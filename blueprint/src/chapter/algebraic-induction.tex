@@ -1,88 +1,90 @@
 \section{The algebraic induction: KT Theorem 5.5 and its three cases}
 \label{sec:molecular-algebraic-induction}
 
-This chapter proves KT Theorem~5.5 \cite[\S5--\S6]{katohTanigawa2011}, which
-turns the combinatorial reduction of \cref{sec:molecular-induction} into a
-statement about rigidity-matrix rank. That chapter reduced every minimal
-$0$-dof-graph to the two-vertex double edge by combinatorial induction (KT
-Theorem~4.9, \cref{thm:minimal-kdof-reduction}). Here each step of the
-reduction is realized geometrically: every minimal $k$-dof-graph $G$ with
-$|V| \ge 2$ carries a panel-hinge realization $(G,p)$ whose rigidity matrix
-attains the rank $D(|V|-1) - k$ (\cref{thm:theorem-55}, at every dimension
-$n \ge 2$, i.e.\ $D = \binom{n+1}{2} \ge 3$; the $d = 3$ instance is
-\cref{thm:theorem-55-d3-instance}). Two consequences follow. The first is the
-generic-rank reconciliation of Tay--Whiteley's body-bar count with the
-rigidity-matrix rank (KT Proposition~1.1, \cref{prop:rigidity-matrix-prop11}).
-The second extends the realization from minimal graphs to every simple
-spanning multigraph, minimal or not (KT Theorem~5.6, \cref{thm:theorem-55-6},
-with $d = 3$ instance \cref{thm:theorem-55-6-d3}). Together they give the
-molecular conjecture itself (KT Conjecture~1.2, \cref{thm:molecular-conjecture}).
-Both are then stated at full multigraph strength in KT's hinge-coplanar
-containment model (\cref{thm:theorem-55-6-multigraph},
-\cref{thm:molecular-conjecture-multigraph}).
+This chapter proves Katoh and Tanigawa's Theorem~5.5 and the results
+that they derive from it~\cite[\S\S5--6]{katohTanigawa2011}. Let
+$D = \binom{d+1}{2}$, where $d$ is the dimension. KT Theorem~5.5 states
+that every minimal $k$-dof-graph $G = (V, E)$ (\cref{def:k-dof}) with
+$|V| \ge 2$ has a panel-hinge realization $(G,p)$ in $\R^d$ with
+\[
+  \operatorname{rank} R(G,p) \;=\; D(|V| - 1) - k,
+\]
+where $R(G,p)$ is the rigidity matrix (\cref{def:rigidity-matrix}). If
+$G$ is simple, the realization is nonparallel: the panels of any two
+bodies meet in a $(d-2)$-dimensional affine subspace (KT \S5.1). We
+prove the theorem for every $d \ge 2$, in two forms
+(\cref{thm:theorem-55}). Every such $G$ has a realization of this rank
+whose hinges lie in the panels of the bodies they join and are
+nondegenerate, that is, have nonzero extensors. If $G$ is simple, it
+also has a panel-hinge realization of this rank in which any two panels
+have linearly independent normals.
 
-Throughout, $D = \binom{n+1}{2}$ is the body-bar dimension, $\tilde G =
-(D-1)\cdot G$ is the multiplied graph of \cref{sec:body-hinge}, $R(G,p)$ is
-the panel-hinge rigidity matrix of \cref{def:rigidity-matrix}, and
-$\operatorname{def}(\tilde G)$ is the $D$-deficiency of
-\cref{def:D-deficiency}. The rank of $R(G,p)$ counts only the rigidity rows
-coming from the edges of $G$, so it depends on $G$ alone and is unchanged by
-ambient bodies outside $V(G)$. Only a rank statement, not the full null space,
-is stable under an induction that removes one vertex at a time
-(\cref{def:rank-hypothesis}, \cref{rem:rank-hypothesis-relative}).
-
-\medskip
-\noindent\textbf{Field generality.} The whole chapter is stated and proved
-over an arbitrary \emph{infinite} field $K$, of any characteristic. The
-extensor algebra and the rigidity matrix are field-general
-(\cref{sec:molecular-homog}, \cref{sec:molecular-rigidity-matrix}), and the
-genericity arguments use only that a nonzero polynomial over an infinite
-field has a non-root; Katoh--Tanigawa's theorem is the $K = \R$
-specialization. One layer down this generality is classical --- Whiteley
-proves the body-bar and matroid-union results over any infinite
-field~\cite{whiteley1988} --- but for the Theorem~5.5/5.6 chain and the
-molecular conjecture itself the field-general statement appears to be new.
+Katoh and Tanigawa derive their Theorem~5.6 from Theorem~5.5: every
+multigraph $G = (V, E)$ has a panel-hinge realization $(G,p)$ with
+$\operatorname{rank} R(G,p) = D(|V| - 1) - \operatorname{def}(\tilde G)$,
+where $\operatorname{def}(\tilde G)$ is the deficiency of the multigraph
+$\tilde G = (D-1)\cdot G$ (\cref{def:D-deficiency}). With their
+Proposition~2.3, Theorem~5.6 proves the molecular conjecture of Tay and
+Whiteley~\cite{tayWhiteley1984} (KT Conjecture~1.2; KT p.~670). We prove
+KT Theorem~5.6 and the molecular conjecture for simple graphs
+(\cref{thm:theorem-55-6}, \cref{thm:molecular-conjecture}). For
+multigraphs we prove them with nondegenerate hinges that need only lie
+in the panels of the bodies they join
+(\cref{thm:theorem-55-6-multigraph},
+\cref{thm:molecular-conjecture-multigraph}). KT Proposition~2.3
+contains the rank formula of Jackson and
+Jord\'an~\cite[Theorem~6.1]{jacksonJordan2009}. We prove it for generic
+panel-hinge realizations with nondegenerate hinges
+(\cref{prop:rigidity-matrix-prop11}).
 
 \medskip
-\noindent\textbf{The argument.} \Cref{sec:molecular-algebraic-induction-panel}
-introduces the panel-hinge frameworks: KT's hinge-coplanar frameworks,
-presented in panel-normal form so that transversality and coplanarity are
-computed in the extensor algebra rather than through affine-subspace
-intersections. \Cref{sec:molecular-algebraic-induction-prop11} proves the
-analytic half of KT Proposition~1.1, identifying the graphs a generic panel
-realization can make rigid. KT Theorem~5.5 is then proved by induction on
-$|V|$, using KT Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): every minimal
-$k$-dof-graph on at least three vertices has a proper rigid subgraph
-(Case~I), a cut edge or a positive-deficiency splittable vertex (Case~II), or
-a zero-deficiency splittable vertex (Case~III), and each of the moves yields a
-realization at full rank.
-\begin{itemize}
-  \item \emph{Case~I} (\cref{lem:case-I}, \cref{lem:case-I-realization}), the
-        contraction of a proper rigid subgraph, is KT's block-triangular
-        rank-addition (KT eq.~(6.3)): the rigid-block rows and the surviving
-        rows are made jointly independent by an exterior-column projection,
-        reaching full rank.
-  \item \emph{Case~II} (\cref{lem:case-II}, \cref{lem:case-II-realization})
-        handles the cut edge and the positive-deficiency splitting-off. It is
-        the panel-hinge analogue of the bar-joint $1$-extension, whose
-        preservation of infinitesimal rigidity is due to
-        Whiteley~\cite[Theorem~2.2.2]{whiteley1996}.
-  \item \emph{Case~III} (\cref{lem:case-III}), the zero-deficiency
-        splitting-off with no proper rigid subgraph, is the most difficult of
-        the three. KT's degenerate placement (KT eq.~(6.12)) falls one row
-        short of full rank, and the missing row is supplied by a redundant-edge
-        argument (KT Lemma~6.10, developed in
-        \cref{sec:molecular-algebraic-induction-caseIII}).
-\end{itemize}
+\noindent\textbf{Field generality.} We work over an arbitrary infinite
+field $K$, of any characteristic. Katoh and Tanigawa work over $\R$,
+which is the case $K = \R$. The extensor algebra
+(\cref{sec:molecular}) and the rigidity matrix
+(\cref{sec:molecular-rigidity-matrix}) need no hypothesis on the field.
+The arguments by genericity use only that a nonzero polynomial over an
+infinite field does not vanish at every point. For KT Theorems~5.5
+and~5.6 and the molecular conjecture, the statement over an arbitrary
+infinite field appears to be new. For body-bar frameworks there is a
+precedent. In his proof of Tay's theorem, Whiteley chooses a point of an
+irreducible variety off the zeros of finitely many polynomials, and he
+states this step over any infinite
+field~\cite[Proposition~6 and Lemma~7]{whiteley1988}.
 
-\noindent The shared analytic input is the genericity argument (KT
-Claim~6.4, \cref{lem:genericity-device}), which selects the coordinates
-attaining the generic rank; the cycle-realization lemma (KT Lemma~5.4,
-\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
-Whiteley~\cite{whiteley1999}) is used in Case~III. The base of the induction is
-the two-vertex double edge (\cref{lem:theorem-55-base}). At $d = 3$ the three
-cases assemble into \cref{thm:theorem-55-d3-instance}; the general-dimension
-assembly (KT Lemma~6.13) gives \cref{thm:theorem-55}.
+\medskip
+We follow Katoh and Tanigawa's proof of Theorem~5.5, an induction on
+$|V|$ over minimal $k$-dof-graphs of every deficiency $k$ at once
+(\cref{thm:minimal-kdof-reduction-all-k}). A graph with at least three
+vertices falls into one of four cases (KT p.~671). If $G$ is not
+$2$-edge-connected, the realization comes from KT Lemma~6.1, which
+\cref{sec:molecular-induction} proves. We call the other three cases
+Cases~I, II and~III, after KT \S\S6.2--6.4. In Case~I, $G$ has a proper
+rigid subgraph (\cref{def:rigid-subgraph}). In Cases~II and~III, $G$ is
+$2$-edge-connected and has no proper rigid subgraph, with $k > 0$ in
+Case~II and $k = 0$ in Case~III.
+
+The first five subsections set up the frameworks and derive the main
+results from the three cases.
+\Cref{sec:molecular-algebraic-induction-panel} builds panel-hinge
+frameworks from the normals of their panels, in homogeneous coordinates.
+The hinge of an edge is the meet of the panels of its ends.
+\Cref{sec:molecular-algebraic-induction-prop11} proves the rank formula.
+\Cref{sec:molecular-algebraic-induction-base} states KT Theorem~5.5 and
+gives its induction. It then derives KT Theorem~5.6 and the molecular
+conjecture for simple graphs, and proves the base of the induction.
+\Cref{sec:molecular-algebraic-induction-withgraph} defines two
+operations on frameworks, and \cref{sec:molecular-coplanar-multigraph}
+proves the results for multigraphs. The remaining subsections prove the
+three cases in order: Case~I in
+\cref{sec:molecular-algebraic-induction-caseI}, Case~II in
+\cref{sec:molecular-algebraic-induction-caseII}, and Case~III in
+\cref{sec:molecular-algebraic-induction-caseIII}. Between Cases~II
+and~III, \cref{sec:molecular-algebraic-induction-genericity} treats the
+rank at generic normals, and
+\cref{sec:molecular-algebraic-induction-relative} counts rows and
+motions. The realization lemmas of all three cases use results of the
+second.
 
 \input{chapter/algebraic-induction/panel-layer.tex}
 \input{chapter/algebraic-induction/case-i.tex}

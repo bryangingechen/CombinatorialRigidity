@@ -1063,6 +1063,18 @@ declaration's name as its header writes it:
   *Evidence:* read (`formalization.yaml`'s JJ 2009 reference and its `status.main_results` and
   alignment entries named; the chapters named).
   *Found:* round 2, the PI's review of `F-084` (2026-10-12).
+- **F-173** · U · `README.md`, `formalization.yaml`: two places contradict the rewritten opening of
+  `algebraic-induction.tex`. (1) `README.md`'s molecular-conjecture item calls the algebraic
+  induction the realization of KT Theorem 4.9's reduction; it runs on
+  `thm:minimal-kdof-reduction-all-k`, over every deficiency, and no pin of `thm:theorem-55`
+  reaches `Graph.minimal_kdof_reduction` (`F-100`). (2) `formalization.yaml`'s main result
+  `rankHypothesis_of_theorem_55_gen` ("the Katoh-Tanigawa Proposition 1.1 reconciliation") and
+  its alignment row "Theorem 5.6 + Proposition 1.1" name the rank formula KT Proposition 1.1; it
+  is KT Proposition 2.3 (`F-067`).
+  *Evidence:* read (`README.md`'s *The molecular conjecture* item; the `formalization.yaml`
+  entries named; KT pp. 648, 655 and 671); measured (`scripts/blueprint-deps.py --label
+  thm:theorem-55` at `889ebc08`).
+  *Found:* round 3 task 2.16.
 
 ## S — statement strength
 

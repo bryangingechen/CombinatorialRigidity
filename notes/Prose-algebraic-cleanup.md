@@ -6,9 +6,9 @@ which rounds are done. The round rewrites the prose of the chapter `algebraic-in
 its five sections, `panel-layer.tex` → `case-iii.tex`, to `40-exposition`'s register and round 1's
 exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is. What
 else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-115`–`F-120`, and tasks 2.1–2.15 `F-121`–`F-172`. 18 one-commit tasks; tasks 1 and 2.1–2.15
-are done, and the round has no planned stop. **Next concrete task:** task 2.16, the chapter's
-opening `algebraic-induction.tex` (1–91), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`F-115`–`F-120`, and tasks 2.1–2.16 `F-121`–`F-173`. 18 one-commit tasks; tasks 1 and 2.1–2.16
+(every slice) are done, and the round has no planned stop. **Next concrete task:** task 3, the
+round's close, docs only and may run at Sonnet (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -18,16 +18,14 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.15 has landed** (this commit): `case-iii.tex`'s general case, KT Lemma 6.13 and the
-opening, the open's 1105–1386 and 1–14 (1732–2013 and 1–13 at the parent), now 1745–2150 and 1–27.
-Its 5 nodes keep every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical; no node moved.
-The general case has its own subsubsection, *The case of general $d$* (KT §6.4.2); three
-formalization notes are new. `case-iii.tex` is done. Nothing is mid-stream; task 2.16 is next.
+**Task 2.16 has landed** (this commit): the chapter's opening `algebraic-induction.tex`, 1–86 of
+its 91 lines (the five `\input`s unchanged), now 1–88 of 93. It has no node. Carry-ins 4 and 7 are
+done, so every slice of the round is done. Nothing is mid-stream; task 3, the close, is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (52 overfull boxes, none in the
-  slice). Screens on the slice: register 10 / 10 → 0 / 0, devices 0 / 1 → 0 / 0, `\operatorname`
-  0, vocabulary 26 → 1 ("endpoint selector", in a note); `case-iii`'s forward `\uses` 0 / 1.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (51 overfull boxes, none in the
+  opening). Screens on the opening: register 1 / 1 → 0 / 0, devices 0 / 0, `\operatorname` 0,
+  vocabulary 0; forward `\uses` 0 / 0.
 
 **Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines. The axioms
@@ -100,9 +98,10 @@ From `notes/Prose.md` §2, restated only as far as a builder needs them.
     `lem:case-III-chain-dispatch` and `lem:case-III` (also the Case-naming entry).
 
   `meet.tex`'s `lem:case-III-claim612-line-in-panel-union` is round 2's. Ledger notes also point
-  here: the Phase-33 note at the opening's *Field generality* paragraph (2.16), and the Phase-40a
-  note at the $d \le 3$ of *The case of general $d$*'s opening and `lem:case-III`'s single
-  degree-2 vertex (2.15, done).
+  here: the Phase-33 note at the opening's *Field generality* paragraph (2.16, done; its run-in
+  heading stays, as ROADMAP §33 and `notes/Phase33.md` name it too), and the Phase-40a note at the
+  $d \le 3$ of *The case of general $d$*'s opening and `lem:case-III`'s single degree-2 vertex
+  (2.15, done).
 - **Evidence.**
   - Citations meet `CLAUDE.md` *Referencing prior work*. `.refs/` has every source these files
     cite except Tay–Whiteley 1984 (`tayWhiteley1984`), which is cited as KT cite it (round 2, task
@@ -191,24 +190,16 @@ vocabulary column is mostly "seed" (89), "conjunct(s)", "bare", "device", "endpo
 for the dimension, the Lean's realization record and role clauses in statements, route history
 ("see the git history" twice), and prose that cites dead nodes as steps of the induction (`F-118`).
 
-**Carried in** (`notes/Prose.md` §3 *Round 3*; the ledger's `F-067`):
-1.–3., 5. Done (2.7, 2.9, 2.15).
-4. The opening says twice that KT Theorem 5.5 is proved with `thm:minimal-kdof-reduction`: the
-   induction runs on `thm:minimal-kdof-reduction-all-k` (2.16; 2.7's "reduction theorem" is gone).
-6. Notation: $\vee$, $\wedge$, $*$, $\bigwedge$ as `meet.tex` writes them (2.1 and every slice;
-   *Decisions*).
-7. `F-067`: KT Proposition 1.1 is Tay and Whiteley's theorem; the rank formula is KT Proposition
-   2.3 (Jackson–Jordán's Theorem 6.1), as `rigidity-matrix.tex` and `deficiency.tex` now say
-   (2.16; the parts of 2.1 and 2.7 are done).
+**Carried in** (`notes/Prose.md` §3 *Round 3*; the ledger's `F-067`): all seven done, 1–3 and 5
+by 2.7, 2.9 and 2.15; 4 and 7 by 2.16 (the opening cites `thm:minimal-kdof-reduction-all-k`,
+checked with `scripts/blueprint-deps.py --label thm:theorem-55`, and names the rank formula KT
+Proposition 2.3); 6, the notation of `meet.tex`, by every slice (*Decisions*).
 
 - **`panel-layer` … `genericity-and-count`.** *Done:* 2.1–2.10 (their open bullets are in this
   log at `efa7ed2b`, the last at `120eca58`).
 - **`case-iii`.** *Done:* 2.11–2.15 (their open bullets are in this log at `fe05a812`, `ba79d703`,
   `4502f035`, `9190873a` and `c3586784`).
-- **`algebraic-induction.tex` (2.16).** The chapter's opening, last (principle F): carry-ins 4 and
-  7; "dimension $n \ge 2$ … the $d = 3$ instance"; "carries"; its Case I–III list repeats the
-  sections' openings (principle F *Once*). The *Field generality* paragraph keeps its claim and its
-  Whiteley 1988 credit (the Phase-33 ledger note points at it).
+- **`algebraic-induction.tex`.** *Done:* 2.16 (its open bullet is in this log at `889ebc08`).
 
 ## Lemma checklist (the round's task list)
 
@@ -218,7 +209,7 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 
 - [x] **1. O — the open** (`efa7ed2b`; docs only): this log, the baselines, the open's findings
   `F-115`–`F-120`, and the status surfaces.
-- [ ] **2. The slices**, one commit each, in `\input` order. Each section's own opening goes in its
+- [x] **2. The slices**, one commit each, in `\input` order. Each section's own opening goes in its
   file's last slice and the chapter's opening last (principle F). The diagnosis of each is above;
   the carry-ins are numbered as there.
   - [x] **2.1–2.5 `panel-layer.tex`** (`db237dfd`, `5c65ea52`, `fd204aa5`, `708f4443`,
@@ -232,13 +223,15 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
     6.8 and putting back a body (carry-in 3); the rank at generic normals, the relative counts and
     KT eq. (6.12) at $k = 0$ (two nodes moved). Found `F-145`–`F-153`.
   - [x] **2.11–2.15 `case-iii.tex`: KT Claim 6.11, the row operations, the case $d = 3$ and the
-    general case** (`ba79d703`, `e5f16b29`, `9190873a`, `eed7e7a5`, this commit; 1–1386, now
+    general case** (`ba79d703`, `e5f16b29`, `9190873a`, `eed7e7a5`, `889ebc08`; 1–1386, now
     1–2150): KT's three steps (pp. 684–685) and KT footnote 6; KT's row and column operations
     (pp. 685–686) at $(G, p_1)$ (KT eq. (6.12)); KT pp. 680–691 for $d = 3$, its points in
     homogeneous coordinates and the rotation of KT Lemma 5.2; KT pp. 692–698 for every $d$, with
     the triangle of KT Lemma 6.7(i) and KT eq. (6.66). Found `F-154`–`F-172`.
-  - [ ] **2.16 `algebraic-induction.tex`, the chapter's opening** (1–91): no node, 91 lines;
-    carry-ins 4 and 7.
+  - [x] **2.16 `algebraic-induction.tex`, the chapter's opening** (this commit; 1–86, now 1–88):
+    what is proved (KT Theorems 5.5 and 5.6, the molecular conjecture, KT Proposition 2.3's rank
+    formula), the field, KT's induction and four cases (KT p. 671), and the order of the ten
+    subsections; carry-ins 4 and 7. Found `F-173`.
 - [ ] **3. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
   - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat ef57b401..
     -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty). The axioms
@@ -388,6 +381,8 @@ one line each naming the ledger ID and the task that found it.
   (6.66), the arm theorem) has no node; the triangle realization and the $d = 3$ pin are dead.
 - `F-172` (L, task 2.15): the docstrings of its pins deny two pins, cite KT Lemma 6.10 and a wrong
   page, and carry process codes.
+- `F-173` (U, task 2.16): `README.md` calls the algebraic induction the realization of KT Theorem
+  4.9's reduction, and `formalization.yaml` names the rank formula KT Proposition 1.1.
 
 ## Blockers / open questions
 
@@ -395,33 +390,18 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.16, the chapter's opening `algebraic-induction.tex` (1–91), at Opus**,
-a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.16* item under *Per-chapter
-diagnosis*, with carry-ins 4 and 7; its gates and screens are under *Scope*. Then task 3 closes the
-round. For 2.16:
-- **Notation and terms.** *Decisions*' notation (2.1; the note on $d = k + 1$ follows
-  `def:panel-support-extensor`); the opening still writes $n$. After `def:panel-hinge-framework`:
-  *nondegenerate* hinges, the *endpoint selector* in notes only (`F-122`, `F-128`).
-  `def:rank-hypothesis` defines *at the target rank* and *generic full-rank realization*,
-  `def:genuine-hinge-realization` *nondegenerate-hinge panel realization*.
-- **What the sections now say** (principle F *Once*: the chapter's opening names what is proved
-  and in what order, and does not repeat the sections' openings). Each of `case-i.tex`,
-  `case-ii.tex` and `case-iii.tex` opens with KT's case and its plan. Case III's formal proof is
-  KT Lemma 6.13 for every $d$ (`lem:case-III`), with KT Lemma 6.10 as its worked case $d = 3$
-  and the triangle as KT Lemma 6.7(i); the opening's "KT Lemma 6.10" for Case III, "the most
-  difficult of the three" and "the general-dimension assembly (KT Lemma 6.13) gives
-  `thm:theorem-55`" need this. `lem:genericity-device` is *the rank at generic normals* (KT §5.1,
-  p. 668), used as `lem:rank-polynomial-of-le-finrank` (`F-149`): the opening's "Claim 6.4,
-  `lem:genericity-device`" follows this, and KT Claim 6.4 is `lem:claim-6-4` (2.7).
-- **The open's findings** are recorded, not acted on: `lem:genericity-device` kept its statement
-  (`F-117`, `F-149`). Where a sentence cites a node its pin does not reach (`F-118`), a slice may
-  name in prose the node the pin does reach, after checking it with the script; the edges wait for
-  round 5.
-- **For the close** (task 3): 2.15 added notes to three entries of `notes/BlueprintExposition.md`
-  (the triangle floor, the general case, Phase 40a), whose pointers moved into *The case of general
-  $d$*.
-- **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <section>`. The ledger's next ID is `F-173`.
+**Next concrete task: task 3, the round's close** (`CLEANUP.md` *Workflow* 5; docs only; it may run
+at Sonnet, `notes/Prose.md` §2). Its checklist is item 3 of the *Lemma checklist*. The values it
+reproduces are under *Current state* (the open's) and *Scope* (gate 3, the two screens), and the
+open's screen figures are the table under *Per-chapter diagnosis*. For the close:
+- **The exposition ledger.** Check the pointers that *Scope*'s crux list and ledger notes name
+  against the new text. 2.15 added notes to the triangle-floor, general-case and Phase-40a entries
+  of `notes/BlueprintExposition.md`, whose pointers moved into *The case of general $d$*; the
+  Phase-33 note's *Field generality* paragraph keeps its heading (2.16). Then add the round note.
+- **Findings.** The round recorded `F-115`–`F-173`, 59 entries, each with its line under
+  *Candidates* (`S`, `M`) or *Moved* (`E`, `N`, `L`, `T`, `U`) as of this commit.
+- **Tools.** `scripts/blueprint-deps.py --label <label>` or `--chapter <section>`. The ledger's
+  next ID is `F-174`.
 
 ## Decisions made during this round
 
@@ -440,11 +420,11 @@ round. For 2.16:
 - **The crux list, by label** (the open): twelve slices, *Scope*; the done entry under the ledger's
   `rigidity-matrix.tex` heading is here (2.1). Node moves stay within a section file (`F-119`). The
   no-Lean-edit base is `ef57b401`, the open's parent.
-- **Tasks 2.1–2.15 (done).** `panel-layer.tex` follows KT §5 and p. 671 (Proposition 2.3's halves,
+- **Tasks 2.1–2.16 (done).** `panel-layer.tex` follows KT §5 and p. 671 (Proposition 2.3's halves,
   KT Lemma 5.3 before `thm:theorem-55`, Theorem 5.6 without the projective move, the base by KT's
   three cases); `case-i.tex` KT Lemma 5.4 for $m \le d + 1$ and KT §6.2; `case-ii.tex` KT §6.3;
-  `genericity-and-count.tex` KT §5.1 and p. 680; `case-iii.tex` KT pp. 680–698 ($(G, p_1)$ with
-  its subspace $L$; KT's isomorphisms rename one realization; the general case on its own). A
+  `genericity-and-count.tex` KT §5.1 and p. 680; `case-iii.tex` KT pp. 680–698 ($(G, p_1)$, its
+  subspace $L$, KT's isomorphisms renaming one realization); the opening KT pp. 670–671. A
   statement that claims more than its pins, or less (`F-169`), keeps the claim, with a note; its
   proof assumes what it needs and says so (`F-136`–`F-138`, `F-141`, `F-142`, `F-145`, `F-149`,
   `F-150`, `F-154`, `F-158`, `F-165`).
