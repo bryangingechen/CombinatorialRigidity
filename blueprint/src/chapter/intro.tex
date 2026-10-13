@@ -51,317 +51,190 @@ body pass through a common point of the body's panel.
 \subsection*{Organization of the blueprint}
 
 The Lean development is organized into phases, tracked in
-\href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-At a high level it proceeds in four arcs:
+\href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}},
+which also lists the Lean files of each phase. Phases~1--26 form four
+arcs:
 
 \begin{itemize}
-  \item \textbf{Laman's theorem} (phases~1--6) --- the Henneberg route
-        above, formalized in both directions.
-  \item \textbf{Rigidity matroid and sparsity decision} (phases~7--11)
-        --- the planar rigidity matroid as a mathlib \texttt{Matroid},
-        and the $(k,\ell)$-pebble game as an executable,
-        certificate-carrying decision procedure for sparsity.
-  \item \textbf{Body-bar and body-hinge rigidity} (phases~12--16) ---
-        the abstract matroid-union machinery, Tay's body-bar theorem,
-        and its body-hinge / panel-hinge Tay--Whiteley extension.
-  \item \textbf{The molecular conjecture} (phases~17--26) ---
-        Katoh--Tanigawa's proof of the panel-hinge Tay--Whiteley
-        conjecture together with its molecule application, the
-        project's largest single undertaking.
+  \item \textbf{Laman's theorem} (phases~1--6): sparse graphs, Laman
+        graphs, Henneberg moves, frameworks, and the two directions of
+        the theorem.
+  \item \textbf{The planar rigidity matroid and the pebble game}
+        (phases~7--11): the rigidity matroid in the plane, as a count
+        matroid and as a linear matroid, and the $(k,\ell)$-pebble game,
+        a computable test for sparsity that returns a certificate with
+        its answer.
+  \item \textbf{Body-bar and body-hinge rigidity} (phases~12--16):
+        matroid union, Tay's theorem on body-bar frameworks, and the
+        theorem of Tay and Whiteley on body-hinge frameworks.
+  \item \textbf{The molecular conjecture} (phases~17--26): Katoh and
+        Tanigawa's proof of the molecular
+        conjecture~\cite{katohTanigawa2011}, cited as KT below, and the
+        rank formula for squares of graphs that they derive from it.
 \end{itemize}
 
-The per-phase breakdown, with the chapter and Lean files each phase
-contributes:
+The phases of the four arcs, with the chapters they contribute to:
 
 \begin{enumerate}
-  \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
-        for arbitrary $k, \ell$. (Files: \texttt{EdgesIn.lean},
-        \texttt{Sparsity.lean}.)
-  \item \textbf{Laman graphs.} The $(2,3)$-tight specialization, the
-        $K_2$ base case, and degree facts used by the Henneberg induction.
-        (File: \texttt{Laman.lean}.)
-  \item \textbf{Henneberg moves.} Type~I and Type~II moves, Laman-preservation
-        in both directions, and the existence of an inverse move at every
-        non-base Laman graph. (File: \texttt{Henneberg.lean}.)
-  \item \textbf{Frameworks.} Frameworks, the rigidity map, infinitesimal
-        rigidity, generic rigidity. (File: \texttt{Framework.lean}.)
-  \item \textbf{Laman's theorem ($\Leftarrow$).} Per-move rigidity
-        preservation and the induction. (Files: \texttt{HennebergRigidity.lean},
-        \texttt{LamanTheorem.lean}.)
-  \item \textbf{Laman's theorem ($\Rightarrow$).} The companion direction
-        via the planar rigidity matroid (Lov\'asz--Yemini's easy
-        identification of row-independence with $(2,3)$-sparsity).
-        (Files: \texttt{RigidityMatroid.lean}, \texttt{LamanTheorem.lean}.)
-  \item \textbf{Lov\'asz--Yemini matroid identification.} The harder
-        converse: $(2,3)$-sparse $\Rightarrow$ row-independent at some
-        placement; together with Phase~6 this gives the
-        Lov\'asz--Yemini~\cite{lovaszYemini1982} row-independence $\Leftrightarrow$
-        $(2,3)$-sparse identification. Packaged as a mathlib
-        \texttt{Matroid} via the general $(k, \ell)$-count matroid in
-        the matroidal regime $\ell < 2k$
-        (Whiteley~\cite{whiteley1996}, Lee--Streinu~\cite{leeStreinu2008}).
-        (Files: \texttt{CountMatroid.lean}, \texttt{MatroidIdentification.lean}.)
-  \item \textbf{Linear-matroid framing.} The planar rigidity matroid
-        as a linear matroid via \texttt{Matroid.ofFun} (from the
-        \texttt{apnelson1/Matroid} library) of the rigidity-row
-        function at a uniformly generic placement, identified with the
-        combinatorial $(2,3)$-count matroid of Phase~7
-        (Lov\'asz--Yemini, linear-matroid form).
-        (File: \texttt{LinearRigidityMatroid.lean}.)
-  \item \textbf{Pebble game.} The basic $(k, \ell)$-pebble game of
-        Lee--Streinu~\cite{leeStreinu2008} (generalising the original
-        $(2, 3)$ algorithm of Jacobs--Hendrickson~\cite{jacobsHendrickson1997})
-        and its correctness theorem in certificate form, in the
-        matroidal regime $\ell < 2k$ matching Phase~7. Preceded by a
-        verified-DFS warmup. (Files:
-        \texttt{Search/DFS.lean}, \texttt{PebbleGame/\{Basic,Algorithm,Correctness\}.lean}.)
-  \item \textbf{Executable pebble game.} A computable form of
-        the Phase~9 algorithm, yielding \texttt{Decidable} instances
-        for $\mathrm{IsSparse}$, $\mathrm{IsTight}$, and
-        $\mathrm{IsLaman}$ that run in polynomial time;
-        \texttt{\#eval}-able worked examples on $\mathrm{Fin}\,n$
-        graphs; and a \texttt{lake exe pebble-game} command-line tool.
-        (Files: \texttt{PebbleGame/\{Exec,Examples\}.lean},
-        \texttt{Main.lean}.)
-  \item \textbf{Witness extraction.} The pebble game returns a
-        verdict carrying an inline, machine-checked certificate on
-        every branch: the accepting partial orientation $D$ when the
-        input is $(k, \ell)$-sparse, and a blocking vertex subset
-        $V'$ with $\bigl|\edgesIn{V'}\bigr| > k|V'| - \ell$ when it
-        is not. The command-line tool prints this witness data
-        alongside the classification, making its verdict externally
-        checkable. (Files: \texttt{Search/DFS.lean},
-        \texttt{PebbleGame/\{Basic,Algorithm,Correctness,Exec\}.lean},
-        \texttt{Main.lean}.)
-  \item \textbf{Matroid foundations: submodular functions and
-        matroid union.} The abstract-matroid prerequisites of the
-        body-bar route, formalized \emph{locally}: the
-        matroid-from-submodular-function construction and polymatroid
-        rank formula (Edmonds~\cite{edmonds1970}), the matroid-union
-        theorem (Nash-Williams~\cite{nashWilliams1966} / Edmonds),
-        Rado's theorem (Rado~1942,~\cite[Thm 11.2.2]{oxley2011}), and
-        Edmonds' matroid-partition rank formula~\cite{edmonds1965}. The
-        Lean is ported from Peter Nelson's \texttt{apnelson1/Matroid}
-        package (Apache-2.0; the same package supplying
-        \texttt{Matroid.ofFun} and \texttt{Graph.cycleMatroid}), whose
-        shelved \texttt{WIP/\{Submodular,Union\}.lean} carry complete
-        proofs, rebased onto the package's current
-        \texttt{FiniteCircuitMatroid} constructor. (Chapter:
-        \cref{sec:matroid-union}; files:
-        \texttt{CombinatorialRigidity/Matroid/}.)
-  \item \textbf{Tutte--Nash-Williams tree-packing.} Specializing the
-        matroid-partition theorem to $k$ copies of the cycle matroid
-        recovers the tree-packing theorem~\cite{tutte1961,nashWilliams1961}:
-        a multigraph is the edge-disjoint union of $k$ forests iff it
-        is $(k, k)$-sparse. Introduces a \texttt{Graph}-native
-        $(k, \ell)$-sparsity predicate. (File:
-        \texttt{BodyBar/TreePacking.lean}.)
-  \item \textbf{The $k$-frame matroid as a cycle-matroid union.}
-        Whiteley's Theorem~1~\cite{whiteley1988}: the generic
-        $k$-frame matroid on a multigraph (a linear matroid via
-        \texttt{Matroid.ofFun} over indeterminate coefficients)
-        equals the $k$-fold union of the cycle matroid, restricted to
-        the bar set $E(G)$. (File: \texttt{BodyBar/KFrame.lean}.)
-  \item \textbf{Body-bar Tay theorem.} For $n \ge 2$ and
-        $d = n(n+1)/2$, a multigraph $G$ carries an independent body-bar
-        framework in $\mathbb{R}^n$ iff $G$ is $(d,d)$-sparse, and an
-        isostatic one iff $(d,d)$-tight --- equivalently the
-        edge-disjoint union of $d$ forests (resp.\ spanning trees)
-        (Tay~1984~\cite{tay1984}, \cref{thm:tay-witness}). Existence is
-        witnessed by specializing two-extensor row coefficients to
-        standard-basis Pl\"ucker coordinates on a tree packing; the
-        converse is the body-bar Lov\'asz--Yemini rank-upper-bound. The
-        phase establishes the existence-of-realization form, deferring
-        Whiteley's full lift via irreducible-variety machinery
-        (Proposition~6 in~\cite{whiteley1988}). (Chapter:
-        \cref{sec:body-bar}; files:
-        \texttt{BodyBar/\{Framework,TayTheorem\}.lean}.)
-  \item \textbf{Body-hinge Tay--Whiteley theorem.} The body-hinge
-        (panel-hinge) theorem in $n$-space (Tay~1989~\cite{tay1989},
-        Whiteley~\cite{whiteley1988}), existence-of-realization form,
-        \emph{via the matroid-union reduction to Phase~15}. A hinge ---
-        an $(n-2)$-dimensional affine subspace --- constrains all but
-        one of the $\delta = n(n+1)/2$ relative screw freedoms of the
-        two bodies it joins, so it behaves like a bundle of
-        $\delta - 1$ coincident body-bars; a body-hinge framework on
-        $G$ is the induced body-bar framework on $(\delta-1)\cdot G$
-        (each hinge replaced by $\delta - 1$ parallel bars), and the
-        characterization --- $G$ carries an independent (resp.\
-        isostatic) body-hinge framework iff $(\delta-1)\cdot G$ is
-        $(\delta,\delta)$-sparse (resp.\ tight) --- reduces directly
-        to \cref{thm:tay-witness} on $(\delta-1)\cdot G$. The
-        $(\delta-1)\cdot G$ device is the multiplied graph of the
-        molecular conjecture~\cite{katohTanigawa2011}. (Chapter:
-        \cref{sec:body-hinge}; file: \texttt{BodyBar/BodyHinge.lean}.)
-  \item \textbf{Grassmann--Cayley extensor algebra.}
-        Opens the longer-horizon molecular-conjecture program
-        (phases~17--26, Katoh--Tanigawa~\cite{katohTanigawa2011}) with
-        the extensor algebra of \cite[\S2.1]{katohTanigawa2011}. Homogeneous coordinatization,
-        extensors as decomposable elements of $\bigwedge^{j} \R^{d+1}$,
-        the join $\vee$, Pl\"ucker coordinates, and the affine-subspace
-        extensor $C(\cdot)$, culminating in Lemma~2.1
-        (\cref{lem:extensor-independence}): the
-        $D = \binom{d+1}{2}$ many $(d-1)$-extensors of $d+1$ affinely
-        independent points are linearly independent --- the
-        linear-algebra foundation the conjecture's hardest case bottoms
-        out on. (Chapter: \cref{sec:molecular}; file:
-        \texttt{Molecular/Extensor.lean}.)
-  \item \textbf{Panel-hinge rigidity matrix.} The \emph{genuine}
-        panel-hinge rigidity matrix $R(G,p)$
-        (Katoh--Tanigawa~\cite[\S2.2--2.4]{katohTanigawa2011}). A
-        body-hinge framework assigns a $(d-2)$-dimensional affine hinge
-        to each edge; its supporting $(d-1)$-extensor $C(p(e))$ (Phase~17)
-        constrains the $D$-dimensional screw centers by
-        $S(u) - S(v) \in \operatorname{span} C(p(e))$. The phase builds
-        the null space $Z(G,p)$ of the block matrix (basis-free, on the
-        degree-$k$ graded screw space $\bigwedge^k \R^{k+2}$ of dimension
-        $D$), the $D$ trivial motions and the codimension form of
-        $\operatorname{rank} \le D(|V|-1)$, and the rank Lemmas~5.1--5.3
-        --- the full rank-form substrate for the algebraic induction.
-        The reconciliation with the body-hinge existence form of
-        Phase~16 (Tay--Whiteley's Proposition~1.1,
-        \cref{thm:body-hinge-tay}) is a top-level corollary depending on
-        the analytic generic-rank theorem; it is presented with the
-        algebraic induction. (Chapter:
-        \cref{sec:molecular-rigidity-matrix}; file:
-        \texttt{Molecular/RigidityMatrix.lean}.)
-  \item \textbf{The matroid $M(\tilde G)$, deficiency, and $k$-dof
-        graphs.} The matroidal substrate of the conjecture's algebraic
-        induction (Katoh--Tanigawa~\cite[\S2.5, \S3]{katohTanigawa2011}).
-        The
-        matroid $M(\tilde G)$ is the $(D,D)$-count matroid of the
-        multiplied graph $\tilde G = (D-1)\cdot G$ at the boundary regime
-        $\ell = 2k = D$ --- the $D$-fold graphic-matroid union of
-        Phases~13--14 with Tutte--Nash-Williams, not the matroidal-regime
-        count matroid of Phase~7. The phase builds the $D$-deficiency
-        $\operatorname{def}(\tilde G)$, the $k$-degree-of-freedom and
-        minimal-$k$-dof hierarchy, rigid subgraphs, the structural lemmas
-        (KT 3.1, 3.3, 3.4), and the bridge
-        $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
-        (Jackson--Jord\'an~\cite{jacksonJordan2009}) --- the matroidal
-        half of the Phase~16 reconciliation. (Chapter:
-        \cref{sec:molecular-deficiency}; file:
-        \texttt{Molecular/Deficiency.lean}.)
-  \item \textbf{Combinatorial induction.} The combinatorial half of
-        Katoh--Tanigawa's proof
-        (\cite[\S3.4--3.5, \S4]{katohTanigawa2011}). The graph operations on
-        \texttt{Graph $\alpha$ $\beta$} --- vertex removal, splitting-off
-        $G_v^{ab}$ at a degree-2 vertex, its inverse edge-splitting, and
-        rigid-subgraph contraction --- the degree-of-freedom tracking
-        lemmas (4.3--4.8), and the capstone \textbf{Theorem~4.9}
-        (\cref{thm:minimal-kdof-reduction}): every minimal $0$-dof-graph
-        reduces to the two-vertex double edge by splitting-off and
-        rigid-subgraph contraction, the combinatorial skeleton the
-        algebraic induction realizes at the rigidity-matrix rank.
-        (Chapter: \cref{sec:molecular-induction}; file:
-        \texttt{Molecular/Induction/}.)
-  \item \textbf{Algebraic induction} (phases~21--23). The algebraic half
-        of Katoh--Tanigawa's proof
-        (\cite[\S5--6]{katohTanigawa2011}), which realizes the Phase-20
-        combinatorial reduction at the rigidity-matrix rank. It opens
-        with the Grassmann--Cayley \emph{meet} and the projective-duality
-        dictionary on $\R^{k+2}$ (\cref{sec:molecular-meet}, the dual of
-        the Phase-17 join), then lands \textbf{Theorem~5.5}
-        (\cref{thm:theorem-55}) --- every minimal $k$-dof-graph $G$ with
-        $|V| \ge 2$ has a panel-hinge realization with
-        $\operatorname{rank} R(G,p) = D(|V|-1) - k$ --- through its base
-        case, the generic-max-rank device underpinning the induction, and
-        the case analysis of Theorem~4.9's reduction dichotomy: Case~I (a
-        proper rigid subgraph, by rigid-subgraph contraction and
-        block-triangular gluing), Case~II ($k > 0$, splitting off a
-        reducible degree-2 vertex --- the panel-hinge analogue of
-        Whiteley's bar-joint $1$-extension), and the crux Case~III
-        ($k = 0$, no proper rigid subgraph; KT~\S6.4, the conjecture's
-        hardest argument). The cycle-realization Lemma~5.4
-        (Crapo--Whiteley~\cite{crapoWhiteley1982}) and the analytic half
-        of Proposition~1.1 (\cref{prop:rigidity-matrix-prop11}, the
-        rank/deficiency reconciliation completing the Phase-16 reduction)
-        land here too. The arc culminates in Theorems~5.5 and~5.6 at every
-        dimension and the \emph{Molecular Conjecture} itself
+  \item \textbf{Sparsity.} $(k,\ell)$-sparse and $(k,\ell)$-tight graphs,
+        for all $k$ and $\ell$ (\cref{sec:edgesIn}, \cref{sec:sparsity}).
+  \item \textbf{Laman graphs.} The case $(k,\ell) = (2,3)$, $K_2$ as the
+        only Laman graph on two vertices, and the degrees of the vertices
+        of a Laman graph (\cref{sec:laman}).
+  \item \textbf{Henneberg moves.} The two moves, which preserve the Laman
+        property, and the decomposition of every Laman graph on at least
+        three vertices by a reverse move (\cref{sec:henneberg}).
+  \item \textbf{Frameworks.} The rigidity map, and infinitesimal and
+        generic rigidity (\cref{sec:frameworks}).
+  \item \textbf{Laman's theorem ($\Leftarrow$).} The Henneberg moves
+        preserve rigidity in the plane, so every Laman graph is
+        generically rigid there (\cref{sec:henneberg-rigidity},
+        \cref{sec:laman-theorem}).
+  \item \textbf{Laman's theorem ($\Rightarrow$).} The trivial motions
+        bound the rank of the rigidity map, and the bound shows that a
+        generically rigid graph in the plane has a spanning Laman subgraph
+        (\cref{sec:trivial-motions}, \cref{sec:laman-theorem}).
+  \item \textbf{Row independence and the count matroid.} Every
+        $(2,3)$-sparse edge set is row-independent at some framework in
+        the plane, which completes Laman's characterization of the planar
+        rigidity matroid; and the $(k,\ell)$-count matroid of Lorea and of
+        White and Whiteley, for $\ell < 2k$ (\cref{sec:rigidity-matroid},
+        \cref{sec:count-matroid}).
+  \item \textbf{Linear-matroid framing.} The planar rigidity matroid as
+        the rigidity matroid of one framework of the complete graph
+        (\cref{sec:rigidity-matroid-linear-framing}).
+  \item \textbf{Pebble game.} Lee and Streinu's $(k,\ell)$-pebble game
+        for $\ell < 2k$, which generalizes Jacobs and Hendrickson's: on a
+        simple graph it accepts every edge if and only if the graph is
+        $(k,\ell)$-sparse (\cref{sec:dfs}, \cref{sec:pebble-game}).
+  \item \textbf{Executable pebble game.} A computable form of the game,
+        procedures that decide $(k,\ell)$-sparsity, $(k,\ell)$-tightness
+        and the Laman property, and a command-line program that decides
+        whether a graph read from a file is Laman
+        (\cref{sec:executable}).
+  \item \textbf{Witness extraction.} The game returns a certificate with
+        its answer: the orientation it builds when it accepts, and
+        otherwise a set $V'$ of vertices spanning more than
+        $k|V'| - \ell$ edges. The command-line program prints it
+        (\cref{sec:pebble-game-verdict}, \cref{sec:executable-cli}).
+  \item \textbf{Matroid union.} The matroid of a submodular function
+        (Edmonds and Rota), Rado's theorem, and the union of matroids with
+        its rank (Nash-Williams and Edmonds) and Edmonds' partition
+        theorem, after Oxley; the formal proofs are ported from Peter
+        Nelson's matroid package for Lean (\cref{sec:matroid-union}).
+  \item \textbf{Tree packing.} The theorem of Tutte and Nash-Williams: a
+        multigraph is the union of $k$ disjoint forests if and only if it
+        is $(k,k)$-sparse (\cref{sec:body-bar-matroid-union},
+        \cref{sec:body-bar-tree-packing}).
+  \item \textbf{The $k$-frame.} Whiteley's Theorem~1: the general
+        $k$-frame of a multigraph, a matrix of indeterminates, represents
+        the union of $k$ copies of its cycle matroid
+        (\cref{sec:body-bar-k-frame}).
+  \item \textbf{Tay's theorem.} Let $d \ge 2$ and $D = \binom{d+1}{2}$. A
+        multigraph has an independent body-bar framework in $\R^d$ if and
+        only if it is $(D,D)$-sparse, and an independent and
+        infinitesimally rigid one if and only if it is $(D,D)$-tight
+        (\cref{sec:body-bar-framework}, \cref{sec:body-bar-tay}).
+  \item \textbf{Body-hinge frameworks.} The theorem of Tay and Whiteley,
+        proved with each hinge replaced by $D - 1$ bars: a multigraph $G$
+        has an independent and infinitesimally rigid such framework in
+        $\R^d$ if and only if $(D-1)\cdot G$, with each edge repeated
+        $D - 1$ times, is $(D,D)$-tight (\cref{sec:body-hinge}).
+  \item \textbf{Extensors.} Homogeneous coordinates, extensors and their
+        join, and KT Lemma~2.1: the extensors of the $D$ sets of $d - 1$
+        of $d + 1$ affinely independent points are linearly independent
+        (\cref{sec:molecular}).
+  \item \textbf{The panel-hinge rigidity matrix.} The rigidity matrix
+        $R(G,p)$ of a body-hinge framework, built from the extensors of
+        its hinges (KT \S\S2.2--2.4), and KT Lemmas~5.1--5.3 on its rank
+        (\cref{sec:molecular-rigidity-matrix}).
+  \item \textbf{Deficiency and $k$-dof-graphs.} The matroid
+        $M(\tilde G)$ of the multigraph $\tilde G = (D-1)\cdot G$, the
+        deficiency $\operatorname{def}(\tilde G)$, $k$-dof-graphs and
+        rigid subgraphs; KT eq.~(2.4), which relates the deficiency to the
+        rank of $M(\tilde G)$; and the lemmas of KT~\S3
+        (\cref{sec:molecular-deficiency}).
+  \item \textbf{Combinatorial induction.} Splitting off, edge-splitting
+        and the contraction of rigid subgraphs, the lemmas of KT~\S4, and
+        KT Theorem~4.9: every minimal $0$-dof-graph with at least two
+        vertices reduces to the two-vertex double edge
+        (\cref{sec:molecular-induction}).
+  \item \textbf{Algebraic induction: the first cases.} The
+        Grassmann--Cayley meet (\cref{sec:molecular-meet}), panel-hinge
+        frameworks, and the base and Cases~I and~II of KT Theorem~5.5,
+        whose proof is an induction over minimal $k$-dof-graphs of every
+        deficiency $k$ (\cref{sec:molecular-algebraic-induction}).
+  \item \textbf{Cases~I and~III.} KT Claim~6.4 of Case~I, KT Claim~6.11
+        of Case~III, and KT Lemma~6.10 with KT Claim~6.12, the case
+        $d = 3$ of Case~III (\cref{sec:molecular-algebraic-induction-caseI},
+        \cref{sec:molecular-algebraic-induction-caseIII}).
+  \item \textbf{Case~III in general dimension.} KT Lemma~6.13, which
+        completes KT Theorem~5.5 for $d \ge 3$. With it come the rank
+        formula of Jackson and Jord\'an (KT Proposition~2.3), and KT
+        Theorem~5.6 and the molecular conjecture for simple graphs
         (\cref{thm:molecular-conjecture}).
-        (Chapter: \cref{sec:molecular-algebraic-induction},
-        \cref{sec:molecular-meet}; files:
-        \texttt{Molecular/\{Meet,AlgebraicInduction,Induction\}.lean}.)
-  \item \textbf{The generic bar-joint rigidity matroid in dimension 3.}
-        Opens the \emph{molecule application} of the conjecture
-        (phases~24--26): the generic bar-joint rigidity matroid of the
-        Phase-4 frameworks, packaged in linear-matroid form via
-        \texttt{Matroid.ofFun} at a placement generic for row
-        independence (extending the dimension-2 framing of
-        \cref{sec:rigidity-matroid-linear-framing} to every dimension),
-        together with its rank function $r(\cdot)$ --- the quantity in
-        the molecule rank formula
-        $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
-        (Jackson--Jord\'an~\cite{jacksonJordan2008}, Corollary~5.7
-        of~\cite{katohTanigawa2011}). Only the linear matroid is built
-        --- a combinatorial characterization of generic rigidity in
-        dimension 3 is an open problem~\cite[\S7]{katohTanigawa2011}.
-        (Chapter: \cref{sec:bar-joint-3d}; file:
-        \texttt{GenericRigidityMatroid.lean}.)
+  \item \textbf{The generic bar-joint rigidity matroid.} The generic
+        rigidity matroid $\mathcal{R}_d(V)$ in every dimension $d$, as the
+        rigidity matroid of the complete graph at a placement that is
+        generic for row independence, and its rank function
+        (\cref{sec:bar-joint-3d}).
   \item \textbf{Projective duality and the molecule modelling
-        equivalence.} The geometric content of the molecule application:
-        the three equivalent $3$-dimensional rigidity models of a graph
-        of minimum degree at least two --- bar-joint framework of the
-        square $G^2$, molecular (hinge-concurrent body-hinge) framework
-        of $G$, and panel-hinge framework of $G$. Projective invariance
-        of infinitesimal rigidity in $\R^3$
-        (Crapo--Whiteley~\cite{crapoWhiteley1982}) carries panel-hinge
-        to hinge-concurrent body-hinge frameworks, and the square-graph
-        modelling equivalence (Whiteley~\cite{whiteley1999},
-        Jackson--Jord\'an~\cite{jacksonJordan2008}) matches the
-        molecular model to the bar-joint framework of $G^2$; composed
-        with Theorem~5.6 and the generic matroid these give the molecule
-        rank formula of the final phase. (Chapter:
-        \cref{sec:molecule-modelling}; files: \texttt{SquareGraph.lean},
-        \texttt{GeneralPositionPlacement.lean},
-        \texttt{Molecular/Molecule/}.)
-  \item \textbf{The molecule rank formula.} The capstone
-        (Corollary~5.7, \cref{cor:molecule-rank-formula}): for a graph
-        $G$ of minimum degree at least two, the $3$-dimensional generic
-        bar-joint rigidity rank of the square is
-        $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
-        (Jackson--Jord\'an~\cite{jacksonJordan2008}, Corollary~5.7
-        of~\cite{katohTanigawa2011}). The dimension-carrying molecule
-        chain of the previous phase, composed with Theorem~5.6 and the
-        generic matroid, pins both bounds with no further combinatorial
-        input --- the protein-flexibility count. (Chapter:
-        \cref{sec:molecule-application}.)
+        equivalence.} Projective invariance of infinitesimal rigidity
+        (Crapo and Whiteley), under a polarity that turns molecular
+        frameworks into panel-hinge frameworks, and Whiteley's equivalence
+        between molecular frameworks on a graph $G$ and bar-joint frameworks
+        on its square $G^2$, both as equalities of dimensions of motion
+        spaces (\cref{sec:molecule-modelling}).
+  \item \textbf{The molecule rank formula.} KT Corollary~5.7, which
+        Jackson and Jord\'an conjectured: for a graph $G$ of minimum degree
+        at least two, $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$,
+        where $r$ is the rank function of the generic rigidity matroid in
+        $\R^3$ (\cref{sec:molecule-application}).
 \end{enumerate}
 
-Beyond the four arcs, a continuation phase (phase~32)
-derives two further Jackson--Jord\'an~\cite{jacksonJordan2008}
-consequences of the rank formula: \emph{Jacobs' conjecture} --- the
-square of a graph is independent in the three-dimensional generic
-rigidity matroid if and only if it satisfies the three-dimensional
-Laman counting condition, unconditional now that the rank formula is a
-theorem --- and the \emph{degree-one rank formula}, the explicit value
-of $r(G^2)$ for connected graphs with vertices of degree one, where
-the rank formula's minimum-degree hypothesis fails. (Chapter:
-\cref{sec:jacobs}.) A second continuation (phase~33) generalized the
-Katoh--Tanigawa chain from $\R$ to an arbitrary \emph{infinite field
-of any characteristic}: Theorems~5.5 and~5.6 and the molecular
-conjecture itself now hold over any infinite field $K$, with the
-original real statements as the $K = \R$ specialization --- a
-generality that appears to be new (the field-generality discussion
-opens \cref{sec:molecular-algebraic-induction}; the molecule
-application, three-dimensional Euclidean geometry, stays over $\R$).
-A third continuation (phase~34) upgraded the
-existence-form realization theorems --- Tay's body-bar theorem, the
-body-hinge Tay--Whiteley theorem, and the molecule rank formula ---
-to their generic form, following Jackson and
-Jord\'an~\cite{jacksonJordan2009}: almost all realizations attain the
-generic rank, with the non-generic parameter choices confined to the
-zero set of a single nonzero polynomial in each framework class
-(\cref{sec:generic-lift}). A fourth continuation (phase~35) recovered
-the full \emph{multigraph} strength of Katoh--Tanigawa's Theorem~5.6
-and of the molecular conjecture itself, which the main development
-proves for simple graphs: stating the panel side in Katoh--Tanigawa's
-own hinge-coplanar model --- each hinge required only to \emph{lie in}
-a panel at each endpoint body, rather than being the intersection of
-the two panels --- both results hold with parallel edges admitted
-(\cref{sec:molecular-coplanar-multigraph}), while the multigraph
-equivalence is provably false for the intersection-based frameworks of
-the main development.
+Beyond the four arcs, a continuation (phase~32) proves two results of
+Jackson and Jord\'an~\cite{jacksonJordan2008} on squares of graphs
+(\cref{sec:jacobs}). The first is Jacobs' conjecture: the square of a
+graph is independent in the generic rigidity matroid in $\R^3$ if and
+only if it satisfies the three-dimensional Laman condition of Jackson and
+Jord\'an. They derived it from the molecule rank formula, so the
+conjecture holds. The second is their degree-one rank formula, for
+connected graphs with vertices of degree one, to which the molecule rank
+formula does not apply. It gives the rank of the square of a tree
+explicitly, a case that Jackson and Jord\'an credit to Franzblau. For
+any other such graph it gives the rank of the square through that of the
+square of the core, the maximal subgraph of minimum degree at least two.
+
+A second continuation (phase~33) proves KT Theorems~5.5 and~5.6 and the
+molecular conjecture over every infinite field $K$, of any
+characteristic. Katoh and Tanigawa's statements over $\R$ are the case
+$K = \R$. For these theorems the generality appears to be new. For
+body-bar frameworks there is a precedent: Whiteley states the genericity
+step of his proof of Tay's theorem over every infinite
+field~\cite{whiteley1988}. The opening of
+\cref{sec:molecular-algebraic-induction} discusses this generality. The
+molecule rank formula, a statement about the generic rigidity matroid in
+$\R^3$, stays over $\R$.
+
+A third continuation (phase~34) proves the realization theorems above in
+generic form, by the coordinate argument of Jackson and
+Jord\'an~\cite{jacksonJordan2009} (\cref{sec:generic-lift}). Each
+theorem holds at every generic realization, and the realizations that
+are not generic lie in the zero set of a nonzero polynomial. The
+theorems are the molecule rank formula, at generic placements; Tay's
+theorem, at generic endpoints of the bars; and, for a simple graph, the
+rank formula of KT Proposition~2.3, at generic normals of the panels and
+at generic points spanning the hinges. The last gives the theorem of Tay
+and Whiteley for frameworks with hinges, which phase~16 proves for
+bundles of bars.
+
+A fourth continuation (phase~35) proves KT Theorem~5.6 and the molecular
+conjecture for multigraphs, as Katoh and Tanigawa state them
+(\cref{sec:molecular-coplanar-multigraph}). It works in their own model,
+the hinge-coplanar model, in which each hinge need only lie in the
+panels of the two bodies it joins. In the panel-hinge frameworks of the
+main development, a hinge is the intersection of the two panels. For
+these frameworks the multigraph form of the molecular conjecture fails.
 
 A fifth continuation (phases~39--40) strengthens the multigraph form of
 Theorem~5.6 in the hinge-coplanar model, in dimension three. A

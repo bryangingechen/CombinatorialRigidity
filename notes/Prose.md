@@ -20,9 +20,10 @@ recorded `F-115`–`F-120`, and its sixteen slices `F-121`–`F-173`; its slices
 done. Round 4's open recorded `F-174`, its task 2.1, `bar-joint-3d.tex`, `F-175`–`F-177`, and its
 tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`, its task 2.4,
 `molecule-application.tex`, `F-187`–`F-190`, its tasks 2.5–2.8, `jacobs.tex`'s four slices,
-`F-191`–`F-205`, and its tasks 2.9–2.12, `generic-lift.tex`'s four slices, `F-206`–`F-225`.
-**Next concrete task:** round 4's task 2.13, `intro.tex`'s *Organization of the blueprint* and
-continuation paragraph (the round's log, *Lemma checklist*).
+`F-191`–`F-205`, its tasks 2.9–2.12, `generic-lift.tex`'s four slices, `F-206`–`F-225`, and its
+task 2.13, `intro.tex`'s *Organization of the blueprint*, `F-226`–`F-227`. **Next concrete
+task:** round 4's task 2.14, `intro.tex`'s *Reading this blueprint* and opening (the round's log,
+*Lemma checklist*).
 
 ## 1. The PI's decisions
 

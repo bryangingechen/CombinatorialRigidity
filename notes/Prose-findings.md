@@ -1353,6 +1353,13 @@ declaration's name as its header writes it:
   *Evidence:* read (`sec:jacobs-degree-one`; `main-component.tex`'s notation list and
   `sec:main-component-contract`).
   *Found:* round 4 task 2.8.
+- **F-227** · T · `lem:complement-iso-decomposable-wedge-perp` (`meet.tex`): its two parts are
+  `\item[(i)]` and `\item[(ii)]` of an `enumerate`, and its proof says "For (i)" and "For (ii)".
+  The PDF prints the labels; the web build prints the items as 1 and 2, since plasTeX drops an
+  optional `\item` label (`blueprint/SETUP-AND-PITFALLS.md` *Pitfalls*). It is the blueprint's
+  only `\item[…]`. Candidate: an `enumerate` with the proof's "For part 1", or inline "(i)" text.
+  *Evidence:* read (the web build's `sec-molecular-meet.html`, one `<ol>`; `print.pdf` p. 139).
+  *Found:* round 4 task 2.13.
 
 ## U — status surfaces
 
@@ -1390,6 +1397,18 @@ declaration's name as its header writes it:
   *Evidence:* read (`README.md`'s and the home page's paragraph on phase 32; `formalization.yaml`'s
   literature entry; JJ 2008 §4; Crossref's record for the DOI).
   *Found:* round 4 task 2.8.
+- **F-226** · U · `README.md`, `home_page/index.md`: two places contradict `rigidity-matroid.tex`
+  and the rewritten *Organization of the blueprint* in `intro.tex`. (1) `README.md`'s second arc
+  ("the planar rigidity matroid as a mathlib `Matroid` (Lovász–Yemini, …)") and the home page's
+  phase-7 row ("Lovász–Yemini matroid id.") credit the planar identification of row independence
+  with $(2,3)$-sparsity to Lovász and Yemini. Jordán (2016, p. 45, Theorem 2.2.1) credits it to
+  Laman (`F-025`, which names `formalization.yaml` but not these two). (2) The home page's
+  phase-21 row lists "the generic-max-rank device", which no main result's proof uses (`F-117`,
+  `F-118`). Task 2.13 dropped both from `intro.tex`, and with the last citation of Lovász–Yemini
+  1982 its `bibliography.bib` entry (`lint.sh` check 2).
+  *Evidence:* read (`README.md` line 67; the home page's lines 177 and 191; Jordán 2016 p. 45, in
+  `.refs/`).
+  *Found:* round 4 task 2.13.
 
 ## S — statement strength
 

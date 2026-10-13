@@ -92,6 +92,13 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   `\raggedright` and end each row with `\tabularnewline`, not `\\`;
   plasTeX renders such a cell as a left-aligned `div`
   (`sec:main-component-coverage`'s table, 2026-10-03).
+- **plasTeX drops an `\item[…]` label in an `enumerate`.** The web
+  build renders every item of an `enumerate` as a plain `<li>` of one
+  `<ol>`, numbered 1, 2, …, whatever its optional label; the PDF keeps
+  the label. So `meet.tex`'s `\item[(i)]` and `\item[(ii)]` show as
+  1 and 2 on the web, and a list that must skip numbers cannot be
+  labelled by hand. `intro.tex`'s per-phase list gives each phase its
+  own item instead (PROSE round 4, task 2.13).
 - **`\lean{Name1, Name2}` with multiple names** is fine for the
   HTML build (each links separately) but produces only one link
   target in the PDF. Reserve multi-name `\lean{}` for closely-

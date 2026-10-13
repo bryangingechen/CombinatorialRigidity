@@ -1262,9 +1262,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   five sections, `panel-layer.tex` through `case-iii.tex`, in sixteen slices, and recorded 59
   findings in the ledger (`F-115`–`F-173`). Round 4, `prose-applications`, opened 2026-10-13
   (`notes/Prose-applications-cleanup.md`); its tasks 2.1–2.12, the five chapters `bar-joint-3d.tex`,
-  `molecule-modelling.tex`, `molecule-application.tex`, `jacobs.tex` and `generic-lift.tex`, are
-  done. **Next concrete task:** its task 2.13, `intro.tex`'s *Organization of the blueprint* and
-  continuation paragraph.
+  `molecule-modelling.tex`, `molecule-application.tex`, `jacobs.tex` and `generic-lift.tex`, and
+  its task 2.13, `intro.tex`'s *Organization of the blueprint*, are done. **Next concrete task:**
+  its task 2.14, `intro.tex`'s *Reading this blueprint* and opening.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
