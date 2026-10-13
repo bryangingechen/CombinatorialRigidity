@@ -68,7 +68,7 @@ id = "prose-applications"
 title = "PROSE 4/5: applications, continuations and the introduction"
 note = "notes/Prose-applications-cleanup.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "prose-graph"

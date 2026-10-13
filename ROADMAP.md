@@ -173,7 +173,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 1/5: Laman's theorem and the rigidity matroid) | the twelve chapters `sparsity.tex` → `executable.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 47 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-laman-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (PROSE 2/5: body-bar, body-hinge and the molecular foundations) | the eight chapters `matroid-union.tex` → `meet.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 67 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-molecular-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (PROSE 3/5: the algebraic induction) | the chapter `algebraic-induction.tex` and its five sections, `panel-layer.tex` → `case-iii.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 59 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-algebraic-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (PROSE 4/5: applications, continuations and the introduction) | the five chapters `bar-joint-3d.tex` → `generic-lift.tex`, then `intro.tex` (prose only) | ◐ In progress (see `notes/Prose-applications-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (PROSE 4/5: applications, continuations and the introduction) | the five chapters `bar-joint-3d.tex` → `generic-lift.tex`, then `intro.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 56 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-applications-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1260,11 +1260,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   Round 3, `prose-algebraic`, opened 2026-10-12 and closed 2026-10-13
   (`notes/Prose-algebraic-cleanup.md`): it rewrote the chapter `algebraic-induction.tex` and its
   five sections, `panel-layer.tex` through `case-iii.tex`, in sixteen slices, and recorded 59
-  findings in the ledger (`F-115`–`F-173`). Round 4, `prose-applications`, opened 2026-10-13
-  (`notes/Prose-applications-cleanup.md`); its slices, tasks 2.1–2.14, the five chapters
-  `bar-joint-3d.tex`, `molecule-modelling.tex`, `molecule-application.tex`, `jacobs.tex` and
-  `generic-lift.tex`, then `intro.tex`, are done. **Next concrete task:** its task 3, the round's
-  close.
+  findings in the ledger (`F-115`–`F-173`). Round 4, `prose-applications`, opened and closed
+  2026-10-13 (`notes/Prose-applications-cleanup.md`): it rewrote the five chapters
+  `bar-joint-3d.tex` through `generic-lift.tex`, then `intro.tex`, in fourteen slices, and recorded
+  56 findings in the ledger (`F-174`–`F-229`). **Next concrete task:** round 5, `prose-graph`,
+  opens (its scope and tasks are in `notes/Prose.md` §3).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

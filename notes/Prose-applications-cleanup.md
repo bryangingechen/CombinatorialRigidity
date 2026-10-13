@@ -1,15 +1,18 @@
 # PROSE round 4/5 — `prose-applications`, applications, continuations and the introduction (work log)
 
-**Status:** in progress (opened 2026-10-13). Round 4 of **PROSE**'s five rounds; their plan and the
-PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is the authority for
-which rounds are done. The round rewrites the prose of the five chapters `bar-joint-3d.tex`,
-`molecule-modelling.tex`, `molecule-application.tex`, `jacobs.tex` and `generic-lift.tex`, then the
-parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
-1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
-What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, and tasks 2.1–2.14 `F-175`–`F-229`. 16 one-commit tasks; tasks 1 and 2.1–2.14 (the five
-chapters and `intro.tex`) are done, and the round has no planned stop. **Next concrete task:**
-task 3, the round's close (*Lemma checklist*; it may run at Sonnet). Round manual: `CLEANUP.md`.
+**Status:** closed (opened 2026-10-13, closed 2026-10-13). Round 4 of **PROSE**'s five rounds;
+their plan and the PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is the
+authority for which rounds are done. The round rewrote the prose of the five chapters
+`bar-joint-3d.tex`, `molecule-modelling.tex`, `molecule-application.tex`, `jacobs.tex` and
+`generic-lift.tex`, then the parts of `intro.tex` that `40-exposition` did not rewrite, to
+`40-exposition`'s register and round 1's exemplar, in fourteen slices. Every `\label`, pin,
+`\leanok` and `\uses` edge is as it was; one node moved within its chapter (task 2.3). Statements
+changed only in register and anchoring, under the hygiene rule's readings (*Scope*), each filed `S`;
+`notes/dispatch-log.md` records the coordinator accepting tasks 2.2 and 2.3's (2026-10-13). A
+statement that claims more or less than its pins keeps its claim, with a note. The ledger
+`notes/Prose-findings.md` holds the round's 56 findings, `F-174`–`F-229`. All 16 one-commit tasks
+are done. **Next concrete task:** round 5, `prose-graph`, opens (*Hand-off*). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,20 +22,34 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.14 has landed** (this commit), and with it all of `intro.tex`: the opening is 9–64 (was
-9–49; its last two sentences, on the pencil chapters, verbatim), *Organization* 66–252 and the
-kept fifth continuation 254–321 unchanged, *Reading this blueprint* 323–356 (was 308–385). The
-canonical citation example in `blueprint/AUTHORING.md` *Citations* follows the opening's new credit.
-Every slice is done; nothing is mid-stream.
-- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
-  silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (31 overfull boxes, the parent 32; none in
-  `intro.tex`). Screens on the slice: register 0, devices 1 (the repository link), `\operatorname`
-  0, vocabulary 0. The parent's, on 9–44 and 308–385: register 6 ("route", "carry", "leaf-most",
-  "genuine", "capstone", "feed"), devices 3, vocabulary 0. The whole file: register 15 → 0 over
-  the two slices, devices 57 → 2 (the two repository links), vocabulary 7 → 1.
+**The round is closed** (task 3, docs only). Nothing is mid-stream.
+- **Gates at the close**, all the open's values: whole-project `lake build` green (2 996 jobs, 0
+  `warning:`, 0 `error:`); `git diff --stat baa224cc.. -- CombinatorialRigidity/ lakefile.toml
+  lake-manifest.json lean-toolchain` empty; `lint.sh` green; `verify.sh` green, `checkdecls` silent,
+  9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and `b53eb8b1cf78cb06`;
+  `print.log` 0 `LaTeX Warning` lines and 31 overfull boxes (51 at the open). The axioms check is
+  round 5's (`notes/Prose.md` §2).
+- **The screens, beside the open's table** (*Per-chapter diagnosis*; the open's figures re-run on
+  `baa224cc`'s files): 4 641 lines (3 640), 95 nodes and 152 pins (unchanged). Register 0 in prose
+  in all six files (41); the script's 18 hits in all the text (56) are `\label`, `\uses` and
+  `\cref` arguments ("genuine", "producer"), kept by the label rule. Lean devices 0 in statements
+  (2) and 2 in the whole text (66), the two repository links in `intro.tex`; `\operatorname` Lean
+  names 0 (0); vocabulary 7 (56): six "endpoint selector", each in a formalization note, and
+  Nelson's "package" in `intro.tex`. Forward `\uses` to later chapters 0 (0); to later nodes of
+  the same file 0 (2 at 1 node), after task 2.3's move.
+- **The findings check**, by script: each of `F-174`–`F-229` has exactly one line here, with the
+  ledger's category and the task of its *Found:* line (20 under *Candidates for the PI*: 18 `S`,
+  2 `M`; 36 under *Moved to a later round*: 12 `E`, 7 `N`, 12 `L`, 2 `T`, 3 `U`), and every line
+  here has an entry. The ledger's next ID is `F-230`.
+- **The exposition ledger** (`notes/BlueprintExposition.md`): every pointer into these files
+  checked against the new text, against JJ 2008 §§2.1, 4 and KT pp. 650, 670–671; three entries
+  aligned (the square-graph dictionary's credit and the place of its counterexample; the
+  general-position lemma's "nonparallel" and its bound; the body-and-bar witness's pointer to the
+  prose after `def:two-extensor`); a round note added, with the crux texts task 2.3 corrected.
+  Result unchanged: 0 pending / 50 done / 1 closed as superseded.
 
-**Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
+**Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only), the baselines the close
+matched:
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
   cached; the coordinator's gave the same). No axioms check at the open (`notes/Prose.md` §2). **The
   no-Lean-edit base is `baa224cc`**, the open's parent: the close checks that `git diff --stat
@@ -244,9 +261,9 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
     `dc58265b`, `ac88bd18`, `1e3df147`): found `F-206`–`F-225`.
   - [x] **2.13 `intro.tex`, *Organization of the blueprint* and the continuation paragraph**
     (`248ec772`; 51–364, now 51–237): found `F-226`, `F-227`.
-  - [x] **2.14 `intro.tex`, *Reading this blueprint* and the opening** (this commit; 308–385 and
+  - [x] **2.14 `intro.tex`, *Reading this blueprint* and the opening** (`9b635ace`; 308–385 and
     9–44, now 323–356 and 9–64): found `F-228`, `F-229`.
-- [ ] **3. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
+- [x] **3. X — close the round** (this commit; `CLEANUP.md` *Workflow* 5; docs only).
   - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat baa224cc..
     -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty). The axioms
     check runs at round 5's close, not here (§2).
@@ -356,26 +373,17 @@ one line each naming the ledger ID and the task that found it.
 
 ## Blockers / open questions
 
-- None. The round has no planned stop.
+- None. The round is closed.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3, the round's close** (`CLEANUP.md` *Workflow* 5; docs only; it may
-run at Sonnet, `notes/Prose.md` §2). Its items are under task 3 in *Lemma checklist*. What the
-slices leave it:
-- **Findings.** The round recorded `F-174`–`F-229`, 56 entries; each has its line under
-  *Candidates for the PI* or *Moved to a later round*. The ledger's next ID is `F-230`.
-- **The blueprint.** The gate values at 2.14 are the open's (*Current state*), with 31 overfull
-  boxes in `print.log` (the open counted 51). Re-run the two screens under *Scope* beside the
-  open's table in *Per-chapter diagnosis*; `intro.tex` now gives register 0 / 0, devices 0 / 2
-  (the two repository links), `\operatorname` 0, vocabulary 1 (Nelson's "package").
-- **The exposition ledger.** No pointer into `intro.tex`; the pointers to check are *Scope*'s
-  crux bullet (three done entries under `molecule-modelling.tex`, and the judged chapters').
-- **Status surfaces.** ROADMAP's Status row for this round reads like rounds 1–3's (✓ Complete,
-  "56 findings recorded"); ROADMAP's PROSE bullet and `notes/Prose.md`'s **Status** name round 5,
-  `prose-graph`, as next; `.claude/autopilot/queue.toml`'s `prose-applications` row gets
-  `done = true`. `README.md` and the home page stay as they are (`F-204`, `F-226`, `F-229` are
-  round 5's).
+**Next concrete task: round 5, `prose-graph`, opens** (`notes/Prose.md` §3 *Round 5*; `CLEANUP.md`
+*Workflow* for the open, an Opus task that creates `notes/Prose-graph-cleanup.md`). Round 4 carries
+nothing into round 5 but its findings, which wait in the ledger `notes/Prose-findings.md`: for round
+5 the `E`, `N`, `T` and `U` lines under *Moved to a later round* (the `U` entries `F-204`, `F-226`
+and `F-229` are `README.md` and the home page, left as they are here), for a later Lean round the
+`L` lines, and for the PI the `S` and `M` lines under *Candidates for the PI*. The round-4 gate
+values above are the baselines for round 5's open to re-verify. The ledger's next ID is `F-230`.
 
 ## Decisions made during this round
 

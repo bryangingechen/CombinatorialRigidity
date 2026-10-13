@@ -5,7 +5,7 @@
 (`notes/Prose-laman-cleanup.md`, with the ledger `notes/Prose-findings.md`). Round 2,
 `prose-molecular`, opened 2026-10-08 and closed 2026-10-12 (`notes/Prose-molecular-cleanup.md`).
 Round 3, `prose-algebraic`, opened 2026-10-12 and closed 2026-10-13
-(`notes/Prose-algebraic-cleanup.md`). Round 4, `prose-applications`, opened 2026-10-13
+(`notes/Prose-algebraic-cleanup.md`). Round 4, `prose-applications`, opened and closed 2026-10-13
 (`notes/Prose-applications-cleanup.md`); round 5 has not opened. These are five `CLEANUP.md`
 rounds over every blueprint chapter that round 3 of the post-Phase-40 cleanup (`40-exposition`) did
 not rewrite. Four prose rounds go arc by arc, and a
@@ -21,8 +21,8 @@ done. Round 4's open recorded `F-174`, its task 2.1, `bar-joint-3d.tex`, `F-175`
 tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`, its task 2.4,
 `molecule-application.tex`, `F-187`–`F-190`, its tasks 2.5–2.8, `jacobs.tex`'s four slices,
 `F-191`–`F-205`, its tasks 2.9–2.12, `generic-lift.tex`'s four slices, `F-206`–`F-225`, and its
-tasks 2.13–2.14, `intro.tex`'s two slices, `F-226`–`F-229`. **Next concrete task:** round 4's task
-3, the round's close (the round's log, *Lemma checklist*).
+tasks 2.13–2.14, `intro.tex`'s two slices, `F-226`–`F-229`; its slices and its close are done.
+**Next concrete task:** round 5, `prose-graph`, opens (§3 *Round 5*).
 
 ## 1. The PI's decisions
 

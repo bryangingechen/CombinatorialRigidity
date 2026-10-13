@@ -242,6 +242,35 @@ their own statements (each slice's commit message has the evidence):
 
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**PROSE round 4 (`prose-applications`, closed 2026-10-13).** The round rewrote the prose of the
+five chapters `bar-joint-3d.tex` → `generic-lift.tex` (phases 24–26, 32 and 34), then the parts of
+`intro.tex` outside `40-exposition`'s reader path (`notes/Prose-applications-cleanup.md`). No
+node's pins or `\uses` edges changed and no node rerouted, so no entry is added;
+`thm:panel-hinge-iff-molecular` moved after `lem:theorem-56-general-position` (task 2.3), curing a
+forward `\uses`. Statements changed only in register and anchoring, under the hygiene rule's
+readings, each filed `S`; `notes/dispatch-log.md` records the coordinator accepting tasks 2.2 and
+2.3's (2026-10-13). The close checked every pointer into these files against the new text. The
+three done entries under `molecule-modelling.tex` name nodes that exist under their labels and
+keep full proofs. The close aligned two of them, the dictionary's (its credit to Whiteley's 2004
+manuscript as JJ 2008 §2.1 and KT pp. 650, 671 cite it, checked in `.refs/`, and the place of its
+counterexample) and the general-position lemma's (its bound, and KT's "nonparallel", pp. 670–671).
+The rank-level chain entry holds against the opening's second and third paragraphs (JJ 2008
+Theorems 4.1 and 4.3). The judged no-entry chapters hold: `bar-joint-3d.tex`
+(`lem:exists-generic-placement`'s interpolation), `molecule-application.tex`, `jacobs.tex`
+(`fmlnote:isLaman3-guard`; the lead of `sec:jacobs-zero-extension`, with the K₁,₄ witness and
+JJ's quotation; `cor:zero-extension-clique-rank`'s K₅ argument) and `generic-lift.tex`, whose
+entry now points at the prose after `def:two-extensor` for the shortcut that fails. `intro.tex`
+has no entry. Task 2.3 corrected these crux texts, against the sources or against their own
+statements (its commit message has the evidence):
+- `thm:molecular-iff-square-bar-joint`'s "In particular" realizability sentence was false for
+  coincident centres, which `def:hinge-concurrent` admits (`notes/Prose-findings.md` `F-174`); it
+  now asks nondegenerate hinges, and the proof proves it (`F-183`).
+- The opening credited the equivalence to Whiteley 1999, which has the molecular structure
+  (Definition 4) and only an informal remark that molecular structures are equivalent to
+  bond-bending networks (p. 27); it now credits Whiteley's 2004 manuscript, as JJ and KT cite it.
+
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
@@ -909,18 +938,22 @@ flipped `done` in the same pass.
 - **`thm:molecular-iff-square-bar-joint` / `molecular_finrank_motions_eq_square_ker`
   (the square-graph dictionary)** — [done (the node's statement + proof prose)]
   **(a)**. **Stable insight:** the primary source for the molecule ↔
-  hinge-concurrent-body-hinge equivalence, Whiteley's [35] (*The equivalence of
-  molecular rigidity models*, manuscript), is **unpublished** — KT p. 650/671 and
-  JJ 2008 §2.1 only sketch it — so the chapter's proof is the project's own
+  hinge-concurrent-body-hinge equivalence, Whiteley's manuscript *The equivalence of
+  molecular rigidity models as geometric and generic graphs* (2004; KT's [35], JJ
+  2008's [21]), is **unpublished** — JJ 2008 §2.1 sketch it informally and KT
+  (pp. 650, 671) cite it — so the chapter's proof is the project's own
   reconstruction (screw-velocity fields, per-body determination on
-  closed-neighbourhood cliques), verified internally, with JJ 2008 as the citable
-  anchor. Formalizing it forced the placement hypothesis sharp: injectivity +
+  closed-neighbourhood cliques), verified internally; since PROSE round 4 task 2.3
+  the chapter credits the equivalence to the manuscript as JJ and KT cite it.
+  Formalizing it forced the placement hypothesis sharp: injectivity +
   non-collinearity is **not** enough — four coplanar points admit the out-of-plane
   flex of a flat complete quadrilateral, which is a bar-joint motion but no screw
-  restriction — so the dictionary needs general position **up to order four**
-  (`lem:screw-determination` states the counterexample). No source states the
-  exact general-position grade. Pointer: `notes/Phase25-design.md` §2.3/F5;
-  `notes/Phase25.md`.
+  restriction — so the dictionary needs general position **up to order four** (the
+  end of `lem:screw-determination`'s proof gives the counterexample). Neither JJ nor
+  KT states the exact general-position grade. Since PROSE round 4 task 2.3 the
+  statement's realizability sentence asks nondegenerate hinges, and the proof
+  proves it, unpinned (`notes/Prose-findings.md` `F-174`, `F-183`). Pointer:
+  `notes/Phase25-design.md` §2.3/F5; `notes/Phase25.md`.
 - **rank-level chain over realizability-iff chain (the chapter preamble +
   `thm:panel-hinge-iff-molecular`)** — [done (the chapter's opening paragraphs)]
   **(b)**. **Stable insight:** KT/Whiteley state the modelling links as
@@ -943,7 +976,11 @@ flipped `done` in the same pass.
   common non-root of the product (originally at an algebraically-independent-over-ℚ
   seed; Phase 30 rerouted to the one-shot `exists_eval_ne_zero` non-root choice);
   the rank is then pinched between the
-  witnessed count and the genuine-hinge deterministic bound. Pointer:
+  witnessed count and the deficiency bound at nondegenerate hinges
+  (`lem:relative-deficiency-rank-bound`). Since PROSE round 4 task 2.3 the
+  proof's last paragraph puts it this way: KT need only a nonparallel
+  realization, which a projective transformation gives (pp. 670–671), and the
+  square-graph dictionary needs the order-four grade. Pointer:
   `notes/Phase25-design.md` §2.4; KT p. 671.
 
 ### `molecule-application.tex` — Phase 26 (Corollary 5.7, the rank formula)
@@ -1007,9 +1044,10 @@ chapter rather than deferred here: (i) JJ's Lemma-5.1 staged elimination on
 the coordinate-segment extensor entries is replaced by the
 change-of-extensor-coordinates route their own §5 Remark attributes to
 Whiteley, and `lem:coordinate-extensor-basis` + `lem:endpoint-witness` spell
-the whole argument out (including the entry table and why the R0-era
-"standard-basis image" shortcut fails — no segment yields a pure moment
-basis vector); (ii) JJ's Thm 6.4 coordinate-simplex witness and their
+the whole argument out (the entry table is in the first's proof; why the
+R0-era "standard-basis image" shortcut fails — no segment yields a pure moment
+basis vector — is, since PROSE round 4 task 2.10, the prose after
+`def:two-extensor`); (ii) JJ's Thm 6.4 coordinate-simplex witness and their
 Lemma-7.1 perturbation are bypassed by transplanting the KT Theorem-5.6
 panel witness, and the `sec:generic-lift-bodyhinge` preamble +
 `lem:hinge-point-witness` state exactly what replaces them (the simultaneous
