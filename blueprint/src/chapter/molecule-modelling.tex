@@ -41,6 +41,17 @@ dual transposes points and planes and where the molecule model lives
 \subsection{The square graph and molecular frameworks}
 \label{sec:molecule-modelling-defs}
 
+Katoh and Tanigawa describe two models of a molecule whose atoms are
+joined by covalent bonds~\cite[\S1.2]{katohTanigawa2011}. Let $G$ be
+the graph of the bonds. In the first model the molecule is a bar-joint
+framework on the square of $G$, which joins two atoms when they are at
+distance one or two in $G$ (\cref{def:square-graph}). In the second it
+is a body-hinge framework on $G$, with the atoms as bodies and the
+bonds as hinges, in which all the hinges at an atom pass through its
+centre (\cref{def:hinge-concurrent}). In the square, an atom and its
+neighbours induce a complete subgraph (\cref{lem:square-cliques}),
+which acts as a rigid body~\cite[\S2.1]{jacksonJordan2008}.
+
 \begin{definition}[Square of a graph]
   \label{def:square-graph}
   \lean{SimpleGraph.square}
@@ -51,8 +62,8 @@ dual transposes points and planes and where the molecule model lives
     E^2 = E \cup \{\, uv \mid u \ne v,\ \exists w \in V \setminus \{u,v\}
       \text{ with } uw, wv \in E \,\},
   \]
-  i.e.\ $G$ together with an edge for every pair of vertices at
-  distance two.
+  that is, $G$ together with an edge joining every two vertices at
+  distance two in $G$.
 \end{definition}
 
 \begin{lemma}[Closed neighbourhoods are cliques of the square]
@@ -61,45 +72,85 @@ dual transposes points and planes and where the molecule model lives
         SimpleGraph.exists_mem_closedNeighborSet_of_square_adj}
   \leanok
   \uses{def:square-graph}
-  For every vertex $v$ of $G$, the closed neighbourhood
-  $N[v] = \{v\} \cup N(v)$ induces a complete subgraph of $G^2$; and
-  every edge of $G^2$ lies inside $N[v]$ for some $v$ (an original edge
-  $uv$ inside $N[u]$; a distance-two edge $uw$ through the common
-  neighbour $v$ inside $N[v]$).
+  Let $G$ be a graph. For every vertex $v$ of $G$, the closed
+  neighbourhood $N[v] = \{v\} \cup N(v)$ induces a complete subgraph of
+  $G^2$. Moreover, every edge of $G^2$ has both ends in $N[w]$ for some
+  vertex $w$ of $G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Two neighbours of $v$ are at distance at most two through $v$, and
-  $v$ is adjacent to each of its neighbours; both cases land in $E^2$.
-  The covering statement is the case analysis in the parenthesis.
+  Let $x \neq y$ be vertices of $N[v]$. If one of them is $v$, then
+  $xy$ is an edge of $G$. Otherwise $v$ is a common neighbour of $x$ and
+  $y$. In both cases $xy \in E^2$. Now let $uw$ be an edge of $G^2$. If
+  it is an edge of $G$, then $u$ and $w$ lie in $N[u]$. Otherwise $u$
+  and $w$ have a common neighbour $v$, and they lie in $N[v]$.
 \end{proof}
+
+Katoh and Tanigawa call a body-hinge framework \emph{hinge-concurrent}
+if all the hinges at each body pass through one point, the centre of the
+body~\cite[p.~650]{katohTanigawa2011}. A molecule is
+modelled by such a framework, since the bonds at an atom pass through
+its centre. Following Whiteley~\cite[Definition~4]{whiteley1999}, we
+give the framework by the centres of its bodies.
 
 \begin{definition}[Molecular (hinge-concurrent) framework]
   \label{def:hinge-concurrent}
   \lean{CombinatorialRigidity.Molecular.molecularOfCentres}
   \leanok
   \uses{def:hinge-constraint}
-  Let $G$ be a multigraph with an endpoint selector and
-  $c : V \to \R^3$ an assignment of a \emph{centre} to each body. The
-  \emph{molecular framework} on $(G, c)$ is the body-hinge framework
-  (\cref{def:hinge-constraint}) whose hinge at each edge $e = uv$ is
-  the line through the two endpoint centres: its supporting
-  $2$-extensor is $\hat c(u) \vee \hat c(v)$, the join of the
-  homogenized centres. Every hinge incident to $v$ passes through
-  $c(v)$ by construction, which is the \emph{hinge-concurrency} KT
-  describe on p.~671; conversely, when the centres are distinct, a
-  hinge through both $c(u)$ and $c(v)$ \emph{is} the line
-  $c(u)c(v)$, so carrying the centres as data loses no generality.
-  A molecule (atoms as bodies, bonds as hinges) is modelled by such a
-  framework~\cite{jacksonJordan2008,whiteley1999}: each atom's bonds
-  emanate from the atom's centre. When two centres coincide the join
-  degenerates to zero (a welded hinge); the genuine-hinge statements
-  below therefore carry an injectivity or general-position hypothesis
-  on $c$.
+  Let $G = (V, E)$ be a multigraph, and let $c \colon V \to \R^3$
+  assign a \emph{centre} $c(v)$ to each body $v$. The \emph{molecular
+  framework} on $(G, c)$ is the body-hinge framework on $G$
+  (\cref{def:hinge-constraint}) whose supporting extensor at an edge
+  $e$ with ends $u$ and $v$ is
+  \[
+    C\bigl(c(u), c(v)\bigr) \;=\; \bar c(u) \vee \bar c(v)
+  \]
+  (\cref{def:affine-subspace-extensor}), where
+  $\bar c(v) = (c(v), 1)$.
 \end{definition}
+
+Let $e$ be an edge with ends $u$ and $v$. If $c(u) \neq c(v)$, the
+extensor at $e$ is a nonzero extensor of the line through $c(u)$ and
+$c(v)$ (the remarks after \cref{def:affine-subspace-extensor}), and
+this line is the hinge at $e$. So when adjacent bodies have distinct
+centres, every hinge at a body $v$ passes through $c(v)$, and the
+molecular framework is hinge-concurrent. Conversely, let a body-hinge
+framework on $G$ be hinge-concurrent with centres $c$, where
+$c(u) \neq c(v)$ at every edge $uv$. The hinge at $uv$ passes through
+$c(u)$ and $c(v)$, so it is the line through them, and the framework is
+the molecular framework on $(G, c)$. Jackson and Jord\'an call these
+frameworks molecular frameworks~\cite[\S2.1]{jacksonJordan2008}, and
+Katoh and Tanigawa use their name~\cite[p.~671]{katohTanigawa2011}.
+
+If $c(u) = c(v)$, the extensor at $e$ is zero. The hinge at $e$ is then
+degenerate, and it welds $u$ and $v$ together (the remarks after
+\cref{def:panel-hinge-framework}). Whiteley calls a molecular structure
+non-degenerate if distinct bodies have distinct
+centres~\cite[Definition~4]{whiteley1999}. Where nondegenerate hinges
+are needed below, the centres are assumed distinct or in general
+position (\cref{def:general-position-placement}).
+
+\begin{fmlnote}
+  The formal molecular framework records an ordered pair of bodies for
+  every edge label, as a formal panel-hinge framework does
+  (\cref{fmlnote:panel-hinge-nondegenerate}). Its extensor at a label is
+  that of the centres of the pair.
+\end{fmlnote}
 
 \subsection{Projective invariance and duality}
 \label{sec:molecule-modelling-projective}
+
+A projective transformation of space acts linearly on homogeneous
+coordinates, and through them on the screw space. A collineation sends
+points to points, and a correlation sends points to planes. Crapo and
+Whiteley~\cite[\S3.6]{crapoWhiteley1982} showed that both take the
+infinitesimal motions of a body-hinge framework to those of the
+transformed framework. So infinitesimal rigidity is a projective
+invariant. We prove this for every linear automorphism of the screw
+space (\cref{thm:projective-invariance}). We then apply it to a
+polarity, which turns a molecular framework into a panel-hinge framework
+(\cref{lem:panel-hinge-dual-molecular}).
 
 \begin{theorem}[Projective invariance of infinitesimal rigidity;
   Crapo--Whiteley]
@@ -113,49 +164,101 @@ dual transposes points and planes and where the molecule model lives
         CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_scaleExtensor}
   \leanok
   \uses{def:hinge-constraint, def:rank-hypothesis}
-  Let $\Lambda$ be a linear automorphism of the screw space
-  $\textstyle\bigwedge^2 \R^4$ and $F$ a body-hinge framework in
-  $\R^3$. Transporting $F$ along $\Lambda$ --- keeping the multigraph
-  and replacing each supporting extensor $C(p(e))$ by
-  $\Lambda\,C(p(e))$ --- carries the infinitesimal-motion space
-  $Z(G,p)$ to its image under the bodywise map
-  $S \mapsto \Lambda \circ S$. In particular the motion-space
-  dimension, the realized rank, and infinitesimal rigidity are
-  unchanged. This applies to the linear map on screws induced by any
-  projective transformation of $\R^3$ --- collineation or correlation
-  (polarity) --- which is Crapo--Whiteley's projective invariance of
-  infinitesimal rigidity (\cite{crapoWhiteley1982}, \S3.6); the
-  correlation case is the one the duality below consumes. Motions are
-  likewise unchanged when each supporting extensor is rescaled by a
-  nonzero scalar (the normalization from homogeneous to affine data),
-  since only the spans of the extensors enter the constraints. The
-  argument uses only linearity and invertibility of $\Lambda$, so the
-  Lean statement holds over an arbitrary field $K$ ($\Lambda$ a
-  $K$-linear automorphism of $\textstyle\bigwedge^2 K^4$, $F$ a
-  body-hinge framework over $K$); $\R^3$ is fixed above because that is
-  where the projective-transformation reading of $\Lambda$ applies, and
-  where the molecule modelling equivalence uses it. The polarity of
-  \cref{lem:panel-hinge-dual-molecular} is field-general in the same
-  sense (\cref{sec:pencil-duality}).
+  Let $K$ be a field, let $(G, p)$ be a body-hinge framework in $K^3$
+  (\cref{def:hinge-constraint}), and let $\Lambda$ be a linear
+  automorphism of the screw space $\bigwedge^2 K^4$. Let
+  $(G, \Lambda p)$ be the body-hinge framework on $G$ whose supporting
+  extensor at each edge $e$ is $\Lambda\, C(p(e))$.
+  \begin{enumerate}
+    \item The map $S \mapsto \Lambda \circ S$ is an isomorphism from
+      $Z(G, p)$ onto $Z(G, \Lambda p)$. In particular the two motion
+      spaces have the same dimension, the two rigidity matrices have the
+      same rank, and $(G, \Lambda p)$ is infinitesimally rigid if and
+      only if $(G, p)$ is.
+    \item The hinge at an edge is nondegenerate in $(G, \Lambda p)$ if
+      and only if it is nondegenerate in $(G, p)$.
+    \item The space $Z(G, p)$ does not change when the supporting
+      extensor at each edge is multiplied by a nonzero scalar.
+  \end{enumerate}
 \end{theorem}
 \begin{proof}
   \leanok
-  A screw assignment $S$ satisfies the hinge constraint
-  $S(u) - S(v) \in \langle C(p(e)) \rangle$ if and only if
-  $\Lambda S(u) - \Lambda S(v) \in \langle \Lambda C(p(e)) \rangle$,
-  because $\Lambda$ is linear and invertible; so
-  $S \mapsto \Lambda \circ S$ is a linear isomorphism between the two
-  motion spaces. Trivial motions (constant screw assignments) map to
-  trivial motions, so rigidity transfers; dimensions transfer along the
-  isomorphism. This is Crapo--Whiteley's argument verbatim: a
-  projective transformation ``is expressed by a non-singular linear
-  transformation on the projective coordinates,'' inducing a linear
-  transformation of the screw space that carries instantaneous motions
-  to instantaneous motions and has an inverse. The corresponding
-  invariance of the dimension of the rigidity-row span is
-  \cref{lem:screw-map-rows}, proved directly from the row identity
-  rather than through the motion isomorphism.
+  (1) Let $e$ be an edge with ends $u$ and $v$. As $\Lambda$ is linear
+  and injective, a screw $w$ lies in $\operatorname{span} C(p(e))$ if
+  and only if $\Lambda w$ lies in
+  $\operatorname{span} \Lambda C(p(e))$. Taking $w = S(u) - S(v)$
+  shows that $S$ satisfies the hinge constraint of $(G, p)$ at $e$ if
+  and only if $\Lambda \circ S$ satisfies that of $(G, \Lambda p)$. The
+  map $S \mapsto \Lambda \circ S$ is a linear automorphism of the space
+  of screw assignments, with inverse $S \mapsto \Lambda^{-1} \circ S$,
+  so it maps $Z(G, p)$ onto $Z(G, \Lambda p)$. Moreover $\Lambda \circ S$
+  is constant if and only if $S$ is, so the map takes the trivial
+  motions of one framework onto those of the other
+  (\cref{def:dof-generic}), and infinitesimal rigidity transfers. The
+  ranks agree because the rank of the rigidity matrix is
+  $D|V| - \dim Z$ (the remark after \cref{def:rigidity-matrix}).
+
+  (2) A linear automorphism sends nonzero vectors to nonzero vectors.
+  (3) A nonzero multiple of $C(p(e))$ spans the same line as $C(p(e))$,
+  so no hinge constraint changes.
+
+  This is the argument of Crapo and
+  Whiteley~\cite[\S3.6]{crapoWhiteley1982}. A collineation ``is
+  expressed by a non-singular linear transformation on the projective
+  coordinates of the points''. The linear map that it induces on the
+  space of screws ``will transform an instantaneous motion into an
+  instantaneous motion'', and it has an inverse.
 \end{proof}
+
+For a general $\Lambda$, the screw $\Lambda\, C(p(e))$ need not be the
+extensor of a line. The hinge constraint at $e$ is then
+$S(u) - S(v) \in \operatorname{span} \Lambda\, C(p(e))$, as in the
+formal definition (the note after \cref{def:hinge-constraint}).
+
+Over $\R$, every projective transformation of real projective space
+induces such a map $\Lambda$, and \cref{thm:projective-invariance} is
+then Crapo and Whiteley's projective invariance of infinitesimal
+rigidity~\cite[\S3.6]{crapoWhiteley1982}; see also
+Whiteley~\cite[Theorem~6]{whiteley1999}. A collineation is given by a
+nonsingular linear map $g$ of $\R^4$ on homogeneous coordinates. It
+induces the automorphism $\Lambda$ with
+$\Lambda(v_0 \vee v_1) = g v_0 \vee g v_1$, which sends the extensor of
+the line through two points to that of the line through their images. A
+correlation sends points to planes by a nonsingular linear map, and it
+also induces a linear automorphism of the screw space that sends lines
+to lines~\cite[\S3.6]{crapoWhiteley1982}. The polarity of the next
+lemma is a correlation. The proof uses only that $\Lambda$ is linear
+and invertible, so we state the theorem over every field. The pencil
+chapters apply it over an arbitrary field (\cref{sec:pencil-duality}).
+For the rows of the rigidity matrix, \cref{lem:screw-map-rows} proves
+the invariance of the rank directly.
+
+For $d = 3$ and $j = 2$, the complement isomorphism $*$
+(\cref{def:meet-complement-iso}) is a linear automorphism of the screw
+space $\bigwedge^2 K^4$, over every field $K$. It sends a nonzero
+extensor of a two-dimensional subspace $U$ of $K^4$ to a nonzero
+extensor of $U^\perp$ (the remarks after \cref{def:meet}). So it is the
+map that the polarity $x \mapsto x^\perp$ of projective space induces on
+lines: the line through two points goes to the line in which their
+polar planes meet. We call $*$ the \emph{polarity}. By the definition
+of the panel support extensor (\cref{def:panel-support-extensor}), the
+polarity sends the join $v_0 \vee v_1$ of any two vectors
+$v_0, v_1 \in K^4$ to $C(v_0, v_1)$.
+
+The polar plane of a point $c \in \R^3$ is
+$\{x \in \R^3 : x \cdot c + 1 = 0\}$, since
+$(x, 1) \cdot (c, 1) = x \cdot c + 1$, and $c$ is the \emph{pole} of
+this plane. Its normal is $\bar c = (c, 1)$, and it is the panel that
+Katoh and Tanigawa attach to the vector
+$c$~\cite[\S5.1]{katohTanigawa2011}. They observe that the polar of a
+hinge-concurrent framework is a panel-hinge framework. Conversely, the
+polar of a nonparallel panel-hinge framework, in which any two panels
+meet in a line, is hinge-concurrent, with the poles of the panels as
+centres. By projective invariance, the two frameworks are
+infinitesimally rigid together~\cite[pp.~650 and~671]{katohTanigawa2011}.
+Whiteley states this correspondence for molecular
+structures~\cite[Corollary~12]{whiteley1999}. The next lemma proves it
+in the form that we use.
 
 \begin{lemma}[Projective dual of a panel-hinge framework]
   \label{lem:panel-hinge-dual-molecular}
@@ -171,43 +274,53 @@ dual transposes points and planes and where the molecule model lives
   \uses{def:panel-hinge-framework, def:panel-support-extensor,
         def:meet-complement-iso, def:hinge-concurrent,
         thm:projective-invariance}
-  Work in $\R^3$ with the polarity that matches a plane's homogeneous
-  normal $4$-vector with the homogeneous coordinates of its pole, so a
-  panel $\Pi(v) = \{x \mid x \cdot c(v) + 1 = 0\}$ with normal
-  $n_v = (c(v), 1)$ has pole $c(v)$ (KT \S5.1). For a panel-hinge
-  framework with normals $n_v$, the supporting extensor of the hinge at
-  $e = uv$ is by construction the complement isomorphism applied to the
-  join of the two normals (\cref{def:panel-support-extensor}); the join
-  $n_u \wedge n_v$ itself is the supporting extensor of the line
-  through the two poles, i.e.\ of the molecular framework on the
-  centres $c$ (\cref{def:hinge-concurrent}). Hence the panel-hinge
-  framework on normals $(c(v), 1)$ and the molecular framework on
-  centres $c(v)$ are transports of one another along the fixed screw
-  automorphism of \cref{thm:projective-invariance} with
-  $\Lambda$ the complement isomorphism (\cref{def:meet-complement-iso}):
-  their motion spaces have equal dimension, their realized ranks agree,
-  and hinges are genuine on one side iff on the other. For normals with
-  nonvanishing last coordinate the same holds after the rescaling
-  normalization of \cref{thm:projective-invariance}. The extensor-level
-  identity holds more generally for the join of any two homogeneous
-  points $v_0, v_1 \in \R^4$, not only ones normalized to a pole's
-  homogeneous coordinates $(c,1)$: the polarity carries $v_0 \wedge v_1$
-  to the panel-support extensor $C(v_0,v_1)$
-  (\cref{def:panel-support-extensor}), the join-of-two-points
-  $\leftrightarrow$ meet-of-two-panels identity in its full generality.
+  Let $*$ be the polarity of $\bigwedge^2 \R^4$.
+  \begin{enumerate}
+    \item For all $v_0, v_1 \in \R^4$, $*(v_0 \vee v_1) = C(v_0, v_1)$.
+      In particular, for points $a, b \in \R^3$, the polarity sends the
+      extensor $C(a, b) = \bar a \vee \bar b$ to $C(\bar a, \bar b)$.
+    \item Let $G$ be a multigraph on $V$, and let $c \colon V \to \R^3$.
+      The panel-hinge framework on $G$ with normals $\bar c(v)$
+      (\cref{def:panel-hinge-framework}) is obtained from the molecular
+      framework on $(G, c)$ (\cref{def:hinge-concurrent}) by applying
+      $*$ to the supporting extensor at every edge. Hence the two
+      frameworks have motion spaces of the same dimension and rigidity
+      matrices of the same rank. One of them is infinitesimally rigid if
+      and only if the other is, and the hinge at an edge is
+      nondegenerate in one if and only if it is nondegenerate in the
+      other.
+    \item The conclusions of (2) also hold for the panel-hinge framework
+      on $G$ with normals $\lambda_v\, \bar c(v)$, for any nonzero
+      scalars $\lambda_v$. Its motion space is that of the panel-hinge
+      framework with normals $\bar c(v)$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
-  The panel support extensor is defined as the complement isomorphism
-  of the normals' join, so the extensor-level identity is definitional;
-  \cref{thm:projective-invariance} with $\Lambda$ the complement
-  isomorphism (a fixed linear equivalence of
-  $\textstyle\bigwedge^2 \R^4$) transports motions, dimensions, and
-  genuineness. Hinge-concurrency of the dual is structural: the join
-  $\hat c(u) \vee \hat c(v)$ visibly contains each endpoint's
-  homogenized centre as a factor, i.e.\ the dual hinge passes through
-  both poles (KT~\cite{katohTanigawa2011}, p.~671).
+  Statement (1) is the definition of $C(v_0, v_1)$
+  (\cref{def:panel-support-extensor}), and
+  $C(a, b) = \bar a \vee \bar b$ (\cref{def:affine-subspace-extensor}).
+  For (2), both frameworks have the multigraph $G$. At an edge with ends
+  $u$ and $v$, the molecular framework has the supporting extensor
+  $\bar c(u) \vee \bar c(v)$. By (1) its image under $*$ is
+  $C(\bar c(u), \bar c(v))$, the supporting extensor of the panel-hinge
+  framework at that edge. As $*$ is a linear automorphism of
+  $\bigwedge^2 \R^4$ (\cref{def:meet-complement-iso}),
+  \cref{thm:projective-invariance} gives the rest. For (3), the join is
+  bilinear, so
+  $C(\lambda_u \bar c(u), \lambda_v \bar c(v)) =
+  \lambda_u \lambda_v\, C(\bar c(u), \bar c(v))$. The two panel-hinge
+  frameworks differ by nonzero multiples of their supporting extensors,
+  so they have the same motion space by
+  \cref{thm:projective-invariance}(3).
 \end{proof}
+
+\begin{fmlnote}
+  Statement (1) is formalized over every field, as is the polarity.
+  Statement (3) has no formal counterpart: the proof of
+  \cref{thm:panel-hinge-iff-molecular} rescales the normals it uses, by
+  the argument above.
+\end{fmlnote}
 
 \begin{theorem}[Panel-hinge $\Leftrightarrow$ molecular, rank-carrying]
   \label{thm:panel-hinge-iff-molecular}
@@ -256,9 +369,15 @@ dual transposes points and planes and where the molecule model lives
 \subsection{Screw velocity fields}
 \label{sec:molecule-modelling-velocity}
 
-The square-graph dictionary compares screw assignments (one screw per
-body) with joint velocities (one vector per atom centre). The
-translation is the classical velocity field of a screw.
+The square-graph dictionary (\cref{thm:molecular-iff-square-bar-joint})
+compares the infinitesimal motions of the two models of a molecule. A
+motion of the molecular framework assigns a screw to each body, and a
+motion of the bar-joint framework assigns a velocity to each atom. A
+screw is an infinitesimal rigid motion of space. It moves a point $x$
+with velocity $\omega \times x + t$, where $\omega$ is its angular
+velocity and $t$ is the velocity of the origin. This subsection defines
+this velocity field and proves the facts about it that the dictionary
+uses.
 
 \begin{definition}[Velocity field of a screw]
   \label{def:screw-velocity}
@@ -267,40 +386,67 @@ translation is the classical velocity field of a screw.
         CombinatorialRigidity.Molecular.screwTau}
   \leanok
   \uses{def:hinge-constraint}
-  Write a screw $S \in \bigwedge^2 \R^4$ in graded Pl\"ucker
-  coordinates $(\omega_S, t_S) \in \R^3 \times \R^3$ (the components
-  pairing two affine directions, resp.\ a direction with the
-  homogenizing coordinate). The \emph{velocity field} of $S$ is
+  For $v \in \R^4$, let $v' \in \R^3$ be its first three coordinates
+  and $v_4$ its last. The \emph{rotation part} $\omega_S \in \R^3$ and
+  the \emph{translation part} $t_S \in \R^3$ of a screw
+  $S \in \bigwedge^2 \R^4$ are the linear functions of $S$ with
   \[
-    \mathrm{vel}_S(x) = \omega_S \times x + t_S \qquad (x \in \R^3),
+    \omega_{v \vee w} = v_4\, w' - w_4\, v', \qquad
+    t_{v \vee w} = v' \times w' \qquad (v, w \in \R^4).
   \]
-  linear in $S$. For a line $2$-extensor
-  $\hat a \vee \hat b$ this is the familiar rotation field about the
-  line through $a$ and $b$: $\omega = b - a$, $t = a \times b$.
+  The \emph{velocity field} of $S$ is
+  \[
+    \mathrm{vel}_S(x) = \omega_S \times x + t_S \qquad (x \in \R^3).
+  \]
 \end{definition}
 
-\begin{lemma}[Lines through two points, velocity form]
+The two formulas are bilinear and alternating in $v$ and $w$, so they
+define linear maps $S \mapsto \omega_S$ and $S \mapsto t_S$ on
+$\bigwedge^2 \R^4$. Write $S = \sum_{i < j} S_{ij}\, e_i \vee e_j$ in the
+standard basis. Then $\omega_S = -(S_{14}, S_{24}, S_{34})$ and
+$t_S = (S_{23}, -S_{13}, S_{12})$, so up to sign and order $\omega_S$
+and $t_S$ are the six coordinates of $S$. In particular $S$ is
+determined by $\omega_S$ and $t_S$. For two points $a, b \in \R^3$, the
+extensor $\bar a \vee \bar b$ of the line through them has
+$\omega = b - a$ and $t = a \times b$, and
+\[
+  \mathrm{vel}_{\bar a \vee \bar b}(x) \;=\; (b - a) \times x + a \times b
+  \;=\; (b - a) \times (x - a).
+\]
+This is the velocity field of the rotation about the line through $a$
+and $b$ with angular velocity $b - a$. For every screw $S$ and all
+$x, y \in \R^3$,
+\[
+  \mathrm{vel}_S(x) - \mathrm{vel}_S(y) \;=\; \omega_S \times (x - y).
+\]
+
+\begin{lemma}[Screws whose velocity field vanishes at two points]
   \label{lem:screw-velocity-line}
   \lean{CombinatorialRigidity.Molecular.screwVel_eq_zero_iff_mem_span,
         CombinatorialRigidity.Molecular.dotProduct_screwVel_sub}
   \leanok
   \uses{def:screw-velocity, def:hinge-concurrent}
-  For distinct $a, b \in \R^3$ and any screw $S$:
-  $\mathrm{vel}_S(a) = 0$ and $\mathrm{vel}_S(b) = 0$ if and only if
-  $S$ is a scalar multiple of $\hat a \vee \hat b$. Moreover every
-  velocity field is infinitesimally isometric:
-  $\langle x - y,\ \mathrm{vel}_S(x) - \mathrm{vel}_S(y) \rangle = 0$
-  for all $x, y$.
+  Let $a \neq b$ be points of $\R^3$, and let $S$ be a screw. Then
+  $\mathrm{vel}_S(a) = \mathrm{vel}_S(b) = 0$ if and only if $S$ is a
+  multiple of $\bar a \vee \bar b$. Moreover
+  $\langle x - y,\, \mathrm{vel}_S(x) - \mathrm{vel}_S(y) \rangle = 0$
+  for all $x, y \in \R^3$, that is, every velocity field is an
+  infinitesimal isometry.
 \end{lemma}
 \begin{proof}
   \leanok
-  The isometry identity is
-  $\langle x - y, \omega \times (x - y) \rangle = 0$. If
-  $\mathrm{vel}_S(a) = 0$ then $t = a \times \omega$, and
-  $\mathrm{vel}_S(b) = \omega \times (b - a) = 0$ forces $\omega$
-  parallel to $b - a$; the solutions form the one-dimensional span of
-  $\hat a \vee \hat b$, which conversely vanishes at $a$ and $b$ by the
-  formula in \cref{def:screw-velocity}.
+  The second statement holds because
+  $\mathrm{vel}_S(x) - \mathrm{vel}_S(y) = \omega_S \times (x - y)$ is
+  orthogonal to $x - y$. The velocity field of $\bar a \vee \bar b$ is
+  $(b - a) \times (x - a)$, which vanishes at $a$ and at $b$, and so do
+  the velocity fields of its multiples. Conversely, suppose that
+  $\mathrm{vel}_S(a) = \mathrm{vel}_S(b) = 0$. Then
+  $\omega_S \times (b - a) = \mathrm{vel}_S(b) - \mathrm{vel}_S(a) = 0$,
+  and since $b - a \neq 0$, $\omega_S = \lambda\,(b - a)$ for some
+  $\lambda \in \R$. From $\mathrm{vel}_S(a) = 0$ we get
+  $t_S = -\omega_S \times a = \lambda\, a \times b$. So $S$ and
+  $\lambda\,(\bar a \vee \bar b)$ have the same rotation and translation
+  parts, and they are equal.
 \end{proof}
 
 \begin{lemma}[A screw is determined by point velocities]
@@ -309,37 +455,71 @@ translation is the classical velocity field of a screw.
         CombinatorialRigidity.Molecular.existsUnique_screwVel_eq}
   \leanok
   \uses{def:screw-velocity, lem:screw-velocity-line}
-  A screw whose velocity field vanishes at three non-collinear points
-  is zero. Consequently, if a finite point family contains three
-  non-collinear points, every point of the family is affinely
-  independent from each such triple, and a velocity assignment
-  satisfies the bar constraint
-  $\langle p_i - p_j,\ x_i - x_j \rangle = 0$ for \emph{every} pair,
-  then there is a unique screw $S$ with $\mathrm{vel}_S(p_i) = x_i$
-  for all $i$.
+  \begin{enumerate}
+    \item A screw whose velocity field vanishes at three non-collinear
+      points of $\R^3$ is zero.
+    \item Let $(p_i)_{i \in I}$ be a finite family of points of $\R^3$
+      that contains three non-collinear points, such that any three
+      non-collinear points of the family and any fourth member of it
+      are affinely independent. Let $(x_i)_{i \in I}$ be vectors of
+      $\R^3$ with $\langle p_i - p_j,\, x_i - x_j \rangle = 0$ for all
+      $i, j \in I$. Then there is a unique screw $S$ with
+      $\mathrm{vel}_S(p_i) = x_i$ for every $i \in I$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
-  Vanishing at two points puts $S$ on the line span
-  (\cref{lem:screw-velocity-line}); vanishing at a third non-collinear
-  point kills the span, which gives uniqueness. For existence, first
-  solve on a non-collinear triple $q_0, q_1, q_2$. Write the target as
-  the edge differences $d_i = x_i - x_0$ against $e_i = q_i - q_0$; the
-  three bar constraints read $e_1 \cdot d_1 = e_2 \cdot d_2 = 0$ and
-  $e_1 \cdot d_2 + e_2 \cdot d_1 = 0$. Then
-  $\omega_0 = (e_1 \cdot e_1)^{-1}\,(e_1 \times d_1)$ solves
-  $\omega \times e_1 = d_1$ by the vector triple product, and adding
-  the unique multiple of $e_1$ that also fixes the second edge — a
-  multiple of $e_1 \times e_2$, precisely because of the third bar
-  constraint — yields an $\omega$ with $\omega \times e_i = d_i$; take
-  $S$ with rotation part $\omega$ and the matching translation part.
-  For any further point $w$, the residual velocity after subtracting
-  the triangle's screw is orthogonal to $w - q_0, w - q_1, w - q_2$,
-  which span $\R^3$ because $\{w, q_0, q_1, q_2\}$ is affinely
-  independent; so the residual is zero. The affine-independence
-  hypothesis is sharp: four coplanar points admit the out-of-plane flex
-  of a flat complete quadrilateral, which is not a screw restriction.
+  (1) Let $\mathrm{vel}_S$ vanish at non-collinear points
+  $q_0, q_1, q_2$. Then
+  $\omega_S \times (q_i - q_0) = \mathrm{vel}_S(q_i) - \mathrm{vel}_S(q_0)
+  = 0$ for $i = 1, 2$, so $\omega_S$ is a multiple of both $q_1 - q_0$
+  and $q_2 - q_0$. These vectors are linearly independent, so
+  $\omega_S = 0$, and then $t_S = \mathrm{vel}_S(q_0) = 0$. Hence
+  $S = 0$ (the remarks after \cref{def:screw-velocity}).
+
+  (2) Uniqueness follows from (1): two such screws differ by a screw
+  whose velocity field vanishes at three non-collinear points of the
+  family.
+
+  For existence, let $q_0, q_1, q_2$ be three non-collinear points of
+  the family, with prescribed velocities $y_0, y_1, y_2$, and let
+  $e_i = q_i - q_0$ and $d_i = y_i - y_0$ for $i = 1, 2$. The hypothesis
+  on the pairs among $q_0, q_1, q_2$ reads $e_1 \cdot d_1 = e_2 \cdot d_2 = 0$ and
+  $e_1 \cdot d_2 + e_2 \cdot d_1 = 0$. We first find $\omega \in \R^3$
+  with $\omega \times e_1 = d_1$ and $\omega \times e_2 = d_2$. By the
+  vector triple product,
+  $\omega_0 = (e_1 \cdot e_1)^{-1}\, (e_1 \times d_1)$ satisfies
+  $\omega_0 \times e_1 = d_1$. The vector $u = d_2 - \omega_0 \times e_2$
+  is orthogonal to $e_2$, and the third of these equations makes it
+  orthogonal to $e_1$ as well. So $u = \mu\, (e_1 \times e_2)$ for some $\mu \in \R$,
+  and $\omega = \omega_0 + \mu\, e_1$ satisfies both equations. Let $S$
+  be the screw with $\omega_S = \omega$ and
+  $t_S = y_0 - \omega \times q_0$. Then $\mathrm{vel}_S(q_0) = y_0$, and
+  $\mathrm{vel}_S(q_i) = y_0 + \omega \times e_i = y_i$ for $i = 1, 2$.
+
+  Let $w$ be a further member of the family, with prescribed velocity
+  $y_w$, and let $r = \mathrm{vel}_S(w) - y_w$. For each $i$, the vector
+  $w - q_i$ is orthogonal to $\mathrm{vel}_S(w) - \mathrm{vel}_S(q_i)$
+  (\cref{lem:screw-velocity-line}) and to $y_w - y_i$ (by hypothesis).
+  As $\mathrm{vel}_S(q_i) = y_i$, it is orthogonal to $r$. The
+  points $w, q_0, q_1, q_2$ are affinely independent, so the vectors
+  $w - q_0$, $w - q_1$, $w - q_2$ span $\R^3$, and $r = 0$.
+
+  The hypothesis of affine independence cannot be dropped: four coplanar
+  points, three of them not collinear, admit the out-of-plane flex of a
+  flat complete quadrilateral, which is not the restriction of a screw.
+  Indeed, every assignment of velocities perpendicular to the plane
+  satisfies $\langle p_i - p_j,\, x_i - x_j \rangle = 0$, and these
+  assignments form a space of dimension four. But on the plane, the
+  perpendicular component of a velocity field is an affine function,
+  which is determined by its values at three non-collinear points.
 \end{proof}
+
+\begin{fmlnote}
+  The formal version of (2) assumes less. The family may be infinite,
+  and affine independence is asked only of one non-collinear triple of
+  the family together with each further member.
+\end{fmlnote}
 
 \subsection{General position}
 \label{sec:molecule-modelling-general-position}

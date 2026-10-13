@@ -7,9 +7,10 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, and task 2.1 `F-175`–`F-177`. 16 one-commit tasks; tasks 1 and 2.1 are done, and the round
-has no planned stop. **Next concrete task:** task 2.2, `molecule-modelling.tex`'s first slice
-(41–211, 256–343), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`F-174`, task 2.1 `F-175`–`F-177` and task 2.2 `F-178`–`F-182`. 16 one-commit tasks; tasks 1, 2.1
+and 2.2 are done, and the round has no planned stop. **Next concrete task:** task 2.3,
+`molecule-modelling.tex`'s second slice (325–368, 524–656, 1–40 now), at Opus (*Lemma
+checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,14 +20,16 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.1 has landed** (this commit), and `bar-joint-3d.tex` is done: 1–238 at the open and the
-parent, now 1–273, 9 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. No
-node moved and no formalization note is new. Nothing is mid-stream; task 2.2 is next.
+**Task 2.2 has landed** (this commit): `molecule-modelling.tex`'s 41–211 and 256–343 (8 nodes) are
+now 41–324 and 369–523; the file's 13 nodes keep every `\label`, `\lean{…}`, `\leanok` and `\uses`
+byte-identical, and no node moved. Three formalization notes are new (no label). Nothing is
+mid-stream; task 2.3 is next. `bar-joint-3d.tex` (2.1) is done.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (51 overfull boxes, none in the file).
-  Screens on `bar-joint-3d`: register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 0,
-  forward `\uses` 0 / 0; the open's were 1 / 1, 1 / 3, 0, 1 and 0 / 0.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (51 overfull boxes; the file's two are
+  2.3's displays at its lines 13 and 625). Screens on `molecule-modelling` (2.3's part remains):
+  register 7 / 7, devices 0 / 0, `\operatorname` 0, vocabulary 3, forward `\uses` 0 / 2 (one
+  node); the open's were 13 / 13, 0 / 0, 0, 5 and 0 / 2.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -254,18 +257,10 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
 
 - **`bar-joint-3d`.** *Done:* 2.1 (its open bullet is in this log at `69bc7afb`).
 - **`molecule-modelling`.**
-  - *2.2 (41–211, 256–343):* `def:hinge-concurrent`'s statement names the endpoint selector and
-    carries the converse, the modelling sentence and the welded hinge (principle B). The statement
-    of `thm:projective-invariance` (7 pins, 3 dead) runs eight sentences: the projective reading,
-    the rescaling, field generality and a `\cref` to the later `sec:pencil-duality` go to prose or
-    a note, keeping the readings of `pencil.tex` and `main-component.tex` (*Scope*); check its
-    proof's Crapo–Whiteley quotation (§3.6). `lem:panel-hinge-dual-molecular` (8 pins, 3 dead):
-    a six-sentence statement, $n_u \wedge n_v$ for a join ($\vee$ since `meet.tex`), "genuine"
-    twice. `def:screw-velocity` states the line's field ($\omega = b - a$, $t = a \times b$), a
-    consequence to check against `screwVel`. `lem:screw-determination`'s second sentence; its
-    proof's flat-quadrilateral sentence is a crux pointer (keep).
-  - *2.3 (212–255, 344–476, 1–40):* `thm:panel-hinge-iff-molecular` uses
-    `def:general-position-placement` and `lem:theorem-56-general-position`, later in the file, the
+  - *2.2:* done (its open bullet is in this log at `67d44583`).
+  - *2.3 (212–255, 344–476, 1–40 at the open; 325–368, 524–656, 1–40 now):*
+    `thm:panel-hinge-iff-molecular` uses `def:general-position-placement` and
+    `lem:theorem-56-general-position`, later in the file, the
     round's only forward `\uses`: move it after the latter. Its statement: "with enough hinge
     labels" (`\cref` `rem:fresh-edge-supply`, principle D), "an endpoint selector … genuinely
     recording every $G$-link", three role and attribution sentences; its proof's selector sentence
@@ -368,11 +363,11 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 - [ ] **2. The slices**, one commit each, in `chapter/main.tex` order. Each chapter's opening goes
   in its last slice, and `intro.tex` comes last (principle F). The diagnosis of each is above; the
   carry-ins are numbered as there.
-  - [x] **2.1 `bar-joint-3d.tex`** (this commit): generic placements, $\mathcal{R}_d(V)$ and its
+  - [x] **2.1 `bar-joint-3d.tex`** (`67d44583`): generic placements, $\mathcal{R}_d(V)$ and its
     rank function; the title loses "in dimension three". Found `F-175`–`F-177`.
-  - [ ] **2.2 `molecule-modelling.tex`, the square, molecular frameworks, projective invariance,
-    the polarity and screw velocities** (41–211, 256–343): 8 nodes, 259 lines; the crux pointer
-    in `lem:screw-determination`'s proof.
+  - [x] **2.2 `molecule-modelling.tex`, the square, molecular frameworks, projective invariance,
+    the polarity and screw velocities** (this commit): leads for the three subsections; the
+    polarity named before its lemma; the crux pointer kept. Found `F-178`–`F-182`.
   - [ ] **2.3 `molecule-modelling.tex`, general position, the rank-carrying equivalence, the
     square-graph dictionary and the opening** (212–255, 344–476, 1–40): 5 nodes, 217 lines; crux
     throughout; carry-in 9 and `F-174`; the node move.
@@ -419,6 +414,12 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   equivalence is unpinned, and false for coincident centres, which `def:hinge-concurrent` admits.
 - `F-177` (S, task 2.1): `def:genericRigidityMatroid`'s placement independence and `def:genericRank`'s
   KT Corollary 5.7 clause left the definitions (principle B); the lemma and the opening keep them.
+- `F-178` (S, task 2.2): `thm:projective-invariance` is stated over a field $K$, the block's own
+  "the Lean statement holds over an arbitrary field"; the projective reading went to prose.
+- `F-179` (S, task 2.2): principle B's moves out of `def:hinge-concurrent`, `def:screw-velocity`
+  (its swapped coordinate gloss dropped) and `lem:panel-hinge-dual-molecular`'s setup.
+- `F-180` (S, task 2.2): `lem:panel-hinge-dual-molecular`'s (3) is unpinned and its (1) narrower than
+  its pin; `lem:screw-determination`'s (2) assumes more than its pin. Kept, with notes.
 
 ## Moved to a later round
 
@@ -429,6 +430,10 @@ one line each naming the ledger ID and the task that found it.
   argument its existence proof cites wants no edge.
 - `F-176` (L, task 2.1): the docstrings of `GenericRigidityMatroid.lean` (process narration; the
   abundance lemma's "Gram-determinant sketch", which no chapter has now).
+- `F-181` (E, task 2.2): the first eight nodes of `molecule-modelling.tex`: eight missing edges and
+  three unbacked.
+- `F-182` (L, task 2.2): the docstrings of its pins (the swapped $\omega$/$t$ gloss in
+  `ScrewVelocity.lean`, a stale `Dictionary.lean` header, process narration).
 
 ## Blockers / open questions
 
@@ -436,20 +441,23 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.2, `molecule-modelling.tex`'s square, molecular frameworks,
-projective invariance, the polarity and screw velocities (41–211, 256–343 at the open and now), at
-Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.2* item under *Per-chapter
-diagnosis*, its gates and screens under *Scope*. Then tasks 2.3–2.14 in order, and task 3 closes
-the round. For the slices:
+**Next concrete task: task 2.3, `molecule-modelling.tex`'s general position, the rank-carrying
+equivalence, the square-graph dictionary and the opening (212–255, 344–476, 1–40 at the open;
+325–368, 524–656, 1–40 now), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the
+*2.3* item under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.4–2.14
+in order, and task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"): the coordinator reads 2.1–2.3 in full against the exemplars, as rounds 2–3 did.
-- **From task 2.1.** `bar-joint-3d.tex` is titled *The generic bar-joint rigidity matroid* and
-  builds $\mathcal{R}_d(V)$ in every dimension: Jordán's $\mathcal{R}_d$ and $r_d$ (§1.3.1, p. 39),
-  genericity after JJ 2008 §2, and the formula credited to JJ 2008's Theorems 4.1 ($\le$) and 4.3
-  (equality is equivalent to the molecular conjecture). Readings to keep true: 2.4's "All the
-  geometry is specific to $\R^3$, inherited from … `sec:bar-joint-3d`" (it is dimension-general), 2.9's
-  JJ genericity in `generic-lift`'s opening, and the intro's item title "in dimension 3" and line 486
-  (2.13, 2.14).
+- **From task 2.1.** `bar-joint-3d.tex` (*The generic bar-joint rigidity matroid*) builds
+  $\mathcal{R}_d(V)$ in every dimension (Jordán §1.3.1; JJ 2008 §2, Theorems 4.1 and 4.3). Keep
+  true: 2.4's "All the geometry is specific to $\R^3$, inherited from … `sec:bar-joint-3d`", 2.9's
+  JJ genericity, and the intro's "in dimension 3" and line 486 (2.13, 2.14).
+- **From task 2.2.** The polarity $*$ is defined, over every field, before
+  `lem:panel-hinge-dual-molecular` (over $\R$; items (1)–(3)); `thm:projective-invariance` is over $K$. "The rescaling normalization" in
+  `thm:panel-hinge-iff-molecular`'s proof is now both nodes' item (3); the lemma's note `\cref`s that
+  proof. Write $\bar c = (c, 1)$. For `F-174` and the opening: `whiteley1999` has the molecular
+  structure (Definition 4, p. 27) and the polarity (Corollary 12, p. 30), but no square-graph
+  equivalence, which JJ 2008 (§2.1) credits to Whiteley's 2004 manuscript, their [21].
 - **Notation and terms** (*Decisions*); **crux nodes** in 2.3 and 2.2's pointer (*Scope*);
   **carry-ins** 1–13 under *Per-chapter diagnosis*. Where a proof cites a node its pin does not
   reach, a slice may name in prose the node the pin reaches, checked with the script; the edges
@@ -457,7 +465,7 @@ the round. For the slices:
 - **The open's finding** `F-174`: 2.3 keeps the claim with a note, or anchors it by a reading
   under *Scope*, and flags the call.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <name>`. The ledger's next ID is `F-178`.
+  `--chapter <name>`. The ledger's next ID is `F-183`.
 
 ## Decisions made during this round
 
@@ -481,3 +489,6 @@ the round. For the slices:
   every-$d$ content contradicted; the sentence that $3|V| - 6$ is the largest rank of a graph on $V$
   (false below $|V| = d$; Jordán's Lemma 1.2.1) is cut, not repaired, as the formula's reading
   belongs to `molecule-application.tex`; the opening sketches the chapter once, with no node list.
+- **`molecule-modelling`'s first slice** (2.2): `thm:projective-invariance` over $K$, as `pencil.tex`
+  reads it (`F-178`); the polarity defined once, before its lemma, over every field, the lemma over
+  $\R$ (both later chapters' readings); claims beside their pins kept, with notes (`F-180`).

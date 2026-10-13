@@ -503,6 +503,20 @@ declaration's name as its header writes it:
   `lem:genericRigidityMatroid-two-eq-rigidityMatroid` is dead (`F-012`).
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter bar-joint-3d`, at `69bc7afb`).
   *Found:* round 4 task 2.1.
+- **F-181** · E · `molecule-modelling.tex`'s first eight nodes, task 2.2's (`molecule-modelling.tex`):
+  eight missing edges and three unbacked. Missing: the edges of `def:hinge-concurrent` (proof),
+  `def:screw-velocity`, `lem:screw-velocity-line` and `lem:screw-determination` to
+  `def:rigidity-matrix`, through `ScrewSpace`, which is pinned there (the screw space is introduced
+  at `def:hinge-constraint`); `thm:projective-invariance`'s to `def:dof-generic`,
+  `lem:trivial-motions-rank-bound` (`IsTrivialMotion`) and `lem:rank-rotation-semicont`
+  (`infinitesimalMotions_mono_of_span_le`, in the rescaling); `lem:panel-hinge-dual-molecular`'s
+  to `def:dof-generic`. Unbacked: `thm:projective-invariance`'s to `def:rank-hypothesis`,
+  `def:screw-velocity`'s to `def:hinge-constraint` and `lem:screw-velocity-line`'s to
+  `def:hinge-concurrent`. Task 2.2's proof of `thm:projective-invariance` cites `def:dof-generic`
+  and `def:rigidity-matrix` without an edge. Three pins of each of those two nodes are dead
+  (`F-012`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-modelling`, at `67d44583`).
+  *Found:* round 4 task 2.2.
 
 ## N — node shape
 
@@ -1692,6 +1706,55 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `genericRigidityMatroid` and `genericRank`; the statement of
   `linearRigidityMatroid_eq_genericRigidityMatroid`).
   *Found:* round 4 task 2.1.
+- **F-178** · S · `thm:projective-invariance` (`molecule-modelling.tex`): at the open the statement
+  was set in $\R^3$, for an automorphism $\Lambda$ of $\bigwedge^2 \R^4$, and ran eight sentences:
+  the projective reading (a collineation or a correlation, Crapo–Whiteley §3.6), the correlation as
+  "the one the duality below consumes", the rescaling, and "the argument uses only linearity and
+  invertibility of $\Lambda$, so the Lean statement holds over an arbitrary field $K$ … $\R^3$ is
+  fixed above because that is where the projective-transformation reading of $\Lambda$ applies",
+  ending on a `\cref` to the later `sec:pencil-duality`. Task 2.2 states it over a field $K$, as
+  (1) the motion isomorphism with dimension, rank and rigidity, (2) nondegenerate hinges and (3)
+  the rescaling, and moves the projective reading, the role clause, the $\R^3$ remark and the
+  pencil pointer to the prose after it. Two readings: the block already claimed the $K$ form, as
+  "the Lean statement", so the claim is unchanged (the task's); or the headline was the $\R$ form
+  and the sentence a formalization remark, so the headline now claims more, though no more than its
+  pins (which hold over every field and in every dimension). `pencil.tex` reads the theorem as field-general
+  (`lem:pencil-self-dual`, `lem:pencil-projective-transport`), which the first reading keeps true.
+  *Evidence:* read (the statements of the seven pins, `Molecule/ProjectiveInvariance.lean` and
+  `RigidityMatrix/Basic.lean`; `pencil.tex` at `lem:pencil-self-dual` and
+  `lem:pencil-projective-transport`).
+  *Found:* round 4 task 2.2.
+- **F-179** · S · `def:hinge-concurrent`, `def:screw-velocity`, `lem:panel-hinge-dual-molecular`
+  (`molecule-modelling.tex`): principle B's moves. `def:hinge-concurrent` named the endpoint selector
+  and ended on five sentences: the hinge-concurrency it gives (KT p. 671), the converse "carrying the
+  centres as data loses no generality", the molecule model, the welded hinge at coincident centres
+  and "the genuine-hinge statements below therefore carry an injectivity or general-position
+  hypothesis". Task 2.2 moved them to the prose after it, the converse stated for distinct adjacent
+  centres (sources: KT p. 650, JJ 2008 §2.1, Whiteley 1999 Definition 4), and the selector to a
+  note. `def:screw-velocity` called $(\omega_S, t_S)$ "the components pairing two affine
+  directions, resp. a direction with the homogenizing coordinate", which swaps them ($\omega_S$
+  reads the coordinates at $e_i \vee e_4$, as `omegaForm` does), and ended on the line's field
+  $\omega = b - a$, $t = a \times b$. It now defines $\omega$ and $t$ by their values at
+  $v \vee w$, as the pins do; the gloss is dropped, and the line's field is proved after it
+  (`screwOmega_lineExtensor`, `screwTau_lineExtensor`). `lem:panel-hinge-dual-molecular`'s setup
+  (the polarity's convention, KT's pole $c(v)$, $\Lambda$ as the complement isomorphism) went to a
+  lead-in, and its claims are its items (1)–(3).
+  *Evidence:* read (the bodies of `molecularOfCentres`, `omegaForm`, `tauForm`, `screwVel` and the
+  two line lemmas; KT pp. 650, 671; JJ 2008 §2.1; Whiteley 1999 p. 27).
+  *Found:* round 4 task 2.2.
+- **F-180** · S · `lem:panel-hinge-dual-molecular`, `lem:screw-determination`
+  (`molecule-modelling.tex`): statements that claim more or less than their pins. The first's
+  "for normals with nonvanishing last coordinate the same holds after the rescaling normalization",
+  now its (3), has no pin: `exists_molecular_rankHypothesis_generalPosition` (the pin of
+  `thm:panel-hinge-iff-molecular`) proves the rescaling inline, by a span equality and
+  `infinitesimalMotions_mono_of_span_le`, not through the pinned `infinitesimalMotions_scaleExtensor`.
+  Its (1) is stated over $\R$, while `screwComplementIso` and `screwComplementIso_mk_extensor` are
+  field-general. The second's part (2) asks for a finite family, and for every non-collinear triple
+  with every fourth member to be affinely independent; `existsUnique_screwVel_eq` takes any index
+  type and one fixed triple. Task 2.2 kept each claim, with a note.
+  *Evidence:* read (the statements of the pins; the body of
+  `exists_molecular_rankHypothesis_generalPosition`, `Molecule/Modelling.lean`).
+  *Found:* round 4 task 2.2.
 
 ## L — Lean
 
@@ -2278,6 +2341,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the nine pins and of the abundance lemma; `grep
   -i gram` over `blueprint/src`).
   *Found:* round 4 task 2.1.
+- **F-182** · L · the docstrings of task 2.2's pins (`Molecule/ScrewVelocity.lean`, `Duality.lean`,
+  `ProjectiveInvariance.lean`, `Dictionary.lean`). `ScrewVelocity.lean`'s header says that
+  $\omega_S$ pairs two affine directions and $t_S$ a direction with the homogenizing coordinate;
+  `omegaForm` and `tauForm` read the reverse. `screwComplementIso`'s says "the polarity never
+  preserves adjacent-distinctness or nondegeneracy", which `supportExtensor_mapExtensor_ne_zero`
+  contradicts for nondegeneracy. `Dictionary.lean`'s header says that injectivity, surjectivity and
+  the finrank equality "are follow-up slices"; `molecular_finrank_motions_eq_square_ker` is in the
+  same file. The headers narrate process (Phase 25 leaves W1, W2 and W7, "brick (1)"–"(4)", "design
+  §2.3(4), flag F2 route two", DUAL-K) and say "genuine" and "consumes".
+  *Evidence:* read (the docstrings and bodies of the slice's 26 pins and of `omegaForm`, `tauForm`).
+  *Found:* round 4 task 2.2.
 
 ## M — mathematics and sources
 
