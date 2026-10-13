@@ -54,10 +54,13 @@ For the blueprint specifically:
   source — DOI landing page, publisher metadata, or NASA ADS for
   older journals. Don't copy from second-hand citations without
   cross-checking.
-- **Match attribution to who proved it.** When the modern
-  presentation matters, name both: *"classical strategy of
-  Tay--Whiteley 1985, in the modern presentation of Jord\'an 2016
-  §2.2"* (`chapter/intro.tex` is the canonical example).
+- **Match attribution to who proved it.** Credit an argument to
+  whoever first gave it, not to the paper that made it explicit, and
+  when the modern presentation matters, name it as well: *"Laman's own
+  proof uses the moves implicitly, as Tay and Whiteley 1985 observe
+  (p.~39). Their §3 makes the argument explicit, and we follow the
+  presentation of Jord\'an 2016 (§2.2)"* (`chapter/intro.tex` is the
+  canonical example).
 - **Verify any §N pointers** — §N must exist in the cited work and
   contain what you claim. Drop the section pointer rather than
   guess.

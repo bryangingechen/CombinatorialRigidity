@@ -8,40 +8,55 @@ everything you read here with a grain of salt.
 
 This blueprint accompanies the
 \href{https://github.com/bryangingechen/CombinatorialRigidity}{\texttt{CombinatorialRigidity}}
-Lean~4 / mathlib4 formalization. Its first goal is a proof of \textbf{Laman's
-theorem}~\cite{laman1970}: for $n \ge 2$, a graph $G$ on $n$ vertices is generically
-rigid in the plane if and only if it contains a spanning subgraph $H$ with
-$|E(H)| = 2n - 3$ such that every subgraph $H[S]$ on $k \ge 2$ vertices
-satisfies $|E(H[S])| \le 2k - 3$. Such an $H$ is called a \emph{Laman
-graph}, or \emph{minimally rigid graph in the plane}.
+Lean~4 / mathlib4 formalization. It begins with \textbf{Laman's
+theorem}~\cite{laman1970}: for $n \ge 2$, a graph $G$ on $n$ vertices is
+generically rigid in the plane if and only if it has a spanning subgraph
+$H$ with $2n - 3$ edges in which every set $S$ of at least two vertices
+spans at most $2|S| - 3$ edges. Such a graph $H$ is a \emph{Laman graph}.
+In an equivalent form, the theorem says that the Laman graphs are exactly
+the graphs that are generically minimally rigid in the plane.
 
-The Lean development follows the \emph{Henneberg-construction} route: we
-characterize Laman graphs inductively via two combinatorial moves (Type~I
-adds a vertex of degree~2; Type~II splits an edge), prove the moves
-preserve generic rigidity, and combine these facts to deduce the ``Laman
-implies generically rigid'' direction. This $\Leftarrow$ direction is the
-classical strategy of Tay and Whiteley~\cite{tayWhiteley1985}, in the
-modern presentation of Jord\'an~\cite{jordan2016}~\S 2.2. The converse
-direction goes through the rigidity matroid. For background on
-combinatorial rigidity, see
-\cite{graverServatiusServatius1993,jordan2016}.
+To prove that every Laman graph is generically rigid in the plane, we use
+the Henneberg moves. The Type~I move adds a vertex of degree two, and the
+Type~II move deletes an edge $ab$ and adds a vertex joined to $a$, $b$
+and a third vertex. Every Laman graph is built from $K_2$ by these moves,
+and the moves preserve rigidity in the plane. Laman's own proof uses the
+moves implicitly, as Tay and Whiteley~\cite{tayWhiteley1985} observe
+(p.~39). Their \S3 makes the argument explicit, and we follow the
+presentation of Jord\'an~\cite{jordan2016} (\S2.2). For the converse, a
+graph on $n$ vertices that is generically rigid in the plane has
+$2n - 3$ edges whose rows in the rigidity map are linearly independent at
+a suitable framework. A bound on the rank of the rigidity map by the
+trivial motions shows that these edges form a Laman graph. For background
+on combinatorial rigidity, see~\cite{graverServatiusServatius1993,jordan2016}.
 
-Beyond Laman's theorem the project formalizes a sequence of deeper
-combinatorial-rigidity results: the planar rigidity matroid and an
-executable $(k,\ell)$-sparsity decision procedure, the abstract
-matroid-union machinery, Tay's body-bar theorem, the body-hinge /
-panel-hinge Tay--Whiteley theorem, and --- the longest-horizon target ---
-a formalization of Katoh--Tanigawa's proof~\cite{katohTanigawa2011} of the
-\emph{molecular conjecture} (the panel-hinge characterization of
-Tay--Whiteley), now formalized at every dimension and over any
-infinite field
-(\cref{thm:molecular-conjecture}) together with its molecule application,
-the protein-flexibility rank formula
-$r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
-(\cref{cor:molecule-rank-formula}). A continuation chapter
-(\cref{sec:jacobs}) derives two further Jackson--Jord\'an
-consequences of the rank formula: Jacobs' conjecture on the
-independence of molecular graphs, and the degree-one rank formula. Two
+Beyond Laman's theorem, the blueprint proves results on the rigidity
+matroid in the plane, Lee and Streinu's pebble game for sparse graphs, the
+union of matroids, and the theorems of Tay on body-bar frameworks and of
+Tay and Whiteley on body-hinge frameworks. A body-hinge framework in
+$\R^d$ joins rigid bodies in pairs by hinges, which are affine subspaces of
+dimension $d - 2$. It is a \emph{panel-hinge} framework if the hinges at
+each body lie in a common hyperplane, the \emph{panel} of the body. The
+\emph{molecular conjecture} of Tay and Whiteley~\cite{tayWhiteley1984}
+states that a graph has an infinitesimally rigid body-hinge realization if
+and only if it has an infinitesimally rigid panel-hinge realization. Katoh
+and Tanigawa proved it~\cite{katohTanigawa2011}. They derive it from their
+Theorem~5.6: every graph has a panel-hinge realization whose rigidity
+matrix has the largest rank of any body-hinge realization of the graph.
+Following their proof, we prove Theorem~5.6 and the molecular conjecture
+in every dimension $d \ge 2$ and over every infinite field, for simple
+graphs and for multigraphs (\cref{thm:molecular-conjecture},
+\cref{thm:molecular-conjecture-multigraph}).
+
+From Theorem~5.6, Katoh and Tanigawa derive the \emph{molecule rank
+formula} (\cref{cor:molecule-rank-formula}), which Jackson and Jord\'an
+conjectured. It gives the rank of the square $G^2$ of a graph $G$ of
+minimum degree at least two in the generic rigidity matroid in $\R^3$.
+When $G$ is the graph of the atoms and bonds of a molecule, $G^2$ is the
+graph of its bar-joint model. Jackson and Jord\'an derive from the formula
+Jacobs' conjecture on the independence of squares of graphs. A later
+chapter proves this conjecture and their degree-one rank formula
+(\cref{sec:jacobs}). Two
 later chapters (\cref{sec:pencil}, \cref{sec:main-component}) prove a
 strengthening of Katoh--Tanigawa's Theorem~5.6 in dimension three that
 appears to be new, the pencil realization theorem, which this project
@@ -307,79 +322,35 @@ Theorem~5.6, so that it too holds over every infinite field
 
 \subsection*{Reading this blueprint}
 
-Statements formalized in Lean carry a green tick and a
-\texttt{\textbackslash lean\{\}} pointer linking to the API
-documentation; statements not yet formalized are shown red. The
-\emph{dependency graph view} (linked from the navigation bar) is the
-best place to see at a glance how the chapters fit together and which
-nodes are formalized; the four arcs and the continuation chapters ---
-the independence and rank of molecular graphs (\cref{sec:jacobs}), the
-field generalization, the generic form of the realization theorems
-(\cref{sec:generic-lift}), the multigraph molecular conjecture in
-the hinge-coplanar model (\cref{sec:molecular-coplanar-multigraph}), and
-the pencil realization theorem (\cref{sec:pencil}, \cref{sec:main-component})
---- are all complete (every node green). The
-graph is authored \emph{forward} --- a
-chapter's nodes and their dependency edges written before its Lean
-proofs landed, a red node's statement and proof sketch standing as the
-plan for its eventual Lean declaration --- so the graph doubles as the
-project's to-do list, worked \emph{leaf-most} first: a red node all of
-whose dependencies are already green is the next one formalized. (This
-paragraph and the appendix (\cref{sec:formalization-notes}) are the only
-places in the blueprint that use this project-process vocabulary;
-chapter prose elsewhere states the mathematics, not its formalization
-status.)
+In the web version, a statement that is formalized in Lean is marked with
+a tick, and a button in its heading links to the documentation of its
+Lean declarations. The \emph{dependency graph}, linked from the
+navigation bar, shows how the statements depend on each other. A node has
+a green border when its statement is formalized, and a green interior
+when its proof is; the graph's legend explains the other markings. The
+main results of every chapter are formalized, from Laman's theorem to
+the pencil realization theorem (\cref{sec:pencil}, \cref{sec:main-component}).
+From phase~6 on, the graph is written forward: a chapter's nodes and
+their edges come first, and the statement and proof sketch of a node not
+yet formalized are the plan for its Lean declaration. So the graph is
+also the project's list of work to do, and its legend marks the nodes
+whose prerequisites are all formalized. Outside this introduction and the
+appendix (\cref{sec:formalization-notes}), the chapters state the
+mathematics, not the progress of its formalization.
 
-The development from Laman's theorem (\cref{sec:laman-theorem}) through
-the body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}) ---
-phases~1--16, including the matroid identifications, the executable
-pebble game, the matroid-union machinery, and Tay's body-bar theorem ---
-is fully formalized. Within the molecular-conjecture program
-(\cref{sec:molecular}, phases~17--26), the extensor algebra
-(\cref{lem:extensor-independence}, Katoh--Tanigawa Lemma~2.1), the
-panel-hinge rigidity matrix, the deficiency matroid, the combinatorial
-induction (\cref{thm:minimal-kdof-reduction}, Theorem~4.9), and the
-algebraic induction realizing that reduction at the rigidity-matrix rank
-(\cref{sec:molecular-algebraic-induction}) are formalized at full
-Katoh--Tanigawa strength (all degrees of freedom, genuine hinges).
-Theorem~5.5 (the realization theorem, all three cases including the
-hardest, Case~III, \cref{thm:theorem-55}) and Theorem~5.6 (every simple
-spanning multigraph realizes the deficiency rank, \cref{thm:theorem-55-6},
-reconciling the rigidity-matrix rank with the combinatorial deficiency via
-\cref{prop:rigidity-matrix-prop11}) are formalized at every dimension
-$d \ge 2$, and the \emph{Molecular Conjecture} itself --- a simple graph
-has an infinitesimally rigid body-hinge realization if and only if it has
-a panel-hinge one --- is a theorem of the development
-(\cref{thm:molecular-conjecture}; at $d = 2$ it is Jackson and Jord\'an's
-pin-collinear theorem~\cite{jacksonJordan2008pin}, here over every infinite
-field); in the hinge-coplanar panel model of
-phase~35, Theorem~5.6 and the conjecture hold at Katoh--Tanigawa's full
-multigraph strength (\cref{thm:theorem-55-6-multigraph},
-\cref{thm:molecular-conjecture-multigraph}). The molecule application is complete as
-well: the generic bar-joint rigidity matroid in dimension three
-(\cref{sec:bar-joint-3d}) --- the rank function of the molecule rank
-formula --- projective duality and the molecule modelling equivalence
-(\cref{sec:molecule-modelling}) --- the projective and square-graph
-correspondences that connect the panel-hinge rank to the bar-joint
-rigidity of $G^2$, at the level of motion-space dimensions --- and,
-assembled from these, the capstone molecule rank formula
-$r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$ for the square graph
-itself (\cref{cor:molecule-rank-formula}, Corollary~5.7,
-\cref{sec:molecule-application}).
+The proofs give the argument as a paper would, and the Lean proofs
+behind the links give every detail. The chapters on the molecular
+conjecture give in full the steps that Katoh and Tanigawa's paper states
+compactly, so that each of them can be followed without the paper. Among
+these steps are the cases of KT Theorem~5.5, of which Katoh and Tanigawa
+call Case~III the most difficult (KT p.~650). Where the Lean statement of
+a node differs from the statement in the text, for instance in how it
+encodes a construction, a formalization note after the node explains the
+difference.
 
-Beyond tracking what is formalized, the molecular chapters aim to give the
-steps Katoh--Tanigawa's paper compresses --- in particular the three cases of
-Theorem~5.5, including the intricate Case~III --- full, self-contained
-expositions, so that each is followable without the original authors' context.
-These detailed accounts of the conjecture's hardest arguments are now in place.
-See
-\href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}
-and the dependency graph for fine-grained status.
-
-An appendix (\cref{sec:formalization-notes}) at the end of the blueprint
-records some of the wrong turns this formalization took along the way to
-the arguments above: a statement whose formal strength diverged from the
-source, a decomposition that did not survive contact with the argument
-it was meant to feed, a decision left with no record of the obligation
-it created. It stands outside the mathematical development just
-described and can be read on its own.
+An appendix (\cref{sec:formalization-notes}) records some of the wrong
+turns that the formalization of KT Theorem~5.5 took: a statement whose
+formal strength differed from the source's, a decomposition of a proof
+that did not match the structure the final argument needed, and a
+decision left with no record of the obligation it created. It stands
+outside the mathematical development and can be read on its own.

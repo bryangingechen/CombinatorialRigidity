@@ -7,10 +7,9 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, and tasks 2.1–2.13 `F-175`–`F-227`. 16 one-commit tasks; tasks 1 and 2.1–2.13 (the five
-chapters and `intro.tex`'s *Organization*) are done, and the round has no planned stop. **Next
-concrete task:** task 2.14, `intro.tex`, *Reading this blueprint* and the opening (308–385, 9–44),
-at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`F-174`, and tasks 2.1–2.14 `F-175`–`F-229`. 16 one-commit tasks; tasks 1 and 2.1–2.14 (the five
+chapters and `intro.tex`) are done, and the round has no planned stop. **Next concrete task:**
+task 3, the round's close (*Lemma checklist*; it may run at Sonnet). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,20 +19,18 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.13 has landed** (this commit): `intro.tex`'s *Organization of the blueprint* and the
-four continuations are now 51–237 (were 51–364), one item per phase 1–26 and one paragraph per
-continuation, with no file lists. The kept fifth continuation is 239–306, verbatim; *Reading this
-blueprint* is 308–385 (was 435–512); the opening, 1–49, is unchanged. `bibliography.bib` lost
-`lovaszYemini1982`, which nothing cites now (`F-226`), and `blueprint/SETUP-AND-PITFALLS.md`
-gained plasTeX's handling of `\item[…]` (`F-227`). Nothing is mid-stream.
+**Task 2.14 has landed** (this commit), and with it all of `intro.tex`: the opening is 9–64 (was
+9–49; its last two sentences, on the pencil chapters, verbatim), *Organization* 66–252 and the
+kept fifth continuation 254–321 unchanged, *Reading this blueprint* 323–356 (was 308–385). The
+canonical citation example in `blueprint/AUTHORING.md` *Citations* follows the opening's new credit.
+Every slice is done; nothing is mid-stream.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (32 overfull boxes, the parent 45; none in
-  the slice, one in the opening). Screens on the slice: register 0, devices 1 (the `ROADMAP.md`
-  link), `\operatorname` 0, vocabulary 1 (Nelson's "package", literal, as `matroid-union.tex`). The
-  parent's, on 51–364: register 9 in prose ("carry" and its forms 4, "route" 2, "capstone" 2,
-  "genuine" 1), devices 54, `\operatorname` 0, vocabulary 7 ("package" 5, "device" 2). The whole
-  file: register 15 → 6, devices 57 → 4, vocabulary 7 → 1.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (31 overfull boxes, the parent 32; none in
+  `intro.tex`). Screens on the slice: register 0, devices 1 (the repository link), `\operatorname`
+  0, vocabulary 0. The parent's, on 9–44 and 308–385: register 6 ("route", "carry", "leaf-most",
+  "genuine", "capstone", "feed"), devices 3, vocabulary 0. The whole file: register 15 → 0 over
+  the two slices, devices 57 → 2 (the two repository links), vocabulary 7 → 1.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -220,21 +217,13 @@ identifiers. These chapters (Phases 24–26, 32, 34) predate the 2026-10-03 clau
 notation.
 
 **Carried in** (the ledger's findings addressed to these files, and round 3's carry-in 4): all
-done (2.3, 2.9–2.13; the list is in this log at `1e3df147`) except carry-in 2's part in *Reading*
-(347–349; 2.14): `F-067`, the rank formula `prop:rigidity-matrix-prop11` is KT Proposition 2.3 (JJ
-2009, Theorem 6.1), and KT Proposition 1.1 is Tay and Whiteley's theorem.
+done (2.3, 2.9–2.14; the list is in this log at `1e3df147`). Carry-in 2's part in *Reading* went
+with the status paragraph that held it; *Organization*'s phase-23 item credits the rank formula.
 
 - **The five chapters.** *Done:* 2.1–2.12 (the open bullets are in this log at `69bc7afb`, and each
   slice's own at its parent).
-- **`intro.tex`.**
-  - *2.13:* done (the open's bullet is in this log at `1e3df147`).
-  - *2.14 (308–385, 9–44):* *Reading this blueprint*'s second paragraph (333–368) recaps the
-    *Organization* as status (principle F *Once*; a status log): "genuine hinges", "all three
-    cases" (KT p. 671 has four, as `algebraic-induction.tex` says), carry-in 2; its third
-    (370–377) ends "are now in place". The opening: "now formalized", "A continuation chapter";
-    the sentence crediting Tay and Whiteley 1985 and Jordán §2.2 is `AUTHORING.md` *Citations*'
-    canonical example: check it against `.refs/` and round 1's `henneberg-rigidity.tex` and
-    `laman-theorem.tex`, and keep it or update the example in the same commit.
+- **`intro.tex`.** *Done:* 2.13 and 2.14 (their diagnosis bullets are in this log at `1e3df147`
+  and `248ec772`).
 
 ## Lemma checklist (the round's task list)
 
@@ -244,7 +233,7 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 
 - [x] **1. O — the open** (`69bc7afb`; docs only): this log, the baselines, the open's finding
   `F-174`, and the status surfaces.
-- [ ] **2. The slices**, one commit each, in `chapter/main.tex` order. Each chapter's opening goes
+- [x] **2. The slices**, one commit each, in `chapter/main.tex` order. Each chapter's opening goes
   in its last slice, and `intro.tex` comes last (principle F). The diagnosis of each is above; the
   numbered carry-ins are in this log at `1e3df147`.
   - [x] **2.1–2.8** `bar-joint-3d.tex`, `molecule-modelling.tex` (2), `molecule-application.tex`,
@@ -253,10 +242,10 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.9–2.12 `generic-lift.tex`**: abundance, squares and panel-and-hinge; body-and-bar;
     generic hinge-point assignments; body-and-hinge, its lead and the opening (`c8f1f0f1`,
     `dc58265b`, `ac88bd18`, `1e3df147`): found `F-206`–`F-225`.
-  - [x] **2.13 `intro.tex`, *Organization of the blueprint* and the continuation paragraph** (this
-    commit; 51–364, now 51–237): found `F-226`, `F-227`.
-  - [ ] **2.14 `intro.tex`, *Reading this blueprint* and the opening** (308–385, 9–44): no node,
-    113 lines; carry-in 2.
+  - [x] **2.13 `intro.tex`, *Organization of the blueprint* and the continuation paragraph**
+    (`248ec772`; 51–364, now 51–237): found `F-226`, `F-227`.
+  - [x] **2.14 `intro.tex`, *Reading this blueprint* and the opening** (this commit; 308–385 and
+    9–44, now 323–356 and 9–64): found `F-228`, `F-229`.
 - [ ] **3. X — close the round** (`CLEANUP.md` *Workflow* 5; docs only).
   - *Gates:* whole-project `lake build` green; the no-Lean-edit check (`git diff --stat baa224cc..
     -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty). The axioms
@@ -315,6 +304,8 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   body-hinge statements, as in `F-206` (two readings); `F-207` holds for their pins.
 - `F-222` (M, task 2.12): `body-hinge.tex` presents `cor:bodyhinge-generic-tree-packing` as KT
   Proposition 1.1's form for hinges; it is for simple graphs.
+- `F-228` (M, task 2.14): Laman's theorem is credited to Laman alone; recent literature also
+  credits Pollaczek-Geiringer 1927 (suspected; the paper is not in `.refs/`).
 
 ## Moved to a later round
 
@@ -360,6 +351,8 @@ one line each naming the ledger ID and the task that found it.
 - `F-226` (U, task 2.13): README and the home page credit the planar identification to
   Lovász–Yemini, and the home page lists the generic-max-rank device for phase 21.
 - `F-227` (T, task 2.13): `meet.tex`'s `\item[(i)]`, `\item[(ii)]` show as 1 and 2 on the web.
+- `F-229` (U, task 2.14): README and the home page call Tay and Whiteley's theorem "body-hinge /
+  panel-hinge", and keep the removed *Reading* paragraph's "fully green" and "all three cases".
 
 ## Blockers / open questions
 
@@ -367,33 +360,22 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.14, `intro.tex`, *Reading this blueprint* and the opening (308–385,
-9–44), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.14* item under
-*`intro.tex`* in *Per-chapter diagnosis*, with carry-in 2; `intro.tex`'s kept parts and rules, the
-gates and the screens are under *Scope*. Then task 3 closes the round. What the rewritten text
-says, which 2.14 must agree with:
-- **From task 2.13.** *Organization* (51–237) has one item per phase 1–26 (21–23 split, since
-  plasTeX drops `\item[…]` labels), credits by name with chapter `\cref`s, and no file lists
-  (ROADMAP's table has them). The fourth arc introduces "KT" ("cited as KT below"): if the opening
-  introduces it, drop it there. Phase 6 is the trivial-motion rank bound (`laman-theorem.tex`), so
-  the opening's "The converse direction goes through the rigidity matroid" (24–25) needs checking.
-  The continuations: phase 32's two JJ 2008 results, the degree-one formula not derived from the
-  rank formula, so the opening's lines 42–43 are still false (`F-204`); phase 33's field generality
-  with Whiteley 1988's precedent; phase 34's generic forms, Tay and Whiteley's for hinges of simple
-  graphs; phase 35 introduces "the hinge-coplanar model" (231–237), which 239ff and *Reading* use.
-  *Reading*'s second paragraph (333–368) now repeats *Organization* as status (principle F *Once*).
-- **From the five chapters.** `bar-joint-3d.tex` builds $\mathcal{R}_d(V)$ in every dimension
-  (2.1): keep line 359's "in dimension three" true. `thm:projective-invariance` is over $K$, the
-  polarity over every field (2.2). `molecule-application.tex` credits JJ 2008's Conjecture 2.2,
-  Theorems 4.1 and 4.3 and KT p. 671, and has no counterpart of "protein-flexibility" (line 39) or
-  "capstone" (line 365) (2.4). `jacobs.tex` credits Jacobs' conjecture to Jacobs 1998 (JJ
-  Conjecture 5.1, JJ §5) and the degree-one formula to JJ Lemma 4.2, part (a) to Franzblau (2.8).
-  `generic-lift.tex`'s generic forms are as *Organization*'s phase-34 paragraph says (2.9–2.12;
-  `jacksonJordan2009` is JJ 2010 and renders [JJ10]).
-- **Notation and terms** (*Decisions*).
-- **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <name>`. `lint.sh` 5a bans JJ's "brick" too (2.3 wrote "maximal subgraphs of
-  deficiency zero"). The ledger's next ID is `F-228`.
+**Next concrete task: task 3, the round's close** (`CLEANUP.md` *Workflow* 5; docs only; it may
+run at Sonnet, `notes/Prose.md` §2). Its items are under task 3 in *Lemma checklist*. What the
+slices leave it:
+- **Findings.** The round recorded `F-174`–`F-229`, 56 entries; each has its line under
+  *Candidates for the PI* or *Moved to a later round*. The ledger's next ID is `F-230`.
+- **The blueprint.** The gate values at 2.14 are the open's (*Current state*), with 31 overfull
+  boxes in `print.log` (the open counted 51). Re-run the two screens under *Scope* beside the
+  open's table in *Per-chapter diagnosis*; `intro.tex` now gives register 0 / 0, devices 0 / 2
+  (the two repository links), `\operatorname` 0, vocabulary 1 (Nelson's "package").
+- **The exposition ledger.** No pointer into `intro.tex`; the pointers to check are *Scope*'s
+  crux bullet (three done entries under `molecule-modelling.tex`, and the judged chapters').
+- **Status surfaces.** ROADMAP's Status row for this round reads like rounds 1–3's (✓ Complete,
+  "56 findings recorded"); ROADMAP's PROSE bullet and `notes/Prose.md`'s **Status** name round 5,
+  `prose-graph`, as next; `.claude/autopilot/queue.toml`'s `prose-applications` row gets
+  `done = true`. `README.md` and the home page stay as they are (`F-204`, `F-226`, `F-229` are
+  round 5's).
 
 ## Decisions made during this round
 
@@ -429,3 +411,10 @@ says, which 2.14 must agree with:
   lists dropped, not repaired (ROADMAP's table is their home); the list credits by name, checked
   against each chapter and `.refs/`, and leaves the citations to the chapters. Lovász–Yemini's
   credit went with `F-025`, and their bib entry with its last citation (`lint.sh` check 2).
+- **`intro.tex`'s opening and *Reading*** (2.14): the Henneberg argument is Laman's, used
+  implicitly in his proof, as Tay and Whiteley 1985 note (p. 39), made explicit in their §3, in
+  Jordán's presentation (§2.2); `AUTHORING.md`'s example follows. The opening defines body-hinge
+  and panel-hinge frameworks, so that the kept pencil sentences' "panel" resolves, and leaves "KT"
+  to *Organization*. *Reading* keeps the one dependency-graph note, in the legend's colours (no
+  node is drawn red), claims only that every chapter's main results are formalized (four nodes are
+  unfilled, `F-008`), and replaces the status recap by how the chapters are written.

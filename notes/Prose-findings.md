@@ -1409,6 +1409,20 @@ declaration's name as its header writes it:
   *Evidence:* read (`README.md` line 67; the home page's lines 177 and 191; Jordán 2016 p. 45, in
   `.refs/`).
   *Found:* round 4 task 2.13.
+- **F-229** · U · `README.md`, `home_page/index.md`: two places contradict the rewritten opening
+  and *Reading this blueprint* of `intro.tex`. (1) `README.md` (lines 15 and 76) and the home page
+  (lines 71–72) call the body-hinge theorem of Tay and Whiteley a "body-hinge / panel-hinge"
+  theorem or extension. The panel-hinge characterization is the molecular conjecture
+  (`body-hinge.tex`, after `thm:body-hinge-tay`), which the theorem does not imply. (2) Their
+  status paragraphs mirror the *Reading* paragraph that task 2.14 removed: "fully green through the
+  body-hinge Tay–Whiteley theorem" (`README.md` line 86, the home page's line 80) and "The
+  blueprint dependency graph is fully green" (`README.md` line 153, the home page's line 141),
+  while four nodes are unfilled, `def:blockingWitness` among them in phases 1–16 (`F-008`); "all
+  three cases" of KT Theorem 5.5, which has four (KT p. 671, as `algebraic-induction.tex` says);
+  and "genuine hinges".
+  *Evidence:* read (the lines named; the built graph's 653 green and 4 blue nodes at this task's
+  tree; KT p. 671).
+  *Found:* round 4 task 2.14.
 
 ## S — statement strength
 
@@ -3102,3 +3116,14 @@ declaration's name as its header writes it:
   after `thm:body-hinge-tay`; the statement of
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`; JJ 2010 §6, p. 582).
   *Found:* round 4 task 2.12.
+- **F-228** · M · the credit for Laman's theorem (`intro.tex`, `laman.tex`, `laman-theorem.tex`,
+  `henneberg.tex`; `README.md`, `home_page/index.md`): the blueprint credits the characterization of
+  the generically rigid graphs in the plane to Laman 1970 alone, as Jordán 2016 does (Theorems 2.2.1
+  and 2.2.2, p. 45). Recent literature also credits it to H. Pollaczek-Geiringer, *Über die
+  Gliederung ebener Fachwerke*, ZAMM 7(1) (1927), 58–72 (DOI `10.1002/zamm.19270070107`, Crossref
+  checked), as the Pollaczek-Geiringer–Laman theorem. Neither paper is in `.refs/`, and the 1927
+  paper's content was not read. Candidate: read it, then credit both where the blueprint names the
+  theorem's originator.
+  *Evidence:* suspected (the 1927 paper's content); read (Crossref's record for the DOI; Jordán 2016
+  p. 45).
+  *Found:* round 4 task 2.14.
