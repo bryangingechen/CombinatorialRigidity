@@ -5,7 +5,8 @@
 (`notes/Prose-laman-cleanup.md`, with the ledger `notes/Prose-findings.md`). Round 2,
 `prose-molecular`, opened 2026-10-08 and closed 2026-10-12 (`notes/Prose-molecular-cleanup.md`).
 Round 3, `prose-algebraic`, opened 2026-10-12 and closed 2026-10-13
-(`notes/Prose-algebraic-cleanup.md`); rounds 4–5 have not opened. These are five `CLEANUP.md`
+(`notes/Prose-algebraic-cleanup.md`). Round 4, `prose-applications`, opened 2026-10-13
+(`notes/Prose-applications-cleanup.md`); round 5 has not opened. These are five `CLEANUP.md`
 rounds over every blueprint chapter that round 3 of the post-Phase-40 cleanup (`40-exposition`) did
 not rewrite. Four prose rounds go arc by arc, and a
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
@@ -16,7 +17,8 @@ slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F
 first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-099` (2026-10-12, §1),
 and tasks 2.16–2.18 `F-100`–`F-114`; its eighteen slices and its close are done. Round 3's open
 recorded `F-115`–`F-120`, and its sixteen slices `F-121`–`F-173`; its slices and its close are
-done. **Next concrete task:** round 4, `prose-applications`, opens (§3 *Round 4*).
+done. Round 4's open recorded `F-174`. **Next concrete task:** round 4's task 2.1,
+`bar-joint-3d.tex`, the first of its fourteen slices (the round's log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 
@@ -262,6 +264,10 @@ Provisional slices (Stop 1), 13: `bar-joint-3d` and `molecule-application` one e
 `molecule-modelling` two (41–343, 344–477); `jacobs` four (58–275, 276–583, 584–881, 882–1053);
 `generic-lift` three (55–438, 439–734, 735–1148); `intro` two (51–434, then 435–513 with the
 opening).
+The open re-sliced these to 14, numbered 2.1–2.14: `generic-lift`'s body-and-hinge section splits
+in two, `thm:panel-hinge-iff-molecular` moves into `molecule-modelling`'s second slice, and
+`intro.tex`'s slices skip the text `40-exposition` rewrote (`notes/Prose-applications-cleanup.md`
+*Scope* and *Decisions*).
 
 ### Round 5 — `prose-graph`: graph repairs and the findings report
 

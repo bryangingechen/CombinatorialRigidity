@@ -1647,6 +1647,23 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `chainData_fire_discriminator`, and of
   `exists_shared_redundancy_and_matched_candidate` and `chainData_dispatch`).
   *Found:* round 3 task 2.15.
+- **F-174** · S · `thm:molecular-iff-square-bar-joint` (`molecule-modelling.tex`): the statement
+  ends "in particular $G$ has an infinitesimally rigid molecular realization iff $G^2$ has an
+  infinitesimally rigid bar-joint realization". Its pin `molecular_finrank_motions_eq_square_ker`
+  gives only the equality $\dim Z_{\mathrm{mol}}(G, c) = \dim \ker R(G^2, c)$ at one placement $c$
+  in general position up to order four, and no declaration states the realizability equivalence.
+  Read with `def:hinge-concurrent`, which admits coincident centres, the sentence is false: with all
+  centres equal every hinge is welded, so the molecular framework of a connected $G$ is rigid, while
+  the square of the cycle $C_7$ (minimum degree two) has $14 < 3 \cdot 7 - 6$ edges and no rigid
+  realization. With nondegenerate hinges it is the modelling equivalence of Whiteley and
+  Jackson–Jordán; it then follows from `thm:panel-hinge-iff-molecular`, the deficiency bound for
+  nondegenerate hinges, this dictionary and a placement both generic and in general position
+  (`lem:exists-generic-general-position`), but no node states it. A crux node: task 2.3 keeps the
+  claim with a note, or anchors it, and says which.
+  *Evidence:* read (the statement and body of `molecular_finrank_motions_eq_square_ker` and the
+  definition `molecularOfCentres`, `Molecular/Molecule/Dictionary.lean`; the edge count of
+  $C_7^2$).
+  *Found:* round 4 task 1.
 
 ## L — Lean
 
