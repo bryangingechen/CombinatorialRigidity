@@ -410,6 +410,26 @@ declaration's name as its header writes it:
   (KT eq. (6.22)), and `lem:splitoff-edge-substitution` and `def:hinge-row-block` (Claim 6.11).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `fe05a812`).
   *Found:* round 3 task 2.11.
+- **F-160** · E · `case-iii.tex`'s row operations of KT eqs. (6.24)–(6.29)
+  (`algebraic-induction/case-iii.tex`, nine nodes): 11 missing edges, those of
+  `lem:case-III-vanish-off-column` and `lem:case-III-columnop` to `def:rigidity-matrix`, four of
+  `lem:case-III-seam` (`def:hinge-constraint`, `def:panel-hinge-framework`,
+  `def:panel-support-extensor`, `def:rigidity-matrix`), and five of
+  `lem:case-III-transport-collapse` (those four and `def:meet-complement-iso`). 14 edges have no
+  Lean basis: `lem:case-III-columnop`'s to `lem:case-III-vanish-off-column`,
+  `lem:case-III-conditional-block`'s to both of these, `lem:case-III-transport-collapse`'s to
+  `lem:case-III-seam`, `lem:case-III-candidate-row-construction`'s to
+  `lem:case-III-redundant-decomposition`, and nine of `lem:case-III-candidate-row`'s (all but
+  `lem:case-III-columnop`), among them the forward edge to `lem:case-III-claim612` (`F-119`), which
+  the statement no longer needs, and the edge to `lem:case-II-realization-placement` (`F-150`). The
+  proofs as task 2.12 wrote them also cite nodes that no `\uses` names:
+  `def:panel-hinge-framework` and `lem:rows-polynomial-in-normals` (the seam),
+  `def:hinge-row-block` and `lem:splitoff-edge-substitution` (KT eq. (6.24)),
+  `def:panel-support-extensor` and `lem:rows-polynomial-in-normals` (the one-row identity),
+  `def:hinge-row-block` and `lem:case-III-columnop` (the new row), and `def:hinge-row-block` and
+  `lem:rigidityRows-pinned-placement-rank-add` (the rank of KT eq. (6.29)).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the nine nodes, at `ba79d703`).
+  *Found:* round 3 task 2.12.
 
 ## N — node shape
 
@@ -840,6 +860,28 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of the five declarations, `Molecular/AlgebraicInduction/CaseIII/
   Candidate.lean` and `Realization.lean`; a `grep` for each in `blueprint/src`).
   *Found:* round 3 task 2.11.
+- **F-159** · N · `case-iii.tex`'s row operations of KT eqs. (6.24)–(6.29)
+  (`algebraic-induction/case-iii.tex`): six of the nine nodes have every pin dead
+  (`lem:case-III-vanish-off-column`, `lem:case-III-seam`, `lem:case-III-acolumn-zero`,
+  `lem:case-III-conditional-block`, `lem:case-III-candidate-row-construction`,
+  `lem:case-III-candidate-row`), and `lem:case-III-transport-collapse` two of its three; only the
+  pins of `lem:case-III-columnop` and `lem:case-III-redundant-decomposition` and
+  `hingeRow_sub_hingeRow_eq` lie in the main results' closure. The live path through these
+  equations has no node: `caseIIICandidate` (KT's $(G, p_1)$ of eq. (6.12), with $L$ the meet of
+  $\Pi(a)$ and a second panel), `exists_redundant_panelRow_ab_lam` (the coefficients with
+  $\lambda_{i^*} = 1$ and $r \neq 0$), `linearIndependent_sum_augment_candidateRow_restriction`,
+  `case_III_full_family_restriction` and `case_III_rank_certification` (the rank bound of KT
+  eq. (6.29), with the bottom rows independent outside the columns of $v$). The dead nodes state
+  the steps at the normals $q(a) + t\,q(b)$ at $v$, where the block of KT eq. (6.29) is singular
+  (`F-158`). `lem:case-III-transport-collapse` bundles three facts, the third the composite of
+  `lem:case-III-columnop` and `lem:case-III-vanish-off-column`. Nodes for KT's $(G, p_1)$ and for
+  the rank bound in its live form (a repin of `lem:case-III-candidate-row`), and retiring or
+  merging the dead nodes, are the candidates (`F-118`, `F-157`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the nine nodes, at `ba79d703`, and
+  its Lean cache's closure of the main results for the five unpinned declarations); read (their
+  statements and bodies, `Molecular/AlgebraicInduction/CaseIII/Candidate.lean`,
+  `Molecular/RigidityMatrix/Basic.lean`; a `grep` for each in `blueprint/src`).
+  *Found:* round 3 task 2.12.
 
 ## T — terminology and notation
 
@@ -1433,6 +1475,27 @@ declaration's name as its header writes it:
   `Molecular/AlgebraicInduction/CaseIII/Realization.lean`; `def:panel-hinge-framework`); the
   example's deficiencies by hand, over the fifteen partitions of its four vertices.
   *Found:* round 3 task 2.11.
+- **F-158** · S · `lem:case-III-candidate-row` (`algebraic-induction/case-iii.tex`): the statement
+  is KT's count at $(G, p_1)$ (KT pp. 684 and 686): if the top-left block of KT eq. (6.29) is
+  nonsingular, $\operatorname{rank} R(G, p_1) \ge D(|V(G)| - 1)$. Its pin
+  `linearIndependent_sum_augment_candidateRow` is linear algebra on families of forms, with no
+  graph, framework or rank, and its old block must vanish on the screw assignments that vanish off
+  $v$, which KT's bottom rows $(vb)j$ do not. The open's statement took $p_1$ from
+  `lem:case-II-realization-placement`, whose normal $q(a) + t\,q(b)$ at $v$ gives $va$ the hinge
+  $-t\,C(q(a), q(b))$, so $L = q(ab)$ for $t \neq 0$ and the block is singular; task 2.12
+  anchored $p_1$ at KT eq. (6.12), as the statement's "for some choice of line" requires. The
+  open's proof
+  applied the pin to the rows of $R(G_v^{ab} \setminus (ab)i^*, q)$ without placing them in the row
+  space of $R(G, p_1)$; task 2.12's proof places them there when the block is nonsingular. The
+  graph-level count is the unpinned `case_III_rank_certification` (`F-159`). Task 2.12 kept the
+  claim; the note says that the pin does not mention $G$, $p_1$ or the rank.
+  *Evidence:* read (the statements and bodies of `linearIndependent_sum_augment_candidateRow`,
+  `…_block`, `caseIIICandidate` and `case_III_rank_certification`; KT 2011 pp. 678, 684–686 and
+  690, `.refs/`); `lake lean` witnesses: a row `hingeRow v b φ` reads `φ x` at the screw assignment
+  with value `x` at `v` and `0` elsewhere; every form vanishing on `C(n_a, n_b)` vanishes on
+  `C(n_a + t • n_b, n_a)` (`panelSupportExtensor_add_smul_left`); and
+  `hingeRow a b φ = hingeRow v b φ - hingeRow v a φ`.
+  *Found:* round 3 task 2.12.
 
 ## L — Lean
 
@@ -1950,6 +2013,23 @@ declaration's name as its header writes it:
   "seed".
   *Evidence:* read (the docstrings and bodies; KT 2011 p. 661, `.refs/`).
   *Found:* round 3 task 2.11.
+- **F-161** · L · the docstrings of `case-iii.tex`'s pins for KT eqs. (6.24)–(6.29)
+  (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelHinge.lean`,
+  `CaseIII/Candidate.lean`). `exists_redundant_panelRow_ab_decomposition`'s says that the transport
+  and the eq. (6.43) vanishing "remain the open crux" of `lem:case-III-candidate-row`, and
+  `exists_redundant_panelRow_ab_decomposition_acolumn_zero`'s that eq. (6.43) is "the one fact" the
+  transport still needs; `hingeRow_comp_columnOp_apply`'s says that the mechanism is the column
+  operation and not eq. (6.43), and no live proof uses either. `ofNormals_panelRow_eq_of_ends_seed_eq`'s
+  calls the identity KT eq. (6.26) (it is eq. (6.13)) and says that the transported row vanishes
+  off $v$'s column, which holds only after the column operation. `exists_candidate_row_eq612`'s,
+  `linearIndependent_sum_pinned_block_augment`'s, `comp_columnOp_eq_comp_single_proj`'s and
+  `linearIndependent_sum_augment_candidateRow`'s say that the row lifts the rank
+  $D(|V| - 1) - 1$ of `case_II_placement_eq612` to $D(|V| - 1)$; at those normals the block is
+  singular (`F-158`). `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`'s credits the shear identity to
+  KT eq. (6.16). They carry process codes (Phases 22d and 22e) and the words "brick", "stratum",
+  "producer", "genuine", "seed", "green", "feeds", "threads" and "heart".
+  *Evidence:* read (the docstrings and bodies; KT 2011 pp. 679 and 685–686, `.refs/`).
+  *Found:* round 3 task 2.12.
 
 ## M — mathematics and sources
 

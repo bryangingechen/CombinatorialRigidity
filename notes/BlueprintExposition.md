@@ -450,7 +450,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `notes/Phase22d.md`; ROADMAP §22d; KT pp. 684–685, eq. (6.22) + footnote 6.
 - **`lem:case-III-candidate-row` / `lem:case-III-columnop` — the eq. (6.27) transport's off-`v`
   vanishing is the eqs. (6.14)–(6.16) *column operation*, not the seam + eq. (6.43)** — [done
-  (`case-iii.tex`, prose final since 22e; flipped 22k-close)]
+  (`case-iii.tex`, prose final since 22e; flipped 22k-close; since PROSE round 3 task 2.12 the
+  candidate-row statement is KT's rank bound at KT's eq.-(6.12) `(G, p₁)` with its subspace `L`,
+  and its proof puts the rows of `R(G_v^{ab} ∖ (ab)i*, q)` in the row space before the count,
+  `F-158`)]
   **(c)** (Phase 22e capture — a reroute correcting a mis-identified mechanism). **Stable insight:**
   KT eqs. (6.27)→(6.28) claim the transported row `w`'s `V∖{v}` part vanishes; a Phase-22e recon
   found *which* fact makes it vanish was mis-read. The transported row collapses (using the eq.-(6.24)
