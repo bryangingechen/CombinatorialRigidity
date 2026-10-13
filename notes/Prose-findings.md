@@ -668,6 +668,26 @@ declaration's name as its header writes it:
   *Evidence:* measured (`sort blueprint/lean_decls | uniq -d` and each name's nodes, at
   `ef57b401`); read (a `grep` for the three pins' callers, which finds only docstrings).
   *Found:* round 3 task 1.
+- **F-131** · N · `lem:theorem-55-base-producer-empty`, `lem:theorem-55-base-producer-single`,
+  `lem:theorem-55-base-producer-parallel`, `lem:extensor-pair-in-panel`
+  (`algebraic-induction/panel-layer.tex`): the nodes pin the $d = 3$ (`k := 2`) wrappers
+  `theorem_55_base_producer_empty`, `_empty_gp`, `_single_edge`, `_single_edge_gp`,
+  `_parallel_pair` and `exists_linearIndependent_extensor_pair_perp`. None has a caller, and all six
+  lie outside every main result's closure. The general forms that the induction uses
+  (`theorem_55_base_producer_empty_gen` and the four other `_gen` names,
+  `exists_linearIndependent_extensor_pair_perp_grade`), which `theorem_55_base_producer_gen` (the
+  pin of `lem:theorem-55-base-producer`) and `case_I_realization_nonsimple_gen` call, have no node.
+  So the three cases' statements, for every $d$, claim more than their pins, and the dispatch's
+  three `\uses` of them have no Lean basis. Repinning the three cases to the `_gen` forms aligns
+  both; `lem:extensor-pair-in-panel` states $K^4$, as its pin does, and the form for $K^{d+1}$ is
+  the paragraph after it. `lem:case-I-realization-nonsimple` (`case-i.tex`) likewise pins the dead
+  wrapper `case_I_realization_nonsimple`. Task 2.4 kept the statements, with a note after the third
+  case that names the `_gen` forms.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five base nodes and
+  `lem:case-I-realization-nonsimple`, at `fd204aa5`: seven dead pins, the dispatch's three `\uses`
+  unbacked); read (the wrappers' bodies, one-line specializations; a `grep` for their callers,
+  which finds only docstrings).
+  *Found:* round 3 task 2.4.
 
 ## T — terminology and notation
 
@@ -1501,6 +1521,20 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; `IsInfinitesimalMotion`,
   `Molecular/RigidityMatrix/Basic.lean`).
   *Found:* round 3 task 2.3.
+- **F-132** · L · the docstrings of `panel-layer.tex`'s base pins
+  (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`, `Pinning.lean`): those of
+  `theorem_55_base_producer_empty`, `_single_edge` and their `_gen` forms name
+  `lem:theorem-55-base-producer`, and those of the four `_gp` and `_gp_gen` forms name
+  `lem:theorem-55-base`; they belong to `lem:theorem-55-base-producer-empty` and `-single`. The
+  docstrings of `theorem_55_base_producer_empty_gp` and `_empty_gp_gen` call $G$ simple, which
+  neither assumes. `exists_linearIndependent_extensor_pair_perp`'s calls it the wrapper "feeding
+  `theorem_55_base` (kept while the spine consumers in `Theorem55.lean` are still `k = 2`)"; it has
+  no caller (`F-131`). `exists_triangle_normals`' heading says "`d = 3`", and the theorem holds for
+  every `k ≥ 1`. `theorem_55_base`'s calls the independence of the two extensors the
+  "general-position hypothesis", and `theorem_55_base_producer_gen`'s narrates "the L9 spine's
+  conditioned motive", "carry" and phases.
+  *Evidence:* read (the docstrings and signatures; a `grep` for the callers).
+  *Found:* round 3 task 2.4.
 
 ## M — mathematics and sources
 

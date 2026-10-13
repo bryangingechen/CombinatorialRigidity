@@ -326,17 +326,21 @@ Whiteley's theorem in the form of KT Proposition~1.1
 (\cref{sec:body-hinge-tay}), for the rigidity matrix of
 \cref{sec:molecular-rigidity-matrix}.
 
-\subsection{The induction skeleton and base case}
+\subsection{KT Theorems 5.5 and 5.6 and the molecular conjecture}
 \label{sec:molecular-algebraic-induction-base}
 
-KT Theorem~5.5 is proved by induction on $|V(G)|$, so its statement must be
-strong enough to serve as its own inductive hypothesis. That hypothesis is
-KT's realization hypothesis (KT eq.~(6.1)): a minimal $k$-dof-graph has a
-panel-hinge realization at the deficiency rank. We record it in two forms, a
-rank form (\cref{def:rank-hypothesis}) that composes through the induction and
-the nondegenerate-hinge form KT actually uses (\cref{def:genuine-hinge-realization}), then
-state the two-vertex base case (\cref{lem:theorem-55-base}) and the
-base-region trichotomy at which the induction terminates.
+This subsection proves KT Theorem~5.5 and derives from it KT Theorem~5.6
+and the molecular conjecture for simple graphs. Katoh and Tanigawa prove
+Theorem~5.5 by induction on the number of vertices. Its induction
+hypothesis, KT eq.~(6.1), is the theorem for graphs with fewer vertices.
+We first define two forms of the realization that it asks for
+(\cref{def:rank-hypothesis}, \cref{def:genuine-hinge-realization}), and
+then state the theorem and give the induction (\cref{thm:theorem-55}).
+KT Theorem~5.6 and the molecular conjecture follow
+(\cref{thm:theorem-55-6}, \cref{thm:molecular-conjecture}). The
+subsection ends with the base of the induction, the graphs with one or two
+vertices (\cref{lem:theorem-55-base-producer}), and with panel normals for
+the rigid cycles of KT Lemma~5.4, which Case~III uses.
 
 \begin{definition}[Realization hypothesis, rank form; KT eq.\ (6.1)]
   \label{def:rank-hypothesis}
@@ -1002,158 +1006,166 @@ their result in this form~\cite[p.~647]{katohTanigawa2011}.
   (\texttt{molecular\_\allowbreak{}conjecture\_\allowbreak{}witness}).
 \end{remark}
 
-The base of the induction is the two-vertex double edge, the minimal
-$0$-dof-graph. Realized by two hinges with linearly independent supporting
-extensors (KT Lemma~5.3, \cref{lem:rank-parallel-full}) it attains the full rank
-$D = D(|V(G)|-1)$ at $k = 0$, which in the $V(G)$-relative rank hypothesis
-(\cref{def:rank-hypothesis}) is rigidity on the two bodies.
+It remains to prove the base of the induction in the proof of
+\cref{thm:theorem-55}. Let $G$ be a minimal $k$-dof-graph with one or two
+vertices. By \cref{lem:two-vertex-trichotomy}, either (i) $G$ has no edge,
+or (ii) $G$ has two vertices and one edge, which joins them, or (iii) $G$
+has two vertices and two edges, each of which joins them. In cases (i)
+and (ii), every realization of $G$ with nondegenerate hinges is at the
+target rank. Katoh and Tanigawa note this, and they treat case (iii) by
+their Lemma~5.3~\cite[p.~671]{katohTanigawa2011}. In case (iii), two
+hinges with linearly independent extensors make the two bodies rigid.
 
-\begin{lemma}[KT Theorem 5.5 base case ($|V(G)| = 2$)]
+\begin{lemma}[Two independent hinges make two bodies rigid]
   \label{lem:theorem-55-base}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_base}
   \leanok
   \uses{def:rank-hypothesis, lem:rank-parallel-full}
-  Let $F$ be a body-hinge framework carrying two edges $e_1, e_2$, both joining
-  the same two distinct bodies $u \ne v$, whose supporting extensors
-  $C(p(e_1)), C(p(e_2))$ are linearly independent. Then every infinitesimal
-  motion of $F$ is constant on $\{u, v\}$.
+  Let $(G,p)$ be a body-hinge framework, and let $e_1$ and $e_2$ be edges
+  of $G$ that both join the bodies $u \neq v$, with $C(p(e_1))$ and
+  $C(p(e_2))$ linearly independent. Then every infinitesimal motion $S$
+  of $(G,p)$ has $S(u) = S(v)$. In particular, if $u$ and $v$ are the
+  only bodies, then $(G,p)$ is infinitesimally rigid.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-parallel-full}
-  Both edges constrain the relative screw $S(u) - S(v)$ to the span of a
-  supporting extensor. Their extensors being linearly independent, the
-  parallel-hinges lemma (KT Lemma~5.3, \cref{lem:rank-parallel-full}) forces
-  $S(u) = S(v)$ for every infinitesimal motion $S$. Every body of $\{u, v\}$ is
-  $u$ or $v$, so $S$ is constant on $\{u, v\}$.
+  An infinitesimal motion satisfies the hinge constraints at $e_1$ and
+  $e_2$, so this is KT Lemma~5.3 (\cref{lem:rank-parallel-full}).
 \end{proof}
 
-The parallel-pair base case (\cref{lem:theorem-55-base-producer-parallel})
-places two hinges in a single shared panel $\Pi(u) = \Pi(v) = n^{\perp}$
-(writing $\Pi(v) = \mathrm{panel}(v)$ for body $v$'s hyperplane), with two
-non-proportional supporting extensors (cf.\ KT Lemma~5.3, p.~670). The
-following supplies that coincident-panel pair.
+Katoh and Tanigawa realize the double edge with two coincident panels and
+two distinct hinges in them (KT Lemma~5.3, p.~669). Distinct hinges have
+linearly independent extensors (the remark after
+\cref{lem:rank-parallel-full}). In homogeneous coordinates, we need two
+linearly independent extensors in one panel.
 
-\begin{lemma}[Two independent extensors in a common panel]
+\begin{lemma}[Two independent extensors in one panel]
   \label{lem:extensor-pair-in-panel}
   \lean{CombinatorialRigidity.Molecular.exists_linearIndependent_extensor_pair_perp}
   \leanok
   \uses{def:extensor, lem:extensor-independence}
-  For any normal $n \in K^4$ there are points $p_0, p_1, q_0, q_1 \in
-  n^{\perp} = \{x : x \cdot n = 0\}$ whose grade-$2$ extensors
-  $p_0 \wedge p_1$ and $q_0 \wedge q_1$ in $\bigwedge^2 K^4$ are linearly independent.
+  Let $n \in K^4$. Then there are vectors $p_0, p_1, q_0, q_1$ in
+  $n^{\perp} = \{x \in K^4 : x \cdot n = 0\}$ such that the extensors
+  $p_0 \vee p_1$ and $q_0 \vee q_1$ are linearly independent in
+  $\bigwedge^2 K^4$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:extensor-independence}
-  The panel $n^{\perp}$ has dimension at least $3$ in $K^4$ (it is the kernel of the single
-  pairing functional $x \mapsto x \cdot n$, so $\dim n^{\perp} \ge 4 - 1 = 3$, with equality
-  unless $n = 0$). Pick three linearly independent vectors $a, b, c \in n^{\perp}$ and set
-  $p = (a, b)$, $q = (a, c)$. The two wedges $a \wedge b$ and $a \wedge c$ are linearly
-  independent: a relation $s\,(a \wedge b) + t\,(a \wedge c) = 0$, joined on the left with $c$
-  (resp.\ $b$), kills the second (resp.\ first) term by the alternating property and leaves
-  $s\,(c \wedge a \wedge b) = 0$ (resp.\ $t\,(b \wedge a \wedge c) = 0$); the surviving triple
-  wedge is nonzero by independence of $\{a, b, c\}$, so $s = t = 0$. (This is the two-subset
-  instance of the join-to-isolate technique behind \cref{lem:extensor-independence}.)
+  The subspace $n^{\perp}$ has dimension at least $3$, so it contains
+  linearly independent vectors $a$, $b$ and $c$. Extend them by a vector
+  $w$ to a basis of $K^4$, and take $p_0 = a$, $p_1 = q_0 = b$ and
+  $q_1 = c$. Then $a \vee b$ and $b \vee c$ are two of the extensors of
+  KT Lemma~2.1 for this basis: the first omits $c$ and $w$, and the second
+  omits $a$ and $w$. So they are linearly independent
+  (\cref{lem:extensor-independence} and the remark after it).
 \end{proof}
 
-The base region of the induction is the minimal-dof-graphs on at most two
-bodies. By the trichotomy (\cref{lem:two-vertex-trichotomy}) they fall into
-three cases: the empty graph, a single edge, and a parallel edge pair. Each is
-realized directly, and the dispatch (\cref{lem:theorem-55-base-producer})
-assembles them.
+The same argument works in $K^{d+1}$ for every $d \ge 2$. The subspace
+$n^{\perp}$ contains linearly independent vectors $v_1, \dots, v_d$, and
+the extensors $v_1 \vee \cdots \vee v_{d-1}$ and
+$v_2 \vee \cdots \vee v_d$ are linearly independent, by KT Lemma~2.1 for a
+basis $v_1, \dots, v_d, w$ of $K^{d+1}$
+(\texttt{exists\_\allowbreak{}linearIndependent\_\allowbreak{}extensor\_\allowbreak{}pair\_\allowbreak{}perp\_\allowbreak{}grade}).
+The realizations below use this form.
 
-\begin{lemma}[KT Theorem 5.5 base region ($|V(G)| \le 2$): the empty graph]
+We now realize the three cases. In cases (i) and (ii) we also give a
+generic full-rank realization. The graph of case (iii) is not simple.
+
+\begin{lemma}[The base of KT Theorem 5.5: no edge]
   \label{lem:theorem-55-base-producer-empty}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_empty,
         CombinatorialRigidity.Molecular.theorem_55_base_producer_empty_gp}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy}
-  Let $G$ be a minimal-$k$-dof-graph on $1 \le |V(G)| \le 2$ bodies realizing the \emph{empty}
-  case of the base trichotomy (\cref{lem:two-vertex-trichotomy} (i)): $E(G) = \emptyset$, and
-  hence $\mathrm{def}(\tilde G) = D(|V(G)| - 1)$. Then $G$ has a nondegenerate-hinge panel realization
-  (\cref{def:genuine-hinge-realization}) at the target rank $D(|V(G)|-1) - \mathrm{def} = 0$, and
-  also a \emph{generic} full-rank realization (\cref{fmlnote:generic-full-rank}) at that same rank.
+  Let $K$ be an infinite field, and let $G$ be a minimal $k$-dof-graph
+  with one or two vertices and no edge. Then $G$ has a
+  nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}) and a generic full-rank
+  realization (\cref{def:rank-hypothesis}), both of rank $0$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The bare construction is geometry-free: take the all-zero framework (every edge carries the
-  zero supporting extensor) at a fixed nonzero panel normal. With no edges no hinge constraint
-  is imposed, so the rigidity-row family is empty, its span is $\{0\}$, and the rank is $0$; the
-  per-link conjunct is vacuous. The target rank vanishes because the empty-graph
-  deficiency is exactly $D(|V(G)|-1)$ (\cref{lem:two-vertex-trichotomy}). For the generic
-  companion build the single-body / empty framework at a \emph{seed} --- an assignment of a
-  normal parameter to each body ---
-  chosen as a non-root of the \emph{general-position polynomial}, a fixed nonzero polynomial whose
-  non-roots are exactly the assignments placing the panel normals in general position: the panel
-  normals are then in general position, the rigidity-row family is
-  still empty (rank $0$), and link-recording is vacuous.
+  By \cref{lem:two-vertex-trichotomy},
+  $\operatorname{def}(\tilde G) = k = D(|V| - 1)$, so the target rank
+  $D(|V| - 1) - \operatorname{def}(\tilde G)$ is $0$. As $G$ has no edge,
+  $R(G,p)$ has no rows, and every realization of $G$ is at the target
+  rank. For the first realization, give every body the same nonzero
+  normal; there is no hinge. For the second, take normals in general
+  position, which exist as $K$ is infinite
+  (\cref{lem:moment-curve-general-position}).
 \end{proof}
 
-\begin{lemma}[KT Theorem 5.5 base region ($|V(G)| \le 2$): a single edge]
+\begin{lemma}[The base of KT Theorem 5.5: one edge]
   \label{lem:theorem-55-base-producer-single}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge,
         CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge_gp}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy,
         lem:extensor-pair-in-panel, def:rigidity-matrix}
-  Let $G$ be a two-vertex minimal-$1$-dof-graph realizing the \emph{single-edge} case of the base
-  trichotomy (\cref{lem:two-vertex-trichotomy} (ii)): $V(G) = \{x, y\}$ with $x \ne y$,
-  $E(G) = \{e\}$ a single edge joining $x$ and $y$, and $\mathrm{def}(\tilde G) = 1$. Then $G$ has
-  a nondegenerate-hinge panel realization (\cref{def:genuine-hinge-realization}) at the target rank
-  $D(|V(G)|-1) - \mathrm{def} = D - 1 = 5$ (at $d = 3$, $D = 6$), and also a \emph{generic}
-  full-rank realization (\cref{fmlnote:generic-full-rank}) at that same rank.
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a minimal
+  $1$-dof-graph with two vertices and one edge, which joins them. Then
+  $G$ has a nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}) and a generic full-rank
+  realization (\cref{def:rank-hypothesis}), both of rank $D - 1$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:extensor-pair-in-panel, def:rigidity-matrix}
-  For the bare realization, place coincident panels $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero
-  normal $n$ and assign the single hinge one nonzero supporting extensor inside the common panel
-  (the first of the pair of \cref{lem:extensor-pair-in-panel}; nonzero by its linear
-  independence). The lone hinge's row block already \emph{is} the entire rigidity-row family
-  (there is only one edge), and that block has rank exactly $D - 1$ (\cref{def:rigidity-matrix});
-  so the rigidity-row span has rank $D - 1 = D(|V(G)|-1) - \mathrm{def}$, as required.
-  Unlike the parallel-pair case the framework is not rigid ($\mathrm{def} = 1$): the rank
-  is the single hinge-row count, not the full two-vertex base rank. The generic companion builds
-  the panel framework from a normal assignment ($\mathtt{ofNormals}$) at a
-  seed chosen as a non-root of the
-  general-position polynomial, with the single edge's two distinct endpoints: general position
-  forces the lone supporting extensor nonzero, and the same single hinge-row count gives rank
-  $D - 1$.
+  Let the edge $e$ of $G$ join $x$ and $y$. As
+  $\operatorname{def}(\tilde G) = 1$, the target rank is
+  $D(2 - 1) - 1 = D - 1$. The rows of $R(G,p)$ are the $D - 1$ rows of
+  $e$, and they are linearly independent when the hinge at $e$ is
+  nondegenerate (the remark after \cref{def:rigidity-matrix}). So each
+  realization needs only a nondegenerate hinge at $e$. For the first,
+  give $x$ and $y$ the same nonzero normal $n$, and give $e$ the extensor
+  $v_1 \vee \cdots \vee v_{d-1}$ of the paragraph after
+  \cref{lem:extensor-pair-in-panel}. It lies in the panel with normal $n$,
+  and it is nonzero, as $v_1, \dots, v_{d-1}$ are linearly independent. For
+  the second, take normals in general position
+  (\cref{lem:moment-curve-general-position}). Then the hinge
+  $C(n_x, n_y)$ at $e$ is nonzero
+  (\cref{lem:general-position-support-nonzero}).
 \end{proof}
 
-This is the one base case whose generic realization is not automatic. The
-parallel-pair case carries the geometric content of the base region; the empty
-and single-edge cases reduce to rank counts.
-
-\begin{lemma}[KT Theorem 5.5 base region ($|V(G)| \le 2$): a parallel edge pair]
+\begin{lemma}[The base of KT Theorem 5.5: the double edge; KT Lemma 5.3]
   \label{lem:theorem-55-base-producer-parallel}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_parallel_pair}
   \leanok
   \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy, lem:theorem-55-base,
         lem:extensor-pair-in-panel}
-  Let $G$ be a two-vertex minimal-$0$-dof-graph realizing the \emph{parallel-pair} case of the
-  base trichotomy (\cref{lem:two-vertex-trichotomy} (iii)): $V(G) = \{x, y\}$ with $x \ne y$,
-  $E(G) = \{e, f\}$ with $e \ne f$ two edges both joining $x$ and $y$, and $\mathrm{def}(\tilde G)
-  = 0$. Then $G$ has a nondegenerate-hinge panel realization
-  (\cref{def:genuine-hinge-realization}) at the full target rank $D(|V(G)|-1) - \mathrm{def} =
-  D \cdot 1 = 6$ (at $d = 3$, $D = 6$).
+  Let $d \ge 2$, and let $G$ be a minimal $0$-dof-graph with two vertices
+  and two edges, each of which joins them. Then $G$ has a
+  nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}), of rank $D$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:theorem-55-base, lem:extensor-pair-in-panel}
-  Place \emph{coincident panels} $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero normal
-  $n$ and assign the pair's two hinges two linearly independent supporting extensors inside the
-  common panel $n^{\perp}$ (\cref{lem:extensor-pair-in-panel}). Each link's supporting extensor is
-  then nonzero and lies in both endpoint panels, verifying the per-link conjunct. The two
-  independent extensors give the combined hinge-row blocks full rank $D$ on the relative
-  screw $S(x) - S(y)$, so the two-vertex base case (\cref{lem:theorem-55-base}) makes the framework
-  infinitesimally rigid on $\{x, y\} = V(G)$; the $V(G)$-relative rank bridge (rigid on $V(G)$ iff
-  the rigidity-row span has rank $D(|V(G)|-1)$) turns that into the target rank equality,
-  with $\mathrm{def}(\tilde G) = 0$.
+  We follow Katoh and Tanigawa's proof of their Lemma~5.3 (KT p.~670).
+  Let the edges $e$ and $f$ of $G$ join $x$ and $y$. Give $x$ and $y$ the
+  same nonzero normal $n$, so that their panels coincide. Give $e$ and $f$
+  two linearly independent extensors that lie in the panel with normal
+  $n$ (the form of \cref{lem:extensor-pair-in-panel} for $K^{d+1}$). Both
+  are nonzero, and each lies in the panels of $x$ and $y$. By
+  \cref{lem:theorem-55-base}, the framework is infinitesimally rigid. So
+  its space of motions is the $D$-dimensional space of trivial motions
+  (\cref{lem:trivial-motions-rank-bound}), and its rank is $2D - D = D$
+  (\cref{def:rigidity-matrix}). As $\operatorname{def}(\tilde G) = 0$,
+  this is the target rank.
 \end{proof}
 
-\begin{lemma}[KT Theorem 5.5 base region ($|V(G)| \le 2$): the trichotomy dispatch]
+\begin{fmlnote}
+  The pinned theorems of \cref{lem:theorem-55-base-producer-empty},
+  \cref{lem:theorem-55-base-producer-single} and this lemma are their
+  cases $d = 3$. Each is the specialization of a theorem for general $d$
+  whose name adds the suffix \texttt{\_gen}, with the proof above. The
+  pinned theorem of \cref{lem:theorem-55-base-producer} uses these
+  general forms.
+\end{fmlnote}
+
+\begin{lemma}[The base of KT Theorem 5.5]
   \label{lem:theorem-55-base-producer}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_gen,
         Graph.not_simple_of_isMinimalKDof_of_ncard_two}
@@ -1161,125 +1173,118 @@ and single-edge cases reduce to rank counts.
   \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy,
         lem:theorem-55-base-producer-empty, lem:theorem-55-base-producer-single,
         lem:theorem-55-base-producer-parallel}
-  Let $G$ be a minimal-$k$-dof-graph with $1 \le |V(G)| \le 2$. Then $G$ has a
-  nondegenerate-hinge panel realization (\cref{def:genuine-hinge-realization}) at the
-  target rank $D(|V(G)|-1) - \operatorname{def}(\tilde G)$, and, if $G$ is
-  simple, a \emph{generic} full-rank realization (\cref{fmlnote:generic-full-rank}) at
-  that rank.
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a minimal
+  $k$-dof-graph with one or two vertices. Then $G$ has a
+  nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}). If $G$ is simple, then $G$ also
+  has a generic full-rank realization (\cref{def:rank-hypothesis}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:theorem-55-base-producer-empty, lem:theorem-55-base-producer-single,
         lem:theorem-55-base-producer-parallel}
-  Dispatch on the base trichotomy (\cref{lem:two-vertex-trichotomy}). The unconditional
-  bare conjunct comes from the three bare cases. For the simple conjunct, the empty case
-  ($E(G) = \emptyset$) and the single-edge case ($\mathrm{def} = 1 > 0$) both admit a
-  \emph{generic} full-rank realization, built from a normal assignment ($\mathtt{ofNormals}$)
-  at a seed chosen as a non-root of the general-position
-  polynomial, so the panel normals are in general position;
-  the rank is $0$ (empty) resp.\ $D - 1$ (single-edge, the single hinge-row count).
-  The single-edge case is the one base case where the simple conjunct is not automatic. In the
-  parallel-pair case ($k = 0$) a two-vertex minimal-$0$-dof-graph cannot be simple: the
-  single-vertex cut supplies two distinct parallel edges, both forced to link the same pair,
-  which simplicity collapses, a contradiction
-  (\texttt{Graph.not\_simple\_of\_isMinimalKDof\_of\_ncard\_two}); the $G$-simple antecedent is
-  therefore vacuous.
+  By \cref{lem:two-vertex-trichotomy}, $G$ is a graph of
+  \cref{lem:theorem-55-base-producer-empty},
+  \cref{lem:theorem-55-base-producer-single} or
+  \cref{lem:theorem-55-base-producer-parallel}, and that lemma gives the
+  realizations. In the last case the two edges of $G$ join the same two
+  vertices, so $G$ is not simple.
 \end{proof}
 
 \begin{fmlnote}
-  The generic conjunct is the strengthened form of \cref{def:rank-hypothesis}
-  (general-position, link-recording panel normals,
-  \cref{fmlnote:generic-full-rank}); the
-  unconditional conjunct is the bare nondegenerate-hinge form of
-  \cref{def:genuine-hinge-realization}.
+  The second pinned theorem states that a minimal $0$-dof-graph with two
+  vertices is not simple. The first uses it in case (iii).
 \end{fmlnote}
 
-This conditioned pair is the base-region instance, at $|V(G)| \le 2$, of the
-all-deficiency induction hypothesis KT Theorem~5.5 is proved against (the base
-region of the all-$k$ reduction, \cref{thm:minimal-kdof-reduction-all-k}).
+Case~III uses KT Lemma~5.4: a cycle on $m$ bodies, for
+$3 \le m \le D$, has an infinitesimally rigid nonparallel panel-hinge
+realization (KT p.~670; \cref{lem:cycle-realization}, in
+\cref{sec:molecular-algebraic-induction-caseI}). Katoh and Tanigawa refer
+to Crapo and Whiteley~\cite{crapoWhiteley1982} and to
+Whiteley~\cite{whiteley1999} for the computation in dimension $3$, and
+note that it works in every dimension. We first treat the triangle,
+$m = 3$. The three-vertex realization of Case~III
+(\cref{lem:triangle-realization}) uses the next two lemmas.
 
-The two-body base case has a three-body analogue: a triangle with independent
-supporting extensors is rigid on its three bodies.
-
-\begin{lemma}[KT Theorem 5.5 triangle base ($|V(G)| = 3$)]
+\begin{lemma}[A triangle with independent hinges is rigid]
   \label{lem:theorem-55-triangle}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_triangle}
   \leanok
   \uses{def:rank-hypothesis, lem:rank-parallel-full}
-  If a body-hinge framework $F$ has three edges $e_1 : u$--$v$, $e_2 : v$--$w$,
-  $e_3 : w$--$u$ forming a triangle whose three supporting extensors
-  $C(p(e_1))$, $C(p(e_2))$, $C(p(e_3))$ are linearly independent, then every
-  infinitesimal motion of $F$ is constant on $\{u, v, w\}$.
+  Let $(G,p)$ be a body-hinge framework, let $u$, $v$ and $w$ be distinct
+  bodies, and let $e_1$, $e_2$ and $e_3$ be edges of $G$ that join $u$ to
+  $v$, $v$ to $w$, and $w$ to $u$. Suppose that $C(p(e_1))$, $C(p(e_2))$
+  and $C(p(e_3))$ are linearly independent. Then every infinitesimal
+  motion $S$ of $(G,p)$ has $S(u) = S(v) = S(w)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-parallel-full}
-  Each hinge constraint puts a relative screw $S(u) - S(v)$, $S(v) -
-  S(w)$, $S(w) - S(u)$ in the one-dimensional span of its supporting
-  extensor; the three differences telescope to $0$ (the cyclic shift is a
-  bijection of $\{u,v,w\}$). Linear independence of the three extensors,
-  extending the two-extensor argument of \cref{lem:rank-parallel-full} to three
-  independent extensors, forces each difference to vanish, so
-  $S(u) = S(v) = S(w)$, and constancy on $\{u,v,w\}$ follows.
+  We argue as in the proof of KT Lemma~5.3 (\cref{lem:rank-parallel-full}).
+  By the hinge constraints (\cref{def:hinge-constraint}), there are
+  scalars $\lambda_1$, $\lambda_2$ and $\lambda_3$ with
+  $S(u) - S(v) = \lambda_1 C(p(e_1))$,
+  $S(v) - S(w) = \lambda_2 C(p(e_2))$ and
+  $S(w) - S(u) = \lambda_3 C(p(e_3))$. The three differences sum to zero,
+  so $\lambda_1 C(p(e_1)) + \lambda_2 C(p(e_2)) + \lambda_3 C(p(e_3)) = 0$.
+  By the linear independence, $\lambda_1 = \lambda_2 = \lambda_3 = 0$, so
+  $S(u) = S(v) = S(w)$.
 \end{proof}
 
-\begin{lemma}[Cyclic-seed existence for the triangle base]
+\begin{lemma}[Normals for a triangle with independent hinges]
   \label{lem:triangle-normals}
   \lean{CombinatorialRigidity.Molecular.exists_triangle_normals}
   \leanok
   \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
         lem:extensor-independence}
-  When $k \ge 1$ (so $k+2 \ge 3$), there exist three vectors
-  $n_0, n_1, n_2 \in K^{k+2}$ such that (1) each cyclic pair $(n_0,n_1)$,
-  $(n_1,n_2)$, $(n_2,n_0)$ has a nonzero grade-$2$ join $n_i \wedge n_j \ne 0$,
-  and (2) the cyclic supporting-extensor family $i \mapsto C(n_i, n_{i+1})$
-  (indices mod $3$) is linearly independent.
+  Let $d \ge 2$. Then there are $n_0, n_1, n_2 \in K^{d+1}$ such that the
+  extensors $C(n_0, n_1)$, $C(n_1, n_2)$ and $C(n_2, n_0)$ are linearly
+  independent. In particular, $n_0 \vee n_1$, $n_1 \vee n_2$ and
+  $n_2 \vee n_0$ are nonzero.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:panel-support-extensor-independence, lem:extensor-independence}
-  Take $n_i = e_i$, the standard basis vectors. By
-  \cref{lem:panel-support-extensor-independence} it suffices to show the
-  grade-$2$ join family is linearly independent. The three cyclic joins
-  $e_0 \wedge e_1$, $e_1 \wedge e_2$, $e_2 \wedge e_0$ realize the three distinct
-  $2$-subsets $\{0,1\}$, $\{1,2\}$, $\{0,2\}$, so up to sign they are three
-  members of the $\Lambda^2$-basis family; indexed by distinct subsets, they
-  inherit independence from the full basis family
-  (\cref{lem:extensor-independence}). (The sign at the wrap edge,
-  $e_2 \wedge e_0 = -\,e_0 \wedge e_2$, is \texttt{normalsJoin\_swap}.)
+  Let $e_0, \dots, e_d$ be the standard basis of $K^{d+1}$, and let
+  $n_i = e_i$ for $i = 0, 1, 2$, which is possible as $d \ge 2$. The
+  joins $e_a \vee e_b$ with $a < b$ are linearly independent (the remark
+  after \cref{def:extensor}). Up to sign, $e_0 \vee e_1$, $e_1 \vee e_2$
+  and $e_2 \vee e_0 = -\,e_0 \vee e_2$ are three distinct ones among them,
+  so they are linearly independent, and in particular nonzero. The
+  extensors $C(n_i, n_{i+1})$ are their images under the complement
+  isomorphism $*$ (\cref{def:panel-support-extensor}). Since $*$ is an
+  isomorphism, they are linearly independent too.
+  \Cref{lem:panel-support-extensor-independence}, in
+  \cref{sec:molecular-algebraic-induction-caseI}, records this.
 \end{proof}
 
-The triangle seed generalizes to a cycle of any length (\cref{lem:triangle-normals}
-is its $m = 3$ instance). Consecutive hinges of a panel cycle share a panel, so
-a panel-hinge seed assigns one normal per body, which the free extensor pairs of
-\cref{lem:exists-independent-panel-extensor} do not provide.
+For every $m$, a cycle on $m$ bodies whose hinges have linearly
+independent extensors is infinitesimally rigid, by the argument of
+\cref{lem:theorem-55-triangle} (\cref{lem:cycle-realization-rigid}). The
+next lemma gives normals with such hinges for $m \le d + 1$.
 
-\begin{lemma}[Cyclic-seed existence for a general cycle]
+\begin{lemma}[Normals for a cycle with independent hinges]
   \label{lem:cycle-normals}
   \lean{CombinatorialRigidity.Molecular.exists_cycle_normals}
   \leanok
   \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
         lem:extensor-independence}
-  For $3 \le m \le k + 2$ there exist $m$ vectors $n_0, \dots, n_{m-1} \in K^{k+2}$
-  such that (1) each cyclic pair $(n_i, n_{i+1})$ (indices mod $m$) has a nonzero
-  grade-$2$ join $n_i \wedge n_{i+1} \ne 0$, and (2) the cyclic supporting-extensor
-  family $i \mapsto C(n_i, n_{i+1})$ is linearly independent.
+  Let $3 \le m \le d + 1$. Then there are
+  $n_0, \dots, n_{m-1} \in K^{d+1}$ such that the $m$ extensors
+  $C(n_i, n_{i+1})$, with indices mod $m$, are linearly independent. In
+  particular, each $n_i \vee n_{i+1}$ is nonzero.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:panel-support-extensor-independence, lem:extensor-independence}
-  Witness: the standard basis restricted along the inclusion of index sets,
-  $n_i = e_i$ (this is where $m \le k + 2$ enters). The $m$ cyclic joins then
-  realize the $m$ distinct $2$-subsets $\{i, i+1\}$ ($i < m-1$) and $\{0, m-1\}$ ---
-  the edges of the cycle $C_m$ embedded in the index set. Via the grade-2
-  antisymmetry at the single wrap edge, the cyclic join family equals unit scalars
-  times the sorted subfamily of the $\Lambda^2$-basis family indexed by these
-  $2$-subsets; the edge-to-subset index map is injective for $m \ge 3$ (two cyclic
-  edges coincide only if $2 = 0$ in $\Z/m$), so the subfamily inherits independence
-  from the basis family (\cref{lem:extensor-independence}), and unit scaling
-  preserves independence. Each join is nonzero since consecutive indices are
-  distinct; the extensor conclusion follows via
-  \cref{lem:panel-support-extensor-independence}.
+  We argue as for \cref{lem:triangle-normals}, with $n_i = e_i$ for
+  $0 \le i \le m - 1$; this uses $m \le d + 1$. Up to sign, the joins
+  $n_i \vee n_{i+1}$ are the $e_a \vee e_b$ with $a < b$ for the pairs
+  $\{i, i+1\}$ with $0 \le i \le m - 2$ and the pair $\{0, m-1\}$, the
+  edges of a cycle on $\{0, \dots, m-1\}$. These $m$ pairs are distinct,
+  as $m \ge 3$. So the joins are linearly independent, and so are the
+  extensors $C(n_i, n_{i+1}) = *(n_i \vee n_{i+1})$
+  (\cref{lem:panel-support-extensor-independence}).
 \end{proof}
 
 \subsection{The framework-construction operation}

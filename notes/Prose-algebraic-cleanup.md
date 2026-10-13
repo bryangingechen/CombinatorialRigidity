@@ -6,10 +6,10 @@ which rounds are done. The round rewrites the prose of the chapter `algebraic-in
 its five sections, `panel-layer.tex` → `case-iii.tex`, to `40-exposition`'s register and round 1's
 exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is. What
 else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-115`–`F-120`, task 2.1 `F-121`–`F-123`, task 2.2 `F-124`–`F-127`, task 2.3 `F-128`–`F-130`. 18
-one-commit tasks; tasks 1 and 2.1–2.3 are done, and the round has no planned stop. **Next concrete
-task:** task 2.4, `panel-layer.tex`'s base region and cycle seeds, at Opus (*Lemma checklist*).
-Round manual: `CLEANUP.md`.
+`F-115`–`F-120`, task 2.1 `F-121`–`F-123`, task 2.2 `F-124`–`F-127`, task 2.3 `F-128`–`F-130`,
+task 2.4 `F-131`–`F-132`. 18 one-commit tasks; tasks 1 and 2.1–2.4 are done, and the round has no
+planned stop. **Next concrete task:** task 2.5, `panel-layer.tex`'s framework operations and the
+multigraph conjecture, at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,18 +19,18 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.3 has landed** (this commit): `panel-layer.tex` 498–777 at the open, 683–962 at its
-parent, now 683–1003, 5 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical and
-in order; three formalization notes were added, and the file's later lines have moved by +42 more
-(task 2.4's range, 778–1057 at the open, is now 1005–1284, with the lead 329–339; 2.5's
-1285–1579). Nothing is mid-stream; task 2.4 is next.
+**Task 2.4 has landed** (this commit): `panel-layer.tex` 778–1057 and the lead 229–239 at the open,
+1005–1283 and 329–339 at its parent, now 1009–1288 and 329–343, 9 nodes, every `\label`,
+`\lean{…}`, `\leanok` and `\uses` byte-identical and in order; the subsection is retitled, and the
+file's later lines have moved by +5 more (task 2.5's range, 1058–1352 at the open, is now
+1290–1584). Nothing is mid-stream; task 2.5 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (67 overfull boxes, the open's 72, none
-  in lines 1–1003). Screens on `panel-layer`: register 56 / 5, devices 0 / 13, `\operatorname` 1,
-  vocabulary 31, forward `\uses` 10 / 5 (the open's 63 / 15, 0 / 17, 1, 44, 10 / 5). In lines
-  683–1003: register 0 in prose, one `\texttt` address (the witness, in
-  `rem:molecular-conjecture-nonvacuous`), "endpoint selector" four times in notes.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (66 overfull boxes, the open's 72; the
+  file's one is at 1356–1363, task 2.5's). Screens on `panel-layer`: register 58 / 3, devices 0 /
+  11, `\operatorname` 1, vocabulary 10, forward `\uses` 10 / 5 (the open's 63 / 15, 0 / 17, 1, 44,
+  10 / 5). In the slice's lines: no register or vocabulary hit in prose, two `\texttt` addresses
+  (the general-$d$ forms).
 
 **Verified at the open** (2026-10-12, at `ef57b401`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -233,12 +233,7 @@ induction, nodes whose pins no main result uses (`F-118`).
    (2.1, 2.7, 2.16).
 
 - **`panel-layer`.**
-  - *Done:* 2.1–2.3 (their open bullets are in this log at `efa7ed2b`).
-  - *2.4 (229–239, 778–1057):* the base-region statements say "minimal-$k$-dof-graph", "generic
-    companion", and give "$D - 1 = 5$ (at $d = 3$)" and "$D \cdot 1 = 6$" in a statement for every
-    $D$ (check the pins); proofs carry "bare conjunct", "per-link conjunct", $\mathtt{ofNormals}$,
-    `\texttt{normalsJoin\_swap}` and "Witness: the standard basis restricted along the inclusion of
-    index sets". `lem:extensor-pair-in-panel` is $K^4$ only. The subsection's lead (229–239) last.
+  - *Done:* 2.1–2.4 (their open bullets are in this log at `efa7ed2b`).
   - *2.5 (1058–1352):* `lem:with-normal-preserves`'s proof is three `\texttt` names;
     `thm:theorem-55-6-multigraph`'s proof cites `exists_extensor_in_two_panels_grade` and writes
     $K^{k+2}$; `rem:coplanar-single-body` has the round's one `\operatorname` name; "the
@@ -335,8 +330,9 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.3 `panel-layer.tex`, KT Theorem 5.6 and the molecular conjecture** (this commit;
     498–777 at the open, now 683–1003, 5 nodes). Crux `thm:theorem-55-6`'s two halves. Found
     `F-128`–`F-130`.
-  - [ ] **2.4 `panel-layer.tex`, the base region and the cycle seeds** (778–1057, and the
-    subsection's lead 229–239): 9 nodes, 291 lines.
+  - [x] **2.4 `panel-layer.tex`, the base region and the cycle normals** (this commit; 778–1057 and
+    229–239 at the open, now 1009–1288 and 329–343, 9 nodes). KT p. 671's three cases, KT Lemma
+    5.3 for motions; the subsection retitled. Found `F-131`–`F-132`.
   - [ ] **2.5 `panel-layer.tex`, the framework operations and the multigraph conjecture**
     (1058–1352): 8 nodes, 295 lines.
   - [ ] **2.6 `case-i.tex`, KT Lemma 5.4 and the block pin** (18–291): 10 nodes, 274 lines.
@@ -421,6 +417,10 @@ one line each naming the ledger ID and the task that found it.
   `lem:minimal-kdof-spanning-subgraph`'s, which no `\uses` of it names.
 - `F-130` (L, task 2.3): the docstrings of the KT Theorem 5.6 and molecular-conjecture pins: dropping
   the nonzero-hinge conjunct does not falsify the equivalence; a wrong node; "KT Prop 1.1".
+- `F-131` (N, task 2.4): the base's three cases and `lem:extensor-pair-in-panel` pin dead $d = 3$
+  wrappers; the general forms the induction calls have no node.
+- `F-132` (L, task 2.4): the docstrings of the base's pins name wrong nodes, a hypothesis the
+  theorem lacks, and stale callers.
 
 ## Blockers / open questions
 
@@ -428,10 +428,10 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.4, `panel-layer.tex`'s base region and cycle seeds (778–1057 at the
-open, now 1005–1284, and the subsection's lead 329–339), at Opus**, a fresh agent (`notes/Prose.md`
-§2). Its diagnosis is under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then
-tasks 2.5–2.16 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.5, `panel-layer.tex`'s framework operations and the multigraph
+conjecture (1058–1352 at the open, now 1290–1584), at Opus**, a fresh agent (`notes/Prose.md` §2).
+Its diagnosis is under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks
+2.6–2.16 in order, and task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"). 2.1–2.3 open the round; the coordinator reads them in full against the
   exemplars, as round 2's hand-off asked for its first three.
@@ -449,21 +449,21 @@ tasks 2.5–2.16 in order, and task 3 closes the round. For the slices:
   encoding artifacts, each cited in one sentence by a carrying node's note: `rem:fresh-edge-supply`
   ($W$, $L$ and the label bound) and, since 2.3, `rem:molecular-conjecture-essential` (a nonzero
   hinge at every label of $L$; the reason the formal molecular conjecture needs $|V| \ge 2$).
-- **For 2.4 and 2.5.** `fmlnote:molecular-conjecture-multigraph` cites `lem:theorem-55-base` (2.4)
-  for the double edge's rigid body-hinge realization. 2.5's `thm:theorem-55-6-multigraph` still
-  says "KT Proposition 1.1 rank bridge" (carry-in 7) and cites `lem:subgraph-minimality` for the
-  step that is `lem:minimal-kdof-spanning-subgraph`'s (`F-129`); its `\cref`s to 2.3's remark and
-  note stay true.
+- **For 2.5 and later.** 2.5's `thm:theorem-55-6-multigraph` still says "KT Proposition 1.1 rank
+  bridge" (carry-in 7) and cites `lem:subgraph-minimality` for `lem:minimal-kdof-spanning-subgraph`'s
+  step (`F-129`). Since 2.4, the form of `lem:extensor-pair-in-panel` for $K^{d+1}$ is the paragraph
+  after it (`F-131`; `lem:case-I-realization-nonsimple`, 2.8, uses it), and `lem:cycle-normals`
+  gives normals, not a "seed" (2.6's `lem:cycle-realization`, 2.15's triangle floor).
 - **Crux nodes** keep their full proofs: tasks 2.1–2.3 and 2.7–2.15 (*Scope*).
 - **Carry-ins** 1–7 are under *Per-chapter diagnosis*, each with its task.
 - **The open's findings** are recorded, not acted on: 2.6 keeps `lem:cycle-realization`'s
   statement and corrects its note's range (`F-115`); 2.7 keeps `lem:case-I`'s (`F-116`); 2.10
   keeps `lem:genericity-device`'s (`F-117`). Where a proof cites a node its pin does not reach
   (`F-118`), a slice may name in prose the node the pin does reach, after checking it with the
-  script; the edges wait for round 5. 2.1–2.4, 2.6–2.10, 2.12 and 2.14 give `F-119`'s forward
-  references a sentence or a move within the file.
+  script; the edges wait for round 5. 2.6–2.10, 2.12 and 2.14 give `F-119`'s forward references a
+  sentence or a move within the file.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <section>` (e.g. `--chapter case-i`). The ledger's next ID is `F-131`.
+  `--chapter <section>` (e.g. `--chapter case-i`). The ledger's next ID is `F-133`.
 
 ## Decisions made during this round
 
@@ -485,15 +485,11 @@ tasks 2.5–2.16 in order, and task 3 closes the round. For the slices:
 - **The crux list, by label** (the open): twelve slices, *Scope*; the done entry under the ledger's
   `rigidity-matrix.tex` heading is here (2.1). Node moves stay within a section file (`F-119`).
 - **The no-Lean-edit base** is `ef57b401`, the open's parent.
-- **Tasks 2.1 and 2.2, `panel-layer.tex` 1–681.** KT's panel-hinge frameworks (KT p. 648, §5.1)
-  open the subsection; KT Proposition 2.3's two halves are `prop:rigidity-matrix-prop11`'s
-  backbone; `def:rank-hypothesis` and `def:genuine-hinge-realization` define the two realization
-  forms; the simplicity account is the paragraph before `thm:theorem-55` (KT Lemma 5.3, p. 669),
-  whose proof follows KT's four cases (p. 671).
-- **Task 2.3, `panel-layer.tex` 683–1003.** `thm:theorem-55-6`'s proof is KT's (p. 670), in the
-  crux's two halves; the generic normals of a minimal spanning subgraph serve for $G$, so KT's
-  projective move is not needed. That theorem allows degenerate hinges, `-genuine` is KT's
-  nondegenerate form, `-rows` the generic one. The molecular conjecture's lead-in says why both
-  sides need nondegenerate hinges (welded, rigid means connected).
-  `rem:molecular-conjecture-essential` became principle D's labeled remark for a nonzero hinge at
-  every label; both remarks stay remarks, as 2.2's and 2.5's text cite them as such.
+- **Tasks 2.1–2.4, `panel-layer.tex` 1–1288.** KT's panel-hinge frameworks (KT p. 648, §5.1) open
+  the file; KT Proposition 2.3's two halves are `prop:rigidity-matrix-prop11`'s backbone; the
+  simplicity account (KT Lemma 5.3, p. 669) precedes `thm:theorem-55`, whose proof follows KT's four
+  cases (p. 671). `thm:theorem-55-6` is KT's proof (p. 670) without the projective move; `-genuine`
+  is KT's nondegenerate form, `-rows` the generic one. Both labeled remarks stay remarks (2.2's and
+  2.5's text cite them). The base follows KT p. 671's three cases, its arms stated for every $d$
+  over $d = 3$ pins (`F-131`); the subsection is now *KT Theorems 5.5 and 5.6 and the molecular
+  conjecture*.
