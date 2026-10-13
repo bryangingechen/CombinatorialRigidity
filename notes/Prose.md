@@ -6,7 +6,8 @@
 `prose-molecular`, opened 2026-10-08 and closed 2026-10-12 (`notes/Prose-molecular-cleanup.md`).
 Round 3, `prose-algebraic`, opened 2026-10-12 and closed 2026-10-13
 (`notes/Prose-algebraic-cleanup.md`). Round 4, `prose-applications`, opened and closed 2026-10-13
-(`notes/Prose-applications-cleanup.md`); round 5 has not opened. These are five `CLEANUP.md`
+(`notes/Prose-applications-cleanup.md`). Round 5, `prose-graph`, opened 2026-10-13
+(`notes/Prose-graph-cleanup.md`). These are five `CLEANUP.md`
 rounds over every blueprint chapter that round 3 of the post-Phase-40 cleanup (`40-exposition`) did
 not rewrite. Four prose rounds go arc by arc, and a
 fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
@@ -22,7 +23,9 @@ tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`, its task 2.4,
 `molecule-application.tex`, `F-187`–`F-190`, its tasks 2.5–2.8, `jacobs.tex`'s four slices,
 `F-191`–`F-205`, its tasks 2.9–2.12, `generic-lift.tex`'s four slices, `F-206`–`F-225`, and its
 tasks 2.13–2.14, `intro.tex`'s two slices, `F-226`–`F-229`; its slices and its close are done.
-**Next concrete task:** round 5, `prose-graph`, opens (§3 *Round 5*).
+Round 5's open re-ran the script, which still gives round 1's counts, and triaged the ledger's 97
+`E`, `N`, `T` and `U` entries into 31 one-commit tasks (§3 *Round 5*). **Next concrete task:**
+round 5's task 2, the gate's tooling (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions
 
@@ -309,6 +312,13 @@ expected diff.
 2. Take the script's `--dump` of the built graph's sorted edges and the label→pins map.
 3. Diff it against the previous commit's dump. The diff must be exactly the task's listed changes. A
    split that only moves pins leaves the `lean_decls` hash unchanged; unpinning a helper changes it.
+
+The open re-sliced the round into 31 tasks: the open; the gate's tooling (the dump gains each
+node's `\uses` from the TeX, which the drawn graph's transitive reduction can hide); fourteen N
+tasks by chapter; nine E tasks by chapter group; the node order; T; U; the report in two commits;
+and the close. Its node-shape and edge policies, the honesty gate for a new node and the
+retargeting rule are in `notes/Prose-graph-cleanup.md` *Scope*, and its slicing judgment is under
+*Decisions* there.
 
 ## 4. The findings ledger, `notes/Prose-findings.md`
 

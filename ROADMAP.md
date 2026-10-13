@@ -174,6 +174,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 2/5: body-bar, body-hinge and the molecular foundations) | the eight chapters `matroid-union.tex` → `meet.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 67 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-molecular-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (PROSE 3/5: the algebraic induction) | the chapter `algebraic-induction.tex` and its five sections, `panel-layer.tex` → `case-iii.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 59 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-algebraic-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (PROSE 4/5: applications, continuations and the introduction) | the five chapters `bar-joint-3d.tex` → `generic-lift.tex`, then `intro.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 56 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-applications-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (PROSE 5/5: graph repairs and the findings report) | every chapter's dependency edges, pins and node shapes; the findings report | ◐ In progress (see `notes/Prose-graph-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1263,8 +1264,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   findings in the ledger (`F-115`–`F-173`). Round 4, `prose-applications`, opened and closed
   2026-10-13 (`notes/Prose-applications-cleanup.md`): it rewrote the five chapters
   `bar-joint-3d.tex` through `generic-lift.tex`, then `intro.tex`, in fourteen slices, and recorded
-  56 findings in the ledger (`F-174`–`F-229`). **Next concrete task:** round 5, `prose-graph`,
-  opens (its scope and tasks are in `notes/Prose.md` §3).
+  56 findings in the ledger (`F-174`–`F-229`). Round 5, `prose-graph`, opened 2026-10-13
+  (`notes/Prose-graph-cleanup.md`): it triaged the ledger's edge, node-shape, terminology and
+  status-surface findings into 31 one-commit tasks. **Next concrete task:** round 5's task 2, the
+  gate's tooling (its hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
