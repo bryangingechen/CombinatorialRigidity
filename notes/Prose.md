@@ -17,8 +17,9 @@ slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F
 first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-099` (2026-10-12, §1),
 and tasks 2.16–2.18 `F-100`–`F-114`; its eighteen slices and its close are done. Round 3's open
 recorded `F-115`–`F-120`, and its sixteen slices `F-121`–`F-173`; its slices and its close are
-done. Round 4's open recorded `F-174`. **Next concrete task:** round 4's task 2.1,
-`bar-joint-3d.tex`, the first of its fourteen slices (the round's log, *Lemma checklist*).
+done. Round 4's open recorded `F-174`, and its task 2.1, `bar-joint-3d.tex`, `F-175`–`F-177`.
+**Next concrete task:** round 4's task 2.2, the first of `molecule-modelling.tex`'s two slices (the
+round's log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 

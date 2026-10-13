@@ -6,10 +6,10 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 `molecule-modelling.tex`, `molecule-application.tex`, `jacobs.tex` and `generic-lift.tex`, then the
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
-What else the round notices goes to the ledger `notes/Prose-findings.md`; the open recorded
-`F-174`. 16 one-commit tasks, of which task 1 is this open; the round has no planned stop. **Next
-concrete task:** task 2.1, `bar-joint-3d.tex`, at Opus (*Lemma checklist*). Round manual:
-`CLEANUP.md`.
+What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
+`F-174`, and task 2.1 `F-175`–`F-177`. 16 one-commit tasks; tasks 1 and 2.1 are done, and the round
+has no planned stop. **Next concrete task:** task 2.2, `molecule-modelling.tex`'s first slice
+(41–211, 256–343), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,13 +19,19 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Round 4 is open** (task 1, this commit, docs only; the Lean tree and the blueprint TeX are
-`baa224cc`'s, round 3's close). Nothing is mid-stream. The next concrete task is task 2.1.
+**Task 2.1 has landed** (this commit), and `bar-joint-3d.tex` is done: 1–238 at the open and the
+parent, now 1–273, 9 nodes, every `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. No
+node moved and no formalization note is new. Nothing is mid-stream; task 2.2 is next.
+- **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
+  silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (51 overfull boxes, none in the file).
+  Screens on `bar-joint-3d`: register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 0,
+  forward `\uses` 0 / 0; the open's were 1 / 1, 1 / 3, 0, 1 and 0 / 0.
 
-**Verified at the open** (2026-10-13, at `baa224cc`):
+**Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
-  cached; the coordinator's gave the same). No axioms check at this open (`notes/Prose.md` §2). **The
-  no-Lean-edit base is `baa224cc`**, this commit's parent: the close checks that `git diff --stat
+  cached; the coordinator's gave the same). No axioms check at the open (`notes/Prose.md` §2). **The
+  no-Lean-edit base is `baa224cc`**, the open's parent: the close checks that `git diff --stat
   baa224cc.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` is empty.
 - **The round's gate values**, round 3's close reproduced exactly; every slice reproduces them:
   `lint.sh` green; `verify.sh` green (47 s), `checkdecls` silent, **9** `WARNING:` lines (plasTeX
@@ -246,17 +252,7 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
 13. `F-121`: `panel-layer.tex`'s note on `prop:rigidity-matrix-prop11` points at
     `thm:panel-generic-rank` and `thm:bodyhinge-generic-rank`: keep the two consistent (2.9, 2.12).
 
-- **`bar-joint-3d` (2.1).** The title says dimension three; the chapter builds
-  $\mathcal{R}_d(V)$ for every $d$. The opening: "the `Matroid.ofFun` device" (a Lean name as
-  instrument); its third paragraph lists every node (principle F *Once*); "the two interfaces the
-  molecule application reads" (role); "$d|V| - \binom{d+1}{2}$ … is the maximal possible rank of
-  a spanning graph" holds for $|V| \ge d$ only ($K_2$ in $\R^3$ has rank 1; `F-020`); check the
-  credits (JJ 2008's conditional rank formula; KT §7's open problem). `lem:exists-generic-placement`'s
-  proof uses "the Gram determinant"; the Lean's affine-path lemma uses one maximal minor
-  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`): over $\R$ both work, so state the Lean's, as round 3
-  task 2.10 did. `def:genericRigidityMatroid` ends on a consequence with a forward `\cref`, and
-  `def:genericRank` on a role clause (principle B). `\texttt{Matroid.ext\_indep}` as an
-  instrument; $\mathrm{rigidityRow}\,K_V\,p\,e$ in `lem:genericRank-eq-finrank-span`.
+- **`bar-joint-3d`.** *Done:* 2.1 (its open bullet is in this log at `69bc7afb`).
 - **`molecule-modelling`.**
   - *2.2 (41–211, 256–343):* `def:hinge-concurrent`'s statement names the endpoint selector and
     carries the converse, the modelling sentence and the welded hinge (principle B). The statement
@@ -367,12 +363,13 @@ One commit per task, in this order (`notes/Prose.md` §3). Each line gets its co
 commit, with this log as of that commit, carries the task's diagnosis and findings. Rungs: every
 slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
 
-- [x] **1. O — the open** (this commit; docs only): this log, the baselines, the open's finding
+- [x] **1. O — the open** (`69bc7afb`; docs only): this log, the baselines, the open's finding
   `F-174`, and the status surfaces.
 - [ ] **2. The slices**, one commit each, in `chapter/main.tex` order. Each chapter's opening goes
   in its last slice, and `intro.tex` comes last (principle F). The diagnosis of each is above; the
   carry-ins are numbered as there.
-  - [ ] **2.1 `bar-joint-3d.tex`** (1–238): 9 nodes, 238 lines.
+  - [x] **2.1 `bar-joint-3d.tex`** (this commit): generic placements, $\mathcal{R}_d(V)$ and its
+    rank function; the title loses "in dimension three". Found `F-175`–`F-177`.
   - [ ] **2.2 `molecule-modelling.tex`, the square, molecular frameworks, projective invariance,
     the polarity and screw velocities** (41–211, 256–343): 8 nodes, 259 lines; the crux pointer
     in `lem:screw-determination`'s proof.
@@ -420,13 +417,18 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
 
 - `F-174` (S, task 1): `thm:molecular-iff-square-bar-joint`'s "in particular" realizability
   equivalence is unpinned, and false for coincident centres, which `def:hinge-concurrent` admits.
+- `F-177` (S, task 2.1): `def:genericRigidityMatroid`'s placement independence and `def:genericRank`'s
+  KT Corollary 5.7 clause left the definitions (principle B); the lemma and the opening keep them.
 
 ## Moved to a later round
 
 `E`, `N`, `T` and `U` findings for round 5, `prose-graph`, and `L` findings for a later Lean round,
 one line each naming the ledger ID and the task that found it.
 
-- None yet.
+- `F-175` (E, task 2.1): `bar-joint-3d.tex`'s six missing edges and one unbacked; the planar
+  argument its existence proof cites wants no edge.
+- `F-176` (L, task 2.1): the docstrings of `GenericRigidityMatroid.lean` (process narration; the
+  abundance lemma's "Gram-determinant sketch", which no chapter has now).
 
 ## Blockers / open questions
 
@@ -434,11 +436,20 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.1, `bar-joint-3d.tex` 1–238, at Opus**, a fresh agent
-(`notes/Prose.md` §2). Its diagnosis is under *Per-chapter diagnosis*, its gates and screens under
-*Scope*. Then tasks 2.2–2.14 in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.2, `molecule-modelling.tex`'s square, molecular frameworks,
+projective invariance, the polarity and screw velocities (41–211, 256–343 at the open and now), at
+Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.2* item under *Per-chapter
+diagnosis*, its gates and screens under *Scope*. Then tasks 2.3–2.14 in order, and task 3 closes
+the round. For the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"): the coordinator reads 2.1–2.3 in full against the exemplars, as rounds 2–3 did.
+- **From task 2.1.** `bar-joint-3d.tex` is titled *The generic bar-joint rigidity matroid* and
+  builds $\mathcal{R}_d(V)$ in every dimension: Jordán's $\mathcal{R}_d$ and $r_d$ (§1.3.1, p. 39),
+  genericity after JJ 2008 §2, and the formula credited to JJ 2008's Theorems 4.1 ($\le$) and 4.3
+  (equality is equivalent to the molecular conjecture). Readings to keep true: 2.4's "All the
+  geometry is specific to $\R^3$, inherited from … `sec:bar-joint-3d`" (it is dimension-general), 2.9's
+  JJ genericity in `generic-lift`'s opening, and the intro's item title "in dimension 3" and line 486
+  (2.13, 2.14).
 - **Notation and terms** (*Decisions*); **crux nodes** in 2.3 and 2.2's pointer (*Scope*);
   **carry-ins** 1–13 under *Per-chapter diagnosis*. Where a proof cites a node its pin does not
   reach, a slice may name in prose the node the pin reaches, checked with the script; the edges
@@ -446,7 +457,7 @@ one line each naming the ledger ID and the task that found it.
 - **The open's finding** `F-174`: 2.3 keeps the claim with a note, or anchors it by a reading
   under *Scope*, and flags the call.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <name>`. The ledger's next ID is `F-175`.
+  `--chapter <name>`. The ledger's next ID is `F-178`.
 
 ## Decisions made during this round
 
@@ -466,3 +477,7 @@ one line each naming the ledger ID and the task that found it.
   *Reading* are rewritten; the Caution paragraph and `40-exposition`'s pencil text stay.
 - **The crux list, by label** (the open): three entries, in 2.3 with a pointer in 2.2. The
   no-Lean-edit base is `baa224cc`, the open's parent.
+- **`bar-joint-3d`'s opening** (2.1): the title drops "in dimension three", which the chapter's
+  every-$d$ content contradicted; the sentence that $3|V| - 6$ is the largest rank of a graph on $V$
+  (false below $|V| = d$; Jordán's Lemma 1.2.1) is cut, not repaired, as the formula's reading
+  belongs to `molecule-application.tex`; the opening sketches the chapter once, with no node list.

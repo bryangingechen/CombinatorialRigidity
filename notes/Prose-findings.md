@@ -489,6 +489,20 @@ declaration's name as its header writes it:
   (the dispatch); and `lem:two-edge-conn` (`lem:case-III`).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `c3586784`).
   *Found:* round 3 task 2.15.
+- **F-175** · E · `bar-joint-3d.tex`'s nine nodes (`bar-joint-3d.tex`): six missing edges and one
+  unbacked. Missing: `lem:exists-generic-placement`'s to `def:rigidityRow`,
+  `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow` and `lem:rigidityMap-apply`;
+  `lem:genericRank-eq-finrank-span`'s to `lem:k-frame-incidence-finrank-rk`
+  (`Matroid.Rep.finrank_span_image_eq_rk`); `lem:rigidityMap-rank-at-generic`'s to
+  `lem:rigidityMap-apply` and `lem:span-range-rigidityRow`. Unbacked: `lem:genericRank-eq-finrank-span`'s
+  to `lem:linearRigidityMatroid-indep-iff`, reached only through another node. Task 2.1's proofs
+  cite every missing target but `def:rigidityRow`, and `def:linearRigidityMatroid` and
+  `def:linearRigidityRow` (the row-space form), without an edge. The existence proof also cites
+  `lem:exists-uniform-rowIndependent-placement` and `thm:edgeSet-rowIndependent-iff-isSparse` as
+  the planar argument it follows; its pin reaches neither, and they want no edge. The pin of
+  `lem:genericRigidityMatroid-two-eq-rigidityMatroid` is dead (`F-012`).
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter bar-joint-3d`, at `69bc7afb`).
+  *Found:* round 4 task 2.1.
 
 ## N — node shape
 
@@ -1664,6 +1678,20 @@ declaration's name as its header writes it:
   definition `molecularOfCentres`, `Molecular/Molecule/Dictionary.lean`; the edge count of
   $C_7^2$).
   *Found:* round 4 task 1.
+- **F-177** · S · `def:genericRigidityMatroid`, `def:genericRank` (`bar-joint-3d.tex`): at the open
+  the first definition ended "By `lem:linearRigidityMatroid-eq-genericRigidityMatroid` the matroid
+  does not depend on the choice of $p$", a consequence with a forward `\cref`, and called
+  $\mathcal{R}_d(V)$ "a matroid on $\mathrm{Sym}_2 V$ with ground set $E(K_V)$"; the second ended
+  "At $d = 3$ this is the rank function $r(\cdot)$ of the molecule rank formula (KT Corollary
+  5.7)". Task 2.1 moved both sentences out under principle B, as a definition's consequence and a
+  role clause. The first is the statement of `lem:linearRigidityMatroid-eq-genericRigidityMatroid`
+  (pin `linearRigidityMatroid_eq_genericRigidityMatroid`), two nodes later, and the opening says it;
+  the second is in the opening. The pin `genericRigidityMatroid` takes the placement
+  `(exists_isGenericPlacement d).choose`, so neither definition changes. $\mathrm{Sym}_2 V$ is the
+  formal element type (the note at `def:linearRigidityRow`); the ground set stays $E(K_V)$.
+  *Evidence:* read (the bodies of `genericRigidityMatroid` and `genericRank`; the statement of
+  `linearRigidityMatroid_eq_genericRigidityMatroid`).
+  *Found:* round 4 task 2.1.
 
 ## L — Lean
 
@@ -2239,6 +2267,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and statements of the six pins; KT 2011 pp. 659, 677 and
   692, `.refs/`).
   *Found:* round 3 task 2.15.
+- **F-176** · L · the docstrings of `bar-joint-3d.tex`'s pins (`GenericRigidityMatroid.lean`). The
+  module header narrates process ("Phase 24", "This file lands the forward-mode chapter … end to
+  end", "Phase 14's"), and `genericRank`'s cites "Phase 26". In the same file
+  `exists_isGenericPlacement_abundance`, the pin of `generic-lift.tex`'s
+  `lem:generic-placement-abundance`, says that its proof matches "the blueprint's Gram-determinant
+  sketch in substance"; after task 2.1 no chapter has such a sketch (the existence proof here and
+  the abundance proof take a minor), and it carries "Phase 34 PROSPECT G3". The other docstrings
+  agree with their bodies.
+  *Evidence:* read (the docstrings and bodies of the nine pins and of the abundance lemma; `grep
+  -i gram` over `blueprint/src`).
+  *Found:* round 4 task 2.1.
 
 ## M — mathematics and sources
 
