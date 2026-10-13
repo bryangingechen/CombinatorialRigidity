@@ -725,6 +725,22 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the slice's five nodes and
   `lem:case-I-realization`, at `9a465598`); read (a `grep` for each pin's callers).
   *Found:* round 3 task 2.7.
+- **F-143** · N · `lem:case-I-realization-nonsimple`, `lem:case-I-dispatch`
+  (`algebraic-induction/case-i.tex`): the pin of the first, `case_I_realization_nonsimple`, lies
+  outside every main result's closure and has no caller, so the second's `\uses` edge to it has no
+  Lean basis; the dispatch calls the unpinned `case_I_realization_nonsimple_gen` (`F-142`). Three
+  load-bearing steps of the formal Case I have no node: the case split for every $k$,
+  `case_I_hcontract_gen`, which `thm:theorem-55`'s pin calls for Case I and whose $k = 0$ branch is
+  the dispatch; KT Claim 6.6, `exists_degree_two_removeVertex_of_no_simple_contraction`, and its
+  first assertion ($k = 0$), `deficiency_eq_zero_of_simple_rigid_no_simpleContraction`; and the
+  combination of KT Lemma 6.3's two realizations,
+  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`. Repinning the
+  first node on the general form, and a node for the case split (or a second pin on the dispatch)
+  with KT Claim 6.6 in it, are the candidates.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the slice's four nodes, at
+  `666f05f9`); read (a `grep` for each declaration's callers and for its pins in
+  `blueprint/src`).
+  *Found:* round 3 task 2.8.
 
 ## T — terminology and notation
 
@@ -1223,6 +1239,32 @@ declaration's name as its header writes it:
   p. 675, `.refs/`); measured (`scripts/blueprint-deps.py --label lem:claim-6-4` and
   `lem:case-I-realization`, at `9a465598`).
   *Found:* round 3 task 2.7.
+- **F-141** · S · `lem:case-I-realization`, `lem:case-I-realization-h65`, `lem:case-I-dispatch`
+  (`algebraic-induction/case-i.tex`): three statements leave out hypotheses their pins assume.
+  `lem:case-I-realization-h65` omits that $G$ has a proper rigid subgraph, which
+  `case_I_realization_h65_gen` (`hrig`) and KT Lemma 6.5 (p. 676) assume and the proof of KT
+  Claim 6.6 needs; without one the statement is Case III at $k = 0$, which also needs the induction
+  hypothesis at positive deficiencies. `lem:case-I-dispatch` omits the induction hypothesis, which
+  `case_I_dispatch_gen` (`hIH`) assumes. `lem:case-I-realization` assumes generic full-rank
+  realizations of $H$ and $G/E(H)$, and `case_I_realization_all_k_gen` the induction hypothesis
+  for every smaller graph; its proof uses only those two instances. Task 2.8 kept the three
+  statements, wrote the proofs under the pins' hypotheses with a sentence saying so, and gave each a
+  note. It also added, as anchoring, $d \ge 2$ to the slice's four statements (the pins' `hD` and
+  `hk`), "$K$ infinite" to the three whose pins assume it, and "at least one vertex" to the
+  induction-hypothesis clauses, as `def:genuine-hinge-realization` needs $V \ne \emptyset$.
+  *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/Theorem55.lean`; KT
+  2011 pp. 673--676, `.refs/`).
+  *Found:* round 3 task 2.8.
+- **F-142** · S · `lem:case-I-realization-nonsimple` (`algebraic-induction/case-i.tex`): the
+  statement is KT Lemma 6.2 for every $d \ge 2$; its pin `case_I_realization_nonsimple` is the case
+  $d = 3$ (`hn : bodyBarDim n = screwDim 2`), a wrapper of `case_I_realization_nonsimple_gen`, the
+  form for every $d$ that `case_I_dispatch_gen` and the Case I split for $k > 0$
+  (`case_I_hcontract_gen`) call. In the other direction the statement assumes the full induction
+  hypothesis, and the pin only nondegenerate-hinge realizations of the smaller graphs. Repinning the
+  node on the general form makes its pin match the statement's dimension. Task 2.8 kept the
+  statement, with a note.
+  *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/Theorem55.lean`).
+  *Found:* round 3 task 2.8.
 
 ## L — Lean
 
@@ -1677,6 +1719,19 @@ declaration's name as its header writes it:
   (U1–U4, "Phase 22b route (i) Commit 5") and calls the dead `case_I_realization` the composer.
   *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers).
   *Found:* round 3 task 2.7.
+- **F-144** · L · the docstrings of `case-i.tex`'s last four pins
+  (`Molecular/AlgebraicInduction/Theorem55.lean`). `case_I_dispatch_gen`'s calls "the `d = 3`
+  `case_I_dispatch` below" its `k = 2` wrapper; the docstrings of `case_I_realization_h65_gen` and
+  `case_I_realization_h65` and the file's header name the same `case_I_dispatch`, and those of
+  `case_I_realization_nonsimple` and `case_I_realization_all_k` "the `d = 3` Case-I dispatch", as a
+  consumer. No declaration of that name exists. `case_I_realization_h65_gen`'s and
+  `case_I_realization_h65`'s give `lem:case-I-dispatch` as their node, which is
+  `lem:case-I-realization-h65`. The three `d = 3` wrappers `case_I_realization_nonsimple`,
+  `case_I_realization_all_k` and `case_I_realization_h65` have no caller. The docstrings carry
+  process codes (L5a-ii, L5b-ii-d, L8c-2, OD-7, RELAX, "verbatim numeral pass") and the words
+  "producer", "motive", "seed" and "brick".
+  *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
+  *Found:* round 3 task 2.8.
 
 ## M — mathematics and sources
 

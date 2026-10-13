@@ -1,23 +1,26 @@
 \subsection{Case I: a proper rigid subgraph}
 \label{sec:molecular-algebraic-induction-caseI}
 
-This subsection proves Katoh--Tanigawa's Case~I: a minimal $k$-dof-graph
-with a proper rigid subgraph $H$ realizes its target rank by contracting
-$H$ to a single pinned body and gluing the rigid block to the
-contraction's own inductive realization (KT eq.~(6.3)). Two pieces of
-shared infrastructure come first: the panel-cycle realization (KT
-Lemma~5.4), used later in Case~III, and the block pin --- the
-framework-side model of contracting a rigid block to one body. The Case~I
-accounting itself (\cref{lem:case-I}) is genericity-free; genericity
-enters only through KT Claim~6.4 (\cref{lem:claim-6-4}), needed to realize
-both legs of the block-triangular splice at a single common placement.
-The realization lemmas (\cref{lem:case-I-realization}, \cref{lem:case-I-realization-nonsimple},
-\cref{lem:case-I-realization-h65}, \cref{lem:case-I-dispatch}) assemble
-this into KT Lemmas~6.2, 6.3, and 6.5.
+This subsection proves Case~I of KT Theorem~5.5, in which the minimal
+$k$-dof-graph $G$ has at least three vertices and a proper rigid
+subgraph $H$ (KT \S6.2). Katoh and Tanigawa contract $H$ to a single
+vertex, realize $H$ and the contraction $G/E(H)$ by induction, and
+combine the two realizations into one of $G$ whose rank is the sum of
+their ranks (KT eq.~(6.3)). To obtain a nonparallel realization when $G$
+is simple, they distinguish three cases: $G$ is not simple (KT
+Lemma~6.2); $G$ is simple and some proper rigid subgraph has a simple
+contraction (KT Lemma~6.3); and $G$ is simple and no proper rigid
+subgraph has one (KT Lemma~6.5).
 
-We first prove KT Lemma~5.4, which Case~III uses. It states that a
-cycle on $m$ vertices, for $3 \le m \le D$, has an infinitesimally rigid
-nonparallel panel-hinge
+We first prove KT Lemma~5.4 on cycles, which Case~III uses, and define
+the block pin, which pins all the bodies of a set at once. We then
+follow KT \S6.2: KT Lemma~3.5 for the contraction, the rank count of KT
+eq.~(6.3) and its form for infinitesimal motions, KT Claim~6.4, and
+finally KT Lemmas~6.3, 6.2 and~6.5, with the case split that combines
+them (\cref{lem:case-I-dispatch}).
+
+KT Lemma~5.4 states that a cycle on $m$ vertices, for $3 \le m \le D$,
+has an infinitesimally rigid nonparallel panel-hinge
 realization~\cite[p.~670]{katohTanigawa2011}. Katoh and Tanigawa note
 that a cycle can be analyzed directly from the definition of
 infinitesimal motions. For the computation in dimension~$3$ they refer
@@ -794,247 +797,389 @@ and \cref{lem:claim-6-4} states the claim.
   not this one.
 \end{fmlnote}
 
-The three realization lemmas that follow discharge Case~I in its three
-sub-cases \cite[pp.~673--676]{katohTanigawa2011}, and that three-way split
-is forced, not cosmetic. Its origin is the contraction $G/E(H)$ itself:
-the one operation Case~I recurses through that need not preserve
-simplicity. Every other operation the argument performs on a graph ---
-deleting the edges $E(H)$, deleting a vertex, restricting to a subset of
-edges, passing to an induced subgraph --- is a \emph{subgraph} operation:
-it only removes edges and vertices, so it carries a simple graph to a
-simple graph automatically. Contraction is different in kind. After
-deleting $E(H)$ it \emph{identifies} the whole body set $V(H)$ to a single
-representative $r$ --- a relabelling of vertices, not a passage to a
-subgraph --- and identifying vertices is exactly what can manufacture the
-two configurations simplicity forbids. A \emph{loop} appears when a
-surviving edge $e \in E(G) \setminus E(H)$ has both of its ends in $V(H)$:
-both are sent to $r$, and $e$ becomes a self-loop at $r$. A \emph{parallel
-pair} appears when two distinct surviving edges have their end-pairs
-identified to a single collapsed pair --- for instance two edges from a
-common body $w \notin V(H)$ into $V(H)$, which after the collapse both
-join $w$ to $r$. Simplicity of $G$ constrains $G$'s own edges but says
-nothing about how the collapse identifies their endpoints, so neither mode
-can be excluded in advance; ``$G/E(H)$ is simple'' is a genuine hypothesis,
-not a consequence of $G$ being simple.
+Katoh and Tanigawa need three cases to obtain a nonparallel realization
+when $G$ is simple~\cite[pp.~673--676]{katohTanigawa2011}. The reason
+is that the contraction $G/E(H)$ need not be simple when $G$ is. The
+other graphs that Case~I builds from $G$, such as $G \setminus E(H)$,
+$H$, and the graph $G_v$ obtained by removing a vertex $v$
+(\cref{def:graph-operations}), are subgraphs of $G$, and a subgraph of a
+simple graph is simple. The contraction instead identifies every vertex
+of $H$ with $r$ (\cref{def:rigid-contraction}), and this can create a
+loop or two parallel edges. An edge of $G$ that is not in $H$ but has
+both ends in $V(H)$ becomes a loop at $r$. Two edges not in $H$ become
+parallel when their ends are identified in pairs. For instance, two
+edges that join a vertex $w \notin V(H)$ to two vertices of $H$ both
+join $w$ and $r$ in $G/E(H)$. The simplicity of $G$ excludes neither
+configuration. So the simplicity of $G/E(H)$ is a hypothesis of KT
+Lemma~6.3, and it does not follow from that of $G$.
 
-This is why Case~I trifurcates rather than recursing uniformly on
-contraction. If $G$ is not simple it already carries a parallel pair, and
-\cref{lem:case-I-realization-nonsimple} (KT Lemma~6.2) contracts that pair
-directly. If $G$ is simple, the argument turns on whether some proper
-rigid subgraph $H$ has a \emph{simple} contraction: when one does, $G/E(H)$
-is a smaller simple minimal $k$-dof-graph to recurse on and
-\cref{lem:case-I-realization} (KT Lemma~6.3) realizes $G$ from its
-inductive realization; when \emph{every} proper rigid subgraph has a
-non-simple contraction --- a mode the previous paragraph shows cannot be
-ruled out --- no simplicity-preserving contraction recursion is available.
-There \cref{lem:case-I-realization-h65} (KT Lemma~6.5, through Claim~6.6)
-instead removes a degree-two vertex; vertex removal is a subgraph
-operation, so it returns a smaller \emph{simple} minimal $0$-dof-graph and
-restores the inductive hypothesis. The failure of contraction-simplicity
-is thus precisely the signal that routes the argument out of the
-contraction case (Lemma~6.3) and into the vertex-removal case
-(Lemma~6.5).
+This gives the three cases. If $G$ is not simple, then two parallel
+edges of $G$ form a proper rigid subgraph, and KT Lemma~6.2 contracts it
+(\cref{lem:case-I-realization-nonsimple}). The induction asks for a
+nonparallel realization only of a simple graph, so this case needs no
+general position. If $G$ is simple and some proper rigid subgraph $H$
+has a simple contraction, then the induction hypothesis gives generic
+full-rank realizations of $H$ and $G/E(H)$, and KT Lemma~6.3 combines
+them (\cref{lem:case-I-realization}). If $G$ is simple and no proper
+rigid subgraph has a simple contraction, then KT Lemma~6.5 removes a
+vertex $v$ of degree two instead (\cref{lem:case-I-realization-h65}).
+The graph $G_v$ is a subgraph of $G$, so it is simple, and the induction
+hypothesis gives a generic full-rank realization of it. By KT
+Claim~6.6, this last case occurs only for $k = 0$. We prove KT
+Lemma~6.3 first, and then KT Lemmas~6.2 and~6.5.
 
-\begin{lemma}[Case I realization: simple-contraction case, all deficiencies; KT Lemma~6.3]
+\begin{lemma}[Case~I with a simple contraction; KT Lemma~6.3]
   \label{lem:case-I-realization}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_all_k_gen}
   \leanok
   \uses{def:rank-hypothesis, lem:case-I, lem:rigidContract-isMinimalKDof,
         lem:rank-polynomial-IH-relabel-proj, lem:genericity-device,
         lem:rows-polynomial-in-normals, lem:isInfRigidOn-of-relative-count}
-  Let $G$ be a simple minimal $k$-dof-graph with $|V(G)| \ge 3$, a proper
-  rigid subgraph $H$ on $s = V(H)$ with representative body $r$, such
-  that the contraction $G/E(H)$ is itself simple (KT Lemma~6.3's case
-  hypothesis; the non-simple-contraction case is
-  \cref{lem:case-I-realization-h65}). If the induction hypothesis
-  supplies generic realizations of both $H$ (at deficiency $0$, since $H$
-  is rigid) and the contraction $G/E(H)$ (at deficiency $k$, minimal
-  $k$-dof by \cref{lem:rigidContract-isMinimalKDof}), then $G$ carries a
-  generic realization at rank $D(|V(G)|-1) - k$ (\cref{def:rank-hypothesis}),
-  discharging the Case~I contraction premise of \cref{thm:theorem-55} in
-  this case.
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a simple
+  minimal $k$-dof-graph with $|V(G)| \ge 3$. Let $H$ be a proper rigid
+  subgraph of $G$ whose contraction $G/E(H)$ to a vertex $r$ of $H$ is
+  simple, and suppose that $H$ and $G/E(H)$ have generic full-rank
+  realizations (\cref{def:rank-hypothesis}). Then $G$ has a generic
+  full-rank realization, of rank $D(|V(G)| - 1) - k$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rows-polynomial-in-normals, lem:rank-polynomial-IH-relabel-proj,
         lem:genericity-device, lem:case-I, lem:rigidContract-isMinimalKDof,
         lem:isInfRigidOn-of-relative-count}
-  Work on a single framework $F$ at a general-position seed $q_0$, KT's
-  block-triangular rank addition (eq.~(6.3)). The rigid-block rows
-  ($E(H)$) are independent and number $D(|V(H)|-1)$, from the $H$-leg's
-  inductive generic realization at deficiency $0$, fed through the row
-  coordinatization of \cref{lem:rows-polynomial-in-normals}. The
-  surviving-edge rows ($E(G) \setminus E(H)$, on $s_c = (V(G) \setminus
-  V(H)) \cup \{r\}$) number $D(|s_c|-1) - k$ and, after the
-  exterior-column projection killing the $V(H)$ columns, are independent
-  (\cref{lem:rank-polynomial-IH-relabel-proj}, the deficiency-aware
-  surviving-block rank polynomial applied to the contraction's inductive
-  realization). The rigid-block rows vanish under this projection (KT's
-  top-right zero block), so the two row families are disjoint and their
-  union gives $D(|V(H)|-1) + D(|s_c|-1) - k = D(|V(G)|-1) - k$
-  independent rows (using $|s_H \cap s_c| = 1$). The genericity device
-  (\cref{lem:genericity-device}) then reads rigidity on $V(G)$ off this
-  row count via the relative-count adapter
-  (\cref{lem:isInfRigidOn-of-relative-count}), at $q_0$ itself; since
-  $q_0$ is general position, the realization is generic.
+  By KT Lemma~3.3 (\cref{lem:subgraph-minimality}), $H$ is a minimal
+  $0$-dof-graph. By KT Lemma~3.5 (\cref{lem:rigidContract-isMinimalKDof}),
+  $G/E(H)$ is a minimal $k$-dof-graph, with the vertex set
+  $s_c = (V(G) \setminus V(H)) \cup \{r\}$. So the given realizations
+  $(H, p_1)$ and $(G/E(H), p_2)$ have the ranks $D(|V(H)| - 1)$ and
+  $D(|s_c| - 1) - k$. In Katoh and Tanigawa's proof the induction
+  hypothesis gives them, with algebraically independent coefficients,
+  and KT eq.~(6.6) combines them into a realization of $G$. Its rank is
+  the target rank by KT eq.~(6.3) and Claim~6.4, as in the proof of
+  \cref{lem:case-I}.
+
+  We choose instead one set of normals $q_0$ for all the bodies, off the
+  zero sets of three nonzero polynomials in the normals. First, some
+  $D(|V(H)| - 1)$ rows of $R(H, p_1)$ are linearly independent. The rows
+  can be chosen with entries that are polynomials in the normals
+  (\cref{lem:rows-polynomial-in-normals}). So one of the maximal minors
+  of these rows is a polynomial $Q_1$ that does not vanish at the normals
+  of $p_1$, and wherever $Q_1(q) \neq 0$, the same rows of $R(H, q)$ are
+  linearly independent. This is the argument of
+  \cref{lem:rank-polynomial-of-le-finrank}, later in this chapter
+  (\cref{sec:molecular-algebraic-induction-relative}).
+
+  Second, there is a nonzero polynomial $Q_2$ such that wherever
+  $Q_2(q) \neq 0$, some $D(|s_c| - 1) - k$ rows of
+  $R(G \setminus E(H), q)$ are linearly independent after the columns of
+  $V(H)$ are deleted (\cref{lem:rank-polynomial-IH-relabel-proj}, applied
+  to $(G/E(H), p_2)$). This is KT Claim~6.4 with KT eq.~(6.9), in
+  polynomial form.
+
+  Third, write $q(a)_i$ for the $i$-th coordinate of the normal $q(a)$,
+  from $i = 0$. Let $P$ be the product, over the ordered pairs of
+  distinct bodies $a$ and $b$, of the minors
+  $q(a)_0\,q(b)_1 - q(a)_1\,q(b)_0$. Wherever $P(q) \neq 0$, any two
+  normals are linearly independent, so the normals are in general
+  position (\cref{def:panel-general-position}). The polynomial $P$ is not
+  zero: at normals on the moment curve
+  (\cref{lem:moment-curve-general-position}), each factor is a difference
+  $t_b - t_a \neq 0$. As $K$ is infinite, the nonzero polynomial
+  $Q_1 Q_2 P$ has a non-root $q_0$.
+
+  Let $(G, q_0)$ be the panel-hinge framework on $G$ with the normals
+  $q_0$, in which every hinge is the meet of the panels of the ends of
+  its edge, as in KT eq.~(6.6). As $Q_1(q_0) \neq 0$, some
+  $D(|V(H)| - 1)$ rows of the edges of $H$ are linearly independent. As
+  $Q_2(q_0) \neq 0$, some $D(|s_c| - 1) - k$ rows of the other edges are
+  linearly independent after the columns of $V(H)$ are deleted. By the
+  block form of KT eq.~(6.3), all these rows together are linearly
+  independent (the proof of \cref{lem:case-I}). The sets $V(H)$ and $s_c$
+  share only the body $r$ and cover $V(G)$, so there are
+  \[
+    D\bigl(|V(H)| - 1\bigr) + D\bigl(|s_c| - 1\bigr) - k
+    \;=\; D\bigl(|V(G)| - 1\bigr) - k
+  \]
+  of them. As $P(q_0) \neq 0$, the normals $q_0$ are in general position.
+  The graph $G$ has no loops, so every hinge of $(G, q_0)$ is
+  nondegenerate (\cref{lem:general-position-support-nonzero}). Hence the
+  rank of $R(G, q_0)$ is at most $D(|V(G)| - 1) - k$
+  (\cref{lem:relative-deficiency-rank-bound}), and $(G, q_0)$ is a
+  generic full-rank realization of $G$.
 \end{proof}
 
-\medskip\noindent\emph{Genericity of the rank versus general position of the
-configuration.} The realization above lands at \emph{one} seed $q_0$ on which
-both legs attain their ranks and, at the same time, the panel normals are in
-general position; the closing step reads rigidity off that count and observes
-that, because $q_0$ is general position, the realization is generic. That a
-single seed carries both facts at once is where the formalization makes explicit
-a separation Katoh--Tanigawa fold into one hypothesis. In \S5.1
-\cite[p.~668]{katohTanigawa2011} a nonparallel realization is called
-\emph{generic} when the coordinates of its normal field $c \colon V(G) \to \R^d$
-are algebraically independent over $\Q$, and that single word bundles two
-conditions of different character. The first is a \emph{non-degeneracy} of the
-configuration --- KT's \emph{nonparallel} condition, that $\Pi(u) \cap \Pi(v)$
-is a $(d-2)$-flat for every distinct pair, equivalently that $c(u)$ and $c(v)$
-are linearly independent; this is exactly what the present development calls
-general position (\cref{def:panel-general-position}). The second is
-\emph{rank-maximality} --- that $R(G,p)$ attains the largest rank of any
-nonparallel realization of $G$. Claim~6.4 \cite[p.~675]{katohTanigawa2011} reads
-\emph{both} off the one assumption: its proof writes each rigidity-matrix entry
-as a polynomial in the panel coefficients and then, ``since $p_1$ and $p_2$ have
-been taken so that the coefficients are algebraically independent over $\Q$,''
-concludes the surviving block ``takes the maximum rank,'' with no separate
-non-degeneracy check and no explicit intersection of loci. The fusion is
-deliberate: footnote~4 (\emph{ibid.}) records that the algebraic-independence
-definition cuts out a strictly smaller class of frameworks than the conventional
-rank-maximality notion of generic, and that KT adopt it only ``to make our proof
-simpler.''
+\begin{fmlnote}
+  The pinned theorem assumes the induction hypothesis KT eq.~(6.1) for
+  every graph with fewer vertices than $G$ (\cref{thm:theorem-55}), and
+  uses it only for $H$ and $G/E(H)$. The realization of $H$ that the
+  induction hypothesis gives orients the edges of $H$ in its own way. The
+  pinned theorem first gives that realization the orientation of $G$,
+  which changes no infinitesimal motion, as for $G/E(H)$ in
+  \cref{lem:rank-transport-relabel-of-le-finrank}. It obtains the
+  infinitesimal rigidity of that realization on $V(H)$ from its rank by
+  the relative count of \cref{lem:isInfRigidOn-of-relative-count}, later
+  in this chapter, as the formal framework has bodies outside $V(H)$.
+\end{fmlnote}
 
-Working with concrete non-roots of concrete polynomials rather than with a
-posited algebraically-independent point, the formalization cannot read both
-conditions off one hypothesis; it carries them as two separate polynomial
-factors. Rank-maximality is the genericity device
-(\cref{lem:genericity-device}): a maximal non-vanishing minor of $R(G,q_0)$ is
-one polynomial in the normal coordinates, and its non-vanishing locus is where
-the rank stays at least that large. Non-degeneracy is a \emph{different}
-polynomial condition, carried by its own \emph{general-position polynomial}: the
-product, over the pairs $(a,b)$ of distinct bodies, of the leading $2 \times 2$
-minor $q(a,0)\,q(b,1) - q(a,1)\,q(b,0)$ of the two normals. An assignment is a
-non-root of the product exactly when every pair's leading minor is nonzero,
-which forces each pair of normals to be linearly independent, i.e.\ general
-position; and the product is not the zero polynomial, because the moment-curve
-assignment of \cref{lem:moment-curve-general-position} makes each factor a
-nonzero Vandermonde difference $\mathrm{param}(b) - \mathrm{param}(a)$.
+\medskip\noindent\emph{Rank and general position.} The normals $q_0$
+satisfy conditions of two kinds: the rank conditions $Q_1(q_0) \neq 0$
+and $Q_2(q_0) \neq 0$, and general position. Katoh and Tanigawa obtain
+both from one hypothesis~\cite[\S5.1, p.~668]{katohTanigawa2011}. They
+call two panels nonparallel if they meet in a $(d-2)$-dimensional affine
+subspace. The panel of a body $v$ is defined by a vector
+$c(v) \in \R^d$, and two panels are nonparallel when their vectors are
+linearly independent. A nonparallel realization is generic if the
+coordinates of all the vectors $c(v)$ are algebraically independent
+over $\Q$. In the proof of KT Lemma~6.3 (pp.~674--675), $p_1$ and
+$p_2$ are taken so that the coefficients of the panels of $p_1$ at the
+bodies of $H$ and of $p_2$ at the other bodies are algebraically
+independent over $\Q$. This choice makes any two of these panels
+nonparallel, so the realization of KT eq.~(6.6) is nonparallel. In
+Claim~6.4 the same choice makes the rank of $R(G/E(H), p')$ the largest
+over all the realizations of the form of KT eq.~(6.7). Katoh and
+Tanigawa note that their definition of a generic realization gives a
+smaller class of frameworks than the usual one, by the largest rank of
+the rigidity matrix, and that they use it to make their proof simpler
+(KT footnote~4, p.~668).
 
-The two factors are coupled by a shared non-root of their product. Each leg's
-inductive rigidity yields a rank polynomial nonzero at that leg's own seed,
-hence a nonzero polynomial; the product of the two rank polynomials with the
-general-position polynomial is again a nonzero polynomial, and over the infinite
-field $K$ a nonzero polynomial has a non-root $q_0$ --- equivalently, the
-finitely many Zariski-open loci, each the complement of a proper algebraic
-subset, meet in a dense set. At $q_0$ every factor is nonzero at once, so both
-legs attain their ranks \emph{and} the normals are in general position: the two
-conditions KT's single hypothesis delivers together, here recovered as the
-common non-root of an explicit product. In this sense the one ``algebraically
-independent over $\Q$'' assumption of \S5.1 is, on the formalization's side, two
-loci --- one of rank-maximality, one of general position --- whose shared points
-the product exhibits.
+Over an infinite field that is algebraic over its prime field, such as
+the algebraic closure of $\Q$ or of a finite field, no coordinate is
+transcendental over the prime field, so no realization is generic in
+this sense. We therefore state the two kinds of condition separately,
+each as the non-vanishing of a polynomial in the normals, and use only
+that a nonzero polynomial over an infinite field has a non-root. A rank
+condition is the non-vanishing of a minor of the rows that does not
+vanish at a given realization. The general form of this argument is
+\cref{lem:genericity-device}, in
+\cref{sec:molecular-algebraic-induction-genericity}. General
+position is a condition on pairs of normals that Katoh and Tanigawa's
+nonparallel panels satisfy (the remark after
+\cref{def:panel-general-position}), and it holds wherever $P$ does not
+vanish. A product of nonzero polynomials is again a nonzero polynomial.
+At a non-root of the product all the conditions hold at once, and this
+takes the place of Katoh and Tanigawa's one hypothesis. The proof of KT
+Lemma~6.5 below uses the same product with a factor of a third kind.
 
-\begin{lemma}[Case I realization: non-simple $G$; KT Lemma~6.2]
+\begin{lemma}[Case~I for a graph that is not simple; KT Lemma~6.2]
   \label{lem:case-I-realization-nonsimple}
   \lean{CombinatorialRigidity.Molecular.case_I_realization_nonsimple}
   \leanok
   \uses{def:genuine-hinge-realization, lem:case-I, lem:two-vertex-zero-dof,
         lem:rigidContract-isMinimalKDof}
-  Let $G$ be a minimal $k$-dof-graph with $|V(G)| \ge 3$ that is
-  \emph{not} simple: it carries a parallel pair, edges $e \ne f$ both
-  linking vertices $a \ne b$. Given the induction hypothesis for every
-  minimal $k'$-dof-graph with fewer vertices, $G$ has a nondegenerate-hinge
-  panel realization at rank $D(|V(G)|-1) - k$
-  (\cref{def:genuine-hinge-realization}).
+  Let $d \ge 2$, and let $G$ be a minimal $k$-dof-graph with
+  $|V(G)| \ge 3$ that is not simple. Suppose that for every $k'$, every
+  minimal $k'$-dof-graph with at least one and fewer than $|V(G)|$
+  vertices has a nondegenerate-hinge panel realization, and a generic
+  full-rank realization if it is simple. Then $G$ has a
+  nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}), of rank $D(|V(G)| - 1) - k$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:extensor-pair-in-panel, lem:theorem-55-base,
         lem:relative-deficiency-rank-bound, lem:rigidityRows-splice-rank-add,
         lem:extProj-preserves-rank-of-inter}
-  The parallel pair $\{e,f\}$ spans a proper rigid subgraph
-  $H' = G[\{a,b\}] \restriction \{e,f\}$, $0$-dof by
-  \cref{lem:two-vertex-zero-dof} and proper since $|V(G)| \ge 3$.
-  Contract to $G' = G/H'$ and apply the induction hypothesis to obtain a
-  panel-hinge framework $F_c$ on $G'$; install coincident panels at $a$
-  and $b$ by pulling back $F_c$'s normal at the contracted body, and
-  choose two linearly independent extensors $C_e, C_f$ in that shared
-  panel (\cref{lem:extensor-pair-in-panel}). The two-body base case
-  (\cref{lem:theorem-55-base}) makes the $H'$-block rigid at rank $D$;
-  projecting away the $H'$-columns, the $H'$-rows vanish while $F_c$'s
-  rows inject (\cref{lem:extProj-preserves-rank-of-inter}), so the two
-  blocks are jointly independent and $D + \operatorname{rank}(F_c) \le
-  \operatorname{rank}(F)$ (\cref{lem:rigidityRows-splice-rank-add}). The
-  upper bound $\operatorname{rank}(F) \le D(|V(G)|-1)-k$ follows from the
-  codimension bound (\cref{lem:relative-deficiency-rank-bound}); the
-  arithmetic $D + (D(|V(G)|-2)-k) = D(|V(G)|-1)-k$ closes rank equality.
+  A minimal $k$-dof-graph has no loops, as in the proof of
+  \cref{lem:rank-polynomial-IH-relabel-proj}. As $G$ is not simple, it
+  has two edges $e \neq f$ that join the same vertices $a \neq b$. Let
+  $H'$ be the subgraph with the vertices $a$ and $b$ and the edges $e$
+  and $f$. It is a $0$-dof-graph (\cref{lem:two-vertex-zero-dof}; KT
+  p.~673), and a proper rigid subgraph of $G$ as $|V(G)| \ge 3$. Let
+  $G' = G/E(H')$ be its contraction to $a$. By KT Lemma~3.5
+  (\cref{lem:rigidContract-isMinimalKDof}), $G'$ is a minimal
+  $k$-dof-graph with $|V(G)| - 1$ vertices. So, by the hypothesis, $G'$
+  has a nondegenerate-hinge panel realization $(G', p_2)$, of rank
+  $D(|V(G)| - 2) - k$.
+
+  As Katoh and Tanigawa do, we give $a$ and $b$ the panel of the body
+  $a$ in $(G', p_2)$, and every other body its panel in $(G', p_2)$. We
+  choose two linearly independent extensors $C_e$ and $C_f$ in the panel
+  of $a$ (\cref{lem:extensor-pair-in-panel}, in the form for $K^{d+1}$
+  given after it). Let $p$ give $e$ and $f$ the hinges $C_e$ and $C_f$,
+  and every other edge its hinge in $(G', p_2)$ (KT eq.~(6.2)). Every
+  hinge of $p$ is nonzero. It lies in the panels of the ends of its edge:
+  the ends of an edge in $G'$ are its ends in $G$ with $b$ replaced by
+  $a$ (\cref{def:rigid-contraction}), and $a$ and $b$ have the same
+  panel.
+
+  We compute the rank as in the proof of \cref{lem:case-I} for KT
+  Lemma~6.2. By KT Lemma~5.3 (\cref{lem:theorem-55-base}), the restriction of
+  $(G,p)$ to $H'$ is infinitesimally rigid, so the rows of $e$ and $f$
+  have rank $D$. The other edges have their hinges in $(G', p_2)$. After
+  the columns of $a$ and $b$ are deleted, their rows are those of
+  $R(G', p_2)$ with the columns of $a$ deleted (KT eq.~(6.4)). By KT
+  Lemma~5.1, these have the rank of $R(G', p_2)$ (KT eq.~(6.5);
+  \cref{lem:extProj-preserves-rank-of-inter}). By the block form of KT
+  eq.~(6.3),
+  \[
+    \operatorname{rank} R(G,p) \;\ge\; D + D\bigl(|V(G)| - 2\bigr) - k
+    \;=\; D\bigl(|V(G)| - 1\bigr) - k
+  \]
+  (\cref{lem:rigidityRows-splice-rank-add}). As every hinge is nonzero,
+  the rank is at most this (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}
 
-\begin{lemma}[Case I realization: removing a degree-two vertex; KT Lemma~6.5, Claim~6.6]
+\begin{fmlnote}
+  The pinned theorem is the case $d = 3$. The theorem for every
+  $d \ge 2$, of which it is an instance, is the one that the formal proof
+  of KT Theorem~5.5 uses, and it is not pinned. The pinned theorem
+  assumes of the graphs with fewer vertices only that they have
+  nondegenerate-hinge panel realizations.
+\end{fmlnote}
+
+\begin{lemma}[Case~I with no simple contraction; KT Lemma~6.5 and Claim~6.6]
   \label{lem:case-I-realization-h65}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_h65_gen}
   \leanok
   \uses{def:rank-hypothesis, lem:genericity-device}
-  Let $G$ be a simple minimal $0$-dof-graph with $|V(G)| \ge 3$ in which
-  every proper rigid subgraph has a non-simple contraction. Given the
-  induction hypothesis for every smaller minimal $0$-dof-graph, $G$
-  carries a generic full-rank realization (\cref{def:rank-hypothesis}).
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a simple
+  minimal $0$-dof-graph with $|V(G)| \ge 3$ in which no proper rigid
+  subgraph $H$ has a simple contraction $G/E(H)$. Suppose that every
+  minimal $0$-dof-graph with at least one and fewer than $|V(G)|$
+  vertices has a nondegenerate-hinge panel realization, and a generic
+  full-rank realization if it is simple. Then $G$ has a generic
+  full-rank realization (\cref{def:rank-hypothesis}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:genericity-device}
-  By KT Claim~6.6, a vertex-inclusionwise maximal proper rigid subgraph
-  $G'$ of $G$ has a non-simple contraction only because some vertex
-  $v \notin V(G')$ has degree two, with two neighbours $a, b \in V(G')$
-  and $G = G' + v$; then $G - v$ is a smaller simple minimal $0$-dof-graph,
-  which the induction hypothesis realizes at full rank. Take a seed $q$
-  chosen as a common non-root of three nonzero polynomials in the seed
-  coordinates, all fixed before the seed: the rank polynomial of $G - v$,
-  a general-position polynomial, and the $3 \times 3$ determinant of the
-  normal rows at $v, a, b$; over the infinite field $K$ their product has
-  a non-root. Re-attach $v$ at that seed: keep every endpoint selection
-  from $G-v$'s realization, give $v$ its own normal $q(v)$, and direct the
-  two new edges $va, vb$ from $v$. Off $\{va, vb\}$ the framework agrees
-  with the vertex-removal framework at the same seed, which attains full
-  rank there (the rank-polynomial factor is nonvanishing), so
-  $D(|V(G-v)|-1)$ independent rigidity rows transport
-  unchanged, vanishing on $v$'s screw column. The two new rows at $va,
-  vb$ span the full $D$-dimensional block through $v$'s column: their
-  supporting extensors $C(q(v), q(a))$ and $C(q(v), q(b))$ are linearly
-  independent because the triple $(q(v), q(a), q(b))$ is --- the
-  determinant factor is nonvanishing at the chosen seed, with no
-  perturbation argument needed. The two row blocks are disjoint (one
-  vanishes on, the other is pinned through, $v$'s column) and together
-  give $D + D(|V(G-v)|-1) = D(|V(G)|-1)$ independent rows, so $G$ is
-  infinitesimally rigid on $V(G)$ at this seed; the genericity device
-  (\cref{lem:genericity-device}) upgrades this fixed-seed rigidity to a
-  generic realization.
+  As in KT Lemma~6.5, we assume that $G$ has a proper rigid subgraph (the
+  note after the proof). We first prove KT Claim~6.6: $G$ has a vertex
+  $v$ of degree two such that $G_v$ is a minimal $0$-dof-graph. Let $G'$
+  be a proper rigid subgraph of $G$ whose vertex set is maximal under
+  inclusion. The subgraph of $G$ induced on $V(G')$ contains $G'$ and
+  has the same vertices, so its deficiency is at most that of $G'$,
+  which is zero (\cref{def:D-deficiency}). So we may take $G'$ induced.
+  Then an edge of $G$ not in $G'$ has at most one end in $V(G')$, and
+  $G/E(G')$ has no loop. By the hypothesis, $G/E(G')$ is not simple, so
+  it has two edges $e \neq f$ with the same ends. As $G$ is simple, $e$
+  and $f$ are not parallel in $G$, so one of these ends is the vertex $r$
+  to which $G'$ is contracted. So each of $e$ and $f$ has exactly one end
+  in $V(G')$, and they join a common vertex $v \notin V(G')$ to two
+  vertices $a \neq b$ of $G'$. Katoh and Tanigawa read off $v$, $e$ and
+  $f$ from the non-simplicity of $G/E(G')$ directly (KT p.~676). This
+  needs $G'$ induced: otherwise an edge of $G$ with both ends in $V(G')$
+  could give a loop of $G/E(G')$ instead.
+
+  Let $G''$ be obtained from $G'$ by adding $v$ and the edges $e$ and
+  $f$. Removing $v$ from $G''$ gives $G'$, so
+  $\operatorname{def}(\tilde G'') \le \operatorname{def}(\tilde G') = 0$,
+  by KT Lemma~4.4 (\cref{lem:removal-deficiency}). So $G''$ is a rigid
+  subgraph of $G$ with more vertices than $G'$. By the choice of $G'$ it
+  is not proper, so $V(G'') = V(G)$. Let $e'$ be an edge of $G$ not in
+  $G''$. Then $G - e'$ contains $G''$ and has the same vertices, so its
+  deficiency is zero, as is that of $G$. This contradicts the minimality
+  of $G$ (the remark after \cref{def:k-dof}), so $G = G''$. Hence $v$
+  has degree two in $G$, and $G_v = G'$ is a minimal $0$-dof-graph (KT
+  Lemma~3.3, \cref{lem:subgraph-minimality}). For a minimal
+  $k$-dof-graph $G$, the same argument gives
+  $\operatorname{def}(\tilde G) \le \operatorname{def}(\tilde G'') = 0$
+  (\cref{def:D-deficiency}), so $k = 0$. This is the first assertion of
+  KT Claim~6.6.
+
+  The graph $G_v$ is simple, as a subgraph of $G$, and has
+  $|V(G)| - 1 \ge 2$ vertices. So it has a generic full-rank realization,
+  of rank $D(|V(G)| - 2)$. Katoh and Tanigawa keep this realization, and
+  give $v$ a panel $\Pi^\circ$ that is nonparallel to the other panels
+  and does not contain $\Pi(a) \cap \Pi(b)$. Then the hinges
+  $\Pi^\circ \cap \Pi(a)$ and $\Pi^\circ \cap \Pi(b)$ of $va$ and $vb$
+  are distinct (KT p.~676).
+
+  We choose all the normals at once, as in the proof of
+  \cref{lem:case-I-realization}, at a non-root $q$ of the product of
+  three nonzero polynomials. The first is a polynomial $Q$ that does not
+  vanish at the normals of this realization, such that $R(G_v, q)$ has
+  rank at least $D(|V(G)| - 2)$ wherever $Q(q) \neq 0$
+  (\cref{lem:rank-polynomial-of-le-finrank}). This is the genericity
+  argument of \cref{lem:genericity-device}, in the form of that lemma.
+  The second is the polynomial $P$ of the proof of
+  \cref{lem:case-I-realization}, so that the normals $q$ are in general
+  position.
+
+  The third is a $3 \times 3$ minor $\Delta$ of the matrix with the rows
+  $q(v)$, $q(a)$ and $q(b)$, which is not the zero polynomial as
+  $d + 1 \ge 3$. As $\Delta(q) \neq 0$, the normals $q(v)$, $q(a)$ and
+  $q(b)$ are linearly independent. Since $q(a)$ and $q(b)$ are linearly
+  independent, this says that the panel of $v$ does not contain the
+  intersection of the panels of $a$ and $b$, as Katoh and Tanigawa ask
+  of $\Pi^\circ$.
+
+  Let $(G, q)$ be the panel-hinge framework on $G$ with the normals $q$.
+  The edges of $G_v$ have the same hinges in $(G, q)$ and in $(G_v, q)$,
+  so their rows are those of $R(G_v, q)$, and these vanish in the columns
+  of $v$. The hinges of $va$ and $vb$ are $C(q(v), q(a))$ and
+  $C(q(v), q(b))$. They are linearly independent, because the joins
+  $q(v) \vee q(a)$ and $q(v) \vee q(b)$ are
+  (\cref{lem:panel-support-extensor-independence}). Indeed, if $q(v)$,
+  $q(a)$ and $q(b)$ are extended to a basis of $K^{d+1}$, the two joins
+  belong to the corresponding basis of $\bigwedge^2 K^{d+1}$ (the remark
+  after \cref{def:extensor}). So, as in the proof of KT Lemma~5.3
+  (\cref{lem:rank-parallel-full}), the rows of $va$ and $vb$ have rank
+  $D$ in the columns of $v$. This is the block form of KT eq.~(6.10).
+
+  Take $D$ of these rows that are linearly independent in the columns of
+  $v$, and $D(|V(G)| - 2)$ linearly independent rows of $G_v$. In a
+  vanishing linear combination of them, only the first have nonzero
+  entries in the columns of $v$, so their coefficients vanish, and then
+  so do the others. Hence
+  \[
+    \operatorname{rank} R(G, q) \;\ge\; D + D\bigl(|V(G)| - 2\bigr)
+    \;=\; D\bigl(|V(G)| - 1\bigr),
+  \]
+  and the rank is at most this (\cref{lem:trivial-motions-rank-bound}).
+  As the normals $q$ are in general position, $(G, q)$ is a generic
+  full-rank realization of $G$.
 \end{proof}
 
-\begin{lemma}[Case I dispatch: KT Lemmas 6.2, 6.3, 6.5]
+\begin{fmlnote}
+  The pinned theorem assumes that $G$ has a proper rigid subgraph, as KT
+  Lemma~6.5 does, and the statement omits this hypothesis. The proof
+  above uses it to choose $G'$. Without a proper rigid subgraph, the
+  statement would be the case $k = 0$ of Case~III
+  (\cref{sec:molecular-algebraic-induction-caseIII}), whose proof also
+  needs the induction hypothesis at positive deficiencies (KT
+  Claim~6.11).
+\end{fmlnote}
+
+\begin{lemma}[The three cases of Case~I; KT Lemmas 6.2, 6.3 and 6.5]
   \label{lem:case-I-dispatch}
   \lean{CombinatorialRigidity.Molecular.case_I_dispatch_gen}
   \leanok
   \uses{def:genuine-hinge-realization, def:rank-hypothesis,
         lem:case-I-realization-nonsimple, lem:case-I-realization,
         lem:case-I-realization-h65}
-  Let $G$ be a minimal $0$-dof-graph with $|V(G)| \ge 3$ carrying a
-  proper rigid subgraph. Then $G$ has a nondegenerate-hinge panel
-  realization at the target rank (\cref{def:genuine-hinge-realization}),
-  and if $G$ is simple, a generic one (\cref{def:rank-hypothesis}).
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a minimal
+  $0$-dof-graph with $|V(G)| \ge 3$ that has a proper rigid subgraph.
+  Then $G$ has a nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}), and if $G$ is simple, a
+  generic full-rank realization (\cref{def:rank-hypothesis}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-I-realization-nonsimple, lem:case-I-realization,
         lem:case-I-realization-h65, lem:generic-yields-genuine-hinge}
-  If $G$ is not simple, \cref{lem:case-I-realization-nonsimple} (KT
-  Lemma~6.2) applies directly. If $G$ is simple, case on whether some
-  proper rigid subgraph $H$ with representative body $r$ has a simple
-  contraction $G/E(H)$: if so, \cref{lem:case-I-realization} (KT
-  Lemma~6.3) gives the generic realization; otherwise every contraction is
-  non-simple and \cref{lem:case-I-realization-h65} (KT Lemma~6.5) gives
-  it instead. Either way \cref{lem:generic-yields-genuine-hinge} then
-  gives the nondegenerate-hinge form.
+  As in the three lemmas, we assume the induction hypothesis KT
+  eq.~(6.1) for the graphs with fewer vertices than $G$ (the note after
+  the proof). We follow Katoh and Tanigawa's three cases (KT p.~673). If
+  $G$ is not simple, then KT Lemma~6.2 gives a nondegenerate-hinge panel
+  realization (\cref{lem:case-I-realization-nonsimple}). Let $G$ be
+  simple. Suppose that some proper rigid subgraph $H$ has a simple
+  contraction $G/E(H)$. Then $H$ and $G/E(H)$ are simple minimal
+  $0$-dof-graphs with fewer vertices than $G$ (KT Lemmas~3.3 and~3.5).
+  The induction hypothesis gives generic full-rank realizations of both,
+  and KT Lemma~6.3 gives one of $G$ (\cref{lem:case-I-realization}).
+  Otherwise, KT Lemma~6.5 gives one (\cref{lem:case-I-realization-h65}).
+  In both cases, $G$ also has a nondegenerate-hinge panel realization
+  (\cref{lem:generic-yields-genuine-hinge}).
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem assumes the induction hypothesis, for every $k'$
+  and every minimal $k'$-dof-graph with at least one and fewer than
+  $|V(G)|$ vertices, and the statement omits it. The pinned theorem is
+  Case~I for $k = 0$. For $k > 0$ the formal proof of KT Theorem~5.5
+  makes the same case split, and its third case does not occur, by the
+  first assertion of KT Claim~6.6 (the proof of
+  \cref{lem:case-I-realization-h65}). No pinned theorem states that case
+  split or KT Claim~6.6.
+\end{fmlnote}

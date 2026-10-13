@@ -381,7 +381,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   pp. 673--676.
 - **`lem:case-I-dispatch` / Claim 6.6 (the Lemma-6.5 arm) — the maximal rigid
   subgraph must be edge-saturated (Phase 22k L8a)** — [done (`case-i.tex`
-  `lem:case-I-dispatch` + this ledger insight; flipped 22k-close)] **(a)** the
+  `lem:case-I-dispatch` + this ledger insight; flipped 22k-close; since PROSE round 3
+  task 2.8 the proof of `lem:case-I-realization-h65` gives Claim 6.6 with `G′`
+  induced)] **(a)** the
   L8a-step-2 build surfaced it (2026-06-15). **Stable insight (a benign gap in
   KT-as-written):** KT's Lemma 6.5 / Claim 6.6 takes a *vertex-inclusionwise
   maximal* proper rigid subgraph `G'` and reads the degree-2 vertex `v` off the
@@ -652,7 +654,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (the product over distinct body pairs of the leading `2×2` minor, nonzero at a
   Vandermonde/moment-curve seed, `lem:moment-curve-general-position`), coupled by
   a shared non-root of the product of the two per-leg rank polynomials with the
-  GP factor. Source verified: KT §5.1 + footnote 4, p. 668; Claim 6.4, p. 675.
+  GP factor. Since PROSE round 3 task 2.8 the passage is two paragraphs after
+  that lemma's note, and the polynomials and their product are in its proof; the
+  passage names Lemma 6.3's proof (pp. 674--675), where the one choice gives both.
+  Source verified: KT §5.1 + footnote 4, p. 668; Claim 6.4, p. 675.
   Pointer: `notes/Phase22-realization-design.md` §0, §1.1; `notes/Phase22a.md`
   *Decisions* — (G2) / N6b–N6c.
 - **`lem:case-III-claim612-p3-placement` — the third candidate via the graph iso
