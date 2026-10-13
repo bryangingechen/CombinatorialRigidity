@@ -66,6 +66,9 @@ form for the graph in the algebraic induction, where it is used.
 
 \begin{definition}[The subgraph induced by the ends of a set of edges]
   \label{def:induced-span}
+  \lean{Graph.fiberSpan, Graph.inducedSpan}
+  \leanok
+  \uses{def:edge-multiply, def:body-bar-framework}
   Let $G$ be a multigraph, let $X$ be a set of edges of $\tilde G$, and
   let $V(X)$ be the set of vertices incident with an edge of $X$. Then
   $G[V(X)]$ is the subgraph of $G$ induced by $V(X)$. Its vertices are
@@ -302,7 +305,7 @@ p.~660]{katohTanigawa2011}. They also use its inverse, edge-splitting
 
 \begin{definition}[Removal, splitting off and edge-splitting]
   \label{def:graph-operations}
-  \lean{Graph.removeVertex, Graph.splitOff, Graph.edgeSplit, Graph.endsOf}
+  \lean{Graph.removeVertex, Graph.splitOff, Graph.edgeSplit}
   \leanok
   \uses{def:k-dof}
   Let $G$ be a multigraph, and let $v$ be a vertex of $G$ of degree two,
@@ -327,10 +330,11 @@ p.~660]{katohTanigawa2011}. They also use its inverse, edge-splitting
   $ab$. So it gives $G_v^{ab}$ when no edge of $G - v$ has the label
   $e_0$, for instance when $e_0 \notin E(G)$. A label outside $E(G)$
   exists when there are enough labels (\cref{rem:fresh-edge-supply}).
-  The fourth pin fixes, for each edge of $G$, an ordered pair of its
-  ends, the \emph{endpoint choice} of $G$. The realizations of Cases~I
-  and~II of the algebraic induction take the ends of the edges of $G$
-  from it (\cref{fmlnote:panel-hinge-nondegenerate}).
+  The formalization also fixes, for each edge of $G$, an ordered pair of
+  its ends (\texttt{endsOf}), the \emph{endpoint choice} of $G$. The
+  realizations of Cases~I and~II of the algebraic induction take the
+  ends of the edges of $G$ from it
+  (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
 
 Splitting off the new vertex $v$ of $H_{ab}^v$ gives back $H$.
@@ -1430,7 +1434,8 @@ next two lemmas give.
   \leanok
   By \cref{lem:low-degree-vertex}, $G$ has a vertex of degree at most
   two. As $G$ is $2$-edge-connected and has at least two vertices, every
-  vertex of $G$ has degree at least two (\cref{def:cut-edges-2ec}).
+  vertex of $G$ has degree at least two
+  (\cref{lem:two-edge-connected-degree}).
 \end{proof}
 
 A $0$-dof-graph is $2$-edge-connected (KT Lemma~3.1,
@@ -1660,8 +1665,8 @@ Lemma~6.1, which ends the subsection in two forms.
   $P(G)$ holds by (c).
 
   Otherwise, $G$ is $2$-edge-connected, as it is a $0$-dof-graph
-  (\cref{def:cut-edges-2ec}). So $G$ has a vertex $v$ of degree two
-  (\cref{lem:reducible-vertex}). As we showed before
+  (\cref{lem:two-edge-connected-degree}). So $G$ has a vertex $v$ of
+  degree two (\cref{lem:reducible-vertex}). As we showed before
   \cref{lem:no-rigid-edge-count}, $G$ has no loops. So the two edges at
   $v$ join it to vertices $a, b \neq v$. By part~(i) of
   \cref{lem:reduction-step}, $G_v^{ab}$ is a minimal $0$-dof-graph. Its
@@ -1938,7 +1943,8 @@ induction uses neither: it extracts a chain of length $d$ at every $d$
   \uses{lem:two-vertex-zero-dof, lem:simple-minimal-noRigid}
   Suppose not. As we showed before \cref{lem:no-rigid-edge-count}, $G$
   has no loops. As $G$ is a $0$-dof-graph with at least two vertices,
-  every vertex of $G$ has degree at least two (\cref{def:cut-edges-2ec}).
+  every vertex of $G$ has degree at least two
+  (\cref{lem:deficiency-zero-connected}).
   Let $X_2$ be the set of vertices of degree two, and let $X_3$ be the
   set of the other vertices, which have degree at least three. No edge
   joins two vertices of $X_2$, so every edge at a vertex of $X_2$ has its

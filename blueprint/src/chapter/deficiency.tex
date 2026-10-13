@@ -465,20 +465,25 @@ $2$-edge-connectivity by the condition of \cref{lem:two-edge-conn}.
 
 \begin{definition}[Cuts and $2$-edge-connectivity]
   \label{def:cut-edges-2ec}
-  \lean{Graph.cutEdges, Graph.TwoEdgeConnected, Graph.cutEdges_eq_crossingEdges_cutLabeling,
-    Graph.twoEdgeConnected_of_isKDof_zero, Graph.two_le_degree_of_twoEdgeConnected,
-    Graph.crossingEdges_cutLabeling_singleton_subset,
-    Graph.crossingEdges_cutLabeling_singleton_ncard_le}
+  \lean{Graph.cutEdges, Graph.TwoEdgeConnected}
   \leanok
-  \uses{def:k-dof}
   Let $G$ be a multigraph. For a set $V'$ of vertices of $G$, let
   $\delta_G(V')$ be the set of edges of $G$ that join $V'$ to
   $V(G) \setminus V'$, and let $d_G(V') = |\delta_G(V')|$. Then $G$ is
   \emph{$2$-edge-connected} if $d_G(V') \ge 2$ for every set $V'$ with
-  $\emptyset \neq V' \neq V(G)$. If $D \ge 1$, every $0$-dof-graph is
-  $2$-edge-connected. If $G$ is $2$-edge-connected and has at least two
-  vertices, then every vertex of $G$ has degree at least $2$.
+  $\emptyset \neq V' \neq V(G)$.
 \end{definition}
+
+\begin{lemma}[$2$-edge-connectivity of $0$-dof-graphs, and the degrees]
+  \label{lem:two-edge-connected-degree}
+  \lean{Graph.twoEdgeConnected_of_isKDof_zero, Graph.two_le_degree_of_twoEdgeConnected}
+  \leanok
+  \uses{def:cut-edges-2ec, def:k-dof}
+  Let $G$ be a multigraph. If $D \ge 1$ and $G$ is a $0$-dof-graph,
+  then $G$ is $2$-edge-connected. If $G$ is $2$-edge-connected and has
+  at least two vertices, then every vertex of $G$ has degree at
+  least~$2$.
+\end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:two-edge-conn}
@@ -490,11 +495,14 @@ $2$-edge-connectivity by the condition of \cref{lem:two-edge-conn}.
 \end{proof}
 \begin{fmlnote}
   The formalization states \cref{lem:two-edge-conn} with a labeling, as
-  its formalization note explains. One pin identifies $\delta_G(V')$
-  with the set of edges whose ends get different labels under that
-  labeling. Two more show that for $V' = \{v\}$ these
-  are the edges at $v$ that are not loops, and bound their number by
-  the degree of $v$.
+  its formalization note explains. The formal proof identifies
+  $\delta_G(V')$ with the set of edges whose ends get different labels
+  under that labeling
+  (\texttt{cutEdges\_\allowbreak{}eq\_\allowbreak{}crossingEdges\_\allowbreak{}cutLabeling}).
+  For $V' = \{v\}$, these are the edges at $v$ that are not loops
+  (\texttt{crossingEdges\_\allowbreak{}cutLabeling\_\allowbreak{}singleton\_\allowbreak{}subset}),
+  and their number is at most the degree of $v$
+  (\texttt{crossingEdges\_\allowbreak{}cutLabeling\_\allowbreak{}singleton\_\allowbreak{}ncard\_\allowbreak{}le}).
 \end{fmlnote}
 
 \begin{lemma}[A $0$-dof-graph is connected, of minimum degree at least two]
@@ -508,10 +516,10 @@ $2$-edge-connectivity by the condition of \cref{lem:two-edge-conn}.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:two-edge-conn}
-  By \cref{def:cut-edges-2ec}, $G$ is $2$-edge-connected, and this
-  gives the bound on the degrees. If $G$ were disconnected, the vertex
-  set $V'$ of one of its components would have
+  \uses{lem:two-edge-conn, lem:two-edge-connected-degree}
+  By \cref{lem:two-edge-connected-degree}, $G$ is $2$-edge-connected,
+  and this gives the bound on the degrees. If $G$ were disconnected,
+  the vertex set $V'$ of one of its components would have
   $\emptyset \neq V' \neq V(G)$ and $d_G(V') = 0$.
 \end{proof}
 
@@ -569,14 +577,36 @@ Katoh and Tanigawa prove their Lemma~3.6 by writing $M(\tilde G)$ as a
 direct sum, using their Lemmas~3.1 and~3.4; we compare partitions
 directly. For
 a set $X$ of vertices of $G$, $G[X]$ is the subgraph induced by $X$, and
-$\tilde G[X] = (D-1)\cdot G[X]$.
+$\tilde G[X] = (D-1)\cdot G[X]$. We first compute the value of a
+partition none of whose parts meets both sides of a cut.
+
+\begin{lemma}[The value of a separated partition]
+  \label{lem:separated-partition-value}
+  \lean{Graph.partitionDef_split_of_sides}
+  \leanok
+  \uses{def:D-deficiency, def:cut-edges-2ec}
+  Let $G$ be a multigraph, let $V'$ be a set of vertices of $G$ with
+  $\emptyset \neq V' \neq V(G)$, and let $V'' = V(G) \setminus V'$. Let
+  $P$ be a partition of $V(G)$ that is \emph{separated}, that is, each
+  of its parts lies in $V'$ or in $V''$. Let $P'$ and $P''$ be the
+  partitions of $V'$ and of $V''$ formed by these parts. Then
+  \[
+    \operatorname{def}_{\tilde G}(P) \;=\;
+    \operatorname{def}_{\tilde G[V']}(P')
+    + \operatorname{def}_{\tilde G[V'']}(P'')
+    + D - (D-1)\,d_G(V').
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  An edge of $G$ joins different parts of $P$ if and only if it joins
+  different parts of $P'$, or of $P''$, or lies in $\delta_G(V')$. As
+  $|P| - 1 = (|P'| - 1) + (|P''| - 1) + 1$, the identity follows.
+\end{proof}
 
 \begin{lemma}[The deficiency at a cut of at most one edge; KT Lemma~3.6]
   \label{lem:cut-edge-decomposition}
-  \lean{Graph.partitionDef_congr, Graph.partitionDef_comp_of_injOn,
-    Graph.partitionDef_split_of_sides,
-    Graph.exists_sides_separated_partitionDef_le,
-    Graph.deficiency_eq_of_cutEdges_ncard_le_one,
+  \lean{Graph.deficiency_eq_of_cutEdges_ncard_le_one,
     Graph.exists_cut_decomposition_of_not_twoEdgeConnected,
     Graph.deficiency_induce_union_singleton}
   \leanok
@@ -607,21 +637,11 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:D-deficiency, def:cut-edges-2ec, thm:def-eq-corank}
-  (1) Call a partition of $V(G)$ \emph{separated} if each of its parts
-  lies in $V'$ or in $V''$. A separated partition $P$ is the union of a
-  partition $P'$ of $V'$ and a partition $P''$ of $V''$. An edge of $G$
-  joins different parts of $P$ if and only if it joins different parts
-  of $P'$, or of $P''$, or lies in $\delta_G(V')$. As
-  $|P| - 1 = (|P'| - 1) + (|P''| - 1) + 1$, it follows that
-  \[
-    \operatorname{def}_{\tilde G}(P) \;=\;
-    \operatorname{def}_{\tilde G[V']}(P')
-    + \operatorname{def}_{\tilde G[V'']}(P'')
-    + D - (D-1)\,d_G(V').
-  \]
-  Taking $P'$ and $P''$ of largest value gives the inequality $\ge$ in
-  (1).
+  \uses{def:D-deficiency, def:cut-edges-2ec, lem:separated-partition-value, thm:def-eq-corank}
+  (1) The union of a partition $P'$ of $V'$ and a partition $P''$ of
+  $V''$ is a separated partition of $V(G)$, whose value is given by
+  \cref{lem:separated-partition-value}. Taking $P'$ and $P''$ of
+  largest value gives the inequality $\ge$ in (1).
 
   For $\le$, let $P$ be any partition of $V(G)$, and split each part $Q$
   that meets both $V'$ and $V''$ into $Q \cap V'$ and $Q \cap V''$. The
@@ -630,8 +650,10 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
   parts of the new partition but not of $P$. Each of them lies in
   $\delta_G(V')$, so $c \le 1$, and $c = 0$ if $s = 0$. So the value
   changes by $Ds - (D-1)c \ge 0$. Hence the value of $P$ is at most that
-  of a separated partition, which by the identity above is at most the
-  right-hand side of (1).
+  of a separated partition
+  (\texttt{exists\_\allowbreak{}sides\_\allowbreak{}separated\_\allowbreak{}partitionDef\_\allowbreak{}le}).
+  By \cref{lem:separated-partition-value}, the value of a separated
+  partition is at most the right-hand side of (1).
 
   (2) As $G$ is not $2$-edge-connected, some set $V'$ with
   $\emptyset \neq V' \neq V(G)$ has $d_G(V') \le 1$. The formula for $k$
@@ -647,14 +669,14 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
   one part. The other side is $G[V']$, and $D - (D-1) = 1$.
 \end{proof}
 \begin{fmlnote}
-  Partitions are labelings in the formalization
-  (\cref{fmlnote:partition-labeling}). Two of the pins say that the
-  value of a labeling depends only on its labels on $V(G)$, and that it
-  does not change when the labels are renamed injectively. The proof of
-  (1) uses them to give the two sides disjoint sets of labels before it
-  combines their partitions. The other pins are the identity for
-  separated partitions, the splitting step, and statements (1), (2) and
-  (3).
+  The three pins are statements (1), (2) and (3). Partitions are
+  labelings in the formalization (\cref{fmlnote:partition-labeling}).
+  The value of a labeling depends only on its labels on $V(G)$
+  (\texttt{partitionDef\_\allowbreak{}congr}), and it does not change
+  when the labels are renamed injectively
+  (\texttt{partitionDef\_\allowbreak{}comp\_\allowbreak{}of\_\allowbreak{}injOn}).
+  The proof of (1) uses these two facts to give the two sides disjoint
+  sets of labels before it combines their partitions.
 \end{fmlnote}
 
 \begin{lemma}[The deficiency at a cut vertex]
@@ -674,7 +696,6 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:cut-edge-decomposition}
   Let $P$ be a partition of $V(G)$. For $i = 1, 2$, the nonempty sets
   $Q \cap V_i$ with $Q \in P$ form a partition $P_i$ of $V_i$. Let $I$ be
   the set of parts of $P$ that meet both $V_1$ and $V_2$, so that
@@ -704,9 +725,9 @@ $\tilde G[X] = (D-1)\cdot G[X]$.
   vertices $u$ and $v$ not joined by an edge; a cut vertex is the case
   $u = v$. The second pin is the lemma, and the first is its inequality
   $\ge$. The proof of the first renames the labels of two attaining
-  labelings injectively, with the pins of
-  \cref{lem:cut-edge-decomposition} that allow this, so that their sets
-  of labels meet only in the label of $v$.
+  labelings injectively
+  (\texttt{partitionDef\_\allowbreak{}comp\_\allowbreak{}of\_\allowbreak{}injOn}),
+  so that their sets of labels meet only in the label of $v$.
 \end{fmlnote}
 
 Let $V_1$ be a set of vertices of $G$. A path of $G$ whose ends lie in
@@ -733,13 +754,13 @@ of $G$ with that of $G[V_1]$ when $G$ consists of $G[V_1]$ and one ear.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:cut-edge-decomposition}
+  \uses{lem:separated-partition-value}
   Let $V'' = \{x_1, \dots, x_k\}$, and let $P''$ be the partition of
   $V''$ into single vertices. Take a partition $P_1$ of $V_1$ of largest
   value, and let $P = P_1 \cup P''$. Each part of $P$ lies in $V_1$ or in
-  $V''$, so $P$ is separated in the sense of the proof of
-  \cref{lem:cut-edge-decomposition}, with $V' = V_1$. The identity for
-  separated partitions there gives
+  $V''$, so $P$ is separated in the sense of
+  \cref{lem:separated-partition-value}, with $V' = V_1$. That lemma
+  gives
   \[
     \operatorname{def}_{\tilde G}(P) \;=\;
     \operatorname{def}(\tilde G[V_1])
@@ -887,9 +908,7 @@ minimal $k$-dof-graphs with two vertices, and with one.
 
 \begin{lemma}[The minimal $k$-dof-graphs with at most two vertices; KT p.~671]
   \label{lem:two-vertex-trichotomy}
-  \lean{Graph.deficiency_of_edgeSet_empty, Graph.deficiency_of_single_edge,
-    Graph.edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two,
-    Graph.isMinimalKDof_ncard_le_two_trichotomy}
+  \lean{Graph.isMinimalKDof_ncard_le_two_trichotomy}
   \leanok
   \uses{def:k-dof, lem:matroid-restrict-subgraph, thm:def-eq-corank}
   Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with one or two
@@ -904,11 +923,14 @@ minimal $k$-dof-graphs with two vertices, and with one.
   We first compute three deficiencies. If a multigraph $H$ has no edge,
   then every partition $P$ of $V(H)$ has value
   $D(|P| - 1) \le D(|V(H)| - 1)$, with equality for the partition into
-  single vertices, so $\operatorname{def}(\tilde H) = D(|V(H)| - 1)$.
+  single vertices, so $\operatorname{def}(\tilde H) = D(|V(H)| - 1)$
+  (\texttt{deficiency\_\allowbreak{}of\_\allowbreak{}edgeSet\_\allowbreak{}empty}).
   Let $H$ have two vertices $x$ and $y$. Its partitions are $\{V(H)\}$,
   of value $0$, and $\{\{x\}, \{y\}\}$. If $H$ has one edge, joining $x$
   and $y$, the second has value $D - (D - 1) = 1$, so
-  $\operatorname{def}(\tilde H) = 1$. If $H$ has two edges, each joining
+  $\operatorname{def}(\tilde H) = 1$
+  (\texttt{deficiency\_\allowbreak{}of\_\allowbreak{}single\_\allowbreak{}edge}).
+  If $H$ has two edges, each joining
   $x$ and $y$, the second has value $D - 2(D - 1) = 2 - D \le 0$, so
   $\operatorname{def}(\tilde H) = 0$. This last computation is also
   \cref{lem:two-vertex-zero-dof}, in the next chapter.
@@ -930,13 +952,9 @@ minimal $k$-dof-graphs with two vertices, and with one.
   $k = D - \operatorname{rank} M(\tilde G) \le 0$. As $k \ge 0$, it
   follows that $k = 0$ and that $B_H$ is a base of $M(\tilde G)$. But
   $B_H \subseteq E(\tilde H)$ misses $\tilde e_3$, against the
-  minimality of $G$. So $G$ has at most two edges, and the three
-  computations give (i), (ii) and (iii). Katoh and Tanigawa deduce that
-  $G$ has at most two edges from their Lemma~3.2: a minimal
-  $k$-dof-graph is not $3$-edge-connected.
+  minimality of $G$. So $G$ has at most two edges
+  (\texttt{edgeSet\_\allowbreak{}ncard\_\allowbreak{}le\_\allowbreak{}two\_\allowbreak{}of\_\allowbreak{}isMinimalKDof\_\allowbreak{}of\_\allowbreak{}ncard\_\allowbreak{}two}),
+  and the three computations give (i), (ii) and (iii). Katoh and
+  Tanigawa deduce that $G$ has at most two edges from their Lemma~3.2: a
+  minimal $k$-dof-graph is not $3$-edge-connected.
 \end{proof}
-\begin{fmlnote}
-  The first two pins are the deficiencies of a multigraph without edges
-  and of a single edge, the third is the bound on the number of edges at
-  two vertices, and the fourth is the lemma.
-\end{fmlnote}

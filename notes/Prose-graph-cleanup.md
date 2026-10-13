@@ -6,11 +6,12 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
 disposition, and reports its 132 `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.3
-reshaped the nodes of round 1's chapters, of `matroid-union` to `meet` and of `rigidity-matrix`. No
-task edits the Lean or changes a statement's strength. **Next concrete task:** task 3.4, the node
-shapes of `deficiency.tex` and of `molecular-induction.tex`'s operations (*Hand-off*). Round
-manual: `CLEANUP.md`.
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.4
+reshaped the nodes of round 1's chapters, of `matroid-union` to `meet`, of `rigidity-matrix`, and
+of `deficiency` with `molecular-induction`'s operations. No task edits the Lean or changes a
+statement's strength. **Next concrete task:** task 3.5, the node shapes of
+`molecular-induction.tex`'s KT Lemmas 4.4–4.9 and the carry-in `F-098` (*Hand-off*). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -21,27 +22,30 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3.3 has landed** (this commit; eight chapters, the ledger and docs, no Lean). Nothing is
-mid-stream; the next task is task 3.4.
+**Task 3.4 has landed** (this commit; four chapters, the ledger and docs, no Lean). Nothing is
+mid-stream; the next task is task 3.5.
 
-**The gate's baseline, at task 3.3** (2026-10-13):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 322 lines**, sha256 prefix
-  **`9e02c8f68bf13099`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 3.4** (2026-10-13):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 334 lines**, sha256 prefix
+  **`a1ac36f392cc046b`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
-  against task 3.2's (3 300 lines, `731a21a2756c46c4`) is task 3.3's *Expected*, its 156 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1310 edges
-  7d49700fb4cfb499`** and **`c230f601f4c9cc61`**; `print.log` 0 `LaTeX Warning` lines and 31
-  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 667 nodes,
-  1 019 pins (1 009 distinct; `lean_decls` 1 020), 490 missing, 2 217 implied, 86 + 310
-  unbacked, 190 dead, 25 nodes with four or more pins, one cycle-closing missing edge (`F-011`'s
+  against task 3.3's (3 322 lines, `9e02c8f68bf13099`) is task 3.4's *Expected*, its 117 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1316 edges
+  2336c6df5ff83f75`** and **`c5a418472970a00c`**; `print.log` 0 `LaTeX Warning` lines and 31
+  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 669 nodes,
+  1 011 pins (1 001 distinct; `lean_decls` 1 012), 459 missing, 2 226 implied, 87 + 309
+  unbacked, 190 dead, 21 nodes with four or more pins, one cycle-closing missing edge (`F-011`'s
   last, task 3.6). The forward screen gives the open's table but `case-i` 8/6 (task 3.2) and
   `rigidity-matrix` 10/9 0/0.
-- Missing in-edges that tasks 3.2–3.3 drew (task 4's, which the script's report lists; their
+- Missing in-edges that tasks 3.2–3.4 drew (task 4's, which the script's report lists; their
   commits name them): to `lem:generic-realization-of-rigid` 4, `lem:meet-two-hyperplanes` 3,
   `def:screw-space` 9 (five in `case-iii.tex` implied once their missing edges to
-  `def:rigidity-matrix` are added), `def:trivial-motions-rigid` 3 and `lem:edge-rows-independent`
-  2 (`pencil.tex`). Two proofs in `case-i.tex` and one in `molecule-modelling.tex` cite
-  `def:trivial-motions-rigid` without an edge, as they cited `def:dof-generic`.
+  `def:rigidity-matrix` are added), `def:trivial-motions-rigid` 3, `lem:edge-rows-independent`
+  2 (`pencil.tex`), `lem:two-edge-connected-degree` 3 and `def:induced-span` 1. Proofs that cite
+  a node without an edge, as they cited the node it left: two in `case-i.tex` and one in
+  `molecule-modelling.tex` (`def:trivial-motions-rigid`), `lem:reducible-vertex` and
+  `thm:minimal-kdof-reduction` (`lem:two-edge-connected-degree`), `lem:adjacent-degree-two-pair`
+  (`lem:deficiency-zero-connected`).
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -194,62 +198,49 @@ gate's diff, which each task makes exact before editing.
     `F-059`, `F-110`, `F-111`): `thm:matroid-partition`, `lem:meet-two-hyperplanes` and
     `lem:generic-realization-of-rigid` added, `F-110`'s choice *revised*; its exact list and
     *Expected* (77 lines) are in its commit.
-  - [x] **3.3 `rigidity-matrix.tex`** (this commit; `F-009`'s two, `F-010`'s `ScrewSpace` and
-    `finrank_screwAssignment`, `F-011`'s three, `F-008`'s `def:dof-generic`, `F-065`, `F-068`), each
-    fix tried on a scratch copy with `--tex-root`. `def:rigidity-matrix` keeps its five motion and
-    row pins (KT §2.4's one definition) with a role map; `exists_finite_spanning_rigidityRows`,
-    which no clause states, is unpinned. *Revised:* the screw space (`ScrewSpace`, `screwDim`,
-    `screwSpace_finrank`) gets a node of its own, `def:screw-space` before `def:hinge-constraint`
-    (`F-010`'s third choice: many nodes use the space without frameworks), and the two facts after
-    the definition become `lem:edge-rows-independent` (`linearIndependent_hingeRow`,
-    `exists_independent_rigidityRows_of_edge`, which later chapters use) and
-    `lem:own-end-rows-independent` (the forest and star forms, dead). `def:trivial-motions-rigid`,
-    before `def:dof-generic`, takes `IsTrivialMotion`, `trivialMotions` and `IsInfinitesimallyRigid`;
-    `def:dof-generic` keeps the degree of freedom and genericity, unpinned and unfilled (no
-    declaration defines them), `\uses` `def:rigidity-matrix` and gets a note. *Revised:* the
-    deficiency bound splits off as `lem:deficiency-rank-bound`; KT state it only inside their
-    Proposition 2.3, but three nodes use it apart from the trivial motions. The trivial-motions lemma
-    keeps three pins; `finrank_screwAssignment`, `trivialMotions_le_infinitesimalMotions` and
-    `trivialMotions_eq_range_const` are unpinned and named in its proof. `F-011`'s three cycles go.
-    `F-065`, `F-068`: left (the induced case; KT eq. (6.29), the lemma's "in particular").
-    Retargets: `def:extensor-through-point`'s and `lem:case-III-claim612-extensor-span`'s statement
-    edges `def:rigidity-matrix` -> `def:screw-space`; those of `def:framework-with-graph`,
-    `lem:cycle-realization-dim-bound` and `lem:case-III-claim612-block-iff-perp` removed (only the
-    screw space backed them, implied now), and `lem:motions-mono-of-graph-le`, which reached
-    `def:rigidity-matrix` through the first, gains it; `lem:rank-parallel-full`'s stays (its
-    statement states rows). `def:dof-generic` -> `def:trivial-motions-rigid` in the two
-    molecular-conjecture statements; `lem:trivial-motions-rank-bound` -> `lem:deficiency-rank-bound`
-    in the proofs of `prop:rigidity-matrix-prop11` and `lem:relative-deficiency-rank-bound` and,
-    from the statement, of `lem:molecule-rank-upper-bound`, and beside it in the two
-    molecular-conjecture proofs; `+lem:edge-rows-independent` in the proofs of
-    `lem:case-II-placement-new-rows` (reach), `lem:block-rank-cut` and
-    `lem:theorem-55-base-producer-single` (they cite the moved fact). `\cref`s repointed:
-    `def:dof-generic` 5 of 10, `lem:trivial-motions-rank-bound` 5 of 18 (2 more split in two),
-    `def:rigidity-matrix` 2 of 16. New: `F-233` (L).
+  - [x] **3.3 `rigidity-matrix.tex`** (`a7b8ea35`; `F-009`'s two, `F-010`'s `ScrewSpace` and
+    `finrank_screwAssignment`, `F-011`'s three, `F-008`'s `def:dof-generic`, `F-065`, `F-068`):
+    `def:screw-space`, `lem:edge-rows-independent`, `lem:own-end-rows-independent`,
+    `def:trivial-motions-rigid` and `lem:deficiency-rank-bound` added, two of the open's choices
+    *revised*; its exact list and *Expected* (156 lines) are in its commit.
+  - [x] **3.4 `deficiency.tex`; `molecular-induction.tex`'s operations, induced subgraph and
+    forest surgery** (this commit; `F-009`'s four, `F-010`'s `endsOf`, `F-082`, `F-087`,
+    `F-090`, `F-091`; `F-008`'s two), each fix tried on a scratch copy with `--tex-root`.
+    `def:cut-edges-2ec` keeps `cutEdges` and `TwoEdgeConnected`; its two claims split off after it
+    as `lem:two-edge-connected-degree` (`twoEdgeConnected_of_isKDof_zero`,
+    `two_le_degree_of_twoEdgeConnected`), whose note names the three `cutLabeling` helpers,
+    unpinned; its `\uses{def:k-dof}` moves with them. `lem:cut-edge-decomposition` keeps one pin
+    per part; `partitionDef_congr`, `partitionDef_comp_of_injOn` and
+    `exists_sides_separated_partitionDef_le` are unpinned and named. *Revised:* the identity for
+    separated partitions (`partitionDef_split_of_sides`) splits off before it as
+    `lem:separated-partition-value`, since `lem:deficiency-ear`, `lem:deficiency-singleton-bound`
+    and `lem:deficiency-one-body-chain` use it apart (their pins reach it, their proofs cite it).
+    `lem:two-vertex-trichotomy` keeps the trichotomy, which states the values of $k$; its three
+    steps are unpinned and named. `def:graph-operations`: `endsOf` unpinned, named in its note.
+    `F-082`: `def:induced-span` pinned on `Graph.fiberSpan` and `Graph.inducedSpan` and filled by
+    the gate (its witness read with `lake lean`), `\uses` `def:edge-multiply` and
+    `def:body-bar-framework` (its reach).
+    `F-091`: left, unfilled: clause (i) fails, as `splitOff_indep_extend_of_fiber_lt` proves the
+    independent-set form for $D \ge 2$ and $a \neq b$, not the forest form, which also needs
+    $D \ge 2$ (new `F-234`, S). `F-087`, `F-090`: left. Retargets:
+    `+lem:two-edge-connected-degree` in the proofs of `lem:deficiency-zero-connected`,
+    `thm:pencil-reduction`, `thm:pencil-x0-coverage` (reach) and `lem:pencil-x0-distinct-statement`
+    (it cites the moved claim); `lem:cut-edge-decomposition` -> `lem:separated-partition-value` in
+    the three proofs above, and added to its own; `lem:deficiency-cut-vertex`'s removed (only the
+    relabeling helpers backed it). `\cref`s: `def:cut-edges-2ec` 4 of 9 repointed, 2 split in two;
+    `lem:cut-edge-decomposition` 3 of 7 repointed, 1 an address. New: `F-234` (S), `F-235` (L).
     *Expected* (exact, before editing the tree; the copy's after-dump predicted by `predict.py`):
-    +5 nodes (`def:screw-space`, `def:trivial-motions-rigid` `#B0ECA3`; the three lemmas `#1CAC78`);
-    pins 1 023 -> 1 019 (12 moved, 4 unpinned; `lean_decls` 1 024 -> 1 020, hash `eea72b4e717e6bb8`
-    -> `c230f601f4c9cc61`); `## pins:` 5 added, 3 changed; `## uses:` 5 added, 17 changed; drawn
-    edges 1 303 -> 1 310 (`7d49700fb4cfb499`), -10 (`def:rigidity-matrix` ->
-    `def:extensor-through-point`, `def:framework-with-graph`, `lem:block-rank-cut`,
-    `lem:case-III-claim612-extensor-span`, `lem:cycle-realization-dim-bound` and
-    `lem:trivial-motions-rank-bound`; `def:D-deficiency` -> the last; the last -> `def:dof-generic`,
-    `lem:molecule-rank-upper-bound` and `lem:relative-deficiency-rank-bound`), +17 (14 into and out
-    of the new nodes; `def:extensor` -> `def:extensor-through-point`; `def:rigidity-matrix` ->
-    `def:dof-generic` and `lem:motions-mono-of-graph-le`); +5 node lines; 3 322 lines
-    (`9e02c8f68bf13099`), the diff 156 lines.
-  - [ ] **3.4 `deficiency.tex`; `molecular-induction.tex`'s operations, induced subgraph and
-    forest surgery** (`F-009`'s four, `F-010`'s `endsOf`, `F-082`, `F-087`, `F-090`, `F-091`;
-    `F-008`'s two). `def:cut-edges-2ec` (7): its two claims (a $0$-dof-graph is
-    $2$-edge-connected; then every vertex has degree at least two) split into a lemma, and the
-    three `cutLabeling` helpers are unpinned. `lem:cut-edge-decomposition` (7): the four
-    `partitionDef` helpers unpinned, one pin per part remaining. `lem:two-vertex-trichotomy` (4):
-    the three steps unpinned if the trichotomy's pin states the values of $k$.
-    `def:graph-operations`: `endsOf` unpinned. `F-082`: `def:induced-span` pinned on
-    `Graph.fiberSpan` and `Graph.inducedSpan`. `F-091`: `lem:forest-surgery-unsplit` pinned on
-    `splitOff_indep_extend_of_fiber_lt`, with a note. Both get `\leanok` by the gate. `F-087`,
-    `F-090`: leave (exposition of the move; a merge). *Expected:* +1 node; pins about −11 and +3
-    (hash changes); two nodes filled; the retargets of `def:cut-edges-2ec`'s in-edges.
+    +2 nodes (`lem:separated-partition-value`, `lem:two-edge-connected-degree`, `#1CAC78`);
+    `def:induced-span` `#A3D6FF` -> `#B0ECA3`; pins 1 019 -> 1 011 (3 moved, 10 unpinned, 2 added;
+    `lean_decls` 1 020 -> 1 012, hash `c230f601f4c9cc61` -> `c5a418472970a00c`); `## pins:` 2
+    added, 5 changed; `## uses:` 2 added, 11 changed; drawn edges 1 310 -> 1 316
+    (`2336c6df5ff83f75`), -7 (`def:cut-edges-2ec` -> `lem:cut-edge-decomposition`,
+    `lem:deficiency-zero-connected` and `thm:pencil-reduction`; `lem:cut-edge-decomposition` ->
+    `lem:deficiency-cut-vertex`, `lem:deficiency-ear` and `lem:deficiency-singleton-bound`;
+    `lem:two-edge-conn` -> `def:cut-edges-2ec`), +13 (9 into and out of the new nodes;
+    `def:edge-multiply` and `def:body-bar-framework` -> `def:induced-span`; `def:D-deficiency` ->
+    `lem:deficiency-cut-vertex`; `def:k-dof` -> `lem:cut-edge-decomposition`); +2 node lines, 1
+    changed; 3 334 lines (`a1ac36f392cc046b`), the diff 117 lines.
   - [ ] **3.5 `molecular-induction.tex`, KT Lemmas 4.4–4.9, and the carry-in `F-098`** (`F-096`,
     `F-098`, `F-103`, `F-106`). `F-096`: split `lem:removal-deficiency-strict` into KT Lemma 4.4's
     second assertion and KT Lemma 4.7, one pin each; unpin `Graph.contraction_isMinimalKDof` from
@@ -421,7 +412,8 @@ gate's diff, which each task makes exact before editing.
 `S` and `M` findings this round makes, one line each naming the ledger ID. The ledger's earlier
 `S` and `M` entries are task 8's.
 
-- None yet.
+- `F-234` (task 3.4): `lem:forest-surgery-unsplit` states a forest form that no declaration
+  proves, and it fails at $D = 1$.
 
 ## Moved to a later round
 
@@ -431,6 +423,7 @@ ledger's earlier `L` entries are task 8.2's.
 - `F-230` (task 3.1): three pebble-game docstrings name the nodes their pins left.
 - `F-232` (task 3.2): docstrings of moved or unpinned declarations, and the dead code among them.
 - `F-233` (task 3.3): the same for `rigidity-matrix.tex`'s moved pins, and a stale docstring claim.
+- `F-235` (task 3.4): the same for task 3.4's moved and unpinned pins, and `inducedSpan`'s.
 
 ## Blockers / open questions
 
@@ -438,14 +431,13 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3.4, the node shapes of `deficiency.tex` and of
-`molecular-induction.tex`'s operations, induced subgraph and forest surgery** (Opus, a fresh
-agent). The parent's dump is task 3.3's (3 322 lines, `9e02c8f68bf13099`; *Current state*):
-regenerate it on the parent after `verify.sh` if the scratch copy is gone. Before editing, read
-each named node, its pins' statements and its `--label` report, try the change on a scratch copy
-of the TeX (*Decisions*, tasks 3.1–3.3), and make 3.4's *Expected* exact in its line, its
-`## uses:` lines included (gate 3 (b)); then edit, and diff the after-dump against it. Then task
-3.5.
+**Next concrete task: task 3.5, the node shapes of `molecular-induction.tex`'s KT Lemmas 4.4–4.9,
+and the carry-in `F-098`** (Opus, a fresh agent). The parent's dump is task 3.4's (3 334 lines,
+`a1ac36f392cc046b`; *Current state*): regenerate it on the parent after `verify.sh` if the
+scratch copy is gone. Before editing, read each named node, its pins' statements and its `--label`
+report, try the change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.4), and make 3.5's
+*Expected* exact in its line, its `## uses:` lines included (gate 3 (b)); then edit, and diff the
+after-dump against it. Then task 3.6.
 
 ## Decisions made during this round
 
@@ -482,3 +474,8 @@ of the TeX (*Decisions*, tasks 3.1–3.3), and make 3.4's *Expected* exact in it
   edge). A removed edge that a downstream node's reach went through is restored at that node
   (`lem:motions-mono-of-graph-le`). Diffing the copy's `--tex-root` report against the parent's,
   node by node, lists every missing or unbacked edge a move changes (*Current state*).
+- **A proof step that other nodes cite** (task 3.4). A pinned step whose unpinning would strand
+  other nodes' `\uses` (task 3.1's test), and which their proofs cite, splits off as a node, as
+  task 3.3's deficiency bound did (`lem:separated-partition-value`). A labeling or relabeling
+  helper that no prose cites as a claim is unpinned and named in a note, and an edge that only it
+  backed is removed (`lem:deficiency-cut-vertex`).

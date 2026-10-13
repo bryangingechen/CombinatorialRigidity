@@ -3949,10 +3949,10 @@ steps at non-adjacent ends, for one or two
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:cut-edge-decomposition}
+  \uses{lem:separated-partition-value}
   Both $P$ and the partition into singletons are separated by $Z$, so
   each splits at $Z$ with the same cut term
-  (\cref{lem:cut-edge-decomposition}). On $G[Z]$ the partition $P$ has
+  (\cref{lem:separated-partition-value}). On $G[Z]$ the partition $P$ has
   one part and value zero, and the singletons have value $s_D(Z)$. The
   second statement follows by induction on the number of bodies, since
   $s_D(Z) \ge 0$ and the rest is the statement at $G[V(G) \setminus
@@ -4170,7 +4170,7 @@ empty or $X_0 = \{x\}$.
 \begin{proof}
   \leanok
   \uses{lem:deficiency-singleton-bound, lem:deficiency-add-body,
-        lem:cut-edge-decomposition}
+        lem:separated-partition-value}
   (1) An edge $ab$ would give the triangle $\{x, a, b\}$ singleton value
   zero. Let a partition of $V_1$ with $a$ and $b$ in one part $Z$ attain
   the merged deficiency. Its value plus $s(Z)$ is at most
@@ -4185,7 +4185,7 @@ empty or $X_0 = \{x\}$.
   with $Q$ the part of $a$ and $b$. Refining $Q$ by a partition $R$ of
   $Q$, relabelled apart from the other parts of $P$, changes the value
   of $P$ by the value of $R$ in $G[Q]$
-  (\cref{lem:cut-edge-decomposition}). Since
+  (\cref{lem:separated-partition-value}). Since
   $\operatorname{def}_3(G[V_1]) \le m + 4$, every such $R$ has value at
   most $4$ in $G[Q]$, and at most $0$ if it keeps $a$ and $b$ together.
 
@@ -4740,7 +4740,7 @@ no two of them are adjacent, a rigid set that avoids one of them.
         lem:pencil-x0-chain-exists, lem:pencil-x0-chain-reduces,
         thm:pencil-x0-theorem-s, lem:deficiency-sparse,
         lem:deficiency-antitone, lem:pencil-contract-standing,
-        lem:pencil-contract-standing-rigid}
+        lem:pencil-contract-standing-rigid, lem:two-edge-connected-degree}
   Let $G$ satisfy the standing hypotheses. We take the cases of the
   table in order. If $G$ is not 2-edge-connected, or $G - v$ is
   disconnected for some body $v$, then $G$ reduces by
@@ -4763,9 +4763,11 @@ no two of them are adjacent, a rigid set that avoids one of them.
   $W$.
 
   The rest is \cref{thm:pencil-x0-reduction-attains}. A simple
-  2-edge-connected graph on at least three bodies is connected, with
-  minimum degree at least two (\cref{def:cut-edges-2ec}), so it
-  satisfies the standing hypotheses.
+  2-edge-connected graph on at least three bodies is connected
+  (\cref{def:cut-edges-2ec}), since no edge leaves the vertices of a
+  component. Its minimum degree is at least two
+  (\cref{lem:two-edge-connected-degree}), so it satisfies the standing
+  hypotheses.
 \end{proof}
 
 \subsection{The two main-component statements}
@@ -4818,11 +4820,14 @@ extend its generic realization across the removed bodies
 \begin{proof}
   \leanok
   \uses{thm:pencil-x0-coverage, lem:pencil-x0-attains-distinct,
-        def:pencil-x0-standing, def:cut-edges-2ec}
+        def:pencil-x0-standing, def:cut-edges-2ec,
+        lem:two-edge-connected-degree}
   A simple two-edge-connected multigraph on at least three bodies is
-  connected with minimum degree at least two (\cref{def:cut-edges-2ec}),
-  so it satisfies the standing hypotheses (\cref{def:pencil-x0-standing})
-  and its general configuration attains (\cref{thm:pencil-x0-coverage}).
+  connected (\cref{def:cut-edges-2ec}), since no edge leaves the
+  vertices of a component. Its minimum degree is at least two
+  (\cref{lem:two-edge-connected-degree}), so it satisfies the standing
+  hypotheses (\cref{def:pencil-x0-standing}). Its general configuration
+  attains (\cref{thm:pencil-x0-coverage}).
   One attaining configuration is such a realization
   (\cref{lem:pencil-x0-attains-distinct}). No hypothesis on the number of
   edge labels is used.

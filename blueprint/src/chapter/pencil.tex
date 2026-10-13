@@ -594,6 +594,7 @@ statement the induction proves is the following.
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:two-edge-connected-degree}
   Strong induction on $(|V(G)|, |E(G)|)$, lexicographically. Its
   hypothesis at $G$ gives the property at every smaller nonempty
   multigraph, in particular at every one on fewer vertices. Deleting a
@@ -601,7 +602,7 @@ statement the induction proves is the following.
   multigraph. Case (v)'s degree-two vertex follows from
   \cref{lem:pencil-min-degree-rigid} (no proper rigid subgraph forces a
   vertex of degree at most two) and two-edge-connectivity (degree at least
-  two).
+  two, \cref{lem:two-edge-connected-degree}).
 \end{proof}
 
 We take the five cases in the order of the lemmas below. The loop

@@ -185,6 +185,9 @@ declaration's name as its header writes it:
   `BodyHingeFramework.IsInfinitesimallyRigid` without `\leanok`.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; the built graph at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (task 3.4) for `def:induced-span`; left for `def:blockingWitness` and
+  `def:dof-generic` (no declaration defines them; tasks 3.1, 3.3) and `lem:forest-surgery-unsplit`
+  (`F-091`).
 - **F-062** · E · `lem:case-II-placement-new-rows` (`algebraic-induction/genericity-and-count.tex`):
   its statement and proof use `lem:rank-delete-vertex`, which no pin reaches, and its proof cites
   that node for the dimension $D - 1$ of the hinge-row block, which is `def:hinge-row-block`'s
@@ -886,6 +889,8 @@ declaration's name as its header writes it:
   `lem:packing-move`, the edge unbacked at `lem:balanced-forest-packing`); read (the body of
   `exists_balanced_forest_packing`).
   *Found:* round 2 task 2.12.
+  *Disposition:* left (exposition of the move; having the descent call the pin is a Lean change,
+  `F-088`).
 - **F-090** · N · `cor:forest-surgery-deficiency` (`molecular-induction.tex`): it restates
   `lem:forest-surgery-split`. Its pin `splitOff_deficiency_le_of_forest_surgery` is a
   `@[deprecated]` narrative-bridge shim that applies `forest_surgery_split` to the same hypotheses
@@ -896,6 +901,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `01aec968`: a dead pin and an
   unbacked edge); read (the shim's statement and body).
   *Found:* round 2 task 2.13.
+  *Disposition:* left (a merge, which is not among principle D's fixes; the shim's deletion is a
+  Lean round's).
 - **F-091** · N · `lem:forest-surgery-unsplit` (`molecular-induction.tex`; unfilled, `F-008`): in
   the form of independent sets it is the case $h' = 0$ of `lem:edge-splitting`'s case (i) for
   $G = H_{ab}^v$ ($D \ge 2$, $a \neq b$), which `splitOff_indep_extend_of_fiber_lt` proves, and no
@@ -904,6 +911,8 @@ declaration's name as its header writes it:
   declaration with a note, or delete it and keep KT's use for Lemma 4.4 in `rem:kt-lemma-44`.
   *Evidence:* read (the pin's statement; KT 2011 pp. 660–662).
   *Found:* round 2 task 2.13.
+  *Disposition:* left (the honesty gate's clause (i) fails: the pin proves the independent-set form
+  for $D \ge 2$ and $a \neq b$, not the forest form the statement claims; `F-234`).
 - **F-096** · N · `lem:removal-deficiency-strict` and `lem:reduction-step`
   (`molecular-induction.tex`): each bundles results that KT state separately (principle E). The
   first is the second assertion of KT Lemma 4.4 and KT Lemma 4.7, one pin each. The second is KT
@@ -2307,6 +2316,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the seven pins, `GenericLift/HingeGeneric.lean`,
   `Extensor.lean`).
   *Found:* round 4 task 2.12.
+- **F-234** · S · `lem:forest-surgery-unsplit` (`molecular-induction.tex`; unfilled): no declaration
+  proves its statement. `splitOff_indep_extend_of_fiber_lt`, the pin `F-091` names, proves the form
+  of independent sets: for $D \ge 2$, a vertex $v$ of $G$ of degree two whose edges join it to
+  distinct $a, b \neq v$, and an independent set $I'$ of $M(\widetilde{G_v^{ab}})$ with fewer than
+  $D - 1$ copies of $ab$, some independent set $I$ of $M(\tilde G)$ has $|I| = |I'| + D$ and
+  $I \setminus (\tilde e_a \cup \tilde e_b) = I' \setminus \widetilde{ab}$. The node states the
+  forest form (each forest $F'_i$ of $\tilde H$ extends to a forest of $\widetilde{H_{ab}^v}$ with
+  one more edge) for every $H$ with an edge $ab$ and every $D$; it fails at $D = 1$, where
+  $\tilde H$ and $\widetilde{H_{ab}^v}$ have no edges, and its proof uses the copy $(vb, 1)$.
+  Filling it needs the statement restated in the pin's weaker form, or $D \ge 2$ added and a
+  declaration for the forest form; retiring the node is `F-091`'s other option (task 8.2).
+  *Evidence:* read (the pin's statement; the node's statement and proof).
+  *Found:* round 5 task 3.4.
 
 ## L — Lean
 
@@ -3080,6 +3102,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and statements; a `grep` for each name's callers);
   measured (`scripts/blueprint-deps.py --label`, dead pins).
   *Found:* round 5 task 3.3.
+- **F-235** · L · the declarations round 5's task 3.4 moved or unpinned (`Molecular/Deficiency.lean`,
+  `Molecular/Induction/Operations.lean`). Their docstrings name the nodes their pins left:
+  `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` say `def:cut-edges-2ec`
+  (now `lem:two-edge-connected-degree`), and `partitionDef_split_of_sides` says
+  `lem:cut-edge-decomposition` (now `lem:separated-partition-value`). The three `cutLabeling`
+  helpers (`cutEdges_eq_crossingEdges_cutLabeling`, `crossingEdges_cutLabeling_singleton_subset`,
+  `crossingEdges_cutLabeling_singleton_ncard_le`) say that `def:cut-edges-2ec` uses them; the
+  definition no longer does, and `lem:two-edge-connected-degree`'s note names them. `inducedSpan`'s
+  says `def:graph-operations`, though its pin is at `def:induced-span`.
+  *Evidence:* read (the docstrings).
+  *Found:* round 5 task 3.4.
 
 ## M — mathematics and sources
 
