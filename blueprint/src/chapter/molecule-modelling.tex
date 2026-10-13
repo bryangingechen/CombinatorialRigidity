@@ -1,42 +1,82 @@
 \section{Projective duality and the molecule modelling equivalence}
 \label{sec:molecule-modelling}
 
-The molecule application of the conjecture rests on a chain of three
-equivalent rigidity models for a graph $G$ of minimum degree at least
-two, all in $\R^3$:
+Let $G = (V, E)$ be a graph of minimum degree at least two. KT
+Corollary~5.7 is the rank formula
 \[
-  \text{bar-joint framework of } G^2
-  \;\Longleftrightarrow\;
-  \text{molecular (hinge-concurrent body-hinge) framework of } G
-  \;\Longleftrightarrow\;
-  \text{panel-hinge framework of } G .
+  r(G^2) \;=\; 3|V| - 6 - \operatorname{def}(\tilde G),
 \]
-The first equivalence is the modelling fact that a molecule --- atoms
-joined by covalent bonds --- is a bar-joint framework on the square
-graph exactly when it is a body-hinge framework whose hinges at each
-atom meet at the atom's centre (Whiteley~\cite{whiteley1999}, in the
-form used by Jackson--Jord\'an~\cite{jacksonJordan2008}). The second is
-projective duality: in $\R^3$ the projective dual sends points to
-planes and lines to lines, carrying a hinge-concurrent body-hinge
-framework to a panel-hinge framework, and infinitesimal rigidity is
-invariant under it (Crapo--Whiteley~\cite{crapoWhiteley1982}, \S3.6).
+where $r$ is the rank function of the generic bar-joint rigidity matroid
+in $\R^3$ (\cref{sec:bar-joint-3d}), $G^2$ is the square of $G$, and
+$\operatorname{def}(\tilde G)$ is the deficiency of \cref{def:D-deficiency}
+at $D = 6$. Jackson and Jord\'an conjectured the formula and proved it
+equivalent to the molecular conjecture~\cite[Conjecture~2.2 and
+Theorem~4.3]{jacksonJordan2008}. Its proof relates three models, all in
+$\R^3$, of a molecule whose atoms and bonds form the graph $G$:
+\[
+  \begin{array}{c} \text{bar-joint} \\ \text{framework on } G^2 \end{array}
+  \;\Longleftrightarrow\;
+  \begin{array}{c} \text{molecular} \\ \text{framework on } G \end{array}
+  \;\Longleftrightarrow\;
+  \begin{array}{c} \text{panel-hinge} \\ \text{framework on } G \end{array}
+\]
+A molecular framework is a body-hinge framework in which the hinges at
+each body pass through one point, the centre of the body. The second
+equivalence is projective duality. A polarity of projective three-space
+sends points to planes and lines to lines, so it turns a molecular
+framework into a panel-hinge framework, and infinitesimal rigidity is
+invariant under it~\cite[\S3.6]{crapoWhiteley1982}. The first equivalence
+is Whiteley's: a graph of minimum degree at least two has an
+infinitesimally rigid molecular realization if and only if its square has
+an infinitesimally rigid bar-joint realization. Jackson and
+Jord\'an~\cite[\S2.1]{jacksonJordan2008} and Katoh and
+Tanigawa~\cite[pp.~650 and~671]{katohTanigawa2011} cite it from
+Whiteley's manuscript \emph{The equivalence of molecular rigidity models
+as geometric and generic graphs} (2004).
 
-This chapter states both links at the level of \emph{motion-space
-dimensions} (equivalently, rigidity-matrix ranks), not merely as
-realizability equivalences. The stronger form is what the rank formula
-needs: composed with Theorem~5.6 (\cref{thm:theorem-55-6}, at $d = 3$
-\cref{thm:theorem-55-6-d3}) and the generic $3$-dimensional bar-joint
-rigidity matroid of \cref{sec:bar-joint-3d}, the dimension-carrying
-chain yields the molecule rank formula
-$r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
-(KT Corollary~5.7, due to Jackson--Jord\'an~\cite{jacksonJordan2008}),
-assembled in the final chapter with no further combinatorial input.
-(With only the realizability equivalences, the rank formula would
-instead require the deficiency induction and independent-cover bounds
-of~\cite{jacksonJordan2008}, a substantial separate development.) All
-the geometry here is specific to $\R^3$: it is where the projective
-dual transposes points and planes and where the molecule model lives
-(KT \S1.2 and the reconciliation on p.~671).
+Whiteley's equivalence, in the form that Jackson and Jord\'an and Katoh
+and Tanigawa state, concerns rigid realizations. In this form it gives the
+rank formula only when $\operatorname{def}(\tilde G) = 0$, where the
+formula says that $G^2$ is rigid. Jackson and Jord\'an deduce the general
+formula from this case~\cite[\S\S3--4]{jacksonJordan2008}. Their upper
+bound on $r(G^2)$ is the value of an independent cover of $G^2$ built from
+a partition of $V$ of largest deficiency (their Theorem~4.1). It uses
+results on such covers, and on the maximal subgraphs of deficiency zero,
+from two further papers of theirs. Their lower bound is an induction on
+the deficiency, which attaches to $G$ a path of length five between two
+of these maximal subgraphs (their Theorem~4.3).
+
+We avoid this development. We prove both equivalences as equalities
+between the dimensions of the spaces of infinitesimal motions, at a
+single placement. KT Theorem~5.6
+(\cref{thm:theorem-55-6}) realizes $G$ as a panel-hinge framework of rank
+$6(|V| - 1) - \operatorname{def}(\tilde G)$. The two equivalences turn this
+realization into a bar-joint framework on $G^2$ of rank
+$3|V| - 6 - \operatorname{def}(\tilde G)$, as Katoh and Tanigawa do for
+the second (KT p.~671). The reverse inequality comes from the first
+equivalence at a generic placement, together with the lower bound
+$6 + \operatorname{def}(\tilde G)$ on the dimension of the motions of a
+molecular framework with nondegenerate hinges
+(\cref{lem:relative-deficiency-rank-bound}).
+\Cref{sec:molecule-application} derives the formula in this way.
+
+The chapter proceeds in five steps. \Cref{sec:molecule-modelling-defs}
+defines the square of a graph and molecular frameworks.
+\Cref{sec:molecule-modelling-projective} proves the projective invariance
+of the motion spaces, and shows that the polar of a molecular framework
+is a panel-hinge framework. \Cref{sec:molecule-modelling-velocity}
+describes a screw by its field of velocities.
+\Cref{sec:molecule-modelling-general-position} defines general position
+up to order four, and gives a molecular realization at the rank of KT
+Theorem~5.6 whose centres are in general position.
+\Cref{sec:molecule-modelling-equivalences} proves the first equivalence
+at such centres. Throughout, $d = 3$ and $D = 6$, the setting of Katoh
+and Tanigawa's connection with molecules (KT \S1.2). We use the extensors
+and the meet of \cref{sec:molecular} and \cref{sec:molecular-meet}, the
+body-hinge and panel-hinge frameworks of
+\cref{sec:molecular-rigidity-matrix} and
+\cref{sec:molecular-algebraic-induction}, and the bar-joint frameworks of
+\cref{sec:frameworks} and \cref{sec:bar-joint-3d}.
 
 \subsection{The square graph and molecular frameworks}
 \label{sec:molecule-modelling-defs}
@@ -322,50 +362,6 @@ in the form that we use.
   the argument above.
 \end{fmlnote}
 
-\begin{theorem}[Panel-hinge $\Leftrightarrow$ molecular, rank-carrying]
-  \label{thm:panel-hinge-iff-molecular}
-  \lean{CombinatorialRigidity.Molecular.exists_molecular_rankHypothesis_generalPosition}
-  \leanok
-  \uses{def:hinge-concurrent, def:general-position-placement,
-        lem:theorem-56-general-position, lem:panel-hinge-dual-molecular}
-  Let $G$ be a simple spanning graph on at least one body, with enough
-  hinge labels. Then $G$ has an endpoint selector $\mathrm{ends}$
-  genuinely recording every $G$-link and a molecular realization in
-  $\R^3$ --- centres $c : V \to \R^3$ in general position up to order
-  four --- whose motion space attains the target dimension
-  \[
-    \dim Z_{\mathrm{mol}}(G, c) \;=\; D + \operatorname{def}(\tilde G).
-  \]
-  This is the panel-hinge realization of
-  \cref{lem:theorem-56-general-position} carried to the molecular model:
-  the two models realize the same rank on general-position data, the
-  modelling equivalence KT state on p.~671 (for which
-  Jackson--Jord\'an~\cite{jacksonJordan2008} is the citable published
-  anchor). Taking $\operatorname{def}(\tilde G) = 0$ gives an
-  infinitesimally rigid molecular realization.
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{thm:projective-invariance}
-  Apply \cref{lem:theorem-56-general-position} to obtain a panel-hinge
-  realization at $\dim Z = D + \operatorname{def}(\tilde G)$ whose normals
-  are in general position up to order four --- in particular each normal
-  has a nonvanishing last coordinate. Dehomogenize each normal by its
-  last coordinate to a pole $c(v) \in \R^3$; the homogenized pole
-  $(c(v), 1)$ is that normal rescaled by a nonzero scalar, so the
-  panel-hinge framework on the homogenized poles has the same hinge spans
-  --- hence the same motion space --- as the realization just obtained
-  (\cref{thm:projective-invariance}, the rescaling normalization). The
-  projective duality \cref{lem:panel-hinge-dual-molecular} then carries
-  that dimension to the molecular framework on the centres $c$. Finally,
-  order-four linear independence of the normals is, through
-  homogenization, order-four affine independence of the poles, so the
-  centres are in general position. The endpoint selector is the
-  realization's own $\mathrm{ends}$, unchanged by the rescaling and
-  duality steps, so it inherits genuine-link recording from
-  \cref{lem:theorem-56-general-position} verbatim.
-\end{proof}
-
 \subsection{Screw velocity fields}
 \label{sec:molecule-modelling-velocity}
 
@@ -521,136 +517,353 @@ $x, y \in \R^3$,
   the family together with each further member.
 \end{fmlnote}
 
-\subsection{General position}
+\subsection{Molecular realizations in general position}
 \label{sec:molecule-modelling-general-position}
+
+The square-graph dictionary (\cref{thm:molecular-iff-square-bar-joint})
+needs the centres of a molecular framework to be in general position up
+to order four. This subsection defines the condition and constructs
+placements that satisfy it: first together with genericity for row
+independence, then as the centres of a molecular realization at the rank
+of KT Theorem~5.6.
 
 \begin{definition}[General position up to order four]
   \label{def:general-position-placement}
   \lean{SimpleGraph.IsGeneralPositionPlacement}
   \leanok
   \uses{def:framework}
-  A placement $p : V \to \R^3$ is \emph{in general position up to
-  order four} if every subfamily of at most four points is affinely
-  independent (so in particular $p$ is injective and no three points
-  are collinear). Points on the moment curve
-  $t \mapsto (t, t^2, t^3)$ at distinct parameters witness the
-  condition, by Vandermonde determinants.
+  A placement $p \colon V \to \R^3$ (\cref{def:framework}) is \emph{in
+  general position up to order four} if, for every set $S \subseteq V$
+  of at most four vertices, the points $p(v)$ with $v \in S$ are
+  affinely independent.
 \end{definition}
+
+Such a placement is injective, and no three of its points are
+collinear. For every finite $V$ there is one. Let $t \colon V \to \R$
+be injective, and place each vertex $v$ at the point
+$(t_v, t_v^2, t_v^3)$ of the moment curve. For four vertices with
+parameters $t_1, \dots, t_4$, the matrix with rows
+$(t_i, t_i^2, t_i^3, 1)$ has the Vandermonde determinant
+$\pm\prod_{i < j} (t_j - t_i) \neq 0$, so the four points are affinely
+independent (\cref{lem:affine-indep-iff}). Fewer than four points of the
+curve lie among four of its points at distinct parameters, and a
+subfamily of an affinely independent family is affinely independent.
 
 \begin{lemma}[Generic placements in general position]
   \label{lem:exists-generic-general-position}
   \lean{SimpleGraph.exists_isGenericPlacement_isGeneralPositionPlacement}
   \leanok
   \uses{def:general-position-placement, def:generic-placement}
-  For every finite $V$ there is a placement $p : V \to \R^3$ that is
-  simultaneously generic for row independence
-  (\cref{def:generic-placement}) and in general position up to order
-  four.
+  Let $V$ be finite. Then there is a placement $p \colon V \to \R^3$ that
+  is generic for row independence (\cref{def:generic-placement}) and in
+  general position up to order four.
 \end{lemma}
 \begin{proof}
   \leanok
-  Re-run the finite-family interpolation of
-  \cref{lem:exists-generic-placement} with the finitely many
-  order-$\le 4$ affine-independence conditions added to the avoided
-  sets: along an affine path of placements each condition is the
-  nonvanishing of a polynomial in the path parameter, not identically
-  zero by the moment-curve witness, hence with finitely many roots.
+  Let $p_0$ be a placement that is generic for row independence
+  (\cref{lem:exists-generic-placement}), let $q$ be a placement in general
+  position up to order four, and let $p^t = p_0 + t\,(q - p_0)$ for
+  $t \in \R$.
+
+  Let $I \subseteq E(K_V)$ be a set of edges that is row-independent at
+  some placement. Then it is row-independent at $p_0$. Its rigidity rows
+  at $p^t$ are affine in $t$, so it is row-independent at $p^t$ for all
+  but finitely many $t$, as in the proof of
+  \cref{lem:exists-generic-placement}. Let $S \subseteq V$ have at most four
+  vertices, and fix $v_0 \in S$. The points $p^t(v)$ with $v \in S$ are
+  affinely independent exactly when the vectors $p^t(v) - p^t(v_0)$ with
+  $v \in S \setminus \{v_0\}$ are linearly independent. These vectors are
+  affine in $t$ and linearly independent at $t = 1$, so in the same way
+  they are linearly independent for all but finitely many $t$.
+
+  There are finitely many sets $I$ and $S$. Choose $t$ outside the
+  finitely many exceptional values of all of them. Then $p^t$ is in
+  general position up to order four, and it is generic for row
+  independence, since every edge set that is row-independent at some
+  placement is row-independent at $p^t$.
 \end{proof}
 
-\begin{lemma}[Theorem~5.6 at $d = 3$, general-position form]
+KT Theorem~5.6 realizes a simple graph as a panel-hinge framework at the
+target rank with nondegenerate hinges (\cref{thm:theorem-55-6-genuine}).
+We need more. A normal $n \in \R^4$ with a nonzero
+last coordinate is a nonzero multiple of $\bar c = (c, 1)$ for a unique
+point $c \in \R^3$, the pole of its panel
+(\cref{sec:molecule-modelling-projective}). We ask that the poles be in
+general position up to order four. Up to a rescaling of its normals,
+the realization is then the image under the polarity of a molecular
+framework whose centres are the poles
+(\cref{lem:panel-hinge-dual-molecular}).
+
+\begin{lemma}[KT Theorem~5.6 at $d = 3$ with poles in general position]
   \label{lem:theorem-56-general-position}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4}
   \leanok
   \uses{def:general-position-placement}
-  Let $G$ be a simple spanning graph on at least one body. Then $G$
-  has a panel-hinge realization in $\R^3$ with
-  $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$ whose normals have
-  nonvanishing last coordinate and whose poles are in general position
-  up to order four.
+  Let $G = (V, E)$ be a simple graph with $V \neq \emptyset$. Then $G$ has
+  a panel-hinge realization $(G, p)$ in $\R^3$ whose normals are
+  $n_v = \lambda_v\, \bar c(v)$, for nonzero scalars $\lambda_v$ and
+  points $c(v) \in \R^3$ in general position up to order four
+  (\cref{def:general-position-placement}), and which has
+  \[
+    \dim Z(G, p) \;=\; D + \operatorname{def}(\tilde G),
+  \]
+  where $D = 6$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{thm:theorem-55-6-d3, lem:genericity-device,
         lem:relative-deficiency-rank-bound}
-  Dispatch on the number of bodies. On a single body $G$ is edgeless
-  (a loopless graph on one vertex), so $\operatorname{def}(\tilde G) = 0$,
-  the realization is trivially rigid, and a moment-curve normal is
-  vacuously in general position up to order four.
+  If $|V| = 1$, then $G$ has no edge, as it is simple, and
+  $\operatorname{def}(\tilde G) = 0$. Every realization of $G$ then has
+  $\dim Z(G, p) = D$, the dimension of the screw space, and any normal
+  $\bar c(v)$ will do.
 
-  With at least two bodies, start from the genuine realization of
-  \cref{thm:theorem-55-6-d3}. Its realized rank
-  $\dim Z = D + \operatorname{def}(\tilde G)$ is, through the
-  rigidity-row/motion complement identity, an exact count of
-  $D(|V|-1) - \operatorname{def}(\tilde G)$ independent rigidity rows;
-  since the row coordinates are polynomials in the normal coordinates,
-  the independence is witnessed by a single nonzero rational minor
-  polynomial (the mechanism of \cref{lem:genericity-device}). Multiply it
-  by the order-four general-position avoidance polynomial --- the product
-  of the last-coordinate variables $\prod_a X_{a,3}$ with, over the
-  injective vertex tuples of sizes $2, 3, 4$, the leading square minors of
-  the normal matrix, each nonzero at the moment-curve normals by the
-  Vandermonde determinant. Both factors are nonzero polynomials, so their
-  product has a non-root over the infinite field $\R$ --- a simultaneous
-  non-root of both. There the realized rank is at least the
-  witnessed value, the reverse inequality is the deterministic bound
-  $D + \operatorname{def}(\tilde G) \le \dim Z$ for genuine-hinge
-  frameworks (\cref{lem:relative-deficiency-rank-bound}, whose genuine hinges
-  come from the general position), and the normals satisfy every
-  general-position condition. KT compress this strengthening into the word
-  ``nonparallel'' (p.~671); the order-four form is what the dictionary
-  below consumes.
+  Let $|V| \ge 2$, and let $N = D(|V| - 1) - \operatorname{def}(\tilde G)$.
+  KT Theorem~5.6 at $d = 3$ (\cref{thm:theorem-55-6-d3}) holds with
+  nondegenerate hinges (\cref{thm:theorem-55-6-genuine}). So $G$ has a
+  panel-hinge realization with normals $q_0$ whose hinges are all
+  nondegenerate and whose rigidity matrix has rank $N$. We move the
+  normals into general position without lowering the rank. The rank is
+  lower semicontinuous in the normals (\cref{lem:genericity-device}). We
+  use this in the form of \cref{lem:rank-polynomial-of-le-finrank}, which
+  gives a polynomial $Q_1$ in the coordinates of the normals, an
+  $N \times N$ minor of a matrix of rows of the rigidity matrix, such that
+  $Q_1(q_0) \neq 0$ and $\operatorname{rank} R(G, q) \ge N$ at every $q$
+  with $Q_1(q) \neq 0$.
+
+  A second polynomial $Q_2$ tests general position. Regard the normals as
+  the rows of a $|V| \times 4$ matrix of variables. Let $Q_2$ be the
+  product of the last coordinates of all the normals and of the minors
+  on the first $j$ columns of the submatrices formed by $j$ distinct
+  rows, for $j = 2, 3, 4$. At normals with $Q_2 \neq 0$, each normal has
+  a nonzero last coordinate, so that $n_v = \lambda_v\, \bar c(v)$ with
+  $\lambda_v \neq 0$. Any $j$ of the normals, for $2 \le j \le 4$, have a
+  nonzero $j \times j$ minor, so they are linearly independent, and so are
+  the vectors $\bar c(v)$, which differ from them by nonzero factors. Hence any four
+  or fewer of the points $c(v)$ are affinely independent
+  (\cref{lem:affine-indep-iff}). The polynomial $Q_2$ is not zero. At the
+  normals $(1, t_v, t_v^2, t_v^3)$ of the moment curve, with distinct
+  nonzero $t_v$, the last coordinates are $t_v^3 \neq 0$, and each of the
+  minors is a Vandermonde determinant, which is nonzero.
+
+  As $\R$ is infinite, the nonzero polynomial $Q_1 Q_2$ has a non-root
+  $q$, and at $q$ the poles are in general position up to order four. In
+  particular any two of the normals are linearly independent, so every
+  hinge of $(G, q)$ is nondegenerate
+  (\cref{lem:general-position-support-nonzero}). The deficiency bound for
+  nondegenerate hinges (\cref{lem:relative-deficiency-rank-bound}) gives
+  $\operatorname{rank} R(G, q) \le N$, and $Q_1(q) \neq 0$ gives
+  $\operatorname{rank} R(G, q) \ge N$. So
+  $\dim Z(G, q) = D|V| - N = D + \operatorname{def}(\tilde G)$.
+
+  Katoh and Tanigawa need only a nonparallel realization, one whose
+  panels meet pairwise in lines, and they obtain it by a projective
+  transformation (KT pp.~670--671). The square-graph dictionary needs the
+  poles in general position up to order four, and the argument above
+  provides them.
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem assumes that $G$ spans the set $W$ of bodies and
+  that $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). It states the
+  general position of the poles for the normals: each has a nonzero last
+  coordinate, and any four or fewer of them are linearly independent. It
+  also states that every hinge at an edge of $G$ is nondegenerate, and
+  that the endpoint selector assigns each edge of $G$ its two ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}).
+\end{fmlnote}
+
+Katoh and Tanigawa deduce from KT Theorem~5.6 that every simple graph has
+a molecular realization at the target rank (KT p.~671). Taking the poles
+of \cref{lem:theorem-56-general-position} as centres, we obtain such a
+realization with centres in general position up to order four.
+
+\begin{theorem}[Molecular realizations at the target rank; KT p.~671]
+  \label{thm:panel-hinge-iff-molecular}
+  \lean{CombinatorialRigidity.Molecular.exists_molecular_rankHypothesis_generalPosition}
+  \leanok
+  \uses{def:hinge-concurrent, def:general-position-placement,
+        lem:theorem-56-general-position, lem:panel-hinge-dual-molecular}
+  Let $G = (V, E)$ be a simple graph with $V \neq \emptyset$. Then there
+  is a placement $c \colon V \to \R^3$ in general position up to order
+  four (\cref{def:general-position-placement}) such that the space
+  $Z_{\mathrm{mol}}(G, c)$ of infinitesimal motions of the molecular
+  framework on $(G, c)$ (\cref{def:hinge-concurrent}) has dimension
+  \[
+    \dim Z_{\mathrm{mol}}(G, c) \;=\; D + \operatorname{def}(\tilde G),
+  \]
+  where $D = 6$. In particular, if $\operatorname{def}(\tilde G) = 0$,
+  then this molecular framework is infinitesimally rigid.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:projective-invariance}
+  Let $(G, p)$ be the realization of
+  \cref{lem:theorem-56-general-position}, with normals
+  $n_v = \lambda_v\, \bar c(v)$, where each $\lambda_v \neq 0$ and the
+  points $c(v)$ are in general position up to order four. Up to the
+  factors $\lambda_v$, these are the normals $\bar c(v)$ of the image of
+  the molecular framework on $(G, c)$ under the polarity
+  (\cref{lem:panel-hinge-dual-molecular}(2)). The factors multiply the
+  supporting extensor at an edge with ends $u$ and $v$ by
+  $\lambda_u \lambda_v \neq 0$, which does not change the motion space
+  (\cref{thm:projective-invariance}(3)). So by
+  \cref{lem:panel-hinge-dual-molecular}(3),
+  \[
+    \dim Z_{\mathrm{mol}}(G, c) \;=\; \dim Z(G, p)
+    \;=\; D + \operatorname{def}(\tilde G).
+  \]
+  If $\operatorname{def}(\tilde G) = 0$, then
+  $\dim Z_{\mathrm{mol}}(G, c) = D$. As $V \neq \emptyset$, the trivial
+  motions form a $D$-dimensional subspace of $Z_{\mathrm{mol}}(G, c)$
+  (\cref{lem:trivial-motions-rank-bound}), so every infinitesimal motion
+  is trivial.
+\end{proof}
+
+\begin{fmlnote}
+  The pinned theorem assumes that $G$ spans the set $W$ of bodies and
+  that $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). It also returns
+  the endpoint selector of the molecular framework, and states that it
+  assigns each edge of $G$ its two ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}). This is the form in which
+  \cref{thm:molecular-iff-square-bar-joint} takes the framework. The
+  rescaling in the proof is proved directly, from the equality of the
+  spans of the supporting extensors (\cref{lem:rank-rotation-semicont}).
+  The pinned theorem does not state the case
+  $\operatorname{def}(\tilde G) = 0$, which the last paragraph of the
+  proof derives.
+\end{fmlnote}
 
 \subsection{The square-graph dictionary}
 \label{sec:molecule-modelling-equivalences}
 
-\begin{theorem}[Molecule $\Leftrightarrow$ bar-joint of the square;
-  Whiteley, Jackson--Jord\'an]
+We prove Whiteley's equivalence for the motion spaces at one placement
+$c$ in general position up to order four. A screw assignment $S$ of the
+molecular framework on $(G, c)$ gives each atom $v$ the velocity of its
+own screw $S(v)$ at its centre $c(v)$. We show that this map is an
+isomorphism from the motions of the molecular framework onto those of
+the bar-joint framework on $G^2$ at $c$. Its inverse recovers the screw
+of a body $v$ from the velocities at the centres of the closed
+neighbourhood $N[v]$, which is a clique of $G^2$
+(\cref{lem:square-cliques}). Neither Jackson and Jord\'an nor Katoh and
+Tanigawa say which general position the equivalence needs. The proof
+needs any four centres of a closed neighbourhood to be affinely
+independent, because four coplanar points admit the out-of-plane flex of
+a flat complete quadrilateral, which is not the field of velocities of a
+screw (the end of the proof of \cref{lem:screw-determination}). It also
+needs every atom to have at least two bonds. Whiteley notes that, except
+in how atoms with only one bond or none are handled, the hinge model of
+a molecule is equivalent to the bond-bending networks used in modelling
+glasses~\cite[p.~27]{whiteley1999}.
+
+\begin{theorem}[Molecular frameworks and bar-joint frameworks on the
+  square; Whiteley]
   \label{thm:molecular-iff-square-bar-joint}
   \lean{CombinatorialRigidity.Molecular.molecular_finrank_motions_eq_square_ker}
   \leanok
   \uses{def:hinge-concurrent, def:square-graph, lem:square-cliques,
         def:framework, lem:screw-velocity-line,
         lem:screw-determination, def:general-position-placement}
-  Let $G = (V,E)$ be a graph of minimum degree at least two and
-  $c : V \to \R^3$ a placement in general position up to order four.
-  Then the infinitesimal-motion space of the molecular framework on
-  $(G, c)$ (\cref{def:hinge-concurrent}) and the kernel of the
-  bar-joint rigidity matrix of $(G^2, c)$ are isomorphic as vector
-  spaces:
+  Let $G = (V,E)$ be a graph of minimum degree at least two, and let
+  $c \colon V \to \R^3$ be a placement in general position up to order
+  four. Then the space $Z_{\mathrm{mol}}(G, c)$ of infinitesimal motions
+  of the molecular framework on $(G, c)$ (\cref{def:hinge-concurrent})
+  and the kernel of the rigidity map $R(G^2, c)$ of the square of $G$
+  (\cref{def:square-graph}) are isomorphic. So
   \[
     \dim Z_{\mathrm{mol}}(G, c) \;=\; \dim \ker R(G^2, c),
-    \qquad\text{hence}\qquad
-    \operatorname{rank} R(G^2, c) = 3|V| - \dim Z_{\mathrm{mol}}(G, c).
   \]
-  In particular $G$ has an infinitesimally rigid molecular realization
-  iff $G^2$ has an infinitesimally rigid bar-joint realization
-  (Whiteley's modelling equivalence, for which
-  Jackson--Jord\'an~\cite{jacksonJordan2008} is the citable published
-  anchor; KT resolve the conjecture that closes the argument).
+  and $\operatorname{rank} R(G^2, c) = 3|V| - \dim Z_{\mathrm{mol}}(G, c)$.
+  Moreover, $G$ has an infinitesimally rigid molecular realization with
+  nondegenerate hinges, that is, with $c(u) \neq c(v)$ at every edge
+  $uv$, if and only if $G^2$ has an infinitesimally rigid bar-joint
+  realization in $\R^3$.
 \end{theorem}
 \begin{proof}
   \leanok
-  The isomorphism sends a screw assignment $S$ to the velocity
-  assignment $v \mapsto \mathrm{vel}_{S(v)}(c(v))$. It lands in
-  $\ker R(G^2, c)$: an original edge splits as one screw's isometry
-  plus a hinge term vanishing at the endpoint
-  (\cref{lem:screw-velocity-line}); a distance-two edge $uw$ through
-  $v$ is handled entirely by body $v$'s screw, since the hinges
-  $c(u)c(v)$ and $c(w)c(v)$ let $S(v)$ reproduce the velocities at
-  both neighbours. It is injective: a motion in the kernel has each
-  screw's velocity field vanishing on the $\ge 3$ non-collinear points
-  of its closed neighbourhood (minimum degree two plus general
-  position), so each screw is zero (\cref{lem:screw-determination}).
-  It is surjective: a bar-joint motion of $G^2$ restricts to a
-  pairwise-constrained velocity assignment on each closed-neighbourhood
-  clique (\cref{lem:square-cliques}), which determines a unique screw
-  per body (\cref{lem:screw-determination}); adjacent bodies' screws
-  differ by a screw vanishing at both endpoint centres, i.e.\ by a
-  multiple of the hinge line (\cref{lem:screw-velocity-line}), so the
-  family is a molecular motion mapping back to the given one. The rank
-  identity is rank--nullity; the realizability corollary is the
-  dimension statement at
-  $\dim Z_{\mathrm{mol}} = D = 6$ together with the existence of
-  general-position placements on each side.
+  \emph{The map.} For a screw assignment $S$, let $\Phi(S)$ be the
+  velocity assignment $v \mapsto \mathrm{vel}_{S(v)}(c(v))$
+  (\cref{def:screw-velocity}). It is linear in $S$. Let
+  $S \in Z_{\mathrm{mol}}(G, c)$, and let $u$ be a neighbour of a vertex
+  $v$. By the hinge constraint at $uv$, the screw $S(u) - S(v)$ is a
+  multiple of $\bar c(u) \vee \bar c(v)$, whose velocity field vanishes
+  at $c(u)$ (\cref{lem:screw-velocity-line}). So
+  $\Phi(S)(u) = \mathrm{vel}_{S(v)}(c(u))$: on the closed neighbourhood
+  $N[v]$, the velocities $\Phi(S)$ are those of the single screw $S(v)$.
+
+  \emph{Motions go to motions.} Every edge $xy$ of $G^2$ has both ends in
+  $N[w]$ for some vertex $w$ (\cref{lem:square-cliques}). Hence
+  $\Phi(S)(x) - \Phi(S)(y) =
+  \mathrm{vel}_{S(w)}(c(x)) - \mathrm{vel}_{S(w)}(c(y))$, which is
+  orthogonal to $c(x) - c(y)$ (\cref{lem:screw-velocity-line}). So
+  $\Phi(S)$ lies in $\ker R(G^2, c)$ (\cref{lem:rigidityMap-apply}).
+
+  \emph{Injectivity.} Let $\Phi(S) = 0$, and let $v$ be a vertex. The
+  velocity field of $S(v)$ vanishes at the centres of $N[v]$. There are at
+  least three of them, as $v$ has at least two neighbours, and they are
+  not collinear, as $c$ is in general position. So $S(v) = 0$
+  (\cref{lem:screw-determination}(1)).
+
+  \emph{Surjectivity.} Let $x \in \ker R(G^2, c)$, and let $v$ be a
+  vertex. The closed neighbourhood $N[v]$ is a clique of $G^2$
+  (\cref{lem:square-cliques}), so
+  $\langle c(a) - c(b),\, x(a) - x(b) \rangle = 0$ for all
+  $a, b \in N[v]$. The centres of $N[v]$ include three non-collinear
+  points, and any four of them are affinely independent. By
+  \cref{lem:screw-determination}(2) there is a unique screw $S(v)$ with
+  $\mathrm{vel}_{S(v)}(c(a)) = x(a)$ for every $a \in N[v]$. In particular
+  $\Phi(S)(v) = x(v)$. Let $uv$ be an edge of $G$. Both $u$ and $v$ lie in
+  $N[u]$ and in $N[v]$, so the velocity fields of $S(u)$ and $S(v)$ agree
+  at $c(u)$ and at $c(v)$. As $c(u) \neq c(v)$, the screw $S(u) - S(v)$
+  is a multiple of $\bar c(u) \vee \bar c(v)$
+  (\cref{lem:screw-velocity-line}), which is the hinge constraint at $uv$.
+  So $S \in Z_{\mathrm{mol}}(G, c)$, and $\Phi(S) = x$.
+
+  Hence $\Phi$ restricts to an isomorphism from $Z_{\mathrm{mol}}(G, c)$
+  onto $\ker R(G^2, c)$. The map $R(G^2, c)$ is defined on a space of
+  dimension $3|V|$ (\cref{lem:framework-finrank}), so its rank is
+  $3|V| - \dim Z_{\mathrm{mol}}(G, c)$.
+
+  \emph{Realizations.} Both sides of the equivalence hold when
+  $V = \emptyset$, so let $V \neq \emptyset$. Suppose first that the
+  molecular framework on $(G, c_0)$ is infinitesimally rigid for some
+  $c_0$ with $c_0(u) \neq c_0(v)$ at every edge $uv$. Its motions are the
+  trivial ones, so $\dim Z_{\mathrm{mol}}(G, c_0) = D$
+  (\cref{lem:trivial-motions-rank-bound}). Its hinges are nondegenerate,
+  so $\dim Z_{\mathrm{mol}}(G, c_0) \ge D + \operatorname{def}(\tilde G)$
+  (\cref{lem:relative-deficiency-rank-bound}), and
+  $\operatorname{def}(\tilde G) = 0$. By
+  \cref{thm:panel-hinge-iff-molecular} there is a placement $c'$ in
+  general position up to order four with
+  $\dim Z_{\mathrm{mol}}(G, c') = D = 6$. By the first part,
+  $\dim \ker R(G^2, c') = 6$, so $c'$ is infinitesimally rigid for $G^2$
+  (\cref{def:isInfinitesimallyRigid}).
+
+  Conversely, let $p$ be infinitesimally rigid for $G^2$, so that
+  $\operatorname{rank} R(G^2, p) \ge 3|V| - 6$. Let $c'$ be a placement
+  that is generic for row independence and in general position up to
+  order four (\cref{lem:exists-generic-general-position}). A set of edges
+  of $G^2$ that is row-independent at $p$ is row-independent at $c'$
+  (\cref{def:generic-placement}), so
+  $\operatorname{rank} R(G^2, c') \ge 3|V| - 6$. By the first part,
+  $\dim Z_{\mathrm{mol}}(G, c') \le 6 = D$. The trivial motions form a
+  $D$-dimensional subspace of $Z_{\mathrm{mol}}(G, c')$
+  (\cref{lem:trivial-motions-rank-bound}), so the molecular framework on
+  $(G, c')$ is infinitesimally rigid. Its hinges are nondegenerate, as
+  $c'$ is injective.
 \end{proof}
+
+\begin{fmlnote}
+  The pinned theorem states the equality of the dimensions. It builds the
+  molecular framework on a multigraph on $V$ in which two distinct
+  vertices are joined by an edge exactly when they are adjacent in $G$,
+  with an endpoint selector that assigns each edge its two ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}). Edges with the same ends
+  impose the same hinge constraint, and a loop imposes none, so the
+  motions are those of the molecular framework on $(G, c)$. No
+  declaration states the equivalence of realizations in the last sentence
+  of the theorem. Its proof above combines the pinned theorem with those
+  of \cref{thm:panel-hinge-iff-molecular},
+  \cref{lem:relative-deficiency-rank-bound} and
+  \cref{lem:exists-generic-general-position}.
+\end{fmlnote}

@@ -18,9 +18,8 @@ first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-
 and tasks 2.16–2.18 `F-100`–`F-114`; its eighteen slices and its close are done. Round 3's open
 recorded `F-115`–`F-120`, and its sixteen slices `F-121`–`F-173`; its slices and its close are
 done. Round 4's open recorded `F-174`, its task 2.1, `bar-joint-3d.tex`, `F-175`–`F-177`, and its
-task 2.2, the first of `molecule-modelling.tex`'s two slices, `F-178`–`F-182`. **Next concrete
-task:** round 4's task 2.3, the second of `molecule-modelling.tex`'s slices (the round's log,
-*Lemma checklist*).
+tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`. **Next concrete task:** round 4's task
+2.4, `molecule-application.tex` (the round's log, *Lemma checklist*).
 
 ## 1. The PI's decisions
 

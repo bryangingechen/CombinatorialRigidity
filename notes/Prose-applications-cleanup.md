@@ -7,10 +7,10 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, task 2.1 `F-175`–`F-177` and task 2.2 `F-178`–`F-182`. 16 one-commit tasks; tasks 1, 2.1
-and 2.2 are done, and the round has no planned stop. **Next concrete task:** task 2.3,
-`molecule-modelling.tex`'s second slice (325–368, 524–656, 1–40 now), at Opus (*Lemma
-checklist*). Round manual: `CLEANUP.md`.
+`F-174`, task 2.1 `F-175`–`F-177`, task 2.2 `F-178`–`F-182` and task 2.3 `F-183`–`F-186`. 16
+one-commit tasks; tasks 1 and 2.1–2.3 are done, and the round has no planned stop. **Next concrete
+task:** task 2.4, `molecule-application.tex` (1–215), at Opus (*Lemma checklist*). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,16 +20,18 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.2 has landed** (this commit): `molecule-modelling.tex`'s 41–211 and 256–343 (8 nodes) are
-now 41–324 and 369–523; the file's 13 nodes keep every `\label`, `\lean{…}`, `\leanok` and `\uses`
-byte-identical, and no node moved. Three formalization notes are new (no label). Nothing is
-mid-stream; task 2.3 is next. `bar-joint-3d.tex` (2.1) is done.
+**Task 2.3 has landed** (this commit): `molecule-modelling.tex` is done (2.2 and 2.3), now 869
+lines. `thm:panel-hinge-iff-molecular` moved after `lem:theorem-56-general-position`, into the
+retitled `sec:molecule-modelling-general-position` (*Molecular realizations in general position*);
+every node keeps its `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. Three notes are new
+(no label). Nothing is mid-stream; task 2.4 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (51 overfull boxes; the file's two are
-  2.3's displays at its lines 13 and 625). Screens on `molecule-modelling` (2.3's part remains):
-  register 7 / 7, devices 0 / 0, `\operatorname` 0, vocabulary 3, forward `\uses` 0 / 2 (one
-  node); the open's were 13 / 13, 0 / 0, 0, 5 and 0 / 2.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (50 overfull boxes: this file's two are
+  gone, and `molecule-application.tex`'s paragraph at its lines 26–35 is 3.4 pt over, as the
+  renumbered `\cref` widened it; 2.4 rewrites it). Screens on `molecule-modelling`: register 2 / 0
+  (label words), devices 0 / 0, `\operatorname` 0, vocabulary 3 (the endpoint selector in three
+  notes), forward `\uses` 0 / 0; the open's were 13 / 13, 0 / 0, 0, 5 and 0 / 2.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -51,8 +53,8 @@ mid-stream; task 2.3 is next. `bar-joint-3d.tex` (2.1) is done.
   76 edges are missing (`F-004`) and 43 unbacked, 22 through another node (`F-006`); 22 pins lie
   outside every main result's closure, every pin of 13 nodes (`F-012`), ten of them in
   `generic-lift` (its whole panel-and-hinge section and three abundance and existence lemmas).
-- **The crux nodes** (*Scope*): in task 2.3, with one pointer in 2.2. **The open's finding:**
-  `F-174` (S), under *Candidates for the PI*.
+- **The crux nodes** (*Scope*): in task 2.3, with one pointer in 2.2; both done. **The open's
+  finding:** `F-174` (S), under *Candidates for the PI*; 2.3 anchored it (`F-183`).
 
 ## Scope and standing rules
 
@@ -240,11 +242,8 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
 8. Round 3's carry-in 4 (`F-100`, `F-173`): the Phase-20 and -21 items say the algebraic induction
    realizes KT Theorem 4.9's reduction (`thm:minimal-kdof-reduction`); it runs on
    `thm:minimal-kdof-reduction-all-k`, as `algebraic-induction.tex` says (principle E; 2.13).
-9. `F-117`, `F-118`: `lem:theorem-56-general-position`'s proof cites `thm:theorem-55-6-d3` and "the
-   mechanism of" `lem:genericity-device`, which its pin does not reach; it reaches
-   `thm:theorem-55-6-genuine` (through `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, a
-   missing edge) and `lem:rank-polynomial-of-le-finrank` (`--label`, at `baa224cc`): name those
-   (2.3). The Phase-21 item's "generic-max-rank device underpinning the induction" (2.13).
+9. `F-117`, `F-118`: done in 2.3 (`lem:theorem-56-general-position`'s proof names the nodes its pin
+   reaches). The Phase-21 item's "generic-max-rank device underpinning the induction" (2.13).
 10. `F-137`, `F-139`: the panel section of `generic-lift` cites `lem:rows-polynomial-in-normals`
     for rows quadratic in the normals; that pin states no polynomial, and
     `lem:generic-normals-abundance`'s pin does not reach it: name what it reaches (2.9).
@@ -256,21 +255,8 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
     `thm:panel-generic-rank` and `thm:bodyhinge-generic-rank`: keep the two consistent (2.9, 2.12).
 
 - **`bar-joint-3d`.** *Done:* 2.1 (its open bullet is in this log at `69bc7afb`).
-- **`molecule-modelling`.**
-  - *2.2:* done (its open bullet is in this log at `67d44583`).
-  - *2.3 (212–255, 344–476, 1–40 at the open; 325–368, 524–656, 1–40 now):*
-    `thm:panel-hinge-iff-molecular` uses `def:general-position-placement` and
-    `lem:theorem-56-general-position`, later in the file, the
-    round's only forward `\uses`: move it after the latter. Its statement: "with enough hinge
-    labels" (`\cref` `rem:fresh-edge-supply`, principle D), "an endpoint selector … genuinely
-    recording every $G$-link", three role and attribution sentences; its proof's selector sentence
-    is a note's; its title says $\Leftrightarrow$ for an existence statement.
-    `lem:theorem-56-general-position`: "KT Theorem 5.6" (principle E), the fresh-label supply its
-    pin assumes, carry-in 9. `def:general-position-placement` ends on an existence claim.
-    `thm:molecular-iff-square-bar-joint`: `F-174`; check that `whiteley1999` holds the modelling
-    fact the opening cites it for (the ledger calls Whiteley's source an unpublished manuscript,
-    KT p. 650). The opening: "dimension-carrying", "carrying", "assembled in the final chapter"
-    (four chapters follow it), KT §1.2 and p. 671 to check.
+- **`molecule-modelling`.** *Done:* 2.2 and 2.3 (their open bullets are in this log at `67d44583`
+  and `db71b408`).
 - **`molecule-application` (2.4).** The opening: "the final chapter of the molecular-conjecture
   program", "protein-flexibility", "Katoh–Tanigawa's Theorem 5.6" (KT prefix), and an itemized
   overview that repeats the two bounds' proofs (principle F *Once*); check "proved it equivalent
@@ -366,11 +352,11 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
   - [x] **2.1 `bar-joint-3d.tex`** (`67d44583`): generic placements, $\mathcal{R}_d(V)$ and its
     rank function; the title loses "in dimension three". Found `F-175`–`F-177`.
   - [x] **2.2 `molecule-modelling.tex`, the square, molecular frameworks, projective invariance,
-    the polarity and screw velocities** (this commit): leads for the three subsections; the
+    the polarity and screw velocities** (`db71b408`): leads for the three subsections; the
     polarity named before its lemma; the crux pointer kept. Found `F-178`–`F-182`.
-  - [ ] **2.3 `molecule-modelling.tex`, general position, the rank-carrying equivalence, the
-    square-graph dictionary and the opening** (212–255, 344–476, 1–40): 5 nodes, 217 lines; crux
-    throughout; carry-in 9 and `F-174`; the node move.
+  - [x] **2.3 `molecule-modelling.tex`, general position, the rank-carrying equivalence, the
+    square-graph dictionary and the opening** (this commit): the node move; the crux at full depth;
+    `F-174` anchored; carry-in 9. Found `F-183`–`F-186`.
   - [ ] **2.4 `molecule-application.tex`** (1–215): 5 nodes, 215 lines.
   - [ ] **2.5 `jacobs.tex`, the Laman condition and tight partitions** (58–275): 10 nodes, 218
     lines.
@@ -420,6 +406,11 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
   (its swapped coordinate gloss dropped) and `lem:panel-hinge-dual-molecular`'s setup.
 - `F-180` (S, task 2.2): `lem:panel-hinge-dual-molecular`'s (3) is unpinned and its (1) narrower than
   its pin; `lem:screw-determination`'s (2) assumes more than its pin. Kept, with notes.
+- `F-183` (S, task 2.3): `F-174`'s call: the realizability sentence asks nondegenerate hinges and
+  is proved, unpinned, with a note.
+- `F-184` (S, task 2.3): principle B's moves out of `thm:panel-hinge-iff-molecular` (label supply,
+  selector, role clauses; new title), `lem:theorem-56-general-position` and
+  `def:general-position-placement`.
 
 ## Moved to a later round
 
@@ -434,6 +425,10 @@ one line each naming the ledger ID and the task that found it.
   three unbacked.
 - `F-182` (L, task 2.2): the docstrings of its pins (the swapped $\omega$/$t$ gloss in
   `ScrewVelocity.lean`, a stale `Dictionary.lean` header, process narration).
+- `F-185` (E, task 2.3): the last five nodes: nine missing edges and five unbacked, and the nodes
+  the rewritten proofs cite without an edge.
+- `F-186` (L, task 2.3): the docstrings of its pins (a misattribution in `Modelling.lean`, process
+  narration).
 
 ## Blockers / open questions
 
@@ -441,31 +436,32 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.3, `molecule-modelling.tex`'s general position, the rank-carrying
-equivalence, the square-graph dictionary and the opening (212–255, 344–476, 1–40 at the open;
-325–368, 524–656, 1–40 now), at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the
-*2.3* item under *Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.4–2.14
-in order, and task 3 closes the round. For the slices:
+**Next concrete task: task 2.4, `molecule-application.tex` (1–215), at Opus**, a fresh agent
+(`notes/Prose.md` §2). Its diagnosis is the *`molecule-application` (2.4)* item under *Per-chapter
+diagnosis*, its gates and screens under *Scope*. Then tasks 2.5–2.14 in order, and task 3 closes
+the round. For the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"): the coordinator reads 2.1–2.3 in full against the exemplars, as rounds 2–3 did.
 - **From task 2.1.** `bar-joint-3d.tex` (*The generic bar-joint rigidity matroid*) builds
   $\mathcal{R}_d(V)$ in every dimension (Jordán §1.3.1; JJ 2008 §2, Theorems 4.1 and 4.3). Keep
   true: 2.4's "All the geometry is specific to $\R^3$, inherited from … `sec:bar-joint-3d`", 2.9's
   JJ genericity, and the intro's "in dimension 3" and line 486 (2.13, 2.14).
-- **From task 2.2.** The polarity $*$ is defined, over every field, before
-  `lem:panel-hinge-dual-molecular` (over $\R$; items (1)–(3)); `thm:projective-invariance` is over $K$. "The rescaling normalization" in
-  `thm:panel-hinge-iff-molecular`'s proof is now both nodes' item (3); the lemma's note `\cref`s that
-  proof. Write $\bar c = (c, 1)$. For `F-174` and the opening: `whiteley1999` has the molecular
-  structure (Definition 4, p. 27) and the polarity (Corollary 12, p. 30), but no square-graph
-  equivalence, which JJ 2008 (§2.1) credits to Whiteley's 2004 manuscript, their [21].
-- **Notation and terms** (*Decisions*); **crux nodes** in 2.3 and 2.2's pointer (*Scope*);
-  **carry-ins** 1–13 under *Per-chapter diagnosis*. Where a proof cites a node its pin does not
-  reach, a slice may name in prose the node the pin reaches, checked with the script; the edges
-  wait for round 5. **Later chapters' readings** (*Scope*) bind 2.2, 2.5 and 2.12.
-- **The open's finding** `F-174`: 2.3 keeps the claim with a note, or anchors it by a reading
-  under *Scope*, and flags the call.
+- **From task 2.2.** The polarity $*$ is defined over every field before
+  `lem:panel-hinge-dual-molecular` (over $\R$); `thm:projective-invariance` is over $K$; $\bar c = (c, 1)$.
+- **From task 2.3, for 2.4.** `molecule-modelling.tex`'s opening gives the crux account (JJ's
+  Theorems 4.1 and 4.3, which the dimension chain replaces): 2.4's opening `\cref`s it, not repeats
+  it (principle F *Once*). `thm:panel-hinge-iff-molecular` keeps its label bound and selector in
+  its note, which `lem:molecule-rank-lower-bound`'s "label supply" sentence should point at; the
+  dictionary's note describes the formal multigraph that 2.4's carrier names. Whiteley's 2004
+  manuscript is credited through JJ §2.1 and KT pp. 650, 671. The 3.4 pt overfull box at
+  `molecule-application.tex` 26–35 is new (a renumbered `\cref`).
+- **Notation and terms** (*Decisions*); **carry-ins** 1–8 and 10–13 under *Per-chapter
+  diagnosis*. Where a proof cites a node its pin does not reach, a slice may name in prose the node
+  the pin reaches, checked with the script; the edges wait for round 5. **Later chapters'
+  readings** (*Scope*) bind 2.5 and 2.12.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
-  `--chapter <name>`. The ledger's next ID is `F-183`.
+  `--chapter <name>`. `lint.sh` 5a bans JJ's "brick" too (2.3 wrote "maximal subgraphs of
+  deficiency zero"). The ledger's next ID is `F-187`.
 
 ## Decisions made during this round
 
@@ -492,3 +488,9 @@ in order, and task 3 closes the round. For the slices:
 - **`molecule-modelling`'s first slice** (2.2): `thm:projective-invariance` over $K$, as `pencil.tex`
   reads it (`F-178`); the polarity defined once, before its lemma, over every field, the lemma over
   $\R$ (both later chapters' readings); claims beside their pins kept, with notes (`F-180`).
+- **`molecule-modelling`'s second slice** (2.3): `F-174` anchored (`F-183`): the realizability
+  sentence asks nondegenerate hinges and says "Moreover"; the dictionary's proof proves it from KT
+  Theorem 5.6, the deficiency bound and genericity, and a note says it is unpinned. The equivalence
+  is Whiteley's 2004 manuscript, credited through JJ §2.1 and KT pp. 650, 671 (no bib entry: no
+  primary source). `thm:panel-hinge-iff-molecular` moved after `lem:theorem-56-general-position`,
+  whose subsection is retitled; the opening keeps the crux account, naming JJ's Theorems 4.1, 4.3.

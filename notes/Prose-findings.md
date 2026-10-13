@@ -517,6 +517,28 @@ declaration's name as its header writes it:
   (`F-012`).
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-modelling`, at `67d44583`).
   *Found:* round 4 task 2.2.
+- **F-185** · E · `molecule-modelling.tex`'s last five nodes, task 2.3's (`molecule-modelling.tex`):
+  nine missing edges and five unbacked. Missing: `thm:panel-hinge-iff-molecular`'s (proof) to
+  `lem:rank-rotation-semicont` (`infinitesimalMotions_mono_of_span_le`, the rescaling);
+  `lem:theorem-56-general-position`'s to `thm:theorem-55-6-genuine` (carry-in 9);
+  `lem:exists-generic-general-position`'s to `def:rigidityRow`,
+  `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`, `lem:exists-generic-placement` and
+  `lem:rigidityMap-apply`; `thm:molecular-iff-square-bar-joint`'s to `def:rigidity-matrix`,
+  `def:rigidityMap` and `lem:rigidityMap-apply`. Unbacked: `thm:panel-hinge-iff-molecular`'s to
+  `thm:projective-invariance` (through another node); `lem:theorem-56-general-position`'s to
+  `def:general-position-placement` (its pin states the condition for the normals),
+  `lem:genericity-device` and `thm:theorem-55-6-d3`; `def:general-position-placement`'s to
+  `def:framework`. Task 2.3's prose also cites without an edge: in the proof of
+  `lem:theorem-56-general-position`, `thm:theorem-55-6-genuine`,
+  `lem:rank-polynomial-of-le-finrank`, `lem:general-position-support-nonzero` and
+  `lem:affine-indep-iff`, which its pin reaches; in that of `thm:panel-hinge-iff-molecular`,
+  `lem:trivial-motions-rank-bound`; in that of `thm:molecular-iff-square-bar-joint`,
+  `def:screw-velocity`, `lem:rigidityMap-apply` and `lem:framework-finrank`, and for its unpinned
+  realizability claim (`F-183`) `thm:panel-hinge-iff-molecular`, `lem:trivial-motions-rank-bound`,
+  `lem:relative-deficiency-rank-bound`, `def:isInfinitesimallyRigid`, `def:generic-placement` and
+  `lem:exists-generic-general-position`. No pin of these nodes is dead.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-modelling`, at `db71b408`).
+  *Found:* round 4 task 2.3.
 
 ## N — node shape
 
@@ -1755,6 +1777,48 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the pins; the body of
   `exists_molecular_rankHypothesis_generalPosition`, `Molecule/Modelling.lean`).
   *Found:* round 4 task 2.2.
+- **F-183** · S · `thm:molecular-iff-square-bar-joint` (`molecule-modelling.tex`): task 2.3's call
+  on `F-174`, by anchoring. The statement's last sentence read "In particular $G$ has an
+  infinitesimally rigid molecular realization iff $G^2$ has an infinitesimally rigid bar-joint
+  realization (Whiteley's modelling equivalence, for which Jackson–Jordán is the citable published
+  anchor; KT resolve the conjecture that closes the argument)". It now reads "Moreover, $G$ has an
+  infinitesimally rigid molecular realization with nondegenerate hinges, that is, with $c(u) \neq
+  c(v)$ at every edge $uv$, if and only if $G^2$ has an infinitesimally rigid bar-joint realization
+  in $\R^3$"; the attribution went to the title and the subsection's lead. Two readings: anchoring a
+  definition's domain, as the molecular frameworks of Jackson–Jordán and KT have lines through the
+  centres as hinges (JJ 2008 §2.1; KT p. 671; Whiteley 1999 Definition 4 calls distinct centres
+  non-degenerate), so the claim is the equivalence they state, now true; or a hypothesis added to an
+  unpinned claim that, read with `def:hinge-concurrent`, was false (`F-174`'s $C_7$), with "In
+  particular" changed to "Moreover", since the claim does not follow from the dimension equality
+  alone. The claim stays unpinned, with a note. The proof now proves it: rigidity with nondegenerate
+  hinges forces $\operatorname{def}(\tilde G) = 0$ (`lem:relative-deficiency-rank-bound`), then
+  `thm:panel-hinge-iff-molecular` and the dimension equality give a rigid $(G^2, c')$; conversely a
+  placement both generic and in general position (`lem:exists-generic-general-position`) gives,
+  from any rigid $(G^2, p)$, a rigid molecular framework with injective centres.
+  *Evidence:* read (the statement and body of `molecular_finrank_motions_eq_square_ker`;
+  `molecularOfCentres`; JJ 2008 §2.1; KT pp. 650, 671; Whiteley 1999 p. 27).
+  *Found:* round 4 task 2.3.
+- **F-184** · S · `thm:panel-hinge-iff-molecular`, `lem:theorem-56-general-position`,
+  `def:general-position-placement` (`molecule-modelling.tex`): principle B's moves and anchoring.
+  The theorem's "simple spanning graph on at least one body, with enough hinge labels", its "endpoint
+  selector … genuinely recording every $G$-link" and three role and attribution sentences ("the
+  panel-hinge realization … carried to the molecular model", "the modelling equivalence KT state on
+  p. 671", Jackson–Jordán as "the citable published anchor") left the statement: it reads "a simple
+  graph with $V \neq \emptyset$", the label bound, the spanning hypothesis and the selector are in a
+  note (`rem:fresh-edge-supply`, `fmlnote:panel-hinge-nondegenerate`), and the title is "Molecular
+  realizations at the target rank; KT p. 671", not "Panel-hinge $\Leftrightarrow$ molecular,
+  rank-carrying". Its "Taking $\operatorname{def}(\tilde G) = 0$ gives an infinitesimally rigid
+  molecular realization", which the pin does not state (`rankHypothesis_zero_iff` gives it), stays
+  as an "In particular", with a note. The lemma's "simple spanning graph on at least one body" is "a
+  simple graph with $V \neq \emptyset$", and its "normals have nonvanishing last coordinate and …
+  poles are in general position" is "normals $n_v = \lambda_v \bar c(v)$, $\lambda_v \neq 0$, with
+  the $c(v)$ in general position", the same condition; the pin's label bound and its statement for
+  the normals are in a note. The definition's "(so in particular $p$ is injective and no three
+  points are collinear)" and its moment-curve witness went to the prose after it, with a proof.
+  *Evidence:* read (the statements of `exists_molecular_rankHypothesis_generalPosition`,
+  `exists_rankHypothesis_isGeneralPosition4`, `IsGeneralPosition4` and
+  `IsGeneralPositionPlacement`).
+  *Found:* round 4 task 2.3.
 
 ## L — Lean
 
@@ -2352,6 +2416,17 @@ declaration's name as its header writes it:
   §2.3(4), flag F2 route two", DUAL-K) and say "genuine" and "consumes".
   *Evidence:* read (the docstrings and bodies of the slice's 26 pins and of `omegaForm`, `tauForm`).
   *Found:* round 4 task 2.2.
+- **F-186** · L · the docstrings of task 2.3's pins (`GeneralPositionPlacement.lean`,
+  `Molecule/GeneralPosition4.lean`, `Theorem56.lean`, `Modelling.lean`). The docstring of
+  `exists_molecular_rankHypothesis_generalPosition` credits the panel-hinge–molecular link to "the
+  modelling equivalence Whiteley [35] / Jackson–Jordán 2008 state"; that is the square-graph
+  equivalence, and the link is projective duality (KT p. 671, Crapo–Whiteley §3.6). The headers and
+  docstrings narrate process (Phases 24–26, 30 and 31, leaves W5–W7, "the F1 fix", "RELAX",
+  "PROSPECT S2") and say "capstone", "consumes", "producer", "genuine(ly)" and "rank-carrying". The
+  other docstrings agree with their bodies.
+  *Evidence:* read (the docstrings and bodies of the five pins, `IsGeneralPosition4` and
+  `exists_generalPosition4_polynomial`).
+  *Found:* round 4 task 2.3.
 
 ## M — mathematics and sources
 
