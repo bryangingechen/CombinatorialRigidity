@@ -539,6 +539,23 @@ declaration's name as its header writes it:
   `lem:exists-generic-general-position`. No pin of these nodes is dead.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-modelling`, at `db71b408`).
   *Found:* round 4 task 2.3.
+- **F-189** · E · `molecule-application.tex`'s five nodes, task 2.4's (`molecule-application.tex`):
+  six missing edges and two unbacked. Missing: `lem:square-rank-le-genericRank`'s to
+  `lem:k-frame-incidence-finrank-rk` (`Matroid.Rep.finrank_span_image_eq_rk`);
+  `lem:molecule-rank-lower-bound`'s to `lem:framework-finrank` (rank–nullity), and to
+  `lem:rigidityMap-apply` and `lem:span-range-rigidityRow` (through the unpinned rank form of
+  `F-188`); `lem:molecule-rank-upper-bound`'s to `lem:framework-finrank` and
+  `lem:rigidityMap-rank-at-generic`. Unbacked: `lem:molecule-graph-carrier`'s to
+  `def:hinge-concurrent` (no Lean basis); `lem:molecule-rank-upper-bound`'s to
+  `lem:genericRank-eq-finrank-span` (through `lem:rigidityMap-rank-at-generic`). Task 2.4's prose
+  cites without an edge: in the proof of `lem:square-rank-le-genericRank`,
+  `def:linearRigidityMatroid`, `lem:k-frame-incidence-finrank-rk` and
+  `lem:linearRigidityMatroid-indep-iff`, which its pin reaches, and
+  `lem:rigidityMap-rank-at-generic` for the rank form; in that of the upper bound,
+  `lem:rigidityMap-rank-at-generic`, which its pin uses in place of
+  `lem:genericRank-eq-finrank-span`. No pin of these nodes is dead.
+  *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-application`, at `302cc117`).
+  *Found:* round 4 task 2.4.
 
 ## N — node shape
 
@@ -1819,6 +1836,30 @@ declaration's name as its header writes it:
   `exists_rankHypothesis_isGeneralPosition4`, `IsGeneralPosition4` and
   `IsGeneralPositionPlacement`).
   *Found:* round 4 task 2.3.
+- **F-187** · S · `lem:molecule-graph-carrier` (`molecule-application.tex`): the label supply left
+  the statement. At the open it read "There is a multigraph $G'$ on $V$, spanning and simple, with an
+  edge between distinct $u, v$ if and only if $u \sim_G v$, and with strictly more than $6(|V| -
+  1)$ edge labels available". Task 2.4 states that there is a simple multigraph $G'$ with vertex set
+  $V$ in which two distinct vertices are joined if and only if they are adjacent in $G$; the label
+  bound, with the labels the pin uses, is in the note, citing `rem:fresh-edge-supply`. Two
+  readings: principle E's "a Lean-side device … stays out of statements" and the round's *Terms*
+  (the fresh-label supply leaves statements, as at `thm:panel-hinge-iff-molecular`, `F-184`), the
+  pins unchanged and the bound stated in the note; or the statement now claims less than its pins,
+  one of which (`card_shadowLabel_lt`) is the bound, against the rule that such a statement keeps
+  its claim, with a note. Without the bound the statement reads a simple graph as a multigraph;
+  whether the node stays one is `F-010`'s question (its pinned helper `shadowGraph`).
+  *Evidence:* read (the statements of the five pins and the body of `shadowGraph`,
+  `Molecule/Carrier.lean`; the signature of `exists_molecular_rankHypothesis_generalPosition`).
+  *Found:* round 4 task 2.4.
+- **F-188** · S · `lem:square-rank-le-genericRank` (`molecule-application.tex`): the statement's
+  second form, "Equivalently, $\operatorname{rank} R(H, p) \le r_d(H)$", has no pin. The pin
+  `finrank_span_rigidityRow_le_genericRank` bounds the span of the rows of $K_V$ at $E(H)$; the
+  rank form is the unpinned `finrank_range_rigidityMap_le_genericRank`, which the pin of
+  `lem:molecule-rank-lower-bound` uses. Task 2.4 kept the claim, with a note; whether to pin the
+  rank form is round 5's call (principle D).
+  *Evidence:* read (the statements of both declarations, `GenericRigidityMatroid.lean`; the body of
+  `molecule_rank_lower_bound`).
+  *Found:* round 4 task 2.4.
 
 ## L — Lean
 
@@ -2427,6 +2468,20 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the five pins, `IsGeneralPosition4` and
   `exists_generalPosition4_polynomial`).
   *Found:* round 4 task 2.3.
+- **F-190** · L · the docstrings of task 2.4's pins (`Molecule/Carrier.lean`,
+  `Molecule/Application.lean`). `Carrier.lean`'s header says that the labels `Sym2 V` alone are too
+  few "e.g. for `Nat.card V ≤ 10`"; at $|V| = 10$ they number $55 > 54 = 6 \cdot 9$, and at
+  $|V| = 1$ one, more than $0$: they are too few exactly when $2 \le |V| \le 9$.
+  `molecule_rank_formula`'s says the formula "is due to Jackson–Jordán 2008, who proved it
+  equivalent to the Molecular Conjecture", and calls `molecular_conjecture` KT Theorem 5.6; JJ
+  conjectured the formula and proved $\le$ and the equivalence (Conjecture 2.2, Theorems 4.1 and
+  4.3), and `molecular_conjecture` is KT Conjecture 1.2 (`thm:molecular-conjecture`). The headers and
+  docstrings narrate process (Phases 24–26 and 34, leaf F4, Layer M, "not on the critical path")
+  and say "shadowing carrier", "producer", "attainment leg", "fed", "carries", "transports",
+  "genuine" and "consumers". The other docstrings agree with their bodies.
+  *Evidence:* read (the docstrings and bodies of the eight pins in these files, and of
+  `finrank_span_rigidityRow_le_genericRank`; JJ 2008 §§2 and 4, `.refs/`).
+  *Found:* round 4 task 2.4.
 
 ## M — mathematics and sources
 

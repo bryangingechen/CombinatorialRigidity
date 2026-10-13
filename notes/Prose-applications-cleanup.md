@@ -7,10 +7,10 @@ which rounds are done. The round rewrites the prose of the five chapters `bar-jo
 parts of `intro.tex` that `40-exposition` did not rewrite, to `40-exposition`'s register and round
 1's exemplar. Every `\label`, pin, `\leanok`, `\uses` edge and statement strength stays as it is.
 What else the round notices goes to the ledger `notes/Prose-findings.md`: the open recorded
-`F-174`, task 2.1 `F-175`–`F-177`, task 2.2 `F-178`–`F-182` and task 2.3 `F-183`–`F-186`. 16
-one-commit tasks; tasks 1 and 2.1–2.3 are done, and the round has no planned stop. **Next concrete
-task:** task 2.4, `molecule-application.tex` (1–215), at Opus (*Lemma checklist*). Round manual:
-`CLEANUP.md`.
+`F-174`, task 2.1 `F-175`–`F-177`, task 2.2 `F-178`–`F-182`, task 2.3 `F-183`–`F-186` and task
+2.4 `F-187`–`F-190`. 16 one-commit tasks; tasks 1 and 2.1–2.4 are done, and the round has no
+planned stop. **Next concrete task:** task 2.5, `jacobs.tex`, the Laman condition and tight
+partitions (58–275), at Opus (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,18 +20,17 @@ No planned stop: Stop 1 was the program's only one, in round 1 (`notes/Prose.md`
 
 ## Current state
 
-**Task 2.3 has landed** (this commit): `molecule-modelling.tex` is done (2.2 and 2.3), now 869
-lines. `thm:panel-hinge-iff-molecular` moved after `lem:theorem-56-general-position`, into the
-retitled `sec:molecule-modelling-general-position` (*Molecular realizations in general position*);
-every node keeps its `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. Three notes are new
-(no label). Nothing is mid-stream; task 2.4 is next.
+**Task 2.4 has landed** (this commit): `molecule-application.tex` is done, now 251 lines, its
+subsections retitled; "shadowing carrier" is gone (the multigraph of `lem:molecule-graph-carrier`).
+No node moved; every one keeps its `\label`, `\lean{…}`, `\leanok` and `\uses` byte-identical. Three
+notes are new (no label). The coordinator's anchor of "at the target rank" in
+`molecule-modelling.tex` (`def:rank-hypothesis`) rides here. Nothing is mid-stream; 2.5 is next.
 - **Gates at this commit**, all the open's values: `lint.sh` green; `verify.sh` green, `checkdecls`
   silent, 9 `WARNING:` lines; the invariance check `1292 edges 673e3178d1b3145e` and
-  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (50 overfull boxes: this file's two are
-  gone, and `molecule-application.tex`'s paragraph at its lines 26–35 is 3.4 pt over, as the
-  renumbered `\cref` widened it; 2.4 rewrites it). Screens on `molecule-modelling`: register 2 / 0
-  (label words), devices 0 / 0, `\operatorname` 0, vocabulary 3 (the endpoint selector in three
-  notes), forward `\uses` 0 / 0; the open's were 13 / 13, 0 / 0, 0, 5 and 0 / 2.
+  `b53eb8b1cf78cb06`; `print.log` 0 `LaTeX Warning` lines (49 overfull boxes, none in the chapter).
+  Screens on `molecule-application`: register 0 / 0, devices 0 / 0, `\operatorname` 0, vocabulary 1
+  (the endpoint selector in a note), forward `\uses` 0 / 0; the open's were 1 / 1, 1 / 6, 0, 12
+  and 0 / 0.
 
 **Verified at the open** (2026-10-13, at `baa224cc`; task 1, docs only):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run here, all
@@ -254,20 +253,8 @@ instruments, three letters for the dimension in `generic-lift`, and role clauses
 13. `F-121`: `panel-layer.tex`'s note on `prop:rigidity-matrix-prop11` points at
     `thm:panel-generic-rank` and `thm:bodyhinge-generic-rank`: keep the two consistent (2.9, 2.12).
 
-- **`bar-joint-3d`.** *Done:* 2.1 (its open bullet is in this log at `69bc7afb`).
-- **`molecule-modelling`.** *Done:* 2.2 and 2.3 (their open bullets are in this log at `67d44583`
-  and `db71b408`).
-- **`molecule-application` (2.4).** The opening: "the final chapter of the molecular-conjecture
-  program", "protein-flexibility", "Katoh–Tanigawa's Theorem 5.6" (KT prefix), and an itemized
-  overview that repeats the two bounds' proofs (principle F *Once*); check "proved it equivalent
-  to the Molecular Conjecture" against JJ 2008. $\mathrm{rigidityRow}$ in
-  `lem:square-rank-le-genericRank`'s statement. *The shadowing multigraph carrier*:
-  `lem:molecule-graph-carrier` (5 pins; `shadowGraph` a pinned helper, `F-010`) states the label
-  supply (`rem:fresh-edge-supply`), and its proof $\mathrm{Sym2}(V) \oplus
-  \mathrm{Fin}(6(|V|-1)+1)$ (principle B *Constructions*: the construction in words, the encoding
-  in a note); "shadowing carrier" is a coinage: define it once or replace it, and 2.9 follows. The
-  remark after it ends "Not yet formalized … not on its critical path" (status vocabulary).
-  "Attainment leg"; the upper bound's selector construction is a note's; "genuine".
+- **`bar-joint-3d`, `molecule-modelling`, `molecule-application`.** *Done:* 2.1–2.4 (the open
+  bullets are in this log at `69bc7afb`, `67d44583`, `db71b408` and `302cc117`).
 - **`jacobs`.**
   - *2.5 (58–275):* `fmlnote:isLaman3-guard` is a ledger pointer (keep).
     `lem:exists-tight-partition` defines "tight" inside a lemma and pins the definition
@@ -355,9 +342,10 @@ slice at Opus, a fresh agent per task; the close may run at Sonnet (§2).
     the polarity and screw velocities** (`db71b408`): leads for the three subsections; the
     polarity named before its lemma; the crux pointer kept. Found `F-178`–`F-182`.
   - [x] **2.3 `molecule-modelling.tex`, general position, the rank-carrying equivalence, the
-    square-graph dictionary and the opening** (this commit): the node move; the crux at full depth;
+    square-graph dictionary and the opening** (`e5adefe1`): the node move; the crux at full depth;
     `F-174` anchored; carry-in 9. Found `F-183`–`F-186`.
-  - [ ] **2.4 `molecule-application.tex`** (1–215): 5 nodes, 215 lines.
+  - [x] **2.4 `molecule-application.tex`** (this commit): the coinage "shadowing carrier" replaced;
+    the opening points at `molecule-modelling`'s for the argument. Found `F-187`–`F-190`.
   - [ ] **2.5 `jacobs.tex`, the Laman condition and tight partitions** (58–275): 10 nodes, 218
     lines.
   - [ ] **2.6 `jacobs.tex`, the counting bound (JJ Theorem 5.3)** (276–583): 11 nodes, 308 lines.
@@ -411,6 +399,9 @@ finding). Recorded, not acted on in this round; round 5's report ranks them for 
 - `F-184` (S, task 2.3): principle B's moves out of `thm:panel-hinge-iff-molecular` (label supply,
   selector, role clauses; new title), `lem:theorem-56-general-position` and
   `def:general-position-placement`.
+- `F-187` (S, task 2.4): `lem:molecule-graph-carrier`'s label bound left the statement for its note,
+  though one of its pins states it (two readings).
+- `F-188` (S, task 2.4): `lem:square-rank-le-genericRank`'s rank form is unpinned; kept, with a note.
 
 ## Moved to a later round
 
@@ -429,6 +420,10 @@ one line each naming the ledger ID and the task that found it.
   the rewritten proofs cite without an edge.
 - `F-186` (L, task 2.3): the docstrings of its pins (a misattribution in `Modelling.lean`, process
   narration).
+- `F-189` (E, task 2.4): `molecule-application.tex`'s six missing edges and two unbacked, and the
+  nodes the rewritten proofs cite without an edge.
+- `F-190` (L, task 2.4): the docstrings of its pins (a false count in `Carrier.lean`, a loose credit,
+  process narration).
 
 ## Blockers / open questions
 
@@ -436,32 +431,32 @@ one line each naming the ledger ID and the task that found it.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 2.4, `molecule-application.tex` (1–215), at Opus**, a fresh agent
-(`notes/Prose.md` §2). Its diagnosis is the *`molecule-application` (2.4)* item under *Per-chapter
-diagnosis*, its gates and screens under *Scope*. Then tasks 2.5–2.14 in order, and task 3 closes
-the round. For the slices:
+**Next concrete task: task 2.5, `jacobs.tex`, the Laman condition and tight partitions (58–275),
+at Opus**, a fresh agent (`notes/Prose.md` §2). Its diagnosis is the *2.5* item under *`jacobs`* in
+*Per-chapter diagnosis*, its gates and screens under *Scope*. Then tasks 2.6–2.14 in order, and
+task 3 closes the round. For the slices:
 - **The PI's check** (round 1's Stop 1: "the overriding goal is to make sure the result is
   understandable"): the coordinator reads 2.1–2.3 in full against the exemplars, as rounds 2–3 did.
 - **From task 2.1.** `bar-joint-3d.tex` (*The generic bar-joint rigidity matroid*) builds
   $\mathcal{R}_d(V)$ in every dimension (Jordán §1.3.1; JJ 2008 §2, Theorems 4.1 and 4.3). Keep
-  true: 2.4's "All the geometry is specific to $\R^3$, inherited from … `sec:bar-joint-3d`", 2.9's
-  JJ genericity, and the intro's "in dimension 3" and line 486 (2.13, 2.14).
+  true: 2.9's JJ genericity, and the intro's "in dimension 3" and line 486 (2.13, 2.14).
 - **From task 2.2.** The polarity $*$ is defined over every field before
   `lem:panel-hinge-dual-molecular` (over $\R$); `thm:projective-invariance` is over $K$; $\bar c = (c, 1)$.
-- **From task 2.3, for 2.4.** `molecule-modelling.tex`'s opening gives the crux account (JJ's
-  Theorems 4.1 and 4.3, which the dimension chain replaces): 2.4's opening `\cref`s it, not repeats
-  it (principle F *Once*). `thm:panel-hinge-iff-molecular` keeps its label bound and selector in
-  its note, which `lem:molecule-rank-lower-bound`'s "label supply" sentence should point at; the
-  dictionary's note describes the formal multigraph that 2.4's carrier names. Whiteley's 2004
-  manuscript is credited through JJ §2.1 and KT pp. 650, 671. The 3.4 pt overfull box at
-  `molecule-application.tex` 26–35 is new (a renumbered `\cref`).
+- **From task 2.4.** `molecule-application.tex`'s opening credits JJ 2008's Conjecture 2.2 (the
+  formula), Theorem 4.1 ($\le$) and Theorem 4.3 (its equivalence with their Conjecture 2.1, the
+  bar-joint molecular conjecture), and KT p. 671 for KT's deduction: 2.8, 2.13 and 2.14 agree with
+  it. "Shadowing carrier" is now the multigraph $G'$ of `lem:molecule-graph-carrier` (*Simple graphs
+  as multigraphs*), whose deficiency is JJ's $\operatorname{def}(G)$: 2.9 rewrites the term in
+  `cor:molecule-generic-square-packing`'s proof. The chapter ends on generic rigidity of squares
+  (JJ Conjecture 2.1, KT §7), citing `cor:molecule-generic-rigid`; the intro's "protein-flexibility"
+  and "capstone" (2.13, 2.14) have no counterpart in it.
 - **Notation and terms** (*Decisions*); **carry-ins** 1–8 and 10–13 under *Per-chapter
   diagnosis*. Where a proof cites a node its pin does not reach, a slice may name in prose the node
   the pin reaches, checked with the script; the edges wait for round 5. **Later chapters'
   readings** (*Scope*) bind 2.5 and 2.12.
 - **Tools.** The two screens under *Scope*; `scripts/blueprint-deps.py --label <label>` or
   `--chapter <name>`. `lint.sh` 5a bans JJ's "brick" too (2.3 wrote "maximal subgraphs of
-  deficiency zero"). The ledger's next ID is `F-187`.
+  deficiency zero"). The ledger's next ID is `F-191`.
 
 ## Decisions made during this round
 
@@ -475,8 +470,8 @@ the round. For the slices:
   `generic-lift` writes $n$, $k + 1$, a grade $k$ and $d = n(n+1)/2$ now.
 - **Terms** (round 3's, carried). The realization record (the endpoint selector, link-recording)
   and the fresh-label supply leave statements, `\cref`ing round 3's note at
-  `def:panel-hinge-framework` and `rem:fresh-edge-supply`; "genuine" is "nondegenerate". The
-  coinage "shadowing carrier" is 2.4's call.
+  `def:panel-hinge-framework` and `rem:fresh-edge-supply`; "genuine" is "nondegenerate". 2.4
+  replaced the coinage "shadowing carrier" (below).
 - **`intro.tex`'s parts** (the open's call; *Scope*): the lists, the continuation paragraph and
   *Reading* are rewritten; the Caution paragraph and `40-exposition`'s pencil text stay.
 - **The crux list, by label** (the open): three entries, in 2.3 with a pointer in 2.2. The
@@ -494,3 +489,8 @@ the round. For the slices:
   is Whiteley's 2004 manuscript, credited through JJ §2.1 and KT pp. 650, 671 (no bib entry: no
   primary source). `thm:panel-hinge-iff-molecular` moved after `lem:theorem-56-general-position`,
   whose subsection is retitled; the opening keeps the crux account, naming JJ's Theorems 4.1, 4.3.
+- **`molecule-application`** (2.4): "shadowing carrier" is replaced, not defined: *Simple graphs as
+  multigraphs* reads $G$ as a multigraph $G'$ whose deficiency is JJ's $\operatorname{def}(G)$,
+  and the label bound goes to a note (`F-187`). The opening credits JJ's Conjecture 2.2 and
+  Theorems 4.1 and 4.3, and points at `molecule-modelling`'s opening for the argument; the closing
+  remark is prose on generic rigidity of squares (JJ Conjecture 2.1, KT §7).
