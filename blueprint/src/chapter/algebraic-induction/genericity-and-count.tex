@@ -108,8 +108,10 @@ dimensions to $Z(G,q)$, and every infinitesimal motion is constant on
 $V(G)$ exactly when $\dim Z(G,q) = D(|W \setminus V(G)| + 1)$. The first
 four lemmas count in this form. They compute the motions that vanish on
 $V(G)$ (\cref{lem:relative-screw-split}), and pass from independent rows, or
-from a bound on $\dim Z(G,q)$, to motions constant on $V(G)$. Then comes
-the form of \cref{lem:genericity-device} that the realization lemmas use
+from a bound on $\dim Z(G,q)$, to motions constant on $V(G)$. Then come
+the independent rows that a bound on the rank gives
+(\cref{lem:independent-rows-of-rank}), and the form of
+\cref{lem:genericity-device} that the realization lemmas use
 (\cref{lem:rank-polynomial-of-le-finrank}). The subsection ends with the
 count of KT eq.~(6.12) when the graph obtained by splitting off a vertex
 of degree two is rigid (\cref{lem:case-II-realization-placement}), and
@@ -234,6 +236,38 @@ the four lemmas on rows before it.
   \cref{lem:relative-device-count}, under the same assumption on the
   endpoint selector. Its conclusion is the first predicate of
   \cref{fmlnote:generic-full-rank}. No main result uses it.
+\end{fmlnote}
+
+\begin{lemma}[Independent rows from a bound on the rank]
+  \label{lem:independent-rows-of-rank}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank}
+  \leanok
+  \uses{def:hinge-constraint, def:rigidity-matrix,
+        lem:rows-polynomial-in-normals}
+  Let $(G,p)$ be a body-hinge framework whose hinges are nondegenerate.
+  At each edge $e$ of $G$, with ends $u$ and $w$, take the linear forms
+  $S \mapsto C_t\, x_{t'} - C_{t'}\, x_t$, where $C = C(p(e))$ and
+  $x = S(u) - S(w)$, for all pairs of indices $t$ and $t'$, as in
+  \cref{lem:rows-polynomial-in-normals}. If
+  $N \le \operatorname{rank} R(G,p)$, then some $N$ of these forms are
+  linearly independent.
+\end{lemma}
+\begin{proof}
+  \leanok
+  As the hinges are nondegenerate, the forms at each edge span the same
+  space as the rows of $R(G,p)$ at that edge (the proof of
+  \cref{lem:rows-polynomial-in-normals}). So all the forms span the row
+  space of $R(G,p)$, whose dimension is
+  $\operatorname{rank} R(G,p) \ge N$, and some $N$ of them are linearly
+  independent.
+\end{proof}
+
+\begin{fmlnote}
+  The pinned theorem reads the ends of each edge from the endpoint
+  selector (\cref{fmlnote:panel-hinge-nondegenerate}), and indexes the
+  forms by the edge and the pair of indices. The last step of the proof
+  of \cref{lem:case-II-placement-old-rows-extract} is the case of a
+  framework rigid on $V(G)$, with $N = D(|V(G)| - 1)$.
 \end{fmlnote}
 
 \begin{lemma}[A rank bound off the zeros of a polynomial]

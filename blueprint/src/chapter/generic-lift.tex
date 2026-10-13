@@ -437,29 +437,25 @@ $D - 1$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-II-placement-old-rows-extract}
+  \uses{lem:independent-rows-of-rank}
   As the hinges are nondegenerate, the members of the family at each
   edge span the same space as the rows of $R(G, q)$ at that edge
   (\cref{lem:rows-polynomial-in-normals}). So the family spans the row
   space of $R(G, q)$, which has dimension
   $\operatorname{rank} R(G, q) \ge N$. Hence some $N$ of its members
-  are linearly independent. This is the last step of the proof of
-  \cref{lem:case-II-placement-old-rows-extract}. That lemma is stated
-  for a graph obtained by splitting off a vertex, and it obtains the
-  rank from rigidity. The step holds for every framework with
-  nondegenerate hinges, and for every bound $N$ on the rank.
+  are linearly independent (\cref{lem:independent-rows-of-rank}).
 \end{proof}
 
 \begin{fmlnote}
-  The pinned lemma takes the realization with its own endpoint
-  selector, which gives each edge its two ends in either order
-  (\cref{fmlnote:panel-hinge-nondegenerate}), and the family with the
-  selector of \cref{fmlnote:generic-normals-selector}. Where the two
+  The pinned lemma extracts the rows by the pinned theorem of
+  \cref{lem:independent-rows-of-rank}, with the realization's own
+  endpoint selector, which gives each edge its two ends in either order
+  (\cref{fmlnote:panel-hinge-nondegenerate}). It takes the family with
+  the selector of \cref{fmlnote:generic-normals-selector}. Where the two
   orders differ, the hinge of the realization is $-C(q_u, q_v)$
   (\cref{def:panel-support-extensor}), and the rows it extracts differ
   from the members of the family by a sign. Signs do not affect linear
-  independence. The extraction is an unpinned lemma that takes a bound
-  on the rank in place of rigidity.
+  independence.
 \end{fmlnote}
 
 \begin{theorem}[The rank formula at every generic normal assignment]
@@ -1368,7 +1364,7 @@ in every dimension, by comparing the rows.
     lem:panel-support-extensor-join,
     def:genuine-hinge-realization, lem:simultaneous-affine-position,
     lem:extensor-affine-representation, lem:screw-map-rows,
-    lem:case-II-placement-old-rows-extract}
+    lem:independent-rows-of-rank}
   Let $N = D(|V|-1) - \operatorname{def}(\tilde G)$. By KT
   Theorem~5.6 with nondegenerate hinges
   (\cref{thm:theorem-55-6-genuine}), $G$ has a panel-hinge realization
@@ -1403,12 +1399,9 @@ in every dimension, by comparing the rows.
   of $R(G, \Lambda p)$ at $e$ (the argument in the proof of
   \cref{lem:rows-polynomial-in-normals}). So these forms, at all the
   edges, span the row space of $R(G, \Lambda p)$, of dimension $N$, and
-  some $N$ of them are linearly independent. This is the last step of the
-  proof of \cref{lem:case-II-placement-old-rows-extract}. As the proof
-  of \cref{lem:panel-witness-transplant} explains, the step holds for
-  every framework with nondegenerate hinges and every bound on the
-  rank. The member of the annihilator-row family of $q$ at an index
-  $(e, t, t')$ is $c_e$ times the form at $(e, t, t')$, as
+  some $N$ of them are linearly independent
+  (\cref{lem:independent-rows-of-rank}). The member of the
+  annihilator-row family of $q$ at an index $(e, t, t')$ is $c_e$ times the form at $(e, t, t')$, as
   $C(q_e) = c_e\, \Lambda\, C(n_u, n_v)$. Multiplying the members of a
   family by nonzero scalars does not affect their linear independence.
   So the members of the family of $q$ at these $N$ indices are linearly

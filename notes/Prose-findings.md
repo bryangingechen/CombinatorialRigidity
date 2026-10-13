@@ -1141,6 +1141,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the four nodes, at `5e9e329c`);
   read (a `grep` for each pin's callers and for the three declarations in `blueprint/src`).
   *Found:* round 3 task 2.9.
+  *Disposition:* done (task 3.8) for KT Lemma 6.7: `lem:splitoff-simple` pins
+  `isKDof_zero_of_triangle`, `triangle_isProperRigidSubgraph` and
+  `splitOff_simple_of_noRigid_of_card` (moved from `lem:chain-data-extract`), and both lemmas use
+  it; left for the three dead nodes, kept as exposition (retiring or merging them is not among
+  principle D's fixes; task 8.2).
 - **F-152** · N · `lem:genericity-device`, `lem:relative-device-count`,
   `lem:realization-of-independent-rows`, `lem:case-II-placement-old-rows`,
   `lem:case-II-realization-placement` (`algebraic-induction/genericity-and-count.tex`): every pin of
@@ -1159,6 +1164,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the eleven nodes, at `120eca58`);
   read (a `grep` for each dead pin's callers).
   *Found:* round 3 task 2.10.
+  *Disposition:* left (retiring the dead nodes and joining `lem:genericity-device` to
+  `lem:rank-polynomial-of-le-finrank` are not among principle D's fixes, task 8.2; stating the two
+  lemmas generally is a statement change, `F-239`). The extraction has its own node since task 3.8
+  (`F-209`).
 - **F-157** · N · `lem:case-III-claim-6-11` (`algebraic-induction/case-iii.tex`): the node states
   Claim 6.11 for $G_v^{ab}$ and $G_v = G - v$; its pin
   `exists_redundant_panelRow_ab_of_finrank_eq` holds for any two graphs whose links agree but for
@@ -1303,6 +1312,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of the two pins; a `grep` for the callers of the extraction and of
   the minor lemma); measured (`scripts/blueprint-deps.py --chapter generic-lift`, at `7c268bce`).
   *Found:* round 4 task 2.9.
+  *Disposition:* done (task 3.8): `lem:independent-rows-of-rank` pins the rank form of the
+  extraction, for every body-hinge framework with nondegenerate hinges, and
+  `lem:panel-witness-transplant` and `lem:hinge-point-witness` cite it in place of
+  `lem:case-II-placement-old-rows-extract`; task 3.7 repinned `lem:rows-polynomial-in-normals`
+  (`F-139`).
 
 - **F-214** · N · `def:two-extensor`, `lem:coordinate-extensor-basis`, `lem:extensor-map-rows`
   (`generic-lift.tex`): pinned helpers. `def:two-extensor` pins the bijection `pairIdxEquiv` (any
@@ -2366,6 +2380,21 @@ declaration's name as its header writes it:
   declaration for the forest form; retiring the node is `F-091`'s other option (task 8.2).
   *Evidence:* read (the pin's statement; the node's statement and proof).
   *Found:* round 5 task 3.4.
+- **F-239** · S · `lem:case-II-placement-old-rows-extract`, `lem:case-II-placement-block-independent`
+  (`algebraic-induction/genericity-and-count.tex`): each states a special case of its pins, which
+  other nodes cite in general. The first is stated for a realization of a graph $G_v^{ab}$ obtained
+  by splitting off a vertex; its two pins hold for every body-hinge framework rigid on its vertex
+  set (the first with nondegenerate hinges), and the proofs of `cor:panel-generic-rigid` and
+  `cor:bodyhinge-generic-rigid` (`generic-lift.tex`) cite its dimension count for such a framework.
+  The second is stated for rows of $R(G,q)$ at edges with and without the end $v$; its pin
+  `linearIndependent_sum_pinned_block` holds for any two families of linear forms on the screw
+  assignments, the second of which vanishes on the assignments that vanish off $v$, and
+  `lem:rigidityRows-pinned-placement-rank-add` (`rigidity-matrix.tex`) uses it in that form.
+  Stating the two generally, `F-152`'s third candidate, strengthens two statements.
+  *Evidence:* read (the statements of `exists_independent_panelRow_subfamily_of_rigidOn`,
+  `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` and
+  `linearIndependent_sum_pinned_block`; the citing proofs).
+  *Found:* round 5 task 3.8.
 
 ## L — Lean
 
@@ -3187,6 +3216,16 @@ declaration's name as its header writes it:
   `lem:case-I-all-k` and `lem:claim-6-6`).
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.7.
+- **F-240** · L · the declarations round 5's task 3.8 pinned (`Molecular/Deficiency.lean`,
+  `Molecular/Induction/Operations.lean`, `Molecular/AlgebraicInduction/GenericityDevice.lean`). The
+  section header over `isKDof_zero_of_triangle` names `lem:case-III`, which is not its node, and the
+  docstring of the unpinned `splitOff_simple_of_noRigid` calls its triangle hypothesis `htri` and the
+  deficiency of a triangle not yet formalized, which `triangle_isProperRigidSubgraph` and
+  `isKDof_zero_of_triangle` are. The docstrings of these two, of
+  `splitOff_simple_of_noRigid_of_card` and of `exists_independent_panelRow_subfamily_of_le_finrank`
+  name no node (now `lem:splitoff-simple` and `lem:independent-rows-of-rank`).
+  *Evidence:* read (the docstrings and the section header).
+  *Found:* round 5 task 3.8.
 
 ## M — mathematics and sources
 

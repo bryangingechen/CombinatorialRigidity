@@ -4,14 +4,12 @@
 the PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is the authority for
 which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of the ledger
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
-disposition, and reports its 132 `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
+disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.7
-reshaped the nodes of round 1's chapters, of `matroid-union` to `meet`, of `rigidity-matrix`, of
-`deficiency`, of `molecular-induction` (with `F-098`'s move from `case-i`), of `panel-layer`, and
-of `case-i`. No task edits the Lean or changes a statement's strength. **Next concrete task:**
-task 3.8, the node shapes of `case-ii.tex` and `genericity-and-count.tex` (*Hand-off*). Round
-manual: `CLEANUP.md`.
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.8 reshaped
+the nodes of round 1's chapters and of `matroid-union` through `genericity-and-count`. No task
+edits the Lean or changes a statement's strength. **Next concrete task:** task 3.9, the node shapes
+of `case-iii.tex` from KT Claim 6.11 to KT eq. (6.29) (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -22,45 +20,39 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3.7 has landed** (this commit; three chapters, the ledger and docs, no Lean). Nothing is
-mid-stream; the next task is task 3.8.
+**Task 3.8 has landed** (this commit; five chapters, the ledger and docs, no Lean). Nothing is
+mid-stream; the next task is task 3.9.
 
-**The gate's baseline, at task 3.7** (2026-10-13):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 371 lines**, sha256 prefix
-  **`df04fe421b024a46`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 3.8** (2026-10-13):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 384 lines**, sha256 prefix
+  **`9b8817b51cb070ce`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
-  against task 3.6's (3 353 lines, `f3a387d0b9276795`) is task 3.7's *Expected*, its 78 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1338 edges
-  841ee3bd2c6ae11e`** and **`21f9c9f3441bd42a`**; `print.log` 0 `LaTeX Warning` lines and 31
-  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 674 nodes,
-  1 013 pins (1 003 distinct; `lean_decls` 1 014), 447 missing, 2 208 implied, 85 + 303
+  against task 3.7's (3 371 lines, `df04fe421b024a46`) is task 3.8's *Expected*, its 54 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1345 edges
+  5d0d383abe0e71d0`** and **`a941880f895665f9`**; `print.log` 0 `LaTeX Warning` lines and 31
+  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 676 nodes,
+  1 016 pins (1 006 distinct; `lean_decls` 1 017), 455 missing, 2 201 implied, 83 + 302
   unbacked, 180 dead, 20 nodes with four or more pins, no cycle-closing missing edge (`F-011`
-  done). The forward screen gives the open's table but `case-i` 7/5 (task 3.2's 8/6, less
-  `lem:rows-polynomial-in-normals` -> `lem:genericity-device`, removed by task 3.7),
-  `rigidity-matrix` 10/9 0/0, and `molecular-induction` 5/3 3/3: task 3.5's
-  `lem:removal-deficiency-equality` uses `lem:splitoff-edge-substitution` (`case-ii.tex`, its
-  pin's reach), and the moved `lem:rigidContract-isMinimalKDof` uses `lem:reduction-measure`,
-  later in its file (task 5). `thm:theorem-55`'s forward edge went from the dispatch to
-  `lem:case-I-all-k`.
-- Missing in-edges that tasks 3.2–3.7 drew (task 4's, which the script's report lists; their
-  commits name them): to `lem:generic-realization-of-rigid` 4, `def:screw-space` 9 (five in
-  `case-iii.tex` implied once their missing edges to `def:rigidity-matrix` are added),
-  `def:trivial-motions-rigid` 2, `lem:edge-rows-independent` 2 (`pencil.tex`),
-  `lem:two-edge-connected-degree` 3, `def:induced-span` 1, `lem:panel-support-extensor-join` 3
-  (`lem:generic-yields-genuine-hinge`, `lem:cycle-pencil-realization`,
-  `lem:pencil-lifting-planes-motions`; task 3.2's three to `lem:meet-two-hyperplanes`, which now
-  reach it), and `lem:rows-polynomial-in-normals` 12 (task 3.7: pins that reach its spanning or
-  coordinates, in `case-i.tex` 3, `genericity-and-count.tex` 2, `case-iii.tex` 4, and one each in
-  `panel-layer.tex`, `generic-lift.tex` and `main-component.tex`); task 3.5's `def:edge-multiply` ->
-  `lem:rigidContract-isMinimalKDof` (its edge to `lem:reduction-step` went) and
-  `lem:reduction-measure` -> `lem:pencil-contraction-deficiency` (it was to
-  `lem:pencil-contract-standing`). Proofs that cite a node without an edge, as they cited the node
-  it left: two in `case-i.tex` and one in `molecule-modelling.tex` (`def:trivial-motions-rigid`),
-  `lem:reducible-vertex` and `thm:minimal-kdof-reduction` (`lem:two-edge-connected-degree`),
-  `lem:adjacent-degree-two-pair` (`lem:deficiency-zero-connected`), `lem:case-II-realization`
-  (`lem:cycle-zero-dof`), `lem:generic-yields-genuine-hinge` (`lem:panel-support-extensor-join`).
-  Since task 3.5, `thm:minimal-kdof-reduction`'s proof cites `lem:rigidContract-isMinimalKDof`
-  from earlier in its file (task 4.3).
+  done). The forward screen, unchanged by task 3.8, gives the open's table but `case-i` 7/5,
+  `rigidity-matrix` 10/9 0/0 and `molecular-induction` 5/3 3/3 (tasks 3.2–3.7's commits say why).
+- Missing in-edges that tasks 3.2–3.8 drew (task 4's; the report lists them, the commits name
+  them): to `lem:generic-realization-of-rigid` 4, `def:screw-space` 9 (five in `case-iii.tex`
+  implied once their missing edges to `def:rigidity-matrix` are added),
+  `def:trivial-motions-rigid` 2, `lem:edge-rows-independent` 2, `lem:two-edge-connected-degree`
+  3, `def:induced-span` 1, `lem:panel-support-extensor-join` 3, `lem:rows-polynomial-in-normals`
+  8 (`case-i.tex` 1, `genericity-and-count.tex` 2, `case-iii.tex` 4, `panel-layer.tex` 1; task
+  3.8 moved four to the next node), `lem:independent-rows-of-rank` 11 (`rigidity-matrix.tex` 1,
+  `case-i.tex` 3, `case-ii.tex` 1, `genericity-and-count.tex` 2, `case-iii.tex` 2,
+  `main-component.tex` 2; the first five point forward, task 5), `lem:splitoff-simple` 1 (the
+  superseded `lem:chain-data-of-noRigid`); task 3.5's `def:edge-multiply` ->
+  `lem:rigidContract-isMinimalKDof` and `lem:reduction-measure` ->
+  `lem:pencil-contraction-deficiency`. Proofs that cite a node without an edge, as they cited the
+  node it left: two in `case-i.tex` and one in `molecule-modelling.tex`
+  (`def:trivial-motions-rigid`), `lem:reducible-vertex` and `thm:minimal-kdof-reduction`
+  (`lem:two-edge-connected-degree`), `lem:adjacent-degree-two-pair`
+  (`lem:deficiency-zero-connected`), `lem:generic-yields-genuine-hinge`
+  (`lem:panel-support-extensor-join`); `thm:minimal-kdof-reduction`'s proof also cites
+  `lem:rigidContract-isMinimalKDof`, from earlier in its file (task 4.3).
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -205,74 +197,48 @@ gate's diff, which each task makes exact before editing.
   edge or pin change (its *Expected* is in its commit).
 - [ ] **3. N — node shape**, chapter by chapter. N before E: an N fix changes what the report calls
   missing (`F-010`'s six helpers alone draw 97 missing in-edges).
-  - [x] **3.1 Round 1's chapters** (`7b2a8272`; `F-009`'s four, `F-011`'s three pebble-game edges,
-    `F-014`, `F-016`, `F-043`, `F-044`; `F-008`'s `def:blockingWitness`): `def:runPebbleGame-verdict`
-    and `thm:runPebbleGameExec-isAccept-iff` split off, four of the open's choices *revised*; its
-    exact list and *Expected* (36 lines) are in its commit.
-  - [x] **3.2 `matroid-union`, `body-bar`, `extensor`, `meet`** (`56fb8b8c`; `F-052`, `F-054`,
-    `F-059`, `F-110`, `F-111`): `thm:matroid-partition`, `lem:meet-two-hyperplanes` and
-    `lem:generic-realization-of-rigid` added, `F-110`'s choice *revised*; its exact list and
-    *Expected* (77 lines) are in its commit.
-  - [x] **3.3 `rigidity-matrix.tex`** (`a7b8ea35`; `F-009`'s two, `F-010`'s `ScrewSpace` and
-    `finrank_screwAssignment`, `F-011`'s three, `F-008`'s `def:dof-generic`, `F-065`, `F-068`):
-    `def:screw-space`, `lem:edge-rows-independent`, `lem:own-end-rows-independent`,
-    `def:trivial-motions-rigid` and `lem:deficiency-rank-bound` added, two of the open's choices
-    *revised*; its exact list and *Expected* (156 lines) are in its commit.
-  - [x] **3.4 `deficiency.tex`; `molecular-induction.tex`'s operations, induced subgraph and
-    forest surgery** (`8e6786d3`; `F-009`'s four, `F-010`'s `endsOf`, `F-082`, `F-087`, `F-090`,
-    `F-091`; `F-008`'s two): `lem:two-edge-connected-degree` and `lem:separated-partition-value`
-    split off, `def:induced-span` filled, `F-091` left (new `F-234`, S); its exact list and
-    *Expected* (117 lines) are in its commit.
-  - [x] **3.5 `molecular-induction.tex`, KT Lemmas 4.4–4.9, and the carry-in `F-098`**
-    (`20d62426`; `F-096`, `F-098`, `F-103`, `F-106`): `lem:removal-deficiency-equality` and
-    `lem:cycle-zero-dof` split off, `F-098`'s count re-homed and the graph form of KT Lemma 3.5
-    moved from `case-i.tex`, `lem:reduction-step` left; its exact list and *Expected* (98 lines)
-    are in its commit.
-  - [x] **3.6 `panel-layer.tex`** (`1d35d435`; `F-011`'s last, `F-131`, `F-224`'s meet
-    decomposition): KT Theorem 5.6's derivation reversed, the three base cases repinned on their
-    `_gen` forms, `lem:panel-support-extensor-join` added, `lem:extensor-pair-in-panel` left; its
-    exact list and *Expected* (58 lines) are in its commit.
-  - [x] **3.7 `case-i.tex`** (this commit; `F-134`, `F-139`, `F-143`, `F-009`'s
-    `lem:cycle-realization-rigid`), each fix tried on a scratch copy. `F-134`: the six dead nodes
-    left (exposition; merging is not a D fix); `lem:cycle-realization-rigid` pins `theorem_55_cycle`
-    alone, which states it (the three `Fin m` forms unpinned; its note, and its edge from
-    `def:panel-hinge-framework`, which only the panel form backed, removed). `F-139`:
-    `lem:rows-polynomial-in-normals` repinned on `annihRowPoly_eval`, `annihRowPoly_totalDegree_le`
-    and `span_annihRow_eq_dualAnnihilator`, a pin per clause (not `annihRowPoly`, a definition
-    beside claims), with a role map; `exists_good_realization_ofParam` unpinned, named in
-    `lem:relative-device-count`'s note; its edge from `lem:genericity-device`, which only that pin
-    backed, removed, and the reach through it restored at `lem:rank-polynomial-of-le-finrank`
-    (`def:panel-hinge-framework`, statement); `lem:claim-6-4` left. `F-143`:
-    `lem:case-I-realization-nonsimple` repinned on `case_I_realization_nonsimple_gen`, the statement
-    kept (its note: the pin proves more);
-    `lem:claim-6-6` (KT Claim 6.6, p. 676: $k = 0$ and the vertex; two pins) before
-    `lem:case-I-realization-h65`, whose proof's first part moved there; `lem:case-I-all-k` (Case I
-    for every $k$, `case_I_hcontract_gen`; a node, as the dispatch states $k = 0$) after the
-    dispatch, and `thm:theorem-55`'s two edges and `\cref` to the dispatch retargeted to it; the
-    coupler of KT Lemma 6.3 named in `lem:case-I-realization`'s note.
+  - [x] **3.1 Round 1's chapters** (`7b2a8272`): `def:runPebbleGame-verdict` and
+    `thm:runPebbleGameExec-isAccept-iff` split off; four of the open's choices *revised*.
+  - [x] **3.2 `matroid-union` → `meet`** (`56fb8b8c`): `thm:matroid-partition`,
+    `lem:meet-two-hyperplanes` and `lem:generic-realization-of-rigid` added; `F-110` *revised*.
+  - [x] **3.3 `rigidity-matrix.tex`** (`a7b8ea35`): `def:screw-space`, two row lemmas,
+    `def:trivial-motions-rigid` and `lem:deficiency-rank-bound` added; two choices *revised*.
+  - [x] **3.4 `deficiency.tex`, `molecular-induction.tex`'s operations** (`8e6786d3`): two lemmas
+    split off, `def:induced-span` filled, `F-091` left (`F-234`).
+  - [x] **3.5 `molecular-induction.tex`'s KT Lemmas 4.4–4.9, `F-098`** (`20d62426`): two lemmas
+    split off, the graph form of KT Lemma 3.5 moved from `case-i.tex`.
+  - [x] **3.6 `panel-layer.tex`** (`1d35d435`): KT Theorem 5.6's derivation reversed, the base cases
+    repinned on their `_gen` forms, `lem:panel-support-extensor-join` added.
+  - [x] **3.7 `case-i.tex`** (`d851de0f`): `lem:claim-6-6` and `lem:case-I-all-k` added, the rows
+    lemma and KT Lemma 6.2 repinned, the cycle forms unpinned.
+  - [x] **3.8 `case-ii.tex`, `genericity-and-count.tex`** (this commit; `F-147`, `F-152`, `F-209`'s
+    extraction), each fix tried on a scratch copy. `F-147`: `lem:splitoff-simple` (KT Lemma 6.7, p.
+    677), after `lem:simple-minimal-noRigid` in `molecular-induction.tex`, before its users, pins
+    `isKDof_zero_of_triangle` (a triangle is a $0$-dof-graph), `triangle_isProperRigidSubgraph` (an
+    edge $ab$ gives a proper rigid subgraph) and `splitOff_simple_of_noRigid_of_card` (KT 6.7(ii)),
+    the last moved from `lem:chain-data-extract`. *Revised:* the open's
+    `splitOff_simple_of_noRigid`, a step of (ii)'s proof, stays unpinned, named in the note. The
+    proofs of `lem:chain-data-extract` and `lem:case-II-realization` cite it in place of their
+    triangle arguments (the former's edge from `lem:cycle-zero-dof`, unbacked through a node and no
+    longer cited, removed), and `case-iii.tex`'s `\cref` for KT 6.7(ii) follows; the three dead
+    nodes are left. `F-152`: left (new `F-239`, S). `F-209`: `lem:independent-rows-of-rank`, before
+    `lem:rank-polynomial-of-le-finrank`, pins `exists_independent_panelRow_subfamily_of_le_finrank`
+    (every body-hinge framework with nondegenerate hinges); `generic-lift.tex`'s two witness lemmas
+    cite it in place of `lem:case-II-placement-old-rows-extract`, and the eleven other nodes whose
+    pins reach it, Cases II and III among them, are task 4's missing edges.
     *Expected* (exact, before editing the tree; `predict.py`'s after-dump of the copy): +2 nodes
-    (`lem:claim-6-6`, `lem:case-I-all-k`, `#1CAC78`); pins 1 011 -> 1 013 (1 003 distinct;
-    `lean_decls` 1 012 -> 1 014, hash `5bbcec2bc7244250` -> `21f9c9f3441bd42a`); `## pins:` 2 added,
-    3 changed; `## uses:` 2 added, 5 changed (the h65 lemma, `lem:cycle-realization-rigid`,
-    `lem:rank-polynomial-of-le-finrank`, `lem:rows-polynomial-in-normals`, `thm:theorem-55`); drawn
-    edges 1 326 -> 1 338 (`841ee3bd2c6ae11e`), -2 (`lem:case-I-dispatch` -> `thm:theorem-55`,
-    `lem:genericity-device` -> `lem:rows-polynomial-in-normals`, both dashed), +14 (to
-    `lem:claim-6-6` from `def:edge-multiply`, `def:rigid-contraction` (dashed),
-    `lem:removal-deficiency` and `lem:subgraph-minimality`, and from it to the h65 lemma;
-    `lem:case-I-dispatch` -> `lem:case-I-all-k` -> `thm:theorem-55` (dashed);
-    `def:panel-hinge-framework` -> `lem:rank-polynomial-of-le-finrank`, `def:panel-support-extensor`
-    and `def:rigidity-matrix` -> `lem:rows-polynomial-in-normals` (dashed); `lem:genericity-device`
-    -> `lem:case-II-realization`, and (dashed) `lem:case-II-realization-placement`,
-    `lem:case-cut-edge-realization-gp`, `lem:relative-device-count`); +2 node lines; 3 371 lines
-    (`df04fe421b024a46`), the diff 78 lines.
-  - [ ] **3.8 `case-ii.tex`, `genericity-and-count.tex`** (`F-147`, `F-152`, `F-209`'s
-    extraction). `F-147`: a node for KT Lemma 6.7 (`splitOff_simple_of_noRigid`,
-    `triangle_isProperRigidSubgraph`, `isKDof_zero_of_triangle`), which `lem:case-II-realization`
-    and `lem:chain-data-extract` use; the three dead nodes are left. `F-152`: leave (retiring and
-    joining nodes are not D fixes; stating the two lemmas generally is a statement change, for the
-    report). `F-209`: a node for the rank form of the row extraction, for every framework
-    (`exists_independent_panelRow_subfamily_of_le_finrank`), which `generic-lift.tex`'s two witness
-    lemmas, Case II and Case III use. *Expected:* +2 nodes, +4 pins (hash changes); new edges.
+    (`lem:splitoff-simple`, `lem:independent-rows-of-rank`, `#1CAC78`); pins 1 013 -> 1 016 (1 006
+    distinct; `lean_decls` 1 014 -> 1 017, hash `21f9c9f3441bd42a` -> `a941880f895665f9`);
+    `## pins:` 2 added, 1 changed (`lem:chain-data-extract`); `## uses:` 2 added, 4 changed
+    (`lem:case-II-realization`, `lem:chain-data-extract`, `lem:hinge-point-witness`,
+    `lem:panel-witness-transplant`); drawn edges 1 338 -> 1 345 (`5d0d383abe0e71d0`), -1
+    (`lem:case-II-placement-old-rows-extract` -> `lem:panel-witness-transplant`), +8 (dashed:
+    `def:graph-operations` and `def:rigid-subgraph` -> `lem:splitoff-simple`,
+    `lem:rows-polynomial-in-normals` -> `lem:independent-rows-of-rank`, `def:panel-hinge-framework`
+    -> `lem:panel-witness-transplant`; solid: `lem:splitoff-simple` -> `lem:case-II-realization`
+    and `lem:chain-data-extract`, `lem:independent-rows-of-rank` -> `lem:hinge-point-witness` and
+    `lem:panel-witness-transplant`); +2 node lines; 3 384 lines (`9b8817b51cb070ce`), the diff 54
+    lines.
   - [ ] **3.9 `case-iii.tex`, KT Claim 6.11 to KT eq. (6.29)** (`F-120`'s two, `F-157`, `F-159`;
     `F-009`'s `lem:case-III-claim612-eq644`). `F-120`: leave both doubles (each pair states one
     claim twice, and a merge is not a D fix). `F-157`: a node for the step from KT Claim 6.11 to
@@ -391,7 +357,8 @@ gate's diff, which each task makes exact before editing.
     ranked, each with its evidence, a suggested disposition and a commit estimate. It is presented
     as one group, statements whose blueprint and formal texts disagreed after the formalization
     was declared complete, for what they show about the limits of autoformalization (the PI,
-    2026-10-12, §1).
+    2026-10-12, §1). It lists `F-137` and `F-142` in the group as resolved in passing by task 3.7's
+    repins; their dispositions stay `done`.
   - [ ] **8.2 The `L` and `M` groups, the left graph findings, and the follow-up** (61 `L`, 6
     `M`; the `E` and `N` entries left for a merge, a retirement or a Lean change). The report's
     rest, and an unqueued ROADMAP bullet proposing the follow-up program, which the PI queues.
@@ -410,6 +377,8 @@ gate's diff, which each task makes exact before editing.
 
 - `F-234` (task 3.4): `lem:forest-surgery-unsplit` states a forest form that no declaration
   proves, and it fails at $D = 1$.
+- `F-239` (task 3.8): `lem:case-II-placement-old-rows-extract` and
+  `lem:case-II-placement-block-independent` state special cases of pins cited in general.
 
 ## Moved to a later round
 
@@ -423,6 +392,8 @@ ledger's earlier `L` entries are task 8.2's.
 - `F-236` (task 3.5): the same for task 3.5's moved pins, and `CycleData.vertexSet_ncard`'s.
 - `F-237` (task 3.6): the five dead $d = 3$ base wrappers task 3.6 unpinned, and three docstrings.
 - `F-238` (task 3.7): the dead cycle forms and $d = 3$ wrapper task 3.7 unpinned, and docstrings.
+- `F-240` (task 3.8): docstrings of task 3.8's pins, and a stale one of
+  `splitOff_simple_of_noRigid`.
 
 ## Blockers / open questions
 
@@ -430,14 +401,15 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3.8, the node shapes of `case-ii.tex` and `genericity-and-count.tex`**
-(`F-147`, `F-152`, `F-209`'s extraction; Opus, a fresh agent). The parent's dump is task 3.7's
-(3 371 lines, `df04fe421b024a46`; *Current state*): regenerate it on the parent after `verify.sh`
-if the scratch copy is gone. Before editing, read each named node, its pins' statements and its
-`--label` report, try the change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.7), and
-make 3.8's *Expected* exact in its line, its `## uses:` lines included (gate 3 (b)); then edit,
-and diff the after-dump against it. Task 3.7's twelve missing in-edges to
-`lem:rows-polynomial-in-normals` are task 4's, not 3.8's. Then task 3.9.
+**Next concrete task: task 3.9, the node shapes of `case-iii.tex` from KT Claim 6.11 to KT eq.
+(6.29)** (`F-120`'s two, `F-157`, `F-159`, `F-009`'s `lem:case-III-claim612-eq644`; Opus, a fresh
+agent). The parent's dump is task 3.8's (3 384 lines, `9b8817b51cb070ce`; *Current state*):
+regenerate it on the parent after `verify.sh` if the scratch copy is gone. Before editing, read
+each named node, its pins' statements and its `--label` report, try the change on a scratch copy
+of the TeX (*Decisions*, tasks 3.1–3.8), and make 3.9's *Expected* exact in its line, its
+`## uses:` lines included (gate 3 (b)); then edit, and diff the after-dump against it. The missing
+in-edges to `lem:rows-polynomial-in-normals` and `lem:independent-rows-of-rank` are task 4's, not
+3.9's. Then task 3.10.
 
 ## Decisions made during this round
 
@@ -494,3 +466,7 @@ and diff the after-dump against it. Task 3.7's twelve missing in-edges to
   $k = 0$, and `case_I_hcontract_gen` proves Case I for every $k$: as a second pin it would prove a
   claim no clause makes, so it got a node (`lem:case-I-all-k`), and `thm:theorem-55` retargets to
   it. A repin takes one pin per clause, not the definition a pin states (`annihRowPoly`).
+- **Where a new node goes** (task 3.8). After the nodes it `\uses` and before its users, where one
+  place allows both (`lem:splitoff-simple`, after `lem:simple-minimal-noRigid`, KT's remark on the
+  same page); otherwise in its task's chapter, before the users there, its earlier users' missing
+  edges left forward for task 5 (`lem:independent-rows-of-rank`).

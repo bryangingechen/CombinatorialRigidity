@@ -1998,8 +1998,10 @@ three vertices and no proper rigid subgraph is simple, as two edges that
 join the same pair of vertices form a proper rigid
 subgraph~\cite[p.~677]{katohTanigawa2011}. We prove this remark
 (\cref{lem:simple-minimal-noRigid}) after a computation for the
-two-vertex double edge. For $d = 3$, Katoh and Tanigawa derive from KT
-Lemma~4.6 that such a graph with $k = 0$ has two adjacent vertices $v$
+two-vertex double edge. With it, KT Lemma~6.7 shows that splitting off
+a vertex of degree two keeps such a graph simple when it has at least
+four vertices (\cref{lem:splitoff-simple}). For $d = 3$, Katoh and
+Tanigawa derive from KT Lemma~4.6 that such a graph with $k = 0$ has two adjacent vertices $v$
 and $a$ of degree two, and they write $N_G(v) = \{a, b\}$ and
 $N_G(a) = \{v, c\}$~\cite[p.~680]{katohTanigawa2011}.
 We prove the first fact for $d \ge 3$ by a count of degrees
@@ -2043,6 +2045,62 @@ induction uses neither: it extracts a chain of length $d$ at every $d$
   and $1 < |V(H)| = 2 < |V(G)|$. So $H$ is a proper rigid subgraph of
   $G$ (\cref{def:rigid-subgraph}), which is impossible.
 \end{proof}
+
+\begin{lemma}[Splitting off keeps the graph simple; KT Lemma~6.7]
+  \label{lem:splitoff-simple}
+  \lean{Graph.isKDof_zero_of_triangle,
+        Graph.triangle_isProperRigidSubgraph,
+        Graph.splitOff_simple_of_noRigid_of_card}
+  \leanok
+  \uses{def:k-dof, def:rigid-subgraph, def:graph-operations}
+  Let $D \ge 3$. A triangle, a multigraph with three vertices and three
+  edges that join them in pairs, is a $0$-dof-graph
+  (\cref{def:k-dof}). Let $G$ be a simple multigraph with
+  $|V(G)| \ge 4$, and let $e_a \neq e_b$ be edges of $G$ that join a
+  vertex $v$ to vertices $a$ and $b$. If an edge of $G$ joins $a$ and
+  $b$, then $G$ has a proper rigid subgraph (\cref{def:rigid-subgraph}).
+  So if $G$ has none, then $G_v^{ab}$ (\cref{def:graph-operations}) is
+  simple.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:D-deficiency}
+  We follow Katoh and Tanigawa's proof~\cite[p.~677]{katohTanigawa2011}.
+  Let $T$ be a triangle. A partition of $V(T)$ into two parts has value
+  $D - 2(D-1) = 2 - D < 0$, as two edges join its parts, and the
+  partition into three parts has value $2D - 3(D-1) = 3 - D \le 0$
+  (\cref{def:D-deficiency}). The partition into one part has value $0$,
+  so $\operatorname{def}(\tilde T) = 0$.
+
+  As $G$ is simple, $e_a$ and $e_b$ do not join $v$ to the same vertex,
+  so $a \neq b$. Let $f$ be an edge of $G$ that joins $a$ and $b$. The
+  subgraph of $G$ induced on $\{v, a, b\}$ has no edge other than $e_a$,
+  $e_b$ and $f$, as $G$ is simple, so it is a triangle, and a
+  $0$-dof-graph. As $1 < 3 < 4 \le |V(G)|$, it is a proper rigid
+  subgraph of $G$.
+
+  Now let $G$ have no proper rigid subgraph. Then no edge of $G$ joins
+  $a$ and $b$. The new edge $ab$ of $G_v^{ab}$ is not a loop, as
+  $a \neq b$, and its other edges are edges of the simple graph $G$ with
+  the same ends (\cref{def:graph-operations}). None of them joins $a$
+  and $b$, so none is parallel to $ab$, and $G_v^{ab}$ is simple.
+\end{proof}
+\begin{fmlnote}
+  The first pinned theorem is the first assertion. The second is the
+  next, with the triangle on $v$, $a$ and $b$ as the proper rigid
+  subgraph; it assumes $a \neq b$, which holds as $G$ is simple. The
+  third is the last assertion, which is KT Lemma~6.7(ii). It combines the
+  second with
+  \texttt{splitOff\_\allowbreak{}simple\_\allowbreak{}of\_\allowbreak{}noRigid},
+  by which $G_v^{ab}$ is simple when $G$ has no proper rigid subgraph and
+  no edge joining $a$ and $b$. Katoh and Tanigawa assume that $G$ is a
+  $2$-edge-connected minimal $k$-dof-graph with no proper rigid
+  subgraph, which is simple (\cref{lem:simple-minimal-noRigid}), and
+  that $v$ has degree two. Their part~(i) says that if $|V(G)| = 3$, then
+  $k = 0$ and $G$ has a realization of rank $D(|V(G)| - 1)$. Such a $G$
+  is a triangle, as it is simple and $2$-edge-connected, so $k = 0$ by
+  the first assertion; \cref{lem:triangle-realization} realizes it.
+\end{fmlnote}
 
 \begin{lemma}[Two adjacent vertices of degree two; from KT Lemma~4.6, for $d \ge 3$ (superseded)]
   \label{lem:adjacent-degree-two-pair}
@@ -2126,7 +2184,8 @@ $G_{v_1}^{v_0 v_2}$, which is a minimal $0$-dof-graph by KT Lemma~4.8.
 We define chains and cycles, show that a short cycle is a
 $0$-dof-graph, and prove the dichotomy
 (\cref{lem:chain-cycle-dichotomy}). Then we show that
-$G_{v_1}^{v_0 v_2}$ is also simple and smaller than $G$ when $G$ has at
+$G_{v_1}^{v_0 v_2}$ is also simple, by KT Lemma~6.7
+(\cref{lem:splitoff-simple}), and smaller than $G$ when $G$ has at
 least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
 
 \begin{definition}[A chain of length $d$; KT Lemma~4.6]
@@ -2305,8 +2364,7 @@ of the next lemma, it occurs exactly when $d \ge 4$.
 
 \begin{lemma}[The chain and its splitting off; KT Lemmas~4.6, 4.8 and~6.7]
   \label{lem:chain-data-extract}
-  \lean{Graph.chainData_extract,
-        Graph.splitOff_simple_of_noRigid_of_card}
+  \lean{Graph.chainData_extract}
   \leanok
   \uses{def:chain-data, def:cycle-data, lem:chain-cycle-dichotomy,
         lem:reduction-step, lem:reduction-measure, lem:simple-minimal-noRigid}
@@ -2319,7 +2377,7 @@ of the next lemma, it occurs exactly when $d \ge 4$.
 \begin{proof}
   \leanok
   \uses{lem:chain-cycle-dichotomy, lem:reduction-step, lem:reduction-measure,
-        lem:simple-minimal-noRigid, lem:cycle-zero-dof}
+        lem:simple-minimal-noRigid, lem:splitoff-simple}
   By \cref{lem:chain-cycle-dichotomy}, $G$ is a cycle on at most $d$
   vertices, or it has a chain $v_0 v_1 \dots v_d$ of length $d$. Suppose
   the second. As $D \ge 3$, we have $d \ge 2$, so $v_1$ is an interior
@@ -2330,18 +2388,15 @@ of the next lemma, it occurs exactly when $d \ge 4$.
   \cref{lem:reduction-step}). Its vertices are the $|V(G)| - 1 \ge 3$
   vertices of $G$ other than $v_1$ (\cref{lem:reduction-measure}).
 
-  It remains to show that $G_{v_1}^{v_0 v_2}$ is simple. This is KT
-  Lemma~6.7(ii)~\cite[p.~677]{katohTanigawa2011}, and we follow its
-  proof. The graph $G$ is simple, by hypothesis and also by
-  \cref{lem:simple-minimal-noRigid}, and the new edge $v_0 v_2$ is not a
-  loop. So if $G_{v_1}^{v_0 v_2}$ were not simple, $G$ would have an edge
-  $g$ joining $v_0$ and $v_2$. Then $v_0, v_1, v_2$ and $f_0, f_1, g$
-  form a cycle on three vertices in $G$. As $3 \le D$, this cycle is a
-  $0$-dof-graph (\cref{lem:cycle-zero-dof}). As $|V(G)| \ge 4$, it is a
-  proper rigid subgraph of $G$, which is impossible.
+  It remains to show that $G_{v_1}^{v_0 v_2}$ is simple. The graph $G$
+  is simple, by hypothesis and also by
+  \cref{lem:simple-minimal-noRigid}, and it has at least four vertices
+  and no proper rigid subgraph. So KT Lemma~6.7(ii)
+  (\cref{lem:splitoff-simple}), applied to $v_1$ and its edges
+  $f_0 \neq f_1$, shows that $G_{v_1}^{v_0 v_2}$ is simple.
 \end{proof}
 \begin{fmlnote}
-  The first pin is the lemma. The second pin is KT Lemma~6.7(ii), for
-  every simple multigraph with at least four vertices and no proper
-  rigid subgraph.
+  The pinned theorem is the lemma. It takes the simplicity of
+  $G_{v_1}^{v_0 v_2}$ from the third pinned theorem of
+  \cref{lem:splitoff-simple}.
 \end{fmlnote}

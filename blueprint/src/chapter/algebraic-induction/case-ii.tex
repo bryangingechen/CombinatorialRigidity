@@ -6,8 +6,9 @@ $k$-dof-graph $G$ is $2$-edge-connected, has at least three vertices
 and no proper rigid subgraph, and $k > 0$ (KT \S6.3). Katoh and
 Tanigawa split off a vertex $v$ of degree two, whose edges join it to
 vertices $a$ and $b$. The graph $G_v^{ab}$ is a minimal
-$(k-1)$-dof-graph with fewer vertices, and the induction hypothesis
-realizes it. They then put $v$ back, with the hinge of the edge $vb$
+$(k-1)$-dof-graph with fewer vertices, simple by KT Lemma~6.7
+(\cref{lem:splitoff-simple}), and the induction hypothesis realizes
+it. They then put $v$ back, with the hinge of the edge $vb$
 equal to that of the new edge $ab$, and the rank rises by $D - 1$ (KT
 Lemma~6.8). Katoh and Tanigawa note that this is essentially the idea
 of Whiteley's proof that the $1$-extension preserves the infinitesimal
@@ -182,7 +183,8 @@ panel-hinge framework on $G_v$.
 \begin{proof}
   \leanok
   \uses{lem:reduction-step-pos, lem:with-normal-preserves,
-        lem:rank-polynomial-of-le-finrank, lem:genericity-device}
+        lem:rank-polynomial-of-le-finrank, lem:genericity-device,
+        lem:splitoff-simple}
   We follow Katoh and Tanigawa's proof of KT Lemma~6.8
   (pp.~677--679). The graph $G$ is simple
   (\cref{lem:simple-minimal-noRigid}). As $d \ge 2$, we have $D \ge 3$,
@@ -190,15 +192,13 @@ panel-hinge framework on $G_v$.
   KT Lemma~4.6). Its edges $e_a$ and $e_b$ join it to vertices $a$ and
   $b$, and $a \neq b$ as $G$ is simple.
 
-  Next, $G$ has no edge that joins $a$ and $b$, as in the proof of KT
-  Lemma~6.7. Otherwise this edge, $e_a$ and $e_b$ form a cycle on three
-  vertices, which is a $0$-dof-graph as $D \ge 3$
-  (\cref{lem:cycle-zero-dof}). If $|V(G)| \ge 4$, the
-  cycle is a proper rigid subgraph of $G$. If $|V(G)| = 3$, the simple
-  graph $G$ has no further edge, so it is the cycle, and $k = 0$. Both
-  contradict the hypotheses. Hence $G_v^{ab}$ is simple: its new edge
-  $ab$ is not a loop, and its other edges are edges of the simple graph
-  $G$ (\cref{def:graph-operations}), none of which joins $a$ and $b$.
+  Next, $G_v^{ab}$ is simple, by KT Lemma~6.7
+  (\cref{lem:splitoff-simple}). If $|V(G)| \ge 4$, this is its last
+  assertion. Let $|V(G)| = 3$. If an edge of $G$ joined $a$ and $b$, then
+  this edge, $e_a$ and $e_b$ would be all the edges of the simple graph
+  $G$. So $G$ would be a triangle, and a $0$-dof-graph by the first
+  assertion of KT Lemma~6.7, contradicting $k > 0$. So no edge of $G$ joins $a$ and $b$, and $G_v^{ab}$ is simple,
+  as in the proof of \cref{lem:splitoff-simple}.
 
   By KT Lemma~4.8(ii) (\cref{lem:reduction-step-pos}), $G_v^{ab}$ is a
   minimal $(k-1)$-dof-graph. Its vertices are the $|V(G)| - 1 \ge 2$
