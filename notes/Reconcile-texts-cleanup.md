@@ -4,8 +4,8 @@
 rounds; the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot/queue.toml`
 is the authority for which rounds are done. Docs and blueprint prose only: the round stated S1's and
 S2's scopes on the status surfaces, wrote M1's "for simple graphs", read M2's and M5's credits
-against the two PDFs (Laman originates the planar characterization, Pollaczek-Geiringer 1927 is
-credited beside him), replaced §2.6's stale example, and added the non-vacuity rule. No node, edge or
+against the two PDFs (the planar characterization is Pollaczek-Geiringer's of 1927, proved again
+by Laman in 1970, and not Lovász–Yemini's; both are now credited), replaced §2.6's stale example, and added the non-vacuity rule. No node, edge or
 pin changed, and the Lean is unchanged. All nine one-commit tasks are done. **Next concrete task:**
 round 2's open, `reconcile-statements` (*Hand-off*). Round manual: `CLEANUP.md`.
 
@@ -193,7 +193,8 @@ docstring lines under *Moved to a later round*, already mirrored into round 3's 
   nondegenerate form; the free selector does not reach the multigraph theorems.
 - **M1's passages** (task 4): the scope is the pin's signature; for multigraphs the formalization
   "has" the bundle form, not `F-222`'s "only".
-- **M2's credits** (task 5): Laman originates it; LY is `independently-proves` for Corollary 1, no
+- **M2's credits** (task 5): the characterization is Laman's, not LY's (task 6 found
+  Pollaczek-Geiringer 1927 before Laman); LY is `independently-proves` for Corollary 1, no
   "presentation we follow" credit, as the proofs follow Jordán's.
 - **M5's credits** (task 6): Pollaczek-Geiringer is credited first and Laman "again" wherever the
   originator is named; "Laman's theorem" and "Laman graph" keep their names. The planar
