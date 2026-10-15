@@ -983,6 +983,10 @@ declaration's name as its header writes it:
   diagnosis (delete, wire in, or keep as exposition), not a reflex deletion.
   *Evidence:* measured (`scripts/blueprint-deps.py` report 2, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* left (tasks 3.1–3.14 unpinned the dead wrappers and helpers whose claims live
+  pins now carry, so 177 pins at 145 nodes lie outside every main result's closure, every pin of
+  109; deadness alone is no reason to unpin or retire (*Scope*), so the rest takes `CLEANUP.md`
+  §B's three-way diagnosis in `notes/Prose-report.md`, G6).
 - **F-014** · N · `lem:isSparse-exists-degree-le-three` (`sparsity.tex`): the low-degree step of
   the sparse reverse decomposition, `IsSparse.exists_one_le_degree_le_three` (a vertex of degree
   1, 2 or 3 in a $(2,3)$-sparse graph with an edge), has no node; the proof of
@@ -2913,17 +2917,20 @@ declaration's name as its header writes it:
   states only "$ab$ is an edge". The theorem has no Lean caller, so the binder can go alone.
   *Evidence:* read (the statement of `typeII_isLaman`; a `grep` finds no caller).
   *Found:* round 1 task 3.
+  *Disposition:* reported (`notes/Prose-report.md`, L7).
 - **F-017** · L · `IsTightOn.union_with_bonus`, `IsTightOn.insert_vertex_with_edges`
   (`Sparsity.lean`): each takes `hF_finite : F.Finite`, which follows from `hF_sub`, since
   `edgesIn` of a finite vertex set is finite (`edgesIn_finite`). The blueprint statements no longer
   name it. The callers pass `Set.toFinite _` or `Set.finite_singleton _`.
   *Evidence:* read (both statements, and their two callers in `Sparsity.lean`).
   *Found:* round 1 task 5.2.
+  *Disposition:* reported (`notes/Prose-report.md`, L7).
 - **F-018** · L · `SimpleGraph.IsSparse.typeII_reverse_blocker` (`Sparsity.lean`): its docstring
   and the section docstring above it say "distinct vertices `x, y`", but the statement does not
   assume `x ≠ y`. (At `x = y` the hypothesis fails, since the added pair is a loop and is dropped.)
   *Evidence:* read (the statement and the two docstrings).
   *Found:* round 1 task 5.2.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-021** · L · `SimpleGraph.Henneberg.typeII_isGenericallyRigidInj_two_of_nonCollinear`
   (`HennebergRigidity.lean`): it takes `hab : a ≠ b` beside `hLI_abc : LinearIndependent ℝ ![p b -
   p a, p c - p a]`, which implies it (the first vector is nonzero). The body uses `hab` only to get
@@ -2931,6 +2938,7 @@ declaration's name as its header writes it:
   non-collinearity. Its one caller, `typeII_isGenericallyRigidInj_two`, passes `hab`.
   *Evidence:* read (the statement and body; a `grep` finds the one caller).
   *Found:* round 1 task 5.5.
+  *Disposition:* reported (`notes/Prose-report.md`, L7).
 - **F-022** · L · `typeI_isInfinitesimallyRigid_extend`, `typeII_isInfinitesimallyRigid_extend`
   (`HennebergRigidity.lean`): their docstrings contradict their declarations. The first calls
   itself "the rank-nullity heart of `typeI_isGenericallyRigid_two`", which names no declaration (the
@@ -2938,6 +2946,7 @@ declaration's name as its header writes it:
   the statement does not take it, and the proof treats the edge $ab$ only when it is present.
   *Evidence:* read (both statements and docstrings; a `grep` for `typeI_isGenericallyRigid_two`).
   *Found:* round 1 task 5.5.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-023** · L · `SimpleGraph.trivialMotions` (`TrivialMotions.lean`): its docstring cites
   `trivialMotions_three_le_finrank_of_affinelySpanning_two`, which no longer exists (only
   `notes/FRICTION.md` still names it), and the docstring of the section on the $d$-general bound
@@ -2946,6 +2955,7 @@ declaration's name as its header writes it:
   `trivial-motions.tex` dropped as unverified (task 5.6).
   *Evidence:* read (the file; a `grep` over the repository for the cited name).
   *Found:* round 1 task 5.6.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 - **F-024** · L · `SimpleGraph.trivialMotionFamily_linearIndependent` (`TrivialMotions.lean`): its
   `[Finite V]` is unused. The `@[nolint unusedArguments]` comment calls the linter's report a false
   positive, but the theorem elaborates without the binder, with the same proof minus its
@@ -2955,6 +2965,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body); a `lake lean` witness (the theorem restated without
   `[Finite V]`, the proof copied with that line deleted; it elaborates with no output).
   *Found:* round 1 task 5.6.
+  *Disposition:* reported (`notes/Prose-report.md`, L6).
 - **F-030** · L · `MatroidIdentification.lean`, `LinearRigidityMatroid.lean`: docstrings that
   contradict the declarations. In the first, the section header "`|E|`-induction: every sparse
   graph has a row-independent placement" and the docstring of
@@ -2968,6 +2979,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `IsSparse.exists_rowIndependent_placement` and
   `linearRigidityMatroid_eq_rigidityMatroid`, and the docstrings named).
   *Found:* round 1 task 5.10.
+  *Disposition:* reported (`notes/Prose-report.md`, L12).
 - **F-032** · L · `SimpleGraph.countMatroid` (`CountMatroid.lean`): its docstring says that outside
   $\ell < 2k$ "the augmentation axiom can fail (e.g. `(3, 6)` in 3-dimensional rigidity)". By
   `IsSparse`'s definition a $(3,6)$-sparse graph has no edges (a pair $s$ has $6 \le 3|s|$, so it
@@ -2977,6 +2989,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the body of `IsSparse`); a `lake lean` witness (every $(3,6)$-sparse
   `SimpleGraph V` is `⊥`; it elaborates with no output).
   *Found:* round 1 task 5.11.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-033** · L · `CombinatorialRigidity.Search.reachableFinding`, `reachClosureComputable`
   (`Search/DFS.lean`): the search marks only the vertices of the current walk, since every
   recursive call from `v` gets the same `insert v visited`. When no vertex satisfies `P` it
@@ -2993,6 +3006,7 @@ declaration's name as its header writes it:
   vertices, $4n$ arcs, $2^n$ simple walks end to end) took 2, 6, 29, 128, 631 and 3071 ms at
   $n = 8, 10, \ldots, 18$.
   *Found:* round 1 task 5.12.
+  *Disposition:* reported (`notes/Prose-report.md`, L1).
 - **F-035** · L · `PebbleGame/Basic.lean`, `PebbleGame/Algorithm.lean`: docstrings that describe
   other states of the code. Basic.lean's *Path reversal* section header says the lemmas about
   `out`, `peb`, `span` and `outOn` "follow in a subsequent commit"; they are in that section.
@@ -3002,6 +3016,7 @@ declaration's name as its header writes it:
   11's reshape ("was `some D'`", "was `Option (PartialOrientation V)`").
   *Evidence:* read (the docstrings named, against the two files).
   *Found:* round 1 task 5.13.
+  *Disposition:* reported (`notes/Prose-report.md`, L12).
 - **F-039** · L · `runPebbleGameWith_sound`, `runPebbleGameWith_underline_eq`,
   `runPebbleGameWith_correct` (`PebbleGame/Correctness.lean`, `Algorithm.lean`): the binder
   `hloops : ∀ p ∈ edges, p.1 ≠ p.2` follows from `himg`, since each entry's unordered pair is an
@@ -3009,6 +3024,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the three statements); a `lake lean` witness deriving `hloops` from `himg` in
   three lines (`List.mem_toFinset`, `SimpleGraph.ne_of_adj`).
   *Found:* round 1 task 5.14.
+  *Disposition:* reported (`notes/Prose-report.md`, L7).
 - **F-040** · L · `PebbleGame/Correctness.lean`, `Algorithm.lean`: docstrings that name blueprint
   labels or declarations that do not exist, or describe other states of the code. Three labels do
   not exist: `lem:pebble-game-tryAddEdge-iff-independent` (`tryAddEdgeWith_isSparse`, "⇒ half of"),
@@ -3023,6 +3039,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings named; `grep` for the labels in `blueprint/src/` and for the
   names in the Lean).
   *Found:* round 1 task 5.14.
+  *Disposition:* reported (`notes/Prose-report.md`, L10).
 - **F-045** · L · `runPebbleGame.aux` and the verdict's docstrings (`PebbleGame/Correctness.lean`):
   `runPebbleGame.aux`'s docstring says that `certifies_against` "calls
   `independent_brings_pebble_simpleGraph_form` whose size step uses `ℓ < 2 * k`". The body of
@@ -3034,6 +3051,7 @@ declaration's name as its header writes it:
   Layer 4 design"), the kind `F-035` records in `Basic.lean` and `Algorithm.lean`.
   *Evidence:* read (the body of `certifies_against` and the docstrings named).
   *Found:* round 1 task 5.15.
+  *Disposition:* reported (`notes/Prose-report.md`, L12).
 - **F-047** · L · `Main.lean`, `PebbleGame/Examples.lean`, `lakefile.toml`; `DESIGN.md` *One
   `Decidable` instance per project predicate*: running-time and `decide` claims beyond `F-033`'s.
   `Main.lean`'s module docstring and `lakefile.toml`'s comment on the `pebble-game` target say that
@@ -3054,6 +3072,7 @@ declaration's name as its header writes it:
   `getReducibilityStatus` reports both definitions `irreducible`; `native_decide` proves
   `k4MinusE.IsLaman` and `¬ k4.IsLaman`; `"3\t4".splitOn` is one token.
   *Found:* round 1 task 5.16.
+  *Disposition:* reported (`notes/Prose-report.md`, L2).
 - **F-055** · L · `Graph.exists_forestPacking_cover_of_isSparse_restrict` (`BodyBar/KFrame.lean`;
   `lem:k-frame-forest-packing-of-sparse`): it derives the forward half of `Graph.tutte_nash_williams`
   (`TreePacking.lean`, which `KFrame.lean` imports) again, at $G \restriction E'$ and without
@@ -3064,6 +3083,7 @@ declaration's name as its header writes it:
   `tutte_nash_williams`'s proof uses. One lemma giving a disjoint cover would serve all three.
   *Evidence:* read (the bodies of the four declarations).
   *Found:* round 2 task 2.2.
+  *Disposition:* reported (`notes/Prose-report.md`, L8).
 - **F-057** · L · docstrings of `BodyBar/` (`body-bar.tex`'s Tay nodes): three disagree with
   the declarations or the sources. `Graph.isSpanningTreePacking_of_isTight` credits Whiteley 1988
   Theorem 13, which is about frameworks on the flat torus (p. 249; only its (ii)⇔(iii) is the
@@ -3075,6 +3095,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the three declarations' statements and bodies; Whiteley 1988 pp. 243, 249, in
   `.refs/`).
   *Found:* round 2 task 2.3.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-061** · L · `BodyHingeFramework.linearIndependent_hingeRow_forest` and
   `exists_independent_rigidityRows_of_forest` (`Molecular/RigidityMatrix/Basic.lean`): the names
   and docstrings speak of a spanning forest, but the hypothesis `hsep` (no other end of an edge is
@@ -3084,6 +3105,7 @@ declaration's name as its header writes it:
   task 2.5 states the hypothesis instead.
   *Evidence:* read (the two statements and the first body).
   *Found:* round 2 task 2.5.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-063** · L · `BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions`
   (`Molecular/AlgebraicInduction/PanelLayer.lean`): its hypothesis asks $C(e) \neq 0$ at every
   edge label, also at labels that are not edges of $G$, where the extensor does not affect the
@@ -3091,12 +3113,14 @@ declaration's name as its header writes it:
   in the same file asks it only at the edges of $G$.
   *Evidence:* read (the two statements).
   *Found:* round 2 task 2.5.
+  *Disposition:* reported (`notes/Prose-report.md`, L7).
 - **F-064** · L · `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
   (`Molecular/RigidityMatrix/Bricks.lean`): its docstring names the node
   `lem:rigidityRows-cut-rank-add`, which does not exist; the declaration is pinned on
   `lem:block-rank-cut`.
   *Evidence:* read (the docstring; a `grep` for the label in `blueprint/src/`).
   *Found:* round 2 task 2.6.
+  *Disposition:* reported (`notes/Prose-report.md`, L10).
 - **F-069** · L · docstrings of four pins in `rigidity-matrix.tex`'s Case I lemmas name the wrong
   node: `infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton`,
   `injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` and
@@ -3106,11 +3130,13 @@ declaration's name as its header writes it:
   (`CaseI.lean`) names `lem:case-I-realization-all-k`, which does not exist.
   *Evidence:* read (the docstrings; a `grep` for the labels in `blueprint/src/`).
   *Found:* round 2 task 2.7.
+  *Disposition:* reported (`notes/Prose-report.md`, L10).
 - **F-070** · L · `PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj`
   (`AlgebraicInduction/CaseI.lean`): its hypothesis `hcLoop` (the contraction has no loops)
   follows from `hKmin` (it is a minimal $k$-dof-graph) by `Graph.loopless_of_isMinimalKDof`.
   *Evidence:* read (the statement and body; `Graph.loopless_of_isMinimalKDof`, `Deficiency.lean`).
   *Found:* round 2 task 2.7.
+  *Disposition:* reported (`notes/Prose-report.md`, L7).
 - **F-074** · L · docstrings in `Molecular/Deficiency.lean`: `Graph.matroidMG`'s says that
   $M(\tilde G)$ is "the boundary regime `ℓ = 2k = D`", not "the matroidal regime `ℓ < 2k` of
   `CountMatroid.lean`". The $(D,D)$ count has $\ell = k$, inside $\ell < 2k$; `countMatroid` does
@@ -3119,6 +3145,7 @@ declaration's name as its header writes it:
   "boundary-regime cleanliness".
   *Evidence:* read (the docstrings; `countMatroid`'s signature, `CountMatroid.lean`).
   *Found:* round 2 task 2.8.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-075** · L · `Graph.deficiency_eq_of_cutEdges_ncard_le_one` (`Molecular/Deficiency.lean`): its
   hypothesis `hD : 1 ≤ bodyBarDim n` is unused (the proof discards it, "part of the public API").
   `exists_cut_decomposition_of_not_twoEdgeConnected` and `Graph.deficiency_induce_union_singleton`
@@ -3126,6 +3153,7 @@ declaration's name as its header writes it:
   its (1)–(3) without it, so dropping it makes the three pins match.
   *Evidence:* read (the three statements and bodies).
   *Found:* round 2 task 2.8.
+  *Disposition:* reported (`notes/Prose-report.md`, L6).
 - **F-077** · L · docstrings and a binder of `deficiency.tex`'s pins (`Molecular/Deficiency.lean`,
   `MainComponent/Ear.lean`): `isSparse_diff_singleton_of_isCircuit`'s docstring says that the bound
   $|X| > D(|V(X)| - 1)$ for a circuit $X$ needs the reverse half of `thm:def-eq-corank`, "deferred
@@ -3137,6 +3165,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; the bodies of `circuit_ncard_gt` and
   `deficiency_induce_le_of_ear_of_merge`).
   *Found:* round 2 task 2.9.
+  *Disposition:* reported (`notes/Prose-report.md`, L6).
 - **F-080** · L · docstrings in `Molecular/Deficiency.lean` around `thm:def-eq-corank`:
   `isBase_ncard_add_deficiency_eq`'s says that it "closes" `prop:rigidity-matrix-prop11`, which
   `rigidityMatrix_prop11` (`AlgebraicInduction/PanelHinge.lean`) proves; `rank_add_deficiency_le`'s
@@ -3146,6 +3175,7 @@ declaration's name as its header writes it:
   Phase-22 construction "the remaining Track-A obstruction". Their credits are `F-081`'s.
   *Evidence:* read (the docstrings and the four statements).
   *Found:* round 2 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, L12).
 - **F-085** · L · docstrings of `molecular-induction.tex`'s first pins (`Induction/Operations.lean`,
   `Induction/ReducibleVertex.lean`): `inducedSpan`'s names `def:graph-operations` for
   `def:induced-span`. Those of `rank_matroidMG_of_isKDof_zero`, `contract_matroidMG_rank` and
@@ -3157,6 +3187,7 @@ declaration's name as its header writes it:
   simp lemmas mention `edgeSplit`.
   *Evidence:* read (the docstrings; a `grep` for `edgeSplit`).
   *Found:* round 2 task 2.11.
+  *Disposition:* reported (`notes/Prose-report.md`, L10).
 - **F-088** · L · the balanced-partition pins (`Induction/Operations.lean`,
   `Induction/ReducibleVertex.lean`, `Induction/ForestSurgery/Reduction.lean`):
   `exists_balanced_forest_packing` repeats the move of `exists_packing_move_of_not_inc` inline, while
@@ -3170,6 +3201,7 @@ declaration's name as its header writes it:
   `matroidMG_indep_iff_exists_forest_packing` credits "Nash-Williams 1966 / Edmonds" (`F-053`).
   *Evidence:* read (the docstrings and sections; the body of `exists_balanced_forest_packing`).
   *Found:* round 2 task 2.12.
+  *Disposition:* reported (`notes/Prose-report.md`, L8).
 - **F-092** · L · the surgery's pins (`Induction/ForestSurgery/EdgeSplitting.lean`,
   `Induction/ForestSurgery/Reduction.lean`): `splitOff_indep_extend_of_fiber_subset` and
   `splitOff_indep_extend_of_fiber_lt` take the degree-two hypothesis `_hdeg2` and do not use it.
@@ -3180,6 +3212,7 @@ declaration's name as its header writes it:
   reverse ones `lem:edge-splitting`, not the nodes that pin them.
   *Evidence:* read (the docstrings; the two wrappers' bodies, which do not pass `_hdeg2` on).
   *Found:* round 2 task 2.13.
+  *Disposition:* reported (`notes/Prose-report.md`, L6).
 - **F-094** · L · the deficiency bounds' pins (`Induction/SplitOffDeficiency.lean`): the private
   `splitOff_deficiency_le_aux` takes `heab : eₐ ≠ e_b` and does not use it, so
   `splitOff_deficiency_le` and `splitOff_deficiency_le_of_eq_left` take it only to pass it on.
@@ -3190,6 +3223,7 @@ declaration's name as its header writes it:
   forest surgery "deferred"; `removeVertex_deficiency_ge`'s cites `notes/Phase20.md` *Finding 2*.
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.14.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 - **F-097** · L · the pins of KT Lemmas 4.5–4.8 (`Induction/ReducibleVertex.lean`,
   `Induction/Operations.lean`, `Induction/ForestSurgery/Reduction.lean`): in
   `splitOff_isMinimalKDof_of_pos`, the case $e = e_0$ of the minimality applies KT 4.7
@@ -3204,6 +3238,7 @@ declaration's name as its header writes it:
   degree-two step "the remaining `lem:reducible-vertex` work".
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.15.
+  *Disposition:* reported (`notes/Prose-report.md`, L8).
 - **F-104** · L · the pins of KT Theorem 4.9, KT Lemma 6.1 and the $d = 3$ pair
   (`Induction/ForestSurgery/Reduction.lean`, `Induction/ReducibleVertex.lean`,
   `AlgebraicInduction/Theorem55.lean`, `AlgebraicInduction/PanelHinge.lean`):
@@ -3218,6 +3253,7 @@ declaration's name as its header writes it:
   `d = 3` regime", which is $d \ge 3$.
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.16.
+  *Disposition:* reported (`notes/Prose-report.md`, L6).
 - **F-108** · L · the pins of KT Lemma 4.6's nodes (`Induction/ForestSurgery/ChainExtraction.lean`,
   `Induction/Operations.lean`, `Molecular/Deficiency.lean`): `chainData_extract` takes
   `hV3 : 3 ≤ V(G).ncard` beside `hV4 : 4 ≤ V(G).ncard`, and `[G.Simple]`, which
@@ -3230,6 +3266,7 @@ declaration's name as its header writes it:
   `CycleData.vertexSet_ncard`'s names a use that no caller makes.
   *Evidence:* read (the bodies and docstrings; KT 2011 pp. 664 and 692).
   *Found:* round 2 task 2.17.
+  *Disposition:* reported (`notes/Prose-report.md`, L7).
 - **F-114** · L · the pins of `meet.tex` (`Molecular/Meet.lean`): the file's header lists
   `meet_ne_zero_iff` and "the geometric reading" as deliverables, which no declaration provides, and
   narrates phases, commits and design codes ("this commit", "route (ii)", "N3b-2b-α", "CHAIN-3",
@@ -3243,6 +3280,7 @@ declaration's name as its header writes it:
   them, and the second and `exteriorPower_map_subtype_injective` have no caller (`F-111`).
   *Evidence:* read (the bodies and docstrings; a `grep` for the callers).
   *Found:* round 2 task 2.18.
+  *Disposition:* reported (`notes/Prose-report.md`, L9).
 - **F-123** · L · the docstrings of `panel-layer.tex`'s first pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`): the field `ends` of `PanelHingeFramework` is
   documented as "the two bodies `e` joins", which nothing enforces (`F-122`);
@@ -3255,6 +3293,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies); measured (`scripts/blueprint-deps.py --label` at
   `efa7ed2b`, dead pins).
   *Found:* round 3 task 2.1.
+  *Disposition:* reported (`notes/Prose-report.md`, L3).
 - **F-126** · L · the docstrings and comments of `panel-layer.tex`'s KT Theorem 5.5 pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `Pinning.lean`, `Theorem55.lean`):
   `HasFullRankRealization`'s docstring calls it "the motive Theorem 5.5's induction is run
@@ -3268,6 +3307,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings, signatures and bodies; KT 2011 p. 670); measured
   (`scripts/blueprint-deps.py --label def:rank-hypothesis` at `db237dfd`, dead pin).
   *Found:* round 3 task 2.2.
+  *Disposition:* reported (`notes/Prose-report.md`, L12).
 - **F-130** · L · the docstrings of `panel-layer.tex`'s KT Theorem 5.6 and molecular-conjecture
   pins (`Molecular/AlgebraicInduction/Theorem55.lean`): `molecular_conjecture`'s says that dropping
   the nonzero-hinge conjunct "makes the statement false"; dropped from both sides, each side holds
@@ -3280,6 +3320,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; `IsInfinitesimalMotion`,
   `Molecular/RigidityMatrix/Basic.lean`).
   *Found:* round 3 task 2.3.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-132** · L · the docstrings of `panel-layer.tex`'s base pins
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`, `Pinning.lean`): those of
   `theorem_55_base_producer_empty`, `_single_edge` and their `_gen` forms name
@@ -3294,6 +3335,7 @@ declaration's name as its header writes it:
   conditioned motive", "carry" and phases.
   *Evidence:* read (the docstrings and signatures; a `grep` for the callers).
   *Found:* round 3 task 2.4.
+  *Disposition:* reported (`notes/Prose-report.md`, L10).
 - **F-133** · L · the docstrings of `panel-layer.tex`'s framework-operation and multigraph pins
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `Theorem55.lean`):
   `BodyHingeFramework.withGraph`'s calls it "the carrier for the inductive constructions of Cases I
@@ -3315,6 +3357,7 @@ declaration's name as its header writes it:
   results over the `scripts/blueprint-deps.py` cache, and `--label` for the slice's nodes, at
   `708f4443`).
   *Found:* round 3 task 2.5.
+  *Disposition:* reported (`notes/Prose-report.md`, L3).
 - **F-135** · L · the docstrings of `case-i.tex`'s first pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `PanelLayer.lean`, `Pinning.lean`,
   `CaseIII/Arms.lean`). `toBodyHinge_rankHypothesis_zero`'s calls
@@ -3341,6 +3384,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers); measured (the
   main results' closure over the `scripts/blueprint-deps.py` cache, at `8cfa4531`).
   *Found:* round 3 task 2.6.
+  *Disposition:* reported (`notes/Prose-report.md`, L3).
 - **F-140** · L · the docstrings of `case-i.tex`'s KT eq. (6.3) and Claim 6.4 pins
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `GenericityDevice.lean`,
   `CaseI.lean`). `rankHypothesis_iff_finrank_pinnedMotionsOn`'s calls the node "GREEN-modulo-21b",
@@ -3359,6 +3403,7 @@ declaration's name as its header writes it:
   (U1–U4, "Phase 22b route (i) Commit 5") and calls the dead `case_I_realization` the composer.
   *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers).
   *Found:* round 3 task 2.7.
+  *Disposition:* reported (`notes/Prose-report.md`, L6).
 - **F-144** · L · the docstrings of `case-i.tex`'s last four pins
   (`Molecular/AlgebraicInduction/Theorem55.lean`). `case_I_dispatch_gen`'s calls "the `d = 3`
   `case_I_dispatch` below" its `k = 2` wrapper; the docstrings of `case_I_realization_h65_gen` and
@@ -3372,6 +3417,7 @@ declaration's name as its header writes it:
   "producer", "motive", "seed" and "brick".
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.8.
+  *Disposition:* reported (`notes/Prose-report.md`, L9).
 - **F-148** · L · the docstrings of `case-ii.tex`'s pins (`Molecular/AlgebraicInduction/Pinning.lean`,
   `PanelHinge.lean`, `CaseII.lean`; `Molecular/Induction/Operations.lean`). Those of
   `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
@@ -3389,6 +3435,7 @@ declaration's name as its header writes it:
   "producer", "brick" and "stratum".
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.9.
+  *Disposition:* reported (`notes/Prose-report.md`, L3).
 - **F-153** · L · the docstrings of `genericity-and-count.tex`'s pins
   (`Molecular/AlgebraicInduction/GenericityDevice.lean`, `CaseI.lean`, `CaseII.lean`,
   `Pinning.lean`; `Molecular/RigidityMatrix/Basic.lean`). The file header and
@@ -3408,6 +3455,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; a `grep` for `lem:case-I-splice-placement` in
   `blueprint/src`).
   *Found:* round 3 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, L3).
 - **F-156** · L · the docstrings of `case-iii.tex`'s KT Claim 6.11 pins
   (`Molecular/Induction/ForestSurgery/Reduction.lean`, `Molecular/AlgebraicInduction/CaseIII/
   Candidate.lean`, `Realization.lean`). `splitOff_exists_base_inter_fiber_lt`'s places KT Lemma 4.3
@@ -3422,6 +3470,7 @@ declaration's name as its header writes it:
   "seed".
   *Evidence:* read (the docstrings and bodies; KT 2011 p. 661, `.refs/`).
   *Found:* round 3 task 2.11.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 - **F-161** · L · the docstrings of `case-iii.tex`'s pins for KT eqs. (6.24)–(6.29)
   (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelHinge.lean`,
   `CaseIII/Candidate.lean`). `exists_redundant_panelRow_ab_decomposition`'s says that the transport
@@ -3439,6 +3488,7 @@ declaration's name as its header writes it:
   "producer", "genuine", "seed", "green", "feeds", "threads" and "heart".
   *Evidence:* read (the docstrings and bodies; KT 2011 pp. 679 and 685–686, `.refs/`).
   *Found:* round 3 task 2.12.
+  *Disposition:* reported (`notes/Prose-report.md`, L3).
 - **F-164** · L · the docstrings of the pins of `case-iii.tex`'s span and point choice
   (`Molecular/RigidityMatrix/Claim612.lean`). Those of `exists_ne_zero_dotProduct_eq_zero`,
   `exists_affineIndependent_of_det_polynomial_ne_zero`, `exists_detPolynomial_of_pointPolynomial`,
@@ -3452,6 +3502,7 @@ declaration's name as its header writes it:
   "seed", "leaf" and "feeding".
   *Evidence:* read (the docstrings and bodies).
   *Found:* round 3 task 2.13.
+  *Disposition:* reported (`notes/Prose-report.md`, L3).
 - **F-168** · L · the docstrings of the pins of `case-iii.tex`'s three frameworks and KT Claim 6.12
   (`Molecular/RigidityMatrix/Claim612.lean`, `CaseIII/Relabel/Basic.lean`, `Relabel/Chain.lean`,
   `CaseIII/Realization.lean`, `Molecular/Induction/Operations.lean`).
@@ -3469,6 +3520,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; the signatures of `theorem_55_minimalKDof_k_all_k`
   and `case_III_hsplit_producer_all_k`; KT 2011 pp. 682 and 686, `.refs/`).
   *Found:* round 3 task 2.14.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-172** · L · the docstrings of the pins of `case-iii.tex`'s general case
   (`CaseIII/Realization.lean`, `CaseIII/Arms.lean`, `Molecular/Induction/Operations.lean`).
   `chainData_fire_discriminator`'s and `chainData_dispatch`'s say that they have no `\lean` pin;
@@ -3480,6 +3532,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and statements of the six pins; KT 2011 pp. 659, 677 and
   692, `.refs/`).
   *Found:* round 3 task 2.15.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 - **F-176** · L · the docstrings of `bar-joint-3d.tex`'s pins (`GenericRigidityMatroid.lean`). The
   module header narrates process ("Phase 24", "This file lands the forward-mode chapter … end to
   end", "Phase 14's"), and `genericRank`'s cites "Phase 26". In the same file
@@ -3491,6 +3544,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the nine pins and of the abundance lemma; `grep
   -i gram` over `blueprint/src`).
   *Found:* round 4 task 2.1.
+  *Disposition:* reported (`notes/Prose-report.md`, L12).
 - **F-182** · L · the docstrings of task 2.2's pins (`Molecule/ScrewVelocity.lean`, `Duality.lean`,
   `ProjectiveInvariance.lean`, `Dictionary.lean`). `ScrewVelocity.lean`'s header says that
   $\omega_S$ pairs two affine directions and $t_S$ a direction with the homogenizing coordinate;
@@ -3502,6 +3556,7 @@ declaration's name as its header writes it:
   §2.3(4), flag F2 route two", DUAL-K) and say "genuine" and "consumes".
   *Evidence:* read (the docstrings and bodies of the slice's 26 pins and of `omegaForm`, `tauForm`).
   *Found:* round 4 task 2.2.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-186** · L · the docstrings of task 2.3's pins (`GeneralPositionPlacement.lean`,
   `Molecule/GeneralPosition4.lean`, `Theorem56.lean`, `Modelling.lean`). The docstring of
   `exists_molecular_rankHypothesis_generalPosition` credits the panel-hinge–molecular link to "the
@@ -3513,6 +3568,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the five pins, `IsGeneralPosition4` and
   `exists_generalPosition4_polynomial`).
   *Found:* round 4 task 2.3.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 - **F-190** · L · the docstrings of task 2.4's pins (`Molecule/Carrier.lean`,
   `Molecule/Application.lean`). `Carrier.lean`'s header says that the labels `Sym2 V` alone are too
   few "e.g. for `Nat.card V ≤ 10`"; at $|V| = 10$ they number $55 > 54 = 6 \cdot 9$, and at
@@ -3527,6 +3583,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the eight pins in these files, and of
   `finrank_span_rigidityRow_le_genericRank`; JJ 2008 §§2 and 4, `.refs/`).
   *Found:* round 4 task 2.4.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 - **F-194** · L · the docstrings of task 2.5's pins (`Jacobs.lean`, `EdgesIn.lean`,
   `Molecular/Deficiency.lean`). In `Deficiency.lean` the header of the tight-partition section and
   the docstring of `IsTightPartition` name `lem:tight-partition-cross-pair`, a label that no
@@ -3540,6 +3597,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins and of `exists_fresh_label`; JJ
   2008 §3, its closing remarks and its references).
   *Found:* round 4 task 2.5.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 - **F-198** · L · the docstrings of task 2.6's pins (`JacobsCounting.lean`, `Jacobs.lean`,
   `SquareGraph.lean`). Five name `lem:normal-cross-count` for declarations pinned at the nodes split
   from it (`rootedAt_inj`, `ncard_inPartNeighbors_eq_two`, `mk_mem_squareNormalCrossEdgesRootedAt`,
@@ -3555,6 +3613,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the 25 pins and of the unpinned lemmas of
   `laman_square_count`'s proof; JJ 2008 §§2, 3 and 5, `.refs/`).
   *Found:* round 4 task 2.6.
+  *Disposition:* reported (`notes/Prose-report.md`, L10).
 - **F-200** · L · the docstrings of task 2.7's pins (`JacobsZeroExtension.lean`,
   `RigidityMatroid.lean`, `SquareGraph.lean`, `GenericRigidityMatroid.lean`,
   `GeneralPositionPlacement.lean`, `Jacobs.lean`). They agree with their bodies, but narrate
@@ -3566,6 +3625,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the 16 pins, of
   `zero_extension_edgeSetRowIndependent_extend` and of the three `K₅` lemmas).
   *Found:* round 4 task 2.7.
+  *Disposition:* reported (`notes/Prose-report.md`, L12).
 - **F-205** · L · the docstrings of task 2.8's pins (`JacobsTheorem.lean`, `JacobsDegreeOne.lean`,
   `TwoCore.lean`). They agree with their bodies, but narrate process: the three file headers
   ("Phase 32", "Phase 26", "the L2 slice plan, T1", "T3–T4", "This file lands", "the rank glue",
@@ -3576,6 +3636,7 @@ declaration's name as its header writes it:
   `jacobs_of_isLaman3_of_ncard`, `degree_one_rank_tree_of_ncard` and `degree_one_rank_of_ncard`;
   JJ 2008 §4).
   *Found:* round 4 task 2.8.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 - **F-210** · L · the docstrings of task 2.9's pins (`GenericLift/PanelGeneric.lean`,
   `GenericRigidityMatroid.lean`, `Molecule/Application.lean`). `IsGenericNormals` "subsumes
   Jackson and Jordán's edge-induced-submatrix maximum-rank condition": not over all normal
@@ -3591,6 +3652,7 @@ declaration's name as its header writes it:
   eight; it is 2010 (task 2.9 corrected the bibliography).
   *Evidence:* read (the docstrings and bodies of the twelve pins; `grep` for the year).
   *Found:* round 4 task 2.9.
+  *Disposition:* reported (`notes/Prose-report.md`, L4).
 
 - **F-215** · L · the docstrings of task 2.10's pins (`BodyBar/GenericLift.lean`).
   `exists_isGenericEndpoints_abundance` calls its polynomial one "in the `2n|E(G)|` endpoint
@@ -3606,6 +3668,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins and the private lemmas; JJ 2010
   §5, pp. 581–582).
   *Found:* round 4 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, L3).
 
 - **F-220** · L · the docstrings of task 2.11's pins (`GenericLift/HingeGeneric.lean`). Six credit
   their construction to "Jackson–Jordán 2010 §6", which has neither hinge points nor the row
@@ -3620,6 +3683,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the seven pins; JJ 2010 §§3.3 and 6, pp. 578 and
   583).
   *Found:* round 4 task 2.11.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 
 - **F-225** · L · the docstrings of task 2.12's pins (`GenericLift/HingeGeneric.lean`,
   `Extensor.lean`). Six credit "Jackson–Jordán 2010 §6": right for the rank theorem and its
@@ -3637,6 +3701,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the seven pins and of `screwEquivOfLinearEquiv`;
   JJ 2010 §§6–7, pp. 582–584).
   *Found:* round 4 task 2.12.
+  *Disposition:* reported (`notes/Prose-report.md`, L5).
 
 - **F-230** · L · `runPebbleGame`, `runPebbleGame.aux` (`PebbleGame/Correctness.lean`) and
   `runPebbleGameExec_isAccept_iff` (`PebbleGame/Exec.lean`): their docstrings name the nodes their
@@ -3646,6 +3711,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the three docstrings; a `grep` for the two old labels in
   `CombinatorialRigidity/`).
   *Found:* round 5 task 3.1.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-232** · L · the declarations round 5's task 3.2 moved or unpinned
   (`Molecular/Meet.lean`, `Molecular/AlgebraicInduction/`, `Molecular/RigidityMatrix/Claim612.lean`,
   `BodyBar/KFrame.lean`). The docstrings of `hasGenericFullRankRealization_of_rigidOn_ofNormals`
@@ -3661,6 +3727,7 @@ declaration's name as its header writes it:
   uses the per-set forms.
   *Evidence:* read (the docstrings; a `grep` for each name's callers in `CombinatorialRigidity/`).
   *Found:* round 5 task 3.2.
+  *Disposition:* reported (`notes/Prose-report.md`, L9).
 - **F-233** · L · the declarations round 5's task 3.3 moved or unpinned
   (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`). Their
   docstrings name the nodes their pins left: `screwSpace_finrank` and the five row-independence
@@ -3678,6 +3745,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and statements; a `grep` for each name's callers);
   measured (`scripts/blueprint-deps.py --label`, dead pins).
   *Found:* round 5 task 3.3.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-235** · L · the declarations round 5's task 3.4 moved or unpinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`). Their docstrings name the nodes their pins left:
   `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` say `def:cut-edges-2ec`
@@ -3689,6 +3757,7 @@ declaration's name as its header writes it:
   says `def:graph-operations`, though its pin is at `def:induced-span`.
   *Evidence:* read (the docstrings).
   *Found:* round 5 task 3.4.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-236** · L · the declarations round 5's task 3.5 moved or unpinned
   (`Molecular/Induction/ForestSurgery/Reduction.lean`, `Molecular/Induction/ReducibleVertex.lean`,
   `Molecular/Induction/Operations.lean`). The section header before
@@ -3699,6 +3768,7 @@ declaration's name as its header writes it:
   it, but it has no caller (`F-106`).
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.5.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-237** · L · the declarations round 5's task 3.6 pinned or unpinned
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`). The five $d = 3$ base wrappers
   `theorem_55_base_producer_empty`, `_empty_gp`, `_single_edge`, `_single_edge_gp` and
@@ -3712,6 +3782,7 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_of_theorem_55_gen` (`F-011`).
   *Evidence:* read (the docstrings and bodies; a `grep` for the callers).
   *Found:* round 5 task 3.6.
+  *Disposition:* reported (`notes/Prose-report.md`, L9).
 - **F-238** · L · the declarations round 5's task 3.7 unpinned or pinned
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `PanelLayer.lean`,
   `GenericityDevice.lean`, `Theorem55.lean`; `Molecular/Induction/Contraction.lean`). The three
@@ -3726,6 +3797,7 @@ declaration's name as its header writes it:
   `lem:case-I-all-k` and `lem:claim-6-6`).
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.7.
+  *Disposition:* reported (`notes/Prose-report.md`, L9).
 - **F-240** · L · the declarations round 5's task 3.8 pinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`, `Molecular/AlgebraicInduction/GenericityDevice.lean`). The
   section header over `isKDof_zero_of_triangle` names `lem:case-III`, which is not its node, and the
@@ -3736,6 +3808,7 @@ declaration's name as its header writes it:
   name no node (now `lem:splitoff-simple` and `lem:independent-rows-of-rank`).
   *Evidence:* read (the docstrings and the section header).
   *Found:* round 5 task 3.8.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-241** · L · the declarations round 5's task 3.9 pinned (`CaseIII/Candidate.lean`). The
   docstrings of `exists_redundant_panelRow_ab_lam_of_rigidOn` and of its caller
   `exists_candidateRow_bottomRows_of_rigidOn` name `lem:case-III-claim612-r`, a label the blueprint
@@ -3744,6 +3817,7 @@ declaration's name as its header writes it:
   `lem:case-III-rank-certification` and `def:case-III-candidate`).
   *Evidence:* read (the docstrings; a `grep` for the label in `blueprint/src`).
   *Found:* round 5 task 3.9.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-242** · L · the declarations round 5's task 3.10 pinned or unpinned
   (`Molecular/RigidityMatrix/Claim612.lean`; `CaseIII/Relabel/Chain.lean`, `ChainColumn.lean`,
   `ForkedArm.lean`). The docstrings of `exists_homogeneousIncidence_of_normals_gen` and of its
@@ -3759,6 +3833,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` for the callers); measured (the closure of
   `case_III_realization_all_k` in `scripts/blueprint-deps.py`'s Lean cache, at task 3.10).
   *Found:* round 5 task 3.10.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-243** · L · the declarations round 5's task 3.11 pinned or unpinned
   (`Molecular/Molecule/Duality.lean`, `Pencil/Statement.lean`;
   `Molecular/GenericLift/HingeGeneric.lean`; `BodyBar/GenericLift.lean`). The docstrings of
@@ -3772,6 +3847,7 @@ declaration's name as its header writes it:
   `lem:hinge-rows-polynomial-in-points` to pins those nodes no longer have.
   *Evidence:* read (the docstrings and module headers; a `grep` for the callers).
   *Found:* round 5 task 3.11.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-244** · L · the declarations round 5's task 3.12 pinned or moved (`Molecular/Deficiency.lean`,
   `JacobsCounting.lean`, `TwoCore.lean`). The docstrings of `IsTightPartition` and
   `crossingEdgesWithin` name `lem:exists-tight-partition` and `lem:partitionDef-merge`, now
@@ -3784,6 +3860,7 @@ declaration's name as its header writes it:
   three nodes now pin.
   *Evidence:* read (the docstrings and module header).
   *Found:* round 5 task 3.12.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-245** · L · `linearIndepOn_pencilChartNormal_closedHubNbhd` (`Molecular/Molecule/Pencil/Chart.lean`):
   its docstring calls it the `lem:pencil-nondegenerate` companion, a label the blueprint lacks; the
   node is `def:pencil-nondegenerate`, and no node pins the declaration. The docstrings of the five
@@ -3791,6 +3868,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` of `blueprint/src` and `CombinatorialRigidity/` for the
   labels of task 3.13's nodes).
   *Found:* round 5 task 3.13.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-246** · L · the declarations round 5's task 3.14 moved or unpinned
   (`Molecular/Molecule/Pencil/MainComponent/Bridge.lean`, `Carrier.lean`). The docstring of
   `Graph.embedEdges` names `lem:pencil-jj-embed-edges`, now `def:pencil-embed-edges`. The module
@@ -3802,6 +3880,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and module headers; a `grep` of `CombinatorialRigidity/` for the
   labels of task 3.14's nodes).
   *Found:* round 5 task 3.14.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 - **F-250** · L · the declarations of the nodes round 5's task 5.3 moved across chapters
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `Molecular/Deficiency.lean`). The docstring of
   `PanelHingeFramework.theorem_55_minimalKDof_k` places `lem:case-cut-edge-realization{,-gp}` in
@@ -3812,6 +3891,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` of `CombinatorialRigidity/` for the six labels and
   for the chapters' file names).
   *Found:* round 5 task 5.3.
+  *Disposition:* reported (`notes/Prose-report.md`, L11).
 
 ## M — mathematics and sources
 
@@ -3841,6 +3921,7 @@ declaration's name as its header writes it:
   *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint
   and the Lean). Lovász–Yemini 1982 is not in `.refs/`.
   *Found:* round 1 task 5.7.
+  *Disposition:* reported (`notes/Prose-report.md`, M2).
 - **F-053** · M · the credit for the matroid of a submodular function, the polymatroid rank formula
   and the union's rank formula (`matroid-union.tex`, `intro.tex`, `deficiency.tex`,
   `molecular-induction.tex`; Lean docstrings). The blueprint credited the first two to Edmonds 1970.
@@ -3860,6 +3941,7 @@ declaration's name as its header writes it:
   *Evidence:* read (Oxley 2011 pp. 404–407, 411–412, 416, 427–430; Schrijver pp. 725–726, 775;
   Edmonds 1965 p. 69; all in `.refs/`). Edmonds 1970 and Nash-Williams 1966 are not in `.refs/`.
   *Found:* round 2 task 2.1.
+  *Disposition:* reported (`notes/Prose-report.md`, M4).
 - **F-081** · M · the credit for KT eq. (2.4), $\operatorname{rank} M(\tilde G) +
   \operatorname{def}(\tilde G) = D(|V|-1)$ (`thm:def-eq-corank`): the blueprint credited it to
   Jackson and Jordán's Theorem 6.1, "whose Corollary 6.2" is the deficiency-zero case. JJ 2009's
@@ -3874,6 +3956,7 @@ declaration's name as its header writes it:
   and 6.3, about realizations, for KT Proposition 2.2 at $\tilde G$).
   *Evidence:* read (JJ 2009 pp. 580–583; KT 2011 pp. 655–656; both in `.refs/`; the docstrings).
   *Found:* round 2 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, M4).
 - **F-118** · M · the route of Cases I–III (`algebraic-induction/case-i.tex` … `case-iii.tex`): the
   prose presents as steps of the induction several nodes that no main result's proof takes. Every
   pin of these nodes lies outside every main result's closure, and the pins of the live nodes that
@@ -3894,6 +3977,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter` and `--label`, dead pins and edges
   with no Lean basis; TeX and Lean at `ef57b401`).
   *Found:* round 3 task 1.
+  *Disposition:* reported (`notes/Prose-report.md`, M3).
 
 - **F-222** · M · `cor:bodyhinge-generic-tree-packing`, as `body-hinge.tex` cites it: after
   `thm:body-hinge-tay` the chapter says that for frameworks "with hinges in general position", KT
@@ -3910,6 +3994,7 @@ declaration's name as its header writes it:
   after `thm:body-hinge-tay`; the statement of
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`; JJ 2010 §6, p. 582).
   *Found:* round 4 task 2.12.
+  *Disposition:* reported (`notes/Prose-report.md`, M1).
 - **F-228** · M · the credit for Laman's theorem (`intro.tex`, `laman.tex`, `laman-theorem.tex`,
   `henneberg.tex`; `README.md`, `home_page/index.md`): the blueprint credits the characterization of
   the generically rigid graphs in the plane to Laman 1970 alone, as Jordán 2016 does (Theorems 2.2.1
@@ -3921,3 +4006,4 @@ declaration's name as its header writes it:
   *Evidence:* suspected (the 1927 paper's content); read (Crossref's record for the DOI; Jordán 2016
   p. 45).
   *Found:* round 4 task 2.14.
+  *Disposition:* reported (`notes/Prose-report.md`, M5).

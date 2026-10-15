@@ -14,9 +14,10 @@ they use, so that no edge of `deficiency.tex` or `molecular-induction.tex` point
 chapter, task 5.4 four blocks of the algebraic induction (`F-119`), and task 5.5 left `pencil.tex`'s
 order, which only a regrouping would change. Task 6 aligned the terminology and notation of
 `pencil.tex`, `main-component.tex`, `jacobs.tex` and `meet.tex`, and task 7 `README.md`, the home
-page and `formalization.yaml` with the chapters. Task 8.1 wrote the findings report's `S` part,
-`notes/Prose-report.md`. No task edits the Lean or changes a statement's strength. **Next
-concrete task:** task 8.2, the report's `L` and `M` part (*Hand-off*). Round manual: `CLEANUP.md`.
+page and `formalization.yaml` with the chapters. Task 8 wrote the findings report,
+`notes/Prose-report.md`, which proposes the follow-up program RECONCILE (unqueued, in ROADMAP), so
+every ledger entry has its disposition. No task edits the Lean or changes a statement's strength.
+**Next concrete task:** task 9, the close (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -27,16 +28,19 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 8.1 has landed** (this commit; docs only, no TeX and no Lean): `notes/Prose-report.md`,
-whose Part 1 groups the 67 `S` entries into eight kinds and ranks the 65 open ones in 42 items,
-and the disposition `reported` on those 65 (`F-137` and `F-142` stay `done`). Nothing is
-mid-stream; the next task is task 8.2.
+**Task 8.2 has landed** (this commit; docs only, no TeX and no Lean): the report's Part 2, the 76
+`L` entries in twelve items (L1–L12), the 6 `M` in five (M1–M5), the 19 `E` and `N` entries left
+for a merge, a retirement, a pin change or a Lean change in six (G1–G6, with `F-012`'s liveness),
+and a stale example in `blueprint/CLAUDE.md`'s honesty gate with a replacement (§2.6); Part 3, the
+follow-up program RECONCILE, which ROADMAP lists unqueued for the PI. The ledger: `reported` on
+the 82 `L` and `M` entries, and `F-012` `left`, so every entry has a disposition. Nothing is
+mid-stream; the next task is task 9, the close.
 
-**The gate's baseline, at task 8.1** (2026-10-15; the same as task 4.9's):
+**The gate's baseline, at task 8.2** (2026-10-15; the same as task 4.9's):
 - `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 588 lines**, sha256 prefix
   **`2e4cbc2acd13d193`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
-  regenerate it on this commit), byte-identical to task 4.9's, as at tasks 5.1–7. Tasks 8.2–9
-  keep it byte-identical.
+  regenerate it on this commit), byte-identical to task 4.9's, as at tasks 5.1–8.1. Task 9 keeps
+  it byte-identical.
 - `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1501 edges
   11033da1dbaa0fae`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 692 nodes,
@@ -44,7 +48,7 @@ mid-stream; the next task is task 8.2.
   84 + 145 unbacked, 177 dead, 12 nodes with four or more pins. Task 5 moved nodes between the
   chapter rows (task 5.4: `case-i` 24 nodes, 36 pins, 156 implied; `panel-layer` 39, 55, 203; the
   `case-ii` row after `genericity-and-count`'s). No node is drawn `#9CEC8B` (`F-007`).
-- **The forward screen at task 5's end**, unchanged at tasks 6–8.1 (*Scope*; task 9 re-runs it
+- **The forward screen at task 5's end**, unchanged at tasks 6–8.2 (*Scope*; task 9 re-runs it
   beside the open's table):
   `rigidity-matroid` 2/2 0/0, `rigidity-matrix` 3/2 0/0, `molecular-induction` 0/0 2/2,
   `panel-layer` 10/4 1/1, `case-i` 14/6 0/0, `case-ii` 1/1 0/0 and `pencil` 3/2 1/1: 33 edges to a
@@ -221,21 +225,12 @@ gate's diff, which each task makes exact before editing.
   chapters they name, `F-229`'s phrases on all three, Jacobs 1998's DOI (Crossref); no
   `declaration:` changed, `F-025`'s lines left for task 8.2; the dispositions carry the rest. The
   dump byte-identical to `34f61fd9`'s, the screen unchanged.
-- [ ] **8. R — the findings report** (`notes/Prose.md` §3 *R*), in `notes/Prose-report.md`. Each
-  `S`, `L` and `M` entry gets the disposition `reported`; the report is not a stop.
-  - [x] **8.1 The `S` group** (this commit; 67 entries, recounted): `notes/Prose-report.md` Part
-    1, one group with what it shows about autoformalization (§1.1; the PI, 2026-10-12), eight
-    kinds ranked (§1.2), 42 items merged from the 65 open entries, each with evidence, a suggested
-    disposition and an estimate (§1.3–§1.4); `F-137` and `F-142` listed as resolved by task 3.7,
-    still `done`; 65 dispositions `reported`. Expected: no TeX, the dump byte-identical to task 7's.
-  - [ ] **8.2 The `L` and `M` groups, the left graph findings, and the follow-up** (61 `L` at the
-    open, 76 with this round's, and 6 `M`; the `E` and `N` entries left for a merge, a retirement
-    or a Lean change). The report's rest, and an unqueued ROADMAP bullet proposing the follow-up
-    program, which the PI queues. One more item for the PI: a stale example in
-    `blueprint/CLAUDE.md`'s honesty gate, which gives `lem:case-I` as case (b), a hypothesis that
-    is the conclusion of a `\uses`'d node (`lem:genericity-device`); the node's pins take no such
-    hypothesis, and task 4.4 removed the edge, which no text used. The report suggests a
-    replacement, found then; the round edits no agent manual.
+- [x] **8. R — the findings report** (`notes/Prose.md` §3 *R*), `notes/Prose-report.md`; not a
+  stop. 8.1 `f6ddebb5`: Part 1, the 67 `S` entries in eight kinds and 42 items, 65 `reported`
+  (`F-137`, `F-142` stay `done`). 8.2 (this commit; 76 `L` and 6 `M`, recounted): Part 2, twelve
+  `L` items, five `M` items, the 19 graph findings left (G1–G6, `F-012` given `left`) and §2.6's
+  honesty-gate example with a replacement (`lem:case-III`; no agent manual edited); Part 3 and an
+  unqueued ROADMAP bullet, RECONCILE; 82 `reported`. No TeX: the dump byte-identical.
 - [ ] **9. X — close** (`CLEANUP.md` *Workflow* 5; docs only; Sonnet allowed). The axioms check
   on `formalization.yaml`'s main results (`[propext, Classical.choice, Quot.sound]`, byte-identical
   to round 1's open); the no-Lean-edit check from `216e0702`; every ledger entry has its
@@ -257,7 +252,8 @@ gate's diff, which each task makes exact before editing.
 ## Moved to a later round
 
 `L` findings this round makes (a later Lean round), one line each naming the ledger ID. The
-ledger's earlier `L` entries are task 8.2's.
+ledger's earlier `L` entries are task 8.2's. Task 8.2 mirrored all of them into the follow-up's
+plan: `notes/Prose-report.md` L9 and L11, and Part 3's Lean round (RECONCILE).
 
 - `F-230` (task 3.1): three pebble-game docstrings name the nodes their pins left.
 - `F-232` (task 3.2): docstrings of moved or unpinned declarations, and the dead code among them.
@@ -287,25 +283,25 @@ None.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 8.2, the report's Part 2** (Opus, a fresh agent), appended to
-`notes/Prose-report.md`: the `L` entries (76 at task 8.1: the open's 61 with this round's 15) and
-the 6 `M` entries, grouped by kind, deduplicated and ranked, each with its evidence, a suggested
-disposition and a commit estimate, as Part 1 does; the `E` and `N` entries whose disposition is
-`left`, wholly or in part, for a merge, a retirement or a Lean change (Part 1's items S2–S4, S7,
-S10, S20, S21 and S30 point at some of them); the stale honesty-gate example (the checklist line);
-and an unqueued ROADMAP bullet proposing the follow-up program, drawing on Part 1's §1.4. Each `L`
-and `M` entry gets the disposition `reported`. Recount at pickup (`grep -c '· L ·'` and
-`'· M ·'` on the ledger); if Part 2 does not fit one commit, split it by group in the checklist
-line and land the first. No TeX: the dump stays byte-identical to task 7's (*Current state*).
-Then task 9, the close.
+**Next concrete task: task 9, the close** (docs only; Sonnet allowed; one commit), as its
+checklist line lists: the axioms check of `formalization.yaml`'s main results against round 1's
+open; `git diff --stat 216e0702.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json
+lean-toolchain` empty; every ledger entry's disposition with its task numbers replaced by shas
+(the ledger's *Format*; `F-247`–`F-249`'s "task 8.2 lists it" names this commit), and none
+missing (task 8.2 left none); the script's report and the forward screen re-run beside the
+open's table; `notes/BlueprintExposition.md`'s pointers to moved or split nodes checked; the
+queue row `done = true` (not RECONCILE's: the PI queues it); the ROADMAP row ✓, ROADMAP's PROSE
+bullet and `notes/Prose.md`'s **Status**. No TeX: the dump stays byte-identical to task 7's.
 
 ## Decisions made during this round
 
 - **The slicing** (the open): 31 tasks; the order is the tooling, N, E, the node order, T, U, R, X.
   Task 5 is split by entry into 5.1–5.5 (tasks 5.1–5.2), as task 4 was by chapter group.
 - **The `## uses:` section** (task 2): every labelled environment with a `\uses`, parts sorted.
-- **The report's home** is `notes/Prose-report.md`; the ledger keeps each finding. Part 1 (task
-  8.1) ranks the `S` entries in kinds and items, and each entry's disposition names its item.
+- **The report's home** is `notes/Prose-report.md`; the ledger keeps each finding. Parts 1–2 rank
+  the entries in kinds and items, and each `S`, `L` and `M` disposition names its item; Part 2's
+  graph items (G1–G6) list the `left` entries, and `F-012`'s disposition points at G6. The
+  follow-up, RECONCILE, is a ROADMAP bullet and the report's Part 3, not a queue row (task 8.2).
 - **Try each change on a scratch copy, and predict the whole dump** (tasks 3.1–3.2). Edit a copy
   of `blueprint/src`, read its `--tex-root` report, and predict the after-dump with
   `predict-dump.sh` (the script's `ancestors_map` and `transitive_reduction` and leanblueprint's

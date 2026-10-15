@@ -4,9 +4,9 @@ The report on the `S`, `L` and `M` entries of the ledger `notes/Prose-findings.m
 (`notes/Prose.md` §3 *R*). The ledger holds each finding, its evidence and its disposition; this
 report groups the entries by the kind of divergence, merges the entries that record one
 divergence, ranks the groups, and suggests a disposition and a commit estimate for each. Part 1,
-the `S` group, is task 8.1's (2026-10-15). Part 2, the `L` and `M` groups, the graph findings the
-round left, and the proposed follow-up program, is task 8.2's. The report is not a stop
-(`notes/Prose-graph-cleanup.md` *Autopilot: for the PI*).
+the `S` group, is task 8.1's (2026-10-15). Part 2, the `L` and `M` groups and the graph findings
+the round left, and Part 3, the proposed follow-up program, are task 8.2's (2026-10-15). The
+report is not a stop (`notes/Prose-graph-cleanup.md` *Autopilot: for the PI*).
 
 **Evidence.** Each item restates its entries' evidence from the ledger, which names what was read
 (a declaration's statement or body, never its docstring; a source passage) or measured
@@ -19,7 +19,7 @@ round's repair or reading; no commit. *Restate*: a blueprint statement change, w
 rule leaves to the PI, under round 5's expected-diff gate. *Repin*: a pin added or moved under the
 honesty gate. *Lean+*: a new declaration that states the claim, then a pin. *Lean±*: a change of a
 signature, definition or structure, with its dependents and the nodes that state them; a recon
-first. *Merge/retire*: not among principle D's fixes, so on task 8.2's list.
+first. *Merge/retire*: not among principle D's fixes, so listed in §2.5.
 
 ## Part 1 — the `S` group
 
@@ -81,7 +81,7 @@ Material for the PI's question, not conclusions.
    selector, the label sets, the label supply) from statements to notes, recording two readings
    (kind G). At S34 the moved pair is S1's.
 
-**Checks the kinds suggest**, for the follow-up that task 8.2 proposes:
+**Checks the kinds suggest**, for the follow-up that Part 3 proposes:
 - for each main result, a non-vacuity witness (its hypotheses met at a minimal input of the
   intended class; S1), and for each existential conclusion the definition-faithfulness gate's
   cheapest witness (S2);
@@ -162,7 +162,7 @@ divergence, or one fix at one place.
   *Suggested:* docs first: the KT Theorem 5.6 row cites the nondegenerate, link-recording form
   beside or in place of `rankHypothesis_of_theorem_55_gen` (a `declaration:` change, which task 7
   did not make). Then Lean±: the link condition in the structure, or in the main results'
-  conclusions as additive successors. Retiring the dead $d = 3$ corollary is task 8.2's.
+  conclusions as additive successors. Retiring the dead $d = 3$ corollary is G6's.
   *Estimate:* 1 docs commit; a recon, then 2–4 commits for successors, or a phase for a structure
   field (every constructor of `PanelHingeFramework`).
 - **S3. The KT eq. (6.12) placement pin assumes what no framework of Cases II and III has**
@@ -174,7 +174,7 @@ divergence, or one fix at one place.
   *Evidence:* ledger (read; a `lake lean` witness of `Gv.deficiency n ≤ 0`).
   *State:* kept, with a note.
   *Suggested:* keep; or Lean+ (the count at a rigid splitting-off, which
-  `lem:case-II-realization`'s proof gives) and repin. Retiring the node is task 8.2's (`F-152`).
+  `lem:case-II-realization`'s proof gives) and repin. Retiring the node is G4's (`F-152`).
   *Estimate:* 0, or 2 commits.
 - **S4. A Case II assertion that holds only vacuously** (`F-145`; `lem:case-II`,
   `lem:splitoff-edge-substitution`). The second assertion of `lem:case-II`, as its pin
@@ -188,7 +188,7 @@ divergence, or one fix at one place.
   *Evidence:* ledger (read; KT pp. 677–679; a `lake lean` witness).
   *State:* kept, in register only; the gloss dropped, the titles corrected, the notes say it. The
   three nodes of `F-147` are dead.
-  *Suggested:* restate: drop the vacuous assertion. Retiring the dead nodes is task 8.2's.
+  *Suggested:* restate: drop the vacuous assertion. Retiring the dead nodes is G4's.
   *Estimate:* 1 commit.
 - **S5. A Case III statement that every graph meets** (`F-169`;
   `lem:case-III-chain-discriminator`). The statement asks for normals $q$, a nonzero form $r$
@@ -233,10 +233,10 @@ S6–S9 are `\leanok` nodes whose statements still read as below; one commit cou
   *Evidence:* ledger (read; KT p. 668; a `lake lean` witness: a zero hinge forces $S(u) = S(v)$).
   *State:* kept; the proof assumes nondegenerate hinges and says so, and the remark after it gives
   the example. The pins are dead (`F-152`); seven proofs cite the node for a step that no main
-  result's proof takes (`F-118`, `M`, task 8.2).
+  result's proof takes (`F-118`, M3).
   *Suggested:* restate with nondegenerate hinges (KT §5.1's nonparallel realizations) and repin on
   `exists_rankPolynomial_of_le_finrank_linking`; or join the node to
-  `lem:rank-polynomial-of-le-finrank` (a merge, task 8.2's).
+  `lem:rank-polynomial-of-le-finrank` (a merge, G3).
   *Estimate:* 1–2 commits.
 - **S8. A Case III rank bound that fails without simplicity** (`F-154`;
   `lem:case-III-nested-rank-lower`). The statement omits two hypotheses of its pin
@@ -266,7 +266,7 @@ S6–S9 are `\leanok` nodes whose statements still read as below; one commit cou
   the form of independent sets, for $D \ge 2$ and distinct $a, b$.
   *Evidence:* ledger (read: the pin's statement; the node's statement and proof).
   *State:* unfilled; task 3.4 found it under the honesty gate.
-  *Suggested:* restate in the pin's form and fill it, or retire the node (`F-091`, task 8.2's).
+  *Suggested:* restate in the pin's form and fill it, or retire the node (`F-091`, G4).
   *Estimate:* 1 commit.
 
 #### C. The carrier or a definition differs from the source's object
@@ -387,7 +387,7 @@ S6–S9 are `\leanok` nodes whose statements still read as below; one commit cou
   *Evidence:* ledger (read; three `lake lean` witnesses; KT pp. 678, 682–691).
   *State:* kept, with notes; the three nodes' pins are dead (`F-159`, `F-167`).
   *Suggested:* repin the three on `case_III_rank_certification` at their roles, or merge them into
-  `lem:case-III-rank-certification` (task 8.2's).
+  `lem:case-III-rank-certification` (G3).
   *Estimate:* 1 commit.
 - **S21. KT Claim 6.4 as a polynomial, pinned on a point** (`F-138`; `lem:claim-6-4`). The
   statement gives a nonzero polynomial off whose zeros the rows of $G \setminus E(H)$ have rank
@@ -397,7 +397,7 @@ S6–S9 are `\leanok` nodes whose statements still read as below; one commit cou
   form for every $k$ is `lem:rank-polynomial-IH-relabel-proj`'s, which the formal Case I reaches.
   *Evidence:* ledger (read; KT p. 675; measured).
   *State:* kept, with a note; the pin is dead (`F-139`).
-  *Suggested:* merge into `lem:rank-polynomial-IH-relabel-proj` (task 8.2's), or restate at the
+  *Suggested:* merge into `lem:rank-polynomial-IH-relabel-proj` (G3), or restate at the
   point.
   *Estimate:* 1 commit.
 - **S22. KT Theorem 4.9's sequence** (`F-101`; `thm:minimal-kdof-reduction`). Part (i), KT's
@@ -475,7 +475,7 @@ S6–S9 are `\leanok` nodes whose statements still read as below; one commit cou
   `def:meet`'s property of supporting extensors, moved to the prose after their nodes, where it
   proves them; no declaration states either (the meet's is formalized for two hyperplanes).
   *Evidence:* ledger (read).
-  *Suggested:* keep. The double pin of `lem:reduction-step` is task 8.2's (`F-096`, `F-120`).
+  *Suggested:* keep. The double pin of `lem:reduction-step` is G2's (`F-096`, `F-120`).
   *Estimate:* 0.
 
 #### F. False text that rounds 1–4 repaired in place
@@ -625,3 +625,559 @@ S6–S9 (one blueprint commit, S7's repin aside) and S1–S2's surfaces (one doc
 `F-177` S37 · `F-178` S37 · `F-179` S37 · `F-180` S29 · `F-183` S31 · `F-184` S36 · `F-187` S35 ·
 `F-188` S26 · `F-191` S39 · `F-195` S39 · `F-206` S34 · `F-207` S1 · `F-211` S37 · `F-212` S13 ·
 `F-216` S34 · `F-217` S27 · `F-221` S34 · `F-234` S10 · `F-239` S38.
+
+## Part 2 — the `L` and `M` groups, and the graph findings the round left
+
+Part 2 reports the 76 `L` entries (§2.1–§2.3) and the 6 `M` entries (§2.4), recounted at
+`f6ddebb5`: 61 `L` entries from rounds 1–4 and 15 from round 5. §2.5 lists the `E` and `N`
+entries that round 5 left, wholly or in part, for a merge, a retirement, a pin change or a Lean
+change, with `F-012`'s liveness, the one entry that had no disposition. §2.6 reports a stale
+example in an agent manual, §2.7 adds up the estimates, and §2.8 maps each entry to its item.
+Part 3 proposes the follow-up program. No PROSE round edits the Lean, so every `L` entry
+describes the tree as it stands at this commit, and the `L` items carry no *State* line.
+
+Beyond Part 1's vocabulary, Part 2 suggests: *Docs*, a status surface or a design document;
+*Lean (text)*, a docstring or comment, no declaration changed; *Delete*, a declaration removed
+after `CLEANUP.md` §B's check (a trial deletion and a full build); *PI*, a choice the report
+cannot make.
+
+### 2.1 What the `L` group shows
+
+1. **The bar for notice set the coverage.** Each `L` entry was met while a slice read its pins
+   (the ledger's *bar for "notice"*); no slice ran a Lean audit. So the group covers the files the
+   blueprint pins, unevenly, and says nothing of the rest of the library. Its systematic
+   companions are the ledger's two Lean baselines (the smell counts and the twenty longest proofs,
+   round 1's task 2), inputs for a Lean round that are not entries.
+2. **Most entries are docstrings.** Of the 76, 53 have a false or stale docstring as their main
+   content (kinds LB, LC and LF), 13 a hypothesis (LD), 8 dead or repeated code (LE), and 2 the
+   executable pebble game (LA). Most docstring entries mix several faults: a label, a claim, a
+   credit, and process narration (phase numbers, design codes, "brick", "producer").
+3. **Each move of a pin makes docstrings stale.** The project's docstrings name the blueprint
+   label they serve, and nothing checks the name. Round 5's node-shape tasks moved or unpinned
+   pins in every chapter, and its 15 entries (`F-230`–`F-250`) are the docstrings that now name
+   the node a pin left, a label that no longer exists, or none. Rounds 1–4 found the same after
+   the phases' moves (`F-040`, `F-064`, `F-069`, `F-153`, `F-194`).
+4. **A docstring written beside the proof can carry the blueprint's error.** Eleven entries state
+   false mathematics (L4), and eight repeat a divergence that Part 1 records for the node's
+   statement (L3).
+5. **An underscore hides an unused hypothesis.** Lean's unused-variables linter and the
+   `unusedArguments` linter of `lake lint` both exempt a binder whose name starts with `_`. Five
+   entries are such hypotheses (`_hinj`, `_hdeg2`, `_hV3` twice, `_hSimple`, and three in
+   `chainWalk_charging`), and `F-024` an unused argument under a `@[nolint unusedArguments]` whose
+   comment calls the report a false positive. Seven more are derivable from the other hypotheses.
+6. **One entry is a behaviour, not a text.** The depth-first search under the executable pebble
+   game marks only the current walk, so it is exponential where its docstrings, `DESIGN.md` and
+   `Main.lean` call the game polynomial-time (L1).
+
+**Checks the kinds suggest**, for Part 3:
+- a script that reads each blueprint label a Lean docstring names and checks that it exists and
+  that the declaration is among its pins (L10–L11; run on the commit that moves a pin, it would
+  have caught round 5's 15 entries there);
+- a `grep` of the signatures for underscore-prefixed hypotheses and for `nolint unusedArguments`
+  (L6);
+- the dead-pin screen (`scripts/blueprint-deps.py`'s report 2) beside a `grep` for callers, to
+  find dead declarations (L9), with §B's trial deletion before any deletion.
+
+### 2.2 The `L` kinds, ranked
+
+As in Part 1: a user-facing behaviour or a false text a reader trusts ranks first, then a
+signature, then code that only costs maintenance, then a text that only misleads navigation.
+
+| Kind | What | Entries | Items |
+|---|---|---|---|
+| LA | Code whose behaviour contradicts its documentation | 2 | L1–L2 |
+| LB | A docstring states false mathematics | 19 | L3–L4 |
+| LC | A docstring misattributes or miscites | 9 | L5 |
+| LD | A hypothesis unused, derivable, or stronger than the proof needs | 13 | L6–L7 |
+| LE | A derivation repeated, or a declaration dead | 8 | L8–L9 |
+| LF | A docstring stale: a label, a status, process narration | 25 | L10–L12 |
+
+### 2.3 The `L` items
+
+#### LA. Code whose behaviour contradicts its documentation
+
+- **L1. The pebble game's search is exponential** (`F-033`; `Search/DFS.lean`). The search
+  `reachableFindingAux` passes `insert v visited` to every recursive call from `v`, so sibling
+  calls do not share their marks, and when no vertex satisfies `P` it follows every simple walk
+  from `v`. On a chain of $n$ diamonds ($2^n$ simple walks end to end) a timing grew from 2 ms at
+  $n = 8$ to 3071 ms at $n = 18$, about five times per two diamonds; `reachClosureComputable` runs
+  the search once per vertex. The section docstring calls this "$O(n)$ DFS invocations — quadratic
+  in the worst case". Lee and Streinu's $O(m_a n)$ bound for the basic game (§3, p. 1430) counts
+  each search as linear, as a search keeping one marked set across siblings would be. `dfs.tex`
+  describes the per-walk marking since round 1 (task 5.12); `executable.tex` claims no bound.
+  *Evidence:* ledger (read: the body; measured, script not retained). Re-checked from the body
+  (`Search/DFS.lean`, the recursive call at line 588).
+  *Suggested:* docs and Lean (text) first: the docstrings, `DESIGN.md` and `Main.lean` say what
+  the search does (exponential in the worst case, no bound proved; L2). Then Lean±: one visited
+  set threaded through the siblings, with `reachableFinding_sound` and `_complete` re-proved; a
+  recon first, as the completeness proof inducts along the walk (`dropUntilBundle`).
+  *Estimate:* within L2's commits; a recon, then 2–4 commits.
+- **L2. The `decide`, running-time and input claims** (`F-047`; `DESIGN.md` *One `Decidable`
+  instance per project predicate*, `Main.lean`, `PebbleGame/Examples.lean`, `lakefile.toml`).
+  `DESIGN.md` says that the pebble-game instances' bodies are what `decide` unfolds, and that they
+  run in polynomial time. `reachableFindingAux` and `tryAddEdgeWith` are defined by well-founded
+  recursion and are irreducible: `by decide` fails on `(⊤ : SimpleGraph (Fin 2)).IsLaman` and on
+  `k4MinusE.IsLaman`, `decide +kernel` proves only the first, and `native_decide` proves both. The
+  docstrings of `Main.lean` and `Examples.lean` and the `lakefile.toml` comment claim polynomial
+  time and "a sub-second bytecode-interpreter run". `Main.lean` and the comment call the input
+  "whitespace-separated", where `parsePair` splits on spaces only (`String.splitOn`'s default), so a
+  tab makes a line malformed; the comment routes the classification through the `Decidable`
+  instances, where `classify` calls `runPebbleGameExec`; and `Main.lean` points at a "three-row
+  matrix" in `executable.tex` that round 1 made a list.
+  *Evidence:* ledger (read; measured, script not retained). Re-checked: `DESIGN.md`'s section, which
+  still says both, and `parsePair` (`Main.lean`, line 100).
+  *Suggested:* docs: `DESIGN.md`'s section, with L1's sentence. Lean (text): the docstrings and the
+  comment; and `parsePair` split on any whitespace, or the texts say spaces.
+  *Estimate:* 1 docs commit; 1 Lean commit.
+
+#### LB. A docstring states false mathematics
+
+- **L3. Docstrings that repeat a divergence of Part 1** (`F-123`, `F-133`, `F-135`, `F-148`,
+  `F-153`, `F-161`, `F-164`, `F-215`). Each states beside the formal proof the reading from which
+  Part 1 finds the node's statement to diverge: the field `ends` as "the two bodies `e` joins",
+  and the hinges of `P.withGraph G'` in their bodies' panels, which nothing enforces (S2; `F-123`,
+  `F-133`); `rigidityMatrix_prop11` "for a generic panel-hinge realization" (S18; `F-123`); KT
+  Lemma 5.4 for $3 \le m \le D$ (S15; `F-135`); `hspan` at the normals of KT Claim 6.9 (S4;
+  `F-148`); `Gv` as the splitting-off (S3; `F-153`); the candidate row lifting the rank at normals
+  where the block is singular (S20; `F-161`); each omit-two extensor as "the join $p_i \vee p_j$"
+  (S9; `F-164`); a polynomial "in the `2n|E(G)|` endpoint coordinates" (S13; `F-215`). The same
+  entries also name stale roles, which L12 sweeps.
+  *Evidence:* ledger (read: the docstrings and bodies).
+  *Suggested:* Lean (text), with each `S` item: the fix of the statement decides the docstring.
+  *Estimate:* within the `S` items' commits, or the docstring sweep (Part 3).
+- **L4. Docstrings with false mathematics of their own** (`F-018`, `F-022`, `F-032`, `F-057`,
+  `F-061`, `F-074`, `F-130`, `F-168`, `F-182`, `F-190`, `F-210`).
+  - `molecular_conjecture`'s says that dropping the nonzero-hinge conjunct "makes the statement
+    false"; dropped from both sides, each side holds exactly when $G$ is connected, as a zero hinge
+    welds its ends, so the equivalence still holds (`F-130`).
+  - `countMatroid`'s says that the augmentation axiom can fail at $(3, 6)$; every
+    $(3,6)$-sparse graph has no edges, and those edge sets form a matroid (`F-032`, a `lake lean`
+    witness).
+  - `matroidMG`'s places the $(D,D)$ count in "the boundary regime `ℓ = 2k = D`"; it has
+    $\ell = k < 2k$, and `countMatroid`, on `Sym2 V`, does not apply because it has no parallel
+    edges (`F-074`).
+  - `ScrewVelocity.lean`'s header swaps $\omega_S$ and $t_S$, and `screwComplementIso`'s says that
+    the polarity never preserves nondegeneracy, which `supportExtensor_mapExtensor_ne_zero`
+    contradicts (`F-182`).
+  - `Carrier.lean`'s header: the labels `Sym2 V` are too few exactly when $2 \le |V| \le 9$, not
+    "e.g. for `Nat.card V ≤ 10`" (`F-190`).
+  - `IsGenericNormals` "subsumes" Jackson and Jordán's maximum-rank condition only over
+    nondegenerate hinges; "`G̃ = G.shadowGraph`" names $G'$, where $\tilde G = 5 G'$ (`F-210`).
+  - KT's frameworks $(G, p_2)$ and $(G, p_3)$ described as other splittings-off, a conjunct
+    transported that the statement lacks, and a branch `hsplitZero` that does not exist (`F-168`).
+  - The standard-basis vectors called "degenerate two-extensors" on the Plücker variety
+    "vacuously" (they are the Plücker vectors of lines, Whiteley 1988 p. 243), and a docstring
+    assuming a spanning-tree packing where the statement assumes tightness (`F-057`).
+  - `linearIndependent_hingeRow_forest` and `exists_independent_rigidityRows_of_forest` named and
+    documented for spanning forests, where their hypothesis `hsep` holds only when every component
+    is a star; the rows of any forest of nondegenerate hinges are independent, and no declaration
+    states it (`F-061`).
+  - "distinct vertices `x, y`" for a statement that does not assume it (`F-018`), and a hypothesis
+    listed that the statement does not take (`F-022`).
+  *Evidence:* ledger (read: the docstrings against the bodies; two `lake lean` witnesses).
+  Re-checked: `molecular_conjecture`'s docstring and statement (`Theorem55.lean`).
+  *Suggested:* Lean (text). `F-061`: Lean±, a rename with its callers (both outside every main
+  result's closure, `F-233`), and optionally Lean+, the forest lemma.
+  *Estimate:* within the docstring sweep; `F-061` 1 commit, its lemma 1–2.
+
+#### LC. A docstring misattributes or miscites
+
+- **L5. Credits, sections, pages and equation numbers** (`F-023`, `F-094`, `F-156`, `F-172`,
+  `F-186`, `F-194`, `F-205`, `F-220`, `F-225`; also parts of `F-057`, `F-088`, `F-108`, `F-126`,
+  `F-140`, `F-153`, `F-161`, `F-190`, `F-198`, `F-210` and `F-215`, and the docstrings of M2 and
+  M4). Rounds 1–4 corrected the blueprint's credits; the docstrings keep the old ones.
+  - Jackson and Jordán 2010: "§6" for constructions JJ do not make (six docstrings each in `F-220`
+    and `F-225`), their Lemma 7.1 placed in §6 (`F-225`), the formula "due to" JJ, who conjectured
+    it and proved one inequality and its equivalence to the Molecular Conjecture (`F-190`), their
+    Lemma 3.2 taken from "their companion paper" (`F-194`), `twoCore` credited to their Lemma 4.2,
+    defined before it (`F-205`), $d_G(P)$ for their $e_G(P)$ (`F-198`), $c_0$ for $p_0$ and the
+    signs of their entry table (`F-215`), and the year 2009 in three files (`F-210`).
+  - Katoh and Tanigawa: Lemmas 4.3–4.5 for 4.3(i) with 4.4 (`F-094`); p. 660 for p. 661 (`F-156`);
+    §6.4.1 and Lemma 6.10 for Lemma 6.13, "§6.4 §1.48(1)", and p. 659 for p. 677 (`F-172`);
+    eq. (6.46) for KT Lemma 4.6's chain (`F-108`); p. 669 for p. 670 (`F-126`); Claims 6.4 and 6.9
+    for the genericity device (`F-153`); eq. (6.26) for (6.13), and (6.16) for the shear identity
+    (`F-161`); `hglue` as Claim 6.4 (`F-140`).
+  - Others: Asimow–Roth for a count that `trivial-motions.tex` dropped as unverified (`F-023`);
+    Whiteley 1988 Theorem 13, which is about frameworks on the flat torus (`F-057`); the modelling
+    equivalence of Whiteley and Jackson–Jordán for the projective duality (`F-186`).
+  *Evidence:* ledger (read: the docstrings; the sources in `.refs/` at the pages named).
+  *Suggested:* Lean (text), with the chapters' credits as the reference.
+  *Estimate:* within the docstring sweep.
+
+#### LD. A hypothesis unused, derivable, or stronger than the proof needs
+
+- **L6. Unused hypotheses** (`F-024`, `F-075`, `F-077`, `F-092`, `F-104`, `F-140`; also `F-094`'s
+  `heab`, `F-108`'s three in `chainWalk_charging` and `F-126`'s `_hSimple`). The body never uses
+  `[Finite V]` in `trivialMotionFamily_linearIndependent`, under a `@[nolint unusedArguments]`
+  whose comment calls the report a false positive (`F-024`, a `lake lean` witness); `hD` in
+  `deficiency_eq_of_cutEdges_ncard_le_one`, which two callers take only to pass on (`F-075`);
+  `_hinj` (`F-077`); `_hdeg2` in the two `splitOff_indep_extend` lemmas (`F-092`); `_hV3` in
+  `case_cut_edge_realization_gen` and `_gp_gen`, with the second conjunct of the latter's
+  hypothesis (S17; `F-104`); and the three hypotheses of
+  `rigidContract_exterior_rank_transport_htransport`'s conclusion, discarded by `intro _ _ _ _`
+  (`F-140`).
+  *Evidence:* ledger (read: the statements and bodies).
+  *Suggested:* Lean±: drop each with its callers; where a blueprint statement names one, restate
+  it with S17 (`lem:cut-edge-decomposition` already states its parts without `hD`).
+  *Estimate:* 2–3 commits.
+- **L7. Hypotheses derivable from the others, or stronger than the proof needs** (`F-013`,
+  `F-017`, `F-021`, `F-039`, `F-063`, `F-070`, `F-108`). `hab` beside `G.Adj a b` (`F-013`) and
+  beside the independence of $p(b) - p(a)$ and $p(c) - p(a)$ (`F-021`); `hF_finite` from `hF_sub`
+  (`F-017`); `hloops` from `himg` in three pebble-game theorems (`F-039`, a `lake lean`
+  witness); `hcLoop` from minimality (`F-070`); `hV3` beside `hV4`, and `[G.Simple]` by
+  `simple_of_isMinimalKDof_of_noRigid` (`F-108`). `F-063`'s nonzero extensor at every label, where
+  the relative bound in the same file asks it only at the edges, is stronger than needed.
+  `F-097`'s `hV3` rides with L8.
+  *Evidence:* ledger (read: the statements, bodies and callers).
+  *Suggested:* Lean±: derive each in the body, or ask `F-063`'s at the edges only; the blueprint
+  statements already omit most of them.
+  *Estimate:* 2–3 commits.
+
+#### LE. A derivation repeated, or a declaration dead
+
+- **L8. A derivation repeated, or longer than it needs** (`F-055`, `F-088`, `F-097`; also
+  `F-108`'s triangle). `exists_forestPacking_cover_of_isSparse_restrict` derives the forward half
+  of `tutte_nash_williams` again, and both its callers then make the cover disjoint in the five
+  lines that the theorem's proof uses (`F-055`). `exists_balanced_forest_packing` makes inline the
+  move of `exists_packing_move_of_not_inc`, while its docstring says it uses it (`F-088`; the node
+  is `F-087`'s, G5). In `splitOff_isMinimalKDof_of_pos`, the case $e = e_0$ applies KT Lemma 4.7,
+  but the criterion step of the other case settles it, so the proof needs neither KT Lemma 4.7 nor
+  `lem:edge-set-indep-pos` and holds for $D \ge 2$ (`F-097`). `isKDof_zero_of_triangle` proves
+  again the case $m = 3$ of `isKDof_zero_of_cycle` (`F-108`).
+  *Evidence:* ledger (read: the bodies).
+  *Suggested:* Lean±: one lemma giving a disjoint cover; the descent calling the move, which makes
+  `lem:packing-move`'s pin live; the shorter case, its node's edges re-read; the triangle as an
+  instance of the cycle.
+  *Estimate:* 3–4 commits.
+- **L9. Dead declarations** (`F-114`, `F-144`, `F-232`, `F-237`, `F-238`; also parts of `F-104`,
+  `F-233`, `F-236` and `F-242`). With no caller outside themselves, and outside every main
+  result's closure: the five $d = 3$ base wrappers `theorem_55_base_producer_*` (`F-237`), the
+  three Case I wrappers `case_I_realization_nonsimple`, `_all_k` and `_h65` (`F-144`, `F-238`),
+  the three `Fin m` cycle forms (`F-238`), six of the eight declarations unpinned from the $d = 3$
+  meet lemma, `case_III_realization_of_line` among them, and `blockPiSpan` with two lemmas
+  (`F-232`), the lemmas of `meet.tex`'s route through $\bigwedge^2 W$ (`F-114`), and
+  `CycleData.vertexSet_ncard` (`F-236`). Four forest-row lemmas have callers only in dead
+  `CaseI.lean` code (`F-233`), and `exists_homogeneousIncidence_of_normals` one, the dead $d = 3$
+  dispatch (`F-242`). Round 5 unpinned all of these but `meet.tex`'s lemmas, which pin its dead
+  step nodes (G4), and three of `F-233`'s, which pin the dead `lem:own-end-rows-independent`
+  (`F-061`). `minimal_kdof_reduction` has no caller and pins KT Theorem 4.9 (`F-104`): it stays.
+  *Evidence:* ledger (read: a `grep` for each name's callers; measured, the dead-pin report).
+  *Suggested:* Delete the unpinned ones; a pinned one goes with its node (G3–G4).
+  *Estimate:* 2–3 commits.
+
+#### LF. A docstring stale: a label, a status, process narration
+
+- **L10. Labels that do not exist, or name another node, from rounds 1–4** (`F-040`, `F-064`,
+  `F-069`, `F-085`, `F-132`, `F-198`; also parts of `F-077`, `F-080`, `F-088`, `F-092`, `F-097`,
+  `F-130`, `F-144`, `F-148`, `F-153`, `F-164`, `F-168`, `F-194` and `F-225`). Labels that do not
+  exist: three in the pebble game, with two consumers (`F-040`), `lem:rigidityRows-cut-rank-add`
+  (`F-064`), `lem:case-I-realization-all-k` (`F-069`), `lem:case-I-splice-placement` (`F-153`),
+  `lem:tight-partition-cross-pair` (`F-194`). Elsewhere the label of another node, mostly one the
+  declaration served before a phase or round 2 split it.
+  *Evidence:* ledger (read: the docstrings; a `grep` for each label in `blueprint/src`).
+  *Suggested:* Lean (text); then §2.1's label check keeps them current.
+  *Estimate:* within the docstring sweep.
+- **L11. Docstrings that name a node their pin left in round 5** (`F-230`, `F-233`, `F-235`,
+  `F-236`, `F-240`–`F-246`, `F-250`; also `F-232`, `F-237` and `F-238`). Each of round 5's
+  node-shape tasks 3.1–3.14 and its task 5.3 has an entry: the docstrings of the declarations it
+  moved, pinned or unpinned name the node they left, a label the blueprint lacks
+  (`lem:case-III-claim612-r`, `lem:pencil-nondegenerate`, "`lem:case-III general-d`"), or no
+  node, and two of task 5.3's place a node in its old chapter. Each entry lists its declarations
+  and their nodes now.
+  *Suggested:* Lean (text), from each entry's list.
+  *Estimate:* 2–3 commits by chapter group, or within the sweep.
+- **L12. Status, roles and process narration** (`F-030`, `F-035`, `F-045`, `F-080`, `F-126`,
+  `F-176`, `F-200`; also most entries of rounds 3–4). Docstrings that describe an earlier state of
+  the code: a result called "the eventual Phase 8 target" in the file that proves it, and an
+  induction on edges that inducts on vertices (`F-030`); lemmas that "follow in a subsequent
+  commit" and are there (`F-035`); a body described as calling a lemma it does not call, the one
+  whose step uses $\ell < 2k$ (`F-045`, S40); results "deferred" or "remaining" that are proved
+  (`F-080`); `HasFullRankRealization` as the motive of KT Theorem 5.5's induction, which runs on
+  other predicates (`F-126`); and phase numbers, design codes and words such as "brick",
+  "producer", "seed" and "genuine" across `Molecular/` (each entry of rounds 3–4 lists its file's).
+  *Evidence:* ledger (read: the docstrings against the bodies).
+  *Suggested:* Lean (text): a sweep by directory, each docstring read against its body, which
+  takes L3–L5 and L10–L12 together.
+  *Estimate:* the sweep: 8–12 commits (Part 3).
+
+### 2.4 The `M` group
+
+The six entries are attributions and the presentation of the route; ranked as the kinds are.
+
+- **M1. A body-hinge corollary cited for multigraphs** (`F-222`; `body-hinge.tex`). After
+  `thm:body-hinge-tay` the chapter says that for frameworks "with hinges in general position", KT
+  Proposition 1.1's form (a multigraph $G$ has an infinitesimally rigid body-hinge framework if and
+  only if $\tilde G$ contains $D$ edge-disjoint spanning trees) "is"
+  `cor:bodyhinge-generic-tree-packing`, and the note after `def:body-hinge-framework` calls the
+  corollary the rigidity statement for frameworks with hinges. The corollary and its pin are for
+  simple graphs with $|V| \ge 2$, $d \ge 2$ and an infinite field, at generic hinge points, and S1
+  finds them vacuous at minimal graphs; for multigraphs the formalization has only the form for
+  bundles of bars (S11).
+  *Evidence:* ledger (read: the chapter, the pin's statement; JJ 2010 §6, p. 582).
+  *State:* unchanged (`body-hinge.tex`, lines 70–79 and 144–152).
+  *Suggested:* blueprint prose: "for simple graphs", and S1's scope once settled; or Lean+, the
+  multigraph form (JJ Theorem 6.1 holds for multigraphs), with S1's refactor.
+  *Estimate:* 1 commit; a phase's work for the multigraph form.
+- **M2. The planar characterization credited to Lovász and Yemini** (`F-025`;
+  `formalization.yaml`, Lean docstrings). Jordán (2016) credits the characterization of
+  generically rigid graphs in the plane, and so the identification of row-independence with
+  $(2,3)$-sparsity, to Laman (Theorem 2.2.1, p. 45), and credits Lovász and Yemini with the rank
+  formula (Theorem 2.3.2, p. 49) and the rigidity of 6-connected graphs (Theorem 2.4.1, p. 51).
+  Rounds 1 and 4 moved the blueprint's credit to Laman, and round 1's close
+  `notes/BlueprintExposition.md`'s. `formalization.yaml` still lists Lovász–Yemini 1982 as a
+  reference that the project "formalizes" at its "main theorem (rigidity matroid = (2,3)-count
+  matroid)", and credits them in its scope, in the description of
+  `linearRigidityMatroid_eq_rigidityMatroid` and in its statements' list; task 7 left these lines
+  for this report. Docstrings in `RigidityMatroid.lean`, `LamanTheorem.lean`,
+  `MatroidIdentification.lean`, `LinearRigidityMatroid.lean` and `CountMatroid.lean` give the same
+  credit, and `Sparsity.lean`'s the pendant attachment that round 1 dropped from the chapter.
+  *Evidence:* ledger (read: Jordán 2016 pp. 45, 49, 51, in `.refs/`). Lovász–Yemini 1982 is not
+  in `.refs/`. Re-checked: `formalization.yaml`'s four lines at this commit, and a `grep` of the
+  Lean for the names (the blueprint has none).
+  *Suggested:* docs: credit Laman on the four lines, and keep the 1982 reference only for what it
+  proves (*PI*: it formalizes neither the rank formula nor the 6-connected theorem); Lean (text),
+  the docstrings.
+  *Estimate:* 1 docs commit; within the docstring sweep.
+- **M3. Off-route nodes in Cases I–III** (`F-118`; `algebraic-induction/`). The chapters present as
+  steps of the induction several nodes that no main result's proof takes: the genericity device
+  (`lem:genericity-device`, S7), KT Claim 6.4's point form (`lem:claim-6-4`), the splice seed, Case
+  II's accounting (`lem:case-II`, S4), the eq. (6.12) placement
+  (`lem:case-II-realization-placement`, S3), the relabel lemmas and Case III's candidate completion
+  (S20). Round 5's edge policy took their `\uses` off the live nodes (tasks 4.4–4.5 removed the
+  realizations' edges to the genericity device, and task 3.7's repin made
+  `lem:case-I-realization-nonsimple` live): their users now are dead nodes,
+  `lem:case-III-chain-dispatch`'s proof edge to `lem:case-III-claim612-p2-placement`, and
+  `lem:theorem-56-general-position`'s proof edge to `lem:genericity-device`, which task 4.7 kept for
+  a step the proof cites and the script finds with no Lean basis. The proofs keep eleven `\cref`s of
+  `lem:genericity-device`, most as "the argument of".
+  *Evidence:* ledger (measured); re-checked from the dump's `## uses:` section at `f6ddebb5` and a
+  `grep` for the `\cref`s.
+  *Suggested:* *PI*: how the chapters present KT's route beside the formal one. Keep KT's exposition
+  with the notes (round 5's default), collapse each off-route group into a remark
+  (`blueprint/CLAUDE.md`'s pattern for a whole dead route), or retire it (G4).
+  *Estimate:* G4's.
+- **M4. Two credits left in docstrings** (`F-053`, `F-081`). The blueprint and
+  `formalization.yaml` carry the corrected credits: the matroid of a submodular function to
+  Edmonds and Rota, the union's rank to Nash-Williams and Edmonds, Edmonds 1965's Theorem 1 as the
+  partition criterion (`F-053`), and KT eq. (2.4) as JJ's Theorem 4.1(a) at $\tilde G$ (`F-081`).
+  The docstrings of `Submodular.lean` and `Union.lean`, and of `rank_add_deficiency_eq`,
+  `isBase_ncard_add_deficiency_eq`, `le_rank_add_deficiency` and
+  `deficiency_eq_zero_iff_exists_spanningTrees`, keep the old ones.
+  *Evidence:* ledger (read: Oxley 2011 pp. 404–430, Schrijver pp. 725–726, 775, Edmonds 1965
+  p. 69, JJ 2010 pp. 580–583, KT 2011 pp. 655–656, all in `.refs/`). Re-checked:
+  `formalization.yaml`'s rows for both.
+  *Suggested:* Lean (text), with L5.
+  *Estimate:* within the docstring sweep.
+- **M5. Pollaczek-Geiringer 1927** (`F-228`). The blueprint, README and the home page credit the
+  planar characterization to Laman 1970 alone, as Jordán does (2016, p. 45). Recent literature
+  also credits H. Pollaczek-Geiringer, *Über die Gliederung ebener Fachwerke*, ZAMM 7(1) (1927),
+  58–72 (DOI `10.1002/zamm.19270070107`, Crossref checked). The paper is not in `.refs/`, and its
+  content was not read.
+  *Suggested:* *PI*: obtain and read it; if it states the characterization, credit both where the
+  blueprint names the theorem's originator.
+  *Estimate:* 0, or 1 commit after the reading.
+
+### 2.5 The graph findings the round left
+
+Principle D's fixes are a split, an unpinning and a leave, so round 5 left a merge, a retirement and
+any change to the Lean (*Scope*), and task 4 filed three pin changes after task 3 closed. Of the 28
+`E` and `N` entries left wholly or in part, 19 are here, with `F-012`. The other nine were left with
+a reason that needs no follow-up: nodes kept with a role map (`F-009`, `F-010`), the order of two
+chapters (`F-029`), exposition (`F-065`, `F-068`), an edge the pins use (`F-129`), a statement at
+its pin's strength (`F-131`'s `lem:extensor-pair-in-panel`, `F-197`'s
+`lem:singleton-part-converse`), and an edge that the definition's one pin backs (`F-219`).
+
+- **G1. Three pin changes that task 4 filed** (`F-247`, `F-248`, `F-249`). `thm:pencil-x0-bridge`
+  pins the rank that a path of bridges adds, a step of its proof, which `lem:block-rank-path`'s pin
+  applies, so a `\uses` runs from `rigidity-matrix.tex` into the last chapter (`F-247`).
+  `lem:case-III-claim612-block-iff-perp` pins `mem_hingeRowBlock_iff`, a fact about
+  `def:hinge-row-block` that `lem:screw-map-rows` uses (`F-248`). `def:pencil-x0-reduces` pins
+  `Graph.IsOpenEar`, the open ears that *Ears and cycles* defines in prose, so every node whose
+  pins take an ear reaches the definition of a reduction (`F-249`).
+  *Suggested:* repin: a node for the rank lemma in `rigidity-matrix.tex`, or its unpinning; the
+  pin on `def:hinge-row-block`; a definition node for ears in *Ears and cycles*. Blueprint only,
+  under round 5's expected-diff gate.
+  *Estimate:* 2–3 commits.
+- **G2. Pins two nodes share** (`F-120`, `F-096`; S30). Ten declarations are pinned twice.
+  `Graph.contraction_isMinimalKDof` proves `lem:reduction-step`'s part (ii), KT Lemma 3.5 at
+  $k = 0$, the narrowing the PI kept (2026-10-12), and `lem:contraction-minimality`'s claim. In
+  `case-iii.tex`, `lem:case-III-claim-6-11-base` restates on its one pin the forward half of
+  `lem:splitoff-kdof-criterion` and does not use it, and
+  `lem:case-III-claim612-points-affineIndep-witness` and `lem:case-III-claim612-points-affineIndep`
+  state one claim on one dead pin. In `pencil.tex` and `main-component.tex`,
+  `pencilPair_of_nonempty` is the claim of `thm:pencil-conditioned-pair-nonempty` and the general
+  claim of `thm:pencil-realization-theorem`, a main result's node, and six pins, four of
+  `thm:pencil-x0-main-component` and two of `thm:pencil-x0-generic-attains`, state lemmas their
+  proofs cite. Each double leaves an edge that the script cannot back (task 3.14's decision).
+  *Suggested:* merge `lem:case-III-claim-6-11-base` into `lem:splitoff-kdof-criterion`, and the
+  two affine nodes into one (or retire both, G4); keep the pencil doubles, where a theorem
+  restates the lemmas it assembles, and `lem:reduction-step`'s, which the PI kept.
+  *Estimate:* 1–2 commits.
+- **G3. A node that restates a general form** (`F-090`, `F-134`, `F-139`, `F-152`, `F-159`,
+  `F-167`; S7, S20, S21). `cor:forest-surgery-deficiency` restates `lem:forest-surgery-split` on a
+  `@[deprecated]` narrative-bridge shim with no caller (`F-090`). `lem:cycle-realization-base` is
+  `lem:theorem-55-base` applied to `P.toBodyHinge` (`F-134`). `lem:claim-6-4` states at $k = 0$
+  the claim of `lem:rank-polynomial-IH-relabel-proj` (S21; `F-139`). `lem:genericity-device`'s
+  open-set form is `lem:rank-polynomial-of-le-finrank` (S7; `F-152`). Case III's three count nodes
+  state KT's counts on a linear-algebra pin, where `lem:case-III-rank-certification` states the
+  graph-level count (S20; `F-159`, `F-167`).
+  *Suggested:* merge each into its general form, with the comparison as prose; Delete the shim.
+  *Estimate:* 2–3 blueprint commits; the shim with L9.
+- **G4. KT's route where the formal proof leaves it** (`F-134`, `F-139`, `F-147`, `F-152`,
+  `F-159`, `F-163`, `F-167`, `F-171`, `F-111`, `F-091`; M3). Dead nodes round 5 kept as KT's
+  exposition: Case I's `lem:cycle-realization-dim-bound`, `lem:exists-independent-panel-extensor`
+  and the three `lem:pinned-motions-on-*` lemmas (`F-134`), `lem:case-I-splice-seed` and the two
+  dead pins of `lem:case-I` (`F-139`); Case II's `lem:case-II-rank-lift` and `lem:case-II` (S4;
+  `F-147`); `lem:relative-device-count`, `lem:realization-of-independent-rows`,
+  `lem:case-II-placement-old-rows` and `lem:case-II-realization-placement` (S3; `F-152`); Case
+  III's six row-operation nodes (`F-159`), its four affine nodes and
+  `lem:case-III-claim612-r-nonzero` (`F-163`), its $d = 3$ placement and relabel nodes (`F-167`),
+  and `lem:case-III`'s dead $d = 3$ pin `case_III_realization` (`F-171`); `meet.tex`'s two step
+  lemmas through $\bigwedge^2 W$, with the dead pins of `def:meet` and `def:meet-pairing-dual`
+  (`F-111`, L9's `F-114`); and `lem:forest-surgery-unsplit`, unfilled, whose forest form fails at
+  $D = 1$ (S10; `F-091`).
+  *Suggested:* *PI* (M3): per group, keep, collapse into a remark, or retire. Unpin
+  `case_III_realization`, as tasks 3.6–3.7 unpinned such wrappers.
+  *Estimate:* 3–6 blueprint commits by chapter, if retired; the Lean deletions with L9.
+- **G5. Nodes that wait on the Lean** (`F-008`, `F-059`, `F-087`, `F-091`). `def:blockingWitness`
+  and `def:dof-generic` are unfilled, as no declaration defines them (S33, S18).
+  `def:plucker-coords`'s pins have no caller, and no declaration states the expansion that makes
+  the Plücker vector an extensor's coordinates (`F-059`). `lem:packing-move`'s pin is dead because
+  the descent repeats the move inline (`F-087`, L8). `lem:forest-surgery-unsplit` waits on a
+  declaration of its forest form, or a restatement (S10).
+  *Suggested:* Lean+: a declaration for each definition, or the node restated as prose; the
+  expansion lemma; L8's descent.
+  *Estimate:* 3–5 commits.
+- **G6. Liveness, by `CLEANUP.md` §B's three outcomes** (`F-012`). At round 5's open, as at round
+  1's audit, 202 pins at 153 nodes lay outside every main result's closure, every pin of 112 nodes.
+  At this commit: **177 pins at 145 nodes, every pin of 109**; by group (pins / nodes / with every
+  pin), round 1's chapters 33 / 32 / 28, round 2's 35 / 25 / 15, round 3's 68 / 54 / 43, round 4's
+  22 / 17 / 14, `pencil` and `main-component` 19 / 17 / 9 (`scripts/blueprint-deps.py`, report 2).
+  Round 5 unpinned the dead wrappers and helpers whose claims live pins now carry (tasks 3.6, 3.7,
+  3.10, 3.13), and left the rest under *Scope*'s rule that deadness alone is no reason to unpin or
+  retire.
+  - *Keep as exposition*, dead by design: the executable surface (`executable.tex`'s nine nodes),
+    side results and examples (`thm:typeII-isLaman`, the `top-fin` examples,
+    `thm:degree-one-rank-tree`), the $d = 3$ instances (`thm:theorem-55-d3-instance`,
+    `thm:theorem-55-6-d3`, `cor:theorem-55-d3-spanning`, `cor:theorem-55-6-multigraph-d3`,
+    `lem:case-III-candidate-dispatch-d3`), an acceptance test (`cor:pencil-flat-x0`), and results
+    of their own that no main result uses, such as `generic-lift.tex`'s panel form
+    (`thm:panel-generic-rank`, `cor:panel-generic-rigid`), which `formalization.yaml` names in the
+    body-hinge main result's row. Of these, `cor:theorem-55-d3-spanning`, whose pin a zero
+    framework meets without its hypothesis (S2), is a candidate to retire.
+  - *Retire or merge*: G3–G4's nodes, KT's route where the formal proof leaves it.
+  - *Delete*: the unpinned dead declarations (L9), after §B's check.
+  No dead pin is live-under-wired: task 4 added every missing edge, and a pin's liveness is its
+  Lean call chain, which no `\uses` changes.
+  *Suggested:* *PI*: G3–G4's choices, and whether a result of its own, such as the panel form,
+  becomes a main result in `formalization.yaml`, which would make its pins live.
+  *Estimate:* within G3–G4 and L9.
+
+### 2.6 A stale example in `blueprint/CLAUDE.md`
+
+The honesty gate's case (b) is a hypothesis that is the conclusion of a `\uses`'d node, and its
+paragraph says: "`lem:case-I` is honestly green because its hypothesis *is*
+`lem:genericity-device`, a `\uses`'d node that was red until discharged." That no longer holds.
+`lem:case-I` does not `\uses` `lem:genericity-device`: task 4.4 removed the edge, which neither
+the statement, the proof prose nor the pins used. Its pins' hypotheses are `hblock` (every motion
+constant on $s$; `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le`) and `hglue` (the bound
+$\dim Z(G,p) \le D + \dim Z_s(G,p)$; the other two pins, both dead). Neither is the conclusion of
+`lem:genericity-device`'s pins, which produce a realization (`exists_good_realization`), and for
+a set $s$ of more than one body neither is the conclusion of a node that `lem:case-I` uses
+(`lem:rank-delete-vertex` gives `hglue` at one body). `hglue` is the lower bound of KT eq. (6.3)
+in motion form (`F-140`); S19 records that the node's statement is not what its pins state, and
+S19's fix decides the node.
+*Evidence:* read: the three pins' signatures (`Pinning.lean`, `PanelHinge.lean`), and
+`lem:case-I`'s `\uses` in the dump at `f6ddebb5`.
+
+**A replacement: `lem:case-III`.** Its first pin, `case_III_realization_all_k`, takes
+`hSimple : G.Simple` beside `hG` (a minimal $0$-dof-graph), `hV3` ($|V(G)| \ge 3$) and `hnoRigid`
+(no proper rigid subgraph). Simplicity is the conclusion of `lem:simple-minimal-noRigid` (pin
+`simple_of_isMinimalKDof_of_noRigid`, from those three and $D \ge 2$), which `lem:case-III`'s
+statement `\uses`, and `thm:theorem-55`'s pin discharges it by calling that lemma before Case III
+(`theorem_55_minimalKDof_k_all_k`, `Theorem55.lean`, the branch for deficiency zero). The contrast
+is case (a), `lem:case-II-realization`, whose pin derives simplicity in its body (`CaseII.lean`).
+Two cautions for the sentence. The hypothesis is derivable from the pin's others, so a Lean round
+that drops it (L7's kind) turns the example into case (a) and must move the manual's example with
+it. And the script reads the edge as unbacked (the pin reaches the lemma only through
+`lem:chain-data-extract`'s pin): a case (b) edge is backed by a hypothesis, which `--label` does
+not read.
+*Evidence:* read: the signatures of `case_III_realization_all_k` (`CaseIII/Realization.lean`)
+and `simple_of_isMinimalKDof_of_noRigid` (`Induction/ReducibleVertex.lean`), the Case III branch
+of `theorem_55_minimalKDof_k_all_k`, and `lem:case-III`'s `\uses`; `scripts/blueprint-deps.py
+--label lem:case-III`.
+*Suggested:* *PI*: sanction the edit, as no PROSE round edits an agent manual; then 1 commit
+(Part 3, round 1).
+
+### 2.7 Estimates
+
+If the PI takes every suggestion, Part 2's items add up to:
+- **docs**: `DESIGN.md`'s pebble-game section (L1–L2) and `formalization.yaml`'s credit (M2): 2
+  commits; the honesty-gate example (§2.6): 1 commit;
+- **blueprint**: M1's scope, G1's pin changes, G2–G3's merges, and G4's retirements if the PI
+  retires: 6–15 commits, under the expected-diff gate; and M5's credit after the reading: 0–1;
+- **Lean**: L1 after a recon (2–4), L2 (1), `F-061`'s rename (1), L6–L7 (4–6), L8 (3–4), L9 (2–3),
+  G5 (3–5) and the docstring sweep, L3–L5 and L10–L12 with M2's and M4's docstrings (8–12): 24–36
+  commits; 25–38 with `F-061`'s forest lemma;
+- **no commit**: L3's docstrings ride with their `S` items when those come first; G6's keeps.
+
+The smallest set that leaves no false text a reader trusts outside the Lean is the two docs
+commits and M1's blueprint commit; §2.6's commit corrects the manual.
+
+### 2.8 Entry → item
+
+`L`: `F-013` L7 · `F-017` L7 · `F-018` L4 · `F-021` L7 · `F-022` L4 · `F-023` L5 · `F-024` L6 ·
+`F-030` L12 · `F-032` L4 · `F-033` L1 · `F-035` L12 · `F-039` L7 · `F-040` L10 · `F-045` L12 ·
+`F-047` L2 · `F-055` L8 · `F-057` L4 · `F-061` L4 · `F-063` L7 · `F-064` L10 · `F-069` L10 ·
+`F-070` L7 · `F-074` L4 · `F-075` L6 · `F-077` L6 · `F-080` L12 · `F-085` L10 · `F-088` L8 ·
+`F-092` L6 · `F-094` L5 · `F-097` L8 · `F-104` L6 · `F-108` L7 · `F-114` L9 · `F-123` L3 ·
+`F-126` L12 · `F-130` L4 · `F-132` L10 · `F-133` L3 · `F-135` L3 · `F-140` L6 · `F-144` L9 ·
+`F-148` L3 · `F-153` L3 · `F-156` L5 · `F-161` L3 · `F-164` L3 · `F-168` L4 · `F-172` L5 ·
+`F-176` L12 · `F-182` L4 · `F-186` L5 · `F-190` L4 · `F-194` L5 · `F-198` L10 · `F-200` L12 ·
+`F-205` L5 · `F-210` L4 · `F-215` L3 · `F-220` L5 · `F-225` L5 · `F-230` L11 · `F-232` L9 ·
+`F-233` L11 · `F-235` L11 · `F-236` L11 · `F-237` L9 · `F-238` L9 · `F-240` L11 · `F-241` L11 ·
+`F-242` L11 · `F-243` L11 · `F-244` L11 · `F-245` L11 · `F-246` L11 · `F-250` L11.
+
+`M`: `F-025` M2 · `F-053` M4 · `F-081` M4 · `F-118` M3 · `F-222` M1 · `F-228` M5.
+
+`E` and `N`, left wholly or in part: `F-008` G5 · `F-012` G6 · `F-059` G5 · `F-087` G5 ·
+`F-090` G3 · `F-091` G4, G5 · `F-096` G2 · `F-111` G4 · `F-120` G2 · `F-134` G3, G4 ·
+`F-139` G3, G4 · `F-147` G4 · `F-152` G3, G4 · `F-159` G3, G4 · `F-163` G4 · `F-167` G3, G4 ·
+`F-171` G4 · `F-247` G1 · `F-248` G1 · `F-249` G1; no follow-up: `F-009`, `F-010`, `F-029`,
+`F-065`, `F-068`, `F-129`, `F-131`, `F-197`, `F-219`.
+
+## Part 3 — the follow-up program, proposed
+
+The proposal is an unqueued ROADMAP bullet, **RECONCILE** (*Queued post-program phases*); the PI
+queues it, places it against ORIGAMI, and edits its shape. It takes Parts 1 and 2 as its input
+and the ledger as each finding's home, as PROSE's rounds did.
+
+- **First, the PI's decisions**, recorded in the program's planning note: Part 1's suggestions,
+  S1's and S2's direction (a refactor, or the scope stated), M2's reference, M3 and G4 (keep,
+  collapse or retire KT's route), M5's reading, whether the panel form becomes a main result
+  (G6), and the edits to `DESIGN.md` and `blueprint/CLAUDE.md` (L1–L2, §2.6). Part 1's §1.1
+  frames the discussion of what the `S` group shows.
+- **Round 1, the texts** (docs and blueprint prose; no node, edge or pin change, so PROSE rounds
+  1–4's invariance check): the scope of S1 and S2 on `formalization.yaml` and README (§1.4), M1's
+  "for simple graphs", M2's four lines, `DESIGN.md`'s pebble-game section (L1–L2), and the
+  honesty-gate example (§2.6). About 6 commits.
+- **Round 2, the blueprint's statements and pins** (round 5's expected-diff gate and honesty
+  gate; the hygiene rule lifted for exactly the items the PI sanctions): S6–S9 first, the four
+  `\leanok` statements that are false as written (§1.4's smallest set); then §1.4's other
+  restatements and repins, G1's pin changes, and the merges and retirements the PI chose (G2–G4).
+  About 15–25 commits.
+- **Round 3, the Lean** (`CLEANUP.md` §A–§C): §2.1's label check first, then L9's deletions after
+  §B's check, L6–L8's signatures and repeated derivations (with the blueprint statements they
+  touch, S17's among them), L1–L2's code after L1's recon, and the docstring sweep by directory
+  (L3–L5, L10–L12, M2 and M4); the ledger's two Lean baselines feed §B and §C. About 22–32
+  commits. In the files that S1 and S2 change (`GenericLift/`, `AlgebraicInduction/Theorem55.lean`,
+  `PanelHinge.lean`) the sweep waits for the phase, so their docstrings are written once.
+- **A phase** (new formalization; a number minted on open): S1 and S2 after a recon each (the
+  families indexed by $E(G)$; the endpoint selector tied to the links), the Lean+ items (S22–S25,
+  S31; optionally S3, S16 and S19), G5's declarations, `F-061`'s forest lemma, and optionally M1's
+  multigraph form. About 16–26 commits with the recons, more with the optional items or if S2
+  takes a structure field.
+
+Rounds 1–2 need no Lean and can run first under autopilot once the decisions are recorded;
+round 3 can too. The phase is new mathematics, so it is attended. Every round adds to the ledger
+what it finds, under the ledger's rules, and sets the dispositions of what it acts on.

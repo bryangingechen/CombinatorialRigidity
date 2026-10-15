@@ -52,9 +52,9 @@ left the order of `pencil.tex`, which only a regrouping would change; that close
 Its task 6 gave `pencil.tex` and `main-component.tex` the earlier chapters' notation, KT's $d$ for
 the dimension and $\vee$ for the join, and told the contracted core apart from the core of
 `jacobs.tex`. Its task 7 aligned `README.md`, the home page and `formalization.yaml` with the
-rewritten chapters, and its task 8.1 wrote the findings report's `S` part,
-`notes/Prose-report.md`. **Next concrete task:** round 5's task 8.2, the report's `L` and `M`
-part (`notes/Prose-graph-cleanup.md` *Hand-off*).
+rewritten chapters, and its tasks 8.1–8.2 wrote the findings report, `notes/Prose-report.md`,
+whose Part 3 proposes the follow-up program RECONCILE, an unqueued ROADMAP bullet for the PI.
+**Next concrete task:** round 5's task 9, the close (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions
 

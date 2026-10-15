@@ -1295,8 +1295,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `pencil.tex` and `main-component.tex` the earlier chapters' notation, KT's $d$ for the dimension
   and $\vee$ for the join, and told the contracted core apart from the core of `jacobs.tex`. Its
   task 7 aligned `README.md`, the home page and `formalization.yaml` with the rewritten chapters,
-  and its task 8.1 wrote the findings report's `S` part, `notes/Prose-report.md`. **Next concrete
-  task:** round 5's task 8.2, the report's `L` and `M` part (its hand-off).
+  and its tasks 8.1–8.2 wrote the findings report, `notes/Prose-report.md`, which proposes the
+  follow-up program **RECONCILE** (below, unqueued). **Next concrete task:** round 5's task 9, the
+  close (its hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
@@ -1321,6 +1322,15 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
 - **VERSO** — blueprint → `leanprover/verso-blueprint` port. Paused,
   external-gated (resume criteria in `notes/VersoPort.md`); listed so it stays
   visible on the queue.
+- **RECONCILE** — *proposed, not queued*: PROSE round 5 proposed it on 2026-10-15, and the PI
+  queues and places it. It acts on what the PROSE ledger `notes/Prose-findings.md` recorded for
+  the PI and a later round: statements whose blueprint and Lean texts disagree, Lean hygiene
+  (stale or false docstrings, unused hypotheses, dead and repeated code, an exponential search
+  under the executable pebble game), credits, and the blueprint nodes round 5 left for a merge or
+  a retirement. The plan is `notes/Prose-report.md`'s Part 3: the PI's decisions first, then a
+  round of texts (docs and prose), a round of blueprint statements and pins, a Lean cleanup round,
+  and one phase of new formalization (the generic body-hinge and panel theorems' scope, KT Theorem
+  5.6's endpoint selector, and the claims no declaration states).
 
 ## Engineering conventions
 
