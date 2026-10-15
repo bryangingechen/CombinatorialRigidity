@@ -1291,8 +1291,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   splitting off before their first uses, and its task 5.4 moved the base of KT Theorem 5.5's
   induction before the theorem, the operations on frameworks before their first users, and the
   genericity and counting subsections before Case II, and its task 5.5 left the order of
-  `pencil.tex`, which only a regrouping would change; that closed the node order. **Next
-  concrete task:** round 5's task 6, terminology and notation (its hand-off).
+  `pencil.tex`, which only a regrouping would change; that closed the node order. Its task 6 gave
+  `pencil.tex` and `main-component.tex` the earlier chapters' notation, KT's $d$ for the dimension
+  and $\vee$ for the join, and told the contracted core apart from the core of `jacobs.tex`.
+  **Next concrete task:** round 5's task 7, the status surfaces (its hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

@@ -26,7 +26,7 @@ contraction (\cref{def:graph-operations}, \cref{def:rigid-contraction}).
 We fix the following notation and terms.
 \begin{itemize}
   \item $\operatorname{def}_2(G)$ and $\operatorname{def}_3(G)$ are the
-    deficiencies of \cref{def:D-deficiency} at $n = 2$ and $n = 3$
+    deficiencies of \cref{def:D-deficiency} at $d = 2$ and $d = 3$
     ($D = 3$ and $D = 6$), so that
     $\operatorname{def}_3(G) = \operatorname{def}(\tilde G)$. We call
     $\operatorname{def}_2(G)$ the \emph{planar deficiency} of $G$.
@@ -67,13 +67,16 @@ We fix the following notation and terms.
     contraction (\cref{def:rigid-contraction}). The core is
     \emph{additive} if it is rigid and
     $\operatorname{def}_2(H) + \operatorname{def}_2(G/H) \le
-    \operatorname{def}_2(G)$.
+    \operatorname{def}_2(G)$. This core is not the core of
+    \cref{def:two-core}, the largest subgraph of minimum degree at least
+    two: a graph that satisfies the standing hypotheses is its own core in
+    that sense (\cref{lem:two-core-degree-one}).
   \item The \emph{value} of a partition $P$ of the bodies is its
     $D$-deficiency $\operatorname{def}_{\tilde G}(P)$
     (\cref{def:D-deficiency}). The \emph{singleton value} of a set $X$ of
     bodies is $s_D(X) = D(|X| - 1) - (D - 1)\, e(X)$, the value of the
     partition of $G[X]$ into singletons. Here $e(X)$ is the number of edges
-    joining two distinct bodies of $X$, and $s = s_3$ is the case $n = 2$.
+    joining two distinct bodies of $X$, and $s = s_3$ is the case $d = 2$.
   \item A graph is \emph{smaller than} $G$ if it satisfies the standing
     hypotheses and has fewer bodies than $G$. The \emph{structural
     coverage} is the case analysis by which every graph satisfying the
@@ -96,7 +99,7 @@ We fix the following notation and terms.
     of unknowns of the rescaled lifting system to the height that agrees
     with $z$ on the core and vanishes elsewhere.
   \item The \emph{flat coordinates} $(\sigma(c), \tau(c)) \in K^3 \times
-    K^3$ of a screw $c \in \Lambda^2 K^4$ are its image under the
+    K^3$ of a screw $c \in \bigwedge^2 K^4$ are its image under the
     isomorphism of \cref{lem:pencil-join-flat}.
 \end{itemize}
 
@@ -160,16 +163,16 @@ proves the lemma that each step of the induction uses
 (\cref{lem:pencil-x0-one-witness}). Throughout, $K$ is an infinite field
 and $G$ satisfies the standing hypotheses
 (\cref{def:pencil-x0-standing}): it is finite, simple and connected, with
-minimum degree at least two. A body of degree $d$ in a simple graph has
-$d$ distinct neighbours, so every closed neighbourhood of $G$ has at
-least three members.
+minimum degree at least two. In a simple graph a body has as many
+distinct neighbours as its degree, so every closed neighbourhood of $G$
+has at least three members.
 
 The idea is to lift a picture of $G$ in the plane, as in scene analysis.
 The picture places each body $v$ at a point $q_v = (x_v, y_v)$ of $K^2$,
 and a height $z_v$ lifts it to the point $p_v = (x_v, y_v, z_v, 1)$, in
 homogeneous coordinates. The picture and the heights form a
 configuration. Take the points $p_v$ as concurrency points and the joins
-$p_u \wedge p_v$ as hinges. Then the configuration is a pencil
+$p_u \vee p_v$ as hinges. Then the configuration is a pencil
 realization when the points of every closed neighbourhood lie in a plane
 (\cref{sec:pencil-main-component-route}). We draw the picture with
 adjacent bodies at distinct points and with no closed neighbourhood on a
@@ -363,14 +366,14 @@ coordinates of $n_v$ are polynomials in those of $q$ and $z$.
   coordinates such that every picture $q$ with $P(q) \neq 0$ is
   admissible and the heights $z \in L(q)$ at which $(q, z)$ has rank
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ (\cref{def:D-deficiency},
-  at $n = 3$) contain a nonempty Zariski-open subset of $L(q)$.
+  at $d = 3$) contain a nonempty Zariski-open subset of $L(q)$.
 \end{definition}
 
 The panel normals in this definition are the points $p_v$, not the plane
 normals $n_v$. With the points, the hinge at an edge $uv$ is the meet of
 the planes $p_u^{\perp}$ and $p_v^{\perp}$
 (\cref{def:panel-support-extensor}). Under the polarity it corresponds
-to the line $p_u \wedge p_v$, the hinge of the pencil realization, and it
+to the line $p_u \vee p_v$, the hinge of the pencil realization, and it
 is nonzero whenever $q_u \neq q_v$
 (\cref{lem:pencil-config-point-join-rank}). With the plane normals, the
 hinge would be zero wherever two adjacent planes coincide, and a zero
@@ -391,7 +394,7 @@ definition then holds vacuously.
         lem:polarity-join, lem:screw-map-rows}
   Let $p = (q, z)$ be a configuration of $G$, and let $F_p$ be the
   body-hinge framework on $G$ (\cref{def:body-hinge-framework}) whose
-  hinge at each edge $uv$ is the line $p_u \wedge p_v$
+  hinge at each edge $uv$ is the line $p_u \vee p_v$
   (\cref{def:extensor}). Then the rigidity matrix of $F_p$ has the rank
   of $p$ (\cref{def:pencil-x0-attains}). If $q$ is admissible, every
   hinge of $F_p$ is nonzero.
@@ -401,7 +404,7 @@ definition then holds vacuously.
   \uses{thm:projective-invariance}
   The hinge at $uv$ of the panel-hinge framework that defines the rank
   of $p$ is the meet of the planes $p_u^{\perp}$ and $p_v^{\perp}$. It is
-  the image of $p_u \wedge p_v$ under the polarity
+  the image of $p_u \vee p_v$ under the polarity
   (\cref{lem:polarity-join}), an invertible linear map of
   the screw space over every field. So the two rigidity matrices have the
   same rank (\cref{lem:screw-map-rows}). Over an admissible picture,
@@ -439,7 +442,7 @@ definition then holds vacuously.
   adjacent points are linearly independent. If moreover $p$ has rank
   $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, then $G$ has an
   adjacent-distinct pencil realization (\cref{def:pencil-distinct-motive},
-  at $n = 3$).
+  at $d = 3$).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -450,7 +453,7 @@ definition then holds vacuously.
 
   The two ends of an edge $uv$ lie in the closed neighbourhoods of both
   $u$ and $v$. So $p_u$ and $p_v$ are orthogonal to $n_u$ and to $n_v$:
-  the line $p_u \wedge p_v$ lies in both panels, and it passes through
+  the line $p_u \vee p_v$ lies in both panels, and it passes through
   both points by construction. Taking $w = v$ gives the incidence
   $p_v \cdot n_v = 0$, and $p_v \neq 0$ since its last coordinate is $1$.
   Adjacent points are linearly independent, and every hinge is nonzero
@@ -526,14 +529,14 @@ shrinks a core along the contraction curve
   \leanok
   \uses{lem:polarity-join, lem:screw-map-rows, def:induced-screw-map}
   The hinge at an edge $uv$ with normals $p$ is the image of the line
-  $p_u \wedge p_v$ under the polarity
+  $p_u \vee p_v$ under the polarity
   (\cref{lem:polarity-join}). So the rigidity matrix with
   normals $p$ has the rank of the body-hinge framework whose hinge at
-  $uv$ is $p_u \wedge p_v$, as in the proof of
+  $uv$ is $p_u \vee p_v$, as in the proof of
   \cref{lem:pencil-config-point-join-rank}, and likewise for $p'$. Both
   ends of an edge of $G$ are bodies of $G$. So
-  $p'_u \wedge p'_v = g(p_u) \wedge g(p_v)$ is the image of
-  $p_u \wedge p_v$ under the invertible linear map of the screw space
+  $p'_u \vee p'_v = g(p_u) \vee g(p_v)$ is the image of
+  $p_u \vee p_v$ under the invertible linear map of the screw space
   induced by $g$, and the two ranks agree (\cref{lem:screw-map-rows}).
 \end{proof}
 
@@ -806,7 +809,7 @@ its solutions form $L(q)$.
         def:pencil-distinct-motive}
   Let $K$ be infinite. If the general configuration of $G$ attains
   (\cref{def:pencil-x0-attains}), then $G$ has an adjacent-distinct
-  pencil realization (\cref{def:pencil-distinct-motive}, at $n = 3$).
+  pencil realization (\cref{def:pencil-distinct-motive}, at $d = 3$).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -861,7 +864,7 @@ Later subsections cite the lemmas themselves.
   rank at least $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$, then the
   general configuration of $G$ attains (\cref{def:pencil-x0-attains}),
   and $G$ has an adjacent-distinct pencil realization
-  (\cref{def:pencil-distinct-motive}, at $n = 3$).
+  (\cref{def:pencil-distinct-motive}, at $d = 3$).
 \end{theorem}
 \begin{proof}
   \leanok
@@ -892,10 +895,10 @@ whenever the two deficiencies agree (\cref{cor:pencil-jj-flat}). This
 settles one case of the induction with no appeal to smaller graphs
 (\cref{sec:main-component-coverage}).
 Throughout, $\operatorname{def}_2$ and $\operatorname{def}_3$ are the
-deficiencies of \cref{def:D-deficiency} at $n = 2$ and $n = 3$ ($D = 3$
+deficiencies of \cref{def:D-deficiency} at $d = 2$ and $d = 3$ ($D = 3$
 and $D = 6$).
 
-The idea is that at zero heights every hinge $p_u \wedge p_v$ is a line
+The idea is that at zero heights every hinge $p_u \vee p_v$ is a line
 of the plane $z = 0$. We split the screw space into the screws of the
 lines of this plane and a complement (\cref{lem:pencil-flat-split}). At a
 hinge, the screws of the two bodies may differ only by a multiple of the
@@ -983,7 +986,7 @@ $\dim L(q) = 3$.
   \uses{def:pencil-lifting-planes, lem:pencil-config-point-join-rank}
   Let $G$ be connected, let $q$ be admissible, and let $F_{(q,0)}$ be the
   body-hinge framework whose hinge at each edge $uv$ is the line
-  $p_u \wedge p_v$ of the flat configuration $p = (q, 0)$
+  $p_u \vee p_v$ of the flat configuration $p = (q, 0)$
   (\cref{lem:pencil-config-point-join-rank}). Then its infinitesimal
   motions form a space of dimension $3 + \dim F(q)$.
 \end{lemma}
@@ -991,23 +994,23 @@ $\dim L(q) = 3$.
   \leanok
   \uses{def:extensor, def:hinge-constraint}
   Let $e_0, \dots, e_3$ be the standard basis of $K^4$, with $e_2$ the
-  height direction, and write $e_{ij} = e_i \wedge e_j$. The plane
+  height direction, and write $e_{ij} = e_i \vee e_j$. The plane
   $z = 0$ is spanned by $e_0$, $e_1$ and $e_3$. So at $z = 0$ every hinge
-  $p_u \wedge p_v$ lies in
+  $p_u \vee p_v$ lies in
   $W_\Pi = \operatorname{span}(e_{01}, e_{03}, e_{13})$, the span of the
-  lines of that plane. Split $\Lambda^2 K^4 = W' \oplus W_\Pi$ with
+  lines of that plane. Split $\bigwedge^2 K^4 = W' \oplus W_\Pi$ with
   $W' = \operatorname{span}(e_{02}, e_{12}, e_{23})$, and write a screw
   as $m_v = (m'_v, m^\Pi_v)$. The hinge condition
-  $m_u - m_v \in \operatorname{span}(p_u \wedge p_v)$
+  $m_u - m_v \in \operatorname{span}(p_u \vee p_v)$
   (\cref{def:hinge-constraint}) splits into $m'_u = m'_v$ and
-  $m^\Pi_u - m^\Pi_v \in \operatorname{span}(p_u \wedge p_v)$. As $G$ is
+  $m^\Pi_u - m^\Pi_v \in \operatorname{span}(p_u \vee p_v)$. As $G$ is
   connected, the first condition makes $m'$ constant, which gives three
   dimensions.
 
-  For the second, identify $W_\Pi = \Lambda^2 \hat\Pi$, where
+  For the second, identify $W_\Pi = \bigwedge^2 \hat\Pi$, where
   $\hat\Pi = \operatorname{span}(e_0, e_1, e_3)$, with the affine
-  functions on $K^2$ by $a \wedge b \mapsto \det(a, b, \cdot)$, evaluated
-  at $(x, y, 1)$. The line $p_u \wedge p_v$ becomes a nonzero affine
+  functions on $K^2$ by $a \vee b \mapsto \det(a, b, \cdot)$, evaluated
+  at $(x, y, 1)$. The line $p_u \vee p_v$ becomes a nonzero affine
   function vanishing at $q_u$ and $q_v$. As $q_u \ne q_v$, its multiples
   are all the affine functions vanishing at these two points. So the
   second condition says that $h_u - h_v$ vanishes at $q_u$ and $q_v$,
@@ -1033,7 +1036,7 @@ $\dim L(q) = 3$.
         def:panel-hinge-framework, def:rigidity-matrix}
   Let $q$ be admissible, and let $P_q$ be the panel-hinge framework in
   the plane on $G$ whose panel normal at each body $v$ is
-  $(x_v, y_v, 1)$ (\cref{def:panel-hinge-framework}, at $n = 2$). Then
+  $(x_v, y_v, 1)$ (\cref{def:panel-hinge-framework}, at $d = 2$). Then
   the infinitesimal motions of $P_q$ form a space isomorphic to $F(q)$,
   and $\operatorname{rank} R(P_q) = 3|V(G)| - \dim L(q)$.
 \end{lemma}
@@ -1250,7 +1253,7 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   \leanok
   \uses{lem:rank-polynomial-of-le-finrank, def:panel-general-position,
         lem:general-position-support-nonzero, lem:pencil-jj-rescale}
-  By \cref{thm:theorem-55-6-rows} at $n = 2$ ($D = 3$), $G$ has a
+  By \cref{thm:theorem-55-6-rows} at $d = 2$ ($D = 3$), $G$ has a
   panel-hinge realization of rank
   $3(|V(G)| - 1) - \operatorname{def}_2(G)$. As $K$ is infinite, three
   nonzero polynomials in the normals have a common non-root $n$: the rank
@@ -1301,8 +1304,8 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   Let $G'$ be $G$ with its edges relabelled injectively into a larger set
   of labels (\cref{def:pencil-embed-edges}). Then $G'$ is simple if $G$
   is, and $G'$ has the lifting spaces $L(q)$, the admissible and main
-  pictures, and the deficiencies $\operatorname{def}_n$ of $G$, for every
-  $n$.
+  pictures, and the deficiencies $\operatorname{def}_d$ of $G$, for every
+  $d$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1462,8 +1465,8 @@ us read the rank of a subgraph at a height of $G$.
   \uses{def:pencil-nondegenerate}
   A graph $G$ satisfies the \emph{standing hypotheses} if it is finite,
   simple and connected, with minimum degree at least two. Then every
-  closed neighbourhood of $G$ has at least three members: a body of
-  degree $d$ in a simple graph has $d$ distinct neighbours.
+  closed neighbourhood of $G$ has at least three members: in a simple
+  graph a body has as many distinct neighbours as its degree.
 \end{definition}
 
 \begin{lemma}[Heights restrict to a subgraph]
@@ -1761,9 +1764,9 @@ condition holds at all but finitely many $t$. There the core has its
 target $6(|W| - 1)$.
 
 We first show that the core and the contraction satisfy the standing
-hypotheses. The first lemma holds at every $n$. The step uses it at
-$n = 3$, and its corollary at a core of planar deficiency zero uses it
-at $n = 2$.
+hypotheses. The first lemma holds at every $d$. The step uses it at
+$d = 3$, and its corollary at a core of planar deficiency zero uses it
+at $d = 2$.
 
 \begin{lemma}[A rigid core satisfies the standing hypotheses]
   \label{lem:pencil-contract-standing-rigid}
@@ -1771,7 +1774,7 @@ at $n = 2$.
   \leanok
   \uses{def:pencil-x0-standing, def:D-deficiency}
   Let $G$ be simple and $W \subseteq V(G)$ with $|W| \ge 2$, and suppose
-  $G[W]$ has deficiency zero at some $n \ge 1$
+  $G[W]$ has deficiency zero at some $d \ge 1$
   (\cref{def:D-deficiency}). Then $G[W]$ satisfies the standing
   hypotheses.
 \end{lemma}
@@ -2036,10 +2039,10 @@ of the rank, so the step works over every infinite field.
         lem:block-rank-contract, lem:reduction-measure,
         lem:pencil-lifting-restrict}
   \emph{The pieces.} $H$ satisfies the standing hypotheses
-  (\cref{lem:pencil-contract-standing-rigid}, at $n = 3$). By
+  (\cref{lem:pencil-contract-standing-rigid}, at $d = 3$). By
   \cref{lem:pencil-contract-standing}, $G/H$ is simple and satisfies them
   too. As $H$ is rigid, $G/H$ has the deficiency of $G$
-  (\cref{lem:pencil-contraction-deficiency}, at $n = 3$).
+  (\cref{lem:pencil-contraction-deficiency}, at $d = 3$).
 
   \emph{The picture.} As $H$ and $G/H$ satisfy the standing hypotheses,
   Jackson and Jord\'an's equality applies to both
@@ -2139,13 +2142,13 @@ of the rank, so the step works over every infinite field.
         lem:deficiency-antitone, cor:pencil-jj-flat,
         lem:pencil-contraction-deficiency}
   The core $H$ satisfies the standing hypotheses
-  (\cref{lem:pencil-contract-standing-rigid}, at $n = 2$). Since
+  (\cref{lem:pencil-contract-standing-rigid}, at $d = 2$). Since
   $\operatorname{def}_3(H) \le \operatorname{def}_2(H) = 0$
   (\cref{lem:deficiency-antitone}), both deficiencies of $H$ vanish. So
   $H$ is rigid, and its general configuration attains
   (\cref{cor:pencil-jj-flat}). Contracting a core of planar deficiency
   zero does not change the planar deficiency
-  (\cref{lem:pencil-contraction-deficiency}, at $n = 2$). So
+  (\cref{lem:pencil-contraction-deficiency}, at $d = 2$). So
   $\operatorname{def}_2(H) + \operatorname{def}_2(G/H) =
   \operatorname{def}_2(G)$, and \cref{thm:pencil-x0-contract-additive}
   applies.
@@ -2201,7 +2204,7 @@ At an open ear the height must meet two open conditions in $L_G(q)$. As
 at a cut vertex, $G[V_1]$ must have its target at the restriction. In
 addition, six hinges of the ear must be linearly independent. Under the
 polarity, the hinge at an edge $uw$ corresponds to the join
-$p_u \wedge p_w$ (\cref{lem:pencil-config-point-join-rank}). The
+$p_u \vee p_w$ (\cref{lem:pencil-config-point-join-rank}). The
 independence of six joins is a polynomial condition, in the picture at
 fixed heights and in the heights at a fixed picture
 (\cref{lem:pencil-join-independence-open}). So it suffices that it hold
@@ -2294,16 +2297,16 @@ the coordinates of a join.
   \uses{lem:pencil-flat-split, def:extensor}
   For $p = (p_x, p_y, p_z, p_w) \in K^4$ write
   $\bar p = (p_x, p_y, p_w) \in K^3$. There is a linear isomorphism of
-  the screw space $\Lambda^2 K^4$ onto $K^3 \times K^3$, adapted to the
+  the screw space $\bigwedge^2 K^4$ onto $K^3 \times K^3$, adapted to the
   splitting of \cref{lem:pencil-flat-split}, that sends the join
-  $p \wedge p'$ of $p, p' \in K^4$ to
+  $p \vee p'$ of $p, p' \in K^4$ to
   $\bigl(p_z\,\bar p' - p'_z\,\bar p,\ \bar p \times \bar p'\bigr)$. In
   particular, a family of joins is linearly independent as soon as the
   family of these vectors is.
 \end{lemma}
 \begin{proof}
   \leanok
-  Expand $p \wedge p'$ in the basis of $W'$ and $W_\Pi$ used in the
+  Expand $p \vee p'$ in the basis of $W'$ and $W_\Pi$ used in the
   proof of \cref{lem:pencil-flat-split}: the coefficients on $W_\Pi$
   are the $2 \times 2$ minors of $\bar p$ and $\bar p'$, and those on
   $W'$ pair the heights with the planar parts.
@@ -2317,7 +2320,7 @@ the coordinates of a join.
   \uses{def:pencil-configuration, def:extensor}
   Let $(u_i, w_i)_{i \in I}$ be a finite family of pairs of bodies, and
   write $p$ for the points of a configuration $(q, z)$. If the joins
-  $p_{u_i} \wedge p_{w_i}$ are linearly independent at $(q_0, z)$, there
+  $p_{u_i} \vee p_{w_i}$ are linearly independent at $(q_0, z)$, there
   is a polynomial $P$ in the picture, nonzero at $q_0$, such that they
   are linearly independent at $(q, z)$ whenever $P(q) \neq 0$. Likewise,
   if they are independent at $(q, z_0)$, there is a polynomial $R$ in the
@@ -2345,7 +2348,7 @@ the coordinates of a join.
   Let $Y_0, \dots, Y_5 \in K^4$ be the points $(1, 0, 0, 1)$,
   $(0, -1, 0, 1)$, $(0, 0, 1, 1)$, $(-1, 0, 1, 1)$, $(0, 0, 0, 1)$ and
   $(-1, -1, 0, 1)$. For $n = 3, 4, 5, 6$, the $n$ joins
-  $Y_0 \wedge Y_1, \dots, Y_{n-2} \wedge Y_{n-1}, Y_{n-1} \wedge Y_0$ of
+  $Y_0 \vee Y_1, \dots, Y_{n-2} \vee Y_{n-1}, Y_{n-1} \vee Y_0$ of
   the closed polygon $Y_0 Y_1 \cdots Y_{n-1}$ are linearly independent,
   over every field.
 \end{lemma}
@@ -2370,7 +2373,7 @@ the coordinates of a join.
     lem:pencil-join-flat}
   Let $p$ be the points of a configuration of $G$, and let
   $g_1, \dots, g_m$ be edges of $G$, with ends $u_i, w_i$, whose joins
-  $p_{u_i} \wedge p_{w_i}$ are linearly independent. Then the hinges at
+  $p_{u_i} \vee p_{w_i}$ are linearly independent. Then the hinges at
   $g_1, \dots, g_m$ of the panel-hinge framework defining the rank of
   $p$ (\cref{def:pencil-x0-attains}) span a space of dimension at least
   $m$. In particular, if $m = 6$, the hinges at any set of edges
@@ -2381,7 +2384,7 @@ the coordinates of a join.
   \uses{lem:pencil-config-point-join-rank, lem:polarity-join}
   The hinge at an edge $uw$ spans the line of the meet of the planes
   $p_u^{\perp}$ and $p_w^{\perp}$. The polarity, an invertible linear
-  map of the screw space, maps the join $p_u \wedge p_w$ to that meet
+  map of the screw space, maps the join $p_u \vee p_w$ to that meet
   (\cref{lem:pencil-config-point-join-rank}). So the meets at
   $g_1, \dots, g_m$ are independent and lie in the span of the hinges
   there. The screw space has dimension six.
@@ -2595,18 +2598,18 @@ data, and then prove the three steps.
 
 The steps with three and four interior bodies compute ranks with the
 joins of the points as hinges (\cref{lem:pencil-config-point-join-rank}),
-in the screw space $\Lambda^2 K^4$. For $c \in \Lambda^2 K^4$ write
+in the screw space $\bigwedge^2 K^4$. For $c \in \bigwedge^2 K^4$ write
 $(\sigma(c), \tau(c)) \in K^3 \times K^3$ for its flat coordinates
 (\cref{lem:pencil-join-flat}), so that
-$\sigma(p \wedge p') = p_z\,\bar p' - p'_z\,\bar p$ and
-$\tau(p \wedge p') = \bar p \times \bar p'$.
+$\sigma(p \vee p') = p_z\,\bar p' - p'_z\,\bar p$ and
+$\tau(p \vee p') = \bar p \times \bar p'$.
 
 \begin{definition}[The pairing of lines]
   \label{def:pencil-line-pairing}
   \lean{CombinatorialRigidity.Molecular.kleinLin}
   \leanok
   \uses{lem:pencil-join-flat}
-  The \emph{pairing} of $c, c' \in \Lambda^2 K^4$ is
+  The \emph{pairing} of $c, c' \in \bigwedge^2 K^4$ is
   \[
     \langle c, c' \rangle = \sigma(c) \cdot \tau(c') + \sigma(c') \cdot \tau(c).
   \]
@@ -2620,7 +2623,7 @@ The pairing is bilinear and symmetric.
   \leanok
   \uses{def:pencil-line-pairing, def:extensor}
   For $p, q, r, s \in K^4$,
-  $\langle p \wedge q, r \wedge s \rangle = \det(p, q, r, s)$; in
+  $\langle p \vee q, r \vee s \rangle = \det(p, q, r, s)$; in
   particular two lines through a common point pair to zero.
 \end{lemma}
 \begin{proof}
@@ -2649,21 +2652,21 @@ the join with the opposite edge.
   \leanok
   \uses{def:extensor}
   If $p_0, p_1, p_2, p_3 \in K^4$ are linearly independent, the six joins
-  $p_i \wedge p_j$, $i < j$, are linearly independent, so they span
-  $\Lambda^2 K^4$.
+  $p_i \vee p_j$, $i < j$, are linearly independent, so they span
+  $\bigwedge^2 K^4$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-line-pairing-join}
-  Pair a vanishing combination $\sum c_{ij}\, p_i \wedge p_j = 0$ with the
-  opposite edge $p_k \wedge p_l$. By \cref{lem:pencil-line-pairing-join}
+  Pair a vanishing combination $\sum c_{ij}\, p_i \vee p_j = 0$ with the
+  opposite edge $p_k \vee p_l$. By \cref{lem:pencil-line-pairing-join}
   the pairing of two edges is $\pm \det(p_0, p_1, p_2, p_3) \neq 0$ when
   they are opposite and $0$ when they share a point, so every $c_{ij}$
-  vanishes. The space $\Lambda^2 K^4$ has dimension six.
+  vanishes. The space $\bigwedge^2 K^4$ has dimension six.
 \end{proof}
 
 The \emph{star} of a point $y \in K^4$ is the span
-$\operatorname{star}(y)$ of the joins $y \wedge u$, $u \in K^4$: the lines
+$\operatorname{star}(y)$ of the joins $y \vee u$, $u \in K^4$: the lines
 through $y$.
 
 \begin{lemma}[The lines through two points]
@@ -2675,7 +2678,7 @@ through $y$.
   \uses{def:pencil-line-pairing, def:extensor}
   For $y, y' \in K^4$, every element $c$ of
   $\operatorname{star}(y) + \operatorname{star}(y')$ has
-  $\langle c, y \wedge y' \rangle = 0$. If $y$ and $y'$ are linearly
+  $\langle c, y \vee y' \rangle = 0$. If $y$ and $y'$ are linearly
   independent, then
   $\dim\bigl(\operatorname{star}(y) + \operatorname{star}(y')\bigr) \ge 5$.
 \end{lemma}
@@ -2685,7 +2688,7 @@ through $y$.
   A line through $y$ or through $y'$ meets the line $y y'$, so the
   pairing vanishes (\cref{lem:pencil-line-pairing-join}). Extend $y, y'$
   to a basis $y, y', e, e'$ of $K^4$. Five of the six joins of
-  \cref{lem:pencil-tetrahedron}, all but $e \wedge e'$, lie in the two
+  \cref{lem:pencil-tetrahedron}, all but $e \vee e'$, lie in the two
   stars.
 \end{proof}
 
@@ -2697,7 +2700,7 @@ bodies, the points of $a$ and $x_1$ lie on the plane of $a$, and those of
 $x_3$ and $b$ on the plane of $b$. For $h \in K^3$ write
 $\hat\pi_h = \{(u_1, u_2, h \cdot u, u_3) : u \in K^3\} \subseteq K^4$
 for the homogeneous points of the plane $z = h_1 x + h_2 y + h_3$, and
-$\Lambda^2 \hat\pi_h$ for the space of screws $c$ with
+$\bigwedge^2 \hat\pi_h$ for the space of screws $c$ with
 $\sigma(c) = -\, h \times \tau(c)$.
 
 \begin{lemma}[The lines of a plane]
@@ -2708,13 +2711,13 @@ $\sigma(c) = -\, h \times \tau(c)$.
   \leanok
   \uses{lem:pencil-join-flat}
   For $h \in K^3$, the join of any two points of $\hat\pi_h$ lies in
-  $\Lambda^2 \hat\pi_h$, and $\dim \Lambda^2 \hat\pi_h \le 3$.
+  $\bigwedge^2 \hat\pi_h$, and $\dim \bigwedge^2 \hat\pi_h \le 3$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-join-flat}
   The first claim is a computation in the flat coordinates of
-  \cref{lem:pencil-join-flat}. On $\Lambda^2 \hat\pi_h$ the coordinate
+  \cref{lem:pencil-join-flat}. On $\bigwedge^2 \hat\pi_h$ the coordinate
   $\sigma$ is determined by $\tau$, so $\tau$ is injective there.
 \end{proof}
 
@@ -2724,12 +2727,12 @@ $\sigma(c) = -\, h \times \tau(c)$.
     CombinatorialRigidity.Molecular.finrank_sup_le_three_of_klein}
   \leanok
   \uses{def:pencil-line-pairing, lem:pencil-plane-lines}
-  Let $h, h' \in K^3$, and let $c \in \Lambda^2 K^4$ have
-  $\langle c, u \wedge v \rangle = 0$ for every $u \in \hat\pi_h$ and
+  Let $h, h' \in K^3$, and let $c \in \bigwedge^2 K^4$ have
+  $\langle c, u \vee v \rangle = 0$ for every $u \in \hat\pi_h$ and
   every $v \in \hat\pi_{h'}$. If $h \neq h'$, then $c = 0$; if $h = h'$,
-  then $c \in \Lambda^2 \hat\pi_h$. Consequently, if every element of a
-  subspace $\rho \subseteq \Lambda^2 K^4$ has this property, and
-  $f_1, f_2, f_3 \in \Lambda^2 K^4$ lie in $\Lambda^2 \hat\pi_h$ when
+  then $c \in \bigwedge^2 \hat\pi_h$. Consequently, if every element of a
+  subspace $\rho \subseteq \bigwedge^2 K^4$ has this property, and
+  $f_1, f_2, f_3 \in \bigwedge^2 K^4$ lie in $\bigwedge^2 \hat\pi_h$ when
   $h = h'$, then $\dim\bigl(\rho + \operatorname{span}(f_1, f_2, f_3)\bigr)
   \le 3$.
 \end{lemma}
@@ -2740,7 +2743,7 @@ $\sigma(c) = -\, h \times \tau(c)$.
   be the points over them. In the flat coordinates of
   \cref{lem:pencil-join-flat},
   \[
-    \langle c, \hat u \wedge \hat v \rangle
+    \langle c, \hat u \vee \hat v \rangle
     = \sigma(c) \cdot (u \times v) + (h \cdot u)\,\bigl(v \cdot \tau(c)\bigr)
       - (h' \cdot v)\,\bigl(u \cdot \tau(c)\bigr).
   \]
@@ -2762,13 +2765,13 @@ $\sigma(c) = -\, h \times \tau(c)$.
   $\sigma(c) = -\, h \times \tau(c)$.
 
   For the consequence, if $h \neq h'$ then $\rho = 0$. If $h = h'$ then
-  $\rho$ and the $f_i$ lie in $\Lambda^2 \hat\pi_h$, of dimension at most
+  $\rho$ and the $f_i$ lie in $\bigwedge^2 \hat\pi_h$, of dimension at most
   three (\cref{lem:pencil-plane-lines}).
 \end{proof}
 
 In the steps, the points $y$ and $y'$ of the next lemma are those of
 $x_1$ and $x_3$, in either order. Then $W$ is the span for $G''$, with the join
-$y \wedge y'$ at its edge $x_1 x_3$, and $W_t$ is the span for $G$ with
+$y \vee y'$ at its edge $x_1 x_3$, and $W_t$ is the span for $G$ with
 $x_2$ put back at $y + t u$.
 
 \begin{lemma}[Putting a body back next to a neighbour]
@@ -2776,33 +2779,33 @@ $x_2$ put back at $y + t u$.
   \lean{CombinatorialRigidity.Molecular.exists_insertion_gain}
   \leanok
   \uses{def:extensor, lem:pencil-join-flat}
-  Let $K$ be infinite, let $\rho \subseteq \Lambda^2 K^4$ be a subspace
-  and $F$ a finite family in $\Lambda^2 K^4$, let $y, y', u \in K^4$, and
-  let $W = \rho + \operatorname{span} F + K\,(y \wedge y')$. For $t \in K$
+  Let $K$ be infinite, let $\rho \subseteq \bigwedge^2 K^4$ be a subspace
+  and $F$ a finite family in $\bigwedge^2 K^4$, let $y, y', u \in K^4$, and
+  let $W = \rho + \operatorname{span} F + K\,(y \vee y')$. For $t \in K$
   write $W_t = \rho + \operatorname{span} F +
-  \operatorname{span}\bigl(y \wedge (y + t u),\ (y + t u) \wedge y'\bigr)$.
-  If $y \wedge u \notin W$, then $\dim W_t \ge \dim W + 1$ for some
+  \operatorname{span}\bigl(y \vee (y + t u),\ (y + t u) \vee y'\bigr)$.
+  If $y \vee u \notin W$, then $\dim W_t \ge \dim W + 1$ for some
   $t \neq 0$.
 \end{lemma}
 \begin{proof}
   \leanok
   Write $R = \rho + \operatorname{span} F$. For $t \neq 0$,
-  $y \wedge (y + t u) = t\,(y \wedge u)$ and
-  $(y + t u) \wedge y' = v_t$ with $v_t = y \wedge y' + t\,(u \wedge y')$.
-  So $W_t$ contains $R$, $y \wedge u$ and $v_t$. A vector $v$ outside a
+  $y \vee (y + t u) = t\,(y \vee u)$ and
+  $(y + t u) \vee y' = v_t$ with $v_t = y \vee y' + t\,(u \vee y')$.
+  So $W_t$ contains $R$, $y \vee u$ and $v_t$. A vector $v$ outside a
   subspace $S$ has $v + t w \notin S$ for one of any two distinct nonzero
   values of $t$, since otherwise $S$ contains $w$ and then $v$. As $K$ is
   infinite, two such values exist.
 
-  If $y \wedge y' \in R$, then $W = R$, and
-  $\dim W_t \ge \dim\bigl(R + K\,(y \wedge u)\bigr)
+  If $y \vee y' \in R$, then $W = R$, and
+  $\dim W_t \ge \dim\bigl(R + K\,(y \vee u)\bigr)
   = \dim W + 1$ for every $t \neq 0$.
 
   Otherwise $\dim W = \dim R + 1$, and
-  $y \wedge y' \notin R + K\,(y \wedge u)$, since a relation
-  $y \wedge y' = r + c\,(y \wedge u)$ with $r \in R$ has $c \neq 0$ and
-  puts $y \wedge u$ in $W$. So some $t \neq 0$ has
-  $v_t \notin R + K\,(y \wedge u)$, and $\dim W_t \ge \dim R + 2 =
+  $y \vee y' \notin R + K\,(y \vee u)$, since a relation
+  $y \vee y' = r + c\,(y \vee u)$ with $r \in R$ has $c \neq 0$ and
+  puts $y \vee u$ in $W$. So some $t \neq 0$ has
+  $v_t \notin R + K\,(y \vee u)$, and $\dim W_t \ge \dim R + 2 =
   \dim W + 1$.
 \end{proof}
 
@@ -2882,7 +2885,7 @@ condition on the ear data.
   every hinge of a graph $H$ is nonzero and the rank of $H$ is at least $r$, there is a
   polynomial in $s$, nonzero there, such that the rank of $H$ is at least $r$ wherever it does
   not vanish. If, at one parameter, $\dim(\rho + \operatorname{span} F) \ge n$ for a fixed
-  subspace $\rho \subseteq \Lambda^2 K^4$ and a family $F$ of joins of points of the
+  subspace $\rho \subseteq \bigwedge^2 K^4$ and a family $F$ of joins of points of the
   configuration, the same holds for this bound.
 \end{lemma}
 \begin{proof}
@@ -2905,7 +2908,7 @@ condition on the ear data.
   (\cref{def:pencil-x0-standing}), with an open ear $a - x_1 - x_2 - b$
   on $V_1$ whose ends $a$ and $b$ may be adjacent, and suppose
   $\operatorname{def}(\tilde G[V_1]) \le \operatorname{def}(\tilde G)$
-  (\cref{def:D-deficiency}, at $n = 3$). If the general configuration of
+  (\cref{def:D-deficiency}, at $d = 3$). If the general configuration of
   $G[V_1]$ attains, then the general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
@@ -2920,7 +2923,7 @@ condition on the ear data.
   $(0, 0)$. At the heights $0$ the points of $a, x_1, x_2, b$ are then
   $Y_4, Y_5, Y_0, Y_1$ (\cref{lem:pencil-chain-span-certificates}). So
   the joins at the three ear edges $a x_1$, $x_1 x_2$ and $x_2 b$ are
-  $Y_4 \wedge Y_5$, $Y_5 \wedge Y_0$ and $Y_0 \wedge Y_1$. These are three
+  $Y_4 \vee Y_5$, $Y_5 \vee Y_0$ and $Y_0 \vee Y_1$. These are three
   joins of the closed hexagon, and they are linearly independent. Let $P$
   be the polynomial in the picture that
   \cref{lem:pencil-join-independence-open} gives for these joins at the
@@ -3024,7 +3027,7 @@ condition on the ear data.
   at least its target and that the picture is admissible for $G''$. Both
   hold at $s^*$, where the hinges of $G''$ are nonzero. The third is that
   the six joins of the points of $x_1$, $x_3$, $x_4$ and $b$ span
-  $\Lambda^2 K^4$. Let $q_b$ and $z_b$ be the picture and the height of
+  $\bigwedge^2 K^4$. Let $q_b$ and $z_b$ be the picture and the height of
   $b$. Put $x_1$ over $q_b + (0, 1)$ on the plane of $a$, $x_4$ over
   $q_b + (1, 0)$ on the plane of $b$, and $x_3$ over $q_b$ at the height
   $z_b + 1$. The points of $x_1$, $x_3$, $x_4$ and $b$ are then linearly
@@ -3035,27 +3038,27 @@ condition on the ear data.
   target. So by the ear rank formula at $G''$, with the joins as hinges
   (\cref{lem:block-rank-ear}, \cref{lem:pencil-config-point-join-rank}),
   \[
-    W = \rho + \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge y_3,\
-    y_3 \wedge y_4,\ y_4 \wedge p_b)
+    W = \rho + \operatorname{span}(p_a \vee y_1,\ y_1 \vee y_3,\
+    y_3 \vee y_4,\ y_4 \vee p_b)
   \]
   has $\dim W \ge 4 + f - \operatorname{def}(\tilde G'')$.
 
   \emph{Putting $x_2$ back.} Keep the other bodies of $y$ and give $x_2$
   an affine point $x$. As $x_2$ is a middle body of the ear, this is an
   ear datum of $G$. Let $\Lambda$ be the span of the joins of its ear.
-  Every line through an affine point $y'$ is $y' \wedge u$ with $u$ of
-  last coordinate $0$, since $y' \wedge v = y' \wedge (v - v_4 y')$. If
+  Every line through an affine point $y'$ is $y' \vee u$ with $u$ of
+  last coordinate $0$, since $y' \vee v = y' \vee (v - v_4 y')$. If
   $W$ does not contain every line through $y_1$, take such a $u$ with $y_1
-  \wedge u \notin W$. Then $y_1 + t u$ is affine for every $t$, and for
+  \vee u \notin W$. Then $y_1 + t u$ is affine for every $t$, and for
   some $t \neq 0$ the point $x = y_1 + t u$ has $\dim(\rho + \Lambda) \ge
   \dim W + 1$
   (\cref{lem:pencil-insertion}). The same holds at $y_3$. Suppose that
   $W$ contains every line through $y_1$ and every line through $y_3$.
-  Then it contains $y_1 \wedge y_3$, $y_1 \wedge y_4$, $y_1 \wedge p_b$,
-  $y_3 \wedge y_4$ and $y_3 \wedge p_b$, and also $y_4 \wedge p_b$, a join
+  Then it contains $y_1 \vee y_3$, $y_1 \vee y_4$, $y_1 \vee p_b$,
+  $y_3 \vee y_4$ and $y_3 \vee p_b$, and also $y_4 \vee p_b$, a join
   of the ear of $G''$. These are the six joins of $y_1, y_3, y_4, p_b$,
-  which span $\Lambda^2 K^4$ by the choice of $y$. So $W = \Lambda^2 K^4$,
-  and we take $x = y_1$: the join $y_1 \wedge x$ vanishes, but
+  which span $\bigwedge^2 K^4$ by the choice of $y$. So $W = \bigwedge^2 K^4$,
+  and we take $x = y_1$: the join $y_1 \vee x$ vanishes, but
   $\rho + \Lambda$ contains $W$. Either way
   $\dim(\rho + \Lambda) \ge \min(\dim W + 1, 6)$
   (\texttt{exists\_insertion\_four}).
@@ -3118,57 +3121,57 @@ condition on the ear data.
   $y_3$ of $x_3$ and $p_b$ lie in $\hat\pi_b$.
 
   \emph{The case split on $\rho$}, made before the ear data are chosen.
-  In the first case $\langle c, u \wedge v \rangle = 0$ for every
+  In the first case $\langle c, u \vee v \rangle = 0$ for every
   $c \in \rho$, $u \in \hat\pi_a$ and $v \in \hat\pi_b$. In the second,
-  some $c \in \rho$ pairs to a nonzero value with some $u_0 \wedge v_0$.
+  some $c \in \rho$ pairs to a nonzero value with some $u_0 \vee v_0$.
   We then ask one more condition of the ear data,
-  $\langle c, y_1 \wedge y_3 \rangle \neq 0$. For $s, s' \in K^3$ let
+  $\langle c, y_1 \vee y_3 \rangle \neq 0$. For $s, s' \in K^3$ let
   $\hat s \in \hat\pi_a$ and $\hat s' \in \hat\pi_b$ be the points over
-  them. The map $(s, s') \mapsto \langle c, \hat s \wedge \hat s' \rangle$
+  them. The map $(s, s') \mapsto \langle c, \hat s \vee \hat s' \rangle$
   is bilinear and not zero. The vectors $(0, 0, 1)$, $(1, 0, 1)$ and
   $(0, 1, 1)$ span $K^3$, so it is nonzero at a pair of them. The points
   over them are affine, so some ear datum puts $x_1$ and $x_3$ there
   (\texttt{exists\_klein\_liftPlane\_affine\_ne\_zero}). Let $c^\perp$ be
   the hyperplane of screws pairing to zero with $c$. The condition says
-  $\dim\bigl(c^\perp + K\,(y_1 \wedge y_3)\bigr) = 6$. So it holds off the
+  $\dim\bigl(c^\perp + K\,(y_1 \vee y_3)\bigr) = 6$. So it holds off the
   zero set of a polynomial in the ear data that is nonzero at that ear
   datum (\cref{lem:pencil-ear-data-open}).
 
   \emph{The second stage, for $G''$.} Take ear data $y$ off the zero sets
   of the polynomials that ask the rank of $G''$ to be at least its target
   and the picture to be admissible for $G''$. In the second case, take
-  $y$ also off the zero set for $\langle c, y_1 \wedge y_3 \rangle$. As in
+  $y$ also off the zero set for $\langle c, y_1 \vee y_3 \rangle$. As in
   the four-body step, the ear rank formula at $G''$
   (\cref{lem:block-rank-ear}) shows that
   \[
-    W = \rho + \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge y_3,\
-    y_3 \wedge p_b)
+    W = \rho + \operatorname{span}(p_a \vee y_1,\ y_1 \vee y_3,\
+    y_3 \vee p_b)
   \]
   has $\dim W \ge 3 + f - \operatorname{def}(\tilde G'')$. As $x_1 x_3$ is
   an edge of $G''$ and the picture is admissible for $G''$, the pictures
   of $x_1$ and $x_3$ differ. So $y_1$ and $y_3$ are linearly independent,
   and $\operatorname{star}(y_1) + \operatorname{star}(y_3)$ has dimension
-  at least five and pairs to zero with $y_1 \wedge y_3$
+  at least five and pairs to zero with $y_1 \vee y_3$
   (\cref{lem:pencil-two-stars}).
 
   \emph{A span containing both stars.} We show that $W$ contains both
-  stars only if $W = \Lambda^2 K^4$. In the first case
+  stars only if $W = \bigwedge^2 K^4$. In the first case
   $\dim W \le 3$ (\cref{lem:pencil-bilinear}). When $h_a = h_b$ this uses
   that the three joins of the ear of $G''$ are lines of the one plane
   $\hat\pi_a = \hat\pi_b$ (\cref{lem:pencil-plane-lines}). So $W$ does not
   contain both stars (\texttt{not\_star\_sup\_star\_le\_of\_klein}). In
   the second case $c$ lies in $W$, and outside $\operatorname{star}(y_1) +
   \operatorname{star}(y_3)$, as it pairs to a nonzero value with $y_1
-  \wedge y_3$. So a $W$ containing both stars has dimension six
+  \vee y_3$. So a $W$ containing both stars has dimension six
   (\texttt{eq\_top\_of\_star\_sup\_star\_le}).
 
   \emph{Putting $x_2$ back, and the configuration of $G$.} We argue as
   in the proof of \cref{thm:pencil-x0-open-ear-four}. Some affine point
   $x$ for $x_2$ has $\dim(\rho + \Lambda) \ge \min(\dim W + 1, 6)$, where
-  $\Lambda = \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge x,\
-  x \wedge y_3,\ y_3 \wedge p_b)$ (\texttt{exists\_insertion\_three}). It
+  $\Lambda = \operatorname{span}(p_a \vee y_1,\ y_1 \vee x,\
+  x \vee y_3,\ y_3 \vee p_b)$ (\texttt{exists\_insertion\_three}). It
   lies on a line through $y_1$ or $y_3$ that is not in $W$
-  (\cref{lem:pencil-insertion}), or at $y_1$ when $W = \Lambda^2 K^4$.
+  (\cref{lem:pencil-insertion}), or at $y_1$ when $W = \bigwedge^2 K^4$.
   This bound and the main-picture condition are polynomial conditions on
   the ear data of $G$ (\cref{lem:pencil-ear-data-picture},
   \cref{lem:pencil-ear-data-open}). At a common non-root the picture is a
@@ -3226,7 +3229,7 @@ and $b$ are not adjacent. In both steps we assume
   \operatorname{def}_2(G[V_1]; a, b) + 2 \;\le\;
   \operatorname{def}_2(G[V_1])
 \]
-(\cref{def:deficiency-merged}, at $n = 2$): every partition of $V_1$ with
+(\cref{def:deficiency-merged}, at $d = 2$): every partition of $V_1$ with
 $a$ and $b$ in one part falls at least two below the planar deficiency of
 $G[V_1]$. With one interior body we also assume
 $\operatorname{def}(\tilde G[V_1]) \le \operatorname{def}(\tilde G)$.
@@ -3287,7 +3290,7 @@ a line through $y$. With $u_0$ a direction of this line, of last
 coordinate $0$, the points $p_a$, $y$, $u_0$ and $p_b$ are linearly
 independent. Their six joins span the screw space
 (\cref{lem:pencil-tetrahedron}), and $W$ contains two of them,
-$p_a \wedge y$ and $y \wedge p_b$. Unless $W$ is the whole screw space,
+$p_a \vee y$ and $y \vee p_b$. Unless $W$ is the whole screw space,
 one of the other four lies outside $W$. We then place $x_1$ on $\pi_a$
 and $x_2$ on $\pi_b$, on lines through $y$ chosen for that join, and the
 span gains a dimension (\cref{lem:pencil-insertion-two}). The heights
@@ -3390,7 +3393,7 @@ interior bodies can apply it to $G_1$
   on $V_1$ with one interior body, whose ends are not adjacent. Let
   $G' = H[V_1]$, suppose that the general configuration of $G'$ attains
   and that $\operatorname{def}_2(G'; a, b) + 2 \le
-  \operatorname{def}_2(G')$ (\cref{def:deficiency-merged}, at $n = 2$),
+  \operatorname{def}_2(G')$ (\cref{def:deficiency-merged}, at $d = 2$),
   and let $B$ be a nonzero polynomial in the picture coordinates whose
   non-roots are admissible for $H$. Then there are a picture $q$ with
   $B(q) \neq 0$ and a polynomial $A$ in the coordinates of the lifting
@@ -3464,10 +3467,10 @@ interior bodies can apply it to $G_1$
   (\cref{def:pencil-x0-standing}), with an open ear $a - x_1 - b$ on
   $V_1$ whose ends $a$ and $b$ are not adjacent. Suppose
   $\operatorname{def}(\tilde G[V_1]) \le \operatorname{def}(\tilde G)$
-  (\cref{def:D-deficiency}, at $n = 3$) and
+  (\cref{def:D-deficiency}, at $d = 3$) and
   $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
   \operatorname{def}_2(G[V_1])$ (\cref{def:deficiency-merged}, at
-  $n = 2$). If the general configuration of $G[V_1]$ attains, then the
+  $d = 2$). If the general configuration of $G[V_1]$ attains, then the
   general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
@@ -3486,7 +3489,7 @@ interior bodies can apply it to $G_1$
   \emph{The count.} The closed neighbourhood of $x_1$ is $\{a, x_1, b\}$,
   and its picture points are not collinear, as $q$ is admissible. So
   $p_a$, $p_{x_1}$ and $p_b$ are linearly independent, and so are the two
-  joins $p_a \wedge p_{x_1}$ and $p_{x_1} \wedge p_b$. Every hinge is
+  joins $p_a \vee p_{x_1}$ and $p_{x_1} \vee p_b$. Every hinge is
   nonzero at $q$, and $\dim(\rho + \Lambda) \ge 2$
   (\cref{lem:pencil-ear-hinge-span}). By the hypothesis on the
   deficiencies this is $(\star)$ at $k = 1$, so \cref{lem:block-rank-ear}
@@ -3508,45 +3511,45 @@ lemma are the new points of the two interior bodies.
   $\ell_a, \ell_b \in K^3$ (with $\bar p$ as in \cref{lem:pencil-join-flat}).
   Let $p_a \in \pi_a$, $p_b \in \pi_b$ and $y \in \pi_a \cap \pi_b$ be
   affine points, of last coordinate $1$, with $p_a \notin \pi_b$ and
-  $p_b \notin \pi_a$. Then for every subspace $\rho \subseteq \Lambda^2 K^4$
+  $p_b \notin \pi_a$. Then for every subspace $\rho \subseteq \bigwedge^2 K^4$
   there are affine points $x_1 \in \pi_a$ and $x_2 \in \pi_b$ with
   \[
-    \dim\bigl(\rho + \operatorname{span}(p_a \wedge x_1,\ x_1 \wedge x_2,\
-      x_2 \wedge p_b)\bigr)
-    \;\ge\; \min\bigl(\dim(\rho + \operatorname{span}(p_a \wedge y,\
-      y \wedge p_b)) + 1,\ 6\bigr).
+    \dim\bigl(\rho + \operatorname{span}(p_a \vee x_1,\ x_1 \vee x_2,\
+      x_2 \vee p_b)\bigr)
+    \;\ge\; \min\bigl(\dim(\rho + \operatorname{span}(p_a \vee y,\
+      y \vee p_b)) + 1,\ 6\bigr).
   \]
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:pencil-tetrahedron}
-  Write $W = \rho + \operatorname{span}(p_a \wedge y, y \wedge p_b)$. If
-  $W = \Lambda^2 K^4$, take $x_1 = x_2 = y$. Otherwise note that
+  Write $W = \rho + \operatorname{span}(p_a \vee y, y \vee p_b)$. If
+  $W = \bigwedge^2 K^4$, take $x_1 = x_2 = y$. Otherwise note that
   $\pi_a \neq \pi_b$, as $p_b \notin \pi_a$, so the two planes meet in a
   line through $y$; let $u_0$ be a direction of it, of last coordinate
   $0$. The points $p_a$, $y$, $u_0$, $p_b$ are linearly independent: both
   plane equations vanish at $y$ and $u_0$, the equation of $\pi_a$ vanishes
   at $p_a$ but not at $p_b$ and that of $\pi_b$ the other way round, and
-  $y$ is affine while $u_0$ is not. Their six joins span $\Lambda^2 K^4$
-  (\cref{lem:pencil-tetrahedron}), and $W$ contains $p_a \wedge y$ and
-  $y \wedge p_b$, so one of $y \wedge u_0$, $u_0 \wedge p_b$,
-  $p_a \wedge u_0$, $p_a \wedge p_b$ lies outside $W$.
+  $y$ is affine while $u_0$ is not. Their six joins span $\bigwedge^2 K^4$
+  (\cref{lem:pencil-tetrahedron}), and $W$ contains $p_a \vee y$ and
+  $y \vee p_b$, so one of $y \vee u_0$, $u_0 \vee p_b$,
+  $p_a \vee u_0$, $p_a \vee p_b$ lies outside $W$.
 
   Put $x_1 = y + t u$ and $x_2 = y + \sigma (p_b - y)$, with $\sigma \neq 1$
   and $u$ a direction in $\pi_a$ of last coordinate $0$. For $t \neq 0$,
-  the span of $\rho$ and the three joins contains $y \wedge p_b$ (a nonzero
-  multiple of $x_2 \wedge p_b$), $u \wedge x_2$, and
-  $p_a \wedge y + t\,(p_a \wedge u)$.
-  So if $u \wedge x_2 \notin W$, some $t \neq 0$ gives dimension at least
+  the span of $\rho$ and the three joins contains $y \vee p_b$ (a nonzero
+  multiple of $x_2 \vee p_b$), $u \vee x_2$, and
+  $p_a \vee y + t\,(p_a \vee u)$.
+  So if $u \vee x_2 \notin W$, some $t \neq 0$ gives dimension at least
   $\dim W + 1$, since a vector outside a subspace stays outside it after
   adding $t$ times another for some $t \neq 0$ (as in the proof of
   \cref{lem:pencil-insertion}). It remains to choose $u$ and $\sigma$ with
-  $u \wedge x_2 \notin W$. If $y \wedge u_0 \notin W$, take $u = u_0$ and
+  $u \vee x_2 \notin W$. If $y \vee u_0 \notin W$, take $u = u_0$ and
   $\sigma = 0$. Otherwise, for $\sigma \notin \{0, 1\}$, the join
-  $u \wedge x_2$ is modulo $W$ a nonzero multiple of $u_0 \wedge p_b$ when
-  $u = u_0$, and of $p_a \wedge u_0$ for the same curve with the two planes
+  $u \vee x_2$ is modulo $W$ a nonzero multiple of $u_0 \vee p_b$ when
+  $u = u_0$, and of $p_a \vee u_0$ for the same curve with the two planes
   exchanged. For $u = p_a - y$ and $\sigma \notin \{0, 1\}$ it is modulo
-  $W$ a nonzero multiple of $p_a \wedge p_b$.
+  $W$ a nonzero multiple of $p_a \vee p_b$.
 \end{proof}
 
 \begin{theorem}[An open ear with two interior bodies at non-adjacent ends]
@@ -3559,7 +3562,7 @@ lemma are the new points of the two interior bodies.
   an open ear $a - x_1 - x_2 - b$ on $V_1$ whose ends $a$ and $b$ are not
   adjacent, and suppose $\operatorname{def}_2(G[V_1]; a, b) + 2 \le
   \operatorname{def}_2(G[V_1])$ (\cref{def:deficiency-merged}, at
-  $n = 2$). Let $G_1$ be $G$ with $x_2$ suppressed: the splitting-off
+  $d = 2$). Let $G_1$ be $G$ with $x_2$ suppressed: the splitting-off
   $G_{x_2}^{x_1 b}$ (\cref{def:graph-operations}) whose new edge $x_1 b$
   carries the label of the deleted edge $x_1 x_2$. If the general
   configurations of $G[V_1]$ and of $G_1$ attain, then the general
@@ -3595,15 +3598,15 @@ lemma are the new points of the two interior bodies.
   $G_1$ have their targets. So the ear rank formula at $G_1$
   (\cref{lem:block-rank-ear}) gives
   \[
-    s \;=\; \dim\bigl(\rho + \operatorname{span}(p_a \wedge y,\ y \wedge
+    s \;=\; \dim\bigl(\rho + \operatorname{span}(p_a \vee y,\ y \vee
     p_b)\bigr) \;=\; 2 + f - \operatorname{def}(\tilde G_1).
   \]
 
   \emph{Putting $x_2$ back.} By \cref{lem:pencil-insertion-two} there are
   affine points $y_1 \in \pi_a$ and $y_2 \in \pi_b$ with
   $\dim(\rho + \Lambda) \ge \min(s + 1, 6)$, where
-  $\Lambda = \operatorname{span}(p_a \wedge y_1,\ y_1 \wedge y_2,\
-  y_2 \wedge p_b)$.
+  $\Lambda = \operatorname{span}(p_a \vee y_1,\ y_1 \vee y_2,\
+  y_2 \vee p_b)$.
 
   \emph{The configuration of $G$.} Take as base data the restriction of
   $(q, z)$ to $V_1$, with the affine functions of $\pi_a$ and $\pi_b$
@@ -3644,7 +3647,7 @@ provided that
   \delta \;=\; \operatorname{def}(\tilde G[V_1]) -
   \operatorname{def}(\tilde G[V_1]; a, b) \;\ge\; 5
 \]
-(\cref{def:deficiency-merged}, at $n = 3$). Here $\delta$ is how far the
+(\cref{def:deficiency-merged}, at $d = 3$). Here $\delta$ is how far the
 deficiency of $G[V_1]$ drops when only partitions with $a$ and $b$ in one
 part are counted. The structural coverage applies this step to a chain
 $a - x - b$ with $\delta \ge 5$ (\cref{def:pencil-x0-usable-chain}).
@@ -3873,7 +3876,7 @@ The curve also needs the height that the ear body $x$ contributes.
   (\cref{def:graph-operations}) whose new edge $ab$ carries the label of
   the edge $ax$. Suppose $\operatorname{def}(\tilde G[V_1]; a, b) + 5 \le
   \operatorname{def}(\tilde G[V_1])$ (\cref{def:deficiency-merged},
-  \cref{def:D-deficiency}, at $n = 3$). If the general configuration of
+  \cref{def:D-deficiency}, at $d = 3$). If the general configuration of
   $G''$ attains, then the general configuration of $G$ attains.
 \end{theorem}
 \begin{proof}
@@ -3897,7 +3900,7 @@ The curve also needs the height that the ear body $x$ contributes.
   (\cref{lem:deficiency-ear}, at $k = 1$) this gives
   $\operatorname{def}(\tilde G'') + 1 \le \operatorname{def}(\tilde G)$.
   Also $\operatorname{def}_2(G'') \le \operatorname{def}_2(G)$
-  (\cref{lem:splitoff-deficiency-reuse}, at $n = 2$).
+  (\cref{lem:splitoff-deficiency-reuse}, at $d = 2$).
 
   \emph{The picture.} As $a$ and $b$ are not adjacent, $G''$ is simple
   and each of its closed neighbourhoods has as many members as in $G$, at
@@ -3966,8 +3969,8 @@ The curve also needs the height that the ear body $x$ contributes.
 This subsection proves the estimates on partitions that the structural
 coverage uses (\cref{sec:main-component-coverage}). The proof of the
 generic statement uses some of them too
-(\cref{sec:main-component-statements}). Let $D$ be the dimension of
-\cref{def:D-deficiency} at some $n$. We call the $D$-deficiency
+(\cref{sec:main-component-statements}). Fix a dimension $d$, and let
+$D = \binom{d+1}{2}$, as in \cref{def:D-deficiency}. We call the $D$-deficiency
 $\operatorname{def}_{\tilde G}(P)$ of a partition $P$ its \emph{value}.
 For $X \subseteq V(G)$ let $e(X)$ be the number of edges of $G$ joining
 two distinct bodies of $X$, and let
@@ -3976,11 +3979,11 @@ two distinct bodies of $X$, and let
 \]
 the value of the partition of $G[X]$ into singletons. We call $s_D(X)$
 the \emph{singleton value} of $X$, and write $s = s_3$, the case
-$n = 2$. A set $W$ of at least two bodies is \emph{rigid} if $G[W]$ is a
-rigid subgraph at $n = 3$ (\cref{def:rigid-subgraph}), that is, if
+$d = 2$. A set $W$ of at least two bodies is \emph{rigid} if $G[W]$ is a
+rigid subgraph at $d = 3$ (\cref{def:rigid-subgraph}), that is, if
 $\operatorname{def}_3(G[W]) = 0$. It is \emph{planar-rigid} if
 $\operatorname{def}_2(G[W]) = 0$. For bodies $a$ and $b$,
-$\operatorname{def}_n(G; a, b)$ is the merged deficiency of
+$\operatorname{def}_d(G; a, b)$ is the merged deficiency of
 \cref{def:deficiency-merged}.
 
 The graph $G$ is \emph{sparse} if $s(X) \ge 1$ for every set $X$ of at
@@ -3996,7 +3999,7 @@ $s(X) = 1$, so that $X$ spans as many edges as sparsity allows. For
 example, a set inducing a $4$-cycle is tight.
 
 In a sparse graph, a partition with a part $Z$ has value at most
-$s(V(G)) - s(Z)$ at $n = 2$ (\cref{lem:deficiency-singleton-bound}). As
+$s(V(G)) - s(Z)$ at $d = 2$ (\cref{lem:deficiency-singleton-bound}). As
 $s(Z) \ge 0$, the partition into singletons attains the planar
 deficiency: $\operatorname{def}_2(G) = s(V(G))$. The estimates below
 compare singleton values in this way. We use three further facts. Adding
@@ -4004,14 +4007,14 @@ a body with $t$ edges into a set changes its singleton value by
 $D - (D - 1)t$ (\cref{lem:deficiency-add-body}). Merging the parts of a
 partition that meet a set of deficiency zero does not lower its value
 (\cref{lem:deficiency-merge-rigid}). The third relates the two
-dimensions. Let a partition $P$ have value $v_2(P)$ at $n = 2$ and
-$v_3(P)$ at $n = 3$, and let $d(P)$ edges of $G$ join distinct parts of
-$P$. Then
+dimensions. Let a partition $P$ have value $v_2(P)$ at $d = 2$ and
+$v_3(P)$ at $d = 3$, and let $d_G(P)$ edges of $G$ join distinct parts
+of $P$ (\cref{def:D-deficiency}). Then
 \[
-  v_3(P) \;=\; 6\,(|P| - 1) - 5\,d(P) \;=\; 2\,v_2(P) - d(P).
+  v_3(P) \;=\; 6\,(|P| - 1) - 5\,d_G(P) \;=\; 2\,v_2(P) - d_G(P).
 \]
-So a partition whose value at $n = 2$ is at most zero has value at most
-zero at $n = 3$. Planar counts can therefore show that a set is rigid.
+So a partition whose value at $d = 2$ is at most zero has value at most
+zero at $d = 3$. Planar counts can therefore show that a set is rigid.
 
 From these facts we prove that a tight set is rigid, and that in a
 sparse graph a maximal rigid set has the least singleton value among the
@@ -4091,7 +4094,7 @@ steps at non-adjacent ends, for one or two
   Let $X \subseteq V(G)$ with $|X| \ge 2$ and $s_D(X) \le 0$. Then some
   $Y \subseteq X$ with $|Y| \ge 2$ has $\operatorname{def}(\tilde G[Y])
   = 0$. Hence, if no set of at least two bodies has deficiency zero,
-  then $s_D(X) \ge 1$ for every $X$ with $|X| \ge 2$; at $n = 2$, a
+  then $s_D(X) \ge 1$ for every $X$ with $|X| \ge 2$; at $d = 2$, a
   graph with no planar-rigid set is sparse.
 \end{lemma}
 \begin{proof}
@@ -4706,7 +4709,7 @@ The next two lemmas settle the first three cases of the table.
   By the contraction clause at a maximal planar-rigid set $W$. It is
   proper, since $\operatorname{def}_2(G) > 0$. A body outside $W$ with
   two neighbours in $W$ would enlarge it (\cref{lem:deficiency-add-body},
-  at $n = 2$). So no such body exists, and $G/G[W]$ is smaller than $G$
+  at $d = 2$). So no such body exists, and $G/G[W]$ is smaller than $G$
   (\cref{lem:pencil-contract-standing}, \cref{lem:reduction-measure}).
 \end{proof}
 
@@ -4736,8 +4739,8 @@ no two of them are adjacent, a rigid set that avoids one of them.
   $3 - \deg v$ over the bodies is at least $4$; each term is at most
   one, and positive only at degree two.
 
-  (2) With $d$ bodies of degree two, their $2d$ edges are distinct, so
-  $|E(G)| \ge 2d$, while $2|E(G)| \ge 2d + 3(|V(G)| - d)$. Hence
+  (2) With $m$ bodies of degree two, their $2m$ edges are distinct, so
+  $|E(G)| \ge 2m$, while $2|E(G)| \ge 2m + 3(|V(G)| - m)$. Hence
   $5|E(G)| \ge 6|V(G)|$, and removing $x$ removes one body and two
   edges.
 \end{proof}
@@ -5276,7 +5279,7 @@ nondegeneracy-feasible.
   Each of these finitely many conditions says that a polynomial in the
   parameters is nonzero. If the rank is $r$ at some parameters, it is at
   least $r$ off the zero set of a polynomial that is nonzero there.
-  Indeed, the hinge of an edge $uv$ is $p_u \wedge p_v$ up to a scalar,
+  Indeed, the hinge of an edge $uv$ is $p_u \vee p_v$ up to a scalar,
   and the rows of the rigidity matrix at an edge can be taken linear in
   its hinge, so the minors of the rigidity matrix are polynomials in the
   parameters.
@@ -5383,7 +5386,7 @@ nondegeneracy-feasible.
   of $x$ are independent. A body of $H$ that is not a hub of $G$ is not
   $a$ or $b$, so it has the same closed neighbourhood in $H$.
 
-  The new hinges $p_a \wedge p_x$ and $p_x \wedge p_b$ are independent, so
+  The new hinges $p_a \vee p_x$ and $p_x \vee p_b$ are independent, so
   the rank rises by at least six (\cref{lem:block-rank-ear}). As
   $\operatorname{def}_3(G - x) \le \operatorname{def}_3(G)$, the rank of
   $G$ reaches its deficiency rank, which bounds it
@@ -5513,7 +5516,7 @@ graphs alone, with the two consequences of nondegeneracy-feasibility in
   \uses{def:pencil-generic-motive, def:pencil-conditioned-pair}
   Let $K$ be infinite and $G$ simple and two-edge-connected on at least
   three bodies, nondegeneracy-feasible, and suppose every multigraph on
-  fewer bodies, at least one, satisfies the conditioned pair at $n = 3$
+  fewer bodies, at least one, satisfies the conditioned pair at $d = 3$
   (\cref{def:pencil-conditioned-pair}). Then $G$ has a generic pencil
   realization.
 \end{theorem}
@@ -5564,7 +5567,7 @@ one body.
   \leanok
   \uses{def:pencil-conditioned-pair}
   Let $K$ be an infinite field. Every multigraph with at least one body
-  satisfies the conditioned pair at $n = 3$
+  satisfies the conditioned pair at $d = 3$
   (\cref{def:pencil-conditioned-pair}).
 \end{theorem}
 \begin{proof}
@@ -5603,7 +5606,7 @@ We collect these results in the main theorem of this chapter.
   Let $K$ be an infinite field. For every simple connected multigraph $G$
   of minimum degree at least two, the general configuration of $G$ attains
   the rank $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$
-  (\cref{def:pencil-x0-attains}; \cref{def:D-deficiency}, at $n = 3$).
+  (\cref{def:pencil-x0-attains}; \cref{def:D-deficiency}, at $d = 3$).
   The two main-component statements
   (\cref{def:pencil-main-component-statements}) hold: every simple
   two-edge-connected multigraph on at least three bodies has a pencil

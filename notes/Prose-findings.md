@@ -1755,6 +1755,10 @@ declaration's name as its header writes it:
   $(\delta-1)\cdot G$ and $(\delta,\delta)$-sparsity (lines 165–195). Round 4 rewrites both.
   *Evidence:* read (a `grep` for `n(n+1)` and `\delta` over the chapters, at task 2.3).
   *Found:* round 2 task 2.3.
+  *Disposition:* done (`dc58265b`, `248ec772`): round 4's tasks 2.10 and 2.13 write $d$ and
+  $D$ in `generic-lift.tex`'s body-bar section and `intro.tex`'s Phase-15 and Phase-16 items;
+  $n(n+1)/2$ is left only in `body-bar.tex`'s gloss of Tay and Whiteley's letters and its
+  formalization note.
 - **F-067** · T · KT Proposition 1.1 (`panel-layer.tex`, `algebraic-induction.tex`,
   `deficiency.tex`, `case-i.tex`, `intro.tex`): KT's Proposition 1.1 (p. 648) is Tay and
   Whiteley's theorem, that $G$ has an infinitesimally rigid body-hinge realization if and only if
@@ -1769,6 +1773,11 @@ declaration's name as its header writes it:
   *Evidence:* read (KT pp. 648 and 655; JJ 2009 Theorem 6.1, `.refs/`; a `grep` for
   "Proposition~1.1" over the chapters, at task 2.7).
   *Found:* round 2 task 2.7.
+  *Disposition:* done (`1b06def1`, `db237dfd`, `5c65ea52`, `fd204aa5`, `8cfa4531`, `85e0e4f8`,
+  `c766f589`, `248ec772`, `baa224cc`): rounds 2–4 name the rank formula KT Proposition 2.3, and
+  `db237dfd` retitled `prop:rigidity-matrix-prop11` and its subsection; `baa224cc` corrected
+  `notes/BlueprintExposition.md`'s entry. KT Proposition 1.1 is left only for Tay and Whiteley's
+  theorem (`body-hinge.tex`, `rigidity-matrix.tex`, `panel-layer.tex`).
 - **F-072** · T · "boundary regime" (`intro.tex`): the Phase-19 item calls $M(\tilde G)$ the
   $(D,D)$-count matroid "at the boundary regime $\ell = 2k = D$", not "the matroidal-regime count
   matroid of Phase~7". The $(D,D)$ count has $\ell = k = D < 2k$; what `count-matroid.tex` does not
@@ -1779,6 +1788,9 @@ declaration's name as its header writes it:
   *Evidence:* read (`count-matroid.tex`'s opening; `countMatroid`'s signature, a matroid on
   `Sym2 V` for `ℓ < 2 * k`, `CountMatroid.lean`).
   *Found:* round 2 task 2.8.
+  *Disposition:* done (`86b44e1b`, `22317b88`, `1b06def1`, `ce54bf15`, `248ec772`): rounds 2 and 4
+  dropped the term from `deficiency.tex`'s subsection title and proofs, `molecular-induction.tex`
+  and `intro.tex`'s Phase-19 item; no chapter has "regime".
 - **F-073** · T · the dimension letter (`main-component.tex`, `pencil.tex`): both write the
   dimension as $n$, the formalization's parameter: "the deficiencies of `def:D-deficiency` at $n = 2$
   and $n = 3$ ($D = 3$ and $D = 6$)", "the conditioned pair at $n = 3$", about 48 lines in all.
@@ -1787,6 +1799,12 @@ declaration's name as its header writes it:
   $\operatorname{def}_3$.
   *Evidence:* read (a `grep` for "$n = 2$" and "$n = 3$" over the two chapters, at task 2.8).
   *Found:* round 2 task 2.8.
+  *Disposition:* done (task 6): KT's $d$ for the dimension on 15 lines of `pencil.tex` and 42 of
+  `main-component.tex`, with $\operatorname{def}_d$ for $\operatorname{def}_n$;
+  `fmlnote:pencil-conditioned-pair` says that the formalization calls it $n$. Where $d$ would
+  clash, `main-component.tex`'s degree $d$ is reworded (twice), a count $d$ is $m$, and $d(P)$ is
+  `def:D-deficiency`'s $d_G(P)$. The $n$ of a panel normal, of a polygon's size and of a dimension
+  bound stays.
 - **F-127** · T · the extensor of vectors (`molecular-induction.tex`, `main-component.tex`):
   `extensor.tex` writes the extensor of $v_1, \dots, v_j$ as the join $v_1 \vee \cdots \vee v_j$
   "from now on", and `meet.tex` writes $\wedge$ for the meet. `molecular-induction.tex` writes a
@@ -1796,6 +1814,12 @@ declaration's name as its header writes it:
   $x_1 \vee \cdots \vee x_{d-1}$ since task 2.2.
   *Evidence:* read (a `grep` for `\wedge` products of vectors over the chapters, at task 2.2).
   *Found:* round 3 task 2.2.
+  *Disposition:* done (task 6): $x_1 \vee \cdots \vee x_{d-1}$ in the proof of
+  `lem:case-cut-edge-realization`, now in `panel-layer.tex` (task 5.3 moved it and dropped the
+  paragraph before it), and $\vee$ for all 128 products on 92 lines of `main-component.tex`,
+  each read as a join of vectors (none is a meet). With them, its $\Lambda^2$ (30 places) is
+  the blueprint's $\bigwedge^2$, which leaves $\Lambda$ to the span of an ear's hinges.
+  `extensor.tex`'s and `rigidity-matrix.tex`'s basis products $e_{i_1} \wedge \cdots$ stay.
 - **F-203** · T · "core" (`jacobs.tex`, `main-component.tex`): the word names two objects.
   `def:two-core` is JJ's $G^{\mathrm{core}}$, the maximal subgraph of minimum degree at least two.
   `main-component.tex` calls the induced subgraph $H = G[W]$ of a contraction step "the core"
@@ -1805,6 +1829,10 @@ declaration's name as its header writes it:
   *Evidence:* read (`sec:jacobs-degree-one`; `main-component.tex`'s notation list and
   `sec:main-component-contract`).
   *Found:* round 4 task 2.8.
+  *Disposition:* done (task 6): `main-component.tex`'s notation list, which defines its core, says
+  that it is not the core of `def:two-core`, which every graph under the standing hypotheses is
+  (`lem:two-core-degree-one`). The word stays, as the chapter's titles and
+  `Graph.IsX0Graph.exists_additiveCore` use it.
 - **F-227** · T · `lem:complement-iso-decomposable-wedge-perp` (`meet.tex`): its two parts are
   `\item[(i)]` and `\item[(ii)]` of an `enumerate`, and its proof says "For (i)" and "For (ii)".
   The PDF prints the labels; the web build prints the items as 1 and 2, since plasTeX drops an
@@ -1812,6 +1840,10 @@ declaration's name as its header writes it:
   only `\item[…]`. Candidate: an `enumerate` with the proof's "For part 1", or inline "(i)" text.
   *Evidence:* read (the web build's `sec-molecular-meet.html`, one `<ol>`; `print.pdf` p. 139).
   *Found:* round 4 task 2.13.
+  *Disposition:* done (task 6): plain `\item`s, cited as part (1) and part (2) by the
+  subsection's opening, the proof, the formalization note and the proof of
+  `lem:case-III-claim612-line-in-panel-union`; `blueprint/SETUP-AND-PITFALLS.md`'s example of the
+  pitfall is updated.
 
 ## U — status surfaces
 

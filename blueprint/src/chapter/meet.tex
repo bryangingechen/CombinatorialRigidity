@@ -310,7 +310,7 @@ proves it for $d = 3$ by a count of dimensions.
 
 \subsection{Lines in projective three-space}
 
-In this subsection $d = 3$ and $V = K^4$, except in the first statement
+In this subsection $d = 3$ and $V = K^4$, except in part~(1)
 of \cref{lem:complement-iso-decomposable-wedge-perp} and in
 \cref{lem:decomposable-extensor-span-unique}, which hold for every $d$.
 A point $p \in K^3$ has the homogeneous coordinate vector
@@ -347,10 +347,10 @@ the meet lies on it.
   \leanok
   \uses{def:meet-complement-iso, lem:complement-iso-toDual, def:join, def:extensor}
   \begin{enumerate}
-    \item[(i)] Let $d \ge 1$ and $0 \le j \le d+1$, and let
+    \item Let $d \ge 1$ and $0 \le j \le d+1$, and let
       $X \in \bigwedge^{j} K^{d+1}$ and $Y \in \bigwedge^{d+1-j} K^{d+1}$
       with $X \vee Y = 0$. Then $\langle *X, Y \rangle = 0$.
-    \item[(ii)] Let $n_1, n_2 \in K^4$ be linearly independent, and let
+    \item Let $n_1, n_2 \in K^4$ be linearly independent, and let
       $Y = n \vee c$ with $n \in \{n_1, n_2\}$ and $c \in K^4$. Then
       $(n_1 \vee n_2) \vee Y = 0$ and
       $\langle *(n_1 \vee n_2), Y \rangle = 0$.
@@ -358,16 +358,16 @@ the meet lies on it.
 \end{lemma}
 \begin{proof}
   \leanok
-  For (i), \cref{lem:complement-iso-toDual} gives
+  For part~(1), \cref{lem:complement-iso-toDual} gives
   $\langle *X, Y \rangle = \operatorname{vol}(X \vee Y) =
-  \operatorname{vol}(0) = 0$. For (ii), $(n_1 \vee n_2) \vee (n \vee c)$
+  \operatorname{vol}(0) = 0$. For part~(2), $(n_1 \vee n_2) \vee (n \vee c)$
   is the extensor of the family $n_1, n_2, n, c$ (\cref{def:join}). This
   family repeats $n$, so its extensor is zero (the remark after
-  \cref{def:extensor}). The second claim follows by (i), with
+  \cref{def:extensor}). The second claim follows by part~(1), with
   $X = n_1 \vee n_2$ and $j = 2$.
 \end{proof}
 \begin{fmlnote}
-  The first pin is (i). The second and third pins are (ii) for
+  The first pin is part~(1). The second and third pins are part~(2) for
   $n = n_1$, without the hypothesis that $n_1$ and $n_2$ are linearly
   independent. The formal proof of
   \cref{lem:case-III-claim612-line-in-panel-union} obtains the case
@@ -467,8 +467,8 @@ that identify it, which we use after the proof.
   Its first column is zero by hypothesis, so it vanishes
   (\texttt{extensor\_\allowbreak{}toDual\_\allowbreak{}extensor\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}perp}).
 
-  The meet lies in $\Omega$ as well: by
-  \cref{lem:complement-iso-decomposable-wedge-perp}(ii), the pairing
+  The meet lies in $\Omega$ as well: by part~(2) of
+  \cref{lem:complement-iso-decomposable-wedge-perp}, the pairing
   $\langle *(n_1 \vee n_2), n_i \vee v \rangle$ vanishes for $i = 1, 2$
   and $v \in K^4$.
 

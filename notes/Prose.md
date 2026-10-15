@@ -49,8 +49,10 @@ the subgraph shared by removal and splitting off before their first uses, and it
 the base of KT Theorem 5.5's induction before the theorem, the operations on frameworks before
 their first users, and the genericity and counting subsections before Case II, and its task 5.5
 left the order of `pencil.tex`, which only a regrouping would change; that closed the node order.
-**Next concrete task:** round 5's task 6, terminology and notation (`notes/Prose-graph-cleanup.md`
-*Hand-off*).
+Its task 6 gave `pencil.tex` and `main-component.tex` the earlier chapters' notation, KT's $d$ for
+the dimension and $\vee$ for the join, and told the contracted core apart from the core of
+`jacobs.tex`. **Next concrete task:** round 5's task 7, the status surfaces
+(`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions
 

@@ -916,7 +916,7 @@ conditions.
   \leanok
   \uses{def:pencil-nondegenerate, def:pencil-generic-motive,
         def:pencil-distinct-motive, def:pencil-rank-hypothesis}
-  A multigraph $G$ satisfies the \emph{conditioned pair} at $n$ when it
+  A multigraph $G$ satisfies the \emph{conditioned pair} at $d$ when it
   has a pencil realization at the deficiency rank
   (\cref{def:pencil-rank-hypothesis}); when, if it is simple, it has an
   adjacent-distinct one (\cref{def:pencil-distinct-motive}); and when, if
@@ -928,10 +928,10 @@ conditions.
   \label{fmlnote:pencil-conditioned-pair}
   In the Lean, this definition and \cref{def:pencil-rank-hypothesis},
   \cref{def:pencil-generic-motive} and \cref{def:pencil-distinct-motive}
-  take the parameter $n$ of the deficiency (\cref{def:D-deficiency}, with
-  $D = \binom{n+1}{2}$) as an argument, while their realizations stay at
-  $k = 2$, where the target has $D = 6$. The theorems that use them take
-  $n = 3$, where the two agree.
+  take the dimension $d$ of the deficiency (\cref{def:D-deficiency}, with
+  $D = \binom{d+1}{2}$), which the formalization calls $n$, as an
+  argument, while their realizations stay at $k = 2$, where the target has
+  $D = 6$. The theorems that use them take $d = 3$, where the two agree.
 \end{fmlnote}
 
 We now prove the reduction for the conditioned pair, beginning with the
@@ -947,14 +947,14 @@ statement.
   \begin{enumerate}
     \item If $G$ has a loop, and every nonempty multigraph with fewer
       vertices than $G$, or with as many vertices and fewer edges,
-      satisfies the conditioned pair at $n = 3$
+      satisfies the conditioned pair at $d = 3$
       (\cref{def:pencil-conditioned-pair}), then so does $G$.
     \item If $G$ is loopless and has one or two vertices, it satisfies
-      the conditioned pair at $n = 3$.
+      the conditioned pair at $d = 3$.
     \item If $G$ is loopless with $|V(G)| \ge 3$ and not
       two-edge-connected (\cref{def:cut-edges-2ec}), and every nonempty
       multigraph on fewer vertices than $G$ satisfies the conditioned
-      pair at $n = 3$, then so does $G$.
+      pair at $d = 3$, then so does $G$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -1006,15 +1006,15 @@ statement.
   multigraphs $G$ with $|V(G)| \ge 3$: those with a proper rigid subgraph
   (\cref{def:rigid-subgraph}), and those that are two-edge-connected,
   have no proper rigid subgraph and have a vertex of degree two. Suppose
-  that each such $G$ satisfies the conditioned pair at $n = 3$
+  that each such $G$ satisfies the conditioned pair at $d = 3$
   (\cref{def:pencil-conditioned-pair}) whenever every nonempty multigraph
   on fewer vertices than $G$ does. Then every nonempty multigraph
-  satisfies the conditioned pair at $n = 3$.
+  satisfies the conditioned pair at $d = 3$.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:pencil-reduction, lem:pencil-pair-loop-base-cut}
-  Apply \cref{thm:pencil-reduction} with the conditioned pair at $n = 3$
+  Apply \cref{thm:pencil-reduction} with the conditioned pair at $d = 3$
   as the property. Its cases at a loop, on at most two vertices and at a
   cut edge are \cref{lem:pencil-pair-loop-base-cut}. Its contraction and
   split cases are the two hypotheses.
@@ -1079,11 +1079,11 @@ from the conditioned pair at smaller multigraphs
   Let $K$ be a field. The \emph{distinct main-component statement}
   asserts that every simple two-edge-connected multigraph on at least
   three bodies has an adjacent-distinct pencil realization at the
-  deficiency rank at $n = 3$ (\cref{def:pencil-distinct-motive}). The
+  deficiency rank at $d = 3$ (\cref{def:pencil-distinct-motive}). The
   \emph{generic main-component statement} asserts that every such
   multigraph that is nondegeneracy-feasible
   (\cref{def:pencil-nondegenerate}) has a generic pencil realization at
-  $n = 3$ (\cref{def:pencil-generic-motive}).
+  $d = 3$ (\cref{def:pencil-generic-motive}).
 \end{definition}
 
 \begin{lemma}[A multigraph with parallel edges; cf.\ KT Lemma~6.2]
@@ -1094,7 +1094,7 @@ from the conditioned pair at smaller multigraphs
         def:rigid-subgraph}
   Let $K$ be a field and $G$ a loopless multigraph on at least three
   bodies that is not simple. If every multigraph on strictly fewer
-  bodies satisfies the conditioned pair at $n = 3$
+  bodies satisfies the conditioned pair at $d = 3$
   (\cref{def:pencil-conditioned-pair}), then $G$ has a pencil realization
   at the deficiency rank (\cref{def:pencil-rank-hypothesis}).
 \end{lemma}
@@ -1153,7 +1153,7 @@ from the conditioned pair at smaller multigraphs
   Let $K$ be an infinite field. If the distinct and the generic
   main-component statements (\cref{def:pencil-main-component-statements})
   hold, then every multigraph on the whole ambient body set satisfies the
-  conditioned pair at $n = 3$.
+  conditioned pair at $d = 3$.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -1184,7 +1184,7 @@ from the conditioned pair at smaller multigraphs
   \leanok
   \uses{def:pencil-conditioned-pair}
   Let $K$ be an infinite field. Every multigraph on the whole ambient
-  body set satisfies the conditioned pair at $n = 3$
+  body set satisfies the conditioned pair at $d = 3$
   (\cref{def:pencil-conditioned-pair}): it has a pencil realization at
   the deficiency rank, with adjacent concurrency points distinct when it
   is simple, and a generic one when it is also nondegeneracy-feasible.
