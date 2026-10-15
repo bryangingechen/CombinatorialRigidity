@@ -684,7 +684,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   revisited. Since PROSE round 3 task 2.7 the proof gives the assembly in four steps, in KT's
   terms: the contraction's rank; the deletion of the columns of `r` by KT Lemma 5.1; KT's normals
   `q₀`, which give the bodies of `H` the normal of `r` (p. 675); and the polynomial `Q`. The
-  passage before `lem:rows-polynomial-in-normals` gives KT's two-step proof of the claim.
+  passage before `lem:rows-polynomial-in-normals` gives KT's two-step proof of the claim. Since
+  RECONCILE round 2 task 6 the node states the rank at one point, as its pin does, and the proof
+  keeps the first three steps and the spanning forms at `q₀`; the polynomial `Q` is
+  `lem:rank-polynomial-IH-relabel-proj`'s, at every deficiency.
 - **`lem:case-I-realization` N6-G3-G3c / the two splice legs live on *different*
   body sets, `V′` and `V∖V′ ∪ {v∗}`** — [done (`case-i.tex`, Phase-27 C2 exposition)]
   **(a)** thought "pure green-brick

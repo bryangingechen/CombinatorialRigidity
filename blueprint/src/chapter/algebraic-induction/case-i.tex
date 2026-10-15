@@ -210,7 +210,7 @@ next lemma, and in general by the polynomial of
   \leanok
   \uses{def:rigidity-matrix, def:rank-hypothesis, def:cycle-data, def:k-dof,
         lem:cycle-realization-rigid, lem:cycle-normals}
-  Let $K$ be an infinite field, let $3 \le m \le D$, and let $G$ be a
+  Let $K$ be an infinite field, let $3 \le m \le d + 1$, and let $G$ be a
   cycle on $m$ vertices (\cref{def:cycle-data}) that is a minimal
   $0$-dof-graph. Then $G$ has a generic full-rank realization
   (\cref{def:rank-hypothesis}), of rank $D(m - 1)$.
@@ -219,8 +219,6 @@ next lemma, and in general by the polynomial of
   \leanok
   \uses{lem:cycle-realization-rigid,
         lem:cycle-normals, lem:generic-realization-of-rigid}
-  We give the proof for $m \le d + 1$, the range of the formalization;
-  the note after the proof compares this range with Katoh and Tanigawa's.
   Let
   $v_0, \dots, v_{m-1}$ and $f_0, \dots, f_{m-1}$ be the vertices and the
   edges of $G$, where $f_i$ joins $v_i$ and $v_{i+1}$, with indices
@@ -243,13 +241,15 @@ next lemma, and in general by the polynomial of
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem assumes $m \le d + 1$. This is Katoh and Tanigawa's
-  range when $d = 2$, where $D = 3$. For $d \ge 3$ we have $d + 1 < D$,
-  and the cycles with $d + 1 < m \le D$ are not covered. Case~III applies
-  the lemma to cycles on at most $d$ vertices, as Katoh and Tanigawa do
-  in their proof of Lemma~6.13 (KT p.~692; \cref{lem:chain-cycle-dichotomy}),
-  and to triangles, for which $m = 3 = d + 1$ when $d = 2$
-  (\cref{lem:case-III}).
+  Katoh and Tanigawa state the lemma for $3 \le m \le D$ (KT p.~670).
+  The statement has the range of the pinned theorem, $m \le d + 1$, which
+  is theirs when $d = 2$, where $D = 3$. For $d \ge 3$ we have
+  $d + 1 < D$, and the cycles with $d + 1 < m \le D$ are not covered. No
+  use needs them. Katoh and Tanigawa apply the lemma to the triangle in
+  their proof of Lemma~6.7(i) (KT p.~677), and to cycles on at most $d$
+  vertices in their proof of Lemma~6.13 (KT p.~692;
+  \cref{lem:chain-cycle-dichotomy}). Case~III applies it to the same
+  cycles (\cref{lem:case-III}).
 
   The formal framework also has bodies outside $V(G)$
   (\cref{fmlnote:generic-full-rank}), and general position concerns their
@@ -496,7 +496,8 @@ bodies, where $\pi_W$ deletes the columns of $W$
   hinges at the edges between $V(H)$ and the other bodies (KT
   eq.~(6.6)). With KT Lemma~5.1, KT Claim~6.4 shows that the second
   block still has at least the rank of $R(G/E(H), p_2)$ (KT eq.~(6.9);
-  \cref{lem:claim-6-4}, below). The proof of the claim uses that $p_1$
+  \cref{lem:rank-polynomial-IH-relabel-proj}, and \cref{lem:claim-6-4} at
+  one point, below). The proof of the claim uses that $p_1$
   and $p_2$ are generic, so that the rank is the largest over all choices
   of the panels.
   The general form of this argument is \cref{lem:genericity-device}, in
@@ -624,7 +625,8 @@ gives KT eq.~(6.9), the bound on the second block in the proof of
 \cref{lem:case-I}. For panel normals, the first step is the next lemma.
 The lemmas after it give the rows outside $H$ at every deficiency
 (\cref{lem:rank-polynomial-IH-relabel-proj}), and \cref{lem:claim-6-4}
-states the claim when $G/E(H)$ is rigid.
+gives the rank at the placement of the second step when $G/E(H)$ is
+simple and rigid.
 
 \begin{lemma}[Rows polynomial in the normals; KT Claim~6.4]
   \label{lem:rows-polynomial-in-normals}
@@ -838,38 +840,38 @@ $V(H)$ the panel of the contracted body, and conclude from the algebraic
 independence of the coefficients of their panels that the rows of
 $G \setminus E(H)$ attain the rank of $G/E(H)$~\cite[Claim~6.4,
 p.~675]{katohTanigawa2011}. The polynomial $Q$ takes the place of that
-argument. Case~I uses the lemma in \cref{lem:case-I-realization}, and
-\cref{lem:claim-6-4} is its case of a rigid contraction.
+argument, and Case~I uses the lemma in \cref{lem:case-I-realization}.
+The next lemma gives the rank at one placement, $q_0$ in its proof, when
+$G/E(H)$ is simple and has deficiency zero. Its conclusion is that of
+\cref{lem:rank-polynomial-IH-relabel-proj} for $k = 0$ at one point, and
+it assumes $G/E(H)$ simple where that lemma assumes it minimal.
 
-\begin{lemma}[The rows outside $H$ at generic normals; KT Claim~6.4 and eq.~(6.9)]
+\begin{lemma}[The rows outside $H$ at one point; KT Claim~6.4 and eq.~(6.9)]
   \label{lem:claim-6-4}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidContract_exterior_rank_transport_htransport}
   \leanok
   \uses{def:rigidity-matrix, def:rigid-contraction, lem:rank-delete-vertex}
-  Let $G$ be a simple minimal $0$-dof-graph, let $H$ be a proper rigid
-  subgraph of $G$, and let $G/E(H)$ be its contraction to a vertex $r$ of
-  $H$, with vertex set $s_c = (V(G) \setminus V(H)) \cup \{r\}$. Suppose
-  that $G/E(H)$ has a generic full-rank realization
-  (\cref{def:rank-hypothesis}). Then there is a nonzero polynomial $Q$ in
-  the panel normals such that at every $q$ with $Q(q) \neq 0$, the rows of
-  $R(G \setminus E(H), q)$ with the columns of $V(H)$ deleted have rank
-  $D(|s_c| - 1)$.
+  Let $G$ be a multigraph, let $H$ be a proper rigid subgraph of $G$, and
+  let $G/E(H)$ be its contraction to a vertex $r$ of $H$, with vertex set
+  $s_c = (V(G) \setminus V(H)) \cup \{r\}$. Suppose that $G/E(H)$ is a
+  simple $0$-dof-graph (\cref{def:k-dof}) with a generic full-rank
+  realization (\cref{def:rank-hypothesis}). Then there are normals $q_0$
+  at which some $D(|s_c| - 1)$ rows of $R(G \setminus E(H), q_0)$ are
+  linearly independent after the columns of $V(H)$ are deleted.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:general-position-support-nonzero,
     lem:case-II-placement-old-rows-extract,
-    lem:independent-rows-of-rank, lem:isInfRigidOn-of-relative-count,
-    lem:rank-polynomial-proj-eval}
+    lem:independent-rows-of-rank, lem:isInfRigidOn-of-relative-count}
   Let $N = D(|s_c| - 1)$, and let $f$ map every body of $V(H)$ to $r$ and
-  fix the other bodies. By KT Lemma~3.5
-  (\cref{lem:rigidContract-isMinimalKDof}), $G/E(H)$ is a minimal
-  $0$-dof-graph, so its target rank is $N$. Its
-  generic full-rank realization has normals $n$ in general position at
-  which $R(G/E(H), n)$ has rank $N$. The bodies of $G/E(H)$ meet $V(H)$
-  only in $r$. So deleting the columns of $V(H)$ from $R(G/E(H), n)$
-  deletes those of the one body $r$, and by KT Lemma~5.1
-  (\cref{lem:rank-delete-vertex}) the rank stays $N$.
+  fix the other bodies. As $G/E(H)$ is a $0$-dof-graph, its target rank
+  is $N$. Its generic full-rank realization has normals $n$ in general
+  position at which $R(G/E(H), n)$ has rank $N$, so it is infinitesimally
+  rigid on $s_c$ (\cref{lem:isInfRigidOn-of-relative-count}). The bodies
+  of $G/E(H)$ meet $V(H)$ only in $r$. So deleting the columns of $V(H)$
+  from $R(G/E(H), n)$ deletes those of the one body $r$, and by KT
+  Lemma~5.1 (\cref{lem:rank-delete-vertex}) the rank stays $N$.
 
   Now give each body $v$ the normal $q_0(v) = n_{f(v)}$, so that the
   bodies of $V(H)$ get the normal of $r$. This is the choice in Katoh and
@@ -882,37 +884,36 @@ argument. Case~I uses the lemma in \cref{lem:case-I-realization}, and
   $R(G \setminus E(H), q_0)$ are those of $R(G/E(H), n)$, and they have
   rank $N$.
 
-  Finally, $G/E(H)$ has no loops, since every base of
-  $M(\widetilde{G/E(H)})$ meets the copies of every edge (as in the proof
-  of \cref{lem:rank-polynomial-IH-relabel-proj}). As $n$ is in general
+  Finally, $G/E(H)$ is simple, so it has no loops. As $n$ is in general
   position, the hinges of $G/E(H)$ at $n$, and so those of
   $G \setminus E(H)$ at $q_0$, are nondegenerate
   (\cref{lem:general-position-support-nonzero}). So the forms of
   \cref{lem:rows-polynomial-in-normals} at $q_0$ span the rows of every
   edge of $G \setminus E(H)$, and some $N$ of them are linearly
-  independent after the deletion. Their $N \times N$ minors are
-  polynomials in the normals, and one of them, $Q$, satisfies
-  $Q(q_0) \neq 0$. Wherever $Q(q) \neq 0$, the same $N$ forms are linearly
-  independent after the deletion (\cref{lem:rank-polynomial-proj-eval}),
-  and they lie in the row space of $R(G \setminus E(H), q)$. After the
-  deletion the rows have only the $N$ columns of $V(G) \setminus V(H)$,
-  so their rank is then $N$.
+  independent after the deletion, as in
+  \cref{lem:independent-rows-of-rank}.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem stops at $q_0$. It gives the normals $q_0$ and
-  $D(|s_c| - 1)$ rows of $R(G \setminus E(H), q_0)$ that are linearly
-  independent after the columns of $V(H)$ are deleted. It assumes that
-  $G/E(H)$ is simple and has deficiency zero, and that the endpoint
-  selector gives each edge of $G \setminus E(H)$ its two ends
-  (\cref{fmlnote:panel-hinge-nondegenerate}). It assumes neither that
-  $G$ is simple nor that $G$ is minimal. Its proof first orients each
-  edge of $G/E(H)$ as the same edge of $G \setminus E(H)$, as in
+  The rows of the statement are the forms of
+  \cref{lem:rows-polynomial-in-normals}, as in
+  \cref{lem:rank-polynomial-IH-relabel-proj}. Of $H$ the pinned theorem
+  assumes only that $r \in V(H) \subseteq V(G)$, and of $G$ nothing. It
+  assumes that the endpoint selector gives each edge of
+  $G \setminus E(H)$ its two ends
+  (\cref{fmlnote:panel-hinge-nondegenerate}). It states its conclusion
+  for every panel-hinge realization of $G/E(H)$ whose normals are in
+  general position and which is infinitesimally rigid on $s_c$, such as
+  the one in the proof, and its proof does not use that realization. Its
+  statement gives some normals $q_0$; its proof takes them of the form
+  above, giving every body of $V(H)$ the normal of $r$. Its proof first
+  orients each edge of $G/E(H)$ as the same edge of $G \setminus E(H)$, as in
   \cref{lem:rank-transport-relabel-of-le-finrank}, so that the rows of
-  the two graphs can be compared edge by edge. The polynomial $Q$, for every
-  deficiency, is \cref{lem:rank-polynomial-IH-relabel-proj}, whose proof
-  takes the same steps. The formal proof of Case~I uses that lemma, and
-  not this one.
+  the two graphs can be compared edge by edge. The polynomial $Q$, for
+  every deficiency, is \cref{lem:rank-polynomial-IH-relabel-proj}, whose
+  proof takes the same steps and then those of
+  \cref{lem:rank-polynomial-proj-eval}. The formal proof of Case~I uses
+  that lemma, and not this one.
 \end{fmlnote}
 
 Katoh and Tanigawa need three cases to obtain a nonparallel realization
@@ -1220,11 +1221,12 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a simple
-  minimal $0$-dof-graph with $|V(G)| \ge 3$ in which no proper rigid
-  subgraph $H$ has a simple contraction $G/E(H)$. Suppose that every
-  minimal $0$-dof-graph with at least one and fewer than $|V(G)|$
-  vertices has a nondegenerate-hinge panel realization, and a generic
-  full-rank realization if it is simple. Then $G$ has a generic
+  minimal $0$-dof-graph with $|V(G)| \ge 3$ that has a proper rigid
+  subgraph, and in which no proper rigid subgraph $H$ has a simple
+  contraction $G/E(H)$. Suppose that every minimal $0$-dof-graph with at
+  least one and fewer than $|V(G)|$ vertices has a nondegenerate-hinge
+  panel realization, and a generic full-rank realization if it is
+  simple. Then $G$ has a generic
   full-rank realization (\cref{def:rank-hypothesis}).
 \end{lemma}
 \begin{proof}
@@ -1238,10 +1240,9 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
     lem:relative-deficiency-rank-bound,
     lem:span-rigidityRows-eq-of-motions-eq,
     lem:splitoff-edge-substitution}
-  As in KT Lemma~6.5, we assume that $G$ has a proper rigid subgraph (the
-  note after the proof). By KT Claim~6.6 (\cref{lem:claim-6-6}), $G$ has
-  a vertex $v$ of degree two, joined to two distinct vertices $a$ and
-  $b$, such that $G_v$ is a simple minimal $0$-dof-graph. It has
+  By KT Claim~6.6 (\cref{lem:claim-6-6}), $G$ has a vertex $v$ of degree
+  two, joined to two distinct vertices $a$ and $b$, such that $G_v$ is a
+  simple minimal $0$-dof-graph. It has
   $|V(G)| - 1 \ge 2$ vertices, so it has a generic full-rank realization,
   of rank $D(|V(G)| - 2)$. Katoh and Tanigawa keep this realization, and
   give $v$ a panel $\Pi^\circ$ that is nonparallel to the other panels
@@ -1295,16 +1296,6 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
   full-rank realization of $G$.
 \end{proof}
 
-\begin{fmlnote}
-  The pinned theorem assumes that $G$ has a proper rigid subgraph, as KT
-  Lemma~6.5 does, and the statement omits this hypothesis. The proof
-  above uses it for KT Claim~6.6 (\cref{lem:claim-6-6}). Without a
-  proper rigid subgraph, the statement would be the case $k = 0$ of
-  Case~III (\cref{sec:molecular-algebraic-induction-caseIII}), whose
-  proof also needs the induction hypothesis at positive deficiencies (KT
-  Claim~6.11).
-\end{fmlnote}
-
 \begin{lemma}[The three cases of Case~I; KT Lemmas 6.2, 6.3 and 6.5]
   \label{lem:case-I-dispatch}
   \lean{CombinatorialRigidity.Molecular.case_I_dispatch_gen}
@@ -1314,7 +1305,10 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
         lem:case-I-realization-h65}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a minimal
   $0$-dof-graph with $|V(G)| \ge 3$ that has a proper rigid subgraph.
-  Then $G$ has a nondegenerate-hinge panel realization
+  Suppose that for every $k'$, every minimal $k'$-dof-graph with at
+  least one and fewer than $|V(G)|$ vertices has a nondegenerate-hinge
+  panel realization, and a generic full-rank realization if it is
+  simple. Then $G$ has a nondegenerate-hinge panel realization
   (\cref{def:genuine-hinge-realization}), and if $G$ is simple, a
   generic full-rank realization (\cref{def:rank-hypothesis}).
 \end{lemma}
@@ -1322,10 +1316,10 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
   \leanok
   \uses{lem:case-I-realization-nonsimple, lem:case-I-realization,
         lem:case-I-realization-h65, lem:generic-yields-genuine-hinge}
-  As in the three lemmas, we assume the induction hypothesis KT
-  eq.~(6.1) for the graphs with fewer vertices than $G$ (the note after
-  the proof). We follow Katoh and Tanigawa's three cases (KT p.~673). If
-  $G$ is not simple, then KT Lemma~6.2 gives a nondegenerate-hinge panel
+  The hypothesis is the induction hypothesis KT eq.~(6.1) for the graphs
+  with fewer vertices than $G$. We follow Katoh and Tanigawa's three
+  cases (KT p.~673). If $G$ is not simple, then KT Lemma~6.2 gives a
+  nondegenerate-hinge panel
   realization (\cref{lem:case-I-realization-nonsimple}). Let $G$ be
   simple. Suppose that some proper rigid subgraph $H$ has a simple
   contraction $G/E(H)$. Then $H$ and $G/E(H)$ are simple minimal
@@ -1338,10 +1332,8 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem assumes the induction hypothesis, for every $k'$
-  and every minimal $k'$-dof-graph with at least one and fewer than
-  $|V(G)|$ vertices, and the statement omits it. The pinned theorem is
-  Case~I for $k = 0$; the next lemma is Case~I for every $k$.
+  The pinned theorem is Case~I for $k = 0$; the next lemma is Case~I for
+  every $k$.
 \end{fmlnote}
 
 Case~I for every $k$ makes the same case split, and for $k > 0$ its

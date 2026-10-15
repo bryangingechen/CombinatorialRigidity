@@ -2312,7 +2312,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the pin's statement and the step `hnk` of its body,
   `Molecular/AlgebraicInduction/CaseIII/Arms.lean`; KT 2011 pp. 670 and 692, `.refs/`).
   *Found:* round 3 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, S15).
+  *Disposition:* done (task 6): the statement takes the pin's range $3 \le m \le d + 1$, and the
+  note gives KT's range and both of KT's uses, each inside it: the triangle in the proof of their
+  Lemma 6.7(i) (p. 677), which this entry missed, and the cycles on at most $d$ vertices in that of
+  Lemma 6.13 (p. 692). `panel-layer.tex`'s `\cref` says the node's range.
 - **F-116** · S · `lem:case-I` (`algebraic-induction/case-i.tex`): the statement is KT eq. (6.3)'s
   rank addition: for a minimal $k$-dof-graph $G$ with a proper rigid subgraph $H$, $(G,p)$
   attains the target rank if and only if $\operatorname{rank} R(G,p) = D(|V(H)|-1) +
@@ -2489,7 +2492,14 @@ declaration's name as its header writes it:
   p. 675, `.refs/`); measured (`scripts/blueprint-deps.py --label lem:claim-6-4` and
   `lem:case-I-realization`, at `9a465598`).
   *Found:* round 3 task 2.7.
-  *Disposition:* reported (`notes/Prose-report.md`, S21).
+  *Disposition:* done (task 6): the statement is the pin's: for any $G$, with $G/E(H)$ a simple
+  $0$-dof-graph with a generic full-rank realization, some normals $q_0$ at which $D(|s_c| - 1)$
+  rows of $G \setminus E(H)$ are independent after the columns of $V(H)$ are deleted. The pin's
+  statement gives some $q_0$ only, so KT's point is the proof's, which keeps its steps and stops
+  there; the passage before the node says that it is `lem:rank-polynomial-IH-relabel-proj`'s
+  conclusion at $k = 0$ and one point, and the proof's edge to `lem:rank-polynomial-proj-eval` (no
+  Lean basis) goes with the polynomial. The note names the pin's premise of a rigid realization in
+  general position (`F-140`), which the proof's realization meets.
 - **F-141** · S · `lem:case-I-realization`, `lem:case-I-realization-h65`, `lem:case-I-dispatch`
   (`algebraic-induction/case-i.tex`): three statements leave out hypotheses their pins assume.
   `lem:case-I-realization-h65` omits that $G$ has a proper rigid subgraph, which
@@ -2506,7 +2516,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/Theorem55.lean`; KT
   2011 pp. 673--676, `.refs/`).
   *Found:* round 3 task 2.8.
-  *Disposition:* reported (`notes/Prose-report.md`, S14).
+  *Disposition:* done (task 6): `lem:case-I-realization-h65` assumes a proper rigid subgraph and
+  `lem:case-I-dispatch` the induction hypothesis, for every $k'$, as their pins do; the proofs'
+  sentences assuming them go, with the first node's note and the second's first sentence.
+  `lem:case-I-realization` is kept, as the report suggests.
 - **F-142** · S · `lem:case-I-realization-nonsimple` (`algebraic-induction/case-i.tex`): the
   statement is KT Lemma 6.2 for every $d \ge 2$; its pin `case_I_realization_nonsimple` is the case
   $d = 3$ (`hn : bodyBarDim n = screwDim 2`), a wrapper of `case_I_realization_nonsimple_gen`, the
