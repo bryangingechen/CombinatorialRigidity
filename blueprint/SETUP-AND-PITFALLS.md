@@ -120,6 +120,14 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   notes changes the graph, so that round left them (`notes/Cleanup40.md`).
   Moved by `40-simplify` task 10h (`528381ef`, verdict `m5`): the node now
   draws filled.
+- **A `\uses` of a remark draws its users as not fully proved.** The dep
+  graph draws only theorem-like nodes, so `\uses{rem:…}` draws no edge,
+  and `lint.sh` passes it, as the label exists. But leanblueprint counts
+  the remark, which has no `\leanok`, among the node's ancestors, so the
+  node and everything that depends on it draw in the lighter green
+  (`#9CEC8B`) instead of `#1CAC78`. Cite a remark with `\cref` in the
+  proof. Three such `\uses` in `molecular-induction.tex` drew 83 nodes so,
+  `thm:theorem-55` among them, until PROSE round 5 task 4.3.
 - **A literal `\lean{}` in prose poisons `lean_decls` and fails
   `checkdecls`.** plastex executes the `\lean` macro wherever it
   appears, including inside descriptive prose — e.g. a

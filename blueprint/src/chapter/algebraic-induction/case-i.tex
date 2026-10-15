@@ -784,7 +784,7 @@ and KT Lemma~6.5, and finally the case split.
   \leanok
   \uses{lem:rows-polynomial-in-normals, lem:rank-polynomial-IH-relabel-proj,
         lem:genericity-device, lem:case-I, lem:rigidContract-isMinimalKDof,
-        lem:isInfRigidOn-of-relative-count}
+        lem:isInfRigidOn-of-relative-count, lem:subgraph-minimality}
   By KT Lemma~3.3 (\cref{lem:subgraph-minimality}), $H$ is a minimal
   $0$-dof-graph. By KT Lemma~3.5 (\cref{lem:rigidContract-isMinimalKDof}),
   $G/E(H)$ is a minimal $k$-dof-graph, with the vertex set
@@ -989,7 +989,7 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
 \begin{proof}
   \leanok
   \uses{def:D-deficiency, def:edge-multiply, lem:removal-deficiency,
-        lem:subgraph-minimality}
+        lem:subgraph-minimality, thm:def-eq-corank}
   Let $G'$ be a proper rigid subgraph of $G$ whose vertex set is maximal
   under inclusion. The subgraph of $G$ induced on $V(G')$ contains $G'$ and
   has the same vertices, so its deficiency is at most that of $G'$,

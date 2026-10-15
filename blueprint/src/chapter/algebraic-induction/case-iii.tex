@@ -68,6 +68,7 @@ on its own, as Katoh and Tanigawa use it here.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:balanced-forest-packing}
   We recall Katoh and Tanigawa's
   proof~\cite[p.~661]{katohTanigawa2011}, which
   \cref{lem:splitoff-kdof-criterion} also gives. Let $B$ be a base of
@@ -1445,7 +1446,7 @@ it. The formal proof of the case $d = 3$ does not use these lemmas.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.ofNormals_relabel,
         CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel}
   \leanok
-  \uses{lem:splitOff-isLink-relabel}
+  \uses{lem:splitOff-isLink-relabel, def:D-deficiency}
   Let $G$, $v$, $a$, $b$ and $c$ be as in
   \cref{lem:splitOff-isLink-relabel}, and let $q$ be normals. Let
   $q_\rho$ be the normals with $q_\rho(v) = q(a)$, $q_\rho(a) = q(v)$, and
@@ -2198,7 +2199,8 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
   \label{lem:case-III-chain-relabel-rows}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.chainData_bottom_relabel}
   \leanok
-  \uses{def:chain-data, def:panel-hinge-framework, def:rigidity-matrix}
+  \uses{def:chain-data, def:panel-hinge-framework, def:rigidity-matrix,
+    def:graph-operations}
   Let $G$ be a multigraph with a chain $v_0 v_1 \cdots v_d$ of length $d$
   (\cref{def:chain-data}), let $2 \le i \le d - 1$, and let $q$ be
   normals. Let $\sigma_i$ and $q_i$ be as above. Let $f$ be a row of

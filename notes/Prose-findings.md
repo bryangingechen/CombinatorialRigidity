@@ -147,6 +147,9 @@ declaration's name as its header writes it:
   279 more are implied.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (tasks 4.2–4.3): none of the eight chapters has a missing edge. Of the 26
+  and 17 missing at the two tasks' parents, 14 and 9 were added and the rest are implied by them;
+  each task also added the edges its removals of unbacked edges left missing.
 - **F-003** · E · round 3's files (`algebraic-induction.tex` and its five sections): 164 missing
   edges at 47 nodes (42 through a statement): `case-iii` 70, `case-i` 52, `panel-layer` 26,
   `case-ii` 15, `genericity-and-count` 1. The commonest targets are `def:rigidity-matrix` (15),
@@ -181,6 +184,10 @@ declaration's name as its header writes it:
   `Graph.kt_lemma_41_overquantified`, which `checkdecls` checks and no node shows.
   *Evidence:* measured (`scripts/blueprint-deps.py`'s parse notes, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (task 4.3): the three `\uses` of the remark removed, as an edge to KT Lemma
+  4.1's node (`lem:forest-surgery-split`) would close a cycle through `lem:balanced-forest-packing`;
+  each of the three proofs cites the remark instead. The remark had drawn 83 nodes `#9CEC8B`, as not
+  fully proved; none is now. The example keeps its pin, which `checkdecls` checks.
 - **F-008** · E · the graph's four unfilled nodes: `def:blockingWitness` (`pebble-game.tex`),
   `def:induced-span` and `lem:forest-surgery-unsplit` (`molecular-induction.tex`) have neither a
   pin nor `\leanok`; `def:dof-generic` (`rigidity-matrix.tex`) pins
@@ -275,6 +282,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `1b06def1`); read (the pins'
   statements).
   *Found:* round 2 task 2.11.
+  *Disposition:* done (task 4.3): `def:induced-span` pinned at task 3.4; the edges of
+  `lem:contract-rank-bridge` and `lem:contract-minimality-transport` to `def:rigid-contraction`
+  removed, with the second's to `lem:subgraph-minimality`; `lem:contraction-minimality`'s statement
+  edges to `lem:rigid-full-rank` and `lem:contract-rank-bridge` moved to its proof, and its edge to
+  `lem:subgraph-minimality` removed.
 - **F-089** · E · the surgery's lemmas (`molecular-induction.tex`): the statement edges of
   `lem:reroute-cycle-lift` and `lem:reverse-pendant-insert` to `lem:reroute-vfree-transport`, and
   of `lem:reverse-reroute-cycle-lift` to `lem:reroute-cycle-lift`, have no Lean basis; the prose
@@ -288,6 +300,13 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `01aec968`); read (the pins'
   statements).
   *Found:* round 2 task 2.13.
+  *Disposition:* done (task 4.3): `lem:reroute-cycle-lift`'s edge to `lem:reroute-vfree-transport`
+  moved to its proof, which applies the lemma; those of `lem:reverse-pendant-insert` and
+  `lem:reverse-reroute-cycle-lift` removed, as their proofs follow an argument ("as in the proof
+  of", "we reverse the argument of", `F-175`); `lem:forest-surgery-count`'s edge to
+  `lem:balanced-forest-packing` removed, and its proof and `lem:edge-splitting`'s now `\uses`
+  `lem:forest-packing-decomp`; `lem:reverse-reroute-cycle-lift`'s proof edge to
+  `lem:splitoff-edge-substitution` added, a forward edge (task 5).
 - **F-093** · E · `lem:splitoff-deficiency` and `lem:removal-deficiency`
   (`molecular-induction.tex`): edges the pins do not back. The statement of
   `lem:splitoff-deficiency` uses `def:matroid-MG` and `thm:def-eq-corank`, which neither of its
@@ -300,6 +319,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `90051e3c`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.14.
+  *Disposition:* done (task 4.3): the four unbacked edges removed, the last two as their proofs
+  follow `lem:splitoff-deficiency`'s argument; the two bounds' statements now `\uses`
+  `def:D-deficiency`.
 - **F-095** · E · KT Lemmas 4.3(ii)–4.8's nodes (`molecular-induction.tex`): edges the pins do
   not back, and edges they need. The statement edges of `lem:reduction-step` to
   `lem:reducible-vertex` and `lem:reduction-measure`, and of `lem:reduction-step-pos` to
@@ -318,6 +340,14 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `d9b0e96a`); read (the pins'
   statements and bodies; the two citing passages).
   *Found:* round 2 task 2.15.
+  *Disposition:* done (task 4.3): the three statement edges with no Lean basis removed; those of
+  `lem:splitoff-kdof-criterion` and `lem:removal-deficiency-strict` moved to their proofs;
+  `lem:edge-set-indep-pos`'s proof edge to `lem:rigid-full-rank` added, through which
+  `lem:reduction-step-pos` reaches it, and `lem:reducible-vertex`'s to
+  `lem:two-edge-connected-degree`, which implies `def:cut-edges-2ec`.
+  `lem:splitoff-edge-substitution` is implied at both nodes, and `lem:reduction-step-pos`'s edge to
+  `lem:edge-set-indep-pos`, reached through `lem:removal-deficiency-strict`, stays. The two citing
+  passages cite `lem:reduction-measure` and `lem:reducible-vertex` already.
 - **F-100** · E · KT Theorem 4.9 to `lem:chain-data-of-noRigid` (`molecular-induction.tex`): edges
   the pins do not back, and edges they need. `thm:minimal-kdof-reduction` has its five `\uses` on
   its statement and none on its proof. Its edge to `lem:contraction-minimality` has no Lean basis:
@@ -339,6 +369,15 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `a2df0ed3`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.16.
+  *Disposition:* done (task 4.3): `thm:minimal-kdof-reduction`'s four lemma edges moved to its
+  proof, which also takes `lem:rigidContract-isMinimalKDof` and `lem:two-vertex-trichotomy` for part
+  (i) and reaches `lem:two-edge-connected-degree` through `lem:reducible-vertex`; both KT Lemma 6.1
+  nodes' edges to `thm:minimal-kdof-reduction-all-k` removed, and the second's to
+  `lem:genericity-device`, whose argument it follows; that node's proof takes
+  `lem:general-position-support-nonzero`, which implies `def:panel-general-position`, and
+  `lem:moment-curve-general-position`, two forward edges (task 5); `lem:adjacent-degree-two-pair`'s
+  two proof edges removed, its other statement edges moved to its proof, which also takes
+  `lem:deficiency-zero-connected`, the node it cites.
 - **F-105** · E · KT Lemma 4.6's nodes, `def:chain-data` to `lem:chain-data-extract`
   (`molecular-induction.tex`): edges the pins do not back, and edges they need. The statement
   edges of `def:chain-data` and `def:cycle-data` to `def:graph-operations` have no Lean basis: the
@@ -352,6 +391,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `1d455ed9`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.17.
+  *Disposition:* done (task 4.3): the two definitions' edges to `def:graph-operations` removed
+  (`lem:case-III-chain-relabel-rows`, which reached it through `def:chain-data`, takes the edge);
+  the statement edges of `lem:chain-cycle-dichotomy` and `lem:chain-data-extract` that their proofs
+  name removed; the dichotomy's proof takes `lem:deficiency-zero-connected`, which implies the
+  other two; `def:edge-multiply` is implied.
 - **F-109** · E · `meet.tex`'s nodes: edges the pins do not back, and edges they need. The
   statement edge of `def:meet-pairing-dual` to `def:meet-top-equiv` has no Lean basis, nor have
   those of `lem:complement-iso-line-one-dim` to `def:join` and `def:extensor` (its pins are about
@@ -366,6 +410,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, at `d5db0e0c`); read (the
   pins' statements and bodies).
   *Found:* round 2 task 2.18.
+  *Disposition:* done (task 4.3): the six edges with no Lean basis removed, four of them at the
+  step lemmas and definitions and the claim's two; `def:meet-complement-iso`'s statement takes
+  `def:join` and `def:extensor`, its body's reach, through which `lem:complement-iso-toDual`
+  reaches them; the claim's proof takes `def:meet-pairing-dual`, whose determinant it cites. The
+  nine realization pins left the claim at task 3.2 (`F-110`).
 - **F-129** · E · `thm:theorem-55-6` (`algebraic-induction/panel-layer.tex`): its statement and
   proof `\uses` `lem:subgraph-minimality` (a subgraph of a minimal $k$-dof-graph with deficiency
   $k'$ is a minimal $k'$-dof-graph), which the argument does not use. Its step is

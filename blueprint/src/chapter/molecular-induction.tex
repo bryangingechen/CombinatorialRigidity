@@ -88,7 +88,8 @@ graph, the form that the algebraic induction uses.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:matroid-MG, lem:rank-matroidMG-le, lem:matroid-restrict-subgraph, thm:def-eq-corank}
+  \uses{def:matroid-MG, lem:rank-matroidMG-le, lem:matroid-restrict-subgraph, thm:def-eq-corank,
+    cor:k-spanning-trees}
   For the count we follow Katoh and
   Tanigawa~\cite[p.~658]{katohTanigawa2011}. As $X$ is a circuit, $X - e$
   is independent, so $\tilde G \restriction (X - e)$ is $(D, D)$-sparse
@@ -142,7 +143,6 @@ for any subgraph, which we contract to one of its vertices.
   \label{def:rigid-contraction}
   \lean{Graph.rigidContract}
   \leanok
-  \uses{def:rigid-subgraph}
   Let $H$ be a subgraph of a multigraph $G$, and let $r$ be a vertex of
   $H$. The \emph{contraction} $G/E(H)$ of $H$ to $r$ is obtained from
   $G$ by deleting the edges of $H$ and identifying every vertex of $H$
@@ -188,7 +188,7 @@ compute its rank.
   \label{lem:contract-rank-bridge}
   \lean{Graph.contract_matroidMG_rank}
   \leanok
-  \uses{def:rigid-contraction, def:matroid-MG, lem:matroid-restrict-subgraph}
+  \uses{def:matroid-MG, lem:matroid-restrict-subgraph}
   Let $H$ be a subgraph of a multigraph $G$. Then
   \[
     \operatorname{rank}\bigl(M(\tilde G) / E(\tilde H)\bigr)
@@ -241,7 +241,7 @@ the contraction.
   \label{lem:contract-minimality-transport}
   \lean{Graph.contract_minimality_transport}
   \leanok
-  \uses{lem:subgraph-minimality, def:k-dof, def:rigid-contraction}
+  \uses{def:k-dof}
   Let $G$ be a minimal $k$-dof-graph, and let $H$ be a subgraph of $G$.
   Then every base of $M(\tilde G)/E(\tilde H)$ meets $\tilde e$ for every
   edge $e$ of $G$ that is not an edge of $H$.
@@ -262,7 +262,7 @@ the contraction.
   \label{lem:contraction-minimality}
   \lean{Graph.contraction_isMinimalKDof}
   \leanok
-  \uses{def:rigid-subgraph, lem:subgraph-minimality, def:k-dof, lem:rigid-full-rank, lem:contract-rank-bridge, lem:contract-deficiency-conservation, lem:contract-minimality-transport}
+  \uses{def:rigid-subgraph, def:k-dof, lem:contract-deficiency-conservation, lem:contract-minimality-transport}
   Let $D \ge 1$, let $G$ be a minimal $k$-dof-graph, and let $H$ be a
   proper rigid subgraph of $G$. Then
   \[
@@ -274,7 +274,8 @@ the contraction.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:contract-deficiency-conservation, lem:contract-minimality-transport}
+  \uses{lem:contract-deficiency-conservation, lem:contract-minimality-transport,
+    lem:rigid-full-rank, lem:contract-rank-bridge}
   As $H$ is proper, it has at least two vertices, and
   $\operatorname{def}(\tilde G) = k$ as $G$ is a $k$-dof-graph. So the
   identity is \cref{lem:contract-deficiency-conservation}, and the
@@ -407,7 +408,6 @@ p.~660]{katohTanigawa2011}. They also use its inverse, edge-splitting
   \label{def:graph-operations}
   \lean{Graph.removeVertex, Graph.splitOff, Graph.edgeSplit}
   \leanok
-  \uses{def:k-dof}
   Let $G$ be a multigraph, and let $v$ be a vertex of $G$ of degree two,
   whose two edges join $v$ to vertices $a$ and $b$.
   \begin{itemize}
@@ -587,7 +587,8 @@ and~4.2 with such a partition.
   \label{lem:base-vfiber-count}
   \lean{Graph.isBase_vfiber_ncard_ge}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:removal-deficiency, rem:kt-lemma-41}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:removal-deficiency,
+    def:k-dof}
   Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
   two, whose edges $e_a$ and $e_b$ join $v$ to vertices $a, b \neq v$.
   Then every base $B$ of $M(\tilde G)$ contains at least $D$ of the
@@ -600,6 +601,7 @@ and~4.2 with such a partition.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:matroid-restrict-subgraph}
   Let $G_v = G - v$ (\cref{def:graph-operations}), and let
   $B_0 = B \setminus (\tilde e_a \cup \tilde e_b)$. An edge of $B_0$ is
   a copy of an edge of $G$ other than $e_a$ and $e_b$, so it is not
@@ -626,13 +628,15 @@ and~4.2 with such a partition.
   The last step is KT Lemma~4.4 (\cref{lem:removal-deficiency}), which
   uses $D \ge 2$: it gives
   $\operatorname{def}(\tilde G) \le \operatorname{def}(\widetilde{G_v})$.
+  \Cref{rem:kt-lemma-41} uses this count to find a balanced partition
+  of a base.
 \end{proof}
 
 \begin{lemma}[A forest with no edge at $v$ accepts an edge at $v$]
   \label{lem:acyclic-insert-vfiber}
   \lean{Graph.acyclicSet_insert_vfiber_of_not_inc}
   \leanok
-  \uses{def:matroid-MG, rem:kt-lemma-41, lem:base-vfiber-count}
+  \uses{def:body-bar-framework, def:edge-multiply}
   Let $G$ be a multigraph with a vertex $v$ of degree two. Let $F$ be a
   forest of $\tilde G$ none of whose edges is incident with $v$, and let
   $x$ be an edge of $\tilde G$ that joins $v$ to a vertex $w \neq v$.
@@ -646,13 +650,15 @@ and~4.2 with such a partition.
   bridge. A bridge lies on no cycle, and $F$ contains no cycle, so
   $F \cup \{x\}$ contains none. The argument uses only that no edge of
   $F$ is incident with $v$, not the degree of $v$.
+  \Cref{rem:kt-lemma-41} uses the lemma to move an edge at $v$ between
+  the forests of a partition of a base.
 \end{proof}
 
 \begin{lemma}[Moving an edge at $v$ into a forest with none]
   \label{lem:packing-move}
   \lean{Graph.exists_packing_move_of_not_inc}
   \leanok
-  \uses{def:matroid-MG, lem:acyclic-insert-vfiber, lem:base-vfiber-count}
+  \uses{lem:acyclic-insert-vfiber}
   Let $G$ be a multigraph with a vertex $v$ of degree two, and let
   $F_1, \dots, F_D$ be forests of $\tilde G$ with union $I$. Suppose
   that no edge of $F_j$ is incident with $v$, and let $x \in I$ be an
@@ -673,7 +679,7 @@ and~4.2 with such a partition.
   \label{lem:balanced-forest-packing}
   \lean{Graph.exists_balanced_forest_packing}
   \leanok
-  \uses{def:matroid-MG, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, lem:packing-move, rem:kt-lemma-41}
+  \uses{def:matroid-MG, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber}
   Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
   two, whose edges join $v$ to vertices $a, b \neq v$. Then every base
   $B$ of $M(\tilde G)$ is the union of $D$ pairwise disjoint forests of
@@ -695,7 +701,8 @@ and~4.2 with such a partition.
   disjoint with union $B$, since $x$ lay in $F_i$ only. Now $F_j$ has an
   edge incident with $v$, and $F_i$ keeps its other one. So the number
   of forests with no edge incident with $v$ drops by one, and the
-  induction hypothesis gives the partition.
+  induction hypothesis gives the partition. Katoh and Tanigawa's proof
+  of their Lemma~4.1 assumes such a partition (\cref{rem:kt-lemma-41}).
 \end{proof}
 
 We now perform the surgery on a balanced partition of a base.
@@ -704,7 +711,8 @@ We now perform the surgery on a balanced partition of a base.
   \label{lem:reroute-vfree-transport}
   \lean{Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG}
+  \uses{def:graph-operations, def:body-bar-framework,
+    def:edge-multiply}
   Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
   join $v$ to vertices $a, b \neq v$, and let $F$ be a forest of
   $\tilde G$. Then the edges of $F$ that are not incident with $v$ form a
@@ -723,7 +731,7 @@ We now perform the surgery on a balanced partition of a base.
   \label{lem:reroute-cycle-lift}
   \lean{Graph.isAcyclicSet_splitOff_reroute}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, lem:reroute-vfree-transport}
+  \uses{def:graph-operations}
   Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
   $e_a$ and $e_b$ join $v$ to vertices $a, b \neq v$. Let $F$ be a forest
   of $\tilde G$ whose edges incident with $v$ are $p_a \in \tilde e_a$ and
@@ -733,6 +741,7 @@ We now perform the surgery on a balanced partition of a base.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:reroute-vfree-transport, def:k-dof}
   Let $F_0 = F \setminus \{p_a, p_b\}$, the set of edges of $F$ not
   incident with $v$. By \cref{lem:reroute-vfree-transport}, $F_0$ is a
   forest of $\widetilde{G_v^{ab}}$, so a cycle $C$ of $F_0 \cup \{r\}$
@@ -746,7 +755,7 @@ We now perform the surgery on a balanced partition of a base.
   \label{lem:forest-surgery-count}
   \lean{Graph.forest_surgery_count}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport}
+  \uses{def:graph-operations, def:matroid-MG, lem:reroute-cycle-lift, lem:reroute-vfree-transport}
   Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
   two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
   $a, b \neq v$. Let $F_1, \dots, F_D$ be pairwise disjoint forests of
@@ -761,6 +770,7 @@ We now perform the surgery on a balanced partition of a base.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:forest-packing-decomp}
   Two copies of an edge form a cycle, so each $F_i$ has at most one edge
   in $\tilde e_a$ and at most one in $\tilde e_b$. These are its only
   edges incident with $v$, and it has at least one, so it has one or two.
@@ -835,7 +845,7 @@ forest surgery.
   \label{cor:forest-surgery-deficiency}
   \lean{Graph.splitOff_deficiency_le_of_forest_surgery}
   \leanok
-  \uses{lem:forest-surgery-split, lem:splitoff-deficiency}
+  \uses{lem:forest-surgery-split}
   Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
   two, whose edges join $v$ to distinct vertices $a, b \neq v$. Then
   \[
@@ -901,7 +911,7 @@ gives a forest of $\tilde G$.
   \label{lem:reverse-reroute-cycle-lift}
   \lean{Graph.isAcyclicSet_mulTilde_of_splitOff_reroute}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, lem:reroute-cycle-lift}
+  \uses{def:graph-operations}
   Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
   $e_a$ and $e_b$ join $v$ to distinct vertices $a, b \neq v$. Let $F'$
   be a forest of $\widetilde{G_v^{ab}}$ that contains a copy $r$ of $ab$,
@@ -910,6 +920,7 @@ gives a forest of $\tilde G$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:splitoff-edge-substitution, def:k-dof}
   We reverse the argument of \cref{lem:reroute-cycle-lift}. Two copies
   of $ab$ form a cycle, so $r$ is the only copy of $ab$ in $F'$. Hence the
   edges of $F_0 = F' \setminus \{r\}$ are edges of $\widetilde{G_v}$.
@@ -927,7 +938,7 @@ gives a forest of $\tilde G$.
   \label{lem:reverse-pendant-insert}
   \lean{Graph.isAcyclicSet_mulTilde_insert_vfiber_of_splitOff}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, lem:reroute-vfree-transport, lem:acyclic-insert-vfiber}
+  \uses{def:graph-operations, lem:acyclic-insert-vfiber, def:k-dof}
   Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
   join $v$ to vertices $a, b \neq v$. Let $F$ be a forest of
   $\widetilde{G_v^{ab}}$ that contains no copy of $ab$, and let $x$ be an
@@ -958,7 +969,7 @@ two cases of the lemma cover every $I'$.
   \lean{Graph.splitOff_indep_extend_of_fiber_subset,
     Graph.splitOff_indep_extend_of_fiber_lt}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, lem:forest-packing-decomp,
+  \uses{def:graph-operations, def:matroid-MG,
     lem:reverse-reroute-cycle-lift, lem:reverse-pendant-insert}
   Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
   two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
@@ -975,6 +986,7 @@ two cases of the lemma cover every $I'$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:forest-packing-decomp}
   We follow Katoh and Tanigawa's proof. By
   \cref{lem:forest-packing-decomp}, $I'$ is the union of $D$ forests of
   $\widetilde{G_v^{ab}}$, which we make pairwise disjoint as after that
@@ -1044,7 +1056,7 @@ Theorem~4.9, together with the contraction of a proper rigid subgraph
   \label{lem:splitoff-deficiency}
   \lean{Graph.splitOff_deficiency_le, Graph.splitOff_deficiency_ge}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank}
+  \uses{def:graph-operations, def:D-deficiency}
   Let $D \ge 1$, and let $G$ be a multigraph with a vertex $v$ of degree
   two, whose edges $e_a$ and $e_b$ join $v$ to vertices $a, b \neq v$.
   Then
@@ -1123,7 +1135,6 @@ new edge that joins its neighbours.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:splitoff-deficiency}
   The graph $G''$ is $G_v^{ab}$ with $e_a$ as its new edge $ab$, and we
   argue as for the upper bound of \cref{lem:splitoff-deficiency}. Let
   $P'$ be a partition of $V(G) - v$, and let $P$ be the partition of
@@ -1185,7 +1196,7 @@ obtained from it by adding an edge.
   \label{lem:removal-deficiency}
   \lean{Graph.removeVertex_deficiency_ge}
   \leanok
-  \uses{def:graph-operations, lem:splitoff-deficiency}
+  \uses{def:graph-operations, def:D-deficiency}
   Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
   two, whose edges $e_a$ and $e_b$ join $v$ to vertices $a, b \neq v$.
   Then
@@ -1299,8 +1310,7 @@ The step of the induction uses the two bounds together
   \lean{Graph.splitOff_exists_base_inter_fiber_lt,
         Graph.splitOff_isKDof_of_exists_base_inter_fiber_lt}
   \leanok
-  \uses{def:k-dof, def:graph-operations, def:matroid-MG, lem:edge-splitting,
-        lem:splitoff-deficiency, thm:def-eq-corank}
+  \uses{def:k-dof, def:graph-operations, def:matroid-MG}
   Let $D \ge 2$, and let $G$ be a $k$-dof-graph with a vertex $v$ of
   degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
   $a, b \neq v$. Then $G_v^{ab}$ is a $k$-dof-graph if and only if
@@ -1309,7 +1319,8 @@ The step of the induction uses the two bounds together
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:forest-surgery-count, lem:balanced-forest-packing}
+  \uses{lem:forest-surgery-count, lem:balanced-forest-packing,
+    lem:edge-splitting, lem:splitoff-deficiency, thm:def-eq-corank}
   The vertices of $G_v^{ab}$ are the $|V(G)| - 1$ vertices of $G$ other
   than $v$. So KT eq.~(2.4) (\cref{thm:def-eq-corank}) gives
   \[
@@ -1417,7 +1428,7 @@ subgraph, then $V(X) = V(G)$, as we noted after
 \begin{proof}
   \leanok
   \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG,
-        thm:def-eq-corank}
+        thm:def-eq-corank, lem:rigid-full-rank}
   Suppose that $E(\tilde G)$ contains a circuit $X$ of $M(\tilde G)$. As
   $G$ has no loops and no proper rigid subgraph, $V(X) = V(G)$. So
   $H = G[V(X)]$ is a rigid subgraph of $G$ with the vertices of $G$
@@ -1480,8 +1491,7 @@ that assertion and KT Lemma~4.7.
   \label{lem:removal-deficiency-strict}
   \lean{Graph.removeVertex_deficiency_gt_of_noRigid}
   \leanok
-  \uses{lem:removal-deficiency, lem:edge-set-indep-pos, def:k-dof,
-        def:rigid-subgraph}
+  \uses{def:k-dof, def:rigid-subgraph}
   Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with at least
   three vertices and no proper rigid subgraph. Let $v$ be a vertex of $G$
   of degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct
@@ -1489,7 +1499,8 @@ that assertion and KT Lemma~4.7.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:removal-deficiency-equality}
+  \uses{lem:removal-deficiency-equality, lem:removal-deficiency,
+    lem:edge-set-indep-pos}
   KT Lemma~4.4 (\cref{lem:removal-deficiency}) gives
   $\operatorname{def}(\widetilde{G_v}) \ge k$, and we show that
   equality fails. Suppose that $\operatorname{def}(\widetilde{G_v}) = k$.
@@ -1547,6 +1558,7 @@ next two lemmas give.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:two-edge-connected-degree}
   By \cref{lem:low-degree-vertex}, $G$ has a vertex of degree at most
   two. As $G$ is $2$-edge-connected and has at least two vertices, every
   vertex of $G$ has degree at least two
@@ -1585,7 +1597,7 @@ vertices~\cite[pp.~666--667]{katohTanigawa2011}.
   \label{lem:reduction-step}
   \lean{Graph.splitOff_isMinimalKDof, Graph.contraction_isMinimalKDof}
   \leanok
-  \uses{lem:reducible-vertex, lem:contraction-minimality, lem:dof-tracking, lem:reduction-measure, lem:circuit-induces-rigid}
+  \uses{lem:contraction-minimality, lem:dof-tracking, lem:circuit-induces-rigid}
   Let $D \ge 2$, and let $G$ be a minimal $0$-dof-graph.
   \begin{enumerate}
     \item Suppose that $G$ has at least three vertices and no proper
@@ -1674,7 +1686,7 @@ minimal $0$-dof-graph (\cref{lem:rigidContract-isMinimalKDof}).
   \label{lem:reduction-step-pos}
   \lean{Graph.splitOff_isMinimalKDof_of_pos}
   \leanok
-  \uses{lem:dof-tracking, lem:reduction-measure, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:edge-set-indep-pos, lem:removal-deficiency-strict, lem:circuit-induces-rigid}
+  \uses{lem:dof-tracking, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:edge-set-indep-pos, lem:removal-deficiency-strict, lem:circuit-induces-rigid}
   Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with $k > 0$, at
   least three vertices and no proper rigid subgraph. Let $v$ be a vertex
   of $G$ of degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct
@@ -1753,7 +1765,7 @@ Lemma~6.1, which ends the subsection in two forms.
   \label{thm:minimal-kdof-reduction}
   \lean{Graph.minimal_kdof_reduction}
   \leanok
-  \uses{lem:reduction-step, lem:reducible-vertex, lem:contraction-minimality, def:graph-operations, lem:reduction-measure}
+  \uses{def:graph-operations}
   Let $D \ge 3$.
 
   \textup{(i)} Let $G$ be a minimal $0$-dof-graph with at least two
@@ -1775,6 +1787,9 @@ Lemma~6.1, which ends the subsection in two forms.
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:reduction-step, lem:reducible-vertex,
+    lem:contraction-minimality, lem:reduction-measure,
+    lem:rigidContract-isMinimalKDof, lem:two-vertex-trichotomy}
   We prove (ii) by induction on $|V(G)|$. If $G$ has two vertices, then
   $P(G)$ holds by (a). Let $G$ have at least three vertices, and suppose
   that $P$ holds for every minimal $0$-dof-graph with at least two and
@@ -1878,8 +1893,7 @@ Tanigawa's nonparallel realizations that the algebraic induction uses
   \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gen}
   \leanok
   \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
-        thm:minimal-kdof-reduction-all-k, lem:block-rank-cut,
-        lem:relative-deficiency-rank-bound}
+        lem:block-rank-cut, lem:relative-deficiency-rank-bound}
   Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with at least
   three vertices that is not $2$-edge-connected. Suppose that for every
   $k'$, every minimal $k'$-dof-graph with at least one and fewer than
@@ -1933,9 +1947,8 @@ Tanigawa's nonparallel realizations that the algebraic induction uses
   \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gp_gen}
   \leanok
   \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
-        thm:minimal-kdof-reduction-all-k, lem:block-rank-cut,
-        lem:relative-deficiency-rank-bound, lem:rank-polynomial-of-le-finrank,
-        lem:genericity-device}
+        lem:block-rank-cut, lem:relative-deficiency-rank-bound,
+        lem:rank-polynomial-of-le-finrank}
   Let $D \ge 2$, and let $G$ be a simple minimal $k$-dof-graph with at
   least three vertices that is not $2$-edge-connected. Suppose that for
   every $k'$, every simple minimal $k'$-dof-graph with at least one and
@@ -1945,8 +1958,10 @@ Tanigawa's nonparallel realizations that the algebraic induction uses
 \begin{proof}
   \leanok
   \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
-        lem:relative-deficiency-rank-bound, lem:rank-polynomial-of-le-finrank,
-        lem:genericity-device}
+        lem:relative-deficiency-rank-bound,
+        lem:rank-polynomial-of-le-finrank,
+        lem:general-position-support-nonzero,
+        lem:moment-curve-general-position}
   Let $V_1$, $V_2$, $C$, $k_1$ and $k_2$ be as in the proof of
   \cref{lem:case-cut-edge-realization}. As $G$ is simple, so are
   $G[V_1]$ and $G[V_2]$. By hypothesis they have generic full-rank
@@ -2107,14 +2122,15 @@ induction uses neither: it extracts a chain of length $d$ at every $d$
   \label{lem:adjacent-degree-two-pair}
   \lean{Graph.exists_adjacent_degree_two_pair}
   \leanok
-  \uses{lem:no-rigid-edge-count, lem:two-edge-conn, def:k-dof, def:rigid-subgraph}
+  \uses{def:k-dof, def:rigid-subgraph}
   Let $D \ge 6$, that is, $d \ge 3$, and let $G$ be a minimal
   $0$-dof-graph with at least three vertices and no proper rigid
   subgraph. Then $G$ has two adjacent vertices of degree two.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:two-vertex-zero-dof, lem:simple-minimal-noRigid}
+  \uses{lem:no-rigid-edge-count, lem:two-edge-conn,
+    lem:deficiency-zero-connected}
   Suppose not. As we showed before \cref{lem:no-rigid-edge-count}, $G$
   has no loops. As $G$ is a $0$-dof-graph with at least two vertices,
   every vertex of $G$ has degree at least two
@@ -2155,7 +2171,8 @@ induction uses neither: it extracts a chain of length $d$ at every $d$
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid, def:rigid-subgraph}
+  \uses{lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid, def:rigid-subgraph,
+    lem:splitoff-simple}
   By \cref{lem:adjacent-degree-two-pair}, $G$ has adjacent vertices $v$
   and $a$ of degree two. Let $e_a$ be an edge that joins them. By
   \cref{lem:simple-minimal-noRigid}, $G$ is simple. So the other edge
@@ -2193,7 +2210,6 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
   \label{def:chain-data}
   \lean{Graph.ChainData}
   \leanok
-  \uses{def:graph-operations}
   Let $G$ be a multigraph, and let $d \ge 1$. A \emph{chain of length
   $d$} in $G$, written $v_0 v_1 \dots v_d$, consists of distinct vertices
   $v_0, \dots, v_d$ of $G$ and, for $0 \le i \le d - 1$, an edge $f_i$ of
@@ -2214,7 +2230,6 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
   \label{def:cycle-data}
   \lean{Graph.CycleData, Graph.CycleData.range_vtx}
   \leanok
-  \uses{def:graph-operations}
   Let $G$ be a multigraph, and let $m \ge 3$. Then $G$ is a \emph{cycle}
   on $m$ vertices, or a cycle graph, if it has distinct vertices
   $v_0, \dots, v_{m-1}$ and, for $0 \le i \le m - 1$, an edge $f_i$
@@ -2257,8 +2272,7 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
   \lean{Graph.chainData_or_cycleData_of_noRigid,
         Graph.cycle_isProperRigidSubgraph}
   \leanok
-  \uses{def:chain-data, def:cycle-data, def:k-dof, def:rigid-subgraph,
-        lem:two-edge-conn, lem:no-rigid-edge-count, lem:simple-minimal-noRigid}
+  \uses{def:chain-data, def:cycle-data, def:k-dof, def:rigid-subgraph}
   Let $D \ge 3$, and let $G$ be a minimal $0$-dof-graph with at least
   three vertices and no proper rigid subgraph. Then $G$ is a cycle on at
   most $d$ vertices (\cref{def:cycle-data}), or $G$ has a chain of length
@@ -2267,7 +2281,8 @@ least four vertices (\cref{lem:chain-data-extract}), as Case~III needs.
 \begin{proof}
   \leanok
   \uses{lem:two-edge-conn, lem:no-rigid-edge-count, lem:simple-minimal-noRigid,
-        def:rigid-subgraph, lem:cycle-zero-dof}
+        def:rigid-subgraph, lem:cycle-zero-dof,
+        lem:deficiency-zero-connected}
   We follow Katoh and Tanigawa's
   proof~\cite[pp.~664--665]{katohTanigawa2011}, and give its count in
   full. As $D \ge 3$, we have $d \ge 2$, and $d \le D$. By KT Lemma~3.1
@@ -2367,8 +2382,7 @@ of the next lemma, it occurs exactly when $d \ge 4$.
   \label{lem:chain-data-extract}
   \lean{Graph.chainData_extract}
   \leanok
-  \uses{def:chain-data, def:cycle-data, lem:chain-cycle-dichotomy,
-        lem:reduction-step, lem:reduction-measure, lem:simple-minimal-noRigid}
+  \uses{def:chain-data, def:cycle-data}
   Let $D \ge 3$, and let $G$ be a simple minimal $0$-dof-graph with at
   least four vertices and no proper rigid subgraph. Then $G$ is a cycle
   on at most $d$ vertices, or $G$ has a chain $v_0 v_1 \dots v_d$ of

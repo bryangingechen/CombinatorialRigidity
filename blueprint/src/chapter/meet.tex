@@ -84,7 +84,6 @@ other through determinants.
   \lean{CombinatorialRigidity.Molecular.screwAlgebraPairingDualEquiv,
     exteriorPower.pairingDualEquiv}
   \leanok
-  \uses{def:meet-top-equiv}
   Let $j \ge 0$. The linear map
   $\bigwedge^{j} V^{*} \to (\bigwedge^{j} V)^{*}$ that sends
   $\varphi_1 \vee \cdots \vee \varphi_j$ to the linear form
@@ -127,7 +126,7 @@ $\operatorname{vol}(X \vee Y)$.
   \label{def:meet-complement-iso}
   \lean{CombinatorialRigidity.Molecular.complementIso}
   \leanok
-  \uses{def:meet-top-equiv}
+  \uses{def:meet-top-equiv, def:join, def:extensor}
   Let $0 \le j \le d+1$. The wedge pairing
   $\bigwedge^{j} V \times \bigwedge^{d+1-j} V \to K$ is nondegenerate,
   so $X \mapsto \operatorname{vol}(X \vee \cdot)$ is an isomorphism
@@ -384,7 +383,6 @@ that identify it, which we use after the proof.
   \lean{CombinatorialRigidity.Molecular.finrank_exteriorPower_two_eq_one,
         CombinatorialRigidity.Molecular.exteriorPower_finrank_eq_one_proportional}
   \leanok
-  \uses{def:join, def:extensor}
   Let $W$ be a $2$-dimensional vector space over $K$. Then
   $\dim \bigwedge^{2} W = \binom{2}{2} = 1$. Consequently, every element
   of $\bigwedge^{2} W$ is a scalar multiple of any nonzero one.
@@ -400,7 +398,6 @@ that identify it, which we use after the proof.
   \label{lem:complement-iso-exterior-map-injective}
   \lean{CombinatorialRigidity.Molecular.exteriorPower_map_subtype_injective}
   \leanok
-  \uses{def:meet-complement-iso}
   Let $W$ be a subspace of $K^4$. The linear map
   $\bigwedge^{2} W \to \bigwedge^{2} K^4$ induced by the inclusion of $W$
   in $K^4$ is injective.
@@ -419,8 +416,8 @@ that identify it, which we use after the proof.
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero,
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct}
   \leanok
-  \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
-        lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
+  \uses{lem:complement-iso-decomposable-wedge-perp,
+        def:meet-complement-iso, def:join, def:extensor}
   Let $n_1, n_2 \in K^4$ be linearly independent, and let
   $x, y \in K^4$ satisfy $x \cdot n_i = y \cdot n_i = 0$ for $i = 1, 2$.
   Then $x \vee y$ is a scalar multiple of $*(n_1 \vee n_2)$. In
@@ -429,6 +426,7 @@ that identify it, which we use after the proof.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{def:meet-pairing-dual}
   Let $\Phi$ be the subspace of $\bigwedge^2 K^4$ spanned by the
   $2$-extensors $n_1 \vee v$ and $n_2 \vee v$ for $v \in K^4$, and let
   \[
