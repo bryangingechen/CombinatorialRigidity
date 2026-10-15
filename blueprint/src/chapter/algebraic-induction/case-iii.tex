@@ -166,9 +166,9 @@ eq.~(6.22) as a bound off the zeros of a polynomial.
   \leanok
   \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof,
         def:genuine-hinge-realization}
-  Let $d \ge 2$, let $G$ be a minimal $0$-dof-graph with a vertex $v$ of
-  degree two, whose edges join $v$ to distinct vertices $a, b \neq v$,
-  and let $G_v = G - v$. Then there is a nonzero polynomial $P$ in the
+  Let $d \ge 2$, let $G$ be a simple minimal $0$-dof-graph with a vertex
+  $v$ of degree two, whose edges join $v$ to distinct vertices
+  $a, b \neq v$, and let $G_v = G - v$. Then there is a nonzero polynomial $P$ in the
   normals such that
   \[
     \operatorname{rank} R(G_v, q) \;\ge\; D\,(|V(G_v)| - 1) - (D - 2)
@@ -180,11 +180,11 @@ eq.~(6.22) as a bound off the zeros of a polynomial.
   \uses{lem:general-position-support-nonzero,
         lem:rank-polynomial-of-le-finrank,
         lem:span-rigidityRows-eq-of-motions-eq}
-  We assume, as in Case~III, that $G$ is simple and that the induction
-  hypothesis KT eq.~(6.1) holds for the graphs with fewer vertices than
-  $G$ (the note after the proof). By
-  \cref{lem:case-III-gap3-minimalKDof}, $G_v$ is a minimal
-  $k'$-dof-graph with $k' = \operatorname{def}(\tilde G_v) \le D - 2$.
+  We assume, as in Case~III, that the induction hypothesis KT
+  eq.~(6.1) holds for the graphs with fewer vertices than $G$ (the note
+  after the proof). The graph $G_v$ is a minimal $k'$-dof-graph with
+  $k' = \operatorname{def}(\tilde G_v) \le D - 2$
+  (\cref{lem:case-III-gap3-minimalKDof}).
   It is simple, as a subgraph of $G$, and it has at least one and fewer
   than $|V(G)|$ vertices. So the induction hypothesis gives a generic
   full-rank realization $(G_v, q_0)$ (\cref{def:rank-hypothesis}), with
@@ -201,16 +201,20 @@ eq.~(6.22) as a bound off the zeros of a polynomial.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem assumes that $G$ is simple, and the induction
-  hypothesis for every $k'$ and every minimal $k'$-dof-graph with at
-  least one and fewer than $|V(G)|$ vertices. The statement omits both.
-  The pinned theorem also assumes that some edge label lies outside
+  The pinned theorem also assumes the induction hypothesis for every
+  $k'$ and every minimal $k'$-dof-graph with at least one and fewer than
+  $|V(G)|$ vertices, which the statement omits. Over an infinite field
+  the statement holds without it: $G_v$ is simple, and KT Theorem~5.5
+  (\cref{thm:theorem-55}) gives it the generic full-rank realization
+  that the proof takes from the induction hypothesis. The pinned
+  theorem also assumes that some edge label lies outside
   $E(G)$ (\cref{rem:fresh-edge-supply}). It fixes an endpoint selector
   that assigns each edge of $G_v^{ab}$ its ends
   (\cref{fmlnote:panel-hinge-nondegenerate}) before it gives $P$.
 \end{fmlnote}
 
-The lemma needs $G$ to be simple. Let $d = 2$, so that $D = 3$, and let
+The hypothesis that $G$ is simple is needed. Let $d = 2$, so that
+$D = 3$, and let
 $G$ have the vertices $v, a, b, c$, the edges $va$, $vb$ and $cb$, and
 two edges $ac$. Comparing the partitions of $V(G)$
 (\cref{def:D-deficiency}) shows that $\operatorname{def}(\tilde G) = 0$.
@@ -227,7 +231,8 @@ $Q(q) \neq 0$, the hinges of $(G_v, q)$ are nondegenerate, and
   \;<\; 5 \;=\; D\,(|V(G_v)| - 1) - (D - 2).
 \]
 Over an infinite field, $PQ$ has a non-root for every nonzero
-polynomial $P$, so no polynomial $P$ as in the lemma exists. The two
+polynomial $P$, so no polynomial $P$ as in the conclusion of the lemma
+exists. The two
 edges $ac$ form a proper rigid subgraph of $G$, so this graph falls under
 Case~I.
 
@@ -1021,35 +1026,31 @@ The proof of KT Claim~6.12 ends with KT Lemma~2.1
 (\cref{lem:extensor-independence}), which holds for any linearly
 independent vectors (the remark after it).
 
-\begin{lemma}[The joins of $d + 1$ linearly independent vectors span $\bigwedge^{d-1} K^{d+1}$; from KT Lemma~2.1]
+\begin{lemma}[The omit-two extensors of $d + 1$ linearly independent vectors span $\bigwedge^{d-1} K^{d+1}$; from KT Lemma~2.1]
   \label{lem:case-III-claim612-extensor-span}
   \lean{CombinatorialRigidity.Molecular.span_omitTwoExtensor_eq_top}
   \leanok
   \uses{lem:extensor-independence, def:screw-space}
   Let $\bar p_1, \dots, \bar p_{d+1} \in K^{d+1}$ be linearly
-  independent. Then the $D$ joins $\bar p_i \vee \bar p_j$
-  ($1 \le i < j \le d + 1$) span $\bigwedge^{d-1} K^{d+1}$.
+  independent. For $1 \le i < j \le d + 1$, let $E_{ij}$ be the join of
+  the $d - 1$ vectors $\bar p_l$ with $l \neq i, j$, in increasing order
+  of $l$. Then the $D$ extensors $E_{ij}$ span
+  $\bigwedge^{d-1} K^{d+1}$. In particular, for $d = 3$ the six joins
+  $\bar p_i \vee \bar p_j$ ($1 \le i < j \le 4$) span
+  $\bigwedge^2 K^4$.
 \end{lemma}
 \begin{proof}
   \leanok
-  For $i < j$, let $E_{ij}$ be the join of the $\bar p_l$ with
-  $l \neq i, j$, in increasing order of $l$, as in
-  \cref{lem:extensor-independence}. By the remark after that lemma, the
-  $D$ extensors $E_{ij}$ form a basis of $\bigwedge^{d-1} K^{d+1}$. At
-  $d = 3$, $E_{ij} = \bar p_k \vee \bar p_l$, where $k < l$ and
-  $\{k, l\} = \{1, 2, 3, 4\} \setminus \{i, j\}$. So the six joins are
-  the six $E_{ij}$, and they span $\bigwedge^2 K^4$.
-
-  For $d \neq 3$ the join $\bar p_i \vee \bar p_j$ lies in
-  $\bigwedge^2 K^{d+1}$, not in $\bigwedge^{d-1} K^{d+1}$. The argument
-  then proves the claim with the $E_{ij}$ in place of the joins, the
-  form that the general case uses
-  (\cref{lem:case-III-chain-discriminator}).
+  The extensors $E_{ij}$ are those of \cref{lem:extensor-independence}.
+  By the remark after that lemma, they form a basis of
+  $\bigwedge^{d-1} K^{d+1}$. At $d = 3$, $E_{ij} = \bar p_k \vee \bar p_l$,
+  where $k < l$ and $\{k, l\} = \{1, 2, 3, 4\} \setminus \{i, j\}$. So
+  the six joins are the six $E_{ij}$, and they span $\bigwedge^2 K^4$.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem states the lemma for every $d$, with $E_{ij}$ in
-  place of $\bar p_i \vee \bar p_j$.
+  The pinned theorem is the first assertion, for every $d$; the second
+  is its case $d = 3$.
 \end{fmlnote}
 
 \begin{lemma}[A linear form that vanishes on a spanning set is zero; from the proof of KT Claim~6.12]
@@ -1922,18 +1923,21 @@ It also assumes the bound of KT eq.~(6.22), as
   $(G, p_3)$ with $L'' = L$ (\cref{lem:case-III-claim612-p3-placement}).
 
   Let $u = a$. Katoh and Tanigawa rotate the panel of $v$ slightly (KT
-  Lemma~5.2, \cref{lem:rank-rotation-semicont}), and we rotate it about
+  Lemma~5.2, KT p.~691), and we rotate it about
   $L$. For $t \in K$, let $F_t$ be the body-hinge framework on $G$ whose
   hinges have the extensors $C(q(a), n')$ at $va$,
   $C(q(a) + t\,n', q(b))$ at $vb$, and those of $(G_v^{ab}, q)$ at the
   edges of $G_v$ (\cref{def:case-III-candidate}). Then $F_0$ has the
   rank of $(G, p_1)$. Let $q_t$ agree with $q$ except that $q_t(v) = q(a) + t\,n'$, whose panel contains
   $L$. For $t \neq 0$, the extensor of the hinge of $va$ in $(G, q_t)$ is
-  $C(q(a) + t\,n', q(a)) = -t\,C(q(a), n')$, so $(G, q_t)$ has the rank
-  of $F_t$. The rows of $F_t$ can be chosen polynomial in $t$, as in the
+  $C(q(a) + t\,n', q(a)) = -t\,C(q(a), n')$. The two frameworks then
+  have the same hinge spans, so $(G, q_t)$ has the rank of $F_t$
+  (\cref{lem:rank-rotation-semicont}, applied both ways). The rows of
+  $F_t$ can be chosen polynomial in $t$, as in the
   proof of \cref{lem:rows-polynomial-in-normals}. So the rank
   $D(|V(G)| - 1)$ at $t = 0$ persists for all but finitely many $t$, as
-  in the proof of \cref{lem:rank-rotation-semicont}. For all but at most
+  in the proof of \cref{lem:rank-polynomial-of-le-finrank}: a minor that
+  does not vanish at $t = 0$ is a nonzero polynomial in $t$. For all but at most
   one $t$, the normals $q(a) + t\,n'$ and $q(b)$ are linearly
   independent. As $K$ is infinite, some $t \neq 0$ gives a panel-hinge
   framework $(G, q_t)$ with nondegenerate hinges and rank at least
@@ -2165,8 +2169,8 @@ builds the framework for this panel.
 
   For $0 \le l < m \le d$, let $E_{lm}$ be the join of the $d - 1$
   vectors $\bar p_{l'}$ with $l' \neq l, m$. These $D$ extensors span
-  $\bigwedge^{d-1} K^{d+1}$, by KT Lemma~2.1 (the proof of
-  \cref{lem:case-III-claim612-extensor-span}; KT eq.~(6.67)). As
+  $\bigwedge^{d-1} K^{d+1}$, by KT Lemma~2.1
+  (\cref{lem:case-III-claim612-extensor-span}; KT eq.~(6.67)). As
   $r \neq 0$, it does not vanish on some $E_{lm}$
   (\cref{lem:case-III-claim612-orthseq-vanish}). This is KT Claim~6.12
   in the form for every $d$ (the note after
@@ -2423,7 +2427,8 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
   In each case the vertex put back, $v_1$ or $v_i$, has the panel
   $\Pi(u_i)$ in $(G, p_i)$, which contains $L_i$ (KT pp.~692 and~694).
   As in the proof of \cref{lem:case-III-candidate-dispatch-d3}, we
-  rotate this panel about $L_i$ (KT Lemma~5.2, \cref{lem:rank-rotation-semicont}).
+  rotate this panel about $L_i$, where Katoh and Tanigawa apply KT
+  Lemma~5.2 (KT p.~694).
   This gives a panel-hinge framework on $G$ with nondegenerate hinges
   and rank at least $D(|V(G)| - 1)$. Finally, as in the proof of
   \cref{lem:case-II-realization}, there are normals in general position

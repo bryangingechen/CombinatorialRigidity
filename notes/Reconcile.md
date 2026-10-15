@@ -7,9 +7,9 @@ input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L
 (`notes/Reconcile-texts-cleanup.md`), is done in nine tasks: S1's and S2's scopes, M1's text, M2's
 and M5's credits (Pollaczek-Geiringer 1927 states the characterization and is credited beside
 Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. Round 2,
-`reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), opened with 21 one-commit tasks.
-**Next concrete task:** round 2's task 2, the four false statements (S6, S7's restatement, S8 and
-S9). The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
+`reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), opened with 21 one-commit tasks;
+task 2 made the four false statements (S6–S9) true. **Next concrete task:** round 2's task 3, S10
+restated in its pin's form and filled. The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 
@@ -193,7 +193,9 @@ writes them once; everything else proceeds.
   `BodyBar/TayTheorem.lean`'s "Lovász–Yemini-style" necessity argument (548), which the report does
   not list, and `MatroidIdentification.lean`'s "`|E|`-induction" (23, 190, 263, 708, 749), where
   the proof inducts on $|V|$ (round 1, task 5); M5's, `Laman.lean`'s header (21), which credits
-  the theorem to Laman alone (round 1, task 6). The ledger's two Lean baselines feed §B and §C.
+  the theorem to Laman alone (round 1, task 6); and `F-253`'s, the two pins of
+  `lem:rank-rotation-semicont`, whose docstrings call them KT Lemma 5.2 and reverse their inclusion
+  (round 2, task 2). The ledger's two Lean baselines feed §B and §C.
 
 ### The phase — `RECONCILE-FORMAL` (attended; a number minted on open)
 

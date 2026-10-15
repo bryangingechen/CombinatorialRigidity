@@ -339,16 +339,20 @@ infinitesimally rigid.
 \subsection{Rank lemmas}
 \label{sec:molecular-rigidity-matrix-rank}
 
-This subsection proves three rank lemmas of Katoh and
-Tanigawa~\cite[\S5]{katohTanigawa2011}. Deleting the columns of one
+This subsection proves two rank lemmas of Katoh and
+Tanigawa~\cite[\S5]{katohTanigawa2011}, and compares two frameworks on
+one graph. Deleting the columns of one
 body does not change the rank of $R(G,p)$ (KT Lemma~5.1). Two edges
 between the same two bodies, with linearly independent supporting
 extensors, force the two bodies to have the same screw center in every
-infinitesimal motion (KT Lemma~5.3). The last lemma concerns
-panel-hinge frameworks, in which the hinges at each body lie in a
-common hyperplane, the \emph{panel} of the body
-(\cref{sec:body-hinge-tay}): the rank does not drop when a panel
-rotates into a generic position (KT Lemma~5.2).
+infinitesimal motion (KT Lemma~5.3). The last lemma says that if every
+hinge of one framework has a supporting extensor in the span of the
+other's, then every infinitesimal motion of the first is one of the
+second. Katoh and Tanigawa's remaining lemma of their \S5, KT
+Lemma~5.2, rotates a panel without decreasing the rank; the
+formalization takes its steps with the realizations of the algebraic
+induction (the passage before
+\cref{lem:generic-realization-of-rigid}).
 
 \begin{lemma}[Deleting one body's columns preserves rank; KT Lemma 5.1]
   \label{lem:rank-delete-vertex}
@@ -428,50 +432,40 @@ hyperplane, so the two-body graph has an infinitesimally rigid
 panel-hinge realization. This graph is the base case of the algebraic
 induction (\cref{lem:theorem-55-base}).
 
-\begin{lemma}[Lower-semicontinuity of rank under a panel rotation; KT Lemma 5.2]
+\begin{lemma}[Smaller hinge spans give fewer infinitesimal motions]
   \label{lem:rank-rotation-semicont}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_mono_of_span_le,
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_le_of_span_le}
   \leanok
   \uses{def:rigidity-matrix}
-  Along a one-parameter family of realizations of $G$ in which a single
-  panel rotates, the rank of $R(G,p)$ is lower semicontinuous: its
-  value at a generic parameter is at least its value at every member of
-  the family. In monotone
-  form, let $p$ and $p'$ be realizations of $G$ with
-  $\operatorname{span} C(p(e)) \subseteq \operatorname{span} C(p'(e))$
-  at every edge $e$. Then $Z(G,p') \subseteq Z(G,p)$, so
+  Let $(G,p)$ and $(G,p')$ be body-hinge frameworks on the same
+  multigraph $G$, and suppose that
+  $\operatorname{span} C(p'(e)) \subseteq \operatorname{span} C(p(e))$
+  at every edge $e$. Then $Z(G,p') \subseteq Z(G,p)$. In particular,
   $\dim Z(G,p') \le \dim Z(G,p)$ and
   $\operatorname{rank} R(G,p) \le \operatorname{rank} R(G,p')$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The entries of $R(G,p)$ can be written as polynomials in the
-  coordinates of the panels, as Katoh and
-  Tanigawa~\cite[p.~668]{katohTanigawa2011} note with a reference to
-  Jackson and Jord\'an~\cite[Lemma~7.1]{jacksonJordan2009}. Along the
-  family they are polynomials in the parameter $t$. A $\rho \times \rho$
-  minor that is nonzero at one parameter is then a nonzero polynomial in
-  $t$, so it vanishes at only finitely many parameters, and at every
-  other parameter the rank is at least $\rho$. Katoh and Tanigawa argue by
-  continuity over $\R$ instead~\cite[p.~669]{katohTanigawa2011}; the
-  polynomial argument works over every field.
-
-  In the monotone form, $C(p(e))$ and $C(p'(e))$ are nonzero, as the
-  hinges are $(d-2)$-dimensional, so the hypothesis says that
-  $\operatorname{span} C(p(e)) = \operatorname{span} C(p'(e))$ at every
-  edge. The two realizations then have the same hinge constraints, so
-  $Z(G,p') = Z(G,p)$, and their ranks are equal.
+  Let $S \in Z(G,p')$, and let $e$ be an edge with ends $u$ and $v$.
+  Then $S(u) - S(v)$ lies in $\operatorname{span} C(p'(e))$
+  (\cref{def:hinge-constraint}), hence in
+  $\operatorname{span} C(p(e))$, so $S$ satisfies the hinge constraint
+  of $(G,p)$ at $e$. So $Z(G,p') \subseteq Z(G,p)$, and
+  $\dim Z(G,p') \le \dim Z(G,p)$. The rank of $R(G,p)$ is
+  $D|V| - \dim Z(G,p)$ (the remark after \cref{def:rigidity-matrix}),
+  and likewise for $p'$, which gives the bound on the ranks.
 \end{proof}
 \begin{fmlnote}
-  The formalization proves only the monotone form, for frameworks in
-  which $C(p(e))$ may be zero (\cref{def:hinge-constraint}), and with
-  the inclusion of spans reversed. If
-  $\operatorname{span} C(p'(e)) \subseteq \operatorname{span} C(p(e))$
-  at every edge, then each hinge constraint of $(G,p')$ implies the
-  corresponding one of $(G,p)$, so $Z(G,p') \subseteq Z(G,p)$ and
-  $\dim Z(G,p') \le \dim Z(G,p)$. When all the extensors are nonzero,
-  either inclusion of spans says that the spans are equal.
+  The first pin is the inclusion, and the second the bound on the
+  dimensions, for a finite set of bodies; the bound on the ranks follows
+  by the remark after \cref{def:rigidity-matrix}. Both pins assume the
+  inclusion of spans at every edge label, also outside $E(G)$. The
+  formalization lets $C(p(e))$ be zero (the note after
+  \cref{def:hinge-constraint}), so the inclusion can be strict, at an
+  edge with $C(p'(e)) = 0 \neq C(p(e))$. When all the extensors are
+  nonzero, the hypothesis says that the spans are equal, and then
+  $Z(G,p') = Z(G,p)$.
 \end{fmlnote}
 
 \subsection{Rank-addition lemmas}

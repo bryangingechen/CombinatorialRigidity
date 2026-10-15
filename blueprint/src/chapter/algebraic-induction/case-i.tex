@@ -143,11 +143,21 @@ consecutive hinges share a normal. For a cycle, the normals of
 
 The formal realization of a cycle ends by choosing its normals once
 more, in general position, without decreasing the rank (the note after
-\cref{lem:cycle-realization}). Katoh and Tanigawa take a step of this
-kind in the proof of KT Lemma~6.10, where they turn realizations of
-full rank whose panels are not nonparallel into nonparallel ones, by
-rotating a panel slightly without decreasing the rank (KT Lemma~5.2,
-KT p.~691). The formalization takes such steps by the next lemma.
+\cref{lem:cycle-realization}). Katoh and Tanigawa take steps of this
+kind by KT Lemma~5.2~\cite[p.~669]{katohTanigawa2011}, a special case,
+as they note, of a lemma of Jackson and
+Jord\'an~\cite[Lemma~7.1]{jacksonJordan2009}. It says that if a
+panel-hinge realization of a simple graph has one pair of equal panels,
+and every other pair of panels is nonparallel, then the graph has a
+nonparallel realization whose rank is not smaller. They rotate one
+panel of that pair slightly, and argue by continuity over $\R$. In the
+proof of KT Lemma~6.10 they use it to turn realizations of full rank
+whose panels are not nonparallel into nonparallel ones (KT p.~691).
+The formalization takes such steps with polynomials in the normals in
+place of the rotation: for an infinitesimally rigid realization by the
+next lemma, and in general by the polynomial of
+\cref{lem:rank-polynomial-of-le-finrank}, as in the proof of
+\cref{lem:case-II-realization}.
 
 \begin{lemma}[A rigid realization gives a generic one]
   \label{lem:generic-realization-of-rigid}
@@ -679,10 +689,11 @@ with entries that are polynomials in the normals $q$
 (\cref{lem:rows-polynomial-in-normals}). So if some $N$ rows of
 $R(G,q_0)$ are linearly independent, one of their $N \times N$ minors is
 a polynomial $Q$ in the normals with $Q(q_0) \neq 0$, and the rank of
-$R(G,q)$ is at least $N$ wherever $Q(q) \neq 0$. This is the lower
-semicontinuity of the rank (KT Lemma~5.2,
-\cref{lem:rank-rotation-semicont}) in polynomial form, which
-\cref{lem:rank-polynomial-of-le-finrank} states in
+$R(G,q)$ is at least $N$ wherever $Q(q) \neq 0$. This is, in
+polynomial form, the lower semicontinuity of the rank by which Katoh
+and Tanigawa prove KT Lemma~5.2 over $\R$ (KT p.~669; the passage
+before \cref{lem:generic-realization-of-rigid}), and
+\cref{lem:rank-polynomial-of-le-finrank} states it in
 \cref{sec:molecular-algebraic-induction-relative}. The next lemma is its
 form for rows with the columns of a set of bodies deleted.
 

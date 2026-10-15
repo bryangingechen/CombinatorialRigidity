@@ -1288,7 +1288,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `reconcile-texts`, opened and closed 2026-10-15 (`notes/Reconcile-texts-cleanup.md`; the
   non-vacuity rule is in `PHASE-BOUNDARIES.md` and `CLEANUP.md` §A). Round 2,
   `reconcile-statements`, opened 2026-10-15 with 21 one-commit tasks
-  (`notes/Reconcile-statements-cleanup.md`). **Next:** its task 2, the four false statements.
+  (`notes/Reconcile-statements-cleanup.md`); task 2 made the four false statements true. **Next:**
+  its task 3, S10's node restated in its pin's form and filled.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

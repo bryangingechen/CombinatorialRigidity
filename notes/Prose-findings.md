@@ -2136,7 +2136,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the two pins' statements and bodies, `Molecular/RigidityMatrix/Basic.lean`;
   KT 2011 pp. 668–669, in `.refs/`).
   *Found:* round 2 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, S6).
+  *Disposition:* done (task 2): the statement is its pins' inclusion, retitled, with a short proof
+  and note; the rotation and KT Lemma 5.2 left it. The passage before
+  `lem:generic-realization-of-rigid` states KT Lemma 5.2 (KT p. 669; a special case of JJ 2010
+  Lemma 7.1, p. 584) and the formal steps that replace it: that lemma for infinitesimally rigid
+  realizations, and `lem:rank-polynomial-of-le-finrank` in general (KT's input with the two equal
+  panels joined by an edge is a degenerate hinge in the project's carrier). The subsection's lead
+  and the six
+  `\cref`s follow: `case-ii.tex` and `case-iii.tex` cite KT's pages for the rotation, `case-i.tex`
+  the passage, `case-iii.tex` the lemma where two frameworks have equal hinge spans and
+  `lem:rank-polynomial-of-le-finrank` for the minor in $t$, `molecule-modelling.tex` the inclusion
+  both ways.
 - **F-051** · S · `thm:matroid-partition-rank` (`matroid-union.tex`): the statement gives the rank
   of every $X \subseteq E$ in the union of any finite family $M_1, \dots, M_k$, and the
   independence criterion for any family. Its pins prove less: `Matroid.Union_rank_eq` gives the
@@ -2166,7 +2176,9 @@ declaration's name as its header writes it:
   the omit-two form, so it proves the pin's statement, not the node's.
   *Evidence:* read (the pin's statement, `Molecular/RigidityMatrix/Claim612.lean`).
   *Found:* round 2 task 2.4.
-  *Disposition:* reported (`notes/Prose-report.md`, S9).
+  *Disposition:* done (task 2): the title and statement are the omit-two extensors $E_{ij}$, with
+  the six joins at $d = 3$ as their case; the proof and the note follow, and
+  `lem:case-III-chain-discriminator`'s citation names the lemma, not its proof.
 - **F-079** · S · `lem:rk-within-parts` (`deficiency.tex`): the statement bounds $r(Y) + |P|$
   for the set $Y$ of all edges of $\tilde G$ whose ends lie in one part of $P$. Its pin
   `rk_cycleMatroid_within_parts_le` proves the bound for every $Y \subseteq E(\tilde G)$ whose
@@ -2311,7 +2323,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the three statements, `Molecular/AlgebraicInduction/GenericityDevice.lean` and
   `CaseI.lean`).
   *Found:* round 3 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, S7).
+  *Disposition:* reported (`notes/Prose-report.md`, S7); round 2: the statement made true, at
+  nondegenerate hinges (task 2, `F-149`); the pins still state less until task 5 repins the node on
+  `exists_rankPolynomial_of_le_finrank_linking`.
 - **F-121** · S · `prop:rigidity-matrix-prop11` (`algebraic-induction/panel-layer.tex`): the
   statement is KT Proposition 2.3's rank formula, Jackson and Jordán's Theorem 6.1, at a generic
   panel-hinge realization with nondegenerate hinges. Its pin `rigidityMatrix_prop11` takes any
@@ -2525,7 +2539,10 @@ declaration's name as its header writes it:
   `IsInfinitesimalMotion`, `Molecular/RigidityMatrix/Basic.lean`; KT 2011 p. 668, `.refs/`); a `lake
   lean` witness: at an edge with a zero supporting extensor every motion has $S(u) = S(v)$.
   *Found:* round 3 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, S7).
+  *Disposition:* reported (`notes/Prose-report.md`, S7); round 2: the statement is restated on the
+  Zariski-open set $U$ of normals with nondegenerate hinges, where it holds, which contains KT's
+  nonparallel realizations; the remark after the proof says that the restriction is needed (task
+  2). The open-set pin is task 5's.
 - **F-150** · S · `lem:case-II-realization-placement`
   (`algebraic-induction/genericity-and-count.tex`): the statement starts from a realization of the
   splitting-off $G_v^{ab}$, with nondegenerate hinges and every motion constant on its vertices. Its
@@ -2560,7 +2577,9 @@ declaration's name as its header writes it:
   `Molecular/AlgebraicInduction/CaseIII/Realization.lean`; `def:panel-hinge-framework`); the
   example's deficiencies by hand, over the fifteen partitions of its four vertices.
   *Found:* round 3 task 2.11.
-  *Disposition:* reported (`notes/Prose-report.md`, S8).
+  *Disposition:* done (task 2): the statement takes $G$ simple, and the proof no longer assumes it.
+  The induction hypothesis stays in the note, which says that over an infinite field the statement
+  holds without it (KT Theorem 5.5 at $G_v$, `thm:theorem-55`), as this entry's reading has it.
 - **F-158** · S · `lem:case-III-candidate-row` (`algebraic-induction/case-iii.tex`): the statement
   is KT's count at $(G, p_1)$ (KT pp. 684 and 686): if the top-left block of KT eq. (6.29) is
   nonsingular, $\operatorname{rank} R(G, p_1) \ge D(|V(G)| - 1)$. Its pin
@@ -3955,6 +3974,17 @@ declaration's name as its header writes it:
   for the chapters' file names).
   *Found:* round 5 task 5.3.
   *Disposition:* reported (`notes/Prose-report.md`, L11).
+- **F-253** · L · `infinitesimalMotions_mono_of_span_le` and
+  `finrank_infinitesimalMotions_le_of_span_le` (`Molecular/RigidityMatrix/Basic.lean`): their
+  docstrings call them KT Lemma 5.2 and the lower semicontinuity of the rank along a panel rotation,
+  whose generic member has "the largest supporting spans", and state the inclusion of spans
+  reversed: "the constraint span of `F` is contained in that of `F'`", where `hspan` puts the span
+  of `F'.supportExtensor e` in that of `F.supportExtensor e`. The blueprint node no longer says
+  either (`F-049`, round 2 task 2).
+  *Evidence:* read (the two docstrings beside the statements and bodies).
+  *Found:* RECONCILE round 2 task 2.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 2): round 3's docstring sweep
+  (*Moved to a later round*).
 
 ## M — mathematics and sources
 

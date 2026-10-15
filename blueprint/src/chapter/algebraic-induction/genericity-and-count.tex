@@ -24,7 +24,7 @@ zeros the rank is at least $N$. These proofs choose their normals off
 the zeros of a product of such polynomials, and bound the rank from
 above by \cref{lem:relative-deficiency-rank-bound}.
 
-\begin{lemma}[Lower semicontinuity of the rank in the normals; KT \S5.1]
+\begin{lemma}[Lower semicontinuity of the rank at nondegenerate hinges; KT \S5.1]
   \label{lem:genericity-device}
   \lean{CombinatorialRigidity.Molecular.exists_good_realization,
         CombinatorialRigidity.Molecular.exists_good_realization_const}
@@ -32,27 +32,29 @@ above by \cref{lem:relative-deficiency-rank-bound}.
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Let $K$ be an infinite field and let $G$ be a multigraph. Regard the
   normals $q$ of the panel-hinge frameworks $(G,q)$ on a finite set $W$ of
-  bodies as the points of $K^N$, where $N = (d+1)|W|$. Each entry of
-  $R(G,q)$ is a polynomial of degree two in $q$, bilinear in the normals
-  (\cref{def:rigidity-matrix}, \cref{def:panel-hinge-framework}). Hence,
-  for each $r$, the set of the $q$ with
+  bodies as the points of $K^N$, where $N = (d+1)|W|$, and let $U$ be the
+  set of the $q$ at which every hinge of $(G,q)$ is nondegenerate
+  (\cref{def:panel-hinge-framework}). Then $U$ is Zariski-open, and for
+  each $r$, the set of the $q \in U$ with
   $\operatorname{rank} R(G,q) \ge r$ is Zariski-open; that is, the rank
-  is lower semicontinuous in $q$. The rank is at least its value at a
-  given $q_0$ on a dense Zariski-open set, and the largest rank is
-  attained on such a set. Equivalently,
-  $\dim Z(G,q) = D|W| - \operatorname{rank} R(G,q)$ is upper
-  semicontinuous in $q$, and its least value is attained on a dense
-  Zariski-open set.
+  is lower semicontinuous on $U$. The rank is at least its value at a
+  given $q_0 \in U$ on a dense Zariski-open set contained in $U$, and if
+  $U$ is not empty, the largest rank on $U$ is attained on such a set.
+  Equivalently, $\dim Z(G,q) = D|W| - \operatorname{rank} R(G,q)$ is
+  upper semicontinuous on $U$, and its least value on $U$ is attained on
+  a dense Zariski-open set contained in $U$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rows-polynomial-in-normals}
-  We prove the lemma at the normals at which every hinge of $(G,q)$ is
-  nondegenerate, the setting of Katoh and Tanigawa's nonparallel
-  realizations. The remark after the proof shows that it fails at the
-  others. These normals form a Zariski-open set $U$, as the coordinates
-  of the hinge $C(q(u), q(w))$ of an edge with ends $u$ and $w$ are
-  polynomials in $q$ (\cref{def:panel-support-extensor}). Choose the rows
+  The set $U$ contains the normals of Katoh and Tanigawa's nonparallel
+  realizations of a simple graph, as these normals are in general
+  position (the remark after \cref{def:panel-general-position} and
+  \cref{lem:general-position-support-nonzero}). The remark after the
+  proof shows that the lemma fails outside $U$. The set $U$ is Zariski-open,
+  as the coordinates of the hinge $C(q(u), q(w))$ of an edge with ends
+  $u$ and $w$ are polynomials in $q$
+  (\cref{def:panel-support-extensor}). Choose the rows
   of $R(G,q)$ at each edge as in \cref{lem:rows-polynomial-in-normals}.
   Their coordinates are polynomials of degree two in $q$, and at every
   $q \in U$ they span the row space of $R(G,q)$.
@@ -76,7 +78,7 @@ above by \cref{lem:relative-deficiency-rank-bound}.
   (\cref{def:rigidity-matrix}).
 \end{proof}
 
-The lemma needs nondegenerate hinges. If the normals at the ends $u$ and
+The restriction to $U$ is needed. If the normals at the ends $u$ and
 $w$ of an edge are linearly dependent, its hinge is degenerate, the hinge
 constraint welds $u$ and $w$ (\cref{def:panel-hinge-framework}), and the
 rows of the edge have rank $D$ rather than $D - 1$. So for the graph with

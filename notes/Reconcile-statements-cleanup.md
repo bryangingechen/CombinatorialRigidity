@@ -7,9 +7,10 @@ authority for which rounds are done. The round fixes the blueprint statements th
 G2's merges of true duplicates, and gives each group of nodes where the formal proof leaves Katoh
 and Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is not
 edited. The open (task 1, docs only) reproduced round 1's close values and sliced the round into
-21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. **Next concrete
-task:** task 2, the four false statements: S6, S7's restatement, S8 and S9 (*Lemma checklist*).
-Round manual: `CLEANUP.md`.
+21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–2 are done
+(the open; the four false statements S6–S9). **Next concrete task:** task 3, S10:
+`lem:forest-surgery-unsplit` restated in its pin's form and filled (*Lemma checklist*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -19,7 +20,15 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**The round is open** (task 1, docs only; this commit). Nothing is mid-stream; task 2 is next.
+**Tasks 1–2 are done**; task 2, the four false statements, is this commit (prose in six chapter
+files; no node, `\uses`, pin or `\leanok` change). Nothing is mid-stream; task 3 is next. Task 2's
+gates gave the open's values: `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9
+`WARNING:` lines; `1501 edges 11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump (3 588 lines)
+`cmp`-identical to `dump-1cbdbff5.txt`, so that file stays the parent dump, and `--summary` the
+same bytes as the open's; `print.log` rebuilt by latexmk, 0 `LaTeX Warning` lines and 31 overfull
+boxes (two of the first build's new ones reworded away); `check-phase-note.py` green; the
+no-Lean-edit diff from `1cbdbff5` empty; no `formalization.yaml` edit, so no gate 7. The four
+nodes' `--label` reports show no missing edge.
 
 **Verified at the open** (2026-10-15, at `1cbdbff5`, round 1's close tree, whose Lean is
 `f39e35e6`'s):
@@ -132,8 +141,8 @@ line names the ledger IDs and report items it acts on, its surfaces with lines a
 open (re-`grep` before editing), and *Expected*: the open's estimate of the gate's diff, which the
 task makes exact before editing. Every task is at Opus but the close.
 
-- [x] **1. Open** (this commit; docs only): this log, the baselines, the task list.
-- [ ] **2. The four false statements: S6, S7's restatement, S8, S9** (`F-049`, `F-154`, `F-060`;
+- [x] **1. Open** (`1468bc31`; docs only): this log, the baselines, the task list.
+- [x] **2. The four false statements: S6, S7's restatement, S8, S9** (this commit; `F-049`, `F-154`, `F-060`;
   `F-117` and `F-149` in part). S6: `lem:rank-rotation-semicont` (`rigidity-matrix.tex` 431–446)
   states its pins' monotone form with their inclusion ($\operatorname{span} C(p'(e)) \subseteq
   \operatorname{span} C(p(e))$ gives $Z(G,p') \subseteq Z(G,p)$); the rotation sentence and "KT
@@ -147,7 +156,21 @@ task makes exact before editing. Every task is at Opus but the close.
   pins stay until task 5. S8: `lem:case-III-nested-rank-lower` (`case-iii.tex` 163–177) gains
   "simple". S9: `lem:case-III-claim612-extensor-span` (1024–1032), title and statement, for the
   omit-two extensors $E_{ij}$, its proof and note following. *Expected:* no node, `\uses`, pin or
-  `\leanok` change: the dump byte-identical.
+  `\leanok` change: the dump byte-identical. *Done:* the dump byte-identical. S6: retitled
+  "Smaller hinge spans give fewer infinitesimal motions", the pins' inclusion with the rank bound
+  by the remark after `def:rigidity-matrix`; the note says that the pins take every edge label and
+  a zero extensor. KT Lemma 5.2 (read at KT p. 669, with its uses at pp. 679, 681, 691 and 694)
+  is stated in the passage before `lem:generic-realization-of-rigid`, beside JJ 2010 Lemma 7.1
+  (p. 584), which KT name as its general form. The `\cref`s: `case-ii.tex` 204, `case-iii.tex`
+  1925 and 2426 cite KT's pages; `case-i.tex` 684 the passage; `case-iii.tex` 1936
+  `lem:rank-polynomial-of-le-finrank`, and the step "$(G, q_t)$ has the rank of $F_t$" this lemma;
+  `molecule-modelling.tex` 791 the inclusion both ways. S7: the statement on the open set $U$ of
+  normals with nondegenerate hinges, which contains KT's nonparallel realizations; its pins still
+  state less (honesty gate (i), `F-117`) until task 5, as the slicing planned. S8: "simple"; the
+  induction hypothesis stays in the note (`F-154`: over an infinite field the statement holds
+  without it, by `thm:theorem-55` at $G_v$). S9: the omit-two extensors $E_{ij}$ with the six
+  joins at $d = 3$ as their case, and `lem:case-III-chain-discriminator`'s citation of its proof
+  now of the lemma. New: `F-253` (*Moved to a later round*).
 - [ ] **3. S10: `lem:forest-surgery-unsplit` restated in its pin's form and filled** (`F-234`;
   `F-091`, `F-008` in part). `molecular-induction.tex` 903–926: for $D \ge 2$ and distinct
   $a, b \ne v$, the independent-set form that `Graph.splitOff_indep_extend_of_fiber_lt` states
@@ -336,6 +359,9 @@ Items outside this round's scope, one line each, mirrored in the same commit int
   formalized, not restated (§1); the phase's (c).
 - S31 (`F-174`, `F-183`; `thm:molecular-iff-square-bar-joint`'s "Moreover", a crux node): the
   modelling equivalence in Lean; the phase's (c).
+- `F-253` (L, task 2): the docstrings of `infinitesimalMotions_mono_of_span_le` and
+  `finrank_infinitesimalMotions_le_of_span_le` call them KT Lemma 5.2 and reverse their inclusion.
+  Round 3's docstring sweep.
 - `F-090`'s shim `splitOff_deficiency_le_of_forest_surgery`: it stays `cor:forest-surgery-deficiency`'s
   pin this round (no node retired; task 20); round 3's deletion of it (L9) repins the corollary on
   `forest_surgery_split` in the same commit. Round 3's list.
@@ -346,11 +372,17 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 2**, at Opus: S6, S7's restatement, S8 and S9, four statements made true, with no
-node, edge or pin change, so the dump stays byte-identical to `dump-1cbdbff5.txt` (gitignored;
-regenerate it on the parent if it is missing). Carried in from round 1: `F-252` for the PI (round
-1's *Candidates*; the phase's (a) removes it), and its two docstring lines, already in round 3's
-list.
+**Next: task 3**, at Opus: S10, `lem:forest-surgery-unsplit` restated in the independent-set form
+of `Graph.splitOff_indep_extend_of_fiber_lt` and filled (that pin added, `\leanok` on statement
+and proof, its statement `\uses` per the pin's reach), with the paragraph after it rewritten. Its
+parent dump is `dump-1cbdbff5.txt` (task 2 left the dump byte-identical; gitignored, so regenerate
+it on the parent if it is missing). Task 2 moved lines that later tasks name, from the open's
+numbering: `rigidity-matrix.tex` −6 after the old 475; `case-i.tex` +10 after 150 and +11 after
+685; `case-iii.tex` +5 for 231–1023, +1 for 1052–1924, +4 for 1937–2425 and +5 after;
+`genericity-and-count.tex` +2 after 55; `molecule-modelling.tex` +1 after 791; `case-ii.tex` and
+`molecular-induction.tex` unchanged. Re-`grep` as ever. Carried in from round 1: `F-252` for the PI
+(round 1's *Candidates*; the phase's (a) removes it), and its two docstring lines, already in round
+3's list.
 
 ## Decisions made during this round
 
@@ -365,3 +397,8 @@ list.
   report's "or one restatement sweep".
 - **The forward screen as gate 4** (the open): a task that adds a node or an edge adds no forward
   `\uses`, so round 5's ordering holds.
+- **KT Lemma 5.2's credit** (task 2): in the prose before `lem:generic-realization-of-rigid`, not in
+  a node title. No node states it: where the two equal panels are joined by an edge, its input is a
+  degenerate hinge in the carrier, and the formal steps that replace the rotation are that lemma
+  (rigid realizations) and `lem:rank-polynomial-of-le-finrank` (any rank). Citations of KT's
+  rotation cite KT's pages.
