@@ -10,8 +10,8 @@ edited. The open (task 1, docs only) reproduced round 1's close values and slice
 21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–9 are done
 (the open; the false statements S6–S10; S4 and S5; S7's repin; Case I's S14, S15 and S21; Case
 III's three counts, S20; S26, S27 and S35; S29, with S36's pin not made, `F-259`). **Next
-concrete task:** task 10, S38 and S39 (*Lemma checklist*); `F-255`'s and `F-257`'s cures are tasks
-12, 15 and 18's; `F-259` and `F-260` (task 9's) await the coordinator. Round manual: `CLEANUP.md`.
+concrete task:** task 9.1, the pins of `F-259` and `F-260` (*Lemma checklist*); `F-255`'s and
+`F-257`'s cures are tasks 12, 15 and 18's. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -22,11 +22,11 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 ## Current state
 
 **Tasks 1–9 are done**; task 9, S29 and S36, is this commit (`molecule-modelling.tex` and a
-sentence of `pencil.tex`). Nothing is mid-stream; task 10 is next. `F-255`'s cure is task 15's (its
+sentence of `pencil.tex`). Nothing is mid-stream; task 9.1 is next. `F-255`'s cure is task 15's (its
 line); `F-257`'s, three missing proof edges that would be forward, are tasks 12's and 18's (their
-lines). Task 9's two new entries await the coordinator: `F-259`, S36's pin, which at the theorem
-would leave five missing edges (two closing a cycle) and at `lem:trivial-motions-rank-bound` none;
-`F-260`, the rescaling's pin, which `lem:pencil-jj-rescale`'s two pins would give cleanly. Task 9's
+lines). Task 9's two new entries, `F-259` (S36's pin, which at the theorem would leave five
+missing edges, two closing a cycle, and at `lem:trivial-motions-rank-bound` none) and `F-260` (the
+rescaling's pin, which `lem:pencil-jj-rescale`'s two pins give cleanly), are task 9.1's. Task 9's
 gates: `lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:` lines;
 **`1501 edges de0e0d5bc395e518`**, **`5c552a7a71fb19a7`**; the dump byte-identical to
 `dump-t8.txt`, kept as `scratch/reconcile-statements/dump-t9.txt`; `--summary` byte-identical to
@@ -204,33 +204,27 @@ task makes exact before editing. Every task is at Opus but the close.
   form, its proof gaining `lem:span-range-rigidityRow` per the pin's reach (1501 edges);
   S35: `lem:molecule-graph-carrier` states the label bound `card_shadowLabel_lt` proves; S27:
   `lem:hinge-rows-polynomial-in-points` without the degree bound. All three done; no new entry.
-- [x] **9. S29, S36, in `molecule-modelling.tex`** (this commit; `F-180`, `F-184`). S29:
-  `lem:polarity-join` (327–338) over a field $K$, as its pins; `lem:screw-determination`
-  (506–523), part (2) as `existsUnique_screwVel_eq` states it (any index type, one fixed
-  non-collinear triple); `lem:panel-hinge-dual-molecular` (367–395), part (2), the rescaling, keeps
-  its note (no declaration states it). S36: `thm:panel-hinge-iff-molecular` (741–757) pins its "In
-  particular" on `rankHypothesis_zero_iff` (`Pinning.lean`), under the honesty gate, its note
-  trimmed. *Expected:* one pin added (`lean_decls` changes) with the statement edges its reach
-  needs; otherwise statements only. *Exact, before editing* (reach reports on scratch copies,
-  `--tex-root`): pinned at the theorem, `rankHypothesis_zero_iff` leaves five missing proof edges
-  to it, from the pins' bodies of `thm:theorem-55-6` and `lem:theorem-56-general-position` (each
-  closing a cycle) and of `thm:molecular-conjecture`, `thm:theorem-55-6-multigraph` and
-  `thm:molecular-conjecture-multigraph` (`panel-layer.tex`, forward); none can be added, so S36's
-  pin is not made (`F-259`). And a declaration does state the rescaling: `lem:pencil-jj-rescale`'s
-  pins, at any normals (`main-component.tex`; a `lake lean` witness), which the note now says
-  (`F-260`). So: the dump byte-identical (no pin, `\uses` or `\leanok` change); the statements of
-  `lem:polarity-join` and `lem:screw-determination`, three notes, and `pencil.tex`'s sentence that
-  `lem:polarity-join` fixes $K = \R$.
-  *Done:* the dump byte-identical. S29: `lem:polarity-join` for a field $K$, its second clause at
-  $K = \R$ as `screwComplementIso_lineExtensor` is, the note naming the pins only;
-  `lem:screw-determination`'s (2) for a family $(p_i)_{i \in I}$ with $p_{i_0}, p_{i_1}, p_{i_2}$
-  not collinear and each other $p_j$ affinely independent of them, the proof at that triple, the
-  note gone; the dual lemma's note names `lem:pencil-jj-rescale`; `pencil.tex` 115–123 no longer
-  says that the lemma fixes $K = \R$. S36: no edit, its note true as it stands. Honesty gate: the
-  restated nodes' pins take only the statements' hypotheses, each clause beside its pin; users
-  re-read (the dictionary's (2) has any four centres of $N[v]$ affinely independent, which implies
-  the new hypothesis; `main-component.tex`'s two proofs cite the polarity over every field).
-  `F-180` done; `F-184` reported, its round-2 clause; new: `F-259`, `F-260`.
+- [x] **9. S29, S36, in `molecule-modelling.tex`** (`6e56a1d1`; `F-180`, `F-184`). S29:
+  `lem:polarity-join` over a field $K$ (its second clause at $K = \R$, as its pin);
+  `lem:screw-determination`'s (2) for any family with one non-collinear triple, as
+  `existsUnique_screwVel_eq`; `pencil.tex` 115–123 no longer says that the polarity fixes $K = \R$.
+  S36's pin not made: at the theorem, `rankHypothesis_zero_iff` leaves five missing proof edges, two
+  closing a cycle (`F-259`); and `lem:pencil-jj-rescale`'s pins state the dual lemma's rescaling,
+  which its note now says (`F-260`); both are task 9.1's. The dump byte-identical. `F-180` done;
+  `F-184` reported, its round-2 clause; new: `F-259`, `F-260`.
+- [ ] **9.1. The pins of `F-259` and `F-260`** (the coordinator, after task 9; `F-184`'s rest).
+  (a) `F-259`: `BodyHingeFramework.rankHypothesis_zero_iff` (`Pinning.lean`) joins the pins of
+  `lem:trivial-motions-rank-bound` (`rigidity-matrix.tex` 299), whose "with equality if and only
+  if $(G,p)$ is infinitesimally rigid" it proves in the dimension form; its note says which pin
+  proves which clause. `thm:panel-hinge-iff-molecular`'s proof, which cites that node, `\uses` it
+  (an implied edge), and its note cites it for the "In particular". (b) `F-260`:
+  `PanelHingeFramework.supportExtensor_ofNormals_smul` and
+  `PanelHingeFramework.infinitesimalMotions_ofNormals_smul` (`lem:pencil-jj-rescale`'s pins) join
+  the pins of `lem:panel-hinge-dual-molecular` (`molecule-modelling.tex` 368) for its (2), with (1)'s
+  pins; its note (task 9's) follows. Both under the honesty gate; a pin that fails is not made,
+  recorded. *Expected:* three pins added (`lean_decls` changes; the two shared ones as duplicates),
+  the proof edge of (a), and whatever else the reach report asks for (task 9 measured none
+  missing); the screen unchanged.
 - [ ] **10. S38, S39: special cases stated generally** (`F-239`, `F-079`; `F-191` in part).
   S38: `lem:case-II-placement-old-rows-extract` (`genericity-and-count.tex` 394–408) for every
   body-hinge framework rigid on its vertex set (its subfamily clause at nondegenerate hinges), as
@@ -391,21 +385,18 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 
 ## Blockers / open questions
 
-- `F-259` (E, task 9), for the coordinator: S36's pin `rankHypothesis_zero_iff` is not made, as at
-  `thm:panel-hinge-iff-molecular` it would leave five missing edges, two closing a cycle. Pinned at
-  `lem:trivial-motions-rank-bound`, which states its claim in rank form, it leaves none; that is
-  another node's pin, outside the line. Not a stop: the theorem keeps its note.
-
-(`F-255`, task 5's missing proof edge, is task 15's; `F-257`, task 7's three, are tasks 12's and
-18's: *Decisions made*.)
+None. (`F-255`, task 5's missing proof edge, is task 15's; `F-257`, task 7's three, are tasks 12's
+and 18's; `F-259` and `F-260`, task 9's, are task 9.1's: *Decisions made*.)
 
 ## Hand-off / next phase
 
-**Next: task 10**, at Opus: S38 and S39 (`F-239`, `F-079`; `F-191` in part; the task's line), in
+**Next: task 9.1**, at Opus (its line; the coordinator added it after task 9): `F-259`'s pin at
+`lem:trivial-motions-rank-bound` and `F-260`'s at `lem:panel-hinge-dual-molecular`. Its parent dump
+is `dump-t9.txt`. **Then task 10**, at Opus: S38 and S39 (`F-239`, `F-079`; `F-191` in part; the task's line), in
 `genericity-and-count.tex`, `deficiency.tex` and `jacobs.tex`. Before editing, write the exact
 expected diff in the task's line: the statement edges that only the special cases needed, each
-checked with `--label` before its removal. Its parent dump is `dump-t9.txt`, task 9's after-dump
-(gitignored, so regenerate it on the parent if it is missing). Lines moved since the open's
+checked with `--label` before its removal. Its parent dump is task 9.1's after-dump (gitignored, so
+regenerate it on the parent if it is missing). Lines moved since the open's
 numbering, which later tasks use: task 2's, `rigidity-matrix.tex` −6 after the old 475; task 8's,
 `generic-lift.tex` −1 after 1140 (`lem:screw-map-rows`, task 12, is 1272); `case-i.tex`, after tasks
 2 and 6, has the device's `\cref`s at 261, 503, 685, 1080 and 1259 (task 15) and task 16's nodes at
@@ -493,3 +484,8 @@ are tasks 12's and 18's (their lines). Carried in from round 1: `F-252` for the 
   `lem:trivial-motions-rank-bound`, is another node's pin (`F-259`). The line kept (2)'s note as no
   declaration states it, but `lem:pencil-jj-rescale`'s pins do: the note names them, and the pin is
   `F-260`'s choice. S29's statements take their pins' generality, `pencil.tex` following.
+- **`F-259` and `F-260` pinned in a task 9.1** (the coordinator, after task 9): S36's
+  "In particular" gets its Lean through the node that states the general claim,
+  `lem:trivial-motions-rank-bound`, which its proof cites, as the pin at the theorem closes a cycle;
+  and (2) of `lem:panel-hinge-dual-molecular` is pinned, as the open's "no declaration states it"
+  was wrong (`lem:pencil-jj-rescale`'s pins state it at any normals). Neither changes a statement.

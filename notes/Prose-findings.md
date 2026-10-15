@@ -969,8 +969,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, `--chapter` and `--summary` on
   scratch copies of round 2 task 9's parent with the pin at each node, `--tex-root`).
   *Found:* RECONCILE round 2 task 9.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 9): for the coordinator; the
-  other pin is outside the task's line.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 9.1): the coordinator added
+  the task, which pins it at `lem:trivial-motions-rank-bound`.
 
 ## N — node shape
 
@@ -3098,8 +3098,8 @@ declaration's name as its header writes it:
   homogenized centres, `scratch/reconcile-statements/RescaleWitness.lean`, gitignored); measured
   (`--summary` on a scratch copy with the pins shared, `--tex-root`).
   *Found:* RECONCILE round 2 task 9.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 9): pin (2) on the two, or
-  keep the note; the coordinator's or the PI's call.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 9.1): the coordinator added
+  the task, which pins (2) on the two.
 
 ## L — Lean
 

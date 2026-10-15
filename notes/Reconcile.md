@@ -11,7 +11,8 @@ Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. Round 2
 tasks 2–3 made the false statements (S6–S10) true, task 4 restated the vacuous or trivially met
 S4 and S5, task 5 repinned S7, task 6 restated Case I's S14, S15 and S21, task 7 repinned
 Case III's three counts (S20), task 8 fixed S26, S27 and S35, and task 9 fixed S29 (S36's pin not
-made, `F-259`). **Next concrete task:** round 2's task 10, S38 and S39. The two PDFs of §2 are
+made, `F-259`). **Next concrete task:** round 2's task 9.1, the pins of `F-259` and `F-260`,
+then task 10, S38 and S39. The two PDFs of §2 are
 in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
