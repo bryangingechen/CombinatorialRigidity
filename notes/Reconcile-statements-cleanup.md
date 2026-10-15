@@ -7,10 +7,10 @@ authority for which rounds are done. The round fixes the blueprint statements th
 G2's merges of true duplicates, and gives each group of nodes where the formal proof leaves Katoh
 and Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is not
 edited. The open (task 1, docs only) reproduced round 1's close values and sliced the round into
-21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–3 are done
-(the open; the false statements S6–S10). **Next concrete task:** task 4, S4 and S5: `lem:case-II`
-without its vacuous assertion, and `lem:case-III-chain-discriminator` stating its pin's conclusion
-(*Lemma checklist*). Round manual: `CLEANUP.md`.
+21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–4 are done
+(the open; the false statements S6–S10; S4 and S5). **Next concrete task:** task 5, S7's repin:
+`lem:genericity-device` pinned on `exists_rankPolynomial_of_le_finrank_linking` (*Lemma
+checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,19 +20,18 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–3 are done**; task 3, S10, is this commit (`molecular-induction.tex` only). Nothing is
-mid-stream; task 4 is next. Task 3's gates: `lint.sh` green; `verify.sh` green, `checkdecls`
-silent, the same 9 `WARNING:` lines; **`1502 edges d7514450ee387c91`**, **`dd395f10c17b0eb3`**
-(1 011 pins, 1 000 distinct); the dump's diff from `dump-3456d6a7.txt` exactly task 3's expected
-lines, the after-dump kept as `scratch/reconcile-statements/dump-t3.txt`; `--summary` exits 0,
-both checks OK, 690 nodes pinned, 0 missing edges, 177 dead pins; the node's `--label` report has
-no missing or unbacked edge, and the three nodes that reach its pin are backed by
-`lem:edge-splitting`; the forward screen the open's lines; `print.log` rebuilt by latexmk, 0
-`LaTeX Warning` lines, 31 overfull boxes; `check-phase-note.py` green; the no-Lean-edit diff from
-`1cbdbff5` empty; no `formalization.yaml` edit. A `lake lean` witness
-(`scratch/reconcile-statements/UnsplitWitness.lean`) derives the statement from the pin, with
-$D \ge 2$ giving $0 < D - 1$. `edgeSplit`'s docstring still cites the label for an identity no
-declaration states: `F-085`'s, round 3.
+**Tasks 1–4 are done**; task 4, S4 and S5, is this commit (`case-ii.tex`, `case-iii.tex`).
+Nothing is mid-stream; task 5 is next. Task 4's gates: `lint.sh` green; `verify.sh` green,
+`checkdecls` silent, the same 9 `WARNING:` lines; **`1500 edges 3ec296d26f78271c`**,
+**`695ee7b5a485a92f`** (1 010 pins, 999 distinct); the dump's diff from `dump-43c5c8d7.txt` (task
+3's after-dump) exactly task 4's expected lines, the after-dump kept as
+`scratch/reconcile-statements/dump-t4.txt`; `--summary` exits 0, both checks OK, 690 nodes pinned,
+0 missing edges, 176 dead pins; neither node's `--label` report has a missing edge, nor
+`lem:case-II`'s an unbacked one; the forward screen the open's lines; `print.log` rebuilt by
+latexmk, 0 `LaTeX Warning` lines, 31 overfull boxes; `check-phase-note.py` green; the
+no-Lean-edit diff from `1cbdbff5` empty; no `formalization.yaml` edit. Task 4 unpinned
+`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller), for the close's list
+of the declarations round 2 unpins; its docstring is `F-254`'s, round 3.
 
 **Verified at the open** (2026-10-15, at `1cbdbff5`, round 1's close tree, whose Lean is
 `f39e35e6`'s):
@@ -175,7 +174,7 @@ task makes exact before editing. Every task is at Opus but the close.
   without it, by `thm:theorem-55` at $G_v$). S9: the omit-two extensors $E_{ij}$ with the six
   joins at $d = 3$ as their case, and `lem:case-III-chain-discriminator`'s citation of its proof
   now of the lemma. New: `F-253` (*Moved to a later round*).
-- [x] **3. S10: `lem:forest-surgery-unsplit` restated in its pin's form and filled** (this commit; `F-234`;
+- [x] **3. S10: `lem:forest-surgery-unsplit` restated in its pin's form and filled** (`43c5c8d7`; `F-234`;
   `F-091`, `F-008` in part). `molecular-induction.tex` 903–926: for $D \ge 2$ and distinct
   $a, b \ne v$, the independent-set form that `Graph.splitOff_indep_extend_of_fiber_lt` states
   (the second pin of `lem:edge-splitting`, 1001), the forest construction kept in the proof; the
@@ -198,7 +197,7 @@ task makes exact before editing. Every task is at Opus but the close.
   why the proof `\uses` the reroute lemma; the paragraph after it gives KT's use and why $D \ge 2$.
   `rem:kt-lemma-44`'s `\cref` now sits on the sentence that states the node's claim. `F-234` done;
   `F-091`, `F-008` in part.
-- [ ] **4. The two kind-A statements: S4, S5** (`F-145`, `F-169`). S4: `lem:case-II` (`case-ii.tex`
+- [x] **4. The two kind-A statements: S4, S5** (this commit; `F-145`, `F-169`). S4: `lem:case-II` (`case-ii.tex`
   72–94) drops its vacuous second assertion with its pin
   `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`, the proof's second part
   (103–118) and the note (121–133); the section lead's `\cref` (20) re-read;
@@ -210,6 +209,30 @@ task makes exact before editing. Every task is at Opus but the close.
   (statement `def:framework-with-normal`, `lem:case-II-rank-lift`; proof `lem:case-II-rank-lift`,
   `lem:splitoff-edge-substitution`, `lem:pinned-motions-on-mono`), each re-read against the kept
   pin; S5's statement edges for its new clauses per the pin's reach, listed before editing.
+  *Exact, before editing:* S4: the kept pin `isInfinitesimallyRigidOn_insert_iff` reaches
+  `def:rigidity-matrix`, `def:hinge-constraint` and `def:screw-space` from its statement (the last
+  two through the first) and no node from its body. The node's `\uses` go from statement
+  `def:framework-with-normal`, `lem:case-II-rank-lift`, proof `lem:case-II-rank-lift`,
+  `lem:splitoff-edge-substitution`, `lem:pinned-motions-on-mono`, to statement
+  `def:rigidity-matrix` (added, or the kept pin's reach is missing), proof none: the five removed,
+  as only the dropped assertion used them (the dropped pin reached three; the substitution lemma
+  has no Lean basis). Drawn: the edges into the node from `lem:case-II-rank-lift` (dashed),
+  `lem:pinned-motions-on-mono` and `lem:splitoff-edge-substitution` removed, `def:rigidity-matrix`
+  → node dashed added (1500 edges, 2195 graph statements); the node's pins line loses the pin
+  (1 010 pins, 999 distinct); its uses line. No node `\uses` it. S5: no pin change; the
+  statement's `\uses` gain `def:graph-operations`, `def:panel-general-position` and
+  `def:rigidity-matrix`, which its new clauses name and the pin's statement reaches, each already
+  an ancestor: no drawn edge; the node's uses line. The screen unchanged. *Done:* the dump's diff
+  is exactly those lines. S4: the node states the first assertion in its Case II setting, without
+  the names of the second ($e_a$, $e_b$, $a$, $b$); the proof notes $V(G) = t \cup \{v\}$, and a
+  one-sentence note says that the pin is the form for every framework, set $t$ and body $v$; the
+  paragraph before the node (on $G_v$) is gone, and the lead's `\cref` (20) and "the next two
+  lemmas" now say what the node and `lem:case-II-rank-lift` state. S5: the statement lists $q$ in
+  general position, $D(|V(G)| - 2)$ independent rows of $R(G_1, q)$ (KT eq. (6.46)), the form in
+  the row space of $R(G - v_1, q)$ (KT eq. (6.52), read at KT p. 693) and the panel; the proof
+  says the rows; the note keeps the pin's formal extras, and says that `chainData_dispatch` uses
+  all but $r = \sum_j \lambda_j r_j$ (read in its body). The node's `\cref`s elsewhere cite claims
+  it keeps. `F-145`, `F-169` done; new: `F-254` (*Moved to a later round*).
 - [ ] **5. S7's repin** (`F-117`, `F-149`; `F-152` in part). `lem:genericity-device`
   (`genericity-and-count.tex` 27–32; its note 90–100) moves from `exists_good_realization` and
   `exists_good_realization_const` to `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`,
@@ -316,12 +339,13 @@ task makes exact before editing. Every task is at Opus but the close.
   remark in `case-i.tex` for `lem:cycle-realization-base` (48; it restates `lem:theorem-55-base`,
   `panel-layer.tex` 789, for panel-hinge frameworks, and says so), `lem:cycle-realization-dim-bound`
   (68), `lem:exists-independent-panel-extensor` (88), the three `lem:pinned-motions-on-*` (282,
-  305, 329), `lem:case-I-splice-seed` (522), `lem:case-I`'s two dead pins (404) and
-  `lem:claim-6-4` (task 6's). `lem:case-I` and `lem:claim-6-4` keep their crux depth.
+  305, 329; since task 4 no node `\uses` `-mono`), `lem:case-I-splice-seed` (522), `lem:case-I`'s
+  two dead pins (404) and `lem:claim-6-4` (task 6's). `lem:case-I` and `lem:claim-6-4` keep their
+  crux depth.
   *Expected:* the dump byte-identical.
 - [ ] **17. KT's route: Case II's group** (M3, G4; `F-147`, `F-152`). One framing remark for
-  `case-ii.tex`'s `lem:case-II-rank-lift` (32) and `lem:case-II` (task 4's), and
-  `genericity-and-count.tex`'s `lem:relative-device-count` (144),
+  `case-ii.tex`'s `lem:case-II-rank-lift` (32; since task 4 no node `\uses` it) and `lem:case-II`
+  (task 4's), and `genericity-and-count.tex`'s `lem:relative-device-count` (144),
   `lem:realization-of-independent-rows` (213), `lem:case-II-placement-old-rows` (437) and
   `lem:case-II-realization-placement` (495; S3's, which keeps its statement and note for the
   phase). *Expected:* the dump byte-identical.
@@ -382,6 +406,9 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 - `F-253` (L, task 2): the docstrings of `infinitesimalMotions_mono_of_span_le` and
   `finrank_infinitesimalMotions_le_of_span_le` call them KT Lemma 5.2 and reverse their inclusion.
   Round 3's docstring sweep.
+- `F-254` (L, task 4): the docstrings of `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
+  which task 4 unpinned, and `isInfinitesimallyRigidOn_insert_iff` still give both as
+  `lem:case-II`'s. Round 3's docstring sweep.
 - `F-090`'s shim `splitOff_deficiency_le_of_forest_surgery`: it stays `cor:forest-surgery-deficiency`'s
   pin this round (no node retired; task 20); round 3's deletion of it (L9) repins the corollary on
   `forest_surgery_split` in the same commit. Round 3's list.
@@ -392,20 +419,22 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 4**, at Opus: S4 and S5 (`F-145`, `F-169`). `lem:case-II` drops its vacuous second
-assertion with its pin, the proof's second part and the note; `lem:case-III-chain-discriminator`
-states its pin's conclusion. Before editing, write the exact expected diff in the task's line: each
-removed edge re-read against the kept pin, S5's new statement edges per the pin's reach. Its
-parent dump is `dump-t3.txt`, task 3's after-dump (gitignored, so regenerate it on the parent if it
-is missing). Lines moved since the open's numbering, which later tasks use: task 2's,
+**Next: task 5**, at Opus: S7's repin (`F-117`, `F-149`; `F-152` in part). `lem:genericity-device`
+moves to `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` under the honesty gate,
+its note saying that it states that lemma's open-set form in KT's words, and the reach report
+retargets its users (the task's line). Before editing, write the exact expected diff in the task's
+line. Its parent dump is `dump-t4.txt`, task 4's after-dump (gitignored, so regenerate it on the
+parent if it is missing). Lines moved since the open's numbering, which later tasks use: task 2's,
 `rigidity-matrix.tex` −6 after the old 475; `case-i.tex` +10 after 150 and +11 after 685;
-`case-iii.tex` +5 for 231–1023, +1 for 1052–1924, +4 for 1937–2425 and +5 after;
-`genericity-and-count.tex` +2 after 55; `molecule-modelling.tex` +1 after 791; and task 3's,
+`genericity-and-count.tex` +2 after 55; `molecule-modelling.tex` +1 after 791; task 3's,
 `molecular-induction.tex` −32 for 935–1059 (`lem:edge-splitting` is 969) and +17 after 1059
 (`lem:removal-deficiency` 1246, `lem:splitoff-kdof-criterion` 1359), with
-`lem:forest-surgery-unsplit` now at 1032; `case-ii.tex` unchanged. Re-`grep` as ever. Carried in
-from round 1: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it), and its two
-docstring lines, already in round 3's list.
+`lem:forest-surgery-unsplit` now at 1032; tasks 2's and 4's, `case-iii.tex` +5 for 231–1023, +1
+for 1052–1924, +4 for 1937–2112, +13 for 2113–2425 (one more in part of the node's proof) and +14
+after (`lem:case-III-chain-dispatch` 2363, `lem:case-III` 2469); task 4's, `case-ii.tex` −5 for
+72–133 (`lem:case-II` is 67) and −44 after 133 (`lem:case-II-realization` 91). Re-`grep` as ever.
+Carried in from round 1: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it),
+and its two docstring lines, already in round 3's list.
 
 ## Decisions made during this round
 
@@ -432,3 +461,8 @@ docstring lines, already in round 3's list.
   (`AUTHORING.md` *Node order*) instead of gaining forward `\uses`; the dump does not record order.
   `lem:removal-deficiency-equality`'s proof still cites `lem:edge-splitting` at $h' = 0$, which is
   true; it stays, as the task changes no other node's edges.
+- **S4 in its Case II setting; S5's edges implied** (task 4): `lem:case-II` keeps the first
+  assertion as stated, at $t = V(G) \setminus \{v\}$, not its pin's general form, as the task drops
+  the vacuous assertion only; the note names the general form, and task 17's remark frames the
+  node. S5's three new statement edges name what its new clauses use, as
+  `lem:case-III-chain-relabel-rows`'s do; each is already an ancestor, so no drawn edge changes.

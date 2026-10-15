@@ -16,18 +16,18 @@ rigidity of bar-joint frameworks~\cite[Theorem~2.2.2]{whiteley1996}
 (KT p.~650).
 
 The first two lemmas concern putting back the body $v$. The first pins
-one body (\cref{lem:case-II-rank-lift}). The second gives the motions of
-a framework on $G$ obtained from one on $G_v$ (\cref{lem:case-II}), the
-subgraph that $G$ and $G_v^{ab}$ share
-(\cref{lem:splitoff-edge-substitution}). The proof of KT Lemma~6.8
-(\cref{lem:case-II-realization}) counts rows instead, and does not use
-them.
+one body (\cref{lem:case-II-rank-lift}). The second says that the
+infinitesimal motions of a framework on $G$ are constant on $V(G)$
+exactly when they are constant on the other vertices and agree there
+with their value at $v$ (\cref{lem:case-II}). The proof of KT
+Lemma~6.8 (\cref{lem:case-II-realization}) counts rows instead, and
+does not use them.
 
 By \cref{rem:rank-hypothesis-relative}, a realization of $G$ whose
 bodies are the vertices of $G$ is at the target rank
 (\cref{def:rank-hypothesis}) exactly when
-$\dim Z(G,p) = D + \operatorname{def}(\tilde G)$. The next two lemmas
-state the rank in this form.
+$\dim Z(G,p) = D + \operatorname{def}(\tilde G)$. The next lemma states
+the rank in this form.
 
 \begin{lemma}[Pinning one body]
   \label{lem:case-II-rank-lift}
@@ -64,72 +64,28 @@ state the rank in this form.
   not contain $v$ (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
 
-In Case~II, $G_v^{ab}$ is a minimal $(k-1)$-dof-graph (KT
-Lemma~4.8(ii), \cref{lem:reduction-step-pos}), and a realization of it
-restricts to one of $G_v$. The next lemma puts $v$ back into a
-panel-hinge framework on $G_v$.
-
 \begin{lemma}[Putting back a body of degree two]
   \label{lem:case-II}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff}
   \leanok
-  \uses{def:framework-with-normal, lem:case-II-rank-lift}
+  \uses{def:rigidity-matrix}
   Let $G$ be a minimal $k$-dof-graph with $k > 0$, let $v$ be a vertex
-  of $G$ of degree two, whose edges $e_a$ and $e_b$ join it to $a$ and
-  $b$, and let $t = V(G) \setminus \{v\}$. Then every infinitesimal
-  motion of a body-hinge framework $(G,p)$ is constant on $V(G)$ if and
-  only if every infinitesimal motion $S$ is constant on $t$ and
-  satisfies $S(v) = S(w)$ for every $w \in t$.
-
-  Let $k'$ be an integer, let $(G_v, n)$ be a panel-hinge framework, and
-  let $(G, n')$ be the panel-hinge framework on $G$
-  (\cref{def:framework-with-graph}) whose normals are those of
-  $(G_v, n)$ except at $v$ (\cref{def:framework-with-normal}). Suppose
-  that every $S \in \operatorname{pinned}(v)$ of $(G_v, n)$ satisfies
-  $S(a) \in \operatorname{span} C(e_a)$ and
-  $S(b) \in \operatorname{span} C(e_b)$, where $C(e_a)$ and $C(e_b)$ are
-  the hinges of $(G, n')$. Then $\dim Z(G,n') = D + k'$ if and only if
-  $\operatorname{pinned}(v)$ has dimension $k'$ in $(G_v, n)$.
+  of $G$ of degree two, and let $t = V(G) \setminus \{v\}$. Then every
+  infinitesimal motion of a body-hinge framework $(G,p)$ is constant on
+  $V(G)$ if and only if every infinitesimal motion $S$ is constant on $t$
+  and satisfies $S(v) = S(w)$ for every $w \in t$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-II-rank-lift, lem:splitoff-edge-substitution,
-        lem:pinned-motions-on-mono}
-  The first assertion holds for every set $t$ of bodies and every body
-  $v$. A screw assignment $S$ is constant on $t \cup \{v\}$ if and
-  only if it is constant on $t$ and $S(v) = S(w)$ for every $w \in t$.
-
-  For the second, the graph $G_v$ is a subgraph of $G$
-  (\cref{lem:splitoff-edge-substitution}). So every infinitesimal motion
-  of $(G, n')$ is one of the restriction $(G_v, n')$
-  (\cref{lem:motions-mono-of-graph-le}). As $v$ lies on no edge of
-  $G_v$, the frameworks $(G_v, n')$ and $(G_v, n)$ have the same subspace
-  $\operatorname{pinned}(v)$ (\cref{lem:with-normal-preserves}). Hence
-  $\operatorname{pinned}(v)$ of $(G, n')$ lies in that of $(G_v, n)$.
-
-  Conversely, let $S$ lie in $\operatorname{pinned}(v)$ of $(G_v, n)$.
-  The edges of $G$ that are not edges of $G_v$ are $e_a$ and $e_b$
-  (\cref{lem:splitoff-edge-substitution}). As $S(v) = 0$, their hinge
-  constraints $S(v) - S(a) \in \operatorname{span} C(e_a)$ and
-  $S(v) - S(b) \in \operatorname{span} C(e_b)$ are the hypothesis. So
-  $S$ is an infinitesimal motion of $(G, n')$, and the two subspaces
-  $\operatorname{pinned}(v)$ are equal. The equivalence now follows from
-  \cref{lem:case-II-rank-lift}, applied to $(G, n')$.
+  As $v$ is a vertex of $G$, we have $V(G) = t \cup \{v\}$. A screw
+  assignment $S$ is constant on $t \cup \{v\}$ if and only if it is
+  constant on $t$ and $S(v) = S(w)$ for every $w \in t$.
 \end{proof}
 
 \begin{fmlnote}
-  The two pinned theorems are the two assertions. When $d \ge 2$, no
-  framework satisfies the hypothesis of the second, so the second
-  assertion holds vacuously, as does its pin on $G_v$. Indeed, let $c$
-  be a screw, and let $S$ take the value $c$ at every body other than
-  $v$ and the value $0$ at $v$. As $v$ lies on no edge of $G_v$, $S$
-  lies in $\operatorname{pinned}(v)$ of $(G_v, n)$. The hypothesis asks
-  that $S(a) = c$ lie in $\operatorname{span} C(e_a)$, which has
-  dimension at most one, for every screw $c$, while the screws form a
-  space of dimension $D \ge 3$.
-  So no choice of the hinges, such as the linearly independent extensors
-  of \cref{lem:exists-independent-panel-extensor}, meets it.
+  The pinned theorem is the assertion for every body-hinge framework,
+  every set $t$ of bodies and every body $v$, with $t \cup \{v\}$ in
+  place of $V(G)$; the statement is its case $t = V(G) \setminus \{v\}$.
 \end{fmlnote}
 
 \begin{lemma}[Case~II: splitting off a vertex of degree two; KT Lemma~6.8]

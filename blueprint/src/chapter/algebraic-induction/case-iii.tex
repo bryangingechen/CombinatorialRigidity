@@ -2099,7 +2099,8 @@ builds the framework for this panel.
   \label{lem:case-III-chain-discriminator}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.chainData_fire_discriminator}
   \leanok
-  \uses{def:chain-data, def:rank-hypothesis}
+  \uses{def:chain-data, def:rank-hypothesis, def:panel-general-position,
+        def:rigidity-matrix, def:graph-operations}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a simple
   minimal $0$-dof-graph with $|V(G)| \ge 3$. Let $v_0 v_1 \cdots v_d$ be
   a chain of length $d$ in $G$ (\cref{def:chain-data}), let
@@ -2108,11 +2109,19 @@ builds the framework for this panel.
   generic full-rank realization, and that for every $k'$, every minimal
   $k'$-dof-graph with at least one and fewer than $|V(G)|$ vertices has
   a nondegenerate-hinge panel realization, and a generic full-rank
-  realization if it is simple. Then there are normals $q$, a nonzero
-  linear form $r$ on $\bigwedge^{d-1} K^{d+1}$ with
-  $r(C(q(v_0), q(v_2))) = 0$, an index $0 \le i \le d - 1$ and a vector
-  $n' \in K^{d+1}$, linearly independent of $q(u_i)$, such that
-  $r(C(q(u_i), n')) \neq 0$.
+  realization if it is simple. Then there are normals $q$ in general
+  position (\cref{def:panel-general-position}), a nonzero linear form $r$
+  on $\bigwedge^{d-1} K^{d+1}$, an index $0 \le i \le d - 1$ and a
+  vector $n' \in K^{d+1}$ with the following properties.
+  \begin{enumerate}
+    \item The matrix $R(G_1, q)$ has $D(|V(G)| - 2)$ linearly independent
+      rows (\cref{def:rigidity-matrix}; KT eq.~(6.46)).
+    \item $r(C(q(v_0), q(v_2))) = 0$, and the form
+      $S \mapsto r(S(v_0) - S(v_2))$ lies in the row space of
+      $R(G - v_1, q)$ (KT eq.~(6.52)).
+    \item The vector $n'$ is linearly independent of $q(u_i)$, and
+      $r(C(q(u_i), n')) \neq 0$.
+  \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
@@ -2142,9 +2151,10 @@ builds the framework for this panel.
   $u_l$ are distinct. As $K$ is infinite, the product has a non-root $q$.
 
   The first factor gives
-  $\operatorname{rank} R(G_1, q) \ge D(|V(G)| - 2)$. This is also an
-  upper bound (\cref{lem:relative-deficiency-rank-bound}), so equality
-  holds, which is KT eq.~(6.46). The second factor gives KT eq.~(6.22)
+  $\operatorname{rank} R(G_1, q) \ge D(|V(G)| - 2)$, so $R(G_1, q)$ has
+  $D(|V(G)| - 2)$ linearly independent rows. This is also an upper bound
+  (\cref{lem:relative-deficiency-rank-bound}), so equality holds, which
+  is KT eq.~(6.46). The second factor gives KT eq.~(6.22)
   for $G - v_1$, and the third makes the hinge of the new edge
   $v_0 v_2$ nondegenerate. So the hypotheses of KT Claim~6.11
   (\cref{lem:case-III-claim-6-11}) hold, with $v_1$, $v_0$ and $v_2$ in
@@ -2189,17 +2199,16 @@ builds the framework for this panel.
   Hence $r(C(q(u_i), n')) \neq 0$.
 \end{proof}
 \begin{fmlnote}
-  The pinned theorem gives more than the statement, and
-  \cref{lem:case-III-chain-dispatch} uses it. The normals $q$ are in
-  general position. The form $S \mapsto r(S(v_0) - S(v_2))$ lies in the
-  row space of $R(G - v_1, q)$, and it is a combination of the rows of
-  the edges of $G - v_1$, grouped by edge. The form $r$ is
-  $\sum_j \lambda_j r_j$ for forms $r_j$ that give the rows of
-  $v_0 v_2$, as \cref{lem:case-III-redundant-combination} gives them.
-  The pinned theorem also gives $D(|V(G)| - 2)$ linearly independent
-  rows of $R(G_1, q)$, and an endpoint selector that assigns
-  each edge of $G_1$ its ends
-  (\cref{fmlnote:panel-hinge-nondegenerate}).
+  The pinned theorem also gives the form $S \mapsto r(S(v_0) - S(v_2))$
+  as a combination of the rows of the edges of $G - v_1$, grouped by
+  edge, and $r$ as $\sum_j \lambda_j r_j$ for forms $r_j$ that give the
+  rows of $v_0 v_2$, as \cref{lem:case-III-redundant-combination} gives
+  them. Each of the $D(|V(G)| - 2)$ rows of the first property is a row
+  of $R(G - v_1, q)$ or a row of the new edge $v_0 v_2$. The theorem
+  also gives an endpoint selector that assigns each edge of $G_1$ its
+  ends (\cref{fmlnote:panel-hinge-nondegenerate}). The formal proof of
+  \cref{lem:case-III-chain-dispatch} uses all of this but the
+  decomposition of $r$.
 \end{fmlnote}
 
 For $2 \le i \le d - 1$, Katoh and Tanigawa build the $i$-th framework

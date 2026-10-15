@@ -2525,7 +2525,10 @@ declaration's name as its header writes it:
   witness: under `hspan`, with no link of the smaller graph at $v$ and a new edge from $v$ to
   $w \neq v$, every screw lies in the span of that edge's extensor.
   *Found:* round 3 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, S4).
+  *Disposition:* done (task 4): the node drops the second assertion with its pin, the proof's
+  second part and the note, and the lead's sentences on it; it keeps the first in its Case II
+  setting, with a note that the pin is its form for every framework, set $t$ and body $v$.
+  `lem:splitoff-edge-substitution`'s unpinned clause stays, as it is true (the open's decision).
 - **F-149** · S · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): read
   with the rigidity matrix of `def:rigidity-matrix`, the statement fails at normals with a
   degenerate hinge. There the hinge constraint welds the two ends (the remark after
@@ -2632,7 +2635,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `chainData_fire_discriminator`, and of
   `exists_shared_redundancy_and_matched_candidate` and `chainData_dispatch`).
   *Found:* round 3 task 2.15.
-  *Disposition:* reported (`notes/Prose-report.md`, S5).
+  *Disposition:* done (task 4): the statement gives the pin's conclusion: $q$ in general position,
+  $D(|V(G)| - 2)$ independent rows of $R(G_1, q)$ (KT eq. (6.46)), the form
+  $S \mapsto r(S(v_0) - S(v_2))$ in the row space of $R(G - v_1, q)$ (KT eq. (6.52)), and the
+  panel; the note keeps the pin's formal extras and says that `chainData_dispatch` uses all of
+  them but the decomposition $r = \sum_j \lambda_j r_j$.
 - **F-174** · S · `thm:molecular-iff-square-bar-joint` (`molecule-modelling.tex`): the statement
   ends "in particular $G$ has an infinitesimally rigid molecular realization iff $G^2$ has an
   infinitesimally rigid bar-joint realization". Its pin `molecular_finrank_motions_eq_square_ker`
@@ -3991,6 +3998,16 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 2 task 2.
   *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 2): round 3's docstring sweep
   (*Moved to a later round*).
+- **F-254** · L · `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
+  (`Molecular/AlgebraicInduction/PanelHinge.lean`) and `isInfinitesimallyRigidOn_insert_iff`
+  (`Molecular/AlgebraicInduction/Pinning.lean`): the first's docstring says that taking `hspan` as
+  a hypothesis makes `lem:case-II` green, and the second's calls the two the Lean grounding of
+  that node; since round 2 task 4 the node pins only the second (`F-145`), and nothing calls the
+  first. `F-148` covers the rest of both docstrings.
+  *Evidence:* read (the two docstrings; the node's pins; a `grep` for the first's callers).
+  *Found:* RECONCILE round 2 task 4.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 4): round 3's docstring sweep
+  (*Moved to a later round*); the first is among the declarations round 2 unpins.
 
 ## M — mathematics and sources
 
