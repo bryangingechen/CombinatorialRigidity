@@ -174,6 +174,10 @@ declaration's name as its header writes it:
   `lem:pencil-bridge-fibre` (25) and `thm:pencil-jj-equality` (18); 710 more are implied.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (tasks 4.8–4.9): neither chapter has a missing edge, nor does any other
+  (`--summary` at task 4.9: 0 missing). Of the 26 and 28 missing in the two tasks' parts at their
+  parents, 19 and 20 were added and the rest are implied by them; task 4.8 also added the 5 edges
+  its removals of unbacked edges left missing, and task 4.9's removals left none.
 - **F-006** · E · unbacked `\uses`, every chapter: 397 `\uses` targets that no pin of the using
   node reaches. 87 are reached only through another pinned node, and 310 not at all; per group
   (through a node / not at all): round 1 5/19, round 2 11/88, round 3 32/120, round 4 22/21,
@@ -183,6 +187,14 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`);
   the example read (`IsSparse.exists_typeI_or_typeII_reverse`'s statement, `Sparsity.lean`).
   *Found:* round 1 task 2.
+  *Disposition:* done (tasks 4.1–4.9): each task read its chapters' unbacked edges under the edge
+  policy (`notes/Prose-graph-cleanup.md` *Scope*) and removed those with no Lean basis that
+  neither the statement, the proof prose nor the pins use, 196 in all (17, 34, 39, 27, 15, 33, 10,
+  13 and 8), each with its reason in its task's commit. The rest stay, 84 + 145 at task 4.9: those
+  through a node, a use by the pins, and those with no Lean basis that the text uses, read as the
+  work log's *Decisions* records (a symbol the target defines, a step the proof cites, a pin two
+  nodes share). The example's edges to `def:typeI` and `def:typeII` went at task 4.1: the theorem
+  states $G - v$ and $G - v + ab$ directly, and its proof names no move.
 - **F-007** · E · `rem:kt-lemma-41` (`molecular-induction.tex`): `lem:base-vfiber-count`,
   `lem:acyclic-insert-vfiber` and `lem:balanced-forest-packing` use this remark, and the graph
   draws only edges between nodes, so none of the three edges is drawn (`lint.sh` check 1 passes
@@ -1683,6 +1695,17 @@ declaration's name as its header writes it:
   its callers).
   *Found:* round 5 task 4.7.
   *Disposition:* left (a pin change; task 8.2 lists it).
+- **F-249** · N · `def:pencil-x0-reduces` (`main-component.tex`): its first pin, `Graph.IsOpenEar`,
+  defines the open ears that *Ears and cycles* defines in prose, with no node, and that the
+  definition's statement takes "as in" that subsection. So every node whose pins take an open ear
+  reaches the definition of a reduction: task 4.9 added the statement edges of
+  `lem:pencil-generic-one-ear` and `lem:pencil-rigid-good-ear` to it, though neither statement
+  mentions a reduction. A definition node for ears in *Ears and cycles*, taking the pin (principle
+  E), is a node and pin change, after task 3.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label lem:pencil-generic-one-ear`, at
+  `23bf8244`); read (`Graph.IsOpenEar`, a structure, `Pencil/MainComponent/Coverage.lean`).
+  *Found:* round 5 task 4.9.
+  *Disposition:* left (a node and pin change; task 8.2 lists it).
 
 ## T — terminology and notation
 
