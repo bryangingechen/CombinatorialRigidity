@@ -271,6 +271,7 @@ edges as a sparse graph on $V$ can have.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:edgesIn-corners}
   Apply the sparsity bound at $s = V$ and use $\edgesIn{V} = E(G)$
   (\cref{lem:edgesIn-corners}).
 \end{proof}
@@ -490,7 +491,7 @@ vertex of degree three uses both
   \label{thm:isTightOn-union-with-bonus}
   \lean{SimpleGraph.IsTightOn.union_with_bonus}
   \leanok
-  \uses{def:isSparse, def:isTightOn, lem:edgesIn-ncard-add-le}
+  \uses{def:isSparse, def:isTightOn}
   Let $V$ be finite, let $G$ be $(k,\ell)$-sparse, and let
   $s_1, s_2 \subseteq V$ be $(k,\ell)$-tight in $G$. Let $F$ be a set of
   edges of $G$ inside $s_1 \cup s_2$ that lie in neither
@@ -503,6 +504,8 @@ vertex of degree three uses both
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:isSparse-isTightOn-of-le, lem:edgesIn-mono,
+    lem:edgesIn-inter}
   The sets $\edgesIn{s_1}$, $\edgesIn{s_2}$ and $F$ lie in
   $\edgesIn{s_1 \cup s_2}$ (\cref{lem:edgesIn-mono}), and $F$ is
   disjoint from the other two. Their intersection is
@@ -540,6 +543,7 @@ vertex of degree three uses both
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:edgesIn-mono, lem:isSparse-isTightOn-of-le}
   The sets $\edgesIn{s}$ and $F$ are disjoint, and both lie in
   $\edgesIn{s \cup \{w\}}$ (\cref{lem:edgesIn-mono}). Since $s$ is tight
   and $w \notin s$,

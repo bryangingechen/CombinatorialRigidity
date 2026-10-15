@@ -341,6 +341,7 @@ property that holds at all frameworks near a given one, since
   \label{lem:exists-affinelySpanning-of-eventually}
   \lean{SimpleGraph.exists_affinelySpanning_of_eventually}
   \leanok
+  \uses{def:framework}
   Let $V$ be finite, let $d \in \N$, and let $P$ be a property of
   frameworks on $V$ in $\R^{d}$ that holds at every framework in some
   neighbourhood of a framework $p_0$. Then there is a framework $p$ on
@@ -401,8 +402,7 @@ assume that no three of them are collinear.
   \lean{SimpleGraph.isSparse_of_edgeSetRowIndependent_dim_two}
   \leanok
   \uses{def:isSparse, def:edgeSet-rowIndependent,
-    lem:rigidityMap-finrank-range-le-of-affinelySpanning,
-    lem:exists-affinelySpanning-of-eventually}
+    lem:rigidityMap-finrank-range-le-of-affinelySpanning}
   Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{2}$ such
   that no three of the points $p_v$ are collinear, that is, for every
   set $S$ of at least three vertices the points $p_v$, $v \in S$,
@@ -412,6 +412,8 @@ assume that no three of them are collinear.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:span-range-rigidityRow}
   Let $H$ be the spanning subgraph of $G$ with edge set $I$. By
   \cref{def:isSparse}, we must show that
   $|\edgesIn[H]{S}| + 3 \le 2|S|$ for every set $S$ of at least two
@@ -456,8 +458,6 @@ We now combine the two facts with the perturbation lemma.
   \lean{SimpleGraph.IsGenericallyRigid.exists_isLaman_le}
   \leanok
   \uses{def:isGenericallyRigid, def:isLaman, def:isTight,
-    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid,
-    lem:exists-rowIndependent-edge-basis,
     lem:isSparse-of-rowIndependent-two,
     lem:exists-affinelySpanning-of-eventually,
     lem:isInfinitesimallyRigid-eventually}

@@ -66,6 +66,7 @@ A translation of $\R^{d}$ moves every point with the same velocity.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:rigidityMap-apply}
   At each edge $uv$ of $G$, the entry of $R(G, p)(\tau_b)$ is
   $\langle p_u - p_v,\, b - b \rangle = 0$
   (\cref{lem:rigidityMap-apply}).
@@ -100,6 +101,7 @@ $A p_v$ describe a rotation of the framework to first order.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:rigidityMap-apply}
   At each edge $uv$ of $G$, the entry of $R(G, p)(A \circ p)$ is
   $\langle p_u - p_v,\, A p_u - A p_v \rangle$
   (\cref{lem:rigidityMap-apply}). By linearity it equals

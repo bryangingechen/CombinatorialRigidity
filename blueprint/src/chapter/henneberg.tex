@@ -177,6 +177,7 @@ two moves are called the $0$-extension and the $1$-extension.
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:edgesIn-corners}
   Let $v$ be the new vertex of $G'$. The graph $G'$ has one more vertex
   than $G$ and two more edges (\cref{lem:typeI-edgeSet-ncard}), so
   $|E(G')| + 3 = 2|V(G')|$ follows from $|E(G)| + 3 = 2|V(G)|$.
@@ -207,6 +208,7 @@ two moves are called the $0$-extension and the $1$-extension.
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:edgesIn-corners}
   Let $v$ be the new vertex of $G'$. The move deletes $ab$ and adds
   $va$, $vb$ and $vc$, so $G'$ has one more vertex than $G$ and two more
   edges (\cref{lem:typeII-edgeSet-ncard}). The count follows as in
@@ -313,6 +315,7 @@ results of \cref{sec:edgesIn} and \cref{sec:sparsity}.
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:isLaman-iso}
   Since $G$ is Laman and $|V| \ge 3$, it is $(2,3)$-sparse and has
   $2|V| - 3 \ge 3$ edges. So
   \cref{thm:isSparse-exists-typeI-or-typeII-reverse} gives a vertex

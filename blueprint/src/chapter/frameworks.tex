@@ -300,6 +300,7 @@ as a Laman graph on two vertices and $K_2$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:rigidityMap-apply}
   Composition with $\varphi$ is a linear isomorphism from
   $(\R^{d})^{W}$ to $(\R^{d})^{V}$, sending $q'$ to $q' \circ \varphi$.
   Let $uv$ be an edge of $G$, so that $\varphi(u)\varphi(v)$ is an edge
@@ -433,7 +434,7 @@ form.
   \lean{SimpleGraph.top_fin_two_isGenericallyRigidInj}
   \leanok
   \uses{def:isGenericallyRigidInj, lem:framework-finrank,
-    lem:rigidityMap-finrank-range-le, lem:rigidityMap-apply}
+    lem:rigidityMap-apply}
   Let $d \ge 1$. Then the complete graph $K_2$ on two vertices is
   injectively generically rigid in dimension $d$.
 \end{theorem}
@@ -455,7 +456,7 @@ form.
   \label{thm:top-fin-two-isGenericallyRigid}
   \lean{SimpleGraph.top_fin_two_isGenericallyRigid}
   \leanok
-  \uses{thm:top-fin-two-isGenericallyRigidInj}
+  \uses{thm:top-fin-two-isGenericallyRigidInj, def:isGenericallyRigid}
   Let $d \in \N$. Then the complete graph $K_2$ on two vertices is
   generically rigid in dimension $d$.
 \end{theorem}

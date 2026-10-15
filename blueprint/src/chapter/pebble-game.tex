@@ -141,7 +141,7 @@ proof of Invariant~(1) in \cref{lem:pebble-game-invariants} shows.
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.reverse,
     CombinatorialRigidity.PebbleGame.PartialOrientation.underline_reverse_eq}
   \leanok
-  \uses{def:partial-orientation}
+  \uses{def:partial-orientation, def:directed-walk}
   Let $D$ be a partial orientation on $V$. A \emph{directed path} in
   $D$ from $u_0$ to $u_m$ is a simple directed walk
   $u_0, u_1, \ldots, u_m$ along the arcs of $D$
@@ -343,7 +343,7 @@ lists.
     CombinatorialRigidity.PebbleGame.PartialOrientation.tryReachPebble,
     CombinatorialRigidity.PebbleGame.PartialOrientation.TryReachPebbleResult.newOrient}
   \leanok
-  \uses{def:partial-orientation, def:pebble-counts, def:path-reversal,
+  \uses{def:partial-orientation, def:path-reversal,
     thm:reachable-finding-correct}
   Let $D$ be a partial orientation on a finite set $V$, and let each
   vertex $a$ have a list $N^+_D(a)$ whose entries are the
@@ -403,7 +403,9 @@ than $k|V'| - \ell$ edges of $G$
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith,
     CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdge}
   \leanok
-  \uses{def:tryReachPebble, def:partial-orientation, def:arc-insertion}
+  \uses{def:tryReachPebble, def:partial-orientation, def:arc-insertion,
+    def:workhorseWitness, lem:mem-reachClosureComputable,
+    lem:pebble-game-invariants}
   Let $V$ be a finite set, and let $k$ and $\ell$ be non-negative
   integers. Let each partial orientation on $V$ come with lists
   $N^+_D(a)$ as in \cref{def:tryReachPebble}. Let $D$ be a
@@ -673,7 +675,7 @@ that defines sparsity.
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.span_eq_ncard_edgesIn}
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
-    lem:runPebbleGame-underline-eq, def:edgesIn}
+    def:edgesIn}
   Let $D$ be a partial orientation on $V$, and let $G$ be a simple graph
   on $V$ with $\underline{D} = E(G)$. Then every finite set
   $V' \subseteq V$ satisfies
@@ -807,8 +809,7 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
     def:reachable-orientation, def:isSparse,
-    lem:pebble-game-independent-brings-pebble,
-    lem:span-eq-ncard-edgesIn}
+    lem:pebble-game-independent-brings-pebble}
   Let $V$ be a finite set, let $k$ and $\ell$ be non-negative integers
   with $\ell < 2k$, and let $D$ be a $(k, \ell)$-reachable partial
   orientation on $V$. Let $u \ne v$ be vertices such that the edge $uv$
@@ -821,7 +822,7 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
 \begin{proof}
   \leanok
   \uses{lem:pebble-game-independent-brings-pebble,
-    lem:span-eq-ncard-edgesIn}
+    lem:mem-reachClosureComputable}
   Let $G$ be the graph on $V$ with edge set $\underline{D} \cup \{uv\}$,
   and let $V' = \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ be the set
   of vertices reachable from $u$ or from $v$ along the arcs of $D$. Then
@@ -846,8 +847,7 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
   \label{lem:workhorseWitness-certifies}
   \lean{CombinatorialRigidity.PebbleGame.WorkhorseWitness.certifies_against}
   \leanok
-  \uses{def:workhorseWitness, lem:pebble-game-invariants,
-    lem:span-eq-ncard-edgesIn}
+  \uses{def:workhorseWitness, lem:pebble-game-invariants, def:edgesIn}
   Let $k$ and $\ell$ be non-negative integers with $\ell < 2k$, and let
   $(D, V', (u, v))$ be a failure witness (\cref{def:workhorseWitness}).
   Let $G$ be a finite simple graph on $V$ whose edges include $uv$ and
@@ -858,7 +858,7 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn}
+  \uses{lem:pebble-game-invariants}
   The distinct vertices $u$ and $v$ lie in $V'$, so $|V'| \ge 2$ and
   $\ell < 2k \le k|V'|$. Since $D$ is $(k, \ell)$-reachable,
   Invariant~(2) of \cref{lem:pebble-game-invariants} gives
@@ -894,7 +894,8 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn}
+  \uses{lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn,
+    lem:runPebbleGameWith-underline-subset}
   Let $G$ be this graph, and let $D'$ be the partial orientation that
   the processing returns. It is $(k, \ell)$-reachable
   (\cref{def:tryAddEdge}). By
@@ -1000,8 +1001,8 @@ for which the restated theorem holds as well
   \lean{CombinatorialRigidity.PebbleGame.PebbleGameResult,
     CombinatorialRigidity.PebbleGame.PebbleGameResult.isAccept}
   \leanok
-  \uses{def:partial-orientation, def:reachable-orientation, def:isSparse,
-    def:edgesIn, def:workhorseWitness, def:blockingWitness}
+  \uses{def:partial-orientation, def:reachable-orientation,
+    def:edgesIn, def:blockingWitness}
   Let $G$ be a finite simple graph on $V$, and let $k$ and $\ell$ be
   non-negative integers. A \emph{verdict} on $G$ is one of the
   following:

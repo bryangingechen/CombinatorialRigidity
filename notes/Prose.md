@@ -40,7 +40,8 @@ and for the two-extensor's polynomial coordinates, and of `jacobs.tex`, with new
 partitions, for the edges between a family of parts, for the root of a cross edge and for two
 lemmas on the core, and of `main-component.tex`, with new nodes for the lifting system, a
 polynomial section of a kernel and the relabelling of edges, its helpers unpinned and the pins two
-nodes share kept. **Next concrete task:** round 5's task 4.1, the edges of round 1's chapters
+nodes share kept, and its task 4.1 added the missing edges of round 1's chapters. **Next concrete
+task:** round 5's task 4.2, the edges of `matroid-union.tex` through `deficiency.tex`
 (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions

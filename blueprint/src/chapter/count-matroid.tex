@@ -121,7 +121,7 @@ of vertices.
   \label{def:isSparse-maxBlock}
   \lean{SimpleGraph.maxBlock}
   \leanok
-  \uses{def:isSparse, def:isTightOn}
+  \uses{def:isTightOn}
   Let $V$ be finite, let $G$ be a graph on $V$, and let
   $X \subseteq V$. We write $C_G(X)$ for the union of all sets that
   contain $X$ and are $(k, \ell)$-tight in $G$. If there is no such
@@ -265,7 +265,8 @@ property is \cref{lem:isSparse-aug}.
   \label{def:countMatroid}
   \lean{SimpleGraph.countMatroid}
   \leanok
-  \uses{def:isSparse, lem:isSparse-aug}
+  \uses{def:isSparse, lem:isSparse-aug, lem:edgesIn-corners,
+    lem:isSparse-mono-left}
   Let $V$ be finite, and let $k$ and $\ell$ be non-negative integers
   with $\ell < 2k$. The \emph{$(k, \ell)$-count matroid} on $V$ is the
   matroid on $E(K_V)$ whose independent sets are the sets

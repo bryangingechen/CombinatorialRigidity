@@ -139,6 +139,8 @@ declaration's name as its header writes it:
   `lem:rigidityMap-apply` (8); 293 more are implied by other `\uses`.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (task 4.1): of the 71 missing at task 3's close, 40 added and 31 implied by
+  them, and 5 that the task's removals of unbacked edges left missing added too; none is missing.
 - **F-002** · E · round 2's chapters (`matroid-union.tex` … `meet.tex`): 99 missing edges at 58
   nodes (38 through a statement): `molecular-induction` 42, `meet` 24, `deficiency` 18,
   `rigidity-matrix` 13, `body-bar` and `extensor` 1 each. 38 of them go to `def:edge-multiply`;

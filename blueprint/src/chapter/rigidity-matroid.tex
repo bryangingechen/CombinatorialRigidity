@@ -66,7 +66,7 @@ Lemma~2.1.3 that we need within the proof of the theorem.
   \label{thm:isSparse-exists-typeI-or-typeII-reverse}
   \lean{SimpleGraph.IsSparse.exists_typeI_or_typeII_reverse}
   \leanok
-  \uses{def:isSparse, def:typeI, def:typeII}
+  \uses{def:isSparse}
   Let $V$ be finite, and let $G$ be a $(2,3)$-sparse graph on $V$ with
   at least one edge. Then $G$ has a vertex $v$ for which one of the
   following holds.
@@ -85,9 +85,11 @@ Lemma~2.1.3 that we need within the proof of the theorem.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter,
+  \uses{def:isSparse, thm:isTightOn-union-inter,
     lem:isSparse-typeII-reverse-blocker,
-    lem:isSparse-exists-nonadj-among-three-neighbors}
+    lem:isSparse-exists-nonadj-among-three-neighbors,
+    lem:edgesIn-corners, thm:isTightOn-insert-vertex-with-edges,
+    thm:isTightOn-union-with-bonus}
   We find $v$ by the argument of
   \cref{lem:isSparse-exists-degree-le-three}, applied to the vertices
   of positive degree. Let $U$ be the set of these vertices. Every edge
@@ -238,6 +240,8 @@ new vertex $v$ at a given point $q$, and then choose $q$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:rigidityMap-apply, lem:typeI-edgeSet}
   For an edge $e$ of $G$, let $r_e$ be the rigidity row of $G$ at $p$
   indexed by $e$, and for an edge $e$ of $G'$, let $\hat r_e$ be the
   rigidity row of $G'$ at $\hat p$ indexed by $e$
@@ -316,7 +320,9 @@ with the Type~I move.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:edgeSet-rowIndependent}
+  \uses{def:edgeSet-rowIndependent,
+    lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:rigidityMap-apply, lem:typeI-edgeSet}
   Choose a point $q \ne p_a$, and let $\hat p$ extend $p$ by placing
   $v$ at $q$. Let $r_e$, $\hat r_e$ and $x^{\alpha}$ be as in the proof
   of \cref{lem:typeI-rowIndependent-extend}. The edges of $G'$ are the
@@ -345,6 +351,8 @@ with the Type~I move.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:rigidityMap-apply, lem:typeII-edgeSet}
   Let $r_e$, $\hat r_e$, $x^{\alpha}$ and $\rho$ be as in the proof of
   \cref{lem:typeI-rowIndependent-extend}. The vertices $a$, $b$ and $c$
   are distinct: $a \ne b$ since $ab$ is an edge, and $c \ne a, b$ since
@@ -406,8 +414,7 @@ isomorphisms, as we did for infinitesimal rigidity
   \label{lem:edgeSet-rowIndependent-eventually}
   \lean{SimpleGraph.EdgeSetRowIndependent.eventually}
   \leanok
-  \uses{def:edgeSet-rowIndependent, def:rigidityRow,
-    lem:isInfinitesimallyRigid-eventually}
+  \uses{def:edgeSet-rowIndependent, def:rigidityRow}
   Let $G$ be a graph on a finite set $V$, let $I \subseteq E(G)$, and
   let $p_0$ be a framework on $V$ in $\R^{d}$ at which $I$ is
   row-independent. Then $I$ is row-independent at every framework in
@@ -415,6 +422,8 @@ isomorphisms, as we did for infinitesimal rigidity
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:rigidityMap-apply}
   Fix a basis $\xi_1, \dots, \xi_n$ of $(\R^{d})^{V}$. A linear
   functional $\ell$ on $(\R^{d})^{V}$ is determined by the vector
   $(\ell(\xi_1), \dots, \ell(\xi_n)) \in \R^{n}$, and the map sending
@@ -446,6 +455,8 @@ isomorphisms, as we did for infinitesimal rigidity
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:rigidityMap-apply}
   Let $L : (\R^{d})^{V} \to (\R^{d})^{W}$ be the linear isomorphism
   $x \mapsto x \circ \varphi^{-1}$. For an edge $e = uv$ of $G$, let
   $r_e$ be the rigidity row of $G$ at $q \circ \varphi$ indexed by $e$,
@@ -750,6 +761,7 @@ $K_V$, extended to all unordered pairs of vertices.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}
   For $e \in E(K_V)$, the extended row $\tilde r_e$ is the rigidity row
   $r_e$ of $K_V$ at $p$. So $I$ is independent in $\mathcal{L}_p(V)$ if
   and only if the rows $r_e$, for $e \in I$, are linearly independent,
@@ -772,6 +784,7 @@ $(K_V, p)$, and it remains to choose $p$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{thm:edgeSet-rowIndependent-iff-isSparse}
   Let $\mathcal{S}$ be the family of sets $I \subseteq E(K_V)$ for
   which the graph on $V$ with edge set $I$ is $(2, 3)$-sparse. It is
   finite, since $E(K_V)$ is. We show, by induction on $n$, that for any
