@@ -1059,7 +1059,7 @@ $\dim L(q) = 3$.
   \uses{def:pencil-lifting-space, def:D-deficiency}
   Let $G$ have at least one body and let $q$ be admissible. Then
   $\dim L(q) \ge 3 + \operatorname{def}_2(G)$, where
-  $\operatorname{def}_2(G) = \max_P\,[3(|P| - 1) - 2d(P)]$.
+  $\operatorname{def}_2(G) = \max_P\,[3(|P| - 1) - 2d_G(P)]$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1074,7 +1074,7 @@ $\dim L(q) = 3$.
   constant on each part form a space of dimension $3|P|$. On it the edges
   inside a part impose no condition, and each crossing edge imposes at
   most two. So the motions have dimension at least
-  $3|P| - 2d(P) = 3 + [3(|P| - 1) - 2d(P)]$ for every $P$, and hence at
+  $3|P| - 2d_G(P) = 3 + [3(|P| - 1) - 2d_G(P)]$ for every $P$, and hence at
   least $3 + \operatorname{def}_2(G)$. This is the relative deficiency
   bound at $D = 3$ (\cref{lem:relative-deficiency-rank-bound}).
 \end{proof}

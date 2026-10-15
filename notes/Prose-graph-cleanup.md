@@ -27,10 +27,11 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 6 has landed** (this commit; prose only, no Lean): the T entries' seven dispositions, the
-notation in `pencil.tex`, `main-component.tex`, `panel-layer.tex` and `meet.tex`, and
-`blueprint/SETUP-AND-PITFALLS.md`'s example of the `\item[…]` pitfall. Nothing is mid-stream; the
-next task is task 7.
+**Task 6 has landed** (`04ed99ec`, and this commit's follow-up; prose only, no Lean): the T
+entries' seven dispositions, the notation in `pencil.tex`, `main-component.tex`, `panel-layer.tex`
+and `meet.tex`, and `blueprint/SETUP-AND-PITFALLS.md`'s example of the `\item[…]` pitfall. The
+follow-up writes $d_G(P)$ at the three $d(P)$ that `04ed99ec` left in
+`lem:pencil-lifting-space-deficiency`. Nothing is mid-stream; the next task is task 7.
 
 **The gate's baseline, at task 6** (2026-10-15; the same as task 4.9's):
 - `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 588 lines**, sha256 prefix
@@ -213,7 +214,7 @@ gate's diff, which each task makes exact before editing.
   done; `F-250` new), 5.4 `2ecbd37d` (`F-119` done), 5.5 `b384225a` (`pencil.tex`'s order left).
   Each commit's log carries its moves and the edges it left; 33 edges to a later file and 4 within
   a file stay (*Current state*). The dump byte-identical throughout.
-- [x] **6. T — terminology and notation** (this commit; `F-056`, `F-067`, `F-072`, `F-073`,
+- [x] **6. T — terminology and notation** (`04ed99ec` and this commit; `F-056`, `F-067`, `F-072`, `F-073`,
   `F-127`, `F-203`, `F-227`, all done). The first three were done by rounds 2–4; their
   dispositions name the commits (`git log -S`). `F-073`: KT's $d$ for the dimension on 15 lines of
   `pencil.tex` and 42 of `main-component.tex` ($\operatorname{def}_2$, $\operatorname{def}_3$
@@ -224,6 +225,9 @@ gate's diff, which each task makes exact before editing.
   task fix). `F-203`: a sentence in `main-component.tex`'s notation list. `F-227`: plain items,
   cited as part (1) and part (2). *Expected:* one commit; no node, `\uses` or pin changed,
   `lean_decls` unchanged, the dump byte-identical to task 5.5's, the screen unchanged. Held.
+  Follow-up (this commit, the coordinator's check): the three $d(P)$ that `04ed99ec` left in
+  `lem:pencil-lifting-space-deficiency`'s statement and proof are $d_G(P)$; no bare $d(P)$ is left
+  in `pencil.tex` or `main-component.tex`. The dump byte-identical to task 6's. Held.
 - [ ] **7. U — status surfaces** (`F-099`, `F-173`, `F-204`, `F-226`, `F-229`, `F-231`).
   `formalization.yaml`: `F-099`'s three places (the PI, 2026-10-12), `F-173`'s (2) and `F-204`'s
   (2), Jacobs 1998's DOI, and `F-231`'s declaration name in an alignment row's `lean:`.

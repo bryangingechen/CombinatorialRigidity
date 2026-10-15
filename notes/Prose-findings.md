@@ -1799,12 +1799,13 @@ declaration's name as its header writes it:
   $\operatorname{def}_3$.
   *Evidence:* read (a `grep` for "$n = 2$" and "$n = 3$" over the two chapters, at task 2.8).
   *Found:* round 2 task 2.8.
-  *Disposition:* done (task 6): KT's $d$ for the dimension on 15 lines of `pencil.tex` and 42 of
-  `main-component.tex`, with $\operatorname{def}_d$ for $\operatorname{def}_n$;
-  `fmlnote:pencil-conditioned-pair` says that the formalization calls it $n$. Where $d$ would
-  clash, `main-component.tex`'s degree $d$ is reworded (twice), a count $d$ is $m$, and $d(P)$ is
-  `def:D-deficiency`'s $d_G(P)$. The $n$ of a panel normal, of a polygon's size and of a dimension
-  bound stays.
+  *Disposition:* done (task 6 and its follow-up): KT's $d$ for the dimension on 15 lines of
+  `pencil.tex` and 42 of `main-component.tex`, with $\operatorname{def}_d$ for
+  $\operatorname{def}_n$; `fmlnote:pencil-conditioned-pair` says that the formalization calls it
+  $n$. Where $d$ would clash, `main-component.tex`'s degree $d$ is reworded (twice), a count $d$ is
+  $m$, and $d(P)$ is `def:D-deficiency`'s $d_G(P)$ (the follow-up: its three places in
+  `lem:pencil-lifting-space-deficiency`). The $n$ of a panel normal, of a polygon's size and of a
+  dimension bound stays.
 - **F-127** · T · the extensor of vectors (`molecular-induction.tex`, `main-component.tex`):
   `extensor.tex` writes the extensor of $v_1, \dots, v_j$ as the join $v_1 \vee \cdots \vee v_j$
   "from now on", and `meet.tex` writes $\wedge$ for the meet. `molecular-induction.tex` writes a
