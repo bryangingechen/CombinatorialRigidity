@@ -4,9 +4,9 @@
 ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its
 input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6 and
 §2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`,
-opened with nine tasks (`notes/Reconcile-texts-cleanup.md`). **Next concrete task:** its task 4,
-M1's "for simple graphs" in `body-hinge.tex` (tasks 2–3, S1's and S2's scopes, are done). The two
-PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
+opened with nine tasks (`notes/Reconcile-texts-cleanup.md`). **Next concrete task:** its task 5,
+M2's planar credits, read against the sources first (tasks 2–4, S1's and S2's scopes and M1's
+text, are done). The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 

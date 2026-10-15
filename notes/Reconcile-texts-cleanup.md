@@ -5,8 +5,8 @@ the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot
 the authority for which rounds are done. Docs and blueprint prose only: the scopes of S1 and S2 on
 the status surfaces, M1's "for simple graphs", M2's and M5's credits read against the two PDFs,
 §2.6's stale example in an agent manual, and the non-vacuity rule. No node, edge or pin changes,
-and no Lean edit. Nine one-commit tasks; tasks 1–3 (the open, S1's and S2's scopes) are done.
-**Next concrete task:** task 4, M1's "for simple graphs" in `body-hinge.tex` (Opus, a fresh agent).
+and no Lean edit. Nine one-commit tasks; tasks 1–4 (the open, S1's and S2's scopes, M1's text) are
+done. **Next concrete task:** task 5, M2's planar credits, read against the sources first (Opus).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -17,13 +17,13 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–3 are done**; task 3, S2's scope, is this commit (docs and one `intro.tex` paragraph).
-Next: task 4 (*Hand-off*). Task 3's gates gave the open's values: `lint.sh` green; `verify.sh`
-green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges 11033da1dbaa0fae`,
-`8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical) and `--summary` the
-same bytes; `print.log` rebuilt, 0 `LaTeX Warning` lines; the regenerated harness `cmp`-identical;
-the no-Lean-edit diff empty. The witness `scratch/reconcile-texts/S2Witness.lean` is clean under
-`lake lean`, its three theorems on the standard axioms.
+**Tasks 1–4 are done**; task 4, M1's "for simple graphs", is this commit (two `body-hinge.tex`
+passages, their `\cref`s unchanged). Next: task 5 (*Hand-off*). Task 4's gates gave the open's
+values: `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges
+11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical)
+and `--summary` the same bytes; `print.log` rebuilt by latexmk for `body-hinge.tex`, 0 `LaTeX
+Warning` lines; `check-phase-note.py` green; the no-Lean-edit diff empty. No `formalization.yaml`
+edit, so no gate 7.
 
 **Verified at the open** (2026-10-15, at `f39e35e6`, whose Lean and blueprint are round 5's close
 tree, `62175c74`):
@@ -109,7 +109,7 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
 - [x] **2. S1 — the generic body-hinge theorem's scope** (`8ee0f8a8`; `F-207` in part, `F-252`):
   the scope beside both theorems in `formalization.yaml` (row, two `alignment` notes), README, the
   home page, `intro.tex` and ROADMAP §34; the remark's reading checked by a `lake lean` witness.
-- [x] **3. S2 — KT Theorem 5.6's and the molecular conjecture's scope** (this commit; `F-122`,
+- [x] **3. S2 — KT Theorem 5.6's and the molecular conjecture's scope** (`b0eb63eb`; `F-122`,
   `F-128`, in part; `F-251`; report S2; Opus). Read `PanelHingeFramework` (its `ends`),
   `RankHypothesis`, `hingeConstraint`, `panelSupportExtensor_ne_zero_iff`, and the statements of
   `rankHypothesis_of_theorem_55_gen` (`Theorem55.lean:2880`), `molecular_conjecture` and
@@ -125,10 +125,11 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
   `molecular_conjecture_multigraph` and `theorem_55_6_multigraph` too: if the free selector reaches
   them (README 151–160, the row 465), that is a new `S` entry under *Candidates for the PI*. `F-125`
   is the phase's.
-- [ ] **4. M1 — "for simple graphs"** (`F-222`, in part; report M1; Opus). `body-hinge.tex`'s note
-  after `def:body-hinge-framework` (70–79, "The rigidity statement for frameworks with hinges … is
-  `cor:bodyhinge-generic-tree-packing`") and the paragraph after `thm:body-hinge-tay`'s proof
-  (144–152, KT Proposition 1.1 for multigraphs "is" the corollary) say that the corollary is for
+- [x] **4. M1 — "for simple graphs"** (this commit; `F-222`, in part; report M1; Opus).
+  `body-hinge.tex`'s note after `def:body-hinge-framework` (70–79, "The rigidity statement for
+  frameworks with hinges … is `cor:bodyhinge-generic-tree-packing`") and the paragraph after
+  `thm:body-hinge-tay`'s proof (144–152, KT Proposition 1.1 for multigraphs "is" the corollary)
+  say that the corollary is for
   simple graphs, with the rest of its scope read from its pin's signature (`hSimple`, $|V| \ge 2$,
   `hspan`, $K$ infinite), and that for multigraphs the formalization has the form for bundles of
   bars (S11). No `\cref` or `\uses` changes. The multigraph form is the phase's (b).
@@ -202,15 +203,17 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 4, M1** (Opus, a fresh agent): `body-hinge.tex`'s two passages say that
-`cor:bodyhinge-generic-tree-packing` is for simple graphs, with the rest of its scope read from its
-pin's signature, under gates 1–6 (no `formalization.yaml` edit, so no gate 7). Tasks 2–3 shifted
-some lines the later tasks name (the open's numbering): `formalization.yaml`'s `alignment` sources
-for Laman and Lovász–Yemini (602, 607) are now 636 and 641, its other named lines unchanged;
-ROADMAP's *References* entries for Laman and Lovász–Yemini (1372, 1374) are 1383 and 1385, its
-other named lines unchanged; `intro.tex` 114 is 127; README's and the home page's named lines are
-unchanged; `body-hinge.tex`, `DESIGN.md`, `blueprint/CLAUDE.md`, `PHASE-BOUNDARIES.md` and
-`CLEANUP.md` are untouched. Re-`grep` as ever. Then tasks 5–9 in order.
+**Next: task 5, M2** (Opus, a fresh agent): read Lovász–Yemini 1982 and Jordán 2016's three pages
+against the four pins' statements, write the verdict with pages into `F-025`, then fix the credits
+on task 5's surfaces, under gates 1–7 (it edits `formalization.yaml`, so gate 7: the harness
+regenerated and `cmp`-identical). Lines the later tasks name have moved from the task lines'
+numbering (the tree the open read): `formalization.yaml`'s `alignment` sources for Laman and
+Lovász–Yemini (602, 607) are 636 and 641, its other named lines unchanged; ROADMAP's §6 text (269)
+and §7's heading and text (277, 279) are 270, 278 and 280, its *References* entries for Laman and
+Lovász–Yemini (1372, 1374) are 1383 and 1385, and 4, 61 and 96 are unchanged; `intro.tex` 114 is
+127; README's and the home page's named lines are unchanged; `body-hinge.tex` (task 4) is named by
+no later task; `DESIGN.md`, `blueprint/CLAUDE.md`, `PHASE-BOUNDARIES.md` and `CLEANUP.md` are
+untouched. Re-`grep` as ever. Then tasks 6–9 in order.
 
 ## Decisions made during this round
 
@@ -235,3 +238,10 @@ unchanged; `body-hinge.tex`, `DESIGN.md`, `blueprint/CLAUDE.md`, `PHASE-BOUNDARI
   declaration states it. The free selector does not reach the multigraph theorems:
   `HasCoplanarPanelRealization` puts each link's hinge in its own ends' panels, with nonzero
   normals and hinges. No new entry.
+- **M1's passages** (task 4): the scope is the pin's signature (`hSimple`, `hV`, `hspan`, `[Infinite
+  K]`, `hfresh`). The main-text paragraph names the statement block's assumptions; the note after
+  `def:body-hinge-framework` adds the encoding's (every body a vertex; the fresh labels, by pointing
+  at the corollary's own note). No `\cref` added, so prose pointers. For multigraphs both say the
+  formalization "has" the bundle form, not `F-222`'s "only": `thm:theorem-55-6-multigraph`
+  realizes every spanning multigraph with nonzero hinges at the target rank (read from its
+  statement). No new entry.

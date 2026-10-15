@@ -4054,7 +4054,12 @@ declaration's name as its header writes it:
   after `thm:body-hinge-tay`; the statement of
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`; JJ 2010 §6, p. 582).
   *Found:* round 4 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, M1).
+  *Disposition:* reported (`notes/Prose-report.md`, M1); round 1: `body-hinge.tex`'s two passages
+  say the corollary is for simple graphs, with the rest of its pin's scope (at least two vertices,
+  every body a vertex, an infinite field, the fresh-label supply by pointer), and that for
+  multigraphs the formalization has the theorem for bundles of bars (task 4). Not "only":
+  `thm:theorem-55-6-multigraph` realizes every spanning multigraph with nonzero hinges. The
+  multigraph generic form is `RECONCILE-FORMAL`'s (b).
 - **F-228** · M · the credit for Laman's theorem (`intro.tex`, `laman.tex`, `laman-theorem.tex`,
   `henneberg.tex`; `README.md`, `home_page/index.md`): the blueprint credits the characterization of
   the generically rigid graphs in the plane to Laman 1970 alone, as Jordán 2016 does (Theorems 2.2.1

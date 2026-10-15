@@ -73,9 +73,14 @@ chapters.
   hinge and no condition on the $D - 1$ vectors of an edge. So
   \cref{lem:edge-multiply-sparse} and \cref{thm:body-hinge-tay} are
   proved for these bundles of bars, and the frameworks they provide
-  need not come from hinges. The rigidity statement for frameworks with
+  need not come from hinges. For multigraphs, the formalization has
+  the theorem in this form. The rigidity statement for frameworks with
   hinges (\cref{def:hinge-constraint}), at every generic choice of the
-  hinges, is \cref{cor:bodyhinge-generic-tree-packing}.
+  hinges, is \cref{cor:bodyhinge-generic-tree-packing}, and it is for
+  simple graphs. It also asks that $G$ have at least two vertices and
+  every body as a vertex, and that the field be infinite. It assumes the
+  supply of fresh edge labels that the formalization note after it
+  describes.
 \end{fmlnote}
 
 \begin{lemma}[Tay's theorem for the multiplied multigraph]
@@ -148,8 +153,12 @@ $E((D-1)\cdot G)$ the union of $D$ disjoint spanning trees. Katoh and
 Tanigawa state the theorem for infinitesimal rigidity alone (KT
 Proposition~1.1): $G$ has an infinitesimally rigid body-hinge framework
 in $\R^d$ if and only if $\tilde G$ contains $D$ edge-disjoint spanning
-trees. For frameworks with hinges in general position, this form is
-\cref{cor:bodyhinge-generic-tree-packing}.
+trees. For simple graphs and frameworks with hinges in general
+position, this form is \cref{cor:bodyhinge-generic-tree-packing}, which
+also asks that $G$ have at least two vertices and that the field be
+infinite. For multigraphs, the formalization has the theorem above,
+proved for bundles of bars as the note after the definition of
+body-hinge frameworks explains.
 
 Katoh and Tanigawa call a body-hinge framework a panel-hinge framework
 if, for each body, the hinges at that body lie in a common
