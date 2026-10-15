@@ -37,7 +37,6 @@ we apply Tay's theorem to $(D-1)\cdot G$.
   \label{def:edge-multiply}
   \lean{Graph.edgeMultiply}
   \leanok
-  \uses{def:graph-sparse}
   Let $G$ be a multigraph and let $m$ be a natural number. The
   multigraph $m \cdot G$ has the vertices of $G$, and for each edge $e$
   of $G$ it has $m$ edges $(e, 1), \dots, (e, m)$, each with the ends of
@@ -124,7 +123,7 @@ characterization of the graphs of the independent ones.
   \lean{Graph.BodyHingeFramework.body_hinge_tay}
   \leanok
   \uses{def:body-hinge-framework, lem:edge-multiply-sparse,
-    thm:tay-witness, thm:tutte-nash-williams, cor:k-spanning-trees}
+    thm:tay-witness, thm:tutte-nash-williams}
   Let $d \ge 2$ and $D = \binom{d+1}{2}$, and let $G$ be a multigraph.
   Then there is an independent body-hinge framework in $\R^d$ on $G$ if
   and only if $E((D-1)\cdot G)$ is the union of $D$ pairwise disjoint
@@ -134,8 +133,7 @@ characterization of the graphs of the independent ones.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{lem:edge-multiply-sparse, thm:tay-witness, thm:tutte-nash-williams,
-    cor:k-spanning-trees}
+  \uses{lem:edge-multiply-sparse, thm:tay-witness, thm:tutte-nash-williams}
   By \cref{lem:edge-multiply-sparse}, there is an independent
   body-hinge framework on $G$ if and only if $(D-1)\cdot G$ is
   $(D, D)$-sparse. By \cref{thm:tutte-nash-williams}, this holds if and

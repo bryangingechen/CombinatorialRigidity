@@ -169,7 +169,6 @@ we prove Rado's theorem, and from it the rank of the union.
   \label{def:matroid-union}
   \lean{Matroid.Union, Matroid.union}
   \leanok
-  \uses{def:ofPolymatroidFn, lem:polymatroid-rank}
   Let $M_1, \dots, M_k$ be matroids on a finite set $E$, and let
   $\Delta$ be the bipartite graph that joins each $e \in E$ to its
   copies $(1, e), \dots, (k, e)$ in the ground set of the direct sum
@@ -225,7 +224,6 @@ distinct elements with $e_i \in A_i$ for every $i$.
   \label{lem:rado}
   \lean{Matroid.rado}
   \leanok
-  \uses{lem:polymatroid-rank}
   Let $M$ be a matroid on a set $S$, and let $(A_i : i \in J)$ be a
   finite family of finite subsets of $S$. Then the family has a
   transversal $(e_i : i \in J)$ such that $\{e_i : i \in J\}$ is
@@ -235,7 +233,7 @@ distinct elements with $e_i \in A_i$ for every $i$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:polymatroid-rank}
+  \uses{def:submodular}
   If such a transversal exists, then for $K \subseteq J$ the set
   $\{e_i : i \in K\}$ is an independent subset of
   $\bigcup_{i \in K} A_i$ with $|K|$ elements, so the rank of
@@ -262,7 +260,7 @@ distinct elements with $e_i \in A_i$ for every $i$.
   \label{thm:matroid-partition-rank}
   \lean{Matroid.Union_rank_eq, Matroid.Union_pow_rk_eq}
   \leanok
-  \uses{def:matroid-union, lem:union-indep-iff, lem:polymatroid-rank}
+  \uses{def:matroid-union, lem:polymatroid-rank}
   Let $M_1, \dots, M_k$ be matroids on a finite set $E$, with rank
   functions $r_1, \dots, r_k$, and let $X \subseteq E$. Then the rank
   of $X$ in $\bigcup_j M_j$ is

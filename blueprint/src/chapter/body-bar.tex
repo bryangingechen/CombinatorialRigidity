@@ -106,7 +106,7 @@ Corollary~3~\cite{whiteley1988} that we use, and we follow his proof.
   \label{thm:unionPow-cycle-indep-iff-sparse}
   \lean{Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict}
   \leanok
-  \uses{def:graph-sparse, lem:union-indep-iff}
+  \uses{def:graph-sparse}
   Let $G$ be a multigraph, let $k$ be a natural number, and let
   $E' \subseteq E(G)$. Then $E'$ is independent in the union of $k$
   copies of the cycle matroid of $G$ if and only if
@@ -114,7 +114,7 @@ Corollary~3~\cite{whiteley1988} that we use, and we follow his proof.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:matroid-partition, lem:union-indep-iff}
+  \uses{thm:matroid-partition}
   By Edmonds' matroid-partition theorem
   (\cref{thm:matroid-partition}),
   $E'$ is independent in the union if and only if $|Y| \le k\, r(Y)$
@@ -170,7 +170,6 @@ blocks that has $w$ in block $j$ and $0$ in the other blocks.
   \label{def:k-frame-matroid}
   \lean{Graph.kFrameMatroid}
   \leanok
-  \uses{def:matroid-union}
   Let $G$ be a multigraph and let $k \ge 1$. Let $R = \Q[X_{e,j}]$ be
   the polynomial ring over $\Q$ in one indeterminate $X_{e,j}$ for each
   bar $e$ and each $j \in \{1, \dots, k\}$, and let $K$ be its field of
@@ -235,7 +234,6 @@ $U^k$ of the vectors whose $k$ blocks all lie in $W$.
   \label{lem:k-frame-pi-finrank}
   \lean{Graph.finrank_constPiSpan, Graph.constPiSpanEquiv}
   \leanok
-  \uses{lem:k-frame-span-le-pi}
   Let $W$ be a finite-dimensional subspace of a vector space $U$ over
   $K$. Then $\dim W^k = k \dim W$.
 \end{lemma}
@@ -345,6 +343,7 @@ over $R$, which contains the entries of every $k$-frame row.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:union-indep-iff}
   By \cref{thm:unionPow-cycle-indep-iff-sparse}, $E'$ is independent in
   the union of $k$ copies of the cycle matroid. By
   \cref{lem:union-indep-iff}, it is the union of $k$ sets independent in
@@ -355,7 +354,7 @@ over $R$, which contains the entries of every $k$-frame row.
   \label{lem:k-frame-specialize-identity}
   \lean{Graph.forestEval_kFrameRowR_eq_single, Graph.kFrameRowR, Graph.forestEval}
   \leanok
-  \uses{def:k-frame-matroid, lem:k-frame-specialize-li}
+  \uses{def:k-frame-matroid}
   Let $F_1, \dots, F_k$ be pairwise disjoint forests of $G$, and let
   $\varphi \colon R \to \Q$ be the ring homomorphism with
   $\varphi(X_{e,j}) = 1$ if $e \in F_j$ and $\varphi(X_{e,j}) = 0$
@@ -646,7 +645,8 @@ rows directly instead, as in \cref{lem:k-frame-nonzero-monomial-forest}.
 \end{proposition}
 \begin{proof}
   \leanok
-  \uses{def:rigidity-map-body-bar, thm:tutte-nash-williams}
+  \uses{def:rigidity-map-body-bar, thm:tutte-nash-williams,
+    lem:k-frame-specialize-li}
   By \cref{thm:tutte-nash-williams}, $E(G)$ is the union of pairwise
   disjoint forests $F_1, \dots, F_D$. For a bar $e$, let $j(e)$ be the
   index with $e \in F_{j(e)}$, and let $b_e$ be the $j(e)$-th standard
@@ -667,13 +667,13 @@ rows directly instead, as in \cref{lem:k-frame-nonzero-monomial-forest}.
   \lean{Graph.BodyBarFramework.isSparse_of_isIndependent}
   \leanok
   \uses{def:body-bar-framework, def:independent-body-bar,
-    def:rigidity-map-body-bar, def:graph-sparse, def:k-frame-matroid}
+    def:rigidity-map-body-bar, def:graph-sparse}
   Let $D = \binom{d+1}{2}$, and let $(G, b)$ be an independent body-bar
   framework in $\R^d$. Then $G$ is $(D, D)$-sparse.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:k-frame-nonzero-monomial-forest}
+  \uses{lem:k-frame-pi-finrank, lem:k-frame-incidence-finrank-rk}
   Let $E'$ be a non-empty set of bars. The rows of the bars in $E'$ are
   linearly independent, so their span has dimension $|E'|$. Let
   $A_{E'}$ be the span over $\R$ of the vectors $a_e$ with $e \in E'$.
@@ -691,8 +691,7 @@ rows directly instead, as in \cref{lem:k-frame-nonzero-monomial-forest}.
   \lean{Graph.BodyBarFramework.tay_witness}
   \leanok
   \uses{def:body-bar-framework, def:infinitesimally-rigid-body-bar,
-    def:independent-body-bar, def:graph-sparse, thm:tutte-nash-williams,
-    cor:k-spanning-trees}
+    def:independent-body-bar, def:graph-sparse, thm:tutte-nash-williams}
   Let $d \ge 2$ and $D = \binom{d+1}{2}$, and let $G$ be a multigraph.
   Then there is an independent body-bar framework in $\R^d$ on $G$ if
   and only if $G$ is $(D, D)$-sparse. There is a body-bar framework in

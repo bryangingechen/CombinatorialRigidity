@@ -207,6 +207,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `af438fd1`); read
   (both pins' statements and bodies).
   *Found:* round 2 task 2.7.
+  *Disposition:* done (task 4.2): both unbacked edges removed; the first's statement takes
+  `def:rank-hypothesis` and `def:panel-general-position`, the second's proof
+  `lem:rank-polynomial-proj-eval`, `lem:general-position-support-nonzero` and
+  `lem:independent-rows-of-rank`.
 - **F-071** · E · `def:matroid-MG`, `def:D-deficiency`, `lem:deficiency-antitone` and
   `lem:cut-edge-decomposition` (`deficiency.tex`): edges the pins do not back, two of them into
   later nodes of the chapter. `def:matroid-MG` uses `thm:tay-witness`, which its pins do not reach;
@@ -223,6 +227,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter deficiency`, at `27daa953`); read
   (the pins' statements and bodies).
   *Found:* round 2 task 2.8.
+  *Disposition:* done (task 4.2): the four unbacked edges removed, `def:matroid-MG`'s proof takes
+  `thm:unionPow-cycle-indep-iff-sparse`, and `lem:cut-edge-decomposition`'s proof
+  `lem:subgraph-minimality`. The move is moot: KT Lemma 3.3's two nodes have preceded KT Lemma
+  3.6's since round 2 (`22317b88`), and none of the four nodes' edges points forward now.
 - **F-076** · E · `lem:circuit-rigid`, `lem:two-vertex-trichotomy` and `lem:deficiency-ear`
   (`deficiency.tex`): edges the pins do not back, and missing edges into later chapters. The
   statement of `lem:circuit-rigid` uses `def:rigid-subgraph`, which its pin does not reach (the
@@ -236,6 +244,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `86b44e1b`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.9.
+  *Disposition:* done (task 4.2): `lem:circuit-rigid`'s unbacked edge removed,
+  `lem:two-vertex-trichotomy`'s two statement edges left to its proof, and the two missing edges
+  added; both point to later chapters (task 5's screen).
 - **F-078** · E · `thm:def-eq-corank`, `lem:rk-within-parts` and
   `lem:deficiency-zero-iff-tree-packing` (`deficiency.tex`): edges the pins do not back, and one
   missing. The statement of `thm:def-eq-corank` uses `lem:rank-matroidMG-le`, which none of its
@@ -248,6 +259,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `22317b88`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.10.
+  *Disposition:* done (task 4.2): the three unbacked edges removed; `lem:rk-within-parts`'s
+  statement takes $\tilde G$'s `def:edge-multiply` and `def:body-bar-framework` instead, and
+  `lem:deficiency-zero-iff-tree-packing`'s proof `def:k-dof`.
 - **F-082** · E · `def:induced-span`, `def:rigid-contraction` and the contraction lemmas
   (`molecular-induction.tex`): `def:induced-span` has no pin (`F-008`); its statement named
   `Graph.fiberSpan` and `Graph.inducedSpan` (`Induction/Operations.lean`), which define $V(X)$ and
@@ -1449,6 +1463,19 @@ declaration's name as its header writes it:
   `lem:panel-support-extensor-join` (task 3.6), and the screw map is `def:induced-screw-map`,
   before `thm:projective-invariance` (task 3.11); the witness's proof cites both. Its missing edge
   to the second, and those of six `pencil.tex` and `main-component.tex` nodes, are task 4's.
+
+- **F-247** · N · `thm:pencil-x0-bridge` (`main-component.tex`): its pin
+  `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`, the rank a path of bridges
+  adds, is a step of its proof that its statement (the general configuration attains) does not
+  state. The pin of `lem:block-rank-path` (`rigidity-matrix.tex`) applies it, so task 4.2 added
+  that lemma's missing proof edge to the theorem, a `\uses` into the last chapter; through it the
+  missing edge of `thm:pencil-x0-cycle` to `lem:pencil-lifting-restrict` reads as implied. A node
+  for the rank lemma in `rigidity-matrix.tex`, or its unpinning, is a pin change, after task 3.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label thm:pencil-x0-bridge` and `--chapter
+  rigidity-matrix`, at `9eb2c776`); read (the statement of the pin, and the body of
+  `le_finrank_span_rigidityRows_path`).
+  *Found:* round 5 task 4.2.
+  *Disposition:* left (a pin change; task 8.2 lists it).
 
 ## T — terminology and notation
 

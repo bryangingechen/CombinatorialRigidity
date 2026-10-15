@@ -407,7 +407,6 @@ constraint involves it.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:deficiency-rank-bound}
   Let $P$ be a partition of $V(G)$ with
   $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$, and
   let $P'$ be the partition of $B$ whose parts are those of $P$ and the
@@ -480,7 +479,7 @@ direct sum above expresses that fact.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.span_inf_span_eq_bot_of_linearIndependent,
     CombinatorialRigidity.Molecular.BodyHingeFramework.eq_of_hingeConstraint_two_parallel}
   \leanok
-  \uses{def:rigidity-matrix, lem:extensor-independence}
+  \uses{def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework, and let $e$ and $f$ be edges of
   $G$ that both join the bodies $u \neq v$, with $C(p(e))$ and
   $C(p(f))$ linearly independent. Then every screw assignment $S$ that
@@ -520,7 +519,7 @@ induction (\cref{lem:theorem-55-base}).
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_mono_of_span_le,
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_le_of_span_le}
   \leanok
-  \uses{def:rigidity-matrix, def:dof-generic}
+  \uses{def:rigidity-matrix}
   Along a one-parameter family of realizations of $G$ in which a single
   panel rotates, the rank of $R(G,p)$ is lower semicontinuous: its
   value at a generic parameter is at least its value at every member of
@@ -722,7 +721,7 @@ motions of $v$ relative to $u$.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.relScrews,
     CombinatorialRigidity.Molecular.BodyHingeFramework.jointRows}
   \leanok
-  \uses{def:rigidity-matrix, def:hinge-row-block}
+  \uses{def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework and $u, v$ two bodies. The
   \emph{relative screws} of $u, v$ in $(G,p)$ form the subspace
   \[
@@ -842,7 +841,7 @@ first.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:block-rank-cut, def:hinge-row-block}
+  \uses{lem:block-rank-cut, def:hinge-row-block, thm:pencil-x0-bridge}
   The matrix $R(P,p)$ has $D - 1$ rows for each of its $k + 1$ edges
   (\cref{def:hinge-row-block}), so its rank is at most $(D-1)(k+1)$.
   Conversely, for $0 \le i \le k$ the edge $x_i x_{i+1}$ is the only edge
@@ -1062,7 +1061,7 @@ the form of the third hypothesis of
     CombinatorialRigidity.Molecular.BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton,
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton}
   \leanok
-  \uses{def:rigidity-matrix, lem:rank-delete-vertex, lem:claim-6-4}
+  \uses{def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework, and let $t$ be a set of bodies
   with $V(G) \cap t = \{r\}$. Then every screw
   assignment is the sum of an infinitesimal motion of $(G,p)$ and a screw
@@ -1072,7 +1071,7 @@ the form of the third hypothesis of
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:rigidity-matrix, lem:rank-delete-vertex}
+  \uses{def:rigidity-matrix}
   Let $S$ be a screw assignment, and let $T$ be equal to $S(r)$ on $V(G)$
   and to $S$ elsewhere. Both ends of every edge lie in $V(G)$, where $T$
   is constant, so $T$ is an infinitesimal motion. The difference $S - T$
@@ -1110,7 +1109,8 @@ $G \setminus E(H)$.
   \label{lem:rank-transport-relabel-of-le-finrank}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq}
   \leanok
-  \uses{def:rigidity-matrix, lem:span-rigidityRows-eq-of-motions-eq, def:genuine-hinge-realization}
+  \uses{def:rigidity-matrix, lem:span-rigidityRows-eq-of-motions-eq,
+    def:rank-hypothesis, def:panel-general-position}
   Let $H$ be a subgraph of $G$, let $r \in V(H)$, let $f$ map every body
   of $V(H)$ to $r$ and fix every other body, and let $G_1 = G/E(H)$.
   Orient the edges of $G \setminus E(H)$, and orient an edge of $G_1$
@@ -1159,7 +1159,7 @@ bodies deleted.
   \label{lem:rank-polynomial-proj-eval}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval}
   \leanok
-  \uses{lem:rank-polynomial-of-le-finrank, def:rigidity-matrix}
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Let $G$ be a graph, let $t$ be a set of bodies, and let $q_0$ be panel
   normals at which some $m$ rows of $R(G,q_0)$ are linearly independent
   after the columns of $t$ are deleted. Then there is a polynomial $Q$ in
@@ -1169,7 +1169,7 @@ bodies deleted.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-polynomial-of-le-finrank}
+  \uses{lem:rows-polynomial-in-normals}
   Deleting the columns of $t$ replaces some entries of a row by zeros,
   independently of the normals, so the rows of $R(G,q)$ with these
   columns deleted again have entries that are polynomials in $q$
@@ -1188,7 +1188,8 @@ Lemma~5.1 and Claim~6.4.
   \label{lem:rank-polynomial-IH-relabel-proj}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj}
   \leanok
-  \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter, lem:rank-polynomial-of-le-finrank}
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter,
+    def:rigid-contraction}
   Let $H$ be a proper rigid subgraph of $G$, let $r \in V(H)$, and let
   $G_1 = G/E(H)$. Suppose that $G_1$ is a minimal $k$-dof-graph
   (\cref{def:k-dof}) with a panel-hinge realization whose normals are in
@@ -1199,7 +1200,9 @@ Lemma~5.1 and Claim~6.4.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter, lem:rank-polynomial-of-le-finrank}
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter,
+    lem:rank-polynomial-proj-eval,
+    lem:general-position-support-nonzero, lem:independent-rows-of-rank}
   Let $N = D(|V(G_1)|-1) - k$, and let $f$ map the bodies of $V(H)$ to
   $r$ and fix the others. Orient $G \setminus E(H)$, and $G_1$ as in
   \cref{lem:rank-transport-relabel-of-le-finrank}. By that lemma there are
@@ -1270,7 +1273,8 @@ Case~I uses \cref{lem:rank-polynomial-IH-relabel-proj} instead.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank}
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank,
+    lem:general-position-support-nonzero}
   By \cref{lem:rank-transport-relabel-of-le-finrank} there are normals $n$
   in general position at which this framework has rank $N$. As $G_1$ has
   no loops, its hinges at $n$ are nonzero

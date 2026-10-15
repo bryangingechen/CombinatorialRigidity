@@ -119,7 +119,6 @@ join.
   \label{def:join}
   \lean{CombinatorialRigidity.Molecular.join}
   \leanok
-  \uses{def:extensor}
   Let $A, B \in \bigwedge K^{d+1}$. The \emph{join} of $A$ and $B$ is
   their product $A \vee B = A \wedge B$ in $\bigwedge K^{d+1}$.
 \end{definition}
@@ -148,7 +147,6 @@ define next.
   \lean{CombinatorialRigidity.Molecular.pluckerCoord,
     CombinatorialRigidity.Molecular.pluckerVector}
   \leanok
-  \uses{def:extensor, def:join}
   Let $v_1, \dots, v_j \in K^{d+1}$, and let $A(v)$ be the
   $j \times (d+1)$ matrix whose $i$-th row is $v_i$. For
   $1 \le i_1 < \cdots < i_j \le d+1$, the \emph{Plücker coordinate}
@@ -188,7 +186,8 @@ homogeneous coordinate vectors of points that span it.
   \lean{CombinatorialRigidity.Molecular.affineSubspaceExtensor,
     CombinatorialRigidity.Molecular.affineSubspaceExtensor_ne_zero_iff}
   \leanok
-  \uses{def:homogeneous-coords, def:extensor, def:join}
+  \uses{def:homogeneous-coords, def:extensor, def:join,
+    lem:affine-indep-iff}
   Let $p_1, \dots, p_k \in K^d$. The \emph{extensor} of
   $p_1, \dots, p_k$ is
   \[
@@ -228,7 +227,7 @@ proof.
     CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent,
     CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent_of_li}
   \leanok
-  \uses{def:affine-subspace-extensor, def:plucker-coords, lem:affine-indep-iff}
+  \uses{def:affine-subspace-extensor, lem:affine-indep-iff}
   Let $p_1, \dots, p_{d+1} \in K^{d}$ be affinely independent. Then the
   $D = \binom{d+1}{2}$ extensors
   \[

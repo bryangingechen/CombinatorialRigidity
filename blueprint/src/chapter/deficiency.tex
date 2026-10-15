@@ -62,7 +62,7 @@ definition.
   \label{def:matroid-MG}
   \lean{Graph.matroidMG, Graph.matroidMG_indep_iff}
   \leanok
-  \uses{thm:tay-witness}
+  \uses{def:body-bar-framework, def:edge-multiply}
   Let $G$ be a multigraph. The matroid $M(\tilde G)$ is the union of
   $D$ copies of the cycle matroid of $\tilde G$
   (\cref{def:matroid-union}). A set $F$ of edges of $\tilde G$ is
@@ -71,6 +71,7 @@ definition.
 \end{definition}
 \begin{proof}
   \leanok
+  \uses{thm:unionPow-cycle-indep-iff-sparse}
   Apply \cref{thm:unionPow-cycle-indep-iff-sparse} to the multigraph
   $\tilde G$, with $k = D$.
 \end{proof}
@@ -92,7 +93,7 @@ body-bar framework in $\R^d$, by Tay's theorem (\cref{thm:tay-witness}).
   \label{def:D-deficiency}
   \lean{Graph.partitionDef, Graph.deficiency}
   \leanok
-  \uses{def:matroid-MG}
+  \uses{def:body-bar-framework}
   Let $G$ be a multigraph. For a partition $P$ of $V(G)$ into nonempty
   parts, let $d_G(P)$ be the number of edges of $G$ that join different
   parts of $P$. The \emph{$D$-deficiency} of $P$ is
@@ -145,7 +146,6 @@ compares.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rk-within-parts}
   Let $D \le D'$ be the values of $\binom{d+1}{2}$ and
   $\binom{d'+1}{2}$, and let $P$ be a partition of $V(G)$. At least
   $|P| - 1$ edges of $G$ join different parts of $P$. Indeed, once these
@@ -248,7 +248,7 @@ components of $\tilde G \restriction Y$
   \label{lem:rk-within-parts}
   \lean{Graph.rk_cycleMatroid_within_parts_le}
   \leanok
-  \uses{def:matroid-MG, def:D-deficiency}
+  \uses{def:body-bar-framework, def:edge-multiply}
   Let $G$ be a multigraph, and let $r$ be the rank function of the cycle
   matroid of $\tilde G$. Let $P$ be a partition of $V(G)$, and let $Y$
   be the set of edges of $\tilde G$ whose ends lie in one part of $P$.
@@ -306,7 +306,7 @@ components of $\tilde G \restriction Y$
   \label{thm:def-eq-corank}
   \lean{Graph.rank_add_deficiency_eq, Graph.isBase_ncard_add_deficiency_eq, Graph.le_rank_add_deficiency}
   \leanok
-  \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le, lem:rk-within-parts, lem:weak-duality}
+  \uses{def:D-deficiency, def:matroid-MG, lem:rk-within-parts, lem:weak-duality}
   Let $D \ge 1$, and let $G$ be a multigraph with at least one vertex.
   Then every base $B$ of $M(\tilde G)$ satisfies
   \[
@@ -374,7 +374,7 @@ The characterization of deficiency zero announced in
 \begin{proof}
   \leanok
   \uses{thm:def-eq-corank, thm:tutte-nash-williams,
-    cor:k-spanning-trees}
+    cor:k-spanning-trees, def:k-dof}
   Suppose that $\tilde G$ contains $D$ edge-disjoint spanning trees.
   Each has $|V(G)| - 1$ edges, so their union $F$ has $D(|V(G)| - 1)$
   edges. As a union of $D$ forests, $F$ is independent in $M(\tilde G)$
@@ -637,7 +637,8 @@ partition none of whose parts meets both sides of a cut.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:D-deficiency, def:cut-edges-2ec, lem:separated-partition-value, thm:def-eq-corank}
+  \uses{def:D-deficiency, def:cut-edges-2ec, lem:separated-partition-value,
+    lem:subgraph-minimality}
   (1) The union of a partition $P'$ of $V'$ and a partition $P''$ of
   $V''$ is a separated partition of $V(G)$, whose value is given by
   \cref{lem:separated-partition-value}. Taking $P'$ and $P''$ of
@@ -754,7 +755,7 @@ of $G$ with that of $G[V_1]$ when $G$ consists of $G[V_1]$ and one ear.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:separated-partition-value}
+  \uses{lem:separated-partition-value, lem:exists-tight-partition}
   Let $V'' = \{x_1, \dots, x_k\}$, and let $P''$ be the partition of
   $V''$ into single vertices. Take a partition $P_1$ of $V_1$ of largest
   value, and let $P = P_1 \cup P''$. Each part of $P$ lies in $V_1$ or in
@@ -881,7 +882,7 @@ while the deficiency stays the same~\cite[p.~670]{katohTanigawa2011}.
   \label{lem:circuit-rigid}
   \lean{Graph.isSparse_diff_singleton_of_isCircuit}
   \leanok
-  \uses{def:rigid-subgraph, def:matroid-MG}
+  \uses{def:matroid-MG}
   Let $G$ be a multigraph, let $X$ be a circuit of $M(\tilde G)$, and
   let $e \in X$. Then $\tilde G \restriction (X - e)$ is
   $(D, D)$-sparse, and $X - e$ is a basis of $X$, that is, a maximal
@@ -910,7 +911,7 @@ minimal $k$-dof-graphs with two vertices, and with one.
   \label{lem:two-vertex-trichotomy}
   \lean{Graph.isMinimalKDof_ncard_le_two_trichotomy}
   \leanok
-  \uses{def:k-dof, lem:matroid-restrict-subgraph, thm:def-eq-corank}
+  \uses{def:k-dof}
   Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with one or two
   vertices. Then exactly one of the following holds: (i) $G$ has no
   edge, and $k = D(|V(G)| - 1)$; (ii) $G$ has two vertices and one edge,
@@ -919,7 +920,8 @@ minimal $k$-dof-graphs with two vertices, and with one.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:k-dof, lem:matroid-restrict-subgraph, thm:def-eq-corank}
+  \uses{def:k-dof, lem:matroid-restrict-subgraph, thm:def-eq-corank,
+    lem:two-vertex-zero-dof}
   We first compute three deficiencies. If a multigraph $H$ has no edge,
   then every partition $P$ of $V(H)$ has value
   $D(|P| - 1) \le D(|V(H)| - 1)$, with equality for the partition into

@@ -7,9 +7,10 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
 one-commit tasks; task 2 added each node's `\uses` to the gate's dump, tasks 3.1–3.14 (task 3)
-gave every node the ledger names its shape, and task 4.1 added round 1's missing edges. No task
-edits the Lean or changes a statement's strength. **Next concrete task:** task 4.2, the edges of
-`matroid-union.tex` through `deficiency.tex` (*Hand-off*). Round manual: `CLEANUP.md`.
+gave every node the ledger names its shape, and tasks 4.1–4.2 added the missing edges of round
+1's chapters and of `matroid-union.tex` through `deficiency.tex`. No task edits the Lean or
+changes a statement's strength. **Next concrete task:** task 4.3, the edges of
+`molecular-induction.tex` and `meet.tex` (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -20,40 +21,45 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 4.1 has landed** (this commit; round 1's twelve chapters' `\uses`, the ledger and docs, no
-Lean). Nothing is mid-stream; the next task is task 4.2.
+**Task 4.2 has landed** (this commit; the `\uses` of `matroid-union.tex` through
+`deficiency.tex` and three edges their removals left missing in `case-i.tex`, `meet.tex` and
+`molecular-induction.tex`, the ledger and docs, no Lean). Nothing is mid-stream; the next task is
+task 4.3.
 
-**The gate's baseline, at task 4.1** (2026-10-15):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 495 lines**, sha256 prefix
-  **`933f0e6f077a3f81`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 4.2** (2026-10-15):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 485 lines**, sha256 prefix
+  **`9ea23de1679c49e6`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345 and as
-  `predict-dump.sh` gave for the copy. Its diff against task 3.14's (3 482 lines,
-  `0d945ad55bf64cb6`) is task 4.1's *Expected*, its 304 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1408 edges
-  76d88ed8258d454d`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
+  `predict-dump.sh` gave for the copy. Its diff against task 4.1's (3 495 lines,
+  `933f0e6f077a3f81`) is task 4.2's *Expected*, its 366 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1398 edges
+  5dc35f55add46678`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 692 nodes,
-  1 009 pins (999 distinct; `lean_decls` 1 010), 348 missing, 2 285 implied, 84 + 289
+  1 009 pins (999 distinct; `lean_decls` 1 010), 294 missing, 2 310 implied, 84 + 255
   unbacked, 177 dead, 12 nodes with four or more pins, no cycle-closing missing edge (`F-011`
-  done). Round 1's chapters: 0 missing, 5 / 2 unbacked. The forward screen, unchanged by tasks
-  3.8–4.1, gives the open's table but `case-i` 7/5, `rigidity-matrix` 10/9 0/0 and
-  `molecular-induction` 5/3 3/3 (tasks 3.2–3.7's commits say why).
-- Task 4.1's edges into `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow` and
-  `lem:rigidityMap-apply` imply three of `jacobs.tex`'s missing edges (34 -> 31; task 4.7's):
-  `cor:zero-extension-degree-le-three`'s and `lem:genericMatroid-induce-transport`'s to the
-  first, `lem:isLaman3-of-rowIndependent`'s to the second.
+  done). Tasks 4.1–4.2's chapters: 0 missing; unbacked 5 / 2 and 4 / 12. The forward screen gives
+  the open's table but `case-i` 7/5, `rigidity-matrix` 15/9 0/0, `deficiency` 2/2 0/0 and
+  `molecular-induction` 5/3 3/3 (tasks 3.2–3.7's commits and 4.2's line say why).
+- Implied now, through task 4.2's edges: the missing in-edges of `def:edge-multiply` (35 -> 0;
+  two added, the rest through `def:matroid-MG`'s statement, among them 19 of
+  `molecular-induction.tex`'s 32, three of `case-iii.tex`'s and two of `pencil.tex`'s);
+  `case-i.tex`'s two of `lem:case-I-realization`; and, through edges a later task reads,
+  `lem:endpoint-witness`'s to `lem:k-frame-specialize-li` (via its unbacked edge to
+  `prop:tay-witness-exists`, `F-213`, task 4.7) and `thm:pencil-x0-cycle`'s to
+  `lem:pencil-lifting-restrict` (via `lem:block-rank-path`, `F-247`, task 4.9). Task 4.1's edges
+  imply three of `jacobs.tex`'s (34 -> 31).
 - Missing in-edges that tasks 3.2–3.14 drew or moved (task 4's; the report lists them, the
   commits name them): to `lem:generic-realization-of-rigid` 4, `def:screw-space` 9,
   `def:trivial-motions-rigid` 2, `lem:edge-rows-independent` 2, `lem:two-edge-connected-degree`
   3, `def:induced-span` 1, `lem:panel-support-extensor-join` 3, `lem:rows-polynomial-in-normals`
-  8, `lem:independent-rows-of-rank` 11 (five point forward, task 5), `lem:splitoff-simple` 1,
+  8, `lem:independent-rows-of-rank` 10 (four point forward, task 5), `lem:splitoff-simple` 1,
   `def:case-III-candidate` 2, `lem:case-III-rank-certification` 2,
   `lem:case-III-redundant-combination` 2, `lem:case-III-chain-relabel-rows` 1,
-  `lem:case-III-chain-eq666` 1, `def:induced-screw-map` 7, `def:tight-partition` 4 (`F-193`'s
-  and `F-196`'s, and `lem:deficiency-ear` and `lem:deficiency-merge-rigid`, which reach
-  `lem:exists-tight-partition` too), `def:rooted-cross-edges` 5 (`F-196`'s),
-  `lem:normal-cross-count-rooted` 1 (the theorem's proof, through `rootedAt_inj`),
-  `lem:two-core-degree-one` 1, `def:pencil-lifting-system` 3 (moved from the witness lemma); task
-  3.5's `def:edge-multiply` -> `lem:rigidContract-isMinimalKDof` and `lem:reduction-measure` ->
+  `lem:case-III-chain-eq666` 1, `def:induced-screw-map` 7, `def:tight-partition` 3 (`F-193`'s
+  and `F-196`'s, and `lem:deficiency-merge-rigid`, which reaches `lem:exists-tight-partition`
+  too), `def:rooted-cross-edges` 5 (`F-196`'s), `lem:normal-cross-count-rooted` 1 (the theorem's
+  proof, through `rootedAt_inj`), `lem:two-core-degree-one` 1, `def:pencil-lifting-system` 3
+  (moved from the witness lemma); task 3.5's `lem:reduction-measure` ->
   `lem:pencil-contraction-deficiency`.
 - Unbacked edges that task 3.14 made, which task 4.8 or 4.9 reads: `thm:pencil-x0-main-component`
   -> `lem:pencil-x0-one-witness` (no Lean basis, as the two share their one pin; the theorem's
@@ -233,54 +239,65 @@ gate's diff, which each task makes exact before editing.
   edges to add or review. *Expected* (each): the `\uses` the edge policy adds, moves and removes,
   listed in the commit before editing; pins and the `lean_decls` hash unchanged. The open's
   counts (missing; unbacked through a node / none) are estimates, since task 3 changes them.
-  - [x] **4.1 Round 1's chapters** (this commit; `F-001`, `F-006`'s part). The parent's report: 71
-    missing (task 3 changed the open's 83), 5 / 19 unbacked, so one commit. Tried on a scratch copy
-    (`scratch/prose-graph/t41/edit.py`). *Expected* (exact, before editing the tree; the copy's
-    predicted after-dump): no node or pin changes, `lean_decls` `8cdc1b9723e22064`; `## uses:` 35
-    lines changed (S statement, P proof; `iff` is
-    `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`, `apply` `lem:rigidityMap-apply`,
-    `corners` `lem:edgesIn-corners`). *Added* (45): `lem:isSparse-edgeSet-bound` P corners;
-    `thm:isTightOn-union-with-bonus` P `lem:edgesIn-mono`, `lem:edgesIn-inter`,
-    `lem:isSparse-isTightOn-of-le`; `thm:isTightOn-insert-vertex-with-edges` P the first and last;
-    `thm:typeI-isLaman`, `thm:typeII-isLaman` P corners;
-    `thm:isLaman-exists-typeI-or-typeII-reverse` P `lem:isLaman-iso`;
-    `lem:isInfinitesimallyRigid-iso` P apply; `thm:top-fin-two-isGenericallyRigid` S
-    `def:isGenericallyRigid`; the two kernel lemmas of `trivial-motions.tex` P apply;
-    `lem:exists-affinelySpanning-of-eventually` S `def:framework`;
-    `lem:isSparse-of-rowIndependent-two` P iff, `lem:span-range-rigidityRow`;
-    `thm:isSparse-exists-typeI-or-typeII-reverse` P corners and the two tight-set theorems it cites;
-    the three lifts `lem:typeI-rowIndependent-extend`, `lem:pendant-rowIndependent-lift` and
-    `lem:typeII-rowIndependent-extend` P iff, apply and their move's edge-set lemma;
-    `lem:edgeSet-rowIndependent-eventually` and `lem:edgeSet-rowIndependent-iso` P iff, apply;
-    `lem:linearRigidityMatroid-indep-iff` P iff; `lem:exists-uniform-rowIndependent-placement` P
-    `thm:edgeSet-rowIndependent-iff-isSparse`; `def:countMatroid` S corners,
-    `lem:isSparse-mono-left`; `def:path-reversal` S `def:directed-walk`; `def:tryAddEdge` S
-    `def:workhorseWitness`, `lem:mem-reachClosureComputable`, `lem:pebble-game-invariants`;
-    `lem:pebble-game-independent-brings-pebble-graph` P the membership lemma;
-    `lem:workhorseWitness-certifies` S `def:edgesIn`; `lem:pebble-game-tryAddEdgeWith-isSparse` P
-    `lem:runPebbleGameWith-underline-subset`; `def:runPebbleGameExec` S the two sorted-list
-    membership lemmas. Of these, 40 are the report's missing edges that the others do not imply, and
-    5 (the bonus theorem's mono and intersection lemmas, the openness lemma's apply, the
-    certificate's `def:edgesIn` and the accepted edge's) were implied only through edges removed
-    here. *Removed* (17 edges, 21 entries; reasons in the commit): S `lem:edgesIn-ncard-add-le` from
-    the bonus theorem; S `lem:rigidityMap-finrank-range-le` from
-    `thm:top-fin-two-isGenericallyRigidInj`; S `lem:exists-affinelySpanning-of-eventually` from the
-    sparsity lemma; S `lem:exists-rowIndependent-edge-basis` and
-    `lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid` from
-    `thm:isGenericallyRigid-exists-isLaman-le`; S and P `def:typeI`, `def:typeII` from the reverse
-    decomposition (`F-006`'s example); S `lem:isInfinitesimallyRigid-eventually` from the openness
-    lemma; S `def:isSparse` from `def:isSparse-maxBlock`; S `def:pebble-counts` from
-    `def:tryReachPebble` and `def:outListSorted`; S `lem:runPebbleGame-underline-eq` from
-    `lem:span-eq-ncard-edgesIn`; S and P `lem:span-eq-ncard-edgesIn` from the free-pebble lemma and
-    the certificate; S `def:isSparse`, `def:workhorseWitness` from `def:pebbleGameResult`; S
-    `def:partial-orientation` from `def:edgeListSorted`, its only one. *Not added:* the other 31
-    missing, implied by the 40. *Kept:* the 5 unbacked through a node, `def:pebbleGameResult`'s
-    `def:blockingWitness` and `def:runPebbleGameExec`'s `thm:pebble-game-correct` (*Decisions*).
-    *Moved:* none, and no edge added for a citation alone: the ledger flags neither here. Drawn
-    edges 1 395 -> 1 408 (`76d88ed8258d454d`), 42 gone and 55 drawn; 3 495 lines
-    (`933f0e6f077a3f81`), the diff 304 lines.
-  - [ ] **4.2 `matroid-union` → `deficiency`** (`F-002`'s part, `F-006`'s part, `F-066`, `F-071`,
-    `F-076`, `F-078`; 33; 4 / 44).
+  - [x] **4.1 Round 1's chapters** (`9eb2c776`; `F-001` done, `F-006`'s part): 40 of the parent's
+    71 missing edges added, 31 implied by them; 17 unbacked edges removed, and the 5 edges their
+    removal left missing added; the 5 unbacked through a node and 2 that the text uses kept.
+  - [x] **4.2 `matroid-union` → `deficiency`** (this commit; `F-002`'s part, `F-006`'s part,
+    `F-066`, `F-071`, `F-076`, `F-078`, done; `F-247` new). The parent's report: 26 missing, 4 / 46 unbacked, so one commit. Tried on a
+    scratch copy (`scratch/prose-graph/t42/edit.py`). *Expected* (exact, before editing the tree;
+    the copy's predicted after-dump): no node or pin changes, `lean_decls` `8cdc1b9723e22064`;
+    `## uses:` 40 lines changed (S statement, P proof). *Removed* (34 unbacked edges with no Lean
+    basis that neither the statement nor the proof prose uses, 40 entries; reasons in the commit):
+    `def:matroid-union` S `def:ofPolymatroidFn`, `lem:polymatroid-rank`; `lem:rado` S and P
+    `lem:polymatroid-rank`; `lem:union-indep-iff` from `thm:matroid-partition-rank` S and
+    `thm:unionPow-cycle-indep-iff-sparse` S and P; `def:k-frame-matroid` S `def:matroid-union`;
+    `lem:k-frame-pi-finrank` S `lem:k-frame-span-le-pi`; `lem:k-frame-specialize-identity` S
+    `lem:k-frame-specialize-li`; `lem:tay-isSparse-of-independent` S `def:k-frame-matroid`, P
+    `lem:k-frame-nonzero-monomial-forest`; `cor:k-spanning-trees` from `thm:tay-witness` S and
+    `thm:body-hinge-tay` S and P; `def:edge-multiply` S `def:graph-sparse`; `def:join` S
+    `def:extensor`; `def:plucker-coords` S `def:extensor`, `def:join`; `lem:extensor-independence` S
+    `def:plucker-coords`; `lem:relative-deficiency-rank-bound` P `lem:deficiency-rank-bound`;
+    `lem:rank-parallel-full` S `lem:extensor-independence`; `lem:rank-rotation-semicont` S
+    `def:dof-generic`; `def:relative-screws` S `def:hinge-row-block`;
+    `lem:extProj-preserves-rank-of-inter` S `lem:claim-6-4`, S and P `lem:rank-delete-vertex`;
+    `lem:rank-transport-relabel-of-le-finrank` S `def:genuine-hinge-realization`, and
+    `lem:rank-polynomial-proj-eval` and `lem:rank-polynomial-IH-relabel-proj` S and P
+    `lem:rank-polynomial-of-le-finrank` (`F-066`); `def:matroid-MG` S `thm:tay-witness`,
+    `def:D-deficiency` S `def:matroid-MG`, `lem:deficiency-antitone` P `lem:rk-within-parts` and
+    `lem:cut-edge-decomposition` P `thm:def-eq-corank` (`F-071`); `lem:rk-within-parts` S
+    `def:matroid-MG`, `def:D-deficiency` and `thm:def-eq-corank` S `lem:rank-matroidMG-le`
+    (`F-078`); `lem:circuit-rigid` S `def:rigid-subgraph` (`F-076`). *Moved* (`F-076`):
+    `lem:two-vertex-trichotomy`'s S `lem:matroid-restrict-subgraph`, `thm:def-eq-corank`, which
+    only its proof uses and already names, removed. *Added* (29): 14 of the parent's missing, the
+    other 12 implied by them (9 to `def:edge-multiply`): `prop:tay-witness-exists` P
+    `lem:k-frame-specialize-li`; `def:affine-subspace-extensor` S `lem:affine-indep-iff`;
+    `lem:block-rank-path` P `thm:pencil-x0-bridge` (forward; `F-247`);
+    `lem:rank-transport-relabel-of-le-finrank` S `def:panel-general-position`;
+    `lem:rank-polynomial-IH-relabel-proj` P `lem:general-position-support-nonzero`,
+    `lem:independent-rows-of-rank`, `lem:rank-polynomial-proj-eval`, and
+    `lem:rank-polynomial-IH-relabel` P the first (`F-066`); `def:matroid-MG` and
+    `lem:rk-within-parts` S `def:edge-multiply`; `lem:deficiency-zero-iff-tree-packing` P
+    `def:k-dof` (`F-078`); `lem:cut-edge-decomposition` P `lem:subgraph-minimality` (`F-071`);
+    `lem:deficiency-ear` P `lem:exists-tight-partition` and `lem:two-vertex-trichotomy` P
+    `lem:two-vertex-zero-dof` (`F-076`, forward). 15 that the removals left missing:
+    `lem:rado` P `def:submodular`; `lem:k-frame-forest-packing-of-sparse` P `lem:union-indep-iff`;
+    `lem:tay-isSparse-of-independent` P `lem:k-frame-pi-finrank`,
+    `lem:k-frame-incidence-finrank-rk`; `lem:rank-transport-relabel-of-le-finrank` S
+    `def:rank-hypothesis`; `lem:rank-polynomial-proj-eval` S `def:panel-hinge-framework`, P
+    `lem:rows-polynomial-in-normals`; `lem:rank-polynomial-IH-relabel-proj` S
+    `def:rigid-contraction`; `def:matroid-MG` S `def:body-bar-framework`, P
+    `thm:unionPow-cycle-indep-iff-sparse`; `def:D-deficiency` and `lem:rk-within-parts` S
+    `def:body-bar-framework`; in other chapters, `lem:case-I-realization` S
+    `def:genuine-hinge-realization`, `lem:meet-two-hyperplanes` S `def:extensor` and
+    `lem:forest-packing-decomp` P `lem:union-indep-iff`. *Kept:* the 4 unbacked through a node, and
+    12 with no Lean basis that the statement names or the proof cites: `def:k-frame-matroid` from
+    seven $k$-frame lemmas (its $K$, $R$ or $\rho_e$), `def:affine-subspace-extensor`'s
+    `def:join`, `def:hinge-constraint`'s and `lem:extensor-independence`'s
+    `def:affine-subspace-extensor`, `lem:rank-parallel-full`'s `def:rigidity-matrix` and
+    `lem:block-rank-cut`'s `lem:edge-rows-independent`. Drawn edges 1 408 -> 1 398
+    (`5dc35f55add46678`), 66 gone and 56 drawn; 3 485 lines (`9ea23de1679c49e6`), the diff 366
+    lines. Missing 348 -> 294 (these chapters 0; 28 elsewhere implied now, 19 of them in
+    `molecular-induction`), unbacked 84 + 289 -> 84 + 255.
   - [ ] **4.3 `molecular-induction`, `meet`** (`F-002`'s part, `F-006`'s part, `F-007`, `F-082`,
     `F-089`, `F-093`, `F-095`, `F-100`, `F-105`, `F-109`; 66; 7 / 44). `F-007`: the three `\uses` of
     `rem:kt-lemma-41`, which the graph cannot draw, become edges to the node the remark discusses or
@@ -296,11 +313,11 @@ gate's diff, which each task makes exact before editing.
     part; 53; 46 in all).
   - [ ] **4.9 `main-component` from *Open ears with two, three or four interior bodies*** (`F-005`,
     `F-006`; 61; 33 in all).
-- [ ] **5. N — node order** (`F-019`, `F-029`, `F-050`, `F-071`, `F-119`; the forward screen re-run
-  after task 4). Move a node where the move cures a forward `\uses` without creating one: within a
-  chapter (principle E, *Node order*), or across chapters or sections where the ledger names the
-  move (`F-019`'s theorem to the end of `sparsity.tex`; `F-071`'s KT Lemma 3.3 nodes before KT
-  Lemma 3.6; `F-050`'s and `F-119`'s groups). A reference that stays forward keeps its sentence
+- [ ] **5. N — node order** (`F-019`, `F-029`, `F-050`, `F-119`; the forward screen re-run after
+  task 4; `F-071`'s move was round 2's, task 4.2). Move a node where the move cures a forward
+  `\uses` without creating one: within a chapter (principle E, *Node order*), or across chapters or
+  sections where the ledger names the move (`F-019`'s theorem to the end of `sparsity.tex`;
+  `F-050`'s and `F-119`'s groups). A reference that stays forward keeps its sentence
   (left). `F-029`: leave (the swap would make `count-matroid.tex`'s opening refer forward).
   *Expected:* the dump byte-identical.
 - [ ] **6. T — terminology and notation** (`F-056`, `F-067`, `F-072`, `F-073`, `F-127`, `F-203`,
@@ -379,23 +396,27 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 4.2, the edges of `matroid-union.tex` through `deficiency.tex`**
-(`F-002`'s part, `F-006`'s part, `F-066`, `F-071`, `F-076`, `F-078`; Opus, a fresh agent). The
-parent's dump is task 4.1's (3 495 lines, `933f0e6f077a3f81`; *Current state*): regenerate it on
-the parent after `verify.sh` if the scratch copy is gone. Read the parent's report for the five
-chapters (`--chapter`, one per chapter) and the four ledger entries, and apply *Scope*'s edge
-policy as task 4.1 read it (*Decisions*): each *missing* edge on the statement or the proof as
-tagged, unless the task's other additions imply it; an edge for each "cites without an edge"
-still true of the text; a statement edge that only the proof uses moved to the proof; an
-unbacked edge that nothing uses removed, with its reason. Write the `\uses` changes, node by
-node, in 4.2's line before editing (gate 3 (b)). Task 4.1's tools take an op list: `t41/edit.py`
-adds and removes `\uses` per node and part with exact asserts, on the copy and then on the tree;
-re-run the copy's report until none is missing (a removal can leave an implied edge missing);
-`t41/redund.py` checks that no added edge is implied, `t41/nodediff.py` that no other chapter's
-report changes unexpectedly, and `predict-dump.sh` gives the after-dump (the drawn edges and
-`## uses:` change; pins and the `lean_decls` hash stay). The open's counts (33; 4 / 44) are
-estimates: take the parent's report, and split the task if it has more than about 90 missing
-edges. Then task 4.3.
+**Next concrete task: task 4.3, the edges of `molecular-induction.tex` and `meet.tex`** (`F-002`'s
+last part, so its disposition; `F-006`'s part, `F-007`, `F-082`, `F-089`, `F-093`, `F-095`,
+`F-100`, `F-105`, `F-109`; Opus, a fresh agent). The parent's dump is task 4.2's (3 485 lines,
+`9ea23de1679c49e6`; *Current state*): regenerate it on the parent after `verify.sh` if the
+scratch copy is gone. The parent's report gives 17 missing (`molecular-induction` 13, `meet` 4;
+the open's 66 fell with task 3 and task 4.2's `def:matroid-MG` edge) and 8 / 45 unbacked, so one
+commit. Read the two chapters' reports (`--chapter`) and the ledger entries, and apply *Scope*'s
+edge policy as tasks 4.1–4.2 read it (*Decisions*): each *missing* edge on the statement or the
+proof as tagged, unless the task's other additions imply it; an edge for each "cites without an
+edge" the ledger lists and the text still makes; the ledger's statement-to-proof moves (`F-089`,
+`F-095`, `F-105`); an unbacked edge that nothing uses removed, with its reason; then re-run until
+nothing is missing, adding in any chapter the edges a removal leaves missing. `F-007`: the three
+`\uses` of `rem:kt-lemma-41` become edges to the node it discusses or a `\cref` (the checklist
+line). Write the `\uses` changes, node by node, in 4.3's line before editing (gate 3 (b)). Tools
+(gitignored): `t42/edit.py` takes the op list (removals, then `t42/adds.py` with `PHASE=2`) and
+asserts each op, on the copy and then on the tree; `t42/missdiff.py` diffs the missing and
+unbacked sets of two full reports over every chapter; `t41/redund.py` checks that no added edge is
+implied; `t42/screen.py <tex-root> v` lists the forward edges; `predict-dump.sh` gives the
+after-dump. Task 4.2 already added `lem:forest-packing-decomp`'s proof edge to
+`lem:union-indep-iff` and `lem:meet-two-hyperplanes`'s statement edge to `def:extensor`. Then
+task 4.4.
 
 ## Decisions made during this round
 
@@ -455,3 +476,10 @@ edges. Then task 4.3.
   argument followed, `F-175`), and an edge a removal leaves missing is added in the same task. A
   definition's well-definedness paragraph is its proof prose (`def:runPebbleGameExec` keeps
   `thm:pebble-game-correct`). Task 4's split rule counts missing edges, as the open's slicing did.
+
+- **The edge policy, as task 4.2 read it.** An unbacked edge with no Lean basis also stays when
+  the statement names a symbol the target defines or states its object without its name
+  (`def:k-frame-matroid`'s $K$, $R$, $\rho_e$; $C(p_1, \dots, p_k)$ written as a join); a citation
+  in a lead-in or a remark is no use. A definition with a proof takes a theorem pin's body reach
+  on its proof (`def:matroid-MG`). A missing edge that a pinned proof step draws is added and the
+  step filed (`F-247`). An edge a removal leaves missing is added in its own chapter (three here).
