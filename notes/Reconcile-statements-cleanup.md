@@ -22,7 +22,7 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 **Tasks 1–7 are done**; task 7, Case III's three counts, is this commit (`case-iii.tex` only).
 Nothing is mid-stream; task 8 is next. `F-255`'s cure is task 15's (its line); `F-257`'s, three
-missing proof edges that would be forward, is the coordinator's to assign (*Blockers*). Task 7's
+missing proof edges that would be forward, are tasks 12's and 18's (their lines). Task 7's
 gates: `lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:` lines;
 **`1501 edges 9926f1fc47b8b86b`**, **`bf6916bb233989e5`**; the dump's diff from `dump-t6.txt`
 exactly task 7's expected lines, the after-dump kept as `scratch/reconcile-statements/dump-t7.txt`;
@@ -264,9 +264,12 @@ task makes exact before editing. Every task is at Opus but the close.
   the theorem's proof `\uses` it. If the pin reaches a later chapter's node, it is unpinned instead.
   (b) `mem_hingeRowBlock_iff` moves from `lem:case-III-claim612-block-iff-perp` (`case-iii.tex`
   1295) to `def:hinge-row-block` (`rigidity-matrix.tex` 113); `lem:screw-map-rows`'s
-  (`generic-lift.tex` 1273) proof edge moves with it. *Expected:* one node added; two pins moved
-  (`lean_decls` unchanged); the edges as listed, the new node's per its pin's reach; the screen's
-  `rigidity-matrix` count one edge lower.
+  (`generic-lift.tex` 1273) proof edge moves with it. (b) also cures the first of `F-257`'s three
+  missing edges (the coordinator, after task 7): `lem:case-III-candidate-row`'s pin then reaches
+  `mem_hingeRowBlock_iff` at `def:hinge-row-block`, an earlier chapter, so its proof gains that
+  edge, per the reach report. *Expected:* one node added; two pins moved (`lean_decls` unchanged);
+  the edges as listed, the new node's per its pin's reach, and `F-257`'s first; the screen's
+  `rigidity-matrix` count one edge lower; the missing edges one fewer.
 - [ ] **13. G1's third: a node for open ears** (`F-249`). A definition node in `main-component.tex`'s
   *Ears and cycles* (2157) takes `Graph.IsOpenEar` from `def:pencil-x0-reduces` (4428), which
   `\uses` it; the statement edges of `lem:pencil-generic-one-ear` (5337) and
@@ -317,8 +320,15 @@ task makes exact before editing. Every task is at Opus but the close.
   701, `-candidate-row-construction` 788, `-candidate-row` 855), the affine nodes left by task 14
   and `lem:case-III-claim612-r-nonzero` (1329), the relabel nodes (1410, 1445, 1497) and the three
   counts (task 7's); `lem:case-III-chain-dispatch`'s (2350) citations of the relabel nodes and of
-  `lem:case-II-realization-placement` say which argument they borrow. Crux depth kept.
-  *Expected:* the dump byte-identical.
+  `lem:case-II-realization-placement` say which argument they borrow. Crux depth kept. **And
+  `F-257`'s other two edges** (the coordinator, after task 7): `lem:case-III-claim612-eq644` (KT
+  eq. (6.44)) moves to just after `lem:case-III-acolumn-zero` (KT eq. (6.43)), with the setting
+  its statement needs; the lead before the third framework then cites it. Its `\uses`
+  (`lem:case-III-redundant-decomposition`, `lem:case-III-acolumn-zero`) precede the new place, and
+  its users (the third framework, the certification, `lem:case-III-chain-eq666`) follow it. The
+  proofs of `lem:case-III-candidate-row` and `lem:case-III-claim612-p2-placement` gain their edges
+  to it. *Expected:* those two proof `\uses` added, the missing edges two fewer; otherwise the
+  dump byte-identical; the screen unchanged.
 - [ ] **19. `meet.tex`: S28, and the route through $\bigwedge^2 W$** (`F-113`; G4, `F-111`). S28:
   `lem:complement-iso-decomposable-wedge-perp` (342–358) for $n = n_1$, as its second and third
   pins, without the independence (the case $n_2$ by alternation, in the proof). One framing remark
@@ -383,9 +393,8 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 
 ## Blockers / open questions
 
-None. (`F-255`, task 5's missing proof edge, is task 15's: *Decisions made*. `F-257`, task 7's
-three missing proof edges, waits for the coordinator to assign its cure, as `F-255`'s did: the
-moves its entry names, which no task's line names yet. It blocks no task.)
+None. (`F-255`, task 5's missing proof edge, is task 15's; `F-257`, task 7's three, are tasks
+12's and 18's: *Decisions made*.)
 
 ## Hand-off / next phase
 
@@ -408,7 +417,7 @@ row-operation nodes 455, 528, 678, 706, 793 and 860, `lem:case-III-claim612-r-no
 relabel nodes 1423, 1458 and 1510, the counts 1365 and 1605, and `lem:case-III-chain-dispatch` 2396;
 task 4's, `case-ii.tex` −5 for 72–133 (`lem:case-II` is 67) and −44 after 133
 (`lem:case-II-realization` 91). Re-`grep` as ever. `F-255`'s cure is task 15's (its line); `F-257`'s
-is the coordinator's to assign. Carried in from round 1: `F-252` for the PI (round 1's *Candidates*;
+are tasks 12's and 18's (their lines). Carried in from round 1: `F-252` for the PI (round 1's *Candidates*;
 the phase's (a) removes it), and its two docstring lines, already in round 3's list.
 
 ## Decisions made during this round
@@ -465,3 +474,8 @@ the phase's (a) removes it), and its two docstring lines, already in round 3's l
   the notes saying how the theorem's count differs. The theorem's body reaches two later nodes of
   the file, so, as for `F-255`, three proof edges stay missing (`F-257`) rather than forward: the
   cure moves nodes that the line does not name.
+- **`F-257`'s cures go to tasks 12 and 18** (the coordinator, after task 7): task 12(b)'s pin move
+  puts `mem_hingeRowBlock_iff` in an earlier chapter, so the first edge is no longer forward; for
+  the two edges to `lem:case-III-claim612-eq644`, that node moves after `lem:case-III-acolumn-zero`,
+  whose KT eq. (6.43) it follows (task 18, which frames that subsubsection), rather than the
+  certification's users after it. Neither move adds a forward `\uses`.

@@ -953,8 +953,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the two nodes, `--summary` and the
   forward screen, on round 2 task 7's tree).
   *Found:* RECONCILE round 2 task 7.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 7): the cure is the
-  coordinator's to assign, as `F-255`'s was.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, tasks 12 and 18): the coordinator
+  gave the first edge to task 12(b)'s pin move and the move of `lem:case-III-claim612-eq644` to
+  task 18.
 
 ## N — node shape
 
