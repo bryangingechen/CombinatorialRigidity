@@ -6,11 +6,11 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
 disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.9 reshaped
-the nodes of round 1's chapters, of `matroid-union` through `genericity-and-count`, and of
-`case-iii.tex` up to KT eq. (6.29). No task edits the Lean or changes a statement's strength.
-**Next concrete task:** task 3.10, the node shapes of `case-iii.tex`'s case $d = 3$ and general
-case (*Hand-off*). Round manual: `CLEANUP.md`.
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.10
+reshaped the nodes of round 1's chapters and of `matroid-union` through `case-iii.tex`. No task
+edits the Lean or changes a statement's strength. **Next concrete task:** task 3.11, the node
+shapes of `molecule-modelling`, `molecule-application` and `generic-lift` (*Hand-off*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -21,22 +21,22 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3.9 has landed** (this commit; `case-iii.tex`, the ledger and docs, no Lean). Nothing is
-mid-stream; the next task is task 3.10.
+**Task 3.10 has landed** (this commit; `case-iii.tex`, the ledger and docs, no Lean). Nothing is
+mid-stream; the next task is task 3.11.
 
-**The gate's baseline, at task 3.9** (2026-10-13):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 403 lines**, sha256 prefix
-  **`004cda27ff8d8e39`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 3.10** (2026-10-14):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 415 lines**, sha256 prefix
+  **`fe493f3e33f7358b`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
-  against task 3.8's (3 384 lines, `9b8817b51cb070ce`) is task 3.9's *Expected*, its 45 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1355 edges
-  769291c0034cc514`** and **`5d11ccc9647c6ce6`**; `print.log` 0 `LaTeX Warning` lines and 31
-  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 679 nodes,
-  1 017 pins (1 007 distinct; `lean_decls` 1 018), 459 missing, 2 208 implied, 83 + 304
-  unbacked, 178 dead, 19 nodes with four or more pins, no cycle-closing missing edge (`F-011`
-  done). The forward screen, unchanged by tasks 3.8–3.9, gives the open's table but `case-i` 7/5,
+  against task 3.9's (3 403 lines, `004cda27ff8d8e39`) is task 3.10's *Expected*, its 31 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1361 edges
+  41f0e2e97a0f17fc`** and **`dcc1b0231a15c917`**; `print.log` 0 `LaTeX Warning` lines and 31
+  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 681 nodes,
+  1 020 pins (1 010 distinct; `lean_decls` 1 021), 459 missing, 2 220 implied, 83 + 305
+  unbacked, 177 dead, 19 nodes with four or more pins, no cycle-closing missing edge (`F-011`
+  done). The forward screen, unchanged by tasks 3.8–3.10, gives the open's table but `case-i` 7/5,
   `rigidity-matrix` 10/9 0/0 and `molecular-induction` 5/3 3/3 (tasks 3.2–3.7's commits say why).
-- Missing in-edges that tasks 3.2–3.9 drew (task 4's; the report lists them, the commits name
+- Missing in-edges that tasks 3.2–3.10 drew (task 4's; the report lists them, the commits name
   them): to `lem:generic-realization-of-rigid` 4, `def:screw-space` 9 (five in `case-iii.tex`
   implied once their missing edges to `def:rigidity-matrix` are added),
   `def:trivial-motions-rigid` 2, `lem:edge-rows-independent` 2, `lem:two-edge-connected-degree`
@@ -48,7 +48,10 @@ mid-stream; the next task is task 3.10.
   superseded `lem:chain-data-of-noRigid`), `def:case-III-candidate` 2 and
   `lem:case-III-rank-certification` 2 (the two dispatches; task 3.9 took two of the chain
   dispatch's to the next node), `lem:case-III-redundant-combination` 2 (the $d = 3$ dispatch and
-  `lem:case-III-chain-discriminator`); task 3.5's `def:edge-multiply` ->
+  `lem:case-III-chain-discriminator`), `lem:case-III-chain-relabel-rows` 1 and
+  `lem:case-III-chain-eq666` 1 (the chain dispatch, whose missing edges to
+  `lem:case-III-claim612-block-iff-perp` and `lem:case-III-claim612-eq644` they took); task 3.5's
+  `def:edge-multiply` ->
   `lem:rigidContract-isMinimalKDof` and `lem:reduction-measure` ->
   `lem:pencil-contraction-deficiency`. Proofs that cite a node without an edge, as they cited the
   node it left: two in `case-i.tex` and one in `molecule-modelling.tex`
@@ -56,8 +59,9 @@ mid-stream; the next task is task 3.10.
   (`lem:two-edge-connected-degree`), `lem:adjacent-degree-two-pair`
   (`lem:deficiency-zero-connected`), `lem:generic-yields-genuine-hinge`
   (`lem:panel-support-extensor-join`); `thm:minimal-kdof-reduction`'s proof also cites
-  `lem:rigidContract-isMinimalKDof`, from earlier in its file (task 4.3), and the $d = 3$
-  dispatch's proof `def:case-III-candidate`, a missing edge (task 4.6).
+  `lem:rigidContract-isMinimalKDof`, from earlier in its file (task 4.3), the $d = 3$ dispatch's
+  proof `def:case-III-candidate`, and the chain dispatch's proof task 3.10's two nodes, missing
+  edges (task 4.6).
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -218,42 +222,35 @@ gate's diff, which each task makes exact before editing.
     lemma and KT Lemma 6.2 repinned, the cycle forms unpinned.
   - [x] **3.8 `case-ii.tex`, `genericity-and-count.tex`** (`657f3483`): `lem:splitoff-simple`
     (KT Lemma 6.7) and `lem:independent-rows-of-rank` added; `F-152` left (`F-239`).
-  - [x] **3.9 `case-iii.tex`, KT Claim 6.11 to KT eq. (6.29)** (this commit; `F-157`, `F-159`,
-    `F-009`'s `lem:case-III-claim612-eq644`; `F-120`'s two doubles left, its disposition at task
-    3.13), each fix tried on a scratch copy, the new nodes checked against KT 2011 pp. 678–686.
-    `F-157`: `lem:case-III-redundant-combination`, after `lem:case-III-redundant-decomposition`,
-    pins `exists_redundant_panelRow_ab_lam_of_rigidOn`. `F-159`: `def:case-III-candidate`, at the
-    paragraph that introduces $(G, p_1)$, pins `caseIIICandidate` (the frameworks $F_t$, with
-    $(G, p_1) = F_0$); `lem:case-III-rank-certification` pins `case_III_rank_certification`, before
-    the $d = 3$ dispatch and after `lem:case-III-claim612-block-iff-perp` and
-    `lem:case-III-claim612-eq644`, whose pins it reaches, so no edge of it points forward. The two
-    lemmas are stated in KT's setting, with notes for the pins' generality (*Decisions*); the dead
-    nodes and `lem:case-III-transport-collapse` are left. `lem:case-III-claim612-eq644`: the two
-    `acolumn` steps unpinned and named in its note, the span form the $d = 3$ dispatch uses. The
-    notes of `lem:case-III-candidate-row`, both dispatches and the chain discriminator cite the new
-    nodes where they described their theorems.
-    *Expected* (exact, before editing the tree; `predict.py`'s after-dump of the copy): +3 nodes
-    (`def:case-III-candidate` `#B0ECA3`, `lem:case-III-redundant-combination`,
-    `lem:case-III-rank-certification` `#9CEC8B`); pins 1 016 -> 1 017 (1 007 distinct;
-    `lean_decls` 1 017 -> 1 018, hash `a941880f895665f9` -> `5d11ccc9647c6ce6`); `## pins:` 3
-    added, 1 changed (`lem:case-III-claim612-eq644`); `## uses:` 3 added, none changed; drawn
-    edges 1 345 -> 1 355 (`769291c0034cc514`), +10 (dashed: `def:panel-hinge-framework` ->
-    `def:case-III-candidate` -> `lem:case-III-rank-certification`; solid:
-    `lem:case-II-placement-old-rows-extract`, `lem:case-III-redundant-decomposition`,
-    `lem:rows-polynomial-in-normals` and `lem:splitoff-edge-substitution` ->
-    `lem:case-III-redundant-combination`;
-    `lem:case-III-claim612-block-iff-perp`, `lem:case-III-claim612-eq644`,
-    `lem:case-III-transport-collapse` and `lem:splitoff-edge-substitution` ->
-    `lem:case-III-rank-certification`); +3 node lines; 3 403 lines (`004cda27ff8d8e39`), the diff
-    45 lines. The after-dump is exactly that.
-  - [ ] **3.10 `case-iii.tex`, the case $d = 3$ and the general case** (`F-163`, `F-167`,
-    `F-171`). `F-163`: repin `lem:case-III-claim612-points-affineIndep-real-normals` on the general
-    form `exists_homogeneousIncidence_of_normals_gen` (a note if the statement stays at $d = 3$);
-    the four affine nodes are left. `F-167`: leave (the dispatch is dead by design, as its lead
-    says). `F-171`: nodes for KT eq. (6.66) and the renaming (`interior_hρe₀_of_baseWidening`,
-    `chainData_relabel_arm_hρGv`, `chainData_bottom_relabel`), or the two relabel nodes repinned
-    on their general forms, whichever states what the dispatch's proof cites. *Expected:* +1 or +2
-    nodes, or repins (hash changes); new edges.
+  - [x] **3.9 `case-iii.tex`, KT Claim 6.11 to KT eq. (6.29)** (`24f04215`):
+    `def:case-III-candidate`, `lem:case-III-redundant-combination` and
+    `lem:case-III-rank-certification` added; `lem:case-III-claim612-eq644`'s `acolumn` steps unpinned.
+  - [x] **3.10 `case-iii.tex`, the case $d = 3$ and the general case** (this commit; `F-163`,
+    `F-167`, `F-171`), each fix tried on a scratch copy, the new nodes checked against KT 2011
+    pp. 692–698. `F-163`: `lem:case-III-claim612-points-affineIndep-real-normals` repinned on
+    `exists_homogeneousIncidence_of_normals_gen`, which the chain discriminator's pin calls, in place
+    of the dead $d = 3$ wrapper; the statement stays at $d = 3$, and its note says the pin holds for
+    every $d$; the four affine nodes are left. `F-167`: left (the dispatch is dead by design, as its
+    lead says). `F-171`: the dispatch's proof cites the renaming of KT eqs. (6.54)–(6.55), the row
+    correspondence of KT eq. (6.62) and KT eq. (6.66) with its two consequences; its pin reaches
+    the three named theorems, not the relabel nodes' general forms (`ofNormals_relabel_perm`,
+    `rigidityRow_relabel_perm`), so nodes, not repins. Before the chain dispatch: a lead-in for
+    $G_i$, $\rho_i$, $\sigma_i$ and $q_i = q \circ \sigma_i$; `lem:case-III-chain-relabel-rows`
+    (KT eqs. (6.55), (6.62)) pins `chainData_bottom_relabel`; `lem:case-III-chain-eq666` (KT eq.
+    (6.66)) pins `interior_hρe₀_of_baseWidening` and `chainData_relabel_arm_hρGv`, one claim each.
+    Both are stated in KT's setting with notes for the endpoint selectors; the second's proof is
+    the dispatch's (6.66) argument, moved, and `\uses` `lem:splitoff-edge-substitution` (no Lean
+    basis; honesty clause (b), task 3.9's rule). The dispatch's proof and note cite both; its
+    `\uses` are task 4.6's.
+    *Expected* (exact, before editing the tree; `predict.py`'s after-dump of the copy): +2 nodes
+    (`lem:case-III-chain-relabel-rows` `#1CAC78`, `lem:case-III-chain-eq666` `#9CEC8B`); pins
+    1 017 -> 1 020 (1 010 distinct; `lean_decls` 1 018 -> 1 021, hash `5d11ccc9647c6ce6` ->
+    `dcc1b0231a15c917`); `## pins:` 2 added, 1 changed (the real-normals node); `## uses:` 2 added,
+    none changed; drawn edges 1 355 -> 1 361 (`41f0e2e97a0f17fc`), +6 (dashed: `def:chain-data` ->
+    both new nodes; solid: `lem:case-III-claim612-block-iff-perp` -> both,
+    `lem:case-III-claim612-eq644` and `lem:splitoff-edge-substitution` ->
+    `lem:case-III-chain-eq666`); +2 node lines; 3 415 lines (`fe493f3e33f7358b`), the diff 31
+    lines. The after-dump is exactly that.
   - [ ] **3.11 `molecule-modelling`, `molecule-application`, `generic-lift`** (`F-009`'s three,
     `F-010`'s `shadowGraph`, `F-214`, `F-219`, `F-224`'s screw map). `thm:projective-invariance`
     (7): leave (Crapo and Whiteley's transformation, with its three parts and (1)'s consequences;
@@ -393,6 +390,8 @@ ledger's earlier `L` entries are task 8.2's.
 - `F-240` (task 3.8): docstrings of task 3.8's pins, and a stale one of
   `splitOff_simple_of_noRigid`.
 - `F-241` (task 3.9): docstrings of task 3.9's pins name no node, or a label the blueprint lacks.
+- `F-242` (task 3.10): docstrings of task 3.10's pins, a stale "dead", and the unpinned $d = 3$
+  wrapper.
 
 ## Blockers / open questions
 
@@ -400,14 +399,17 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3.10, the node shapes of `case-iii.tex`'s case $d = 3$ and general
-case** (`F-163`, `F-167`, `F-171`; Opus, a fresh agent). The parent's dump is task 3.9's (3 403
-lines, `004cda27ff8d8e39`; *Current state*): regenerate it on the parent after `verify.sh` if the
-scratch copy is gone. Before editing, read each named node, its pins' statements and its `--label`
-report, try the change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.9), and make 3.10's
-*Expected* exact in its line, its `## uses:` lines included (gate 3 (b)); then edit, and diff the
-after-dump against it. The missing in-edges to task 3.9's three nodes are task 4.6's, not 3.10's.
-Then task 3.11.
+**Next concrete task: task 3.11, the node shapes of `molecule-modelling`, `molecule-application`
+and `generic-lift`** (`F-009`'s three, `F-010`'s `shadowGraph`, `F-214`, `F-219`, `F-224`'s screw
+map; Opus, a fresh agent). The parent's dump is task 3.10's (3 415 lines, `fe493f3e33f7358b`;
+*Current state*): regenerate it on the parent after `verify.sh` if the scratch copy is gone.
+Before editing, read each named node, its pins' statements and its `--label` report, try the
+change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.10), and make 3.11's *Expected*
+exact in its line, its `## uses:` lines included (gate 3 (b)); then edit, and diff the after-dump
+against it. A changed pin set makes the script's first `--tex-root` run a fresh `lake lean` (about
+90 s). Task 3.11 has the most moves of the N tasks left; whether `lem:panel-hinge-dual-molecular`'s
+split with its retargets in `pencil.tex` and `main-component.tex` fits beside the other fixes is
+for its trial to show. Then task 3.12.
 
 ## Decisions made during this round
 
@@ -474,3 +476,7 @@ Then task 3.11.
   even with no Lean basis (the honesty gate's clause (b): `lem:splitoff-edge-substitution` for the
   two lemmas of task 3.9). Task 3.8's placement rule holds across subsubsections
   (`lem:case-III-rank-certification`, after the nodes of KT eqs. (6.42) and (6.44) it reaches).
+- **A source step a dispatch's proof derives** (task 3.10). When a dispatch's proof derives a
+  numbered source step whose theorems are unpinned (KT eq. (6.66)), the step gets a node pinning
+  them, the derivation moves into that node's proof, and the dispatch's proof cites the node; the
+  dispatch's new missing edges to it are task 4's, as task 3.9's were.

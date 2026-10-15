@@ -1242,7 +1242,7 @@ for any three linearly independent normals.
 
 \begin{lemma}[The points of KT Claim~6.12 in homogeneous coordinates, for given normals]
   \label{lem:case-III-claim612-points-affineIndep-real-normals}
-  \lean{CombinatorialRigidity.Molecular.exists_homogeneousIncidence_of_normals}
+  \lean{CombinatorialRigidity.Molecular.exists_homogeneousIncidence_of_normals_gen}
   \leanok
   \uses{lem:case-III-claim612-panel-point-exists, lem:affine-indep-iff}
   Let $n_a, n_b, n_c \in K^4$ be linearly independent. Then there are
@@ -1272,10 +1272,14 @@ for any three linearly independent normals.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem is the case $d = 3$ of a form for $d$ linearly
-  independent normals in $K^{d+1}$, which has no node. The formal proof
-  of the general case uses that form
-  (\cref{lem:case-III-chain-discriminator}).
+  The pinned theorem holds for every $d$. For $d$ linearly independent
+  normals in $K^{d+1}$, it gives $d + 1$ linearly independent vectors:
+  first one orthogonal to all the normals, and then, for each normal in
+  turn, one orthogonal to all the others and not to it. The lemma is its
+  case $d = 3$, with the normals $n_c$, $n_a$, $n_b$ in this order. The
+  formal proof of the general case uses the pinned theorem
+  (\cref{lem:case-III-chain-discriminator}), and that of the case
+  $d = 3$ uses the lemma, derived from it.
 \end{fmlnote}
 
 By the proof of \cref{lem:case-III-candidate-row}, the block $M_1$ of
@@ -2175,6 +2179,154 @@ builds the framework for this panel.
   (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
 
+For $2 \le i \le d - 1$, Katoh and Tanigawa build the $i$-th framework
+from the graph $G_i = G_{v_i}^{v_{i-1} v_{i+1}}$, obtained by splitting
+off at $v_i$ along $v_{i-1} v_{i+1}$ (KT pp.~693--694). Their
+isomorphism $\rho_i$ from $G_i$ to $G_1$ maps $v_l$ to $v_{l+1}$ for
+$1 \le l \le i - 1$ and fixes the other vertices (KT eq.~(6.54)). It
+maps the edge $v_0 v_1$ of $G_i$ to the new edge $v_0 v_2$ of $G_1$, and
+the new edge $v_{i-1} v_{i+1}$ of $G_i$ to the edge $v_i v_{i+1}$ of
+$G_1$. Let $\sigma_i$ be the permutation of the bodies that agrees with
+$\rho_i$ and maps $v_i$ to $v_1$, the cycle
+$v_1 \mapsto v_2 \mapsto \cdots \mapsto v_i \mapsto v_1$, and let
+$q_i = q \circ \sigma_i$. Then $(G_i, q_i)$ is $(G_1, q)$ with its bodies
+renamed, ``exactly the same framework'' (KT eq.~(6.55)). The next lemma
+renames the rows of $R(G_1, q)$, and the lemma after it carries the form
+$r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
+
+\begin{lemma}[The rows of $(G_i, q_i)$; KT eqs.~(6.55) and~(6.62)]
+  \label{lem:case-III-chain-relabel-rows}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.chainData_bottom_relabel}
+  \leanok
+  \uses{def:chain-data, def:panel-hinge-framework, def:rigidity-matrix}
+  Let $G$ be a multigraph with a chain $v_0 v_1 \cdots v_d$ of length $d$
+  (\cref{def:chain-data}), let $2 \le i \le d - 1$, and let $q$ be
+  normals. Let $\sigma_i$ and $q_i$ be as above. Let $f$ be a row of
+  $R(G - v_1, q)$, or a form $S \mapsto x(S(v_0) - S(v_2))$ for a linear
+  form $x$ on $K^D$ that vanishes on $C(q(v_0), q(v_2))$. Then the form
+  $S \mapsto f(S \circ \sigma_i^{-1})$ is a row of $R(G - v_i, q_i)$, or
+  a form $S \mapsto x'(S(v_{i-1}) - S(v_{i+1}))$ for a linear form $x'$
+  on $K^D$ that vanishes on $C(q_i(v_{i-1}), q_i(v_{i+1}))$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-III-claim612-block-iff-perp}
+  We follow Katoh and Tanigawa~\cite[pp.~694--696]{katohTanigawa2011}.
+  Let $u$ and $w$ be the ends of an edge of $G - v_1$, or let $u = v_0$
+  and $w = v_2$, and let $f$ be the form $S \mapsto x(S(u) - S(w))$, where
+  $x$ vanishes on $C(q(u), q(w))$. Then $f(S \circ \sigma_i^{-1})$ is the
+  form $S \mapsto x(S(\sigma_i^{-1}(u)) - S(\sigma_i^{-1}(w)))$, and $x$
+  vanishes on
+  $C(q_i(\sigma_i^{-1}(u)), q_i(\sigma_i^{-1}(w))) = C(q(u), q(w))$. So
+  it is enough that $\sigma_i^{-1}(u)$ and $\sigma_i^{-1}(w)$ are the ends
+  of an edge of $G - v_i$, or are $v_{i-1}$ and $v_{i+1}$.
+
+  The vertices $v_2, \dots, v_i$ are interior vertices of the chain, so
+  their only edges in $G$ are chain edges (\cref{def:chain-data}). For an
+  edge $v_l v_{l+1}$ of $G - v_1$ with $2 \le l \le i - 1$,
+  $\sigma_i^{-1}$ maps its ends to those of the edge $v_{l-1} v_l$ of
+  $G - v_i$. It maps the ends of $v_i v_{i+1}$ to $v_{i-1}$ and
+  $v_{i+1}$, and $v_0$ and $v_2$ to the ends of the edge $v_0 v_1$ of
+  $G - v_i$. Every other edge of $G - v_1$ has no end among
+  $v_1, \dots, v_i$, so it is an edge of $G - v_i$, and $\sigma_i^{-1}$
+  fixes its ends. The edges of $G_1$ are those of $G - v_1$ and the new
+  edge $v_0 v_2$ (\cref{def:graph-operations}), and likewise for $G_i$.
+  So renaming takes the rows of $R(G_1, q)$ to those of $R(G_i, q_i)$,
+  which is Katoh and Tanigawa's row correspondence (KT eq.~(6.62)), with
+  the column correspondence given by $\rho_i$.
+\end{proof}
+
+\begin{fmlnote}
+  The pinned theorem takes $R(G - v_i, q_i)$ with the endpoint selector
+  of $(G - v_1, q)$ (\cref{fmlnote:panel-hinge-nondegenerate}) renamed
+  along $\sigma_i$ and along a permutation of the edge labels that
+  extends $\rho_i$. It assumes that the selector of $(G - v_1, q)$
+  assigns each of its edges its ends, and the new edge $v_0 v_2$ the
+  ends $v_2$ and $v_0$, in this order. That the renamed selector assigns
+  each edge of $G_i$ its ends is a separate step of the formal proof of
+  \cref{lem:case-III-chain-dispatch}, which applies the lemma to the
+  bottom rows of KT eq.~(6.64).
+\end{fmlnote}
+
+\begin{lemma}[The form $r$ at the edge $v_i v_{i+1}$; KT eq.~(6.66)]
+  \label{lem:case-III-chain-eq666}
+  \lean{Graph.ChainData.interior_hρe₀_of_baseWidening,
+        Graph.ChainData.chainData_relabel_arm_hρGv}
+  \leanok
+  \uses{def:chain-data, def:panel-hinge-framework, def:rigidity-matrix}
+  Let $d \ge 3$, let $G$ be a multigraph with a chain
+  $v_0 v_1 \cdots v_d$ of length $d$ (\cref{def:chain-data}), and let $q$
+  be normals. Let $r$ be a linear form on $\bigwedge^{d-1} K^{d+1}$ that
+  vanishes on $C(q(v_0), q(v_2))$, such that the form
+  $S \mapsto r(S(v_0) - S(v_2))$ lies in the row space of $R(G - v_1, q)$.
+  Let $2 \le i \le d - 1$, and let $\sigma_i$ and $q_i$ be as above. Then
+  $r$ vanishes on $C(q_i(v_{i-1}), q_i(v_{i+1}))$, the hinge of the new
+  edge $v_{i-1} v_{i+1}$ of $(G_i, q_i)$, and the form
+  $S \mapsto r(S(v_{i-1}) - S(v_{i+1}))$ lies in the row space of
+  $R(G - v_i, q_i)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-III-claim612-block-iff-perp, lem:case-III-claim612-eq644,
+        lem:splitoff-edge-substitution}
+  We follow Katoh and Tanigawa~\cite[pp.~696--698]{katohTanigawa2011}.
+  Write the form $S \mapsto r(S(v_2) - S(v_0))$ as a combination of the
+  rows of $R(G - v_1, q)$, and add up its terms at each edge: for an edge
+  $e$ of $G - v_1$ with ends $x$ and $y$, they add up to a form
+  $S \mapsto \psi_e(S(x) - S(y))$, where $\psi_e$ vanishes on the hinge
+  $q(e)$. Let $\psi_{v_0 v_2} = r$ for the new edge of $G_1$, with ends
+  $v_0$ and $v_2$. Then the forms $S \mapsto \psi_e(S(x) - S(y))$, for the
+  edges $e$ of $G_1$ with ends $x$ and $y$, sum to zero, as in KT
+  eq.~(6.52). Let $S$ vanish off a vertex $u$. Then the term at $e$ takes
+  the value $\pm \psi_e(S(u))$ at $S$ if $u$ is an end of $e$, and $0$
+  otherwise, as in the proof of \cref{lem:case-III-claim612-eq644}. As
+  $S(u)$ can be any element of $K^D$, the forms $\psi_e$ of the edges $e$
+  at $u$, with signs given by the orientations, sum to zero.
+
+  The edges of $G - v_1$ are the edges of $G$ without the end $v_1$
+  (\cref{lem:splitoff-edge-substitution}). For $2 \le l \le d - 1$, the
+  vertex $v_l$ is interior, so its only edges in $G$ are $v_{l-1} v_l$
+  and $v_l v_{l+1}$ (\cref{def:chain-data}). So its edges in $G_1$ are
+  the edge $v_{l-1} v_l$, or the new edge $v_0 v_2$ when $l = 2$, and the
+  edge $v_l v_{l+1}$. Hence $\psi_{v_l v_{l+1}}$ is $\pm$ the form of the
+  other edge, and by induction on $l$,
+  \[
+    \psi_{v_l v_{l+1}} \;=\; \pm r \qquad (2 \le l \le d - 1),
+  \]
+  which is KT eq.~(6.66). For $d = 3$ and $l = 2$ this is KT eq.~(6.44)
+  (\cref{lem:case-III-claim612-eq644}).
+
+  This has two consequences at $l = i$. First, $\psi_{v_i v_{i+1}}$
+  vanishes on the hinge of $v_i v_{i+1}$ in $(G_1, q)$, which is
+  $C(q(v_i), q(v_{i+1}))$, and so does $r$. As $\sigma_i(v_{i-1}) = v_i$
+  and $\sigma_i(v_{i+1}) = v_{i+1}$, this hinge is
+  $C(q_i(v_{i-1}), q_i(v_{i+1}))$. Second, the term of the relation at
+  $v_i v_{i+1}$ is the form $S \mapsto \pm r(S(v_i) - S(v_{i+1}))$, so
+  this form lies in the span of the rows of $R(G_1, q)$ at its other
+  edges. The term at $v_0 v_2$ is such a row, as $r$ vanishes on
+  $C(q(v_0), q(v_2))$. Renamed by $\sigma_i$, the rows at these edges are
+  rows of $R(G - v_i, q_i)$, as in the proof of
+  \cref{lem:case-III-chain-relabel-rows}, and the form becomes
+  $S \mapsto \pm r(S(v_{i-1}) - S(v_{i+1}))$. Katoh and Tanigawa make
+  this step with the row correspondence of KT eq.~(6.62) and the row
+  operations of KT eq.~(6.63).
+\end{proof}
+
+\begin{fmlnote}
+  The two pinned theorems are the two claims. They take the form
+  $S \mapsto r(S(v_0) - S(v_2))$ with a combination of rows, from which
+  the proof reads the forms $\psi_e$: the first at edges of $G - v_1$,
+  and the second at edges of $G$ of which only $v_2 v_3$ meets $v_2$,
+  with the membership in the row space of $R(G - v_1, q)$. The first
+  assumes that the endpoint selector
+  (\cref{fmlnote:panel-hinge-nondegenerate}) assigns the edge
+  $v_i v_{i+1}$ its ends, and the second that it assigns every edge of
+  $G$ its ends and the new edge $v_0 v_2$ the ends $v_0$ and $v_2$. The
+  second takes $R(G - v_i, q_i)$ with this selector. In the formal proof of
+  \cref{lem:case-III-chain-dispatch}, the combination is the one that
+  \cref{lem:case-III-chain-discriminator} gives (the note after it).
+\end{fmlnote}
+
 \begin{lemma}[Case~III for a chain of length $d$; from the proof of KT Lemma~6.13]
   \label{lem:case-III-chain-dispatch}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.chainData_dispatch}
@@ -2212,46 +2364,25 @@ builds the framework for this panel.
   $C(L_1)$ (KT eqs.~(6.50) and~(6.53)).
 
   Now let $2 \le i \le d - 1$, so that $d \ge 3$. Katoh and Tanigawa
-  split off at $v_i$ instead, along $v_{i-1} v_{i+1}$. Their isomorphism
-  $\rho_i$ from $G_i = G_{v_i}^{v_{i-1} v_{i+1}}$ to $G_1$ maps $v_l$ to
-  $v_{l+1}$ for $1 \le l \le i - 1$ and fixes the other vertices (KT
-  eq.~(6.54)). It maps the new edge $v_{i-1} v_{i+1}$ of $G_i$ to the
-  edge $v_i v_{i+1}$ of $G_1$. So it maps $G - v_i$, which is $G_i$
-  without its new edge, onto $G_1$ without $v_i v_{i+1}$. Let
-  $q_i = q \circ \rho_i$. Then $(G_i, q_i)$ is $(G_1, q)$ with its
-  bodies renamed, ``exactly the same framework'' (KT eq.~(6.55)), and
-  $R(G_i, q_i)$ has the rank $D(|V(G)| - 2)$ of $R(G_1, q)$.
+  split off at $v_i$ instead, along $v_{i-1} v_{i+1}$, and rename the
+  bodies of $(G_1, q)$ by their isomorphism $\rho_i$ from
+  $G_i = G_{v_i}^{v_{i-1} v_{i+1}}$ to $G_1$ (KT eqs.~(6.54)
+  and~(6.55)). Let $\sigma_i$ and $q_i = q \circ \sigma_i$ be as before
+  \cref{lem:case-III-chain-relabel-rows}. Then $(G_i, q_i)$ is $(G_1, q)$
+  with its bodies renamed. By that lemma, renaming takes the rows of
+  $R(G_1, q)$ to rows of $R(G_i, q_i)$, and it keeps linearly independent
+  forms linearly independent. So
+  $\operatorname{rank} R(G_i, q_i) \ge D(|V(G)| - 2)$, the rank of
+  $R(G_1, q)$.
 
-  For an edge $e$ of $G_1$, let $r_{e1}, \dots, r_{e(D-1)}$ be the
-  linear forms on $K^D$ that give its rows, and let
-  $\psi_e = \sum_j \lambda_{ej} r_{ej}$, with the coefficients of KT
-  eq.~(6.52). Then $\psi_e$ vanishes on the hinge $q(e)$, and
-  $\psi_{v_0 v_2} = r$. The relation says that the forms
-  $S \mapsto \psi_e(S(x) - S(y))$, for the edges $e$ of $G_1$ with ends
-  $x$ and $y$, sum to zero. On the screw assignments that vanish off a
-  vertex $u$, it says that the forms $\psi_e$ of the edges at $u$ sum to
-  zero, with signs given by the orientations. For $2 \le l \le d - 1$,
-  the vertex $v_l$ has two edges in $G_1$: the edge $v_{l-1} v_l$, or
-  the new edge $v_0 v_2$ when $l = 2$, and the edge $v_l v_{l+1}$. So
-  $\psi_{v_l v_{l+1}}$ is $\pm$ the form of the other edge, and by
-  induction on $l$,
-  \[
-    \psi_{v_l v_{l+1}} \;=\; \pm r \qquad (2 \le l \le d - 1),
-  \]
-  which is KT eq.~(6.66). For $d = 3$ and $l = 2$ this is KT
-  eq.~(6.44) (\cref{lem:case-III-claim612-eq644}).
-
-  This has two consequences at $l = i$. First, $r$ vanishes on the
-  hinge $q(v_i v_{i+1})$ of $(G_1, q)$, which is the hinge of the new
-  edge $v_{i-1} v_{i+1}$ of $(G_i, q_i)$. Second, the term of the
-  relation at $v_i v_{i+1}$ is the form
-  $S \mapsto \pm r(S(v_i) - S(v_{i+1}))$, so this form lies in the span
-  of the rows of $R(G_1, q)$ at the other edges. Renamed by $\rho_i$, the
+  By the relation of KT eq.~(6.52), the form
+  $S \mapsto r(S(v_0) - S(v_2))$ lies in the row space of
+  $R(G - v_1, q)$, and $r$ vanishes on $C(q(v_0), q(v_2))$. So by
+  \cref{lem:case-III-chain-eq666}, which is KT eq.~(6.66), $r$ vanishes
+  on the hinge of the new edge $v_{i-1} v_{i+1}$ of $(G_i, q_i)$, and the
   form $S \mapsto r(S(v_{i-1}) - S(v_{i+1}))$ lies in the row space of
-  $R(G - v_i, q_i)$. Katoh and Tanigawa make this step with the row
-  correspondence of KT eq.~(6.62) and the row operations of KT
-  eq.~(6.63). The new row of the $i$-th framework thus comes from the
-  coefficients of the relation at the edge $v_i v_{i+1}$ of $G_1$, an
+  $R(G - v_i, q_i)$. The new row of the $i$-th framework thus comes from
+  the coefficients of the relation at the edge $v_i v_{i+1}$ of $G_1$, an
   edge that depends on $i$.
 
   Katoh and Tanigawa's $(G, p_i)$ is the framework of KT eq.~(6.12)
@@ -2261,9 +2392,10 @@ builds the framework for this panel.
   and~(6.58)). The proof of \cref{lem:case-III-candidate-row} applies to
   it with $-r$ in place of $r$. There we used only that $r$ vanishes on
   the hinge of the new edge $ab$, that $S \mapsto r(S(a) - S(b))$ lies in
-  the row space of $R(G_v, q)$, and that $R(G_v^{ab}, q)$ has rank
-  $D(|V(G)| - 2)$. Here these hold by the two consequences and by the
-  rank of $R(G_i, q_i)$. So $\operatorname{rank} R(G, p_i) \ge
+  the row space of $R(G_v, q)$, and that $R(G_v^{ab}, q)$ has rank at
+  least $D(|V(G)| - 2)$. Here these hold by
+  \cref{lem:case-III-chain-eq666} and by the bound on
+  $\operatorname{rank} R(G_i, q_i)$. So $\operatorname{rank} R(G, p_i) \ge
   D(|V(G)| - 1)$ when $r$ does not vanish on $C(L_i)$ (KT eq.~(6.64)
   and p.~697).
 
@@ -2287,15 +2419,16 @@ builds the framework for this panel.
   followed by the rotation. For $i = 1$ it applies this theorem with $v_0$ and $v_2$ exchanged. For
   $i \ge 2$ it applies it with $v_i$, $v_{i+1}$ and $v_{i-1}$ in the
   roles of $v$, $a$ and $b$, to the normals $q_i$ and the form $-r$, with
-  $G - v_i$ in place of $G_v$. So it does not use
+  $G - v_i$ in place of $G_v$. It takes the bottom rows from
+  \cref{lem:case-III-chain-relabel-rows}, and the two facts it needs on
+  $-r$ from \cref{lem:case-III-chain-eq666}. So it does not use
   \cref{lem:case-II-realization-placement}. For $d = 3$ and $i = 2$, the
   isomorphism $\rho_2$ is that of \cref{lem:splitOff-isLink-relabel}, and
   the renaming of the normals and the rows is that of
   \cref{lem:splitOff-ofNormals-relabel} and
   \cref{lem:splitOff-rigidityRows-relabel}. The formal proof does not
-  use these lemmas either. It renames by a permutation of the bodies
-  that extends $\rho_i$ and sends $v_i$ to $v_1$, and no node pins the
-  steps that use it.
+  use these lemmas either: it renames by the permutation $\sigma_i$, as
+  the two lemmas before this one do.
 \end{fmlnote}
 
 \begin{lemma}[Case~III: no proper rigid subgraph and $k = 0$; KT Lemma~6.13]

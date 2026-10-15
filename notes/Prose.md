@@ -25,16 +25,17 @@ tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`, its task 2.4,
 tasks 2.13–2.14, `intro.tex`'s two slices, `F-226`–`F-229`; its slices and its close are done.
 Round 5's open re-ran the script, which still gives round 1's counts, and triaged the ledger's 97
 `E`, `N`, `T` and `U` entries into 31 one-commit tasks (§3 *Round 5*); its task 2 added each node's
-`\uses` to the gate's dump, and its tasks 3.1–3.9 reshaped the nodes of round 1's chapters, of
+`\uses` to the gate's dump, and its tasks 3.1–3.10 reshaped the nodes of round 1's chapters, of
 `matroid-union.tex` through `meet.tex`, of `rigidity-matrix.tex`, of `deficiency.tex`, of
 `molecular-induction.tex`, into which the graph form of KT Lemma 3.5 moved from `case-i.tex`, of
 `panel-layer.tex`, where KT Theorem 5.6 with nondegenerate hinges now comes first, as in the
 formal proof, of `case-i.tex`, which gained nodes for KT Claim 6.6 and for Case I at every
 deficiency, of `case-ii.tex` and `genericity-and-count.tex`, with new nodes for KT Lemma 6.7, in
 `molecular-induction.tex`, and for the independent rows that a bound on the rank gives, and of
-`case-iii.tex` up to KT eq. (6.29), with new nodes for KT's framework $(G, p_1)$, for its rank as
-the formal proof bounds it, and for the step from KT Claim 6.11 that it uses. **Next concrete
-task:** round 5's task 3.10, the node shapes of `case-iii.tex`'s case $d = 3$ and general case
+`case-iii.tex`, with new nodes for KT's framework $(G, p_1)$, for its rank as the formal proof
+bounds it, for the step from KT Claim 6.11 that it uses, and, for every $d$, for KT's renamed
+frameworks and KT eq. (6.66). **Next concrete task:** round 5's task 3.11, the node shapes of
+`molecule-modelling.tex`, `molecule-application.tex` and `generic-lift.tex`
 (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions

@@ -1237,6 +1237,13 @@ declaration's name as its header writes it:
   `PanelHingeFramework.case_III_candidate_dispatch` and `exists_chainData_discriminator_pick_of_LI`,
   `CaseIII/Realization.lean`; a `grep` of `blueprint/src` for the unpinned names).
   *Found:* round 3 task 2.13.
+  *Disposition:* done (task 3.10): `lem:case-III-claim612-points-affineIndep-real-normals` is
+  repinned on `exists_homogeneousIncidence_of_normals_gen`, the form for every $d$ that the chain
+  discriminator's pin calls, in place of its dead $d = 3$ wrapper; the statement stays at $d = 3$,
+  and its note says that the pin holds for every $d$. Left: the four affine nodes and
+  `lem:case-III-claim612-r-nonzero`, kept as KT's exposition (retiring or merging them is not among
+  principle D's fixes, task 8.2; `F-120`'s double is task 3.13's), and `exists_tripleLI_polynomial`,
+  a step of the dead $d = 3$ dispatch's choice of normals.
 - **F-167** · N · `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12
   (`algebraic-induction/case-iii.tex`): ten of the thirteen pins of its eight nodes are dead, all
   but `case_III_claim612_gen` and `lem:case-III-claim612-eq644`'s `hingeRow_comp_single_tail` and
@@ -1253,6 +1260,11 @@ declaration's name as its header writes it:
   `linearIndependent_sum_p2_candidateRow`/`_p3_`; a `grep` of `blueprint/lean_decls` and of the
   Lean for the unpinned names and the callers).
   *Found:* round 3 task 2.14.
+  *Disposition:* left (the $d = 3$ dispatch is dead by design, as its subsubsection's lead says; its
+  route's nodes came with task 3.9, `lem:case-III-rank-certification` and
+  `lem:case-III-redundant-combination`; the placement and relabel nodes stay as KT's exposition,
+  as retiring or merging them is not among principle D's fixes, task 8.2;
+  `lem:case-III-claim612-eq644`'s bundle was task 3.9's).
 - **F-171** · N · `case-iii.tex`'s general case (`algebraic-induction/case-iii.tex`): the formal
   route of KT Lemma 6.13 below the three live pins has no node. The choice of $q$ off four factors
   (`chainData_split_w6b_gates`, with the $d \times d$ minor `exists_tupleLI_polynomial`), KT's
@@ -1271,6 +1283,17 @@ declaration's name as its header writes it:
   `chainData_dispatch_interior` and `case_III_hsplit_producer_all_k`; a `grep` of
   `blueprint/lean_decls` for the unpinned names).
   *Found:* round 3 task 2.15.
+  *Disposition:* done (task 3.10): before the chain dispatch, a lead-in for KT's $\rho_i$ and
+  $q_i$, `lem:case-III-chain-relabel-rows` (KT eq. (6.62)) pinning `chainData_bottom_relabel`, and
+  `lem:case-III-chain-eq666` (KT eq. (6.66) and its two consequences) pinning
+  `interior_hρe₀_of_baseWidening` and `chainData_relabel_arm_hρGv`; the dispatch's proof and note
+  cite both, and its (6.66) argument moved to the second. The relabel nodes' general forms
+  (`ofNormals_relabel_perm`, `rigidityRow_relabel_perm`) lie outside the dispatch's closure, so they
+  were not repinned. Left: the dispatch's `\uses` of the relabel nodes (unbacked, `F-170`, task
+  4.6); the route's other unpinned steps, which the proofs of the discriminator and the dispatch
+  describe; `lem:triangle-realization`'s dead pin (deadness alone is no reason to unpin); and
+  `lem:case-III`'s dead $d = 3$ pin `case_III_realization`, outside the open's choice for this
+  finding, a candidate for task 8.2's list (tasks 3.6–3.7 unpinned such wrappers).
 - **F-192** · N · `lem:exists-tight-partition`, `lem:partitionDef-merge` (`jacobs.tex`): each
   lemma pins a definition beside its claim. The first pins `IsTightPartition`, and its statement
   defines "tight" in a closing sentence; the second pins `crossingEdgesWithin`, the count
@@ -3246,6 +3269,21 @@ declaration's name as its header writes it:
   `lem:case-III-rank-certification` and `def:case-III-candidate`).
   *Evidence:* read (the docstrings; a `grep` for the label in `blueprint/src`).
   *Found:* round 5 task 3.9.
+- **F-242** · L · the declarations round 5's task 3.10 pinned or unpinned
+  (`Molecular/RigidityMatrix/Claim612.lean`; `CaseIII/Relabel/Chain.lean`, `ChainColumn.lean`,
+  `ForkedArm.lean`). The docstrings of `exists_homogeneousIncidence_of_normals_gen` and of its
+  $d = 3$ wrapper `exists_homogeneousIncidence_of_normals` name
+  `lem:case-III-claim612-points-affineIndep`, the affine node, and not
+  `lem:case-III-claim612-points-affineIndep-real-normals`; the wrapper, now unpinned, has one
+  caller, the dead $d = 3$ dispatch `case_III_candidate_dispatch` (`F-167`). The docstrings of
+  `interior_hρe₀_of_baseWidening` and `chainData_bottom_relabel` name `lem:case-III general-d` and
+  `lem:case-III`, and that of `chainData_relabel_arm_hρGv` no node (now `lem:case-III-chain-eq666`
+  and `lem:case-III-chain-relabel-rows`). The docstring of
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` calls `chainData_relabel_arm_hρGv` dead,
+  though `chainData_dispatch_interior` calls it and it lies in the main results' closure.
+  *Evidence:* read (the docstrings; a `grep` for the callers); measured (the closure of
+  `case_III_realization_all_k` in `scripts/blueprint-deps.py`'s Lean cache, at task 3.10).
+  *Found:* round 5 task 3.10.
 
 ## M — mathematics and sources
 
