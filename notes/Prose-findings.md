@@ -204,6 +204,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:case-II-placement-new-rows`, at
   `47eb5225`'s Lean); read (the proof's prose).
   *Found:* round 2 task 2.5.
+  *Disposition:* done (task 4.5): both edges to `lem:rank-delete-vertex` removed, as the proof cites
+  `def:hinge-row-block` and `lem:edge-rows-independent` for the dimension $D - 1$, and not that
+  node; the proof now `\uses` `lem:rows-polynomial-in-normals`, which its pins reach and it cites.
 - **F-066** · E · `lem:rank-transport-relabel-of-le-finrank` and
   `lem:rank-polynomial-IH-relabel-proj` (`rigidity-matrix.tex`): edges that name the wrong node.
   The first uses `def:genuine-hinge-realization`, which its pin does not reach; its hypothesis is
@@ -448,6 +451,15 @@ declaration's name as its header writes it:
   `def:rank-hypothesis` has none; `lem:splitoff-edge-substitution` misses `def:graph-operations`.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter case-ii`, at `5e9e329c`).
   *Found:* round 3 task 2.9.
+  *Disposition:* done (task 4.5): the 15 missing edges, 11 added and 4 implied by them (two
+  forward, task 5); `lem:case-II-realization`'s statement edges to `lem:reduction-step-pos` and
+  `lem:rank-polynomial-of-le-finrank` removed, as its proof names both, and its proof's edge to
+  `lem:genericity-device`, which the proof names only as the general form of the polynomial
+  lemma's argument; `lem:case-II`'s edges to `def:rank-hypothesis`, `lem:reduction-step-pos` and
+  `lem:exists-independent-panel-extensor` (cited only in the note after it) removed, and its
+  statement edge to `lem:splitoff-edge-substitution`, while its proof, which cites two steps,
+  keeps one; `lem:case-II-rank-lift`'s edge to `def:rank-hypothesis` removed (its $k'$ is any
+  integer, and no realization at a target rank enters).
 - **F-151** · E · `genericity-and-count.tex`'s eleven nodes
   (`algebraic-induction/genericity-and-count.tex`): one missing edge, from the proof of
   `lem:genericity-device` to `lem:trivial-motions-rank-bound` (`finrank_screwAssignment`), and 18
@@ -469,6 +481,19 @@ declaration's name as its header writes it:
   `lem:splitoff-edge-substitution` and `lem:rigidityRows-pinned-placement-rank-add`.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter genericity-and-count`, at `120eca58`).
   *Found:* round 3 task 2.10.
+  *Disposition:* done (task 4.5): the missing edge to `lem:trivial-motions-rank-bound` went when
+  task 3.3 unpinned `finrank_screwAssignment`; the parent's four missing added. Removed: the edges
+  to `def:rank-hypothesis`, the unbacked ones to `lem:rank-delete-vertex` (`F-062`),
+  `lem:relative-device-count`'s to `lem:relative-screw-split`, `lem:case-II-placement-old-rows`'s to
+  `lem:case-II` and the extraction, and `lem:case-II-realization-placement`'s three. Kept: the edges
+  to `def:panel-hinge-framework` (each statement takes a panel-hinge framework),
+  `lem:case-II-placement-old-rows`'s to `lem:rows-polynomial-in-normals` (its statement indexes the
+  rows as there) and the transitive one; the rest are backed now. Of the citations,
+  `lem:genericity-device`'s and `lem:case-II-placement-new-rows`'s proofs now `\uses`
+  `lem:rows-polynomial-in-normals`, and `lem:case-II-realization-placement`'s
+  `lem:with-normal-preserves` and `lem:splitoff-edge-substitution`; `def:panel-support-extensor` and
+  `def:hinge-row-block` are ancestors; `lem:rigidityRows-pinned-placement-rank-add` takes none, as
+  the count argues "as in" it (`F-175`).
 - **F-155** · E · `case-iii.tex`'s KT Claim 6.11 group (`algebraic-induction/case-iii.tex`, five
   nodes): 12 missing edges, `lem:case-III-claim-6-11-base`'s and `lem:case-III-gap3-minimalKDof`'s to
   `def:edge-multiply`, the latter's to `lem:splitoff-edge-substitution`, and nine of

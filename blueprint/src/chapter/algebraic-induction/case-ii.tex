@@ -34,7 +34,7 @@ state the rank in this form.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotions,
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions}
   \leanok
-  \uses{def:rank-hypothesis, lem:rank-delete-vertex, def:framework-with-normal,
+  \uses{lem:rank-delete-vertex, def:framework-with-normal,
         lem:with-normal-preserves}
   Let $(G,p)$ be a body-hinge framework, let $v$ be a body, and let
   $k'$ be an integer. Then $\dim Z(G,p) = D + k'$ if and only if the
@@ -69,6 +69,7 @@ state the rank in this form.
   \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff,
         Graph.isLink_incident_of_not_removeVertex}
   \leanok
+  \uses{def:graph-operations}
   Let $G$ be a multigraph, let $v$ be a vertex of $G$ of degree two,
   whose edges $e_a$ and $e_b$ join it to vertices $a$ and $b$, and let
   $G_v$ and $G_v^{ab}$ be obtained by removing $v$ and by splitting off
@@ -105,9 +106,7 @@ panel-hinge framework on $G_v$.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff,
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions}
   \leanok
-  \uses{def:rank-hypothesis, def:framework-with-normal, lem:reduction-step-pos,
-        lem:case-II-rank-lift, lem:splitoff-edge-substitution,
-        lem:exists-independent-panel-extensor}
+  \uses{def:framework-with-normal, lem:case-II-rank-lift}
   Let $G$ be a minimal $k$-dof-graph with $k > 0$, let $v$ be a vertex
   of $G$ of degree two, whose edges $e_a$ and $e_b$ join it to $a$ and
   $b$, and let $t = V(G) \setminus \{v\}$. Then every infinitesimal
@@ -128,7 +127,7 @@ panel-hinge framework on $G_v$.
 \begin{proof}
   \leanok
   \uses{lem:case-II-rank-lift, lem:splitoff-edge-substitution,
-        lem:exists-independent-panel-extensor}
+        lem:pinned-motions-on-mono}
   The first assertion holds for every set $t$ of bodies and every body
   $v$. A screw assignment $S$ is constant on $t \cup \{v\}$ if and
   only if it is constant on $t$ and $S(v) = S(w)$ for every $w \in t$.
@@ -169,8 +168,7 @@ panel-hinge framework on $G_v$.
   \label{lem:case-II-realization}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_realization_all_k}
   \leanok
-  \uses{def:rank-hypothesis, lem:reduction-step-pos,
-        lem:rank-polynomial-of-le-finrank}
+  \uses{def:rank-hypothesis, def:genuine-hinge-realization}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a
   $2$-edge-connected minimal $k$-dof-graph with $k > 0$, $|V(G)| \ge 3$
   and no proper rigid subgraph. Suppose that for every $k'$, every
@@ -183,8 +181,13 @@ panel-hinge framework on $G_v$.
 \begin{proof}
   \leanok
   \uses{lem:reduction-step-pos, lem:with-normal-preserves,
-        lem:rank-polynomial-of-le-finrank, lem:genericity-device,
-        lem:splitoff-simple, lem:reduction-measure}
+        lem:rank-polynomial-of-le-finrank, lem:splitoff-simple,
+        lem:reduction-measure, lem:simple-minimal-noRigid,
+        lem:reducible-vertex, lem:general-position-support-nonzero,
+        lem:rigidityRows-pinned-placement-rank-add,
+        lem:relative-deficiency-rank-bound, lem:case-II-placement-new-rows,
+        lem:case-III-transport-collapse,
+        lem:span-rigidityRows-eq-of-motions-eq}
   We follow Katoh and Tanigawa's proof of KT Lemma~6.8
   (pp.~677--679). The graph $G$ is simple
   (\cref{lem:simple-minimal-noRigid}). As $d \ge 2$, we have $D \ge 3$,

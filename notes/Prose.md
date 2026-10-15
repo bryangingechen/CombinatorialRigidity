@@ -40,9 +40,9 @@ and for the two-extensor's polynomial coordinates, and of `jacobs.tex`, with new
 partitions, for the edges between a family of parts, for the root of a cross edge and for two
 lemmas on the core, and of `main-component.tex`, with new nodes for the lifting system, a
 polynomial section of a kernel and the relabelling of edges, its helpers unpinned and the pins two
-nodes share kept, and its tasks 4.1–4.4 added the missing edges of rounds 1 and 2's chapters,
-`panel-layer.tex` and `case-i.tex`. **Next concrete task:** round 5's task 4.5, the edges of
-`case-ii.tex` and `genericity-and-count.tex` (`notes/Prose-graph-cleanup.md` *Hand-off*).
+nodes share kept, and its tasks 4.1–4.5 added the missing edges of rounds 1 and 2's chapters
+and of `panel-layer.tex` through `genericity-and-count.tex`. **Next concrete task:** round 5's
+task 4.6, the edges of `case-iii.tex` (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions
 

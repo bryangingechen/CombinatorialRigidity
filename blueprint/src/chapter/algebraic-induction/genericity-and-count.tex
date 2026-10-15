@@ -46,6 +46,7 @@ above by \cref{lem:relative-deficiency-rank-bound}.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:rows-polynomial-in-normals}
   We prove the lemma at the normals at which every hinge of $(G,q)$ is
   nondegenerate, the setting of Katoh and Tanigawa's nonparallel
   realizations. The remark after the proof shows that it fails at the
@@ -121,7 +122,7 @@ the four lemmas on rows before it.
   \label{lem:relative-screw-split}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_vertexSet}
   \leanok
-  \uses{def:rigidity-matrix, def:rank-hypothesis, def:pinned-motions-on}
+  \uses{def:rigidity-matrix, def:pinned-motions-on}
   Let $(G,p)$ be a body-hinge framework whose screw assignments are
   defined on a finite set $W$ of bodies with $V(G) \subseteq W$. Then
   \[
@@ -142,8 +143,7 @@ the four lemmas on rows before it.
   \label{lem:relative-device-count}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_relative_full_count_ofParam}
   \leanok
-  \uses{lem:genericity-device, lem:relative-screw-split,
-        lem:rows-polynomial-in-normals}
+  \uses{lem:genericity-device, lem:rows-polynomial-in-normals}
   Let $K$ be an infinite field, and let $G$ be a multigraph with
   $V(G) \neq \emptyset$, whose panel-hinge frameworks have a finite set
   $W \supseteq V(G)$ of bodies. Suppose that at some normals $q_0$, some
@@ -283,7 +283,7 @@ the four lemmas on rows before it.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rows-polynomial-in-normals}
+  \uses{lem:rows-polynomial-in-normals, lem:independent-rows-of-rank}
   Choose the rows of $R(G,q)$ at each edge as in
   \cref{lem:rows-polynomial-in-normals}. As the hinges of $(G,q_0)$ are
   nondegenerate, these rows span the row space of $R(G,q_0)$, so some $N$
@@ -325,14 +325,15 @@ they span the rows of the edge.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_of_edge,
         CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_edge}
   \leanok
-  \uses{def:panel-hinge-framework, def:hinge-row-block, def:rigidity-matrix, lem:rank-delete-vertex}
+  \uses{def:panel-hinge-framework, def:hinge-row-block, def:rigidity-matrix}
   Let $(G,q)$ be a panel-hinge framework, and let $e$ be an edge of $G$
   with distinct ends whose hinge is nondegenerate. Then some $D - 1$ of
   the rows of $R(G,q)$ at $e$ are linearly independent.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:hinge-row-block, lem:rank-delete-vertex, lem:edge-rows-independent}
+  \uses{def:hinge-row-block, lem:edge-rows-independent,
+        lem:rows-polynomial-in-normals}
   Let $u$ and $w$ be the ends of $e$, and let $C \neq 0$ be its hinge.
   The linear forms on $K^D$ that vanish on $C$ form a space of dimension
   $D - 1$ (\cref{def:hinge-row-block}). The map $S \mapsto S(u) - S(w)$
@@ -356,8 +357,9 @@ they span the rows of the edge.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn,
         CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet}
   \leanok
-  \uses{def:panel-hinge-framework, def:rigidity-matrix, def:rank-hypothesis,
-        lem:rank-delete-vertex, lem:relative-screw-split}
+  \uses{def:panel-hinge-framework, def:rigidity-matrix,
+        lem:rank-delete-vertex, lem:relative-screw-split,
+        def:graph-operations}
   Let $G_v^{ab}$ be obtained from a multigraph $G$ by splitting off a
   vertex $v$ of degree two (\cref{def:graph-operations}), and let
   $(G_v^{ab}, q)$ be a panel-hinge framework with nondegenerate hinges,
@@ -367,7 +369,8 @@ they span the rows of the edge.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-delete-vertex, lem:relative-screw-split}
+  \uses{lem:rank-delete-vertex, lem:relative-screw-split,
+        lem:rows-polynomial-in-normals}
   Let $W$ be the set of bodies, and let $V' = V(G_v^{ab})$, which contains
   the ends of the new edge $ab$. Fix a body $w \in V'$. A motion that
   vanishes at $w$ vanishes on $V'$, as it is constant there. So
@@ -396,8 +399,7 @@ they span the rows of the edge.
   \label{lem:case-II-placement-old-rows}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_independent_panelRow_transport}
   \leanok
-  \uses{def:panel-hinge-framework, lem:case-II, lem:rows-polynomial-in-normals,
-        lem:case-II-placement-old-rows-extract}
+  \uses{def:panel-hinge-framework, lem:rows-polynomial-in-normals}
   Let $(G_1, q_1)$ and $(G_2, q_2)$ be panel-hinge frameworks. Index the
   rows of each rigidity matrix by an edge and a pair of coordinates, as
   in \cref{lem:rows-polynomial-in-normals}. Let $s_1$ be a set of indices at
@@ -409,7 +411,7 @@ they span the rows of the edge.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-II, lem:rows-polynomial-in-normals}
+  \uses{lem:rows-polynomial-in-normals}
   These rows are the rows of $R(G_1, q_1)$ at the indices $f(i)$, which
   are distinct as $f$ is injective. A subfamily of a linearly independent
   family is linearly independent.
@@ -426,7 +428,7 @@ they span the rows of the edge.
   \label{lem:case-II-placement-block-independent}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_pinned_block}
   \leanok
-  \uses{def:panel-hinge-framework, lem:rank-delete-vertex}
+  \uses{def:panel-hinge-framework}
   Let $(G,q)$ be a panel-hinge framework, and let $v$ be a body. Let
   $\rho_1, \dots, \rho_m$ be rows of $R(G,q)$ at edges with the end $v$,
   whose restrictions to the screw assignments that vanish off $v$ are
@@ -437,7 +439,6 @@ they span the rows of the edge.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-delete-vertex}
   Suppose that $\sum_i a_i \rho_i + \sum_j b_j \sigma_j = 0$, and let $S$
   be a screw assignment that vanishes off $v$. Each $\sigma_j$ is a row
   at an edge whose ends differ from $v$, so $\sigma_j(S) = 0$, and hence
@@ -456,9 +457,8 @@ they span the rows of the edge.
   \label{lem:case-II-realization-placement}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_placement_eq612}
   \leanok
-  \uses{def:panel-hinge-framework, lem:case-II, lem:genericity-device,
-        lem:exists-independent-panel-extensor,
-        lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
+  \uses{def:panel-hinge-framework, lem:case-II-placement-new-rows,
+        lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
         lem:case-II-placement-block-independent}
   Let $G$ be a multigraph, let $v$ be a vertex of $G$ of degree two whose
@@ -472,10 +472,11 @@ they span the rows of the edge.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-II, lem:exists-independent-panel-extensor,
-        lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
+  \uses{lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
-        lem:case-II-placement-block-independent}
+        lem:case-II-placement-block-independent,
+        lem:independent-rows-of-rank, lem:splitoff-edge-substitution,
+        lem:with-normal-preserves}
   We follow the count in the proof of \cref{lem:case-II-realization},
   where $t = 1$. Let $n_a = q(a)$ and $n_b = q(b)$. The hinge
   $C = C(n_a, n_b)$ of the edge $ab$ of $(G_v^{ab}, q)$ is nonzero. As
