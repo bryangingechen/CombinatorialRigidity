@@ -714,6 +714,13 @@ declaration's name as its header writes it:
   choice: split, unpin, or a node of its own.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (tasks 3.3, 3.4 and 3.13): `ScrewSpace` has a node of its own,
+  `def:screw-space`, and `finrank_screwAssignment` is unpinned and named in its lemma's proof (task
+  3.3); `endsOf` is unpinned and named in its note (task 3.4); `pathVertex` and its two lemmas are
+  unpinned and named in a note, and `closedNbhd_subset_vertexSet` is unpinned and named in the
+  equality's proof, which drops their 48 missing in-edges (task 3.13). Left for `shadowGraph`, a
+  term of `lem:molecule-graph-carrier`'s one result, with a role map (task 3.11); its in-edges are
+  task 4.7's.
 - **F-011** · N · seven missing edges would close a cycle, so no `\uses` can add them; each needs
   a change of node shape or direction. The termination proofs of `def:runPebbleGame`'s pin
   `runPebbleGame` use the pins of three nodes downstream of it: `lem:runPebbleGame-underline-eq`,
@@ -1036,6 +1043,15 @@ declaration's name as its header writes it:
   *Evidence:* measured (`sort blueprint/lean_decls | uniq -d` and each name's nodes, at
   `ef57b401`); read (a `grep` for the three pins' callers, which finds only docstrings).
   *Found:* round 3 task 1.
+  *Disposition:* left (each doubled pin states a clause of both its nodes, so unpinning either
+  drops a clause, a statement change; folding one node into the other is a merge, not among
+  principle D's fixes: task 8.2). `contraction_isMinimalKDof`: `lem:reduction-step`'s part (ii)
+  states KT Lemma 3.5 at $k = 0$ (task 3.5). The two here: each pair states one claim twice (task
+  3.9). The seven in `pencil.tex` and `main-component.tex` (task 3.13): `pencilPair_of_nonempty`
+  is the claim of `thm:pencil-conditioned-pair-nonempty` and the general claim of
+  `thm:pencil-realization-theorem`, a main result's node; `thm:pencil-x0-main-component`'s four
+  pins and two of `thm:pencil-x0-generic-attains`' three state the claims of the lemmas their
+  proofs cite, which those theorems restate.
 - **F-131** · N · `lem:theorem-55-base-producer-empty`, `lem:theorem-55-base-producer-single`,
   `lem:theorem-55-base-producer-parallel`, `lem:extensor-pair-in-panel`
   (`algebraic-induction/panel-layer.tex`): the nodes pin the $d = 3$ (`k := 2`) wrappers
@@ -3333,6 +3349,13 @@ declaration's name as its header writes it:
   three nodes now pin.
   *Evidence:* read (the docstrings and module header).
   *Found:* round 5 task 3.12.
+- **F-245** · L · `linearIndepOn_pencilChartNormal_closedHubNbhd` (`Molecular/Molecule/Pencil/Chart.lean`):
+  its docstring calls it the `lem:pencil-nondegenerate` companion, a label the blueprint lacks; the
+  node is `def:pencil-nondegenerate`, and no node pins the declaration. The docstrings of the five
+  declarations task 3.13 unpinned name no node.
+  *Evidence:* read (the docstrings; a `grep` of `blueprint/src` and `CombinatorialRigidity/` for the
+  labels of task 3.13's nodes).
+  *Found:* round 5 task 3.13.
 
 ## M — mathematics and sources
 

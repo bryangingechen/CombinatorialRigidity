@@ -6,11 +6,11 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
 disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.12
-reshaped the nodes of round 1's chapters, of `matroid-union` through `case-iii.tex`, and of
-`molecule-modelling` through `generic-lift`. No task edits the Lean or changes a statement's
-strength. **Next concrete task:** task 3.13, the helpers and doubled pins of `pencil.tex` and
-`main-component.tex` (*Hand-off*). Round manual: `CLEANUP.md`.
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.13
+reshaped the nodes of round 1's chapters, of `matroid-union` through `case-iii.tex`, of
+`molecule-modelling` through `generic-lift`, and unpinned five helpers of `main-component.tex`.
+No task edits the Lean or changes a statement's strength. **Next concrete task:** task 3.14,
+`c8a`'s three `main-component.tex` nodes (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -21,20 +21,20 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3.12 has landed** (this commit; `jacobs.tex`, the ledger and docs, no Lean). Nothing is
-mid-stream; the next task is task 3.13.
+**Task 3.13 has landed** (this commit; `pencil.tex`, `main-component.tex`, the ledger and docs,
+no Lean). Nothing is mid-stream; the next task is task 3.14.
 
-**The gate's baseline, at task 3.12** (2026-10-14):
+**The gate's baseline, at task 3.13** (2026-10-14):
 - `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 454 lines**, sha256 prefix
-  **`ef4b1e6651929fe9`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+  **`2c0f00d25a8de870`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
-  against task 3.11's (3 432 lines, `0c80f21571b4044e`) is task 3.12's *Expected*, its 92 lines.
+  against task 3.12's (3 454 lines, `ef4b1e6651929fe9`) is task 3.13's *Expected*, its 16 lines.
 - `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1376 edges
-  1668132e69c80351`** and **`a645da1eb758e3df`**; `print.log` 0 `LaTeX Warning` lines and 31
+  1668132e69c80351`** and **`47a5897be785e5aa`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 689 nodes,
-  1 022 pins (1 012 distinct; `lean_decls` 1 023), 470 missing, 2 229 implied, 84 + 305
-  unbacked, 177 dead, 17 nodes with four or more pins, no cycle-closing missing edge (`F-011`
-  done). The forward screen, unchanged by tasks 3.8–3.12, gives the open's table but `case-i`
+  1 017 pins (1 007 distinct; `lean_decls` 1 018), 422 missing, 2 225 implied, 84 + 305
+  unbacked, 177 dead, 14 nodes with four or more pins, no cycle-closing missing edge (`F-011`
+  done). The forward screen, unchanged by tasks 3.8–3.13, gives the open's table but `case-i`
   7/5, `rigidity-matrix` 10/9 0/0 and `molecular-induction` 5/3 3/3 (tasks 3.2–3.7's commits say
   why).
 - Missing in-edges that tasks 3.2–3.12 drew or moved (task 4's; the report lists them, the
@@ -230,45 +230,34 @@ gate's diff, which each task makes exact before editing.
   - [x] **3.11 `molecule-modelling`, `molecule-application`, `generic-lift`** (`dd34a61e`):
     `def:induced-screw-map`, `lem:polarity-join` and `lem:two-extensor-polynomial` added; two
     choices *revised*, two nodes left with role maps.
-  - [x] **3.12 `jacobs.tex`** (this commit; `F-009`'s three, `F-192`, `F-197`, `F-202`), each fix
-    tried on a scratch copy (`scratch/prose-graph/t312/edit.py`). `F-192`: `def:tight-partition` and
-    `def:crossing-edges-within` ($e_G(Q)$) take `IsTightPartition` and `crossingEdgesWithin`; the
-    existence and merge lemmas `\uses` them, and `lem:tight-partition-subfamily`'s statement edge
-    and the counting subsection's `\cref`, which cite the term, go to the first. `F-197`:
-    `def:rooted-cross-edges`, before the root lemma, takes `squareNormalCrossEdgesRootedAt` and
-    pins `squareSpecialCrossEdgesRootedAt` (JJ root only the normal edges; the count roots both);
-    the root lemma `\uses` it, the count's statement and the theorem's proof cite it.
-    `squareCutPairs` goes to `def:g-cut-edges`, which defines the pairs leaving a part (*revised*:
-    that node already describes them, and no rooting enters them). `lem:singleton-part-converse`:
-    left (its statement is the unique-part form its pin proves, not the rooted form). `F-202`:
-    `def:two-core` pins `twoCore` alone; `lem:two-core-largest` takes its three consequences with
-    the prose proof after it, and `lem:two-core-degree-one` pins the three facts the degree-one
-    rank uses, whose proof cites it (the edge is task 4.7's). `lem:square-cross-classification`
-    (9): left, with a role map.
-    *Expected* (exact, before editing the tree; `predict.py`'s after-dump of the copy): +5 nodes
-    (the three definitions `#B0ECA3`, the two lemmas `#1CAC78`); pins 1 018 -> 1 022 (1 012
-    distinct; `lean_decls` 1 019 -> 1 023, hash `4a0d39a4c1e13dc5` -> `a645da1eb758e3df`), seven
-    moved, four added, none removed; `## pins:` 5 added, 6 changed; `## uses:` 5 added, 4 changed
-    (the existence, merge, root and subfamily lemmas); drawn edges 1 369 -> 1 376
-    (`1668132e69c80351`), +9 −2 (dashed: `def:D-deficiency` -> `def:tight-partition` -> the
-    existence and subfamily lemmas, `def:crossing-edges-within` -> the merge lemma,
-    `def:square-graph` -> `def:rooted-cross-edges` -> the root lemma, `def:two-core` ->
-    `lem:two-core-largest`; solid: `lem:two-core-largest` -> `lem:two-core-degree-one`, the
-    existence lemma -> `thm:laman-square-count`; `def:D-deficiency` -> the existence lemma and the
-    existence lemma -> the subfamily lemma go); +5 node lines; 3 454 lines (`ef4b1e6651929fe9`),
-    the diff 92 lines.
-  - [ ] **3.13 `pencil.tex`, `main-component.tex`: helpers and doubles** (`F-010`'s `pathVertex`
-    and `closedNbhd_subset_vertexSet`, `F-120`'s seven doubles, and of `F-009`
+  - [x] **3.12 `jacobs.tex`** (`ae31af3e`): `def:tight-partition`, `def:crossing-edges-within`,
+    `def:rooted-cross-edges`, `lem:two-core-largest` and `lem:two-core-degree-one` added;
+    `squareCutPairs` to `def:g-cut-edges` (*revised*); two nodes left, one with a role map.
+  - [x] **3.13 `pencil.tex`, `main-component.tex`: helpers and doubles** (this commit; `F-010`'s
+    `pathVertex` and `closedNbhd_subset_vertexSet`, `F-120`'s seven doubles, and of `F-009`
     `def:pencil-nondegenerate`, `thm:pencil-x0-main-component`, `lem:pencil-chain-span-certificates`,
-    `lem:pencil-x0-main-picture-open` and `lem:pencil-bridge-fibre`). `lem:pencil-bridge-fibre`:
-    `pathVertex` and its two lemmas unpinned (*Decisions*). `thm:pencil-jj-equality`:
-    `closedNbhd_subset_vertexSet` unpinned. `F-120`: each doubled pin keeps one home, the node
-    whose statement it proves, and a main result's node keeps its pin.
-    `thm:pencil-x0-main-component`, all four of whose pins are doubles, keeps those that state its
-    claim and `\uses` the rest. `def:pencil-nondegenerate`: leave, one pin per defined term, with
-    `Graph.closedNbhd` unpinned unless the statement defines it. `lem:pencil-chain-span-certificates`:
-    leave (four corner cases). `lem:pencil-x0-main-picture-open`: leave, after its double.
-    *Expected:* no node; pins −4 to −11 (hash changes); retargets.
+    `lem:pencil-x0-main-picture-open` and `lem:pencil-bridge-fibre`), each fix tried on a scratch
+    copy (`scratch/prose-graph/t313/edit.py`). `lem:pencil-bridge-fibre` pins its lemma alone:
+    `pathVertex` and its two lemmas unpinned (*Decisions*), the first and third named in a new note.
+    `thm:pencil-jj-equality`: `closedNbhd_subset_vertexSet` unpinned, named in its proof. `F-120`
+    (*revised*: no double gets one home, as each pin states a clause of both its nodes, task 3.5's
+    rule): `thm:pencil-realization-theorem`, a main result's node, and
+    `thm:pencil-conditioned-pair-nonempty`, whose claim it is, keep `pencilPair_of_nonempty`;
+    `thm:pencil-x0-main-component` keeps its four pins, each a clause, and already `\uses` the four
+    lemmas; `thm:pencil-x0-generic-attains` keeps `x0Attains` and `x0Dist`. All seven left (a merge,
+    task 8.2's). `def:pencil-nondegenerate`: left, `Graph.closedNbhd` kept (the statement defines
+    the closed neighbourhood). `lem:pencil-chain-span-certificates` and
+    `thm:pencil-x0-main-component`: left. `lem:pencil-x0-main-picture-open`: its double stays, and
+    `exists_isAdmissiblePicture`, a step no clause states, is unpinned and named in its proof
+    (*revised* from "leave"). The four left nodes get role maps in notes. No retarget: every
+    `\uses` of the three repinned nodes stays backed by a pin left there; 48 missing in-edges go.
+    *Expected* (exact, before editing the tree; `predict.py`'s after-dump of the copy): no node;
+    pins 1 022 -> 1 017 (1 012 -> 1 007 distinct; `lean_decls` 1 023 -> 1 018, hash
+    `a645da1eb758e3df` -> `47a5897be785e5aa`), five removed (`pathVertex`, `pathVertex_zero`,
+    `pathVertex_eq_or_exists`, `closedNbhd_subset_vertexSet`, `exists_isAdmissiblePicture`), none
+    moved or added; `## pins:` 3 changed (the bridge fibre, the main pictures, the equality);
+    `## uses:` none; drawn edges unchanged (1 376, `1668132e69c80351`); 3 454 lines
+    (`2c0f00d25a8de870`), the diff 16 lines.
   - [ ] **3.14 `main-component.tex`: `c8a`'s splits** (`lem:pencil-x0-one-witness`,
     `lem:pencil-jj-embed-edges`, `lem:pencil-jj-rescale`; `notes/Phase40-simplify.md` *Moved to a
     later round*). `lem:pencil-x0-one-witness` (7) splits along its proof: the polynomial section
@@ -373,6 +362,8 @@ ledger's earlier `L` entries are task 8.2's.
 - `F-243` (task 3.11): docstrings and module headers that name the nodes task 3.11's pins left.
 - `F-244` (task 3.12): docstrings of task 3.12's moved pins name the lemmas they left, a label
   the blueprint lacks, and "this commit".
+- `F-245` (task 3.13): a `Pencil/Chart.lean` docstring names `lem:pencil-nondegenerate`, a label
+  the blueprint lacks.
 
 ## Blockers / open questions
 
@@ -380,19 +371,21 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3.13, the helpers and doubled pins of `pencil.tex` and
-`main-component.tex`** (`F-010`'s `pathVertex` and `closedNbhd_subset_vertexSet`, `F-120`'s seven
-doubles, `F-009`'s five nodes there; Opus, a fresh agent). The parent's dump is task 3.12's (3 454
-lines, `ef4b1e6651929fe9`; *Current state*): regenerate it on the parent after `verify.sh` if the
+**Next concrete task: task 3.14, the splits of `lem:pencil-x0-one-witness` and
+`lem:pencil-jj-embed-edges`, and `lem:pencil-jj-rescale`'s choice** (`c8a`'s three, task 3's
+last; Opus, a fresh agent). The parent's dump is task 3.13's (3 454 lines,
+`2c0f00d25a8de870`; *Current state*): regenerate it on the parent after `verify.sh` if the
 scratch copy is gone. Before editing, read each named node, its pins' statements and its
-`--label` report, try the change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.12), and
-make 3.13's *Expected* exact in its line, its `## uses:` lines included (gate 3 (b)); then edit,
-and diff the after-dump against it. Tasks 3.11–3.12 wrote their edits as one script with
+`--label` report, try the change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.13), and
+make 3.14's *Expected* exact in its line, its `## uses:` lines included (gate 3 (b)); then edit,
+and diff the after-dump against it. Tasks 3.11–3.13 wrote their edits as one script with
 exact-match asserts, run on the copy and then on the tree, so that the two stay equal
-(`scratch/prose-graph/t312/edit.py`); `scratch/prose-graph/t312/cyc.py` checks that the report's
-missing edges close no cycle. A changed pin set makes the script's first `--tex-root` run a fresh
-`lake lean` (about 75 s). Task 3.13 adds no node and drops four to eleven pins, each doubled pin
-keeping one home; the retargets follow the reach report. Then task 3.14.
+(`scratch/prose-graph/t313/edit.py`); `scratch/prose-graph/t312/cyc.py` checks that the report's
+missing edges close no cycle, and `predict-dump.sh` gives the after-dump from the copy. A changed
+pin set makes the script's first `--tex-root` run a fresh `lake lean` (about 75 s). The main
+pictures' proof and the contraction step cite the polynomial section in the witness's proof
+(`grep 'polynomial section'`), so those citations go to its new node, with the reach report's
+retargets. Task 3.14 also writes `F-009`'s disposition, its last task. Then task 4.1.
 
 ## Decisions made during this round
 
@@ -404,10 +397,8 @@ keeping one home; the retargets follow the reach report. Then task 3.14.
   alone hides removals), N, E, the node order, then T, U, R and X; N changes what is missing.
 - **The `## uses:` section's lines** (task 2): every node and every other labelled environment
   with a `\uses` (task 4.3's `F-007`); targets raw, each part sorted, `-` for an empty part.
-- **`pathVertex`** (task 3.13): `40-simplify`'s `c8` unpinned the bridge step's four `pathVertex`
-  lemmas and left `lem:pencil-bridge-fibre`'s `pathVertex` (`notes/Phase40-simplify-verdicts.md`).
-  `F-010` measures 30 missing in-edges through it, five of them forward from `rigidity-matrix.tex`
-  and `deficiency.tex`. A path's vertex sequence is notation, not a result, so it is unpinned.
+- **`pathVertex`** (task 3.13, done): a path's vertex sequence is notation, not a result, so it
+  is unpinned (`40-simplify`'s `c8` had left it; `F-010`'s 30 missing in-edges through it).
 - **The report's home** is `notes/Prose-report.md`: the ledger keeps each finding, and the report
   ranks them for the PI (`notes/CLAUDE.md` *One canonical home*).
 - **Try each N fix on a scratch copy first** (task 3.1). Copy `blueprint/src`, edit the copy, and
@@ -437,9 +428,9 @@ keeping one home; the retargets follow the reach report. Then task 3.14.
 - **A doubled pin that proves a stated clause stays** (task 3.5). `lem:reduction-step`'s part
   (ii) is `lem:contraction-minimality` at $k = 0$, on the same pin (`F-120`); it states KT Lemma
   3.5, so the pin is no helper, and unpinning it would drop the clause, a statement change (task
-  3.13's rule agrees: a node keeps the doubles that state its claim). A pin re-homed with its
-  clause goes to the node that states it in general (`F-098`'s count, to `lem:reduction-measure`),
-  and the proofs that cite the clause cite that node.
+  3.13's rule agrees: a node keeps the doubles that state its claim, so all seven of its stay). A
+  pin re-homed with its clause goes to the node that states it in general (`F-098`'s count, to
+  `lem:reduction-measure`), and the proofs that cite the clause cite that node.
 - **Reversing a derivation** (task 3.6, `F-011`). Where the Lean derives node A from node B and
   the blueprint the reverse, the argument and its edges move together: B, whose pin does the work,
   takes the proof and its `\uses` (on the proof), A's proof cites B, and an edge of the old

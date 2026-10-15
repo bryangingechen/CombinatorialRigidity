@@ -718,8 +718,8 @@ of $G$ at $q$, and the heights of its solutions form $L(q)$.
 
 \begin{lemma}[The main pictures are nonempty and Zariski-open]
   \label{lem:pencil-x0-main-picture-open}
-  \lean{Graph.exists_isAdmissiblePicture, Graph.exists_isMainPicture,
-        Graph.IsMainPicture.exists_mvPolynomial, Graph.exists_mvPolynomial_isMainPicture}
+  \lean{Graph.exists_isMainPicture, Graph.IsMainPicture.exists_mvPolynomial,
+        Graph.exists_mvPolynomial_isMainPicture}
   \leanok
   \uses{def:pencil-main-picture}
   There is a nonzero polynomial $P$ in the picture coordinates such that
@@ -729,8 +729,10 @@ of $G$ at $q$, and the heights of its solutions form $L(q)$.
 \begin{proof}
   \leanok
   \uses{lem:pencil-x0-one-witness}
-  Admissible pictures exist: place the bodies at distinct points of the
-  parabola $\{(t, t^2)\}$, as after \cref{def:pencil-admissible-picture}.
+  Admissible pictures exist
+  (\texttt{Graph.\allowbreak{}exists\_\allowbreak{}isAdmissiblePicture}): place
+  the bodies at distinct points of the parabola $\{(t, t^2)\}$, as after
+  \cref{def:pencil-admissible-picture}.
   So $\ell_0$ exists, and it is attained at a main picture $q_0$.
 
   At any main picture $q_0$, apply the polynomial section of the proof of
@@ -748,7 +750,11 @@ of $G$ at $q$, and the heights of its solutions form $L(q)$.
   \label{fmlnote:pencil-x0-main-picture-open}
   In place of the standing hypotheses on $G$, the formal statements
   assume the two consequences the construction uses: $G$ has no loops,
-  and every closed neighbourhood has at least three members.
+  and every closed neighbourhood has at least three members. The third
+  pin gives the polynomial $P$. The first gives a main picture, and the
+  second, at any main picture $q_0$, a polynomial nonzero at $q_0$ whose
+  non-roots are main pictures. These are the nonemptiness and the
+  openness of $U$.
 \end{fmlnote}
 
 \begin{lemma}[The general configuration attaining gives an adjacent-distinct realization]
@@ -825,6 +831,13 @@ Later subsections cite the lemmas themselves.
   $G$ has an adjacent-distinct pencil realization
   (\cref{lem:pencil-x0-attains-distinct}).
 \end{proof}
+
+\begin{fmlnote}
+  The four pins are, in order, the polynomial of the first claim, the
+  common point of the second, the attainment of the third and the
+  adjacent-distinct realization. Each is also a pin of the lemma that the
+  proof cites for that claim.
+\end{fmlnote}
 
 \subsection{The flat rank}
 \label{sec:main-component-flat}
@@ -1248,8 +1261,7 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   \label{thm:pencil-jj-equality}
   \lean{Graph.exists_mvPolynomial_finrank_liftingSpace_eq,
         Graph.IsMainPicture.finrank_liftingSpace_eq,
-        Graph.exists_isMainPicture_finrank_liftingSpace_eq,
-        Graph.closedNbhd_subset_vertexSet}
+        Graph.exists_isMainPicture_finrank_liftingSpace_eq}
   \leanok
   \uses{def:pencil-lifting-space, def:pencil-main-picture,
         def:D-deficiency}
@@ -1270,7 +1282,9 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   first are main pictures (\cref{lem:pencil-x0-main-picture-open}). The
   second is the polynomial of \cref{lem:pencil-jj-chart}, which needs two
   bodies. Here $G$ has at least three, since a closed neighbourhood of a
-  body lies in $V(G)$. (The formal proof applies \cref{lem:pencil-jj-chart}
+  body lies in $V(G)$
+  (\texttt{Graph.\allowbreak{}closedNbhd\_\allowbreak{}subset\_\allowbreak{}vertexSet}).
+  (The formal proof applies \cref{lem:pencil-jj-chart}
   to $G$ with its edges relabelled, \cref{lem:pencil-jj-embed-edges}.)
 
   Let $q$ be a non-root of $P$. The plane framework $P_q$ has rank at
@@ -1497,10 +1511,7 @@ us read the rank of a subgraph at a height of $G$.
 
 \begin{lemma}[The heights along a chain of bridges]
   \label{lem:pencil-bridge-fibre}
-  \lean{CombinatorialRigidity.Molecular.pathVertex,
-    CombinatorialRigidity.Molecular.pathVertex_zero,
-    CombinatorialRigidity.Molecular.pathVertex_eq_or_exists,
-    Graph.exists_liftingRestrict_eq_of_bridgePath}
+  \lean{Graph.exists_liftingRestrict_eq_of_bridgePath}
   \leanok
   \uses{lem:pencil-lifting-restrict}
   Let $G$ be $G_1 \sqcup G_2$ plus a path $a - x_1 - \cdots - x_k - b$
@@ -1523,6 +1534,15 @@ us read the rank of a subgraph at a height of $G$.
   on every closed neighbourhood of $G$: it lies in $L_G(q)$ and
   restricts to $z^1$. The other restriction is symmetric.
 \end{proof}
+
+\begin{fmlnote}
+  The formal statement gives the path by the sequence
+  $a, x_1, \dots, x_k, b$ of its bodies (\texttt{pathVertex}), whose
+  consecutive terms its edges join in order. Every term but the
+  first is $b$ or some $x_i$
+  (\texttt{pathVertex\_\allowbreak{}eq\_\allowbreak{}or\_\allowbreak{}exists}),
+  and so lies outside $G_1$.
+\end{fmlnote}
 
 \begin{theorem}[A chain of bridges]
   \label{thm:pencil-x0-bridge}
@@ -2270,6 +2290,10 @@ the coordinates of a join.
   in each of the four cases their coordinate matrix has a maximal minor
   equal to $\pm 1$, which is nonzero in every characteristic.
 \end{proof}
+
+\begin{fmlnote}
+  The four pins are the cases $n = 3$, $4$, $5$ and $6$, in this order.
+\end{fmlnote}
 
 \begin{lemma}[Independent joins span the hinges]
   \label{lem:pencil-ear-hinge-span}
