@@ -1217,8 +1217,8 @@ as discharge point. The ledger stays at **2 pending / 36 done** (of 38).
 **No new entries — judged at the sub-phase close (2026-09-26).** The source is again the project's
 own informal proof (`notes/pencil/workbook/K-main.md`, Steps MC4–MC5), and the criterion transfers
 as in the `pencil.tex` section. Every node of `sec:main-component-flat`, with
-`lem:deficiency-antitone` (`deficiency.tex`) and `lem:relative-deficiency-rank-bound`
-(`rigidity-matrix.tex`), is green and landed as first scoped, in one build commit from the design
+`lem:deficiency-antitone` and `lem:relative-deficiency-rank-bound` (both `deficiency.tex`), is
+green and landed as first scoped, in one build commit from the design
 recon's spike: nothing rerouted or decomposed. The substantive step, identifying the planar screws
 of a flat configuration with affine functions (`lem:pencil-flat-split`) and the lifting planes with
 the lifting space (`lem:pencil-lifting-planes-dim`), is spelled out in full in Step MC4 and in those

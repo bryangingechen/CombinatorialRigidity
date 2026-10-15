@@ -16,7 +16,8 @@ We first prove KT Lemma~5.4 on cycles, which Case~III uses, and define
 the block pin, which pins all the bodies of a set at once. We then
 follow KT \S6.2, which applies KT Lemma~3.5 to the contraction
 (\cref{lem:rigidContract-isMinimalKDof}): the rank count of KT
-eq.~(6.3) and its form for infinitesimal motions, KT Claim~6.4, and
+eq.~(6.3), with the block-triangular bound behind it, and its form for
+infinitesimal motions; KT Claim~6.4, with the rank lemmas it needs; and
 finally KT Lemmas~6.3, 6.2 and~6.5, with KT Claim~6.6 and the case
 split that combines them (\cref{lem:case-I-all-k}).
 
@@ -387,6 +388,40 @@ which is $D(|V(G)| - 1) - k$, the target rank of $G$. We prove this rank
 count, KT eq.~(6.3), and then KT Claim~6.4, which Katoh and Tanigawa use
 when $G$ and $G/E(H)$ are simple.
 
+Katoh and Tanigawa read the rank count off the shape (6.3) of
+$R(G,p)$: with the columns of $V(H)$ first, the rows of $H$ have zeros
+in all the other columns~\cite[pp.~673--674]{katohTanigawa2011}. The
+next lemma is the bound that this shape gives, for any set $W$ of
+bodies, where $\pi_W$ deletes the columns of $W$
+(\cref{sec:molecular-rigidity-matrix-blocks}).
+
+\begin{lemma}[The block-triangular rank bound; KT eq.~(6.3)]
+  \label{lem:block-rank-contract}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le}
+  \leanok
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
+  Let $(G,p)$ be a panel-hinge framework, let $W$ be a set of bodies, and
+  let $H = G[W]$. Let $R_W(G \setminus E(H), p)$ be the matrix of the rows
+  of the edges of $G$ not in $H$, with the columns of $W$ deleted. Then
+  \[
+    \operatorname{rank} R(H, p) + \operatorname{rank} R_W(G \setminus E(H), p)
+    \;\le\; \operatorname{rank} R(G, p).
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Let $\mathcal R$, $\mathcal R_H$ and $\mathcal R'$ be the row spaces of
+  $R(G,p)$, $R(H,p)$ and $R(G \setminus E(H), p)$. The rows of $H$ and of
+  $G \setminus E(H)$ are rows of $G$, so $\mathcal R_H$ and $\mathcal R'$
+  lie in $\mathcal R$. A row of an edge of $H$ depends only on the screws
+  at the bodies of $W$, so $\pi_W$ maps it to $0$. Hence
+  $\mathcal R_H \subseteq \mathcal R \cap \ker \pi_W$. The rank of
+  $R_W(G \setminus E(H), p)$ is $\dim \pi_W(\mathcal R')$, which is at
+  most $\dim \pi_W(\mathcal R)$. The bound follows, since
+  $\dim(\mathcal R \cap \ker \pi_W) + \dim \pi_W(\mathcal R)
+  = \dim \mathcal R$ by rank-nullity for $\pi_W$ on $\mathcal R$.
+\end{proof}
+
 \begin{lemma}[Case~I: the rank adds over the contraction; KT eq.~(6.3)]
   \label{lem:case-I}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le,
@@ -597,8 +632,10 @@ coefficients of $p_1$ and $p_2$ are algebraically independent,
 $R(G/E(H), p')$ has the largest rank over all these choices, which is at
 least $\operatorname{rank} R(G/E(H), p_2)$. With KT Lemma~5.1 the claim
 gives KT eq.~(6.9), the bound on the second block in the proof of
-\cref{lem:case-I}. For panel normals, the first step is the next lemma,
-and \cref{lem:claim-6-4} states the claim.
+\cref{lem:case-I}. For panel normals, the first step is the next lemma.
+The lemmas after it give the rows outside $H$ at every deficiency
+(\cref{lem:rank-polynomial-IH-relabel-proj}), and \cref{lem:claim-6-4}
+states the claim when $G/E(H)$ is rigid.
 
 \begin{lemma}[Rows polynomial in the normals; KT Claim~6.4]
   \label{lem:rows-polynomial-in-normals}
@@ -656,6 +693,163 @@ and \cref{lem:claim-6-4} states the claim.
   pinned theorem of \cref{lem:relative-device-count} applies the
   genericity argument of \cref{lem:genericity-device} to these forms.
 \end{fmlnote}
+
+The algebraic induction chooses its realizations off the zeros of
+polynomials in the panel normals. The rows of $R(G,q)$ can be chosen
+with entries that are polynomials in the normals $q$
+(\cref{lem:rows-polynomial-in-normals}). So if some $N$ rows of
+$R(G,q_0)$ are linearly independent, one of their $N \times N$ minors is
+a polynomial $Q$ in the normals with $Q(q_0) \neq 0$, and the rank of
+$R(G,q)$ is at least $N$ wherever $Q(q) \neq 0$. This is the lower
+semicontinuity of the rank (KT Lemma~5.2,
+\cref{lem:rank-rotation-semicont}) in polynomial form, which
+\cref{lem:rank-polynomial-of-le-finrank} states in
+\cref{sec:molecular-algebraic-induction-relative}. The next lemma is its
+form for rows with the columns of a set of bodies deleted.
+
+\begin{lemma}[Independent rows with columns deleted, off the zeros of a polynomial]
+  \label{lem:rank-polynomial-proj-eval}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval}
+  \leanok
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
+  Let $G$ be a graph, let $t$ be a set of bodies, and let $q_0$ be panel
+  normals at which some $m$ rows of $R(G,q_0)$ are linearly independent
+  after the columns of $t$ are deleted. Then there is a polynomial $Q$ in
+  the panel normals with $Q(q_0) \neq 0$ such that at every $q$ with
+  $Q(q) \neq 0$, some $m$ rows of $R(G,q)$ are linearly independent after
+  the columns of $t$ are deleted.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rows-polynomial-in-normals}
+  Deleting the columns of $t$ replaces some entries of a row by zeros,
+  independently of the normals, so the rows of $R(G,q)$ with these
+  columns deleted again have entries that are polynomials in $q$
+  (\cref{lem:rows-polynomial-in-normals}). Take $m$ rows that are
+  independent after the deletion at $q_0$. Some $m \times m$ minor of
+  these $m$ rows, with the columns of $t$ deleted, is nonzero at $q_0$.
+  Let $Q$ be this minor, as a polynomial in the normals. Wherever
+  $Q(q) \neq 0$, the same $m$ rows are independent after the deletion.
+  This is the argument of \cref{lem:rank-polynomial-of-le-finrank}.
+\end{proof}
+
+The induction hypothesis, KT eq.~(6.1), supplies a realization of
+$G/E(H)$ whose rank is $D(|V|-1) - \operatorname{def}$
+(\cref{def:rank-hypothesis}) and whose normals are in general position:
+any two of them are linearly independent
+(\cref{def:panel-general-position}). Such a
+realization also gives one with nondegenerate hinges, the form of the
+hypothesis in \cref{def:genuine-hinge-realization}
+(\cref{lem:generic-yields-genuine-hinge}). Case~I compares the rows of the
+realization of $G/E(H)$ with those of $G \setminus E(H)$ edge by edge,
+and the next lemma first orients the edges of $G/E(H)$ as those of
+$G \setminus E(H)$.
+
+\begin{lemma}[Reorienting a realization of the contraction]
+  \label{lem:rank-transport-relabel-of-le-finrank}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq}
+  \leanok
+  \uses{def:rigidity-matrix, lem:span-rigidityRows-eq-of-motions-eq,
+    def:rank-hypothesis, def:panel-general-position}
+  Let $H$ be a subgraph of $G$, let $r \in V(H)$, let $f$ map every body
+  of $V(H)$ to $r$ and fix every other body, and let $G_1 = G/E(H)$.
+  Orient the edges of $G \setminus E(H)$, and orient an edge of $G_1$
+  from $f(u)$ to $f(v)$ if it is oriented from $u$ to $v$ in
+  $G \setminus E(H)$. Suppose that $G_1$ has a panel-hinge realization
+  whose normals are in general position and whose rank is
+  $D(|V(G_1)|-1) - \operatorname{def}(\tilde G_1)$. Then there are panel
+  normals in general position at which the panel-hinge framework on $G_1$,
+  with this orientation, has the same rank.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:span-rigidityRows-eq-of-motions-eq}
+  Take the normals of the given realization; general position is a
+  condition on the normals alone. The given realization orients each edge
+  of $G_1$ one way or the other. Reversing an edge changes the sign of the
+  extensor of its hinge, which is built from the normals of its ends in
+  order (\cref{def:panel-hinge-framework}), and so does not change its
+  hinge constraint. The two orientations therefore give the same
+  infinitesimal motions, and so the same row space and rank
+  (\cref{lem:span-rigidityRows-eq-of-motions-eq}).
+\end{proof}
+
+\begin{fmlnote}
+  The formalization records an orientation of each edge with a
+  panel-hinge framework (\cref{def:panel-hinge-framework}), and compares
+  the rows of two frameworks edge by edge only for equal orientations.
+  The realization that the induction hypothesis supplies orients
+  $G/E(H)$ in its own way; the lemma gives it the orientation of
+  $G \setminus E(H)$.
+\end{fmlnote}
+
+The next lemma combines the last two with
+\cref{lem:extProj-preserves-rank-of-inter}, as KT eq.~(6.9) combines KT
+Lemma~5.1 and Claim~6.4.
+
+\begin{lemma}[The rows outside a contracted subgraph; KT Claim~6.4]
+  \label{lem:rank-polynomial-IH-relabel-proj}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj}
+  \leanok
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter,
+    def:rigid-contraction}
+  Let $H$ be a proper rigid subgraph of $G$, let $r \in V(H)$, and let
+  $G_1 = G/E(H)$. Suppose that $G_1$ is a minimal $k$-dof-graph
+  (\cref{def:k-dof}) with a panel-hinge realization whose normals are in
+  general position and whose rank is $D(|V(G_1)|-1) - k$. Then there is a nonzero polynomial $Q$ in the
+  panel normals such that at every $q$ with $Q(q) \neq 0$, some
+  $D(|V(G_1)|-1) - k$ rows of $R(G \setminus E(H), q)$ are linearly
+  independent after the columns of $V(H)$ are deleted.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter,
+    lem:rank-polynomial-proj-eval,
+    lem:general-position-support-nonzero, lem:independent-rows-of-rank}
+  Let $N = D(|V(G_1)|-1) - k$, and let $f$ map the bodies of $V(H)$ to
+  $r$ and fix the others. Orient $G \setminus E(H)$, and $G_1$ as in
+  \cref{lem:rank-transport-relabel-of-le-finrank}. By that lemma there are
+  normals $n$ in general position at which $R(G_1, n)$ has rank $N$. The
+  bodies of $G_1$ meet $V(H)$ only in $r$, so deleting the columns of
+  $V(H)$ keeps the rank $N$ (\cref{lem:extProj-preserves-rank-of-inter}).
+  A minimal $k$-dof-graph has no loops: every base of $M(\tilde G_1)$
+  meets the copies of every edge (\cref{def:k-dof}), and the copies of a
+  loop lie in no base
+  (\texttt{Graph.\allowbreak{}loopless\_\allowbreak{}of\_\allowbreak{}isMinimalKDof}).
+  So the hinges of $G_1$ at $n$ are nonzero
+  (\cref{lem:general-position-support-nonzero}), and some $N$ rows of
+  $R(G_1, n)$ are independent after the deletion.
+
+  Let $q_0$ give each body $v$ the normal $n_{f(v)}$: the bodies of
+  $V(H)$ get the normal of $r$, and the other bodies keep theirs. At
+  $q_0$ an edge of $G \setminus E(H)$ from $u$ to $v$ has the hinge that
+  the same edge of $G_1$, from $f(u)$ to $f(v)$, has at $n$. Its rows
+  in the two matrices differ only in the columns of the bodies of $V(H)$.
+  So after the columns of $V(H)$ are deleted, the rows of
+  $R(G \setminus E(H), q_0)$ are those of $R(G_1, n)$, and $N$ of them
+  are independent. By \cref{lem:rank-polynomial-proj-eval} there is a
+  polynomial $Q$ with $Q(q_0) \neq 0$, so that $Q \neq 0$, such that at
+  every $q$ with $Q(q) \neq 0$ some $N$ rows of
+  $R(G \setminus E(H), q)$ are independent after the deletion.
+\end{proof}
+
+\begin{fmlnote}
+  The rows in this lemma and in \cref{lem:rank-polynomial-proj-eval} are
+  those of \cref{lem:rows-polynomial-in-normals}: for each edge, a fixed
+  family of linear forms that vanish on the extensor of its hinge, with
+  entries polynomial in the normals. They span the row space of the edge
+  when its hinge is nonzero, which is why the proof needs $G/E(H)$ to
+  have no loops: a loop has a zero hinge. The formalization takes this as
+  a separate hypothesis.
+\end{fmlnote}
+
+Katoh and Tanigawa reach the placement $q_0$ by giving every body of
+$V(H)$ the panel of the contracted body, and conclude from the algebraic
+independence of the coefficients of their panels that the rows of
+$G \setminus E(H)$ attain the rank of $G/E(H)$~\cite[Claim~6.4,
+p.~675]{katohTanigawa2011}. The polynomial $Q$ takes the place of that
+argument. Case~I uses the lemma in \cref{lem:case-I-realization}, and
+\cref{lem:claim-6-4} is its case of a rigid contraction.
 
 \begin{lemma}[The rows outside $H$ at generic normals; KT Claim~6.4 and eq.~(6.9)]
   \label{lem:claim-6-4}

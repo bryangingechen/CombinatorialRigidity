@@ -113,7 +113,9 @@ from a bound on $\dim Z(G,q)$, to motions constant on $V(G)$. Then come
 the independent rows that a bound on the rank gives
 (\cref{lem:independent-rows-of-rank}), and the form of
 \cref{lem:genericity-device} that the realization lemmas use
-(\cref{lem:rank-polynomial-of-le-finrank}). The subsection ends with the
+(\cref{lem:rank-polynomial-of-le-finrank}), with a superseded
+application of it to the contraction of Case~I
+(\cref{lem:rank-polynomial-IH-relabel}). The subsection ends with the
 count of KT eq.~(6.12) when the graph obtained by splitting off a vertex
 of degree two is rigid (\cref{lem:case-II-realization-placement}), and
 the four lemmas on rows before it.
@@ -300,6 +302,43 @@ the four lemmas on rows before it.
   $\operatorname{rank} R(G,q) \ge N$.
   This is the argument of \cref{lem:genericity-device}, with the minor
   kept.
+\end{proof}
+
+The next lemma is superseded and kept for the record; no other node
+uses it. It gives the rank of the reoriented realization of $G/E(H)$
+itself (\cref{lem:rank-transport-relabel-of-le-finrank}) off the zeros
+of a polynomial, for
+\cref{lem:rigidityRows-splice-rank-add} with $\pi = \pi_{V(H)}$. At
+normals in general position for $G$, however, an edge of
+$G \setminus E(H)$ at a body of $V(H)$ has different hinges in $G$ and
+in $G/E(H)$, so the second hypothesis of that lemma need not hold.
+Case~I uses \cref{lem:rank-polynomial-IH-relabel-proj} instead.
+
+\begin{lemma}[The rank of the reoriented contraction off the zeros of a polynomial (superseded)]
+  \label{lem:rank-polynomial-IH-relabel}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking}
+  \leanok
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank}
+  Let $H$, $r$, $f$ and $G_1 = G/E(H)$, with their orientations, be as in
+  \cref{lem:rank-transport-relabel-of-le-finrank}. Suppose that $G_1$ has
+  no loops and has a panel-hinge realization whose normals are in general
+  position and whose rank is
+  $N = D(|V(G_1)|-1) - \operatorname{def}(\tilde G_1)$. Then there is a
+  nonzero polynomial $Q$ in the panel normals such that at every $q$ with
+  $Q(q) \neq 0$, the panel-hinge framework on $G_1$ with normals $q$ and
+  this orientation has rank at least $N$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank,
+    lem:general-position-support-nonzero}
+  By \cref{lem:rank-transport-relabel-of-le-finrank} there are normals $n$
+  in general position at which this framework has rank $N$. As $G_1$ has
+  no loops, its hinges at $n$ are nonzero
+  (\cref{lem:general-position-support-nonzero}). So
+  \cref{lem:rank-polynomial-of-le-finrank}, at $n$ with the bound $N$,
+  gives a polynomial $Q$ with $Q(n) \neq 0$, so that $Q \neq 0$, such that
+  the rank is at least $N$ wherever $Q$ does not vanish.
 \end{proof}
 
 We turn to KT eq.~(6.12) when $k = 0$. Let $G$ be a multigraph, let $v$

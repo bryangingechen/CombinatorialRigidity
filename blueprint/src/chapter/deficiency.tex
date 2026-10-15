@@ -18,7 +18,8 @@ rigidity matrix $R(G,p)$ of a generic body-hinge framework $(G,p)$
   D\,(|V(G)| - 1) - \operatorname{def}(\tilde G) \;=\;
   \operatorname{rank} M(\tilde G).
 \]
-This chapter proves the second equality, KT eq.~(2.4). The first is the
+This chapter proves the second equality, KT eq.~(2.4), and the
+inequality $\le$ in the first at every realization. The first is the
 rank formula of Jackson and Jord\'an. We prove it after the algebraic
 induction (\cref{prop:rigidity-matrix-prop11}).
 
@@ -28,10 +29,12 @@ $\operatorname{def}(\tilde G) = k$. \Cref{sec:molecular-deficiency-bridge}
 proves KT eq.~(2.4) from the rank of a matroid union
 (\cref{sec:matroid-union}), and characterizes deficiency zero by $D$
 edge-disjoint spanning trees (KT Proposition~2.2).
-\Cref{sec:molecular-deficiency-rigid} proves Katoh and Tanigawa's
-lemmas on $k$-dof-graphs from their \S3, and computes the deficiency at
-cuts, cut vertices and ears. The combinatorial induction of the next
-chapter (\cref{sec:molecular-induction}) uses these results.
+\Cref{sec:molecular-deficiency-rank-bound} bounds the rank of $R(G,p)$
+by the deficiency. \Cref{sec:molecular-deficiency-rigid} proves Katoh
+and Tanigawa's lemmas on $k$-dof-graphs from their \S3, and computes
+the deficiency at cuts, cut vertices and ears. The combinatorial
+induction of the next chapter (\cref{sec:molecular-induction}) uses
+these results.
 
 \subsection{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)}, the deficiency and \texorpdfstring{$k$}{k}-dof-graphs}
 \label{sec:molecular-deficiency-matroid}
@@ -394,6 +397,91 @@ The characterization of deficiency zero announced in
   $|B| \le D|V(G)| - 2D$, against $|B| = D|V(G)| - D$. By
   \cref{cor:k-spanning-trees}, $B$ is the union of $D$ disjoint spanning
   trees of $H$, and these are spanning trees of $\tilde G$.
+\end{proof}
+
+\subsection{The deficiency and the rank of \texorpdfstring{$R(G,p)$}{R(G,p)}}
+\label{sec:molecular-deficiency-rank-bound}
+
+This subsection bounds the rank of the rigidity matrix $R(G,p)$ of a
+body-hinge framework $(G,p)$ (\cref{sec:molecular-rigidity-matrix}) by
+the deficiency of $\tilde G$: first for a framework on $G$, then for one
+that also has bodies on no edge of $G$.
+
+\begin{lemma}[The deficiency bound]
+  \label{lem:deficiency-rank-bound}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions}
+  \leanok
+  \uses{def:rigidity-matrix, def:D-deficiency}
+  Let $(G,p)$ be a body-hinge framework with $V$ nonempty. Then
+  \[
+    \dim Z(G,p) \;\ge\; D + \operatorname{def}(\tilde G),
+  \]
+  that is,
+  $\operatorname{rank} R(G,p) \le D(|V|-1) - \operatorname{def}(\tilde G)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Let $P$ be a partition of $V$, and let $W_P$ be the space of screw
+  assignments that are constant on each part of $P$. It has dimension
+  $D|P|$. On $W_P$, the hinge constraint at an edge inside a part always
+  holds. At an edge $e$ that joins two parts it consists of $D - 1$
+  linear equations, since $C(p(e)) \neq 0$ (\cref{def:hinge-row-block}).
+  So the infinitesimal motions in $W_P$ form a subspace of dimension at
+  least
+  \[
+    D|P| - (D-1)\,d_G(P) \;=\; D + \operatorname{def}_{\tilde G}(P).
+  \]
+  A partition $P$ with
+  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$
+  gives the bound.
+\end{proof}
+
+This bound holds at every realization, generic or not, and it is
+one of the two inequalities of the rank formula in
+\cref{prop:rigidity-matrix-prop11}. Jackson and Jord\'an derive its
+rank form from a count of independent
+rows~\cite[\S4]{jacksonJordan2009}; we count motions instead.
+
+Later chapters consider a framework on a subgraph $G$ of a fixed graph
+together with all the bodies of the fixed graph, as
+\cref{sec:molecular-rigidity-matrix-blocks} does. Its screw assignments
+are maps $B \to \bigwedge^{d-1}K^{d+1}$ on a finite set $B$ of bodies
+that contains $V(G)$, and $R(G,p)$ and $Z(G,p)$ are defined as before.
+A body of $B \setminus V(G)$ lies on no edge of $G$, so no hinge
+constraint involves it.
+
+\begin{lemma}[The relative deficiency bound]
+  \label{lem:relative-deficiency-rank-bound}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le}
+  \leanok
+  \uses{def:rigidity-matrix, def:D-deficiency}
+  Let $(G,p)$ be a body-hinge framework whose screw assignments are
+  defined on a finite set $B$ of bodies with
+  $\emptyset \neq V(G) \subseteq B$, and suppose that $C(p(e)) \neq 0$
+  at every edge $e$ of $G$. Then
+  \[
+    D\,(|B \setminus V(G)| + 1) + \operatorname{def}(\tilde G) \;\le\;
+      \dim Z(G,p),
+  \]
+  that is,
+  $\operatorname{rank} R(G,p) \le D(|V(G)| - 1) - \operatorname{def}(\tilde G)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Let $P$ be a partition of $V(G)$ with
+  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$, and
+  let $P'$ be the partition of $B$ whose parts are those of $P$ and the
+  singletons $\{b\}$ for $b \in B \setminus V(G)$. No edge meets these
+  singletons, so exactly $d_G(P)$ edges join different parts of $P'$.
+  The count in the proof of \cref{lem:deficiency-rank-bound},
+  applied to $P'$, gives
+  \[
+    \dim Z(G,p) \;\ge\; D|P'| - (D-1)\,d_G(P) \;=\;
+    D\,|B \setminus V(G)| + D + \operatorname{def}_{\tilde G}(P).
+  \]
+  The rank form follows, as
+  $\operatorname{rank} R(G,p) = D|B| - \dim Z(G,p)$.
 \end{proof}
 
 \subsection{Rigid subgraphs and structural lemmas}
