@@ -38,9 +38,18 @@ sources:                                                          # [required] l
     authors: ["L. Lovász", "Y. Yemini"]
     id: "doi:10.1137/0603009"
     type: "article"
-    location: "main theorem (rigidity matroid = (2,3)-count matroid)"
-    relationship: "formalizes"
+    location: "Corollary 1, p. 93 (G is generic independent iff 2|V(Y)| - 3 >= |Y| for every nonempty set Y of its edges)"
+    relationship: "independently-proves"
     author_endorsement: "not-contacted"
+    note: >-
+      The characterization is Laman's: Lovász-Yemini present their Theorem 1 as a slight
+      generalization of Laman's theorem with a new proof (pp. 91-92) and their Corollary 3 as
+      Laman's theorem itself (pp. 93-94). Corollary 1 is the form phases 6-8 prove
+      (row-independence at some placement iff (2,3)-sparsity, and the matroids it gives), not by
+      their proof (pp. 95-96), which rests on Lovász's dimension formula for a hyperplane in
+      general position (their Theorem 3, p. 95), but by Jordán 2016's Henneberg induction (Theorem
+      2.2.1, p. 45). Their rank formula (Theorem 1) and the rigidity of 6-connected graphs
+      (Theorem 2, p. 94) are not formalized.
 
   - title: "Pebble game algorithms and sparse graphs"
     authors: ["A. Lee", "I. Streinu"]
@@ -231,10 +240,10 @@ status:
     A Lean 4 / mathlib4 formalization of combinatorial rigidity theory, in four arcs.
     (1) Laman's theorem (1970): a graph on >= 2 vertices is generically rigid in the plane
     iff it contains a (2,3)-tight spanning subgraph, both directions via the Henneberg
-    construction. (2) The planar rigidity matroid (Lovász-Yemini) in both its combinatorial
-    (2,3)-count and linear-matroid forms, plus an executable, certificate-carrying
-    (k,l)-sparsity decision procedure - the Lee-Streinu pebble game - with Decidable
-    instances and a `lake exe pebble-game` CLI. (3) Matroid union / Edmonds partition
+    construction. (2) The planar rigidity matroid (Laman's characterization of independence)
+    in both its combinatorial (2,3)-count and linear-matroid forms, plus an executable,
+    certificate-carrying (k,l)-sparsity decision procedure - the Lee-Streinu pebble game -
+    with Decidable instances and a `lake exe pebble-game` CLI. (3) Matroid union / Edmonds partition
     (ported from apnelson1/Matroid), Tutte-Nash-Williams tree packing, Whiteley's k-frame
     matroid, Tay's body-bar theorem, and Tay and Whiteley's body-hinge theorem.
     (4) Katoh-Tanigawa's 2011 proof of the molecular conjecture - the Grassmann-Cayley
@@ -275,7 +284,7 @@ status:
 
   - declaration: "SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid"
     file: "CombinatorialRigidity/LinearRigidityMatroid.lean"
-    description: "Lovász-Yemini, linear-matroid form: the generic-placement linear rigidity matroid (via Matroid.ofFun) equals the combinatorial (2,3)-count rigidity matroid."
+    description: "Laman's characterization of independence in the plane (as Lovász-Yemini 1982 state it, Corollary 1), as a linear matroid: the generic-placement linear rigidity matroid (via Matroid.ofFun) equals the combinatorial (2,3)-count rigidity matroid."
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -638,7 +647,7 @@ alignment:
       module: "CombinatorialRigidity/LamanTheorem.lean"
       status: "proved"
 
-    - source: "Lovász-Yemini 1982 (rigidity matroid = (2,3)-count matroid), linear form"
+    - source: "Laman's characterization of independence (Jordán 2016 Theorem 2.2.1; Lovász-Yemini 1982 Corollary 1), linear-matroid form"
       lean: "SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid"
       module: "CombinatorialRigidity/LinearRigidityMatroid.lean"
       status: "proved"

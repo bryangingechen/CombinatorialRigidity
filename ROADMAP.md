@@ -58,7 +58,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── RigidityMatroid.lean  Phase 6 — row-independence, basis-pick, sparsity bridge
 │   ├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
 │   ├── CountMatroid.lean  Phase 7 — abstract (k, ℓ)-count matroid (ℓ < 2k)
-│   ├── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
+│   ├── MatroidIdentification.lean  Phase 7 — sparse ⇒ row-independent (Laman) + rigidity matroid
 │   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
 │   ├── GenericRigidityMatroid.lean  Phase 24 — dimension-general generic bar-joint rigidity matroid + rank
 │   ├── SquareGraph.lean  Phase 25 — `SimpleGraph.square` + closed-neighborhood clique lemmas
@@ -93,7 +93,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
 | 5. Laman's theorem (⇐) | `LamanTheorem.lean`, `HennebergRigidity.lean` | ✓ Complete (see `notes/Phase5.md`) |
 | 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | ✓ Complete (see `notes/Phase6.md`) |
-| 7. Lovász–Yemini matroid identification | `CountMatroid.lean`, `MatroidIdentification.lean` | ✓ Complete (see `notes/Phase7.md`) |
+| 7. Row independence and the count matroid | `CountMatroid.lean`, `MatroidIdentification.lean` | ✓ Complete (see `notes/Phase7.md`) |
 | ⋮ Cleanup round (pre-Phase-8) | project-wide | ✓ Complete (see `notes/Phase7-cleanup.md`; round manual: `CLEANUP.md`) |
 | 8. Linear-matroid framing | `LinearRigidityMatroid.lean` | ✓ Complete (see `notes/Phase8.md`) |
 | ⋮ Cleanup round (post-Phase-8) | project-wide (light scope) + import-structure audit | ✓ Complete (see `notes/Phase8-cleanup.md`; round manual: `CLEANUP.md`) |
@@ -267,7 +267,8 @@ blocker-argument contradiction templates (~210 LoC) is noted in
 Complete. Builds the rigidity-matroid scaffolding in
 `RigidityMatroid.lean` (row-independence, dual-module bridge, generic
 rank lower bound, affinely-spanning rank upper bound, basis-pick),
-then ships Lovász–Yemini's easy direction in dim 2 and the assembly
+then ships the easy half of Laman's characterization of independence
+(row-independent ⇒ $(2,3)$-sparse) in dim 2 and the assembly
 `IsGenericallyRigid.exists_isLaman_le`, closing both directions of the
 Phase-5 iff. Phase 6 stood up the matroid scaffolding without
 packaging the abstract `Matroid` instance — the easy direction needs
@@ -275,12 +276,13 @@ only the row-independence relation + two LA facts (cf. DESIGN.md
 *Notion- and matroid-agnostic core*). Ran in forward blueprint mode.
 Full lemma list and decisions → `notes/Phase6.md`.
 
-### Phase 7 — Lovász–Yemini matroid identification (`CountMatroid.lean`, `MatroidIdentification.lean`)
+### Phase 7 — Row independence and the count matroid (`CountMatroid.lean`, `MatroidIdentification.lean`)
 
-Complete. Ships the hard direction of Lovász–Yemini in dim 2
-(converse of Phase 6's easy direction), the general $(k, \ell)$-count
-matroid in the matroidal regime $\ell < 2k$ (Whiteley 1996,
-Lee–Streinu 2008), and the planar rigidity-matroid specialisation.
+Complete. Ships the hard half of Laman's characterization in dim 2
+(sparse ⇒ row-independent, by Jordán's Henneberg induction), the
+general $(k, \ell)$-count matroid in the matroidal regime $\ell < 2k$
+(Whiteley 1996, Lee–Streinu 2008), and the planar rigidity-matroid
+specialisation.
 The hard-direction induction (`MatroidIdentification.lean`) routes
 through matroidal-regime $I$-component scaffolding in `Sparsity.lean`;
 the abstract count matroid sits in `CountMatroid.lean` via
@@ -1280,8 +1282,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `RECONCILE-FORMAL`: the link condition becomes a field of `PanelHingeFramework` (S2), the
   generic body-hinge and panel theorems stop being vacuous at minimal graphs (S1), the generic
   body-hinge theorem's multigraph form, and the claims no declaration states. Round 1,
-  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 5,
-  M2's planar credits, read against Lovász–Yemini 1982 and Jordán 2016 first.
+  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 6,
+  M5: read Pollaczek-Geiringer 1927, and credit it beside Laman if it states the characterization.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
@@ -1383,7 +1385,9 @@ first.
 - G. Laman, *On graphs and rigidity of plane skeletal structures*, J. Engrg.
   Math. **4** (1970), 331–340.
 - L. Lovász and Y. Yemini, *On generic rigidity in the plane*, SIAM J.
-  Algebraic Discrete Methods **3** (1982), 91–98.
+  Algebraic Discrete Methods **3** (1982), 91–98. — its Corollary 1
+  (p. 93) states Laman's characterization in the independence form that
+  Phases 6–8 prove; the hard half follows Jordán's induction, not their proof.
 - J. Graver, B. Servatius, H. Servatius, *Combinatorial Rigidity*, AMS GSM 2,
   1993. — main textbook reference.
 - T. Jordán, *Combinatorial rigidity: graphs and matroids in the theory of

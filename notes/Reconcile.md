@@ -4,9 +4,9 @@
 ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its
 input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6 and
 §2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`,
-opened with nine tasks (`notes/Reconcile-texts-cleanup.md`). **Next concrete task:** its task 5,
-M2's planar credits, read against the sources first (tasks 2–4, S1's and S2's scopes and M1's
-text, are done). The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
+opened with nine tasks (`notes/Reconcile-texts-cleanup.md`). **Next concrete task:** its task 6,
+M5: read Pollaczek-Geiringer 1927 (tasks 2–5, S1's and S2's scopes, M1's text and M2's credits, are
+done). The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 
@@ -182,8 +182,10 @@ writes them once; everything else proceeds.
   texts name `native_decide` as measured.
 - **L9**'s deletions after §B's check (with `F-090`'s shim); **L6–L8**'s signatures and repeated
   derivations, with S17 and the statements they touch; `F-061`'s rename.
-- **The docstring sweep** by directory: L3–L5, L10–L12, M2's and M4's docstrings. The ledger's two
-  Lean baselines feed §B and §C.
+- **The docstring sweep** by directory: L3–L5, L10–L12, M2's and M4's docstrings. M2's include
+  `BodyBar/TayTheorem.lean`'s "Lovász–Yemini-style" necessity argument (548), which the report does
+  not list, and `MatroidIdentification.lean`'s "`|E|`-induction" (23, 190, 263, 708, 749), where
+  the proof inducts on $|V|$ (round 1, task 5). The ledger's two Lean baselines feed §B and §C.
 
 ### The phase — `RECONCILE-FORMAL` (attended; a number minted on open)
 

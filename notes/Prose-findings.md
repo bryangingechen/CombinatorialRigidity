@@ -3979,9 +3979,29 @@ declaration's name as its header writes it:
   "Lovász–Yemini easy direction" for `lem:isSparse-of-rowIndependent-two` (task 6 moved its credit,
   and the Phase-7 line's beside it, to Laman).
   *Evidence:* read (Jordán 2016 pp. 45, 49, 51, in `.refs/`; a `grep` for "Lov" over the blueprint
-  and the Lean). Lovász–Yemini 1982 is not in `.refs/`.
+  and the Lean). Lovász–Yemini 1982 was not in `.refs/` then; RECONCILE round 1 task 5 read it
+  (pp. 91–98), with the statements and bodies of the four pins and of
+  `IsSparse.exists_rowIndependent_placement`.
   *Found:* round 1 task 5.7.
-  *Disposition:* reported (`notes/Prose-report.md`, M2).
+  *Disposition:* reported (`notes/Prose-report.md`, M2); round 1: the verdict. LY credit the
+  characterization to Laman themselves: their abstract gives "a new proof of Laman's theorem" (p.
+  91); Theorem 1, the generic degree of freedom $2n - 3 - \min \sum (2|V(G_i)| - 3)$ over covers, is
+  "a slight generalization of a theorem of Laman", with "an independent proof" (p. 92); Corollary
+  1 derives from it that $G$ is generic independent iff $2|V(Y)| - 3 \ge |Y|$ for every $Y \subseteq
+  E(G)$ (read for nonempty $Y$; p. 93, proof p. 96); Corollary 3 is "the theorem of Laman" (pp.
+  93–94). Their own are Theorem 1 (Jordán's 2.3.2, p. 49), Theorem 2, 6-connected graphs are rigid
+  (p. 94; Jordán's 2.4.1, p. 51), and Theorem 4; Theorem 1's proof (pp. 95–96) applies Lovász's
+  hyperplane formula (their Theorem 3, p. 95), with no induction. Jordán agrees. The pins:
+  `edgeSet_rowIndependent_iff_isSparse_dim_two` is Corollary 1 (Jordán's 2.2.1) with "some
+  placement" for "generic"; `isSparse_of_edgeSetRowIndependent_dim_two` its necessity half, by the
+  rank bound at a placement with no three points collinear (Jordán p. 45); the two matroid
+  identities its packagings; the sufficiency half inducts on $|V|$ by reverse Henneberg moves,
+  Jordán's proof (p. 45), not LY's. No declaration states LY's Theorems 1–2. So Laman is credited;
+  LY is cited for Corollary 1, `independently-proves`; no LY "presentation we follow" credit (the
+  presentation followed is Jordán's, credited). Fixed: `formalization.yaml` (the LY `sources`
+  entry, `status.scope`, the linear-matroid row's description, `alignment`'s source), ROADMAP (the
+  layout line, the Phase 7 row and heading, §6's and §7's texts, *References*), `DESIGN.md`'s two
+  (task 5). The docstrings are round 3's, `BodyBar/TayTheorem.lean`'s among them.
 - **F-053** · M · the credit for the matroid of a submodular function, the polymatroid rank formula
   and the union's rank formula (`matroid-union.tex`, `intro.tex`, `deficiency.tex`,
   `molecular-induction.tex`; Lean docstrings). The blueprint credited the first two to Edmonds 1970.

@@ -5,8 +5,8 @@ the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot
 the authority for which rounds are done. Docs and blueprint prose only: the scopes of S1 and S2 on
 the status surfaces, M1's "for simple graphs", M2's and M5's credits read against the two PDFs,
 §2.6's stale example in an agent manual, and the non-vacuity rule. No node, edge or pin changes,
-and no Lean edit. Nine one-commit tasks; tasks 1–4 (the open, S1's and S2's scopes, M1's text) are
-done. **Next concrete task:** task 5, M2's planar credits, read against the sources first (Opus).
+and no Lean edit. Nine one-commit tasks; tasks 1–5 (the open, S1's and S2's scopes, M1's text, M2's
+credits) are done. **Next concrete task:** task 6, M5: read Pollaczek-Geiringer 1927 (Opus).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -17,13 +17,14 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–4 are done**; task 4, M1's "for simple graphs", is this commit (two `body-hinge.tex`
-passages, their `\cref`s unchanged). Next: task 5 (*Hand-off*). Task 4's gates gave the open's
-values: `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges
-11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical)
-and `--summary` the same bytes; `print.log` rebuilt by latexmk for `body-hinge.tex`, 0 `LaTeX
-Warning` lines; `check-phase-note.py` green; the no-Lean-edit diff empty. No `formalization.yaml`
-edit, so no gate 7.
+**Tasks 1–5 are done**; task 5, M2's planar credits, is this commit: the verdict, read from
+Lovász–Yemini 1982 and Jordán 2016 with pages, is in `F-025`, and the credits are fixed in
+`formalization.yaml`, ROADMAP and `DESIGN.md`. Next: task 6 (*Hand-off*). Task 5's gates gave the
+open's values: `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; `1501
+edges 11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines,
+`cmp`-identical) and `--summary` the same bytes; `print.log` 0 `LaTeX Warning` lines (no TeX
+edit); `check-phase-note.py` green; the no-Lean-edit diff empty; gate 7's harness
+`Axioms-t5.lean` `cmp`-identical to the open's (19 rows, 14 imports).
 
 **Verified at the open** (2026-10-15, at `f39e35e6`, whose Lean and blueprint are round 5's close
 tree, `62175c74`):
@@ -125,7 +126,7 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
   `molecular_conjecture_multigraph` and `theorem_55_6_multigraph` too: if the free selector reaches
   them (README 151–160, the row 465), that is a new `S` entry under *Candidates for the PI*. `F-125`
   is the phase's.
-- [x] **4. M1 — "for simple graphs"** (this commit; `F-222`, in part; report M1; Opus).
+- [x] **4. M1 — "for simple graphs"** (`b72c0202`; `F-222`, in part; report M1; Opus).
   `body-hinge.tex`'s note after `def:body-hinge-framework` (70–79, "The rigidity statement for
   frameworks with hinges … is `cor:bodyhinge-generic-tree-packing`") and the paragraph after
   `thm:body-hinge-tay`'s proof (144–152, KT Proposition 1.1 for multigraphs "is" the corollary)
@@ -133,8 +134,8 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
   simple graphs, with the rest of its scope read from its pin's signature (`hSimple`, $|V| \ge 2$,
   `hspan`, $K$ infinite), and that for multigraphs the formalization has the form for bundles of
   bars (S11). No `\cref` or `\uses` changes. The multigraph form is the phase's (b).
-- [ ] **5. M2 — the planar characterization's credits, verified first** (`F-025`, its docs part;
-  report M2; Opus). Read Lovász–Yemini 1982 (`.refs/`, 8 pages), Jordán 2016 pp. 45, 49 and 51
+- [x] **5. M2 — the planar characterization's credits, verified first** (this commit; `F-025`, its
+  docs part; report M2; Opus). Read Lovász–Yemini 1982 (`.refs/`, 8 pages), Jordán 2016 pp. 45, 49 and 51
   (`.refs/jordan-2016-msj-memoirs.pdf`), and the statements of Phases 6–7's declarations
   (`linearRigidityMatroid_eq_rigidityMatroid`; the pins of
   `thm:edgeSet-rowIndependent-iff-isSparse`, `thm:rigidityMatroid-indep-iff-rowIndependent`,
@@ -195,7 +196,11 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
 Tasks and findings outside this round's scope, one line each, mirrored into the target round's
 list in `notes/Reconcile.md` §3.
 
-- None yet.
+- `BodyBar/TayTheorem.lean` 548's "Lovász–Yemini-style rank-upper-bound argument" (task 5): a
+  docstring crediting LY with the necessity half, which the report's M2 does not list; and
+  `MatroidIdentification.lean`'s "`|E|`-induction" (its header, a section heading and three
+  docstrings), where `IsSparse.exists_rowIndependent_placement` inducts on $|V|$. Round 3's
+  docstring sweep, with M2's.
 
 ## Blockers / open questions
 
@@ -203,17 +208,17 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 5, M2** (Opus, a fresh agent): read Lovász–Yemini 1982 and Jordán 2016's three pages
-against the four pins' statements, write the verdict with pages into `F-025`, then fix the credits
-on task 5's surfaces, under gates 1–7 (it edits `formalization.yaml`, so gate 7: the harness
-regenerated and `cmp`-identical). Lines the later tasks name have moved from the task lines'
-numbering (the tree the open read): `formalization.yaml`'s `alignment` sources for Laman and
-Lovász–Yemini (602, 607) are 636 and 641, its other named lines unchanged; ROADMAP's §6 text (269)
-and §7's heading and text (277, 279) are 270, 278 and 280, its *References* entries for Laman and
-Lovász–Yemini (1372, 1374) are 1383 and 1385, and 4, 61 and 96 are unchanged; `intro.tex` 114 is
-127; README's and the home page's named lines are unchanged; `body-hinge.tex` (task 4) is named by
-no later task; `DESIGN.md`, `blueprint/CLAUDE.md`, `PHASE-BOUNDARIES.md` and `CLEANUP.md` are
-untouched. Re-`grep` as ever. Then tasks 6–9 in order.
+**Next: task 6, M5** (Opus, a fresh agent): read Pollaczek-Geiringer 1927's page images (the Read
+tool's `pages`; its 15 PDF pages are pp. 58–72), then credit or record as its line says, under gates
+1–7 (TeX edits: gate 4's latexmk check; a `formalization.yaml` edit: gate 7). Its named lines have
+moved from the open's numbering: `formalization.yaml`'s `status.scope` (232), the description at
+270 and `alignment`'s Laman source (602) are 241, 279 and 645; ROADMAP's *References* entry for
+Laman (1372) is 1385, its opening (4) unchanged; `intro.tex` 114 is 127; the other chapters, README
+and the home page are unchanged. Task 5 named Laman as the originator of the characterization of
+independence on lines the open's `grep` did not see: `formalization.yaml` 45–47 (the LY note), 243
+(`status.scope`'s arc 2), 287 (the linear-matroid row) and 650 (its `alignment` source); ROADMAP 61,
+270, 281 and 1389; `DESIGN.md` 42 and 213. Whether the 1927 paper's credit joins Laman's there is
+task 6's call, by the form it states. Re-`grep` as ever. Then tasks 7–9 in order.
 
 ## Decisions made during this round
 
@@ -245,3 +250,10 @@ untouched. Re-`grep` as ever. Then tasks 6–9 in order.
   formalization "has" the bundle form, not `F-222`'s "only": `thm:theorem-55-6-multigraph`
   realizes every spanning multigraph with nonzero hinges at the target rank (read from its
   statement). No new entry.
+- **M2's credits** (task 5): Laman originates the characterization, in LY's own words (pp. 91–94)
+  and Jordán's (p. 45). LY stay a source for their Corollary 1, the form proved, as
+  `independently-proves` (a schema value, which the Jackson–Jordán 2008 entry uses for a result
+  proved by another argument), with a note; no LY "presentation we follow" credit, as the proofs
+  follow Jordán's, which the chapter and his `sources` entry already credit. ROADMAP's Phase 7 row
+  and heading take the home page's and `intro.tex`'s title. Closed phase notes keep their titles.
+  No new entry.
