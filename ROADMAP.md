@@ -1290,8 +1290,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   the tight partitions, the two-vertex double edge and the subgraph shared by removal and
   splitting off before their first uses, and its task 5.4 moved the base of KT Theorem 5.5's
   induction before the theorem, the operations on frameworks before their first users, and the
-  genericity and counting subsections before Case II. **Next concrete task:** round 5's task
-  5.5, the node order of `pencil.tex` (its hand-off).
+  genericity and counting subsections before Case II, and its task 5.5 left the order of
+  `pencil.tex`, which only a regrouping would change; that closed the node order. **Next
+  concrete task:** round 5's task 6, terminology and notation (its hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

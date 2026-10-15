@@ -47,8 +47,9 @@ its first use, its task 5.2 moved the deficiency bounds of `rigidity-matrix.tex`
 Lemma 6.1 into the algebraic induction, and the tight partitions, the two-vertex double edge and
 the subgraph shared by removal and splitting off before their first uses, and its task 5.4 moved
 the base of KT Theorem 5.5's induction before the theorem, the operations on frameworks before
-their first users, and the genericity and counting subsections before Case II. **Next concrete
-task:** round 5's task 5.5, the node order of `pencil.tex` (`notes/Prose-graph-cleanup.md`
+their first users, and the genericity and counting subsections before Case II, and its task 5.5
+left the order of `pencil.tex`, which only a regrouping would change; that closed the node order.
+**Next concrete task:** round 5's task 6, terminology and notation (`notes/Prose-graph-cleanup.md`
 *Hand-off*).
 
 ## 1. The PI's decisions
