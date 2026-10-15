@@ -194,8 +194,13 @@ call):
 assumptions (`[Fintype V]`, "Let $G$ be a minimal $k$-dof-graph", the
 placement `p`); "load-bearing" means a hypothesis that *is* a mathematical
 claim the lemma would otherwise have to prove. Case (b) is the legitimate
-green-modulo pattern: `lem:case-I` is honestly green because its hypothesis
-*is* `lem:genericity-device`, a `\uses`'d node that was red until discharged.
+green-modulo pattern: `lem:case-III`'s pins take `hSimple : G.Simple`, the
+conclusion of `lem:simple-minimal-noRigid`, which its statement `\uses`, and
+`thm:theorem-55`'s Lean derives it by that lemma before calling Case III. Two
+cautions: `hSimple` follows from the pins' other hypotheses, so a Lean round
+that drops it turns the example into case (a) and must replace it here; and
+`scripts/blueprint-deps.py --label` calls the edge *unbacked*: a hypothesis
+backs it, and the pins reach the lemma only through another node's pin.
 The failure is case (b) *claimed* but not *true*. The gate's clauses:
 
 - **Case hypotheses are obligations, never ambient.** A hypothesis the source

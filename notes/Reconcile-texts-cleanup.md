@@ -5,9 +5,9 @@ the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot
 the authority for which rounds are done. Docs and blueprint prose only: the scopes of S1 and S2 on
 the status surfaces, M1's "for simple graphs", M2's and M5's credits read against the two PDFs,
 §2.6's stale example in an agent manual, and the non-vacuity rule. No node, edge or pin changes,
-and no Lean edit. Nine one-commit tasks; tasks 1–6 (the open, S1's and S2's scopes, M1's text, M2's
-and M5's credits) are done. **Next concrete task:** task 7, §2.6: the honesty gate's example in
-`blueprint/CLAUDE.md` (Opus). Round manual: `CLEANUP.md`.
+and no Lean edit. Nine one-commit tasks; tasks 1–7 (the open, S1's and S2's scopes, M1's text, M2's
+and M5's credits, §2.6's example) are done. **Next concrete task:** task 8, the non-vacuity rule in
+`PHASE-BOUNDARIES.md` and `CLEANUP.md` §A (Sonnet may take it). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,16 +17,15 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–6 are done**; task 6, M5, is this commit: Pollaczek-Geiringer 1927 states and proves the
-characterization (the verdict, with pages and the German passages translated, is in `F-228`), and
-she is credited beside Laman on every surface its line names, with a `bibliography.bib` entry
-checked against Crossref. Next: task 7 (*Hand-off*). Task 6's gates gave the open's values:
-`lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges
-11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical)
-and `--summary` the same bytes; `print.log` rebuilt by latexmk (dated 2026-10-15 16:13), 0 `LaTeX
-Warning` lines, 31 overfull boxes as at the open; `check-phase-note.py` green; the no-Lean-edit
-diff empty; gate 7's harness `Axioms-t6.lean` `cmp`-identical to the open's (19 rows, 14
-imports).
+**Tasks 1–7 are done**; task 7, §2.6, is this commit: every fact the open verified held at HEAD
+(the two pins' signatures, the two `\uses` and pin lines, `theorem_55_minimalKDof_k_all_k`'s Case
+III branch, `--label lem:case-III`), so `blueprint/CLAUDE.md`'s honesty gate gives
+`lem:case-III`'s `hSimple` as case (b), with the report's two cautions. Next: task 8 (*Hand-off*). Task 7's gates gave the open's values: `lint.sh`
+green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges 11033da1dbaa0fae`,
+`8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical) and `--summary` the
+same bytes; `print.log` 0 `LaTeX Warning` lines, 31 overfull boxes, not rebuilt (no TeX edit;
+dated task 6's run); `check-phase-note.py` green; the no-Lean-edit diff empty; no gate 7 (no
+`formalization.yaml` edit).
 
 **Verified at the open** (2026-10-15, at `f39e35e6`, whose Lean and blueprint are round 5's close
 tree, `62175c74`):
@@ -50,7 +49,7 @@ tree, `62175c74`):
 - **The two PDFs** are in `.refs/`: `lovasz-yemini-1982-on-generic-rigidity-in-the-plane.pdf` (8
   pages) and `pollaczek-geiringer-1927-uber-die-gliederung-ebener-fachwerke.pdf` (15 pages), both
   readable (`pdfinfo`); not read further (tasks 5 and 6 read them).
-- **§2.6's replacement**, verified from current pins: task 7's line.
+- **§2.6's replacement**, `lem:case-III`, verified from current pins; task 7 re-read it at HEAD.
 
 ## Scope and standing rules
 
@@ -109,70 +108,20 @@ One commit per task, in this order; each line gets its commit's sha. A task's li
 IDs and report items it acts on, its rung and its surfaces (lines as at the open).
 
 - [x] **1. Open** (`0638fd12`; docs only): this log, the baselines, the task list, `F-251`.
-- [x] **2. S1 — the generic body-hinge theorem's scope** (`8ee0f8a8`; `F-207` in part, `F-252`):
-  the scope beside both theorems in `formalization.yaml` (row, two `alignment` notes), README, the
-  home page, `intro.tex` and ROADMAP §34; the remark's reading checked by a `lake lean` witness.
-- [x] **3. S2 — KT Theorem 5.6's and the molecular conjecture's scope** (`b0eb63eb`; `F-122`,
-  `F-128`, in part; `F-251`; report S2; Opus). Read `PanelHingeFramework` (its `ends`),
-  `RankHypothesis`, `hingeConstraint`, `panelSupportExtensor_ne_zero_iff`, and the statements of
-  `rankHypothesis_of_theorem_55_gen` (`Theorem55.lean:2880`), `molecular_conjecture` and
-  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (2615). Then say what the two cover today,
-  each claim checked against those bodies (the endpoint selector is free and hinges may be
-  degenerate: at deficiency zero a framework with every normal zero meets Theorem 5.6's conclusion,
-  and the panel side of the molecular conjecture states no condition on `Q.ends`), beside the proved
-  form, the link-recording one with nondegenerate hinges, named in the text only: no `declaration:`
-  change (that is the phase's). Surfaces: the `main_results` rows (357, 371); the `alignment`
-  entries for KT Theorem 5.6, Conjecture 1.2 and JJ 2008 (674, 679, 685); README 93–108; the home
-  page 82–98; `intro.tex` 40–49. And `F-251`: `fidelity.divergences`' "states each result in the
-  exact form proved" (`formalization.yaml` 580–582) names its exceptions. Read
-  `molecular_conjecture_multigraph` and `theorem_55_6_multigraph` too: if the free selector reaches
-  them (README 151–160, the row 465), that is a new `S` entry under *Candidates for the PI*. `F-125`
-  is the phase's.
-- [x] **4. M1 — "for simple graphs"** (`b72c0202`; `F-222`, in part; report M1; Opus).
-  `body-hinge.tex`'s note after `def:body-hinge-framework` (70–79, "The rigidity statement for
-  frameworks with hinges … is `cor:bodyhinge-generic-tree-packing`") and the paragraph after
-  `thm:body-hinge-tay`'s proof (144–152, KT Proposition 1.1 for multigraphs "is" the corollary)
-  say that the corollary is for
-  simple graphs, with the rest of its scope read from its pin's signature (`hSimple`, $|V| \ge 2$,
-  `hspan`, $K$ infinite), and that for multigraphs the formalization has the form for bundles of
-  bars (S11). No `\cref` or `\uses` changes. The multigraph form is the phase's (b).
-- [x] **5. M2 — the planar characterization's credits, verified first** (`b408df1a`; `F-025`, its
-  docs part; report M2; Opus). Read Lovász–Yemini 1982 (`.refs/`, 8 pages), Jordán 2016 pp. 45, 49 and 51
-  (`.refs/jordan-2016-msj-memoirs.pdf`), and the statements of Phases 6–7's declarations
-  (`linearRigidityMatroid_eq_rigidityMatroid`; the pins of
-  `thm:edgeSet-rowIndependent-iff-isSparse`, `thm:rigidityMatroid-indep-iff-rowIndependent`,
-  `thm:linearRigidityMatroid-eq-rigidityMatroid` and `lem:isSparse-of-rowIndependent-two`). Settle
-  what each credit names, and whether the proofs follow LY's argument (then a "presentation we
-  follow" credit beside Laman's); the verdict, with pages, goes into `F-025`. Then fix:
-  `formalization.yaml`'s LY `sources` entry (37–43: `location`, `relationship`) and the lines
-  crediting LY, `status.scope` (234), the description at 278 and `alignment`'s source (607);
-  ROADMAP's directory-layout line (61), Status row title (96), §6's text (269), §7's heading and
-  text (277, 279), and its *References* entry (1374) as the verdict says; `DESIGN.md` 42 and 213.
-  The docstrings are round 3's (`notes/Reconcile.md` §3 lists them).
-- [x] **6. M5 — Pollaczek-Geiringer 1927, read** (this commit; `F-228`; report M5; Opus). Read the PDF's page
-  images with the Read tool's `pages`, not its garbled text layer; its 15 pages are pp. 58–72, and
-  the first also carries the end of the preceding article. If it states the characterization, credit
-  it beside Laman where the originator is named (the open's `grep`; a list's "Laman's theorem" is
-  the task's call): `intro.tex` 12 and 114, `laman.tex` 5, `laman-theorem.tex` 4, `henneberg.tex`
-  10, `rigidity-matroid.tex` 5 and the title at 444, `bar-joint-3d.tex` 25 and 93; a
-  `bibliography.bib` entry checked against Crossref (doi:10.1002/zamm.19270070107); README 10 and
-  68; the home page 11–12; `formalization.yaml` (a `sources` entry, `status.scope` 232, the
-  description at 270, `alignment`'s source at 602); ROADMAP's opening (4) and *References* (1372).
-  If it does not, record what it states as a new `M` entry and change no credit. Either way `F-228`
-  is `done (<sha>)`, with the verdict and pages.
-- [ ] **7. §2.6 — the honesty gate's example** (report §2.6; Opus). `blueprint/CLAUDE.md` 196–198
-  ("`lem:case-I` is honestly green because its hypothesis *is* `lem:genericity-device`") is stale.
-  **The open verified the replacement, `lem:case-III`, from current pins**: its pin
-  `case_III_realization_all_k` (`CaseIII/Realization.lean:2650`) takes `hSimple : G.Simple` beside
-  `hG`, `hV3` and `hnoRigid`; `Graph.simple_of_isMinimalKDof_of_noRigid`
-  (`Induction/ReducibleVertex.lean:698`) concludes `G.Simple` from those three and
-  `2 ≤ bodyBarDim n`; `lem:case-III`'s statement `\uses` `lem:simple-minimal-noRigid` (`case-iii.tex:2460–2461`),
-  which pins that lemma (`molecular-induction.tex:1928`); and `theorem_55_minimalKDof_k_all_k`
-  (`Theorem55.lean:2345`), which `thm:theorem-55`'s pin `theorem_55_minimalKDof_gen` calls (2433),
-  derives `hSimple` by it in its Case III branch (2397–2403). `--label lem:case-III` reads the edge
-  as unbacked, transitively, as the report's second caution says. The task re-reads these at its
-  HEAD and writes the example with the report's two cautions, or, if any has changed, drops the
-  example with no replacement.
+- [x] **2. S1's scope** (`8ee0f8a8`; `F-207` in part, `F-252`): beside both theorems in
+  `formalization.yaml`, README, the home page, `intro.tex` and ROADMAP §34; a `lake lean` witness.
+- [x] **3. S2's scope** (`b0eb63eb`; `F-122`, `F-128` in part; `F-251`): KT Theorem 5.6's and the
+  molecular conjecture's, read from the bodies, beside the link-recording form, on the status
+  surfaces and `intro.tex`; no `declaration:` change.
+- [x] **4. M1, "for simple graphs"** (`b72c0202`; `F-222` in part): `body-hinge.tex`'s two
+  passages, the scope read from the corollary's pin.
+- [x] **5. M2's credits** (`b408df1a`; `F-025`'s docs part): read against Lovász–Yemini 1982 and
+  Jordán 2016, the verdict in `F-025`; `formalization.yaml`, ROADMAP and `DESIGN.md` fixed.
+- [x] **6. M5, Pollaczek-Geiringer 1927** (`211e2737`; `F-228`): read from the page images, the
+  verdict in `F-228`; credited beside Laman, with a `bibliography.bib` entry.
+- [x] **7. §2.6, the honesty gate's example** (this commit; report §2.6): `blueprint/CLAUDE.md`'s
+  stale `lem:case-I` example replaced by `lem:case-III`'s `hSimple`, every fact the open verified
+  re-read at HEAD, with the report's two cautions.
 - [ ] **8. The non-vacuity rule** (§1, the agent's proposal; report §1.1's checks; Sonnet may take
   it). `PHASE-BOUNDARIES.md`'s close checklist, *Sync the user-facing status surfaces* (172–200,
   where a headline theorem joins `status.main_results`), and `CLEANUP.md` §A (its audit list, 51–81)
@@ -212,14 +161,11 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 7, §2.6** (Opus, a fresh agent): `blueprint/CLAUDE.md` 196–198 (unchanged since the
-open) still gives `lem:case-I` as the honestly green example. Re-read at HEAD every pin, line and
-edge its checklist line cites (`case_III_realization_all_k`, `Graph.simple_of_isMinimalKDof_of_noRigid`,
-`lem:case-III`'s `\uses` of `lem:simple-minimal-noRigid`, `theorem_55_minimalKDof_k_all_k`'s Case
-III branch, `--label lem:case-III`), then write `lem:case-III` as the example with the report's two
-cautions, or drop the example if any has changed. The task edits an agent manual only: gates 1–3,
-5 and 6, and gate 4's count with no latexmk check (no TeX edit); no gate 7 (no `formalization.yaml`
-edit). Then tasks 8–9 in order.
+**Next: task 8, the non-vacuity rule** (Sonnet may take it): `PHASE-BOUNDARIES.md`'s *Sync the
+user-facing status surfaces* (172–200 at the open; re-`grep`) and `CLEANUP.md` §A's audit list
+(51–81) gain the requirement of its checklist line, S1 the calibration. Both files are docs, not
+TeX: gates 1–3, 5 and 6, and gate 4's count with no latexmk check; no gate 7. Then task 9, the
+close.
 
 ## Decisions made during this round
 
@@ -250,3 +196,6 @@ edit). Then tasks 8–9 in order.
   argument). `thm:edgeSet-rowIndependent-iff-isSparse` is now *Planar row-independence is
   $(2,3)$-sparsity (Pollaczek-Geiringer, Laman)*: with "in the plane" the credit overfilled its
   print line by 14 pt. No new entry.
+- **§2.6's example** (task 7): the open's facts held at HEAD (`--label lem:case-III` byte-identical
+  to the open's run). The sentence calls `hSimple`, not the node, case (b): the pins' other
+  hypotheses (`hIH`, `hfresh`) are outside the example. No new entry.

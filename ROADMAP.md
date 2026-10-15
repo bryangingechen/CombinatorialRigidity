@@ -1284,8 +1284,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `RECONCILE-FORMAL`: the link condition becomes a field of `PanelHingeFramework` (S2), the
   generic body-hinge and panel theorems stop being vacuous at minimal graphs (S1), the generic
   body-hinge theorem's multigraph form, and the claims no declaration states. Round 1,
-  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 7,
-  §2.6: replace or drop the stale example in `blueprint/CLAUDE.md`'s honesty gate.
+  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 8,
+  the non-vacuity rule in `PHASE-BOUNDARIES.md`'s close checklist and `CLEANUP.md` §A.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
