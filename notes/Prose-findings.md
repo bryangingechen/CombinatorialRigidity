@@ -1952,6 +1952,7 @@ declaration's name as its header writes it:
   `thm:isTightOn-union-with-bonus` assumes $V$ finite as its pin does.
   *Evidence:* read (the statement of `insert_vertex_with_edges`, `Sparsity.lean`).
   *Found:* round 1 task 5.2.
+  *Disposition:* reported (`notes/Prose-report.md`, S42).
 - **F-020** · S · `def:isInfinitesimallyRigid` (`frameworks.tex`): `IsInfinitesimallyRigid` asks
   only $\dim\ker R(G,p) \le d(d+1)/2$, i.e. rank at least $d|V| - d(d+1)/2$, where Jordán (2016,
   pp. 36–37) asks for rank $S(|V|,d)$. The two agree for $|V| \ge d$ and $|V| \le 1$, so at
@@ -1964,11 +1965,13 @@ declaration's name as its header writes it:
   statements and `shadowGraph`); a `lake lean` witness, every graph on `Fin 2` at every $p$ in
   $d = 3$, by `Submodule.finrank_le` and `Framework.finrank` ($6 \le 3 \cdot 4 / 2$).
   *Found:* round 1 task 5.4.
+  *Disposition:* reported (`notes/Prose-report.md`, S12).
 - **F-026** · S · `lem:span-range-rigidityRow` (`laman-theorem.tex`): the statement assumes $V$
   finite, which its pin `span_range_rigidityRow` does not: it takes only `[Finite G.edgeSet]`. The
   statement is weaker than the pin, as in `F-015`.
   *Evidence:* read (the statement of `span_range_rigidityRow`, `RigidityMatroid.lean`).
   *Found:* round 1 task 5.7.
+  *Disposition:* reported (`notes/Prose-report.md`, S42).
 - **F-027** · S · `lem:isSparse-of-rowIndependent-two` (`laman-theorem.tex`): the statement assumes
   $V$ finite, which its pin `isSparse_of_edgeSetRowIndependent_dim_two` does not (it takes no
   finiteness; the sets of at least three vertices it quantifies over are finite). The statement is
@@ -1976,6 +1979,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement of `isSparse_of_edgeSetRowIndependent_dim_two`, and the body of
   `EdgeSetRowIndependent`, `RigidityMatroid.lean`).
   *Found:* round 1 task 5.8.
+  *Disposition:* reported (`notes/Prose-report.md`, S42).
 - **F-028** · S · five nodes of `rigidity-matroid.tex`'s *Lifting row-independence through
   Henneberg moves*: `lem:typeI-rowIndependent-extend`, `lem:typeI-rowIndependent-lift`,
   `lem:pendant-rowIndependent-lift`, `lem:typeII-rowIndependent-extend` and
@@ -1988,6 +1992,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the seven statements, `MatroidIdentification.lean` and `RigidityMatroid.lean`,
   whose only section variable is `{V : Type*}`).
   *Found:* round 1 task 5.9.
+  *Disposition:* reported (`notes/Prose-report.md`, S42).
 - **F-031** · S · `lem:exists-isTightOn-of-insert-not-sparse` (`count-matroid.tex`): the statement
   assumes $V$ finite, which its pin `IsSparse.exists_isTightOn_of_insert_not_sparse` does not (its
   only section variable is `{V : Type*}`; the tight set it produces is a finite set). The statement
@@ -1995,6 +2000,7 @@ declaration's name as its header writes it:
   statements say.
   *Evidence:* read (the statement, `Sparsity.lean`; `#check` in a `lake lean` scratch file).
   *Found:* round 1 task 5.11.
+  *Disposition:* reported (`notes/Prose-report.md`, S42).
 - **F-034** · S · `lem:pebble-game-invariants` (`pebble-game.tex`): the statement assumes $V$
   finite and $\ell < 2k$, and states all four invariants for a vertex $v$ and a set $V'$ with
   $\ell \le k|V'|$. Its five pins (`Reachable.out_le`, `Reachable.peb_add_out_eq`,
@@ -2005,6 +2011,7 @@ declaration's name as its header writes it:
   which needs $\mathrm{out}_D \le k$ without $\ell < 2k$, cites the proof of (1) instead.
   *Evidence:* read (the five statements and the section variables of `PebbleGame/Basic.lean`).
   *Found:* round 1 task 5.13.
+  *Disposition:* reported (`notes/Prose-report.md`, S40).
 - **F-036** · S · `thm:pebble-game-soundness` (`pebble-game.tex`): the statement assumes
   $\ell < 2k$, which its pin `runPebbleGameWith_sound` does not take. The statement is weaker than
   the pin. Neither its proof nor that of `lem:pebble-game-invariants` uses $\ell < 2k$, and task
@@ -2015,12 +2022,14 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `runPebbleGameWith_sound`, `Correctness.lean`;
   `#check` in a `lake lean` scratch file).
   *Found:* round 1 task 5.14 (the open's diagnosis saw the first half).
+  *Disposition:* reported (`notes/Prose-report.md`, S40).
 - **F-037** · S · `lem:workhorseWitness-certifies` (`pebble-game.tex`): the statement takes a finite
   simple graph $G$ on $V$. Its pin `WorkhorseWitness.certifies_against` assumes only that $G$ has
   finitely many edges (`[Fintype G.edgeSet]`; nothing on $V$). The statement is weaker than the
   pin, as in `F-026`. Task 5.13's prose after `def:workhorseWitness` says the same.
   *Evidence:* read (the statement of `certifies_against`, `Correctness.lean`; `#check`).
   *Found:* round 1 task 5.14.
+  *Disposition:* reported (`notes/Prose-report.md`, S42).
 - **F-038** · S · `def:blockingWitness` (`pebble-game.tex`): task 5.13 (`db7ff7d6`) changed the
   content of this unpinned definition. It said that a blocking witness is a finite $V' \subseteq V$
   with $|E_G[V']| > k|V'| - \ell$, and "Equivalently, $G$ is not $(k, \ell)$-sparse on $V'$". The
@@ -2032,6 +2041,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the definition at `db7ff7d6^` and at `db7ff7d6`; `PebbleGameResult`,
   `Correctness.lean`).
   *Found:* round 1 task 5.13; filed by task 5.14 at the coordinator's request.
+  *Disposition:* reported (`notes/Prose-report.md`, S33).
 - **F-041** · S · `thm:pebble-game-correct` (`pebble-game.tex`): the statement says more than its
   pin. `runPebbleGameWith_correct` states only the equivalence: $G$ is $(k, \ell)$-sparse if and
   only if the game on the list returns a partial orientation. The statement adds (1) that a
@@ -2048,6 +2058,7 @@ declaration's name as its header writes it:
   the two `aux` bodies, `Correctness.lean` and `Exec.lean`; `#check` of the four pins of task 5.15
   through the Lean server).
   *Found:* round 1 task 5.15.
+  *Disposition:* reported (`notes/Prose-report.md`, S25).
 - **F-042** · S · `def:pebbleGameResult` (`pebble-game.tex`): the definition takes a finite simple
   graph $G$ on $V$. Its pin `PebbleGameResult` takes only `[DecidableEq V]` and
   `[Fintype G.edgeSet]`, so $G$ need only have finitely many edges, as in `F-037`. The definition
@@ -2056,6 +2067,7 @@ declaration's name as its header writes it:
   *Evidence:* read (`#check @PebbleGameResult`: the `[Fintype V]` of `Correctness.lean`'s
   `Verdict` section is not among its binders).
   *Found:* round 1 task 5.15.
+  *Disposition:* reported (`notes/Prose-report.md`, S42).
 - **F-046** · S · `def:outListSorted`, `lem:mem-outListSorted`, `def:edgeListSorted`,
   `lem:mem-edgeListSorted` (`executable.tex`): the two out-neighbour nodes assume $V$ finite, and
   the two edge-list nodes take a finite simple graph $G$. The pins `outListSorted` and
@@ -2067,6 +2079,7 @@ declaration's name as its header writes it:
   *Evidence:* read (`#check` of the eight pins through `lake lean`, and their bodies in
   `PebbleGame/Exec.lean`).
   *Found:* round 1 task 5.16.
+  *Disposition:* reported (`notes/Prose-report.md`, S42).
 - **F-048** · S · `def:body-hinge-framework`, `thm:body-hinge-tay` (`body-hinge.tex`): the
   definition gives each hinge an $(n-2)$-dimensional affine subspace, "equivalently" a
   $(\delta-1)$-dimensional space of bar coordinates dual to it. Its pin `Graph.BodyHingeFramework`
@@ -2080,6 +2093,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the structure `Graph.BodyHingeFramework` and the statement of
   `body_hinge_tay`, `BodyBar/BodyHinge.lean`; `notes/Phase16.md` *Decisions*).
   *Found:* round 2 task 1.
+  *Disposition:* reported (`notes/Prose-report.md`, S11).
 - **F-049** · S · `lem:rank-rotation-semicont` (`rigidity-matrix.tex`): the statement claims KT
   Lemma 5.2 as the lower-semicontinuity of rank along a panel rotation, then a monotonicity form:
   if $\operatorname{span} C(p(e)) \subseteq \operatorname{span} C(p'(e))$ at every edge, then
@@ -2093,6 +2107,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the two pins' statements and bodies, `Molecular/RigidityMatrix/Basic.lean`;
   KT 2011 pp. 668–669, in `.refs/`).
   *Found:* round 2 task 1.
+  *Disposition:* reported (`notes/Prose-report.md`, S6).
 - **F-051** · S · `thm:matroid-partition-rank` (`matroid-union.tex`): the statement gives the rank
   of every $X \subseteq E$ in the union of any finite family $M_1, \dots, M_k$, and the
   independence criterion for any family. Its pins prove less: `Matroid.Union_rank_eq` gives the
@@ -2104,6 +2119,7 @@ declaration's name as its header writes it:
   `adjMap_rk_eq` with `sum'_rk_eq_rk_sum` would give the family form at every $X$, but no
   declaration states it, and none states the criterion for a family.
   *Found:* round 2 task 2.1.
+  *Disposition:* reported (`notes/Prose-report.md`, S24).
 - **F-058** · S · `thm:tay-witness` (`body-bar.tex`) and `thm:body-hinge-tay` (`body-hinge.tex`):
   both statements assume $d \ge 2$, and their pins `Graph.BodyBarFramework.tay_witness` and
   `Graph.BodyHingeFramework.body_hinge_tay` hold for every $d$, so the statements are weaker than
@@ -2112,6 +2128,7 @@ declaration's name as its header writes it:
   applies `thm:tay-witness` to $(D-1)\cdot G$ for every $d$. Task 2.3 kept every hypothesis.
   *Evidence:* read (the five pins' statements, `BodyBar/TayTheorem.lean` and `BodyHinge.lean`).
   *Found:* round 2 task 2.3.
+  *Disposition:* reported (`notes/Prose-report.md`, S41).
 - **F-060** · S · `lem:case-III-claim612-extensor-span` (`algebraic-induction/case-iii.tex`): the
   statement says that the $D$ two-extensors $\bar p_i \vee \bar p_j$ of $k+2$ linearly independent
   vectors of $K^{k+2}$ span $\bigwedge^k K^{k+2}$, and calls them $k$-extensors. Its pin
@@ -2120,6 +2137,7 @@ declaration's name as its header writes it:
   the omit-two form, so it proves the pin's statement, not the node's.
   *Evidence:* read (the pin's statement, `Molecular/RigidityMatrix/Claim612.lean`).
   *Found:* round 2 task 2.4.
+  *Disposition:* reported (`notes/Prose-report.md`, S9).
 - **F-079** · S · `lem:rk-within-parts` (`deficiency.tex`): the statement bounds $r(Y) + |P|$
   for the set $Y$ of all edges of $\tilde G$ whose ends lie in one part of $P$. Its pin
   `rk_cycleMatroid_within_parts_le` proves the bound for every $Y \subseteq E(\tilde G)$ whose
@@ -2129,6 +2147,7 @@ declaration's name as its header writes it:
   note.
   *Evidence:* read (the statements of both, `Molecular/Deficiency.lean`).
   *Found:* round 2 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, S39).
 - **F-083** · S · `lem:circuit-induces-rigid` (`molecular-induction.tex`): the statement says, as KT
   Lemma 3.4 does, that $X - e$ is the union of $D$ edge-disjoint spanning trees on $V(X)$. Its pins
   `circuit_induces_isTight` (the count $|X - e| + D = D\,|V(X)|$) and
@@ -2140,6 +2159,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the two pins' statements, `Induction/Operations.lean`; the callers of
   `isSpanningTreePacking_of_isTight`).
   *Found:* round 2 task 2.11.
+  *Disposition:* reported (`notes/Prose-report.md`, S23).
 - **F-084** · S · `lem:reduction-step` (`molecular-induction.tex`): the statement says that
   contracting a proper rigid subgraph (`lem:contraction-minimality`) carries a minimal $0$-dof-graph
   to a smaller one. Its pin for that branch, `Graph.contraction_isMinimalKDof` (also
@@ -2156,6 +2176,7 @@ declaration's name as its header writes it:
   the graph form (`lem:rigidContract-isMinimalKDof`).
   *Evidence:* read (the statements of the three declarations, `Induction/Contraction.lean`).
   *Found:* round 2 task 2.11.
+  *Disposition:* reported (`notes/Prose-report.md`, S30).
 - **F-086** · S · `lem:acyclic-insert-vfiber` and `lem:packing-move` (`molecular-induction.tex`):
   both statements take $v$ to be a vertex of degree two of $G$, the setting in which
   `lem:balanced-forest-packing` uses them. Their pins `acyclicSet_insert_vfiber_of_not_inc` and
@@ -2165,6 +2186,7 @@ declaration's name as its header writes it:
   proof says that it is not used.
   *Evidence:* read (the two statements, `Induction/ReducibleVertex.lean`).
   *Found:* round 2 task 2.12.
+  *Disposition:* reported (`notes/Prose-report.md`, S39).
 - **F-101** · S · `thm:minimal-kdof-reduction` (`molecular-induction.tex`): the statement claims KT
   Theorem 4.9 as KT state it, a sequence of minimal $0$-dof-graphs from $G$ to the two-vertex
   double edge, each obtained from the one before by splitting off or by contracting a proper rigid
@@ -2177,6 +2199,7 @@ declaration's name as its header writes it:
   formalization note that (i) is not formalized.
   *Evidence:* read (the statements of the three declarations).
   *Found:* round 2 task 2.16.
+  *Disposition:* reported (`notes/Prose-report.md`, S22).
 - **F-102** · S · `lem:case-cut-edge-realization-gp` (`molecular-induction.tex`): the statement
   assumes that every smaller simple minimal $k'$-dof-graph has a generic full-rank realization. Its
   pin `case_cut_edge_realization_gp_gen` also assumes that every smaller minimal $k'$-dof-graph has
@@ -2187,6 +2210,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the pin's statement and body, `Molecular/AlgebraicInduction/Theorem55.lean`,
   and its call in `theorem_55_minimalKDof_gen`).
   *Found:* round 2 task 2.16.
+  *Disposition:* reported (`notes/Prose-report.md`, S17).
 - **F-107** · S · `lem:chain-cycle-dichotomy` (`molecular-induction.tex`): at the open the
   statement also said that both branches occur: for $d \ge 4$, minimal $0$-dof cycle graphs on
   $4 \le m \le d$ vertices have no chain of length $d$. No pin states this. `isKDof_zero_of_cycle`
@@ -2198,6 +2222,7 @@ declaration's name as its header writes it:
   exactly when $d \ge 4$. The dichotomy itself keeps KT's strength.
   *Evidence:* read (the three pins' statements).
   *Found:* round 2 task 2.17.
+  *Disposition:* reported (`notes/Prose-report.md`, S30).
 - **F-112** · S · `def:meet` (`meet.tex`): at the open the definition also said that the meet of
   the supporting extensors of two subspaces is the supporting extensor of their intersection, and
   that for $a = b = 1$ the meet of two hyperplane normals supports their codimension-$2$
@@ -2209,6 +2234,7 @@ declaration's name as its header writes it:
   (`extensor_join_proportional_complementIso_meet`), and not the general case.
   *Evidence:* read (a `grep` for `meet` in the Lean; the statements of the cited declarations).
   *Found:* round 2 task 2.18.
+  *Disposition:* reported (`notes/Prose-report.md`, S30).
 - **F-113** · S · `lem:complement-iso-decomposable-wedge-perp` (`meet.tex`): the statement says that
   $*(n_1 \vee n_2)$ is orthogonal to every $2$-extensor $n \vee c$ with $n \in \{n_1, n_2\}$, for
   linearly independent $n_1, n_2$. The second and third pins state only $n = n_1$, and assume no
@@ -2216,6 +2242,7 @@ declaration's name as its header writes it:
   of `complementIso_smul_eq_extensor_join` does inline. Task 2.18 kept the statement, with a note.
   *Evidence:* read (the three pins' statements; the body of `complementIso_smul_eq_extensor_join`).
   *Found:* round 2 task 2.18.
+  *Disposition:* reported (`notes/Prose-report.md`, S28).
 - **F-115** · S · `lem:cycle-realization` (`algebraic-induction/case-i.tex`): the statement is KT
   Lemma 5.4 at KT's range, a cycle graph on $3 \le m \le D$ vertices (KT p. 670). Its pin
   `PanelHingeFramework.cycle_realization` assumes `cy.m ≤ n + 1` beside
@@ -2226,6 +2253,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the pin's statement and the step `hnk` of its body,
   `Molecular/AlgebraicInduction/CaseIII/Arms.lean`; KT 2011 pp. 670 and 692, `.refs/`).
   *Found:* round 3 task 1.
+  *Disposition:* reported (`notes/Prose-report.md`, S15).
 - **F-116** · S · `lem:case-I` (`algebraic-induction/case-i.tex`): the statement is KT eq. (6.3)'s
   rank addition: for a minimal $k$-dof-graph $G$ with a proper rigid subgraph $H$, $(G,p)$
   attains the target rank if and only if $\operatorname{rank} R(G,p) = D(|V(H)|-1) +
@@ -2241,6 +2269,7 @@ declaration's name as its header writes it:
   `PanelHinge.lean`); measured (dead pins, `scripts/blueprint-deps.py --label lem:case-I`, at
   `ef57b401`).
   *Found:* round 3 task 1.
+  *Disposition:* reported (`notes/Prose-report.md`, S19).
 - **F-117** · S · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): the
   statement says that each locus $\{p : \operatorname{rank} R(G,p) \ge r\}$ is Zariski-open, so
   the rank is lower semicontinuous and maximal on a dense set, and dually that $\dim Z(G,p)$ is
@@ -2253,6 +2282,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the three statements, `Molecular/AlgebraicInduction/GenericityDevice.lean` and
   `CaseI.lean`).
   *Found:* round 3 task 1.
+  *Disposition:* reported (`notes/Prose-report.md`, S7).
 - **F-121** · S · `prop:rigidity-matrix-prop11` (`algebraic-induction/panel-layer.tex`): the
   statement is KT Proposition 2.3's rank formula, Jackson and Jordán's Theorem 6.1, at a generic
   panel-hinge realization with nondegenerate hinges. Its pin `rigidityMatrix_prop11` takes any
@@ -2273,6 +2303,7 @@ declaration's name as its header writes it:
   prop:rigidity-matrix-prop11` at `efa7ed2b`: `thm:theorem-55`, `lem:motions-mono-of-graph-le`,
   `def:dof-generic` and `lem:genericity-device` unbacked).
   *Found:* round 3 task 2.1.
+  *Disposition:* reported (`notes/Prose-report.md`, S18).
 - **F-122** · S · `def:panel-hinge-framework`, `def:hinge-coplanar`, `thm:molecular-conjecture`
   (`algebraic-induction/panel-layer.tex`): the structure `PanelHingeFramework` records, for every
   edge label, an ordered pair of bodies (`ends`), and computes the hinge from their normals;
@@ -2292,6 +2323,7 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, `Theorem55.lean`; a `grep` for
   `IsHingeCoplanar`).
   *Found:* round 3 task 2.1.
+  *Disposition:* reported (`notes/Prose-report.md`, S2).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2303,6 +2335,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `hasPanelRealization_of_generic`,
   `Molecular/AlgebraicInduction/GenericityDevice.lean`; its callers in `Theorem55.lean`).
   *Found:* round 3 task 2.2.
+  *Disposition:* reported (`notes/Prose-report.md`, S16).
 - **F-125** · S · `cor:theorem-55-d3-spanning` (`algebraic-induction/panel-layer.tex`): the
   statement gives a simple minimal $0$-dof-graph at $d = 3$ a generic full-rank realization with
   $\dim Z(G,p) = D$. Its pin `rankHypothesis_deficiency_of_theorem_55_d3` takes the generic
@@ -2316,6 +2349,7 @@ declaration's name as its header writes it:
   `RankHypothesis`, `Pinning.lean`); measured (`scripts/blueprint-deps.py --label
   cor:theorem-55-d3-spanning` at `db237dfd`, dead pin).
   *Found:* round 3 task 2.2.
+  *Disposition:* reported (`notes/Prose-report.md`, S2).
 - **F-128** · S · `thm:theorem-55-6`, `thm:theorem-55-6-d3`, `thm:theorem-55-6-genuine`
   (`algebraic-induction/panel-layer.tex`): the statements give a simple graph a panel-hinge
   realization at the target rank (with nondegenerate hinges in the third), whose hinge at each edge
@@ -2333,6 +2367,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `reaimSub` and `reaimSubLink`,
   `Molecular/AlgebraicInduction/Theorem55.lean`).
   *Found:* round 3 task 2.3.
+  *Disposition:* reported (`notes/Prose-report.md`, S2).
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
@@ -2346,6 +2381,7 @@ declaration's name as its header writes it:
   `def:rigid-contraction`); measured (dead pin, `scripts/blueprint-deps.py --label`, at
   `9a465598`).
   *Found:* round 3 task 2.7.
+  *Disposition:* reported (`notes/Prose-report.md`, S32).
 - **F-137** · S · `lem:rows-polynomial-in-normals` (`algebraic-induction/case-i.tex`): the statement
   says that the rows of $R(G,n)$ at an edge can be chosen with coordinates that are polynomials of
   degree two in the normals. Task 2.7 added that the hinge at the edge be nondegenerate: the
@@ -2376,6 +2412,7 @@ declaration's name as its header writes it:
   p. 675, `.refs/`); measured (`scripts/blueprint-deps.py --label lem:claim-6-4` and
   `lem:case-I-realization`, at `9a465598`).
   *Found:* round 3 task 2.7.
+  *Disposition:* reported (`notes/Prose-report.md`, S21).
 - **F-141** · S · `lem:case-I-realization`, `lem:case-I-realization-h65`, `lem:case-I-dispatch`
   (`algebraic-induction/case-i.tex`): three statements leave out hypotheses their pins assume.
   `lem:case-I-realization-h65` omits that $G$ has a proper rigid subgraph, which
@@ -2392,6 +2429,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/Theorem55.lean`; KT
   2011 pp. 673--676, `.refs/`).
   *Found:* round 3 task 2.8.
+  *Disposition:* reported (`notes/Prose-report.md`, S14).
 - **F-142** · S · `lem:case-I-realization-nonsimple` (`algebraic-induction/case-i.tex`): the
   statement is KT Lemma 6.2 for every $d \ge 2$; its pin `case_I_realization_nonsimple` is the case
   $d = 3$ (`hn : bodyBarDim n = screwDim 2`), a wrapper of `case_I_realization_nonsimple_gen`, the
@@ -2425,6 +2463,7 @@ declaration's name as its header writes it:
   witness: under `hspan`, with no link of the smaller graph at $v$ and a new edge from $v$ to
   $w \neq v$, every screw lies in the span of that edge's extensor.
   *Found:* round 3 task 2.9.
+  *Disposition:* reported (`notes/Prose-report.md`, S4).
 - **F-149** · S · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): read
   with the rigidity matrix of `def:rigidity-matrix`, the statement fails at normals with a
   degenerate hinge. There the hinge constraint welds the two ends (the remark after
@@ -2441,6 +2480,7 @@ declaration's name as its header writes it:
   `IsInfinitesimalMotion`, `Molecular/RigidityMatrix/Basic.lean`; KT 2011 p. 668, `.refs/`); a `lake
   lean` witness: at an edge with a zero supporting extensor every motion has $S(u) = S(v)$.
   *Found:* round 3 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, S7).
 - **F-150** · S · `lem:case-II-realization-placement`
   (`algebraic-induction/genericity-and-count.tex`): the statement starts from a realization of the
   splitting-off $G_v^{ab}$, with nondegenerate hinges and every motion constant on its vertices. Its
@@ -2460,6 +2500,7 @@ declaration's name as its header writes it:
   `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` and
   `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`.
   *Found:* round 3 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, S3).
 - **F-154** · S · `lem:case-III-nested-rank-lower` (`algebraic-induction/case-iii.tex`): the
   statement omits two hypotheses of its pin `exists_nested_rankPolynomial_lower_all_k`, that $G$ is
   simple (`hSimple`) and the induction hypothesis for every $k'$ (`hIH`). Without simplicity it
@@ -2474,6 +2515,7 @@ declaration's name as its header writes it:
   `Molecular/AlgebraicInduction/CaseIII/Realization.lean`; `def:panel-hinge-framework`); the
   example's deficiencies by hand, over the fifteen partitions of its four vertices.
   *Found:* round 3 task 2.11.
+  *Disposition:* reported (`notes/Prose-report.md`, S8).
 - **F-158** · S · `lem:case-III-candidate-row` (`algebraic-induction/case-iii.tex`): the statement
   is KT's count at $(G, p_1)$ (KT pp. 684 and 686): if the top-left block of KT eq. (6.29) is
   nonsingular, $\operatorname{rank} R(G, p_1) \ge D(|V(G)| - 1)$. Its pin
@@ -2495,6 +2537,7 @@ declaration's name as its header writes it:
   `C(n_a + t • n_b, n_a)` (`panelSupportExtensor_add_smul_left`); and
   `hingeRow a b φ = hingeRow v b φ - hingeRow v a φ`.
   *Found:* round 3 task 2.12.
+  *Disposition:* reported (`notes/Prose-report.md`, S20).
 - **F-165** · S · `lem:case-III-claim612-p2-placement`, `lem:case-III-claim612-p3-placement`
   (`algebraic-induction/case-iii.tex`): the statements are KT's counts at $(G, p_2)$ and
   $(G, p_3)$ (KT pp. 686–689): if the block $M_2$ of KT eq. (6.30), or $M_3$ of KT eq. (6.41), is
@@ -2508,6 +2551,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies of the two pins, of `case_III_arm_realization`,
   `_M2` and `_M3`, and of `caseIIICandidate`; KT 2011 pp. 682 and 686–691, `.refs/`).
   *Found:* round 3 task 2.14.
+  *Disposition:* reported (`notes/Prose-report.md`, S20).
 - **F-169** · S · `lem:case-III-chain-discriminator` (`algebraic-induction/case-iii.tex`): the
   statement claims less than its pin and than its consumer uses. It asks for some normals $q$, a
   nonzero form $r$ vanishing on $C(q(v_0), q(v_2))$, and $r(C(q(u_i), n')) \neq 0$ for some panel
@@ -2521,6 +2565,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `chainData_fire_discriminator`, and of
   `exists_shared_redundancy_and_matched_candidate` and `chainData_dispatch`).
   *Found:* round 3 task 2.15.
+  *Disposition:* reported (`notes/Prose-report.md`, S5).
 - **F-174** · S · `thm:molecular-iff-square-bar-joint` (`molecule-modelling.tex`): the statement
   ends "in particular $G$ has an infinitesimally rigid molecular realization iff $G^2$ has an
   infinitesimally rigid bar-joint realization". Its pin `molecular_finrank_motions_eq_square_ker`
@@ -2538,6 +2583,7 @@ declaration's name as its header writes it:
   definition `molecularOfCentres`, `Molecular/Molecule/Dictionary.lean`; the edge count of
   $C_7^2$).
   *Found:* round 4 task 1.
+  *Disposition:* reported (`notes/Prose-report.md`, S31).
 - **F-177** · S · `def:genericRigidityMatroid`, `def:genericRank` (`bar-joint-3d.tex`): at the open
   the first definition ended "By `lem:linearRigidityMatroid-eq-genericRigidityMatroid` the matroid
   does not depend on the choice of $p$", a consequence with a forward `\cref`, and called
@@ -2552,6 +2598,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `genericRigidityMatroid` and `genericRank`; the statement of
   `linearRigidityMatroid_eq_genericRigidityMatroid`).
   *Found:* round 4 task 2.1.
+  *Disposition:* reported (`notes/Prose-report.md`, S37).
 - **F-178** · S · `thm:projective-invariance` (`molecule-modelling.tex`): at the open the statement
   was set in $\R^3$, for an automorphism $\Lambda$ of $\bigwedge^2 \R^4$, and ran eight sentences:
   the projective reading (a collineation or a correlation, Crapo–Whiteley §3.6), the correlation as
@@ -2570,6 +2617,7 @@ declaration's name as its header writes it:
   `RigidityMatrix/Basic.lean`; `pencil.tex` at `lem:pencil-self-dual` and
   `lem:pencil-projective-transport`).
   *Found:* round 4 task 2.2.
+  *Disposition:* reported (`notes/Prose-report.md`, S37).
 - **F-179** · S · `def:hinge-concurrent`, `def:screw-velocity`, `lem:panel-hinge-dual-molecular`
   (`molecule-modelling.tex`): principle B's moves. `def:hinge-concurrent` named the endpoint selector
   and ended on five sentences: the hinge-concurrency it gives (KT p. 671), the converse "carrying the
@@ -2588,6 +2636,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `molecularOfCentres`, `omegaForm`, `tauForm`, `screwVel` and the
   two line lemmas; KT pp. 650, 671; JJ 2008 §2.1; Whiteley 1999 p. 27).
   *Found:* round 4 task 2.2.
+  *Disposition:* reported (`notes/Prose-report.md`, S37).
 - **F-180** · S · `lem:panel-hinge-dual-molecular`, `lem:screw-determination`
   (`molecule-modelling.tex`): statements that claim more or less than their pins. The first's
   "for normals with nonvanishing last coordinate the same holds after the rescaling normalization",
@@ -2601,6 +2650,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the pins; the body of
   `exists_molecular_rankHypothesis_generalPosition`, `Molecule/Modelling.lean`).
   *Found:* round 4 task 2.2.
+  *Disposition:* reported (`notes/Prose-report.md`, S29).
 - **F-183** · S · `thm:molecular-iff-square-bar-joint` (`molecule-modelling.tex`): task 2.3's call
   on `F-174`, by anchoring. The statement's last sentence read "In particular $G$ has an
   infinitesimally rigid molecular realization iff $G^2$ has an infinitesimally rigid bar-joint
@@ -2622,6 +2672,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `molecular_finrank_motions_eq_square_ker`;
   `molecularOfCentres`; JJ 2008 §2.1; KT pp. 650, 671; Whiteley 1999 p. 27).
   *Found:* round 4 task 2.3.
+  *Disposition:* reported (`notes/Prose-report.md`, S31).
 - **F-184** · S · `thm:panel-hinge-iff-molecular`, `lem:theorem-56-general-position`,
   `def:general-position-placement` (`molecule-modelling.tex`): principle B's moves and anchoring.
   The theorem's "simple spanning graph on at least one body, with enough hinge labels", its "endpoint
@@ -2643,6 +2694,7 @@ declaration's name as its header writes it:
   `exists_rankHypothesis_isGeneralPosition4`, `IsGeneralPosition4` and
   `IsGeneralPositionPlacement`).
   *Found:* round 4 task 2.3.
+  *Disposition:* reported (`notes/Prose-report.md`, S36).
 - **F-187** · S · `lem:molecule-graph-carrier` (`molecule-application.tex`): the label supply left
   the statement. At the open it read "There is a multigraph $G'$ on $V$, spanning and simple, with an
   edge between distinct $u, v$ if and only if $u \sim_G v$, and with strictly more than $6(|V| -
@@ -2658,6 +2710,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the five pins and the body of `shadowGraph`,
   `Molecule/Carrier.lean`; the signature of `exists_molecular_rankHypothesis_generalPosition`).
   *Found:* round 4 task 2.4.
+  *Disposition:* reported (`notes/Prose-report.md`, S35).
 - **F-188** · S · `lem:square-rank-le-genericRank` (`molecule-application.tex`): the statement's
   second form, "Equivalently, $\operatorname{rank} R(H, p) \le r_d(H)$", has no pin. The pin
   `finrank_span_rigidityRow_le_genericRank` bounds the span of the rows of $K_V$ at $E(H)$; the
@@ -2667,6 +2720,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of both declarations, `GenericRigidityMatroid.lean`; the body of
   `molecule_rank_lower_bound`).
   *Found:* round 4 task 2.4.
+  *Disposition:* reported (`notes/Prose-report.md`, S26).
 - **F-191** · S · `lem:exists-tight-partition`, `lem:partitionDef-merge`,
   `lem:tight-partition-cross-pair-mult`, `lem:tight-partition-cross-pair-nbr` (`jacobs.tex`): four
   statements assume a hypothesis that their pins do not. The first asks $V(G)$ nonempty;
@@ -2681,6 +2735,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the four pins, `Molecular/Deficiency.lean`; JJ 2008 §§3
   and 5).
   *Found:* round 4 task 2.5.
+  *Disposition:* reported (`notes/Prose-report.md`, S39).
 - **F-195** · S · `thm:laman-square-count`, `lem:normal-cross-count-rooted`,
   `lem:normal-cross-count-partition` and the lemmas of `sec:jacobs-counting` (`jacobs.tex`):
   statements that assume more, or claim more, than their pins. The theorem asks $V$ nonempty;
@@ -2697,6 +2752,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the slice's 25 pins, `JacobsCounting.lean`, `Jacobs.lean`,
   `SquareGraph.lean`; the body of `laman_square_count`).
   *Found:* round 4 task 2.6.
+  *Disposition:* reported (`notes/Prose-report.md`, S39).
 - **F-206** · S · `def:generic-normals`, `lem:generic-normals-nondegenerate`,
   `lem:panel-witness-transplant`, `thm:panel-generic-rank`, `cor:panel-generic-rigid`
   (`generic-lift.tex`): the endpoint selector, the label set and the spanning left the statements.
@@ -2716,6 +2772,7 @@ declaration's name as its header writes it:
   which `F-207` shows are not innocuous.
   *Evidence:* read (the statements of the eight pins, `GenericLift/PanelGeneric.lean`).
   *Found:* round 4 task 2.9.
+  *Disposition:* reported (`notes/Prose-report.md`, S34).
 - **F-207** · S · `thm:panel-generic-rank`, `cor:panel-generic-rigid` (`generic-lift.tex`): the
   pins hold vacuously at every graph that is itself a minimal $k$-dof-graph. Both take `hends`
   (every edge label links its selector pair in $G$, so $E(G)$ is the whole label set) and `hfresh`
@@ -2733,6 +2790,7 @@ declaration's name as its header writes it:
   `e₀ ∉ E(G)` and `(hends e₀).edge_mem` gives `e₀ ∈ E(G)`. A single edge is minimal: its $D - 1$
   copies are independent in $M(\tilde G)$, the only base, and $\operatorname{def}(\tilde G) = 1$.
   *Found:* round 4 task 2.9.
+  *Disposition:* reported (`notes/Prose-report.md`, S1).
 
 - **F-211** · S · `def:two-extensor`, `def:generic-endpoints` (`generic-lift.tex`): principle B's
   moves out of two definitions, task 2.10's hygiene-rule reading. At the open `def:two-extensor`
@@ -2749,6 +2807,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `twoExtensor`, `twoExtensorPoly`, `twoExtensorPoly_eval` and
   `IsGenericEndpoints`, `BodyBar/GenericLift.lean`).
   *Found:* round 4 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, S37).
 - **F-212** · S · `def:generic-endpoints`, `lem:generic-endpoints-abundance`
   (`generic-lift.tex`): the statements give an endpoint pair to each bar of $G$, and a polynomial
   "in the $2d\,|E(G)|$ endpoint coordinates". The pins give a pair to every edge label
@@ -2761,6 +2820,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of `ofEndpoints`, `IsGenericEndpoints` and
   `exists_isGenericEndpoints_abundance`, and the body of the last).
   *Found:* round 4 task 2.10.
+  *Disposition:* reported (`notes/Prose-report.md`, S13).
 
 - **F-216** · S · `def:generic-hinge-points`, `lem:hinge-rows-polynomial-in-points`,
   `lem:generic-hinge-points-abundance`, `lem:exists-generic-hinge-points`,
@@ -2783,6 +2843,7 @@ declaration's name as its header writes it:
   pin of the slice takes `hfresh`, so `F-207`'s vacuity does not arise here.
   *Evidence:* read (the statements of the seven pins, `GenericLift/HingeGeneric.lean`).
   *Found:* round 4 task 2.11.
+  *Disposition:* reported (`notes/Prose-report.md`, S34).
 - **F-217** · S · `lem:hinge-rows-polynomial-in-points` (`generic-lift.tex`): the statement claims a
   polynomial "of degree at most $d - 1$" ("at most $k$" at the open), and no pin states a degree
   bound. `hingeExtensorPoly` is the $k \times k$ minor of a matrix whose entries are indeterminates
@@ -2792,6 +2853,7 @@ declaration's name as its header writes it:
   total degree of the determinant), or drop it from the statement.
   *Evidence:* read (the bodies of the two pins; no degree lemma in `HingeGeneric.lean`).
   *Found:* round 4 task 2.11.
+  *Disposition:* reported (`notes/Prose-report.md`, S27).
 
 - **F-221** · S · `lem:hinge-point-witness`, `thm:bodyhinge-generic-rank`,
   `cor:bodyhinge-generic-rigid`, `cor:bodyhinge-generic-tree-packing` (`generic-lift.tex`): the
@@ -2812,6 +2874,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the seven pins, `GenericLift/HingeGeneric.lean`,
   `Extensor.lean`).
   *Found:* round 4 task 2.12.
+  *Disposition:* reported (`notes/Prose-report.md`, S34).
 - **F-234** · S · `lem:forest-surgery-unsplit` (`molecular-induction.tex`; unfilled): no declaration
   proves its statement. `splitOff_indep_extend_of_fiber_lt`, the pin `F-091` names, proves the form
   of independent sets: for $D \ge 2$, a vertex $v$ of $G$ of degree two whose edges join it to
@@ -2825,6 +2888,7 @@ declaration's name as its header writes it:
   declaration for the forest form; retiring the node is `F-091`'s other option (task 8.2).
   *Evidence:* read (the pin's statement; the node's statement and proof).
   *Found:* round 5 task 3.4.
+  *Disposition:* reported (`notes/Prose-report.md`, S10).
 - **F-239** · S · `lem:case-II-placement-old-rows-extract`, `lem:case-II-placement-block-independent`
   (`algebraic-induction/genericity-and-count.tex`): each states a special case of its pins, which
   other nodes cite in general. The first is stated for a realization of a graph $G_v^{ab}$ obtained
@@ -2840,6 +2904,7 @@ declaration's name as its header writes it:
   `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` and
   `linearIndependent_sum_pinned_block`; the citing proofs).
   *Found:* round 5 task 3.8.
+  *Disposition:* reported (`notes/Prose-report.md`, S38).
 
 ## L — Lean
 

@@ -12,12 +12,11 @@ every chapter, so the graph has none. Task 5, the node order, split by entry, is
 moved `F-019`'s theorem to the end of `sparsity.tex`, tasks 5.2–5.3 thirteen nodes after the nodes
 they use, so that no edge of `deficiency.tex` or `molecular-induction.tex` points at a later
 chapter, task 5.4 four blocks of the algebraic induction (`F-119`), and task 5.5 left `pencil.tex`'s
-order, which only a regrouping would change. Task 6, terminology and notation, is done: KT's $d$
-for the dimension and $\vee$ for the join in `pencil.tex` and `main-component.tex`, the core of
-`jacobs.tex` told apart from the contracted one, and `meet.tex`'s parts numbered. Task 7 aligned
-`README.md`, the home page and `formalization.yaml` with the chapters. No task edits the Lean or
-changes a statement's strength. **Next concrete task:** task 8.1, the findings report's `S` group
-(*Hand-off*). Round manual: `CLEANUP.md`.
+order, which only a regrouping would change. Task 6 aligned the terminology and notation of
+`pencil.tex`, `main-component.tex`, `jacobs.tex` and `meet.tex`, and task 7 `README.md`, the home
+page and `formalization.yaml` with the chapters. Task 8.1 wrote the findings report's `S` part,
+`notes/Prose-report.md`. No task edits the Lean or changes a statement's strength. **Next
+concrete task:** task 8.2, the report's `L` and `M` part (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -28,15 +27,16 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 7 has landed** (this commit; docs only, no TeX and no Lean): the six U entries' dispositions,
-and `README.md`, `home_page/index.md` and `formalization.yaml` aligned with the chapters they name
-(the checklist line). Nothing is mid-stream; the next task is task 8.1.
+**Task 8.1 has landed** (this commit; docs only, no TeX and no Lean): `notes/Prose-report.md`,
+whose Part 1 groups the 67 `S` entries into eight kinds and ranks the 65 open ones in 42 items,
+and the disposition `reported` on those 65 (`F-137` and `F-142` stay `done`). Nothing is
+mid-stream; the next task is task 8.2.
 
-**The gate's baseline, at task 7** (2026-10-15; the same as task 4.9's):
+**The gate's baseline, at task 8.1** (2026-10-15; the same as task 4.9's):
 - `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 588 lines**, sha256 prefix
   **`2e4cbc2acd13d193`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
-  regenerate it on this commit), byte-identical to task 4.9's, as at tasks 5.1–6. Tasks 8–9 keep
-  it byte-identical.
+  regenerate it on this commit), byte-identical to task 4.9's, as at tasks 5.1–7. Tasks 8.2–9
+  keep it byte-identical.
 - `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1501 edges
   11033da1dbaa0fae`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 692 nodes,
@@ -44,7 +44,7 @@ and `README.md`, `home_page/index.md` and `formalization.yaml` aligned with the 
   84 + 145 unbacked, 177 dead, 12 nodes with four or more pins. Task 5 moved nodes between the
   chapter rows (task 5.4: `case-i` 24 nodes, 36 pins, 156 implied; `panel-layer` 39, 55, 203; the
   `case-ii` row after `genericity-and-count`'s). No node is drawn `#9CEC8B` (`F-007`).
-- **The forward screen at task 5's end**, unchanged at tasks 6–7 (*Scope*; task 9 re-runs it
+- **The forward screen at task 5's end**, unchanged at tasks 6–8.1 (*Scope*; task 9 re-runs it
   beside the open's table):
   `rigidity-matroid` 2/2 0/0, `rigidity-matrix` 3/2 0/0, `molecular-induction` 0/0 2/2,
   `panel-layer` 10/4 1/1, `case-i` 14/6 0/0, `case-ii` 1/1 0/0 and `pencil` 3/2 1/1: 33 edges to a
@@ -216,19 +216,18 @@ gate's diff, which each task makes exact before editing.
 - [x] **6. T — terminology and notation** (`04ed99ec`, follow-up `34f61fd9`; `F-056`, `F-067`,
   `F-072`, `F-073`, `F-127`, `F-203`, `F-227`, all done): KT's $d$ and $\vee$ in `pencil.tex` and
   `main-component.tex`, the two cores told apart, `meet.tex`'s items plain. The dump byte-identical.
-- [x] **7. U — status surfaces** (this commit; `F-099`, `F-173`, `F-204`, `F-226`, `F-229`,
+- [x] **7. U — status surfaces** (`30c4b950`; `F-099`, `F-173`, `F-204`, `F-226`, `F-229`,
   `F-231`, all done): `formalization.yaml`, `README.md` and `home_page/index.md` aligned with the
   chapters they name, `F-229`'s phrases on all three, Jacobs 1998's DOI (Crossref); no
   `declaration:` changed, `F-025`'s lines left for task 8.2; the dispositions carry the rest. The
   dump byte-identical to `34f61fd9`'s, the screen unchanged.
 - [ ] **8. R — the findings report** (`notes/Prose.md` §3 *R*), in `notes/Prose-report.md`. Each
   `S`, `L` and `M` entry gets the disposition `reported`; the report is not a stop.
-  - [ ] **8.1 The `S` group** (65 entries at the open, 67 with `F-234` and `F-239`): grouped by
-    the kind of divergence, deduplicated and ranked, each with its evidence, a suggested
-    disposition and a commit estimate. It is presented as one group, statements whose blueprint
-    and formal texts disagreed after the formalization was declared complete, for what they show
-    about the limits of autoformalization (the PI, 2026-10-12, §1). It lists `F-137` and `F-142`
-    in the group as resolved in passing by task 3.7's repins; their dispositions stay `done`.
+  - [x] **8.1 The `S` group** (this commit; 67 entries, recounted): `notes/Prose-report.md` Part
+    1, one group with what it shows about autoformalization (§1.1; the PI, 2026-10-12), eight
+    kinds ranked (§1.2), 42 items merged from the 65 open entries, each with evidence, a suggested
+    disposition and an estimate (§1.3–§1.4); `F-137` and `F-142` listed as resolved by task 3.7,
+    still `done`; 65 dispositions `reported`. Expected: no TeX, the dump byte-identical to task 7's.
   - [ ] **8.2 The `L` and `M` groups, the left graph findings, and the follow-up** (61 `L` at the
     open, 76 with this round's, and 6 `M`; the `E` and `N` entries left for a merge, a retirement
     or a Lean change). The report's rest, and an unqueued ROADMAP bullet proposing the follow-up
@@ -288,22 +287,25 @@ None.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 8.1, the findings report's `S` group** (Opus, a fresh agent), in a new
-`notes/Prose-report.md`: the `S` entries (67 at task 7, the open's 65 with this round's `F-234`
-and `F-239`) grouped by the kind of divergence, deduplicated and ranked, each with its evidence,
-a suggested disposition and a commit estimate, presented as one group for what they show about
-the limits of autoformalization (the checklist line; `notes/Prose.md` §1, 2026-10-12, and §3
-*R*). Each gets the disposition `reported`; `F-137` and `F-142` stay `done`. Recount at pickup
-(`grep -c '· S ·' notes/Prose-findings.md`); if the report does not fit one commit, split it by
-group of divergences in the checklist line and land the first. No TeX: the dump stays
-byte-identical to task 7's (*Current state*). Then task 8.2.
+**Next concrete task: task 8.2, the report's Part 2** (Opus, a fresh agent), appended to
+`notes/Prose-report.md`: the `L` entries (76 at task 8.1: the open's 61 with this round's 15) and
+the 6 `M` entries, grouped by kind, deduplicated and ranked, each with its evidence, a suggested
+disposition and a commit estimate, as Part 1 does; the `E` and `N` entries whose disposition is
+`left`, wholly or in part, for a merge, a retirement or a Lean change (Part 1's items S2–S4, S7,
+S10, S20, S21 and S30 point at some of them); the stale honesty-gate example (the checklist line);
+and an unqueued ROADMAP bullet proposing the follow-up program, drawing on Part 1's §1.4. Each `L`
+and `M` entry gets the disposition `reported`. Recount at pickup (`grep -c '· L ·'` and
+`'· M ·'` on the ledger); if Part 2 does not fit one commit, split it by group in the checklist
+line and land the first. No TeX: the dump stays byte-identical to task 7's (*Current state*).
+Then task 9, the close.
 
 ## Decisions made during this round
 
 - **The slicing** (the open): 31 tasks; the order is the tooling, N, E, the node order, T, U, R, X.
   Task 5 is split by entry into 5.1–5.5 (tasks 5.1–5.2), as task 4 was by chapter group.
 - **The `## uses:` section** (task 2): every labelled environment with a `\uses`, parts sorted.
-- **The report's home** is `notes/Prose-report.md`; the ledger keeps each finding.
+- **The report's home** is `notes/Prose-report.md`; the ledger keeps each finding. Part 1 (task
+  8.1) ranks the `S` entries in kinds and items, and each entry's disposition names its item.
 - **Try each change on a scratch copy, and predict the whole dump** (tasks 3.1–3.2). Edit a copy
   of `blueprint/src`, read its `--tex-root` report, and predict the after-dump with
   `predict-dump.sh` (the script's `ancestors_map` and `transitive_reduction` and leanblueprint's
@@ -323,29 +325,14 @@ byte-identical to task 7's (*Current state*). Then task 8.2.
   paragraph is its proof prose; a definition with a proof takes a pin's body reach there. A missing
   edge drawn by a pinned proof step, or a definition pinned on another's node, is added and the pin
   filed (`F-247`–`F-249`). A remark in a node's `\uses` becomes a `\cref` in its proof (`F-007`).
-- **What keeps an unbacked edge** (tasks 4.1–4.9). A transitive one is a use by the pins, even
-  where the ledger finds the text does not use it (`F-129`, left), as is one through an unpinned
-  declaration that states the target's object (`def:pinned-motions-on`'s $\operatorname{pinned}(v)$).
-  One with no Lean basis stays when the statement names a symbol the target defines, states or
-  takes its object ("let $r$ be the form of"), or assumes its conclusion (the honesty gate's case
-  (b)), takes a panel-hinge framework, or writes $d_G$ as `def:D-deficiency` does; and when a proof
-  cites the node for a step, though a note says the formal proof skips it (`F-183`), cites "the
-  remark after" it, or applies its claim in a step taken "as in" a proof that cites it (task 4.9).
-- **What is no use** (tasks 4.1–4.9). A citation in a lead-in, a remark or a formalization note; an
-  argument followed or a construction repeated ("as in the proof of", "as for", "as in", "the
-  argument of", "we reverse the argument of", the fact "behind" a node; `F-175`), even where the
-  ledger put the edge on the proof (`F-089`); a comparison; a citation after a proof's conclusion,
-  or one deriving a further form there; one for how Katoh and Tanigawa attain a claim, of a general
-  form, or of an example ("For instance"); and one that says why a step is needed rather than
-  making it (task 4.8: `lem:pencil-cut-case`'s of the biconditional's converse).
-- **`def:rank-hypothesis`, repoints and moves** (tasks 4.3–4.9). A statement on $\dim Z = D + k'$,
-  on motions constant on a set or on rigidity on $V(G)$ takes no edge to `def:rank-hypothesis`, as
-  no realization at a target rank enters. A removed edge's `\cref` is repointed at the node that
-  defines the sentence's object: `def:trivial-motions-rigid` for such rigidity (task 4.8),
-  `def:pencil-lifting-system` for the system at a picture, not its form with weights (task 4.9).
-  An unbacked statement edge that only the proof cites for a step moves to the proof; one that the
-  proof already names is removed, not moved (`F-105`); backed statement edges that only the proof
-  uses, which the ledger does not list, stay.
+- **What keeps an unbacked edge** (tasks 4.1–4.9): a use by the pins, transitive ones included, or
+  by the text (a symbol, object or conclusion the statement takes, a step the proof cites); the
+  commits `9eb2c776`–`60c88e44` carry each case.
+- **What is no use** (tasks 4.1–4.9): a citation in a lead-in, remark or note, an argument followed
+  ("as in", `F-175`), a comparison, or one after a proof's conclusion; the same commits.
+- **`def:rank-hypothesis`, repoints and moves** (tasks 4.3–4.9): no edge where no realization at a
+  target rank enters; a removed edge's `\cref` points at the node defining the sentence's object;
+  an unbacked statement edge only the proof cites moves to it, or goes if it names it (`F-105`).
 - **The node order** (tasks 5.1–5.5). A forward edge's target moves, with its subsection or its
   group, ordered so its edges point back, to the chapter that defines its objects, before its
   first user; a moved block changes only a sentence that would point forward. A move that leaves a
