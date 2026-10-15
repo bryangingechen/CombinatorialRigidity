@@ -42,7 +42,8 @@ generic.
 
 \begin{lemma}[The rank at a placement is at most the generic rank]
   \label{lem:square-rank-le-genericRank}
-  \lean{SimpleGraph.finrank_span_rigidityRow_le_genericRank}
+  \lean{SimpleGraph.finrank_span_rigidityRow_le_genericRank,
+    SimpleGraph.finrank_range_rigidityMap_le_genericRank}
   \leanok
   \uses{def:genericRank, lem:genericRigidityMatroid-indep-iff}
   Let $H$ be a graph on a finite set $V$, and let $p$ be a placement of
@@ -56,7 +57,7 @@ generic.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:k-frame-incidence-finrank-rk}
+  \uses{lem:k-frame-incidence-finrank-rk, lem:span-range-rigidityRow}
   The linear rigidity matroid $\mathcal{L}_p(V)$ is represented by the
   extended rigidity rows $\tilde r_e$ at $p$
   (\cref{def:linearRigidityMatroid}), and $\tilde r_e = r_e$ for every
@@ -69,15 +70,21 @@ generic.
   independent in $\mathcal{R}_d(V)$
   (\cref{lem:genericRigidityMatroid-indep-iff}). Hence the rank of $E(H)$
   in $\mathcal{L}_p(V)$ is at most its rank $r_d(H)$ in
-  $\mathcal{R}_d(V)$. The rank of $R(H, p)$ is the dimension of the same
-  span, as in the proof of \cref{lem:rigidityMap-rank-at-generic}.
+  $\mathcal{R}_d(V)$.
+
+  The rank of $R(H, p)$ is the dimension of the same span. Indeed,
+  $R(H, p)$ has the same rank as its transpose, whose image is spanned by
+  the rigidity rows of $H$ at $p$ (\cref{lem:span-range-rigidityRow}).
+  For an edge $uv$ of $H$, the row of $H$ at $uv$ is
+  $x \mapsto \langle p_u - p_v,\, x_u - x_v \rangle$
+  (\cref{lem:rigidityMap-apply}), which is also the row $r_{uv}$ of
+  $K_V$.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned lemma states the bound for the span. The bound for
-  $\operatorname{rank} R(H, p)$ is a separate lemma of the
-  formalization, which the proof of \cref{lem:molecule-rank-lower-bound}
-  uses.
+  The first pin states the bound for the span, and the second the bound
+  for $\operatorname{rank} R(H, p)$, which the proof of
+  \cref{lem:molecule-rank-lower-bound} uses.
 \end{fmlnote}
 
 \subsection{Simple graphs as multigraphs}
@@ -95,16 +102,19 @@ step is the following lemma.
     SimpleGraph.card_shadowLabel_lt}
   \leanok
   Let $G$ be a simple graph on a finite set $V$. Then there is a simple
-  multigraph $G'$ with vertex set $V$ in which two distinct vertices are
+  multigraph $G'$ with vertex set $V$, whose edges are drawn from a set
+  of more than $6(|V| - 1)$ labels, in which two distinct vertices are
   joined by an edge if and only if they are adjacent in $G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  For each edge $uv$ of $G$, let $G'$ have one edge joining $u$ and $v$,
-  labelled by the pair $\{u, v\}$. Distinct edges of $G'$ have distinct
-  labels, hence distinct pairs of ends, and no edge is a loop, as $G$ has
-  none. So $G'$ is simple, and its edges join exactly the adjacent pairs
-  of $G$.
+  Take as labels the $|V|(|V| + 1)/2$ unordered pairs of elements of
+  $V$ and $6(|V| - 1) + 1$ further labels, more than $6(|V| - 1)$ in
+  all. For each edge $uv$ of $G$, let $G'$ have one edge joining $u$ and
+  $v$, labelled by the pair $\{u, v\}$. Distinct edges of $G'$ have
+  distinct labels, hence distinct pairs of ends, and no edge is a loop,
+  as $G$ has none. So $G'$ is simple, and its edges join exactly the
+  adjacent pairs of $G$.
 \end{proof}
 
 \begin{fmlnote}
@@ -112,16 +122,13 @@ step is the following lemma.
   objects. The square and the generic rank are defined for simple graphs,
   and the deficiency and the frameworks of \cref{sec:molecule-modelling}
   for multigraphs, whose edges are drawn from a fixed set of labels
-  (\cref{fmlnote:graph-operations}). The pinned $G'$ draws its labels from
-  the $|V|(|V| + 1)/2$ unordered pairs of elements of $V$, which label its
-  edges, and from $6(|V| - 1) + 1$ further labels, which no edge uses. So
-  it has more than $6(|V| - 1)$ labels, as the pinned form of
-  \cref{thm:panel-hinge-iff-molecular} asks
-  (\cref{rem:fresh-edge-supply}). The pairs alone are too few when
-  $2 \le |V| \le 9$. The first pin is $G'$, the next three are its
-  simplicity, its vertex set and its edges, and the fifth is the bound
-  on its labels. The pinned forms of the three results below state
-  the deficiency of $G'$, and apply the results of
+  (\cref{fmlnote:graph-operations}). The pinned form of
+  \cref{thm:panel-hinge-iff-molecular} asks for more than $6(|V| - 1)$
+  labels (\cref{rem:fresh-edge-supply}), and the pairs alone are too
+  few when $2 \le |V| \le 9$. The first pin is $G'$, the next three are
+  its simplicity, its vertex set and its edges, and the fifth is the
+  bound on its labels. The pinned forms of the three results below
+  state the deficiency of $G'$, and apply the results of
   \cref{sec:molecule-modelling} to $G'$.
 \end{fmlnote}
 

@@ -2838,7 +2838,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the five pins and the body of `shadowGraph`,
   `Molecule/Carrier.lean`; the signature of `exists_molecular_rankHypothesis_generalPosition`).
   *Found:* round 4 task 2.4.
-  *Disposition:* reported (`notes/Prose-report.md`, S35).
+  *Disposition:* done (task 8): the statement claims what its pins prove, with the bound as a
+  clause ("whose edges are drawn from a set of more than $6(|V| - 1)$ labels",
+  `card_shadowLabel_lt`); the proof builds the labels, and the note keeps why the bound is needed
+  and the pins' roles.
 - **F-188** · S · `lem:square-rank-le-genericRank` (`molecule-application.tex`): the statement's
   second form, "Equivalently, $\operatorname{rank} R(H, p) \le r_d(H)$", has no pin. The pin
   `finrank_span_rigidityRow_le_genericRank` bounds the span of the rows of $K_V$ at $E(H)$; the
@@ -2848,7 +2851,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of both declarations, `GenericRigidityMatroid.lean`; the body of
   `molecule_rank_lower_bound`).
   *Found:* round 4 task 2.4.
-  *Disposition:* reported (`notes/Prose-report.md`, S26).
+  *Disposition:* done (task 8): the node also pins `finrank_range_rigidityMap_le_genericRank` for
+  the rank form, its note naming each pin's clause; its proof derives the rank form, its new edge
+  to `lem:span-range-rigidityRow` per the pin's reach.
 - **F-191** · S · `lem:exists-tight-partition`, `lem:partitionDef-merge`,
   `lem:tight-partition-cross-pair-mult`, `lem:tight-partition-cross-pair-nbr` (`jacobs.tex`): four
   statements assume a hypothesis that their pins do not. The first asks $V(G)$ nonempty;
@@ -2984,7 +2989,9 @@ declaration's name as its header writes it:
   total degree of the determinant), or drop it from the statement.
   *Evidence:* read (the bodies of the two pins; no degree lemma in `HingeGeneric.lean`).
   *Found:* round 4 task 2.11.
-  *Disposition:* reported (`notes/Prose-report.md`, S27).
+  *Disposition:* done (task 8): the statement claims a polynomial, without the bound, as the pin
+  proves; the proof and the abundance proof's citation say "polynomial", and the note no longer
+  says that no pin states the bound. The docstrings' bound is `F-220`'s.
 
 - **F-221** · S · `lem:hinge-point-witness`, `thm:bodyhinge-generic-rank`,
   `cor:bodyhinge-generic-rigid`, `cor:bodyhinge-generic-tree-packing` (`generic-lift.tex`): the
