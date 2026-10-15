@@ -5,9 +5,9 @@ the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot
 the authority for which rounds are done. Docs and blueprint prose only: the scopes of S1 and S2 on
 the status surfaces, M1's "for simple graphs", M2's and M5's credits read against the two PDFs,
 §2.6's stale example in an agent manual, and the non-vacuity rule. No node, edge or pin changes,
-and no Lean edit. Nine one-commit tasks; tasks 1 (the open) and 2 (S1's scope) are done. **Next
-concrete task:** task 3, S2's scope on the status surfaces (Opus, a fresh agent). Round manual:
-`CLEANUP.md`.
+and no Lean edit. Nine one-commit tasks; tasks 1–3 (the open, S1's and S2's scopes) are done.
+**Next concrete task:** task 4, M1's "for simple graphs" in `body-hinge.tex` (Opus, a fresh agent).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,13 +17,13 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–2 are done**; task 2, S1's scope, is this commit (docs and one `intro.tex` paragraph).
-Next: task 3 (*Hand-off*). Task 2's gates gave the open's values: `lint.sh` green; `verify.sh`
+**Tasks 1–3 are done**; task 3, S2's scope, is this commit (docs and one `intro.tex` paragraph).
+Next: task 4 (*Hand-off*). Task 3's gates gave the open's values: `lint.sh` green; `verify.sh`
 green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges 11033da1dbaa0fae`,
 `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical) and `--summary` the
 same bytes; `print.log` rebuilt, 0 `LaTeX Warning` lines; the regenerated harness `cmp`-identical;
-the no-Lean-edit diff empty. The witness `scratch/reconcile-texts/S1Witness.lean` is clean under
-`lake lean`.
+the no-Lean-edit diff empty. The witness `scratch/reconcile-texts/S2Witness.lean` is clean under
+`lake lean`, its three theorems on the standard axioms.
 
 **Verified at the open** (2026-10-15, at `f39e35e6`, whose Lean and blueprint are round 5's close
 tree, `62175c74`):
@@ -106,12 +106,12 @@ One commit per task, in this order; each line gets its commit's sha. A task's li
 IDs and report items it acts on, its rung and its surfaces (lines as at the open).
 
 - [x] **1. Open** (`0638fd12`; docs only): this log, the baselines, the task list, `F-251`.
-- [x] **2. S1 — the generic body-hinge theorem's scope** (this commit; `F-207` in part, `F-252`):
+- [x] **2. S1 — the generic body-hinge theorem's scope** (`8ee0f8a8`; `F-207` in part, `F-252`):
   the scope beside both theorems in `formalization.yaml` (row, two `alignment` notes), README, the
   home page, `intro.tex` and ROADMAP §34; the remark's reading checked by a `lake lean` witness.
-- [ ] **3. S2 — KT Theorem 5.6's and the molecular conjecture's scope** (`F-122`, `F-128`, in part;
-  `F-251`; report S2; Opus). Read `PanelHingeFramework` (its `ends`), `RankHypothesis`,
-  `hingeConstraint`, `panelSupportExtensor_ne_zero_iff`, and the statements of
+- [x] **3. S2 — KT Theorem 5.6's and the molecular conjecture's scope** (this commit; `F-122`,
+  `F-128`, in part; `F-251`; report S2; Opus). Read `PanelHingeFramework` (its `ends`),
+  `RankHypothesis`, `hingeConstraint`, `panelSupportExtensor_ne_zero_iff`, and the statements of
   `rankHypothesis_of_theorem_55_gen` (`Theorem55.lean:2880`), `molecular_conjecture` and
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (2615). Then say what the two cover today,
   each claim checked against those bodies (the endpoint selector is free and hinges may be
@@ -202,14 +202,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 3, S2's scope** (Opus, a fresh agent): read the declarations its line names (bodies
-and statements), then state what KT Theorem 5.6 and the molecular conjecture cover today beside
-the proved link-recording form, on the surfaces its line names, and qualify `F-251`'s paragraph,
-under gates 1–7. Task 2 shifted the lines the later tasks name (the open's numbering):
-`formalization.yaml` +9 after 459, +16 after 720 and +20 after 726 (task 3's 580–582 and 674 are
-589–591 and 683); README +11 after 151 (its Phase 35 sentence now starts at 162); the home page +6
-after 134; `intro.tex` +8 after 244; ROADMAP +3 after 1026 (its *References* entries for Laman and
-Lovász–Yemini are now 1377 and 1379). Re-`grep` as ever. Then tasks 4–9 in order.
+**Next: task 4, M1** (Opus, a fresh agent): `body-hinge.tex`'s two passages say that
+`cor:bodyhinge-generic-tree-packing` is for simple graphs, with the rest of its scope read from its
+pin's signature, under gates 1–6 (no `formalization.yaml` edit, so no gate 7). Tasks 2–3 shifted
+some lines the later tasks name (the open's numbering): `formalization.yaml`'s `alignment` sources
+for Laman and Lovász–Yemini (602, 607) are now 636 and 641, its other named lines unchanged;
+ROADMAP's *References* entries for Laman and Lovász–Yemini (1372, 1374) are 1383 and 1385, its
+other named lines unchanged; `intro.tex` 114 is 127; README's and the home page's named lines are
+unchanged; `body-hinge.tex`, `DESIGN.md`, `blueprint/CLAUDE.md`, `PHASE-BOUNDARIES.md` and
+`CLEANUP.md` are untouched. Re-`grep` as ever. Then tasks 5–9 in order.
 
 ## Decisions made during this round
 
@@ -226,3 +227,11 @@ Lovász–Yemini are now 1377 and 1379). Re-`grep` as ever. Then tasks 4–9 in 
   to the theorem in `body_hinge_tay`'s row and `alignment` note, README 92 and the home page 82 lead
   to the scoped text, and stay. `F-252`'s sharper reading stays off the surfaces: its tree's
   minimality is argued, not witnessed.
+- **S2's surfaces** (task 3): ROADMAP §23 too, where the conjecture's statement is described.
+  Theorem 5.6's row now credits the rank formula to the nondegenerate form, as the upper bound
+  needs it. The KT `sources` note and `status.scope` point at the rows and `fidelity.divergences`,
+  which carry the scope, and stay. That the link-recording form gives the conjecture's panel side
+  at each edge's ends is witnessed (`molecular_conjecture`'s proof on that form); the texts say no
+  declaration states it. The free selector does not reach the multigraph theorems:
+  `HasCoplanarPanelRealization` puts each link's hinge in its own ends' panels, with nonzero
+  normals and hinges. No new entry.

@@ -1966,7 +1966,9 @@ declaration's name as its header writes it:
   results' rows; the paragraph names no exception.
   *Evidence:* read (`formalization.yaml` lines 580–582 at `f39e35e6`; `notes/Prose-report.md` §1.2).
   *Found:* RECONCILE round 1 task 1.
-  *Disposition:* open (`notes/Reconcile-texts-cleanup.md`, task 3).
+  *Disposition:* done (task 3): the paragraph says the blueprint aims at the exact form, that a
+  2026 review found statements claiming more or less than their declarations, which a cleanup acts
+  on, and names the main results whose rows state their scope (S1's and S2's).
 
 ## S — statement strength
 
@@ -2347,7 +2349,14 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, `Theorem55.lean`; a `grep` for
   `IsHingeCoplanar`).
   *Found:* round 3 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, S2).
+  *Disposition:* reported (`notes/Prose-report.md`, S2); round 1: the molecular conjecture's
+  scope stated (its panel side places no condition on the selector, so its body-hinge to
+  panel-hinge direction concludes less than a panel-hinge realization) on its `main_results` row,
+  its and JJ 2008's `alignment` entries, README, the home page, `intro.tex` and ROADMAP §23, beside
+  the link-recording form, which gives the panel side with each hinge at its edge's ends by the
+  same argument (a `lake lean` witness, script not retained: `molecular_conjecture`'s proof with
+  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` in place of the genuine form proves the
+  iff with the link conjunct on the panel side) (task 3).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2391,7 +2400,16 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `reaimSub` and `reaimSubLink`,
   `Molecular/AlgebraicInduction/Theorem55.lean`).
   *Found:* round 3 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, S2).
+  *Disposition:* reported (`notes/Prose-report.md`, S2); round 1: KT Theorem 5.6's scope stated
+  (degenerate hinges, the free selector, and the all-zero-normals framework meeting the conclusion
+  at deficiency zero for every spanning graph; a `lake lean` witness, script not retained: with
+  `normal := 0` every hinge is zero, `Graph.preconnected_of_isKDof_zero` makes each motion
+  constant, and `rankHypothesis_zero_iff` gives the conclusion) on its `main_results` row and
+  `alignment` entry,
+  README, the home page, `intro.tex` and ROADMAP §23, beside the proved form
+  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, named in the text only; the row's
+  rank-formula sentence now takes that form, as the upper bound needs nondegenerate hinges
+  (task 3).
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is

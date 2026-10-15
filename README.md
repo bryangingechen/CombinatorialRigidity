@@ -105,16 +105,30 @@ panel-hinge framework — is a theorem of the development
 is a pin joining two bodies and each panel is a line, the molecular
 conjecture is Jackson–Jordán's 2008 theorem on pin-collinear body-and-pin
 frameworks; the development proves it over every infinite field, by
-Katoh–Tanigawa's argument (phase 40). On top of it sits the molecule
-application: the generic bar-joint rigidity matroid in dimension three in
-linear-matroid form (phase 24), projective invariance plus the molecule
-modelling equivalence identifying bar-joint motions of the square graph
-`G²` with molecular and panel-hinge motions of `G` (phase 25), and the
-capstone **molecule rank formula** `r(G²) = 3|V| − 6 − def(G̃)` for a graph
-of minimum degree at least two (Jackson–Jordán 2008, Katoh–Tanigawa
-Corollary 5.7; `SimpleGraph.molecule_rank_formula`, phase 26) — the
-combinatorial flexibility count for a molecule modelled on `G`. The
-per-phase status table is on the
+Katoh–Tanigawa's argument (phase 40). As stated, these two simple-graph
+theorems leave out conditions: the formal panel-hinge framework records,
+for each edge, a pair of bodies whose panels meet in its hinge, and
+neither statement requires that pair to be the edge's own ends.
+Theorem 5.6's statement also allows degenerate hinges, so for a graph
+of deficiency zero a framework whose panel normals are all zero meets
+its conclusion. The form with both conditions — every hinge
+nondegenerate and the meet of the panels of its edge's ends — is
+proved for simple graphs on at least two bodies
+(`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`), and by the
+same argument gives the molecular conjecture's panel side in that form,
+though no declaration states it; a planned refactor builds the
+condition into the framework. The multigraph forms (phase 35, below)
+place each hinge in the panels of its edge's ends. On top of these
+results sits the molecule application: the generic bar-joint rigidity
+matroid in dimension three in linear-matroid form (phase 24), projective
+invariance plus the molecule modelling equivalence identifying bar-joint
+motions of the square graph `G²` with molecular and panel-hinge motions
+of `G` (phase 25), and the capstone **molecule rank formula**
+`r(G²) = 3|V| − 6 − def(G̃)` for a graph of minimum degree at least two
+(Jackson–Jordán 2008, Katoh–Tanigawa Corollary 5.7;
+`SimpleGraph.molecule_rank_formula`, phase 26) — the combinatorial
+flexibility count for a molecule modelled on `G`. The per-phase status
+table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 

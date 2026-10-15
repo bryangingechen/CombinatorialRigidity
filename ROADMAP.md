@@ -752,7 +752,13 @@ chain `v₀…v_d`, eqs. 6.46–6.67), completed Theorems 5.5 and 5.6 at general
 (`PanelHingeFramework.molecular_conjecture`: a simple spanning graph on ≥ 2
 bodies has an infinitesimally rigid genuine **body-hinge** realization iff it
 has one as a **panel-hinge** framework; green + axiom-clean for
-`6 ≤ bodyBarDim n`, i.e. `n ≥ 3`; weakened to `n ≥ 2` in place by Phase 40a). The work split along the recon's
+`6 ≤ bodyBarDim n`, i.e. `n ≥ 3`; weakened to `n ≥ 2` in place by Phase 40a).
+As stated, its panel side and Theorem 5.6's conclusion
+(`rankHypothesis_of_theorem_55_gen`) leave the endpoint selector free, and
+Theorem 5.6's also allows degenerate hinges, so at deficiency zero all-zero
+normals meet it; the link-recording form with nondegenerate hinges is
+`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (`F-122`, `F-128`;
+the refactor is `RECONCILE-FORMAL`'s). The work split along the recon's
 carrier-grade fault line: **`CARRIER`** (23a, the mechanical `screwDim k`
 spine lift), **`CHAIN`** (23b–23f — the general-`d` chain dispatch; after the
 `±r`-block rank cert hit the *member-mapping wall* (source-verified intrinsic
@@ -1274,8 +1280,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `RECONCILE-FORMAL`: the link condition becomes a field of `PanelHingeFramework` (S2), the
   generic body-hinge and panel theorems stop being vacuous at minimal graphs (S1), the generic
   body-hinge theorem's multigraph form, and the claims no declaration states. Round 1,
-  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 3,
-  S2's scope (KT Theorem 5.6 and the molecular conjecture) on the status surfaces.
+  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 4,
+  M1's "for simple graphs" in `body-hinge.tex`.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
