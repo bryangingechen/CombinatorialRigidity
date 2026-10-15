@@ -25,7 +25,7 @@ satisfy it (\cref{lem:moment-curve-general-position}).
   \label{def:panel-support-extensor}
   \lean{CombinatorialRigidity.Molecular.panelSupportExtensor}
   \leanok
-  \uses{def:join, def:meet-complement-iso, def:hinge-constraint}
+  \uses{def:join, def:meet-complement-iso, def:screw-space}
   Let $n_1, n_2 \in K^{d+1}$. The \emph{panel support extensor} of $n_1$
   and $n_2$ is
   \[
@@ -278,7 +278,7 @@ Theorem~5.6~\cite[p.~670]{katohTanigawa2011}.
   \label{prop:rigidity-matrix-prop11}
   \lean{CombinatorialRigidity.Molecular.rigidityMatrix_prop11}
   \leanok
-  \uses{def:rigidity-matrix, def:D-deficiency, thm:def-eq-corank, def:dof-generic, lem:genericity-device}
+  \uses{def:rigidity-matrix, def:D-deficiency, def:dof-generic}
   Let $G = (V, E)$ be a multigraph with $V \neq \emptyset$, and let
   $(G,p)$ be a generic panel-hinge realization of $G$
   (\cref{def:dof-generic}) whose hinges are all nondegenerate. Then
@@ -291,7 +291,7 @@ Theorem~5.6~\cite[p.~670]{katohTanigawa2011}.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55, lem:deficiency-rank-bound,
-        lem:motions-mono-of-graph-le}
+        lem:motions-mono-of-graph-le, lem:minimal-kdof-spanning-subgraph}
   Let $k = \operatorname{def}(\tilde G)$. Since
   $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$
   (\cref{def:rigidity-matrix}), the claim is that
@@ -375,7 +375,7 @@ the rigid cycles of KT Lemma~5.4, which Case~III uses.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.HasFullRankRealization,
         CombinatorialRigidity.Molecular.PanelHingeFramework.HasGenericFullRankRealization}
   \leanok
-  \uses{def:rigidity-matrix, def:k-dof}
+  \uses{def:rigidity-matrix, def:k-dof, def:panel-general-position}
   Let $G = (V, E)$ be a multigraph with $V \neq \emptyset$. A panel-hinge
   realization $(G,p)$ of $G$ (\cref{def:panel-hinge-framework}) is
   \emph{at the target rank} if
@@ -483,7 +483,8 @@ realization gives a nondegenerate-hinge one.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:general-position-support-nonzero}
+  \uses{lem:general-position-support-nonzero,
+    lem:panel-support-extensor-join}
   Let $(G,p)$ be a generic full-rank realization with normals $n_v$. It
   is at the target rank. Each normal $n_v$ is nonzero, since $|V| \ge 2$
   gives a body $w \neq v$, and $n_v$ and $n_w$ are linearly independent.
@@ -538,7 +539,7 @@ later in this subsection, and Cases~I, II and~III, which
         thm:minimal-kdof-reduction-all-k,
         lem:theorem-55-base-producer, lem:theorem-55-base,
         lem:case-cut-edge-realization, lem:case-cut-edge-realization-gp,
-        lem:case-I, lem:case-II, lem:case-I-realization, lem:case-I-all-k,
+        lem:case-I, lem:case-I-realization, lem:case-I-all-k,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
   minimal $k$-dof-graph with $|V| \ge 2$. Then $G$ has a
@@ -553,7 +554,7 @@ later in this subsection, and Cases~I, II and~III, which
   \leanok
   \uses{thm:minimal-kdof-reduction-all-k, lem:theorem-55-base-producer,
         lem:theorem-55-base, lem:case-cut-edge-realization,
-        lem:case-cut-edge-realization-gp, lem:case-I, lem:case-II,
+        lem:case-cut-edge-realization-gp, lem:case-I,
         lem:case-I-realization, lem:case-I-all-k, lem:case-II-realization,
         lem:case-III, lem:case-III-nested-rank-lower, lem:chain-data-extract}
   For a multigraph $H$, let $P(H)$ say that $H$ has a nondegenerate-hinge
@@ -1051,7 +1052,7 @@ hinges with linearly independent extensors make the two bodies rigid.
   \label{lem:theorem-55-base}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_base}
   \leanok
-  \uses{def:rank-hypothesis, lem:rank-parallel-full}
+  \uses{lem:rank-parallel-full}
   Let $(G,p)$ be a body-hinge framework, and let $e_1$ and $e_2$ be edges
   of $G$ that both join the bodies $u \neq v$, with $C(p(e_1))$ and
   $C(p(e_2))$ linearly independent. Then every infinitesimal motion $S$
@@ -1075,7 +1076,7 @@ linearly independent extensors in one panel.
   \label{lem:extensor-pair-in-panel}
   \lean{CombinatorialRigidity.Molecular.exists_linearIndependent_extensor_pair_perp}
   \leanok
-  \uses{def:extensor, lem:extensor-independence}
+  \uses{def:extensor, lem:extensor-independence, def:screw-space}
   Let $n \in K^4$. Then there are vectors $p_0, p_1, q_0, q_1$ in
   $n^{\perp} = \{x \in K^4 : x \cdot n = 0\}$ such that the extensors
   $p_0 \vee p_1$ and $q_0 \vee q_1$ are linearly independent in
@@ -1118,6 +1119,7 @@ generic full-rank realization. The graph of case (iii) is not simple.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:moment-curve-general-position}
   By \cref{lem:two-vertex-trichotomy},
   $\operatorname{def}(\tilde G) = k = D(|V| - 1)$, so the target rank
   $D(|V| - 1) - \operatorname{def}(\tilde G)$ is $0$. As $G$ has no edge,
@@ -1133,7 +1135,7 @@ generic full-rank realization. The graph of case (iii) is not simple.
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge_gen,
         CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge_gp_gen}
   \leanok
-  \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy,
+  \uses{def:rank-hypothesis, def:genuine-hinge-realization,
         lem:extensor-pair-in-panel, def:rigidity-matrix}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a minimal
   $1$-dof-graph with two vertices and one edge, which joins them. Then
@@ -1143,7 +1145,9 @@ generic full-rank realization. The graph of case (iii) is not simple.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:extensor-pair-in-panel, def:rigidity-matrix, lem:edge-rows-independent}
+  \uses{lem:extensor-pair-in-panel, def:rigidity-matrix, lem:edge-rows-independent,
+    lem:general-position-support-nonzero,
+    lem:moment-curve-general-position, lem:rows-polynomial-in-normals}
   Let the edge $e$ of $G$ join $x$ and $y$. As
   $\operatorname{def}(\tilde G) = 1$, the target rank is
   $D(2 - 1) - 1 = D - 1$. The rows of $R(G,p)$ are the $D - 1$ rows of
@@ -1164,7 +1168,7 @@ generic full-rank realization. The graph of case (iii) is not simple.
   \label{lem:theorem-55-base-producer-parallel}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_parallel_pair_gen}
   \leanok
-  \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy, lem:theorem-55-base,
+  \uses{def:genuine-hinge-realization, lem:theorem-55-base,
         lem:extensor-pair-in-panel}
   Let $d \ge 2$, and let $G$ be a minimal $0$-dof-graph with two vertices
   and two edges, each of which joins them. Then $G$ has a
@@ -1173,7 +1177,9 @@ generic full-rank realization. The graph of case (iii) is not simple.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:theorem-55-base, lem:extensor-pair-in-panel}
+  \uses{lem:theorem-55-base, lem:extensor-pair-in-panel,
+    lem:case-II-placement-old-rows-extract,
+    lem:isInfRigidOn-of-relative-count}
   We follow Katoh and Tanigawa's proof of their Lemma~5.3 (KT p.~670).
   Let the edges $e$ and $f$ of $G$ join $x$ and $y$. Give $x$ and $y$ the
   same nonzero normal $n$, so that their panels coincide. Give $e$ and $f$
@@ -1249,7 +1255,7 @@ $m = 3$. The three-vertex realization of Case~III
   \label{lem:theorem-55-triangle}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_triangle}
   \leanok
-  \uses{def:rank-hypothesis, lem:rank-parallel-full}
+  \uses{def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework, let $u$, $v$ and $w$ be distinct
   bodies, and let $e_1$, $e_2$ and $e_3$ be edges of $G$ that join $u$ to
   $v$, $v$ to $w$, and $w$ to $u$. Suppose that $C(p(e_1))$, $C(p(e_2))$
@@ -1258,7 +1264,6 @@ $m = 3$. The three-vertex realization of Case~III
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-parallel-full}
   We argue as in the proof of KT Lemma~5.3 (\cref{lem:rank-parallel-full}).
   By the hinge constraints (\cref{def:hinge-constraint}), there are
   scalars $\lambda_1$, $\lambda_2$ and $\lambda_3$ with
@@ -1274,8 +1279,7 @@ $m = 3$. The three-vertex realization of Case~III
   \label{lem:triangle-normals}
   \lean{CombinatorialRigidity.Molecular.exists_triangle_normals}
   \leanok
-  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
-        lem:extensor-independence}
+  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence}
   Let $d \ge 2$. Then there are $n_0, n_1, n_2 \in K^{d+1}$ such that the
   extensors $C(n_0, n_1)$, $C(n_1, n_2)$ and $C(n_2, n_0)$ are linearly
   independent. In particular, $n_0 \vee n_1$, $n_1 \vee n_2$ and
@@ -1283,7 +1287,7 @@ $m = 3$. The three-vertex realization of Case~III
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:panel-support-extensor-independence, lem:extensor-independence}
+  \uses{lem:panel-support-extensor-independence}
   Let $e_0, \dots, e_d$ be the standard basis of $K^{d+1}$, and let
   $n_i = e_i$ for $i = 0, 1, 2$, which is possible as $d \ge 2$. The
   joins $e_a \vee e_b$ with $a < b$ are linearly independent (the remark
@@ -1306,8 +1310,7 @@ next lemma gives normals with such hinges for $m \le d + 1$.
   \label{lem:cycle-normals}
   \lean{CombinatorialRigidity.Molecular.exists_cycle_normals}
   \leanok
-  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
-        lem:extensor-independence}
+  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence}
   Let $3 \le m \le d + 1$. Then there are
   $n_0, \dots, n_{m-1} \in K^{d+1}$ such that the $m$ extensors
   $C(n_i, n_{i+1})$, with indices mod $m$, are linearly independent. In
@@ -1315,7 +1318,7 @@ next lemma gives normals with such hinges for $m \le d + 1$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:panel-support-extensor-independence, lem:extensor-independence}
+  \uses{lem:panel-support-extensor-independence}
   We argue as for \cref{lem:triangle-normals}, with $n_i = e_i$ for
   $0 \le i \le m - 1$; this uses $m \le d + 1$. Up to sign, the joins
   $n_i \vee n_{i+1}$ are the $e_a \vee e_b$ with $a < b$ for the pairs
@@ -1391,7 +1394,7 @@ to $G'$ is the panel-hinge framework $(G', n)$
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_infinitesimalMotions_eq,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_pinnedMotions_eq}
   \leanok
-  \uses{def:framework-with-normal}
+  \uses{def:framework-with-normal, lem:rank-delete-vertex}
   Let $(G, n)$ be a panel-hinge framework, let $v$ be a body, and let
   $(G, n')$ be obtained by replacing the normal of $v$
   (\cref{def:framework-with-normal}). Then each edge of $G$ whose ends

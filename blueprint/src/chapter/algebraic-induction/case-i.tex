@@ -48,7 +48,7 @@ frameworks. For panel-hinge frameworks it reads as follows.
   \label{lem:cycle-realization-base}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_zero}
   \leanok
-  \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:theorem-55-base}
+  \uses{def:panel-hinge-framework, lem:theorem-55-base}
   Let $(G,p)$ be a panel-hinge framework, and let $e_1$ and $e_2$ be
   edges of $G$ that both join the bodies $u \neq v$, with $C(p(e_1))$ and
   $C(p(e_2))$ linearly independent. Then every infinitesimal motion $S$
@@ -57,7 +57,7 @@ frameworks. For panel-hinge frameworks it reads as follows.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:theorem-55-base}
+  \uses{lem:theorem-55-base, lem:trivial-motions-rank-bound}
   This is \cref{lem:theorem-55-base} for the body-hinge interpretation of
   $(G,p)$ (\cref{def:panel-hinge-framework}). An infinitesimally rigid
   framework on two bodies has rank $D(2 - 1) = D$
@@ -110,8 +110,7 @@ reduction.
   \lean{CombinatorialRigidity.Molecular.exists_independent_panelSupportExtensor,
         CombinatorialRigidity.Molecular.exists_independent_normalsJoin}
   \leanok
-  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
-        lem:extensor-independence}
+  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence}
   Let $m \le D$. Then there are $a_i, b_i \in K^{d+1}$ for
   $1 \le i \le m$ such that the extensors $C(a_i, b_i)$ are linearly
   independent, and so are the joins $a_i \vee b_i$.
@@ -135,7 +134,7 @@ consecutive hinges share a normal. For a cycle, the normals of
   \label{lem:cycle-realization-rigid}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_cycle}
   \leanok
-  \uses{def:rank-hypothesis, lem:cycle-realization-base}
+  \uses{def:trivial-motions-rigid}
   Let $(G,p)$ be a body-hinge framework, let $m \ge 1$, and let
   $v_0, \dots, v_{m-1}$ be bodies, not necessarily distinct. Let
   $f_0, \dots, f_{m-1}$ be edges of $G$ such that $f_i$ joins $v_i$ and
@@ -148,7 +147,6 @@ consecutive hinges share a normal. For a cycle, the normals of
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-parallel-full}
   We argue as for KT Lemma~5.3 (\cref{lem:rank-parallel-full}) and
   \cref{lem:theorem-55-triangle}, which are the cases $m = 2$ and $m = 3$
   with distinct bodies. Let $S$ be an infinitesimal motion. By the hinge
@@ -185,7 +183,7 @@ KT p.~691). The formalization takes such steps by the next lemma.
 \begin{proof}
   \leanok
   \uses{def:panel-general-position, lem:case-II-placement-old-rows-extract,
-        lem:isInfRigidOn-of-relative-count}
+        lem:isInfRigidOn-of-relative-count, lem:independent-rows-of-rank}
   The normals $q_0$ need not be in general position. As $(G, q_0)$ is
   infinitesimally rigid on $V(G)$ and its hinges are nondegenerate, some
   $D(|V(G)| - 1)$ rows of $R(G, q_0)$ are linearly independent
@@ -221,8 +219,7 @@ KT p.~691). The formalization takes such steps by the next lemma.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.cycle_realization}
   \leanok
   \uses{def:rigidity-matrix, def:rank-hypothesis, def:cycle-data, def:k-dof,
-        lem:cycle-realization-base, lem:cycle-realization-dim-bound,
-        lem:cycle-realization-rigid, lem:cycle-normals, lem:genericity-device}
+        lem:cycle-realization-rigid, lem:cycle-normals}
   Let $K$ be an infinite field, let $3 \le m \le D$, and let $G$ be a
   cycle on $m$ vertices (\cref{def:cycle-data}) that is a minimal
   $0$-dof-graph. Then $G$ has a generic full-rank realization
@@ -396,9 +393,8 @@ when $G$ and $G/E(H)$ are simple.
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn,
         CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn}
   \leanok
-  \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
-        lem:rank-delete-vertex, def:pinned-motions-on,
-        lem:pinned-motions-on-rank-bound, lem:genericity-device}
+  \uses{lem:rank-delete-vertex, def:pinned-motions-on,
+        lem:pinned-motions-on-rank-bound, def:rank-hypothesis}
   Let $G$ be a minimal $k$-dof-graph, let $H$ be a proper rigid subgraph
   of $G$, and let $G/E(H)$ be its contraction to a vertex $r$ of $H$.
   Let $(G,p)$ be a body-hinge framework, and let $(G/E(H), p_2)$ be a
@@ -413,7 +409,7 @@ when $G$ and $G/E(H)$ are simple.
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:pinned-motions-on-rank-bound,
-        lem:genericity-device}
+    lem:rigidContract-isMinimalKDof}
   By KT Lemma~3.5 (\cref{lem:rigidContract-isMinimalKDof}), $G/E(H)$ is
   a minimal $k$-dof-graph. It has $|V(G)| - |V(H)| + 1$ vertices
   (\cref{def:rigid-contraction}), so
@@ -513,7 +509,7 @@ framework of eq.~(6.7) is of this kind.
   \label{lem:case-I-splice-seed}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_of_splice}
   \leanok
-  \uses{def:framework-with-graph, def:rank-hypothesis, lem:case-I}
+  \uses{def:framework-with-graph, def:rigid-contraction}
   Let $(G,p)$ be a body-hinge framework, let $H$ be a proper rigid
   subgraph of $G$, and let $G/E(H)$ be its contraction to a vertex $r$ of
   $H$, with vertex set $s_c = (V(G) \setminus V(H)) \cup \{r\}$. Suppose
@@ -665,8 +661,7 @@ and \cref{lem:claim-6-4} states the claim.
   \label{lem:claim-6-4}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidContract_exterior_rank_transport_htransport}
   \leanok
-  \uses{def:rigidity-matrix, def:rigid-contraction, lem:rank-delete-vertex,
-        lem:contraction-minimality}
+  \uses{def:rigidity-matrix, def:rigid-contraction, lem:rank-delete-vertex}
   Let $G$ be a simple minimal $0$-dof-graph, let $H$ be a proper rigid
   subgraph of $G$, and let $G/E(H)$ be its contraction to a vertex $r$ of
   $H$, with vertex set $s_c = (V(G) \setminus V(H)) \cup \{r\}$. Suppose
@@ -678,7 +673,10 @@ and \cref{lem:claim-6-4} states the claim.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-delete-vertex, lem:contraction-minimality}
+  \uses{lem:rank-delete-vertex, lem:general-position-support-nonzero,
+    lem:case-II-placement-old-rows-extract,
+    lem:independent-rows-of-rank, lem:isInfRigidOn-of-relative-count,
+    lem:rank-polynomial-proj-eval}
   Let $N = D(|s_c| - 1)$, and let $f$ map every body of $V(H)$ to $r$ and
   fix the other bodies. By KT Lemma~3.5
   (\cref{lem:rigidContract-isMinimalKDof}), $G/E(H)$ is a minimal
@@ -770,7 +768,7 @@ and KT Lemma~6.5, and finally the case split.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_all_k_gen}
   \leanok
   \uses{def:rank-hypothesis, lem:case-I, lem:rigidContract-isMinimalKDof,
-        lem:rank-polynomial-IH-relabel-proj, lem:genericity-device,
+        lem:rank-polynomial-IH-relabel-proj,
         lem:rows-polynomial-in-normals, lem:isInfRigidOn-of-relative-count,
         def:genuine-hinge-realization}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a simple
@@ -783,8 +781,11 @@ and KT Lemma~6.5, and finally the case split.
 \begin{proof}
   \leanok
   \uses{lem:rows-polynomial-in-normals, lem:rank-polynomial-IH-relabel-proj,
-        lem:genericity-device, lem:case-I, lem:rigidContract-isMinimalKDof,
-        lem:isInfRigidOn-of-relative-count, lem:subgraph-minimality}
+        lem:case-I, lem:rigidContract-isMinimalKDof,
+        lem:isInfRigidOn-of-relative-count, lem:subgraph-minimality,
+        lem:case-II-placement-old-rows-extract,
+        lem:relative-deficiency-rank-bound,
+        lem:moment-curve-general-position}
   By KT Lemma~3.3 (\cref{lem:subgraph-minimality}), $H$ is a minimal
   $0$-dof-graph. By KT Lemma~3.5 (\cref{lem:rigidContract-isMinimalKDof}),
   $G/E(H)$ is a minimal $k$-dof-graph, with the vertex set
@@ -919,7 +920,9 @@ Lemma~6.5 below uses the same product with a factor of a third kind.
   \leanok
   \uses{lem:extensor-pair-in-panel, lem:theorem-55-base,
         lem:relative-deficiency-rank-bound, lem:rigidityRows-splice-rank-add,
-        lem:extProj-preserves-rank-of-inter}
+        lem:extProj-preserves-rank-of-inter,
+        lem:case-II-placement-old-rows-extract,
+        lem:isInfRigidOn-of-relative-count}
   A minimal $k$-dof-graph has no loops, as in the proof of
   \cref{lem:rank-polynomial-IH-relabel-proj}. As $G$ is not simple, it
   has two edges $e \neq f$ that join the same vertices $a \neq b$. Let
@@ -1031,7 +1034,7 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
   \label{lem:case-I-realization-h65}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_h65_gen}
   \leanok
-  \uses{def:rank-hypothesis, lem:genericity-device}
+  \uses{def:rank-hypothesis, def:genuine-hinge-realization}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G$ be a simple
   minimal $0$-dof-graph with $|V(G)| \ge 3$ in which no proper rigid
   subgraph $H$ has a simple contraction $G/E(H)$. Suppose that every
@@ -1042,7 +1045,15 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:claim-6-6, lem:genericity-device}
+  \uses{lem:claim-6-6, lem:case-II-placement-block-independent,
+    lem:case-III-claim612-block-iff-perp,
+    lem:general-position-support-nonzero,
+    lem:generic-realization-of-rigid,
+    lem:panel-support-extensor-independence, lem:rank-parallel-full,
+    lem:rank-polynomial-of-le-finrank,
+    lem:relative-deficiency-rank-bound,
+    lem:span-rigidityRows-eq-of-motions-eq,
+    lem:splitoff-edge-substitution}
   As in KT Lemma~6.5, we assume that $G$ has a proper rigid subgraph (the
   note after the proof). By KT Claim~6.6 (\cref{lem:claim-6-6}), $G$ has
   a vertex $v$ of degree two, joined to two distinct vertices $a$ and

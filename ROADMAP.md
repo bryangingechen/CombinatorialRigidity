@@ -1282,9 +1282,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `jacobs.tex`, with new nodes for tight partitions, for the edges between a family of parts,
   for the root of a cross edge and for two lemmas on the core, and of `main-component.tex`,
   with new nodes for the lifting system, a polynomial section of a kernel and the relabelling of
-  edges, its helpers unpinned and the pins two nodes share kept, and its tasks 4.1–4.3 added the
-  missing edges of rounds 1 and 2's chapters. **Next concrete task:** round 5's task 4.4, the
-  edges of `panel-layer.tex` and `case-i.tex` (its hand-off).
+  edges, its helpers unpinned and the pins two nodes share kept, and its tasks 4.1–4.4 added the
+  missing edges of rounds 1 and 2's chapters, `panel-layer.tex` and `case-i.tex`. **Next concrete
+  task:** round 5's task 4.5, the edges of `case-ii.tex` and `genericity-and-count.tex` (its
+  hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

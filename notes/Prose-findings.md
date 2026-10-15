@@ -427,6 +427,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label thm:theorem-55-6` and `--label
   lem:minimal-kdof-spanning-subgraph`, at `5c65ea52`); read (the pins' bodies).
   *Found:* round 3 task 2.3.
+  *Disposition:* left (task 4.4): `thm:theorem-55-6`'s edge went at task 3.6, which reversed the
+  derivation (the proof of `thm:theorem-55-6-genuine` uses `lem:minimal-kdof-spanning-subgraph`);
+  `thm:theorem-55-6-multigraph`'s stays, as its pins reach `lem:subgraph-minimality` through
+  `thm:theorem-55`'s, a use the edge policy keeps (task 4.1's reading), and the edge to
+  `thm:theorem-55` implies it; its proof already cites `lem:minimal-kdof-spanning-subgraph`.
 - **F-146** · E · `case-ii.tex`'s four nodes (`algebraic-induction/case-ii.tex`): `F-003`'s 15
   missing edges, and the edges the pins do not back. `lem:case-II-realization`'s statement edges to
   `lem:reduction-step-pos` and `lem:rank-polynomial-of-le-finrank` are its proof's; it misses
