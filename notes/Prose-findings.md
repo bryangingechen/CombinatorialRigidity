@@ -956,6 +956,21 @@ declaration's name as its header writes it:
   *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, tasks 12 and 18): the coordinator
   gave the first edge to task 12(b)'s pin move and the move of `lem:case-III-claim612-eq644` to
   task 18.
+- **F-259** · E · `thm:panel-hinge-iff-molecular` (`molecule-modelling.tex`): round 2 task 9's
+  pin for its "In particular", `BodyHingeFramework.rankHypothesis_zero_iff` (`Pinning.lean`), is a
+  general lemma that five earlier nodes' pins call. Pinned at the theorem, it leaves five missing
+  proof edges to it: from `thm:theorem-55-6` and `lem:theorem-56-general-position`, each closing a
+  cycle, and from `thm:molecular-conjecture`, `thm:theorem-55-6-multigraph` and
+  `thm:molecular-conjecture-multigraph` (`panel-layer.tex`), forward. No order cures a cycle, so
+  the task did not make the pin. Pinned instead at `lem:trivial-motions-rank-bound`
+  (`rigidity-matrix.tex`), whose "with equality if and only if $(G,p)$ is infinitesimally rigid"
+  it proves in the dimension form, it leaves no missing edge; the theorem's proof, which cites
+  that node, could then `\uses` it (an implied edge), its note citing it for the "In particular".
+  *Evidence:* measured (`scripts/blueprint-deps.py --label`, `--chapter` and `--summary` on
+  scratch copies of round 2 task 9's parent with the pin at each node, `--tex-root`).
+  *Found:* RECONCILE round 2 task 9.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 9): for the coordinator; the
+  other pin is outside the task's line.
 
 ## N — node shape
 
@@ -2778,7 +2793,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the pins; the body of
   `exists_molecular_rankHypothesis_generalPosition`, `Molecule/Modelling.lean`).
   *Found:* round 4 task 2.2.
-  *Disposition:* reported (`notes/Prose-report.md`, S29).
+  *Disposition:* done (task 9): `lem:polarity-join` is stated over a field $K$, as its first two
+  pins are, its second clause at $K = \R$; `lem:screw-determination`'s (2) as
+  `existsUnique_screwVel_eq` states it, for any family and one non-collinear triple, its note
+  gone. The rescaling keeps its note, which now names its formal form, `lem:pencil-jj-rescale`'s
+  (`F-260`).
 - **F-183** · S · `thm:molecular-iff-square-bar-joint` (`molecule-modelling.tex`): task 2.3's call
   on `F-174`, by anchoring. The statement's last sentence read "In particular $G$ has an
   infinitesimally rigid molecular realization iff $G^2$ has an infinitesimally rigid bar-joint
@@ -2822,7 +2841,9 @@ declaration's name as its header writes it:
   `exists_rankHypothesis_isGeneralPosition4`, `IsGeneralPosition4` and
   `IsGeneralPositionPlacement`).
   *Found:* round 4 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, S36).
+  *Disposition:* reported (`notes/Prose-report.md`, S36); round 2: the "In particular" is not
+  pinned on `rankHypothesis_zero_iff`, as the pin there would leave five missing edges, two of
+  them closing a cycle (`F-259`), so its note stays (task 9).
 - **F-187** · S · `lem:molecule-graph-carrier` (`molecule-application.tex`): the label supply left
   the statement. At the open it read "There is a multigraph $G'$ on $V$, spanning and simple, with an
   edge between distinct $u, v$ if and only if $u \sim_G v$, and with strictly more than $6(|V| -
@@ -3065,6 +3086,20 @@ declaration's name as its header writes it:
   both fibers of $D - 1$, and all $D - 1$ copies of a single edge.
   *Found:* RECONCILE round 1 task 2.
   *Disposition:* reported (`notes/Reconcile-texts-cleanup.md`, *Candidates for the PI*).
+- **F-260** · S · `lem:panel-hinge-dual-molecular` (`molecule-modelling.tex`): its unpinned (2), the
+  rescaling of the normals $\bar c(v)$ by nonzero $\lambda_v$, is the case $q = \bar c$ of
+  `lem:pencil-jj-rescale` (`main-component.tex`), whose pins
+  `PanelHingeFramework.supportExtensor_ofNormals_smul` and `infinitesimalMotions_ofNormals_smul`
+  (`Pencil/MainComponent/Bridge.lean`) state the hinges' scaling and the equal motion spaces at any
+  normals over any field. Round 2's line kept the note "as no declaration states it"; task 9's note
+  names the lemma instead. Sharing the two pins with the node is clean by the reach report: 1011
+  pins (994 distinct), the missing edges still 4, the unbacked transitive ones 84 (85).
+  *Evidence:* read (the two pins' statements); a `lake lean` witness (the two pins at the
+  homogenized centres, `scratch/reconcile-statements/RescaleWitness.lean`, gitignored); measured
+  (`--summary` on a scratch copy with the pins shared, `--tex-root`).
+  *Found:* RECONCILE round 2 task 9.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 9): pin (2) on the two, or
+  keep the note; the coordinator's or the PI's call.
 
 ## L — Lean
 

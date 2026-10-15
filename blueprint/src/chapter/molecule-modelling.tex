@@ -331,22 +331,22 @@ gives its value on joins.
         CombinatorialRigidity.Molecular.screwComplementIso_lineExtensor}
   \leanok
   \uses{def:panel-support-extensor, def:affine-subspace-extensor}
-  Let $*$ be the polarity of $\bigwedge^2 \R^4$. For all
-  $v_0, v_1 \in \R^4$, $*(v_0 \vee v_1) = C(v_0, v_1)$. In particular,
-  for points $a, b \in \R^3$, the polarity sends the extensor
-  $C(a, b) = \bar a \vee \bar b$ to $C(\bar a, \bar b)$.
+  Let $K$ be a field, and let $*$ be the polarity of $\bigwedge^2 K^4$.
+  For all $v_0, v_1 \in K^4$, $*(v_0 \vee v_1) = C(v_0, v_1)$. In
+  particular, for points $a, b \in \R^3$, the polarity of
+  $\bigwedge^2 \R^4$ sends the extensor $C(a, b) = \bar a \vee \bar b$ to
+  $C(\bar a, \bar b)$.
 \end{lemma}
 \begin{proof}
   \leanok
   The first statement holds by the definition of $C(v_0, v_1)$
   (\cref{def:panel-support-extensor}). The second is the first at
-  $v_0 = \bar a$ and $v_1 = \bar b$, as $C(a, b) = \bar a \vee \bar b$
-  (\cref{def:affine-subspace-extensor}).
+  $K = \R$, $v_0 = \bar a$ and $v_1 = \bar b$, as
+  $C(a, b) = \bar a \vee \bar b$ (\cref{def:affine-subspace-extensor}).
 \end{proof}
 
 \begin{fmlnote}
-  The polarity and the first statement are formalized over every field
-  $K$. The pins are the polarity and the two statements, in this order.
+  The pins are the polarity and the two statements, in this order.
 \end{fmlnote}
 
 The polar plane of a point $c \in \R^3$ is
@@ -415,9 +415,13 @@ in the form that we use.
   The first pin is the identity of the two frameworks in (1), and the
   other four are its consequences: the dimensions of the motion spaces,
   the rank hypothesis (\cref{def:rank-hypothesis}), rigidity, and the
-  nondegeneracy of the hinges. Statement (2) has no formal counterpart:
-  the proof of \cref{thm:panel-hinge-iff-molecular} rescales the normals
-  it uses, by the argument above.
+  nondegeneracy of the hinges. Statement (2) is not pinned. Its equality
+  of motion spaces, and the scaling of the hinges by
+  $\lambda_u \lambda_v$ that gives it, are the case of
+  \cref{lem:pencil-jj-rescale} at the normals $\bar c(v)$, a lemma for
+  any normals over any field. The proof of
+  \cref{thm:panel-hinge-iff-molecular} rescales the normals it uses
+  directly, by the argument above.
 \end{fmlnote}
 
 \subsection{Screw velocity fields}
@@ -512,11 +516,12 @@ $x, y \in \R^3$,
   \begin{enumerate}
     \item A screw whose velocity field vanishes at three non-collinear
       points of $\R^3$ is zero.
-    \item Let $(p_i)_{i \in I}$ be a finite family of points of $\R^3$
-      that contains three non-collinear points, such that any three
-      non-collinear points of the family and any fourth member of it
-      are affinely independent. Let $(x_i)_{i \in I}$ be vectors of
-      $\R^3$ with $\langle p_i - p_j,\, x_i - x_j \rangle = 0$ for all
+    \item Let $(p_i)_{i \in I}$ be a family of points of $\R^3$, and let
+      $i_0, i_1, i_2 \in I$ be such that $p_{i_0}, p_{i_1}, p_{i_2}$ are
+      not collinear and, for every $j \in I$ other than $i_0$, $i_1$
+      and $i_2$, the points $p_j, p_{i_0}, p_{i_1}, p_{i_2}$ are
+      affinely independent. Let $(x_i)_{i \in I}$ be vectors of $\R^3$
+      with $\langle p_i - p_j,\, x_i - x_j \rangle = 0$ for all
       $i, j \in I$. Then there is a unique screw $S$ with
       $\mathrm{vel}_S(p_i) = x_i$ for every $i \in I$.
   \end{enumerate}
@@ -532,11 +537,11 @@ $x, y \in \R^3$,
   $S = 0$ (the remarks after \cref{def:screw-velocity}).
 
   (2) Uniqueness follows from (1): two such screws differ by a screw
-  whose velocity field vanishes at three non-collinear points of the
-  family.
+  whose velocity field vanishes at the non-collinear points
+  $p_{i_0}, p_{i_1}, p_{i_2}$.
 
-  For existence, let $q_0, q_1, q_2$ be three non-collinear points of
-  the family, with prescribed velocities $y_0, y_1, y_2$, and let
+  For existence, let $q_k = p_{i_k}$, with prescribed velocity
+  $y_k = x_{i_k}$, for $k = 0, 1, 2$, and let
   $e_i = q_i - q_0$ and $d_i = y_i - y_0$ for $i = 1, 2$. The hypothesis
   on the pairs among $q_0, q_1, q_2$ reads $e_1 \cdot d_1 = e_2 \cdot d_2 = 0$ and
   $e_1 \cdot d_2 + e_2 \cdot d_1 = 0$. We first find $\omega \in \R^3$
@@ -551,12 +556,13 @@ $x, y \in \R^3$,
   $t_S = y_0 - \omega \times q_0$. Then $\mathrm{vel}_S(q_0) = y_0$, and
   $\mathrm{vel}_S(q_i) = y_0 + \omega \times e_i = y_i$ for $i = 1, 2$.
 
-  Let $w$ be a further member of the family, with prescribed velocity
-  $y_w$, and let $r = \mathrm{vel}_S(w) - y_w$. For each $i$, the vector
-  $w - q_i$ is orthogonal to $\mathrm{vel}_S(w) - \mathrm{vel}_S(q_i)$
-  (\cref{lem:screw-velocity-line}) and to $y_w - y_i$ (by hypothesis).
-  As $\mathrm{vel}_S(q_i) = y_i$, it is orthogonal to $r$. The
-  points $w, q_0, q_1, q_2$ are affinely independent, so the vectors
+  Let $j \in I$ be other than $i_0$, $i_1$ and $i_2$, let $w = p_j$, with
+  prescribed velocity $y_w = x_j$, and let
+  $r = \mathrm{vel}_S(w) - y_w$. For $k = 0, 1, 2$, the vector
+  $w - q_k$ is orthogonal to $\mathrm{vel}_S(w) - \mathrm{vel}_S(q_k)$
+  (\cref{lem:screw-velocity-line}) and to $y_w - y_k$ (by hypothesis).
+  As $\mathrm{vel}_S(q_k) = y_k$, it is orthogonal to $r$. By hypothesis
+  the points $w, q_0, q_1, q_2$ are affinely independent, so the vectors
   $w - q_0$, $w - q_1$, $w - q_2$ span $\R^3$, and $r = 0$.
 
   The hypothesis of affine independence cannot be dropped: four coplanar
@@ -568,12 +574,6 @@ $x, y \in \R^3$,
   perpendicular component of a velocity field is an affine function,
   which is determined by its values at three non-collinear points.
 \end{proof}
-
-\begin{fmlnote}
-  The formal version of (2) assumes less. The family may be infinite,
-  and affine independence is asked only of one non-collinear triple of
-  the family together with each further member.
-\end{fmlnote}
 
 \subsection{Molecular realizations in general position}
 \label{sec:molecule-modelling-general-position}
