@@ -41,9 +41,10 @@ these results.
 
 This subsection follows Katoh and
 Tanigawa~\cite[\S2.5 and the start of \S3]{katohTanigawa2011}. We define
-a matroid $M(\tilde G)$ on the edges of $\tilde G$ and the deficiency
+a matroid $M(\tilde G)$ on the edges of $\tilde G$, the deficiency
 $\operatorname{def}(\tilde G)$, a maximum over the partitions of
-$V(G)$. Every base $B$ of $M(\tilde G)$ has
+$V(G)$, and the partitions that attain it. Every base $B$ of
+$M(\tilde G)$ has
 $|B| + \operatorname{def}(\tilde G) = D(|V(G)| - 1)$ (KT eq.~(2.4)),
 which we prove in \cref{sec:molecular-deficiency-bridge}. Then we
 define the $k$-dof-graphs, the multigraphs $G$ with
@@ -128,6 +129,34 @@ Nash-Williams~\cite{tutte1961,nashWilliams1961} (KT
 Proposition~2.2), $\operatorname{def}(\tilde G) = 0$ if and only if
 $\tilde G$ contains $D$ edge-disjoint spanning trees. We prove this for
 $D \ge 2$ in \cref{lem:deficiency-zero-iff-tree-packing}.
+
+Several proofs below start from a partition of $V(G)$ of largest value.
+
+\begin{definition}[Tight partitions]
+  \label{def:tight-partition}
+  \lean{Graph.IsTightPartition}
+  \leanok
+  \uses{def:D-deficiency}
+  Let $G$ be a multigraph. Following Jackson and
+  Jord\'an~\cite[\S2]{jacksonJordan2008}, a partition $P$ of $V(G)$
+  is \emph{tight} if it attains the deficiency, that is, if
+  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$.
+\end{definition}
+
+\begin{lemma}[Tight partitions exist]
+  \label{lem:exists-tight-partition}
+  \lean{Graph.exists_isTightPartition}
+  \leanok
+  \uses{def:D-deficiency, def:tight-partition}
+  Let $G$ be a multigraph whose vertex set is finite and nonempty. Then
+  some partition $P$ of $V(G)$ is tight, that is,
+  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  A finite set has finitely many partitions, so the maximum that
+  defines $\operatorname{def}(\tilde G)$ is attained.
+\end{proof}
 
 The deficiency depends on the dimension $d$ through
 $D = \binom{d+1}{2}$. When $d$ varies, we write
@@ -992,8 +1021,26 @@ eq.~(2.4).
 
 Katoh and Tanigawa prove their Theorem~5.5 by induction on the number of
 vertices, from the case of two
-vertices~\cite[p.~671]{katohTanigawa2011}. The next lemma lists the
-minimal $k$-dof-graphs with two vertices, and with one.
+vertices~\cite[p.~671]{katohTanigawa2011}. The next lemma computes the
+deficiency of the two-vertex double edge, and the one after it lists
+the minimal $k$-dof-graphs with two vertices, and with one.
+
+\begin{lemma}[The two-vertex double edge is a $0$-dof-graph]
+  \label{lem:two-vertex-zero-dof}
+  \lean{Graph.isKDof_zero_of_parallel_pair}
+  \leanok
+  \uses{def:k-dof}
+  Let $D \ge 2$, and let $H$ be a multigraph with two vertices
+  $x \neq y$ and two edges $e_1 \neq e_2$, each joining $x$ and $y$.
+  Then $H$ is a $0$-dof-graph.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The partitions of $V(H)$ are $\{V(H)\}$, of value $0$, and
+  $\{\{x\}, \{y\}\}$. Both edges join the two parts of the second, so
+  its value is $D - 2(D - 1) = 2 - D \le 0$ (\cref{def:D-deficiency}).
+  Hence $\operatorname{def}(\tilde H) = 0$.
+\end{proof}
 
 \begin{lemma}[The minimal $k$-dof-graphs with at most two vertices; KT p.~671]
   \label{lem:two-vertex-trichotomy}
@@ -1022,8 +1069,8 @@ minimal $k$-dof-graphs with two vertices, and with one.
   (\texttt{deficiency\_\allowbreak{}of\_\allowbreak{}single\_\allowbreak{}edge}).
   If $H$ has two edges, each joining
   $x$ and $y$, the second has value $D - 2(D - 1) = 2 - D \le 0$, so
-  $\operatorname{def}(\tilde H) = 0$. This last computation is also
-  \cref{lem:two-vertex-zero-dof}, in the next chapter.
+  $\operatorname{def}(\tilde H) = 0$. This last computation is
+  \cref{lem:two-vertex-zero-dof}.
 
   A minimal $k$-dof-graph has no loops. Indeed, let $p$ be a copy of a
   loop of $G$. Then $\tilde G \restriction \{p\}$ is not

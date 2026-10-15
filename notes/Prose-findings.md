@@ -272,9 +272,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `86b44e1b`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.9.
-  *Disposition:* done (task 4.2): `lem:circuit-rigid`'s unbacked edge removed,
+  *Disposition:* done (tasks 4.2 and 5.3): `lem:circuit-rigid`'s unbacked edge removed,
   `lem:two-vertex-trichotomy`'s two statement edges left to its proof, and the two missing edges
-  added; both point to later chapters (task 5's screen).
+  added; both pointed to later chapters (task 5's screen). Task 5.3 cured both:
+  `lem:two-vertex-zero-dof` moved before `lem:two-vertex-trichotomy`, and `def:tight-partition`
+  with `lem:exists-tight-partition` from `jacobs.tex` to follow `def:D-deficiency`.
 - **F-078** · E · `thm:def-eq-corank`, `lem:rk-within-parts` and
   `lem:deficiency-zero-iff-tree-packing` (`deficiency.tex`): edges the pins do not back, and one
   missing. The statement of `thm:def-eq-corank` uses `lem:rank-matroidMG-le`, which none of its
@@ -321,13 +323,14 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `01aec968`); read (the pins'
   statements).
   *Found:* round 2 task 2.13.
-  *Disposition:* done (task 4.3): `lem:reroute-cycle-lift`'s edge to `lem:reroute-vfree-transport`
-  moved to its proof, which applies the lemma; those of `lem:reverse-pendant-insert` and
-  `lem:reverse-reroute-cycle-lift` removed, as their proofs follow an argument ("as in the proof
-  of", "we reverse the argument of", `F-175`); `lem:forest-surgery-count`'s edge to
-  `lem:balanced-forest-packing` removed, and its proof and `lem:edge-splitting`'s now `\uses`
-  `lem:forest-packing-decomp`; `lem:reverse-reroute-cycle-lift`'s proof edge to
-  `lem:splitoff-edge-substitution` added, a forward edge (task 5).
+  *Disposition:* done (tasks 4.3 and 5.3): `lem:reroute-cycle-lift`'s edge to
+  `lem:reroute-vfree-transport` moved to its proof, which applies the lemma; those of
+  `lem:reverse-pendant-insert` and `lem:reverse-reroute-cycle-lift` removed, as their proofs follow
+  an argument ("as in the proof of", "we reverse the argument of", `F-175`);
+  `lem:forest-surgery-count`'s edge to `lem:balanced-forest-packing` removed, and its proof and
+  `lem:edge-splitting`'s now `\uses` `lem:forest-packing-decomp`; `lem:reverse-reroute-cycle-lift`'s
+  proof edge to `lem:splitoff-edge-substitution` added, a forward edge, which task 5.3 cured by
+  moving that lemma from `case-ii.tex` to follow `def:graph-operations`.
 - **F-093** · E · `lem:splitoff-deficiency` and `lem:removal-deficiency`
   (`molecular-induction.tex`): edges the pins do not back. The statement of
   `lem:splitoff-deficiency` uses `def:matroid-MG` and `thm:def-eq-corank`, which neither of its
@@ -1079,6 +1082,15 @@ declaration's name as its header writes it:
   *Evidence:* read (each node's statement and proof `\uses` against `main.tex`'s chapter order, at
   `ac7bd966`; the check is the third screen under `notes/Prose-molecular-cleanup.md` *Scope*).
   *Found:* round 2 task 1.
+  *Disposition:* done (tasks 5.2–5.3): the nodes moved after the nodes they use. Task 5.2 moved
+  `rigidity-matrix.tex`'s two deficiency bounds to `deficiency.tex`, `lem:block-rank-contract` and
+  KT Claim 6.4's three lemmas to `case-i.tex`, and the superseded `lem:rank-polynomial-IH-relabel`
+  to `genericity-and-count.tex`; task 5.3 moved KT Lemma 6.1's two nodes to `panel-layer.tex`,
+  before `thm:theorem-55`. Four edges stay forward, each cited in a sentence:
+  `lem:rigidityRows-pinned-placement-rank-add`'s two (moving it after their targets turns
+  `lem:case-II-realization`'s edge to it forward), and those of
+  `lem:rank-polynomial-IH-relabel-proj` and `lem:case-cut-edge-realization-gp` to
+  `genericity-and-count.tex`, now between sections of `algebraic-induction.tex` (`F-119`).
 - **F-052** · N · `matroid-union.tex`: three load-bearing lemmas with no node.
   `Matroid.generalized_halls_marriage` is Welsh's theorem (Oxley 2011, Theorem 11.2.3), the core of
   `Matroid.rado` and `Matroid.rado_v2`. `Matroid.polymatroid_of_adjMap` is Oxley's Lemma 11.2.13
@@ -3649,6 +3661,16 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and module headers; a `grep` of `CombinatorialRigidity/` for the
   labels of task 3.14's nodes).
   *Found:* round 5 task 3.14.
+- **F-250** · L · the declarations of the nodes round 5's task 5.3 moved across chapters
+  (`Molecular/AlgebraicInduction/Theorem55.lean`, `Molecular/Deficiency.lean`). The docstring of
+  `PanelHingeFramework.theorem_55_minimalKDof_k` places `lem:case-cut-edge-realization{,-gp}` in
+  `molecular-induction.tex`, now `panel-layer.tex`. The section docstring before `IsTightPartition`
+  heads it `sec:jacobs-tight-partitions` and places `lem:exists-tight-partition` in `jacobs.tex`,
+  now in `deficiency.tex` with `def:tight-partition`. The docstrings of the other moved nodes' pins
+  name no chapter.
+  *Evidence:* read (the docstrings; a `grep` of `CombinatorialRigidity/` for the six labels and
+  for the chapters' file names).
+  *Found:* round 5 task 5.3.
 
 ## M — mathematics and sources
 

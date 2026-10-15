@@ -15,18 +15,18 @@ of Whiteley's proof that the $1$-extension preserves the infinitesimal
 rigidity of bar-joint frameworks~\cite[Theorem~2.2.2]{whiteley1996}
 (KT p.~650).
 
-The first three lemmas concern putting back the body $v$: pinning one
-body (\cref{lem:case-II-rank-lift}), the subgraph $G_v$ that $G$ and
-$G_v^{ab}$ share (\cref{lem:splitoff-edge-substitution}), and the
-motions of a framework on $G$ obtained from one on $G_v$
-(\cref{lem:case-II}). The proof of KT Lemma~6.8
+The first two lemmas concern putting back the body $v$. The first pins
+one body (\cref{lem:case-II-rank-lift}). The second gives the motions of
+a framework on $G$ obtained from one on $G_v$ (\cref{lem:case-II}), the
+subgraph that $G$ and $G_v^{ab}$ share
+(\cref{lem:splitoff-edge-substitution}). The proof of KT Lemma~6.8
 (\cref{lem:case-II-realization}) counts rows instead, and does not use
 them.
 
 By \cref{rem:rank-hypothesis-relative}, a realization of $G$ whose
 bodies are the vertices of $G$ is at the target rank
 (\cref{def:rank-hypothesis}) exactly when
-$\dim Z(G,p) = D + \operatorname{def}(\tilde G)$. The next three lemmas
+$\dim Z(G,p) = D + \operatorname{def}(\tilde G)$. The next two lemmas
 state the rank in this form.
 
 \begin{lemma}[Pinning one body]
@@ -62,38 +62,6 @@ state the rank in this form.
   \cref{lem:with-normal-preserves}, the second assumes that the pair of
   bodies that the endpoint selector assigns to each edge of $G$ does
   not contain $v$ (\cref{fmlnote:panel-hinge-nondegenerate}).
-\end{fmlnote}
-
-\begin{lemma}[The common subgraph of $G$ and $G_v^{ab}$]
-  \label{lem:splitoff-edge-substitution}
-  \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff,
-        Graph.isLink_incident_of_not_removeVertex}
-  \leanok
-  \uses{def:graph-operations}
-  Let $G$ be a multigraph, let $v$ be a vertex of $G$ of degree two,
-  whose edges $e_a$ and $e_b$ join it to vertices $a$ and $b$, and let
-  $G_v$ and $G_v^{ab}$ be obtained by removing $v$ and by splitting off
-  $v$ (\cref{def:graph-operations}). Then $G_v$ is a subgraph of $G$ and of
-  $G_v^{ab}$, while $G_v^{ab}$, whose edge $ab$ is new, is not a
-  subgraph of $G$. Every edge of $G$ that is not an edge of $G_v$ has
-  $v$ as an end.
-\end{lemma}
-\begin{proof}
-  \leanok
-  The graphs $G_v$ and $G_v^{ab}$ both have the vertices of $G$ other
-  than $v$. An edge of $G_v$ is an edge of $G$ whose ends differ from
-  $v$, with the same ends. It is not the new edge $ab$, which is not an
-  edge of $G$, so it is an edge of $G_v^{ab}$ with the same ends. Hence
-  $G_v$ is a subgraph of both graphs, and the new edge $ab$ is an edge
-  of $G_v^{ab}$ but not of $G$. An edge of $G$ whose ends both differ
-  from $v$ is an edge of $G_v$, which gives the last assertion.
-\end{proof}
-
-\begin{fmlnote}
-  The three pinned theorems state the two inclusions and the last
-  assertion, for every vertex $v$. The second assumes that the label of
-  the new edge $ab$ lies outside $E(G)$ (\cref{fmlnote:graph-operations}).
-  No pinned theorem states that $G_v^{ab}$ is not a subgraph of $G$.
 \end{fmlnote}
 
 In Case~II, $G_v^{ab}$ is a minimal $(k-1)$-dof-graph (KT

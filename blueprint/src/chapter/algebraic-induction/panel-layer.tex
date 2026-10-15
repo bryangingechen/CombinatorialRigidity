@@ -363,7 +363,9 @@ Theorem~5.5 by induction on the number of vertices. Its induction
 hypothesis, KT eq.~(6.1), is the theorem for graphs with fewer vertices.
 We first define two forms of the realization that it asks for
 (\cref{def:rank-hypothesis}, \cref{def:genuine-hinge-realization}), and
-then state the theorem and give the induction (\cref{thm:theorem-55}).
+prove KT Lemma~6.1, the case of the induction in which the graph is not
+$2$-edge-connected, for each form. Then we state the theorem and give
+the induction (\cref{thm:theorem-55}).
 KT Theorem~5.6 and the molecular conjecture follow
 (\cref{thm:theorem-55-6}, \cref{thm:molecular-conjecture}). The
 subsection ends with the base of the induction, the graphs with one or two
@@ -506,6 +508,134 @@ realization gives a nondegenerate-hinge one.
   simple graphs.
 \end{fmlnote}
 
+Katoh and Tanigawa's Lemma~6.1~\cite[p.~672]{katohTanigawa2011} gives
+the realization in case~(i) of their induction
+(\cref{thm:minimal-kdof-reduction-all-k}), in which $G$ is not
+$2$-edge-connected. Its hypothesis is KT eq.~(6.1): every minimal
+$k'$-dof-graph $H$ with fewer vertices than $G$ has a panel-hinge
+realization $(H, p_H)$ with
+$\operatorname{rank} R(H, p_H) = D(|V(H)| - 1) - k'$, nonparallel if $H$
+is simple. We state KT Lemma~6.1 for each of the two forms of this
+hypothesis.
+
+\begin{lemma}[Nondegenerate-hinge realization at a cut of at most one edge; KT Lemma~6.1]
+  \label{lem:case-cut-edge-realization}
+  \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gen}
+  \leanok
+  \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
+        lem:block-rank-cut, lem:relative-deficiency-rank-bound}
+  Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with at least
+  three vertices that is not $2$-edge-connected. Suppose that for every
+  $k'$, every minimal $k'$-dof-graph with at least one and fewer than
+  $|V(G)|$ vertices has a nondegenerate-hinge panel realization. Then $G$
+  has a nondegenerate-hinge panel realization.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
+        lem:relative-deficiency-rank-bound}
+  Part~(2) of \cref{lem:cut-edge-decomposition} (KT Lemmas~3.3
+  and~3.6) applies, as $G$ is not $2$-edge-connected. It gives a set
+  $V_1$ of vertices with $\emptyset \neq V_1 \neq V(G)$ and the
+  following properties. Let $V_2 = V(G) \setminus V_1$. At most one edge
+  joins $V_1$ to $V_2$; let $C$ be the set of such edges. Then $G[V_1]$
+  and $G[V_2]$ are minimal $k_1$- and $k_2$-dof-graphs, with
+  $k = k_1 + k_2 + D - (D-1)\,|C|$. Both have fewer vertices than $G$.
+  So by hypothesis they have nondegenerate-hinge panel realizations
+  $(G[V_1], p_1)$ and $(G[V_2], p_2)$, with
+  $\operatorname{rank} R(G[V_i], p_i) = D(|V_i| - 1) - k_i$.
+
+  Let $p$ have the normals of $p_i$ at the bodies of $V_i$, and the
+  hinges of $p_i$ at the edges of $G[V_i]$. Suppose that $C = \{e\}$,
+  where $e$ joins $u \in V_1$ to $v \in V_2$. The subspace
+  $n_u^\perp \cap n_v^\perp$ of $K^{d+1}$ has dimension at least
+  $d - 1$, so it contains linearly independent vectors
+  $x_1, \dots, x_{d-1}$. Let $p$ have the hinge
+  $x_1 \wedge \dots \wedge x_{d-1} \neq 0$ (\cref{def:extensor}) at $e$.
+  Katoh and Tanigawa take the intersection of the two panels as this
+  hinge, after they move $p_2$ so that the panels are not parallel. Here
+  any nonzero extensor of vectors in both panels serves. So $(G,p)$ has
+  nonzero normals, and each of its hinges is nonzero and lies in the
+  panels of the ends of its edge.
+
+  The hinges of $p$ at the edges of $G[V_i]$ are those of $p_i$, so
+  $\operatorname{rank} R(G[V_i], p) = D(|V_i| - 1) - k_i$. By
+  \cref{lem:block-rank-cut},
+  \[
+    \operatorname{rank} R(G,p) \;\ge\;
+    D(|V_1| - 1) - k_1 + (D-1)\,|C| + D(|V_2| - 1) - k_2
+    \;=\; D(|V(G)| - 1) - k,
+  \]
+  by the formula for $k$ and as $|V(G)| = |V_1| + |V_2|$. As every hinge
+  of $p$ is nonzero and $\operatorname{def}(\tilde G) = k$,
+  \cref{lem:relative-deficiency-rank-bound} gives
+  $\operatorname{rank} R(G,p) \le D(|V(G)| - 1) - k$.
+\end{proof}
+
+\begin{lemma}[Generic full-rank realization at a cut of at most one edge; KT Lemma~6.1]
+  \label{lem:case-cut-edge-realization-gp}
+  \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gp_gen}
+  \leanok
+  \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
+        lem:block-rank-cut, lem:relative-deficiency-rank-bound,
+        lem:rank-polynomial-of-le-finrank}
+  Let $D \ge 2$, and let $G$ be a simple minimal $k$-dof-graph with at
+  least three vertices that is not $2$-edge-connected. Suppose that for
+  every $k'$, every simple minimal $k'$-dof-graph with at least one and
+  fewer than $|V(G)|$ vertices has a generic full-rank realization. Then
+  $G$ has a generic full-rank realization.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
+        lem:relative-deficiency-rank-bound,
+        lem:rank-polynomial-of-le-finrank,
+        lem:general-position-support-nonzero,
+        lem:moment-curve-general-position}
+  Let $V_1$, $V_2$, $C$, $k_1$ and $k_2$ be as in the proof of
+  \cref{lem:case-cut-edge-realization}. As $G$ is simple, so are
+  $G[V_1]$ and $G[V_2]$. By hypothesis they have generic full-rank
+  realizations, with normals $q_1$ and $q_2$. For $i = 1, 2$, there is a
+  polynomial $Q_i$ in the normals with $Q_i(q_i) \neq 0$ such that
+  $\operatorname{rank} R(G[V_i], q) \ge D(|V_i| - 1) - k_i$ at all
+  normals $q$ with $Q_i(q) \neq 0$
+  (\cref{lem:rank-polynomial-of-le-finrank}). Let $Q_0$ be the product,
+  over the pairs of distinct bodies $u$ and $v$, of the $2 \times 2$
+  minor of the first two coordinates of $n_u$ and $n_v$. Where $Q_0$
+  does not vanish, the normals are pairwise linearly independent. At
+  normals on the moment curve each of these minors is a nonzero
+  Vandermonde determinant (\cref{lem:moment-curve-general-position}), so
+  $Q_0$ is not the zero polynomial. Hence the product $Q_1 Q_2 Q_0$ of
+  three nonzero polynomials is not the zero polynomial. Since $K$ is
+  infinite, there are normals $q_0$ at which it does not vanish. This is
+  the argument of KT Claim~6.4 (\cref{lem:genericity-device}).
+
+  Let $(G, q_0)$ be the panel-hinge framework on $G$ with the normals
+  $q_0$, whose hinge at each edge is the intersection of the panels of
+  its ends (\cref{def:panel-hinge-framework}). Its normals are pairwise
+  linearly independent, so its hinges are nonzero
+  (\cref{lem:general-position-support-nonzero}), and
+  $\operatorname{rank} R(G[V_i], q_0) \ge D(|V_i| - 1) - k_i$ for
+  $i = 1, 2$. As in the proof of \cref{lem:case-cut-edge-realization},
+  \cref{lem:block-rank-cut} and \cref{lem:relative-deficiency-rank-bound}
+  give $\operatorname{rank} R(G, q_0) = D(|V(G)| - 1) - k$.
+\end{proof}
+\begin{fmlnote}
+  A generic full-rank realization also records the two ends of each edge,
+  in some order (\cref{fmlnote:generic-full-rank}). The framework
+  $(G, q_0)$ takes them from the endpoint choice of $G$
+  (\cref{fmlnote:graph-operations}). The polynomial $Q_i$ is formed at
+  the framework on $G[V_i]$ with the normals $q_i$ and these ends. Its
+  rank is that of the given realization, as reversing the ends of an
+  edge does not change the space of infinitesimal motions. The
+  hypothesis of the formal statement also asks that every minimal
+  $k'$-dof-graph with at least one and fewer than $|V(G)|$ vertices have
+  a nondegenerate-hinge panel realization
+  (\cref{def:genuine-hinge-realization}). With it, the hypothesis is
+  that of \cref{thm:minimal-kdof-reduction-all-k} for both kinds of
+  realization at once. The proof does not use it.
+\end{fmlnote}
+
 Katoh and Tanigawa's Theorem~5.5~\cite[p.~670]{katohTanigawa2011} gives
 a minimal $k$-dof-graph $G$ with $|V| \ge 2$ a panel-hinge realization
 of rank $D(|V| - 1) - k$, nonparallel if $G$ is simple. We state it as
@@ -525,8 +655,8 @@ define nonparallel realizations only for simple graphs (KT \S5.1,
 p.~668), and their induction hypothesis, KT eq.~(6.1), asks for a
 nonparallel realization only of a simple graph.
 
-The proof is by induction on $|V|$, as in KT \S6. It uses the base cases
-later in this subsection, and Cases~I, II and~III, which
+The proof is by induction on $|V|$, as in KT \S6. It uses KT Lemma~6.1,
+the base cases later in this subsection, and Cases~I, II and~III, which
 \cref{sec:molecular-algebraic-induction-caseI},
 \cref{sec:molecular-algebraic-induction-caseII} and
 \cref{sec:molecular-algebraic-induction-caseIII} prove.

@@ -152,7 +152,8 @@ of \cref{def:isLaman}, it asks for no equality on the number of edges.
 \label{sec:jacobs-tight-partitions}
 
 The counting bound of \cref{sec:jacobs-counting} is proved against a
-partition of $V$ that attains the deficiency. This subsection proves
+partition of $V$ that attains the deficiency, a tight partition
+(\cref{def:tight-partition}). This subsection proves
 the facts about such partitions that the count uses. They come from JJ
 Lemma~3.2, which JJ take from their paper on the partition of a graph
 into its maximal subgraphs of deficiency zero. We prove its part~(a), a
@@ -160,38 +161,14 @@ consequence of its part~(b), and two consequences of part~(a) that JJ
 draw in the proofs of their Theorems~3.4 and~5.3: two parts are joined
 by at most one edge, and two nonadjacent vertices in distinct parts
 have at most one common neighbor. Apart from the existence of these
-partitions, all of this follows from one identity, which gives the
-change in the value $\operatorname{def}_{\tilde G}(P)$ when several
+partitions (\cref{lem:exists-tight-partition}), all of this follows from
+one identity, which gives the change in the value
+$\operatorname{def}_{\tilde G}(P)$ when several
 parts of $P$ are merged into one (\cref{lem:partitionDef-merge}). The
 arguments are the same for every $D$. So we state the lemmas for the
 $D$-deficiency of \cref{def:D-deficiency} at every $D$, and each lemma
 names the bound on $D$ that it needs. The chapter applies them at
 $D = 6$.
-
-\begin{definition}[Tight partitions]
-  \label{def:tight-partition}
-  \lean{Graph.IsTightPartition}
-  \leanok
-  \uses{def:D-deficiency}
-  Let $G$ be a multigraph. Following JJ~\S2, a partition $P$ of $V(G)$
-  is \emph{tight} if it attains the deficiency, that is, if
-  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$.
-\end{definition}
-
-\begin{lemma}[Tight partitions exist]
-  \label{lem:exists-tight-partition}
-  \lean{Graph.exists_isTightPartition}
-  \leanok
-  \uses{def:D-deficiency, def:tight-partition}
-  Let $G$ be a multigraph whose vertex set is finite and nonempty. Then
-  some partition $P$ of $V(G)$ is tight, that is,
-  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  A finite set has finitely many partitions, so the maximum that
-  defines $\operatorname{def}(\tilde G)$ is attained.
-\end{proof}
 
 \begin{definition}[Edges between the members of a family of parts]
   \label{def:crossing-edges-within}
@@ -338,8 +315,8 @@ prove it directly.
   As in \cref{fmlnote:partition-labeling}, a partition is a labeling of
   the vertices, and a tight partition is a labeling whose value is the
   deficiency. Merging the members of $Q$ gives all their vertices one of
-  their labels. Four of the formal statements assume less than the
-  lemmas above. \Cref{lem:exists-tight-partition} does not need $V(G)$
+  their labels. Four of the formal statements assume less than their
+  lemmas. \Cref{lem:exists-tight-partition} does not need $V(G)$
   nonempty: the empty set has one partition, with no parts and value
   $-D$. \Cref{lem:partitionDef-merge} needs only $Q$ nonempty, as for
   $|Q| = 1$ merging changes nothing and $e_G(Q) = 0$.

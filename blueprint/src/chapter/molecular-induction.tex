@@ -38,8 +38,7 @@ proof assumes (\cref{rem:kt-lemma-41}).
 the deficiency after splitting off and after removal by comparing
 partitions of $V(G)$, and find a vertex of degree two when $G$ has no
 proper rigid subgraph. \Cref{sec:molecular-induction-thm49} proves KT
-Theorem~4.9, the induction over all deficiencies, and KT Lemma~6.1,
-which realizes a graph that is not $2$-edge-connected.
+Theorem~4.9 and the induction over all deficiencies.
 
 The last two subsections concern a minimal $0$-dof-graph $G$ with at
 least three vertices and no proper rigid subgraph.
@@ -438,6 +437,41 @@ p.~660]{katohTanigawa2011}. They also use its inverse, edge-splitting
 \end{fmlnote}
 
 Splitting off the new vertex $v$ of $H_{ab}^v$ gives back $H$.
+
+Several proofs below, and the three cases of the algebraic induction,
+pass between $G$ and $G_v^{ab}$ through the graph $G_v$.
+
+\begin{lemma}[The common subgraph of $G$ and $G_v^{ab}$]
+  \label{lem:splitoff-edge-substitution}
+  \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff,
+        Graph.isLink_incident_of_not_removeVertex}
+  \leanok
+  \uses{def:graph-operations}
+  Let $G$ be a multigraph, let $v$ be a vertex of $G$ of degree two,
+  whose edges $e_a$ and $e_b$ join it to vertices $a$ and $b$, and let
+  $G_v$ and $G_v^{ab}$ be obtained by removing $v$ and by splitting off
+  $v$ (\cref{def:graph-operations}). Then $G_v$ is a subgraph of $G$ and of
+  $G_v^{ab}$, while $G_v^{ab}$, whose edge $ab$ is new, is not a
+  subgraph of $G$. Every edge of $G$ that is not an edge of $G_v$ has
+  $v$ as an end.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The graphs $G_v$ and $G_v^{ab}$ both have the vertices of $G$ other
+  than $v$. An edge of $G_v$ is an edge of $G$ whose ends differ from
+  $v$, with the same ends. It is not the new edge $ab$, which is not an
+  edge of $G$, so it is an edge of $G_v^{ab}$ with the same ends. Hence
+  $G_v$ is a subgraph of both graphs, and the new edge $ab$ is an edge
+  of $G_v^{ab}$ but not of $G$. An edge of $G$ whose ends both differ
+  from $v$ is an edge of $G_v$, which gives the last assertion.
+\end{proof}
+
+\begin{fmlnote}
+  The three pinned theorems state the two inclusions and the last
+  assertion, for every vertex $v$. The second assumes that the label of
+  the new edge $ab$ lies outside $E(G)$ (\cref{fmlnote:graph-operations}).
+  No pinned theorem states that $G_v^{ab}$ is not a subgraph of $G$.
+\end{fmlnote}
 
 \subsection{Forest surgery: KT Lemmas~4.1 and~4.2}
 \label{sec:molecular-induction-forest}
@@ -1759,7 +1793,8 @@ minimal $k$-dof-graphs of every deficiency $k$, with four
 cases~\cite[p.~671]{katohTanigawa2011}. This induction is
 \cref{thm:minimal-kdof-reduction-all-k}. In its first case the graph is
 not $2$-edge-connected. Katoh and Tanigawa realize such a graph in their
-Lemma~6.1, which ends the subsection in two forms.
+Lemma~6.1, which we prove with the algebraic induction
+(\cref{sec:molecular-algebraic-induction-base}).
 
 \begin{theorem}[Reduction of minimal $0$-dof-graphs; KT Theorem~4.9]
   \label{thm:minimal-kdof-reduction}
@@ -1865,158 +1900,20 @@ hypothesis KT eq.~(6.1), which we state for a property $P$.
   (\cref{def:D-deficiency}). In each case $P(G)$ holds by hypothesis.
 \end{proof}
 
-Katoh and Tanigawa's Lemma~6.1~\cite[p.~672]{katohTanigawa2011} gives
-the realization in case~(i). Its hypothesis is KT eq.~(6.1): every
-minimal $k'$-dof-graph $H$ with fewer vertices than $G$ has a
-panel-hinge realization $(H, p_H)$ with
-$\operatorname{rank} R(H, p_H) = D(|V(H)| - 1) - k'$, nonparallel if $H$
-is simple. The algebraic induction states KT eq.~(6.1) for two kinds of
-realization, and we state KT Lemma~6.1 for each. A
-nondegenerate-hinge panel realization of $G$
-(\cref{def:genuine-hinge-realization}) is a body-hinge framework $(G,p)$
-with a nonzero normal $n_v \in K^{d+1}$ at each body $v$, such that
-$\operatorname{rank} R(G,p) = D(|V(G)| - 1) - \operatorname{def}(\tilde G)$.
-Its hinge $C(p(e))$ at each edge $e$ with ends $u$ and $v$ is nonzero,
-and it is $x_1 \wedge \dots \wedge x_{d-1}$ for some vectors $x_i$ in
-both panels $n_u^\perp$ and $n_v^\perp$. A multigraph is \emph{simple}
-if it has no loops and no two of its edges join the same pair of
-vertices~\cite[p.~668]{katohTanigawa2011}. A generic full-rank
-realization of $G$ (\cref{def:rank-hypothesis}) is a panel-hinge
-framework on $G$ (\cref{def:panel-hinge-framework}) of the same rank
-whose normals are pairwise linearly independent
-(\cref{def:panel-general-position}). This is the form of Katoh and
-Tanigawa's nonparallel realizations that the algebraic induction uses
-(\cref{fmlnote:generic-full-rank}).
-
-\begin{lemma}[Nondegenerate-hinge realization at a cut of at most one edge; KT Lemma~6.1]
-  \label{lem:case-cut-edge-realization}
-  \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gen}
-  \leanok
-  \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
-        lem:block-rank-cut, lem:relative-deficiency-rank-bound}
-  Let $D \ge 2$, and let $G$ be a minimal $k$-dof-graph with at least
-  three vertices that is not $2$-edge-connected. Suppose that for every
-  $k'$, every minimal $k'$-dof-graph with at least one and fewer than
-  $|V(G)|$ vertices has a nondegenerate-hinge panel realization. Then $G$
-  has a nondegenerate-hinge panel realization.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
-        lem:relative-deficiency-rank-bound}
-  Part~(2) of \cref{lem:cut-edge-decomposition} (KT Lemmas~3.3
-  and~3.6) applies, as $G$ is not $2$-edge-connected. It gives a set
-  $V_1$ of vertices with $\emptyset \neq V_1 \neq V(G)$ and the
-  following properties. Let $V_2 = V(G) \setminus V_1$. At most one edge
-  joins $V_1$ to $V_2$; let $C$ be the set of such edges. Then $G[V_1]$
-  and $G[V_2]$ are minimal $k_1$- and $k_2$-dof-graphs, with
-  $k = k_1 + k_2 + D - (D-1)\,|C|$. Both have fewer vertices than $G$.
-  So by hypothesis they have nondegenerate-hinge panel realizations
-  $(G[V_1], p_1)$ and $(G[V_2], p_2)$, with
-  $\operatorname{rank} R(G[V_i], p_i) = D(|V_i| - 1) - k_i$.
-
-  Let $p$ have the normals of $p_i$ at the bodies of $V_i$, and the
-  hinges of $p_i$ at the edges of $G[V_i]$. Suppose that $C = \{e\}$,
-  where $e$ joins $u \in V_1$ to $v \in V_2$. The subspace
-  $n_u^\perp \cap n_v^\perp$ of $K^{d+1}$ has dimension at least
-  $d - 1$, so it contains linearly independent vectors
-  $x_1, \dots, x_{d-1}$. Let $p$ have the hinge
-  $x_1 \wedge \dots \wedge x_{d-1} \neq 0$ (\cref{def:extensor}) at $e$.
-  Katoh and Tanigawa take the intersection of the two panels as this
-  hinge, after they move $p_2$ so that the panels are not parallel. Here
-  any nonzero extensor of vectors in both panels serves. So $(G,p)$ has
-  nonzero normals, and each of its hinges is nonzero and lies in the
-  panels of the ends of its edge.
-
-  The hinges of $p$ at the edges of $G[V_i]$ are those of $p_i$, so
-  $\operatorname{rank} R(G[V_i], p) = D(|V_i| - 1) - k_i$. By
-  \cref{lem:block-rank-cut},
-  \[
-    \operatorname{rank} R(G,p) \;\ge\;
-    D(|V_1| - 1) - k_1 + (D-1)\,|C| + D(|V_2| - 1) - k_2
-    \;=\; D(|V(G)| - 1) - k,
-  \]
-  by the formula for $k$ and as $|V(G)| = |V_1| + |V_2|$. As every hinge
-  of $p$ is nonzero and $\operatorname{def}(\tilde G) = k$,
-  \cref{lem:relative-deficiency-rank-bound} gives
-  $\operatorname{rank} R(G,p) \le D(|V(G)| - 1) - k$.
-\end{proof}
-
-\begin{lemma}[Generic full-rank realization at a cut of at most one edge; KT Lemma~6.1]
-  \label{lem:case-cut-edge-realization-gp}
-  \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gp_gen}
-  \leanok
-  \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
-        lem:block-rank-cut, lem:relative-deficiency-rank-bound,
-        lem:rank-polynomial-of-le-finrank}
-  Let $D \ge 2$, and let $G$ be a simple minimal $k$-dof-graph with at
-  least three vertices that is not $2$-edge-connected. Suppose that for
-  every $k'$, every simple minimal $k'$-dof-graph with at least one and
-  fewer than $|V(G)|$ vertices has a generic full-rank realization. Then
-  $G$ has a generic full-rank realization.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
-        lem:relative-deficiency-rank-bound,
-        lem:rank-polynomial-of-le-finrank,
-        lem:general-position-support-nonzero,
-        lem:moment-curve-general-position}
-  Let $V_1$, $V_2$, $C$, $k_1$ and $k_2$ be as in the proof of
-  \cref{lem:case-cut-edge-realization}. As $G$ is simple, so are
-  $G[V_1]$ and $G[V_2]$. By hypothesis they have generic full-rank
-  realizations, with normals $q_1$ and $q_2$. For $i = 1, 2$, there is a
-  polynomial $Q_i$ in the normals with $Q_i(q_i) \neq 0$ such that
-  $\operatorname{rank} R(G[V_i], q) \ge D(|V_i| - 1) - k_i$ at all
-  normals $q$ with $Q_i(q) \neq 0$
-  (\cref{lem:rank-polynomial-of-le-finrank}). Let $Q_0$ be the product,
-  over the pairs of distinct bodies $u$ and $v$, of the $2 \times 2$
-  minor of the first two coordinates of $n_u$ and $n_v$. Where $Q_0$
-  does not vanish, the normals are pairwise linearly independent. At
-  normals on the moment curve each of these minors is a nonzero
-  Vandermonde determinant (\cref{lem:moment-curve-general-position}), so
-  $Q_0$ is not the zero polynomial. Hence the product $Q_1 Q_2 Q_0$ of
-  three nonzero polynomials is not the zero polynomial. Since $K$ is
-  infinite, there are normals $q_0$ at which it does not vanish. This is
-  the argument of KT Claim~6.4 (\cref{lem:genericity-device}).
-
-  Let $(G, q_0)$ be the panel-hinge framework on $G$ with the normals
-  $q_0$, whose hinge at each edge is the intersection of the panels of
-  its ends (\cref{def:panel-hinge-framework}). Its normals are pairwise
-  linearly independent, so its hinges are nonzero
-  (\cref{lem:general-position-support-nonzero}), and
-  $\operatorname{rank} R(G[V_i], q_0) \ge D(|V_i| - 1) - k_i$ for
-  $i = 1, 2$. As in the proof of \cref{lem:case-cut-edge-realization},
-  \cref{lem:block-rank-cut} and \cref{lem:relative-deficiency-rank-bound}
-  give $\operatorname{rank} R(G, q_0) = D(|V(G)| - 1) - k$.
-\end{proof}
-\begin{fmlnote}
-  A generic full-rank realization also records the two ends of each edge,
-  in some order (\cref{fmlnote:generic-full-rank}). The framework
-  $(G, q_0)$ takes them from the endpoint choice of $G$
-  (\cref{fmlnote:graph-operations}). The polynomial $Q_i$ is formed at
-  the framework on $G[V_i]$ with the normals $q_i$ and these ends. Its
-  rank is that of the given realization, as reversing the ends of an
-  edge does not change the space of infinitesimal motions. The
-  hypothesis of the formal statement also asks that every minimal
-  $k'$-dof-graph with at least one and fewer than $|V(G)|$ vertices have
-  a nondegenerate-hinge panel realization
-  (\cref{def:genuine-hinge-realization}). With it, the hypothesis is
-  that of \cref{thm:minimal-kdof-reduction-all-k} for both kinds of
-  realization at once. The proof does not use it.
-\end{fmlnote}
-
 \subsection{Simplicity, and two adjacent vertices of degree two}
 \label{sec:simplicity-and-adjacent-pair}
 
+A multigraph is \emph{simple} if it has no loops and no two of its
+edges join the same pair of vertices~\cite[p.~668]{katohTanigawa2011}.
 Katoh and Tanigawa remark that a minimal $k$-dof-graph with at least
 three vertices and no proper rigid subgraph is simple, as two edges that
 join the same pair of vertices form a proper rigid
 subgraph~\cite[p.~677]{katohTanigawa2011}. We prove this remark
-(\cref{lem:simple-minimal-noRigid}) after a computation for the
-two-vertex double edge. With it, KT Lemma~6.7 shows that splitting off
-a vertex of degree two keeps such a graph simple when it has at least
-four vertices (\cref{lem:splitoff-simple}). For $d = 3$, Katoh and
+(\cref{lem:simple-minimal-noRigid}) from the deficiency of the
+two-vertex double edge (\cref{lem:two-vertex-zero-dof}). With it, KT
+Lemma~6.7 shows that splitting off a vertex of degree two keeps such a
+graph simple when it has at least four vertices
+(\cref{lem:splitoff-simple}). For $d = 3$, Katoh and
 Tanigawa derive from KT Lemma~4.6 that such a graph with $k = 0$ has two adjacent vertices $v$
 and $a$ of degree two, and they write $N_G(v) = \{a, b\}$ and
 $N_G(a) = \{v, c\}$~\cite[p.~680]{katohTanigawa2011}.
@@ -2025,24 +1922,6 @@ We prove the first fact for $d \ge 3$ by a count of degrees
 from it (\cref{lem:chain-data-of-noRigid}). Case~III of the algebraic
 induction uses neither: it extracts a chain of length $d$ at every $d$
 (\cref{lem:chain-data-extract}).
-
-\begin{lemma}[The two-vertex double edge is a $0$-dof-graph]
-  \label{lem:two-vertex-zero-dof}
-  \lean{Graph.isKDof_zero_of_parallel_pair}
-  \leanok
-  \uses{def:k-dof}
-  Let $D \ge 2$, and let $H$ be a multigraph with two vertices
-  $x \neq y$ and two edges $e_1 \neq e_2$, each joining $x$ and $y$.
-  Then $H$ is a $0$-dof-graph.
-\end{lemma}
-\begin{proof}
-  \leanok
-  The partitions of $V(H)$ are $\{V(H)\}$, of value $0$, and
-  $\{\{x\}, \{y\}\}$. Both edges join the two parts of the second, so
-  its value is $D - 2(D - 1) = 2 - D \le 0$ (\cref{def:D-deficiency}).
-  Hence $\operatorname{def}(\tilde H) = 0$. This is the computation in
-  the proof of \cref{lem:two-vertex-trichotomy}.
-\end{proof}
 
 \begin{lemma}[A minimal $k$-dof-graph with no proper rigid subgraph is simple; KT p.~677]
   \label{lem:simple-minimal-noRigid}
