@@ -557,7 +557,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (`case-iii.tex`, prose final since 22e; flipped 22k-close; since PROSE round 3 task 2.12 the
   candidate-row statement is KT's rank bound at KT's eq.-(6.12) `(G, p₁)` with its subspace `L`,
   and its proof puts the rows of `R(G_v^{ab} ∖ (ab)i*, q)` in the row space before the count,
-  `F-158`)]
+  `F-158`; since RECONCILE round 2 task 7 it pins `case_III_rank_certification`, of which it is
+  the case `(G, p₁)`, its framework that of `def:case-III-candidate`)]
   **(c)** (Phase 22e capture — a reroute correcting a mis-identified mechanism). **Stable insight:**
   KT eqs. (6.27)→(6.28) claim the transported row `w`'s `V∖{v}` part vanishes; a Phase-22e recon
   found *which* fact makes it vanish was mis-read. The transported row collapses (using the eq.-(6.24)
@@ -783,7 +784,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `Gᵥᵃᵇ ≅ Gₐᵛᶜ` (KT eqs. (6.31)–(6.41))** — [done (`case-iii.tex`, prose final since 22h;
   marker flipped 22k-close; since PROSE round 3 task 2.14 the proof says that KT add the columns of
   `a` to those of `c` (p. 687), as the pin's column operation does, not `col_a += col_c` as below,
-  and builds `(G, p₃)` from `(Gₐᵛᶜ, q_ρ)` as `(G, p₁)` from `(Gᵥᵃᵇ, q)`)] **(a)** (Phase 22e
+  and builds `(G, p₃)` from `(Gₐᵛᶜ, q_ρ)` as `(G, p₁)` from `(Gᵥᵃᵇ, q)`; since RECONCILE round 2
+  task 7 it pins `case_III_rank_certification` at the roles `(a, c, v)`, as
+  `case_III_arm_realization_M3` applies it)] **(a)** (Phase 22e
   capture). **Stable
   insight:** Claim 6.12's third candidate `p₃` exists *because `a` is also a degree-2 vertex* — KT
   splits off at `a` along `vc`, and `Gₐᵛᶜ` is isomorphic to `Gᵥᵃᵇ` (via `ρ(v)=a`, `ρ(u)=u`), so the

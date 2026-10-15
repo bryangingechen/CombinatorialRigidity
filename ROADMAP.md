@@ -1289,8 +1289,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   non-vacuity rule is in `PHASE-BOUNDARIES.md` and `CLEANUP.md` §A). Round 2,
   `reconcile-statements`, opened 2026-10-15 with 21 one-commit tasks
   (`notes/Reconcile-statements-cleanup.md`); tasks 2–3 made the false statements S6–S10 true,
-  task 4 restated the vacuous or trivially met S4 and S5, task 5 repinned S7, and task 6 restated
-  Case I's S14, S15 and S21. **Next:** its task 7, Case III's three counts repinned (S20).
+  task 4 restated the vacuous or trivially met S4 and S5, task 5 repinned S7, task 6 restated
+  Case I's S14, S15 and S21, and task 7 repinned Case III's three counts (S20). **Next:** its
+  task 8, S26, S27 and S35.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

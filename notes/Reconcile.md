@@ -9,8 +9,9 @@ and M5's credits (Pollaczek-Geiringer 1927 states the characterization and is cr
 Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. Round 2,
 `reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), opened with 21 one-commit tasks;
 tasks 2–3 made the false statements (S6–S10) true, task 4 restated the vacuous or trivially met
-S4 and S5, task 5 repinned S7, and task 6 restated Case I's S14, S15 and S21. **Next concrete
-task:** round 2's task 7, Case III's three counts repinned (S20). The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
+S4 and S5, task 5 repinned S7, task 6 restated Case I's S14, S15 and S21, and task 7 repinned
+Case III's three counts (S20). **Next concrete task:** round 2's task 8, S26, S27 and S35. The
+two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 
@@ -198,8 +199,9 @@ writes them once; everything else proceeds.
   `lem:rank-rotation-semicont`, whose docstrings call them KT Lemma 5.2 and reverse their inclusion
   (round 2, task 2); and `F-254`'s, which still give `lem:case-II` the pin that round 2 task 4
   dropped; and `F-256`'s, three declarations whose docstrings still give them as
-  `lem:genericity-device`'s, which round 2 task 5 repinned. The ledger's two Lean baselines feed
-  §B and §C.
+  `lem:genericity-device`'s, which round 2 task 5 repinned; and `F-258`'s, the three that round 2
+  task 7 unpinned from Case III's counts, whose docstrings still name those nodes. The ledger's
+  two Lean baselines feed §B and §C.
 
 ### The phase — `RECONCILE-FORMAL` (attended; a number minted on open)
 

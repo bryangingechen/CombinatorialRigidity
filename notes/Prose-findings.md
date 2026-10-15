@@ -940,6 +940,21 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 2 task 5.
   *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 15): the coordinator gave the
   first cure, the move of `lem:independent-rows-of-rank`, to task 15.
+- **F-257** · E · `lem:case-III-candidate-row` and `lem:case-III-claim612-p2-placement`
+  (`algebraic-induction/case-iii.tex`): since round 2 task 7 both pin `case_III_rank_certification`,
+  whose body calls the pins of `lem:case-III-claim612-block-iff-perp` (`mem_hingeRowBlock_iff`,
+  444 lines after the first node) and of `lem:case-III-claim612-eq644` (`hingeRow_comp_single_off`,
+  688 and 183 lines after them). Three proof edges are missing, the first node's to both and the
+  second's to the second. Adding them makes new forward `\uses` (that round's gate 4), and *Node
+  order* cures them only by moves the task's line does not name: `lem:case-III-claim612-eq644`
+  (with KT eq. (6.44)'s setting, the vertex $c$) to after `lem:case-III-acolumn-zero`, whose
+  KT eq. (6.43) it follows, and `lem:case-III-claim612-block-iff-perp` (with the paragraph before
+  it) to after `lem:case-III-candidate-row-construction`, which it `\uses`; both leads follow.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label` for the two nodes, `--summary` and the
+  forward screen, on round 2 task 7's tree).
+  *Found:* RECONCILE round 2 task 7.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 7): the cure is the
+  coordinator's to assign, as `F-255`'s was.
 
 ## N — node shape
 
@@ -1540,7 +1555,8 @@ declaration's name as its header writes it:
   it. Left: the six dead nodes, kept as KT's exposition (retiring or merging them is not among
   principle D's fixes, `a111b17a`, `notes/Prose-report.md` G3 and G4; `F-158` is the report's), and
   `lem:case-III-transport-collapse`, whose three pins state its two claims and the identity, a role
-  map in its note.
+  map in its note; round 2: `lem:case-III-candidate-row`, one of the six, pins
+  `case_III_rank_certification`, the rank bound in its live form (task 7).
 - **F-163** · N · `case-iii.tex`'s case $d = 3$: the span and the point choice
   (`algebraic-induction/case-iii.tex`): six of the ten nodes have every pin dead
   (`lem:case-III-claim612-points-affineIndep-producer`, `lem:case-III-claim612-detpoly`,
@@ -1588,7 +1604,8 @@ declaration's name as its header writes it:
   route's nodes came with `24f04215`, `lem:case-III-rank-certification` and
   `lem:case-III-redundant-combination`; the placement and relabel nodes stay as KT's exposition, as
   retiring or merging them is not among principle D's fixes, `a111b17a`, `notes/Prose-report.md` G3
-  and G4; `lem:case-III-claim612-eq644`'s bundle was `24f04215`'s).
+  and G4; `lem:case-III-claim612-eq644`'s bundle was `24f04215`'s); round 2: the two placement
+  nodes pin `case_III_rank_certification`, the arms' theorem at their roles (task 7).
 - **F-171** · N · `case-iii.tex`'s general case (`algebraic-induction/case-iii.tex`): the formal
   route of KT Lemma 6.13 below the three live pins has no node. The choice of $q$ off four factors
   (`chainData_split_w6b_gates`, with the $d \times d$ minor `exists_tupleLI_polynomial`), KT's
@@ -2635,7 +2652,10 @@ declaration's name as its header writes it:
   `C(n_a + t • n_b, n_a)` (`panelSupportExtensor_add_smul_left`); and
   `hingeRow a b φ = hingeRow v b φ - hingeRow v a φ`.
   *Found:* round 3 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, S20).
+  *Disposition:* done (task 7): the node pins `case_III_rank_certification`, of which it is the
+  case $(G, p_1)$, the framework of `def:case-III-candidate` for a normal of a hyperplane meeting
+  $\Pi(a)$ in $L$; its note gives each hypothesis's source (`lem:case-III-redundant-decomposition`
+  and the rank of $R(G_v^{ab}, q)$). Two of the pin's proof edges are forward (`F-257`).
 - **F-165** · S · `lem:case-III-claim612-p2-placement`, `lem:case-III-claim612-p3-placement`
   (`algebraic-induction/case-iii.tex`): the statements are KT's counts at $(G, p_2)$ and
   $(G, p_3)$ (KT pp. 686–689): if the block $M_2$ of KT eq. (6.30), or $M_3$ of KT eq. (6.41), is
@@ -2649,7 +2669,12 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies of the two pins, of `case_III_arm_realization`,
   `_M2` and `_M3`, and of `caseIIICandidate`; KT 2011 pp. 682 and 686–691, `.refs/`).
   *Found:* round 3 task 2.14.
-  *Disposition:* reported (`notes/Prose-report.md`, S20).
+  *Disposition:* done (task 7): both nodes pin `case_III_rank_certification`, the theorem that
+  `case_III_arm_realization_M2` applies with $a$ and $b$ exchanged and $-r$, and `_M3` with $a$,
+  $c$, $v$ in the roles of $v$, $a$, $b$, the normals $q_\rho$, $-r$ and $G - a$; each statement
+  names its framework as `def:case-III-candidate`'s at those roles, and each note gives each
+  hypothesis's source (for $(G, p_3)$, KT eq. (6.44) and the proof's display at $S'$). One proof
+  edge of the first is forward (`F-257`).
 - **F-169** · S · `lem:case-III-chain-discriminator` (`algebraic-induction/case-iii.tex`): the
   statement claims less than its pin and than its consumer uses. It asks for some normals $q$, a
   nonzero form $r$ vanishing on $C(q(v_0), q(v_2))$, and $r(C(q(u_i), n')) \neq 0$ for some panel
@@ -4045,6 +4070,16 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 2 task 5.
   *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 5): round 3's docstring sweep
   (*Moved to a later round*); the first and the third are among the declarations round 2 unpins.
+- **F-258** · L · `linearIndependent_sum_augment_candidateRow` (`Molecular/RigidityMatrix/Basic.lean`),
+  `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow`
+  (`Molecular/RigidityMatrix/Claim612.lean`): their docstrings give them as the Lean of
+  `lem:case-III-candidate-row`, `lem:case-III-claim612-p2-placement` and
+  `lem:case-III-claim612-p3-placement`; since round 2 task 7 the three nodes pin
+  `case_III_rank_certification`, and none of the three is pinned.
+  *Evidence:* read (the three docstrings; the nodes' pins).
+  *Found:* RECONCILE round 2 task 7.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 7): round 3's docstring sweep
+  (*Moved to a later round*); all three are among the declarations round 2 unpins.
 
 ## M — mathematics and sources
 
