@@ -1860,6 +1860,13 @@ declaration's name as its header writes it:
   *Evidence:* read (`formalization.yaml`'s JJ 2009 reference and its `status.main_results` and
   alignment entries named; the chapters named).
   *Found:* round 2, the PI's review of `F-084` (2026-10-12).
+  *Disposition:* done (task 7): (1) the main result's description and its alignment row say that
+  `body_hinge_tay` is proved with each hinge replaced by a bundle of bars, and name the form with
+  hinges (the declaration is unchanged); `status.scope` and Tay 1989's `location` no longer say
+  "panel-hinge". (2) The row gives Nash-Williams and Edmonds the union's rank and Edmonds 1965 the
+  partition criterion, lists the chapter's pins, and says where the family form is proved.
+  (3) JJ 2009's `location` and note, and the row, credit KT eq. (2.4) to KT and to JJ Theorem
+  4.1(a), and JJ Theorem 6.1 as the rank formula.
 - **F-173** · U · `README.md`, `formalization.yaml`: two places contradict the rewritten opening of
   `algebraic-induction.tex`. (1) `README.md`'s molecular-conjecture item calls the algebraic
   induction the realization of KT Theorem 4.9's reduction; it runs on
@@ -1872,6 +1879,10 @@ declaration's name as its header writes it:
   entries named; KT pp. 648, 655 and 671); measured (`scripts/blueprint-deps.py --label
   thm:theorem-55` at `889ebc08`).
   *Found:* round 3 task 2.16.
+  *Disposition:* done (task 7): (1) `README.md` calls Theorem 5.5 an induction over the minimal
+  $k$-dof-graphs of every deficiency. (2) The main result's description and the alignment row name
+  the rank formula KT Proposition 2.3 (JJ 2009 Theorem 6.1), with `rigidityMatrix_prop11` as its
+  upper bound.
 - **F-204** · U · `README.md`, `home_page/index.md`, `formalization.yaml`: two places contradict
   or lag the rewritten opening of `jacobs.tex`. (1) `README.md` and the home page call Jacobs'
   conjecture and the degree-one rank formula "two further Jackson–Jordán 2008 consequences of the
@@ -1882,6 +1893,10 @@ declaration's name as its header writes it:
   *Evidence:* read (`README.md`'s and the home page's paragraph on phase 32; `formalization.yaml`'s
   literature entry; JJ 2008 §4; Crossref's record for the DOI).
   *Found:* round 4 task 2.8.
+  *Disposition:* done (task 7): (1) both pages call them two results of JJ 2008 on squares of
+  graphs: JJ derive Jacobs' conjecture from the rank formula, and the degree-one formula reduces
+  $r(G^2)$ to the core, as `jacobs.tex` says. (2) The DOI is the entry's `id`, checked again
+  against Crossref's record (title, J. Phys. A 31(31), 6653–6668, 1998).
 - **F-226** · U · `README.md`, `home_page/index.md`: two places contradict `rigidity-matroid.tex`
   and the rewritten *Organization of the blueprint* in `intro.tex`. (1) `README.md`'s second arc
   ("the planar rigidity matroid as a mathlib `Matroid` (Lovász–Yemini, …)") and the home page's
@@ -1894,6 +1909,10 @@ declaration's name as its header writes it:
   *Evidence:* read (`README.md` line 67; the home page's lines 177 and 191; Jordán 2016 p. 45, in
   `.refs/`).
   *Found:* round 4 task 2.13.
+  *Disposition:* done (task 7): (1) `README.md` credits the characterization to Laman, and the
+  home page's phase-7 row is *Row independence & count matroid*, after `intro.tex`'s item;
+  `formalization.yaml`'s Lovász–Yemini lines stay with `F-025` (`M`, for the report). (2) The
+  device is dropped from the phase-21 row.
 - **F-229** · U · `README.md`, `home_page/index.md`: two places contradict the rewritten opening
   and *Reading this blueprint* of `intro.tex`. (1) `README.md` (lines 15 and 76) and the home page
   (lines 71–72) call the body-hinge theorem of Tay and Whiteley a "body-hinge / panel-hinge"
@@ -1908,6 +1927,12 @@ declaration's name as its header writes it:
   *Evidence:* read (the lines named; the built graph's 653 green and 4 blue nodes at this task's
   tree; KT p. 671).
   *Found:* round 4 task 2.14.
+  *Disposition:* done (task 7): (1) both pages call it Tay and Whiteley's body-hinge theorem, proved
+  with each hinge replaced by a bundle of bars (`F-099`). (2) They say instead that the main
+  results of every chapter are formalized, as `intro.tex`'s *Reading* does; Theorem 5.5's induction
+  has four cases, Case III the one KT call the most difficult (p. 650); its hinges are
+  nondegenerate. The same phrases in `formalization.yaml` follow: "all three cases" in Theorem
+  5.5's description, and "genuine" in the two molecular conjecture descriptions.
 - **F-231** · U · `formalization.yaml`: the alignment row "Lee-Streinu 2008 pebble-game
   correctness" lists `SimpleGraph.PartialOrientation.runPebbleGame_isAccept_iff` in its `lean:`,
   but no declaration has that name. The theorem is
@@ -1916,6 +1941,8 @@ declaration's name as its header writes it:
   *Evidence:* read (`formalization.yaml` line 598; `PebbleGame/Correctness.lean`, the theorem at
   line 835 inside `namespace CombinatorialRigidity.PebbleGame` and `namespace PartialOrientation`).
   *Found:* round 5, the coordinator, verifying task 3.1.
+  *Disposition:* done (task 7): the row names the theorem; every other declaration that
+  `formalization.yaml` names resolves (`#check` on the built tree).
 
 ## S — statement strength
 

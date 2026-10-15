@@ -14,9 +14,10 @@ they use, so that no edge of `deficiency.tex` or `molecular-induction.tex` point
 chapter, task 5.4 four blocks of the algebraic induction (`F-119`), and task 5.5 left `pencil.tex`'s
 order, which only a regrouping would change. Task 6, terminology and notation, is done: KT's $d$
 for the dimension and $\vee$ for the join in `pencil.tex` and `main-component.tex`, the core of
-`jacobs.tex` told apart from the contracted one, and `meet.tex`'s parts numbered. No task edits the Lean or changes a
-statement's strength. **Next concrete task:** task 7, the status surfaces (*Hand-off*). Round
-manual: `CLEANUP.md`.
+`jacobs.tex` told apart from the contracted one, and `meet.tex`'s parts numbered. Task 7 aligned
+`README.md`, the home page and `formalization.yaml` with the chapters. No task edits the Lean or
+changes a statement's strength. **Next concrete task:** task 8.1, the findings report's `S` group
+(*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -27,16 +28,14 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 6 has landed** (`04ed99ec`, and this commit's follow-up; prose only, no Lean): the T
-entries' seven dispositions, the notation in `pencil.tex`, `main-component.tex`, `panel-layer.tex`
-and `meet.tex`, and `blueprint/SETUP-AND-PITFALLS.md`'s example of the `\item[…]` pitfall. The
-follow-up writes $d_G(P)$ at the three $d(P)$ that `04ed99ec` left in
-`lem:pencil-lifting-space-deficiency`. Nothing is mid-stream; the next task is task 7.
+**Task 7 has landed** (this commit; docs only, no TeX and no Lean): the six U entries' dispositions,
+and `README.md`, `home_page/index.md` and `formalization.yaml` aligned with the chapters they name
+(the checklist line). Nothing is mid-stream; the next task is task 8.1.
 
-**The gate's baseline, at task 6** (2026-10-15; the same as task 4.9's):
+**The gate's baseline, at task 7** (2026-10-15; the same as task 4.9's):
 - `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 588 lines**, sha256 prefix
   **`2e4cbc2acd13d193`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
-  regenerate it on this commit), byte-identical to task 4.9's, as at tasks 5.1–5.5. Tasks 7–9 keep
+  regenerate it on this commit), byte-identical to task 4.9's, as at tasks 5.1–6. Tasks 8–9 keep
   it byte-identical.
 - `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1501 edges
   11033da1dbaa0fae`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
@@ -45,8 +44,8 @@ follow-up writes $d_G(P)$ at the three $d(P)$ that `04ed99ec` left in
   84 + 145 unbacked, 177 dead, 12 nodes with four or more pins. Task 5 moved nodes between the
   chapter rows (task 5.4: `case-i` 24 nodes, 36 pins, 156 implied; `panel-layer` 39, 55, 203; the
   `case-ii` row after `genericity-and-count`'s). No node is drawn `#9CEC8B` (`F-007`).
-- **The forward screen at task 5's end**, unchanged at task 6 (*Scope*; task 9 re-runs it beside
-  the open's table):
+- **The forward screen at task 5's end**, unchanged at tasks 6–7 (*Scope*; task 9 re-runs it
+  beside the open's table):
   `rigidity-matroid` 2/2 0/0, `rigidity-matrix` 3/2 0/0, `molecular-induction` 0/0 2/2,
   `panel-layer` 10/4 1/1, `case-i` 14/6 0/0, `case-ii` 1/1 0/0 and `pencil` 3/2 1/1: 33 edges to a
   later file and 4 within a file, from task 4.9's 58 and 8. Each stays with its sentence and its
@@ -214,42 +213,30 @@ gate's diff, which each task makes exact before editing.
   done; `F-250` new), 5.4 `2ecbd37d` (`F-119` done), 5.5 `b384225a` (`pencil.tex`'s order left).
   Each commit's log carries its moves and the edges it left; 33 edges to a later file and 4 within
   a file stay (*Current state*). The dump byte-identical throughout.
-- [x] **6. T — terminology and notation** (`04ed99ec` and this commit; `F-056`, `F-067`, `F-072`, `F-073`,
-  `F-127`, `F-203`, `F-227`, all done). The first three were done by rounds 2–4; their
-  dispositions name the commits (`git log -S`). `F-073`: KT's $d$ for the dimension on 15 lines of
-  `pencil.tex` and 42 of `main-component.tex` ($\operatorname{def}_2$, $\operatorname{def}_3$
-  stay), where a degree $d$ is reworded twice, a count $d$ is $m$ and $d(P)$ is $d_G(P)$. `F-127`:
-  $\vee$ for the join of vectors, once in `panel-layer.tex` and 128 times in `main-component.tex`
-  (each read; none a meet), with its $\Lambda^2$ (30) as $\bigwedge^2$, which frees $\Lambda$ for
-  an ear's span (no entry: a notation choice within a chapter, which the ledger's *Format* has a
-  task fix). `F-203`: a sentence in `main-component.tex`'s notation list. `F-227`: plain items,
-  cited as part (1) and part (2). *Expected:* one commit; no node, `\uses` or pin changed,
-  `lean_decls` unchanged, the dump byte-identical to task 5.5's, the screen unchanged. Held.
-  Follow-up (this commit, the coordinator's check): the three $d(P)$ that `04ed99ec` left in
-  `lem:pencil-lifting-space-deficiency`'s statement and proof are $d_G(P)$; no bare $d(P)$ is left
-  in `pencil.tex` or `main-component.tex`. The dump byte-identical to task 6's. Held.
-- [ ] **7. U — status surfaces** (`F-099`, `F-173`, `F-204`, `F-226`, `F-229`, `F-231`).
-  `formalization.yaml`: `F-099`'s three places (the PI, 2026-10-12), `F-173`'s (2) and `F-204`'s
-  (2), Jacobs 1998's DOI, and `F-231`'s declaration name in an alignment row's `lean:`.
-  `README.md` and `home_page/index.md`: `F-173`'s (1), `F-204`'s (1), `F-226` and `F-229`. Each is
-  aligned with the chapter it names; no main result's `declaration:` changes. *Expected:* the dump
-  byte-identical.
+- [x] **6. T — terminology and notation** (`04ed99ec`, follow-up `34f61fd9`; `F-056`, `F-067`,
+  `F-072`, `F-073`, `F-127`, `F-203`, `F-227`, all done): KT's $d$ and $\vee$ in `pencil.tex` and
+  `main-component.tex`, the two cores told apart, `meet.tex`'s items plain. The dump byte-identical.
+- [x] **7. U — status surfaces** (this commit; `F-099`, `F-173`, `F-204`, `F-226`, `F-229`,
+  `F-231`, all done): `formalization.yaml`, `README.md` and `home_page/index.md` aligned with the
+  chapters they name, `F-229`'s phrases on all three, Jacobs 1998's DOI (Crossref); no
+  `declaration:` changed, `F-025`'s lines left for task 8.2; the dispositions carry the rest. The
+  dump byte-identical to `34f61fd9`'s, the screen unchanged.
 - [ ] **8. R — the findings report** (`notes/Prose.md` §3 *R*), in `notes/Prose-report.md`. Each
   `S`, `L` and `M` entry gets the disposition `reported`; the report is not a stop.
-  - [ ] **8.1 The `S` group** (65 entries): grouped by the kind of divergence, deduplicated and
-    ranked, each with its evidence, a suggested disposition and a commit estimate. It is presented
-    as one group, statements whose blueprint and formal texts disagreed after the formalization
-    was declared complete, for what they show about the limits of autoformalization (the PI,
-    2026-10-12, §1). It lists `F-137` and `F-142` in the group as resolved in passing by task 3.7's
-    repins; their dispositions stay `done`.
-  - [ ] **8.2 The `L` and `M` groups, the left graph findings, and the follow-up** (61 `L`, 6
-    `M`; the `E` and `N` entries left for a merge, a retirement or a Lean change). The report's
-    rest, and an unqueued ROADMAP bullet proposing the follow-up program, which the PI queues.
-    One more item for the PI: a stale example in `blueprint/CLAUDE.md`'s honesty gate, which
-    gives `lem:case-I` as case (b), a hypothesis that is the conclusion of a `\uses`'d node
-    (`lem:genericity-device`); the node's pins take no such hypothesis, and task 4.4 removed the
-    edge, which no text used. The report suggests a replacement, found then; the round edits no
-    agent manual.
+  - [ ] **8.1 The `S` group** (65 entries at the open, 67 with `F-234` and `F-239`): grouped by
+    the kind of divergence, deduplicated and ranked, each with its evidence, a suggested
+    disposition and a commit estimate. It is presented as one group, statements whose blueprint
+    and formal texts disagreed after the formalization was declared complete, for what they show
+    about the limits of autoformalization (the PI, 2026-10-12, §1). It lists `F-137` and `F-142`
+    in the group as resolved in passing by task 3.7's repins; their dispositions stay `done`.
+  - [ ] **8.2 The `L` and `M` groups, the left graph findings, and the follow-up** (61 `L` at the
+    open, 76 with this round's, and 6 `M`; the `E` and `N` entries left for a merge, a retirement
+    or a Lean change). The report's rest, and an unqueued ROADMAP bullet proposing the follow-up
+    program, which the PI queues. One more item for the PI: a stale example in
+    `blueprint/CLAUDE.md`'s honesty gate, which gives `lem:case-I` as case (b), a hypothesis that
+    is the conclusion of a `\uses`'d node (`lem:genericity-device`); the node's pins take no such
+    hypothesis, and task 4.4 removed the edge, which no text used. The report suggests a
+    replacement, found then; the round edits no agent manual.
 - [ ] **9. X — close** (`CLEANUP.md` *Workflow* 5; docs only; Sonnet allowed). The axioms check
   on `formalization.yaml`'s main results (`[propext, Classical.choice, Quot.sound]`, byte-identical
   to round 1's open); the no-Lean-edit check from `216e0702`; every ledger entry has its
@@ -301,14 +288,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 7, the status surfaces** (Opus, a fresh agent), its checklist line's six
-entries, in `formalization.yaml`, `README.md` and `home_page/index.md`; no TeX. Its *Expected* is
-the dump byte-identical to task 6's (*Current state*). Size it at pickup: one commit if it fits,
-else split by file, 7.1 `formalization.yaml` (`F-099`, `F-173`'s (2), `F-204`'s (2), `F-231`) and
-7.2 `README.md` with `home_page/index.md`. The ledger's line numbers date from rounds 2–4: find
-each place by its quoted phrase. A surface follows its chapter as it now stands (the rank formula
-is KT Proposition 2.3, `F-067`'s disposition), and no main result's `declaration:` changes
-(*Scope*). Then task 8.1.
+**Next concrete task: task 8.1, the findings report's `S` group** (Opus, a fresh agent), in a new
+`notes/Prose-report.md`: the `S` entries (67 at task 7, the open's 65 with this round's `F-234`
+and `F-239`) grouped by the kind of divergence, deduplicated and ranked, each with its evidence,
+a suggested disposition and a commit estimate, presented as one group for what they show about
+the limits of autoformalization (the checklist line; `notes/Prose.md` §1, 2026-10-12, and §3
+*R*). Each gets the disposition `reported`; `F-137` and `F-142` stay `done`. Recount at pickup
+(`grep -c '· S ·' notes/Prose-findings.md`); if the report does not fit one commit, split it by
+group of divergences in the checklist line and land the first. No TeX: the dump stays
+byte-identical to task 7's (*Current state*). Then task 8.2.
 
 ## Decisions made during this round
 
@@ -368,3 +356,5 @@ is KT Proposition 2.3, `F-067`'s disposition), and no main result's `declaration
   as from `extensor.tex` on, so that $\wedge$ is only the meet (`meet.tex`) and the algebra's
   product in a basis; a local letter that the change makes clash is renamed or reworded. A list's
   items are plain `\item`s, cited as part (1), part (2), as the web build numbers them.
+- **The status surfaces** (task 7). A surface follows its chapter as it now stands, and a finding's
+  phrase follows to the surfaces its entry does not name; an `M` entry's lines stay for the report.

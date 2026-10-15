@@ -12,8 +12,8 @@ rigid in the plane iff it contains a `(2, 3)`-tight spanning subgraph.
 Beyond Laman's theorem the project formalizes the planar rigidity matroid
 and an executable `(k, ℓ)`-sparsity decision procedure (the Lee–Streinu
 pebble game), the abstract matroid-union machinery, Tay's body-bar theorem
-and the body-hinge / panel-hinge Tay–Whiteley theorem (Tay 1984/1989,
-Whiteley 1988), and Katoh–Tanigawa 2011's proof of the **molecular
+and Tay and Whiteley's body-hinge theorem (Tay 1984/1989, Whiteley 1988),
+and Katoh–Tanigawa 2011's proof of the **molecular
 conjecture**, at every dimension, with its molecule application, the
 protein-flexibility rank formula `r(G²) = 3|V| − 6 − def(G̃)`. Its newest
 result is a strengthening of the molecular conjecture that appears to be
@@ -64,7 +64,8 @@ The development proceeds in four arcs (full plan in `ROADMAP.md`):
 * **Laman's theorem** (phases 1–6) — both directions, via the Henneberg
   route, landing `isGenericallyRigid_two_iff_exists_isLaman_le`.
 * **Rigidity matroid & sparsity decision** (phases 7–11) — the planar
-  rigidity matroid as a mathlib `Matroid` (Lovász–Yemini, combinatorial
+  rigidity matroid as a mathlib `Matroid`, whose independent sets are the
+  `(2, 3)`-sparse edge sets by Laman's characterization (count-matroid
   and linear-matroid forms), and the Lee–Streinu `(k, ℓ)`-pebble game as
   an executable, certificate-carrying decision procedure (`Decidable`
   instances for `IsSparse` / `IsTight` / `IsLaman` and a
@@ -72,23 +73,28 @@ The development proceeds in four arcs (full plan in `ROADMAP.md`):
 * **Body-bar & body-hinge rigidity** (phases 12–16) — abstract
   matroid-union / Edmonds-partition machinery (ported locally from
   `apnelson1/Matroid`), Tutte–Nash-Williams tree-packing, the `k`-frame
-  matroid as a cycle-matroid union, Tay's body-bar theorem, and the
-  body-hinge / panel-hinge Tay–Whiteley extension.
+  matroid as a cycle-matroid union, Tay's body-bar theorem, and Tay and
+  Whiteley's body-hinge theorem, proved with each hinge replaced by a
+  bundle of bars.
 * **The molecular conjecture** (phases 17–26) — Katoh–Tanigawa 2011's
   proof, the project's largest single undertaking: the Grassmann–Cayley
   extensor algebra (Lemma 2.1), the panel-hinge rigidity matrix `R(G,p)`,
   the deficiency matroid `M(G̃)`, the combinatorial induction
-  (Theorem 4.9), the algebraic induction realizing that reduction at
-  the rigidity-matrix rank (Theorem 5.5), and the molecule application
+  (Theorem 4.9), the algebraic induction (Theorem 5.5), which realizes the
+  minimal `k`-dof-graphs of every deficiency `k` at their rigidity-matrix
+  rank by one induction over all of them, and the molecule application
   (Corollary 5.7).
 
-All four arcs — phases 1–26 — are complete and carry no `sorry`s. The
-development is fully green through the body-hinge Tay–Whiteley theorem
-(`Graph.BodyHingeFramework.body_hinge_tay`), and the molecular-conjecture
-program is formalized end-to-end at full Katoh–Tanigawa strength (all
-degrees of freedom, genuine hinges): **Theorem 5.5** (the realization
-theorem, all three cases including the hardest, Case III: `k=0`, no proper
-rigid subgraph) and **Theorem 5.6** (every simple spanning multigraph
+All four arcs — phases 1–26 — are complete and carry no `sorry`s, and the
+main results of every blueprint chapter are formalized. Tay and
+Whiteley's body-hinge theorem (`Graph.BodyHingeFramework.body_hinge_tay`)
+is proved for frameworks whose hinges are bundles of bars; its form for
+frameworks with hinges, at generic hinge positions, is phase 34's (below).
+The molecular-conjecture program is formalized end-to-end:
+**Theorem 5.5** (the realization theorem, for every deficiency `k` and
+with nondegenerate hinges; its induction has four cases, of which
+Katoh–Tanigawa call Case III, `k=0` with no proper rigid subgraph, the
+most difficult) and **Theorem 5.6** (every simple spanning multigraph
 realizes the deficiency rank, reconciling the rigidity-matrix rank with the
 combinatorial deficiency) hold at every dimension `d ≥ 2`, and the
 **molecular conjecture itself** — Katoh–Tanigawa's Conjecture 1.2, for
@@ -113,13 +119,15 @@ per-phase status table is on the
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 
 Beyond the four arcs, phase 32 (closed 2026-07-16) added two further
-Jackson–Jordán 2008 consequences of the rank formula: **Jacobs'
+results of Jackson–Jordán 2008 on squares of graphs: **Jacobs'
 conjecture** (`G²` is independent in the 3-D generic rigidity matroid
-iff it satisfies the 3-D Laman counting condition, unconditional now
-that the rank formula is a theorem; `SimpleGraph.jacobs`) and the
-**degree-1 rank formula** (the explicit `r(G²)` for connected graphs
-with degree-1 vertices — where the rank formula's minimum-degree
-hypothesis fails — by reduction to the two-core;
+iff it satisfies the 3-D Laman counting condition; Jackson and Jordán
+derive it from the rank formula, so it is unconditional now that the
+rank formula is a theorem; `SimpleGraph.jacobs`) and the **degree-1 rank
+formula** (the explicit `r(G²)` for connected graphs with degree-1
+vertices — where the rank formula's minimum-degree hypothesis fails — by
+reduction to the two-core, so that the rank formula, applied to the
+two-core, determines `r(G²)` for every graph;
 `SimpleGraph.degree_one_rank`). Phase 33 (closed 2026-07-17)
 generalized the Katoh–Tanigawa chain from the real numbers to an
 arbitrary **infinite field of any characteristic**: Theorems 5.5 and
@@ -149,8 +157,7 @@ each endpoint body, rather than being the intersection of the two
 panels — both results hold with parallel edges admitted
 (`Molecular.molecular_conjecture_multigraph`), while the multigraph
 equivalence is provably false for the intersection-based panel-hinge
-frameworks the simple-graph statements use. The blueprint dependency graph is
-fully green.
+frameworks the simple-graph statements use.
 
 **How the pencil realization theorem is proved (phases 39–40).** Phase 39 (closed 2026-09-25)
 reduced it, in Lean, to two *main-component statements*: every simple two-edge-connected multigraph

@@ -1293,8 +1293,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   genericity and counting subsections before Case II, and its task 5.5 left the order of
   `pencil.tex`, which only a regrouping would change; that closed the node order. Its task 6 gave
   `pencil.tex` and `main-component.tex` the earlier chapters' notation, KT's $d$ for the dimension
-  and $\vee$ for the join, and told the contracted core apart from the core of `jacobs.tex`.
-  **Next concrete task:** round 5's task 7, the status surfaces (its hand-off).
+  and $\vee$ for the join, and told the contracted core apart from the core of `jacobs.tex`. Its
+  task 7 aligned `README.md`, the home page and `formalization.yaml` with the rewritten chapters.
+  **Next concrete task:** round 5's task 8.1, the findings report's `S` group (its hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

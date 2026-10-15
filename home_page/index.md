@@ -68,23 +68,25 @@ strengthen their results (the full plan is in
   `lake exe pebble-game` CLI).
 - **Body-bar & body-hinge rigidity** (phases 12–16) — local matroid-union
   machinery (ported from `apnelson1/Matroid`), Tay's body-bar theorem
-  (Tay 1984 / Whiteley 1988), and its body-hinge / panel-hinge
-  Tay–Whiteley extension.
+  (Tay 1984 / Whiteley 1988), and Tay and Whiteley's body-hinge theorem,
+  proved with each hinge replaced by a bundle of bars.
 - **The molecular conjecture** (phases 17–26) — Katoh–Tanigawa 2011's
   proof of the panel-hinge Tay–Whiteley conjecture together with its
   molecule application, the project's largest single undertaking.
 
-All four arcs — phases 1–26 — are complete and carry no `sorry`s: Laman's
-theorem
+All four arcs — phases 1–26 — are complete and carry no `sorry`s, and the
+main results of every blueprint chapter are formalized: Laman's theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
-is formalized in both directions, the development is fully green through
-the body-hinge Tay–Whiteley theorem, and the molecular-conjecture program
-is formalized end-to-end. At full Katoh–Tanigawa strength (all degrees of
-freedom, genuine hinges), **Theorem 5.5** (the realization theorem, all
-three cases including the hardest, Case III: `k=0`, no proper rigid
-subgraph) and **Theorem 5.6** (every simple spanning multigraph realizes
-the deficiency rank, reconciling the rigidity-matrix rank with the
-combinatorial deficiency) hold at every dimension `d ≥ 2`, and the
+in both directions, Tay and Whiteley's body-hinge theorem for frameworks
+whose hinges are bundles of bars (for frameworks with hinges, at generic
+hinge positions, see phase 34 below), and the molecular-conjecture
+program end-to-end. **Theorem 5.5** (the realization theorem, for every
+deficiency `k` and with nondegenerate hinges; its induction has four
+cases, of which Katoh–Tanigawa call Case III, `k=0` with no proper rigid
+subgraph, the most difficult) and **Theorem 5.6** (every simple spanning
+multigraph realizes the deficiency rank, reconciling the rigidity-matrix
+rank with the combinatorial deficiency) hold at every dimension `d ≥ 2`,
+and the
 **molecular conjecture itself** — Katoh–Tanigawa's Conjecture 1.2, for
 simple graphs: such a graph can be realized as an infinitesimally rigid
 body-hinge framework iff it can be realized as an infinitesimally rigid
@@ -105,12 +107,14 @@ of the square graph `G²` with molecular and panel-hinge motions of `G`
 flexibility count for a molecule modelled on `G`.
 
 Beyond the four arcs, phase 32 (closed 2026-07-16) added two further
-Jackson–Jordán 2008 consequences of the rank formula: **Jacobs'
+results of Jackson–Jordán 2008 on squares of graphs: **Jacobs'
 conjecture** (`G²` is independent in the 3-D generic rigidity matroid
-iff it satisfies the 3-D Laman counting condition, unconditional now
-that the rank formula is a theorem; `SimpleGraph.jacobs`) and the
-**degree-1 rank formula** (the explicit `r(G²)` for connected graphs
-with degree-1 vertices, by reduction to the two-core;
+iff it satisfies the 3-D Laman counting condition; Jackson and Jordán
+derive it from the rank formula, so it is unconditional now that the
+rank formula is a theorem; `SimpleGraph.jacobs`) and the **degree-1 rank
+formula** (the explicit `r(G²)` for connected graphs with degree-1
+vertices, by reduction to the two-core, so that the rank formula, applied
+to the two-core, determines `r(G²)` for every graph;
 `SimpleGraph.degree_one_rank`). Phase 33 (closed 2026-07-17)
 generalized the Katoh–Tanigawa chain from the real numbers to an
 arbitrary **infinite field of any characteristic**: Theorems 5.5 and
@@ -138,7 +142,7 @@ panels — both results hold with parallel edges admitted
 equivalence is provably false for the intersection-based panel-hinge
 frameworks the simple-graph statements use. Phases 39–40 (closed
 2026-09-25 and 2026-09-29) then proved the pencil realization theorem,
-stated above. The blueprint dependency graph is fully green.
+stated above.
 
 ### How the pencil realization theorem is proved
 
@@ -174,7 +178,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |     4 | Frameworks                  | `Framework.lean`                                                 |   ✓    |
 |     5 | Laman's theorem (⇐)         | `HennebergRigidity.lean`, `LamanTheorem.lean`                    |   ✓    |
 |     6 | Laman's theorem (⇒)         | `RigidityMatroid.lean`, `LamanTheorem.lean`                      |   ✓    |
-|     7 | Lovász–Yemini matroid id.   | `CountMatroid.lean`, `MatroidIdentification.lean`                |   ✓    |
+|     7 | Row independence & count matroid | `CountMatroid.lean`, `MatroidIdentification.lean`           |   ✓    |
 |     8 | Linear-matroid framing      | `LinearRigidityMatroid.lean`                                     |   ✓    |
 |     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness}.lean` |   ✓    |
 |    10 | Executable pebble game      | `PebbleGame/{Exec,Examples}.lean`, `Main.lean`                   |   ✓    |
@@ -188,7 +192,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction/` | ✓ |
-|    21 | Algebraic induction: Thm 5.5 base + Cases I & II (+ the Grassmann–Cayley meet and the generic-max-rank device) | `Molecular/{Meet,AlgebraicInduction}/` | ✓ |
+|    21 | Algebraic induction: Thm 5.5 base + Cases I & II (+ the Grassmann–Cayley meet) | `Molecular/{Meet,AlgebraicInduction}/` | ✓ |
 |    22 | The algebraic-induction realization layer at `d=3`: Cases I & III, Theorem 5.5 and Theorem 5.6 at full strength | `Molecular/` | ✓ |
 |    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the Molecular Conjecture (Conjecture 1.2) | `Molecular/` | ✓ |
 |    24 | 3-D generic bar-joint rigidity matroid (linear-matroid form) | `GenericRigidityMatroid.lean` | ✓ |

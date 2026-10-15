@@ -51,7 +51,8 @@ their first users, and the genericity and counting subsections before Case II, a
 left the order of `pencil.tex`, which only a regrouping would change; that closed the node order.
 Its task 6 gave `pencil.tex` and `main-component.tex` the earlier chapters' notation, KT's $d$ for
 the dimension and $\vee$ for the join, and told the contracted core apart from the core of
-`jacobs.tex`. **Next concrete task:** round 5's task 7, the status surfaces
+`jacobs.tex`. Its task 7 aligned `README.md`, the home page and `formalization.yaml` with the
+rewritten chapters. **Next concrete task:** round 5's task 8.1, the findings report's `S` group
 (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions

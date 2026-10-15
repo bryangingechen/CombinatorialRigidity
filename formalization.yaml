@@ -87,7 +87,7 @@ sources:                                                          # [required] l
     authors: ["T.-S. Tay"]
     id: "doi:10.1007/BF01788678"
     type: "article"
-    location: "main theorem (body-hinge / panel-hinge)"
+    location: "main theorem (body-hinge frameworks)"
     relationship: "formalizes"
     author_endorsement: "not-contacted"
 
@@ -95,15 +95,20 @@ sources:                                                          # [required] l
     authors: ["B. Jackson", "T. Jordán"]
     id: "doi:10.1016/j.ejc.2009.03.030"
     type: "article"
-    location: "Thm 6.1 / Cor 6.2 (def = corank); §5 (body-bar), §6-§7 (body-hinge / panel-hinge: Thm 6.1, Cor 6.3, Thm 7.2), p. 586"
+    location: "Thm 4.1(a) (applied to G~: def = corank, KT eq. (2.4)); §5 (body-bar), §6-§7 (body-bar-and-hinge and panel-and-hinge: Thm 6.1, Cor 6.3, Thm 7.2), p. 586"
     relationship: "formalizes"
     author_endorsement: "not-contacted"
     note: >-
-      Source of the def = corank bridge (Thm 6.1 / Cor 6.2) and, in phase 34, of the
-      coordinate route to the generic ("almost all realizations") form of the realization
-      theorems: its section 5 (body-bar), sections 6-7 (body-hinge / panel-hinge, Thm 6.1,
-      Cor 6.3, Thm 7.2), and the p. 586 molecular observation are formalized with the
-      existential quantifiers upgraded to every generic realization.
+      Its Theorem 4.1(a), the classical formula for the largest union of k forests (which it
+      states with Nash-Williams 1961/1964 and Tutte 1961), applied to G~ is the def = corank
+      bridge, Katoh-Tanigawa eq. (2.4), which Katoh-Tanigawa observe from their Proposition 2.3
+      (phase 19 derives it from the rank of a matroid union). Its Theorem 6.1 is the rank formula
+      rank R(G,p) = D(|V|-1) - def(G~) that Katoh-Tanigawa's Proposition 2.3 credits to it. In
+      phase 34 it is the source of the coordinate route to the generic ("almost all
+      realizations") form of the realization theorems: its section 5 (body-bar), sections 6-7
+      (body-bar-and-hinge and panel-and-hinge, Thm 6.1, Cor 6.3, Thm 7.2), and the p. 586 molecular
+      observation are formalized with the existential quantifiers upgraded to every generic
+      realization.
 
   - title: "A proof of the molecular conjecture"
     authors: ["N. Katoh", "S. Tanigawa"]
@@ -148,8 +153,8 @@ sources:                                                          # [required] l
 
   - title: "Generic rigidity in three-dimensional bond-bending networks"
     authors: ["D. J. Jacobs"]
-    id: "J. Phys. A: Math. Gen. 31 (1998), 6653-6668"
-    type: "article"
+    id: "doi:10.1088/0305-4470/31/31/012"
+    type: "article"                                             # J. Phys. A: Math. Gen. 31(31) (1998) 6653-6668
     relationship: "adapts"
     author_endorsement: "not-contacted"
     note: "Origin of Jacobs' conjecture (phase 32); the statement formalized is Jackson-Jordán 2008's Conjecture 5.1 / Theorem 5.4 form."
@@ -231,7 +236,7 @@ status:
     (k,l)-sparsity decision procedure - the Lee-Streinu pebble game - with Decidable
     instances and a `lake exe pebble-game` CLI. (3) Matroid union / Edmonds partition
     (ported from apnelson1/Matroid), Tutte-Nash-Williams tree packing, Whiteley's k-frame
-    matroid, and the Tay-Whiteley body-bar and body-hinge / panel-hinge theorems.
+    matroid, Tay's body-bar theorem, and Tay and Whiteley's body-hinge theorem.
     (4) Katoh-Tanigawa's 2011 proof of the molecular conjecture - the Grassmann-Cayley
     extensor algebra, the deficiency matroid, and the combinatorial and algebraic
     inductions - together with its molecule application, the rank formula
@@ -319,10 +324,16 @@ status:
   - declaration: "Graph.BodyHingeFramework.body_hinge_tay"
     file: "CombinatorialRigidity/BodyBar/BodyHinge.lean"
     description: >-
-      Body-hinge / panel-hinge Tay-Whiteley theorem (Tay 1989, Whiteley 1988),
-      existence-of-realization form: a graph carries an independent (resp. isostatic)
-      body-hinge framework in R^n iff its (d-1)-fold edge-multiplication is (d,d)-sparse
-      (resp. tight), equivalently a packing of d forests.
+      Tay and Whiteley's body-hinge theorem (Tay 1989, Whiteley 1988 Thm 10),
+      existence-of-realization form, with each hinge replaced by a bundle of bars: for
+      d = n(n+1)/2, a multigraph G carries an independent (resp. isostatic) framework in R^n
+      with d-1 bars at each edge iff its (d-1)-fold edge-multiplication is a packing of d
+      forests (resp. (d,d)-tight). The structure Graph.BodyHingeFramework records the d-1 bar
+      coordinates of each edge, with no hinge and no condition on them, so these frameworks
+      need not come from hinges. The form with hinges, at every generic choice of hinge
+      points, is
+      CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees
+      (phase 34).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -331,8 +342,9 @@ status:
   - declaration: "CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen"
     file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
     description: >-
-      Katoh-Tanigawa 2011 Theorem 5.5 (the realization theorem, all three cases including the
-      hardest, Case III): every minimal k-dof-graph on >= 2 vertices admits a
+      Katoh-Tanigawa 2011 Theorem 5.5 (the realization theorem, all four cases of its induction,
+      including Case III, which Katoh-Tanigawa call the most difficult): every minimal k-dof-graph
+      on >= 2 vertices admits a
       nondegenerate-hinge panel realization whose rigidity matrix attains rank D(|V|-1) - k,
       at every dimension n >= 2 (D = (n+1 choose 2) >= 3; phase 40 lowered the floor from
       n >= 3) and over any infinite field of any characteristic (phase 33; KT's real statement is
@@ -348,8 +360,9 @@ status:
       Katoh-Tanigawa 2011 Theorem 5.6: every simple spanning multigraph has a panel-hinge
       realization attaining the deficiency rank, rank R(G,p) = D(|V|-1) - def(G~), at every
       dimension n >= 2 and over any infinite field of any characteristic (phase 33). With the
-      def = corank bridge this completes the Katoh-Tanigawa Proposition 1.1 reconciliation
-      (CombinatorialRigidity.Molecular.rigidityMatrix_prop11).
+      upper bound at nondegenerate hinges (CombinatorialRigidity.Molecular.rigidityMatrix_prop11)
+      it gives Jackson-Jordán's rank formula, Katoh-Tanigawa Proposition 2.3, and with the
+      def = corank bridge (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -359,8 +372,9 @@ status:
     file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
     description: >-
       The Molecular Conjecture (Tay-Whiteley 1984; Katoh-Tanigawa 2011 Conjecture 1.2): a
-      simple spanning graph on >= 2 bodies has an infinitesimally rigid genuine body-hinge
-      realization iff it has one as a panel-hinge framework, at every dimension n >= 2 and
+      simple spanning graph on >= 2 bodies has an infinitesimally rigid body-hinge realization
+      with nondegenerate hinges iff it has an infinitesimally rigid panel-hinge realization
+      with nondegenerate hinges, at every dimension n >= 2 and
       over any infinite field of any characteristic (phase 33). At n = 2 (phase 40) this is
       Jackson-Jordán 2008's pin-collinear theorem, here over any infinite field.
     sorry_count: 0
@@ -453,8 +467,9 @@ status:
     description: >-
       The Molecular Conjecture at full multigraph strength (Katoh-Tanigawa 2011
       Conjecture 1.2 for multigraphs; phase 35): a spanning multigraph on any nonempty body
-      set - parallel edges and loops admitted - has an infinitesimally rigid genuine body-hinge
-      realization iff it has an infinitesimally rigid hinge-coplanar panel realization
+      set - parallel edges and loops admitted - has an infinitesimally rigid body-hinge
+      realization with nondegenerate hinges iff it has an infinitesimally rigid hinge-coplanar
+      panel realization
       (KT's containment model: each hinge lies in the panel of each endpoint body), at
       every dimension n >= 2 and over any infinite field of any characteristic. The
       multigraph Theorem 5.6 behind it is
@@ -595,15 +610,21 @@ alignment:
       status: "proved"
 
     - source: "Lee-Streinu 2008 pebble-game correctness (matroidal regime l < 2k)"
-      lean: "SimpleGraph.countMatroid_indep_iff_runPebbleGame, SimpleGraph.PartialOrientation.runPebbleGame_isAccept_iff, SimpleGraph.instDecidableIsLaman"
+      lean: "SimpleGraph.countMatroid_indep_iff_runPebbleGame, CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_isAccept_iff, SimpleGraph.instDecidableIsLaman"
       module: "CombinatorialRigidity/PebbleGame/Correctness.lean, CombinatorialRigidity/PebbleGame/Exec.lean"
       status: "proved"
 
-    - source: "Edmonds 1965/1970, Nash-Williams 1966: matroid union & partition rank formula"
-      lean: "Matroid.Union, Matroid.matroid_partition'"
+    - source: "Nash-Williams 1966 and Edmonds: the rank of a matroid union; Edmonds 1965 Thm 1: matroid partition"
+      lean: "Matroid.Union, Matroid.Union_rank_eq, Matroid.Union_pow_rk_eq, Matroid.Union_pow_indep_iff_count, Matroid.matroid_partition'"
       module: "CombinatorialRigidity/Matroid/Constructions/Union.lean"
       status: "proved"
-      note: "Ported from apnelson1/Matroid (Apache-2.0)."
+      note: >-
+        Ported from apnelson1/Matroid (Apache-2.0); presentation after Oxley 2011 §§11.1-11.3. The
+        rank formula is proved for a finite family of matroids only at the whole ground set
+        (Union_rank_eq; matroid_partition' for two matroids), and at every subset for k copies
+        of one matroid (Union_pow_rk_eq). The independence criterion is proved in that case,
+        where it is Edmonds' partition theorem (Union_pow_indep_iff_count), the only case used
+        later.
 
     - source: "Tutte 1961 / Nash-Williams 1961 tree-packing"
       lean: "Graph.tutte_nash_williams"
@@ -620,17 +641,22 @@ alignment:
       module: "CombinatorialRigidity/BodyBar/TayTheorem.lean"
       status: "proved"
 
-    - source: "Tay 1989 / Whiteley 1988: body-hinge / panel-hinge Tay-Whiteley theorem (existence form)"
+    - source: "Tay 1989 / Whiteley 1988 Thm 10: the Tay-Whiteley body-hinge theorem (existence form)"
       lean: "Graph.BodyHingeFramework.body_hinge_tay"
       module: "CombinatorialRigidity/BodyBar/BodyHinge.lean"
       status: "proved"
+      note: >-
+        Proved with each hinge replaced by a bundle of bars: Graph.BodyHingeFramework records
+        the bar coordinates of each edge, with no hinge, so the frameworks it provides need not
+        come from hinges. The form with hinges, at generic hinge points, is the Jackson-Jordán
+        2010 Thm 6.1 / Cor 6.3 row below.
 
     - source: "Katoh-Tanigawa 2011, Lemma 2.1 (Grassmann-Cayley extensor independence)"
       lean: "CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent"
       module: "CombinatorialRigidity/Molecular/Extensor.lean"
       status: "proved"
 
-    - source: "Jackson-Jordán 2009 Thm 6.1 / Cor 6.2 (def = corank bridge)"
+    - source: "Katoh-Tanigawa 2011 eq. (2.4) (def = corank bridge; Jackson-Jordán 2010 Thm 4.1(a) applied to G~)"
       lean: "Graph.isBase_ncard_add_deficiency_eq, Graph.rank_add_deficiency_eq"
       module: "CombinatorialRigidity/Molecular/Deficiency.lean"
       status: "proved"
@@ -645,7 +671,7 @@ alignment:
       module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
       status: "proved"
 
-    - source: "Katoh-Tanigawa 2011, Theorem 5.6 + Proposition 1.1 (deficiency rank; rank R = D(|V|-1) - def)"
+    - source: "Katoh-Tanigawa 2011, Theorem 5.6 + Proposition 2.3 (deficiency rank; rank R = D(|V|-1) - def, Jackson-Jordán 2010 Thm 6.1)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen, CombinatorialRigidity.Molecular.rigidityMatrix_prop11"
       module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean, CombinatorialRigidity/Molecular/AlgebraicInduction/PanelHinge.lean"
       status: "proved"
