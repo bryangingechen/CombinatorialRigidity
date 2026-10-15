@@ -8,8 +8,9 @@ input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L
 and M5's credits (Pollaczek-Geiringer 1927 states the characterization and is credited beside
 Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. Round 2,
 `reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), opened with 21 one-commit tasks;
-task 2 made the four false statements (S6–S9) true. **Next concrete task:** round 2's task 3, S10
-restated in its pin's form and filled. The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
+tasks 2–3 made the false statements (S6–S10) true. **Next concrete task:** round 2's task 4, S4
+and S5, the two vacuous or trivially met statements. The two PDFs of §2 are in `.refs/` (the PI,
+2026-10-15).
 
 ## 1. The PI's decisions
 

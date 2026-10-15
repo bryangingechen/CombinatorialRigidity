@@ -900,38 +900,6 @@ set $I'$ of $M(\tilde H)$ into $D$ forests and change each forest at the
 new vertex $v$. When no forest contains a copy of $ab$, each forest
 gains one edge at $v$.
 
-\begin{lemma}[Edge-splitting and forests avoiding $ab$; KT Lemma~4.2(i)]
-  \label{lem:forest-surgery-unsplit}
-  \uses{def:graph-operations, lem:forest-packing-decomp}
-  Let $H$ be a multigraph with an edge $ab$, and let $H_{ab}^v$ be
-  obtained from $H$ by edge-splitting along $ab$. Let
-  $F'_1, \dots, F'_D$ be pairwise disjoint forests of $\tilde H$, none of
-  which contains a copy of $ab$, and let $I'$ be their union. Then there
-  are pairwise disjoint forests $F_1, \dots, F_D$ of
-  $\widetilde{H_{ab}^v}$ with $F'_i \subseteq F_i$ and
-  $|F_i| = |F'_i| + 1$ for each $i$. In particular, their union $I$ has
-  $|I| = |I'| + D$.
-\end{lemma}
-\begin{proof}
-  The forests $F'_i$ contain no copy of $ab$, so they are sets of edges of
-  $\widetilde{H_{ab}^v}$ with the same ends as in $\tilde H$, and none of
-  their edges is incident with $v$. Let $F_i = F'_i \cup \{(va, i)\}$
-  for $i \le D - 1$, and $F_D = F'_D \cup \{(vb, 1)\}$, where $(va, i)$
-  is the $i$th copy of the new edge $va$. Each added edge joins $v$ to a
-  vertex of $H$ and is the only edge of $F_i$ at $v$, so it lies on no
-  cycle of $F_i$. Hence $F_i$ is a forest. The added edges are distinct
-  and are not edges of $\tilde H$, so the $F_i$ are pairwise disjoint.
-  This is Katoh and Tanigawa's construction when no forest contains a
-  copy of $ab$.
-\end{proof}
-
-Katoh and Tanigawa~\cite[p.~662]{katohTanigawa2011} use this case to
-prove their Lemma~4.4, which we prove without forests
-(\cref{lem:removal-deficiency}). In the form of independent sets, the
-lemma above is the case $h' = 0$ of KT Lemma~4.2(i) below
-(\cref{lem:edge-splitting}), with $G = H_{ab}^v$, for $D \ge 2$ and
-$a \neq b$. So we do not formalize it separately.
-
 We state KT Lemma~4.2 for a vertex $v$ of $G$ of degree two, whose edges
 $e_a$ and $e_b$ join $v$ to distinct vertices $a, b \neq v$. Then $G$ is
 obtained from $G_v^{ab}$ by edge-splitting along $ab$, so the lemma
@@ -1057,6 +1025,55 @@ two cases of the lemma cover every $I'$.
   to the other forests take the indices $j$ for which $(ab, j)$ is not in
   $I'$.
 \end{fmlnote}
+
+We state the case $h' = 0$ of case~(i) on its own: no forest contains a
+copy of $ab$, and each forest gains one edge at $v$.
+
+\begin{lemma}[Edge-splitting and independent sets avoiding $ab$; KT Lemma~4.2(i)]
+  \label{lem:forest-surgery-unsplit}
+  \lean{Graph.splitOff_indep_extend_of_fiber_lt}
+  \leanok
+  \uses{def:graph-operations, def:matroid-MG}
+  Let $D \ge 2$, and let $G$ be a multigraph with a vertex $v$ of degree
+  two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
+  $a, b \neq v$. Let $I'$ be an independent set of
+  $M(\widetilde{G_v^{ab}})$ that contains no copy of $ab$. Then
+  $M(\tilde G)$ has an independent set $I$ with
+  $I \setminus (\tilde e_a \cup \tilde e_b) = I'$, $|I| = |I'| + D$ and
+  $|\tilde e_b \cap I| = 1$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:forest-packing-decomp, lem:reverse-pendant-insert, lem:reverse-reroute-cycle-lift}
+  By \cref{lem:forest-packing-decomp}, $I'$ is the union of $D$ forests
+  $F'_1, \dots, F'_D$ of $\widetilde{G_v^{ab}}$, which we make pairwise
+  disjoint as after that lemma. None of them contains a copy of $ab$.
+  Let $F_i = F'_i \cup \{(e_a, i)\}$ for
+  $i \le D - 1$, and $F_D = F'_D \cup \{(e_b, 1)\}$; the copy $(e_b, 1)$
+  exists as $D \ge 2$. These are forests of $\tilde G$ by
+  \cref{lem:reverse-pendant-insert}. The added edges are distinct copies
+  of $e_a$ and $e_b$, and they are not edges of $\widetilde{G_v^{ab}}$.
+  So $F_1, \dots, F_D$ are pairwise disjoint, and their union $I$ is
+  independent in $M(\tilde G)$ (\cref{lem:forest-packing-decomp}). Each
+  forest gains one edge, so $|I| = |I'| + D$. The edges of $I$ outside
+  $\tilde e_a \cup \tilde e_b$ are those of $I'$, and $(e_b, 1)$ is the
+  only copy of $e_b$ in $I$. This is Katoh and Tanigawa's construction
+  when no forest contains a copy of $ab$.
+\end{proof}
+\begin{fmlnote}
+  The pin is the second pin of \cref{lem:edge-splitting}, its case~(i)
+  for every $h' < D - 1$. The statement is the case $h' = 0$, as
+  $0 < D - 1$ when $D \ge 2$. The proof of the pin also replaces the
+  copies of $ab$ in a forest (\cref{lem:reverse-reroute-cycle-lift}); here
+  there are none.
+\end{fmlnote}
+
+Katoh and Tanigawa~\cite[p.~662]{katohTanigawa2011} use this case to
+prove their Lemma~4.4, which we prove without forests
+(\cref{lem:removal-deficiency}); \cref{rem:kt-lemma-44} compares the two
+proofs. The case needs $D \ge 2$: for $D = 1$ the multigraphs $\tilde G$
+and $\widetilde{G_v^{ab}}$ have no edges, so $I' = \emptyset$, and no set
+$I$ of edges of $\tilde G$ has $|I| = 1$.
 
 \subsection{Splitting off and removal: KT Lemmas~4.3--4.8}
 \label{sec:molecular-induction-dof}
@@ -1278,10 +1295,10 @@ obtained from it by adding an edge.
   $G_v$ is a subgraph of $G_v^{ab}$, the set $B'$ is independent in
   $M(\widetilde{G_v^{ab}})$, and it contains no copy of $ab$. The graph
   $G$ is obtained from $G_v^{ab}$ by edge-splitting along $ab$, so KT
-  Lemma~4.2(i) with $h' = 0$ gives an independent set $I$ of
-  $M(\tilde G)$ with $|I| = |B'| + D$ and $|\tilde e_b \cap I| = 1$. In
-  the form of forests, each of the $D$ forests whose union is $B'$ gains
-  one edge at $v$ (\cref{lem:forest-surgery-unsplit}).
+  Lemma~4.2(i) with $h' = 0$ (\cref{lem:forest-surgery-unsplit}) gives
+  an independent set $I$ of $M(\tilde G)$ with $|I| = |B'| + D$ and
+  $|\tilde e_b \cap I| = 1$: each of the $D$ forests whose union is $B'$
+  gains one edge at $v$.
 
   By KT eq.~(2.4) (\cref{thm:def-eq-corank}),
   $|B'| = D\,(|V(G)| - 2) - \operatorname{def}(\widetilde{G_v})$ and

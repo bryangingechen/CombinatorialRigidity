@@ -221,7 +221,8 @@ declaration's name as its header writes it:
   *Found:* round 1 task 2.
   *Disposition:* done (`8e6786d3`) for `def:induced-span`; left for `def:blockingWitness` and
   `def:dof-generic` (no declaration defines them; `7b2a8272`, `a7b8ea35`) and
-  `lem:forest-surgery-unsplit` (`F-091`).
+  `lem:forest-surgery-unsplit` (`F-091`); round 2: `lem:forest-surgery-unsplit` pinned and filled
+  (task 3).
 - **F-062** · E · `lem:case-II-placement-new-rows` (`algebraic-induction/genericity-and-count.tex`):
   its statement and proof use `lem:rank-delete-vertex`, which no pin reaches, and its proof cites
   that node for the dimension $D - 1$ of the hinge-row block, which is `def:hinge-row-block`'s
@@ -1195,7 +1196,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the pin's statement; KT 2011 pp. 660–662).
   *Found:* round 2 task 2.13.
   *Disposition:* left (the honesty gate's clause (i) fails: the pin proves the independent-set form
-  for $D \ge 2$ and $a \neq b$, not the forest form the statement claims; `F-234`).
+  for $D \ge 2$ and $a \neq b$, not the forest form the statement claims; `F-234`); round 2: the
+  node restated as the pin's case $h' = 0$ and pinned to it, with a note, after `lem:edge-splitting`
+  (task 3).
 - **F-096** · N · `lem:removal-deficiency-strict` and `lem:reduction-step`
   (`molecular-induction.tex`): each bundles results that KT state separately (principle E). The
   first is the second assertion of KT Lemma 4.4 and KT Lemma 4.7, one pin each. The second is KT
@@ -2955,7 +2958,10 @@ declaration's name as its header writes it:
   declaration for the forest form; retiring the node is `F-091`'s other option (task 8.2).
   *Evidence:* read (the pin's statement; the node's statement and proof).
   *Found:* round 5 task 3.4.
-  *Disposition:* reported (`notes/Prose-report.md`, S10).
+  *Disposition:* done (task 3): the node states the pin's case $h' = 0$ (for $D \ge 2$, an
+  independent set of $M(\widetilde{G_v^{ab}})$ with no copy of $ab$), KT's use at p. 662, and is
+  pinned and filled; its proof keeps the forest construction, a note says that the pin is
+  `lem:edge-splitting`'s case (i), and it follows that lemma.
 - **F-239** · S · `lem:case-II-placement-old-rows-extract`, `lem:case-II-placement-block-independent`
   (`algebraic-induction/genericity-and-count.tex`): each states a special case of its pins, which
   other nodes cite in general. The first is stated for a realization of a graph $G_v^{ab}$ obtained
