@@ -27,7 +27,8 @@ One entry per finding, under its category's section, in ID order:
   was read: a Lean declaration's statement or body (never its docstring), or a source passage
   with its page. *Suspected* means neither, yet.
 - **Round 5 adds a third line** to each entry: `*Disposition:* done (<sha>) | left (<reason>) |
-  reported`.
+  reported`. RECONCILE's new entries (from `F-251`) read `open (<work log>, task N)` until a task
+  sets one of these (`notes/Reconcile-texts-cleanup.md` *Scope*).
 - **What is not a finding.** A slice fixes, rather than records, what is prose and local to the
   slice: register, anchoring, a citation it can verify, and a terminology choice within its
   chapter.
@@ -1958,6 +1959,14 @@ declaration's name as its header writes it:
   *Found:* round 5, the coordinator, verifying task 3.1.
   *Disposition:* done (`30c4b950`): the row names the theorem; every other declaration that
   `formalization.yaml` names resolves (`#check` on the built tree).
+- **F-251** · U · `formalization.yaml` (`fidelity.divergences`): the paragraph says that the
+  blueprint "states each result in the exact form proved and discusses its departures from the
+  source in the chapter that proves it". The findings report's Part 1 records 65 open `S` entries
+  where a blueprint statement claims more or less than its pins, S1 and S2 among them at main
+  results' rows; the paragraph names no exception.
+  *Evidence:* read (`formalization.yaml` lines 580–582 at `f39e35e6`; `notes/Prose-report.md` §1.2).
+  *Found:* RECONCILE round 1 task 1.
+  *Disposition:* open (`notes/Reconcile-texts-cleanup.md`, task 3).
 
 ## S — statement strength
 

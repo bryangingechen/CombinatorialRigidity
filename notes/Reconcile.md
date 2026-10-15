@@ -1,11 +1,11 @@
 # RECONCILE: acting on the PROSE findings (planning note)
 
-**Status:** queued (2026-10-15), not opened. The PI queued it next, ahead of ORIGAMI, as three
-autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its input is PROSE's
-findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6 and §2.6), with each
-finding's home the ledger `notes/Prose-findings.md`. **Next concrete task:** round 1's open,
-`reconcile-texts`, which creates `notes/Reconcile-texts-cleanup.md` with its task list (§3). The
-two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
+**Status:** round 1 in progress (opened 2026-10-15). The PI queued RECONCILE next, ahead of
+ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its
+input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6 and
+§2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`,
+opened with nine tasks (`notes/Reconcile-texts-cleanup.md`). **Next concrete task:** its task 2,
+S1's scope on the status surfaces. The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 
@@ -118,7 +118,8 @@ at the open), this note's **Status**, and the ledger's dispositions.
 
 ### Round 1 — `reconcile-texts`: the texts
 
-No node, edge or pin changes; no Lean.
+No node, edge or pin changes; no Lean. The open sliced it into nine tasks, with each task's surfaces
+(`notes/Reconcile-texts-cleanup.md`).
 - **S1 and S2's scope, until the phase**: the `formalization.yaml` rows of the generic body-hinge
   theorem, KT Theorem 5.6 and `molecular_conjecture`, and README, say what the statements cover
   today (S1: no minimal graph; S2: the selector is free) beside the forms that are proved

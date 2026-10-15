@@ -175,6 +175,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 3/5: the algebraic induction) | the chapter `algebraic-induction.tex` and its five sections, `panel-layer.tex` → `case-iii.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 59 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-algebraic-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (PROSE 4/5: applications, continuations and the introduction) | the five chapters `bar-joint-3d.tex` → `generic-lift.tex`, then `intro.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 56 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-applications-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (PROSE 5/5: graph repairs and the findings report) | every chapter's dependency edges, pins and node shapes; the findings report | ✓ Complete — no missing edge left, the Lean unchanged; each finding done, left or reported in `notes/Prose-report.md` (see `notes/Prose-graph-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (RECONCILE 1/3: the texts) | the status surfaces' scopes and credits, blueprint prose and two agent manuals (docs and prose only) | ◐ In progress (see `notes/Reconcile-texts-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1269,8 +1270,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   re-proved, a non-vacuity witness per main result, the docstring sweep). Then one attended phase,
   `RECONCILE-FORMAL`: the link condition becomes a field of `PanelHingeFramework` (S2), the
   generic body-hinge and panel theorems stop being vacuous at minimal graphs (S1), the generic
-  body-hinge theorem's multigraph form, and the claims no declaration states. **Next:** round 1's open,
-  `reconcile-texts`.
+  body-hinge theorem's multigraph form, and the claims no declaration states. Round 1,
+  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 2,
+  S1's scope on the status surfaces.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
