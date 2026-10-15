@@ -1,14 +1,15 @@
 # RECONCILE: acting on the PROSE findings (planning note)
 
-**Status:** round 1 closed (opened and closed 2026-10-15). The PI queued RECONCILE next, ahead of
-ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its
+**Status:** round 1 closed, round 2 open (both 2026-10-15). The PI queued RECONCILE next, ahead
+of ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its
 input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6 and
 §2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`
 (`notes/Reconcile-texts-cleanup.md`), is done in nine tasks: S1's and S2's scopes, M1's text, M2's
 and M5's credits (Pollaczek-Geiringer 1927 states the characterization and is credited beside
-Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. **Next concrete task:**
-round 2's open, `reconcile-statements` (§3 *Round 2*), which creates
-`notes/Reconcile-statements-cleanup.md`. The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
+Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. Round 2,
+`reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), opened with 21 one-commit tasks.
+**Next concrete task:** round 2's task 2, the four false statements (S6, S7's restatement, S8 and
+S9). The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 
@@ -146,7 +147,9 @@ No node, edge or pin changes; no Lean. The open sliced it into nine tasks, with 
 
 ### Round 2 — `reconcile-statements`: every false statement, and KT's route explained
 
-Under the expected-diff and honesty gates; one task per item or chapter batch.
+Under the expected-diff and honesty gates; one task per item or chapter batch. The open sliced it
+into 21 tasks, with each task's surfaces and expected diff (`notes/Reconcile-statements-cleanup.md`);
+S3, S16, S18, S19, S22–S25 and S31 wait for the phase, which lists each.
 - **False first** (kind B): S6–S9 in one commit; S10 restated in its pin's form and filled.
 - **Vacuous or trivially met** (kind A): S4 drops its vacuous assertion; S5 states its pin's
   conclusion. S3 waits for its Lean (phase (c)).
@@ -182,8 +185,10 @@ writes them once; everything else proceeds.
   docstrings, `Main.lean`, `Examples.lean`, the `lakefile.toml` comment, `DESIGN.md`'s section and
   `dfs.tex`. The recon also settles `decide`: a kernel-reducible form if one is cheap, else the
   texts name `native_decide` as measured.
-- **L9**'s deletions after §B's check (with `F-090`'s shim); **L6–L8**'s signatures and repeated
-  derivations, with S17 and the statements they touch; `F-061`'s rename.
+- **L9**'s deletions after §B's check (with `F-090`'s shim, whose deletion repins
+  `cor:forest-surgery-deficiency` on `forest_surgery_split` in the same commit: round 2 keeps the
+  node and its pin), and the declarations that round 2 unpins (its close lists them); **L6–L8**'s
+  signatures and repeated derivations, with S17 and the statements they touch; `F-061`'s rename.
 - **The docstring sweep** by directory: L3–L5, L10–L12, M2's and M4's docstrings. M2's include
   `BodyBar/TayTheorem.lean`'s "Lovász–Yemini-style" necessity argument (548), which the report does
   not list, and `MatroidIdentification.lean`'s "`|E|`-induction" (23, 190, 263, 708, 749), where
@@ -202,7 +207,8 @@ both concern how a carrier relates edge labels to $E(G)$. It sizes the ~70 const
 - **(b) M1**: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1).
 - **(c) the claims no declaration states**: S22–S25, S31, S3, S16 and S19, G5 (`def:blockingWitness`,
   `def:dof-generic`, the Plücker expansion, the packing move), and `F-061`'s forest lemma; each
-  node restated or repinned when its declaration lands.
+  node restated or repinned when its declaration lands. Round 2's open moved these here, with S18
+  to (a) (`notes/Reconcile-statements-cleanup.md` *Moved to a later round*).
 
 The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and the ledger's last
 `reported` entries given dispositions.
