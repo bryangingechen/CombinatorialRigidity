@@ -166,6 +166,9 @@ declaration's name as its header writes it:
   `lem:rigidityMap-apply` and `lem:molecule-graph-carrier` (10 each); 267 more are implied.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (task 4.7): none of the five chapters has a missing edge. Of the 65 missing
+  at the task's parent, 32 were added and 33 are implied by them; the task also added the 6 edges
+  its removals of unbacked edges left missing.
 - **F-005** · E · `pencil.tex` and `main-component.tex`: 114 missing edges at 58 nodes (31
   through a statement): `main-component` 87, `pencil` 27. 43 go to two pinned helpers (F-010):
   `lem:pencil-bridge-fibre` (25) and `thm:pencil-jj-equality` (18); 710 more are implied.
@@ -645,6 +648,11 @@ declaration's name as its header writes it:
   `lem:genericRigidityMatroid-two-eq-rigidityMatroid` is dead (`F-012`).
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter bar-joint-3d`, at `69bc7afb`).
   *Found:* round 4 task 2.1.
+  *Disposition:* done (task 4.7): the six missing edges added or implied (`def:rigidityRow`
+  through `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`, and
+  `lem:rigidityMap-rank-at-generic`'s to `lem:rigidityMap-apply` through `def:genericRank`, now
+  that the existence proof `\uses` it); the transitive unbacked edge kept. The planar argument
+  that the existence proof follows takes no edge.
 - **F-181** · E · `molecule-modelling.tex`'s first eight nodes, task 2.2's (`molecule-modelling.tex`):
   eight missing edges and three unbacked. Missing: the edges of `def:hinge-concurrent` (proof),
   `def:screw-velocity`, `lem:screw-velocity-line` and `lem:screw-determination` to
@@ -659,6 +667,14 @@ declaration's name as its header writes it:
   (`F-012`).
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-modelling`, at `67d44583`).
   *Found:* round 4 task 2.2.
+  *Disposition:* done (task 4.7): `thm:projective-invariance`'s statement `\uses`
+  `def:trivial-motions-rigid` (which implies `lem:panel-hinge-dual-molecular`'s missing edge) and
+  its proof `lem:rank-rotation-semicont` (the rescaling); the others were not missing at the task's
+  parent. The three unbacked edges removed: the theorem's to `def:rank-hypothesis` (only the note
+  names it, for $\dim Z = D + k'$, not a realization at a target rank); `def:screw-velocity`'s to
+  `def:hinge-constraint`, replaced by `def:screw-space`, where its screws lie; and
+  `lem:screw-velocity-line`'s to `def:hinge-concurrent`, replaced by `def:extensor` and
+  `def:homogeneous-coords`, for its $\bar a \vee \bar b$.
 - **F-185** · E · `molecule-modelling.tex`'s last five nodes, task 2.3's (`molecule-modelling.tex`):
   nine missing edges and five unbacked. Missing: `thm:panel-hinge-iff-molecular`'s (proof) to
   `lem:rank-rotation-semicont` (`infinitesimalMotions_mono_of_span_le`, the rescaling);
@@ -681,6 +697,14 @@ declaration's name as its header writes it:
   `lem:exists-generic-general-position`. No pin of these nodes is dead.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-modelling`, at `db71b408`).
   *Found:* round 4 task 2.3.
+  *Disposition:* done (task 4.7): `lem:exists-generic-general-position`'s proof `\uses`
+  `lem:exists-generic-placement`, implying the other three; the dictionary's proof `\uses` the
+  four nodes it cites without an ancestor (`lem:framework-finrank`, and three in its proof of the
+  realizations, `F-183`), which imply its three missing edges and the other citations;
+  `thm:panel-hinge-iff-molecular`'s is implied through `thm:projective-invariance`. The unbacked
+  edges kept: the transitive one; the general-position lemma's statement states the condition,
+  and its proof cites KT Theorem 5.6 at $d = 3$ and the device for steps;
+  `def:general-position-placement` takes a placement (`def:framework`).
 - **F-189** · E · `molecule-application.tex`'s five nodes, task 2.4's (`molecule-application.tex`):
   six missing edges and two unbacked. Missing: `lem:square-rank-le-genericRank`'s to
   `lem:k-frame-incidence-finrank-rk` (`Matroid.Rep.finrank_span_image_eq_rk`);
@@ -698,6 +722,12 @@ declaration's name as its header writes it:
   `lem:genericRank-eq-finrank-span`. No pin of these nodes is dead.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-application`, at `302cc117`).
   *Found:* round 4 task 2.4.
+  *Disposition:* done (task 4.7): `lem:square-rank-le-genericRank`'s proof `\uses`
+  `lem:k-frame-incidence-finrank-rk`, the lower bound's `lem:span-range-rigidityRow` and the upper
+  bound's `lem:rigidityMap-rank-at-generic`, which it cites; `lem:framework-finrank` and
+  `lem:rigidityMap-apply` are implied through the dictionary. `lem:molecule-graph-carrier`'s edge
+  to `def:hinge-concurrent` removed (the lemma builds a multigraph); the transitive edge kept. The
+  rank form "as in the proof of" `lem:rigidityMap-rank-at-generic` takes none.
 - **F-193** · E · `jacobs.tex`'s first ten nodes, task 2.5's (`jacobs.tex`): two missing edges and
   three unbacked. Missing: `lem:tight-partition-parts`'s to `lem:exists-tight-partition`
   (`IsTightPartition`, in its statement) and to `lem:cut-edge-decomposition`
@@ -710,6 +740,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter jacobs`, at `9c97fecc`); read (the
   body of `IsLaman3.mono_left`).
   *Found:* round 4 task 2.5.
+  *Disposition:* done (task 4.7): `lem:tight-partition-parts`'s statement `\uses`
+  `def:tight-partition` (task 3.12's node for `IsTightPartition`; its pin no longer reaches
+  `lem:cut-edge-decomposition`); `lem:isLaman3-mono`'s edge to `lem:edgesIn-mono` removed; the
+  two transitive edges kept.
 - **F-196** · E · `jacobs.tex`'s counting bound, task 2.6's eleven nodes (`jacobs.tex`): 18
   missing edges and 14 unbacked. Missing: ten to `lem:molecule-graph-carrier` (every node but
   `def:g-cut-edges`, through `IsSquareTightPartition`, a tight partition of `shadowGraph`); five to
@@ -728,6 +762,16 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter jacobs`, at `bc6573b9`, and the same
   report on task 2.6's tree).
   *Found:* round 4 task 2.6.
+  *Disposition:* done (task 4.7): the statements of `lem:square-cross-classification`,
+  `lem:singleton-part-neighborhood` and `lem:normal-cross-count-local` `\uses`
+  `lem:molecule-graph-carrier`; the producer's statement `def:rooted-cross-edges` (task 3.12's
+  node, which took the edges to `lem:normal-cross-count-rooted`) and its proof
+  `lem:singleton-part-neighborhood`; the theorem's proof `lem:edgesIn-corners` and
+  `lem:normal-cross-count-rooted`; the rest implied. The converse's edge to
+  `lem:singleton-part-neighborhood` and the theorem's to `lem:singleton-part-converse` removed (no
+  text cites them); `lem:normal-cross-count-rooted`'s to `lem:square-cross-classification` kept,
+  as its proof cites it for the part's size (`F-195`), and `def:g-cut-edges`'s to
+  `def:D-deficiency`, as it takes a part of a partition and writes $d_G$ as there.
 - **F-199** · E · `jacobs.tex`'s easy direction and $0$-extensions, task 2.7's ten nodes
   (`jacobs.tex`): 12 missing edges and none unbacked. Missing: the proof of
   `lem:isLaman3-of-rowIndependent` to `def:rigidityRow`,
@@ -745,6 +789,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `723c460d`); read
   (the bodies of `zero_extension_edgeSetRowIndependent_lift` and `dep_k5`).
   *Found:* round 4 task 2.7.
+  *Disposition:* done (task 4.7): the proofs of `lem:isLaman3-of-rowIndependent`,
+  `lem:zero-extension-rowIndependent` and `cor:zero-extension-clique-rank` `\uses` the missing
+  targets, `def:rigidityRow` through `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`;
+  the other two nodes' edges are implied. The arguments followed ("as in the proof of") take
+  none.
 - **F-201** · E · `jacobs.tex`'s last five nodes, task 2.8's (`jacobs.tex`): one missing edge and
   none unbacked. Missing: the proof of `thm:degree-one-rank-tree` to `lem:square-induce-support`
   (`square_support_subset`, in the base case). Implied through another node: those of
@@ -757,6 +806,9 @@ declaration's name as its header writes it:
   (`fmlnote:degree-one-fixed-carrier`).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `0e8d7546`).
   *Found:* round 4 task 2.8.
+  *Disposition:* done (task 4.7): `thm:degree-one-rank-tree`'s proof `\uses`
+  `lem:square-induce-support`, and `thm:degree-one-rank`'s `lem:two-core-degree-one`, which it
+  cites; "As in the proof of `thm:degree-one-rank-tree`" takes none.
 - **F-208** · E · `generic-lift.tex`'s first eleven nodes, task 2.9's (`generic-lift.tex`): eight
   missing edges and six unbacked. Missing: the proof of `lem:generic-placement-abundance` to
   `def:rigidityRow`, `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow` and
@@ -782,6 +834,12 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter generic-lift`, at `7c268bce`); read
   (the bodies of the twelve pins).
   *Found:* round 4 task 2.9.
+  *Disposition:* done (task 4.7): the abundance proof `\uses` the two lemmas it cites,
+  `lem:panel-witness-transplant`'s statement `def:generic-normals`, and the molecule corollaries'
+  `lem:framework-finrank` is implied through the dictionary; `lem:generic-normals-abundance`'s
+  proof `\uses` `def:plucker-coords`, cited for the minors. The unbacked edges kept: the
+  transitive one; `def:generic-normals` states a panel-hinge framework, and the nondegeneracy
+  proof cites the moment curve for its two normals. "The argument of" another node takes none.
 
 - **F-213** · E · `generic-lift.tex`'s nine body-and-bar nodes, task 2.10's (`generic-lift.tex`):
   one missing edge, three unbacked, three dead pins. Missing: the proof of `lem:endpoint-witness`
@@ -801,6 +859,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the nine nodes, at `c8f1f0f1`);
   read (the bodies of the twelve pins).
   *Found:* round 4 task 2.10.
+  *Disposition:* done (task 4.7): the three unbacked edges removed (the witness takes its vectors
+  "as in" `prop:tay-witness-exists`, the theorem follows "the argument of"
+  `lem:tay-isSparse-of-independent`, and the corollary does not cite it); the witness's proof
+  `\uses` `lem:k-frame-specialize-li`, and the theorem's `lem:k-frame-pi-finrank` and
+  `lem:k-frame-incidence-finrank-rk`, which the removals left missing and the theorem cites.
 
 - **F-218** · E · `generic-lift.tex`'s five hinge-point nodes, task 2.11's (`generic-lift.tex`):
   one missing edge, three unbacked, no dead pin. Missing: the statement of
@@ -816,6 +879,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `dc58265b`);
   read (the bodies of the seven pins).
   *Found:* round 4 task 2.11.
+  *Disposition:* done (task 4.7): the statement of `lem:hinge-rows-polynomial-in-points` `\uses`
+  `def:screw-space` (task 3.3's node), and its edge to `def:plucker-coords` moved to the proof,
+  which cites the minors; the transitive edges to `lem:affine-indep-iff` kept.
 
 - **F-223** · E · `generic-lift.tex`'s seven body-and-hinge nodes, task 2.12's (`generic-lift.tex`):
   four missing edges, three unbacked, no dead pin. Missing: the statement of `lem:screw-map-rows`
@@ -833,6 +899,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the seven nodes, at `ac88bd18`);
   read (the bodies of the seven pins).
   *Found:* round 4 task 2.12.
+  *Disposition:* done (task 4.7): `lem:screw-map-rows`'s statement `\uses`
+  `thm:projective-invariance` (its framework $(G, \Lambda p)$), which implies the witness's, and
+  its proof `lem:case-III-claim612-block-iff-perp` (`F-248`); the witness's proof `\uses`
+  `def:induced-screw-map`, which it cites; the tree-packing statement's edge is implied through
+  `def:matroid-MG`. The transitive edges kept; the comparisons and arguments followed take none.
 
 ## N — node shape
 
@@ -1598,6 +1669,19 @@ declaration's name as its header writes it:
   rigidity-matrix`, at `9eb2c776`); read (the statement of the pin, and the body of
   `le_finrank_span_rigidityRows_path`).
   *Found:* round 5 task 4.2.
+  *Disposition:* left (a pin change; task 8.2 lists it).
+
+- **F-248** · N · `lem:case-III-claim612-block-iff-perp` (`case-iii.tex`): its second pin
+  `mem_hingeRowBlock_iff`, that a form vanishes on the span of a hinge's extensor if and only if it
+  vanishes at it, is a step of its proof and a fact about `def:hinge-row-block` (the remark after
+  it). The pin of `lem:screw-map-rows` (`generic-lift.tex`) uses it, through the unpinned
+  `mapExtensor_rigidityRows`, so task 4.7 added that lemma's missing proof edge into
+  `case-iii.tex`; nine more Lean files call it. A pin on `def:hinge-row-block`, or its
+  unpinning, is a pin change, after task 3.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label lem:screw-map-rows`, at `e1b16939`);
+  read (the statement of `mem_hingeRowBlock_iff`, `RigidityMatrix/Claim612.lean`; a `grep` for
+  its callers).
+  *Found:* round 5 task 4.7.
   *Disposition:* left (a pin change; task 8.2 lists it).
 
 ## T — terminology and notation

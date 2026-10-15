@@ -108,7 +108,6 @@ of \cref{def:isLaman}, it asks for no equality on the number of edges.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:edgesIn-mono}
   Let $H$ be a subgraph of a Laman graph $H'$. Every edge of $H$ inside
   a set $X \subseteq V$ is an edge of $H'$ inside $X$, so
   $\bigl|\edgesIn[H]{X}\bigr| \le \bigl|\edgesIn[H']{X}\bigr|
@@ -269,7 +268,7 @@ prove it directly.
   \label{lem:tight-partition-parts}
   \lean{Graph.IsTightPartition.parts}
   \leanok
-  \uses{def:D-deficiency}
+  \uses{def:D-deficiency, def:tight-partition}
   Let $D \ge 2$, let $G$ be a simple graph, and let $P$ be a tight
   partition of $V(G)$. Then every part of $P$ is a singleton or has at
   least three vertices. In the latter case every vertex of the part has
@@ -398,7 +397,7 @@ $u$ or in that of $w$, and special otherwise.
     SimpleGraph.squareSpecialCrossEdges_singleton_part,
     SimpleGraph.squareNormalCrossEdges_part_three_le}
   \leanok
-  \uses{def:square-graph, def:D-deficiency}
+  \uses{def:square-graph, def:D-deficiency, lem:molecule-graph-carrier}
   Let $G$ and $P$ be as above. Then $E(G^2)$ is the disjoint union of
   four classes: the edges inside a part, the $d_G(P)$ edges of $G$ that
   join distinct parts, the normal cross edges, and the special cross
@@ -446,7 +445,7 @@ We first count the special cross edges.
     SimpleGraph.ncard_edgesIn_neighborSet_square,
     SimpleGraph.IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part}
   \leanok
-  \uses{def:square-graph, def:D-deficiency}
+  \uses{def:square-graph, def:D-deficiency, lem:molecule-graph-carrier}
   Let $G$ and $P$ be as above, and let $\{v\}$ be a singleton part of
   $P$. Then the neighborhood $N_G(v)$ is a clique of $G^2$, all of whose
   edges are special cross edges with common neighbor $v$, and
@@ -489,7 +488,7 @@ JJ also state the converse.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:singleton-part-neighborhood, lem:square-cross-classification,
+  \uses{lem:square-cross-classification,
     lem:tight-partition-cross-pair-nbr}
   Let $uw$ be a special cross edge with common neighbor $v$. Then
   $\{v\}$ is a part of $P$ (\cref{lem:square-cross-classification}), and
@@ -552,7 +551,7 @@ neighbors $u$ of $v$ in $A$.
   \label{lem:normal-cross-count-local}
   \lean{SimpleGraph.IsSquareTightPartition.ncard_inPartNeighbors_eq_two}
   \leanok
-  \uses{def:square-graph, def:D-deficiency}
+  \uses{def:square-graph, def:D-deficiency, lem:molecule-graph-carrier}
   Let $G$ and $P$ be as above, let $A$ be a part of $P$ with
   $|A| \ge 3$, and let $v \in A$ have a neighbor outside $A$. Then $v$
   has exactly two neighbors in $A$.
@@ -570,7 +569,7 @@ neighbors $u$ of $v$ in $A$.
   \label{lem:normal-cross-count-producer}
   \lean{SimpleGraph.IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt}
   \leanok
-  \uses{def:square-graph, def:D-deficiency}
+  \uses{def:square-graph, def:D-deficiency, def:rooted-cross-edges}
   Let $G$ and $P$ be as above, let $v$ be a vertex of $G$, and let $u$
   and $w$ be neighbors of $v$ with $u$ in the part of $v$ and $w$
   outside it. Then $uw$ is a normal cross edge rooted at the part of
@@ -579,7 +578,8 @@ neighbors $u$ of $v$ in $A$.
 \begin{proof}
   \leanok
   \uses{lem:square-cliques, lem:tight-partition-cross-pair-mult,
-    lem:tight-partition-cross-pair-nbr}
+    lem:tight-partition-cross-pair-nbr,
+    lem:singleton-part-neighborhood}
   The vertices $u$ and $w$ lie in distinct parts, and both are neighbors
   of $v$. So $uw$ is an edge of $G^2$ (\cref{lem:square-cliques}) that
   joins two parts. It is not an edge of $G$. Otherwise $vw$ and $uw$
@@ -694,8 +694,9 @@ in $\{v\}$, so $d_G(\{v\})$ is the degree $d_G(v)$ of $v$.
 \begin{proof}
   \leanok
   \uses{lem:exists-tight-partition, lem:square-cross-classification,
-    lem:singleton-part-neighborhood, lem:singleton-part-converse,
-    lem:normal-cross-count, lem:tight-partition-parts}
+    lem:singleton-part-neighborhood, lem:normal-cross-count,
+    lem:tight-partition-parts, lem:edgesIn-corners,
+    lem:normal-cross-count-rooted}
   Let $P$ be a tight partition of $V$
   (\cref{lem:exists-tight-partition}), and let $t$ be its number of
   parts. Let $C_n$ and $C_s$ be the numbers of normal and of special
@@ -790,7 +791,9 @@ also generic.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rigidityMap-finrank-range-le-of-affinelySpanning}
+  \uses{lem:rigidityMap-finrank-range-le-of-affinelySpanning,
+    lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:span-range-rigidityRow}
   Let $X \subseteq V$ with $|X| \ge 3$. If $|X| = 3$, then $X$ spans at
   most $3 = 3|X| - 6$ edges. Let $|X| \ge 4$, let $H[X]$ be the subgraph
   of $H$ induced on $X$, and let $p|_X$ be the restriction of $p$ to
@@ -894,6 +897,8 @@ induced subgraphs. The reduction of Jacobs' conjecture uses them all.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:rigidityMap-apply}
   The points $p'(u_1), \dots, p'(u_s)$ are affinely independent and
   $s \le 3$, so their affine hull is a proper affine subspace of $\R^3$.
   Choose a point $q$ outside it, and let $p$ place $v$ at $q$ and agree
@@ -1003,7 +1008,7 @@ four (\cref{lem:exists-generic-general-position}).
 \begin{proof}
   \leanok
   \uses{cor:zero-extension-degree-le-three,
-    cor:genericMatroid-indep-isLaman3}
+    cor:genericMatroid-indep-isLaman3, lem:clique-edgesIn-count}
   Let $H' = H - E_H(v)$ and $s = d_H(v)$. If $s \le 3$, the claim is
   \cref{cor:zero-extension-degree-le-three}. Let $s \ge 4$, fix three
   neighbors $u_1, u_2, u_3$ of $v$, and let $H_3$ be $H'$ together with
@@ -1348,7 +1353,8 @@ separately.
 \begin{proof}
   \leanok
   \uses{cor:zero-extension-clique-rank, cor:zero-extension-degree-le-three,
-    lem:square-delete-degree-le-one, lem:square-leaf-neighborhood}
+    lem:square-delete-degree-le-one, lem:square-leaf-neighborhood,
+    lem:square-induce-support}
   We induct on $|V|$. If $|V| = 2$, then $G$ is a single edge, and
   $G^2 = G$. Deleting the edge at one of its ends leaves no edge, so
   $r(G^2) = 1$ (\cref{cor:zero-extension-degree-le-three}). And
@@ -1391,7 +1397,7 @@ separately.
 \begin{proof}
   \leanok
   \uses{cor:zero-extension-clique-rank, lem:square-delete-degree-le-one,
-    lem:square-leaf-neighborhood}
+    lem:square-leaf-neighborhood, lem:two-core-degree-one}
   We induct on $|V|$. If $V_1(G)$ is empty, then every vertex of $G$
   has degree at least two, as $G$ is connected and $|V| \ge 2$. So $G$
   is its own core (\cref{lem:two-core-degree-one}), its support is $V$,

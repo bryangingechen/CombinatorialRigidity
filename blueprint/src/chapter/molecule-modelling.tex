@@ -234,7 +234,7 @@ formula determines $\Lambda_g$.
         CombinatorialRigidity.Molecular.BodyHingeFramework.supportExtensor_mapExtensor_ne_zero,
         CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_scaleExtensor}
   \leanok
-  \uses{def:hinge-constraint, def:rank-hypothesis}
+  \uses{def:hinge-constraint, def:trivial-motions-rigid}
   Let $K$ be a field, let $(G, p)$ be a body-hinge framework in $K^3$
   (\cref{def:hinge-constraint}), and let $\Lambda$ be a linear
   automorphism of the screw space $\bigwedge^2 K^4$. Let
@@ -254,6 +254,7 @@ formula determines $\Lambda_g$.
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:rank-rotation-semicont}
   (1) Let $e$ be an edge with ends $u$ and $v$. As $\Lambda$ is linear
   and injective, a screw $w$ lies in $\operatorname{span} C(p(e))$ if
   and only if $\Lambda w$ lies in
@@ -438,7 +439,7 @@ uses.
         CombinatorialRigidity.Molecular.screwOmega,
         CombinatorialRigidity.Molecular.screwTau}
   \leanok
-  \uses{def:hinge-constraint}
+  \uses{def:screw-space}
   For $v \in \R^4$, let $v' \in \R^3$ be its first three coordinates
   and $v_4$ its last. The \emph{rotation part} $\omega_S \in \R^3$ and
   the \emph{translation part} $t_S \in \R^3$ of a screw
@@ -478,7 +479,7 @@ $x, y \in \R^3$,
   \lean{CombinatorialRigidity.Molecular.screwVel_eq_zero_iff_mem_span,
         CombinatorialRigidity.Molecular.dotProduct_screwVel_sub}
   \leanok
-  \uses{def:screw-velocity, def:hinge-concurrent}
+  \uses{def:screw-velocity, def:extensor, def:homogeneous-coords}
   Let $a \neq b$ be points of $\R^3$, and let $S$ be a screw. Then
   $\mathrm{vel}_S(a) = \mathrm{vel}_S(b) = 0$ if and only if $S$ is a
   multiple of $\bar a \vee \bar b$. Moreover
@@ -617,6 +618,7 @@ subfamily of an affinely independent family is affinely independent.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:exists-generic-placement}
   Let $p_0$ be a placement that is generic for row independence
   (\cref{lem:exists-generic-placement}), let $q$ be a placement in general
   position up to order four, and let $p^t = p_0 + t\,(q - p_0)$ for
@@ -839,6 +841,8 @@ glasses~\cite[p.~27]{whiteley1999}.
 \end{theorem}
 \begin{proof}
   \leanok
+  \uses{lem:framework-finrank, thm:panel-hinge-iff-molecular,
+    def:isInfinitesimallyRigid, lem:exists-generic-general-position}
   \emph{The map.} For a screw assignment $S$, let $\Phi(S)$ be the
   velocity assignment $v \mapsto \mathrm{vel}_{S(v)}(c(v))$
   (\cref{def:screw-velocity}). It is linear in $S$. Let

@@ -56,6 +56,7 @@ generic.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:k-frame-incidence-finrank-rk}
   The linear rigidity matroid $\mathcal{L}_p(V)$ is represented by the
   extended rigidity rows $\tilde r_e$ at $p$
   (\cref{def:linearRigidityMatroid}), and $\tilde r_e = r_e$ for every
@@ -93,7 +94,6 @@ step is the following lemma.
     SimpleGraph.shadowGraph_vertexSet, SimpleGraph.shadowGraph_isLink_iff,
     SimpleGraph.card_shadowLabel_lt}
   \leanok
-  \uses{def:hinge-concurrent}
   Let $G$ be a simple graph on a finite set $V$. Then there is a simple
   multigraph $G'$ with vertex set $V$ in which two distinct vertices are
   joined by an edge if and only if they are adjacent in $G$.
@@ -154,7 +154,7 @@ vertex of $G$ to have degree at least two.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:square-graph}
+  \uses{def:square-graph, lem:span-range-rigidityRow}
   Regard $G$ as a multigraph, as in \cref{lem:molecule-graph-carrier}. By
   \cref{thm:panel-hinge-iff-molecular} there is a placement
   $c \colon V \to \R^3$ in general position up to order four such that
@@ -181,7 +181,8 @@ vertex of $G$ to have degree at least two.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:square-graph, def:hinge-concurrent, lem:deficiency-rank-bound}
+  \uses{def:square-graph, def:hinge-concurrent, lem:deficiency-rank-bound,
+    lem:rigidityMap-rank-at-generic}
   Regard $G$ as a multigraph, as in \cref{lem:molecule-graph-carrier}.
   Let $p \colon V \to \R^3$ be a placement that is generic for row
   independence and in general position up to order four

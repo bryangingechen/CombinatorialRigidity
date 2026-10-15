@@ -81,7 +81,9 @@ property exist by an argument that needs no algebraic independence.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:edgeSet-rowIndependent}
+  \uses{def:edgeSet-rowIndependent,
+    lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow,
+    lem:rigidityMap-apply}
   Let $\mathcal{F}$ be the family of sets $I \subseteq E(K_V)$ that are
   row-independent at some placement. It is finite, since $E(K_V)$ is,
   and a placement at which every member of $\mathcal{F}$ is
@@ -239,7 +241,8 @@ a graph on $V$ through $\mathcal{R}_d(V)$.
 \begin{proof}
   \leanok
   \uses{lem:linearRigidityMatroid-eq-genericRigidityMatroid,
-    lem:linearRigidityMatroid-indep-iff}
+    lem:linearRigidityMatroid-indep-iff,
+    lem:k-frame-incidence-finrank-rk}
   The matroid $\mathcal{R}_d(V)$ is $\mathcal{L}_p(V)$
   (\cref{lem:linearRigidityMatroid-eq-genericRigidityMatroid}). It is
   represented by the extended rigidity rows $\tilde r_e$ at $p$
@@ -261,7 +264,7 @@ a graph on $V$ through $\mathcal{R}_d(V)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:genericRank-eq-finrank-span}
+  \uses{lem:genericRank-eq-finrank-span, lem:span-range-rigidityRow}
   The map $R(H, p)$ has the same rank as its transpose, whose image is
   spanned by the rigidity rows of $H$ at $p$
   (\cref{lem:span-range-rigidityRow}). For an edge $uv$ of $H$, the
