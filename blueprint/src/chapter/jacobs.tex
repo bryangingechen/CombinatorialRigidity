@@ -169,15 +169,24 @@ $D$-deficiency of \cref{def:D-deficiency} at every $D$, and each lemma
 names the bound on $D$ that it needs. The chapter applies them at
 $D = 6$.
 
-\begin{lemma}[Tight partitions exist]
-  \label{lem:exists-tight-partition}
-  \lean{Graph.IsTightPartition, Graph.exists_isTightPartition}
+\begin{definition}[Tight partitions]
+  \label{def:tight-partition}
+  \lean{Graph.IsTightPartition}
   \leanok
   \uses{def:D-deficiency}
-  Let $G$ be a multigraph whose vertex set is finite and nonempty. Then
-  some partition $P$ of $V(G)$ attains the deficiency, that is,
+  Let $G$ be a multigraph. Following JJ~\S2, a partition $P$ of $V(G)$
+  is \emph{tight} if it attains the deficiency, that is, if
   $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$.
-  Following JJ~\S2, we call such a partition \emph{tight}.
+\end{definition}
+
+\begin{lemma}[Tight partitions exist]
+  \label{lem:exists-tight-partition}
+  \lean{Graph.exists_isTightPartition}
+  \leanok
+  \uses{def:D-deficiency, def:tight-partition}
+  Let $G$ be a multigraph whose vertex set is finite and nonempty. Then
+  some partition $P$ of $V(G)$ is tight, that is,
+  $\operatorname{def}_{\tilde G}(P) = \operatorname{def}(\tilde G)$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -185,21 +194,30 @@ $D = 6$.
   defines $\operatorname{def}(\tilde G)$ is attained.
 \end{proof}
 
+\begin{definition}[Edges between the members of a family of parts]
+  \label{def:crossing-edges-within}
+  \lean{Graph.crossingEdgesWithin}
+  \leanok
+  Let $G$ be a multigraph, let $P$ be a partition of $V(G)$, and let
+  $Q \subseteq P$. We write $e_G(Q)$ for the number of edges of $G$ that
+  join distinct members of $Q$.
+\end{definition}
+
 \begin{lemma}[Deficiency under coarsening]
   \label{lem:partitionDef-merge}
-  \lean{Graph.crossingEdgesWithin, Graph.partitionDef_merge}
+  \lean{Graph.partitionDef_merge}
   \leanok
-  \uses{def:D-deficiency}
+  \uses{def:D-deficiency, def:crossing-edges-within}
   Let $G$ be a multigraph, let $P$ be a partition of $V(G)$, and let
   $Q \subseteq P$ with $|Q| \ge 2$. Let $P'$ be the partition obtained
-  from $P$ by merging the members of $Q$ into a single part, and let
-  $e_G(Q)$ be the number of edges of $G$ that join distinct members of
-  $Q$. Then
+  from $P$ by merging the members of $Q$ into a single part. Then
   \[
     \operatorname{def}_{\tilde G}(P') \;=\;
     \operatorname{def}_{\tilde G}(P)
-      \;-\; \bigl( D\,(|Q| - 1) - (D-1)\,e_G(Q) \bigr).
+      \;-\; \bigl( D\,(|Q| - 1) - (D-1)\,e_G(Q) \bigr),
   \]
+  where $e_G(Q)$ is the number of edges of $G$ that join distinct
+  members of $Q$ (\cref{def:crossing-edges-within}).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -223,7 +241,7 @@ is the following inequality.
   \label{lem:tight-partition-subfamily}
   \lean{Graph.IsTightPartition.subfamily_le}
   \leanok
-  \uses{def:D-deficiency, lem:exists-tight-partition}
+  \uses{def:D-deficiency, def:tight-partition}
   Let $G$ be a multigraph, let $P$ be a tight partition of $V(G)$, and
   let $Q \subseteq P$ with $|Q| \ge 2$. Then
   \[
@@ -351,7 +369,7 @@ Summing over the parts gives the bound.
 
 For the rest of this subsection, let $G$ be a simple graph of minimum
 degree at least two whose square is Laman, and let $P$ be a tight
-partition of $V$ at $D = 6$ (\cref{lem:exists-tight-partition}). Then
+partition of $V$ at $D = 6$ (\cref{def:tight-partition}). Then
 every vertex of $G$ has degree two or three
 (\cref{lem:isLaman3-degree-le-three}). Every part of $P$ is a singleton
 or has at least three vertices, and in the latter case each of its
@@ -410,6 +428,15 @@ $u$ or in that of $w$, and special otherwise.
   singleton, and it has at least three vertices
   (\cref{lem:tight-partition-parts}).
 \end{proof}
+
+\begin{fmlnote}
+  The first pin is the union of the edges inside a part, the edges of
+  $G$ between parts and the cross edges, and the fifth splits the cross
+  edges into the normal and the special ones. The second, third, fourth
+  and sixth are the disjointness of the classes, and the seventh counts
+  the second class. The last two are the claims on the common neighbor
+  of a special and of a normal cross edge.
+\end{fmlnote}
 
 We first count the special cross edges.
 
@@ -474,18 +501,38 @@ JJ also state the converse.
 We now count the normal cross edges, following JJ's proof of their
 eq.~(6). Let $uw$ be a normal cross edge with common neighbor $v$.
 Exactly one of the edges $uv$ and $vw$ lies inside a part, and JJ root
-$uw$ at that part, which is the part of $v$.
+$uw$ at that part, which is the part of $v$. We root a special cross
+edge in the same way, at the part of its common neighbor, which is a
+singleton part (\cref{lem:square-cross-classification}). JJ do not root
+the special cross edges: they count them in the neighborhoods of the
+singleton parts.
+
+\begin{definition}[Rooted cross edges]
+  \label{def:rooted-cross-edges}
+  \lean{SimpleGraph.squareNormalCrossEdgesRootedAt,
+    SimpleGraph.squareSpecialCrossEdgesRootedAt}
+  \leanok
+  \uses{def:square-graph}
+  Let $G$ and $P$ be as above, and let $A$ be a part of $P$. A normal or
+  special cross edge is \emph{rooted} at $A$ if its common neighbor lies
+  in $A$.
+\end{definition}
+
+\begin{fmlnote}
+  The first pin is the set of normal cross edges rooted at a part, and
+  the second that of special ones. Formally, as for the classes of
+  \cref{lem:square-cross-classification}, a cross edge is rooted at the
+  part of any common neighbor of its endpoints. As $P$ is tight, there
+  is only one.
+\end{fmlnote}
 
 \begin{lemma}[The root of a normal cross edge]
   \label{lem:normal-cross-count-rooted}
-  \lean{SimpleGraph.squareNormalCrossEdgesRootedAt,
-    SimpleGraph.IsSquareTightPartition.rootedAt_inj}
+  \lean{SimpleGraph.IsSquareTightPartition.rootedAt_inj}
   \leanok
-  \uses{def:square-graph, def:D-deficiency}
-  Let $G$ and $P$ be as above. We say that a normal cross edge is
-  \emph{rooted} at the part of $P$ that contains its common neighbor.
-  Then every normal cross edge is rooted at exactly one part, and this
-  part has at least three vertices.
+  \uses{def:square-graph, def:D-deficiency, def:rooted-cross-edges}
+  Let $G$ and $P$ be as above. Then every normal cross edge is rooted at
+  exactly one part, and this part has at least three vertices.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -568,12 +615,14 @@ the degree of $A$, in the sense of JJ~\S3.
 
 \begin{definition}[The degree of a part]
   \label{def:g-cut-edges}
-  \lean{SimpleGraph.gCutEdges}
+  \lean{SimpleGraph.gCutEdges, SimpleGraph.squareCutPairs}
   \leanok
   \uses{def:D-deficiency}
   Let $P$ be a partition of $V$, and let $A$ be a part of $P$. We write
   $d_G(A)$ for the number of edges $xy$ of $G$ with $x \in A$ and
-  $y \notin A$, that is, with exactly one endpoint in $A$.
+  $y \notin A$, that is, with exactly one endpoint in $A$. The ordered
+  pairs $(x, y)$ with $x \in A$, $y \notin A$ and $xy \in E(G)$ are the
+  \emph{pairs leaving} $A$.
 \end{definition}
 
 For a singleton part $\{v\}$, every edge at $v$ has exactly one endpoint
@@ -581,15 +630,15 @@ in $\{v\}$, so $d_G(\{v\})$ is the degree $d_G(v)$ of $v$.
 
 \begin{lemma}[The normal cross edges rooted at a part, by the edges leaving it]
   \label{lem:normal-cross-count-partition}
-  \lean{SimpleGraph.squareCutPairs, SimpleGraph.ncard_squareCutPairs_eq_gCutEdges,
+  \lean{SimpleGraph.ncard_squareCutPairs_eq_gCutEdges,
     SimpleGraph.IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion,
     SimpleGraph.IsSquareTightPartition.squareCutPairs_pairwiseDisjoint}
   \leanok
   \uses{def:square-graph, def:D-deficiency, def:g-cut-edges}
   Let $G$ and $P$ be as above, and let $A$ be a part of $P$. Then
-  $(v, w) \mapsto vw$ is a bijection from the pairs $(v, w)$ with
-  $v \in A$, $w \notin A$ and $vw \in E(G)$ onto the $d_G(A)$ edges of
-  $G$ with exactly one endpoint in $A$. The normal cross edges rooted at
+  $(v, w) \mapsto vw$ is a bijection from the pairs $(v, w)$ leaving $A$
+  (\cref{def:g-cut-edges}) onto the $d_G(A)$ edges of $G$ with exactly
+  one endpoint in $A$. The normal cross edges rooted at
   $A$ are the union, over these pairs $(v, w)$, of the sets
   $\{uw : u \in N_G(v) \cap A\}$, and the sets of two distinct pairs are
   disjoint.
@@ -620,7 +669,7 @@ in $\{v\}$, so $d_G(\{v\})$ is the degree $d_G(v)$ of $v$.
   \uses{def:square-graph, def:D-deficiency, def:g-cut-edges}
   Let $G$ and $P$ be as above, and let $A$ be a part of $P$ with
   $|A| \ge 3$. Then the normal cross edges rooted at $A$
-  (\cref{lem:normal-cross-count-rooted}) number exactly $2\,d_G(A)$.
+  (\cref{def:rooted-cross-edges}) number exactly $2\,d_G(A)$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -660,16 +709,16 @@ in $\{v\}$, so $d_G(\{v\})$ is the degree $d_G(v)$ of $v$.
   and a part $A$ with $|A| \ge 3$ spans at most $3|A| - 6$ edges of
   $G^2$, as $G^2$ is Laman.
 
-  We count each cross edge at the part that contains its common
-  neighbor, which is unique (\cref{lem:tight-partition-cross-pair-nbr}).
-  The normal cross edges counted at a part $A$ are those rooted at $A$,
-  and there are none unless $|A| \ge 3$
+  We count each cross edge at its root (\cref{def:rooted-cross-edges}),
+  the part that contains its common neighbor, which is unique
+  (\cref{lem:tight-partition-cross-pair-nbr}). No normal cross edge is
+  rooted at a part $A$ unless $|A| \ge 3$
   (\cref{lem:normal-cross-count-rooted}). So $C_n$ is the sum of
   $2\,d_G(A)$ over the parts $A$ with $|A| \ge 3$
   (\cref{lem:normal-cross-count}), which is JJ eq.~(6).
 
-  The special cross edges are counted at singleton parts
-  (\cref{lem:square-cross-classification}). Those counted at $\{v\}$
+  The special cross edges are rooted at singleton parts
+  (\cref{lem:square-cross-classification}). Those rooted at $\{v\}$
   have common neighbor $v$, so they lie inside $N_G(v)$. Conversely, the
   edges of $G^2$ inside $N_G(v)$ are special cross edges with common
   neighbor $v$, and there are $2\,d_G(v) - 3$ of them
@@ -1216,20 +1265,64 @@ degree of a subgraph is taken over its support.
 
 \begin{definition}[The core]
   \label{def:two-core}
-  \lean{SimpleGraph.twoCore, SimpleGraph.twoCore_le, SimpleGraph.le_twoCore,
-    SimpleGraph.twoCore_minDegree}
+  \lean{SimpleGraph.twoCore}
   \leanok
   Let $G$ be a graph on $V$. The \emph{core} $G^{\mathrm{core}}$ of $G$
-  is its maximal subgraph of minimum degree at least two: the graph on
-  $V$ whose edges are those of all subgraphs $H$ of $G$ in which every
-  vertex of the support of $H$ has degree at least two in $H$.
+  is the graph on $V$ whose edges are those of all subgraphs $H$ of $G$
+  in which every vertex of the support of $H$ has degree at least two
+  in $H$.
 \end{definition}
 
-The core is itself one of these subgraphs $H$. Indeed, a vertex of its
-support lies on an edge of some such $H$. So it has at least two
-neighbors in $H$, and hence in the core. Thus the core is the largest
-subgraph of $G$ in which every vertex of the support has degree at
-least two.
+\begin{lemma}[The core is the largest subgraph of minimum degree two]
+  \label{lem:two-core-largest}
+  \lean{SimpleGraph.twoCore_le, SimpleGraph.le_twoCore,
+    SimpleGraph.twoCore_minDegree}
+  \leanok
+  \uses{def:two-core}
+  Let $G$ be a graph on $V$. Then $G^{\mathrm{core}}$ is a subgraph of
+  $G$, it contains every subgraph $H$ of $G$ in which every vertex of
+  the support of $H$ has degree at least two in $H$, and every vertex
+  of its support has degree at least two in $G^{\mathrm{core}}$. So
+  $G^{\mathrm{core}}$ is the largest subgraph of $G$ of minimum degree
+  at least two.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The first two claims hold by definition. A vertex of the support of
+  the core lies on an edge of some subgraph $H$ as in the definition.
+  So it has at least two neighbors in $H$, and hence in the core.
+\end{proof}
+
+\begin{lemma}[Graphs of minimum degree two, and vertices of degree at most one]
+  \label{lem:two-core-degree-one}
+  \lean{SimpleGraph.twoCore_eq_self_of_minDegree,
+    SimpleGraph.notMem_support_twoCore,
+    SimpleGraph.twoCore_deleteIncidenceSet}
+  \leanok
+  Let $G$ be a graph on $V$. If every vertex of the support of $G$ has
+  degree at least two, then $G$ is its own core. If $v$ is a vertex of
+  degree at most one in $G$, then $v$ is not in the support of
+  $G^{\mathrm{core}}$, and
+  \[
+    \bigl(G - E_G(v)\bigr)^{\mathrm{core}} \;=\; G^{\mathrm{core}} .
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:two-core-largest}
+  If every vertex of the support of $G$ has degree at least two, then
+  $G$ is one of the subgraphs $H$ that define the core. So $G$ is a
+  subgraph of its core, which is a subgraph of $G$
+  (\cref{lem:two-core-largest}).
+
+  Let $v$ have degree at most one. A vertex of the support of the core
+  has degree at least two in the core, and so in $G$, as the core is a
+  subgraph of $G$ (\cref{lem:two-core-largest}). So $v$ is not in the
+  support of the core. A subgraph of $G$ in which every vertex of the
+  support has degree at least two has no edge at $v$, as $v$ has degree
+  at most one. So $G$ and $G - E_G(v)$ have the same such subgraphs, and
+  the same core.
+\end{proof}
 
 As JJ note, the core of a connected graph on at least two vertices has
 no edges if and only if the graph is a tree. Indeed, a subgraph of a
@@ -1301,7 +1394,8 @@ separately.
     lem:square-leaf-neighborhood}
   We induct on $|V|$. If $V_1(G)$ is empty, then every vertex of $G$
   has degree at least two, as $G$ is connected and $|V| \ge 2$. So $G$
-  is its own core, its support is $V$, and both sides equal $r(G^2)$.
+  is its own core (\cref{lem:two-core-degree-one}), its support is $V$,
+  and both sides equal $r(G^2)$.
 
   Otherwise let $v$ be a vertex of degree one, with neighbor $u$. Then
   $d_G(u) \ge 2$, as otherwise $G$ would be the single edge $uv$, a
@@ -1312,10 +1406,8 @@ separately.
   \cref{thm:degree-one-rank-tree},
   $r(G^2) = r((G - v)^2) + \min(3, d_G(u))$.
 
-  Deleting $v$ does not change the core. Indeed, a subgraph of $G$ in
-  which every vertex of the support has degree at least two has no edge
-  at $v$, as $v$ has degree one. So $G$ and $G - v$ have the same such
-  subgraphs. In particular $v$ is not in $V(G^{\mathrm{core}})$, and
+  Deleting $v$ does not change the core, and $v$ is not in
+  $V(G^{\mathrm{core}})$ (\cref{lem:two-core-degree-one}). So
   $|V \setminus V(G^{\mathrm{core}})|$ is one less for $G - v$ than for
   $G$. The set $V_1$ changes as in the proof of
   \cref{thm:degree-one-rank-tree}. So the right-hand side falls by

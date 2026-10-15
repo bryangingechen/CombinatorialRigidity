@@ -1304,6 +1304,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the two definitions, `Molecular/Deficiency.lean`); measured
   (`scripts/blueprint-deps.py --chapter jacobs`, at `9c97fecc`).
   *Found:* round 4 task 2.5.
+  *Disposition:* done (task 3.12): `def:tight-partition` and `def:crossing-edges-within` pin
+  `IsTightPartition` and `crossingEdgesWithin`; the existence and merge lemmas `\uses` them, and
+  `lem:tight-partition-subfamily`'s statement edge goes to the first (its missing edges, `F-193`,
+  are task 4.7's).
 - **F-197** · N · `lem:normal-cross-count-rooted`, `lem:normal-cross-count-partition`,
   `lem:singleton-part-converse` (`jacobs.tex`): the first two pin a definition beside their claims,
   `squareNormalCrossEdgesRootedAt` (whose statement defines "rooted") and `squareCutPairs`, as
@@ -1317,6 +1321,11 @@ declaration's name as its header writes it:
   `IsSquareTightPartition.sum_perPart_le`, `JacobsCounting.lean`); measured
   (`scripts/blueprint-deps.py --chapter jacobs`, at `bc6573b9`).
   *Found:* round 4 task 2.6.
+  *Disposition:* done (task 3.12) for the two definitions: `def:rooted-cross-edges` pins
+  `squareNormalCrossEdgesRootedAt` and `squareSpecialCrossEdgesRootedAt`, and `squareCutPairs`, the
+  pairs leaving a part, goes to `def:g-cut-edges`; left for `lem:singleton-part-converse`, whose
+  statement is the unique-part form its pin proves, not the rooted form the count uses (deadness
+  alone is no reason to unpin, `F-012`).
 - **F-202** · N · `def:two-core` (`jacobs.tex`; four pins, `F-009`): the definition pins three of
   its consequences, `twoCore_le`, `le_twoCore` and `twoCore_minDegree` (the core is a subgraph of
   $G$, contains every subgraph of minimum degree two, and has minimum degree two), which task 2.8
@@ -1329,6 +1338,9 @@ declaration's name as its header writes it:
   `JacobsDegreeOne.lean`); measured (`scripts/blueprint-deps.py --label def:two-core`, at
   `0e8d7546`).
   *Found:* round 4 task 2.8.
+  *Disposition:* done (task 3.12): `def:two-core` pins `twoCore` alone; `lem:two-core-largest`
+  pins its three consequences, with the prose proof after it, and `lem:two-core-degree-one` the
+  three facts, which `thm:degree-one-rank`'s proof cites (the edge is task 4.7's).
 - **F-209** · N · `lem:panel-witness-transplant`, `lem:generic-normals-abundance`
   (`generic-lift.tex`): two load-bearing steps of the panel section have no node. The witness
   lemma's pin extracts its rows with
@@ -3309,6 +3321,18 @@ declaration's name as its header writes it:
   `lem:hinge-rows-polynomial-in-points` to pins those nodes no longer have.
   *Evidence:* read (the docstrings and module headers; a `grep` for the callers).
   *Found:* round 5 task 3.11.
+- **F-244** · L · the declarations round 5's task 3.12 pinned or moved (`Molecular/Deficiency.lean`,
+  `JacobsCounting.lean`, `TwoCore.lean`). The docstrings of `IsTightPartition` and
+  `crossingEdgesWithin` name `lem:exists-tight-partition` and `lem:partitionDef-merge`, now
+  `def:tight-partition` and `def:crossing-edges-within`; the section docstring before them names
+  `lem:tight-partition-cross-pair`, a label the blueprint lacks, and calls that lemma "a later
+  commit". The docstring of `IsSquareTightPartition.rootedAt_inj` names `lem:normal-cross-count`
+  for the clause of `lem:normal-cross-count-rooted`, and the section docstring of the rooted normal
+  cross edges says "This commit lands" the definition and leaves the assembly to "a later slice".
+  The module header of `TwoCore.lean` names `def:two-core` as the node of a file whose results
+  three nodes now pin.
+  *Evidence:* read (the docstrings and module header).
+  *Found:* round 5 task 3.12.
 
 ## M — mathematics and sources
 

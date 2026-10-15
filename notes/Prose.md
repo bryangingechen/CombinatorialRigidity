@@ -25,7 +25,7 @@ tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`, its task 2.4,
 tasks 2.13–2.14, `intro.tex`'s two slices, `F-226`–`F-229`; its slices and its close are done.
 Round 5's open re-ran the script, which still gives round 1's counts, and triaged the ledger's 97
 `E`, `N`, `T` and `U` entries into 31 one-commit tasks (§3 *Round 5*); its task 2 added each node's
-`\uses` to the gate's dump, and its tasks 3.1–3.11 reshaped the nodes of round 1's chapters, of
+`\uses` to the gate's dump, and its tasks 3.1–3.12 reshaped the nodes of round 1's chapters, of
 `matroid-union.tex` through `meet.tex`, of `rigidity-matrix.tex`, of `deficiency.tex`, of
 `molecular-induction.tex`, into which the graph form of KT Lemma 3.5 moved from `case-i.tex`, of
 `panel-layer.tex`, where KT Theorem 5.6 with nondegenerate hinges now comes first, as in the
@@ -36,8 +36,10 @@ deficiency, of `case-ii.tex` and `genericity-and-count.tex`, with new nodes for 
 bounds it, for the step from KT Claim 6.11 that it uses, and, for every $d$, for KT's renamed
 frameworks and KT eq. (6.66), and of `molecule-modelling.tex`, `molecule-application.tex` and
 `generic-lift.tex`, with new nodes for the screw map of a linear map, for the polarity on joins
-and for the two-extensor's polynomial coordinates. **Next concrete task:** round 5's task 3.12,
-the node shapes of `jacobs.tex` (`notes/Prose-graph-cleanup.md` *Hand-off*).
+and for the two-extensor's polynomial coordinates, and of `jacobs.tex`, with new nodes for tight
+partitions, for the edges between a family of parts, for the root of a cross edge and for two
+lemmas on the core. **Next concrete task:** round 5's task 3.13, the helpers and doubled pins of
+`pencil.tex` and `main-component.tex` (`notes/Prose-graph-cleanup.md` *Hand-off*).
 
 ## 1. The PI's decisions
 
