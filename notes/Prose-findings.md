@@ -704,6 +704,20 @@ declaration's name as its header writes it:
   `lem:pebble-game-invariants` (5 each), `def:tryReachPebble` and `lem:edgesIn-corners` (4 each).
   *Evidence:* measured (`scripts/blueprint-deps.py` report 3, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (tasks 3.1–3.14): every node has principle D's choice, and the 12 nodes left
+  with four or more pins state one result each, with a pin per clause and a role map. Split, a
+  definition or a claim given a node of its own: `def:rigidity-matrix` and
+  `lem:trivial-motions-rank-bound` (task 3.3), `lem:case-III-claim612-line-in-panel-union` (3.2),
+  `def:cut-edges-2ec` and `lem:cut-edge-decomposition` (3.4), `lem:panel-hinge-dual-molecular`
+  (3.11), `def:two-core` and `lem:normal-cross-count-partition` (3.12), `lem:pencil-x0-one-witness`
+  and `lem:pencil-jj-embed-edges` (3.14). Steps unpinned: `def:tryReachPebble` (3.1),
+  `lem:two-vertex-trichotomy` and `def:graph-operations` (3.4), `lem:cycle-realization-rigid`
+  (3.7), `lem:case-III-claim612-eq644` (3.9), `lem:pencil-bridge-fibre`, `thm:pencil-jj-equality`
+  and `lem:pencil-x0-main-picture-open` (3.13), `lem:pencil-jj-rescale` (3.14). Left, one result
+  with a role map: `def:pebble-counts`, `lem:edgesIn-corners` and `lem:pebble-game-invariants`
+  (3.1), `thm:projective-invariance` and `lem:molecule-graph-carrier` (3.11),
+  `lem:square-cross-classification` (3.12), `thm:pencil-x0-main-component`,
+  `def:pencil-nondegenerate` and `lem:pencil-chain-span-certificates` (3.13).
 - **F-010** · N · pinned helpers: a helper pinned on a node with another role draws missing
   in-edges from every node that uses only the helper. Each count is its target's missing
   in-edges through that pin: `lem:pencil-bridge-fibre`'s definition `pathVertex` (30, 5 of them
@@ -3356,6 +3370,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` of `blueprint/src` and `CombinatorialRigidity/` for the
   labels of task 3.13's nodes).
   *Found:* round 5 task 3.13.
+- **F-246** · L · the declarations round 5's task 3.14 moved or unpinned
+  (`Molecular/Molecule/Pencil/MainComponent/Bridge.lean`, `Carrier.lean`). The docstring of
+  `Graph.embedEdges` names `lem:pencil-jj-embed-edges`, now `def:pencil-embed-edges`. The module
+  header of `Bridge.lean` lists `panelSupportExtensor_smul_right` among its main statements, a step
+  that no node now pins. Of the other declarations task 3.14 moved or unpinned, two docstrings name
+  the definition whose term they concern (`IsAdmissiblePicture.exists_mvPolynomial`,
+  `def:pencil-admissible-picture`; `panelSupportExtensor_smul_right`, `def:panel-support-extensor`),
+  as the chapter's prose does, and the rest name no node.
+  *Evidence:* read (the docstrings and module headers; a `grep` of `CombinatorialRigidity/` for the
+  labels of task 3.14's nodes).
+  *Found:* round 5 task 3.14.
 
 ## M — mathematics and sources
 

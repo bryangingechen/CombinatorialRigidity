@@ -69,8 +69,10 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   set the path overfull. A 47-character file path in `executable.tex`
   stayed overfull with breaks after its slashes, first after a run-in
   subsection head and then mid-paragraph (PROSE round 1, task 5.16); a
-  shorter address fixed it. Count the chapter's `Overfull` lines in
-  `print/print.log` after such an edit.
+  shorter address fixed it. A 40-character declaration name stayed
+  4pt over without its `Graph.` prefix, and fitted at the end of the
+  next, longer sentence (PROSE round 5, task 3.14). Count the chapter's
+  `Overfull` lines in `print/print.log` after such an edit.
 - **A long environment title does not wrap in the PDF.** The print
   build set "Lemma 18.8 (Independence of the $(d-1)$-extensors; KT
   Lemma 2.1)." on one line, 15pt past the margin, rather than break

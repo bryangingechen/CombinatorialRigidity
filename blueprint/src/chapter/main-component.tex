@@ -558,6 +558,77 @@ shrinks a core along the contraction curve
   \cref{lem:pencil-rank-collineation} applies.
 \end{proof}
 
+To move heights from one picture to another, we describe $L(q)$ by a
+linear system whose coefficients are polynomials in the picture. Besides
+the heights, its unknowns are the coefficients of an affine function at
+each body.
+
+\begin{definition}[The lifting system]
+  \label{def:pencil-lifting-system}
+  \lean{Graph.liftingMatrix, Graph.map_ker_liftingMatrix,
+        Graph.finrank_ker_liftingMatrix}
+  \leanok
+  \uses{def:pencil-lifting-space, def:pencil-admissible-picture}
+  Let $q$ be a planar picture of $G$. The \emph{lifting system} $M(q)$
+  of $G$ at $q$ is the homogeneous linear system in the heights $z$ and
+  one coefficient vector $h_v \in K^3$ per body $v$ that requires
+  $z_w = h_v \cdot (x_w, y_w, 1)$ for every body $v$ and every $w$ in
+  the closed neighbourhood of $v$. Its coefficients are polynomials in
+  $q$, and the heights of its solutions form $L(q)$. If $q$ is
+  admissible, its solutions form a space of dimension $\dim L(q)$.
+\end{definition}
+\begin{proof}
+  \leanok
+  A height $z$ lies in $L(q)$ exactly when every body $v$ has a vector
+  $h_v$ with $z_w = h_v \cdot (x_w, y_w, 1)$ for every $w$ in its closed
+  neighbourhood (\cref{def:pencil-lifting-space}). Over an admissible
+  picture the heights of a solution determine each $h_v$, as three
+  members of the closed neighbourhood of $v$ have non-collinear picture
+  points. So there the solutions form a space of dimension $\dim L(q)$.
+\end{proof}
+\begin{fmlnote}
+  The three pins are the system, as a matrix of polynomials in the
+  picture coordinates, the heights of its solutions, and the dimension
+  of its solutions over an admissible picture. As for the lifting space
+  (\cref{fmlnote:pencil-lifting-space}), the formal heights and
+  coefficient vectors are indexed by the whole ambient set of bodies,
+  and the system requires them to vanish off $V(G)$.
+\end{fmlnote}
+
+Near a point, the kernel of a matrix of polynomials can only lose
+dimension. Where it keeps its dimension, a kernel vector at the point
+extends to kernel vectors nearby that are polynomial in the parameters,
+and Cramer's rule writes them down. We state this in general, since the
+contraction step uses it for the rescaled lifting system, with the one
+parameter $t$ (\cref{def:pencil-contract-lifting-system}).
+
+\begin{lemma}[A polynomial section of the kernel]
+  \label{lem:pencil-polynomial-section}
+  \lean{Matrix.exists_mvPolynomial_section_mulVec_eq_zero}
+  \leanok
+  Let $M(s)$ be a matrix whose entries are polynomials in parameters
+  $s$, and let $M(s_0)\, x_0 = 0$. Then there are a polynomial $D$ with
+  $D(s_0) \neq 0$ and a vector $X(s)$ of polynomials with
+  $X(s_0) = x_0$, such that $\dim \ker M(s) \le \dim \ker M(s_0)$
+  wherever $D(s) \neq 0$, and $M(s)\, X(s) = 0$ wherever moreover
+  $\dim \ker M(s) \ge \dim \ker M(s_0)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Let $\pi$ be a projection onto $\ker M(s_0)$. The stacked
+  matrix $[M(s_0); \pi]$, with the rows of $M(s_0)$ above those of $\pi$,
+  is injective, as $\pi$ fixes every vector of $\ker M(s_0)$. Let $H$ be
+  a left inverse of it, and let $S(s) = H\,[M(s); \pi]$. This is a square
+  matrix of polynomials with $S(s_0) = 1$. Put $D = \det S$. Where
+  $D(s) \neq 0$ the stack $[M(s); \pi]$ is injective, so $\pi$ maps
+  $\ker M(s)$ injectively into $\ker M(s_0)$. If moreover
+  $\dim \ker M(s) \ge \dim \ker M(s_0)$, this map is onto, and some
+  $x \in \ker M(s)$ has $\pi x = x_0$. Then
+  $S(s)\, x = H\,[0; x_0] = S(s_0)\, x_0 = x_0$. By Cramer's rule
+  $X(s) = \operatorname{adj} S(s)\, x_0$ equals $D(s)\, x$, so it lies in
+  $\ker M(s)$. And $X(s_0) = x_0$, as $S(s_0) = 1$.
+\end{proof}
+
 The proof of \cref{lem:pencil-x0-one-witness} extends a height in
 $L(q_0)$, for a picture $q_0$, to heights at a general picture. For this
 it needs $\dim L(q) \ge \dim L(q_0)$ at a general picture $q$, which
@@ -579,7 +650,7 @@ holds when $\dim L(q_0)$ is least.
   Over the set $U$ of main pictures, $\dim L(q)$ is constant, equal to
   $\ell_0$. Moreover $L(q)$ is the projection to the heights of the
   solutions of a linear system whose coefficients are polynomials in $q$
-  (the proof of \cref{lem:pencil-x0-one-witness}). So the pairs $(q, z)$
+  (\cref{def:pencil-lifting-system}). So the pairs $(q, z)$
   with $q \in U$ and $z \in L(q)$ form a vector bundle over $U$. Its
   closure $X_0$ is the \emph{main component} of the pencil configuration
   space. It is irreducible of dimension $2|V(G)| + \ell_0$, and it
@@ -594,12 +665,7 @@ holds when $\dim L(q_0)$ is least.
 
 \begin{lemma}[One attaining configuration forces the general one]
   \label{lem:pencil-x0-one-witness}
-  \lean{Graph.x0Attains_of_exists,
-        Graph.IsAdmissiblePicture.exists_mvPolynomial,
-        Graph.IsAdmissiblePicture.supportExtensor_ne_zero,
-        Graph.liftingMatrix, Graph.map_ker_liftingMatrix,
-        Graph.finrank_ker_liftingMatrix,
-        Matrix.exists_mvPolynomial_section_mulVec_eq_zero}
+  \lean{Graph.x0Attains_of_exists}
   \leanok
   \uses{def:pencil-main-picture, def:pencil-x0-attains,
         def:panel-support-extensor, lem:rank-polynomial-of-le-finrank,
@@ -613,50 +679,19 @@ holds when $\dim L(q_0)$ is least.
 \end{lemma}
 \begin{proof}
   \leanok
-  \emph{The lifting system.} Let $M(q)$ be the homogeneous linear system
-  in the heights $z$ and one coefficient vector $h_v \in K^3$ per body
-  $v$ that requires $z_w = h_v \cdot (x_w, y_w, 1)$ for every $w$ in the
-  closed neighbourhood of $v$. Its coefficients are polynomials in $q$,
-  and the heights of its solutions form $L(q)$. Over an admissible
-  picture the heights of a solution determine each $h_v$, as three
-  members of the closed neighbourhood of $v$ have non-collinear picture
-  points. So there
-  the solutions form a space of dimension $\dim L(q)$. As $q_0$ is a main
-  picture, this dimension is at least $\dim L(q_0)$ at every admissible
-  picture $q$.
-
-  \emph{A polynomial section.} Near a point, the kernel of a matrix of
-  polynomials can only lose dimension. Where it keeps its dimension, a
-  kernel vector at the point extends to kernel vectors nearby that are
-  polynomial in the parameters, and Cramer's rule writes them down. We
-  state this in general, since the contraction step uses it for the
-  rescaled lifting system, with the one parameter $t$
-  (\cref{def:pencil-contract-lifting-system}). Let $M(s)$ be a matrix
-  whose entries are polynomials in parameters $s$, and let
-  $M(s_0)\, x_0 = 0$. Then there are a polynomial $D$ with
-  $D(s_0) \neq 0$ and a vector $X(s)$ of polynomials with
-  $X(s_0) = x_0$, such that $\dim \ker M(s) \le \dim \ker M(s_0)$
-  wherever $D(s) \neq 0$, and $M(s)\, X(s) = 0$ wherever moreover
-  $\dim \ker M(s) \ge \dim \ker M(s_0)$.
-
-  To prove it, let $\pi$ be a projection onto $\ker M(s_0)$. The stacked
-  matrix $[M(s_0); \pi]$, with the rows of $M(s_0)$ above those of $\pi$,
-  is injective, as $\pi$ fixes every vector of $\ker M(s_0)$. Let $H$ be
-  a left inverse of it, and let $S(s) = H\,[M(s); \pi]$. This is a square
-  matrix of polynomials with $S(s_0) = 1$. Put $D = \det S$. Where
-  $D(s) \neq 0$ the stack $[M(s); \pi]$ is injective, so $\pi$ maps
-  $\ker M(s)$ injectively into $\ker M(s_0)$. If moreover
-  $\dim \ker M(s) \ge \dim \ker M(s_0)$, this map is onto, and some
-  $x \in \ker M(s)$ has $\pi x = x_0$. Then
-  $S(s)\, x = H\,[0; x_0] = S(s_0)\, x_0 = x_0$. By Cramer's rule
-  $X(s) = \operatorname{adj} S(s)\, x_0$ equals $D(s)\, x$, so it lies in
-  $\ker M(s)$. And $X(s_0) = x_0$, as $S(s_0) = 1$.
+  \uses{def:pencil-lifting-system, lem:pencil-polynomial-section}
+  \emph{The lifting system.} Over an admissible picture $q$ the solutions
+  of the lifting system $M(q)$ form a space of dimension $\dim L(q)$
+  (\cref{def:pencil-lifting-system}). As $q_0$ is a main picture, this
+  dimension is at least $\dim L(q_0)$ at every admissible picture $q$.
 
   \emph{The rank.} The rank of a configuration is the rank of the
   panel-hinge framework whose panel normals are its points. Over an
   admissible picture its hinges are nonzero
   (\cref{def:panel-support-extensor}), since two points $(x, y, z, 1)$
-  over distinct picture points are linearly independent. So
+  over distinct picture points are linearly independent
+  (\texttt{IsAdmissiblePicture.\allowbreak{}supportExtensor\_\allowbreak{}ne\_\allowbreak{}zero}).
+  So
   \cref{lem:rank-polynomial-of-le-finrank} gives a polynomial $Q$ in the
   coordinates of the points, nonzero at $(q_0, z_0)$, such that the rank
   is at least $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$ wherever $Q$
@@ -669,8 +704,10 @@ holds when $\dim L(q_0)$ is least.
   of adjacent bodies, in a coordinate in which they differ at $q_0$, and,
   for each body, the determinant of the homogeneous picture points of
   three members of its closed neighbourhood that are independent at
-  $q_0$. Lift $z_0$ to a solution $x_0$ of $M(q_0)$, and let $D$ and $X$
-  be as above, with $Z(q)$ the heights of $X(q)$. Let $P$ be the product
+  $q_0$ (\texttt{IsAdmissiblePicture.\allowbreak{}exists\_\allowbreak{}mvPolynomial}).
+  Lift $z_0$ to a solution $x_0$ of $M(q_0)$, and let $D$ and $X$
+  be as in \cref{lem:pencil-polynomial-section}, for $M$ at $q_0$ and
+  $x_0$, with $Z(q)$ the heights of $X(q)$. Let $P$ be the product
   of $A$, $D$ and $Q$ at the configuration $(q, Z(q))$. Then
   $P(q_0) \neq 0$. A picture $q$ with $P(q) \neq 0$ is admissible, and
   $Z(q) \in L(q)$. For such $q$, let $R$ be $Q$ at $(q, \cdot)$, a
@@ -679,10 +716,10 @@ holds when $\dim L(q_0)$ is least.
   rank $6(|V(G)| - 1) - \operatorname{def}(\tilde G)$.
 \end{proof}
 
-Later steps use the solutions $(z, h)$ of the lifting system $M(q)$ of
-this proof. The contraction step uses the same system with other vectors
-in place of the homogeneous picture points $(x_w, y_w, 1)$
-(\cref{def:pencil-contract-lifting-system}).
+Later steps use the solutions $(z, h)$ of the lifting system $M(q)$
+(\cref{def:pencil-lifting-system}). The contraction step uses the same
+system with other vectors in place of the homogeneous picture points
+$(x_w, y_w, 1)$ (\cref{def:pencil-contract-lifting-system}).
 
 \begin{definition}[The lifting system with weights]
   \label{def:pencil-weighted-lifting-system}
@@ -698,7 +735,8 @@ in place of the homogeneous picture points $(x_w, y_w, 1)$
 \end{definition}
 
 With $\omega(v, w) = (x_w, y_w, 1)$ this is the lifting system $M(q)$
-of $G$ at $q$, and the heights of its solutions form $L(q)$.
+of $G$ at $q$ (\cref{def:pencil-lifting-system}), and the heights of
+its solutions form $L(q)$.
 
 \begin{lemma}[The lifting system reads only the picture at its bodies]
   \label{lem:pencil-weighted-lifting-system-local}
@@ -728,20 +766,23 @@ of $G$ at $q$, and the heights of its solutions form $L(q)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-x0-one-witness}
+  \uses{def:pencil-lifting-system, lem:pencil-polynomial-section}
   Admissible pictures exist
   (\texttt{Graph.\allowbreak{}exists\_\allowbreak{}isAdmissiblePicture}): place
   the bodies at distinct points of the parabola $\{(t, t^2)\}$, as after
   \cref{def:pencil-admissible-picture}.
   So $\ell_0$ exists, and it is attained at a main picture $q_0$.
 
-  At any main picture $q_0$, apply the polynomial section of the proof of
-  \cref{lem:pencil-x0-one-witness} to $M(q)$ at $q_0$ and the zero
-  solution. It gives a polynomial $D$, nonzero at $q_0$, such that
-  wherever $D(q) \neq 0$ the solutions of $M(q)$ form a space of
-  dimension at most $\dim L(q_0)$. Let $P$ be the product of $D$ and a
-  polynomial nonzero at $q_0$ whose non-roots are admissible, as in that
-  proof. At a non-root $q$ of $P$, $q$ is admissible and
+  At any main picture $q_0$, apply \cref{lem:pencil-polynomial-section}
+  to the lifting system $M(q)$ (\cref{def:pencil-lifting-system}) at
+  $q_0$ and the zero solution. It gives a polynomial $D$, nonzero at
+  $q_0$, such that wherever $D(q) \neq 0$ the solutions of $M(q)$ form a
+  space of dimension at most $\dim L(q_0)$. Let $P$ be the product of $D$
+  and a polynomial nonzero at $q_0$ whose non-roots are admissible. It
+  exists since the admissible pictures form a Zariski-open set, as noted
+  after \cref{def:pencil-admissible-picture}
+  (\texttt{IsAdmissiblePicture.\allowbreak{}exists\_\allowbreak{}mvPolynomial}).
+  At a non-root $q$ of $P$, $q$ is admissible and
   $\dim L(q) \le \dim L(q_0)$, so $q$ is a main picture, giving the
   openness around $q_0$. Taking $q_0$ to be the main picture of the
   first paragraph, $\dim L(q_0) = \ell_0$, gives the claim.
@@ -1167,8 +1208,7 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
 
 \begin{lemma}[Rescaling the panel normals]
   \label{lem:pencil-jj-rescale}
-  \lean{CombinatorialRigidity.Molecular.panelSupportExtensor_smul_right,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ofNormals_smul,
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ofNormals_smul,
         CombinatorialRigidity.Molecular.PanelHingeFramework.infinitesimalMotions_ofNormals_smul,
         CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul}
   \leanok
@@ -1185,8 +1225,10 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   \leanok
   \uses{def:hinge-constraint, lem:span-rigidityRows-eq-of-motions-eq}
   The support extensor is linear in each of its two normals
-  (\cref{def:panel-support-extensor}). A nonzero multiple of a hinge
-  spans the same line, and the hinge constraint depends only on that line
+  (\cref{def:panel-support-extensor}), in the second by antisymmetry
+  (\texttt{panelSupportExtensor\_\allowbreak{}smul\_\allowbreak{}right}). A
+  nonzero multiple of a hinge spans the same line, and the hinge
+  constraint depends only on that line
   (\cref{def:hinge-constraint}). Equal motion spaces give equal row spans
   (\cref{lem:span-rigidityRows-eq-of-motions-eq}).
 \end{proof}
@@ -1231,31 +1273,55 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   edge labels (\cref{rem:fresh-edge-supply}), and so does
   \cref{lem:pencil-jj-chart}. The equality mentions no edge label, so
   its formal proof first relabels the edges into a larger label set,
-  which has spare labels (\cref{lem:pencil-jj-embed-edges}). The equality
-  therefore assumes nothing about the labels.
+  which has spare labels (\cref{def:pencil-embed-edges}), and the
+  relabelling changes nothing that the equality reads
+  (\cref{lem:pencil-jj-embed-edges}). The equality therefore assumes
+  nothing about the labels.
 \end{fmlnote}
 
-\begin{lemma}[Relabelling the edges]
+\begin{definition}[Relabelling the edges]
+  \label{def:pencil-embed-edges}
+  \lean{Graph.embedEdges}
+  \leanok
+  Let $\iota$ be an injective map from the set of edge labels of $G$ into
+  a larger set of labels. The graph $G$ \emph{with its edges relabelled
+  by $\iota$} has the bodies of $G$, and an edge $\iota(e)$ joining $u$
+  and $v$ for every edge $e$ of $G$ joining $u$ and $v$.
+\end{definition}
+
+\begin{lemma}[Relabelling the edges keeps the lifting spaces, the pictures and the deficiencies]
   \label{lem:pencil-jj-embed-edges}
-  \lean{Graph.embedEdges, Graph.vertexSet_embedEdges, Graph.embedEdges_isLink,
-        Graph.edgeSet_embedEdges, Graph.closedNbhd_embedEdges, Graph.Simple.embedEdges,
-        Graph.liftingSpace_embedEdges, Graph.finrank_liftingSpace_embedEdges,
+  \lean{Graph.Simple.embedEdges, Graph.liftingSpace_embedEdges,
         Graph.isAdmissiblePicture_embedEdges_iff, Graph.isMainPicture_embedEdges_iff,
         Graph.deficiency_embedEdges}
   \leanok
-  \uses{def:pencil-lifting-space, def:pencil-admissible-picture,
-        def:pencil-main-picture, def:D-deficiency}
+  \uses{def:pencil-embed-edges, def:pencil-lifting-space,
+        def:pencil-admissible-picture, def:pencil-main-picture,
+        def:D-deficiency}
   Let $G'$ be $G$ with its edges relabelled injectively into a larger set
-  of labels. Then $G'$ is simple if $G$ is, and $G'$ has the lifting
-  spaces $L(q)$, the admissible and main pictures, and the deficiencies
-  $\operatorname{def}_n$ of $G$, for every $n$.
+  of labels (\cref{def:pencil-embed-edges}). Then $G'$ is simple if $G$
+  is, and $G'$ has the lifting spaces $L(q)$, the admissible and main
+  pictures, and the deficiencies $\operatorname{def}_n$ of $G$, for every
+  $n$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The bodies, the pairs of adjacent bodies and hence the closed
-  neighbourhoods are unchanged. A partition crosses exactly the images of
-  the edges it crossed before.
+  The bodies and the pairs of adjacent bodies are unchanged
+  (\texttt{vertexSet\_\allowbreak{}embedEdges},
+  \texttt{embedEdges\_\allowbreak{}isLink}), and hence so
+  are the closed neighbourhoods
+  (\texttt{closedNbhd\_\allowbreak{}embedEdges}) and the
+  dimensions of the lifting spaces, which the main pictures read
+  (\texttt{finrank\_\allowbreak{}liftingSpace\_\allowbreak{}embedEdges}).
+  A partition crosses exactly the images of the edges it crossed before
+  (\texttt{edgeSet\_\allowbreak{}embedEdges}).
 \end{proof}
+
+\begin{fmlnote}
+  The five pins are the five clauses, in order: simplicity, the lifting
+  spaces, the admissible pictures, the main pictures and the
+  deficiencies.
+\end{fmlnote}
 
 \begin{theorem}[Jackson and Jord\'an's equality]
   \label{thm:pencil-jj-equality}
@@ -1656,10 +1722,9 @@ There the choice shows that every realization of the contracted graph is
 among their placements of the edges outside the rigid subgraph, KT
 eq.~(6.7).
 
-The polynomial section stated in the proof of
-\cref{lem:pencil-x0-one-witness}, with the parameter $t$, extends a
-solution of $M(0)$ to solutions of $M(t)$ at all but finitely many $t$,
-provided that $\dim \ker M(t) \ge \dim \ker M(0)$ there. We therefore
+The polynomial section of \cref{lem:pencil-polynomial-section}, with
+the parameter $t$, extends a solution of $M(0)$ to solutions of $M(t)$
+at all but finitely many $t$, provided that $\dim \ker M(t) \ge \dim \ker M(0)$ there. We therefore
 need the kernel not to jump at $t = 0$. Below, $\ker M(t)$ is at least
 as large as the lifting space of $G$ at a general point of the curve,
 whose dimension is at least $3 + \operatorname{def}_2(G)$. Above,
@@ -1962,7 +2027,8 @@ of the rank, so the step works over every infinite field.
   \uses{lem:pencil-contract-standing-rigid, lem:pencil-contract-standing,
         lem:pencil-contraction-deficiency, thm:pencil-jj-equality,
         lem:pencil-x0-main-picture-open, lem:pencil-rank-scale-shift,
-        lem:pencil-x0-one-witness, lem:pencil-lifting-space-deficiency,
+        lem:pencil-x0-one-witness, lem:pencil-polynomial-section,
+        lem:pencil-lifting-space-deficiency,
         lem:pencil-contract-lifting-kernel,
         lem:pencil-contract-kernel-bound, lem:pencil-contract-limit,
         lem:pencil-contract-degenerate-rank,
@@ -1991,8 +2057,8 @@ of the rank, so the step works over every infinite field.
   \emph{The kernel at the end of the curve.} Let $\rho$ take a vector of
   unknowns to its core heights, as in
   \cref{lem:pencil-contract-kernel-bound}. The polynomial section through
-  the zero solution at $t = 0$ (the proof of
-  \cref{lem:pencil-x0-one-witness}, with the parameter $t$) gives
+  the zero solution at $t = 0$ (\cref{lem:pencil-polynomial-section},
+  with the parameter $t$) gives
   $\dim \ker M(t) \le \dim \ker M(0)$ for all but finitely many $t$. For
   all but finitely many $t$, also, $q(t)$ is a main picture of $G$, as
   the main-picture polynomial of $G$ along the curve is nonzero at
@@ -2026,8 +2092,8 @@ of the rank, so the step works over every infinite field.
   $x_0 \in \ker M(0)$ makes both polynomials nonzero
   (\cref{lem:pencil-x0-fibre-intersection}).
 
-  \emph{The curve.} Apply the polynomial section of the proof of
-  \cref{lem:pencil-x0-one-witness} to $M(t)$, at $t = 0$ and $x_0$. It
+  \emph{The curve.} Apply \cref{lem:pencil-polynomial-section} to $M(t)$,
+  at $t = 0$ and $x_0$. It
   gives a polynomial $D$ in $t$ with $D(0) \neq 0$, and a vector $X(t)$
   of polynomials in $t$ with $X(0) = x_0$. At every $t \neq 0$ with
   $q(t)$ a main picture of $G$ the kernel does not jump:
@@ -3256,7 +3322,7 @@ $G[V_1] + ab$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-x0-one-witness}
+  \uses{def:pencil-lifting-system}
   At a common zero $(z, h)$ of the two functionals, $h_a$ and $h_b$ take
   the same values at $q_a$ and at $q_b$. As $z_a = h_a \cdot (q_a, 1)$ and
   $z_b = h_b \cdot (q_b, 1)$, the height $z$ agrees with $h_a$ on the
@@ -3265,7 +3331,7 @@ $G[V_1] + ab$.
   neighbourhood in $H$ lies in the one in $G'$, on which $z$ agrees with
   $h_v$. So $z \in L_H(q)$. At a picture admissible for $G'$ a solution is
   determined by its heights, and the solutions form a space of dimension
-  $\dim L_{G'}(q)$ (the proof of \cref{lem:pencil-x0-one-witness}). So the
+  $\dim L_{G'}(q)$ (\cref{def:pencil-lifting-system}). So the
   common zeros of the two functionals form a space of dimension at most
   $\dim L_H(q) \le \dim L_{G'}(q) - 2$, and the two are independent.
 \end{proof}
@@ -3712,7 +3778,7 @@ degree one in $G[V_1]$ the heights do not determine $h_v$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-x0-one-witness, lem:pencil-three-points}
+  \uses{def:pencil-lifting-system, lem:pencil-three-points}
   Suppose some solution $y_0$ has $h_a \neq h_b$. The affine function
   $h_a - h_b$ vanishes at $q_a$ and $q_b$, and $q_a$, $q_b$, $q_x$ are
   not collinear, as $q$ is admissible for $G$. So the functional
@@ -3734,9 +3800,9 @@ degree one in $G[V_1]$ the heights do not determine $h_v$.
   \cref{lem:pencil-three-points}). Since $\varphi(y_0) \neq 0$, the
   solutions for $G$ form a space of smaller dimension than the solutions
   for $G'$, and hence than those for $G''$. At a picture admissible for a
-  graph, the solutions form a space of dimension $\dim L(q)$ (the proof of
-  \cref{lem:pencil-x0-one-witness}). So $\dim L_G(q) < \dim L_{G''}(q)$, a
-  contradiction.
+  graph, the solutions form a space of dimension $\dim L(q)$
+  (\cref{def:pencil-lifting-system}). So $\dim L_G(q) < \dim L_{G''}(q)$,
+  a contradiction.
 \end{proof}
 
 The next lemma is the pure linear-algebra fact behind the curve.
@@ -4979,7 +5045,7 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   \label{def:pencil-two-ear-graph}
   \lean{Graph.addTwoEar}
   \leanok
-  \uses{lem:pencil-jj-embed-edges}
+  \uses{def:pencil-embed-edges}
   For distinct bodies $u, w$ of $G$, the graph $G_{uw}$ is $G$ together
   with one new body $x$ and two new edges, joining $x$ to $u$ and to $w$.
 \end{definition}
@@ -4987,7 +5053,7 @@ of $G_{uw}$. So they form a proper subspace of $L(q)$
   \label{fmlnote:pencil-two-ear-graph}
   The new body and the two new edge labels of $G_{uw}$ lie outside the
   sets of bodies and edge labels of $G$, which are enlarged for them, as
-  the set of edge labels is in \cref{lem:pencil-jj-embed-edges}. So
+  the set of edge labels is in \cref{def:pencil-embed-edges}. So
   $G_{uw}$ needs no unused body or edge label of $G$.
 \end{fmlnote}
 

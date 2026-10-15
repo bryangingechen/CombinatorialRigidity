@@ -1238,8 +1238,9 @@ pin-collinear theorem; the criterion transfers as in the `pencil.tex` section. E
 recon's spike: nothing rerouted or decomposed. The argument is short and complete in the nodes'
 proofs: move a realization at the deficiency rank into the chart `(x_v, y_v, 1)` by rescaling the
 normals, read its rank there by the flat rank's plane framework, and close with the partition bound.
-The edge relabelling (`lem:pencil-jj-embed-edges`, `fmlnote:pencil-jj-embed-edges`) serves only the
-formal label type and is project-side. The end-to-end re-read added one clause to
+The edge relabelling (`def:pencil-embed-edges`, `lem:pencil-jj-embed-edges`,
+`fmlnote:pencil-jj-embed-edges`) serves only the formal label type and is project-side. The
+end-to-end re-read added one clause to
 `thm:pencil-jj-equality`'s proof (three members in a closed neighbourhood give the chart lemma's two
 bodies). The account of the whole induction stays with the Phase-39 entry
 `thm:pencil-conditional-realization-main-component` above, `[pending]` until Phase 40's close. The
