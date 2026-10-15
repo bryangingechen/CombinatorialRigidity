@@ -271,6 +271,26 @@ statements (its commit message has the evidence):
 
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**PROSE round 5 (`prose-graph`, closed 2026-10-15), the program's last.** The round repaired the
+dependency graph of every chapter, `pencil.tex` and `main-component.tex` included
+(`notes/Prose-graph-cleanup.md`): it gave 35 claims and definitions nodes of their own, unpinned
+helpers, added every missing `\uses` edge, removed the unbacked ones that no text or pin uses, and
+moved nodes between chapters so that each follows the nodes it uses. The Lean is unchanged, so no
+proof rerouted, and a split moves each clause with the pin that proves it, at its strength; no entry
+is added. The commits that moved or split a node named here updated its entry (`20d62426`,
+`1d35d435`, `d851de0f`, `0f9c275c`, `76c3c4d4`, `9a7e56b1`): the Claim 6.6 entry now points at
+`lem:claim-6-6`, and the KT Proposition 2.3 entry at the proof of `thm:theorem-55-6-genuine`, from
+which `thm:theorem-55-6` now follows. The close checked every pointer to a moved or split node. The
+three entries naming a node that changed chapter give its new one: `lem:rigidContract-isMinimalKDof`
+in `molecular-induction.tex` (its **Written** line records where Phase 27 wrote it),
+`lem:relative-deficiency-rank-bound` in `deficiency.tex` and
+`thm:isSparse-exists-typeI-or-typeII-reverse` in `sparsity.tex`. Of the ten named nodes whose pins
+changed, the two whose entry titles give a Lean name still pin it, and no entry names one of the 58
+declarations the round unpinned. The passage before `lem:rows-polynomial-in-normals` still gives
+KT's two-step proof of Claim 6.4, now that the claim's three lemmas follow it in `case-i.tex`. The
+nine labels the ledger names that the blueprint lacks were absent at the round's open too.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:

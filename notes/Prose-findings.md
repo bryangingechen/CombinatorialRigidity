@@ -5,7 +5,9 @@ created it (2026-10-07). Rounds 1–4 only append to it. Round 5, `prose-graph`,
 disposition, acts on the `E`, `N`, `T` and `U` entries, and reports the `S`, `L` and `M` entries to
 the PI. A round's work log names a finding by its ID, in one line under *Candidates for …* or
 *Moved to a later round*; the finding itself is written only here (`notes/CLAUDE.md` *One
-canonical home per content type*).
+canonical home per content type*). At round 5's close (2026-10-15) all 250 entries have their
+disposition, 87 `done`, 16 `left` and 147 `reported`, each round-5 task named by its commit; the
+report is `notes/Prose-report.md`, and its follow-up the proposed program RECONCILE.
 
 ## Format
 
@@ -139,7 +141,7 @@ declaration's name as its header writes it:
   `lem:rigidityMap-apply` (8); 293 more are implied by other `\uses`.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (task 4.1): of the 71 missing at task 3's close, 40 added and 31 implied by
+  *Disposition:* done (`9eb2c776`): of the 71 missing at `0f9c275c`, 40 added and 31 implied by
   them, and 5 that the task's removals of unbacked edges left missing added too; none is missing.
 - **F-002** · E · round 2's chapters (`matroid-union.tex` … `meet.tex`): 99 missing edges at 58
   nodes (38 through a statement): `molecular-induction` 42, `meet` 24, `deficiency` 18,
@@ -147,8 +149,8 @@ declaration's name as its header writes it:
   279 more are implied.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (tasks 4.2–4.3): none of the eight chapters has a missing edge. Of the 26
-  and 17 missing at the two tasks' parents, 14 and 9 were added and the rest are implied by them;
+  *Disposition:* done (`3575835c`–`eaba775e`): none of the eight chapters has a missing edge. Of the
+  26 and 17 missing at the two tasks' parents, 14 and 9 were added and the rest are implied by them;
   each task also added the edges its removals of unbacked edges left missing.
 - **F-003** · E · round 3's files (`algebraic-induction.tex` and its five sections): 164 missing
   edges at 47 nodes (42 through a statement): `case-iii` 70, `case-i` 52, `panel-layer` 26,
@@ -157,16 +159,16 @@ declaration's name as its header writes it:
   implied.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (tasks 4.4–4.6): none of the five sections has a missing edge. Of the 44, 19
-  and 67 missing at the three tasks' parents, 27, 15 and 28 were added and the rest are implied by
-  them; each task also added the edges its removals of unbacked edges left missing.
+  *Disposition:* done (`6af43988`–`e1b16939`): none of the five sections has a missing edge. Of the
+  44, 19 and 67 missing at the three tasks' parents, 27, 15 and 28 were added and the rest are
+  implied by them; each task also added the edges its removals of unbacked edges left missing.
 - **F-004** · E · round 4's chapters (`bar-joint-3d.tex` … `generic-lift.tex`): 76 missing edges
   at 42 nodes (28 through a statement): `jacobs` 33, `molecule-modelling` 17, `generic-lift` 14,
   `bar-joint-3d` and `molecule-application` 6 each. The commonest targets are
   `lem:rigidityMap-apply` and `lem:molecule-graph-carrier` (10 each); 267 more are implied.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (task 4.7): none of the five chapters has a missing edge. Of the 65 missing
+  *Disposition:* done (`e9d59672`): none of the five chapters has a missing edge. Of the 65 missing
   at the task's parent, 32 were added and 33 are implied by them; the task also added the 6 edges
   its removals of unbacked edges left missing.
 - **F-005** · E · `pencil.tex` and `main-component.tex`: 114 missing edges at 58 nodes (31
@@ -174,10 +176,10 @@ declaration's name as its header writes it:
   `lem:pencil-bridge-fibre` (25) and `thm:pencil-jj-equality` (18); 710 more are implied.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (tasks 4.8–4.9): neither chapter has a missing edge, nor does any other
-  (`--summary` at task 4.9: 0 missing). Of the 26 and 28 missing in the two tasks' parts at their
-  parents, 19 and 20 were added and the rest are implied by them; task 4.8 also added the 5 edges
-  its removals of unbacked edges left missing, and task 4.9's removals left none.
+  *Disposition:* done (`23bf8244`–`60c88e44`): neither chapter has a missing edge, nor does any
+  other (`--summary` at `60c88e44`: 0 missing). Of the 26 and 28 missing in the two tasks' parts at
+  their parents, 19 and 20 were added and the rest are implied by them; `23bf8244` also added the 5
+  edges its removals of unbacked edges left missing, and `60c88e44`'s removals left none.
 - **F-006** · E · unbacked `\uses`, every chapter: 397 `\uses` targets that no pin of the using
   node reaches. 87 are reached only through another pinned node, and 310 not at all; per group
   (through a node / not at all): round 1 5/19, round 2 11/88, round 3 32/120, round 4 22/21,
@@ -187,13 +189,13 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`);
   the example read (`IsSparse.exists_typeI_or_typeII_reverse`'s statement, `Sparsity.lean`).
   *Found:* round 1 task 2.
-  *Disposition:* done (tasks 4.1–4.9): each task read its chapters' unbacked edges under the edge
-  policy (`notes/Prose-graph-cleanup.md` *Scope*) and removed those with no Lean basis that
+  *Disposition:* done (`9eb2c776`–`60c88e44`): each task read its chapters' unbacked edges under the
+  edge policy (`notes/Prose-graph-cleanup.md` *Scope*) and removed those with no Lean basis that
   neither the statement, the proof prose nor the pins use, 196 in all (17, 34, 39, 27, 15, 33, 10,
-  13 and 8), each with its reason in its task's commit. The rest stay, 84 + 145 at task 4.9: those
+  13 and 8), each with its reason in its task's commit. The rest stay, 84 + 145 at `60c88e44`: those
   through a node, a use by the pins, and those with no Lean basis that the text uses, read as the
   work log's *Decisions* records (a symbol the target defines, a step the proof cites, a pin two
-  nodes share). The example's edges to `def:typeI` and `def:typeII` went at task 4.1: the theorem
+  nodes share). The example's edges to `def:typeI` and `def:typeII` went at `9eb2c776`: the theorem
   states $G - v$ and $G - v + ab$ directly, and its proof names no move.
 - **F-007** · E · `rem:kt-lemma-41` (`molecular-induction.tex`): `lem:base-vfiber-count`,
   `lem:acyclic-insert-vfiber` and `lem:balanced-forest-packing` use this remark, and the graph
@@ -202,7 +204,7 @@ declaration's name as its header writes it:
   `Graph.kt_lemma_41_overquantified`, which `checkdecls` checks and no node shows.
   *Evidence:* measured (`scripts/blueprint-deps.py`'s parse notes, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (task 4.3): the three `\uses` of the remark removed, as an edge to KT Lemma
+  *Disposition:* done (`eaba775e`): the three `\uses` of the remark removed, as an edge to KT Lemma
   4.1's node (`lem:forest-surgery-split`) would close a cycle through `lem:balanced-forest-packing`;
   each of the three proofs cites the remark instead. The remark had drawn 83 nodes `#9CEC8B`, as not
   fully proved; none is now. The example keeps its pin, which `checkdecls` checks.
@@ -212,9 +214,9 @@ declaration's name as its header writes it:
   `BodyHingeFramework.IsInfinitesimallyRigid` without `\leanok`.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; the built graph at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (task 3.4) for `def:induced-span`; left for `def:blockingWitness` and
-  `def:dof-generic` (no declaration defines them; tasks 3.1, 3.3) and `lem:forest-surgery-unsplit`
-  (`F-091`).
+  *Disposition:* done (`8e6786d3`) for `def:induced-span`; left for `def:blockingWitness` and
+  `def:dof-generic` (no declaration defines them; `7b2a8272`, `a7b8ea35`) and
+  `lem:forest-surgery-unsplit` (`F-091`).
 - **F-062** · E · `lem:case-II-placement-new-rows` (`algebraic-induction/genericity-and-count.tex`):
   its statement and proof use `lem:rank-delete-vertex`, which no pin reaches, and its proof cites
   that node for the dimension $D - 1$ of the hinge-row block, which is `def:hinge-row-block`'s
@@ -222,9 +224,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:case-II-placement-new-rows`, at
   `47eb5225`'s Lean); read (the proof's prose).
   *Found:* round 2 task 2.5.
-  *Disposition:* done (task 4.5): both edges to `lem:rank-delete-vertex` removed, as the proof cites
-  `def:hinge-row-block` and `lem:edge-rows-independent` for the dimension $D - 1$, and not that
-  node; the proof now `\uses` `lem:rows-polynomial-in-normals`, which its pins reach and it cites.
+  *Disposition:* done (`1096d2d9`): both edges to `lem:rank-delete-vertex` removed, as the proof
+  cites `def:hinge-row-block` and `lem:edge-rows-independent` for the dimension $D - 1$, and not
+  that node; the proof now `\uses` `lem:rows-polynomial-in-normals`, which its pins reach and it
+  cites.
 - **F-066** · E · `lem:rank-transport-relabel-of-le-finrank` and
   `lem:rank-polynomial-IH-relabel-proj` (`rigidity-matrix.tex`): edges that name the wrong node.
   The first uses `def:genuine-hinge-realization`, which its pin does not reach; its hypothesis is
@@ -235,7 +238,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter rigidity-matrix`, at `af438fd1`); read
   (both pins' statements and bodies).
   *Found:* round 2 task 2.7.
-  *Disposition:* done (task 4.2): both unbacked edges removed; the first's statement takes
+  *Disposition:* done (`3575835c`): both unbacked edges removed; the first's statement takes
   `def:rank-hypothesis` and `def:panel-general-position`, the second's proof
   `lem:rank-polynomial-proj-eval`, `lem:general-position-support-nonzero` and
   `lem:independent-rows-of-rank`.
@@ -255,10 +258,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter deficiency`, at `27daa953`); read
   (the pins' statements and bodies).
   *Found:* round 2 task 2.8.
-  *Disposition:* done (task 4.2): the four unbacked edges removed, `def:matroid-MG`'s proof takes
+  *Disposition:* done (`3575835c`): the four unbacked edges removed, `def:matroid-MG`'s proof takes
   `thm:unionPow-cycle-indep-iff-sparse`, and `lem:cut-edge-decomposition`'s proof
-  `lem:subgraph-minimality`. The move is moot: KT Lemma 3.3's two nodes have preceded KT Lemma
-  3.6's since round 2 (`22317b88`), and none of the four nodes' edges points forward now.
+  `lem:subgraph-minimality`. The move is moot: KT Lemma 3.3's two nodes have preceded KT Lemma 3.6's
+  since round 2 (`22317b88`), and none of the four nodes' edges points forward now.
 - **F-076** · E · `lem:circuit-rigid`, `lem:two-vertex-trichotomy` and `lem:deficiency-ear`
   (`deficiency.tex`): edges the pins do not back, and missing edges into later chapters. The
   statement of `lem:circuit-rigid` uses `def:rigid-subgraph`, which its pin does not reach (the
@@ -272,11 +275,12 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `86b44e1b`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.9.
-  *Disposition:* done (tasks 4.2 and 5.3): `lem:circuit-rigid`'s unbacked edge removed,
+  *Disposition:* done (`3575835c` and `90b68fd1`): `lem:circuit-rigid`'s unbacked edge removed,
   `lem:two-vertex-trichotomy`'s two statement edges left to its proof, and the two missing edges
-  added; both pointed to later chapters (task 5's screen). Task 5.3 cured both:
-  `lem:two-vertex-zero-dof` moved before `lem:two-vertex-trichotomy`, and `def:tight-partition`
-  with `lem:exists-tight-partition` from `jacobs.tex` to follow `def:D-deficiency`.
+  added; both pointed to later chapters (the forward screen, `76c3c4d4`–`b384225a`). `90b68fd1`
+  cured both: `lem:two-vertex-zero-dof` moved before `lem:two-vertex-trichotomy`, and
+  `def:tight-partition` with `lem:exists-tight-partition` from `jacobs.tex` to follow
+  `def:D-deficiency`.
 - **F-078** · E · `thm:def-eq-corank`, `lem:rk-within-parts` and
   `lem:deficiency-zero-iff-tree-packing` (`deficiency.tex`): edges the pins do not back, and one
   missing. The statement of `thm:def-eq-corank` uses `lem:rank-matroidMG-le`, which none of its
@@ -289,7 +293,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `22317b88`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.10.
-  *Disposition:* done (task 4.2): the three unbacked edges removed; `lem:rk-within-parts`'s
+  *Disposition:* done (`3575835c`): the three unbacked edges removed; `lem:rk-within-parts`'s
   statement takes $\tilde G$'s `def:edge-multiply` and `def:body-bar-framework` instead, and
   `lem:deficiency-zero-iff-tree-packing`'s proof `def:k-dof`.
 - **F-082** · E · `def:induced-span`, `def:rigid-contraction` and the contraction lemmas
@@ -305,7 +309,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `1b06def1`); read (the pins'
   statements).
   *Found:* round 2 task 2.11.
-  *Disposition:* done (task 4.3): `def:induced-span` pinned at task 3.4; the edges of
+  *Disposition:* done (`eaba775e`): `def:induced-span` pinned at `8e6786d3`; the edges of
   `lem:contract-rank-bridge` and `lem:contract-minimality-transport` to `def:rigid-contraction`
   removed, with the second's to `lem:subgraph-minimality`; `lem:contraction-minimality`'s statement
   edges to `lem:rigid-full-rank` and `lem:contract-rank-bridge` moved to its proof, and its edge to
@@ -323,13 +327,13 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `01aec968`); read (the pins'
   statements).
   *Found:* round 2 task 2.13.
-  *Disposition:* done (tasks 4.3 and 5.3): `lem:reroute-cycle-lift`'s edge to
+  *Disposition:* done (`eaba775e` and `90b68fd1`): `lem:reroute-cycle-lift`'s edge to
   `lem:reroute-vfree-transport` moved to its proof, which applies the lemma; those of
   `lem:reverse-pendant-insert` and `lem:reverse-reroute-cycle-lift` removed, as their proofs follow
   an argument ("as in the proof of", "we reverse the argument of", `F-175`);
   `lem:forest-surgery-count`'s edge to `lem:balanced-forest-packing` removed, and its proof and
   `lem:edge-splitting`'s now `\uses` `lem:forest-packing-decomp`; `lem:reverse-reroute-cycle-lift`'s
-  proof edge to `lem:splitoff-edge-substitution` added, a forward edge, which task 5.3 cured by
+  proof edge to `lem:splitoff-edge-substitution` added, a forward edge, which `90b68fd1` cured by
   moving that lemma from `case-ii.tex` to follow `def:graph-operations`.
 - **F-093** · E · `lem:splitoff-deficiency` and `lem:removal-deficiency`
   (`molecular-induction.tex`): edges the pins do not back. The statement of
@@ -343,7 +347,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `90051e3c`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.14.
-  *Disposition:* done (task 4.3): the four unbacked edges removed, the last two as their proofs
+  *Disposition:* done (`eaba775e`): the four unbacked edges removed, the last two as their proofs
   follow `lem:splitoff-deficiency`'s argument; the two bounds' statements now `\uses`
   `def:D-deficiency`.
 - **F-095** · E · KT Lemmas 4.3(ii)–4.8's nodes (`molecular-induction.tex`): edges the pins do
@@ -364,7 +368,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `d9b0e96a`); read (the pins'
   statements and bodies; the two citing passages).
   *Found:* round 2 task 2.15.
-  *Disposition:* done (task 4.3): the three statement edges with no Lean basis removed; those of
+  *Disposition:* done (`eaba775e`): the three statement edges with no Lean basis removed; those of
   `lem:splitoff-kdof-criterion` and `lem:removal-deficiency-strict` moved to their proofs;
   `lem:edge-set-indep-pos`'s proof edge to `lem:rigid-full-rank` added, through which
   `lem:reduction-step-pos` reaches it, and `lem:reducible-vertex`'s to
@@ -393,15 +397,15 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `a2df0ed3`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.16.
-  *Disposition:* done (task 4.3): `thm:minimal-kdof-reduction`'s four lemma edges moved to its
+  *Disposition:* done (`eaba775e`): `thm:minimal-kdof-reduction`'s four lemma edges moved to its
   proof, which also takes `lem:rigidContract-isMinimalKDof` and `lem:two-vertex-trichotomy` for part
   (i) and reaches `lem:two-edge-connected-degree` through `lem:reducible-vertex`; both KT Lemma 6.1
   nodes' edges to `thm:minimal-kdof-reduction-all-k` removed, and the second's to
   `lem:genericity-device`, whose argument it follows; that node's proof takes
   `lem:general-position-support-nonzero`, which implies `def:panel-general-position`, and
-  `lem:moment-curve-general-position`, two forward edges (task 5); `lem:adjacent-degree-two-pair`'s
-  two proof edges removed, its other statement edges moved to its proof, which also takes
-  `lem:deficiency-zero-connected`, the node it cites.
+  `lem:moment-curve-general-position`, two forward edges (`76c3c4d4`–`b384225a`);
+  `lem:adjacent-degree-two-pair`'s two proof edges removed, its other statement edges moved to its
+  proof, which also takes `lem:deficiency-zero-connected`, the node it cites.
 - **F-105** · E · KT Lemma 4.6's nodes, `def:chain-data` to `lem:chain-data-extract`
   (`molecular-induction.tex`): edges the pins do not back, and edges they need. The statement
   edges of `def:chain-data` and `def:cycle-data` to `def:graph-operations` have no Lean basis: the
@@ -415,11 +419,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `1d455ed9`); read (the pins'
   statements and bodies).
   *Found:* round 2 task 2.17.
-  *Disposition:* done (task 4.3): the two definitions' edges to `def:graph-operations` removed
+  *Disposition:* done (`eaba775e`): the two definitions' edges to `def:graph-operations` removed
   (`lem:case-III-chain-relabel-rows`, which reached it through `def:chain-data`, takes the edge);
   the statement edges of `lem:chain-cycle-dichotomy` and `lem:chain-data-extract` that their proofs
-  name removed; the dichotomy's proof takes `lem:deficiency-zero-connected`, which implies the
-  other two; `def:edge-multiply` is implied.
+  name removed; the dichotomy's proof takes `lem:deficiency-zero-connected`, which implies the other
+  two; `def:edge-multiply` is implied.
 - **F-109** · E · `meet.tex`'s nodes: edges the pins do not back, and edges they need. The
   statement edge of `def:meet-pairing-dual` to `def:meet-top-equiv` has no Lean basis, nor have
   those of `lem:complement-iso-line-one-dim` to `def:join` and `def:extensor` (its pins are about
@@ -434,11 +438,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, at `d5db0e0c`); read (the
   pins' statements and bodies).
   *Found:* round 2 task 2.18.
-  *Disposition:* done (task 4.3): the six edges with no Lean basis removed, four of them at the
+  *Disposition:* done (`eaba775e`): the six edges with no Lean basis removed, four of them at the
   step lemmas and definitions and the claim's two; `def:meet-complement-iso`'s statement takes
-  `def:join` and `def:extensor`, its body's reach, through which `lem:complement-iso-toDual`
-  reaches them; the claim's proof takes `def:meet-pairing-dual`, whose determinant it cites. The
-  nine realization pins left the claim at task 3.2 (`F-110`).
+  `def:join` and `def:extensor`, its body's reach, through which `lem:complement-iso-toDual` reaches
+  them; the claim's proof takes `def:meet-pairing-dual`, whose determinant it cites. The nine
+  realization pins left the claim at `56fb8b8c` (`F-110`).
 - **F-129** · E · `thm:theorem-55-6` (`algebraic-induction/panel-layer.tex`): its statement and
   proof `\uses` `lem:subgraph-minimality` (a subgraph of a minimal $k$-dof-graph with deficiency
   $k'$ is a minimal $k'$-dof-graph), which the argument does not use. Its step is
@@ -451,10 +455,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label thm:theorem-55-6` and `--label
   lem:minimal-kdof-spanning-subgraph`, at `5c65ea52`); read (the pins' bodies).
   *Found:* round 3 task 2.3.
-  *Disposition:* left (task 4.4): `thm:theorem-55-6`'s edge went at task 3.6, which reversed the
+  *Disposition:* left (`6af43988`): `thm:theorem-55-6`'s edge went at `1d35d435`, which reversed the
   derivation (the proof of `thm:theorem-55-6-genuine` uses `lem:minimal-kdof-spanning-subgraph`);
   `thm:theorem-55-6-multigraph`'s stays, as its pins reach `lem:subgraph-minimality` through
-  `thm:theorem-55`'s, a use the edge policy keeps (task 4.1's reading), and the edge to
+  `thm:theorem-55`'s, a use the edge policy keeps (`9eb2c776`'s reading), and the edge to
   `thm:theorem-55` implies it; its proof already cites `lem:minimal-kdof-spanning-subgraph`.
 - **F-146** · E · `case-ii.tex`'s four nodes (`algebraic-induction/case-ii.tex`): `F-003`'s 15
   missing edges, and the edges the pins do not back. `lem:case-II-realization`'s statement edges to
@@ -472,15 +476,15 @@ declaration's name as its header writes it:
   `def:rank-hypothesis` has none; `lem:splitoff-edge-substitution` misses `def:graph-operations`.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter case-ii`, at `5e9e329c`).
   *Found:* round 3 task 2.9.
-  *Disposition:* done (task 4.5): the 15 missing edges, 11 added and 4 implied by them (two
-  forward, task 5); `lem:case-II-realization`'s statement edges to `lem:reduction-step-pos` and
-  `lem:rank-polynomial-of-le-finrank` removed, as its proof names both, and its proof's edge to
-  `lem:genericity-device`, which the proof names only as the general form of the polynomial
-  lemma's argument; `lem:case-II`'s edges to `def:rank-hypothesis`, `lem:reduction-step-pos` and
-  `lem:exists-independent-panel-extensor` (cited only in the note after it) removed, and its
-  statement edge to `lem:splitoff-edge-substitution`, while its proof, which cites two steps,
-  keeps one; `lem:case-II-rank-lift`'s edge to `def:rank-hypothesis` removed (its $k'$ is any
-  integer, and no realization at a target rank enters).
+  *Disposition:* done (`1096d2d9`): the 15 missing edges, 11 added and 4 implied by them (two
+  forward, `76c3c4d4`–`b384225a`); `lem:case-II-realization`'s statement edges to
+  `lem:reduction-step-pos` and `lem:rank-polynomial-of-le-finrank` removed, as its proof names both,
+  and its proof's edge to `lem:genericity-device`, which the proof names only as the general form of
+  the polynomial lemma's argument; `lem:case-II`'s edges to `def:rank-hypothesis`,
+  `lem:reduction-step-pos` and `lem:exists-independent-panel-extensor` (cited only in the note after
+  it) removed, and its statement edge to `lem:splitoff-edge-substitution`, while its proof, which
+  cites two steps, keeps one; `lem:case-II-rank-lift`'s edge to `def:rank-hypothesis` removed (its
+  $k'$ is any integer, and no realization at a target rank enters).
 - **F-151** · E · `genericity-and-count.tex`'s eleven nodes
   (`algebraic-induction/genericity-and-count.tex`): one missing edge, from the proof of
   `lem:genericity-device` to `lem:trivial-motions-rank-bound` (`finrank_screwAssignment`), and 18
@@ -502,8 +506,8 @@ declaration's name as its header writes it:
   `lem:splitoff-edge-substitution` and `lem:rigidityRows-pinned-placement-rank-add`.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter genericity-and-count`, at `120eca58`).
   *Found:* round 3 task 2.10.
-  *Disposition:* done (task 4.5): the missing edge to `lem:trivial-motions-rank-bound` went when
-  task 3.3 unpinned `finrank_screwAssignment`; the parent's four missing added. Removed: the edges
+  *Disposition:* done (`1096d2d9`): the missing edge to `lem:trivial-motions-rank-bound` went when
+  `a7b8ea35` unpinned `finrank_screwAssignment`; the parent's four missing added. Removed: the edges
   to `def:rank-hypothesis`, the unbacked ones to `lem:rank-delete-vertex` (`F-062`),
   `lem:relative-device-count`'s to `lem:relative-screw-split`, `lem:case-II-placement-old-rows`'s to
   `lem:case-II` and the extraction, and `lem:case-II-realization-placement`'s three. Kept: the edges
@@ -529,7 +533,7 @@ declaration's name as its header writes it:
   (KT eq. (6.22)), and `lem:splitoff-edge-substitution` and `def:hinge-row-block` (Claim 6.11).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `fe05a812`).
   *Found:* round 3 task 2.11.
-  *Disposition:* done (task 4.6): the base's edge to `lem:splitoff-deficiency` and the edges of
+  *Disposition:* done (`e1b16939`): the base's edge to `lem:splitoff-deficiency` and the edges of
   `lem:case-III-claim-6-11-redundant-row` and `lem:case-III-claim-6-11` to
   `lem:case-III-gap3-minimalKDof` removed (the statements assume what those lemmas give, and no
   proof cites them); the missing edges added or implied; `lem:case-III-claim-6-11`'s proof `\uses`
@@ -556,15 +560,15 @@ declaration's name as its header writes it:
   `lem:rigidityRows-pinned-placement-rank-add` (the rank of KT eq. (6.29)).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the nine nodes, at `ba79d703`).
   *Found:* round 3 task 2.12.
-  *Disposition:* done (task 4.6): the missing edges added or implied, and `lem:case-III-seam` and
+  *Disposition:* done (`e1b16939`): the missing edges added or implied, and `lem:case-III-seam` and
   `lem:case-III-transport-collapse` take `lem:rows-polynomial-in-normals` on the statement, whose
   rows they index. Of the 14 edges with no Lean basis, `lem:case-III-columnop`'s moved to its proof,
   which cites the lemma; `lem:case-III-candidate-row-construction`'s kept (its statement takes that
   lemma's forms); those of `lem:case-III-conditional-block` and `lem:case-III-transport-collapse`
   removed; of `lem:case-III-candidate-row`'s nine, the two its statement names and the proof's to
-  `lem:case-III-conditional-block` kept and six removed, the forward edge to
-  `lem:case-III-claim612` (`F-119`) among them. Its proof now `\uses`
-  `lem:rigidityRows-pinned-placement-rank-add`; the other citations are ancestors.
+  `lem:case-III-conditional-block` kept and six removed, the forward edge to `lem:case-III-claim612`
+  (`F-119`) among them. Its proof now `\uses` `lem:rigidityRows-pinned-placement-rank-add`; the
+  other citations are ancestors.
 - **F-162** · E · `case-iii.tex`'s case $d = 3$: the span and the point choice
   (`algebraic-induction/case-iii.tex`, ten nodes): no missing edge, and 13 edges with no Lean
   basis: `lem:case-III-claim612-orthseq-vanish`'s to `lem:case-III-claim612-extensor-span`,
@@ -578,7 +582,7 @@ declaration's name as its header writes it:
   (`lem:case-III-claim612-block-iff-perp`) without an edge.
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `4502f035`).
   *Found:* round 3 task 2.13.
-  *Disposition:* done (task 4.6): 11 of the 13 edges removed, as neither the statements, the
+  *Disposition:* done (`e1b16939`): 11 of the 13 edges removed, as neither the statements, the
   proofs nor the pins use them; `lem:case-III-claim612-points-affineIndep`'s edge to the witness
   moved to its proof, which cites it; `lem:case-III-claim612-r-nonzero`'s to
   `lem:case-III-redundant-decomposition` kept (its statement takes that lemma's forms).
@@ -607,14 +611,14 @@ declaration's name as its header writes it:
   proof, among them `lem:rank-rotation-semicont` and `lem:rows-polynomial-in-normals`.
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the eight nodes, at `9190873a`).
   *Found:* round 3 task 2.14.
-  *Disposition:* done (task 4.6): the missing edges added or implied. Of the edges with no Lean
+  *Disposition:* done (`e1b16939`): the missing edges added or implied. Of the edges with no Lean
   basis, those to `lem:case-II-realization-placement` (the two placements and the dispatch),
-  `lem:case-III-claim612`'s to the real-normals lemma (its statement takes any independent
-  vectors) and the dispatch's to `lem:genericity-device` removed, as no text uses them; three moved
-  to the proofs that cite them (the third framework's to `lem:case-III-claim612-eq644`, that
-  lemma's to `lem:case-III-acolumn-zero`, Claim 6.12's to `lem:case-III-claim612-r-nonzero`); the
-  rest kept, as a statement takes the target's objects or assumes its conclusion, or the dispatch's
-  proof cites the frameworks. Of the citations, the third framework's proof `\uses`
+  `lem:case-III-claim612`'s to the real-normals lemma (its statement takes any independent vectors)
+  and the dispatch's to `lem:genericity-device` removed, as no text uses them; three moved to the
+  proofs that cite them (the third framework's to `lem:case-III-claim612-eq644`, that lemma's to
+  `lem:case-III-acolumn-zero`, Claim 6.12's to `lem:case-III-claim612-r-nonzero`); the rest kept, as
+  a statement takes the target's objects or assumes its conclusion, or the dispatch's proof cites
+  the frameworks. Of the citations, the third framework's proof `\uses`
   `lem:splitOff-rigidityRows-relabel`, which implies the other relabel lemma, and
   `lem:case-III-candidate-row`, which implies the block lemma; Claim 6.12's paragraph after its
   proof, which derives KT's block form, takes none, nor the dispatch's "as in the proof of".
@@ -642,12 +646,12 @@ declaration's name as its header writes it:
   (the dispatch); and `lem:two-edge-conn` (`lem:case-III`).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `c3586784`).
   *Found:* round 3 task 2.15.
-  *Disposition:* done (task 4.6): the missing edges added or implied (`lem:case-III`'s through the
-  chain dispatch); the edges to `lem:genericity-device` (the triangle realization, the dispatch),
-  to `lem:case-II-realization-placement` and to the two relabel lemmas (the dispatch, `F-171`)
-  removed, as no proof cites them. Of the citations, the dispatch's proof `\uses`
-  `lem:case-III-claim612-p2-placement`, which implies `lem:case-III-candidate-row`; those "as in
-  the proof of" another node, of KT Lemma 5.2 for how Katoh and Tanigawa rotate, and of the $d = 3$
+  *Disposition:* done (`e1b16939`): the missing edges added or implied (`lem:case-III`'s through the
+  chain dispatch); the edges to `lem:genericity-device` (the triangle realization, the dispatch), to
+  `lem:case-II-realization-placement` and to the two relabel lemmas (the dispatch, `F-171`) removed,
+  as no proof cites them. Of the citations, the dispatch's proof `\uses`
+  `lem:case-III-claim612-p2-placement`, which implies `lem:case-III-candidate-row`; those "as in the
+  proof of" another node, of KT Lemma 5.2 for how Katoh and Tanigawa rotate, and of the $d = 3$
   lemma or `lem:case-III-claim612-line-in-panel-union` for a comparison take none.
 - **F-175** · E · `bar-joint-3d.tex`'s nine nodes (`bar-joint-3d.tex`): six missing edges and one
   unbacked. Missing: `lem:exists-generic-placement`'s to `def:rigidityRow`,
@@ -663,11 +667,11 @@ declaration's name as its header writes it:
   `lem:genericRigidityMatroid-two-eq-rigidityMatroid` is dead (`F-012`).
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter bar-joint-3d`, at `69bc7afb`).
   *Found:* round 4 task 2.1.
-  *Disposition:* done (task 4.7): the six missing edges added or implied (`def:rigidityRow`
+  *Disposition:* done (`e9d59672`): the six missing edges added or implied (`def:rigidityRow`
   through `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`, and
-  `lem:rigidityMap-rank-at-generic`'s to `lem:rigidityMap-apply` through `def:genericRank`, now
-  that the existence proof `\uses` it); the transitive unbacked edge kept. The planar argument
-  that the existence proof follows takes no edge.
+  `lem:rigidityMap-rank-at-generic`'s to `lem:rigidityMap-apply` through `def:genericRank`, now that
+  the existence proof `\uses` it); the transitive unbacked edge kept. The planar argument that the
+  existence proof follows takes no edge.
 - **F-181** · E · `molecule-modelling.tex`'s first eight nodes, task 2.2's (`molecule-modelling.tex`):
   eight missing edges and three unbacked. Missing: the edges of `def:hinge-concurrent` (proof),
   `def:screw-velocity`, `lem:screw-velocity-line` and `lem:screw-determination` to
@@ -682,7 +686,7 @@ declaration's name as its header writes it:
   (`F-012`).
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-modelling`, at `67d44583`).
   *Found:* round 4 task 2.2.
-  *Disposition:* done (task 4.7): `thm:projective-invariance`'s statement `\uses`
+  *Disposition:* done (`e9d59672`): `thm:projective-invariance`'s statement `\uses`
   `def:trivial-motions-rigid` (which implies `lem:panel-hinge-dual-molecular`'s missing edge) and
   its proof `lem:rank-rotation-semicont` (the rescaling); the others were not missing at the task's
   parent. The three unbacked edges removed: the theorem's to `def:rank-hypothesis` (only the note
@@ -712,13 +716,13 @@ declaration's name as its header writes it:
   `lem:exists-generic-general-position`. No pin of these nodes is dead.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-modelling`, at `db71b408`).
   *Found:* round 4 task 2.3.
-  *Disposition:* done (task 4.7): `lem:exists-generic-general-position`'s proof `\uses`
-  `lem:exists-generic-placement`, implying the other three; the dictionary's proof `\uses` the
-  four nodes it cites without an ancestor (`lem:framework-finrank`, and three in its proof of the
+  *Disposition:* done (`e9d59672`): `lem:exists-generic-general-position`'s proof `\uses`
+  `lem:exists-generic-placement`, implying the other three; the dictionary's proof `\uses` the four
+  nodes it cites without an ancestor (`lem:framework-finrank`, and three in its proof of the
   realizations, `F-183`), which imply its three missing edges and the other citations;
   `thm:panel-hinge-iff-molecular`'s is implied through `thm:projective-invariance`. The unbacked
-  edges kept: the transitive one; the general-position lemma's statement states the condition,
-  and its proof cites KT Theorem 5.6 at $d = 3$ and the device for steps;
+  edges kept: the transitive one; the general-position lemma's statement states the condition, and
+  its proof cites KT Theorem 5.6 at $d = 3$ and the device for steps;
   `def:general-position-placement` takes a placement (`def:framework`).
 - **F-189** · E · `molecule-application.tex`'s five nodes, task 2.4's (`molecule-application.tex`):
   six missing edges and two unbacked. Missing: `lem:square-rank-le-genericRank`'s to
@@ -737,12 +741,12 @@ declaration's name as its header writes it:
   `lem:genericRank-eq-finrank-span`. No pin of these nodes is dead.
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter molecule-application`, at `302cc117`).
   *Found:* round 4 task 2.4.
-  *Disposition:* done (task 4.7): `lem:square-rank-le-genericRank`'s proof `\uses`
+  *Disposition:* done (`e9d59672`): `lem:square-rank-le-genericRank`'s proof `\uses`
   `lem:k-frame-incidence-finrank-rk`, the lower bound's `lem:span-range-rigidityRow` and the upper
   bound's `lem:rigidityMap-rank-at-generic`, which it cites; `lem:framework-finrank` and
-  `lem:rigidityMap-apply` are implied through the dictionary. `lem:molecule-graph-carrier`'s edge
-  to `def:hinge-concurrent` removed (the lemma builds a multigraph); the transitive edge kept. The
-  rank form "as in the proof of" `lem:rigidityMap-rank-at-generic` takes none.
+  `lem:rigidityMap-apply` are implied through the dictionary. `lem:molecule-graph-carrier`'s edge to
+  `def:hinge-concurrent` removed (the lemma builds a multigraph); the transitive edge kept. The rank
+  form "as in the proof of" `lem:rigidityMap-rank-at-generic` takes none.
 - **F-193** · E · `jacobs.tex`'s first ten nodes, task 2.5's (`jacobs.tex`): two missing edges and
   three unbacked. Missing: `lem:tight-partition-parts`'s to `lem:exists-tight-partition`
   (`IsTightPartition`, in its statement) and to `lem:cut-edge-decomposition`
@@ -755,10 +759,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter jacobs`, at `9c97fecc`); read (the
   body of `IsLaman3.mono_left`).
   *Found:* round 4 task 2.5.
-  *Disposition:* done (task 4.7): `lem:tight-partition-parts`'s statement `\uses`
-  `def:tight-partition` (task 3.12's node for `IsTightPartition`; its pin no longer reaches
-  `lem:cut-edge-decomposition`); `lem:isLaman3-mono`'s edge to `lem:edgesIn-mono` removed; the
-  two transitive edges kept.
+  *Disposition:* done (`e9d59672`): `lem:tight-partition-parts`'s statement `\uses`
+  `def:tight-partition` (`ae31af3e`'s node for `IsTightPartition`; its pin no longer reaches
+  `lem:cut-edge-decomposition`); `lem:isLaman3-mono`'s edge to `lem:edgesIn-mono` removed; the two
+  transitive edges kept.
 - **F-196** · E · `jacobs.tex`'s counting bound, task 2.6's eleven nodes (`jacobs.tex`): 18
   missing edges and 14 unbacked. Missing: ten to `lem:molecule-graph-carrier` (every node but
   `def:g-cut-edges`, through `IsSquareTightPartition`, a tight partition of `shadowGraph`); five to
@@ -777,16 +781,16 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter jacobs`, at `bc6573b9`, and the same
   report on task 2.6's tree).
   *Found:* round 4 task 2.6.
-  *Disposition:* done (task 4.7): the statements of `lem:square-cross-classification`,
+  *Disposition:* done (`e9d59672`): the statements of `lem:square-cross-classification`,
   `lem:singleton-part-neighborhood` and `lem:normal-cross-count-local` `\uses`
-  `lem:molecule-graph-carrier`; the producer's statement `def:rooted-cross-edges` (task 3.12's
+  `lem:molecule-graph-carrier`; the producer's statement `def:rooted-cross-edges` (`ae31af3e`'s
   node, which took the edges to `lem:normal-cross-count-rooted`) and its proof
   `lem:singleton-part-neighborhood`; the theorem's proof `lem:edgesIn-corners` and
   `lem:normal-cross-count-rooted`; the rest implied. The converse's edge to
   `lem:singleton-part-neighborhood` and the theorem's to `lem:singleton-part-converse` removed (no
-  text cites them); `lem:normal-cross-count-rooted`'s to `lem:square-cross-classification` kept,
-  as its proof cites it for the part's size (`F-195`), and `def:g-cut-edges`'s to
-  `def:D-deficiency`, as it takes a part of a partition and writes $d_G$ as there.
+  text cites them); `lem:normal-cross-count-rooted`'s to `lem:square-cross-classification` kept, as
+  its proof cites it for the part's size (`F-195`), and `def:g-cut-edges`'s to `def:D-deficiency`,
+  as it takes a part of a partition and writes $d_G$ as there.
 - **F-199** · E · `jacobs.tex`'s easy direction and $0$-extensions, task 2.7's ten nodes
   (`jacobs.tex`): 12 missing edges and none unbacked. Missing: the proof of
   `lem:isLaman3-of-rowIndependent` to `def:rigidityRow`,
@@ -804,11 +808,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `723c460d`); read
   (the bodies of `zero_extension_edgeSetRowIndependent_lift` and `dep_k5`).
   *Found:* round 4 task 2.7.
-  *Disposition:* done (task 4.7): the proofs of `lem:isLaman3-of-rowIndependent`,
+  *Disposition:* done (`e9d59672`): the proofs of `lem:isLaman3-of-rowIndependent`,
   `lem:zero-extension-rowIndependent` and `cor:zero-extension-clique-rank` `\uses` the missing
-  targets, `def:rigidityRow` through `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`;
-  the other two nodes' edges are implied. The arguments followed ("as in the proof of") take
-  none.
+  targets, `def:rigidityRow` through `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`; the
+  other two nodes' edges are implied. The arguments followed ("as in the proof of") take none.
 - **F-201** · E · `jacobs.tex`'s last five nodes, task 2.8's (`jacobs.tex`): one missing edge and
   none unbacked. Missing: the proof of `thm:degree-one-rank-tree` to `lem:square-induce-support`
   (`square_support_subset`, in the base case). Implied through another node: those of
@@ -821,7 +824,7 @@ declaration's name as its header writes it:
   (`fmlnote:degree-one-fixed-carrier`).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `0e8d7546`).
   *Found:* round 4 task 2.8.
-  *Disposition:* done (task 4.7): `thm:degree-one-rank-tree`'s proof `\uses`
+  *Disposition:* done (`e9d59672`): `thm:degree-one-rank-tree`'s proof `\uses`
   `lem:square-induce-support`, and `thm:degree-one-rank`'s `lem:two-core-degree-one`, which it
   cites; "As in the proof of `thm:degree-one-rank-tree`" takes none.
 - **F-208** · E · `generic-lift.tex`'s first eleven nodes, task 2.9's (`generic-lift.tex`): eight
@@ -849,12 +852,12 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter generic-lift`, at `7c268bce`); read
   (the bodies of the twelve pins).
   *Found:* round 4 task 2.9.
-  *Disposition:* done (task 4.7): the abundance proof `\uses` the two lemmas it cites,
+  *Disposition:* done (`e9d59672`): the abundance proof `\uses` the two lemmas it cites,
   `lem:panel-witness-transplant`'s statement `def:generic-normals`, and the molecule corollaries'
-  `lem:framework-finrank` is implied through the dictionary; `lem:generic-normals-abundance`'s
-  proof `\uses` `def:plucker-coords`, cited for the minors. The unbacked edges kept: the
-  transitive one; `def:generic-normals` states a panel-hinge framework, and the nondegeneracy
-  proof cites the moment curve for its two normals. "The argument of" another node takes none.
+  `lem:framework-finrank` is implied through the dictionary; `lem:generic-normals-abundance`'s proof
+  `\uses` `def:plucker-coords`, cited for the minors. The unbacked edges kept: the transitive one;
+  `def:generic-normals` states a panel-hinge framework, and the nondegeneracy proof cites the moment
+  curve for its two normals. "The argument of" another node takes none.
 
 - **F-213** · E · `generic-lift.tex`'s nine body-and-bar nodes, task 2.10's (`generic-lift.tex`):
   one missing edge, three unbacked, three dead pins. Missing: the proof of `lem:endpoint-witness`
@@ -874,7 +877,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the nine nodes, at `c8f1f0f1`);
   read (the bodies of the twelve pins).
   *Found:* round 4 task 2.10.
-  *Disposition:* done (task 4.7): the three unbacked edges removed (the witness takes its vectors
+  *Disposition:* done (`e9d59672`): the three unbacked edges removed (the witness takes its vectors
   "as in" `prop:tay-witness-exists`, the theorem follows "the argument of"
   `lem:tay-isSparse-of-independent`, and the corollary does not cite it); the witness's proof
   `\uses` `lem:k-frame-specialize-li`, and the theorem's `lem:k-frame-pi-finrank` and
@@ -894,8 +897,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `dc58265b`);
   read (the bodies of the seven pins).
   *Found:* round 4 task 2.11.
-  *Disposition:* done (task 4.7): the statement of `lem:hinge-rows-polynomial-in-points` `\uses`
-  `def:screw-space` (task 3.3's node), and its edge to `def:plucker-coords` moved to the proof,
+  *Disposition:* done (`e9d59672`): the statement of `lem:hinge-rows-polynomial-in-points` `\uses`
+  `def:screw-space` (`a7b8ea35`'s node), and its edge to `def:plucker-coords` moved to the proof,
   which cites the minors; the transitive edges to `lem:affine-indep-iff` kept.
 
 - **F-223** · E · `generic-lift.tex`'s seven body-and-hinge nodes, task 2.12's (`generic-lift.tex`):
@@ -914,9 +917,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the seven nodes, at `ac88bd18`);
   read (the bodies of the seven pins).
   *Found:* round 4 task 2.12.
-  *Disposition:* done (task 4.7): `lem:screw-map-rows`'s statement `\uses`
-  `thm:projective-invariance` (its framework $(G, \Lambda p)$), which implies the witness's, and
-  its proof `lem:case-III-claim612-block-iff-perp` (`F-248`); the witness's proof `\uses`
+  *Disposition:* done (`e9d59672`): `lem:screw-map-rows`'s statement `\uses`
+  `thm:projective-invariance` (its framework $(G, \Lambda p)$), which implies the witness's, and its
+  proof `lem:case-III-claim612-block-iff-perp` (`F-248`); the witness's proof `\uses`
   `def:induced-screw-map`, which it cites; the tree-packing statement's edge is implied through
   `def:matroid-MG`. The transitive edges kept; the comparisons and arguments followed take none.
 
@@ -929,20 +932,22 @@ declaration's name as its header writes it:
   `lem:pebble-game-invariants` (5 each), `def:tryReachPebble` and `lem:edgesIn-corners` (4 each).
   *Evidence:* measured (`scripts/blueprint-deps.py` report 3, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (tasks 3.1–3.14): every node has principle D's choice, and the 12 nodes left
-  with four or more pins state one result each, with a pin per clause and a role map. Split, a
+  *Disposition:* done (`7b2a8272`–`0f9c275c`): every node has principle D's choice, and the 12 nodes
+  left with four or more pins state one result each, with a pin per clause and a role map. Split, a
   definition or a claim given a node of its own: `def:rigidity-matrix` and
-  `lem:trivial-motions-rank-bound` (task 3.3), `lem:case-III-claim612-line-in-panel-union` (3.2),
-  `def:cut-edges-2ec` and `lem:cut-edge-decomposition` (3.4), `lem:panel-hinge-dual-molecular`
-  (3.11), `def:two-core` and `lem:normal-cross-count-partition` (3.12), `lem:pencil-x0-one-witness`
-  and `lem:pencil-jj-embed-edges` (3.14). Steps unpinned: `def:tryReachPebble` (3.1),
-  `lem:two-vertex-trichotomy` and `def:graph-operations` (3.4), `lem:cycle-realization-rigid`
-  (3.7), `lem:case-III-claim612-eq644` (3.9), `lem:pencil-bridge-fibre`, `thm:pencil-jj-equality`
-  and `lem:pencil-x0-main-picture-open` (3.13), `lem:pencil-jj-rescale` (3.14). Left, one result
-  with a role map: `def:pebble-counts`, `lem:edgesIn-corners` and `lem:pebble-game-invariants`
-  (3.1), `thm:projective-invariance` and `lem:molecule-graph-carrier` (3.11),
-  `lem:square-cross-classification` (3.12), `thm:pencil-x0-main-component`,
-  `def:pencil-nondegenerate` and `lem:pencil-chain-span-certificates` (3.13).
+  `lem:trivial-motions-rank-bound` (`a7b8ea35`), `lem:case-III-claim612-line-in-panel-union`
+  (`56fb8b8c`), `def:cut-edges-2ec` and `lem:cut-edge-decomposition` (`8e6786d3`),
+  `lem:panel-hinge-dual-molecular` (`dd34a61e`), `def:two-core` and
+  `lem:normal-cross-count-partition` (`ae31af3e`), `lem:pencil-x0-one-witness` and
+  `lem:pencil-jj-embed-edges` (`0f9c275c`). Steps unpinned: `def:tryReachPebble` (`7b2a8272`),
+  `lem:two-vertex-trichotomy` and `def:graph-operations` (`8e6786d3`), `lem:cycle-realization-rigid`
+  (`d851de0f`), `lem:case-III-claim612-eq644` (`24f04215`), `lem:pencil-bridge-fibre`,
+  `thm:pencil-jj-equality` and `lem:pencil-x0-main-picture-open` (`24251386`),
+  `lem:pencil-jj-rescale` (`0f9c275c`). Left, one result with a role map: `def:pebble-counts`,
+  `lem:edgesIn-corners` and `lem:pebble-game-invariants` (`7b2a8272`), `thm:projective-invariance`
+  and `lem:molecule-graph-carrier` (`dd34a61e`), `lem:square-cross-classification` (`ae31af3e`),
+  `thm:pencil-x0-main-component`, `def:pencil-nondegenerate` and
+  `lem:pencil-chain-span-certificates` (`24251386`).
 - **F-010** · N · pinned helpers: a helper pinned on a node with another role draws missing
   in-edges from every node that uses only the helper. Each count is its target's missing
   in-edges through that pin: `lem:pencil-bridge-fibre`'s definition `pathVertex` (30, 5 of them
@@ -953,13 +958,13 @@ declaration's name as its header writes it:
   choice: split, unpin, or a node of its own.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (tasks 3.3, 3.4 and 3.13): `ScrewSpace` has a node of its own,
-  `def:screw-space`, and `finrank_screwAssignment` is unpinned and named in its lemma's proof (task
-  3.3); `endsOf` is unpinned and named in its note (task 3.4); `pathVertex` and its two lemmas are
-  unpinned and named in a note, and `closedNbhd_subset_vertexSet` is unpinned and named in the
-  equality's proof, which drops their 48 missing in-edges (task 3.13). Left for `shadowGraph`, a
-  term of `lem:molecule-graph-carrier`'s one result, with a role map (task 3.11); its in-edges are
-  task 4.7's.
+  *Disposition:* done (`a7b8ea35`, `8e6786d3` and `24251386`): `ScrewSpace` has a node of its own,
+  `def:screw-space`, and `finrank_screwAssignment` is unpinned and named in its lemma's proof
+  (`a7b8ea35`); `endsOf` is unpinned and named in its note (`8e6786d3`); `pathVertex` and its two
+  lemmas are unpinned and named in a note, and `closedNbhd_subset_vertexSet` is unpinned and named
+  in the equality's proof, which drops their 48 missing in-edges (`24251386`). Left for
+  `shadowGraph`, a term of `lem:molecule-graph-carrier`'s one result, with a role map (`dd34a61e`);
+  its in-edges are `e9d59672`'s.
 - **F-011** · N · seven missing edges would close a cycle, so no `\uses` can add them; each needs
   a change of node shape or direction. The termination proofs of `def:runPebbleGame`'s pin
   `runPebbleGame` use the pins of three nodes downstream of it: `lem:runPebbleGame-underline-eq`,
@@ -970,10 +975,10 @@ declaration's name as its header writes it:
   `thm:theorem-55-6-genuine`'s, which the blueprint derives from it.
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* done (tasks 3.1, 3.3 and 3.6): the pebble game's three (task 3.1), the two
-  hinge definitions' and `lem:trivial-motions-rank-bound`'s (task 3.3), and KT Theorem 5.6's, whose
-  derivation now runs from `thm:theorem-55-6-genuine` to `thm:theorem-55-6`, as the Lean's does
-  (task 3.6). No missing edge closes a cycle.
+  *Disposition:* done (`7b2a8272`, `a7b8ea35` and `1d35d435`): the pebble game's three (`7b2a8272`),
+  the two hinge definitions' and `lem:trivial-motions-rank-bound`'s (`a7b8ea35`), and KT Theorem
+  5.6's, whose derivation now runs from `thm:theorem-55-6-genuine` to `thm:theorem-55-6`, as the
+  Lean's does (`1d35d435`). No missing edge closes a cycle.
 - **F-012** · N · liveness (`CLEANUP.md` §B): 202 pins at 153 nodes lie outside the closure of
   every main result, among them every pin of 112 nodes. Per group (pins / nodes with every pin
   outside): round 1 33/27, round 2 48/15, round 3 80/48, round 4 22/13,
@@ -983,9 +988,9 @@ declaration's name as its header writes it:
   diagnosis (delete, wire in, or keep as exposition), not a reflex deletion.
   *Evidence:* measured (`scripts/blueprint-deps.py` report 2, round 1 task 2; at `bca00d3f`).
   *Found:* round 1 task 2.
-  *Disposition:* left (tasks 3.1–3.14 unpinned the dead wrappers and helpers whose claims live
-  pins now carry, so 177 pins at 145 nodes lie outside every main result's closure, every pin of
-  109; deadness alone is no reason to unpin or retire (*Scope*), so the rest takes `CLEANUP.md`
+  *Disposition:* left (`7b2a8272`–`0f9c275c` unpinned the dead wrappers and helpers whose claims
+  live pins now carry, so 177 pins at 145 nodes lie outside every main result's closure, every pin
+  of 109; deadness alone is no reason to unpin or retire (*Scope*), so the rest takes `CLEANUP.md`
   §B's three-way diagnosis in `notes/Prose-report.md`, G6).
 - **F-014** · N · `lem:isSparse-exists-degree-le-three` (`sparsity.tex`): the low-degree step of
   the sparse reverse decomposition, `IsSparse.exists_one_le_degree_le_three` (a vertex of degree
@@ -1000,7 +1005,7 @@ declaration's name as its header writes it:
   `grep` for both lemmas' callers); measured (`scripts/blueprint-deps.py --label`, dead pins, at
   `09106a34`).
   *Found:* round 1 task 5.1.
-  *Disposition:* done (task 3.1).
+  *Disposition:* done (`7b2a8272`).
 
 - **F-016** · N · the degree-three case of `thm:isSparse-exists-typeI-or-typeII-reverse`
   (`rigidity-matroid.tex`): its Lean, `IsSparse.False_of_pairwise_blocker_or_edge`, splits on how
@@ -1016,7 +1021,7 @@ declaration's name as its header writes it:
   `Sparsity.lean`; `notes/Phase5.md` on the "1-deficient intermediate"); measured
   (`scripts/blueprint-deps.py --label thm:isSparse-exists-typeI-or-typeII-reverse`, at `4657a7fc`).
   *Found:* round 1 task 5.2.
-  *Disposition:* done (task 3.1).
+  *Disposition:* done (`7b2a8272`).
 - **F-019** · N · `thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`): the node
   is in §10 of the rendered blueprint, after its first user,
   `thm:isLaman-exists-typeI-or-typeII-reverse` (`henneberg.tex`, §5). Yet its pin `IsSparse.exists_typeI_or_typeII_reverse` is in
@@ -1026,11 +1031,12 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label
   thm:isSparse-exists-typeI-or-typeII-reverse`, at `0a2230a0`); read (the declaration's module).
   *Found:* round 1 task 5.3.
-  *Disposition:* done (task 5.1): the theorem moved to the end of `sparsity.tex`, after the splitting
-  lemma, with its subsection and that subsection's lead-in (`sec:isSparse-reverse-decomposition`, was
-  `sec:rigidity-matroid-sparse-reverse`); its `\uses` all point at `sparsity.tex`, so no forward
-  `\uses` is made. *Reverse decomposition*'s lead-in and `rigidity-matroid.tex`'s opening refer back
-  to it; `fmlnote:reverse-vs-lift-form` stays in `rigidity-matroid.tex`.
+  *Disposition:* done (`76c3c4d4`): the theorem moved to the end of `sparsity.tex`, after the
+  splitting lemma, with its subsection and that subsection's lead-in
+  (`sec:isSparse-reverse-decomposition`, was `sec:rigidity-matroid-sparse-reverse`); its `\uses` all
+  point at `sparsity.tex`, so no forward `\uses` is made. *Reverse decomposition*'s lead-in and
+  `rigidity-matroid.tex`'s opening refer back to it; `fmlnote:reverse-vs-lift-form` stays in
+  `rigidity-matroid.tex`.
 - **F-029** · N · `def:rigidityMatroid` and `thm:rigidityMatroid-indep-iff-rowIndependent`
   (`rigidity-matroid.tex`, §10) use `def:countMatroid` and `thm:countMatroid-indep-iff` of
   `count-matroid.tex`, which is §11. `count-matroid.tex` uses only nodes of `sparsity.tex` and its
@@ -1043,7 +1049,7 @@ declaration's name as its header writes it:
   into forward references instead.
   *Evidence:* read (the `\uses` of both chapters; `main.tex`; `count-matroid.tex`'s opening).
   *Found:* round 1 task 5.10.
-  *Disposition:* left (task 5.1): moving `count-matroid.tex` before `rigidity-matroid.tex` would
+  *Disposition:* left (`76c3c4d4`): moving `count-matroid.tex` before `rigidity-matroid.tex` would
   turn its opening's `\cref`s of `sec:rigidity-matroid-instance` and
   `thm:linearRigidityMatroid-eq-rigidityMatroid` into forward references. The two forward `\uses`
   stay, with the lead-in of *The rigidity matroid as a count matroid*, which names the next section.
@@ -1058,7 +1064,7 @@ declaration's name as its header writes it:
   `640505ce`: `def:runPebbleGameExec` missing from the statement; `def:outListSorted`,
   `def:edgeListSorted`, `lem:mem-outListSorted` and `lem:mem-edgeListSorted` from the proof).
   *Found:* round 1 task 5.15.
-  *Disposition:* done (task 3.1).
+  *Disposition:* done (`7b2a8272`).
 - **F-044** · N · `runPebbleGameWith_witness_bridges` (`Correctness.lean`): a load-bearing lemma
   with no node. If the game on a list of edges of $G$, from an orientation of edges of $G$, returns
   a failure witness, then the witness's pair is an edge of $G$ and its orientation orients only
@@ -1069,7 +1075,7 @@ declaration's name as its header writes it:
   (`scripts/blueprint-deps.py --label thm:pebble-game-correct`, at `640505ce`: every proof chain
   of the pin runs through it).
   *Found:* round 1 task 5.15.
-  *Disposition:* done (task 3.1).
+  *Disposition:* done (`7b2a8272`).
 - **F-050** · N · `rigidity-matrix.tex` and `molecular-induction.tex`: 14 `\uses` edges at 11
   nodes point at nodes of later chapters. In `rigidity-matrix.tex`,
   `lem:trivial-motions-rank-bound` and `lem:relative-deficiency-rank-bound` use `def:D-deficiency`
@@ -1086,12 +1092,12 @@ declaration's name as its header writes it:
   *Evidence:* read (each node's statement and proof `\uses` against `main.tex`'s chapter order, at
   `ac7bd966`; the check is the third screen under `notes/Prose-molecular-cleanup.md` *Scope*).
   *Found:* round 2 task 1.
-  *Disposition:* done (tasks 5.2–5.3): the nodes moved after the nodes they use. Task 5.2 moved
-  `rigidity-matrix.tex`'s two deficiency bounds to `deficiency.tex`, `lem:block-rank-contract` and
-  KT Claim 6.4's three lemmas to `case-i.tex`, and the superseded `lem:rank-polynomial-IH-relabel`
-  to `genericity-and-count.tex`; task 5.3 moved KT Lemma 6.1's two nodes to `panel-layer.tex`,
-  before `thm:theorem-55`. Four edges stay forward, each cited in a sentence:
-  `lem:rigidityRows-pinned-placement-rank-add`'s two (moving it after their targets turns
+  *Disposition:* done (`9a7e56b1`–`90b68fd1`): the nodes moved after the nodes they use. `9a7e56b1`
+  moved `rigidity-matrix.tex`'s two deficiency bounds to `deficiency.tex`, `lem:block-rank-contract`
+  and KT Claim 6.4's three lemmas to `case-i.tex`, and the superseded
+  `lem:rank-polynomial-IH-relabel` to `genericity-and-count.tex`; `90b68fd1` moved KT Lemma 6.1's
+  two nodes to `panel-layer.tex`, before `thm:theorem-55`. Four edges stay forward, each cited in a
+  sentence: `lem:rigidityRows-pinned-placement-rank-add`'s two (moving it after their targets turns
   `lem:case-II-realization`'s edge to it forward), and those of
   `lem:rank-polynomial-IH-relabel-proj` and `lem:case-cut-edge-realization-gp` to
   `genericity-and-count.tex`, now between sections of `algebraic-induction.tex` (`F-119`).
@@ -1106,7 +1112,7 @@ declaration's name as its header writes it:
   supports. A node for the third, or a pin on `thm:matroid-partition-rank`, would index it.
   *Evidence:* read (their statements and bodies; a `grep` for their callers).
   *Found:* round 2 task 2.1.
-  *Disposition:* done (task 3.2).
+  *Disposition:* done (`56fb8b8c`).
 - **F-054** · N · `lem:k-frame-span-le-pi` (`body-bar.tex`): its three pins, `Graph.blockPiSpan`,
   `kFrameRow_mem_blockPiSpan` and `span_kFrameRow_le_blockPiSpan`, state the form for all bars, and
   none has a Lean caller (outside every main result's closure, counted in `F-012`). The rank count
@@ -1120,7 +1126,7 @@ declaration's name as its header writes it:
   three dead pins); read (the body of `forest_count_of_linearIndepOn_kFrameRow`; a `grep` for the
   three names' callers).
   *Found:* round 2 task 2.2.
-  *Disposition:* done (task 3.2).
+  *Disposition:* done (`56fb8b8c`).
 - **F-059** · N · `def:plucker-coords` (`extensor.tex`): its pins `pluckerCoord` and
   `pluckerVector` have no Lean caller outside `Molecular/Extensor.lean`, and no declaration relates
   them to `extensor`: the expansion that makes the Plücker coordinate vector the extensor's
@@ -1193,11 +1199,12 @@ declaration's name as its header writes it:
   second's contraction half and keep it a sentence.
   *Evidence:* read (the four pins' statements; KT 2011 pp. 662, 665–666).
   *Found:* round 2 task 2.15.
-  *Disposition:* done (task 3.5) for `lem:removal-deficiency-strict`, which keeps KT Lemma 4.7,
+  *Disposition:* done (`20d62426`) for `lem:removal-deficiency-strict`, which keeps KT Lemma 4.7,
   the second assertion of KT Lemma 4.4 split off as `lem:removal-deficiency-equality`; left for
   `lem:reduction-step` (its part (ii) states KT Lemma 3.5 at $k = 0$, the narrowing the PI kept at
-  `F-084`, so its second pin proves a clause; dropping the clause is a statement change, and
-  folding it into `lem:contraction-minimality` a merge: task 8.2, with `F-120`'s doubles).
+  `F-084`, so its second pin proves a clause; dropping the clause is a statement change, and folding
+  it into `lem:contraction-minimality` a merge: `a111b17a`, `notes/Prose-report.md` G2, with
+  `F-120`'s doubles).
 - **F-098** · N · `lem:rigidContract-isMinimalKDof` (`case-i.tex`) and
   `lem:pencil-contract-standing` (`main-component.tex`): KT state Lemma 3.5 for the graph $G/E(H)$
   in their §3, where `molecular-induction.tex` now states only the matroid form (`F-084`) and gives
@@ -1215,8 +1222,9 @@ declaration's name as its header writes it:
   statements of `contraction_isMinimalKDof`, `rigidContract_isMinimalKDof` and
   `minimal_kdof_reduction`).
   *Found:* round 2, the PI's review of `F-084` (2026-10-12).
-  *Disposition:* done (task 3.5): the count re-homed with its pin to `lem:reduction-measure`, and
-  the node moved after `lem:contraction-minimality`, its statement edge now `lem:reduction-measure`'s.
+  *Disposition:* done (`20d62426`): the count re-homed with its pin to `lem:reduction-measure`, and
+  the node moved after `lem:contraction-minimality`, its statement edge now
+  `lem:reduction-measure`'s.
 - **F-103** · N · `lem:adjacent-degree-two-pair` and `lem:chain-data-of-noRigid`
   (`molecular-induction.tex`): the $d = 3$ extraction is a dead route. Both pins lie outside every
   main result's closure (counted in `F-012`). The only caller of `exists_adjacent_degree_two_pair`
@@ -1228,7 +1236,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, dead pins, at `a2df0ed3`); read (a
   `grep` for the two names' callers).
   *Found:* round 2 task 2.16.
-  *Disposition:* done (task 3.5): the first node's title marked superseded too.
+  *Disposition:* done (`20d62426`): the first node's title marked superseded too.
 - **F-106** · N · `def:cycle-data` and `lem:chain-cycle-dichotomy` (`molecular-induction.tex`):
   `def:cycle-data`'s third pin `CycleData.vertexSet_ncard` has no Lean caller and lies outside
   every main result's closure; like the second, it is immediate from the definition. The
@@ -1240,7 +1248,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, dead pins, at `1d455ed9`); read (a
   `grep` for the callers of `vertexSet_ncard` and `range_vtx`).
   *Found:* round 2 task 2.17.
-  *Disposition:* done (task 3.5): `lem:cycle-zero-dof`, which the two lemmas' proofs use;
+  *Disposition:* done (`20d62426`): `lem:cycle-zero-dof`, which the two lemmas' proofs use;
   `vertexSet_ncard` unpinned and named in `def:cycle-data`'s note.
 - **F-110** · N · `lem:case-III-claim612-line-in-panel-union` (`meet.tex`; twelve pins, `F-009`):
   the first three pins are the lemma, at $d = 3$. The other nine are a realization of Case III at
@@ -1256,7 +1264,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter meet`, dead pins, at `d5db0e0c`); read
   (the pins' statements and bodies; a `grep` for the general form's callers).
   *Found:* round 2 task 2.18.
-  *Disposition:* done (task 3.2).
+  *Disposition:* done (`56fb8b8c`).
 - **F-111** · N · `meet.tex`'s step nodes. `lem:complement-iso-line-one-dim` and
   `lem:complement-iso-exterior-map-injective` have no Lean caller (`finrank_exteriorPower_two_eq_one`
   is used only by the other pin of the first): the formal proof of
@@ -1290,22 +1298,21 @@ declaration's name as its header writes it:
   *Evidence:* measured (the second screen under `notes/Prose-algebraic-cleanup.md` *Scope*, at
   `ef57b401`).
   *Found:* round 3 task 1.
-  *Disposition:* done (task 5.4): four moves, each curing edges and making none. *Two operations
+  *Disposition:* done (`2ecbd37d`): four moves, each curing edges and making none. *Two operations
   on frameworks* now follows *Panel-hinge frameworks* (the two edges to
-  `lem:motions-mono-of-graph-le`); the base of the induction precedes `thm:theorem-55`, as KT
-  Lemma 5.3 precedes KT Theorem 5.5 (the theorem's two edges to it);
+  `lem:motions-mono-of-graph-le`); the base of the induction precedes `thm:theorem-55`, as KT Lemma
+  5.3 precedes KT Theorem 5.5 (the theorem's two edges to it);
   `lem:panel-support-extensor-independence` moved into *Panel-hinge frameworks*, after the join
   lemma (the edges of `lem:triangle-normals` and `lem:cycle-normals`); and the two subsections of
-  `genericity-and-count.tex` now come between Cases I and II (`lem:case-II-realization`'s two
-  edges into them). 26 edges stay forward: `thm:theorem-55`'s six into Cases I–III and
-  `prop:rigidity-matrix-prop11`'s to it (KT state the theorem before its cases, and the
-  proposition takes its lower bound from it); the base producers' three, to
-  `lem:rows-polynomial-in-normals` (the first step of KT Claim 6.4, in its group in Case I) and to
-  the counting subsection; `lem:case-cut-edge-realization-gp`'s and Case I's 13 into the counting
-  subsection, which uses `lem:case-I`, `def:pinned-motions-on` and
-  `lem:rows-polynomial-in-normals`, so that it can precede its users only by regrouping Case I; and
-  two into Case III's subsections on KT Claim 6.12 and on KT eqs. (6.24)–(6.29), from
-  `lem:case-I-realization-h65` and `lem:case-II-realization`.
+  `genericity-and-count.tex` now come between Cases I and II (`lem:case-II-realization`'s two edges
+  into them). 26 edges stay forward: `thm:theorem-55`'s six into Cases I–III and
+  `prop:rigidity-matrix-prop11`'s to it (KT state the theorem before its cases, and the proposition
+  takes its lower bound from it); the base producers' three, to `lem:rows-polynomial-in-normals`
+  (the first step of KT Claim 6.4, in its group in Case I) and to the counting subsection;
+  `lem:case-cut-edge-realization-gp`'s and Case I's 13 into the counting subsection, which uses
+  `lem:case-I`, `def:pinned-motions-on` and `lem:rows-polynomial-in-normals`, so that it can precede
+  its users only by regrouping Case I; and two into Case III's subsections on KT Claim 6.12 and on
+  KT eqs. (6.24)–(6.29), from `lem:case-I-realization-h65` and `lem:case-II-realization`.
 - **F-120** · N · round 3's doubly pinned declarations (`algebraic-induction/case-iii.tex`): ten
   names in `blueprint/lean_decls` are pinned on two nodes, two of them here.
   `Graph.splitOff_exists_base_inter_fiber_lt` is the first pin of `lem:splitoff-kdof-criterion`
@@ -1320,15 +1327,15 @@ declaration's name as its header writes it:
   *Evidence:* measured (`sort blueprint/lean_decls | uniq -d` and each name's nodes, at
   `ef57b401`); read (a `grep` for the three pins' callers, which finds only docstrings).
   *Found:* round 3 task 1.
-  *Disposition:* left (each doubled pin states a clause of both its nodes, so unpinning either
-  drops a clause, a statement change; folding one node into the other is a merge, not among
-  principle D's fixes: task 8.2). `contraction_isMinimalKDof`: `lem:reduction-step`'s part (ii)
-  states KT Lemma 3.5 at $k = 0$ (task 3.5). The two here: each pair states one claim twice (task
-  3.9). The seven in `pencil.tex` and `main-component.tex` (task 3.13): `pencilPair_of_nonempty`
-  is the claim of `thm:pencil-conditioned-pair-nonempty` and the general claim of
-  `thm:pencil-realization-theorem`, a main result's node; `thm:pencil-x0-main-component`'s four
-  pins and two of `thm:pencil-x0-generic-attains`' three state the claims of the lemmas their
-  proofs cite, which those theorems restate.
+  *Disposition:* left (each doubled pin states a clause of both its nodes, so unpinning either drops
+  a clause, a statement change; folding one node into the other is a merge, not among principle D's
+  fixes: `a111b17a`, `notes/Prose-report.md` G2). `contraction_isMinimalKDof`:
+  `lem:reduction-step`'s part (ii) states KT Lemma 3.5 at $k = 0$ (`20d62426`). The two here: each
+  pair states one claim twice (`24f04215`). The seven in `pencil.tex` and `main-component.tex`
+  (`24251386`): `pencilPair_of_nonempty` is the claim of `thm:pencil-conditioned-pair-nonempty` and
+  the general claim of `thm:pencil-realization-theorem`, a main result's node;
+  `thm:pencil-x0-main-component`'s four pins and two of `thm:pencil-x0-generic-attains`' three state
+  the claims of the lemmas their proofs cite, which those theorems restate.
 - **F-131** · N · `lem:theorem-55-base-producer-empty`, `lem:theorem-55-base-producer-single`,
   `lem:theorem-55-base-producer-parallel`, `lem:extensor-pair-in-panel`
   (`algebraic-induction/panel-layer.tex`): the nodes pin the $d = 3$ (`k := 2`) wrappers
@@ -1349,10 +1356,10 @@ declaration's name as its header writes it:
   unbacked); read (the wrappers' bodies, one-line specializations; a `grep` for their callers,
   which finds only docstrings).
   *Found:* round 3 task 2.4.
-  *Disposition:* done (task 3.6) for the three base cases, repinned on the five `_gen` forms with
+  *Disposition:* done (`1d35d435`) for the three base cases, repinned on the five `_gen` forms with
   their statements kept and a note on what the pins prove beyond them; left for
-  `lem:extensor-pair-in-panel` (it states $K^4$, as its pin does); `lem:case-I-realization-nonsimple`
-  repinned by task 3.7 (`F-143`).
+  `lem:extensor-pair-in-panel` (it states $K^4$, as its pin does);
+  `lem:case-I-realization-nonsimple` repinned by `d851de0f` (`F-143`).
 - **F-134** · N · `lem:cycle-realization-base`, `lem:cycle-realization-dim-bound`,
   `lem:exists-independent-panel-extensor`, `lem:pinned-motions-on-mono`,
   `lem:pinned-motions-on-rank-bound`, `lem:pinned-motions-on-rigid-iff`
@@ -1374,10 +1381,10 @@ declaration's name as its header writes it:
   unbacked edges, and the closure of `formalization.yaml`'s main results over its cache, at
   `8cfa4531`); read (a `grep` for each pin's callers).
   *Found:* round 3 task 2.6.
-  *Disposition:* done (task 3.7) for `lem:cycle-realization-rigid`, which pins `theorem_55_cycle`
-  alone (its three `Fin m` forms unpinned, `F-238`); left for the six dead nodes, kept as
-  exposition (merging the first into `lem:theorem-55-base` is not among principle D's fixes;
-  task 8.2).
+  *Disposition:* done (`d851de0f`) for `lem:cycle-realization-rigid`, which pins `theorem_55_cycle`
+  alone (its three `Fin m` forms unpinned, `F-238`); left for the six dead nodes, kept as exposition
+  (merging the first into `lem:theorem-55-base` is not among principle D's fixes; `a111b17a`,
+  `notes/Prose-report.md` G3 and G4).
 - **F-139** · N · `lem:claim-6-4`, `lem:rows-polynomial-in-normals`, `lem:case-I-splice-seed`,
   `lem:case-I` (`algebraic-induction/case-i.tex`): every pin of the first three, and the second and
   third pins of `lem:case-I`, lie outside every main result's closure. Their callers are dead too:
@@ -1394,11 +1401,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the slice's five nodes and
   `lem:case-I-realization`, at `9a465598`); read (a `grep` for each pin's callers).
   *Found:* round 3 task 2.7.
-  *Disposition:* done (task 3.7) for `lem:rows-polynomial-in-normals`, repinned on its polynomial
+  *Disposition:* done (`d851de0f`) for `lem:rows-polynomial-in-normals`, repinned on its polynomial
   coordinates, their degree bound and the spanning, a pin per clause (`F-137`); left for
-  `lem:claim-6-4` (merging it into `lem:rank-polynomial-IH-relabel-proj` is not a D fix; task
-  8.2) and for the dead pins of `lem:case-I-splice-seed` and `lem:case-I` (deadness alone is no
-  reason to unpin).
+  `lem:claim-6-4` (merging it into `lem:rank-polynomial-IH-relabel-proj` is not a D fix; `a111b17a`,
+  `notes/Prose-report.md` G3 and G4) and for the dead pins of `lem:case-I-splice-seed` and
+  `lem:case-I` (deadness alone is no reason to unpin).
 - **F-143** · N · `lem:case-I-realization-nonsimple`, `lem:case-I-dispatch`
   (`algebraic-induction/case-i.tex`): the pin of the first, `case_I_realization_nonsimple`, lies
   outside every main result's closure and has no caller, so the second's `\uses` edge to it has no
@@ -1415,9 +1422,9 @@ declaration's name as its header writes it:
   `666f05f9`); read (a `grep` for each declaration's callers and for its pins in
   `blueprint/src`).
   *Found:* round 3 task 2.8.
-  *Disposition:* done (task 3.7): `lem:case-I-realization-nonsimple` repinned on
-  `case_I_realization_nonsimple_gen`; `lem:claim-6-6` pins KT Claim 6.6 and its first assertion,
-  and `lem:case-I-all-k` the case split for every $k$, to which `thm:theorem-55`'s edge moved;
+  *Disposition:* done (`d851de0f`): `lem:case-I-realization-nonsimple` repinned on
+  `case_I_realization_nonsimple_gen`; `lem:claim-6-6` pins KT Claim 6.6 and its first assertion, and
+  `lem:case-I-all-k` the case split for every $k$, to which `thm:theorem-55`'s edge moved;
   `lem:case-I-realization`'s note names the coupler of KT Lemma 6.3 (principle C).
 - **F-147** · N · `lem:case-II-rank-lift`, `lem:splitoff-edge-substitution`, `lem:case-II`
   (`algebraic-induction/case-ii.tex`): every pin of the first and third nodes, and the third pin
@@ -1434,11 +1441,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the four nodes, at `5e9e329c`);
   read (a `grep` for each pin's callers and for the three declarations in `blueprint/src`).
   *Found:* round 3 task 2.9.
-  *Disposition:* done (task 3.8) for KT Lemma 6.7: `lem:splitoff-simple` pins
+  *Disposition:* done (`657f3483`) for KT Lemma 6.7: `lem:splitoff-simple` pins
   `isKDof_zero_of_triangle`, `triangle_isProperRigidSubgraph` and
   `splitOff_simple_of_noRigid_of_card` (moved from `lem:chain-data-extract`), and both lemmas use
   it; left for the three dead nodes, kept as exposition (retiring or merging them is not among
-  principle D's fixes; task 8.2).
+  principle D's fixes; `a111b17a`, `notes/Prose-report.md` G4).
 - **F-152** · N · `lem:genericity-device`, `lem:relative-device-count`,
   `lem:realization-of-independent-rows`, `lem:case-II-placement-old-rows`,
   `lem:case-II-realization-placement` (`algebraic-induction/genericity-and-count.tex`): every pin of
@@ -1458,9 +1465,9 @@ declaration's name as its header writes it:
   read (a `grep` for each dead pin's callers).
   *Found:* round 3 task 2.10.
   *Disposition:* left (retiring the dead nodes and joining `lem:genericity-device` to
-  `lem:rank-polynomial-of-le-finrank` are not among principle D's fixes, task 8.2; stating the two
-  lemmas generally is a statement change, `F-239`). The extraction has its own node since task 3.8
-  (`F-209`).
+  `lem:rank-polynomial-of-le-finrank` are not among principle D's fixes, `a111b17a`,
+  `notes/Prose-report.md` G3 and G4; stating the two lemmas generally is a statement change,
+  `F-239`). The extraction has its own node since `657f3483` (`F-209`).
 - **F-157** · N · `lem:case-III-claim-6-11` (`algebraic-induction/case-iii.tex`): the node states
   Claim 6.11 for $G_v^{ab}$ and $G_v = G - v$; its pin
   `exists_redundant_panelRow_ab_of_finrank_eq` holds for any two graphs whose links agree but for
@@ -1476,11 +1483,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of the five declarations, `Molecular/AlgebraicInduction/CaseIII/
   Candidate.lean` and `Realization.lean`; a `grep` for each in `blueprint/src`).
   *Found:* round 3 task 2.11.
-  *Disposition:* done (task 3.9): `lem:case-III-redundant-combination` pins
+  *Disposition:* done (`24f04215`): `lem:case-III-redundant-combination` pins
   `exists_redundant_panelRow_ab_lam_of_rigidOn`, KT eqs. (6.24) and (6.25) at normals where
   $(G_v^{ab}, q)$ is rigid and KT eq. (6.22) holds as a bound; the notes of
   `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-discriminator` say that their $r$
-  comes from it. Its edges to the users are task 4.6's missing edges.
+  comes from it. Its edges to the users are `e1b16939`'s missing edges.
 - **F-159** · N · `case-iii.tex`'s row operations of KT eqs. (6.24)–(6.29)
   (`algebraic-induction/case-iii.tex`): six of the nine nodes have every pin dead
   (`lem:case-III-vanish-off-column`, `lem:case-III-seam`, `lem:case-III-acolumn-zero`,
@@ -1503,13 +1510,14 @@ declaration's name as its header writes it:
   statements and bodies, `Molecular/AlgebraicInduction/CaseIII/Candidate.lean`,
   `Molecular/RigidityMatrix/Basic.lean`; a `grep` for each in `blueprint/src`).
   *Found:* round 3 task 2.12.
-  *Disposition:* done (task 3.9) for the live path: `def:case-III-candidate` pins
+  *Disposition:* done (`24f04215`) for the live path: `def:case-III-candidate` pins
   `caseIIICandidate` (KT's $(G, p_1)$ at $t = 0$), and `lem:case-III-rank-certification` pins
   `case_III_rank_certification` (the rank bound of KT eq. (6.29) in KT's count), placed after
   `lem:case-III-claim612-eq644`, whose pins it reaches; the notes that described the theorem cite
   it. Left: the six dead nodes, kept as KT's exposition (retiring or merging them is not among
-  principle D's fixes, task 8.2; `F-158` is the report's), and `lem:case-III-transport-collapse`,
-  whose three pins state its two claims and the identity, a role map in its note.
+  principle D's fixes, `a111b17a`, `notes/Prose-report.md` G3 and G4; `F-158` is the report's), and
+  `lem:case-III-transport-collapse`, whose three pins state its two claims and the identity, a role
+  map in its note.
 - **F-163** · N · `case-iii.tex`'s case $d = 3$: the span and the point choice
   (`algebraic-induction/case-iii.tex`): six of the ten nodes have every pin dead
   (`lem:case-III-claim612-points-affineIndep-producer`, `lem:case-III-claim612-detpoly`,
@@ -1530,13 +1538,13 @@ declaration's name as its header writes it:
   `PanelHingeFramework.case_III_candidate_dispatch` and `exists_chainData_discriminator_pick_of_LI`,
   `CaseIII/Realization.lean`; a `grep` of `blueprint/src` for the unpinned names).
   *Found:* round 3 task 2.13.
-  *Disposition:* done (task 3.10): `lem:case-III-claim612-points-affineIndep-real-normals` is
+  *Disposition:* done (`258e9e73`): `lem:case-III-claim612-points-affineIndep-real-normals` is
   repinned on `exists_homogeneousIncidence_of_normals_gen`, the form for every $d$ that the chain
   discriminator's pin calls, in place of its dead $d = 3$ wrapper; the statement stays at $d = 3$,
   and its note says that the pin holds for every $d$. Left: the four affine nodes and
   `lem:case-III-claim612-r-nonzero`, kept as KT's exposition (retiring or merging them is not among
-  principle D's fixes, task 8.2; `F-120`'s double is task 3.13's), and `exists_tripleLI_polynomial`,
-  a step of the dead $d = 3$ dispatch's choice of normals.
+  principle D's fixes, `a111b17a`, `notes/Prose-report.md` G4; `F-120`'s double is `24251386`'s),
+  and `exists_tripleLI_polynomial`, a step of the dead $d = 3$ dispatch's choice of normals.
 - **F-167** · N · `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12
   (`algebraic-induction/case-iii.tex`): ten of the thirteen pins of its eight nodes are dead, all
   but `case_III_claim612_gen` and `lem:case-III-claim612-eq644`'s `hingeRow_comp_single_tail` and
@@ -1554,10 +1562,10 @@ declaration's name as its header writes it:
   Lean for the unpinned names and the callers).
   *Found:* round 3 task 2.14.
   *Disposition:* left (the $d = 3$ dispatch is dead by design, as its subsubsection's lead says; its
-  route's nodes came with task 3.9, `lem:case-III-rank-certification` and
-  `lem:case-III-redundant-combination`; the placement and relabel nodes stay as KT's exposition,
-  as retiring or merging them is not among principle D's fixes, task 8.2;
-  `lem:case-III-claim612-eq644`'s bundle was task 3.9's).
+  route's nodes came with `24f04215`, `lem:case-III-rank-certification` and
+  `lem:case-III-redundant-combination`; the placement and relabel nodes stay as KT's exposition, as
+  retiring or merging them is not among principle D's fixes, `a111b17a`, `notes/Prose-report.md` G3
+  and G4; `lem:case-III-claim612-eq644`'s bundle was `24f04215`'s).
 - **F-171** · N · `case-iii.tex`'s general case (`algebraic-induction/case-iii.tex`): the formal
   route of KT Lemma 6.13 below the three live pins has no node. The choice of $q$ off four factors
   (`chainData_split_w6b_gates`, with the $d \times d$ minor `exists_tupleLI_polynomial`), KT's
@@ -1576,17 +1584,18 @@ declaration's name as its header writes it:
   `chainData_dispatch_interior` and `case_III_hsplit_producer_all_k`; a `grep` of
   `blueprint/lean_decls` for the unpinned names).
   *Found:* round 3 task 2.15.
-  *Disposition:* done (task 3.10): before the chain dispatch, a lead-in for KT's $\rho_i$ and
+  *Disposition:* done (`258e9e73`): before the chain dispatch, a lead-in for KT's $\rho_i$ and
   $q_i$, `lem:case-III-chain-relabel-rows` (KT eq. (6.62)) pinning `chainData_bottom_relabel`, and
   `lem:case-III-chain-eq666` (KT eq. (6.66) and its two consequences) pinning
   `interior_hρe₀_of_baseWidening` and `chainData_relabel_arm_hρGv`; the dispatch's proof and note
   cite both, and its (6.66) argument moved to the second. The relabel nodes' general forms
   (`ofNormals_relabel_perm`, `rigidityRow_relabel_perm`) lie outside the dispatch's closure, so they
-  were not repinned. Left: the dispatch's `\uses` of the relabel nodes (unbacked, `F-170`, task
-  4.6); the route's other unpinned steps, which the proofs of the discriminator and the dispatch
-  describe; `lem:triangle-realization`'s dead pin (deadness alone is no reason to unpin); and
-  `lem:case-III`'s dead $d = 3$ pin `case_III_realization`, outside the open's choice for this
-  finding, a candidate for task 8.2's list (tasks 3.6–3.7 unpinned such wrappers).
+  were not repinned. Left: the dispatch's `\uses` of the relabel nodes (unbacked, `F-170`,
+  `e1b16939`); the route's other unpinned steps, which the proofs of the discriminator and the
+  dispatch describe; `lem:triangle-realization`'s dead pin (deadness alone is no reason to unpin);
+  and `lem:case-III`'s dead $d = 3$ pin `case_III_realization`, outside the open's choice for this
+  finding, a candidate for `a111b17a`'s list, `notes/Prose-report.md` G4 (`1d35d435`–`d851de0f`
+  unpinned such wrappers).
 - **F-192** · N · `lem:exists-tight-partition`, `lem:partitionDef-merge` (`jacobs.tex`): each
   lemma pins a definition beside its claim. The first pins `IsTightPartition`, and its statement
   defines "tight" in a closing sentence; the second pins `crossingEdgesWithin`, the count
@@ -1597,10 +1606,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the two definitions, `Molecular/Deficiency.lean`); measured
   (`scripts/blueprint-deps.py --chapter jacobs`, at `9c97fecc`).
   *Found:* round 4 task 2.5.
-  *Disposition:* done (task 3.12): `def:tight-partition` and `def:crossing-edges-within` pin
+  *Disposition:* done (`ae31af3e`): `def:tight-partition` and `def:crossing-edges-within` pin
   `IsTightPartition` and `crossingEdgesWithin`; the existence and merge lemmas `\uses` them, and
   `lem:tight-partition-subfamily`'s statement edge goes to the first (its missing edges, `F-193`,
-  are task 4.7's).
+  are `e9d59672`'s).
 - **F-197** · N · `lem:normal-cross-count-rooted`, `lem:normal-cross-count-partition`,
   `lem:singleton-part-converse` (`jacobs.tex`): the first two pin a definition beside their claims,
   `squareNormalCrossEdgesRootedAt` (whose statement defines "rooted") and `squareCutPairs`, as
@@ -1614,7 +1623,7 @@ declaration's name as its header writes it:
   `IsSquareTightPartition.sum_perPart_le`, `JacobsCounting.lean`); measured
   (`scripts/blueprint-deps.py --chapter jacobs`, at `bc6573b9`).
   *Found:* round 4 task 2.6.
-  *Disposition:* done (task 3.12) for the two definitions: `def:rooted-cross-edges` pins
+  *Disposition:* done (`ae31af3e`) for the two definitions: `def:rooted-cross-edges` pins
   `squareNormalCrossEdgesRootedAt` and `squareSpecialCrossEdgesRootedAt`, and `squareCutPairs`, the
   pairs leaving a part, goes to `def:g-cut-edges`; left for `lem:singleton-part-converse`, whose
   statement is the unique-part form its pin proves, not the rooted form the count uses (deadness
@@ -1631,9 +1640,9 @@ declaration's name as its header writes it:
   `JacobsDegreeOne.lean`); measured (`scripts/blueprint-deps.py --label def:two-core`, at
   `0e8d7546`).
   *Found:* round 4 task 2.8.
-  *Disposition:* done (task 3.12): `def:two-core` pins `twoCore` alone; `lem:two-core-largest`
-  pins its three consequences, with the prose proof after it, and `lem:two-core-degree-one` the
-  three facts, which `thm:degree-one-rank`'s proof cites (the edge is task 4.7's).
+  *Disposition:* done (`ae31af3e`): `def:two-core` pins `twoCore` alone; `lem:two-core-largest` pins
+  its three consequences, with the prose proof after it, and `lem:two-core-degree-one` the three
+  facts, which `thm:degree-one-rank`'s proof cites (the edge is `e9d59672`'s).
 - **F-209** · N · `lem:panel-witness-transplant`, `lem:generic-normals-abundance`
   (`generic-lift.tex`): two load-bearing steps of the panel section have no node. The witness
   lemma's pin extracts its rows with
@@ -1652,10 +1661,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of the two pins; a `grep` for the callers of the extraction and of
   the minor lemma); measured (`scripts/blueprint-deps.py --chapter generic-lift`, at `7c268bce`).
   *Found:* round 4 task 2.9.
-  *Disposition:* done (task 3.8): `lem:independent-rows-of-rank` pins the rank form of the
+  *Disposition:* done (`657f3483`): `lem:independent-rows-of-rank` pins the rank form of the
   extraction, for every body-hinge framework with nondegenerate hinges, and
   `lem:panel-witness-transplant` and `lem:hinge-point-witness` cite it in place of
-  `lem:case-II-placement-old-rows-extract`; task 3.7 repinned `lem:rows-polynomial-in-normals`
+  `lem:case-II-placement-old-rows-extract`; `d851de0f` repinned `lem:rows-polynomial-in-normals`
   (`F-139`).
 
 - **F-214** · N · `def:two-extensor`, `lem:coordinate-extensor-basis`, `lem:extensor-map-rows`
@@ -1670,10 +1679,10 @@ declaration's name as its header writes it:
   `exists_isGenericEndpoints_abundance`); measured (`scripts/blueprint-deps.py --label
   def:two-extensor`, at `c8f1f0f1`).
   *Found:* round 4 task 2.10.
-  *Disposition:* done (task 3.11): `def:two-extensor` pins `twoExtensor` alone (`pairIdxEquiv`
+  *Disposition:* done (`dd34a61e`): `def:two-extensor` pins `twoExtensor` alone (`pairIdxEquiv`
   named in its note, `twoExtensorPoly` unpinned); `lem:two-extensor-polynomial`, before the
-  abundance lemma, pins `twoExtensorPoly_eval`, and the abundance proof cites it; the two lemmas
-  pin their theorems alone (`coordPoint` and `mapPlacement` unpinned).
+  abundance lemma, pins `twoExtensorPoly_eval`, and the abundance proof cites it; the two lemmas pin
+  their theorems alone (`coordPoint` and `mapPlacement` unpinned).
 
 - **F-219** · N · `def:generic-hinge-points`, `lem:hinge-rows-polynomial-in-points`
   (`generic-lift.tex`): pinned helpers. The definition pins the identity
@@ -1686,9 +1695,9 @@ declaration's name as its header writes it:
   `hingePointRow_eq_panelRow`); measured (`scripts/blueprint-deps.py --label
   def:generic-hinge-points`, at `dc58265b`).
   *Found:* round 4 task 2.11.
-  *Disposition:* done (task 3.11) for `lem:hinge-rows-polynomial-in-points`, which pins
+  *Disposition:* done (`dd34a61e`) for `lem:hinge-rows-polynomial-in-points`, which pins
   `hingeExtensorPoly_eval` alone (`hingeExtensorPoly` named in its note); left for
-  `def:generic-hinge-points` (task 3.1's test: unpinning the identity, its one pin that states the
+  `def:generic-hinge-points` (`7b2a8272`'s test: unpinning the identity, its one pin that states the
   framework $(G, q)$, leaves its `\uses` of `def:hinge-constraint` with no Lean basis).
 
 - **F-224** · N · `lem:hinge-point-witness` (`generic-lift.tex`): two load-bearing steps of the
@@ -1706,10 +1715,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the body of `exists_hingePoints_independent_hingePointRow`; a `grep` for the
   callers of the two declarations).
   *Found:* round 4 task 2.12.
-  *Disposition:* done (tasks 3.6 and 3.11): the meet decomposition is
-  `lem:panel-support-extensor-join` (task 3.6), and the screw map is `def:induced-screw-map`,
-  before `thm:projective-invariance` (task 3.11); the witness's proof cites both. Its missing edge
-  to the second, and those of six `pencil.tex` and `main-component.tex` nodes, are task 4's.
+  *Disposition:* done (`1d35d435` and `dd34a61e`): the meet decomposition is
+  `lem:panel-support-extensor-join` (`1d35d435`), and the screw map is `def:induced-screw-map`,
+  before `thm:projective-invariance` (`dd34a61e`); the witness's proof cites both. Its missing edge
+  to the second, and those of six `pencil.tex` and `main-component.tex` nodes, are
+  `9eb2c776`–`60c88e44`'s.
 
 - **F-247** · N · `thm:pencil-x0-bridge` (`main-component.tex`): its pin
   `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`, the rank a path of bridges
@@ -1722,7 +1732,7 @@ declaration's name as its header writes it:
   rigidity-matrix`, at `9eb2c776`); read (the statement of the pin, and the body of
   `le_finrank_span_rigidityRows_path`).
   *Found:* round 5 task 4.2.
-  *Disposition:* left (a pin change; task 8.2 lists it).
+  *Disposition:* left (a pin change; `a111b17a` lists it, `notes/Prose-report.md` G1).
 
 - **F-248** · N · `lem:case-III-claim612-block-iff-perp` (`case-iii.tex`): its second pin
   `mem_hingeRowBlock_iff`, that a form vanishes on the span of a hinge's extensor if and only if it
@@ -1735,7 +1745,7 @@ declaration's name as its header writes it:
   read (the statement of `mem_hingeRowBlock_iff`, `RigidityMatrix/Claim612.lean`; a `grep` for
   its callers).
   *Found:* round 5 task 4.7.
-  *Disposition:* left (a pin change; task 8.2 lists it).
+  *Disposition:* left (a pin change; `a111b17a` lists it, `notes/Prose-report.md` G1).
 - **F-249** · N · `def:pencil-x0-reduces` (`main-component.tex`): its first pin, `Graph.IsOpenEar`,
   defines the open ears that *Ears and cycles* defines in prose, with no node, and that the
   definition's statement takes "as in" that subsection. So every node whose pins take an open ear
@@ -1746,7 +1756,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:pencil-generic-one-ear`, at
   `23bf8244`); read (`Graph.IsOpenEar`, a structure, `Pencil/MainComponent/Coverage.lean`).
   *Found:* round 5 task 4.9.
-  *Disposition:* left (a node and pin change; task 8.2 lists it).
+  *Disposition:* left (a node and pin change; `a111b17a` lists it, `notes/Prose-report.md` G1).
 
 ## T — terminology and notation
 
@@ -1803,8 +1813,8 @@ declaration's name as its header writes it:
   $\operatorname{def}_3$.
   *Evidence:* read (a `grep` for "$n = 2$" and "$n = 3$" over the two chapters, at task 2.8).
   *Found:* round 2 task 2.8.
-  *Disposition:* done (task 6 and its follow-up): KT's $d$ for the dimension on 15 lines of
-  `pencil.tex` and 42 of `main-component.tex`, with $\operatorname{def}_d$ for
+  *Disposition:* done (`04ed99ec` and its follow-up `34f61fd9`): KT's $d$ for the dimension on 15
+  lines of `pencil.tex` and 42 of `main-component.tex`, with $\operatorname{def}_d$ for
   $\operatorname{def}_n$; `fmlnote:pencil-conditioned-pair` says that the formalization calls it
   $n$. Where $d$ would clash, `main-component.tex`'s degree $d$ is reworded (twice), a count $d$ is
   $m$, and $d(P)$ is `def:D-deficiency`'s $d_G(P)$ (the follow-up: its three places in
@@ -1819,12 +1829,12 @@ declaration's name as its header writes it:
   $x_1 \vee \cdots \vee x_{d-1}$ since task 2.2.
   *Evidence:* read (a `grep` for `\wedge` products of vectors over the chapters, at task 2.2).
   *Found:* round 3 task 2.2.
-  *Disposition:* done (task 6): $x_1 \vee \cdots \vee x_{d-1}$ in the proof of
-  `lem:case-cut-edge-realization`, now in `panel-layer.tex` (task 5.3 moved it and dropped the
-  paragraph before it), and $\vee$ for all 128 products on 92 lines of `main-component.tex`,
-  each read as a join of vectors (none is a meet). With them, its $\Lambda^2$ (30 places) is
-  the blueprint's $\bigwedge^2$, which leaves $\Lambda$ to the span of an ear's hinges.
-  `extensor.tex`'s and `rigidity-matrix.tex`'s basis products $e_{i_1} \wedge \cdots$ stay.
+  *Disposition:* done (`04ed99ec`): $x_1 \vee \cdots \vee x_{d-1}$ in the proof of
+  `lem:case-cut-edge-realization`, now in `panel-layer.tex` (`90b68fd1` moved it and dropped the
+  paragraph before it), and $\vee$ for all 128 products on 92 lines of `main-component.tex`, each
+  read as a join of vectors (none is a meet). With them, its $\Lambda^2$ (30 places) is the
+  blueprint's $\bigwedge^2$, which leaves $\Lambda$ to the span of an ear's hinges. `extensor.tex`'s
+  and `rigidity-matrix.tex`'s basis products $e_{i_1} \wedge \cdots$ stay.
 - **F-203** · T · "core" (`jacobs.tex`, `main-component.tex`): the word names two objects.
   `def:two-core` is JJ's $G^{\mathrm{core}}$, the maximal subgraph of minimum degree at least two.
   `main-component.tex` calls the induced subgraph $H = G[W]$ of a contraction step "the core"
@@ -1834,8 +1844,8 @@ declaration's name as its header writes it:
   *Evidence:* read (`sec:jacobs-degree-one`; `main-component.tex`'s notation list and
   `sec:main-component-contract`).
   *Found:* round 4 task 2.8.
-  *Disposition:* done (task 6): `main-component.tex`'s notation list, which defines its core, says
-  that it is not the core of `def:two-core`, which every graph under the standing hypotheses is
+  *Disposition:* done (`04ed99ec`): `main-component.tex`'s notation list, which defines its core,
+  says that it is not the core of `def:two-core`, which every graph under the standing hypotheses is
   (`lem:two-core-degree-one`). The word stays, as the chapter's titles and
   `Graph.IsX0Graph.exists_additiveCore` use it.
 - **F-227** · T · `lem:complement-iso-decomposable-wedge-perp` (`meet.tex`): its two parts are
@@ -1845,7 +1855,7 @@ declaration's name as its header writes it:
   only `\item[…]`. Candidate: an `enumerate` with the proof's "For part 1", or inline "(i)" text.
   *Evidence:* read (the web build's `sec-molecular-meet.html`, one `<ol>`; `print.pdf` p. 139).
   *Found:* round 4 task 2.13.
-  *Disposition:* done (task 6): plain `\item`s, cited as part (1) and part (2) by the
+  *Disposition:* done (`04ed99ec`): plain `\item`s, cited as part (1) and part (2) by the
   subsection's opening, the proof, the formalization note and the proof of
   `lem:case-III-claim612-line-in-panel-union`; `blueprint/SETUP-AND-PITFALLS.md`'s example of the
   pitfall is updated.
@@ -1864,13 +1874,13 @@ declaration's name as its header writes it:
   *Evidence:* read (`formalization.yaml`'s JJ 2009 reference and its `status.main_results` and
   alignment entries named; the chapters named).
   *Found:* round 2, the PI's review of `F-084` (2026-10-12).
-  *Disposition:* done (task 7): (1) the main result's description and its alignment row say that
+  *Disposition:* done (`30c4b950`): (1) the main result's description and its alignment row say that
   `body_hinge_tay` is proved with each hinge replaced by a bundle of bars, and name the form with
   hinges (the declaration is unchanged); `status.scope` and Tay 1989's `location` no longer say
   "panel-hinge". (2) The row gives Nash-Williams and Edmonds the union's rank and Edmonds 1965 the
-  partition criterion, lists the chapter's pins, and says where the family form is proved.
-  (3) JJ 2009's `location` and note, and the row, credit KT eq. (2.4) to KT and to JJ Theorem
-  4.1(a), and JJ Theorem 6.1 as the rank formula.
+  partition criterion, lists the chapter's pins, and says where the family form is proved. (3) JJ
+  2009's `location` and note, and the row, credit KT eq. (2.4) to KT and to JJ Theorem 4.1(a), and
+  JJ Theorem 6.1 as the rank formula.
 - **F-173** · U · `README.md`, `formalization.yaml`: two places contradict the rewritten opening of
   `algebraic-induction.tex`. (1) `README.md`'s molecular-conjecture item calls the algebraic
   induction the realization of KT Theorem 4.9's reduction; it runs on
@@ -1883,7 +1893,7 @@ declaration's name as its header writes it:
   entries named; KT pp. 648, 655 and 671); measured (`scripts/blueprint-deps.py --label
   thm:theorem-55` at `889ebc08`).
   *Found:* round 3 task 2.16.
-  *Disposition:* done (task 7): (1) `README.md` calls Theorem 5.5 an induction over the minimal
+  *Disposition:* done (`30c4b950`): (1) `README.md` calls Theorem 5.5 an induction over the minimal
   $k$-dof-graphs of every deficiency. (2) The main result's description and the alignment row name
   the rank formula KT Proposition 2.3 (JJ 2009 Theorem 6.1), with `rigidityMatrix_prop11` as its
   upper bound.
@@ -1897,10 +1907,10 @@ declaration's name as its header writes it:
   *Evidence:* read (`README.md`'s and the home page's paragraph on phase 32; `formalization.yaml`'s
   literature entry; JJ 2008 §4; Crossref's record for the DOI).
   *Found:* round 4 task 2.8.
-  *Disposition:* done (task 7): (1) both pages call them two results of JJ 2008 on squares of
+  *Disposition:* done (`30c4b950`): (1) both pages call them two results of JJ 2008 on squares of
   graphs: JJ derive Jacobs' conjecture from the rank formula, and the degree-one formula reduces
-  $r(G^2)$ to the core, as `jacobs.tex` says. (2) The DOI is the entry's `id`, checked again
-  against Crossref's record (title, J. Phys. A 31(31), 6653–6668, 1998).
+  $r(G^2)$ to the core, as `jacobs.tex` says. (2) The DOI is the entry's `id`, checked again against
+  Crossref's record (title, J. Phys. A 31(31), 6653–6668, 1998).
 - **F-226** · U · `README.md`, `home_page/index.md`: two places contradict `rigidity-matroid.tex`
   and the rewritten *Organization of the blueprint* in `intro.tex`. (1) `README.md`'s second arc
   ("the planar rigidity matroid as a mathlib `Matroid` (Lovász–Yemini, …)") and the home page's
@@ -1913,10 +1923,10 @@ declaration's name as its header writes it:
   *Evidence:* read (`README.md` line 67; the home page's lines 177 and 191; Jordán 2016 p. 45, in
   `.refs/`).
   *Found:* round 4 task 2.13.
-  *Disposition:* done (task 7): (1) `README.md` credits the characterization to Laman, and the
+  *Disposition:* done (`30c4b950`): (1) `README.md` credits the characterization to Laman, and the
   home page's phase-7 row is *Row independence & count matroid*, after `intro.tex`'s item;
-  `formalization.yaml`'s Lovász–Yemini lines stay with `F-025` (`M`, for the report). (2) The
-  device is dropped from the phase-21 row.
+  `formalization.yaml`'s Lovász–Yemini lines stay with `F-025` (`M`, for the report). (2) The device
+  is dropped from the phase-21 row.
 - **F-229** · U · `README.md`, `home_page/index.md`: two places contradict the rewritten opening
   and *Reading this blueprint* of `intro.tex`. (1) `README.md` (lines 15 and 76) and the home page
   (lines 71–72) call the body-hinge theorem of Tay and Whiteley a "body-hinge / panel-hinge"
@@ -1931,12 +1941,12 @@ declaration's name as its header writes it:
   *Evidence:* read (the lines named; the built graph's 653 green and 4 blue nodes at this task's
   tree; KT p. 671).
   *Found:* round 4 task 2.14.
-  *Disposition:* done (task 7): (1) both pages call it Tay and Whiteley's body-hinge theorem, proved
-  with each hinge replaced by a bundle of bars (`F-099`). (2) They say instead that the main
+  *Disposition:* done (`30c4b950`): (1) both pages call it Tay and Whiteley's body-hinge theorem,
+  proved with each hinge replaced by a bundle of bars (`F-099`). (2) They say instead that the main
   results of every chapter are formalized, as `intro.tex`'s *Reading* does; Theorem 5.5's induction
   has four cases, Case III the one KT call the most difficult (p. 650); its hinges are
-  nondegenerate. The same phrases in `formalization.yaml` follow: "all three cases" in Theorem
-  5.5's description, and "genuine" in the two molecular conjecture descriptions.
+  nondegenerate. The same phrases in `formalization.yaml` follow: "all three cases" in Theorem 5.5's
+  description, and "genuine" in the two molecular conjecture descriptions.
 - **F-231** · U · `formalization.yaml`: the alignment row "Lee-Streinu 2008 pebble-game
   correctness" lists `SimpleGraph.PartialOrientation.runPebbleGame_isAccept_iff` in its `lean:`,
   but no declaration has that name. The theorem is
@@ -1945,7 +1955,7 @@ declaration's name as its header writes it:
   *Evidence:* read (`formalization.yaml` line 598; `PebbleGame/Correctness.lean`, the theorem at
   line 835 inside `namespace CombinatorialRigidity.PebbleGame` and `namespace PartialOrientation`).
   *Found:* round 5, the coordinator, verifying task 3.1.
-  *Disposition:* done (task 7): the row names the theorem; every other declaration that
+  *Disposition:* done (`30c4b950`): the row names the theorem; every other declaration that
   `formalization.yaml` names resolves (`#check` on the built tree).
 
 ## S — statement strength
@@ -2399,7 +2409,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/GenericityDevice.lean`,
   `PanelLayer.lean` and `Pinning.lean`).
   *Found:* round 3 task 2.7.
-  *Disposition:* done (task 3.7): the node is repinned on `annihRowPoly_eval`,
+  *Disposition:* done (`d851de0f`): the node is repinned on `annihRowPoly_eval`,
   `annihRowPoly_totalDegree_le` and `span_annihRow_eq_dualAnnihilator`, which prove its three
   clauses (`F-139`), and `exists_good_realization_ofParam` is unpinned; the statement is unchanged.
 - **F-138** · S · `lem:claim-6-4` (`algebraic-induction/case-i.tex`): the statement takes a simple
@@ -2444,9 +2454,9 @@ declaration's name as its header writes it:
   statement, with a note.
   *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/Theorem55.lean`).
   *Found:* round 3 task 2.8.
-  *Disposition:* done (task 3.7): the node is repinned on `case_I_realization_nonsimple_gen`,
-  which matches the statement's dimension; its note says that the pin, assuming less of the
-  smaller graphs, proves more than the statement (`F-143`).
+  *Disposition:* done (`d851de0f`): the node is repinned on `case_I_realization_nonsimple_gen`,
+  which matches the statement's dimension; its note says that the pin, assuming less of the smaller
+  graphs, proves more than the statement (`F-143`).
 - **F-145** · S · `lem:case-II`, `lem:splitoff-edge-substitution` (`algebraic-induction/case-ii.tex`):
   the second assertion of `lem:case-II` holds vacuously for $d \ge 2$. Its hypothesis, as in its
   pin `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (`hspan`), asks that every

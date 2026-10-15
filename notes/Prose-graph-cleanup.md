@@ -1,23 +1,19 @@
 # PROSE round 5/5 — `prose-graph`, graph repairs and the findings report (work log)
 
-**Status:** in progress (opened 2026-10-13). Round 5 of **PROSE**'s five rounds; their plan and
-the PI's decisions are in `notes/Prose.md`, and `.claude/autopilot/queue.toml` is the authority for
-which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of the ledger
-`notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
-disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
-re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump, tasks 3.1–3.14 (task 3)
-gave every node the ledger names its shape, and tasks 4.1–4.9 (task 4) added the missing edges of
-every chapter, so the graph has none. Task 5, the node order, split by entry, is done: task 5.1
-moved `F-019`'s theorem to the end of `sparsity.tex`, tasks 5.2–5.3 thirteen nodes after the nodes
-they use, so that no edge of `deficiency.tex` or `molecular-induction.tex` points at a later
-chapter, task 5.4 four blocks of the algebraic induction (`F-119`), and task 5.5 left `pencil.tex`'s
-order, which only a regrouping would change. Task 6 aligned the terminology and notation of
-`pencil.tex`, `main-component.tex`, `jacobs.tex` and `meet.tex`, and task 7 `README.md`, the home
-page and `formalization.yaml` with the chapters. Task 8 wrote the findings report,
-`notes/Prose-report.md`, which proposes the follow-up program RECONCILE (unqueued, in ROADMAP), so
-every ledger entry has its disposition. No task edits the Lean or changes a statement's strength.
-**Next concrete task:** task 9, the close (*Hand-off*). Round manual: `CLEANUP.md`.
+**Status:** closed (opened 2026-10-13, closed 2026-10-15). Round 5 of **PROSE**'s five rounds,
+and the last: PROSE is complete. Their plan and the PI's decisions are in `notes/Prose.md`, and
+`.claude/autopilot/queue.toml` is the authority for which rounds are done. The round acted on the
+ledger `notes/Prose-findings.md`'s `E`, `N`, `T` and `U` entries under the expected-diff gate, set
+every entry's disposition, and reported its `S`, `L` and `M` entries to the PI. Task 2 added each
+node's `\uses` to the gate's dump; tasks 3.1–3.14 gave every node the shape the ledger names, with
+35 nodes added; tasks 4.1–4.9 added every missing edge and removed 196 unbacked ones; tasks
+5.1–5.5 moved nodes after the nodes they use; task 6 aligned the notation of `pencil.tex` and
+`main-component.tex`; task 7 aligned `README.md`, the home page and `formalization.yaml`; tasks
+8.1–8.2 wrote the findings report `notes/Prose-report.md`, which proposes the follow-up program
+RECONCILE (unqueued, in ROADMAP). Of the 250 entries, 87 are `done`, 16 `left` and 147 `reported`.
+The Lean is unchanged, and no task changed a statement's strength. All 31 one-commit tasks are
+done. **Next concrete task:** none in this program; the PI queues RECONCILE (*Hand-off*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -28,34 +24,49 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 8.2 has landed** (this commit; docs only, no TeX and no Lean): the report's Part 2, the 76
-`L` entries in twelve items (L1–L12), the 6 `M` in five (M1–M5), the 19 `E` and `N` entries left
-for a merge, a retirement, a pin change or a Lean change in six (G1–G6, with `F-012`'s liveness),
-and a stale example in `blueprint/CLAUDE.md`'s honesty gate with a replacement (§2.6); Part 3, the
-follow-up program RECONCILE, which ROADMAP lists unqueued for the PI. The ledger: `reported` on
-the 82 `L` and `M` entries, and `F-012` `left`, so every entry has a disposition. Nothing is
-mid-stream; the next task is task 9, the close.
+**The round is closed** (task 9, docs only; this commit). Nothing is mid-stream.
+- **Gates at the close** (2026-10-15): whole-project `lake build` green (2 996 jobs, 0 `warning:`,
+  0 `error:`); `git diff --stat 216e0702.. -- CombinatorialRigidity/ lakefile.toml
+  lake-manifest.json lean-toolchain` empty, and so is the program's, from round 1's base
+  `6f4f7afa`; `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines;
+  **`1501 edges 11033da1dbaa0fae`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning`
+  lines and 31 overfull boxes (31 at the open); the dump 3 588 lines, **`2e4cbc2acd13d193`**,
+  byte-identical to task 8.2's, as at tasks 5.1–8.2; `--summary` exits 0, both consistency checks
+  OK.
+- **The axioms check** (`notes/Prose.md` §2): the harness `scratch/prose-graph/t9/Axioms.lean`
+  (gitignored), built from `formalization.yaml`, has round 1's 19 names in order and its 14 imports
+  as a set, the same lines as round 1's `scratch/prose-laman/Axioms.lean`. Run with `lake lean`,
+  every main result gives `[propext, Classical.choice, Quot.sound]`, and the output equals round
+  1's open byte for byte, net of the harness's path (its one warning is its own long line).
+- **The script's report and the forward screen, beside the open's table** (the open's figure in
+  parentheses):
 
-**The gate's baseline, at task 8.2** (2026-10-15; the same as task 4.9's):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 588 lines**, sha256 prefix
-  **`2e4cbc2acd13d193`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
-  regenerate it on this commit), byte-identical to task 4.9's, as at tasks 5.1–8.1. Task 9 keeps
-  it byte-identical.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1501 edges
-  11033da1dbaa0fae`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
-  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 692 nodes,
-  1 009 pins (999 distinct; `lean_decls` 1 010), **0 missing** in every chapter, 2 417 implied,
-  84 + 145 unbacked, 177 dead, 12 nodes with four or more pins. Task 5 moved nodes between the
-  chapter rows (task 5.4: `case-i` 24 nodes, 36 pins, 156 implied; `panel-layer` 39, 55, 203; the
-  `case-ii` row after `genericity-and-count`'s). No node is drawn `#9CEC8B` (`F-007`).
-- **The forward screen at task 5's end**, unchanged at tasks 6–8.2 (*Scope*; task 9 re-runs it
-  beside the open's table):
-  `rigidity-matroid` 2/2 0/0, `rigidity-matrix` 3/2 0/0, `molecular-induction` 0/0 2/2,
-  `panel-layer` 10/4 1/1, `case-i` 14/6 0/0, `case-ii` 1/1 0/0 and `pencil` 3/2 1/1: 33 edges to a
-  later file and 4 within a file, from task 4.9's 58 and 8. Each stays with its sentence and its
-  reason: `F-029`'s two (task 5.1), `rigidity-matrix`'s three (task 5.2), `molecular-induction`'s
-  two (task 5.3), `F-119`'s 26 (task 5.4) and `pencil`'s four (task 5.5).
-  `scratch/prose-graph/t55/screen-after.txt` lists them (`t42/screen.py <tex-root> v`).
+| Group | Nodes | Pins | Missing | Implied | Unbacked (through a node / none) | Dead pins | 4+ pins | Forward `\uses` (later file / same file) |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 155 (153) | 180 (181) | 0 (83) | 356 (293) | 5 / 2 (5 / 19) | 33 (33) | 3 (4) | 2/2 / 0 (3/3 / 0) |
+| 2 | 160 (151) | 255 (272) | 0 (99) | 298 (279) | 12 / 23 (11 / 88) | 35 (48) | 1 (7) | 3/2 / 2/2 (14/11 / 4/4) |
+| 3 | 121 (106) | 164 (152) | 0 (164) | 651 (473) | 27 / 64 (32 / 120) | 68 (80) | 0 (2) | 25/11 / 1/1 (18/10 / 6/4) |
+| 4 | 101 (95) | 152 (152) | 0 (76) | 326 (267) | 22 / 15 (22 / 21) | 22 (22) | 4 (6) | 0 / 0 (0 / 0) |
+| 5 | 155 (152) | 258 (272) | 0 (114) | 786 (710) | 18 / 41 (17 / 62) | 19 (19) | 4 (9) | 3/2 / 1/1 (3/2 / 1/1) |
+| **total** | 692 (657) | 1 009 (1 029) | 0 (536) | 2 417 (2 022) | 84 / 145 (87 / 310) | 177 (202) | 12 (28) | 33/17 / 4/4 (38/26 / 11/9) |
+
+  The 37 forward edges are the ones task 5 left (*Lemma checklist*), each with its sentence and
+  reason. Group 3's edges to a later file grew: task 4 added edges into the algebraic induction's
+  later sections, which task 5.4 could cure only by regrouping (`F-119`).
+  `scratch/prose-graph/t9/` keeps the summary and the screen.
+- **The findings**: all 250 ledger entries have exactly one disposition line, 87 `done`, 16 `left`
+  and 147 `reported`; of the 101 `E`, `N`, `T` and `U` entries (the open's 97, `F-231` and
+  `F-247`–`F-249`), 85 `done` and 16 `left`; the 67 `S` 65 `reported` and 2 `done` (`F-137`,
+  `F-142`); the 76 `L` and 6 `M` `reported`. In 93 dispositions the close wrote each round-5 task
+  as its commit's sha (a range for consecutive tasks); `F-056`'s "round 4's tasks" are round 4's,
+  with their shas. The round's own findings, `F-230`–`F-250`: the 2 `S` under *Candidates for the
+  PI*, the 15 `L` under *Moved to a later round*, `F-231` (`U`) done at task 7, and `F-247`–`F-249`
+  (`N`) `left` for the report's G1; every line here has its entry. The ledger's next ID is `F-251`.
+- **The exposition ledger** (`notes/BlueprintExposition.md`): every pointer to a node the round
+  moved or split checked; tasks 3.5, 3.6, 3.7, 3.14, 5.1 and 5.2 had updated the entries naming
+  them, and the three that name a node which changed chapter give its new one. No entry names one
+  of the 58 declarations the round unpinned. A round note added; result unchanged, 0 pending / 50
+  done / 1 closed as superseded.
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -227,17 +238,19 @@ gate's diff, which each task makes exact before editing.
   dump byte-identical to `34f61fd9`'s, the screen unchanged.
 - [x] **8. R — the findings report** (`notes/Prose.md` §3 *R*), `notes/Prose-report.md`; not a
   stop. 8.1 `f6ddebb5`: Part 1, the 67 `S` entries in eight kinds and 42 items, 65 `reported`
-  (`F-137`, `F-142` stay `done`). 8.2 (this commit; 76 `L` and 6 `M`, recounted): Part 2, twelve
+  (`F-137`, `F-142` stay `done`). 8.2 `a111b17a` (76 `L` and 6 `M`, recounted): Part 2, twelve
   `L` items, five `M` items, the 19 graph findings left (G1–G6, `F-012` given `left`) and §2.6's
   honesty-gate example with a replacement (`lem:case-III`; no agent manual edited); Part 3 and an
   unqueued ROADMAP bullet, RECONCILE; 82 `reported`. No TeX: the dump byte-identical.
-- [ ] **9. X — close** (`CLEANUP.md` *Workflow* 5; docs only; Sonnet allowed). The axioms check
-  on `formalization.yaml`'s main results (`[propext, Classical.choice, Quot.sound]`, byte-identical
-  to round 1's open); the no-Lean-edit check from `216e0702`; every ledger entry has its
-  disposition, task numbers replaced by shas; the script's report and the forward screen re-run
-  beside the open's table; `notes/BlueprintExposition.md`'s pointers to moved or split nodes
-  checked; the queue row `done = true`; the ROADMAP row ✓; ROADMAP's PROSE bullet and
-  `notes/Prose.md`'s **Status**.
+- [x] **9. X — close** (this commit; `CLEANUP.md` *Workflow* 5; docs only). The axioms check on
+  `formalization.yaml`'s main results (`[propext, Classical.choice, Quot.sound]`, byte-identical
+  to round 1's open, net of the harness's path); the no-Lean-edit check from `216e0702` (and from
+  `6f4f7afa`, the program's); every ledger entry has its disposition, round 5's task numbers
+  replaced by shas in 93; the script's report and the forward screen re-run beside the open's
+  table (*Current state*); `notes/BlueprintExposition.md`'s pointers to moved or split nodes
+  checked, with a round note; the queue row `done = true`; the ROADMAP row ✓; ROADMAP's PROSE
+  bullet and `notes/Prose.md`'s **Status** say that PROSE is complete. No TeX: the dump
+  byte-identical to task 8.2's.
 
 ## Candidates for the PI
 
@@ -283,15 +296,13 @@ None.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 9, the close** (docs only; Sonnet allowed; one commit), as its
-checklist line lists: the axioms check of `formalization.yaml`'s main results against round 1's
-open; `git diff --stat 216e0702.. -- CombinatorialRigidity/ lakefile.toml lake-manifest.json
-lean-toolchain` empty; every ledger entry's disposition with its task numbers replaced by shas
-(the ledger's *Format*; `F-247`–`F-249`'s "task 8.2 lists it" names this commit), and none
-missing (task 8.2 left none); the script's report and the forward screen re-run beside the
-open's table; `notes/BlueprintExposition.md`'s pointers to moved or split nodes checked; the
-queue row `done = true` (not RECONCILE's: the PI queues it); the ROADMAP row ✓, ROADMAP's PROSE
-bullet and `notes/Prose.md`'s **Status**. No TeX: the dump stays byte-identical to task 7's.
+**The round and PROSE are closed; there is no next task in this program.** What carried over:
+- **To the PI:** the findings report `notes/Prose-report.md` (Part 1 the 65 `S` entries reported,
+  Part 2 the 76 `L` and 6 `M`, and in G1–G6 the `E` and `N` entries left wholly or in part), and
+  its Part 3, the follow-up program **RECONCILE**, an unqueued ROADMAP bullet (*Queued
+  post-program phases*). The PI queues and places it; this round added no queue row for it.
+- **The autopilot queue:** `prose-graph` is `done = true`; the next row, ORIGAMI, is attended, so
+  the driver stops before it and ORIGAMI opens with the PI (`notes/Origami.md`).
 
 ## Decisions made during this round
 

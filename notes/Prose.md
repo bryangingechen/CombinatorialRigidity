@@ -1,60 +1,27 @@
 # PROSE: the blueprint prose rounds (planning note)
 
-**Status:** planned with the PI on 2026-10-07 and queued ahead of ORIGAMI as five autopilot rows
-(`.claude/autopilot/queue.toml`). Round 1, `prose-laman`, opened 2026-10-07 and closed 2026-10-08
-(`notes/Prose-laman-cleanup.md`, with the ledger `notes/Prose-findings.md`). Round 2,
-`prose-molecular`, opened 2026-10-08 and closed 2026-10-12 (`notes/Prose-molecular-cleanup.md`).
-Round 3, `prose-algebraic`, opened 2026-10-12 and closed 2026-10-13
-(`notes/Prose-algebraic-cleanup.md`). Round 4, `prose-applications`, opened and closed 2026-10-13
-(`notes/Prose-applications-cleanup.md`). Round 5, `prose-graph`, opened 2026-10-13
-(`notes/Prose-graph-cleanup.md`). These are five `CLEANUP.md`
-rounds over every blueprint chapter that round 3 of the post-Phase-40 cleanup (`40-exposition`) did
-not rewrite. Four prose rounds go arc by arc, and a
-fifth repairs the dependency graph and writes the findings report. There is one planned stop, after
-round 1's sample section. The PI answered it on 2026-10-07 (§6; round 1's log, *Autopilot: for the
-PI*), approving the sample, which is now the exemplar `notes/Prose-exemplar.md`. Round 1 wrote the
-dependency-audit script `scripts/blueprint-deps.py` (§5), rewrote its twelve chapters in sixteen
-slices, and recorded `F-001`–`F-047` in the ledger; round 2's open recorded `F-048`–`F-050`, its
-first fifteen slices `F-051`–`F-097`, the PI's review of `F-084` `F-098`–`F-099` (2026-10-12, §1),
-and tasks 2.16–2.18 `F-100`–`F-114`; its eighteen slices and its close are done. Round 3's open
-recorded `F-115`–`F-120`, and its sixteen slices `F-121`–`F-173`; its slices and its close are
-done. Round 4's open recorded `F-174`, its task 2.1, `bar-joint-3d.tex`, `F-175`–`F-177`, and its
-tasks 2.2–2.3, `molecule-modelling.tex`, `F-178`–`F-186`, its task 2.4,
-`molecule-application.tex`, `F-187`–`F-190`, its tasks 2.5–2.8, `jacobs.tex`'s four slices,
-`F-191`–`F-205`, its tasks 2.9–2.12, `generic-lift.tex`'s four slices, `F-206`–`F-225`, and its
-tasks 2.13–2.14, `intro.tex`'s two slices, `F-226`–`F-229`; its slices and its close are done.
-Round 5's open re-ran the script, which still gives round 1's counts, and triaged the ledger's 97
-`E`, `N`, `T` and `U` entries into 31 one-commit tasks (§3 *Round 5*); its task 2 added each node's
-`\uses` to the gate's dump, and its tasks 3.1–3.14 reshaped the nodes of round 1's chapters, of
-`matroid-union.tex` through `meet.tex`, of `rigidity-matrix.tex`, of `deficiency.tex`, of
-`molecular-induction.tex`, into which the graph form of KT Lemma 3.5 moved from `case-i.tex`, of
-`panel-layer.tex`, where KT Theorem 5.6 with nondegenerate hinges now comes first, as in the
-formal proof, of `case-i.tex`, which gained nodes for KT Claim 6.6 and for Case I at every
-deficiency, of `case-ii.tex` and `genericity-and-count.tex`, with new nodes for KT Lemma 6.7, in
-`molecular-induction.tex`, and for the independent rows that a bound on the rank gives, and of
-`case-iii.tex`, with new nodes for KT's framework $(G, p_1)$, for its rank as the formal proof
-bounds it, for the step from KT Claim 6.11 that it uses, and, for every $d$, for KT's renamed
-frameworks and KT eq. (6.66), and of `molecule-modelling.tex`, `molecule-application.tex` and
-`generic-lift.tex`, with new nodes for the screw map of a linear map, for the polarity on joins
-and for the two-extensor's polynomial coordinates, and of `jacobs.tex`, with new nodes for tight
-partitions, for the edges between a family of parts, for the root of a cross edge and for two
-lemmas on the core, and of `main-component.tex`, with new nodes for the lifting system, a
-polynomial section of a kernel and the relabelling of edges, its helpers unpinned and the pins two
-nodes share kept, and its tasks 4.1–4.9 added the missing edges of every chapter, so the graph
-has none. Its task 5.1 moved the sparse reverse decomposition to the end of `sparsity.tex`, before
-its first use, its task 5.2 moved the deficiency bounds of `rigidity-matrix.tex` into
-`deficiency.tex` and its lemmas for Case I into the algebraic induction, and its task 5.3 moved KT
-Lemma 6.1 into the algebraic induction, and the tight partitions, the two-vertex double edge and
-the subgraph shared by removal and splitting off before their first uses, and its task 5.4 moved
-the base of KT Theorem 5.5's induction before the theorem, the operations on frameworks before
-their first users, and the genericity and counting subsections before Case II, and its task 5.5
-left the order of `pencil.tex`, which only a regrouping would change; that closed the node order.
-Its task 6 gave `pencil.tex` and `main-component.tex` the earlier chapters' notation, KT's $d$ for
-the dimension and $\vee$ for the join, and told the contracted core apart from the core of
-`jacobs.tex`. Its task 7 aligned `README.md`, the home page and `formalization.yaml` with the
-rewritten chapters, and its tasks 8.1–8.2 wrote the findings report, `notes/Prose-report.md`,
-whose Part 3 proposes the follow-up program RECONCILE, an unqueued ROADMAP bullet for the PI.
-**Next concrete task:** round 5's task 9, the close (`notes/Prose-graph-cleanup.md` *Hand-off*).
+**Status:** complete (2026-10-15). Planned with the PI on 2026-10-07 and queued ahead of ORIGAMI
+as five autopilot rows (`.claude/autopilot/queue.toml`), all five now done. These were five
+`CLEANUP.md` rounds over every blueprint chapter that round 3 of the post-Phase-40 cleanup
+(`40-exposition`) did not rewrite: four prose rounds, arc by arc, and a fifth that repaired the
+dependency graph and wrote the findings report. Round 1, `prose-laman` (2026-10-07 to 2026-10-08,
+`notes/Prose-laman-cleanup.md`), wrote the dependency-audit script `scripts/blueprint-deps.py`
+(§5), and its sample section became the exemplar `notes/Prose-exemplar.md` at the one planned
+stop, which the PI answered on 2026-10-07 (§6). Round 2, `prose-molecular` (to 2026-10-12,
+`notes/Prose-molecular-cleanup.md`), round 3, `prose-algebraic` (to 2026-10-13,
+`notes/Prose-algebraic-cleanup.md`), and round 4, `prose-applications` (2026-10-13,
+`notes/Prose-applications-cleanup.md`), rewrote their chapters with the graph and pins frozen.
+Rounds 1–4 recorded `F-001`–`F-229` in the ledger `notes/Prose-findings.md`. Round 5,
+`prose-graph` (2026-10-13 to 2026-10-15, `notes/Prose-graph-cleanup.md`), triaged the ledger's
+`E`, `N`, `T` and `U` entries into 31 tasks. It gave bundled claims and definitions nodes of their
+own and unpinned helpers, added every missing `\uses` edge, moved nodes after the nodes they use,
+and aligned the notation of `pencil.tex` and `main-component.tex` and the status surfaces with the
+rewritten chapters. It recorded `F-230`–`F-250`, set every entry's disposition and wrote the
+findings report `notes/Prose-report.md`. The Lean never changed: at round 5's close, `#print
+axioms` on the 19 main results gives round 1's open's output byte for byte, net of the harness's
+path. **Next:** nothing in
+this program. The report's Part 3 proposes the follow-up program RECONCILE, an unqueued ROADMAP
+bullet that the PI queues; the autopilot queue's next row, ORIGAMI, is attended.
 
 ## 1. The PI's decisions
 
