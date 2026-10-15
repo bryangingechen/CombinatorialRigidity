@@ -1283,8 +1283,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   for the root of a cross edge and for two lemmas on the core, and of `main-component.tex`,
   with new nodes for the lifting system, a polynomial section of a kernel and the relabelling of
   edges, its helpers unpinned and the pins two nodes share kept, and its tasks 4.1–4.9 added the
-  missing edges of every chapter, so the graph has none. **Next concrete task:** round 5's task 5,
-  the node order (its hand-off).
+  missing edges of every chapter, so the graph has none. Its task 5.1 moved the sparse reverse
+  decomposition to the end of `sparsity.tex`, before its first use. **Next concrete task:** round
+  5's task 5.2, the node order of `rigidity-matrix.tex` through `molecular-induction.tex` (its
+  hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

@@ -1751,7 +1751,7 @@ ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
       critical `X ⊇ {u,w}` with `v ∉ X`") = `lem:isSparse-typeII-reverse-blocker`
       (`sparsity.tex` §"Splittings and tight sets", full proof); the overshoot
       observation + the assembly =
-      `thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`), whose
+      `thm:isSparse-exists-typeI-or-typeII-reverse` (`sparsity.tex`), whose
       proof gives Jordán 2.1.4(b) in full, split as the Lean is by the number of
       non-adjacent neighbour pairs, with its subsection's lead-in mapping the steps
       to Jordán's lemma numbers (PROSE round 1 task 5.9); and the non-adjacent-pair

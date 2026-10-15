@@ -179,9 +179,13 @@ are invariant under isomorphism. The main result is that two tight
 sets in a sparse graph have a tight union and a tight intersection if
 their intersection is large enough (\cref{thm:isTightOn-union-inter}).
 Two variants enlarge a tight set by counting edges that it does not
-span. The section ends with a counting lemma for reversing the
-Type~II Henneberg move (\cref{def:typeII}), that is, for deleting a
-vertex of degree three and joining two of its neighbours by an edge.
+span. Next comes a counting lemma for reversing the Type~II Henneberg
+move (\cref{def:typeII}), that is, for deleting a vertex of degree
+three and joining two of its neighbours by an edge. The section ends
+with the reverse decomposition of a $(2,3)$-sparse graph with an edge:
+it has a vertex whose deletion leaves a $(2,3)$-sparse graph, after
+such an edge is added if the vertex has degree three
+(\cref{thm:isSparse-exists-typeI-or-typeII-reverse}).
 
 \subsection{Definitions}
 
@@ -613,3 +617,159 @@ does not use the degree of $v$.
   \cref{thm:isLaman-exists-typeI-or-typeII-reverse} build $G - v$ and
   $G - v + xy$ in the same way.
 \end{fmlnote}
+
+\subsection{Sparse-graph reverse decomposition}
+\label{sec:isSparse-reverse-decomposition}
+
+Below is the reverse decomposition of Laman graphs
+(\cref{sec:henneberg-decomp}) in its form for $(2,3)$-sparse graphs,
+where the vertex may also have degree one. The induction of
+\cref{sec:rigidity-matroid-hard-direction} removes the vertex that the
+theorem gives at each step. We write $G - v$ for the graph obtained
+from $G$ by deleting a vertex $v$, and $G - v + ab$ for the graph
+obtained from $G - v$ by adding the edge $ab$, as in
+\cref{lem:isSparse-typeII-reverse-blocker}.
+
+Jord\'an~\cite{jordan2016} finds a vertex of degree one, two or three
+in his proof of Theorem~2.2.1 (p.~45). He proves the cases of degree
+two and three as his Lemma~2.1.4 (p.~44): if $v$ has degree two, then
+$G - v$ is sparse, and if $v$ has degree three, then $v$ has a
+suitable splitting (\cref{sec:isSparse-typeII-reverse-blocker}). His
+proof of the second part uses two facts about critical sets, which are
+our $(2,3)$-tight sets. The first is his Lemma~2.1.2, and the part of
+it that we use is \cref{thm:isTightOn-union-inter} at
+$(k,\ell) = (2,3)$. The second is his Lemma~2.1.3, which says in part
+that if three tight sets meet pairwise in exactly one vertex and have
+no vertex in common, then their union is tight. We prove the case of
+Lemma~2.1.3 that we need within the proof of the theorem.
+
+\begin{theorem}[Sparse-graph reverse decomposition]
+  \label{thm:isSparse-exists-typeI-or-typeII-reverse}
+  \lean{SimpleGraph.IsSparse.exists_typeI_or_typeII_reverse}
+  \leanok
+  \uses{def:isSparse}
+  Let $V$ be finite, and let $G$ be a $(2,3)$-sparse graph on $V$ with
+  at least one edge. Then $G$ has a vertex $v$ for which one of the
+  following holds.
+  \begin{enumerate}
+    \item The vertex $v$ has degree one, with neighbour $a$, and
+      $G - v$ is $(2,3)$-sparse.
+    \item The vertex $v$ has degree two, with neighbours $a$ and $b$,
+      and $G - v$ is $(2,3)$-sparse.
+    \item The vertex $v$ has degree three, with neighbours $a$, $b$ and
+      $c$, where $a$ and $b$ are not adjacent, and $G - v + ab$ is
+      $(2,3)$-sparse.
+  \end{enumerate}
+  Here $G - v$ is the graph on $V \setminus \{v\}$ obtained from $G$
+  by deleting $v$, and $G - v + ab$ is obtained from $G - v$ by adding
+  the edge $ab$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{def:isSparse, thm:isTightOn-union-inter,
+    lem:isSparse-typeII-reverse-blocker,
+    lem:isSparse-exists-nonadj-among-three-neighbors,
+    lem:edgesIn-corners, thm:isTightOn-insert-vertex-with-edges,
+    thm:isTightOn-union-with-bonus}
+  We find $v$ by the argument of
+  \cref{lem:isSparse-exists-degree-le-three}, applied to the vertices
+  of positive degree. Let $U$ be the set of these vertices. Every edge
+  of $G$ has both ends in $U$. So $U$ spans every edge of $G$, and
+  $|U| \ge 2$, since $G$ has an edge. Sparsity at $U$ gives
+  $|E(G)| + 3 \le 2|U|$. If every vertex in $U$ had degree at least
+  four, the handshake identity would give
+  $2|E(G)| = \sum_{u \in U} \deg_G(u) \ge 4|U|$, a contradiction. So
+  some vertex $v$ has degree one, two or three
+  (\texttt{IsSparse.\allowbreak{}exists\_\allowbreak{}one\_\allowbreak{}le\_\allowbreak{}degree\_\allowbreak{}le\_\allowbreak{}three}).
+
+  If $v$ has degree one or two, then a set of vertices of $G - v$
+  spans the same edges in $G - v$ as in $G$, so $G - v$ is
+  $(2,3)$-sparse. For degree two this is Jord\'an's Lemma~2.1.4(a).
+
+  Let $v$ have degree three, with neighbours $a$, $b$ and $c$. We must
+  show that $v$ has a suitable splitting, that is, two neighbours $x$
+  and $y$ that are not adjacent and for which $G - v + xy$ is
+  $(2,3)$-sparse. Suppose that it has none. We use an observation from
+  Jord\'an's proof: no $(2,3)$-tight set $T$ with $v \notin T$ contains
+  all three neighbours of $v$
+  (\texttt{IsSparse.\allowbreak{}no\_\allowbreak{}isTightOn\_\allowbreak{}excluding\_\allowbreak{}three\_\allowbreak{}neighbors}).
+  Otherwise
+  $T \cup \{v\}$ spans the edges inside $T$ and the edges $va$, $vb$
+  and $vc$, so that
+  \[
+    \bigl|\edgesIn{T \cup \{v\}}\bigr|
+    \;\ge\; \bigl|\edgesIn{T}\bigr| + 3
+    \;=\; 2|T| \;=\; 2\,|T \cup \{v\}| - 2,
+  \]
+  against sparsity. We derive a contradiction by constructing such a
+  set $T$.
+
+  If two neighbours of $v$ are not adjacent, the splitting of $v$ on
+  them is not suitable, so some tight set that does not contain $v$
+  contains both of them (\cref{lem:isSparse-typeII-reverse-blocker}).
+  At least one pair of neighbours of $v$ is not adjacent
+  (\cref{lem:isSparse-exists-nonadj-among-three-neighbors}). Jord\'an's
+  proof takes such a tight set for each of the three pairs; for an
+  adjacent pair, the pair itself is such a set. We follow the formal
+  proof instead, which distinguishes how many pairs are not adjacent
+  (\texttt{IsSparse.\allowbreak{}False\_\allowbreak{}of\_\allowbreak{}pairwise\_\allowbreak{}blocker\_\allowbreak{}or\_\allowbreak{}edge}).
+
+  Suppose first that exactly one pair is not adjacent, say $a$ and $b$
+  (\texttt{IsSparse.\allowbreak{}contradiction\_\allowbreak{}one\_\allowbreak{}pair}).
+  Let $S$ be a tight set with $a, b \in S$ and $v \notin S$. If
+  $c \in S$, let $T = S$. Otherwise the edges $ca$ and $cb$ join $c$ to
+  $S$, and $T = S \cup \{c\}$ is tight by
+  \cref{thm:isTightOn-insert-vertex-with-edges} with $k = 2$.
+
+  Suppose next that exactly two pairs are not adjacent, say $a, c$ and
+  $b, c$, so that $ab$ is an edge
+  (\texttt{IsSparse.\allowbreak{}contradiction\_\allowbreak{}two\_\allowbreak{}pair}).
+  Let $S_1$ and $S_2$ be tight sets
+  that do not contain $v$, with $a, c \in S_1$ and $b, c \in S_2$, and
+  let $T = S_1 \cup S_2$. If $|S_1 \cap S_2| \ge 2$, then $T$ is tight
+  by \cref{thm:isTightOn-union-inter}. Otherwise
+  $S_1 \cap S_2 = \{c\}$, so $a \notin S_2$ and $b \notin S_1$. Then
+  the edge $ab$ lies inside $T$ but in neither $\edgesIn{S_1}$ nor
+  $\edgesIn{S_2}$. So \cref{thm:isTightOn-union-with-bonus} applies with
+  $F = \{ab\}$, where its hypothesis reads $0 + 3 \le 2 \cdot 1 + 1$,
+  and $T$ is tight.
+
+  Suppose finally that no two of $a$, $b$ and $c$ are adjacent
+  (\texttt{IsSparse.\allowbreak{}contradiction\_\allowbreak{}three\_\allowbreak{}pair}).
+  Let
+  $S_{ab}$, $S_{ac}$ and $S_{bc}$ be tight sets that do not contain
+  $v$, each containing the two vertices in its index. If two of them
+  meet in at least two vertices, then their union contains $a$, $b$
+  and $c$, and it is tight by \cref{thm:isTightOn-union-inter}; let $T$
+  be this union. Otherwise
+  \[
+    S_{ab} \cap S_{ac} = \{a\}, \qquad
+    S_{ab} \cap S_{bc} = \{b\}, \qquad
+    S_{ac} \cap S_{bc} = \{c\}.
+  \]
+  This is the configuration of Jord\'an's Lemma~2.1.3. We show that
+  $T = S_{ab} \cup S_{ac} \cup S_{bc}$ is tight by applying
+  supermodularity (\cref{lem:edgesIn-ncard-add-le}) twice. The set
+  $S_{ab} \cap S_{ac} = \{a\}$ spans no edge, so
+  \[
+    \bigl|\edgesIn{S_{ab}}\bigr| + \bigl|\edgesIn{S_{ac}}\bigr|
+    \;\le\; \bigl|\edgesIn{S_{ab} \cup S_{ac}}\bigr|.
+  \]
+  The set $(S_{ab} \cup S_{ac}) \cap S_{bc} = \{b, c\}$ spans no edge
+  either, since $b$ and $c$ are not adjacent, so
+  \[
+    \bigl|\edgesIn{S_{ab} \cup S_{ac}}\bigr| + \bigl|\edgesIn{S_{bc}}\bigr|
+    \;\le\; \bigl|\edgesIn{T}\bigr|.
+  \]
+  The three sets are tight, and
+  $|T| = |S_{ab}| + |S_{ac}| + |S_{bc}| - 3$. Hence
+  \[
+    \bigl|\edgesIn{T}\bigr|
+    \;\ge\; (2|S_{ab}| - 3) + (2|S_{ac}| - 3) + (2|S_{bc}| - 3)
+    \;=\; 2|T| - 3,
+  \]
+  and $T$ is tight by \cref{lem:isSparse-isTightOn-of-le}.
+
+  In each case $T$ is a tight set that contains $a$, $b$ and $c$ but
+  not $v$, which is impossible. So $v$ has a suitable splitting.
+\end{proof}

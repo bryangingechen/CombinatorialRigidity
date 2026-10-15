@@ -1019,6 +1019,11 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label
   thm:isSparse-exists-typeI-or-typeII-reverse`, at `0a2230a0`); read (the declaration's module).
   *Found:* round 1 task 5.3.
+  *Disposition:* done (task 5.1): the theorem moved to the end of `sparsity.tex`, after the splitting
+  lemma, with its subsection and that subsection's lead-in (`sec:isSparse-reverse-decomposition`, was
+  `sec:rigidity-matroid-sparse-reverse`); its `\uses` all point at `sparsity.tex`, so no forward
+  `\uses` is made. *Reverse decomposition*'s lead-in and `rigidity-matroid.tex`'s opening refer back
+  to it; `fmlnote:reverse-vs-lift-form` stays in `rigidity-matroid.tex`.
 - **F-029** · N · `def:rigidityMatroid` and `thm:rigidityMatroid-indep-iff-rowIndependent`
   (`rigidity-matroid.tex`, §10) use `def:countMatroid` and `thm:countMatroid-indep-iff` of
   `count-matroid.tex`, which is §11. `count-matroid.tex` uses only nodes of `sparsity.tex` and its
@@ -1031,6 +1036,10 @@ declaration's name as its header writes it:
   into forward references instead.
   *Evidence:* read (the `\uses` of both chapters; `main.tex`; `count-matroid.tex`'s opening).
   *Found:* round 1 task 5.10.
+  *Disposition:* left (task 5.1): moving `count-matroid.tex` before `rigidity-matroid.tex` would
+  turn its opening's `\cref`s of `sec:rigidity-matroid-instance` and
+  `thm:linearRigidityMatroid-eq-rigidityMatroid` into forward references. The two forward `\uses`
+  stay, with the lead-in of *The rigidity matroid as a count matroid*, which names the next section.
 - **F-043** · N · `thm:pebbleGameResult-isAccept-iff` (`pebble-game.tex`): its second pin,
   `runPebbleGameExec_isAccept_iff` (`Exec.lean`), is a statement about `def:runPebbleGameExec` of
   `executable.tex`, the next section, and its proof uses that section's sorted lists. The missing

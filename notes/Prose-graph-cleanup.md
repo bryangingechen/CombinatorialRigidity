@@ -8,8 +8,9 @@ disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
 one-commit tasks; task 2 added each node's `\uses` to the gate's dump, tasks 3.1–3.14 (task 3)
 gave every node the ledger names its shape, and tasks 4.1–4.9 (task 4) added the missing edges of
-every chapter, so the graph has none. No task edits the Lean or changes a statement's strength.
-**Next concrete task:** task 5, the node order (*Hand-off*).
+every chapter, so the graph has none. Task 5, the node order, is split by entry; task 5.1 moved
+`F-019`'s theorem to the end of `sparsity.tex`. No task edits the Lean or changes a statement's
+strength. **Next concrete task:** task 5.2, the node order of `F-050`'s chapters (*Hand-off*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,28 +22,27 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 4.9 has landed** (this commit; the `\uses` of `main-component.tex` from *Open ears with
-two, three or four interior bodies* on, the docs, no Lean), and with it task 4: no chapter has a
-missing edge. It sets `F-005`'s and `F-006`'s dispositions, the last that tasks 4.1–4.9 shared.
-Nothing is mid-stream; the next task is task 5.
+**Task 5.1 has landed** (this commit; the docs, no Lean): `F-019`'s theorem moved to the end of
+`sparsity.tex`, and `F-029` is left. Task 5 is split by entry into 5.1–5.4 (its line). Nothing is
+mid-stream; the next task is task 5.2.
 
-**The gate's baseline, at task 4.9** (2026-10-15):
+**The gate's baseline, at task 5.1** (2026-10-15; the same as task 4.9's):
 - `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 588 lines**, sha256 prefix
   **`2e4cbc2acd13d193`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
-  regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345 and as
-  `predict-dump.sh` gave for the copy. Its diff against task 4.8's (3 576 lines,
-  `80fd0513339af152`) is task 4.9's *Expected*, its 135 lines. Tasks 5–9 keep it byte-identical.
+  regenerate it on this commit), byte-identical to task 4.9's, as `predict-dump.sh` gave for the
+  copy and under `PYTHONHASHSEED` 0, 1 and 12345. Tasks 5.2–9 keep it byte-identical.
 - `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1501 edges
   11033da1dbaa0fae`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 692 nodes,
   1 009 pins (999 distinct; `lean_decls` 1 010), **0 missing** in every chapter, 2 417 implied,
-  84 + 145 unbacked, 177 dead, 12 nodes with four or more pins. Tasks 4.1–4.9's parts: unbacked
-  5 / 2, 4 / 12, 8 / 12, 18 / 27, 1 / 9, 8 / 27, 22 / 15, 5 / 28 and 13 / 13, which sum to the
-  totals. No node is drawn `#9CEC8B` (`F-007`).
-- The forward screen (*Scope*), task 5's input: `henneberg` 1/1 0/0, `rigidity-matroid` 2/2 0/0,
+  84 + 145 unbacked, 177 dead, 12 nodes with four or more pins. Only the chapter rows of a moved
+  node change: task 5.1 moved one node and its 5 implied edges from `rigidity-matroid` to
+  `sparsity`. No node is drawn `#9CEC8B` (`F-007`).
+- The forward screen (*Scope*), task 5's input: `rigidity-matroid` 2/2 0/0 (`F-029`, left),
   `rigidity-matrix` 15/9 0/0, `deficiency` 2/2 0/0, `molecular-induction` 7/4 2/2, `panel-layer`
-  11/5 5/3, `case-i` 14/5 0/0, `case-ii` 3/1 0/0 and `pencil` 3/2 1/1. Tasks 3.2–3.7's commits and
-  4.2–4.6's lines say how it left the open's table; tasks 4.7–4.9 changed no line.
+  11/5 5/3, `case-i` 14/5 0/0, `case-ii` 3/1 0/0 and `pencil` 3/2 1/1; task 5.1 removed
+  `henneberg`'s 1/1. `scratch/prose-graph/t5/screen-after.txt` lists the edges (`t42/screen.py
+  <tex-root> v`).
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -223,42 +223,35 @@ gate's diff, which each task makes exact before editing.
   - [x] **4.8 `pencil`, and `main-component` through *Ears and cycles*** (`23bf8244`; `F-005`'s
     and `F-006`'s parts): 19 added, 7 implied; 13 unbacked removed, 5 left missing added; 1 cited
     step.
-  - [x] **4.9 `main-component` from *Open ears with two, three or four interior bodies*** (this
-    commit; `F-005` and `F-006` done, and task 4 with them; `F-249` new). The parent's report: 28
-    missing and 13 / 21 unbacked, so one commit. Tried on a scratch copy (`t49/edit.py`). *Expected*
-    (exact, before editing the tree; the copy's predicted after-dump): no node or pin changes,
-    `lean_decls` `8cdc1b9723e22064`; `## uses:` 21 lines changed, 20 entries added and 8 removed (S
-    statement, P proof). *Removed* (8 unbacked edges with no Lean basis that neither the statement,
-    the proof prose nor the pins use; reasons in the commit): `lem:pencil-flag-genericity`,
-    `lem:pencil-one-ear-base`, `lem:pencil-splitoff-flexes` and `lem:pencil-splitoff-ear-extension`
-    S `def:pencil-weighted-lifting-system` (each statement is on the lifting system at a picture,
-    `def:pencil-lifting-system`, which two statements' `\cref` and two lead-ins' now name);
-    `lem:pencil-splitoff-flexes` P `lem:pencil-three-points`; `lem:pencil-insertion-two` P
-    `lem:pencil-insertion`; `def:pencil-x0-reduces` S `def:pencil-x0-standing`;
-    `def:pencil-two-ear-graph` S `def:pencil-embed-edges`. *Added* (20 of the parent's 28 missing,
-    the other 8 implied by them): `lem:pencil-insertion` S `lem:pencil-join-flat`;
-    `thm:pencil-x0-open-ear-four` P `lem:pencil-two-stars`; `thm:pencil-x0-open-ear-one` P
-    `lem:pencil-tetrahedron`; `lem:pencil-splitoff-special-rank` P `def:pencil-nondegenerate`;
-    `lem:pencil-splitoff-flexes`, `lem:pencil-splitoff-ear-extension`,
-    `lem:pencil-x0-planes-separate` and `lem:pencil-x0-conjunct-three` S
-    `lem:pencil-flag-genericity`; `lem:pencil-splitoff-ear-extension` P `lem:pencil-ear-fibre`;
-    `lem:deficiency-merge-rigid` P `lem:exists-tight-partition`; `lem:pencil-x0-chain-reduces` P
-    `lem:reduction-measure`; `lem:pencil-x0-sparse-count` P `lem:deficiency-add-body`;
-    `lem:pencil-x0-two-hubs-obstruction` P `lem:two-pencil-extension-iff`;
-    `lem:pencil-generic-steer` P `lem:independent-rows-of-rank`; `lem:pencil-generic-one-ear` and
-    `lem:pencil-rigid-good-ear` S `def:pencil-x0-reduces`; `lem:pencil-generic-one-ear` P
-    `lem:pencil-tetrahedron`; `lem:pencil-generic-pendant-triangle` P
-    `lem:case-II-placement-old-rows-extract`, `lem:isInfRigidOn-of-relative-count` and
-    `lem:pencil-tetrahedron`. The removals leave no edge missing. Drawn edges 1 489 -> 1 501
-    (`11033da1dbaa0fae`), 12 gone and 24 drawn, no fill changed; 3 588 lines, the diff 135 lines.
-    Missing 28 -> 0, in the whole blueprint; unbacked 84 + 153 -> 84 + 145.
+  - [x] **4.9 `main-component` from *Open ears with two, three or four interior bodies***
+    (`60c88e44`; `F-005` and `F-006` done, and task 4 with them; `F-249` new): 20 added, 8 implied;
+    8 unbacked removed.
 - [ ] **5. N — node order** (`F-019`, `F-029`, `F-050`, `F-119`; the forward screen re-run after
   task 4; `F-071`'s move was round 2's, task 4.2). Move a node where the move cures a forward
   `\uses` without creating one: within a chapter (principle E, *Node order*), or across chapters or
   sections where the ledger names the move (`F-019`'s theorem to the end of `sparsity.tex`;
   `F-050`'s and `F-119`'s groups). A reference that stays forward keeps its sentence
   (left). `F-029`: leave (the swap would make `count-matroid.tex`'s opening refer forward).
-  *Expected:* the dump byte-identical.
+  *Expected* (each sub-task): the dump byte-identical. The parent's screen (*Current state*: 58
+  edges to a later file, 8 to a later node of the same file) splits it by entry, one commit each:
+  - [x] **5.1 `F-019`, `F-029`** (this commit; round 1's chapters; `F-019` done, `F-029` left).
+    *Expected* (exact, before editing the tree; tried on a scratch copy, `t5/edit.py`): no node,
+    `\uses` or pin changes, `lean_decls` `8cdc1b9723e22064`, the dump byte-identical to task
+    4.9's; the screen loses `henneberg`'s 1/1 and is otherwise unchanged. All held.
+    `thm:isSparse-exists-typeI-or-typeII-reverse`, its subsection's lead-in and its proof move to
+    the end of `sparsity.tex`, after the splitting lemma (its `\uses` are all `sparsity.tex`'s), as
+    *Sparse-graph reverse decomposition* (`sec:isSparse-reverse-decomposition`, renamed from
+    `sec:rigidity-matroid-sparse-reverse`). `fmlnote:reverse-vs-lift-form` stays before *Lifting
+    row-independence through Henneberg moves* and names the theorem; `sparsity.tex`'s opening names
+    it; `rigidity-matroid.tex`'s opening and *Reverse decomposition*'s lead-in point back to it.
+  - [ ] **5.2 `F-050`**: `rigidity-matrix.tex` (15/9) and `molecular-induction.tex` (7/4 to later
+    chapters, 2/2 within), with `deficiency.tex`'s 2/2 (`F-076`'s, which point at `F-050`). Size it
+    on pickup, and split it if the moves do not fit one commit.
+  - [ ] **5.3 `F-119`**: `algebraic-induction.tex`'s sections: `panel-layer` (11/5, 5/3 within),
+    `case-i` (14/5) and `case-ii` (3/1). Size it on pickup, as 5.2.
+  - [ ] **5.4 `pencil.tex`**: its edge within the file (`lem:pencil-cut-case` ->
+    `def:pencil-distinct-motive`); its three into `main-component.tex` stay, as no entry names a
+    move. Then the screen beside *Current state*'s.
 - [ ] **6. T — terminology and notation** (`F-056`, `F-067`, `F-072`, `F-073`, `F-127`, `F-203`,
   `F-227`). `F-056`, `F-067`, `F-072`: done by rounds 2–4 (checked at the open: no $n(n+1)/2$
   outside `body-bar.tex`'s gloss, `prop:rigidity-matrix-prop11` titled KT Proposition 2.3, no
@@ -340,25 +333,28 @@ None.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 5, the node order** (`F-019`, `F-029`, `F-050`, `F-119`; Opus, a fresh
-agent). Its *Expected* is the checklist line's: the dump byte-identical to task 4.9's (3 588 lines,
-`2e4cbc2acd13d193`; *Current state*), regenerated on the parent after `verify.sh` if the scratch
-copy is gone. First re-run the forward screen (*Scope*; `t42/screen.py <tex-root> v` lists each
-forward edge) and compare it with *Current state*'s lines, then read the four entries and size the
-task: `F-019` is one move (`thm:isSparse-exists-typeI-or-typeII-reverse` to the end of
-`sparsity.tex`), `F-050` (`rigidity-matrix.tex`, `molecular-induction.tex`) and `F-119`
-(`algebraic-induction.tex`'s sections) are groups, and `F-029` is left. If the moves do not fit
-one commit, split task 5 by entry (5.1, 5.2, ...) in its line before editing. For each forward
-edge, move a node only where the move cures it without creating another (principle E, *Node
-order*, `blueprint/AUTHORING.md`); a reference that stays forward keeps its sentence, and its
-entry is `left` with the reason. A moved node takes its `\label`, pins, `\uses` and proof with it;
-its lead-in, or a neighbour's, may need a sentence (*Scope*: the prose a repair needs). Try the
-moves on a scratch copy, screen it, and compare its `predict-dump.sh` output with the parent's
-dump before editing the tree. The commit sets the entries' dispositions. Then task 6.
+**Next concrete task: task 5.2, the node order of `F-050`'s chapters** (Opus, a fresh agent):
+`rigidity-matrix.tex` (15 forward edges at 9 nodes), `molecular-induction.tex` (7 at 4 to later
+chapters, 2 at 2 within) and `deficiency.tex` (2 at 2, `F-076`'s). Its *Expected* is the checklist
+line's: the dump byte-identical to task 5.1's (3 588 lines, `2e4cbc2acd13d193`; *Current state*),
+regenerated on the parent after `verify.sh` if the scratch copy is gone. First re-run the screen
+(`t42/screen.py <tex-root> v`; task 5.1's is `t5/screen-after.txt`) and read `F-050` and `F-076`.
+`F-050` names the cross-chapter moves: the `rigidity-matrix.tex` nodes after the nodes they use, or
+`def:D-deficiency` before its users. A move cures an edge only if the moved node's own `\uses` all
+point back from its new place and none of its users comes before that place; a reference that
+stays forward keeps its sentence, and its entry is `left` with the reason. Size the task before
+editing: if the moves do not fit one commit, split 5.2 in its line. A moved node takes its
+`\label`, pins, `\uses` and proof, and its lead-in where the lead-in serves only it; rename a
+section label that names the old chapter, and `grep` every moved label over `blueprint/src/`,
+`notes/BlueprintExposition.md` and `DESIGN.md`. Try the moves on a scratch copy (`t5/edit.py` is
+task 5.1's), screen it, and compare its `predict-dump.sh` output with the parent's dump. Check
+`print.log`'s overfull count (31): task 5.1's first lead-in overflowed the line of a run-in
+subsection heading. The commit sets the entries' dispositions. Then tasks 5.3 and 5.4, then 6.
 
 ## Decisions made during this round
 
 - **The slicing** (the open): 31 tasks; the order is the tooling, N, E, the node order, T, U, R, X.
+  Task 5 is split by entry into 5.1–5.4 (task 5.1), as task 4 was by chapter group.
 - **The `## uses:` section** (task 2): every labelled environment with a `\uses`, parts sorted.
 - **The report's home** is `notes/Prose-report.md`; the ledger keeps each finding.
 - **Try each change on a scratch copy, and predict the whole dump** (tasks 3.1–3.2). Edit a copy
@@ -403,3 +399,7 @@ dump before editing the tree. The commit sets the entries' dispositions. Then ta
   An unbacked statement edge that only the proof cites for a step moves to the proof; one that the
   proof already names is removed, not moved (`F-105`); backed statement edges that only the proof
   uses, which the ledger does not list, stay.
+- **A node's move across chapters** (task 5.1). The node takes its subsection and lead-in where
+  they serve only it, and a section label naming the old chapter is renamed; a formalization note
+  about its users stays with them, and the old place's opening points back to it. The dump has no
+  positions, so a move leaves it byte-identical; `--summary`'s chapter rows move with the node.
