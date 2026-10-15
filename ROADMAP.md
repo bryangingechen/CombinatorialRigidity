@@ -1024,6 +1024,9 @@ the capstone: every generic hinge-point realization is rigid iff
 `(D-1)·G` packs `D` edge-disjoint spanning trees, over any infinite
 field (JJ Thm 6.1 / Cor 6.3 in every-generic form,
 `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`).
+As stated, P's and BH's theorems say nothing about a graph that is
+itself a minimal `k`-dof-graph, and apply to every graph with more than
+`D(|V|-1)` edges (`F-207`; the refactor is `RECONCILE-FORMAL`'s).
 Headline axioms verified at close. This closed the PROSPECT queue.
 
 ### Phase 35 — Multigraph molecular conjecture in the hinge-coplanar model (COPLANAR, post-program)
@@ -1271,8 +1274,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `RECONCILE-FORMAL`: the link condition becomes a field of `PanelHingeFramework` (S2), the
   generic body-hinge and panel theorems stop being vacuous at minimal graphs (S1), the generic
   body-hinge theorem's multigraph form, and the claims no declaration states. Round 1,
-  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 2,
-  S1's scope on the status surfaces.
+  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 3,
+  S2's scope (KT Theorem 5.6 and the molecular conjecture) on the status surfaces.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

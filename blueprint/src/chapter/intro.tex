@@ -241,7 +241,15 @@ theorem, at generic endpoints of the bars; and, for a simple graph, the
 rank formula of KT Proposition~2.3, at generic normals of the panels and
 at generic points spanning the hinges. The last gives the theorem of Tay
 and Whiteley for frameworks with hinges, which phase~16 proves for
-bundles of bars.
+bundles of bars. As formalized, both forms of the rank formula assume
+that every edge label is an edge of the graph, and also the supply of
+unused labels of \cref{rem:fresh-edge-supply}. The two assumptions
+contradict each other when the graph is itself a minimal
+$k$-dof-graph, such as a single edge, a tree or a minimal
+$0$-dof-graph, so these theorems say nothing about such a graph. They
+apply to every graph with more than $D(|V| - 1)$ edges, where
+$D = \binom{d+1}{2}$, for instance to $K_7$ at $d = 2$. Which graphs
+in between they cover is not settled.
 
 A fourth continuation (phase~35) proves KT Theorem~5.6 and the molecular
 conjecture for multigraphs, as Katoh and Tanigawa state them

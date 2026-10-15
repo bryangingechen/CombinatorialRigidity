@@ -5,8 +5,9 @@ the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot
 the authority for which rounds are done. Docs and blueprint prose only: the scopes of S1 and S2 on
 the status surfaces, M1's "for simple graphs", M2's and M5's credits read against the two PDFs,
 §2.6's stale example in an agent manual, and the non-vacuity rule. No node, edge or pin changes,
-and no Lean edit. Nine one-commit tasks; task 1, the open, is done. **Next concrete task:** task
-2, S1's scope on the status surfaces (Opus, a fresh agent). Round manual: `CLEANUP.md`.
+and no Lean edit. Nine one-commit tasks; tasks 1 (the open) and 2 (S1's scope) are done. **Next
+concrete task:** task 3, S2's scope on the status surfaces (Opus, a fresh agent). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -16,7 +17,13 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 1, the open, is done** (this commit; docs only). Next: task 2 (*Hand-off*).
+**Tasks 1–2 are done**; task 2, S1's scope, is this commit (docs and one `intro.tex` paragraph).
+Next: task 3 (*Hand-off*). Task 2's gates gave the open's values: `lint.sh` green; `verify.sh`
+green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges 11033da1dbaa0fae`,
+`8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical) and `--summary` the
+same bytes; `print.log` rebuilt, 0 `LaTeX Warning` lines; the regenerated harness `cmp`-identical;
+the no-Lean-edit diff empty. The witness `scratch/reconcile-texts/S1Witness.lean` is clean under
+`lake lean`.
 
 **Verified at the open** (2026-10-15, at `f39e35e6`, whose Lean and blueprint are round 5's close
 tree, `62175c74`):
@@ -98,21 +105,10 @@ From `notes/Reconcile.md` §1–§3, restated as far as a builder needs them.
 One commit per task, in this order; each line gets its commit's sha. A task's line names the ledger
 IDs and report items it acts on, its rung and its surfaces (lines as at the open).
 
-- [x] **1. Open** (this commit; docs only): this log, the baselines, the task list, `F-251`.
-- [ ] **2. S1 — the generic body-hinge theorem's scope** (`F-207`, in part; report S1; Opus). Read
-  the signatures of
-  `BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`
-  (`GenericLift/HingeGeneric.lean:1005`) and of the panel form its row names,
-  `PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`
-  (`GenericLift/PanelGeneric.lean:484`), both taking `hfresh` and `hends`, and
-  `rem:fresh-edge-supply` (`panel-layer.tex:1087`). Then say, beside each statement, what it covers
-  today: its hypotheses hold at no graph that is itself a minimal $k$-dof-graph (a single edge, a
-  tree, every minimal $0$-dof-graph), they hold when $|E(G)| > D(|V| - 1)$ (the report's reading of
-  that remark, which the task checks), and the graphs between are unsettled; the refactor is the
-  phase's (a). Surfaces: `formalization.yaml`'s `main_results` row (448) and its `alignment` entries
-  for JJ 2010 Thm 6.1 / Cor 6.3 and Thm 7.2 (716, 722); README 145–151; the home page 131–134;
-  `intro.tex`'s third continuation (234–245). The blueprint notes after `cor:panel-generic-rigid`
-  and `cor:bodyhinge-generic-tree-packing` already say it, and stay.
+- [x] **1. Open** (`0638fd12`; docs only): this log, the baselines, the task list, `F-251`.
+- [x] **2. S1 — the generic body-hinge theorem's scope** (this commit; `F-207` in part, `F-252`):
+  the scope beside both theorems in `formalization.yaml` (row, two `alignment` notes), README, the
+  home page, `intro.tex` and ROADMAP §34; the remark's reading checked by a `lake lean` witness.
 - [ ] **3. S2 — KT Theorem 5.6's and the molecular conjecture's scope** (`F-122`, `F-128`, in part;
   `F-251`; report S2; Opus). Read `PanelHingeFramework` (its `ends`), `RankHypothesis`,
   `hingeConstraint`, `panelSupportExtensor_ne_zero_iff`, and the statements of
@@ -189,7 +185,9 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
 
 `S` and `M` findings this round makes, one line each naming the ledger ID.
 
-- None yet.
+- `F-252` (S, task 2): S1's gap is wider than its report says: `hfresh` fails at every graph with at
+  most $2(|V| - 1)$ edges, $K_4$ at $d = 2$ among them (a tree of single and double edges uses every
+  label); the transfer witnessed, the tree's minimality argued. The phase's (a) removes it with S1.
 
 ## Moved to a later round
 
@@ -204,9 +202,14 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 2, S1's scope** (Opus, a fresh agent): read the two generic theorems' signatures and
-`rem:fresh-edge-supply`, then state what they cover today on the surfaces its line names, under
-gates 1–7. Then tasks 3–9 in order.
+**Next: task 3, S2's scope** (Opus, a fresh agent): read the declarations its line names (bodies
+and statements), then state what KT Theorem 5.6 and the molecular conjecture cover today beside
+the proved link-recording form, on the surfaces its line names, and qualify `F-251`'s paragraph,
+under gates 1–7. Task 2 shifted the lines the later tasks name (the open's numbering):
+`formalization.yaml` +9 after 459, +16 after 720 and +20 after 726 (task 3's 580–582 and 674 are
+589–591 and 683); README +11 after 151 (its Phase 35 sentence now starts at 162); the home page +6
+after 134; `intro.tex` +8 after 244; ROADMAP +3 after 1026 (its *References* entries for Laman and
+Lovász–Yemini are now 1377 and 1379). Re-`grep` as ever. Then tasks 4–9 in order.
 
 ## Decisions made during this round
 
@@ -219,3 +222,7 @@ gates 1–7. Then tasks 3–9 in order.
   put in round 1, is round 3's with L1–L2 (§1's table).
 - **`F-251`** (the open): `formalization.yaml`'s fidelity paragraph claims every blueprint
   statement is in the exact form proved; task 3 qualifies it beside S2's scope.
+- **S1's surfaces** (task 2): ROADMAP §34 too (*Surface* lists ROADMAP for scopes). The pointers
+  to the theorem in `body_hinge_tay`'s row and `alignment` note, README 92 and the home page 82 lead
+  to the scoped text, and stay. `F-252`'s sharper reading stays off the surfaces: its tree's
+  minimality is argued, not witnessed.

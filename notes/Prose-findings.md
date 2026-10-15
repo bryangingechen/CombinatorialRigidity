@@ -2814,7 +2814,10 @@ declaration's name as its header writes it:
   `e₀ ∉ E(G)` and `(hends e₀).edge_mem` gives `e₀ ∈ E(G)`. A single edge is minimal: its $D - 1$
   copies are independent in $M(\tilde G)$, the only base, and $\operatorname{def}(\tilde G) = 1$.
   *Found:* round 4 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, S1).
+  *Disposition:* reported (`notes/Prose-report.md`, S1); round 1: the scope stated beside both
+  theorems in `formalization.yaml` (the row and the two `alignment` entries), README, the home page,
+  `intro.tex` and ROADMAP §34, with `rem:fresh-edge-supply`'s reading checked by a `lake lean`
+  witness; its sharper reading is `F-252` (task 2).
 
 - **F-211** · S · `def:two-extensor`, `def:generic-endpoints` (`generic-lift.tex`): principle B's
   moves out of two definitions, task 2.10's hygiene-rule reading. At the open `def:two-extensor`
@@ -2929,6 +2932,25 @@ declaration's name as its header writes it:
   `linearIndependent_sum_pinned_block`; the citing proofs).
   *Found:* round 5 task 3.8.
   *Disposition:* reported (`notes/Prose-report.md`, S38).
+- **F-252** · S · `cor:panel-generic-rigid`, `cor:bodyhinge-generic-tree-packing` and the four other
+  pins of `F-207` (`generic-lift.tex`): the gap is wider than `F-207`'s "every graph that is itself
+  minimal". `hfresh` ranges over every graph on the bodies and the labels, not over subgraphs of
+  $G$, so under `hspan` and `hends` it depends only on $|V(G)|$, $|E(G)|$ and $D$: it fails whenever
+  some minimal $k$-dof-graph on at most $|V(G)|$ bodies has exactly $|E(G)|$ edges. A tree of single
+  and double edges on $m$ bodies is one, with any edge count from $m - 1$ to $2(m - 1)$. So the six
+  pins say nothing about any graph with at most $2(|V| - 1)$ edges, $K_4$ at $d = 2$ among them (6
+  edges; not itself minimal, as $K_4 - e$ is already rigid), and the band left unsettled is
+  $2(|V| - 1) < |E(G)| \le D(|V| - 1)$. Task 2's scope sentences ("not settled" in between) stand;
+  the phase's refactor (a) removes both gaps.
+  *Evidence:* read (the two main results' statements, where `hfresh` quantifies over
+  `G' : Graph α β`; `matroidMG`'s body and `matroidMG_indep_iff`'s statement, the $(D,D)$-count); a
+  `lake lean` witness, script not retained: from `hH : H.IsMinimalKDof n c` and `E(H) = univ`,
+  `hfresh c H hH` gives a label outside `univ`. The tree's minimality is argued, not witnessed: a
+  base of $M(\tilde H)$ takes at most $D$ of a double edge's $2(D - 1)$ copies, which span two
+  bodies, and the blocks' bounds add, so every base takes exactly $D$ of them ($D \ge 3$), meeting
+  both fibers of $D - 1$, and all $D - 1$ copies of a single edge.
+  *Found:* RECONCILE round 1 task 2.
+  *Disposition:* reported (`notes/Reconcile-texts-cleanup.md`, *Candidates for the PI*).
 
 ## L — Lean
 

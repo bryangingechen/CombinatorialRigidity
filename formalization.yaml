@@ -457,6 +457,15 @@ status:
       The panel-normal analogue (JJ Thm 7.2, sharpened to an iff) is
       CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff
       (CombinatorialRigidity/Molecular/GenericLift/PanelGeneric.lean).
+      As stated, both theorems cover only part of this class. They assume that every edge
+      label is an edge of G, and that every minimal k-dof-graph on the bodies and the labels
+      leaves some label unused (the supply of fresh labels that the Theorem 5.5 induction
+      needs). The two assumptions contradict each other whenever G is itself a minimal
+      k-dof-graph for some k (a single edge, a tree, every minimal 0-dof-graph), so the
+      theorems say nothing about such a graph. Both hold whenever G has more than
+      D(|V| - 1) edges, for instance K_7 at n = 2 (21 > 3 * 6 edges); which graphs in
+      between the theorems cover is not settled. A planned refactor indexes the hinges by
+      the edges of G, so that the labels may outnumber them, and removes the restriction.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -717,13 +726,24 @@ alignment:
       lean: "CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees"
       module: "CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean"
       status: "proved"
-      note: "Over any infinite field, with the existential quantifier upgraded to every generic hinge-point realization."
+      note: >-
+        Over any infinite field, with the existential quantifier upgraded to every generic
+        hinge-point realization. As stated, both theorems assume that every edge label is an
+        edge of G and that every minimal k-dof-graph on the bodies and the labels leaves a
+        label unused, which together exclude every G that is itself a minimal k-dof-graph (a
+        single edge, a tree, every minimal 0-dof-graph); the assumptions hold when G has more
+        than D(|V| - 1) edges, and the graphs in between are not settled (the main_results
+        row).
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff"
       module: "CombinatorialRigidity/Molecular/GenericLift/PanelGeneric.lean"
       status: "proved"
-      note: "Sharpened to an iff against def(G~) = 0; their sufficient tree-packing condition implies it."
+      note: >-
+        Sharpened to an iff against def(G~) = 0; their sufficient tree-packing condition
+        implies it. As stated, both theorems have the scope of the row above: nothing about a
+        G that is itself a minimal k-dof-graph, every G with more than D(|V| - 1) edges, and
+        the graphs in between not settled.
 
     - source: "Jackson-Jordán 2010 p. 586 (every generic realization of G^2 rigid under six spanning trees in 5G; conditional there on the molecular conjecture)"
       lean: "SimpleGraph.molecule_generic_rank, SimpleGraph.molecule_generic_rigid, SimpleGraph.molecule_generic_square_packing"

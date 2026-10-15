@@ -131,7 +131,13 @@ whenever `5G` packs six edge-disjoint spanning trees; Tay's body-bar
 theorem holds at every generic choice of bar endpoints; and the
 body-hinge theorem holds at every generic choice of hinge positions,
 with the non-generic parameter choices confined to the zero set of a
-single nonzero polynomial in each case. Phase 35 (closed 2026-07-18)
+single nonzero polynomial in each case. As stated, the generic
+body-hinge theorem and its panel-hinge companion cover only part of
+the simple graphs: their assumptions fail at every graph that is
+itself a minimal `k`-dof-graph (a single edge, a tree, every minimal
+`0`-dof-graph), hold at every graph with more than `D(|V|−1)` edges,
+where `D = d(d+1)/2`, and are not settled in between; a planned
+refactor removes the restriction. Phase 35 (closed 2026-07-18)
 recovered the **full multigraph strength** of Theorem 5.6 and of the
 molecular conjecture itself, which the development above proves for
 simple graphs: stating the panel side in Katoh–Tanigawa's own
