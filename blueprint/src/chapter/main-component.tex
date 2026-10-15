@@ -386,7 +386,7 @@ definition then holds vacuously.
         Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_ne_zero}
   \leanok
   \uses{def:pencil-x0-attains, def:body-hinge-framework, def:extensor,
-        lem:panel-hinge-dual-molecular, lem:screw-map-rows}
+        lem:polarity-join, lem:screw-map-rows}
   Let $p = (q, z)$ be a configuration of $G$, and let $F_p$ be the
   body-hinge framework on $G$ (\cref{def:body-hinge-framework}) whose
   hinge at each edge $uv$ is the line $p_u \wedge p_v$
@@ -396,10 +396,11 @@ definition then holds vacuously.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{thm:projective-invariance}
   The hinge at $uv$ of the panel-hinge framework that defines the rank
   of $p$ is the meet of the planes $p_u^{\perp}$ and $p_v^{\perp}$. It is
   the image of $p_u \wedge p_v$ under the polarity
-  (\cref{lem:panel-hinge-dual-molecular}), an invertible linear map of
+  (\cref{lem:polarity-join}), an invertible linear map of
   the screw space over every field. So the two rigidity matrices have the
   same rank (\cref{lem:screw-map-rows}). Over an admissible picture,
   adjacent picture points differ. A relation
@@ -521,11 +522,11 @@ shrinks a core along the contraction curve
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:panel-hinge-dual-molecular, lem:screw-map-rows,
+  \uses{lem:polarity-join, lem:screw-map-rows,
         lem:pencil-config-point-join-rank}
   The hinge at an edge $uv$ with normals $p$ is the image of the line
   $p_u \wedge p_v$ under the polarity
-  (\cref{lem:panel-hinge-dual-molecular}). So the rigidity matrix with
+  (\cref{lem:polarity-join}). So the rigidity matrix with
   normals $p$ has the rank of the body-hinge framework whose hinge at
   $uv$ is $p_u \wedge p_v$, as in the proof of
   \cref{lem:pencil-config-point-join-rank}, and likewise for $p'$. Both
@@ -2286,7 +2287,7 @@ the coordinates of a join.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-config-point-join-rank, lem:panel-hinge-dual-molecular}
+  \uses{lem:pencil-config-point-join-rank, lem:polarity-join}
   The hinge at an edge $uw$ spans the line of the meet of the planes
   $p_u^{\perp}$ and $p_w^{\perp}$. The polarity, an invertible linear
   map of the screw space, maps the join $p_u \wedge p_w$ to that meet

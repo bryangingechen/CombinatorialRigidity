@@ -44,7 +44,7 @@ two statements (\cref{def:pencil-main-component-statements}), which
 
 Two parts of the chapter are not used in the proof of
 \cref{thm:pencil-realization-theorem}. \Cref{sec:pencil-duality} shows that the
-polarity of \cref{lem:panel-hinge-dual-molecular} takes a pencil
+polarity of \cref{lem:polarity-join} takes a pencil
 realization to one with the panel normals and the points exchanged.
 This chapter uses the polarity nowhere else. \Cref{sec:pencil-cycle}
 realizes the cycles on three and four bodies as pencil realizations.
@@ -113,12 +113,12 @@ three or more hinges.
 \label{sec:pencil-duality}
 
 Work at grade $k = 2$ ($d = 3$) for the rest of this subsection, the
-setting of \cref{lem:panel-hinge-dual-molecular}. There the polarity
+setting of \cref{lem:polarity-join}. There the polarity
 sends the extensor of two homogeneous points $v_0, v_1 \in K^4$ to the
 panel-support extensor $C(v_0,v_1)$ (\cref{def:panel-support-extensor}):
 the join-of-two-points $\leftrightarrow$ meet-of-two-panels identity,
 here in its full generality rather than only for the homogenized poles
-of a molecular framework. \cref{lem:panel-hinge-dual-molecular} itself
+of a molecular framework. \cref{lem:polarity-join} itself
 fixes $K = \R$. The polarity and the two transport lemmas below instead
 hold over an arbitrary field $K$. The two lemmas show that the polarity
 turns passing through the point $q$ into lying in the panel with normal
@@ -129,7 +129,7 @@ $q$, and lying in that panel into passing through $q$.
   \lean{CombinatorialRigidity.Molecular.extensorInPanel_screwComplementIso_of_extensorThroughPoint}
   \leanok
   \uses{def:extensor-through-point, def:genuine-hinge-realization,
-        lem:panel-hinge-dual-molecular}
+        lem:polarity-join}
   If a screw element $C \in \bigwedge^{2} K^{4}$ passes through the
   homogeneous point $q \in K^4$ (\cref{def:extensor-through-point}),
   then its polarity image lies in the panel with normal $q$
@@ -140,7 +140,7 @@ $q$, and lying in that panel into passing through $q$.
   \uses{lem:panel-support-extensor-join, def:panel-support-extensor}
   If $C = 0$ the image is $0$, which lies in every panel. Otherwise $C$
   is the extensor of an independent pair $v_0, v_1$ with $q$ in their
-  span; the polarity (\cref{lem:panel-hinge-dual-molecular}) sends
+  span; the polarity (\cref{lem:polarity-join}) sends
   $C$ to the panel-support extensor $C(v_0,v_1)$
   (\cref{def:panel-support-extensor}), which by the point-join
   $\leftrightarrow$ panel-meet duality is the extensor of an
@@ -156,7 +156,7 @@ $q$, and lying in that panel into passing through $q$.
   \lean{CombinatorialRigidity.Molecular.extensorThroughPoint_screwComplementIso_of_extensorInPanel}
   \leanok
   \uses{def:extensor-through-point, def:genuine-hinge-realization,
-        lem:panel-hinge-dual-molecular}
+        lem:polarity-join}
   If a screw element $C \in \bigwedge^{2} K^{4}$ lies in the panel
   with normal $q \in K^4$ (\cref{def:genuine-hinge-realization}), then
   its polarity image passes through $q$
@@ -182,11 +182,11 @@ $q$, and lying in that panel into passing through $q$.
   \label{lem:pencil-self-dual}
   \lean{CombinatorialRigidity.Molecular.hasPencilPanelRealization_mapExtensor_screwComplementIso}
   \leanok
-  \uses{def:pencil-panel-realization, lem:panel-hinge-dual-molecular,
+  \uses{def:pencil-panel-realization, lem:polarity-join,
         thm:projective-invariance}
   Over any field $K$, transporting a pencil realization $(F, n, q)$ of
   a multigraph $G$ along the polarity $\Lambda$ of
-  \cref{lem:panel-hinge-dual-molecular} (field-general as a screw-space
+  \cref{lem:polarity-join} (field-general as a screw-space
   automorphism, \cref{thm:projective-invariance}) produces a pencil
   realization $(\Lambda F, q, n)$ of $G$, with the roles of the normal
   and the point exchanged.

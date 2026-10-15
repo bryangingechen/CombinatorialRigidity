@@ -192,6 +192,37 @@ space (\cref{thm:projective-invariance}). We then apply it to a
 polarity, which turns a molecular framework into a panel-hinge framework
 (\cref{lem:panel-hinge-dual-molecular}).
 
+In every dimension $d$, an invertible linear map of $K^{d+1}$ induces a
+linear automorphism of the screw space $\bigwedge^{d-1} K^{d+1}$. For
+$d = 3$, Crapo and Whiteley let a collineation act on screws in this
+way~\cite[\S3.6]{crapoWhiteley1982}.
+
+\begin{definition}[The screw map of a linear map]
+  \label{def:induced-screw-map}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.screwEquivOfLinearEquiv,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor}
+  \leanok
+  \uses{def:screw-space, def:extensor}
+  Let $K$ be a field, let $d \ge 1$, and let $g$ be an invertible linear
+  map of $K^{d+1}$. The \emph{screw map} of $g$ is the linear
+  automorphism $\Lambda_g$ of the screw space $\bigwedge^{d-1} K^{d+1}$
+  (\cref{def:screw-space}) with
+  \[
+    \Lambda_g(v_1 \vee \cdots \vee v_{d-1})
+    \;=\; g v_1 \vee \cdots \vee g v_{d-1}
+    \qquad (v_1, \dots, v_{d-1} \in K^{d+1}).
+  \]
+\end{definition}
+
+The map $\Lambda_g$ is the $(d-1)$-th exterior power of $g$, and its
+inverse is $\Lambda_{g^{-1}}$. The extensors span
+$\bigwedge^{d-1} K^{d+1}$ (the remarks after \cref{def:extensor}), so the
+formula determines $\Lambda_g$.
+
+\begin{fmlnote}
+  The first pin is $\Lambda_g$, and the second is its formula.
+\end{fmlnote}
+
 \begin{theorem}[Projective invariance of infinitesimal rigidity;
   Crapo--Whiteley]
   \label{thm:projective-invariance}
@@ -250,6 +281,15 @@ polarity, which turns a molecular framework into a panel-hinge framework
   instantaneous motion'', and it has an inverse.
 \end{proof}
 
+\begin{fmlnote}
+  The pinned results hold for body-hinge frameworks in $K^d$ for every
+  $d$. The first pin is the framework $(G, \Lambda p)$. The next four
+  prove (1): the isomorphism, the equality of the dimensions, that
+  $(G, \Lambda p)$ satisfies the rank hypothesis
+  (\cref{def:rank-hypothesis}) at a target exactly when $(G, p)$ does,
+  and rigidity. The last two prove (2) and (3).
+\end{fmlnote}
+
 For a general $\Lambda$, the screw $\Lambda\, C(p(e))$ need not be the
 extensor of a line. The hinge constraint at $e$ is then
 $S(u) - S(v) \in \operatorname{span} \Lambda\, C(p(e))$, as in the
@@ -261,8 +301,8 @@ then Crapo and Whiteley's projective invariance of infinitesimal
 rigidity~\cite[\S3.6]{crapoWhiteley1982}; see also
 Whiteley~\cite[Theorem~6]{whiteley1999}. A collineation is given by a
 nonsingular linear map $g$ of $\R^4$ on homogeneous coordinates. It
-induces the automorphism $\Lambda$ with
-$\Lambda(v_0 \vee v_1) = g v_0 \vee g v_1$, which sends the extensor of
+induces the screw map $\Lambda_g$ (\cref{def:induced-screw-map}), with
+$\Lambda_g(v_0 \vee v_1) = g v_0 \vee g v_1$, which sends the extensor of
 the line through two points to that of the line through their images. A
 correlation sends points to planes by a nonsingular linear map, and it
 also induces a linear automorphism of the screw space that sends lines
@@ -280,10 +320,33 @@ extensor of a two-dimensional subspace $U$ of $K^4$ to a nonzero
 extensor of $U^\perp$ (the remarks after \cref{def:meet}). So it is the
 map that the polarity $x \mapsto x^\perp$ of projective space induces on
 lines: the line through two points goes to the line in which their
-polar planes meet. We call $*$ the \emph{polarity}. By the definition
-of the panel support extensor (\cref{def:panel-support-extensor}), the
-polarity sends the join $v_0 \vee v_1$ of any two vectors
-$v_0, v_1 \in K^4$ to $C(v_0, v_1)$.
+polar planes meet. We call $*$ the \emph{polarity}. The next lemma
+gives its value on joins.
+
+\begin{lemma}[The polarity on joins]
+  \label{lem:polarity-join}
+  \lean{CombinatorialRigidity.Molecular.screwComplementIso,
+        CombinatorialRigidity.Molecular.screwComplementIso_mk_extensor,
+        CombinatorialRigidity.Molecular.screwComplementIso_lineExtensor}
+  \leanok
+  \uses{def:panel-support-extensor}
+  Let $*$ be the polarity of $\bigwedge^2 \R^4$. For all
+  $v_0, v_1 \in \R^4$, $*(v_0 \vee v_1) = C(v_0, v_1)$. In particular,
+  for points $a, b \in \R^3$, the polarity sends the extensor
+  $C(a, b) = \bar a \vee \bar b$ to $C(\bar a, \bar b)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The first statement holds by the definition of $C(v_0, v_1)$
+  (\cref{def:panel-support-extensor}). The second is the first at
+  $v_0 = \bar a$ and $v_1 = \bar b$, as $C(a, b) = \bar a \vee \bar b$
+  (\cref{def:affine-subspace-extensor}).
+\end{proof}
+
+\begin{fmlnote}
+  The polarity and the first statement are formalized over every field
+  $K$. The pins are the polarity and the two statements, in this order.
+\end{fmlnote}
 
 The polar plane of a point $c \in \R^3$ is
 $\{x \in \R^3 : x \cdot c + 1 = 0\}$, since
@@ -302,10 +365,7 @@ in the form that we use.
 
 \begin{lemma}[Projective dual of a panel-hinge framework]
   \label{lem:panel-hinge-dual-molecular}
-  \lean{CombinatorialRigidity.Molecular.screwComplementIso,
-        CombinatorialRigidity.Molecular.screwComplementIso_lineExtensor,
-        CombinatorialRigidity.Molecular.screwComplementIso_mk_extensor,
-        CombinatorialRigidity.Molecular.molecularOfCentres_mapExtensor_screwComplementIso,
+  \lean{CombinatorialRigidity.Molecular.molecularOfCentres_mapExtensor_screwComplementIso,
         CombinatorialRigidity.Molecular.finrank_infinitesimalMotions_ofNormals_homogenize,
         CombinatorialRigidity.Molecular.rankHypothesis_ofNormals_homogenize_iff,
         CombinatorialRigidity.Molecular.isInfinitesimallyRigid_ofNormals_homogenize_iff,
@@ -313,12 +373,9 @@ in the form that we use.
   \leanok
   \uses{def:panel-hinge-framework, def:panel-support-extensor,
         def:meet-complement-iso, def:hinge-concurrent,
-        thm:projective-invariance}
+        thm:projective-invariance, lem:polarity-join}
   Let $*$ be the polarity of $\bigwedge^2 \R^4$.
   \begin{enumerate}
-    \item For all $v_0, v_1 \in \R^4$, $*(v_0 \vee v_1) = C(v_0, v_1)$.
-      In particular, for points $a, b \in \R^3$, the polarity sends the
-      extensor $C(a, b) = \bar a \vee \bar b$ to $C(\bar a, \bar b)$.
     \item Let $G$ be a multigraph on $V$, and let $c \colon V \to \R^3$.
       The panel-hinge framework on $G$ with normals $\bar c(v)$
       (\cref{def:panel-hinge-framework}) is obtained from the molecular
@@ -329,7 +386,7 @@ in the form that we use.
       and only if the other is, and the hinge at an edge is
       nondegenerate in one if and only if it is nondegenerate in the
       other.
-    \item The conclusions of (2) also hold for the panel-hinge framework
+    \item The conclusions of (1) also hold for the panel-hinge framework
       on $G$ with normals $\lambda_v\, \bar c(v)$, for any nonzero
       scalars $\lambda_v$. Its motion space is that of the panel-hinge
       framework with normals $\bar c(v)$.
@@ -337,16 +394,14 @@ in the form that we use.
 \end{lemma}
 \begin{proof}
   \leanok
-  Statement (1) is the definition of $C(v_0, v_1)$
-  (\cref{def:panel-support-extensor}), and
-  $C(a, b) = \bar a \vee \bar b$ (\cref{def:affine-subspace-extensor}).
-  For (2), both frameworks have the multigraph $G$. At an edge with ends
+  For (1), both frameworks have the multigraph $G$. At an edge with ends
   $u$ and $v$, the molecular framework has the supporting extensor
-  $\bar c(u) \vee \bar c(v)$. By (1) its image under $*$ is
-  $C(\bar c(u), \bar c(v))$, the supporting extensor of the panel-hinge
-  framework at that edge. As $*$ is a linear automorphism of
+  $\bar c(u) \vee \bar c(v)$. Its image under $*$ is
+  $C(\bar c(u), \bar c(v))$ (\cref{lem:polarity-join}), the supporting
+  extensor of the panel-hinge framework at that edge. As $*$ is a linear
+  automorphism of
   $\bigwedge^2 \R^4$ (\cref{def:meet-complement-iso}),
-  \cref{thm:projective-invariance} gives the rest. For (3), the join is
+  \cref{thm:projective-invariance} gives the rest. For (2), the join is
   bilinear, so
   $C(\lambda_u \bar c(u), \lambda_v \bar c(v)) =
   \lambda_u \lambda_v\, C(\bar c(u), \bar c(v))$. The two panel-hinge
@@ -356,10 +411,12 @@ in the form that we use.
 \end{proof}
 
 \begin{fmlnote}
-  Statement (1) is formalized over every field, as is the polarity.
-  Statement (3) has no formal counterpart: the proof of
-  \cref{thm:panel-hinge-iff-molecular} rescales the normals it uses, by
-  the argument above.
+  The first pin is the identity of the two frameworks in (1), and the
+  other four are its consequences: the dimensions of the motion spaces,
+  the rank hypothesis (\cref{def:rank-hypothesis}), rigidity, and the
+  nondegeneracy of the hinges. Statement (2) has no formal counterpart:
+  the proof of \cref{thm:panel-hinge-iff-molecular} rescales the normals
+  it uses, by the argument above.
 \end{fmlnote}
 
 \subsection{Screw velocity fields}
@@ -705,11 +762,11 @@ realization with centres in general position up to order four.
   points $c(v)$ are in general position up to order four. Up to the
   factors $\lambda_v$, these are the normals $\bar c(v)$ of the image of
   the molecular framework on $(G, c)$ under the polarity
-  (\cref{lem:panel-hinge-dual-molecular}(2)). The factors multiply the
+  (\cref{lem:panel-hinge-dual-molecular}(1)). The factors multiply the
   supporting extensor at an edge with ends $u$ and $v$ by
   $\lambda_u \lambda_v \neq 0$, which does not change the motion space
   (\cref{thm:projective-invariance}(3)). So by
-  \cref{lem:panel-hinge-dual-molecular}(3),
+  \cref{lem:panel-hinge-dual-molecular}(2),
   \[
     \dim Z_{\mathrm{mol}}(G, c) \;=\; \dim Z(G, p)
     \;=\; D + \operatorname{def}(\tilde G).

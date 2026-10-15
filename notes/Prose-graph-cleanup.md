@@ -6,11 +6,11 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 `notes/Prose-findings.md` (40, 45, 7 and 5) under the expected-diff gate, sets every entry's
 disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
-one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.10
-reshaped the nodes of round 1's chapters and of `matroid-union` through `case-iii.tex`. No task
-edits the Lean or changes a statement's strength. **Next concrete task:** task 3.11, the node
-shapes of `molecule-modelling`, `molecule-application` and `generic-lift` (*Hand-off*). Round
-manual: `CLEANUP.md`.
+one-commit tasks; task 2 added each node's `\uses` to the gate's dump, and tasks 3.1–3.11
+reshaped the nodes of round 1's chapters, of `matroid-union` through `case-iii.tex`, and of
+`molecule-modelling`, `molecule-application` and `generic-lift`. No task edits the Lean or changes
+a statement's strength. **Next concrete task:** task 3.12, the node shapes of `jacobs.tex`
+(*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -21,22 +21,25 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3.10 has landed** (this commit; `case-iii.tex`, the ledger and docs, no Lean). Nothing is
-mid-stream; the next task is task 3.11.
+**Task 3.11 has landed** (this commit; three chapters, the retargets in `pencil.tex` and
+`main-component.tex`, the ledger and docs, no Lean). Nothing is mid-stream; the next task is task
+3.12.
 
-**The gate's baseline, at task 3.10** (2026-10-14):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 415 lines**, sha256 prefix
-  **`fe493f3e33f7358b`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 3.11** (2026-10-14):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 432 lines**, sha256 prefix
+  **`0c80f21571b4044e`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345. Its diff
-  against task 3.9's (3 403 lines, `004cda27ff8d8e39`) is task 3.10's *Expected*, its 31 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1361 edges
-  41f0e2e97a0f17fc`** and **`dcc1b0231a15c917`**; `print.log` 0 `LaTeX Warning` lines and 31
-  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 681 nodes,
-  1 020 pins (1 010 distinct; `lean_decls` 1 021), 459 missing, 2 220 implied, 83 + 305
-  unbacked, 177 dead, 19 nodes with four or more pins, no cycle-closing missing edge (`F-011`
-  done). The forward screen, unchanged by tasks 3.8–3.10, gives the open's table but `case-i` 7/5,
-  `rigidity-matrix` 10/9 0/0 and `molecular-induction` 5/3 3/3 (tasks 3.2–3.7's commits say why).
-- Missing in-edges that tasks 3.2–3.10 drew (task 4's; the report lists them, the commits name
+  against task 3.10's (3 415 lines, `fe493f3e33f7358b`) is task 3.11's *Expected*, its 96 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1369 edges
+  1f3c2a5dff8c3fc2`** and **`4a0d39a4c1e13dc5`**; `print.log` 0 `LaTeX Warning` lines and 31
+  overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 684 nodes,
+  1 018 pins (1 008 distinct; `lean_decls` 1 019), 466 missing, 2 224 implied, 84 + 305
+  unbacked (task 3.11's one more: `lem:panel-hinge-dual-molecular`'s `def:meet-complement-iso`,
+  now reached through `lem:polarity-join`, which its proof cites), 177 dead, 19 nodes with four or
+  more pins, no cycle-closing missing edge (`F-011` done). The forward screen, unchanged by tasks
+  3.8–3.11, gives the open's table but `case-i` 7/5, `rigidity-matrix` 10/9 0/0 and
+  `molecular-induction` 5/3 3/3 (tasks 3.2–3.7's commits say why).
+- Missing in-edges that tasks 3.2–3.11 drew (task 4's; the report lists them, the commits name
   them): to `lem:generic-realization-of-rigid` 4, `def:screw-space` 9 (five in `case-iii.tex`
   implied once their missing edges to `def:rigidity-matrix` are added),
   `def:trivial-motions-rigid` 2, `lem:edge-rows-independent` 2, `lem:two-edge-connected-degree`
@@ -50,18 +53,18 @@ mid-stream; the next task is task 3.11.
   dispatch's to the next node), `lem:case-III-redundant-combination` 2 (the $d = 3$ dispatch and
   `lem:case-III-chain-discriminator`), `lem:case-III-chain-relabel-rows` 1 and
   `lem:case-III-chain-eq666` 1 (the chain dispatch, whose missing edges to
-  `lem:case-III-claim612-block-iff-perp` and `lem:case-III-claim612-eq644` they took); task 3.5's
-  `def:edge-multiply` ->
-  `lem:rigidContract-isMinimalKDof` and `lem:reduction-measure` ->
-  `lem:pencil-contraction-deficiency`. Proofs that cite a node without an edge, as they cited the
-  node it left: two in `case-i.tex` and one in `molecule-modelling.tex`
+  `lem:case-III-claim612-block-iff-perp` and `lem:case-III-claim612-eq644` they took),
+  `def:induced-screw-map` 7 (`lem:hinge-point-witness`, `pencil.tex` 4, `main-component.tex` 2);
+  task 3.5's `def:edge-multiply` -> `lem:rigidContract-isMinimalKDof` and
+  `lem:reduction-measure` -> `lem:pencil-contraction-deficiency`. Proofs that cite a node without
+  an edge, as they cited the node it left: two in `case-i.tex` and one in `molecule-modelling.tex`
   (`def:trivial-motions-rigid`), `lem:reducible-vertex` and `thm:minimal-kdof-reduction`
   (`lem:two-edge-connected-degree`), `lem:adjacent-degree-two-pair`
   (`lem:deficiency-zero-connected`), `lem:generic-yields-genuine-hinge`
   (`lem:panel-support-extensor-join`); `thm:minimal-kdof-reduction`'s proof also cites
   `lem:rigidContract-isMinimalKDof`, from earlier in its file (task 4.3), the $d = 3$ dispatch's
-  proof `def:case-III-candidate`, and the chain dispatch's proof task 3.10's two nodes, missing
-  edges (task 4.6).
+  proof `def:case-III-candidate`, the chain dispatch's proof task 3.10's two nodes (task 4.6), and
+  `lem:hinge-point-witness`'s proof `def:induced-screw-map` (task 4.7), missing edges.
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -225,49 +228,37 @@ gate's diff, which each task makes exact before editing.
   - [x] **3.9 `case-iii.tex`, KT Claim 6.11 to KT eq. (6.29)** (`24f04215`):
     `def:case-III-candidate`, `lem:case-III-redundant-combination` and
     `lem:case-III-rank-certification` added; `lem:case-III-claim612-eq644`'s `acolumn` steps unpinned.
-  - [x] **3.10 `case-iii.tex`, the case $d = 3$ and the general case** (this commit; `F-163`,
-    `F-167`, `F-171`), each fix tried on a scratch copy, the new nodes checked against KT 2011
-    pp. 692–698. `F-163`: `lem:case-III-claim612-points-affineIndep-real-normals` repinned on
-    `exists_homogeneousIncidence_of_normals_gen`, which the chain discriminator's pin calls, in place
-    of the dead $d = 3$ wrapper; the statement stays at $d = 3$, and its note says the pin holds for
-    every $d$; the four affine nodes are left. `F-167`: left (the dispatch is dead by design, as its
-    lead says). `F-171`: the dispatch's proof cites the renaming of KT eqs. (6.54)–(6.55), the row
-    correspondence of KT eq. (6.62) and KT eq. (6.66) with its two consequences; its pin reaches
-    the three named theorems, not the relabel nodes' general forms (`ofNormals_relabel_perm`,
-    `rigidityRow_relabel_perm`), so nodes, not repins. Before the chain dispatch: a lead-in for
-    $G_i$, $\rho_i$, $\sigma_i$ and $q_i = q \circ \sigma_i$; `lem:case-III-chain-relabel-rows`
-    (KT eqs. (6.55), (6.62)) pins `chainData_bottom_relabel`; `lem:case-III-chain-eq666` (KT eq.
-    (6.66)) pins `interior_hρe₀_of_baseWidening` and `chainData_relabel_arm_hρGv`, one claim each.
-    Both are stated in KT's setting with notes for the endpoint selectors; the second's proof is
-    the dispatch's (6.66) argument, moved, and `\uses` `lem:splitoff-edge-substitution` (no Lean
-    basis; honesty clause (b), task 3.9's rule). The dispatch's proof and note cite both; its
-    `\uses` are task 4.6's.
-    *Expected* (exact, before editing the tree; `predict.py`'s after-dump of the copy): +2 nodes
-    (`lem:case-III-chain-relabel-rows` `#1CAC78`, `lem:case-III-chain-eq666` `#9CEC8B`); pins
-    1 017 -> 1 020 (1 010 distinct; `lean_decls` 1 018 -> 1 021, hash `5d11ccc9647c6ce6` ->
-    `dcc1b0231a15c917`); `## pins:` 2 added, 1 changed (the real-normals node); `## uses:` 2 added,
-    none changed; drawn edges 1 355 -> 1 361 (`41f0e2e97a0f17fc`), +6 (dashed: `def:chain-data` ->
-    both new nodes; solid: `lem:case-III-claim612-block-iff-perp` -> both,
-    `lem:case-III-claim612-eq644` and `lem:splitoff-edge-substitution` ->
-    `lem:case-III-chain-eq666`); +2 node lines; 3 415 lines (`fe493f3e33f7358b`), the diff 31
-    lines. The after-dump is exactly that.
-  - [ ] **3.11 `molecule-modelling`, `molecule-application`, `generic-lift`** (`F-009`'s three,
-    `F-010`'s `shadowGraph`, `F-214`, `F-219`, `F-224`'s screw map). `thm:projective-invariance`
-    (7): leave (Crapo and Whiteley's transformation, with its three parts and (1)'s consequences;
-    a role map). `lem:panel-hinge-dual-molecular` (8): its (1), the polarity on joins
-    (`screwComplementIso` and its two extensor identities), splits into a node; the citations of
-    the polarity in `pencil.tex` and `main-component.tex` are retargeted to it by the rule above;
-    (2) keeps five pins, one result. `F-224`: a definition node before
-    `thm:projective-invariance` for the screw map of a linear map of $K^{d+1}$
-    (`screwEquivOfLinearEquiv`, `screwEquivOfLinearEquiv_mk_extensor`).
-    `lem:molecule-graph-carrier` (5): leave (the construction and its clauses; `F-187` keeps the
-    label bound's pin); its ten in-edges are task 4.7's. `F-214`: `def:two-extensor` pins
-    `twoExtensor` alone (`pairIdxEquiv` unpinned; `twoExtensorPoly` with `twoExtensorPoly_eval` to
-    `lem:generic-endpoints-abundance` or a lemma node); `lem:coordinate-extensor-basis` and
-    `lem:extensor-map-rows` unpin `coordPoint` and `mapPlacement`. `F-219`:
-    `def:generic-hinge-points` keeps `hingePointRow` and `IsGenericHingePoints`;
-    `lem:hinge-rows-polynomial-in-points` keeps `hingeExtensorPoly_eval`. *Expected:* +2 or +3
-    nodes; pins moved, about −5, +3 (hash changes); new edges and retargets.
+  - [x] **3.10 `case-iii.tex`, the case $d = 3$ and the general case** (`258e9e73`):
+    `lem:case-III-chain-relabel-rows` and `lem:case-III-chain-eq666` added, the real-normals node
+    repinned on its form for every $d$; `F-167` left.
+  - [x] **3.11 `molecule-modelling`, `molecule-application`, `generic-lift`** (this commit; `F-009`'s
+    three, `F-010`'s `shadowGraph`, `F-214`, `F-219`, `F-224`'s screw map), each fix tried on a
+    scratch copy. `def:induced-screw-map`, before `thm:projective-invariance`, pins the screw map of
+    $g$ and its formula; the witness's proof cites it (its seven in-edges are task 4's).
+    `lem:polarity-join` takes `lem:panel-hinge-dual-molecular`'s (1) with its three pins, over $\R$
+    as before (a note for every field); the old node keeps (2)–(3), now (1)–(2), five pins with a
+    role map; its six `\uses` and seven `\cref`s in `pencil.tex` and `main-component.tex` are
+    retargeted, and `lem:pencil-config-point-join-rank`'s reach to `thm:projective-invariance`
+    restored on its proof (task 3.3's rule). Left, with role maps: `thm:projective-invariance`,
+    `lem:molecule-graph-carrier`. `def:two-extensor`, the two body-bar lemmas and
+    `lem:hinge-rows-polynomial-in-points` unpin `pairIdxEquiv`, `twoExtensorPoly`, `coordPoint`,
+    `mapPlacement` and `hingeExtensorPoly`; `lem:two-extensor-polynomial` pins
+    `twoExtensorPoly_eval` alone (*revised*: no definition beside it, task 3.7's rule).
+    `def:generic-hinge-points` keeps `hingePointRow_eq_panelRow` (*revised*: its unpin strands the
+    `\uses` of `def:hinge-constraint`, task 3.1's test).
+    *Expected* (exact, before editing the tree; `predict.py`'s after-dump of the copy): +3 nodes
+    (`def:induced-screw-map` `#B0ECA3`, `lem:polarity-join` and `lem:two-extensor-polynomial`
+    `#1CAC78`); pins 1 020 -> 1 018 (1 008 distinct; `lean_decls` 1 021 -> 1 019, hash
+    `dcc1b0231a15c917` -> `4a0d39a4c1e13dc5`), three moved, three added, five removed; `## pins:` 3
+    added, 5 changed; `## uses:` 3 added, 8 changed (the abundance proof, the old node, the six
+    retargets); drawn edges 1 361 -> 1 369 (`1f3c2a5dff8c3fc2`), +11 −3 (dashed: `def:extensor` and
+    `def:screw-space` -> `def:induced-screw-map`, `def:panel-support-extensor` ->
+    `lem:polarity-join` -> the old node and three retargets, `def:two-extensor` ->
+    `lem:two-extensor-polynomial`, `thm:projective-invariance` -> `lem:pencil-self-dual`; solid:
+    `lem:two-extensor-polynomial` -> `lem:generic-endpoints-abundance` and
+    `thm:projective-invariance` -> `lem:pencil-config-point-join-rank`; the old node's three dashed
+    edges to those retargets go); +3 node lines; 3 432 lines (`0c80f21571b4044e`), the diff 96
+    lines.
   - [ ] **3.12 `jacobs.tex`** (`F-009`'s three, `F-192`, `F-197`, `F-202`). `F-192`: definition
     nodes for a tight partition and for $e_G(Q)$ take `IsTightPartition` and
     `crossingEdgesWithin` from their lemmas. `F-197`: a definition node for the normal and special
@@ -392,6 +383,7 @@ ledger's earlier `L` entries are task 8.2's.
 - `F-241` (task 3.9): docstrings of task 3.9's pins name no node, or a label the blueprint lacks.
 - `F-242` (task 3.10): docstrings of task 3.10's pins, a stale "dead", and the unpinned $d = 3$
   wrapper.
+- `F-243` (task 3.11): docstrings and module headers that name the nodes task 3.11's pins left.
 
 ## Blockers / open questions
 
@@ -399,17 +391,17 @@ ledger's earlier `L` entries are task 8.2's.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 3.11, the node shapes of `molecule-modelling`, `molecule-application`
-and `generic-lift`** (`F-009`'s three, `F-010`'s `shadowGraph`, `F-214`, `F-219`, `F-224`'s screw
-map; Opus, a fresh agent). The parent's dump is task 3.10's (3 415 lines, `fe493f3e33f7358b`;
-*Current state*): regenerate it on the parent after `verify.sh` if the scratch copy is gone.
-Before editing, read each named node, its pins' statements and its `--label` report, try the
-change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.10), and make 3.11's *Expected*
-exact in its line, its `## uses:` lines included (gate 3 (b)); then edit, and diff the after-dump
-against it. A changed pin set makes the script's first `--tex-root` run a fresh `lake lean` (about
-90 s). Task 3.11 has the most moves of the N tasks left; whether `lem:panel-hinge-dual-molecular`'s
-split with its retargets in `pencil.tex` and `main-component.tex` fits beside the other fixes is
-for its trial to show. Then task 3.12.
+**Next concrete task: task 3.12, the node shapes of `jacobs.tex`** (`F-009`'s three, `F-192`,
+`F-197`, `F-202`; Opus, a fresh agent). The parent's dump is task 3.11's (3 432 lines,
+`0c80f21571b4044e`; *Current state*): regenerate it on the parent after `verify.sh` if the scratch
+copy is gone. Before editing, read each named node, its pins' statements and its `--label` report,
+try the change on a scratch copy of the TeX (*Decisions*, tasks 3.1–3.11), and make 3.12's
+*Expected* exact in its line, its `## uses:` lines included (gate 3 (b)); then edit, and diff the
+after-dump against it. Task 3.11 wrote its edits as one script with exact-match asserts, run on
+the copy and then on the tree, so that the two stay equal (`scratch/prose-graph/t311/edit.py`). A
+changed pin set makes the script's first `--tex-root` run a fresh `lake lean` (about 75 s). Task
+3.12 adds three to five definition and lemma nodes; `F-193`'s and `F-196`'s missing edges stay task
+4.7's. Then task 3.13.
 
 ## Decisions made during this round
 
@@ -480,3 +472,7 @@ for its trial to show. Then task 3.12.
   numbered source step whose theorems are unpinned (KT eq. (6.66)), the step gets a node pinning
   them, the derivation moves into that node's proof, and the dispatch's proof cites the node; the
   dispatch's new missing edges to it are task 4's, as task 3.9's were.
+- **A retarget keeps the edge's place** (task 3.11). A retargeted `\uses` stays on the statement
+  or the proof, where the old one was; moving it to where its pins reach (`F-089`'s rule) is task
+  4's. A reach that went through the old node to a third node is restored at the retargeted node,
+  by task 3.3's rule (`lem:pencil-config-point-join-rank` -> `thm:projective-invariance`).

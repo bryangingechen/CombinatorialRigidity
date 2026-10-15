@@ -1365,6 +1365,10 @@ declaration's name as its header writes it:
   `exists_isGenericEndpoints_abundance`); measured (`scripts/blueprint-deps.py --label
   def:two-extensor`, at `c8f1f0f1`).
   *Found:* round 4 task 2.10.
+  *Disposition:* done (task 3.11): `def:two-extensor` pins `twoExtensor` alone (`pairIdxEquiv`
+  named in its note, `twoExtensorPoly` unpinned); `lem:two-extensor-polynomial`, before the
+  abundance lemma, pins `twoExtensorPoly_eval`, and the abundance proof cites it; the two lemmas
+  pin their theorems alone (`coordPoint` and `mapPlacement` unpinned).
 
 - **F-219** · N · `def:generic-hinge-points`, `lem:hinge-rows-polynomial-in-points`
   (`generic-lift.tex`): pinned helpers. The definition pins the identity
@@ -1377,6 +1381,10 @@ declaration's name as its header writes it:
   `hingePointRow_eq_panelRow`); measured (`scripts/blueprint-deps.py --label
   def:generic-hinge-points`, at `dc58265b`).
   *Found:* round 4 task 2.11.
+  *Disposition:* done (task 3.11) for `lem:hinge-rows-polynomial-in-points`, which pins
+  `hingeExtensorPoly_eval` alone (`hingeExtensorPoly` named in its note); left for
+  `def:generic-hinge-points` (task 3.1's test: unpinning the identity, its one pin that states the
+  framework $(G, q)$, leaves its `\uses` of `def:hinge-constraint` with no Lean basis).
 
 - **F-224** · N · `lem:hinge-point-witness` (`generic-lift.tex`): two load-bearing steps of the
   witness have no node. The automorphism of the screw space induced by a linear map $g$ of
@@ -1393,6 +1401,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the body of `exists_hingePoints_independent_hingePointRow`; a `grep` for the
   callers of the two declarations).
   *Found:* round 4 task 2.12.
+  *Disposition:* done (tasks 3.6 and 3.11): the meet decomposition is
+  `lem:panel-support-extensor-join` (task 3.6), and the screw map is `def:induced-screw-map`,
+  before `thm:projective-invariance` (task 3.11); the witness's proof cites both. Its missing edge
+  to the second, and those of six `pencil.tex` and `main-component.tex` nodes, are task 4's.
 
 ## T — terminology and notation
 
@@ -3284,6 +3296,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` for the callers); measured (the closure of
   `case_III_realization_all_k` in `scripts/blueprint-deps.py`'s Lean cache, at task 3.10).
   *Found:* round 5 task 3.10.
+- **F-243** · L · the declarations round 5's task 3.11 pinned or unpinned
+  (`Molecular/Molecule/Duality.lean`, `Pencil/Statement.lean`;
+  `Molecular/GenericLift/HingeGeneric.lean`; `BodyBar/GenericLift.lean`). The docstrings of
+  `screwComplementIso`, `screwComplementIso_lineExtensor`, `screwComplementIso_mk_extensor` and the
+  helper `equivExteriorPower_lineExtensor` name `lem:panel-hinge-dual-molecular`, now
+  `lem:polarity-join`. Those of `screwEquivOfLinearEquiv` and `screwEquivOfLinearEquiv_mk_extensor`
+  call them internal plumbing for `lem:screw-map-rows` and `lem:hinge-point-witness`, though four
+  `Pencil/` files use them, and they are now `def:induced-screw-map`. The docstring of
+  `twoExtensorPoly_eval` names `def:two-extensor`, now `lem:two-extensor-polynomial`, and the
+  module headers of `BodyBar/GenericLift.lean` and `HingeGeneric.lean` map `def:two-extensor` and
+  `lem:hinge-rows-polynomial-in-points` to pins those nodes no longer have.
+  *Evidence:* read (the docstrings and module headers; a `grep` for the callers).
+  *Found:* round 5 task 3.11.
 
 ## M — mathematics and sources
 

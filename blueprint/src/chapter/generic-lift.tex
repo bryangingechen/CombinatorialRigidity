@@ -602,8 +602,7 @@ minors the two-extensor of the segment.
 
 \begin{definition}[The two-extensor of a segment]
   \label{def:two-extensor}
-  \lean{Graph.BodyBarFramework.pairIdxEquiv, Graph.BodyBarFramework.twoExtensor,
-    Graph.BodyBarFramework.twoExtensorPoly}
+  \lean{Graph.BodyBarFramework.twoExtensor}
   \leanok
   \uses{def:body-bar-framework}
   For $p \in \R^d$ let $h(p) = (1, p) \in \R^{d+1}$, with coordinates
@@ -650,12 +649,10 @@ from a choice of endpoints.
 
 \begin{fmlnote}
   The formalization calls the dimension $n$, as in the note after
-  \cref{def:body-bar-framework}. The first pin is the bijection of the
-  pairs $(i, j)$ with the coordinates of $\R^D$, and the second is
-  $T(p, p')$. The third writes each coordinate of $T(p_e, p'_e)$ as a
-  polynomial in the coordinates of an endpoint assignment
-  (\cref{def:generic-endpoints}), the form that
-  \cref{lem:generic-endpoints-abundance} uses.
+  \cref{def:body-bar-framework}. For the bijection of the pairs
+  $(i, j)$ with the coordinates of $\R^D$, it takes the one that the
+  equality of their numbers provides
+  (\texttt{pairIdxEquiv}).
 \end{fmlnote}
 
 \begin{definition}[Endpoint realization; generic endpoint
@@ -692,6 +689,26 @@ orientation.
   realization, and the second is genericity.
 \end{fmlnote}
 
+\begin{lemma}[The two-extensors are polynomial in the endpoints]
+  \label{lem:two-extensor-polynomial}
+  \lean{Graph.BodyBarFramework.twoExtensorPoly_eval}
+  \leanok
+  \uses{def:two-extensor}
+  Let $G$ be a multigraph, let $e$ be a bar of $G$, and let
+  $0 \le i < j \le d$. Then there is a polynomial $P$ in the
+  coordinates of the endpoints of the bars of $G$ such that
+  $P(q) = T(p_e, p'_e)_{(i,j)}$ for every endpoint assignment $q$ of
+  $G$, where $(p_e, p'_e)$ is the pair of points that $q$ gives $e$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By \cref{def:two-extensor},
+  $T(p_e, p'_e)_{(i,j)} = h(p_e)_i\, h(p'_e)_j - h(p_e)_j\, h(p'_e)_i$.
+  Each coordinate of $h(p_e) = (1, p_e)$ and of $h(p'_e)$ is $1$ or a
+  coordinate of $q$. So this is a polynomial of degree at most two in
+  the coordinates of $q$.
+\end{proof}
+
 \begin{lemma}[Abundance of generic endpoint assignments]
   \label{lem:generic-endpoints-abundance}
   \lean{Graph.BodyBarFramework.exists_isGenericEndpoints_abundance}
@@ -705,15 +722,14 @@ orientation.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:two-extensor}
+  \uses{def:two-extensor, lem:two-extensor-polynomial}
   The row of a bar $e$ has the coefficient $-(b_e)_c\,(a_e)_v$ at a
   body $v$ and a coordinate $c$ of $\R^D$, where $a_e$ is the signed
   incidence vector of $e$ (the remarks after
   \cref{def:rigidity-map-body-bar}). So each coefficient is $0$ or
   $\pm (b_e)_c$. At the endpoint realization of $q$, it is $0$ or
-  $\pm$ a coordinate of $T(p_e, p'_e)$, a polynomial of degree at most
-  two in the coordinates of $q$ (the remarks after
-  \cref{def:two-extensor}).
+  $\pm$ a coordinate of $T(p_e, p'_e)$, a polynomial in the coordinates
+  of $q$ (\cref{lem:two-extensor-polynomial}).
 
   The argument of \cref{lem:generic-placement-abundance} now applies.
   There are finitely many sets of bars, as $E(G)$ is finite. Let $F$
@@ -779,8 +795,7 @@ linear independence of rows (\cref{lem:extensor-map-rows}).
 
 \begin{lemma}[The coordinate-segment two-extensors form a basis]
   \label{lem:coordinate-extensor-basis}
-  \lean{Graph.BodyBarFramework.coordPoint,
-    Graph.BodyBarFramework.linearIndependent_twoExtensor_coordPoint}
+  \lean{Graph.BodyBarFramework.linearIndependent_twoExtensor_coordPoint}
   \leanok
   \uses{def:two-extensor}
   Let $c_0 = 0 \in \R^d$, and for $1 \le i \le d$ let $c_i$ be the
@@ -807,8 +822,7 @@ linear independence of rows (\cref{lem:extensor-map-rows}).
 
 \begin{lemma}[Row independence under an invertible map of $\R^D$]
   \label{lem:extensor-map-rows}
-  \lean{Graph.BodyBarFramework.mapPlacement,
-    Graph.BodyBarFramework.linearIndependent_rigidityRow_mapPlacement}
+  \lean{Graph.BodyBarFramework.linearIndependent_rigidityRow_mapPlacement}
   \leanok
   \uses{def:body-bar-framework, def:rigidity-map-body-bar}
   Let $(G, b)$ be a body-bar framework in $\R^d$, and let $M$ be an
@@ -1088,8 +1102,7 @@ subsection explains.
 
 \begin{lemma}[The hinge extensors are polynomial in the hinge points]
   \label{lem:hinge-rows-polynomial-in-points}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.hingeExtensorPoly,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.hingeExtensorPoly_eval}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.hingeExtensorPoly_eval}
   \leanok
   \uses{def:affine-subspace-extensor, def:plucker-coords,
     def:homogeneous-coords}
@@ -1117,13 +1130,13 @@ subsection explains.
 \begin{fmlnote}
   The formalization does not prove the expansion after
   \cref{def:plucker-coords} in general (the note there), and the pins
-  do not use the Pl\"ucker coordinates. The second pin computes the
-  coordinate at $t$ directly, as the pairing of the join with the dual
-  basis vector at $t$, which a library lemma evaluates as the minor.
-  The first pin is the minor of the matrix of indeterminates, a
-  polynomial with $d(d-1)$ variables for each edge label. No pin
-  states the degree bound. The argument below needs only that the
-  coordinates are polynomials.
+  do not use the Pl\"ucker coordinates. The pin computes the coordinate
+  at $t$ directly, as the pairing of the join with the dual basis vector
+  at $t$, which a library lemma evaluates as the minor. Its polynomial is
+  the minor of the matrix of indeterminates
+  (\texttt{hingeExtensorPoly}), with $d(d-1)$ variables for each edge
+  label. No pin states the degree bound. The argument below needs only
+  that the coordinates are polynomials.
 \end{fmlnote}
 
 \begin{lemma}[Abundance of generic hinge-point assignments]
@@ -1379,11 +1392,9 @@ in every dimension, by comparing the rows.
 
   By \cref{lem:simultaneous-affine-position}, there is an invertible
   linear map $g$ of $K^{d+1}$ such that $g(w_{e,1})$ has nonzero last
-  coordinate for every edge $e$. The map $g$ induces a linear
-  automorphism $\Lambda$ of the screw space with
-  $\Lambda(y_1 \vee \cdots \vee y_{d-1}) = g y_1 \vee \cdots \vee
-  g y_{d-1}$ for all $y_1, \dots, y_{d-1} \in K^{d+1}$, whose inverse is
-  induced by $g^{-1}$. The hinge of $(G, \Lambda p)$ at $e$ is
+  coordinate for every edge $e$. Let $\Lambda = \Lambda_g$ be the screw
+  map of $g$ (\cref{def:induced-screw-map}), a linear automorphism of
+  the screw space. The hinge of $(G, \Lambda p)$ at $e$ is
   $g w_{e,1} \vee \cdots \vee g w_{e,d-1}$. The rigidity matrix of
   $(G, \Lambda p)$ has rank $N$ (\cref{lem:screw-map-rows}), and its
   hinges are nondegenerate, as $\Lambda$ is injective. By

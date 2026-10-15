@@ -1267,7 +1267,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   56 findings in the ledger (`F-174`–`F-229`). Round 5, `prose-graph`, opened 2026-10-13
   (`notes/Prose-graph-cleanup.md`): it triaged the ledger's edge, node-shape, terminology and
   status-surface findings into 31 one-commit tasks, its task 2 added each node's `\uses` to the
-  gate's dump, and its tasks 3.1–3.10 reshaped the nodes of round 1's chapters, of
+  gate's dump, and its tasks 3.1–3.11 reshaped the nodes of round 1's chapters, of
   `matroid-union.tex` through `meet.tex`, of `rigidity-matrix.tex`, of `deficiency.tex`, of
   `molecular-induction.tex`, into which the graph form of KT Lemma 3.5 moved from `case-i.tex`,
   of `panel-layer.tex`, where KT Theorem 5.6 with nondegenerate hinges now comes first, as in
@@ -1276,9 +1276,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   Lemma 6.7, in `molecular-induction.tex`, and for the independent rows that a bound on the rank
   gives, and of `case-iii.tex`, with new nodes for KT's framework $(G, p_1)$, for its rank as
   the formal proof bounds it, for the step from KT Claim 6.11 that it uses, and, for every $d$,
-  for KT's renamed frameworks and KT eq. (6.66). **Next concrete task:** round 5's task 3.11, the
-  node shapes of `molecule-modelling.tex`, `molecule-application.tex` and `generic-lift.tex` (its
-  hand-off).
+  for KT's renamed frameworks and KT eq. (6.66), and of `molecule-modelling.tex`,
+  `molecule-application.tex` and `generic-lift.tex`, with new nodes for the screw map of a linear
+  map, for the polarity on joins and for the two-extensor's polynomial coordinates. **Next
+  concrete task:** round 5's task 3.12, the node shapes of `jacobs.tex` (its hand-off).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
