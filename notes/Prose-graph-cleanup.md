@@ -7,9 +7,10 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
 one-commit tasks; task 2 added each node's `\uses` to the gate's dump, tasks 3.1–3.14 (task 3)
-gave every node the ledger names its shape, and tasks 4.1–4.7 added the missing edges of rounds
-1–4's chapters. No task edits the Lean or changes a statement's strength. **Next concrete task:**
-task 4.8, the edges of `pencil.tex` and `main-component.tex` to *Ears and cycles* (*Hand-off*).
+gave every node the ledger names its shape, and tasks 4.1–4.8 added the missing edges of rounds
+1–4's chapters, `pencil.tex` and `main-component.tex` to *Ears and cycles*. No task edits the Lean
+or changes a statement's strength. **Next concrete task:** task 4.9, the edges of the rest of
+`main-component.tex` (*Hand-off*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,46 +22,38 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 4.7 has landed** (this commit; the `\uses` of round 4's chapters, the dispositions of
-`F-004`, `F-175`, `F-181`, `F-185`, `F-189`, `F-193`, `F-196`, `F-199`, `F-201`, `F-208`, `F-213`,
-`F-218` and `F-223`, `F-248` new, the docs, no Lean). Nothing is mid-stream; the next task is task
-4.8.
+**Task 4.8 has landed** (this commit; the `\uses` of `pencil.tex` and of `main-component.tex` to
+*Ears and cycles*, the docs, no Lean). It sets no disposition: `F-005` and `F-006` are done at task
+4.9, the last task they share. Nothing is mid-stream; the next task is task 4.9.
 
-**The gate's baseline, at task 4.7** (2026-10-15):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 555 lines**, sha256 prefix
-  **`e77e0c99de936ca0`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 4.8** (2026-10-15):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 576 lines**, sha256 prefix
+  **`80fd0513339af152`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345 and as
-  `predict-dump.sh` gave for the copy. Its diff against task 4.6's (3 534 lines,
-  `e7926d031b42ed22`) is task 4.7's *Expected*, its 269 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1468 edges
-  86c5ae4539b4f4a1`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
+  `predict-dump.sh` gave for the copy. Its diff against task 4.7's (3 555 lines,
+  `e77e0c99de936ca0`) is task 4.8's *Expected*, its 170 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1489 edges
+  00d69609c8fd0ada`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 692 nodes,
-  1 009 pins (999 distinct; `lean_decls` 1 010), 58 missing, 2 403 implied, 84 + 165 unbacked,
+  1 009 pins (999 distinct; `lean_decls` 1 010), 28 missing, 2 409 implied, 84 + 153 unbacked,
   177 dead, 12 nodes with four or more pins, no cycle-closing missing edge (`F-011` done). Tasks
-  4.1–4.7's chapters: 0 missing; unbacked 5 / 2, 4 / 12, 8 / 12, 18 / 27, 1 / 9, 8 / 27 and
-  22 / 15. No node is drawn `#9CEC8B` (`F-007`). The forward screen gives the open's table but
+  4.1–4.8's chapters: 0 missing; unbacked 5 / 2, 4 / 12, 8 / 12, 18 / 27, 1 / 9, 8 / 27, 22 / 15
+  and 5 / 28. No node is drawn `#9CEC8B` (`F-007`). The forward screen gives the open's table but
   `case-i` 14/5, `case-ii` 3/1, `panel-layer` 11/5 5/3, `rigidity-matrix` 15/9 0/0, `deficiency`
   2/2 0/0, `molecular-induction` 7/4 2/2 and no `case-iii` line (tasks 3.2–3.7's commits and
-  4.2–4.6's lines say why); task 4.7 changed no line.
-- Implied now, through tasks 4.1–4.7's edges: the missing in-edges of `def:edge-multiply` (35 ->
-  0; four added, the rest through `def:matroid-MG`'s statement); `lem:case-III`'s and
-  `cor:molecule-generic-square-packing`'s to `lem:deficiency-zero-connected` (through
-  `lem:chain-cycle-dichotomy`); three in `pencil.tex` and `main-component.tex`, and five more in
-  `pencil.tex` (24 -> 19) through task 4.7's edges of `lem:screw-map-rows` (four to
-  `thm:projective-invariance`, one to `lem:edge-rows-independent`); and, through an edge a later
-  task reads, `thm:pencil-x0-cycle`'s to `lem:pencil-lifting-restrict` (via
-  `lem:block-rank-path`, `F-247`, task 4.9).
-- Missing in-edges that tasks 3.2–3.14 drew or moved (tasks 4.8–4.9's; the report lists them,
-  the commits name them; counted at task 4.7, after round 4's chapters' went): to
-  `def:screw-space` 1, `lem:edge-rows-independent` 1, `def:induced-span` 1,
-  `lem:panel-support-extensor-join` 2, `lem:independent-rows-of-rank` 1, `def:induced-screw-map` 6,
-  `def:tight-partition` 1 (`lem:deficiency-merge-rigid`, which reaches `lem:exists-tight-partition`
-  too), `def:pencil-lifting-system` 3 (moved from the witness lemma); task 3.5's
-  `lem:reduction-measure` -> `lem:pencil-contraction-deficiency`.
-- Unbacked edges that task 3.14 made, which task 4.8 or 4.9 reads: `thm:pencil-x0-main-component`
-  -> `lem:pencil-x0-one-witness` (no Lean basis, as the two share their one pin; the theorem's
-  third clause is the lemma's claim, so it stays, *Decisions*), and `def:pencil-two-ear-graph` ->
+  4.2–4.6's lines say why); tasks 4.7–4.8 changed no line.
+- Task 4.9's part, at task 4.8: 28 missing and 13 / 21 unbacked. Implied now, through task 4.8's
+  edges: `lem:pencil-x0-sparse-count`'s and `thm:pencil-x0-theorem-s`'s to `def:pencil-nondegenerate`
+  (through `def:pencil-x0-standing`), `thm:pencil-conditioned-pair-nonempty`'s to
+  `def:induced-screw-map` and `thm:pencil-x0-open-ear-one`'s to `lem:pencil-join-flat`; through
+  task 4.2's, `thm:pencil-x0-cycle`'s to `lem:pencil-lifting-restrict` (via `lem:block-rank-path`,
+  `F-247`). Still missing, of the in-edges that tasks 3.2–3.14 drew or moved: to `def:screw-space`
+  1, `lem:independent-rows-of-rank` 1, `def:tight-partition` 1 (`lem:deficiency-merge-rigid`, which
+  reaches `lem:exists-tight-partition` too) and `def:pencil-lifting-system` 2.
+- The unbacked edge task 3.14 made that task 4.9 reads: `def:pencil-two-ear-graph` ->
   `def:pencil-embed-edges` (moved from the lemma; its note cites the relabelling for a comparison).
+  Task 4.8 kept the other, `thm:pencil-x0-main-component` -> `lem:pencil-x0-one-witness`, with the
+  theorem's two other edges to the nodes that share its pins (*Decisions*).
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -236,56 +229,46 @@ gate's diff, which each task makes exact before editing.
     unbacked removed, 2 left missing added; 2 cited steps.
   - [x] **4.6 `case-iii`** (`e1b16939`; `F-003` and five done): 28 added, 39 implied; 33 unbacked
     removed, 4 left missing added; 5 moved to proofs; 8 cited steps.
-  - [x] **4.7 Round 4's chapters** (this commit; `F-004`, `F-175`, `F-181`, `F-185`, `F-189`,
-    `F-193`, `F-196`, `F-199`, `F-201`, `F-208`, `F-213`, `F-218`, `F-223` done, `F-006`'s part,
-    `F-248` new). The parent's report: 65 missing (`jacobs` 31), 22 / 20 unbacked, so one commit.
-    Tried on a scratch copy (`t47/edit.py`). *Expected* (exact, before editing the tree; the copy's
-    predicted after-dump): no node or pin changes, `lean_decls` `8cdc1b9723e22064`; `## uses:` 34
-    lines changed, 44 entries added and 11 removed (S statement, P proof). *Removed* (10 unbacked
-    edges with no Lean basis that neither the statement, the proof prose nor the pins use; reasons
-    in the commit): `thm:projective-invariance` S `def:rank-hypothesis`; `def:screw-velocity` S
-    `def:hinge-constraint`; `lem:screw-velocity-line`, `lem:molecule-graph-carrier` S
-    `def:hinge-concurrent`; `lem:isLaman3-mono` P `lem:edgesIn-mono`; `lem:singleton-part-converse`
-    P `lem:singleton-part-neighborhood`; `thm:laman-square-count` P `lem:singleton-part-converse`;
-    `lem:endpoint-witness` P `prop:tay-witness-exists`; `thm:bodybar-generic-independence`,
-    `cor:bodybar-generic-tay` P `lem:tay-isSparse-of-independent`. *Moved* to the proof (1, no Lean
-    basis; the proof cites a step): `lem:hinge-rows-polynomial-in-points` -> `def:plucker-coords`.
-    *Added* (43): 32 of the parent's 65 missing, the other 33 implied by the task's additions:
-    `lem:exists-generic-placement` P `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`,
-    `lem:rigidityMap-apply`; `lem:genericRank-eq-finrank-span` P `lem:k-frame-incidence-finrank-rk`;
-    `lem:rigidityMap-rank-at-generic` P `lem:span-range-rigidityRow`; `thm:projective-invariance` S
-    `def:trivial-motions-rigid`, P `lem:rank-rotation-semicont`;
-    `lem:exists-generic-general-position` P `lem:exists-generic-placement`;
-    `lem:square-rank-le-genericRank` P `lem:k-frame-incidence-finrank-rk`;
-    `lem:molecule-rank-lower-bound` P `lem:span-range-rigidityRow`; `lem:molecule-rank-upper-bound`
-    P `lem:rigidityMap-rank-at-generic`; `lem:tight-partition-parts` S `def:tight-partition`;
-    `lem:square-cross-classification`, `lem:singleton-part-neighborhood`,
-    `lem:normal-cross-count-local` S `lem:molecule-graph-carrier`; `lem:normal-cross-count-producer`
-    S `def:rooted-cross-edges`, P `lem:singleton-part-neighborhood`; `thm:laman-square-count` P
-    `lem:edgesIn-corners`, `lem:normal-cross-count-rooted`; `lem:isLaman3-of-rowIndependent` P
-    `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`, `lem:span-range-rigidityRow`;
-    `lem:zero-extension-rowIndependent` P the first of these and `lem:rigidityMap-apply`;
-    `cor:zero-extension-clique-rank` P `lem:clique-edgesIn-count`; `thm:degree-one-rank-tree` P
-    `lem:square-induce-support`; `thm:degree-one-rank` P `lem:two-core-degree-one`;
-    `lem:generic-placement-abundance` P `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`,
-    `lem:rigidityMap-apply`; `lem:panel-witness-transplant` S `def:generic-normals`;
-    `lem:hinge-rows-polynomial-in-points` S `def:screw-space`; `lem:screw-map-rows` S
-    `thm:projective-invariance`, P `lem:case-III-claim612-block-iff-perp` (`F-248`);
-    `lem:hinge-point-witness` P `def:induced-screw-map`. 5 for a citation of a step:
-    `thm:molecular-iff-square-bar-joint` P `lem:framework-finrank`, `thm:panel-hinge-iff-molecular`,
-    `def:isInfinitesimallyRigid`, `lem:exists-generic-general-position` (`F-183`'s claim);
-    `lem:generic-normals-abundance` P `def:plucker-coords`. 6 that the removals left missing:
-    `def:screw-velocity` S `def:screw-space`; `lem:screw-velocity-line` S `def:extensor`,
-    `def:homogeneous-coords`; `lem:endpoint-witness` P `lem:k-frame-specialize-li`;
-    `thm:bodybar-generic-independence` P `lem:k-frame-pi-finrank`,
-    `lem:k-frame-incidence-finrank-rk`.
-    Drawn edges 1 447 -> 1 468 (`86c5ae4539b4f4a1`), 26 gone and 47 drawn, no fill changed; 3 555
-    lines (`e77e0c99de936ca0`), the diff 269 lines. Missing 128 -> 58 (these chapters 0, `pencil`
-    24 -> 19), unbacked 84 + 170 -> 84 + 165.
-  - [ ] **4.8 `pencil`, and `main-component` through *Ears and cycles*** (`F-005`'s part, `F-006`'s
-    part; at task 4.7, 26 missing and 5 / 40 unbacked).
+  - [x] **4.7 Round 4's chapters** (`e9d59672`; `F-004` and twelve done, `F-248` new): 32 added,
+    33 implied; 10 unbacked removed, 6 left missing added; 1 moved to a proof; 5 cited steps.
+  - [x] **4.8 `pencil`, and `main-component` through *Ears and cycles*** (this commit; `F-005`'s
+    and `F-006`'s parts). The parent's report: 26 missing (`pencil` 19), 5 / 40 unbacked, so one
+    commit. Tried on a scratch copy (`t48/edit.py`). *Expected* (exact, before editing the tree;
+    the copy's predicted after-dump): no node or pin changes, `lean_decls` `8cdc1b9723e22064`;
+    `## uses:` 20 lines changed, 25 entries added and 13 removed (S statement, P proof). *Removed*
+    (13 unbacked edges with no Lean basis that neither the statement, the proof prose nor the pins
+    use; reasons in the commit): `lem:extensor-pair-through-point`,
+    `lem:extensor-pair-through-given-point` P `lem:extensor-pair-in-panel`;
+    `lem:cycle-pencil-realization`, `lem:cycle-coplanar-realization` S `def:rank-hypothesis` (their
+    statements' `\cref` for rigidity on $V(G)$ now names `def:trivial-motions-rigid`, an ancestor);
+    `lem:pencil-cut-case` S `lem:two-pencil-extension-iff`; `lem:pencil-nonsimple-case` P
+    `lem:case-I-realization-nonsimple`; `lem:pencil-rank-collineation` P and
+    `lem:pencil-rank-scale-shift` S `lem:pencil-config-point-join-rank`;
+    `lem:pencil-weighted-lifting-system-local` S `def:pencil-weighted-lifting-system`, P
+    `lem:pencil-picture-local`; `lem:pencil-contract-standing` S `def:D-deficiency`, P
+    `lem:deficiency-zero-connected`; `lem:pencil-contract-degenerate-rank` P `lem:claim-6-4`.
+    *Added* (25): 19 of the parent's 26 missing, the other 7 implied by them:
+    `lem:cycle-pencil-realization`, `lem:pencil-lifting-planes-motions` P
+    `lem:panel-support-extensor-join`; `lem:pencil-min-degree-rigid` P `lem:circuit-induces-rigid`;
+    `lem:pencil-projective-transport` S `def:induced-screw-map`; `lem:pencil-cut-case` P
+    `lem:block-rank-cut`, `lem:relative-deficiency-rank-bound`; `lem:pencil-base-case` P
+    `lem:case-II-placement-old-rows-extract`, `lem:edge-rows-independent`,
+    `lem:isInfRigidOn-of-relative-count`, `lem:relative-deficiency-rank-bound`,
+    `lem:two-vertex-zero-dof`; `lem:pencil-contraction-deficiency` P `lem:reduction-measure`,
+    `lem:two-edge-conn`; `def:pencil-main-component-statements` S `def:cut-edges-2ec`;
+    `lem:pencil-rank-collineation` P `def:induced-screw-map`;
+    `lem:pencil-weighted-lifting-system-local` S `def:pencil-lifting-system`;
+    `def:pencil-x0-standing` S `def:pencil-nondegenerate`; `thm:pencil-x0-contract-additive` P
+    `lem:pencil-lifting-restrict`; `lem:pencil-ear-hinge-span` S `lem:pencil-join-flat`. 1 for a
+    citation a removal left with no ancestor: `lem:pencil-rank-scale-shift` S
+    `def:pencil-x0-attains`. 5 that the removals left missing: `lem:pencil-nonsimple-case` P
+    `lem:case-II-placement-old-rows-extract`, `lem:extProj-preserves-rank-of-inter`,
+    `lem:isInfRigidOn-of-relative-count`, `lem:two-vertex-zero-dof`;
+    `lem:pencil-contract-degenerate-rank` P `lem:independent-rows-of-rank`. Drawn edges 1 468 ->
+    1 489 (`00d69609c8fd0ada`), 13 gone and 34 drawn, no fill changed; 3 576 lines, the diff 170
+    lines. Missing 58 -> 28 (these chapters 0, task 4.9's 32 -> 28), unbacked 84 + 165 -> 84 + 153.
   - [ ] **4.9 `main-component` from *Open ears with two, three or four interior bodies*** (`F-005`,
-    `F-006`; at task 4.7, 32 missing and 13 / 21 unbacked).
+    `F-006`; at task 4.7, 32 missing and 13 / 21 unbacked; at task 4.8, 28 and 13 / 21).
 - [ ] **5. N — node order** (`F-019`, `F-029`, `F-050`, `F-119`; the forward screen re-run after
   task 4; `F-071`'s move was round 2's, task 4.2). Move a node where the move cures a forward
   `\uses` without creating one: within a chapter (principle E, *Node order*), or across chapters or
@@ -374,29 +357,29 @@ None.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 4.8, the edges of `pencil.tex` and of `main-component.tex` through
-*Ears and cycles*** (`F-005`'s part, `F-006`'s part; Opus, a fresh agent). The parent's dump is
-task 4.7's (3 555 lines, `e77e0c99de936ca0`; *Current state*): regenerate it on the parent after
-`verify.sh` if the scratch copy is gone. The parent's report gives `pencil` 19 missing and 2 / 11
-unbacked, and `main-component` before *Open ears with two, three or four interior bodies* (its
-line 2529) 7 missing and 3 / 29 unbacked, so one commit by the split rule; if it will not fit one
-sitting, land `pencil.tex` first and say so in 4.8's line. Read the chapters' report (`--chapter`;
-`--label` takes every node at once) and the ledger entries (`F-005`, and the unbacked edges and
-missing in-edges *Current state* names), and apply *Scope*'s edge policy as tasks 4.1–4.7 read it
-(*Decisions*): each *missing* edge on the statement or the proof as tagged, unless the task's
+**Next concrete task: task 4.9, the edges of `main-component.tex` from *Open ears with two, three or
+four interior bodies* to its end** (`F-005` and `F-006` done with it; Opus, a fresh agent). The
+parent's dump is task 4.8's (3 576 lines, `80fd0513339af152`; *Current state*): regenerate it on the
+parent after `verify.sh` if the scratch copy is gone. The parent's report gives that part 28 missing
+and 13 / 21 unbacked, so one commit by the split rule. Read its report (`--chapter main-component`,
+from that subsection on; `--label` takes every node at once) and the ledger entries (`F-005`,
+`F-006`, and the edges *Current state* names), and apply *Scope*'s edge policy as tasks 4.1–4.8 read
+it (*Decisions*): each *missing* edge on the statement or the proof as tagged, unless the task's
 other additions imply it; an edge for each citation of a step that the ledger lists or
 `t43/cites.py` finds; the ledger's statement-to-proof moves; an unbacked edge that nothing uses
 removed, with its reason; then re-run until nothing is missing, adding in any chapter the edges a
-removal leaves missing, and re-run `t43/cites.py` for citations a removal leaves with no
-ancestor. Write the `\uses` changes, node by node, in 4.8's line before editing (gate 3 (b)).
-Tools (gitignored): `t47/edit.py` reads `t47/ops.py` (removals and moves), then `t47/adds.py`
-with `PHASE=2` and `reflow.py` when present (it aligns the touched blocks' continuation lines),
-and asserts each op, on the copy and then on the tree; `t46/reachtab.py` tabulates a `--label`
-report's `\uses` by the pins' reach (statement, proof, unbacked); `t42/missdiff.py` diffs the
-missing and unbacked sets of two full reports over every chapter; `t41/redund.py` lists each
-added edge that the others imply; `t43/cites.py <tex-root> <chapter>...` lists the `\cref`s with
-no edge; `t42/screen.py <tex-root> v` lists the forward edges; `predict-dump.sh` gives the
-after-dump. Then task 4.9.
+removal leaves missing, and re-run `t43/cites.py` for citations a removal leaves with no ancestor.
+Write the `\uses` changes, node by node, in 4.9's line before editing (gate 3 (b)). The commit sets
+`F-005`'s disposition (no missing edge in the two chapters) and `F-006`'s (tasks 4.1–4.9's unbacked
+edges, removed and kept). Tools (gitignored): `t48/edit.py` reads `t48/ops.py` (removals and moves),
+then `t48/adds.py` with `PHASE=2`, `reflow.py` (it aligns the touched blocks' continuation lines)
+and `txt.py` (exact text replacements, such as a repointed `\cref`) when present, and asserts each
+op, on the copy and then on the tree; `t48/mu.py <report> <chapter>[:<from>[:<to>]]...` lists the
+missing and unbacked edges of the nodes in those line ranges; `t46/reachtab.py` tabulates a
+`--label` report's `\uses` by the pins' reach; `t42/missdiff.py` diffs the missing and unbacked sets
+of two full reports; `t41/redund.py` lists each added edge that the others imply; `t43/cites.py
+<tex-root> <chapter>...` lists the `\cref`s with no edge; `t42/screen.py <tex-root> v` lists the
+forward edges; `predict-dump.sh` gives the after-dump. Then task 5.
 
 ## Decisions made during this round
 
@@ -411,51 +394,34 @@ after-dump. Then task 4.9.
 - **Task 3's node-shape verdicts** (done): each commit has its entry; *Scope* states the rules.
 - **A pin two nodes share leaves an edge the script cannot back** (task 3.14). The script skips a
   node's own pins, so an edge to a node whose pin the user shares reads as unbacked. It stays, as
-  the user's clause is the other node's claim (`thm:pencil-x0-main-component` ->
-  `lem:pencil-x0-one-witness`, `lem:reduction-step` -> `lem:contraction-minimality`); a merge
-  (task 8.2) would remove the double.
-- **The edge policy, as task 4.1 read it.** A missing edge that the task's other additions imply
-  is not added (the report's *implied*, applied after the task). An unbacked edge reached through
-  another node is a use by the pins and stays; one with no Lean basis goes when the statement does
-  not state it and the proof cites it at most "as in the proof of" (an argument followed,
-  `F-175`), and an edge a removal leaves missing is added in the same task. A definition's
-  well-definedness paragraph is its proof prose. Task 4's split rule counts missing edges.
-- **The edge policy, as task 4.2 read it.** An unbacked edge with no Lean basis also stays when
-  the statement names a symbol the target defines or states its object without its name; a
-  citation in a lead-in or a remark is no use. A definition with a proof takes a theorem pin's
-  body reach on its proof. A missing edge that a pinned proof step draws is added and the step
-  filed (`F-247`). An edge a removal leaves missing is added at its node, in any chapter.
-- **The edge policy, as task 4.3 read it.** A proof that follows another node's argument ("as
-  for", "we reverse the argument of") takes no edge to it, though the ledger put the edge on the
-  proof (`F-089`); a statement edge that the proof already names is removed, not moved (`F-105`).
-  Citations of a step come from the ledger's lists and from `t43/cites.py`, a scan of the
-  chapters' `\cref`s. A remark in a node's `\uses` becomes a `\cref` in its proof (`F-007`).
-- **The edge policy, as task 4.4 read it.** A pin that states the target's object through an
-  unpinned declaration uses it (`def:pinned-motions-on`'s $\operatorname{pinned}(v)$), so the edge
-  stays. Citations after a proof's conclusion ("This proves the lemma"), for how Katoh and Tanigawa
-  attain a claim, or of a general form ("the general form of this argument is") are no use. A
-  removal can leave a cited node with no ancestor path: re-run `t43/cites.py` on the copy, and add
-  the edge. A transitive unbacked edge stays even where its ledger entry finds the text does not
-  use it (`F-129`, left).
-- **The edge policy, as task 4.5 read it.** A statement on $\dim Z = D + k'$ for any $k'$, or on
-  motions constant on a set, takes no edge to `def:rank-hypothesis`, as no realization at a target
-  rank enters (task 4.4's five nodes too); one that takes a panel-hinge framework keeps its edge to
-  `def:panel-hinge-framework`, though its pin holds for body-hinge frameworks. An example after a
-  proof's argument ("For instance"), and "Hence, as in" a lemma whose count the proof repeats, are
-  no use.
-- **The edge policy, as task 4.6 read it.** A statement that assumes another node's conclusion
-  keeps its edge to it (the honesty gate's case (b): `lem:case-III-candidate-dispatch-d3` ->
-  `lem:case-III-nested-rank-lower`), and one that takes another node's objects ("let $r$ be the
-  form of") keeps or takes it. An unbacked statement edge that only the proof cites for a step
-  moves to the proof. A proof's paragraph after its conclusion that derives a further form ("This
-  gives KT Claim 6.12") is no use, nor "as in" a node whose reasoning the proof repeats; a proof
-  that cites a node for a step keeps the edge though a note says the formal proof skips that node.
-  Backed statement edges that only the proof uses, which the ledger does not list, stay.
-- **The edge policy, as task 4.7 read it.** A citation in a formalization note is no use, as one
-  in a remark (`thm:projective-invariance` -> `def:rank-hypothesis`), nor a construction made "as
-  in" a node (`lem:endpoint-witness` -> `prop:tay-witness-exists`). The proof of an unpinned clause
-  takes edges for the steps it cites, with no Lean basis (`thm:molecular-iff-square-bar-joint`,
-  `F-183`), as does a proof that cites "the remark after" a node for a step (`def:plucker-coords`).
-  A missing edge that another chapter's pinned proof step draws is added, and the step filed
-  (`F-248`, as `F-247`). A definition on the parts of a partition that writes $d_G$ as
-  `def:D-deficiency` does keeps its edge to it (`def:g-cut-edges`).
+  the user's clause is the other node's claim (`thm:pencil-x0-main-component`'s three, task 4.8;
+  `lem:reduction-step` -> `lem:contraction-minimality`); a merge (task 8.2) would remove the double.
+- **The edge policy's mechanics** (tasks 4.1–4.8). A missing edge that the task's other additions
+  imply is not added (the report's *implied*, applied after the task); the split rule counts
+  missing edges. An edge a removal leaves missing is added at its node, in any chapter, and
+  `t43/cites.py` (with the ledger's lists, the source of cited steps) is re-run on the copy: a
+  citation a removal leaves with no ancestor takes an edge. A definition's well-definedness
+  paragraph is its proof prose; a definition with a proof takes a pin's body reach there. A missing
+  edge that a pinned proof step draws is added and the step filed (`F-247`, `F-248`). A remark in a
+  node's `\uses` becomes a `\cref` in its proof (`F-007`).
+- **What keeps an unbacked edge** (tasks 4.1–4.8). A transitive one is a use by the pins, even
+  where the ledger finds the text does not use it (`F-129`, left), as is one through an unpinned
+  declaration that states the target's object (`def:pinned-motions-on`'s $\operatorname{pinned}(v)$).
+  One with no Lean basis stays when the statement names a symbol the target defines, states or
+  takes its object ("let $r$ be the form of"), or assumes its conclusion (the honesty gate's case
+  (b)), takes a panel-hinge framework, or writes $d_G$ as `def:D-deficiency` does; and when a proof
+  cites the node for a step, though a note says the formal proof skips it, as the proof of an
+  unpinned clause does (`F-183`), or one citing "the remark after" a node.
+- **What is no use** (tasks 4.1–4.8). A citation in a lead-in, a remark or a formalization note; an
+  argument followed or a construction repeated ("as in the proof of", "as for", "as in", "the
+  argument of", "we reverse the argument of", the fact "behind" a node; `F-175`), even where the
+  ledger put the edge on the proof (`F-089`); a comparison; a citation after a proof's conclusion,
+  or one deriving a further form there; one for how Katoh and Tanigawa attain a claim, of a general
+  form, or of an example ("For instance"); and one that says why a step is needed rather than
+  making it (task 4.8: `lem:pencil-cut-case`'s of the biconditional's converse).
+- **`def:rank-hypothesis`, and moves** (tasks 4.3–4.8). A statement on $\dim Z = D + k'$, on
+  motions constant on a set or on rigidity on $V(G)$ takes no edge to `def:rank-hypothesis`, as no
+  realization at a target rank enters; its `\cref` for such rigidity names
+  `def:trivial-motions-rigid` (task 4.8). An unbacked statement edge that only the proof cites for
+  a step moves to the proof; one that the proof already names is removed, not moved (`F-105`);
+  backed statement edges that only the proof uses, which the ledger does not list, stay.

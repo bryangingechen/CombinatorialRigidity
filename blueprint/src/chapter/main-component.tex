@@ -522,8 +522,7 @@ shrinks a core along the contraction curve
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:polarity-join, lem:screw-map-rows,
-        lem:pencil-config-point-join-rank}
+  \uses{lem:polarity-join, lem:screw-map-rows, def:induced-screw-map}
   The hinge at an edge $uv$ with normals $p$ is the image of the line
   $p_u \wedge p_v$ under the polarity
   (\cref{lem:polarity-join}). So the rigidity matrix with
@@ -540,8 +539,8 @@ shrinks a core along the contraction curve
   \label{lem:pencil-rank-scale-shift}
   \lean{Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts}
   \leanok
-  \uses{lem:pencil-config-point-join-rank, def:pencil-lifting-space,
-        lem:screw-map-rows}
+  \uses{def:pencil-lifting-space, lem:screw-map-rows,
+        def:pencil-x0-attains}
   Let $q$ be a picture of $G$, $z$ a height, $t \in K$ nonzero and
   $a \in \mathrm{Aff}(q)$. Then the configurations $(q, z)$ and
   $(q, tz + a)$ have the same rank (\cref{def:pencil-x0-attains}).
@@ -742,13 +741,12 @@ its solutions form $L(q)$.
   \label{lem:pencil-weighted-lifting-system-local}
   \lean{Graph.ker_liftingMatrix_congr}
   \leanok
-  \uses{def:pencil-weighted-lifting-system}
+  \uses{def:pencil-lifting-system}
   The solutions of the lifting system of a graph $H$ at a picture
   depend only on the picture at the bodies of $H$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-picture-local}
   Each condition of the lifting system of $H$ reads the picture at a
   member of the closed neighbourhood of a body of $H$, and these are
   bodies of $H$ (as in \cref{lem:pencil-picture-local}).
@@ -1039,7 +1037,7 @@ $\dim L(q) = 3$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:panel-support-extensor}
+  \uses{def:panel-support-extensor, lem:panel-support-extensor-join}
   The screw space of the plane is $K^3$. The hinge of $P_q$ at an edge
   $uv$ is the meet of the lines with normals $(x_u, y_u, 1)$ and
   $(x_v, y_v, 1)$ (\cref{def:panel-support-extensor}). It is a nonzero
@@ -1459,6 +1457,7 @@ us read the rank of a subgraph at a height of $G$.
   \lean{Graph.IsX0Graph, Graph.three_le_ncard_closedNbhd,
     Graph.IsX0Graph.three_le_ncard_closedNbhd}
   \leanok
+  \uses{def:pencil-nondegenerate}
   A graph $G$ satisfies the \emph{standing hypotheses} if it is finite,
   simple and connected, with minimum degree at least two. Then every
   closed neighbourhood of $G$ has at least three members: a body of
@@ -1785,8 +1784,7 @@ at $n = 2$.
   \label{lem:pencil-contract-standing}
   \lean{Graph.isX0Graph_rigidContract_induce}
   \leanok
-  \uses{def:pencil-x0-standing, def:cut-edges-2ec, def:rigid-contraction,
-        def:D-deficiency}
+  \uses{def:pencil-x0-standing, def:cut-edges-2ec, def:rigid-contraction}
   Let $G$ satisfy the standing hypotheses and be $2$-edge-connected. Let
   $W \subsetneq V(G)$ with $|W| \ge 2$, such that no body outside $W$ is
   adjacent to two bodies of $W$, and let $G/H$ be the contraction of
@@ -1795,7 +1793,6 @@ at $n = 2$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:deficiency-zero-connected}
   An edge of $G/H$ is an edge of $G$ not inside $W$. Two such edges with
   the same ends in $G/H$ would give a body outside $W$ adjacent to two
   bodies of $W$, or two parallel edges of $G$, so $G/H$ is simple. A path
@@ -1969,8 +1966,8 @@ of the rank, so the step works over every infinite field.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:claim-6-4, lem:extProj-preserves-rank-of-inter,
-        lem:rank-polynomial-proj-eval}
+  \uses{lem:extProj-preserves-rank-of-inter, lem:rank-polynomial-proj-eval,
+        lem:independent-rows-of-rank}
   At the collapsed placement each row of $G \setminus E(H)$, with the
   columns of $W$ deleted, is the corresponding row of $G/H$ with the
   column of $r$ deleted (as in \cref{lem:claim-6-4}), and deleting the
@@ -2034,7 +2031,8 @@ of the rank, so the step works over every infinite field.
         lem:pencil-contract-degenerate-rank,
         lem:pencil-x0-fibre-intersection,
         lem:pencil-contract-magnified-rank, lem:pencil-rank-congr,
-        lem:block-rank-contract, lem:reduction-measure}
+        lem:block-rank-contract, lem:reduction-measure,
+        lem:pencil-lifting-restrict}
   \emph{The pieces.} $H$ satisfies the standing hypotheses
   (\cref{lem:pencil-contract-standing-rigid}, at $n = 3$). By
   \cref{lem:pencil-contract-standing}, $G/H$ is simple and satisfies them
@@ -2366,7 +2364,8 @@ the coordinates of a join.
   \lean{CombinatorialRigidity.Molecular.span_supportExtensor_eq_top_of_linearIndependent,
     CombinatorialRigidity.Molecular.card_le_finrank_of_linearIndependent_pointJoin}
   \leanok
-  \uses{def:pencil-x0-attains, def:panel-support-extensor}
+  \uses{def:pencil-x0-attains, def:panel-support-extensor,
+    lem:pencil-join-flat}
   Let $p$ be the points of a configuration of $G$, and let
   $g_1, \dots, g_m$ be edges of $G$, with ends $u_i, w_i$, whose joins
   $p_{u_i} \wedge p_{w_i}$ are linearly independent. Then the hinges at

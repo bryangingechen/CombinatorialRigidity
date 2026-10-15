@@ -241,7 +241,6 @@ lines of a flat pencil already share the point of the pencil.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:extensor-pair-in-panel}
   The panel $n^{\perp}$ has dimension at least $3$ in $K^4$, so it
   contains three linearly independent vectors $q, a, b$. Take the two
   pencil lines $q \vee a$ and $q \vee b$ through $q$: both lie in
@@ -265,7 +264,6 @@ lines of a flat pencil already share the point of the pencil.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:extensor-pair-in-panel}
   As for \cref{lem:extensor-pair-through-point}, with $q$ given in
   advance. The panel $n^{\perp}$ has
   dimension at least $3$ in $K^4$, so $q$ extends to a linearly
@@ -343,16 +341,17 @@ family's panel data, giving a pencil realization outright.
   \label{lem:cycle-pencil-realization}
   \lean{CombinatorialRigidity.Molecular.exists_pencilPanelRealization_cycle}
   \leanok
-  \uses{def:cycle-data, def:pencil-panel-realization, def:rank-hypothesis}
+  \uses{def:cycle-data, def:pencil-panel-realization}
   Let $G$ be presented as a cycle of $m$ bodies (\cref{def:cycle-data})
   with $3 \le m \le 4$. Then $G$ has a pencil realization
   (\cref{def:pencil-panel-realization}) that is infinitesimally rigid on
-  all of its bodies $V(G)$ (\cref{def:rank-hypothesis}).
+  all of its bodies $V(G)$ (\cref{def:trivial-motions-rigid}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:cycle-normals, lem:coplanar-hinges-concurrent, lem:cycle-realization-rigid,
-        def:panel-support-extensor, def:genuine-hinge-realization, def:extensor-through-point}
+        def:panel-support-extensor, def:genuine-hinge-realization, def:extensor-through-point,
+        lem:panel-support-extensor-join}
   At grade $k = 2$ the cyclic shared-normal family
   (\cref{lem:cycle-normals}) supplies $m$ panel normals $n_0, \dots,
   n_{m-1}$ --- the range $3 \le m \le 4 = k + 2$ is exactly its
@@ -387,11 +386,11 @@ realization.
   \label{lem:cycle-coplanar-realization}
   \lean{CombinatorialRigidity.Molecular.exists_coplanarPanelRealization_cycle}
   \leanok
-  \uses{def:cycle-data, def:coplanar-panel-realization, def:rank-hypothesis}
+  \uses{def:cycle-data, def:coplanar-panel-realization}
   Let $G$ be presented as a cycle of $m$ bodies (\cref{def:cycle-data})
   with $3 \le m \le 4$. Then $G$ has a hinge-coplanar panel realization
   (\cref{def:coplanar-panel-realization}) that is infinitesimally rigid on
-  all of its bodies $V(G)$ (\cref{def:rank-hypothesis}).
+  all of its bodies $V(G)$ (\cref{def:trivial-motions-rigid}).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -562,6 +561,7 @@ statement the induction proves is the following.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:circuit-induces-rigid}
   Let $v$ be a vertex of minimum degree $\delta \ge 3$. The handshake
   identity gives $\delta\,|V(G)| \le 2\,|E(G)|$, so the edges avoiding $v$
   number $|E(G)| - \delta \ge \delta(|V(G)|-2)/2$, and the $(D-1)$-fold
@@ -649,7 +649,7 @@ automorphism.
         CombinatorialRigidity.Molecular.extensorInPanel_screwEquivOfLinearEquiv,
         CombinatorialRigidity.Molecular.extensorThroughPoint_screwEquivOfLinearEquiv}
   \leanok
-  \uses{def:pencil-panel-realization}
+  \uses{def:pencil-panel-realization, def:induced-screw-map}
   Let $g$ be a linear automorphism of $K^4$ and $h$ a contragredient of it,
   meaning $\langle g x, h y\rangle = \langle x, y\rangle$ for the standard
   pairing. Transporting a pencil panel realization $(F, n, q)$ by acting on
@@ -716,8 +716,7 @@ automorphism.
         CombinatorialRigidity.Molecular.hasDistinctPencilRealization_of_not_twoEdgeConnected}
   \leanok
   \uses{def:pencil-rank-hypothesis, def:cut-edges-2ec,
-        def:pencil-distinct-motive,
-        lem:two-pencil-extension-iff, lem:pencil-projective-transport,
+        def:pencil-distinct-motive, lem:pencil-projective-transport,
         lem:pencil-cut-nondegeneracy}
   Let $G$ be a multigraph that is not two-edge-connected, so that at most
   one edge crosses some nonempty proper subset $V_1 \subsetneq V(G)$, and
@@ -729,7 +728,8 @@ automorphism.
 \begin{proof}
   \leanok
   \uses{lem:pencil-projective-transport, lem:pencil-cut-nondegeneracy,
-        lem:cut-edge-decomposition, lem:two-pencil-extension}
+        lem:cut-edge-decomposition, lem:two-pencil-extension,
+        lem:block-rank-cut, lem:relative-deficiency-rank-bound}
   Realize the two sides separately. If no edge crosses, together they
   realize $G$. Suppose one edge $uv$ crosses, with $u \in V_1$. The two
   realizations were chosen independently, so the cross-incidences of $uv$
@@ -762,6 +762,9 @@ automorphism.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:case-II-placement-old-rows-extract,
+    lem:edge-rows-independent, lem:isInfRigidOn-of-relative-count,
+    lem:relative-deficiency-rank-bound, lem:two-vertex-zero-dof}
   Give every body the same normal $n$ and the same point $q$ of its
   panel. With no edge the deficiency rank is $0$. With one edge it is
   $D - 1$, which one nonzero hinge in the panel through $q$ attains.
@@ -784,6 +787,7 @@ automorphism.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:reduction-measure, lem:two-edge-conn}
   The matroid-contraction rank identity and the rank/deficiency bridge
   behind \cref{lem:contract-deficiency-conservation} already use no
   minimality; only the base/fiber-meeting half of the corresponding
@@ -1071,7 +1075,7 @@ from the conditioned pair at smaller multigraphs
         CombinatorialRigidity.Molecular.X0Gen}
   \leanok
   \uses{def:pencil-distinct-motive, def:pencil-generic-motive,
-        def:pencil-nondegenerate}
+        def:pencil-nondegenerate, def:cut-edges-2ec}
   Let $K$ be a field. The \emph{distinct main-component statement}
   asserts that every simple two-edge-connected multigraph on at least
   three bodies has an adjacent-distinct pencil realization at the
@@ -1096,9 +1100,13 @@ from the conditioned pair at smaller multigraphs
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-I-realization-nonsimple, lem:pencil-contraction-deficiency,
-        lem:rigidityRows-splice-rank-add, lem:extensor-pair-through-given-point,
-        lem:theorem-55-base, lem:relative-deficiency-rank-bound}
+  \uses{lem:pencil-contraction-deficiency,
+        lem:rigidityRows-splice-rank-add,
+        lem:extensor-pair-through-given-point, lem:theorem-55-base,
+        lem:relative-deficiency-rank-bound,
+        lem:case-II-placement-old-rows-extract,
+        lem:extProj-preserves-rank-of-inter,
+        lem:isInfRigidOn-of-relative-count, lem:two-vertex-zero-dof}
   We follow the proof of KT Lemma~6.2~\cite[p.~673]{katohTanigawa2011},
   as in \cref{lem:case-I-realization-nonsimple}, for pencil realizations
   and without minimality.
