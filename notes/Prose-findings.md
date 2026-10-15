@@ -938,8 +938,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:genericity-device`, `--summary` and
   the forward screen, on round 2 task 5's tree).
   *Found:* RECONCILE round 2 task 5.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 5): *Blockers / open
-  questions*.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 15): the coordinator gave the
+  first cure, the move of `lem:independent-rows-of-rank`, to task 15.
 
 ## N — node shape
 

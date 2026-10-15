@@ -21,7 +21,7 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 ## Current state
 
 **Tasks 1–5 are done**; task 5, S7's repin, is this commit (`genericity-and-count.tex`). Nothing
-is mid-stream; task 6 is next, and `F-255` waits for the coordinator (*Blockers*). Task 5's gates:
+is mid-stream; task 6 is next, and `F-255`'s cure is task 15's (its line). Task 5's gates:
 `lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:` lines;
 **`1501 edges 5c3b872128be09bf`**, **`15d6506b39a873fc`** (1 009 pins, 997 distinct); the dump's diff from
 `dump-ab3a0d45.txt` (task 4's after-dump) exactly task 5's amended expected lines, the after-dump
@@ -290,8 +290,13 @@ task makes exact before editing. Every task is at Opus but the close.
   `genericity-and-count.tex` 17, 115, 172, 303; `case-i.tex` 251, 492, 673, 1068, 1247;
   `case-ii.tex` 275; `panel-layer.tex` 751; `molecule-modelling.tex` 687. Each says which argument
   it borrows (task 5's open-set form, or the minor of `lem:rank-polynomial-of-le-finrank`), and
-  points at another node where its sentence cites that node's claim. *Expected:* the dump
-  byte-identical, or a proof edge moved with its `\cref`, listed before editing.
+  points at another node where its sentence cites that node's claim. **And `F-255`'s cure** (the
+  coordinator, after task 5): `lem:independent-rows-of-rank` and its note move from the counting
+  subsection into the first, before `lem:genericity-device`, whose proof gains the edge to it; both
+  subsections' leads follow. Its `\uses` (`rigidity-matrix.tex`, `case-i.tex` 630) all precede the
+  new place, and its users all follow it or (`case-i.tex`) were forward already. *Expected:* that
+  proof `\uses` added, the missing edge 0; the dump otherwise byte-identical, or a proof edge moved
+  with its `\cref`, listed before editing; the screen unchanged.
 - [ ] **16. KT's route: Case I's group** (M3, G3, G4; `F-134`, `F-139`, `F-118`). One framing
   remark in `case-i.tex` for `lem:cycle-realization-base` (48; it restates `lem:theorem-55-base`,
   `panel-layer.tex` 789, for panel-hinge frameworks, and says so), `lem:cycle-realization-dim-bound`
@@ -375,13 +380,7 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 
 ## Blockers / open questions
 
-- `F-255` (E, task 5), for the coordinator: `lem:genericity-device`'s new pin calls
-  `lem:independent-rows-of-rank`'s, 218 lines later in `genericity-and-count.tex`, and the proof
-  edge is left missing, as adding it is a new forward `\uses` (gate 4). *Node order* cures it by a
-  move that task 5's line does not name: `lem:independent-rows-of-rank` and its note to before the
-  node (into the first subsection, both leads following), or the node after it (leaving its
-  subsection a lead alone). Task 15, which edits both leads' `\cref`s, could take the first if its
-  line is amended; otherwise the edge stays missing, recorded. Not a stop.
+None. (`F-255`, task 5's missing proof edge, is task 15's: *Decisions made*.)
 
 ## Hand-off / next phase
 
@@ -399,7 +398,7 @@ the parent if it is missing). Lines moved since the open's numbering, which late
 for 1052–1924, +4 for 1937–2112, +13 for 2113–2425 (one more in part of the node's proof) and +14
 after (`lem:case-III-chain-dispatch` 2363, `lem:case-III` 2469); task 4's, `case-ii.tex` −5 for
 72–133 (`lem:case-II` is 67) and −44 after 133 (`lem:case-II-realization` 91). Re-`grep` as ever.
-Open for the coordinator: `F-255` (*Blockers*), not a stop. Carried in from round 1: `F-252` for
+`F-255`'s cure is task 15's (its line). Carried in from round 1: `F-252` for
 the PI (round 1's *Candidates*; the phase's (a) removes it), and its two docstring lines, already
 in round 3's list.
 
@@ -440,3 +439,7 @@ in round 3's list.
   be forward and the cure moves a node the line does not name, so it is `F-255`, for the
   coordinator. `lem:relative-device-count`'s edge to the node moves to `def:panel-hinge-framework`,
   which its pin's statement reaches and the removal would leave missing.
+- **`F-255`'s cure goes to task 15** (the coordinator, after task 5): move
+  `lem:independent-rows-of-rank` before `lem:genericity-device`, rather than the device after it
+  (which would leave the first subsection a lead alone) or leaving the edge missing (round 5 left
+  none). Task 15 already edits both leads; the move adds no forward `\uses`.
