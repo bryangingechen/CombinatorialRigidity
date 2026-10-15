@@ -1,11 +1,11 @@
 # Combinatorial Rigidity — Roadmap
 
 This directory formalizes a slice of **combinatorial rigidity theory** in
-mathlib style. Its first target was **Laman's theorem** (1970): a graph on
-`n ≥ 2` vertices is generically rigid in the plane iff it contains a
-spanning subgraph with `2n − 3` edges in which every subgraph on `k ≥ 2`
-vertices has at most `2k − 3` edges. Such graphs are called *Laman graphs*
-or *minimally rigid* graphs in the plane. Laman's theorem closed with
+mathlib style. Its first target was **Laman's theorem** (Pollaczek-Geiringer
+1927, Laman 1970): a graph on `n ≥ 2` vertices is generically rigid in the
+plane iff it contains a spanning subgraph with `2n − 3` edges in which every
+subgraph on `k ≥ 2` vertices has at most `2k − 3` edges. Such graphs are
+called *Laman graphs* or *minimally rigid* graphs in the plane. Laman's theorem closed with
 Phase 6. The program then ran through the body-bar and body-hinge
 Tay–Whiteley theorems to Katoh–Tanigawa's proof of the **molecular
 conjecture** (Phases 17–26), and on to the **pencil realization theorem**
@@ -58,7 +58,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── RigidityMatroid.lean  Phase 6 — row-independence, basis-pick, sparsity bridge
 │   ├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
 │   ├── CountMatroid.lean  Phase 7 — abstract (k, ℓ)-count matroid (ℓ < 2k)
-│   ├── MatroidIdentification.lean  Phase 7 — sparse ⇒ row-independent (Laman) + rigidity matroid
+│   ├── MatroidIdentification.lean  Phase 7 — sparse ⇒ row-independent (Pollaczek-Geiringer, Laman) + rigidity matroid
 │   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
 │   ├── GenericRigidityMatroid.lean  Phase 24 — dimension-general generic bar-joint rigidity matroid + rank
 │   ├── SquareGraph.lean  Phase 25 — `SimpleGraph.square` + closed-neighborhood clique lemmas
@@ -267,8 +267,9 @@ blocker-argument contradiction templates (~210 LoC) is noted in
 Complete. Builds the rigidity-matroid scaffolding in
 `RigidityMatroid.lean` (row-independence, dual-module bridge, generic
 rank lower bound, affinely-spanning rank upper bound, basis-pick),
-then ships the easy half of Laman's characterization of independence
-(row-independent ⇒ $(2,3)$-sparse) in dim 2 and the assembly
+then ships the easy half of Pollaczek-Geiringer's and Laman's
+characterization of independence (row-independent ⇒ $(2,3)$-sparse) in
+dim 2 and the assembly
 `IsGenericallyRigid.exists_isLaman_le`, closing both directions of the
 Phase-5 iff. Phase 6 stood up the matroid scaffolding without
 packaging the abstract `Matroid` instance — the easy direction needs
@@ -278,8 +279,9 @@ Full lemma list and decisions → `notes/Phase6.md`.
 
 ### Phase 7 — Row independence and the count matroid (`CountMatroid.lean`, `MatroidIdentification.lean`)
 
-Complete. Ships the hard half of Laman's characterization in dim 2
-(sparse ⇒ row-independent, by Jordán's Henneberg induction), the
+Complete. Ships the hard half of Pollaczek-Geiringer's and Laman's
+characterization in dim 2 (sparse ⇒ row-independent, by Jordán's Henneberg
+induction), the
 general $(k, \ell)$-count matroid in the matroidal regime $\ell < 2k$
 (Whiteley 1996, Lee–Streinu 2008), and the planar rigidity-matroid
 specialisation.
@@ -1282,8 +1284,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `RECONCILE-FORMAL`: the link condition becomes a field of `PanelHingeFramework` (S2), the
   generic body-hinge and panel theorems stop being vacuous at minimal graphs (S1), the generic
   body-hinge theorem's multigraph form, and the claims no declaration states. Round 1,
-  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 6,
-  M5: read Pollaczek-Geiringer 1927, and credit it beside Laman if it states the characterization.
+  `reconcile-texts`, opened 2026-10-15 (`notes/Reconcile-texts-cleanup.md`). **Next:** its task 7,
+  §2.6: replace or drop the stale example in `blueprint/CLAUDE.md`'s honesty gate.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
@@ -1382,11 +1384,14 @@ first.
 
 ## References
 
+- H. Pollaczek-Geiringer, *Über die Gliederung ebener Fachwerke*, Z. Angew. Math.
+  Mech. **7** (1927), 58–72. — states and proves Laman's theorem (pp. 60, 64), by the
+  vertex-removal induction, and its independence form's hard half (§8, p. 70).
 - G. Laman, *On graphs and rigidity of plane skeletal structures*, J. Engrg.
-  Math. **4** (1970), 331–340.
+  Math. **4** (1970), 331–340. — proves the theorem again.
 - L. Lovász and Y. Yemini, *On generic rigidity in the plane*, SIAM J.
   Algebraic Discrete Methods **3** (1982), 91–98. — its Corollary 1
-  (p. 93) states Laman's characterization in the independence form that
+  (p. 93) states the characterization in the independence form that
   Phases 6–8 prove; the hard half follows Jordán's induction, not their proof.
 - J. Graver, B. Servatius, H. Servatius, *Combinatorial Rigidity*, AMS GSM 2,
   1993. — main textbook reference.

@@ -5,9 +5,9 @@ the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot
 the authority for which rounds are done. Docs and blueprint prose only: the scopes of S1 and S2 on
 the status surfaces, M1's "for simple graphs", M2's and M5's credits read against the two PDFs,
 §2.6's stale example in an agent manual, and the non-vacuity rule. No node, edge or pin changes,
-and no Lean edit. Nine one-commit tasks; tasks 1–5 (the open, S1's and S2's scopes, M1's text, M2's
-credits) are done. **Next concrete task:** task 6, M5: read Pollaczek-Geiringer 1927 (Opus).
-Round manual: `CLEANUP.md`.
+and no Lean edit. Nine one-commit tasks; tasks 1–6 (the open, S1's and S2's scopes, M1's text, M2's
+and M5's credits) are done. **Next concrete task:** task 7, §2.6: the honesty gate's example in
+`blueprint/CLAUDE.md` (Opus). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,14 +17,16 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–5 are done**; task 5, M2's planar credits, is this commit: the verdict, read from
-Lovász–Yemini 1982 and Jordán 2016 with pages, is in `F-025`, and the credits are fixed in
-`formalization.yaml`, ROADMAP and `DESIGN.md`. Next: task 6 (*Hand-off*). Task 5's gates gave the
-open's values: `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; `1501
-edges 11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines,
-`cmp`-identical) and `--summary` the same bytes; `print.log` 0 `LaTeX Warning` lines (no TeX
-edit); `check-phase-note.py` green; the no-Lean-edit diff empty; gate 7's harness
-`Axioms-t5.lean` `cmp`-identical to the open's (19 rows, 14 imports).
+**Tasks 1–6 are done**; task 6, M5, is this commit: Pollaczek-Geiringer 1927 states and proves the
+characterization (the verdict, with pages and the German passages translated, is in `F-228`), and
+she is credited beside Laman on every surface its line names, with a `bibliography.bib` entry
+checked against Crossref. Next: task 7 (*Hand-off*). Task 6's gates gave the open's values:
+`lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges
+11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical)
+and `--summary` the same bytes; `print.log` rebuilt by latexmk (dated 2026-10-15 16:13), 0 `LaTeX
+Warning` lines, 31 overfull boxes as at the open; `check-phase-note.py` green; the no-Lean-edit
+diff empty; gate 7's harness `Axioms-t6.lean` `cmp`-identical to the open's (19 rows, 14
+imports).
 
 **Verified at the open** (2026-10-15, at `f39e35e6`, whose Lean and blueprint are round 5's close
 tree, `62175c74`):
@@ -134,7 +136,7 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
   simple graphs, with the rest of its scope read from its pin's signature (`hSimple`, $|V| \ge 2$,
   `hspan`, $K$ infinite), and that for multigraphs the formalization has the form for bundles of
   bars (S11). No `\cref` or `\uses` changes. The multigraph form is the phase's (b).
-- [x] **5. M2 — the planar characterization's credits, verified first** (this commit; `F-025`, its
+- [x] **5. M2 — the planar characterization's credits, verified first** (`b408df1a`; `F-025`, its
   docs part; report M2; Opus). Read Lovász–Yemini 1982 (`.refs/`, 8 pages), Jordán 2016 pp. 45, 49 and 51
   (`.refs/jordan-2016-msj-memoirs.pdf`), and the statements of Phases 6–7's declarations
   (`linearRigidityMatroid_eq_rigidityMatroid`; the pins of
@@ -147,7 +149,7 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
   ROADMAP's directory-layout line (61), Status row title (96), §6's text (269), §7's heading and
   text (277, 279), and its *References* entry (1374) as the verdict says; `DESIGN.md` 42 and 213.
   The docstrings are round 3's (`notes/Reconcile.md` §3 lists them).
-- [ ] **6. M5 — Pollaczek-Geiringer 1927, read** (`F-228`; report M5; Opus). Read the PDF's page
+- [x] **6. M5 — Pollaczek-Geiringer 1927, read** (this commit; `F-228`; report M5; Opus). Read the PDF's page
   images with the Read tool's `pages`, not its garbled text layer; its 15 pages are pp. 58–72, and
   the first also carries the end of the preceding article. If it states the characterization, credit
   it beside Laman where the originator is named (the open's `grep`; a list's "Laman's theorem" is
@@ -201,6 +203,8 @@ list in `notes/Reconcile.md` §3.
   `MatroidIdentification.lean`'s "`|E|`-induction" (its header, a section heading and three
   docstrings), where `IsSparse.exists_rowIndependent_placement` inducts on $|V|$. Round 3's
   docstring sweep, with M2's.
+- `Laman.lean` 21's "Laman's 1970 theorem" (task 6): the module header credits Laman alone; with
+  `F-228` it credits Pollaczek-Geiringer 1927 too. Round 3's docstring sweep.
 
 ## Blockers / open questions
 
@@ -208,17 +212,14 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 6, M5** (Opus, a fresh agent): read Pollaczek-Geiringer 1927's page images (the Read
-tool's `pages`; its 15 PDF pages are pp. 58–72), then credit or record as its line says, under gates
-1–7 (TeX edits: gate 4's latexmk check; a `formalization.yaml` edit: gate 7). Its named lines have
-moved from the open's numbering: `formalization.yaml`'s `status.scope` (232), the description at
-270 and `alignment`'s Laman source (602) are 241, 279 and 645; ROADMAP's *References* entry for
-Laman (1372) is 1385, its opening (4) unchanged; `intro.tex` 114 is 127; the other chapters, README
-and the home page are unchanged. Task 5 named Laman as the originator of the characterization of
-independence on lines the open's `grep` did not see: `formalization.yaml` 45–47 (the LY note), 243
-(`status.scope`'s arc 2), 287 (the linear-matroid row) and 650 (its `alignment` source); ROADMAP 61,
-270, 281 and 1389; `DESIGN.md` 42 and 213. Whether the 1927 paper's credit joins Laman's there is
-task 6's call, by the form it states. Re-`grep` as ever. Then tasks 7–9 in order.
+**Next: task 7, §2.6** (Opus, a fresh agent): `blueprint/CLAUDE.md` 196–198 (unchanged since the
+open) still gives `lem:case-I` as the honestly green example. Re-read at HEAD every pin, line and
+edge its checklist line cites (`case_III_realization_all_k`, `Graph.simple_of_isMinimalKDof_of_noRigid`,
+`lem:case-III`'s `\uses` of `lem:simple-minimal-noRigid`, `theorem_55_minimalKDof_k_all_k`'s Case
+III branch, `--label lem:case-III`), then write `lem:case-III` as the example with the report's two
+cautions, or drop the example if any has changed. The task edits an agent manual only: gates 1–3,
+5 and 6, and gate 4's count with no latexmk check (no TeX edit); no gate 7 (no `formalization.yaml`
+edit). Then tasks 8–9 in order.
 
 ## Decisions made during this round
 
@@ -231,29 +232,21 @@ task 6's call, by the form it states. Re-`grep` as ever. Then tasks 7–9 in ord
   put in round 1, is round 3's with L1–L2 (§1's table).
 - **`F-251`** (the open): `formalization.yaml`'s fidelity paragraph claims every blueprint
   statement is in the exact form proved; task 3 qualifies it beside S2's scope.
-- **S1's surfaces** (task 2): ROADMAP §34 too (*Surface* lists ROADMAP for scopes). The pointers
-  to the theorem in `body_hinge_tay`'s row and `alignment` note, README 92 and the home page 82 lead
-  to the scoped text, and stay. `F-252`'s sharper reading stays off the surfaces: its tree's
-  minimality is argued, not witnessed.
-- **S2's surfaces** (task 3): ROADMAP §23 too, where the conjecture's statement is described.
-  Theorem 5.6's row now credits the rank formula to the nondegenerate form, as the upper bound
-  needs it. The KT `sources` note and `status.scope` point at the rows and `fidelity.divergences`,
-  which carry the scope, and stay. That the link-recording form gives the conjecture's panel side
-  at each edge's ends is witnessed (`molecular_conjecture`'s proof on that form); the texts say no
-  declaration states it. The free selector does not reach the multigraph theorems:
-  `HasCoplanarPanelRealization` puts each link's hinge in its own ends' panels, with nonzero
-  normals and hinges. No new entry.
-- **M1's passages** (task 4): the scope is the pin's signature (`hSimple`, `hV`, `hspan`, `[Infinite
-  K]`, `hfresh`). The main-text paragraph names the statement block's assumptions; the note after
-  `def:body-hinge-framework` adds the encoding's (every body a vertex; the fresh labels, by pointing
-  at the corollary's own note). No `\cref` added, so prose pointers. For multigraphs both say the
-  formalization "has" the bundle form, not `F-222`'s "only": `thm:theorem-55-6-multigraph`
-  realizes every spanning multigraph with nonzero hinges at the target rank (read from its
-  statement). No new entry.
-- **M2's credits** (task 5): Laman originates the characterization, in LY's own words (pp. 91–94)
-  and Jordán's (p. 45). LY stay a source for their Corollary 1, the form proved, as
-  `independently-proves` (a schema value, which the Jackson–Jordán 2008 entry uses for a result
-  proved by another argument), with a note; no LY "presentation we follow" credit, as the proofs
-  follow Jordán's, which the chapter and his `sources` entry already credit. ROADMAP's Phase 7 row
-  and heading take the home page's and `intro.tex`'s title. Closed phase notes keep their titles.
-  No new entry.
+- **S1's surfaces** (task 2): ROADMAP §34 too; the other pointers to the theorem lead to the scoped
+  text and stay; `F-252`'s sharper reading stays off the surfaces (argued, not witnessed).
+- **S2's surfaces** (task 3): ROADMAP §23 too; Theorem 5.6's row credits the rank formula to the
+  nondegenerate form; the free selector does not reach the multigraph theorems
+  (`HasCoplanarPanelRealization`). No new entry.
+- **M1's passages** (task 4): the scope is the pin's signature; for multigraphs the formalization
+  "has" the bundle form, not `F-222`'s "only" (`thm:theorem-55-6-multigraph`). No new entry.
+- **M2's credits** (task 5): Laman originates it (LY pp. 91–94, Jordán p. 45); LY is
+  `independently-proves` for Corollary 1, with no "presentation we follow" credit, as the proofs
+  follow Jordán's. No new entry.
+- **M5's credits** (task 6): the paper states and proves the characterization and the hard half of
+  its independence form (`F-228`), so she is credited first and Laman "again" wherever the
+  originator is named, task 5's independence lines included; "Laman's theorem" and "Laman graph" keep their names, as do lists and
+  the theorem's node and section. `henneberg.tex`'s construction credit gains her §7; the intro
+  adds that her proof is the Henneberg induction (`AUTHORING.md`: credit the first to give an
+  argument). `thm:edgeSet-rowIndependent-iff-isSparse` is now *Planar row-independence is
+  $(2,3)$-sparsity (Pollaczek-Geiringer, Laman)*: with "in the plane" the credit overfilled its
+  print line by 14 pt. No new entry.

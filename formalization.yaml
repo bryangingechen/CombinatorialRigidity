@@ -26,6 +26,22 @@ project:
 # sources - what was formalized. Sources may be articles, books, web posts, folklore,
 # conversations, or anything else.
 sources:                                                          # [required] list of sources
+  - title: "Über die Gliederung ebener Fachwerke"
+    authors: ["H. Pollaczek-Geiringer"]
+    id: "doi:10.1002/zamm.19270070107"
+    type: "article"
+    location: "the theorem of p. 60 and its Hauptsatz with converse, p. 64 (a planar framework with k joints and 2k - 3 bars is rigid at some realization iff no l >= 4 of its points are joined by more than 2l - 3 bars); Sec. 8, p. 70 (fewer bars: no accumulation gives full rank)"
+    relationship: "formalizes"
+    author_endorsement: "n/a"                                    # classical (1927), author deceased
+    note: >-
+      In German. Laman's theorem, stated and proved here in 1927; Laman 1970 proves it again.
+      Her 'brauchbar' (usable) is the project's notion: the rigidity matrix has rank s at
+      some placement (p. 63). Her proof (pp. 64-68) inducts on the joints, removing a vertex of
+      degree 2 or 3 by a reverse Henneberg move, as Jordán 2016's proof (p. 45), which the project
+      follows; Sec. 7 (pp. 69-70) derives the Henneberg construction. Sec. 8 is the hard half of
+      the independence form (Jordán 2016 Theorem 2.2.1, Lovász-Yemini 1982 Corollary 1). Neither
+      Jordán 2016 nor Lovász-Yemini 1982 cites the paper.
+
   - title: "On graphs and rigidity of plane skeletal structures"
     authors: ["G. Laman"]
     id: "doi:10.1007/BF01534980"
@@ -42,9 +58,10 @@ sources:                                                          # [required] l
     relationship: "independently-proves"
     author_endorsement: "not-contacted"
     note: >-
-      The characterization is Laman's: Lovász-Yemini present their Theorem 1 as a slight
-      generalization of Laman's theorem with a new proof (pp. 91-92) and their Corollary 3 as
-      Laman's theorem itself (pp. 93-94). Corollary 1 is the form phases 6-8 prove
+      The characterization is Laman's (and Pollaczek-Geiringer's before him, whom they do not
+      cite): Lovász-Yemini present their Theorem 1 as a slight generalization of Laman's
+      theorem with a new proof (pp. 91-92) and their Corollary 3 as Laman's theorem itself (pp.
+      93-94). Corollary 1 is the form phases 6-8 prove
       (row-independence at some placement iff (2,3)-sparsity, and the matroids it gives), not by
       their proof (pp. 95-96), which rests on Lovász's dimension formula for a hyperplane in
       general position (their Theorem 3, p. 95), but by Jordán 2016's Henneberg induction (Theorem
@@ -238,10 +255,11 @@ classification:
 status:
   scope: >-
     A Lean 4 / mathlib4 formalization of combinatorial rigidity theory, in four arcs.
-    (1) Laman's theorem (1970): a graph on >= 2 vertices is generically rigid in the plane
-    iff it contains a (2,3)-tight spanning subgraph, both directions via the Henneberg
-    construction. (2) The planar rigidity matroid (Laman's characterization of independence)
-    in both its combinatorial (2,3)-count and linear-matroid forms, plus an executable,
+    (1) Laman's theorem (Pollaczek-Geiringer 1927, Laman 1970): a graph on >= 2 vertices is
+    generically rigid in the plane iff it contains a (2,3)-tight spanning subgraph, both
+    directions via the Henneberg construction. (2) The planar rigidity matroid
+    (Pollaczek-Geiringer's and Laman's characterization of independence) in both its
+    combinatorial (2,3)-count and linear-matroid forms, plus an executable,
     certificate-carrying (k,l)-sparsity decision procedure - the Lee-Streinu pebble game -
     with Decidable instances and a `lake exe pebble-game` CLI. (3) Matroid union / Edmonds partition
     (ported from apnelson1/Matroid), Tutte-Nash-Williams tree packing, Whiteley's k-frame
@@ -276,7 +294,7 @@ status:
   main_results:                                                  # the completed headline theorems (four arcs + post-program phases)
   - declaration: "SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le"
     file: "CombinatorialRigidity/LamanTheorem.lean"
-    description: "Laman's theorem (1970): for n >= 2, G is generically rigid in the plane iff it contains a Laman (= (2,3)-tight) spanning subgraph."
+    description: "Laman's theorem (Pollaczek-Geiringer 1927, Laman 1970): for n >= 2, G is generically rigid in the plane iff it contains a Laman (= (2,3)-tight) spanning subgraph."
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -284,7 +302,7 @@ status:
 
   - declaration: "SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid"
     file: "CombinatorialRigidity/LinearRigidityMatroid.lean"
-    description: "Laman's characterization of independence in the plane (as Lovász-Yemini 1982 state it, Corollary 1), as a linear matroid: the generic-placement linear rigidity matroid (via Matroid.ofFun) equals the combinatorial (2,3)-count rigidity matroid."
+    description: "Pollaczek-Geiringer's and Laman's characterization of independence in the plane (as Lovász-Yemini 1982 state it, Corollary 1), as a linear matroid: the generic-placement linear rigidity matroid (via Matroid.ofFun) equals the combinatorial (2,3)-count rigidity matroid."
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -642,12 +660,12 @@ review:
 alignment:
   namespace: "(mixed) SimpleGraph, Graph, CombinatorialRigidity.Molecular, Matroid"
   statements:
-    - source: "Laman 1970, main theorem"
+    - source: "Pollaczek-Geiringer 1927, Hauptsatz (pp. 60, 64); Laman 1970, main theorem"
       lean: "SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le"
       module: "CombinatorialRigidity/LamanTheorem.lean"
       status: "proved"
 
-    - source: "Laman's characterization of independence (Jordán 2016 Theorem 2.2.1; Lovász-Yemini 1982 Corollary 1), linear-matroid form"
+    - source: "Pollaczek-Geiringer's and Laman's characterization of independence (Pollaczek-Geiringer 1927 Sec. 8; Jordán 2016 Theorem 2.2.1; Lovász-Yemini 1982 Corollary 1), linear-matroid form"
       lean: "SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid"
       module: "CombinatorialRigidity/LinearRigidityMatroid.lean"
       status: "proved"

@@ -39,8 +39,8 @@ than the matroid-theoretic route via `Mathlib.Combinatorics.Matroid`.
 edge-count bound — go through cleanly *without* invoking the rigidity
 matroid as a `Matroid` object. Phase 5 followed the same line for the
 (⇐) direction (Henneberg induction). Phase 6 closed the (⇒) direction
-via the easy half of Laman's characterization of independence (a
-row-independent edge set is $(2, 3)$-sparse); `RigidityMatroid.lean`
+via the easy half of Pollaczek-Geiringer's and Laman's characterization
+of independence (a row-independent edge set is $(2, 3)$-sparse); `RigidityMatroid.lean`
 sits on top of `Framework.lean` (whose definitions are deliberately
 matroid-agnostic — see *Notion- and matroid-agnostic core* below) and packages the
 row-independence relation plus its two named facts without
@@ -210,7 +210,8 @@ slots in as a separate file (`LocalRigidity.lean`, `GlobalRigidity.lean`,
   `Framework.lean` exists, but the abstract `Matroid` object isn't
   needed for any Phase 4 lemma or for Phase 5's (⇐) direction.
   `RigidityMatroid.lean` landed in Phase 6 to support the (⇒)
-  direction (the easy half of Laman's characterization of independence);
+  direction (the easy half of Pollaczek-Geiringer's and Laman's
+  characterization of independence);
   it ships the row-independence relation and the rank lemmas without
   packaging the abstract `Matroid` instance — see `notes/Phase6.md`
   *Architectural choices*.

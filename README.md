@@ -7,8 +7,9 @@
 > I (Bryan) have not yet fully vetted the prose or Lean code, so take everything you read here with a grain of salt.
 
 A Lean 4 / mathlib4 formalization of combinatorial rigidity theory. It
-began with **Laman's theorem** (1970): for `n ≥ 2`, a graph is generically
-rigid in the plane iff it contains a `(2, 3)`-tight spanning subgraph.
+began with **Laman's theorem** (Pollaczek-Geiringer 1927, Laman 1970): for
+`n ≥ 2`, a graph is generically rigid in the plane iff it contains a
+`(2, 3)`-tight spanning subgraph.
 Beyond Laman's theorem the project formalizes the planar rigidity matroid
 and an executable `(k, ℓ)`-sparsity decision procedure (the Lee–Streinu
 pebble game), the abstract matroid-union machinery, Tay's body-bar theorem
@@ -65,8 +66,9 @@ The development proceeds in four arcs (full plan in `ROADMAP.md`):
   route, landing `isGenericallyRigid_two_iff_exists_isLaman_le`.
 * **Rigidity matroid & sparsity decision** (phases 7–11) — the planar
   rigidity matroid as a mathlib `Matroid`, whose independent sets are the
-  `(2, 3)`-sparse edge sets by Laman's characterization (count-matroid
-  and linear-matroid forms), and the Lee–Streinu `(k, ℓ)`-pebble game as
+  `(2, 3)`-sparse edge sets by Pollaczek-Geiringer's and Laman's
+  characterization (count-matroid and linear-matroid forms), and the
+  Lee–Streinu `(k, ℓ)`-pebble game as
   an executable, certificate-carrying decision procedure (`Decidable`
   instances for `IsSparse` / `IsTight` / `IsLaman` and a
   `lake exe pebble-game` CLI emitting inline witnesses).

@@ -4089,6 +4089,49 @@ declaration's name as its header writes it:
   paper's content was not read. Candidate: read it, then credit both where the blueprint names the
   theorem's originator.
   *Evidence:* suspected (the 1927 paper's content); read (Crossref's record for the DOI; Jordán 2016
-  p. 45).
+  p. 45). The 1927 paper was not in `.refs/` then; RECONCILE round 1 task 6 read its page images
+  (pp. 58–72, in German), Crossref's record again, and the reference lists of Jordán 2016 and LY
+  1982.
   *Found:* round 4 task 2.14.
-  *Disposition:* reported (`notes/Prose-report.md`, M5).
+  *Disposition:* done (task 6; reported, `notes/Prose-report.md`, M5). The verdict: **the paper
+  states and proves the characterization.** Its theorem (p. 60): "Notwendig und hinreichend dafür,
+  daß ein Fachwerk von $k$ Knoten und $(2k-3)$ Stäben brauchbar sei, ist, daß es kein Teilsystem von
+  $l$ Punkten $(4 \le l < k)$ enthält, die durch mehr als $(2l-3)$ »innere« Stäbe mit einander
+  verbunden sind" (for a framework with $k$ joints and $2k-3$ bars to be *usable* it is necessary
+  and sufficient that it contain no subsystem of $l$ points, $4 \le l < k$, joined among themselves
+  by more than $2l-3$ "inner" bars); p. 64, the *Hauptsatz* with its converse: "Ein komplettes
+  ebenes $F_k$ ist dann und nur dann brauchbar, wenn es anhäufungsfrei ist" (a complete planar $F_k$
+  is usable if and only if it has no accumulation), "das gewünschte einfache, rein abzählende
+  Kriterium" (the desired simple, purely counting criterion). *Usable* is the generic notion: "Wir
+  wollen eine Gliederung brauchbar nennen, wenn sie mindestens eine Realisierung durch ein starres
+  Fachwerk besitzt" (we call a structure usable if it has at least one realization by a rigid
+  framework), algebraically "wenn es irgend ein Wertesystem $x_1 y_1, \dots x_k y_k$ gibt, für
+  welches die Matrix den Rang $s$ hat" (if there is some system of values for which the matrix, the
+  rigidity matrix, has rank $s$; both p. 63); rigid is rank $2k-3$ (p. 59), where she separates a
+  determinant vanishing at special positions (a hexagon's six points on a conic) from one vanishing
+  "bei jeder Wahl dieser Koordinaten" (for every choice of the coordinates). So it is Jordán's
+  Theorem 2.2.2 with "some placement" for "generic", the project's form, for simple graphs (bars
+  join pairs of points, $s \le \binom k2$, p. 61; $l < 4$ is dropped as $\binom l2 = 2l-3$ for $l =
+  2, 3$, p. 64). §8 (p. 70) extends the sufficiency to $2k-3-\nu$ bars, *usable* now meaning rank
+  $s$: "Ein Gebilde $F_k^{(\nu)}$ $(\nu \ge 0)$ von $k$ Knoten und $2k-3-\nu$ Stäben hat nicht mehr
+  als $\nu$ in der Gliederung begründete Beweglichkeiten, d. h. es ist im verallgemeinerten Sinne
+  brauchbar, sofern es keine Anhäufung besitzt" (… has no more than $\nu$ mobilities founded in its
+  structure, i.e. is usable in the generalized sense, if it has no accumulation): the hard half of
+  the independence form (Jordán's 2.2.1, LY's Corollary 1), which "zeigt, daß Anhäufung tatsächlich
+  das einzige Vorkommnis ist, das bei ebenen Fachwerksgebilden Unbrauchbarkeit hervorruft" (shows
+  that accumulation is indeed the only thing that makes planar frameworks unusable, p. 70); the
+  converse is the count she calls "sehr leicht zu sehen" (very easy to see, p. 64, stated for
+  complete frameworks). The proof (pp.
+  64–68) inducts on the number of joints from the triangle: a vertex of degree two is removed and
+  put back off its neighbours' line (p. 65); one of degree three is removed, a bar inserted between
+  two neighbours that a lemma on complete subsystems keeps free of accumulations (§4, pp. 65–67),
+  and put back off a "gefährlicher Ort", a conic (§5, pp. 67–68): the reverse Henneberg moves of
+  Jordán's proof (p. 45), which the project follows. §7 (pp. 69–70) derives the construction: the
+  complete usable frameworks are those built from the triangle by the two moves. Neither Jordán nor
+  LY cites her (their reference lists). Crossref: ZAMM 7(1) (1927), 58–72, Wiley; the scan's header
+  "Band 7, Heft 1, Februar 1927". Credited beside Laman, the theorem keeping its name: the
+  blueprint (`intro.tex`, `laman.tex`, `laman-theorem.tex`, `henneberg.tex`, `rigidity-matroid.tex`
+  with `thm:edgeSet-rowIndependent-iff-isSparse`'s title, `bar-joint-3d.tex`) and a
+  `bibliography.bib` entry; README; the home page; `formalization.yaml` (a `sources` entry, LY's
+  note, `status.scope`, two rows, two `alignment` sources); ROADMAP (opening, layout line, §6, §7,
+  *References*); `DESIGN.md`'s two (task 6).

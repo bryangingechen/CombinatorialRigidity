@@ -1,14 +1,16 @@
 \section{The planar rigidity matroid}
 \label{sec:rigidity-matroid}
 
-In \cref{sec:laman-theorem} we proved one half of
-Laman's~\cite{laman1970} characterization of the independent sets of
-the rigidity matroid in the plane: an edge set that is row-independent
+In \cref{sec:laman-theorem} we proved one half of the characterization
+of the independent sets of the rigidity matroid in the plane by
+Pollaczek-Geiringer~\cite{pollaczekGeiringer1927} and
+Laman~\cite{laman1970}: an edge set that is row-independent
 at a framework in the plane with no three points collinear forms a
 $(2,3)$-sparse graph (\cref{lem:isSparse-of-rowIndependent-two}). In
 this section we prove the other half: the edge set of every
 $(2,3)$-sparse graph is row-independent at some framework in the
-plane. The two halves together are Jord\'an's~\cite{jordan2016}
+plane, which Pollaczek-Geiringer proves in her~\S8 (p.~70). The two
+halves together are Jord\'an's~\cite{jordan2016}
 Theorem~2.2.1, which he credits to Laman, and we follow his proof
 (p.~45). We then describe the rigidity matroid in the plane as a
 matroid on the edges of a complete graph.
@@ -441,7 +443,7 @@ edge sets that are row-independent at some framework in the plane.
   $\hat p$.
 \end{proof}
 
-\begin{theorem}[Row-independence in the plane is $(2, 3)$-sparsity (Laman)]
+\begin{theorem}[Planar row-independence is $(2, 3)$-sparsity (Pollaczek-Geiringer, Laman)]
   \label{thm:edgeSet-rowIndependent-iff-isSparse}
   \lean{SimpleGraph.edgeSet_rowIndependent_iff_isSparse_dim_two}
   \leanok

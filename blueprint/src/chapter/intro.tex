@@ -9,18 +9,24 @@ everything you read here with a grain of salt.
 This blueprint accompanies the
 \href{https://github.com/bryangingechen/CombinatorialRigidity}{\texttt{CombinatorialRigidity}}
 Lean~4 / mathlib4 formalization. It begins with \textbf{Laman's
-theorem}~\cite{laman1970}: for $n \ge 2$, a graph $G$ on $n$ vertices is
-generically rigid in the plane if and only if it has a spanning subgraph
-$H$ with $2n - 3$ edges in which every set $S$ of at least two vertices
-spans at most $2|S| - 3$ edges. Such a graph $H$ is a \emph{Laman graph}.
+theorem}~\cite{pollaczekGeiringer1927,laman1970}: for $n \ge 2$, a graph
+$G$ on $n$ vertices is generically rigid in the plane if and only if it
+has a spanning subgraph $H$ with $2n - 3$ edges in which every set $S$
+of at least two vertices spans at most $2|S| - 3$ edges. Such a graph
+$H$ is a \emph{Laman graph}.
 In an equivalent form, the theorem says that the Laman graphs are exactly
 the graphs that are generically minimally rigid in the plane.
+Pollaczek-Geiringer~\cite{pollaczekGeiringer1927} stated and proved it
+in this form in 1927 (pp.~60 and~64), and Laman~\cite{laman1970} proved
+it again in 1970. We keep the theorem's usual name.
 
 To prove that every Laman graph is generically rigid in the plane, we use
 the Henneberg moves. The Type~I move adds a vertex of degree two, and the
 Type~II move deletes an edge $ab$ and adds a vertex joined to $a$, $b$
 and a third vertex. Every Laman graph is built from $K_2$ by these moves,
-and the moves preserve rigidity in the plane. Laman's own proof uses the
+and the moves preserve rigidity in the plane. Pollaczek-Geiringer's
+proof is this induction: it removes a vertex of degree two or three and
+puts it back by one of the moves (pp.~64--68). Laman's own proof uses the
 moves implicitly, as Tay and Whiteley~\cite{tayWhiteley1985} observe
 (p.~39). Their \S3 makes the argument explicit, and we follow the
 presentation of Jord\'an~\cite{jordan2016} (\S2.2). For the converse, a
@@ -124,10 +130,10 @@ The phases of the four arcs, with the chapters they contribute to:
         (\cref{sec:trivial-motions}, \cref{sec:laman-theorem}).
   \item \textbf{Row independence and the count matroid.} Every
         $(2,3)$-sparse edge set is row-independent at some framework in
-        the plane, which completes Laman's characterization of the planar
-        rigidity matroid; and the $(k,\ell)$-count matroid of Lorea and of
-        White and Whiteley, for $\ell < 2k$ (\cref{sec:rigidity-matroid},
-        \cref{sec:count-matroid}).
+        the plane, which completes Pollaczek-Geiringer's and Laman's
+        characterization of the planar rigidity matroid; and the
+        $(k,\ell)$-count matroid of Lorea and of White and Whiteley, for
+        $\ell < 2k$ (\cref{sec:rigidity-matroid}, \cref{sec:count-matroid}).
   \item \textbf{Linear-matroid framing.} The planar rigidity matroid as
         the rigidity matroid of one framework of the complete graph
         (\cref{sec:rigidity-matroid-linear-framing}).

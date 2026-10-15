@@ -9,11 +9,12 @@ title: Combinatorial Rigidity
 
 A Lean 4 / mathlib4 formalization of combinatorial rigidity theory. It
 began with [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph)
-(1970) on rigid graphs in the plane. It now covers Tay's body-bar theorem,
-the Tay–Whiteley body-hinge theorem, Katoh–Tanigawa's 2011 proof of the
-**molecular conjecture** with its application to molecules, and a
-strengthening of the molecular conjecture that appears to be new, the
-**pencil realization theorem**. The development carries no `sorry`s.
+(Pollaczek-Geiringer 1927, Laman 1970) on rigid graphs in the plane. It
+now covers Tay's body-bar theorem, the Tay–Whiteley body-hinge theorem,
+Katoh–Tanigawa's 2011 proof of the **molecular conjecture** with its
+application to molecules, and a strengthening of the molecular conjecture
+that appears to be new, the **pencil realization theorem**. The
+development carries no `sorry`s.
 
 ## The pencil realization theorem
 
