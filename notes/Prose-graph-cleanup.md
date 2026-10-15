@@ -7,10 +7,9 @@ which rounds are done. The round acts on the 97 `E`, `N`, `T` and `U` entries of
 disposition, and reports its `S`, `L` and `M` entries to the PI. The open (task 1, docs only)
 re-ran the audit script, reproduced round 4's gate values and triaged the entries into 31
 one-commit tasks; task 2 added each node's `\uses` to the gate's dump, tasks 3.1–3.14 (task 3)
-gave every node the ledger names its shape, and tasks 4.1–4.5 added the missing edges of rounds
-1 and 2's chapters and of `panel-layer.tex` through `genericity-and-count.tex`. No task edits the
-Lean or changes a statement's strength. **Next concrete task:** task 4.6, the edges of
-`case-iii.tex` (*Hand-off*). Round manual: `CLEANUP.md`.
+gave every node the ledger names its shape, and tasks 4.1–4.6 added the missing edges of rounds
+1–3's chapters. No task edits the Lean or changes a statement's strength. **Next concrete task:**
+task 4.7, the edges of round 4's chapters (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -21,43 +20,38 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 4.5 has landed** (this commit; the `\uses` of `case-ii.tex` and
-`genericity-and-count.tex`, the dispositions of `F-062`, `F-146` and `F-151`, the docs, no Lean).
-Nothing is mid-stream; the next task is task 4.6.
+**Task 4.6 has landed** (this commit; the `\uses` of `case-iii.tex`, the dispositions of `F-003`,
+`F-155`, `F-160`, `F-162`, `F-166` and `F-170`, the docs, no Lean). Nothing is mid-stream; the next
+task is task 4.7.
 
-**The gate's baseline, at task 4.5** (2026-10-15):
-- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 526 lines**, sha256 prefix
-  **`0fc2ebeb43de52b3`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
+**The gate's baseline, at task 4.6** (2026-10-15):
+- `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 534 lines**, sha256 prefix
+  **`e7926d031b42ed22`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), the same bytes under `PYTHONHASHSEED` 0, 1 and 12345 and as
-  `predict-dump.sh` gave for the copy. Its diff against task 4.4's (3 517 lines,
-  `33600b0b62a0a65b`) is task 4.5's *Expected*, its 131 lines.
-- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1439 edges
-  c7669ccff3e6ec34`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
+  `predict-dump.sh` gave for the copy. Its diff against task 4.5's (3 526 lines,
+  `0fc2ebeb43de52b3`) is task 4.6's *Expected*, its 251 lines.
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1447 edges
+  b2108fcd860fdf21`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 692 nodes,
-  1 009 pins (999 distinct; `lean_decls` 1 010), 195 missing, 2 336 implied, 84 + 195
+  1 009 pins (999 distinct; `lean_decls` 1 010), 128 missing, 2 371 implied, 84 + 170
   unbacked, 177 dead, 12 nodes with four or more pins, no cycle-closing missing edge (`F-011`
-  done). Tasks 4.1–4.5's chapters: 0 missing; unbacked 5 / 2, 4 / 12, 8 / 12, 18 / 27 and 1 / 9.
-  No node is drawn `#9CEC8B` (`F-007`). The forward screen gives the open's table but `case-i`
-  14/5, `case-ii` 3/1, `panel-layer` 11/5 5/3, `rigidity-matrix` 15/9 0/0, `deficiency` 2/2 0/0
-  and `molecular-induction` 7/4 2/2 (tasks 3.2–3.7's commits and 4.2–4.5's lines say why).
-- Implied now, through tasks 4.1–4.5's edges: the missing in-edges of `def:edge-multiply` (35 ->
+  done). Tasks 4.1–4.6's chapters: 0 missing; unbacked 5 / 2, 4 / 12, 8 / 12, 18 / 27, 1 / 9 and
+  8 / 27. No node is drawn `#9CEC8B` (`F-007`). The forward screen gives the open's table but
+  `case-i` 14/5, `case-ii` 3/1, `panel-layer` 11/5 5/3, `rigidity-matrix` 15/9 0/0, `deficiency`
+  2/2 0/0, `molecular-induction` 7/4 2/2 and no `case-iii` line (tasks 3.2–3.7's commits and
+  4.2–4.6's lines say why).
+- Implied now, through tasks 4.1–4.6's edges: the missing in-edges of `def:edge-multiply` (35 ->
   0; four added, the rest through `def:matroid-MG`'s statement); `lem:case-III`'s and
   `cor:molecule-generic-square-packing`'s to `lem:deficiency-zero-connected` (through
-  `lem:chain-cycle-dichotomy`); three of `jacobs.tex`'s (34 -> 31); 11 in `case-ii.tex` (1),
-  `case-iii.tex` (7), `pencil.tex` (2) and `main-component.tex` (1), through task 4.4's edges;
-  6 more in `case-iii.tex`, four to `lem:rows-polynomial-in-normals` and two to
-  `lem:independent-rows-of-rank`, through task 4.5's; and, through edges a later task reads,
-  `lem:endpoint-witness`'s to
+  `lem:chain-cycle-dichotomy`); three of `jacobs.tex`'s (34 -> 31); three in `pencil.tex` and
+  `main-component.tex`; and, through edges a later task reads, `lem:endpoint-witness`'s to
   `lem:k-frame-specialize-li` (via its unbacked edge to `prop:tay-witness-exists`, `F-213`, task
   4.7) and `thm:pencil-x0-cycle`'s to `lem:pencil-lifting-restrict` (via `lem:block-rank-path`,
   `F-247`, task 4.9).
 - Missing in-edges that tasks 3.2–3.14 drew or moved (task 4's; the report lists them, the
-  commits name them; counted at task 4.5): to `lem:generic-realization-of-rigid` 3,
-  `def:screw-space` 8, `def:trivial-motions-rigid` 2, `lem:edge-rows-independent` 2,
-  `def:induced-span` 1, `lem:panel-support-extensor-join` 2, `lem:rows-polynomial-in-normals` 0,
-  `lem:independent-rows-of-rank` 1, `def:case-III-candidate` 2,
-  `lem:case-III-rank-certification` 2, `lem:case-III-redundant-combination` 2,
-  `lem:case-III-chain-relabel-rows` 1, `lem:case-III-chain-eq666` 1, `def:induced-screw-map` 7,
+  commits name them; counted at task 4.6, after `case-iii.tex`'s 17 went): to `def:screw-space` 2,
+  `def:trivial-motions-rigid` 2, `lem:edge-rows-independent` 2, `def:induced-span` 1,
+  `lem:panel-support-extensor-join` 2, `lem:independent-rows-of-rank` 1, `def:induced-screw-map` 7,
   `def:tight-partition` 3 (`F-193`'s and `F-196`'s, and `lem:deficiency-merge-rigid`, which reaches
   `lem:exists-tight-partition` too), `def:rooted-cross-edges` 5 (`F-196`'s),
   `lem:normal-cross-count-rooted` 1 (the theorem's proof, through `rootedAt_inj`),
@@ -67,12 +61,11 @@ Nothing is mid-stream; the next task is task 4.6.
   -> `lem:pencil-x0-one-witness` (no Lean basis, as the two share their one pin; the theorem's
   third clause is the lemma's claim, so it stays, *Decisions*), and `def:pencil-two-ear-graph` ->
   `def:pencil-embed-edges` (moved from the lemma; its note cites the relabelling for a comparison).
-- Nodes that cite a node without an edge, as they cited the node it left or the step it now states:
-  a proof in `molecule-modelling.tex` (`def:trivial-motions-rigid`); the $d = 3$ dispatch's proof
-  `def:case-III-candidate`, the chain dispatch's proof task 3.10's two nodes (task 4.6),
+- Nodes that cite a node without an edge, as they cited the node it left or the step it now states
+  (task 4.7): a proof in `molecule-modelling.tex` (`def:trivial-motions-rigid`),
   `lem:hinge-point-witness`'s proof `def:induced-screw-map`, `lem:normal-cross-count`'s statement
   and `thm:laman-square-count`'s proof `def:rooted-cross-edges`, and `thm:degree-one-rank`'s proof
-  `lem:two-core-degree-one` (task 4.7), missing edges.
+  `lem:two-core-degree-one`, missing edges.
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -248,46 +241,58 @@ gate's diff, which each task makes exact before editing.
     moved to proofs, 6 cited steps added; `rem:kt-lemma-41` cited instead of used.
   - [x] **4.4 `panel-layer`, `case-i`** (`6af43988`; `F-129` left): 27 of the parent's 44 missing
     edges added, 17 implied by them; 27 unbacked edges removed, the 8 they left missing added.
-  - [x] **4.5 `case-ii`, `genericity-and-count`** (this commit; `F-003`'s part, `F-006`'s part,
-    `F-062`, `F-146`, `F-151` done). The parent's report: 19 missing, 1 / 21 unbacked, so one
-    commit. Tried on a scratch copy (`t45/edit.py`). *Expected* (exact, before editing the tree; the
-    copy's predicted after-dump): no node or pin changes, `lean_decls` `8cdc1b9723e22064`;
-    `## uses:` 13 lines changed, 19 entries added and 24 removed (S statement, P proof). *Removed*
-    (15 unbacked edges with no Lean basis that neither the statement, the proof prose nor the pins
-    use, 21 entries; reasons in the commit): `lem:case-II-rank-lift` S `def:rank-hypothesis`;
-    `lem:case-II` S `def:rank-hypothesis`, `lem:reduction-step-pos` and S, P
-    `lem:exists-independent-panel-extensor`; `lem:case-II-realization` P `lem:genericity-device`;
-    `lem:relative-screw-split` S `def:rank-hypothesis`; `lem:relative-device-count` S
-    `lem:relative-screw-split`; `lem:case-II-placement-new-rows` S, P `lem:rank-delete-vertex`;
-    `lem:case-II-placement-old-rows-extract` S `def:rank-hypothesis`;
-    `lem:case-II-placement-old-rows` S, P `lem:case-II` and S `lem:case-II-placement-old-rows-extract`;
-    `lem:case-II-placement-block-independent` S, P `lem:rank-delete-vertex`;
-    `lem:case-II-realization-placement` S, P `lem:case-II`, `lem:exists-independent-panel-extensor`
-    and S `lem:genericity-device`. 3 statement entries whose proof names the target: `lem:case-II` S
-    `lem:splitoff-edge-substitution` (the proof's edge, unbacked, stays: it cites two steps) and
-    `F-146`'s `lem:case-II-realization` S `lem:reduction-step-pos`, `lem:rank-polynomial-of-le-finrank`.
-    *Added* (19): 15 of the parent's 19 missing, the other 4 implied by the task's additions:
-    `lem:splitoff-edge-substitution` S `def:graph-operations`; `lem:case-II` P
-    `lem:pinned-motions-on-mono` (implies `def:framework-with-graph`, `def:pinned-motions-on` and
-    the cited `lem:motions-mono-of-graph-le`); `lem:case-II-realization` S
-    `def:genuine-hinge-realization` and P `lem:case-II-placement-new-rows`,
-    `lem:case-III-transport-collapse` (both forward, task 5), `lem:general-position-support-nonzero`,
-    `lem:reducible-vertex` (implies `def:cut-edges-2ec`), `lem:relative-deficiency-rank-bound`,
-    `lem:rigidityRows-pinned-placement-rank-add`, `lem:simple-minimal-noRigid`,
-    `lem:span-rigidityRows-eq-of-motions-eq`; `lem:rank-polynomial-of-le-finrank` P
-    `lem:independent-rows-of-rank` (implies `lem:case-II-realization`'s);
-    `lem:case-II-placement-new-rows` and `-old-rows-extract` P `lem:rows-polynomial-in-normals`;
-    `lem:case-II-realization-placement` P `lem:independent-rows-of-rank`. 2 for a citation of a
-    step: `lem:genericity-device` P `lem:rows-polynomial-in-normals`;
-    `lem:case-II-placement-old-rows-extract` S `def:graph-operations` (its $G_v^{ab}$). 2 that the
-    removals left missing or left a citation without: `lem:case-II-realization-placement` P
-    `lem:with-normal-preserves`, `lem:splitoff-edge-substitution`. *Kept:* the 1 unbacked through a
-    node, and 6 with no Lean basis that the text uses. Drawn edges 1 430 -> 1 439
-    (`c7669ccff3e6ec34`), 19 gone and 28 drawn, no fill changed; 3 526 lines (`0fc2ebeb43de52b3`),
-    the diff 131 lines. Missing 220 -> 195 (these chapters 0; 6 in `case-iii.tex` implied now),
-    unbacked 84 + 207 -> 84 + 195. The tree's after-dump is the predicted bytes.
-  - [ ] **4.6 `case-iii`** (`F-003`'s part, `F-006`'s part, `F-155`, `F-160`, `F-162`, `F-166`,
-    `F-170`; 70; 9 / 50).
+  - [x] **4.5 `case-ii`, `genericity-and-count`** (`1096d2d9`; `F-062`, `F-146`, `F-151` done): 15
+    of the parent's 19 missing edges added, 4 implied by them; 15 unbacked edges removed, the 2
+    they left missing added; 2 cited steps added.
+  - [x] **4.6 `case-iii`** (this commit; `F-003` done, `F-006`'s part, `F-155`, `F-160`, `F-162`,
+    `F-166`, `F-170` done). The parent's report: 67 missing, 8 / 52 unbacked, so one commit. Tried
+    on a scratch copy (`t46/edit.py`). *Expected* (exact, before editing the tree; the copy's
+    predicted after-dump): no node or pin changes, `lean_decls` `8cdc1b9723e22064`; `## uses:` 28
+    lines changed, 45 entries added and 44 removed (S statement, P proof; `lem:case-III-` dropped
+    from labels). *Removed* (33 unbacked edges with no Lean basis that neither the statement, the
+    proof prose nor the pins use, 38 entries; reasons in the commit): `claim-6-11-base` S
+    `lem:splitoff-deficiency`; `claim-6-11-redundant-row`, `claim-6-11` S `gap3-minimalKDof`;
+    `conditional-block` S `vanish-off-column`, `columnop`; `transport-collapse` S `seam`;
+    `candidate-row` S, P `candidate-row-construction`, `vanish-off-column`, `transport-collapse`,
+    `claim612`, `lem:case-II-realization-placement` and S `seam`; `claim612-orthseq-vanish` S
+    `claim612-extensor-span`; `claim612-panel-point-exists` S `def:panel-hinge-framework`;
+    `claim612-detpoly`, `claim612-points-affineIndep-real-normals` S `lem:affine-indep-iff`;
+    `claim612-points-affineIndep` S `def:rigidity-matrix`, `def:panel-hinge-framework`,
+    `claim612-panel-point-exists`, `claim612-points-affineIndep-producer`, `claim612-detpoly`;
+    `claim612-block-iff-perp`, `claim612-r-nonzero` S `lem:case-II-placement-new-rows`;
+    `claim612-p2-placement`, `claim612-p3-placement` S `lem:case-II-realization-placement`;
+    `claim612` S `claim612-points-affineIndep-real-normals`; `candidate-dispatch-d3` P
+    `lem:case-II-realization-placement`, `lem:genericity-device`; `lem:triangle-realization` P
+    `lem:genericity-device`; `chain-dispatch` P `lem:case-II-realization-placement`,
+    `lem:splitOff-ofNormals-relabel`, `lem:splitOff-rigidityRows-relabel`, `lem:genericity-device`.
+    1 statement entry whose target the proof names: `candidate-row` S `conditional-block`. *Moved*
+    to the proof (5, no Lean basis; the proof cites a step): `columnop` -> `vanish-off-column`,
+    `claim612-points-affineIndep` -> `claim612-points-affineIndep-witness`, `claim612-eq644` ->
+    `acolumn-zero`, `claim612-p3-placement` -> `claim612-eq644`, `claim612` -> `claim612-r-nonzero`.
+    *Added* (40): 28 of the parent's 67 missing, the other 39 implied by the task's additions:
+    `gap3-minimalKDof` P `lem:splitoff-edge-substitution`; `nested-rank-lower` S
+    `def:genuine-hinge-realization`, P `lem:general-position-support-nonzero`,
+    `lem:rank-polynomial-of-le-finrank`, `lem:span-rigidityRows-eq-of-motions-eq`;
+    `vanish-off-column` S `def:screw-space`; `columnop` S `def:rigidity-matrix`; `seam`,
+    `transport-collapse` S `def:panel-hinge-framework`; `claim612-p2-placement`,
+    `claim612-p3-placement` P `candidate-row`; `lem:splitOff-ofNormals-relabel` P
+    `lem:case-II-placement-old-rows-extract`, `lem:isInfRigidOn-of-relative-count`;
+    `candidate-dispatch-d3` P `claim612-line-in-panel-union`, `rank-certification`,
+    `redundant-combination`, `lem:generic-realization-of-rigid`,
+    `lem:relative-deficiency-rank-bound`; `lem:triangle-third-edge` P `lem:rigid-full-rank`;
+    `lem:triangle-realization` P `lem:generic-realization-of-rigid`; `chain-discriminator` P
+    `claim612-block-iff-perp`, `redundant-combination`, `lem:isInfRigidOn-of-relative-count`,
+    `lem:relative-deficiency-rank-bound`; `chain-dispatch` P `chain-eq666`, `chain-relabel-rows`,
+    `rank-certification`, `lem:generic-realization-of-rigid`. 8 for a citation of a step:
+    `claim-6-11` P `lem:splitoff-edge-substitution`; `seam`, `transport-collapse` S
+    `lem:rows-polynomial-in-normals`; `candidate-row` P `lem:rigidityRows-pinned-placement-rank-add`;
+    `claim612-block-iff-perp`, `claim612` S `candidate-row-construction`; `claim612-p3-placement` P
+    `lem:splitOff-rigidityRows-relabel`; `chain-dispatch` P `claim612-p2-placement`. 4 that the
+    removals left missing: `claim612-orthseq-vanish` S `def:screw-space`; `claim612-detpoly` S
+    `def:homogeneous-coords`; `candidate-dispatch-d3`, `chain-discriminator` P
+    `claim612-points-affineIndep-real-normals`. Drawn edges 1 439 -> 1 447 (`b2108fcd860fdf21`),
+    43 gone and 51 drawn, no fill changed; 3 534 lines (`e7926d031b42ed22`), the diff 251 lines.
+    Missing 195 -> 128 (this chapter 0), unbacked 84 + 195 -> 84 + 170.
   - [ ] **4.7 Round 4's chapters** (`F-004`, `F-006`'s part, `F-175`, `F-181`, `F-185`, `F-189`,
     `F-193`, `F-196`, `F-199`, `F-201`, `F-208`, `F-213`, `F-218`, `F-223`; 76; 22 / 21).
   - [ ] **4.8 `pencil`, and `main-component` through *Ears and cycles*** (`F-005`'s part, `F-006`'s
@@ -382,29 +387,28 @@ None.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 4.6, the edges of `case-iii.tex`** (`F-003`'s part, `F-006`'s part,
-`F-155`, `F-160`, `F-162`, `F-166`, `F-170`; Opus, a fresh agent). The parent's dump is task 4.5's
-(3 526 lines, `0fc2ebeb43de52b3`; *Current state*): regenerate it on the parent after `verify.sh`
-if the scratch copy is gone. The parent's report gives 67 missing and 8 / 52 unbacked, so one
-commit by the split rule, the largest of task 4's; if it will not fit one sitting, land the
-chapter up to its $d = 3$ subsubsection (task 3.9's nodes) first and say so in 4.6's line. Read
-the chapter's report (`--chapter case-iii`; `--label` takes every node at once) and the ledger
-entries, and apply *Scope*'s edge policy as tasks 4.1–4.5 read it (*Decisions*): each *missing*
-edge on the statement or the proof as tagged, unless the task's other additions imply it; an edge
-for each citation of a step that the ledger lists or `t43/cites.py` finds (and those *Current
-state* names for task 4.6); the ledger's statement-to-proof moves; an unbacked edge that nothing uses
-removed, with its reason; then re-run until nothing is missing, adding in any chapter the edges a
-removal leaves missing, and re-run `t43/cites.py` for citations a removal leaves with no ancestor.
-Write the `\uses` changes, node by node, in 4.6's line before editing (gate 3 (b)). Tools
-(gitignored): `t45/edit.py` reads `t45/ops.py` (removals and moves), then `t45/adds.py` with
-`PHASE=2` and an optional `reflow.py` (aligns continuation lines under the first target) and
-`txt.py` beside it, and asserts each op, on the copy and then on the tree; `t42/missdiff.py`
-diffs the missing and unbacked sets of two full reports over every chapter; `t41/redund.py` checks
-that no added edge is implied; `t43/cites.py <tex-root> <chapter>...` lists the `\cref`s with no
-edge; `t42/screen.py <tex-root> v` lists the forward edges; `predict-dump.sh` gives the
-after-dump. Tasks 4.4–4.5 already added `lem:triangle-realization`'s statement edge to
-`def:rank-hypothesis`, and edges into `case-iii.tex` from `case-i.tex` and `case-ii.tex`. Then
-task 4.7.
+**Next concrete task: task 4.7, the edges of round 4's chapters** (`bar-joint-3d.tex` through
+`generic-lift.tex`; `F-004`, `F-006`'s part, `F-175`, `F-181`, `F-185`, `F-189`, `F-193`, `F-196`,
+`F-199`, `F-201`, `F-208`, `F-213`, `F-218`, `F-223`; Opus, a fresh agent). The parent's dump is
+task 4.6's (3 534 lines, `e7926d031b42ed22`; *Current state*): regenerate it on the parent after
+`verify.sh` if the scratch copy is gone. The parent's report gives 65 missing (`jacobs` 31) and
+22 / 20 unbacked, so one commit by the split rule; if it will not fit one sitting, land the
+chapters before `jacobs.tex` first and say so in 4.7's line. Read the chapters' report
+(`--chapter`; `--label` takes every node at once) and the ledger entries, and apply *Scope*'s edge
+policy as tasks 4.1–4.6 read it (*Decisions*): each *missing* edge on the statement or the proof as
+tagged, unless the task's other additions imply it; an edge for each citation of a step that the
+ledger lists or `t43/cites.py` finds (and those *Current state* names for task 4.7); the ledger's
+statement-to-proof moves; an unbacked edge that nothing uses removed, with its reason; then re-run
+until nothing is missing, adding in any chapter the edges a removal leaves missing, and re-run
+`t43/cites.py` for citations a removal leaves with no ancestor. Write the `\uses` changes, node by
+node, in 4.7's line before editing (gate 3 (b)). Tools (gitignored): `t46/edit.py` reads
+`t46/ops.py` (removals and moves), then `t46/adds.py` with `PHASE=2` and `reflow.py` (aligns the
+touched blocks' continuation lines under the first target) beside it, and asserts each op, on the
+copy and then on the tree; `t46/reachtab.py` tabulates a `--label` report's `\uses` by the pins'
+reach (statement, proof, unbacked); `t42/missdiff.py` diffs the missing and unbacked sets of two
+full reports over every chapter; `t41/redund.py` lists each added edge that the others imply;
+`t43/cites.py <tex-root> <chapter>...` lists the `\cref`s with no edge; `t42/screen.py <tex-root>
+v` lists the forward edges; `predict-dump.sh` gives the after-dump. Then task 4.8.
 
 ## Decisions made during this round
 
@@ -451,3 +455,11 @@ task 4.7.
   `def:panel-hinge-framework`, though its pin holds for body-hinge frameworks. An example after a
   proof's argument ("For instance"), and "Hence, as in" a lemma whose count the proof repeats, are
   no use.
+- **The edge policy, as task 4.6 read it.** A statement that assumes another node's conclusion
+  keeps its edge to it (the honesty gate's case (b): `lem:case-III-candidate-dispatch-d3` ->
+  `lem:case-III-nested-rank-lower`), and one that takes another node's objects ("let $r$ be the
+  form of") keeps or takes it. An unbacked statement edge that only the proof cites for a step
+  moves to the proof. A proof's paragraph after its conclusion that derives a further form ("This
+  gives KT Claim 6.12") is no use, nor "as in" a node whose reasoning the proof repeats; a proof
+  that cites a node for a step keeps the edge though a note says the formal proof skips that node.
+  Backed statement edges that only the proof uses, which the ledger does not list, stay.

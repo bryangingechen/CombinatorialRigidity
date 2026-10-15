@@ -157,6 +157,9 @@ declaration's name as its header writes it:
   implied.
   *Evidence:* measured (`scripts/blueprint-deps.py`, round 1 task 2; TeX and Lean at `bca00d3f`).
   *Found:* round 1 task 2.
+  *Disposition:* done (tasks 4.4–4.6): none of the five sections has a missing edge. Of the 44, 19
+  and 67 missing at the three tasks' parents, 27, 15 and 28 were added and the rest are implied by
+  them; each task also added the edges its removals of unbacked edges left missing.
 - **F-004** · E · round 4's chapters (`bar-joint-3d.tex` … `generic-lift.tex`): 76 missing edges
   at 42 nodes (28 through a statement): `jacobs` 33, `molecule-modelling` 17, `generic-lift` 14,
   `bar-joint-3d` and `molecule-application` 6 each. The commonest targets are
@@ -508,6 +511,13 @@ declaration's name as its header writes it:
   (KT eq. (6.22)), and `lem:splitoff-edge-substitution` and `def:hinge-row-block` (Claim 6.11).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `fe05a812`).
   *Found:* round 3 task 2.11.
+  *Disposition:* done (task 4.6): the base's edge to `lem:splitoff-deficiency` and the edges of
+  `lem:case-III-claim-6-11-redundant-row` and `lem:case-III-claim-6-11` to
+  `lem:case-III-gap3-minimalKDof` removed (the statements assume what those lemmas give, and no
+  proof cites them); the missing edges added or implied; `lem:case-III-claim-6-11`'s proof `\uses`
+  `lem:splitoff-edge-substitution`, which implies that citation in
+  `lem:case-III-redundant-decomposition`. `lem:splitoff-kdof-criterion`, which the base's proof
+  names as also giving the claim, takes none (a comparison); the other citations are ancestors.
 - **F-160** · E · `case-iii.tex`'s row operations of KT eqs. (6.24)–(6.29)
   (`algebraic-induction/case-iii.tex`, nine nodes): 11 missing edges, those of
   `lem:case-III-vanish-off-column` and `lem:case-III-columnop` to `def:rigidity-matrix`, four of
@@ -528,6 +538,15 @@ declaration's name as its header writes it:
   `lem:rigidityRows-pinned-placement-rank-add` (the rank of KT eq. (6.29)).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the nine nodes, at `ba79d703`).
   *Found:* round 3 task 2.12.
+  *Disposition:* done (task 4.6): the missing edges added or implied, and `lem:case-III-seam` and
+  `lem:case-III-transport-collapse` take `lem:rows-polynomial-in-normals` on the statement, whose
+  rows they index. Of the 14 edges with no Lean basis, `lem:case-III-columnop`'s moved to its proof,
+  which cites the lemma; `lem:case-III-candidate-row-construction`'s kept (its statement takes that
+  lemma's forms); those of `lem:case-III-conditional-block` and `lem:case-III-transport-collapse`
+  removed; of `lem:case-III-candidate-row`'s nine, the two its statement names and the proof's to
+  `lem:case-III-conditional-block` kept and six removed, the forward edge to
+  `lem:case-III-claim612` (`F-119`) among them. Its proof now `\uses`
+  `lem:rigidityRows-pinned-placement-rank-add`; the other citations are ancestors.
 - **F-162** · E · `case-iii.tex`'s case $d = 3$: the span and the point choice
   (`algebraic-induction/case-iii.tex`, ten nodes): no missing edge, and 13 edges with no Lean
   basis: `lem:case-III-claim612-orthseq-vanish`'s to `lem:case-III-claim612-extensor-span`,
@@ -541,6 +560,13 @@ declaration's name as its header writes it:
   (`lem:case-III-claim612-block-iff-perp`) without an edge.
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the ten nodes, at `4502f035`).
   *Found:* round 3 task 2.13.
+  *Disposition:* done (task 4.6): 11 of the 13 edges removed, as neither the statements, the
+  proofs nor the pins use them; `lem:case-III-claim612-points-affineIndep`'s edge to the witness
+  moved to its proof, which cites it; `lem:case-III-claim612-r-nonzero`'s to
+  `lem:case-III-redundant-decomposition` kept (its statement takes that lemma's forms).
+  `lem:case-III-claim612-detpoly`'s statement, which writes $\bar p_i(t)$, now `\uses`
+  `def:homogeneous-coords`, which its proof cites; `def:affine-subspace-extensor` stays an ancestor
+  of `lem:case-III-claim612-block-iff-perp`.
 - **F-166** · E · `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12
   (`algebraic-induction/case-iii.tex`, eight nodes): 23 missing edges and 16 with no Lean basis.
   Missing: `lem:case-III-candidate-row` at both `lem:case-III-claim612-p2-placement` and
@@ -563,6 +589,17 @@ declaration's name as its header writes it:
   proof, among them `lem:rank-rotation-semicont` and `lem:rows-polynomial-in-normals`.
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the eight nodes, at `9190873a`).
   *Found:* round 3 task 2.14.
+  *Disposition:* done (task 4.6): the missing edges added or implied. Of the edges with no Lean
+  basis, those to `lem:case-II-realization-placement` (the two placements and the dispatch),
+  `lem:case-III-claim612`'s to the real-normals lemma (its statement takes any independent
+  vectors) and the dispatch's to `lem:genericity-device` removed, as no text uses them; three moved
+  to the proofs that cite them (the third framework's to `lem:case-III-claim612-eq644`, that
+  lemma's to `lem:case-III-acolumn-zero`, Claim 6.12's to `lem:case-III-claim612-r-nonzero`); the
+  rest kept, as a statement takes the target's objects or assumes its conclusion, or the dispatch's
+  proof cites the frameworks. Of the citations, the third framework's proof `\uses`
+  `lem:splitOff-rigidityRows-relabel`, which implies the other relabel lemma, and
+  `lem:case-III-candidate-row`, which implies the block lemma; Claim 6.12's paragraph after its
+  proof, which derives KT's block form, takes none, nor the dispatch's "as in the proof of".
 - **F-170** · E · `case-iii.tex`'s general case: the triangle, KT Lemma 6.13 and the chain
   (`algebraic-induction/case-iii.tex`, five nodes): 24 missing edges and 13 unbacked. Missing:
   `def:edge-multiply` and `lem:rigid-full-rank` at `lem:triangle-third-edge`; `def:graph-operations`
@@ -587,6 +624,13 @@ declaration's name as its header writes it:
   (the dispatch); and `lem:two-edge-conn` (`lem:case-III`).
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the five nodes, at `c3586784`).
   *Found:* round 3 task 2.15.
+  *Disposition:* done (task 4.6): the missing edges added or implied (`lem:case-III`'s through the
+  chain dispatch); the edges to `lem:genericity-device` (the triangle realization, the dispatch),
+  to `lem:case-II-realization-placement` and to the two relabel lemmas (the dispatch, `F-171`)
+  removed, as no proof cites them. Of the citations, the dispatch's proof `\uses`
+  `lem:case-III-claim612-p2-placement`, which implies `lem:case-III-candidate-row`; those "as in
+  the proof of" another node, of KT Lemma 5.2 for how Katoh and Tanigawa rotate, and of the $d = 3$
+  lemma or `lem:case-III-claim612-line-in-panel-union` for a comparison take none.
 - **F-175** · E · `bar-joint-3d.tex`'s nine nodes (`bar-joint-3d.tex`): six missing edges and one
   unbacked. Missing: `lem:exists-generic-placement`'s to `def:rigidityRow`,
   `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow` and `lem:rigidityMap-apply`;

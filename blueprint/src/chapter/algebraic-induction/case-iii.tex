@@ -55,7 +55,8 @@ on its own, as Katoh and Tanigawa use it here.
   \label{lem:case-III-claim-6-11-base}
   \lean{Graph.splitOff_exists_base_inter_fiber_lt}
   \leanok
-  \uses{def:k-dof, def:matroid-MG, thm:def-eq-corank, lem:forest-surgery-count, lem:splitoff-deficiency}
+  \uses{def:k-dof, def:matroid-MG, thm:def-eq-corank,
+        lem:forest-surgery-count}
   Let $D \ge 2$, and let $G$ be a $k$-dof-graph with a vertex $v$ of
   degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
   $a, b \neq v$. Let $\widetilde{ab}$ be the set of the $D - 1$ copies
@@ -118,6 +119,7 @@ In the second step, $G$ is a minimal $0$-dof-graph, as in Case~III.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:splitoff-edge-substitution}
   We follow Katoh and Tanigawa~\cite[p.~684]{katohTanigawa2011}. The
   graph $G_v$ is a subgraph of $G$, so it is a minimal $k'$-dof-graph by
   KT Lemma~3.3 (\cref{lem:subgraph-minimality}). It has the vertex $a$,
@@ -162,7 +164,8 @@ eq.~(6.22) as a bound off the zeros of a polynomial.
   \label{lem:case-III-nested-rank-lower}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k}
   \leanok
-  \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof}
+  \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof,
+        def:genuine-hinge-realization}
   Let $d \ge 2$, let $G$ be a minimal $0$-dof-graph with a vertex $v$ of
   degree two, whose edges join $v$ to distinct vertices $a, b \neq v$,
   and let $G_v = G - v$. Then there is a nonzero polynomial $P$ in the
@@ -174,6 +177,9 @@ eq.~(6.22) as a bound off the zeros of a polynomial.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:general-position-support-nonzero,
+        lem:rank-polynomial-of-le-finrank,
+        lem:span-rigidityRows-eq-of-motions-eq}
   We assume, as in Case~III, that $G$ is simple and that the induction
   hypothesis KT eq.~(6.1) holds for the graphs with fewer vertices than
   $G$ (the note after the proof). By
@@ -268,7 +274,7 @@ hinge of any body-hinge framework.
   \label{lem:case-III-claim-6-11-redundant-row}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt}
   \leanok
-  \uses{lem:case-III-gap3-minimalKDof, lem:case-II-placement-new-rows}
+  \uses{lem:case-II-placement-new-rows}
   Let $(G, p)$ be a body-hinge framework, let $e$ be an edge of $G$ with
   distinct ends whose hinge is nondegenerate, and let $R_e$ be the span
   of the rows of $R(G, p)$ at $e$. Let $W$ be a space of linear forms on
@@ -306,7 +312,7 @@ space of $R(G_v, q)$.
   \label{lem:case-III-claim-6-11}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq}
   \leanok
-  \uses{lem:case-III-claim-6-11-redundant-row, lem:case-III-gap3-minimalKDof}
+  \uses{lem:case-III-claim-6-11-redundant-row}
   Let $d \ge 2$, let $G$ be a multigraph with a vertex $v$ of degree
   two, whose edges join $v$ to distinct vertices $a, b \neq v$, and let
   $G_v = G - v$. Let $q$ be normals at which the hinge of the new edge
@@ -323,6 +329,7 @@ space of $R(G_v, q)$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:splitoff-edge-substitution}
   We follow Katoh and Tanigawa~\cite[p.~685]{katohTanigawa2011}. The
   edges of $G_v^{ab}$ are those of $G_v$, with the same ends, and the
   new edge $ab$ (\cref{lem:splitoff-edge-substitution}). The two
@@ -444,6 +451,7 @@ the screw assignments that vanish off $u$.
   \label{lem:case-III-vanish-off-column}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.dualMap_eq_comp_single_proj_of_vanish_off}
   \leanok
+  \uses{def:screw-space}
   Let $v$ be a body, and let $f$ be a linear form on the screw
   assignments such that $f(S) = 0$ for every screw assignment $S$ with
   $S(v) = 0$. For a screw $y$, let $S_y$ be the screw assignment with
@@ -465,7 +473,7 @@ of variables.
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_columnOp_apply,
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_columnOp_vanish_off}
   \leanok
-  \uses{lem:case-III-vanish-off-column}
+  \uses{def:rigidity-matrix}
   Let $v \neq a$ be bodies, and let $\Phi$ be the map on screw
   assignments with $\Phi(S)(v) = S(v) + S(a)$ and $\Phi(S)(u) = S(u)$
   for every body $u \neq v$. Then $\Phi$ is a linear automorphism. For
@@ -475,6 +483,7 @@ of variables.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:case-III-vanish-off-column}
   Each value of $\Phi(S)$ is a linear function of $S$, so $\Phi$ is
   linear. Let $\Psi$ be the map with $\Psi(S)(v) = S(v) - S(a)$ and
   $\Psi(S)(u) = S(u)$ for $u \neq v$. As $a \neq v$, both maps keep the
@@ -515,6 +524,7 @@ follows.
   \label{lem:case-III-seam}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.ofNormals_panelRow_eq_of_ends_seed_eq}
   \leanok
+  \uses{def:panel-hinge-framework, lem:rows-polynomial-in-normals}
   Let $(G, q_0)$ and $(G', q)$ be panel-hinge frameworks, and let $e$ be
   an edge of $G$ and of $G'$ with the same ends $u$ and $w$ in both. If
   $q_0(u) = q(u)$ and $q_0(w) = q(w)$, then $e$ has the same rows in
@@ -692,8 +702,7 @@ in the first family. A bound on the rank follows as in
   \label{lem:case-III-conditional-block}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_pinned_block_augment}
   \leanok
-  \uses{lem:case-II-placement-block-independent, lem:case-III-vanish-off-column,
-        lem:case-III-columnop}
+  \uses{lem:case-II-placement-block-independent}
   Let $v$ be a body, and let $\varphi_1, \dots, \varphi_{D-1}$, $\omega$
   and $\psi_1, \dots, \psi_l$ be linear forms on the screw assignments.
   Suppose that the restrictions of $\varphi_1, \dots, \varphi_{D-1}$ and
@@ -732,7 +741,8 @@ enters, and it is $q(ab)$, as in $(G, p_1)$.
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_sub_hingeRow_eq,
         CombinatorialRigidity.Molecular.BodyHingeFramework.comp_columnOp_eq_comp_single_proj}
   \leanok
-  \uses{lem:case-III-seam, lem:case-III-columnop, lem:case-III-vanish-off-column}
+  \uses{lem:case-III-columnop, lem:case-III-vanish-off-column,
+        def:panel-hinge-framework, lem:rows-polynomial-in-normals}
   Let $G$ be a multigraph with a vertex $v$ of degree two, whose edges
   join $v$ to distinct vertices $a, b \neq v$, and orient $vb$ from $v$
   to $b$ and $ab$ from $a$ to $b$. Let $q$ be normals, $t \in K$, and
@@ -847,11 +857,7 @@ arbitrary subspace $L$.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_augment_candidateRow}
   \leanok
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-candidate-row-construction,
-        lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
-        lem:case-III-transport-collapse,
-        lem:case-III-conditional-block, lem:case-III-claim612,
-        lem:case-II-realization-placement}
+        lem:case-III-columnop}
   Under the hypotheses of \cref{lem:case-III-claim-6-11}, let the forms
   $r_j$, the index $i^*$ and the scalars $\lambda_j$ be as in
   \cref{lem:case-III-redundant-decomposition}, and let
@@ -865,10 +871,8 @@ arbitrary subspace $L$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III-candidate-row-construction, lem:case-III-columnop,
-        lem:case-III-vanish-off-column, lem:case-III-transport-collapse,
-        lem:case-III-conditional-block, lem:case-III-claim612,
-        lem:case-II-realization-placement}
+  \uses{lem:case-III-columnop, lem:case-III-conditional-block,
+        lem:rigidityRows-pinned-placement-rank-add}
   We follow Katoh and Tanigawa~\cite[pp.~685--686]{katohTanigawa2011}.
   Let $W$ be the row space of $R(G_v, q)$. The edges of $G_v$ have the
   same hinges in $(G, p_1)$ as in $(G_v^{ab}, q)$, so $W$ lies in the row
@@ -1052,7 +1056,7 @@ independent vectors (the remark after it).
   \label{lem:case-III-claim612-orthseq-vanish}
   \lean{CombinatorialRigidity.Molecular.eq_zero_of_annihilates_span_top}
   \leanok
-  \uses{lem:case-III-claim612-extensor-span}
+  \uses{def:screw-space}
   Let $S$ be a subset of $\bigwedge^{d-1} K^{d+1}$ that spans it, and
   let $r$ be a linear form on $\bigwedge^{d-1} K^{d+1}$ that vanishes on
   $S$. Then $r = 0$.
@@ -1090,7 +1094,6 @@ fewer than $d + 1$ panels always have a common nonzero vector.
   \label{lem:case-III-claim612-panel-point-exists}
   \lean{CombinatorialRigidity.Molecular.exists_ne_zero_dotProduct_eq_zero}
   \leanok
-  \uses{def:panel-hinge-framework}
   Let $m < d + 1$, and let $n_1, \dots, n_m \in K^{d+1}$. Then there is
   a nonzero $x \in K^{d+1}$ with $x \cdot n_i = 0$ for
   $1 \le i \le m$.
@@ -1143,7 +1146,7 @@ planes with such points exist
   \label{lem:case-III-claim612-detpoly}
   \lean{CombinatorialRigidity.Molecular.exists_detPolynomial_of_pointPolynomial}
   \leanok
-  \uses{lem:affine-indep-iff}
+  \uses{def:homogeneous-coords}
   Let $\sigma$ be a set of variables, and let $P_{ij} \in K[\sigma]$ for
   $1 \le i \le 4$ and $1 \le j \le 3$. For $t \in K^\sigma$, let
   $p_i(t) = \bigl(P_{i1}(t), P_{i2}(t), P_{i3}(t)\bigr) \in K^3$. Then
@@ -1203,9 +1206,6 @@ planes with such points exist
   \label{lem:case-III-claim612-points-affineIndep}
   \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_panel_incidence}
   \leanok
-  \uses{def:rigidity-matrix, def:panel-hinge-framework,
-        lem:case-III-claim612-panel-point-exists, lem:case-III-claim612-points-affineIndep-producer,
-        lem:case-III-claim612-detpoly, lem:case-III-claim612-points-affineIndep-witness}
   There are linearly independent $n_a, n_b, n_c \in K^4$ and affinely
   independent points $p_1, \dots, p_4 \in K^3$ such that
   \begin{align*}
@@ -1218,6 +1218,7 @@ planes with such points exist
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:case-III-claim612-points-affineIndep-witness}
   The normals and the points of
   \cref{lem:case-III-claim612-points-affineIndep-witness} have these
   properties.
@@ -1245,7 +1246,7 @@ for any three linearly independent normals.
   \label{lem:case-III-claim612-points-affineIndep-real-normals}
   \lean{CombinatorialRigidity.Molecular.exists_homogeneousIncidence_of_normals_gen}
   \leanok
-  \uses{lem:case-III-claim612-panel-point-exists, lem:affine-indep-iff}
+  \uses{lem:case-III-claim612-panel-point-exists}
   Let $n_a, n_b, n_c \in K^4$ be linearly independent. Then there are
   linearly independent $\bar p_1, \dots, \bar p_4 \in K^4$ with
   $\bar p_1 \cdot n_a = \bar p_1 \cdot n_b = \bar p_1 \cdot n_c = 0$ and
@@ -1296,7 +1297,7 @@ singularity of the blocks by the extensors of the lines (KT p.~690).
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sumElim_candidateRow_iff,
         CombinatorialRigidity.Molecular.BodyHingeFramework.mem_hingeRowBlock_iff}
   \leanok
-  \uses{def:hinge-row-block, lem:case-II-placement-new-rows}
+  \uses{def:hinge-row-block, lem:case-III-candidate-row-construction}
   Under the hypotheses of \cref{lem:case-III-claim-6-11}, let $r$ be
   the linear form of \cref{lem:case-III-candidate-row-construction}.
   Let $L$ be a $(d-2)$-dimensional affine subspace of the panel of a
@@ -1329,7 +1330,7 @@ singularity of the blocks by the extensors of the lines (KT p.~690).
   \label{lem:case-III-claim612-r-nonzero}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ne_zero}
   \leanok
-  \uses{lem:case-III-redundant-decomposition, lem:case-II-placement-new-rows}
+  \uses{lem:case-III-redundant-decomposition}
   Under the hypotheses of \cref{lem:case-III-claim-6-11}, let the forms
   $r_j$ and the scalars $\lambda_j$ be as in
   \cref{lem:case-III-redundant-decomposition}. Then the linear form
@@ -1356,8 +1357,7 @@ only on $(G_v^{ab}, q)$ (KT p.~686).
   \label{lem:case-III-claim612-p2-placement}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p2_candidateRow}
   \leanok
-  \uses{lem:case-II-realization-placement, lem:case-III-columnop,
-        lem:case-III-claim612-block-iff-perp}
+  \uses{lem:case-III-columnop, lem:case-III-claim612-block-iff-perp}
   Under the hypotheses of \cref{lem:case-III-claim-6-11}, let $r$ be the
   linear form of \cref{lem:case-III-candidate-row-construction}. Let $L'$
   be a $(d-2)$-dimensional affine subspace of the panel $\Pi(b)$ of
@@ -1370,6 +1370,7 @@ only on $(G_v^{ab}, q)$ (KT p.~686).
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:case-III-candidate-row}
   We argue as in the proof of \cref{lem:case-III-candidate-row}, with
   the roles of $a$ and $b$ exchanged (KT pp.~682 and~686). Let $W$ be the
   row space of $R(G_v, q)$, which lies in the row space of $R(G, p_2)$.
@@ -1460,7 +1461,9 @@ it. The formal proof of the case $d = 3$ does not use these lemmas.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:splitOff-isLink-relabel}
+  \uses{lem:splitOff-isLink-relabel,
+        lem:case-II-placement-old-rows-extract,
+        lem:isInfRigidOn-of-relative-count}
   The normals $q_\rho$ are those of $q$, permuted, so they are in general
   position (\cref{def:panel-general-position}). By
   \cref{lem:splitOff-isLink-relabel}, an edge of $G_a^{vc}$ with ends $u$
@@ -1535,7 +1538,7 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_tail,
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_off}
   \leanok
-  \uses{lem:case-III-acolumn-zero, lem:case-III-redundant-decomposition}
+  \uses{lem:case-III-redundant-decomposition}
   Under the hypotheses of \cref{lem:case-III-claim-6-11}, suppose that
   the edges of $G$ at $a$ are $va$ and $ac$, where $v$, $a$, $b$ and $c$
   are distinct. Let the forms $r_j$ and the scalars $\lambda_j$ and
@@ -1549,6 +1552,7 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:case-III-acolumn-zero}
   We follow Katoh and Tanigawa~\cite[pp.~690--691]{katohTanigawa2011}.
   By KT eq.~(6.43) (\cref{lem:case-III-acolumn-zero}), the combination
   of the rows of $R(G_v^{ab}, q)$ in KT eq.~(6.24) vanishes on the screw
@@ -1589,8 +1593,7 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
   \label{lem:case-III-claim612-p3-placement}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p3_candidateRow}
   \leanok
-  \uses{lem:case-II-realization-placement, lem:case-III-columnop,
-        lem:case-III-claim612-block-iff-perp, lem:case-III-claim612-eq644}
+  \uses{lem:case-III-columnop, lem:case-III-claim612-block-iff-perp}
   Under the hypotheses of \cref{lem:case-III-claim-6-11}, suppose that
   the edges of $G$ at $a$ are $va$ and $ac$, where $v$, $a$, $b$ and $c$
   are distinct. Let $r$ be the linear form of
@@ -1605,6 +1608,8 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:case-III-claim612-eq644, lem:case-III-candidate-row,
+        lem:splitOff-rigidityRows-relabel}
   We follow Katoh and Tanigawa~\cite[pp.~686--689]{katohTanigawa2011}.
   Let $(G_a^{vc}, q_\rho)$ be the panel-hinge framework of
   \cref{lem:splitOff-ofNormals-relabel}. In it the panel of $v$ is
@@ -1691,7 +1696,7 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
   \label{lem:case-III-claim612}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_claim612_gen}
   \leanok
-  \uses{lem:case-III-claim612-points-affineIndep-real-normals, lem:case-III-claim612-r-nonzero}
+  \uses{lem:case-III-candidate-row-construction}
   Let $d = 3$. Under the hypotheses of \cref{lem:case-III-claim-6-11},
   let $r$ be the linear form of
   \cref{lem:case-III-candidate-row-construction}, and let
@@ -1700,7 +1705,9 @@ comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III-claim612-extensor-span, lem:case-III-claim612-orthseq-vanish}
+  \uses{lem:case-III-claim612-extensor-span,
+        lem:case-III-claim612-orthseq-vanish,
+        lem:case-III-claim612-r-nonzero}
   We follow Katoh and Tanigawa~\cite[pp.~690--691]{katohTanigawa2011}.
   The form $r$ is not zero (\cref{lem:case-III-claim612-r-nonzero}). For
   $d = 3$, the screw space $K^D$ is $\bigwedge^2 K^4$, and the six joins
@@ -1872,9 +1879,15 @@ It also assumes the bound of KT eq.~(6.22), as
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III-claim-6-11, lem:case-III-candidate-row, lem:case-III-claim612,
-        lem:case-III-claim612-p2-placement, lem:case-III-claim612-p3-placement,
-        lem:case-II-realization-placement, lem:genericity-device}
+  \uses{lem:case-III-claim-6-11, lem:case-III-candidate-row,
+        lem:case-III-claim612, lem:case-III-claim612-p2-placement,
+        lem:case-III-claim612-p3-placement,
+        lem:case-III-claim612-line-in-panel-union,
+        lem:case-III-rank-certification,
+        lem:case-III-redundant-combination,
+        lem:generic-realization-of-rigid,
+        lem:relative-deficiency-rank-bound,
+        lem:case-III-claim612-points-affineIndep-real-normals}
   We follow Katoh and Tanigawa's proof of KT Lemma~6.10 (pp.~682--691).
   We choose the normals off the zeros of a product of polynomials fixed
   before the choice, as explained after \cref{lem:case-I-realization}.
@@ -2012,7 +2025,7 @@ realize it as the cycle on three vertices, by
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{thm:def-eq-corank}
+  \uses{thm:def-eq-corank, lem:rigid-full-rank}
   As $G$ is simple, it has no loops, so $a \neq v$ and $b \neq v$. Two
   distinct edges of $G$ do not join the same two vertices, so
   $a \neq b$. The three distinct vertices $v$, $a$ and $b$ are then all
@@ -2047,8 +2060,8 @@ proof of \cref{lem:cycle-realization} for $m = 3$. The proof of
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:triangle-third-edge, lem:theorem-55-triangle, lem:triangle-normals,
-        lem:genericity-device}
+  \uses{lem:triangle-third-edge, lem:theorem-55-triangle,
+        lem:triangle-normals, lem:generic-realization-of-rigid}
   By \cref{lem:triangle-third-edge}, $V(G) = \{v, a, b\}$, and an edge
   $f$ joins $a$ and $b$. Let $n_0$, $n_1$ and $n_2$ be the normals of
   \cref{lem:triangle-normals}, and give $v$, $a$ and $b$ the normals
@@ -2102,7 +2115,11 @@ builds the framework for this panel.
   \uses{lem:case-III-claim-6-11, lem:case-III-nested-rank-lower,
         lem:case-III-claim612-extensor-span,
         lem:case-III-claim612-orthseq-vanish, lem:case-III-claim612,
-        lem:meet-two-hyperplanes}
+        lem:meet-two-hyperplanes, lem:case-III-claim612-block-iff-perp,
+        lem:case-III-redundant-combination,
+        lem:isInfRigidOn-of-relative-count,
+        lem:relative-deficiency-rank-bound,
+        lem:case-III-claim612-points-affineIndep-real-normals}
   We follow Katoh and Tanigawa~\cite[pp.~692--698]{katohTanigawa2011}.
   As $d \ge 2$, the vertex $v_1$ is interior, so its only edges join it
   to $v_0$ and to $v_2$ (\cref{def:chain-data}). The vertices
@@ -2341,9 +2358,10 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III-chain-discriminator, lem:case-II-realization-placement,
-        lem:splitOff-ofNormals-relabel, lem:splitOff-rigidityRows-relabel,
-        lem:genericity-device}
+  \uses{lem:case-III-chain-discriminator, lem:case-III-chain-eq666,
+        lem:case-III-chain-relabel-rows, lem:case-III-rank-certification,
+        lem:generic-realization-of-rigid,
+        lem:case-III-claim612-p2-placement}
   We follow Katoh and Tanigawa~\cite[pp.~692--698]{katohTanigawa2011}.
   Let $q$, $r = \sum_j \lambda_j r_j$, $i$ and $n'$ be as in
   \cref{lem:case-III-chain-discriminator} and its proof, with the linear
