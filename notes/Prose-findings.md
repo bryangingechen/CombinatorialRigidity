@@ -928,6 +928,18 @@ declaration's name as its header writes it:
   proof `lem:case-III-claim612-block-iff-perp` (`F-248`); the witness's proof `\uses`
   `def:induced-screw-map`, which it cites; the tree-packing statement's edge is implied through
   `def:matroid-MG`. The transitive edges kept; the comparisons and arguments followed take none.
+- **F-255** · E · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): since
+  round 2 task 5 its pin is `exists_rankPolynomial_of_le_finrank_linking`, whose body calls the pin
+  of `lem:independent-rows-of-rank`, 218 lines later in the file. The proof edge is missing, the
+  graph's one missing edge. Adding it makes a new forward `\uses` (that round's gate 4), and
+  *Node order* cures it only by a move the task's line does not name: `lem:independent-rows-of-rank`
+  and its note from the counting subsection to before the node, with both subsections' leads
+  following, or the node after it, which leaves the node's subsection with its lead alone.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label lem:genericity-device`, `--summary` and
+  the forward screen, on round 2 task 5's tree).
+  *Found:* RECONCILE round 2 task 5.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 5): *Blockers / open
+  questions*.
 
 ## N — node shape
 
@@ -1475,7 +1487,10 @@ declaration's name as its header writes it:
   *Disposition:* left (retiring the dead nodes and joining `lem:genericity-device` to
   `lem:rank-polynomial-of-le-finrank` are not among principle D's fixes, `a111b17a`,
   `notes/Prose-report.md` G3 and G4; stating the two lemmas generally is a statement change,
-  `F-239`). The extraction has its own node since `657f3483` (`F-209`).
+  `F-239`). The extraction has its own node since `657f3483` (`F-209`); round 2:
+  `lem:genericity-device` pins the live `exists_rankPolynomial_of_le_finrank_linking` with
+  `lem:rank-polynomial-of-le-finrank`, and `lem:relative-device-count` no longer `\uses` it (task
+  5).
 - **F-157** · N · `lem:case-III-claim-6-11` (`algebraic-induction/case-iii.tex`): the node states
   Claim 6.11 for $G_v^{ab}$ and $G_v = G - v$; its pin
   `exists_redundant_panelRow_ab_of_finrank_eq` holds for any two graphs whose links agree but for
@@ -2326,9 +2341,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the three statements, `Molecular/AlgebraicInduction/GenericityDevice.lean` and
   `CaseI.lean`).
   *Found:* round 3 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, S7); round 2: the statement made true, at
-  nondegenerate hinges (task 2, `F-149`); the pins still state less until task 5 repins the node on
-  `exists_rankPolynomial_of_le_finrank_linking`.
+  *Disposition:* done (task 5): the statement made true, at nondegenerate hinges (task 2,
+  `F-149`), and the node repinned on `exists_rankPolynomial_of_le_finrank_linking`, its note saying
+  which clauses the pin proves and which are the proof's (task 5).
 - **F-121** · S · `prop:rigidity-matrix-prop11` (`algebraic-induction/panel-layer.tex`): the
   statement is KT Proposition 2.3's rank formula, Jackson and Jordán's Theorem 6.1, at a generic
   panel-hinge realization with nondegenerate hinges. Its pin `rigidityMatrix_prop11` takes any
@@ -2545,10 +2560,10 @@ declaration's name as its header writes it:
   `IsInfinitesimalMotion`, `Molecular/RigidityMatrix/Basic.lean`; KT 2011 p. 668, `.refs/`); a `lake
   lean` witness: at an edge with a zero supporting extensor every motion has $S(u) = S(v)$.
   *Found:* round 3 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, S7); round 2: the statement is restated on the
-  Zariski-open set $U$ of normals with nondegenerate hinges, where it holds, which contains KT's
-  nonparallel realizations; the remark after the proof says that the restriction is needed (task
-  2). The open-set pin is task 5's.
+  *Disposition:* done (task 5): the statement is restated on the Zariski-open set $U$ of normals
+  with nondegenerate hinges, where it holds, which contains KT's nonparallel realizations; the
+  remark after the proof says that the restriction is needed (task 2). The node pins the open-set
+  form, `exists_rankPolynomial_of_le_finrank_linking` (task 5).
 - **F-150** · S · `lem:case-II-realization-placement`
   (`algebraic-induction/genericity-and-count.tex`): the statement starts from a realization of the
   splitting-off $G_v^{ab}$, with nondegenerate hinges and every motion constant on its vertices. Its
@@ -4008,6 +4023,15 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 2 task 4.
   *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 4): round 3's docstring sweep
   (*Moved to a later round*); the first is among the declarations round 2 unpins.
+- **F-256** · L · `exists_good_realization` and `exists_good_realization_reindex`
+  (`Molecular/AlgebraicInduction/GenericityDevice.lean`) and `exists_good_realization_const`
+  (`CaseI.lean`): their docstrings, and the header of the first two's section, give them as
+  `lem:genericity-device`'s Lean; since round 2 task 5 the node pins
+  `exists_rankPolynomial_of_le_finrank_linking`, and none of the three is pinned.
+  *Evidence:* read (the three docstrings and the section header; the node's pin).
+  *Found:* RECONCILE round 2 task 5.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 5): round 3's docstring sweep
+  (*Moved to a later round*); the first and the third are among the declarations round 2 unpins.
 
 ## M — mathematics and sources
 

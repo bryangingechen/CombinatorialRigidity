@@ -26,8 +26,7 @@ above by \cref{lem:relative-deficiency-rank-bound}.
 
 \begin{lemma}[Lower semicontinuity of the rank at nondegenerate hinges; KT \S5.1]
   \label{lem:genericity-device}
-  \lean{CombinatorialRigidity.Molecular.exists_good_realization,
-        CombinatorialRigidity.Molecular.exists_good_realization_const}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Let $K$ be an infinite field and let $G$ be a multigraph. Regard the
@@ -90,15 +89,22 @@ vanish at a degenerate hinge, and the rank of the matrix of these rows,
 unlike that of $R(G,q)$, is lower semicontinuous at every $q$.
 
 \begin{fmlnote}
-  The pinned theorems state neither the open sets nor the
-  semicontinuity. The first applies to a family of frameworks whose rows
-  have polynomial coordinates. If some $m$ of the rows are linearly
-  independent at $q_0$, it gives normals $q$ with
-  $m + \dim Z(G,q) \le D|W|$, a bound that $q_0$ already satisfies. The
-  second is the case of a single framework. No main result uses either
-  of them. The open set is that of
-  \cref{lem:rank-polynomial-of-le-finrank}, at normals with
-  nondegenerate hinges.
+  The pinned theorem is that of
+  \cref{lem:rank-polynomial-of-le-finrank}, which this lemma states in
+  the terms of KT \S5.1. At normals $q_0 \in U$ with
+  $\operatorname{rank} R(G,q_0) \ge r$, it gives a polynomial $Q$ with
+  $Q(q_0) \neq 0$ such that $\operatorname{rank} R(G,q) \ge r$ wherever
+  $Q(q) \neq 0$. So the set of the $q \in U$ with
+  $\operatorname{rank} R(G,q) \ge r$ contains, with each of its points
+  $q_0$, the points of $U$ off the zeros of $Q$: it is open in $U$, which
+  is the lower semicontinuity on $U$. The pinned theorem holds over every
+  field. The other clauses are the proof's: $U$ is Zariski-open, as the
+  coordinates of the hinges are polynomials in $q$; the open sets are
+  dense, as $K$ is infinite; the largest rank is the case of normals
+  $q_0 \in U$ of the largest rank; and the assertions on $Z(G,q)$ follow
+  by the remark after \cref{def:rigidity-matrix}. The pinned theorem
+  reads the ends of each edge from the endpoint selector
+  (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
 
 \subsection{Counting rows and motions}
@@ -147,7 +153,7 @@ the four lemmas on rows before it.
   \label{lem:relative-device-count}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_relative_full_count_ofParam}
   \leanok
-  \uses{lem:genericity-device, lem:rows-polynomial-in-normals}
+  \uses{def:panel-hinge-framework, lem:rows-polynomial-in-normals}
   Let $K$ be an infinite field, and let $G$ be a multigraph with
   $V(G) \neq \emptyset$, whose panel-hinge frameworks have a finite set
   $W \supseteq V(G)$ of bodies. Suppose that at some normals $q_0$, some
