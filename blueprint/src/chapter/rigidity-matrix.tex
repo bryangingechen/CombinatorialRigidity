@@ -299,7 +299,8 @@ infinitesimally rigid.
   \label{lem:trivial-motions-rank-bound}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimalMotion_of_isTrivialMotion,
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_trivialMotions,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_zero_iff}
   \leanok
   \uses{def:rigidity-matrix, def:trivial-motions-rigid}
   Let $(G,p)$ be a body-hinge framework with $V$ nonempty, and for
@@ -333,7 +334,9 @@ infinitesimally rigid.
   The first pin says that the trivial screw assignments are
   infinitesimal motions, the second that they form a space of dimension
   $D$, and the third that $Z(G,p)$ is this space exactly when $(G,p)$ is
-  infinitesimally rigid.
+  infinitesimally rigid. The fourth states the equality case for the
+  dimension of $Z(G,p)$, which is $D|V| - \operatorname{rank} R(G,p)$:
+  $\dim Z(G,p) = D$ exactly when $(G,p)$ is infinitesimally rigid.
 \end{fmlnote}
 
 \subsection{Rank lemmas}

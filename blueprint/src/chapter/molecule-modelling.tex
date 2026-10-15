@@ -370,7 +370,9 @@ in the form that we use.
         CombinatorialRigidity.Molecular.finrank_infinitesimalMotions_ofNormals_homogenize,
         CombinatorialRigidity.Molecular.rankHypothesis_ofNormals_homogenize_iff,
         CombinatorialRigidity.Molecular.isInfinitesimallyRigid_ofNormals_homogenize_iff,
-        CombinatorialRigidity.Molecular.supportExtensor_ofNormals_homogenize_ne_zero_iff}
+        CombinatorialRigidity.Molecular.supportExtensor_ofNormals_homogenize_ne_zero_iff,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ofNormals_smul,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.infinitesimalMotions_ofNormals_smul}
   \leanok
   \uses{def:panel-hinge-framework, def:panel-support-extensor,
         def:meet-complement-iso, def:hinge-concurrent,
@@ -413,15 +415,17 @@ in the form that we use.
 
 \begin{fmlnote}
   The first pin is the identity of the two frameworks in (1), and the
-  other four are its consequences: the dimensions of the motion spaces,
+  next four are its consequences: the dimensions of the motion spaces,
   the rank hypothesis (\cref{def:rank-hypothesis}), rigidity, and the
-  nondegeneracy of the hinges. Statement (2) is not pinned. Its equality
-  of motion spaces, and the scaling of the hinges by
-  $\lambda_u \lambda_v$ that gives it, are the case of
-  \cref{lem:pencil-jj-rescale} at the normals $\bar c(v)$, a lemma for
-  any normals over any field. The proof of
-  \cref{thm:panel-hinge-iff-molecular} rescales the normals it uses
-  directly, by the argument above.
+  nondegeneracy of the hinges. The last two pins are the first two of
+  \cref{lem:pencil-jj-rescale}, which hold for any normals over any
+  field, and give (2) at the normals $\bar c(v)$. The first scales the
+  hinge at an edge with ends $u$ and $v$ by
+  $\lambda_u \lambda_v \neq 0$, so it is nondegenerate exactly when the
+  hinge at the normals $\bar c(v)$ is. The second is the equality of the
+  motion spaces, from which the other conclusions of (1) follow by the
+  first five pins. The proof of \cref{thm:panel-hinge-iff-molecular}
+  rescales the normals it uses directly, by the argument above.
 \end{fmlnote}
 
 \subsection{Screw velocity fields}
@@ -757,7 +761,7 @@ realization with centres in general position up to order four.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:projective-invariance}
+  \uses{thm:projective-invariance, lem:trivial-motions-rank-bound}
   Let $(G, p)$ be the realization of
   \cref{lem:theorem-56-general-position}, with normals
   $n_v = \lambda_v\, \bar c(v)$, where each $\lambda_v \neq 0$ and the
@@ -792,7 +796,10 @@ realization with centres in general position up to order four.
   of \cref{lem:rank-rotation-semicont} in both directions.
   The pinned theorem does not state the case
   $\operatorname{def}(\tilde G) = 0$, which the last paragraph of the
-  proof derives.
+  proof derives. Its formal step is the last pin of
+  \cref{lem:trivial-motions-rank-bound}: a framework on a nonempty set
+  of bodies whose motion space has dimension $D$ is infinitesimally
+  rigid.
 \end{fmlnote}
 
 \subsection{The square-graph dictionary}

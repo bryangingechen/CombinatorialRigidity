@@ -7,10 +7,10 @@ authority for which rounds are done. The round fixes the blueprint statements th
 G2's merges of true duplicates, and gives each group of nodes where the formal proof leaves Katoh
 and Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is not
 edited. The open (task 1, docs only) reproduced round 1's close values and sliced the round into
-21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–9 are done
+21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–9.1 are done
 (the open; the false statements S6–S10; S4 and S5; S7's repin; Case I's S14, S15 and S21; Case
-III's three counts, S20; S26, S27 and S35; S29, with S36's pin not made, `F-259`). **Next
-concrete task:** task 9.1, the pins of `F-259` and `F-260` (*Lemma checklist*); `F-255`'s and
+III's three counts, S20; S26, S27 and S35; S29; S36's and the rescaling's pins, `F-259` and
+`F-260`). **Next concrete task:** task 10, S38 and S39 (*Lemma checklist*); `F-255`'s and
 `F-257`'s cures are tasks 12, 15 and 18's. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -21,27 +21,25 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–9 are done**; task 9, S29 and S36, is this commit (`molecule-modelling.tex` and a
-sentence of `pencil.tex`). Nothing is mid-stream; task 9.1 is next. `F-255`'s cure is task 15's (its
-line); `F-257`'s, three missing proof edges that would be forward, are tasks 12's and 18's (their
-lines). Task 9's two new entries, `F-259` (S36's pin, which at the theorem would leave five
-missing edges, two closing a cycle, and at `lem:trivial-motions-rank-bound` none) and `F-260` (the
-rescaling's pin, which `lem:pencil-jj-rescale`'s two pins give cleanly), are task 9.1's. Task 9's
-gates: `lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:` lines;
-**`1501 edges de0e0d5bc395e518`**, **`5c552a7a71fb19a7`**; the dump byte-identical to
-`dump-t8.txt`, kept as `scratch/reconcile-statements/dump-t9.txt`; `--summary` byte-identical to
-task 8's (exits 0, both checks OK, 690 nodes pinned, 1009 pins (994 distinct), 4 missing edges, 171
-dead pins, 137 edges with no Lean basis, 85 transitive); the `--label` reports of the four nodes
-and the dictionary show no missing edge; the forward screen the open's lines; `print.log` rebuilt
+**Tasks 1–9.1 are done**; task 9.1, the pins of `F-259` and `F-260`, is this commit
+(`rigidity-matrix.tex` and `molecule-modelling.tex`). Nothing is mid-stream; task 10 is next.
+`F-255`'s cure is task 15's (its line); `F-257`'s, three missing proof edges that would be
+forward, are tasks 12's and 18's (their lines). Task 9.1's gates: `lint.sh` green; `verify.sh`
+green, `checkdecls` silent, the same 9 `WARNING:` lines; **`1501 edges de0e0d5bc395e518`**,
+**`9c98f641ae650627`**; the dump's diff from `dump-t9.txt` the four lines its line lists, kept as
+`scratch/reconcile-statements/dump-t91.txt`; `--summary` exits 0, both checks OK, 690 nodes
+pinned, 1012 pins (995 distinct), 4 missing edges, 171 dead pins, 137 edges with no Lean basis, 85
+transitive, 13 nodes with 4+ pins; the `--label` reports of the three nodes and the nodes that use
+or share their pins show no missing edge; the forward screen the open's lines; `print.log` rebuilt
 by latexmk, 0 `LaTeX Warning` lines, 31 overfull boxes; `check-phase-note.py` green; the
-no-Lean-edit diff from `1cbdbff5` empty; no `formalization.yaml` edit. `notes/BlueprintExposition.md`'s
-one pointer into the task's nodes (980, the counterexample at the end of
-`lem:screw-determination`'s proof) still holds. The declarations round 2 unpins, for the close's
-list (task 9 unpins none): task 4's `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
-(no caller), task 5's `exists_good_realization` and `exists_good_realization_const` (dead,
-`F-152`), and task 7's `linearIndependent_sum_augment_candidateRow`,
-`linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow` (dead); their
-docstrings are `F-254`'s, `F-256`'s and `F-258`'s, round 3.
+no-Lean-edit diff from `1cbdbff5` empty; no `formalization.yaml` edit.
+`notes/BlueprintExposition.md`'s two pointers to the theorem (249, 986) still hold. The
+declarations round 2 unpins, for the close's list (tasks 9 and 9.1 unpin none): task 4's
+`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller), task 5's
+`exists_good_realization` and `exists_good_realization_const` (dead, `F-152`), and task 7's
+`linearIndependent_sum_augment_candidateRow`, `linearIndependent_sum_p2_candidateRow` and
+`linearIndependent_sum_p3_candidateRow` (dead); their docstrings are `F-254`'s, `F-256`'s and
+`F-258`'s, round 3.
 
 **Verified at the open** (2026-10-15, at `1cbdbff5`, round 1's close tree, whose Lean is
 `f39e35e6`'s):
@@ -212,19 +210,30 @@ task makes exact before editing. Every task is at Opus but the close.
   closing a cycle (`F-259`); and `lem:pencil-jj-rescale`'s pins state the dual lemma's rescaling,
   which its note now says (`F-260`); both are task 9.1's. The dump byte-identical. `F-180` done;
   `F-184` reported, its round-2 clause; new: `F-259`, `F-260`.
-- [ ] **9.1. The pins of `F-259` and `F-260`** (the coordinator, after task 9; `F-184`'s rest).
-  (a) `F-259`: `BodyHingeFramework.rankHypothesis_zero_iff` (`Pinning.lean`) joins the pins of
-  `lem:trivial-motions-rank-bound` (`rigidity-matrix.tex` 299), whose "with equality if and only
-  if $(G,p)$ is infinitesimally rigid" it proves in the dimension form; its note says which pin
-  proves which clause. `thm:panel-hinge-iff-molecular`'s proof, which cites that node, `\uses` it
-  (an implied edge), and its note cites it for the "In particular". (b) `F-260`:
+- [x] **9.1. The pins of `F-259` and `F-260`** (this commit; the coordinator, after task 9;
+  `F-184`'s rest). (a) `F-259`: `BodyHingeFramework.rankHypothesis_zero_iff` (`Pinning.lean`) joins
+  the pins of `lem:trivial-motions-rank-bound` (`rigidity-matrix.tex` 299), whose "with equality if
+  and only if $(G,p)$ is infinitesimally rigid" it proves in the dimension form; its note says which
+  pin proves which clause. `thm:panel-hinge-iff-molecular`'s proof, which cites that node, `\uses`
+  it (an implied edge), and its note cites it for the "In particular". (b) `F-260`:
   `PanelHingeFramework.supportExtensor_ofNormals_smul` and
   `PanelHingeFramework.infinitesimalMotions_ofNormals_smul` (`lem:pencil-jj-rescale`'s pins) join
   the pins of `lem:panel-hinge-dual-molecular` (`molecule-modelling.tex` 368) for its (2), with (1)'s
   pins; its note (task 9's) follows. Both under the honesty gate; a pin that fails is not made,
   recorded. *Expected:* three pins added (`lean_decls` changes; the two shared ones as duplicates),
   the proof edge of (a), and whatever else the reach report asks for (task 9 measured none
-  missing); the screen unchanged.
+  missing); the screen unchanged. *Exact, before editing* (the reach reports on a scratch copy):
+  no node added or removed; one `\uses` added, the theorem's proof to
+  `lem:trivial-motions-rank-bound`, implied (an ancestor through
+  `lem:theorem-56-general-position`), so the graph stays `1501 edges de0e0d5bc395e518`; the three
+  pins added, none moved or removed; no `\leanok` change; the `lean_decls` hash changes. The dump's
+  diff is four lines: the hash, the two nodes' pin lines and the theorem's `\uses` line.
+  `--summary`: 1012 pins (995 distinct), missing 4, transitive 85 (the lemma's
+  `def:meet-complement-iso` now reached, the new edge transitive), 4+ pins 13 (the first node at 4).
+  *Done:* exactly that diff and summary; the three notes as the line says, each derivation checked
+  by a `lake lean` witness (`T91Witness.lean`). Honesty gate: the new pins assume only $V$
+  nonempty (finite, ambient) and $\lambda_v \neq 0$, as the statements do; both nodes' users and
+  `\cref`s re-read, each citing a claim still stated. `F-184`, `F-259`, `F-260` done; no new entry.
 - [ ] **10. S38, S39: special cases stated generally** (`F-239`, `F-079`; `F-191` in part).
   S38: `lem:case-II-placement-old-rows-extract` (`genericity-and-count.tex` 394–408) for every
   body-hinge framework rigid on its vertex set (its subfamily clause at nondegenerate hinges), as
@@ -345,9 +354,7 @@ task makes exact before editing. Every task is at Opus but the close.
 
 `S` and `M` findings this round makes, one line each naming the ledger ID.
 
-- `F-260` (S, task 9): `lem:panel-hinge-dual-molecular`'s (2), the rescaling, is unpinned, while
-  `lem:pencil-jj-rescale`'s two pins state it at any normals; sharing them is clean by the reach
-  report. Pin (2) on them or keep the note; the coordinator may give it to a task.
+None open: task 9's `F-260` (S), the rescaling's pin, went to task 9.1, which made it.
 
 ## Moved to a later round
 
@@ -386,22 +393,23 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 ## Blockers / open questions
 
 None. (`F-255`, task 5's missing proof edge, is task 15's; `F-257`, task 7's three, are tasks 12's
-and 18's; `F-259` and `F-260`, task 9's, are task 9.1's: *Decisions made*.)
+and 18's: *Decisions made*.)
 
 ## Hand-off / next phase
 
-**Next: task 9.1**, at Opus (its line; the coordinator added it after task 9): `F-259`'s pin at
-`lem:trivial-motions-rank-bound` and `F-260`'s at `lem:panel-hinge-dual-molecular`. Its parent dump
-is `dump-t9.txt`. **Then task 10**, at Opus: S38 and S39 (`F-239`, `F-079`; `F-191` in part; the task's line), in
+**Next: task 10**, at Opus: S38 and S39 (`F-239`, `F-079`; `F-191` in part; the task's line), in
 `genericity-and-count.tex`, `deficiency.tex` and `jacobs.tex`. Before editing, write the exact
 expected diff in the task's line: the statement edges that only the special cases needed, each
-checked with `--label` before its removal. Its parent dump is task 9.1's after-dump (gitignored, so
-regenerate it on the parent if it is missing). Lines moved since the open's
-numbering, which later tasks use: task 2's, `rigidity-matrix.tex` −6 after the old 475; task 8's,
+checked with `--label` before its removal; this log is at the 500-line cap's edge, so compress
+task 9.1's line to its verdict and sha first. Its parent dump is task 9.1's after-dump,
+`scratch/reconcile-statements/dump-t91.txt` (gitignored, so regenerate it on the parent if it is
+missing). Lines moved since the open's numbering, which later tasks use: tasks 2's and 9.1's,
+`rigidity-matrix.tex` −3 after the old 478 (`lem:block-rank-path`, task 12, is 746); task 8's,
 `generic-lift.tex` −1 after 1140 (`lem:screw-map-rows`, task 12, is 1272); `case-i.tex`, after tasks
 2 and 6, has the device's `\cref`s at 261, 503, 685, 1080 and 1259 (task 15) and task 16's nodes at
-49, 69, 89, 293, 316, 340, 415 (`lem:case-I`), 534 and 850 (`lem:claim-6-4`); task 2's,
-`molecule-modelling.tex` +1 after 791 (task 9's edits net zero after 580); tasks 2's and 5's,
+49, 69, 89, 293, 316, 340, 415 (`lem:case-I`), 534 and 850 (`lem:claim-6-4`);
+`molecule-modelling.tex`, after tasks 2, 9 and 9.1, has the device's `\cref` (task 15) at 691;
+tasks 2's and 5's,
 `genericity-and-count.tex` +8 after 102 (`lem:relative-device-count` 152,
 `lem:case-II-placement-old-rows-extract` 402); task 3's, `molecular-induction.tex` −32 for 935–1059
 (`lem:edge-splitting` is 969) and +17 after 1059 (`lem:removal-deficiency` 1246,
@@ -478,14 +486,10 @@ are tasks 12's and 18's (their lines). Carried in from round 1: `F-252` for the 
 - **S26, S35 and S27, each at what its pins prove** (task 8): S26 keeps "Equivalently", now
   pinned, and the lower bound's edge to `lem:span-range-rigidityRow`, now transitive, is kept as
   `F-189`'s was; S35 states the bound as the label supply; S27 drops the bound wherever cited.
-- **S36's pin not made; the rescaling's note corrected, not pinned** (task 9): pinned at the
-  theorem, the general `rankHypothesis_zero_iff` makes every node whose pin calls it reach the
-  theorem, five missing edges, two closing a cycle, which no node order cures; the clean home,
-  `lem:trivial-motions-rank-bound`, is another node's pin (`F-259`). The line kept (2)'s note as no
-  declaration states it, but `lem:pencil-jj-rescale`'s pins do: the note names them, and the pin is
-  `F-260`'s choice. S29's statements take their pins' generality, `pencil.tex` following.
-- **`F-259` and `F-260` pinned in a task 9.1** (the coordinator, after task 9): S36's
-  "In particular" gets its Lean through the node that states the general claim,
-  `lem:trivial-motions-rank-bound`, which its proof cites, as the pin at the theorem closes a cycle;
-  and (2) of `lem:panel-hinge-dual-molecular` is pinned, as the open's "no declaration states it"
-  was wrong (`lem:pencil-jj-rescale`'s pins state it at any normals). Neither changes a statement.
+- **S36 and the rescaling, pinned on the nodes that state them** (task 9; the coordinator; task
+  9.1): at the theorem, `rankHypothesis_zero_iff` makes every node whose pin calls it reach the
+  theorem (five missing edges, two closing a cycle, which no order cures), so it joins
+  `lem:trivial-motions-rank-bound`, which states its claim and which the theorem's proof cites; (2)
+  of `lem:panel-hinge-dual-molecular` shares `lem:pencil-jj-rescale`'s two pins (the open's "no
+  declaration states it" was wrong). No statement or drawn edge changed; the first node's fourth
+  pin puts it under principle D's 4+ flag, the line's choice. S29 takes its pins' generality.

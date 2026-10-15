@@ -969,8 +969,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, `--chapter` and `--summary` on
   scratch copies of round 2 task 9's parent with the pin at each node, `--tex-root`).
   *Found:* RECONCILE round 2 task 9.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 9.1): the coordinator added
-  the task, which pins it at `lem:trivial-motions-rank-bound`.
+  *Disposition:* done (task 9.1): `lem:trivial-motions-rank-bound` pins it, its note reading it as
+  the equality for $\dim Z(G,p)$; the theorem's proof `\uses` that node (an implied edge, the drawn
+  graph unchanged), and its note cites it for the "In particular"; no missing edge.
 
 ## N — node shape
 
@@ -2841,9 +2842,10 @@ declaration's name as its header writes it:
   `exists_rankHypothesis_isGeneralPosition4`, `IsGeneralPosition4` and
   `IsGeneralPositionPlacement`).
   *Found:* round 4 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, S36); round 2: the "In particular" is not
-  pinned on `rankHypothesis_zero_iff`, as the pin there would leave five missing edges, two of
-  them closing a cycle (`F-259`), so its note stays (task 9).
+  *Disposition:* done (task 9.1): the "In particular" is not pinned at the theorem, where
+  `rankHypothesis_zero_iff` would leave five missing edges, two of them closing a cycle (task 9,
+  `F-259`); that declaration joins the pins of `lem:trivial-motions-rank-bound`, which the
+  theorem's proof now `\uses` and its note cites for the case.
 - **F-187** · S · `lem:molecule-graph-carrier` (`molecule-application.tex`): the label supply left
   the statement. At the open it read "There is a multigraph $G'$ on $V$, spanning and simple, with an
   edge between distinct $u, v$ if and only if $u \sim_G v$, and with strictly more than $6(|V| -
@@ -3098,8 +3100,9 @@ declaration's name as its header writes it:
   homogenized centres, `scratch/reconcile-statements/RescaleWitness.lean`, gitignored); measured
   (`--summary` on a scratch copy with the pins shared, `--tex-root`).
   *Found:* RECONCILE round 2 task 9.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 9.1): the coordinator added
-  the task, which pins (2) on the two.
+  *Disposition:* done (task 9.1): (2) is pinned on the two, beside (1)'s five, its note saying
+  which clause each gives; a `lake lean` witness derives (1)'s conclusions at the rescaled normals
+  from them and (1)'s pins (`scratch/reconcile-statements/T91Witness.lean`, gitignored).
 
 ## L — Lean
 
