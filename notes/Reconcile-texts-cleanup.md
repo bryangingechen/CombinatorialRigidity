@@ -5,9 +5,9 @@ the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot
 the authority for which rounds are done. Docs and blueprint prose only: the scopes of S1 and S2 on
 the status surfaces, M1's "for simple graphs", M2's and M5's credits read against the two PDFs,
 §2.6's stale example in an agent manual, and the non-vacuity rule. No node, edge or pin changes,
-and no Lean edit. Nine one-commit tasks; tasks 1–7 (the open, S1's and S2's scopes, M1's text, M2's
-and M5's credits, §2.6's example) are done. **Next concrete task:** task 8, the non-vacuity rule in
-`PHASE-BOUNDARIES.md` and `CLEANUP.md` §A (Sonnet may take it). Round manual: `CLEANUP.md`.
+and no Lean edit. Nine one-commit tasks; tasks 1–8 (the open, S1's and S2's scopes, M1's text, M2's
+and M5's credits, §2.6's example, the non-vacuity rule) are done. **Next concrete task:** task 9, the
+close (Sonnet may take it). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,15 +17,13 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–7 are done**; task 7, §2.6, is this commit: every fact the open verified held at HEAD
-(the two pins' signatures, the two `\uses` and pin lines, `theorem_55_minimalKDof_k_all_k`'s Case
-III branch, `--label lem:case-III`), so `blueprint/CLAUDE.md`'s honesty gate gives
-`lem:case-III`'s `hSimple` as case (b), with the report's two cautions. Next: task 8 (*Hand-off*). Task 7's gates gave the open's values: `lint.sh`
-green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; `1501 edges 11033da1dbaa0fae`,
-`8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588 lines, `cmp`-identical) and `--summary` the
-same bytes; `print.log` 0 `LaTeX Warning` lines, 31 overfull boxes, not rebuilt (no TeX edit;
-dated task 6's run); `check-phase-note.py` green; the no-Lean-edit diff empty; no gate 7 (no
-`formalization.yaml` edit).
+**Tasks 1–8 are done**; task 8, the non-vacuity rule, is this commit: `PHASE-BOUNDARIES.md`'s
+close checklist (a row joins `main_results` with a closed non-vacuity witness, S1 the calibration)
+and `CLEANUP.md` §A (a third failure mode, vacuous hypotheses). Round 3 writes the existing rows'
+witnesses. Next: task 9, the close (*Hand-off*). Task 8's gates (docs only, no TeX edit; gate 4's log
+is task 6's, not rebuilt): `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:`
+lines; `1501 edges 11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588
+lines); `print.log` 0 `LaTeX Warning` lines; the no-Lean-edit diff empty; no gate 7.
 
 **Verified at the open** (2026-10-15, at `f39e35e6`, whose Lean and blueprint are round 5's close
 tree, `62175c74`):
@@ -119,10 +117,10 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
   Jordán 2016, the verdict in `F-025`; `formalization.yaml`, ROADMAP and `DESIGN.md` fixed.
 - [x] **6. M5, Pollaczek-Geiringer 1927** (`211e2737`; `F-228`): read from the page images, the
   verdict in `F-228`; credited beside Laman, with a `bibliography.bib` entry.
-- [x] **7. §2.6, the honesty gate's example** (this commit; report §2.6): `blueprint/CLAUDE.md`'s
+- [x] **7. §2.6, the honesty gate's example** (`3b68f7de`; report §2.6): `blueprint/CLAUDE.md`'s
   stale `lem:case-I` example replaced by `lem:case-III`'s `hSimple`, every fact the open verified
   re-read at HEAD, with the report's two cautions.
-- [ ] **8. The non-vacuity rule** (§1, the agent's proposal; report §1.1's checks; Sonnet may take
+- [x] **8. The non-vacuity rule** (this commit; §1, the agent's proposal; report §1.1's checks; Sonnet may take
   it). `PHASE-BOUNDARIES.md`'s close checklist, *Sync the user-facing status surfaces* (172–200,
   where a headline theorem joins `status.main_results`), and `CLEANUP.md` §A (its audit list, 51–81)
   gain the requirement: a closed declaration instantiating each `main_results` row's hypotheses at a
@@ -161,11 +159,8 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 8, the non-vacuity rule** (Sonnet may take it): `PHASE-BOUNDARIES.md`'s *Sync the
-user-facing status surfaces* (172–200 at the open; re-`grep`) and `CLEANUP.md` §A's audit list
-(51–81) gain the requirement of its checklist line, S1 the calibration. Both files are docs, not
-TeX: gates 1–3, 5 and 6, and gate 4's count with no latexmk check; no gate 7. Then task 9, the
-close.
+**Next: task 9, the close** (Sonnet may take it): its checklist line above, in full. Then the
+queue's next row, `reconcile-statements`.
 
 ## Decisions made during this round
 
@@ -178,24 +173,18 @@ close.
   put in round 1, is round 3's with L1–L2 (§1's table).
 - **`F-251`** (the open): `formalization.yaml`'s fidelity paragraph claims every blueprint
   statement is in the exact form proved; task 3 qualifies it beside S2's scope.
-- **S1's surfaces** (task 2): ROADMAP §34 too; the other pointers to the theorem lead to the scoped
-  text and stay; `F-252`'s sharper reading stays off the surfaces (argued, not witnessed).
-- **S2's surfaces** (task 3): ROADMAP §23 too; Theorem 5.6's row credits the rank formula to the
-  nondegenerate form; the free selector does not reach the multigraph theorems
-  (`HasCoplanarPanelRealization`). No new entry.
+- **S1's and S2's surfaces** (tasks 2–3): ROADMAP §34 and §23 too; `F-252`'s sharper reading stays
+  off the surfaces (argued, not witnessed); Theorem 5.6's row credits the rank formula to the
+  nondegenerate form; the free selector does not reach the multigraph theorems.
 - **M1's passages** (task 4): the scope is the pin's signature; for multigraphs the formalization
-  "has" the bundle form, not `F-222`'s "only" (`thm:theorem-55-6-multigraph`). No new entry.
-- **M2's credits** (task 5): Laman originates it (LY pp. 91–94, Jordán p. 45); LY is
-  `independently-proves` for Corollary 1, with no "presentation we follow" credit, as the proofs
-  follow Jordán's. No new entry.
-- **M5's credits** (task 6): the paper states and proves the characterization and the hard half of
-  its independence form (`F-228`), so she is credited first and Laman "again" wherever the
-  originator is named, task 5's independence lines included; "Laman's theorem" and "Laman graph" keep their names, as do lists and
-  the theorem's node and section. `henneberg.tex`'s construction credit gains her §7; the intro
-  adds that her proof is the Henneberg induction (`AUTHORING.md`: credit the first to give an
-  argument). `thm:edgeSet-rowIndependent-iff-isSparse` is now *Planar row-independence is
-  $(2,3)$-sparsity (Pollaczek-Geiringer, Laman)*: with "in the plane" the credit overfilled its
-  print line by 14 pt. No new entry.
-- **§2.6's example** (task 7): the open's facts held at HEAD (`--label lem:case-III` byte-identical
-  to the open's run). The sentence calls `hSimple`, not the node, case (b): the pins' other
-  hypotheses (`hIH`, `hfresh`) are outside the example. No new entry.
+  "has" the bundle form, not `F-222`'s "only".
+- **M2's credits** (task 5): Laman originates it; LY is `independently-proves` for Corollary 1, no
+  "presentation we follow" credit, as the proofs follow Jordán's.
+- **M5's credits** (task 6): Pollaczek-Geiringer is credited first and Laman "again" wherever the
+  originator is named; "Laman's theorem" and "Laman graph" keep their names. The planar
+  row-independence node's title gained her name (no "in the plane": it overfilled a print line).
+- **§2.6's example** (task 7): the sentence calls `hSimple`, not the node, case (b): the pins' other
+  hypotheses are outside the example.
+- **The non-vacuity rule** (task 8): `notes/Reconcile.md` §1's text, transcribed; `CLEANUP.md` §A
+  names the failure mode as a third beside its two. No new entry (tasks 3–8 made none beyond
+  `F-251`, `F-252`).

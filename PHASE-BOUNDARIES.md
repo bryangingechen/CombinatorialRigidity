@@ -181,7 +181,15 @@ of* the per-commit checklists above:
   theorem to `status.main_results` and `alignment` (verified with
   `#print axioms`), and record any new `fidelity` divergences —
   backfilling that file at project end loses exactly the per-phase
-  detail it exists to capture. **The headline-axioms check's harness**
+  detail it exists to capture. **A row joins `main_results` with a
+  closed non-vacuity witness**: a declaration (no `sorry`, no new
+  hypothesis) that instantiates the headline theorem's hypotheses at a
+  minimal input of its intended class. `#print axioms` cannot see a
+  hypothesis set no input satisfies; the generic body-hinge and panel
+  theorems were green and axiom-clean while `hfresh` and `hends`
+  contradicted each other at every minimal k-dof-graph (`F-207`,
+  `F-252`). The phase-close commit is not done without one; the
+  existing rows' witnesses are RECONCILE round 3's. **The headline-axioms check's harness**
   (Phase 40's close ran it, and every post-Phase-40 cleanup round's
   open and close re-ran it against the same main results; round 5's
   open is the fullest worked description — `notes/Phase40-docs.md`

@@ -52,9 +52,9 @@ For each chapter under `blueprint/src/chapter/`:
 
 1. For each `\lean{...}` entry, compare the blueprint statement form
    against the Lean declaration's signature. Flag any mismatch in
-   hypotheses, conclusion form, or implicit/explicit binders. Two
-   distinct failure modes hide here, and the second is easy to miss
-   if you only hunt the first:
+   hypotheses, conclusion form, or implicit/explicit binders. Three
+   distinct failure modes hide here, and the second and third are easy
+   to miss if you only hunt the first:
    - *Prose oversells the Lean* — the smoothness-gloss case the rest
      of this section is about (a prose proof claiming an argument the
      Lean can't sustain).
@@ -71,6 +71,14 @@ For each chapter under `blueprint/src/chapter/`:
      not just the ones with suspicious prose. Phase 21b's
      `lem:case-I-realization` (a producer lemma assuming the rigidity
      it was named to construct) is the calibration case.
+   - *Vacuous hypotheses* — a third mode: for each `main_results` row,
+     does a **closed witness declaration** instantiate its hypotheses at
+     a minimal input of its intended class? A hypothesis set that no
+     minimal input satisfies leaves the theorem green, axiom-clean and
+     empty there, which neither mode above nor any gate sees (S1: `hfresh`
+     and `hends` contradict at every minimal k-dof-graph, `F-207`,
+     `F-252`). A missing witness is a finding; the rule is
+     `PHASE-BOUNDARIES.md`'s close checklist.
 2. Re-read each prose proof. If it suggests "the Lean does X via Y"
    where Y is harder than X, that's a candidate for Lean
    simplification — the blueprint shouldn't be carrying a smoothness

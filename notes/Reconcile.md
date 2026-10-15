@@ -4,10 +4,9 @@
 ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its
 input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6 and
 §2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`,
-opened with nine tasks (`notes/Reconcile-texts-cleanup.md`). **Next concrete task:** its task 8,
-the non-vacuity rule in `PHASE-BOUNDARIES.md`'s close checklist and `CLEANUP.md` §A (tasks 2–7,
-S1's and S2's scopes, M1's text, M2's and M5's credits and §2.6's example, are done;
-Pollaczek-Geiringer 1927 states the characterization and is credited beside Laman). The two PDFs of
+opened with nine tasks (`notes/Reconcile-texts-cleanup.md`). **Next concrete task:** its task 9, the close (tasks 2–8,
+S1's and S2's scopes, M1's text, M2's and M5's credits, §2.6's example and the non-vacuity rule, are
+done; Pollaczek-Geiringer 1927 states the characterization and is credited beside Laman). The two PDFs of
 §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
