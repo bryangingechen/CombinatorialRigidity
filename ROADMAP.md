@@ -1291,9 +1291,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   (`notes/Reconcile-statements-cleanup.md`); tasks 2–3 made the false statements S6–S10 true,
   task 4 restated the vacuous or trivially met S4 and S5, task 5 repinned S7, task 6 restated
   Case I's S14, S15 and S21, task 7 repinned Case III's three counts (S20), task 8 fixed S26, S27
-  and S35, task 9 fixed S29, and task 9.1 made `F-259`'s and `F-260`'s pins (S36's "In
-  particular" through `lem:trivial-motions-rank-bound`; the dual lemma's rescaling). **Next:** its
-  task 10, S38 and S39.
+  and S35, task 9 fixed S29, task 9.1 made `F-259`'s and `F-260`'s pins (S36's "In particular"
+  through `lem:trivial-motions-rank-bound`; the dual lemma's rescaling), and task 10 stated S38's
+  and S39's special cases generally. **Next:** its task 11, S40–S42.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

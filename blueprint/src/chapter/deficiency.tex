@@ -283,8 +283,8 @@ components of $\tilde G \restriction Y$
   \uses{def:body-bar-framework, def:edge-multiply}
   Let $G$ be a multigraph, and let $r$ be the rank function of the cycle
   matroid of $\tilde G$. Let $P$ be a partition of $V(G)$, and let $Y$
-  be the set of edges of $\tilde G$ whose ends lie in one part of $P$.
-  Then $r(Y) + |P| \le |V(G)|$.
+  be a set of edges of $\tilde G$ such that the ends of each edge of $Y$
+  lie in one part of $P$. Then $r(Y) + |P| \le |V(G)|$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -293,12 +293,10 @@ components of $\tilde G \restriction Y$
   nonempty, so it contains a component, and $\tilde G \restriction Y$
   has at least $|P|$ components. Hence $r(Y) \le |V(G)| - |P|$.
 \end{proof}
-\begin{fmlnote}
-  The formalization proves the bound, by the same argument, for every
-  set $Y$ of edges of $\tilde G$ such that the ends of each edge of $Y$
-  lie in one part of $P$. The formal proof of \cref{thm:def-eq-corank}
-  uses it in this form.
-\end{fmlnote}
+
+The proof of \cref{lem:weak-duality} applies the lemma to the set of all
+the edges of $\tilde G$ inside the parts of $P$, and the formal proof of
+\cref{thm:def-eq-corank} to the set $Y_0$ of its proof.
 
 \begin{lemma}[Weak duality: $\operatorname{def}(\tilde G) \le \operatorname{corank} M(\tilde G)$]
   \label{lem:weak-duality}
@@ -317,7 +315,8 @@ components of $\tilde G \restriction Y$
 \end{lemma}
 \begin{proof}
   \leanok
-  Let $r$ and $Y$ be as in \cref{lem:rk-within-parts}. The edges of
+  Let $r$ be as in \cref{lem:rk-within-parts}, and let $Y$ be the set
+  of edges of $\tilde G$ whose ends lie in one part of $P$. The edges of
   $\tilde G$ outside $Y$ are the $D - 1$ copies of each of the $d_G(P)$
   edges of $G$ that join different parts of $P$. The matroid
   $M(\tilde G)$ is the union of $D$ copies of the cycle matroid of
@@ -386,8 +385,8 @@ components of $\tilde G \restriction Y$
   for a base, and the third the reverse inequality. In the third, the
   partition into components is the labeling that sends each vertex to a
   chosen vertex of its component (\cref{fmlnote:partition-labeling}).
-  By \cref{lem:rk-within-parts}, in the form of its formalization note,
-  this labeling has at most as many parts as there are components. It
+  By \cref{lem:rk-within-parts}, applied to $Y_0$, this labeling has
+  at most as many parts as there are components. It
   has at least as many, as different components get different labels.
 \end{fmlnote}
 

@@ -185,8 +185,8 @@ $D = 6$.
   \leanok
   \uses{def:D-deficiency, def:crossing-edges-within}
   Let $G$ be a multigraph, let $P$ be a partition of $V(G)$, and let
-  $Q \subseteq P$ with $|Q| \ge 2$. Let $P'$ be the partition obtained
-  from $P$ by merging the members of $Q$ into a single part. Then
+  $Q \subseteq P$ be nonempty. Let $P'$ be the partition obtained from
+  $P$ by merging the members of $Q$ into a single part. Then
   \[
     \operatorname{def}_{\tilde G}(P') \;=\;
     \operatorname{def}_{\tilde G}(P)
@@ -201,7 +201,8 @@ $D = 6$.
   different parts of $P'$ exactly when it joins different parts of $P$
   and does not join two members of $Q$, so
   $d_G(P') = d_G(P) - e_G(Q)$. The identity follows from the definition
-  of the value (\cref{def:D-deficiency}). Read from right to left, it
+  of the value (\cref{def:D-deficiency}); when $|Q| = 1$, it says that
+  $P' = P$ has the value of $P$. Read from right to left, it
   gives the change in value when a part is split into several: if a
   part of $P'$ is split into the members of $Q$, the value rises by
   $D(|Q| - 1) - (D-1)\,e_G(Q)$.
@@ -315,15 +316,13 @@ prove it directly.
   As in \cref{fmlnote:partition-labeling}, a partition is a labeling of
   the vertices, and a tight partition is a labeling whose value is the
   deficiency. Merging the members of $Q$ gives all their vertices one of
-  their labels. Four of the formal statements assume less than their
+  their labels. Three of the formal statements assume less than their
   lemmas. \Cref{lem:exists-tight-partition} does not need $V(G)$
   nonempty: the empty set has one partition, with no parts and value
-  $-D$. \Cref{lem:partitionDef-merge} needs only $Q$ nonempty, as for
-  $|Q| = 1$ merging changes nothing and $e_G(Q) = 0$.
-  \Cref{lem:tight-partition-cross-pair-mult} holds for every multigraph,
-  with parallel edges counted. \Cref{lem:tight-partition-cross-pair-nbr}
-  does not assume the two vertices nonadjacent, and its proof above does
-  not use this.
+  $-D$. \Cref{lem:tight-partition-cross-pair-mult} holds for every
+  multigraph, with parallel edges counted.
+  \Cref{lem:tight-partition-cross-pair-nbr} does not assume the two
+  vertices nonadjacent, and its proof above does not use this.
 \end{fmlnote}
 
 \subsection{The counting bound}

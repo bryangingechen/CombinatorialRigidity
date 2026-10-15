@@ -2240,7 +2240,9 @@ declaration's name as its header writes it:
   note.
   *Evidence:* read (the statements of both, `Molecular/Deficiency.lean`).
   *Found:* round 2 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, S39).
+  *Disposition:* done (task 10): the statement is the pin's, for every set $Y$ of edges whose ends
+  each lie in one part of $P$, the note replaced by a remark naming the two sets its users take;
+  `lem:weak-duality`'s proof sets its $Y$, and `thm:def-eq-corank`'s note applies it at $Y_0$.
 - **F-083** · S · `lem:circuit-induces-rigid` (`molecular-induction.tex`): the statement says, as KT
   Lemma 3.4 does, that $X - e$ is the union of $D$ edge-disjoint spanning trees on $V(X)$. Its pins
   `circuit_induces_isTight` (the count $|X - e| + D = D\,|V(X)|$) and
@@ -2891,7 +2893,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the four pins, `Molecular/Deficiency.lean`; JJ 2008 §§3
   and 5).
   *Found:* round 4 task 2.5.
-  *Disposition:* reported (`notes/Prose-report.md`, S39).
+  *Disposition:* reported (`notes/Prose-report.md`, S39); round 2: `lem:partitionDef-merge` is
+  stated for every nonempty $Q$, its proof saying what $|Q| = 1$ gives, and its sentence left the
+  note (task 10).
 - **F-195** · S · `thm:laman-square-count`, `lem:normal-cross-count-rooted`,
   `lem:normal-cross-count-partition` and the lemmas of `sec:jacobs-counting` (`jacobs.tex`):
   statements that assume more, or claim more, than their pins. The theorem asks $V$ nonempty;
@@ -3068,7 +3072,10 @@ declaration's name as its header writes it:
   `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` and
   `linearIndependent_sum_pinned_block`; the citing proofs).
   *Found:* round 5 task 3.8.
-  *Disposition:* reported (`notes/Prose-report.md`, S38).
+  *Disposition:* done (task 10): the first node states the pins' dimension of $Z(G,p)$ and, at
+  nondegenerate hinges, the independent rows, for every body-hinge framework whose motions are
+  constant on $\emptyset \neq V(G) \subseteq W$; the block lemma is the pin's, for any two finite
+  families of forms; each `\cref` that read the special case now cites the claim.
 - **F-252** · S · `cor:panel-generic-rigid`, `cor:bodyhinge-generic-tree-packing` and the four other
   pins of `F-207` (`generic-lift.tex`): the gap is wider than `F-207`'s "every graph that is itself
   minimal". `hfresh` ranges over every graph on the bodies and the labels, not over subgraphs of

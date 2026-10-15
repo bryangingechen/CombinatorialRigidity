@@ -365,7 +365,10 @@ next four lemmas give its parts. In them, as in
 \cref{lem:rank-polynomial-of-le-finrank}, the rows of $R(G,q)$ at an
 edge are the linear forms of \cref{lem:rows-polynomial-in-normals},
 indexed by the edge and a pair of coordinates. At a nondegenerate hinge
-they span the rows of the edge.
+they span the rows of the edge. The second and the fourth are stated in
+the generality in which other chapters use them: for every framework
+whose motions are constant on its vertex set, and for any two families
+of linear forms.
 
 \begin{lemma}[The $D - 1$ rows of a nondegenerate hinge]
   \label{lem:case-II-placement-new-rows}
@@ -399,47 +402,48 @@ they span the rows of the edge.
   (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
 
-\begin{lemma}[Independent rows of a rigid realization]
+\begin{lemma}[The motions and independent rows of a framework rigid on $V(G)$]
   \label{lem:case-II-placement-old-rows-extract}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn,
         CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet}
   \leanok
-  \uses{def:panel-hinge-framework, def:rigidity-matrix,
-        lem:rank-delete-vertex, lem:relative-screw-split,
-        def:graph-operations}
-  Let $G_v^{ab}$ be obtained from a multigraph $G$ by splitting off a
-  vertex $v$ of degree two (\cref{def:graph-operations}), and let
-  $(G_v^{ab}, q)$ be a panel-hinge framework with nondegenerate hinges,
-  every infinitesimal motion of which is constant on $V(G_v^{ab})$. Then
-  some $D(|V(G_v^{ab})| - 1)$ rows of $R(G_v^{ab}, q)$ are linearly
-  independent.
+  \uses{def:rigidity-matrix, lem:rank-delete-vertex,
+        lem:relative-screw-split}
+  Let $(G,p)$ be a body-hinge framework whose screw assignments are
+  defined on a finite set $W$ of bodies with
+  $\emptyset \neq V(G) \subseteq W$, and suppose that every
+  infinitesimal motion of $(G,p)$ is constant on $V(G)$. Then
+  \[
+    \dim Z(G,p) \;=\; D\,\bigl(|W \setminus V(G)| + 1\bigr).
+  \]
+  If moreover $C(p(e)) \neq 0$ at every edge $e$ of $G$, that is, every
+  hinge is nondegenerate, then some $D(|V(G)| - 1)$ rows of $R(G,p)$ are
+  linearly independent.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:relative-screw-split,
         lem:rows-polynomial-in-normals}
-  Let $W$ be the set of bodies, and let $V' = V(G_v^{ab})$, which contains
-  the ends of the new edge $ab$. Fix a body $w \in V'$. A motion that
-  vanishes at $w$ vanishes on $V'$, as it is constant there. So
-  $\operatorname{pinned}(w) = Z_{V'}(G_v^{ab}, q)$, and by KT Lemma~5.1
+  Fix a body $w \in V(G)$. A motion that vanishes at $w$ vanishes on
+  $V(G)$, as it is constant there. So
+  $\operatorname{pinned}(w) = Z_{V(G)}(G,p)$, and by KT Lemma~5.1
   (\cref{lem:rank-delete-vertex}) and \cref{lem:relative-screw-split},
   \[
-    \dim Z(G_v^{ab}, q) \;=\; D + D\,|W \setminus V'|.
+    \dim Z(G,p) \;=\; D + D\,|W \setminus V(G)|.
   \]
   Hence
-  $\operatorname{rank} R(G_v^{ab}, q) = D|W| - \dim Z(G_v^{ab}, q)
-  = D(|V'| - 1)$. As the hinges are nondegenerate, the rows of
-  $R(G_v^{ab}, q)$ span its row space, and $D(|V'| - 1)$ of them are
-  linearly independent.
+  $\operatorname{rank} R(G,p) = D|W| - \dim Z(G,p) = D(|V(G)| - 1)$. If
+  the hinges are nondegenerate, the rows of $R(G,p)$ span its row space
+  (the proof of \cref{lem:rows-polynomial-in-normals}), and
+  $D(|V(G)| - 1)$ of them are linearly independent.
 \end{proof}
 
 \begin{fmlnote}
-  The first pinned theorem is the lemma for every body-hinge framework
-  whose hinges are nondegenerate, with the endpoint selector giving the
-  ends of each edge. It asks both at every edge label, so that every
-  label is an edge. No main result uses it. The second pinned theorem is
-  the dimension of $Z(G_v^{ab}, q)$ in the proof, for every body-hinge
-  framework.
+  The second pinned theorem is the dimension of $Z(G,p)$, and the first
+  the independent rows. The first reads the ends of each edge from the
+  endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}), and it
+  asks both the selector's ends and a nondegenerate hinge at every edge
+  label, so that every label is an edge. No main result uses it.
 \end{fmlnote}
 
 \begin{lemma}[Rows shared by two frameworks]
@@ -471,34 +475,36 @@ they span the rows of the edge.
   (\cref{lem:splitoff-edge-substitution}).
 \end{proof}
 
-\begin{lemma}[Rows at $v$ and rows that vanish at $v$]
+\begin{lemma}[Forms independent at $v$ and forms that vanish at $v$]
   \label{lem:case-II-placement-block-independent}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_pinned_block}
   \leanok
-  \uses{def:panel-hinge-framework}
-  Let $(G,q)$ be a panel-hinge framework, and let $v$ be a body. Let
-  $\rho_1, \dots, \rho_m$ be rows of $R(G,q)$ at edges with the end $v$,
-  whose restrictions to the screw assignments that vanish off $v$ are
-  linearly independent. Let $\sigma_1, \dots, \sigma_l$ be linearly
-  independent rows of $R(G,q)$ at edges whose ends differ from $v$. Then
+  \uses{def:screw-space}
+  Let $v$ be a body, and let $\rho_1, \dots, \rho_m$ and
+  $\sigma_1, \dots, \sigma_l$ be linear forms on the screw assignments,
+  the maps from the bodies to the screw space (\cref{def:screw-space}).
+  Suppose that the restrictions of $\rho_1, \dots, \rho_m$ to the screw
+  assignments that vanish off $v$ are linearly independent, and that
+  $\sigma_1, \dots, \sigma_l$ are linearly independent and vanish on
+  these screw assignments. Then
   $\rho_1, \dots, \rho_m, \sigma_1, \dots, \sigma_l$ are linearly
   independent.
 \end{lemma}
 \begin{proof}
   \leanok
   Suppose that $\sum_i a_i \rho_i + \sum_j b_j \sigma_j = 0$, and let $S$
-  be a screw assignment that vanishes off $v$. Each $\sigma_j$ is a row
-  at an edge whose ends differ from $v$, so $\sigma_j(S) = 0$, and hence
-  $\sum_i a_i \rho_i(S) = 0$. By the hypothesis on the $\rho_i$, every
-  $a_i$ is $0$. Then $\sum_j b_j \sigma_j = 0$, and every $b_j$ is $0$.
+  be a screw assignment that vanishes off $v$. Then $\sigma_j(S) = 0$ for
+  every $j$, and hence $\sum_i a_i \rho_i(S) = 0$. By the hypothesis on
+  the $\rho_i$, every $a_i$ is $0$. Then $\sum_j b_j \sigma_j = 0$, and
+  every $b_j$ is $0$.
 \end{proof}
 
-\begin{fmlnote}
-  The pinned theorem holds for any two families of linear forms on the
-  screw assignments, of which the second vanishes on the assignments that
-  vanish off $v$. \Cref{lem:rigidityRows-pinned-placement-rank-add} uses it
-  in this form.
-\end{fmlnote}
+For instance, a row of a rigidity matrix at an edge whose ends differ
+from $v$ vanishes on the screw assignments that vanish off $v$. The
+proof of \cref{lem:case-II-realization-placement} applies the lemma to
+rows of two frameworks, and
+\cref{lem:rigidityRows-pinned-placement-rank-add} to forms in the row
+space of a rigidity matrix.
 
 \begin{lemma}[KT eq.~(6.12) when $G_v^{ab}$ is rigid: one row short]
   \label{lem:case-II-realization-placement}
@@ -569,9 +575,8 @@ they span the rows of the edge.
   are the forms $S \mapsto \varphi_i(S(v))$, which are again linearly
   independent. The $\sigma_j$ vanish there, as no edge of $G_v^{ab}$ has
   $v$ as an end. So the $\rho_i$ and the $\sigma_j$ are linearly
-  independent together, as in the proof of
-  \cref{lem:case-II-placement-block-independent}, and they lie in the row
-  space of $R(G, q_0)$. Hence, as in
+  independent together (\cref{lem:case-II-placement-block-independent}),
+  and they lie in the row space of $R(G, q_0)$. Hence, as in
   \cref{lem:rigidityRows-pinned-placement-rank-add},
   \[
     \operatorname{rank} R(G, q_0) \;\ge\;
