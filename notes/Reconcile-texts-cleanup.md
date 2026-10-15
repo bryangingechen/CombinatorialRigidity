@@ -1,13 +1,13 @@
 # RECONCILE round 1/3 — `reconcile-texts`, the texts (work log)
 
-**Status:** in progress (opened 2026-10-15). Round 1 of **RECONCILE**'s three autopilot rounds;
-the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot/queue.toml` is
-the authority for which rounds are done. Docs and blueprint prose only: the scopes of S1 and S2 on
-the status surfaces, M1's "for simple graphs", M2's and M5's credits read against the two PDFs,
-§2.6's stale example in an agent manual, and the non-vacuity rule. No node, edge or pin changes,
-and no Lean edit. Nine one-commit tasks; tasks 1–8 (the open, S1's and S2's scopes, M1's text, M2's
-and M5's credits, §2.6's example, the non-vacuity rule) are done. **Next concrete task:** task 9, the
-close (Sonnet may take it). Round manual: `CLEANUP.md`.
+**Status:** closed (opened and closed 2026-10-15). Round 1 of **RECONCILE**'s three autopilot
+rounds; the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot/queue.toml`
+is the authority for which rounds are done. Docs and blueprint prose only: the round stated S1's and
+S2's scopes on the status surfaces, wrote M1's "for simple graphs", read M2's and M5's credits
+against the two PDFs (Laman originates the planar characterization, Pollaczek-Geiringer 1927 is
+credited beside him), replaced §2.6's stale example, and added the non-vacuity rule. No node, edge or
+pin changed, and the Lean is unchanged. All nine one-commit tasks are done. **Next concrete task:**
+round 2's open, `reconcile-statements` (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -17,13 +17,24 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–8 are done**; task 8, the non-vacuity rule, is this commit: `PHASE-BOUNDARIES.md`'s
-close checklist (a row joins `main_results` with a closed non-vacuity witness, S1 the calibration)
-and `CLEANUP.md` §A (a third failure mode, vacuous hypotheses). Round 3 writes the existing rows'
-witnesses. Next: task 9, the close (*Hand-off*). Task 8's gates (docs only, no TeX edit; gate 4's log
-is task 6's, not rebuilt): `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:`
-lines; `1501 edges 11033da1dbaa0fae`, `8cdc1b9723e22064`; the dump `2e4cbc2acd13d193` (3 588
-lines); `print.log` 0 `LaTeX Warning` lines; the no-Lean-edit diff empty; no gate 7.
+**The round is closed** (task 9, docs only; this commit). Nothing is mid-stream.
+- **Gates at the close** (2026-10-15; the open's values beside them where they differ): whole-project
+  `lake build` green (2 996 jobs, 0 `warning:`, 0 `error:`; the open's); `git diff --stat f39e35e6..
+  -- CombinatorialRigidity/ lakefile.toml lake-manifest.json lean-toolchain` empty; `lint.sh` green;
+  `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1501 edges 11033da1dbaa0fae`** and
+  **`8cdc1b9723e22064`**; the dump 3 588 lines, **`2e4cbc2acd13d193`**, byte-identical to task 7's
+  and the open's; `print.log` 0 `LaTeX Warning` lines and 31 overfull boxes (31 at the open; no TeX
+  rebuilt for the close); `python3 notes/check-phase-note.py --all` green.
+- **The axioms check**: the harness `scratch/reconcile-texts/Axioms-close.lean` (gitignored),
+  regenerated from `formalization.yaml` by the command under *Scope* gate 7, is `cmp`-identical to
+  the open's `Axioms.lean` (no `declaration:` changed). Run with `lake lean`, all 19 main results
+  give `[propext, Classical.choice, Quot.sound]`, and the output equals `axioms-open.log` byte for
+  byte, net of the harness's path.
+- **The ledger** (`notes/Prose-findings.md`): `F-025`, `F-122`, `F-128`, `F-207`, `F-222` keep
+  `reported`, each with its round-1 clause; `F-228` and `F-251` are `done` (`211e2737`,
+  `b0eb63eb`); `F-252` stays `reported` under *Candidates for the PI*. Each "(task N)" this round
+  wrote is now that task's sha. The ledger has 252 entries: 89 `done`, 16 `left`, 147 `reported`.
+- **The queue**: `reconcile-texts`'s `done = true`.
 
 **Verified at the open** (2026-10-15, at `f39e35e6`, whose Lean and blueprint are round 5's close
 tree, `62175c74`):
@@ -120,13 +131,13 @@ IDs and report items it acts on, its rung and its surfaces (lines as at the open
 - [x] **7. §2.6, the honesty gate's example** (`3b68f7de`; report §2.6): `blueprint/CLAUDE.md`'s
   stale `lem:case-I` example replaced by `lem:case-III`'s `hSimple`, every fact the open verified
   re-read at HEAD, with the report's two cautions.
-- [x] **8. The non-vacuity rule** (this commit; §1, the agent's proposal; report §1.1's checks; Sonnet may take
+- [x] **8. The non-vacuity rule** (`21215096`; §1, the agent's proposal; report §1.1's checks; Sonnet may take
   it). `PHASE-BOUNDARIES.md`'s close checklist, *Sync the user-facing status surfaces* (172–200,
   where a headline theorem joins `status.main_results`), and `CLEANUP.md` §A (its audit list, 51–81)
   gain the requirement: a closed declaration instantiating each `main_results` row's hypotheses at a
   minimal input of its intended class, landing with the row; S1 is the calibration. Round 3 writes
   them for the existing rows outside S1, S2 and G6's.
-- [ ] **9. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check (byte-identical
+- [x] **9. Close** (this commit; `CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check (byte-identical
   to the open's, net of the path); the no-Lean-edit check from `f39e35e6`; gates 1–4 at the open's
   values; every ledger entry the round touched has its disposition, task numbers as shas; the queue
   row `done = true`; ROADMAP's row ✓ and its RECONCILE bullet, and `notes/Reconcile.md`'s
@@ -159,8 +170,12 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 9, the close** (Sonnet may take it): its checklist line above, in full. Then the
-queue's next row, `reconcile-statements`.
+**Next: round 2's open**, `reconcile-statements`, the queue's next row: create
+`notes/Reconcile-statements-cleanup.md` from `notes/Reconcile.md` §3 *Round 2* (every false
+blueprint statement fixed, KT's route kept and explained), with the baselines the open takes. Carried
+in: `F-252` for the PI (*Candidates for the PI*; the phase's refactor (a) removes it), and the two
+docstring lines under *Moved to a later round*, already mirrored into round 3's list in
+`notes/Reconcile.md` §3.
 
 ## Decisions made during this round
 

@@ -8,7 +8,10 @@ the PI. A round's work log names a finding by its ID, in one line under *Candida
 canonical home per content type*). At round 5's close (2026-10-15) all 250 entries have their
 disposition, 87 `done`, 16 `left` and 147 `reported`, each round-5 task named by its commit; the
 report is `notes/Prose-report.md`. Its follow-up, RECONCILE (`notes/Reconcile.md`, queued
-2026-10-15), keeps this ledger as each finding's home and sets the dispositions it acts on.
+2026-10-15), keeps this ledger as each finding's home and sets the dispositions it acts on. At
+RECONCILE round 1's close (2026-10-15) the ledger has 252 entries (`F-251` and `F-252` are the
+round's), 89 `done` (`F-228` and `F-251` joined), 16 `left` and 147 `reported`, each round-1 task
+named by its commit.
 
 ## Format
 
@@ -1966,7 +1969,7 @@ declaration's name as its header writes it:
   results' rows; the paragraph names no exception.
   *Evidence:* read (`formalization.yaml` lines 580–582 at `f39e35e6`; `notes/Prose-report.md` §1.2).
   *Found:* RECONCILE round 1 task 1.
-  *Disposition:* done (task 3): the paragraph says the blueprint aims at the exact form, that a
+  *Disposition:* done (b0eb63eb): the paragraph says the blueprint aims at the exact form, that a
   2026 review found statements claiming more or less than their declarations, which a cleanup acts
   on, and names the main results whose rows state their scope (S1's and S2's).
 
@@ -2356,7 +2359,7 @@ declaration's name as its header writes it:
   the link-recording form, which gives the panel side with each hinge at its edge's ends by the
   same argument (a `lake lean` witness, script not retained: `molecular_conjecture`'s proof with
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` in place of the genuine form proves the
-  iff with the link conjunct on the panel side) (task 3).
+  iff with the link conjunct on the panel side) (b0eb63eb).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2409,7 +2412,7 @@ declaration's name as its header writes it:
   README, the home page, `intro.tex` and ROADMAP §23, beside the proved form
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, named in the text only; the row's
   rank-formula sentence now takes that form, as the upper bound needs nondegenerate hinges
-  (task 3).
+  (b0eb63eb).
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
@@ -2835,7 +2838,7 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, S1); round 1: the scope stated beside both
   theorems in `formalization.yaml` (the row and the two `alignment` entries), README, the home page,
   `intro.tex` and ROADMAP §34, with `rem:fresh-edge-supply`'s reading checked by a `lake lean`
-  witness; its sharper reading is `F-252` (task 2).
+  witness; its sharper reading is `F-252` (8ee0f8a8).
 
 - **F-211** · S · `def:two-extensor`, `def:generic-endpoints` (`generic-lift.tex`): principle B's
   moves out of two definitions, task 2.10's hygiene-rule reading. At the open `def:two-extensor`
@@ -4001,7 +4004,7 @@ declaration's name as its header writes it:
   presentation followed is Jordán's, credited). Fixed: `formalization.yaml` (the LY `sources`
   entry, `status.scope`, the linear-matroid row's description, `alignment`'s source), ROADMAP (the
   layout line, the Phase 7 row and heading, §6's and §7's texts, *References*), `DESIGN.md`'s two
-  (task 5). The docstrings are round 3's, `BodyBar/TayTheorem.lean`'s among them.
+  (b408df1a). The docstrings are round 3's, `BodyBar/TayTheorem.lean`'s among them.
 - **F-053** · M · the credit for the matroid of a submodular function, the polymatroid rank formula
   and the union's rank formula (`matroid-union.tex`, `intro.tex`, `deficiency.tex`,
   `molecular-induction.tex`; Lean docstrings). The blueprint credited the first two to Edmonds 1970.
@@ -4077,7 +4080,7 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, M1); round 1: `body-hinge.tex`'s two passages
   say the corollary is for simple graphs, with the rest of its pin's scope (at least two vertices,
   every body a vertex, an infinite field, the fresh-label supply by pointer), and that for
-  multigraphs the formalization has the theorem for bundles of bars (task 4). Not "only":
+  multigraphs the formalization has the theorem for bundles of bars (b72c0202). Not "only":
   `thm:theorem-55-6-multigraph` realizes every spanning multigraph with nonzero hinges. The
   multigraph generic form is `RECONCILE-FORMAL`'s (b).
 - **F-228** · M · the credit for Laman's theorem (`intro.tex`, `laman.tex`, `laman-theorem.tex`,
@@ -4093,7 +4096,7 @@ declaration's name as its header writes it:
   (pp. 58–72, in German), Crossref's record again, and the reference lists of Jordán 2016 and LY
   1982.
   *Found:* round 4 task 2.14.
-  *Disposition:* done (task 6; reported, `notes/Prose-report.md`, M5). The verdict: **the paper
+  *Disposition:* done (211e2737; reported, `notes/Prose-report.md`, M5). The verdict: **the paper
   states and proves the characterization.** Its theorem (p. 60): "Notwendig und hinreichend dafür,
   daß ein Fachwerk von $k$ Knoten und $(2k-3)$ Stäben brauchbar sei, ist, daß es kein Teilsystem von
   $l$ Punkten $(4 \le l < k)$ enthält, die durch mehr als $(2l-3)$ »innere« Stäbe mit einander
@@ -4134,4 +4137,4 @@ declaration's name as its header writes it:
   with `thm:edgeSet-rowIndependent-iff-isSparse`'s title, `bar-joint-3d.tex`) and a
   `bibliography.bib` entry; README; the home page; `formalization.yaml` (a `sources` entry, LY's
   note, `status.scope`, two rows, two `alignment` sources); ROADMAP (opening, layout line, §6, §7,
-  *References*); `DESIGN.md`'s two (task 6).
+  *References*); `DESIGN.md`'s two (211e2737).

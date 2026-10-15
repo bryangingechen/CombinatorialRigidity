@@ -83,7 +83,7 @@ id = "reconcile-texts"
 title = "RECONCILE 1/3: the texts"
 note = "notes/Reconcile-texts-cleanup.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "reconcile-statements"

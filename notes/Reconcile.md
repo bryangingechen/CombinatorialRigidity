@@ -1,13 +1,14 @@
 # RECONCILE: acting on the PROSE findings (planning note)
 
-**Status:** round 1 in progress (opened 2026-10-15). The PI queued RECONCILE next, ahead of
+**Status:** round 1 closed (opened and closed 2026-10-15). The PI queued RECONCILE next, ahead of
 ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its
 input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6 and
-§2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`,
-opened with nine tasks (`notes/Reconcile-texts-cleanup.md`). **Next concrete task:** its task 9, the close (tasks 2–8,
-S1's and S2's scopes, M1's text, M2's and M5's credits, §2.6's example and the non-vacuity rule, are
-done; Pollaczek-Geiringer 1927 states the characterization and is credited beside Laman). The two PDFs of
-§2 are in `.refs/` (the PI, 2026-10-15).
+§2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`
+(`notes/Reconcile-texts-cleanup.md`), is done in nine tasks: S1's and S2's scopes, M1's text, M2's
+and M5's credits (Pollaczek-Geiringer 1927 states the characterization and is credited beside
+Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. **Next concrete task:**
+round 2's open, `reconcile-statements` (§3 *Round 2*), which creates
+`notes/Reconcile-statements-cleanup.md`. The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 
