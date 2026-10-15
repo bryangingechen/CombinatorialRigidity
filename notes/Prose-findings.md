@@ -7,7 +7,8 @@ the PI. A round's work log names a finding by its ID, in one line under *Candida
 *Moved to a later round*; the finding itself is written only here (`notes/CLAUDE.md` *One
 canonical home per content type*). At round 5's close (2026-10-15) all 250 entries have their
 disposition, 87 `done`, 16 `left` and 147 `reported`, each round-5 task named by its commit; the
-report is `notes/Prose-report.md`, and its follow-up the proposed program RECONCILE.
+report is `notes/Prose-report.md`. Its follow-up, RECONCILE (`notes/Reconcile.md`, queued
+2026-10-15), keeps this ledger as each finding's home and sets the dispositions it acts on.
 
 ## Format
 

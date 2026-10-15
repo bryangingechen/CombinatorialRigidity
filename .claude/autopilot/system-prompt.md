@@ -21,7 +21,8 @@ Don't ask it. For every item in the queue:
   hasn't opened, and the loop's first commit opens it at the top rung.
 - A cleanup round's plan is its program's planning note: scope, order, the PI's decisions
   verbatim, and any planned stops (the five `40-*` rounds, all closed: `notes/Cleanup40.md`;
-  PROSE's five `prose-*` rounds: `notes/Prose.md`).
+  PROSE's five `prose-*` rounds, all closed: `notes/Prose.md`; RECONCILE's three `reconcile-*`
+  rounds: `notes/Reconcile.md`).
 - Moving a task to a later queued round, with a one-line reason in both work logs, is ordinary
   cleanup practice, not a stop.
 

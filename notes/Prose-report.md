@@ -1148,8 +1148,9 @@ commits and M1's blueprint commit; §2.6's commit corrects the manual.
 
 ## Part 3 — the follow-up program, proposed
 
-The proposal is an unqueued ROADMAP bullet, **RECONCILE** (*Queued post-program phases*); the PI
-queues it, places it against ORIGAMI, and edits its shape. It takes Parts 1 and 2 as its input
+The proposal is the ROADMAP bullet **RECONCILE** (*Queued post-program phases*). The PI queued it
+next on 2026-10-15, ahead of ORIGAMI, and changed its shape: the plan as queued, with the PI's
+decisions, is `notes/Reconcile.md`, which supersedes this Part where they differ. It takes Parts 1 and 2 as its input
 and the ledger as each finding's home, as PROSE's rounds did.
 
 - **First, the PI's decisions**, recorded in the program's planning note: Part 1's suggestions,

@@ -6,6 +6,7 @@
 #   work log doesn't exist yet hasn't opened.
 # The five cleanup rounds' scope, order and stops: notes/Cleanup40.md (PI, 2026-09-29).
 # PROSE's five rounds' scope, order and stop: notes/Prose.md (PI, 2026-10-07).
+# RECONCILE's three rounds and its phase: notes/Reconcile.md (PI, 2026-10-15).
 
 [[item]]
 id = "40-cleanup"
@@ -76,6 +77,36 @@ title = "PROSE 5/5: graph repairs and the findings report"
 note = "notes/Prose-graph-cleanup.md"
 attended = false
 done = true
+
+[[item]]
+id = "reconcile-texts"
+title = "RECONCILE 1/3: the texts"
+note = "notes/Reconcile-texts-cleanup.md"
+attended = false
+done = false
+
+[[item]]
+id = "reconcile-statements"
+title = "RECONCILE 2/3: every false statement, and KT's route explained"
+note = "notes/Reconcile-statements-cleanup.md"
+attended = false
+done = false
+
+[[item]]
+id = "reconcile-lean"
+title = "RECONCILE 3/3: the Lean outside the phase's footprint"
+note = "notes/Reconcile-lean-cleanup.md"
+attended = false
+done = false
+
+# Attended: new formalization (the carriers, M1's multigraph form, the claims no declaration
+# states). It opens with the PI and takes its phase number then; its plan is notes/Reconcile.md §3.
+[[item]]
+id = "RECONCILE-FORMAL"
+title = "RECONCILE: the carriers and new formalization (phase)"
+note = "notes/Reconcile.md"
+attended = true
+done = false
 
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.

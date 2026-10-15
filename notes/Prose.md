@@ -20,8 +20,8 @@ rewritten chapters. It recorded `F-230`–`F-250`, set every entry's disposition
 findings report `notes/Prose-report.md`. The Lean never changed: at round 5's close, `#print
 axioms` on the 19 main results gives round 1's open's output byte for byte, net of the harness's
 path. **Next:** nothing in
-this program. The report's Part 3 proposes the follow-up program RECONCILE, an unqueued ROADMAP
-bullet that the PI queues; the autopilot queue's next row, ORIGAMI, is attended.
+this program. The report's Part 3 proposed the follow-up program RECONCILE, which the PI queued
+next on 2026-10-15 (`notes/Reconcile.md`).
 
 ## 1. The PI's decisions
 

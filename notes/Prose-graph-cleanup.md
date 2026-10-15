@@ -9,10 +9,10 @@ node's `\uses` to the gate's dump; tasks 3.1–3.14 gave every node the shape th
 35 nodes added; tasks 4.1–4.9 added every missing edge and removed 196 unbacked ones; tasks
 5.1–5.5 moved nodes after the nodes they use; task 6 aligned the notation of `pencil.tex` and
 `main-component.tex`; task 7 aligned `README.md`, the home page and `formalization.yaml`; tasks
-8.1–8.2 wrote the findings report `notes/Prose-report.md`, which proposes the follow-up program
-RECONCILE (unqueued, in ROADMAP). Of the 250 entries, 87 are `done`, 16 `left` and 147 `reported`.
+8.1–8.2 wrote the findings report `notes/Prose-report.md`, which proposed the follow-up program
+RECONCILE (queued next, `notes/Reconcile.md`). Of the 250 entries, 87 are `done`, 16 `left` and 147 `reported`.
 The Lean is unchanged, and no task changed a statement's strength. All 31 one-commit tasks are
-done. **Next concrete task:** none in this program; the PI queues RECONCILE (*Hand-off*). Round
+done. **Next concrete task:** none in this program; RECONCILE, queued next (*Hand-off*). Round
 manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -299,10 +299,10 @@ None.
 **The round and PROSE are closed; there is no next task in this program.** What carried over:
 - **To the PI:** the findings report `notes/Prose-report.md` (Part 1 the 65 `S` entries reported,
   Part 2 the 76 `L` and 6 `M`, and in G1–G6 the `E` and `N` entries left wholly or in part), and
-  its Part 3, the follow-up program **RECONCILE**, an unqueued ROADMAP bullet (*Queued
-  post-program phases*). The PI queues and places it; this round added no queue row for it.
-- **The autopilot queue:** `prose-graph` is `done = true`; the next row, ORIGAMI, is attended, so
-  the driver stops before it and ORIGAMI opens with the PI (`notes/Origami.md`).
+  its Part 3, the follow-up program **RECONCILE**, which the PI queued next on 2026-10-15
+  (`notes/Reconcile.md`, ROADMAP *Queued post-program phases*).
+- **The autopilot queue:** `prose-graph` is `done = true`; the next rows are RECONCILE's three
+  rounds, then its attended phase and ORIGAMI.
 
 ## Decisions made during this round
 

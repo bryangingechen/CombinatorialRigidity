@@ -1222,8 +1222,8 @@ Phase 38. The user inserted **PENCIL** and **ORIGAMI** ahead of PIN on
 above); its formalization sequel **PENCIL-X0** opened as Phase 40 the same day at the user's
 initiative and closed 2026-09-29, proving the pencil realization theorem (§40 above). The PI then
 queued five post-Phase-40 cleanup rounds ahead of ORIGAMI (2026-09-29), to run under
-autopilot, and on 2026-10-07 **PROSE**'s five rounds after them, so **ORIGAMI opens after
-PROSE**.) A longer **unqueued**
+autopilot, on 2026-10-07 **PROSE**'s five rounds after them, and on 2026-10-15 **RECONCILE**
+after PROSE, so **ORIGAMI opens after RECONCILE**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
 formalization targets) lives in `notes/IdeaBacklog.md`.
@@ -1239,7 +1239,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   rounds 3, `40-exposition`, and 4, `40-simplify`, closed 2026-10-04; round 5, `40-docs`, closed
   2026-10-05 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`, `notes/Phase40-docs.md`).
-  The autopilot queue then ran **PROSE**'s rounds (below), and its next row is ORIGAMI.
+  The autopilot queue then ran **PROSE**'s rounds (below), and its next rows are **RECONCILE**'s.
 - **PROSE** — five `CLEANUP.md` rounds that rewrote the prose of every blueprint chapter outside
   `pencil.tex` and `main-component.tex`, repaired the dependency graph of every chapter, and
   recorded what else they noticed. Queued by the PI on 2026-10-07, ahead of ORIGAMI, and run under
@@ -1258,8 +1258,19 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   never changed, and the 19 main results' axioms are as at round 1's open. Work logs:
   `notes/Prose-laman-cleanup.md`, `notes/Prose-molecular-cleanup.md`,
   `notes/Prose-algebraic-cleanup.md`, `notes/Prose-applications-cleanup.md`,
-  `notes/Prose-graph-cleanup.md`. The report proposes the follow-up program **RECONCILE** (below,
-  unqueued). The autopilot queue's next row is ORIGAMI, which is attended.
+  `notes/Prose-graph-cleanup.md`. The report proposed the follow-up program **RECONCILE** (below),
+  which the PI queued next on 2026-10-15.
+- **RECONCILE** — acts on PROSE's findings report `notes/Prose-report.md`: statements whose
+  blueprint and Lean texts disagree, Lean hygiene, credits, and the nodes PROSE round 5 left.
+  Queued by the PI on 2026-10-15, next, ahead of ORIGAMI; plan, the PI's decisions and the order
+  are in `notes/Reconcile.md`. Three autopilot rounds: `reconcile-texts` (docs and prose, with the
+  credits verified against the sources), `reconcile-statements` (every false blueprint statement
+  fixed, KT's route kept and explained) and `reconcile-lean` (the pebble game's search fixed and
+  re-proved, a non-vacuity witness per main result, the docstring sweep). Then one attended phase,
+  `RECONCILE-FORMAL`: the link condition becomes a field of `PanelHingeFramework` (S2), the
+  generic body-hinge and panel theorems stop being vacuous at minimal graphs (S1), the generic
+  body-hinge theorem's multigraph form, and the claims no declaration states. **Next:** round 1's open,
+  `reconcile-texts`.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
@@ -1284,15 +1295,6 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
 - **VERSO** — blueprint → `leanprover/verso-blueprint` port. Paused,
   external-gated (resume criteria in `notes/VersoPort.md`); listed so it stays
   visible on the queue.
-- **RECONCILE** — *proposed, not queued*: PROSE round 5 proposed it on 2026-10-15, and the PI
-  queues and places it. It acts on what the PROSE ledger `notes/Prose-findings.md` recorded for
-  the PI and a later round: statements whose blueprint and Lean texts disagree, Lean hygiene
-  (stale or false docstrings, unused hypotheses, dead and repeated code, an exponential search
-  under the executable pebble game), credits, and the blueprint nodes round 5 left for a merge or
-  a retirement. The plan is `notes/Prose-report.md`'s Part 3: the PI's decisions first, then a
-  round of texts (docs and prose), a round of blueprint statements and pins, a Lean cleanup round,
-  and one phase of new formalization (the generic body-hinge and panel theorems' scope, KT Theorem
-  5.6's endpoint selector, and the claims no declaration states).
 
 ## Engineering conventions
 
