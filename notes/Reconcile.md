@@ -5,7 +5,7 @@ autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`). Its in
 findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6 and §2.6), with each
 finding's home the ledger `notes/Prose-findings.md`. **Next concrete task:** round 1's open,
 `reconcile-texts`, which creates `notes/Reconcile-texts-cleanup.md` with its task list (§3). The
-two PDFs of §2 should be in `.refs/` before it opens.
+two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 
@@ -129,7 +129,10 @@ No node, edge or pin changes; no Lean.
   follow LY's argument (a "presentation we follow" credit). Then fix `formalization.yaml`'s
   reference entry and its four lines, and ROADMAP's Phase 6–7 texts, Status row title and
   directory-layout line. The Lean docstrings go to round 3.
-- **M5**: read Pollaczek-Geiringer 1927. If it states the characterization, credit it beside Laman
+- **M5**: read Pollaczek-Geiringer 1927 (in German). Its scan's text layer is garbled OCR, so read
+  the page images (the Read tool's `pages`), not `REFS.md`'s text extraction; the PDF's 15 pages
+  are pp. 58–72, and the first also carries the end of the preceding article. If it states the
+  characterization, credit it beside Laman
   wherever the blueprint, README, home page and `formalization.yaml` name the originator, and add
   the reference; if not, record what it does state as an `M` entry.
 - **§2.6**: drop the stale `lem:case-I` example from `blueprint/CLAUDE.md`'s honesty gate (replace
