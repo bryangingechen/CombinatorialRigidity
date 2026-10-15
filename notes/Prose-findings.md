@@ -1286,6 +1286,22 @@ declaration's name as its header writes it:
   *Evidence:* measured (the second screen under `notes/Prose-algebraic-cleanup.md` *Scope*, at
   `ef57b401`).
   *Found:* round 3 task 1.
+  *Disposition:* done (task 5.4): four moves, each curing edges and making none. *Two operations
+  on frameworks* now follows *Panel-hinge frameworks* (the two edges to
+  `lem:motions-mono-of-graph-le`); the base of the induction precedes `thm:theorem-55`, as KT
+  Lemma 5.3 precedes KT Theorem 5.5 (the theorem's two edges to it);
+  `lem:panel-support-extensor-independence` moved into *Panel-hinge frameworks*, after the join
+  lemma (the edges of `lem:triangle-normals` and `lem:cycle-normals`); and the two subsections of
+  `genericity-and-count.tex` now come between Cases I and II (`lem:case-II-realization`'s two
+  edges into them). 26 edges stay forward: `thm:theorem-55`'s six into Cases I–III and
+  `prop:rigidity-matrix-prop11`'s to it (KT state the theorem before its cases, and the
+  proposition takes its lower bound from it); the base producers' three, to
+  `lem:rows-polynomial-in-normals` (the first step of KT Claim 6.4, in its group in Case I) and to
+  the counting subsection; `lem:case-cut-edge-realization-gp`'s and Case I's 13 into the counting
+  subsection, which uses `lem:case-I`, `def:pinned-motions-on` and
+  `lem:rows-polynomial-in-normals`, so that it can precede its users only by regrouping Case I; and
+  two into Case III's subsections on KT Claim 6.12 and on KT eqs. (6.24)–(6.29), from
+  `lem:case-I-realization-h65` and `lem:case-II-realization`.
 - **F-120** · N · round 3's doubly pinned declarations (`algebraic-induction/case-iii.tex`): ten
   names in `blueprint/lean_decls` are pinned on two nodes, two of them here.
   `Graph.splitOff_exists_base_inter_fiber_lt` is the first pin of `lem:splitoff-kdof-criterion`

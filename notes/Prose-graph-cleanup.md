@@ -9,11 +9,10 @@ re-ran the audit script, reproduced round 4's gate values and triaged the entrie
 one-commit tasks; task 2 added each node's `\uses` to the gate's dump, tasks 3.1–3.14 (task 3)
 gave every node the ledger names its shape, and tasks 4.1–4.9 (task 4) added the missing edges of
 every chapter, so the graph has none. Task 5, the node order, is split by entry; task 5.1 moved
-`F-019`'s theorem to the end of `sparsity.tex`, task 5.2 moved seven `rigidity-matrix.tex` nodes
-after the nodes they use, and task 5.3 six more, so that no edge of `deficiency.tex` or
-`molecular-induction.tex` points at a later chapter. No task edits the Lean or changes a
-statement's strength. **Next concrete task:** task 5.4, the node order of the algebraic
-induction's sections (`F-119`; *Hand-off*).
+`F-019`'s theorem to the end of `sparsity.tex`, tasks 5.2–5.3 thirteen nodes after the nodes they
+use, so that no edge of `deficiency.tex` or `molecular-induction.tex` points at a later chapter,
+and task 5.4 four blocks of the algebraic induction (`F-119`). No task edits the Lean or changes a
+statement's strength. **Next concrete task:** task 5.5, `pencil.tex`'s node order (*Hand-off*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -25,30 +24,27 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 5.3 has landed** (this commit; the docs, no Lean): six nodes moved, `F-050`'s rest and
-`F-076`, which are done; `F-250` filed for the Lean docstrings that name the old chapters. Nothing
-is mid-stream; the next task is task 5.4.
+**Task 5.4 has landed** (this commit; the docs, no Lean): four moves in the algebraic induction,
+`F-119` done. Nothing is mid-stream; the next task is task 5.5.
 
-**The gate's baseline, at task 5.3** (2026-10-15; the same as task 4.9's):
+**The gate's baseline, at task 5.4** (2026-10-15; the same as task 4.9's):
 - `python3 scripts/blueprint-deps.py --dump` after `verify.sh`: **3 588 lines**, sha256 prefix
   **`2e4cbc2acd13d193`**, kept as `scratch/prose-graph/dump-<this commit's sha>.txt` (gitignored;
   regenerate it on this commit), byte-identical to task 4.9's, as `predict-dump.sh` gave for the
-  copy and under `PYTHONHASHSEED` 0, 1 and 12345. Tasks 5.4–9 keep it byte-identical.
+  copy and under `PYTHONHASHSEED` 0, 1 and 12345. Tasks 5.5–9 keep it byte-identical.
 - `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines; **`1501 edges
   11033da1dbaa0fae`** and **`8cdc1b9723e22064`**; `print.log` 0 `LaTeX Warning` lines and 31
   overfull boxes, the open's count; `--summary` exits 0, both consistency checks OK: 692 nodes,
   1 009 pins (999 distinct; `lean_decls` 1 010), **0 missing** in every chapter, 2 417 implied,
   84 + 145 unbacked, 177 dead, 12 nodes with four or more pins. Only the chapter rows of a moved
-  node change: task 5.3 moved KT Lemma 6.1's two nodes and their 23 implied edges to
-  `panel-layer` (now 38 nodes, 54 pins), three nodes to `deficiency` (30, 51; 58 implied) from
-  `molecular-induction` and `jacobs` (39, 63), and one with its dead pin from `case-ii` (3, 5) to
-  `molecular-induction` (51, 67; 161 implied, 8 dead). No node is drawn `#9CEC8B` (`F-007`).
+  node change: task 5.4 moved `lem:panel-support-extensor-independence` and its implied edge from
+  `case-i` (now 24 nodes, 36 pins, 156 implied) to `panel-layer` (39, 55; 203 implied), and
+  `case-ii`'s row now follows `genericity-and-count`'s. No node is drawn `#9CEC8B` (`F-007`).
 - The forward screen (*Scope*), task 5's input: `rigidity-matroid` 2/2 0/0 (`F-029`, left),
-  `rigidity-matrix` 3/2 0/0, `molecular-induction` 0/0 2/2, `panel-layer` 12/6 5/3, `case-i` 14/6
-  0/0, `case-ii` 3/1 0/0 and `pencil` 3/2 1/1: 37 edges to a later file, 8 to a later node of the
-  same file. Task 5.3 cured 9, among them `case-i`'s to `lem:splitoff-edge-substitution`, and
-  moved one to `panel-layer`. `scratch/prose-graph/t53/screen-after.txt` lists the edges
-  (`t42/screen.py <tex-root> v`).
+  `rigidity-matrix` 3/2 0/0, `molecular-induction` 0/0 2/2, `panel-layer` 10/4 1/1, `case-i` 14/6
+  0/0, `case-ii` 1/1 0/0 and `pencil` 3/2 1/1: 33 edges to a later file, 4 to a later node of the
+  same file. Task 5.4 cured 8 and made none. `scratch/prose-graph/t54/screen-after.txt` lists the
+  edges (`t42/screen.py <tex-root> v`).
 
 **Verified at the open** (2026-10-13, at `216e0702`, round 4's close tree):
 - Whole-project `lake build` green: 2 996 jobs, 0 `warning:` and 0 `error:` lines (re-run, all
@@ -246,25 +242,17 @@ gate's diff, which each task makes exact before editing.
     `case-i.tex` and `genericity-and-count.tex`; `lem:rigidityRows-pinned-placement-rank-add`'s two
     edges left (its user `lem:case-II-realization` comes first), and `lem:block-rank-path`'s
     (`F-247`).
-  - [x] **5.3 `F-050`'s rest, `F-076`** (this commit; both done, `F-250` new):
-    `molecular-induction.tex` (7/4 to later chapters, 2/2 within) and `deficiency.tex` (2/2).
-    Sized at pickup: six nodes in four moves, fewer than 5.2's seven, so one commit. *Expected*
-    (exact, before editing the tree; tried on a scratch copy, `t53/edit.py`): no node, `\uses` or
-    pin changes, `lean_decls` `8cdc1b9723e22064`, the dump byte-identical to task 5.2's; the
-    screen's `molecular-induction` 7/4 2/2 to 0/0 2/2, `deficiency` 2/2 to none, `panel-layer`
-    11/5 to 12/6 and `case-i` 15/6 to 14/6, the rest unchanged. All held. Moved: KT Lemma 6.1's
-    two nodes to `panel-layer.tex`, before their one user `thm:theorem-55` (the second's edge to
-    `lem:rank-polynomial-of-le-finrank` stays forward, `F-119`'s); `lem:two-vertex-zero-dof` before
-    `lem:two-vertex-trichotomy`; `def:tight-partition` and `lem:exists-tight-partition` from
-    `jacobs.tex` to follow `def:D-deficiency`, which keeps the ear lemmas together;
-    `lem:splitoff-edge-substitution` from `case-ii.tex` to follow `def:graph-operations`, curing
-    `F-089`'s edge and two more (`F-050`'s remedy, the target before its users). Left, within the
-    file: `lem:base-vfiber-count` -> `lem:removal-deficiency` (KT Lemma 4.4 stays with KT Lemma
-    4.3(i), whose argument its proof follows; the forest surgery's opening names it) and
-    `lem:rigidContract-isMinimalKDof` -> `lem:reduction-measure` (`F-098` placed the node after
-    KT Lemma 3.5's matroid form; the measure needs `def:graph-operations`; the statement cites it).
-  - [ ] **5.4 `F-119`**: `algebraic-induction.tex`'s sections: `panel-layer` (12/6, 5/3 within),
-    `case-i` (14/6) and `case-ii` (3/1). Size it on pickup, as 5.2.
+  - [x] **5.3 `F-050`'s rest, `F-076`** (`90b68fd1`; both done, `F-250` new): six nodes in four
+    moves, KT Lemma 6.1 into `panel-layer.tex`; `molecular-induction.tex`'s two edges within it
+    left (KT Lemma 4.4 with KT Lemma 4.3(i); `F-098`'s placement).
+  - [x] **5.4 `F-119`** (this commit; done): `panel-layer` (12/6, 5/3 within), `case-i` (14/6),
+    `case-ii` (3/1). Sized at pickup: four block moves, one an `\input` swap, so one commit.
+    *Expected* (exact, before editing the tree; tried on a scratch copy, `t54/edit.py`): no node,
+    `\uses` or pin changes, the dump byte-identical to task 5.3's; the screen's `panel-layer` to
+    10/4 1/1 and `case-ii` to 1/1, the rest unchanged. All held. Moved: *Two operations on
+    frameworks* before *The generic rank formula*; the base of the induction before
+    `thm:theorem-55`; `lem:panel-support-extensor-independence` into *Panel-hinge frameworks*; the
+    genericity and counting subsections before Case II. The 26 edges left: `F-119`'s disposition.
   - [ ] **5.5 `pencil.tex`**: its edge within the file (`lem:pencil-cut-case` ->
     `def:pencil-distinct-motive`); its three into `main-component.tex` stay, as no entry names a
     move. Then the screen beside *Current state*'s.
@@ -351,31 +339,20 @@ None.
 
 ## Hand-off / next phase
 
-**Next concrete task: task 5.4, the node order of the algebraic induction's sections** (`F-119`;
-Opus, a fresh agent): `panel-layer` (12/6 to later sections, 5/3 within), `case-i` (14/6) and
-`case-ii` (3/1); no edge of these files points at a later chapter. Its *Expected* is the dump
-byte-identical to task 5.3's (*Current state*). Re-run the screen first (task 5.3's is
-`t53/screen-after.txt`), and read `F-119`: a move within a section cures what it can (principle
-E), and a move between sections, such as the genericity argument before Case I, is the one the
-ledger names. Candidates, each still to be read:
-- `thm:theorem-55`'s six edges into Cases I–III: KT state the theorem before its cases, and the
-  paragraph before it names the three subsections, so they likely stay. Within the file, its two
-  to the base cases at the subsection's end, and three to `thm:theorem-55` and
-  `lem:motions-mono-of-graph-le` (from `prop:rigidity-matrix-prop11` and
-  `thm:theorem-55-6-genuine`): read which moves are reorderings and not regroupings;
-- `lem:triangle-normals` and `lem:cycle-normals` use `case-i.tex`'s
-  `lem:panel-support-extensor-independence` (it uses only `panel-layer.tex` and `meet.tex`), and
-  `lem:theorem-55-base-producer-single` uses `lem:rows-polynomial-in-normals` (the same);
-- `genericity-and-count.tex`'s `lem:isInfRigidOn-of-relative-count`,
-  `lem:case-II-placement-old-rows-extract`, `lem:independent-rows-of-rank` and
-  `lem:rank-polynomial-of-le-finrank`, used from `panel-layer`, `case-i` and `case-ii`; the first
-  uses `lem:case-I`, so it cannot precede Case I.
+**Next concrete task: task 5.5, `pencil.tex`'s node order** (Opus, a fresh agent): its one edge
+within the file, `lem:pencil-cut-case` (in *Reduction on all spanning multigraphs*) ->
+`def:pencil-distinct-motive` (in *Nondegenerate realizations and the conditioned pair*, later).
+Read whether the definition, or its group, can move before its user without making a forward
+edge and without regrouping (principle E; *Decisions*: the target before its users); otherwise
+the edge stays with its sentence. Its three edges into `main-component.tex` stay, as no entry
+names a move. Its *Expected* is the dump byte-identical to task 5.4's (*Current state*). Then
+re-run the screen beside *Current state*'s: the rest is what tasks 5.1–5.4 left (`F-029`'s two,
+`rigidity-matrix`'s three, `molecular-induction`'s two, and `F-119`'s 26, two of them `F-050`'s),
+which task 9 re-runs.
 
-Size the task before editing, and split it in its line if the moves do not fit one commit. The
-mechanics are 5.2's and 5.3's (*Decisions*): an `edit.py` on a scratch copy (`t53/edit.py`), the
-screen, `predict-dump.sh`, `t52/verbatim.py` and `t52/fwdcref.py`, and `print.log`'s 31 overfull
-boxes (a reworded lead-in can add one: task 5.3 rephrased `case-ii.tex`'s opening to keep 31). The
-commit sets `F-119`'s disposition. Then task 5.5, then 6.
+The mechanics are 5.2–5.4's (*Decisions*): an `edit.py` on a scratch copy (`t54/edit.py`), the
+screen, `predict-dump.sh`, `t52/verbatim.py`, `t52/fwdcref.py` and `t54/ctx.py` (position words
+around a moved label's `\cref`s), and `print.log`'s 31 overfull boxes. Then task 6.
 
 ## Decisions made during this round
 
@@ -435,9 +412,11 @@ commit sets `F-119`'s disposition. Then task 5.5, then 6.
   with them (bodies on no edge, now the rank-addition *Throughout*), and the moved lead-in points
   back to it; a group that fits no subsection of its new chapter gets one. `t52/verbatim.py` checks
   every moved block byte-identical, and `t52/fwdcref.py` lists the prose's forward `\cref`s.
-- **The target before its users, and what stays** (task 5.3). A forward edge's target that uses
-  only earlier nodes moves to the chapter that defines its objects, before its first user
-  (`F-050`'s remedy; the double edge, the tight partitions, the common subgraph of a splitting
-  off). A moved block changes only a sentence that would point forward, or an abbreviation of its
-  old chapter (`JJ`). Within a chapter, a move that takes a node out of its KT-numbered group is a
-  regrouping (principle E), so its edge stays, with the sentence that cites the target.
+- **The target before its users, and what stays** (tasks 5.3–5.4). A forward edge's target that
+  uses only earlier nodes moves to the chapter or section that defines its objects, before its
+  first user (`F-050`'s remedy); a subsection moves whole, as a block or by its `\input`. A moved
+  block changes only a sentence that would point forward, or an abbreviation of its old chapter
+  (`JJ`); a position word that a move falsifies ("below", "later in this subsection") is fixed
+  wherever it stands. A move that takes a node out of its KT-numbered group, or splits a
+  subsection, is a regrouping (principle E), so its edge stays: the counting subsection, which
+  uses `lem:case-I`, follows Case I.

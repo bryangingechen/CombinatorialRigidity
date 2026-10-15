@@ -83,28 +83,7 @@ frameworks. For panel-hinge frameworks it reads as follows.
 \end{proof}
 
 The bound of \cref{lem:cycle-realization-dim-bound} is attained by panel
-support extensors (\cref{lem:exists-independent-panel-extensor}). We
-first reduce their linear independence to that of joins. The proofs of
-\cref{lem:triangle-normals} and \cref{lem:cycle-normals} use this
-reduction.
-
-\begin{lemma}[Independence of panel support extensors]
-  \label{lem:panel-support-extensor-independence}
-  \lean{CombinatorialRigidity.Molecular.panelSupportExtensor_linearIndependent_iff}
-  \leanok
-  \uses{def:panel-support-extensor, def:meet-complement-iso}
-  Let $a_i, b_i \in K^{d+1}$ for $1 \le i \le m$. Then the extensors
-  $C(a_i, b_i)$ with $1 \le i \le m$ are linearly independent if and
-  only if the joins $a_i \vee b_i$ are linearly independent in
-  $\bigwedge^2 K^{d+1}$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  By definition, $C(a_i, b_i) = *(a_i \vee b_i)$
-  (\cref{def:panel-support-extensor}), and the complement isomorphism $*$
-  (\cref{def:meet-complement-iso}) is a linear isomorphism. A linear
-  isomorphism preserves and reflects linear independence.
-\end{proof}
+support extensors (\cref{lem:exists-independent-panel-extensor}).
 
 \begin{lemma}[Up to $D$ independent panel support extensors]
   \label{lem:exists-independent-panel-extensor}

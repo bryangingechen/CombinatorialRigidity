@@ -45,9 +45,11 @@ has none. Its task 5.1 moved the sparse reverse decomposition to the end of `spa
 its first use, its task 5.2 moved the deficiency bounds of `rigidity-matrix.tex` into
 `deficiency.tex` and its lemmas for Case I into the algebraic induction, and its task 5.3 moved KT
 Lemma 6.1 into the algebraic induction, and the tight partitions, the two-vertex double edge and
-the subgraph shared by removal and splitting off before their first uses. **Next concrete task:**
-round 5's task 5.4, the node order of the algebraic induction's sections
-(`notes/Prose-graph-cleanup.md` *Hand-off*).
+the subgraph shared by removal and splitting off before their first uses, and its task 5.4 moved
+the base of KT Theorem 5.5's induction before the theorem, the operations on frameworks before
+their first users, and the genericity and counting subsections before Case II. **Next concrete
+task:** round 5's task 5.5, the node order of `pencil.tex` (`notes/Prose-graph-cleanup.md`
+*Hand-off*).
 
 ## 1. The PI's decisions
 
