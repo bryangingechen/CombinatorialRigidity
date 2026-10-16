@@ -127,8 +127,8 @@ These are Lee and Streinu's functions $\mathrm{peb}$, $\mathrm{span}$
 and $\mathrm{out}$~\cite[\S 4]{leeStreinu2008}, for a graph without
 loops. The maximum with $0$ matters only when $\mathrm{out}_D(v) > k$.
 This does not happen at the orientations the game reaches, the
-$(k, \ell)$-reachable ones of \cref{def:reachable-orientation}, as the
-proof of Invariant~(1) in \cref{lem:pebble-game-invariants} shows.
+$(k, \ell)$-reachable ones of \cref{def:reachable-orientation}, as
+Invariant~(1) of \cref{lem:pebble-game-invariants} shows.
 
 \begin{fmlnote}
   In order, the five pins define $\mathrm{out}_D(v)$,
@@ -237,16 +237,17 @@ from it.
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
     def:reachable-orientation, def:arc-insertion, def:path-reversal}
-  Let $V$ be a finite set, let $k$ and $\ell$ be non-negative integers
-  with $\ell < 2k$, and let $D$ be a $(k, \ell)$-reachable partial
-  orientation on $V$. Let $v \in V$, and let $V' \subseteq V$ with
-  $\ell \le k|V'|$. Then:
+  Let $V$ be a set, let $k$ and $\ell$ be non-negative integers, and
+  let $D$ be a $(k, \ell)$-reachable partial orientation on $V$. Let
+  $v \in V$, and let $V' \subseteq V$ be a finite set. Then:
   \begin{enumerate}
     \item $\mathrm{peb}_{D, k}(v) + \mathrm{out}_D(v) = k$;
     \item $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') +
       \mathrm{out}_D(V') = k|V'|$;
-    \item $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V') \ge \ell$;
-    \item $\mathrm{span}_D(V') \le k|V'| - \ell$.
+    \item if $\ell \le k|V'|$, then
+      $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V') \ge \ell$;
+    \item if $\ell \le k|V'|$, then
+      $\mathrm{span}_D(V') \le k|V'| - \ell$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -272,8 +273,8 @@ from it.
   So the sum of the out-degrees over $V'$ is
   $\mathrm{span}_D(V') + \mathrm{out}_D(V')$.
 
-  For (3), at the empty orientation the left-hand side is
-  $k|V'| \ge \ell$. Reversing a path does not change
+  For (3), let $\ell \le k|V'|$. At the empty orientation the
+  left-hand side is $k|V'| \ge \ell$. Reversing a path does not change
   $\mathrm{span}_D(V')$, since it replaces each arc of the path by an
   arc with the same ends. By (2), before and after the move, it does not
   change $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V')$ either.
@@ -301,10 +302,11 @@ from it.
   \mathrm{out}(v) = k$, in which $\mathrm{span}(v)$ counts the loops at
   $v$, therefore becomes (1). Second, they assume $|V'| \ge 1$ when
   $\ell \le k$ and $|V'| \ge 2$ when $k < \ell < 2k$. Both give
-  $\ell \le k|V'|$, which is the hypothesis used here. The formal
-  statement of (4) is $\mathrm{span}_D(V') + \ell \le k|V'|$, which
-  avoids the truncated subtraction of natural numbers. Under
-  $\ell \le k|V'|$ the two forms agree. The first two pins are (1), in
+  $\ell \le k|V'|$, which is the hypothesis of (3) and (4) here; no
+  part needs $\ell < 2k$. The formal statement of (4) is
+  $\mathrm{span}_D(V') + \ell \le k|V'|$, which avoids the truncated
+  subtraction of natural numbers. Under $\ell \le k|V'|$ the two forms
+  agree. The first two pins are (1), in
   the equivalent form $\mathrm{out}_D(v) \le k$ and as stated, and the
   other three are (2) to (4).
 \end{fmlnote}
@@ -393,9 +395,9 @@ pebbles on $u$ and $v$, it rejects $uv$ and returns the following data.
 \end{definition}
 
 A failure witness does not mention a graph. Let $\ell < 2k$, and let
-$G$ be a finite simple graph on $V$ whose edges include $uv$ and the
-edges in $\underline{D}$. Then $\ell \le k|V'|$, and $V'$ spans more
-than $k|V'| - \ell$ edges of $G$
+$G$ be a simple graph on $V$ with finitely many edges, whose edges
+include $uv$ and the edges in $\underline{D}$. Then $\ell \le k|V'|$,
+and $V'$ spans more than $k|V'| - \ell$ edges of $G$
 (\cref{lem:workhorseWitness-certifies}).
 
 \begin{definition}[Processing an edge]
@@ -445,8 +447,8 @@ vertex $w$ with $w \ne u, v$ and $\mathrm{peb}_{D, k}(w) > 0$. So the
 path has at least one arc, and $\mathrm{out}_D(w) < k$. Hence $D'$ is
 $(k, \ell)$-reachable, and $uv$ is not oriented in $D'$, since the
 reversal keeps the underlying edge set. Since $D$ is
-$(k, \ell)$-reachable, $\mathrm{out}_D(u) \le k$, as in the proof of
-Invariant~(1) in \cref{lem:pebble-game-invariants}. So the reversal
+$(k, \ell)$-reachable, $\mathrm{out}_D(u) \le k$ by Invariant~(1) of
+\cref{lem:pebble-game-invariants}. So the reversal
 raises $\mathrm{peb}_{D, k}(u)$ by $1$. It leaves
 $\mathrm{peb}_{D, k}(v)$ unchanged, since $v$ is not an end of the
 path. Step~3 is the same with $u$ and $v$ exchanged. Hence
@@ -701,13 +703,13 @@ that defines sparsity.
   \uses{def:runPebbleGame, lem:pebble-game-invariants, def:isSparse,
     lem:runPebbleGame-underline-eq, lem:span-eq-ncard-edgesIn}
   Let $V$ be a finite set, let $G$ be a simple graph on $V$, and let $k$
-  and $\ell$ be non-negative integers with $\ell < 2k$. Let the lists
-  $N^+_D(a)$ be as in \cref{def:tryAddEdge}, and let the pairs
+  and $\ell$ be non-negative integers. Let the lists $N^+_D(a)$ be as
+  in \cref{def:tryAddEdge}, and let the pairs
   $(u_1, v_1), \ldots, (u_m, v_m)$ list the edges of $G$, each once, as
   $(u, v)$ or as $(v, u)$. If the pebble game on this list from the
   empty orientation returns a partial orientation, then $G$ is
-  $(k, \ell)$-sparse. In particular, $G$ is $(k, \ell)$-sparse if the
-  pebble game on $G$ accepts $G$.
+  $(k, \ell)$-sparse. In particular, if $\ell < 2k$ and the pebble game
+  on $G$ accepts $G$, then $G$ is $(k, \ell)$-sparse.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -725,8 +727,8 @@ that defines sparsity.
   on $G$ runs on a list of the kind above
   (\cref{lem:runPebbleGame-underline-eq}), which gives the last claim.
 
-  The first claim holds without the hypothesis $\ell < 2k$: neither
-  this proof nor that of \cref{lem:pebble-game-invariants} uses it.
+  Only the last claim assumes $\ell < 2k$, the range in which the
+  pebble game on $G$ is defined (\cref{def:runPebbleGame}).
 \end{proof}
 
 \subsection{Completeness}
@@ -785,8 +787,7 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
 \begin{proof}
   \leanok
   \uses{lem:pebble-game-invariants}
-  As in the proof of Invariant~(2) of
-  \cref{lem:pebble-game-invariants},
+  By Invariant~(2) of \cref{lem:pebble-game-invariants},
   \[
     \mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') + \mathrm{out}_D(V')
     = k|V'|.
@@ -850,8 +851,8 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
   \uses{def:workhorseWitness, lem:pebble-game-invariants, def:edgesIn}
   Let $k$ and $\ell$ be non-negative integers with $\ell < 2k$, and let
   $(D, V', (u, v))$ be a failure witness (\cref{def:workhorseWitness}).
-  Let $G$ be a finite simple graph on $V$ whose edges include $uv$ and
-  the edges in $\underline{D}$. Then $\ell \le k|V'|$ and
+  Let $G$ be a simple graph on $V$ with finitely many edges, whose edges
+  include $uv$ and the edges in $\underline{D}$. Then $\ell \le k|V'|$ and
   \[
     |\edgesIn[G]{V'}| + \ell \;>\; k|V'|.
   \]
@@ -901,8 +902,8 @@ Lee and Streinu's Lemma~13, read in the contrapositive.
   (\cref{def:tryAddEdge}). By
   \cref{lem:runPebbleGameWith-underline-subset}~(1),
   $\underline{D'} = \underline{D} \cup \{uv\} = E(G)$. Let
-  $V' \subseteq V$ with $\ell \le k|V'|$. As in the proof of
-  Invariant~(4) of \cref{lem:pebble-game-invariants},
+  $V' \subseteq V$ with $\ell \le k|V'|$. By Invariant~(4) of
+  \cref{lem:pebble-game-invariants},
   $\mathrm{span}_{D'}(V') \le k|V'| - \ell$. By
   \cref{lem:span-eq-ncard-edgesIn}, the left-hand side is
   $|\edgesIn[G]{V'}|$. Hence $G$ is $(k, \ell)$-sparse.
@@ -1003,9 +1004,9 @@ for which the restated theorem holds as well
   \leanok
   \uses{def:partial-orientation, def:reachable-orientation,
     def:edgesIn, def:blockingWitness}
-  Let $G$ be a finite simple graph on $V$, and let $k$ and $\ell$ be
-  non-negative integers. A \emph{verdict} on $G$ is one of the
-  following:
+  Let $G$ be a simple graph on $V$ with finitely many edges, and let
+  $k$ and $\ell$ be non-negative integers. A \emph{verdict} on $G$ is
+  one of the following:
   \begin{enumerate}
     \item an \emph{acceptance}, given by a $(k, \ell)$-reachable partial
       orientation $D$ on $V$ with $\underline{D} = E(G)$

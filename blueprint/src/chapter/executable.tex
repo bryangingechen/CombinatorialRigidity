@@ -36,7 +36,7 @@ replace both with lists sorted by a linear order on $V$.
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.outListSorted}
   \leanok
   \uses{def:partial-orientation}
-  Let $V$ be a finite set with a linear order, and let $D$ be a partial
+  Let $V$ be a set with a linear order, and let $D$ be a partial
   orientation on $V$ (\cref{def:partial-orientation}). For $v \in V$,
   the \emph{sorted out-neighbour list} of $v$ in $D$ is the list of the
   out-neighbours of $v$ in $D$, the vertices $u$ with $(v, u) \in D$, in
@@ -64,10 +64,10 @@ So the sorted out-neighbour lists are lists $N^+_D(a)$ as in
   \label{def:edgeListSorted}
   \lean{SimpleGraph.edgeListSorted}
   \leanok
-  Let $V$ be a set with a linear order, and let $G$ be a finite simple
-  graph on $V$. The \emph{sorted edge list} of $G$ is the list of the
-  pairs $(\min e, \max e)$, for the edges $e$ of $G$, in lexicographic
-  order. Here $\min e$ and $\max e$ are the smaller and the larger end
+  Let $V$ be a set with a linear order, and let $G$ be a simple graph
+  on $V$ with finitely many edges. The \emph{sorted edge list} of $G$
+  is the list of the pairs $(\min e, \max e)$, for the edges $e$ of
+  $G$, in lexicographic order. Here $\min e$ and $\max e$ are the smaller and the larger end
   of $e$.
 \end{definition}
 

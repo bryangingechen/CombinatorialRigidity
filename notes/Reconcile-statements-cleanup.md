@@ -7,11 +7,12 @@ authority for which rounds are done. The round fixes the blueprint statements th
 G2's merges of true duplicates, and gives each group of nodes where the formal proof leaves Katoh
 and Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is not
 edited. The open (task 1, docs only) reproduced round 1's close values and sliced the round into
-21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–10 are done
+21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–11 are done
 (the open; the false statements S6–S10; S4 and S5; S7's repin; Case I's S14, S15 and S21; Case
 III's three counts, S20; S26, S27 and S35; S29; S36's and the rescaling's pins, `F-259` and
-`F-260`; S38 and S39, stated generally). **Next concrete task:** task 11, S40–S42 (*Lemma
-checklist*); `F-255`'s and `F-257`'s cures are tasks 12, 15 and 18's. Round manual: `CLEANUP.md`.
+`F-260`; S38 and S39, stated generally; S40–S42, the hypotheses the pins do not take). **Next
+concrete task:** task 12, G1's first two pin changes (*Lemma checklist*); `F-255`'s and
+`F-257`'s cures are tasks 12, 15 and 18's. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -21,25 +22,26 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–10 are done**; task 10, S38 and S39 stated generally, is this commit
-(`genericity-and-count.tex`, `deficiency.tex`, `jacobs.tex`, and the retargeted `\cref`s in
-`generic-lift.tex` and `case-i.tex`). Nothing is mid-stream; task 11 is next. `F-255`'s cure is
-task 15's (its line); `F-257`'s, three missing proof edges that would be forward, are tasks 12's
-and 18's (their lines). Task 10's gates: `lint.sh` green; `verify.sh` green, `checkdecls`
-silent, the same 9 `WARNING:` lines; **`1499 edges 3e9dbd3eeddc9a23`**, **`9c98f641ae650627`**;
-the dump's diff from `dump-t91.txt` the eight lines its line lists, kept as
-`scratch/reconcile-statements/dump-t10.txt`; `--summary` exits 0, both checks OK, 690 nodes
-pinned, 1012 pins (995 distinct), 4 missing edges, 171 dead pins, 134 edges with no Lean basis, 85
-transitive, 13 nodes with 4+ pins; the `--label` reports of the four nodes and their 21 users show
-no missing edge; the forward screen the open's lines; `print.log` rebuilt by latexmk, 0 `LaTeX
-Warning` lines, 31 overfull boxes; `check-phase-note.py` green; the no-Lean-edit diff from
-`1cbdbff5` empty; no `formalization.yaml` edit; `notes/BlueprintExposition.md` points at none of
-the four nodes. The declarations round 2 unpins, for the close's list (tasks 8–10 unpin none):
-task 4's `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller), task 5's
-`exists_good_realization` and `exists_good_realization_const` (dead, `F-152`), and task 7's
-`linearIndependent_sum_augment_candidateRow`, `linearIndependent_sum_p2_candidateRow` and
-`linearIndependent_sum_p3_candidateRow` (dead); their docstrings are `F-254`'s, `F-256`'s and
-`F-258`'s, round 3.
+**Tasks 1–11 are done**; task 11, S40–S42, is this commit (`pebble-game.tex`, `body-bar.tex`,
+`body-hinge.tex`, `intro.tex`, `sparsity.tex`, `laman-theorem.tex`, `rigidity-matroid.tex`,
+`count-matroid.tex`, `executable.tex`, and the citing sentence in `deficiency.tex`). Nothing is
+mid-stream; task 12 is next. `F-255`'s cure is task 15's (its line); `F-257`'s, three missing
+proof edges that would be forward, are tasks 12's and 18's (their lines). Task 11's gates:
+`lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:` lines; **`1499
+edges 3e9dbd3eeddc9a23`**, **`9c98f641ae650627`**; the dump byte-identical to `dump-t10.txt`, kept
+as `scratch/reconcile-statements/dump-t11.txt`; `--summary` exits 0, both checks OK, byte-identical
+to task 10's (690 nodes pinned, 1012 pins (995 distinct), 4 missing edges, 171 dead pins, 134
+edges with no Lean basis, 85 transitive, 13 nodes with 4+ pins); the nineteen nodes' `--label`
+reports show no missing edge; the forward screen the open's lines; `print.log` rebuilt by latexmk,
+0 `LaTeX Warning` lines, 31 overfull boxes; `check-phase-note.py` green; the no-Lean-edit diff
+from `1cbdbff5` empty; no `formalization.yaml` edit (its two Tay rows bound no dimension);
+`notes/BlueprintExposition.md` names one of the nineteen, `lem:isSparse-of-rowIndependent-two`, in
+its light screen, and that sentence holds. The declarations round 2 unpins, for the close's list
+(tasks 8–11 unpin none): task 4's `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
+(no caller), task 5's `exists_good_realization` and `exists_good_realization_const` (dead,
+`F-152`), and task 7's `linearIndependent_sum_augment_candidateRow`,
+`linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow` (dead); their
+docstrings are `F-254`'s, `F-256`'s and `F-258`'s, round 3.
 
 **Verified at the open** (2026-10-15, at `1cbdbff5`, round 1's close tree, whose Lean is
 `f39e35e6`'s):
@@ -191,41 +193,13 @@ task makes exact before editing. Every task is at Opus but the close.
   `rankHypothesis_zero_iff` joins `lem:trivial-motions-rank-bound`, the rescaling's two pins
   `lem:panel-hinge-dual-molecular`'s (2); the dump's four predicted lines. `F-184`, `F-259`, `F-260`
   done.
-- [x] **10. S38, S39: special cases stated generally** (this commit; `F-239`, `F-079`; `F-191` in
-  part). S38: `lem:case-II-placement-old-rows-extract` (`genericity-and-count.tex` 394–408) for
-  every body-hinge framework rigid on its vertex set (its subfamily clause at nondegenerate hinges),
-  as `cor:panel-generic-rigid` and `cor:bodyhinge-generic-rigid` cite it;
-  `lem:case-II-placement-block-independent` (466–478) for any two families of forms on the screw
-  assignments, the second vanishing on those that vanish off $v$, as
-  `lem:rigidityRows-pinned-placement-rank-add` uses it. S39: `lem:rk-within-parts`
-  (`deficiency.tex` 279–288) for every $Y \subseteq E(\tilde G)$ within parts, and
-  `lem:partitionDef-merge` (`jacobs.tex` 182–197) for any member of $Q$. *Expected:* statement
-  edges that only the special cases needed removed (e.g. `def:graph-operations` at the first),
-  listed before editing; pins unchanged. *Exact, before editing* (the reach reports and the
-  reduced graph on a scratch copy): no node added or removed; no pin moved, added or removed (the
-  `lean_decls` hash stays `9c98f641ae650627`); no `\leanok` change. `\uses`: the first node's
-  statement loses `def:graph-operations` and `def:panel-hinge-framework` (neither its new
-  statement, its proof nor its pins use them); the block lemma's statement trades
-  `def:panel-hinge-framework` for `def:screw-space` (the codomain of the screw assignments, its
-  pin's reach); the S39 nodes' edges stay. Drawn: those three edges go and the fourth comes,
-  `1499 edges 3e9dbd3eeddc9a23` (2194 statements); no node loses an ancestor it names
-  (`lem:rigidityRows-pinned-placement-rank-add` and `lem:case-III-conditional-block` lose only the
-  panel and extensor ancestors that the block lemma had, which their statements and pins do not
-  use). The dump's diff: the two header lines, those four graph lines and the two nodes' `\uses`
-  lines. `--summary`: missing 4, transitive 85, implied 2435, no Lean basis 134 (the three
-  unbacked edges gone); the screen unchanged. *Done:* exactly that diff and summary. The first
-  node, retitled, states the second pin's $\dim Z(G,p) = D(|W \setminus V(G)| + 1)$ and, at
-  $C(p(e)) \neq 0$, the first pin's rows; the block lemma the pin, a remark after it on rows;
-  `lem:rk-within-parts` any such $Y$, a remark naming its users' two sets for the note;
-  `lem:partitionDef-merge` any nonempty $Q$, the shared note's sentence dropped. Honesty gate:
-  each clause beside its pin, each pin's hypotheses the statement's ($V(G) \neq \emptyset$, the
-  motions, the hinges; the selector and the labels in the note); the users re-read with `--label`
-  (no missing edge); the
-  `\cref`s that read a special case retargeted (`generic-lift.tex` twice, `case-i.tex` 180,
-  `deficiency.tex` twice, the placement's proof). `F-079`, `F-239` done; `F-191` in part; no new
-  entry.
-- [ ] **11. S40, S41, S42: hypotheses the pins do not take** (`F-034`, `F-036`, `F-058`, `F-015`,
-  `F-026`, `F-027`, `F-028`, `F-031`, `F-037`, `F-042`, `F-046`). S40:
+- [x] **10. S38, S39: special cases stated generally** (`0b8a78e0`; `F-239`, `F-079`; `F-191` in
+  part): `lem:case-II-placement-old-rows-extract` and `-block-independent` at their pins'
+  generality, `lem:rk-within-parts` for every $Y$ within parts, `lem:partitionDef-merge` for any
+  nonempty $Q$; three unbacked statement edges gone, `def:screw-space` added (1499 edges); the
+  `\cref`s that read a special case retargeted. `F-079`, `F-239` done; `F-191` in part.
+- [x] **11. S40, S41, S42: hypotheses the pins do not take** (this commit; `F-034`, `F-036`,
+  `F-058`, `F-015`, `F-026`, `F-027`, `F-028`, `F-031`, `F-037`, `F-042`, `F-046`). S40:
   `lem:pebble-game-invariants` (`pebble-game.tex` 230–251) without $V$ finite and $\ell < 2k$,
   parts (1)–(2) for every vertex and finite $V'$, (3)–(4) at $\ell \le k|V'|$;
   `thm:pebble-game-soundness` (697–711) without $\ell < 2k$. S41: `thm:tay-witness` (`body-bar.tex`
@@ -234,7 +208,28 @@ task makes exact before editing. Every task is at Opus but the close.
   it). S42: fifteen nodes' finiteness as their pins take it:
   `sparsity.tex` 537; `laman-theorem.tex` 198, 402; `rigidity-matroid.tex` 76, 130, 158, 185, 294;
   `count-matroid.tex` 89; `pebble-game.tex` 846, 999; `executable.tex` 34, 46, 63, 74. May split
-  by chapter (11.1, 11.2). *Expected:* the dump byte-identical.
+  by chapter (11.1, 11.2). *Expected:* the dump byte-identical. *Exact, before editing* (the 24
+  pins' statements by `#check`, `scratch/reconcile-statements/T11Pins.lean`; the nineteen nodes'
+  `--label` reports, no missing edge): one commit, no split. No node added or removed; no `\uses`
+  added, moved or removed (no dropped hypothesis is a node, and each statement still names what
+  its edges name); no pin moved, added or removed (`lean_decls` stays `9c98f641ae650627`); no
+  `\leanok` change; so `1499 edges 3e9dbd3eeddc9a23`, the dump byte-identical to `dump-t10.txt`,
+  `--summary` task 10's, the screen unchanged. The `\cref`s that read a dropped hypothesis follow:
+  `pebble-game.tex`'s four that cite an invariant's proof for want of its hypotheses (after
+  `def:pebble-counts` and `def:tryAddEdge`, the proofs of
+  `lem:pebble-game-independent-brings-pebble` and `-tryAddEdgeWith-isSparse`) cite the invariant;
+  the paraphrase of `lem:workhorseWitness-certifies` before `def:tryAddEdge` takes its graph; the
+  soundness proof's remark on $\ell < 2k$ says why only the last claim takes it; `deficiency.tex`
+  94 drops "When $d \ge 2$". No `formalization.yaml` edit: its two rows bound no dimension.
+  *Done:* exactly that; `--summary` and the screen byte-identical to task 10's. The invariants on
+  any $V$ at any $k, \ell$, (3) and (4) each "if $\ell \le k|V'|$", the note saying no part needs
+  $\ell < 2k$; soundness at any $\ell$ but its "In particular" (the game on $G$ is defined for
+  $\ell < 2k$); both Tay theorems and the summary at every $d$, as `lem:edge-multiply-sparse` was.
+  S42's nodes take no finiteness, or finitely many edges (`lem:span-range-rigidityRow`,
+  `lem:workhorseWitness-certifies`, `def:pebbleGameResult`, `def:edgeListSorted`); the two
+  membership lemmas follow their definitions; `count-matroid.tex`'s says "need not be finite"
+  against the section's lead. Honesty gate: each clause beside its pin, read by `#check`; soundness
+  keeps `[Fintype V]`. All eleven entries done; no new entry.
 - [ ] **12. G1's first two pin changes** (`F-247`, `F-248`). (a) A node in `rigidity-matrix.tex`,
   before `lem:block-rank-path` (749), takes
   `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` from `thm:pencil-x0-bridge`
@@ -376,16 +371,18 @@ and 18's: *Decisions made*.)
 
 ## Hand-off / next phase
 
-**Next: task 11**, at Opus: S40, S41 and S42, the hypotheses the pins do not take (the task's
-line and its eleven ledger IDs), in `pebble-game.tex`, `body-bar.tex`, `body-hinge.tex`,
-`intro.tex` and the six chapters of S42's fifteen nodes; it may split by chapter (11.1, 11.2), each
-slice with its own line. Its files are unedited since the open, so the line numbers in its line
-hold. Before editing, write the exact expected diff in the task's line (the open's estimate is a
-byte-identical dump; check each dropped hypothesis against its pin's statement, and with `--label`
-any statement edge the drop frees). S41 changes two main results' nodes' hypotheses, not their
-pins or rows (*Scope*). Its parent dump is task 10's after-dump,
-`scratch/reconcile-statements/dump-t10.txt` (gitignored, so regenerate it on the parent if it is
-missing). Lines moved since the open's numbering, which later tasks use: tasks 2's and 9.1's,
+**Next: task 12**, at Opus: G1's first two pin changes (`F-247`, `F-248`) with `F-257`'s first
+cure, as its line says: (a) a node in `rigidity-matrix.tex` before `lem:block-rank-path` takes
+`add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` from `thm:pencil-x0-bridge`
+(`main-component.tex` 1617), or the pin is unpinned if it reaches a later chapter's node; (b)
+`mem_hingeRowBlock_iff` moves to `def:hinge-row-block` (`rigidity-matrix.tex` 113), with
+`lem:screw-map-rows`'s proof edge, and `lem:case-III-candidate-row`'s proof gains its edge to that
+node. Before editing, write the exact expected diff in the task's line, from the reach reports on a
+scratch copy (`--tex-root`), as task 10 did; the open's estimate is one node added, two pins moved
+(`lean_decls` unchanged), the screen's `rigidity-matrix` count one lower and the missing edges one
+fewer. Its parent dump is task 11's after-dump, `scratch/reconcile-statements/dump-t11.txt`
+(gitignored, so regenerate it on the parent if it is missing). Task 11 moved no line that a later
+task names. Lines moved since the open's numbering, which later tasks use: tasks 2's and 9.1's,
 `rigidity-matrix.tex` −3 after the old 478 (`lem:block-rank-path`, task 12, is 746); tasks 8's and
 10's, `generic-lift.tex` −2 after 527 and −1 after 1140 (`lem:screw-map-rows`, task 12, is 1270);
 `case-i.tex`, after tasks 2 and 6, has the device's `\cref`s at 261, 503, 685, 1080 and 1259 (task
@@ -470,9 +467,12 @@ docstring lines, already in round 3's list.
 - **S26, S35, S27; S36 and the rescaling** (tasks 8, 9, 9.1): each node at what its pins prove;
   `rankHypothesis_zero_iff` joins `lem:trivial-motions-rank-bound` rather than pin the theorem
   (whose reach would close a cycle); (2) of the dual lemma shares `lem:pencil-jj-rescale`'s pins.
-- **S38 and S39 in their pins' generality; each edge what its statement names** (task 10): the
-  first node gives the dimension `generic-lift.tex` cites and the rows at $C(p(e)) \neq 0$, for any
-  body-hinge framework, so its unbacked edges to `def:graph-operations` and
-  `def:panel-hinge-framework` go; the block lemma names the screw space, so it `\uses`
-  `def:screw-space` (its pin's reach) instead. A note whose content became the statement gives way
-  to a remark on its users, and each `\cref` that read a special case now cites the claim.
+- **S38 and S39 in their pins' generality** (task 10): each edge what the new statement names
+  (three unbacked edges go, `def:screw-space` comes); a note whose content became the statement
+  gives way to a remark on its users, and each `\cref` that read a special case cites the claim.
+- **S40–S42 in one commit; a hypothesis kept only where a definition needs it** (task 11): the
+  drops free no edge and move no pin, so the nineteen nodes fit one commit. Soundness keeps
+  $\ell < 2k$ in its "In particular" alone, since `def:runPebbleGame` defines the pebble game on
+  $G$ for $\ell < 2k$ (that definition is not the task's); a node under a chapter lead that fixes
+  $V$ finite says that its $V$ need not be. A `\cref` that cited an invariant's proof, or bounded
+  $d$, because the statement assumed too much now cites the claim.

@@ -78,7 +78,7 @@ new vertex $v$ at a given point $q$, and then choose $q$.
   \lean{SimpleGraph.Henneberg.typeI_edgeSetRowIndependent_extend}
   \leanok
   \uses{def:typeI, def:edgeSet-rowIndependent}
-  Let $G$ be a graph on a finite set $V$, and let $p$ be a framework on
+  Let $G$ be a graph on a set $V$, and let $p$ be a framework on
   $V$ in $\R^{2}$ at which $E(G)$ is row-independent. Let $a, b \in V$,
   and let $G'$ be obtained from $G$ by the Type~I move at $a$ and $b$,
   with new vertex $v$. Let $q \in \R^{2}$ be a point such that
@@ -133,7 +133,7 @@ new vertex $v$ at a given point $q$, and then choose $q$.
   \leanok
   \uses{def:typeI, def:edgeSet-rowIndependent,
     lem:typeI-rowIndependent-extend}
-  Let $G$ be a graph on a finite set $V$, and let $p$ be a framework on
+  Let $G$ be a graph on a set $V$, and let $p$ be a framework on
   $V$ in $\R^{2}$ at which $E(G)$ is row-independent. Let $a, b \in V$
   with $p_a \ne p_b$, and let $G'$ be obtained from $G$ by the Type~I
   move at $a$ and $b$, with new vertex $v$. Then there is a framework
@@ -160,7 +160,7 @@ with the Type~I move.
   \lean{SimpleGraph.Henneberg.typeI_pendant_edgeSetRowIndependent_lift}
   \leanok
   \uses{def:edgeSet-rowIndependent}
-  Let $G$ be a graph on a finite set $V$, let $p$ be a framework on $V$
+  Let $G$ be a graph on a set $V$, let $p$ be a framework on $V$
   in $\R^{2}$ at which $E(G)$ is row-independent, and let $a \in V$.
   Let $G'$ be obtained from $G$ by the Type~I move at $a$ and $a$, with
   new vertex $v$. Then there is a framework $\hat p$ on $V \cup \{v\}$
@@ -187,7 +187,7 @@ with the Type~I move.
   \lean{SimpleGraph.Henneberg.typeII_edgeSetRowIndependent_extend}
   \leanok
   \uses{def:typeII, def:edgeSet-rowIndependent}
-  Let $G$ be a graph on a finite set $V$, let $ab$ be an edge of $G$,
+  Let $G$ be a graph on a set $V$, let $ab$ be an edge of $G$,
   and let $p$ be a framework on $V$ in $\R^{2}$ at which $E(G)$ is
   row-independent. Let $c \in V$, and let $G'$ be obtained from $G$ by
   the Type~II move on $ab$ and $c$, with new vertex $v$. Let
@@ -296,7 +296,7 @@ isomorphisms, as we did for infinitesimal rigidity
   \lean{SimpleGraph.EdgeSetRowIndependent.iso}
   \leanok
   \uses{def:edgeSet-rowIndependent, def:rigidityRow}
-  Let $G$ and $H$ be graphs on finite sets $V$ and $W$, let $\varphi$
+  Let $G$ and $H$ be graphs on sets $V$ and $W$, let $\varphi$
   be an isomorphism from $G$ to $H$, and let $q$ be a framework on $W$
   in $\R^{d}$. If $E(H)$ is row-independent at $q$, then $E(G)$ is
   row-independent at $q \circ \varphi$.

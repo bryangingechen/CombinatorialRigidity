@@ -91,9 +91,9 @@ Corollary~6~\cite{leeStreinu2008}.
   \lean{SimpleGraph.IsSparse.exists_isTightOn_of_insert_not_sparse}
   \leanok
   \uses{def:isSparse, def:isTightOn}
-  Let $V$ be finite, let $G$ be a $(k, \ell)$-sparse graph on $V$, and
-  let $u$ and $v$ be distinct vertices that are not adjacent in $G$.
-  Let $G + uv$ be obtained from $G$ by adding the edge $uv$. If
+  Let $G$ be a $(k, \ell)$-sparse graph on a set $V$, which need not be
+  finite, and let $u$ and $v$ be distinct vertices that are not adjacent
+  in $G$. Let $G + uv$ be obtained from $G$ by adding the edge $uv$. If
   $G + uv$ is not $(k, \ell)$-sparse, then some set containing $u$ and
   $v$ is $(k, \ell)$-tight in $G$.
 \end{lemma}

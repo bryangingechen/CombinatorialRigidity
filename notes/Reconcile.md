@@ -12,9 +12,9 @@ tasks 2–3 made the false statements (S6–S10) true, task 4 restated the vacuo
 S4 and S5, task 5 repinned S7, task 6 restated Case I's S14, S15 and S21, task 7 repinned
 Case III's three counts (S20), task 8 fixed S26, S27 and S35, task 9 fixed S29, task 9.1 made
 `F-259`'s and `F-260`'s pins (S36's "In particular" through `lem:trivial-motions-rank-bound`; the
-dual lemma's rescaling), and task 10 stated S38's and S39's special cases generally. **Next
-concrete task:** round 2's task 11, S40–S42. The two PDFs of §2 are in `.refs/` (the PI,
-2026-10-15).
+dual lemma's rescaling), task 10 stated S38's and S39's special cases generally, and task 11
+dropped the hypotheses S40–S42's pins do not take. **Next concrete task:** round 2's task 12,
+G1's first two pin changes. The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 

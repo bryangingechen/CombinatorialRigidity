@@ -2033,7 +2033,7 @@ declaration's name as its header writes it:
   `thm:isTightOn-union-with-bonus` assumes $V$ finite as its pin does.
   *Evidence:* read (the statement of `insert_vertex_with_edges`, `Sparsity.lean`).
   *Found:* round 1 task 5.2.
-  *Disposition:* reported (`notes/Prose-report.md`, S42).
+  *Disposition:* done (task 11): the statement takes no finiteness of $V$, as its pin.
 - **F-020** · S · `def:isInfinitesimallyRigid` (`frameworks.tex`): `IsInfinitesimallyRigid` asks
   only $\dim\ker R(G,p) \le d(d+1)/2$, i.e. rank at least $d|V| - d(d+1)/2$, where Jordán (2016,
   pp. 36–37) asks for rank $S(|V|,d)$. The two agree for $|V| \ge d$ and $|V| \le 1$, so at
@@ -2052,7 +2052,8 @@ declaration's name as its header writes it:
   statement is weaker than the pin, as in `F-015`.
   *Evidence:* read (the statement of `span_range_rigidityRow`, `RigidityMatroid.lean`).
   *Found:* round 1 task 5.7.
-  *Disposition:* reported (`notes/Prose-report.md`, S42).
+  *Disposition:* done (task 11): the statement asks only that $G$ have finitely many edges, as
+  its pin.
 - **F-027** · S · `lem:isSparse-of-rowIndependent-two` (`laman-theorem.tex`): the statement assumes
   $V$ finite, which its pin `isSparse_of_edgeSetRowIndependent_dim_two` does not (it takes no
   finiteness; the sets of at least three vertices it quantifies over are finite). The statement is
@@ -2060,7 +2061,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement of `isSparse_of_edgeSetRowIndependent_dim_two`, and the body of
   `EdgeSetRowIndependent`, `RigidityMatroid.lean`).
   *Found:* round 1 task 5.8.
-  *Disposition:* reported (`notes/Prose-report.md`, S42).
+  *Disposition:* done (task 11): the statement takes no finiteness, as its pin.
 - **F-028** · S · five nodes of `rigidity-matroid.tex`'s *Lifting row-independence through
   Henneberg moves*: `lem:typeI-rowIndependent-extend`, `lem:typeI-rowIndependent-lift`,
   `lem:pendant-rowIndependent-lift`, `lem:typeII-rowIndependent-extend` and
@@ -2073,7 +2074,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the seven statements, `MatroidIdentification.lean` and `RigidityMatroid.lean`,
   whose only section variable is `{V : Type*}`).
   *Found:* round 1 task 5.9.
-  *Disposition:* reported (`notes/Prose-report.md`, S42).
+  *Disposition:* done (task 11): the five statements are for graphs on any sets, as their pins;
+  the subsection's other two keep $V$ finite, as theirs do.
 - **F-031** · S · `lem:exists-isTightOn-of-insert-not-sparse` (`count-matroid.tex`): the statement
   assumes $V$ finite, which its pin `IsSparse.exists_isTightOn_of_insert_not_sparse` does not (its
   only section variable is `{V : Type*}`; the tight set it produces is a finite set). The statement
@@ -2081,7 +2083,8 @@ declaration's name as its header writes it:
   statements say.
   *Evidence:* read (the statement, `Sparsity.lean`; `#check` in a `lake lean` scratch file).
   *Found:* round 1 task 5.11.
-  *Disposition:* reported (`notes/Prose-report.md`, S42).
+  *Disposition:* done (task 11): the statement is for a graph on any set $V$, and says so against
+  the section's lead.
 - **F-034** · S · `lem:pebble-game-invariants` (`pebble-game.tex`): the statement assumes $V$
   finite and $\ell < 2k$, and states all four invariants for a vertex $v$ and a set $V'$ with
   $\ell \le k|V'|$. Its five pins (`Reachable.out_le`, `Reachable.peb_add_out_eq`,
@@ -2092,7 +2095,10 @@ declaration's name as its header writes it:
   which needs $\mathrm{out}_D \le k$ without $\ell < 2k$, cites the proof of (1) instead.
   *Evidence:* read (the five statements and the section variables of `PebbleGame/Basic.lean`).
   *Found:* round 1 task 5.13.
-  *Disposition:* reported (`notes/Prose-report.md`, S40).
+  *Disposition:* done (task 11): the statement is on any $V$ at any $k$ and $\ell$, (1)–(2) for
+  every vertex and finite $V'$, (3)–(4) each at $\ell \le k|V'|$; the four sentences that cited an
+  invariant's proof for want of its hypotheses, the one after `def:tryAddEdge` among them, cite
+  the invariant.
 - **F-036** · S · `thm:pebble-game-soundness` (`pebble-game.tex`): the statement assumes
   $\ell < 2k$, which its pin `runPebbleGameWith_sound` does not take. The statement is weaker than
   the pin. Neither its proof nor that of `lem:pebble-game-invariants` uses $\ell < 2k$, and task
@@ -2103,14 +2109,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `runPebbleGameWith_sound`, `Correctness.lean`;
   `#check` in a `lake lean` scratch file).
   *Found:* round 1 task 5.14 (the open's diagnosis saw the first half).
-  *Disposition:* reported (`notes/Prose-report.md`, S40).
+  *Disposition:* done (task 11): the statement takes no bound on $\ell$ but in its "In
+  particular", for the pebble game on $G$, which `def:runPebbleGame` defines for $\ell < 2k$;
+  the proof's remark says so.
 - **F-037** · S · `lem:workhorseWitness-certifies` (`pebble-game.tex`): the statement takes a finite
   simple graph $G$ on $V$. Its pin `WorkhorseWitness.certifies_against` assumes only that $G$ has
   finitely many edges (`[Fintype G.edgeSet]`; nothing on $V$). The statement is weaker than the
   pin, as in `F-026`. Task 5.13's prose after `def:workhorseWitness` says the same.
   *Evidence:* read (the statement of `certifies_against`, `Correctness.lean`; `#check`).
   *Found:* round 1 task 5.14.
-  *Disposition:* reported (`notes/Prose-report.md`, S42).
+  *Disposition:* done (task 11): the statement, and the sentence after `def:workhorseWitness` that
+  restates it, take a graph with finitely many edges.
 - **F-038** · S · `def:blockingWitness` (`pebble-game.tex`): task 5.13 (`db7ff7d6`) changed the
   content of this unpinned definition. It said that a blocking witness is a finite $V' \subseteq V$
   with $|E_G[V']| > k|V'| - \ell$, and "Equivalently, $G$ is not $(k, \ell)$-sparse on $V'$". The
@@ -2148,7 +2157,8 @@ declaration's name as its header writes it:
   *Evidence:* read (`#check @PebbleGameResult`: the `[Fintype V]` of `Correctness.lean`'s
   `Verdict` section is not among its binders).
   *Found:* round 1 task 5.15.
-  *Disposition:* reported (`notes/Prose-report.md`, S42).
+  *Disposition:* done (task 11): the definition takes a graph with finitely many edges, as its
+  pin.
 - **F-046** · S · `def:outListSorted`, `lem:mem-outListSorted`, `def:edgeListSorted`,
   `lem:mem-edgeListSorted` (`executable.tex`): the two out-neighbour nodes assume $V$ finite, and
   the two edge-list nodes take a finite simple graph $G$. The pins `outListSorted` and
@@ -2160,7 +2170,9 @@ declaration's name as its header writes it:
   *Evidence:* read (`#check` of the eight pins through `lake lean`, and their bodies in
   `PebbleGame/Exec.lean`).
   *Found:* round 1 task 5.16.
-  *Disposition:* reported (`notes/Prose-report.md`, S42).
+  *Disposition:* done (task 11): `def:outListSorted` is on any set with a linear order, and
+  `def:edgeListSorted` for a graph with finitely many edges; the two membership lemmas follow
+  their definitions.
 - **F-048** · S · `def:body-hinge-framework`, `thm:body-hinge-tay` (`body-hinge.tex`): the
   definition gives each hinge an $(n-2)$-dimensional affine subspace, "equivalently" a
   $(\delta-1)$-dimensional space of bar coordinates dual to it. Its pin `Graph.BodyHingeFramework`
@@ -2219,7 +2231,9 @@ declaration's name as its header writes it:
   applies `thm:tay-witness` to $(D-1)\cdot G$ for every $d$. Task 2.3 kept every hypothesis.
   *Evidence:* read (the five pins' statements, `BodyBar/TayTheorem.lean` and `BodyHinge.lean`).
   *Found:* round 2 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, S41).
+  *Disposition:* done (task 11): both statements and `intro.tex`'s summary are at every $d$, and
+  `deficiency.tex`'s sentence that applied `thm:tay-witness` "when $d \ge 2$" drops the bound; no
+  row states one.
 - **F-060** · S · `lem:case-III-claim612-extensor-span` (`algebraic-induction/case-iii.tex`): the
   statement says that the $D$ two-extensors $\bar p_i \vee \bar p_j$ of $k+2$ linearly independent
   vectors of $K^{k+2}$ span $\bigwedge^k K^{k+2}$, and calls them $k$-extensors. Its pin

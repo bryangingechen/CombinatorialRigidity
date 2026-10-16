@@ -200,9 +200,9 @@ has the same rank as $R(G, p)$.
   \lean{SimpleGraph.span_range_rigidityRow}
   \leanok
   \uses{def:rigidityRow, def:rigidityMap}
-  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{d}$.
-  Then the rigidity rows $r_e$, for $e \in E(G)$, span the image of
-  $R(G, p)^{\top}$.
+  Let $G$ have finitely many edges, and let $p$ be a framework on $V$
+  in $\R^{d}$. Then the rigidity rows $r_e$, for $e \in E(G)$, span
+  the image of $R(G, p)^{\top}$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -405,12 +405,11 @@ assume that no three of them are collinear.
   \leanok
   \uses{def:isSparse, def:edgeSet-rowIndependent,
     lem:rigidityMap-finrank-range-le-of-affinelySpanning}
-  Let $V$ be finite, and let $p$ be a framework on $V$ in $\R^{2}$ such
-  that no three of the points $p_v$ are collinear, that is, for every
-  set $S$ of at least three vertices the points $p_v$, $v \in S$,
-  affinely span $\R^{2}$. Let $I \subseteq E(G)$ be row-independent at
-  $p$. Then the spanning subgraph of $G$ with edge set $I$ is
-  $(2, 3)$-sparse.
+  Let $p$ be a framework on $V$ in $\R^{2}$ such that no three of the
+  points $p_v$ are collinear, that is, for every set $S$ of at least
+  three vertices the points $p_v$, $v \in S$, affinely span $\R^{2}$.
+  Let $I \subseteq E(G)$ be row-independent at $p$. Then the spanning
+  subgraph of $G$ with edge set $I$ is $(2, 3)$-sparse.
 \end{lemma}
 \begin{proof}
   \leanok
