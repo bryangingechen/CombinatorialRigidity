@@ -7,12 +7,13 @@ authority for which rounds are done. The round fixes the blueprint statements th
 G2's merges of true duplicates, and gives each group of nodes where the formal proof leaves Katoh
 and Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is not
 edited. The open (task 1, docs only) reproduced round 1's close values and sliced the round into
-21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–11 are done
+21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–12 are done
 (the open; the false statements S6–S10; S4 and S5; S7's repin; Case I's S14, S15 and S21; Case
 III's three counts, S20; S26, S27 and S35; S29; S36's and the rescaling's pins, `F-259` and
-`F-260`; S38 and S39, stated generally; S40–S42, the hypotheses the pins do not take). **Next
-concrete task:** task 12, G1's first two pin changes (*Lemma checklist*); `F-255`'s and
-`F-257`'s cures are tasks 12, 15 and 18's. Round manual: `CLEANUP.md`.
+`F-260`; S38 and S39, stated generally; S40–S42, the hypotheses the pins do not take; G1's first
+two pin changes). **Next concrete task:** task 13, G1's third pin change (*Lemma checklist*).
+Three missing edges that would be forward wait for the coordinator (*Blockers*); `F-255`'s and
+`F-257`'s other cures are tasks 15 and 18's. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -22,26 +23,25 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–11 are done**; task 11, S40–S42, is this commit (`pebble-game.tex`, `body-bar.tex`,
-`body-hinge.tex`, `intro.tex`, `sparsity.tex`, `laman-theorem.tex`, `rigidity-matroid.tex`,
-`count-matroid.tex`, `executable.tex`, and the citing sentence in `deficiency.tex`). Nothing is
-mid-stream; task 12 is next. `F-255`'s cure is task 15's (its line); `F-257`'s, three missing
-proof edges that would be forward, are tasks 12's and 18's (their lines). Task 11's gates:
-`lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:` lines; **`1499
-edges 3e9dbd3eeddc9a23`**, **`9c98f641ae650627`**; the dump byte-identical to `dump-t10.txt`, kept
-as `scratch/reconcile-statements/dump-t11.txt`; `--summary` exits 0, both checks OK, byte-identical
-to task 10's (690 nodes pinned, 1012 pins (995 distinct), 4 missing edges, 171 dead pins, 134
-edges with no Lean basis, 85 transitive, 13 nodes with 4+ pins); the nineteen nodes' `--label`
-reports show no missing edge; the forward screen the open's lines; `print.log` rebuilt by latexmk,
-0 `LaTeX Warning` lines, 31 overfull boxes; `check-phase-note.py` green; the no-Lean-edit diff
-from `1cbdbff5` empty; no `formalization.yaml` edit (its two Tay rows bound no dimension);
-`notes/BlueprintExposition.md` names one of the nineteen, `lem:isSparse-of-rowIndependent-two`, in
-its light screen, and that sentence holds. The declarations round 2 unpins, for the close's list
+**Tasks 1–12 are done**; task 12, G1's first two pin changes, is this commit (`rigidity-matrix.tex`,
+`main-component.tex`, `case-iii.tex`, `case-i.tex`, `generic-lift.tex`). Nothing is mid-stream; task
+13 is next. Open for the coordinator: `F-257`'s first edge, which task 12's move did not cure, and
+`F-261` and `F-262`, two missing edges that task 12 exposed; each would be forward (*Blockers*).
+Task 12's gates: `lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:`
+lines; **`1527 edges 4b5c8b4912b3ffcd`**, **`0105d5fb12c84423`**; the dump's diff from
+`dump-t11.txt` exactly the line's prediction, kept as `scratch/reconcile-statements/dump-t12.txt`;
+`--summary` exits 0, both checks OK, as predicted (690 nodes pinned, 1011 pins (994 distinct), 6
+missing edges, 171 dead pins, 134 edges with no Lean basis, 85 transitive, 14 nodes with 4+ pins);
+the forward screen `rigidity-matrix 2/1` and `case-i 13/6`, the rest the open's lines; `print.log`
+rebuilt by latexmk, 0 `LaTeX Warning` lines, 31 overfull boxes; `check-phase-note.py` green; the
+no-Lean-edit diff from `1cbdbff5` empty. The declarations round 2 unpins, for the close's list
 (tasks 8–11 unpin none): task 4's `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
-(no caller), task 5's `exists_good_realization` and `exists_good_realization_const` (dead,
-`F-152`), and task 7's `linearIndependent_sum_augment_candidateRow`,
-`linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow` (dead); their
-docstrings are `F-254`'s, `F-256`'s and `F-258`'s, round 3.
+(no caller), task 5's `exists_good_realization` and `exists_good_realization_const` (dead, `F-152`),
+task 7's `linearIndependent_sum_augment_candidateRow`, `linearIndependent_sum_p2_candidateRow` and
+`linearIndependent_sum_p3_candidateRow` (dead), and task 12's
+`add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (live: the bridge theorem's and
+the path lemma's pins call it, and its docstring names no node). Their docstrings are `F-254`'s,
+`F-256`'s and `F-258`'s, and the moved pin's `F-263`'s, round 3.
 
 **Verified at the open** (2026-10-15, at `1cbdbff5`, round 1's close tree, whose Lean is
 `f39e35e6`'s):
@@ -198,40 +198,14 @@ task makes exact before editing. Every task is at Opus but the close.
   generality, `lem:rk-within-parts` for every $Y$ within parts, `lem:partitionDef-merge` for any
   nonempty $Q$; three unbacked statement edges gone, `def:screw-space` added (1499 edges); the
   `\cref`s that read a special case retargeted. `F-079`, `F-239` done; `F-191` in part.
-- [x] **11. S40, S41, S42: hypotheses the pins do not take** (this commit; `F-034`, `F-036`,
-  `F-058`, `F-015`, `F-026`, `F-027`, `F-028`, `F-031`, `F-037`, `F-042`, `F-046`). S40:
-  `lem:pebble-game-invariants` (`pebble-game.tex` 230–251) without $V$ finite and $\ell < 2k$,
-  parts (1)–(2) for every vertex and finite $V'$, (3)–(4) at $\ell \le k|V'|$;
-  `thm:pebble-game-soundness` (697–711) without $\ell < 2k$. S41: `thm:tay-witness` (`body-bar.tex`
-  689) and `thm:body-hinge-tay` (`body-hinge.tex` 126), main results' nodes, without $d \ge 2$,
-  and `intro.tex`'s summary of Tay's theorem (167) with them (no row or README sentence states
-  it). S42: fifteen nodes' finiteness as their pins take it:
-  `sparsity.tex` 537; `laman-theorem.tex` 198, 402; `rigidity-matroid.tex` 76, 130, 158, 185, 294;
-  `count-matroid.tex` 89; `pebble-game.tex` 846, 999; `executable.tex` 34, 46, 63, 74. May split
-  by chapter (11.1, 11.2). *Expected:* the dump byte-identical. *Exact, before editing* (the 24
-  pins' statements by `#check`, `scratch/reconcile-statements/T11Pins.lean`; the nineteen nodes'
-  `--label` reports, no missing edge): one commit, no split. No node added or removed; no `\uses`
-  added, moved or removed (no dropped hypothesis is a node, and each statement still names what
-  its edges name); no pin moved, added or removed (`lean_decls` stays `9c98f641ae650627`); no
-  `\leanok` change; so `1499 edges 3e9dbd3eeddc9a23`, the dump byte-identical to `dump-t10.txt`,
-  `--summary` task 10's, the screen unchanged. The `\cref`s that read a dropped hypothesis follow:
-  `pebble-game.tex`'s four that cite an invariant's proof for want of its hypotheses (after
-  `def:pebble-counts` and `def:tryAddEdge`, the proofs of
-  `lem:pebble-game-independent-brings-pebble` and `-tryAddEdgeWith-isSparse`) cite the invariant;
-  the paraphrase of `lem:workhorseWitness-certifies` before `def:tryAddEdge` takes its graph; the
-  soundness proof's remark on $\ell < 2k$ says why only the last claim takes it; `deficiency.tex`
-  94 drops "When $d \ge 2$". No `formalization.yaml` edit: its two rows bound no dimension.
-  *Done:* exactly that; `--summary` and the screen byte-identical to task 10's. The invariants on
-  any $V$ at any $k, \ell$, (3) and (4) each "if $\ell \le k|V'|$", the note saying no part needs
-  $\ell < 2k$; soundness at any $\ell$ but its "In particular" (the game on $G$ is defined for
-  $\ell < 2k$); both Tay theorems and the summary at every $d$, as `lem:edge-multiply-sparse` was.
-  S42's nodes take no finiteness, or finitely many edges (`lem:span-range-rigidityRow`,
-  `lem:workhorseWitness-certifies`, `def:pebbleGameResult`, `def:edgeListSorted`); the two
-  membership lemmas follow their definitions; `count-matroid.tex`'s says "need not be finite"
-  against the section's lead. Honesty gate: each clause beside its pin, read by `#check`; soundness
-  keeps `[Fintype V]`. All eleven entries done; no new entry.
-- [ ] **12. G1's first two pin changes** (`F-247`, `F-248`). (a) A node in `rigidity-matrix.tex`,
-  before `lem:block-rank-path` (749), takes
+- [x] **11. S40, S41, S42: hypotheses the pins do not take** (`40e1f4c8`; `F-034`, `F-036`,
+  `F-058`, `F-015`, `F-026`, `F-027`, `F-028`, `F-031`, `F-037`, `F-042`, `F-046`): the pebble
+  game's invariants and soundness without $\ell < 2k$ (but soundness's "In particular"), both Tay
+  theorems and `intro.tex`'s summary at every $d$, fifteen nodes' finiteness as their pins take it;
+  the `\cref`s that read a dropped hypothesis cite the claim. The dump byte-identical. All eleven
+  done; no new entry.
+- [x] **12. G1's first two pin changes** (this commit; `F-247`, `F-248`). (a) A node in
+  `rigidity-matrix.tex`, before `lem:block-rank-path` (749), takes
   `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` from `thm:pencil-x0-bridge`
   (`main-component.tex` 1617); `lem:block-rank-path`'s proof edge to the theorem moves to it, and
   the theorem's proof `\uses` it. If the pin reaches a later chapter's node, it is unpinned instead.
@@ -242,7 +216,42 @@ task makes exact before editing. Every task is at Opus but the close.
   `mem_hingeRowBlock_iff` at `def:hinge-row-block`, an earlier chapter, so its proof gains that
   edge, per the reach report. *Expected:* one node added; two pins moved (`lean_decls` unchanged);
   the edges as listed, the new node's per its pin's reach, and `F-257`'s first; the screen's
-  `rigidity-matrix` count one edge lower; the missing edges one fewer.
+  `rigidity-matrix` count one edge lower; the missing edges one fewer. *Exact, before editing*
+  (the reach reports and the reduced graph on a scratch copy, `--tex-root`): (a) the pin's proof
+  reaches `def:cut-edges-2ec` (`deficiency.tex`, through `Graph.cutEdges`), so it is unpinned and
+  no node is added. `lem:block-rank-path`'s proof loses the theorem (no Lean basis or citation
+  left); its pin, through the unpinned lemma, then reaches `def:cut-edges-2ec`, a missing edge
+  that would be forward (new: `F-261`). `thm:pencil-x0-cycle`'s proof gains
+  `lem:pencil-lifting-restrict`, which the removal would leave missing. (b) `def:hinge-row-block`
+  takes a fourth pin (principle D's flag). The proofs of `lem:screw-map-rows`,
+  `lem:case-I-realization-h65` and `lem:case-III-chain-discriminator`, `-relabel-rows` and
+  `-eq666`, whose pins reached `lem:case-III-claim612-block-iff-perp` only through the moved pin
+  and whose text does not cite its criterion, trade it for `def:hinge-row-block`;
+  `lem:case-III-candidate-row`'s proof gains that node (its text cites it); all six implied.
+  `F-257`'s first edge stays missing: the certification also reaches the node through
+  `case_III_full_family_restriction` and its other pin. `lem:case-I-realization-h65`'s pin
+  reaches `lem:case-II-placement-new-rows`, a later file, a missing edge that would be forward
+  (new: `F-262`). So: no node added or removed; one pin removed, one moved (`lean_decls`
+  changes); no `\leanok` change. Drawn, `1527 edges` (2222 statements): the five edges into
+  `lem:case-III-claim612-block-iff-perp` and `thm:pencil-x0-bridge -> lem:block-rank-path` go,
+  and 34 that the removed edges made transitive come: 10 dashed (`def:graph-operations`,
+  `def:panel-hinge-framework`, `def:rigidity-matrix` into `-chain-relabel-rows`;
+  `def:panel-hinge-framework` into `lem:pencil-rank-collineation`; `def:pencil-x0-standing` into
+  the six `thm:pencil-x0-open-ear*`), and 24 solid (`lem:block-rank-cut` into
+  `lem:block-rank-path`; `lem:pencil-lifting-restrict` into the cycle; `lem:pencil-rank-congr` and
+  `lem:pencil-x0-fibre-intersection` into four open-ear theorems; `-main-picture-open` into the
+  cycle and those four; `-one-witness` into the cycle and all six;
+  `lem:splitoff-edge-substitution` into `lem:case-I-realization-h65`; `thm:pencil-x0-bridge` into
+  `thm:pencil-x0-reduction-attains`). `--summary`: 1011 pins (994 distinct), 14 nodes with 4+
+  pins, 6 missing edges, 2426 implied, 85 transitive, 134 with no Lean basis, 171 dead pins; the
+  screen `rigidity-matrix 2/1`, `case-i 13/6`, the rest the open's.
+  *Done:* exactly that: the dump's diff is its three header lines, the 40 graph lines, the three
+  pin lines and the eight `\uses` lines; `--summary` and the screen as predicted. The remark after
+  `def:hinge-row-block` states the fourth pin's claim, and a new note names the four pins;
+  `lem:case-III-claim612-block-iff-perp`'s proof cites that remark, its note one pin. Honesty gate:
+  no missing statement edge at the seventeen nodes read; the moved and the kept pins each beside its
+  clause; at $C(p(e)) = 0$ every form lies in the space, and the note gives $D - 1$ only for
+  $C(p(e)) \neq 0$. `F-247`, `F-248` done; new `F-261`, `F-262` (*Blockers*) and `F-263` (round 3).
 - [ ] **13. G1's third: a node for open ears** (`F-249`). A definition node in `main-component.tex`'s
   *Ears and cycles* (2157) takes `Graph.IsOpenEar` from `def:pencil-x0-reduces` (4428), which
   `\uses` it; the statement edges of `lem:pencil-generic-one-ear` (5337) and
@@ -360,50 +369,58 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 - `F-258` (L, task 7): the docstrings of `linearIndependent_sum_augment_candidateRow`,
   `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow`, which task 7
   unpinned, still give them as Case III's three count nodes'. Round 3's docstring sweep.
+- `F-263` (L, task 12): `mem_hingeRowBlock_iff`'s docstring, and its file's header, still place it
+  in `case-iii.tex`, at `lem:case-III-claim612-block-iff-perp`. Round 3's docstring sweep.
 - `F-090`'s shim `splitOff_deficiency_le_of_forest_surgery`: it stays `cor:forest-surgery-deficiency`'s
   pin this round (no node retired; task 20); round 3's deletion of it (L9) repins the corollary on
   `forest_surgery_split` in the same commit. Round 3's list.
 
 ## Blockers / open questions
 
-None. (`F-255`, task 5's missing proof edge, is task 15's; `F-257`, task 7's three, are tasks 12's
-and 18's: *Decisions made*.)
+None for task 13. Three missing proof edges, each of which would be forward, wait for the
+coordinator (task 12; the ledger has each cure's options):
+- `F-257`'s first, `lem:case-III-candidate-row` to `lem:case-III-claim612-block-iff-perp`: task
+  12's pin move did not cure it, as the certification reaches the node's other pin through
+  `case_III_full_family_restriction`; `F-257` names the node's move.
+- `F-261`, `lem:block-rank-path` to `def:cut-edges-2ec` (`deficiency.tex`), exposed by task 12's
+  unpinning.
+- `F-262`, `lem:case-I-realization-h65` to `lem:case-II-placement-new-rows`
+  (`genericity-and-count.tex`), exposed by task 12's edge move.
+
+`F-255` (task 5) is task 15's, and `F-257`'s other two (task 7) are task 18's: *Decisions made*.
 
 ## Hand-off / next phase
 
-**Next: task 12**, at Opus: G1's first two pin changes (`F-247`, `F-248`) with `F-257`'s first
-cure, as its line says: (a) a node in `rigidity-matrix.tex` before `lem:block-rank-path` takes
-`add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` from `thm:pencil-x0-bridge`
-(`main-component.tex` 1617), or the pin is unpinned if it reaches a later chapter's node; (b)
-`mem_hingeRowBlock_iff` moves to `def:hinge-row-block` (`rigidity-matrix.tex` 113), with
-`lem:screw-map-rows`'s proof edge, and `lem:case-III-candidate-row`'s proof gains its edge to that
-node. Before editing, write the exact expected diff in the task's line, from the reach reports on a
-scratch copy (`--tex-root`), as task 10 did; the open's estimate is one node added, two pins moved
-(`lean_decls` unchanged), the screen's `rigidity-matrix` count one lower and the missing edges one
-fewer. Its parent dump is task 11's after-dump, `scratch/reconcile-statements/dump-t11.txt`
-(gitignored, so regenerate it on the parent if it is missing). Task 11 moved no line that a later
-task names. Lines moved since the open's numbering, which later tasks use: tasks 2's and 9.1's,
-`rigidity-matrix.tex` −3 after the old 478 (`lem:block-rank-path`, task 12, is 746); tasks 8's and
-10's, `generic-lift.tex` −2 after 527 and −1 after 1140 (`lem:screw-map-rows`, task 12, is 1270);
-`case-i.tex`, after tasks 2 and 6, has the device's `\cref`s at 261, 503, 685, 1080 and 1259 (task
-15) and task 16's nodes at 49, 69, 89, 293, 316, 340, 415 (`lem:case-I`), 534 and 850
-(`lem:claim-6-4`); `molecule-modelling.tex`, after tasks 2, 9 and 9.1, has the device's `\cref`
-(task 15) at 691; `genericity-and-count.tex`, after tasks 2, 5 and 10, has the device's `\cref`s
-at 17, 123, 180 and 311 (task 15) and task 17's nodes at 152, 221, 449 and 509
-(`lem:relative-device-count`, `lem:realization-of-independent-rows`,
-`lem:case-II-placement-old-rows`, `lem:case-II-realization-placement`); task 3's,
-`molecular-induction.tex` −32 for 935–1059 (`lem:edge-splitting` is 969) and +17 after 1059
-(`lem:removal-deficiency` 1246, `lem:splitoff-kdof-criterion` 1359), with
-`lem:forest-surgery-unsplit` now at 1032; `case-iii.tex`, after tasks 2, 4 and 7, has the nodes
-later tasks name at (`\begin` lines; none moved before 873 by task 7): task 12's
-`lem:case-III-claim612-block-iff-perp` 1304; task 14's `lem:case-III-claim-6-11-base` 54, the
-affine pair 1183 and 1214, `lem:case-III` 2505; task 18's row-operation nodes 455, 528, 678, 706,
-793 and 860, `lem:case-III-claim612-r-nonzero` 1338, the relabel nodes 1423, 1458 and 1510, the
-counts 1365 and 1605, and `lem:case-III-chain-dispatch` 2396; task 4's, `case-ii.tex` −5 for
-72–133 (`lem:case-II` is 67) and −44 after 133 (`lem:case-II-realization` 91). Re-`grep` as ever.
-`F-255`'s cure is task 15's (its line); `F-257`'s are tasks 12's and 18's (their lines). Carried in
-from round 1: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it), and its two
-docstring lines, already in round 3's list.
+**Next: task 13**, at Opus: G1's third pin change (`F-249`), as its line says: a definition node in
+`main-component.tex`'s *Ears and cycles* takes `Graph.IsOpenEar` from `def:pencil-x0-reduces`,
+which `\uses` it, and the statement edges of `lem:pencil-generic-one-ear` and
+`lem:pencil-rigid-good-ear` to `def:pencil-x0-reduces` move to it where neither statement names a
+reduction; the definition-faithfulness gate. Before editing, write the exact expected diff in the
+task's line from the reach reports and the reduced graph on a scratch copy (`--tex-root`;
+`scratch/reconcile-statements/t12-predict.py` diffs the reduced graphs and lists the ancestors
+each node loses), as task 12 did: check the new node's proof reach for a later node, and each
+node that loses an ancestor for a reach left missing. Its parent dump is task 12's after-dump,
+`scratch/reconcile-statements/dump-t12.txt` (gitignored, so regenerate it on the parent if it is
+missing). Lines moved since the open's numbering, which later tasks use: task 12's,
+`main-component.tex` −1 after 1620 (task 13's *Ears and cycles* is 2156, `def:pencil-x0-reduces`
+4427, `lem:pencil-generic-one-ear` 5336, `lem:pencil-rigid-good-ear` 5450); `case-i.tex`, after
+tasks 2 and 6, has the device's `\cref`s at 261, 503, 685, 1080 and 1259 (task 15) and task 16's
+nodes at 49, 69, 89, 293, 316, 340, 415 (`lem:case-I`), 534 and 850 (`lem:claim-6-4`);
+`molecule-modelling.tex`, after tasks 2, 9 and 9.1, has the device's `\cref` (task 15) at 691;
+`genericity-and-count.tex`, after tasks 2, 5 and 10, has the device's `\cref`s at 17, 123, 180
+and 311 (task 15) and task 17's nodes at 152, 221, 449 and 509 (`lem:relative-device-count`,
+`lem:realization-of-independent-rows`, `lem:case-II-placement-old-rows`,
+`lem:case-II-realization-placement`); task 3's, `molecular-induction.tex` −32 for 935–1059
+(`lem:edge-splitting` is 969) and +17 after 1059 (`lem:removal-deficiency` 1246,
+`lem:splitoff-kdof-criterion` 1359), with `lem:forest-surgery-unsplit` now at 1032;
+`case-iii.tex`, after tasks 2, 4, 7 and 12, has the nodes later tasks name at (`\begin` lines):
+task 14's `lem:case-III-claim-6-11-base` 54, the affine pair 1183 and 1214, `lem:case-III` 2503;
+task 18's row-operation nodes 455, 528, 678, 706, 793 and 860, `lem:case-III-claim612-r-nonzero`
+1336, the relabel nodes 1421, 1456 and 1508, the counts 1363 and 1603,
+`lem:case-III-claim612-eq644` 1546 and `lem:case-III-chain-dispatch` 2394; task 4's,
+`case-ii.tex` −5 for 72–133 (`lem:case-II` is 67) and −44 after 133 (`lem:case-II-realization`
+91). Re-`grep` as ever. Carried in from round 1: `F-252` for the PI (round 1's *Candidates*; the
+phase's (a) removes it), and its two docstring lines, already in round 3's list.
 
 ## Decisions made during this round
 
@@ -418,52 +435,29 @@ docstring lines, already in round 3's list.
   report's "or one restatement sweep".
 - **The forward screen as gate 4** (the open): a task that adds a node or an edge adds no forward
   `\uses`, so round 5's ordering holds.
-- **KT Lemma 5.2's credit** (task 2): in the prose before `lem:generic-realization-of-rigid`, not in
-  a node title. No node states it: where the two equal panels are joined by an edge, its input is a
-  degenerate hinge in the carrier, and the formal steps that replace the rotation are that lemma
-  (rigid realizations) and `lem:rank-polynomial-of-le-finrank` (any rank). Citations of KT's
-  rotation cite KT's pages.
-- **S10 at $h' = 0$, after `lem:edge-splitting`** (task 3): the node states its pin's case
-  $h' = 0$, KT's use at p. 662, rather than the pin's whole case (i), which is
-  `lem:edge-splitting`'s; its proof keeps the forest construction. The pin's value reach takes in
-  the two reverse lemmas, which followed the node, so the node moved after `lem:edge-splitting`
-  (`AUTHORING.md` *Node order*) instead of gaining forward `\uses`; the dump does not record order.
-  `lem:removal-deficiency-equality`'s proof still cites `lem:edge-splitting` at $h' = 0$, which is
-  true; it stays, as the task changes no other node's edges.
+- **KT Lemma 5.2's credit** (task 2): in the prose before `lem:generic-realization-of-rigid`, not a
+  node; that lemma and `lem:rank-polynomial-of-le-finrank` replace the rotation formally.
+- **S10 at $h' = 0$, after `lem:edge-splitting`** (task 3): KT's use at p. 662, the proof keeping
+  the forest construction; the node moved after `lem:edge-splitting`, whose two reverse lemmas its
+  pin reaches, instead of gaining forward `\uses`.
 - **S4 in its Case II setting; S5's edges implied** (task 4): `lem:case-II` keeps the first
-  assertion as stated, at $t = V(G) \setminus \{v\}$, not its pin's general form, as the task drops
-  the vacuous assertion only; the note names the general form, and task 17's remark frames the
-  node. S5's three new statement edges name what its new clauses use, as
-  `lem:case-III-chain-relabel-rows`'s do; each is already an ancestor, so no drawn edge changes.
-- **S7's repin; its forward edge recorded, not cured** (task 5): `lem:genericity-device` shares
-  `lem:rank-polynomial-of-le-finrank`'s pin, its note saying which clauses the pin proves (each
-  rank locus open in $U$, over any field) and which are the proof's, as S6's note does for its rank
-  bound. The pin's body reaches `lem:independent-rows-of-rank`, later in the file; that edge would
-  be forward and the cure moves a node the line does not name, so it is `F-255`, for the
-  coordinator. `lem:relative-device-count`'s edge to the node moves to `def:panel-hinge-framework`,
-  which its pin's statement reaches and the removal would leave missing.
-- **`F-255`'s cure goes to task 15** (the coordinator, after task 5): move
-  `lem:independent-rows-of-rank` before `lem:genericity-device`, rather than the device after it
-  (which would leave the first subsection a lead alone) or leaving the edge missing (round 5 left
-  none). Task 15 already edits both leads; the move adds no forward `\uses`.
-- **S21 at its pin's point; the polynomial left to `lem:rank-polynomial-IH-relabel-proj`** (task
-  6): the pin's statement gives some $q_0$, so the node says "there are normals $q_0$" and KT's
-  point is its proof's. The proof keeps the crux's steps (the contraction's rank, KT Lemma 5.1, KT's
-  point, the spanning forms) and stops at $q_0$; the polynomial, its former last step, is that
-  lemma's, so the proof's edge to `lem:rank-polynomial-proj-eval`, with no Lean basis, goes. The
-  `\cref`s that cite KT Claim 6.4 at generic panels now point at both nodes.
-- **S20 at the three roles; the forward edges recorded, not added** (task 7): each count node pins
-  `case_III_rank_certification` and keeps KT's statement, naming its framework as
-  `def:case-III-candidate`'s at the role the arms' bodies give; its note maps each of the
-  theorem's hypotheses to its source (the honesty gate's reading). The crux proofs keep KT's route,
-  the notes saying how the theorem's count differs. The theorem's body reaches two later nodes of
-  the file, so, as for `F-255`, three proof edges stay missing (`F-257`) rather than forward: the
-  cure moves nodes that the line does not name.
-- **`F-257`'s cures go to tasks 12 and 18** (the coordinator, after task 7): task 12(b)'s pin move
-  puts `mem_hingeRowBlock_iff` in an earlier chapter, so the first edge is no longer forward; for
-  the two edges to `lem:case-III-claim612-eq644`, that node moves after `lem:case-III-acolumn-zero`,
-  whose KT eq. (6.43) it follows (task 18, which frames that subsubsection), rather than the
-  certification's users after it. Neither move adds a forward `\uses`.
+  assertion at $t = V(G) \setminus \{v\}$, its note naming the general form (task 17 frames it);
+  S5's new statement edges name what its clauses use, all implied.
+- **Forward edges recorded, not added** (tasks 5, 7, 12): a pin whose reach makes a missing edge
+  that would be forward gets a ledger entry for the coordinator, as the cure moves nodes the line
+  does not name (`F-255`: `lem:genericity-device`'s note says which clauses its shared pin proves;
+  `F-257`: Case III's counts pin the certification at the arms' roles, their notes mapping its
+  hypotheses). The coordinator gave `F-255` to task 15 (`lem:independent-rows-of-rank` before the
+  device) and `F-257`'s eq. (6.44) edges to task 18 (that node after `lem:case-III-acolumn-zero`).
+- **S21 at its pin's point** (task 6): "there are normals $q_0$"; KT's point and the crux's steps
+  are the proof's, the polynomial `lem:rank-polynomial-IH-relabel-proj`'s.
+- **G1's first two: the line's alternative, and edges that follow their pin** (task 12): the
+  bridge-path lemma is unpinned, since its proof reaches `def:cut-edges-2ec`, a later chapter; the
+  path lemma then reaches it through the lemma (`F-261`), and the forward edge into the last chapter
+  goes. Each `\uses` that only the moved pin backed follows it to `def:hinge-row-block`, as the
+  line has `lem:screw-map-rows`'s do. A removal that leaves a reach missing adds that edge when it
+  is backward (`thm:pencil-x0-cycle`), and records it when forward (`F-262`). `F-257`'s first edge
+  survives the move, through the node's other pin; its cure is unassigned.
 - **S26, S35, S27; S36 and the rescaling** (tasks 8, 9, 9.1): each node at what its pins prove;
   `rankHypothesis_zero_iff` joins `lem:trivial-motions-rank-bound` rather than pin the theorem
   (whose reach would close a cycle); (2) of the dual lemma shares `lem:pencil-jj-rescale`'s pins.

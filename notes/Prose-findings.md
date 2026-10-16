@@ -955,7 +955,9 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 2 task 7.
   *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, tasks 12 and 18): the coordinator
   gave the first edge to task 12(b)'s pin move and the move of `lem:case-III-claim612-eq644` to
-  task 18.
+  task 18. Task 12 measured that the move does not cure the first edge: the certification also
+  calls `case_III_full_family_restriction`, whose body calls the node's other pin,
+  `linearIndependent_sumElim_candidateRow_iff`. Its cure, the node's move above, is unassigned.
 - **F-259** · E · `thm:panel-hinge-iff-molecular` (`molecule-modelling.tex`): round 2 task 9's
   pin for its "In particular", `BodyHingeFramework.rankHypothesis_zero_iff` (`Pinning.lean`), is a
   general lemma that five earlier nodes' pins call. Pinned at the theorem, it leaves five missing
@@ -972,6 +974,31 @@ declaration's name as its header writes it:
   *Disposition:* done (task 9.1): `lem:trivial-motions-rank-bound` pins it, its note reading it as
   the equality for $\dim Z(G,p)$; the theorem's proof `\uses` that node (an implied edge, the drawn
   graph unchanged), and its note cites it for the "In particular"; no missing edge.
+- **F-261** · E · `lem:block-rank-path` (`rigidity-matrix.tex`): since round 2 task 12 unpinned
+  `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (`F-247`), the node's pin
+  `le_finrank_span_rigidityRows_path` reaches through that lemma's body (by
+  `Graph.cutEdges_union_image_of_bridgePath` and `Graph.eq_cutEdge_of_isLink_crossing`)
+  `Graph.cutEdges`, the pin of `def:cut-edges-2ec` (`deficiency.tex`, the next chapter). The proof
+  edge is missing; the edge to `thm:pencil-x0-bridge` had made it implied. Adding it makes a new
+  forward `\uses` (that round's gate 4); a cure moves nodes, or changes the Lean, outside that
+  task's line.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label lem:block-rank-path`, `--summary` and
+  the forward screen, on round 2 task 12's tree); read (the bodies of the two lemmas).
+  *Found:* RECONCILE round 2 task 12.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 12): for the coordinator.
+- **F-262** · E · `lem:case-I-realization-h65` (`algebraic-induction/case-i.tex`): its pin
+  `case_I_realization_h65_gen` calls `exists_independent_panelRow_subfamily_of_edge`, the pin of
+  `lem:case-II-placement-new-rows` (`genericity-and-count.tex`, the next file). The proof's edge to
+  `lem:case-III-claim612-block-iff-perp`, which the pins reached only through
+  `mem_hingeRowBlock_iff`, made it implied; round 2 task 12 moved that pin to
+  `def:hinge-row-block` and the edge with it, so the proof edge is missing. Adding it makes a new
+  forward `\uses` (that round's gate 4; the proof's edge to
+  `lem:case-II-placement-block-independent`, in the same file, is forward already); a cure moves
+  nodes outside that task's line.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label lem:case-I-realization-h65`,
+  `--summary` and the forward screen, on round 2 task 12's tree).
+  *Found:* RECONCILE round 2 task 12.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 12): for the coordinator.
 
 ## N — node shape
 
@@ -1789,7 +1816,11 @@ declaration's name as its header writes it:
   rigidity-matrix`, at `9eb2c776`); read (the statement of the pin, and the body of
   `le_finrank_span_rigidityRows_path`).
   *Found:* round 5 task 4.2.
-  *Disposition:* left (a pin change; `a111b17a` lists it, `notes/Prose-report.md` G1).
+  *Disposition:* done (RECONCILE round 2 task 12): unpinned, as the pin's proof reaches
+  `def:cut-edges-2ec` (`deficiency.tex`), so a node in `rigidity-matrix.tex` would have a forward
+  edge; `lem:block-rank-path`'s proof edge to the theorem went, and `thm:pencil-x0-cycle`'s proof
+  `\uses` `lem:pencil-lifting-restrict`. The path lemma's pin now reaches that definition
+  (`F-261`).
 
 - **F-248** · N · `lem:case-III-claim612-block-iff-perp` (`case-iii.tex`): its second pin
   `mem_hingeRowBlock_iff`, that a form vanishes on the span of a hinge's extensor if and only if it
@@ -1802,7 +1833,9 @@ declaration's name as its header writes it:
   read (the statement of `mem_hingeRowBlock_iff`, `RigidityMatrix/Claim612.lean`; a `grep` for
   its callers).
   *Found:* round 5 task 4.7.
-  *Disposition:* left (a pin change; `a111b17a` lists it, `notes/Prose-report.md` G1).
+  *Disposition:* done (RECONCILE round 2 task 12): `def:hinge-row-block`'s fourth pin, its claim in
+  the remark after the definition and a new note; the proofs of `lem:screw-map-rows` and four
+  nodes whose pins reached the lemma only through it `\uses` the definition instead.
 - **F-249** · N · `def:pencil-x0-reduces` (`main-component.tex`): its first pin, `Graph.IsOpenEar`,
   defines the open ears that *Ears and cycles* defines in prose, with no node, and that the
   definition's statement takes "as in" that subsection. So every node whose pins take an open ear
@@ -4147,6 +4180,14 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 2 task 7.
   *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 7): round 3's docstring sweep
   (*Moved to a later round*); all three are among the declarations round 2 unpins.
+- **F-263** · L · `mem_hingeRowBlock_iff` (`Molecular/RigidityMatrix/Claim612.lean`): its
+  docstring gives it as `lem:case-III-claim612-block-iff-perp`'s, and the file's header lists it
+  in "the part the blueprint puts in `case-iii.tex` rather than `rigidity-matrix.tex`"; since
+  round 2 task 12 it is a pin of `def:hinge-row-block` (`rigidity-matrix.tex`, `F-248`).
+  *Evidence:* read (the docstring and the header; the two nodes' pins).
+  *Found:* RECONCILE round 2 task 12.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 12): round 3's docstring
+  sweep (*Moved to a later round*).
 
 ## M — mathematics and sources
 

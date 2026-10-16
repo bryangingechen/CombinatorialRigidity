@@ -114,7 +114,8 @@ and write $x \cdot y$ for the dot product of $K^D$.
   \label{def:hinge-row-block}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRowBlock,
     CombinatorialRigidity.Molecular.BodyHingeFramework.hingeConstraint_iff_hingeRowBlock,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_hingeRowBlock}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_hingeRowBlock,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.mem_hingeRowBlock_iff}
   \leanok
   \uses{def:hinge-constraint}
   Let $(G,p)$ be a body-hinge framework and let $e$ be an edge of $G$.
@@ -134,7 +135,18 @@ $C(p(e)) \neq 0$. The equivalence holds because a subspace of $K^D$ is
 the orthogonal complement of its orthogonal complement, as the dot
 product is nondegenerate. Through the dot product, the rows of
 $r(p(e))$ form a basis of the linear forms on $K^D$ that vanish on
-$C(p(e))$.
+$\operatorname{span} C(p(e))$. A linear form vanishes on
+$\operatorname{span} C(p(e))$ if and only if it vanishes at $C(p(e))$,
+as the span consists of the multiples of $C(p(e))$; we then say that it
+vanishes on $C(p(e))$.
+
+\begin{fmlnote}
+  The first pin is the space of linear forms on the screw space that
+  vanish on $\operatorname{span} C(p(e))$, with no basis chosen, and the
+  second is the equivalence. The third gives this space the dimension
+  $D - 1$ when $C(p(e)) \neq 0$, and the fourth says that a form lies in
+  it if and only if it vanishes at $C(p(e))$.
+\end{fmlnote}
 
 The rigidity matrix collects these equations for all the edges.
 
@@ -756,7 +768,7 @@ first.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:block-rank-cut, def:hinge-row-block, thm:pencil-x0-bridge}
+  \uses{lem:block-rank-cut, def:hinge-row-block}
   The matrix $R(P,p)$ has $D - 1$ rows for each of its $k + 1$ edges
   (\cref{def:hinge-row-block}), so its rank is at most $(D-1)(k+1)$.
   Conversely, for $0 \le i \le k$ the edge $x_i x_{i+1}$ is the only edge

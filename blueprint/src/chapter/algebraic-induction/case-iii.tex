@@ -879,7 +879,7 @@ arbitrary subspace $L$.
 \begin{proof}
   \leanok
   \uses{lem:case-III-columnop, lem:case-III-conditional-block,
-        lem:case-III-transport-collapse,
+        lem:case-III-transport-collapse, def:hinge-row-block,
         lem:rigidityRows-pinned-placement-rank-add}
   We follow Katoh and Tanigawa~\cite[pp.~685--686]{katohTanigawa2011}.
   Let $W$ be the row space of $R(G_v, q)$. The edges of $G_v$ have the
@@ -1303,8 +1303,7 @@ singularity of the blocks by the extensors of the lines (KT p.~690).
 
 \begin{lemma}[When the blocks of KT eq.\ (6.42) are nonsingular]
   \label{lem:case-III-claim612-block-iff-perp}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sumElim_candidateRow_iff,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.mem_hingeRowBlock_iff}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sumElim_candidateRow_iff}
   \leanok
   \uses{def:hinge-row-block, lem:case-III-candidate-row-construction}
   Under the hypotheses of \cref{lem:case-III-claim-6-11}, let $r$ be
@@ -1321,18 +1320,17 @@ singularity of the blocks by the extensors of the lines (KT p.~690).
   So the linear forms on $K^D$ that vanish on $C(L)$ form a space of
   dimension $D - 1$ (\cref{def:hinge-row-block}), and
   $r'_1, \dots, r'_{D-1}$ is a basis of it. A form vanishes on
-  $\operatorname{span} C(L)$ if and only if it vanishes at $C(L)$. So
+  $\operatorname{span} C(L)$ if and only if it vanishes at $C(L)$ (the
+  remark after \cref{def:hinge-row-block}). So
   $r(C(L)) = 0$ if and only if $r$ is a linear combination of the
   $r'_i$, that is, if and only if the $D$ forms are linearly
   dependent.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorems hold for every linear form $r$ and every edge of
+  The pinned theorem holds for every linear form $r$ and every edge of
   a body-hinge framework, with any linearly independent forms that span
-  the forms vanishing on its extensor. The first is the lemma. The
-  second is the step that a form vanishes on the span of the extensor
-  if and only if it vanishes at the extensor.
+  the forms vanishing on its extensor.
 \end{fmlnote}
 
 \begin{lemma}[The form $r$ is not zero; from the proof of KT Claim~6.12]
@@ -2161,7 +2159,7 @@ builds the framework for this panel.
   \uses{lem:case-III-claim-6-11, lem:case-III-nested-rank-lower,
         lem:case-III-claim612-extensor-span,
         lem:case-III-claim612-orthseq-vanish, lem:case-III-claim612,
-        lem:meet-two-hyperplanes, lem:case-III-claim612-block-iff-perp,
+        lem:meet-two-hyperplanes, def:hinge-row-block,
         lem:case-III-redundant-combination,
         lem:isInfRigidOn-of-relative-count,
         lem:relative-deficiency-rank-bound,
@@ -2276,7 +2274,7 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III-claim612-block-iff-perp}
+  \uses{def:hinge-row-block}
   We follow Katoh and Tanigawa~\cite[pp.~694--696]{katohTanigawa2011}.
   Let $u$ and $w$ be the ends of an edge of $G - v_1$, or let $u = v_0$
   and $w = v_2$, and let $f$ be the form $S \mapsto x(S(u) - S(w))$, where
@@ -2333,7 +2331,7 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III-claim612-block-iff-perp, lem:case-III-claim612-eq644,
+  \uses{def:hinge-row-block, lem:case-III-claim612-eq644,
         lem:splitoff-edge-substitution}
   We follow Katoh and Tanigawa~\cite[pp.~696--698]{katohTanigawa2011}.
   Write the form $S \mapsto r(S(v_2) - S(v_0))$ as a combination of the

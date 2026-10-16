@@ -1617,8 +1617,7 @@ us read the rank of a subgraph at a height of $G$.
 \begin{theorem}[A chain of bridges]
   \label{thm:pencil-x0-bridge}
   \lean{Graph.X0Attains.of_bridgePath,
-    Graph.deficiency_induce_union_range_of_bridgePath,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath}
+    Graph.deficiency_induce_union_range_of_bridgePath}
   \leanok
   \uses{def:pencil-x0-attains, def:pencil-x0-standing}
   Let $K$ be infinite and let $G$ satisfy the standing hypotheses. Let
@@ -2406,8 +2405,8 @@ the coordinates of a join.
   \uses{lem:pencil-three-points, lem:pencil-join-independence-open,
         lem:pencil-chain-span-certificates, lem:pencil-ear-hinge-span,
         lem:block-rank-ear, lem:block-rank-path, lem:relative-screws-path,
-        def:D-deficiency, lem:pencil-x0-main-picture-open,
-        lem:pencil-x0-one-witness}
+        def:D-deficiency, lem:pencil-lifting-restrict,
+        lem:pencil-x0-main-picture-open, lem:pencil-x0-one-witness}
   \emph{The configuration.} Every closed neighbourhood of $G$ has three
   members, so at an admissible picture $q$ every height lies in $L_G(q)$
   (\cref{lem:pencil-three-points}). Put the bodies at the points of
