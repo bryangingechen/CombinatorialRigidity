@@ -21,6 +21,79 @@ infinitesimal motions; KT Claim~6.4, with the rank lemmas it needs; and
 finally KT Lemmas~6.3, 6.2 and~6.5, with KT Claim~6.6 and the case
 split that combines them (\cref{lem:case-I-all-k}).
 
+\begin{remark}[Katoh and Tanigawa's steps and the formal proof]
+  \label{rem:case-I-kt-steps}
+  Several of the steps just listed follow Katoh and Tanigawa's argument,
+  or restate it for infinitesimal motions, but the formal proof of KT
+  Theorem~5.5 (\cref{thm:theorem-55}) does not take them. We keep them
+  beside the argument they belong to, and say here what the formal proof
+  does instead.
+
+  \emph{Cycles.} KT Lemma~5.4 realizes a cycle on $m$ vertices for
+  every $3 \le m \le D$ (KT p.~670). At most $D$ hinges can have
+  linearly independent extensors
+  (\cref{lem:cycle-realization-dim-bound}), and some $D$ panel support
+  extensors are linearly independent
+  (\cref{lem:exists-independent-panel-extensor}). Katoh and Tanigawa
+  apply KT Lemma~5.4 only to cycles on at most $d + 1$ vertices (the
+  note after \cref{lem:cycle-realization}). The formal proof realizes these
+  cycles with the normals of \cref{lem:cycle-normals}, and it uses
+  neither of the two lemmas. For two bodies joined by two edges,
+  \cref{lem:cycle-realization-base} restates \cref{lem:theorem-55-base}
+  for panel-hinge frameworks. The formal proof applies the body-hinge
+  form, for instance in KT Lemma~6.2
+  (\cref{lem:case-I-realization-nonsimple}).
+
+  \emph{The rank count.} Katoh and Tanigawa argue with the ranks of
+  rigidity matrices throughout KT \S6.2. The first diagonal block of
+  KT eq.~(6.3) consists of the rows of the edges of $H$. The second
+  consists of the rows of the other edges, with the columns of $V(H)$
+  deleted. Katoh and Tanigawa read off that $\operatorname{rank} R(G,p)$
+  is at least the sum of the ranks of the two blocks (KT
+  pp.~673--675). \Cref{lem:case-I} states the count as an identity. Its
+  proof obtains the reverse inequality from the block pin
+  (\cref{lem:pinned-motions-on-rank-bound}). For $k = 0$, the count has
+  a form for infinitesimal motions (\cref{lem:case-I-splice-seed}). Two
+  more lemmas give properties of the block pin: deleting edges enlarges
+  it (\cref{lem:pinned-motions-on-mono}), and it detects rigidity
+  (\cref{lem:pinned-motions-on-rigid-iff}). The formal proof uses
+  neither the identity nor these lemmas. Nor does it use the forms of
+  the identity with the block pin (the note after \cref{lem:case-I}).
+
+  Like Katoh and Tanigawa, the formal proof needs only the lower bound.
+  No realization with nondegenerate hinges has a rank larger than the
+  target rank $D(|V(G)| - 1) - k$
+  (\cref{lem:relative-deficiency-rank-bound}). The formal proof obtains
+  the lower bound by counting rows at one choice of normals. Some
+  $D(|V(H)| - 1)$ rows of the edges of $H$ are linearly independent, and
+  so are some $D(|V(G)| - |V(H)|) - k$ rows of the other edges after the
+  columns of $V(H)$ are deleted. By the block form, all these rows
+  together are linearly independent (the proof of
+  \cref{lem:case-I-realization}). This count gives the rank at every
+  $k$. The form for infinitesimal motions gives only rigidity, the case
+  $k = 0$.
+
+  \emph{KT Claim~6.4.} In KT Lemma~6.3 the hinges of the edges between
+  $V(H)$ and the other bodies change (KT eq.~(6.6)). Katoh and Tanigawa
+  compare the second block with its value when every body of $H$ is
+  given the panel of the vertex to which $H$ is contracted. There it has
+  the rank of the contraction. As the coefficients of their panels are
+  algebraically independent, the second block has at least this rank
+  (KT Claim~6.4 and eq.~(6.9), p.~675). For $k = 0$ and a simple
+  contraction, \cref{lem:claim-6-4} gives this rank at some normals,
+  and its proof takes these. At these normals the bodies of $H$ share
+  one normal. So the hinges of the edges of $H$ are zero, and the
+  normals are not in general position. The formal proof needs instead a
+  nonzero polynomial in the normals, off whose zeros the second block
+  has the rank of the contraction. Over an infinite field it has a
+  common non-root with the polynomials for the rows of $H$ and for
+  general position (the proof of \cref{lem:case-I-realization}). The
+  polynomial is that of \cref{lem:rank-polynomial-IH-relabel-proj}, at
+  every $k$, and its proof takes the steps of \cref{lem:claim-6-4} at the
+  same normals. It takes the place of Katoh and Tanigawa's algebraic
+  independence (the passage after \cref{lem:case-I-realization}).
+\end{remark}
+
 KT Lemma~5.4 states that a cycle on $m$ vertices, for $3 \le m \le D$,
 has an infinitesimally rigid nonparallel panel-hinge
 realization~\cite[p.~670]{katohTanigawa2011}. Katoh and Tanigawa note
@@ -43,7 +116,8 @@ generic full-rank realization of the cycle
 
 The case of two bodies joined by two edges is the double edge of KT
 Lemma~5.3, which \cref{lem:theorem-55-base} treats for body-hinge
-frameworks. For panel-hinge frameworks it reads as follows.
+frameworks. The next lemma restates that lemma for panel-hinge
+frameworks.
 
 \begin{lemma}[Two bodies joined by two independent hinges]
   \label{lem:cycle-realization-base}

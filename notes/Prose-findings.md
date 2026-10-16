@@ -1469,7 +1469,9 @@ declaration's name as its header writes it:
   *Disposition:* done (`d851de0f`) for `lem:cycle-realization-rigid`, which pins `theorem_55_cycle`
   alone (its three `Fin m` forms unpinned, `F-238`); left for the six dead nodes, kept as exposition
   (merging the first into `lem:theorem-55-base` is not among principle D's fixes; `a111b17a`,
-  `notes/Prose-report.md` G3 and G4).
+  `notes/Prose-report.md` G3 and G4); round 2: the six framed by `rem:case-I-kt-steps`, after the
+  roadmap of `case-i.tex`, which says what the formal proof uses instead, and the lead of
+  `lem:cycle-realization-base` says that it restates `lem:theorem-55-base` (task 16).
 - **F-139** · N · `lem:claim-6-4`, `lem:rows-polynomial-in-normals`, `lem:case-I-splice-seed`,
   `lem:case-I` (`algebraic-induction/case-i.tex`): every pin of the first three, and the second and
   third pins of `lem:case-I`, lie outside every main result's closure. Their callers are dead too:
@@ -1490,7 +1492,9 @@ declaration's name as its header writes it:
   coordinates, their degree bound and the spanning, a pin per clause (`F-137`); left for
   `lem:claim-6-4` (merging it into `lem:rank-polynomial-IH-relabel-proj` is not a D fix; `a111b17a`,
   `notes/Prose-report.md` G3 and G4) and for the dead pins of `lem:case-I-splice-seed` and
-  `lem:case-I` (deadness alone is no reason to unpin).
+  `lem:case-I` (deadness alone is no reason to unpin); round 2: the three framed by
+  `rem:case-I-kt-steps`, which says what the formal proof uses instead: the row count in the proof
+  of `lem:case-I-realization`, and `lem:rank-polynomial-IH-relabel-proj` for KT Claim 6.4 (task 16).
 - **F-143** · N · `lem:case-I-realization-nonsimple`, `lem:case-I-dispatch`
   (`algebraic-induction/case-i.tex`): the pin of the first, `case_I_realization_nonsimple`, lies
   outside every main result's closure and has no caller, so the second's `\uses` edge to it has no
@@ -2424,7 +2428,9 @@ declaration's name as its header writes it:
   `PanelHinge.lean`); measured (dead pins, `scripts/blueprint-deps.py --label lem:case-I`, at
   `ef57b401`).
   *Found:* round 3 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, S19).
+  *Disposition:* reported (`notes/Prose-report.md`, S19); round 2: `rem:case-I-kt-steps` says that
+  the formal proof uses neither the identity nor its forms with the block pin, and counts rows
+  instead (task 16).
 - **F-117** · S · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): the
   statement says that each locus $\{p : \operatorname{rank} R(G,p) \ge r\}$ is Zariski-open, so
   the rank is lower semicontinuous and maximal on a dense set, and dually that $\dim Z(G,p)$ is
@@ -4316,7 +4322,8 @@ declaration's name as its header writes it:
   *Found:* round 3 task 1.
   *Disposition:* reported (`notes/Prose-report.md`, M3); round 2: the twelve `\cref`s of
   `lem:genericity-device` say which argument they borrow, three of them now citing the minor of
-  `lem:rank-polynomial-of-le-finrank` (task 15).
+  `lem:rank-polynomial-of-le-finrank` (task 15); Case I's group, `lem:claim-6-4` and
+  `lem:case-I-splice-seed` among it, framed by `rem:case-I-kt-steps` (task 16).
 
 - **F-222** · M · `cor:bodyhinge-generic-tree-packing`, as `body-hinge.tex` cites it: after
   `thm:body-hinge-tay` the chapter says that for frameworks "with hinges in general position", KT

@@ -7,14 +7,14 @@ authority for which rounds are done. The round fixes the blueprint statements th
 G2's merges of true duplicates, and gives each group of nodes where the formal proof leaves Katoh
 and Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is not
 edited. The open (task 1, docs only) reproduced round 1's close values and sliced the round into
-21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–15 are done
+21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–16 are done
 (the open; the false statements S6–S10; S4 and S5; S7's repin; Case I's S14, S15 and S21; Case
 III's three counts, S20; S26, S27 and S35; S29; S36's and the rescaling's pins, `F-259` and
 `F-260`; S38 and S39, stated generally; S40–S42, the hypotheses the pins do not take; G1's three
 pin changes, with `F-261`'s and `F-262`'s forward edges; G2's two true duplicates merged and
-`case_III_realization` unpinned; the genericity device's citations, with `F-255`'s cure).
-**Next concrete task:** task 16, Case I's framing remark (*Lemma checklist*). Every missing edge
-has a task: `F-257`'s three are task 18's. Round manual: `CLEANUP.md`.
+`case_III_realization` unpinned; the genericity device's citations, with `F-255`'s cure; Case I's
+framing remark). **Next concrete task:** task 17, Case II's framing remark (*Lemma checklist*).
+Every missing edge has a task: `F-257`'s three are task 18's. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,17 +24,16 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–15 are done**; task 15, the genericity device's citations and `F-255`'s cure, is this
-commit (`genericity-and-count.tex`, `case-i.tex`, `case-ii.tex`, `panel-layer.tex`,
-`molecule-modelling.tex`). Nothing is mid-stream; task 16 is next.
-Task 15's gates: `lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:`
-lines; **`1528 edges 0ac876f73130c45d`**, **`558613b168745717`** (no pin changed); the dump's
-diff from `dump-t14.txt` exactly the line's prediction, kept as
-`scratch/reconcile-statements/dump-t15.txt`; `--summary` exits 0, both checks OK, as predicted
-(691 nodes, 689 pinned, 1008 pins (993 distinct), 3 missing edges, 169 dead pins, 133 edges with
-no Lean basis, 85 transitive, 14 nodes with 4+ pins); the forward screen the open's lines
-exactly; `print.log` rebuilt by latexmk, 0 `LaTeX Warning` lines, 31 overfull boxes;
-`check-phase-note.py` green; the no-Lean-edit diff from `1cbdbff5` empty. The declarations round
+**Tasks 1–16 are done**; task 16, Case I's framing remark `rem:case-I-kt-steps`, is this commit
+(`case-i.tex`, the ledger). Nothing is mid-stream; task 17 is next.
+Task 16's gates: `lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:`
+lines; **`1528 edges 0ac876f73130c45d`**, **`558613b168745717`** (no pin changed); the dump
+byte-identical to `dump-t15.txt`, as predicted, kept as `scratch/reconcile-statements/dump-t16.txt`;
+`--summary` exits 0, both checks OK, its output byte-identical to task 15's (691 nodes, 689
+pinned, 1008 pins (993 distinct), 3 missing edges, 169 dead pins, 133 edges with no Lean basis, 85
+transitive, 14 nodes with 4+ pins); the forward screen the open's lines exactly; `print.log`
+rebuilt by latexmk, 0 `LaTeX Warning` lines, 31 overfull boxes; `check-phase-note.py` green; the
+no-Lean-edit diff from `1cbdbff5` empty. The declarations round
 2 unpins, for the close's list (tasks 8–11, 13 and 15 unpin none, nor do task 14's merges):
 task 4's `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller), task 5's
 `exists_good_realization` and `exists_good_realization_const` (dead, `F-152`), task 7's
@@ -158,13 +157,8 @@ task makes exact before editing. Every task is at Opus but the close.
 
 - [x] **1. Open** (`1468bc31`; docs only): this log, the baselines, the task list.
 - [x] **2. The four false statements: S6, S7's restatement, S8, S9** (`3456d6a7`; `F-049`, `F-154`,
-  `F-060`; `F-117` and `F-149` in part). S6: `lem:rank-rotation-semicont`, retitled "Smaller hinge
-  spans give fewer infinitesimal motions", states its pins' inclusion, the rank bound by the remark
-  after `def:rigidity-matrix`; KT Lemma 5.2 (p. 669) is stated before
-  `lem:generic-realization-of-rigid`, beside JJ 2010 Lemma 7.1, and the label's six `\cref`s cite
-  what they use. S7: `lem:genericity-device` on the open set $U$ of normals with nondegenerate
-  hinges. S8: `lem:case-III-nested-rank-lower` gains "simple". S9:
-  `lem:case-III-claim612-extensor-span` for the omit-two extensors $E_{ij}$. The dump
+  `F-060`; `F-117`, `F-149` in part): S6 at its pins' inclusion, KT Lemma 5.2 (p. 669) stated in
+  prose; S7 at nondegenerate hinges; S8 "simple"; S9 for the omit-two extensors. The dump
   byte-identical. New: `F-253`.
 - [x] **3. S10: `lem:forest-surgery-unsplit` restated in its pin's form and filled** (`43c5c8d7`;
   `F-234`; `F-091`, `F-008` in part). Pinned on `Graph.splitOff_indep_extend_of_fiber_lt`, also
@@ -206,14 +200,10 @@ task makes exact before editing. Every task is at Opus but the close.
   theorems and `intro.tex`'s summary at every $d$, fifteen nodes' finiteness as their pins take it;
   the `\cref`s that read a dropped hypothesis cite the claim. The dump byte-identical. All eleven
   done; no new entry.
-- [x] **12. G1's first two pin changes** (`94196444`; `F-247`, `F-248`). (a) The bridge-path
-  lemma unpinned from `thm:pencil-x0-bridge`, as its proof reaches `def:cut-edges-2ec`, a later
-  chapter; `lem:block-rank-path`'s proof edge to the theorem gone, `thm:pencil-x0-cycle`'s proof
-  `\uses` `lem:pencil-lifting-restrict`. (b) `mem_hingeRowBlock_iff` at `def:hinge-row-block`
-  (its fourth pin, its claim in the remark after it); the five proofs whose pins reached
-  `lem:case-III-claim612-block-iff-perp` only through it `\uses` the definition. 1527 edges.
-  Both done; new `F-261`, `F-262` (task 13), `F-263` (round 3); `F-257`'s first edge survives
-  (task 18).
+- [x] **12. G1's first two pin changes** (`94196444`; `F-247`, `F-248`): the bridge-path lemma
+  unpinned (its proof reaches a later chapter); `mem_hingeRowBlock_iff` at `def:hinge-row-block`,
+  the five proofs it backed now `\uses` the definition. 1527 edges. Both done; new `F-261`, `F-262`
+  (task 13), `F-263` (round 3); `F-257`'s first edge survives (task 18).
 - [x] **13. G1's third: a node for open ears** (`cd516eda`; `F-249`; `F-261`, `F-262`):
   `def:open-ear` in *Ears and cycles* takes `Graph.IsOpenEar` from `def:pencil-x0-reduces`, at
   $k \ge 0$ as the structure allows (a `lake lean` witness); the statement edges of the two ear
@@ -225,32 +215,18 @@ task makes exact before editing. Every task is at Opus but the close.
   needs it; the two affine nodes on one dead pin one node, under the label the pin's docstrings
   name; `lem:case-III` unpinned from its dead $d = 3$ pin, the manual's honesty-gate example
   singular. 1528 edges. `F-120` done; new: `F-264`.
-- [x] **15. KT's route: the genericity device's citations; `F-255`'s cure** (this commit; M3,
-  `F-118` in part; `F-255`). Each of the twelve `\cref`s at the open says which argument it borrows.
-  The device's open sets: the section lead; the largest rank in `lem:case-I`'s proof; the passage
-  after `lem:case-I-realization`; `lem:theorem-56-general-position`, at nondegenerate hinges; the
-  cut-edge proof (`lem:case-cut-edge-realization-gp`), whose open sets meet, and whose "KT Claim
-  6.4" was KT Lemma 6.1's isometry (p. 672). The minor: the counting lead,
-  `lem:case-I-realization-h65`, `lem:case-II-realization` and `lem:rank-polynomial-of-le-finrank`
-  (unchanged). Three notes whose sentence cites the minor now cite
-  `lem:rank-polynomial-of-le-finrank`'s proof (`lem:cycle-realization`'s,
-  `lem:rows-polynomial-in-normals`'s, `lem:relative-device-count`'s), as the pins' bodies take a
-  minor. `lem:independent-rows-of-rank` and its note moved before the device, whose proof `\uses`
-  and cites it; both leads follow.
-  *Exact, before editing* (`t15-edit.py` on a `--tex-root` copy, `t15-predict.py`): no `\uses` moves
-  with a `\cref`, so the dump changes in `1528 edges`' hash (the `lean_decls` hash kept), the
-  graph's `lem:rows-polynomial-in-normals` → the device (gone, now transitive) and
-  `lem:independent-rows-of-rank` → the device (solid, new), and the device's `\uses` line;
-  `--summary` 3 missing, the rest as task 14's; no ancestor lost; the screen the open's. *Done:*
-  exactly that. `F-255` done; `F-118` in part; no new entry.
-- [ ] **16. KT's route: Case I's group** (M3, G3, G4; `F-134`, `F-139`, `F-118`). One framing
-  remark in `case-i.tex` for `lem:cycle-realization-base` (48; it restates `lem:theorem-55-base`,
-  `panel-layer.tex` 789, for panel-hinge frameworks, and says so), `lem:cycle-realization-dim-bound`
-  (68), `lem:exists-independent-panel-extensor` (88), the three `lem:pinned-motions-on-*` (282,
-  305, 329; since task 4 no node `\uses` `-mono`), `lem:case-I-splice-seed` (522), `lem:case-I`'s
-  two dead pins (404) and `lem:claim-6-4` (task 6's). `lem:case-I` and `lem:claim-6-4` keep their
-  crux depth.
-  *Expected:* the dump byte-identical.
+- [x] **15. KT's route: the genericity device's citations; `F-255`'s cure** (`daa53665`; M3,
+  `F-118` in part; `F-255`): each of the twelve `\cref`s says whether it borrows the device's open
+  sets or its minor; three notes cite `lem:rank-polynomial-of-le-finrank`'s proof; the cut-edge
+  proof cites KT Lemma 6.1's isometry (p. 672); `lem:independent-rows-of-rank` moved before the
+  device. The dump as predicted (one edge solid, one transitive). `F-255` done; no new entry.
+- [x] **16. KT's route: Case I's group** (this commit; M3, G3, G4; `F-134`, `F-139`, `F-118`;
+  `F-116` in part): `rem:case-I-kt-steps`, after `case-i.tex`'s roadmap, frames the nine by KT's
+  step: cycles (KT Lemma 5.4, applied on at most $d + 1$ vertices, pp. 677, 692), the rank count
+  (KT eq. (6.3); the formal proof counts rows) and KT Claim 6.4 (p. 675; replaced by
+  `lem:rank-polynomial-IH-relabel-proj`); `lem:cycle-realization-base`'s lead says it restates
+  `lem:theorem-55-base`; the crux nodes unedited. The dump byte-identical, as predicted (the remark
+  has no `\lean` or `\uses`). No new entry.
 - [ ] **17. KT's route: Case II's group** (M3, G4; `F-147`, `F-152`). One framing remark for
   `case-ii.tex`'s `lem:case-II-rank-lift` (32; since task 4 no node `\uses` it) and `lem:case-II`
   (task 4's), and `genericity-and-count.tex`'s `lem:relative-device-count` (144),
@@ -317,8 +293,8 @@ Items outside this round's scope, one line each, mirrored in the same commit int
   §3 holds it for the phase so the statement changes once; the phase's (c).
 - S18 (`F-121`; `prop:rigidity-matrix-prop11`): restated or repinned on the generic forms after
   S1's refactor; the phase's (a).
-- S19 (`F-116`; `lem:case-I`, a crux node): the rank-addition identity in Lean; task 16's remark
-  names the live route meanwhile; the phase's (c).
+- S19 (`F-116`; `lem:case-I`, a crux node): the rank-addition identity in Lean; meanwhile
+  `rem:case-I-kt-steps` (task 16) says what the formal proof uses instead; the phase's (c).
 - S22–S25 (`F-101`, `F-083`, `F-051`, `F-041`; `thm:minimal-kdof-reduction` (i),
   `lem:circuit-induces-rigid`, `thm:matroid-partition-rank`, `thm:pebble-game-correct`): kind E,
   formalized, not restated (§1); the phase's (c).
@@ -350,33 +326,34 @@ None. Every missing edge has a task (*Decisions made*): `F-257`'s three are task
 
 ## Hand-off / next phase
 
-**Next: task 16**, at Opus: Case I's framing remark (M3, G3, G4; `F-134`, `F-139`, `F-118` in part),
-as its line says: one remark in `case-i.tex` for the off-route nodes the line names, giving KT's
-step, why the formal proof leaves it, and what replaces it, with `\cref`s to the live nodes;
-`lem:cycle-realization-base` says that it restates `lem:theorem-55-base` for panel-hinge frameworks;
-`lem:case-I` and `lem:claim-6-4` keep their crux depth. Its *Expected* is a byte-identical dump:
-before editing, make it exact in the line, then diff the dumps, as tasks 12–15 did
-(`scratch/reconcile-statements/t15-predict.py` diffs the reduced graphs of the tree and a
-`--tex-root` copy and lists the ancestors each node loses; `t15-edit.py` applies one script's edits
-to the copy and then the tree; a `--tex-root` run whose pins differ takes a fresh `lake lean`, about
-three minutes, so give it an explicit timeout). Its parent dump is task 15's after-dump,
-`scratch/reconcile-statements/dump-t15.txt` (gitignored, so regenerate it on the parent if it is
-missing). Lines moved since the open's numbering, which later tasks use: `case-i.tex`, after tasks
-2, 6 and 15, has task 16's nodes at (`\label` lines) 49, 69, 89, 294, 317, 341, 416 (`lem:case-I`),
-538 and 855 (`lem:claim-6-4`); `panel-layer.tex` +4 after 751 (task 15; `lem:theorem-55-base` begins
-at 793); `genericity-and-count.tex`, after tasks 2, 5, 10 and 15, has task 17's nodes at (`\begin`
-lines) 191, 263, 459 and 519 (`lem:relative-device-count`, `lem:realization-of-independent-rows`,
-`lem:case-II-placement-old-rows`, `lem:case-II-realization-placement`); task 3's,
-`molecular-induction.tex` −32 for 935–1059 (`lem:edge-splitting` is 969) and +17 after 1059
-(`lem:removal-deficiency` 1246), with `lem:forest-surgery-unsplit` now at 1032; `case-iii.tex`,
-after tasks 2, 4, 7, 12 and 14, has the nodes task 18 names at (`\begin` lines): the row-operation
-nodes 421, 494, 644, 672, 759 and 826, the affine nodes 1097, 1117 and 1146,
-`lem:case-III-claim612-block-iff-perp` 1245, `lem:case-III-claim612-r-nonzero` 1277, the counts 1304
-and 1544, the relabel nodes 1362, 1397 and 1449, `lem:case-III-claim612-eq644` 1487 and
-`lem:case-III-chain-dispatch` 2335; task 4's, `case-ii.tex` −5 for 72–133 (`lem:case-II` is 67) and
-−44 after 133 (`lem:case-II-realization` 91). Re-`grep` as ever. Carried in from round 1: `F-252`
-for the PI (round 1's *Candidates*; the phase's (a) removes it), and its two docstring lines,
-already in round 3's list.
+**Next: task 17**, at Opus: Case II's framing remark (M3, G4; `F-147`, `F-152`), as its line says:
+one remark for `case-ii.tex`'s `lem:case-II-rank-lift` and `lem:case-II` and
+`genericity-and-count.tex`'s four nodes the line names, giving KT's step, why the formal proof
+leaves it, and what replaces it, with `\cref`s to the live nodes; `lem:case-II-realization-placement`
+keeps its statement and note for the phase (S3). Task 16's `rem:case-I-kt-steps` is the model: a
+`remark` with a `\label` and `\cref`s only, no `\lean` and no `\uses`, so the dump stays
+byte-identical; the replacements read from `--label` (dead pins, "reached by") and the pins'
+bodies; every KT page and numbered result the remark names checked in `.refs/` (KT 2011 printed
+p. N is the PDF's page N − 646). Its *Expected* is a byte-identical dump: before editing, make it
+exact in the line, then diff the dumps. Its parent dump is task 16's after-dump,
+`scratch/reconcile-statements/dump-t16.txt` (gitignored, so regenerate it on the parent if it is
+missing); tasks 12–15's `t15-predict.py` and `t15-edit.py` serve a task that moves an edge (a
+`--tex-root` run whose pins differ takes a fresh `lake lean`, about three minutes, so give it an
+explicit timeout). Lines moved since the open's numbering, which later tasks use: `case-ii.tex`, after
+task 4, has `lem:case-II-rank-lift` at (`\label` lines) 33, `lem:case-II` 68 and
+`lem:case-II-realization` 92; `genericity-and-count.tex`, after tasks 2, 5, 10 and 15, has task 17's
+other nodes at (`\begin` lines) 191, 263, 459 and 519 (`lem:relative-device-count`,
+`lem:realization-of-independent-rows`, `lem:case-II-placement-old-rows`,
+`lem:case-II-realization-placement`); `case-i.tex` +73 after 23 and +74 after 46 (task 16);
+`panel-layer.tex` +4 after 751 (task 15); task 3's, `molecular-induction.tex` −32 for 935–1059
+(`lem:edge-splitting` is 969) and +17 after 1059 (`lem:removal-deficiency` 1246), with
+`lem:forest-surgery-unsplit` now at 1032; `case-iii.tex`, after tasks 2, 4, 7, 12 and 14, has the
+nodes task 18 names at (`\begin` lines): the row-operation nodes 421, 494, 644, 672, 759 and 826,
+the affine nodes 1097, 1117 and 1146, `lem:case-III-claim612-block-iff-perp` 1245,
+`lem:case-III-claim612-r-nonzero` 1277, the counts 1304 and 1544, the relabel nodes 1362, 1397 and
+1449, `lem:case-III-claim612-eq644` 1487 and `lem:case-III-chain-dispatch` 2335. Re-`grep` as
+ever. Carried in from round 1: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes
+it), and its two docstring lines, already in round 3's list.
 
 ## Decisions made during this round
 
@@ -428,3 +405,9 @@ already in round 3's list.
   as its pin's body takes one, cites `lem:rank-polynomial-of-le-finrank`'s proof. No proof drops its
   edge to the device; the cut-edge proof now cites KT Lemma 6.1's isometry (p. 672), not KT Claim
   6.4.
+- **The framing remark's form** (task 16, the model for tasks 17–20): one `remark` after the
+  subsection's roadmap, one paragraph per KT step; `\cref`s only, no `\lean` or `\uses`, so the
+  dump stays byte-identical. "The formal proof of KT Theorem 5.5" stands for the main results'
+  closure (`--label`'s dead pins); a restatement of KT's step for infinitesimal motions is said to
+  be one, not KT's; a node restating a general form says so in its lead; the crux nodes are not
+  edited.
