@@ -1409,11 +1409,13 @@ declaration's name as its header writes it:
   *Evidence:* measured (`sort blueprint/lean_decls | uniq -d` and each name's nodes, at
   `ef57b401`); read (a `grep` for the three pins' callers, which finds only docstrings).
   *Found:* round 3 task 1.
-  *Disposition:* left (each doubled pin states a clause of both its nodes, so unpinning either drops
-  a clause, a statement change; folding one node into the other is a merge, not among principle D's
-  fixes: `a111b17a`, `notes/Prose-report.md` G2). `contraction_isMinimalKDof`:
-  `lem:reduction-step`'s part (ii) states KT Lemma 3.5 at $k = 0$ (`20d62426`). The two here: each
-  pair states one claim twice (`24f04215`). The seven in `pencil.tex` and `main-component.tex`
+  *Disposition:* done (task 14): the two doubles here, each pair one claim stated twice, are one
+  node each: `lem:case-III-claim-6-11-base`, the forward half of `lem:splitoff-kdof-criterion`, is
+  merged into it, and `lem:case-III-claim612-points-affineIndep-witness` into
+  `lem:case-III-claim612-points-affineIndep`. The other eight stay, as the PI decided
+  (`notes/Reconcile.md` §3, G2), each doubled pin stating a clause of both its nodes.
+  `contraction_isMinimalKDof`: `lem:reduction-step`'s part (ii) states KT Lemma 3.5 at $k = 0$
+  (`20d62426`). The seven in `pencil.tex` and `main-component.tex`
   (`24251386`): `pencilPair_of_nonempty` is the claim of `thm:pencil-conditioned-pair-nonempty` and
   the general claim of `thm:pencil-realization-theorem`, a main result's node;
   `thm:pencil-x0-main-component`'s four pins and two of `thm:pencil-x0-generic-attains`' three state
@@ -1630,7 +1632,8 @@ declaration's name as its header writes it:
   and its note says that the pin holds for every $d$. Left: the four affine nodes and
   `lem:case-III-claim612-r-nonzero`, kept as KT's exposition (retiring or merging them is not among
   principle D's fixes, `a111b17a`, `notes/Prose-report.md` G4; `F-120`'s double is `24251386`'s),
-  and `exists_tripleLI_polynomial`, a step of the dead $d = 3$ dispatch's choice of normals.
+  and `exists_tripleLI_polynomial`, a step of the dead $d = 3$ dispatch's choice of normals;
+  round 2: the witness and `lem:case-III-claim612-points-affineIndep` are one node (task 14).
 - **F-167** · N · `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12
   (`algebraic-induction/case-iii.tex`): ten of the thirteen pins of its eight nodes are dead, all
   but `case_III_claim612_gen` and `lem:case-III-claim612-eq644`'s `hingeRow_comp_single_tail` and
@@ -1682,7 +1685,7 @@ declaration's name as its header writes it:
   dispatch describe; `lem:triangle-realization`'s dead pin (deadness alone is no reason to unpin);
   and `lem:case-III`'s dead $d = 3$ pin `case_III_realization`, outside the open's choice for this
   finding, a candidate for `a111b17a`'s list, `notes/Prose-report.md` G4 (`1d35d435`–`d851de0f`
-  unpinned such wrappers).
+  unpinned such wrappers); round 2: `case_III_realization` unpinned (task 14).
 - **F-192** · N · `lem:exists-tight-partition`, `lem:partitionDef-merge` (`jacobs.tex`): each
   lemma pins a definition beside its claim. The first pins `IsTightPartition`, and its statement
   defines "tight" in a closing sentence; the second pins `crossingEdgesWithin`, the count
@@ -4193,6 +4196,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstring and the header; the two nodes' pins).
   *Found:* RECONCILE round 2 task 12.
   *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 12): round 3's docstring
+  sweep (*Moved to a later round*).
+- **F-264** · L · `PanelHingeFramework.case_III_realization`
+  (`Molecular/AlgebraicInduction/CaseIII/Realization.lean`): its docstring gives it as
+  `lem:case-III`'s, and the file's header (17) and its first section's (35) call it the all-$k$
+  capstone that `Theorem55.lean` consumes, `lem:case-III`'s; it is the $k = 2$ wrapper of
+  `case_III_realization_all_k`, which is that capstone, and no declaration calls it. Since round 2
+  task 14 `lem:case-III` pins only `case_III_realization_all_k`.
+  *Evidence:* read (the docstring, the header and both declarations' statements and bodies; a
+  `grep` of the Lean for callers).
+  *Found:* RECONCILE round 2 task 14.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 14): round 3's docstring
   sweep (*Moved to a later round*).
 
 ## M — mathematics and sources

@@ -13,9 +13,10 @@ S4 and S5, task 5 repinned S7, task 6 restated Case I's S14, S15 and S21, task 7
 Case III's three counts (S20), task 8 fixed S26, S27 and S35, task 9 fixed S29, task 9.1 made
 `F-259`'s and `F-260`'s pins (S36's "In particular" through `lem:trivial-motions-rank-bound`; the
 dual lemma's rescaling), task 10 stated S38's and S39's special cases generally, task 11
-dropped the hypotheses S40–S42's pins do not take, and tasks 12 and 13 made G1's three pin
-changes (task 13 a node for open ears). **Next concrete task:** round 2's task 14, G2's true
-duplicates merged. The two PDFs of §2 are in
+dropped the hypotheses S40–S42's pins do not take, tasks 12 and 13 made G1's three pin
+changes (task 13 a node for open ears), and task 14 merged G2's two true duplicates and unpinned
+`case_III_realization`. **Next concrete task:** round 2's task 15, the genericity device's
+citations. The two PDFs of §2 are in
 `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
@@ -207,7 +208,9 @@ writes them once; everything else proceeds.
   `lem:genericity-device`'s, which round 2 task 5 repinned; and `F-258`'s, the three that round 2
   task 7 unpinned from Case III's counts, whose docstrings still name those nodes; and `F-263`'s,
   `mem_hingeRowBlock_iff`'s docstring and its file's header, which still place it in
-  `case-iii.tex`, though round 2 task 12 moved it to `def:hinge-row-block`. The ledger's
+  `case-iii.tex`, though round 2 task 12 moved it to `def:hinge-row-block`; and `F-264`'s,
+  `case_III_realization`'s docstring and its file's header, which still give it as
+  `lem:case-III`'s, though round 2 task 14 unpinned it. The ledger's
   two Lean baselines feed §B and §C.
 
 ### The phase — `RECONCILE-FORMAL` (attended; a number minted on open)

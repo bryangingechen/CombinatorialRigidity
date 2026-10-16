@@ -533,7 +533,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `notes/AlgebraicIndependence.md`). So Gaps 3+1 share one kernel — "the rigidity matrix at
   the inductively-fixed seed attains the rank `M(G̃)` predicts" — the genuinely-new
   analytic content. **Whole chain green + axiom-clean at 22d-close:**
-  `lem:case-III-claim-6-11-base` (Gap 2), `lem:case-III-gap3-minimalKDof` (Gap 3
+  the forward half of `lem:splitoff-kdof-criterion` (Gap 2; its own node until RECONCILE
+  round 2 task 14 merged it there), `lem:case-III-gap3-minimalKDof` (Gap 3
   combinatorial), the seed-rank kernel (`lem:case-III-seed-rank-bridge` `def=0` rigidity
   transfer + `-seed-rank-upper` `def>0` upper bound + `-rank-attainment` exact rank), and
   the pigeonhole + row-set identity feeding `lem:case-III-claim-6-11` (Gap 1, the

@@ -1294,8 +1294,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   and S35, task 9 fixed S29, task 9.1 made `F-259`'s and `F-260`'s pins (S36's "In particular"
   through `lem:trivial-motions-rank-bound`; the dual lemma's rescaling), task 10 stated S38's
   and S39's special cases generally, task 11 dropped the hypotheses S40–S42's pins do not
-  take, and tasks 12 and 13 made G1's three pin changes (task 13 a node for open ears).
-  **Next:** its task 14, G2's true duplicates merged.
+  take, tasks 12 and 13 made G1's three pin changes (task 13 a node for open ears), and task 14
+  merged G2's two true duplicates and unpinned `case_III_realization`. **Next:** its task 15, the
+  genericity device's citations.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

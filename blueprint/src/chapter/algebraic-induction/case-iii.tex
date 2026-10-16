@@ -36,8 +36,8 @@ $D - 1$ rows at the new edge $ab$ is
 redundant~\cite[p.~684]{katohTanigawa2011}. Its proof finds the
 redundancy first in the matroid $M(\widetilde{G_v^{ab}})$ and then in
 the rows, in three steps. First, $M(\widetilde{G_v^{ab}})$ has a base
-that does not contain every copy of $ab$
-(\cref{lem:case-III-claim-6-11-base}). Second, it follows that the
+that does not contain every copy of $ab$ (KT Lemma~4.3(ii),
+\cref{lem:splitoff-kdof-criterion}). Second, it follows that the
 graph $G_v = G - v$, which is $G_v^{ab}$ without the edge $ab$, is a
 minimal $k'$-dof-graph with $k' \le D - 2$
 (\cref{lem:case-III-gap3-minimalKDof}). So the induction hypothesis
@@ -47,58 +47,23 @@ $R(G_v^{ab}, q)$ are those of $R(G_v, q)$ and the rows at $ab$. The rows
 at $ab$ therefore raise the rank by at most $D - 2$, and one of them is
 redundant (KT eq.~(6.23), \cref{lem:case-III-claim-6-11}).
 
-The first step is the forward half of KT Lemma~4.3(ii), which
-\cref{lem:splitoff-kdof-criterion} states with its converse. We state it
-on its own, as Katoh and Tanigawa use it here.
-
-\begin{lemma}[A base of $M(\widetilde{G_v^{ab}})$ without some copy of $ab$; KT Lemma~4.3(ii)]
-  \label{lem:case-III-claim-6-11-base}
-  \lean{Graph.splitOff_exists_base_inter_fiber_lt}
-  \leanok
-  \uses{def:k-dof, def:matroid-MG, thm:def-eq-corank,
-        lem:forest-surgery-count}
-  Let $D \ge 2$, and let $G$ be a $k$-dof-graph with a vertex $v$ of
-  degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
-  $a, b \neq v$. Let $\widetilde{ab}$ be the set of the $D - 1$ copies
-  in $\widetilde{G_v^{ab}}$ of the new edge $ab$ of $G_v^{ab}$. If
-  $G_v^{ab}$ is a $k$-dof-graph, then $M(\widetilde{G_v^{ab}})$ has a
-  base $B'$ with
-  \[
-    \bigl|\widetilde{ab} \cap B'\bigr| \;<\; D - 1.
-  \]
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:balanced-forest-packing}
-  We recall Katoh and Tanigawa's
-  proof~\cite[p.~661]{katohTanigawa2011}, which
-  \cref{lem:splitoff-kdof-criterion} also gives. Let $B$ be a base of
-  $M(\tilde G)$. By \cref{lem:balanced-forest-packing}, $B$ is the union
-  of $D$ pairwise disjoint forests of $\tilde G$, each of which has an
-  edge incident with $v$, as the proof of KT Lemma~4.1 assumes
-  (\cref{rem:kt-lemma-41}). The surgery of KT Lemma~4.1 on these forests
-  (\cref{lem:forest-surgery-count}) gives an independent set $I'$ of
-  $M(\widetilde{G_v^{ab}})$ with $|I'| = |B| - D$ and
-  $|\widetilde{ab} \cap I'| < D - 1$.
-
-  The vertices of $G_v^{ab}$ are the $|V(G)| - 1$ vertices of $G$ other
-  than $v$. Both graphs are $k$-dof-graphs, so KT eq.~(2.4)
-  (\cref{thm:def-eq-corank}) gives $|B| = D(|V(G)| - 1) - k$ and
-  \[
-    \operatorname{rank} M(\widetilde{G_v^{ab}})
-    \;=\; D\,(|V(G)| - 2) - k \;=\; |B| - D \;=\; |I'|.
-  \]
-  So $I'$ is a base, and we take $B' = I'$. A copy of $ab$ outside $B'$
-  can be removed from $\widetilde{G_v^{ab}}$ without lowering the rank of
-  its matroid. Katoh and Tanigawa call such a copy a redundant edge
-  (p.~684).
-\end{proof}
-
-\begin{fmlnote}
-  The pinned theorem is also the first pinned theorem of
-  \cref{lem:splitoff-kdof-criterion}. It assumes that the label of the
-  new edge $ab$ lies outside $E(G)$ (\cref{fmlnote:graph-operations}).
-\end{fmlnote}
+The first step is the forward half of KT Lemma~4.3(ii)
+(\cref{lem:splitoff-kdof-criterion}). Let $\widetilde{ab}$ be the set
+of the $D - 1$ copies in $\widetilde{G_v^{ab}}$ of the new edge $ab$.
+If $G_v^{ab}$, like $G$, is a $k$-dof-graph, then
+$M(\widetilde{G_v^{ab}})$ has a base $B'$ with
+$|\widetilde{ab} \cap B'| < D - 1$. Katoh and Tanigawa prove it by the
+surgery of KT Lemma~4.1~\cite[p.~661]{katohTanigawa2011}, and the proof
+of \cref{lem:splitoff-kdof-criterion} gives their argument in full. A
+base $B$ of $M(\tilde G)$ is the union of $D$ pairwise disjoint forests,
+each with an edge at $v$ (\cref{lem:balanced-forest-packing}).
+Rerouting them across $v$ (\cref{lem:forest-surgery-count}) gives an
+independent set of $M(\widetilde{G_v^{ab}})$ with $|B| - D$ elements
+and fewer than $D - 1$ copies of $ab$. As both graphs are
+$k$-dof-graphs, KT eq.~(2.4) (\cref{thm:def-eq-corank}) shows that
+this set is a base. A copy of $ab$ outside $B'$ can be removed from
+$\widetilde{G_v^{ab}}$ without lowering the rank of its matroid. Katoh
+and Tanigawa call such a copy a redundant edge (p.~684).
 
 In the second step, $G$ is a minimal $0$-dof-graph, as in Case~III.
 
@@ -107,7 +72,7 @@ In the second step, $G$ is a minimal $0$-dof-graph, as in Case~III.
   \lean{Graph.splitOff_removeVertex_minimalKDof}
   \leanok
   \uses{def:k-dof, def:graph-operations, lem:subgraph-minimality, thm:def-eq-corank,
-        lem:splitoff-deficiency, lem:case-III-claim-6-11-base}
+        lem:splitoff-deficiency, lem:splitoff-kdof-criterion}
   Let $D \ge 2$, and let $G$ be a minimal $0$-dof-graph with a vertex $v$
   of degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct
   vertices $a, b \neq v$. Let $G_v = G - v$ and
@@ -130,7 +95,8 @@ In the second step, $G$ is a minimal $0$-dof-graph, as in Case~III.
   $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G) = 0$,
   so $G_v^{ab}$ is a $0$-dof-graph.
 
-  By \cref{lem:case-III-claim-6-11-base}, at $k = 0$,
+  By the forward half of KT Lemma~4.3(ii)
+  (\cref{lem:splitoff-kdof-criterion}), at $k = 0$,
   $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
   $h = |\widetilde{ab} \cap B'| < D - 1$. As $G_v^{ab}$ has the
   $|V(G)| - 1$ vertices of $G$ other than $v$, KT eq.~(2.4)
@@ -1115,7 +1081,7 @@ fewer than $d + 1$ panels always have a common nonzero vector.
   it contains a nonzero vector.
 \end{proof}
 
-The next four lemmas concern the affine choice of the points. The
+The next three lemmas concern the affine choice of the points. The
 formal proof does not use them: it chooses vectors of $K^4$ in place
 of the points
 (\cref{lem:case-III-claim612-points-affineIndep-real-normals}). If the
@@ -1125,11 +1091,8 @@ values of the variables
 (\cref{lem:case-III-claim612-points-affineIndep-producer}). The
 determinant is a polynomial in the variables when the coordinates of
 the points are (\cref{lem:case-III-claim612-detpoly}). The coordinate planes of $K^3$
-give an example of four affinely independent points with the
-incidences above
-(\cref{lem:case-III-claim612-points-affineIndep-witness}). So three
-planes with such points exist
-(\cref{lem:case-III-claim612-points-affineIndep}).
+are three planes with four affinely independent points with the
+incidences above (\cref{lem:case-III-claim612-points-affineIndep}).
 
 \begin{lemma}[Affine independence off the zeros of a polynomial; for the points of KT Claim~6.12]
   \label{lem:case-III-claim612-points-affineIndep-producer}
@@ -1180,38 +1143,7 @@ planes with such points exist
   $d + 1$ points of $K^d$, for every $d$.
 \end{fmlnote}
 
-\begin{lemma}[An example of the points of KT Claim~6.12, at the coordinate planes]
-  \label{lem:case-III-claim612-points-affineIndep-witness}
-  \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_panel_incidence}
-  \leanok
-  \uses{lem:affine-indep-iff}
-  There are linearly independent $n_a, n_b, n_c \in K^4$ and affinely
-  independent points $p_1, \dots, p_4 \in K^3$ such that
-  \begin{align*}
-    p_1 &\in \Pi(a) \cap \Pi(b) \cap \Pi(c), &
-    p_2 &\in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \\
-    p_3 &\in \Pi(b) \cap \Pi(c) \setminus \Pi(a), &
-    p_4 &\in \Pi(c) \cap \Pi(a) \setminus \Pi(b),
-  \end{align*}
-  where $\Pi(u)$ is the plane $\{x \in K^3 : \bar x \cdot n_u = 0\}$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Let $n_a, n_b, n_c$ be the first three standard basis vectors of
-  $K^4$, so that $\Pi(a)$, $\Pi(b)$ and $\Pi(c)$ are the coordinate
-  planes $x_1 = 0$, $x_2 = 0$ and $x_3 = 0$ of $K^3$. Let $p_1 = 0$,
-  $p_2 = e_3$, $p_3 = e_1$ and $p_4 = e_2$, where $e_1, e_2, e_3$ is
-  the standard basis of $K^3$. The point $p_1$ lies on the three
-  planes. The point $e_3$ lies on $\Pi(a)$ and $\Pi(b)$ but not on
-  $\Pi(c)$, and $e_1$ and $e_2$ have the incidences required of $p_3$
-  and $p_4$ in the same way. Subtracting $\bar p_1 = (0, 0, 0, 1)$ from
-  the other rows of the matrix with the rows
-  $\bar p_1, \dots, \bar p_4$ leaves a permutation matrix, so its
-  determinant is $\pm 1$. Hence the points are affinely independent
-  (\cref{lem:affine-indep-iff}).
-\end{proof}
-
-\begin{lemma}[Three planes with the points of KT Claim~6.12]
+\begin{lemma}[Three planes with the points of KT Claim~6.12, at the coordinate planes]
   \label{lem:case-III-claim612-points-affineIndep}
   \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_panel_incidence}
   \leanok
@@ -1227,10 +1159,19 @@ planes with such points exist
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III-claim612-points-affineIndep-witness}
-  The normals and the points of
-  \cref{lem:case-III-claim612-points-affineIndep-witness} have these
-  properties.
+  \uses{lem:affine-indep-iff}
+  Let $n_a, n_b, n_c$ be the first three standard basis vectors of
+  $K^4$, so that $\Pi(a)$, $\Pi(b)$ and $\Pi(c)$ are the coordinate
+  planes $x_1 = 0$, $x_2 = 0$ and $x_3 = 0$ of $K^3$. Let $p_1 = 0$,
+  $p_2 = e_3$, $p_3 = e_1$ and $p_4 = e_2$, where $e_1, e_2, e_3$ is
+  the standard basis of $K^3$. The point $p_1$ lies on the three
+  planes. The point $e_3$ lies on $\Pi(a)$ and $\Pi(b)$ but not on
+  $\Pi(c)$, and $e_1$ and $e_2$ have the incidences required of $p_3$
+  and $p_4$ in the same way. Subtracting $\bar p_1 = (0, 0, 0, 1)$ from
+  the other rows of the matrix with the rows
+  $\bar p_1, \dots, \bar p_4$ leaves a permutation matrix, so its
+  determinant is $\pm 1$. Hence the points are affinely independent
+  (\cref{lem:affine-indep-iff}).
 \end{proof}
 
 The formal proof of the case $d = 3$ chooses the normals $q$ of
@@ -2502,8 +2443,7 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
 
 \begin{lemma}[Case~III: no proper rigid subgraph and $k = 0$; KT Lemma~6.13]
   \label{lem:case-III}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization_all_k,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization_all_k}
   \leanok
   \uses{def:panel-hinge-framework, def:rank-hypothesis,
         lem:simple-minimal-noRigid, lem:reduction-step}
@@ -2552,8 +2492,7 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
 \end{proof}
 
 \begin{fmlnote}
-  The first pinned theorem also assumes that some edge label lies
-  outside $E(G)$ (\cref{rem:fresh-edge-supply}). The chain uses it for
-  the new edge $v_0 v_2$ (the note after \cref{def:chain-data}). The
-  second pinned theorem is the case $d = 3$, and no main result uses it.
+  The pinned theorem also assumes that some edge label lies outside
+  $E(G)$ (\cref{rem:fresh-edge-supply}). The chain uses it for the new
+  edge $v_0 v_2$ (the note after \cref{def:chain-data}).
 \end{fmlnote}
