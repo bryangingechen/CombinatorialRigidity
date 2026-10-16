@@ -14,9 +14,10 @@ Case III's three counts (S20), task 8 fixed S26, S27 and S35, task 9 fixed S29, 
 `F-259`'s and `F-260`'s pins (S36's "In particular" through `lem:trivial-motions-rank-bound`; the
 dual lemma's rescaling), task 10 stated S38's and S39's special cases generally, task 11
 dropped the hypotheses S40–S42's pins do not take, tasks 12 and 13 made G1's three pin
-changes (task 13 a node for open ears), and task 14 merged G2's two true duplicates and unpinned
-`case_III_realization`. **Next concrete task:** round 2's task 15, the genericity device's
-citations. The two PDFs of §2 are in
+changes (task 13 a node for open ears), task 14 merged G2's two true duplicates and unpinned
+`case_III_realization`, and task 15 made the genericity device's citations say which argument
+they borrow. **Next concrete task:** round 2's task 16, Case I's framing remark. The two PDFs of
+§2 are in
 `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

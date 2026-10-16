@@ -257,9 +257,10 @@ next lemma, and in general by the polynomial of
   It then chooses new normals for all the bodies, in general position, at
   which the rank of $R(G,p)$ is still $D(m - 1)$. Such normals exist
   because $K$ is infinite: each of the two conditions holds off the zero
-  set of a nonzero polynomial in the normals. This is the argument of
-  \cref{lem:genericity-device}, later in this chapter
-  (\cref{sec:molecular-algebraic-induction-genericity}), for one
+  set of a nonzero polynomial in the normals, for the rank a minor of
+  the rows that does not vanish at the given normals. This is the
+  argument of \cref{lem:rank-polynomial-of-le-finrank}, later in this
+  chapter (\cref{sec:molecular-algebraic-induction-relative}), for one
   realization, and the step is \cref{lem:generic-realization-of-rigid}.
 \end{fmlnote}
 
@@ -500,8 +501,11 @@ bodies, where $\pi_W$ deletes the columns of $W$
   one point, below). The proof of the claim uses that $p_1$
   and $p_2$ are generic, so that the rank is the largest over all choices
   of the panels.
-  The general form of this argument is \cref{lem:genericity-device}, in
-  \cref{sec:molecular-algebraic-induction-genericity}. Hence the rank of
+  The general form of this argument is the assertion of
+  \cref{lem:genericity-device} on the largest rank, in
+  \cref{sec:molecular-algebraic-induction-genericity}: where every hinge
+  is nondegenerate, the largest rank is attained on a dense Zariski-open
+  set of normals. Hence the rank of
   $R(G,p)$ is at least the target rank. It is also at most the target
   rank, as the hinges are nondegenerate
   (\cref{lem:relative-deficiency-rank-bound}).
@@ -681,8 +685,9 @@ simple and rigid.
   polynomial by two. The coordinates of the form in $S$ are these, up to
   sign, at the columns of $u$ and $v$. The third is the spanning: for
   $C \neq 0$, the forms in $x$ span the forms that vanish at $C$. The
-  pinned theorem of \cref{lem:relative-device-count} applies the
-  genericity argument of \cref{lem:genericity-device} to these forms.
+  pinned theorem of \cref{lem:relative-device-count} takes a minor of
+  these forms, as in the proof of
+  \cref{lem:rank-polynomial-of-le-finrank}.
 \end{fmlnote}
 
 The algebraic induction chooses its realizations off the zeros of
@@ -1076,9 +1081,11 @@ this sense. We therefore state the two kinds of condition separately,
 each as the non-vanishing of a polynomial in the normals, and use only
 that a nonzero polynomial over an infinite field has a non-root. A rank
 condition is the non-vanishing of a minor of the rows that does not
-vanish at a given realization. The general form of this argument is
-\cref{lem:genericity-device}, in
-\cref{sec:molecular-algebraic-induction-genericity}. General
+vanish at a given realization
+(\cref{lem:rank-polynomial-of-le-finrank}). Stated for open sets, this
+is the lower semicontinuity of the rank where every hinge is
+nondegenerate (\cref{lem:genericity-device}, in
+\cref{sec:molecular-algebraic-induction-genericity}). General
 position is a condition on pairs of normals that Katoh and Tanigawa's
 nonparallel panels satisfy (the remark after
 \cref{def:panel-general-position}), and it holds wherever $P$ does not
@@ -1255,8 +1262,9 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
   three nonzero polynomials. The first is a polynomial $Q$ that does not
   vanish at the normals of this realization, such that $R(G_v, q)$ has
   rank at least $D(|V(G)| - 2)$ wherever $Q(q) \neq 0$
-  (\cref{lem:rank-polynomial-of-le-finrank}). This is the genericity
-  argument of \cref{lem:genericity-device}, in the form of that lemma.
+  (\cref{lem:rank-polynomial-of-le-finrank}). The polynomial $Q$ is the
+  minor by which the proof of \cref{lem:genericity-device} gives the
+  lower semicontinuity of the rank.
   The second is the polynomial $P$ of the proof of
   \cref{lem:case-I-realization}, so that the normals $q$ are in general
   position.

@@ -938,8 +938,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:genericity-device`, `--summary` and
   the forward screen, on round 2 task 5's tree).
   *Found:* RECONCILE round 2 task 5.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 15): the coordinator gave the
-  first cure, the move of `lem:independent-rows-of-rank`, to task 15.
+  *Disposition:* done (task 15): `lem:independent-rows-of-rank` and its note moved into the first
+  subsection, before the node, whose proof `\uses` it and cites it for the independent rows; both
+  leads follow, and the screen is unchanged. The graph's missing edges are `F-257`'s three.
 - **F-257** · E · `lem:case-III-candidate-row` and `lem:case-III-claim612-p2-placement`
   (`algebraic-induction/case-iii.tex`): since round 2 task 7 both pin `case_III_rank_certification`,
   whose body calls the pins of `lem:case-III-claim612-block-iff-perp` (`mem_hingeRowBlock_iff`,
@@ -4313,7 +4314,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter` and `--label`, dead pins and edges
   with no Lean basis; TeX and Lean at `ef57b401`).
   *Found:* round 3 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, M3).
+  *Disposition:* reported (`notes/Prose-report.md`, M3); round 2: the twelve `\cref`s of
+  `lem:genericity-device` say which argument they borrow, three of them now citing the minor of
+  `lem:rank-polynomial-of-le-finrank` (task 15).
 
 - **F-222** · M · `cor:bodyhinge-generic-tree-packing`, as `body-hinge.tex` cites it: after
   `thm:body-hinge-tay` the chapter says that for frameworks "with hinges in general position", KT

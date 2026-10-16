@@ -13,16 +13,54 @@ them for it. Their proof uses it in KT Claim~6.4 (p.~675) and for the
 realizations that the induction hypothesis gives (KT footnote~6,
 p.~684). We replace
 algebraic independence by the non-vanishing of polynomials in the
-normals, as explained after \cref{lem:case-I-realization}.
+normals, as explained after \cref{lem:case-I-realization}. Where every
+hinge is nondegenerate, a bound on the rank gives as many linearly
+independent rows of the form of \cref{lem:rows-polynomial-in-normals}
+(\cref{lem:independent-rows-of-rank}), and so a minor of these rows, a
+polynomial in the normals, that does not vanish.
 \Cref{lem:genericity-device} states the resulting lower semicontinuity
-of the rank. The proofs of KT Lemmas~6.3 and~6.8
-(\cref{lem:case-I-realization}, \cref{lem:case-II-realization}) use it in
-the form of \cref{lem:rank-polynomial-of-le-finrank}, in the next
-subsection. Given normals at which the rank is at least $N$, that lemma
+of the rank on the Zariski-open set of such normals. The proofs of KT
+Lemmas~6.3 and~6.8 (\cref{lem:case-I-realization},
+\cref{lem:case-II-realization}) keep the minor instead, in the form of
+\cref{lem:rank-polynomial-of-le-finrank}, in the next subsection. Given
+normals at which the rank is at least $N$, that lemma
 gives a polynomial in the normals that does not vanish there, off whose
 zeros the rank is at least $N$. These proofs choose their normals off
 the zeros of a product of such polynomials, and bound the rank from
 above by \cref{lem:relative-deficiency-rank-bound}.
+
+\begin{lemma}[Independent rows from a bound on the rank]
+  \label{lem:independent-rows-of-rank}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank}
+  \leanok
+  \uses{def:hinge-constraint, def:rigidity-matrix,
+        lem:rows-polynomial-in-normals}
+  Let $(G,p)$ be a body-hinge framework whose hinges are nondegenerate.
+  At each edge $e$ of $G$, with ends $u$ and $w$, take the linear forms
+  $S \mapsto C_t\, x_{t'} - C_{t'}\, x_t$, where $C = C(p(e))$ and
+  $x = S(u) - S(w)$, for all pairs of indices $t$ and $t'$, as in
+  \cref{lem:rows-polynomial-in-normals}. If
+  $N \le \operatorname{rank} R(G,p)$, then some $N$ of these forms are
+  linearly independent.
+\end{lemma}
+\begin{proof}
+  \leanok
+  As the hinges are nondegenerate, the forms at each edge span the same
+  space as the rows of $R(G,p)$ at that edge (the proof of
+  \cref{lem:rows-polynomial-in-normals}). So all the forms span the row
+  space of $R(G,p)$, whose dimension is
+  $\operatorname{rank} R(G,p) \ge N$, and some $N$ of them are linearly
+  independent.
+\end{proof}
+
+\begin{fmlnote}
+  The pinned theorem reads the ends of each edge from the endpoint
+  selector (\cref{fmlnote:panel-hinge-nondegenerate}), and indexes the
+  forms by the edge and the pair of indices. The last step of the proof
+  of \cref{lem:case-II-placement-old-rows-extract}, in the next
+  subsection, is the case of a framework rigid on $V(G)$, with
+  $N = D(|V(G)| - 1)$.
+\end{fmlnote}
 
 \begin{lemma}[Lower semicontinuity of the rank at nondegenerate hinges; KT \S5.1]
   \label{lem:genericity-device}
@@ -45,7 +83,7 @@ above by \cref{lem:relative-deficiency-rank-bound}.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rows-polynomial-in-normals}
+  \uses{lem:rows-polynomial-in-normals, lem:independent-rows-of-rank}
   The set $U$ contains the normals of Katoh and Tanigawa's nonparallel
   realizations of a simple graph, as these normals are in general
   position (the remark after \cref{def:panel-general-position} and
@@ -59,8 +97,10 @@ above by \cref{lem:relative-deficiency-rank-bound}.
   $q \in U$ they span the row space of $R(G,q)$.
 
   So for $q \in U$, the rank of $R(G,q)$ is at least $r$ if and only if
-  some $r \times r$ minor of the matrix of these rows does not vanish at
-  $q$. Each
+  some $r$ of these rows are linearly independent at $q$
+  (\cref{lem:independent-rows-of-rank}), that is, if and only if some
+  $r \times r$ minor of the matrix of these rows does not vanish at $q$.
+  Each
   minor $\Delta$ is a polynomial in $q$. Hence the set of the $q \in U$
   with $\operatorname{rank} R(G,q) \ge r$ is the intersection of $U$ with
   the union of the finitely many sets $\{\Delta \neq 0\}$, and it is
@@ -117,10 +157,9 @@ dimensions to $Z(G,q)$, and every infinitesimal motion is constant on
 $V(G)$ exactly when $\dim Z(G,q) = D(|W \setminus V(G)| + 1)$. The first
 four lemmas count in this form. They compute the motions that vanish on
 $V(G)$ (\cref{lem:relative-screw-split}), and pass from independent rows, or
-from a bound on $\dim Z(G,q)$, to motions constant on $V(G)$. Then come
-the independent rows that a bound on the rank gives
-(\cref{lem:independent-rows-of-rank}), and the form of
-\cref{lem:genericity-device} that the realization lemmas use
+from a bound on $\dim Z(G,q)$, to motions constant on $V(G)$. Then
+comes the form of \cref{lem:genericity-device} that the realization
+lemmas use, which keeps the minor of its proof as a polynomial
 (\cref{lem:rank-polynomial-of-le-finrank}), with a superseded
 application of it to the contraction of Case~I
 (\cref{lem:rank-polynomial-IH-relabel}). The subsection ends with the
@@ -176,11 +215,14 @@ the four lemmas on rows before it.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem applies the genericity argument of
-  \cref{lem:genericity-device} to the rows of
-  \cref{lem:rows-polynomial-in-normals}
-  (\texttt{exists\_\allowbreak{}good\_\allowbreak{}realization\_\allowbreak{}ofParam}),
-  which gives normals $q$ with $m + \dim Z(G,q) \le D|W|$. It then
+  The pinned theorem takes an $m \times m$ minor of the $m$ rows that
+  does not vanish at $q_0$, as in the proof of
+  \cref{lem:rank-polynomial-of-le-finrank}, and normals $q$ at which it
+  does not vanish
+  (\texttt{exists\_\allowbreak{}good\_\allowbreak{}realization\_\allowbreak{}ofParam}).
+  At $q$ the $m$ rows are again linearly independent, and they lie in
+  the row space of $R(G,q)$ (\cref{lem:rows-polynomial-in-normals}), so
+  $m + \dim Z(G,q) \le D|W|$. It then
   substitutes $|W| = |V(G)| + |W \setminus V(G)|$, as above. It assumes
   that every edge label is an edge of $G$, whose ends the endpoint
   selector gives (\cref{fmlnote:panel-hinge-nondegenerate}). No main
@@ -246,38 +288,6 @@ the four lemmas on rows before it.
   \cref{lem:relative-device-count}, under the same assumption on the
   endpoint selector. Its conclusion is the first predicate of
   \cref{fmlnote:generic-full-rank}. No main result uses it.
-\end{fmlnote}
-
-\begin{lemma}[Independent rows from a bound on the rank]
-  \label{lem:independent-rows-of-rank}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank}
-  \leanok
-  \uses{def:hinge-constraint, def:rigidity-matrix,
-        lem:rows-polynomial-in-normals}
-  Let $(G,p)$ be a body-hinge framework whose hinges are nondegenerate.
-  At each edge $e$ of $G$, with ends $u$ and $w$, take the linear forms
-  $S \mapsto C_t\, x_{t'} - C_{t'}\, x_t$, where $C = C(p(e))$ and
-  $x = S(u) - S(w)$, for all pairs of indices $t$ and $t'$, as in
-  \cref{lem:rows-polynomial-in-normals}. If
-  $N \le \operatorname{rank} R(G,p)$, then some $N$ of these forms are
-  linearly independent.
-\end{lemma}
-\begin{proof}
-  \leanok
-  As the hinges are nondegenerate, the forms at each edge span the same
-  space as the rows of $R(G,p)$ at that edge (the proof of
-  \cref{lem:rows-polynomial-in-normals}). So all the forms span the row
-  space of $R(G,p)$, whose dimension is
-  $\operatorname{rank} R(G,p) \ge N$, and some $N$ of them are linearly
-  independent.
-\end{proof}
-
-\begin{fmlnote}
-  The pinned theorem reads the ends of each edge from the endpoint
-  selector (\cref{fmlnote:panel-hinge-nondegenerate}), and indexes the
-  forms by the edge and the pair of indices. The last step of the proof
-  of \cref{lem:case-II-placement-old-rows-extract} is the case of a
-  framework rigid on $V(G)$, with $N = D(|V(G)| - 1)$.
 \end{fmlnote}
 
 \begin{lemma}[A rank bound off the zeros of a polynomial]
