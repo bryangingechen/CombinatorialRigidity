@@ -1,6 +1,6 @@
 # RECONCILE: acting on the PROSE findings (planning note)
 
-**Status:** rounds 1 and 2 closed (both 2026-10-15), round 3 next. The PI queued RECONCILE next,
+**Status:** rounds 1 and 2 closed, round 3 open (all 2026-10-15). The PI queued RECONCILE next,
 ahead of ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`).
 Its input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6
 and §2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`
@@ -13,7 +13,8 @@ repinned, G1's three pin changes made, S14, S15, S21, S26–S29, S35, S36 and S3
 merged, the genericity device's citations made to say which argument they borrow, and the nodes of
 Cases I, II and III, `meet.tex` and the forest surgery that the formal proof leaves each framed by a
 remark; the Lean is unchanged, and the declarations the round unpinned are in round 3's list
-(§3, L9). **Next concrete task:** round 3's open, `reconcile-lean`.
+(§3, L9). Round 3, `reconcile-lean` (`notes/Reconcile-lean-cleanup.md`), opened with 39 one-commit
+tasks. **Next concrete task:** round 3's task 2, the docstring-label check script.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
@@ -175,9 +176,11 @@ S3, S16, S18, S19, S22–S25 and S31 wait for the phase, which lists each.
 ### Round 3 — `reconcile-lean`: the Lean outside the phase's footprint
 
 `CLEANUP.md` §A–§C; no main result's statement changes. **The footprint** (the open lists it): the
-files that construct `PanelHingeFramework` (21 at planning) and `GenericLift/`. There the
-docstrings that describe the panel-hinge carrier or S1/S2's theorems wait for the phase, which
-writes them once; everything else proceeds.
+files that construct `PanelHingeFramework` (21 at planning; 33 read from the Lean at the open) and
+`GenericLift/`. There the docstrings that describe the panel-hinge carrier or S1/S2's theorems wait
+for the phase, which writes them once; everything else proceeds. The open sliced the round into 39
+tasks, with each task's surfaces and expected diff (`notes/Reconcile-lean-cleanup.md`), and moved
+the footprint's docstrings to the phase's list.
 - **The docstring-label check** (report §2.1): a committed script that checks each blueprint label
   a Lean docstring names exists and pins that declaration; run on every later commit that moves a
   pin.
@@ -195,7 +198,9 @@ writes them once; everything else proceeds.
   node and its pin), and the eight declarations that round 2 unpinned, which its close lists for
   L9's §B check (dead: no main result's proof reaches it):
   `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller; `ab3a0d45`),
-  `exists_good_realization` and `exists_good_realization_const` (dead, `F-152`; `1b46edc6`),
+  `exists_good_realization` and `exists_good_realization_const` (dead, `F-152`; `1b46edc6`; the
+  open's screen keeps the first, which pinned declarations call, and the second goes with its five
+  dead callers, `F-265`),
   `linearIndependent_sum_augment_candidateRow`, `linearIndependent_sum_p2_candidateRow` and
   `linearIndependent_sum_p3_candidateRow` (dead; `9e98aaba`),
   `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (live: the bridge theorem's
@@ -221,15 +226,19 @@ writes them once; everything else proceeds.
 ### The phase — `RECONCILE-FORMAL` (attended; a number minted on open)
 
 New formalization, so it opens with the PI. A design recon comes first, on S2 and S1 together:
-both concern how a carrier relates edge labels to $E(G)$. It sizes the ~70 constructions, settles
-`reaimSub` and `withGraph`, and proposes a sub-phase split, likely:
+both concern how a carrier relates edge labels to $E(G)$. It sizes the ~70 constructions (round
+3's open: 257 declarations in 33 files name a constructor, `notes/Reconcile-lean-cleanup.md`
+*Current state*), settles `reaimSub` and `withGraph`, and proposes a sub-phase split, likely:
 - **(a) the carriers**: S2's structure field, then S1's refactor, restating the S1 and S2 main
   results, their nodes and notes, the rows and README (removing round 1's scope sentences);
   `cor:theorem-55-d3-spanning` fixed; S13 and S18 within; G6's row; the non-vacuity witnesses of
-  these rows; the footprint's docstrings.
+  these rows; the footprint's docstrings: `F-123`, `F-130` and `F-220`, and the parts of `F-126`,
+  `F-133`, `F-210`, `F-215`, `F-225`, `F-237` and `F-243` that round 3's open moved here
+  (`notes/Reconcile-lean-cleanup.md` *Moved to a later round*).
 - **(b) M1**: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1).
 - **(c) the claims no declaration states**: S22–S25, S31, S3, S16 and S19, G5 (`def:blockingWitness`,
-  `def:dof-generic`, the Plücker expansion, the packing move), and `F-061`'s forest lemma; each
+  `def:dof-generic`, the Plücker expansion; the packing move is round 3's task 14, L8's `F-088`),
+  and `F-061`'s forest lemma; each
   node restated or repinned when its declaration lands. Round 2's open moved these here, with S18
   to (a) (`notes/Reconcile-statements-cleanup.md` *Moved to a later round*).
 

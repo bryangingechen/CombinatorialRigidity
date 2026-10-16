@@ -4244,6 +4244,17 @@ declaration's name as its header writes it:
   `grep` of the Lean for callers).
   *Found:* RECONCILE round 2 task 14.
   *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep (*Moved to a later round*).
+- **F-265** · L · `hglue_of_realization`, `hglue_of_independent_rigidityRows`, `hglue_of_forest`,
+  `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition`,
+  `ofParam_rankHypothesis_iff_pinnedMotionsOn` (`Molecular/AlgebraicInduction/CaseI.lean`): five
+  unpinned declarations that no main result's proof reaches, each called only by the next (the last
+  by none). The first is the only caller of `exists_good_realization_const`, which round 2 unpinned
+  (`F-152`, `F-256`), and the second of `exists_finite_spanning_rigidityRows` (`F-233`), so L9
+  deletes the two with the five. No ledger entry named them.
+  *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
+  *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at `347ba9c4`).
+  *Found:* RECONCILE round 3 task 1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 5).
 
 ## M — mathematics and sources
 
