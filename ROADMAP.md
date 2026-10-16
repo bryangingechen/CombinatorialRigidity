@@ -1303,8 +1303,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   task 19 restated S28 and framed `meet.tex`'s lemmas through $\bigwedge^2 W$
   (`rem:meet-kt-steps`), and task 20 framed the forest surgery (`rem:forest-surgery-kt-steps`),
   and task 21 closed it, listing the eight declarations it unpinned for round 3. Round 3,
-  `reconcile-lean`, opened 2026-10-15 with 39 one-commit tasks (`notes/Reconcile-lean-cleanup.md`).
-  **Next:** its task 2, the docstring-label check script.
+  `reconcile-lean`, opened 2026-10-15 with 39 one-commit tasks (`notes/Reconcile-lean-cleanup.md`);
+  task 2 committed the docstring-label check (`scripts/check-docstring-labels.py`, baseline 422).
+  **Next:** its task 3, L9's Theorem 5.5 and Case I wrappers and the cycle forms.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

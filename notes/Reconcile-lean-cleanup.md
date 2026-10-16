@@ -11,8 +11,9 @@ L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main r
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
-round into 39 one-commit tasks. **Next concrete task:** task 2, the docstring-label check script
-(*Lemma checklist*). Round manual: `CLEANUP.md`.
+round into 39 one-commit tasks; task 2 committed the docstring-label check (baseline 422).
+**Next concrete task:** task 3, L9's Theorem 5.5 and Case I wrappers (*Lemma checklist*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -22,7 +23,26 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**The round is open** (task 1, docs only; this commit). Nothing is mid-stream; task 2 is next.
+**Task 2 is done** (this commit; a script, no Lean or TeX edit). Nothing is mid-stream; task 3 is
+next.
+
+**The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
+docstring and *Decisions*). The baseline at task 2: **total 422**: 39 *missing* (9 of them labels
+broken across a line), 136 *pinned, another node*, 247 *unpinned, own node*; by directory
+(missing, pinned another, unpinned own): root files 1 5 6, `BodyBar` 0 6 5, `Matroid/Constructions`
+0 0 1, `Molecular` 2 20 27, `AlgebraicInduction` 24 42 91, `CaseIII` 2 8 13, `CaseIII/Relabel`
+0 2 4, `GenericLift` 0 2 2, `Induction` 2 14 5, `ForestSurgery` 0 5 16, `Molecule` 1 2 15,
+`Pencil` 2 1 0, `Pencil/MainComponent` 1 6 27, `RigidityMatrix` 1 20 35, `PebbleGame` 3 3 0. The
+full report is `scratch/reconcile-lean/labels-t2.txt` (gitignored; 442 lines, sha256
+`2f281955f3ddf9b8…`, the same at `PYTHONHASHSEED` 0, 1 and 12345). Acceptance: `--self-test`
+green (20 planted declarations: each kind of finding, each exemption, the parser's edges), and
+red under each of five mutations of the rule (bold, rejoin, namespaces, kind match, first item);
+on a copy of the tree, four planted cases (a label renamed, a label broken, a pin moved, a pin
+removed) moved the report by exactly their four lines, 422 → 426; `--lean`: all 2 775 names read
+outside `Main.lean` are constants (the cache at the open's tree). Of the declarations `F-230`–`F-264`
+list for a stale or absent label, all are reported (`F-241`'s and `F-245`'s as *missing*) but
+`runPebbleGame.aux`, whose label is past its lead; section and module headers (`F-236`, `F-240`,
+`F-243`, `F-246`) and docstrings that name no node (`F-238`, `F-240`, `F-242`) are outside the rule.
 
 **Verified at the open** (2026-10-15, at `347ba9c4`, round 2's close tree; its Lean is `64bb9754`'s,
 unchanged since `6f4f7afa`, the tree of the ledger's Lean baselines):
@@ -131,7 +151,9 @@ From `notes/Reconcile.md` §1–§3, restated as far as a builder needs them.
      33/17 and 4/4.
   8. A TeX task: `blueprint/print/print.log` 0 `LaTeX Warning` lines, latexmk having rebuilt it.
   9. From task 2 on, task 2's docstring-label check: its count does not rise, and falls by what the
-     task fixes; a task that moves, renames or removes a pin runs it.
+     task fixes; a task that moves, renames or removes a pin runs it. The count is the `total` line
+     of `python3 scripts/check-docstring-labels.py > scratch/reconcile-lean/labels-tN.txt` (task 2:
+     422); every task runs it (a second) and diffs the report against the parent's.
   10. `python3 notes/check-phase-note.py` green.
   Every commit also updates this log: its checklist line, *Current state* and *Hand-off*.
 - **The honesty gate** (round 2's, `notes/Reconcile-statements-cleanup.md` *Scope*) for every node a
@@ -182,13 +204,14 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 
 - [x] **1. Open** (this commit; docs only): this log, the baselines, the footprint, the L9 screen,
   `F-265`, the task list.
-- [ ] **2. The docstring-label check** (report §2.1; the check of L10–L11). A committed script,
+- [x] **2. The docstring-label check** (report §2.1; the check of L10–L11). A committed script,
   `scripts/check-docstring-labels.py`, reading each blueprint label (`def:`, `lem:`, `thm:`, `cor:`,
   `prop:`, `rem:`, `fmlnote:`, …) a Lean doc comment names: it reports a label the blueprint lacks,
   and a declaration whose docstring gives as its own node a label that does not pin it (which label
   is "its own", e.g. the lead's, settled in the script's docstring with acceptance tests on planted
   cases); counts by directory. Its first report is the baseline here. *Expected:* no Lean or TeX
-  edit; the dump byte-identical.
+  edit; the dump byte-identical. *Done:* total 422, the baseline under *Current state*; the rule
+  under *Decisions*.
 - [ ] **3. L9: the Theorem 5.5 and Case I wrappers, and the cycle forms** (`F-237`, `F-144`,
   `F-238`, `F-236`; `F-254` in part). The thirteen: `Theorem55.lean`
   `theorem_55_base_producer_parallel_pair` (130), `_empty` (198), `_single_edge` (312),
@@ -198,7 +221,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `PanelHinge.lean` `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (874, round 2's),
   `toBodyHinge_rankHypothesis_zero_cycle` (941); `Induction/Operations.lean`
   `CycleData.vertexSet_ncard` (3263). *Expected:* no pin: the dump and `--summary` unchanged; a
-  blueprint prose mention, if gate 2 finds one, repointed (gate 8).
+  blueprint prose mention, if gate 2 finds one, repointed (gate 8); gate 9 422 → 410 (twelve of the
+  thirteen are *unpinned, own node* lines; not `vertexSet_ncard`).
 - [ ] **4. L9: Case III's line route, the candidate rows, `case_III_realization`, `blockPiSpan`**
   (`F-232`, `F-258`; `F-264` in part). The sixteen: `PanelLayer.lean`
   `panelSupportExtensor_join_eq_zero_of_eq_zero` (358),
@@ -395,7 +419,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   and the forward screen beside the open's; the smell counts; the ledger's dispositions, task
   numbers as shas, and its header's counts; the queue row `done = true`; ROADMAP's row ✓ and its
   RECONCILE bullet, and `notes/Reconcile.md`'s **Status**, pointing at `RECONCILE-FORMAL`
-  (attended: the queue stops).
+  (attended: the queue stops); and a proposal, for the PI, of whether task 2's check joins the
+  project's gates for a commit that moves a pin (`CombinatorialRigidity/CLAUDE.md`).
 
 ## Candidates for the PI
 
@@ -432,9 +457,10 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 2**, at Opus: the docstring-label check script, with its baseline counts recorded here;
-no Lean or TeX edit, so the dump stays byte-identical to `scratch/reconcile-lean/dump-open.txt`
-(gitignored; regenerate it on the parent if it is missing). Carried in: `F-252` for the PI (round
+**Next: task 3**, at Opus: L9's thirteen declarations (*Lemma checklist*), block (b) on each name
+first, then §B's trial deletion and gates 1–3, 5–6 (the dump byte-identical to
+`scratch/reconcile-lean/dump-t2.txt`, gitignored; regenerate it on the parent if it is missing),
+9 (422 → 410) and 10. Carried in: `F-252` for the PI (round
 1's *Candidates*; the phase's (a) removes it). After the round the queue stops before
 `RECONCILE-FORMAL`, which is attended.
 
@@ -452,5 +478,12 @@ no Lean or TeX edit, so the dump stays byte-identical to `scratch/reconcile-lean
   `CaseI.lean` callers task 5 adds.
 - **`F-088` here** (the open): §3 gives L8's repeated derivations to this round, and G5's packing
   move in the phase's (c) is the same change, so task 14 takes it and the phase's list says so.
+- **The label check's own node** (task 2): a pin's docstring names its node in its lead, so a lead
+  naming nodes none of which pins it is reported; an unpinned declaration's own node is its lead
+  parenthetical's first item when that is a bare label of its kind (`def:` for definitions,
+  `lem:`/`thm:`/`cor:`/`prop:` for theorems). The house style leads pins and helpers alike with the
+  node, so this also reports helpers (most of the 247): the sweep says, in that item, how a helper
+  serves its node (`a step of <label>`), and gives a stale one its node or none. Section headers
+  and line comments are read for absent labels only.
 - **`F-097`'s `hD`** (the open): weakening `3 ≤ D` to `2 ≤ D` is a statement change beyond L8's
   suggestion; task 15 records it under *Candidates* if the shorter proof holds there.
