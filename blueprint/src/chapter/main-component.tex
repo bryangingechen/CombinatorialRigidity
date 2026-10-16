@@ -83,7 +83,7 @@ We fix the following notation and terms.
     standing hypotheses admits a step of the induction at graphs smaller
     than it (\cref{thm:pencil-x0-coverage}).
   \item Let $a - x_1 - \cdots - x_k - b$ be an open ear of $G$ on $V_1$
-    (\cref{sec:main-component-chain}), and take a configuration of $G$
+    (\cref{def:open-ear}), and take a configuration of $G$
     whose hinges on the ear are nonzero. Then $\Lambda$ is the span of the
     hinges of the ear, and $\rho$ is the space of relative screws of $a$
     and $b$ in $G[V_1]$ (\cref{def:relative-screws}). The inequality
@@ -2158,13 +2158,24 @@ of the rank, so the step works over every infinite field.
 
 This subsection proves two steps of the induction, at a cycle and at an
 open ear with at least five interior bodies. It also proves a third
-result, at a closed ear, which the induction does not use. Let
-$V_1 \subseteq V(G)$. An \emph{ear} of $G$ on $V_1$ is a path
-$a - x_1 - \cdots - x_k - b$ ($k \ge 1$) with $a, b \in V_1$ and
-distinct \emph{interior bodies} $x_1, \dots, x_k$ outside $V_1$, such
-that $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ off the
-path lies inside $V_1$. The ear is \emph{open} if $a \neq b$, and then
-$a$ and $b$ may be adjacent. It is \emph{closed} if $a = b$.
+result, at a closed ear, which the induction does not use.
+
+\begin{definition}[Open ears]
+  \label{def:open-ear}
+  \lean{Graph.IsOpenEar}
+  \leanok
+  Let $V_1 \subseteq V(G)$. An \emph{open ear} of $G$ on $V_1$ is a path
+  $a - x_1 - \cdots - x_k - b$ ($k \ge 0$) with distinct ends
+  $a, b \in V_1$ and distinct \emph{interior bodies} $x_1, \dots, x_k$
+  outside $V_1$, such that $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and
+  every edge of $G$ off the path lies inside $V_1$.
+\end{definition}
+
+The ends $a$ and $b$ may be adjacent, by an edge off the path. An open
+ear with $k = 0$ is an edge $ab$, on $V_1 = V(G)$; the steps of the
+induction take $k \ge 1$. A \emph{closed} ear
+$c - x_1 - \cdots - x_k - c$ on $V_1$ ($k \ge 1$) meets the same
+conditions with its two ends equal to one body $c \in V_1$.
 
 The rank along an open ear has an exact formula. Let $p$ be a
 configuration of $G$ whose hinges on the ear are nonzero. Write
@@ -3637,7 +3648,7 @@ lemma are the new points of the two interior bodies.
 This subsection proves the split-off step. Let $x$ be a body of degree
 two whose neighbours $a$ and $b$ are not adjacent, and let
 $V_1 = V(G) \setminus \{x\}$, so that $a - x - b$ is an open ear on $V_1$
-(\cref{sec:main-component-chain}). Splitting off $x$ gives the graph
+(\cref{def:open-ear}). Splitting off $x$ gives the graph
 $G'' = G_x^{ab}$ (\cref{def:graph-operations}): it is $G[V_1]$ together
 with a new edge $ab$, which carries the label of $ax$. We show that if
 the general configuration of $G''$ attains, then so does that of $G$,
@@ -4342,7 +4353,7 @@ fail, $G$ is 2-connected, sparse (\cref{sec:main-component-sparse}) and
 not a cycle. Its bodies of degree two then lie on \emph{chains}: paths
 of bodies of degree two between bodies of degree at least three
 (\cref{def:pencil-x0-chain}). We write a chain as an open ear
-$a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{sec:main-component-chain}).
+$a - x_1 - \cdots - x_k - b$ on $V_1$ (\cref{def:open-ear}).
 A chain is \emph{usable} if it meets the condition of one of the chain
 rows of the table (\cref{def:pencil-x0-usable-chain}), and then the step
 of that row applies (\cref{lem:pencil-x0-chain-reduces}). If no chain is
@@ -4426,12 +4437,12 @@ sets that avoid one body of degree two.
 
 \begin{definition}[One step of the induction]
   \label{def:pencil-x0-reduces}
-  \lean{Graph.IsOpenEar, Graph.X0Reduces}
+  \lean{Graph.X0Reduces}
   \leanok
   \uses{def:D-deficiency, def:deficiency-merged, def:graph-operations,
-        def:rigid-contraction, def:cut-edges-2ec}
+        def:rigid-contraction, def:cut-edges-2ec, def:open-ear}
   Let $\mathcal P$ be a property of graphs, and let open ears be as in
-  \cref{sec:main-component-chain}. The graph $G$ \emph{reduces to
+  \cref{def:open-ear}. The graph $G$ \emph{reduces to
   $\mathcal P$} if one of the following holds.
   \begin{enumerate}
     \item $\operatorname{def}_2(G) = \operatorname{def}_3(G)$.
@@ -4526,7 +4537,7 @@ smaller graphs that a chain gives.
   \label{def:pencil-x0-chain}
   \lean{Graph.IsChain}
   \leanok
-  \uses{def:pencil-x0-reduces}
+  \uses{def:open-ear}
   A \emph{chain} of $G$ is an open ear $a - x_1 - \cdots - x_k - b$ on
   $V_1$ with $k \ge 1$ whose interior bodies all have degree two in $G$
   and whose ends have degree at least three.
@@ -5339,7 +5350,7 @@ nondegeneracy-feasible.
         Graph.IsOpenEar.hasGenericPencilRealization_of_one}
   \leanok
   \uses{def:pencil-generic-motive, def:D-deficiency,
-        def:pencil-x0-reduces}
+        def:open-ear}
   Let $K$ be infinite and $G$ simple and nondegeneracy-feasible, with a
   body $x$ of degree two whose neighbours $a$ and $b$ are pencil hubs, and
   with $\operatorname{def}_3(G - x) \le \operatorname{def}_3(G)$. If $G - x$
@@ -5453,7 +5464,7 @@ graphs alone, with the two consequences of nondegeneracy-feasibility in
         Graph.exists_closedEar_two_of_triangle}
   \leanok
   \uses{def:pencil-x0-standing, def:D-deficiency, def:cut-edges-2ec,
-        def:pencil-nondegenerate, def:pencil-x0-reduces}
+        def:pencil-nondegenerate, def:open-ear}
   Let $G$ satisfy the standing hypotheses (\cref{def:pencil-x0-standing})
   and be two-edge-connected on at least four bodies, with every closed
   hub-neighbourhood of at most three members and no triangle containing

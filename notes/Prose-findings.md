@@ -986,8 +986,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:block-rank-path`, `--summary` and
   the forward screen, on round 2 task 12's tree); read (the bodies of the two lemmas).
   *Found:* RECONCILE round 2 task 12.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 13): the coordinator gave the
-  edge to task 13, as a forward edge replacing the one task 12 removed from the node.
+  *Disposition:* done (task 13): the proof `\uses` `def:cut-edges-2ec`, a forward edge in place of
+  the one task 12 removed (the screen's `rigidity-matrix` count the open's, 3/2).
 - **F-262** · E · `lem:case-I-realization-h65` (`algebraic-induction/case-i.tex`): its pin
   `case_I_realization_h65_gen` calls `exists_independent_panelRow_subfamily_of_edge`, the pin of
   `lem:case-II-placement-new-rows` (`genericity-and-count.tex`, the next file). The proof's edge to
@@ -1000,8 +1000,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:case-I-realization-h65`,
   `--summary` and the forward screen, on round 2 task 12's tree).
   *Found:* RECONCILE round 2 task 12.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 13): the coordinator gave the
-  edge to task 13, as a forward edge replacing the one task 12 removed from the node.
+  *Disposition:* done (task 13): the proof `\uses` `lem:case-II-placement-new-rows`, a forward edge
+  in place of the one task 12 removed (the screen's `case-i` count the open's, 14/6).
 
 ## N — node shape
 
@@ -1849,7 +1849,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:pencil-generic-one-ear`, at
   `23bf8244`); read (`Graph.IsOpenEar`, a structure, `Pencil/MainComponent/Coverage.lean`).
   *Found:* round 5 task 4.9.
-  *Disposition:* left (a node and pin change; `a111b17a` lists it, `notes/Prose-report.md` G1).
+  *Disposition:* done (RECONCILE round 2 task 13): `def:open-ear` in *Ears and cycles* takes the
+  pin, with $k \ge 0$ as its structure allows (an edge $ab$ at $k = 0$); the reduction `\uses` it,
+  and the statement edges of the two lemmas and of `def:pencil-x0-chain`, whose pins reach the
+  reduction only through the ear, move to it.
 
 ## T — terminology and notation
 

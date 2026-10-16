@@ -751,7 +751,7 @@ a path, which is not an induced subgraph when its ends are adjacent.
 \end{proof}
 
 We apply \cref{lem:block-rank-two-cut} to a path attached to $G[V_1]$ at
-two bodies $a \neq b$; \cref{sec:main-component-chain} calls such a path
+two bodies $a \neq b$; \cref{def:open-ear} calls such a path
 an open ear on $V_1$. The rank and the relative screws of a path come
 first.
 
@@ -768,7 +768,7 @@ first.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:block-rank-cut, def:hinge-row-block}
+  \uses{lem:block-rank-cut, def:hinge-row-block, def:cut-edges-2ec}
   The matrix $R(P,p)$ has $D - 1$ rows for each of its $k + 1$ edges
   (\cref{def:hinge-row-block}), so its rank is at most $(D-1)(k+1)$.
   Conversely, for $0 \le i \le k$ the edge $x_i x_{i+1}$ is the only edge
