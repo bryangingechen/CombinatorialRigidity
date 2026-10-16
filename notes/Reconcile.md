@@ -16,9 +16,9 @@ dual lemma's rescaling), task 10 stated S38's and S39's special cases generally,
 dropped the hypotheses S40–S42's pins do not take, tasks 12 and 13 made G1's three pin
 changes (task 13 a node for open ears), task 14 merged G2's two true duplicates and unpinned
 `case_III_realization`, task 15 made the genericity device's citations say which argument they
-borrow, and tasks 16–18 framed the nodes of Cases I, II and III that the formal proof leaves
-(task 18 with `F-257`'s three edges). **Next concrete task:** round 2's task 19, `meet.tex`'s S28
-and the route through $\bigwedge^2 W$.
+borrow, tasks 16–18 framed the nodes of Cases I, II and III that the formal proof leaves (task 18
+with `F-257`'s three edges), and task 19 restated S28 and framed `meet.tex`'s lemmas through
+$\bigwedge^2 W$. **Next concrete task:** round 2's task 20, the forest surgery's framing remark.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

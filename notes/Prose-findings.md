@@ -1369,7 +1369,11 @@ declaration's name as its header writes it:
   *Found:* round 2 task 2.18.
   *Disposition:* left (the steps of a route the formal proof does not take; the live steps are
   addresses, the transformation law in the prose after `def:meet` and the proof of
-  `lem:meet-two-hyperplanes`).
+  `lem:meet-two-hyperplanes`); round 2: the two step lemmas, with `def:meet` and
+  `def:meet-pairing-dual`, framed by `rem:meet-kt-steps`, after the roadmap of `meet.tex`'s second
+  subsection, which says that the formal proof of KT Theorem 5.5 compares meet and join by
+  `lem:meet-two-hyperplanes` in degree $d - 1$, uses the map of `def:meet-pairing-dual` but not that
+  it is an isomorphism, and forms no meet; the chapter's roadmap points to it (task 19).
 - **F-119** · N · node order in `algebraic-induction.tex`'s five sections: 18 `\uses` edges at 10
   nodes point at nodes of later sections. `thm:theorem-55` uses seven Case I–III nodes;
   `prop:rigidity-matrix-prop11` uses `lem:genericity-device`; `lem:triangle-normals` and
@@ -2415,7 +2419,10 @@ declaration's name as its header writes it:
   of `complementIso_smul_eq_extensor_join` does inline. Task 2.18 kept the statement, with a note.
   *Evidence:* read (the three pins' statements; the body of `complementIso_smul_eq_extensor_join`).
   *Found:* round 2 task 2.18.
-  *Disposition:* reported (`notes/Prose-report.md`, S28).
+  *Disposition:* done (task 19): part (2) states $Y = n_1 \vee c$ for any $n_1, n_2, c$, as the
+  second and third pins do; the case $n_2$ is at the end of the proof, by the repeated vector and
+  part (1), and the note says that no pin states it; the proof of
+  `lem:case-III-claim612-line-in-panel-union` cites part (2) for $n_1$ and that end for $n_2$.
 - **F-115** · S · `lem:cycle-realization` (`algebraic-induction/case-i.tex`): the statement is KT
   Lemma 5.4 at KT's range, a cycle graph on $3 \le m \le D$ vertices (KT p. 670). Its pin
   `PanelHingeFramework.cycle_realization` assumes `cy.m ≤ n + 1` beside

@@ -39,7 +39,10 @@ two hyperplanes is an extensor of their intersection
 subsection takes $d = 3$ and proves the agreement of meet and join
 (\cref{lem:case-III-claim612-line-in-panel-union}). It ends with the
 converse fact that a nonzero $2$-extensor determines its plane
-(\cref{lem:decomposable-extensor-span-unique}).
+(\cref{lem:decomposable-extensor-span-unique}). The remark at the start
+of the second subsection (\cref{rem:meet-kt-steps}) says which of these
+results the formal proof of KT Theorem~5.5 does not use, and what it
+uses instead.
 
 \subsection{The complement isomorphism and the meet}
 
@@ -335,8 +338,67 @@ $\bigwedge^2 K^4$. It states the agreement in the form that the
 algebraic induction applies: a linear form on $\bigwedge^2 K^4$ that
 vanishes on the meet vanishes on the join.
 
-The proof finds a line of $\bigwedge^2 K^4$ that contains both
-extensors, cut out by the coordinate pairing. The first lemma shows that
+\begin{remark}[Katoh and Tanigawa's extensors of lines and the formal proof]
+  \label{rem:meet-kt-steps}
+  Katoh and Tanigawa write the $2$-extensor $C(L)$ supporting a line $L$
+  as the join of two points of $L$ (KT \S2.1, p.~651). In the proof of
+  KT Claim~6.12, they use that the join of two points of a line in a
+  panel is such an extensor (KT eq.~(6.45), p.~691). The formalization
+  records a hinge by the meet of two panels
+  (\cref{def:panel-support-extensor}), so it compares the meet with the
+  join. Some definitions and lemmas of this chapter concern this
+  comparison in a form that the formal proof of KT Theorem~5.5
+  (\cref{thm:theorem-55}) does not use. We keep them, and say here what
+  the formal proof does instead.
+
+  \emph{The line $\bigwedge^2 W$.} After the proof of
+  \cref{lem:case-III-claim612-line-in-panel-union}, we identify the line
+  of $\bigwedge^2 K^4$ that the proof finds with the image of
+  $\bigwedge^2 W$. So the meet of the two planes is an extensor of their
+  line of intersection. The identification uses two facts. The space
+  $\bigwedge^2 W$ is a line (\cref{lem:complement-iso-line-one-dim}). It
+  embeds in $\bigwedge^2 K^4$
+  (\cref{lem:complement-iso-exterior-map-injective}). The formal proof
+  of \cref{lem:case-III-claim612-line-in-panel-union} makes no such
+  identification. There the line is the orthogonal complement of the
+  span of the $2$-extensors $n_i \vee v$, a span of dimension $5$. The
+  join lies on it, as a determinant of dot products vanishes.
+
+  The formal proof of KT Theorem~5.5 uses neither
+  \cref{lem:case-III-claim612-line-in-panel-union} nor
+  \cref{lem:complement-iso-decomposable-wedge-perp}. It takes the case
+  $d = 3$ as a case of KT Lemma~6.13 (\cref{rem:case-III-kt-steps}). It
+  compares the meet and the join by \cref{lem:meet-two-hyperplanes},
+  which holds for every $d$. In that lemma, $W$ is a subspace of
+  $K^{d+1}$ of dimension $d - 1$ whose vectors are orthogonal to $n_1$
+  and $n_2$. The first statement places the meet in the image of
+  $\bigwedge^{d-1} W$, by the transformation law of the complement
+  isomorphism (the passage after \cref{def:meet}). The second compares
+  the meet and the join in this image. Its formal proof uses the facts
+  of \cref{lem:complement-iso-line-one-dim} and
+  \cref{lem:complement-iso-exterior-map-injective} in degree $d - 1$.
+  The two lemmas state their case $d = 3$.
+
+  \emph{The meet and the duality of exterior powers.} Katoh and Tanigawa
+  give each panel of a nonparallel framework by a vector $c(v)$, and each
+  hinge as the intersection of two panels (KT \S5.1, p.~668). The formal
+  proof gives each panel by a normal. It gives a hinge by
+  $*(n_A \vee n_B)$, from the normals $n_A$ and $n_B$ of its two panels.
+  It does not form the meet $A \wedge B$ of \cref{def:meet}, which is
+  $*(n_A \vee n_B)$ when $n_A = {*A}$ and $n_B = {*B}$ (the passage
+  before \cref{lem:meet-two-hyperplanes}). Of
+  \cref{def:meet-pairing-dual}, the formal proof uses the map and its
+  determinant formula, but not that the map is an isomorphism. With $V$
+  identified with $V^*$ by the dot product, the formula gives the
+  coordinate pairing of two $j$-extensors as a determinant of dot
+  products (the proof of \cref{lem:case-III-claim612-line-in-panel-union}).
+  The formal proof of the transformation law compares coordinate
+  pairings in this form.
+\end{remark}
+
+The proof of \cref{lem:case-III-claim612-line-in-panel-union} finds a
+line of $\bigwedge^2 K^4$ that contains both extensors, cut out by the
+coordinate pairing. The first lemma shows that
 the meet lies on it.
 
 \begin{lemma}[The complement of a $2$-extensor is orthogonal to the $2$-extensors sharing a vector with it]
@@ -350,8 +412,7 @@ the meet lies on it.
     \item Let $d \ge 1$ and $0 \le j \le d+1$, and let
       $X \in \bigwedge^{j} K^{d+1}$ and $Y \in \bigwedge^{d+1-j} K^{d+1}$
       with $X \vee Y = 0$. Then $\langle *X, Y \rangle = 0$.
-    \item Let $n_1, n_2 \in K^4$ be linearly independent, and let
-      $Y = n \vee c$ with $n \in \{n_1, n_2\}$ and $c \in K^4$. Then
+    \item Let $n_1, n_2, c \in K^4$, and let $Y = n_1 \vee c$. Then
       $(n_1 \vee n_2) \vee Y = 0$ and
       $\langle *(n_1 \vee n_2), Y \rangle = 0$.
   \end{enumerate}
@@ -360,18 +421,21 @@ the meet lies on it.
   \leanok
   For part~(1), \cref{lem:complement-iso-toDual} gives
   $\langle *X, Y \rangle = \operatorname{vol}(X \vee Y) =
-  \operatorname{vol}(0) = 0$. For part~(2), $(n_1 \vee n_2) \vee (n \vee c)$
-  is the extensor of the family $n_1, n_2, n, c$ (\cref{def:join}). This
-  family repeats $n$, so its extensor is zero (the remark after
-  \cref{def:extensor}). The second claim follows by part~(1), with
-  $X = n_1 \vee n_2$ and $j = 2$.
+  \operatorname{vol}(0) = 0$. For part~(2),
+  $(n_1 \vee n_2) \vee (n_1 \vee c)$ is the extensor of the family
+  $n_1, n_2, n_1, c$ (\cref{def:join}). This family repeats $n_1$, so
+  its extensor is zero (the remark after \cref{def:extensor}). The
+  second claim follows by part~(1), with $X = n_1 \vee n_2$ and $j = 2$.
+
+  The same argument applies to $Y = n_2 \vee c$, as the family
+  $n_1, n_2, n_2, c$ repeats $n_2$. So $*(n_1 \vee n_2)$ is orthogonal
+  to every $2$-extensor $n \vee c$ with $n \in \{n_1, n_2\}$.
 \end{proof}
 \begin{fmlnote}
-  The first pin is part~(1). The second and third pins are part~(2) for
-  $n = n_1$, without the hypothesis that $n_1$ and $n_2$ are linearly
-  independent. The formal proof of
-  \cref{lem:case-III-claim612-line-in-panel-union} obtains the case
-  $n = n_2$ from the first pin, as above.
+  The first pin is part~(1), and the second and third pins are the two
+  claims of part~(2). No pin states the case $Y = n_2 \vee c$. The
+  formal proof of \cref{lem:case-III-claim612-line-in-panel-union}
+  obtains it from the first pin, as at the end of the proof above.
 \end{fmlnote}
 
 Geometrically, the line in the proof below is the image of
@@ -467,10 +531,11 @@ that identify it, which we use after the proof.
   Its first column is zero by hypothesis, so it vanishes
   (\texttt{extensor\_\allowbreak{}toDual\_\allowbreak{}extensor\_\allowbreak{}eq\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}perp}).
 
-  The meet lies in $\Omega$ as well: by part~(2) of
+  The meet lies in $\Omega$ as well. By part~(2) of
   \cref{lem:complement-iso-decomposable-wedge-perp}, the pairing
-  $\langle *(n_1 \vee n_2), n_i \vee v \rangle$ vanishes for $i = 1, 2$
-  and $v \in K^4$.
+  $\langle *(n_1 \vee n_2), n_1 \vee v \rangle$ vanishes for every
+  $v \in K^4$. The end of the proof of that lemma gives the same for
+  $n_2 \vee v$.
 
   Finally, $n_1 \vee n_2 \neq 0$, as $n_1$ and $n_2$ are linearly
   independent, and so $*(n_1 \vee n_2) \neq 0$, as $*$ is an isomorphism.

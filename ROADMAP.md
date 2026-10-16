@@ -1298,8 +1298,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   merged G2's two true duplicates and unpinned `case_III_realization`, task 15 made the
   genericity device's citations say which argument they borrow, and tasks 16–18 framed the nodes
   of Cases I, II and III that the formal proof leaves (`rem:case-I-kt-steps`,
-  `rem:case-II-kt-steps`, `rem:case-III-kt-steps`; task 18 also added `F-257`'s three edges).
-  **Next:** its task 19, `meet.tex`'s S28 and the route through $\bigwedge^2 W$.
+  `rem:case-II-kt-steps`, `rem:case-III-kt-steps`; task 18 also added `F-257`'s three edges), and
+  task 19 restated S28 and framed `meet.tex`'s lemmas through $\bigwedge^2 W$
+  (`rem:meet-kt-steps`). **Next:** its task 20, the forest surgery's framing remark.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
