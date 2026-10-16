@@ -23,11 +23,114 @@ with their value at $v$ (\cref{lem:case-II}). The proof of KT
 Lemma~6.8 (\cref{lem:case-II-realization}) counts rows instead, and
 does not use them.
 
+\begin{remark}[Katoh and Tanigawa's steps in Case~II and the formal proof]
+  \label{rem:case-II-kt-steps}
+  Two lemmas of this subsection and four of
+  \cref{sec:molecular-algebraic-induction-relative} belong to Katoh and
+  Tanigawa's proof of KT Lemma~6.8, or state facts about it for
+  infinitesimal motions. The formal proof of KT Theorem~5.5
+  (\cref{thm:theorem-55}) does not take them. We keep them beside the
+  argument they belong to, and say here what the formal proof does
+  instead.
+
+  \emph{Putting back $v$.} Let $(G_v^{ab}, q)$ be the realization that
+  the induction hypothesis gives, of rank $D(|V(G)| - 2) - (k - 1)$ (KT
+  eq.~(6.11), p.~678). Katoh and Tanigawa put $v$ back with the hinge
+  of $vb$ equal to the hinge $q(ab)$ of the edge $ab$. This gives a
+  realization $(G, p_1)$ (KT eq.~(6.12), p.~678). In the formal proof
+  the panel of $v$ has the normal $q(a) + q(b)$, and the realization is
+  $(G, q_0)$ (the proof of \cref{lem:case-II-realization}). The first
+  two lemmas of this subsection state facts about putting back $v$ for
+  infinitesimal motions, which Katoh and Tanigawa do not use.
+  \Cref{lem:case-II-rank-lift} reads KT Lemma~5.1 at a given rank:
+  $\dim Z(G,p) = D + k'$ exactly when the motions that vanish at $v$
+  form a space of dimension $k'$. By its second assertion, replacing the
+  normal of $v$ in a panel-hinge framework in which $v$ lies on no edge,
+  as in $(G_v^{ab}, q)$, does not change the dimension of this space.
+  Every motion is constant on $V(G)$ exactly when it is constant on the
+  other vertices and takes there its value at $v$ (\cref{lem:case-II}).
+
+  The induction hypothesis gives the rank of $R(G_v^{ab}, q)$. The last
+  step of the formal proof starts from a lower bound on the rank of
+  $R(G, q_0)$ (\cref{lem:rank-polynomial-of-le-finrank}). So the formal
+  proof counts rows throughout, as Katoh and Tanigawa do, and it does not
+  pass to motions. Besides, \cref{lem:case-II} concerns the rank
+  $D(|V(G)| - 1)$, at which every motion is constant on $V(G)$
+  (\cref{rem:rank-hypothesis-relative}). In Case~II, where $k > 0$, the
+  target rank is smaller.
+
+  \emph{The rows of $G_v^{ab}$.} The edges of $G_v$ have the same hinges
+  in $(G, p_1)$ as in $(G_v^{ab}, q)$, so the two rigidity matrices
+  have the same rows at these edges (KT eq.~(6.13), p.~679).
+  \Cref{lem:case-II-placement-old-rows} states the consequence for any
+  two frameworks: linearly independent rows of one, each of which is
+  also a row of the other, are linearly independent rows of the other.
+  The edge $ab$ of $G_v^{ab}$ is not an edge of $G$, however, and its
+  rows are not rows of $R(G, p_1)$. Katoh and Tanigawa add the columns
+  of $v$ to those of $a$. The rows of $vb$ then have, outside the
+  columns of $v$, the entries of the rows of $R(G_v^{ab}, q)$ at $ab$
+  (KT eqs.~(6.15)--(6.17), p.~679). The formal proof uses a row
+  operation instead. At $q_0$ the hinges of $vb$, $va$ and $ab$ agree up
+  to sign, so each row at $ab$ is the difference of a row at $vb$ and a
+  row at $va$. Hence every row of $R(G_v^{ab}, q)$ lies in the row space
+  of $R(G, q_0)$ (the proof of \cref{lem:case-II-realization}).
+
+  The rank then adds, as in KT eq.~(6.16). Some $D - 1$ rows at $vb$ are
+  linearly independent on the screw assignments that vanish off $v$,
+  and the rows of $R(G_v^{ab}, q)$ vanish there
+  (\cref{lem:rigidityRows-pinned-placement-rank-add}). The linearly
+  independent rows of $R(G_v^{ab}, q)$ that this count takes may include
+  rows at $ab$. So the formal proof does not use
+  \cref{lem:case-II-placement-old-rows}.
+
+  \emph{One row short.} For $k = 0$, the graph $G_v^{ab}$ is a minimal
+  $0$-dof-graph, and the same count gives one row less than the target
+  rank (KT p.~680). \Cref{lem:case-II-realization-placement} states this
+  count from a realization of $G_v^{ab}$ whose motions are all constant
+  on its vertex set. Its formal counterpart assumes instead a rigid
+  realization of a subgraph of $G$ that avoids $v$. No graph of
+  Cases~II and~III has one (the note after the lemma), and no main
+  result uses the lemma. For $k > 0$, the proof of
+  \cref{lem:case-II-realization} makes the count itself. In Case~III,
+  where $k = 0$, the formal proof obtains the full rank of each of its
+  frameworks from the count of KT eq.~(6.29)
+  (\cref{lem:case-III-rank-certification}).
+
+  \emph{The rotation.} In $(G, p_1)$ the hinges at $v$ lie in the panel
+  of $a$ (KT p.~678). Katoh and Tanigawa rotate the panel of $v$ slightly, which
+  does not lower the rank, to make the realization nonparallel (KT
+  Lemma~5.2, KT p.~679). For the rank $D(|V(G)| - 1)$, two lemmas of
+  \cref{sec:molecular-algebraic-induction-relative} pass instead from
+  linearly independent rows to a realization. Suppose that at some
+  normals, at least $D(|V(G)| - 1)$ rows of the rigidity matrix are
+  linearly independent. Then \cref{lem:relative-device-count} gives
+  normals at which $\dim Z(G,q)$ is at most its value at that rank. \Cref{lem:realization-of-independent-rows} gives a realization
+  of $G$ of that rank. Both hold at the given normals, by their proofs.
+  Their formal counterparts pass to normals off the zeros of a minor of
+  these rows (the notes after them).
+
+  Neither lemma serves the formal proof. In Case~II the count gives
+  only $D(|V(G)| - 1) - k$ rows, with $k > 0$, and the lemmas say
+  nothing of the position of the normals. The formal proof needs a
+  generic full-rank realization: normals in general position, at the
+  target rank (\cref{def:rank-hypothesis}). Instead of rotating a panel,
+  it chooses all the normals at once. It keeps a minor of the rows as a
+  polynomial in the normals, nonzero at $q_0$, off whose zeros the rank
+  is at least $D(|V(G)| - 1) - k$
+  (\cref{lem:rank-polynomial-of-le-finrank}). At a common non-root of
+  this polynomial and of the polynomial for general position, the
+  normals are in general position and the rank is at least
+  $D(|V(G)| - 1) - k$ (the proof of \cref{lem:case-II-realization}).
+  As the hinges there are nondegenerate, the rank there is at most the
+  target rank (\cref{lem:relative-deficiency-rank-bound}).
+\end{remark}
+
 By \cref{rem:rank-hypothesis-relative}, a realization of $G$ whose
 bodies are the vertices of $G$ is at the target rank
 (\cref{def:rank-hypothesis}) exactly when
-$\dim Z(G,p) = D + \operatorname{def}(\tilde G)$. The next lemma states
-the rank in this form.
+$\dim Z(G,p) = D + \operatorname{def}(\tilde G)$. The first assertion of
+the next lemma restates KT Lemma~5.1 (\cref{lem:rank-delete-vertex}) in
+this form.
 
 \begin{lemma}[Pinning one body]
   \label{lem:case-II-rank-lift}

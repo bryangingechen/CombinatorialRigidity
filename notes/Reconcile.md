@@ -16,9 +16,9 @@ dual lemma's rescaling), task 10 stated S38's and S39's special cases generally,
 dropped the hypotheses S40–S42's pins do not take, tasks 12 and 13 made G1's three pin
 changes (task 13 a node for open ears), task 14 merged G2's two true duplicates and unpinned
 `case_III_realization`, task 15 made the genericity device's citations say which argument they
-borrow, and task 16 framed Case I's nodes that the formal proof leaves. **Next concrete task:**
-round 2's task 17, Case II's framing remark. The two PDFs of §2 are in `.refs/` (the PI,
-2026-10-15).
+borrow, and tasks 16 and 17 framed Case I's and Case II's nodes that the formal proof leaves.
+**Next concrete task:** round 2's task 18, Case III's framing remark and `F-257`'s three edges.
+The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
 

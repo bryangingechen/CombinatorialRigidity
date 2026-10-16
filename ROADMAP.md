@@ -1296,9 +1296,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   and S39's special cases generally, task 11 dropped the hypotheses S40–S42's pins do not
   take, tasks 12 and 13 made G1's three pin changes (task 13 a node for open ears), task 14
   merged G2's two true duplicates and unpinned `case_III_realization`, task 15 made the
-  genericity device's citations say which argument they borrow, and task 16 framed Case I's nodes
-  that the formal proof leaves (`rem:case-I-kt-steps`). **Next:** its task 17, Case II's framing
-  remark.
+  genericity device's citations say which argument they borrow, and tasks 16 and 17 framed Case
+  I's and Case II's nodes that the formal proof leaves (`rem:case-I-kt-steps`,
+  `rem:case-II-kt-steps`). **Next:** its task 18, Case III's framing remark and `F-257`'s three
+  edges.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

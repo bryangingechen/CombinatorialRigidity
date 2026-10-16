@@ -1534,7 +1534,10 @@ declaration's name as its header writes it:
   `isKDof_zero_of_triangle`, `triangle_isProperRigidSubgraph` and
   `splitOff_simple_of_noRigid_of_card` (moved from `lem:chain-data-extract`), and both lemmas use
   it; left for the three dead nodes, kept as exposition (retiring or merging them is not among
-  principle D's fixes; `a111b17a`, `notes/Prose-report.md` G4).
+  principle D's fixes; `a111b17a`, `notes/Prose-report.md` G4); round 2: `lem:case-II-rank-lift`
+  and `lem:case-II` framed by `rem:case-II-kt-steps`, after the roadmap of `case-ii.tex`, which says
+  that the formal proof counts rows instead, and the lead of the first says that its first
+  assertion restates `lem:rank-delete-vertex` (task 17).
 - **F-152** · N · `lem:genericity-device`, `lem:relative-device-count`,
   `lem:realization-of-independent-rows`, `lem:case-II-placement-old-rows`,
   `lem:case-II-realization-placement` (`algebraic-induction/genericity-and-count.tex`): every pin of
@@ -1559,7 +1562,8 @@ declaration's name as its header writes it:
   `F-239`). The extraction has its own node since `657f3483` (`F-209`); round 2:
   `lem:genericity-device` pins the live `exists_rankPolynomial_of_le_finrank_linking` with
   `lem:rank-polynomial-of-le-finrank`, and `lem:relative-device-count` no longer `\uses` it (task
-  5).
+  5); its other four nodes framed by `rem:case-II-kt-steps`, which says what the formal proof uses
+  instead, and the lead of *Counting rows and motions* points to it (task 17).
 - **F-157** · N · `lem:case-III-claim-6-11` (`algebraic-induction/case-iii.tex`): the node states
   Claim 6.11 for $G_v^{ab}$ and $G_v = G - v$; its pin
   `exists_redundant_panelRow_ab_of_finrank_eq` holds for any two graphs whose links agree but for
@@ -4323,7 +4327,9 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, M3); round 2: the twelve `\cref`s of
   `lem:genericity-device` say which argument they borrow, three of them now citing the minor of
   `lem:rank-polynomial-of-le-finrank` (task 15); Case I's group, `lem:claim-6-4` and
-  `lem:case-I-splice-seed` among it, framed by `rem:case-I-kt-steps` (task 16).
+  `lem:case-I-splice-seed` among it, framed by `rem:case-I-kt-steps` (task 16); Case II's group,
+  `lem:case-II` and `lem:case-II-realization-placement` among it, framed by `rem:case-II-kt-steps`
+  (task 17).
 
 - **F-222** · M · `cor:bodyhinge-generic-tree-packing`, as `body-hinge.tex` cites it: after
   `thm:body-hinge-tay` the chapter says that for frameworks "with hinges in general position", KT
