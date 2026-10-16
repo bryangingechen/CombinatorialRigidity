@@ -8,8 +8,8 @@ and §2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round
 and M5's credits (Pollaczek-Geiringer 1927 states the characterization and is credited beside
 Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. Round 2,
 `reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), is done in 21 one-commit tasks: the
-false statements (S6–S10) made true, S4 and S5 restated, S7, Case III's three counts (S20) and G1's
-three nodes repinned, S14, S15, S21, S26–S29, S35, S36 and S38–S42 fixed, G2's two true duplicates
+false statements (S6–S10) made true, S4 and S5 restated, S7 and Case III's three counts (S20)
+repinned, G1's three pin changes made, S14, S15, S21, S26–S29, S35, S36 and S38–S42 fixed, G2's two true duplicates
 merged, the genericity device's citations made to say which argument they borrow, and the nodes of
 Cases I, II and III, `meet.tex` and the forest surgery that the formal proof leaves each framed by a
 remark; the Lean is unchanged, and the declarations the round unpinned are in round 3's list
@@ -192,14 +192,15 @@ writes them once; everything else proceeds.
   texts name `native_decide` as measured.
 - **L9**'s deletions after §B's check (with `F-090`'s shim, whose deletion repins
   `cor:forest-surgery-deficiency` on `forest_surgery_split` in the same commit: round 2 keeps the
-  node and its pin), and the eight declarations that round 2 unpinned, which its close lists for L9's §B check:
-`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller; `ab3a0d45`),
-`exists_good_realization` and `exists_good_realization_const` (dead, `F-152`; `1b46edc6`),
-`linearIndependent_sum_augment_candidateRow`, `linearIndependent_sum_p2_candidateRow` and
-`linearIndependent_sum_p3_candidateRow` (dead; `9e98aaba`),
-`add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (live: the bridge theorem's and
-the path lemma's pins call it, so it is not a deletion; `94196444`) and `case_III_realization` (dead,
-no caller; `58307442`); **L6–L8**'s
+  node and its pin), and the eight declarations that round 2 unpinned, which its close lists for
+  L9's §B check (dead: no main result's proof reaches it):
+  `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller; `ab3a0d45`),
+  `exists_good_realization` and `exists_good_realization_const` (dead, `F-152`; `1b46edc6`),
+  `linearIndependent_sum_augment_candidateRow`, `linearIndependent_sum_p2_candidateRow` and
+  `linearIndependent_sum_p3_candidateRow` (dead; `9e98aaba`),
+  `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (live: the bridge theorem's
+  and the path lemma's pins call it, so it is not a deletion; `94196444`) and
+  `case_III_realization` (dead, no caller; `58307442`); **L6–L8**'s
   signatures and repeated derivations, with S17 and the statements they touch; `F-061`'s rename.
 - **The docstring sweep** by directory: L3–L5, L10–L12, M2's and M4's docstrings. M2's include
   `BodyBar/TayTheorem.lean`'s "Lovász–Yemini-style" necessity argument (548), which the report does
