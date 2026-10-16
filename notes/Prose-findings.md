@@ -954,12 +954,15 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the two nodes, `--summary` and the
   forward screen, on round 2 task 7's tree).
   *Found:* RECONCILE round 2 task 7.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, tasks 12 and 18): the coordinator
-  gave the first edge to task 12(b)'s pin move and the move of `lem:case-III-claim612-eq644` to
-  task 18. Task 12 measured that the move does not cure the first edge: the certification also
-  calls `case_III_full_family_restriction`, whose body calls the node's other pin,
-  `linearIndependent_sumElim_candidateRow_iff`. Its cure, the node's move above, is task 18's too
-  (the coordinator, after task 12).
+  *Disposition:* done (task 18): `lem:case-III-claim612-eq644` moved to just after
+  `lem:case-III-acolumn-zero`, with a lead for its setting, and `lem:case-III-claim612-block-iff-perp`
+  to just before `lem:case-III-candidate-row`, with the lead its statement needs; the proofs of the
+  candidate row (both edges) and of the second framework (the second) gain the three edges, each
+  cited where its step is used, and the lead before the third framework cites the moved node. The
+  screen is unchanged and the graph has no missing edge. Task 12 had measured that its pin move
+  (`mem_hingeRowBlock_iff` to `def:hinge-row-block`) did not cure the first edge, as the
+  certification also calls `case_III_full_family_restriction`, whose body calls the node's other pin,
+  `linearIndependent_sumElim_candidateRow_iff`.
 - **F-259** · E · `thm:panel-hinge-iff-molecular` (`molecule-modelling.tex`): round 2 task 9's
   pin for its "In particular", `BodyHingeFramework.rankHypothesis_zero_iff` (`Pinning.lean`), is a
   general lemma that five earlier nodes' pins call. Pinned at the theorem, it leaves five missing
@@ -1614,7 +1617,10 @@ declaration's name as its header writes it:
   principle D's fixes, `a111b17a`, `notes/Prose-report.md` G3 and G4; `F-158` is the report's), and
   `lem:case-III-transport-collapse`, whose three pins state its two claims and the identity, a role
   map in its note; round 2: `lem:case-III-candidate-row`, one of the six, pins
-  `case_III_rank_certification`, the rank bound in its live form (task 7).
+  `case_III_rank_certification`, the rank bound in its live form (task 7); the six framed by
+  `rem:case-III-kt-steps`, after the roadmap of `case-iii.tex`, which says what the formal count at
+  $(G, p_1)$ uses instead, and the candidate row's lead says that it is a case of
+  `lem:case-III-rank-certification` (task 18).
 - **F-163** · N · `case-iii.tex`'s case $d = 3$: the span and the point choice
   (`algebraic-induction/case-iii.tex`): six of the ten nodes have every pin dead
   (`lem:case-III-claim612-points-affineIndep-producer`, `lem:case-III-claim612-detpoly`,
@@ -1642,7 +1648,10 @@ declaration's name as its header writes it:
   `lem:case-III-claim612-r-nonzero`, kept as KT's exposition (retiring or merging them is not among
   principle D's fixes, `a111b17a`, `notes/Prose-report.md` G4; `F-120`'s double is `24251386`'s),
   and `exists_tripleLI_polynomial`, a step of the dead $d = 3$ dispatch's choice of normals;
-  round 2: the witness and `lem:case-III-claim612-points-affineIndep` are one node (task 14).
+  round 2: the witness and `lem:case-III-claim612-points-affineIndep` are one node (task 14); the
+  three affine nodes and `lem:case-III-claim612-r-nonzero` framed by `rem:case-III-kt-steps`, which
+  says that the formal proof takes vectors in homogeneous coordinates and obtains $r \neq 0$ with
+  the relation (task 18).
 - **F-167** · N · `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12
   (`algebraic-induction/case-iii.tex`): ten of the thirteen pins of its eight nodes are dead, all
   but `case_III_claim612_gen` and `lem:case-III-claim612-eq644`'s `hingeRow_comp_single_tail` and
@@ -1664,7 +1673,11 @@ declaration's name as its header writes it:
   `lem:case-III-redundant-combination`; the placement and relabel nodes stay as KT's exposition, as
   retiring or merging them is not among principle D's fixes, `a111b17a`, `notes/Prose-report.md` G3
   and G4; `lem:case-III-claim612-eq644`'s bundle was `24f04215`'s); round 2: the two placement
-  nodes pin `case_III_rank_certification`, the arms' theorem at their roles (task 7).
+  nodes pin `case_III_rank_certification`, the arms' theorem at their roles (task 7); the placement
+  and relabel nodes framed by `rem:case-III-kt-steps`, the placements' leads saying that each is a
+  case of `lem:case-III-rank-certification`, and the note after `lem:case-III-chain-dispatch` names
+  the argument of its citations of the relabel nodes and of `lem:case-II-realization-placement`
+  (task 18).
 - **F-171** · N · `case-iii.tex`'s general case (`algebraic-induction/case-iii.tex`): the formal
   route of KT Lemma 6.13 below the three live pins has no node. The choice of $q$ off four factors
   (`chainData_split_w6b_gates`, with the $d \times d$ minor `exists_tupleLI_polynomial`), KT's
@@ -4324,12 +4337,14 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter` and `--label`, dead pins and edges
   with no Lean basis; TeX and Lean at `ef57b401`).
   *Found:* round 3 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, M3); round 2: the twelve `\cref`s of
-  `lem:genericity-device` say which argument they borrow, three of them now citing the minor of
-  `lem:rank-polynomial-of-le-finrank` (task 15); Case I's group, `lem:claim-6-4` and
-  `lem:case-I-splice-seed` among it, framed by `rem:case-I-kt-steps` (task 16); Case II's group,
-  `lem:case-II` and `lem:case-II-realization-placement` among it, framed by `rem:case-II-kt-steps`
-  (task 17).
+  *Disposition:* done (tasks 15–18; reported as `notes/Prose-report.md` M3, and the PI chose to keep
+  KT's route, explained): the twelve `\cref`s of `lem:genericity-device` say which argument they
+  borrow, three of them now citing the minor of `lem:rank-polynomial-of-le-finrank` (task 15); Case
+  I's group, `lem:claim-6-4` and `lem:case-I-splice-seed` among it, framed by `rem:case-I-kt-steps`
+  (task 16); Case II's group, `lem:case-II` and `lem:case-II-realization-placement` among it,
+  framed by `rem:case-II-kt-steps` (task 17); Case III's group, the candidate completion and the
+  relabel lemmas among it, framed by `rem:case-III-kt-steps`, and `lem:case-III-chain-dispatch`'s
+  note names the argument of each citation (task 18).
 
 - **F-222** · M · `cor:bodyhinge-generic-tree-packing`, as `body-hinge.tex` cites it: after
   `thm:body-hinge-tay` the chapter says that for frameworks "with hinges in general position", KT

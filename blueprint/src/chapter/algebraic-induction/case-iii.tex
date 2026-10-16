@@ -26,6 +26,124 @@ Lemma~6.13, for every $d$ and including the graphs with three vertices.
 This is the form that the formal proof of KT Theorem~5.5 uses
 (\cref{lem:case-III}).
 
+\begin{remark}[Katoh and Tanigawa's steps in Case~III and the formal proof]
+  \label{rem:case-III-kt-steps}
+  Several lemmas of this subsection state single steps of Katoh and
+  Tanigawa's proof of KT Lemma~6.10. The formal proof of KT Theorem~5.5
+  (\cref{thm:theorem-55}) takes these steps in another form, or not at
+  all. We keep the lemmas beside the argument they belong to, and say
+  here what the formal proof does instead.
+
+  \emph{The row operations.} Katoh and Tanigawa bring $R(G, p_1)$ to the
+  block form of KT eq.~(6.29) by column and row operations (KT pp.~679
+  and~685--686). After the columns of $v$ are added to those of $a$, the
+  new row has entries only in the columns of $v$, where it is a linear
+  form $r$ on $K^D$ (KT eq.~(6.28)). The top-left $D \times D$ block of
+  KT eq.~(6.29) consists of $r$ and of the entries of the rows of $va$
+  in these columns. Four lemmas of the second subsubsection state steps
+  of this computation. \Cref{lem:case-III-seam} compares the rows of an
+  edge in two panel-hinge frameworks, as in KT eq.~(6.13).
+  \Cref{lem:case-III-vanish-off-column} writes a form that vanishes
+  where $S(v) = 0$ as a form in $S(v)$.
+  \Cref{lem:case-III-candidate-row-construction} computes the new row of
+  KT eq.~(6.27). \Cref{lem:case-III-conditional-block} gives the
+  independence from which the rank of KT eq.~(6.29) follows.
+
+  The formal proof makes one count, at $(G, p_1)$ itself
+  (\cref{lem:case-III-rank-certification}). There the edges of
+  $G_v = G - v$ keep their hinges by the definition of $(G, p_1)$
+  (\cref{def:case-III-candidate}). So the formal proof does not compare
+  two panel-hinge frameworks. After the column operation, the rows of
+  $va$ and the new row vanish where $S(v) = 0$
+  (\cref{lem:case-III-columnop}). The formal proof needs only this, and
+  not that they are forms in $S(v)$. It obtains the new row as a row at
+  $vb$ minus a form in the row space of $R(G_v, q)$, by the identity of
+  \cref{lem:case-III-transport-collapse}.
+  \Cref{lem:case-III-candidate-row-construction} computes the new row
+  instead at normals $q_0$ that agree with $q$ off $v$ and have
+  $q_0(v) = q(a) + t\,q(b)$, as in the proof of
+  \cref{lem:case-II-realization} for $t = 1$. For $t \neq 0$, the hinge
+  of $va$ is then a multiple of the hinge $q(ab)$ of $ab$, on which $r$
+  vanishes, and the block of KT eq.~(6.29) is singular (the note after
+  \cref{lem:case-III-candidate-row}). The bottom rows of KT eq.~(6.29)
+  at $vb$ have entries in the columns of $v$. So
+  \cref{lem:case-III-conditional-block}, which takes forms that vanish
+  on the screw assignments that vanish off $v$, applies only after the
+  proof of \cref{lem:case-III-candidate-row} has replaced them by rows of
+  $R(G_v^{ab}, q)$. The formal count takes Katoh and Tanigawa's form
+  instead, in which the bottom rows are linearly independent outside the
+  columns of $v$. The note after \cref{lem:case-III-candidate-row} lists
+  the theorems of that subsubsection that the formal proof uses.
+
+  \emph{The ranks of the frameworks.} Katoh and Tanigawa read the rank
+  of each of their three frameworks off its block form (KT
+  eqs.~(6.29), (6.30) and~(6.41), pp.~686 and~689).
+  \Cref{lem:case-III-candidate-row} states this count for $(G, p_1)$,
+  and \cref{lem:case-III-claim612-p2-placement} and
+  \cref{lem:case-III-claim612-p3-placement} state it for the other two.
+  As the remark at the start of Case~II says
+  (\cref{rem:case-II-kt-steps}), the formal proof obtains the rank of
+  each of its frameworks from one count. The three lemmas are this count
+  at the three frameworks (\cref{lem:case-III-rank-certification} and
+  the notes after them). In the general case the formal proof applies
+  the count at the $d$ frameworks of KT Lemma~6.13, along a chain of
+  length $d$ (\cref{def:chain-data}). It does not first
+  count the rows of KT eq.~(6.12) one short of the target rank (KT
+  p.~680; the note after \cref{lem:case-III-chain-dispatch}).
+
+  \emph{The third framework.} In the case $d = 3$, the vertex $a$ has
+  degree two as well, with the neighbours $v$ and $c$ (KT p.~680).
+  Katoh and Tanigawa build their third framework $(G, p_3)$ on a
+  realization $(G_a^{vc}, q_\rho)$ of the graph $G_a^{vc}$ obtained by
+  splitting off at $a$ along $vc$. This realization has the panels of
+  $(G_v^{ab}, q)$, through an isomorphism $\rho$ from $G_a^{vc}$ to
+  $G_v^{ab}$ (KT pp.~686--687 and eq.~(6.31)).
+  \Cref{lem:splitOff-isLink-relabel},
+  \cref{lem:splitOff-ofNormals-relabel} and
+  \cref{lem:splitOff-rigidityRows-relabel} give the isomorphism, the
+  realization and its rows. The formal proof takes the case $d = 3$ as a
+  case of KT Lemma~6.13 (\cref{lem:case-III}). There it renames the
+  bodies by a permutation $\sigma_i$ for each $2 \le i \le d - 1$
+  (\cref{lem:case-III-chain-relabel-rows}). For $d = 3$ and $i = 2$,
+  $\sigma_2$ is the transposition of $v$ and $a$, and the renamed
+  realization is $(G_a^{vc}, q_\rho)$ (the note after
+  \cref{lem:case-III-chain-dispatch}).
+
+  The top-left block $M_3$ of KT eq.~(6.41), for $(G, p_3)$, has the
+  last row $-r$ (KT eq.~(6.44), \cref{lem:case-III-claim612-eq644}).
+  Katoh and Tanigawa obtain this by restricting the relation of KT
+  eq.~(6.24) to the screw assignments that vanish off $a$, which gives
+  KT eq.~(6.43) (KT pp.~690--691). As $a$ has degree two, only the rows
+  at $ab$ and $ac$ remain. \Cref{lem:case-III-acolumn-zero} states KT
+  eq.~(6.43), which holds as the relation is zero. The step to KT
+  eq.~(6.44) restricts each row to these screw assignments (the note
+  after \cref{lem:case-III-claim612-eq644}). The formal proof makes this
+  step in the general case, at interior vertices of the chain, for the
+  relation of KT eq.~(6.52) grouped by edge (KT eq.~(6.66),
+  \cref{lem:case-III-chain-eq666}). It does not state KT eq.~(6.43) as a
+  step of its own.
+
+  \emph{KT Claim~6.12.} Katoh and Tanigawa note that $r$ is not zero, as
+  it is a combination of linearly independent forms with a coefficient
+  $1$ (KT p.~690). \Cref{lem:case-III-claim612-r-nonzero} states this.
+  The formal proof obtains $r \neq 0$ with the relation itself
+  (\cref{lem:case-III-redundant-combination}). Katoh and Tanigawa then
+  choose four affinely independent points with given incidences with
+  the panels of $a$, $b$ and $c$, which they can as $(G_v^{ab}, q)$ is
+  generic (KT p.~691). Three lemmas concern this choice. Two of them
+  treat points that depend on some variables
+  (\cref{lem:case-III-claim612-points-affineIndep-producer},
+  \cref{lem:case-III-claim612-detpoly}).
+  \Cref{lem:case-III-claim612-points-affineIndep} gives four points with
+  these incidences for the coordinate planes. The formal proof chooses
+  no points. The span of KT eq.~(6.45) needs only linearly independent
+  vectors in homogeneous coordinates, which exist for any linearly
+  independent normals
+  (\cref{lem:case-III-claim612-points-affineIndep-real-normals} and the
+  passage before it). The formal proof takes them at every $d$, in the
+  general case (the note after that lemma).
+\end{remark}
+
 \subsubsection{KT Claim~6.11: a redundant row at the new edge}
 
 In Katoh and Tanigawa's proof, the induction hypothesis gives a generic
@@ -664,6 +782,72 @@ proof of Claim~6.12 for the third of their frameworks (p.~690;
   assignments that vanish off $u$.
 \end{proof}
 
+In the case $d = 3$, the vertex $a$ has degree two as well, and its
+edges are $va$ and $ac$ (KT p.~680). Then only the edges $ab$ and $ac$
+of $G_v^{ab}$ meet $a$, and KT eq.~(6.43) has nonzero terms only at
+these two edges (KT p.~691). The top-left block $M_3$ of Katoh and Tanigawa's
+third framework has as its last row the combination of the rows at $ac$
+with the coefficients of KT eq.~(6.24) (KT eq.~(6.42), p.~690). By the
+next lemma, this row is $-r$, where $r$ is the combination of the rows
+at $ab$ with these coefficients.
+
+\begin{lemma}[The last row of $M_3$; KT eq.\ (6.44)]
+  \label{lem:case-III-claim612-eq644}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_tail,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_off}
+  \leanok
+  \uses{lem:case-III-redundant-decomposition}
+  Under the hypotheses of \cref{lem:case-III-claim-6-11}, suppose that
+  the edges of $G$ at $a$ are $va$ and $ac$, where $v$, $a$, $b$ and $c$
+  are distinct. Let the forms $r_j$ and the scalars $\lambda_j$ and
+  $\lambda_{ej}$ be as in \cref{lem:case-III-redundant-decomposition},
+  and let $r = \sum_j \lambda_j r_j$. Write the rows
+  $R(G_v^{ab}, q; (ac)j)$ at $ac$ as the forms
+  $S \mapsto s_j(S(a) - S(c))$. Then
+  \[
+    r \;=\; -\sum_{1 \le j \le D-1} \lambda_{(ac)j}\, s_j .
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-III-acolumn-zero}
+  We follow Katoh and Tanigawa~\cite[pp.~690--691]{katohTanigawa2011}.
+  By KT eq.~(6.43) (\cref{lem:case-III-acolumn-zero}), the combination
+  of the rows of $R(G_v^{ab}, q)$ in KT eq.~(6.24) vanishes on the screw
+  assignments that vanish off $a$. Let $S$ be such a screw assignment,
+  with $S(a) = y$. A row $S \mapsto x(S(u) - S(w))$ at an edge with ends
+  $u, w \neq a$ vanishes at $S$. As the edges of $G$ at $a$ are $va$ and
+  $ac$, the edges of $G_v^{ab}$ at $a$ are $ab$ and $ac$
+  (\cref{def:graph-operations}). Their rows take the values $r_j(y)$ and
+  $s_j(y)$ at $S$. So
+  \[
+    0 \;=\; \sum_j \lambda_j\, r_j(y) + \sum_j \lambda_{(ac)j}\, s_j(y)
+    \;=\; r(y) + \sum_j \lambda_{(ac)j}\, s_j(y)
+  \]
+  for every $y \in K^D$, which is KT eq.~(6.44).
+\end{proof}
+
+\begin{fmlnote}
+  The first pinned theorem is the computation of the proof, for any forms
+  at $ab$ and at $ac$ and any further form that vanishes on the screw
+  assignments that vanish off $a$. The second and third give the
+  restriction of a form $S \mapsto x(S(u) - S(w))$ to these screw
+  assignments: it is $x$ if $u = a \neq w$, and $0$ if
+  $a \notin \{u, w\}$. The formal proof of the case $d = 3$ uses the
+  lemma in a span form,
+  \texttt{BodyHingeFramework.\allowbreak{}acolumn\_\allowbreak{}mem\_\allowbreak{}hingeRowBlock\_\allowbreak{}of\_\allowbreak{}span\_\allowbreak{}rigidityRows}.
+  Let $ac$ be the only edge at $a$ of a body-hinge framework, and let $f$
+  be a form in the span of its rows. Then the restriction of $f$ to the
+  screw assignments that vanish off $a$, a linear form $x$ on $K^D$,
+  vanishes on the hinge of $ac$, and $S \mapsto x(S(a) - S(c))$ lies in
+  the span of the rows
+  (\texttt{BodyHingeFramework.\allowbreak{}hingeRow\_\allowbreak{}acolumn\_\allowbreak{}mem\_\allowbreak{}span\_\allowbreak{}rigidityRows}).
+  For the framework $(G_v, q)$ and the form
+  $f \colon S \mapsto r(S(a) - S(b))$, the span form says that $r$
+  vanishes on $C(q(a), q(c))$, as KT eq.~(6.44) shows.
+\end{fmlnote}
+
 The rank in KT eq.~(6.29) comes from the following independence. It
 extends \cref{lem:case-II-placement-block-independent} by one more form
 in the first family. A bound on the rank follows as in
@@ -821,7 +1005,50 @@ $r = \sum_j \lambda_j r_j$.
 \end{fmlnote}
 
 We now return to Katoh and Tanigawa's framework $(G, p_1)$, with an
-arbitrary subspace $L$.
+arbitrary subspace $L$. After the column operation, the rows of $va$ and
+the row $w$ have entries only in the columns of $v$, where they form the
+top-left $D \times D$ block of KT eq.~(6.29). Katoh and Tanigawa call it
+$M_1$, and they test its singularity by the extensor of $L$ (KT
+eq.~(6.42) and p.~690). In these columns the rows of $va$ are $D - 1$
+linearly independent linear forms on $K^D$ that vanish on $C(L)$
+(\cref{def:hinge-row-block}). A nondegenerate hinge of a panel-hinge
+framework gives such forms (\cref{lem:case-II-placement-new-rows}).
+
+\begin{lemma}[When the blocks of KT eq.\ (6.42) are nonsingular]
+  \label{lem:case-III-claim612-block-iff-perp}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sumElim_candidateRow_iff}
+  \leanok
+  \uses{def:hinge-row-block, lem:case-III-candidate-row-construction}
+  Under the hypotheses of \cref{lem:case-III-claim-6-11}, let $r$ be
+  the linear form of \cref{lem:case-III-candidate-row-construction}.
+  Let $L$ be a $(d-2)$-dimensional affine subspace of the panel of a
+  vertex of $(G_v^{ab}, q)$, and let $r'_1, \dots, r'_{D-1}$ be linearly
+  independent linear forms on $K^D$ that vanish on $C(L)$. Then
+  $r'_1, \dots, r'_{D-1}, r$ are linearly independent if and only if
+  $r(C(L)) \neq 0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The extensor $C(L)$ is not zero (\cref{def:affine-subspace-extensor}).
+  So the linear forms on $K^D$ that vanish on $C(L)$ form a space of
+  dimension $D - 1$ (\cref{def:hinge-row-block}), and
+  $r'_1, \dots, r'_{D-1}$ is a basis of it. A form vanishes on
+  $\operatorname{span} C(L)$ if and only if it vanishes at $C(L)$ (the
+  remark after \cref{def:hinge-row-block}). So
+  $r(C(L)) = 0$ if and only if $r$ is a linear combination of the
+  $r'_i$, that is, if and only if the $D$ forms are linearly
+  dependent.
+\end{proof}
+
+\begin{fmlnote}
+  The pinned theorem holds for every linear form $r$ and every edge of
+  a body-hinge framework, with any linearly independent forms that span
+  the forms vanishing on its extensor.
+\end{fmlnote}
+
+The next lemma gives the rank of $R(G, p_1)$ when this block is
+nonsingular. It is the count of \cref{lem:case-III-rank-certification},
+in the next subsubsection, at $(G, p_1)$.
 
 \begin{lemma}[The rank of KT eq.\ (6.29); from the proof of KT Lemma~6.10]
   \label{lem:case-III-candidate-row}
@@ -846,7 +1073,8 @@ arbitrary subspace $L$.
   \leanok
   \uses{lem:case-III-columnop, lem:case-III-conditional-block,
         lem:case-III-transport-collapse, def:hinge-row-block,
-        lem:rigidityRows-pinned-placement-rank-add}
+        lem:rigidityRows-pinned-placement-rank-add,
+        lem:case-III-claim612-block-iff-perp, lem:case-III-claim612-eq644}
   We follow Katoh and Tanigawa~\cite[pp.~685--686]{katohTanigawa2011}.
   Let $W$ be the row space of $R(G_v, q)$. The edges of $G_v$ have the
   same hinges in $(G, p_1)$ as in $(G_v^{ab}, q)$, so $W$ lies in the row
@@ -867,7 +1095,8 @@ arbitrary subspace $L$.
   $D \times D$ block of KT eq.~(6.29), with the rows $r'_1, \dots,
   r'_{D-1}$ and $r$. This block is nonsingular exactly when $r$ is not a
   combination of the $r'_i$, that is, when $r$ does not vanish on $C(L)$
-  (KT p.~690). The other rows of KT eq.~(6.29) are the rows $(vb)j$ with
+  (KT p.~690, \cref{lem:case-III-claim612-block-iff-perp}). The other
+  rows of KT eq.~(6.29) are the rows $(vb)j$ with
   $j \neq i^*$ and the rows of the edges of $G_v$. Outside the columns of
   $v$ they have the entries of $R(G_v^{ab} \setminus (ab)i^*, q)$, the
   matrix $R(G_v^{ab}, q)$ without the row $(ab)i^*$. By KT eq.~(6.24)
@@ -891,7 +1120,9 @@ arbitrary subspace $L$.
   $R(G_v^{ab} \setminus (ab)i^*, q)$ lies in the row space of
   $R(G, p_1)$, and we choose $D(|V(G)| - 2)$ linearly independent ones.
   They vanish on the screw assignments that vanish off $v$, as no edge of
-  $G_v^{ab}$ has the end $v$. On these screw assignments the rows of $va$
+  $G_v^{ab}$ has the end $v$ (as in the proof of
+  \cref{lem:case-III-claim612-eq644}). On these screw assignments the
+  rows of $va$
   and $w$ are the forms $S \mapsto r'_i(S(v))$ and $S \mapsto r(S(v))$,
   which are linearly independent. By \cref{lem:case-III-conditional-block},
   the $(D - 1) + 1 + D(|V(G)| - 2) = D(|V(G)| - 1)$ forms are linearly
@@ -922,9 +1153,11 @@ arbitrary subspace $L$.
   Of the theorems pinned in this subsubsection, the proofs of the main
   results use the definition of $(G, p_1)$
   (\cref{def:case-III-candidate}), the theorems of
-  \cref{lem:case-III-columnop}, \cref{lem:case-III-redundant-decomposition}
-  and \cref{lem:case-III-redundant-combination}, the identity of
-  \cref{lem:case-III-transport-collapse}, and the theorem pinned here.
+  \cref{lem:case-III-columnop}, \cref{lem:case-III-redundant-decomposition},
+  \cref{lem:case-III-redundant-combination} and
+  \cref{lem:case-III-claim612-block-iff-perp}, the identity of
+  \cref{lem:case-III-transport-collapse}, the restrictions of rows of
+  \cref{lem:case-III-claim612-eq644}, and the theorem pinned here.
 \end{fmlnote}
 
 \subsubsection{The case \texorpdfstring{$d = 3$}{d = 3}: three frameworks and KT Claim~6.12 (KT \S6.4.1)}
@@ -984,7 +1217,8 @@ contradiction~\cite[pp.~690--691]{katohTanigawa2011}. The form $r$ is
 not zero (\cref{lem:case-III-claim612-r-nonzero}). The block $M_1$ is
 singular if and only if $r$ vanishes on $C(L)$
 (\cref{lem:case-III-claim612-block-iff-perp}), and likewise $M_2$ for
-$L'$. The last row of $M_3$ is $-r$ (KT eq.~(6.44)), so $M_3$ is
+$L'$. The last row of $M_3$ is $-r$ (KT eq.~(6.44),
+\cref{lem:case-III-claim612-eq644}), so $M_3$ is
 singular if and only if $r$ vanishes on $C(L'')$. If no choice makes a
 block nonsingular, then $r$ vanishes on the extensors of all lines in
 $\Pi(a)$, $\Pi(b)$ and $\Pi(c)$, the set of KT eq.~(6.45). Four points
@@ -1234,46 +1468,6 @@ for any three linearly independent normals.
   $d = 3$ uses the lemma, derived from it.
 \end{fmlnote}
 
-By the proof of \cref{lem:case-III-candidate-row}, the block $M_1$ of
-KT eq.~(6.42) has the rows $r'_1, \dots, r'_{D-1}$ and $r$, where the
-$r'_i$ are $D - 1$ linearly independent linear forms on $K^D$ that
-vanish on $C(L)$ (\cref{def:hinge-row-block}). A nondegenerate hinge of
-a panel-hinge framework gives such forms
-(\cref{lem:case-II-placement-new-rows}). Katoh and Tanigawa test the
-singularity of the blocks by the extensors of the lines (KT p.~690).
-
-\begin{lemma}[When the blocks of KT eq.\ (6.42) are nonsingular]
-  \label{lem:case-III-claim612-block-iff-perp}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sumElim_candidateRow_iff}
-  \leanok
-  \uses{def:hinge-row-block, lem:case-III-candidate-row-construction}
-  Under the hypotheses of \cref{lem:case-III-claim-6-11}, let $r$ be
-  the linear form of \cref{lem:case-III-candidate-row-construction}.
-  Let $L$ be a $(d-2)$-dimensional affine subspace of the panel of a
-  vertex of $(G_v^{ab}, q)$, and let $r'_1, \dots, r'_{D-1}$ be linearly
-  independent linear forms on $K^D$ that vanish on $C(L)$. Then
-  $r'_1, \dots, r'_{D-1}, r$ are linearly independent if and only if
-  $r(C(L)) \neq 0$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  The extensor $C(L)$ is not zero (\cref{def:affine-subspace-extensor}).
-  So the linear forms on $K^D$ that vanish on $C(L)$ form a space of
-  dimension $D - 1$ (\cref{def:hinge-row-block}), and
-  $r'_1, \dots, r'_{D-1}$ is a basis of it. A form vanishes on
-  $\operatorname{span} C(L)$ if and only if it vanishes at $C(L)$ (the
-  remark after \cref{def:hinge-row-block}). So
-  $r(C(L)) = 0$ if and only if $r$ is a linear combination of the
-  $r'_i$, that is, if and only if the $D$ forms are linearly
-  dependent.
-\end{proof}
-
-\begin{fmlnote}
-  The pinned theorem holds for every linear form $r$ and every edge of
-  a body-hinge framework, with any linearly independent forms that span
-  the forms vanishing on its extensor.
-\end{fmlnote}
-
 \begin{lemma}[The form $r$ is not zero; from the proof of KT Claim~6.12]
   \label{lem:case-III-claim612-r-nonzero}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ne_zero}
@@ -1299,7 +1493,9 @@ singularity of the blocks by the extensors of the lines (KT p.~690).
 \end{fmlnote}
 
 The form $r$ serves for the second framework as well, as it depends
-only on $(G_v^{ab}, q)$ (KT p.~686).
+only on $(G_v^{ab}, q)$ (KT p.~686). Like
+\cref{lem:case-III-candidate-row}, the next lemma is a case of the count
+of \cref{lem:case-III-rank-certification}.
 
 \begin{lemma}[The second framework; KT eqs.\ (6.19) and~(6.30)]
   \label{lem:case-III-claim612-p2-placement}
@@ -1320,7 +1516,7 @@ only on $(G_v^{ab}, q)$ (KT p.~686).
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III-candidate-row}
+  \uses{lem:case-III-candidate-row, lem:case-III-claim612-eq644}
   We argue as in the proof of \cref{lem:case-III-candidate-row}, with
   the roles of $a$ and $b$ exchanged (KT pp.~682 and~686). Let $W$ be the
   row space of $R(G_v, q)$, which lies in the row space of $R(G, p_2)$.
@@ -1339,7 +1535,10 @@ only on $(G_v^{ab}, q)$ (KT p.~686).
   $r'_1, \dots, r'_{D-1}$ and $r$, which is nonsingular exactly when
   $r(C(L')) \neq 0$ (\cref{lem:case-III-claim612-block-iff-perp}). The
   count in the proof of \cref{lem:case-III-candidate-row}, with $b$ in
-  place of $a$, then gives the bound.
+  place of $a$, then gives the bound. In it the rows of the edges of
+  $G_v^{ab}$ vanish on the screw assignments that vanish off $v$, as no
+  edge of $G_v^{ab}$ has the end $v$ (as in the proof of
+  \cref{lem:case-III-claim612-eq644}).
 \end{proof}
 
 \begin{fmlnote}
@@ -1482,64 +1681,10 @@ it. The formal proof of the case $d = 3$ does not use these lemmas.
 \end{fmlnote}
 
 We now turn to the third framework. The last row of its block $M_3$
-comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)).
-
-\begin{lemma}[The last row of $M_3$; KT eq.\ (6.44)]
-  \label{lem:case-III-claim612-eq644}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_tail,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_off}
-  \leanok
-  \uses{lem:case-III-redundant-decomposition}
-  Under the hypotheses of \cref{lem:case-III-claim-6-11}, suppose that
-  the edges of $G$ at $a$ are $va$ and $ac$, where $v$, $a$, $b$ and $c$
-  are distinct. Let the forms $r_j$ and the scalars $\lambda_j$ and
-  $\lambda_{ej}$ be as in \cref{lem:case-III-redundant-decomposition},
-  and let $r = \sum_j \lambda_j r_j$. Write the rows
-  $R(G_v^{ab}, q; (ac)j)$ at $ac$ as the forms
-  $S \mapsto s_j(S(a) - S(c))$. Then
-  \[
-    r \;=\; -\sum_{1 \le j \le D-1} \lambda_{(ac)j}\, s_j .
-  \]
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:case-III-acolumn-zero}
-  We follow Katoh and Tanigawa~\cite[pp.~690--691]{katohTanigawa2011}.
-  By KT eq.~(6.43) (\cref{lem:case-III-acolumn-zero}), the combination
-  of the rows of $R(G_v^{ab}, q)$ in KT eq.~(6.24) vanishes on the screw
-  assignments that vanish off $a$. Let $S$ be such a screw assignment,
-  with $S(a) = y$. A row $S \mapsto x(S(u) - S(w))$ at an edge with ends
-  $u, w \neq a$ vanishes at $S$. As the edges of $G$ at $a$ are $va$ and
-  $ac$, the edges of $G_v^{ab}$ at $a$ are $ab$ and $ac$
-  (\cref{def:graph-operations}). Their rows take the values $r_j(y)$ and
-  $s_j(y)$ at $S$. So
-  \[
-    0 \;=\; \sum_j \lambda_j\, r_j(y) + \sum_j \lambda_{(ac)j}\, s_j(y)
-    \;=\; r(y) + \sum_j \lambda_{(ac)j}\, s_j(y)
-  \]
-  for every $y \in K^D$, which is KT eq.~(6.44).
-\end{proof}
-
-\begin{fmlnote}
-  The first pinned theorem is the computation of the proof, for any forms
-  at $ab$ and at $ac$ and any further form that vanishes on the screw
-  assignments that vanish off $a$. The second and third give the
-  restriction of a form $S \mapsto x(S(u) - S(w))$ to these screw
-  assignments: it is $x$ if $u = a \neq w$, and $0$ if
-  $a \notin \{u, w\}$. The formal proof of the case $d = 3$ uses the
-  lemma in a span form,
-  \texttt{BodyHingeFramework.\allowbreak{}acolumn\_\allowbreak{}mem\_\allowbreak{}hingeRowBlock\_\allowbreak{}of\_\allowbreak{}span\_\allowbreak{}rigidityRows}.
-  Let $ac$ be the only edge at $a$ of a body-hinge framework, and let $f$
-  be a form in the span of its rows. Then the restriction of $f$ to the
-  screw assignments that vanish off $a$, a linear form $x$ on $K^D$,
-  vanishes on the hinge of $ac$, and $S \mapsto x(S(a) - S(c))$ lies in
-  the span of the rows
-  (\texttt{BodyHingeFramework.\allowbreak{}hingeRow\_\allowbreak{}acolumn\_\allowbreak{}mem\_\allowbreak{}span\_\allowbreak{}rigidityRows}).
-  For the framework $(G_v, q)$ and the form
-  $f \colon S \mapsto r(S(a) - S(b))$, the span form says that $r$
-  vanishes on $C(q(a), q(c))$, as KT eq.~(6.44) shows.
-\end{fmlnote}
+comes from the rows of $R(G_v^{ab}, q)$ at $ac$ (KT eq.~(6.42)), and it
+is $-r$ (KT eq.~(6.44), \cref{lem:case-III-claim612-eq644}). Like
+\cref{lem:case-III-candidate-row}, the next lemma is a case of the count
+of \cref{lem:case-III-rank-certification}.
 
 \begin{lemma}[The third framework; KT eqs.\ (6.31)--(6.41)]
   \label{lem:case-III-claim612-p3-placement}
@@ -2431,14 +2576,18 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
   roles of $v$, $a$ and $b$, to the normals $q_i$ and the form $-r$, with
   $G - v_i$ in place of $G_v$. It takes the bottom rows from
   \cref{lem:case-III-chain-relabel-rows}, and the two facts it needs on
-  $-r$ from \cref{lem:case-III-chain-eq666}. So it does not use
-  \cref{lem:case-II-realization-placement}. For $d = 3$ and $i = 2$, the
-  isomorphism $\rho_2$ is that of \cref{lem:splitOff-isLink-relabel}, and
-  the renaming of the normals and the rows is that of
-  \cref{lem:splitOff-ofNormals-relabel} and
+  $-r$ from \cref{lem:case-III-chain-eq666}. So it does not use the
+  count of KT eq.~(6.12) one row short of the target rank, from a
+  realization of $G_v^{ab}$ whose motions are constant on its vertex set
+  (KT p.~680, \cref{lem:case-II-realization-placement}). For $d = 3$ and
+  $i = 2$, the isomorphism $\rho_2$ is Katoh and Tanigawa's isomorphism
+  $\rho$ from $G_a^{vc}$ to $G_v^{ab}$ (KT p.~686,
+  \cref{lem:splitOff-isLink-relabel}), and $(G_2, q_2)$ is their
+  realization $(G_a^{vc}, q_\rho)$ of KT eq.~(6.31). Its normals and its
+  rows are those of \cref{lem:splitOff-ofNormals-relabel} and
   \cref{lem:splitOff-rigidityRows-relabel}. The formal proof does not
-  use these lemmas either: it renames by the permutation $\sigma_i$, as
-  the two lemmas before this one do.
+  use these three lemmas either: it renames by the permutation
+  $\sigma_i$, as the two lemmas before this one do.
 \end{fmlnote}
 
 \begin{lemma}[Case~III: no proper rigid subgraph and $k = 0$; KT Lemma~6.13]
