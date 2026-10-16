@@ -11,7 +11,9 @@ report is `notes/Prose-report.md`. Its follow-up, RECONCILE (`notes/Reconcile.md
 2026-10-15), keeps this ledger as each finding's home and sets the dispositions it acts on. At
 RECONCILE round 1's close (2026-10-15) the ledger has 252 entries (`F-251` and `F-252` are the
 round's), 89 `done` (`F-228` and `F-251` joined), 16 `left` and 147 `reported`, each round-1 task
-named by its commit.
+named by its commit. At RECONCILE round 2's close (2026-10-15) it has 264 entries (`F-253` to
+`F-264` are the round's), 133 `done`, 11 `left` and 120 `reported` (the six `L` entries of the
+round are `reported`, to round 3's docstring sweep), each round-2 task named by its commit.
 
 ## Format
 
@@ -222,7 +224,7 @@ declaration's name as its header writes it:
   *Disposition:* done (`8e6786d3`) for `def:induced-span`; left for `def:blockingWitness` and
   `def:dof-generic` (no declaration defines them; `7b2a8272`, `a7b8ea35`) and
   `lem:forest-surgery-unsplit` (`F-091`); round 2: `lem:forest-surgery-unsplit` pinned and filled
-  (task 3).
+  (`43c5c8d7`).
 - **F-062** · E · `lem:case-II-placement-new-rows` (`algebraic-induction/genericity-and-count.tex`):
   its statement and proof use `lem:rank-delete-vertex`, which no pin reaches, and its proof cites
   that node for the dimension $D - 1$ of the hinge-row block, which is `def:hinge-row-block`'s
@@ -938,7 +940,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:genericity-device`, `--summary` and
   the forward screen, on round 2 task 5's tree).
   *Found:* RECONCILE round 2 task 5.
-  *Disposition:* done (task 15): `lem:independent-rows-of-rank` and its note moved into the first
+  *Disposition:* done (`daa53665`): `lem:independent-rows-of-rank` and its note moved into the first
   subsection, before the node, whose proof `\uses` it and cites it for the independent rows; both
   leads follow, and the screen is unchanged. The graph's missing edges are `F-257`'s three.
 - **F-257** · E · `lem:case-III-candidate-row` and `lem:case-III-claim612-p2-placement`
@@ -954,7 +956,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label` for the two nodes, `--summary` and the
   forward screen, on round 2 task 7's tree).
   *Found:* RECONCILE round 2 task 7.
-  *Disposition:* done (task 18): `lem:case-III-claim612-eq644` moved to just after
+  *Disposition:* done (`98f89445`): `lem:case-III-claim612-eq644` moved to just after
   `lem:case-III-acolumn-zero`, with a lead for its setting, and `lem:case-III-claim612-block-iff-perp`
   to just before `lem:case-III-candidate-row`, with the lead its statement needs; the proofs of the
   candidate row (both edges) and of the second framework (the second) gain the three edges, each
@@ -976,7 +978,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, `--chapter` and `--summary` on
   scratch copies of round 2 task 9's parent with the pin at each node, `--tex-root`).
   *Found:* RECONCILE round 2 task 9.
-  *Disposition:* done (task 9.1): `lem:trivial-motions-rank-bound` pins it, its note reading it as
+  *Disposition:* done (`64a531db`): `lem:trivial-motions-rank-bound` pins it, its note reading it as
   the equality for $\dim Z(G,p)$; the theorem's proof `\uses` that node (an implied edge, the drawn
   graph unchanged), and its note cites it for the "In particular"; no missing edge.
 - **F-261** · E · `lem:block-rank-path` (`rigidity-matrix.tex`): since round 2 task 12 unpinned
@@ -990,7 +992,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:block-rank-path`, `--summary` and
   the forward screen, on round 2 task 12's tree); read (the bodies of the two lemmas).
   *Found:* RECONCILE round 2 task 12.
-  *Disposition:* done (task 13): the proof `\uses` `def:cut-edges-2ec`, a forward edge in place of
+  *Disposition:* done (`cd516eda`): the proof `\uses` `def:cut-edges-2ec`, a forward edge in place of
   the one task 12 removed (the screen's `rigidity-matrix` count the open's, 3/2).
 - **F-262** · E · `lem:case-I-realization-h65` (`algebraic-induction/case-i.tex`): its pin
   `case_I_realization_h65_gen` calls `exists_independent_panelRow_subfamily_of_edge`, the pin of
@@ -1004,7 +1006,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:case-I-realization-h65`,
   `--summary` and the forward screen, on round 2 task 12's tree).
   *Found:* RECONCILE round 2 task 12.
-  *Disposition:* done (task 13): the proof `\uses` `lem:case-II-placement-new-rows`, a forward edge
+  *Disposition:* done (`cd516eda`): the proof `\uses` `lem:case-II-placement-new-rows`, a forward edge
   in place of the one task 12 removed (the screen's `case-i` count the open's, 14/6).
 
 ## N — node shape
@@ -1268,7 +1270,7 @@ declaration's name as its header writes it:
   framed by `rem:forest-surgery-kt-steps`, after the roadmap of the subsection *Forest surgery*,
   which says that the formal proof takes the bound from `lem:splitoff-deficiency`; its lead says
   that it restates `lem:forest-surgery-split` with the same hypotheses. The shim's deletion and
-  the repin on `forest_surgery_split` are round 3's (L9) (task 20).
+  the repin on `forest_surgery_split` are round 3's (L9) (`8db5a0c1`).
 - **F-091** · N · `lem:forest-surgery-unsplit` (`molecular-induction.tex`; unfilled, `F-008`): in
   the form of independent sets it is the case $h' = 0$ of `lem:edge-splitting`'s case (i) for
   $G = H_{ab}^v$ ($D \ge 2$, $a \neq b$), which `splitOff_indep_extend_of_fiber_lt` proves, and no
@@ -1278,10 +1280,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the pin's statement; KT 2011 pp. 660–662).
   *Found:* round 2 task 2.13.
   *Disposition:* done (tasks 3 and 20): the node restated as the pin's case $h' = 0$ and pinned to
-  it, with a note, after `lem:edge-splitting` (task 3); kept, not retired (the PI's choice), its
+  it, with a note, after `lem:edge-splitting` (`43c5c8d7`); kept, not retired (the PI's choice), its
   lead says that it restates that case of `lem:edge-splitting`, and `rem:forest-surgery-kt-steps`
   says that the formal proof applies `lem:edge-splitting` at it for the second assertion of KT
-  Lemma 4.4 and compares partitions for the first (task 20).
+  Lemma 4.4 and compares partitions for the first (`8db5a0c1`).
 - **F-096** · N · `lem:removal-deficiency-strict` and `lem:reduction-step`
   (`molecular-induction.tex`): each bundles results that KT state separately (principle E). The
   first is the second assertion of KT Lemma 4.4 and KT Lemma 4.7, one pin each. The second is KT
@@ -1378,7 +1380,7 @@ declaration's name as its header writes it:
   `def:meet-pairing-dual`, framed by `rem:meet-kt-steps`, after the roadmap of `meet.tex`'s second
   subsection, which says that the formal proof of KT Theorem 5.5 compares meet and join by
   `lem:meet-two-hyperplanes` in degree $d - 1$, uses the map of `def:meet-pairing-dual` but not that
-  it is an isomorphism, and forms no meet; the chapter's roadmap points to it (task 19).
+  it is an isomorphism, and forms no meet; the chapter's roadmap points to it (`5955454a`).
 - **F-119** · N · node order in `algebraic-induction.tex`'s five sections: 18 `\uses` edges at 10
   nodes point at nodes of later sections. `thm:theorem-55` uses seven Case I–III nodes;
   `prop:rigidity-matrix-prop11` uses `lem:genericity-device`; `lem:triangle-normals` and
@@ -1422,7 +1424,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`sort blueprint/lean_decls | uniq -d` and each name's nodes, at
   `ef57b401`); read (a `grep` for the three pins' callers, which finds only docstrings).
   *Found:* round 3 task 1.
-  *Disposition:* done (task 14): the two doubles here, each pair one claim stated twice, are one
+  *Disposition:* done (`58307442`): the two doubles here, each pair one claim stated twice, are one
   node each: `lem:case-III-claim-6-11-base`, the forward half of `lem:splitoff-kdof-criterion`, is
   merged into it, and `lem:case-III-claim612-points-affineIndep-witness` into
   `lem:case-III-claim612-points-affineIndep`. The other eight stay, as the PI decided
@@ -1483,7 +1485,7 @@ declaration's name as its header writes it:
   (merging the first into `lem:theorem-55-base` is not among principle D's fixes; `a111b17a`,
   `notes/Prose-report.md` G3 and G4); round 2: the six framed by `rem:case-I-kt-steps`, after the
   roadmap of `case-i.tex`, which says what the formal proof uses instead, and the lead of
-  `lem:cycle-realization-base` says that it restates `lem:theorem-55-base` (task 16).
+  `lem:cycle-realization-base` says that it restates `lem:theorem-55-base` (`e6f1e425`).
 - **F-139** · N · `lem:claim-6-4`, `lem:rows-polynomial-in-normals`, `lem:case-I-splice-seed`,
   `lem:case-I` (`algebraic-induction/case-i.tex`): every pin of the first three, and the second and
   third pins of `lem:case-I`, lie outside every main result's closure. Their callers are dead too:
@@ -1506,7 +1508,7 @@ declaration's name as its header writes it:
   `notes/Prose-report.md` G3 and G4) and for the dead pins of `lem:case-I-splice-seed` and
   `lem:case-I` (deadness alone is no reason to unpin); round 2: the three framed by
   `rem:case-I-kt-steps`, which says what the formal proof uses instead: the row count in the proof
-  of `lem:case-I-realization`, and `lem:rank-polynomial-IH-relabel-proj` for KT Claim 6.4 (task 16).
+  of `lem:case-I-realization`, and `lem:rank-polynomial-IH-relabel-proj` for KT Claim 6.4 (`e6f1e425`).
 - **F-143** · N · `lem:case-I-realization-nonsimple`, `lem:case-I-dispatch`
   (`algebraic-induction/case-i.tex`): the pin of the first, `case_I_realization_nonsimple`, lies
   outside every main result's closure and has no caller, so the second's `\uses` edge to it has no
@@ -1549,7 +1551,7 @@ declaration's name as its header writes it:
   principle D's fixes; `a111b17a`, `notes/Prose-report.md` G4); round 2: `lem:case-II-rank-lift`
   and `lem:case-II` framed by `rem:case-II-kt-steps`, after the roadmap of `case-ii.tex`, which says
   that the formal proof counts rows instead, and the lead of the first says that its first
-  assertion restates `lem:rank-delete-vertex` (task 17).
+  assertion restates `lem:rank-delete-vertex` (`04b33020`).
 - **F-152** · N · `lem:genericity-device`, `lem:relative-device-count`,
   `lem:realization-of-independent-rows`, `lem:case-II-placement-old-rows`,
   `lem:case-II-realization-placement` (`algebraic-induction/genericity-and-count.tex`): every pin of
@@ -1575,7 +1577,7 @@ declaration's name as its header writes it:
   `lem:genericity-device` pins the live `exists_rankPolynomial_of_le_finrank_linking` with
   `lem:rank-polynomial-of-le-finrank`, and `lem:relative-device-count` no longer `\uses` it (task
   5); its other four nodes framed by `rem:case-II-kt-steps`, which says what the formal proof uses
-  instead, and the lead of *Counting rows and motions* points to it (task 17).
+  instead, and the lead of *Counting rows and motions* points to it (`04b33020`).
 - **F-157** · N · `lem:case-III-claim-6-11` (`algebraic-induction/case-iii.tex`): the node states
   Claim 6.11 for $G_v^{ab}$ and $G_v = G - v$; its pin
   `exists_redundant_panelRow_ab_of_finrank_eq` holds for any two graphs whose links agree but for
@@ -1626,10 +1628,10 @@ declaration's name as its header writes it:
   principle D's fixes, `a111b17a`, `notes/Prose-report.md` G3 and G4; `F-158` is the report's), and
   `lem:case-III-transport-collapse`, whose three pins state its two claims and the identity, a role
   map in its note; round 2: `lem:case-III-candidate-row`, one of the six, pins
-  `case_III_rank_certification`, the rank bound in its live form (task 7); the six framed by
+  `case_III_rank_certification`, the rank bound in its live form (`9e98aaba`); the six framed by
   `rem:case-III-kt-steps`, after the roadmap of `case-iii.tex`, which says what the formal count at
   $(G, p_1)$ uses instead, and the candidate row's lead says that it is a case of
-  `lem:case-III-rank-certification` (task 18).
+  `lem:case-III-rank-certification` (`98f89445`).
 - **F-163** · N · `case-iii.tex`'s case $d = 3$: the span and the point choice
   (`algebraic-induction/case-iii.tex`): six of the ten nodes have every pin dead
   (`lem:case-III-claim612-points-affineIndep-producer`, `lem:case-III-claim612-detpoly`,
@@ -1657,10 +1659,10 @@ declaration's name as its header writes it:
   `lem:case-III-claim612-r-nonzero`, kept as KT's exposition (retiring or merging them is not among
   principle D's fixes, `a111b17a`, `notes/Prose-report.md` G4; `F-120`'s double is `24251386`'s),
   and `exists_tripleLI_polynomial`, a step of the dead $d = 3$ dispatch's choice of normals;
-  round 2: the witness and `lem:case-III-claim612-points-affineIndep` are one node (task 14); the
+  round 2: the witness and `lem:case-III-claim612-points-affineIndep` are one node (`58307442`); the
   three affine nodes and `lem:case-III-claim612-r-nonzero` framed by `rem:case-III-kt-steps`, which
   says that the formal proof takes vectors in homogeneous coordinates and obtains $r \neq 0$ with
-  the relation (task 18).
+  the relation (`98f89445`).
 - **F-167** · N · `case-iii.tex`'s case $d = 3$: the three frameworks and KT Claim 6.12
   (`algebraic-induction/case-iii.tex`): ten of the thirteen pins of its eight nodes are dead, all
   but `case_III_claim612_gen` and `lem:case-III-claim612-eq644`'s `hingeRow_comp_single_tail` and
@@ -1682,11 +1684,11 @@ declaration's name as its header writes it:
   `lem:case-III-redundant-combination`; the placement and relabel nodes stay as KT's exposition, as
   retiring or merging them is not among principle D's fixes, `a111b17a`, `notes/Prose-report.md` G3
   and G4; `lem:case-III-claim612-eq644`'s bundle was `24f04215`'s); round 2: the two placement
-  nodes pin `case_III_rank_certification`, the arms' theorem at their roles (task 7); the placement
+  nodes pin `case_III_rank_certification`, the arms' theorem at their roles (`9e98aaba`); the placement
   and relabel nodes framed by `rem:case-III-kt-steps`, the placements' leads saying that each is a
   case of `lem:case-III-rank-certification`, and the note after `lem:case-III-chain-dispatch` names
   the argument of its citations of the relabel nodes and of `lem:case-II-realization-placement`
-  (task 18).
+  (`98f89445`).
 - **F-171** · N · `case-iii.tex`'s general case (`algebraic-induction/case-iii.tex`): the formal
   route of KT Lemma 6.13 below the three live pins has no node. The choice of $q$ off four factors
   (`chainData_split_w6b_gates`, with the $d \times d$ minor `exists_tupleLI_polynomial`), KT's
@@ -1716,7 +1718,7 @@ declaration's name as its header writes it:
   dispatch describe; `lem:triangle-realization`'s dead pin (deadness alone is no reason to unpin);
   and `lem:case-III`'s dead $d = 3$ pin `case_III_realization`, outside the open's choice for this
   finding, a candidate for `a111b17a`'s list, `notes/Prose-report.md` G4 (`1d35d435`–`d851de0f`
-  unpinned such wrappers); round 2: `case_III_realization` unpinned (task 14).
+  unpinned such wrappers); round 2: `case_III_realization` unpinned (`58307442`).
 - **F-192** · N · `lem:exists-tight-partition`, `lem:partitionDef-merge` (`jacobs.tex`): each
   lemma pins a definition beside its claim. The first pins `IsTightPartition`, and its statement
   defines "tight" in a closing sentence; the second pins `crossingEdgesWithin`, the count
@@ -1853,7 +1855,7 @@ declaration's name as its header writes it:
   rigidity-matrix`, at `9eb2c776`); read (the statement of the pin, and the body of
   `le_finrank_span_rigidityRows_path`).
   *Found:* round 5 task 4.2.
-  *Disposition:* done (RECONCILE round 2 task 12): unpinned, as the pin's proof reaches
+  *Disposition:* done (`94196444`): unpinned, as the pin's proof reaches
   `def:cut-edges-2ec` (`deficiency.tex`), so a node in `rigidity-matrix.tex` would have a forward
   edge; `lem:block-rank-path`'s proof edge to the theorem went, and `thm:pencil-x0-cycle`'s proof
   `\uses` `lem:pencil-lifting-restrict`. The path lemma's pin now reaches that definition
@@ -1870,7 +1872,7 @@ declaration's name as its header writes it:
   read (the statement of `mem_hingeRowBlock_iff`, `RigidityMatrix/Claim612.lean`; a `grep` for
   its callers).
   *Found:* round 5 task 4.7.
-  *Disposition:* done (RECONCILE round 2 task 12): `def:hinge-row-block`'s fourth pin, its claim in
+  *Disposition:* done (`94196444`): `def:hinge-row-block`'s fourth pin, its claim in
   the remark after the definition and a new note; the proofs of `lem:screw-map-rows` and four
   nodes whose pins reached the lemma only through it `\uses` the definition instead.
 - **F-249** · N · `def:pencil-x0-reduces` (`main-component.tex`): its first pin, `Graph.IsOpenEar`,
@@ -1883,7 +1885,7 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:pencil-generic-one-ear`, at
   `23bf8244`); read (`Graph.IsOpenEar`, a structure, `Pencil/MainComponent/Coverage.lean`).
   *Found:* round 5 task 4.9.
-  *Disposition:* done (RECONCILE round 2 task 13): `def:open-ear` in *Ears and cycles* takes the
+  *Disposition:* done (`cd516eda`): `def:open-ear` in *Ears and cycles* takes the
   pin, with $k \ge 0$ as its structure allows (an edge $ab$ at $k = 0$); the reduction `\uses` it,
   and the statement edges of the two lemmas and of `def:pencil-x0-chain`, whose pins reach the
   reduction only through the ear, move to it.
@@ -2106,7 +2108,7 @@ declaration's name as its header writes it:
   `thm:isTightOn-union-with-bonus` assumes $V$ finite as its pin does.
   *Evidence:* read (the statement of `insert_vertex_with_edges`, `Sparsity.lean`).
   *Found:* round 1 task 5.2.
-  *Disposition:* done (task 11): the statement takes no finiteness of $V$, as its pin.
+  *Disposition:* done (`40e1f4c8`): the statement takes no finiteness of $V$, as its pin.
 - **F-020** · S · `def:isInfinitesimallyRigid` (`frameworks.tex`): `IsInfinitesimallyRigid` asks
   only $\dim\ker R(G,p) \le d(d+1)/2$, i.e. rank at least $d|V| - d(d+1)/2$, where Jordán (2016,
   pp. 36–37) asks for rank $S(|V|,d)$. The two agree for $|V| \ge d$ and $|V| \le 1$, so at
@@ -2125,7 +2127,7 @@ declaration's name as its header writes it:
   statement is weaker than the pin, as in `F-015`.
   *Evidence:* read (the statement of `span_range_rigidityRow`, `RigidityMatroid.lean`).
   *Found:* round 1 task 5.7.
-  *Disposition:* done (task 11): the statement asks only that $G$ have finitely many edges, as
+  *Disposition:* done (`40e1f4c8`): the statement asks only that $G$ have finitely many edges, as
   its pin.
 - **F-027** · S · `lem:isSparse-of-rowIndependent-two` (`laman-theorem.tex`): the statement assumes
   $V$ finite, which its pin `isSparse_of_edgeSetRowIndependent_dim_two` does not (it takes no
@@ -2134,7 +2136,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement of `isSparse_of_edgeSetRowIndependent_dim_two`, and the body of
   `EdgeSetRowIndependent`, `RigidityMatroid.lean`).
   *Found:* round 1 task 5.8.
-  *Disposition:* done (task 11): the statement takes no finiteness, as its pin.
+  *Disposition:* done (`40e1f4c8`): the statement takes no finiteness, as its pin.
 - **F-028** · S · five nodes of `rigidity-matroid.tex`'s *Lifting row-independence through
   Henneberg moves*: `lem:typeI-rowIndependent-extend`, `lem:typeI-rowIndependent-lift`,
   `lem:pendant-rowIndependent-lift`, `lem:typeII-rowIndependent-extend` and
@@ -2147,7 +2149,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the seven statements, `MatroidIdentification.lean` and `RigidityMatroid.lean`,
   whose only section variable is `{V : Type*}`).
   *Found:* round 1 task 5.9.
-  *Disposition:* done (task 11): the five statements are for graphs on any sets, as their pins;
+  *Disposition:* done (`40e1f4c8`): the five statements are for graphs on any sets, as their pins;
   the subsection's other two keep $V$ finite, as theirs do.
 - **F-031** · S · `lem:exists-isTightOn-of-insert-not-sparse` (`count-matroid.tex`): the statement
   assumes $V$ finite, which its pin `IsSparse.exists_isTightOn_of_insert_not_sparse` does not (its
@@ -2156,7 +2158,7 @@ declaration's name as its header writes it:
   statements say.
   *Evidence:* read (the statement, `Sparsity.lean`; `#check` in a `lake lean` scratch file).
   *Found:* round 1 task 5.11.
-  *Disposition:* done (task 11): the statement is for a graph on any set $V$, and says so against
+  *Disposition:* done (`40e1f4c8`): the statement is for a graph on any set $V$, and says so against
   the section's lead.
 - **F-034** · S · `lem:pebble-game-invariants` (`pebble-game.tex`): the statement assumes $V$
   finite and $\ell < 2k$, and states all four invariants for a vertex $v$ and a set $V'$ with
@@ -2168,7 +2170,7 @@ declaration's name as its header writes it:
   which needs $\mathrm{out}_D \le k$ without $\ell < 2k$, cites the proof of (1) instead.
   *Evidence:* read (the five statements and the section variables of `PebbleGame/Basic.lean`).
   *Found:* round 1 task 5.13.
-  *Disposition:* done (task 11): the statement is on any $V$ at any $k$ and $\ell$, (1)–(2) for
+  *Disposition:* done (`40e1f4c8`): the statement is on any $V$ at any $k$ and $\ell$, (1)–(2) for
   every vertex and finite $V'$, (3)–(4) each at $\ell \le k|V'|$; the four sentences that cited an
   invariant's proof for want of its hypotheses, the one after `def:tryAddEdge` among them, cite
   the invariant.
@@ -2182,7 +2184,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `runPebbleGameWith_sound`, `Correctness.lean`;
   `#check` in a `lake lean` scratch file).
   *Found:* round 1 task 5.14 (the open's diagnosis saw the first half).
-  *Disposition:* done (task 11): the statement takes no bound on $\ell$ but in its "In
+  *Disposition:* done (`40e1f4c8`): the statement takes no bound on $\ell$ but in its "In
   particular", for the pebble game on $G$, which `def:runPebbleGame` defines for $\ell < 2k$;
   the proof's remark says so.
 - **F-037** · S · `lem:workhorseWitness-certifies` (`pebble-game.tex`): the statement takes a finite
@@ -2191,7 +2193,7 @@ declaration's name as its header writes it:
   pin, as in `F-026`. Task 5.13's prose after `def:workhorseWitness` says the same.
   *Evidence:* read (the statement of `certifies_against`, `Correctness.lean`; `#check`).
   *Found:* round 1 task 5.14.
-  *Disposition:* done (task 11): the statement, and the sentence after `def:workhorseWitness` that
+  *Disposition:* done (`40e1f4c8`): the statement, and the sentence after `def:workhorseWitness` that
   restates it, take a graph with finitely many edges.
 - **F-038** · S · `def:blockingWitness` (`pebble-game.tex`): task 5.13 (`db7ff7d6`) changed the
   content of this unpinned definition. It said that a blocking witness is a finite $V' \subseteq V$
@@ -2230,7 +2232,7 @@ declaration's name as its header writes it:
   *Evidence:* read (`#check @PebbleGameResult`: the `[Fintype V]` of `Correctness.lean`'s
   `Verdict` section is not among its binders).
   *Found:* round 1 task 5.15.
-  *Disposition:* done (task 11): the definition takes a graph with finitely many edges, as its
+  *Disposition:* done (`40e1f4c8`): the definition takes a graph with finitely many edges, as its
   pin.
 - **F-046** · S · `def:outListSorted`, `lem:mem-outListSorted`, `def:edgeListSorted`,
   `lem:mem-edgeListSorted` (`executable.tex`): the two out-neighbour nodes assume $V$ finite, and
@@ -2243,7 +2245,7 @@ declaration's name as its header writes it:
   *Evidence:* read (`#check` of the eight pins through `lake lean`, and their bodies in
   `PebbleGame/Exec.lean`).
   *Found:* round 1 task 5.16.
-  *Disposition:* done (task 11): `def:outListSorted` is on any set with a linear order, and
+  *Disposition:* done (`40e1f4c8`): `def:outListSorted` is on any set with a linear order, and
   `def:edgeListSorted` for a graph with finitely many edges; the two membership lemmas follow
   their definitions.
 - **F-048** · S · `def:body-hinge-framework`, `thm:body-hinge-tay` (`body-hinge.tex`): the
@@ -2273,7 +2275,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the two pins' statements and bodies, `Molecular/RigidityMatrix/Basic.lean`;
   KT 2011 pp. 668–669, in `.refs/`).
   *Found:* round 2 task 1.
-  *Disposition:* done (task 2): the statement is its pins' inclusion, retitled, with a short proof
+  *Disposition:* done (`3456d6a7`): the statement is its pins' inclusion, retitled, with a short proof
   and note; the rotation and KT Lemma 5.2 left it. The passage before
   `lem:generic-realization-of-rigid` states KT Lemma 5.2 (KT p. 669; a special case of JJ 2010
   Lemma 7.1, p. 584) and the formal steps that replace it: that lemma for infinitesimally rigid
@@ -2304,7 +2306,7 @@ declaration's name as its header writes it:
   applies `thm:tay-witness` to $(D-1)\cdot G$ for every $d$. Task 2.3 kept every hypothesis.
   *Evidence:* read (the five pins' statements, `BodyBar/TayTheorem.lean` and `BodyHinge.lean`).
   *Found:* round 2 task 2.3.
-  *Disposition:* done (task 11): both statements and `intro.tex`'s summary are at every $d$, and
+  *Disposition:* done (`40e1f4c8`): both statements and `intro.tex`'s summary are at every $d$, and
   `deficiency.tex`'s sentence that applied `thm:tay-witness` "when $d \ge 2$" drops the bound; no
   row states one.
 - **F-060** · S · `lem:case-III-claim612-extensor-span` (`algebraic-induction/case-iii.tex`): the
@@ -2315,7 +2317,7 @@ declaration's name as its header writes it:
   the omit-two form, so it proves the pin's statement, not the node's.
   *Evidence:* read (the pin's statement, `Molecular/RigidityMatrix/Claim612.lean`).
   *Found:* round 2 task 2.4.
-  *Disposition:* done (task 2): the title and statement are the omit-two extensors $E_{ij}$, with
+  *Disposition:* done (`3456d6a7`): the title and statement are the omit-two extensors $E_{ij}$, with
   the six joins at $d = 3$ as their case; the proof and the note follow, and
   `lem:case-III-chain-discriminator`'s citation names the lemma, not its proof.
 - **F-079** · S · `lem:rk-within-parts` (`deficiency.tex`): the statement bounds $r(Y) + |P|$
@@ -2327,7 +2329,7 @@ declaration's name as its header writes it:
   note.
   *Evidence:* read (the statements of both, `Molecular/Deficiency.lean`).
   *Found:* round 2 task 2.10.
-  *Disposition:* done (task 10): the statement is the pin's, for every set $Y$ of edges whose ends
+  *Disposition:* done (`0b8a78e0`): the statement is the pin's, for every set $Y$ of edges whose ends
   each lie in one part of $P$, the note replaced by a remark naming the two sets its users take;
   `lem:weak-duality`'s proof sets its $Y$, and `thm:def-eq-corank`'s note applies it at $Y_0$.
 - **F-083** · S · `lem:circuit-induces-rigid` (`molecular-induction.tex`): the statement says, as KT
@@ -2424,7 +2426,7 @@ declaration's name as its header writes it:
   of `complementIso_smul_eq_extensor_join` does inline. Task 2.18 kept the statement, with a note.
   *Evidence:* read (the three pins' statements; the body of `complementIso_smul_eq_extensor_join`).
   *Found:* round 2 task 2.18.
-  *Disposition:* done (task 19): part (2) states $Y = n_1 \vee c$ for any $n_1, n_2, c$, as the
+  *Disposition:* done (`5955454a`): part (2) states $Y = n_1 \vee c$ for any $n_1, n_2, c$, as the
   second and third pins do; the case $n_2$ is at the end of the proof, by the repeated vector and
   part (1), and the note says that no pin states it; the proof of
   `lem:case-III-claim612-line-in-panel-union` cites part (2) for $n_1$ and that end for $n_2$.
@@ -2438,7 +2440,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the pin's statement and the step `hnk` of its body,
   `Molecular/AlgebraicInduction/CaseIII/Arms.lean`; KT 2011 pp. 670 and 692, `.refs/`).
   *Found:* round 3 task 1.
-  *Disposition:* done (task 6): the statement takes the pin's range $3 \le m \le d + 1$, and the
+  *Disposition:* done (`c2cfcd08`): the statement takes the pin's range $3 \le m \le d + 1$, and the
   note gives KT's range and both of KT's uses, each inside it: the triangle in the proof of their
   Lemma 6.7(i) (p. 677), which this entry missed, and the cycles on at most $d$ vertices in that of
   Lemma 6.13 (p. 692). `panel-layer.tex`'s `\cref` says the node's range.
@@ -2459,7 +2461,7 @@ declaration's name as its header writes it:
   *Found:* round 3 task 1.
   *Disposition:* reported (`notes/Prose-report.md`, S19); round 2: `rem:case-I-kt-steps` says that
   the formal proof uses neither the identity nor its forms with the block pin, and counts rows
-  instead (task 16).
+  instead (`e6f1e425`).
 - **F-117** · S · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): the
   statement says that each locus $\{p : \operatorname{rank} R(G,p) \ge r\}$ is Zariski-open, so
   the rank is lower semicontinuous and maximal on a dense set, and dually that $\dim Z(G,p)$ is
@@ -2472,9 +2474,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the three statements, `Molecular/AlgebraicInduction/GenericityDevice.lean` and
   `CaseI.lean`).
   *Found:* round 3 task 1.
-  *Disposition:* done (task 5): the statement made true, at nondegenerate hinges (task 2,
+  *Disposition:* done (`1b46edc6`): the statement made true, at nondegenerate hinges (`3456d6a7`,
   `F-149`), and the node repinned on `exists_rankPolynomial_of_le_finrank_linking`, its note saying
-  which clauses the pin proves and which are the proof's (task 5).
+  which clauses the pin proves and which are the proof's (`1b46edc6`).
 - **F-121** · S · `prop:rigidity-matrix-prop11` (`algebraic-induction/panel-layer.tex`): the
   statement is KT Proposition 2.3's rank formula, Jackson and Jordán's Theorem 6.1, at a generic
   panel-hinge realization with nondegenerate hinges. Its pin `rigidityMatrix_prop11` takes any
@@ -2620,7 +2622,7 @@ declaration's name as its header writes it:
   p. 675, `.refs/`); measured (`scripts/blueprint-deps.py --label lem:claim-6-4` and
   `lem:case-I-realization`, at `9a465598`).
   *Found:* round 3 task 2.7.
-  *Disposition:* done (task 6): the statement is the pin's: for any $G$, with $G/E(H)$ a simple
+  *Disposition:* done (`c2cfcd08`): the statement is the pin's: for any $G$, with $G/E(H)$ a simple
   $0$-dof-graph with a generic full-rank realization, some normals $q_0$ at which $D(|s_c| - 1)$
   rows of $G \setminus E(H)$ are independent after the columns of $V(H)$ are deleted. The pin's
   statement gives some $q_0$ only, so KT's point is the proof's, which keeps its steps and stops
@@ -2644,7 +2646,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `Molecular/AlgebraicInduction/Theorem55.lean`; KT
   2011 pp. 673--676, `.refs/`).
   *Found:* round 3 task 2.8.
-  *Disposition:* done (task 6): `lem:case-I-realization-h65` assumes a proper rigid subgraph and
+  *Disposition:* done (`c2cfcd08`): `lem:case-I-realization-h65` assumes a proper rigid subgraph and
   `lem:case-I-dispatch` the induction hypothesis, for every $k'$, as their pins do; the proofs'
   sentences assuming them go, with the first node's note and the second's first sentence.
   `lem:case-I-realization` is kept, as the report suggests.
@@ -2681,7 +2683,7 @@ declaration's name as its header writes it:
   witness: under `hspan`, with no link of the smaller graph at $v$ and a new edge from $v$ to
   $w \neq v$, every screw lies in the span of that edge's extensor.
   *Found:* round 3 task 2.9.
-  *Disposition:* done (task 4): the node drops the second assertion with its pin, the proof's
+  *Disposition:* done (`ab3a0d45`): the node drops the second assertion with its pin, the proof's
   second part and the note, and the lead's sentences on it; it keeps the first in its Case II
   setting, with a note that the pin is its form for every framework, set $t$ and body $v$.
   `lem:splitoff-edge-substitution`'s unpinned clause stays, as it is true (the open's decision).
@@ -2701,10 +2703,10 @@ declaration's name as its header writes it:
   `IsInfinitesimalMotion`, `Molecular/RigidityMatrix/Basic.lean`; KT 2011 p. 668, `.refs/`); a `lake
   lean` witness: at an edge with a zero supporting extensor every motion has $S(u) = S(v)$.
   *Found:* round 3 task 2.10.
-  *Disposition:* done (task 5): the statement is restated on the Zariski-open set $U$ of normals
+  *Disposition:* done (`1b46edc6`): the statement is restated on the Zariski-open set $U$ of normals
   with nondegenerate hinges, where it holds, which contains KT's nonparallel realizations; the
-  remark after the proof says that the restriction is needed (task 2). The node pins the open-set
-  form, `exists_rankPolynomial_of_le_finrank_linking` (task 5).
+  remark after the proof says that the restriction is needed (`3456d6a7`). The node pins the open-set
+  form, `exists_rankPolynomial_of_le_finrank_linking` (`1b46edc6`).
 - **F-150** · S · `lem:case-II-realization-placement`
   (`algebraic-induction/genericity-and-count.tex`): the statement starts from a realization of the
   splitting-off $G_v^{ab}$, with nondegenerate hinges and every motion constant on its vertices. Its
@@ -2739,7 +2741,7 @@ declaration's name as its header writes it:
   `Molecular/AlgebraicInduction/CaseIII/Realization.lean`; `def:panel-hinge-framework`); the
   example's deficiencies by hand, over the fifteen partitions of its four vertices.
   *Found:* round 3 task 2.11.
-  *Disposition:* done (task 2): the statement takes $G$ simple, and the proof no longer assumes it.
+  *Disposition:* done (`3456d6a7`): the statement takes $G$ simple, and the proof no longer assumes it.
   The induction hypothesis stays in the note, which says that over an infinite field the statement
   holds without it (KT Theorem 5.5 at $G_v$, `thm:theorem-55`), as this entry's reading has it.
 - **F-158** · S · `lem:case-III-candidate-row` (`algebraic-induction/case-iii.tex`): the statement
@@ -2763,7 +2765,7 @@ declaration's name as its header writes it:
   `C(n_a + t • n_b, n_a)` (`panelSupportExtensor_add_smul_left`); and
   `hingeRow a b φ = hingeRow v b φ - hingeRow v a φ`.
   *Found:* round 3 task 2.12.
-  *Disposition:* done (task 7): the node pins `case_III_rank_certification`, of which it is the
+  *Disposition:* done (`9e98aaba`): the node pins `case_III_rank_certification`, of which it is the
   case $(G, p_1)$, the framework of `def:case-III-candidate` for a normal of a hyperplane meeting
   $\Pi(a)$ in $L$; its note gives each hypothesis's source (`lem:case-III-redundant-decomposition`
   and the rank of $R(G_v^{ab}, q)$). Two of the pin's proof edges are forward (`F-257`).
@@ -2780,7 +2782,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies of the two pins, of `case_III_arm_realization`,
   `_M2` and `_M3`, and of `caseIIICandidate`; KT 2011 pp. 682 and 686–691, `.refs/`).
   *Found:* round 3 task 2.14.
-  *Disposition:* done (task 7): both nodes pin `case_III_rank_certification`, the theorem that
+  *Disposition:* done (`9e98aaba`): both nodes pin `case_III_rank_certification`, the theorem that
   `case_III_arm_realization_M2` applies with $a$ and $b$ exchanged and $-r$, and `_M3` with $a$,
   $c$, $v$ in the roles of $v$, $a$, $b$, the normals $q_\rho$, $-r$ and $G - a$; each statement
   names its framework as `def:case-III-candidate`'s at those roles, and each note gives each
@@ -2799,7 +2801,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `chainData_fire_discriminator`, and of
   `exists_shared_redundancy_and_matched_candidate` and `chainData_dispatch`).
   *Found:* round 3 task 2.15.
-  *Disposition:* done (task 4): the statement gives the pin's conclusion: $q$ in general position,
+  *Disposition:* done (`ab3a0d45`): the statement gives the pin's conclusion: $q$ in general position,
   $D(|V(G)| - 2)$ independent rows of $R(G_1, q)$ (KT eq. (6.46)), the form
   $S \mapsto r(S(v_0) - S(v_2))$ in the row space of $R(G - v_1, q)$ (KT eq. (6.52)), and the
   panel; the note keeps the pin's formal extras and says that `chainData_dispatch` uses all of
@@ -2888,7 +2890,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the pins; the body of
   `exists_molecular_rankHypothesis_generalPosition`, `Molecule/Modelling.lean`).
   *Found:* round 4 task 2.2.
-  *Disposition:* done (task 9): `lem:polarity-join` is stated over a field $K$, as its first two
+  *Disposition:* done (`6e56a1d1`): `lem:polarity-join` is stated over a field $K$, as its first two
   pins are, its second clause at $K = \R$; `lem:screw-determination`'s (2) as
   `existsUnique_screwVel_eq` states it, for any family and one non-collinear triple, its note
   gone. The rescaling keeps its note, which now names its formal form, `lem:pencil-jj-rescale`'s
@@ -2936,8 +2938,8 @@ declaration's name as its header writes it:
   `exists_rankHypothesis_isGeneralPosition4`, `IsGeneralPosition4` and
   `IsGeneralPositionPlacement`).
   *Found:* round 4 task 2.3.
-  *Disposition:* done (task 9.1): the "In particular" is not pinned at the theorem, where
-  `rankHypothesis_zero_iff` would leave five missing edges, two of them closing a cycle (task 9,
+  *Disposition:* done (`64a531db`): the "In particular" is not pinned at the theorem, where
+  `rankHypothesis_zero_iff` would leave five missing edges, two of them closing a cycle (`6e56a1d1`,
   `F-259`); that declaration joins the pins of `lem:trivial-motions-rank-bound`, which the
   theorem's proof now `\uses` and its note cites for the case.
 - **F-187** · S · `lem:molecule-graph-carrier` (`molecule-application.tex`): the label supply left
@@ -2955,7 +2957,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the five pins and the body of `shadowGraph`,
   `Molecule/Carrier.lean`; the signature of `exists_molecular_rankHypothesis_generalPosition`).
   *Found:* round 4 task 2.4.
-  *Disposition:* done (task 8): the statement claims what its pins prove, with the bound as a
+  *Disposition:* done (`41e7a771`): the statement claims what its pins prove, with the bound as a
   clause ("whose edges are drawn from a set of more than $6(|V| - 1)$ labels",
   `card_shadowLabel_lt`); the proof builds the labels, and the note keeps why the bound is needed
   and the pins' roles.
@@ -2968,7 +2970,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of both declarations, `GenericRigidityMatroid.lean`; the body of
   `molecule_rank_lower_bound`).
   *Found:* round 4 task 2.4.
-  *Disposition:* done (task 8): the node also pins `finrank_range_rigidityMap_le_genericRank` for
+  *Disposition:* done (`41e7a771`): the node also pins `finrank_range_rigidityMap_le_genericRank` for
   the rank form, its note naming each pin's clause; its proof derives the rank form, its new edge
   to `lem:span-range-rigidityRow` per the pin's reach.
 - **F-191** · S · `lem:exists-tight-partition`, `lem:partitionDef-merge`,
@@ -2987,7 +2989,7 @@ declaration's name as its header writes it:
   *Found:* round 4 task 2.5.
   *Disposition:* reported (`notes/Prose-report.md`, S39); round 2: `lem:partitionDef-merge` is
   stated for every nonempty $Q$, its proof saying what $|Q| = 1$ gives, and its sentence left the
-  note (task 10).
+  note (`0b8a78e0`).
 - **F-195** · S · `thm:laman-square-count`, `lem:normal-cross-count-rooted`,
   `lem:normal-cross-count-partition` and the lemmas of `sec:jacobs-counting` (`jacobs.tex`):
   statements that assume more, or claim more, than their pins. The theorem asks $V$ nonempty;
@@ -3108,7 +3110,7 @@ declaration's name as its header writes it:
   total degree of the determinant), or drop it from the statement.
   *Evidence:* read (the bodies of the two pins; no degree lemma in `HingeGeneric.lean`).
   *Found:* round 4 task 2.11.
-  *Disposition:* done (task 8): the statement claims a polynomial, without the bound, as the pin
+  *Disposition:* done (`41e7a771`): the statement claims a polynomial, without the bound, as the pin
   proves; the proof and the abundance proof's citation say "polynomial", and the note no longer
   says that no pin states the bound. The docstrings' bound is `F-220`'s.
 
@@ -3145,7 +3147,7 @@ declaration's name as its header writes it:
   declaration for the forest form; retiring the node is `F-091`'s other option (task 8.2).
   *Evidence:* read (the pin's statement; the node's statement and proof).
   *Found:* round 5 task 3.4.
-  *Disposition:* done (task 3): the node states the pin's case $h' = 0$ (for $D \ge 2$, an
+  *Disposition:* done (`43c5c8d7`): the node states the pin's case $h' = 0$ (for $D \ge 2$, an
   independent set of $M(\widetilde{G_v^{ab}})$ with no copy of $ab$), KT's use at p. 662, and is
   pinned and filled; its proof keeps the forest construction, a note says that the pin is
   `lem:edge-splitting`'s case (i), and it follows that lemma.
@@ -3164,7 +3166,7 @@ declaration's name as its header writes it:
   `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` and
   `linearIndependent_sum_pinned_block`; the citing proofs).
   *Found:* round 5 task 3.8.
-  *Disposition:* done (task 10): the first node states the pins' dimension of $Z(G,p)$ and, at
+  *Disposition:* done (`0b8a78e0`): the first node states the pins' dimension of $Z(G,p)$ and, at
   nondegenerate hinges, the independent rows, for every body-hinge framework whose motions are
   constant on $\emptyset \neq V(G) \subseteq W$; the block lemma is the pin's, for any two finite
   families of forms; each `\cref` that read the special case now cites the claim.
@@ -3199,7 +3201,7 @@ declaration's name as its header writes it:
   homogenized centres, `scratch/reconcile-statements/RescaleWitness.lean`, gitignored); measured
   (`--summary` on a scratch copy with the pins shared, `--tex-root`).
   *Found:* RECONCILE round 2 task 9.
-  *Disposition:* done (task 9.1): (2) is pinned on the two, beside (1)'s five, its note saying
+  *Disposition:* done (`64a531db`): (2) is pinned on the two, beside (1)'s five, its note saying
   which clause each gives; a `lake lean` witness derives (1)'s conclusions at the rescaled normals
   from them and (1)'s pins (`scratch/reconcile-statements/T91Witness.lean`, gitignored).
 
@@ -4194,7 +4196,7 @@ declaration's name as its header writes it:
   either (`F-049`, round 2 task 2).
   *Evidence:* read (the two docstrings beside the statements and bodies).
   *Found:* RECONCILE round 2 task 2.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 2): round 3's docstring sweep
+  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep
   (*Moved to a later round*).
 - **F-254** · L · `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
   (`Molecular/AlgebraicInduction/PanelHinge.lean`) and `isInfinitesimallyRigidOn_insert_iff`
@@ -4204,7 +4206,7 @@ declaration's name as its header writes it:
   first. `F-148` covers the rest of both docstrings.
   *Evidence:* read (the two docstrings; the node's pins; a `grep` for the first's callers).
   *Found:* RECONCILE round 2 task 4.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 4): round 3's docstring sweep
+  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep
   (*Moved to a later round*); the first is among the declarations round 2 unpins.
 - **F-256** · L · `exists_good_realization` and `exists_good_realization_reindex`
   (`Molecular/AlgebraicInduction/GenericityDevice.lean`) and `exists_good_realization_const`
@@ -4213,7 +4215,7 @@ declaration's name as its header writes it:
   `exists_rankPolynomial_of_le_finrank_linking`, and none of the three is pinned.
   *Evidence:* read (the three docstrings and the section header; the node's pin).
   *Found:* RECONCILE round 2 task 5.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 5): round 3's docstring sweep
+  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep
   (*Moved to a later round*); the first and the third are among the declarations round 2 unpins.
 - **F-258** · L · `linearIndependent_sum_augment_candidateRow` (`Molecular/RigidityMatrix/Basic.lean`),
   `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow`
@@ -4223,7 +4225,7 @@ declaration's name as its header writes it:
   `case_III_rank_certification`, and none of the three is pinned.
   *Evidence:* read (the three docstrings; the nodes' pins).
   *Found:* RECONCILE round 2 task 7.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 7): round 3's docstring sweep
+  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep
   (*Moved to a later round*); all three are among the declarations round 2 unpins.
 - **F-263** · L · `mem_hingeRowBlock_iff` (`Molecular/RigidityMatrix/Claim612.lean`): its
   docstring gives it as `lem:case-III-claim612-block-iff-perp`'s, and the file's header lists it
@@ -4231,8 +4233,7 @@ declaration's name as its header writes it:
   round 2 task 12 it is a pin of `def:hinge-row-block` (`rigidity-matrix.tex`, `F-248`).
   *Evidence:* read (the docstring and the header; the two nodes' pins).
   *Found:* RECONCILE round 2 task 12.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 12): round 3's docstring
-  sweep (*Moved to a later round*).
+  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep (*Moved to a later round*).
 - **F-264** · L · `PanelHingeFramework.case_III_realization`
   (`Molecular/AlgebraicInduction/CaseIII/Realization.lean`): its docstring gives it as
   `lem:case-III`'s, and the file's header (17) and its first section's (35) call it the all-$k$
@@ -4242,8 +4243,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstring, the header and both declarations' statements and bodies; a
   `grep` of the Lean for callers).
   *Found:* RECONCILE round 2 task 14.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 14): round 3's docstring
-  sweep (*Moved to a later round*).
+  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep (*Moved to a later round*).
 
 ## M — mathematics and sources
 
@@ -4351,12 +4351,12 @@ declaration's name as its header writes it:
   *Found:* round 3 task 1.
   *Disposition:* done (tasks 15–18; reported as `notes/Prose-report.md` M3, and the PI chose to keep
   KT's route, explained): the twelve `\cref`s of `lem:genericity-device` say which argument they
-  borrow, three of them now citing the minor of `lem:rank-polynomial-of-le-finrank` (task 15); Case
+  borrow, three of them now citing the minor of `lem:rank-polynomial-of-le-finrank` (`daa53665`); Case
   I's group, `lem:claim-6-4` and `lem:case-I-splice-seed` among it, framed by `rem:case-I-kt-steps`
-  (task 16); Case II's group, `lem:case-II` and `lem:case-II-realization-placement` among it,
-  framed by `rem:case-II-kt-steps` (task 17); Case III's group, the candidate completion and the
+  (`e6f1e425`); Case II's group, `lem:case-II` and `lem:case-II-realization-placement` among it,
+  framed by `rem:case-II-kt-steps` (`04b33020`); Case III's group, the candidate completion and the
   relabel lemmas among it, framed by `rem:case-III-kt-steps`, and `lem:case-III-chain-dispatch`'s
-  note names the argument of each citation (task 18).
+  note names the argument of each citation (`98f89445`).
 
 - **F-222** · M · `cor:bodyhinge-generic-tree-packing`, as `body-hinge.tex` cites it: after
   `thm:body-hinge-tay` the chapter says that for frameworks "with hinges in general position", KT

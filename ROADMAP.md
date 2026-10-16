@@ -176,7 +176,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 4/5: applications, continuations and the introduction) | the five chapters `bar-joint-3d.tex` → `generic-lift.tex`, then `intro.tex` (prose only) | ✓ Complete — prose only, the dependency graph and pins unchanged; 56 findings recorded in `notes/Prose-findings.md` (see `notes/Prose-applications-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (PROSE 5/5: graph repairs and the findings report) | every chapter's dependency edges, pins and node shapes; the findings report | ✓ Complete — no missing edge left, the Lean unchanged; each finding done, left or reported in `notes/Prose-report.md` (see `notes/Prose-graph-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 1/3: the texts) | the status surfaces' scopes and credits, blueprint prose and two agent manuals (docs and prose only) | ✓ Complete — the scopes and credits fixed on the status surfaces, the Lean unchanged (see `notes/Reconcile-texts-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ◐ In progress (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1287,7 +1287,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   body-hinge theorem's multigraph form, and the claims no declaration states. Round 1,
   `reconcile-texts`, opened and closed 2026-10-15 (`notes/Reconcile-texts-cleanup.md`; the
   non-vacuity rule is in `PHASE-BOUNDARIES.md` and `CLEANUP.md` §A). Round 2,
-  `reconcile-statements`, opened 2026-10-15 with 21 one-commit tasks
+  `reconcile-statements`, opened and closed 2026-10-15 in 21 one-commit tasks
   (`notes/Reconcile-statements-cleanup.md`); tasks 2–3 made the false statements S6–S10 true,
   task 4 restated the vacuous or trivially met S4 and S5, task 5 repinned S7, task 6 restated
   Case I's S14, S15 and S21, task 7 repinned Case III's three counts (S20), task 8 fixed S26, S27
@@ -1300,8 +1300,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   of Cases I, II and III that the formal proof leaves (`rem:case-I-kt-steps`,
   `rem:case-II-kt-steps`, `rem:case-III-kt-steps`; task 18 also added `F-257`'s three edges),
   task 19 restated S28 and framed `meet.tex`'s lemmas through $\bigwedge^2 W$
-  (`rem:meet-kt-steps`), and task 20 framed the forest surgery (`rem:forest-surgery-kt-steps`).
-  **Next:** its task 21, the close.
+  (`rem:meet-kt-steps`), and task 20 framed the forest surgery (`rem:forest-surgery-kt-steps`),
+  and task 21 closed it, listing the eight declarations it unpinned for round 3. **Next:** round 3's
+  open, `reconcile-lean`.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

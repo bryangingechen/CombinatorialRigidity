@@ -291,6 +291,23 @@ KT's two-step proof of Claim 6.4, now that the claim's three lemmas follow it in
 nine labels the ledger names that the blueprint lacks were absent at the round's open too.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+**RECONCILE round 2 (`reconcile-statements`, closed 2026-10-15).** The round made the blueprint's
+false statements true, repinned and merged nodes, and framed the nodes of Katoh and Tanigawa's route
+that the formal proof leaves (`notes/Reconcile-statements-cleanup.md`); the Lean is unchanged, so no
+proof rerouted and no entry is added. Tasks 6, 7 and 14 updated the entries of the nodes they
+restated, repinned or merged (`c2cfcd08`, `9e98aaba`, `58307442`): the Claim 6.12 chain now names
+the forward half of `lem:splitoff-kdof-criterion` for the node task 14 merged there. The close
+checked every entry naming a node the round restated, merged or added. The two merged-away labels
+(`lem:case-III-claim-6-11-base`, `lem:case-III-claim612-points-affineIndep-witness`) appear in no
+entry (the Claim 6.12 chain's names the merged node by its role); the six labels the round added (`def:open-ear` and the five framing remarks)
+are in none, and the crux nodes the remarks sit beside are unedited. The entries of
+`lem:case-III-chain-discriminator`, `lem:claim-6-4`, `lem:genericity-device`,
+`lem:case-III-nested-rank-lower`, `lem:cycle-realization`, `lem:case-I-dispatch` and
+`rem:kt-lemma-44` describe the mechanism, not the hypotheses the round changed, and no clause of
+theirs contradicts the statement as it stands. No entry names one of the eight declarations the
+round unpinned, and the seven labels the ledger names that the blueprint lacks are the open's.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:

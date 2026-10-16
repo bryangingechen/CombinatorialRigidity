@@ -90,7 +90,7 @@ id = "reconcile-statements"
 title = "RECONCILE 2/3: every false statement, and KT's route explained"
 note = "notes/Reconcile-statements-cleanup.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "reconcile-lean"

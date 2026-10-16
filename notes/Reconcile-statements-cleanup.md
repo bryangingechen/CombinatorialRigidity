@@ -1,22 +1,20 @@
 # RECONCILE round 2/3 — `reconcile-statements`, every false statement and KT's route explained (work log)
 
-**Status:** in progress (opened 2026-10-15). Round 2 of **RECONCILE**'s three autopilot rounds; the
-plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot/queue.toml` is the
-authority for which rounds are done. The round fixes the blueprint statements the plan assigns it
-(S4–S10 but S3, S14, S15, S20, S21, S26–S29, S35, S36, S38–S42), makes G1's three pin changes and
-G2's merges of true duplicates, and gives each group of nodes where the formal proof leaves Katoh
-and Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is not
-edited. The open (task 1, docs only) reproduced round 1's close values and sliced the round into
-21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–20 are done
-(the open; the false statements S6–S10; S4 and S5; S7's repin; Case I's S14, S15 and S21; Case
-III's three counts, S20; S26, S27 and S35; S29; S36's and the rescaling's pins, `F-259` and
-`F-260`; S38 and S39, stated generally; S40–S42, the hypotheses the pins do not take; G1's three
-pin changes, with `F-261`'s and `F-262`'s forward edges; G2's two true duplicates merged and
-`case_III_realization` unpinned; the genericity device's citations, with `F-255`'s cure; the
-framing remarks of Cases I, II and III, the last with `F-257`'s three edges; S28 and `meet.tex`'s
-framing remark; the forest surgery's). **Next concrete task:** task 21, the close (*Lemma
-checklist*; Sonnet may take it). The graph has no missing edge since task 18. Round manual:
-`CLEANUP.md`.
+**Status:** closed (opened and closed 2026-10-15). Round 2 of **RECONCILE**'s three autopilot rounds;
+the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot/queue.toml` is the
+authority for which rounds are done. The round fixed the blueprint statements the plan assigns it
+(S4–S10 but S3, S14, S15, S20, S21, S26–S29, S35, S36, S38–S42), made G1's three pin changes and
+G2's merges of true duplicates, and gave each group of nodes where the formal proof leaves Katoh and
+Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is unedited
+(the diff from `1cbdbff5` is empty). It ran in 21 one-commit tasks (the open; the false statements
+S6–S10; S4 and S5; S7's repin; Case I's S14, S15 and S21; Case III's three counts, S20; S26, S27 and
+S35; S29; S36's and the rescaling's pins, `F-259` and `F-260`; S38 and S39, stated generally;
+S40–S42; G1's three pin changes, with `F-261`'s and `F-262`'s forward edges; G2's two true
+duplicates merged and `case_III_realization` unpinned; the genericity device's citations, with
+`F-255`'s cure; the framing remarks of Cases I, II and III, the last with `F-257`'s three edges; S28
+and `meet.tex`'s framing remark; the forest surgery's; this close). S3, S16, S18, S19, S22–S25 and
+S31 wait for the phase. **Next concrete task:** round 3's open, `reconcile-lean` (no work log yet).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -26,27 +24,40 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–20 are done**; task 20, the forest surgery's framing remark
-`rem:forest-surgery-kt-steps`, is this commit (`molecular-induction.tex`, the ledger). Nothing is
-mid-stream; task 21, the close, is next. Task 20's gates: `lint.sh` green; `verify.sh` green,
-`checkdecls` silent, the same 9 `WARNING:` lines; **`1525 edges aa87ce11152366b1`**,
-**`558613b168745717`** (`sort blueprint/lean_decls`, SHA-256, first 16 digits; no pin changed);
-the dump `cmp`-identical to `dump-t19.txt`, as the task line predicted, kept as
-`scratch/reconcile-statements/dump-t20.txt`; `--summary` exits 0, both checks OK, its output task
-19's but for one parse note's line number (`ex:kt-41-overquantified`, 582 to 630, below the new
-remark): 691 nodes, 689 pinned, 1008 pins (993 distinct), 169 dead pins, 133 edges with no Lean
-basis, 85 transitive, 0 missing, 14 nodes with 4+ pins; the forward screen the open's lines
-exactly; `print.log` rebuilt by latexmk, 0 `LaTeX Warning` lines, 31 overfull boxes;
-`check-phase-note.py` green; the no-Lean-edit diff from `1cbdbff5` empty. The declarations round
-2 unpins, for the close's list (tasks 8–11, 13, 15–20 unpin none, nor do task 14's merges):
-task 4's `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller), task 5's
-`exists_good_realization` and `exists_good_realization_const` (dead, `F-152`), task 7's
-`linearIndependent_sum_augment_candidateRow`, `linearIndependent_sum_p2_candidateRow` and
-`linearIndependent_sum_p3_candidateRow` (dead), task 12's
-`add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (live: the bridge theorem's and
-the path lemma's pins call it, and its docstring names no node), and task 14's
-`case_III_realization` (dead, no caller). Their docstrings are `F-254`'s, `F-256`'s, `F-258`'s and
-`F-264`'s, and the moved pin's `F-263`'s, round 3.
+**All 21 tasks are done**; task 21, the close, is this commit (docs only: this log, the ledger,
+`notes/BlueprintExposition.md`, `notes/Reconcile.md`, ROADMAP, the queue row). Nothing is
+mid-stream. The close's checks, each run in the foreground at the close:
+- **The axioms harness**, regenerated by gate 8's command as `Axioms-close.lean`: `cmp`-identical to
+  the open's `Axioms.lean`. Run with `lake lean`, the output equals the open's (`axioms-open.log`)
+  byte for byte net of the harness's path (its only difference is the path in the one long-line
+  warning); all 19 main results give `[propext, Classical.choice, Quot.sound]`.
+- **The no-Lean-edit diff** `git diff --stat 1cbdbff5.. -- CombinatorialRigidity/ lakefile.toml
+  lake-manifest.json lean-toolchain`: empty.
+- **Gates 1–6 at the close's tree:** `lint.sh` green; `verify.sh` green, `checkdecls` silent, the
+  same 9 `WARNING:` lines; **`1525 edges aa87ce11152366b1`**, **`558613b168745717`** (the dump's
+  first two lines); the dump `cmp`-identical to `dump-t20.txt`; `--summary` exits 0, both checks OK,
+  byte-identical to task 20's: 691 nodes, 689 pinned, 1008 pins (993 distinct), 169 dead pins, 0
+  missing edges; the forward screen `cmp`-identical to the open's `forward-open.txt` (33 edges at 17
+  nodes to a later file, 4 at 4 within a file); `print.log` rebuilt by latexmk during `verify.sh`, 0
+  `LaTeX Warning` lines, 31 overfull boxes; `check-phase-note.py` run after this log's edit.
+- **`notes/BlueprintExposition.md`:** the pointers of every entry naming a node the round merged,
+  added or restated checked (the two merged-away labels and the six added ones are in no entry; the
+  seven labels the ledger names that the blueprint lacks are the open's), with a round note.
+- **The declarations the round unpinned** (the pin sets of the blueprint at `1468bc31` and at the
+  close, compared: eight left, two joined, `rankHypothesis_zero_iff` and
+  `finrank_range_rigidityMap_le_genericRank`), each checked absent from `blueprint/src`, are in
+  `notes/Reconcile.md` §3 round 3's L9 item: task 4's
+  `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller), task 5's
+  `exists_good_realization` and `exists_good_realization_const` (dead, `F-152`), task 7's
+  `linearIndependent_sum_augment_candidateRow`, `_p2_candidateRow` and `_p3_candidateRow` (dead),
+  task 12's `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (live: the bridge
+  theorem's and the path lemma's pins call it) and task 14's `case_III_realization` (dead, no
+  caller). Their docstrings are `F-254`'s, `F-256`'s, `F-258`'s and `F-264`'s, and the moved pin's
+  `F-263`'s, all in round 3's docstring sweep.
+- **The ledger** (`notes/Prose-findings.md`): 264 entries (`F-253` to `F-264` are the round's), 133
+  `done`, 11 `left`, 120 `reported`; the six round `L` entries (`F-253`, `F-254`, `F-256`, `F-258`,
+  `F-263`, `F-264`) are `reported`, to round 3's docstring sweep, and each "(task N)" the round
+  wrote reads that task's sha. The next ID is `F-265`.
 
 **Verified at the open** (2026-10-15, at `1cbdbff5`, round 1's close tree, whose Lean is
 `f39e35e6`'s):
@@ -191,19 +202,17 @@ task makes exact before editing. Every task is at Opus but the close.
 - [x] **19. `meet.tex`: S28, and the route through $\bigwedge^2 W$** (`5955454a`; `F-113`; G4,
   `F-111`): S28's part (2) at its pins' generality; `rem:meet-kt-steps`. The dump as predicted.
   `F-113` done; `F-111` left, with its round-2 clause.
-- [x] **20. KT's route: the forest surgery** (this commit; G3, G4; `F-090`, `F-091`):
+- [x] **20. KT's route: the forest surgery** (`8db5a0c1`; G3, G4; `F-090`, `F-091`):
   `rem:forest-surgery-kt-steps`; the leads of `cor:forest-surgery-deficiency` and
   `lem:forest-surgery-unsplit`. *Expected, before editing:* no node, `\uses`, pin or `\leanok`
   change, the dump `cmp`-identical to `dump-t19.txt`; as predicted. `F-091` done; `F-090` left,
   with its round-2 clause.
-- [ ] **21. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check
-  byte-identical to the open's, net of the path; the no-Lean-edit check from `1cbdbff5`; gates 1–5
-  at the last task's values; the script's report and the forward screen beside the open's figures;
-  `notes/BlueprintExposition.md`'s pointers to every node the round merged, added or restated
-  checked, with a round note; the declarations the round unpinned listed in round 3's list for
-  L9's §B check; every ledger entry the round touched has its disposition, task numbers as shas;
-  the queue row `done = true`; ROADMAP's row ✓ and its RECONCILE bullet, and `notes/Reconcile.md`'s
-  **Status**, pointing at round 3's open.
+- [x] **21. Close** (this commit; `CLEANUP.md` *Workflow* 5; Sonnet may take it). Done as its text
+  says, each check recorded under *Current state*: the axioms check, the no-Lean-edit check, gates
+  1–6, the script's report and the forward screen, `notes/BlueprintExposition.md`'s pointers and
+  round note, the unpinned declarations in round 3's list, the ledger's dispositions with task
+  numbers as shas, the queue row `done = true`, ROADMAP's row and bullet, and `notes/Reconcile.md`'s
+  **Status**.
 
 ## Candidates for the PI
 
@@ -255,20 +264,15 @@ None. The graph has no missing edge since task 18 (`F-257`'s three).
 
 ## Hand-off / next phase
 
-**Next: task 21, the close**, docs only (Sonnet may take it), as its line says; round 1's close
-(`notes/Reconcile-texts-cleanup.md`, task 9) is the model. The axioms harness by gate 8's command
-as `scratch/reconcile-statements/Axioms-close.lean`, `cmp` with the open's `Axioms.lean`, run with
-`lake lean`, its output the open's net of the path; the no-Lean-edit `git diff --stat 1cbdbff5..`
-empty; gates 1–5 at task 20's values (*Current state*), the dump `cmp` with `dump-t20.txt`; the
-`--summary` figures and the forward screen beside the open's (*Verified at the open*: 692 nodes,
-177 dead pins, 33/17 and 4/4). `notes/BlueprintExposition.md`: check its pointers to the nodes
-task 14 merged away and to every node the round restated (the task lines name them), with a round
-note. Copy *Current state*'s list of unpinned declarations into `notes/Reconcile.md` §3 round 3's
-L9 item. Replace each ledger entry's `(task N)` with that task's sha (the checklist names them,
-and `git log` task 20's). Set the queue row's `done = true`; ROADMAP's row ✓ and its RECONCILE
-bullet, and `notes/Reconcile.md`'s **Status**, name round 3's open (`reconcile-lean`) next.
-Carried in from round 1: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it),
-and its two docstring lines, already in round 3's list.
+**Next: round 3's open**, `reconcile-lean` (`notes/Reconcile.md` §3 *Round 3*; the queue's next row;
+`CLEANUP.md` is the round manual): create `notes/Reconcile-lean-cleanup.md`, reproduce this round's
+close values as its baselines (whole-project `lake build`, the axioms output, `lint.sh`, `verify.sh`,
+the dump, whose first line is now `1525 edges aa87ce11152366b1`), and slice the round.
+Round 3's list takes the eight unpinned declarations (*Current state*), the docstring entries
+`F-253`, `F-254`, `F-256`, `F-258`, `F-263` and `F-264` and `F-090`'s shim
+`splitOff_deficiency_le_of_forest_surgery` (*Moved to a later round*). The phase's list takes S3,
+S16, S18, S19, S22–S25 and S31 (the same section). `F-252` is for the PI (round 1's *Candidates*; the
+phase's (a) removes it), and its two docstring lines are in round 3's list already.
 
 ## Decisions made during this round
 
