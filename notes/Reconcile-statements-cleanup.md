@@ -12,8 +12,8 @@ edited. The open (task 1, docs only) reproduced round 1's close values and slice
 III's three counts, S20; S26, S27 and S35; S29; S36's and the rescaling's pins, `F-259` and
 `F-260`; S38 and S39, stated generally; S40–S42, the hypotheses the pins do not take; G1's first
 two pin changes). **Next concrete task:** task 13, G1's third pin change (*Lemma checklist*).
-Three missing edges that would be forward wait for the coordinator (*Blockers*); `F-255`'s and
-`F-257`'s other cures are tasks 15 and 18's. Round manual: `CLEANUP.md`.
+Every missing edge has a task: `F-261`'s and `F-262`'s are task 13's, `F-255`'s task 15's,
+`F-257`'s three task 18's. Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -25,8 +25,8 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 **Tasks 1–12 are done**; task 12, G1's first two pin changes, is this commit (`rigidity-matrix.tex`,
 `main-component.tex`, `case-iii.tex`, `case-i.tex`, `generic-lift.tex`). Nothing is mid-stream; task
-13 is next. Open for the coordinator: `F-257`'s first edge, which task 12's move did not cure, and
-`F-261` and `F-262`, two missing edges that task 12 exposed; each would be forward (*Blockers*).
+13 is next. The coordinator gave task 12's three open edges tasks after it: `F-261` and `F-262` to
+task 13, `F-257`'s first to task 18 (their lines).
 Task 12's gates: `lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:`
 lines; **`1527 edges 4b5c8b4912b3ffcd`**, **`0105d5fb12c84423`**; the dump's diff from
 `dump-t11.txt` exactly the line's prediction, kept as `scratch/reconcile-statements/dump-t12.txt`;
@@ -256,8 +256,14 @@ task makes exact before editing. Every task is at Opus but the close.
   *Ears and cycles* (2157) takes `Graph.IsOpenEar` from `def:pencil-x0-reduces` (4428), which
   `\uses` it; the statement edges of `lem:pencil-generic-one-ear` (5337) and
   `lem:pencil-rigid-good-ear` (5451) to `def:pencil-x0-reduces` move to it where neither statement
-  names a reduction (the reach report); the definition-faithfulness gate. *Expected:* one node
-  added; one pin moved (`lean_decls` unchanged); the edges as listed.
+  names a reduction (the reach report); the definition-faithfulness gate. **And `F-261`'s and
+  `F-262`'s edges** (the coordinator, after task 12): `lem:block-rank-path`'s proof `\uses`
+  `def:cut-edges-2ec`, and `lem:case-I-realization-h65`'s proof `lem:case-II-placement-new-rows`,
+  each a forward edge that replaces one task 12 removed from the same node (to
+  `thm:pencil-x0-bridge`, to `lem:case-III-claim612-block-iff-perp`), so no chapter's forward count
+  exceeds the open's (*Decisions made*). *Expected:* one node added; one pin moved (`lean_decls`
+  unchanged); the edges as listed; the two forward edges, the screen's `rigidity-matrix` and
+  `case-i` counts back to at most the open's, the missing edges two fewer.
 - [ ] **14. G2: the true duplicates merged, `case_III_realization` unpinned** (`F-120`; `F-163`,
   `F-171` in part). `lem:case-III-claim-6-11-base` (`case-iii.tex` 54) merges into
   `lem:splitoff-kdof-criterion` (`molecular-induction.tex` 1342), which pins its one pin: KT's
@@ -309,8 +315,14 @@ task makes exact before editing. Every task is at Opus but the close.
   (`lem:case-III-redundant-decomposition`, `lem:case-III-acolumn-zero`) precede the new place, and
   its users (the third framework, the certification, `lem:case-III-chain-eq666`) follow it. The
   proofs of `lem:case-III-candidate-row` and `lem:case-III-claim612-p2-placement` gain their edges
-  to it. *Expected:* those two proof `\uses` added, the missing edges two fewer; otherwise the
-  dump byte-identical; the screen unchanged.
+  to it. **And `F-257`'s first** (the coordinator, after task 12, which found its pin move did not
+  cure it): `lem:case-III-claim612-block-iff-perp` moves to just before
+  `lem:case-III-candidate-row`, with the sentences before it that its statement needs; its `\uses`
+  (`def:hinge-row-block`, `lem:case-III-candidate-row-construction`, and in the proof
+  `def:affine-subspace-extensor`) precede that place, and its users (the second and third
+  frameworks, the certification) and the $d = 3$ lead's `\cref` follow it; the candidate row's
+  proof gains its edge to it. *Expected:* those three proof `\uses` added, the missing edges three
+  fewer; otherwise the dump byte-identical; the screen unchanged.
 - [ ] **19. `meet.tex`: S28, and the route through $\bigwedge^2 W$** (`F-113`; G4, `F-111`). S28:
   `lem:complement-iso-decomposable-wedge-perp` (342–358) for $n = n_1$, as its second and third
   pins, without the independence (the case $n_2$ by alternation, in the proof). One framing remark
@@ -377,17 +389,8 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 
 ## Blockers / open questions
 
-None for task 13. Three missing proof edges, each of which would be forward, wait for the
-coordinator (task 12; the ledger has each cure's options):
-- `F-257`'s first, `lem:case-III-candidate-row` to `lem:case-III-claim612-block-iff-perp`: task
-  12's pin move did not cure it, as the certification reaches the node's other pin through
-  `case_III_full_family_restriction`; `F-257` names the node's move.
-- `F-261`, `lem:block-rank-path` to `def:cut-edges-2ec` (`deficiency.tex`), exposed by task 12's
-  unpinning.
-- `F-262`, `lem:case-I-realization-h65` to `lem:case-II-placement-new-rows`
-  (`genericity-and-count.tex`), exposed by task 12's edge move.
-
-`F-255` (task 5) is task 15's, and `F-257`'s other two (task 7) are task 18's: *Decisions made*.
+None. Every missing edge has a task (*Decisions made*): `F-255`'s is task 15's, `F-257`'s three
+are task 18's, and `F-261`'s and `F-262`'s are task 13's.
 
 ## Hand-off / next phase
 
@@ -470,3 +473,10 @@ phase's (a) removes it), and its two docstring lines, already in round 3's list.
   $G$ for $\ell < 2k$ (that definition is not the task's); a node under a chapter lead that fixes
   $V$ finite says that its $V$ need not be. A `\cref` that cited an invariant's proof, or bounded
   $d$, because the statement assumed too much now cites the claim.
+- **Task 12's open edges assigned; a forward edge may replace one** (the coordinator, after task
+  12): `F-257`'s first goes to task 18, which moves `lem:case-III-claim612-block-iff-perp` before
+  `lem:case-III-candidate-row`. `F-261` and `F-262` go to task 13 as forward edges: each replaces a
+  forward edge task 12 removed from the same node, so the gate-4 screen stays at most the open's
+  per chapter, and the graph shows the dependency rather than a missing edge. No order cures them
+  short of moving nodes across chapters (`lem:block-rank-path` before `def:cut-edges-2ec`'s
+  chapter; Case I before the counting lemmas).

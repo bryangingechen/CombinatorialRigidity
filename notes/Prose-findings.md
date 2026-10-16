@@ -957,7 +957,8 @@ declaration's name as its header writes it:
   gave the first edge to task 12(b)'s pin move and the move of `lem:case-III-claim612-eq644` to
   task 18. Task 12 measured that the move does not cure the first edge: the certification also
   calls `case_III_full_family_restriction`, whose body calls the node's other pin,
-  `linearIndependent_sumElim_candidateRow_iff`. Its cure, the node's move above, is unassigned.
+  `linearIndependent_sumElim_candidateRow_iff`. Its cure, the node's move above, is task 18's too
+  (the coordinator, after task 12).
 - **F-259** · E · `thm:panel-hinge-iff-molecular` (`molecule-modelling.tex`): round 2 task 9's
   pin for its "In particular", `BodyHingeFramework.rankHypothesis_zero_iff` (`Pinning.lean`), is a
   general lemma that five earlier nodes' pins call. Pinned at the theorem, it leaves five missing
@@ -985,7 +986,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:block-rank-path`, `--summary` and
   the forward screen, on round 2 task 12's tree); read (the bodies of the two lemmas).
   *Found:* RECONCILE round 2 task 12.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 12): for the coordinator.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 13): the coordinator gave the
+  edge to task 13, as a forward edge replacing the one task 12 removed from the node.
 - **F-262** · E · `lem:case-I-realization-h65` (`algebraic-induction/case-i.tex`): its pin
   `case_I_realization_h65_gen` calls `exists_independent_panelRow_subfamily_of_edge`, the pin of
   `lem:case-II-placement-new-rows` (`genericity-and-count.tex`, the next file). The proof's edge to
@@ -998,7 +1000,8 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:case-I-realization-h65`,
   `--summary` and the forward screen, on round 2 task 12's tree).
   *Found:* RECONCILE round 2 task 12.
-  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 12): for the coordinator.
+  *Disposition:* open (`notes/Reconcile-statements-cleanup.md`, task 13): the coordinator gave the
+  edge to task 13, as a forward edge replacing the one task 12 removed from the node.
 
 ## N — node shape
 
