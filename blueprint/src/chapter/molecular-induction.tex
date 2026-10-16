@@ -501,7 +501,55 @@ such a partition gives the two conclusions of the lemma
 (\cref{lem:removal-deficiency}). We prove that lemma in
 \cref{sec:molecular-induction-dof} by comparing the values of partitions
 of $V(G)$, without forests. KT Lemma~4.2 (\cref{lem:edge-splitting}),
-the converse for edge-splitting, ends the subsection.
+the converse for edge-splitting, ends the subsection. The next remark
+(\cref{rem:forest-surgery-kt-steps}) says which lemmas of this
+subsection the formal proof of KT Theorem~5.5 does not use, and what it
+uses instead.
+
+\begin{remark}[Katoh and Tanigawa's forests and the formal proof]
+  \label{rem:forest-surgery-kt-steps}
+  Katoh and Tanigawa prove KT Lemmas~4.1 and~4.2 with forests, and they
+  derive KT Lemmas~4.3 and~4.4 from them (KT pp.~660--662). The formal
+  proof of KT Theorem~5.5 (\cref{thm:theorem-55}) uses the forests where
+  KT Lemmas~4.3 and~4.4 concern bases, but not where they bound a
+  deficiency. We keep the lemmas of this subsection that it does not
+  take beside the argument they belong to, and say here what the formal
+  proof does instead.
+
+  \emph{The deficiency bounds.} Katoh and Tanigawa derive the upper bound
+  of KT Lemma~4.3(i), their eq.~(4.1), from KT Lemma~4.1. They derive the
+  lower bound from KT Lemma~4.2(ii) (KT p.~661). They derive the first
+  assertion of KT Lemma~4.4 from the case of KT Lemma~4.2(i) in which the
+  independent set contains no copy of $ab$ (KT p.~662). The formal proof
+  compares the values of partitions of $V(G)$ instead, for splitting off
+  (\cref{lem:splitoff-deficiency}). It compares them for removal as well
+  (\cref{lem:removal-deficiency}). These comparisons need neither forests
+  nor KT eq.~(2.4) (\cref{thm:def-eq-corank}). So the formal proof does
+  not use \cref{lem:forest-surgery-split}, which derives the upper bound
+  from the surgery on a base, as Katoh and Tanigawa derive eq.~(4.1).
+  \Cref{cor:forest-surgery-deficiency} restates that lemma as the upper
+  bound of KT Lemma~4.3(i).
+
+  \emph{The bases.} KT Lemma~4.3(ii) and the second assertion of KT
+  Lemma~4.4 concern bases, and so does the minimality of $G_v^{ab}$ in
+  KT Lemma~4.3(i). For these the formal proof keeps the forests. One
+  direction of KT Lemma~4.3(ii) (\cref{lem:splitoff-kdof-criterion})
+  follows from the surgery on a base, as in Katoh and Tanigawa's proof
+  of eq.~(4.1). The surgery takes a partition of the base into $D$
+  forests each of which has an edge incident with $v$
+  (\cref{lem:balanced-forest-packing}). The other direction follows from
+  case~(i) of KT Lemma~4.2 (\cref{lem:edge-splitting}) and the upper
+  bound of KT Lemma~4.3(i). The second
+  assertion of KT Lemma~4.4 follows from the case of KT Lemma~4.2(i) for
+  an independent set with no copy of $ab$, as Katoh and Tanigawa derive
+  it (\cref{lem:removal-deficiency-equality}).
+  \Cref{lem:forest-surgery-unsplit} states this case on its own. It is a
+  case of \cref{lem:edge-splitting}, and the formal proof applies that
+  lemma. The formal proof shows the minimality of $G_v^{ab}$ in the
+  proof of KT Lemma~4.8(ii) (\cref{lem:reduction-step-pos}). For an edge
+  $e \neq ab$ of $G_v^{ab}$, it applies case~(ii) of KT Lemma~4.2 there,
+  as Katoh and Tanigawa do (KT p.~661).
+\end{remark}
 
 \begin{remark}[On KT Lemma~4.1]
   \label{rem:kt-lemma-41}
@@ -872,8 +920,9 @@ We now perform the surgery on a balanced partition of a base.
 The bound of \cref{lem:forest-surgery-split} is the upper bound of KT
 Lemma~4.3(i). We prove the same bound by comparing the values of
 partitions (\cref{lem:splitoff-deficiency}), for every $D \ge 1$ and
-without assuming $a \neq b$. Here we restate it as a consequence of the
-forest surgery.
+without assuming $a \neq b$. The next corollary restates
+\cref{lem:forest-surgery-split}, with the same hypotheses, as this bound
+of KT Lemma~4.3(i).
 
 \begin{corollary}[The upper bound of KT Lemma~4.3(i) by forest surgery]
   \label{cor:forest-surgery-deficiency}
@@ -1026,8 +1075,9 @@ two cases of the lemma cover every $I'$.
   $I'$.
 \end{fmlnote}
 
-We state the case $h' = 0$ of case~(i) on its own: no forest contains a
-copy of $ab$, and each forest gains one edge at $v$.
+The next lemma restates the case $h' = 0$ of case~(i) of
+\cref{lem:edge-splitting}. In this case no forest contains a copy of
+$ab$, and each forest gains one edge at $v$.
 
 \begin{lemma}[Edge-splitting and independent sets avoiding $ab$; KT Lemma~4.2(i)]
   \label{lem:forest-surgery-unsplit}

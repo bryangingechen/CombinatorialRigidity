@@ -7,16 +7,16 @@ authority for which rounds are done. The round fixes the blueprint statements th
 G2's merges of true duplicates, and gives each group of nodes where the formal proof leaves Katoh
 and Tanigawa's route a framing remark, under the expected-diff and honesty gates; the Lean is not
 edited. The open (task 1, docs only) reproduced round 1's close values and sliced the round into
-21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–19 are done
+21 one-commit tasks; S3, S16, S18, S19, S22–S25 and S31 wait for the phase. Tasks 1–20 are done
 (the open; the false statements S6–S10; S4 and S5; S7's repin; Case I's S14, S15 and S21; Case
 III's three counts, S20; S26, S27 and S35; S29; S36's and the rescaling's pins, `F-259` and
 `F-260`; S38 and S39, stated generally; S40–S42, the hypotheses the pins do not take; G1's three
 pin changes, with `F-261`'s and `F-262`'s forward edges; G2's two true duplicates merged and
 `case_III_realization` unpinned; the genericity device's citations, with `F-255`'s cure; the
 framing remarks of Cases I, II and III, the last with `F-257`'s three edges; S28 and `meet.tex`'s
-framing remark). **Next concrete task:** task 20, the forest surgery's framing remark in
-`molecular-induction.tex` (*Lemma checklist*). The graph has no missing edge since task 18. Round
-manual: `CLEANUP.md`.
+framing remark; the forest surgery's). **Next concrete task:** task 21, the close (*Lemma
+checklist*; Sonnet may take it). The graph has no missing edge since task 18. Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -26,18 +26,19 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Tasks 1–19 are done**; task 19, S28 and `meet.tex`'s framing remark `rem:meet-kt-steps`, is
-this commit (`meet.tex`, the ledger). Nothing is mid-stream; task 20 is next. Task 19's gates:
-`lint.sh` green; `verify.sh` green, `checkdecls` silent, the same 9 `WARNING:` lines;
-**`1525 edges aa87ce11152366b1`**, **`558613b168745717`** (`sort blueprint/lean_decls`, SHA-256,
-first 16 digits; no pin changed); the dump `cmp`-identical to `dump-t18.txt` (the parent's,
-regenerated, is identical too), as the task line predicted, kept as
-`scratch/reconcile-statements/dump-t19.txt`; `--summary` exits 0, both checks OK, its output
-task 18's byte for byte (691 nodes, 689 pinned, 1008 pins (993 distinct), 169 dead pins, 133 edges
-with no Lean basis, 85 transitive, 0 missing, 14 nodes with 4+ pins); the forward screen the
-open's lines exactly; `print.log` rebuilt by latexmk, 0 `LaTeX Warning` lines, 31 overfull boxes;
+**Tasks 1–20 are done**; task 20, the forest surgery's framing remark
+`rem:forest-surgery-kt-steps`, is this commit (`molecular-induction.tex`, the ledger). Nothing is
+mid-stream; task 21, the close, is next. Task 20's gates: `lint.sh` green; `verify.sh` green,
+`checkdecls` silent, the same 9 `WARNING:` lines; **`1525 edges aa87ce11152366b1`**,
+**`558613b168745717`** (`sort blueprint/lean_decls`, SHA-256, first 16 digits; no pin changed);
+the dump `cmp`-identical to `dump-t19.txt`, as the task line predicted, kept as
+`scratch/reconcile-statements/dump-t20.txt`; `--summary` exits 0, both checks OK, its output task
+19's but for one parse note's line number (`ex:kt-41-overquantified`, 582 to 630, below the new
+remark): 691 nodes, 689 pinned, 1008 pins (993 distinct), 169 dead pins, 133 edges with no Lean
+basis, 85 transitive, 0 missing, 14 nodes with 4+ pins; the forward screen the open's lines
+exactly; `print.log` rebuilt by latexmk, 0 `LaTeX Warning` lines, 31 overfull boxes;
 `check-phase-note.py` green; the no-Lean-edit diff from `1cbdbff5` empty. The declarations round
-2 unpins, for the close's list (tasks 8–11, 13, 15–19 unpin none, nor do task 14's merges):
+2 unpins, for the close's list (tasks 8–11, 13, 15–20 unpin none, nor do task 14's merges):
 task 4's `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (no caller), task 5's
 `exists_good_realization` and `exists_good_realization_const` (dead, `F-152`), task 7's
 `linearIndependent_sum_augment_candidateRow`, `linearIndependent_sum_p2_candidateRow` and
@@ -187,19 +188,14 @@ task makes exact before editing. Every task is at Opus but the close.
 - [x] **18. KT's route: Case III's group** (`98f89445`; M3, G3, G4; `F-159`, `F-163`, `F-167`,
   `F-118`; `F-257`): `rem:case-III-kt-steps`; the three counts' leads; `F-257`'s two moves and three
   proof edges. The dump as predicted (1525 edges). `F-257`, `F-118` done.
-- [x] **19. `meet.tex`: S28, and the route through $\bigwedge^2 W$** (this commit; `F-113`; G4,
-  `F-111`): S28's part (2) at $Y = n_1 \vee c$, as its second and third pins, the case $n_2$ at
-  the end of the proof and in the line lemma's proof; `rem:meet-kt-steps`, the formal proof's
-  span of dimension 5, determinant and `lem:meet-two-hyperplanes`, with `def:meet` and
-  `def:meet-pairing-dual`. *Expected, before editing:* no node, `\uses`, pin or `\leanok` change,
-  `lean_decls` `558613b168745717`, the dump `cmp`-identical to `dump-t18.txt`; as predicted.
+- [x] **19. `meet.tex`: S28, and the route through $\bigwedge^2 W$** (`5955454a`; `F-113`; G4,
+  `F-111`): S28's part (2) at its pins' generality; `rem:meet-kt-steps`. The dump as predicted.
   `F-113` done; `F-111` left, with its round-2 clause.
-- [ ] **20. KT's route: the forest surgery** (G3, G4; `F-090`, `F-091`). One framing remark in
-  `molecular-induction.tex`'s *Forest surgery* (476): KT's forests (their Lemmas 4.1–4.2, for
-  4.3–4.4) beside the formal independent sets (`lem:edge-splitting` 1001, `lem:removal-deficiency`
-  1229); `cor:forest-surgery-deficiency` (878), on a narrative-bridge shim, says that it restates
-  `lem:forest-surgery-split` (835); `lem:forest-surgery-unsplit` (task 3's) that it is a case of
-  `lem:edge-splitting`. *Expected:* the dump byte-identical.
+- [x] **20. KT's route: the forest surgery** (this commit; G3, G4; `F-090`, `F-091`):
+  `rem:forest-surgery-kt-steps`; the leads of `cor:forest-surgery-deficiency` and
+  `lem:forest-surgery-unsplit`. *Expected, before editing:* no node, `\uses`, pin or `\leanok`
+  change, the dump `cmp`-identical to `dump-t19.txt`; as predicted. `F-091` done; `F-090` left,
+  with its round-2 clause.
 - [ ] **21. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check
   byte-identical to the open's, net of the path; the no-Lean-edit check from `1cbdbff5`; gates 1–5
   at the last task's values; the script's report and the forward screen beside the open's figures;
@@ -259,24 +255,20 @@ None. The graph has no missing edge since task 18 (`F-257`'s three).
 
 ## Hand-off / next phase
 
-**Next: task 20**, at Opus: KT's route, the forest surgery (G3, G4; `F-090`, `F-091`), as its
-line says: one framing remark in `molecular-induction.tex`'s *Forest surgery* subsection (476),
-after its roadmap, and the leads of `cor:forest-surgery-deficiency` (that it restates
-`lem:forest-surgery-split`) and `lem:forest-surgery-unsplit` (that it is a case of
-`lem:edge-splitting`). The remark is tasks 16–19's form (`rem:case-I-kt-steps`,
-`rem:case-II-kt-steps`, `rem:case-III-kt-steps`, `rem:meet-kt-steps`): a `remark` with a `\label`
-and `\cref`s only, one paragraph per step (KT's step, why the formal proof leaves it, what replaces
-it), the replacements read from `--label` and the pins' bodies, every page and numbered result it
-names checked against `.refs/`. Check `notes/BlueprintExposition.md` for *done* entries among the
-group before editing (their proofs keep their depth). Before editing, write the exact expected
-diff in the line (the line expects the dump byte-identical), then diff against task 19's
-after-dump, `scratch/reconcile-statements/dump-t19.txt` (gitignored, so regenerate it on the
-parent if it is missing). Lines moved since the open's numbering: task 3's, `molecular-induction.tex`
-−32 for 935–1059 and +17 after 1059, so the `\begin` lines are now `lem:forest-surgery-split` 835,
-`cor:forest-surgery-deficiency` 878, `lem:edge-splitting` 969, `lem:forest-surgery-unsplit` 1032
-and `lem:removal-deficiency` 1246 (re-`grep` as ever). Carried in from round 1: `F-252` for the PI
-(round 1's *Candidates*; the phase's (a) removes it), and its two docstring lines, already in round
-3's list.
+**Next: task 21, the close**, docs only (Sonnet may take it), as its line says; round 1's close
+(`notes/Reconcile-texts-cleanup.md`, task 9) is the model. The axioms harness by gate 8's command
+as `scratch/reconcile-statements/Axioms-close.lean`, `cmp` with the open's `Axioms.lean`, run with
+`lake lean`, its output the open's net of the path; the no-Lean-edit `git diff --stat 1cbdbff5..`
+empty; gates 1–5 at task 20's values (*Current state*), the dump `cmp` with `dump-t20.txt`; the
+`--summary` figures and the forward screen beside the open's (*Verified at the open*: 692 nodes,
+177 dead pins, 33/17 and 4/4). `notes/BlueprintExposition.md`: check its pointers to the nodes
+task 14 merged away and to every node the round restated (the task lines name them), with a round
+note. Copy *Current state*'s list of unpinned declarations into `notes/Reconcile.md` §3 round 3's
+L9 item. Replace each ledger entry's `(task N)` with that task's sha (the checklist names them,
+and `git log` task 20's). Set the queue row's `done = true`; ROADMAP's row ✓ and its RECONCILE
+bullet, and `notes/Reconcile.md`'s **Status**, name round 3's open (`reconcile-lean`) next.
+Carried in from round 1: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it),
+and its two docstring lines, already in round 3's list.
 
 ## Decisions made during this round
 
@@ -310,9 +302,8 @@ Settled entries are one-line verdicts; the reasoning is in each task's commit.
 - **A group across two subsections or files** (tasks 17, 19): the remark sits after the roadmap of
   the subsection of the KT step it frames, and the other lead (or the chapter's roadmap) points to
   it.
-- **Case III's group** (task 18): the remark also frames the $d = 3$ nodes, as the formal proof
-  takes $d = 3$ as a case of KT Lemma 6.13; a moved node keeps its title, statement and `\uses`.
-- **`meet.tex`'s group** (task 19): KT use no meet, so the step framed is their join of two points
-  as $C(L)$ (KT eq. (6.45)); the remark also names the dead S28 node and line lemma, as KT Theorem
-  5.5's formal proof takes `lem:meet-two-hyperplanes`. S28's case $n_2$ is proof prose; the crux
-  proof's citation of it gains a sentence.
+- **The groups** (tasks 18–20): Case III's remark also frames the $d = 3$ nodes (a case of KT
+  Lemma 6.13), a moved node keeping its title, statement and `\uses`; `meet.tex`'s frames KT's
+  join of two points as $C(L)$ (KT eq. (6.45)), as KT use no meet; the forest surgery's goes
+  before the crux `rem:kt-lemma-41`, unedited, and splits KT's derivation of KT Lemmas 4.3–4.4 as
+  the formal proof does (partitions for the deficiency bounds, forests for the bases).

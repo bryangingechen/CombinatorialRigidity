@@ -1264,7 +1264,11 @@ declaration's name as its header writes it:
   unbacked edge); read (the shim's statement and body).
   *Found:* round 2 task 2.13.
   *Disposition:* left (a merge, which is not among principle D's fixes; the shim's deletion is a
-  Lean round's).
+  Lean round's); round 2: the corollary kept on its shim (no node merged away, the PI's choice) and
+  framed by `rem:forest-surgery-kt-steps`, after the roadmap of the subsection *Forest surgery*,
+  which says that the formal proof takes the bound from `lem:splitoff-deficiency`; its lead says
+  that it restates `lem:forest-surgery-split` with the same hypotheses. The shim's deletion and
+  the repin on `forest_surgery_split` are round 3's (L9) (task 20).
 - **F-091** · N · `lem:forest-surgery-unsplit` (`molecular-induction.tex`; unfilled, `F-008`): in
   the form of independent sets it is the case $h' = 0$ of `lem:edge-splitting`'s case (i) for
   $G = H_{ab}^v$ ($D \ge 2$, $a \neq b$), which `splitOff_indep_extend_of_fiber_lt` proves, and no
@@ -1273,10 +1277,11 @@ declaration's name as its header writes it:
   declaration with a note, or delete it and keep KT's use for Lemma 4.4 in `rem:kt-lemma-44`.
   *Evidence:* read (the pin's statement; KT 2011 pp. 660–662).
   *Found:* round 2 task 2.13.
-  *Disposition:* left (the honesty gate's clause (i) fails: the pin proves the independent-set form
-  for $D \ge 2$ and $a \neq b$, not the forest form the statement claims; `F-234`); round 2: the
-  node restated as the pin's case $h' = 0$ and pinned to it, with a note, after `lem:edge-splitting`
-  (task 3).
+  *Disposition:* done (tasks 3 and 20): the node restated as the pin's case $h' = 0$ and pinned to
+  it, with a note, after `lem:edge-splitting` (task 3); kept, not retired (the PI's choice), its
+  lead says that it restates that case of `lem:edge-splitting`, and `rem:forest-surgery-kt-steps`
+  says that the formal proof applies `lem:edge-splitting` at it for the second assertion of KT
+  Lemma 4.4 and compares partitions for the first (task 20).
 - **F-096** · N · `lem:removal-deficiency-strict` and `lem:reduction-step`
   (`molecular-induction.tex`): each bundles results that KT state separately (principle E). The
   first is the second assertion of KT Lemma 4.4 and KT Lemma 4.7, one pin each. The second is KT
