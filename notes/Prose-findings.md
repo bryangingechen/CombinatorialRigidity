@@ -3329,7 +3329,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the three statements); a `lake lean` witness deriving `hloops` from `himg` in
   three lines (`List.mem_toFinset`, `SimpleGraph.ne_of_adj`).
   *Found:* round 1 task 5.14.
-  *Disposition:* reported (`notes/Prose-report.md`, L7).
+  *Disposition:* done (task 9): `hloops` dropped from the three, `runPebbleGameWith_underline_eq`
+  deriving it from `himg` (`SimpleGraph.ne_of_adj`); `runPebbleGame_edges_discharges` lost its
+  no-loops conjunct, which no node states, and `edgeListSorted_no_loops` (unpinned), left without a
+  caller, was deleted; the callers in `Correctness.lean` and `Exec.lean` follow. Before: reported
+  (`notes/Prose-report.md`, L7).
 - **F-040** · L · `PebbleGame/Correctness.lean`, `Algorithm.lean`: docstrings that name blueprint
   labels or declarations that do not exist, or describe other states of the code. Three labels do
   not exist: `lem:pebble-game-tryAddEdge-iff-independent` (`tryAddEdgeWith_isSparse`, "⇒ half of"),

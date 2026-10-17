@@ -42,10 +42,9 @@ theorem `runPebbleGameWith_correct` of Phase 10 Layer 2:
   occupies the slot with a non-total subset order, so a competing
   linear order on `Sym2 V` itself is structurally impossible to
   register).
-* Three discharge lemmas — `edgeListSorted_no_loops`,
-  `edgeListSorted_pairwise`, `edgeListSorted_map_sym2_toFinset` —
-  the no-loops / pairwise-Sym2-distinct / Sym2-image round-trip
-  glue that `runPebbleGameWith_correct` consumes.
+* Two discharge lemmas — `edgeListSorted_pairwise`,
+  `edgeListSorted_map_sym2_toFinset` — the pairwise-Sym2-distinct /
+  Sym2-image round-trip glue that `runPebbleGameWith_correct` consumes.
 * `runPebbleGameExec G k ℓ h_matroidal` (Phase 11 Layer 4b — maximal
   reshape) — the computable verdict-bearing sibling of the math-layer
   `runPebbleGame`. Returns `PebbleGameResult G k ℓ` directly; plugs the
@@ -176,19 +175,8 @@ lemma mem_edgeListSorted [LinearOrder V] {G : SimpleGraph V} [Fintype G.edgeSet]
     refine ⟨toLex (u, v), ⟨s(u, v), hmem, ?_⟩, rfl⟩
     simp only [Sym2.inf_mk, Sym2.sup_mk, inf_of_le_left hle, sup_of_le_right hle]
 
-/-- **No-loops discharge for `edgeListSorted G`** (Phase 10 Layer 2, discharge 1
-of three for `runPebbleGameWith_correct`). Each entry `(u, v)` of
-`G.edgeListSorted` has distinct components, since `s(u, v) ∈ G.edgeFinset`
-forces non-diagonality via `not_isDiag_of_mem_edgeSet`. -/
-lemma edgeListSorted_no_loops [LinearOrder V] (G : SimpleGraph V) [Fintype G.edgeSet] :
-    ∀ p ∈ G.edgeListSorted, p.1 ≠ p.2 := by
-  rintro ⟨u, v⟩ hp heq
-  obtain ⟨_, hmem⟩ := G.mem_edgeListSorted.mp hp
-  exact G.not_isDiag_of_mem_edgeSet (G.mem_edgeFinset.mp hmem)
-    (Sym2.mk_isDiag_iff.mpr heq)
-
 /-- **Pairwise Sym2-distinctness discharge for `edgeListSorted G`** (Phase 10
-Layer 2, discharge 2 of three for `runPebbleGameWith_correct`). Distinct
+Layer 2, discharge 1 of two for `runPebbleGameWith_correct`). Distinct
 entries of `G.edgeListSorted` correspond to distinct unoriented edges of `G`.
 The `Nodup`ness of the underlying `Finset.sort` is promoted to pairwise
 Sym2-distinctness via `List.Pairwise.imp_of_mem`: the `Sym2.eq_iff` case-split
@@ -215,7 +203,7 @@ lemma edgeListSorted_pairwise [LinearOrder V] (G : SimpleGraph V) [Fintype G.edg
     exact hne (Prod.ext h_1 h_2)
 
 /-- **Sym2-image round-trip discharge for `edgeListSorted G`** (Phase 10
-Layer 2, discharge 3 of three for `runPebbleGameWith_correct`). The
+Layer 2, discharge 2 of two for `runPebbleGameWith_correct`). The
 `Sym2.mk`-image of `G.edgeListSorted` recovers `G.edgeFinset`. By `Finset.ext`:
 forward, every entry of `G.edgeListSorted` came via `mem_edgeListSorted` from
 `G.edgeFinset`; backward, given `e ∈ G.edgeFinset`, pick `(e.inf, e.sup)`
@@ -279,8 +267,7 @@ def runPebbleGameExec.aux [LinearOrder V] [Fintype V]
   | .inr D, h_opt =>
       .accept D
         (runPebbleGameWith_underline_eq _ _ G.edgeListSorted
-          G.edgeListSorted_no_loops G.edgeListSorted_pairwise
-          G.edgeListSorted_map_sym2_toFinset h_opt)
+          G.edgeListSorted_pairwise G.edgeListSorted_map_sym2_toFinset h_opt)
         (runPebbleGameWith_reachable _ _ _ Reachable.empty h_opt)
   | .inl w, h_opt =>
       let bridge_part : s(w.uv.1, w.uv.2) ∈ G.edgeFinset ∧
@@ -326,7 +313,7 @@ analog). In the matroidal regime `ℓ < 2 * k`, `G` is `(k, ℓ)`-sparse iff
 composition: unfolding `runPebbleGameExec` to its aux helper,
 `runPebbleGameExec_aux_isAccept` collapses `.isAccept` to `Sum.isRight`
 of the workhorse output, and `runPebbleGameWith_correct` gives the iff
-against sparsity (with the three discharges supplied by the
+against sparsity (with the two discharges supplied by the
 `edgeListSorted`-level discharge lemmas). -/
 theorem runPebbleGameExec_isAccept_iff [LinearOrder V] [Fintype V]
     {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ} (h_matroidal : ℓ < 2 * k) :
@@ -334,8 +321,7 @@ theorem runPebbleGameExec_isAccept_iff [LinearOrder V] [Fintype V]
   unfold runPebbleGameExec
   rw [runPebbleGameExec_aux_isAccept]
   rw [Sum.isRight_iff, ← runPebbleGameWith_correct h_matroidal _ _ _
-    G.edgeListSorted_no_loops G.edgeListSorted_pairwise
-    G.edgeListSorted_map_sym2_toFinset]
+    G.edgeListSorted_pairwise G.edgeListSorted_map_sym2_toFinset]
 
 end PartialOrientation
 

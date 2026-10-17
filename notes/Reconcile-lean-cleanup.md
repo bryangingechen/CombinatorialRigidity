@@ -11,11 +11,10 @@ L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main r
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
-round into 39 one-commit tasks; task 2 committed the docstring-label check, tasks 3–5 deleted
-thirty-eight of L9's declarations (the check 422 → 409 → 396 → 390), task 6 `F-090`'s shim,
-`cor:forest-surgery-deficiency` repinned, task 7 renamed `F-061`'s two `_forest` pins
-`_starForest` (the check 388), and task 8 dropped the planar layer's unused or derivable
-hypotheses. **Next concrete task:** task 9, the pebble game's `hloops`, from `himg` (*Lemma
+round into 39 one-commit tasks; task 2 committed the docstring-label check, tasks 3–6 made L9's
+deletions, `F-090`'s shim among them (the check 422 → 390), task 7 `F-061`'s rename (388), and
+tasks 8–9 dropped L6–L7's unused or derivable hypotheses (the planar layer, the pebble game's
+`hloops`). **Next concrete task:** task 10, L6's in the deficiency and the induction (*Lemma
 checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -26,25 +25,27 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 8 is done** (this commit; Lean and TeX); nothing is mid-stream.
+**Task 9 is done** (this commit; Lean only); nothing is mid-stream.
 
-**Task 8, the planar layer** (`F-013`, `F-017`, `F-021`, `F-024`): `typeII_isLaman` without `hab`
-(its tightness branch reads `a ≠ b` off `hG_ab`); `IsTightOn.union_with_bonus` and
-`.insert_vertex_with_edges` without `hF_finite` (each derives it from `hF_sub` by
-`edgesIn_finite`); `typeII_isGenericallyRigidInj_two_of_nonCollinear` without `hab` (`p a ≠ p b`
-read off `hLI_abc`); `trivialMotionFamily_linearIndependent` without `[Finite V]`, its
-`Fintype.ofFinite` line and its `@[nolint unusedArguments]`. The callers pass one argument fewer;
-`IsSparse.contradiction_one_pair` (unpinned) also loses `[Finite V]`, which `lake lint` then
-reported unused (*Decisions*). One node restated: `lem:trivialMotionFamily-linearIndependent` no
-longer asks $V$ finite (the honesty gate: its one hypothesis, the affine span, stated); the other
-four nodes already state what their pins take. Gate 9: **388**, the report task 7's
-(`labels-t8.txt`). The dump task 7's byte for byte (`dump-t8.txt`); `--summary` task 7's but the
-cache's name. The ledger: the four done; 269 entries, 145 `done`, 10 `left`, 112 `reported`, 2
-`open`; the next ID is `F-270`.
+**Task 9, the pebble game's `hloops`** (`F-039`): `runPebbleGameWith_underline_eq`,
+`runPebbleGameWith_sound` and `runPebbleGameWith_correct` without `hloops`; the first derives it
+from `himg` in one line (`SimpleGraph.ne_of_adj`), the other two pass one argument fewer.
+`runPebbleGameWith_mem_underline` keeps its own. `runPebbleGame_edges_discharges` (a pin of
+`lem:runPebbleGame-underline-eq`) lost its no-loops conjunct rather than going: its node never
+stated it, and deleting it would repeat its two discharges at both callers. Its callers
+(`runPebbleGame.aux`, `runPebbleGame_isAccept_iff`) and `Exec.lean`'s (`runPebbleGameExec.aux`,
+`runPebbleGameExec_isAccept_iff`) follow: seven call sites, of which the hand-off named three.
+`edgeListSorted_no_loops` (unpinned), left without a caller, was deleted (*Decisions*: an orphan
+goes). Gate 2: the three nodes already state the hypothesis-free form, so none is restated. Gate 9:
+**388**, task 8's report but for line numbers (`labels-t9.txt`). The dump task 8's byte for byte
+(`dump-t9.txt`); `--summary` task 8's but the cache's name and 7 185 → 7 182 Lean constants. The
+ledger: `F-039` done; 269 entries, 146 `done`, 10 `left`, 111 `reported`, 2 `open`; the next ID is
+`F-270`.
 
-**Done before** (tasks 3–7): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
-them; the pins they left without a caller stay with their nodes), `F-090`'s shim, and `F-061`'s
-rename to `_starForest`. Gate 2 runs block (c) since task 5.
+**Done before** (tasks 3–8): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
+them; the pins they left without a caller stay with their nodes), `F-090`'s shim, `F-061`'s rename
+to `_starForest`, and the planar layer's five hypotheses (`F-013`, `F-017`, `F-021`, `F-024`;
+`lem:trivialMotionFamily-linearIndependent` restated). Gate 2 runs block (c) since task 5.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -246,11 +247,10 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `hF_finite` and `[Finite V]` with its `@[nolint]` dropped, the callers following
   (`contradiction_one_pair`'s `[Finite V]` with them); `lem:trivialMotionFamily-linearIndependent`
   restated; the dump byte-identical; gate 9 388.
-- [ ] **9. L7: the pebble game's `hloops`** (`F-039`). `runPebbleGameWith_sound`
-  (`PebbleGame/Correctness.lean` 180), `runPebbleGameWith_underline_eq` (`Algorithm.lean` 964) and
-  `runPebbleGameWith_correct` (`Correctness.lean` 568) derive it from `himg` (`F-039`'s three
-  lines); callers follow (`runPebbleGame_edges_discharges` may go); `countMatroid_indep_iff_runPebbleGame`
-  unchanged. *Expected:* the dump byte-identical.
+- [x] **9. L7: the pebble game's `hloops`** (`F-039`): dropped from the three, derived from `himg`
+  in `runPebbleGameWith_underline_eq`; `runPebbleGame_edges_discharges`' no-loops conjunct and the
+  orphaned `edgeListSorted_no_loops` gone, the callers following; the dump byte-identical; gate 9
+  388.
 - [ ] **10. L6: the deficiency and the induction** (`F-075`, `F-077`, `F-092`, `F-094`). `hD` of
   `deficiency_eq_of_cutEdges_ncard_le_one` (`Deficiency.lean` 1873) and of its pass-throughs
   `exists_cut_decomposition_of_not_twoEdgeConnected` (1985) and `deficiency_induce_union_singleton`
@@ -446,34 +446,29 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 9**, at Opus: the pebble game's `hloops` (`F-039`; *Lemma checklist*).
-`runPebbleGameWith_underline_eq` (`PebbleGame/Algorithm.lean` 964), `runPebbleGameWith_sound`
-(`Correctness.lean` 180) and `runPebbleGameWith_correct` (568) derive `hloops` from `himg` (each
-pair's `Sym2.mk` is an edge, so not a loop: `F-039`'s witness, `List.mem_toFinset` and
-`SimpleGraph.ne_of_adj`); `runPebbleGameWith_mem_underline` (908) keeps its own `_hloops`, having no
-`himg`. Callers follow (`Correctness.lean` 194, 608, 840); `runPebbleGame_edges_discharges`
-(`Algorithm.lean` 1007) may lose its `hloops` conjunct or go, but it is a pin of
-`lem:runPebbleGame-underline-eq` (`pebble-game.tex` 627), so either is a statement change or a
-deletion for gate 2 and moves the dump (the node's pin line, and `lean_decls` if it goes), written
-before editing; keeping it unchanged keeps the dump byte-identical. `lake lint` after the build: a
-caller's binder the change leaves unused goes too (*Decisions*). Gates 1–3, 5–6 (the parent
-`scratch/reconcile-lean/dump-t8.txt`, gitignored; regenerate it if missing), 8 if a node's TeX
+**Next: task 10**, at Opus: L6's binders in the deficiency and the induction (`F-075`, `F-077`,
+`F-092`, `F-094`; *Lemma checklist*), the code parts only (the four entries' docstring parts are
+tasks 29–31's). `hD : 1 ≤ bodyBarDim n` out of `deficiency_eq_of_cutEdges_ncard_le_one`
+(`Deficiency.lean` 1873) and its pass-throughs `exists_cut_decomposition_of_not_twoEdgeConnected`
+(1985) and `deficiency_induce_union_singleton` (`Pencil/Motive.lean` 911); `_hinj` out of
+`deficiency_induce_le_of_ear_of_merge` (`Pencil/MainComponent/Ear.lean` 539); `_hdeg2` out of
+`splitOff_indep_extend_of_fiber_subset` and `_of_fiber_lt` (`ForestSurgery/EdgeSplitting.lean`
+1471, 1503); `heab` out of the private `splitOff_deficiency_le_aux` (`SplitOffDeficiency.lean` 63)
+and its pass-throughs `splitOff_deficiency_le` and `_of_eq_left`. **Re-`grep` every caller of
+each changed name** (task 9's hand-off named three of seven call sites); a caller's binder or a
+discharge lemma the change leaves unused goes too (*Decisions*), and `lake lint` runs to a fixed
+point. Each pinned name's node is re-read for the honesty gate (`lem:cut-edge-decomposition`
+already omits `hD`). *Expected:* the dump byte-identical. Gates 1–3, 5–6 (the parent
+`scratch/reconcile-lean/dump-t9.txt`, gitignored; regenerate it if missing), 8 if a node's TeX
 changes, 9 (388) and 10. Carried in: `F-252` for the PI (round 1's *Candidates*; the phase's (a)
 removes it); `F-268` and `F-269` for task 38. After the round the queue stops before
 `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
-- **The slicing** (the open): 39 tasks against §3's ~30–40. The label check first, as later tasks
-  move pins; L9's deletions before any docstring is rewritten; signatures (L6–L8) before the sweep;
-  L1–L2 after its recon; the witnesses in four groups; the sweep by directory, after the code it
-  documents has changed; then §B–§C's screen and the close.
-- **The footprint's measure** (the open): the declarations that name a constructor in a statement
-  or a body, read from the Lean (the definitions' types, `scripts/blueprint-deps.py`'s cache), not
-  the plan's count; 34 files. Its docstring rule is *Scope*'s; `GenericLift/` waits whole.
-- **L9 by the screen** (the open): a declaration goes only with every caller, transitively, unpinned
-  and dead; a pinned one stays with its node, as the PI keeps KT's route. `F-265` records the five
-  `CaseI.lean` callers task 5 adds.
+- **The slicing** (the open): 39 tasks; code before the docstring sweep that documents it.
+- **The footprint's measure** (the open): read from the Lean (block (a)), not the plan's count.
+- **L9 by the screen** (the open): only with every caller, transitively, unpinned and dead (`F-265`).
 - **`F-088` here** (the open): §3 gives L8's repeated derivations to this round, and G5's packing
   move in the phase's (c) is the same change, so task 14 takes it and the phase's list says so.
 - **The label check's own node** (task 2): a pin's docstring names its node in its lead, so a lead
@@ -486,10 +481,9 @@ removes it); `F-268` and `F-269` for task 38. After the round the queue stops be
 - **A deletion's screen covers what it orphans** (task 3): deleting the `Fin m` cycle forms left
   `eq_succ_of_isInfinitesimalMotion_cycle` (unpinned, dead) without a caller, so it went with them,
   as L9's "no caller outside themselves" covers (`F-266`); block (b) now lists such orphans (task 4,
-  `F-267`).
-- **The rename's name** (task 7): `_starForest`, the exact shape `hu` and `hsep` force (each
-  component a star, the `u j` its leaves), beside `linearIndependent_hingeRow_star`; the binder
-  `hsep` kept. `_forest` is free for the phase's forest lemma (`F-061`).
+  `F-267`). A signature change's orphan goes too, after block (b) and the trial deletion (task 9:
+  `edgeListSorted_no_loops`, the discharge of a dropped hypothesis).
+- **The rename's name** (task 7): `_starForest`, the shape `hu` and `hsep` force (`F-061`).
 - **A caller's binder the change leaves unused goes with it** (task 8): dropping `hF_finite` left
   `contradiction_one_pair`'s `[Finite V]` unused (it had passed `Set.toFinite _` for it), which
   `lake lint`'s `unusedArguments` reported; an unused hypothesis is the hygiene rule's, so it went, and

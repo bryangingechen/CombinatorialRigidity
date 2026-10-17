@@ -157,9 +157,9 @@ lemma span_eq_ncard_edgesIn (D : PartialOrientation V)
 
 /-- **Workhorse-level soundness of the `(k, ℓ)`-pebble game** (Phase 10
 Layer 2). Starting from the empty orientation against an edge list whose
-`Sym2.mk`-image is exactly `G.edgeFinset` (`himg`), with no loops (`hloops`)
-and pairwise Sym2-distinct entries (`hpairwise`), if `runPebbleGameWith`
-returns `some D'`, then `G` is `(k, ℓ)`-sparse. Three-piece assembly:
+`Sym2.mk`-image is exactly `G.edgeFinset` (`himg`) and pairwise Sym2-distinct
+entries (`hpairwise`), if `runPebbleGameWith` returns `some D'`, then `G` is
+`(k, ℓ)`-sparse. Three-piece assembly:
 *(i)* `runPebbleGameWith_reachable` lifts the initial `Reachable.empty` to
 `Reachable k ℓ D'`; *(ii)* `Reachable.span_add_le` (Invariant (4)) gives the
 algebraic inequality `D'.span s + ℓ ≤ k * s.card` for every `s` of the right
@@ -183,7 +183,6 @@ theorem runPebbleGameWith_sound [Fintype V]
     (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
         b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
     (edges : List (V × V))
-    (hloops : ∀ p ∈ edges, p.1 ≠ p.2)
     (hpairwise : edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)))
     (himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset)
     {D' : PartialOrientation V}
@@ -191,7 +190,7 @@ theorem runPebbleGameWith_sound [Fintype V]
       toSucc h_toSucc edges = .inr D') :
     G.IsSparse k ℓ := by
   have h_eq : D'.underline = G.edgeFinset :=
-    runPebbleGameWith_underline_eq toSucc h_toSucc edges hloops hpairwise himg h
+    runPebbleGameWith_underline_eq toSucc h_toSucc edges hpairwise himg h
   have hR : Reachable k ℓ D' :=
     runPebbleGameWith_reachable toSucc h_toSucc _ Reachable.empty h
   intro s hs
@@ -572,7 +571,6 @@ theorem runPebbleGameWith_correct [Fintype V]
     (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
         b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
     (edges : List (V × V))
-    (hloops : ∀ p ∈ edges, p.1 ≠ p.2)
     (hpairwise : edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)))
     (himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset) :
     G.IsSparse k ℓ ↔
@@ -605,7 +603,7 @@ theorem runPebbleGameWith_correct [Fintype V]
       have := hG w.V' h_size
       omega
   · rintro ⟨_, hD⟩
-    exact runPebbleGameWith_sound toSucc h_toSucc edges hloops hpairwise himg hD
+    exact runPebbleGameWith_sound toSucc h_toSucc edges hpairwise himg hD
 
 end Correctness
 
@@ -634,7 +632,7 @@ and the math-layer noncomputable wrapper
 reshape; the wrapper now returns the verdict directly rather than the
 Phase 11 Layer 3 `Sum`-shape that Layer 4 wrapped additively). The
 body pattern-matches on `runPebbleGameWith` (the workhorse-level
-`Sum`-returning fold from `Algorithm.lean`) plus the three discharges
+`Sum`-returning fold from `Algorithm.lean`) plus the two discharges
 of `runPebbleGameWith_correct`, using `runPebbleGameWith_underline_eq`
 on the `.inr D` branch to populate `.accept`'s `h_underline` and
 `runPebbleGameWith_witness_bridges` + `WorkhorseWitness.certifies_against`
@@ -727,7 +725,7 @@ construct `.reject`'s `h_size` field via
 
 Body: pattern-match on the workhorse output:
 * `.inr D` ⟶ `.accept D h_underline h_reach`, where `h_underline` is
-  `runPebbleGameWith_underline_eq` with the three discharges supplied
+  `runPebbleGameWith_underline_eq` with the two discharges supplied
   by `runPebbleGame_edges_discharges`, and `h_reach` is
   `runPebbleGameWith_reachable` against `Reachable.empty`.
 * `.inl w` ⟶ `.reject w.V' h_size h_lt`, where the pair is the output
@@ -756,13 +754,12 @@ noncomputable def runPebbleGame.aux (G : SimpleGraph V) [Fintype G.edgeSet]
       .accept D
         (runPebbleGameWith_underline_eq _ _ _
           (runPebbleGame_edges_discharges (G := G)).1
-          (runPebbleGame_edges_discharges (G := G)).2.1
-          (runPebbleGame_edges_discharges (G := G)).2.2 h_opt)
+          (runPebbleGame_edges_discharges (G := G)).2 h_opt)
         (runPebbleGameWith_reachable _ _ _ Reachable.empty h_opt)
   | .inl w, h_opt =>
       let bridge_part : s(w.uv.1, w.uv.2) ∈ G.edgeFinset ∧
           w.D.underline ⊆ G.edgeFinset := by
-        have himg := (runPebbleGame_edges_discharges (G := G)).2.2
+        have himg := (runPebbleGame_edges_discharges (G := G)).2
         have hmem : ∀ p ∈ G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V),
             s(p.1, p.2) ∈ G.edgeFinset := by
           intro p hp; rw [← himg]
@@ -830,16 +827,15 @@ reduction body.
 One-line composition: unfolding `runPebbleGame` to its aux helper,
 `runPebbleGame_aux_isAccept` collapses `.isAccept` to `Sum.isRight` of
 the workhorse output, and `runPebbleGameWith_correct` gives the iff
-against sparsity (with the three discharges supplied by
+against sparsity (with the two discharges supplied by
 `runPebbleGame_edges_discharges`). -/
 theorem runPebbleGame_isAccept_iff (G : SimpleGraph V) [Fintype G.edgeSet]
     (k ℓ : ℕ) (h_matroidal : ℓ < 2 * k) :
     G.IsSparse k ℓ ↔ (runPebbleGame G k ℓ h_matroidal).isAccept := by
   unfold runPebbleGame
   rw [runPebbleGame_aux_isAccept]
-  obtain ⟨hloops, hpairwise, himg⟩ := runPebbleGame_edges_discharges (G := G)
-  rw [Sum.isRight_iff, ← runPebbleGameWith_correct h_matroidal _ _ _
-    hloops hpairwise himg]
+  obtain ⟨hpairwise, himg⟩ := runPebbleGame_edges_discharges (G := G)
+  rw [Sum.isRight_iff, ← runPebbleGameWith_correct h_matroidal _ _ _ hpairwise himg]
 
 end PartialOrientation
 

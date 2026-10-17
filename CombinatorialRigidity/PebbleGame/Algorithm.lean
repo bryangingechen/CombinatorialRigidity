@@ -951,15 +951,15 @@ lemma runPebbleGameWith_mem_underline {k ℓ : ℕ}
 
 /-- **Workhorse-level underline equation for `runPebbleGameWith`** (Phase 10
 Layer 2). Starting from the empty orientation against an edge list whose
-`Sym2.mk`-image is exactly `G.edgeFinset` (`himg`), with no loops (`hloops`)
-and pairwise Sym2-distinct entries (`hpairwise`), on success the output
-orientation's underline equals `G.edgeFinset`. Combines the upper bound from
-`runPebbleGameWith_underline_subset` (with `D = empty` collapsing the
-`D.underline ∪ …` clause via `underline_empty`) and the lower bound from
-`runPebbleGameWith_mem_underline` (using the empty-underline freshness).
-Both the math-layer `runPebbleGame` and exec-layer `runPebbleGameExec`
-verdict-bearing wrappers (Phase 11 Layer 4b) consume this lemma to
-populate `.accept`'s `h_underline` proof field. Blueprint
+`Sym2.mk`-image is exactly `G.edgeFinset` (`himg`, so no entry is a loop:
+each is an edge of `G`) and pairwise Sym2-distinct entries (`hpairwise`), on
+success the output orientation's underline equals `G.edgeFinset`. Combines the
+upper bound from `runPebbleGameWith_underline_subset` (with `D = empty`
+collapsing the `D.underline ∪ …` clause via `underline_empty`) and the lower
+bound from `runPebbleGameWith_mem_underline` (using the empty-underline
+freshness). Both the math-layer `runPebbleGame` and exec-layer
+`runPebbleGameExec` verdict-bearing wrappers (Phase 11 Layer 4b) consume this
+lemma to populate `.accept`'s `h_underline` proof field. Blueprint
 `thm:runPebbleGameWith-correct` part (underline-tracking piece). -/
 theorem runPebbleGameWith_underline_eq {G : SimpleGraph V}
     [Fintype G.edgeSet] {k ℓ : ℕ}
@@ -967,13 +967,14 @@ theorem runPebbleGameWith_underline_eq {G : SimpleGraph V}
     (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
         b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
     (edges : List (V × V))
-    (hloops : ∀ p ∈ edges, p.1 ≠ p.2)
     (hpairwise : edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)))
     (himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset)
     {D' : PartialOrientation V}
     (h : (empty : PartialOrientation V).runPebbleGameWith k ℓ Reachable.empty
       toSucc h_toSucc edges = .inr D') :
     D'.underline = G.edgeFinset := by
+  have hloops : ∀ p ∈ edges, p.1 ≠ p.2 := fun p hp =>
+    G.ne_of_adj (G.mem_edgeFinset.mp (himg ▸ List.mem_toFinset.mpr (List.mem_map_of_mem hp)))
   have hfresh : ∀ p ∈ edges, s(p.1, p.2) ∉ (empty : PartialOrientation V).underline := by
     intro p _; simp
   have h_supset : ∀ p ∈ edges, s(p.1, p.2) ∈ D'.underline :=
@@ -997,17 +998,15 @@ omit [Fintype V] in
 `G.edgeFinset.toList.map Quot.out`** (Phase 11 Layer 4b). The math-layer
 verdict-bearing wrapper `runPebbleGame G k ℓ` (in `PebbleGame/Correctness.lean`)
 plugs the `Quot.out`-shaped enumeration of `G.edgeFinset` into the workhorse-level
-`runPebbleGameWith`. The three discharges that the workhorse-level correctness
+`runPebbleGameWith`. The two discharges that the workhorse-level correctness
 chain (`runPebbleGameWith_underline_eq`, `runPebbleGameWith_witness_bridges`)
-consumes — no-loops, pairwise Sym2-distinctness, and Sym2-image round-trip
-back to `G.edgeFinset` — are bundled here as a single lemma. The three
-algebraic content pieces are: `not_isDiag_of_mem_edgeSet` for no-loops,
-`Finset.nodup_toList` + `Quot.out_eq` for pairwise distinctness, and
+consumes — pairwise Sym2-distinctness and Sym2-image round-trip back to
+`G.edgeFinset` — are bundled here as a single lemma. The two algebraic content
+pieces are `Finset.nodup_toList` + `Quot.out_eq` for pairwise distinctness, and
 `Quot.out_eq` for the round-trip. -/
 theorem runPebbleGame_edges_discharges {G : SimpleGraph V}
     [Fintype G.edgeSet] :
     let edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V)
-    (∀ p ∈ edges, p.1 ≠ p.2) ∧
     edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)) ∧
     (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset := by
   set edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V) with hedges
@@ -1017,13 +1016,6 @@ theorem runPebbleGame_edges_discharges {G : SimpleGraph V}
       funext e
       exact Quot.out_eq e
     rw [h_id, List.map_id, G.edgeFinset.toList_toFinset]
-  have hloops : ∀ p ∈ edges, p.1 ≠ p.2 := by
-    intro p hp h_eq
-    simp only [hedges, List.mem_map, Finset.mem_toList] at hp
-    obtain ⟨e, he, rfl⟩ := hp
-    apply G.not_isDiag_of_mem_edgeSet (G.mem_edgeFinset.mp he)
-    rw [← Quot.out_eq e]
-    exact Sym2.mk_isDiag_iff.mpr h_eq
   have hpairwise : edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)) := by
     rw [hedges, List.pairwise_map]
     refine G.edgeFinset.nodup_toList.imp ?_
@@ -1031,7 +1023,7 @@ theorem runPebbleGame_edges_discharges {G : SimpleGraph V}
     apply hne
     rw [← Quot.out_eq e, ← Quot.out_eq e']
     exact h_eq
-  exact ⟨hloops, hpairwise, himg⟩
+  exact ⟨hpairwise, himg⟩
 
 end RunPebbleGame
 
