@@ -1451,9 +1451,10 @@ ambient — and `G̃_v^{ab}` has one fewer vertex) reads off
 deficiency-count route delivers green as `splitOff_deficiency_le`; the surgery is off the
 Theorem-4.9 critical path (`rem:kt-lemma-41`). -/
 
-/-- **Forest surgery at a degree-2 vertex, splitting-off direction** (`lem:forest-surgery-split`;
-Katoh–Tanigawa 2011 Lemma 4.1 p.660). Let `v` be a degree-2 vertex of `G` with distinct
-neighbours `a ≠ b` (`a, b ≠ v ∈ V(G)`), incident edges exactly `eₐ ≠ e_b`, `e₀ ∉ E(G)` fresh,
+/-- **Forest surgery at a degree-2 vertex, splitting-off direction** (`lem:forest-surgery-split`,
+and `cor:forest-surgery-deficiency`, which restates it; Katoh–Tanigawa 2011 Lemma 4.1 p.660).
+Let `v` be a degree-2 vertex of `G` with distinct neighbours `a ≠ b` (`a, b ≠ v ∈ V(G)`),
+incident edges exactly `eₐ ≠ e_b`, `e₀ ∉ E(G)` fresh,
 `D = bodyBarDim n ≥ 2`, `V(G)` nonempty. Rerouting a balanced forest packing of a base of `M(G̃)`
 across `v` (`exists_balanced_forest_packing` + `forest_surgery_count`) produces a forest packing
 of `G̃_v^{ab}` of size `|base| − D`, an independent set of `M(G̃_v^{ab})`. The def\,=\,corank
@@ -2153,27 +2154,5 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
         splitOff_isKDof_of_exists_base_inter_fiber_lt hD2 hab hav hbv heab hla hlb
           hdeg2 he₀ hG.1 hB' hlt'
       linarith
-
-/-- **The forest-surgery route to the KT-4.3 splitting-off deficiency bound**
-(`cor:forest-surgery-deficiency`; narrative bridge). The deficiency bound
-`def(G̃_v^{ab}) ≤ def(G̃)` that `dof_tracking` / Theorem 4.9 consume — landed on the
-critical path by the deficiency-count `splitOff_deficiency_le` — is *also* the exact
-conclusion of the off-path forest surgery `forest_surgery_split` (KT 4.1, splitting-off
-direction). This lemma records that alternative route: it derives the same bound from the
-forest reroute, the route Katoh–Tanigawa actually take. It is `@[deprecated]` in favour of
-`splitOff_deficiency_le` because that deficiency-count lemma is the route the critical path
-uses (and carries the weaker `1 ≤ bodyBarDim n`, no `a ≠ b`); this shim exists solely to
-anchor the blueprint's narrative claim that the forest surgery reaches the same place, with
-no Lean caller. The `@[deprecated]` shim pattern (and the `(since := "narrative-bridge")`
-sentinel) is documented in `CombinatorialRigidity/CLAUDE.md` *Engineering conventions*. -/
-@[deprecated splitOff_deficiency_le (since := "narrative-bridge")]
-theorem splitOff_deficiency_le_of_forest_surgery [Finite α] [Finite β] {G : Graph α β}
-    {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
-    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
-    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
-    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
-    (he₀ : e₀ ∉ E(G)) :
-    (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n :=
-  forest_surgery_split hD hab hav hbv heab hla hlb hdeg2 he₀
 
 end Graph

@@ -1265,12 +1265,14 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label`, at `01aec968`: a dead pin and an
   unbacked edge); read (the shim's statement and body).
   *Found:* round 2 task 2.13.
-  *Disposition:* left (a merge, which is not among principle D's fixes; the shim's deletion is a
-  Lean round's); round 2: the corollary kept on its shim (no node merged away, the PI's choice) and
-  framed by `rem:forest-surgery-kt-steps`, after the roadmap of the subsection *Forest surgery*,
-  which says that the formal proof takes the bound from `lem:splitoff-deficiency`; its lead says
-  that it restates `lem:forest-surgery-split` with the same hypotheses. The shim's deletion and
-  the repin on `forest_surgery_split` are round 3's (L9) (`8db5a0c1`).
+  *Disposition:* done (task 6): the shim deleted, and the corollary repinned on
+  `forest_surgery_split`, the pin it shares with `lem:forest-surgery-split` (its edge to that node
+  is one the script cannot back); the merge not made. Before: left (a merge, which is not among
+  principle D's fixes; the shim's deletion is a Lean round's); round 2: the corollary kept (no
+  node merged away, the PI's choice) and framed by `rem:forest-surgery-kt-steps`, after the
+  roadmap of the subsection *Forest surgery*, which says that the formal proof takes the bound
+  from `lem:splitoff-deficiency`; its lead says that it restates `lem:forest-surgery-split` with
+  the same hypotheses (`8db5a0c1`).
 - **F-091** · N · `lem:forest-surgery-unsplit` (`molecular-induction.tex`; unfilled, `F-008`): in
   the form of independent sets it is the case $h' = 0$ of `lem:edge-splitting`'s case (i) for
   $G = H_{ab}^v$ ($D \ge 2$, $a \neq b$), which `splitOff_indep_extend_of_fiber_lt` proves, and no
