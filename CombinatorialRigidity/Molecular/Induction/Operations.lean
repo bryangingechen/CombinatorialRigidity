@@ -3257,12 +3257,6 @@ theorem range_vtx (cy : G.CycleData) : Set.range cy.vtx = V(G) := by
     obtain ⟨i, hi⟩ := cy.vtx_surj x hx
     exact ⟨i, hi⟩
 
-/-- **The cycle's vertex count equals `V(G).ncard`** (`range_vtx` + `vtx_inj`). This is the
-accessor the ENTRY binder reshape (E4) uses to make the `d = 3` `hcycle` fill vacuous — `cy.m ≤
-3` forces `V(G).ncard ≤ 3`, contradicting the ambient `4 ≤ V(G).ncard`. -/
-theorem vertexSet_ncard (cy : G.CycleData) : V(G).ncard = cy.m := by
-  rw [← cy.range_vtx, Set.ncard_range_of_injective cy.vtx_inj, Nat.card_fin]
-
 /-- **The `|V| = 3` triangle base as a `3`-cycle** (Katoh–Tanigawa 2011 §6.4; Phase 31). A simple
 minimal `0`-dof-graph `G` on exactly three vertices, presented by two edges `eₐ : v–a`, `e_b : v–b`
 from a common vertex `v` (with `eₐ ≠ e_b`, `a ≠ v`, `b ≠ v`), **is** the triangle `C₃`, packaged

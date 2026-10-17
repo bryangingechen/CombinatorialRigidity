@@ -1786,7 +1786,9 @@ plain "rigid on `V(G)` at the seed" fact (itself obtained from the combined row 
 — turning a 6M-heartbeat `whnf` blowup into a 55s clean build at `maxHeartbeats 800000`. The general
 lesson: an existence-motive producer should bottom out on a *consumer* lemma that takes the witness
 data positionally, never on a bare `⟨…⟩` against the unfolded `def`. Worked case:
-`PanelHingeFramework.case_I_realization_h65` (Phase 22k L8c-2, `Molecular/AlgebraicInduction/Theorem55.lean`).
+`PanelHingeFramework.case_I_realization_h65_gen` (`Molecular/AlgebraicInduction/Theorem55.lean`;
+built in Phase 22k L8c-2 as the `d = 3` `case_I_realization_h65`, later its `k = 2` wrapper, which
+RECONCILE round 3 task 3 deleted).
 
 **Relabel-brick implicit-seed/endpoint variant (Phase 23b).** When `refine`-ing a panel-hinge
 relabel brick (`rigidityRow_relabel_to_block`, `…_to_genuine`, …) into a *disjunction* goal whose

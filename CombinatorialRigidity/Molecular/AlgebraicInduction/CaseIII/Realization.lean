@@ -140,7 +140,7 @@ seed coordinates such that **every** seed `q` off its zero locus (`eval q P ≠ 
 normal rows `![q(a,·), q(b,·), q(c,·)]` `K`-linearly independent (any field `K`).
 
 This is a **non-root condition of a single fixed polynomial** — the shape the RELAX product route
-consumes at the KT Lemma-6.5 arm (`case_I_realization_h65`): the product of the four base
+consumes at the KT Lemma-6.5 arm (`case_I_realization_h65_gen`): the product of the four base
 det/rank-polynomial factors is formed *before* `q`, and one `MvPolynomial.exists_eval_ne_zero` shot
 delivers a seed off all four loci. No algebraic independence, no per-candidate factors
 (`notes/Phase30.md` *R2 record*).

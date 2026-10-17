@@ -11,9 +11,10 @@ L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main r
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
-round into 39 one-commit tasks; task 2 committed the docstring-label check (baseline 422).
-**Next concrete task:** task 3, L9's Theorem 5.5 and Case I wrappers (*Lemma checklist*). Round
-manual: `CLEANUP.md`.
+round into 39 one-commit tasks; task 2 committed the docstring-label check, and task 3 deleted
+L9's first fourteen declarations (the check 422 → 409). **Next concrete task:** task 4, L9's Case
+III line route, the candidate rows, `case_III_realization` and `blockPiSpan` (*Lemma checklist*).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -23,26 +24,28 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 2 is done** (this commit; a script, no Lean or TeX edit). Nothing is mid-stream; task 3 is
+**Task 3 is done** (this commit; Lean, with two blueprint notes). Nothing is mid-stream; task 4 is
 next.
 
+**L9's first deletions** (task 3): the thirteen of the *Lemma checklist* and `F-266`'s
+`eq_succ_of_isInfinitesimalMotion_cycle`, whose one caller they include (*Decisions*). The
+docstrings that named them name the `_gen` forms or nothing, and so do `TACTICS-GOLF.md`,
+`TACTICS-QUIRKS.md`, `def:cycle-data`'s note and the retrospective; `notes/FRICTION.md`'s *Where it
+bit* line and the closed notes are history. Gate 9: **409**, the deleted declarations' thirteen
+*unpinned, own node* lines (`scratch/reconcile-lean/labels-t3.txt`). The dump `cmp`-identical to
+task 2's; `--summary` identical but for its constant count (7 232 → 7 218). The ledger: `F-266`
+new and `F-254` done (task 33 has no part of it left); `F-144` and `F-236`–`F-238` in part; 266
+entries, 135 `done`, 11 `left`, 119 `reported`, 1 `open`; the next ID is `F-267`.
+
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
-docstring and *Decisions*). The baseline at task 2: **total 422**: 39 *missing* (9 of them labels
-broken across a line), 136 *pinned, another node*, 247 *unpinned, own node*; by directory
-(missing, pinned another, unpinned own): root files 1 5 6, `BodyBar` 0 6 5, `Matroid/Constructions`
-0 0 1, `Molecular` 2 20 27, `AlgebraicInduction` 24 42 91, `CaseIII` 2 8 13, `CaseIII/Relabel`
-0 2 4, `GenericLift` 0 2 2, `Induction` 2 14 5, `ForestSurgery` 0 5 16, `Molecule` 1 2 15,
-`Pencil` 2 1 0, `Pencil/MainComponent` 1 6 27, `RigidityMatrix` 1 20 35, `PebbleGame` 3 3 0. The
-full report is `scratch/reconcile-lean/labels-t2.txt` (gitignored; 442 lines, sha256
-`2f281955f3ddf9b8…`, the same at `PYTHONHASHSEED` 0, 1 and 12345). Acceptance: `--self-test`
-green (20 planted declarations: each kind of finding, each exemption, the parser's edges), and
-red under each of five mutations of the rule (bold, rejoin, namespaces, kind match, first item);
-on a copy of the tree, four planted cases (a label renamed, a label broken, a pin moved, a pin
-removed) moved the report by exactly their four lines, 422 → 426; `--lean`: all 2 775 names read
-outside `Main.lean` are constants (the cache at the open's tree). Of the declarations `F-230`–`F-264`
-list for a stale or absent label, all are reported (`F-241`'s and `F-245`'s as *missing*) but
-`runPebbleGame.aux`, whose label is past its lead; section and module headers (`F-236`, `F-240`,
-`F-243`, `F-246`) and docstrings that name no node (`F-238`, `F-240`, `F-242`) are outside the rule.
+docstring and *Decisions*). The baseline at task 2: **total 422** (39 *missing*, 9 of them labels
+broken across a line; 136 *pinned, another node*; 247 *unpinned, own node*), the report
+`scratch/reconcile-lean/labels-t2.txt` (gitignored; the same at `PYTHONHASHSEED` 0, 1 and 12345),
+its counts by directory at its end. Its acceptance (a self-test of 20 planted declarations, red
+under five mutations of the rule; four planted cases on a copy of the tree, 422 → 426; `--lean`) is
+`65a5c0ee`'s message. Of the stale or absent labels `F-230`–`F-264` list, all are reported but
+`runPebbleGame.aux`'s (past its lead); section and module headers and docstrings that name no node
+are outside the rule.
 
 **Verified at the open** (2026-10-15, at `347ba9c4`, round 2's close tree; its Lean is `64bb9754`'s,
 unchanged since `6f4f7afa`, the tree of the ledger's Lean baselines):
@@ -212,7 +215,7 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   cases); counts by directory. Its first report is the baseline here. *Expected:* no Lean or TeX
   edit; the dump byte-identical. *Done:* total 422, the baseline under *Current state*; the rule
   under *Decisions*.
-- [ ] **3. L9: the Theorem 5.5 and Case I wrappers, and the cycle forms** (`F-237`, `F-144`,
+- [x] **3. L9: the Theorem 5.5 and Case I wrappers, and the cycle forms** (`F-237`, `F-144`,
   `F-238`, `F-236`; `F-254` in part). The thirteen: `Theorem55.lean`
   `theorem_55_base_producer_parallel_pair` (130), `_empty` (198), `_single_edge` (312),
   `_empty_gp` (387), `_single_edge_gp` (500), `case_I_realization_h65` (960),
@@ -222,7 +225,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `toBodyHinge_rankHypothesis_zero_cycle` (941); `Induction/Operations.lean`
   `CycleData.vertexSet_ncard` (3263). *Expected:* no pin: the dump and `--summary` unchanged; a
   blueprint prose mention, if gate 2 finds one, repointed (gate 8); gate 9 422 → 410 (twelve of the
-  thirteen are *unpinned, own node* lines; not `vertexSet_ncard`).
+  thirteen are *unpinned, own node* lines; not `vertexSet_ncard`). *Done:* plus `F-266`'s orphan
+  (409); the TeX mentions repointed (`def:cycle-data`'s note, the retrospective), gate 8 green.
 - [ ] **4. L9: Case III's line route, the candidate rows, `case_III_realization`, `blockPiSpan`**
   (`F-232`, `F-258`; `F-264` in part). The sixteen: `PanelLayer.lean`
   `panelSupportExtensor_join_eq_zero_of_eq_zero` (358),
@@ -457,10 +461,12 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 3**, at Opus: L9's thirteen declarations (*Lemma checklist*), block (b) on each name
-first, then §B's trial deletion and gates 1–3, 5–6 (the dump byte-identical to
-`scratch/reconcile-lean/dump-t2.txt`, gitignored; regenerate it on the parent if it is missing),
-9 (422 → 410) and 10. Carried in: `F-252` for the PI (round
+**Next: task 4**, at Opus: L9's sixteen declarations (*Lemma checklist*), block (b) on each name
+first and on each callee their deletion would leave without a caller (*Decisions*), then §B's trial
+deletion and gates 1–3, 5–6 (the dump byte-identical to `scratch/reconcile-lean/dump-t3.txt`,
+gitignored; regenerate it on the parent if it is missing), 8 if a TeX mention moves, 9 (409 → 397:
+twelve of the sixteen have a line in `labels-t3.txt`, not `exists_shear_linearIndependent_pair` or
+the three `blockPiSpan` declarations) and 10. Carried in: `F-252` for the PI (round
 1's *Candidates*; the phase's (a) removes it). After the round the queue stops before
 `RECONCILE-FORMAL`, which is attended.
 
@@ -485,5 +491,10 @@ first, then §B's trial deletion and gates 1–3, 5–6 (the dump byte-identical
   node, so this also reports helpers (most of the 247): the sweep says, in that item, how a helper
   serves its node (`a step of <label>`), and gives a stale one its node or none. Section headers
   and line comments are read for absent labels only.
+- **A deletion's screen covers what it orphans** (task 3): block (b) clears the names it is given,
+  not their callees. Deleting the three `Fin m` cycle forms left
+  `eq_succ_of_isInfinitesimalMotion_cycle` without a caller, so task 3 screened it (unpinned, dead,
+  nothing blocks it) and deleted it with them, as L9's "no caller outside themselves" covers
+  (`F-266`). Tasks 4–5 run block (b) also on each callee their deletion would orphan.
 - **`F-097`'s `hD`** (the open): weakening `3 ≤ D` to `2 ≤ D` is a statement change beyond L8's
   suggestion; task 15 records it under *Candidates* if the shorter proof holds there.

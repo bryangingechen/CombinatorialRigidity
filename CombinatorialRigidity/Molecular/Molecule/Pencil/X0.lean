@@ -48,10 +48,11 @@ def X0Gen (K : Type*) [Field K] (α β : Type*) : Prop :=
 
 -- `[NeZero (Graph.bodyHingeMult 3)]` does not synthesize; built from `hD` inside the proof.
 /-- **The non-simple bare case** (`lem:pencil-nonsimple-case`; Phase 39 PENCIL, L0b, W4-A; Katoh
-and Tanigawa's parallel-edge contraction, Lemma 6.2, in the form of `case_I_realization_nonsimple`
-(`AlgebraicInduction/Theorem55.lean`), run at the pencil condition and without minimality). Let `G`
-be a loopless multigraph on at least three bodies that is not simple, with the **bare** induction
-hypothesis (`hIH`, no minimality). Then `G` has a pencil realization at the deficiency rank.
+and Tanigawa's parallel-edge contraction, Lemma 6.2, in the form of
+`case_I_realization_nonsimple_gen` (`AlgebraicInduction/Theorem55.lean`), run at the pencil
+condition and without minimality). Let `G` be a loopless multigraph on at least three bodies that is
+not simple, with the **bare** induction hypothesis (`hIH`, no minimality). Then `G` has a pencil
+realization at the deficiency rank.
 
 Let `e_edge`, `f_edge` be parallel edges joining bodies `a` and `b`; they span a proper rigid
 subgraph `H' = G[{a,b}] ↾ {e_edge, f_edge}` (`Graph.isKDof_zero_of_parallel_pair`). Contracting `H'`

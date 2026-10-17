@@ -929,7 +929,7 @@ homogeneity lemmas) to `n_v ∨ (c₁·n_a + c₂·n_b) = 0`. If `c₁·n_a + c�
 by the `(n_a, n_b)` pair-independence; otherwise the vanishing join forces `n_v` and
 `c₁·n_a + c₂·n_b` collinear (`normalsJoin_ne_zero_iff`), contradicting the triple-independence of
 `![n_v, n_a, n_b]`. Extracted as a standalone lemma (no framework/graph data) so the producer
-`case_I_realization_h65` does not re-elaborate this exterior-algebra block inline. -/
+`case_I_realization_h65_gen` does not re-elaborate this exterior-algebra block inline. -/
 theorem normalsJoin_pair_linearIndependent_of_triLI
     (n_v n_a n_b : Fin (k + 2) → K)
     (htriLI : LinearIndependent K (![n_v, n_a, n_b] : Fin 3 → Fin (k + 2) → K))
@@ -981,7 +981,7 @@ theorem normalsJoin_pair_linearIndependent_of_triLI
 (`lem:case-I-dispatch` infra). From `LinearIndependent K ![n₀, n₁, n₂]`, each of the three pairs
 `![n₀, n₁]`, `![n₀, n₂]`, `![n₁, n₂]` is independent — the `LinearIndependent.comp` reindexings
 along `![0,1]`, `![0,2]`, `![1,2]`. Extracted as a standalone lemma (small context) so the producer
-`case_I_realization_h65` does not pay the `Fin`-reindexing defeq cost inside its heavy local
+`case_I_realization_h65_gen` does not pay the `Fin`-reindexing defeq cost inside its heavy local
 context (where `simp_all`/`fin_cases` overflow the recursion budget). -/
 theorem triLI_subpairs (n₀ n₁ n₂ : Fin (k + 2) → K)
     (htriLI : LinearIndependent K (![n₀, n₁, n₂] : Fin 3 → Fin (k + 2) → K)) :

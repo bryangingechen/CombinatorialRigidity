@@ -3712,7 +3712,8 @@ declaration's name as its header writes it:
   "producer", "motive", "seed" and "brick".
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.8.
-  *Disposition:* reported (`notes/Prose-report.md`, L9).
+  *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the three `d = 3` wrappers
+  deleted, and the docstrings that named them repointed to their `_gen` forms (task 3).
 - **F-148** · L · the docstrings of `case-ii.tex`'s pins (`Molecular/AlgebraicInduction/Pinning.lean`,
   `PanelHinge.lean`, `CaseII.lean`; `Molecular/Induction/Operations.lean`). Those of
   `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
@@ -4063,7 +4064,8 @@ declaration's name as its header writes it:
   it, but it has no caller (`F-106`).
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.5.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: `CycleData.vertexSet_ncard`
+  deleted, and `def:cycle-data`'s note no longer names it (task 3).
 - **F-237** · L · the declarations round 5's task 3.6 pinned or unpinned
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`). The five $d = 3$ base wrappers
   `theorem_55_base_producer_empty`, `_empty_gp`, `_single_edge`, `_single_edge_gp` and
@@ -4077,7 +4079,8 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_of_theorem_55_gen` (`F-011`).
   *Evidence:* read (the docstrings and bodies; a `grep` for the callers).
   *Found:* round 5 task 3.6.
-  *Disposition:* reported (`notes/Prose-report.md`, L9).
+  *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the five wrappers deleted, and
+  the `_gen` forms' docstrings no longer name them as their lifts (task 3).
 - **F-238** · L · the declarations round 5's task 3.7 unpinned or pinned
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `PanelLayer.lean`,
   `GenericityDevice.lean`, `Theorem55.lean`; `Molecular/Induction/Contraction.lean`). The three
@@ -4092,7 +4095,8 @@ declaration's name as its header writes it:
   `lem:case-I-all-k` and `lem:claim-6-6`).
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.7.
-  *Disposition:* reported (`notes/Prose-report.md`, L9).
+  *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the three `Fin m` cycle forms
+  deleted with their step (`F-266`), and `case_I_realization_nonsimple` (task 3).
 - **F-240** · L · the declarations round 5's task 3.8 pinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`, `Molecular/AlgebraicInduction/GenericityDevice.lean`). The
   section header over `isKDof_zero_of_triangle` names `lem:case-III`, which is not its node, and the
@@ -4206,8 +4210,8 @@ declaration's name as its header writes it:
   first. `F-148` covers the rest of both docstrings.
   *Evidence:* read (the two docstrings; the node's pins; a `grep` for the first's callers).
   *Found:* RECONCILE round 2 task 4.
-  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep
-  (*Moved to a later round*); the first is among the declarations round 2 unpins.
+  *Disposition:* done (task 3): the first deleted, and the second's docstring now gives the second
+  alone as the Lean grounding of `lem:case-II`, the node's one pin. `F-148` keeps the rest of it.
 - **F-256** · L · `exists_good_realization` and `exists_good_realization_reindex`
   (`Molecular/AlgebraicInduction/GenericityDevice.lean`) and `exists_good_realization_const`
   (`CaseI.lean`): their docstrings, and the header of the first two's section, give them as
@@ -4255,6 +4259,17 @@ declaration's name as its header writes it:
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at `347ba9c4`).
   *Found:* RECONCILE round 3 task 1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 5).
+- **F-266** · L · `eq_succ_of_isInfinitesimalMotion_cycle`
+  (`Molecular/AlgebraicInduction/Pinning.lean`): the step of the `Fin m` cycle forms (consecutive
+  bodies of a rigid cycle carry the same screw), unpinned, which no main result's proof reaches.
+  Its one caller was `isTrivialMotion_of_isInfinitesimalMotion_cycle`, one of the three cycle forms
+  that `F-238` names and L9 deletes, so L9's three `Fin m` cycle forms are four; `theorem_55_cycle`
+  runs the same telescoping on `α` without it. No ledger entry named it.
+  *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
+  *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at `65a5c0ee`); read (its body and
+  `theorem_55_cycle`'s).
+  *Found:* RECONCILE round 3 task 3.
+  *Disposition:* done (task 3).
 
 ## M — mathematics and sources
 

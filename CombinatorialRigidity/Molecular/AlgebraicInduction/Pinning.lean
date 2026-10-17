@@ -588,7 +588,7 @@ theorem span_panelRow_comp_single_of_edge [DecidableEq α]
 pinned-independent new block spanning the rigidity rows** (`lem:case-I-dispatch`, the `hnewpin`
 brick of the KT Lemma-6.5 vertex-removal arm; Katoh–Tanigawa 2011 §6, Claim 6.6 / Lemma 5.3,
 distinct-endpoint form; Phase 22k L8c). The geometric heart of the two-vertex-removal producer
-`case_I_realization_h65`: when the re-inserted degree-2 body `v` carries two incident edges
+`case_I_realization_h65_gen`: when the re-inserted degree-2 body `v` carries two incident edges
 `eₐ = va`, `e_b = vb` whose supporting extensors are linearly independent (the general-position
 input from the triple-LI normals — the RELAX product route's `exists_tripleLI_polynomial` det
 factor, Phase 30), their two
@@ -790,94 +790,6 @@ theorem theorem_55_base (F : BodyHingeFramework K k α β)
   simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb
   rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;>
     first | rfl | exact key | exact key.symm
-
-/-! ## The `m`-body cycle base (`lem:cycle-realization`, KT Lemma 5.4)
-
-The general (`m`-body) panel-cycle realization. A cycle of `m` bodies `0, 1, …, m−1` (carried as
-`Fin m`) and `m` hinges, the `i`-th joining body `i` to body `i + 1` (cyclically, `Graph.IsLink
-(e i) i (i + 1)`), is infinitesimally rigid exactly when its `m` supporting extensors are
-linearly independent. The argument propagates `S u = S v` around the cycle: each hinge constraint
-puts the relative screw `S i − S (i + 1)` in the one-dimensional span of `C(p(e i))`, and these
-`m` differences telescope around the cycle to `∑ᵢ (S i − S (i+1)) = 0` (the rotation `i ↦ i + 1`
-is a bijection of `Fin m`). Independence of the `m` extensors then forces every difference to
-vanish (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`, the `m`-edge generalization of the
-parallel-hinges-full Lemma 5.3), so `S` is constant on the connected cycle — a trivial motion.
-This is the `m`-body generalization of the two-body base case `theorem_55_base`; together with the
-dimension bound `card_le_screwDim_of_linearIndependent` (`3 ≤ m ≤ D`) it is the cycle realization
-of KT Lemma 5.4 (the genericity-supplied independent extensors come from
-`exists_independent_panelSupportExtensor`). -/
-
-/-- **Around a rigid cycle the relative screws vanish** (`lem:cycle-realization`, KT Lemma 5.4,
-step): for an infinitesimal motion `S` of a body-hinge framework on the cycle `Fin m` whose `i`-th
-edge `e i` links bodies `i` and `i + 1` (cyclically), if the `m` supporting extensors are linearly
-independent then consecutive bodies carry the same screw, `S i = S (i + 1)`. Each hinge puts the
-difference `S i − S (i + 1)` in `span C(p(e i))`, and the `m` differences telescope around the
-cycle to `∑ᵢ (S i − S (i+1)) = 0` (the shift `i ↦ i + 1` is a bijection of `Fin m`,
-`Equiv.addRight`); independence then forces each to vanish
-(`eq_zero_of_mem_span_singleton_of_sum_eq_zero`). The `m`-edge generalization of the
-relative-screw step in `theorem_55_base`. -/
-theorem eq_succ_of_isInfinitesimalMotion_cycle {m : ℕ} [NeZero m]
-    (F : BodyHingeFramework K k (Fin m) β) (e : Fin m → β)
-    (hlink : ∀ i, F.graph.IsLink (e i) i (i + 1))
-    (hgen : LinearIndependent K fun i => F.supportExtensor (e i))
-    {S : Fin m → ScrewSpace K k} (hS : F.IsInfinitesimalMotion S) (i : Fin m) :
-    S i = S (i + 1) := by
-  have hd : ∀ j, (fun j => S j - S (j + 1)) j ∈
-      Submodule.span K {F.supportExtensor (e j)} := fun j => hS (e j) j (j + 1) (hlink j)
-  have hsum : ∑ j, (S j - S (j + 1)) = 0 := by
-    rw [Finset.sum_sub_distrib, sub_eq_zero]
-    exact (Equiv.sum_comp (Equiv.addRight (1 : Fin m)) S).symm
-  have := eq_zero_of_mem_span_singleton_of_sum_eq_zero hgen hd hsum i
-  rwa [sub_eq_zero] at this
-
-/-- **A rigid cycle's infinitesimal motions are trivial** (`lem:cycle-realization`, KT Lemma 5.4):
-an infinitesimal motion `S` of a body-hinge cycle framework on `Fin m` with `m` linearly
-independent supporting extensors is a trivial motion — `S` is constant, every body carrying the
-common screw `S 0`. From the consecutive-equality step
-(`eq_succ_of_isInfinitesimalMotion_cycle`), `S i = S (i + 1)` for all `i`; the cyclic shift `+ 1`
-generates `Fin m`, so iterating from `0` (formally an induction on `Fin.ofNat m j`, with
-`Fin.ofNat_val_eq_self` returning to `i`) gives `S i = S 0` for every body `i`. This is the
-`m`-body trivial-motion conclusion that `theorem_55_base` proves for `m = 2`. -/
-theorem isTrivialMotion_of_isInfinitesimalMotion_cycle {m : ℕ} [NeZero m]
-    (F : BodyHingeFramework K k (Fin m) β) (e : Fin m → β)
-    (hlink : ∀ i, F.graph.IsLink (e i) i (i + 1))
-    (hgen : LinearIndependent K fun i => F.supportExtensor (e i))
-    {S : Fin m → ScrewSpace K k} (hS : F.IsInfinitesimalMotion S) :
-    IsTrivialMotion S := by
-  have hstep : ∀ i, S i = S (i + 1) :=
-    fun i => F.eq_succ_of_isInfinitesimalMotion_cycle e hlink hgen hS i
-  have hofNat : ∀ p : ℕ, Fin.ofNat m p + 1 = Fin.ofNat m (p + 1) := fun p => by
-    apply Fin.ext; simp [Fin.add_def, Nat.add_mod]
-  have hzero : ∀ a : Fin m, S a = S 0 := by
-    have hnat : ∀ j : ℕ, S (Fin.ofNat m j) = S 0 := by
-      intro j
-      induction j with
-      | zero => rw [Fin.ofNat_zero]
-      | succ p ih => rw [← hofNat, ← hstep, ih]
-    intro a
-    have := hnat a.val
-    rwa [Fin.ofNat_val_eq_self] at this
-  intro a b
-  rw [hzero a, hzero b]
-
-/-- **Theorem 5.5, `m`-body cycle base** (`lem:cycle-realization`, KT Lemma 5.4): a body-hinge
-framework on the cycle `Fin m` (`m ≥ 1`), whose `i`-th edge `e i` links bodies `i` and `i + 1`
-(cyclically) and whose `m` supporting extensors `C(p(e i))` are linearly independent, realizes the
-target rank `D(|V|−1) − 0` of the minimal `0`-dof case — `F.RankHypothesis 0`, i.e. `F` is
-infinitesimally rigid. The `m`-body generalization of the two-body base case `theorem_55_base`:
-every infinitesimal motion is constant around the cycle
-(`isTrivialMotion_of_isInfinitesimalMotion_cycle`), hence trivial. Combined with the dimension
-bound `card_le_screwDim_of_linearIndependent` (which forces `m ≤ D`) and the genericity-supplied
-independent extensor family (`exists_independent_panelSupportExtensor`), this is the cycle
-realization of KT Lemma 5.4 for `3 ≤ m ≤ D`. -/
-theorem rankHypothesis_zero_of_cycle {m : ℕ} [NeZero m]
-    (F : BodyHingeFramework K k (Fin m) β) (e : Fin m → β)
-    (hlink : ∀ i, F.graph.IsLink (e i) i (i + 1))
-    (hgen : LinearIndependent K fun i => F.supportExtensor (e i)) :
-    F.RankHypothesis 0 := by
-  rw [rankHypothesis_zero_iff]
-  intro S hS
-  exact F.isTrivialMotion_of_isInfinitesimalMotion_cycle e hlink hgen hS
 
 /-- **The Case II rank-lift accounting** (`lem:case-II`, skeleton; Katoh–Tanigawa 2011 §6.3
 Lemma 6.8): in the basis-free null-space convention, re-inserting a body `v` — equivalently
@@ -1598,16 +1510,15 @@ genericity device supplies); the existing nullity-side rank-lift
 (`rankHypothesis_iff_finrank_pinnedMotions`, the pin-a-body `+D` accounting) is its `α`-dependent
 sibling, retained for the deficiency/Prop 1.1 path. The forward direction restricts rigidity to the
 subset `t` (`IsInfinitesimallyRigidOn.mono`) and to the `v`-to-`t` pairs; the converse case-splits a
-pair in `insert v t` on whether each endpoint is `v`. With its panel-layer sibling
-`PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`, this is the
-Lean grounding of the blueprint node `lem:case-II` — KT's genericity-free 1-extension accounting
-(Lemmas 6.7/6.8). It has **no term-level Lean caller**: the `k > 0` realization producer
-`case_II_realization_all_k` (`lem:case-II-realization`) builds the realization *directly* (inline
-eq. (6.12) placement + rank-polynomial conversion), not through this iff — the blueprint's own
-`lem:case-II-realization` proof records the same ("this construction is direct and does not need
-the genericity-gated equality of the 1-extension inclusion"). This accounting instead grounds the
-Case-II exposition the crux placement/count nodes (`lem:case-II-realization-placement`,
-`lem:case-II-placement-old-rows`) draw on. -/
+pair in `insert v t` on whether each endpoint is `v`. This is the Lean grounding of the blueprint
+node `lem:case-II` — KT's genericity-free 1-extension accounting (Lemmas 6.7/6.8). It has **no
+term-level Lean caller**: the `k > 0` realization producer `case_II_realization_all_k`
+(`lem:case-II-realization`) builds the realization *directly* (inline eq. (6.12) placement +
+rank-polynomial conversion), not through this iff — the blueprint's own `lem:case-II-realization`
+proof records the same ("this construction is direct and does not need the genericity-gated equality
+of the 1-extension inclusion"). This accounting instead grounds the Case-II exposition the crux
+placement/count nodes (`lem:case-II-realization-placement`, `lem:case-II-placement-old-rows`) draw
+on. -/
 theorem isInfinitesimallyRigidOn_insert_iff (F : BodyHingeFramework K k α β) {t : Set α} {v : α} :
     F.IsInfinitesimallyRigidOn (insert v t) ↔
       (F.IsInfinitesimallyRigidOn t ∧
@@ -1634,18 +1545,16 @@ block-triangularly with the pinned rigid block. Then `F` realizes the target ran
 (`RankHypothesis k'`, i.e. `dim Z(G,p) = D + k'`) **iff** the block pin has dimension `k'` — the
 contraction's inductive rank.
 
-This is the genericity-free assembly of Case I, the parallel of the Case II 1-extension
-`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`. The genericity-free skeleton is
-the block-pin lower bound `screwDim_add_finrank_pinnedMotionsOn_le` (the `D`-dimensional trivial
-motions and the block pin are disjoint inside `Z(G,p)`, so `D + dim Z_s ≤ dim Z`, always). The
-**one** input from the Phase-21b device is `hglue`: the block-triangular gluing closes that slack
-to an equality, `dim Z(G,p) ≤ D + dim Z_s(G,p)` (the reverse inequality — KT's Claim 6.4 that the
-combined rigidity matrix attains the sum of the two block ranks, the generic-position step lifting
-a single good realization to a generic one). That is *not* automatic: it holds only at the generic
-point the Claim 6.4 rank/dimension count selects. Taking `hglue` as an explicit hypothesis makes
-`lem:case-I` GREEN-modulo-21b: combined with the green lower bound it pins
-`dim Z(G,p) = D + dim Z_s`, so the realization count is exactly the contraction's block-pinned
-dimension. -/
+This is the genericity-free assembly of Case I. The genericity-free skeleton is the block-pin lower
+bound `screwDim_add_finrank_pinnedMotionsOn_le` (the `D`-dimensional trivial motions and the block
+pin are disjoint inside `Z(G,p)`, so `D + dim Z_s ≤ dim Z`, always). The **one** input from the
+Phase-21b device is `hglue`: the block-triangular gluing closes that slack to an equality,
+`dim Z(G,p) ≤ D + dim Z_s(G,p)` (the reverse inequality — KT's Claim 6.4 that the combined rigidity
+matrix attains the sum of the two block ranks, the generic-position step lifting a single good
+realization to a generic one). That is *not* automatic: it holds only at the generic point the Claim
+6.4 rank/dimension count selects. Taking `hglue` as an explicit hypothesis makes `lem:case-I`
+GREEN-modulo-21b: combined with the green lower bound it pins `dim Z(G,p) = D + dim Z_s`, so the
+realization count is exactly the contraction's block-pinned dimension. -/
 theorem rankHypothesis_iff_finrank_pinnedMotionsOn [Nonempty α] [Finite α]
     (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
     (hglue : (Module.finrank K F.infinitesimalMotions : ℤ) ≤
@@ -1828,11 +1737,10 @@ theorem hnew_of_isLink_incident (F : BodyHingeFramework K k α β) (v : α) {G' 
 `C(p(e₁)), C(p(e₂)), C(p(e₃))` are linearly independent is infinitesimally rigid *on the three
 bodies* `{u, v, w}` — every infinitesimal motion is constant on `{u, v, w}`.
 
-The argument is the three-body instance of the cycle-telescoping of
-`eq_succ_of_isInfinitesimalMotion_cycle`, re-run directly on `α` without `Fin m` transport: each
-hinge constraint puts the relative screw `S u − S v`, `S v − S w`, `S w − S u` in the
-one-dimensional span of its supporting extensor, and the three differences telescope around the
-triangle to `(S u − S v) + (S v − S w) + (S w − S u) = 0`. Linear independence
+The argument is the three-body instance of the cycle telescoping of `theorem_55_cycle`, written
+out on `{u, v, w}`: each hinge constraint puts the relative screw `S u − S v`, `S v − S w`,
+`S w − S u` in the one-dimensional span of its supporting extensor, and the three differences
+telescope around the triangle to `(S u − S v) + (S v − S w) + (S w − S u) = 0`. Linear independence
 (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`) forces each to vanish, so `S u = S v = S w`. A
 9-case membership dispatch then gives constancy on `{u, v, w}`.
 
@@ -1878,23 +1786,21 @@ theorem theorem_55_triangle (F : BodyHingeFramework K k α β)
           | exact key1.trans key2 | exact (key1.trans key2).symm
 
 /-- **Theorem 5.5, `m`-body cycle rigidity on `α`** (`lem:cycle-realization-rigid`, KT Lemma 5.4):
-the arbitrary-vertex-type sibling of `theorem_55_triangle` and the `α`-level form of
-`rankHypothesis_zero_of_cycle`. A body-hinge framework `F` on `α` carrying an `m`-cycle of bodies
-`vtx 0, …, vtx (m-1)` — the `i`-th edge `edge i` linking `vtx i` to `vtx (i + 1)` (cyclically) —
-whose `m` supporting extensors `C(p(edge i))` are linearly independent is infinitesimally rigid
-*on the bodies the cycle carries* `Set.range vtx`: every infinitesimal motion is constant there.
+the `m`-body sibling of `theorem_55_triangle`. A body-hinge framework `F` on `α` carrying an
+`m`-cycle of bodies `vtx 0, …, vtx (m-1)` — the `i`-th edge `edge i` linking `vtx i` to
+`vtx (i + 1)` (cyclically) — whose `m` supporting extensors `C(p(edge i))` are linearly independent
+is infinitesimally rigid *on the bodies the cycle carries* `Set.range vtx`: every infinitesimal
+motion is constant there.
 **No injectivity of `vtx` is needed** — constancy of `S ∘ vtx` on the index cycle suffices on the
 range.
 
-The argument re-runs the `Fin m` cycle telescoping of
-`eq_succ_of_isInfinitesimalMotion_cycle`/`isTrivialMotion_of_isInfinitesimalMotion_cycle` directly
-on the family `S ∘ vtx`, without transporting the framework along `vtx`: each hinge puts the
-relative screw `S (vtx i) − S (vtx (i+1))` in the one-dimensional span of its supporting extensor,
-the `m` differences telescope around the cycle to `0` (the shift `i ↦ i + 1` is a bijection of
-`Fin m`), and independence (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`) forces each to vanish,
-so `S ∘ vtx` is constant (the `Fin.ofNat` induction from body `0`). This is the `α`-level cycle
-rigidity that KT Lemma 5.4's realization consumes; the `Fin m`-body form is
-`rankHypothesis_zero_of_cycle`. -/
+The argument telescopes around the index cycle `Fin m` directly on the family `S ∘ vtx`, without
+transporting the framework along `vtx`: each hinge puts the relative screw
+`S (vtx i) − S (vtx (i+1))` in the one-dimensional span of its supporting extensor, the `m`
+differences telescope around the cycle to `0` (the shift `i ↦ i + 1` is a bijection of `Fin m`), and
+independence (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`) forces each to vanish, so `S ∘ vtx` is
+constant (the `Fin.ofNat` induction from body `0`). This is the `α`-level cycle rigidity that KT
+Lemma 5.4's realization consumes. -/
 theorem theorem_55_cycle (F : BodyHingeFramework K k α β) {m : ℕ} [NeZero m]
     (vtx : Fin m → α) (edge : Fin m → β)
     (hlink : ∀ i, F.graph.IsLink (edge i) (vtx i) (vtx (i + 1)))

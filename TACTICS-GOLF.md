@@ -1156,9 +1156,9 @@ moves fail and one works:
   `Fin.succ : Fin n → Fin (n+1)`, a different operation from cyclic
   `+1`.
 
-The idiom (used in `rankHypothesis_zero_of_cycle`'s
-`isTrivialMotion_of_isInfinitesimalMotion_cycle`,
-`Molecular/AlgebraicInduction/`):
+The idiom (used in `theorem_55_cycle`, `Molecular/AlgebraicInduction/Pinning.lean`; first written
+for the `Fin m`-body `isTrivialMotion_of_isInfinitesimalMotion_cycle`, deleted by RECONCILE round 3
+task 3):
 
 ```lean
 have hofNat : ∀ p : ℕ, Fin.ofNat m p + 1 = Fin.ofNat m (p + 1) := fun p => by
