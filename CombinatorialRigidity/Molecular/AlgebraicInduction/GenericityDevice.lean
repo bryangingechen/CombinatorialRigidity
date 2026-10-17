@@ -345,7 +345,7 @@ family `i ↦ panelRow ends (j i)` linearly independent (`hindep`), and the rela
 so no per-edge link hypothesis is needed here, unlike the `lem:case-II` accounting iff.)
 
 This is the shape the `d = 3` `hsplit` producer feeds the device closure: the candidate-completion
-assembly (`linearIndependent_sum_augment_candidateRow`) outputs a `Sum`-indexed family
+assembly (`linearIndependent_sum_augment_candidateRow_restriction`) outputs a `Sum`-indexed family
 `(rn ⊕ {candidate row}) ⊕ ro`, not a `Set`-indexed one, so the producer carries an abstract index
 `ι` (a `Sum` type) with an injective realization `j` placing each block index at its
 `(edge, ⋀ᵏ-pair)` and concludes through this lemma. It re-packages to the `Set.range j` form

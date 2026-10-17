@@ -14,9 +14,11 @@ merged, the genericity device's citations made to say which argument they borrow
 Cases I, II and III, `meet.tex` and the forest surgery that the formal proof leaves each framed by a
 remark; the Lean is unchanged, and the declarations the round unpinned are in round 3's list
 (§3, L9). Round 3, `reconcile-lean` (`notes/Reconcile-lean-cleanup.md`), opened with 39 one-commit
-tasks; task 2 committed the docstring-label check (`scripts/check-docstring-labels.py`), and task 3
-deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms. **Next concrete task:** round 3's
-task 4, L9's Case III line route, the candidate rows, `case_III_realization` and `blockPiSpan`.
+tasks; task 2 committed the docstring-label check (`scripts/check-docstring-labels.py`), task 3
+deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms, and task 4 Case III's line route,
+the candidate rows, `case_III_realization` and `blockPiSpan`. **Next concrete task:** round 3's task
+5, L9's `exists_good_realization_const` and `exists_finite_spanning_rigidityRows` with their dead
+callers.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

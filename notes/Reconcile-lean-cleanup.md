@@ -11,10 +11,11 @@ L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main r
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
-round into 39 one-commit tasks; task 2 committed the docstring-label check, and task 3 deleted
-L9's first fourteen declarations (the check 422 → 409). **Next concrete task:** task 4, L9's Case
-III line route, the candidate rows, `case_III_realization` and `blockPiSpan` (*Lemma checklist*).
-Round manual: `CLEANUP.md`.
+round into 39 one-commit tasks; task 2 committed the docstring-label check, task 3 deleted L9's
+first fourteen declarations and task 4 the next seventeen (the check 422 → 409 → 396). **Next
+concrete task:** task 5, L9's `exists_good_realization_const` and
+`exists_finite_spanning_rigidityRows` with their five dead callers (*Lemma checklist*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,28 +25,26 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 3 is done** (this commit; Lean, with two blueprint notes). Nothing is mid-stream; task 4 is
-next.
+**Task 4 is done** (this commit; Lean, with a blueprint note); nothing is mid-stream.
 
-**L9's first deletions** (task 3): the thirteen of the *Lemma checklist* and `F-266`'s
-`eq_succ_of_isInfinitesimalMotion_cycle`, whose one caller they include (*Decisions*). The
-docstrings that named them name the `_gen` forms or nothing, and so do `TACTICS-GOLF.md`,
-`TACTICS-QUIRKS.md`, `def:cycle-data`'s note and the retrospective; `notes/FRICTION.md`'s *Where it
-bit* line and the closed notes are history. Gate 9: **409**, the deleted declarations' thirteen
-*unpinned, own node* lines (`scratch/reconcile-lean/labels-t3.txt`). The dump `cmp`-identical to
-task 2's; `--summary` identical but for its constant count (7 232 → 7 218). The ledger: `F-266`
-new and `F-254` done (task 33 has no part of it left); `F-144` and `F-236`–`F-238` in part; 266
-entries, 135 `done`, 11 `left`, 119 `reported`, 1 `open`; the next ID is `F-267`.
+**L9's deletions so far.** Task 3: fourteen, `F-266`'s orphan among them. Task 4: the sixteen of
+the *Lemma checklist* and `F-267`'s orphan `linearIndependent_sum_augment_candidateRow_block`. The
+docstrings that named them name what replaced them (the shear choice, the restriction-form family
+and augment, `case_III_realization_all_k`, `blockPiSpanOn`) or nothing, as do `TACTICS-QUIRKS.md`'s
+worked case and the retrospective; `DESIGN.md`'s quoted recon claim, `blueprint/DESIGN.md`'s
+calibration case, ROADMAP §22h, `notes/FRICTION.md`, `notes/FRICTION-archive.md` and the closed
+notes are history. Gate 9: **396**, the deleted's thirteen lines gone (`labels-t4.txt`). The dump
+`cmp`-identical to task 3's; `--summary` too but for its constant count (7 218 → 7 194: the
+seventeen, `blockPiSpan.eq_1`, six `_simp` auxiliaries). The ledger: `F-258`, `F-264`, `F-267`
+done; `F-161`, `F-168`, `F-232` in part; `F-268` new (four unpinned declarations beside task 4's
+with no live caller, for task 38's §B); 268 entries, 138 `done`, 11 `left`, 117 `reported`, 2
+`open`; the next ID is `F-269`.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
-docstring and *Decisions*). The baseline at task 2: **total 422** (39 *missing*, 9 of them labels
-broken across a line; 136 *pinned, another node*; 247 *unpinned, own node*), the report
-`scratch/reconcile-lean/labels-t2.txt` (gitignored; the same at `PYTHONHASHSEED` 0, 1 and 12345),
-its counts by directory at its end. Its acceptance (a self-test of 20 planted declarations, red
-under five mutations of the rule; four planted cases on a copy of the tree, 422 → 426; `--lean`) is
+docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
+*unpinned, own node*; `scratch/reconcile-lean/labels-t2.txt`, gitignored); its acceptance is
 `65a5c0ee`'s message. Of the stale or absent labels `F-230`–`F-264` list, all are reported but
-`runPebbleGame.aux`'s (past its lead); section and module headers and docstrings that name no node
-are outside the rule.
+`runPebbleGame.aux`'s (past its lead); headers and docstrings that name no node are outside it.
 
 **Verified at the open** (2026-10-15, at `347ba9c4`, round 2's close tree; its Lean is `64bb9754`'s,
 unchanged since `6f4f7afa`, the tree of the ledger's Lean baselines):
@@ -83,15 +82,11 @@ unchanged since `6f4f7afa`, the tree of the ledger's Lean baselines):
 - **The L9 screen** (block (b)) over L9's entries, round 2's unpinned declarations and `F-090`'s
   shim: 36 unpinned declarations that no main result reaches and no pinned or live declaration
   calls, even through others, are tasks 3–5; the shim is task 6. Staying: `exists_good_realization`
-  and `_reindex` (the pinned `exists_relative_full_count_ofParam` and
-  `hasFullRankRealization_of_independent_panelRow` reach them); the three helpers of the pinned
+  and `_reindex` (pinned declarations reach them); the three helpers of the pinned
   $d = 3$ dispatch `case_III_candidate_dispatch`; the pinned dead declarations
   (`minimal_kdof_reduction`, `annihRowPoly_totalDegree_le`, `F-114`'s three, `F-233`'s three), a
   pin staying with its node. `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` is
   live (the pencil realization theorem reaches it).
-- **The ledger** (`notes/Prose-findings.md`): 265 entries with this commit's `F-265` (the five dead
-  `CaseI.lean` callers that task 5 deletes), 133 `done`, 11 `left`, 120 `reported`, 1 `open`; the
-  next ID is `F-266`.
 
 ## Scope and standing rules
 
@@ -179,7 +174,8 @@ From `notes/Reconcile.md` §1–§3, restated as far as a builder needs them.
   ```
 - **Block (b), the liveness screen** (`CLEANUP.md` §B), from the same cache: for each name, pinned or
   not, reached by a main result or not, its callers, and the pinned or live declarations among its
-  callers' callers, which block its deletion:
+  callers' callers, which block its deletion; then the callees that deleting all the names would
+  leave without a caller, transitively (*Decisions*; a pinned or live one stays):
   ```sh
   python3 - NAME1 NAME2 <<'PY'
   import json,glob,os,re,sys
@@ -196,6 +192,9 @@ From `notes/Reconcile.md` §1–§3, restated as far as a builder needs them.
       while s: [U.add(c) or s.append(c) for c in R.get(s.pop(),()) if c not in U and c!=f]
       k=lambda X: sorted(x.split('.')[-1] for x in X)
       print(q,'pinned' if f in P else 'unpinned','live' if f in L else 'dead','| callers',k(R.get(f,())),'| blocked by',k(x for x in U if x in P or x in L))
+  D={f for q in sys.argv[1:] for f in T if f==q or f.endswith('.'+q)};O=set();s={1}
+  while s: s={x for d in D for x in T[d] if x in T and x not in D and not R.get(x,set())-D};O|=s;s-=P|L;D|=s
+  print('orphans',[(x.split('.')[-1],x in P,x in L) for x in sorted(O)])
   PY
   ```
 
@@ -227,7 +226,7 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   blueprint prose mention, if gate 2 finds one, repointed (gate 8); gate 9 422 → 410 (twelve of the
   thirteen are *unpinned, own node* lines; not `vertexSet_ncard`). *Done:* plus `F-266`'s orphan
   (409); the TeX mentions repointed (`def:cycle-data`'s note, the retrospective), gate 8 green.
-- [ ] **4. L9: Case III's line route, the candidate rows, `case_III_realization`, `blockPiSpan`**
+- [x] **4. L9: Case III's line route, the candidate rows, `case_III_realization`, `blockPiSpan`**
   (`F-232`, `F-258`; `F-264` in part). The sixteen: `PanelLayer.lean`
   `panelSupportExtensor_join_eq_zero_of_eq_zero` (358),
   `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` (713),
@@ -240,7 +239,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `linearIndependent_sum_augment_candidateRow_selector` (1229); `CaseIII/Realization.lean`
   `case_III_realization` (2690; the header's and first section's account of it, `F-264`'s,
   follow); `BodyBar/KFrame.lean` `blockPiSpan` (108), `kFrameRow_mem_blockPiSpan` (120),
-  `span_kFrameRow_le_blockPiSpan` (132). *Expected:* as task 3.
+  `span_kFrameRow_le_blockPiSpan` (132). *Expected:* as task 3. *Done:* plus `F-267`'s orphan
+  (396); `F-264` whole; the retrospective's account of the producers, gate 8 green.
 - [ ] **5. L9: `exists_good_realization_const` and `exists_finite_spanning_rigidityRows`, with their
   dead callers** (`F-265`; `F-256`, `F-233` in part). The seven: `CaseI.lean`
   `exists_good_realization_const` (1699, round 2's), `hglue_of_realization` (1816),
@@ -461,14 +461,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 4**, at Opus: L9's sixteen declarations (*Lemma checklist*), block (b) on each name
-first and on each callee their deletion would leave without a caller (*Decisions*), then §B's trial
-deletion and gates 1–3, 5–6 (the dump byte-identical to `scratch/reconcile-lean/dump-t3.txt`,
-gitignored; regenerate it on the parent if it is missing), 8 if a TeX mention moves, 9 (409 → 397:
-twelve of the sixteen have a line in `labels-t3.txt`, not `exists_shear_linearIndependent_pair` or
-the three `blockPiSpan` declarations) and 10. Carried in: `F-252` for the PI (round
-1's *Candidates*; the phase's (a) removes it). After the round the queue stops before
-`RECONCILE-FORMAL`, which is attended.
+**Next: task 5**, at Opus: L9's seven declarations (*Lemma checklist*), block (b) on the seven
+first (at the parent its orphans are two pins, `exists_independent_rigidityRows_of_forest` and
+`toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`, which stay), then §B's trial deletion and
+gates 1–3, 5–6 (the dump byte-identical to `scratch/reconcile-lean/dump-t4.txt`, gitignored;
+regenerate it on the parent if it is missing), 8 if a TeX mention moves, 9 (396 → 390: six of the
+seven have a line in `labels-t4.txt`, not `exists_finite_spanning_rigidityRows`) and 10.
+`PanelHinge.lean`'s header names `hglue_of_forest` (gate 2). Carried in: `F-252` for the PI (round
+1's *Candidates*; the phase's (a) removes it); `F-268` for task 38. After the round the queue stops
+before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -491,10 +492,9 @@ the three `blockPiSpan` declarations) and 10. Carried in: `F-252` for the PI (ro
   node, so this also reports helpers (most of the 247): the sweep says, in that item, how a helper
   serves its node (`a step of <label>`), and gives a stale one its node or none. Section headers
   and line comments are read for absent labels only.
-- **A deletion's screen covers what it orphans** (task 3): block (b) clears the names it is given,
-  not their callees. Deleting the three `Fin m` cycle forms left
-  `eq_succ_of_isInfinitesimalMotion_cycle` without a caller, so task 3 screened it (unpinned, dead,
-  nothing blocks it) and deleted it with them, as L9's "no caller outside themselves" covers
-  (`F-266`). Tasks 4–5 run block (b) also on each callee their deletion would orphan.
+- **A deletion's screen covers what it orphans** (task 3): deleting the `Fin m` cycle forms left
+  `eq_succ_of_isInfinitesimalMotion_cycle` (unpinned, dead) without a caller, so it went with them,
+  as L9's "no caller outside themselves" covers (`F-266`); block (b) now lists such orphans (task 4,
+  `F-267`).
 - **`F-097`'s `hD`** (the open): weakening `3 ≤ D` to `2 ≤ D` is a statement change beyond L8's
   suggestion; task 15 records it under *Candidates* if the shorter proof holds there.

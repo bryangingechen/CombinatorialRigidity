@@ -528,9 +528,9 @@ theorem linearIndependent_panelRow_comp_single_of_edge [DecidableEq α]
 
 /-- **L2 — the pinned new-block rows span the whole hinge-row block**
 (`lem:case-II-placement-new-rows` infra, the `hspan` input of the Claim-6.12 candidate producers;
-Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The candidate-completion full-block producers
-(`linearIndependent_sum_p2_candidateRow` / `linearIndependent_sum_p3_candidateRow`, via the
-row-space criterion `linearIndependent_sumElim_candidateRow_iff`) consume not just the
+Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The row-space criterion
+`linearIndependent_sumElim_candidateRow_iff`, as the restriction-form candidate family
+`case_III_full_family_restriction` applies it, consumes not just the
 *independence* of the re-inserted body `v`'s new-block rows pinned to its screw column
 (`linearIndependent_panelRow_comp_single_of_edge`, the `hrnpin` input) but that they *span* the
 whole hinge-row block `r(p(e)) = (span C(p(e)))^⊥`. This certifies that equality.

@@ -20,7 +20,7 @@ realization-only machinery — the part the blueprint puts in `case-iii.tex` rat
 * the **Claim 6.12 panel geometry** — the standalone `Fin 4` / `⋀²K⁴` spanning, affine-independence,
   and homogeneous-incidence / line-data witnesses (KT §6.4.1, eq. (6.45));
 * the **`D`-candidate disjunction and row-space criterion** — `mem_hingeRowBlock_iff`,
-  `linearIndependent_sumElim_candidateRow_iff`, the M₁/M₂/M₃ p2/p3 candidate-row lemmas,
+  `linearIndependent_sumElim_candidateRow_iff`, the candidate rows' column-operation identities,
   `candidateRow_ne_zero` / `candidateRow_ac_eq_neg`, the Claim 6.12 capstone `case_III_claim612`,
   and the duality witnesses handing the producer its nonzero-candidate-row input.
 
@@ -817,13 +817,12 @@ placement needs: `LinearIndependent ![n u, n']`, the four `⬝ᵥ`-orthogonaliti
 `{pi, pj} ⊥ {n u, n'}`, and the join identity
 `omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj]`.
 
-This is exactly the input
-`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` (the Leaf-2b seed-from-line core)
-consumes to turn Claim 6.12's existential witness `r̂(p̄_i ∨ p̄_j) ≠ 0` into the nonzero
-candidate-row input `r̂(panelSupportExtensor (n_u + t • n') n_u) ≠ 0` the row-space criterion fires
-on. The
-construction mirrors `exists_hduality_witness_of_panel_incidence`'s two builders: the three joins
-through `p̄ 0` lie on **two** N3a panels (use two real normals `n u, n w`); the three "opposite"
+This is exactly the input `exists_complementIso_ne_zero_of_homogeneousIncidence` consumes, with the
+per-line duality `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, to turn Claim 6.12's
+existential witness `r̂(p̄_i ∨ p̄_j) ≠ 0` into a panel-meet `r̂(C(L)) ≠ 0` of the line `L` in the
+panel `Π(n u)`, the nonzero candidate-row input the row-space criterion fires on. The construction
+mirrors `exists_hduality_witness_of_panel_incidence`'s two builders: the three joins through `p̄ 0`
+lie on **two** N3a panels (use two real normals `n u, n w`); the three "opposite"
 joins share **one** panel `Π(u)` (use `n u` and a constructed second normal from
 `exists_independent_perp_pair`). Graph-free; pure `Fin 4` panel geometry. -/
 theorem exists_line_data_of_homogeneousIncidence
@@ -903,9 +902,9 @@ variable {k : ℕ} {α β : Type*}
 
 /-! ## Claim 6.12: the `D`-candidate disjunction and the row-space criterion (KT §6.4.1)
 
-The row-space criterion `r̂(C) ≠ 0 ⟺ full rank`, the M₁/M₂/M₃ p2/p3 candidate-row machinery, the
-Claim 6.12 capstone (`case_III_claim612`, contrapositive of the panel-geometry span result), and the
-duality witnesses handing the producer its nonzero-candidate-row input. -/
+The row-space criterion `r̂(C) ≠ 0 ⟺ full rank`, the candidate rows' column-operation identities,
+the Claim 6.12 capstone (`case_III_claim612`, contrapositive of the panel-geometry span result), and
+the duality witnesses handing the producer its nonzero-candidate-row input. -/
 
 /-- **A row functional lies in the hinge-row block iff it annihilates the supporting extensor**
 (`lem:case-III-claim612-block-iff-perp`, the membership half of KT's eq.~(6.42) row-space criterion;
@@ -935,8 +934,8 @@ independent **iff** `r̂` is not orthogonal to the supporting extensor:
 `(span C)^⊥`; appending `r̂` raises the dimension to `D` iff `r̂` is fresh
 (`linearIndependent_sumElim_unit_iff`, the row-space criterion), and freshness off the hinge-row
 block is exactly `r̂ (C) ≠ 0` (`mem_hingeRowBlock_iff`). This is the conditional `hnewpinaug` of the
-candidate-completion assembly (`linearIndependent_sum_augment_candidateRow`) recast as a clean
-orthogonality test — the eq.~(6.42) full-rank-of-the-top-left-block fact the `D`-candidate
+candidate-completion assembly (`linearIndependent_sum_augment_candidateRow_restriction`) recast as a
+clean orthogonality test — the eq.~(6.42) full-rank-of-the-top-left-block fact the `D`-candidate
 disjunction (`lem:case-III-claim612`) discharges. -/
 theorem linearIndependent_sumElim_candidateRow_iff (F : BodyHingeFramework K k α β) (e : β)
     {ι : Type*} {rn : ι → Module.Dual K (ScrewSpace K k)} (hrn : LinearIndependent K rn)
@@ -1071,181 +1070,6 @@ theorem hingeRow_comp_single_off [DecidableEq α] {u w a : α} (hau : a ≠ u) (
     simp only [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply,
       Pi.single_eq_of_ne hau.symm, Pi.single_eq_of_ne haw.symm, sub_zero, map_zero,
       LinearMap.zero_apply]
-
-/-- **The `p₂` candidate full block: the symmetric `va ↔ vb` candidate attains the full
-`D(|V|−1)`-size family when `ρ` is not orthogonal to the supporting extensor**
-(`lem:case-III-claim612-p2-placement`, KT eqs.~(6.19)/(6.30); Katoh–Tanigawa 2011 §6.4.1,
-Phase 22e). The second of Claim~6.12's three candidates: split off at `v` along `vb` (rather than
-`va`), the symmetric image of `p₁` under `a ↔ b`. It reuses the candidate-completion assembly
-(`linearIndependent_sum_augment_candidateRow`) at the column op `Φ = columnOp hvb` for the edge `vb`
-in place of `va`, and the row-space criterion (`linearIndependent_sumElim_candidateRow_iff`) at the
-`vb`-hinge `e`: given the operated, `v`-pinned `vb`-block rows — the `D − 1` rows
-`(rn ·∘ₗ Φ) ∘ₗ single v`, linearly independent (`hrnpin`) and spanning the whole hinge-row block
-`r(p(e)) = (span C(e))^⊥` (`hspan`; `lem:case-II-placement-new-rows` supplies them at the
-`vb`-hinge) — **if** the candidate functional `ρ` is not orthogonal to the supporting extensor,
-`ρ(C(e)) ≠ 0`, **then** the full `p₂` family `Sum.elim (Sum.elim rn {hingeRow v b ρ}) ro` is
-linearly independent. This is KT's `M₂` (eq.~(6.30)) full rank `⟺ r ∉ (span C(L'))^⊥` for the line
-`L' ⊂ Π(b)` — the producer direction of the eq.~(6.42) row-space criterion the assembly consumes
-through its operated `hnewpinaug`. The `λ_{(ab)j}` / `i^*` of the redundant-row decomposition are
-unchanged between `M₁` and `M₂`: they live in `R(G_v^{ab}, q)`, common to both candidates and
-independent of `p₁, p₂`. The bridge `hingeRow_comp_columnOp_comp_single` identifies the operated,
-pinned candidate row with `ρ`, so the criterion's `ScrewSpace K k`-level iff reads on the assembly's
-`hnewpinaug` directly. -/
-theorem linearIndependent_sum_p2_candidateRow (F : BodyHingeFramework K k α β) (e : β)
-    [DecidableEq α] {v b : α} (hvb : v ≠ b) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
-    {ρ : Module.Dual K (ScrewSpace K k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace K k),
-      ro j (Function.update (0 : α → ScrewSpace K k) v x) = 0)
-    (holdindep : LinearIndependent K ro)
-    (hrnpin : LinearIndependent K (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) v)))
-    (hspan : Submodule.span K (Set.range (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) v))) = F.hingeRowBlock e)
-    (hr : ρ (F.supportExtensor e) ≠ 0) :
-    LinearIndependent K
-      (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v b ρ)) ro) := by
-  refine linearIndependent_sum_augment_candidateRow hvb hold ?_ holdindep
-  rw [hingeRow_comp_columnOp_comp_single hvb ρ]
-  exact (linearIndependent_sumElim_candidateRow_iff F e hrnpin hspan ρ).2 hr
-
-/-- **The `p₃` candidate full block: the third candidate split at the other degree-2 body `a`
-along `ac` attains the full `D(|V|−1)`-size family when its candidate functional is not orthogonal
-to the supporting extensor** (`lem:case-III-claim612-p3-placement`, KT eqs.~(6.31)–(6.41);
-Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The third of Claim~6.12's candidates, available because `a`
-too is a degree-2 vertex: split off at `a` along `ac` (rather than splitting at `v`). The
-isomorphism `G_v^{ab} ≅ G_a^{vc}` (`ρ : V∖{a} → V∖{v}`, `ρ(v) = a`, identity otherwise) is handled
-**functionally**, not by an `ofNormals` graph swap: the candidate row is `hingeRow a c ρ_c` for the
-candidate functional `ρ_c` on `ScrewSpace K k`, and the producer is the *same* candidate-completion
-assembly (`linearIndependent_sum_augment_candidateRow`) instantiated at the column op
-`Φ = columnOp hac` for the edge `ac` in place of `va` — the split body is `a`, its operated endpoint
-`c`. Its one hypothesis — the operated, `a`-pinned top-left block being full rank — is supplied by
-the row-space criterion (`linearIndependent_sumElim_candidateRow_iff`) at the `ac`-hinge `e` once
-the operated, pinned candidate row `(hingeRow a c ρ_c) ∘ Φ ∘ single a` is identified with `ρ_c`
-itself (the column op makes it pure `a`-column with value `ρ_c(S_a)`,
-`hingeRow_comp_columnOp_comp_single`), which holds iff `ρ_c(C(e)) ≠ 0`. This is KT's `M₃`
-(eq.~(6.41)) full rank `⟺ r ∉ (span C(L''))^⊥` for the line `L'' ⊂ Π(c)` — the producer direction
-of the eq.~(6.42) row-space criterion the assembly consumes through its operated `hnewpinaug`. The
-link to the *same* common vector `r̂` the `M₁/M₂` criteria use is eq.~(6.44)
-(`candidateRow_ac_eq_neg`): the `M₃` candidate functional `ρ_c` is `−r̂` restricted to the
-`c`-endpoint, so the Claim-6.12 capstone (`lem:case-III-claim612`) reads its criterion off the
-same `r̂`; N7 itself is the graph-free producer, so the recurring `ofNormals` defeq trap does not
-bite. -/
-theorem linearIndependent_sum_p3_candidateRow (F : BodyHingeFramework K k α β) (e : β)
-    [DecidableEq α] {a c : α} (hac : a ≠ c) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
-    {ρ : Module.Dual K (ScrewSpace K k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace K k),
-      ro j (Function.update (0 : α → ScrewSpace K k) a x) = 0)
-    (holdindep : LinearIndependent K ro)
-    (hrnpin : LinearIndependent K (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) a)))
-    (hspan : Submodule.span K (Set.range (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) a))) = F.hingeRowBlock e)
-    (hr : ρ (F.supportExtensor e) ≠ 0) :
-    LinearIndependent K
-      (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) a c ρ)) ro) := by
-  refine linearIndependent_sum_augment_candidateRow hac hold ?_ holdindep
-  rw [hingeRow_comp_columnOp_comp_single hac ρ]
-  exact (linearIndependent_sumElim_candidateRow_iff F e hrnpin hspan ρ).2 hr
-
-/-- **The `p₂` candidate selector: the `M₂` block is full rank when the common candidate vector is
-not orthogonal to its supporting extensor** (`lem:case-III-claim612-p2-placement`, the selector
-recast of the `p₂` producer; Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The `case_III_claim612`
-disjunction (`lem:case-III-claim612`) selects a candidate by the orthogonality test
-`r̂(Cₘ) ≠ 0` on the *common* candidate vector `r̂`, where `Cₘ` is that block's supporting extensor
-`C(p(e)) = F.supportExtensor e`. This packages `linearIndependent_sum_p2_candidateRow` into exactly
-that selector shape `r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow v b r̂}) ro)`
-— the selector shape the `d = 3` `hsplit` producer's line-indexed candidate construction
-(`case_III_hsplit_producer_all_k`) consumes — by taking the candidate functional `ρ := r̂` and the
-supporting extensor `C := F.supportExtensor e`. Graph-free (abstract `F`); the producer's row-space
-criterion already does all the work. -/
-theorem linearIndependent_sum_p2_candidateRow_selector (F : BodyHingeFramework K k α β) (e : β)
-    [DecidableEq α] {v b : α} (hvb : v ≠ b) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
-    {r : Module.Dual K (ScrewSpace K k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace K k),
-      ro j (Function.update (0 : α → ScrewSpace K k) v x) = 0)
-    (holdindep : LinearIndependent K ro)
-    (hrnpin : LinearIndependent K (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) v)))
-    (hspan : Submodule.span K (Set.range (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) v))) = F.hingeRowBlock e) :
-    r (F.supportExtensor e) ≠ 0 →
-      LinearIndependent K
-        (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v b r)) ro) :=
-  fun hr => linearIndependent_sum_p2_candidateRow F e hvb hold holdindep hrnpin hspan hr
-
-/-- **The `p₃` candidate selector: the `M₃` block is full rank when the common candidate vector is
-not orthogonal to its supporting extensor** (`lem:case-III-claim612-p3-placement`, the selector
-recast of the `p₃` producer; Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The third candidate is split at
-the other degree-2 body `a` along `ac`; its full-rank criterion is routed onto the *same* common
-vector `r̂` by eq.~(6.44) (`candidateRow_ac_eq_neg`), so the selector test is again `r̂(C(e)) ≠ 0`
-for the `ac`-hinge's supporting extensor `C = F.supportExtensor e`. This packages
-`linearIndependent_sum_p3_candidateRow` into the `hsel₃` selector shape
-`r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow a c r̂}) ro)`
-(`ρ := r̂`, `C := F.supportExtensor e`). Graph-free (abstract `F`). -/
-theorem linearIndependent_sum_p3_candidateRow_selector (F : BodyHingeFramework K k α β) (e : β)
-    [DecidableEq α] {a c : α} (hac : a ≠ c) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
-    {r : Module.Dual K (ScrewSpace K k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace K k),
-      ro j (Function.update (0 : α → ScrewSpace K k) a x) = 0)
-    (holdindep : LinearIndependent K ro)
-    (hrnpin : LinearIndependent K (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) a)))
-    (hspan : Submodule.span K (Set.range (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) a))) = F.hingeRowBlock e) :
-    r (F.supportExtensor e) ≠ 0 →
-      LinearIndependent K
-        (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) a c r)) ro) :=
-  fun hr => linearIndependent_sum_p3_candidateRow F e hac hold holdindep hrnpin hspan hr
-
-/-- **The `M₁` candidate selector: the un-symmetrized `va`-split block is full rank when the common
-candidate vector is not orthogonal to its supporting extensor** (`lem:case-III-candidate-row`, the
-selector recast of the `M₁` candidate-completion assembly; Katoh–Tanigawa 2011 §6.4.1, Phase 22g).
-The first of Claim~6.12's three candidates is `p₁` itself — split off at `v` along the *original*
-edge `va` — so it has no separate producer: it is the candidate-completion assembly
-(`linearIndependent_sum_augment_candidateRow`) applied directly at the column op `Φ = columnOp hva`
-for the edge `va`, with the operated top-left block `hnewpinaug` supplied by the row-space criterion
-(`linearIndependent_sumElim_candidateRow_iff`) at the `va`-hinge `e`. This packages it into the same
-`hsel₁` selector shape
-`r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow v a r̂}) ro)`
-that the `d = 3` `hsplit` producer's line-indexed candidate construction
-(`case_III_hsplit_producer_all_k`) consumes, matching the `hsel₂`/`hsel₃` recasts. Unlike those
-two — which delegate the `hnewpinaug`
-discharge to the `p₂`/`p₃` producers — this one builds the operated block inline (there is no `M₁`
-producer to delegate to): once the operated, pinned candidate row `(hingeRow v a r̂) ∘ Φ ∘ single v`
-is identified with `r̂` (`hingeRow_comp_columnOp_comp_single`), the row-space criterion's
-`ScrewSpace K k`-level iff reads on `hnewpinaug` directly. Graph-free (abstract `F`). -/
-theorem linearIndependent_sum_augment_candidateRow_selector (F : BodyHingeFramework K k α β) (e : β)
-    [DecidableEq α] {v a : α} (hva : v ≠ a) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
-    {r : Module.Dual K (ScrewSpace K k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace K k),
-      ro j (Function.update (0 : α → ScrewSpace K k) v x) = 0)
-    (holdindep : LinearIndependent K ro)
-    (hrnpin : LinearIndependent K (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hva).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) v)))
-    (hspan : Submodule.span K (Set.range (fun i : ιn =>
-      ((rn i).comp (columnOp (k := k) hva).toLinearMap).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) v))) = F.hingeRowBlock e) :
-    r (F.supportExtensor e) ≠ 0 →
-      LinearIndependent K
-        (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v a r)) ro) :=
-  fun hr => linearIndependent_sum_augment_candidateRow hva hold
-    (by rw [hingeRow_comp_columnOp_comp_single hva r]
-        exact (linearIndependent_sumElim_candidateRow_iff F e hrnpin hspan r).2 hr)
-    holdindep
 
 /-- **The common vector `r̂` of the `D`-candidate disjunction is nonzero**
 (`lem:case-III-claim612-r-nonzero`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1, Phase 22e).

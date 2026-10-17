@@ -3508,7 +3508,10 @@ the numeric-tactic grep audit is what catches them (any `(n : K) ≠ 0`-shaped g
 **Worked case:** Phase 33 Slice 8 (`AlgebraicInduction/PanelLayer.lean` ℝ→K).
 `exists_shear_linearIndependent_pair` picked `t ∈ {1, 2}` outside a subsingleton bad set
 (`two_ne_zero` — char-2-false); rerouted to `[Infinite K]` + the `Set.infinite_univ.diff` extraction
-above. Separately, `normalsJoin_pair_linearIndependent_of_triLI`'s
+above. (RECONCILE round 3 task 4 deleted that lemma, which had no caller; the same extraction from
+a finite set's complement, `hbad.infinite_compl.nonempty`, closes
+`LinearIndependent.exists_notMem_of_polynomial_repr` in `Mathlib/LinearAlgebra/Matrix/Rank.lean`.)
+Separately, `normalsJoin_pair_linearIndependent_of_triLI`'s
 `linarith [mul_add s₂ (c₁ * n_a i) (c₂ * n_b i)]` (a bilinearity identity) became `linear_combination
 hi`. No downstream caller of the shear lemma broke — `Infinite ℝ` is a global instance, so still-ℝ
 callers auto-discharge the new `[Infinite K]`.

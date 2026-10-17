@@ -1193,7 +1193,8 @@ bad set and nonzero (`t ∉ bad`, `t ≠ 0`) at which `g t` is again linearly in
 
 The basis-free, graph-free shape the molecular Case-III realization (KT §6.4.1) consumes: the
 `t = 0` hinge-level family is certified independent, then transferred along the one-parameter shear,
-the bad `t` intersected with the good-`t` set of `exists_shear_linearIndependent_pair`. The proof
+the prescribed bad set being the shears that break the `vb`-hinge
+(`setOf_not_shear_linearIndependent_subsingleton`). The proof
 pulls `g t` back along `φ := b.equivFun : M ≃ₗ[K] (κ → K)` (so `φ (g t i) j = b.repr (g t i) j =
 (P i j).eval t`, i.e. `φ ∘ g t` is the row family of `(Matrix.of P).map (evalRingHom t)`); LI
 transfers across `φ` (`LinearMap.linearIndependent_iff`), so

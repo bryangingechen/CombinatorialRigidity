@@ -3784,7 +3784,8 @@ declaration's name as its header writes it:
   "producer", "genuine", "seed", "green", "feeds", "threads" and "heart".
   *Evidence:* read (the docstrings and bodies; KT 2011 pp. 679 and 685–686, `.refs/`).
   *Found:* round 3 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L3).
+  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3:
+  `linearIndependent_sum_augment_candidateRow` deleted (task 4).
 - **F-164** · L · the docstrings of the pins of `case-iii.tex`'s span and point choice
   (`Molecular/RigidityMatrix/Claim612.lean`). Those of `exists_ne_zero_dotProduct_eq_zero`,
   `exists_affineIndependent_of_det_polynomial_ne_zero`, `exists_detPolynomial_of_pointPolynomial`,
@@ -3816,7 +3817,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; the signatures of `theorem_55_minimalKDof_k_all_k`
   and `case_III_hsplit_producer_all_k`; KT 2011 pp. 682 and 686, `.refs/`).
   *Found:* round 3 task 2.14.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* reported (`notes/Prose-report.md`, L4); round 3:
+  `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow` deleted
+  (task 4).
 - **F-172** · L · the docstrings of the pins of `case-iii.tex`'s general case
   (`CaseIII/Realization.lean`, `CaseIII/Arms.lean`, `Molecular/Induction/Operations.lean`).
   `chainData_fire_discriminator`'s and `chainData_dispatch`'s say that they have no `\lean` pin;
@@ -4023,7 +4026,9 @@ declaration's name as its header writes it:
   uses the per-set forms.
   *Evidence:* read (the docstrings; a `grep` for each name's callers in `CombinatorialRigidity/`).
   *Found:* round 5 task 3.2.
-  *Disposition:* reported (`notes/Prose-report.md`, L9).
+  *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the six without a caller outside
+  themselves deleted, with `blockPiSpan` and its two lemmas, and the docstrings that named them
+  repointed or cut (task 4).
 - **F-233** · L · the declarations round 5's task 3.3 moved or unpinned
   (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`). Their
   docstrings name the nodes their pins left: `screwSpace_finrank` and the five row-independence
@@ -4229,8 +4234,8 @@ declaration's name as its header writes it:
   `case_III_rank_certification`, and none of the three is pinned.
   *Evidence:* read (the three docstrings; the nodes' pins).
   *Found:* RECONCILE round 2 task 7.
-  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep
-  (*Moved to a later round*); all three are among the declarations round 2 unpins.
+  *Disposition:* done (task 4): all three deleted, with the selectors and the block form
+  (`F-267`).
 - **F-263** · L · `mem_hingeRowBlock_iff` (`Molecular/RigidityMatrix/Claim612.lean`): its
   docstring gives it as `lem:case-III-claim612-block-iff-perp`'s, and the file's header lists it
   in "the part the blueprint puts in `case-iii.tex` rather than `rigidity-matrix.tex`"; since
@@ -4247,7 +4252,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstring, the header and both declarations' statements and bodies; a
   `grep` of the Lean for callers).
   *Found:* RECONCILE round 2 task 14.
-  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep (*Moved to a later round*).
+  *Disposition:* done (task 4): `case_III_realization` deleted, and the file's header and first
+  section, with `case_III_realization_all_k`'s docstring, give `case_III_realization_all_k` as the
+  capstone.
 - **F-265** · L · `hglue_of_realization`, `hglue_of_independent_rigidityRows`, `hglue_of_forest`,
   `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition`,
   `ofParam_rankHypothesis_iff_pinnedMotionsOn` (`Molecular/AlgebraicInduction/CaseI.lean`): five
@@ -4270,6 +4277,28 @@ declaration's name as its header writes it:
   `theorem_55_cycle`'s).
   *Found:* RECONCILE round 3 task 3.
   *Disposition:* done (task 3).
+- **F-267** · L · `BodyHingeFramework.linearIndependent_sum_augment_candidateRow_block`
+  (`Molecular/RigidityMatrix/Basic.lean`): the candidate-completion assembly for a block of
+  candidate rows, unpinned, which no main result's proof reaches. Its one caller was
+  `linearIndependent_sum_augment_candidateRow`, its single-candidate instance, which `F-258` names
+  and L9 deletes; `linearIndependent_sum_augment_candidateRow_restriction` runs the same column
+  operation and transport back, for one candidate row against a restriction-independent bottom
+  block. No ledger entry named it.
+  *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
+  *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at `d85b9bea`); read (its body and
+  `_restriction`'s).
+  *Found:* RECONCILE round 3 task 4.
+  *Disposition:* done (task 4).
+- **F-268** · L · `PanelHingeFramework.case_III_old_new_blocks` (`CaseIII/Candidate.lean`),
+  `hasFullRankRealization_of_independent_rigidityRow` and `hasFullRankRealization_of_candidateSelector`
+  (`AlgebraicInduction/CaseI.lean`), `hasFullRankRealization_of_independent_panelRow_index`
+  (`AlgebraicInduction/GenericityDevice.lean`): four unpinned declarations that no main result's
+  proof reaches; none has a caller but the second, whose one caller is the third. They sit beside
+  the declarations RECONCILE round 3 task 4 deletes, but no L9 entry names them.
+  *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
+  *Scope*, over `scripts/blueprint-deps.py`'s Lean cache after task 4).
+  *Found:* RECONCILE round 3 task 4.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 

@@ -336,36 +336,6 @@ theorem panelSupportExtensor_eq_complementIso_extensor (n₁ n₂ : Fin (k + 2) 
   rw [panelSupportExtensor]
   exact congrArg _ (Subtype.ext (normalsJoin_coe n₁ n₂))
 
-/-- **The point-join ↔ panel-meet annihilation transfer, in the producer (`panelSupportExtensor`)
-direction** (`lem:case-III-claim612-line-in-panel-union`, N3b; Katoh–Tanigawa 2011 §6.4.1 eq.
-(6.45), Phase 22g). The `d = 3` form of the duality consumed by the Case-III `hsplit` producer.
-Given two independent panel normals `n_u, n'` of a panel `Π(u)` and two points `pi, pj` of the line
-`L = pi pj ⊂ Π(u)` (each dot-orthogonal to both normals), a screw functional
-`r : Dual(ScrewSpace K 2)` that annihilates the candidate `va`-hinge's supporting extensor
-`panelSupportExtensor n_u n'` also annihilates the spanning point-join
-`p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]` — and *contrapositively*, the producer's existential witness
-`r̂(p̄ᵢ ∨ p̄ⱼ) ≠ 0` (Claim 6.12, `case_III_claim612`) forces `r̂(panelSupportExtensor n_u n') ≠ 0`,
-the nonzero-row input the row-space criterion at `C(L)` feeds to the single-candidate brick.
-
-Immediate from the `Molecular/Meet.lean` core
-`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` after the bridge
-`panelSupportExtensor_eq_complementIso_extensor` rewrites the supporting extensor into the
-`complementIso`-of-an-`extensor` meet form the core is stated against. This is the
-producer-direction reading of the same proportionality `extensor ![pi, pj] = c • C(L)`; the
-`hann`-discharge direction
-(`extensor_join_eq_zero_of_complementIso_eq_zero`, off the `d = 3` live route per
-`notes/Phase22-realization-design.md` §1.39) pushed annihilation the other way. -/
-theorem panelSupportExtensor_join_eq_zero_of_eq_zero (n_u n' pi pj : Fin 4 → K)
-    (hpair : LinearIndependent K ![n_u, n'])
-    (hi_u : pi ⬝ᵥ n_u = 0) (hi_u' : pi ⬝ᵥ n' = 0)
-    (hj_u : pj ⬝ᵥ n_u = 0) (hj_u' : pj ⬝ᵥ n' = 0)
-    (r : Module.Dual K (ScrewSpace K 2))
-    (hr : r (panelSupportExtensor n_u n') = 0) :
-    r (ScrewSpace.mk (extensor ![pi, pj]) (extensor_mem_exteriorPower _)) = 0 :=
-  extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct n_u n' pi pj hpair
-    hi_u hi_u' hj_u hj_u' r
-    (by rw [← panelSupportExtensor_eq_complementIso_extensor]; exact hr)
-
 /-- **`m` linearly-independent common-perp vectors of `r` normals, `m + r ≤ k + 2`**
 (`def:genuine-hinge-realization`, the general-`d` rank-nullity perp-space brick; Phase 23a Leaf 1).
 Given `r` row-normals `N : Fin r → Fin (k+2) → K` and a count `m` with `m + r ≤ k + 2`, there are
@@ -692,49 +662,16 @@ theorem exists_extensor_in_two_panels_grade (n₁ n₂ : Fin (k + 2) → K) :
   intro heq
   exact (extensor_ne_zero_iff_linearIndependent p).mpr hpli (congr_arg ScrewSpace.val heq)
 
-/-- **The eq. (6.12) candidate's `va`-hinge support carries the existential join witness**
-(`lem:case-III-claim612-line-in-panel-union`, the Leaf-2b seed-from-line transfer; Katoh–Tanigawa
-2011 §6.4.1 eq. (6.12)/(6.45), Phase 22g). The `d = 3` Case-III producer builds its degenerate
-candidate by placing the re-inserted body `v` at the sheared normal `n_u + t • n'` (`t ≠ 0`) of the
-witness panel `Π(u)`, with the `va`-hinge's second panel `a` at `n_u`; the candidate's `va`-hinge
-supporting extensor is then `panelSupportExtensor (n_u + t • n') n_u`, a nonzero multiple of the
-panel-meet `C(L) = complementIso (n_u ∧ n')` of the witness line `L = pi pj ⊂ Π(u)`
-(`panelSupportExtensor_add_smul_left`, the eq. (6.12) `va`-line). So a screw functional `r` not
-annihilating the spanning point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]` — Claim 6.12's existential
-witness (`case_III_claim612`) — does not annihilate that `va`-hinge support either:
-`r̂(p̄ᵢ ∨ p̄ⱼ) ≠ 0 ⟹ r̂(panelSupportExtensor (n_u + t • n') n_u) ≠ 0`.
-
-This is the nonzero-row input the row-space criterion (`linearIndependent_sumElim_candidateRow_iff`)
-consumes at the candidate's `va`-hinge to certify the eq. (6.29) candidate family independent. It is
-the shear-invariant, producer-direction reading of the point-join ↔ panel-meet annihilation transfer
-`panelSupportExtensor_join_eq_zero_of_eq_zero` (the unsheared `n_u, n'` form): the shear factor `-t`
-(nonzero since `t ≠ 0`) cancels under `r`, so the candidate's actual sheared support and the
-unsheared panel-meet share the nonvanishing. -/
-theorem panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero (n_u n' pi pj : Fin 4 → K)
-    {t : K} (ht : t ≠ 0) (hpair : LinearIndependent K ![n_u, n'])
-    (hi_u : pi ⬝ᵥ n_u = 0) (hi_u' : pi ⬝ᵥ n' = 0)
-    (hj_u : pj ⬝ᵥ n_u = 0) (hj_u' : pj ⬝ᵥ n' = 0)
-    (r : Module.Dual K (ScrewSpace K 2))
-    (hr : r (ScrewSpace.mk (extensor ![pi, pj]) (extensor_mem_exteriorPower _)) ≠ 0) :
-    r (panelSupportExtensor (n_u + t • n') n_u) ≠ 0 := by
-  intro hz
-  apply hr
-  apply panelSupportExtensor_join_eq_zero_of_eq_zero n_u n' pi pj hpair hi_u hi_u' hj_u hj_u' r
-  rw [panelSupportExtensor_add_smul_left, map_smul, smul_eq_zero] at hz
-  rcases hz with h | h
-  · exact absurd (neg_eq_zero.mp h) ht
-  · exact h
-
-/-- **GAP-3, the bad-shear set is a subsingleton** (the bad-set bound of
-`exists_shear_linearIndependent_pair`; Katoh–Tanigawa 2011 §6.4.1, eq. (6.12), Phase 22h). The set
+/-- **GAP-3, the bad-shear set is a subsingleton** (the bad-set bound of the shear that
+`case_III_realization_of_rank` chooses; Katoh–Tanigawa 2011 §6.4.1, eq. (6.12), Phase 22h). The set
 of shears `t` making the eq.~(6.12) `va`-line `n_a + t • n'` collinear with the IH `b`-normal `n_b`
 has at most one element: if two distinct `t₁ ≠ t₂` were both bad (each `n_a + tᵢ • n'` a scalar
 multiple of `n_b`), subtracting the two collinearity witnesses puts `n'` in `span {n_b}`, hence
 `n_a = c₁ • n_b - t₁ • n' ∈ span {n_b}`, contradicting `hgab : LinearIndependent ![n_a, n_b]`. This
 is the standalone bad-set the producer's `t`-family transfer intersects with the genericity device's
 finite bad set (the `t = 0` rank certification re-extracts a `t`-independent family, then
-`exists_shear_linearIndependent_pair`-style avoidance picks a `t` outside both bad sets, KT's
-"`p₁` nonparallel" choice). -/
+`caseIIICandidate_exists_good_shear` picks a `t` outside both bad sets, KT's "`p₁` nonparallel"
+choice). -/
 theorem setOf_not_shear_linearIndependent_subsingleton (n_a n' n_b : Fin (k + 2) → K)
     (hgab : LinearIndependent K ![n_a, n_b]) :
     {t : K | ¬ LinearIndependent K ![n_a + t • n', n_b]}.Subsingleton := by
@@ -777,36 +714,6 @@ theorem setOf_not_shear_linearIndependent_subsingleton (n_a n' n_b : Fin (k + 2)
   -- Then `n_a = c₁ • n_b - t₁ • n' ∈ span {n_b}`, contradicting `hna_not`.
   apply hna_not (c₁ - t₁ * ((c₁ - c₂) / (t₁ - t₂)))
   rw [sub_smul, mul_smul, ← hn', hc₁]; abel
-
-/-- **GAP-3 good-`t`: a generic shear keeps the reproduced `vb`-hinge transversal** (the genericity-
-in-`t` condition the `d = 3` Case-III producer must supply to `case_III_old_new_blocks_of_line`'s
-`hnewtrans`; Katoh–Tanigawa 2011 §6.4.1, eq. (6.12), Phase 22h). The line-indexed candidate shears
-the re-inserted body `v`'s normal along the witness line `L = n_a ∧ n'` to `n_a + t • n'` (`t ≠ 0`);
-for the new block `e_b = vb` to stay a genuine hinge the producer needs `n_a + t • n'` independent
-from the IH `b`-normal `n_b`. This holds for **all but at most one** value of `t`: if two distinct
-`t₁ ≠ t₂` were both bad (each making `n_a + tᵢ • n'` collinear with `n_b`), subtracting the two
-collinearity witnesses puts `n'` in `span {n_b}`, hence `n_a = (witness) - tᵢ • n' ∈ span {n_b}`,
-contradicting `hgab : LinearIndependent ![n_a, n_b]` (the IH `ab`-hinge transversal). With the bad
-set a subsingleton, two distinct nonzero candidates `t = 1, 2` cannot both be bad, so one of them is
-a good nonzero shear.
-
-The witness line being genuine (`hL : LinearIndependent ![n_a, n']`) is *not* needed for this
-existence (the bad-set bound uses only `hgab`); it is recorded as the companion hypothesis the
-producer carries for `case_III_old_new_blocks_of_line`'s `hL` slot, and ensures `n' ≠ 0` so the
-shear is nondegenerate. -/
-theorem exists_shear_linearIndependent_pair [Infinite K] (n_a n' n_b : Fin (k + 2) → K)
-    (hgab : LinearIndependent K ![n_a, n_b]) :
-    ∃ t : K, t ≠ 0 ∧ LinearIndependent K ![n_a + t • n', n_b] := by
-  -- The bad shears form a subsingleton (`≤ 1` element); adjoining `{0}` keeps the set finite, and
-  -- an infinite field has a nonzero scalar avoiding it. Two fixed candidates like `t = 1, 2` would
-  -- need `2 ≠ 0` — false in characteristic 2 — so the reroute goes through `[Infinite K]`.
-  have hbad := setOf_not_shear_linearIndependent_subsingleton n_a n' n_b hgab
-  have hfin : ({0} ∪ {t : K | ¬ LinearIndependent K ![n_a + t • n', n_b]}).Finite :=
-    (Set.finite_singleton _).union hbad.finite
-  obtain ⟨t, ht⟩ := (Set.infinite_univ (α := K)).sdiff hfin |>.nonempty
-  simp only [Set.mem_sdiff, Set.mem_univ, true_and, Set.mem_union, Set.mem_singleton_iff,
-    Set.mem_ofPred_eq, not_or, not_not] at ht
-  exact ⟨t, ht.1, ht.2⟩
 
 /-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
 extensor`): the family `i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is `complementIso` applied to the

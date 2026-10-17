@@ -14,7 +14,7 @@ subdirectory; the post-Phase-22l molecular split round, `notes/Phase22l-perf.md`
 candidate dispatch `case_III_candidate_dispatch` (W10) discharging the `hcand` obligation via the
 three arm closers (`CaseIII/Arms`, `CaseIII/Relabel`), the eq. (6.22) nested-IH rank bound
 `exists_nested_rankPolynomial_lower_all_k`, and the all-`k` Case-III composer
-`case_III_realization` — the capstone consumed by `AlgebraicInduction/Theorem55`.
+`case_III_realization_all_k` — the capstone consumed by `AlgebraicInduction/Theorem55`.
 
 See `ROADMAP.md` §22 and the `sec:molecular-algebraic-induction-caseIII` dep-graph in
 `blueprint/src/chapter/algebraic-induction/case-iii.tex`.
@@ -32,8 +32,8 @@ variable {K : Type*} [Field K]
 /-! ## The discharge dispatch and the final Case III realization
 
 The M₁/M₂/M₃ dispatch discharging the candidate obligation `hcand` (W10), the eq. (6.22) nested-IH
-rank bound (`lem:case-III-nested-rank-lower`), and the all-`k` capstone `case_III_realization`
-(`lem:case-III`). -/
+rank bound (`lem:case-III-nested-rank-lower`), and the all-`k` capstone
+`case_III_realization_all_k` (`lem:case-III`). -/
 
 /-- **W10a — the ends-congruence pre-brick** (design §1.53(b); Phase 22h). Two free-normal panel
 frameworks on the *same* graph `G` and seed `q` whose endpoint selectors `ends`, `ends'` agree on
@@ -2642,8 +2642,7 @@ hdef hsplitGP`). Since the ASSEMBLY producer-site rewire (Phase 23h, A1) the **E
 consumed *inside* `case_III_hsplit_producer_all_k` directly — the general-`n` chain extractor
 `Graph.chainData_extract` (E3, KT Lemma 4.6/4.8) and the short-cycle brick `cycle_realization`
 (E5, Lemma 5.4) — so no `hextract`/`hcycle` green-modulo carries remain on this spine; only `hn`,
-`hD`, and `hfresh` thread down to feed them. The `d = 3` line stays fully green through the `k = 2`
-wrapper `case_III_realization` below.
+`hD`, and `hfresh` thread down to feed them. The `d = 3` case is its `k = 2` instance.
 
 The body adapts the all-`k` IH to the `k = 0`-only form `case_III_hsplit_producer_all_k` expects
 and discharges `hcand` via the router. -/
@@ -2674,31 +2673,5 @@ theorem PanelHingeFramework.case_III_realization_all_k
     (fun cd hd2 hdef_Gab hsplitGP =>
       PanelHingeFramework.chainData_dispatch cd hd2 hk1 hn hG hV3 hSimple hIH hG.1
         hdef_Gab hsplitGP)
-
-/-- **The Case-III `d = 3` realization** (`lem:case-III`; the `k = 2` specialization of
-`case_III_realization_all_k`, Phase 23a Leaf 4; CHAIN-5 reshape, Phase 23g; ASSEMBLY producer-site
-rewire, Phase 23h A1). Thin wrapper pinning the grade to `k = 2`. Since CHAIN-5 the Case-III chain
-**dispatch** is discharged at general `k` by the router `chainData_dispatch` inside
-`case_III_realization_all_k`, and since the A1 rewire the ENTRY chain **extraction** + short-cycle
-bricks are consumed directly inside the producer (`Graph.chainData_extract` / `cycle_realization`,
-both general-`n`); this wrapper now only pins the grade and threads `hD`/`hn`/`hfresh`. The
-general-`n` extractor covers `d = 3` (`bodyBarDim 3 = 6 ≥ 3`), so the `d = 3`-only extractor this
-route used to run is redundant and has been removed (Phase 23h orphan sweep). Phase 40a's `n = 2`
-sizing weakens `hD` in place to `3 ≤ D`; the hypothesis is redundant at this wrapper's fixed
-`k = 2` (where `hD` always holds), but uniformity with `case_III_realization_all_k` keeps the
-docstrings honest. -/
-theorem PanelHingeFramework.case_III_realization [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    (G : Graph α β) (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
-    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
-    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
-    (hSimple : G.Simple)
-    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
-      V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K 2 n G') ∧
-        HasPanelRealization K 2 n G') :
-    PanelHingeFramework.HasGenericFullRankRealization K 2 n G :=
-  PanelHingeFramework.case_III_realization_all_k (by norm_num) hD hn G hfresh hG hV3 hnoRigid
-    hSimple hIH
 
 end CombinatorialRigidity.Molecular

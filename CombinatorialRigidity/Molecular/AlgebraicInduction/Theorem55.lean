@@ -2344,7 +2344,7 @@ GP conjunct (`G.Simple` → generic full-rank realization) and bare (`HasPanelRe
 
 All three adjudicated carries (`h622`, `hsplit`, `hcontract`) have been discharged:
 - `h622` at Phase 22k L7 (all-`k` IH → `exists_nested_rankPolynomial_lower_all_k`);
-- `hsplit` at Phase 22k L9 (G0 + M4 ∘ `case_III_realization`);
+- `hsplit` at Phase 22k L9 (G0 + M4; now `case_III_realization_all_k`);
 - `hcontract` at Phase 22i L5 + Phase 22k L8/L9 (`case_I_dispatch` + producers).
 
 The consumer-facing repackaging of `theorem_55_minimalKDof_k`'s `k = 0` special case: the

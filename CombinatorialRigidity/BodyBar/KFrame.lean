@@ -100,41 +100,6 @@ open Submodule
 
 variable {G : Graph α β} {k : ℕ} {D : Graph.orientation G}
 
-/-- The `Fin k`-fold product subspace whose `j`-th block is the `KFrameField β k`-span of
-all signed incidence rows of `G`. The `k`-frame row of every bar lives in this subspace
-(`kFrameRow_mem_blockPiSpan`), so the whole `k`-frame row space is contained in it
-(`span_kFrameRow_le_blockPiSpan`); its `K`-dimension is `k · (dim of the incidence-row
-span)`, the upper bound in Whiteley §2.1's rank count. -/
-noncomputable def blockPiSpan (G : Graph α β) (k : ℕ) (D : Graph.orientation G) :
-    Submodule (KFrameField β k) (Fin k → α → KFrameField β k) :=
-  letI : DecidableEq α := Classical.decEq α
-  letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
-  Submodule.pi Set.univ
-    (fun _ : Fin k ↦ span (KFrameField β k) (Set.range (D.signedIncMatrix (KFrameField β k))))
-
-/-- Each `k`-frame row `kFrameRow k D e` lies in the block-diagonal product subspace
-`blockPiSpan`: in each block `j`, the row is the scalar multiple
-`X_{(e,j)} • signedIncMatrix e`, which lies in the span of the incidence rows. This is the
-per-row half of the rank-counting bound for the forward direction of Whiteley §2.1
-(`lem:k-frame-nonzero-monomial-forest`). -/
-theorem kFrameRow_mem_blockPiSpan (e : β) :
-    kFrameRow k D e ∈ blockPiSpan G k D := by
-  rw [blockPiSpan, Submodule.mem_pi]
-  intro j _
-  rw [kFrameRow]
-  exact Submodule.smul_mem _ _ (subset_span ⟨e, rfl⟩)
-
-/-- The span of all `k`-frame rows is contained in the block-diagonal product subspace
-`blockPiSpan`. Combined with the dimension count `finrank (blockPiSpan) = k · (incidence
-row span dimension)`, this gives the upper half of Whiteley §2.1's count for the forward
-direction of `lem:k-frame-nonzero-monomial-forest`: linear independence of the `k`-frame
-rows on `E'` forces `|E'| ≤ k · r_{cycleMatroid}(E')`. -/
-theorem span_kFrameRow_le_blockPiSpan :
-    span (KFrameField β k) (Set.range (kFrameRow k D)) ≤ blockPiSpan G k D := by
-  rw [span_le]
-  rintro _ ⟨e, rfl⟩
-  exact kFrameRow_mem_blockPiSpan e
-
 /-- The `Fin k`-fold constant product subspace `Submodule.pi univ (fun _ ↦ W)` is linearly
 equivalent to the plain product `Fin k → ↥W` of the block submodule with itself. The forward
 map projects each block; the inverse re-bundles. Generic-block helper for the dimension count
@@ -152,7 +117,8 @@ def constPiSpanEquiv {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
 /-- The `K`-dimension of the constant `Fin k`-fold product subspace is `k` times the dimension of
 the block submodule `W`. Piece (1) of the forward rank count of Whiteley §2.1
 (`lem:k-frame-nonzero-monomial-forest`): applied with `W` the `K`-span of the signed incidence
-rows of a bar set, it turns the `blockPiSpan` upper bound into `k · (incidence-span dimension)`. -/
+rows of a bar set, it turns the `blockPiSpanOn` upper bound into
+`k · (incidence-span dimension)`. -/
 theorem finrank_constPiSpan {R M : Type*} [DivisionRing R] [AddCommGroup M] [Module R M]
     (n : ℕ) (W : Submodule R M) [Module.Finite R W] :
     Module.finrank R (Submodule.pi Set.univ (fun _ : Fin n ↦ W) : Submodule R (Fin n → M))
@@ -160,12 +126,11 @@ theorem finrank_constPiSpan {R M : Type*} [DivisionRing R] [AddCommGroup M] [Mod
   simp [(constPiSpanEquiv n W).finrank_eq, Module.finrank_pi_fintype R]
 
 /-- The `Fin k`-fold product subspace whose `j`-th block is the `KFrameField β k`-span of the
-signed incidence rows indexed by a bar set `Y` (the `Y`-restricted analogue of `blockPiSpan`).
-For `e ∈ Y` the `k`-frame row `kFrameRow k D e` lies in this subspace
-(`kFrameRow_mem_blockPiSpanOn`), so the span of the `k`-frame rows on `Y` is contained in it
-(`span_kFrameRowOn_le_blockPiSpanOn`); its `K`-dimension is `k` times the dimension of the
-`Y`-incidence-row span, i.e. `k · r_{cycleMatroid}(Y)` — the per-`Y` upper bound in
-Whiteley §2.1's rank count. -/
+signed incidence rows indexed by a bar set `Y`. For `e ∈ Y` the `k`-frame row `kFrameRow k D e`
+lies in this subspace (`kFrameRow_mem_blockPiSpanOn`), so the span of the `k`-frame rows on `Y`
+is contained in it (`span_kFrameRowOn_le_blockPiSpanOn`); its `K`-dimension is `k` times the
+dimension of the `Y`-incidence-row span, i.e. `k · r_{cycleMatroid}(Y)` — the per-`Y` upper bound
+in Whiteley §2.1's rank count. -/
 noncomputable def blockPiSpanOn (G : Graph α β) (k : ℕ) (D : Graph.orientation G) (Y : Set β) :
     Submodule (KFrameField β k) (Fin k → α → KFrameField β k) :=
   letI : DecidableEq α := Classical.decEq α
@@ -176,7 +141,7 @@ noncomputable def blockPiSpanOn (G : Graph α β) (k : ℕ) (D : Graph.orientati
 /-- Each `k`-frame row `kFrameRow k D e` of a bar `e ∈ Y` lies in the `Y`-restricted
 block-diagonal product subspace `blockPiSpanOn G k D Y`: in each block `j` the row is the scalar
 multiple `X_{(e,j)} • signedIncMatrix e`, which lies in the span of the incidence rows over `Y`
-(since `e ∈ Y`). The `Y`-restricted analogue of `kFrameRow_mem_blockPiSpan`. -/
+(since `e ∈ Y`). -/
 theorem kFrameRow_mem_blockPiSpanOn {Y : Set β} {e : β} (he : e ∈ Y) :
     kFrameRow k D e ∈ blockPiSpanOn G k D Y := by
   rw [blockPiSpanOn, Submodule.mem_pi]
@@ -185,8 +150,7 @@ theorem kFrameRow_mem_blockPiSpanOn {Y : Set β} {e : β} (he : e ∈ Y) :
   exact Submodule.smul_mem _ _ (subset_span ⟨e, he, rfl⟩)
 
 /-- The span of the `k`-frame rows indexed by `Y` is contained in the `Y`-restricted
-block-diagonal product subspace `blockPiSpanOn G k D Y`. The `Y`-restricted analogue of
-`span_kFrameRow_le_blockPiSpan`, with `r(Y)` in place of `r(E(G))`. -/
+block-diagonal product subspace `blockPiSpanOn G k D Y`. -/
 theorem span_kFrameRowOn_le_blockPiSpanOn {Y : Set β} :
     span (KFrameField β k) (kFrameRow k D '' Y) ≤ blockPiSpanOn G k D Y := by
   rw [span_le]
@@ -213,11 +177,11 @@ theorem _root_.Matroid.Rep.finrank_span_image_eq_rk {γ K W : Type*} [Field K] [
 
 /-- **Incidence-span finrank = cycle-matroid rank** (`lem:k-frame-nonzero-monomial-forest`,
 piece (2)). For the orientation `G.orientation_nonempty.some` underlying `cycleMatroidRep` (the same
-one `kFrameMatroid` / `blockPiSpan` use), the `K`-dimension of the span of the signed incidence rows
-indexed by `Y` equals the cycle-matroid rank `G.cycleMatroid.rk Y`. This is the cycle-matroid
+one `kFrameMatroid` uses), the `K`-dimension of the span of the signed incidence rows indexed by `Y`
+equals the cycle-matroid rank `G.cycleMatroid.rk Y`. This is the cycle-matroid
 specialization of `Matroid.Rep.finrank_span_image_eq_rk` to `Graph.cycleMatroidRep`, whose
 representation map is exactly `signedIncMatrix` for that orientation; it turns the
-`finrank blockPiSpan = k · (incidence-span finrank)` bound of the forward rank count into
+`finrank blockPiSpanOn = k · (incidence-span finrank)` bound of the forward rank count into
 `k · r_{cycleMatroid}(Y)`. -/
 theorem finrank_span_signedIncMatrix_eq_cycleMatroid_rk [Finite β] (K : Type*) [Field K]
     (Y : Set β) :

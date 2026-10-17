@@ -1417,8 +1417,8 @@ is degenerate by construction and cannot itself be in general position. But
 the *generic* motive `HasGenericFullRankRealization K k G`'s realizing framework is
 **existentially quantified** — it asks for *some*
 general-position rigid framework on `G`, not for the candidate seed to be generic.
-So the producer hands the degenerate candidate to a bare full-rank realization
-(`case_III_realization_of_line` → C1), then this single-graph upgrade re-realizes it generically.
+So the producer hands the degenerate candidate to a bare full-rank realization, then this
+single-graph upgrade re-realizes it generically.
 
 The upgrade is `exists_rankPolynomial_of_rigidOn_linking` read for one graph: from the rigid
 `ofNormals G ends q₀` (with linking hinges transversal, `hne`) it builds the rank
