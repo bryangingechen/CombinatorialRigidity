@@ -959,7 +959,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
     -- either the length-`n` chain data (+ the `v₁`-split's minimality/simplicity/measure data)
     -- or the short-cycle disjunct (§C.5 shape 2).
     have hV4' : 4 ≤ V(G).ncard := hV4
-    rcases Graph.chainData_extract hD hV3 hG hfresh hV4' hnoRigid with
+    rcases Graph.chainData_extract hD hG hfresh hV4' hnoRigid with
       ⟨cd, hd2, hGv, hGvSimple, hGv2, hGvlt⟩ | ⟨cy, hcym⟩
     · -- Chain disjunct: pull the `v₁`-split's **generic** realization from the IH's GP `.1`
       -- conjunct (the placement seed `q`, whose `IsGeneralPosition` conjunct feeds the triple-LI

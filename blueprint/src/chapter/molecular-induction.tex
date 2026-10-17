@@ -2333,9 +2333,9 @@ of the next lemma, it occurs exactly when $d \ge 4$.
   \lean{Graph.chainData_extract}
   \leanok
   \uses{def:chain-data, def:cycle-data}
-  Let $D \ge 3$, and let $G$ be a simple minimal $0$-dof-graph with at
-  least four vertices and no proper rigid subgraph. Then $G$ is a cycle
-  on at most $d$ vertices, or $G$ has a chain $v_0 v_1 \dots v_d$ of
+  Let $D \ge 3$, and let $G$ be a minimal $0$-dof-graph with at least
+  four vertices and no proper rigid subgraph. Then $G$ is a cycle on at
+  most $d$ vertices, or $G$ has a chain $v_0 v_1 \dots v_d$ of
   length $d$ such that $G_{v_1}^{v_0 v_2}$ is a simple minimal
   $0$-dof-graph with at least two and fewer than $|V(G)|$ vertices.
 \end{lemma}
@@ -2354,9 +2354,9 @@ of the next lemma, it occurs exactly when $d \ge 4$.
   vertices of $G$ other than $v_1$ (\cref{lem:reduction-measure}).
 
   It remains to show that $G_{v_1}^{v_0 v_2}$ is simple. The graph $G$
-  is simple, by hypothesis and also by
-  \cref{lem:simple-minimal-noRigid}, and it has at least four vertices
-  and no proper rigid subgraph. So KT Lemma~6.7(ii)
+  is simple by \cref{lem:simple-minimal-noRigid}, as it has at least
+  three vertices and no proper rigid subgraph, and it has at least four
+  vertices. So KT Lemma~6.7(ii)
   (\cref{lem:splitoff-simple}), applied to $v_1$ and its edges
   $f_0 \neq f_1$, shows that $G_{v_1}^{v_0 v_2}$ is simple.
 \end{proof}

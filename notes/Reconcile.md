@@ -22,8 +22,9 @@ task 6 L9's shim `splitOff_deficiency_le_of_forest_surgery`, with
 `cor:forest-surgery-deficiency` repinned on `forest_surgery_split`, task 7 renamed `F-061`'s two
 `_forest` pins `_starForest`, the shape their hypothesis forces, task 8 dropped the planar
 layer's unused or derivable hypotheses, task 9 the pebble game's `hloops`, which `himg` implies,
-and task 10 the unused hypotheses of the deficiency and the induction. **Next concrete task:**
-round 3's task 11, the chain extraction's unused or derivable hypotheses.
+task 10 the unused hypotheses of the deficiency and the induction, and task 11 the chain
+extraction's, its triangle lemma now the case $m = 3$ of the cycle lemma, which left one missing
+forward edge (`F-270`). **Next concrete task:** round 3's task 11.1, the node move that cures it.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

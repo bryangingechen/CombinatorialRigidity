@@ -897,14 +897,11 @@ one of that incidence's own terminated walk's `≤ n−2` interior positions, an
 `(v, e) ↦ (incidence, position)` — from pairs of a degree-`2` vertex with an incident edge into
 pairs of a high-degree incidence with an interior position — to be injective. The bound follows
 from `Set.ncard_le_ncard_of_injOn` plus two disjoint-union cardinality identities (the domain is
-`2` copies of each `v ∈ X₂`, the incidence set `I` has `Σ_{u ∈ V₊} deg u` elements). The ambient
-`0`-dof / floor hypotheses (`hG0`/`hD`/`hV2`, carried for interface uniformity with the rest of the
-E2d ladder) are not needed by this leaf's own argument — `hterm`, `[G.Simple]`, and finiteness
-already pin down the degree-`2` extraction and the fiber lemma's hypotheses; hence the
-underscore-prefixed names. -/
+`2` copies of each `v ∈ X₂`, the incidence set `I` has `Σ_{u ∈ V₊} deg u` elements). The
+argument needs no deficiency or size hypothesis: `hterm`, `[G.Simple]` and finiteness give the
+degree-`2` extraction and the fiber lemma's hypotheses. -/
 theorem chainWalk_charging [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ} [G.Simple] (_hG0 : G.IsKDof n 0)
-    (_hD : 3 ≤ bodyBarDim n) (_hV2 : 2 ≤ V(G).ncard)
+    {G : Graph α β} {n : ℕ} [G.Simple]
     (hterm : ∀ (v₀ x₀ : α) (f : β), G.IsLink f v₀ x₀ →
       ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
         (∃ hne : P.Nonempty, hne.firstEdge = f) ∧ 1 ≤ P.length ∧ P.length ≤ n - 1 ∧
@@ -1138,7 +1135,7 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
   have hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
   -- The charging bound (E2d-6), folded against the min-degree-`2` partition `V(G) = X₂ ⊔ V₊`
   -- (E2a) once named — `set` retroactively folds `hcharge`'s literal set-builders.
-  have hcharge := chainWalk_charging hG.1 hD hV2 hterm
+  have hcharge := chainWalk_charging hterm
   set X₂ : Set α := {v ∈ V(G) | G.degree v = 2} with hX₂def
   set Vge3 : Set α := {u ∈ V(G) | 3 ≤ G.degree u} with hVge3def
   have hpart : V(G) = X₂ ∪ Vge3 := by
@@ -1257,11 +1254,12 @@ theorem chainData_or_cycleData_of_noRigid [DecidableEq β] [Finite α] [Finite �
 ENTRY leaf **E3**, `notes/Phase23-design.md` §(4.107.D)'s pinned public signature): composes
 **E2** (`chainData_or_cycleData_of_noRigid`) with the landed Lemma-4.8 stack at the interior
 chain vertex `v₁ = cd.vtx ⟨1, _⟩` — `splitOff_isMinimalKDof` (KT 4.8(i)),
-`splitOff_simple_of_noRigid_of_card` (KT 6.7(ii)), and the two measure facts (`2 ≤ |V'|`,
-`|V'| < |V|`) — to discharge the ENTRY interface `hextract` at general `n`: either a length-`n`
-chain whose `v₁`-split is again a smaller minimal `0`-dof-graph, or a cycle on `≤ n` vertices
-(forwarded unchanged from E2's right disjunct, feeding `hcycle`/E5). Composition only, no new
-combinatorics — mirrors the (since-removed) `d = 3` discharge's split-fact list verbatim.
+`splitOff_simple_of_noRigid_of_card` (KT 6.7(ii), on `G`, which is simple by
+`simple_of_isMinimalKDof_of_noRigid`), and the two measure facts (`2 ≤ |V'|`, `|V'| < |V|`) — to
+discharge the ENTRY interface `hextract` at general `n`: either a length-`n` chain whose `v₁`-split
+is again a smaller minimal `0`-dof-graph, or a cycle on `≤ n` vertices (forwarded unchanged from
+E2's right disjunct, feeding `hcycle`/E5). Composition only, no new combinatorics — mirrors the
+(since-removed) `d = 3` discharge's split-fact list verbatim.
 Below-contract file home (§(4.107.G.2)): `ChainExtraction.lean`, not §(4.107.D)'s literal
 `Reduction.lean` pin — `Reduction.lean` already carries the E2d ladder + E2-assembly for the same
 LoC-tripwire reason, and E3 is E2's sole consumer.
@@ -1275,8 +1273,7 @@ literal `(cd.vtx ⟨1,_⟩) (cd.vtx ⟨0,_⟩) (cd.vtx ⟨2,_⟩)` slots need �
 reconciliation needed (contrast the `d = 3` adapter, whose fixed `vtx = ![b, v, a, c]` labeling
 runs the other way). -/
 theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
-    (hG : G.IsMinimalKDof n 0) [G.Simple]
+    {G : Graph α β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0)
     (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
     (hV4 : 4 ≤ V(G).ncard) (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
@@ -1292,6 +1289,8 @@ theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
   classical
   have hD3 : 3 ≤ bodyBarDim n := by omega
   have hD2 : 2 ≤ bodyBarDim n := by omega
+  have hV3 : 3 ≤ V(G).ncard := by omega
+  have : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnoRigid
   obtain ⟨e₀, he₀⟩ := hfresh
   rcases chainData_or_cycleData_of_noRigid hD3 hV3 hG hnoRigid ⟨e₀, he₀⟩ with hchain | ⟨cy, hcym⟩
   · obtain ⟨cd⟩ := hchain

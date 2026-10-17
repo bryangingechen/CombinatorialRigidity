@@ -1008,6 +1008,21 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 2 task 12.
   *Disposition:* done (`cd516eda`): the proof `\uses` `lem:case-II-placement-new-rows`, a forward edge
   in place of the one task 12 removed (the screen's `case-i` count the open's, 14/6).
+- **F-270** · E · `lem:splitoff-simple` (`molecular-induction.tex`): since RECONCILE round 3 task
+  11 its pin `isKDof_zero_of_triangle` is the case $m = 3$ of `isKDof_zero_of_cycle` (`F-108`),
+  the pin of `lem:cycle-zero-dof`, 179 lines later in the chapter. The proof edge is missing, the
+  graph's one missing edge, and the proof's edge to `def:D-deficiency` is now unbacked (through a
+  node). Adding the edge makes a new forward `\uses` (that round's gate 7), and the node order
+  cures it only by a move the task's line does not name: `lem:cycle-zero-dof` to `deficiency.tex`,
+  beside `lem:two-vertex-zero-dof` (their pins share `Molecular/Deficiency.lean`), stating the
+  cycle in its own words, as its pin takes two maps and not `Graph.CycleData` (its statement edge
+  to `def:cycle-data` has no Lean basis); the proof then `\uses` it, a triangle being the cycle
+  on three vertices. Moving `lem:splitoff-simple` after it instead makes
+  `lem:chain-data-of-noRigid`'s proof edge to it forward.
+  *Evidence:* measured (`scripts/blueprint-deps.py --label lem:splitoff-simple`, `--summary` and
+  the forward screen, on round 3 task 11's tree).
+  *Found:* RECONCILE round 3 task 11.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 11.1).
 
 ## N — node shape
 
@@ -3586,7 +3601,10 @@ declaration's name as its header writes it:
   `CycleData.vertexSet_ncard`'s names a use that no caller makes.
   *Evidence:* read (the bodies and docstrings; KT 2011 pp. 664 and 692).
   *Found:* round 2 task 2.17.
-  *Disposition:* reported (`notes/Prose-report.md`, L7).
+  *Disposition:* reported (`notes/Prose-report.md`, L7); round 3: `chainData_extract` without
+  `hV3` and `[G.Simple]`, both derived in its body, `chainWalk_charging` without the three, and
+  `isKDof_zero_of_triangle` proved as the case $m = 3$ of `isKDof_zero_of_cycle`, after it in the
+  file; `lem:chain-data-extract` restated without simplicity, and `F-270` (task 11).
 - **F-114** · L · the pins of `meet.tex` (`Molecular/Meet.lean`): the file's header lists
   `meet_ne_zero_iff` and "the geometric reading" as deliverables, which no declaration provides, and
   narrates phases, commits and design codes ("this commit", "route (ii)", "N3b-2b-α", "CHAIN-3",
