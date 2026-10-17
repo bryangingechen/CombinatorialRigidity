@@ -4046,7 +4046,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and statements; a `grep` for each name's callers);
   measured (`scripts/blueprint-deps.py --label`, dead pins).
   *Found:* round 5 task 3.3.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3:
+  `exists_finite_spanning_rigidityRows` deleted, and the other three's docstrings no longer name
+  the dead `CaseI.lean` code (task 5).
 - **F-235** · L · the declarations round 5's task 3.4 moved or unpinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`). Their docstrings name the nodes their pins left:
   `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` say `def:cut-edges-2ec`
@@ -4225,7 +4227,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the three docstrings and the section header; the node's pin).
   *Found:* RECONCILE round 2 task 5.
   *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep
-  (*Moved to a later round*); the first and the third are among the declarations round 2 unpins.
+  (*Moved to a later round*); the first and the third are among the declarations round 2 unpins;
+  round 3: the third deleted (task 5).
 - **F-258** · L · `linearIndependent_sum_augment_candidateRow` (`Molecular/RigidityMatrix/Basic.lean`),
   `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow`
   (`Molecular/RigidityMatrix/Claim612.lean`): their docstrings give them as the Lean of
@@ -4235,7 +4238,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the three docstrings; the nodes' pins).
   *Found:* RECONCILE round 2 task 7.
   *Disposition:* done (task 4): all three deleted, with the selectors and the block form
-  (`F-267`).
+  (`F-267`); six brace-form mentions (`linearIndependent_sum_{augment,p2,p3}_candidateRow`) that
+  task 4's `grep` missed repointed (task 5).
 - **F-263** · L · `mem_hingeRowBlock_iff` (`Molecular/RigidityMatrix/Claim612.lean`): its
   docstring gives it as `lem:case-III-claim612-block-iff-perp`'s, and the file's header lists it
   in "the part the blueprint puts in `case-iii.tex` rather than `rigidity-matrix.tex`"; since
@@ -4265,7 +4269,9 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at `347ba9c4`).
   *Found:* RECONCILE round 3 task 1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 5).
+  *Disposition:* done (task 5): the five deleted with the two; the pins they leave without a
+  caller, `exists_independent_rigidityRows_of_forest` and
+  `toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`, stay with their nodes.
 - **F-266** · L · `eq_succ_of_isInfinitesimalMotion_cycle`
   (`Molecular/AlgebraicInduction/Pinning.lean`): the step of the `Fin m` cycle forms (consecutive
   bodies of a rigid cycle carry the same screw), unpinned, which no main result's proof reaches.
@@ -4298,6 +4304,16 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache after task 4).
   *Found:* RECONCILE round 3 task 4.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-269** · L · `PanelHingeFramework.candidateCompletion_index_injective` and
+  `candidateCompletion_panelRow_packaging` (`CaseIII/Arms.lean`),
+  `BodyHingeFramework.linearIndependent_sumElim_candidateRow_swap` and
+  `linearIndependent_sumElim_candidateBlock_swap` (`RigidityMatrix/Basic.lean`): four more unpinned
+  declarations of the candidate-row route that no main result's proof reaches and nothing calls,
+  beside `F-268`'s; no L9 entry names them.
+  *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
+  *Scope*, over `scripts/blueprint-deps.py`'s Lean cache after task 5).
+  *Found:* RECONCILE round 3 task 5.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

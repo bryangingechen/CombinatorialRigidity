@@ -15,10 +15,11 @@ Cases I, II and III, `meet.tex` and the forest surgery that the formal proof lea
 remark; the Lean is unchanged, and the declarations the round unpinned are in round 3's list
 (§3, L9). Round 3, `reconcile-lean` (`notes/Reconcile-lean-cleanup.md`), opened with 39 one-commit
 tasks; task 2 committed the docstring-label check (`scripts/check-docstring-labels.py`), task 3
-deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms, and task 4 Case III's line route,
-the candidate rows, `case_III_realization` and `blockPiSpan`. **Next concrete task:** round 3's task
-5, L9's `exists_good_realization_const` and `exists_finite_spanning_rigidityRows` with their dead
-callers.
+deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms, task 4 Case III's line route,
+the candidate rows, `case_III_realization` and `blockPiSpan`, and task 5
+`exists_good_realization_const` and `exists_finite_spanning_rigidityRows` with their dead callers.
+**Next concrete task:** round 3's task 6, L9's shim `splitOff_deficiency_le_of_forest_surgery`,
+deleted with `cor:forest-surgery-deficiency` repinned.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

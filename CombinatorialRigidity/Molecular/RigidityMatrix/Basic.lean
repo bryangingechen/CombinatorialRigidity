@@ -667,8 +667,8 @@ linear map preserves linear independence (`LinearIndependent.map'`).
 
 This turns the independent supporting extensors of a rigid block
 (`exists_independent_panelSupportExtensor`, through the `(D−1)`-dimensional hinge-row block
-`finrank_hingeRowBlock`) into the independent rigidity-row subfamily the Case-I capstone
-`hglue_of_realization` needs (`hindep`): one transversal hinge `e = uv` contributes `D − 1`
+`finrank_hingeRowBlock`) into independent rigidity rows
+(`exists_independent_rigidityRows_of_edge`): one transversal hinge `e = uv` contributes `D − 1`
 independent rows of `R(G,p)`, all routed through the *same* relative-screw evaluation, so block-row
 independence is exactly hinge-row-block independence. -/
 theorem linearIndependent_hingeRow {ι : Type*} {u v : α} (huv : u ≠ v)
@@ -1185,30 +1185,6 @@ theorem span_rigidityRows_eq_of_infinitesimalMotions_eq [Finite α]
   rw [F.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
     G.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions, h]
 
-/-- **A finite family of rows spans the rigidity row space** (`def:rigidity-matrix`,
-the genericity device's finite-index input): when the body set `α` is finite, the screw-
-assignment space `α → ScrewSpace K k` is finite-dimensional (`finrank_screwAssignment`), hence so
-is its dual `Module.Dual K (α → ScrewSpace K k)` (`Subspace.instModuleDualFiniteDimensional`), and
-therefore every submodule of it is finitely generated — in particular `span K F.rigidityRows`. So
-there is a *finite* family `a : Fin n → Module.Dual K (α → ScrewSpace K k)` with the same span as
-the (a priori infinite) row set `rigidityRows`,
-`span K (range a) = span K F.rigidityRows` (`Submodule.fg_iff_exists_fin_generating_family`).
-
-This supplies the finite-index spanning family `a` (with `hspanrows`) that the Phase-21b
-genericity device's consumer-facing capstone `hglue_of_realization` requires of each consumer: the
-device's engine needs a finite index type, and the constant-path route reads the corank off this
-family at the single hand-built realization `F`. The remaining Case-I inputs (the matching-size
-independent subfamily) come from `exists_independent_panelSupportExtensor` through the hinge-row
-block. -/
-theorem exists_finite_spanning_rigidityRows [Finite α] (F : BodyHingeFramework K k α β) :
-    ∃ (n : ℕ) (a : Fin n → Module.Dual K (α → ScrewSpace K k)),
-      Submodule.span K (Set.range a) = Submodule.span K F.rigidityRows := by
-  have : Fintype α := Fintype.ofFinite α
-  have hfg : (Submodule.span K F.rigidityRows).FG :=
-    IsNoetherian.noetherian (Submodule.span K F.rigidityRows)
-  obtain ⟨n, a, ha⟩ := Submodule.fg_iff_exists_fin_generating_family.1 hfg
-  exact ⟨n, a, ha⟩
-
 /-- **A transversal hinge's row block has dimension `D − 1`** (`def:hinge-row-block`,
 the genericity device's row-count input): when the supporting extensor `C(p(e))` is nonzero —
 the general-position condition that the hinge is a genuine codimension-2 intersection
@@ -1218,8 +1194,7 @@ dimension `D − 1`, `finrank K (F.hingeRowBlock e) = screwDim k − 1`. This is
 `1`-dimensional subspace of the `D`-dimensional screw space (`finrank_span_singleton`,
 `screwSpace_finrank`), and the dual annihilator's dimension is the codimension
 (`Subspace.finrank_add_finrank_dualAnnihilator_eq`). It is the per-edge brick that counts the
-rigidity rows `rigidityRows` of a rigid block — the source of the matching-size independent
-subfamily the Case-I capstone `hglue_of_realization` (Phase 21b) requires. -/
+rigidity rows `rigidityRows` of a rigid block. -/
 theorem finrank_hingeRowBlock (F : BodyHingeFramework K k α β) {e : β}
     (he : F.supportExtensor e ≠ 0) :
     Module.finrank K (F.hingeRowBlock e) = screwDim k - 1 := by
@@ -1239,10 +1214,9 @@ in ambient-coerced existence form by `Submodule.exists_linearIndependent_fin_of_
 the heavy `Module.Dual` of an exterior power is never unfolded). Each basis functional lies in
 `r(p(e))`, so its `hingeRow u v` image is a rigidity row (witnessed by `e, u, v`), and the
 basis-independent functionals stay independent as rigidity rows through the relative-screw
-evaluation (`linearIndependent_hingeRow`). This is the per-edge brick that counts and produces the
-matching-size independent rigidity-row subfamily the Case-I capstone `hglue_of_realization` needs:
-each transversal hinge of a rigid block contributes exactly `D − 1` independent rows of `R(G,p)`,
-all routed through the same `screwDiff u v`. -/
+evaluation (`linearIndependent_hingeRow`). This is the per-edge brick: each transversal hinge of
+a rigid block contributes exactly `D − 1` independent rows of `R(G,p)`, all routed through the same
+`screwDiff u v`. -/
 theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework K k α β) {e : β} {u v : α}
     (huv : u ≠ v) (hlink : F.graph.IsLink e u v) (he : F.supportExtensor e ≠ 0) :
     ∃ r : Fin (screwDim k - 1) → Module.Dual K (α → ScrewSpace K k),
@@ -1484,10 +1458,10 @@ vanishing combination at the screw assignment `Function.update 0 (w k) x` (place
 `w k`, `0` elsewhere — legitimate since `w k ≠ v` and the `w j` are distinct) collapses it to
 `∑ i, c⟨k,i⟩ • (r k i) x = 0` for all `x`, so per-hinge independence
 (`Fintype.linearIndependent_iff` on `r k`) forces every coefficient at `k` to vanish. This is the
-joint independence of the rigid block's hinge rows that `hglue_of_realization`'s `hindep` consumes
-— each of the block's transversal hinges contributing its `D − 1` rows
-(`exists_independent_rigidityRows_of_edge`), the rows of distinct hinges jointly independent because
-they live on disjoint body-coordinate blocks once the common body is pinned. -/
+joint independence of a rigid block's hinge rows — each of the block's transversal hinges
+contributing its `D − 1` rows (`exists_independent_rigidityRows_of_edge`), the rows of distinct
+hinges jointly independent because they live on disjoint body-coordinate blocks once the common body
+is pinned. -/
 theorem linearIndependent_hingeRow_star {J : Type*} [Finite J] {I : J → Type*}
     [∀ j, Finite (I j)] {v : α} {w : J → α} (hw : Function.Injective w) (hwv : ∀ j, w j ≠ v)
     {r : ∀ j, I j → Module.Dual K (ScrewSpace K k)} (hr : ∀ j, LinearIndependent K (r j)) :
@@ -1802,16 +1776,16 @@ theorem linearIndependent_sum_pinned_block_augment {ιn ιo : Type*} [Finite ιn
 `Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro`
 — the new block `rn`, the old block `ro`, and the single candidate row `w`. The genericity-device
 feed (`hasFullRankRealization_of_independent_panelRow_index`) needs every member of the independent
-family to be a genuine `panelRow` of the candidate placement, but the per-candidate producers
-(`linearIndependent_sum_{p2,p3,augment}_candidateRow`) deliver the candidate row in a `hingeRow`
-form `w` that is *not* itself a panel row. KT's eq.~(6.27) closes this by a **row operation**: the
-transported `(vb)i^*`-row `hingeRow v b ρ` (a genuine rigidity row, `exists_candidate_row_eq612`)
-minus its inductive `(ab)`-part `wGv = hingeRow a b ρ` — an element of the *old* block's span —
-collapses to the pure `(va)`-hinge candidate row `hingeRow v a ρ`. Adding a combination of the other
-rows to one row of a matrix never changes its rank, and this lemma is that fact for the candidate
-summand: if the family with candidate row `w` is linearly independent and `w'` differs from `w` by
-an element of the span of the *remaining* rows `Sum.elim rn ro` (`hdiff`), then the family with the
-swapped candidate row `w'` is again linearly independent.
+family to be a genuine `panelRow` of the candidate placement, but the candidate-completion
+assembly (`linearIndependent_sum_augment_candidateRow_restriction`) delivers the candidate row in a
+`hingeRow` form `w` that is *not* itself a panel row. KT's eq.~(6.27) closes this by a **row
+operation**: the transported `(vb)i^*`-row `hingeRow v b ρ` (a genuine rigidity row,
+`exists_candidate_row_eq612`) minus its inductive `(ab)`-part `wGv = hingeRow a b ρ` — an element of
+the *old* block's span — collapses to the pure `(va)`-hinge candidate row `hingeRow v a ρ`. Adding a
+combination of the other rows to one row of a matrix never changes its rank, and this lemma is that
+fact for the candidate summand: if the family with candidate row `w` is linearly independent and
+`w'` differs from `w` by an element of the span of the *remaining* rows `Sum.elim rn ro` (`hdiff`),
+then the family with the swapped candidate row `w'` is again linearly independent.
 
 The proof reassociates the `(ιn ⊕ Unit) ⊕ ιo` index to `(ιn ⊕ ιo) ⊕ Unit` (the candidate summand
 last), so the row-space criterion `linearIndependent_sumElim_unit_iff` reads the independence as
@@ -1985,17 +1959,17 @@ other-endpoint of any hinge is the private endpoint of any hinge (`other j ≠ u
 family `⟨j, i⟩ ↦ hingeRow (u j) (other j) (r j i)` over `Σ j, Iⱼ` is linearly independent on
 `α → ScrewSpace K k`.
 
-This is the cross-hinge step a genuine rigid block — a spanning tree / forest of the contracted
-block, hinges spanning *multiple* bodies rather than a single pinned `v` — presents to
-`hglue_of_realization`'s `hindep`. The star (`linearIndependent_hingeRow_star`) is the special
-case `u = w`, `other = const v`: there `hsep` is `w j' ≠ v`, here it is the forest property that
-each hinge has a private child vertex incident to no other hinge of the block. The proof is the
-same *pin-a-body* / disjoint-support count, pinning the private endpoint `u j₀` rather than the
-common body: evaluating a vanishing combination at the screw assignment `Function.update 0 (u j₀)
-x` reads `0` on every hinge `j ≠ j₀` (its private endpoint `u j ≠ u j₀` by injectivity, its other
-endpoint `other j ≠ u j₀` by `hsep`) and `x` on hinge `j₀` (its other endpoint `other j₀ ≠ u j₀`
-again by `hsep`), collapsing to `∑ i, c⟨j₀,i⟩ • (r j₀ i) x = 0` for all `x`, so per-hinge
-independence forces every coefficient at `j₀` to vanish. -/
+This is the cross-hinge step of a genuine rigid block — a spanning tree / forest of the contracted
+block, hinges spanning *multiple* bodies rather than a single pinned `v`. The star
+(`linearIndependent_hingeRow_star`) is the special case `u = w`, `other = const v`: there `hsep` is
+`w j' ≠ v`, here it is the forest property that each hinge has a private child vertex incident to no
+other hinge of the block. The proof is the same *pin-a-body* / disjoint-support count, pinning the
+private endpoint `u j₀` rather than the common body: evaluating a vanishing combination at the screw
+assignment `Function.update 0 (u j₀) x` reads `0` on every hinge `j ≠ j₀` (its private endpoint
+`u j ≠ u j₀` by injectivity, its other endpoint `other j ≠ u j₀` by `hsep`) and `x` on hinge `j₀`
+(its other endpoint `other j₀ ≠ u j₀` again by `hsep`), collapsing to
+`∑ i, c⟨j₀,i⟩ • (r j₀ i) x = 0` for all `x`, so per-hinge independence forces every coefficient at
+`j₀` to vanish. -/
 theorem linearIndependent_hingeRow_forest {J : Type*} [Finite J] {I : J → Type*}
     [∀ j, Finite (I j)] {u other : J → α} (hu : Function.Injective u)
     (hsep : ∀ j j', other j ≠ u j')
@@ -2044,13 +2018,11 @@ edge `e j` linking a *private endpoint* `u j` (the forest child, so `u` injectiv
 `other j`, with the forest-separation hypothesis `hsep : ∀ j j', other j ≠ u j'` and every hinge
 transversal (`he : F.supportExtensor (e j) ≠ 0`) — there is a linearly independent family of
 rigidity rows indexed by the disjoint union `Σ j, Fin (screwDim k − 1)`, all members of
-`F.rigidityRows`. The index type has cardinality `|J|·(screwDim k − 1)` (`Nat.card_sigma`), so this
-is the matching-size independent subfamily `s` the Case-I capstone `hglue_of_realization` consumes:
-its `hindep` is the joint independence and its `hmatch` count is `|J|·(D − 1)`, matched against the
-contraction's inductive rank. The per-edge block functionals `c j` (a basis of the
-`(D−1)`-dimensional hinge-row block `r(p(e j))`, `finrank_hingeRowBlock`) are extracted by
-`exists_linearIndependent_fin_of_finrank_eq`, fed to `linearIndependent_hingeRow_forest` for the
-joint independence, and witnessed as rigidity rows via the link `hlink j` and block membership. -/
+`F.rigidityRows`. The index type has cardinality `|J|·(screwDim k − 1)` (`Nat.card_sigma`). The
+per-edge block functionals `c j` (a basis of the `(D−1)`-dimensional hinge-row block `r(p(e j))`,
+`finrank_hingeRowBlock`) are extracted by `exists_linearIndependent_fin_of_finrank_eq`, fed to
+`linearIndependent_hingeRow_forest` for the joint independence, and witnessed as rigidity rows via
+the link `hlink j` and block membership. -/
 theorem exists_independent_rigidityRows_of_forest (F : BodyHingeFramework K k α β) {J : Type*}
     [Finite J] {u other : J → α} {e : J → β} (hu : Function.Injective u)
     (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, F.graph.IsLink (e j) (u j) (other j))

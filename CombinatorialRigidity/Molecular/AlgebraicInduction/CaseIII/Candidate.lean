@@ -753,19 +753,19 @@ Katoh–Tanigawa 2011 §6.4.1, eq. (6.12), Phase 22g). The first leaf dischargin
 carried `panelRow`-packaging: from the inductively rigid split-off block `ofNormals Gv ends q`
 (rigid on `V(Gv) = V(G) ∖ {v}`, transversal hinges, the `e₀ = ab`-hinge transversal `hgab`), at the
 shared seed `q₀` that overrides body `v`'s normal by `n_a + t·n_b` (the eq. (6.12) shear, `t ≠ 0`),
-it produces the **two blocks** the three candidate producers
-(`linearIndependent_sum_{augment,p2,p3}_candidateRow`) consume:
+it produces the **two blocks** of the three candidate families:
 
 * the **OLD block** `so` — `D(|V(Gv)|−1) = D(|V(G)|−1) − D` independent linking panel rows of
   `ofNormals G ends q₀`, transported off the IH-rigid `Gv`-block (N7b-0 `…_of_rigidOn_linking` +
   the graph-free transport `…_panelRow_transport`, `panelRow` reading only `ends`/`q₀`); they vanish
   through body `v`'s screw column (`hold`, their `Gv`-edges avoiding `v`) and stay independent
-  (`holdindep`) — the producers' `hold`/`holdindep` inputs.
+  (`holdindep`) — the `hold`/`holdindep` inputs of `linearIndependent_sum_pinned_block_augment`.
 * the **NEW block** `sn` — the `D − 1` independent panel rows of the re-inserted body `v`'s
   hinge `e_b` (N7b-1 `…_subfamily_of_edge`), all using `e_b` (`hsn_e`), independent (`hsn_indep`),
   and staying independent through `v = (ends e_b).1`'s screw column (`hnewpin`,
-  `…_comp_single_of_edge`) — the producers' `rn`/`hrnpin` input (the full hinge-block span `hspan`
-  they additionally need is L2's bridge).
+  `…_comp_single_of_edge`) — the `rn`/`hrnpin` input of the row-space criterion
+  `linearIndependent_sumElim_candidateRow_iff` (the full hinge-block span `hspan` it additionally
+  needs is L2's bridge).
 
 Plus the two extensor-nonzero facts L3 reuses: the `va`-hinge `e_a` is a nondegenerate line
 `L ⊂ Π(a)` (`hane`, KT eq. (6.12)'s candidate, `t ≠ 0`) and the reproduced `vb`-hinge `e_b` is
@@ -1562,8 +1562,8 @@ probe (`notes/Phase23c.md`, design §(o‴)(I.8.21)(2b)(α)): it confirms the ab
 lower bound carries to the `span (rigidityRows)` carrier with **no `ScrewSpace ≃ₗ`/§38-defeq
 friction** —
 the only carrier fact consumed is the ambient finite-dimensionality, which is `inferInstance` (the
-`Subspace.instModuleDualFiniteDimensional` route the Phase-18 spanning/rank lemmas already use, cf.
-`exists_finite_spanning_rigidityRows`), and the `ScrewSpace` carrier is never unfolded. -/
+`Subspace.instModuleDualFiniteDimensional` route), and the `ScrewSpace` carrier is never
+unfolded. -/
 
 /-- **Block-rank-additivity on the rigidity-row carrier** (`lem:case-III general-d`, the option-(A)
 rank-certification shape; Katoh–Tanigawa 2011 eqs. (6.64)–(6.65)). For a body-hinge framework `F`

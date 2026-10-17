@@ -11,10 +11,9 @@ L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main r
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
-round into 39 one-commit tasks; task 2 committed the docstring-label check, task 3 deleted L9's
-first fourteen declarations and task 4 the next seventeen (the check 422 → 409 → 396). **Next
-concrete task:** task 5, L9's `exists_good_realization_const` and
-`exists_finite_spanning_rigidityRows` with their five dead callers (*Lemma checklist*). Round
+round into 39 one-commit tasks; task 2 committed the docstring-label check, and tasks 3–5 deleted
+thirty-eight of L9's declarations (the check 422 → 409 → 396 → 390). **Next concrete task:** task 6,
+`F-090`'s shim deleted and `cor:forest-surgery-deficiency` repinned (*Lemma checklist*). Round
 manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -25,20 +24,21 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 4 is done** (this commit; Lean, with a blueprint note); nothing is mid-stream.
+**Task 5 is done** (this commit; Lean only); nothing is mid-stream.
 
-**L9's deletions so far.** Task 3: fourteen, `F-266`'s orphan among them. Task 4: the sixteen of
-the *Lemma checklist* and `F-267`'s orphan `linearIndependent_sum_augment_candidateRow_block`. The
-docstrings that named them name what replaced them (the shear choice, the restriction-form family
-and augment, `case_III_realization_all_k`, `blockPiSpanOn`) or nothing, as do `TACTICS-QUIRKS.md`'s
-worked case and the retrospective; `DESIGN.md`'s quoted recon claim, `blueprint/DESIGN.md`'s
-calibration case, ROADMAP §22h, `notes/FRICTION.md`, `notes/FRICTION-archive.md` and the closed
-notes are history. Gate 9: **396**, the deleted's thirteen lines gone (`labels-t4.txt`). The dump
-`cmp`-identical to task 3's; `--summary` too but for its constant count (7 218 → 7 194: the
-seventeen, `blockPiSpan.eq_1`, six `_simp` auxiliaries). The ledger: `F-258`, `F-264`, `F-267`
-done; `F-161`, `F-168`, `F-232` in part; `F-268` new (four unpinned declarations beside task 4's
-with no live caller, for task 38's §B); 268 entries, 138 `done`, 11 `left`, 117 `reported`, 2
-`open`; the next ID is `F-269`.
+**L9's deletions so far**, none pinned: task 3 fourteen (`F-266`'s orphan among them), task 4
+seventeen (`F-267`'s), task 5 the seven of its line; the two pins task 5 leaves without a caller,
+`exists_independent_rigidityRows_of_forest` and
+`toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`, stay with their nodes. The docstrings that
+named the deleted name what replaced them or nothing, as do `TACTICS-*.md` and the retrospective;
+`DESIGN.md`, `blueprint/DESIGN.md`, ROADMAP §22h, `notes/FRICTION*.md`, `notes/Prose-report.md` and
+the closed notes are history. Task 5 also repointed six mentions
+`linearIndependent_sum_{augment,p2,p3}_candidateRow` that task 4's exact-name `grep` missed; gate 2
+now runs block (c). Gate 9: **390**, task 5's six lines gone (`labels-t5.txt`). The dump
+`cmp`-identical to task 4's; `--summary` too but for its constant count (7 194 → 7 186: the seven,
+`hglue_of_realization._proof_1_1`). The ledger: `F-265` done; `F-233`, `F-256` in part; `F-258`
+noted; `F-269` new (four more uncalled dead declarations of the candidate-row route, for task 38's
+§B); 269 entries, 139 `done`, 11 `left`, 117 `reported`, 2 `open`; the next ID is `F-270`.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -126,9 +126,9 @@ From `notes/Reconcile.md` §1–§3, restated as far as a builder needs them.
      lines; then `lake lint` green.
   2. A Lean task: the friction review, and the per-slice gates of `CombinatorialRigidity/CLAUDE.md`
      *Forward-mode slices*: a changed statement (grep `blueprint/src/` for the name; restate the node
-     in the same commit) and a deletion (`grep -rn` the repository for each deleted name; every
-     docstring, comment, blueprint and live-doc reference repointed or removed in the same commit;
-     closed phase notes and the ledger are history).
+     in the same commit) and a deletion (`grep -rn` the repository for each deleted name, and block
+     (c) for its brace and suffix forms; every docstring, comment, blueprint and live-doc reference
+     repointed or removed in the same commit; closed phase notes and the ledger are history).
   3. A Lean task: the axioms harness, regenerated, `cmp`-identical to the open's, run with `lake
      lean`: all 19 main results `[propext, Classical.choice, Quot.sound]`, the output the open's net
      of the path. A witness task adds its witnesses' `#print axioms` (the same three).
@@ -197,6 +197,21 @@ From `notes/Reconcile.md` §1–§3, restated as far as a builder needs them.
   print('orphans',[(x.split('.')[-1],x in P,x in L) for x in sorted(O)])
   PY
   ```
+- **Block (c), a deletion's abbreviated mentions** (task 5: task 4's `grep` missed six): each
+  backticked brace form `a_{b,c}_d` expanded, and each suffix form `_d`, matched against the deleted
+  names over the Lean, the blueprint source and the top-level docs (a short suffix also hits live
+  names; read each hit):
+  ```sh
+  python3 - NAME1 NAME2 <<'PY'
+  import re,sys,glob,itertools
+  D=set(sys.argv[1:]);F=glob.glob('CombinatorialRigidity/**/*.lean',recursive=True)+glob.glob('blueprint/src/**/*.tex',recursive=True)+glob.glob('*.md')
+  for f in F:
+    for i,l in enumerate(open(f),1):
+      for t in re.findall(r'`([^`]+)`',l):
+        p=re.split(r'\{([^{}]*)\}',t);X={''.join(x).split('.')[-1] for x in itertools.product(*[[q] if j%2==0 else q.split(',') for j,q in enumerate(p)])}
+        if '{' in t and X&D or t.startswith('_') and any(d.endswith(t) for d in D): print(f'{f}:{i}: `{t}`')
+  PY
+  ```
 
 ## Lemma checklist (the round's task list)
 
@@ -204,51 +219,17 @@ One commit per task, in this order. Each line names the ledger IDs it acts on, i
 the open (lines at `347ba9c4`; re-`grep` before editing), and *Expected*: the open's estimate of
 gate 6, which the task makes exact before editing. Every task is at Opus but the close.
 
-- [x] **1. Open** (this commit; docs only): this log, the baselines, the footprint, the L9 screen,
-  `F-265`, the task list.
-- [x] **2. The docstring-label check** (report §2.1; the check of L10–L11). A committed script,
-  `scripts/check-docstring-labels.py`, reading each blueprint label (`def:`, `lem:`, `thm:`, `cor:`,
-  `prop:`, `rem:`, `fmlnote:`, …) a Lean doc comment names: it reports a label the blueprint lacks,
-  and a declaration whose docstring gives as its own node a label that does not pin it (which label
-  is "its own", e.g. the lead's, settled in the script's docstring with acceptance tests on planted
-  cases); counts by directory. Its first report is the baseline here. *Expected:* no Lean or TeX
-  edit; the dump byte-identical. *Done:* total 422, the baseline under *Current state*; the rule
-  under *Decisions*.
-- [x] **3. L9: the Theorem 5.5 and Case I wrappers, and the cycle forms** (`F-237`, `F-144`,
-  `F-238`, `F-236`; `F-254` in part). The thirteen: `Theorem55.lean`
-  `theorem_55_base_producer_parallel_pair` (130), `_empty` (198), `_single_edge` (312),
-  `_empty_gp` (387), `_single_edge_gp` (500), `case_I_realization_h65` (960),
-  `case_I_realization_nonsimple` (2062), `case_I_realization_all_k` (2196); `Pinning.lean`
-  `isTrivialMotion_of_isInfinitesimalMotion_cycle` (841), `rankHypothesis_zero_of_cycle` (873);
-  `PanelHinge.lean` `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` (874, round 2's),
-  `toBodyHinge_rankHypothesis_zero_cycle` (941); `Induction/Operations.lean`
-  `CycleData.vertexSet_ncard` (3263). *Expected:* no pin: the dump and `--summary` unchanged; a
-  blueprint prose mention, if gate 2 finds one, repointed (gate 8); gate 9 422 → 410 (twelve of the
-  thirteen are *unpinned, own node* lines; not `vertexSet_ncard`). *Done:* plus `F-266`'s orphan
-  (409); the TeX mentions repointed (`def:cycle-data`'s note, the retrospective), gate 8 green.
+- [x] **1. Open** (docs only): this log, the baselines, the footprint, the L9 screen, `F-265`, the
+  task list.
+- [x] **2. The docstring-label check** (report §2.1; L10–L11): `scripts/check-docstring-labels.py`,
+  gate 9; baseline 422, its rule under *Decisions*.
+- [x] **3. L9: the Theorem 5.5 and Case I wrappers, the cycle forms** (`F-237`, `F-144`, `F-238`,
+  `F-236`, `F-254`): fourteen deleted (`F-266`'s orphan); gate 9 409.
 - [x] **4. L9: Case III's line route, the candidate rows, `case_III_realization`, `blockPiSpan`**
-  (`F-232`, `F-258`; `F-264` in part). The sixteen: `PanelLayer.lean`
-  `panelSupportExtensor_join_eq_zero_of_eq_zero` (358),
-  `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` (713),
-  `exists_shear_linearIndependent_pair` (797); `CaseIII/Candidate.lean`
-  `case_III_old_new_blocks_of_line` (1295), `case_III_full_family_of_line` (1475);
-  `CaseIII/Arms.lean` `case_III_realization_of_line` (572); `RigidityMatrix/Basic.lean`
-  `linearIndependent_sum_augment_candidateRow` (1970); `RigidityMatrix/Claim612.lean`
-  `linearIndependent_sum_p2_candidateRow` (1094), `_p3_candidateRow` (1136),
-  `_p2_candidateRow_selector` (1167), `_p3_candidateRow_selector` (1194),
-  `linearIndependent_sum_augment_candidateRow_selector` (1229); `CaseIII/Realization.lean`
-  `case_III_realization` (2690; the header's and first section's account of it, `F-264`'s,
-  follow); `BodyBar/KFrame.lean` `blockPiSpan` (108), `kFrameRow_mem_blockPiSpan` (120),
-  `span_kFrameRow_le_blockPiSpan` (132). *Expected:* as task 3. *Done:* plus `F-267`'s orphan
-  (396); `F-264` whole; the retrospective's account of the producers, gate 8 green.
-- [ ] **5. L9: `exists_good_realization_const` and `exists_finite_spanning_rigidityRows`, with their
-  dead callers** (`F-265`; `F-256`, `F-233` in part). The seven: `CaseI.lean`
-  `exists_good_realization_const` (1699, round 2's), `hglue_of_realization` (1816),
-  `hglue_of_independent_rigidityRows` (1861), `hglue_of_forest` (1928),
-  `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` (1980),
-  `ofParam_rankHypothesis_iff_pinnedMotionsOn` (2024); `RigidityMatrix/Basic.lean`
-  `exists_finite_spanning_rigidityRows` (1203). `PanelHinge.lean`'s header names `hglue_of_forest`
-  (gate 2). *Expected:* as task 3.
+  (`F-232`, `F-258`, `F-264`): seventeen deleted (`F-267`'s orphan); gate 9 396.
+- [x] **5. L9: `exists_good_realization_const`, `exists_finite_spanning_rigidityRows` and their five
+  dead callers** (`F-265`; `F-256`, `F-233` in part): seven deleted, the two pins orphaned stay;
+  gate 9 390.
 - [ ] **6. L9: `F-090`'s shim, and `cor:forest-surgery-deficiency` repinned** (`F-090`). Delete
   `Graph.splitOff_deficiency_le_of_forest_surgery` (`Induction/ForestSurgery/Reduction.lean` 2170,
   `forest_surgery_split` applied to the same hypotheses); the corollary (`molecular-induction.tex`
@@ -413,11 +394,12 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `F-237`, `F-238`). The parts that wait are *Moved to a later round*'s.
 - [ ] **37. `Molecular/Molecule/`** (`F-182`, `F-190`, `F-245`, `F-246`; the parts there of `F-186`
   (`Modelling.lean`: the link is projective duality), `F-210`, `F-243`).
-- [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines). The smell counts
-  again (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's; each
-  `@[nolint …]` and `set_option linter` site checked for its one-line justification; §C's ranking,
-  the top ten walked with the four questions (expected no-op, §C's calibration). A fix found is a
-  task appended before the close. *Expected:* docs only.
+- [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
+  `F-269`'s eight declarations through block (b)). The smell counts again
+  (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's; each `@[nolint …]`
+  and `set_option linter` site checked for its one-line justification; §C's ranking, the top ten
+  walked with the four questions (expected no-op, §C's calibration). A fix found is a task appended
+  before the close. *Expected:* docs only.
 - [ ] **39. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check with the
   witnesses; the build, `lake lint` and gates 5–10 at the last task's values; the script's report
   and the forward screen beside the open's; the smell counts; the ledger's dispositions, task
@@ -461,15 +443,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 5**, at Opus: L9's seven declarations (*Lemma checklist*), block (b) on the seven
-first (at the parent its orphans are two pins, `exists_independent_rigidityRows_of_forest` and
-`toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`, which stay), then §B's trial deletion and
-gates 1–3, 5–6 (the dump byte-identical to `scratch/reconcile-lean/dump-t4.txt`, gitignored;
-regenerate it on the parent if it is missing), 8 if a TeX mention moves, 9 (396 → 390: six of the
-seven have a line in `labels-t4.txt`, not `exists_finite_spanning_rigidityRows`) and 10.
-`PanelHinge.lean`'s header names `hglue_of_forest` (gate 2). Carried in: `F-252` for the PI (round
-1's *Candidates*; the phase's (a) removes it); `F-268` for task 38. After the round the queue stops
-before `RECONCILE-FORMAL`, which is attended.
+**Next: task 6**, at Opus: delete `F-090`'s shim `Graph.splitOff_deficiency_le_of_forest_surgery`
+(block (b) on it first, then §B's trial deletion) and repin `cor:forest-surgery-deficiency` on
+`Graph.forest_surgery_split` in the same commit, under the honesty gate (*Lemma checklist*). Gates
+1–3, 5–6 (the expected diff against `scratch/reconcile-lean/dump-t5.txt`, gitignored, written
+before editing: one pin replaced, no `\uses` or `\leanok`; regenerate the parent's dump if it is
+missing), 8 (a TeX pin moves), 9 (390; the shim has no line in `labels-t5.txt`) and 10, with gate
+2's block (c). Carried in: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it);
+`F-268` and `F-269` for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which
+is attended.
 
 ## Decisions made during this round
 

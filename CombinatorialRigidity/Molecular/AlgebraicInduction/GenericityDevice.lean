@@ -165,11 +165,10 @@ corank, supplied by `exists_independent_panelSupportExtensor` through the hinge-
 there is a normal assignment `q` at which the null space attains the codimension bound
 `#s + dim Z(G,q) ≤ D|V|`.
 
-This is the keystone the prior phase could only invoke on a *constant* family
-(`exists_good_realization_const`): here the realization genuinely varies over panel-coordinate
-space. The device inputs are assembled from the landed B0 bricks: the row family is the explicit
-`panelRow` (`hingeRow` of the `annihRow` annihilator family); its `⋀^k`-coordinates against the
-standard basis `Pi.basis (fun _ => screwBasis k)` are the degree-2 polynomials
+Here the realization genuinely varies over panel-coordinate space, rather than being a single
+constant framework. The device inputs are assembled from the landed B0 bricks: the row family is
+the explicit `panelRow` (`hingeRow` of the `annihRow` annihilator family); its `⋀^k`-coordinates
+against the standard basis `Pi.basis (fun _ => screwBasis k)` are the degree-2 polynomials
 `annihRowPoly` scaled by the body-incidence sign `[u=a] − [v=a]` (`hg`, via `dualBasis_equivFun` +
 `annihRowPoly_eval` + `Pi.single_apply`); and the span identity `hcoord` is
 `span_panelRow_eq_rigidityRows` composed with `infinitesimalMotions_eq_dualCoannihilator`. The

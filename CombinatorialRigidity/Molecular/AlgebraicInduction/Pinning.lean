@@ -131,7 +131,7 @@ theorem panelRow_mem_rigidityRows (F : BodyHingeFramework K k α β) {ends : β 
 / `lem:case-III`, the isolated framework-alignment leaf of the `d = 3` `hsplit` producer;
 Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The `d = 3` `hsplit` producer's three candidate families are
 `Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow u w ρ)) ro` (the candidate-completion assembly's
-`+1` over the eq.~(6.12) brick; `linearIndependent_sum_{augment,p2,p3}_candidateRow`), and the
+`+1` over the eq.~(6.12) brick; `linearIndependent_sum_augment_candidateRow_restriction`), and the
 device closure consumes them packaged as panel-row subfamilies along an injective edge-index `j`
 (`hasFullRankRealization_of_independent_panelRow_index`). The `rn`/`ro` rows are already `panelRow`s
 (supplied by `case_III_old_new_blocks`); this leaf identifies the remaining `Unit`-summand candidate

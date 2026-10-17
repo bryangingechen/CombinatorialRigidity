@@ -434,7 +434,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M2 [Infinite K]
 /-- **L5 — the candidate-completion index map is injective** (`lem:case-II-realization` /
 `lem:case-III`, the `j`/`Sum.elim` packaging leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa
 2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly
-(`linearIndependent_sum_{augment,p2,p3}_candidateRow`) outputs a `Sum`-indexed family
+(`linearIndependent_sum_augment_candidateRow_restriction`) outputs a `Sum`-indexed family
 `(rn ⊕ {candidate row}) ⊕ ro` over `ι = (sn ⊕ Unit) ⊕ so`; the abstractly-indexed device feed
 (`hasFullRankRealization_of_independent_panelRow_index`) consumes it along an injective index map
 `j` placing each block index at its `(edge, ⋀ᵏ-pair)`. This certifies that `j` is injective — the
@@ -484,7 +484,7 @@ theorem PanelHingeFramework.candidateCompletion_index_injective
 /-- **L5-pack — the candidate-completion `panelRow ∘ j` family identity and count**
 (`lem:case-II-realization` / `lem:case-III`, a packaging leaf for the `d = 3` `hsplit` producer;
 Katoh–Tanigawa 2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly
-(`linearIndependent_sum_{augment,p2,p3}_candidateRow`) outputs the family
+(`linearIndependent_sum_augment_candidateRow_restriction`) outputs the family
 `Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow u w ρ)) ro` over `(sn ⊕ Unit) ⊕ so`; this leaf
 repackages it as a single `panelRow`-family `fam = fun i => F.panelRow ends (j i)` along an
 injective index `j` (the shape a panelRow-shaped device feed would need), supplying both halves

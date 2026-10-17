@@ -21,8 +21,7 @@ projection-into-pinned-motions bridges, themselves on the device
   over one common framework;
 * the Case-I composer `case_I_realization` (`lem:case-I-realization`), **green-modulo** a single
   dischargeable hypothesis = KT **Claim 6.4** (the red node `lem:claim-6-4`, deferred to Phase
-  22b — the surviving block's exterior-projected rank at the generic placement);
-* the `hglue` device-to-motive helpers and the `rankHypothesis_iff_pinnedMotionsOn` bridges.
+  22b — the surviving block's exterior-projected rank at the generic placement).
 
 See `ROADMAP.md` §22a / `notes/Phase22a.md` and the `sec:molecular-algebraic-induction` dep-graph
 of `blueprint/src/chapter/algebraic-induction.tex`.
@@ -1674,51 +1673,6 @@ theorem PanelHingeFramework.case_I_realization
     G ends hends hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl) hcover
     ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne hsc_proj_indep n hG.1
 
-/-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
-rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
-resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by
-the exterior-algebra existence lemma `exists_independent_panelSupportExtensor` (a basis choice on
-`⋀²`, Phase 21/17), not found by perturbing along a path through panel-coordinate space. So the
-multivariate family the device consumes can be the **constant** family `F p = F₀`, with `g p = a`
-any family whose span lies **inside** the rigidity rows of the single good realization `F₀`
-(`hspanrows`, a `≤`); the bilinearity obstruction (the panel rows are quadratic along a real line
-through normal-space) never bites, because no path is traversed — the device reads off the corank
-`#s` at the one hand-built realization, which is all Case I's block-triangular gluing needs.
-
-This packages the constant family into the multivariate `exists_good_realization`: the
-panel-coordinate variables `σ := Unit` are vacuous (the framework does not vary), the polynomial
-coordinates are the constants `c i j = C (φ (a i) j)` (so `hg` is `eval_C`), and the
-coordinatization `hcoord` is the per-framework `infinitesimalMotions_eq_dualCoannihilator` composed
-with the coannihilator anti-monotonicity `dualCoannihilator_anti hspanrows` — which is why
-`hspanrows` only needs the `≤` containment, not equality. The basis identification `φ` is taken from
-any finite basis of the
-finite-dimensional dual `α → ScrewSpace K k` (`Module.finBasis … |>.equivFun`). The output is the
-unquantified codimension bound `#s + dim Z(F₀) ≤ D|V|` at `F₀` itself — the form
-`hglue_of_realization` consumes. The independent subfamily `s` (the engine's `hindep`) is supplied
-by `exists_independent_panelSupportExtensor` through the hinge-row block. -/
-theorem exists_good_realization_const [Infinite K] [Fintype α] {ι : Type*} [Finite ι]
-    (F₀ : BodyHingeFramework K k α β) (a : ι → Module.Dual K (α → ScrewSpace K k))
-    (hspanrows : Submodule.span K (Set.range a) ≤ Submodule.span K F₀.rigidityRows)
-    {s : Set ι} (hindep : LinearIndependent K (fun i : s => a i)) :
-    Nat.card s + Module.finrank K F₀.infinitesimalMotions ≤ screwDim k * Fintype.card α := by
-  classical
-  set n := Module.finrank K (Module.Dual K (α → ScrewSpace K k)) with hn
-  -- A basis identification of the finite-dimensional dual with `Fin n → K`.
-  let φ : Module.Dual K (α → ScrewSpace K k) ≃ₗ[K] (Fin n → K) :=
-    (Module.finBasis K (Module.Dual K (α → ScrewSpace K k))).equivFun
-  -- The constant family: `F p = F₀`, rows `g p = a`, polynomial coords the constants `φ (a i) j`.
-  -- The `hcoord` leg needs only `span (range a) ⊆ span rigidityRows`: anti-monotonicity of the
-  -- coannihilator (`dualCoannihilator_anti`) reverses it onto `infinitesimalMotions` rewritten as
-  -- `(span rigidityRows).dualCoannihilator`, so the spanning hypothesis can be a `≤`.
-  have hcoord : ∀ _ : Unit → K, F₀.infinitesimalMotions
-      ≤ (Submodule.span K (Set.range a)).dualCoannihilator := fun _ => by
-    rw [F₀.infinitesimalMotions_eq_dualCoannihilator]
-    exact Submodule.dualCoannihilator_anti hspanrows
-  obtain ⟨p, hp⟩ := exists_good_realization (σ := Unit) (s := s) (p₀ := fun _ => 0)
-    (fun _ => F₀) (fun _ => a) (fun i j => MvPolynomial.C (φ (a i) j)) φ
-    (fun _ i j => by rw [MvPolynomial.eval_C]) hcoord hindep
-  exact hp
-
 /-- **Realization producer from a fixed-framework independent rigidity-row-span family** (C1;
 `lem:case-III` / `lem:case-II-realization`, the genericity-free device-feed variant; Katoh–Tanigawa
 2011 §6.4.1 eqs. (6.24)–(6.44), Phase 22g). The fixed-framework analog of
@@ -1759,9 +1713,9 @@ theorem PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow
 /-- **C2 — the single-candidate brick** (`lem:case-III` / `lem:case-II-realization`, the
 per-candidate selector → realization step of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011
 §6.4.1 eqs. (6.27)–(6.44), Phase 22g). Turns one candidate's *row-space selector* — the conditional
-`r̂(C(e)) ≠ 0 → LinearIndependent fam` that the candidate-completion producers
-(`linearIndependent_sum_{p2,p3,augment}_candidateRow`) supply — plus per-row membership in the fixed
-realization's rigidity rows and the relative-full count `D(|V(G)|−1) ≤ |κ|` into the realization
+`r̂(C(e)) ≠ 0 → LinearIndependent fam` that a candidate-completion producer supplies — plus
+per-row membership in the fixed realization's rigidity rows and the relative-full count
+`D(|V(G)|−1) ≤ |κ|` into the realization
 conclusion `r̂(C(e)) ≠ 0 → HasFullRankRealization K k G`, by feeding C1
 (`hasFullRankRealization_of_independent_rigidityRow`) at the fixed placement `ofNormals G ends q₀`.
 
@@ -1792,256 +1746,6 @@ theorem PanelHingeFramework.hasFullRankRealization_of_candidateSelector
   rw [Submodule.span_le, Set.range_subset_iff]
   exact fun i => hmem i
 
-/-- **Case I `hglue` from a single panel realization** (`lem:case-I`, the route-(a) capstone;
-Katoh–Tanigawa 2011 §6.1 Claim 6.4). The genuinely-consumer-facing form of the genericity device
-for Case I: given a single body-hinge realization `F₀`, a finite family `a` of functionals
-**spanning** its rigidity rows (`hspanrows`), a linearly independent subfamily indexed by `s`
-(`hindep`, the witnessed corank, supplied by `exists_independent_panelSupportExtensor` through the
-hinge-row block), and the **rank-match** `hmatch` — the witnessed corank `#s` equals the
-contraction's inductive rank `D(|V|−1) − dim Z_s` — the block-triangular gluing inequality
-`hglue : dim Z(G,p) ≤ D + dim Z_s` holds at `F₀` itself.
-
-This is the route-(a) resolution promised in the hand-off: the bilinearity obstruction (panel rows
-quadratic along a real line) is sidestepped because the witness realization `F₀` is *constructed*
-by the exterior-algebra existence lemma rather than reached by perturbation, so the device runs on
-the **constant** multivariate family `F p = F₀` (`exists_good_realization_const`), reading off the
-corank `#s` at `F₀`. The arithmetic then substitutes `#s = D(|V|−1) − dim Z_s` (`hmatch`) into the
-device's `#s + dim Z(F₀) ≤ D|V|`, collapsing `D|V| − (D(|V|−1) − dim Z_s)` to `D + dim Z_s` via
-`D·(|V|−1) = D·|V| − D`. The residual per-consumer work is now purely combinatorial-geometric:
-exhibit, from the contraction realization plus the rigidly placed block `V(H)`, the single
-realization `F₀`, a finite spanning row family `a`, and the independent subfamily `s` whose size
-matches `#s = D(|V|−1) − dim Z_s` (`hspanrows` + `hindep` + `hmatch`); no path construction remains.
-It bottoms on `screwDim k * (|V|−1) = D|V| − D`, the trivial-motion codimension
-`lem:trivial-motions-rank-bound`. -/
-theorem hglue_of_realization [Infinite K] [Fintype α] [Nonempty α] {ι : Type*} [Finite ι]
-    (F₀ : BodyHingeFramework K k α β) (a : ι → Module.Dual K (α → ScrewSpace K k))
-    {s : Set ι} {sblk : Set α}
-    (hspanrows : Submodule.span K (Set.range a) = Submodule.span K F₀.rigidityRows)
-    (hindep : LinearIndependent K (fun i : s => a i))
-    (hmatch : Nat.card s + Module.finrank K F₀.infinitesimalMotions ≤ screwDim k * Fintype.card α →
-      (Nat.card s : ℤ) = screwDim k * (Fintype.card α - 1)
-        - Module.finrank K (F₀.pinnedMotionsOn sblk)) :
-    (Module.finrank K F₀.infinitesimalMotions : ℤ) ≤
-      screwDim k + Module.finrank K (F₀.pinnedMotionsOn sblk) := by
-  have ht := exists_good_realization_const F₀ a hspanrows.le hindep
-  have hcard : 1 ≤ Fintype.card α := Fintype.card_pos
-  have hmatch' := hmatch ht
-  have ht' : (Nat.card s : ℤ) + Module.finrank K F₀.infinitesimalMotions
-      ≤ screwDim k * Fintype.card α := by exact_mod_cast ht
-  -- `D·(|V|−1) = D·|V| − D`, so substituting `#s` collapses the bound to `D + dim Z_s`.
-  rw [Nat.cast_sub hcard, Nat.cast_one, mul_sub, mul_one] at hmatch'
-  omega
-
-/-- **Case I `hglue` from an independent rigidity-row family** (`lem:case-I`, the route-(a)
-capstone in its consumer-ready form; Katoh–Tanigawa 2011 §6.1 Claim 6.4, Phase 21b). The bridge
-that feeds the **assembled** independent rigidity-row family of
-`exists_independent_rigidityRows_of_forest` directly into the block-triangular gluing inequality,
-discharging `hglue_of_realization`'s finite-spanning-family `a` and its independent-subfamily index
-`s` once and for all.
-
-`hglue_of_realization` is stated against a single finite family `a` that *spans* `F₀.rigidityRows`
-together with an independent subfamily indexed by `s ⊆ ι` of `a` itself. The Case-I assembly,
-however, produces its independent family `r : κ → Dual` (the `(D−1)·|J|` rows of a rigid block's
-spanning forest of transversal hinges) as members of `F₀.rigidityRows` — *not* as a syntactic
-subfamily of any pre-chosen spanning enumeration. This lemma closes that index gap with the
-**concatenation** `a := Sum.elim r a₀`, where `a₀` is any finite family spanning the rigidity rows
-(`exists_finite_spanning_rigidityRows`): its range is `range r ∪ range a₀`, and since `range r ⊆
-span F₀.rigidityRows = span (range a₀)`, the concatenated family still spans the rigidity rows
-(`hspanrows`); the subfamily indexed by `s := range Sum.inl` is exactly `r` (independent by
-`hr`, transported across the `Sum.inl` reindexing). The corank then matches `Nat.card κ` (the
-forest's `(D−1)·|J|`), so the route-(a) capstone fires with `hmatch` keyed to `κ` rather than to a
-hand-chosen subset of an enumeration.
-
-The residual per-consumer obligations are now exactly two and *both purely geometric*: (i) exhibit
-the realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge` from the contraction realization
-plus the rigidly placed block `V(H)`), supplying the forest data `r` via
-`exists_independent_rigidityRows_of_forest`; and (ii) the count match `hmatch`
-(`Nat.card κ = D(|V|−1) − dim Z_s`) against the contraction's inductive `RankHypothesis`. No
-spanning-family construction, no subfamily-index bookkeeping, and no affine path remain. -/
-theorem hglue_of_independent_rigidityRows [Infinite K] [Fintype α] [Nonempty α] {κ : Type*}
-    [Finite κ] (F₀ : BodyHingeFramework K k α β) {sblk : Set α}
-    (r : κ → Module.Dual K (α → ScrewSpace K k)) (hr : LinearIndependent K r)
-    (hmem : ∀ i, r i ∈ Submodule.span K F₀.rigidityRows)
-    (hmatch : Nat.card κ + Module.finrank K F₀.infinitesimalMotions ≤ screwDim k * Fintype.card α →
-      (Nat.card κ : ℤ) = screwDim k * (Fintype.card α - 1)
-        - Module.finrank K (F₀.pinnedMotionsOn sblk)) :
-    (Module.finrank K F₀.infinitesimalMotions : ℤ) ≤
-      screwDim k + Module.finrank K (F₀.pinnedMotionsOn sblk) := by
-  classical
-  -- A finite family `a₀` spanning the rigidity rows; concatenate `r` in front of it.
-  obtain ⟨n, a₀, ha₀⟩ := F₀.exists_finite_spanning_rigidityRows
-  set a : κ ⊕ Fin n → Module.Dual K (α → ScrewSpace K k) := Sum.elim r a₀ with ha
-  -- The concatenated family still spans the rigidity rows: `range r ⊆ span (range a₀)`.
-  have hspanrows : Submodule.span K (Set.range a) = Submodule.span K F₀.rigidityRows := by
-    rw [ha, Set.Sum.elim_range, Submodule.span_union, ha₀]
-    refine le_antisymm (sup_le ?_ le_rfl) le_sup_right
-    rw [Submodule.span_le]
-    rintro _ ⟨i, rfl⟩
-    rw [SetLike.mem_coe]; exact ha₀ ▸ hmem i
-  -- The subfamily indexed by `range Sum.inl` is exactly `r`, hence independent.
-  have hindep : LinearIndependent K
-      (fun i : (Set.range (Sum.inl : κ → κ ⊕ Fin n)) => a i) := by
-    have hcomp : (fun i : (Set.range (Sum.inl : κ → κ ⊕ Fin n)) => a (i : κ ⊕ Fin n))
-        = r ∘ (fun i => (Set.rangeSplitting Sum.inl i : κ)) := by
-      funext i
-      have := Set.apply_rangeSplitting (Sum.inl : κ → κ ⊕ Fin n) i
-      rw [ha]
-      simp only [Function.comp_apply]
-      rw [show (i : κ ⊕ Fin n) = Sum.inl (Set.rangeSplitting Sum.inl i) from this.symm,
-        Sum.elim_inl]
-    rw [hcomp]
-    exact hr.comp _ (Set.rangeSplitting_injective (Sum.inl : κ → κ ⊕ Fin n))
-  -- The corank `#s = Nat.card (range Sum.inl) = Nat.card κ`.
-  have hcard : Nat.card (Set.range (Sum.inl : κ → κ ⊕ Fin n)) = Nat.card κ := by
-    rw [Nat.card_range_of_injective Sum.inl_injective]
-  refine hglue_of_realization F₀ a (s := Set.range (Sum.inl : κ → κ ⊕ Fin n)) (sblk := sblk)
-    hspanrows hindep ?_
-  rw [hcard]; exact hmatch
-
-/-- **Case I `hglue` from a rigid block's spanning forest** (`lem:case-I`, the route-(a) capstone
-in its fully geometry-facing form; Katoh–Tanigawa 2011 §6.1 Claim 6.4, §6.2/6.5, Phase 21b). The
-last reduction of the route-(a) chain before the genuinely-geometric `F₀` exhibition: it composes
-the assembled forest family `exists_independent_rigidityRows_of_forest` (the rigid block's
-`(D−1)·|J|` independent rigidity rows, indexed by `Σ _ : J, Fin (screwDim k − 1)`) straight into
-the consumer bridge `hglue_of_independent_rigidityRows`, so the only remaining consumer obligation
-is the *forest data itself* plus the count.
-
-Concretely: given a single body-hinge realization `F₀` whose rigid block `V(H) = s_blk` carries a
-spanning forest of transversal hinges — each hinge `e j` oriented from a *private endpoint* `u j`
-(the forest child, `u` injective) to an arbitrary `other j`, with the forest-separation hypothesis
-`hsep : ∀ j j', other j ≠ u j'` and every hinge transversal (`he : F₀.supportExtensor (e j) ≠ 0`)
-— the block-triangular gluing inequality `hglue : dim Z(G,p) ≤ D + dim Z_s` holds at `F₀`, provided
-only the **count match** `hmatch`: the forest's row count `|J|·(D−1)` equals the contraction's
-inductive rank `D(|V|−1) − dim Z_s`. The forest rows discharge `hglue_of_independent_rigidityRows`'s
-independent family `r` (via `linearIndependent_hingeRow_forest`) and its membership obligation
-(each row is in `F₀.rigidityRows` by the hinge link `hlink j`); the cardinality
-`Nat.card (Σ _ : J, Fin (screwDim k − 1)) = |J|·(D−1)` (`Nat.card_sigma`) keys `hmatch` to the
-forest size.
-
-This is the last *generic* (graph-and-hinge-agnostic) reduction. The remaining consumer work — the
-genuinely-geometric Case-I assembly (KT §6.2/6.5) — is to exhibit, from the contraction realization
-`G/E(H)` at its inductive `RankHypothesis` plus the rigidly placed block `V(H)`, the single
-realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`), the private-endpoint spanning forest
-`u`/`other`/`e` of `V(H)`'s transversal hinges (transversality from
-`exists_independent_panelSupportExtensor` general position), and the count `hmatch` against the
-contraction's inductive rank. -/
-theorem hglue_of_forest [Infinite K] [Fintype α] [Nonempty α] {J : Type*} [Finite J]
-    (F₀ : BodyHingeFramework K k α β) {sblk : Set α}
-    {u other : J → α} {e : J → β} (hu : Function.Injective u)
-    (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, F₀.graph.IsLink (e j) (u j) (other j))
-    (he : ∀ j, F₀.supportExtensor (e j) ≠ 0)
-    (hmatch : Nat.card J * (screwDim k - 1) + Module.finrank K F₀.infinitesimalMotions
-        ≤ screwDim k * Fintype.card α →
-      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
-        - Module.finrank K (F₀.pinnedMotionsOn sblk)) :
-    (Module.finrank K F₀.infinitesimalMotions : ℤ) ≤
-      screwDim k + Module.finrank K (F₀.pinnedMotionsOn sblk) := by
-  classical
-  have : Fintype J := Fintype.ofFinite J
-  obtain ⟨r, hr, hmem⟩ := F₀.exists_independent_rigidityRows_of_forest hu hsep hlink he
-  -- `Nat.card (Σ _ : J, Fin (screwDim k − 1)) = |J|·(D − 1)`.
-  have hcard : Nat.card ((_ : J) × Fin (screwDim k - 1)) = Nat.card J * (screwDim k - 1) := by
-    simp [Nat.card_eq_fintype_card]
-  refine hglue_of_independent_rigidityRows F₀ r hr
-    (fun p => Submodule.subset_span (hmem p)) (sblk := sblk) ?_
-  rw [hcard]; exact hmatch
-
-/-- **Case I panel capstone: a general-position rigid block realizes the rank** (`lem:case-I`, the
-route-(a) panel-layer iff-realization; Katoh–Tanigawa 2011 §6.1 Claim 6.4, §6.2/6.5, Phase 21b).
-The packaging of `hglue_of_forest` against a *panel*-hinge framework `P` whose normals are in
-general position (`P.IsGeneralPosition`, e.g. the moment-curve assignment
-`isGeneralPosition_withMomentNormals`): it sources the per-hinge transversality input `he` of
-`hglue_of_forest` from the general position via `supportExtensor_ne_zero_of_isGeneralPosition`,
-leaving the consumer only the *graph* data of the rigid block's spanning forest and the count.
-
-Concretely, for the body-hinge interpretation `P.toBodyHinge` on a (nonempty) rigid block
-`s = sblk` carrying a spanning forest of hinges — each `e j` linking a *private endpoint* `u j`
-(the forest child, `u` injective) to an arbitrary `other j`, with the forest-separation hypothesis
-`hsep : ∀ j j', other j ≠ u j'` and each hinge's panel endpoints matching its forest orientation
-(`hends : P.ends (e j) = (u j, other j)`) — the framework realizes the target rank at `k'`
-(`RankHypothesis k'`, i.e. `dim Z(G,p) = D + k'`) **iff** the block pin `pinnedMotionsOn s` has
-dimension `k'`, the contraction's inductive rank, provided the **count match** `hmatch`: the
-forest's row count `|J|·(D−1)` equals `D(|V|−1) − dim Z_s`. Endpoint distinctness of each forest
-hinge — the input `supportExtensor_ne_zero_of_isGeneralPosition` needs — is read off the
-forest separation at the diagonal (`(hsep j j) : other j ≠ u j`, so `(P.ends (e j)).1 = u j ≠
-other j = (P.ends (e j)).2` through `hends`), so no extra transversality hypothesis is required:
-general position of the panel normals discharges every forest hinge at once.
-
-This is the last reduction of the Case-I route-(a) chain that still mentions the panel general
-position: it composes `hglue_of_forest` (the rigid block's `(D−1)·|J|` independent rigidity rows
-feeding the block-triangular gluing) with `supportExtensor_ne_zero_of_isGeneralPosition` (every
-forest hinge transversal under general position) into `toBodyHinge_rankHypothesis_iff_finrank_
-pinnedMotionsOn`. The remaining consumer work — the genuinely-geometric Case-I assembly (KT
-§6.2/6.5) — is the *graph-and-realization* exhibition: build `P` (a `PanelHingeFramework`, its
-normals from `withMomentNormals` on an injective parameter map, so `IsGeneralPosition` for free) on
-the parent graph `G` from the contraction realization `G/E(H)` plus the rigidly placed block
-`V(H)`, exhibit the block's spanning forest `u`/`other`/`e` (with `hends` by construction), and
-discharge the count `hmatch` against the contraction's inductive `RankHypothesis`. -/
-theorem PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition
-    [Infinite K] [Fintype α] [Nonempty α] {J : Type*} [Finite J]
-    (P : PanelHingeFramework K k α β) (hP : P.IsGeneralPosition)
-    {sblk : Set α} (hs : sblk.Nonempty) (k' : ℤ)
-    {u other : J → α} {e : J → β} (hu : Function.Injective u)
-    (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, P.toBodyHinge.graph.IsLink (e j) (u j) (other j))
-    (hends : ∀ j, P.ends (e j) = (u j, other j))
-    (hmatch : Nat.card J * (screwDim k - 1) + Module.finrank K P.toBodyHinge.infinitesimalMotions
-        ≤ screwDim k * Fintype.card α →
-      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
-        - Module.finrank K (P.toBodyHinge.pinnedMotionsOn sblk)) :
-    P.toBodyHinge.RankHypothesis k' ↔
-      (Module.finrank K (P.toBodyHinge.pinnedMotionsOn sblk) : ℤ) = k' := by
-  have he : ∀ j, P.toBodyHinge.supportExtensor (e j) ≠ 0 := fun j =>
-    P.supportExtensor_ne_zero_of_isGeneralPosition hP (e := e j)
-      (by rw [hends j]; exact (hsep j j).symm)
-  exact P.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn hs k'
-    (hglue_of_forest P.toBodyHinge hu hsep hlink he hmatch)
-
-/-- **Case I from-scratch realization entry point: a moment-curve framework realizes the rank**
-(`lem:case-I`, the route-(a) panel-layer iff-realization specialized to the `ofParam` constructor;
-Katoh–Tanigawa 2011 §6.1 Claim 6.4, §6.2/6.5, Phase 21b). The packaging of the general-position
-capstone `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` against the
-from-scratch framework `ofParam G ends param` built directly on the parent multigraph `G`, its
-hinge-endpoint selector `ends`, and an *injective* real parameter map `param`. Because the
-moment-curve normals at an injective `param` are automatically in general position
-(`isGeneralPosition_ofParam`), the per-hinge transversality input is discharged for free, and the
-endpoint hypothesis `hends` of the capstone reduces to a statement about `ends` *directly*
-(`ofParam_ends` is definitional).
-
-Concretely, for the body-hinge interpretation `(ofParam G ends param).toBodyHinge` on a (nonempty)
-rigid block `s = sblk` carrying a spanning forest of hinges — each `e j` linking a *private
-endpoint* `u j` (the forest child, `u` injective) to an arbitrary `other j`, with the
-forest-separation `hsep : ∀ j j', other j ≠ u j'`, each hinge a genuine link of `G`
-(`hlink : G.IsLink (e j) (u j) (other j)`), and the endpoint selector matching the forest
-orientation (`hends : ∀ j, ends (e j) = (u j, other j)`) — the framework realizes the target rank
-at `k'` (`RankHypothesis k'`, i.e. `dim Z(G,p) = D + k'`) **iff** the block pin `pinnedMotionsOn s`
-has dimension `k'`, provided the **count match** `hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`). This
-is the realization-side entry point of the genuinely-geometric Case-I assembly (KT §6.2/6.5):
-combinatorial inputs `(G, ends)` carry the geometry of the rigid-subgraph contraction
-`G/E(H) ⊔ V(H)`, the forest data `u`/`other`/`e` is read off the rigid block, and the genericity is
-the single injective real assignment `param`. The remaining consumer obligation is purely
-combinatorial — exhibit the parent graph `G`, its endpoint selector `ends`, the block's spanning
-forest, and discharge the count `hmatch` against the contraction's inductive `RankHypothesis`. -/
-theorem PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn [Infinite K]
-    [Fintype α] [Nonempty α] {J : Type*} [Finite J]
-    (G : Graph α β) (ends : β → α × α) {param : α → K} (hparam : Function.Injective param)
-    {sblk : Set α} (hs : sblk.Nonempty) (k' : ℤ)
-    {u other : J → α} {e : J → β} (hu : Function.Injective u)
-    (hsep : ∀ j j', other j ≠ u j')
-    (hlink : ∀ j, G.IsLink (e j) (u j) (other j))
-    (hends : ∀ j, ends (e j) = (u j, other j))
-    (hmatch : Nat.card J * (screwDim k - 1)
-        + Module.finrank K (ofParam (k := k) G ends param).toBodyHinge.infinitesimalMotions
-        ≤ screwDim k * Fintype.card α →
-      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
-        - Module.finrank K
-            ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk)) :
-    (ofParam (k := k) G ends param).toBodyHinge.RankHypothesis k' ↔
-      (Module.finrank K
-        ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk) : ℤ) = k' :=
-  ((ofParam (k := k) G ends param).toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition
-    (isGeneralPosition_ofParam G ends hparam) hs k' hu hsep
-    (by simpa using hlink) (by simpa using hends) hmatch)
-
 /-! ### Retired absolute-motive Case-I producers (Phase 21b re-plan)
 
 The four `HasFullRankRealization` producers that lived here —
@@ -2056,9 +1760,8 @@ over unsatisfiable hypotheses (`hpin`/`hHrig`/`hcrig` over `withGraph`-subgraphs
 `α`). They are retired here as the realization motive (`HasFullRankRealization`) is relativized to
 `IsInfinitesimallyRigidOn V(G)`; the genuine device-direct producers (`lem:case-I-realization`,
 `lem:case-II-realization`, built on the splice seed + B0 + the green genericity device) replace
-them and remain red — see `notes/Phase21b.md` *Hand-off*. The accounting iffs
-(`ofParam_rankHypothesis_iff_pinnedMotionsOn` and the nullity `RankHypothesis` chain) are retained
-above. The seed-rank-bridge / rank-attainment family that once lived here
+them and remain red — see `notes/Phase21b.md` *Hand-off*. The seed-rank-bridge /
+rank-attainment family that once lived here
 (`isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`,
 `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`,
 `rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent`) transferred rigidity/rank facts

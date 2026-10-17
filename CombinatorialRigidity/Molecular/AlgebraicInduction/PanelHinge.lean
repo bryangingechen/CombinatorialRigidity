@@ -112,10 +112,9 @@ the panel normals of `P` are in *general position* when any two normals at disti
 linearly independent — equivalently every pair of panels meets transversally. This is the
 single general-position condition the panel realizations of Theorem 5.5 supply: under it, every
 hinge whose two endpoints are distinct bodies has a nonzero supporting extensor
-(`supportExtensor_ne_zero_of_isGeneralPosition`), the transversality hypothesis `he` the
-block-triangular gluing (`hglue_of_forest`) and the per-edge independent-rows brick
-(`exists_independent_rigidityRows_of_edge`) require of each forest hinge. It is the panel
-analogue of the affine-independence general-position condition on a `BodyHingeFramework`'s
+(`supportExtensor_ne_zero_of_isGeneralPosition`), the transversality hypothesis `he` the per-edge
+independent-rows brick (`exists_independent_rigidityRows_of_edge`) requires of each hinge. It is
+the panel analogue of the affine-independence general-position condition on a `BodyHingeFramework`'s
 hinge points, and the realization-side counterpart of the abstract extensor-independence
 existence (`exists_independent_panelSupportExtensor`). -/
 def IsGeneralPosition (P : PanelHingeFramework K k α β) : Prop :=
@@ -126,8 +125,8 @@ def IsGeneralPosition (P : PanelHingeFramework K k α β) : Prop :=
 (`P.IsGeneralPosition`) and edge `e` joins two distinct bodies (`(P.ends e).1 ≠ (P.ends e).2`),
 then `P.toBodyHinge.supportExtensor e ≠ 0`. Immediate from
 `toBodyHinge_supportExtensor_ne_zero_iff` and the general-position pairwise independence. This is
-the realization-side source of the transversality hypothesis `he` each forest hinge carries into
-the block-triangular gluing `hglue_of_forest`: once the normals are in general position, every
+the realization-side source of the transversality hypothesis `he` of the per-edge independent-rows
+brick (`exists_independent_rigidityRows_of_edge`): once the normals are in general position, every
 hinge of the rigid block is genuine and contributes its `D − 1` independent rigidity rows. -/
 theorem supportExtensor_ne_zero_of_isGeneralPosition (P : PanelHingeFramework K k α β)
     (hP : P.IsGeneralPosition) {e : β} (he : (P.ends e).1 ≠ (P.ends e).2) :
@@ -176,10 +175,9 @@ infra): given an injective parameter map `param : α → K` assigning a distinct
 the panel framework `P.withMomentNormals param` re-uses `P`'s multigraph and endpoint selector but
 sets every body's panel normal to the moment-curve point `momentCurve (param a)`. Its normals are
 in general position (`isGeneralPosition_withMomentNormals`) for *any* number of bodies — the
-explicit construction the Case-I rigid block needs to source `hglue_of_forest`'s transversality
-hypothesis `he` (standard-basis normals cover only `|α| ≤ k + 2`). The endpoint selector and graph
-are untouched, so the framework is glued onto the inductive realization exactly as `withGraph` /
-`withNormal` are. -/
+explicit construction of a rigid block's transversal hinges (standard-basis normals cover only
+`|α| ≤ k + 2`). The endpoint selector and graph are untouched, so the framework is glued onto the
+inductive realization exactly as `withGraph` / `withNormal` are. -/
 def withMomentNormals (P : PanelHingeFramework K k α β) (param : α → K) :
     PanelHingeFramework K k α β where
   graph := P.graph
@@ -204,9 +202,9 @@ normals are in general position — any two normals at distinct bodies are linea
 Distinct bodies get distinct parameters (injectivity), and distinct-parameter moment-curve points
 are independent (`momentCurve_pair_linearIndependent`). This is the explicit, dimension-free
 general-position witness for the Case-I rigid block: combined with
-`supportExtensor_ne_zero_of_isGeneralPosition` it discharges every forest hinge's transversality
-hypothesis `he` in `hglue_of_forest`, isolating the genericity (a single injective real assignment)
-from the geometric gluing. -/
+`supportExtensor_ne_zero_of_isGeneralPosition` it discharges every hinge's transversality
+hypothesis `he`, isolating the genericity (a single injective real assignment) from the geometric
+gluing. -/
 theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework K k α β) {param : α → K}
     (hparam : Function.Injective param) : (P.withMomentNormals param).IsGeneralPosition := by
   intro a b hab
@@ -222,7 +220,7 @@ realization-side entry point for the genuinely-geometric Case-I assembly, where 
 `G` and its hinge-endpoint data are the combinatorial inputs and the genericity is a single
 injective real assignment `param`. When `param` is injective the normals are automatically in
 general position (`isGeneralPosition_ofParam`), so every hinge joining two distinct bodies is
-transversal — the realization-side source of `hglue_of_forest`'s `he`. -/
+transversal. -/
 def ofParam (G : Graph α β) (ends : β → α × α) (param : α → K) :
     PanelHingeFramework K k α β where
   graph := G

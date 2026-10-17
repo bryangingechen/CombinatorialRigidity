@@ -1306,9 +1306,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `reconcile-lean`, opened 2026-10-15 with 39 one-commit tasks (`notes/Reconcile-lean-cleanup.md`);
   task 2 committed the docstring-label check (`scripts/check-docstring-labels.py`, baseline 422),
   task 3 deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms (fourteen declarations,
-  none pinned), and task 4 Case III's line route, the candidate rows, `case_III_realization` and
-  `blockPiSpan` (seventeen, none pinned). **Next:** its task 5, L9's
-  `exists_good_realization_const` and `exists_finite_spanning_rigidityRows` with their dead callers.
+  none pinned), task 4 Case III's line route, the candidate rows, `case_III_realization` and
+  `blockPiSpan` (seventeen, none pinned), and task 5 `exists_good_realization_const` and
+  `exists_finite_spanning_rigidityRows` with their five dead callers. **Next:** its task 6, L9's
+  shim `splitOff_deficiency_le_of_forest_surgery`, deleted with `cor:forest-surgery-deficiency`
+  repinned.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
