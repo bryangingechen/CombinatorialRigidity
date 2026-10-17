@@ -62,7 +62,7 @@ in the fresh case, via `hfv`/`hfa` as `eₐ`'s own endpoints in the reused case)
 proof. Both public corollaries below just fix `he₀`'s side of the disjunction. -/
 private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
-    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hav : a ≠ v) (hbv : b ≠ v)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (he₀ : e₀ ∉ E(G) ∨ e₀ = eₐ) :
@@ -171,9 +171,9 @@ private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α
   exact hmono.trans (G.partitionDef_le_deficiency n f)
 
 /-- **Splitting-off does not increase the deficiency** (`lem:splitoff-deficiency`,
-KT Lemma 4.3(i)). Let `v` be a degree-2 vertex of `G` with neighbours `a, b`, carried by
-two distinct edges `eₐ` (joining `v, a`) and `e_b` (joining `v, b`) that are the *only*
-edges of `G` incident to `v` (`hdeg2`), with `a, b ≠ v`. With the short-circuit label
+KT Lemma 4.3(i)). Let `v` be a vertex of `G` with neighbours `a, b`, carried by edges `eₐ`
+(joining `v, a`) and `e_b` (joining `v, b`) that are the *only* edges of `G` incident to `v`
+(`hdeg2`; so `v` has degree two when `eₐ ≠ e_b`), with `a, b ≠ v`. With the short-circuit label
 `e₀` fresh (`e₀ ∉ E(G)`), the splitting-off `G_v^{ab}` satisfies
 `def(G̃_v^{ab}) ≤ def(G̃)`.
 
@@ -185,12 +185,12 @@ replaces KT's forest surgery (`lem:forest-surgery-split`). This is the fresh-lab
 the shared core `splitOff_deficiency_le_aux`. -/
 theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
-    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hav : a ≠ v) (hbv : b ≠ v)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (he₀ : e₀ ∉ E(G)) :
     (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n :=
-  splitOff_deficiency_le_aux hD hav hbv heab hla hlb hdeg2 (Or.inl he₀)
+  splitOff_deficiency_le_aux hD hav hbv hla hlb hdeg2 (Or.inl he₀)
 
 /-! ### Suppressing a body by reusing one of its own edge labels (`lem:splitoff-deficiency-reuse`)
 
@@ -216,11 +216,11 @@ G.crossingEdges f` in place of `e₀ ∉ E(G)`. This is the reused-label case of
 `splitOff_deficiency_le_aux`. -/
 theorem splitOff_deficiency_le_of_eq_left [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
-    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hav : a ≠ v) (hbv : b ≠ v)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) :
     (G.splitOff v a b eₐ).deficiency n ≤ G.deficiency n :=
-  splitOff_deficiency_le_aux hD hav hbv heab hla hlb hdeg2 (Or.inr rfl)
+  splitOff_deficiency_le_aux hD hav hbv hla hlb hdeg2 (Or.inr rfl)
 
 /-! ### Splitting off with a gap in the merged deficiency (`lem:splitoff-deficiency-merged`)
 
@@ -700,7 +700,7 @@ theorem dof_tracking [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
       G.deficiency n ≤ (G.removeVertex v).deficiency n :=
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   ⟨splitOff_deficiency_ge hD1 hav hbv heab hla hlb hdeg2 he₀,
-    splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀,
+    splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 he₀,
     removeVertex_deficiency_ge hD hav hbv heab hla hlb hdeg2⟩
 
 end Graph

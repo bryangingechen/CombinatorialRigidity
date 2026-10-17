@@ -1619,7 +1619,7 @@ theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite �
   -- `def(G̃_v^{ab}) = 0` at `k = 0`: splitting off does not increase deficiency, and `def ≥ 0`.
   have hdefH_zero : H.deficiency n = 0 := by
     have hle : H.deficiency n ≤ G.deficiency n :=
-      splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀
+      splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 he₀
     have hge : 0 ≤ H.deficiency n := H.deficiency_nonneg n hVHne
     rw [hG.deficiency_eq] at hle; omega
   -- The Gap-2 base `B'` of `M(G̃_v^{ab})`: `|ãb ∩ B'| = h < D − 1`.
@@ -1683,11 +1683,11 @@ theorem splitOff_isKDof_of_exists_base_inter_fiber_lt [DecidableEq β] [Finite �
     ⟨a, by rw [vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
   -- `def(H̃) ≤ k`: splitting off does not increase the deficiency (KT 4.3(i)).
   have hle : (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n :=
-    splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀
+    splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 he₀
   rw [hG] at hle
   -- 4.2(i) lifts `B'` to an `M(G̃)`-independent `I` of size `|B'| + D`.
   obtain ⟨I, hIindep, hIcard, -, -⟩ :=
-    splitOff_indep_extend_of_fiber_lt hD hab hav hbv heab hla hlb hdeg2 he₀ hB'.indep hlt
+    splitOff_indep_extend_of_fiber_lt hD hab hav hbv heab hla hlb he₀ hB'.indep hlt
   -- def = corank both sides: `|B'| + def(H̃) = D(|V|−2)`, `rank M(G̃) + k = D(|V|−1)`.
   have hB'card := (G.splitOff v a b e₀).isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
   have hVHcard : (V(G.splitOff v a b e₀).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
@@ -1720,8 +1720,7 @@ theorem exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof [DecidableEq β] [F
     [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ}
     (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
-    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
-    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b) (he₀ : e₀ ∉ E(G))
     (hG : G.IsKDof n k) (hGv : (G.removeVertex v).IsKDof n k) :
     ∃ B, (G.matroidMG n).IsBase B ∧ (B ∩ edgeFiber e_b n).ncard = 1 := by
   classical
@@ -1755,7 +1754,7 @@ theorem exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof [DecidableEq β] [F
     rw [hB'fib, Set.ncard_empty, bodyHingeMult]; omega
   -- 4.2(i) lifts `B'` to `M(G̃)`-independent `I`, `|I| = |B'| + D`, `|I ∩ ẽ_b| = 0 + 1`.
   obtain ⟨I, hIindep, hIcard, hIfib, -⟩ :=
-    splitOff_indep_extend_of_fiber_lt hD hab hav hbv heab hla hlb hdeg2 he₀ hB'indepH hlt
+    splitOff_indep_extend_of_fiber_lt hD hab hav hbv heab hla hlb he₀ hB'indepH hlt
   -- Rank count: `|I| = |B'| + D = (D(|V|−2) − k) + D = D(|V|−1) − k = rank M(G̃)`.
   have hB'card := (G.removeVertex v).isBase_ncard_add_deficiency_eq n hD1 hVvne hB'
   rw [hGv] at hB'card
@@ -1812,7 +1811,7 @@ theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Fini
   · -- `k > 0`: 4.4-equality gives a base `B` with `|B ∩ ẽ_b| = 1`; 4.5(ii) uniqueness
     -- forces `B = E(G̃)` with `|E(G̃) ∩ ẽ_b| = D − 1 ≥ 2`.
     obtain ⟨B, hB, hBfib⟩ := exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof
-      hD2 hab hav hbv heab hla hlb hdeg2 he₀ hG.1 hGv
+      hD2 hab hav hbv heab hla hlb he₀ hG.1 hGv
     have hBeq := isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos hD2 hG hkpos hnp hB
     have hfibsub : edgeFiber e_b n ⊆ E(G.mulTilde n) := by
       intro p hp
@@ -2001,9 +2000,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
     have hhe₀K : e₀ ∉ E(K) := by
       rw [hKdef, edgeSet_induce]; rintro ⟨x, y, hxy, -, -⟩; exact he₀ hxy.edge_mem
     obtain ⟨J, hJindep, hJcard, -, -⟩ :=
-      splitOff_indep_extend_of_fiber_lt hD2 hab hav hbv heab hlaK hlbK
-        (fun e x hel => hdeg2 e x (by rw [hKdef, Graph.induce_isLink] at hel; exact hel.1))
-        hhe₀K hIindepKspl hIfiblt
+      splitOff_indep_extend_of_fiber_lt hD2 hab hav hbv heab hlaK hlbK hhe₀K hIindepKspl hIfiblt
     -- `|J| = D(|V(K)|−1) = rank M(K̃)`, so `K` is rigid.
     have hJcardZ : (J.ncard : ℤ) = bodyBarDim n * ((V(K).ncard : ℤ) - 1) := by
       have hJZ : (J.ncard : ℤ) = (X \ {p}).ncard + bodyBarDim n := by exact_mod_cast hJcard
@@ -2072,8 +2069,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
     by_cases hfibsub : edgeFiber e₀ n ⊆ B'
     · -- `ẽ₀ ⊆ B'`: apply 4.2(ii) to lift `B'` to a `M(G̃)`-base `J`.
       obtain ⟨J, hJindep, hJcard, hJsurvive⟩ :=
-        splitOff_indep_extend_of_fiber_subset hD2 hab hav hbv heab hla hlb hdeg2 he₀
-          hB'.indep hfibsub
+        splitOff_indep_extend_of_fiber_subset hD2 hab hav hbv heab hla hlb he₀ hB'.indep hfibsub
       -- `|J| + 1 = |B'| + D = D(|V|−1) − (k−1) + D = D(|V|−1) − k + 1`,
       -- so `|J| = D(|V|−1) − k`.
       have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by

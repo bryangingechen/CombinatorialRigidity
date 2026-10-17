@@ -21,9 +21,9 @@ the candidate rows, `case_III_realization` and `blockPiSpan`, task 5
 task 6 L9's shim `splitOff_deficiency_le_of_forest_surgery`, with
 `cor:forest-surgery-deficiency` repinned on `forest_surgery_split`, task 7 renamed `F-061`'s two
 `_forest` pins `_starForest`, the shape their hypothesis forces, task 8 dropped the planar
-layer's unused or derivable hypotheses, and task 9 the pebble game's `hloops`, which `himg`
-implies. **Next concrete task:** round 3's task 10, L6's unused or derivable hypotheses in the
-deficiency and the induction.
+layer's unused or derivable hypotheses, task 9 the pebble game's `hloops`, which `himg` implies,
+and task 10 the unused hypotheses of the deficiency and the induction. **Next concrete task:**
+round 3's task 11, the chain extraction's unused or derivable hypotheses.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

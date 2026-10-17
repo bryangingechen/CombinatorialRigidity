@@ -1311,9 +1311,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `exists_finite_spanning_rigidityRows` with their five dead callers, task 6 L9's shim
   `splitOff_deficiency_le_of_forest_surgery`, with `cor:forest-surgery-deficiency` repinned on
   `forest_surgery_split`, task 7 renamed `F-061`'s two `_forest` pins `_starForest`, the shape
-  their hypothesis forces, task 8 dropped the planar layer's unused or derivable hypotheses, and
-  task 9 the pebble game's `hloops`, which `himg` implies. **Next:** its task 10, L6's unused or
-  derivable hypotheses in the deficiency and the induction.
+  their hypothesis forces, task 8 dropped the planar layer's unused or derivable hypotheses, task 9
+  the pebble game's `hloops`, which `himg` implies, and task 10 the unused hypotheses of the
+  deficiency and the induction. **Next:** its task 11, the chain extraction's unused or derivable
+  hypotheses.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

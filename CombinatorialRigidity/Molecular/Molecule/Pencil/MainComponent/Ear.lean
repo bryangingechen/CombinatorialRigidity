@@ -538,7 +538,7 @@ becomes internal (both its ends now carry `p a`), so `partitionDef` at `G` under
 equals `partitionDef` at `G[V₁]` under `p`. -/
 theorem _root_.Graph.deficiency_induce_le_of_ear_of_merge [Finite α] {G : Graph α β}
     {n : ℕ} {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
-    (hcover : V(G) = V₁ ∪ Set.range x) (_hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
+    (hcover : V(G) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁)
     (ha : a ∈ V₁) (hb : b ∈ V₁)
     (hpath : ∀ i : Fin (k + 1),
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))

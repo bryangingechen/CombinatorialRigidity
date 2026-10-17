@@ -110,7 +110,7 @@ theorem _root_.Graph.IsOpenEar.deficiency_induce_le {G : Graph α β} {V₁ : Se
   have : Nonempty {f : α → α // f a = f b} := ⟨⟨fun _ => a, rfl⟩⟩
   obtain ⟨⟨p, hp⟩, hpeq⟩ := exists_eq_ciSup_of_finite
     (f := fun f : {f : α → α // f a = f b} => (G.induce V₁).partitionDef n f.1)
-  refine Graph.deficiency_induce_le_of_ear_of_merge hear.cover hear.inj hear.notMem
+  refine Graph.deficiency_induce_le_of_ear_of_merge hear.cover hear.notMem
     hear.left_mem hear.right_mem hear.isLink hear.sep ⟨p, ?_, hp⟩
   rw [← h]
   exact hpeq

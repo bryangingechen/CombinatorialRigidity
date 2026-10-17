@@ -878,8 +878,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
       · exact Or.inr rfl
     · exact absurd (hsep e' _ _ hl (fun i h' => h ⟨i, h'⟩)).1 (hxV₁ 1)
   have hdef₁ : G₁.deficiency 3 ≤ G.deficiency 3 :=
-    Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 (hbx 1).symm
-      (fun h => by simpa using pathEdge_injective hinj hax hbx hab hpath h) l1.symm l2 hdeg2
+    Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 (hbx 1).symm l1.symm l2 hdeg2
   have hdefG : (G.induce V₁).deficiency 3 + 2 + 1 - (Graph.bodyBarDim 3 : ℤ) ≤ G.deficiency 3 :=
     Graph.deficiency_induce_add_le_of_ear (n := 3) (k := 2) (by decide) (by omega) hcover hinj
       hxV₁ ha hb hpath hsep

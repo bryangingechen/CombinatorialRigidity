@@ -593,7 +593,7 @@ costs is exactly what the deficiency bookkeeping's `+ 1`
 (`Graph.deficiency_induce_union_singleton`) recovers. Stated generically in `V₁`/`e₀`/`u₀`/`w₀` so
 the eventual sub-case-1 assembly applies it verbatim to both crossing endpoints. -/
 theorem hlb_induce_of_isNondegPencilRealization_induce_union_singleton
-    [Finite α] [Finite β] {n : ℕ} (hD : 1 ≤ Graph.bodyBarDim n)
+    [Finite α] [Finite β] {n : ℕ}
     {G : Graph α β} [G.Loopless] {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1)
@@ -627,7 +627,7 @@ theorem hlb_induce_of_isNondegPencilRealization_induce_union_singleton
     rw [Graph.vertexSet_induce, Set.union_singleton]
     exact Set.ncard_insert_of_notMem hw₀
   have hdefeq : (G.induce (V₁ ∪ {w₀})).deficiency n = (G.induce V₁).deficiency n + 1 :=
-    Graph.deficiency_induce_union_singleton (n := n) hD hl₀ hu₀ hw₀ hcut
+    Graph.deficiency_induce_union_singleton (n := n) hl₀ hu₀ hw₀ hcut
   have hdropZ : (Module.finrank K (Submodule.span K
       (⟨G.induce (V₁ ∪ {w₀}), F.supportExtensor⟩ : BodyHingeFramework K 2 α β).rigidityRows) : ℤ)
       ≤ (Module.finrank K (Submodule.span K
@@ -813,14 +813,13 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
       (pt_u := point₁ u_c) (pt_v := g (point₂ v_c)) hp₁ne
       (hp₁inc u_c (Set.mem_union_left _ hu_c)) (hp₂'inc v_c (Set.mem_union_left _ hv_c₂))
       hcross1 hcross2
-  have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
   obtain ⟨F, hreal, hrank_eq⟩ := exists_hasPencilPanelRealization_glue hD hn hssub hne hcut
     (hnd₁.1.restrict ⟨Set.subset_union_left, fun _ _ _ hl => ⟨hl.1, Or.inl hl.2.1, Or.inl hl.2.2⟩⟩)
     (hnd₂'.1.restrict ⟨Set.subset_union_left, fun _ _ _ hl => ⟨hl.1, Or.inl hl.2.1, Or.inl hl.2.2⟩⟩)
     (hlb_induce_of_isNondegPencilRealization_induce_union_singleton
-      (n := n) hD1 hl_c hu_c hv_c hcut hnd₁ hrank₁ (fun _ _ _ _ => rfl))
+      (n := n) hl_c hu_c hv_c hcut hnd₁ hrank₁ (fun _ _ _ _ => rfl))
     (hlb_induce_of_isNondegPencilRealization_induce_union_singleton
-      (n := n) hD1 hl_c.symm hv_c₂ hu_notin₂ hcut₂ hnd₂' hrank₂' (fun _ _ _ _ => rfl))
+      (n := n) hl_c.symm hv_c₂ hu_notin₂ hcut₂ hnd₂' hrank₂' (fun _ _ _ _ => rfl))
     hCne (fun e u v hl hu hv => by
       obtain ⟨-, rfl, rfl⟩ := hcross_eq e u v hl hu hv
       exact ⟨hCpn_u, hCpn_v, hCth_u, hCth_v⟩)

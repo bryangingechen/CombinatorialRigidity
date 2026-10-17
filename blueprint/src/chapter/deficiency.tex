@@ -903,11 +903,11 @@ the ear, the deficiency does not drop.
   \leanok
   \uses{def:D-deficiency}
   Let $G$ be a multigraph, and let $V_1$ be a set of vertices of $G$.
-  Let $a - x_1 - \cdots - x_k - b$ ($k \ge 0$) be a path of $G$ with
-  $a, b \in V_1$, possibly $a = b$, and distinct vertices
-  $x_1, \dots, x_k$ outside $V_1$, such that
+  Let $a - x_1 - \cdots - x_k - b$ ($k \ge 0$) be a walk of $G$ with
+  $a, b \in V_1$, possibly $a = b$, and vertices $x_1, \dots, x_k$
+  outside $V_1$, not necessarily distinct, such that
   $V(G) = V_1 \cup \{x_1, \dots, x_k\}$ and every edge of $G$ off the
-  path lies inside $V_1$. Suppose that some partition of $V_1$ of value
+  walk lies inside $V_1$. Suppose that some partition of $V_1$ of value
   $\operatorname{def}(\tilde G[V_1])$ has $a$ and $b$ in one part. Then
   \[
     \operatorname{def}(\tilde G[V_1]) \;\le\; \operatorname{def}(\tilde G).
@@ -917,7 +917,7 @@ the ear, the deficiency does not drop.
   \leanok
   Let $P_1$ be such a partition, and let $P$ be obtained from it by
   adding $x_1, \dots, x_k$ to the part that contains $a$ and $b$. Then
-  $|P| = |P_1|$. Every edge of the path lies inside that part. Every
+  $|P| = |P_1|$. Every edge of the walk lies inside that part. Every
   other edge of $G$ lies inside $V_1$, where $P$ and $P_1$ agree, so it
   joins different parts of $P$ if and only if it joins different parts
   of $P_1$. Hence the value of $P$ is that of $P_1$, which is

@@ -802,8 +802,7 @@ theorem _root_.Graph.X0Attains.of_openEar_four [Infinite K] [Finite α] [Finite 
   refine Graph.X0Attains.of_openEar_splitOff hG (by norm_num) hcover hinj hxV₁ ha hb hab hpath
     hsep hcover'' hinj'' hxV₁'' hpath'' hsep''
     (by rintro _ ⟨i, rfl⟩; fin_cases i <;> exact ⟨_, rfl⟩) ⟨1, rfl⟩ (hxV₁ 0) l1 (hpath'' 1)
-    (Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 x12.symm
-      (fun h => by simpa using pathEdge_injective hinj hax hbx hab hpath h) l1.symm l2 hdeg2)
+    (Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 x12.symm l1.symm l2 hdeg2)
     (xf := x 0) (xl := x 3) rfl rfl x01.symm x13 (Or.inr ⟨e 0, hpath'' 0⟩)
     (Or.inr ⟨e 4, (hpath'' 3).symm⟩) (fun q z la lb ρ _ _ => ?_) h₁ h₂
   -- the six joins of `x 0, x 2, x 3, b` span `Λ²K⁴` at one ear datum, so off a polynomial
@@ -940,8 +939,7 @@ theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite
   refine Graph.X0Attains.of_openEar_splitOff hG le_rfl hcover hinj hxV₁ ha hb hab hpath
     hsep hcover'' hinj'' hxV₁'' hpath'' hsep''
     (by rintro _ ⟨i, rfl⟩; fin_cases i <;> exact ⟨_, rfl⟩) ⟨1, rfl⟩ (hxV₁ 0) l1 (hpath'' 1)
-    (Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 x12.symm
-      (fun h => by simpa using pathEdge_injective hinj hax hbx hab hpath h) l1.symm l2 hdeg2)
+    (Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 x12.symm l1.symm l2 hdeg2)
     (xf := x 0) (xl := x 2) rfl rfl x01.symm x12 (Or.inr ⟨e 0, hpath'' 0⟩)
     (Or.inr ⟨e 3, (hpath'' 2).symm⟩) (fun q z la lb ρ hza hzb => ?_) h₁ h₂
   set cfg := earConfig V₁ q z (x 0) (x 2) (Set.range x) la lb

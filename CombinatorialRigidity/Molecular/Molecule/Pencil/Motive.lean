@@ -909,7 +909,7 @@ deficiency `0` (`deficiency_of_edgeSet_empty`), the complementary side re-induce
 (target `screwDim k · (|V₁| + 1 − 1) − def(Gᵢ⁺)`) into the bare-side form the landed cut assembly
 `finrank_span_rigidityRows_cutEdge_eq` consumes, once the drop brick removes the cut edge's rows. -/
 theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {G : Graph α β}
-    [G.Loopless] {n : ℕ} (hD : 1 ≤ Graph.bodyBarDim n) {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    [G.Loopless] {n : ℕ} {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1) :
     (G.induce (V₁ ∪ {w₀})).deficiency n = (G.induce V₁).deficiency n + 1 := by
@@ -932,7 +932,7 @@ theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {
       have hl' : Gp.IsLink e₀ w₀ u₀ := (Graph.induce_isLink G (V₁ ∪ {w₀}) e₀ w₀ u₀).mpr
         ⟨hl₀.symm, Set.mem_union_right _ rfl, Set.mem_union_left _ hu₀⟩
       exact ⟨hl'.edge_mem, w₀, u₀, hl', rfl, fun h => hw₀ (h ▸ hu₀)⟩
-  have hsplit := Graph.deficiency_eq_of_cutEdges_ncard_le_one (G := Gp) hD hne hssub
+  have hsplit := Graph.deficiency_eq_of_cutEdges_ncard_le_one (G := Gp) (n := n) hne hssub
     (by rw [hcut', Set.ncard_singleton])
   have hdiff : V(Gp) \ {w₀} = V₁ := by
     ext x

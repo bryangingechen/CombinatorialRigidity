@@ -1457,9 +1457,9 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite β]
     · intro _; exact ⟨hcount, heb⟩
 
 /-- **The edge-splitting extension, full-fiber case** (`lem:edge-splitting`, KT Lemma 4.2(ii);
-Katoh–Tanigawa 2011 pp. 660–661). Let `v` be a degree-2 vertex of `G` with distinct
-neighbours `a ≠ b` (`a, b ≠ v`), incident edges exactly `eₐ ≠ e_b` (`G.IsLink eₐ v a`,
-`G.IsLink e_b v b`), and `e₀ ∉ E(G)` the fresh short-circuit edge, `D = bodyBarDim n ≥ 2`.
+Katoh–Tanigawa 2011 pp. 660–661). Let `v` be a vertex of `G` joined to distinct `a ≠ b`
+(`a, b ≠ v`) by edges `eₐ ≠ e_b` (`G.IsLink eₐ v a`, `G.IsLink e_b v b`; `v` need not have
+degree two), and `e₀ ∉ E(G)` the fresh short-circuit edge, `D = bodyBarDim n ≥ 2`.
 Given an `M(G̃_v^{ab})`-independent fiber set `I'` that **contains the whole fresh fiber**
 `ã̃b = edgeFiber e₀ n` (`hsub`), there is an `M(G̃)`-independent set `I` with
 `I.ncard + 1 = I'.ncard + bodyBarDim n` and the *survivor conjunct*
@@ -1471,8 +1471,7 @@ traded back for the `v`-edges it short-circuited. A thin wrapper over `splitOff_
 theorem splitOff_indep_extend_of_fiber_subset [DecidableEq β] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
-    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
-    (_hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b) (he₀ : e₀ ∉ E(G))
     {I' : Set (β × Fin (bodyHingeMult n))}
     (hI' : ((G.splitOff v a b e₀).matroidMG n).Indep I')
     (hsub : edgeFiber e₀ n ⊆ I') :
@@ -1485,7 +1484,7 @@ theorem splitOff_indep_extend_of_fiber_subset [DecidableEq β] [Finite β]
   exact ⟨I, hI, hc1 hfull, hsurv⟩
 
 /-- **The edge-splitting extension, partial-fiber case** (`lem:edge-splitting`, KT Lemma 4.2(i);
-Katoh–Tanigawa 2011 pp. 660–661). Same degree-2 data as the full-fiber arm
+Katoh–Tanigawa 2011 pp. 660–661). Same data as the full-fiber arm
 `splitOff_indep_extend_of_fiber_subset`, but now the `M(G̃_v^{ab})`-independent set `I'` contains
 **fewer than the whole** fresh fiber `ã̃b = edgeFiber e₀ n`
 (`hlt : (I' ∩ ã̃b).ncard < bodyHingeMult n`, i.e. `h' < D − 1`). Then there is an
@@ -1503,8 +1502,7 @@ selecting the partial-fiber guard. See the section preamble. -/
 theorem splitOff_indep_extend_of_fiber_lt [DecidableEq β] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
-    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
-    (_hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b) (he₀ : e₀ ∉ E(G))
     {I' : Set (β × Fin (bodyHingeMult n))}
     (hI' : ((G.splitOff v a b e₀).matroidMG n).Indep I')
     (hlt : (I' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n) :

@@ -733,7 +733,7 @@ theorem exists_hasPencilPanelRealization_glue [Finite α] [Finite β] {n : ℕ}
         Set.union_sdiff_cancel hssub.subset]
     have hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
         + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard :=
-      Graph.deficiency_eq_of_cutEdges_ncard_le_one (by omega) hne hssub hcut
+      Graph.deficiency_eq_of_cutEdges_ncard_le_one hne hssub hcut
     have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = ext₁ e :=
       fun e u v hl => by
         simp only [extF, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem, ↓reduceIte]

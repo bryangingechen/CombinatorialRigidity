@@ -13,9 +13,9 @@ changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
 round into 39 one-commit tasks; task 2 committed the docstring-label check, tasks 3–6 made L9's
 deletions, `F-090`'s shim among them (the check 422 → 390), task 7 `F-061`'s rename (388), and
-tasks 8–9 dropped L6–L7's unused or derivable hypotheses (the planar layer, the pebble game's
-`hloops`). **Next concrete task:** task 10, L6's in the deficiency and the induction (*Lemma
-checklist*). Round manual: `CLEANUP.md`.
+tasks 8–10 dropped L6–L7's unused or derivable hypotheses (the planar layer, the pebble game's
+`hloops`, the deficiency and the induction). **Next concrete task:** task 11, the chain extraction
+(*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -25,27 +25,28 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 9 is done** (this commit; Lean only); nothing is mid-stream.
+**Task 10 is done** (this commit; Lean and one node); nothing is mid-stream.
 
-**Task 9, the pebble game's `hloops`** (`F-039`): `runPebbleGameWith_underline_eq`,
-`runPebbleGameWith_sound` and `runPebbleGameWith_correct` without `hloops`; the first derives it
-from `himg` in one line (`SimpleGraph.ne_of_adj`), the other two pass one argument fewer.
-`runPebbleGameWith_mem_underline` keeps its own. `runPebbleGame_edges_discharges` (a pin of
-`lem:runPebbleGame-underline-eq`) lost its no-loops conjunct rather than going: its node never
-stated it, and deleting it would repeat its two discharges at both callers. Its callers
-(`runPebbleGame.aux`, `runPebbleGame_isAccept_iff`) and `Exec.lean`'s (`runPebbleGameExec.aux`,
-`runPebbleGameExec_isAccept_iff`) follow: seven call sites, of which the hand-off named three.
-`edgeListSorted_no_loops` (unpinned), left without a caller, was deleted (*Decisions*: an orphan
-goes). Gate 2: the three nodes already state the hypothesis-free form, so none is restated. Gate 9:
-**388**, task 8's report but for line numbers (`labels-t9.txt`). The dump task 8's byte for byte
-(`dump-t9.txt`); `--summary` task 8's but the cache's name and 7 185 → 7 182 Lean constants. The
-ledger: `F-039` done; 269 entries, 146 `done`, 10 `left`, 111 `reported`, 2 `open`; the next ID is
-`F-270`.
+**Task 10, L6's binders** (`F-075`, `F-077`, `F-092`, `F-094`): `hD` out of
+`deficiency_eq_of_cutEdges_ncard_le_one`, `exists_cut_decomposition_of_not_twoEdgeConnected` and
+`deficiency_induce_union_singleton`, so also out of `deficiency_induce_union_range_of_bridgePath`
+and the unpinned `hlb_induce_of_isNondegPencilRealization_induce_union_singleton`, which only
+passed it on; `_hinj` out of `deficiency_induce_le_of_ear_of_merge`; `_hdeg2` out of
+`splitOff_indep_extend_of_fiber_subset` and `_lt`, so `hdeg2` out of
+`exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof` (the build's unused-variable warning);
+`heab` out of `splitOff_deficiency_le_aux`, `splitOff_deficiency_le` and `_of_eq_left` (a caller's
+`have he01` with it). Twenty-six call sites in twelve files follow; nothing deleted, no orphan.
+Gate 2: `lem:deficiency-ear-merge` restated for a walk; the other nodes keep their text
+(*Decisions*). Gate 9 **388**, task 9's report but for line numbers. The dump task 9's byte for
+byte (`dump-t10.txt`); `--summary` task 9's but the cache's name and 7 182 → 7 178 Lean constants
+(compiler auxiliaries of the dropped `by omega` discharges). The ledger: `F-075` done; 269
+entries, 147 `done`, 10 `left`, 110 `reported`, 2 `open`; the next ID is `F-270`.
 
-**Done before** (tasks 3–8): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
+**Done before** (tasks 3–9): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
 them; the pins they left without a caller stay with their nodes), `F-090`'s shim, `F-061`'s rename
-to `_starForest`, and the planar layer's five hypotheses (`F-013`, `F-017`, `F-021`, `F-024`;
-`lem:trivialMotionFamily-linearIndependent` restated). Gate 2 runs block (c) since task 5.
+to `_starForest`, the planar layer's five hypotheses (`F-013`, `F-017`, `F-021`, `F-024`;
+`lem:trivialMotionFamily-linearIndependent` restated), and the pebble game's `hloops` (`F-039`;
+`edgeListSorted_no_loops` deleted). Gate 2 runs block (c) since task 5.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -251,15 +252,10 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   in `runPebbleGameWith_underline_eq`; `runPebbleGame_edges_discharges`' no-loops conjunct and the
   orphaned `edgeListSorted_no_loops` gone, the callers following; the dump byte-identical; gate 9
   388.
-- [ ] **10. L6: the deficiency and the induction** (`F-075`, `F-077`, `F-092`, `F-094`). `hD` of
-  `deficiency_eq_of_cutEdges_ncard_le_one` (`Deficiency.lean` 1873) and of its pass-throughs
-  `exists_cut_decomposition_of_not_twoEdgeConnected` (1985) and `deficiency_induce_union_singleton`
-  (`Molecule/Pencil/Motive.lean` 911); `_hinj` of `deficiency_induce_le_of_ear_of_merge`
-  (`Pencil/MainComponent/Ear.lean` 539); `_hdeg2` of `splitOff_indep_extend_of_fiber_subset` and
-  `_of_fiber_lt` (`ForestSurgery/EdgeSplitting.lean` 1471, 1503); `heab` of the private
-  `splitOff_deficiency_le_aux` (`Induction/SplitOffDeficiency.lean` 63) and its pass-throughs
-  (186, 217). Callers follow; each pin's node re-read (`lem:cut-edge-decomposition` omits `hD`).
-  *Expected:* the dump byte-identical.
+- [x] **10. L6: the deficiency and the induction** (`F-075`, `F-077`, `F-092`, `F-094`): `hD`,
+  `_hinj`, `_hdeg2` and `heab` dropped, with the binders two pass-throughs and
+  `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof` were left holding; twenty-six call sites;
+  `lem:deficiency-ear-merge` restated; the dump byte-identical; gate 9 388.
 - [ ] **11. L6–L8: the chain extraction** (`F-108`). `chainData_extract`
   (`ForestSurgery/ChainExtraction.lean` 1277) without `hV3` (beside `hV4`) and `[G.Simple]`
   (`simple_of_isMinimalKDof_of_noRigid`); `chainWalk_charging` (905) without `_hG0`, `_hD`, `_hV2`;
@@ -446,23 +442,23 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 10**, at Opus: L6's binders in the deficiency and the induction (`F-075`, `F-077`,
-`F-092`, `F-094`; *Lemma checklist*), the code parts only (the four entries' docstring parts are
-tasks 29–31's). `hD : 1 ≤ bodyBarDim n` out of `deficiency_eq_of_cutEdges_ncard_le_one`
-(`Deficiency.lean` 1873) and its pass-throughs `exists_cut_decomposition_of_not_twoEdgeConnected`
-(1985) and `deficiency_induce_union_singleton` (`Pencil/Motive.lean` 911); `_hinj` out of
-`deficiency_induce_le_of_ear_of_merge` (`Pencil/MainComponent/Ear.lean` 539); `_hdeg2` out of
-`splitOff_indep_extend_of_fiber_subset` and `_of_fiber_lt` (`ForestSurgery/EdgeSplitting.lean`
-1471, 1503); `heab` out of the private `splitOff_deficiency_le_aux` (`SplitOffDeficiency.lean` 63)
-and its pass-throughs `splitOff_deficiency_le` and `_of_eq_left`. **Re-`grep` every caller of
-each changed name** (task 9's hand-off named three of seven call sites); a caller's binder or a
-discharge lemma the change leaves unused goes too (*Decisions*), and `lake lint` runs to a fixed
-point. Each pinned name's node is re-read for the honesty gate (`lem:cut-edge-decomposition`
-already omits `hD`). *Expected:* the dump byte-identical. Gates 1–3, 5–6 (the parent
-`scratch/reconcile-lean/dump-t9.txt`, gitignored; regenerate it if missing), 8 if a node's TeX
-changes, 9 (388) and 10. Carried in: `F-252` for the PI (round 1's *Candidates*; the phase's (a)
-removes it); `F-268` and `F-269` for task 38. After the round the queue stops before
-`RECONCILE-FORMAL`, which is attended.
+**Next: task 11**, at Opus: L6–L8's chain extraction (`F-108`; *Lemma checklist*), the code parts
+only (the entry's docstring parts are tasks 29–31's). `chainData_extract`
+(`ForestSurgery/ChainExtraction.lean` 1277) without `hV3` (beside `hV4`) and `[G.Simple]` (from
+`simple_of_isMinimalKDof_of_noRigid`); `chainWalk_charging` (905) without `_hG0`, `_hD`, `_hV2`;
+`isKDof_zero_of_triangle` (`Deficiency.lean` 563) as the case $m = 3$ of `isKDof_zero_of_cycle`
+(795). `case_III_realization_all_k`'s `hSimple` stays (`blueprint/CLAUDE.md`'s honesty-gate
+example). **Re-`grep` every caller of each changed name**, and follow a binder the change leaves
+unused up the call chain to a fixed point: the build's unused-variable warning reports one (task
+10's), `lake lint`'s `unusedArguments` another (task 8's). A dropped hypothesis that was the only
+argument mentioning an implicit strands it at untyped callers (`notes/FRICTION.md`, task 10). Each
+pinned name's node is re-read for gate 2 and the honesty gate (*Decisions*: a node's setting).
+*Expected:*
+the dump byte-identical, or the triangle node's edge to the cycle's as the reach report shows,
+listed before editing. Gates 1–3, 5–6 (the parent `scratch/reconcile-lean/dump-t10.txt`,
+gitignored; regenerate it if missing), 8 if a node's TeX changes, 9 (388) and 10. Carried in:
+`F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it); `F-268` and `F-269` for
+task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -488,5 +484,10 @@ removes it); `F-268` and `F-269` for task 38. After the round the queue stops be
   `contradiction_one_pair`'s `[Finite V]` unused (it had passed `Set.toFinite _` for it), which
   `lake lint`'s `unusedArguments` reported; an unused hypothesis is the hygiene rule's, so it went, and
   `lake lint` runs to a fixed point (`notes/ToolchainBumps.md`: the linter cascades).
+- **A pin more general than its node's setting** (task 10): a node that states a dropped hypothesis
+  is restated (`lem:deficiency-ear-merge`'s distinct vertices, as task 8's finite $V$), but not
+  where it is the setting a definition node fixes: `def:graph-operations` defines $G_v$ and
+  $G_v^{ab}$ at a vertex of degree two, so `lem:edge-splitting`, `lem:forest-surgery-unsplit` and
+  `lem:removal-deficiency-equality` keep it, stating a case of what their pins prove.
 - **`F-097`'s `hD`** (the open): weakening `3 ≤ D` to `2 ≤ D` is a statement change beyond L8's
   suggestion; task 15 records it under *Candidates* if the shorter proof holds there.

@@ -3466,7 +3466,10 @@ declaration's name as its header writes it:
   its (1)–(3) without it, so dropping it makes the three pins match.
   *Evidence:* read (the three statements and bodies).
   *Found:* round 2 task 2.8.
-  *Disposition:* reported (`notes/Prose-report.md`, L6).
+  *Disposition:* done (task 10): `hD` dropped from the three; the callers follow, among them
+  `Graph.deficiency_induce_union_range_of_bridgePath` (a pin of `thm:pencil-x0-bridge`) and
+  `hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (unpinned), which only passed
+  it on and lost it too. No node states it. Before: reported (`notes/Prose-report.md`, L6).
 - **F-077** · L · docstrings and a binder of `deficiency.tex`'s pins (`Molecular/Deficiency.lean`,
   `MainComponent/Ear.lean`): `isSparse_diff_singleton_of_isCircuit`'s docstring says that the bound
   $|X| > D(|V(X)| - 1)$ for a circuit $X$ needs the reverse half of `thm:def-eq-corank`, "deferred
@@ -3478,7 +3481,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; the bodies of `circuit_ncard_gt` and
   `deficiency_induce_le_of_ear_of_merge`).
   *Found:* round 2 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, L6).
+  *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hinj` dropped, its caller
+  following, and `lem:deficiency-ear-merge` restated for a walk (task 10).
 - **F-080** · L · docstrings in `Molecular/Deficiency.lean` around `thm:def-eq-corank`:
   `isBase_ncard_add_deficiency_eq`'s says that it "closes" `prop:rigidity-matrix-prop11`, which
   `rigidityMatrix_prop11` (`AlgebraicInduction/PanelHinge.lean`) proves; `rank_add_deficiency_le`'s
@@ -3525,7 +3529,9 @@ declaration's name as its header writes it:
   reverse ones `lem:edge-splitting`, not the nodes that pin them.
   *Evidence:* read (the docstrings; the two wrappers' bodies, which do not pass `_hdeg2` on).
   *Found:* round 2 task 2.13.
-  *Disposition:* reported (`notes/Prose-report.md`, L6).
+  *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hdeg2` dropped from both, the
+  callers following, and with it `hdeg2` of `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`,
+  which only passed it on (task 10).
 - **F-094** · L · the deficiency bounds' pins (`Induction/SplitOffDeficiency.lean`): the private
   `splitOff_deficiency_le_aux` takes `heab : eₐ ≠ e_b` and does not use it, so
   `splitOff_deficiency_le` and `splitOff_deficiency_le_of_eq_left` take it only to pass it on.
@@ -3536,7 +3542,8 @@ declaration's name as its header writes it:
   forest surgery "deferred"; `removeVertex_deficiency_ge`'s cites `notes/Phase20.md` *Finding 2*.
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.14.
-  *Disposition:* reported (`notes/Prose-report.md`, L5).
+  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3: `heab` dropped from the three,
+  the callers following (task 10).
 - **F-097** · L · the pins of KT Lemmas 4.5–4.8 (`Induction/ReducibleVertex.lean`,
   `Induction/Operations.lean`, `Induction/ForestSurgery/Reduction.lean`): in
   `splitOff_isMinimalKDof_of_pos`, the case $e = e_0$ of the minimality applies KT 4.7

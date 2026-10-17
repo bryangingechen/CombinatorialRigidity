@@ -111,6 +111,20 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] Dropping an unused hypothesis can strand an implicit that only it mentioned — pin it by name at untyped callers
+- **Where it bit:** RECONCILE round 3, task 10: `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
+  without `hD : 1 ≤ bodyBarDim n`. Its `n` then occurs only in the conclusion, so a caller that
+  binds the result untyped (`have hdef_eq := …` in
+  `exists_cut_decomposition_of_not_twoEdgeConnected`) failed with "don't know how to synthesize
+  implicit argument `n`".
+- **Friction:** one build → fix iteration; a second untyped caller (`have hsplit := …` in
+  `Graph.deficiency_induce_union_singleton`) was pinned on reading, before the build reached it.
+  Callers with an ascribed type, or already passing `(n := 3)`, elaborated unchanged.
+- **Proposed fix:** before dropping a hypothesis, check whether it is the only explicit argument
+  whose type mentions some implicit; if so, pass that implicit by name (`(n := n)`) at every
+  caller that does not ascribe the result's type.
+- **Status:** idiom.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

@@ -434,12 +434,6 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   have l'' : G''.IsLink (e 0) a b :=
     Or.inr ⟨rfl, hax, hbx, hV₁G ha, hV₁G hb, Or.inl ⟨rfl, rfl⟩⟩
   have hle : G' ≤ G'' := ⟨fun w hw => hVG''.symm ▸ hw, hle'⟩
-  have he01 : e 0 ≠ e 1 := by
-    intro h
-    rw [h] at l0
-    rcases l0.eq_and_eq_or_eq_and_eq l1 with ⟨h1, -⟩ | ⟨h1, -⟩
-    · exact hax h1
-    · exact hab h1
   -- (MC-29): the counts
   have hdeg2 : ∀ f y, G.IsLink f (x 0) y → f = e 0 ∨ f = e 1 := by
     intro f y hf
@@ -459,7 +453,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
     push_cast at hdef3b
     linarith
   have hdef2 : G''.deficiency 2 ≤ G.deficiency 2 :=
-    Graph.splitOff_deficiency_le_of_eq_left (n := 2) (by decide) hax hbx he01 l0.symm l1 hdeg2
+    Graph.splitOff_deficiency_le_of_eq_left (n := 2) (by decide) hax hbx l0.symm l1 hdeg2
   -- the generic picture: `G″` attains, Jackson–Jordán at `G″`, and `G` main
   obtain ⟨ends₁, P₁, hends₁, hP₁, hgood₁⟩ := h₁
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero hP₁

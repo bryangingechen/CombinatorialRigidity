@@ -1243,7 +1243,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
   classical
   -- ── Step 1: Cut decomposition ─────────────────────────────────────────────────────────
   obtain ⟨V₁, c₁, c₂, hV₁ne, hV₁sub, hV₂ne, hG₁, hG₂, hcut_le, hk_eq⟩ :=
-    Graph.exists_cut_decomposition_of_not_twoEdgeConnected (by omega) hG hntec
+    Graph.exists_cut_decomposition_of_not_twoEdgeConnected hG hntec
   -- V₂ = V(G) \ V₁.  V(G.induce V₁) = V₁ definitionally.
   set V₂ := V(G) \ V₁ with hV₂def
   -- ── Step 2: IH on each side ────────────────────────────────────────────────────────────
@@ -1408,7 +1408,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   classical
   -- ── Step 1: Cut decomposition ─────────────────────────────────────────────────────────
   obtain ⟨V₁, c₁, c₂, hV₁ne, hV₁sub, hV₂ne, hG₁, hG₂, hcut_le, hk_eq⟩ :=
-    Graph.exists_cut_decomposition_of_not_twoEdgeConnected (by omega) hG hntec
+    Graph.exists_cut_decomposition_of_not_twoEdgeConnected hG hntec
   set V₂ := V(G) \ V₁ with hV₂def
   -- Inhabited instance for G.endsOf (needs a vertex)
   have : Inhabited α := ⟨hV₁ne.choose⟩

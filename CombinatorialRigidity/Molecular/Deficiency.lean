@@ -1871,15 +1871,13 @@ cut `{V₁, V(G) ∖ V₁}`, the deficiency of `G` splits over the two sides.
 Both arms collapse to the single formula
 `def(G̃) = def(G̃₁) + def(G̃₂) + D - (D-1)·|cutEdges G V₁|`. -/
 theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Graph α β}
-    {n : ℕ} (hD : 1 ≤ bodyBarDim n) {V₁ : Set α} (hne : V₁.Nonempty)
+    {n : ℕ} {V₁ : Set α} (hne : V₁.Nonempty)
     (hssub : V₁ ⊂ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) :
     G.deficiency n
       = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n
         + (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
   have : Fintype α := Fintype.ofFinite α
   have : Fintype β := Fintype.ofFinite β
-  -- hD is part of the public API (used by callers); not needed in this proof.
-  have _ := hD
   -- α is nonempty (needed for ciSup_le and exists_eq_ciSup_of_finite on α → α).
   have : Nonempty α := ⟨hne.choose⟩
   have : Nonempty (α → α) := ⟨id⟩
@@ -1983,7 +1981,7 @@ there is a nonempty proper cut `V₁ ⊂ V(G)` with at most one crossing edge su
 both sides are minimal `k₁`- and `k₂`-dof-graphs (for some `k₁, k₂ ≥ 0`) and
 `k = k₁ + k₂ + D - (D-1)·|cutEdges G V₁|`. -/
 theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finite α]
-    [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 1 ≤ bodyBarDim n)
+    [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ}
     (hG : G.IsMinimalKDof n k) (hntec : ¬ G.TwoEdgeConnected) :
     ∃ (V₁ : Set α) (k₁ k₂ : ℤ), V₁.Nonempty ∧ V₁ ⊂ V(G) ∧ (V(G) \ V₁).Nonempty ∧
       (G.induce V₁).IsMinimalKDof n k₁ ∧
@@ -1995,7 +1993,7 @@ theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finit
   obtain ⟨V₁, hne, hssub, hcut_lt2⟩ := hntec
   have hcut : (G.cutEdges V₁).ncard ≤ 1 := Nat.lt_succ_iff.mp hcut_lt2
   -- Compute deficiency equality for this cut.
-  have hdef_eq := deficiency_eq_of_cutEdges_ncard_le_one hD hne hssub hcut
+  have hdef_eq := deficiency_eq_of_cutEdges_ncard_le_one (n := n) hne hssub hcut
   -- Sides-minimal via subgraph_minimality.
   have hle₁ : G.induce V₁ ≤ G := G.induce_le hssub.subset
   have hle₂ : G.induce (V(G) \ V₁) ≤ G := G.induce_le (Set.sdiff_subset)

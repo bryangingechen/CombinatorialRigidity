@@ -826,7 +826,7 @@ time, `x j` hangs from the prefix before it by the single edge `e j`
 (`Graph.cutEdges_union_image_of_bridgePath`), so KT Lemma 3.6 in its pendant form
 `Graph.deficiency_induce_union_singleton` adds `1` at each step. -/
 theorem _root_.Graph.deficiency_induce_union_range_of_bridgePath [Finite α] [Finite β]
-    {G : Graph α β} [G.Loopless] {n : ℕ} (hD : 1 ≤ Graph.bodyBarDim n) {V₁ V₂ : Set α}
+    {G : Graph α β} [G.Loopless] {n : ℕ} {V₁ V₂ : Set α}
     (hdisj : Disjoint V₁ V₂) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
     (hxV₂ : ∀ i, x i ∉ V₂) (hinj : Function.Injective x) {a b : α} (ha : a ∈ V₁) (hb : b ∈ V₂)
     {e : Fin (k + 1) → β}
@@ -850,7 +850,7 @@ theorem _root_.Graph.deficiency_induce_union_range_of_bridgePath [Finite α] [Fi
       have hl := hpath ⟨j, by omega⟩
       rw [hxj] at hl
       rw [union_image_val_lt_succ V₁ x hjk,
-        Graph.deficiency_induce_union_singleton hD hl
+        Graph.deficiency_induce_union_singleton (n := n) hl
           ((hmem _ hjk.le _).mpr (by simp))
           (by rw [← hxj, hmem _ hjk.le]; simp)
           (by rw [Graph.cutEdges_union_image_of_bridgePath hdisj hxV₁ hxV₂ hinj ha hb hpath hsep
@@ -1050,12 +1050,12 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
     BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath
       F.supportExtensor hext hdisj hxV₁ hxV₂ hinj ha hb hpath hsep
   -- the deficiencies: `1` for the last bridge, and for each path body
-  have hdefS := Graph.deficiency_induce_union_range_of_bridgePath (n := 3) (by decide) hdisj
+  have hdefS := Graph.deficiency_induce_union_range_of_bridgePath (n := 3) hdisj
     hxV₁ hxV₂ hinj ha hb hpath hsep
   have hSne : S.Nonempty := ⟨a, Or.inl ha⟩
   have hSssub : S ⊂ V(G) := (Set.ssubset_iff_of_subset hSV).mpr
     ⟨b, hV₂ hb, fun h => Set.disjoint_left.mp hSV₂ h hb⟩
-  have hdef := Graph.deficiency_eq_of_cutEdges_ncard_le_one (n := 3) (by decide) hSne hSssub
+  have hdef := Graph.deficiency_eq_of_cutEdges_ncard_le_one (n := 3) hSne hSssub
     (by rw [hcut, Set.ncard_singleton])
   rw [hcut, Set.ncard_singleton, hVS] at hdef
   -- the body counts
