@@ -448,7 +448,7 @@ theorem IsTightOn.union_inter [Finite V] [DecidableEq V] {G : SimpleGraph V} {k 
 
 /-- **Tight union with bonus edges.** Generalizes `IsTightOn.union_inter`'s union half: instead of
 requiring `ℓ ≤ k * #(s ∩ t)` to extract sparsity at the intersection, allow the user to supply a
-finite set `F` of "bonus" edges in `edgesIn (S₁ ∪ S₂)` disjoint from `edgesIn S₁ ∪ edgesIn S₂` and
+set `F` of "bonus" edges in `edgesIn (S₁ ∪ S₂)` disjoint from `edgesIn S₁ ∪ edgesIn S₂` and
 ask only that `F` plus the intersection accounting close the gap, i.e.
 `|F| + k * #(S₁ ∩ S₂) ≥ |edgesIn (S₁ ∩ S₂)| + ℓ`. Specializes to
 `IsTightOn.union_inter`'s union conclusion at `F = ∅` (the size proviso then provides the
@@ -458,7 +458,6 @@ theorem IsTightOn.union_with_bonus [Finite V] [DecidableEq V] {G : SimpleGraph V
     (hG : G.IsSparse k ℓ) {F : Set (Sym2 V)}
     (hF_sub : F ⊆ G.edgesIn (↑(S₁ ∪ S₂) : Set V))
     (hF_disj : Disjoint F (G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V)))
-    (hF_finite : F.Finite)
     (h_close : (G.edgesIn (↑(S₁ ∩ S₂) : Set V)).ncard + ℓ ≤
                F.ncard + k * (S₁ ∩ S₂).card) :
     G.IsTightOn k ℓ (S₁ ∪ S₂) := by
@@ -483,7 +482,7 @@ theorem IsTightOn.union_with_bonus [Finite V] [DecidableEq V] {G : SimpleGraph V
       (G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V) ∪ F).ncard =
         (G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V)).ncard + F.ncard :=
     Set.ncard_union_eq hF_disj.symm
-      ((G.edgesIn_finite S₁).union (G.edgesIn_finite S₂)) hF_finite
+      ((G.edgesIn_finite S₁).union (G.edgesIn_finite S₂)) ((G.edgesIn_finite _).subset hF_sub)
   have h_le_union :=
     Set.ncard_le_ncard h_combined_sub (G.edgesIn_finite (S₁ ∪ S₂))
   -- Step 2: cardinality identity for the union/intersection split.
@@ -503,8 +502,7 @@ theorem IsTightOn.insert_vertex_with_edges [DecidableEq V] {G : SimpleGraph V}
     {k ℓ : ℕ} {S : Finset V} (h : G.IsTightOn k ℓ S) (hG : G.IsSparse k ℓ)
     {w : V} (hw : w ∉ S) {F : Set (Sym2 V)}
     (hF_sub : F ⊆ G.edgesIn (↑(insert w S) : Set V))
-    (hF_disj : Disjoint F (G.edgesIn (↑S : Set V)))
-    (hF_finite : F.Finite) (h_card : k ≤ F.ncard) :
+    (hF_disj : Disjoint F (G.edgesIn (↑S : Set V))) (h_card : k ≤ F.ncard) :
     G.IsTightOn k ℓ (insert w S) := by
   have h_S_sub : G.edgesIn (↑S : Set V) ⊆ G.edgesIn (↑(insert w S) : Set V) := by
     refine edgesIn_mono ?_; rw [Finset.coe_insert]; exact Set.subset_insert _ _
@@ -513,7 +511,7 @@ theorem IsTightOn.insert_vertex_with_edges [DecidableEq V] {G : SimpleGraph V}
     Set.union_subset h_S_sub hF_sub
   have h_combined_card :
       (G.edgesIn (↑S : Set V) ∪ F).ncard = (G.edgesIn (↑S : Set V)).ncard + F.ncard :=
-    Set.ncard_union_eq hF_disj.symm (G.edgesIn_finite S) hF_finite
+    Set.ncard_union_eq hF_disj.symm (G.edgesIn_finite S) ((G.edgesIn_finite _).subset hF_sub)
   have h_le := Set.ncard_le_ncard h_combined_sub (G.edgesIn_finite (insert w S))
   have h_card_insert : (insert w S).card = S.card + 1 := Finset.card_insert_of_notMem hw
   have h_size : ℓ ≤ k * (insert w S).card := by
@@ -695,7 +693,7 @@ If no, extend to `T := insert z S`; the two edges `s(x, z)` and `s(y, z)` are in
 `edgesIn T` but not in `edgesIn S` (since `z ∉ S`), giving `#(edgesIn T) ≥ #(edgesIn S) + 2`,
 which combined with tightness of `S` saturates the squeeze at `T`. -/
 theorem IsSparse.contradiction_one_pair
-    [Finite V] {G : SimpleGraph V} (h : G.IsSparse 2 3) {v x y z : V}
+    {G : SimpleGraph V} (h : G.IsSparse 2 3) {v x y z : V}
     (hx : G.Adj v x) (hy : G.Adj v y) (hz : G.Adj v z)
     (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
     (hxz_adj : G.Adj x z) (hyz_adj : G.Adj y z)
@@ -729,7 +727,7 @@ theorem IsSparse.contradiction_one_pair
       hT_def ▸ hS_tight.insert_vertex_with_edges h hzS
         (F := {s(x, z), s(y, z)})
         (Set.insert_subset hxz_in_T (Set.singleton_subset_iff.mpr hyz_in_T))
-        hF_disj (Set.toFinite _) (by rw [hF_card])
+        hF_disj (by rw [hF_card])
     exact IsSparse.no_isTightOn_excluding_three_neighbors h hx hy hz hxy hxz hyz
       hvT hxT hyT hzT hT_tight
 
@@ -792,7 +790,7 @@ theorem IsSparse.contradiction_two_pair
       exact Set.ncard_empty _
     have hT_tight : G.IsTightOn 2 3 T :=
       hT_def ▸ hSxz_tight.union_with_bonus hSyz_tight h
-        (Set.singleton_subset_iff.mpr hxy_in_T) hF_disj (Set.finite_singleton _)
+        (Set.singleton_subset_iff.mpr hxy_in_T) hF_disj
         (by rw [Set.ncard_singleton, h_inter_card]; omega)
     exact IsSparse.no_isTightOn_excluding_three_neighbors h hx hy hz hxy hxz hyz
       hvT hxT hyT hzT hT_tight

@@ -19,9 +19,10 @@ deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms, task 4 Case II
 the candidate rows, `case_III_realization` and `blockPiSpan`, task 5
 `exists_good_realization_const` and `exists_finite_spanning_rigidityRows` with their dead callers,
 task 6 L9's shim `splitOff_deficiency_le_of_forest_surgery`, with
-`cor:forest-surgery-deficiency` repinned on `forest_surgery_split`, and task 7 renamed `F-061`'s
-two `_forest` pins `_starForest`, the shape their hypothesis forces. **Next concrete task:** round
-3's task 8, L6–L7's unused hypotheses in the planar layer.
+`cor:forest-surgery-deficiency` repinned on `forest_surgery_split`, task 7 renamed `F-061`'s two
+`_forest` pins `_starForest`, the shape their hypothesis forces, and task 8 dropped the planar
+layer's unused or derivable hypotheses. **Next concrete task:** round 3's task 9, the pebble game's
+`hloops`, derived from `himg`.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

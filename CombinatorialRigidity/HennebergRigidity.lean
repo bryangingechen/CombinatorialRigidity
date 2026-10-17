@@ -478,10 +478,9 @@ one while preserving rigidity); the perturbation is packaged in
 `typeII_isGenericallyRigidInj_two` below. -/
 theorem typeII_isGenericallyRigidInj_two_of_nonCollinear [Finite V] {G : SimpleGraph V}
     {p : Framework V 2} (hp_rig : G.IsInfinitesimallyRigid p) (hp_inj : Function.Injective p)
-    {a b c : V} (hab : a ≠ b)
-    (hLI_abc : LinearIndependent ℝ ![p b - p a, p c - p a]) :
+    {a b c : V} (hLI_abc : LinearIndependent ℝ ![p b - p a, p c - p a]) :
     (typeII G a b c).IsGenericallyRigidInj 2 := by
-  have hpab : p a ≠ p b := fun h => hab (hp_inj h)
+  have hpab : p a ≠ p b := fun h => hLI_abc.ne_zero 0 (by simp [h])
   obtain ⟨α, q, hα0, hα1, hcoll, hLI, hq_notmem⟩ :=
     exists_typeII_q_on_line_dim_two (p a) (p b) (p c) hpab hLI_abc (Set.range p)
       (Set.finite_range p)
@@ -635,7 +634,7 @@ theorem typeII_isGenericallyRigidInj_two [Finite V] {G : SimpleGraph V}
     (typeII G a b c).IsGenericallyRigidInj 2 := by
   obtain ⟨p, hp_rig, hp_inj, hLI⟩ :=
     exists_nonCollinear_rigid_placement_dim_two hG hab hac hbc
-  exact typeII_isGenericallyRigidInj_two_of_nonCollinear hp_rig hp_inj hab hLI
+  exact typeII_isGenericallyRigidInj_two_of_nonCollinear hp_rig hp_inj hLI
 
 end Henneberg
 

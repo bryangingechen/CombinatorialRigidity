@@ -251,13 +251,9 @@ theorem trivialMotionFamily_mem_trivialMotions (p : Framework V d)
 /-- **Joint linear independence** of the d-general trivial-motion family at an affinely-spanning
 placement. The translation/rotation split combined with affine spanning kills the rotation part,
 leaving the translation part identifiable coord-by-coord. -/
--- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
--- needs this instance to elaborate; it does not survive into the proof term.
-@[nolint unusedArguments]
-theorem trivialMotionFamily_linearIndependent [Finite V] {p : Framework V d}
+theorem trivialMotionFamily_linearIndependent {p : Framework V d}
     (hp : affineSpan ℝ (Set.range p) = ⊤) :
     LinearIndependent ℝ (trivialMotionFamily p) := by
-  have : Fintype V := Fintype.ofFinite V
   obtain ⟨_, v₀, rfl⟩ := AffineSubspace.nonempty_of_affineSpan_eq_top _ _ _ hp
   rw [Fintype.linearIndependent_iff]
   intro c hc

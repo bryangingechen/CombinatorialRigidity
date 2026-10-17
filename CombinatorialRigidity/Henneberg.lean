@@ -363,13 +363,13 @@ private lemma typeII_edgesIn_ncard_decomp [Finite V] (G : SimpleGraph V) (a b c 
 
 /-! ### Type II preserves the Laman property -/
 
-/-- The Type II Henneberg move preserves the Laman property: if `G` is Laman, `a, b, c` are
-pairwise distinct, and `G.Adj a b`, then `typeII G a b c` is Laman. The proof structure mirrors
-`typeI_isLaman`; the main wrinkle is that the deletion of `s(a, b)` interacts with the new edges,
-but a uniform `+ 2` bound holds: either `s(a, b)` was inside `G.edgesIn ↑s'` (loses 1, gains up
-to 3), or it wasn't (loses 0, but then one of `a, b` is outside `s'` so gains at most 2). -/
+/-- The Type II Henneberg move preserves the Laman property: if `G` is Laman, `G.Adj a b` (so
+`a ≠ b`) and `c` differs from `a` and `b`, then `typeII G a b c` is Laman. The proof structure
+mirrors `typeI_isLaman`; the main wrinkle is that the deletion of `s(a, b)` interacts with the new
+edges, but a uniform `+ 2` bound holds: either `s(a, b)` was inside `G.edgesIn ↑s'` (loses 1, gains
+up to 3), or it wasn't (loses 0, but then one of `a, b` is outside `s'` so gains at most 2). -/
 theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V}
-    (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) (hG_ab : G.Adj a b) :
+    (hca : c ≠ a) (hcb : c ≠ b) (hG_ab : G.Adj a b) :
     (typeII G a b c).IsLaman := by
   have : Fintype V := Fintype.ofFinite V
   refine ⟨fun s hs_pre => ?_, ?_⟩
@@ -440,6 +440,7 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
         Set.ncard_sdiff_singleton_le _ _
       omega
   · -- Tightness.
+    have hab : a ≠ b := hG_ab.ne
     have hab_in : s(a, b) ∈ G.edgeSet := hG_ab
     grind only [!typeII_edgeSet_ncard, !Finite.card_option,
       !Set.ncard_sdiff_singleton_of_mem, h.edgeSet_ncard]

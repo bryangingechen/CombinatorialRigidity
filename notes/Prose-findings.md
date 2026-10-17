@@ -3214,14 +3214,19 @@ declaration's name as its header writes it:
   states only "$ab$ is an edge". The theorem has no Lean caller, so the binder can go alone.
   *Evidence:* read (the statement of `typeII_isLaman`; a `grep` finds no caller).
   *Found:* round 1 task 3.
-  *Disposition:* reported (`notes/Prose-report.md`, L7).
+  *Disposition:* done (task 8): `hab` dropped, the tightness branch reading `a ≠ b` off `hG_ab`,
+  and the docstring states the hypotheses the theorem takes. Before: reported
+  (`notes/Prose-report.md`, L7).
 - **F-017** · L · `IsTightOn.union_with_bonus`, `IsTightOn.insert_vertex_with_edges`
   (`Sparsity.lean`): each takes `hF_finite : F.Finite`, which follows from `hF_sub`, since
   `edgesIn` of a finite vertex set is finite (`edgesIn_finite`). The blueprint statements no longer
   name it. The callers pass `Set.toFinite _` or `Set.finite_singleton _`.
   *Evidence:* read (both statements, and their two callers in `Sparsity.lean`).
   *Found:* round 1 task 5.2.
-  *Disposition:* reported (`notes/Prose-report.md`, L7).
+  *Disposition:* done (task 8): `hF_finite` dropped from both, each deriving it from `hF_sub` by
+  `edgesIn_finite`; the callers `contradiction_one_pair` and `contradiction_two_pair` pass one
+  argument fewer, and `contradiction_one_pair`'s `[Finite V]`, used only by its `Set.toFinite _`,
+  went too (`lake lint`'s `unusedArguments`). Before: reported (`notes/Prose-report.md`, L7).
 - **F-018** · L · `SimpleGraph.IsSparse.typeII_reverse_blocker` (`Sparsity.lean`): its docstring
   and the section docstring above it say "distinct vertices `x, y`", but the statement does not
   assume `x ≠ y`. (At `x = y` the hypothesis fails, since the added pair is a loop and is dropped.)
@@ -3235,7 +3240,8 @@ declaration's name as its header writes it:
   non-collinearity. Its one caller, `typeII_isGenericallyRigidInj_two`, passes `hab`.
   *Evidence:* read (the statement and body; a `grep` finds the one caller).
   *Found:* round 1 task 5.5.
-  *Disposition:* reported (`notes/Prose-report.md`, L7).
+  *Disposition:* done (task 8): `hab` dropped, `p a ≠ p b` read off `hLI_abc`; the caller passes
+  one argument fewer. Before: reported (`notes/Prose-report.md`, L7).
 - **F-022** · L · `typeI_isInfinitesimallyRigid_extend`, `typeII_isInfinitesimallyRigid_extend`
   (`HennebergRigidity.lean`): their docstrings contradict their declarations. The first calls
   itself "the rank-nullity heart of `typeI_isGenericallyRigid_two`", which names no declaration (the
@@ -3262,7 +3268,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body); a `lake lean` witness (the theorem restated without
   `[Finite V]`, the proof copied with that line deleted; it elaborates with no output).
   *Found:* round 1 task 5.6.
-  *Disposition:* reported (`notes/Prose-report.md`, L6).
+  *Disposition:* done (task 8): `[Finite V]`, the `Fintype.ofFinite` line and the `@[nolint
+  unusedArguments]` with its comment dropped; `lem:trivialMotionFamily-linearIndependent` no
+  longer asks $V$ finite. Before: reported (`notes/Prose-report.md`, L6).
 - **F-030** · L · `MatroidIdentification.lean`, `LinearRigidityMatroid.lean`: docstrings that
   contradict the declarations. In the first, the section header "`|E|`-induction: every sparse
   graph has a row-independent placement" and the docstring of

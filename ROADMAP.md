@@ -1310,8 +1310,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `blockPiSpan` (seventeen, none pinned), task 5 `exists_good_realization_const` and
   `exists_finite_spanning_rigidityRows` with their five dead callers, task 6 L9's shim
   `splitOff_deficiency_le_of_forest_surgery`, with `cor:forest-surgery-deficiency` repinned on
-  `forest_surgery_split`, and task 7 renamed `F-061`'s two `_forest` pins `_starForest`, the shape
-  their hypothesis forces. **Next:** its task 8, L6–L7's unused hypotheses in the planar layer.
+  `forest_surgery_split`, task 7 renamed `F-061`'s two `_forest` pins `_starForest`, the shape
+  their hypothesis forces, and task 8 dropped the planar layer's unused or derivable hypotheses.
+  **Next:** its task 9, the pebble game's `hloops`, derived from `himg`.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
