@@ -1308,10 +1308,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   task 3 deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms (fourteen declarations,
   none pinned), task 4 Case III's line route, the candidate rows, `case_III_realization` and
   `blockPiSpan` (seventeen, none pinned), task 5 `exists_good_realization_const` and
-  `exists_finite_spanning_rigidityRows` with their five dead callers, and task 6 L9's shim
+  `exists_finite_spanning_rigidityRows` with their five dead callers, task 6 L9's shim
   `splitOff_deficiency_le_of_forest_surgery`, with `cor:forest-surgery-deficiency` repinned on
-  `forest_surgery_split`. **Next:** its task 7, `F-061`'s rename of the two `_forest` pins, whose
-  hypothesis makes each component a star.
+  `forest_surgery_split`, and task 7 renamed `F-061`'s two `_forest` pins `_starForest`, the shape
+  their hypothesis forces. **Next:** its task 8, L6–L7's unused hypotheses in the planar layer.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

@@ -3402,7 +3402,11 @@ declaration's name as its header writes it:
   task 2.5 states the hypothesis instead.
   *Evidence:* read (the two statements and the first body).
   *Found:* round 2 task 2.5.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* done (task 7): the two renamed `linearIndependent_hingeRow_starForest` and
+  `exists_independent_rigidityRows_of_starForest`, their docstrings stating the star forest (and a
+  path with three edges as a forest outside it), with `lem:own-end-rows-independent`'s pins and
+  the two other docstrings that named them. The forest lemma, which no declaration states, is the
+  phase's (c) (`notes/Reconcile.md` §3). Before: reported (`notes/Prose-report.md`, L4).
 - **F-063** · L · `BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions`
   (`Molecular/AlgebraicInduction/PanelLayer.lean`): its hypothesis asks $C(e) \neq 0$ at every
   edge label, also at labels that are not edges of $G$, where the extensor does not affect the
@@ -4050,7 +4054,8 @@ declaration's name as its header writes it:
   *Found:* round 5 task 3.3.
   *Disposition:* reported (`notes/Prose-report.md`, L11); round 3:
   `exists_finite_spanning_rigidityRows` deleted, and the other three's docstrings no longer name
-  the dead `CaseI.lean` code (task 5).
+  the dead `CaseI.lean` code (task 5); the two `_forest` lemmas, renamed `_starForest`, name
+  `lem:own-end-rows-independent` (task 7).
 - **F-235** · L · the declarations round 5's task 3.4 moved or unpinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`). Their docstrings name the nodes their pins left:
   `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` say `def:cut-edges-2ec`

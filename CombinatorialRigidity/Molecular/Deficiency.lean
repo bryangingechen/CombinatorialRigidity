@@ -3195,13 +3195,13 @@ option (a)): a `0`-dof (body-hinge-rigid) graph `H` — `def(H̃) = 0` — has a
 that decomposes into `D = bodyBarDim n` edge-disjoint forests of `H̃ ↾ B`, with the full edge
 count `|B| = D(|V(H)| − 1)`.
 
-This is the prerequisite the per-leg rigid-seed construction needs: the single-forest brick
-`exists_independent_rigidityRows_of_forest` yields only `(D−1)·|J|` independent rigidity rows from
-*one* spanning forest, a factor `(D−1)/D` short of the full `D(|V(H)|−1)` that
-`HasFullRankRealization k H` demands; reaching full rank needs the `D`-fold packing assembled here,
-not a single tree. The base `B` is a maximal `(D,D)`-independent (hence `(D,D)`-sparse, via
-`matroidMG_indep_iff`) edge subset, so `tutte_nash_williams` decomposes it into `D` edge-disjoint
-forests; its cardinality is `rank M(H̃) = D(|V(H)|−1)` because `def(H̃) = 0`
+This is the prerequisite the per-leg rigid-seed construction needs: the star-forest lemma
+`exists_independent_rigidityRows_of_starForest` yields only `(D−1)·|J|` independent rigidity rows
+from *one* star forest of `|J| ≤ |V(H)|−1` edges, at most a fraction `(D−1)/D` of the full
+`D(|V(H)|−1)` that `HasFullRankRealization k H` demands; reaching full rank needs the `D`-fold
+packing assembled here, not a single tree. The base `B` is a maximal `(D,D)`-independent (hence
+`(D,D)`-sparse, via `matroidMG_indep_iff`) edge subset, so `tutte_nash_williams` decomposes it
+into `D` edge-disjoint forests; its cardinality is `rank M(H̃) = D(|V(H)|−1)` because `def(H̃) = 0`
 (`isBase_ncard_add_deficiency_eq`). Regime `[NeZero (bodyHingeMult n)]` (`D ≥ 1`, also forcing the
 copies that `mulTilde` needs); `V(H).Nonempty`.
 

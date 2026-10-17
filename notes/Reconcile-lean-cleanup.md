@@ -12,10 +12,10 @@ changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
 round into 39 one-commit tasks; task 2 committed the docstring-label check, tasks 3–5 deleted
-thirty-eight of L9's declarations (the check 422 → 409 → 396 → 390), and task 6 `F-090`'s shim,
-`cor:forest-surgery-deficiency` repinned. **Next concrete task:** task 7, `F-061`'s rename of the
-two `_forest` pins, whose hypothesis makes each component a star (*Lemma checklist*). Round manual:
-`CLEANUP.md`.
+thirty-eight of L9's declarations (the check 422 → 409 → 396 → 390), task 6 `F-090`'s shim,
+`cor:forest-surgery-deficiency` repinned, and task 7 renamed `F-061`'s two `_forest` pins
+`_starForest` (the check 388). **Next concrete task:** task 8, L6–L7's unused hypotheses in the
+planar layer (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -25,24 +25,24 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 6 is done** (this commit; Lean and TeX); nothing is mid-stream.
+**Task 7 is done** (this commit; Lean and TeX); nothing is mid-stream.
 
-**L9's deletions so far**: task 3 fourteen (`F-266`'s orphan among them), task 4 seventeen
-(`F-267`'s), task 5 seven, none pinned; task 6 the pinned shim
-`splitOff_deficiency_le_of_forest_surgery`, with `cor:forest-surgery-deficiency` repinned on
-`forest_surgery_split`, the pin it now shares with `lem:forest-surgery-split` (the honesty gate: the
-same statement, every hypothesis ambient, no missing edge; the corollary's edge to the lemma is one
-the script cannot back, `notes/Prose-graph-cleanup.md`'s shared-pin precedent; its lead and
-`rem:forest-surgery-kt-steps` stay true, unedited). The pins left without a caller stay with their
-nodes (task 5's two, task 6's `forest_surgery_split`). The docstrings that named the deleted name
-what replaced them or nothing (`forest_surgery_split`'s lead now names the corollary), as do
-`TACTICS-*.md` and the retrospective; `DESIGN.md`, `blueprint/DESIGN.md`, ROADMAP §22h,
-`notes/FRICTION*.md`, `notes/Prose-report.md` and the closed notes are history. Gate 2 runs block
-(c) since task 5. Gate 9: **390**, task 6's report identical to task 5's (`labels-t6.txt`). The
-dump differs from task 5's in exactly the expected two lines (`dump-t6.txt`, second line
-`337e4fd212bdbfd2`); `--summary`: 1 008 pins (992 distinct), implied 2 430, no Lean basis 134, dead
-169, 7 185 constants. The ledger: `F-090` done; 269 entries, 140 `done`, 10 `left`, 117
-`reported`, 2 `open`; the next ID is `F-270`.
+**Task 7, `F-061`'s rename** (*Decisions*):
+`BodyHingeFramework.linearIndependent_hingeRow_starForest` and
+`exists_independent_rigidityRows_of_starForest` (`RigidityMatrix/Basic.lean` 1966, 2012), their
+statements and proofs unchanged; their docstrings and section header state the star forest and
+lead with `lem:own-end-rows-independent`, whose first two pins they now are (no statement, `\uses`
+or `\leanok` change; the honesty gate: the node states `hsep` clause for clause). The two other
+docstrings that named them (`Deficiency.lean` 3199, `GenericityDevice.lean` 650) name the new
+forms; the ledger, `notes/FRICTION.md`, `notes/Prose-report.md` and the closed notes are history;
+block (c) finds no brace or suffix form. **L9's deletions** (tasks 3–6): thirty-nine declarations,
+`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with their
+nodes. Gate 2 runs block (c) since task 5. Gate 9: **388**, task 7's report task 6's without the
+two renamed declarations' lines (`labels-t7.txt`). The dump differs from task 6's in exactly the
+expected two lines (`dump-t7.txt`, second line `5d8c0cfb7a2d68a1`); `--summary` task 6's: 1 008
+pins (992 distinct), implied 2 430, no Lean basis 134, dead 169, 7 185 constants. The ledger:
+`F-061` done; 269 entries, 141 `done`, 10 `left`, 116 `reported`, 2 `open`; the next ID is
+`F-270`.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -237,12 +237,9 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **6. L9: `F-090`'s shim, and `cor:forest-surgery-deficiency` repinned** (`F-090`): the shim
   deleted, the corollary on `forest_surgery_split`; the dump's `lean_decls` hash and pin line as
   expected, implied 2 424 → 2 430, no Lean basis 133 → 134; gate 9 390.
-- [ ] **7. `F-061`'s rename** (`F-061`; `F-233` in part). `BodyHingeFramework.linearIndependent_hingeRow_forest`
-  and `exists_independent_rigidityRows_of_forest` (`RigidityMatrix/Basic.lean` 2103, 2158) renamed
-  for their hypothesis `hsep` (each component a star), their docstrings with them; the pins of
-  `lem:own-end-rows-independent` (`rigidity-matrix.tex` 228–230) and every reference (gate 2;
-  `Deficiency.lean` 3199, `GenericityDevice.lean` 651) in the same commit. The forest lemma is the
-  phase's (c). *Expected:* two pins renamed (`lean_decls` and the pin map change), no edge.
+- [x] **7. `F-061`'s rename** (`F-061`; `F-233` in part): the two `_forest` lemmas renamed
+  `_starForest`, their docstrings and `lem:own-end-rows-independent`'s pins with them; the dump's
+  `lean_decls` hash and pin line as expected; gate 9 388. The forest lemma is the phase's (c).
 - [ ] **8. L6–L7: the planar layer** (`F-013`, `F-017`, `F-021`, `F-024`). `hab` of `typeII_isLaman`
   (`Henneberg.lean` 371; no caller); `hF_finite` of `IsTightOn.union_with_bonus` and
   `.insert_vertex_with_edges` (`Sparsity.lean` 456, 502), from `hF_sub`; `hab` of
@@ -443,18 +440,19 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 7**, at Opus: `F-061`'s rename (*Lemma checklist*).
-`BodyHingeFramework.linearIndependent_hingeRow_forest` and
-`exists_independent_rigidityRows_of_forest` (now `RigidityMatrix/Basic.lean` 1973 and 2026, after
-task 5) renamed for their hypothesis `hsep`, their docstrings with them, and
-`lem:own-end-rows-independent`'s pins (`rigidity-matrix.tex` 229–230) and every reference repointed
-in the same commit. A rename is a deletion for gate 2: `grep -rn` and block (c) on both old names.
-Gates 1–3, 5–6 (the expected diff against `scratch/reconcile-lean/dump-t6.txt`, gitignored, written
-before editing: the `lean_decls` hash and the node's pin line; `--summary` predicted on a
-`--tex-root` copy of the TeX, as task 6 did; regenerate the parent's dump if it is missing), 8 (a
-TeX pin changes), 9 (390; it runs, as two pins are renamed) and 10. Carried in: `F-252` for the PI
-(round 1's *Candidates*; the phase's (a) removes it); `F-268` and `F-269` for task 38. After the
-round the queue stops before `RECONCILE-FORMAL`, which is attended.
+**Next: task 8**, at Opus: L6–L7's planar layer (`F-013`, `F-017`, `F-021`, `F-024`; *Lemma
+checklist*). Drop `hab` of `typeII_isLaman` (`Henneberg.lean` 371; no caller); derive `hF_finite`
+of `IsTightOn.union_with_bonus` and `.insert_vertex_with_edges` (`Sparsity.lean` 456, 502; callers
+794, 729) from `hF_sub`; drop `hab` of `typeII_isGenericallyRigidInj_two_of_nonCollinear`
+(`HennebergRigidity.lean` 479) and `[Finite V]` of `trivialMotionFamily_linearIndependent`
+(`TrivialMotions.lean` 257) with its `@[nolint unusedArguments]`; callers follow. A signature
+change, so gate 2's changed-statement grep: `lem:trivialMotionFamily-linearIndependent`
+(`trivial-motions.tex` 219) and every node pinning the four, restated only where the change reaches
+the statement. Gates 1–3, 5–6 (expected: the dump byte-identical to
+`scratch/reconcile-lean/dump-t7.txt`, gitignored; regenerate the parent's if it is missing), 8 if
+a node's TeX changes, 9 (388) and 10. Carried in: `F-252` for the PI (round 1's *Candidates*; the
+phase's (a) removes it); `F-268` and `F-269` for task 38. After the round the queue stops before
+`RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -481,5 +479,8 @@ round the queue stops before `RECONCILE-FORMAL`, which is attended.
   `eq_succ_of_isInfinitesimalMotion_cycle` (unpinned, dead) without a caller, so it went with them,
   as L9's "no caller outside themselves" covers (`F-266`); block (b) now lists such orphans (task 4,
   `F-267`).
+- **The rename's name** (task 7): `_starForest`, the exact shape `hu` and `hsep` force (each
+  component a star, the `u j` its leaves), beside `linearIndependent_hingeRow_star`; the binder
+  `hsep` kept. `_forest` is free for the phase's forest lemma (`F-061`).
 - **`F-097`'s `hD`** (the open): weakening `3 ≤ D` to `2 ≤ D` is a statement change beyond L8's
   suggestion; task 15 records it under *Candidates* if the shorter proof holds there.

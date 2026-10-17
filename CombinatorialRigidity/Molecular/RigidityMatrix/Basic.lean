@@ -1941,36 +1941,29 @@ theorem linearIndependent_sum_augment_candidateRow_restriction
   rw [hcomp] at hop
   exact (Φ.dualMap.toLinearMap.linearIndependent_iff hker).1 hop
 
-/-! ## Multi-edge rigidity-row independence over a rigid block (the Case-I `hindep` assembly)
+/-! ## Joint row independence at hinges with ends of their own (a star forest)
 
-The forest / multi-body generalization of single-edge row independence
-(`linearIndependent_hingeRow_forest`, `exists_independent_rigidityRows_of_forest`) — the full-rank
-input for the Case-I producer. -/
+The rows of several hinges are jointly independent when each hinge has an end that no other hinge
+meets (`linearIndependent_hingeRow_starForest`, `exists_independent_rigidityRows_of_starForest`),
+the multi-body form of `linearIndependent_hingeRow_star`. -/
 
-/-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
-(`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
-generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,
-here each hinge `j : J` is oriented from a *private endpoint* `u j` — the "child" vertex of a
-spanning forest of the rigid block, so the `u j` are distinct (`hu` injective) — to an arbitrary
-*other endpoint* `other j`, subject only to the **forest separation** hypothesis `hsep`: no
-other-endpoint of any hinge is the private endpoint of any hinge (`other j ≠ u j'` for all
-`j, j'`; in particular `u j ≠ other j`). If for each `j` the hinge-row functionals
-`r j : Iⱼ → Module.Dual K (ScrewSpace K k)` are linearly independent, the combined rigidity-row
-family `⟨j, i⟩ ↦ hingeRow (u j) (other j) (r j i)` over `Σ j, Iⱼ` is linearly independent on
+/-- **The forms of hinges with ends of their own are jointly independent**
+(`lem:own-end-rows-independent`, its claim for linear forms). Each hinge `j : J` runs from an end
+`u j` of its own to an other end `other j`: the `u j` are distinct (`hu`), and no other end is any
+hinge's own end (`hsep : ∀ j j', other j ≠ u j'`; in particular `u j ≠ other j`). The pairs
+`(u j, other j)` then form a *star forest*, a forest each of whose components is a star: each
+`u j` is a leaf whose one neighbour is `other j`. Not every forest is one: the edges of a path with
+three edges allow no such choice of ends. If for each `j` the forms
+`r j : Iⱼ → Module.Dual K (ScrewSpace K k)` are linearly independent, the forms
+`⟨j, i⟩ ↦ hingeRow (u j) (other j) (r j i)` over `Σ j, Iⱼ` are linearly independent on
 `α → ScrewSpace K k`.
 
-This is the cross-hinge step of a genuine rigid block — a spanning tree / forest of the contracted
-block, hinges spanning *multiple* bodies rather than a single pinned `v`. The star
-(`linearIndependent_hingeRow_star`) is the special case `u = w`, `other = const v`: there `hsep` is
-`w j' ≠ v`, here it is the forest property that each hinge has a private child vertex incident to no
-other hinge of the block. The proof is the same *pin-a-body* / disjoint-support count, pinning the
-private endpoint `u j₀` rather than the common body: evaluating a vanishing combination at the screw
-assignment `Function.update 0 (u j₀) x` reads `0` on every hinge `j ≠ j₀` (its private endpoint
-`u j ≠ u j₀` by injectivity, its other endpoint `other j ≠ u j₀` by `hsep`) and `x` on hinge `j₀`
-(its other endpoint `other j₀ ≠ u j₀` again by `hsep`), collapsing to
-`∑ i, c⟨j₀,i⟩ • (r j₀ i) x = 0` for all `x`, so per-hinge independence forces every coefficient at
-`j₀` to vanish. -/
-theorem linearIndependent_hingeRow_forest {J : Type*} [Finite J] {I : J → Type*}
+`linearIndependent_hingeRow_star` is the case of one star, `u = w` and `other = const v`. The proof
+evaluates a vanishing combination at the screw assignment `Function.update 0 (u j₀) x`: a hinge
+`j ≠ j₀` reads `0` at both ends (`u j ≠ u j₀` by `hu`, `other j ≠ u j₀` by `hsep`) and the hinge
+`j₀` reads `x` at `u j₀` and `0` at `other j₀`, so `∑ i, c⟨j₀,i⟩ • (r j₀ i) x = 0` for every `x`,
+and every coefficient at `j₀` vanishes, as the forms `r j₀` are independent. -/
+theorem linearIndependent_hingeRow_starForest {J : Type*} [Finite J] {I : J → Type*}
     [∀ j, Finite (I j)] {u other : J → α} (hu : Function.Injective u)
     (hsep : ∀ j j', other j ≠ u j')
     {r : ∀ j, I j → Module.Dual K (ScrewSpace K k)} (hr : ∀ j, LinearIndependent K (r j)) :
@@ -2005,25 +1998,18 @@ theorem linearIndependent_hingeRow_forest {J : Type*} [Finite J] {I : J → Type
       simpa [LinearMap.sum_apply, LinearMap.smul_apply] using hval x
   exact Fintype.linearIndependent_iff.1 (hr j₀) (fun i => g ⟨j₀, i⟩) hk i₀
 
-/-- **A rigid block's spanning forest of transversal hinges yields `(D−1)·|J|` independent
-rigidity rows** (`def:rigidity-matrix`, the Case-I `hindep`/`hmatch` assembly in its general form).
-This is the multi-body assembly the hand-off flagged: it combines the per-edge brick
-`exists_independent_rigidityRows_of_edge` (each transversal hinge contributing `D − 1 = screwDim
-k − 1` independent rows through the same relative-screw evaluation `screwDiff (u j) (other j)`) with
-the cross-hinge combination `linearIndependent_hingeRow_forest` (rows of *distinct* hinges jointly
-independent by the pin-a-body count over the spanning forest).
+/-- **Edges with ends of their own give `(D − 1)·|J|` independent rigidity rows**
+(`lem:own-end-rows-independent`, its form for rows). Let each edge `e j` link an end `u j` of its
+own to `other j` (`hlink`; `hu` and `hsep` as in `linearIndependent_hingeRow_starForest`, so the
+edges form a star forest), with `F.supportExtensor (e j) ≠ 0` at each edge (`he`). Then there is a
+linearly independent family of members of `F.rigidityRows` indexed by
+`Σ j, Fin (screwDim k − 1)`, of cardinality `|J|·(D − 1)` with `D = screwDim k` (`Nat.card_sigma`).
 
-Concretely, for a family of hinges `j : J` of a rigid block oriented along a spanning forest — each
-edge `e j` linking a *private endpoint* `u j` (the forest child, so `u` injective) to an arbitrary
-`other j`, with the forest-separation hypothesis `hsep : ∀ j j', other j ≠ u j'` and every hinge
-transversal (`he : F.supportExtensor (e j) ≠ 0`) — there is a linearly independent family of
-rigidity rows indexed by the disjoint union `Σ j, Fin (screwDim k − 1)`, all members of
-`F.rigidityRows`. The index type has cardinality `|J|·(screwDim k − 1)` (`Nat.card_sigma`). The
-per-edge block functionals `c j` (a basis of the `(D−1)`-dimensional hinge-row block `r(p(e j))`,
-`finrank_hingeRowBlock`) are extracted by `exists_linearIndependent_fin_of_finrank_eq`, fed to
-`linearIndependent_hingeRow_forest` for the joint independence, and witnessed as rigidity rows via
-the link `hlink j` and block membership. -/
-theorem exists_independent_rigidityRows_of_forest (F : BodyHingeFramework K k α β) {J : Type*}
+The `D − 1` forms of each edge are a basis of its hinge-row block (`finrank_hingeRowBlock`,
+extracted by `exists_linearIndependent_fin_of_finrank_eq`), and
+`linearIndependent_hingeRow_starForest` makes the rows of all the edges jointly independent; the
+link `hlink j` and the block membership witness each as a rigidity row. -/
+theorem exists_independent_rigidityRows_of_starForest (F : BodyHingeFramework K k α β) {J : Type*}
     [Finite J] {u other : J → α} {e : J → β} (hu : Function.Injective u)
     (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, F.graph.IsLink (e j) (u j) (other j))
     (he : ∀ j, F.supportExtensor (e j) ≠ 0) :
@@ -2036,7 +2022,7 @@ theorem exists_independent_rigidityRows_of_forest (F : BodyHingeFramework K k α
     (F.hingeRowBlock (e j)).exists_linearIndependent_fin_of_finrank_eq
       (F.finrank_hingeRowBlock (he j))
   refine ⟨fun p => hingeRow (u p.1) (other p.1) (c p.1 p.2),
-    linearIndependent_hingeRow_forest hu hsep hc, fun p => ?_⟩
+    linearIndependent_hingeRow_starForest hu hsep hc, fun p => ?_⟩
   exact ⟨e p.1, u p.1, other p.1, hlink p.1, c p.1 p.2, hmem p.1 p.2, rfl⟩
 
 /-! ## Trivial motions + infinitesimal rigidity: rank Lemmas 5.1–5.3 (KT §2.4)

@@ -646,10 +646,10 @@ independent subfamily of that many *actual* panel rows; re-indexing each by its
 exactly as `exists_independent_panelRow_subfamily_of_edge`'s honest form does per edge.
 
 It is **not** discharged by the transport `exists_independent_panelRow_transport` (which only
-carries an *already-witnessed* family across the graph swap) nor by the forest-existence
-`exists_independent_rigidityRows_of_forest` (forest-count rows, bounded below the full `D(|V|−1)`
-unless the block is rigid). This rank-equals-codimension forward direction is the genuine deficit
-between "rigid on a set" and "carries that many independent rows". -/
+carries an *already-witnessed* family across the graph swap) nor by
+`exists_independent_rigidityRows_of_starForest` (`D−1` rows at each edge of a star forest, at most
+`(D−1)(|V|−1)` in all, fewer than `D(|V|−1)`). This rank-equals-codimension forward direction is
+the genuine deficit between "rigid on a set" and "carries that many independent rows". -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α}
     (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2)
