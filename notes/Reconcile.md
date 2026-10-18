@@ -24,7 +24,9 @@ task 6 L9's shim `splitOff_deficiency_le_of_forest_surgery`, with
 layer's unused or derivable hypotheses, task 9 the pebble game's `hloops`, which `himg` implies,
 task 10 the unused hypotheses of the deficiency and the induction, and task 11 the chain
 extraction's, its triangle lemma now the case $m = 3$ of the cycle lemma, which left one missing
-forward edge (`F-270`). **Next concrete task:** round 3's task 11.1, the node move that cures it.
+forward edge (`F-270`), and task 11.1 moved the cycle lemma to `deficiency.tex` so that the edge
+points back. **Next concrete task:** round 3's task 12, the algebraic induction's unused or
+derivable hypotheses.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

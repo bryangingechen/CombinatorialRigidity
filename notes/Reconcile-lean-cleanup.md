@@ -12,11 +12,12 @@ changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
 round into 39 one-commit tasks; task 2 committed the docstring-label check, tasks 3–6 made L9's
-deletions, `F-090`'s shim among them (the check 422 → 390), task 7 `F-061`'s rename (388), and
+deletions, `F-090`'s shim among them (the check 422 → 390), task 7 `F-061`'s rename (388),
 tasks 8–11 dropped L6–L8's unused or derivable hypotheses (the planar layer, the pebble game's
-`hloops`, the deficiency and the induction, the chain extraction); task 11's triangle, now the
-3-cycle's case, left one missing forward edge (`F-270`). **Next concrete task:** task 11.1, its
-cure (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`hloops`, the deficiency and the induction, the chain extraction), and task 11.1 moved
+`lem:cycle-zero-dof` to `deficiency.tex` so that task 11's one missing edge (`F-270`) points back.
+**Next concrete task:** task 12, the algebraic induction (*Lemma checklist*). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -26,29 +27,28 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 11 is done** (this commit; Lean and one node); nothing is mid-stream, but the graph has one
-missing edge (`F-270`), task 11.1's.
+**Task 11.1 is done** (this commit; docs only); nothing is mid-stream, and the graph has no
+missing edge.
 
-**Task 11, the chain extraction** (`F-108`): `chainData_extract` without `hV3` (from `hV4`) and
-`[G.Simple]` (by `simple_of_isMinimalKDof_of_noRigid`), its one caller following
-(`case_III_hsplit_producer_all_k`, whose `hsimple` stays: `CycleData.ofCardThree` takes it);
-`chainWalk_charging` without `_hG0`, `_hD`, `_hV2`, its one caller following;
-`isKDof_zero_of_triangle` moved after `isKDof_zero_of_cycle` and proved as its case $m = 3$, its
-statement unchanged. No binder left unused. Gate 2: `lem:chain-data-extract` restated without
-simplicity, which its proof derives. The dump task 10's byte for byte; `--summary`: missing 0 → 1
-(`lem:splitoff-simple` → `lem:cycle-zero-dof`, proof, forward: `F-270`), unbacked through a node
-85 still (`lem:chain-data-extract`'s edge to `lem:simple-minimal-noRigid` backed,
-`lem:splitoff-simple`'s to `def:D-deficiency` now through a node), Lean constants 7 178 → 7 175.
-Gate 9 388, task 10's report but for line numbers; the forward screen the open's. The ledger: 270
-entries, 147 `done`, 10 `left`, 110 `reported`, 3 `open`; the next ID is `F-271`.
+**Task 11.1, `F-270`'s cure**: `lem:cycle-zero-dof` moved to `deficiency.tex` after
+`lem:two-vertex-zero-dof` (both pins are `Molecular/Deficiency.lean`'s), the cycle stated in its own
+words, so its statement edge to `def:cycle-data` (no Lean basis) is gone; `lem:splitoff-simple`'s
+proof `\uses` it for `def:D-deficiency`, the triangle the cycle on three vertices; the leads of
+`deficiency.tex`'s rigid-subgraph subsection and two-vertex paragraph, and of the KT Lemma 4.6
+subsection, follow. The dump as the checklist line expected (1 526 edges, the `lean_decls` hash
+`5d8c0cfb7a2d68a1`); `--summary` missing 1 → 0, unbacked transitive 85 → 84, none 134 → 133; gate
+7 the open's 33/17 and 4/4; gate 9 388, task 11's report byte for byte; `verify.sh` 9 `WARNING:`
+lines, `print.log` 0 `LaTeX Warning`. The ledger: 270 entries, 148 `done`, 10 `left`, 110
+`reported`, 2 `open` (`F-268`, `F-269`, task 38's); the next ID is `F-271`.
 
-**Done before** (tasks 3–10): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
+**Done before** (tasks 3–11): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
 them; the pins they left without a caller stay with their nodes), `F-090`'s shim, `F-061`'s rename
 to `_starForest`, the planar layer's five hypotheses (`F-013`, `F-017`, `F-021`, `F-024`;
 `lem:trivialMotionFamily-linearIndependent` restated), the pebble game's `hloops` (`F-039`;
-`edgeListSorted_no_loops` deleted), and the deficiency's and the induction's unused binders
-(`F-075`, `F-077`, `F-092`, `F-094`; `lem:deficiency-ear-merge` restated for a walk). Gate 2 runs
-block (c) since task 5.
+`edgeListSorted_no_loops` deleted), the deficiency's and the induction's unused binders (`F-075`,
+`F-077`, `F-092`, `F-094`; `lem:deficiency-ear-merge` restated for a walk), and the chain
+extraction's (`F-108`; `isKDof_zero_of_triangle` now the case $m = 3$ of `isKDof_zero_of_cycle`,
+`lem:chain-data-extract` restated; Lean constants 7 175). Gate 2 runs block (c) since task 5.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -262,14 +262,13 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `[G.Simple]`, `chainWalk_charging` without its three, `isKDof_zero_of_triangle` the case $m = 3$
   of `isKDof_zero_of_cycle`; `lem:chain-data-extract` restated; the dump byte-identical; one
   missing forward edge, new: `F-270`; gate 9 388.
-- [ ] **11.1. `F-270`'s cure** (docs only; *Decisions*: a forward missing edge).
-  `lem:cycle-zero-dof` (`molecular-induction.tex` 2196) to `deficiency.tex`, after
-  `lem:two-vertex-zero-dof` (1028), the cycle stated in its own words without
-  `\uses{def:cycle-data}` (its pin takes two maps: no Lean basis), the leads of the subsections it
-  leaves and joins following; `lem:splitoff-simple`'s proof (2034) `\uses` it, the triangle being
-  the cycle on three vertices.
-  *Expected:* the dump's edges and the node's page per the move, listed before editing; gate 7 the
-  open's counts; `--summary` missing 1 → 0.
+- [x] **11.1. `F-270`'s cure** (docs only): `lem:cycle-zero-dof` to `deficiency.tex` after
+  `lem:two-vertex-zero-dof`, the cycle in its own words without `def:cycle-data`;
+  `lem:splitoff-simple`'s proof `\uses` it for `def:D-deficiency`; the dump as listed before
+  editing (1 525 → 1 526 edges, the `lean_decls` hash kept; `def:cycle-data` → `lem:cycle-zero-dof`
+  gone, `def:cycle-data` → `lem:chain-cycle-dichotomy` and `lem:cycle-zero-dof` →
+  `lem:splitoff-simple` new); `--summary` missing 0, unbacked 84 and 133; gate 7 the open's; gate 9
+  388.
 - [ ] **12. L6–L7 and S17: the algebraic induction** (`F-104`, `F-102`, `F-070`, `F-063`, `F-140`).
   S17: `case_cut_edge_realization_gen` and `_gp_gen` (`Theorem55.lean` 1337, 1500) without `_hV3`,
   the second without its hypothesis's second conjunct; the call in `theorem_55_minimalKDof_gen`
@@ -449,19 +448,18 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 11.1**, at Opus, docs only: `F-270`'s cure (*Lemma checklist*). Task 11 proved
-`isKDof_zero_of_triangle` (a pin of `lem:splitoff-simple`, `molecular-induction.tex` 2017) as the
-case $m = 3$ of `isKDof_zero_of_cycle`, the pin of `lem:cycle-zero-dof` (2196), so the reach report
-has one missing proof edge, forward; the cure moves `lem:cycle-zero-dof` to `deficiency.tex`, the
-chapter before, beside `lem:two-vertex-zero-dof`, so that the edge points back, and adds it. Make the dump's
-expected diff exact before editing (the moved node's page, its dropped edge to `def:cycle-data`,
-the new proof edge), and re-read `lem:chain-cycle-dichotomy` (2221), the KT Lemma 4.6
-subsection's lead (2145) and `deficiency.tex`'s around 1028 for a sentence that would point
-forward. Gates 5–6 (the parent `scratch/reconcile-lean/dump-t11.txt`, gitignored; regenerate it
-if missing), 7 (33/17 and 4/4), 8, 9 (388) and 10; no Lean edit, so not 1–3. Then task 12, the
-algebraic induction (`F-104`, `F-102`, `F-070`, `F-063`, `F-140`). Carried in: `F-252` for the PI
-(round 1's *Candidates*; the phase's (a) removes it); `F-268` and `F-269` for task 38. After the
-round the queue stops before `RECONCILE-FORMAL`, which is attended.
+**Next: task 12**, at Opus, Lean: the algebraic induction's signatures (`F-104`, `F-102`, `F-070`,
+`F-063`, `F-140`; *Lemma checklist*), four changes in `Theorem55.lean`, `CaseI.lean` (two) and
+`PanelLayer.lean`. If they do not fit one commit, land S17's as 12.1
+(`case_cut_edge_realization_gen` and `_gp_gen` without `_hV3`, the second without its hypothesis's
+second conjunct, the call in `theorem_55_minimalKDof_gen` following, its statement unchanged) and
+the other three as 12.2, splitting the checklist line in that commit. Re-`grep` the line numbers.
+Gates 1–3 (the axioms harness `cmp`-identical to the open's), gate 2's statement grep of each
+changed name over `blueprint/src/` (`lem:case-cut-edge-realization-gp`'s note, `panel-layer.tex`
+716, is named), 5–6 (the parent `scratch/reconcile-lean/dump-t11_1.txt`, gitignored; regenerate it
+if missing; byte-identical unless node text changes), 9 (388) and 10. Carried in: `F-252` for the
+PI (round 1's *Candidates*; the phase's (a) removes it); `F-268` and `F-269` for task 38. After
+the round the queue stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 

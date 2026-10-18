@@ -525,8 +525,9 @@ Lemma~3.6), at a cut vertex, and along an ear. We also define the
 largest value of a partition that keeps two given vertices in one part,
 and show that every multigraph has a minimal spanning subgraph of the
 same deficiency. Finally we treat the circuits of $M(\tilde G)$ (the
-first step of KT Lemma~3.4) and the minimal $k$-dof-graphs with at most
-two vertices.
+first step of KT Lemma~3.4), show that the two-vertex double edge and a
+short cycle are $0$-dof-graphs, and list the minimal $k$-dof-graphs
+with at most two vertices.
 
 Katoh and Tanigawa's combinatorial induction contracts proper rigid
 subgraphs (\cref{sec:molecular-induction}).
@@ -1021,8 +1022,10 @@ eq.~(2.4).
 Katoh and Tanigawa prove their Theorem~5.5 by induction on the number of
 vertices, from the case of two
 vertices~\cite[p.~671]{katohTanigawa2011}. The next lemma computes the
-deficiency of the two-vertex double edge, and the one after it lists
-the minimal $k$-dof-graphs with two vertices, and with one.
+deficiency of the two-vertex double edge, and the one after it that of
+a short cycle, which the next chapter uses
+(\cref{sec:molecular-induction}). The third lists the minimal
+$k$-dof-graphs with two vertices, and with one.
 
 \begin{lemma}[The two-vertex double edge is a $0$-dof-graph]
   \label{lem:two-vertex-zero-dof}
@@ -1040,6 +1043,33 @@ the minimal $k$-dof-graphs with two vertices, and with one.
   its value is $D - 2(D - 1) = 2 - D \le 0$ (\cref{def:D-deficiency}).
   Hence $\operatorname{def}(\tilde H) = 0$.
 \end{proof}
+
+\begin{lemma}[A short cycle is a $0$-dof-graph]
+  \label{lem:cycle-zero-dof}
+  \lean{Graph.isKDof_zero_of_cycle}
+  \leanok
+  \uses{def:k-dof}
+  Let $3 \le m \le D$, and let $C$ be a multigraph whose vertices are
+  $m$ distinct vertices $v_0, \dots, v_{m-1}$ and whose edges are $m$
+  edges $f_0, \dots, f_{m-1}$, where $f_i$ joins $v_i$ and $v_{i+1}$,
+  with indices modulo $m$. Then $C$ is a $0$-dof-graph.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:D-deficiency}
+  Let $P$ be a partition of $V(C)$ into at least two parts. Each part is
+  a proper subset of $V(C)$, so it has a vertex $v_i$ whose successor
+  $v_{i+1}$ lies in another part. The edge $f_i$ joins two parts, and
+  different parts give different edges. So at least $|P|$ edges join
+  different parts, and the value of $P$ (\cref{def:D-deficiency}) is at
+  most $D(|P| - 1) - (D-1)|P| = |P| - D \le 0$, as $|P| \le m \le D$.
+  The partition into one part has value $0$, so
+  $\operatorname{def}(\tilde C) = 0$.
+\end{proof}
+\begin{fmlnote}
+  The pin takes the vertices and the edges of $C$ as two maps on
+  $\{0, \dots, m-1\}$, and it does not ask that the vertices be distinct.
+\end{fmlnote}
 
 \begin{lemma}[The minimal $k$-dof-graphs with at most two vertices; KT p.~671]
   \label{lem:two-vertex-trichotomy}

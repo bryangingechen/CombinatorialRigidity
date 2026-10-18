@@ -1022,7 +1022,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --label lem:splitoff-simple`, `--summary` and
   the forward screen, on round 3 task 11's tree).
   *Found:* RECONCILE round 3 task 11.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 11.1).
+  *Disposition:* done (task 11.1): `lem:cycle-zero-dof` moved after `lem:two-vertex-zero-dof`,
+  stating the cycle in its own words, without `def:cycle-data`; `lem:splitoff-simple`'s proof
+  `\uses` it for `def:D-deficiency`, its triangle the cycle on three vertices (missing 0, the
+  screen the open's).
 
 ## N — node shape
 
