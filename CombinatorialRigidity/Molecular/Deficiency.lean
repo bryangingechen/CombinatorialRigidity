@@ -1741,48 +1741,49 @@ theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finit
     rw [← hdef_eq]; exact hG.deficiency_eq.symm
   exact ⟨V₁, _, _, hne, hssub, hne₂, hmin₁, hmin₂, hcut, hk_eq⟩
 
-/-! ## Tight partitions (`sec:jacobs-tight-partitions`, JJ Lemma 3.2 bricks)
+/-! ## Tight partitions (`def:tight-partition`, `sec:jacobs-tight-partitions`)
 
-Structural facts about partitions attaining the deficiency (`lem:exists-tight-partition`
-through `lem:tight-partition-cross-pair` of `jacobs.tex`), due to Jackson–Jordán
-(Lemma 3.2 of their companion paper on partitions into maximal zero-deficiency
-subgraphs). Stated `D`-generically to match `partitionDef`/`deficiency`; the Jacobs
-chapter (Phase 32) consumes them at `D = 6`. This slice adds the part dichotomy
-(`lem:tight-partition-parts`, JJ Lemma 3.2(b) consumed form) on top of the existence lemma,
-the merge-arithmetic identity, and the subfamily inequality; the `lem:tight-partition-parts`
-proof needs `G.Simple` (an in-part-edge count bounds a neighbor-vertex count only when edges
-between a fixed pair are unique) even though the earlier lemmas of this section do not. The
-cross-pair consequence (`lem:tight-partition-cross-pair`) follows in a later commit. -/
+A partition of `V(G)` is *tight* when its value is the deficiency (`def:tight-partition`, after
+Jackson and Jordán 2008, §2), and tight partitions exist (`lem:exists-tight-partition`). The rest of
+the section is `sec:jacobs-tight-partitions`: the change in value when several parts are merged into
+one (`lem:partitionDef-merge`), and from it Jackson and Jordán's Lemma 3.2(a)
+(`lem:tight-partition-subfamily`), a consequence of its part (b) (`lem:tight-partition-parts`), and
+two consequences of part (a) that they draw in the proofs of their Theorems 3.4 and 5.3: two parts
+are joined by at most one edge (`lem:tight-partition-cross-pair-mult`), and two vertices in distinct
+parts have at most one common neighbor (`lem:tight-partition-cross-pair-nbr`). Jackson and Jordán
+take Lemma 3.2 from their paper *Brick partitions of graphs* (their reference [10]). The lemmas
+hold for every `D = bodyBarDim n`, each with the bound on `D` that it assumes; `jacobs.tex` applies
+them at `D = 6`. `IsTightPartition.parts` and `IsTightPartition.eq_of_common_nbr` also assume `G`
+simple, as their nodes do. -/
 
-/-- **A tight partition** (`lem:exists-tight-partition`): a labeling `f` of `V(G)` whose
-`D`-deficiency `partitionDef` attains the maximum `deficiency`. The name matches the
-later structural lemmas (`lem:tight-partition-subfamily`, `lem:tight-partition-parts`,
-`lem:tight-partition-cross-pair`), all stated for such an `f`. -/
+/-- A **tight partition** (`def:tight-partition`; Jackson and Jordán 2008, §2): a labeling `f`
+whose value `partitionDef` is the deficiency, `def_{G̃}(P_f) = def(G̃)`. The lemmas of
+`sec:jacobs-tight-partitions` below are stated for such an `f`. -/
 def IsTightPartition (G : Graph α β) (n : ℕ) (f : α → α) : Prop :=
   G.partitionDef n f = G.deficiency n
 
-/-- **Tight partitions exist** (`lem:exists-tight-partition`). The domain `α → α` is
-finite (since `α` is, via `Pi.finite`) and always nonempty (`id` is a term of it
-regardless of `α`), so `Finite.exists_max` produces a maximizer of `partitionDef`;
-combined with `partitionDef_le_deficiency` (the other half of the `iSup` equality via
-`ciSup_le`), the maximizer's `partitionDef` equals `deficiency` exactly. Holds
-unconditionally (no `V(G).Nonempty` hypothesis needed, unlike the blueprint's phrasing:
-even for `α` empty the unique labeling trivially attains the — possibly negative —
-deficiency). -/
+/-- **Tight partitions exist** (`lem:exists-tight-partition`), when `α` is finite. The labelings
+`α → α` form a finite nonempty type (`id` is one), so some labeling has the largest value
+(`Finite.exists_max`), and that value is the deficiency (`partitionDef_le_deficiency` and
+`ciSup_le`). The lemma does not ask `V(G)` to be nonempty, unlike its node
+(`fmlnote:tight-partition-consumed-forms`): when it is empty, every labeling has value `-D`, which
+is then the deficiency. -/
 theorem exists_isTightPartition [Finite α] (G : Graph α β) (n : ℕ) :
     ∃ f, G.IsTightPartition n f := by
   have : Nonempty (α → α) := ⟨id⟩
   obtain ⟨f, hf⟩ := Finite.exists_max (G.partitionDef n)
   exact ⟨f, le_antisymm (G.partitionDef_le_deficiency n f) (ciSup_le hf)⟩
 
-/-- The number of edges of `G` joining two **distinct** members of a subfamily `S` of the
-parts of the partition encoded by `f` (`e_G(Q)` of `lem:partitionDef-merge` / JJ Lemma
-3.2): edges `e ∈ E(G)` with endpoints `x, y` such that `f x, f y ∈ S` and `f x ≠ f y`. -/
+/-- The set of edges of `G` **joining distinct members of a family of parts**
+(`def:crossing-edges-within`): for a set `S` of labels, the edges `e ∈ E(G)` with ends `x, y` such
+that `f x, f y ∈ S` and `f x ≠ f y`. For the family `Q` of the parts of the partition encoded by `f`
+whose labels lie in `S`, it is Jackson and Jordán's `E_G(Q)` (2008, §2), and its size is their
+`e_G(Q)`. -/
 def crossingEdgesWithin (G : Graph α β) (f : α → α) (S : Set α) : Set β :=
   {e ∈ E(G) | ∃ x y, G.IsLink e x y ∧ f x ∈ S ∧ f y ∈ S ∧ f x ≠ f y}
 
-/-- Helper for `partitionDef_merge`: collapsing a subfamily `S ⊆ T` of labels to a single
-representative `a ∈ S` (the identity outside `S`) sends `T` to `insert a (T \ S)`. -/
+/-- A step of `lem:partitionDef-merge`: a map `c` that sends every label of `S ⊆ T` to one
+`a ∈ S` and fixes every label outside `S` sends `T` to `insert a (T \ S)`. -/
 private lemma image_const_of_subset {T S : Set α} {c : α → α} {a : α}
     (hS : S ⊆ T) (ha : a ∈ S) (hc_mem : ∀ y ∈ S, c y = a) (hc_not_mem : ∀ y ∉ S, c y = y) :
     c '' T = insert a (T \ S) := by
@@ -1797,16 +1798,15 @@ private lemma image_const_of_subset {T S : Set α} {c : α → α} {a : α}
     · exact ⟨a, hS ha, (hc_mem a ha).trans hy.symm⟩
     · exact ⟨y, hyT, hc_not_mem y hyS⟩
 
-/-- **Deficiency under coarsening** (`lem:partitionDef-merge`; JJ Lemma 3.2 setup). Let
-`f` be a labeling of `V(G)`, `S ⊆ f '' V(G)` a subfamily of its parts (`Q`), and
-`c : α → α` a map collapsing `S` to a representative `a ∈ S` and fixing every label
-outside `S`. Then the `D`-deficiency of the coarsened labeling `c ∘ f` is
-`partitionDef G n f - (D·(|S| - 1) - (D-1)·e_G(Q))`, where
-`e_G(Q) = (G.crossingEdgesWithin f S).ncard`. Read right to left, the identity computes
-the deficiency change under refining one part into several (`lem:tight-partition-parts`,
-a later commit). Holds without JJ's `2 ≤ S.ncard` (the identity is trivially true, both
-sides equal, when `S` is a singleton and `e_G(Q) = 0`); callers supply that hypothesis
-themselves when it is the substantive content (`lem:tight-partition-subfamily`). -/
+/-- **Deficiency under coarsening** (`lem:partitionDef-merge`). Let `f` be a labeling,
+`S ⊆ f '' V(G)` a set of its labels on `V(G)` (the family `Q` of their parts), and `c : α → α` a
+map that sends every label of `S` to one `a ∈ S` and fixes every label outside `S`, so that `c ∘ f`
+merges the members of `Q` into one part. Then
+`def_{G̃}(P_{c ∘ f}) = def_{G̃}(P_f) - (D(|S| - 1) - (D-1)·e_G(Q))`, where
+`e_G(Q) = |crossingEdgesWithin G f S|`: the merged partition has `|S| - 1` fewer parts, and its
+crossing edges are those of `f` that do not join two members of `Q`. `S` is nonempty as `a ∈ S`;
+when `|S| = 1`, `c ∘ f` is `f`. Read from right to left, the identity gives the change in value when
+a part is split into several (`IsTightPartition.parts`). -/
 theorem partitionDef_merge [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f c : α → α}
     {S : Set α} {a : α} (hS : S ⊆ f '' V(G)) (ha : a ∈ S)
     (hc_mem : ∀ y ∈ S, c y = a) (hc_not_mem : ∀ y ∉ S, c y = y) :
@@ -1860,13 +1860,12 @@ theorem partitionDef_merge [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {
   push_cast
   ring
 
-/-- **Subfamilies of a tight partition** (`lem:tight-partition-subfamily`; JJ Lemma 3.2(a)).
-Let `f` be a tight labeling and `S ⊆ f '' V(G)` a subfamily of its parts (`Q`) with
-`2 ≤ S.ncard`. Then `(D-1)·e_G(Q) ≤ D·(|S|-1)`, where `e_G(Q) = (G.crossingEdgesWithin f
-S).ncard`. Collapsing `S` to a representative `a ∈ S` (`partitionDef_merge`) can only
-*decrease* the deficiency below its maximum (`partitionDef_le_deficiency`), and tightness
-of `f` says that maximum is already attained at `f`; rearranging the merge identity gives
-the bound. -/
+/-- **Subfamilies of a tight partition** (`lem:tight-partition-subfamily`; Jackson and Jordán 2008,
+Lemma 3.2(a)). Let `f` be a tight labeling and `S ⊆ f '' V(G)` a set of its labels on `V(G)` (the
+family `Q` of their parts) with `2 ≤ |S|`. Then `(D-1)·e_G(Q) ≤ D(|S| - 1)`, where
+`e_G(Q) = |crossingEdgesWithin G f S|`. Merging the members of `Q` (`partitionDef_merge`) gives a
+partition of value at most `def(G̃)` (`partitionDef_le_deficiency`), which is the value of `f`, as
+`f` is tight; so the change in value, `(D-1)·e_G(Q) - D(|S| - 1)`, is at most `0`. -/
 theorem IsTightPartition.subfamily_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
     (hf : G.IsTightPartition n f) {S : Set α} (hS : S ⊆ f '' V(G)) (hS2 : 2 ≤ S.ncard) :
     ((bodyBarDim n : ℤ) - 1) * (G.crossingEdgesWithin f S).ncard ≤
@@ -1880,12 +1879,10 @@ theorem IsTightPartition.subfamily_le [Finite α] [Finite β] {G : Graph α β} 
   have hf' : G.partitionDef n f = G.deficiency n := hf
   linarith [hmerge, hle, hf']
 
-/-- Helper for `IsTightPartition.parts`: if two distinct vertices of `V(G)` carry the same
-`f`-label, some label `b` genuinely *fresh* — carried by no vertex of `G` at all — exists.
-`f` is non-injective at the pair `{v, w}`, so `f '' V(G) = f '' (V(G) \ {w})` has `ncard` at
-most `V(G).ncard - 1`, strictly below `Nat.card α`; a label outside the (cardinality-proper)
-image therefore exists. Feeds the vertex-splitting construction (`Function.update f v b`) of
-`IsTightPartition.parts`. -/
+/-- A step of `lem:tight-partition-parts`: if two distinct vertices `v, w` of `G` have the same
+label, some label `b` is the label of no vertex of `G`. Indeed `f '' V(G) = f '' (V(G) \ {w})` has
+at most `|V(G)| - 1 < |α|` elements, `α` being finite. `IsTightPartition.parts` gives `v` the
+label `b` (`Function.update f v b`), to split `v` off its part. -/
 private theorem exists_fresh_label [Finite α] (G : Graph α β) (f : α → α) {v w : α}
     (hv : v ∈ V(G)) (hw : w ∈ V(G)) (hvw : v ≠ w) (hfw : f w = f v) :
     ∃ b, b ∉ f '' V(G) := by
@@ -1907,19 +1904,18 @@ private theorem exists_fresh_label [Finite α] (G : Graph α β) (f : α → α)
     omega
   exact (Set.ne_univ_iff_exists_notMem _).mp hne
 
-/-- **Parts of a tight partition** (`lem:tight-partition-parts`; JJ Lemma 3.2(b), consumed
-form). Let `f` be a tight labeling of `V(G)` (`D = bodyBarDim n ≥ 2`) of a simple graph `G`,
-and let `v, w ∈ V(G)` be distinct vertices sharing a label (witnessing `v`'s part has ≥ 2
-members). Then `v`'s part has at least three vertices, and `v` has at least two neighbors
-inside it (counted as edges, matching the `e_G(Q)` quantity of `partitionDef_merge`).
+/-- **Parts of a tight partition** (`lem:tight-partition-parts`; a consequence of Jackson and
+Jordán 2008, Lemma 3.2(b), which they draw in the proof of their Theorem 5.3). Let `D ≥ 2`, let `G`
+be simple, let `f` be a tight labeling, and let `v ≠ w` be vertices of `G` with the same label, so
+that the part of `v` has at least two vertices. Then that part has at least three vertices, and at
+least two edges join `v` to other vertices of it.
 
-Splitting `v` off its part into a fresh singleton label `b` (`exists_fresh_label`,
-`f' := Function.update f v b`) and merging `{b, f v}` back via `partitionDef_merge` recovers
-`f` (`partitionDef_congr`, since the merge agrees with `f` on `V(G)`); tightness of `f` bounds
-the merge's deficiency change by `0`, giving `D ≤ (D-1) * d` where `d` is `v`'s in-part edge
-count — hence `d ≥ 2` (using `hD`). Simplicity of `G` turns `d`'s edges injectively into
-distinct in-part neighbors (`eq_of_isLink`), bounding `d` by (part size − 1) and so the part
-size by `d + 1 ≥ 3`. -/
+Give `v` a label `b` that no vertex of `G` has (`exists_fresh_label`), in
+`f' = Function.update f v b`. Merging the labels `b` and `f v` of `f'` (`partitionDef_merge`) gives
+back the partition of `f` (`partitionDef_congr`), and as `f` is tight the value of `f'` is at most
+that of `f`. So `D ≤ (D-1)·d`, where `d` is the number of edges joining `v` to the rest of its
+part, and `d ≥ 2`. As `G` is simple, these edges have distinct other ends (`Simple.eq_of_isLink`),
+so the part has at least `d + 1 ≥ 3` vertices. -/
 theorem IsTightPartition.parts [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
     (hf : G.IsTightPartition n f) (hD : 2 ≤ bodyBarDim n) (hG : G.Simple)
     {v w : α} (hv : v ∈ V(G)) (hw : w ∈ V(G)) (hvw : w ≠ v) (hfw : f w = f v) :
@@ -2032,14 +2028,13 @@ theorem IsTightPartition.parts [Finite α] [Finite β] {G : Graph α β} {n : �
   omega
 
 /-- **At most one edge between two parts of a tight partition**
-(`lem:tight-partition-cross-pair-mult`; JJ Lemma 3.2, cross-pair edge-multiplicity form). Let
-`f` be a tight labeling with `D = bodyBarDim n ≥ 3`, and `a ≠ b` two of its labels. Then at
-most one edge of `G` crosses between the parts labeled `a` and `b` (`e_G(Q)` for
-`Q = \{a, b\}`, counted via `crossingEdgesWithin f {a, b}`, matching
-`lem:tight-partition-subfamily`).
-
-An instance of `subfamily_le` at `S = {a, b}` (`S.ncard = 2`): two or more crossing edges
-would give `(D-1)*2 ≤ D*(2-1) = D`, i.e. `D ≤ 2`, contradicting `D ≥ 3`. -/
+(`lem:tight-partition-cross-pair-mult`; a consequence of Jackson and Jordán 2008, Lemma 3.2(a),
+which they draw in the proof of their Theorem 3.4). Let `D ≥ 3`, let `f` be a tight labeling, and
+let `a ≠ b` be two of its labels on `V(G)`. Then at most one edge of `G` joins the parts labeled `a`
+and `b`: `e_G(Q) ≤ 1` for `Q` the two parts, `|crossingEdgesWithin G f {a, b}| ≤ 1`. This holds for
+every multigraph, with parallel edges counted (`fmlnote:tight-partition-consumed-forms`). Two such
+edges would give `2(D-1) ≤ D` (`IsTightPartition.subfamily_le` at `S = {a, b}`), that is,
+`D ≤ 2`. -/
 theorem IsTightPartition.crossingEdgesWithin_pair_le_one [Finite α] [Finite β] {G : Graph α β}
     {n : ℕ} {f : α → α} (hf : G.IsTightPartition n f) (hD : 3 ≤ bodyBarDim n)
     {a b : α} (ha : a ∈ f '' V(G)) (hb : b ∈ f '' V(G)) (hab : a ≠ b) :
@@ -2057,10 +2052,10 @@ theorem IsTightPartition.crossingEdgesWithin_pair_le_one [Finite α] [Finite β]
     have hD' : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
     nlinarith
 
-/-- Helper for `IsTightPartition.eq_of_common_nbr`: an edge linking `x, y` with different
-`f`-images than another edge linking `x', y'` is itself a different edge (an edge's endpoints,
-as an unordered pair, determine it). Purely structural (no `Simple`/`Loopless` needed): the two
-disjuncts of `IsLink.eq_and_eq_or_eq_and_eq` are each excluded by one of `h1`, `h2`. -/
+/-- A step of `lem:tight-partition-cross-pair-nbr`: an edge `e` with ends `a, b` and an edge `g`
+with ends `c, d` are different edges when `{a, b} ≠ {c, d}` as unordered pairs, that is, when
+`a ≠ c ∨ b ≠ d` and `a ≠ d ∨ b ≠ c`; an edge determines its ends up to order
+(`IsLink.eq_and_eq_or_eq_and_eq`). It assumes nothing of `G`. -/
 private theorem isLink_ne_of_ne_ends {G : Graph α β} {e g : β} {a b c d : α}
     (he : G.IsLink e a b) (hg : G.IsLink g c d) (h1 : a ≠ c ∨ b ≠ d) (h2 : a ≠ d ∨ b ≠ c) :
     e ≠ g := by
@@ -2069,8 +2064,9 @@ private theorem isLink_ne_of_ne_ends {G : Graph α β} {e g : β} {a b c d : α}
   · exact h1.elim (· hac) (· hbd)
   · exact h2.elim (· had) (· hbc)
 
-/-- Helper for `IsTightPartition.eq_of_common_nbr`: two distinct edges crossing the same pair of
-labels contradict `crossingEdgesWithin_pair_le_one`. -/
+/-- A step of `lem:tight-partition-cross-pair-nbr`: two distinct edges joining the parts of two
+labels `a ≠ b` of a tight labeling contradict `IsTightPartition.crossingEdgesWithin_pair_le_one`,
+which needs `D ≥ 3`. -/
 private theorem false_of_two_crossing [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
     (hf : G.IsTightPartition n f) (hD5 : 5 ≤ bodyBarDim n)
     {a b : α} (hab : a ≠ b) (ha : a ∈ f '' V(G)) (hb : b ∈ f '' V(G))
@@ -2083,9 +2079,9 @@ private theorem false_of_two_crossing [Finite α] [Finite β] {G : Graph α β} 
   have hWc := Set.ncard_le_ncard hWsub (Set.toFinite _)
   omega
 
-/-- Helper for `IsTightPartition.eq_of_common_nbr`: three pairwise-distinct edges all crossing
-within a three-element label set are an instance of `subfamily_le` contradicting `D ≥ 5`
-(`(D-1)*3 ≤ D*2` forces `D ≤ 3`). -/
+/-- A step of `lem:tight-partition-cross-pair-nbr`: three distinct edges, each joining two of the
+parts of three distinct labels of a tight labeling, contradict `D ≥ 5`, as
+`IsTightPartition.subfamily_le` gives `3(D-1) ≤ 2D`, that is, `D ≤ 3`. -/
 private theorem false_of_three_crossing [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
     (hf : G.IsTightPartition n f) (hD5 : 5 ≤ bodyBarDim n)
     {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
@@ -2110,9 +2106,9 @@ private theorem false_of_three_crossing [Finite α] [Finite β] {G : Graph α β
   push_cast at hsub
   nlinarith [hsub, hke', hD']
 
-/-- Helper for `IsTightPartition.eq_of_common_nbr`: four pairwise-distinct edges all crossing
-within a four-element label set are an instance of `subfamily_le` contradicting `D ≥ 5`
-(`(D-1)*4 ≤ D*3` forces `D ≤ 4`). -/
+/-- A step of `lem:tight-partition-cross-pair-nbr`: four distinct edges, each joining two of the
+parts of four distinct labels of a tight labeling, contradict `D ≥ 5`, as
+`IsTightPartition.subfamily_le` gives `4(D-1) ≤ 3D`, that is, `D ≤ 4`. -/
 private theorem false_of_four_crossing [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
     (hf : G.IsTightPartition n f) (hD5 : 5 ≤ bodyBarDim n)
     {a b c d : α} (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hbc : b ≠ c) (hbd : b ≠ d)
@@ -2139,20 +2135,18 @@ private theorem false_of_four_crossing [Finite α] [Finite β] {G : Graph α β}
   push_cast at hsub
   nlinarith [hsub, hke', hD']
 
-/-- **Uniqueness of the common neighbor of a cross pair** (`lem:tight-partition-cross-pair-nbr`).
-Let `f` be a tight labeling of a simple graph `G` with `D = bodyBarDim n ≥ 5`, and `u, w` two
-vertices in distinct parts. Then `u` and `w` have at most one common neighbor: any two common
-neighbors `v, v'` coincide. Holds without JJ's hypothesis that `u, w` are themselves
-nonadjacent — the proof below never uses it, only `f u ≠ f w`.
+/-- **The common neighbor of two vertices in distinct parts** (`lem:tight-partition-cross-pair-nbr`;
+a consequence of Jackson and Jordán 2008, Lemma 3.2(a), which they draw in the proof of their
+Theorem 5.3). Let `D ≥ 5`, let `G` be simple, let `f` be a tight labeling, and let `u, w` be
+vertices with `f u ≠ f w`. Then any two common neighbors `v, v'` of `u` and `w` are equal. Jackson
+and Jordán take `u` and `w` nonadjacent; the proof does not use it
+(`fmlnote:tight-partition-consumed-forms`), and it uses simplicity only through looplessness.
 
-The four edges `uv, vw, uv', v'w` are automatically pairwise distinct: `u, v, w, v'` are
-pairwise distinct (`Loopless`, off each `G.Adj` hypothesis and `f u ≠ f w`), so no two of the
-four edges share the same unordered endpoint pair (`isLink_ne_of_ne_ends`). Splitting on which
-of the four labels `f u, f v, f w, f v'` coincide (`f u ≠ f w` always) leaves, in every branch,
-either two of the four edges crossing the *same* pair of labels (`false_of_two_crossing`, an
-instance of `crossingEdgesWithin_pair_le_one`) or all of a three- or four-element subfamily of
-labels crossing (`false_of_three_crossing` / `false_of_four_crossing`, instances of
-`subfamily_le`); every branch contradicts `D ≥ 5`. -/
+Suppose that `v ≠ v'`. The vertices `u, v, w, v'` are then distinct, as `G` has no loops and
+`f u ≠ f w`, so the edges `uv, vw, uv', v'w` are distinct (`isLink_ne_of_ne_ends`). In each case
+of which of the labels `f u, f v, f w, f v'` are equal, either two of these edges join the same two
+parts (`false_of_two_crossing`), or three or four of them join parts of three or four distinct
+labels (`false_of_three_crossing`, `false_of_four_crossing`); each contradicts `D ≥ 5`. -/
 theorem IsTightPartition.eq_of_common_nbr [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     {f : α → α} (hf : G.IsTightPartition n f) (hD5 : 5 ≤ bodyBarDim n) (hG : G.Simple)
     {u w v v' : α} (hfuw : f u ≠ f w)
@@ -2260,6 +2254,10 @@ theorem IsTightPartition.eq_of_common_nbr [Finite α] [Finite β] {G : Graph α 
             · exact ⟨h_v'w.edge_mem, v', w, h_v'w, by simp, by simp, hsr⟩
             · exact ⟨h_uv'.edge_mem, u, v', h_uv', by simp, by simp, hsp.symm⟩
 
+/-- **An upper bound on the rank of `M(G̃)`** (`lem:rank-matroidMG-le`): for `V(G)` nonempty,
+`rank M(G̃) ≤ D(|V(G)| - 1)`, in `ℕ`. An independent set `I` of `M(G̃)` has `G̃ ↾ I`
+`(D, D)`-sparse (`matroidMG_indep_iff`). If `I` is nonempty, sparsity applied to `I` itself gives
+`|I| + D ≤ D·|V(I)| ≤ D·|V(G)|`. -/
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
     (hne : V(G).Nonempty) :
     (G.matroidMG n).rank ≤ bodyBarDim n * (V(G).ncard - 1) := by
@@ -2285,21 +2283,20 @@ theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α
         omega
     _ = bodyBarDim n * (V(G).ncard - 1) := by rw [Nat.mul_sub, Nat.mul_one]
 
-/-! ## Partition-respecting cycle-matroid rank bound (`thm:def-eq-corank`, piece 1)
+/-! ## The rank of the edges inside the parts of a partition (`lem:rk-within-parts`)
 
-The leaf the weak-duality half of the def = corank bridge bottoms out on: for the
-edge set `Y` of `G̃` whose every edge stays *within* a part of the partition `P`
-encoded by `f` (no crossing edge), the cycle-matroid rank is bounded by
-`r_{cycle}(Y) ≤ |V(G)| - |P|`. The point is *rank ≤ vertices − components* together
-with *components ≥ #parts*: a within-part edge keeps connectivity inside a part, so
-the connected components of `(G̃ ↾ Y)` refine the partition, hence there are at least
-`|P| = numParts` of them. -/
+Let `r` be the rank function of the cycle matroid of `G̃`, and let `Y` be a set of edges of `G̃`
+whose ends lie in one part of the partition `P` encoded by `f`. Then `r(Y) ≤ |V(G)| - |P|`. The
+restriction `G̃ ↾ Y` has all the vertices of `G` and `|V(G)| - r(Y)` components, and each component
+lies in one part, so there are at least `|P|` of them. Weak duality (`lem:weak-duality`) applies
+this to the edges of `G̃` inside the parts of `P`, and the reverse inequality of
+`thm:def-eq-corank` to a set `Y₀` at which the rank of a matroid union attains its minimum. -/
 
-/-- **The parts of a labeling constant across `Y` number at most the components of `H ↾ Y`**
-(`lem:rk-within-parts`, the components-refine-the-partition count). If the labeling `f` agrees
-across the ends of every edge of `Y`, it is constant on each component of the restriction
-`H ↾ Y` (`ConnBetween.eq_of_forall_isLink`), so the map sending a label to the component of one of
-its vertices is injective on `f '' V(H)`. -/
+/-- **The parts of a labeling constant along `Y` number at most the components of `H ↾ Y`** (a step
+of `lem:rk-within-parts` and of `lem:deficiency-antitone`). If the labeling `f` agrees on the ends
+of every edge of `Y`, it is constant on each component of the restriction `H ↾ Y`
+(`ConnBetween.eq_of_forall_isLink`), so the map sending a label to the component of one of its
+vertices is injective on `f '' V(H)`. -/
 theorem encard_image_le_numberOfComponents_restrict {H : Graph α β} {Y : Set β} {f : α → α}
     (hY : ∀ e ∈ Y, ∀ x y, H.IsLink e x y → f x = f y) : (f '' V(H)).encard ≤ c(H ↾ Y) := by
   -- A representative vertex for each label.
@@ -2323,17 +2320,12 @@ theorem encard_image_le_numberOfComponents_restrict {H : Graph α β} {Y : Set �
   rw [(hrep ℓ hℓ).2, (hrep ℓ' hℓ').2] at hff
   exact hff.symm
 
-/-- **Partition-respecting cycle-matroid rank bound** (`thm:def-eq-corank`, piece 1;
-the components-refine-the-partition leaf). For the multiplied graph `G̃ = (D-1)·G`,
-the edge set `Y` of within-part fibers under the partition `P` encoded by `f` (every
-edge of `Y` joins two equally-labeled vertices) satisfies
-`r_{cycle}(Y) + numParts f ≤ |V(G)|`, i.e. `r_{cycle}(Y) ≤ |V(G)| - |P|`.
-
-Via the cycle-matroid rank–component identity `eRank + c = |V|` on the restriction
-`G̃ ↾ Y` (which keeps every vertex, so `V(G̃ ↾ Y) = V(G̃) = V(G)`): the rank is
-`|V(G)| - c(G̃ ↾ Y)`, and `c(G̃ ↾ Y) ≥ numParts f` because the labeling is constant on
-each component, so the map sending a label to the component of one of its vertices is
-injective (`encard_image_le_numberOfComponents_restrict`). -/
+/-- **The rank of the edges inside the parts of a partition** (`lem:rk-within-parts`): let `r` be
+the rank function of the cycle matroid of `G̃ = (D-1)·G`, and let `Y ⊆ E(G̃)` be a set of edges each
+of which joins two vertices with the same label under `f`. Then `r(Y) + |P| ≤ |V(G)|`, where
+`|P| = numParts G f`. The restriction `G̃ ↾ Y` keeps every vertex, so
+`r(Y) + c(G̃ ↾ Y) = |V(G)|` (`eRank_cycleMatroid_add_numberOfComponents`), and
+`|P| ≤ c(G̃ ↾ Y)` (`encard_image_le_numberOfComponents_restrict`). -/
 theorem rk_cycleMatroid_within_parts_le [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} (hYE : Y ⊆ E(G.mulTilde n)) {f : α → α}
     (hY : ∀ p ∈ Y, ∀ x y, (G.mulTilde n).IsLink p x y → f x = f y) :
@@ -2363,12 +2355,12 @@ theorem rk_cycleMatroid_within_parts_le [Finite α] [Finite β] (G : Graph α β
     gcongr
   exact_mod_cast hsum
 
-/-! ## Crossing edges of a connected graph, and the deficiency across dimensions
-(`lem:deficiency-antitone`)
+/-! ## The deficiency does not increase with the dimension (`lem:deficiency-antitone`)
 
-A partition of a connected graph into `p` parts is crossed by at least `p − 1` edges, so partition
-by partition `def` at a larger body dimension is no larger: the difference is
-`(D′ − D)(|P| − 1 − d(P)) ≤ 0`. Informal (MC-5)(i) of §(K-main), `def₃ ≤ def₂`. -/
+A partition of a connected graph into `p` parts is crossed by at least `p − 1` edges. So for
+`D ≤ D′` the value of a partition `P` at `D′` minus its value at `D` is
+`(D′ − D)(|P| − 1 − d_G(P)) ≤ 0`. In particular `def₃(G) ≤ def₂(G)`, the deficiencies at `D = 6`
+and `D = 3`, which `sec:main-component` compares. -/
 
 /-- **A partition of a connected graph into `p` parts is crossed by at least `p − 1` edges**
 (`lem:deficiency-antitone`). Deleting the crossing edges leaves at least `p` components
@@ -2410,11 +2402,10 @@ theorem Connected.numParts_le_ncard_crossingEdges_add_one [Finite α] [Finite β
   rw [← Finite.cast_ncard_eq (toFinite _), ← Finite.cast_ncard_eq (toFinite _)] at this
   exact_mod_cast this
 
-/-- **On a connected graph the deficiency decreases with the dimension**
-(`lem:deficiency-antitone`; informal (MC-5)(i) of §(K-main) in general form). For `n ≤ m`,
-partition by partition `partitionDef m f − partitionDef n f = (D_m − D_n)(|P| − 1 − d(P)) ≤ 0`,
-since `bodyBarDim` is monotone and `|P| − 1 ≤ d(P)`
-(`Connected.numParts_le_ncard_crossingEdges_add_one`). -/
+/-- **On a connected graph the deficiency does not increase with the dimension**
+(`lem:deficiency-antitone`): for `n ≤ m`, `def_m(G) ≤ def_n(G)`. For each labeling `f`,
+`partitionDef m f − partitionDef n f = (D_m − D_n)(|P| − 1 − d_G(P)) ≤ 0`, since `bodyBarDim` is
+monotone and `|P| − 1 ≤ d_G(P)` (`Connected.numParts_le_ncard_crossingEdges_add_one`). -/
 theorem Connected.deficiency_le_deficiency_of_le [Finite α] [Finite β] {G : Graph α β}
     (hG : G.Connected) {n m : ℕ} (hnm : n ≤ m) : G.deficiency m ≤ G.deficiency n := by
   have hD : (bodyBarDim n : ℤ) ≤ bodyBarDim m := by
@@ -2429,26 +2420,26 @@ theorem Connected.deficiency_le_deficiency_of_le [Finite α] [Finite β] {G : Gr
   unfold partitionDef
   nlinarith
 
-/-- **`def₃ ≤ def₂` on a connected graph** (`lem:deficiency-antitone`; informal (MC-5)(i)). -/
+/-- **`def₃ ≤ def₂` on a connected graph** (`lem:deficiency-antitone`): the deficiency at `n = 3`
+(`D = 6`) is at most that at `n = 2` (`D = 3`). -/
 theorem Connected.deficiency_three_le_deficiency_two [Finite α] [Finite β] {G : Graph α β}
     (hG : G.Connected) : G.deficiency 3 ≤ G.deficiency 2 :=
   hG.deficiency_le_deficiency_of_le (by norm_num)
 
-/-! ## Weak duality (`thm:def-eq-corank`, piece 2)
+/-! ## Weak duality (`lem:weak-duality`)
 
-For every partition `P` of `V(G)`, `rank M(G̃) + def_{G̃}(P) ≤ D(|V| - 1)`, hence
-(maximising over `P`) `rank M(G̃) + def(G̃) ≤ D(|V| - 1)` — the `def ≤ corank`
-half of the bridge. The Edmonds matroid-partition rank formula (`Union_pow_rk_eq`)
-on `X := E(G̃)` with the non-crossing fibers `Y` bounds `rank M(G̃) ≤ D·r_cycle(Y) +
-|E(G̃) ∖ Y|`; piece 1 (`rk_cycleMatroid_within_parts_le`) bounds `D·r_cycle(Y) ≤
-D(|V| - |P|)`, and the bookkeeping leaf `|E(G̃) ∖ Y| = (D-1)·d_G(P)` (each crossing
-edge contributes its `D-1` fibers) makes the two sides match. -/
+For `D ≥ 1`, `V(G)` nonempty and every partition `P` of `V(G)`,
+`rank M(G̃) + def_{G̃}(P) ≤ D(|V(G)| - 1)`, and so `rank M(G̃) + def(G̃) ≤ D(|V(G)| - 1)`, the
+inequality `≤` of KT eq. (2.4). Let `Y` be the set of the copies of the edges of `G` inside the
+parts of `P`. The rank of a matroid union (`thm:matroid-partition-rank`, `Union_pow_rk_eq`), for
+the `D` copies of the cycle matroid of `G̃` at `E(G̃)`, gives
+`rank M(G̃) ≤ D·r(Y) + |E(G̃) ∖ Y|`. Then `r(Y) ≤ |V(G)| - |P|` (`rk_cycleMatroid_within_parts_le`),
+and `|E(G̃) ∖ Y| = (D-1)·d_G(P)`, as each crossing edge has `D - 1` copies. -/
 
-/-- The **crossing fibers** of `G̃` under the partition `P` encoded by `f`: the fibers
-`p ∈ E(G̃)` whose underlying edge `p.1` crosses `P`. Equivalently `E(G̃) ∖ Y` for the
-non-crossing fibers `Y`. There are exactly `(D-1)·d_G(P)` of them — each of the
-`d_G(P) = |crossingEdges G f|` crossing edges of `G` contributes its `D-1` parallel
-copies. -/
+/-- A step of `lem:weak-duality` and of `thm:def-eq-corank`: the copies in `G̃` of the edges of `G`
+crossing the partition encoded by `f` number `(D-1)·d_G(P)`, as each of the
+`d_G(P) = |crossingEdges G f|` crossing edges has `D - 1 = bodyHingeMult n` copies. They are the
+edges of `G̃` outside the set of the copies of the edges inside the parts. -/
 private theorem ncard_crossing_fibers (G : Graph α β) (n : ℕ) (f : α → α) :
     {p : β × Fin (bodyHingeMult n) | p.1 ∈ G.crossingEdges f}.ncard =
       bodyHingeMult n * (G.crossingEdges f).ncard := by
@@ -2458,13 +2449,13 @@ private theorem ncard_crossing_fibers (G : Graph α β) (n : ℕ) (f : α → α
   rw [hprod, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin,
     mul_comm]
 
-/-- **Weak duality for a single partition** (`thm:def-eq-corank`, piece 2): for the
-partition `P` encoded by a labeling `f`, `rank M(G̃) + def_{G̃}(P) ≤ D(|V| - 1)`.
-Via the Edmonds partition-rank formula `Union_pow_rk_eq` on `X := E(G̃)` and the
-non-crossing fibers `Y = {p ∈ E(G̃) | p.1 ∉ crossingEdges}`: `rank M(G̃) =
-rk_Union(E(G̃)) ≤ D·r_cycle(Y) + |E(G̃) ∖ Y|`, where `r_cycle(Y) ≤ |V| - |P|`
-(`rk_cycleMatroid_within_parts_le`) and `|E(G̃) ∖ Y| = (D-1)·d_G(P)`
-(`ncard_crossing_fibers`). -/
+/-- **Weak duality at a partition** (`lem:weak-duality`): for `D ≥ 1`, `V(G)` nonempty and the
+partition `P` encoded by a labeling `f`, `rank M(G̃) + def_{G̃}(P) ≤ D(|V(G)| - 1)`. Let
+`Y = {p | p.1 ∈ E(G), p.1 ∉ crossingEdges G f}`, the copies of the edges inside the parts. The rank
+of a matroid union (`Union_pow_rk_eq`), at `E(G̃)` and `Y`, gives
+`rank M(G̃) ≤ D·r(Y) + |E(G̃) ∖ Y|` for the rank function `r` of the cycle matroid of `G̃`. Then
+`r(Y) ≤ |V(G)| - |P|` (`rk_cycleMatroid_within_parts_le`) and
+`|E(G̃) ∖ Y| = (D-1)·d_G(P)` (`ncard_crossing_fibers`). -/
 theorem rank_add_partitionDef_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) (f : α → α) :
     (G.matroidMG n).rank + G.partitionDef n f ≤ bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
@@ -2489,10 +2480,10 @@ theorem rank_add_partitionDef_le [DecidableEq β] [Finite α] [Finite β] (G : G
     constructor
     · rintro ⟨hpE, h⟩; exact h hpE
     · intro hp; exact ⟨(by exact hp.1 : p.1 ∈ E(G)), fun _ => hp⟩
-  -- Edmonds rank formula: `rk_Union(E(G̃)) ≤ D·r_cycle(Y) + |E(G̃) ∖ Y|`.
+  -- The rank of a matroid union: `rk_Union(E(G̃)) ≤ D·r_cycle(Y) + |E(G̃) ∖ Y|`.
   obtain ⟨_, hle⟩ := Union_pow_rk_eq (G.mulTilde n).cycleMatroid (bodyBarDim n) E(G.mulTilde n)
   have hbound := hle Y hYsub
-  -- Within-part hypothesis for piece 1: a non-crossing fiber joins equally-labeled vertices.
+  -- `rk_cycleMatroid_within_parts_le`'s hypothesis: an edge of `Y` joins vertices with one label.
   have hwithin : ∀ p ∈ Y, ∀ x y, (G.mulTilde n).IsLink p x y → f x = f y := by
     intro p hp x y hlink
     have hG : G.IsLink p.1 x y := by rw [mulTilde_isLink] at hlink; exact hlink
@@ -2509,26 +2500,25 @@ theorem rank_add_partitionDef_le [DecidableEq β] [Finite α] [Finite β] (G : G
       E(G.mulTilde n) ≤ bodyBarDim n * (G.mulTilde n).cycleMatroid.rk Y +
         bodyHingeMult n * (G.crossingEdges f).ncard := by
     rw [← hcard]; exact hbound
-  -- `|V| ≥ 1` (nonempty); unfold `numParts` in piece 1 to match the goal's `(f '' V).ncard`.
+  -- `|V| ≥ 1` (nonempty); unfold `numParts` in `hpiece1` to match the goal's `(f '' V).ncard`.
   have hV1 : 1 ≤ V(G).ncard := hne.ncard_pos
   rw [numParts] at hpiece1
   -- `bodyHingeMult n = D - 1` as ℤ (clean since `D ≥ 1`).
   have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
   zify at hkey hpiece1
   rw [hHM] at hkey
-  -- `r_cycle(Y) ≤ |V| - |P|` (piece 1) and `rank ≤ D·r + (D-1)·d` (Edmonds); combine.
+  -- `r_cycle(Y) ≤ |V| - |P|` (`hpiece1`) and `rank ≤ D·r + (D-1)·d` (`hkey`); combine.
   set R : ℤ := ((G.mulTilde n).cycleMatroid.rk Y : ℤ) with hR
   set D : ℤ := (bodyBarDim n : ℤ) with hDdef
   nlinarith [hkey, hpiece1, mul_le_mul_of_nonneg_left
     (show R ≤ (V(G).ncard : ℤ) - (f '' V(G)).ncard by linarith)
     (show (0:ℤ) ≤ D by positivity)]
 
-/-- **Weak duality** (`thm:def-eq-corank`, the `def ≤ corank` half): maximising
-`rank_add_partitionDef_le` over all partitions gives
-`rank M(G̃) + def(G̃) ≤ D(|V| - 1)`. Equivalently `def(G̃) ≤ corank M(G̃)` inside the
-rank-`D(|V|-1)` ambient. With the rank upper bound `rank_matroidMG_le`, this is one of
-the two inequalities of the full bridge `thm:def-eq-corank`; the reverse direction (a
-partition attaining the rank) is the remaining JJ09 min–max content. -/
+/-- **Weak duality** (`lem:weak-duality`): for `D ≥ 1` and `V(G)` nonempty,
+`rank M(G̃) + def(G̃) ≤ D(|V(G)| - 1)`, that is, `def(G̃)` is at most the corank
+`D(|V(G)| - 1) - rank M(G̃)`. It is `rank_add_partitionDef_le` at every partition (`ciSup_le`).
+This is the inequality `≤` of KT eq. (2.4) (`thm:def-eq-corank`), whose reverse is
+`le_rank_add_deficiency`. -/
 theorem rank_add_deficiency_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
     (G.matroidMG n).rank + G.deficiency n ≤ bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
@@ -2540,28 +2530,29 @@ theorem rank_add_deficiency_le [DecidableEq β] [Finite α] [Finite β] (G : Gra
     ciSup_le fun f => by linarith [G.rank_add_partitionDef_le n hD hne f]
   linarith
 
-/-! ## The reverse inequality (`thm:def-eq-corank`, piece 3)
+/-! ## The reverse inequality (`thm:def-eq-corank`)
 
-The substantive Jackson--Jordán min–max content: a vertex-partition `P` attaining the
-rank, giving `rank M(G̃) + def_{G̃}(P) ≥ D(|V| - 1)`, equivalently
-`def(G̃) ≥ corank M(G̃)`. The optimal edge set `Y₀ ⊆ E(G̃)` of the Edmonds
-partition-rank formula (`Union_pow_rk_eq`, existence half) induces a partition `P`
-of `V(G)`: the connected components of `G̃ ↾ Y₀`. For that partition the within-part
-fibers are exactly `Y₀`, so `r_cycle(Y₀) = |V| - |P|`, and every crossing edge has all
-`D-1` of its fibers outside `Y₀`, so `(D-1)·d_G(P) ≤ |E(G̃) ∖ Y₀|`. Together with the
-optimal bound `D·r_cycle(Y₀) + |E(G̃) ∖ Y₀| ≤ rank` this gives the reverse inequality. -/
+For `D ≥ 1` and `V(G)` nonempty, some partition `P` of `V(G)` has
+`rank M(G̃) + def_{G̃}(P) ≥ D(|V(G)| - 1)`, so `def(G̃)` is at least the corank of `M(G̃)`. Let `r`
+be the rank function of the cycle matroid of `G̃`. The rank of a matroid union (`Union_pow_rk_eq`,
+`thm:matroid-partition-rank`) gives a set `Y₀ ⊆ E(G̃)` with
+`D·r(Y₀) + |E(G̃) ∖ Y₀| ≤ rank M(G̃)`. Let `P` be the partition of `V(G)` into the vertex sets of
+the components of `G̃ ↾ Y₀`. Then `r(Y₀) = |V(G)| - |P|`, and the `D - 1` copies of an edge of `G`
+crossing `P` lie outside `Y₀`, so `(D-1)·d_G(P) ≤ |E(G̃) ∖ Y₀|`. Together these give the
+inequality at `P`. -/
 
-/-- A chosen vertex of a graph `K` (the component graph in `componentLabel`), or an
-arbitrary vertex if `K` is empty. Factored through the graph so that the component label
-depends only on the `walkable` *graph*, making it constant on a component a `congrArg`. -/
+/-- A chosen vertex of a graph `K` (the component graph in `componentLabel`), or an arbitrary
+element of `α` if `K` has no vertex. It is a function of the graph, so that `componentLabel`, which
+applies it to the component `H.walkable x` of `x`, is constant on a component by `congrArg`. -/
 private noncomputable def pickVertex {α γ : Type*} [Nonempty α] (K : Graph α γ) : α := by
   classical exact if h : V(K).Nonempty then h.choose else Classical.arbitrary α
 
-/-- The **component labeling** of a graph `H`: `componentLabel H x` is a chosen vertex of
-the connected component (the `walkable` set) of `x`. It is constant on each component
-(`componentLabel_eq_of_connBetween`) and connected to its own vertex
-(`connBetween_componentLabel`), so its fibers on `V(H)` are exactly the connected
-components — the partition the reverse direction of `thm:def-eq-corank` runs on. -/
+/-- The **component labeling** of a graph `H`: `componentLabel H x` is a chosen vertex of the
+component `H.walkable x` of `x`. It is constant on each component
+(`componentLabel_eq_of_connBetween`), and each vertex `x` of `H` is connected to its label
+(`connBetween_componentLabel`), so its parts on `V(H)` are the vertex sets of the components. It is
+the labeling of the partition into components in the proof of `le_rank_add_deficiency`
+(`thm:def-eq-corank`'s formalization note). -/
 private noncomputable def componentLabel {α γ : Type*} [Nonempty α] (H : Graph α γ) (x : α) : α :=
   pickVertex (H.walkable x)
 
@@ -2582,12 +2573,12 @@ private theorem connBetween_of_componentLabel_eq {α γ : Type*} [Nonempty α] {
     (heq : componentLabel H x = componentLabel H y) : H.ConnBetween x y :=
   ((connBetween_componentLabel hx).trans (heq ▸ (connBetween_componentLabel hy).symm))
 
-/-- The components of `H ↾ Y` number at most the parts of the component labeling `f`:
-the map sending each part-label of `f` back to the component of one of its vertices is
-the inverse of the component-to-label map, so the labels at least count the components.
-This is the reverse of the `numParts ≤ c` inequality inside
-`rk_cycleMatroid_within_parts_le`, and it gives the *exact* `r_cycle(Y) + numParts f = |V|`
-for the component labeling. -/
+/-- A step of `thm:def-eq-corank`: the components of `H = G̃ ↾ Y` number at most the parts of its
+component labeling `f`. The map sending a component to the label of its chosen vertex is injective
+on the components, as two vertices with the same label are connected
+(`connBetween_of_componentLabel_eq`). This is the reverse of the inequality `|P| ≤ c(H)` in
+`rk_cycleMatroid_within_parts_le`, and it gives the equality `r(Y) + |P| = |V(G)|` for the
+component labeling (`rk_add_numParts_componentLabel`). -/
 private theorem numberOfComponents_le_numParts [Finite α] [Nonempty α] (G : Graph α β)
     (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} :
     c((G.mulTilde n) ↾ Y) ≤ (G.numParts (componentLabel ((G.mulTilde n) ↾ Y)) : ℕ∞) := by
@@ -2620,12 +2611,13 @@ private theorem numberOfComponents_le_numParts [Finite α] [Nonempty α] (G : Gr
   rw [NumberOfComponents, numParts, Set.Finite.cast_ncard_eq ((f '' V(G)).toFinite)]
   exact Set.encard_le_encard_of_injOn hmaps hinj
 
-/-- For the component labeling of `G̃ ↾ Y`, the within-part fibers of `Y` together with the
-parts exactly account for the vertices: `r_cycle(Y) + numParts f = |V|`. The `≤` is piece 1
-(`rk_cycleMatroid_within_parts_le`, valid since every fiber of `Y` joins same-component, hence
-equally-labeled, vertices); the `≥` is `numberOfComponents_le_numParts` plus the rank–component
-identity `r_cycle(Y) = |V| - c(G̃ ↾ Y)`. This exactness is what turns the *upper* bound piece 1
-gave for weak duality into the *lower* bound the reverse direction needs. -/
+/-- A step of `thm:def-eq-corank`: for `Y ⊆ E(G̃)` and the component labeling `f` of `G̃ ↾ Y`,
+`r(Y) + |P| = |V(G)|`, where `r` is the rank function of the cycle matroid of `G̃` and
+`|P| = numParts G f`. The inequality `≤` is `rk_cycleMatroid_within_parts_le`, as an edge of `Y`
+joins two vertices of one component, which have the same label; the inequality `≥` is
+`numberOfComponents_le_numParts` with `r(Y) + c(G̃ ↾ Y) = |V(G)|`. With the equality, the bound of
+`rk_cycleMatroid_within_parts_le` that weak duality uses becomes the bound the reverse inequality
+needs. -/
 private theorem rk_add_numParts_componentLabel [Finite α] [Finite β] [Nonempty α] (G : Graph α β)
     (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} (hYE : Y ⊆ E(G.mulTilde n)) :
     (G.mulTilde n).cycleMatroid.rk Y + G.numParts (componentLabel ((G.mulTilde n) ↾ Y))
@@ -2639,7 +2631,7 @@ private theorem rk_add_numParts_componentLabel [Finite α] [Finite β] [Nonempty
     intro p hp x y hlink
     have hHlink : H.IsLink p x y := by rw [hHdef, restrict_isLink]; exact ⟨hp, hlink⟩
     exact componentLabel_eq_of_connBetween (H := H) hHlink.connBetween
-  -- `≤` from piece 1.
+  -- `≤` from `rk_cycleMatroid_within_parts_le`.
   have hle := G.rk_cycleMatroid_within_parts_le n hYE hwithin
   -- `≥` via the rank–component identity and `c ≤ numParts`.
   have hrank : (G.mulTilde n).cycleMatroid.eRk Y = H.cycleMatroid.eRank := by
@@ -2655,26 +2647,23 @@ private theorem rk_add_numParts_componentLabel [Finite α] [Finite β] [Nonempty
     rw [hrk_eq, Set.Finite.cast_ncard_eq V(G).toFinite]
     calc V(G).encard = H.cycleMatroid.eRank + c(H) := hid.symm
       _ ≤ H.cycleMatroid.eRank + (G.numParts f : ℕ∞) := by gcongr
-  -- Combine `≤` (piece 1) and `≥` into the equality, in `ℕ`.
+  -- Combine `≤` (`hle`) and `≥` into the equality, in `ℕ`.
   have hge' : V(G).ncard ≤ (G.mulTilde n).cycleMatroid.rk Y + G.numParts f := by
     exact_mod_cast hge
   omega
 
-/-- **Weak duality is tight: the reverse inequality** (`thm:def-eq-corank`, piece 3). For a
-multigraph `G` with `V(G) ≠ ∅` and `D ≥ 1`, the partition `P` into the connected components
-of `G̃ ↾ Y₀` (for the Edmonds-optimal edge set `Y₀`) attains
-`rank M(G̃) + def_{G̃}(P) ≥ D(|V| - 1)`, hence `rank M(G̃) + def(G̃) ≥ D(|V| - 1)`, i.e.
-`def(G̃) ≥ corank M(G̃)`. With `rank_add_deficiency_le` this is the full bridge.
+/-- **The deficiency is at least the corank** (`thm:def-eq-corank`, the reverse inequality of KT
+eq. (2.4)): for `D ≥ 1` and `V(G)` nonempty, `rank M(G̃) + def(G̃) ≥ D(|V(G)| - 1)`. With
+`rank_add_deficiency_le` it gives `rank_add_deficiency_eq`.
 
-The existence half of the Edmonds partition-rank formula (`Union_pow_rk_eq`) provides an
-edge set `Y₀ ⊆ E(G̃)` with `D·r_cycle(Y₀) + |E(G̃) ∖ Y₀| ≤ rank M(G̃)`. For the component
-labeling of `G̃ ↾ Y₀`: every fiber of `Y₀` joins same-component, hence equally-labeled,
-vertices, so `Y₀` is non-crossing and `r_cycle(Y₀) + numParts f = |V|`
-(`rk_add_numParts_componentLabel`); and every crossing edge's `D-1` fibers all lie outside
-`Y₀` (their endpoints are in different components), so the crossing fibers
-`{p | p.1 ∈ crossingEdges f}` (numbering `(D-1)·d_G(P)`, `ncard_crossing_fibers`) sit inside
-`E(G̃) ∖ Y₀`, giving `(D-1)·d_G(P) ≤ |E(G̃) ∖ Y₀|`. Substituting,
-`rank ≥ D(|V| - numParts f) + (D-1)·d_G(P) = D(|V|-1) - def_{G̃}(P)`. -/
+The rank of a matroid union (`Union_pow_rk_eq`) gives a set `Y₀ ⊆ E(G̃)` with
+`D·r(Y₀) + |E(G̃) ∖ Y₀| ≤ rank M(G̃)`, where `r` is the rank function of the cycle matroid of `G̃`.
+Let `f` be the component labeling of `G̃ ↾ Y₀`, and `P` its partition. Then
+`r(Y₀) + |P| = |V(G)|` (`rk_add_numParts_componentLabel`). The ends of an edge of `G` crossing `P`
+lie in different components, so its `D - 1` copies lie outside `Y₀`, and
+`(D-1)·d_G(P) ≤ |E(G̃) ∖ Y₀|` (`ncard_crossing_fibers`). Hence
+`rank M(G̃) ≥ D(|V(G)| - |P|) + (D-1)·d_G(P) = D(|V(G)| - 1) - def_{G̃}(P)`, and
+`def_{G̃}(P) ≤ def(G̃)`. -/
 theorem le_rank_add_deficiency [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
     bodyBarDim n * ((V(G).ncard : ℤ) - 1) ≤ (G.matroidMG n).rank + G.deficiency n := by
@@ -2687,11 +2676,11 @@ theorem le_rank_add_deficiency [DecidableEq β] [Finite α] [Finite β] (G : Gra
         E(G.mulTilde n) := by
     rw [matroidMG, Matroid.rank_def, Matroid.restrict_ground_eq,
       Matroid.restrict_rk_eq _ subset_rfl]
-  -- Edmonds-optimal `Y₀ ⊆ E(G̃)`.
+  -- A set `Y₀ ⊆ E(G̃)` at which the rank of the matroid union attains its minimum.
   obtain ⟨⟨Y₀, hY₀sub, hY₀le⟩, _⟩ :=
     Union_pow_rk_eq (G.mulTilde n).cycleMatroid (bodyBarDim n) E(G.mulTilde n)
   set f := componentLabel ((G.mulTilde n) ↾ Y₀) with hf
-  -- Piece: `r_cycle(Y₀) + numParts f = |V|`.
+  -- `r_cycle(Y₀) + numParts f = |V|`.
   have heq := G.rk_add_numParts_componentLabel n hY₀sub
   -- Crossing fibers sit inside `E(G̃) ∖ Y₀`.
   have hcrosssub : {p : β × Fin (bodyHingeMult n) | p.1 ∈ G.crossingEdges f}
@@ -2730,46 +2719,40 @@ theorem le_rank_add_deficiency [DecidableEq β] [Finite α] [Finite β] (G : Gra
   -- hdef : def_P = D*(NP-1) - (D-1)*DC ≤ deficiency
   nlinarith [hdef, hY₀le, heq, hcrosscard]
 
-/-! ## The def = corank bridge (`thm:def-eq-corank`; Jackson–Jordán) -/
+/-! ## The deficiency is the corank of `M(G̃)` (`thm:def-eq-corank`) -/
 
-/-- **`rank M(G̃) + def(G̃) = D(|V| - 1)`** (`thm:def-eq-corank`; Jackson–Jordán 2009 Thm 6.1):
-the rank-deficiency identity, assembled from weak duality `rank_add_deficiency_le`
-(`def ≤ corank`) and its reverse `le_rank_add_deficiency` (`def ≥ corank`, the substantive
-JJ09 min–max content: a vertex-partition — the components of `G̃ ↾ Y₀` for the Edmonds-optimal
-`Y₀` — attaining the rank). For `V(G) ≠ ∅` and `D = bodyBarDim n ≥ 1`. -/
+/-- **`rank M(G̃) + def(G̃) = D(|V(G)| - 1)`** (`thm:def-eq-corank`; Katoh–Tanigawa 2011,
+eq. (2.4), p. 655), for `D ≥ 1` and `V(G)` nonempty: weak duality (`rank_add_deficiency_le`) and its
+reverse (`le_rank_add_deficiency`). Katoh and Tanigawa observe it from their Proposition 2.3. As
+the independent sets of `M(G̃)` are the unions of `D` forests of `G̃`, it is the classical formula
+for the largest size of such a union (Jackson and Jordán 2010, Theorem 4.1(a), p. 580, who cite
+Nash-Williams 1961 and 1964 and Tutte 1961), applied to `G̃`. -/
 theorem rank_add_deficiency_eq [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
     (G.matroidMG n).rank + G.deficiency n = bodyBarDim n * ((V(G).ncard : ℤ) - 1) :=
   le_antisymm (G.rank_add_deficiency_le n hD hne) (G.le_rank_add_deficiency n hD hne)
 
-/-- **`def(G̃) = corank M(G̃)`** in base form (`thm:def-eq-corank`; Jackson–Jordán 2009
-Thm 6.1 / Cor 6.2): for any base `B` of `M(G̃)`, `|B| + def(G̃) = D(|V| - 1)`. The corank
-`D(|V|-1) - |B|` against the trivial-motion ambient `D(|V|-1)` equals the deficiency; in
-particular `def(G̃) = 0` (`G` body-hinge rigid) iff `|B| = D(|V|-1)`, i.e. `G̃` packs `D`
-edge-disjoint spanning trees (Cor 6.2). This closes the Phase-18-inherited reconciliation
-node `prop:rigidity-matrix-prop11`. -/
+/-- **`|B| + def(G̃) = D(|V(G)| - 1)` for a base `B` of `M(G̃)`** (`thm:def-eq-corank`;
+Katoh–Tanigawa 2011, eq. (2.4), p. 655), for `D ≥ 1` and `V(G)` nonempty, as
+`|B| = rank M(G̃)` (`rank_add_deficiency_eq`). So the deficiency is the corank
+`D(|V(G)| - 1) - |B|`, and `def(G̃) = 0` iff `|B| = D(|V(G)| - 1)`. -/
 theorem isBase_ncard_add_deficiency_eq [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
     (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) {B : Set (β × Fin (bodyHingeMult n))}
     (hB : (G.matroidMG n).IsBase B) :
     (B.ncard : ℤ) + G.deficiency n = bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
   rw [hB.ncard]; exact G.rank_add_deficiency_eq n hD hne
 
-/-- **Minimality + subgraph + equal vertex set + 0-dof ⟹ equality** (`lem:subgraph-minimality`;
-KT Lemma 3.3 corollary): if `G` is a minimal `0`-dof-graph, `G'' ≤ G` is a subgraph with
-`V(G'') = V(G)` and `G''` is also `0`-dof, then `G = G''`.
+/-- **A spanning `0`-dof subgraph of a minimal `0`-dof-graph is the graph** (a step of
+`lem:claim-6-6`): for `D ≥ 1`, if `G` is a minimal `0`-dof-graph and `G'' ≤ G` is a `0`-dof-graph
+with `V(G'') = V(G)`, then `G = G''`. It is the step "the minimality of `G` implies `G = G''`" of
+Katoh and Tanigawa's proof of their Claim 6.6 (2011, p. 676), which
+`exists_degree_two_removeVertex_of_no_simple_contraction` takes.
 
-Proof: assume for contradiction that there is a `g ∈ E(G) ∖ E(G'')`. Get a base `B''` of
-`M(G̃'')`. By the restriction identity `M(G̃) ↾ E(G̃'') = M(G̃'')` (`matroidMG_restrict_mulTilde`),
-`B''` is `M(G̃)`-independent. Since `G''` is `0`-dof and `V(G'') = V(G)`,
-`|B''| = D(|V(G)| - 1)` (`isBase_ncard_add_deficiency_eq`). Since `G` is `0`-dof,
-`rank M(G̃) = D(|V(G)| - 1)`, so `B''` is a base of `M(G̃)`. Minimality of `G` (`hG.2`)
-gives `p ∈ B'' ∩ ẽ_g ≠ ∅`; but `p ∈ E(G̃'')` forces `p.1 ∈ E(G'')`,
-contradicting `g = p.1 ∉ E(G'')`.
-
-This is the **step-4 bridge** the Lemma-6.5 arm of the Case-I dispatch (KT Claim 6.6,
-Phase 22k L8a) uses after building `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`: maximality
-of `G'` forces `V(G'') = V(G)`, and `G''` is `0`-dof by the vertex-removal deficiency count
-(`removeVertex_deficiency_ge`), so `G = G''` and `v` has degree exactly 2 in `G`. -/
+Suppose that `g ∈ E(G) ∖ E(G'')`, and let `B''` be a base of `M(G̃'')`. It is independent in
+`M(G̃)` (`matroidMG_restrict_mulTilde`). As `G''` and `G` are `0`-dof-graphs on the same vertices,
+KT eq. (2.4) (`isBase_ncard_add_deficiency_eq`, `rank_add_deficiency_eq`) gives
+`|B''| = D(|V(G)| - 1) = rank M(G̃)`, so `B''` is a base of `M(G̃)`. As `G` is minimal, `B''` meets
+the copies `g̃` of `g`; but `B'' ⊆ E(G̃'')`, so `g ∈ E(G'')`. -/
 theorem eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof [DecidableEq β] [Finite α]
     [Finite β] {G G'' : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hle : G'' ≤ G)
@@ -2817,26 +2800,20 @@ theorem eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof [DecidableEq β] [Fi
   rw [mem_edgeFiber] at hpe
   exact hgne (hpe ▸ hpGS)
 
-/-- **A deficiency-preserving spanning minimal `k`-dof subgraph exists** (`lem:subgraph-minimality`
-direction, the strip brick of the `d = 3` Theorem 5.6 feed, Phase 22k L10a; Katoh–Tanigawa 2011
-p. 670, the "delete edges keeping the rank" half). Every graph `G` (with `D = bodyBarDim n ≥ 1`
-and a nonempty vertex set) has a *spanning* subgraph `G'` (`V(G') = V(G)`) that is a **minimal**
-`def(G̃)`-dof-graph: `G' ≤ G`, `def(G̃') = def(G̃)`, and no edge of `G'` can be deleted without
-raising the deficiency. This is the converse direction to `subgraph_minimality` (which needs `G`
-*already* minimal); the strip starts from an arbitrary `G` and removes deficiency-irrelevant edges.
+/-- **A minimal spanning subgraph of the same deficiency** (`lem:minimal-kdof-spanning-subgraph`;
+the first step of Katoh and Tanigawa's proof of their Theorem 5.6, 2011, p. 670): for `D ≥ 1` and
+`V(G)` nonempty, `G` has a subgraph `G' ≤ G` with `V(G') = V(G)` that is a minimal
+`def(G̃)`-dof-graph. Katoh and Tanigawa delete edges while the deficiency stays the same.
+`subgraph_minimality` (KT Lemma 3.3) needs `G` minimal already.
 
-Construction (a finite minimum, not a well-founded recursion): among all edge subsets `F ⊆ E(G)`
-whose restriction `G ↾ F` has the same deficiency as `G` (`G` itself witnesses `F = E(G)`), pick one
-of minimal cardinality (`Set.exists_min_image`, finite because `[Finite β]`). Set `G' := G ↾ F₀`.
-Then `V(G') = V(G)` (`restrict` fixes vertices) and `def(G̃') = def(G̃)` by choice; the
-base/fiber-meeting minimality is the contrapositive of the minimum: a base `B` of `M(G̃')` missing
-the fiber `ẽ` of some `e ∈ E(G')` lives in `E((G ↾ (F₀ ∖ {e}))~)`, where it is independent of full
-size, so deleting `e` preserves the deficiency (`isBase_ncard_add_deficiency_eq` on both graphs +
-`deficiency_le_deficiency_of_le_vertexSet_eq` for the `≥` bound) — contradicting minimality of
-`|F₀|`.
-
-The strip is pinned at `lem:minimal-kdof-spanning-subgraph` (`deficiency.tex`), feeding the
-`def > 0` `prop:rigidity-matrix-prop11` producer through its four Theorem 5.6 callers. -/
+Among the sets `F ⊆ E(G)` with `def((G ↾ F)~) = def(G̃)`, such as `E(G)`, choose one, `F₀`, of
+least size (`Set.exists_min_image`; `β` is finite), and let `G' = G ↾ F₀`. If a base `B` of
+`M(G̃')` missed the copies `ẽ` of an edge `e` of `G'`, then `B ⊆ E(G̃'')` for
+`G'' = G' ↾ (F₀ ∖ {e})`, and `B` would be independent in `M(G̃'')`
+(`matroidMG_restrict_mulTilde`). KT eq. (2.4) (`isBase_ncard_add_deficiency_eq`,
+`rank_add_deficiency_eq`) would give `def(G̃'') ≤ def(G̃')`, and deleting an edge does not lower
+the deficiency (`deficiency_le_deficiency_of_le_vertexSet_eq`), so `F₀ ∖ {e}` would keep the
+deficiency of `G`, against the choice of `F₀`. -/
 theorem exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Finite β]
     (G : Graph α β) (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
     ∃ G' : Graph α β, G' ≤ G ∧ V(G') = V(G) ∧
@@ -2914,28 +2891,14 @@ theorem exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Fin
     exact Set.ncard_sdiff_singleton_lt_of_mem heF₀ (Set.toFinite F₀)
   exact absurd (hF₀min F₁ hF₁S) (not_le.mpr hlt)
 
-/-- **A rigid subgraph's multiplied graph packs `D` edge-disjoint forests on a base**
-(`thm:def-eq-corank` Cor 6.2; Jackson–Jordán 2009, Katoh–Tanigawa 2011 §6.2). The
-combinatorial substrate of the Case-I realization producer (`lem:case-I-realization`, Phase 22,
-option (a)): a `0`-dof (body-hinge-rigid) graph `H` — `def(H̃) = 0` — has a base `B` of `M(H̃)`
-that decomposes into `D = bodyBarDim n` edge-disjoint forests of `H̃ ↾ B`, with the full edge
-count `|B| = D(|V(H)| − 1)`.
-
-This is the prerequisite the per-leg rigid-seed construction needs: the star-forest lemma
-`exists_independent_rigidityRows_of_starForest` yields only `(D−1)·|J|` independent rigidity rows
-from *one* star forest of `|J| ≤ |V(H)|−1` edges, at most a fraction `(D−1)/D` of the full
-`D(|V(H)|−1)` that `HasFullRankRealization k H` demands; reaching full rank needs the `D`-fold
-packing assembled here, not a single tree. The base `B` is a maximal `(D,D)`-independent (hence
-`(D,D)`-sparse, via `matroidMG_indep_iff`) edge subset, so `tutte_nash_williams` decomposes it
-into `D` edge-disjoint forests; its cardinality is `rank M(H̃) = D(|V(H)|−1)` because `def(H̃) = 0`
-(`isBase_ncard_add_deficiency_eq`). Regime `[NeZero (bodyHingeMult n)]` (`D ≥ 1`, also forcing the
-copies that `mulTilde` needs); `V(H).Nonempty`.
-
-The `↾ B` restriction is forced: a general rigid `H` may be over-braced (`def(H̃) = 0` with extra
-edges), so the *whole* `H̃` need not be sparse — only a base packs into forests. The remaining
-Track-A obstruction (`notes/Phase22.md` *Hand-off*, option (a)) is to stack the `D` forests'
-rigidity rows to the full `D(|V(H)|−1)` count and produce the rigid seed; this lemma supplies the
-forest packing those rows are read off. -/
+/-- **A base of `M(H̃)` for a `0`-dof-graph `H` is `D` forests with `D(|V(H)| - 1)` edges** (a
+step of `lem:deficiency-zero-iff-tree-packing`): for `D ≥ 2` (`[NeZero (bodyHingeMult n)]`, that
+is, `D - 1 ≥ 1`) and `V(H)` nonempty, some base `B` of `M(H̃)` has `H̃ ↾ B` a union of `D`
+edge-disjoint forests and `|B| = D(|V(H)| - 1)`. Every base will do: it is independent, so
+`H̃ ↾ B` is `(D, D)`-sparse (`matroidMG_indep_iff`) and is a union of `D` forests
+(`tutte_nash_williams`), and KT eq. (2.4) (`isBase_ncard_add_deficiency_eq`) gives its size. The
+restriction to `B` is needed: `H̃` itself need not be sparse, as `H` may have edges that a minimal
+`0`-dof-graph would not. -/
 theorem IsKDof.exists_isBase_isForestPacking [DecidableEq β] [Finite α] [Finite β]
     {H : Graph α β} {n : ℕ} [NeZero (bodyHingeMult n)]
     (hrig : H.IsKDof n 0) (hne : V(H).Nonempty) :
@@ -2953,28 +2916,24 @@ theorem IsKDof.exists_isBase_isForestPacking [DecidableEq β] [Finite α] [Finit
     rw [hrig] at hcount
     linarith
 
-/-! ## The packing bridge (`lem:deficiency-zero-iff-tree-packing`)
+/-! ## Deficiency zero and `D` edge-disjoint spanning trees (`lem:deficiency-zero-iff-tree-packing`)
 
-Phase 34, Layer BH. The `0`-dof/deficiency-zero characterization in the shape the
-generic-lift tree-packing corollary needs (JJ 2010 Cor 6.2/6.3,
-`cor:bodyhinge-generic-tree-packing`): `G` is rigid (`def(G̃) = 0`) iff the multiplied graph
-`G̃` packs `D = bodyBarDim n` edge-disjoint spanning trees.
+For `D ≥ 2` and `V(G)` nonempty, `def(G̃) = 0` iff `G̃` contains `D` edge-disjoint spanning trees:
+KT Proposition 2.2, the theorem of Tutte and Nash-Williams, at `G̃` (Katoh–Tanigawa 2011, p. 655).
+`cor:bodyhinge-generic-tree-packing` applies it. If `def(G̃) = 0`, a base of `M(G̃)` has
+`D(|V(G)| - 1)` elements (`IsKDof.exists_isBase_isForestPacking`) and is `(D, D)`-sparse, so
+`G̃` restricted to it is `(D, D)`-tight; it is then connected (`IsTight.connected`), and its `D`
+maximal forests are spanning trees (`isSpanningTreePacking_of_isTight`). Conversely, the union of
+`D` edge-disjoint spanning trees is independent in `M(G̃)` with `D(|V(G)| - 1)` elements, so it is a
+base, and KT eq. (2.4) gives `def(G̃) = 0`. -/
 
-The forward direction assembles `IsKDof.exists_isBase_isForestPacking`'s base forest-packing
-into spanning trees via the tightness-forces-connectivity helper (`IsTight.connected`,
-`BodyBar/TreePacking.lean`) feeding `isSpanningTreePacking_of_isTight`. The reverse direction
-generalizes `molecule_generic_square_packing`'s `hdef` derivation (six spanning trees ⟹
-`def = 0` at the fixed `n = 3`/`D = 6` molecular case) to general `n`. -/
-
--- `linter.unusedDecidableInType` only checks whether the *stated conclusion* needs
--- `[DecidableEq β]`; it doesn't, since the conclusion is phrased via `≤s`/`IsTree`/`Pairwise`
--- rather than `matroidMG`. The *proof* genuinely needs it (both directions route through
--- `matroidMG`/`Matroid.restrict_indep_iff`), and the signature is pinned by the Layer-BH
--- checklist, so this is a genuine false positive for this narrower-scoped lint.
+-- `linter.unusedDecidableInType` reports `[DecidableEq β]`, which the statement does not use; the
+-- proof uses it, through `matroidMG` and `IsKDof.exists_isBase_isForestPacking`.
 set_option linter.unusedDecidableInType false in
-/-- **`def(G̃) = 0` iff `G̃` packs `D` edge-disjoint spanning trees**
-(`lem:deficiency-zero-iff-tree-packing`; Jackson–Jordán Cor 6.2/6.3). See the section
-docstring for the two routes. -/
+/-- **`def(G̃) = 0` iff `G̃` contains `D` edge-disjoint spanning trees**
+(`lem:deficiency-zero-iff-tree-packing`; KT Proposition 2.2 at `G̃`, Katoh–Tanigawa 2011, p. 655),
+for `D ≥ 2` (`[NeZero (bodyHingeMult n)]`) and `V(G)` nonempty. The trees are spanning subgraphs
+`Ts i ≤s G̃` with pairwise disjoint edge sets; the section docstring gives the proof. -/
 theorem deficiency_eq_zero_iff_exists_spanningTrees [DecidableEq β] [Finite α] [Finite β]
     (G : Graph α β) (n : ℕ) [NeZero (bodyHingeMult n)] (hne : V(G).Nonempty) :
     G.deficiency n = 0 ↔
@@ -3061,19 +3020,16 @@ theorem deficiency_eq_zero_iff_exists_spanningTrees [DecidableEq β] [Finite α]
     rw [hcast] at heqb
     linarith
 
-/-! ## The `|V| ≤ 2` trichotomy (`lem:two-vertex-trichotomy`, Phase 22i L1b)
+/-! ## The minimal `k`-dof-graphs with at most two vertices (`lem:two-vertex-trichotomy`)
 
-Three lemmas + packaging for `|V| ≤ 2`: the deficiency of an edge-free graph,
-the deficiency of a single-edge graph, the parallel-class bound at `|V| = 2`,
-and the trichotomy packaging them into the `L3`/`L9` base-case form. -/
+The base case `|V| = 2` of Katoh and Tanigawa's proof of their Theorem 5.5 (2011, §6, p. 671), with
+the case `|V| = 1`: the deficiency of a graph with no edge and of a single edge, the bound of two
+edges on two vertices, and the three cases. -/
 
-/-- **Deficiency of an edge-free graph** (`lem:two-vertex-trichotomy`; KT p. 671):
-if `E(G) = ∅` then `def(G̃) = D(|V(G)| − 1)`.
-
-Proof: every labeling has `crossingEdges G f = ∅`, so `def_P = D(|f '' V(G)| − 1) ≤
-D(|V(G)| − 1)` (the label image is a subset of `V(G)`). The discrete partition
-`f = id` achieves the bound: `|id '' V(G)| = |V(G)|`. The `iSup` therefore equals
-`D(|V(G)| − 1)`. -/
+/-- **The deficiency of a graph with no edge** (a step of `lem:two-vertex-trichotomy`): if
+`E(G) = ∅`, then `def(G̃) = D(|V(G)| − 1)`. No labeling crosses an edge, so its value is
+`D(|f '' V(G)| − 1) ≤ D(|V(G)| − 1)`, as `f '' V(G)` has at most `|V(G)|` elements; the labeling
+`id`, with a part for each vertex, attains the bound. -/
 theorem deficiency_of_edgeSet_empty [Finite α] {G : Graph α β} {n : ℕ}
     (hE : E(G) = ∅) :
     G.deficiency n = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by
@@ -3095,13 +3051,10 @@ theorem deficiency_of_edgeSet_empty [Finite α] {G : Graph α β} {n : ℕ}
         numParts, Set.image_id]
     linarith [G.partitionDef_le_deficiency n id, hid.symm.le]
 
-/-- **Deficiency of a single-edge graph** (`lem:two-vertex-trichotomy`; KT p. 671):
-if `V(H) = {x, y}`, `E(H) = {e}`, `H.IsLink e x y`, and `x ≠ y` then `def(H̃) = 1`
-for `D = bodyBarDim n ≥ 1`.
-
-Proof: the two-part partition `f x ≠ f y` witnesses `def_P = D − (D−1)·1 = 1 ≥ 1`;
-every other partition has `def_P = 0` (one part, no crossings) or is the previous
-case, so the sup equals 1. -/
+/-- **The deficiency of a single edge** (a step of `lem:two-vertex-trichotomy`): for `D ≥ 1`, if
+`V(G) = {x, y}` with `x ≠ y`, `E(G) = {e}` and `e` joins `x` and `y`, then `def(G̃) = 1`. A
+labeling with `f x ≠ f y` has two parts and one crossing edge, so its value is `D − (D−1) = 1`, and
+one with `f x = f y` has value `0`. -/
 theorem deficiency_of_single_edge [Finite α] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {x y : α} (hxy : x ≠ y) {e : β}
     (hl : G.IsLink e x y) (hV : V(G) = {x, y}) (hE : E(G) = {e}) :
@@ -3168,16 +3121,17 @@ theorem deficiency_of_single_edge [Finite α] {G : Graph α β} {n : ℕ}
       push_cast; ring
     linarith [G.partitionDef_le_deficiency n f₀, hfun.symm.le]
 
-/-- **Parallel-class bound at `|V| = 2`** (`lem:two-vertex-trichotomy`; KT Lemma 3.2
-consequence): a minimal `k`-dof-graph with exactly two vertices and `D ≥ 2` has at
-most two edges, i.e. `E(G).ncard ≤ 2`.
+/-- **A minimal `k`-dof-graph on two vertices has at most two edges** (a step of
+`lem:two-vertex-trichotomy`), for `D ≥ 2`. Katoh and Tanigawa deduce it from their Lemma 3.2, a
+minimal `k`-dof-graph is not `3`-edge-connected (2011, pp. 657 and 671); the proof here is direct.
 
-Proof: if `|E(G)| ≥ 3`, pick three distinct edges `e₁, e₂, e₃`. The restriction
-`H := G ↾ {e₁, e₂}` is `0`-dof by `isKDof_zero_of_parallel_pair`. The corank bridge
-gives a base `B_H` of `M(H̃)` with `|B_H| = D`; by `matroidMG_restrict_mulTilde`,
-`B_H` is `M(G̃)`-independent of size `D`, giving `rank M(G̃) ≥ D`. Combined with the
-rank-deficiency bridge, `k = 0` and `B_H` is a `M(G̃)`-base. But `B_H ⊆ E(H̃)` avoids
-`ẽ₃`, contradicting `hG.2`. -/
+`G` has no loops (`loopless_of_isMinimalKDof`), so each edge joins the two vertices `x, y`. Suppose
+that `G` has three edges `e₁, e₂, e₃`. Then `H = G ↾ {e₁, e₂}` is a `0`-dof-graph
+(`isKDof_zero_of_parallel_pair`), so a base `B_H` of `M(H̃)` has `D` elements by KT eq. (2.4)
+(`isBase_ncard_add_deficiency_eq`), and it is independent in `M(G̃)`
+(`matroidMG_restrict_mulTilde`). So `rank M(G̃) ≥ D`, and KT eq. (2.4) for `G`, with `k ≥ 0`, gives
+`k = 0` and `B_H` a base of `M(G̃)`. But `B_H ⊆ E(H̃)` misses the copies of `e₃`, against the
+minimality of `G`. -/
 theorem edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two [DecidableEq β] [Finite α]
     [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
     (hG : G.IsMinimalKDof n k) (hV : V(G).ncard = 2) : E(G).ncard ≤ 2 := by
@@ -3271,19 +3225,15 @@ theorem edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two [DecidableEq β] [Fin
   simp only [mem_edgeFiber] at hpe₃
   obtain ⟨-, h | h⟩ := hpH <;> simp_all
 
-/-- **The `|V| ≤ 2` trichotomy** (`lem:two-vertex-trichotomy`; KT p. 671): a minimal
-`k`-dof-graph on at most two vertices with `V(G).Nonempty` and `D ≥ 2` is in one of
-three cases:
-- (empty) `E(G) = ∅` and `k = D(|V(G)| − 1)` (covers both `|V| = 1` and `|V| = 2`);
-- (single edge) `|V| = 2`, `|E| = 1`, linking `x` to `y`, and `k = 1`;
-- (parallel pair) `|V| = 2`, `|E| = 2`, two parallel edges between `x` and `y`,
-  and `k = 0`.
+/-- **The minimal `k`-dof-graphs with at most two vertices** (`lem:two-vertex-trichotomy`; KT
+p. 671): for `D ≥ 2`, a minimal `k`-dof-graph `G` with one or two vertices satisfies one of
+- `E(G) = ∅` and `k = D(|V(G)| − 1)`, with one or two vertices;
+- `V(G) = {x, y}` with `x ≠ y`, `E(G) = {e}`, `e` joins `x` and `y`, and `k = 1`;
+- `V(G) = {x, y}` with `x ≠ y`, `E(G) = {e, f}` with `e ≠ f`, both join `x` and `y`, and `k = 0`.
 
-Proof: `|V| = 1` forces `E = ∅` (looplessness). `|V| = 2` gives vertices `{x, y}`;
-the parallel-class bound (`edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two`) gives
-`|E| ≤ 2`; `|E| = 0` is the empty arm; `|E| = 1` is the single-edge arm via
-`deficiency_of_single_edge`; `|E| = 2` is the parallel-pair arm via
-`isKDof_zero_of_parallel_pair`. -/
+With one vertex, `G` has no edge, as it has no loop (`loopless_of_isMinimalKDof`). With two, it has
+at most two edges (`edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two`), and the three cases are
+`deficiency_of_edgeSet_empty`, `deficiency_of_single_edge` and `isKDof_zero_of_parallel_pair`. -/
 theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
     (hG : G.IsMinimalKDof n k) (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
@@ -3346,26 +3296,18 @@ theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Fini
       exact hlink.ne (hpV ▸ hqV ▸ rfl)
     exact Or.inl ⟨hE, hG.deficiency_eq.symm.trans (deficiency_of_edgeSet_empty hE)⟩
 
-/-! ## Fresh-edge supply (the `hfresh` repair; `notes/FreshEdgeSupply-design.md`)
+/-! ## Fresh edge labels (`rem:fresh-edge-supply`)
 
-The combinatorial induction (Phase 20+) repeatedly needs a fresh edge label — one
-not already used by the graph in hand — to splice in as a new edge. The
-unconditioned universal supply `∀ G', ∃ e₀, e₀ ∉ E(G')` threaded through the
-Theorem-5.5 spine turned out to be **unsatisfiable** (the all-loops-at-one-vertex
-graph has `E(G') = univ`); the two lemmas below deliver the repaired,
-**minimality-conditioned** supply the design doc's *Verdict* settles on: minimal
-`k`-dof-graphs have a bounded edge count (`edgeSet_ncard_add_deficiency_le_of_isMinimalKDof`),
-so a large-enough `β` always has an unused label
-(`freshEdgeSupply_of_card_lt`). -/
+The graphs of the induction take their edges from one type `β` of labels, and an operation that
+adds an edge needs a label that the graph does not use. A minimal `k`-dof-graph `G` has at most
+`D(|V(G)| - 1) - def(G̃)` edges, so when `D(|α| - 1) < |β|` some label is unused. Minimality is
+needed: a graph whose edges are loops at one vertex can use every label. -/
 
-/-- **Minimality bounds the edge count** (`notes/FreshEdgeSupply-design.md`
-*Satisfiability*, item 1): for a minimal `k`-dof-graph `G`,
-`|E(G)| + def(G̃) ≤ D(|V(G)| - 1)`.
-
-Proof: take a base `B` of `M(G̃)`; minimality (`hG.2`) makes every edge-fiber of
-`e ∈ E(G)` meet `B`, so `E(G) ⊆ Prod.fst '' B` and `|E(G)| ≤ |Prod.fst '' B| ≤
-|B|`. Conclude with the corank bridge `isBase_ncard_add_deficiency_eq`,
-`|B| + def(G̃) = D(|V(G)| - 1)`. -/
+/-- **A minimal `k`-dof-graph has at most `D(|V(G)| - 1) - def(G̃)` edges** (a step of
+`rem:fresh-edge-supply`): for `D ≥ 1` and `V(G)` nonempty, `|E(G)| + def(G̃) ≤ D(|V(G)| - 1)`. A
+base `B` of `M(G̃)` meets the copies of every edge of `G`, as `G` is minimal, so
+`E(G) ⊆ Prod.fst '' B` and `|E(G)| ≤ |B|`; and `|B| + def(G̃) = D(|V(G)| - 1)` by KT eq. (2.4)
+(`isBase_ncard_add_deficiency_eq`). -/
 theorem edgeSet_ncard_add_deficiency_le_of_isMinimalKDof
     [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ}
     (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) (hG : G.IsMinimalKDof n k) :
@@ -3381,18 +3323,12 @@ theorem edgeSet_ncard_add_deficiency_le_of_isMinimalKDof
     exact_mod_cast this
   linarith [hle, G.isBase_ncard_add_deficiency_eq n hD hne hB]
 
-/-- **Fresh-edge supply from a headroom bound** (`notes/FreshEdgeSupply-design.md`
-*Satisfiability*, item 2 — the reshaped `hfresh` Tier-2 binder's derivation
-lemma): if `D = bodyBarDim n ≥ 1` and `β` has more elements than the maximal
-edge count a minimal `c`-dof-graph on `α` can reach, `D·(|α|-1) < |β|`, then
-every minimal `c`-dof-graph (any `c`, any `G'`) has an edge label not in
-`E(G')`.
-
-Proof: if `E(G') = univ` then, since `hcard`'s right side is positive, `β` is
-nonempty; picking any label gives an edge of `G'`, hence a vertex, hence
-`V(G')` and (locally) `α` are nonempty. The edge-count bound above plus
-`deficiency_nonneg` then force `|β| = |E(G')| ≤ D(|V(G')|-1) ≤ D(|α|-1) <
-|β|`, a contradiction. -/
+/-- **A fresh edge label** (`rem:fresh-edge-supply`): for `D ≥ 1` and `D(|α| - 1) < |β|`, every
+minimal `c`-dof-graph `G'` on `α`, for every `c`, leaves some label `e₀ ∉ E(G')`. Suppose that
+`E(G')` is all of `β`. Then `β` is nonempty, as `|β| > 0`, so `G'` has an edge and a vertex, and
+`|β| = |E(G')| ≤ D(|V(G')| - 1) ≤ D(|α| - 1) < |β|` by
+`edgeSet_ncard_add_deficiency_le_of_isMinimalKDof` and `deficiency_nonneg`. The pinned theorems
+assume this bound or a form of its conclusion (`rem:fresh-edge-supply`). -/
 theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hcard : bodyBarDim n * (Nat.card α - 1) < Nat.card β) :
     ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G') := by
@@ -3427,42 +3363,42 @@ theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n :
   have hEeq : (E(G').ncard : ℤ) = (Nat.card β : ℤ) := by rw [hEuniv, Set.ncard_univ]
   linarith [hbound, hdefnn, hmul, hcardZ, hEeq]
 
-/-! ## The merged deficiency at a vertex pair (`def:deficiency-merged`,
-Phase 39 checklist item 6)
+/-! ## The merged deficiency (`def:deficiency-merged`) and the value at a vertex 2-cut
 
-Phase 39 (PENCIL; `notes/Phase39.md` checklist item 6, carrier recon
-`notes/Phase39-design.md` § *Item-6 carrier recon (2026-09-16)*). `deficiencyMerged` (the
-workbook's `g`) restricts the `D`-deficiency labeling supremum to partitions keeping `u, v`
-together. `partitionDef_map` and `deficiency_weldPair_eq_deficiencyMerged` originally proved
-`deficiencyMerged` interchangeable with the graph-level weld `H/uv`'s own deficiency, settling
-decision D4 (`notes/Phase39.md` *Blockers*); the weld carrier and that bridge retired with
-Phase 39's D5 blueprint debt (round 4 `40-simplify`, `r1`), along with the separated deficiency
-`deficiencySep` and the vertex-2-cut deficiency laws built on them (6b and its consumer
-`pencilLoss_vertexTwoCut`) — none had a live caller or a blueprint pin. Blueprint nodes:
-`def:deficiency-merged` (`blueprint/src/chapter/deficiency.tex`, Phase 40i) pins
-`deficiencyMerged` and `partitionDef_le_deficiencyMerged`, and `lem:deficiency-cut-vertex`
-(Phase 40e) pins `partitionDef_split_of_vertexTwoCut`. Its other public declarations are
-unpinned: `bddAbove_range_partitionDef_merged`, `partitionDef_map` and
-`deficiencyMerged_le_deficiency`. -/
+`deficiencyMerged G n u v` is the largest value of a partition with `u` and `v` in one part
+(`def:deficiency-merged`), at most the deficiency (`deficiencyMerged_le_deficiency`,
+`lem:deficiency-merge-rigid`). `partitionDef_map` gives the value of a partition of the image of
+`G` under a map of its vertices (`lem:deficiency-additive-core`).
+`partitionDef_split_of_vertexTwoCut` splits the value of a partition at two sets of vertices that
+meet in two nonadjacent vertices and share no edge; the next section takes its case of a cut vertex
+(`lem:deficiency-cut-vertex`). -/
 
-/-- **`g` — the merged deficiency** (Phase 39's `deficiencyMerged`): the `D`-deficiency
-supremum restricted to labelings that keep `u` and `v` together (`f u = f v`). Always
-well-defined — the subtype is inhabited by every constant labeling. -/
+/-- The **merged deficiency** `def(G̃; u, v)` (`def:deficiency-merged`): the largest value
+`partitionDef` of a labeling `f` with `f u = f v`, a partition with `u` and `v` in one part. The
+constant labelings are such labelings; when `α` is finite there are finitely many, and the `iSup`
+bounds the value of each (`partitionDef_le_deficiencyMerged`). -/
 noncomputable def deficiencyMerged (G : Graph α β) (n : ℕ) (u v : α) : ℤ :=
   ⨆ f : {f : α → α // f u = f v}, G.partitionDef n f.1
 
+/-- When `α` is finite, the values of the labelings `f` with `f u = f v` are bounded above (there
+are finitely many), so `deficiencyMerged`, an `iSup`, bounds each of them
+(`partitionDef_le_deficiencyMerged`). -/
 theorem bddAbove_range_partitionDef_merged [Finite α] (G : Graph α β) (n : ℕ) (u v : α) :
     BddAbove (Set.range (fun f : {f : α → α // f u = f v} => G.partitionDef n f.1)) :=
   (Set.finite_range _).bddAbove
 
+/-- **A partition with `u` and `v` in one part has value at most `def(G̃; u, v)`**
+(`def:deficiency-merged`): `def_{G̃}(P_f) ≤ deficiencyMerged G n u v` when `f u = f v` and `α` is
+finite (`le_ciSup`). -/
 theorem partitionDef_le_deficiencyMerged [Finite α] (G : Graph α β) (n : ℕ) {u v : α}
     {f : α → α} (hf : f u = f v) :
     G.partitionDef n f ≤ G.deficiencyMerged n u v :=
   le_ciSup (G.bddAbove_range_partitionDef_merged n u v) (⟨f, hf⟩ : {f : α → α // f u = f v})
 
-/-- **`partitionDef` under a vertex map**: `(G.map c).partitionDef n h = G.partitionDef n
-(h ∘ c)`. General and new — it is what makes the two `g`-carriers (the direct
-merged-partition supremum and the weld's own `deficiency`) interchangeable. -/
+/-- **The value of a partition of an image graph** (`lem:deficiency-additive-core` (1)): for a
+map `c` of the vertices, the labeling `h` of `G.map c` has the value of the labeling `h ∘ c` of
+`G`, `(G.map c).partitionDef n h = G.partitionDef n (h ∘ c)`. The parts correspond, as
+`h '' (c '' V(G)) = (h ∘ c) '' V(G)`, and so do the crossing edges. -/
 theorem partitionDef_map (G : Graph α β) (n : ℕ) (c h : α → α) :
     (G.map c).partitionDef n h = G.partitionDef n (h ∘ c) := by
   have hnp : (G.map c).numParts h = G.numParts (h ∘ c) := by
@@ -3480,20 +3416,15 @@ theorem partitionDef_map (G : Graph α β) (n : ℕ) (c h : α → α) :
       exact ⟨heE, c x₀, c y₀, ⟨x₀, y₀, hl, rfl, rfl⟩, hne⟩
   simp only [partitionDef, hnp, hce]
 
-/-- **Exact split of `partitionDef` across a vertex 2-cut** (Phase 39 checklist item A4;
-`notes/Phase39-design.md` § *Item-6 carrier recon*). For *any* labeling `f` — no
-side-separation hypothesis at all — the `D`-deficiency of `G` under `f` splits exactly into
-the two sides' contributions plus a
-correction `D * (1 - |I|)`, where `I = f '' V₁ ∩ f '' V₂` is the set of labels straddling
-both sides.
-
-Two ingredients: `numParts` inclusion-exclusion (`f '' V₁ ∪ f '' V₂ = f '' V(G)` via
-`hcover`, so `|f''V(G)| + |I| = |f''V₁| + |f''V₂|`); and `crossingEdges` splitting *exactly*
-into the two sides' crossing edges with **no crossing term** at all — every edge lies
-wholly in `V₁` or wholly in `V₂` (`hsep`), unlike the edge-cut law's `partitionDef_split_of_
-sides`. The two sides' crossing-edge sets are disjoint, and this is the **only** place
-`hnonadj` is load-bearing: a crossing edge counted on both sides has both endpoints in
-`V₁ ∩ V₂ = {u, v}`, hence is a `u`-`v` link, excluded by `hnonadj`. -/
+/-- **The value of a partition at a vertex 2-cut** (`lem:deficiency-cut-vertex`, the identity of
+its proof): let `V₁ ∪ V₂ = V(G)` and `V₁ ∩ V₂ = {u, v}`, with `u` and `v` not adjacent and every
+edge inside `V₁` or inside `V₂`. Then every labeling `f` has
+`def_{G̃}(P_f) = def_{G̃[V₁]}(P_f) + def_{G̃[V₂]}(P_f) + D(1 - |I|)`, where `I = f '' V₁ ∩ f '' V₂`
+is the set of labels used on both sides; it needs no other hypothesis on `f`. The parts satisfy
+`|f '' V(G)| + |I| = |f '' V₁| + |f '' V₂|`. An edge crossing `P_f` lies inside `V₁` or inside
+`V₂` (`hsep`), so it crosses the partition of that side; it does not lie inside both, as its ends,
+which differ, would be `u` and `v`. Unlike `partitionDef_split_of_sides`, at a cut of edges, there
+is no term for edges between the sides. A cut vertex is the case `u = v`. -/
 lemma partitionDef_split_of_vertexTwoCut [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} {V₁ V₂ : Set α} {u v : α} (hnonadj : ¬ G.Adj u v)
     (hcover : V₁ ∪ V₂ = V(G)) (hoverlap : V₁ ∩ V₂ = {u, v})
@@ -3559,25 +3490,26 @@ lemma partitionDef_split_of_vertexTwoCut [Finite α] [Finite β]
   push_cast
   ring
 
-/-- `deficiencyMerged`'s sup ranges over a subset of all labelings, so it is `≤ deficiency`. -/
+/-- **The merged deficiency is at most the deficiency** (`lem:deficiency-merge-rigid` (2), its
+inequality): `def(G̃; u, v) ≤ def(G̃)` when `α` is finite, as its `iSup` ranges over some of the
+labelings. -/
 theorem deficiencyMerged_le_deficiency [Finite α] (G : Graph α β) (n : ℕ) (u v : α) :
     G.deficiencyMerged n u v ≤ G.deficiency n := by
   have : Nonempty {f : α → α // f u = f v} := ⟨⟨fun _ => u, rfl⟩⟩
   exact ciSup_le fun w => G.partitionDef_le_deficiency n w.1
 
-/-! ## The deficiency at a cut vertex (`lem:deficiency-cut-vertex`; Phase 40e)
+/-! ## The deficiency at a cut vertex (`lem:deficiency-cut-vertex`)
 
-The cut-vertex case `u = v` of the vertex-2-cut split `partitionDef_split_of_vertexTwoCut` above:
-two sides overlapping in one body `v`, every link internal to one side. Its non-adjacency
-hypothesis is then "no loop at `v`", and its correction `D (1 − |I|)` is `≤ 0` for every labeling,
-since the label of `v` is used on both sides — so the deficiencies add (informal (MC-52)(i)). The
-`X₀` induction's CUT step (`Graph.X0Attains.of_cutVertex`) uses the `≤` half. -/
+The case `u = v` of `partitionDef_split_of_vertexTwoCut` above: two sets of vertices that meet in
+one vertex `v`, every edge inside one of them. The hypothesis that `u` and `v` are not adjacent is
+then that `v` has no loop, and the term `D(1 − |I|)` is `≤ 0` for every labeling, as the label of
+`v` is used on both sides. So the deficiencies add. -/
 
 /-- **The deficiencies glue at a cut vertex** (`lem:deficiency-cut-vertex`, the `≥` direction):
-`def(G[V₁]) + def(G[V₂]) ≤ def(G)`. Optimal labelings of the two sides, relabelled injectively
-into their own sides with the cut vertex as the label of its part (`Equiv.swap`), glue to one
-labeling of `G` whose two label sets meet only in `v`; the vertex-2-cut split
-`partitionDef_split_of_vertexTwoCut` at `u = v` then reads its value as the sum. -/
+`def(G̃[V₁]) + def(G̃[V₂]) ≤ def(G̃)`. Labelings of the two sides of largest value, relabeled
+injectively into their own sides with `v` as the label of its part (`Equiv.swap`), glue to one
+labeling of `G` whose two sets of labels meet only in `v`; `partitionDef_split_of_vertexTwoCut` at
+`u = v` then gives its value as the sum. -/
 theorem deficiency_add_le_of_cutVertex [Finite α] [Finite β] {G : Graph α β}
     (hloop : G.Loopless) (n : ℕ) {V₁ V₂ : Set α} {v : α} (hcover : V₁ ∪ V₂ = V(G))
     (hoverlap : V₁ ∩ V₂ = {v})
@@ -3641,10 +3573,11 @@ theorem deficiency_add_le_of_cutVertex [Finite α] [Finite β] {G : Graph α β}
   push_cast at hsplit
   linarith
 
-/-- **The deficiencies add at a cut vertex** (`lem:deficiency-cut-vertex`; informal (MC-52)(i)):
-`def(G) = def(G[V₁]) + def(G[V₂])`. The upper bound is the vertex-2-cut split at `u = v`, whose
-correction `D (1 − |I|)` is `≤ 0` because the cut vertex's label is shared; the lower bound is
-`deficiency_add_le_of_cutVertex`. -/
+/-- **The deficiencies add at a cut vertex** (`lem:deficiency-cut-vertex`): for `G` without loops,
+`V₁ ∪ V₂ = V(G)`, `V₁ ∩ V₂ = {v}` and every edge inside `V₁` or inside `V₂`,
+`def(G̃) = def(G̃[V₁]) + def(G̃[V₂])`. The bound `≤` is `partitionDef_split_of_vertexTwoCut` at
+`u = v`, whose term `D(1 − |I|)` is `≤ 0` as the label of `v` is used on both sides; the bound `≥`
+is `deficiency_add_le_of_cutVertex`. -/
 theorem deficiency_eq_add_of_cutVertex [Finite α] [Finite β] {G : Graph α β}
     (hloop : G.Loopless) (n : ℕ) {V₁ V₂ : Set α} {v : α} (hcover : V₁ ∪ V₂ = V(G))
     (hoverlap : V₁ ∩ V₂ = {v})

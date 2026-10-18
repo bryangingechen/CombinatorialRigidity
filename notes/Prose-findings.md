@@ -3595,7 +3595,12 @@ declaration's name as its header writes it:
   Phase-22 construction "the remaining Track-A obstruction". Their credits are `F-081`'s.
   *Evidence:* read (the docstrings and the four statements).
   *Found:* round 2 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, L12).
+  *Disposition:* done (task 29.1): `isBase_ncard_add_deficiency_eq`'s docstring without
+  `prop:rigidity-matrix-prop11`, `rank_add_deficiency_le`'s naming `le_rank_add_deficiency` for
+  the reverse inequality, `rk_cycleMatroid_within_parts_le`'s and its section's naming
+  `lem:rk-within-parts`, and `IsKDof.exists_isBase_isForestPacking`'s a step of
+  `lem:deficiency-zero-iff-tree-packing`, without the Phase-22 paragraph; their credits are
+  `F-081`'s; reported (`notes/Prose-report.md`, L12).
 - **F-085** · L · docstrings of `molecular-induction.tex`'s first pins (`Induction/Operations.lean`,
   `Induction/ReducibleVertex.lean`): `inducedSpan`'s names `def:graph-operations` for
   `def:induced-span`. Those of `rank_matroidMG_of_isKDof_zero`, `contract_matroidMG_rank` and
@@ -4046,9 +4051,13 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins and of `exists_fresh_label`; JJ
   2008 §3, its closing remarks and its references).
   *Found:* round 4 task 2.5.
-  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3: `Jacobs.lean`'s header and
-  `IsLaman3.ncard_edgesIn_le` without "Phase 32" and "Thm 5.3 assembly", and `EdgesIn.lean`'s
-  header and docstrings without their phase pointers (task 28); `Deficiency.lean`'s are task 29's.
+  *Disposition:* done (task 29.1): `Jacobs.lean`'s header and `IsLaman3.ncard_edgesIn_le`
+  without "Phase 32" and "Thm 5.3 assembly", and `EdgesIn.lean`'s header and docstrings without
+  their phase pointers (task 28); in `Deficiency.lean`, the tight partitions' section names
+  `lem:tight-partition-cross-pair-mult` and `-nbr` and credits Lemma 3.2 to Jackson and Jordán
+  2008, who take it from their [10], `IsTightPartition`'s lead names `def:tight-partition`, and
+  the narration is gone, `exists_fresh_label`'s included (task 29.1); reported
+  (`notes/Prose-report.md`, L5).
 - **F-198** · L · the docstrings of task 2.6's pins (`JacobsCounting.lean`, `Jacobs.lean`,
   `SquareGraph.lean`). Five name `lem:normal-cross-count` for declarations pinned at the nodes split
   from it (`rootedAt_inj`, `ncard_inPartNeighbors_eq_two`, `mk_mem_squareNormalCrossEdgesRootedAt`,
@@ -4117,8 +4126,8 @@ declaration's name as its header writes it:
   *Found:* round 4 task 2.9.
   *Disposition:* reported (`notes/Prose-report.md`, L4); round 3: `GenericRigidityMatroid.lean`'s
   abundance lemma without "Phase 34 PROSPECT G3" (its credit dropped, as the node gives none)
-  (task 28); `Molecular/Deficiency.lean`'s header without the year 2009 (task 29), the rest of
-  that file task 29.1's.
+  (task 28); `Molecular/Deficiency.lean`'s header without the year 2009 (task 29), and its
+  docstrings with Jackson and Jordán's Theorem 4.1(a) dated 2010 (task 29.1).
 
 - **F-215** · L · the docstrings of task 2.10's pins (`BodyBar/GenericLift.lean`).
   `exists_isGenericEndpoints_abundance` calls its polynomial one "in the `2n|E(G)|` endpoint
@@ -4349,10 +4358,12 @@ declaration's name as its header writes it:
   three nodes now pin.
   *Evidence:* read (the docstrings and module header).
   *Found:* round 5 task 3.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: `JacobsCounting.lean`'s (the
-  lead of `rootedAt_inj` names `lem:normal-cross-count-rooted`, the section docstring no process)
-  and `TwoCore.lean`'s header (it names the three nodes) (task 28); the docstrings of
-  `Deficiency.lean` are task 29's.
+  *Disposition:* done (task 29.1): `JacobsCounting.lean`'s (the lead of `rootedAt_inj` names
+  `lem:normal-cross-count-rooted`, the section docstring no process) and `TwoCore.lean`'s header
+  (it names the three nodes) (task 28); in `Deficiency.lean`, the leads of `IsTightPartition` and
+  `crossingEdgesWithin` name `def:tight-partition` and `def:crossing-edges-within`, and the
+  section docstring the two cross-pair nodes and no process (task 29.1); reported
+  (`notes/Prose-report.md`, L11).
 - **F-245** · L · `linearIndepOn_pencilChartNormal_closedHubNbhd` (`Molecular/Molecule/Pencil/Chart.lean`):
   its docstring calls it the `lem:pencil-nondegenerate` companion, a label the blueprint lacks; the
   node is `def:pencil-nondegenerate`, and no node pins the declaration. The docstrings of the five
@@ -4383,7 +4394,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` of `CombinatorialRigidity/` for the six labels and
   for the chapters' file names).
   *Found:* round 5 task 5.3.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: the section docstring before
+  `IsTightPartition` names `def:tight-partition` and `lem:exists-tight-partition`, without a
+  chapter, and `sec:jacobs-tight-partitions` for the rest (task 29.1);
+  `theorem_55_minimalKDof_k`'s is task 36's.
 - **F-253** · L · `infinitesimalMotions_mono_of_span_le` and
   `finrank_infinitesimalMotions_le_of_span_le` (`Molecular/RigidityMatrix/Basic.lean`): their
   docstrings call them KT Lemma 5.2 and the lower semicontinuity of the rank along a panel rotation,
@@ -4630,6 +4644,23 @@ declaration's name as its header writes it:
   (`scratch/reconcile-lean/Hyps-t29.lean`, gitignored).
   *Found:* RECONCILE round 3 task 29.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-281** · L · five declarations of `Molecular/Deficiency.lean` whose proofs use less than a
+  hypothesis gives: `Graph.IsTightPartition.subfamily_le`'s `hS2 : 2 ≤ S.ncard` only as
+  `S.ncard ≠ 0`; `Graph.IsTightPartition.parts`'s `hD : 2 ≤ bodyBarDim n` only as
+  `1 ≤ bodyBarDim n` (they differ at `n = 1`); `Graph.IsTightPartition.eq_of_common_nbr`'s
+  `hG : G.Simple` only through `G.Loopless`; `Graph.deficiency_of_single_edge`'s
+  `hD : 1 ≤ bodyBarDim n` not at all; and `Graph.deficiency_eq_zero_iff_exists_spanningTrees`'s
+  `[DecidableEq β]`, which its statement does not use (hence its `set_option
+  linter.unusedDecidableInType false`), only where `classical` would do. The first three nodes
+  state Jackson and Jordán's setting (`|Q| ≥ 2`, `D ≥ 2`, `G` simple), so a weaker pin there is
+  a form for `fmlnote:tight-partition-consumed-forms` to list, as it lists three.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness, copies of the five with the
+  hypothesis weakened or dropped (and of their private helpers) that elaborate with the same
+  proofs, one line changed in the last two (`have := hG` for `have := hG.toLoopless`, and
+  `classical`), each on the three standard axioms (`scratch/reconcile-lean/Hyps-t29-1.lean`,
+  gitignored).
+  *Found:* RECONCILE round 3 task 29.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 
@@ -4702,13 +4733,15 @@ declaration's name as its header writes it:
   *Evidence:* read (Oxley 2011 pp. 404–407, 411–412, 416, 427–430; Schrijver pp. 725–726, 775;
   Edmonds 1965 p. 69; all in `.refs/`). Edmonds 1970 and Nash-Williams 1966 are not in `.refs/`.
   *Found:* round 2 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, M4); round 3: the docstrings of
+  *Disposition:* done (task 29.1): the docstrings of
   `Submodular.lean` and `Union.lean` credit the matroid of a submodular function and the
   polymatroid rank formula to Edmonds and Rota with Oxley's numbers as Oxley's, the union to
   Nash-Williams, its rank formula to Nash-Williams and Edmonds, and Edmonds 1965's Theorem 1 as
   the partition criterion (`Union_pow_indep_iff_count`), as `TreePacking.lean`'s
   `Union_pow_rank_eq` now does (task 27); `Molecular/Deficiency.lean`'s header without "the
-  Edmonds-optimal `Y₀`" (task 29); its "Edmonds matroid-partition rank formula" is task 29.1's.
+  Edmonds-optimal `Y₀`" (task 29), and its "Edmonds matroid-partition rank formula" the rank of a
+  matroid union, `thm:matroid-partition-rank` (task 29.1); the four chapters already credit them
+  so; reported (`notes/Prose-report.md`, M4).
 - **F-081** · M · the credit for KT eq. (2.4), $\operatorname{rank} M(\tilde G) +
   \operatorname{def}(\tilde G) = D(|V|-1)$ (`thm:def-eq-corank`): the blueprint credited it to
   Jackson and Jordán's Theorem 6.1, "whose Corollary 6.2" is the deficiency-zero case. JJ 2009's
@@ -4723,9 +4756,14 @@ declaration's name as its header writes it:
   and 6.3, about realizations, for KT Proposition 2.2 at $\tilde G$).
   *Evidence:* read (JJ 2009 pp. 580–583; KT 2011 pp. 655–656; both in `.refs/`; the docstrings).
   *Found:* round 2 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, M4); round 3: `Molecular/Deficiency.lean`'s
-  header credits KT eq. (2.4), without "Jackson–Jordán 2009 Thm 6.1 / Cor 6.2" (task 29); the
-  docstrings of the four declarations are task 29.1's.
+  *Disposition:* done (task 29.1): `Molecular/Deficiency.lean`'s header credits KT eq. (2.4),
+  without "Jackson–Jordán 2009 Thm 6.1 / Cor 6.2" (task 29); `rank_add_deficiency_eq` and
+  `isBase_ncard_add_deficiency_eq` credit KT eq. (2.4) (p. 655), observed from their Proposition
+  2.3, and the first Jackson and Jordán's Theorem 4.1(a) (2010, p. 580) with its credit to
+  Nash-Williams and Tutte, `le_rank_add_deficiency` and its section no "Jackson–Jordán min–max
+  content", and `deficiency_eq_zero_iff_exists_spanningTrees` KT Proposition 2.2 at `G̃` (task
+  29.1); `intro.tex` and `formalization.yaml` already credit it so; reported
+  (`notes/Prose-report.md`, M4).
 - **F-118** · M · the route of Cases I–III (`algebraic-induction/case-i.tex` … `case-iii.tex`): the
   prose presents as steps of the induction several nodes that no main result's proof takes. Every
   pin of these nodes lies outside every main result's closure, and the pins of the live nodes that
