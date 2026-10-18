@@ -9,31 +9,36 @@ public import Mathlib.Combinatorics.SimpleGraph.Finite
 public import CombinatorialRigidity.PebbleGame.Basic
 
 /-!
-# The `(k, ℓ)`-pebble game — algorithm layer
+# The `(k, ℓ)`-pebble game — the algorithm
 
-Phase 9, algorithm layer. Builds the three-layer algorithm chain on
-top of the `PartialOrientation V` state and invariants from
-`PebbleGame/Basic.lean`:
+Lee and Streinu's basic pebble game (Lee–Streinu 2008, §3), stopped at the
+first rejected edge, on the state and moves of `PebbleGame/Basic.lean`, in
+three levels:
 
-* `tryReachPebbleWith` — the computable workhorse running the verified
-  DFS `Search.reachableFinding` along a caller-supplied
-  out-neighbour enumeration, returning a
-  `TryReachPebbleResult D P v` on success and `none` on failure;
-* `tryAddEdgeWith` — outer loop driving DFS + path reversal + arc
-  insertion to try to fit an additional edge into `D`;
-* `runPebbleGameWith` — fold of `tryAddEdgeWith` over an edge
-  enumeration of `G`, returning the final partial orientation if every
-  edge fits, or `none` on the first failure.
+* `tryReachPebbleWith`, the pebble search: it runs the search
+  `Search.reachableFinding` along caller-supplied lists of out-neighbours and
+  returns `some` of a `TryReachPebbleResult D P v` (the target and a simple
+  walk to it, along which `newOrient` reverses `D`), or `none`;
+* `tryAddEdgeWith`, processing an edge: pebble searches and path reversals
+  until the edge is inserted (`.inr` of the new orientation) or rejected
+  (`.inl` of a `WorkhorseWitness`);
+* `runPebbleGameWith`, the pebble game on a list of pairs: `tryAddEdgeWith` on
+  each pair in turn, skipping a loop or a pair already oriented; it returns
+  `.inr` of the final orientation, or `.inl` of the first rejection's witness.
 
-Each computable workhorse comes with a thin noncomputable math-layer
-wrapper (`tryReachPebble` / `tryAddEdge` / `runPebbleGame`)
-specialising the enumeration to `D.outList` / `G.edgeFinset`. The
-correctness theorems (soundness, completeness, the certificate-form
-iff, the matroidal-independence corollary) live in
-`PebbleGame/Correctness.lean`.
+The first two have `noncomputable` instances on mathlib's lists `D.outList`
+(`tryReachPebble`, `tryAddEdge`). The formal pebble game `runPebbleGame`, which
+runs the third on mathlib's lists and returns a verdict, is in
+`PebbleGame/Correctness.lean` with the correctness theorems. This file also
+proves how an accepted run
+changes the underlying edge set (`tryAddEdgeWith_underline`,
+`runPebbleGameWith_underline_subset`, `runPebbleGameWith_mem_underline`,
+`runPebbleGameWith_underline_eq`), and the two facts about mathlib's list of a
+graph's edges that the formal pebble game needs
+(`runPebbleGame_edges_discharges`).
 
-Cf. Lee–Streinu §3 (pebble-search inside `tryAddEdge`),
-blueprint `def:tryReachPebble`, `def:tryAddEdge`, `def:runPebbleGame`.
+The blueprint presents this file in `sec:pebble-game-algorithm` and
+`sec:pebble-game-soundness`.
 -/
 
 public section
@@ -46,25 +51,23 @@ namespace PartialOrientation
 
 variable [DecidableEq V] (D : PartialOrientation V)
 
-/-! ### Try-reach-pebble: DFS with path reversal
+/-! ### Try-reach-pebble: the pebble search
 
 The computable workhorse `tryReachPebbleWith D P v succ h_succ` runs the
-verified DFS `Search.reachableFinding` along a caller-supplied
-out-neighbour enumeration `succ : V → List V` (with a propositional
-witness `h_succ` that `succ` matches `D`'s outgoing-arc relation); on
-success it bundles the witness walk and target into a
-`TryReachPebbleResult D P v`, on failure it returns `none`. The math-layer
-convenience `tryReachPebble D P v` is a one-line noncomputable wrapper
-plugging in `succ := D.outList`.
+search `Search.reachableFinding` along caller-supplied lists of
+out-neighbours `succ : V → List V` (with a proof `h_succ` that `succ` matches
+`D`'s outgoing-arc relation); on success it returns the target and the walk as
+a `TryReachPebbleResult D P v`, on failure `none`. The math-layer convenience
+`tryReachPebble D P v` is a one-line noncomputable wrapper plugging in
+`succ := D.outList`.
 
-Splitting the API this way lets IO-driven callers (parser → algorithm →
-output pipelines, in which the user already holds adjacency data in
-`List`-shape) call `tryReachPebbleWith` directly with their own enumeration
-and stay fully computable, while abstract math-layer use of `tryReachPebble`
-remains terse. Downstream soundness/completeness theorems will live on
-`tryReachPebbleWith` and inherit to `tryReachPebble` for free.
+Splitting the API this way lets a caller that already holds its lists of
+out-neighbours (as `PebbleGame/Exec.lean` does, with sorted lists) call
+`tryReachPebbleWith` and stay computable, while `tryReachPebble` stays terse.
+The lemmas below are stated for `tryReachPebbleWith`, so they hold for
+`tryReachPebble`, its instance.
 
-Cf. Lee–Streinu §3 (one pebble-search attempt inside `tryAddEdge`),
+Cf. Lee–Streinu §3 (the search for a pebble when an edge is processed),
 blueprint `def:tryReachPebble`. -/
 
 section TryReachPebble
@@ -89,16 +92,16 @@ structure TryReachPebbleResult (D : PartialOrientation V) (P : V → Bool) (v : 
   /-- The target satisfies the predicate. -/
   hP : P target = true
 
-/-- Computable workhorse for `tryReachPebble`. Runs the verified DFS
-`Search.reachableFinding` with a caller-supplied out-neighbour enumeration
-`succ : V → List V` plus a propositional witness `h_succ` that `succ`
-agrees with `D`'s outgoing-arc relation; transports the resulting walk to
-the orientation's arc relation via `DirectedWalk.mapRel` and packages the
-output as a `TryReachPebbleResult D P v`.
+/-- Computable workhorse for `tryReachPebble`. Runs the search
+`Search.reachableFinding` with caller-supplied lists of out-neighbours
+`succ : V → List V` and a proof `h_succ` that `succ` agrees with `D`'s
+outgoing-arc relation; transports the resulting walk to the orientation's arc
+relation via `DirectedWalk.mapRel` and packages the output as a
+`TryReachPebbleResult D P v`.
 
-Stays computable as long as `succ` is. This is the form an IO pipeline
-calls directly with a `List`-shaped adjacency built from input data;
-soundness / completeness theorems will land here and inherit to the
+Stays computable as long as `succ` is: `PebbleGame/Exec.lean` runs it, through
+`runPebbleGameWith`, on sorted lists. Its completeness,
+`tryReachPebbleWith_eq_none_imp`, is stated for it and so holds for the
 math-layer wrapper `tryReachPebble`. Lee–Streinu §3, blueprint
 `def:tryReachPebble`. -/
 def tryReachPebbleWith (P : V → Bool) (v : V)
@@ -137,8 +140,9 @@ omit [Fintype V] in
 reachable input orientation `D` and a target with strictly-positive free pebble
 count (i.e. `D.out r.target < k`), the post-reversal orientation
 `r.newOrient = D.reverse r.walk r.isPath` is again reachable, via the
-`Reachable.reverse` constructor. The `h_target` hypothesis is supplied by
-`tryAddEdgeWith`'s predicate `0 < D.peb k w ∧ ...` at the recursive call. -/
+`Reachable.reverse` constructor. At `tryAddEdgeWith`'s recursive calls,
+`reachable_newOrient_of_addEdgePred` supplies `h_target` from the predicate
+`0 < D.peb k w ∧ ...`. -/
 lemma TryReachPebbleResult.reachable_newOrient {D : PartialOrientation V}
     {P : V → Bool} {v : V} (r : TryReachPebbleResult D P v) {k ℓ : ℕ}
     (hD : Reachable k ℓ D) (h_target : D.out r.target < k) :
@@ -151,12 +155,11 @@ runs the DFS with:
 `P w = decide (0 < D.peb k w) && decide (w ≠ u) && decide (w ≠ v)`.
 Decodes the conjunctive `r.hP` into `0 < D.peb k r.target`, derives
 `D.out r.target < k` (using `peb k w = k - D.out w` definitionally and
-`h_outle r.target ≤ k`), then applies `reachable_newOrient`. Bundles the
-8-line case3+case4 preamble shared across the three `tryAddEdgeWith.induct`
-proofs (`_reachable`, `_isSome`, `_eq_none_imp_exists_witness`) — at each
-callsite the case-binder `P` (let-bound by `.induct` to the specific lambda)
-unifies with the helper's signature, so the simp dance is performed once in
-the helper instead of six times across the consumers. -/
+`h_outle r.target ≤ k`), then applies `reachable_newOrient`. `tryAddEdgeWith`
+calls it at its two recursive calls (after a search from `u` and after one
+from `v`), for the new orientation's `Reachable` argument; there the
+`let`-bound predicate `P` unifies with this signature, so the `simp` step is
+done once here. -/
 lemma TryReachPebbleResult.reachable_newOrient_of_addEdgePred
     {D : PartialOrientation V} {k ℓ : ℕ} {u v start : V}
     (r : TryReachPebbleResult D
@@ -188,8 +191,9 @@ satisfies the predicate `P`. The orientation-side `ReflTransGen` of
 `fun a b => (a, b) ∈ D.arcs` is bridged to the algorithm-side `ReflTransGen`
 of `fun a b => b ∈ succ a` by `h_succ`, after which
 `Search.reachableFinding_complete` produces a contradiction with the `none`
-result. Used by `tryAddEdgeWith_isSome` to discharge the case where both
-endpoint-DFS searches fail. -/
+result. `tryAddEdgeWith` uses it where both pebble searches fail, to show that
+no vertex of its set `V'` but `u` and `v` holds a free pebble (the witness's
+`h_pebOn_le`). -/
 lemma tryReachPebbleWith_eq_none_imp {D : PartialOrientation V}
     {P : V → Bool} {v : V}
     {succ : V → List V}
@@ -214,47 +218,43 @@ lemma tryReachPebbleWith_eq_none_imp {D : PartialOrientation V}
 
 end TryReachPebble
 
-/-! ### Try-add-edge: outer loop driving DFS + path reversal + insertion
+/-! ### Try-add-edge: processing an edge
 
 `tryAddEdgeWith D k ℓ u v ... toSucc h_toSucc` processes a candidate edge
 `{u, v}` against the orientation `D` (blueprint `def:tryAddEdge`):
 
 * If `peb k u + peb k v ≥ ℓ + 1`: insert the directed arc, orienting `(u, v)`
-  when `0 < peb k u` (free pebble at `u`) and `(v, u)` otherwise; return the
-  updated orientation.
+  when `0 < peb k u` (free pebble at `u`) and `(v, u)` otherwise; return `.inr`
+  of the updated orientation.
 * Else: search for a vertex `w ≠ u, v` with a free pebble reachable from `u`
   along `D`'s out-arcs via `tryReachPebbleWith`. On success, reverse the path
-  to send a pebble back to `u` and recurse. If `u`-search fails, try the
-  symmetric `v`-search; on success, reverse + recurse. If both DFS attempts
-  fail, return `.inl w` carrying a workhorse-level failure witness (Phase 11
-  Layer 3 reshape; see the next paragraph).
+  to send a pebble back to `u` and recurse. If the search from `u` fails, try
+  the symmetric search from `v`; on success, reverse and recurse. If both
+  searches fail, return `.inl` of a failure witness (see the last paragraph).
 
 Termination measure: `(ℓ + 1) - (D.peb k u + D.peb k v)`, which strictly
-decreases per successful reversal — the predicate's `w ≠ u, v` clauses ensure
-the head endpoint of the reversed path is `u` (resp. `v`) and the tail is
-neither, so `out_reverse_head` raises `peb k u` (resp. `peb k v`) by exactly
-`1` while leaving the other endpoint's pebble count untouched.
+decreases at each reversal. The search from `u` returns a path from `u`, and
+the predicate's clauses `w ≠ u, v` make it end at neither, so the path has an
+arc, `peb_reverse_head` raises `peb k u` by exactly `1`, and
+`peb_reverse_of_not_endpoint` leaves `peb k v` unchanged (likewise with `u`
+and `v` exchanged).
 
-The caller supplies the out-neighbour enumeration `toSucc D'` for *every*
-intermediate orientation `D'` the recursion can encounter — necessary because
-path reversal mutates `D.arcs`. The agreement witness `h_toSucc` is the
-universally-quantified analogue of `tryReachPebbleWith`'s `h_succ`. As with
-the DFS layer, the math-layer convenience `tryAddEdge` plugs in
-`toSucc D' := D'.outList`, inheriting `noncomputable` from `outList`'s use of
-`Finset.toList`; IO callers staying inside the computable layer should invoke
-`tryAddEdgeWith` directly with a `List`-shaped adjacency they already hold.
+The caller supplies the lists of out-neighbours `toSucc D'` for *every*
+orientation `D'` the recursion can reach, since path reversal changes the
+arcs. The proof `h_toSucc` is the universally-quantified analogue of
+`tryReachPebbleWith`'s `h_succ`. As with the pebble search, the math-layer
+convenience `tryAddEdge` plugs in `toSucc D' := D'.outList`, inheriting
+`noncomputable` from `outList`'s use of `Finset.toList`; a caller that holds
+its lists calls `tryAddEdgeWith` and stays computable.
 
-The failure branch returns `.inl ⟨…⟩` carrying a `WorkhorseWitness k ℓ V`
-constructed inline at case 5 (both DFS attempts fail). The witness's
-`V'` is the reach-union `D.reach u ∪ D.reach v` materialised via the
-verified-iterative `reachClosureComputable` of `Search/DFS.lean`, with
-`h_outOn_zero` discharged by `outOn_reach_union_eq_zero`, the strengthened
-`h_pebOn_le : D.pebOn k V' ≤ ℓ` discharged by combining the case-5
-below-threshold `peb u + peb v ≤ ℓ` with the DFS-failure "no free pebble
-outside `{u, v}`" guarantee via `Finset.sum_eq_zero`, and `h_reachable`
-inherited from the input. Phase 11 Layer 3 absorbs the previously-separate
-`tryAddEdgeWith_eq_none_imp_exists_witness` existential into this inline
-construction. -/
+Where both searches fail, the branch returns `.inl ⟨…⟩`, a
+`WorkhorseWitness k ℓ V` built in place. Its `V'` is the union of the sets of
+vertices reachable from `u` and from `v`, computed by `reachClosureComputable`
+(`Search/DFS.lean`) on the lists `toSucc D`; `h_outOn_zero` is
+`outOn_eq_zero_of_closed`; `h_pebOn_le : D.pebOn k V' ≤ ℓ` combines the failed
+threshold test, `peb u + peb v ≤ ℓ`, with the failed searches, by which no
+other vertex of `V'` holds a free pebble (`Finset.sum_eq_zero`,
+`tryReachPebbleWith_eq_none_imp`); and `h_reachable` is the input's `hD`. -/
 
 section TryAddEdge
 
@@ -262,17 +262,15 @@ variable [Fintype V]
 
 open CombinatorialRigidity.Search
 
-/-- Computable workhorse for the pebble-game's outer-loop combinator
-`tryAddEdge`. See the section docstring for the algorithm description; the
-math-layer convenience `tryAddEdge` is a one-line `noncomputable` wrapper
-plugging in `toSucc := (·.outList)`.
+/-- Computable workhorse for `tryAddEdge`, processing the edge `{u, v}` at
+`D`. See the section docstring for the algorithm description; the math-layer
+convenience `tryAddEdge` is a one-line `noncomputable` wrapper plugging in
+`toSucc := (·.outList)`.
 
-Phase 11 Layer 3 reshape: the return type is `Sum (WorkhorseWitness k ℓ V)
-(PartialOrientation V)`; the `.inr D'` branch carries the updated
-orientation (replacing the old `some D'`), and the `.inl w` branch carries
-a workhorse-level failure witness (replacing the old `none`) constructed
-inline at case 5 from `hD : Reachable k ℓ D`, the DFS-failure data, and
-the case-5 below-threshold guarantee. Blueprint `def:tryAddEdge`. -/
+It returns `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)`: `.inr D'`
+with the orientation after the insertion, or `.inl w` with a failure witness
+built where both searches fail, from `hD : Reachable k ℓ D`, the failed
+searches and the failed threshold test. Blueprint `def:tryAddEdge`. -/
 def tryAddEdgeWith
     (D : PartialOrientation V) (k ℓ : ℕ) (u v : V) (huv : u ≠ v)
     (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
@@ -309,12 +307,12 @@ def tryAddEdgeWith
           toSucc h_toSucc
       | none =>
         -- Both DFS attempts fail: build the workhorse-level failure witness
-        -- inline from `hD : Reachable k ℓ D`, the case-5 below-threshold
-        -- guarantee `hthr`, and the DFS-failure data `h_u` / `h_v`. The
-        -- blocking subset is materialised via the *computable*
-        -- `reachClosureComputable` (against the caller-supplied `toSucc D`
-        -- adjacency, not the noncomputable math-layer `D.reach`), so the
-        -- workhorse stays fully computable even on accept-via-CLI paths.
+        -- inline from `hD : Reachable k ℓ D`, the failed threshold test
+        -- `h_thr`, and the DFS-failure data `h_u` / `h_v`. The
+        -- blocking subset is computed by `reachClosureComputable`
+        -- (on the caller-supplied lists `toSucc D`, not by the
+        -- noncomputable math-layer `D.reach`), so the workhorse stays
+        -- computable whenever `toSucc` is.
         .inl
           { D := D
             V' := reachClosureComputable (toSucc D) u ∪
@@ -439,12 +437,9 @@ def tryAddEdgeWith
 /-- Math-layer convenience: specialise `tryAddEdgeWith` to
 `toSucc := (·.outList)`, with the agreement witness supplied uniformly by
 `mem_outList`. `noncomputable` because `outList` goes through `Finset.toList`;
-IO callers should use `tryAddEdgeWith` directly with a list-shaped adjacency to
-stay computable. Phase 11 Layer 3 reshape: return type is now
-`Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)` (was
-`Option (PartialOrientation V)`) and the `h_outle` hypothesis is absorbed
-into `hD : Reachable k ℓ D` via `Reachable.out_le`. Blueprint
-`def:tryAddEdge`. -/
+a caller that needs to compute uses `tryAddEdgeWith` with its own lists. The
+bound `D.out x ≤ k` comes from `hD : Reachable k ℓ D` (`Reachable.out_le`).
+Blueprint `def:tryAddEdge`. -/
 noncomputable def tryAddEdge
     (D : PartialOrientation V) (k ℓ : ℕ) (u v : V) (huv : u ≠ v)
     (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
@@ -455,10 +450,8 @@ noncomputable def tryAddEdge
 
 /-- `tryAddEdgeWith` preserves `Reachable k ℓ` on the accept branch: if the
 input orientation `D` is reachable and the call returns `.inr D'`
-(accept), then `D'` is also reachable. Phase 11 Layer 3 reshape: the
-hypothesis `h` matches the `.inr D'` branch of the new `Sum`-shaped return
-type (was `some D'`). The reject branch `.inl w` carries its own
-witness's `h_reachable` field and is irrelevant to this lemma.
+(accept), then `D'` is also reachable. The reject branch `.inl w` carries its
+own witness's `h_reachable` field and is irrelevant to this lemma.
 
 By induction on the function's recursion structure
 (`tryAddEdgeWith.induct`); the threshold-accept branches close via the
@@ -542,8 +535,7 @@ lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
       · exact nomatch h
 
 /-- `tryAddEdgeWith` on the accept branch (`.inr D'`) rewrites the underlying
-unoriented edge set as `insert s(u, v) D.underline`. Phase 11 Layer 3
-reshape: hypothesis matches `.inr D'` (was `some D'`). The reject branch
+unoriented edge set as `insert s(u, v) D.underline`. The reject branch
 `.inl w` is irrelevant to this lemma — the witness carries its own
 `h_pending_fresh` field.
 
@@ -723,42 +715,37 @@ lemma tryAddEdgeWith_witness_underline_eq {k ℓ : ℕ} {u v : V} (huv : u ≠ v
 
 end TryAddEdge
 
-/-! ### Run-pebble-game: fold tryAddEdge over an edge enumeration
+/-! ### Run-pebble-game: the game on a list of pairs
 
-`runPebbleGameWith D k ℓ toSucc h_toSucc edges` folds `tryAddEdgeWith` over a
-caller-supplied `List (V × V)` of candidate ordered pairs starting from the
+`runPebbleGameWith D k ℓ hD toSucc h_toSucc edges` folds `tryAddEdgeWith` over
+a caller-supplied `List (V × V)` of candidate ordered pairs starting from the
 orientation `D`, threading the orientation through each call. For each pair
 `(u, v)`:
 
 * If `u = v` (loop), or either `(u, v)` or `(v, u)` is already in `D.arcs`
   (parallel / antiparallel duplicate of an already-accepted edge), the step
   is a no-op (skip + recurse on the unchanged `D`). All three checks are
-  decided per `[DecidableEq V]`; the `D.out x ≤ k` invariant carried by
-  `Reachable k ℓ D` no longer enters the runtime check (Phase 11 Layer 3
-  absorbed it into the `hD : Reachable k ℓ D` hypothesis).
+  decided per `[DecidableEq V]`; the bound `D.out x ≤ k` needs no check, since
+  `hD : Reachable k ℓ D` gives it.
 * Otherwise call `D.tryAddEdgeWith`; on `.inr D'` recurse from `D'`
   threading the updated reachability via `tryAddEdgeWith_reachable`; on
-  `.inl w` propagate the workhorse-level failure witness `.inl w` as the
-  whole-run output.
+  `.inl w` return `.inl w` as the whole run's output.
 
-Termination is by `edges.length`, which strictly decreases per recursive call
-(cf. Lee–Streinu §3 outer fold).
+The recursion is structural on the list (cf. Lee–Streinu §3, which considers
+the edges one at a time).
 
-The math-layer verdict-bearing wrapper `runPebbleGame G k ℓ h_matroidal :
-PebbleGameResult G k ℓ` (Phase 11 Layer 4b — maximal reshape) and the
-exec-layer sibling `runPebbleGameExec` live in `PebbleGame/Correctness.lean`
-and `PebbleGame/Exec.lean` respectively; both call `runPebbleGameWith`
-internally (the math layer with `D'.outList` and `G.edgeFinset.toList.map
-Quot.out`, the exec layer with `outListSorted` and `edgeListSorted`) and
-package the workhorse-level `Sum` output as a `PebbleGameResult` verdict.
-IO-driven callers can also invoke `runPebbleGameWith` directly with their
-own `List (V × V)` enumeration and a list-shaped adjacency.
+The formal pebble game `runPebbleGame G k ℓ h_matroidal : PebbleGameResult G k ℓ`
+and the computable pebble game `runPebbleGameExec` are in
+`PebbleGame/Correctness.lean` and `PebbleGame/Exec.lean` respectively; both run
+`runPebbleGameWith` from the empty orientation (the first with `D'.outList`
+and `G.edgeFinset.toList.map Quot.out`, the second with `outListSorted` and
+`edgeListSorted`) and turn its `Sum` output into a `PebbleGameResult` verdict.
+A caller can also run `runPebbleGameWith` on its own `List (V × V)` and lists
+of out-neighbours.
 
-The failure branch returns `.inl w` carrying a workhorse-level failure
-witness — the same witness `tryAddEdgeWith` builds at its case-5 inline
-construction, threaded unchanged through the fold (the recursion's
-failure branch propagates the first `.inl` it encounters; subsequent
-edges are not processed). Blueprint `def:runPebbleGame`. -/
+The failure branch returns `.inl w` with the witness that `tryAddEdgeWith`
+built where both its searches failed, unchanged (the first `.inl` ends the
+run; the later pairs are not processed). Blueprint `def:runPebbleGame`. -/
 
 section RunPebbleGame
 
@@ -767,12 +754,11 @@ variable [Fintype V]
 open CombinatorialRigidity.Search
 
 /-- Computable workhorse for the pebble-game's outer fold. See the section
-docstring for the algorithm description; the math-layer convenience
-`runPebbleGame` is a `noncomputable` wrapper. Phase 11 Layer 3 reshape:
-return type is `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)`
-(was `Option (PartialOrientation V)`) and the function carries
-`hD : Reachable k ℓ D` so the per-step runtime check no longer needs
-the `(∀ x, D.out x ≤ k)` clause. Blueprint `def:runPebbleGame`. -/
+docstring for the algorithm description; the math-layer `runPebbleGame` is a
+`noncomputable` wrapper. It returns `Sum (WorkhorseWitness k ℓ V)
+(PartialOrientation V)`, and takes `hD : Reachable k ℓ D`, which
+`tryAddEdgeWith` needs, so the per-step check needs no clause
+`∀ x, D.out x ≤ k`. Blueprint `def:runPebbleGame`. -/
 @[expose] def runPebbleGameWith
     (D : PartialOrientation V) (k ℓ : ℕ)
     (hD : Reachable k ℓ D)
@@ -794,13 +780,13 @@ the `(∀ x, D.out x ≤ k)` clause. Blueprint `def:runPebbleGame`. -/
 
 /-- `runPebbleGameWith` preserves `Reachable k ℓ` on the accept branch: if
 the input orientation `D` is reachable and the fold returns `.inr D'`
-(accept), then `D'` is also reachable. Phase 11 Layer 3 reshape: the
-function carries `hD : Reachable k ℓ D` as a hypothesis, but the
-*output* reachability of `.inr D'` is non-trivial (it goes through the
-per-step `tryAddEdgeWith_reachable`); this lemma extracts that fact for
-downstream consumption (notably soundness). By structural induction on
-the edge list; the per-step glue is `tryAddEdgeWith_reachable` on
-accept-branch hits and the IH directly on no-op (skipped) edges. -/
+(accept), then `D'` is also reachable. The function takes
+`hD : Reachable k ℓ D` as an argument, but the reachability of the output
+`D'` has to be proved (through the per-step `tryAddEdgeWith_reachable`); this
+lemma does so, for `runPebbleGameWith_sound` and for the verdict's `accept`. By
+structural induction on the edge list; the per-step glue is
+`tryAddEdgeWith_reachable` on accept-branch hits and the IH directly on no-op
+(skipped) edges. -/
 lemma runPebbleGameWith_reachable {k ℓ : ℕ}
     (toSucc : PartialOrientation V → V → List V)
     (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
@@ -827,15 +813,15 @@ lemma runPebbleGameWith_reachable {k ℓ : ℕ}
     · simp only [dite_eq_right hcond] at h
       exact runPebbleGameWith_reachable toSucc h_toSucc es hD h
 
-/-- `runPebbleGameWith` tracks the underlying unoriented edge set across the
-fold (infrastructure piece (ii) for `thm:pebble-game-soundness`). On success,
-`D'.underline` lies between the input `D.underline` (monotone: nothing is ever
-removed by the move sequence — `underline_reverse_eq` shows reversal preserves
-it, `underline_addArc` shows arc insertion grows it) and the union with the
-`Sym2.mk`-image of the candidate edge list (upper bound: every edge of
-`D'.underline` either started in `D.underline` or got accepted from a list
-entry; skipped entries either were already in `D.underline` or did not
-contribute, and accept-branch hits add exactly one new `s(u, v)` per
+/-- **The edges oriented by an accepted run** (`lem:runPebbleGameWith-underline-subset`,
+part (2)): `runPebbleGameWith` tracks the underlying unoriented edge set across
+the fold. On success, `D'.underline` lies between the input `D.underline`
+(monotone: nothing is ever removed by the move sequence —
+`underline_reverse_eq` shows reversal preserves it, `underline_addArc` shows
+arc insertion grows it) and the union with the `Sym2.mk`-image of the
+candidate edge list (upper bound: every edge of `D'.underline` either started
+in `D.underline` or got accepted from a list entry; skipped entries add
+nothing, and accept-branch hits add exactly their `s(u, v)` per
 `tryAddEdgeWith_underline`).
 
 By structural induction on the edge list; the per-step glue is
@@ -889,17 +875,17 @@ lemma runPebbleGameWith_underline_subset {k ℓ : ℕ}
         Finset.mem_insert] at he' ⊢
       tauto
 
-/-- No-skip-fires converse to `runPebbleGameWith_underline_subset`: under
-hypotheses ensuring every runtime check passes at every step (`Reachable k ℓ`
-for the out-degree bound; per-edge `p.1 ≠ p.2` for the loop check; per-edge
-freshness `s(p.1, p.2) ∉ D.underline` plus pairwise Sym2-distinctness across
-the list for the two arc-membership checks), every input edge ends up in
+/-- Converse to `runPebbleGameWith_underline_subset` when no pair is skipped:
+under hypotheses ensuring every check passes at every step (per-edge
+`p.1 ≠ p.2` for the loop check; per-edge freshness
+`s(p.1, p.2) ∉ D.underline` plus pairwise Sym2-distinctness across the list
+for the two arc-membership checks), every input edge ends up in
 `D'.underline`.
 
-Combined with `runPebbleGameWith_underline_subset` this gives the tight
-identity `D'.underline = D.underline ∪ (edges.map s(·,·)).toFinset` at
-termination; the wrapper `runPebbleGame G k ℓ` specialises at
-`D = empty` to obtain `D'.underline = G.edgeFinset`. -/
+Combined with `runPebbleGameWith_underline_subset` this gives the identity
+`D'.underline = D.underline ∪ (edges.map s(·,·)).toFinset` at termination;
+`runPebbleGameWith_underline_eq` takes `D` to be the empty orientation to
+obtain `D'.underline = G.edgeFinset`. -/
 lemma runPebbleGameWith_mem_underline {k ℓ : ℕ}
     (toSucc : PartialOrientation V → V → List V)
     (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
@@ -949,18 +935,17 @@ lemma runPebbleGameWith_mem_underline {k ℓ : ℕ}
           hfresh_es hpw_tail h p hp_in_es
     next _ _ => exact nomatch h
 
-/-- **Workhorse-level underline equation for `runPebbleGameWith`** (Phase 10
-Layer 2). Starting from the empty orientation against an edge list whose
+/-- **Workhorse-level underline equation for `runPebbleGameWith`**
+(`lem:runPebbleGame-underline-eq`). Starting from the empty orientation against an edge list whose
 `Sym2.mk`-image is exactly `G.edgeFinset` (`himg`, so no entry is a loop:
 each is an edge of `G`) and pairwise Sym2-distinct entries (`hpairwise`), on
 success the output orientation's underline equals `G.edgeFinset`. Combines the
 upper bound from `runPebbleGameWith_underline_subset` (with `D = empty`
 collapsing the `D.underline ∪ …` clause via `underline_empty`) and the lower
 bound from `runPebbleGameWith_mem_underline` (using the empty-underline
-freshness). Both the math-layer `runPebbleGame` and exec-layer
-`runPebbleGameExec` verdict-bearing wrappers (Phase 11 Layer 4b) consume this
-lemma to populate `.accept`'s `h_underline` proof field. Blueprint
-`thm:runPebbleGameWith-correct` part (underline-tracking piece). -/
+freshness). `runPebbleGameWith_sound` uses it, and so do the verdict-bearing
+wrappers of the formal and the computable pebble game (`runPebbleGame.aux`,
+`runPebbleGameExec.aux`), to populate `.accept`'s `h_underline` proof field. -/
 theorem runPebbleGameWith_underline_eq {G : SimpleGraph V}
     [Fintype G.edgeSet] {k ℓ : ℕ}
     (toSucc : PartialOrientation V → V → List V)
@@ -995,15 +980,16 @@ theorem runPebbleGameWith_underline_eq {G : SimpleGraph V}
 
 omit [Fintype V] in
 /-- **Math-layer discharges for `runPebbleGameWith` against
-`G.edgeFinset.toList.map Quot.out`** (Phase 11 Layer 4b). The math-layer
-verdict-bearing wrapper `runPebbleGame G k ℓ` (in `PebbleGame/Correctness.lean`)
-plugs the `Quot.out`-shaped enumeration of `G.edgeFinset` into the workhorse-level
-`runPebbleGameWith`. The two discharges that the workhorse-level correctness
-chain (`runPebbleGameWith_underline_eq`, `runPebbleGameWith_witness_bridges`)
-consumes — pairwise Sym2-distinctness and Sym2-image round-trip back to
-`G.edgeFinset` — are bundled here as a single lemma. The two algebraic content
-pieces are `Finset.nodup_toList` + `Quot.out_eq` for pairwise distinctness, and
-`Quot.out_eq` for the round-trip. -/
+`G.edgeFinset.toList.map Quot.out`** (`lem:runPebbleGame-underline-eq`). The formal pebble game
+`runPebbleGame G k ℓ` (in `PebbleGame/Correctness.lean`) plugs the
+`Quot.out`-shaped enumeration of `G.edgeFinset` into the workhorse-level
+`runPebbleGameWith`. The two hypotheses on the list that
+`runPebbleGameWith_underline_eq` and `runPebbleGameWith_correct` take —
+pairwise Sym2-distinctness (`hpairwise`) and the Sym2-image round-trip back to
+`G.edgeFinset` (`himg`, from which `runPebbleGame.aux` also derives the
+hypothesis `hmem` of `runPebbleGameWith_witness_bridges`) — are bundled here
+as a single lemma. The proofs are `Finset.nodup_toList` + `Quot.out_eq` for
+pairwise distinctness, and `Quot.out_eq` for the round-trip. -/
 theorem runPebbleGame_edges_discharges {G : SimpleGraph V}
     [Fintype G.edgeSet] :
     let edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V)

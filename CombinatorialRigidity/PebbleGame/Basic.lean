@@ -12,53 +12,45 @@ public import Mathlib.Data.Sym.Sym2
 public import CombinatorialRigidity.Search.DFS
 
 /-!
-# The `(k, ℓ)`-pebble game — state, operations, and invariants
+# The `(k, ℓ)`-pebble game — state, moves, and invariants
 
-Phase 9, structural layer. This file carries the algorithmic state of
-the basic `(k, ℓ)`-pebble game (Lee–Streinu 2008, generalising the
-original `(2, 3)` algorithm of Jacobs–Hendrickson 1997) together with
-its two state operations and the four pebble-game invariants of
-Lee–Streinu Lemma 10:
+The state of Lee and Streinu's basic `(k, ℓ)`-pebble game (Lee–Streinu 2008, §3), which
+generalizes the `(2, 3)` pebble game of Jacobs and Hendrickson (1997), its two moves, and the
+four invariants of Lee–Streinu's Lemma 10:
 
-* the `PartialOrientation V` structure (bundled `Finset (V × V)` of
-  arcs with `no_loops` + `no_antiparallel`), plus the `empty` /
-  `reverse` / `addArc` operations and their per-vertex and
-  subset-level accounting lemmas;
-* the derived count fields `out` / `peb` / `span` / `outOn` /
-  `pebOn` / `underline` (consumed by the algorithm and by the
-  soundness/completeness proofs downstream);
-* the `Reachable k ℓ` inductive predicate packaging the algorithmic
-  state space and the four invariants `Reachable.{out_le,
-  peb_add_out_eq, pebOn_add_span_add_outOn, pebOn_add_outOn_ge,
-  span_add_le}` of Lee–Streinu's `lem:pebble-game-invariants`.
+* the structure `PartialOrientation V` (a `Finset (V × V)` of arcs with the fields `no_loops`
+  and `no_antiparallel`), the empty orientation `empty`, and the two moves `reverse` (path
+  reversal) and `addArc` (arc insertion), with how each move changes the counts at a vertex
+  and on a set of vertices;
+* the counts `out`, `peb`, `span`, `outOn` and `pebOn`, and the underlying edge set
+  `underline`;
+* the inductive predicate `Reachable k ℓ` (the orientations that the two moves reach from the
+  empty one, each move under the game's conditions) and the four invariants
+  `Reachable.out_le`, `Reachable.peb_add_out_eq`, `Reachable.pebOn_add_span_add_outOn`,
+  `Reachable.pebOn_add_outOn_ge` and `Reachable.span_add_le`;
+* `Reachable.independent_brings_pebble`, the counting form of Lee–Streinu's Lemma 13;
+* `PartialOrientation.reach`, the set of vertices reachable from a vertex, and the lemmas by
+  which no arc leaves a union of such sets;
+* `WorkhorseWitness`, the data with which the game rejects an edge.
 
-The algorithm layer (`tryReachPebbleWith` / `tryAddEdgeWith` /
-`runPebbleGameWith` and the math-layer wrappers `tryReachPebble` /
-`tryAddEdge` / `runPebbleGame`) lives in `PebbleGame/Algorithm.lean`;
-the certificate-form correctness theorem and matroidal-independence
-corollary live in `PebbleGame/Correctness.lean`. The forward-mode
-dep-graph in `blueprint/src/chapter/pebble-game.tex` is the
-authoritative lemma index for this chapter.
+The algorithm (`tryReachPebbleWith`, `tryAddEdgeWith`, `runPebbleGameWith`, and the
+`noncomputable` instances `tryReachPebble` and `tryAddEdge`) is in `PebbleGame/Algorithm.lean`;
+its correctness, the verdict and the count-matroid corollary are in
+`PebbleGame/Correctness.lean`. The blueprint presents this file in `sec:pebble-game-state` and
+`sec:pebble-game-invariants`.
 
 ## Style island
 
-This file (together with `CombinatorialRigidity/Search/DFS.lean`) is
-a deliberate **style island**: it takes `[Fintype V] [DecidableEq V]`
-directly in algorithm signatures and uses `Finset.card` end-to-end,
-departing from the project's default `[Finite V]` + inline
-`Fintype.ofFinite V` bridge idiom. The algorithm body builds
-`Finset (V × V)`-backed partial orientations and iterates over
-out-neighbourhoods; the state machine cannot run at `[Finite V]`
-strength (no `Finset.univ`, no enumeration), and the certificate-form
-correctness statement requires `#eval` and compiled code to run
-end-to-end (the elaborator's `decide` does not: `../../DESIGN.md` *One
-`Decidable` instance per project predicate*).
-The math layer / exec layer split (state stays `Finset`-backed, while
-enumeration goes through `List V` to dodge `Finset.toList`'s
-non-computability) is established in `Search/DFS.lean`; the
-`PartialOrientation V` representation here follows the same pattern.
-See `../../DESIGN.md` *Pebble-game style island* for the rationale and
-forward-compatibility note.
+The pebble-game files, with `CombinatorialRigidity/Search/DFS.lean`, are a deliberate **style
+island**: where they need finiteness they take `[Fintype V]` with `[DecidableEq V]` in their
+signatures and count with `Finset.card`, departing from the project's default `[Finite V]` with
+an inline `Fintype.ofFinite V`. The state is a `Finset (V × V)` of arcs, and the algorithm
+enumerates vertices (`Finset.univ`), which `[Finite V]` does not provide computably; `#eval` and
+compiled code run the algorithm end to end (the elaborator's `decide` does not:
+`../../DESIGN.md` *One `Decidable` instance per project predicate*). The state stays
+`Finset`-backed, while the algorithm takes out-neighbours as a `List V`, since `Finset.toList`
+cannot be computed (`outList`); `Search/DFS.lean` takes its out-neighbours in the same way. See
+`../../DESIGN.md` *Pebble-game style island* for the rationale.
 
 ## References
 
@@ -67,11 +59,6 @@ forward-compatibility note.
 * D.J. Jacobs, B. Hendrickson, *An algorithm for two-dimensional
   rigidity percolation: the pebble game*, J. Comput. Phys. **137**
   (1997) 346–365 — the original `(2, 3)` version.
-
-See `ROADMAP.md` §9, `notes/Phase9.md` (architectural choices, deferred
-questions, hand-off), and the blueprint chapter
-`blueprint/src/chapter/pebble-game.tex` (authoritative dep-graph and
-lemma index).
 -/
 
 public section
@@ -125,18 +112,16 @@ lemma mem_outNbhd {v u : V} : u ∈ D.outNbhd v ↔ (v, u) ∈ D.arcs := by
   dsimp at hfst hsnd
   subst hfst; subst hsnd; exact hmem
 
-/-- List view of the out-neighbour set, for feeding into the verified DFS
-`Search.reachableFinding`. The DFS primitive takes a `List V`-valued `succ`
-function (computable; see `Search/DFS.lean` *Style island*); converting a
-`Finset V` to a `List V` goes through `Finset.toList`, which is
-noncomputable in mathlib because `Multiset.toList` lifts through a
-`Classical`-flavored `Quotient.lift`. The math-layer wrapper
-`tryReachPebble` therefore inherits `noncomputable` (consuming `outList`);
-IO-driven callers should call the computable workhorse
-`tryReachPebbleWith` directly with their own `List`-shaped adjacency and
-the matching membership proof, bypassing `outList` entirely. This is the
-boundary between the (noncomputable) math layer's `Finset (V × V)`
-orientation storage and the (computable) DFS exec layer. -/
+/-- List view of the out-neighbour set, for the search `Search.reachableFinding`, which takes
+its out-neighbours as a `List V`-valued function `succ` (computable; see `Search/DFS.lean`
+*Style island*). Converting a `Finset V` to a `List V` goes through `Finset.toList`, which is
+noncomputable in mathlib: it lists the elements by a choice (`Multiset.toList` is
+`Quotient.out`, which uses `Classical.choice`). So `outList` is `noncomputable`, and so are the
+instances that use it (`tryReachPebble`, `tryAddEdge`, `runPebbleGame`). A caller that needs to
+compute calls the workhorses (`tryReachPebbleWith` and its siblings) with its own lists of
+out-neighbours and their membership proof, as `PebbleGame/Exec.lean` does with sorted lists.
+This is the boundary between the `Finset (V × V)` storage of the orientation and the computable
+search. -/
 noncomputable def outList (v : V) : List V := (D.outNbhd v).toList
 
 lemma mem_outList {v u : V} : u ∈ D.outList v ↔ (v, u) ∈ D.arcs := by
@@ -147,8 +132,9 @@ lemma mem_outList {v u : V} : u ∈ D.outList v ↔ (v, u) ∈ D.arcs := by
 @[expose] def out (v : V) : ℕ := (D.outNbhd v).card
 
 /-- The out-degree at `v` equals the cardinality of the source-`v` slice of
-`D.arcs`. Used by the `out_reverse` lemmas to reduce to set-arithmetic on the
-arc finset, bypassing the `outNbhd` `image Prod.snd` indirection. -/
+`D.arcs`. The lemmas on path reversal and arc insertion, and
+`sum_out_eq_span_add_outOn`, count with it on the arc finset, bypassing the
+`outNbhd` `image Prod.snd` indirection. -/
 lemma out_eq_card_filter_fst (v : V) :
     D.out v = (D.arcs.filter (·.1 = v)).card := by
   rw [out, outNbhd, Finset.card_image_of_injOn]
@@ -182,15 +168,15 @@ def outOn (V' : Finset V) : ℕ := (D.boundaryArcs V').card
 /-- Total pebble count on `V'`: sum of `peb k v` over `v ∈ V'`. -/
 @[expose] def pebOn (k : ℕ) (V' : Finset V) : ℕ := ∑ v ∈ V', D.peb k v
 
-/-- The *underlying edge set* `underline(D) ⊆ Sym₂ V` (blueprint
+/-- The *underlying edge set* `underline(D) ⊆ Sym2 V` (blueprint
 `def:partial-orientation`): the set of unoriented edges of `D`, obtained by
-forgetting orientation on each arc. Both `(u, v) ∈ D.arcs` and `(v, u) ∈ D.arcs`
-project to the same `Sym2 V` element `s(u, v) = s(v, u)`, so the algorithm's
-no-antiparallel invariant means each edge of `underline D` lifts uniquely to an
-arc of `D`. Consumed by `thm:pebble-game-soundness` and the wrapper
-`runPebbleGame G k ℓ`'s correctness statement, where the invariant
-`underline D = E(G)` ties the algorithm's structural state back to the input
-graph. -/
+forgetting orientation on each arc. Both `(u, v)` and `(v, u)` project to the
+same `Sym2 V` element `s(u, v) = s(v, u)`, so by the field `no_antiparallel`
+each edge of `underline D` lifts to exactly one arc of `D`
+(`sym2_mk_injOn_arcs`). The equation `D.underline = G.edgeFinset` ties an
+accepted orientation back to the input graph: it is a field of the verdict's
+`accept` (`PebbleGameResult`), and the hypothesis of `span_eq_ncard_edgesIn`,
+by which `thm:pebble-game-soundness` is proved. -/
 @[expose] def underline : Finset (Sym2 V) :=
   D.arcs.image (fun p => s(p.1, p.2))
 
@@ -275,12 +261,12 @@ lemma pebOn_add_span_add_outOn (k : ℕ) (V' : Finset V)
 
 The path-reversal move (Lee–Streinu §3, blueprint `def:path-reversal`):
 given a simple directed path `p` in `D` from `u_0` to `u_m`, invert every
-arc of `p` in `D`. The result is again a partial orientation; underlying
-edges are preserved, but out-degree at `u_0` decreases by one while
-out-degree at `u_m` increases by one (with all other vertices unchanged).
-This file lands the definition and the invariant-preservation half;
-structural lemmas about `out`/`peb`/`span`/`outOn` follow in a subsequent
-commit (feeding `lem:pebble-game-invariants` (3)). -/
+arc of `p` in `D`. The result is again a partial orientation with the same
+underlying edges; if `m ≥ 1`, the out-degree at `u_0` decreases by one and the
+out-degree at `u_m` increases by one, all others unchanged. This section
+defines the move and proves how it changes `out`, `peb`, `span`,
+`pebOn + outOn` and `underline`, as Invariants (1) and (3) of
+`lem:pebble-game-invariants` and the algorithm use them. -/
 
 section Reverse
 
@@ -474,9 +460,9 @@ lemma peb_reverse_head
 
 /-- Tail endpoint, under the algorithmic precondition `D.out w < k`: the
 terminal vertex of a non-nil reversed path loses one pebble (mirror of the
-out-count rising by one). `out w < k` is the precondition for the path-reversal
-move to be valid (the head of the reachability search must have a free pebble
-to send). -/
+out-count rising by one). `out w < k` is the condition that `Reachable.reverse`
+puts on the move (the vertex that the pebble search reaches must hold a free
+pebble). -/
 lemma peb_reverse_tail
     (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
     (hpos : 0 < p.length) (k : ℕ) (hbd : D.out w < k) :
@@ -488,8 +474,8 @@ lemma peb_reverse_tail
 
 /-- The span of `V'` is invariant under path reversal: each path arc with
 both endpoints in `V'` is removed and its reverse is inserted, and both
-sit in `spanArcs V'`. Feeds `lem:pebble-game-invariants` (2) on path-reversal
-moves. -/
+sit in `spanArcs V'`. Gives `pebOn_add_outOn_reverse_eq`, for Invariant (3) of
+`lem:pebble-game-invariants` at a path reversal. -/
 lemma span_reverse_eq
     (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
     (V' : Finset V) :
@@ -527,7 +513,8 @@ algebraic identity `pebOn + span + outOn = k|V'|` applied to both `D` and
 `D.reverse p hp` forces `pebOn + outOn` to match. While `outOn V'` itself
 shifts by `[w ∈ V'] - [u ∈ V']` per the head/tail accounting in
 `out_reverse_head` / `out_reverse_tail`, the corresponding shift in `pebOn k V'`
-cancels it. Feeds `lem:pebble-game-invariants` (2) on path-reversal moves. -/
+cancels it. Gives Invariant (3) of `lem:pebble-game-invariants` at a path
+reversal (`Reachable.pebOn_add_outOn_ge`). -/
 lemma pebOn_add_outOn_reverse_eq
     (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
     {k : ℕ} {V' : Finset V}
@@ -542,8 +529,9 @@ lemma pebOn_add_outOn_reverse_eq
 /-- Path reversal preserves the underlying unoriented edge set
 `underline(D) ⊆ Sym2 V` (blueprint `def:path-reversal`): every arc removed from
 `D` along the path is replaced by its reverse, and `s(a, b) = s(b, a)` so the
-two cancel under the `Sym2.mk`-image. Consumed by the fold-level
-underlying-edge invariant for `runPebbleGameWith`. -/
+two cancel under the `Sym2.mk`-image. Through
+`TryReachPebbleResult.underline_newOrient_eq`, `tryAddEdgeWith_underline` uses
+it. -/
 lemma underline_reverse_eq
     (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath) :
     (D.reverse p hp).underline = D.underline := by
@@ -565,8 +553,8 @@ lemma underline_reverse_eq
 not in `D.arcs` remains absent from `D.reverse p hp`'s arcs. Path reversal
 removes some arcs and inserts their reverses; an arc `(a, b)` could re-enter
 only if `(b, a)` was on the path (hence in `D.arcs`), so the second hypothesis
-rules this out. Consumed by `tryAddEdge`'s recursive call to thread the
-"candidate edge fresh" preconditions across path-reversal steps. -/
+rules this out. `tryAddEdgeWith`'s recursive calls use it to keep their
+hypotheses `hnotin` and `hnotin_rev` across a path reversal. -/
 lemma notMem_arcs_reverse_of_notMem
     (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
     {a b : V} (h : (a, b) ∉ D.arcs) (h_rev : (b, a) ∉ D.arcs) :
@@ -581,8 +569,8 @@ lemma notMem_arcs_reverse_of_notMem
 provided the tail's out-degree was strictly below `k` (the algorithmic
 precondition that makes the new tail-source arc fit within budget). The only
 vertex whose out-count can rise is the path's tail `w`, and the hypothesis
-`D.out w < k` absorbs the `+1`. Consumed by `tryAddEdge`'s recursive call to
-thread Invariant (1)'s out-degree bound across path-reversal steps. -/
+`D.out w < k` absorbs the `+1`. The algorithm does not use it: `tryAddEdgeWith`
+takes `Reachable k ℓ D`, and `Reachable.out_le` gives the bound. -/
 lemma out_reverse_le_of_outle
     (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
     {k : ℕ} (h_outle : ∀ x, D.out x ≤ k) (hw : D.out w < k) (x : V) :
@@ -605,23 +593,22 @@ end Reverse
 
 /-! ### Arc insertion
 
-The arc-insertion move (Lee–Streinu §3, the edge-insertion half of
-`def:tryAddEdge`): given a directed pair `(u, v)` with `u ≠ v` and
-`(v, u) ∉ D.arcs`, extend `D` by `(u, v)`. The two `PartialOrientation`
-invariants survive directly from the preconditions. Per-vertex
-accounting lemmas additionally assume `(u, v) ∉ D.arcs` to ensure the
-`Finset.insert` is a genuine extension rather than a no-op. -/
+The arc-insertion move (Lee–Streinu §3, blueprint `def:arc-insertion`):
+given a directed pair `(u, v)` with `u ≠ v` and `(v, u) ∉ D.arcs`, extend `D`
+by `(u, v)`. The two `PartialOrientation` fields survive directly from these
+conditions. The accounting lemmas also assume `(u, v) ∉ D.arcs`, so that the
+`Finset.insert` adds an arc rather than doing nothing. -/
 
 section AddArc
 
 /-- Add the directed arc `(u, v)` to `D`. The two `PartialOrientation`
 invariants survive under the preconditions: `huv : u ≠ v` rules out a
 self-loop, and `hnotin_rev : (v, u) ∉ D.arcs` rules out an antiparallel
-pair. The accounting lemmas (`out_addArc_source`, etc.) additionally
-take `(u, v) ∉ D.arcs` to ensure `Finset.insert` is a genuine extension.
+pair. The accounting lemmas (`out_addArc_source`, etc.) also take
+`(u, v) ∉ D.arcs`, so that `Finset.insert` adds an arc.
 
-Cf. Lee–Streinu §3 arc-insertion move; together with `def:path-reversal`,
-the two state transitions used by the pebble game's `def:tryAddEdge`. -/
+Cf. Lee–Streinu §3 arc-insertion move, blueprint `def:arc-insertion`; with
+`def:path-reversal`, one of the two moves of `def:tryAddEdge`. -/
 @[expose] def addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs) :
     PartialOrientation V where
   arcs := insert (u, v) D.arcs
@@ -696,11 +683,11 @@ lemma peb_addArc_of_ne_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉
 
 /-! #### Subset-level accounting for arc insertion
 
-The next four lemmas trace how `span`, `outOn`, `pebOn` shift on a subset
-`V'` when a fresh arc `(u, v)` is inserted. Each is a unified additive
-identity keyed on the position of `u`/`v` relative to `V'`; together they
-yield the combined identity `pebOn_add_outOn_addArc_add` which feeds
-`lem:pebble-game-invariants` (3) at the arc-insertion step. -/
+The next four lemmas trace how `span`, `outOn` and `pebOn` change on a subset
+`V'` when a new arc `(u, v)` is inserted, each as an additive identity keyed on
+where `u` and `v` lie relative to `V'`. The fourth,
+`pebOn_add_outOn_addArc_add`, combines the second and the third, and gives
+Invariant (3) of `lem:pebble-game-invariants` at an arc insertion. -/
 
 /-- Span of `V'` rises by `1` exactly when both endpoints of the inserted arc
 lie in `V'`, and is unchanged otherwise. Unified additive identity, like
@@ -787,15 +774,13 @@ lemma pebOn_add_outOn_addArc_add (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) 
     · simp [hu, hv] at h_peb h_out ⊢; omega
   · simp [hu] at h_peb h_out ⊢; omega
 
-/-- Arc insertion adds exactly one unoriented edge to `underline(D)`: the new
-edge `s(u, v)` (blueprint `def:arc-insertion`). The `Finset.insert` is a
-genuine extension iff the edge `s(u, v)` was absent before, which holds in the
-`tryAddEdge` context (where both `(u, v) ∉ D.arcs` and `(v, u) ∉ D.arcs` are
-preconditions, so neither orientation lifts to a representative of `s(u, v)`
-in `D.underline`); the equation itself holds unconditionally on the
-`(u, v) ∉ D.arcs` hypothesis because `Finset.image_insert` is unconditional.
-Consumed by the fold-level underlying-edge invariant for
-`runPebbleGameWith`. -/
+/-- Inserting the arc `(u, v)` adds the edge `s(u, v)` to `underline(D)`
+(blueprint `def:arc-insertion`): the underlying edge set becomes
+`insert s(u, v) D.underline`. The equation holds whether or not `(u, v)` is
+already an arc of `D`, since `Finset.image_insert` takes no hypothesis; the
+edge is new when neither `(u, v)` nor `(v, u)` is an arc of `D`, as in
+`tryAddEdgeWith`. Through `tryAddEdgeWith_underline` it gives the lemmas on the
+underlying edge set of `runPebbleGameWith`. -/
 lemma underline_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs) :
     (D.addArc u v huv hnotin_rev).underline = insert s(u, v) D.underline := by
   simp [underline, arcs_addArc, Finset.image_insert]
@@ -983,13 +968,13 @@ Invariant (2) under `outOn V' = 0` collapses to
 the below-threshold `peb u + peb v < ℓ + 1`. The slack lives on
 `V' \ {u, v}`, so some `w` there has positive pebble count.
 
-This is the algorithm-side algebraic core of
-`lem:pebble-game-independent-brings-pebble`. Callers
-(`tryAddEdgeWith`'s completeness side, downstream) discharge the
-post-insertion span bound from a `SimpleGraph` sparsity hypothesis via the
-`underline` / `span_eq_ncard_edgesIn` bridge; the natural `V'` is
-`Reach_D(u) ∪ Reach_D(v)`, for which `outOn V' = 0` from closure under
-out-arcs. Lee–Streinu Lemma 13. -/
+This is the counting form of Lee–Streinu's Lemma 13
+(`lem:pebble-game-independent-brings-pebble`). Its one caller,
+`independent_brings_pebble_simpleGraph_form`, takes for `V'` the set
+`D.reach u ∪ D.reach v` of the vertices reachable from `u` or from `v`, which
+no arc leaves (`outOn_reach_union_eq_zero`), and derives the span bound from
+the sparsity of a graph with edge set `insert s(u, v) D.underline`, through
+`span_succ_le_edgesIn_ncard_of_subset`. -/
 lemma Reachable.independent_brings_pebble
     {D : PartialOrientation V} (hR : Reachable k ℓ D)
     {u v : V} (huv : u ≠ v)
@@ -1024,22 +1009,20 @@ end Reachability
 /-! ### Reachability closure on partial orientations
 
 `PartialOrientation.reach D v` is the `Finset V` of vertices reachable
-from `v` along `D`'s outgoing arcs, materialised through Phase 11's
-verified-iterative `reachClosureComputable` of `Search/DFS.lean` against
-the orientation's `outList` view. The closure-of-reach lemmas
-(`self_mem_reach`, `reach_closed`, `outOn_eq_zero_of_closed`,
-`outOn_reach_union_eq_zero`) provide the algebraic content consumed by
-`tryAddEdgeWith`'s case-5 inline witness construction (Phase 11 Layer 3,
-`PebbleGame/Algorithm.lean`) and by the wrapper-layer `independent_brings_pebble_simpleGraph_form`
-in `PebbleGame/Correctness.lean`.
+from `v` along `D`'s outgoing arcs, computed by the closure
+`reachClosureComputable` of `Search/DFS.lean` (blueprint
+`def:reachClosureComputable`) on the lists `outList`. The lemmas
+`self_mem_reach`, `reach_closed` and `outOn_reach_union_eq_zero` give
+`independent_brings_pebble_simpleGraph_form` (`PebbleGame/Correctness.lean`)
+its set `V' = D.reach u ∪ D.reach v` and the fact that no arc leaves it.
+`tryAddEdgeWith` (`PebbleGame/Algorithm.lean`) builds the same union with
+`reachClosureComputable` on the caller's lists, and uses
+`outOn_eq_zero_of_closed`.
 
-The math-layer `D.outList` is itself `noncomputable` (it threads
-through `Finset.toList`), so `D.reach` inherits `noncomputable`. The
-exec layer bypasses this by supplying its own list-shaped adjacency
-directly to `reachClosureComputable`. The `mem_reach` iff against
-`Relation.ReflTransGen` is the consumer-facing contract; downstream
-proofs depend only on this iff and are blind to the implementation
-choice. Blueprint `def:reachClosureComputable`. -/
+`D.outList` is `noncomputable` (it goes through `Finset.toList`), and so is
+`D.reach`; `tryAddEdgeWith` stays computable by passing its own lists to
+`reachClosureComputable`. The proofs about `reach` use only `mem_reach`, its
+membership iff with `Relation.ReflTransGen`. -/
 
 section ReachClosure
 
@@ -1048,12 +1031,10 @@ open CombinatorialRigidity.Search
 variable [Fintype V]
 
 /-- `D.reach v` is the set of vertices reachable from `v` along `D`'s
-out-arcs, packaged as a `Finset V`. Routed through Phase 11's
-verified-iterative `reachClosureComputable` over the orientation's
-`outList` view of its out-neighbours; `noncomputable` because `outList`
-threads through `Finset.toList`. The `mem_reach` iff against
-`Relation.ReflTransGen` is the consumer-facing contract; downstream
-proofs depend only on this iff and are blind to the redefinition. -/
+out-arcs, as a `Finset V`: the closure `reachClosureComputable` of
+`Search/DFS.lean` on the lists `outList` of out-neighbours. `noncomputable`
+because `outList` goes through `Finset.toList`. The proofs about it use only
+`mem_reach`, its membership iff with `Relation.ReflTransGen`. -/
 noncomputable def reach (D : PartialOrientation V) (v : V) : Finset V :=
   reachClosureComputable D.outList v
 
@@ -1110,51 +1091,49 @@ end ReachClosure
 
 end PartialOrientation
 
-/-! ### Workhorse-level failure witness (Phase 11)
+/-! ### The failure witness
 
-The `WorkhorseWitness k ℓ V` structure carries the failure-point data of the
-workhorse-level `tryAddEdgeWith` (and, propagated unchanged through the fold,
-of `runPebbleGameWith`). Its fields together encode the algebraic content of
-the `none` branch of `tryAddEdgeWith`'s case 5 (both DFS searches fail): a
-candidate edge `s(uv.1, uv.2)` fresh w.r.t.\ the running orientation's
-underline, a finset `V'` closed under the orientation's out-arcs and
-containing both endpoints, and the algorithmic guarantee that the subset's
-pebble sum `D.pebOn k V'` is at most `ℓ` (the strengthened form of the
-case-5 below-threshold `peb u + peb v ≤ ℓ` combined with the DFS-failure
-"no free pebble outside `{u, v}`" assertion).
+The structure `WorkhorseWitness k ℓ V` holds the data with which
+`tryAddEdgeWith` rejects an edge, and which `runPebbleGameWith` passes on
+unchanged: the orientation `D` at that point, an edge `s(uv.1, uv.2)` not in
+`D.underline`, a finset `V'` that contains both its ends and that no arc of `D`
+leaves, and the bound `D.pebOn k V' ≤ ℓ`. Where both pebble searches fail, the
+two ends hold at most `ℓ` free pebbles together (the threshold test failed)
+and no other vertex of `V'` holds one (the searches failed), which gives the
+bound.
 
-The wrapper-layer lemma `WorkhorseWitness.certifies_against` (in
-`PebbleGame/Correctness.lean`) discharges the workhorse data against an
-ambient `SimpleGraph` `G` to produce the sparsity-violation pair
-`ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ`. The
-workhorse layer is `G`-free — adding `G` to the witness's signature would
-propagate a `D.underline ⊆ G.edgeFinset` bridge through every call site
-for no benefit; the `G`-shaped story belongs at the wrapper layer.
+`WorkhorseWitness.certifies_against` (`PebbleGame/Correctness.lean`) turns
+these data, for a `SimpleGraph` `G` whose edges include `s(uv.1, uv.2)` and the
+edges of `D.underline`, into the sparsity-violation pair
+`ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ`. The structure
+does not mention `G`: putting `G` in it would put a hypothesis
+`D.underline ⊆ G.edgeFinset` into every call of the algorithm, for no benefit;
+`G` enters where the verdict is built.
 
-Cf. Lee--Streinu Lemma 13 + 14; blueprint `def:workhorseWitness`. -/
+The set `V'`, and the argument that no arc leaves it, are from Lee–Streinu's
+proof of their Lemma 13; blueprint `def:workhorseWitness`. -/
 
-/-- Workhorse-level failure witness: the data extracted by `tryAddEdgeWith`'s
-case-5 branch (both DFS searches fail) when assembling its negative verdict.
+/-- Workhorse-level failure witness: the data with which `tryAddEdgeWith`
+rejects an edge, built where both pebble searches fail.
 
 Fields:
 * `D` — the partial orientation at the failure point.
-* `V'` — the blocking finset; mathematically `D.reach uv.1 ∪ D.reach uv.2`
-  at the failure site, but the structure abstracts the construction.
+* `V'` — the blocking finset; where `tryAddEdgeWith` rejects, the set of
+  vertices reachable from `uv.1` or from `uv.2`, but the structure does not
+  fix how it is built.
 * `uv` — the pending edge that triggered failure.
 * `huv_ne`, `hu_mem`, `hv_mem` — the two endpoints are distinct and both
-  sit in `V'` (`D.reach`'s reflexivity gives this at the failure site).
-* `h_outOn_zero` — `V'` is closed under `D`'s outgoing arcs (the
-  closure-of-reach identity at the failure site).
+  sit in `V'` (at the failure site, each vertex reaches itself).
+* `h_outOn_zero` — `V'` is closed under `D`'s outgoing arcs (at the failure
+  site, a set of reachable vertices is).
 * `h_pebOn_le` — `D.pebOn k V' ≤ ℓ`. At the failure site this combines
-  case 5's per-vertex below-threshold `peb uv.1 + peb uv.2 ≤ ℓ` (from
-  the `if h : ℓ + 1 ≤ ...`-arm being skipped) with the DFS-failure
-  guarantee that every other `w ∈ V'` has `peb k w = 0` (no free pebble
-  outside `{u, v}` reachable from either endpoint). Strictly stronger
-  than the per-vertex form `peb uv.1 + peb uv.2 ≤ ℓ` posed in the
-  Phase 11 plan; the strengthening absorbs the DFS-failure content and
-  is exactly what `certifies_against` consumes.
-* `h_pending_fresh` — `s(uv.1, uv.2) ∉ D.underline`, so the candidate edge
-  is genuinely pending; routed downstream into the `+1` bridge of
+  the failed threshold test, `peb uv.1 + peb uv.2 ≤ ℓ` (the
+  `if h_thr : ℓ + 1 ≤ ...` arm is skipped), with the failure of both
+  searches: every other `w ∈ V'` has `peb k w = 0` (no free pebble
+  outside `{u, v}` is reachable from either endpoint). It is stronger than
+  `peb uv.1 + peb uv.2 ≤ ℓ`, and it is what `certifies_against` uses.
+* `h_pending_fresh` — `s(uv.1, uv.2) ∉ D.underline`: the edge is not
+  oriented in `D`; it gives the `+ 1` of
   `span_succ_le_edgesIn_ncard_of_subset`.
 * `h_reachable` — `D` is `(k, ℓ)`-reachable, giving access to the four
   pebble-game invariants on `V'` (used in `certifies_against`).
@@ -1180,10 +1159,10 @@ structure WorkhorseWitness (k ℓ : ℕ) (V : Type*) [DecidableEq V] where
   hv_mem : uv.2 ∈ V'
   /-- `V'` is closed under `D`'s outgoing arcs. -/
   h_outOn_zero : D.outOn V' = 0
-  /-- Subset-level pebble bound: `pebOn V' ≤ ℓ`. Combines case-5 below-threshold
-  with the DFS-failure "no free pebble outside `{u, v}`" assertion. -/
+  /-- Subset-level pebble bound: `pebOn V' ≤ ℓ`. Combines the failed threshold
+  test with the failed searches' "no free pebble outside `{u, v}`". -/
   h_pebOn_le : D.pebOn k V' ≤ ℓ
-  /-- Candidate edge `s(uv.1, uv.2)` is fresh w.r.t.\ `D.underline`. -/
+  /-- Candidate edge `s(uv.1, uv.2)` is not in `D.underline`. -/
   h_pending_fresh : s(uv.1, uv.2) ∉ D.underline
   /-- `D` is `(k, ℓ)`-reachable. -/
   h_reachable : PartialOrientation.Reachable k ℓ D

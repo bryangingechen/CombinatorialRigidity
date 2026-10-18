@@ -23,9 +23,10 @@ predicate `P : V → Bool`, `reachableFinding succ P v` returns either
 
 The out-neighbours are passed as `List V` rather than `Finset V` so
 that the algorithm is fully *computable*: `Finset.toList` is
-noncomputable in mathlib (it lifts through `Multiset.toList`'s
-`Classical`-flavored `Quotient.lift`), which would propagate to the
-DFS body if we enumerated via `(succ v).attach.toList`. Callers that
+noncomputable in mathlib (it lists the elements by a choice:
+`Multiset.toList` is `Quotient.out`, which uses `Classical.choice`), which
+would propagate to the DFS body if we enumerated via
+`(succ v).attach.toList`. Callers that
 hold their adjacency data in `Finset` form should expose a list
 projection (with optional `Nodup` invariant) at the DFS boundary; see
 `DESIGN.md` *Pebble-game style island* for the math-layer ↔ exec-layer

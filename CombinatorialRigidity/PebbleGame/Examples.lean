@@ -23,41 +23,37 @@ function compiled, on the same graphs as `examples/*.txt`.
 ## Worked examples
 
 * `Examples.k4MinusE` — `K₄ \ {s(2, 3)}` on `Fin 4`. 4 vertices, 5
-  edges, Laman (`2 · 4 − 3 = 5`). The Phase 3 / `HennebergReverse.lean`
-  worked example `top_fin_four_minus_edge_isLaman`, surfaced through
-  decidability; verifies the minimal non-trivial accept path through
-  the pebble game.
+  edges, Laman (`2 · 4 − 3 = 5`): the graph that
+  `SimpleGraph.top_fin_four_minus_edge_isLaman` (`HennebergReverse.lean`)
+  proves Laman, here decided by the pebble game.
 * `Examples.moserSpindle` — Moser spindle. 7 vertices, 11 edges, Laman
-  (`2 · 7 − 3 = 11`); verifies the accept path on a graph large enough
-  for the DFS to fire non-trivially.
+  (`2 · 7 − 3 = 11`); a larger graph that the pebble game accepts.
 * `Examples.k4` — `K₄` on `Fin 4`. 4 vertices, 6 edges; not Laman, not
-  even `(2, 3)`-sparse (`6 > 2 · 4 − 3 = 5`). The pebble game rejects
-  at the full-vertex subset on the sparsity step.
+  even `(2, 3)`-sparse (`6 > 2 · 4 − 3 = 5`). The pebble game rejects it,
+  with the full vertex set as its blocking set.
 * `Examples.path5` — path on `Fin 5`. 5 vertices, 4 edges; `(2, 3)`-sparse
   but not `(2, 3)`-tight (`4 ≠ 2 · 5 − 3 = 7`), hence not Laman. The
   pebble game accepts, and the global edge-count equation of
   `IsTight` rejects.
 
-See `blueprint/src/chapter/executable.tex` §*Worked examples* for the
-prose narrative; the `#eval` outputs below are the operational
-counterpart.
+The blueprint presents these examples in `sec:executable-examples`.
 
 ## Implementation notes
 
-The four `SimpleGraph (Fin n)` graphs are defined via
-`SimpleGraph.fromEdgeSet` on an explicit `Finset (Sym2 (Fin n))` (or
-`(⊤ : SimpleGraph (Fin 4)).deleteEdges …` for K₄ minus one edge,
-matching `HennebergReverse.lean`'s construction). Each carries an
-explicit `DecidableRel _.Adj` instance bridging through
-`fromEdgeSet_adj` / `deleteEdges_adj` to a `Decidable (… ∧ _ ≠ _)`
-form; this is what unlocks the `instDecidableIsLaman` /
-`instDecidableIsSparse` typeclass synthesis at each `#eval` callsite.
+Two of the four `SimpleGraph (Fin n)` graphs (the Moser spindle and the
+path) are defined via `SimpleGraph.fromEdgeSet` on an explicit
+`Finset (Sym2 (Fin n))`, `K₄` minus one edge as
+`(⊤ : SimpleGraph (Fin 4)).deleteEdges …` (matching
+`HennebergReverse.lean`'s construction), and `K₄` as `⊤`. Each carries an
+explicit `DecidableRel _.Adj` instance, bridging through `fromEdgeSet_adj` /
+`deleteEdges_adj` to a decidable conjunction (for `K₄`, `⊤`'s own instance);
+this is what unlocks the `instDecidableIsLaman` / `instDecidableIsSparse`
+typeclass synthesis at each `#eval` callsite.
 
-The `public meta import` on `PebbleGame.Exec` makes the Phase 10
-`Decidable` instances visible to `#eval`'s meta-time instance
-synthesis (the alternative would be to drop this file from the
-`module` system entirely, but the rest of the project is uniformly
-module-converted per `PERFORMANCE.md`).
+The `public meta import` on `PebbleGame.Exec` makes the `Decidable`
+instances of `PebbleGame/Exec.lean` visible to `#eval`'s meta-time instance
+synthesis (the alternative would be to drop this file from the `module`
+system).
 -/
 
 public section
@@ -68,9 +64,9 @@ open SimpleGraph
 
 /-! ### Example 1 — `K₄ \ {s(2, 3)}` is Laman -/
 
-/-- The complete graph on `Fin 4` minus one edge — the Phase 3 worked
-example formalised in `SimpleGraph.top_fin_four_minus_edge_isLaman`,
-surfaced here through Phase 10's `Decidable` instance. -/
+/-- The complete graph on `Fin 4` minus one edge — the graph that
+`SimpleGraph.top_fin_four_minus_edge_isLaman` proves Laman, decided here by
+the `Decidable` instance `SimpleGraph.instDecidableIsLaman`. -/
 @[expose] def k4MinusE : SimpleGraph (Fin 4) :=
   (⊤ : SimpleGraph (Fin 4)).deleteEdges {s(2, 3)}
 

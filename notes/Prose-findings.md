@@ -3373,7 +3373,12 @@ declaration's name as its header writes it:
   11's reshape ("was `some D'`", "was `Option (PartialOrientation V)`").
   *Evidence:* read (the docstrings named, against the two files).
   *Found:* round 1 task 5.13.
-  *Disposition:* reported (`notes/Prose-report.md`, L12).
+  *Disposition:* done (task 26): the *Path reversal* header says what the section proves; the
+  *Try-reach-pebble* header and `tryReachPebbleWith`'s docstring say that
+  `tryReachPebbleWith_eq_none_imp` is stated for it; the docstrings of `tryAddEdgeWith`,
+  `tryAddEdge`, `tryAddEdgeWith_reachable`, `tryAddEdgeWith_underline`, `runPebbleGameWith` and
+  `runPebbleGameWith_reachable` describe the return type as it is, without the reshape. Before:
+  reported (`notes/Prose-report.md`, L12).
 - **F-039** · L · `runPebbleGameWith_sound`, `runPebbleGameWith_underline_eq`,
   `runPebbleGameWith_correct` (`PebbleGame/Correctness.lean`, `Algorithm.lean`): the binder
   `hloops : ∀ p ∈ edges, p.1 ≠ p.2` follows from `himg`, since each entry's unordered pair is an
@@ -3400,7 +3405,15 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings named; `grep` for the labels in `blueprint/src/` and for the
   names in the Lean).
   *Found:* round 1 task 5.14.
-  *Disposition:* reported (`notes/Prose-report.md`, L10).
+  *Disposition:* done (task 26): `tryAddEdgeWith_isSparse` names
+  `lem:pebble-game-tryAddEdgeWith-isSparse` and `runPebbleGameWith_underline_eq`
+  `lem:runPebbleGame-underline-eq`, and the module docstring no longer names
+  `thm:pebble-game-completeness`; the consumers named are `tryAddEdgeWith`'s body (of
+  `tryReachPebbleWith_eq_none_imp`) and `WorkhorseWitness.certifies_against` (of
+  `span_succ_le_edgesIn_ncard_of_subset`); `runPebbleGameWith_sound` says `.inr D'`; the
+  *Completeness* header lists the section's lemmas and says that the correctness proof uses
+  neither Lemma 13 for a graph nor `tryAddEdgeWith_isSparse`. Before: reported
+  (`notes/Prose-report.md`, L10).
 - **F-045** · L · `runPebbleGame.aux` and the verdict's docstrings (`PebbleGame/Correctness.lean`):
   `runPebbleGame.aux`'s docstring says that `certifies_against` "calls
   `independent_brings_pebble_simpleGraph_form` whose size step uses `ℓ < 2 * k`". The body of
@@ -3412,7 +3425,12 @@ declaration's name as its header writes it:
   Layer 4 design"), the kind `F-035` records in `Basic.lean` and `Algorithm.lean`.
   *Evidence:* read (the body of `certifies_against` and the docstrings named).
   *Found:* round 1 task 5.15.
-  *Disposition:* reported (`notes/Prose-report.md`, L12).
+  *Disposition:* done (task 26): `runPebbleGame.aux`'s docstring says that `certifies_against`
+  gets its size step from `ℓ < 2 * k` and the two ends of the witness's edge in `V'`, and the
+  module docstring no longer routes `certifies_against` through Lemma 13; the docstrings of
+  `PebbleGameResult`, `PebbleGameResult.isAccept`, `runPebbleGame`, `runPebbleGame_isAccept_iff`,
+  the verdict's section header and the correctness section's describe the code as it is. Before:
+  reported (`notes/Prose-report.md`, L12).
 - **F-047** · L · `Main.lean`, `PebbleGame/Examples.lean`, `lakefile.toml`; `DESIGN.md` *One
   `Decidable` instance per project predicate*: running-time and `decide` claims beyond `F-033`'s.
   `Main.lean`'s module docstring and `lakefile.toml`'s comment on the `pebble-game` target say that
@@ -4128,7 +4146,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the three docstrings; a `grep` for the two old labels in
   `CombinatorialRigidity/`).
   *Found:* round 5 task 3.1.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* done (task 26): `runPebbleGame` names `def:runPebbleGame-verdict` in its lead,
+  `runPebbleGame.aux` as the node it is a step of, and `runPebbleGameExec_isAccept_iff` names
+  `thm:runPebbleGameExec-isAccept-iff`. Before: reported (`notes/Prose-report.md`, L11).
 - **F-232** · L · the declarations round 5's task 3.2 moved or unpinned
   (`Molecular/Meet.lean`, `Molecular/AlgebraicInduction/`, `Molecular/RigidityMatrix/Claim612.lean`,
   `BodyBar/KFrame.lean`). The docstrings of `hasGenericFullRankRealization_of_rigidOn_ofNormals`
@@ -4511,9 +4531,10 @@ declaration's name as its header writes it:
   gitignored).
   *Found:* RECONCILE round 3 task 25.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
-- **F-279** · L · unpinned declarations of `Search/DFS.lean` and of `Mathlib/` that no declaration
-  of the project uses, twenty-one: outside `Matrix/Rank.lean` and `Dimension/Constructions.lean`,
-  `Fin.ofNat_eq_mk` (used only by the next) and `Fin.two_eq_mk_of_lt`,
+- **F-279** · L · unpinned declarations of `Search/DFS.lean`, of `Mathlib/` and of `PebbleGame/`
+  that no declaration of the project uses, twenty-six: outside `Matrix/Rank.lean`,
+  `Dimension/Constructions.lean` and `PebbleGame/`, `Fin.ofNat_eq_mk` (used only by the next) and
+  `Fin.two_eq_mk_of_lt`,
   `Sym2.mk_mem_image_map_some_iff`, `Pi.basisFun_dualBasis`, `LinearIndepOn.dualMap_of_surjective`,
   `ExteriorAlgebra.ιMulti_family_congr`, `exteriorPower.coe_pairingDualEquiv`;
   `reachClosureComputable_closed`, `self_mem_reachClosureComputable`,
@@ -4526,14 +4547,18 @@ declaration's name as its header writes it:
   `Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` and `Matrix.rowOp_zeroes_upperRight`
   (used only by the previous),
   `LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite` and
-  `LinearIndependent.le_finrank_span_along_affine_path_cofinite` (used only by the previous). Also
+  `LinearIndependent.le_finrank_span_along_affine_path_cofinite` (used only by the previous); in
+  `PebbleGame/Basic.lean` (task 26), `out_reverse_le_of_outle`, `peb_reverse_tail`,
+  `peb_addArc_source` (whose statement `pebOn_addArc` re-derives in its proof), `span_addArc` and
+  `span_empty`. Also
   `cross₃_ne_zero_iff_linearIndependent` (`Molecule/Pencil/Chart.lean`) builds, in each direction,
   the chain that `Matrix.linearIndependent_rows_iff_det_ne_zero` packages, which its imports do not
   reach.
   *Evidence:* measured (the reverse dependencies of statements and bodies in the Lean cache of
-  `scripts/blueprint-deps.py`, at `522a0c0a` plus task 25.2's docstrings, and at `0c34177f` for
-  task 25.3; `rfl` lemmas left out); read (`Chart.lean`'s proof and import closure).
-  *Found:* RECONCILE round 3 tasks 25.2 and 25.3.
+  `scripts/blueprint-deps.py`, at `522a0c0a` plus task 25.2's docstrings, at `0c34177f` for
+  task 25.3 and at `05b0dae4` for task 26; `rfl` lemmas left out); read (`Chart.lean`'s proof and
+  import closure; `pebOn_addArc`'s proof).
+  *Found:* RECONCILE round 3 tasks 25.2, 25.3 and 26.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

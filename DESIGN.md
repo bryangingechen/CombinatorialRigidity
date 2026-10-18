@@ -591,11 +591,12 @@ form keeps that lift localized to the two files that need it rather
 than propagating it across the whole project.
 
 **Math layer / exec layer split.** `Finset.toList` is noncomputable
-in mathlib (it lifts through `Multiset.toList`'s `Classical`-flavored
-`Quotient.lift`; there is no canonical permutation representative of
-an unordered collection). A DFS / pebble-game body that enumerates
-out-neighbours via `(succ v).attach.toList` therefore propagates
-`noncomputable` to the whole algorithm — blocking the `#eval` goal
+in mathlib (it lists the elements by a choice: `Multiset.toList` is
+`Quotient.out`, which uses `Classical.choice`; there is no canonical
+permutation representative of an unordered collection). A DFS /
+pebble-game body that enumerates out-neighbours via
+`(succ v).attach.toList` therefore propagates `noncomputable` to the
+whole algorithm — blocking the `#eval` goal
 above. The style island resolves this by
 splitting:
 

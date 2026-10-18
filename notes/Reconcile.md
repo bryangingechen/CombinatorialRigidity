@@ -40,9 +40,9 @@ task 19 had `parsePair` split on any whitespace, so a tab-separated input reads,
 rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
 input, and tasks 21–24 landed the non-vacuity witnesses of the sixteen main results outside S1's
 and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last,
-and tasks 25–25.3 swept the docstrings of the thirteen planar files, of `Search/` and of
-`Mathlib/`.
-**Next concrete task:** round 3's task 26, the docstrings of `PebbleGame/`.
+and tasks 25–26 swept the docstrings of the thirteen planar files, of `Search/`, of
+`Mathlib/` and of `PebbleGame/`.
+**Next concrete task:** round 3's task 27, the docstrings of `Matroid/` and `BodyBar/`.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

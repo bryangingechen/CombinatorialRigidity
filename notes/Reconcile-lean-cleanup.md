@@ -10,12 +10,12 @@ each of the 16 main results outside S1's and S2's rows, and the docstring sweep 
 L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–25.3 are done (*Current state*): the open, the docstring-label check
-(gate 9: 422 at task 2, 387 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
+wait for the phase. Tasks 1–26 are done (*Current state*): the open, the docstring-label check
+(gate 9: 422 at task 2, 381 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
 hypotheses and repeated derivations, the pebble game's search with one visited set and its texts
 (tasks 16–20), the sixteen non-vacuity witnesses (tasks 21–24), and the docstrings of the planar
-files, of `Search/` and of `Mathlib/` (tasks 25–25.3). **Next concrete task:** task 26, the
-docstrings of `PebbleGame/` (*Lemma checklist*).
+files, of `Search/`, of `Mathlib/` and of `PebbleGame/` (tasks 25–26). **Next concrete task:**
+task 27, the docstrings of `Matroid/` and `BodyBar/` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -26,35 +26,33 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 25.3 is done** (this commit); nothing is mid-stream.
+**Task 26 is done** (this commit); nothing is mid-stream.
 
-**Tasks 25–25.3** (task 25: `F-018`, `F-022`, `F-023`, `F-030`, `F-032` `done`, `F-025`, `F-228`,
-`F-200` in part; task 25.1: `F-020` in part, new `F-278`; tasks 25.2–25.3: new `F-279`): the
-docstrings of the thirteen planar files, `Search/DFS.lean` and the 35 files of `Mathlib/` read
-against their bodies, under *Decisions*' sweep form; each claim a body contradicts is named in its
-commit's message (task 25.3's: the genericity device said to run on the affine rank lemmas, an
-isostatic realization, consumers and a pair "above" that are not, KT equation and page numbers).
-The label check's report is unchanged (387; none of its lines are in these files). The ledger:
-279 entries, 162 `done`, 9 `left`, 102 `reported`, 6 `open`.
+**Task 26** (`F-035`, `F-040`, `F-045`, `F-230` `done`; `F-279` gains five of `Basic.lean`): the
+docstrings of the five files of `PebbleGame/` (`Examples.lean` with the four the line names) read
+against their bodies; the three "verified-iterative" gone; the false claims named in the commit
+(among them `certifies_against` said to call Lemma 13's graph form, consumers that do not exist or
+do not call, "Feeds (2)" for (3), `Finset.toList` said to lift through `Quotient.lift`, fixed also
+in `Search/DFS.lean` and `DESIGN.md`). Gate 9 387 → 381 (its six lines in `PebbleGame/`). The
+ledger: 279 entries, 166 `done`, 9 `left`, 98 `reported`, 6 `open`.
 
-**Tasks 21–24** (§1's proposal): `CombinatorialRigidity/Nonvacuity.lean`, sixteen closed
-theorems, one per main result outside S1's and S2's rows, none failed, all on the three axioms.
-FRICTION: tasks 22–24's entries; task 21's count-matroid entry waits for task 38.
+**Tasks 25–25.3** (`F-018`, `F-022`, `F-023`, `F-030`, `F-032` `done`; `F-020`, `F-025`, `F-200`,
+`F-228` in part; new `F-278`, `F-279`): the planar files, `Search/DFS.lean` and the 35 files of
+`Mathlib/`, under *Decisions*' sweep form; their messages name each false claim.
 
-**Tasks 16–20** (`F-033`, `F-047`, both `done`; new `F-276`, `F-277`, `reported`): the search
-with one marked set, `scripts/DFSTiming.lean`, `parsePair` on any whitespace, the texts.
-
-**Done before** (tasks 3–15.1; their `[x]` lines and messages carry the detail): L9's thirty-nine
+**Done before** (tasks 3–24; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
-their nodes), `F-090`'s shim, `F-061`'s rename to `_starForest`, and L6–L8's unused or derivable
-hypotheses and repeated derivations, each node they reach restated in the same commit. Gate 2 runs
-block (c) since task 5.
+their nodes), `F-090`'s shim, `F-061`'s rename to `_starForest`, L6–L8's unused or derivable
+hypotheses and repeated derivations (each node they reach restated in the same commit; gate 2 runs
+block (c) since task 5), the search with one marked set and its texts (tasks 16–20; `F-033`,
+`F-047` `done`, new `F-276`, `F-277` `reported`), and `Nonvacuity.lean`'s sixteen witnesses (tasks
+21–24, all on the three axioms; FRICTION: tasks 22–24's entries, task 21's waits for task 38).
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
 *unpinned, own node*; `scratch/reconcile-lean/labels-t2.txt`, gitignored); its acceptance is
 `65a5c0ee`'s message. Of the stale or absent labels `F-230`–`F-264` list, all are reported but
-`runPebbleGame.aux`'s (past its lead); headers and docstrings that name no node are outside it.
+`runPebbleGame.aux`'s (past its lead; task 26 fixed it); a docstring naming no node is outside it.
 
 **Verified at the open** (2026-10-15, at `347ba9c4`, round 2's close tree; its Lean is `64bb9754`'s,
 unchanged since `6f4f7afa`, the tree of the ledger's Lean baselines):
@@ -309,9 +307,10 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **25.3. `Mathlib/LinearAlgebra/Matrix/Rank.lean` and `Dimension/Constructions.lean`**: the
   phase pointers gone, KT's equations (6.6), (6.16), (6.60)–(6.66) and Lemma 5.2's page checked in
   `.refs/`; `F-279` gains nine of `Rank.lean`; the dump byte-identical; gate 9 387.
-- [ ] **26. `PebbleGame/`** (`F-035`, `F-040`, `F-045`, `F-230`): `Basic.lean`, `Algorithm.lean`,
-  `Correctness.lean`, `Exec.lean`; task 20 took the running-time and `decide` claims. Also the
-  three "verified-iterative" (`Basic.lean` 1028, 1052; `Algorithm.lean` 250): the search recurses.
+- [x] **26. `PebbleGame/`** (`F-035`, `F-040`, `F-045`, `F-230` `done`; `F-279` in part): the four
+  files and `Examples.lean`, which no task named; the three "verified-iterative" gone; task 20's
+  running-time texts kept; `Quotient.lift` also in `DFS.lean` and `DESIGN.md`; the dump
+  byte-identical; gate 9 381.
 - [ ] **27. `Matroid/` and `BodyBar/`** (M4's `F-053`; `F-057`; `F-215` but S13's part; `F-243`'s
   `BodyBar/GenericLift.lean` header; M2's `TayTheorem.lean` 548): `Matroid/Constructions/{Submodular,
   Union}.lean` (ported from `apnelson1/Matroid`; its credit stays), `BodyBar/{Framework, TayTheorem,
@@ -411,12 +410,14 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 26**, at Opus: the docstrings of `PebbleGame/` (`F-035`, `F-040`, `F-045`, `F-230`;
-*Lemma checklist*, under the sweep's rules and *Decisions*' sweep form), with the three
-"verified-iterative". *Expected:* the dump byte-identical; gate 9 falls by what the task fixes (6
-of its lines are in `PebbleGame/`: 3 *missing*, 3 *pinned, another node*). Gates 1–3 (gate 3's
-witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t25-3.lean`), 5, 6, 9 and 10 (the
-parent dump `scratch/reconcile-lean/dump-t25-3.txt`, gitignored; regenerate it if missing).
+**Next: task 27**, at Opus: the docstrings of `Matroid/` and `BodyBar/` (the IDs its checklist
+line names; under the sweep's rules and *Decisions*' sweep form). `BodyBar/KFrame.lean` and
+`TreePacking.lean` are in its directory and no task names them: take them, or split them off as
+27.1 (task 25.1's precedent). *Expected:* the dump byte-identical; gate 9 falls by what the task
+fixes (10 of its lines are in the six named files: `Union.lean` 1, `GenericLift.lean` 4,
+`TayTheorem.lean` 3, `BodyHinge.lean` 2; `KFrame.lean` has 2). Gates 1–3 (gate 3's witnesses: the
+sixteen of `scratch/reconcile-lean/Witnesses-t26.lean`), 5, 6, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t26.txt`, gitignored; regenerate it if missing).
 Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275`,
 `F-278`, `F-279` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries
 for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
