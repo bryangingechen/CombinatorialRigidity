@@ -17,59 +17,37 @@ public import CombinatorialRigidity.Molecular.Extensor
 public import CombinatorialRigidity.Molecular.Meet
 
 /-!
-# The panel-hinge rigidity matrix `R(G,p)` (`sec:molecular-rigidity-matrix`)
+# The rigidity matrix `R(G,p)` of a body-hinge framework
 
-Phase 18, the second phase of the molecular-conjecture program (Phases 17–26; see
-`notes/MolecularConjecture.md`). Where the body-hinge chapter (Phase 16,
-`BodyBar/BodyHinge.lean`) *defined* rigidity by reduction to body-bar on the
-multiplied graph `(δ-1)·G` (a standard-basis witness, no honest geometry — the
-*existence* form), this file builds the **genuine** panel-hinge / body-hinge
-rigidity matrix `R(G,p)` of Katoh–Tanigawa 2011 (*A proof of the molecular
-conjecture*, Discrete Comput. Geom. **45**, §2.2–2.4), on a realization `p`
-assigning a `(d-2)`-dimensional affine *hinge* subspace to each edge.
+The definitions and rank lemmas of `sec:molecular-rigidity-matrix`, after Katoh and Tanigawa (2011,
+*A proof of the molecular conjecture*, Discrete Comput. Geom. **45**, §§2.2–2.4 and 5). The
+dimension is written `d = k + 1`, so that the screw space is `⋀^k K^(k+2)`, of dimension
+`D = (k+2 choose 2)` (`def:screw-space`). A body-hinge framework is a multigraph with an element
+`C(e)` of the screw space at each edge, the supporting extensor of its hinge
+(`def:hinge-constraint`). The file proves:
 
-This is the **core** of the `RigidityMatrix/` subdirectory (post-Phase-22l split round,
-`notes/Phase22l-perf.md`): the dimension-agnostic rigidity-matrix API + the rank Lemmas 5.1–5.3,
-plus the shared block-triangular-rank machinery (`columnOp`, the pinned-block independence lemmas).
-The two leaves built on it are `RigidityMatrix/Bricks` (the vertex-disjoint / splice /
-pinned-placement rank-addition bricks) and `RigidityMatrix/Claim612` (the `d=3` Claim-6.12 panel
-geometry + candidate-row machinery). This file lands the `sec:molecular-rigidity-matrix`
-dep-graph in dependency order. The leaf node landing here:
+* the hinge constraint `S u − S v ∈ span C(e)` and its form as `D − 1` linear equations
+  (`def:hinge-constraint`, `def:hinge-row-block`);
+* the rows of `R(G,p)` and the infinitesimal motions, the space on which all the rows vanish
+  (`def:rigidity-matrix`); the independence of the rows of an edge, and of the rows of edges with
+  ends of their own (`lem:edge-rows-independent`, `lem:own-end-rows-independent`); and the row space
+  as the forms that vanish on the motions (`lem:span-rigidityRows-eq-of-motions-eq`);
+* the trivial motions and the bound `rank R(G,p) ≤ D(|V| − 1)` (`def:trivial-motions-rigid`,
+  `lem:trivial-motions-rank-bound`); KT Lemmas 5.1 and 5.3 (`lem:rank-delete-vertex`,
+  `lem:rank-parallel-full`); and the comparison of two frameworks whose hinges have nested spans
+  (`lem:rank-rotation-semicont`);
+* the column operation and the blocks of independent forms with which Katoh and Tanigawa read the
+  rank in their Cases II and III (KT eqs. (6.14)–(6.16) and (6.26)–(6.29), pp. 679 and 685–686;
+  `lem:case-III-columnop`, `lem:case-III-vanish-off-column`, `lem:case-III-transport-collapse`,
+  `lem:case-II-placement-block-independent`, `lem:case-III-conditional-block`).
 
-* `BodyHingeFramework` (`def:hinge-constraint`) — a `d`-dimensional body-hinge
-  framework `(G,p)` is a multigraph `G : Graph α β` together with a map `p`
-  assigning each edge a *hinge*: a `(d-1)`-point family in `K^d` whose affine span
-  is a `(d-2)`-dimensional affine subspace. Reparametrizing `d = k+1` to clear the
-  `ℕ`-subtraction, a hinge is `Fin k → Fin (k+1) → K` (`k` points in `K^(k+1)`),
-  homogenizing to `K^(k+2)`; its supporting `(d-1)`-extensor is the `k`-extensor
-  `C(p(e)) = affineSubspaceExtensor (p e) ∈ ⋀^k K^(k+2)` of Phase 17.
-* `hingeConstraint` (`def:hinge-constraint`) — identifying an infinitesimal motion
-  of a rigid body with a `D`-dimensional *screw center* `S(v)` living in the
-  exterior algebra `ExteriorAlgebra K (Fin (k+2) → K)` (where `C(p(e))` lives), the
-  hinge `p(e)` constrains the two screw centers `S(u), S(v)` of its endpoints
-  `e = uv` to satisfy
-  `S(u) - S(v) ∈ span C(p(e)) = Submodule.span K {affineSubspaceExtensor (p e)}`.
-
-The file also carries the transport `BodyHingeFramework.mapExtensor` along a linear automorphism of
-the screw space (the same multigraph, each supporting extensor replaced by its image), which
-`thm:projective-invariance` pins and `lem:screw-map-rows` also reads.
-
-## Carrier and dimension
-
-Infinitesimal motions are `D`-dimensional screw centers with `D = (d+1 choose 2)`,
-matching Phase 17's extensor space `⋀^(d-1) K^(d+1) ≅ K^D` (here, with `d = k+1`,
-`⋀^k K^(k+2)`). We carry the screw center as an element of the **degree-`k` graded
-piece** `⋀[K]^k (Fin (k+2) → K)` of the exterior algebra — the subspace in which the
-supporting extensors `C(p(e)) = affineSubspaceExtensor (p e)` actually live
-(`affineSubspaceExtensor_mem_exteriorPower`) — rather than a coordinate vector in `K^D`;
-`span C(p(e))` is then literally a `Submodule` of it and the hinge constraint is a
-membership. The concrete `⋀^k K^(k+2) ≅ K^D` identification is realized as the `finrank`
-equality `screwSpace_finrank : finrank K (ScrewSpace K k) = D` (rather than an explicit
-basis), the numeric gate for the rank counts of `lem:trivial-motions-rank-bound` and the
-degree of freedom of `def:dof-generic`.
-
-Carrier for the multigraph: mathlib core `Graph α β` (the Phase 13–16 carrier).
-Carrier for points: `Fin (k+1) → K`, matching Phase 17's `affineSubspaceExtensor`.
+No basis of the screw space is fixed. A row of `R(G,p)` is the linear form `S ↦ r (S u − S v)` on
+screw assignments, for an edge with ends `u` and `v` and a linear form `r` on the screw space that
+vanishes at `C(e)`, and the rank of `R(G,p)` is the dimension of the span of the rows. The file also
+defines the transport of a framework along a linear automorphism of the screw space (`mapExtensor`,
+`thm:projective-invariance`) and the extensors that lie in a panel (`ExtensorInPanel`,
+`def:genuine-hinge-realization`). `Bricks.lean` proves the rank-addition lemmas
+(`sec:molecular-rigidity-matrix-blocks`).
 -/
 
 @[expose] public section
@@ -80,16 +58,14 @@ open scoped Matrix
 
 variable {K : Type*} [Field K]
 
-/-! ## The screw-center space `ScrewSpace` (the carrier `⋀^k K^(k+2) ≅ K^D`)
+/-! ## The screw space (`def:screw-space`)
 
-The screw dimension `D = (k+2 choose 2)`, the opaque-`def` carrier `ScrewSpace K k` with its
-boundary API (Phase 22l), and the `finrank (ScrewSpace K k) = D` numeric gate (`screwSpace_finrank`)
-that every rank count keys on. -/
+The number `D = screwDim k`, the screw space `ScrewSpace K k` with its constructor `ScrewSpace.mk`
+and value `ScrewSpace.val`, and its dimension `D` (`screwSpace_finrank`). -/
 
-/-- The **screw dimension** `D = (d+1 choose 2) = (k+2 choose 2)` of `d = k+1`-dimensional
-body-hinge rigidity: the dimension of the screw-center space `ScrewSpace K k`, equal to the
-dimension `binom(d+1, 2)` of the space of infinitesimal screw motions of a rigid body in
-`K^d` (Katoh–Tanigawa 2011 §2.2). -/
+/-- **The number `D`** (`def:screw-space`): `screwDim k = (k+2 choose 2)`, which is
+`D = (d+1 choose 2)` for `d = k + 1`, the dimension of the space of screw centers of a body in `K^d`
+(Katoh and Tanigawa 2011, §2.2) and of the screw space (`screwSpace_finrank`). -/
 abbrev screwDim (k : ℕ) : ℕ := (k + 2).choose 2
 
 /-- `screwDim 1 = 3`: the screw dimension of `d = 2`-dimensional (planar) body-hinge rigidity,
@@ -100,38 +76,21 @@ lemma screwDim_one : screwDim 1 = 3 := rfl
 three translations plus three spatial rotations. -/
 lemma screwDim_two : screwDim 2 = 6 := rfl
 
-/-- The **screw-center space** of `d = k+1`-dimensional body-hinge rigidity: the degree-`k`
-graded piece `⋀[K]^k (Fin (k+2) → K)` of the exterior algebra, in which the supporting
-extensors `C(·) = affineSubspaceExtensor` of the hinges live
-(`affineSubspaceExtensor_mem_exteriorPower`). An infinitesimal motion of a rigid body is a
-`D`-dimensional *screw center* `S(v)` in this space, `D = screwDim k = (k+2 choose 2)`
-(`screwSpace_finrank`). We carry the screw center as the graded-piece element (a `Submodule`
-of the full exterior algebra) rather than a coordinate vector in `K^D`, so `span C(p(e))` is
-literally a `Submodule` of it (`def:hinge-constraint`); the `⋀^k K^(k+2) ≅ K^D` identification
-of the blueprint is realized by the `finrank` equality `screwSpace_finrank` rather than an
-explicit basis.
+/-- **The screw space** (`def:screw-space`): `ScrewSpace K k` is the degree-`k` piece
+`⋀[K]^k (Fin (k+2) → K)` of the exterior algebra of `K^(k+2)`, of dimension `D = screwDim k`
+(`screwSpace_finrank`). A screw center, the value of a screw assignment at a body, lies in it, and
+so do the supporting extensors of the hinges (`affineSubspaceExtensor_mem_exteriorPower`). No basis
+is fixed: the identification of the screw space with `K^D` enters only through its dimension.
 
-## Carrier API (Phase 22l, part 1 — pre-opacity)
-
-The `mk` / `val` / `equivExteriorPower` API below is the stable boundary surface routing
-every `ScrewSpace`-typed reach-in: it replaces the bare `⟨val, proof⟩` anonymous-constructor
-and `Subtype.val` coercion idioms that the opaque head blocks. The carrier is now an **opaque
-`def`** (Phase 22l flip, 2026-06-16) — a distinct, non-reducing head over the graded piece, so
-the heavy `↥(⋀^k …)` type-expression no longer re-unfolds during defeq / `simp` / `rw` motives
-over it (a diffuse `maxHeartbeats` cost behind the three former survivors — opacity cleared this
-component; a follow-up `nlinarith`→`linarith` fix cleared the rest, so **0** overrides now remain;
-`notes/Phase22l.md`, `notes/ScrewSpaceCarrier-design.md`). The defeq bridge to the graded piece is
-`ScrewSpace_def`
-(default-transparency `rfl`); the three module instances are `inferInstanceAs` over that bridge.
-The carrier stays defeq to the graded piece at *default* transparency (so the spike's
-coordinate transports are no-ops) but not at the *reducible/instance* transparency that drove
-the cost — which is exactly the win. -/
+It is a `def`, not an `abbrev`, so that unification at reducible and instance transparency does not
+unfold it to the subtype of the exterior algebra. `ScrewSpace_def` unfolds it, by `rfl`; the module
+instances below are those of the subtype; and `ScrewSpace.mk`, `ScrewSpace.val` and
+`ScrewSpace.equivExteriorPower` pass between the two. -/
 def ScrewSpace (K : Type*) [Field K] (k : ℕ) :=
   ↥(⋀[K]^k (Fin (k + 2) → K))
 
-/-- **The defeq bridge** from the opaque `ScrewSpace` carrier to the underlying graded piece
-`↥(⋀^k K^(k+2))`. Holds by `rfl` at default transparency; used sparingly (the `mk` / `val` /
-`equivExteriorPower` API routes the coercions through it so they survive the opacity flip). -/
+/-- **`ScrewSpace K k` unfolds to the degree-`k` piece** of the exterior algebra, by `rfl` at
+default transparency. -/
 theorem ScrewSpace_def (K : Type*) [Field K] (k : ℕ) :
     ScrewSpace K k = ↥(⋀[K]^k (Fin (k + 2) → K)) := rfl
 
@@ -144,16 +103,14 @@ noncomputable instance (k : ℕ) : Module K (ScrewSpace K k) :=
 noncomputable instance (k : ℕ) : FiniteDimensional K (ScrewSpace K k) :=
   inferInstanceAs (FiniteDimensional K ↥(⋀[K]^k (Fin (k + 2) → K)))
 
-/-- **Constructor for the `ScrewSpace` carrier** from an exterior-algebra element with a
-membership proof — the named replacement for the bare `⟨v, h⟩ : ScrewSpace K k` anonymous
-constructor, kept building once the carrier becomes an opaque `def` (Phase 22l). -/
+/-- **The screw given by an element `v` of the degree-`k` piece** of the exterior algebra (`h`). It
+stands for the anonymous constructor `⟨v, h⟩` of the subtype. -/
 def ScrewSpace.mk {k : ℕ} (v : ExteriorAlgebra K (Fin (k + 2) → K))
     (h : v ∈ ⋀[K]^k (Fin (k + 2) → K)) : ScrewSpace K k :=
   (ScrewSpace_def K k).symm ▸ (⟨v, h⟩ : ↥(⋀[K]^k (Fin (k + 2) → K)))
 
-/-- **The underlying exterior-algebra element of a `ScrewSpace` carrier** — the named
-replacement for the `Subtype.val` coercion `(C : ⋀[K]^k …)`, kept building once the carrier
-becomes an opaque `def` (Phase 22l). -/
+/-- **The element of the exterior algebra that a screw is**, which stands for the coercion
+`Subtype.val` of the subtype. -/
 def ScrewSpace.val {k : ℕ} (C : ScrewSpace K k) : ExteriorAlgebra K (Fin (k + 2) → K) :=
   Subtype.val (ScrewSpace_def K k ▸ C : ↥(⋀[K]^k (Fin (k + 2) → K)))
 
@@ -187,13 +144,9 @@ theorem ScrewSpace.val_injective {k : ℕ} : Function.Injective (ScrewSpace.val 
 theorem ScrewSpace.ext {k : ℕ} {C D : ScrewSpace K k} (h : C.val = D.val) : C = D :=
   ScrewSpace.val_injective h
 
-/-- **The linear equivalence between the `ScrewSpace` carrier and the graded piece.** The
-boundary `≃ₗ` for the basis / dual work; because the carrier is definitionally the graded
-piece at default transparency (`ScrewSpace_def`, `notes/ScrewSpaceCarrier-design.md` §5 OQ3),
-this is the `cast (ScrewSpace_def K k)` transport — its `map_add'` / `map_smul'` are `rfl` and
-the `_apply` / `_symm_apply` simp lemmas restate to the `cast`. (It cannot be `LinearEquiv.refl`
-on the opaque head: the opaque carrier is not defeq to `↥(⋀^k …)` at the reducible transparency
-`refl`'s apply lemmas need.) -/
+/-- **The screw space is linearly equivalent to the degree-`k` piece**: the cast along
+`ScrewSpace_def`, whose additivity and homogeneity hold by `rfl`. The `_apply` and `_symm_apply`
+lemmas below state it as the cast. -/
 noncomputable def ScrewSpace.equivExteriorPower (K : Type*) [Field K] (k : ℕ) :
     ScrewSpace K k ≃ₗ[K] ↥(⋀[K]^k (Fin (k + 2) → K)) where
   toFun C := cast (ScrewSpace_def K k) C
@@ -212,139 +165,103 @@ theorem ScrewSpace.equivExteriorPower_symm_apply {k : ℕ}
     (C : ↥(⋀[K]^k (Fin (k + 2) → K))) :
     (ScrewSpace.equivExteriorPower K k).symm C = cast (ScrewSpace_def K k).symm C := rfl
 
-/-- **The screw-center space has dimension `D = (k+2 choose 2)`** (`def:rigidity-matrix`,
-the deferred `⋀^k K^(k+2) ≅ K^D` coordinatization). Since `ScrewSpace K k` is the degree-`k`
-graded piece of the exterior algebra of `K^(k+2)`, its dimension is `(k+2).choose k`
-(`exteriorPower.finrank_eq`), which equals `(k+2).choose 2 = screwDim k` by the symmetry
-`binom(n, j) = binom(n, n-j)`. This is the numeric content of the blueprint's
-`⋀^k K^(k+2) ≅ K^D` identification — carried as a `finrank` equality rather than an explicit
-basis — and is the gate for every numeric rank count (`lem:trivial-motions-rank-bound`'s
-`rank R ≤ D(|V|-1)`, the degree of freedom of `def:dof-generic`). -/
+/-- **The screw space has dimension `D`** (`def:screw-space`):
+`finrank K (ScrewSpace K k) = screwDim k`. The degree-`k` piece of the exterior algebra of `K^(k+2)`
+has dimension `(k+2 choose k)` (`exteriorPower.finrank_eq`), which is `(k+2 choose 2)` by the
+symmetry of the binomial coefficients. The rank counts use this in place of a basis of the screw
+space. -/
 theorem screwSpace_finrank (k : ℕ) : Module.finrank K (ScrewSpace K k) = screwDim k := by
   change Module.finrank K ↥(⋀[K]^k (Fin (k + 2) → K)) = screwDim k
   rw [exteriorPower.finrank_eq, Module.finrank_pi, Fintype.card_fin, screwDim,
     ← Nat.choose_symm (Nat.le_add_left 2 k)]
   congr 1
 
-/-- **At most `D` independent supporting extensors** (`def:rigidity-matrix`): any linearly
-independent family of `m` screw-space elements has `m ≤ D = screwDim k`, since
-`ScrewSpace K k` is `D`-dimensional (`screwSpace_finrank`). This is the dimension bound a panel
-*cycle* must respect — a cycle whose `m` supporting extensors are independent in the
-`D`-dimensional screw space can have at most `m ≤ D` hinges, the upper half `|V| ≤ D` of
-Katoh–Tanigawa Lemma 5.4's hypothesis `3 ≤ |V| ≤ D` (`lem:cycle-realization`). Immediate from
-the finite-dimensionality bound `LinearIndependent.fintype_card_le_finrank`. -/
+/-- **At most `D` independent screws** (`lem:cycle-realization-dim-bound`): a linearly independent
+family of `m` elements of the screw space has `m ≤ D = screwDim k`, as the space has dimension `D`
+(`screwSpace_finrank`, `LinearIndependent.fintype_card_le_finrank`). A cycle whose `m` supporting
+extensors are independent therefore has `m ≤ D`, the upper bound in the hypothesis `3 ≤ |V| ≤ D` of
+Katoh and Tanigawa's Lemma 5.4 (p. 670). -/
 theorem card_le_screwDim_of_linearIndependent {k m : ℕ} (c : Fin m → ScrewSpace K k)
     (h : LinearIndependent K c) : m ≤ screwDim k := by
   have := h.fintype_card_le_finrank
   rwa [Fintype.card_fin, screwSpace_finrank] at this
 
-/-! ## `screwDim k` numeric arithmetic (general-`d` rank-count kit)
+/-! ## Bounds on `D`
 
-The three `Nat.choose` facts the symbolic-`k` realization spine needs in place of the
-`d = 3` (`screwDim 2 = 6`) `decide` calls: the dimension is never zero
-(`one_le_screwDim`), is at least `2` once the dimension floor `k ≥ 1` (i.e. `d = k+1 ≥ 2`)
-holds (`two_le_screwDim`), and the `exists_nested_rankPolynomial_lower_all_k` eq.-(6.22)
-lower-bound arithmetic `D − 2 ≤ D(|V'| − 1)` (`screwDim_sub_two_le_mul`). At `k = 0` the screw
-space is
-the degenerate `⋀^0 = K` with `screwDim 0 = (2).choose 2 = 1`, so the `≥ 2` facts genuinely
-need the floor; the body-hinge regime always supplies `d = k + 1 ≥ 2`. -/
+`D ≥ 1` always, and `D ≥ 2` and `D ≥ 3` when `d = k + 1 ≥ 2`; at `k = 0` the screw space is
+`⋀^0 K^2 = K`, and `D = 1`. Also `D − 2 ≤ D(m − 1)` when `m ≥ 2`. -/
 
-/-- **The screw dimension is positive** (`def:rigidity-matrix`): `D = screwDim k ≥ 1` for every
-`k`. Immediate from `(k+2).choose 2 ≠ 0` (`Nat.choose_eq_zero_iff`: `2 ≤ k + 2`). The `k`-free
-base fact the rank counts lean on; the floor-conditioned `2 ≤ screwDim k` is `two_le_screwDim`. -/
+/-- **`D ≥ 1`** (`def:screw-space`): `(k+2 choose 2) ≠ 0`, as `2 ≤ k + 2`
+(`Nat.choose_eq_zero_iff`). -/
 theorem one_le_screwDim {k : ℕ} : 1 ≤ screwDim k :=
   Nat.one_le_iff_ne_zero.mpr (by simp [screwDim, Nat.choose_eq_zero_iff])
 
-/-- **The screw dimension is at least `2` in the body-hinge regime** (`def:rigidity-matrix`):
-`D = screwDim k ≥ 2` once `k ≥ 1` (i.e. the ambient dimension `d = k + 1 ≥ 2`). The general-`d`
-replacement for the `d = 3` `(2 : ℕ) ≤ screwDim 2` `decide`. Conditioned on the floor because
-`screwDim 0 = (2).choose 2 = 1 < 2`; for `k ≥ 1` it follows from `screwDim 1 = (3).choose 2 = 3`
-by monotonicity of `(· .choose 2)` (`Nat.choose_mono`). -/
+/-- **`D ≥ 2` when `d ≥ 2`** (`def:screw-space`): `screwDim k ≥ 2` when `k ≥ 1`, that is, when
+`d = k + 1 ≥ 2`; at `k = 0`, `D = 1`. As `screwDim 1 = 3` and `n ↦ (n choose 2)` is monotone
+(`Nat.choose_mono`). -/
 theorem two_le_screwDim {k : ℕ} (hk : 1 ≤ k) : 2 ≤ screwDim k := by
   have h := Nat.choose_mono 2 (show 1 + 2 ≤ k + 2 by omega)
   simpa [screwDim] using le_trans (by decide) h
 
-/-- **The screw dimension is at least `3` in the body-hinge regime** (`def:rigidity-matrix`):
-`D = screwDim k ≥ 3` once `k ≥ 1` (i.e. the ambient dimension `d = k + 1 ≥ 2`). The general-`d`
-floor the Case-II / Case-III spine producers need (their graph-side hypotheses
-`3 ≤ bodyBarDim n` were `screwDim 2 = 6`-discharged at `d = 3`): with
-`hn : bodyBarDim n = screwDim k`, `3 ≤ bodyBarDim n` follows from this. Same `Nat.choose_mono`
-route as `two_le_screwDim` (it is
-exactly `screwDim 1 = (3).choose 2 = 3 ≤ screwDim k`); conditioned on the floor because
-`screwDim 0 = 1 < 3`. -/
+/-- **`D ≥ 3` when `d ≥ 2`** (`def:screw-space`): `screwDim k ≥ 3` when `k ≥ 1`, as `screwDim 1 = 3`
+and `n ↦ (n choose 2)` is monotone (`Nat.choose_mono`). With `bodyBarDim n = screwDim k` it gives
+`3 ≤ bodyBarDim n`. -/
 theorem three_le_screwDim {k : ℕ} (hk : 1 ≤ k) : 3 ≤ screwDim k := by
   have h := Nat.choose_mono 2 (show 1 + 2 ≤ k + 2 by omega)
   simpa [screwDim] using h
 
-/-- **The eq.-(6.22) lower-bound arithmetic** (`lem:case-III-nested-rank-lower`,
-Katoh–Tanigawa 2011 §6.4.1 eq. (6.22)): `D − 2 ≤ D(m − 1)` whenever `m ≥ 2`. The general-`d`
-replacement for the `d = 3` `screwDim 2 - 2 ≤ screwDim 2 * (|V'| − 1)` `decide`-led step in
-`exists_nested_rankPolynomial_lower_all_k`, where `m = |V(G.splitOff …)|` is the (post-split,
-`≥ 2`) vertex count. Pure `ℕ`-arithmetic: `D − 2 ≤ D = D · 1 ≤ D · (m − 1)` since `1 ≤ m − 1`. -/
+/-- **`D − 2 ≤ D(m − 1)` when `m ≥ 2`** (a step of `lem:case-III-nested-rank-lower`): so the lower
+bound `D(m − 1) − (D − 2)` of KT eq. (6.22) (p. 684, where `D − 2 = 4`) is a subtraction in `ℕ` that
+does not truncate. `D − 2 ≤ D ≤ D(m − 1)`, as `1 ≤ m − 1`. -/
 theorem screwDim_sub_two_le_mul {k m : ℕ} (hm : 2 ≤ m) :
     screwDim k - 2 ≤ screwDim k * (m - 1) :=
   le_trans (Nat.sub_le _ _) (Nat.le_mul_of_pos_right _ (by omega))
 
-/-! ## The panel-in-extensor predicate and the `BodyHingeFramework` carrier
+/-! ## Panels, and body-hinge frameworks (`def:hinge-constraint`)
 
-`ExtensorInPanel` (a screw-space element lies in a hyperplane `n^⊥`) and the framework structure
-`(graph, supportExtensor)` — the bridge from the screw space to the rigidity matrix `R(G,p)`. -/
+The extensors that lie in a panel (`ExtensorInPanel`), and the structure `BodyHingeFramework`: a
+multigraph with a screw at each edge. -/
 
-/-- **A screw-space element `C` lies in a hyperplane `n^⊥`** (`def:genuine-hinge-realization`,
-the per-link containment predicate of the honest bare motive M2; Phase 22i L0a). The `k`-extensor
-`C ∈ ScrewSpace K k` is *in the panel with normal `n`* when it is the extensor of `k` points of the
-hyperplane `n^⊥ = {p | p ⬝ᵥ n = 0}`. The `k = 0` case (`extensor ![] = 1`) is degenerate and
-satisfies the predicate vacuously; the relevant instances are `k = 2` (the `d = 3` producers,
-where each link's `ScrewSpace ℝ 2` element is the meet of two hyperplanes, itself the extensor of
-two common-perp points, `exists_extensor_eq_panelSupportExtensor` in `PanelLayer.lean`).
-`C = 0` satisfies the predicate (degenerate `p`); nonzero-ness is M2's separate conjunct.
-Scalars in the first slot absorb: `c • extensor p = extensor (update p 0 (c • p 0))`
-(`AlternatingMap.map_update_smul`). -/
+/-- **An extensor in the panel with normal `n`** (`def:genuine-hinge-realization`): a screw `C` lies
+in the panel with normal `n` if it is the extensor `x₁ ∨ ⋯ ∨ x_k` of `k` vectors of the hyperplane
+`n^⊥ = {x | x ⬝ᵥ n = 0}` of `K^(k+2)`. When `k ≥ 1`, `C = 0` lies in every panel (take `x₁ = 0`). At
+`k = 0` the only extensor is that of the empty family, `1`, so the predicate says `C = 1`, whatever
+`n`. -/
 def ExtensorInPanel {k : ℕ} (C : ScrewSpace K k) (n : Fin (k + 2) → K) : Prop :=
   ∃ p : Fin k → Fin (k + 2) → K,
     C.val = extensor p ∧ ∀ i, p i ⬝ᵥ n = 0
 
-/-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
-a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
-`(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k K^(k+2)` — the screw-space
-element the rigidity matrix constrains. In the affine model `p(e)` is a
-`(d-2) = (k-1)`-dimensional affine *hinge* subspace spanned by `k` points of `K^(k+1)`
-and `C(p(e)) = affineSubspaceExtensor (p e)` (Phase 17, the smart constructor `ofHinge`);
-the panel model (Phase 21, `PanelHingeFramework.toBodyHinge`) supplies it as a
-Grassmann–Cayley meet of two panels instead. Carrying the support extensor directly as a
-field decouples the rigidity-matrix rank theory from how the extensor arose, so both the
-affine hinge and the panel hinge feed the same constraint family.
+/-- **A body-hinge framework** `(G,p)` in `K^d`, `d = k + 1` (`def:hinge-constraint`): a multigraph
+`G : Graph α β` with, at each edge label `e`, an element `supportExtensor e` of the screw space
+`⋀^k K^(k+2)`, which stands for the supporting extensor `C(p(e))` of the hinge `p(e)`. The bodies
+are the elements of `α`, among which there may be bodies on no edge of `G`. When `p(e)` is the
+affine span of `k` points of `K^(k+1)`, `C(p(e))` is their extensor (`ofHinge`); for a panel-hinge
+framework it is the meet of the panels at the two ends of `e` (`PanelHingeFramework.toBodyHinge`).
+The extensor need not be nonzero, nor come from points.
 
-The dimension is reparametrized `d = k + 1` (so points live in `K^(k+1)`,
-homogenizing to `K^(k+2)`) to clear the `ℕ`-subtractions `d-1`, `d-2` that the
-hinge / extensor arities would otherwise carry, matching the Phase 17
-`omitTwoExtensor` reparametrization. -/
+Writing `d = k + 1` avoids the subtractions `d − 1` and `d − 2` in the numbers of points. -/
 structure BodyHingeFramework (K : Type*) [Field K] (k : ℕ) (α β : Type*) where
-  /-- The underlying multigraph; bodies are vertices, hinges are edges. -/
+  /-- The multigraph: the bodies on its edges are its vertices, and the hinges its edges. -/
   graph : Graph α β
-  /-- The **supporting extensor** `C(p(e))` of the hinge at each edge `e`: the
-  `(d-1) = k`-extensor in the screw space `⋀^k K^(k+2)` whose span the relative screw
-  center is constrained to lie in (`def:hinge-constraint`). It is nonzero exactly when the
-  hinge is genuine (a `(k-1)`-dimensional affine subspace, resp. two transversal panels). -/
+  /-- **The supporting extensor** `C(p(e))` at the edge label `e`, a screw of `⋀^k K^(k+2)`
+  (`def:hinge-constraint`). For points it is nonzero exactly when they are affinely independent
+  (`affineSubspaceExtensor_ne_zero_iff`); for two panels, exactly when their normals are linearly
+  independent (`panelSupportExtensor_ne_zero_iff`). -/
   supportExtensor : β → ScrewSpace K k
 
 section RankArithmetic
 
-/-! ### Rank-equation `ℤ`/`ℕ` cast plumbing
+/-! ### The rank equation in `ℤ` and in `ℕ`
 
-Two self-contained scalar bridges shared by the `k > 0`-split rank producer
-(`PanelHingeFramework.case_II_realization_all_k`, CaseI.lean): both the lower-bound transfer
-(`hrank_lb_nat`) and the rank-equality transfer (`hrankge_int`) re-run the *same* `Int.toNat` ↔
-`ℕ`-subtraction bridge to move `D·(V−1) − k` between its `ℤ` form (from Brick A's `finrank` bound,
-`D = screwDim 2`, `V = |V(G)|`) and its `ℕ`-`toNat` form (for the rank-polynomial transfer). Both
-factor through the rank equation `N + (D−1) = D·(V−1) − k` (KT eq.~(6.12), `hNpD` in the producer:
-`N` IH-old rows + `(D−1)` new rows = the target rank). Extracting them removes the dominant `CoeT`
-typeclass-inference load the duplicated casts incurred (Phase 22j A1; `notes/PERFORMANCE.md`
-*Producer helper-split design*). Pure scalar arithmetic — no rigidity content. -/
+Two facts of integer arithmetic for Case II (`PanelHingeFramework.case_II_realization_all_k`). There
+the rank equation `N + (D − 1) = D(V − 1) − k` holds in `ℤ`, where `N = D(V − 2) − (k − 1)` is the
+rank of the realization of `G_v^{ab}` and `D(V − 1) − k` the target rank of `G` (the count at the
+end of the proof of KT Lemma 6.8, p. 679). They give `k.toNat ≤ D(V − 1)` and
+`D(V − 1) − k.toNat = N + (D − 1)` in `ℕ`. -/
 
-/-- **Side fact: `k.toNat ≤ D·(V−1)`** from the rank equation `N + (D−1) = D·(V−1) − k`
-(Phase 22j A1; see the section preamble). With `N : ℕ` and `1 ≤ D` the right side `N + (D−1)`
-is `ℤ`-nonnegative, so `k ≤ D·(V−1)`; the `ℕ`-`toNat` form follows. -/
+/-- **`k.toNat ≤ D(V − 1)` from the rank equation** `N + (D − 1) = D(V − 1) − k`: with `N ≥ 0` and
+`D ≥ 1`, the left side is nonnegative, so `k ≤ D(V − 1)`, and `V ≥ 1` makes `V − 1` a subtraction in
+`ℕ` that does not truncate. -/
 theorem toNat_le_of_add_pred_eq {D V N : ℕ} {k : ℤ} (hV : 1 ≤ V) (hD : 1 ≤ D)
     (hNpD : (N : ℤ) + (D - 1) = D * ((V : ℤ) - 1) - k) :
     k.toNat ≤ D * (V - 1) := by
@@ -359,10 +276,9 @@ theorem toNat_le_of_add_pred_eq {D V N : ℕ} {k : ℤ} (hV : 1 ≤ V) (hD : 1 �
       linarith [hNpD, hND]
   exact_mod_cast hk_le
 
-/-- **`D·(V−1) − k.toNat = N + (D−1)`** from the rank equation `N + (D−1) = D·(V−1) − k`
-(Phase 22j A1; see the section preamble). The `ℕ`-side identity feeding the rank-polynomial
-transfer; `hk : 0 < k` pins `(k.toNat : ℤ) = k`, then both sides cast through
-`toNat_le_of_add_pred_eq` and `hNpD`. -/
+/-- **`D(V − 1) − k.toNat = N + (D − 1)` from the rank equation** `N + (D − 1) = D(V − 1) − k`, when
+`k > 0`: then `(k.toNat : ℤ) = k`, and both sides are cast to `ℤ`, through
+`toNat_le_of_add_pred_eq`. -/
 theorem sub_toNat_eq_of_add_pred_eq {D V N : ℕ} {k : ℤ} (hk : 0 < k) (hV : 1 ≤ V) (hD : 1 ≤ D)
     (hNpD : (N : ℤ) + (D - 1) = D * ((V : ℤ) - 1) - k) :
     D * (V - 1) - k.toNat = N + (D - 1) := by
@@ -381,19 +297,17 @@ namespace BodyHingeFramework
 
 variable {k : ℕ} {α β : Type*}
 
-/-! ## The hinge constraint and the hinge-row block (`def:hinge-constraint`)
+/-! ## The hinge constraint and the hinge-row block (`def:hinge-constraint`, `def:hinge-row-block`)
 
-The affine-hinge constructor `ofHinge`, the transport `mapExtensor` along a screw-space
-automorphism, and the per-edge constraint `S u − S v ∈ span C(p(e))`, restated as the
-`(D−1)`-equation hinge-row block `(span C)^⊥` (`hingeConstraint_iff_hingeRowBlock`). -/
+The framework of a hinge assignment (`ofHinge`), the transport along an automorphism of the screw
+space (`mapExtensor`), and the hinge constraint `S u − S v ∈ span C(p(e))` with its form as the
+`D − 1` equations of the hinge-row block (`hingeConstraint_iff_hingeRowBlock`). -/
 
-/-- The **affine-hinge body-hinge framework** (`def:hinge-constraint`): the canonical
-constructor from a *hinge assignment* `hinge` sending each edge `e : β` to a family of `k`
-points in `K^(k+1)`, whose affine span is the `(d-2) = (k-1)`-dimensional affine hinge
-subspace `p(e)`. Its supporting extensor is `C(p(e)) = affineSubspaceExtensor (hinge e)`
-(Phase 17), nonzero exactly when the `k` hinge points are affinely independent
-(`affineSubspaceExtensor_ne_zero_iff`). This is the original Phase-18 free-hinge model; the
-hinge-coplanar panel model is the alternative constructor `PanelHingeFramework.toBodyHinge`. -/
+/-- **The framework of a hinge assignment** (the affine hinges of `def:hinge-constraint`): each edge
+label `e` gets `k` points `hinge e` of `K^(k+1)`, and its supporting extensor is
+`affineSubspaceExtensor (hinge e)`, the extensor of the homogenized points, which is nonzero exactly
+when the points are affinely independent (`affineSubspaceExtensor_ne_zero_iff`). The hinges of a
+panel-hinge framework are given by `PanelHingeFramework.toBodyHinge` instead. -/
 noncomputable def ofHinge (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → K) :
     BodyHingeFramework K k α β where
   graph := G
@@ -410,15 +324,12 @@ theorem ofHinge_supportExtensor_val (G : Graph α β) (hinge : β → Fin k → 
     ((ofHinge G hinge).supportExtensor e).val = affineSubspaceExtensor (hinge e) :=
   ScrewSpace.val_mk _ (affineSubspaceExtensor_mem_exteriorPower (hinge e))
 
-/-- **Transport a body-hinge framework along a linear automorphism `Λ` of the screw space**
-(`thm:projective-invariance`, `lem:screw-map-rows`): keep the multigraph and replace each
-supporting extensor `C(p(e))` by `Λ C(p(e))`. This is the panel structure a projective
-transformation (collineation) or correlation (polarity) of `K³` induces via the linear map it
-puts on the screw space `⋀² K⁴` (Crapo–Whiteley 1982 §3.6); read as a change of screw coordinates
-(Jackson–Jordán 2010 §6), it is also the move `lem:screw-map-rows` shows leaves the row rank
-unchanged. It is defined here, beside the carrier, because its two consumers sit in separate
-import branches: the motion-space transport (`Molecule/ProjectiveInvariance.lean`) and the row-span
-rank (`finrank_span_rigidityRows_mapExtensor`, `GenericLift/HingeGeneric.lean`). -/
+/-- **The framework transported along a linear automorphism `Λ` of the screw space**
+(`thm:projective-invariance`): the same multigraph, with the supporting extensor `Λ C(p(e))` at each
+edge `e`. A projective transformation of `K³` acts on the screw space `⋀² K⁴` in this way (Crapo and
+Whiteley 1982, §3.6). It leaves the motions unchanged up to `Λ`
+(`Molecule/ProjectiveInvariance.lean`, `thm:projective-invariance`) and the rank of the rigidity
+matrix unchanged (`finrank_span_rigidityRows_mapExtensor`, `lem:screw-map-rows`). -/
 noncomputable def mapExtensor (F : BodyHingeFramework K k α β)
     (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
     BodyHingeFramework K k α β where
@@ -435,15 +346,9 @@ theorem mapExtensor_supportExtensor (F : BodyHingeFramework K k α β)
     (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) (e : β) :
     (F.mapExtensor Λ).supportExtensor e = Λ (F.supportExtensor e) := rfl
 
-/-- The **hinge constraint** at an edge `e = uv` (`def:hinge-constraint`): a screw
-assignment `S : α → ScrewSpace K k` meets the hinge constraint at `e` between
-endpoints `u v : α` when the relative screw center lies in the span of the
-supporting extensor,
-`S u - S v ∈ span C(p(e)) = Submodule.span K {C(p(e))}`.
-
-This is the honest geometric constraint that the panel-hinge rigidity matrix
-`R(G,p)` (`def:rigidity-matrix`) encodes; it supersedes Phase 16's
-reduction-form `BodyBar/BodyHinge.lean` definition. -/
+/-- **The hinge constraint** at an edge label `e` with ends `u` and `v` (`def:hinge-constraint`; KT
+eq. (2.3), p. 653): a screw assignment `S : α → ScrewSpace K k` satisfies it if
+`S u − S v ∈ span C(p(e)) = Submodule.span K {C(p(e))}`. -/
 def hingeConstraint (F : BodyHingeFramework K k α β) (S : α → ScrewSpace K k)
     (e : β) (u v : α) : Prop :=
   S u - S v ∈ Submodule.span K {F.supportExtensor e}
@@ -454,21 +359,15 @@ theorem hingeConstraint_iff (F : BodyHingeFramework K k α β) (S : α → Screw
       S u - S v ∈ Submodule.span K {F.supportExtensor e} :=
   Iff.rfl
 
-/-- The **hinge-row block** `r(p(e))` at an edge `e` (`def:hinge-row-block`): the
-orthogonal complement `(span C(p(e)))^⊥` of the hinge's supporting extensor, taken
-basis-free as the **dual annihilator** of `span C(p(e))` inside the dual space
-`Module.Dual K (ScrewSpace K k)`. Its elements are the row functionals `r_i(p(e))`; a
-basis of it is the `(D-1)` rows of Katoh–Tanigawa's `(D-1) × D` matrix `r(p(e))`
-(`D = (k+2 choose 2) = dim (ScrewSpace K k)`, and `span C(p(e))` is `1`-dimensional
-when the hinge is genuine, so its annihilator has dimension `D - 1`).
+/-- **The hinge-row block** `r(p(e))` at an edge label `e` (`def:hinge-row-block`; KT §2.4, p. 653):
+the space `(span C(p(e)))^⊥` of the linear forms on the screw space that vanish on `span C(p(e))`,
+its dual annihilator. When `C(p(e)) ≠ 0` it has dimension `D − 1` (`finrank_hingeRowBlock`), and the
+`D − 1` rows `r_i(p(e))` of Katoh and Tanigawa's matrix `r(p(e))`, read through the dot product of
+`K^D`, are a basis of it.
 
-Carrying the orthogonal complement as the annihilator submodule keeps the screw
-space as the graded-piece element (`def:hinge-constraint`): no explicit
-`⋀^k K^(k+2) ≅ K^D` coordinate basis / inner-product structure is forced at this
-node. The dot products `(S u - S v) · r_i(p(e))` of the blueprint become the
-functional applications `r (S u - S v)`, and the orthogonality `v ⟂ span C ↔ r v = 0
-∀ r ∈ (span C)^⊥` is exactly the field-level double-annihilator identity
-`Subspace.dualAnnihilator_dualCoannihilator_eq`. -/
+No basis of the screw space is fixed: the dot product `r_i(p(e)) · x` is the value `r x` of a form
+`r` of the block, and the equivalence of the hinge constraint with the vanishing of these values is
+the identity `(span C)^⊥⊥ = span C` (`Subspace.dualAnnihilator_dualCoannihilator_eq`). -/
 noncomputable def hingeRowBlock (F : BodyHingeFramework K k α β) (e : β) :
     Submodule K (Module.Dual K (ScrewSpace K k)) :=
   (Submodule.span K {F.supportExtensor e}).dualAnnihilator
@@ -478,17 +377,14 @@ theorem hingeRowBlock_apply (F : BodyHingeFramework K k α β) (e : β) :
       (Submodule.span K {F.supportExtensor e}).dualAnnihilator :=
   rfl
 
-/-- **The hinge constraint as `(D-1)` linear equations** (`def:hinge-row-block`): a
-screw assignment `S` meets the hinge constraint at `e = uv` (`def:hinge-constraint`)
-exactly when the relative screw center `S u - S v` is annihilated by every row
-functional `r ∈ r(p(e))` of the hinge-row block, i.e. `r (S u - S v) = 0` for all
-`r ∈ F.hingeRowBlock e`. This is Katoh–Tanigawa's restatement
-`(S(u) - S(v)) · r_i(p(e)) = 0`, `1 ≤ i ≤ D-1`.
+/-- **The hinge constraint as `D − 1` linear equations** (`def:hinge-row-block`): a screw assignment
+`S` satisfies the hinge constraint at `e` with ends `u` and `v` (`def:hinge-constraint`) if and only
+if `r (S u − S v) = 0` for every form `r` of the hinge-row block `F.hingeRowBlock e`. This is Katoh
+and Tanigawa's `(S(u) − S(v)) · r_i(p(e)) = 0` for `1 ≤ i ≤ D − 1` (KT §2.4, p. 653).
 
-The forward direction is `Submodule.dualAnnihilator` membership; the converse is the
-field-level double-annihilator identity `Subspace.dualAnnihilator_dualCoannihilator_eq`
-(`(span C)^⊥⊥ = span C`), which holds because `ScrewSpace K k` is an `K`-vector
-space. -/
+One direction is the definition of the dual annihilator; the other is the identity
+`(span C)^⊥⊥ = span C` of a finite-dimensional vector space over a field
+(`Subspace.dualAnnihilator_dualCoannihilator_eq`). -/
 theorem hingeConstraint_iff_hingeRowBlock (F : BodyHingeFramework K k α β)
     (S : α → ScrewSpace K k) (e : β) (u v : α) :
     F.hingeConstraint S e u v ↔ ∀ r ∈ F.hingeRowBlock e, r (S u - S v) = 0 := by
@@ -497,17 +393,16 @@ theorem hingeConstraint_iff_hingeRowBlock (F : BodyHingeFramework K k α β)
     rw [← Subspace.dualAnnihilator_dualCoannihilator_eq
       (W := Submodule.span K {F.supportExtensor e}), Submodule.mem_dualCoannihilator]
 
-/-! ## Rigidity rows: `screwDiff`, `hingeRow`, and the row family `rigidityRows`
+/-! ## The rows of `R(G,p)` (`def:rigidity-matrix`)
 
-The row functional `S ↦ r (S u − S v)` of `R(G,p)` and its algebra (swap, relabel, the
-difference-collapse `hingeRow_sub_hingeRow_eq`, single-edge independence), plus the row-set carrier
-`rigidityRows`. -/
+The relative screw `screwDiff u v`, the form `hingeRow u v r : S ↦ r (S u − S v)` and the set
+`rigidityRows` of rows, with the independence of the rows of an edge (`lem:edge-rows-independent`)
+and the spans of families of rows. -/
 
-/-- The **relative-screw evaluation** `screwDiff u v : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k`
-(`def:rigidity-matrix`): the linear map sending a screw assignment `S` to the relative screw
-center `S u - S v` of the bodies `u, v`. It is the difference of the two coordinate projections
-`proj u − proj v`; the per-edge hinge constraint (`def:hinge-constraint`) and the row functionals
-of `R(G,p)` (`hingeRow`) are built from it. -/
+/-- **The relative screw of two bodies** (`def:rigidity-matrix`'s `S(u) − S(v)`): the linear map
+`screwDiff u v : S ↦ S u − S v` from screw assignments to the screw space, the difference of the
+projections at `u` and at `v`. The hinge constraint (`def:hinge-constraint`) and the rows of
+`R(G,p)` (`hingeRow`) are built from it. -/
 noncomputable def screwDiff (u v : α) : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k :=
   (LinearMap.proj u : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) - LinearMap.proj v
 
@@ -516,18 +411,13 @@ theorem screwDiff_apply (u v : α) (S : α → ScrewSpace K k) :
     screwDiff (k := k) u v S = S u - S v := by
   simp only [screwDiff, LinearMap.sub_apply, LinearMap.proj_apply]
 
-/-- A **row functional** of the panel-hinge rigidity matrix `R(G,p)` (`def:rigidity-matrix`): the
-linear functional on the screw-assignment space `α → ScrewSpace K k` sending `S ↦ r (S u − S v)`,
-for a row `r` of the hinge-row block (`def:hinge-row-block`) at an oriented edge `e = uv`. This is
-the coordinatized view of one row of `R(G,p)`: the block row of the oriented edge `e = uv` carries
-the dual element `r` in `u`'s `D` columns and `−r` in `v`'s, zero elsewhere, so its dot product
-with `S` is exactly `r (S u − S v)`. Built basis-free as `r ∘ₗ screwDiff u v` — the composite of
-the relative-screw evaluation `screwDiff` with the hinge-row-block functional `r ∈ Module.Dual K
-(ScrewSpace K k)` — so that the rigidity matrix is carried as the *family* of these functionals
-(`rigidityRows`) and its null space `Z(G,p)` is their common kernel
-(`infinitesimalMotions_eq_dualCoannihilator`). It depends only on the endpoints `u v` and the row
-`r`, not on which edge `e` carries the hinge; the edge is recorded only at the family level
-(`rigidityRows`, which pairs `u v` with the rows of the edge's hinge-row block). -/
+/-- **A row of `R(G,p)`** (`def:rigidity-matrix`; KT §2.4, p. 654): for bodies `u`, `v` and a linear
+form `r` on the screw space, the linear form `hingeRow u v r : S ↦ r (S u − S v)` on screw
+assignments, `r ∘ₗ screwDiff u v`. For an edge `e` from `u` to `v` and `r` in the hinge-row block
+`r(p(e))` (`def:hinge-row-block`), it is a row of `R(G,p)`: the row with `r` in the columns of `u`,
+`−r` in those of `v`, and zeros elsewhere. It depends only on `u`, `v` and `r`; the edge enters in
+the set of rows (`rigidityRows`), whose span is the row space and whose forms all vanish exactly on
+the motions (`infinitesimalMotions_eq_dualCoannihilator`). -/
 noncomputable def hingeRow (u v : α) (r : Module.Dual K (ScrewSpace K k)) :
     Module.Dual K (α → ScrewSpace K k) :=
   r ∘ₗ screwDiff (k := k) u v
@@ -538,26 +428,17 @@ theorem hingeRow_apply (u v : α) (r : Module.Dual K (ScrewSpace K k))
     hingeRow (k := k) (α := α) u v r S = r (S u - S v) := by
   rw [hingeRow, LinearMap.comp_apply, screwDiff_apply]
 
-/-- **A degenerate (self-loop) row functional vanishes** (`def:rigidity-matrix`): `hingeRow a a r =
-0` for every block functional `r`, because the relative screw `S a − S a = 0` is constant zero and
-the linear `r` carries it to `r 0 = 0`. This is the zero row the Phase 23f corner edge `e_a`
-contributes after the `a`-shift collapses its recorded endpoint `(v, a)` to `(a, a)` (KT 2011
-§6.4.2): the candidate's `a`-shifted family lists this functional but it is the zero vector, so it
-never enters a linearly-independent selection and dropping it leaves the family's span unchanged
-(`span_range_hingeRow_crossFramework_eq_rigidityRows_of_off`). -/
+/-- **The row of a loop is zero** (`def:rigidity-matrix`): `hingeRow a a r = 0`, as `S a − S a = 0`.
+So a loop adds only zero rows, which `hasPencilRealization_of_isLoopAt` uses. -/
 @[simp]
 theorem hingeRow_self (a : α) (r : Module.Dual K (ScrewSpace K k)) :
     hingeRow (k := k) (α := α) a a r = 0 := by
   ext S; simp
 
-/-- The **relative-screw evaluation is surjective at distinct bodies** (`def:rigidity-matrix`):
-when `u ≠ v`, `screwDiff u v : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k` (the map `S ↦ S u − S v`)
-is surjective. Any target screw `x` is hit by the assignment placing `x` on `u` and `0` elsewhere
-(`Function.update 0 u x`): at `u` it reads `x`, at the distinct `v` it reads `0`, so
-`S u − S v = x`. This is the dual of the row-functional injectivity `hingeRow` carries
-(`hingeRow_eq_dualMap`): a
-genuine edge `e = uv` (distinct endpoints) reads every relative screw, so its block of rows
-faithfully sees the whole hinge-row block. -/
+/-- **The relative screw is onto at distinct bodies** (`def:rigidity-matrix`): for `u ≠ v`, every
+screw `x` is `S u − S v` for `S = Function.update 0 u x`. So its dual map
+`hingeRow u v = (screwDiff u v).dualMap` (`hingeRow_eq_dualMap`) is injective, and the rows of an
+edge with distinct ends are independent (`linearIndependent_hingeRow`). -/
 theorem screwDiff_surjective {u v : α} (huv : u ≠ v) :
     Function.Surjective (screwDiff (K := K) (k := k) (α := α) u v) := by
   classical
@@ -566,39 +447,28 @@ theorem screwDiff_surjective {u v : α} (huv : u ≠ v) :
   simp only [screwDiff_apply, Function.update_self, Function.update_of_ne huv.symm, Pi.zero_apply,
     sub_zero]
 
-/-- The **row functional is the dual map of the relative-screw evaluation** (`def:rigidity-matrix`):
-`hingeRow u v r = (screwDiff u v).dualMap r`. Definitional — both sides are `r ∘ₗ screwDiff u v`
-(`LinearMap.dualMap_apply'`) — but naming it lets the independence bridge
-`linearIndependent_hingeRow` route through the dual-map injectivity
-`LinearMap.dualMap_injective_of_surjective`. -/
+/-- **A row is the dual map of the relative screw applied to its form** (`def:rigidity-matrix`):
+`hingeRow u v r = (screwDiff u v).dualMap r`, by `rfl`; `linearIndependent_hingeRow` reads
+injectivity off it (`LinearMap.dualMap_injective_of_surjective`). -/
 theorem hingeRow_eq_dualMap (u v : α) (r : Module.Dual K (ScrewSpace K k)) :
     hingeRow (k := k) (α := α) u v r = (screwDiff (k := k) (α := α) u v).dualMap r :=
   rfl
 
-/-- **The row functional flips orientation by negating the block row** (`def:rigidity-matrix`):
-`hingeRow u v r = hingeRow v u (-r)`. Reversing the oriented edge `e = uv → vu` negates the
-relative screw center `S u - S v = -(S v - S u)`, which the linear `r` carries to a sign on the
-row. This is the orientation-independence the unoriented graph `G` forces on `R(G,p)`'s block
-rows: a rigidity row from a link `uv` is, in the reverse orientation `vu`, the same functional up
-to the negated block row `-r ∈ r(p(e))` (the hinge-row block is a subspace, closed under negation).
-The named form of the `hingeRow u v r = hingeRow v u (-r)` rewrite the rigidity-row span identities
-(`span_panelRow_eq_rigidityRows`, `span_panelRow_linking_eq_rigidityRows`,
-`span_rigidityRows_eq_sup_span_panelRow_edge`) repeatedly perform when a generating row's endpoints
-match a link only up to swap (`IsLink.eq_and_eq_or_eq_and_eq`). -/
+/-- **Reversing an edge negates the form of a row** (`def:rigidity-matrix`):
+`hingeRow u v r = hingeRow v u (-r)`, as `S u − S v = −(S v − S u)`. The hinge-row block is a
+subspace, so the rows of an edge taken in the two orientations are the same set of forms. The span
+identities that match the ends of a row to those of a link up to order
+(`IsLink.eq_and_eq_or_eq_and_eq`) use it. -/
 theorem hingeRow_swap (u v : α) (r : Module.Dual K (ScrewSpace K k)) :
     hingeRow (k := k) (α := α) u v r = hingeRow v u (-r) :=
   LinearMap.ext fun S => by rw [hingeRow_apply, hingeRow_apply, LinearMap.neg_apply, ← map_neg,
     neg_sub]
 
-/-- **A body relabel transports a hinge row along its endpoint permutation**
-(`lem:splitOff-rigidityRows-relabel`, the dual-of-`funLeft` half of KT eq.~(6.31); Katoh–Tanigawa
-2011 §6.4.1, Phase 22h). Relabelling the screw assignments by a body map `ρ : α → α` is the linear
-map `funLeft ρ : S ↦ S ∘ ρ`; its transpose `(funLeft ρ).dualMap` sends the hinge row
-`hingeRow u v r` to the hinge row at the *relabelled* endpoints, `hingeRow (ρ u) (ρ v) r`:
-`((funLeft ρ).dualMap (hingeRow u v r)) S = (hingeRow u v r)(S ∘ ρ) = r(S(ρ u) − S(ρ v))`. No
-involution on `ρ` is needed — the identity holds for any body map — which makes it the clean export
-of the `hdual` computation inlined in `rigidityRows_ofNormals_relabel`, the form the `M₃` arm's
-candidate-row membership transport (the `ρ = (a v)` relabel) reads. -/
+/-- **Relabelling the bodies moves the ends of a row** (the relabelling of KT eq. (6.31), p. 687):
+for any map `ρ : α → α`, the transpose of `funLeft ρ : S ↦ S ∘ ρ` sends `hingeRow u v r` to
+`hingeRow (ρ u) (ρ v) r`, as `(hingeRow u v r) (S ∘ ρ) = r (S (ρ u) − S (ρ v))`. The map `ρ` need
+not be invertible. Case III's relabelled frameworks use it (`lem:case-III-chain-relabel-rows`,
+`lem:case-III-chain-eq666`). -/
 theorem hingeRow_funLeft_dualMap (u v : α) (r : Module.Dual K (ScrewSpace K k)) (ρ : α → α) :
     (LinearMap.funLeft K (ScrewSpace K k) ρ).dualMap (hingeRow (k := k) (α := α) u v r)
       = hingeRow (ρ u) (ρ v) r :=
@@ -606,26 +476,11 @@ theorem hingeRow_funLeft_dualMap (u v : α) (r : Module.Dual K (ScrewSpace K k))
     rw [LinearMap.dualMap_apply, hingeRow_apply, hingeRow_apply, LinearMap.funLeft_apply,
       LinearMap.funLeft_apply]
 
-/-- **The body-relabel transpose commutes a screw column with its permuted body**
-(`lem:case-III general-d`, the chain arm's `±r` column-naturality bridge, Phase 23c §I.8.24(4.5)(α);
-Katoh–Tanigawa 2011 §6.4.1, the eq. (6.31)/(6.62) relabel applied at the column level). For a body
-permutation `σ : Equiv.Perm α`, the relabel transpose `(funLeft σ).dualMap` precomposed with body
-`w`'s screw column `single w` equals the original functional precomposed with body `σ⁻¹ w`'s column:
-`((funLeft σ).dualMap φ).comp (single w) = φ.comp (single (σ⁻¹ w))`. Pointwise,
-`funLeft σ (single w x) = (single w x) ∘ σ = single (σ⁻¹ w) x` (since `(single w x)(σ a) = x` iff
-`σ a = w` iff `a = σ⁻¹ w`, using `σ`'s bijectivity), so reading the relabelled functional at body
-`w`'s column is reading the original at body `σ⁻¹ w`'s.
-
-This is the column-level naturality the general-`d` Case-III chain arm
-(`case_III_arm_realization_chain`) needs to bridge the LANDED *base-side* `±r` identity
-`Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy` (the redundant `r`-group's screw
-column at the base body `vᵢ` is `−ρ₀`, eq. (6.66)) to the *candidate-side* `hrCol` hypothesis the
-discriminator leaf `notMem_span_mkQ_pmR_row_of_gate` consumes: the candidate `±r` row is the
-relabel image `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` of the base group, so its column at the
-re-inserted candidate body is the base group's column at the cycle-permuted body — the same `−ρ₀`.
-Unlike `hingeRow_funLeft_dualMap` (which moves a single hinge row's *endpoints*), this reads any
-functional through a single screw column and needs `σ` bijective (the column index moves by `σ⁻¹`),
-making it the `±r`-*group* analogue (`φ` is the whole degree-2 edge group, not one `hingeRow`). -/
+/-- **Reading a relabelled form at the screws of one body**: for a permutation `σ` of the bodies and
+a form `φ` on screw assignments, `((funLeft σ).dualMap φ) ∘ₗ single w = φ ∘ₗ single (σ⁻¹ w)`.
+Pointwise, `(single w x) ∘ σ = single (σ⁻¹ w) x`, as `σ a = w` exactly when `a = σ⁻¹ w`. So the
+columns of `w` in the relabelled form are those of `σ⁻¹ w` in `φ`. Unlike `hingeRow_funLeft_dualMap`
+it holds for every form `φ`, and needs `σ` invertible. -/
 theorem funLeft_dualMap_comp_single [DecidableEq α]
     (φ : Module.Dual K (α → ScrewSpace K k)) (σ : Equiv.Perm α) (w : α) :
     ((LinearMap.funLeft K (ScrewSpace K k) σ).dualMap φ).comp
@@ -641,36 +496,23 @@ theorem funLeft_dualMap_comp_single [DecidableEq α]
   · rw [Pi.single_eq_of_ne h,
       Pi.single_eq_of_ne (fun he => h (by rw [he, Equiv.apply_symm_apply]))]
 
-/-- **The hinge-difference collapse: two rows sharing an endpoint subtract to a third hinge row**
-(`def:rigidity-matrix`, the candidate-completion's eq.~(6.27) collapse algebra; Katoh–Tanigawa 2011
-§6.4.1, Phase 22e). For a fixed hinge-row-block functional `r` and a common endpoint `w`,
-`hingeRow u w r - hingeRow v w r = hingeRow u v r`: both rows read the relative screw against the
-same `w`, so the shared `S w` cancels, `(S u - S w) - (S v - S w) = S u - S v`. This is the
-algebraic heart of the candidate-completion transport (`panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`,
-eq.~(6.27)): the transported `(vb)`-row minus the inductive `(ab)`-row (sharing endpoint `b` and the
-same supporting extensor) collapses to the pure `(va)`-hinge row `hingeRow v a ρ_g` — the candidate
-row `w` whose column op makes it pure `v`-column. -/
+/-- **Two rows with a common end and form subtract to a row** (`lem:case-III-transport-collapse`; KT
+eqs. (6.26)–(6.27), p. 685): `hingeRow u w r − hingeRow v w r = hingeRow u v r`, as
+`(S u − S w) − (S v − S w) = S u − S v`. In Case III the row of `vb` in `R(G, q₀)` minus the row of
+`ab` in `R(G_v^{ab}, q)` with the same form is the form `S ↦ x (S v − S a)`
+(`PanelHingeFramework.panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`). -/
 theorem hingeRow_sub_hingeRow_eq (u v w : α) (r : Module.Dual K (ScrewSpace K k)) :
     hingeRow (k := k) (α := α) u w r - hingeRow v w r = hingeRow u v r :=
   LinearMap.ext fun S => by
     rw [LinearMap.sub_apply, hingeRow_apply, hingeRow_apply, hingeRow_apply, ← map_sub,
       sub_sub_sub_cancel_right]
 
-/-- **The independence bridge: independent hinge-row functionals stay independent as rigidity rows**
-(`def:rigidity-matrix`, the Case-I `hindep` brick). For a genuine edge `e = uv` with distinct
-endpoints, if a family `r : ι → Module.Dual K (ScrewSpace K k)` of hinge-row-block functionals is
-linearly independent, then so is the family of rigidity rows `i ↦ hingeRow u v (r i)` it induces on
-the screw-assignment space `α → ScrewSpace K k`. Because `screwDiff u v` is surjective at distinct
-bodies (`screwDiff_surjective`), its dual map `(screwDiff u v).dualMap = hingeRow u v`
-(`hingeRow_eq_dualMap`) is injective (`LinearMap.dualMap_injective_of_surjective`), and an injective
-linear map preserves linear independence (`LinearIndependent.map'`).
-
-This turns the independent supporting extensors of a rigid block
-(`exists_independent_panelSupportExtensor`, through the `(D−1)`-dimensional hinge-row block
-`finrank_hingeRowBlock`) into independent rigidity rows
-(`exists_independent_rigidityRows_of_edge`): one transversal hinge `e = uv` contributes `D − 1`
-independent rows of `R(G,p)`, all routed through the *same* relative-screw evaluation, so block-row
-independence is exactly hinge-row-block independence. -/
+/-- **The forms of one edge are independent** (`lem:edge-rows-independent`, its claim for linear
+forms): for `u ≠ v` and linearly independent forms `r i` on the screw space, the forms
+`hingeRow u v (r i)` on screw assignments are linearly independent. `hingeRow u v` is the dual map
+of `screwDiff u v` (`hingeRow_eq_dualMap`), which is onto (`screwDiff_surjective`), so it is
+injective (`LinearMap.dualMap_injective_of_surjective`) and keeps the family independent
+(`LinearIndependent.map'`). -/
 theorem linearIndependent_hingeRow {ι : Type*} {u v : α} (huv : u ≠ v)
     {r : ι → Module.Dual K (ScrewSpace K k)} (hr : LinearIndependent K r) :
     LinearIndependent K (fun i => hingeRow (k := k) (α := α) u v (r i)) := by
@@ -679,34 +521,20 @@ theorem linearIndependent_hingeRow {ι : Type*} {u v : α} (huv : u ≠ v)
   simpa only [hingeRow_eq_dualMap, Function.comp_def] using
     hr.map' (screwDiff (K := K) (k := k) (α := α) u v).dualMap (LinearMap.ker_eq_bot.2 hinj)
 
-/-- The **rows of the panel-hinge rigidity matrix `R(G,p)`** (`def:rigidity-matrix`): the set of
-all row functionals `hingeRow u v r` over every link `e = uv` of `G` and every row `r` of the
-hinge-row block `r(p(e))` (`def:hinge-row-block`). This is the basis-free carrier of `R(G,p)` as
-a *family of functionals* on the screw-assignment space `α → ScrewSpace K k` — its span is the row
-space of the matrix and its common kernel (the dual coannihilator of that span) is the null space
-`Z(G,p) = infinitesimalMotions` (`infinitesimalMotions_eq_dualCoannihilator`). Carrying the matrix
-this way (rather than as an explicit `(D−1)|E| × D|V|` real coordinate matrix) keeps the screw
-space the graded-piece element and lets the rank arguments run through `Module.Dual`; it is the
-view the Phase-21b genericity device parametrizes by the panel coordinates. -/
+/-- **The rows of `R(G,p)`** (`def:rigidity-matrix`; KT §2.4, pp. 653–654): the set of the forms
+`hingeRow u v r` on screw assignments, over the links `e` of `G` from `u` to `v` and the forms `r`
+of the hinge-row block `r(p(e))` (`def:hinge-row-block`). Its span is the row space of `R(G,p)`,
+whose dimension is the rank, and the forms all vanish exactly on the motions `Z(G,p)`
+(`infinitesimalMotions_eq_dualCoannihilator`). A link is taken in both orientations, which give the
+same forms (`hingeRow_swap`). In place of the `(D − 1)|E| × D|V|` matrix, the rank arguments work
+with this set and the dual space. -/
 def rigidityRows (F : BodyHingeFramework K k α β) : Set (Module.Dual K (α → ScrewSpace K k)) :=
   {φ | ∃ e u v, F.graph.IsLink e u v ∧ ∃ r ∈ F.hingeRowBlock e, φ = hingeRow u v r}
 
-/-- **An element of the rigidity-row span unpacks as an explicit edge-indexed `hingeRow`
-combination** (`def:rigidity-matrix`, the edge-grouped reading of `span R(G,p)`-rows; the
-Phase-23b CHAIN-2c-ii-arm `hρGv` regroup-at-interior-vertex prerequisite, KT eq.~(6.66)). A
-functional `φ ∈ span(F.rigidityRows)` is, by `Submodule.mem_span_set'`, a finite K-combination
-of generators of `F.rigidityRows`; unfolding each generator's `rigidityRows`-membership exposes,
-per summand, the carrying link `eᵢ = uᵢ vᵢ` (`F.graph.IsLink (ev j) (uv j) (vv j)`) and the
-hinge-row-block row `rᵢ ∈ r(p(eᵢ))` (`rv j ∈ F.hingeRowBlock (ev j)`), so that
-`φ = ∑ⱼ cⱼ • hingeRow (uv j) (vv j) (rv j)`.
-
-This is the **edge-grouped** form of a `G_v`-row span member: where `hρGv` of the Case-III
-candidate producer (`exists_candidateRow_bottomRows_of_rigidOn`) records the candidate row
-`r̂ = hingeRow (ab) ρ ∈ span R(G_v)-rows` only as an opaque span membership, this lemma turns it
-into the explicit per-edge combination KT eq.~(6.66)'s regrouping of the global redundancy at a
-degree-2 interior chain vertex consumes (collecting the summands incident to that vertex; the
-others vanish on its column). It is the `mem_span_set'` analogue specialized to `rigidityRows`,
-keeping the link / block data the regroup needs rather than a bare `Finsupp`. -/
+/-- **A form in the row space is a combination of rows, edge by edge** (`def:rigidity-matrix`): a
+form `φ ∈ span F.rigidityRows` is `∑ j, c j • hingeRow (uv j) (vv j) (rv j)` for finitely many links
+`ev j` from `uv j` to `vv j` and forms `rv j` of their hinge-row blocks. `Submodule.mem_span_set'`
+gives a finite combination of rows, and each row is unpacked to its link and form. -/
 theorem exists_edgeIndexed_combination_of_mem_span_rigidityRows
     (F : BodyHingeFramework K k α β) {φ : Module.Dual K (α → ScrewSpace K k)}
     (hφ : φ ∈ Submodule.span K F.rigidityRows) :
@@ -724,33 +552,11 @@ theorem exists_edgeIndexed_combination_of_mem_span_rigidityRows
   rw [← hsum]
   exact Finset.sum_congr rfl fun j _ => by rw [hgrow j]
 
-/-- **A hinge row transfers between two frameworks sharing the carrying edges' support extensor**
-(`def:hinge-row-block`; the option-(A) chain-arm row-routing bridge, Phase 23c §I.8.24(4.6); Phase
-23d the cross-label `R(Gab)`-bottom generalization). Because the hinge-row block
-`r(p(e)) = (span C(p(e)))^⊥` depends only on the supporting extensor `F.supportExtensor e`
-(`hingeRowBlock`), a block row `r ∈ F₁.hingeRowBlock e₁` and a link `F₂.graph.IsLink e₂ u v` whose
-two — possibly **distinct** — edge labels `e₁`, `e₂` carry the *same* support extensor
-(`hsupp : F₁.supportExtensor e₁ = F₂.supportExtensor e₂`) yield a generator
-`hingeRow u v r ∈ F₂.rigidityRows`: the same `r` lies in `F₂.hingeRowBlock e₂` (`hsupp`), and
-`hlink` supplies the link. The **same-label** case `e₁ = e₂` is the original Phase-23c form (the
-chain arm's `caseIIICandidate`-vs-`ofNormals` off-slot row routing); the **cross-label** case
-`e₁ ≠ e₂` is the Phase-23d `R(Gab)`-bottom reshape's `e_b`→`e₀` row routing — the original framework
-`F₁`'s `e_b`-block row (carried by the `v`-incident edge `e_b`, which does *not* survive the
-splitting-off) routes into
-the split-off framework `F₂`'s `e₀ = (a,b)`-link rigidity rows, because the reproduced slot
-reproduces `e_b`'s support extensor at the fresh edge `e₀` (KT eq.~(6.62);
-`caseIIICandidate_supportExtensor_reproduced` at `t = 0`).
-
-This is the framework-general primitive the general-`d` chain arm `case_III_arm_realization_chain`
-routes its chain-leaf row memberships through: the chain leaves (`chainData_bottom_relabel`) produce
-genuine rows of the *seed* framework `ofNormals (G − vᵢ) endsσρ qρ`, but the rank certification
-`case_III_rank_certification_chain` is stated over the *candidate* framework
-`caseIIICandidate (G − vᵢ) endsσρ qρ e_a e_b …`. The two share the graph `G − vᵢ` and, off the two
-overridden hinge slots `{e_a, e_b}` (`caseIIICandidate_supportExtensor_of_ne`), the support extensor
-of every edge — so this lemma carries a seed row at any off-slot edge into the candidate's rigidity
-rows. (At the `d = 3` `M₃` instance the seed-row routing is done inline by the shared tail's
-`hFG₀_eq_panelRow` at the `panelRow` level; this is its `hingeRow`-level, framework-general sibling
-for the cycle relabel.) -/
+/-- **A form of one hinge's block gives a row of every framework with that hinge**
+(`def:hinge-row-block`): if `F₁.supportExtensor e₁ = F₂.supportExtensor e₂`, `r` lies in the
+hinge-row block of `F₁` at `e₁`, and `e₂` links `u` to `v` in `F₂`, then
+`hingeRow u v r ∈ F₂.rigidityRows`. The block depends only on the supporting extensor, so `r` is in
+the block of `F₂` at `e₂`; the labels `e₁` and `e₂` may differ. -/
 theorem hingeRow_mem_rigidityRows_of_supportExtensor_eq
     (F₁ F₂ : BodyHingeFramework K k α β) {e₁ e₂ : β} {u v : α}
     (hlink : F₂.graph.IsLink e₂ u v) {r : Module.Dual K (ScrewSpace K k)}
@@ -758,33 +564,15 @@ theorem hingeRow_mem_rigidityRows_of_supportExtensor_eq
     hingeRow u v r ∈ F₂.rigidityRows :=
   ⟨e₂, u, v, hlink, r, by rwa [hingeRowBlock, ← hsupp, ← hingeRowBlock], rfl⟩
 
-/-- **A block-spanning per-edge row family spans the rigidity rows** (`def:rigidity-matrix`; Phase
-23d `R(Gab)`-bottom reshape, **L-span**, the substantive spanning leaf of the `hD` RANK route — the
-analogue of `span_range_rigidityRowFunEdge` for an *arbitrary* per-edge family of block rows). Let
-`ι` index the per-edge block rows, `ends : β → α × α` record each edge's endpoints, and
-`B : (e : β) → ι → Module.Dual K (ScrewSpace K k)` carry, per edge, a family of hinge-row-block rows
-that **spans** the block: for every *edge* `e ∈ E(F.graph)`, each `B e i` lies in
-`F.hingeRowBlock e` (`hmem`) and `{B e i}ᵢ` spans the whole block (`hspan`). Then the **bottom-row
-family** `fun (⟨e, _⟩, i) ↦ hingeRow (ends e).1 (ends e).2 (B e i)` (indexed by
-`{e // e ∈ E(F.graph)} × ι`) spans exactly `F.rigidityRows`.
+/-- **Rows from spanning families of the blocks span the row space** (`def:rigidity-matrix`): let
+`ends e` be the ends of each edge `e` of `G` (`hends`), and let the forms `B e i` lie in the
+hinge-row block at `e` and span it (`hmem`, `hspan`). Then the forms
+`hingeRow (ends e).1 (ends e).2 (B e i)`, over the edges `e` of `G` and the indices `i`, span the
+row space of `R(G,p)`.
 
-This is the spanning identity the `hD` rank route reads through: the `R(Gab)`-bottom block's rows
-are not `F₂`'s own `blockBasisOn` (they are routed from the *original* framework `F₁`'s
-`blockBasisOn` via the cross-label bridge `hingeRow_mem_rigidityRows_of_supportExtensor_eq`, since
-the post-op `e_b` row reproduces `F₂ = splitOff …`'s `e₀`-block extensor —
-`caseIIICandidate_supportExtensor_reproduced`), so `span_range_rigidityRowFunEdge` (which fixes
-`B = F.blockBasisOn`) does not apply directly. The proof is `le_antisymm`:
-
-* `≤`: each `hingeRow (ends e).1 (ends e).2 (B e i)` is a rigidity row — `B e i ∈ F.hingeRowBlock e`
-  (`hmem`) and `ends e` records the link (`hends`).
-* `≥`: every generator `hingeRow u v r` of `F.rigidityRows` carries a link `e = uv` (an edge,
-  `IsLink.edge_mem`) and a block row `r ∈ F.hingeRowBlock e = span {B e i}ᵢ` (`hspan`); since
-  `hingeRow u v ·` is linear it carries `r`'s span membership to
-  `hingeRow u v r ∈ span {hingeRow u v (B e i)}ᵢ`, and each
-  `hingeRow u v (B e i) = ± (bottom-row at (⟨e,he⟩, i))` (`(u, v)` matches `ends e` up to swap,
-  `hingeRow_swap` for the flip), so the whole row lies in the bottom-row span.
-
-NO span membership beyond the rows' own; NO `ScrewSpace` unfolding. -/
+`≤`: each is a row. `≥`: a row `hingeRow u v r` of a link `e` has `r` in the span of the `B e i`,
+and `hingeRow u v` is linear; `(u, v)` is `ends e` or its swap, and a swap negates the form
+(`hingeRow_swap`). -/
 theorem span_range_hingeRow_blockSpanning_eq_rigidityRows
     (F : BodyHingeFramework K k α β) {ι : Type*} (ends : β → α × α)
     (B : β → ι → Module.Dual K (ScrewSpace K k))
@@ -838,41 +626,13 @@ theorem span_range_hingeRow_blockSpanning_eq_rigidityRows
     · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
     · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
-/-- **A per-edge block-spanning family of one framework spans a SECOND framework's rigidity rows**
-(`def:rigidity-matrix`; Phase 23f `R(Gab)`-bottom reshape, **BOT-1**, the keystone of the `hD`
-RANK route's basis-pick; the *cross-framework* generalization of
-`span_range_hingeRow_blockSpanning_eq_rigidityRows`, Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64)).
-The `hD` rank route needs the bottom-row span of the **candidate** framework `F₁` (whose
-`blockBasisOn` the operated `toBlocks₂₂` reads through `rank_columnOp_toBlocks₂₂_eq_finrank_span_
-mixedBottom`'s `wfun`) to equal `span F₂.rigidityRows`, where `F₂ = R(Gab)` is the IH split-off
-framework whose def-`0` rigidity makes `finrank (span F₂.rigidityRows) = D·(|V(Gab)|−1) = #m₂`. The
-two frameworks differ (candidate vs. split-off), so the single-framework
-`span_range_hingeRow_blockSpanning_eq_rigidityRows` does not apply directly — the `a`-shift carrying
-the `e_b`-fill row to the `(a, b)`-link `e₀`, and the `Gv`↔`Gv` relabel, are exactly the
-edge relabel `remap` and the candidate endpoints `ends₁` (the `if (ends e).1 = v then a else …`
-shift baked into `ends₁`).
-
-The hypotheses are the cross-framework matching, leaf-level (each dischargeable at the wrapper from
-the cross-label support-extensor bridge `hingeRow_mem_rigidityRows_of_supportExtensor_eq` and the
-membership bricks `hingeRow_mem_caseIIICandidate_rigidityRows_{of_ofNormals_link,reproduced}`):
-
-* `hremap_surj` — `remap : E(F₁) ↠ E(F₂)` is onto (every `F₂`-edge — `Gv`-edge or `e₀` — is the
-  image of an `F₁`-edge — `Gv`-edge or `e_b`);
-* `hspan` — per `F₁`-edge `e`, the family `B e` spans `F₂`'s hinge-row block at `remap e` (the
-  candidate's `blockBasisOn` at `e`, routed into `F₂`'s block by the support-extensor match — the
-  block depends only on the support extensor, so equal extensors give equal blocks);
-* `hlink₁` — the candidate's recorded endpoints `ends₁ e` link `remap e` in `F₂` (orientation-free
-  — the spanning identity is swap-robust via `hingeRow_swap`, so this absorbs the `a`-shift without
-  an exact-orientation obligation on the dispatch).
-
-Then the `a`-shifted candidate family `fun (⟨e, _⟩, i) ↦ hingeRow (ends₁ e).1 (ends₁ e).2 (B e i)`
-(indexed by `E(F₁) × ι`) spans exactly `span F₂.rigidityRows`. Proof is `le_antisymm`, structurally
-the same as `span_range_hingeRow_blockSpanning_eq_rigidityRows`: `≤` routes each row into `F₂`'s
-rows via `hlink₁` + `hspan`'s `⊆ block`; `≥` transfers a section `s` of `remap` to pull each `F₂`
-generator's block row into `span {B (s e') i}` (`hspan` + `Function.RightInverse`), then the
-`span_induction` over the `screwDiff`-`dualMap` linearity, matching the generator's endpoints to
-`ends₁ (s e')` up to swap. NO span membership beyond the rows' own; NO `ScrewSpace` unfolding;
-carrier/coordinatization-agnostic. -/
+/-- **Rows of one framework's spanning families span another framework's row space**
+(`def:rigidity-matrix`): the form of `span_range_hingeRow_blockSpanning_eq_rigidityRows` for two
+frameworks `F₁` and `F₂`. Let `remap` map the edges of `F₁` onto those of `F₂` (`hremap_surj`), and
+for each edge `e` of `F₁` let the forms `B e i` span the hinge-row block of `F₂` at `remap e`
+(`hspan`) and `ends₁ e` be the ends of `remap e` in `F₂` (`hlink₁`). Then the forms
+`hingeRow (ends₁ e).1 (ends₁ e).2 (B e i)`, over the edges `e` of `F₁` and the indices `i`, span the
+row space of `F₂`. The proof is that of the one-framework form, through a section of `remap`. -/
 theorem span_range_hingeRow_crossFramework_eq_rigidityRows
     (F₁ F₂ : BodyHingeFramework K k α β) {ι : Type*}
     (ends₁ : β → α × α)
@@ -903,7 +663,7 @@ theorem span_range_hingeRow_crossFramework_eq_rigidityRows
     -- `r ∈ F₂.hingeRowBlock e = span {B (s ⟨e,he⟩) i}ᵢ` (via `hspan` + the section).
     have hrspan : r ∈ Submodule.span K (Set.range (B (s ⟨e, he⟩))) := by
       rw [hspan (s ⟨e, he⟩), hs ⟨e, he⟩]; exact hr
-    -- `(u, v)` matches the candidate's recorded endpoints at `s ⟨e, he⟩` up to swap (both link).
+    -- `(u, v)` is `ends₁ (s ⟨e, he⟩)` up to swap (both pairs are ends of `e` in `F₂`).
     have hcand : F₂.graph.IsLink e (ends₁ (s ⟨e, he⟩).1).1 (ends₁ (s ⟨e, he⟩).1).2 := by
       have := hlink₁ (s ⟨e, he⟩); rwa [hs ⟨e, he⟩] at this
     have hmatch := hcand.eq_and_eq_or_eq_and_eq hlink
@@ -933,23 +693,11 @@ theorem span_range_hingeRow_crossFramework_eq_rigidityRows
     · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
     · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
-/-- **The cross-framework spanning identity over a RESTRICTED edge family, with the off-family rows
-vanishing** (`def:rigidity-matrix`; Phase 23f **R1**, the dispatch-ready discharge of BOT-2's
-`hspan_id`; the restricted-edge sibling of `span_range_hingeRow_crossFramework_eq_rigidityRows`,
-Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64)). The cross-framework keystone BOT-1 is **not**
-instantiable over the FULL `E(F₁)` family at the Case-III dispatch: the corner edge `e_a` (with
-recorded ends `(v, a)`) is carried by the `a`-shift to the degenerate `(a, a)`, so its `hlink₁`
-obligation `F₂.IsLink _ a a` is a self-loop, false in the loopless `F₂`. This variant quantifies
-the cross-framework matching (`remap` surjective, `hspan`, `hlink₁`) only over the **genuine** edges
-`{e // P e}` (the `Gv`-edges + the `e_b`-fill — those with a real `F₂`-image), and takes a separate
-hypothesis `hoff` that every off-`P` edge's `a`-shifted row is the **zero** functional (KT's `e_a`
-row, `hingeRow_self`). The full `E(F₁) × ι` family then spans exactly `span F₂.rigidityRows`: the
-off-`P` rows are zero (so they contribute nothing to the span and route trivially in `≤`), and the
-`P`-rows carry the cross-framework identity verbatim. Proof is `le_antisymm`, structurally the same
-as BOT-1: `≤` routes a `P`-row into `F₂` via `hlink₁` + `hspan` and an off-`P` row via `hoff` to
-`0 ∈ span`; `≥` transfers a section of `remap` to pull each `F₂` generator's block row into the
-`P`-rows, then `span_induction` over the `screwDiff`-`dualMap` linearity. NO `ScrewSpace`
-unfolding; carrier/coordinatization-agnostic. -/
+/-- **The same when the forms at some edges are zero** (`def:rigidity-matrix`): the matching of
+`span_range_hingeRow_crossFramework_eq_rigidityRows` (`remap` onto, `hspan`, `hlink₁`) is asked only
+at the edges of `F₁` that satisfy `P`, and the forms at the other edges are zero (`hoff`). The whole
+family still spans the row space of `F₂`: the zero forms add nothing. An edge whose two ends are
+taken equal has zero forms (`hingeRow_self`). -/
 theorem span_range_hingeRow_crossFramework_eq_rigidityRows_of_off
     (F₁ F₂ : BodyHingeFramework K k α β) {ι : Type*}
     (ends₁ : β → α × α)
@@ -1013,26 +761,22 @@ theorem span_range_hingeRow_crossFramework_eq_rigidityRows_of_off
     · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
     · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
-/-! ## Infinitesimal motions and the null space `Z(G,p)`
+/-! ## The infinitesimal motions `Z(G,p)` (`def:rigidity-matrix`)
 
-The motion submodule as the common kernel of the rows (dual coannihilator), the span ↔ annihilator
-duality (`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`), finite spanning families, and
-the per-edge `D−1` independent-row count (`finrank_hingeRowBlock`). -/
+The motions as the space on which all the rows vanish (`infinitesimalMotions_eq_dualCoannihilator`),
+the row space as the forms that vanish on the motions
+(`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`), the dimension `D − 1` of a hinge-row
+block (`finrank_hingeRowBlock`), and families of independent rows. -/
 
-/-- **Infinitesimal motion** of a body-hinge framework `(G,p)` (`def:rigidity-matrix`): a
-screw assignment `S : α → ScrewSpace K k` is an infinitesimal motion when it satisfies the
-hinge constraint (`def:hinge-constraint`) at *every* edge of `G`, i.e. for every edge `e`
-linking endpoints `u v` (`G.IsLink e u v`), the relative screw center `S u - S v` lies in
-`span C(p(e))`.
+/-- **An infinitesimal motion** of a body-hinge framework `(G,p)` (`def:rigidity-matrix`; KT §2.3,
+p. 653): a screw assignment `S : α → ScrewSpace K k` that satisfies the hinge constraint
+(`def:hinge-constraint`) at every link of `G`, that is, `S u − S v ∈ span C(p(e))` whenever `e`
+links `u` and `v`.
 
-This is membership in the kernel of Katoh–Tanigawa's rigidity matrix `R(G,p)`
-(`def:rigidity-matrix`): each oriented edge `e = uv` contributes the block row carrying the
-hinge-row block `r(p(e))` in the `D` columns of `u` and `-r(p(e))` in those of `v` (zero
-elsewhere), so a vanishing matrix-vector product is exactly the per-edge hinge constraint.
-We keep the screw space the graded-piece element (`def:hinge-constraint`) and carry
-`R(G,p)` as this constraint family on the screw-assignment space `α → ScrewSpace K k` rather
-than as an explicit `(D-1)|E| × D|V|` real coordinate matrix, matching the basis-free
-hinge-row block (`def:hinge-row-block`). -/
+These are the vectors of the null space of Katoh and Tanigawa's rigidity matrix `R(G,p)`: the rows
+of `e = uv` carry `r(p(e))` in the columns of `u` and `−r(p(e))` in those of `v`, so the rows of `e`
+vanish at `S` exactly when the hinge constraint holds at `e` (`def:hinge-row-block`). The matrix
+itself is not formed; its rows are `rigidityRows`. -/
 def IsInfinitesimalMotion (F : BodyHingeFramework K k α β) (S : α → ScrewSpace K k) : Prop :=
   ∀ e u v, F.graph.IsLink e u v → F.hingeConstraint S e u v
 
@@ -1042,23 +786,18 @@ theorem isInfinitesimalMotion_iff (F : BodyHingeFramework K k α β) (S : α →
         S u - S v ∈ Submodule.span K {F.supportExtensor e} :=
   Iff.rfl
 
-/-- The constraint of an infinitesimal motion is orientation-independent: it holds for an
-oriented edge `e = uv` iff for the reversed orientation `e = vu`. This makes
-`IsInfinitesimalMotion` well-defined on the undirected multigraph `G`, where `R(G,p)`'s block
-rows come from unoriented edges. (The span of a single vector is closed under negation, and
-`S v - S u = -(S u - S v)`.) -/
+/-- **The hinge constraint does not depend on the orientation of the edge**: it holds for `(u, v)`
+exactly when it holds for `(v, u)`, as `S v − S u = −(S u − S v)` and a span is closed under
+negation. So `IsInfinitesimalMotion` is a condition on the undirected multigraph `G`. -/
 theorem hingeConstraint_comm (F : BodyHingeFramework K k α β) (S : α → ScrewSpace K k)
     (e : β) (u v : α) :
     F.hingeConstraint S e u v ↔ F.hingeConstraint S e v u := by
   rw [hingeConstraint, hingeConstraint, ← neg_sub (S v) (S u), Submodule.neg_mem_iff]
 
-/-- The **null space** `Z(G,p)` of the panel-hinge rigidity matrix `R(G,p)`
-(`def:rigidity-matrix`): the submodule of all infinitesimal motions inside the screw-assignment
-space `α → ScrewSpace K k`. By `def:rigidity-matrix` this is `Z(G,p) = ker R(G,p)`; carried
-basis-free as the kernel cut out by the per-edge hinge constraints (`IsInfinitesimalMotion`),
-its membership is `mem_infinitesimalMotions`. It is a submodule because each hinge constraint
-is membership in the fixed subspace `span C(p(e))`, closed under the screw-assignment vector
-operations. -/
+/-- **The space `Z(G,p)` of infinitesimal motions** (`def:rigidity-matrix`): the submodule of the
+screw assignments `α → ScrewSpace K k` that are infinitesimal motions (`IsInfinitesimalMotion`), the
+null space `ker R(G,p)` of Katoh and Tanigawa (KT p. 654). Each hinge constraint asks for membership
+in the subspace `span C(p(e))`, so the motions form a subspace. -/
 def infinitesimalMotions (F : BodyHingeFramework K k α β) :
     Submodule K (α → ScrewSpace K k) where
   carrier := {S | F.IsInfinitesimalMotion S}
@@ -1079,15 +818,12 @@ theorem mem_infinitesimalMotions (F : BodyHingeFramework K k α β) (S : α → 
     S ∈ F.infinitesimalMotions ↔ F.IsInfinitesimalMotion S :=
   Iff.rfl
 
-/-- **The motion space depends only on the supporting extensors of the linking edges**
-(`lem:motions-mono-of-graph-le`, equality form): two body-hinge frameworks `F`, `F'` on the
-*same* multigraph whose supporting extensors agree at every edge that actually links
-(`∀ e u v, F.graph.IsLink e u v → F'.supportExtensor e = F.supportExtensor e`) have the same null
-space, `F.infinitesimalMotions = F'.infinitesimalMotions`. Only the extensors of genuine hinges
-enter the constraint family, so an extensor change at a non-linking edge — the situation Case II's
-`withNormal` creates when the re-inserted body `v` carries no incident edges yet — leaves the
-motions untouched. The two inclusions are `infinitesimalMotions_mono_of_graph_le`
-(`AlgebraicInduction/Pinning.lean`, with `≤ = rfl`) in each direction. -/
+/-- **The motions read the supporting extensors only at the links** (`def:rigidity-matrix`): two
+frameworks on the same multigraph whose supporting extensors agree at every edge label that links
+two bodies have the same motions, as the hinge constraints are taken only at the links
+(`IsInfinitesimalMotion`). So changing the extensors at labels that are not edges of the graph, as
+`withNormal` does at a body on no edge, leaves the motions unchanged
+(`PanelHingeFramework.toBodyHinge_withNormal_infinitesimalMotions_eq`). -/
 theorem infinitesimalMotions_eq_of_isLink_supportExtensor (F F' : BodyHingeFramework K k α β)
     (hgraph : F'.graph = F.graph)
     (hext : ∀ e u v, F.graph.IsLink e u v → F'.supportExtensor e = F.supportExtensor e) :
@@ -1100,16 +836,12 @@ theorem infinitesimalMotions_eq_of_isLink_supportExtensor (F F' : BodyHingeFrame
     rw [hingeConstraint, ← hext e u v he]
     exact hS e u v (hgraph ▸ he)
 
-/-- **The motion space depends only on the span of the supporting extensors of the linking edges**
-(`lem:motions-mono-of-graph-le`, span form): the span-keyed sibling of
-`infinitesimalMotions_eq_of_isLink_supportExtensor`. Two body-hinge frameworks `F`, `F'` on the
-*same* multigraph whose supporting extensors *span the same line* at every linking edge
-(`Submodule.span K {F'.supportExtensor e} = Submodule.span K {F.supportExtensor e}`) have the same
-null space. The hinge constraint is membership in `span {supportExtensor e}` (`hingeConstraint`,
-`IsInfinitesimalMotion`), so only the *span* — not the extensor itself — enters the motion space.
-This is strictly weaker than the extensor-equality form and is what an *anti-symmetric* extensor
-change (an endpoint swap, `panelSupportExtensor_swap`, where the extensor flips sign but its span is
-unchanged) needs: `span {−x} = span {x}`. -/
+/-- **The motions read only the spans of the supporting extensors at the links**
+(`def:rigidity-matrix`): the form of `infinitesimalMotions_eq_of_isLink_supportExtensor` in which
+the two frameworks' extensors at each link span the same line. The hinge constraint is membership in
+`span {C(p(e))}`, so only the span enters. Changing the sign of an extensor, as recording the ends
+of an edge in the other order does (`panelSupportExtensor_swap`), changes the extensor but not its
+span. -/
 theorem infinitesimalMotions_eq_of_isLink_span_supportExtensor (F F' : BodyHingeFramework K k α β)
     (hgraph : F'.graph = F.graph)
     (hspan : ∀ e u v, F.graph.IsLink e u v →
@@ -1123,22 +855,16 @@ theorem infinitesimalMotions_eq_of_isLink_span_supportExtensor (F F' : BodyHinge
     rw [hingeConstraint, ← hspan e u v he]
     exact hS e u v (hgraph ▸ he)
 
-/-- **The null space `Z(G,p)` is the common kernel of the rows of `R(G,p)`**
-(`def:rigidity-matrix`): the infinitesimal-motion subspace equals the **dual coannihilator** of the
-span of the rigidity rows,
+/-- **The motions are the screw assignments at which every row vanishes** (`def:rigidity-matrix`; KT
+§2.4, p. 654):
 
   `F.infinitesimalMotions = (Submodule.span K F.rigidityRows).dualCoannihilator`.
 
-This is the coordinatized reading of `Z(G,p) = ker R(G,p)` against the basis-free row family
-`rigidityRows` (`def:rigidity-matrix`): the dual coannihilator of a span is the common kernel of
-the functionals (`Submodule.coe_dualCoannihilator_span`), so an infinitesimal motion is exactly a
-screw assignment annihilated by every row functional `hingeRow e u v r` of every link `e = uv` and
-every row `r` of the hinge-row block. The per-edge match is the row-block restatement of the hinge
-constraint `hingeConstraint_iff_hingeRowBlock` (`r (S u − S v) = 0` for all `r ∈ r(p(e))`). This is
-the load-bearing identity that lets the Phase-21b genericity device — which works on a `finrank`
-upper bound for the `dualCoannihilator` of an affine family of functionals
-(`LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite`) — speak directly about
-`dim Z(G,p)`. -/
+The dual coannihilator of a span is the common kernel of its generators
+(`Submodule.coe_dualCoannihilator_span`). So this says that `S` is a motion exactly when
+`hingeRow u v r` vanishes at `S` for every link `e` from `u` to `v` and every form `r` of the
+hinge-row block at `e`, that is, by `hingeConstraint_iff_hingeRowBlock`, when `S` satisfies every
+hinge constraint. -/
 theorem infinitesimalMotions_eq_dualCoannihilator (F : BodyHingeFramework K k α β) :
     F.infinitesimalMotions = (Submodule.span K F.rigidityRows).dualCoannihilator := by
   apply SetLike.coe_injective
@@ -1155,15 +881,11 @@ theorem infinitesimalMotions_eq_dualCoannihilator (F : BodyHingeFramework K k α
     have := hS (hingeRow u v r) ⟨e, u, v, he, r, hr, rfl⟩
     rwa [hingeRow_apply] at this
 
-/-- **The rigidity-row span is the dual annihilator of the motion space** (`def:rigidity-matrix`,
-the dual-side restatement of `infinitesimalMotions_eq_dualCoannihilator` over a finite body set).
-When the body set `α` is finite, the screw-assignment dual is finite-dimensional, so the
-finite-dimensional double-annihilator identity
-(`Subspace.dualCoannihilator_dualAnnihilator_eq`) closes the loop
-`span rigidityRows = (span rigidityRows).dualCoannihilator.dualAnnihilator =
-Z.dualAnnihilator` (`Z = infinitesimalMotions`). This is the `Φ = Z.dualAnnihilator` step the
-`injOn_extProj_dualMap_rigidityRows` family inlines, factored out so the motion-space transport
-of the Case-I splice can read the rigidity-row span off the motions alone. -/
+/-- **The row space is the space of forms that vanish on the motions**
+(`lem:span-rigidityRows-eq-of-motions-eq`): for finitely many bodies,
+`span F.rigidityRows = Z(G,p).dualAnnihilator`. The motions are the common kernel of the rows
+(`infinitesimalMotions_eq_dualCoannihilator`), and in the dual of a finite-dimensional space a
+subspace is the annihilator of its kernel (`Subspace.dualCoannihilator_dualAnnihilator_eq`). -/
 theorem span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions [Finite α]
     (F : BodyHingeFramework K k α β) :
     Submodule.span K F.rigidityRows = F.infinitesimalMotions.dualAnnihilator := by
@@ -1171,13 +893,12 @@ theorem span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions [Finite α]
   rw [F.infinitesimalMotions_eq_dualCoannihilator,
     Subspace.dualCoannihilator_dualAnnihilator_eq]
 
-/-- **Equal motion spaces give equal rigidity-row spans** (`def:rigidity-matrix`, the rigidity-free
-rank-invariance the Case-I splice's deficiency-aware relabel transport reads). Two body-hinge
-frameworks with the *same* infinitesimal-motion space have the *same* rigidity-row span — at any
-rank, with no rigidity hypothesis — because the span is the dual annihilator of the motions
-(`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`). This is what carries the rank of one
-framework to another sharing its motion space (the selector-swap brick
-`infinitesimalMotions_ofNormals_eq_of_ends_swap` supplies exactly such a motion-space equality). -/
+/-- **Frameworks with the same motions have the same row space**
+(`lem:span-rigidityRows-eq-of-motions-eq`): for finitely many bodies, two body-hinge frameworks with
+the same infinitesimal motions have the same row space, and so the same rank, by
+`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`. The frameworks need not be rigid.
+`PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap` gives such an equality of
+motions. -/
 theorem span_rigidityRows_eq_of_infinitesimalMotions_eq [Finite α]
     (F G : BodyHingeFramework K k α β)
     (h : F.infinitesimalMotions = G.infinitesimalMotions) :
@@ -1185,16 +906,12 @@ theorem span_rigidityRows_eq_of_infinitesimalMotions_eq [Finite α]
   rw [F.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
     G.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions, h]
 
-/-- **A transversal hinge's row block has dimension `D − 1`** (`def:hinge-row-block`,
-the genericity device's row-count input): when the supporting extensor `C(p(e))` is nonzero —
-the general-position condition that the hinge is a genuine codimension-2 intersection
-(`panelSupportExtensor_ne_zero_iff`) — the hinge-row block `r(p(e)) = (span C(p(e)))^⊥` has
-dimension `D − 1`, `finrank K (F.hingeRowBlock e) = screwDim k − 1`. This is Katoh–Tanigawa's
-`(D−1) × D` block-row count `1 ≤ i ≤ D−1` carried basis-free: the supporting extensor spans a
-`1`-dimensional subspace of the `D`-dimensional screw space (`finrank_span_singleton`,
-`screwSpace_finrank`), and the dual annihilator's dimension is the codimension
-(`Subspace.finrank_add_finrank_dualAnnihilator_eq`). It is the per-edge brick that counts the
-rigidity rows `rigidityRows` of a rigid block. -/
+/-- **A hinge-row block has dimension `D − 1`** (`def:hinge-row-block`): when the supporting
+extensor `C(p(e))` is nonzero, `finrank K (F.hingeRowBlock e) = screwDim k − 1`. The extensor spans
+a line of the `D`-dimensional screw space (`finrank_span_singleton`, `screwSpace_finrank`), and the
+dimension of a dual annihilator is the codimension
+(`Subspace.finrank_add_finrank_dualAnnihilator_eq`). This is the count `1 ≤ i ≤ D − 1` of the rows
+of Katoh and Tanigawa's `r(p(e))`. -/
 theorem finrank_hingeRowBlock (F : BodyHingeFramework K k α β) {e : β}
     (he : F.supportExtensor e ≠ 0) :
     Module.finrank K (F.hingeRowBlock e) = screwDim k - 1 := by
@@ -1203,20 +920,11 @@ theorem finrank_hingeRowBlock (F : BodyHingeFramework K k α β) {e : β}
   rw [screwSpace_finrank, finrank_span_singleton he, ← hingeRowBlock_apply] at key
   omega
 
-/-- **A single transversal hinge contributes `D − 1` independent rigidity rows**
-(`def:rigidity-matrix`, the per-edge half of the Case-I `hindep`/`hmatch` assembly). For a genuine
-edge `e = uv` with distinct endpoints (`u ≠ v`) whose supporting extensor is nonzero (the
-transversal / general-position hinge, `panelSupportExtensor_ne_zero_iff`), there is a linearly
-independent family of `D − 1 = screwDim k − 1` rigidity rows, all members of `F.rigidityRows`.
-The family is `hingeRow u v` applied to a basis of the hinge-row block: the `(D−1)`-dimensional
-hinge-row block `r(p(e))` (`finrank_hingeRowBlock`) has a basis of `D − 1` functionals, supplied
-in ambient-coerced existence form by `Submodule.exists_linearIndependent_fin_of_finrank_eq` (so
-the heavy `Module.Dual` of an exterior power is never unfolded). Each basis functional lies in
-`r(p(e))`, so its `hingeRow u v` image is a rigidity row (witnessed by `e, u, v`), and the
-basis-independent functionals stay independent as rigidity rows through the relative-screw
-evaluation (`linearIndependent_hingeRow`). This is the per-edge brick: each transversal hinge of
-a rigid block contributes exactly `D − 1` independent rows of `R(G,p)`, all routed through the same
-`screwDiff u v`. -/
+/-- **An edge gives `D − 1` independent rows** (`lem:edge-rows-independent`, its form for rows): if
+`e` links `u ≠ v` and `C(p(e)) ≠ 0`, there are `D − 1 = screwDim k − 1` linearly independent rows of
+`R(G,p)` at `e`. They are `hingeRow u v` applied to a basis of the hinge-row block, which has
+dimension `D − 1` (`finrank_hingeRowBlock`, `Submodule.exists_linearIndependent_fin_of_finrank_eq`),
+and they are independent by `linearIndependent_hingeRow`. -/
 theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework K k α β) {e : β} {u v : α}
     (huv : u ≠ v) (hlink : F.graph.IsLink e u v) (he : F.supportExtensor e ≠ 0) :
     ∃ r : Fin (screwDim k - 1) → Module.Dual K (α → ScrewSpace K k),
@@ -1229,29 +937,11 @@ theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework K k α �
   refine ⟨fun i => hingeRow u v (c i), linearIndependent_hingeRow huv hc, fun i => ?_⟩
   exact ⟨e, u, v, hlink, c i, hmem i, rfl⟩
 
-/-- **A genuine linearly-independent basis of the rigidity-row span, drawn from the row set with a
-redundant member excluded** (`lem:case-III general-d`, the route-B LEAF-B1 genuine-basis extraction;
-Katoh–Tanigawa 2011 §6.4.2 eq. (6.64), the bottom block `R(G₁ ∖ (v₀v₂)ᵢ*, q₁)`; design
-§I.8.24(4.25)). When the body set `α` is finite, the rigidity-row span is finite-dimensional, so a
-finite *spanning subset* of any row set is also a *basis* of its span. Applied to the row set with a
-redundant member `rhat` removed (`F.rigidityRows \ {rhat}`), this produces a linearly independent
-family `f : Fin N → Module.Dual K (α → ScrewSpace K k)` (`N = finrank` of that span) with:
-
-* every `f i` a **genuine** rigidity row (`f i ∈ F.rigidityRows`, carrying its link/block data —
-  the data `rigidityRow_relabel_to_genuine` consumes downstream in LEAF-B2), and
-* every `f i ≠ rhat` (the redundant member is **excluded**, never transported), and
-* `span (range f) = span (F.rigidityRows \ {rhat})`.
-
-This is the route-B base block at the source level: KT's bottom block (6.64) is
-`R(G₁ ∖ (v₀v₂)ᵢ*, q₁)` — the base matrix with the *redundant* row deleted — whose rank is the same
-`D(|V|−2)` (the redundant row lies in the span of the others, so deleting it preserves the span —
-`span_rigidityRows_diff_singleton_eq_of_mem_span`). Selecting the base family from genuine rows only
-is exactly what escapes the member-mapping wall (design §I.8.24(4.18)/(4.20): the wall arose only
-because the old base family was forced to include the redundant member, a row *through* `vᵢ`
-breaking the off-`vᵢ` vanishing the corner discriminator needs). The genuine-link data is recovered
-*for free* from set-membership in `F.rigidityRows` — no motive strengthening is needed. The kernel
-is mathlib's `Submodule.exists_fun_fin_finrank_span_eq` (a finite spanning subset of a
-finite-dimensional span is a basis), specialised to the row set `F.rigidityRows \ {rhat}`. -/
+/-- **Independent rows other than a given form that span the same space** (`def:rigidity-matrix`):
+for finitely many bodies and a form `rhat`, there are linearly independent rows `f i` of `F`, none
+equal to `rhat`, indexed by `Fin N` with `N` the dimension of `span (F.rigidityRows \ {rhat})`,
+whose span is that space: mathlib's `Submodule.exists_fun_fin_finrank_span_eq` for the set
+`F.rigidityRows \ {rhat}`. -/
 theorem exists_genuine_linearIndependent_basis_of_rigidityRows_diff [Finite α]
     (F : BodyHingeFramework K k α β) (rhat : Module.Dual K (α → ScrewSpace K k)) :
     ∃ (f : Fin (Module.finrank K (Submodule.span K (F.rigidityRows \ {rhat}))) →
@@ -1263,17 +953,9 @@ theorem exists_genuine_linearIndependent_basis_of_rigidityRows_diff [Finite α]
     Submodule.exists_fun_fin_finrank_span_eq K (F.rigidityRows \ {rhat})
   exact ⟨f, hLI, fun i => (hmem i).1, fun i => (hmem i).2, hspan⟩
 
-/-- **Deleting a redundant rigidity row preserves the span** (`lem:case-III general-d`, the route-B
-LEAF-B1 satisfiability fact; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64); design §I.8.24(4.25)). When the
-redundant member `rhat` lies in the span of the remaining rows `span (F.rigidityRows \ {rhat})` —
-which is exactly the project's redundant-row decomposition `r̂ = Σ λⱼ rⱼ`
-(`exists_redundant_panelRow_ab_decomposition`, KT eq. (6.24)) — removing it from the row set leaves
-the span unchanged: `span (F.rigidityRows \ {rhat}) = span F.rigidityRows`. Hence the GENUINE rows
-(redundant deleted) attain the *full* base rank, so the LEAF-B1 genuine basis above has the same
-cardinality as the base rank `D(|V|−2)`. This is the precise fact design §I.8.24(4.18) flagged as
-the satisfiability question of the genuine-only base block (there found impossible for a base family
-that *includes* the redundant member; here resolved by *excluding* it). General linear algebra; the
-redundancy hypothesis is the only content. -/
+/-- **Removing a redundant row keeps the row space** (`def:rigidity-matrix`): if `rhat` lies in the
+span of the other rows, `span (F.rigidityRows \ {rhat}) = span F.rigidityRows`. Katoh and Tanigawa
+remove a redundant row of `R(G_v^{ab}, q)` in this way (KT eq. (6.23), p. 685). -/
 theorem span_rigidityRows_diff_singleton_eq_of_mem_span
     (F : BodyHingeFramework K k α β) {rhat : Module.Dual K (α → ScrewSpace K k)}
     (hrhat : rhat ∈ Submodule.span K (F.rigidityRows \ {rhat})) :
@@ -1283,28 +965,18 @@ theorem span_rigidityRows_diff_singleton_eq_of_mem_span
   · exact hxr ▸ hrhat
   · exact Submodule.subset_span ⟨hx, hxr⟩
 
-/-! ## Candidate-completion: column operation + pinned-block independence (KT eqs. (6.14)–(6.29))
+/-! ## The column operation and blocks of independent forms (KT eqs. (6.14)–(6.29))
 
-The column operation `col_a += col_v` (`columnOp`) and the pin-a-body / off-`v` column-split
-linear-independence engine (`linearIndependent_sum_pinned_block{,_augment,_augment_block}`,
-`linearIndependent_sum_augment_candidateRow_restriction`) — the block-triangular `+1` for Cases
-II/III and its general-`d` chain `+|ιc|` block form (Phase 23b CHAIN-1). -/
+The column operation of KT eqs. (6.14)–(6.15) (`columnOp`), the forms that depend only on the screw
+of one body, and the joint independence of a family of forms independent at a body `v` with a family
+of forms that vanish at the screw assignments that vanish off `v`
+(`linearIndependent_sum_pinned_block`), with its variants for Cases II and III. -/
 
-/-- **A rigidity row that vanishes off body `v`'s column factors through that column** (the pure
-linear-algebra core of KT eq.~(6.28); Katoh–Tanigawa 2011 §6.4.1, Phase 22d). The candidate-%
-completion row operation of eq.~(6.24)–(6.28) reduces the $(vb)i^*$-row of $R(G, p_1)$ to a row
-whose $V \setminus \{v\}$ part is *all zero* — by definition, a functional `f` on the screw
-assignments `α → ScrewSpace K k` that vanishes on every assignment supported off `v` (`S v = 0 ⟹
-f S = 0`). This lemma is the formal content of "such a row is determined by its `v`-column": writing
-`S = Pi.single v (S v) + (S - Pi.single v (S v))`, the second summand is supported off `v` so `f`
-kills it, leaving `f S = f (Pi.single v (S v)) = (f ∘ single v) (S v)`. Hence
-`f = (f ∘ₗ single v) ∘ₗ proj v` factors through body `v`'s screw column.
-
-This is exactly the structural input the candidate-completion's block-triangular rank lift needs:
-the row-operation output of eq.~(6.28) becomes a *pure `v`-column* row `(Σⱼ λ_{(ab)j} rⱼ(q(ab)), 0)`
-(eq.~(6.29)'s `(vb)i^*`-row), which then joins the $va$-block in the pin-a-body new block of
-`linearIndependent_sum_pinned_block` — lifting `v`'s column contribution from `D − 1` to `D`, the
-missing `+1` that takes the stratum-1 brick `D(|V|−1) − 1` to full `D(|V|−1)`. -/
+/-- **A form that vanishes where `S v = 0` depends only on `S v`**
+(`lem:case-III-vanish-off-column`; the form of KT eq. (6.28), p. 686): if `f S = 0` for every screw
+assignment `S` with `S v = 0`, then `f = (f ∘ₗ single v) ∘ₗ proj v`, that is,
+`f S = f (single v (S v))`. The assignment `S − single v (S v)` vanishes at `v`, so `f` kills it. In
+KT eq. (6.28), the row operations leave a row whose entries outside the columns of `v` are zero. -/
 theorem dualMap_eq_comp_single_proj_of_vanish_off [DecidableEq α]
     (f : Module.Dual K (α → ScrewSpace K k)) (v : α)
     (hvanish : ∀ S : α → ScrewSpace K k, S v = 0 → f S = 0) :
@@ -1318,17 +990,12 @@ theorem dualMap_eq_comp_single_proj_of_vanish_off [DecidableEq α]
   rw [map_sub, sub_eq_zero] at hz
   exact hz
 
-/-- **The candidate-completion column operation** `Φ = col_a += col_v` (Katoh–Tanigawa 2011
-§6.4.1, eqs.~(6.14)–(6.15); Phase 22e). The change-of-variables automorphism on the screw
-assignments `α → ScrewSpace K k` that adds body `v`'s screw column to body `a`'s — modelled, since
-the rigidity rows read relative screws `S u − S w`, as its *dual* substitution on the assignment:
-`Φ S = Function.update S v (S v + S a)` (it is `col_a += col_v` acting on rows, equivalently
-`row_v += row_a` on the column-vector `S`). It is a linear automorphism with inverse
-`Φ⁻¹ S = Function.update S v (S v − S a)`; both directions need `v ≠ a` so that the update at `v`
-leaves the `a`-coordinate fixed. A rank is invariant under this change of variables (precomposition
-with a `≃ₗ`), so it certifies the candidate row's vanishing without changing any rank: it is the
-device that makes the transported `(vb)i^*`-row `hingeRow v a ρ` (supported on *both* columns `v`
-and `a`) into a pure `v`-column row in the operated frame — see `hingeRow_comp_columnOp_apply`. -/
+/-- **The column operation** `Φ` (`lem:case-III-columnop`; KT eqs. (6.14)–(6.15), p. 679): for
+bodies `v ≠ a`, the linear automorphism `Φ S = Function.update S v (S v + S a)` of the screw
+assignments, with inverse `S ↦ Function.update S v (S v − S a)`; both fix the value at `a`, as
+`a ≠ v`. Replacing each row `f` of a rigidity matrix by `f ∘ₗ Φ` adds the columns of `v` to those of
+`a`, and leaves the rank unchanged. The row `hingeRow v a ρ` becomes `S ↦ ρ (S v)`
+(`hingeRow_comp_columnOp_apply`). -/
 @[simps! apply]
 noncomputable def columnOp [DecidableEq α] {v a : α} (hva : v ≠ a) :
     (α → ScrewSpace K k) ≃ₗ[K] (α → ScrewSpace K k) where
@@ -1359,15 +1026,9 @@ noncomputable def columnOp [DecidableEq α] {v a : α} (hva : v ≠ a) :
         sub_add_cancel]
     · rw [Function.update_of_ne hx, Function.update_of_ne hx]
 
-/-- **The column operation is the identity on body `v`'s screw column** (the `comp Φ`-is-identity-
-at-the-pin fact the candidate producers' `hrnpin`/`hspan` inputs need; Katoh–Tanigawa 2011
-§6.4.1, Phase 22g). Applying `Φ = columnOp hvb` (`col_b += col_v`) to a screw assignment supported
-only on body `v` (`single v x`) leaves it unchanged: at `v` it reads `(single v x) v + (single v x)
-b = x + 0 = x` (using `v ≠ b`, so the distinct `b`-coordinate is `0`), and at every other body it
-is `Function.update`-untouched. Hence precomposing the candidate producers' `(rn ·) ∘ₗ Φ ∘ₗ
-single v` with the column op collapses to `(rn ·) ∘ₗ single v` — the form the L1/L2 leaves
-(`linearIndependent_panelRow_comp_single_of_edge` / `span_panelRow_comp_single_of_edge`) supply
-directly, so the candidate path feeds them with no extra `Φ`-rewrite. -/
+/-- **`Φ` fixes the screw assignments that vanish off `v`** (from the proof of
+`lem:case-III-columnop`): for `v ≠ b` and `Φ = columnOp hvb`, `Φ (single v x) = single v x`. At `v`
+the value is `x + 0`, as `b ≠ v`, and elsewhere `Φ` changes nothing. -/
 theorem columnOp_apply_single [DecidableEq α] {v b : α} (hvb : v ≠ b) (x : ScrewSpace K k) :
     columnOp (k := k) hvb (LinearMap.single K (fun _ : α => ScrewSpace K k) v x)
       = LinearMap.single K (fun _ : α => ScrewSpace K k) v x := by
@@ -1377,13 +1038,9 @@ theorem columnOp_apply_single [DecidableEq α] {v b : α} (hvb : v ≠ b) (x : S
       Pi.single_eq_of_ne hvb.symm, add_zero]
   · rw [columnOp_apply, Function.update_of_ne hy]
 
-/-- **Operating then pinning to body `v` equals pinning directly** (the L1/L2 → candidate-producer
-bridge; Katoh–Tanigawa 2011 §6.4.1, Phase 22g). For any row functional `g`, the candidate
-producers' operated-and-pinned form `(g ∘ₗ Φ) ∘ₗ single v` (with `Φ = columnOp hvb`) equals the
-bare pinned form `g ∘ₗ single v`, since `Φ` is the identity on body `v`'s screw column
-(`columnOp_apply_single`). This lets the candidate producers' `hrnpin`/`hspan` inputs — stated on
-the operated form `(rn ·) ∘ₗ Φ ∘ₗ single v` — be discharged directly from the L1/L2 leaves, which
-supply the bare `(panelRow ·) ∘ₗ single v` form. -/
+/-- **Composing with `Φ` keeps a form's columns of `v`** (from the proof of
+`lem:case-III-columnop`): `(g ∘ₗ Φ) ∘ₗ single v = g ∘ₗ single v` for every form `g` on screw
+assignments, by `columnOp_apply_single`. -/
 theorem comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v ≠ b)
     (g : Module.Dual K (α → ScrewSpace K k)) :
     (g.comp (columnOp (k := k) hvb).toLinearMap).comp
@@ -1392,46 +1049,27 @@ theorem comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v ≠ b)
   LinearMap.ext fun x => by
     simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, columnOp_apply_single]
 
-/-- **The candidate row becomes pure `v`-column in the operated frame** (KT eqs.~(6.14)–(6.16),
-the eq.~(6.28) vanishing; Phase 22e). Precomposing the transported candidate row `hingeRow v a ρ`
-of `R(G, p_1)` — supported on *both* body `v`'s and body `a`'s screw columns, with
-`(hingeRow v a ρ) S = ρ(S v − S a)` — with the column operation `Φ = columnOp hva`
-(`col_a += col_v`) reads `Φ S` at `v` as `S v + S a` and at `a` as `S a` (since `v ≠ a`), so
-`(hingeRow v a ρ)(Φ S) = ρ((S v + S a) − S a) = ρ(S v)`: the `a`-column contribution cancels and
-the row depends only on `v`'s column. This is KT's mechanism for the candidate-completion
-vanishing — *not* the per-edge seam plus eq.~(6.43) — and is exactly the off-`v` vanishing
-hypothesis `dualMap_eq_comp_single_proj_of_vanish_off` consumes (`S v = 0 ⟹ ρ(S v) = 0`). -/
+/-- **After `Φ`, the form `hingeRow v a ρ` reads only `S v`** (`lem:case-III-columnop`; KT
+eqs. (6.14)–(6.16), p. 679): `(hingeRow v a ρ) (Φ S) = ρ (S v)`, as `Φ S` has the value `S v + S a`
+at `v` and `S a` at `a`. -/
 theorem hingeRow_comp_columnOp_apply [DecidableEq α] {v a : α} (hva : v ≠ a)
     (ρ : Module.Dual K (ScrewSpace K k)) (S : α → ScrewSpace K k) :
     hingeRow (k := k) (α := α) v a ρ (columnOp (k := k) hva S) = ρ (S v) := by
   simp only [hingeRow_apply, columnOp_apply, Function.update_self,
     Function.update_of_ne hva.symm, add_sub_cancel_right]
 
-/-- **The operated candidate row vanishes off `v`'s column** (KT eq.~(6.28); Phase 22e). Composing
-the candidate row `hingeRow v a ρ` with the column operation `Φ = columnOp hva` gives a functional
-on `α → ScrewSpace K k` that kills every assignment supported off body `v`: by
-`hingeRow_comp_columnOp_apply`, `(hingeRow v a ρ ∘ₗ Φ) S = ρ(S v)`, which is `ρ 0 = 0` whenever
-`S v = 0`. Combined with `dualMap_eq_comp_single_proj_of_vanish_off`, this is the certificate that
-in the column-operated frame the candidate row is a *pure `v`-column* row — the formal content of
-KT eqs.~(6.27)–(6.28) and the missing structural input the candidate-completion needs. -/
+/-- **After `Φ`, the form `hingeRow v a ρ` vanishes where `S v = 0`** (`lem:case-III-columnop`): by
+`hingeRow_comp_columnOp_apply`, its value is `ρ (S v) = ρ 0 = 0`. -/
 theorem hingeRow_comp_columnOp_vanish_off [DecidableEq α] {v a : α} (hva : v ≠ a)
     (ρ : Module.Dual K (ScrewSpace K k)) (S : α → ScrewSpace K k) (hS : S v = 0) :
     hingeRow (k := k) (α := α) v a ρ (columnOp (k := k) hva S) = 0 := by
   rw [hingeRow_comp_columnOp_apply hva ρ S, hS, map_zero]
 
-/-- **The operated candidate row is a pure `v`-column row** (`lem:case-III-candidate-row`, the
-eqs.~(6.27)–(6.28) packaging; Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The combined certificate the
-candidate-completion's `w`-assembly produces: precomposing the transported candidate row
-`hingeRow v a ρ` of `R(G, p_1)` (supported on *both* columns `v` and `a`) with the column operation
-`Φ = columnOp hva` (`col_a += col_v`) gives the operated row `w := (hingeRow v a ρ) ∘ₗ Φ`, and this
-operated row factors through body `v`'s screw column:
-`w = (w ∘ₗ single v) ∘ₗ proj v` — a *pure `v`-column* row. This is exactly the composition of the
-two leaves the assembly threads: `hingeRow_comp_columnOp_vanish_off` (eqs.~(6.14)–(6.16): the
-operated row kills every assignment supported off `v`) feeds the off-`v` vanishing hypothesis of
-`dualMap_eq_comp_single_proj_of_vanish_off` (eq.~(6.28): a row vanishing off `v` is a pure
-`v`-column row). The result is the eq.~(6.29) `(vb)i^*`-row that joins the `va`-block in
-`linearIndependent_sum_pinned_block_augment`'s pin-a-body split — the missing `+1` taking the
-stratum-1 brick `D(|V|−1) − 1` to full `D(|V|−1)`. -/
+/-- **After `Φ`, the form `hingeRow v a ρ` factors through `S v`**
+(`lem:case-III-transport-collapse`, its last claim; KT eq. (6.28), p. 686): with
+`w = (hingeRow v a ρ) ∘ₗ Φ`, `w = (w ∘ₗ single v) ∘ₗ proj v`. By
+`hingeRow_comp_columnOp_vanish_off`, `w` vanishes where `S v = 0`, and
+`dualMap_eq_comp_single_proj_of_vanish_off` applies. -/
 theorem comp_columnOp_eq_comp_single_proj [DecidableEq α] {v a : α} (hva : v ≠ a)
     (ρ : Module.Dual K (ScrewSpace K k)) :
     (hingeRow (k := k) (α := α) v a ρ).comp (columnOp (k := k) hva).toLinearMap
@@ -1442,26 +1080,14 @@ theorem comp_columnOp_eq_comp_single_proj [DecidableEq α] {v a : α} (hva : v �
     (fun S hS => by
       rw [LinearMap.comp_apply, LinearEquiv.coe_coe, hingeRow_comp_columnOp_vanish_off hva ρ S hS])
 
-/-- **The star independence bridge: rows from distinct hinges at a common body are jointly
-independent** (`def:rigidity-matrix`, the Case-I cross-hinge `hindep` step). Fix a body `v` and a
-family of distinct other endpoints `w : J → α` (`hw` injective, `hwv` each `w j ≠ v`) — a *star*
-of edges all incident to `v`, the shape a rigid block pinned at `v` presents. If for each `j : J`
-the hinge-row functionals `r j : Iⱼ → Module.Dual K (ScrewSpace K k)` are linearly independent, then
-the combined rigidity-row family `⟨j, i⟩ ↦ hingeRow (w j) v (r j i)` over the disjoint union
-`Σ j, Iⱼ` is linearly independent on `α → ScrewSpace K k`.
+/-- **The forms of a star are independent** (`lem:own-end-rows-independent`, the case of a star):
+let `w : J → α` be distinct bodies other than a body `v`, and for each `j` let the forms `r j i` on
+the screw space be linearly independent. Then the forms `hingeRow (w j) v (r j i)` over `Σ j, I j`
+are linearly independent.
 
-This is the cross-hinge step the per-edge brick `exists_independent_rigidityRows_of_edge` does not
-cover: rows from *different* hinges go through *different* relative-screw evaluations
-`screwDiff (w j) v`, so `linearIndependent_hingeRow`'s single-edge dual-map argument no longer
-applies. The independence is instead the *pin-a-body* / disjoint-support count: evaluating a
-vanishing combination at the screw assignment `Function.update 0 (w k) x` (place `x` on the body
-`w k`, `0` elsewhere — legitimate since `w k ≠ v` and the `w j` are distinct) collapses it to
-`∑ i, c⟨k,i⟩ • (r k i) x = 0` for all `x`, so per-hinge independence
-(`Fintype.linearIndependent_iff` on `r k`) forces every coefficient at `k` to vanish. This is the
-joint independence of a rigid block's hinge rows — each of the block's transversal hinges
-contributing its `D − 1` rows (`exists_independent_rigidityRows_of_edge`), the rows of distinct
-hinges jointly independent because they live on disjoint body-coordinate blocks once the common body
-is pinned. -/
+Evaluate a vanishing combination at `Function.update 0 (w j₀) x`. The forms of `j ≠ j₀` vanish
+there, as `w j ≠ w j₀` and `v ≠ w j₀`, and those of `j₀` take the values `r j₀ i x`. So the
+coefficients of `j₀` give a vanishing combination of the forms `r j₀ i`, and they are zero. -/
 theorem linearIndependent_hingeRow_star {J : Type*} [Finite J] {I : J → Type*}
     [∀ j, Finite (I j)] {v : α} {w : J → α} (hw : Function.Injective w) (hwv : ∀ j, w j ≠ v)
     {r : ∀ j, I j → Module.Dual K (ScrewSpace K k)} (hr : ∀ j, LinearIndependent K (r j)) :
@@ -1495,22 +1121,14 @@ theorem linearIndependent_hingeRow_star {J : Type*} [Finite J] {I : J → Type*}
       simpa [LinearMap.sum_apply, LinearMap.smul_apply] using hval x
   exact Fintype.linearIndependent_iff.1 (hr j₀) (fun i => g ⟨j₀, i⟩) hk i₀
 
-/-- **N7b-3: the new-edge and old blocks are jointly independent (the pin-a-body column split)**
-(`lem:case-II-placement-block-independent`; Katoh–Tanigawa 2011 §6.3). The pin-a-body column
-decomposition (Lemma 5.1, `finrank_pinnedMotions_add_screwDim`) certifying the joint independence
-of the two blocks the Case-II $1$-extension placement assembles: a *new* block `rn` of rigidity
-rows carried by the re-inserted body `v`'s incident hinges, and an *old* block `ro` of rows of the
-common subgraph `G − v`. The split is the body-`v` column: pinning the screw assignment to body `v`
-alone (`Function.update 0 v x`) reads the old rows as `0` (their edges avoid `v`, `hold`) while
-reading the new rows through `v`'s screw column (`rn i ∘ₗ LinearMap.single K _ v`). So if the new
-rows are independent *as functionals of `v`'s screw* (`hnewpin`, the $D-1$ column-block rows of
-N7b-1) and the old rows are independent (`holdindep`, the $D(|V(G)|-2)$ inductive rows of N7b-2),
-the union `Sum.elim rn ro` is independent: a vanishing combination, evaluated at `update 0 v x`,
-collapses to the new block (old terms vanish by `hold`) and forces the new coefficients to vanish
-by `hnewpin`; the residual is a vanishing combination of the old block, forcing the old
-coefficients by `holdindep`. This is the panel-row form of the $1$-extension's exact `+D` rank lift
-(`lem:case-II-rank-lift`); the assembly `lem:case-II-realization-placement` (N7b) feeds the union to
-the device-closure glue `hasFullRankRealization_of_independent_panelRow`. -/
+/-- **Forms independent at `v` and forms vanishing at `v` are jointly independent**
+(`lem:case-II-placement-block-independent`): let `rn` be forms on screw assignments whose
+restrictions to the assignments that vanish off `v`, `rn i ∘ₗ single v`, are linearly independent
+(`hnewpin`), and `ro` linearly independent forms (`holdindep`) that vanish at those assignments
+(`hold`). Then `Sum.elim rn ro` is linearly independent.
+
+Evaluate a vanishing combination at `Function.update 0 v x`: the forms `ro` vanish there, so the
+coefficients of `rn` vanish by `hnewpin`; what is left is a vanishing combination of `ro`. -/
 theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finite ιo]
     [DecidableEq α] {v : α}
     {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
@@ -1553,35 +1171,15 @@ theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finit
   · exact hgn i
   · exact hgo j
 
-/-- **LEAF-DBL: the option-2 disjoint-coordinate-block independence of the de-operated corner
-and the `v`-free bottom** (`lem:case-III` infra, Phase 23d, the option-2 cert prerequisite;
-Katoh–Tanigawa 2011 §6.4.2, eqs. (6.61)/(6.64)). The independence half of KT's (6.64) block
-decomposition as the route-A option-2 cert (`notes/Phase23-design.md` §I.8.24(4.42)) consumes it:
-the corner block `Mᵢ` and the `R(G_v^{ab}, q₁)` bottom block live on **disjoint coordinate blocks**,
-glued by the column-operation `Φ = columnOp hva` (`col_a += col_v`).
+/-- **Forms independent at `v`, composed with `Φ⁻¹`, and forms that ignore `S v`**: let
+`Φ = columnOp hva`, let the restrictions of the forms `corner i` to the screw assignments that
+vanish off `v` be linearly independent (`hcornerpin`), and let `bottom` be linearly independent
+forms (`hbotindep`) that do not depend on `S v` (`hbotblind`). Then the forms `corner i ∘ₗ Φ⁻¹` and
+`bottom j` are jointly linearly independent.
 
-Concretely, the inputs are a *corner* functional family `corner : m₁ → Dual (α → ScrewSpace K k)`
-that is independent **after restriction to body `v`'s screw column** (`hcornerpin`, the
-`corner i ∘ₗ single v` family — the `hA` content of the operated `Mᵢ` corner block) and a *bottom*
-family `bottom : m₂ → Dual (α → ScrewSpace K k)` **blind to body `v`** (`hbotblind`: changing
-the `v`-coordinate of an assignment leaves every `bottom j` unchanged — the structural reason the
-`R(G_v^{ab}, q₁)` rows of the split-off `Gab`, which has no body `v`, have no pin column) and is
-itself independent (`hbotindep`, KT's full-rank `R(Gab)` bottom from the IH). The conclusion is that
-the **de-operated** corner family `corner i ∘ₗ Φ⁻¹` (precomposed with `Φ⁻¹ = (columnOp hva).symm`,
-which the option-2 cert recognizes as genuine `R(F₀)` rigidity rows) together with the unchanged
-bottom is jointly independent — the `D(|V(G)|−1)`-row independent family the cert lands in
-`span F₀.rigidityRows`.
-
-The proof is the disjoint-pin split `linearIndependent_sum_pinned_block` (the corner pinned to
-`v`'s column, the bottom vanishing on pure-`v` assignments — both supplied by `hcornerpin`/
-`hbotblind`) giving the independence of the *operated* `Sum.elim corner bottom`, then the
-`Φ⁻¹`-precompose: `corner i ∘ₗ Φ⁻¹` is `(columnOp hva).symm.dualMap (corner i)`, the bottom is fixed
-by `Φ⁻¹` (`Φ⁻¹` only touches the `v`-column, `hbotblind`), so the de-operated combined family is
-`(columnOp hva).symm.dualMap ∘ (Sum.elim corner bottom)` — the image of an independent family under
-the dual-space automorphism `(columnOp hva).symm.dualMap`, hence independent
-(`LinearIndependent.map'` along the injective equiv). This routes around the `Φ`-induced nonzero pin
-entries that broke the literal-`0` lower-left block of the `fromBlocks A B 0 D` matrix cert (option
-1 walls on the Schur complement; design §I.8.24(4.41)/(4.42)). -/
+The forms `bottom j` vanish at the assignments that vanish off `v`, so `Sum.elim corner bottom` is
+independent (`linearIndependent_sum_pinned_block`). `Φ⁻¹` changes only `S v`, so it fixes each
+`bottom j`, and composing with `Φ⁻¹` is an injective linear map of the forms. -/
 theorem linearIndependent_sumElim_corner_bottom_of_disjoint_pin {m₁ m₂ : Type*}
     [Finite m₁] [Finite m₂] [DecidableEq α] {v a : α} (hva : v ≠ a)
     {corner : m₁ → Module.Dual K (α → ScrewSpace K k)}
@@ -1594,11 +1192,12 @@ theorem linearIndependent_sumElim_corner_bottom_of_disjoint_pin {m₁ m₂ : Typ
     LinearIndependent K (Sum.elim
       (fun i : m₁ => (corner i).comp (columnOp (k := k) hva).symm.toLinearMap) bottom) := by
   classical
-  -- The bottom rows kill every pure-`v` assignment (`hbotblind` at `S = 0`, `update 0 v 0 = 0`).
+  -- The bottom rows vanish at every assignment `update 0 v x` (`hbotblind` at `S = 0`, then
+  -- `bottom j 0 = 0`).
   have hold : ∀ (j : m₂) (x : ScrewSpace K k),
       bottom j (Function.update (0 : α → ScrewSpace K k) v x) = 0 := fun j x => by
     rw [hbotblind j 0 x]; exact map_zero _
-  -- The *operated* `Sum.elim corner bottom` is independent (the disjoint-pin column split).
+  -- `Sum.elim corner bottom` is independent (`linearIndependent_sum_pinned_block`).
   have hpinned : LinearIndependent K (Sum.elim corner bottom) :=
     linearIndependent_sum_pinned_block hold hcornerpin hbotindep
   -- `Φ⁻¹` fixes each blind bottom row: `Φ⁻¹ S = update S v (S v − S a)` only changes the
@@ -1608,8 +1207,8 @@ theorem linearIndependent_sumElim_corner_bottom_of_disjoint_pin {m₁ m₂ : Typ
       rw [LinearMap.comp_apply, LinearEquiv.coe_coe]
       change bottom j (Function.update S v (S v - S a)) = bottom j S
       rw [hbotblind]
-  -- The de-operated combined family is the dual-space automorphism `Φ⁻¹.dualMap` applied to the
-  -- operated family, so independence transports along the injective equiv.
+  -- The family with `Φ⁻¹` is `Φ⁻¹.dualMap` applied to `Sum.elim corner bottom`, and `Φ⁻¹.dualMap`
+  -- is injective.
   have heq : Sum.elim (fun i : m₁ =>
         (corner i).comp (columnOp (k := k) hva).symm.toLinearMap) bottom
       = ⇑(columnOp (k := k) hva).symm.dualMap ∘ Sum.elim corner bottom := by
@@ -1621,27 +1220,17 @@ theorem linearIndependent_sumElim_corner_bottom_of_disjoint_pin {m₁ m₂ : Typ
   exact hpinned.map' (columnOp (k := k) hva).symm.dualMap.toLinearMap
     (LinearMap.ker_eq_bot.2 (columnOp (k := k) hva).symm.dualMap.injective)
 
-/-- **The restriction-bottom block-triangular augment (the sibling of
-`linearIndependent_sum_pinned_block`, roles transposed)** (`lem:case-III-candidate-row`, the KT
-eq.~(6.29) `t = 0` certification shape;
-Katoh–Tanigawa 2011 §6.4.1, Phase 22h). The pin-a-body split `linearIndependent_sum_pinned_block`
-proves `Sum.elim rn ro` independent from a *pinned* top block (`rn` independent on body `v`'s screw
-column) and a *full*-strength bottom block (`ro` independent as ambient functionals, vanishing on
-pure-`v` assignments). The `t = 0` hinge-level family of KT's eq.~(6.29) presents the transposed
-shape: the **top** block `top` is the operated, pure-`v`-column candidate rows (vanishing on every
-assignment supported off `v`, `htopvanish`), and the **bottom** block `bot` is the chosen split-off
-rows carried as `F₀`-rows, independent only *after restriction to `V ∖ {v}`* (`hbotrestrict`, their
-composites with the off-`v` projection `P_v S = Function.update S v 0`, expressed as
-`id − single v ∘ proj v`). So the augment runs with the block-triangular argument the *other* way
-round: evaluate a vanishing combination at the off-`v` assignment `Function.update S v 0` — the
-pure-`v` top rows vanish there (`htopvanish`), leaving a vanishing combination of the restricted
-bottom rows `bot ∘ P_v`, whose coefficients vanish by `hbotrestrict`; the residual is a vanishing
-combination of `top` alone, and pinning to body `v`'s column (composing with `single v`) forces the
-top coefficients by `htoppin`. This is the abstract count carrier of the M₁/M₂/M₃ arms' `t = 0`
-certification (design §1.50(c)): the top is the candidate-completion's extra `D` rows, the bottom is
-the `D(|V_v|−1)` split-off rows reproduced as `F₀`-rows, the union's independence the eq.~(6.29)
-full `D(|V|−1)`. Graph-free and carrier-free pure linear algebra (the `ofNormals`/`withGraph` defeq
-trap, TACTICS-QUIRKS §38, does not bite). -/
+/-- **Forms that depend only on `S v`, and forms independent off `v`** (a step of
+`lem:case-III-candidate-row`; the shape of KT eq. (6.29), p. 686): let the forms `top` vanish where
+`S v = 0` (`htopvanish`), with restrictions to the assignments that vanish off `v` linearly
+independent (`htoppin`), and let the restrictions of the forms `bot` to the other bodies,
+`bot j ∘ₗ (id − single v ∘ₗ proj v)`, be linearly independent (`hbotrestrict`). Then
+`Sum.elim top bot` is linearly independent.
+
+Evaluate a vanishing combination at `S` with its value at `v` replaced by `0`: the forms `top`
+vanish there, so the coefficients of `bot` vanish by `hbotrestrict`; then those of `top` vanish by
+`htoppin`. It is `linearIndependent_sum_pinned_block` with the roles of the columns of `v` and of
+the other columns exchanged. -/
 theorem linearIndependent_sum_restriction_block {ιt ιb : Type*} [Finite ιt] [Finite ιb]
     [DecidableEq α] {v : α}
     {top : ιt → Module.Dual K (α → ScrewSpace K k)} {bot : ιb → Module.Dual K (α → ScrewSpace K k)}
@@ -1704,23 +1293,12 @@ theorem linearIndependent_sum_restriction_block {ιt ιb : Type*} [Finite ιt] [
   · exact hgt i
   · exact hgb j
 
-/-- **The conditional `+|ιc|`-row new block: a whole pinned candidate block lifts the `va`-block**
-(`lem:case-III-candidate-row`, the general-`d` chain form of KT eq.~(6.29); Katoh–Tanigawa 2011
-§6.4.1–§6.4.2, the candidate-completion's block-triangular `+|ιc|`, Phase 22e/23b CHAIN-1). The
-`ιc`-block generalization of `linearIndependent_sum_pinned_block_augment` (the single-`Unit`
-candidate; below): instead of one extra pure-`v`-column candidate row, augment the new `va`-block by
-an entire block `wc : ιc → Dual` of candidate-completion rows, each already a pure-`v`-column row
-(the column op having reduced them, eq.~(6.28)). The new block is the `D − 1` rows `rn` of body
-`v`'s `va`-hinge **plus** the candidate block `wc`; the old block is the `D(|V_v|−1)` rows `ro` of
-the split-off (vanishing at `update 0 v`, `hold`). The two are jointly independent —
-`Sum.elim (Sum.elim rn wc) ro` — provided the **augmented** pinned new block
-`Sum.elim (rn ·∘ₗ single v) (wc ·∘ₗ single v)` is independent on body `v`'s `D`-dimensional screw
-column (`hnewpinaug`, the top-left `D × D` full rank). This is exactly
-`linearIndependent_sum_pinned_block` applied to the augmented new block: each `wc i` is a new-block
-row pinned through `v`'s column like `rn` (the pure-`v`-column property the caller establishes,
-carried into `hnewpinaug`),
-so the whole block joins `rn` in the `hnewpin` slot rather than needing the old-block `hold`
-vanishing. The `+|ιc|` over the stratum-1 brick is the candidate block. -/
+/-- **Forms independent at `v`, in two families, and forms vanishing at `v`** (a step of
+`lem:case-III-conditional-block`): if the restrictions of the forms `rn` and `wc` to the screw
+assignments that vanish off `v` are jointly linearly independent (`hnewpinaug`), and the forms `ro`
+are as in `linearIndependent_sum_pinned_block` (`hold`, `holdindep`), then
+`Sum.elim (Sum.elim rn wc) ro` is linearly independent: that lemma, with `Sum.elim rn wc` as the
+first family. -/
 theorem linearIndependent_sum_pinned_block_augment_block {ιn ιo ιc : Type*}
     [Finite ιn] [Finite ιo] [Finite ιc]
     [DecidableEq α] {v : α}
@@ -1733,12 +1311,10 @@ theorem linearIndependent_sum_pinned_block_augment_block {ιn ιo ιc : Type*}
       (fun i : ιc => (wc i).comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v))))
     (holdindep : LinearIndependent K ro) :
     LinearIndependent K (Sum.elim (Sum.elim rn wc) ro) := by
-  -- The whole pure-`v`-column candidate block `wc` joins the `va`-block as `|ιc|` more new-block
-  -- rows, each pinned through `v`'s column exactly like `rn`; feed the augmented new block to the
-  -- pin-a-body split.
+  -- The forms `wc` join `rn` in the first family of `linearIndependent_sum_pinned_block`.
   refine BodyHingeFramework.linearIndependent_sum_pinned_block (v := v) hold ?_ holdindep
-  -- The augmented new block, composed with `single v`, *is* `hnewpinaug` — the two functions agree
-  -- (`Sum.elim` distributes over the per-index `.comp (single v)`).
+  -- The first family, composed with `single v`, is the family of `hnewpinaug` (`Sum.elim`
+  -- commutes with `.comp (single v)`).
   have hfun : (fun i : ιn ⊕ ιc =>
       ((Sum.elim rn wc) i).comp
         (LinearMap.single K (fun _ : α => ScrewSpace K k) v))
@@ -1748,13 +1324,12 @@ theorem linearIndependent_sum_pinned_block_augment_block {ιn ιo ιc : Type*}
     funext i; cases i <;> rfl
   rw [hfun]; exact hnewpinaug
 
-/-- **The single-candidate pinned-block augment** (`lem:case-III-candidate-row`, KT eq.~(6.29);
-Katoh–Tanigawa 2011 §6.4.1, the candidate-completion's block-triangular `+1`, Phase 22e). The
-`ιc := Unit` instance of `linearIndependent_sum_pinned_block_augment_block`: augment the new
-`va`-block by **one** extra pure-`v`-column candidate row `w` (the operated `(vb)i^*`-row from
-the column op, `hingeRow_comp_columnOp_vanish_off` + `dualMap_eq_comp_single_proj_of_vanish_off`,
-eq.~(6.28)). The `+1` over the stratum-1 brick is the extra `Unit` row; the count becomes
-`((D − 1) + 1) + D(|V_v|−1) = D(|V|−1)`. -/
+/-- **Two blocks of independent forms, with one more form independent at `v`**
+(`lem:case-III-conditional-block`; for KT eq. (6.29), p. 686): if the restrictions of the forms `rn`
+and of a form `w` to the screw assignments that vanish off `v` are linearly independent, and the
+forms `ro` are linearly independent and vanish at those assignments, then `rn`, `w` and `ro` are
+jointly linearly independent. It is the case `ιc = Unit` of
+`linearIndependent_sum_pinned_block_augment_block`. -/
 theorem linearIndependent_sum_pinned_block_augment {ιn ιo : Type*} [Finite ιn] [Finite ιo]
     [DecidableEq α] {v : α}
     {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
@@ -1766,32 +1341,15 @@ theorem linearIndependent_sum_pinned_block_augment {ιn ιo : Type*} [Finite ιn
       (fun _ : Unit => w.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v))))
     (holdindep : LinearIndependent K ro) :
     LinearIndependent K (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro) :=
-  -- The single-candidate `Unit` instance of the block augment `…_augment_block`.
+  -- The case `ιc = Unit` of `linearIndependent_sum_pinned_block_augment_block`.
   linearIndependent_sum_pinned_block_augment_block (wc := fun _ : Unit => w) hold hnewpinaug
     holdindep
 
-/-- **Swapping the candidate row by an old/new-block combination preserves independence**
-(`lem:case-III-candidate-row`, the abstract row-operation core of KT eq.~(6.27); Katoh–Tanigawa 2011
-§6.4.1, Phase 22g). The candidate-completion family is
-`Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro`
-— the new block `rn`, the old block `ro`, and the single candidate row `w`. The genericity-device
-feed (`hasFullRankRealization_of_independent_panelRow_index`) needs every member of the independent
-family to be a genuine `panelRow` of the candidate placement, but the candidate-completion
-assembly (`linearIndependent_sum_augment_candidateRow_restriction`) delivers the candidate row in a
-`hingeRow` form `w` that is *not* itself a panel row. KT's eq.~(6.27) closes this by a **row
-operation**: the transported `(vb)i^*`-row `hingeRow v b ρ` (a genuine rigidity row,
-`exists_candidate_row_eq612`) minus its inductive `(ab)`-part `wGv = hingeRow a b ρ` — an element of
-the *old* block's span — collapses to the pure `(va)`-hinge candidate row `hingeRow v a ρ`. Adding a
-combination of the other rows to one row of a matrix never changes its rank, and this lemma is that
-fact for the candidate summand: if the family with candidate row `w` is linearly independent and
-`w'` differs from `w` by an element of the span of the *remaining* rows `Sum.elim rn ro` (`hdiff`),
-then the family with the swapped candidate row `w'` is again linearly independent.
-
-The proof reassociates the `(ιn ⊕ Unit) ⊕ ιo` index to `(ιn ⊕ ιo) ⊕ Unit` (the candidate summand
-last), so the row-space criterion `linearIndependent_sumElim_unit_iff` reads the independence as
-`w ∉ span (range (Sum.elim rn ro))`; since `w' − w` lies in that span, `w'` is fresh iff `w` is.
-Graph-free and carrier-free (pure linear algebra on the dual space), so the recurring
-`ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+/-- **Changing one form by a combination of the others keeps independence** (a row operation): if
+the forms `rn`, `w` and `ro` are jointly linearly independent and `w' − w` lies in the span of `rn`
+and `ro`, then `rn`, `w'` and `ro` are. Reordered with `w` last, independence says
+`w ∉ span (rn, ro)` (`linearIndependent_sumElim_unit_iff`), and `w'` differs from `w` by a member of
+that span. -/
 theorem linearIndependent_sumElim_candidateRow_swap {ιn ιo : Type*}
     {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
     {w w' : Module.Dual K (α → ScrewSpace K k)}
@@ -1823,24 +1381,11 @@ theorem linearIndependent_sumElim_candidateRow_swap {ιn ιo : Type*}
   rw [hreassoc w', linearIndependent_equiv]
   exact (linearIndependent_sumElim_unit_iff hbase w').2 hw'
 
-/-- **Swapping an entire `d`-fold candidate block by old/new-block combinations preserves
-independence** (`lem:case-III-candidate-row`, the general-`d` chain row-correspondence of KT
-eq.~(6.62); Katoh–Tanigawa 2011 §6.4.2, the CHAIN-1 generalization of the single-`Unit`
-`linearIndependent_sumElim_candidateRow_swap` to the length-`d` chain). The candidate-completion
-family is `Sum.elim (Sum.elim rn cand) ro` — the new block `rn`, the **block** of `d` candidate
-rows `cand : ιc → Dual`, and the old block `ro`. KT's general-`d` Case III corrects *each* of the
-`d` chain candidate rows by its own inductive `(ab)`-part (an element of the old/new blocks' span,
-eq.~(6.62)): if the family with candidate block `cand` is linearly independent and `cand' i` differs
-from `cand i` by an element of `span (range (Sum.elim rn ro))` for every chain index `i` (`hdiff`),
-then the family with the swapped block `cand'` is again linearly independent.
-
-The `Fin d`-indexed generalization of `linearIndependent_sumElim_candidateRow_swap` (the `Unit`
-single-candidate version): the proof reassociates the `(ιn ⊕ ιc) ⊕ ιo` index to `(ιn ⊕ ιo) ⊕ ιc`
-(the candidate block last) and applies the block row operation
-`linearIndependent_sumElim_block_swap` with base `Sum.elim rn ro`, where each candidate's
-correction `cand' i - cand i` lies in `span (range (Sum.elim rn ro))`. Graph-free and carrier-free
-(pure linear algebra on the dual space), so the recurring `ofNormals`/`withGraph` defeq trap
-(TACTICS-QUIRKS §38) does not bite. -/
+/-- **Changing a family of forms by combinations of the others keeps independence**: the form of
+`linearIndependent_sumElim_candidateRow_swap` for a family `cand` in place of one form `w`. If `rn`,
+`cand` and `ro` are jointly linearly independent and each `cand' i − cand i` lies in the span of
+`rn` and `ro`, then `rn`, `cand'` and `ro` are. Reordered with `cand` last, it is
+`linearIndependent_sumElim_block_swap`. -/
 theorem linearIndependent_sumElim_candidateBlock_swap {ιn ιo ιc : Type*}
     {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
     {cand cand' : ιc → Module.Dual K (α → ScrewSpace K k)}
@@ -1860,30 +1405,17 @@ theorem linearIndependent_sumElim_candidateBlock_swap {ιn ιo ιc : Type*}
   rw [hreassoc cand, linearIndependent_equiv] at hindep
   exact linearIndependent_sumElim_block_swap hindep hdiff
 
-/-- **The restriction-bottom candidate-completion augment: the operated top block joins a
-restriction-independent bottom block** (`lem:case-III-candidate-row`, the abstract core of the
-M₁/M₂/M₃ arms' `t = 0` certification at the hinge-level family `F₀`; Katoh–Tanigawa 2011 §6.4.1,
-eq.~(6.29), Phase 22h §1.50(c)). It assembles the candidate completion against a bottom block
-independent only *after restriction to `V ∖ {v}`*, not against a *pure-`v`-vanishing* one — KT's
-eq.~(6.29) bottom block at the `t = 0` candidate `F₀`, the `(vb)ⱼ`-rows whose restrictions to
-`V ∖ {v}` reproduce the split's rows (design §1.50(c): the eq.~(6.29) bottom is
-**restriction-independent**, not `v`-vanishing).
+/-- **The rows of `va`, the form `hingeRow v a ρ` and forms independent off `v`, through the column
+operation** (a step of `lem:case-III-candidate-row`; KT eqs. (6.14)–(6.16) and (6.29), pp. 679 and
+686): let `Φ = columnOp hva`. Suppose that the forms `rn i ∘ₗ Φ` vanish where `S v = 0`
+(`hrnvanish`); that the restrictions of the forms `rn i ∘ₗ Φ` and `(hingeRow v a ρ) ∘ₗ Φ` to the
+screw assignments that vanish off `v` are linearly independent (`hnewpinaug`); and that the
+restrictions of the forms `ro j ∘ₗ Φ` to the other bodies are linearly independent (`hbotrestrict`).
+Then `rn`, `hingeRow v a ρ` and `ro` are jointly linearly independent.
 
-The column operation `Φ = columnOp hva` (`col_a += col_v`, eqs.~(6.14)–(6.15)) makes the candidate
-row `w = hingeRow v a ρ` and the `va`-block rows `rn` pure-`v`-column in the operated frame
-(`hingeRow_comp_columnOp_vanish_off`; `hrnvanish` for the abstract `rn`); precomposing the whole
-family with `Φ` (a linear automorphism, independence preserved via the injective dual equivalence
-`Φ.dualMap`) turns it into the operated family
-`Sum.elim (Sum.elim (rn ·∘ₗ Φ) (w ∘ₗ Φ)) (ro ·∘ₗ Φ)`. There the operated top block — the `va`-rows
-plus the operated candidate row, all pure-`v`-column — meets the *top*-vanishing hypothesis of the
-restriction-bottom augment `linearIndependent_sum_restriction_block`, the operated top is
-pinned-independent on body `v`'s column (`hnewpinaug`, eq.~(6.29) top-left `D × D` full rank = the
-Claim~6.12 conditional, passed through), and the operated bottom is independent after restriction to
-`V ∖ {v}` (`hbotrestrict`). The augment fires, and the operated family's independence transports
-back through `Φ.dualMap` (injective) to the original family
-`Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow v a ρ)) ro` — the eq.~(6.29) certified count at
-`F₀`. Graph-free / carrier-free pure linear algebra (the `ofNormals`/`withGraph` defeq trap,
-TACTICS-QUIRKS §38, does not bite). -/
+The forms composed with `Φ` satisfy `linearIndependent_sum_restriction_block`, the form
+`(hingeRow v a ρ) ∘ₗ Φ` by `hingeRow_comp_columnOp_vanish_off`, and composing with `Φ` is an
+injective linear map of the forms. -/
 theorem linearIndependent_sum_augment_candidateRow_restriction
     [DecidableEq α] {v a : α} (hva : v ≠ a) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
     {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
@@ -1906,8 +1438,8 @@ theorem linearIndependent_sum_augment_candidateRow_restriction
   set Φ := columnOp (K := K) (k := k) hva with hΦ
   have hker : LinearMap.ker Φ.dualMap.toLinearMap = ⊥ :=
     LinearMap.ker_eq_bot_of_injective Φ.dualMap.injective
-  -- The operated top block `(rn ⊕ {w}) ∘ₗ Φ` vanishes on every assignment supported off `v`: the
-  -- `rn`-part by `hrnvanish`, the operated candidate `w ∘ₗ Φ` by the columnOp vanish-off brick.
+  -- The composed forms `rn i ∘ₗ Φ` and `(hingeRow v a ρ) ∘ₗ Φ` vanish where `S v = 0`: the
+  -- first by `hrnvanish`, the second by `hingeRow_comp_columnOp_vanish_off`.
   have htopvanish : ∀ (i : ιn ⊕ Unit) (S : α → ScrewSpace K k), S v = 0 →
       Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
         (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap) i S = 0 := by
@@ -1915,8 +1447,8 @@ theorem linearIndependent_sum_augment_candidateRow_restriction
     · exact hrnvanish i S hS
     · rw [Sum.elim_inr, LinearMap.comp_apply, LinearEquiv.coe_coe,
         hingeRow_comp_columnOp_vanish_off hva ρ S hS]
-  -- The operated top block is pinned-independent on body `v`'s column: `hnewpinaug` after the
-  -- `Sum.elim`-of-pins is reassociated to the pin-of-`Sum.elim` shape.
+  -- Their restrictions to the assignments that vanish off `v` are independent: `hnewpinaug`,
+  -- with `Sum.elim` commuted with `.comp (single v)`.
   have htoppin : LinearIndependent K
       (fun i : ιn ⊕ Unit =>
         (Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
@@ -1924,14 +1456,14 @@ theorem linearIndependent_sum_augment_candidateRow_restriction
           (LinearMap.single K (fun _ : α => ScrewSpace K k) v)) := by
     convert hnewpinaug using 1
     funext i; rcases i with i | u <;> rfl
-  -- The restriction-bottom augment fires on the operated family.
+  -- `linearIndependent_sum_restriction_block` applies to the composed forms.
   have hop : LinearIndependent K (Sum.elim
       (Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
         (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap))
       (fun j : ιo => (ro j).comp Φ.toLinearMap)) :=
     linearIndependent_sum_restriction_block (v := v) htopvanish htoppin hbotrestrict
-  -- The operated family is `Φ.dualMap ∘ (original family)`; transport independence back through the
-  -- injective dual equivalence `Φ.dualMap` (`g ↦ g ∘ₗ Φ`).
+  -- The composed family is `Φ.dualMap` applied to the original one; `Φ.dualMap` is injective
+  -- (`g ↦ g ∘ₗ Φ`), so the original family is independent.
   have hcomp : (Sum.elim (Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
         (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap))
       (fun j : ιo => (ro j).comp Φ.toLinearMap))
@@ -2002,11 +1534,11 @@ theorem linearIndependent_hingeRow_starForest {J : Type*} [Finite J] {I : J → 
 (`lem:own-end-rows-independent`, its form for rows). Let each edge `e j` link an end `u j` of its
 own to `other j` (`hlink`; `hu` and `hsep` as in `linearIndependent_hingeRow_starForest`, so the
 edges form a star forest), with `F.supportExtensor (e j) ≠ 0` at each edge (`he`). Then there is a
-linearly independent family of members of `F.rigidityRows` indexed by
-`Σ j, Fin (screwDim k − 1)`, of cardinality `|J|·(D − 1)` with `D = screwDim k` (`Nat.card_sigma`).
+linearly independent family of members of `F.rigidityRows` indexed by `Σ j, Fin (screwDim k − 1)`,
+of cardinality `|J|·(D − 1)` with `D = screwDim k` (`Nat.card_sigma`).
 
 The `D − 1` forms of each edge are a basis of its hinge-row block (`finrank_hingeRowBlock`,
-extracted by `exists_linearIndependent_fin_of_finrank_eq`), and
+extracted by `Submodule.exists_linearIndependent_fin_of_finrank_eq`), and
 `linearIndependent_hingeRow_starForest` makes the rows of all the edges jointly independent; the
 link `hlink j` and the block membership witness each as a rigidity row. -/
 theorem exists_independent_rigidityRows_of_starForest (F : BodyHingeFramework K k α β) {J : Type*}
@@ -2025,18 +1557,18 @@ theorem exists_independent_rigidityRows_of_starForest (F : BodyHingeFramework K 
     linearIndependent_hingeRow_starForest hu hsep hc, fun p => ?_⟩
   exact ⟨e p.1, u p.1, other p.1, hlink p.1, c p.1 p.2, hmem p.1 p.2, rfl⟩
 
-/-! ## Trivial motions + infinitesimal rigidity: rank Lemmas 5.1–5.3 (KT §2.4)
+/-! ## Trivial motions, rigidity and the rank lemmas (KT §§2.3–2.4 and 5)
 
-The trivial (rigid-motion) subspace of dimension `D`, the rigidity predicates
-(`IsInfinitesimallyRigid{,On}`), and the three rank lemmas — Lemma 5.1 (pin-a-body,
-`finrank_pinnedMotions_add_screwDim`), Lemma 5.2 (semicontinuity,
-`finrank_infinitesimalMotions_le_of_span_le`), Lemma 5.3 (parallel hinges,
-`eq_of_hingeConstraint_two_parallel`). -/
+The trivial motions, of dimension `D` (`lem:trivial-motions-rank-bound`); infinitesimal rigidity,
+and rigidity on a set of bodies; KT Lemma 5.1 (`finrank_pinnedMotions_add_screwDim`,
+`lem:rank-delete-vertex`) and Lemma 5.3 (`eq_of_hingeConstraint_two_parallel`,
+`lem:rank-parallel-full`); and the comparison of two frameworks whose hinges have nested spans
+(`lem:rank-rotation-semicont`), which is not KT Lemma 5.2. -/
 
-/-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
-assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
-These are the rigid-motion screws — the constant assignments — and they form the
-`D`-dimensional subspace that the rank bound subtracts off. -/
+/-- **A trivial screw assignment** (`def:trivial-motions-rigid`; KT §2.3, p. 653): `S u = S v` for
+all bodies `u` and `v`. The trivial assignments are infinitesimal motions
+(`isInfinitesimalMotion_of_isTrivialMotion`), and they form a space of dimension `D` when there is a
+body (`finrank_trivialMotions`). -/
 def IsTrivialMotion (S : α → ScrewSpace K k) : Prop :=
   ∀ u v, S u = S v
 
@@ -2049,17 +1581,13 @@ theorem isInfinitesimalMotion_of_isTrivialMotion (F : BodyHingeFramework K k α 
   rw [hingeConstraint, hS u v, sub_self]
   exact Submodule.zero_mem _
 
-/-- The **trivial-motion subspace** (`lem:trivial-motions-rank-bound`): the submodule of all
-trivial infinitesimal motions (constant screw assignments) inside the screw-assignment space
-`α → ScrewSpace K k`. Katoh–Tanigawa's `D` standard trivial motions `S*_i` span this space, and
-its dimension is `D = screwDim k = (k+2 choose 2)`; carried basis-free as the constant
-assignments. The screw-dimension count `D` is now available as the `finrank` equality
-`screwSpace_finrank` (`def:rigidity-matrix`'s `⋀^k K^(k+2) ≅ K^D` coordinatization), so
-`finrank (trivialMotions) = D` follows from the diagonal iso `trivialMotions_eq_range_const`.
+/-- **The space of trivial motions** (`def:trivial-motions-rigid`): the constant screw assignments,
+a subspace of `α → ScrewSpace K k`. Katoh and Tanigawa's `D` motions `S*_i` are a basis of it (KT
+p. 654); it is the image of the screw space under `s ↦ (fun _ => s)`
+(`trivialMotions_eq_range_const`), of dimension `D` when there is a body (`finrank_trivialMotions`).
 
-The framework argument `F` is carried only to give the `F.trivialMotions` dot-notation API
-parallel to `F.infinitesimalMotions`: the trivial-motion space depends only on `α` and `k` (the
-constant assignments), not on the graph or hinges, hence the `@[nolint unusedArguments]`. -/
+The framework `_F` is an argument only so that `F.trivialMotions` reads as `F.infinitesimalMotions`
+does; the space does not depend on it, hence `@[nolint unusedArguments]`. -/
 @[nolint unusedArguments]
 def trivialMotions (_F : BodyHingeFramework K k α β) : Submodule K (α → ScrewSpace K k) where
   carrier := {S | IsTrivialMotion S}
@@ -2072,17 +1600,17 @@ theorem mem_trivialMotions (F : BodyHingeFramework K k α β) (S : α → ScrewS
     S ∈ F.trivialMotions ↔ IsTrivialMotion S :=
   Iff.rfl
 
-/-- The trivial motions lie inside the null space `Z(G,p)` (`lem:trivial-motions-rank-bound`):
-`trivialMotions ≤ infinitesimalMotions`, since each constant assignment is an infinitesimal
-motion (`isInfinitesimalMotion_of_isTrivialMotion`). -/
+/-- **The trivial motions are motions** (a step of `lem:trivial-motions-rank-bound`):
+`trivialMotions ≤ infinitesimalMotions`, by `isInfinitesimalMotion_of_isTrivialMotion`. -/
 theorem trivialMotions_le_infinitesimalMotions (F : BodyHingeFramework K k α β) :
     F.trivialMotions ≤ F.infinitesimalMotions :=
   fun _ hS => F.isInfinitesimalMotion_of_isTrivialMotion hS
 
-/-- **Infinitesimal rigidity** of a body-hinge framework `(G,p)`
-(`def:dof-generic`, `lem:trivial-motions-rank-bound`): every infinitesimal motion is trivial,
-i.e. `Z(G,p) ⊆` the trivial motions. Equivalently `rank R(G,p) = D(|V|-1)`; the equality form
-of the rank bound waits on the `⋀^k K^(k+2) ≅ K^D` coordinatization (`def:rigidity-matrix`). -/
+/-- **Infinitesimal rigidity** (`def:trivial-motions-rigid`; KT §2.3, p. 653): every infinitesimal
+motion is trivial, `Z(G,p) ≤ trivialMotions`. It holds exactly when `Z(G,p)` is the space of trivial
+motions (`infinitesimalMotions_eq_trivialMotions_iff`), which has dimension `D` when there is a body
+(`finrank_trivialMotions`); that is, when `rank R(G,p) = D(|V| − 1)`
+(`lem:trivial-motions-rank-bound`). -/
 def IsInfinitesimallyRigid (F : BodyHingeFramework K k α β) : Prop :=
   F.infinitesimalMotions ≤ F.trivialMotions
 
@@ -2091,16 +1619,11 @@ theorem isInfinitesimallyRigid_iff (F : BodyHingeFramework K k α β) :
       ∀ S, F.IsInfinitesimalMotion S → IsTrivialMotion S :=
   Iff.rfl
 
-/-- **Infinitesimal rigidity relative to a body set `s`** (`def:rank-hypothesis`, the
-`V(G)`-relative motive): every infinitesimal motion is constant *on `s`*, `S u = S v` for all
-`u v ∈ s`. This is the `α`-independent realization motive of the algebraic induction (Phase 21b):
-the absolute form `IsInfinitesimallyRigid` (constancy on *all* of `α`) is unsatisfiable for a
-graph `G` that does not span the ambient body type `α` — a body in `α ∖ V(G)` carries no hinge
-constraint and is a free non-trivial motion — but the realization induction reduces to subgraphs
-with strictly fewer vertices on the same fixed `α`. Read at `s = V(G)`, this asks only that
-motions be constant on the bodies `G` actually carries, which is `rank R(G,p) = D(|V(G)|−1)` and
-composes through the vertex-reducing induction. Taking `s = Set.univ` recovers the absolute form
-(`isInfinitesimallyRigidOn_univ_iff`). -/
+/-- **Infinitesimal rigidity on a set `s` of bodies** (the rank form of `def:rank-hypothesis` at
+deficiency zero): every infinitesimal motion is constant on `s`. All frameworks have the same bodies
+`α`, and a body of `α` that is not a vertex of `G` moves freely; on `s = V(G)` the condition is the
+rank `D(|V(G)| − 1)` (`rem:rank-hypothesis-relative`). On `s = Set.univ` it is infinitesimal
+rigidity (`isInfinitesimallyRigidOn_univ_iff`). -/
 def IsInfinitesimallyRigidOn (F : BodyHingeFramework K k α β) (s : Set α) : Prop :=
   ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ v ∈ s, S u = S v
 
@@ -2109,38 +1632,30 @@ theorem isInfinitesimallyRigidOn_iff (F : BodyHingeFramework K k α β) (s : Set
       ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ v ∈ s, S u = S v :=
   Iff.rfl
 
-/-- **Relative rigidity shrinks with the body set** (`def:rank-hypothesis`): a framework rigid on
-`t` is rigid on any subset `s ⊆ t`. Constancy on the larger set forces constancy on the
-smaller. -/
+/-- **Rigidity on a set gives rigidity on its subsets** (`def:rank-hypothesis`): a motion constant
+on `t` is constant on every `s ⊆ t`. -/
 theorem IsInfinitesimallyRigidOn.mono (F : BodyHingeFramework K k α β) {s t : Set α} (hst : s ⊆ t)
     (h : F.IsInfinitesimallyRigidOn t) : F.IsInfinitesimallyRigidOn s :=
   fun S hS u hu v hv => h S hS u (hst hu) v (hst hv)
 
-/-- **Absolute rigidity is relative rigidity on all of `α`** (`def:rank-hypothesis`): the
-`V(G)`-relative motive at `s = Set.univ` is exactly the absolute infinitesimal rigidity
-`IsInfinitesimallyRigid` (every motion constant on every pair). -/
+/-- **Rigidity on all of `α` is infinitesimal rigidity** (`def:rank-hypothesis`):
+`F.IsInfinitesimallyRigidOn Set.univ ↔ F.IsInfinitesimallyRigid`. -/
 theorem isInfinitesimallyRigidOn_univ_iff (F : BodyHingeFramework K k α β) :
     F.IsInfinitesimallyRigidOn Set.univ ↔ F.IsInfinitesimallyRigid := by
   rw [isInfinitesimallyRigidOn_iff, isInfinitesimallyRigid_iff]
   exact ⟨fun h S hS u v => h S hS u (Set.mem_univ u) v (Set.mem_univ v),
     fun h S hS u _ v _ => h S hS u v⟩
 
-/-- **Absolute rigidity implies relative rigidity on any set** (`def:rank-hypothesis`): if every
-infinitesimal motion is constant on *all* of `α` then in particular it is constant on `s`. This is
-the direction the cycle / two-body base cases use — they prove the strong absolute statement when
-`G` spans, which immediately gives the relative motive on `V(G)`. -/
+/-- **Infinitesimal rigidity gives rigidity on every set of bodies** (`def:rank-hypothesis`): a
+motion constant on `α` is constant on `s`. -/
 theorem isInfinitesimallyRigidOn_of_isInfinitesimallyRigid (F : BodyHingeFramework K k α β)
     (h : F.IsInfinitesimallyRigid) (s : Set α) : F.IsInfinitesimallyRigidOn s :=
   fun S hS u _ v _ => (F.isInfinitesimallyRigid_iff.mp h S hS) u v
 
-/-- **Two overlapping rigid pieces glue to a rigid union** (`def:rank-hypothesis`, the splice-glue
-of Case I; Katoh–Tanigawa 2011 §6.2/6.5). If a framework is infinitesimally rigid on each of two
-body sets `s` and `t` that share a body `c ∈ s ∩ t`, then it is rigid on their union `s ∪ t`:
-every motion is constant on `s` and constant on `t`, and the two constants agree at the shared
-body `c`, so the motion is constant across all of `s ∪ t`. This is the `α`-independent geometric
-core of the Case-I block-triangular splice — the rigid subgraph `H` (on `s = V(H)`) and the rigid
-contraction `G/E(H)` (on `t = V(G/E(H))`) overlap at the contracted body and cover `V(G)`, so a
-framework realizing both pieces realizes the parent rank. -/
+/-- **Rigidity on two sets with a common body gives rigidity on their union** (a step of
+`lem:case-I-splice-seed`): if every motion is constant on `s` and on `t`, and `c ∈ s ∩ t`, then
+every motion takes the value `S c` on `s ∪ t`. In Case I the vertex set of the rigid subgraph `H`
+and that of the contraction `G/E(H)` share the body to which `H` is contracted, and cover `V(G)`. -/
 theorem isInfinitesimallyRigidOn_union_of_inter (F : BodyHingeFramework K k α β) {s t : Set α}
     {c : α} (hcs : c ∈ s) (hct : c ∈ t)
     (hs : F.IsInfinitesimallyRigidOn s) (ht : F.IsInfinitesimallyRigidOn t) :
@@ -2152,20 +1667,16 @@ theorem isInfinitesimallyRigidOn_union_of_inter (F : BodyHingeFramework K k α �
     · exact ht S hS x hx c hct
   rw [key u hu, key v hv]
 
-/-- Infinitesimal rigidity is the equality `Z(G,p) = trivialMotions` of the two submodules
-(`lem:trivial-motions-rank-bound`): one inclusion always holds
-(`trivialMotions_le_infinitesimalMotions`), so rigidity — the reverse inclusion — upgrades it to
-equality. This is the basis-free form of `rank R(G,p) = D(|V|-1)`: the null space is exactly the
-`D(|V|-1)`-corank trivial-motion space. -/
+/-- **Infinitesimal rigidity is the equality `Z(G,p) = trivialMotions`**
+(`lem:trivial-motions-rank-bound`): the trivial motions are always motions
+(`trivialMotions_le_infinitesimalMotions`), so rigidity, the other inclusion, gives the equality. -/
 theorem infinitesimalMotions_eq_trivialMotions_iff (F : BodyHingeFramework K k α β) :
     F.infinitesimalMotions = F.trivialMotions ↔ F.IsInfinitesimallyRigid :=
   ⟨fun h => h.le, fun h => le_antisymm h F.trivialMotions_le_infinitesimalMotions⟩
 
-/-- The trivial-motion subspace is the **diagonal** of `α → ScrewSpace K k`: the range of the
-constant-assignment map `s ↦ (fun _ => s)`. This is the `D`-dimensional rigid-motion space of
-`lem:trivial-motions-rank-bound`; the linear isomorphism `ScrewSpace K k ≃ trivialMotions` it
-gives (for `Nonempty α`) is what carries `finrank (trivialMotions) = D` once the
-`⋀^k K^(k+2) ≅ K^D` coordinatization is in place (`def:rigidity-matrix`). -/
+/-- **The trivial motions are the constant assignments** (a step of
+`lem:trivial-motions-rank-bound`): `trivialMotions` is the image of `s ↦ (fun _ => s)`. With
+`injective_const_pi` it gives their dimension `D` (`finrank_trivialMotions`). -/
 theorem trivialMotions_eq_range_const (F : BodyHingeFramework K k α β) :
     F.trivialMotions =
       LinearMap.range (LinearMap.pi (fun _ : α => LinearMap.id) :
@@ -2180,11 +1691,8 @@ theorem trivialMotions_eq_range_const (F : BodyHingeFramework K k α β) :
   · rintro ⟨s, rfl⟩ u v
     rfl
 
-/-- The constant-assignment map `s ↦ (fun _ => s)` is injective on a nonempty index type
-(`lem:trivial-motions-rank-bound`): two constant assignments that agree everywhere agree at the
-witnessing body, hence carry the same common screw center. This is what makes the diagonal map a
-linear isomorphism `ScrewSpace K k ≃ trivialMotions`, the basis-free form of "a trivial motion is
-determined by its single common value". -/
+/-- **The map `s ↦ (fun _ => s)` is injective when there is a body** (a step of
+`lem:trivial-motions-rank-bound`): two constant assignments that agree agree at a body. -/
 theorem injective_const_pi [Nonempty α] :
     Function.Injective (LinearMap.pi (fun _ : α => LinearMap.id) :
       ScrewSpace K k →ₗ[K] α → ScrewSpace K k) := by
@@ -2192,38 +1700,28 @@ theorem injective_const_pi [Nonempty α] :
   have := congrFun h (Classical.arbitrary α)
   simpa using this
 
-/-- **The trivial-motion space has dimension `D = (k+2 choose 2)`** for a nonempty body set
-(`lem:trivial-motions-rank-bound`, `def:dof-generic`): `finrank K (trivialMotions) = screwDim k`.
-This is the numeric content of Katoh–Tanigawa's `D` standard trivial motions `S*_1, …, S*_D`. It
-combines the diagonal identification `trivialMotions_eq_range_const` (the trivial motions are the
-range of the injective constant-assignment map `s ↦ (fun _ => s)`, `injective_const_pi`) with the
-screw-dimension count `screwSpace_finrank` (`finrank K (ScrewSpace K k) = D`, the
-`⋀^k K^(k+2) ≅ K^D` coordinatization of `def:rigidity-matrix`): an injective linear map preserves
-`finrank` (`LinearMap.finrank_range_of_inj`). -/
+/-- **The trivial motions have dimension `D`** (`lem:trivial-motions-rank-bound`; KT p. 654): when
+there is a body, `finrank K F.trivialMotions = screwDim k`. They are the image of the injective map
+`s ↦ (fun _ => s)` (`trivialMotions_eq_range_const`, `injective_const_pi`), which preserves
+dimension (`LinearMap.finrank_range_of_inj`), and the screw space has dimension `D`
+(`screwSpace_finrank`). -/
 theorem finrank_trivialMotions [Nonempty α] (F : BodyHingeFramework K k α β) :
     Module.finrank K F.trivialMotions = screwDim k := by
   rw [trivialMotions_eq_range_const, LinearMap.finrank_range_of_inj injective_const_pi,
     screwSpace_finrank]
 
-/-- **The screw-assignment space has dimension `D·|V|`** (`lem:trivial-motions-rank-bound`,
-`def:dof-generic`): `finrank K (α → ScrewSpace K k) = D · |V|`, the column count `D|V|` of
-Katoh–Tanigawa's rigidity matrix `R(G,p)`. From the product-space dimension `Module.finrank_pi`
-and the screw-dimension count `screwSpace_finrank` (the `⋀^k K^(k+2) ≅ K^D` coordinatization of
-`def:rigidity-matrix`). With `finrank_trivialMotions` this gives the numeric rank bound
-`rank R(G,p) ≤ D|V| - D = D(|V|-1)` of `lem:trivial-motions-rank-bound` (the codimension of the
-`D`-dimensional trivial kernel) and the degree of freedom of `def:dof-generic`. -/
+/-- **The screw assignments have dimension `D|V|`** (a step of `lem:trivial-motions-rank-bound`):
+`finrank K (α → ScrewSpace K k) = screwDim k * Fintype.card α`, the number of columns of `R(G,p)`
+(`Module.finrank_pi_const`, `screwSpace_finrank`). With `finrank_trivialMotions` it gives
+`rank R(G,p) = D|V| − dim Z(G,p) ≤ D(|V| − 1)`. -/
 theorem finrank_screwAssignment [Fintype α] :
     Module.finrank K (α → ScrewSpace K k) = screwDim k * Fintype.card α := by
   rw [Module.finrank_pi_const K, screwSpace_finrank, mul_comm]
 
-/-- **Two general-position parallel hinges intersect their constraint spans only at `0`**
-(`lem:rank-parallel-full`, Katoh–Tanigawa Lemma 5.3, span form): if the supporting extensors
-`C₁, C₂` of two hinges are linearly independent (the *general-position* hypothesis), then the
-two one-dimensional constraint spans `span C₁` and `span C₂` meet only at the origin,
-`span C₁ ⊓ span C₂ = ⊥`. This is the linear-algebra core of the lemma; the geometric
-general-position hypothesis on the hinge points is `affineSubspaceExtensor`-independence,
-supplied by the extensor-independence engine (`omitTwoExtensor_linearIndependent`,
-Phase 17 Lemma 2.1) specialized to two hinges. -/
+/-- **The spans of two independent screws meet in `0`** (`lem:rank-parallel-full`; the step of KT
+Lemma 5.3, p. 670): if `c₁` and `c₂` are linearly independent, then `span {c₁} ⊓ span {c₂} = ⊥`. Two
+hinges spanned by `d − 1` of `d + 1` affinely independent points, omitting different pairs, have
+independent extensors by KT Lemma 2.1 (`omitTwoExtensor_linearIndependent`). -/
 theorem span_inf_span_eq_bot_of_linearIndependent {c₁ c₂ : ScrewSpace K k}
     (h : LinearIndependent K ![c₁, c₂]) :
     Submodule.span K {c₁} ⊓ Submodule.span K {c₂} = ⊥ := by
@@ -2233,16 +1731,12 @@ theorem span_inf_span_eq_bot_of_linearIndependent {c₁ c₂ : ScrewSpace K k}
   rintro ⟨a, ha⟩
   exact h a ha
 
-/-- **Two general-position parallel hinges force the relative screw to zero**
-(`lem:rank-parallel-full`, Katoh–Tanigawa Lemma 5.3): if two edges `e₁, e₂` of a body-hinge
-framework `F` join the same pair of bodies `u, v` with hinges in general position — i.e. their
-supporting extensors `C(p(e₁)), C(p(e₂))` are linearly independent — then any screw assignment
-`S` satisfying the hinge constraint of *both* edges has equal screw centers on the two bodies,
-`S u = S v`. Geometrically the two `(D-1) × D` hinge-row blocks together have full rank `D`
-(`hingeRowBlock`), so the combined kernel on the relative screw `S u - S v` is `{0}`: this is
-the base case `|V| = 2` of the conjecture's algebraic induction. The general-position
-hypothesis on the hinge *points* is supplied by `omitTwoExtensor_linearIndependent`
-(Phase 17 Lemma 2.1) specialized to the two hinges. -/
+/-- **Two parallel edges with independent hinges fix the relative screw** (`lem:rank-parallel-full`;
+KT Lemma 5.3, pp. 669–670): if the edges `e₁` and `e₂` join the bodies `u` and `v`, with linearly
+independent supporting extensors, then every screw assignment that satisfies both hinge constraints
+has `S u = S v`. The difference `S u − S v` lies in both spans
+(`span_inf_span_eq_bot_of_linearIndependent`). The graph with two bodies and two such edges is the
+base case of the algebraic induction (`lem:theorem-55-base`). -/
 theorem eq_of_hingeConstraint_two_parallel (F : BodyHingeFramework K k α β)
     (S : α → ScrewSpace K k) {e₁ e₂ : β} {u v : α}
     (hgen : LinearIndependent K ![F.supportExtensor e₁, F.supportExtensor e₂])
@@ -2254,17 +1748,14 @@ theorem eq_of_hingeConstraint_two_parallel (F : BodyHingeFramework K k α β)
   rw [span_inf_span_eq_bot_of_linearIndependent hgen, Submodule.mem_bot, sub_eq_zero] at hmem
   exact hmem
 
-/-- **An independent family of constraint spans admits no nonzero cycle of differences**
-(`lem:cycle-realization`, the linear-algebra core of the `m`-body cycle): if `c : Fin m →
-ScrewSpace K k` is linearly independent and a family `d : Fin m → ScrewSpace K k` has each
-`d i ∈ span {c i}` with `∑ i, d i = 0`, then every `d i = 0`. This is the screw-space fact
-behind Katoh–Tanigawa Lemma 5.4 for a cycle of length `m`: around a cycle the relative-screw
-differences `d i = S(vᵢ) − S(vᵢ₊₁)` lie in the one-dimensional hinge spans `span C(p(eᵢ))`
-and telescope to `∑ d i = 0`, so independence of the `m` supporting extensors forces every
-difference to vanish — the `m`-edge generalization of
-`span_inf_span_eq_bot_of_linearIndependent` (the `m = 2` antiparallel case). Each `d i` is a
-scalar multiple `aᵢ • c i` (`Submodule.mem_span_singleton`), and `∑ aᵢ • c i = 0` with the
-`c i` independent forces every `aᵢ = 0` (`Fintype.linearIndependent_iff`). -/
+/-- **Independent screws admit no vanishing sum of nonzero multiples** (a step of
+`lem:cycle-realization-rigid`): if the screws `c i` are linearly independent, `d i ∈ span {c i}` for
+each `i`, and `∑ i, d i = 0`, then every `d i = 0`. Write `d i = a i • c i`
+(`Submodule.mem_span_singleton`); then every `a i = 0` (`Fintype.linearIndependent_iff`). It is the
+step behind the cycles of KT Lemma 5.4 (p. 670): around a cycle of bodies `vᵢ` whose supporting
+extensors are independent, the differences `d i = S(vᵢ) − S(vᵢ₊₁)` of a motion satisfy these
+hypotheses, so the motion is constant on the cycle. The case of two screws is
+`span_inf_span_eq_bot_of_linearIndependent`. -/
 theorem eq_zero_of_mem_span_singleton_of_sum_eq_zero {m : ℕ}
     {c d : Fin m → ScrewSpace K k} (hc : LinearIndependent K c)
     (hd : ∀ i, d i ∈ Submodule.span K {c i}) (hsum : ∑ i, d i = 0) (i : Fin m) :
@@ -2273,11 +1764,9 @@ theorem eq_zero_of_mem_span_singleton_of_sum_eq_zero {m : ℕ}
   have key : ∑ j, a j • c j = 0 := by rw [← hsum]; exact Finset.sum_congr rfl fun j _ => ha j
   rw [← ha i, Fintype.linearIndependent_iff.1 hc a key i, zero_smul]
 
-/-- The **pinned-motion subspace** at a body `v` (`lem:rank-delete-vertex`): the infinitesimal
-motions `S` that vanish on the pinned body, `S v = 0`. Pinning a body — fixing it to the zero
-screw — is the algebraic effect of deleting the `D` columns of `v` from the rigidity matrix
-`R(G,p)`; the surviving motions are exactly this subspace. Carried as the submodule of
-`infinitesimalMotions` cut out by `S v = 0`. -/
+/-- **The motions that vanish at a body `v`** (the space `pinned(v)` of `lem:rank-delete-vertex`):
+the infinitesimal motions `S` with `S v = 0`. Deleting the `D` columns of `v` from `R(G,p)` leaves
+the matrix whose null space consists of their restrictions to the other bodies. -/
 def pinnedMotions (F : BodyHingeFramework K k α β) (v : α) :
     Submodule K (α → ScrewSpace K k) where
   carrier := {S | F.IsInfinitesimalMotion S ∧ S v = 0}
@@ -2292,10 +1781,9 @@ theorem mem_pinnedMotions (F : BodyHingeFramework K k α β) (v : α) (S : α �
     S ∈ F.pinnedMotions v ↔ F.IsInfinitesimalMotion S ∧ S v = 0 :=
   Iff.rfl
 
-/-- Subtracting the constant screw `S v` from an infinitesimal motion `S` leaves an infinitesimal
-motion (`lem:rank-delete-vertex`): the hinge constraint only sees the relative screws
-`S u - S w`, which a constant shift `S u ↦ S u - S v` leaves unchanged. This is the
-normalization underlying the pin-a-body fact of White--Whiteley~`whiteWhiteley1987`. -/
+/-- **A motion minus a constant assignment is a motion** (a step of `lem:rank-delete-vertex`): the
+hinge constraints read only the differences `S u − S w`, which subtracting `c` from every value does
+not change. -/
 theorem isInfinitesimalMotion_sub_const (F : BodyHingeFramework K k α β)
     {S : α → ScrewSpace K k} (hS : F.IsInfinitesimalMotion S) (c : ScrewSpace K k) :
     F.IsInfinitesimalMotion (fun u => S u - c) := by
@@ -2304,10 +1792,9 @@ theorem isInfinitesimalMotion_sub_const (F : BodyHingeFramework K k α β)
   rw [hingeConstraint] at this ⊢
   simpa using this
 
-/-- **The trivial and pinned motions intersect only at `0`** (`lem:rank-delete-vertex`): a
-trivial motion (constant on every body) that also vanishes on the pinned body `v` is the zero
-assignment, `trivialMotions ⊓ pinnedMotions v = ⊥`. The two `D`- and (`rank R`)-dimensional
-summands are independent. -/
+/-- **The trivial motions and the motions that vanish at `v` meet in `0`**
+(`lem:rank-delete-vertex`): a constant assignment with value `0` at `v` is zero. With
+`trivialMotions_sup_pinnedMotions` it makes `Z(G,p)` their direct sum. -/
 theorem trivialMotions_inf_pinnedMotions_eq_bot (F : BodyHingeFramework K k α β) (v : α) :
     F.trivialMotions ⊓ F.pinnedMotions v = ⊥ := by
   rw [eq_bot_iff]
@@ -2315,13 +1802,10 @@ theorem trivialMotions_inf_pinnedMotions_eq_bot (F : BodyHingeFramework K k α �
   rw [Submodule.mem_bot]
   exact funext fun u => (hTriv u v).trans hv
 
-/-- **Every infinitesimal motion splits as trivial plus pinned** (`lem:rank-delete-vertex`):
-`trivialMotions ⊔ pinnedMotions v = infinitesimalMotions`. Any motion `S` is the sum of the
-trivial motion `fun _ => S v` (constant at the pinned body's screw) and the pinned motion
-`fun u => S u - S v` (which vanishes at `v` and is still a motion by
-`isInfinitesimalMotion_sub_const`). With
-`trivialMotions_inf_pinnedMotions_eq_bot` this exhibits `Z(G,p)` as the internal direct sum of
-the `D` trivial motions and the body-`v`-pinned motions. -/
+/-- **Every motion is a trivial motion plus one that vanishes at `v`** (`lem:rank-delete-vertex`):
+`trivialMotions ⊔ pinnedMotions v = infinitesimalMotions`. A motion `S` is the constant assignment
+with value `S v` plus `u ↦ S u − S v`, which vanishes at `v` and is a motion
+(`isInfinitesimalMotion_sub_const`). -/
 theorem trivialMotions_sup_pinnedMotions (F : BodyHingeFramework K k α β) (v : α) :
     F.trivialMotions ⊔ F.pinnedMotions v = F.infinitesimalMotions := by
   apply le_antisymm
@@ -2332,18 +1816,16 @@ theorem trivialMotions_sup_pinnedMotions (F : BodyHingeFramework K k α β) (v :
     · exact ⟨F.isInfinitesimalMotion_sub_const hS (S v), sub_self _⟩
     · exact funext fun u => by rw [Pi.add_apply, add_sub_cancel]
 
-/-- **Pinning one body preserves rank** (`lem:rank-delete-vertex`, Katoh--Tanigawa Lemma 5.1):
-deleting the `D` columns of a single body `v` from the rigidity matrix `R(G,p)` drops exactly the
-`D` trivial-motion dimensions, leaving the rank unchanged. In the codimension form: the null
-space `Z(G,p)` is the internal direct sum of the `D`-dimensional trivial motions and the
-body-`v`-pinned motions, so
+/-- **Deleting the columns of one body keeps the rank** (`lem:rank-delete-vertex`; KT Lemma 5.1,
+pp. 667–668): for finitely many bodies, at least one,
 
   `finrank (pinnedMotions v) + D = finrank Z(G,p)`,
 
-equivalently `rank R(G,p) = rank R(G,p; V ∖ v)`. The `D` trivial motions
-(`lem:trivial-motions-rank-bound`) normalize any motion to vanish on the pinned body
-(`isInfinitesimalMotion_sub_const`), the pin-a-body motion-space fact of
-White--Whiteley~`whiteWhiteley1987`. -/
+as `Z(G,p)` is the direct sum of the trivial motions, of dimension `D`, and the motions that vanish
+at `v` (`trivialMotions_inf_pinnedMotions_eq_bot`, `trivialMotions_sup_pinnedMotions`).
+Equivalently, deleting the `D` columns of `v` from `R(G,p)` does not change its rank. Katoh and
+Tanigawa cite White and Whiteley (1987, §2) for the fact that fixing a body does not change the
+space of nontrivial motions (KT p. 668). -/
 theorem finrank_pinnedMotions_add_screwDim [Nonempty α] [Finite α]
     (F : BodyHingeFramework K k α β) (v : α) :
     Module.finrank K (F.pinnedMotions v) + screwDim k =
@@ -2357,22 +1839,12 @@ theorem finrank_pinnedMotions_add_screwDim [Nonempty α] [Finite α]
   rw [hsup, F.finrank_trivialMotions] at key
   omega
 
-/-- **Refining the hinge spans shrinks the motion space** (`lem:rank-rotation-semicont`,
-Katoh–Tanigawa Lemma 5.2, span/monotonicity form). If two body-hinge frameworks `F`, `F'`
-share the same underlying multigraph and at every edge the constraint span of `F` is contained
-in that of `F'` — i.e. `F'` is the *more general* (more constrained) realization, the generic
-member of a rotation family — then every infinitesimal motion of `F'` is one of `F`:
-`F'.infinitesimalMotions ≤ F.infinitesimalMotions`. The stronger (larger-span) constraints of
-`F'` cut out a smaller null space.
-
-This is the basis-free core of the lower-semicontinuity of `rank R(G,p)`: along a one-parameter
-family rotating a panel, the generic realization has the *largest* supporting spans (the hinge
-points in general position), hence the *smallest* motion space and the *largest* rank
-(`finrank_infinitesimalMotions_le_of_span_le`). We carry it as this monotonicity-under-span-
-refinement statement — matching the basis-free treatment of Lemmas 5.1/5.3 — rather than the
-literal analytic one-parameter semicontinuity, which would force the parametrized
-polynomial-entry coordinate matrix the design defers (the genericity-over-perturbation choice of
-the risk register). -/
+/-- **Smaller hinge spans give fewer motions** (`lem:rank-rotation-semicont`): if `F` and `F'` have
+the same multigraph and `span C'(e) ≤ span C(e)` at every edge label `e`, where `C` and `C'` are the
+supporting extensors of `F` and `F'`, then every motion of `F'` is one of `F`. At a link `e` from
+`u` to `v`, `S u − S v ∈ span C'(e) ≤ span C(e)`. When all the extensors are nonzero, the hypothesis
+says that the spans are equal; the inclusion can be strict at an edge with `C'(e) = 0 ≠ C(e)`. It is
+not KT Lemma 5.2, which rotates a panel without lowering the rank (KT p. 669). -/
 theorem infinitesimalMotions_mono_of_span_le (F F' : BodyHingeFramework K k α β)
     (hgraph : F.graph = F'.graph)
     (hspan : ∀ e, Submodule.span K {F'.supportExtensor e} ≤
@@ -2382,19 +1854,11 @@ theorem infinitesimalMotions_mono_of_span_le (F F' : BodyHingeFramework K k α �
   rw [hingeConstraint]
   exact hspan e (hS e u v (hgraph ▸ he))
 
-/-- **Rank is lower-semicontinuous under hinge-span refinement** (`lem:rank-rotation-semicont`,
-Katoh–Tanigawa Lemma 5.2, rank form). If `F'` refines `F` — same graph, every constraint span
-of `F` contained in that of `F'` — then the motion space of `F'` has no larger dimension than
-that of `F`:
-
-  `finrank Z(G, p') ≤ finrank Z(G, p)`,
-
-equivalently `rank R(G, p) ≤ rank R(G, p')` (the rank is the codimension `D|V| − finrank Z` and
-`finrank Z` only shrinks under refinement, `finrank_screwAssignment`). So the *generic* member of
-a one-parameter rotation family — the one whose hinges are in general position, with the largest
-supporting spans — attains the maximum rank, the content of Katoh–Tanigawa's Lemma 5.2: rank
-cannot drop at a generic parameter. Immediate from the span-monotonicity
-`infinitesimalMotions_mono_of_span_le` and `Submodule.finrank_mono`. -/
+/-- **Smaller hinge spans give a motion space of no larger dimension**
+(`lem:rank-rotation-semicont`): for finitely many bodies and `F`, `F'` as in
+`infinitesimalMotions_mono_of_span_le`, `finrank Z(G,p') ≤ finrank Z(G,p)`, so
+`rank R(G,p) ≤ rank R(G,p')`, the rank being `D|V| − finrank Z` (`finrank_screwAssignment`).
+`Submodule.finrank_mono` on `infinitesimalMotions_mono_of_span_le`. -/
 theorem finrank_infinitesimalMotions_le_of_span_le [Finite α]
     (F F' : BodyHingeFramework K k α β) (hgraph : F.graph = F'.graph)
     (hspan : ∀ e, Submodule.span K {F'.supportExtensor e} ≤

@@ -3527,7 +3527,8 @@ declaration's name as its header writes it:
   `lem:block-rank-cut`.
   *Evidence:* read (the docstring; a `grep` for the label in `blueprint/src/`).
   *Found:* round 2 task 2.6.
-  *Disposition:* reported (`notes/Prose-report.md`, L10).
+  *Disposition:* done (task 32): the lead names `lem:block-rank-cut`. Before: reported
+  (`notes/Prose-report.md`, L10).
 - **F-069** · L · docstrings of four pins in `rigidity-matrix.tex`'s Case I lemmas name the wrong
   node: `infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton`,
   `injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` and
@@ -3949,7 +3950,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; a `grep` for `lem:case-I-splice-placement` in
   `blueprint/src`).
   *Found:* round 3 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, L3).
+  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3: in `RigidityMatrix/Basic.lean`,
+  `linearIndependent_sum_pinned_block`'s docstring carries no code (N7b-1 to N7b-3) and names no
+  consumer (task 32); the other files' are tasks 33 and 34's.
 - **F-156** · L · the docstrings of `case-iii.tex`'s KT Claim 6.11 pins
   (`Molecular/Induction/ForestSurgery/Reduction.lean`, `Molecular/AlgebraicInduction/CaseIII/
   Candidate.lean`, `Realization.lean`). `splitOff_exists_base_inter_fiber_lt`'s places KT Lemma 4.3
@@ -3987,7 +3990,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; KT 2011 pp. 679 and 685–686, `.refs/`).
   *Found:* round 3 task 2.12.
   *Disposition:* reported (`notes/Prose-report.md`, L3); round 3:
-  `linearIndependent_sum_augment_candidateRow` deleted (task 4).
+  `linearIndependent_sum_augment_candidateRow` deleted (task 4); in `RigidityMatrix/Basic.lean`,
+  the docstrings of `hingeRow_comp_columnOp_apply`, `comp_columnOp_eq_comp_single_proj` and
+  `linearIndependent_sum_pinned_block_augment` say neither that the column operation replaces
+  eq. (6.43) nor that a row lifts a rank, and carry no process code (task 32); `PanelHinge.lean`'s
+  and `CaseIII/`'s are tasks 36 and 35's.
 - **F-164** · L · the docstrings of the pins of `case-iii.tex`'s span and point choice
   (`Molecular/RigidityMatrix/Claim612.lean`). Those of `exists_ne_zero_dotProduct_eq_zero`,
   `exists_affineIndependent_of_det_polynomial_ne_zero`, `exists_detPolynomial_of_pointPolynomial`,
@@ -4288,7 +4295,10 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, L11); round 3:
   `exists_finite_spanning_rigidityRows` deleted, and the other three's docstrings no longer name
   the dead `CaseI.lean` code (task 5); the two `_forest` lemmas, renamed `_starForest`, name
-  `lem:own-end-rows-independent` (task 7).
+  `lem:own-end-rows-independent` (task 7); in `RigidityMatrix/Basic.lean`, `screwSpace_finrank`,
+  the other three row-independence lemmas, `IsTrivialMotion`, `trivialMotions` and
+  `IsInfinitesimallyRigid` name their nodes, and the last no longer has the equality form wait on
+  a coordinatization (task 32); `PanelLayer.lean`'s is task 33's.
 - **F-235** · L · the declarations round 5's task 3.4 moved or unpinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`). Their docstrings name the nodes their pins left:
   `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` say `def:cut-edges-2ec`
@@ -4471,8 +4481,10 @@ declaration's name as its header writes it:
   either (`F-049`, round 2 task 2).
   *Evidence:* read (the two docstrings beside the statements and bodies).
   *Found:* RECONCILE round 2 task 2.
-  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep
-  (*Moved to a later round*).
+  *Disposition:* done (task 32): both docstrings state the inclusion as `hspan` does,
+  `span C'(e) ≤ span C(e)` with `C'` the extensors of `F'`, and say that the lemma is not KT
+  Lemma 5.2; the section's header no longer calls them Lemma 5.2. Before: reported
+  (`notes/Reconcile.md` §3): round 3's docstring sweep (*Moved to a later round*).
 - **F-254** · L · `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
   (`Molecular/AlgebraicInduction/PanelHinge.lean`) and `isInfinitesimallyRigidOn_insert_iff`
   (`Molecular/AlgebraicInduction/Pinning.lean`): the first's docstring says that taking `hspan` as
@@ -4724,6 +4736,13 @@ declaration's name as its header writes it:
   `Graph.fiberDegree` (used only by the next two), `Graph.fiberDegree_mono` and
   `Graph.fiberDegree_le`, whose docstrings said that the surgery's count `h' ≤ D − 2` rests on them
   and that they bound its degrees (`forest_surgery_count` uses `fiberAtVertex` alone).
+  Task 32 adds four in `Molecular/RigidityMatrix/Basic.lean` (the same screen and the cache, at
+  `8263eed0`): `BodyHingeFramework.isInfinitesimallyRigidOn_of_isInfinitesimallyRigid`, whose
+  docstring said the cycle and two-body base cases use it,
+  `linearIndependent_sumElim_corner_bottom_of_disjoint_pin`,
+  `span_range_hingeRow_blockSpanning_eq_rigidityRows` (whose `hmem` `hspan` gives) and
+  `span_range_hingeRow_crossFramework_eq_rigidityRows_of_off`; the file's two others,
+  `linearIndependent_sumElim_candidateRow_swap` and `_candidateBlock_swap`, are `F-269`'s.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -4822,6 +4841,31 @@ declaration's name as its header writes it:
   elaborate with the same proofs, on at most the three standard axioms
   (`scratch/reconcile-lean/Hyps-t311.lean`, gitignored).
   *Found:* RECONCILE round 3 task 31.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-286** · L · hypotheses of `Molecular/RigidityMatrix/Bricks.lean` that the proofs do not use,
+  or use less of than the statements give. `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
+  (`lem:block-rank-cut`): its `_hE₁` (every other link inside `V₁` or outside it), which the proof
+  does not use; its `[Finite β]`, used only by the proof's `have : Fintype β`, which nothing after
+  it uses; and its `hC_ext`, used only at the edge of `C`. With these gone,
+  `add_le_finrank_span_rigidityRows_induce_union_singleton` (the same node's second claim) needs
+  neither its `honly` (`e₀` the only edge from `V₁` to `w₀`) nor its `[Finite β]`, and its `hext`
+  only at `e₀`. `le_finrank_span_rigidityRows_of_splice`'s `[Finite β]`, as for the first (its
+  `[Finite α]` is needed). And the `hoverlap : V₁ ∩ V₂ = {u, v}` of
+  `inf_span_rigidityRows_of_vertexTwoCut` and `finrank_span_rigidityRows_vertexTwoCut_eq`
+  (`cor:block-rank-vertex-two-cut`), used only as `V₁ ∩ V₂ ⊆ {u, v}`. The comments above the
+  `@[nolint unusedArguments]` of the first and the third called `[Finite β]` a false positive that
+  the proof needs to elaborate; copies of the two as they stand, linted
+  (`#lint only unusedArguments`) without the attribute in a non-`module` file, are not reported.
+  The nodes state the hypotheses (`lem:block-rank-cut`'s set of crossing edges and its "exactly one
+  edge", `cor:block-rank-vertex-two-cut`'s equality), so a change restates them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: copies of the first without
+  `_hE₁` and `[Finite β]`, then with `hC_ext` asked only at the edges of `C`; of the second from it,
+  without `honly` and `[Finite β]` and with `ext e₀ ≠ 0`; of the third without `[Finite β]`; and of
+  the last two with `⊆`; each with the same proof (one line changed in the first, the discharge of
+  `_hE₁` removed from the second, a `.le` from the last two), on the three standard axioms; a copy
+  of the third without `[Finite α]` as well fails (`scratch/reconcile-lean/Hyps-t32.lean`,
+  gitignored).
+  *Found:* RECONCILE round 3 task 32.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
