@@ -10,16 +10,11 @@ each of the 16 main results outside S1's and S2's rows, and the docstring sweep 
 L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
-round into 39 one-commit tasks; task 2 committed the docstring-label check, tasks 3–6 made L9's
-deletions, `F-090`'s shim among them (the check 422 → 390), task 7 `F-061`'s rename (388),
-tasks 8–12 dropped L6–L8's unused or derivable hypotheses (the planar layer, the pebble game's
-`hloops`, the deficiency and the induction, the chain extraction, the algebraic induction; task
-11.1 cured task 11's forward edge, `F-270`), task 13 made the forest packing one disjoint cover,
-task 14 had the descent call the packing move, task 15 shortened KT Lemma 4.8(ii) to KT 4.3's
-minimality argument, and task 15.1 dropped the three hypotheses of that lemma its links imply
-(`F-274`). **Next concrete task:** task 16, the recon of the pebble game's search
-(*Lemma checklist*). Round manual: `CLEANUP.md`.
+wait for the phase. Tasks 1–15.1 are done: the open, the docstring-label check (gate 9: 422 at task
+2, 387 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, and L6–L8's hypotheses and
+repeated derivations (*Current state*). Task 16, the recon of the pebble game's search, settled its
+fix with a spike that closes, and left `decide` to the texts (*Decisions*). **Next concrete task:**
+task 17, the search with one visited set (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -29,33 +24,26 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 15.1 is done** (this commit); nothing is mid-stream.
+**Task 16 is done** (this commit, docs only); nothing is mid-stream.
 
-**Task 15.1** (`F-274`, new and done): `splitOff_isMinimalKDof_of_pos` without `haV`, `hbV` and
-`hvG`, which `hla` and `hlb` give (derived in the body). Its one caller, in `CaseII.lean`, derives
-its own and uses them elsewhere: not a pass-through. `lem:reduction-step-pos` states none of them,
-so it is unchanged. The dump `cmp`-identical to task 15's, `--summary` too but for the cache's
-name; gate 9 387, task 15's report. Three declarations that are not callers repeat the pattern
-(`splitOff_isMinimalKDof`, `forest_surgery_count`, `case_III_candidate_dispatch`): new `F-275`,
-task 38's. The ledger: 275 entries, 155 `done`, 9 `left`, 107 `reported`, 4 `open` (task 38's);
-the next ID is `F-276`.
+**Task 16** (`F-033`, `F-047`; the recon): the spike `scratch/reconcile-lean/t16/DFSThreadedC.lean`
+(gitignored) builds the search with one visited set and re-proves `reachableFinding_sound`,
+`reachableFinding_complete` and `reachClosureComputable`'s two halves with their statements, with no
+`sorry`: `lake lean` exit 0 and 0 warnings, `#print axioms`
+`[propext, Classical.choice, Quot.sound]`. Its non-`module` copy `KernelC.lean` has `decide +kernel`
+evaluate the new search, and times both searches with `P` false on the diamond chain at
+$n = 8, 10, \ldots, 18$: 1, 5, 25, 114, 498 and 2291 ms before, at most 1 ms after (measured, script
+not retained; task 18 commits one). Beside them are the `decide` probes (`DecideProbe*.lean`,
+`KernelSort.lean`, `ModuleProbe*.lean`) and the refuted mutual form (`DFSThreaded.lean`,
+`DFSTimingSpike.lean`). The verdict is under *Decisions*; tasks 17–18 are written from it, and task
+20's line follows it. The ledger is unchanged: 275 entries, 155 `done`, 9 `left`, 107 `reported`, 4
+`open` (task 38's); the next ID is `F-276`.
 
-**Done before** (tasks 3–15): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
-them; the pins they left without a caller stay with their nodes), `F-090`'s shim, `F-061`'s rename
-to `_starForest`, the planar layer's five hypotheses (`F-013`, `F-017`, `F-021`, `F-024`;
-`lem:trivialMotionFamily-linearIndependent` restated), the pebble game's `hloops` (`F-039`;
-`edgeListSorted_no_loops` deleted), the deficiency's and the induction's unused binders (`F-075`,
-`F-077`, `F-092`, `F-094`; `lem:deficiency-ear-merge` restated for a walk), and the chain
-extraction's (`F-108`; `isKDof_zero_of_triangle` now the case $m = 3$ of `isKDof_zero_of_cycle`,
-`lem:chain-data-extract` restated), `F-270`'s cure (task 11.1: `lem:cycle-zero-dof` moved to
-`deficiency.tex`), and the algebraic induction's (task 12: `F-104`, `F-102`, `F-070`, `F-063`,
-`F-140`; `rigidContract_exterior_rank_transport` deleted, two cut-edge statements restated; new
-`F-271`, task 38's), one disjoint cover (task 13, `F-055`: the lemma in `TreePacking.lean`,
-`lem:k-frame-forest-packing-of-sparse` restated), the descent calling the packing move (task
-14, `F-087`, `F-088` in part; new `F-272`; `lem:packing-move` restated to the re-choice), and KT
-Lemma 4.8(ii)'s minimality by KT 4.3's argument (task 15, `F-097` in part; new `F-273`; `hV3`
-dropped there and from `removeVertex_deficiency_gt_of_noRigid`; `lem:reduction-step-pos` and
-`lem:removal-deficiency-strict` restated; dead pins 168 → 172). Gate 2 runs block (c) since task 5.
+**Done before** (tasks 3–15.1; their `[x]` lines and messages carry the detail): L9's thirty-nine
+deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
+their nodes), `F-090`'s shim, `F-061`'s rename to `_starForest`, and L6–L8's unused or derivable
+hypotheses and repeated derivations, each node they reach restated in the same commit. Gate 2 runs
+block (c) since task 5.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -96,14 +84,11 @@ unchanged since `6f4f7afa`, the tree of the ledger's Lean baselines):
   ForkedArm}`, `GenericLift/{PanelGeneric, HingeGeneric}`, `Molecule/{Duality, GeneralPosition4,
   Modelling, Theorem56}`, `Molecule/Pencil/MainComponent/{Bridge, Carrier, Chain, Configuration,
   ContractAdditive, ContractCurve, Cut, Ear, EarGen, Flat, GenericBase, Orbit, Short, SplitOff}`.
-- **The L9 screen** (block (b)) over L9's entries, round 2's unpinned declarations and `F-090`'s
-  shim: 36 unpinned declarations that no main result reaches and no pinned or live declaration
-  calls, even through others, are tasks 3–5; the shim is task 6. Staying: `exists_good_realization`
-  and `_reindex` (pinned declarations reach them); the three helpers of the pinned
-  $d = 3$ dispatch `case_III_candidate_dispatch`; the pinned dead declarations
-  (`minimal_kdof_reduction`, `annihRowPoly_totalDegree_le`, `F-114`'s three, `F-233`'s three), a
-  pin staying with its node. `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` is
-  live (the pencil realization theorem reaches it).
+- **The L9 screen** (block (b)) gave tasks 3–5 their 36 declarations and task 6 the shim. It kept
+  `exists_good_realization` and `_reindex` (pinned declarations reach them), the three helpers of
+  the pinned $d = 3$ dispatch `case_III_candidate_dispatch`, the pinned dead declarations
+  (`minimal_kdof_reduction`, `annihRowPoly_totalDegree_le`, `F-114`'s three, `F-233`'s three), and
+  the live `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`.
 
 ## Scope and standing rules
 
@@ -251,53 +236,67 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `forest_surgery_split`; implied 2 424 → 2 430, no Lean basis 133 → 134; gate 9 390.
 - [x] **7. `F-061`'s rename** (`F-061`; `F-233` in part): `_forest` to `_starForest`, the pins
   following; gate 9 388. The forest lemma is the phase's (c).
-- [x] **8. L6–L7: the planar layer** (`F-013`, `F-017`, `F-021`, `F-024`): the two `hab`, the two
-  `hF_finite` and `[Finite V]`; `lem:trivialMotionFamily-linearIndependent` restated; gate 9 388.
-- [x] **9. L7: the pebble game's `hloops`** (`F-039`): derived from `himg`; the orphaned
-  `edgeListSorted_no_loops` gone; gate 9 388.
+- [x] **8. L6–L7: the planar layer** (`F-013`, `F-017`, `F-021`, `F-024`): two `hab`, two
+  `hF_finite`, `[Finite V]`; `lem:trivialMotionFamily-linearIndependent` restated; gate 9 388.
+- [x] **9. L7: the pebble game's `hloops`** (`F-039`): derived from `himg`;
+  `edgeListSorted_no_loops` gone.
 - [x] **10. L6: the deficiency and the induction** (`F-075`, `F-077`, `F-092`, `F-094`): four
-  binders and those they stranded, 26 call sites; `lem:deficiency-ear-merge` restated; gate 9 388.
-- [x] **11. L6–L8: the chain extraction** (`F-108`): `hV3`, `[G.Simple]` and three more, the triangle
-  the cycle's case $m = 3$; `lem:chain-data-extract` restated; new `F-270`; gate 9 388.
+  binders, 26 call sites; `lem:deficiency-ear-merge` restated.
+- [x] **11. L6–L8: the chain extraction** (`F-108`): the triangle the cycle's case $m = 3$;
+  `lem:chain-data-extract` restated; new `F-270`.
 - [x] **11.1. `F-270`'s cure** (docs only): `lem:cycle-zero-dof` to `deficiency.tex`; 1 526 edges.
 - [x] **12. L6–L7 and S17: the algebraic induction** (`F-104`, `F-102`, `F-070`, `F-063`, `F-140`):
-  five hypotheses dropped or cut, `rigidContract_exterior_rank_transport` deleted; two statements
-  restated; new `F-271`; gate 9 387 (task 13 added `-gp`'s edge to `def:rank-hypothesis`).
-- [x] **13. L8: one disjoint cover** (`F-055`): the lemma in `TreePacking.lean`;
-  `lem:k-frame-forest-packing-of-sparse` restated; 1 525 edges; gate 9 387.
-- [x] **14. L8: the descent calls the move** (`F-088` in part, `F-087`): the move concludes the
-  re-choice (new `F-272`, done), the descent calls it; `lem:packing-move` restated; the dump as
-  listed (1 525 edges); dead pins 169 → 168, unbacked transitive 84 → 85; gate 9 387.
-- [x] **15. L8: KT Lemma 4.8's shorter case** (`F-097` in part): in `splitOff_isMinimalKDof_of_pos`
-  the case $e = e_0$ by the other case's criterion step, without KT 4.7's or
-  `lem:edge-set-indep-pos`'s pin; `hV3` dropped there (unused) and from
-  `removeVertex_deficiency_gt_of_noRigid` (derived); `hD : 3 ≤ D` stays (new `F-273`, for the PI).
-  `lem:reduction-step-pos` and `lem:removal-deficiency-strict` restated, the former's proof prose
-  KT 4.3's. The dump as listed before editing (`t15-tred.py` on `dump-t14.txt`, `t15-model.py` on
-  the cache): the two leave both `\uses`, the proof gains `lem:rigid-full-rank` (step (2)'s, an
-  ancestor only through `lem:edge-set-indep-pos`: else missing); 1 526 edges, the drawn
-  `lem:removal-deficiency-strict ->` the node removed, `lem:circuit-induces-rigid ->` it (dashed)
-  and `lem:rigid-full-rank ->` it added; dead pins 168 → 172 (KT 4.7's, 4.5(ii)'s two, 4.4's second
-  assertion's), implied 2 431 → 2 429, unbacked transitive 85 → 84, missing 0; gate 9 387.
-- [x] **15.1. L6: task 15's lemma, its derivable vertex hypotheses** (coordinator-appended; new
-  `F-274`): `haV`, `hbV`, `hvG` dropped, derived from the links; the caller, not a pass-through,
-  follows; the node unchanged; the dump byte-identical; gate 9 387. The siblings': `F-275`.
-- [ ] **16. L1–L2: the recon** (`F-033`, `F-047`; a design pass, its verdict committed here). One
-  visited set threaded through the sibling calls of `reachableFindingAux` (`Search/DFS.lean` 578,
-  the call at 588); how `reachableFindingAux_sound` (622) and `_complete` (687, inducting along the
-  walk with `dropUntilBundle`, 140) re-prove, with `reachClosureComputable` (802) and the pebble
-  game's callers (`PebbleGame/Algorithm.lean` 107, 206) unchanged in statement; whether a
-  kernel-reducible form is cheap (`decide` on `Examples.k4MinusE.IsLaman`), else the texts name
-  `native_decide` as measured; the timing script's form and place. Tasks 17–18 made exact, with
-  sub-tasks if the build takes more than one commit. *Expected:* docs only.
-- [ ] **17. L1: the search with one visited set** (`F-033`). As task 16 settles: the visited set
-  threaded through sibling calls, `reachableFinding_sound` and `_complete` re-proved with their
-  statements; `dfs.tex`'s nodes restated only if a pin's statement changes. *Expected:* the dump
-  byte-identical.
-- [ ] **18. L1: the timing, by a committed script; `decide`** (`F-033`, `F-047`). The diamond-chain
-  timing ($n = 8, 10, \ldots, 18$, as `F-033` measured) as a committed script, its figures here,
-  beside `F-033`'s; a kernel-reducible form if task 16 finds one cheap. *Expected:* the dump
-  byte-identical.
+  `rigidContract_exterior_rank_transport` deleted, two statements restated; new `F-271`; gate 9 387.
+- [x] **13. L8: one disjoint cover** (`F-055`): `lem:k-frame-forest-packing-of-sparse` restated;
+  1 525 edges.
+- [x] **14. L8: the descent calls the move** (`F-088` in part, `F-087`; new `F-272`):
+  `lem:packing-move` restated; dead pins 168, unbacked transitive 85.
+- [x] **15. L8: KT Lemma 4.8's shorter case** (`F-097` in part; new `F-273`):
+  `lem:reduction-step-pos` and `lem:removal-deficiency-strict` restated; 1 526 edges, dead pins 172,
+  implied 2 429, unbacked transitive 84.
+- [x] **15.1. L6: task 15's lemma without its derivable vertex hypotheses** (new `F-274`; the
+  siblings' `F-275`): the dump byte-identical; gate 9 387.
+- [x] **16. L1–L2: the recon** (`F-033`, `F-047`; docs only): the spike closes; tasks 17–18 exact,
+  task 20 adjusted; the dump byte-identical; gate 9 387.
+- [ ] **17. L1: the search with one visited set** (`F-033` in part). `Search/DFS.lean` as the spike
+  `scratch/reconcile-lean/t16/DFSThreadedC.lean` has it, its bodies and proofs as they are, without
+  the `SpikeC` namespace: (a) new, above `reachableFindingAux` (578), with inline binders, the
+  sibling loop `reachableFindingList succ base v f s hs l hl`, structural on `l : List V`
+  (`hl : ∀ u ∈ l, u ∈ succ v`), returning `{s' : Finset V // s ⊆ s'} × Option (Σ w, …)`, where
+  `f : (s : Finset V) → base ⊆ s → (u : V) → {s' // s ⊆ s'} × Option (…)` searches from one
+  out-neighbour and `hs : base ⊆ s`; (b) `reachableFindingAux` returning
+  `{s : Finset V // visited ⊆ s} × Option (…)`, its third branch (the call at 588) the loop from
+  `insert v visited` with `f := fun s _hs u => reachableFindingAux succ P s u`, its `termination_by`
+  kept and `decreasing_by` from `_hs`; (c) `reachableFinding` (614) the `.2` of the search from `∅`,
+  its statement unchanged; (d) `reachableFindingList_sound` and `_complete`, new, in a section with
+  `variable [DecidableEq V]` above line 601's `variable`; `reachableFindingAux_sound` (622) restated
+  on `.2 = some wp`, and the private `reachableFindingAux_complete` (687) restated as the invariant
+  `(… visited v).2 = none → v ∈ S ∧ ∀ x ∈ S, x ∉ visited → P x = false ∧ ∀ y ∈ succ x, y ∈ S` (`S`
+  its `.1.1`; the loop's, `∀ u ∈ l, u ∈ S` and the same for `x ∉ s`), both by
+  `reachableFindingAux.induct (succ := succ) (P := P)`; (e) `reachableFinding_complete` (747) by
+  `Relation.ReflTransGen` induction into the returned set, and `DirectedWalk.vertices_eq_cons_tail`
+  new, beside `head_mem_vertices` (161); (f) `dropUntilBundle` (140), left without a caller, deleted
+  (gate 4: block (b), block (c), the trial deletion; gate 2's `grep`). The changed declarations'
+  docstrings are rewritten; the section docstring (771) is task 20's. In the same commit (the
+  definition-faithfulness gate), `dfs.tex`: the section's opening (12–20), `def:reachable-finding`'s
+  step 3 and the set the search returns (52–76), the paragraph after the note (89–99) and the
+  correctness proof's completeness half (117–154), with no `\uses` or pin moved.
+  `reachClosureComputable` (802) and the callers (`PebbleGame/Algorithm.lean` 107 and 206,
+  `Basic.lean` 1056) are unchanged. One commit: the spike has no residual goal. *Expected:* the dump
+  byte-identical; `--summary` identical but for the cache's name (only unpinned declarations
+  change); gate 9 387 (no new docstring leads with a node); gates 1–5, 8 and 10.
+- [ ] **18. L1: the timing script; the `decide` facts** (`F-033`, `F-047` in part).
+  `scripts/DFSTiming.lean`, not a `module` (as `scripts/BlueprintDeps.lean`), run as
+  `lake lean scripts/DFSTiming.lean`, with no driver and no `lake exe` (the lakefile is out of
+  scope): the per-walk search as it stood before task 17 (its body, renamed, citing task 17's
+  parent), the spike's diamond chain `diamondSucc n` ($3n + 1$ vertices, $4n$ arcs, $2^n$ simple
+  walks end to end), and one `#eval` that times both searches with `P` false at
+  $n = 8, 10, \ldots, 18$ in one run and prints the size of the set the new search marks ($3n + 1$,
+  the figure that does not move; the times do). Then the facts task 20 states, each a tactic that
+  fails the file if it changes: `fail_if_success decide` and `fail_if_success decide +kernel` on
+  `Examples.k4MinusE.IsLaman`, `decide +kernel` on `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and
+  `native_decide` on `k4MinusE.IsLaman` and on `¬ Examples.k4.IsLaman`. Its output in `scratch/`,
+  its figures here beside `F-033`'s. No library change. *Expected:* the dump byte-identical.
 - [ ] **19. L2: `parsePair` on any whitespace** (`F-047`). `Main.lean` 100 splits on any whitespace,
   so a tab no longer makes a line malformed; `lake exe pebble-game` on a tab-separated input,
   recorded. *Expected:* the dump byte-identical.
@@ -306,8 +305,9 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   367), `Main.lean`'s module docstring (21–38: the input, `executable.tex`'s list for its "three-row
   matrix"), `PebbleGame/Examples.lean` (17–20), the `lakefile.toml` comment (84–91: the
   classification through `runPebbleGameExec`), `DESIGN.md` *One `Decidable` instance per project
-  predicate* (657: what `decide` unfolds, per task 16), `dfs.tex` (97) and `executable.tex` where
-  they state a bound. *Expected:* TeX prose only; the dump byte-identical.
+  predicate* (657: what `decide` and `decide +kernel` unfold, per task 16's *Decisions* and task
+  18's script), and `executable.tex` where it states a bound or what `decide` does (23; 253–261).
+  `dfs.tex` is task 17's. *Expected:* TeX prose only; the dump byte-identical.
 - [ ] **21. Non-vacuity witnesses, 1: the planar and matroid rows** (§1's proposal; the rule in
   `PHASE-BOUNDARIES.md`). A module `CombinatorialRigidity/Nonvacuity.lean`, imported by
   `CombinatorialRigidity.lean`, with one named closed theorem per row, as the precedent
@@ -437,16 +437,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 16**, at Opus, docs only: the recon of the pebble game's search (`F-033`, `F-047`;
-*Lemma checklist*), a design pass whose verdict is committed here: one visited set threaded through
-`reachableFindingAux`'s sibling calls; how `_sound` and `_complete` re-prove, with
-`reachClosureComputable` and the pebble game's callers unchanged in statement; whether a
-kernel-reducible form is cheap (`decide` on `Examples.k4MinusE.IsLaman`); the timing script's form
-and place. It makes tasks 17–18 exact, with sub-tasks if the build takes more than one commit.
-Re-`grep` the line numbers. Gates 6 (the parent `scratch/reconcile-lean/dump-t151.txt`, gitignored;
-regenerate it if missing), 9 (387) and 10. Carried in: `F-252` and `F-273` for the PI; `F-268`,
-`F-269`, `F-271`, `F-275` and FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38. After the round
-the queue stops before `RECONCILE-FORMAL`, which is attended.
+**Next: task 17**, at Opus, Lean and TeX: the search with one visited set (`F-033`; *Lemma
+checklist*). The spike `scratch/reconcile-lean/t16/DFSThreadedC.lean` lands in `Search/DFS.lean` as
+it is (it closes), `dropUntilBundle` is deleted, and `dfs.tex`'s search and correctness proof are
+restated. Re-`grep` the line numbers. Gates 1–6 and 8–10 (the parent dump
+`scratch/reconcile-lean/dump-t16.txt`, gitignored; regenerate it if missing; gate 9 387). Carried
+in: `F-252` and `F-273` for the PI; `F-268`, `F-269`, `F-271`, `F-275` and FRICTION's
+`edgeFiber_nonempty` entry (task 15) for task 38; whether to queue a `decide +kernel` route
+(*Decisions*) is the coordinator's or the PI's. After the round the queue stops before
+`RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -491,3 +490,11 @@ the queue stops before `RECONCILE-FORMAL`, which is attended.
   pin, was an ancestor only through the removed `lem:edge-set-indep-pos`, so the removal alone
   makes it missing. A task's *Expected* models the summary on the cache (`t15-model.py`) and adds
   such an edge in the same commit (backward here, 170 < 1793).
+- **The search's fix** (task 16; the spike closes): the visit keeps its `ℕ` measure and returns its
+  marked set; the sibling loop, structural on the list, takes the visit as an argument and threads
+  the set. Completeness needs no stack invariant and no walk: when the search fails, each vertex it
+  newly marked fails `P` and has its out-neighbours marked, so from `∅` the set holds `v` and is
+  closed under the arcs. A mutual form on a lexicographic measure proves too; the kernel does not
+  unfold it. `decide` is not cheap: the kernel stops at core's `List.mergeSort` (in `Finset.sort`,
+  the two list builders), and from a `module` file at each body not `@[expose]`d, the search's and
+  mathlib's `List.insertionSort` among them. The texts name `#eval`, `lake exe` and `native_decide`.
