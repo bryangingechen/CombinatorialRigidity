@@ -10,15 +10,15 @@ each of the 16 main results outside S1's and S2's rows, and the docstring sweep 
 L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–31 are done (*Current state*): the open, the docstring-label check
-(gate 9: 422 at task 2, 293 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
+wait for the phase. Tasks 1–31.1 are done (*Current state*): the open, the docstring-label check
+(gate 9: 422 at task 2, 291 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
 hypotheses and repeated derivations, the pebble game's search with one visited set and its texts
 (tasks 16–20), the sixteen non-vacuity witnesses (tasks 21–24), and the docstrings of every
 top-level file but `Nonvacuity.lean`, of `Search/`, of `Mathlib/`, of `PebbleGame/`, of `Matroid/`
 and of `BodyBar/` (tasks 25–28), of `Molecular/Deficiency.lean` (tasks 29–29.1) and of
-`Molecular/Induction/` but `ForestSurgery/Reduction.lean` (tasks 30–31).
-**Next concrete task:** task 31.1, the docstrings of
-`Molecular/Induction/ForestSurgery/Reduction.lean` (*Lemma checklist*).
+`Molecular/Induction/` (tasks 30–31.1).
+**Next concrete task:** task 32, the docstrings of `Molecular/RigidityMatrix/`, `Meet.lean` and
+`Extensor.lean` (*Lemma checklist*), split at a file boundary.
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -29,25 +29,26 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 31 is done** (this commit); nothing is mid-stream.
+**Task 31.1 is done** (this commit); nothing is mid-stream.
 
-**Task 31** (`F-108` `done`; `F-092` in part; `F-279` gains five; new `F-284`, `open` for task
-38): every docstring and comment of `ForestSurgery/ChainExtraction.lean` and `EdgeSplitting.lean`
-(2 851 lines) read against its body under the sweep's form; credits checked in `.refs/` (KT 2011
-§§4.1–4.2, pp. 660–665). Split from `Reduction.lean` (task 31.1) at the file boundary the hand-off
-allowed. Its message names the false claims (among them `lem:forest-surgery-split` called red, the
-copy-count lemmas and the transport of a forest of `G̃_v^{ab}` into `G̃` filed under KT Lemma 4.1,
-the reroute lemmas said to assume a vertex of degree two, KT Lemma 4.8(ii) in
-`chainData_extract`'s credit). Gate 9 312 → 293. The ledger: 284 entries, 183 `done`, 9 `left`,
-81 `reported`, 11 `open`.
+**Task 31.1** (`F-088`, `F-092`, `F-097`, `F-236` `done`; `F-104`, `F-156` in part; new `F-285`,
+`open` for task 38): every docstring and comment of `ForestSurgery/Reduction.lean` (2 104 lines)
+read against its body under the sweep's form, and docstrings for the file's eight declarations,
+seven of them pins, whose text stood in a section comment; credits checked in `.refs/` (KT 2011
+pp. 660–684). Its message names the false claims (among them the header's KT §3.4–3.5 and the
+algebraic induction running `minimal_kdof_reduction`, which nothing uses, `forest_surgery_count`'s
+"superseded and vacuous" `forest_surgery_split`, and `exists_degree_eq_two_of_noRigid` feeding
+`chainData_or_cycleData_of_noRigid`). Gate 9 293 → 291. The ledger: 285 entries, 187 `done`, 9
+`left`, 77 `reported`, 12 `open`.
 
-**Tasks 25–30.1** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`,
-`F-045`, `F-053`, `F-057`, `F-074`, `F-077`, `F-080`, `F-081`, `F-085`, `F-094`, `F-176`, `F-194`,
+**Tasks 25–31** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`,
+`F-053`, `F-057`, `F-074`, `F-077`, `F-080`, `F-081`, `F-085`, `F-094`, `F-108`, `F-176`, `F-194`,
 `F-198`, `F-200`, `F-205`, `F-230`, `F-235`, `F-244` `done`; others in part; new `F-278` to
-`F-283`): the planar files, `Search/`, `Mathlib/`, `PebbleGame/`, `Matroid/Constructions/`,
+`F-284`): the planar files, `Search/`, `Mathlib/`, `PebbleGame/`, `Matroid/Constructions/`,
 `BodyBar/`, the square-graph and generic-rigidity files, `Molecular/Deficiency.lean` (split at the
-tight partitions) and `Molecular/Induction/` but `ForestSurgery/` (split at `Operations.lean`),
-under *Decisions*' sweep form; their messages name each false claim.
+tight partitions) and `Molecular/Induction/` but `ForestSurgery/Reduction.lean` (split at
+`Operations.lean` and at `Reduction.lean`), under *Decisions*' sweep form; their messages name each
+false claim.
 
 **Done before** (tasks 3–24; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -287,50 +288,31 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   chapters give them, checked against `.refs/`. *Expected* for each: the dump byte-identical; gate 9
   falls. Each entry's declarations are in its ledger text.
 - [x] **25. The planar files** (`F-018`, `F-022`, `F-023`, `F-030`, `F-032` `done`; `F-025`,
-  `F-228`, `F-200` in part): the nine files, credits Pollaczek-Geiringer and Laman, Jordán's and
-  Whiteley's pages; no Lovász–Yemini but `TayTheorem.lean` 548 (task 27); the dump
-  byte-identical; gate 9 387, none of its report's lines in these files.
-- [x] **25.1. The planar files no task named** (`F-020` in part; new `F-278`): `Framework.lean`,
-  `Henneberg.lean`, `HennebergReverse.lean`, `SparsityIComponents.lean`; the dump byte-identical;
-  gate 9 387.
-- [x] **25.2. `Search/` and `Mathlib/` but two files** (new `F-279`): `Search/DFS.lean` and 33
-  files; the mirrors in mathlib's register; the dump byte-identical; gate 9 387.
-- [x] **25.3. `Mathlib/LinearAlgebra/Matrix/Rank.lean` and `Dimension/Constructions.lean`**: the
-  phase pointers gone, KT's equations (6.6), (6.16), (6.60)–(6.66) and Lemma 5.2's page checked in
-  `.refs/`; `F-279` gains nine of `Rank.lean`; the dump byte-identical; gate 9 387.
-- [x] **26. `PebbleGame/`** (`F-035`, `F-040`, `F-045`, `F-230` `done`; `F-279` in part): the four
-  files and `Examples.lean`, which no task named; the three "verified-iterative" gone; task 20's
-  running-time texts kept; `Quotient.lift` also in `DFS.lean` and `DESIGN.md`; the dump
-  byte-identical; gate 9 381.
-- [x] **27. `Matroid/` and `BodyBar/`** (M4's `F-053`; `F-057`; `F-215` but S13's part; `F-243`'s
-  `BodyBar/GenericLift.lean` header; M2's `TayTheorem.lean` 548): `Matroid/Constructions/{Submodular,
-  Union}.lean` (ported from `apnelson1/Matroid`; its credit stays), `BodyBar/{Framework, TayTheorem,
-  BodyHinge, GenericLift}.lean`, and `KFrame.lean`, `TreePacking.lean`, which no task named;
-  `F-025`, `F-057` `done`, `F-279` gains sixty-five; the dump byte-identical; gate 9 369.
+  `F-228`, `F-200` in part): credits Pollaczek-Geiringer, Laman, Jordán and Whiteley; gate 9 387.
+- [x] **25.1. The planar files no task named** (`F-020` in part; new `F-278`): gate 9 387.
+- [x] **25.2. `Search/` and `Mathlib/` but two files** (new `F-279`): mathlib's register; gate 9
+  387.
+- [x] **25.3. `Mathlib/LinearAlgebra/Matrix/Rank.lean` and `Dimension/Constructions.lean`** (`F-279`
+  gains nine): KT's equations and Lemma 5.2's page checked in `.refs/`; gate 9 387.
+- [x] **26. `PebbleGame/`** (`F-035`, `F-040`, `F-045`, `F-230` `done`; `F-279` in part): gate 9
+  381.
+- [x] **27. `Matroid/` and `BodyBar/`** (`F-025`, `F-057` `done`; `F-053`, `F-215`, `F-243` in part;
+  `F-279` gains sixty-five): the `apnelson1/Matroid` credit stays; gate 9 369.
 - [x] **28. The square-graph and generic-rigidity files** (`F-176`, `F-198`, `F-200`, `F-205`
-  `done`; the parts there of `F-186`, `F-194`, `F-210`, `F-244`): `GenericRigidityMatroid.lean`,
-  `GeneralPositionPlacement.lean`, the five `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean`,
-  `EdgesIn.lean`; credits Jacobs 1998, JJ 2008 and KT p. 650; `F-279` gains two; the dump
-  byte-identical; gate 9 357.
-- [x] **29. `Molecular/Deficiency.lean`, the first half** (`F-074`, `F-077` `done`; the parts there
-  of `F-053`, `F-081`, `F-108`, `F-210`, `F-235`, `F-240`; new `F-280`): the header and the
-  docstrings to `exists_cut_decomposition_of_not_twoEdgeConnected` (1711); credits KT 2011
-  pp. 654–677; the dump byte-identical; gate 9 346.
+  `done`; `F-279` gains two): credits Jacobs 1998, JJ 2008 and KT p. 650; gate 9 357.
+- [x] **29. `Molecular/Deficiency.lean`, the first half** (`F-074`, `F-077` `done`; new `F-280`):
+  credits KT 2011 pp. 654–677; gate 9 346.
 - [x] **29.1. `Molecular/Deficiency.lean`, the rest** (`F-080`, `F-194`, `F-244`, `F-081`, `F-053`
-  `done`; `F-250`, `F-210` in part; new `F-281`): from the tight partitions to the end, with a
-  docstring for `rank_matroidMG_le`; credits JJ 2008 §§2–3, 5 and JJ 2010 Theorem 4.1(a); the
-  dump byte-identical; gate 9 346 → 333.
-- [x] **30. `Molecular/Induction/Operations.lean`** (`F-235` `done`; the parts there of `F-085`,
-  `F-088`, `F-097`, `F-108`, `F-148`, `F-168`, `F-172`, `F-240`; new `F-282`): credits KT 2011
-  pp. 658–698; `F-279` gains twenty-two; the dump byte-identical; gate 9 333 → 319.
+  `done`; new `F-281`): credits JJ 2008 and JJ 2010; gate 9 333.
+- [x] **30. `Molecular/Induction/Operations.lean`** (`F-235` `done`; new `F-282`; `F-279` gains
+  twenty-two): credits KT 2011 pp. 658–698; gate 9 319.
 - [x] **30.1. `Molecular/Induction/` but `Operations.lean` and `ForestSurgery/`** (`F-085`, `F-094`
-  `done`; the parts there of `F-088`, `F-097`, `F-104`, `F-236`, `F-238`; new `F-283`): credits KT
-  2011 pp. 658–677 and Oxley 2011; `F-279` gains four; the dump byte-identical; gate 9 319 → 312.
-- [x] **31. `ForestSurgery/ChainExtraction.lean` and `EdgeSplitting.lean`** (`F-108` `done`;
-  `F-092` in part; new `F-284`): credits KT 2011 pp. 660–665; `F-279` gains five; the dump
-  byte-identical; gate 9 312 → 293.
-- [ ] **31.1. `ForestSurgery/Reduction.lean`** (`F-092`'s rest, `forest_surgery_count`; the parts
-  there of `F-088`, `F-097`, `F-104`, `F-156`, `F-236`).
+  `done`; new `F-283`; `F-279` gains four): gate 9 312.
+- [x] **31. `ForestSurgery/ChainExtraction.lean` and `EdgeSplitting.lean`** (`F-108` `done`; new
+  `F-284`; `F-279` gains five): credits KT 2011 pp. 660–665; gate 9 293.
+- [x] **31.1. `ForestSurgery/Reduction.lean`** (`F-088`, `F-092`, `F-097`, `F-236` `done`; `F-104`,
+  `F-156` in part; new `F-285`): docstrings for eight declarations whose text was a section comment;
+  credits KT 2011 pp. 660–684; the dump byte-identical; gate 9 293 → 291.
 - [ ] **32. `Molecular/RigidityMatrix/`, `Meet.lean`, `Extensor.lean`** (`F-064`, `F-114`, `F-164`,
   `F-233`, `F-253`, `F-263`; the parts there of `F-153`, `F-161`, `F-168`, `F-225`, `F-232`, `F-242`):
   `infinitesimalMotions_mono_of_span_le` (`Basic.lean` 2522) and its sibling, not KT Lemma 5.2, the
@@ -359,15 +341,15 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
   `F-269`'s eight declarations and `F-271`'s `case_I_realization` through block (b); `F-275`'s
   derivable vertex hypotheses, `F-278`'s and `F-280`'s two each, `F-281`'s five, `F-282`'s nine,
-  `F-283`'s six and `F-284`'s four, L6's, and `F-282`'s repeated derivation, L8's; `F-279`'s
-  unused declarations). The smell counts again
-  (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's;
-  each `@[nolint …]` and `set_option linter` site checked for its one-line justification (task 8
-  found that one of the seven bridge "false positives" `notes/ToolchainBumps.md` counts was a real
-  unused binder, and dropped it: that note's "11 such sites in the tree today" is now 10 `grep`
-  lines, 9 sites, and the others want the same `lake lean` check); §C's ranking, the top ten walked
-  with the four questions (expected no-op, §C's calibration). A fix found is a task appended before
-  the close. *Expected:* docs only.
+  `F-283`'s six, `F-284`'s four and `F-285`'s three, L6's, and `F-282`'s repeated derivation, L8's;
+  `F-279`'s unused declarations). The smell counts again
+  (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's; each `@[nolint …]`
+  and `set_option linter` site checked for its one-line justification (task 8 found that one of the
+  seven bridge "false positives" `notes/ToolchainBumps.md` counts was a real unused binder, and
+  dropped it: that note's "11 such sites in the tree today" is now 10 `grep` lines, 9 sites, and the
+  others want the same `lake lean` check); §C's ranking, the top ten walked with the four questions
+  (expected no-op, §C's calibration). A fix found is a task appended before the close. *Expected:*
+  docs only.
 - [ ] **39. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check with the
   witnesses; the build, `lake lint` and gates 5–10 at the last task's values; the script's report
   and the forward screen beside the open's; the smell counts; the ledger's dispositions, task
@@ -415,21 +397,24 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 31.1**, at Opus: the docstrings of `Molecular/Induction/ForestSurgery/Reduction.lean`
-(2 104 lines; the IDs and parts its checklist line names, among them `forest_surgery_count`'s
-"superseded and vacuous" `forest_surgery_split`, `F-092`; under the sweep's rules and *Decisions*'
-sweep form). *Expected:* the dump byte-identical; gate 9 293 → 291 (its two lines there; task
-31's line estimated 22 for the directory, and it had 21). Gates 1–3 (gate 3's witnesses: the
-sixteen of `scratch/reconcile-lean/Witnesses-t31.lean`), 5, 6, 9 and 10 (the parent dump
-`scratch/reconcile-lean/dump-t31.txt`, gitignored; regenerate it if missing). The screens may
+**Next: task 32**, at Opus: the docstrings of `Molecular/RigidityMatrix/`, `Meet.lean` and
+`Extensor.lean`, with the IDs and parts its checklist line names, under the sweep's rules and
+*Decisions*' sweep form. The six files have 10 599 lines (`Basic.lean` 2 407, `Bricks.lean` 1 251,
+`Claim612.lean` 1 310, `Concrete.lean` 2 897, `Meet.lean` 1 993, `Extensor.lean` 741), twice task
+31's; split the task at a file boundary as task 31 did, the checklist line split in the same commit:
+`RigidityMatrix/Basic.lean` and `Bricks.lean` (3 658 lines) make a slice of task 31.1's size.
+*Expected:* the dump byte-identical; gate 9 falls by the slice's lines of the report (72 in the six
+files: `Basic.lean` 30, `Bricks.lean` 1, `Claim612.lean` 16, `Meet.lean` 25). Gates 1–3 (gate 3's
+witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t311.lean`), 5, 6, 9 and 10 (the parent
+dump `scratch/reconcile-lean/dump-t311.txt`, gitignored; regenerate it if missing). The screens may
 serve (gitignored): `scratch/reconcile-lean/t30/unused_src.py` and `t30/binders.py` (`lake lint`
-missed three hypotheses, `F-282`, `F-283`), `t301/rw.py`, which renders doc-comment blocks wrapped
-at 100 columns without breaking a backticked name and replaces line ranges (task 31's edit scripts,
-`t31/edit_ce.py` and `t31/edit_es.py`, use it), and `Names-t31.lean`, the `#check` harness for the
-backticked names. Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`,
-`F-271`, `F-275`, `F-278` to `F-284` and FRICTION's `edgeFiber_nonempty` (task 15) and
-count-matroid (task 21) entries for task 38. After the round the queue stops before
-`RECONCILE-FORMAL`, which is attended.
+missed three hypotheses, `F-282`, `F-283`, `F-285`), `t301/rw.py`, which renders doc-comment blocks
+wrapped at 100 columns without breaking a backticked name and replaces line ranges (task 31.1's edit
+script `t311/edit_rd.py` uses it, and turns a section comment that stood for a docstring into a
+header and a docstring), and `Names-t311.lean`, the `#check` harness for the backticked names.
+Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275`,
+`F-278` to `F-285` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries
+for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 

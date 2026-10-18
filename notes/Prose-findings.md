@@ -3633,17 +3633,20 @@ declaration's name as its header writes it:
   `matroidMG_indep_iff_exists_forest_packing` credits "Nash-Williams 1966 / Edmonds" (`F-053`).
   *Evidence:* read (the docstrings and sections; the body of `exists_balanced_forest_packing`).
   *Found:* round 2 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L8); round 3: the descent calls the move,
-  whose conclusion now states the re-choice (`F-272`) (task 14); in `Induction/Operations.lean`,
-  the section before `kt_lemma_41_overquantified` follows `rem:kt-lemma-41` (a base has the
-  balanced partition, `lem:balanced-forest-packing`), and the leads of that lemma and of
+  *Disposition:* done (task 31.1): the descent calls the move, whose conclusion now states the
+  re-choice (`F-272`) (task 14); in `Induction/Operations.lean`, the section before
+  `kt_lemma_41_overquantified` follows `rem:kt-lemma-41` (a base has the balanced partition,
+  `lem:balanced-forest-packing`), and the leads of that lemma and of
   `matroidMG_indep_iff_exists_forest_packing` name `ex:kt-41-overquantified` and
   `lem:forest-packing-decomp`, the second with `lem:union-indep-iff` for the union and without the
   credit (task 30); in `Induction/ReducibleVertex.lean`, the docstrings and sections of
   `isBase_vfiber_ncard_ge`, `acyclicSet_insert_vfiber_of_not_inc` and
   `exists_packing_move_of_not_inc` name their nodes, follow `rem:kt-lemma-41` (the descent is
-  `exists_balanced_forest_packing`), and no longer tie the step to the degree of $v$ (task 30.1);
-  `ForestSurgery/Reduction.lean`'s are task 31's.
+  `exists_balanced_forest_packing`), and no longer tie the step to the degree of $v$ (task 30.1); in
+  `ForestSurgery/Reduction.lean`, the lead of `exists_balanced_forest_packing` names
+  `lem:balanced-forest-packing`, its docstring and section describe the descent that calls the move,
+  and the section no longer calls it the last piece of a deferred surgery (task 31.1); reported
+  (`notes/Prose-report.md`, L8).
 - **F-092** · L · the surgery's pins (`Induction/ForestSurgery/EdgeSplitting.lean`,
   `Induction/ForestSurgery/Reduction.lean`): `splitOff_indep_extend_of_fiber_subset` and
   `splitOff_indep_extend_of_fiber_lt` take the degree-two hypothesis `_hdeg2` and do not use it.
@@ -3654,13 +3657,15 @@ declaration's name as its header writes it:
   reverse ones `lem:edge-splitting`, not the nodes that pin them.
   *Evidence:* read (the docstrings; the two wrappers' bodies, which do not pass `_hdeg2` on).
   *Found:* round 2 task 2.13.
-  *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hdeg2` dropped from both, the
-  callers following, and with it `hdeg2` of `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`,
-  which only passed it on (task 10); in `ForestSurgery/EdgeSplitting.lean`, the leads of the two
-  forward reroute lemmas name `lem:reroute-vfree-transport` and `lem:reroute-cycle-lift`, and of the
-  two reverse ones `lem:reverse-reroute-cycle-lift` and `lem:reverse-pendant-insert`, and no
-  docstring or section calls a reroute step open or `lem:forest-surgery-split` red (task 31);
-  `forest_surgery_count`'s (`ForestSurgery/Reduction.lean`) is task 31.1's.
+  *Disposition:* done (task 31.1): `_hdeg2` dropped from both, the callers following, and with it
+  `hdeg2` of `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`, which only passed it on (task
+  10); in `ForestSurgery/EdgeSplitting.lean`, the leads of the two forward reroute lemmas name
+  `lem:reroute-vfree-transport` and `lem:reroute-cycle-lift`, and of the two reverse ones
+  `lem:reverse-reroute-cycle-lift` and `lem:reverse-pendant-insert`, and no docstring or section
+  calls a reroute step open or `lem:forest-surgery-split` red (task 31); in
+  `ForestSurgery/Reduction.lean`, `forest_surgery_count`'s docstring names `forest_surgery_split` as
+  a lemma that applies it, not a superseded one, and states its second conclusion (task 31.1);
+  reported (`notes/Prose-report.md`, L6).
 - **F-094** · L · the deficiency bounds' pins (`Induction/SplitOffDeficiency.lean`): the private
   `splitOff_deficiency_le_aux` takes `heab : eₐ ≠ e_b` and does not use it, so
   `splitOff_deficiency_le` and `splitOff_deficiency_le_of_eq_left` take it only to pass it on.
@@ -3689,16 +3694,18 @@ declaration's name as its header writes it:
   degree-two step "the remaining `lem:reducible-vertex` work".
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.15.
-  *Disposition:* reported (`notes/Prose-report.md`, L8); round 3: the case $e = e_0$ by the other
-  case's criterion step, as KT Lemma 4.3's minimality argument (p. 661) has it, and `hV3` dropped
-  from both pins; `lem:reduction-step-pos` and `lem:removal-deficiency-strict` restated, and KT 4.7's,
-  4.5(ii)'s and 4.4's second assertion's pins now outside every main result's closure, dead pins
-  168 → 172 (task 15); `splitOff_vertexSet_ncard_lt`'s lead names `lem:reduction-measure` (task
-  30), and those of `rigidContract_vertexSet_ncard_lt` and `rigidContract_vertexSet_ncard` (task
-  30.1); in `Induction/ReducibleVertex.lean`, `no_rigid_edge_count`'s section and docstring give
-  every $k$, and those before `mulTilde_edgeSet_ncard` and `exists_degree_le_two` no longer call KT
-  4.5(i) or the degree-two step unfinished (task 30.1); task 31 reads
-  `ForestSurgery/Reduction.lean`'s. The $D \ge 2$ question is `F-273`'s.
+  *Disposition:* done (task 31.1): the case $e = e_0$ by the other case's criterion step, as KT
+  Lemma 4.3's minimality argument (p. 661) has it, and `hV3` dropped from both pins;
+  `lem:reduction-step-pos` and `lem:removal-deficiency-strict` restated, and KT 4.7's, 4.5(ii)'s and
+  4.4's second assertion's pins now outside every main result's closure, dead pins 168 → 172 (task
+  15); `splitOff_vertexSet_ncard_lt`'s lead names `lem:reduction-measure` (task 30), and those of
+  `rigidContract_vertexSet_ncard_lt` and `rigidContract_vertexSet_ncard` (task 30.1); in
+  `Induction/ReducibleVertex.lean`, `no_rigid_edge_count`'s section and docstring give every $k$,
+  and those before `mulTilde_edgeSet_ncard` and `exists_degree_le_two` no longer call KT 4.5(i) or
+  the degree-two step unfinished (task 30.1); in `ForestSurgery/Reduction.lean`, the two pins have
+  docstrings that describe their proofs as task 15 left them, step (3) of KT Lemma 4.8(ii) by KT
+  Lemma 4.3's minimality argument (task 31.1); reported (`notes/Prose-report.md`, L8). The $D \ge 2$
+  question is `F-273`'s.
 - **F-104** · L · the pins of KT Theorem 4.9, KT Lemma 6.1 and the $d = 3$ pair
   (`Induction/ForestSurgery/Reduction.lean`, `Induction/ReducibleVertex.lean`,
   `AlgebraicInduction/Theorem55.lean`, `AlgebraicInduction/PanelHinge.lean`):
@@ -3715,9 +3722,13 @@ declaration's name as its header writes it:
   *Found:* round 2 task 2.16.
   *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hV3` dropped from
   `case_cut_edge_realization_gen` and `_gp_gen`, and the second conjunct from the latter's
-  hypothesis (`F-102`), the call in `theorem_55_minimalKDof_gen` following, its statement
-  unchanged; both nodes no longer ask three vertices (task 12); `exists_adjacent_degree_two_pair`'s
-  docstring says $d \ge 3$ (task 30.1).
+  hypothesis (`F-102`), the call in `theorem_55_minimalKDof_gen` following, its statement unchanged;
+  both nodes no longer ask three vertices (task 12); `exists_adjacent_degree_two_pair`'s docstring
+  says $d \ge 3$ (task 30.1); in `ForestSurgery/Reduction.lean`, neither the header nor
+  `minimal_kdof_reduction`'s docstring says that the algebraic induction runs it (it runs
+  `minimal_kdof_reduction_all_k`; nothing uses `minimal_kdof_reduction`), the docstring narrates no
+  phase and cites no note, and `exists_chain_data_of_noRigid`'s says $d \ge 3$ (task 31.1); the
+  docstrings of the two pins (`Theorem55.lean`) and `PanelHinge.lean`'s section are task 36's.
 - **F-108** · L · the pins of KT Lemma 4.6's nodes (`Induction/ForestSurgery/ChainExtraction.lean`,
   `Induction/Operations.lean`, `Molecular/Deficiency.lean`): `chainData_extract` takes
   `hV3 : 3 ≤ V(G).ncard` beside `hV4 : 4 ≤ V(G).ncard`, and `[G.Simple]`, which
@@ -3953,7 +3964,11 @@ declaration's name as its header writes it:
   "seed".
   *Evidence:* read (the docstrings and bodies; KT 2011 p. 661, `.refs/`).
   *Found:* round 3 task 2.11.
-  *Disposition:* reported (`notes/Prose-report.md`, L5).
+  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3: in
+  `Induction/ForestSurgery/Reduction.lean`, `splitOff_exists_base_inter_fiber_lt`'s docstring places
+  KT Lemma 4.3 on p. 661, `splitOff_removeVertex_minimalKDof`'s names
+  `exists_nested_rankPolynomial_lower_all_k` (`lem:case-III-nested-rank-lower`) as the lemma that
+  uses it, and neither carries a process code (task 31.1); `CaseIII/`'s are task 35's.
 - **F-161** · L · the docstrings of `case-iii.tex`'s pins for KT eqs. (6.24)–(6.29)
   (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelHinge.lean`,
   `CaseIII/Candidate.lean`). `exists_redundant_panelRow_ab_decomposition`'s says that the transport
@@ -4301,10 +4316,11 @@ declaration's name as its header writes it:
   it, but it has no caller (`F-106`).
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.5.
-  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: `CycleData.vertexSet_ncard`
-  deleted, and `def:cycle-data`'s note no longer names it (task 3); the leads of
-  `rigidContract_vertexSet_ncard` and `_lt` name `lem:reduction-measure` (task 30.1); the section in
-  `ForestSurgery/Reduction.lean` is task 31's.
+  *Disposition:* done (task 31.1): `CycleData.vertexSet_ncard` deleted, and `def:cycle-data`'s note
+  no longer names it (task 3); the leads of `rigidContract_vertexSet_ncard` and `_lt` name
+  `lem:reduction-measure` (task 30.1); the section before
+  `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof` (`ForestSurgery/Reduction.lean`) names
+  `lem:removal-deficiency-equality` (task 31.1); reported (`notes/Prose-report.md`, L11).
 - **F-237** · L · the declarations round 5's task 3.6 pinned or unpinned
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`). The five $d = 3$ base wrappers
   `theorem_55_base_producer_empty`, `_empty_gp`, `_single_edge`, `_single_edge_gp` and
@@ -4791,6 +4807,21 @@ declaration's name as its header writes it:
   `hneT.length_pos` from `hfe`; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t31.lean`, gitignored).
   *Found:* RECONCILE round 3 task 31.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-285** · L · three hypotheses of `Molecular/Induction/ForestSurgery/Reduction.lean` that the
+  statements or the proofs do not use, or use less of than they give: `Graph.pencil_reduction`'s
+  `[DecidableEq β]`, which its statement does not use (hence its
+  `set_option linter.unusedDecidableInType false`, whose comment called the report a false positive)
+  and `classical` supplies (`thm:pencil-reduction`); `Graph.exists_degree_eq_two_of_noRigid`'s
+  `hV3 : 3 ≤ V(G).ncard`, used only as `2 ≤ V(G).ncard` (its one caller is Case III's
+  `case_III_hsplit_producer_all_k`); and the private `Graph.vfiber_inc_iff`'s
+  `_hpE : p ∈ E(G.mulTilde n)`, which its proof does not use.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the first stated without the
+  instance and proved by the theorem under `classical`, and copies of the second with
+  `2 ≤ V(G).ncard` (the line deriving it from `hV3` removed) and of the third without `_hpE` that
+  elaborate with the same proofs, on at most the three standard axioms
+  (`scratch/reconcile-lean/Hyps-t311.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 31.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
