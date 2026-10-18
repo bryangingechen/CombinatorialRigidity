@@ -19,27 +19,23 @@ public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 
 /-!
-# The rigidity matroid
+# The rigidity matroid: row-independent edge sets
 
-Linear-algebra infrastructure used by the `(⇒)` direction of Laman's theorem
-(`IsGenericallyRigid.exists_isLaman_le` in `LamanTheorem.lean`). The eventual
-home for the rigidity-matroid side of Lovász–Yemini's identification of the
-rigidity matroid in dimension 2 with the `(2, 3)`-count matroid.
+An edge set is *row-independent* at a placement when its rows of the rigidity matrix are
+linearly independent (`EdgeSetRowIndependent`); Jordán (2016, p. 39) calls these sets the
+independent sets of the framework's rigidity matroid. This file proves what the rigidity matroid
+in the plane and in 3-space rests on, with no `Matroid` structure: transport along
+isomorphisms and injective vertex maps, openness in the placement, the rank bounds at a
+generically rigid and at an affinely-spanning placement, the perturbation to an
+affinely-spanning placement, the counts that row-independence forces (`(2, 3)`-sparsity in the
+plane, one half of Pollaczek-Geiringer's and Laman's characterization, which
+`IsGenericallyRigid.exists_isLaman_le` uses, and the Laman condition `IsLaman3` in 3-space), and
+the `0`-extension lift in 3-space.
 
-## Project context
-
-Phase 4 (`Framework.lean`) deliberately kept the abstract rigidity matroid
-out of the core framework API; Phase 6 stands this file up alongside it.
-Per `notes/Phase6.md` *Architectural choices*, we stay matroid-agnostic in
-the proof body and defer the `Mathlib.Combinatorics.Matroid` packaging:
-closing `exists_isLaman_le` needs only the row-independence relation and
-two linear-algebra facts (a rank lower bound at a generically rigid
-placement, and `(2, 3)`-sparsity-from-row-independence). Building the
-abstract `Matroid` instance is reusable infrastructure but not on the
-critical path.
-
-See `ROADMAP.md` §6, `notes/Phase6.md`, and the `(⇒)` subsection of
-`blueprint/src/chapter/laman-theorem.tex`.
+The matroids are built elsewhere: the planar one in `MatroidIdentification.lean` and
+`LinearRigidityMatroid.lean`, the generic one in `GenericRigidityMatroid.lean`. The blueprint
+presents this file in `sec:laman-theorem` (its `(⇒)` direction), `sec:rigidity-matroid`,
+`sec:jacobs-easy` and `sec:jacobs-zero-extension`.
 -/
 
 public section
@@ -57,10 +53,9 @@ of edge-rows `(motion ↦ G.RigidityMap p motion e)_{e ∈ I}` — viewed as lin
 on `Framework V d` — is linearly independent over `ℝ`.
 
 Equivalently (in finite dimension), the composition of `G.RigidityMap p` with the column
-projection `(G.edgeSet → ℝ) → (I → ℝ)` has full rank `|I|`. The Lovász–Yemini matroid
-view of rigidity declares such `I` to be the *independent sets* of the rigidity matroid of
-`(G, p)`; we keep the predicate-only formulation since the Phase 6 `(⇒)` direction does not
-need the abstract `Matroid` packaging. -/
+projection `(G.edgeSet → ℝ) → (I → ℝ)` has full rank `|I|`. Jordán (2016, p. 39) calls such
+`I` the *independent sets* of the rigidity matroid of `(G, p)`; the matroid itself is
+`linearRigidityMatroid` (`LinearRigidityMatroid.lean`). -/
 def EdgeSetRowIndependent (G : SimpleGraph V) (p : Framework V d) (I : Set G.edgeSet) : Prop :=
   LinearIndepOn ℝ
     (fun e : G.edgeSet => fun motion : Framework V d => G.RigidityMap p motion e) I
@@ -172,8 +167,9 @@ Row-LI analogue of `IsInfinitesimallyRigid.iso` in `Framework.lean`. The G-rows 
 factor as `Lφ.toLinearMap.dualMap ∘ H.rigidityRow q ∘ φ.mapEdgeSet`, where
 `Lφ : Framework V d ≃ₗ[ℝ] Framework W d` is precomposition with `φ.symm` (motion ↦ motion ∘
 φ.symm). LI of the H-rows transports through the bijection `φ.mapEdgeSet` and the injective
-linear map `Lφ.toLinearMap.dualMap` (dualMap of a linear equiv). Used by Phase 7's
-`|E|`-induction at each Henneberg branch (`MatroidIdentification.lean`). -/
+linear map `Lφ.toLinearMap.dualMap` (dualMap of a linear equiv). Used at each Henneberg branch
+of the induction on `|V|` in `IsSparse.exists_rowIndependent_placement`
+(`MatroidIdentification.lean`). -/
 theorem EdgeSetRowIndependent.iso {V W : Type*} {d : ℕ}
     {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H)
     {q : Framework W d} (h : H.EdgeSetRowIndependent q Set.univ) :
@@ -216,11 +212,12 @@ theorem EdgeSetRowIndependent.iso {V W : Type*} {d : ℕ}
 
 /-! ### Rigidity-row factoring through an injective vertex embedding
 
-The factoring identity and its two LI consequences (forward / reverse) shared by every Phase 7
+The factoring identity and its two LI consequences (forward / reverse) shared by every
 "lift placement along an injective vertex map" proof. Specialisations:
 `some : V → Option V` (typeI / typeII / pendant Henneberg lifts in `MatroidIdentification.lean`)
-and `Subtype.val : ↥S → V` (Lovász–Yemini easy direction at `isSparse_of_edgeSetRowIndependent
-_dim_two`). Generalises the iso-only `EdgeSetRowIndependent.iso` above. -/
+and `Subtype.val : ↥S → V` (the restriction to an induced subgraph in
+`isSparse_of_edgeSetRowIndependent_dim_two` and `isLaman3_of_edgeSetRowIndependent_dim_three`).
+Generalises the iso-only `EdgeSetRowIndependent.iso` above. -/
 
 /-- **Rigidity-row factoring through `LinearMap.funLeft φ`.** For an injective vertex map
 `φ : V → W` and a placement `p_ext : Framework W d` compatible with `p' : Framework V d`
@@ -275,8 +272,8 @@ theorem linearIndependent_rigidityRow_lift_of_injective
 /-- **Reverse transport of row independence along an injective vertex embedding.** If the
 family of `H`-rows at `p_ext` indexed via `s : ι → G'.edgeSet` (with each `Sym2.map φ (s i)`
 landing in `H.edgeSet`) is linearly independent, then so is the underlying family of
-`G'`-rows at `p'`. Used by the Lovász–Yemini easy direction
-(`isSparse_of_edgeSetRowIndependent_dim_two`) where the V-side row-LI on `I` pulls back to
+`G'`-rows at `p'`. Used by `isSparse_of_edgeSetRowIndependent_dim_two` and
+`isLaman3_of_edgeSetRowIndependent_dim_three`, where the V-side row-LI on `I` pulls back to
 row-LI of the induced subgraph at the restricted placement. -/
 theorem linearIndependent_rigidityRow_of_lift
     {V W : Type*} {d : ℕ}
@@ -400,8 +397,8 @@ rigid in dimension `d`, some framework `p` realises
 
 This is the rank half of `IsGenericallyRigid.card_mul_le`: the same rank-nullity argument that
 gives `d * #V ≤ #E + d (d + 1) / 2`, stopping one step earlier (before replacing `rank` by
-`#E` via `rigidityMap_finrank_range_le`). The Phase 6 `(⇒)` direction consumes this at `d = 2`,
-where `2 * (2 + 1) / 2 = 3` reduces by `rfl` so callers can use the d-general lemma directly. -/
+`#E` via `rigidityMap_finrank_range_le`). `exists_edgeSetRowIndependent_basis_dim_two` uses it
+at `d = 2`, where `2 * (2 + 1) / 2 = 3` reduces by `rfl`, so no `d = 2` form is needed. -/
 theorem rigidityMap_finrank_range_ge_of_isGenericallyRigid [Fintype V] {d : ℕ}
     {G : SimpleGraph V} (hG : G.IsGenericallyRigid d) :
     ∃ p : Framework V d,
@@ -439,9 +436,10 @@ theorem rigidityMap_finrank_range_le_of_affinelySpanning [Fintype V] {d : ℕ}
 /-- **Row-independent edge basis at a fixed rank-realising placement, dim 2.** If `p : Framework
 V 2` realises the rank lower bound `2 * #V ≤ finrank (range R) + 3` (e.g. at an infinitesimally
 rigid placement, via rank-nullity), then `G` has a row-independent edge set at `p` of size exactly
-`2 * #V - 3`. The placement-fixed companion to `exists_edgeSetRowIndependent_basis_dim_two` — same
-body, but `p` is supplied externally so the lemma composes with
-`exists_affinelySpanning_of_eventually` (at `IsInfinitesimallyRigid.eventually`). -/
+`2 * #V - 3`. The placement is supplied externally, so the lemma composes with
+`exists_affinelySpanning_of_eventually` (at `IsInfinitesimallyRigid.eventually`) in
+`IsGenericallyRigid.exists_isLaman_le`; `exists_edgeSetRowIndependent_basis_dim_two` applies it
+at the placement of the rank lower bound. -/
 theorem exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two [Fintype V]
     {G : SimpleGraph V} {p : Framework V 2}
     (hp : 2 * Fintype.card V ≤
@@ -497,8 +495,8 @@ theorem exists_edgeSetRowIndependent_basis_dim_two [Fintype V] {G : SimpleGraph 
 
 /-! ### Affinely-spanning rigid placement, d-general
 
-The Phase 6 critical path needs a placement that is both infinitesimally rigid for `G` *and*
-affinely spanning on every size-`≥ d + 1` subset. Openness of infinitesimal rigidity
+The `(⇒)` direction of Laman's theorem needs a placement that is both infinitesimally rigid
+for `G` *and* affinely spanning on every size-`≥ d + 1` subset. Openness of infinitesimal rigidity
 (`IsInfinitesimallyRigid.eventually`) supplies the IR half; for the affinely-spanning half we
 perturb the IR witness along the *moment curve* `w v = (φ(v)^1, …, φ(v)^d)` (with `φ : V → ℝ`
 injective via `Fintype.equivFin`). For each ordered `(d+1)`-tuple of distinct vertices, the
@@ -535,12 +533,12 @@ Given any property `P : Framework V d → Prop` that holds on a neighborhood of 
 `p₀`, there exists a placement satisfying `P` and affinely spanning `EuclideanSpace ℝ (Fin d)`
 when restricted to every size-`≥ d + 1` subset of `V`.
 
-Specialised twice in the project: at `P = G.IsInfinitesimallyRigid` (the Phase 6 `(⇒)` direction
+Specialised twice in the planar files: at `P = G.IsInfinitesimallyRigid` (the `(⇒)` direction
 of Laman's theorem, in `LamanTheorem.lean`, where `hP` comes from
 `IsInfinitesimallyRigid.eventually`), and at `P = G.EdgeSetRowIndependent · I` in dimension 2
-(the Phase 7 iff `edgeSet_rowIndependent_iff_isSparse_dim_two`, in `MatroidIdentification.lean`,
-where `hP` comes from `EdgeSetRowIndependent.eventually`). The shared moment-curve perturbation
-is genuinely property-agnostic — only the openness premise differs between the two callers.
+(the iff `edgeSet_rowIndependent_iff_isSparse_dim_two`, in `MatroidIdentification.lean`,
+where `hP` comes from `EdgeSetRowIndependent.eventually`). The moment-curve perturbation does
+not depend on the property; only the openness premise differs between the two callers.
 
 The proof perturbs `p₀` along the moment-curve direction `w v = (φ(v)^1, …, φ(v)^d)` with
 `φ : V → ℝ` injective. The openness premise `hP` gives `ε > 0` such that `P (p₀ + t • w)` holds
@@ -687,9 +685,15 @@ theorem exists_affinelySpanning_of_eventually [Finite V] {d : ℕ}
       _ ≤ affineSpan ℝ (Set.range (fun v : S => pt t v.val)) :=
           affineSpan_mono ℝ h_incl
 
-/-! ### Sparsity from row-independence (Lovász–Yemini, easy direction) -/
+/-! ### Sparsity from row-independence
 
-/-- **`(2, 3)`-sparsity from row-independence, dim 2** (Lovász–Yemini's easy direction). Let
+The half of Pollaczek-Geiringer's and Laman's characterization of row-independence in the plane
+(Jordán 2016, Theorem 2.2.1) that needs no construction: a row-independent edge set at a
+placement with no three points collinear is `(2, 3)`-sparse. Jordán derives it from his rank
+bound (Lemmas 1.2.1 and 1.3.1), as we do. -/
+
+/-- **`(2, 3)`-sparsity from row-independence, dim 2** (one half of Pollaczek-Geiringer's and
+Laman's characterization, Jordán's Theorem 2.2.1). Let
 `p : Framework V 2` affinely span on every size-`≥ 3` subset of `V`; then any spanning subgraph
 whose edge set is row-independent at `p` is `(2, 3)`-sparse.
 
@@ -704,8 +708,9 @@ direction; the factoring identity says the rigidity row in `G` at the lifted edg
 rigidity row in the induced subgraph composed with the restriction.
 
 **Blueprint:** the $(\Rightarrow)$ direction's sparsity step, `lem:isSparse-of-rowIndependent-two`.
-The hypothesis `hp` is supplied at dimension `2` by
-`exists_affinelySpanning_of_eventually` (Phase 6 specialises it at IR; Phase 7's iff at row-LI). -/
+The hypothesis `hp` is supplied at dimension `2` by `exists_affinelySpanning_of_eventually`
+(specialised at infinitesimal rigidity in `IsGenericallyRigid.exists_isLaman_le`, at
+row-independence in `edgeSet_rowIndependent_iff_isSparse_dim_two`). -/
 theorem isSparse_of_edgeSetRowIndependent_dim_two {V : Type*} {G : SimpleGraph V}
     {p : Framework V 2}
     (hp : ∀ S : Set V, 3 ≤ S.ncard →
@@ -916,13 +921,14 @@ theorem isLaman3_of_edgeSetRowIndependent_dim_three {V : Type*} {G : SimpleGraph
 
 /-! ### Zero-extension (vertex-addition) row-independence lift, dimension three
 
-The conditional core of `lem:zero-extension-rowIndependent` (Jackson–Jordán Lemma 3.3 /
-Whiteley Lemma 9.1.3, the classical `0`-extension used to reduce Jacobs' conjecture to the
-minimum-degree-two case). On a *fixed* vertex set, re-placing a single vertex `v` off the affine
-hull of its neighbors keeps every edge of `H` row-independent, provided the edges *not* incident
-to `v` were already row-independent: the untouched rows stay independent, and the star rows at
+The conditional core of `lem:zero-extension-rowIndependent`, the `0`-extension lemma
+(Jackson–Jordán 2008, Lemma 3.3, citing Whiteley's Vertex 3-Addition Lemma 9.1.3, 1996) that
+the reduction of Jacobs' conjecture to minimum degree at least two and the degree-one rank
+formula both use. On a *fixed* vertex set, re-placing a single vertex `v` off the affine hull of
+its neighbors keeps every edge of `H` row-independent, provided the edges *not* incident to `v`
+were already row-independent: the untouched rows stay independent, and the star rows at
 `v` are independent from them and from each other because the displacement vectors `p v - p' uᵢ`
-are linearly independent. This is the fixed-`V` analogue of Phase 7's
+are linearly independent. This is the fixed-`V` analogue of
 `typeI_edgeSetRowIndependent_extend` (which instead adjoins a fresh `Option V` vertex). -/
 
 /-- **Zero-extension row-independence lift (conditional core), dimension three.** Let `H` be a
@@ -1057,7 +1063,9 @@ a proper affine subspace of `ℝ³`, so some point `q` lies off it; placing `v` 
 vanishing combination with nonzero weight-sum would exhibit `q` as an affine combination of the
 `p' uᵢ`, and one with zero weight-sum vanishes by affine independence), so
 `zero_extension_edgeSetRowIndependent_extend` applies. The affine-independence and degree
-hypotheses are discharged by the corollaries downstream at a general-position generic placement. -/
+hypotheses are discharged at a generic placement in general position by
+`zero_extension_genericRank_add_degree` (`cor:zero-extension-degree-le-three`,
+`JacobsZeroExtension.lean`). -/
 theorem zero_extension_edgeSetRowIndependent_lift {V : Type*} {H : SimpleGraph V} {v : V}
     [Fintype ↥(H.neighborSet v)] {p' : Framework V 3}
     (h : (H.deleteIncidenceSet v).EdgeSetRowIndependent p' Set.univ)

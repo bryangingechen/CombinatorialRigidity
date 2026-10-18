@@ -11,17 +11,19 @@ public import Mathlib.Combinatorics.Matroid.IndepAxioms
 /-!
 # The `(k, ℓ)`-count matroid
 
-Phase 7 (Commit 18). The abstract `(k, ℓ)`-count matroid on a finite vertex set `V`, in the
-matroidal regime `ℓ < 2 * k` (Whiteley 1996, Lee–Streinu 2008). Its ground set is the off-
-diagonal symmetric pairs `(⊤ : SimpleGraph V).edgeSet ⊆ Sym2 V`, and its independent sets are
-exactly the edge subsets `I` such that `fromEdgeSet I` is `(k, ℓ)`-sparse.
+The abstract `(k, ℓ)`-count matroid on a finite vertex set `V`, in the matroidal regime
+`ℓ < 2 * k`. It goes back to Lorea and, independently, to White and Whiteley; Whiteley (1996,
+Proposition A.1.1) proves it for hypergraphs and credits both, and Lee and Streinu (2008,
+Theorem 2) prove a version for multigraphs. Its ground set is the off-diagonal symmetric pairs
+`(⊤ : SimpleGraph V).edgeSet ⊆ Sym2 V`, and its independent sets are exactly the edge subsets
+`I` such that `fromEdgeSet I` is `(k, ℓ)`-sparse.
 
 Existence as a matroid is by mathlib's `IndepMatroid.ofFinite` applied to the four axioms:
 * `indep_empty` — `fromEdgeSet ∅ = ⊥` is vacuously sparse (`bot_isSparse`).
 * `indep_subset` — sparsity is monotone in the edge set (`IsSparse.mono_left` via
   `fromEdgeSet_mono`).
 * `indep_aug` — the matroidal-regime augmentation lemma
-  `IsSparse.exists_aug_of_lt_two_mul` (Sparsity.lean, Commit 17c).
+  `IsSparse.exists_aug_of_lt_two_mul` (`SparsityIComponents.lean`).
 * `subset_ground` — definitional from the predicate's first conjunct.
 
 ## Main definitions
@@ -36,10 +38,10 @@ Existence as a matroid is by mathlib's `IndepMatroid.ofFinite` applied to the fo
   (fromEdgeSet I).IsSparse k ℓ`.
 
 The planar specialisation `SimpleGraph.rigidityMatroid V := countMatroid V 2 3 (by omega)` and
-the matroid-form Lovász–Yemini live in `MatroidIdentification.lean` (Commit 19).
+its independent sets as the edge sets row-independent at some placement
+(`rigidityMatroid_indep_iff_edgeSetRowIndependent`) are in `MatroidIdentification.lean`.
 
-See `ROADMAP.md` §7, `notes/Phase7.md`, and the blueprint chapter
-`blueprint/src/chapter/count-matroid.tex`.
+The blueprint's `sec:count-matroid` presents this file.
 -/
 
 public section
@@ -56,12 +58,10 @@ edge set `I ⊆ Sym2 V` is independent iff `I` is contained in the ground set an
 is `(k, ℓ)`-sparse (`SimpleGraph.IsSparse`).
 
 In the matroidal regime, the `(k, ℓ)`-sparse subsets are exactly the independent sets of a
-matroid on `Sym2 V`; outside the regime (`ℓ ≥ 2 * k`), the augmentation axiom can fail
-(e.g.\ `(3, 6)` in 3-dimensional rigidity).
+matroid on `Sym2 V`; the construction needs the regime, as its augmentation axiom
+(`IsSparse.exists_aug_of_lt_two_mul`) is proved only there.
 
-See `countMatroid_indep_iff` for the independence characterisation and
-`SimpleGraph.IsSparse.exists_aug_of_lt_two_mul` for the augmentation axiom that powers this
-construction. -/
+See `countMatroid_indep_iff` for the independence characterisation. -/
 @[expose] def countMatroid (k ℓ : ℕ) (hℓ : ℓ < 2 * k) : Matroid (Sym2 V) :=
   (IndepMatroid.ofFinite
     (E := (⊤ : SimpleGraph V).edgeSet)

@@ -14,19 +14,20 @@ public import CombinatorialRigidity.RigidityMatroid
 /-!
 # Matroid identification of the planar rigidity matroid
 
-Phase 7. The hard direction of Lovász–Yemini's matroid identification: in dimension 2, every
-`(2, 3)`-sparse edge set is row-independent at some placement. Combined with Phase 6's easy
-direction (`isSparse_of_edgeSetRowIndependent_dim_two` in `RigidityMatroid.lean`), this gives
-the row-LI ↔ sparse iff and packages the planar rigidity matroid as a
-`Mathlib.Combinatorics.Matroid` instance.
+The harder half of the characterization of row-independence in the plane, due to
+Pollaczek-Geiringer and Laman (Jordán 2016, Theorem 2.2.1; Pollaczek-Geiringer proves this half
+in her §8, p. 70): in dimension 2, every `(2, 3)`-sparse edge set is row-independent at some
+placement. Combined with the other half (`isSparse_of_edgeSetRowIndependent_dim_two` in
+`RigidityMatroid.lean`), this gives the row-LI ↔ sparse iff and packages the planar rigidity
+matroid as a `Mathlib.Combinatorics.Matroid` instance.
 
-The proof follows Jordán~§2.2 (Theorem 2.2.1): induction on `|E|`, with each Henneberg move
-on a sparse graph lifting row-independence to a fresh placement of the larger graph by placing
-the new vertex generically. This file holds the two Henneberg row-LI lifts (Type I and Type II,
-both in operation form), the inductive existence theorem, the iff and matroid identification.
+The proof follows Jordán's proof of his Theorem 2.2.1 (p. 45): induction with reverse Henneberg
+moves, each move lifting row-independence to a placement of the larger graph by placing the new
+vertex suitably. It inducts on `|V|`, where Jordán inducts on `|E|`. This file holds the
+Henneberg row-LI lifts (pendant, Type I and Type II, in operation form), the inductive existence
+theorem, the iff and the matroid identification.
 
-See `ROADMAP.md` §7, `notes/Phase7.md`, and the blueprint chapter
-`blueprint/src/chapter/rigidity-matroid.tex`.
+The blueprint's `sec:rigidity-matroid` presents this file.
 -/
 
 public section
@@ -60,7 +61,7 @@ private lemma typeI_new_rows_coeff_zero
 displacements `q - p' a` and `q - p' b` are linearly independent, then every edge of
 `typeI G' a b` is row-independent at the extended placement `fun w : Option V => w.elim q p'`.
 
-Row-LI analogue of Phase 5's `typeI_isInfinitesimallyRigid_extend`. The proof uses
+Row-LI analogue of `typeI_isInfinitesimallyRigid_extend`. The proof uses
 `LinearIndepOn.union` to partition `(typeI G' a b).edgeSet` into the image of `G'.edgeSet`
 under `Sym2.map some` and the two new edges `s(none, some a)`, `s(none, some b)`. LI on the
 old part comes by factoring through the restriction map `(· ∘ some) : Framework (Option V) 2 →ₗ
@@ -158,9 +159,9 @@ edge of `G'` is row-independent, and two old vertices `a, b` with distinct image
 `p' a ≠ p' b`, there exists an extended placement `p : Framework (Option V) 2` with
 `p ∘ some = p'` at which every edge of `typeI G' a b` is row-independent.
 
-Row-LI analogue of Phase 5's `typeI_isGenericallyRigidInj_two`. The proof uses
-`exists_off_line_off_finite_dim_two` (with empty avoidance set, since the row-LI matroid hard
-direction needs *some* placement, not an *injective* one) to pick `q` so that `q - p' a` and
+Row-LI analogue of `typeI_isGenericallyRigidInj_two`. The proof uses
+`exists_off_line_off_finite_dim_two` (with empty avoidance set, since the sufficiency half
+needs *some* placement, not an *injective* one) to pick `q` so that `q - p' a` and
 `q - p' b` are linearly independent, then applies `typeI_edgeSetRowIndependent_extend`. -/
 theorem typeI_edgeSetRowIndependent_lift {G' : SimpleGraph V}
     {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ)
@@ -186,9 +187,9 @@ the extended placement `fun w : Option V => w.elim q p'`.
 
 Degenerate `b = a` case of `typeI_edgeSetRowIndependent_extend`: the parallel edges of
 `typeI G' a a` collapse to the single new edge `s(none, some a)`, so the LI condition
-`![q - p' a, q - p' b]` (impossible at `b = a`) is replaced by `q ≠ p' a`. Used by Phase 7's
-`|E|`-induction pendant branch (degree-1 reverse) — see
-`IsSparse.exists_typeI_or_typeII_reverse`. -/
+`![q - p' a, q - p' b]` (impossible at `b = a`) is replaced by `q ≠ p' a`. Used, through
+`typeI_pendant_edgeSetRowIndependent_lift`, by the pendant branch (degree-1 reverse) of the
+induction on `|V|` in `IsSparse.exists_rowIndependent_placement`. -/
 theorem typeI_pendant_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ)
     {a : V} {q : EuclideanSpace ℝ (Fin 2)} (hq : q ≠ p' a) :
@@ -260,9 +261,9 @@ placement `p : Framework (Option V) 2` with `p ∘ some = p'` at which every edg
 
 The blueprint statement `lem:pendant-rowIndependent-lift`: picks any `q ≠ p' a` (exists since
 `EuclideanSpace ℝ (Fin 2)` is nontrivial) and applies
-`typeI_pendant_edgeSetRowIndependent_extend`. Consumed by Phase 7's `|E|`-induction pendant
-branch alongside the canonical iso `isoTypeIOfTwoNeighbors` at `a = b` (the unique
-neighbour of the degree-1 vertex). -/
+`typeI_pendant_edgeSetRowIndependent_extend`. Used by the pendant branch of the induction on
+`|V|` in `IsSparse.exists_rowIndependent_placement`, alongside the canonical iso
+`isoTypeIOfTwoNeighbors` at `a = b` (the unique neighbour of the degree-1 vertex). -/
 theorem typeI_pendant_edgeSetRowIndependent_lift {G' : SimpleGraph V}
     {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ) (a : V) :
     ∃ p : Framework (Option V) 2, p ∘ some = p' ∧
@@ -273,12 +274,12 @@ theorem typeI_pendant_edgeSetRowIndependent_lift {G' : SimpleGraph V}
 
 /-! ### Type II row-LI lift, conditional core
 
-Row-LI analogue of Phase 5's `typeII_isInfinitesimallyRigid_extend`. The new vertex `q` is
-placed on the line through `p' a, p' b` (collinearity scalar `s ≠ 0, 1`) so that the two new
-rows for `s(none, some a)` and `s(none, some b)` are scalar multiples of the deleted G'-row
-for `s(a, b)`; the third new row `s(none, some c)` is independent by `(q - p' a, q - p' c)`
-linear independence. The classical Whiteley/Jordán argument adapted to row-LI; see the chapter
-preamble. -/
+Row-LI analogue of `typeII_isInfinitesimallyRigid_extend`. The new vertex `q` is
+placed on the line through `p' a, p' b` (collinearity scalar `s ≠ 0, 1`) so that a linear
+combination of the two new rows for `s(none, some a)` and `s(none, some b)` is a multiple of
+the deleted G'-row for `s(a, b)` (`typeII_collinear_inner_combo`); the third new row
+`s(none, some c)` is independent by `(q - p' a, q - p' c)` linear independence. Whiteley's
+argument (his proof of the Edge `d`-Split Theorem 11.1.7, 1996), adapted to row-LI. -/
 
 /-- Internal helper for the Type II row-LI lift. Under the collinearity hypothesis
 `q - p' a = s • (p' b - p' a)` with `s ≠ 0`, the evaluation
@@ -325,11 +326,11 @@ scalar `s ≠ 0, 1` (i.e. `q - p' a = s • (p' b - p' a)`) AND the linear-indep
 the line through `p' a, p' b`), then every edge of `typeII G' a b c` is row-independent at the
 extended placement `fun w : Option V => w.elim q p'`.
 
-Row-LI analogue of Phase 5's `typeII_isInfinitesimallyRigid_extend`. The classical
-Whiteley/Jordán argument adapted to the dual side: the two new rows `s(none, some a)` and
-`s(none, some b)` are scalar multiples of the deleted G'-row `s(a, b)` (anti-parallel
-displacements along `p' b - p' a`), and a single linear combination
-`s · row_b - (s-1) · row_a = -s(s-1) · T(rowG'(s(a, b)))` recovers it; the third new row
+Row-LI analogue of `typeII_isInfinitesimallyRigid_extend`. Whiteley's argument adapted to the
+dual side: the two new rows `s(none, some a)` and `s(none, some b)` have displacements parallel
+to `p' b - p' a`, and a single linear combination
+`s · row_b - (s-1) · row_a = -s(s-1) · T(rowG'(s(a, b)))` recovers the deleted `G'`-row
+`s(a, b)`; the third new row
 `s(none, some c)` is independent of the first two by linear independence of `![q - p' a,
 q - p' c]`, and the entire new-row span is disjoint from the lifted old-row span (whose
 G'-row for `s(a, b)` is *not* in the lifted typeII old-row family, but is in the new-row
@@ -609,10 +610,10 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
 
 /-! ### Type II row-LI lift, unconditional wrapper
 
-Row-LI analogue of Phase 5's `typeII_isGenericallyRigidInj_two` minus the
+Row-LI analogue of `typeII_isGenericallyRigidInj_two` minus the
 injectivity-preservation half. The non-collinearity gap on `(p' a, p' b, p' c)` is discharged
-by a perpendicular perturbation of `p' c` (preserving row-LI of `G'` via
-`EdgeSetRowIndependent.eventually`), after which a generic collinearity scalar `s` recovers
+by moving `p' c` off the line through `p' a, p' b` (preserving row-LI of `G'` via
+`EdgeSetRowIndependent.eventually`), after which the collinearity scalar `s = 1/2` recovers
 the conditional core. -/
 
 /-- **Existence of a non-collinear row-independent placement in dim 2.** Given a placement `p₀`
@@ -620,7 +621,7 @@ of `G'` at which every edge of `G'` is row-independent, an edge `G'.Adj a b`, an
 `c` with `a ≠ c, b ≠ c`, there exists a placement `p` of `V` with `G'`-row-LI at `p` and
 `(p a, p b, p c)` non-collinear, i.e. `LinearIndependent ℝ ![p b - p a, p c - p a]`.
 
-Row-LI analogue of Phase 5's `exists_nonCollinear_rigid_placement_dim_two`. The non-zero
+Row-LI analogue of `exists_nonCollinear_rigid_placement_dim_two`. The non-zero
 direction `p₀ b - p₀ a ≠ 0` is supplied by `h_ab` plus row-LI (a zero row at the edge `s(a, b)`
 would contradict LI), and row-LI of `G'` is preserved on a neighborhood of `t = 0` by
 `EdgeSetRowIndependent.eventually` pulled back through continuity of the perturbation; the
@@ -663,14 +664,14 @@ edge of `G'` is row-independent, an edge `G'.Adj a b`, and a third vertex `c` wi
 there exists an extended placement `p : Framework (Option V) 2` at which every edge of
 `typeII G' a b c` is row-independent.
 
-Row-LI analogue of Phase 5's `typeII_isGenericallyRigidInj_two` minus the injectivity. The proof
+Row-LI analogue of `typeII_isGenericallyRigidInj_two` minus the injectivity. The proof
 passes the input through `exists_nonCollinear_rowIndependent_placement_dim_two` to obtain a
-placement `p''` at which `(p'' a, p'' b, p'' c)` is non-collinear (perturbing `p' c` perpendicular
-to the line through `p' a, p' b` if needed; row-LI openness via `EdgeSetRowIndependent.eventually`
+placement `p''` at which `(p'' a, p'' b, p'' c)` is non-collinear (moving `p' c` off the line
+through `p' a, p' b` if needed; row-LI openness via `EdgeSetRowIndependent.eventually`
 preserves row-LI through the perturbation). With the non-collinear placement in hand, pick
 `s = 1/2` and set `q := p'' a + s • (p'' b - p'' a)`; the conditional core
-`typeII_edgeSetRowIndependent_extend` then applies. Unlike Phase 5, we do *not* maintain
-`p ∘ some = p'`, because the helper may have perturbed `p'` itself. -/
+`typeII_edgeSetRowIndependent_extend` then applies. Unlike the Type I lift, the conclusion does
+*not* state `p ∘ some = p'`, because the helper may have perturbed `p'` itself. -/
 theorem typeII_edgeSetRowIndependent_lift [Finite V] {G' : SimpleGraph V}
     {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ)
     {a b c : V} (h_ab : G'.Adj a b) (hac : a ≠ c) (hbc : b ≠ c) :
@@ -705,8 +706,9 @@ theorem typeII_edgeSetRowIndependent_lift [Finite V] {G' : SimpleGraph V}
 placement `p₀` of `G'` at which every edge of `G'` is row-independent and two distinct vertices
 `a, b`, there exists a row-LI placement `p` with `p a ≠ p b`. If `p₀ a ≠ p₀ b` already, return
 `p₀`; otherwise perturb `p₀ a` by `t • v` for `v ≠ 0` and small `t ≠ 0`, preserving row-LI via
-`EdgeSetRowIndependent.eventually`. Phase 7's `|E|`-induction Type I branch feeds this to
-`typeI_edgeSetRowIndependent_lift` (which requires `p' a ≠ p' b`). -/
+`EdgeSetRowIndependent.eventually`. The Type I branch of the induction on `|V|`
+(`IsSparse.exists_rowIndependent_placement`) feeds this to `typeI_edgeSetRowIndependent_lift`
+(which requires `p' a ≠ p' b`). -/
 private lemma exists_distinct_rowIndependent_placement_dim_two [Finite V]
     {G' : SimpleGraph V} {p₀ : Framework V 2}
     (h : G'.EdgeSetRowIndependent p₀ Set.univ) {a b : V} (hab : a ≠ b) :
@@ -746,10 +748,10 @@ private lemma exists_distinct_rowIndependent_placement_dim_two [Finite V]
 
 end Henneberg
 
-/-! ### `|E|`-induction: every sparse graph has a row-independent placement
+/-! ### Induction on `|V|`: every sparse graph has a row-independent placement
 
-The hard direction of Lovász–Yemini's matroid identification (Jordán §2.2 Theorem 2.2.1):
-in dimension 2, every `(2, 3)`-sparse graph admits a placement at which its edge set is
+The harder half of Pollaczek-Geiringer's and Laman's characterization (Jordán 2016, Theorem
+2.2.1): in dimension 2, every `(2, 3)`-sparse graph admits a placement at which its edge set is
 row-independent. The proof is strong induction on `Fintype.card V`: each Henneberg reverse
 strictly decreases `card V`, and the corresponding row-LI lift (pendant / Type I / Type II)
 reconstructs a placement of the larger graph. -/
@@ -758,11 +760,12 @@ reconstructs a placement of the larger graph. -/
 finite vertex set admits a placement `p : Framework V 2` at which the entire edge set of `H` is
 row-independent.
 
-The hard direction of Lovász–Yemini's matroid identification (Jordán §2.2 Theorem 2.2.1).
-Strong induction on `Fintype.card V`. Base case: when `H.edgeSet` is empty (in particular when
-`card V ≤ 1`), the empty family of rows is linearly independent at any placement. Inductive
-step: apply `IsSparse.exists_typeI_or_typeII_reverse` to obtain a vertex `v` with `H.degree v ∈
-{1, 2, 3}` and a smaller sparse graph `H'` on `{w // w ≠ v}` via one of three Henneberg
+The harder half of Pollaczek-Geiringer's and Laman's characterization (Jordán 2016, Theorem
+2.2.1), by Jordán's induction (p. 45), here on `Fintype.card V` rather than on `|E|`. Base
+case: when `H.edgeSet` is empty (in particular when `card V ≤ 1`), the empty family of rows is
+linearly independent at any placement. Inductive step: apply
+`IsSparse.exists_typeI_or_typeII_reverse` to obtain a vertex `v` with `H.degree v ∈ {1, 2, 3}`
+and a smaller sparse graph `H'` on `{w // w ≠ v}` via one of three Henneberg
 reverses (pendant / Type I / Type II). The IH gives a row-LI placement `p'` of `H'`; in each
 branch, the corresponding row-LI lift (`typeI_pendant_edgeSetRowIndependent_lift` /
 `typeI_edgeSetRowIndependent_lift` / `typeII_edgeSetRowIndependent_lift`) reconstructs a
@@ -783,7 +786,7 @@ theorem IsSparse.exists_rowIndependent_placement :
     by_cases hE : H.edgeSet.Nonempty
     · -- Inductive step: apply the flat-form sparse reverse, reconstruct the iso to
       -- `typeI H' a b` / `typeI H' a a` / `typeII H' x y c` via the iso constructors in
-      -- `Henneberg.lean`, then apply IH + row-LI lift + iso transport.
+      -- `HennebergReverse.lean`, then apply IH + row-LI lift + iso transport.
       obtain ⟨v, hbranch⟩ := h.exists_typeI_or_typeII_reverse hE
       have hcard_lt : Fintype.card {w : V // w ≠ v} < n := by
         rw [← hV]
@@ -836,14 +839,14 @@ theorem IsSparse.exists_rowIndependent_placement :
       rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff]
       exact linearIndependent_empty_type
 
-/-! ### Lovász–Yemini: row-independent iff `(2, 3)`-sparse, dim 2
+/-! ### Row-independent iff `(2, 3)`-sparse, dim 2
 
-Combining the easy direction (Phase 6's `isSparse_of_edgeSetRowIndependent_dim_two`) with the
-hard direction `IsSparse.exists_rowIndependent_placement` yields the matroid identification of
-Lovász–Yemini in dimension 2: an edge subset of `G` is row-independent at some placement iff
-its spanning subgraph is `(2, 3)`-sparse. -/
+Combining the necessity half `isSparse_of_edgeSetRowIndependent_dim_two` with the
+sufficiency half `IsSparse.exists_rowIndependent_placement` yields the characterization of
+Pollaczek-Geiringer and Laman in dimension 2 (Jordán 2016, Theorem 2.2.1): an edge subset of
+`G` is row-independent at some placement iff its spanning subgraph is `(2, 3)`-sparse. -/
 
-/-- **Lovász–Yemini: row-LI iff `(2, 3)`-sparse, dim 2.** Let `V` be finite and
+/-- **Row-LI iff `(2, 3)`-sparse, dim 2** (Pollaczek-Geiringer, Laman). Let `V` be finite and
 `G : SimpleGraph V`. An edge set `I ⊆ G.edgeSet` is row-independent at some placement
 `p : Framework V 2` iff the spanning subgraph of `G` with edge set `I` (i.e.
 `fromEdgeSet (Subtype.val '' I)`) is `(2, 3)`-sparse.
@@ -851,7 +854,7 @@ its spanning subgraph is `(2, 3)`-sparse. -/
 The matroid identification of the planar rigidity matroid with the `(2, 3)`-count matroid on
 `E(K_V)`. The `(⇒)` direction perturbs the row-LI witness to an affinely-spanning placement via
 `exists_affinelySpanning_of_eventually` (at row-LI's openness, `EdgeSetRowIndependent.eventually`),
-then applies Phase 6's easy direction `isSparse_of_edgeSetRowIndependent_dim_two`. The `(⇐)`
+then applies the necessity half `isSparse_of_edgeSetRowIndependent_dim_two`. The `(⇐)`
 direction is `IsSparse.exists_rowIndependent_placement` on the spanning subgraph
 `H := fromEdgeSet (Subtype.val '' I)`, followed by a bridge from
 `H.EdgeSetRowIndependent p Set.univ` to `G.EdgeSetRowIndependent p I`: the natural reindex
@@ -891,13 +894,14 @@ theorem edgeSet_rowIndependent_iff_isSparse_dim_two {V : Type*} [Finite V]
     rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
     -- `LinearIndepOn ℝ (G.rigidityRow p) I` unfolds to subtype LI; `G`- and `H`-rows at
     -- corresponding edges are definitionally equal (both reduce through `Sym2.lift` to the
-    -- same `edgeRow p (u, v)` on the same `Sym2`-value), so `convert ... using 1` closes both
-    -- the LI carrier and the index reindex via `toH`.
+    -- same `edgeRow p (u, v)` on the same `Sym2`-value), so `hp.comp toH htoH_inj` closes the
+    -- goal up to that defeq.
     exact hp.comp toH htoH_inj
 
 /-! ### The planar rigidity matroid
 
-The matroid-theoretic packaging of Lovász–Yemini for `d = 2`. The planar rigidity matroid
+The matroid form of Pollaczek-Geiringer's and Laman's characterization. The planar rigidity
+matroid
 `SimpleGraph.rigidityMatroid V` is the `(2, 3)`-count matroid on `V` (a matroid since
 `3 < 4 = 2k` at `k = 2`), and its independent sets are the edge subsets that are
 row-independent at some placement (`rigidityMatroid_indep_iff_edgeSetRowIndependent`),
@@ -909,15 +913,15 @@ combining `countMatroid_indep_iff` with the row-LI ↔ sparse iff
 `omega`.
 
 By `countMatroid_indep_iff` its independent sets are exactly the `(2, 3)`-sparse edge subsets
-of `K_V`; by `rigidityMatroid_indep_iff_edgeSetRowIndependent` (Lovász–Yemini, matroid form)
-these are equivalently the edge subsets that are row-independent at some placement
-`p : V → ℝ²`. -/
+of `K_V`; by `rigidityMatroid_indep_iff_edgeSetRowIndependent` (the characterization of
+Pollaczek-Geiringer and Laman, matroid form) these are equivalently the edge subsets that are
+row-independent at some placement `p : V → ℝ²`. -/
 def _root_.SimpleGraph.rigidityMatroid (V : Type*) [Finite V] : Matroid (Sym2 V) :=
   SimpleGraph.countMatroid V 2 3 (by omega)
 
-/-- **Lovász–Yemini, matroid form.** An edge subset `I ⊆ (⊤ : SimpleGraph V).edgeSet` is
-independent in the planar rigidity matroid iff there exists a placement `p : Framework V 2` at
-which `I` is row-independent.
+/-- **Independent sets of the planar rigidity matroid.** An edge subset
+`I ⊆ (⊤ : SimpleGraph V).edgeSet` is independent in the planar rigidity matroid iff there exists
+a placement `p : Framework V 2` at which `I` is row-independent.
 
 Combines `countMatroid_indep_iff` (independent ↔ off-diagonal + `(2, 3)`-sparse) with
 `edgeSet_rowIndependent_iff_isSparse_dim_two` at `G = ⊤` (the row-LI ↔ sparse iff on the

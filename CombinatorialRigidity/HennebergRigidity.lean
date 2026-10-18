@@ -13,7 +13,7 @@ public import CombinatorialRigidity.Mathlib.Topology.Separation.Hausdorff
 /-!
 # Rigidity preservation under Henneberg moves (dim 2)
 
-Phase 5 milestone 2. The Type I and Type II Henneberg moves both preserve injective generic
+The Type I and Type II Henneberg moves both preserve injective generic
 rigidity in dimension 2. The proofs are rank-nullity arguments on the rigidity map: a `restrict :
 ker ((typeI/II _).RigidityMap p_ext) →ₗ[ℝ] ker (G.RigidityMap p)` map `x ↦ x ∘ some` is built per
 move, shown to be injective via the new edges through `none`, and the kernel-dim bound transports
@@ -21,9 +21,11 @@ via `LinearMap.finrank_le_finrank_of_injective`.
 
 The Type II move's "place `q` on the line through `p a, p b`" construction requires the
 *non-collinear* hypothesis `LinearIndependent ℝ ![p b - p a, p c - p a]`; the unconditional
-wrapper `typeII_isGenericallyRigidInj_two` discharges this gap via a perpendicular perturbation
-of the placement of `c`, justified by openness of infinitesimal rigidity
-(`IsInfinitesimallyRigid.eventually`).
+wrapper `typeII_isGenericallyRigidInj_two` discharges this gap by moving the placement of `c`
+off the line through `p a` and `p b`, justified by openness of infinitesimal rigidity
+(`IsInfinitesimallyRigid.eventually`). Jordán (2016, Lemmas 1.2.2 and 1.2.3, p. 38) states
+the two moves' rank increase in general position, citing Whiteley (1996, Lemma 11.1.1 and
+Theorem 11.1.7); the Type II placement on the line is Whiteley's proof of his Theorem 11.1.7.
 
 ## Main theorems
 
@@ -35,16 +37,12 @@ of the placement of `c`, justified by openness of infinitesimal rigidity
 * `SimpleGraph.Henneberg.typeII_isGenericallyRigidInj_two_of_nonCollinear` — Type II preservation
   conditional on non-collinearity.
 * `SimpleGraph.Henneberg.typeII_isGenericallyRigidInj_two` — unconditional Type II preservation;
-  composes the perpendicular-perturbation helper with the conditional theorem.
+  composes the perturbation helper with the conditional theorem.
 
-## Project context
+## Implementation notes
 
-This file extracts the Phase 5 milestone-2 rigidity-preservation work from `Henneberg.lean`,
-which otherwise hosts only Phase 3 (Henneberg moves, edge sets, Laman preservation, iso
-decomposition) and Phase 5 milestone 1 (the reverse-decomposition theorem with Laman preservation).
-The split decouples `Henneberg.lean` from the analysis/linear-algebra imports needed here.
-
-See `ROADMAP.md` §5 and `notes/Phase5.md` for the Phase 5 plan.
+The moves themselves are in `Henneberg.lean`, which this file keeps free of the analysis and
+linear-algebra imports needed here. The blueprint's `sec:henneberg-rigidity` presents this file.
 -/
 
 public section
@@ -75,7 +73,7 @@ private lemma injective_option_elim {V α : Type*}
 
 /-- In `EuclideanSpace ℝ (Fin 2)`, every line `Submodule.span ℝ {v}` (with `v ≠ 0`) is a proper
 subspace, so admits a non-member. The off-line construction in `exists_off_line_off_finite_dim_two`
-and the perpendicular-perturbation direction in `exists_nonCollinear_rigid_placement_dim_two` both
+and the perturbation direction in `exists_nonCollinear_rigid_placement_dim_two` both
 need this; the helper consolidates the `finrank_span_singleton` / `finrank_euclideanSpace_fin` /
 `SetLike.exists_not_mem_of_ne_top` chain. -/
 lemma exists_not_mem_span_singleton_dim_two
@@ -122,7 +120,7 @@ infinitesimally rigid for `G` and `q : EuclideanSpace ℝ (Fin 2)` is a placemen
 for which the displacements `q - p a` and `q - p b` are linearly independent, then the extended
 placement `fun w => w.elim q p` is infinitesimally rigid for `typeI G a b`.
 
-The rank-nullity heart of `typeI_isGenericallyRigid_two`. The proof builds a linear injection
+The rank-nullity heart of `typeI_isGenericallyRigidInj_two`. The proof builds a linear injection
 from `ker ((typeI G a b).RigidityMap p_ext)` into `ker (G.RigidityMap p)` via the restriction
 `x ↦ x ∘ some`: it lands in the right kernel because every `G`-edge lifts to a `typeI G a b`-edge
 with the same rigidity-row formula, and it is injective because the two new edges through `none`
@@ -194,9 +192,9 @@ cover `{affineSpan {pa, pb}} ∪ {affineSpan {s} | s ∈ S}`. The LI condition
 `(q - pa, q - pb)` then follows from `q` being off the line via a single row-op on
 `(q - pa, pb - pa)`.
 
-Used by `typeI_isGenericallyRigidInj_two` (Phase 5) with `S = Set.range p` to get a `q` outside
-the image of `p`, and by Phase 7's `typeI_edgeSetRowIndependent_lift` with `S = ∅` (the matroid
-hard direction does not need injectivity of the extended placement). -/
+Used by `typeI_isGenericallyRigidInj_two` with `S = Set.range p` to get a `q` outside
+the image of `p`, and by `typeI_edgeSetRowIndependent_lift` (`MatroidIdentification.lean`) with
+`S = ∅` (row-independence does not need an injective extended placement). -/
 lemma exists_off_line_off_finite_dim_two
     (pa pb : EuclideanSpace ℝ (Fin 2)) (hab : pa ≠ pb)
     (S : Set (EuclideanSpace ℝ (Fin 2))) (hS : S.Finite) :
@@ -276,15 +274,16 @@ theorem typeI_isGenericallyRigidInj_two [Finite V] {G : SimpleGraph V}
 
 /-! ### Type II preservation of rigidity in dim 2
 
-The classical Whiteley/Jordán argument: place the new vertex `q` on the *line* through `p a` and
-`p b`. The three new edges' constraints then split into a "deleted-edge recovery" (the constraint
+Whiteley's argument (his proof of the Edge `d`-Split Theorem 11.1.7, 1996; Jordán 2016, Lemma
+1.2.3, cites it): place the new vertex `q` on the *line* through `p a` and `p b`. The three new
+edges' constraints then split into a "deleted-edge recovery" (the constraint
 `⟪p a - p b, x (some a) - x (some b)⟫ = 0` falls out of the new edges at `none ↔ some a` and
 `none ↔ some b`, both lying along the common direction `p b - p a`) and an "injectivity" piece
 (the new edge at `none ↔ some c`, in an independent direction, pins `x none`).
 
 The argument requires `p a, p b, p c` to be **non-collinear** — otherwise `q - p c` also lies in
-the `p b - p a` direction, the LI condition fails, and the extended placement is genuinely
-non-rigid (a 1-parameter family of "vertical" infinitesimal motions of `none` is unconstrained).
+the `p b - p a` direction, the LI condition fails, and the extended placement is not
+rigid (a 1-parameter family of "vertical" infinitesimal motions of `none` is unconstrained).
 The conditional theorem below takes the appropriate `q` as input; the unconditional wrapper
 strengthens the input rigid placement to one with non-collinear `(p a, p b, p c)` via the
 perturbation helper `exists_nonCollinear_rigid_placement_dim_two`, which uses openness of
@@ -299,10 +298,11 @@ inner product at `s(a, b)`:
    = s(s − 1) · ⟪p' a − p' b, x (some a) − x (some b)⟫_ℝ`
 
 valid for any motion `x : Framework (Option V) d`. This is the algebraic content shared by
-Phase 5's `typeII_isInfinitesimallyRigid_extend` (kernel / IR side) and Phase 7's
-`typeII_edgeSetRowIndependent_extend` (dual / row-LI side): in the IR setting both
-new-edge inner products vanish at a kernel element, and dividing by `s(s − 1) ≠ 0` recovers
-the deleted-edge G'-constraint; in the row-LI setting the equation is the row identity
+`typeII_isInfinitesimallyRigid_extend` (kernel / IR side) and
+`typeII_edgeSetRowIndependent_extend` (`MatroidIdentification.lean`; dual / row-LI side): in the
+IR setting both new-edge inner products vanish at a kernel element, and dividing by
+`s(s − 1) ≠ 0` recovers the deleted-edge G'-constraint; in the row-LI setting the equation is
+the row identity
 `(s−1)·rigidityRow newA − s·rigidityRow newB = s(s−1) · restrictMap.dualMap (rigidityRow eAB)`
 applied at `x`, which combined with G'-row LI and `dualMap` injectivity forces the
 typeII coefficients to vanish.
@@ -334,7 +334,7 @@ lemma typeII_collinear_inner_combo {V : Type*} {d : ℕ}
   linear_combination s * (s - 1) * h_eq
 
 /-- **Conditional Type II rigidity preservation in dim 2.** If `p` is infinitesimally rigid for
-`G`, `G.Adj a b`, and `q : EuclideanSpace ℝ (Fin 2)` is a placement of the new vertex satisfying
+`G` and `q : EuclideanSpace ℝ (Fin 2)` is a placement of the new vertex satisfying
 the collinearity condition `q - p a = α • (p b - p a)` with `α ≠ 0, 1` (so `q` is on the line
 through `p a, p b`, distinct from both) AND the linear-independence condition
 `LinearIndependent ℝ ![q - p a, q - p c]` (the new vertex's direction to `p c` is off the line),
@@ -344,7 +344,8 @@ The rank-nullity heart of `typeII_isGenericallyRigidInj_two_of_nonCollinear`. Th
 linear injection from `ker ((typeII G a b c).RigidityMap p_ext)` into `ker (G.RigidityMap p)` via
 the restriction `x ↦ x ∘ some`. The new ingredient over typeI is that for the deleted edge
 `s(a, b)` (no corresponding typeII edge), the kernel constraint is recovered from the two
-collinear-direction new edges at `none ↔ some a` and `none ↔ some b`. -/
+collinear-direction new edges at `none ↔ some a` and `none ↔ some b`. The statement does not
+ask `G.Adj a b`: when `ab` is not an edge of `G` there is no such constraint to recover. -/
 theorem typeII_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
     {p : Framework V 2} (hp : G.IsInfinitesimallyRigid p) {a b c : V}
     {q : EuclideanSpace ℝ (Fin 2)} {α : ℝ}
@@ -474,8 +475,8 @@ injectively generically rigid in dim 2.
 The non-collinearity hypothesis is essential — see the section docstring above. Removing it
 requires an openness-of-rigidity argument (any rigid placement can be perturbed to a non-collinear
 one while preserving rigidity); the perturbation is packaged in
-`exists_nonCollinear_rigid_placement_dim_two`, used to land the unconditional
-`typeII_isGenericallyRigidInj_two` below. -/
+`exists_nonCollinear_rigid_placement_dim_two`, which the unconditional
+`typeII_isGenericallyRigidInj_two` below uses. -/
 theorem typeII_isGenericallyRigidInj_two_of_nonCollinear [Finite V] {G : SimpleGraph V}
     {p : Framework V 2} (hp_rig : G.IsInfinitesimallyRigid p) (hp_inj : Function.Injective p)
     {a b c : V} (hLI_abc : LinearIndependent ℝ ![p b - p a, p c - p a]) :
@@ -488,8 +489,10 @@ theorem typeII_isGenericallyRigidInj_two_of_nonCollinear [Finite V] {G : SimpleG
     typeII_isInfinitesimallyRigid_extend hp_rig hα0 hα1 hcoll hLI,
     injective_option_elim hp_inj hq_notmem⟩
 
-/-- **Non-collinear placement via `Function.update`-perturbation in dim 2.** Shared core for the
-row-LI and IR + injectivity variants of `exists_nonCollinear_X_placement_dim_two`. Given a
+/-- **Non-collinear placement via `Function.update`-perturbation in dim 2.** Shared core of
+`exists_nonCollinear_rigid_placement_dim_two` (rigidity and injectivity) and
+`exists_nonCollinear_rowIndependent_placement_dim_two` (row-independence,
+`MatroidIdentification.lean`). Given a
 placement `p₀` with `p₀ b - p₀ a ≠ 0`, a property `P` preserved on a neighborhood of `t = 0`
 along the one-vertex perturbation `t ↦ Function.update p₀ c (p₀ c + t • w)` for a direction
 `w` outside `span {p₀ b - p₀ a}`, produce a placement `p` with `P p` and the non-collinearity
@@ -583,7 +586,7 @@ the perturbed placement stays rigid and injective on an open neighborhood of `t 
 shared core `exists_nonCollinear_update_perturbation_dim_two` selects a `t ≠ 0` that also gives
 non-collinearity.
 
-This is the openness-of-IR closure of the Phase 5 milestone 2 collinearity gap; it lifts
+By openness of infinitesimal rigidity it closes the collinearity gap: it lifts
 `typeII_isGenericallyRigidInj_two_of_nonCollinear` to the unconditional
 `typeII_isGenericallyRigidInj_two` below. -/
 private lemma exists_nonCollinear_rigid_placement_dim_two [Finite V] {G : SimpleGraph V}
@@ -623,11 +626,9 @@ extension `typeII G a b c` is again injectively generically rigid in dim 2.
 
 The proof passes the IH through `exists_nonCollinear_rigid_placement_dim_two` to obtain a placement
 on which `(p a, p b, p c)` is non-collinear (the original IH placement may have a collinear
-triple, in which case we perturb the placement of `c` perpendicular to the line through `p a, p b`
+triple, in which case we move the placement of `c` in a direction off the line through `p a, p b`
 to break collinearity while preserving rigidity, by openness of infinitesimal rigidity), then
-invokes the conditional `typeII_isGenericallyRigidInj_two_of_nonCollinear`.
-
-**Phase 5 milestone 2 closure.** -/
+invokes the conditional `typeII_isGenericallyRigidInj_two_of_nonCollinear`. -/
 theorem typeII_isGenericallyRigidInj_two [Finite V] {G : SimpleGraph V}
     (hG : G.IsGenericallyRigidInj 2) {a b c : V}
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :

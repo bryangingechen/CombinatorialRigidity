@@ -15,31 +15,23 @@ public import CombinatorialRigidity.RigidityMatroid
 /-!
 # Laman's theorem
 
-For `n ≥ 2` vertices, a simple graph is generically rigid in the plane iff it
-contains a Laman spanning subgraph (a `(2, 3)`-tight subgraph on the same
-vertex set):
+Laman's theorem (Pollaczek-Geiringer 1927, Laman 1970): for `n ≥ 2` vertices, a simple graph is
+generically rigid in the plane iff it contains a Laman spanning subgraph (a `(2, 3)`-tight
+subgraph on the same vertex set):
 
 ```
 G.IsGenericallyRigid 2 ↔ ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman
 ```
 
-The two directions land separately for phasing reasons:
-
-* `IsLaman.isGenericallyRigid_two` — the (⇐) direction. Henneberg induction
-  on `Fintype.card V`. Phase 5 milestone 3.
-* `IsGenericallyRigid.exists_isLaman_le` — the (⇒) direction. Lovász–Yemini
-  rigidity-matroid duality. Phase 6.
+* `IsLaman.isGenericallyRigid_two` — the (⇐) direction, by Henneberg induction
+  on `Fintype.card V`.
+* `IsGenericallyRigid.exists_isLaman_le` — the (⇒) direction: a basis of the rows of the rigidity
+  matrix at a suitable placement spans a `(2, 3)`-sparse, hence Laman, subgraph.
 * `isGenericallyRigid_two_iff_exists_isLaman_le` — the iff, composed from
   the two directional theorems above.
 
-See `notes/Phase5.md` (Phase 5 plan, including the milestone breakdown for
-the (⇐) direction) and ROADMAP.md §5–6.
-
-## Project context
-
-Phase 4 (`Framework.lean`) develops `IsGenericallyRigid` and ships
-`IsGenericallyRigid.card_mul_le` for general dimension. Phase 5 specializes
-that bound to `d = 2` here as `IsGenericallyRigid.card_mul_le_two`.
+`IsGenericallyRigid.card_mul_le_two` is the edge count `IsGenericallyRigid.card_mul_le`
+(`Framework.lean`) at `d = 2`. The blueprint's `sec:laman-theorem` presents this file.
 -/
 
 public section
@@ -62,14 +54,12 @@ theorem IsGenericallyRigid.card_mul_le_two [Fintype V] {G : SimpleGraph V}
 dim 2 (`IsGenericallyRigidInj 2`).
 
 Both inductive moves (Type I and Type II) are handled by the unconditional
-per-move preservation theorems in `Henneberg.lean`; the Type II step's
+per-move preservation theorems in `HennebergRigidity.lean`; the Type II step's
 non-collinearity gap is discharged inside
 `typeII_isGenericallyRigidInj_two` via openness of infinitesimal rigidity
-(`IsInfinitesimallyRigid.eventually`) and a perpendicular perturbation of the
-new vertex's neighbor. Base case `n = 2` reduces to `K₂` via
-`eq_top_of_card_eq_two` plus iso transport.
-
-**Phase 5 milestone 3.** -/
+(`IsInfinitesimallyRigid.eventually`) and a perturbation of one neighbor of the
+new vertex off the line through the other two. Base case `n = 2` reduces to `K₂` via
+`eq_top_of_card_eq_two` plus iso transport. -/
 private theorem IsLaman.isGenericallyRigidInj_two_of_card :
     ∀ (n : ℕ) {V : Type*} [Fintype V], Fintype.card V = n →
       ∀ {G : SimpleGraph V}, G.IsLaman → G.IsGenericallyRigidInj 2 := by
@@ -121,13 +111,11 @@ private theorem IsLaman.isGenericallyRigidInj_two_of_card :
 /-- Every Laman graph is generically rigid in dimension 2.
 
 Proved by Henneberg induction on `Fintype.card V`: the K₂ base case is
-`top_fin_two_isGenericallyRigid 2`; the inductive step uses
+`top_fin_two_isGenericallyRigidInj 1` (dimension `1 + 1`); the inductive step uses
 `IsLaman.exists_typeI_or_typeII_reverse` plus per-move rigidity preservation
-plus iso transport (`IsGenericallyRigid.iso`). The induction maintains the
+plus iso transport (`IsGenericallyRigidInj.iso`). The induction maintains the
 strong predicate `IsGenericallyRigidInj` (existence of an *injective* rigid
-placement) — see `IsLaman.isGenericallyRigidInj_two_of_card`.
-
-**Phase 5 milestone 3.** -/
+placement) — see `IsLaman.isGenericallyRigidInj_two_of_card`. -/
 theorem IsLaman.isGenericallyRigid_two [Finite V] {G : SimpleGraph V}
     (h : G.IsLaman) : G.IsGenericallyRigid 2 := by
   have : Fintype V := Fintype.ofFinite V
@@ -136,10 +124,10 @@ theorem IsLaman.isGenericallyRigid_two [Finite V] {G : SimpleGraph V}
 /-- Every graph that is generically rigid in dimension 2 contains a Laman
 spanning subgraph.
 
-Proved via the equality of the rigidity matroid and the `(2, 3)`-count
-matroid in dimension 2 (Lovász–Yemini): row-independence of the rigidity
-matrix at a generic placement equals `(2, 3)`-sparsity, so a basis of the
-rigidity matroid (size `2n − 3`) spans a Laman subgraph.
+Proved by one half of Pollaczek-Geiringer's and Laman's characterization of
+row-independence in the plane (Jordán 2016, Theorem 2.2.1): an edge set
+row-independent at a placement with no three points collinear is
+`(2, 3)`-sparse, so a basis of the rows (size `2n − 3`) spans a Laman subgraph.
 
 Proof: pick a placement `p` that is both infinitesimally rigid for `G`
 *and* affinely-spanning on every size-`≥ 3` subset, via the
@@ -151,9 +139,7 @@ a row-independent edge set `I ⊆ G.edgeSet` of size `2|V| - 3`. The spanning
 subgraph `H = fromEdgeSet (Subtype.val '' I)` is `(2, 3)`-sparse by
 `isSparse_of_edgeSetRowIndependent_dim_two` (using affine spanning of `p`)
 and has exactly `2|V| - 3` edges by construction, hence is `(2, 3)`-tight,
-i.e.\ Laman.
-
-**Phase 6: Lovász–Yemini matroid duality.** -/
+i.e.\ Laman. -/
 theorem IsGenericallyRigid.exists_isLaman_le [Fintype V] {G : SimpleGraph V}
     (h : G.IsGenericallyRigid 2) (hV : 2 ≤ Fintype.card V) :
     ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman := by
@@ -189,12 +175,11 @@ theorem IsGenericallyRigid.exists_isLaman_le [Fintype V] {G : SimpleGraph V}
   rw [hH_ncard, Nat.card_eq_fintype_card]
   omega
 
-/-- **Laman's theorem.** A simple graph on `n ≥ 2` vertices is generically rigid
-in the plane iff it contains a Laman spanning subgraph.
+/-- **Laman's theorem** (Pollaczek-Geiringer 1927, Laman 1970). A simple graph on `n ≥ 2`
+vertices is generically rigid in the plane iff it contains a Laman spanning subgraph.
 
 The iff is composed from the two named directional theorems
-`IsLaman.isGenericallyRigid_two` (Phase 5) and
-`IsGenericallyRigid.exists_isLaman_le` (Phase 6). -/
+`IsLaman.isGenericallyRigid_two` and `IsGenericallyRigid.exists_isLaman_le`. -/
 theorem isGenericallyRigid_two_iff_exists_isLaman_le [Fintype V] {G : SimpleGraph V}
     (hV : 2 ≤ Fintype.card V) :
     G.IsGenericallyRigid 2 ↔ ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman :=

@@ -3265,7 +3265,8 @@ declaration's name as its header writes it:
   assume `x ≠ y`. (At `x = y` the hypothesis fails, since the added pair is a loop and is dropped.)
   *Evidence:* read (the statement and the two docstrings).
   *Found:* round 1 task 5.2.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* done (task 25): both docstrings drop "distinct", and the section's says why
+  the statement needs no `x ≠ y`. Before: reported (`notes/Prose-report.md`, L4).
 - **F-021** · L · `SimpleGraph.Henneberg.typeII_isGenericallyRigidInj_two_of_nonCollinear`
   (`HennebergRigidity.lean`): it takes `hab : a ≠ b` beside `hLI_abc : LinearIndependent ℝ ![p b -
   p a, p c - p a]`, which implies it (the first vector is nonzero). The body uses `hab` only to get
@@ -3282,7 +3283,9 @@ declaration's name as its header writes it:
   the statement does not take it, and the proof treats the edge $ab$ only when it is present.
   *Evidence:* read (both statements and docstrings; a `grep` for `typeI_isGenericallyRigid_two`).
   *Found:* round 1 task 5.5.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* done (task 25): the first names `typeI_isGenericallyRigidInj_two`; the second
+  drops `G.Adj a b` and says the statement does not ask it. Before: reported
+  (`notes/Prose-report.md`, L4).
 - **F-023** · L · `SimpleGraph.trivialMotions` (`TrivialMotions.lean`): its docstring cites
   `trivialMotions_three_le_finrank_of_affinelySpanning_two`, which no longer exists (only
   `notes/FRICTION.md` still names it), and the docstring of the section on the $d$-general bound
@@ -3291,7 +3294,10 @@ declaration's name as its header writes it:
   `trivial-motions.tex` dropped as unverified (task 5.6).
   *Evidence:* read (the file; a `grep` over the repository for the cited name).
   *Found:* round 1 task 5.6.
-  *Disposition:* reported (`notes/Prose-report.md`, L5).
+  *Disposition:* done (task 25): `trivialMotions` cites the lower bound it has
+  (`trivialMotions_finrank_ge_of_affinelySpanning`), the section names the planar case as the
+  instance at `d = 2`, and the kernel bound credits Jordán 2016, p. 36, and Whiteley 1996, §11.1,
+  as `trivial-motions.tex` does. Before: reported (`notes/Prose-report.md`, L5).
 - **F-024** · L · `SimpleGraph.trivialMotionFamily_linearIndependent` (`TrivialMotions.lean`): its
   `[Finite V]` is unused. The `@[nolint unusedArguments]` comment calls the linter's report a false
   positive, but the theorem elaborates without the binder, with the same proof minus its
@@ -3317,7 +3323,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `IsSparse.exists_rowIndependent_placement` and
   `linearRigidityMatroid_eq_rigidityMatroid`, and the docstrings named).
   *Found:* round 1 task 5.10.
-  *Disposition:* reported (`notes/Prose-report.md`, L12).
+  *Disposition:* done (task 25): the induction on `|V|` named so (and Jordán's on `|E|`); the
+  identification called proved, not a target. Before: reported (`notes/Prose-report.md`, L12).
 - **F-032** · L · `SimpleGraph.countMatroid` (`CountMatroid.lean`): its docstring says that outside
   $\ell < 2k$ "the augmentation axiom can fail (e.g. `(3, 6)` in 3-dimensional rigidity)". By
   `IsSparse`'s definition a $(3,6)$-sparse graph has no edges (a pair $s$ has $6 \le 3|s|$, so it
@@ -3327,7 +3334,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the body of `IsSparse`); a `lake lean` witness (every $(3,6)$-sparse
   `SimpleGraph V` is `⊥`; it elaborates with no output).
   *Found:* round 1 task 5.11.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* done (task 25): the `(3, 6)` example dropped; the docstring says the
+  construction needs the regime, where its augmentation lemma is proved. Before: reported
+  (`notes/Prose-report.md`, L4).
 - **F-033** · L · `CombinatorialRigidity.Search.reachableFinding`, `reachClosureComputable`
   (`Search/DFS.lean`): the search marks only the vertices of the current walk, since every
   recursive call from `v` gets the same `insert v visited`. When no vertex satisfies `P` it
@@ -4031,7 +4040,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the 16 pins, of
   `zero_extension_edgeSetRowIndependent_extend` and of the three `K₅` lemmas).
   *Found:* round 4 task 2.7.
-  *Disposition:* reported (`notes/Prose-report.md`, L12).
+  *Disposition:* reported (`notes/Prose-report.md`, L12); round 3: `RigidityMatroid.lean`'s
+  zero-extension section (task 25).
 - **F-205** · L · the docstrings of task 2.8's pins (`JacobsTheorem.lean`, `JacobsDegreeOne.lean`,
   `TwoCore.lean`). They agree with their bodies, but narrate process: the three file headers
   ("Phase 32", "Phase 26", "the L2 slice plan, T1", "T3–T4", "This file lands", "the rank glue",
@@ -4540,7 +4550,8 @@ declaration's name as its header writes it:
   presentation followed is Jordán's, credited). Fixed: `formalization.yaml` (the LY `sources`
   entry, `status.scope`, the linear-matroid row's description, `alignment`'s source), ROADMAP (the
   layout line, the Phase 7 row and heading, §6's and §7's texts, *References*), `DESIGN.md`'s two
-  (b408df1a). The docstrings are round 3's, `BodyBar/TayTheorem.lean`'s among them.
+  (b408df1a). The docstrings are round 3's, `BodyBar/TayTheorem.lean`'s among them; round 3: the
+  planar files' credit Pollaczek-Geiringer and Laman (task 25).
 - **F-053** · M · the credit for the matroid of a submodular function, the polymatroid rank formula
   and the union's rank formula (`matroid-union.tex`, `intro.tex`, `deficiency.tex`,
   `molecular-induction.tex`; Lean docstrings). The blueprint credited the first two to Edmonds 1970.
@@ -4680,4 +4691,5 @@ declaration's name as its header writes it:
   with `thm:edgeSet-rowIndependent-iff-isSparse`'s title, `bar-joint-3d.tex`) and a
   `bibliography.bib` entry; README; the home page; `formalization.yaml` (a `sources` entry, LY's
   note, `status.scope`, two rows, two `alignment` sources); ROADMAP (opening, layout line, §6, §7,
-  *References*); `DESIGN.md`'s two (211e2737).
+  *References*); `DESIGN.md`'s two (211e2737); round 3: the docstrings, `Laman.lean`'s header
+  among them (task 25).

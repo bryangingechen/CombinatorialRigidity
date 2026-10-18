@@ -16,13 +16,15 @@ The space of **trivial infinitesimal motions** of a framework `p : Framework V d
 span of (i) all translations `motion v = t` for `t : EuclideanSpace ℝ (Fin d)` constant, and
 (ii) all infinitesimal rotations `motion v = A (p v)` where `A` is "skew-adjoint" in the sense
 `⟪x, A x⟫_ℝ = 0` for every `x : EuclideanSpace ℝ (Fin d)`. This submodule lies in the kernel of
-`G.RigidityMap p` for every graph `G` (`trivialMotions_le_ker`) and is the textbook
-$d (d + 1)/2$-dimensional subspace of "rigid motions" at an affinely-spanning placement.
+`G.RigidityMap p` for every graph `G` (`trivialMotions_le_ker`). At an affinely-spanning
+placement it has dimension `d (d + 1) / 2`, the dimension of the infinitesimal rigid motions;
+the file proves the lower bound (`trivialMotions_finrank_ge_of_affinelySpanning`), the half that
+the rank bound of the rigidity map needs.
 
-All API is `d`-general. The Phase 6 `(⇒)` direction of Laman's theorem consumes
-`rigidityMap_ker_finrank_ge_of_affinelySpanning` at `d = 2`, where `d (d + 1) / 2 = 3` reduces by
-`rfl` on `Nat` literals so callers can apply the d-general lemma directly with no specialisation
-ceremony.
+All API is `d`-general. The `(⇒)` direction of Laman's theorem uses
+`rigidityMap_ker_finrank_ge_of_affinelySpanning` at `d = 2` (through
+`rigidityMap_finrank_range_le_of_affinelySpanning`, `RigidityMatroid.lean`), where
+`d (d + 1) / 2 = 3` reduces by `rfl` on `Nat` literals, so no `d = 2` form is needed.
 
 ## Main definitions
 
@@ -38,10 +40,7 @@ ceremony.
   placement, the trivial-motions submodule has dimension at least `d (d + 1) / 2`.
 * `SimpleGraph.rigidityMap_ker_finrank_ge_of_affinelySpanning` — corresponding kernel bound.
 
-## Project context
-
-See `ROADMAP.md` §6, `notes/Phase6.md`, and the `(⇒)` subsection of
-`blueprint/src/chapter/laman-theorem.tex`.
+The blueprint's `sec:trivial-motions` presents this file.
 -/
 
 public section
@@ -108,9 +107,9 @@ theorem infinitesimalRotation_mem_ker (G : SimpleGraph V) (p : Framework V d)
 translations together with all infinitesimal rotations by skew-adjoint linear maps.
 
 For every graph `G` this submodule lies in the kernel of `G.RigidityMap p`
-(`trivialMotions_le_ker`). In dimension `d` it has dimension at most `d (d + 1) / 2` (the textbook
-dimension of Euclidean rigid motions); in dimension `2` the bound is sharp at an affinely-spanning
-placement (`trivialMotions_three_le_finrank_of_affinelySpanning_two`). -/
+(`trivialMotions_le_ker`). At a placement that affinely spans `EuclideanSpace ℝ (Fin d)` it has
+dimension at least `d (d + 1) / 2` (`trivialMotions_finrank_ge_of_affinelySpanning`), the
+dimension of the Euclidean rigid motions; the matching upper bound is not proved here. -/
 def trivialMotions (p : Framework V d) : Submodule ℝ (Framework V d) :=
   Submodule.span ℝ <|
     Set.range (translationMotion (V := V) : EuclideanSpace ℝ (Fin d) → Framework V d) ∪
@@ -138,11 +137,10 @@ theorem trivialMotions_le_ker (G : SimpleGraph V) (p : Framework V d) :
 
 /-! ### The d-general finrank lower bound at an affinely-spanning placement
 
-This section ships the d-general statement
-`d * (d + 1) / 2 ≤ finrank ℝ (trivialMotions p)` at an affinely-spanning placement, via an
-explicit family of `d` translations (the coordinate translations) and `d (d - 1) / 2` elementary
-skew-symmetric rotations (one per ordered pair `(i, j)` with `j < i`). The dim-2 case below is its
-`d = 2` instance. -/
+This section proves `d * (d + 1) / 2 ≤ finrank ℝ (trivialMotions p)` at an affinely-spanning
+placement, via an explicit family of `d` translations (the coordinate translations) and
+`d (d - 1) / 2` elementary skew-symmetric rotations (one per ordered pair `(i, j)` with `j < i`).
+The planar case is its instance at `d = 2`, where the bound is `3`. -/
 
 /-- The "elementary skew-adjoint" linear map indexed by a pair `i, j : Fin d`, sending
 `x ↦ x_j • e_i - x_i • e_j` (where `e_k = EuclideanSpace.single k 1`). Skew-adjoint:
@@ -341,7 +339,8 @@ theorem trivialMotions_finrank_ge_of_affinelySpanning [Finite V]
 /-- **d-general finrank lower bound for the rigidity-map kernel at an affinely-spanning placement.**
 For any graph `G`, any dimension `d`, and any placement `p` whose image affinely spans
 `EuclideanSpace ℝ (Fin d)`, the kernel of `G.RigidityMap p` has dimension at least
-`d (d + 1) / 2` (the textbook Asimow--Roth trivial-motions dimension count).
+`d (d + 1) / 2`, the dimension of the infinitesimal rigid motions (Jordán 2016, p. 36; the
+generators are Whiteley's, 1996, §11.1).
 
 Combines the d-general `trivialMotions_finrank_ge_of_affinelySpanning` with the unconditional
 inclusion `trivialMotions_le_ker`. Plugs into rank-nullity to give the d-general rank upper

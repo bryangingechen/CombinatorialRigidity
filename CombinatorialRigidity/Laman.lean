@@ -18,9 +18,11 @@ A simple graph is **Laman** (or *minimally rigid in the plane*) if it is
 `(2, 3)`-tight: every set of `k ≥ 2` vertices spans at most `2k − 3`
 edges, with equality globally.
 
-Laman's 1970 theorem identifies these graphs with the minimally
-generically rigid graphs in the plane. The combinatorial half — counts
-and Henneberg moves — is what this directory builds toward.
+Laman's theorem (Pollaczek-Geiringer 1927, Laman 1970) identifies these
+graphs with the generically minimally rigid graphs in the plane;
+`LamanTheorem.lean` proves it in the form "generically rigid iff some
+spanning subgraph is Laman". This file proves the facts about Laman graphs
+that its induction rests on.
 
 ## Main definitions
 
@@ -45,13 +47,9 @@ and Henneberg moves — is what this directory builds toward.
 
 `IsLaman` is a non-reducible `def` (= `IsTight 2 3`); `grind` will not
 unfold it. Use `refine ⟨?_, ?_⟩` or pattern-match to break the
-And-structure inherited from `IsTight`. See `TACTICS.md` § 4.
+And-structure inherited from `IsTight`. See `TACTICS-GOLF.md` §4.
 
-## Project context
-
-See `ROADMAP.md` for the project plan, `notes/Phase1.md` for the
-sparsity API work log, and `notes/Phase2.md` for the Laman-specific
-work log (this file's content spans Phase 1 + Phase 2).
+The blueprint's `sec:laman` presents this file.
 -/
 
 public section
@@ -96,11 +94,13 @@ theorem IsLaman.two_le_degree [Fintype V]
 
 By `IsSparse.exists_degree_le_three` (handshake + the global edge bound), any `(2, 3)`-sparse
 graph on `n ≥ 2` vertices has a vertex of degree at most 3. Combined with
-`IsLaman.two_le_degree`, when `n ≥ 3` this yields a vertex of degree exactly 2 or 3 — the
-key fact for the Henneberg induction. -/
+`IsLaman.two_le_degree`, when `n ≥ 3` this yields a vertex of degree exactly 2 or 3: the
+vertex that a reverse Henneberg move removes. -/
 
 /-- In a Laman graph on `n ≥ 3` vertices there is a vertex of degree exactly 2 or 3.
-This is the inductive step underlying the Henneberg construction. -/
+A reverse Henneberg move removes such a vertex; the reverse decomposition
+`Henneberg.IsLaman.exists_typeI_or_typeII_reverse` finds it through the sparse one,
+`IsSparse.exists_typeI_or_typeII_reverse`, rather than through this lemma. -/
 theorem IsLaman.exists_two_le_degree_le_three [Fintype V]
     {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsLaman)
     (hV : 3 ≤ Fintype.card V) :

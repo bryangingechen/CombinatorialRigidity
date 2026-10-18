@@ -39,8 +39,9 @@ landed that search, re-proved, with `dfs.tex` restated, task 18 committed
 task 19 had `parsePair` split on any whitespace, so a tab-separated input reads, task 20
 rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
 input, and tasks 21–24 landed the non-vacuity witnesses of the sixteen main results outside S1's
-and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last.
-**Next concrete task:** round 3's task 25, the docstring sweep's planar files.
+and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last,
+and task 25 swept the docstrings of nine planar files.
+**Next concrete task:** round 3's task 25.1, the four planar files no sweep task named.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

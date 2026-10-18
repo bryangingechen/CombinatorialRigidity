@@ -53,41 +53,31 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
 * `SimpleGraph.IsSparse.iso`, `SimpleGraph.IsTight.iso` — sparsity and tightness are
   preserved under graph isomorphism.
 * `SimpleGraph.IsSparse.isTightOn_of_le` — in a `(k, ℓ)`-sparse graph, a Finset whose
-  edge count meets the sparsity bound from below is exactly tight. The "squeeze" used by
-  the Phase 5 typeII-reverse blocker to extract a tight set from a sparsity violation
-  on a candidate graph.
+  edge count meets the sparsity bound from below is exactly tight. The "squeeze" by which
+  `IsSparse.typeII_reverse_blocker` extracts a tight set from a sparsity violation on a
+  candidate graph.
 * `SimpleGraph.IsTightOn.union_inter` — tight subsets are closed under union and
   intersection in a `(k, ℓ)`-sparse graph (subject to the standard `ℓ ≤ k * #(s ∩ t)`
-  size proviso). The tight-set lattice closure that the Phase 5 Henneberg-blocker
-  argument runs on.
+  size proviso). The contradiction templates of the reverse decomposition run on it.
 * `SimpleGraph.IsTightOn.union_inter_of_pair` — matroidal-regime specialization
   (`ℓ < 2 * k`): two tight sets sharing a pair of distinct vertices have tight union
   and intersection. The size proviso of `IsTightOn.union_inter` is auto-discharged.
 * `SimpleGraph.IsSparse.exists_isTightOn_of_insert_not_sparse` — violation extraction:
   if `fromEdgeSet I` is `(k, ℓ)`-sparse but inserting an off-diagonal edge `s(u, v) ∉ I`
   breaks sparsity, then some Finset containing `u` and `v` is `(fromEdgeSet I)`-tight.
-  Builds the "I-block" that anchors the `(k, ℓ)`-count matroid augmentation argument
-  (Phase 7).
-* `SimpleGraph.maxBlock`, `SimpleGraph.IsSparse.maxBlock_isTightOn`,
-  `SimpleGraph.IsSparse.maxBlock_eq_of_subset_maxBlock` — matroidal-regime maximal
-  `I`-block (a.k.a. *I-component*) anchored at a Finset; the union-closure of all
-  `I`-tight Finsets containing an anchor `X` with `|X| ≥ 2` is itself `I`-tight, and
-  distinct `I`-components are edge-disjoint.
-* `SimpleGraph.IsSparse.exists_aug_of_lt_two_mul` — the `(k, ℓ)`-count matroid
-  augmentation axiom in the matroidal regime `ℓ < 2 * k`: for `(k, ℓ)`-sparse `I, J`
-  with `|I| < |J|`, some `e ∈ J \ I` extends `I` to a `(k, ℓ)`-sparse edge set.
-  Proved by I-component decomposition (Whiteley 1996, Lee–Streinu 2008).
+  Builds the "I-block" that anchors the `(k, ℓ)`-count matroid augmentation argument.
 * `SimpleGraph.image_edgesIn_comap` — `Sym2.map`-image of `(G.comap f).edgesIn s'` is
   `G.edgesIn (f '' s')`; the comap analogue of `Iso.image_edgesIn`, used by the typeII-
   reverse blocker to pump edge counts back along the subtype embedding.
 * `SimpleGraph.IsSparse.typeII_reverse_blocker` — per-pair tight-blocker witness for the
   typeII Henneberg reverse, sparse form: a sparsity violation on the candidate graph
-  `(G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` extracts a tight set in `G` containing both `x` and `y`.
-  Phase 5 originally shipped a Laman wrapper (`IsLaman.typeII_reverse_blocker`) routing
-  the edge count through the typeII iso; Phase 7 lifted the core to `IsSparse` and the
-  Laman wrapper was deleted in favor of the flat-form
-  `IsLaman.exists_typeI_or_typeII_reverse` consuming `IsSparse.typeII_reverse_blocker`
-  directly.
+  `(G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` extracts a tight set in `G` containing `x` and `y` but not
+  `v`.
+* `SimpleGraph.IsSparse.exists_typeI_or_typeII_reverse` — the reverse decomposition of a
+  `(2, 3)`-sparse graph with an edge, at a vertex of degree one, two or three.
+
+The `I`-components (`maxBlock`) and the count matroid's augmentation lemma
+`IsSparse.exists_aug_of_lt_two_mul` are in `SparsityIComponents.lean`.
 
 ## Implementation notes
 
@@ -95,13 +85,10 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
 will not unfold them. To break a goal involving `IsTight` into its sparse and
 edge-count components, use `refine ⟨?_, ?_⟩` (or pattern-match `⟨h1, h2⟩`);
 to surface the underlying equation of an `IsTightOn`, use `unfold IsTightOn`
-(it is a one-equation `def`, not an And). See `TACTICS.md` § 4 for related
+(it is a one-equation `def`, not an And). See `TACTICS-GOLF.md` §4 for related
 guidance.
 
-## Project context
-
-See `ROADMAP.md` for the project plan and `notes/Phase1.md` for the
-Phase 1 work log (this file's content is Phase 1).
+The blueprint's `sec:sparsity` presents this file.
 -/
 
 public section
@@ -172,9 +159,11 @@ theorem IsSparse.deleteEdges {G : SimpleGraph V} {k ℓ : ℕ}
 /-! ### Low-degree vertex in `(2, 3)`-sparse graphs
 
 A `(2, 3)`-sparse graph on `n ≥ 2` vertices has `#E ≤ 2n − 3`, so by handshake the
-average degree is `< 4` and some vertex has degree at most 3. Both the Phase 5 Henneberg
-induction on Laman graphs (`IsLaman.exists_two_le_degree_le_three`) and the Phase 7
-sparse-graph reverse decomposition (Jordán Lemma 2.1.4) depend on this. -/
+average degree is `< 4` and some vertex has degree at most 3
+(`IsLaman.exists_two_le_degree_le_three` uses it). The sparse-graph reverse decomposition
+`IsSparse.exists_typeI_or_typeII_reverse` uses the strengthening
+`IsSparse.exists_one_le_degree_le_three`, as Jordán's proof of his Theorem 2.2.1 finds a vertex
+of degree one, two or three (p. 45). -/
 
 /-- In a `(2, 3)`-sparse graph on `n ≥ 2` vertices, some vertex has degree at most 3.
 The handshake identity gives `∑ deg = 2 #E ≤ 4n − 6`, so the average is `< 4` and some
@@ -200,8 +189,8 @@ restricting the handshake / sparsity bound to `S := {v | 1 ≤ G.degree v}` give
 `∑_{v ∈ S} G.degree v = ∑_v G.degree v = 2 |E|`, all edges sit inside `edgesIn ↑S`, and
 sparsity at `S` (size ≥ 2 from any edge) gives `|E| + 3 ≤ 2 |S|`. If every vertex in `S`
 had degree ≥ 4 the sum would be `≥ 4 |S|`, contradicting `2 |E| ≤ 4 |S| − 6`. The
-positive-degree restriction is what the Phase 7 3-way sparse reverse decomposition needs
-to distinguish pendant (`deg = 1`) from Type I proper (`deg = 2`). -/
+reverse decomposition `IsSparse.exists_typeI_or_typeII_reverse` needs the positive degree:
+its three cases are the degrees one (pendant), two (Type I) and three (Type II). -/
 theorem IsSparse.exists_one_le_degree_le_three [Fintype V]
     {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsSparse 2 3)
     (hE : G.edgeSet.Nonempty) :
@@ -258,9 +247,9 @@ theorem IsSparse.exists_one_le_degree_le_three [Fintype V]
 In a `(2, 3)`-sparse graph, any three neighbors of a single vertex contain a non-adjacent
 pair. This is the combinatorial input for the Type II Henneberg reverse move: given a
 degree-3 vertex with neighbors `a, b, c`, we use this lemma to pick the two non-adjacent
-ones to bridge with a fresh edge. Both `IsLaman.exists_typeI_or_typeII_reverse`
-(Phase 5 milestone 1) and `IsSparse.exists_typeI_or_typeII_reverse` (Phase 7) depend on
-this; the proof uses sparsity, not tightness. -/
+ones to bridge with a fresh edge. `IsSparse.exists_typeI_or_typeII_reverse` uses it, and
+`Henneberg.IsLaman.exists_typeI_or_typeII_reverse` through it; the proof uses sparsity, not
+tightness. -/
 
 /-- In a `(2, 3)`-sparse graph, three pairwise distinct neighbors of any vertex contain
 a non-adjacent pair. Apply sparsity to the 4-set `{v, a, b, c}` (size 4, so at most
@@ -344,8 +333,8 @@ end Iso
 /-- Under graph comap, the `Sym2.map`-image of `(G.comap f).edgesIn s'` is `G.edgesIn (f '' s')`.
 The image-form equality holds without an injectivity hypothesis on `f`; injectivity lifts to the
 ncard equality used downstream (via `Set.ncard_image_of_injective` on `Sym2.map f`). The
-non-iso analogue of `Iso.image_edgesIn`; the Phase 5 / Phase 7 typeII-reverse blocker pumps the
-candidate graph's edge count back through `G` along the subtype embedding via this lemma. -/
+non-iso analogue of `Iso.image_edgesIn`; through `ncard_edgesIn_comap`, the typeII-reverse
+blocker pumps the candidate graph's edge count back through `G` along the subtype embedding. -/
 lemma image_edgesIn_comap (G : SimpleGraph V) {V' : Type*} (f : V' → V) (s' : Set V') :
     Sym2.map f '' ((G.comap f).edgesIn s') = G.edgesIn (f '' s') := by
   ext e
@@ -397,7 +386,7 @@ theorem IsTight.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
 /-- The comap of a `(k, ℓ)`-sparse graph along an injective vertex map is `(k, ℓ)`-sparse.
 The proof transports a candidate Finset on the source side to its `f`-image on the target,
 and reads off `(G.comap f)`'s edge count via `image_edgesIn_comap`. The directional analogue
-of `IsSparse.iso`; specialized to `Subtype.val : {w // w ≠ v} → V` by the Phase 7 sparse-graph
+of `IsSparse.iso`; specialized to `Subtype.val : {w // w ≠ v} → V` by the sparse-graph
 reverse decomposition. -/
 theorem IsSparse.comap {V' : Type*} {G : SimpleGraph V} {k ℓ : ℕ} (h : G.IsSparse k ℓ)
     {f : V' → V} (hf : Function.Injective f) : (G.comap f).IsSparse k ℓ := by
@@ -412,8 +401,8 @@ theorem IsSparse.comap {V' : Type*} {G : SimpleGraph V} {k ℓ : ℕ} (h : G.IsS
 
 /-- **Squeeze: lower bound forces tight.** In a `(k, ℓ)`-sparse graph, if a Finset `s`
 attains the sparsity upper bound from below, it must be exactly `(k, ℓ)`-tight. Used by
-the Phase 5 typeII-reverse blocker to convert a sparsity violation on a candidate graph
-into a tight set in `G`. -/
+the typeII-reverse blocker (`IsSparse.typeII_reverse_blocker`) to convert a sparsity violation
+on a candidate graph into a tight set in `G`. -/
 theorem IsSparse.isTightOn_of_le {G : SimpleGraph V} {k ℓ : ℕ}
     (hG : G.IsSparse k ℓ) {s : Finset V} (hs : ℓ ≤ k * s.card)
     (h_le : k * s.card ≤ (G.edgesIn ↑s).ncard + ℓ) :
@@ -526,10 +515,11 @@ theorem IsTightOn.insert_vertex_with_edges [DecidableEq V] {G : SimpleGraph V}
 In the matroidal regime `ℓ < 2 * k`, the size proviso `ℓ ≤ k * #(s ∩ t)` of
 `IsTightOn.union_inter` is automatically discharged for two tight sets sharing a common pair
 of distinct vertices: `#(s ∩ t) ≥ 2 ≥ ⌈ℓ/k⌉` for any `ℓ < 2k`. This is the combinatorial
-foundation of the `(k, ℓ)`-count matroid (Whiteley 1996, Lee–Streinu 2008): blocks of an
-edge set `I` containing a fixed pair `{u, v}` are closed under intersection and union,
-so the family has a unique maximum element — the *I-component* of `{u, v}` —
-that drives the augmentation argument of Phase 7. -/
+foundation of the `(k, ℓ)`-count matroid (Lorea; White and Whiteley; see Whiteley 1996,
+Proposition A.1.1, and Lee–Streinu 2008, Theorem 2): blocks of an edge set `I` containing a
+fixed pair `{u, v}` are closed under intersection and union, so the family has a unique
+maximum element — the *I-component* of `{u, v}` — that drives the augmentation argument
+(`SparsityIComponents.lean`). -/
 
 /-- **Block closure under a shared pair (matroidal regime).** For `ℓ < 2 * k` and two
 `(k, ℓ)`-tight finite sets `s, t` both containing distinct vertices `u ≠ v`, both `s ∪ t` and
@@ -621,9 +611,9 @@ set in `V \ {v}` that contains all three neighbors. The unified dispatcher
 `IsSparse.False_of_pairwise_blocker_or_edge` packages all three by case-splitting on the
 adj-or-blocker disjunction for each pair.
 
-These primitives drive both Phase 5 milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse`)
-and Phase 7's sparse-graph reverse decomposition (Jordán Lemma 2.1.4(b)); both targets sit
-in `Henneberg.lean`. -/
+These primitives drive the degree-three case of the sparse-graph reverse decomposition
+`IsSparse.exists_typeI_or_typeII_reverse` below (Jordán Lemma 2.1.4(b)), from which
+`Henneberg.IsLaman.exists_typeI_or_typeII_reverse` (`HennebergReverse.lean`) follows. -/
 
 /-- **Three-neighbor obstruction.** In a `(2, 3)`-sparse graph, no `(2, 3)`-tight set
 `T ⊆ V \ {v}` can contain three distinct neighbors `a, b, c` of `v`: inserting `v` adds
@@ -937,9 +927,7 @@ pair non-adjacent, derive `False`.
 
 Dispatches across 8 leaves: the all-adjacent leaf contradicts `h_some_nonadj`; the other
 seven fan out by blocker count (1-pair, 2-pair, 3-pair) into the corresponding contradiction
-template. Replaces the 14-branch nested `by_cases` of the degree-3 dispatcher in
-`IsLaman.exists_typeI_or_typeII_reverse` and will be reused by Phase 7's sparse-graph
-reverse decomposition. -/
+template. The degree-three case of `IsSparse.exists_typeI_or_typeII_reverse` ends with it. -/
 theorem IsSparse.False_of_pairwise_blocker_or_edge
     [Finite V] {G : SimpleGraph V} (h : G.IsSparse 2 3) {v a b c : V}
     (ha_adj : G.Adj v a) (hb_adj : G.Adj v b) (hc_adj : G.Adj v c)
@@ -998,24 +986,21 @@ theorem IsSparse.False_of_pairwise_blocker_or_edge
 /-! ### Per-pair tight-blocker witness (typeII reverse, sparse form)
 
 The combinatorial heart of the typeII Henneberg reverse: given a `(2, 3)`-sparse graph `G`,
-a vertex `v`, a pair of distinct vertices `x, y` both `≠ v`, and a *failed* candidate
+a vertex `v`, vertices `x, y` both `≠ v`, and a *failed* candidate
 `G' := (G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` — i.e. `¬ G'.IsSparse 2 3` — extract a `(2, 3)`-tight set
-`S ⊆ V \ {v}` in `G` containing both `x` and `y`. The proof lifts a sparsity-violating Finset
+`S ⊆ V \ {v}` in `G` containing both `x` and `y`. The statement does not ask `x ≠ y`: at
+`x = y` the bridge is a loop, which `fromEdgeSet` drops, so `G'` is `G ↾ {v}ᶜ`, which is sparse,
+and the hypothesis fails. The proof lifts a sparsity-violating Finset
 of `G'` along `Subtype.val` to a Finset of `V \ {v}`, then case-splits on whether the bridge
 edge survives the lift (`xs, ys ∈ s'`): on the bridge-surviving side the squeeze closes via
 `IsSparse.isTightOn_of_le`; on the other side the bridge is forced out and `G`'s sparsity
-contradicts directly.
-
-The Phase-5 Laman-flavored shell `IsLaman.typeII_reverse_blocker` (in `Henneberg.lean`)
-routed `¬ G'.IsLaman` through the typeII iso + global edge count to derive
-`¬ G'.IsSparse 2 3` and call this lemma; Phase 7 lifted the entire reverse-decomposition
-pipeline (Jordán Lemma 2.1.4) to the sparse layer and the shell was deleted in Commit 6 of
-that phase. -/
+contradicts directly. This is the observation in Jordán's proof of his Lemma 2.1.4(b), that a
+splitting is not suitable only if such a tight set exists (p. 44). -/
 
 /-- **Per-pair tight-blocker witness for the typeII Henneberg reverse (sparse form).**
 
-Inputs: a `(2, 3)`-sparse graph `G`; distinct vertices `x, y` both `≠ v`; a sparsity violation
-on the typeII-reverse candidate `G' := (G ↾ {v}ᶜ) ⊔ {bridge(x, y)}`.
+Inputs: a `(2, 3)`-sparse graph `G`; vertices `x, y` both `≠ v`; a sparsity violation on the
+typeII-reverse candidate `G' := (G ↾ {v}ᶜ) ⊔ {bridge(x, y)}`.
 
 Output: a `(2, 3)`-tight set `S` in `G` with `v ∉ S` and `{x, y} ⊆ S`.
 
@@ -1116,18 +1101,20 @@ theorem IsSparse.typeII_reverse_blocker
 In a `(2, 3)`-sparse graph with at least one edge, a Henneberg reverse step exists distinguished
 by `G.degree v ∈ {1, 2, 3}`: pendant reverse (delete a degree-1 vertex), Type I reverse (delete
 a degree-2 vertex), or Type II reverse (split a degree-3 vertex with a non-adjacent neighbour
-pair). The sparse analogue of Phase 5 milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse` in
-`Henneberg.lean`), stated in **flat form** per `DESIGN.md` *Statement-form conventions*: the
-conclusion describes the smaller graph by its edges directly (`G - v` as `G.comap Subtype.val`,
-the typeII candidate as `G.comap Subtype.val ⊔ fromEdgeSet {bridge}`) rather than via the
-`typeI` / `typeII` Henneberg operations.
+pair). The Laman form `Henneberg.IsLaman.exists_typeI_or_typeII_reverse`
+(`HennebergReverse.lean`) is derived from it. It is stated in **flat form** per `DESIGN.md`
+*Statement-form conventions*: the conclusion describes the smaller graph by its edges directly
+(`G - v` as `G.comap Subtype.val`, the typeII candidate as
+`G.comap Subtype.val ⊔ fromEdgeSet {bridge}`) rather than via the `typeI` / `typeII` Henneberg
+operations.
 
-Proof structure (Jordán Lemma 2.1.4): pick a vertex `v` with `1 ≤ G.degree v ≤ 3` via
-`IsSparse.exists_one_le_degree_le_three`; split on `G.degree v ∈ {1, 2, 3}`. The pendant
-(`= 1`) and Type I (`= 2`) cases close via `IsSparse.comap` after extracting neighbour data
-from `card_eq_one` / `card_eq_two`. The `= 3` case runs the per-pair witness-or-blocker
-dispatch using `IsSparse.typeII_reverse_blocker` and combines three blockers via
-`IsSparse.False_of_pairwise_blocker_or_edge`. -/
+Proof structure (Jordán's proof of his Theorem 2.2.1, p. 45, for the vertex, and his Lemma
+2.1.4, p. 44, for the cases of degree two and three): pick a vertex `v` with
+`1 ≤ G.degree v ≤ 3` via `IsSparse.exists_one_le_degree_le_three`; split on
+`G.degree v ∈ {1, 2, 3}`. The pendant (`= 1`) and Type I (`= 2`) cases close via
+`IsSparse.comap` after extracting neighbour data from `card_eq_one` / `card_eq_two`. The `= 3`
+case runs the per-pair witness-or-blocker dispatch using `IsSparse.typeII_reverse_blocker` and
+combines three blockers via `IsSparse.False_of_pairwise_blocker_or_edge`. -/
 
 /-- Per-pair Type II dispatch helper for `IsSparse.exists_typeI_or_typeII_reverse`. For a
 degree-3 vertex `v` with three distinct neighbours `x, y, c`, the pair `(x, y)` yields one of
@@ -1160,9 +1147,9 @@ private theorem IsSparse.typeII_pair_dispatch_aux
         hN_iff, hxy_adj, hsparse⟩
     · exact Or.inr (Or.inr (h.typeII_reverse_blocker x.2 y.2 hsparse))
 
-/-- **Flat-form Henneberg reverse decomposition (Jordán Lemma 2.1.4).** Every `(2, 3)`-sparse
-graph with at least one edge admits a Henneberg reverse to a smaller `(2, 3)`-sparse graph,
-distinguished by `G.degree v ∈ {1, 2, 3}`:
+/-- **Flat-form Henneberg reverse decomposition (Jordán, Lemma 2.1.4 and Theorem 2.2.1).**
+Every `(2, 3)`-sparse graph with at least one edge admits a Henneberg reverse to a smaller
+`(2, 3)`-sparse graph, distinguished by `G.degree v ∈ {1, 2, 3}`:
 
 * **Pendant reverse** (`G.degree v = 1`): the unique neighbour `a` of `v` is exposed and
   the induced subgraph on `{w // w ≠ v}` is `(2, 3)`-sparse.
@@ -1172,14 +1159,16 @@ distinguished by `G.degree v ∈ {1, 2, 3}`:
   along with a non-adjacent pair `(x, y)`, such that the induced subgraph augmented with the
   bridging edge `s(x, y)` is `(2, 3)`-sparse.
 
-The sparse analogue of Phase 5 milestone 1's `IsLaman.exists_typeI_or_typeII_reverse`. Stated
+The cases of degree two and three are Jordán's Lemma 2.1.4 (p. 44); the vertex of degree one,
+two or three, and the case of degree one, are from his proof of Theorem 2.2.1 (p. 45).
+`Henneberg.IsLaman.exists_typeI_or_typeII_reverse` is derived from this theorem. Stated
 in flat form: the smaller graphs are described by their explicit edge constructions rather
 than via the typeI / typeII Henneberg operations (see `DESIGN.md` *Statement-form
-conventions*). Phase 7's row-LI lift consumers reconstruct the operation form at each step
-via `isoTypeIOfTwoNeighbors` / `isoTypeIIOfThreeNeighbors` in `Henneberg.lean`. The
-pendant branch invokes `isoTypeIOfTwoNeighbors` at `a = b` (the unique neighbour);
-`typeI G' a a` joins the new vertex to a single old vertex, modelling the pendant
-attachment used by Lovász–Yemini to reverse a degree-1 vertex. -/
+conventions*). The row-independence induction `IsSparse.exists_rowIndependent_placement`
+(`MatroidIdentification.lean`) reconstructs the operation form at each step via
+`isoTypeIOfTwoNeighbors` / `isoTypeIIOfThreeNeighbors` (`HennebergReverse.lean`). Its
+pendant branch invokes `isoTypeIOfTwoNeighbors` at `a = b` (the unique neighbour):
+`typeI G' a a` joins the new vertex to a single old vertex. -/
 theorem IsSparse.exists_typeI_or_typeII_reverse [Fintype V]
     {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsSparse 2 3)
     (hE : G.edgeSet.Nonempty) :
@@ -1267,6 +1256,6 @@ end SimpleGraph
 
 -- Matroidal-regime I-components (`HasBlock`, `maxBlock`, `IsSparse.maxBlock_*`) and the
 -- augmentation lemma `IsSparse.exists_aug_of_lt_two_mul` live in
--- `CombinatorialRigidity/SparsityIComponents.lean`. Files that only need the base
--- `(k, ℓ)`-sparsity API (eight of ten downstream files) can import this file alone;
--- `CountMatroid.lean` (the sole consumer of the augmentation lemma) imports the split.
+-- `CombinatorialRigidity/SparsityIComponents.lean`. Files that need only the base
+-- `(k, ℓ)`-sparsity API import this file alone; `CountMatroid.lean`, which uses the
+-- augmentation lemma, imports `SparsityIComponents.lean`.

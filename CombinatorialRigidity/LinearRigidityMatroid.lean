@@ -10,20 +10,20 @@ import Matroid.Representation.Map
 /-!
 # Linear-matroid framing of the planar rigidity matroid
 
-Phase 8. Packages the planar rigidity matroid as the linear matroid `Matroid.ofFun` of the
-rigidity-row function at a chosen placement, using the `apnelson1/Matroid` library
-(see `DESIGN.md` *Phase 8: `apnelson1/Matroid` dependency*). The matroid identification
-`linearRigidityMatroid V 2 p = SimpleGraph.rigidityMatroid V` (Lovász–Yemini, linear-matroid
-form) at a generic placement `p` is the eventual Phase 8 target; this file lands the
-definition skeleton plus the independence bridge that identifies the linear matroid's
-independent sets with the project's `EdgeSetRowIndependent` predicate at the same placement.
+Packages the rigidity matroid of a framework as the linear matroid `Matroid.ofFun` of the
+rigidity-row function at a placement, using the `apnelson1/Matroid` library. Its independent
+sets are the edge sets row-independent at the placement
+(`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`), and at a suitable placement in the
+plane it is the planar rigidity matroid,
+`linearRigidityMatroid V 2 p = SimpleGraph.rigidityMatroid V`
+(`linearRigidityMatroid_eq_rigidityMatroid`, the matroid form of Pollaczek-Geiringer's and
+Laman's characterization at a single placement).
 
 `Matroid.ofFun` consumes a function on the full type `Sym2 V` and a ground set; we use
 `(⊤ : SimpleGraph V).edgeSet` as the ground set (matching `SimpleGraph.rigidityMatroid`'s
 ground set) and extend `(⊤).rigidityRow p` by zero off the edge set via `linearRigidityRow`.
 
-See `ROADMAP.md` §8, `notes/Phase8.md`, and the *Linear-matroid framing* subsection of
-`blueprint/src/chapter/rigidity-matroid.tex`.
+The blueprint's `sec:rigidity-matroid-linear-framing` presents this file.
 -/
 
 namespace SimpleGraph
@@ -55,9 +55,8 @@ theorem linearRigidityRow_of_mem (p : Framework V d) {e : Sym2 V}
 matroid on `Sym2 V` with ground set `(⊤ : SimpleGraph V).edgeSet` and row function
 `linearRigidityRow p`. Built via `Matroid.ofFun` from the `apnelson1/Matroid` library.
 
-The matroid identification `linearRigidityMatroid V 2 p = SimpleGraph.rigidityMatroid V`
-(Lovász–Yemini, linear-matroid form) at a generic placement is the Phase 8 target; the
-independence bridge that powers it lives in
+For some placement `p` in the plane, `linearRigidityMatroid V 2 p = SimpleGraph.rigidityMatroid V`
+(`linearRigidityMatroid_eq_rigidityMatroid`); its proof identifies the independent sets through
 `linearRigidityMatroid_indep_iff_edgeSetRowIndependent`. -/
 noncomputable def linearRigidityMatroid (V : Type*) (d : ℕ)
     (p : Framework V d) : Matroid (Sym2 V) :=
@@ -72,8 +71,8 @@ theorem linearRigidityMatroid_ground (V : Type*) (d : ℕ)
 /-- **Linear-matroid independence iff row-LI.** An edge subset `I ⊆ (⊤ : SimpleGraph V).edgeSet`
 is independent in `linearRigidityMatroid V d p` if and only if its underlying edges form a
 row-independent family at `p`. The image-of-subtype packaging on the left-hand side matches
-`SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent`, so this lemma is the linear-
-matroid analogue of the matroid-form Lovász–Yemini bridge. -/
+`SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent`, so this lemma is its
+linear-matroid analogue, at one placement. -/
 theorem linearRigidityMatroid_indep_iff_edgeSetRowIndependent
     {V : Type*} {d : ℕ} {p : Framework V d}
     {I : Set (⊤ : SimpleGraph V).edgeSet} :
@@ -100,8 +99,9 @@ the existential `∃ p', row-LI at p'` in `rigidityMatroid_indep_iff_edgeSetRowI
 `row-LI at p`.
 
 Proof sketch (linear-interpolation perturbation on the finite family of sparse subsets, per
-blueprint `lem:exists-uniform-rowIndependent-placement`): induct on the cardinality of
-`{I ⊆ E(K_V) | fromEdgeSet I is (2, 3)-sparse}`. At the inductive step, interpolate between
+blueprint `lem:exists-uniform-rowIndependent-placement`): prove it for every finite family of
+sets `I ⊆ E(K_V)` with `fromEdgeSet I` `(2, 3)`-sparse, by induction on the family, one set at a
+time; the family of all of them is finite. At the inductive step, interpolate between
 the inductive-hypothesis witness `p₀` (row-LI on the `n`-element subfamily) and a fresh row-LI
 witness `q` for the new subset `I₀` (from `IsSparse.exists_rowIndependent_placement`); each
 "row-LI on `S`" condition along `p_t := (1-t) p₀ + t q` is the non-vanishing of a polynomial in
@@ -201,11 +201,11 @@ theorem exists_uniform_rowIndependent_placement_dim_two {V : Type*} [Finite V] :
     simp only [bad, Set.mem_iUnion]
     exact ⟨I, hI, h_not_LI⟩
 
-/-- **Lovász–Yemini, linear-matroid form, dim 2.** There exists a placement `p : Framework V 2`
-at which the linear rigidity matroid coincides with the combinatorial planar rigidity matroid:
-`linearRigidityMatroid V 2 p = SimpleGraph.rigidityMatroid V`.
+/-- **The planar rigidity matroid as a linear matroid, dim 2.** There exists a placement
+`p : Framework V 2` at which the linear rigidity matroid coincides with the combinatorial planar
+rigidity matroid: `linearRigidityMatroid V 2 p = SimpleGraph.rigidityMatroid V`.
 
-The Phase 8 target. Combines the uniform-genericity witness
+Combines the uniform-genericity witness
 `exists_uniform_rowIndependent_placement_dim_two` with `Matroid.ext_indep`: both matroids have
 ground set `(⊤ : SimpleGraph V).edgeSet`, so it suffices to identify their independent sets. The
 $(\Rightarrow)$ direction collapses by taking the existential placement in
@@ -225,8 +225,8 @@ theorem linearRigidityMatroid_eq_rigidityMatroid {V : Type*} [Finite V] :
     rw [← hI_image, linearRigidityMatroid_indep_iff_edgeSetRowIndependent,
       SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent]
     refine ⟨fun h => ⟨p, h⟩, fun ⟨_, hp'⟩ => ?_⟩
-    -- Row-LI at *some* placement ⟹ sparse spanning subgraph (Phase 7's
-    -- `edgeSet_rowIndependent_iff_isSparse_dim_two`, (⇒)) ⟹ row-LI at our uniform-generic `p`.
+    -- Row-LI at *some* placement ⟹ sparse spanning subgraph
+    -- (`edgeSet_rowIndependent_iff_isSparse_dim_two`, (⇒)) ⟹ row-LI at our uniform-generic `p`.
     exact hp_uniform _ ((edgeSet_rowIndependent_iff_isSparse_dim_two _ _).mp ⟨_, hp'⟩)
 
 end SimpleGraph

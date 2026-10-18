@@ -16,8 +16,9 @@ repeated derivations (*Current state*). Task 16, the recon of the pebble game's 
 fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set;
 task 18 committed the script that times it and checks the `decide` facts; task 19 had the
 executable split its input on any whitespace; task 20 rewrote the texts; tasks 21–24 landed the
-sixteen non-vacuity witnesses. **Next concrete task:** task 25, the planar files' docstrings
-(*Lemma checklist*). Round manual: `CLEANUP.md`.
+sixteen non-vacuity witnesses; task 25 swept the docstrings of the nine planar files it names.
+**Next concrete task:** task 25.1, the four planar files no sweep task named (*Lemma checklist*).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -27,31 +28,28 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 24 is done** (this commit); nothing is mid-stream.
+**Task 25 is done** (this commit); nothing is mid-stream.
 
-**Tasks 21–24** (no ledger entry; §1's proposal): `CombinatorialRigidity/Nonvacuity.lean`, imported
-by `CombinatorialRigidity.lean`, sixteen closed theorems, one per main result outside S1's and S2's
-rows, every hypothesis discharged (*Decisions*): task 21's five at `K₂` and the double edge; task
-22's three in the plane at the triple edge and `K₃`; task 23's four at the single and double edges
-and the star `K₁,₃`; task 24's four in 3-space: the molecule rank formula at `K₃` (its multigraph
-a triangle, `0`-dof, so `r(K₃²) = 3`), Jacobs at the path `P₃`, the degree-one formula at the paw
-(its core the triangle; `+ 3`), and the six-tree packing at `K₃`, its six trees (paths of length
-two in `5·K₃`) and a generic placement exhibited. None failed, so no `S` entry; all sixteen's
-`#print axioms` (`scratch/reconcile-lean/Witnesses-t24.lean`) give the three. FRICTION: tasks
-22–24's entries; task 21's count-matroid entry waits for task 38. The ledger: 277 entries, 157
-`done`, 9 `left`, 107 `reported`, 4 `open`.
+**Task 25** (`F-018`, `F-022`, `F-023`, `F-030`, `F-032` `done`; `F-025`, `F-228`, `F-200` in part):
+the nine files' docstrings read against their bodies, under *Decisions*' sweep form. Beyond the
+entries: stale file pointers (`Henneberg.lean` for `HennebergReverse.lean`, `Sparsity.lean` for
+`SparsityIComponents.lean`), roles the Lean no longer has (the Laman reverse decomposition now
+derives from the sparse one), a "perpendicular" perturbation (the direction is only off the line),
+a "generic" scalar (`s = 1/2`), "same body" (`exists_edgeSetRowIndependent_basis_dim_two` calls
+its sibling), `top_fin_two_isGenericallyRigid 2` (the proof uses the injective form). The label
+check's report is unchanged (387; none of its lines are in these files). The ledger: 277 entries,
+162 `done`, 9 `left`, 102 `reported`, 4 `open`.
 
-**Tasks 16–20** (`F-033`, `F-047`, both `done`): task 20 rewrote the texts on the search, its
-running time (measured, no bound), `decide` (the script's five facts, `F-276`'s reasons) and the
-input, and `pebble-game.tex`'s per-walk paragraph and four "`decide` fires" a re-`grep` found;
-task 16's recon (`scratch/reconcile-lean/t16/`) settled the
-search with one marked set; task 17 landed it in `Search/DFS.lean`, re-proved, `dropUntilBundle`
-deleted and `dfs.tex` restated (new `F-276` and `F-277`, both `reported`); task 18 committed
-`scripts/DFSTiming.lean` (run by `lake lean`, not a `module`): on the diamond chain at
-$n = 8, \ldots, 18$ the per-walk search took 1.5 to 2196 ms and the new one 63 to 157 µs, marking
-$3n + 1$ vertices, and the five `decide` facts hold; task 19 had `parsePair` split on
-`Char.isWhitespace`, so `lake exe pebble-game` reads a tab-separated or CRLF `k4-minus-e.txt` as
-`LAMAN` (malformed before).
+**Tasks 21–24** (§1's proposal): `CombinatorialRigidity/Nonvacuity.lean`, sixteen closed
+theorems, one per main result outside S1's and S2's rows, every hypothesis discharged
+(*Decisions*), none failed; all sixteen's `#print axioms`
+(`scratch/reconcile-lean/Witnesses-t24.lean`) give the three. FRICTION: tasks 22–24's entries;
+task 21's count-matroid entry waits for task 38.
+
+**Tasks 16–20** (`F-033`, `F-047`, both `done`): task 16's recon settled the search with one
+marked set; task 17 landed it in `Search/DFS.lean` (new `F-276`, `F-277`, `reported`); task 18
+committed `scripts/DFSTiming.lean` (at $n = 18$: 2196 ms per-walk, 157 µs now) and checked the
+`decide` facts; task 19 had `parsePair` split on any whitespace; task 20 rewrote the texts.
 
 **Done before** (tasks 3–15.1; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -306,13 +304,15 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   "brick", "producer", "seed", "genuine", "motive", "carry", "this commit") removed; credits as the
   chapters give them, checked against `.refs/`. *Expected* for each: the dump byte-identical; gate 9
   falls. Each entry's declarations are in its ledger text.
-- [ ] **25. The planar files** (`F-018`, `F-022`, `F-023`, `F-030`, `F-032`; M2's, `F-025`; M5's,
-  `F-228`; `F-200`'s `RigidityMatroid.lean` part): `Laman.lean` (21: Pollaczek-Geiringer beside
-  Laman), `Sparsity.lean` (1029; 1184, the pendant attachment), `HennebergRigidity.lean` (130, 348),
-  `TrivialMotions.lean` (114, 353, Asimow–Roth), `CountMatroid.lean` (39, 65), `RigidityMatroid.lean`
-  (26, 60, 176, 222, 278, 690), `LamanTheorem.lean` (30, 140, 156), `MatroidIdentification.lean`
-  (17, 190, 263, 708, 749–761, 839–918: the induction is on $|V|$), `LinearRigidityMatroid.lean`
-  (16, 59, 76, 204). The credit as round 1 settled it (`F-025`'s verdict).
+- [x] **25. The planar files** (`F-018`, `F-022`, `F-023`, `F-030`, `F-032` `done`; `F-025`,
+  `F-228`, `F-200` in part): the nine files, credits Pollaczek-Geiringer and Laman, Jordán's and
+  Whiteley's pages; no Lovász–Yemini but `TayTheorem.lean` 548 (task 27); the dump
+  byte-identical; gate 9 387, none of its report's lines in these files.
+- [ ] **25.1. The planar files no task named**: `Framework.lean`, `Henneberg.lean`,
+  `HennebergReverse.lean`, `SparsityIComponents.lean` (phase pointers, "Phase 5 milestone 1",
+  "Commit" numbers; task 25's grep). *Expected:* the dump byte-identical.
+- [ ] **25.2. `Search/` and `Mathlib/`**, which no task names: 22 files with phase pointers, 33 in
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean` (task 25's grep). *Expected:* as 25.1.
 - [ ] **26. `PebbleGame/`** (`F-035`, `F-040`, `F-045`, `F-230`): `Basic.lean`, `Algorithm.lean`,
   `Correctness.lean`, `Exec.lean`; task 20 took the running-time and `decide` claims. Also the
   three "verified-iterative" (`Basic.lean` 1028, 1052; `Algorithm.lean` 250): the search recurses.
@@ -415,11 +415,12 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 25**, at Opus: the docstrings of the planar files (*Lemma checklist*, under the
-sweep's rules above it; the credit is round 1's verdict on `F-025`). *Expected:* the dump
-byte-identical; gate 9 falls by what the task fixes. Gates 1–3 (gate 3's witnesses: the sixteen of
-`scratch/reconcile-lean/Witnesses-t24.lean`), 5, 6, 9 and 10 (the parent dump
-`scratch/reconcile-lean/dump-t24.txt`, gitignored; regenerate it if missing; gate 9 387). Carried
+**Next: task 25.1**, at Opus: the docstrings of `Framework.lean`, `Henneberg.lean`,
+`HennebergReverse.lean` and `SparsityIComponents.lean` (*Lemma checklist*, under the sweep's rules
+and *Decisions*' sweep form). *Expected:* the dump byte-identical; gate 9 falls by what the task
+fixes (none of its lines are in these files today, so 387). Gates 1–3 (gate 3's witnesses: the
+sixteen of `scratch/reconcile-lean/Witnesses-t25.lean`), 5, 6, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t25.txt`, gitignored; regenerate it if missing). Carried
 in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275` and
 FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries for task 38; the
 three "verified-iterative" for task 26. After the round the queue stops before
@@ -489,3 +490,8 @@ three "verified-iterative" for task 26. After the round the queue stops before
   script's facts and the ledger's reasons (`F-276`). A claim on the line's subject that a re-`grep`
   finds beyond its surfaces is fixed in the same commit (`pebble-game.tex`'s per-walk paragraph,
   four "`decide` fires").
+- **The sweep's form** (task 25): a header's process narration (a *Project context* section, phase
+  and commit numbers, `notes/` pointers) becomes one sentence naming the blueprint section that
+  presents the file; a credit is the chapter's, and one a docstring keeps beyond it (a page, a
+  theorem number) is checked in `.refs/`; a docstring claim the body contradicts is fixed in the
+  same pass and named in the commit.
