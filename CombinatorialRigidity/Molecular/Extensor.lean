@@ -13,92 +13,33 @@ public import CombinatorialRigidity.Mathlib.Data.Finset.Insert
 public import CombinatorialRigidity.Mathlib.Data.Finset.Sort
 
 /-!
-# Grassmann–Cayley extensor algebra: homogeneous coordinates (`sec:molecular-homog`)
+# Grassmann–Cayley extensors and KT Lemma 2.1 (`sec:molecular`)
 
-Phase 17, the first phase of the molecular-conjecture program (Phases 17–26;
-see `notes/MolecularConjecture.md`). This file opens the Grassmann–Cayley /
-extensor-algebra layer of Katoh–Tanigawa 2011 (*A proof of the molecular
-conjecture*, Discrete Comput. Geom. **45**, §2.1), the load-bearing target of
-which is Lemma 2.1 (independence of the `(d-1)`-extensors of `d+1` affinely
-independent points; `blueprint/src/chapter/molecular.tex`,
-`lem:extensor-independence`).
+The definitions and lemmas of `sec:molecular`: homogeneous coordinates and affine independence
+(`sec:molecular-homog`); extensors, the join, the Plücker coordinates and the extensor of an affine
+subspace (`sec:molecular-extensor`); and the independence of the `(d − 1)`-extensors, KT Lemma 2.1
+(`sec:molecular-lemma21`). We follow Katoh and Tanigawa (2011, *A proof of the molecular
+conjecture*, Discrete Comput. Geom. **45**, §2.1, pp. 651–652), and Barnabei, Brini and Rota (1985)
+for the algebra. Nothing here uses an inner product, an order or a hypothesis on the characteristic,
+so `K` is any field; Katoh and Tanigawa work over `ℝ`. A point of `K^d` is a vector `Fin d → K`, its
+homogeneous coordinate vector is `Fin.snoc p 1 : Fin (d+1) → K`, and the extensors lie in mathlib's
+exterior algebra `ExteriorAlgebra K (Fin (d+1) → K)`. The file proves:
 
-**Field generality (Phase 33 G1 sweep, Slice 2).** The full §2.1 development is
-pure exterior/affine algebra with no metric, order, or infiniteness content, so
-it holds over any field `K` (`variable {K : Type*} [Field K]`, threaded
-throughout; no characteristic restriction — originally developed over `ℝ`,
-Phases 17–26).
-
-This file lands the full §2.1 dep-graph, in dependency order. The leaf nodes:
-
-* `homogenize` (`def:homogeneous-coords`) — the homogeneous coordinatization
-  `p ↦ (p, 1) : K^d → K^(d+1)`, sending a point of affine `d`-space to its
-  homogeneous coordinate vector by appending a final `1` coordinate
-  (`Fin.snoc p 1`).
-* `affineIndependent_iff_linearIndependent_homogenize` (`lem:affine-indep-iff`,
-  linear-independence form) — `p₁, …, pₖ` are affinely independent iff their
-  homogenizations `p̄₁, …, p̄ₖ` are linearly independent in `K^(d+1)`. This is
-  the core bridge underlying the blueprint's join-nonvanishing reformulation
-  (the latter additionally restates "linearly independent" as "join `≠ 0`",
-  which awaits the join / extensor layer, `def:join` / `def:extensor`).
-* `affineIndependent_fin_iff_det_homogenize` (`lem:affine-indep-iff`, top-extensor
-  form) — `d+1` points are affinely independent iff the determinant of the
-  `(d+1) × (d+1)` matrix of their homogeneous coordinates is nonzero. This is
-  the top-extensor (full-determinant) specialization the blueprint singles out.
-
-The symbolic Grassmann–Cayley layer (`def:extensor`, `def:join`) follows:
-
-* `extensor` (`def:extensor`) — a `j`-extensor in `K^(d+1)` is the decomposable
-  element `v₁ ∧ ⋯ ∧ vⱼ` of the `j`-th exterior power, built on mathlib's
-  `ExteriorAlgebra.ιMulti` (so `extensor v ∈ ⋀[K]^j (Fin (d+1) → K)`, the graded
-  piece `exteriorPower`). Two facts the join needs come for free from `ιMulti`
-  being an `AlternatingMap`: it vanishes on a repeated vector
-  (`extensor_eq_zero_of_not_injective` / `extensor_eq_zero_of_eq`) — the
-  load-bearing fact for Lemma 2.1.
-* `join` (`def:join`) — the join `A ∨ B` of two extensors is their exterior
-  product `A * B` in `ExteriorAlgebra K (Fin (d+1) → K)`. `join_extensor`
-  records the defining identity `extensor a ∨ extensor b = extensor (a ++ b)`
-  (mathlib `ιMulti_mul_ιMulti`, with `Fin.append` the concatenation); the join
-  inherits associativity / graded-commutativity from the ring product.
-
-## Symbolic carrier (mathlib `ExteriorAlgebra` coverage)
-
-The symbolic layer reuses mathlib's `ExteriorAlgebra K (Fin (d+1) → K)`
-verbatim. mathlib's `Mathlib.LinearAlgebra.ExteriorPower.Basic` supplies all the
-needed scaffolding: the graded pieces `⋀[K]^j M` (`exteriorPower`, a
-`Submodule`), the decomposable generators via the alternating multilinear map
-`ExteriorAlgebra.ιMulti K j : M [⋀^Fin j]→ₗ[R] ExteriorAlgebra K M`, the
-exterior product `*` as the join (`ExteriorAlgebra.ιMulti_mul_ιMulti`), and the
-alternating / vanishes-on-repeats facts (`ExteriorAlgebra.ιMulti_eq_zero_of_not_inj`,
-`AlternatingMap.map_eq_zero_of_eq`). Lemma 2.1 is self-contained from these plus
-the affine-independence bridge above; no new exterior-algebra infrastructure is
-required, so the symbolic-vs-coordinatized depth (risk register item 1 in
-`notes/MolecularConjecture.md`) stays shallow.
-
-## Lemma 2.1 (`omitTwoExtensor_linearIndependent`)
-
-The load-bearing target, the last §2.1 node. For `e + 2` affinely independent
-points (the dimension is reparametrized `d = e + 1`, clearing the `ℕ`-subtraction
-`d - 1`), the `D = (e+2 choose 2)` many omit-two extensors `omitTwoExtensor` — the
-`e`-extensors dropping two of the `e + 2` homogenized vectors — are linearly
-independent. The proof fixes a pair `{a, b}`, joins the dependence relation on the
-left with the `2`-extensor `v a ∨ₑ v b`, kills every off-diagonal term by repeated
-vector (`join_pair_omitTwo_other_eq_zero`, via `extensor_eq_zero_of_not_injective`),
-and reads off the surviving diagonal term as a nonzero scalar times the reindexed
-top extensor (`join_pair_omitTwo_self_ne_zero`, via the `pairAppend` bijection +
-`extensor_ne_zero_iff_linearIndependent`). Closing this node closes Phase 17 and is
-the linear-algebra foundation Case III (Phases 22–23) bottoms out on.
-
-## Carrier
-
-A point of affine `d`-space is `Fin d → K` and homogenizes to `Fin (d+1) → K`
-(via `Fin.snoc`, appending the constant `1`). This concrete coordinate carrier
-is the natural one for the exterior power `⋀ʲ K^(d+1)` and the `j × j`-minor
-Plücker vectors of the downstream nodes; the symbolic exterior-algebra layer
-(`def:extensor`, `def:join`) builds on mathlib's `⋀[K]` over the same
-`Fin (d+1) → K`. (Phase 4's `Framework V d` uses `EuclideanSpace ℝ (Fin d)`; at
-`K = ℝ` the two agree up to the canonical isometry on `Fin d → ℝ`, so Phase
-18/24 reuse stays frictionless.)
+* `p₁, …, pₖ` are affinely independent iff `p̄₁, …, p̄ₖ` are linearly independent, and `d + 1`
+  points of `K^d` are iff the matrix of their homogeneous coordinate vectors has nonzero determinant
+  (`lem:affine-indep-iff`);
+* the extensor `v₁ ∧ ⋯ ∧ vⱼ`, the value of `ExteriorAlgebra.ιMulti` (`def:extensor`): it is zero
+  when two vectors are equal, linear in each vector, unchanged when multiples of one vector are
+  added to the others, and nonzero iff the vectors are linearly independent; the join, the product
+  of the exterior algebra (`def:join`); the extensor `C(p₁, …, pₖ) = p̄₁ ∨ ⋯ ∨ p̄ₖ` of points,
+  nonzero iff they are affinely independent (`def:affine-subspace-extensor`); points whose extensor
+  is a multiple of a given extensor with a vector off the hyperplane at infinity
+  (`lem:extensor-affine-representation`, in `generic-lift.tex`);
+  and that three linearly independent vectors `a, b, c` give linearly independent `a ∨ b` and
+  `a ∨ c`;
+* the Plücker coordinates (`def:plucker-coords`);
+* KT Lemma 2.1 (`lem:extensor-independence`, p. 651), for `d + 1` linearly independent vectors of
+  `K^(d+1)` and for `d + 1` affinely independent points of `K^d`.
 -/
 
 @[expose] public section
@@ -109,9 +50,8 @@ open scoped Matrix
 
 variable {K : Type*} [Field K] {d : ℕ}
 
-/-- **Homogeneous coordinatization** (`def:homogeneous-coords`). The homogeneous
-coordinate vector `p̄ = (p, 1) ∈ K^(d+1)` of a point `p ∈ K^d`, obtained by
-appending a final `1` coordinate. -/
+/-- **Homogeneous coordinates** (`def:homogeneous-coords`): the homogeneous coordinate vector
+`p̄ = (p, 1) ∈ K^(d+1)` of a point `p ∈ K^d`, obtained by appending the coordinate `1`. -/
 def homogenize (p : Fin d → K) : Fin (d + 1) → K :=
   Fin.snoc p 1
 
@@ -125,14 +65,12 @@ theorem homogenize_last (p : Fin d → K) :
     homogenize p (Fin.last d) = 1 := by
   simp [homogenize]
 
-/-- **Affine independence via homogenization** (`lem:affine-indep-iff`,
-linear-independence form). A family `p : ι → K^d` of points is affinely
-independent if and only if the homogenized family `homogenize ∘ p : ι → K^(d+1)`
-is linearly independent.
-
-This is the core content of `lem:affine-indep-iff`. The blueprint additionally
-phrases linear independence as the join `p̄₁ ∨ ⋯ ∨ p̄ₖ ≠ 0`; that reformulation
-awaits the join / extensor layer (`def:join`, `def:extensor`). -/
+/-- **Affine independence in homogeneous coordinates** (`lem:affine-indep-iff`): a family
+`p : ι → K^d` of points is affinely independent iff the family `homogenize ∘ p` is linearly
+independent. The last coordinate of `∑ w i • p̄ i` is `∑ w i`, and the others are those of
+`∑ w i • p i`. With `extensor_ne_zero_iff_linearIndependent`, it gives the criterion
+`affineSubspaceExtensor_ne_zero_iff`: the points are affinely independent iff the join of their
+homogeneous coordinate vectors is nonzero. -/
 theorem affineIndependent_iff_linearIndependent_homogenize
     {ι : Type*} (p : ι → Fin d → K) :
     AffineIndependent K p ↔ LinearIndependent K (fun i => homogenize (p i)) := by
@@ -166,15 +104,11 @@ theorem affineIndependent_iff_linearIndependent_homogenize
       have := congrFun hpts k
       simpa [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] using this
 
-/-- **Affine independence via the top extensor** (`lem:affine-indep-iff`,
-determinant form). `d+1` points `p : Fin (d+1) → K^d` are affinely independent
-if and only if the determinant of the `(d+1) × (d+1)` matrix of their homogeneous
-coordinates is nonzero.
-
-This is the top-extensor (full-determinant) specialization the blueprint
-singles out: for `d+1` points the top exterior power `⋀^(d+1) K^(d+1)` is
-one-dimensional and the coordinate of the join `p̄₁ ∨ ⋯ ∨ p̄_{d+1}` is exactly
-this determinant. -/
+/-- **`d + 1` points are affinely independent iff their determinant is nonzero**
+(`lem:affine-indep-iff`): `p : Fin (d+1) → K^d` is affinely independent iff the `(d+1) × (d+1)`
+matrix with rows `p̄ᵢ` has nonzero determinant, by the previous lemma and
+`Matrix.linearIndependent_rows_iff_isUnit`. Up to sign this determinant is the one Plücker
+coordinate of `p̄₁, …, p̄_(d+1)` (`pluckerCoord_univ`). -/
 theorem affineIndependent_fin_iff_det_homogenize (p : Fin (d + 1) → Fin d → K) :
     AffineIndependent K p ↔
       (Matrix.of (fun i => homogenize (p i))).det ≠ 0 := by
@@ -184,18 +118,15 @@ theorem affineIndependent_fin_iff_det_homogenize (p : Fin (d + 1) → Fin d → 
     isUnit_iff_ne_zero]
   rfl
 
-/-! ## Extensors and the join
+/-! ## Extensors and the join (`sec:molecular-extensor`)
 
-The symbolic Grassmann–Cayley layer on mathlib's exterior algebra. We work in
-`ExteriorAlgebra K (Fin (d+1) → K)`; a `j`-extensor is the decomposable element
-`v₁ ∧ ⋯ ∧ vⱼ`, packaged through the alternating multilinear map
-`ExteriorAlgebra.ιMulti K j`, and the join is the exterior product. -/
+A `j`-extensor of `K^(d+1)` is a product `v₁ ∧ ⋯ ∧ vⱼ` in the exterior algebra, the value of
+mathlib's alternating map `ExteriorAlgebra.ιMulti K j`, and the join is the product of the exterior
+algebra (Barnabei, Brini and Rota 1985, §3). -/
 
-/-- **Extensor** (`def:extensor`). The `j`-extensor of a family
-`v : Fin j → K^(d+1)` is the decomposable element
-`v 0 ∧ ⋯ ∧ v (j-1)` of the exterior algebra, i.e. the value of mathlib's
-alternating multilinear map `ExteriorAlgebra.ιMulti K j`. It lands in the graded
-piece `⋀[K]^j (Fin (d+1) → K)` (see `extensor_mem_exteriorPower`). -/
+/-- **Extensor** (`def:extensor`): the extensor of a family `v : Fin j → K^(d+1)` is the product
+`v 0 ∧ ⋯ ∧ v (j−1)` in the exterior algebra of `K^(d+1)`, the value of mathlib's alternating map
+`ExteriorAlgebra.ιMulti K j`. It lies in `⋀[K]^j (Fin (d+1) → K)` (`extensor_mem_exteriorPower`). -/
 def extensor {d j : ℕ} (v : Fin j → Fin (d + 1) → K) :
     ExteriorAlgebra K (Fin (d + 1) → K) :=
   ExteriorAlgebra.ιMulti K j v
@@ -203,47 +134,41 @@ def extensor {d j : ℕ} (v : Fin j → Fin (d + 1) → K) :
 theorem extensor_apply {d j : ℕ} (v : Fin j → Fin (d + 1) → K) :
     extensor v = ExteriorAlgebra.ιMulti K j v := rfl
 
-/-- A `j`-extensor lies in the `j`-th exterior power (graded piece)
-`⋀[K]^j (Fin (d+1) → K)`. -/
+/-- **A `j`-extensor lies in `⋀[K]^j (Fin (d+1) → K)`** (`def:extensor`), the graded piece of degree
+`j` (`ExteriorAlgebra.ιMulti_range`). -/
 theorem extensor_mem_exteriorPower {d j : ℕ} (v : Fin j → Fin (d + 1) → K) :
     extensor v ∈ ⋀[K]^j (Fin (d + 1) → K) :=
   ExteriorAlgebra.ιMulti_range K j ⟨v, rfl⟩
 
-/-- A `j`-extensor vanishes when two of its vectors coincide (the alternating
-property of the join; `def:extensor`). This — together with
-`extensor_eq_zero_of_not_injective` — is the load-bearing fact for Lemma 2.1's
-"join the relation with a `2`-extensor to kill all but one term" argument. -/
+/-- **An extensor with a repeated vector is zero** (`def:extensor`): if `v a = v b` for `a ≠ b`,
+then `extensor v = 0`, as `ιMulti` is alternating (`AlternatingMap.map_eq_zero_of_eq`). -/
 theorem extensor_eq_zero_of_eq {d j : ℕ} (v : Fin j → Fin (d + 1) → K)
     {a b : Fin j} (hab : v a = v b) (hne : a ≠ b) : extensor v = 0 :=
   (ExteriorAlgebra.ιMulti K j).map_eq_zero_of_eq v hab hne
 
-/-- A `j`-extensor vanishes when its family of vectors is not injective — the
-contrapositive packaging of `extensor_eq_zero_of_eq` (`def:extensor`). -/
+/-- **The extensor of a family that is not injective is zero** (`def:extensor`;
+`ExteriorAlgebra.ιMulti_eq_zero_of_not_inj`). The proof of `lem:extensor-independence` kills the
+terms of the other pairs by it. -/
 theorem extensor_eq_zero_of_not_injective {d j : ℕ} {v : Fin j → Fin (d + 1) → K}
     (hv : ¬Function.Injective v) : extensor v = 0 :=
   ExteriorAlgebra.ιMulti_eq_zero_of_not_inj hv
 
-/-- **Scaling a single slot of an extensor scales the whole extensor**
-(`def:extensor`, the multilinearity of the join in one factor): for any slot `i`,
-`extensor (Function.update v i (c • v i)) = c • extensor v`. The extensor is the
-alternating multilinear `ExteriorAlgebra.ιMulti`, homogeneous in each factor
-(`MultilinearMap.map_update_smul`). The producer-side rescaling brick: a
-proportionality `c • C = extensor v` is absorbed into the family by rescaling one
-slot, giving an extensor *equal* (not merely proportional) to `C`. -/
+/-- **Scaling one vector scales the extensor** (`def:extensor`):
+`extensor (update v i (c • v i)) = c • extensor v`, as `ιMulti` is linear in each vector
+(`MultilinearMap.map_update_smul`). So a nonzero scalar factor of an extensor can be moved into one
+of its vectors, as in the proofs of `lem:extensor-affine-representation`,
+`lem:panel-support-extensor-join` and `lem:pencil-generic-steer`. -/
 theorem extensor_update_smul {d j : ℕ} (v : Fin j → Fin (d + 1) → K) (i : Fin j)
     (c : K) : extensor (Function.update v i (c • v i)) = c • extensor v := by
   have h := (ExteriorAlgebra.ιMulti K j (M := Fin (d + 1) → K)).map_update_smul v i c (v i)
   rw [Function.update_eq_self] at h
   rw [extensor_apply, extensor_apply]; exact h
 
-/-- **Adding a multiple of one slot to a distinct slot leaves the extensor unchanged**
-(`def:extensor`, internal plumbing for `lem:extensor-affine-representation`): for distinct slots
-`a ≠ b`, `extensor (Function.update v a (v a + c • v b)) = extensor v`. Expanding the updated slot's
-sum by additivity, the `v a` term restores the original family (`Function.update_eq_self`) and the
-`c • v b` term's extensor vanishes: `Function.update v a (v b)` repeats `v b` in the distinct slots
-`a` and `b`, so it is zero by the alternating property (`AlternatingMap.map_update_self`). This is
-the "add a multiple of one column to another" elementary column operation, which changes a
-determinant/join by nothing (as opposed to `extensor_update_smul`'s scaling operation). -/
+/-- **Adding a multiple of one vector to another does not change the extensor** (a step of
+`lem:extensor-affine-representation`): for `a ≠ b`,
+`extensor (update v a (v a + c • v b)) = extensor v`. By linearity in the vector at `a`, the left
+side is `extensor v + c • extensor (update v a (v b))`, and the second family has the vector `v b`
+at `a` and at `b`, so its extensor is zero (`AlternatingMap.map_update_self`). -/
 theorem extensor_update_add_smul {d j : ℕ} (v : Fin j → Fin (d + 1) → K) {a b : Fin j}
     (hab : a ≠ b) (c : K) :
     extensor (Function.update v a (v a + c • v b)) = extensor v := by
@@ -254,13 +179,10 @@ theorem extensor_update_add_smul {d j : ℕ} (v : Fin j → Fin (d + 1) → K) {
   rw [Function.update_eq_self, h2, h3, smul_zero, add_zero] at h1
   rw [extensor_apply, extensor_apply]; exact h1
 
-/-- **Shearing every other slot by a multiple of a fixed slot leaves the extensor unchanged**
-(`def:extensor`, internal plumbing for `lem:extensor-affine-representation`): for a fixed slot `i₀`
-and coefficients `c` with `c i₀ = 0`, `extensor (fun a => v a + c a • v i₀) = extensor v`. Iterates
-`extensor_update_add_smul` over the finitely many slots `a ≠ i₀` (`Finset.induction`); the slot `i₀`
-itself is untouched since `c i₀ = 0` makes its own "shear" a no-op. This is the bulk elementary
-column operation `lem:extensor-affine-representation`'s column reduction performs in one step
-rather than as separate scale-then-shear stages. -/
+/-- **Adding multiples of one vector to the others does not change the extensor** (a step of
+`lem:extensor-affine-representation`): for `c` with `c i₀ = 0`,
+`extensor (fun a => v a + c a • v i₀) = extensor v`, by `extensor_update_add_smul` one vector at a
+time (`Finset.induction`); the vector at `i₀` does not change, as `c i₀ = 0`. -/
 theorem extensor_shear {d j : ℕ} (v : Fin j → Fin (d + 1) → K) (i₀ : Fin j) (c : Fin j → K)
     (hc : c i₀ = 0) :
     extensor (fun a => v a + c a • v i₀) = extensor v := by
@@ -291,11 +213,10 @@ theorem extensor_shear {d j : ℕ} (v : Fin j → Fin (d + 1) → K) (i₀ : Fin
       rw [extensor_update_add_smul t hai]
       exact ih
 
-/-- **Join** (`def:join`). The join `A ∨ B` of two extensors is their exterior
-product `A * B` in `ExteriorAlgebra K (Fin (d+1) → K)`. Geometrically it
-represents the span of the two corresponding subspaces (when they meet only at
-the origin). The join inherits associativity and graded-commutativity from the
-ring product. -/
+/-- **Join** (`def:join`): the join `A ∨ B` of two elements of the exterior algebra of `K^(d+1)` is
+their product `A * B`. It is associative (`join_assoc`), and on extensors it concatenates the
+families (`join_extensor`). For nonzero extensors of subspaces `X` and `Y` with `X ∩ Y = 0`, it is
+an extensor of `X + Y` (Barnabei, Brini and Rota 1985, Proposition 3.5). -/
 def join {d : ℕ} (A B : ExteriorAlgebra K (Fin (d + 1) → K)) :
     ExteriorAlgebra K (Fin (d + 1) → K) :=
   A * B
@@ -305,41 +226,39 @@ def join {d : ℕ} (A B : ExteriorAlgebra K (Fin (d + 1) → K)) :
 theorem join_def {d : ℕ} (A B : ExteriorAlgebra K (Fin (d + 1) → K)) :
     A ∨ₑ B = A * B := rfl
 
-/-- The defining identity of the join on extensors (`def:join`): joining the
-`m`-extensor of `a` with the `n`-extensor of `b` is the `(m+n)`-extensor of the
-concatenated family `Fin.append a b`. Immediate from mathlib's
+/-- **The join of two extensors is the extensor of the concatenated family** (`def:join`):
+`extensor a ∨ₑ extensor b = extensor (Fin.append a b)`, mathlib's
 `ExteriorAlgebra.ιMulti_mul_ιMulti`. -/
 theorem join_extensor {d m n : ℕ} (a : Fin m → Fin (d + 1) → K)
     (b : Fin n → Fin (d + 1) → K) :
     extensor a ∨ₑ extensor b = extensor (Fin.append a b) :=
   ExteriorAlgebra.ιMulti_mul_ιMulti a b
 
-/-- The join is associative (inherited from the ring product; `def:join`). -/
+/-- **The join is associative** (`def:join`), as the product of the exterior algebra is. -/
 theorem join_assoc {d : ℕ} (A B C : ExteriorAlgebra K (Fin (d + 1) → K)) :
     (A ∨ₑ B) ∨ₑ C = A ∨ₑ (B ∨ₑ C) :=
   mul_assoc A B C
 
-/-! ## The extensor of an affine subspace
+/-! ## Extensors of independent families, and of points (`def:affine-subspace-extensor`)
 
-The map `C(·)` sending affinely independent points `p₁, …, p_k ∈ K^d` to the join
-`p̄₁ ∨ ⋯ ∨ p̄_k` of their homogenizations, with the nonvanishing characterization
-`C(p) ≠ 0 ⇔ p` affinely independent. -/
+An extensor is nonzero iff its vectors are linearly independent. The extensor of points
+`p₁, …, pₖ ∈ K^d` is `C(p) = p̄₁ ∨ ⋯ ∨ p̄ₖ`, which is nonzero iff the points are affinely
+independent; and an extensor with a vector off the hyperplane at infinity is a multiple of the
+extensor of some points. -/
 
-/-- A `k`-extensor `extensor v` vanishes when `v` is linearly dependent; over a
-field, the converse also holds (see `extensor_ne_zero_iff_linearIndependent`).
-The forward direction is `AlternatingMap.map_linearDependent` applied to mathlib's
-`ExteriorAlgebra.ιMulti`. -/
+/-- **The extensor of a linearly dependent family is zero** (`def:extensor`), as `ιMulti` is
+alternating (`AlternatingMap.map_linearDependent`). Over a field the converse holds too
+(`extensor_ne_zero_iff_linearIndependent`). -/
 theorem extensor_eq_zero_of_not_linearIndependent {d k : ℕ}
     {v : Fin k → Fin (d + 1) → K} (hv : ¬LinearIndependent K v) :
     extensor v = 0 :=
   (ExteriorAlgebra.ιMulti K k).map_linearDependent v hv
 
-/-- **Extensor nonvanishing characterizes linear independence** (over `K`). The
-`k`-extensor `extensor v` is nonzero if and only if the family `v` is linearly
-independent. The forward direction is the contrapositive of
-`extensor_eq_zero_of_not_linearIndependent`; the converse extends `v` to a basis of
-its span and reads off a nonzero exterior-power basis coordinate
-(mathlib's `exteriorPower.ιMulti_family_linearIndependent_field`). -/
+/-- **An extensor is nonzero iff its vectors are linearly independent** (`def:extensor`; Katoh and
+Tanigawa recall it, p. 651): one direction is `extensor_eq_zero_of_not_linearIndependent`. For the
+other, the products of the vectors of `v` along the `k`-subsets of `Fin k` are linearly independent
+(mathlib's `exteriorPower.ιMulti_family_linearIndependent_field`), and the one along `univ` is
+`extensor v`, so it is nonzero. -/
 theorem extensor_ne_zero_iff_linearIndependent {d k : ℕ}
     (v : Fin k → Fin (d + 1) → K) :
     extensor v ≠ 0 ↔ LinearIndependent K v := by
@@ -365,21 +284,14 @@ theorem extensor_ne_zero_iff_linearIndependent {d k : ℕ}
     rw [hid, Function.comp_id]
     exact hzero
 
-/-- **A linearly independent triple gives a linearly independent pair of `2`-extensors
-sharing a vector** (`def:genuine-hinge-realization`, the wedge-LI brick; Phase 22i L3a).
-For three linearly independent vectors `a, b, c : K^(d+1)`, the two `2`-extensors
-`a ∨ b` and `a ∨ c` (the wedges sharing `a`) are linearly independent in `⋀^2 K^(d+1)`.
+/-- **Three independent vectors give two independent `2`-extensors with a common vector** (a step of
+`lem:extensor-pair-through-point` and `lem:extensor-pair-through-given-point`): if `a, b, c` are
+linearly independent, then `a ∨ b` and `a ∨ c` are linearly independent in `⋀² K^(d+1)`.
 
-This is the wedge analogue of "distinct `2`-subsets of an independent family give
-independent exterior-power elements", restricted to the two subsets `{a,b}` and `{a,c}`
-of `{a,b,c}`. It is the base case of the two-LI-extensors-in-a-common-panel construction
-(`exists_linearIndependent_extensor_pair_perp`) the genuine-hinge base producer rests on.
-
-Proof: by `LinearIndependent.pair_iff`, suppose `s • (a ∨ b) + t • (a ∨ c) = 0`.
-Left-joining with `c` kills the `a ∨ c` term (it repeats `c`) and turns the `a ∨ b`
-term into `s • (c ∨ a ∨ b) = s • extensor ![c, a, b]`, whose extensor is nonzero
-(`![c, a, b]` is independent, a reindexing of `![a, b, c]`), forcing `s = 0`. Symmetrically
-left-joining with `b` forces `t = 0`. -/
+Let `s • (a ∨ b) + t • (a ∨ c) = 0`. The join with `c` on the left kills the second term, which
+repeats `c`, and turns the first into `s • (c ∨ a ∨ b)`, which is nonzero as `c, a, b` are linearly
+independent; so `s = 0`. The join with `b` on the left gives `t = 0` (`LinearIndependent.pair_iff`).
+-/
 theorem linearIndependent_pair_extensor_of_li3 {d : ℕ}
     {a b c : Fin (d + 1) → K} (hv : LinearIndependent K ![a, b, c]) :
     LinearIndependent K ![extensor ![a, b], extensor ![a, c]] := by
@@ -430,13 +342,11 @@ theorem linearIndependent_pair_extensor_of_li3 {d : ℕ}
     -- `key : t • extensor ![b, a, c] = 0`, with `extensor ![b, a, c] ≠ 0`.
     exact (smul_eq_zero.mp key).resolve_right hbac_ne
 
-/-- **Extensor of an affine subspace** (`def:affine-subspace-extensor`). The
-extensor `C(p)` of the affine subspace spanned by points `p₁, …, p_k ∈ K^d` is the
-join `p̄₁ ∨ ⋯ ∨ p̄_k ∈ ⋀^k K^(d+1)` of their homogenizations — equivalently
-(`join_extensor`) the `k`-extensor of the homogenized family. It is well-defined up
-to a nonzero scalar and, by `affineSubspaceExtensor_ne_zero_iff`, nonzero exactly
-when the points are affinely independent, so `C` faithfully encodes the affine
-subspace. -/
+/-- **Extensor of an affine subspace** (`def:affine-subspace-extensor`): for points
+`p₁, …, pₖ ∈ K^d`, `C(p) = p̄₁ ∨ ⋯ ∨ p̄ₖ ∈ ⋀^k K^(d+1)`, the extensor of their homogeneous
+coordinate vectors. It is nonzero iff the points are affinely independent
+(`affineSubspaceExtensor_ne_zero_iff`). Then it determines their affine span, which determines it up
+to a nonzero scalar (Barnabei, Brini and Rota 1985, Proposition 3.4). -/
 def affineSubspaceExtensor {d k : ℕ} (p : Fin k → Fin d → K) :
     ExteriorAlgebra K (Fin (d + 1) → K) :=
   extensor (fun i => homogenize (p i))
@@ -444,33 +354,29 @@ def affineSubspaceExtensor {d k : ℕ} (p : Fin k → Fin d → K) :
 theorem affineSubspaceExtensor_apply {d k : ℕ} (p : Fin k → Fin d → K) :
     affineSubspaceExtensor p = extensor (fun i => homogenize (p i)) := rfl
 
-/-- The extensor of an affine subspace lies in the `k`-th exterior power (graded piece)
-`⋀[K]^k (Fin (d+1) → K)`, being the `k`-extensor of the homogenized family
-(`extensor_mem_exteriorPower`). This is what lets a screw center carry the
-supporting extensor inside the degree-`k` graded piece `⋀^k K^(k+2)` of dimension
-`D = (k+2 choose 2)`, rather than the full exterior algebra. -/
+/-- **The extensor of `k` points lies in `⋀[K]^k (Fin (d+1) → K)`** (`def:affine-subspace-extensor`;
+`extensor_mem_exteriorPower`). So for `k` points of `K^(k+1)` it is an element of the screw space
+`⋀^k K^(k+2)`, as the hinges of `BodyHingeFramework.ofHinge` (`RigidityMatrix/Basic.lean`) need. -/
 theorem affineSubspaceExtensor_mem_exteriorPower {d k : ℕ} (p : Fin k → Fin d → K) :
     affineSubspaceExtensor p ∈ ⋀[K]^k (Fin (d + 1) → K) :=
   extensor_mem_exteriorPower _
 
-/-- **The extensor of an affine subspace is nonzero iff the points are affinely
-independent** (`def:affine-subspace-extensor`). Combines the homogenization bridge
-`affineIndependent_iff_linearIndependent_homogenize` with the extensor nonvanishing
-characterization `extensor_ne_zero_iff_linearIndependent`. -/
+/-- **The extensor of points is nonzero iff they are affinely independent**
+(`def:affine-subspace-extensor`): by `extensor_ne_zero_iff_linearIndependent` and
+`affineIndependent_iff_linearIndependent_homogenize`. -/
 theorem affineSubspaceExtensor_ne_zero_iff {d k : ℕ} (p : Fin k → Fin d → K) :
     affineSubspaceExtensor p ≠ 0 ↔ AffineIndependent K p := by
   rw [affineSubspaceExtensor, extensor_ne_zero_iff_linearIndependent,
     ← affineIndependent_iff_linearIndependent_homogenize]
 
-/-- **An affine hinge spans every extensor off infinity** (`lem:extensor-affine-representation`;
-Jackson–Jordán 2010 §6, Phase 34). If some vector of the family `u` has nonzero last coordinate,
-there are points `p` of `K^(k+1)` and a nonzero scalar `c` with `C(p) = c • (u₁ ∨ ⋯ ∨ u_k)`.
-
-Column reduction on the last coordinate: scale the witnessing vector `u i₀` to last-coordinate `1`
-(`extensor_update_smul`), then shear every other vector by the multiple of the scaled `u i₀` that
-zeroes its own last coordinate then adds it back — a single shear by `1 - (last coordinate)`
-(`extensor_shear`) — landing every vector at last-coordinate `1`, i.e. the homogenization of a point
-of `K^(k+1)` (`homogenize_last`/`homogenize_castSucc`). -/
+/-- **Points that span an extensor off the hyperplane at infinity**
+(`lem:extensor-affine-representation`): for `u : Fin k → K^(k+2)` with some `u i` of nonzero last
+coordinate, there are points `p` of `K^(k+1)` and a unit `c` with `C(p) = c • (u₁ ∨ ⋯ ∨ u_k)`.
+Divide `u i₀` by its last coordinate `λ`, which divides the extensor by `λ`
+(`extensor_update_smul`), so `c = λ⁻¹`. Then add to each `u j` the multiple `1 − μⱼ` of the new
+`u i₀`, where `μⱼ` is the last coordinate of `u j`, which does not change the extensor
+(`extensor_shear`). Every vector then has last coordinate `1`, and is the homogeneous coordinate
+vector of a point. -/
 theorem exists_affineSubspaceExtensor_eq_smul_extensor {k : ℕ}
     {u : Fin k → Fin (k + 2) → K} (h0 : ∃ i, u i (Fin.last (k + 1)) ≠ 0) :
     ∃ (p : Fin k → Fin (k + 1) → K) (c : Kˣ),
@@ -508,48 +414,39 @@ theorem exists_affineSubspaceExtensor_eq_smul_extensor {k : ℕ}
   rw [show (fun j => homogenize (p j)) = p' from funext fun j => (hp'_eq_homogenize j).symm,
     hp'_extensor, hw_extensor, Units.val_mk0]
 
-/-! ## Plücker coordinates
+/-! ## Plücker coordinates (`def:plucker-coords`)
 
-The coordinatized bridge from the symbolic exterior-algebra layer to the concrete
-minor vectors. Following Katoh–Tanigawa §2.1, a family `v : Fin j → K^(d+1)`
-assembles into the `j × (d+1)` matrix `A(v)` whose `i`-th row is `v i`; the
-Plücker coordinate at an increasing column index set is a signed `j × j` minor of
-`A(v)`. -/
+Katoh and Tanigawa define extensors through Plücker coordinates (p. 651). For `v : Fin j → K^(d+1)`,
+let `A(v)` be the `j × (d+1)` matrix with rows `v i`; the Plücker coordinate at columns
+`i₁ < ⋯ < iⱼ` is a signed `j × j` minor of `A(v)`. The formalization does not prove that these are,
+up to sign, the coordinates of the extensor; the later files use the extensor itself. -/
 
-/-- The `j × (d+1)` coordinate matrix of a family `v : Fin j → K^(d+1)`, whose
-`i`-th row is the vector `v i` (Katoh–Tanigawa's `A(p₁, …, pⱼ)`). -/
+/-- **The matrix of a family**: the `j × (d+1)` matrix with rows `v i`, Katoh and Tanigawa's
+`A(p₁, …, pⱼ)` (p. 651). -/
 def coordMatrix {d j : ℕ} (v : Fin j → Fin (d + 1) → K) :
     Matrix (Fin j) (Fin (d + 1)) K :=
   Matrix.of v
 
-/-- **Plücker coordinate** (`def:plucker-coords`). The Plücker coordinate
-`P_{i₁,…,iⱼ}` of the `j`-extensor of `v : Fin j → K^(d+1)`, indexed by a
-`j`-element column set `s : Finset (Fin (d+1))`. Following
-Katoh–Tanigawa~`\cite{katohTanigawa2011}` §2.1 it is the Katoh–Tanigawa sign
-`(-1)^{1 + i₁ + ⋯ + iⱼ}` times the determinant of the `j × j` submatrix of
-`coordMatrix v` whose columns are `s`, taken in increasing order. The sign uses
-the **1-based** column indices `iₗ = (orderEmbOfFin) + 1` of KT's convention
-(mathlib's `Fin (d+1)` is `0`-based, so `iₗ = sᵢ.val + 1`); concretely the
-exponent is `1 + ∑_{i ∈ s} (i.val + 1)`. -/
+/-- **Plücker coordinate** (`def:plucker-coords`): for `v : Fin j → K^(d+1)` and a `j`-element set
+`s` of columns, `(−1)^(1 + i₁ + ⋯ + iⱼ)` times the determinant of the submatrix of `coordMatrix v`
+on the columns of `s` in increasing order, with Katoh and Tanigawa's sign (p. 651). They number the
+columns from `1`, so `iₗ` is one more than the index in `Fin (d+1)`, and the exponent is
+`1 + ∑_{i ∈ s} (i.val + 1)`. -/
 noncomputable def pluckerCoord {d j : ℕ} (v : Fin j → Fin (d + 1) → K)
     (s : Finset (Fin (d + 1))) (h : s.card = j) : K :=
   (-1) ^ (1 + ∑ i ∈ s, (i.val + 1)) *
     ((coordMatrix v).submatrix id (s.orderEmbOfFin h)).det
 
-/-- **Plücker coordinate vector** (`def:plucker-coords`). The full vector of
-Plücker coordinates of the `j`-extensor of `v`, indexed by the `j`-element
-column subsets `s : {s : Finset (Fin (d+1)) // s.card = j}`. This is the
-coordinatized realization of the symbolic extensor `extensor v`; KT's
-`(d+1 choose j)`-dimensional Plücker coordinate vector. -/
+/-- **Plücker coordinate vector** (`def:plucker-coords`): the vector of the `(d+1 choose j)` Plücker
+coordinates of `v`, indexed by the `j`-element sets of columns. Katoh and Tanigawa call the extensor
+its symbolic version (p. 651). -/
 noncomputable def pluckerVector {d j : ℕ} (v : Fin j → Fin (d + 1) → K) :
     {s : Finset (Fin (d + 1)) // s.card = j} → K :=
   fun s => pluckerCoord v s.1 s.2
 
-/-- The top Plücker coordinate of `d+1` points (the unique column subset is all
-of `Fin (d+1)`) is, up to the KT sign, the full homogeneous-coordinate
-determinant of `affineIndependent_fin_iff_det_homogenize`. Concretely, taking the
-top column set `s = Finset.univ`, the submatrix is the matrix itself, so the
-Plücker coordinate is `±det (coordMatrix v)`. -/
+/-- **The Plücker coordinate of `d + 1` vectors** (`def:plucker-coords`): for `j = d + 1` the only
+set of columns is `univ`, and the coordinate is `±det (coordMatrix v)`. For homogenized points this
+is the determinant of `affineIndependent_fin_iff_det_homogenize`. -/
 theorem pluckerCoord_univ {d : ℕ} (v : Fin (d + 1) → Fin (d + 1) → K)
     (h : (Finset.univ : Finset (Fin (d + 1))).card = d + 1) :
     pluckerCoord v Finset.univ h =
@@ -558,41 +455,41 @@ theorem pluckerCoord_univ {d : ℕ} (v : Fin (d + 1) → Fin (d + 1) → K)
   congr 1
   rw [Finset.univ_orderEmbOfFin, Matrix.submatrix_id_id]
 
-/-! ## Independence of the `(d-1)`-extensors (Lemma 2.1)
+/-! ## Independence of the `(d − 1)`-extensors, KT Lemma 2.1 (`sec:molecular-lemma21`)
 
-Katoh–Tanigawa Lemma 2.1: for `d+1` affinely independent points the
-`D = (d+1 choose 2)` many `(d-1)`-extensors obtained by omitting two of the
-points are linearly independent. We parametrize the dimension as `d = e + 1`,
-so there are `e + 2` points in `K^(e+1)` (homogenized to `K^(e+2)`) and each
-omit-two extensor is an `e`-extensor — this clears the `ℕ`-subtraction `d - 1`.
-The `D` extensors are indexed by ordered pairs `a < b` of point indices. -/
+For `d + 1` affinely independent points of `K^d`, the `D = (d+1 choose 2)` extensors of the sets of
+`d − 1` of them are linearly independent (Katoh and Tanigawa 2011, Lemma 2.1, p. 651, and its proof,
+pp. 651–652). The dimension is `d = e + 1`, so that there are `e + 2` points of `K^(e+1)` and each
+extensor is an `e`-extensor, and the extensors are indexed by the pairs `a < b` of omitted points.
+As in Katoh and Tanigawa's proof, a vanishing combination is joined with `p̄_a ∨ p̄_b`: every other
+term repeats a vector, and the remaining one is a multiple of the join of all `d + 1` vectors, which
+is nonzero. -/
 
-/-- The complement of a two-element pair `{a, b} ⊆ Fin (e+2)` with `a ≠ b` has
-exactly `e` elements. -/
+/-- **The complement of a pair has `e` elements** (a step of `lem:extensor-independence`): for
+`a ≠ b` in `Fin (e+2)`, `{a, b}ᶜ` has `e` elements. -/
 theorem card_compl_pair {e : ℕ} {a b : Fin (e + 2)} (hab : a ≠ b) :
     (({a, b} : Finset (Fin (e + 2)))ᶜ).card = e := by
   rw [Finset.card_compl, Fintype.card_fin, Finset.card_pair hab]
   omega
 
-/-- **Omit-two extensor.** For a family `v : Fin (e+2) → K^(e+2)` and a pair
-`a ≠ b`, the `e`-extensor obtained by dropping the two vectors `v a`, `v b`,
-i.e. the extensor of `v` along the increasing enumeration of `{a, b}ᶜ`. -/
+/-- **The extensor omitting two vectors** (`lem:extensor-independence`): for
+`v : Fin (e+2) → K^(e+2)` and `a ≠ b`, the `e`-extensor of the vectors `v i`, `i ∉ {a, b}`, in
+increasing order of `i` (`Finset.orderEmbOfFin`). -/
 noncomputable def omitTwoExtensor {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) → K)
     {a b : Fin (e + 2)} (hab : a ≠ b) :
     ExteriorAlgebra K (Fin (e + 2) → K) :=
   extensor (v ∘ (({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab))
 
-/-- The combined index map `Fin (2 + e) → Fin (e + 2)` sending the first two
-slots to `a`, `b` and the rest to the increasing enumeration of `{a, b}ᶜ`.
-Used to reindex the join of the `2`-extensor `p̄_a ∨ₑ p̄_b` with an omit-two
-extensor. -/
+/-- **The reordering of the proof of KT Lemma 2.1** (a step of `lem:extensor-independence`): the map
+`Fin (2 + e) → Fin (e + 2)` that sends the first two places to `a` and `b` and the others, in order,
+to the elements of `{a, b}ᶜ` in increasing order. -/
 private def pairAppend {e : ℕ} (a b : Fin (e + 2)) (hab : a ≠ b) :
     Fin (2 + e) → Fin (e + 2) :=
   Fin.append (![a, b] : Fin 2 → Fin (e + 2))
     (⇑((({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab)))
 
-/-- The combined index map is injective (its range is `{a} ∪ {b} ∪ {a,b}ᶜ`,
-all of `Fin (e+2)`). -/
+/-- **The reordering is injective** (a step of `lem:extensor-independence`): its range is `{a, b}`
+and `{a, b}ᶜ`, all of `Fin (e+2)`. -/
 private theorem pairAppend_injective {e : ℕ} (a b : Fin (e + 2)) (hab : a ≠ b) :
     Function.Injective (pairAppend a b hab) := by
   set emb := (({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab) with hemb
@@ -607,9 +504,9 @@ private theorem pairAppend_injective {e : ℕ} (a b : Fin (e + 2)) (hab : a ≠ 
   · exact fun h => hmem.1 h.symm
   · exact fun h => hmem.2 h.symm
 
-/-- Joining the `2`-extensor `![v a, v b]` with the omit-two extensor of a pair
-`{c, d}` is the extensor of the concatenated family
-`Fin.append ![v a, v b] (v ∘ {c,d}ᶜ.orderEmbOfFin)`. -/
+/-- **The join of `v a ∨ v b` with an extensor omitting two vectors** (a step of
+`lem:extensor-independence`): the join of `extensor ![v a, v b]` with the extensor omitting `c` and
+`d` is the extensor of the concatenated family (`join_extensor`). -/
 private theorem join_pair_omitTwo {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) → K)
     {a b c d : Fin (e + 2)} (hcd : c ≠ d) :
     extensor ![v a, v b] ∨ₑ omitTwoExtensor v hcd
@@ -617,9 +514,9 @@ private theorem join_pair_omitTwo {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) →
           (v ∘ (({c, d} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hcd))) :=
   by rw [omitTwoExtensor, join_extensor]
 
-/-- **Diagonal term is nonzero.** When `v` is linearly independent (the
-homogenized affinely-independent family), joining the pair `{a, b}` with its own
-omit-two extensor reindexes all `e + 2` vectors and so is nonzero. -/
+/-- **The term of the pair itself is nonzero** (a step of `lem:extensor-independence`): for linearly
+independent `v`, the join of `v a ∨ v b` with the extensor omitting `a` and `b` is the extensor of
+`v` reordered by `pairAppend`, which is nonzero (`extensor_ne_zero_iff_linearIndependent`). -/
 private theorem join_pair_omitTwo_self_ne_zero {e : ℕ} {v : Fin (e + 2) → Fin (e + 2) → K}
     (hv : LinearIndependent K v) {a b : Fin (e + 2)} (hab : a ≠ b) :
     extensor ![v a, v b] ∨ₑ omitTwoExtensor v hab ≠ 0 := by
@@ -635,9 +532,10 @@ private theorem join_pair_omitTwo_self_ne_zero {e : ℕ} {v : Fin (e + 2) → Fi
   rw [happ, extensor_ne_zero_iff_linearIndependent]
   exact hv.comp _ (pairAppend_injective a b hab)
 
-/-- **Off-diagonal term vanishes.** Joining the pair `{a, b}` with the omit-two
-extensor of a *different* pair `{c, d}` repeats a vector (`a` or `b` survives the
-omission of `{c, d}`), so the join vanishes. -/
+/-- **The terms of the other pairs vanish** (a step of `lem:extensor-independence`): for
+`{a, b} ≠ {c, d}`, one of `a` and `b` is not omitted from the extensor omitting `c` and `d`, so the
+join of `v a ∨ v b` with that extensor repeats a vector and is zero
+(`extensor_eq_zero_of_not_injective`). -/
 private theorem join_pair_omitTwo_other_eq_zero {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) → K)
     {a b c d : Fin (e + 2)} (hab : a ≠ b) (hcd : c ≠ d)
     (hne : ({a, b} : Finset (Fin (e + 2))) ≠ {c, d}) :
@@ -670,15 +568,13 @@ private theorem join_pair_omitTwo_other_eq_zero {e : ℕ} (v : Fin (e + 2) → F
     · simp [hk]
     · intro h; simp only [Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd] at h; omega
 
-/-- **Extensor independence, affine-free form; Katoh–Tanigawa Lemma 2.1**
-(`lem:extensor-independence`). For any `e + 2` *linearly* independent vectors
-`v : Fin (e+2) → K^(e+2)`, the `(e+2 choose 2)` many omit-two extensors are linearly
-independent. This is the load-bearing content of Lemma 2.1: the proof reads only
-`LinearIndependent K v`, never the affine origin of `v`. The affine statement
-(`omitTwoExtensor_linearIndependent`) is the corollary at `v = homogenize ∘ p`, but the `d = 3`
-Case-III consumers (`span_omitTwoExtensor_eq_top`, `case_III_claim612`) feed bare homogeneous
-witness vectors (`exists_homogeneousIncidence_of_normals`), so they consume this form directly —
-no de-homogenization to affine points (`notes/Phase22-realization-design.md` §1.42, R1-affine). -/
+/-- **KT Lemma 2.1 for linearly independent vectors** (`lem:extensor-independence`): for linearly
+independent `v : Fin (e+2) → K^(e+2)`, the extensors omitting two vectors, over the pairs `a < b`,
+are linearly independent. Join a vanishing combination with `v a ∨ v b` on the left: the terms of
+the other pairs vanish, and the term of `{a, b}` is its coefficient times a nonzero extensor, so the
+coefficient is zero. The proof uses only the linear independence of `v`; the span of these extensors
+(`span_omitTwoExtensor_eq_top`, `lem:case-III-claim612-extensor-span`) uses this form, for vectors
+that need not be homogenized points. -/
 theorem omitTwoExtensor_linearIndependent_of_li {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) → K)
     (hv : LinearIndependent K v) :
     LinearIndependent K
@@ -723,13 +619,11 @@ theorem omitTwoExtensor_linearIndependent_of_li {e : ℕ} (v : Fin (e + 2) → F
   -- `g q₀ • T = 0` with `T ≠ 0` forces `g q₀ = 0`.
   exact (smul_eq_zero.mp key).resolve_right (join_pair_omitTwo_self_ne_zero hv hab)
 
-/-- **Extensor independence; Katoh–Tanigawa Lemma 2.1**
-(`lem:extensor-independence`). For `e + 2` affinely independent points
-`p : Fin (e+2) → K^(e+1)`, the `(e+2 choose 2)` many omit-two extensors of the
-homogenized family `v = homogenize ∘ p` are linearly independent. The corollary of the affine-free
-core (`omitTwoExtensor_linearIndependent_of_li`) at `v = homogenize ∘ p`, where affine independence
-of `p` gives linear independence of the homogenizations
-(`affineIndependent_iff_linearIndependent_homogenize`). -/
+/-- **KT Lemma 2.1** (`lem:extensor-independence`, p. 651): for affinely independent points
+`p : Fin (e+2) → K^(e+1)`, the extensors of the family `homogenize ∘ p` omitting two vectors, over
+the pairs `a < b`, are linearly independent. By `omitTwoExtensor_linearIndependent_of_li`, as the
+homogenized vectors are linearly independent (`affineIndependent_iff_linearIndependent_homogenize`).
+-/
 theorem omitTwoExtensor_linearIndependent {e : ℕ} (p : Fin (e + 2) → Fin (e + 1) → K)
     (hp : AffineIndependent K p) :
     LinearIndependent K

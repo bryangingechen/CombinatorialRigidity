@@ -10,16 +10,16 @@ each of the 16 main results outside S1's and S2's rows, and the docstring sweep 
 L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–32.1 are done (*Current state*): the open, the docstring-label check
+wait for the phase. Tasks 1–32.2 are done (*Current state*): the open, the docstring-label check
 (gate 9: 422 at task 2, 219 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
 hypotheses and repeated derivations, the pebble game's search with one visited set and its texts
 (tasks 16–20), the sixteen non-vacuity witnesses (tasks 21–24), and the docstrings of every
 top-level file but `Nonvacuity.lean`, of `Search/`, of `Mathlib/`, of `PebbleGame/`, of `Matroid/`
 and of `BodyBar/` (tasks 25–28), of `Molecular/Deficiency.lean` (tasks 29–29.1), of
-`Molecular/Induction/` (tasks 30–31.1), of `RigidityMatrix/Basic.lean`, `Bricks.lean` and
-`Claim612.lean` and of `Meet.lean` (tasks 32–32.1).
-**Next concrete task:** task 32.2, the docstrings of `RigidityMatrix/Concrete.lean` and
-`Extensor.lean` (*Lemma checklist*).
+`Molecular/Induction/` (tasks 30–31.1), and of `RigidityMatrix/`, `Meet.lean` and `Extensor.lean`
+(tasks 32–32.2).
+**Next concrete task:** task 33, the docstrings of `AlgebraicInduction/Pinning.lean` and
+`PanelLayer.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -30,25 +30,27 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 32.1 is done** (this commit); nothing is mid-stream.
+**Task 32.2 is done** (this commit); nothing is mid-stream.
 
-**Task 32.1** (`F-114`, `F-164`, `F-263` `done`; `F-168`, `F-232`, `F-242` in part; `F-279` gains
-seven; new `F-287`, `open` for task 38): every docstring and comment of
-`RigidityMatrix/Claim612.lean` and `Meet.lean` (3 303 lines) read against its body under the sweep's
-form; credits checked in `.refs/` (KT 2011 pp. 651 and 680–698). Split from `Concrete.lean` and
-`Extensor.lean` (task 32.2) at the file boundary the hand-off named. Its message names the false
-claims (among them consumers and routes that do not exist, an unused lemma said to build the
-discriminator's normal, a lemma cited by the wrong name, and a node called red). Gate 9 260 → 219.
-The ledger: 287 entries, 192 `done`, 9 `left`, 72 `reported`, 14 `open`.
+**Task 32.2** (`F-225` in part; `F-279` gains the whole of `Concrete.lean` and two declarations; new
+`F-288`, `open` for task 38): every docstring and comment of `RigidityMatrix/Concrete.lean` and
+`Extensor.lean` (3 638 lines) read against its body under the sweep's form; credits checked in
+`.refs/` (KT 2011 pp. 651–654, 679 and 696–698; Barnabei, Brini and Rota 1985, Propositions 3.4 and
+3.5). No declaration outside `Concrete.lean` uses any of its 81, so its header says that no node
+presents it and nothing uses it (*Decisions*). Its message names the false claims (among them
+consumers that do not exist, a KT section, the columns of KT's block `Mᵢ`, and "awaits the join" for
+a criterion the file proves). Gate 9 stays 219 (the report had no line in the two files). The
+ledger: 288 entries, 192 `done`, 9 `left`, 72 `reported`, 15 `open`.
 
-**Tasks 25–32** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`,
+**Tasks 25–32.1** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`,
 `F-053`, `F-057`, `F-064`, `F-074`, `F-077`, `F-080`, `F-081`, `F-085`, `F-088`, `F-092`, `F-094`,
-`F-097`, `F-108`, `F-176`, `F-194`, `F-198`, `F-200`, `F-205`, `F-230`, `F-235`, `F-236`, `F-244`,
-`F-253` `done`; others in part; new `F-278` to `F-286`): the planar files, `Search/`, `Mathlib/`,
-`PebbleGame/`, `Matroid/Constructions/`, `BodyBar/`, the square-graph and generic-rigidity files,
-`Molecular/Deficiency.lean` (split at the tight partitions), `Molecular/Induction/` (split at
-`Operations.lean` and twice in `ForestSurgery/`) and `RigidityMatrix/Basic.lean` and `Bricks.lean`,
-under *Decisions*' sweep form; their messages name each false claim.
+`F-097`, `F-108`, `F-114`, `F-164`, `F-176`, `F-194`, `F-198`, `F-200`, `F-205`, `F-230`, `F-235`,
+`F-236`, `F-244`, `F-253`, `F-263` `done`; others in part; new `F-278` to `F-287`): the planar
+files, `Search/`, `Mathlib/`, `PebbleGame/`, `Matroid/Constructions/`, `BodyBar/`, the square-graph
+and generic-rigidity files, `Molecular/Deficiency.lean` (split at the tight partitions),
+`Molecular/Induction/` (split at `Operations.lean` and twice in `ForestSurgery/`),
+`RigidityMatrix/Basic.lean`, `Bricks.lean` and `Claim612.lean`, and `Meet.lean`, under *Decisions*'
+sweep form; their messages name each false claim.
 
 **Done before** (tasks 3–24; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -320,7 +322,9 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `F-168`, `F-232`, `F-242` in part; `F-279` gains seven; new `F-287`): `mem_hingeRowBlock_iff` and
   the file's header name `def:hinge-row-block`; credits KT 2011 pp. 651 and 680–698; the dump
   byte-identical; gate 9 260 → 219.
-- [ ] **32.2. `RigidityMatrix/Concrete.lean` and `Molecular/Extensor.lean`** (the parts there of `F-225`).
+- [x] **32.2. `RigidityMatrix/Concrete.lean` and `Molecular/Extensor.lean`** (`F-225` in part;
+  `F-279` gains `Concrete.lean`'s 81 declarations and two; new `F-288`): credits KT 2011 pp. 651–698
+  and Barnabei, Brini and Rota 1985; the dump byte-identical; gate 9 219.
 - [ ] **33. `AlgebraicInduction/` outside the footprint: `Pinning.lean`, `PanelLayer.lean`** (the
   parts there of `F-126`, `F-132`, `F-133`, `F-135`, `F-140`, `F-148`, `F-153`, `F-210` (the year),
   `F-233`, `F-237`, `F-238`, `F-254` (`isInfinitesimallyRigidOn_insert_iff`, 1611)).
@@ -400,23 +404,26 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 32.2**, at Opus: the docstrings of `RigidityMatrix/Concrete.lean` (2 897 lines) and
-`Extensor.lean` (741), with the parts there of `F-225` (its checklist line), under the sweep's rules
-and *Decisions*' sweep form. The 3 638 lines are about task 32.1's 3 303; split at the file
-boundary if needed, the checklist line split in the same commit. *Expected:* the dump byte-identical; gate 9
-stays at 219 (the report has no line in the two files), and the sweep still checks every label they
-name. Gates 1–3 (gate 3's witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t321.lean`),
-5, 6, 9 and 10 (the parent dump `scratch/reconcile-lean/dump-t321.txt`, gitignored; regenerate it
-if missing). The screens may serve (gitignored): `scratch/reconcile-lean/t30/unused_src.py` and
-`t30/binders.py` (`lake lint` missed the hypotheses of `F-282` to `F-287`), `t32/rw2.py`, which
-renders doc-comment blocks wrapped at 100 columns without breaking a backticked name, keeps an
-indented display line, and replaces line ranges (task 32.1's edit scripts `t321/edit_claim612.py`
-and `t321/edit_meet.py` use it), `t321/codecmp.py`, which checks that a file's code, comments
-stripped, is unchanged, `t32/serves.py`, which lists the nodes an unpinned declaration's callers
-serve (for a lead's `a step of`), and `Names-t321.lean`, the `#check` harness for the backticked
-names. Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`,
-`F-275`, `F-278` to `F-287` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid
-(task 21) entries for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is
+**Next: task 33**, at Opus: the docstrings of `AlgebraicInduction/Pinning.lean` (1 840 lines) and
+`PanelLayer.lean` (2 082), outside the footprint, with the parts there of the ledger IDs its
+checklist line names, under the sweep's rules and *Decisions*' sweep form. The 3 922 lines are about
+task 32.1's 3 303; split at the file boundary if needed, the checklist line split in the same
+commit. *Expected:* the dump byte-identical; gate 9 falls from 219 by what the task fixes (the
+report has 44 lines in the two files). Gates 1–3 (gate 3's witnesses: the sixteen of
+`scratch/reconcile-lean/Witnesses-t321.lean`), 5, 6, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t322.txt`, gitignored; regenerate it if missing). The screens may serve
+(gitignored): `scratch/reconcile-lean/t30/unused_src.py` and `t30/binders.py` (`lake lint` missed
+the hypotheses of `F-282` to `F-288`), `t32/rw2.py`, which renders doc-comment blocks wrapped at 100
+columns without breaking a backticked name, keeps an indented display line, and replaces line ranges
+(task 32.2's edit scripts `t322/edit_concrete.py` and `t322/edit_extensor.py` use it;
+`t322/rewrap.py` rewraps one block), `t321/codecmp.py`, which checks that a file's code, comments
+stripped, is unchanged, `t322/serves.py`, which lists the nodes an unpinned declaration's callers
+serve (for a lead's `a step of`), and `t322/names.py`, which writes the `#check` harness for the
+backticked names (`Names-t322.lean`). Task 35 also takes `CaseIII/Candidate.lean`'s comments that
+present its `hsupp` lemmas as inputs of `Concrete.lean`'s `_Gab` lemmas, which nothing uses
+(`F-279`). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`,
+`F-275`, `F-278` to `F-288` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task
+21) entries for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is
 attended.
 
 ## Decisions made during this round
@@ -478,3 +485,7 @@ attended.
   `L` entry for task 38, not a signature change in a docstring task (task 25.1, `F-278`), and so
   is a declaration nothing uses (task 25.2, `F-279`). `Mathlib/`'s mirrors keep mathlib's
   register, with a pointer to the project file that uses a mirror (task 25.2).
+- **A file nothing uses** (task 32.2): its docstrings are swept like any other, its header says that
+  no node presents it and no declaration outside it uses its declarations, and `F-279` lists the
+  file and the declarations its removal would leave without a caller, for task 38's block (b) and
+  trial deletion.

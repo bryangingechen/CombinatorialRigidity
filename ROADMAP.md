@@ -1331,12 +1331,12 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   rewrote the texts on the search's cost (measured, no bound claimed), `decide` and the input,
   and tasks 21–24 gave each of the sixteen main results outside S1's and S2's rows its
   non-vacuity witness, a closed theorem applying it at a small input with every hypothesis met
-  (`Nonvacuity.lean`), and tasks 25–32.1 checked the docstrings of the thirteen planar files,
+  (`Nonvacuity.lean`), and tasks 25–32.2 checked the docstrings of the thirteen planar files,
   of the search, of the project's mathlib additions, of the pebble game's files, of the matroid
   constructions, of the body-bar files, of the square-graph and generic-rigidity files, of the
-  deficiency file, of the induction's files, of the rigidity matrix's first three files and of
-  the meet's file against their proofs and credits.
-  **Next:** task 32.2, the docstrings of the last rigidity-matrix file and of `Extensor.lean`.
+  deficiency file, of the induction's files, of the rigidity matrix's files and of the meet's and
+  the extensors' files against their proofs and credits.
+  **Next:** task 33, the docstrings of the algebraic induction's pinning and panel-layer files.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

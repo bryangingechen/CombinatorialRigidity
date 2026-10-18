@@ -40,13 +40,13 @@ task 19 had `parsePair` split on any whitespace, so a tab-separated input reads,
 rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
 input, and tasks 21–24 landed the non-vacuity witnesses of the sixteen main results outside S1's
 and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last,
-and tasks 25–32.1 swept the docstrings of the thirteen planar files, of `Search/`, of
+and tasks 25–32.2 swept the docstrings of the thirteen planar files, of `Search/`, of
 `Mathlib/`, of `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and
 generic-rigidity files (every top-level file but `Nonvacuity.lean`), of
-`Molecular/Deficiency.lean`, of `Molecular/Induction/`, of `RigidityMatrix/Basic.lean`,
-`Bricks.lean` and `Claim612.lean` and of `Molecular/Meet.lean`.
-**Next concrete task:** round 3's task 32.2, the docstrings of `RigidityMatrix/Concrete.lean` and
-`Extensor.lean`.
+`Molecular/Deficiency.lean`, of `Molecular/Induction/`, of `RigidityMatrix/` and of
+`Molecular/Meet.lean` and `Extensor.lean`.
+**Next concrete task:** round 3's task 33, the docstrings of `AlgebraicInduction/Pinning.lean` and
+`PanelLayer.lean`.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

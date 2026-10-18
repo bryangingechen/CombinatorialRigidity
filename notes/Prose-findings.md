@@ -4256,7 +4256,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the seven pins and of `screwEquivOfLinearEquiv`;
   JJ 2010 §§6–7, pp. 582–584).
   *Found:* round 4 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L5).
+  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3: `Extensor.lean`'s part (task
+  32.2): `exists_affineSubspaceExtensor_eq_smul_extensor` credits no one, as
+  `lem:extensor-affine-representation` does not, its "Phase 34" is gone, and its lead names the
+  node; `GenericLift/HingeGeneric.lean`'s part moved to the phase.
 
 - **F-230** · L · `runPebbleGame`, `runPebbleGame.aux` (`PebbleGame/Correctness.lean`) and
   `runPebbleGameExec_isAccept_iff` (`PebbleGame/Exec.lean`): their docstrings name the nodes their
@@ -4773,6 +4776,21 @@ declaration's name as its header writes it:
   docstring named a caller `case_III_claim612` that does not exist; in `Molecular/Meet.lean`,
   `coe_gradedMul`, `wedgeProdBilin_apply`, `piBasisFun_toDual_symm`, and the `d = 3` forms
   `extensor_mem_range_map_subtype_of_mem` and `exists_smul_eq_of_mem_range_map_subtype`.
+  Task 32.2 adds the whole of `Molecular/RigidityMatrix/Concrete.lean` and two declarations of
+  `Molecular/Extensor.lean` (the same screen and the cache, at `814570e4`). No declaration outside
+  `Concrete.lean` uses any of its 81 declarations, none of them pinned: `CaseIII/Candidate.lean`
+  imports the file and uses none of them, and its docstrings named consumers that do not exist
+  (`case_III_rank_certification_matrix`, `chainData_arm_realization_zero₁₂`) or do not use it
+  (`chainData_dispatch`). Removing it would leave eleven declarations without a caller: in
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean`, `Matrix.of_eq_mul_of_row_comb`,
+  `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks`, `_submatrix_fromBlocks` and
+  `_submatrix_fromBlocks_zero₁₂` (and through them
+  `Matrix.rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows` and `_zero₂₁_`),
+  `Matrix.rank_submatrix_inr_of_zero_left_cols` and `exists_finCard_linearIndependent_selection`; in
+  `Mathlib/LinearAlgebra/Dimension/Constructions.lean`, `Module.Basis.linearIndependent_coe_subtype`
+  and `Module.Basis.span_coe_eq`; and in `RigidityMatrix/Basic.lean`,
+  `BodyHingeFramework.span_range_hingeRow_crossFramework_eq_rigidityRows`. In `Extensor.lean`,
+  `join_assoc` and `pluckerCoord_univ`.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -4915,6 +4933,21 @@ declaration's name as its header writes it:
   lemmas when the family is independent and take `c = 0` otherwise; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t321.lean`, gitignored).
   *Found:* RECONCILE round 3 task 32.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-288** · L · hypotheses of `Molecular/RigidityMatrix/Concrete.lean` that the statements need
+  not take, moot if task 38 removes the file (`F-279`). `hbot1 : ∀ i, v ≠ x ∨ x = v`, which is
+  excluded middle, is a hypothesis of seven declarations
+  (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` and `_eq_Gab`,
+  `rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` and `_Gab`,
+  `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` and `_row_Gab_of_finrank_eq`, and
+  `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂`) and a conjunct of the conclusions of
+  `bottom_selection_of_crossFramework_span` and `_Gab`. `edgeRowSplit_corner_card`'s `[Finite β]`
+  carries `@[nolint unusedArguments]` and a comment that the proof needs it to elaborate; it does
+  not.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: `edgeRowSplit_corner_card`
+  without `[Finite β]` and without the proof's two `have`s, by `simp` alone, and `hbot1`'s statement
+  by `eq_or_ne`, on the three standard axioms (`scratch/reconcile-lean/Hyps-t322.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 32.2.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
