@@ -3656,7 +3656,11 @@ declaration's name as its header writes it:
   *Found:* round 2 task 2.13.
   *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hdeg2` dropped from both, the
   callers following, and with it `hdeg2` of `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`,
-  which only passed it on (task 10).
+  which only passed it on (task 10); in `ForestSurgery/EdgeSplitting.lean`, the leads of the two
+  forward reroute lemmas name `lem:reroute-vfree-transport` and `lem:reroute-cycle-lift`, and of the
+  two reverse ones `lem:reverse-reroute-cycle-lift` and `lem:reverse-pendant-insert`, and no
+  docstring or section calls a reroute step open or `lem:forest-surgery-split` red (task 31);
+  `forest_surgery_count`'s (`ForestSurgery/Reduction.lean`) is task 31.1's.
 - **F-094** · L · the deficiency bounds' pins (`Induction/SplitOffDeficiency.lean`): the private
   `splitOff_deficiency_le_aux` takes `heab : eₐ ≠ e_b` and does not use it, so
   `splitOff_deficiency_le` and `splitOff_deficiency_le_of_eq_left` take it only to pass it on.
@@ -3726,13 +3730,16 @@ declaration's name as its header writes it:
   `CycleData.vertexSet_ncard`'s names a use that no caller makes.
   *Evidence:* read (the bodies and docstrings; KT 2011 pp. 664 and 692).
   *Found:* round 2 task 2.17.
-  *Disposition:* reported (`notes/Prose-report.md`, L7); round 3: `chainData_extract` without
+  *Disposition:* done (task 31): `chainData_extract` without
   `hV3` and `[G.Simple]`, both derived in its body, `chainWalk_charging` without the three, and
   `isKDof_zero_of_triangle` proved as the case $m = 3$ of `isKDof_zero_of_cycle`, after it in the
   file; `lem:chain-data-extract` restated without simplicity, and `F-270` (task 11);
   `Deficiency.lean`'s cycle and triangle sections without "ENTRY leaf E2c" and "brick" (task 29);
   `ChainData`'s docstrings without KT eq. (6.46), the chain credited to KT Lemma 4.6 (p. 664)
-  (task 30); `ChainExtraction.lean`'s are task 31's.
+  (task 30); `ChainExtraction.lean`'s header names its two results and their nodes, without "This
+  commit lands **E3**", E5 "is next" and the design note's sections, and its docstrings and
+  sections without the leaf codes, the chain credited to KT Lemma 4.6 (p. 664) and the count to
+  KT eqs. (4.6)–(4.9) (pp. 664–665) (task 31); reported (`notes/Prose-report.md`, L7).
 - **F-114** · L · the pins of `meet.tex` (`Molecular/Meet.lean`): the file's header lists
   `meet_ne_zero_iff` and "the geometric reading" as deliverables, which no declaration provides, and
   narrates phases, commits and design codes ("this commit", "route (ii)", "N3b-2b-α", "CHAIN-3",
@@ -4695,6 +4702,12 @@ declaration's name as its header writes it:
   docstring said it discharged a "safe-vertex obligation" (`ReducibleVertex.lean`), and
   `Matroid.Union_pow_isBasis'_split_of_rk_saturated` (`Contraction.lean`), which two docstrings
   said took the rank equality that `Matroid.Union_pow_contract_eq_contract_of_rk_saturated` takes.
+  Task 31 adds five in `Molecular/Induction/ForestSurgery/EdgeSplitting.lean` (the same screen, at
+  `b08c948e`): `Graph.fiberAtVertex_inter_edgeSet` (used only by the next),
+  `Graph.fiberAtVertex_inter_edgeSet_ncard` (used only by `fiberDegree_le`), the definition
+  `Graph.fiberDegree` (used only by the next two), `Graph.fiberDegree_mono` and
+  `Graph.fiberDegree_le`, whose docstrings said that the surgery's count `h' ≤ D − 2` rests on them
+  and that they bound its degrees (`forest_surgery_count` uses `fiberAtVertex` alone).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -4761,6 +4774,23 @@ declaration's name as its header writes it:
   or `hH`; the fifth with `classical`; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t301.lean`, gitignored).
   *Found:* RECONCILE round 3 task 30.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-284** · L · three hypotheses of `Molecular/Induction/ForestSurgery/ChainExtraction.lean` that
+  the proofs use less of than they give, or that the others give: `Graph.chainWalk_charging`'s
+  `[G.Simple]`, used only through `G.Loopless`, with which
+  `Graph.chainWalk_terminated_contradiction` would use its `hV3 : 3 ≤ V(G).ncard` only as
+  `2 ≤ V(G).ncard` (the simplicity it derives from `hV3` is for that call);
+  `Graph.exists_cyclic_data_of_closed_path`'s `h2 : 2 ≤ P.length`, used only as `1 ≤ P.length`; and
+  `Graph.chainWalk_isPrefix_of_terminated`'s `hTlen1 : 1 ≤ T.length`, which `hfe` gives (`T` is
+  nonempty). The four declarations are unpinned steps of `lem:chain-cycle-dichotomy`, whose pin
+  needs its three vertices for `chainWalk_trichotomy`.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: copies of the first with
+  `[G.Loopless]`, of `chainWalk_terminated_contradiction` with `2 ≤ V(G).ncard` calling it, and of
+  the second with `1 ≤ P.length`, that elaborate with the same proofs (the line deriving `G.Simple`
+  removed from the copy of `chainWalk_terminated_contradiction`), and the third called with
+  `hneT.length_pos` from `hfe`; all on the three standard axioms
+  (`scratch/reconcile-lean/Hyps-t31.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 31.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

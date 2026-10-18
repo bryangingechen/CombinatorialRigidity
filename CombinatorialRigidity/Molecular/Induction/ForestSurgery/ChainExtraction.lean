@@ -7,42 +7,35 @@ import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import Mathlib.Data.List.GetD
 
 /-!
-# Chain extraction at general `n` (KT Lemma 4.6, ENTRY leaves E2 + E3)
+# The combinatorial induction: a chain or a short cycle (KT Lemma 4.6)
 
-Phase 23g (`notes/Phase23g.md`; design `notes/Phase23-design.md` §(4.107), §(4.107.D),
-§(4.107.G)). This file houses the **E2d** ladder — the maximal-chain walk-builder and the
-Katoh–Tanigawa (2011) display (4.6)–(4.9) counting contradiction that discharges
-`Graph.chainData_or_cycleData_of_noRigid` (the `E2` leaf of the ENTRY ladder, KT Lemma 4.6) —
-plus the numeric linking fact **E2e** and the general extractor **E3**. New file
-(below-contract deviation from §(4.107.D)'s `ForestSurgery/Reduction.lean` pin, settled in
-§(4.107.G.2): `Reduction.lean` is past the ~1500-LoC tripwire, and only
-`Molecular/AlgebraicInduction/PanelLayer.lean` imports it, so the seam is clean.
+Results of the combinatorial induction (`sec:molecular-induction`, its subsection on KT Lemma 4.6)
+after Katoh and Tanigawa (2011, *A proof of the molecular conjecture*, Discrete Comput. Geom.
+**45**, §4.2). For `D = bodyBarDim n ≥ 3` and a minimal `0`-dof-graph `G` with at least three
+vertices, no proper rigid subgraph and a label outside `E(G)`, it proves:
 
-Build order per §(4.107.G.5): E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 → E2d-5 → E2d-6 → E2d-7 →
-E2-assembly → E3 — all landed. E2d-1/E2d-2/E2d-3/E2e/E2d-4/E2d-5/E2d-6/E2d-7 are the
-path→`ChainData` bridge, the cycle-branch confinement, the closed-walk packaging, the numeric
-linking fact, the capped-trichotomy walk-builder, chain-walk determinism, the charging bound
-(fiber lemma + double count), and the KT (4.8)/(4.9) arithmetic close, respectively; E2-assembly
-composes the ladder into `chainData_or_cycleData_of_noRigid` (§(4.107.D)'s pinned public
-signature), closing the ENTRY leaf **E2** (KT Lemma 4.6) in full — see `notes/Phase23g.md` for
-the per-leaf detail. This commit lands **E3**, `Graph.chainData_extract`: composes E2 with the
-landed Lemma-4.8 stack (`splitOff_isMinimalKDof`/`splitOff_simple_of_noRigid_of_card`) at the
-interior chain vertex `v₁`, discharging the ENTRY interface `hextract` at general `n`. E2's other
-consumer, the Lemma-5.4 cycle brick **E5** (discharging `hcycle`), is next.
+* KT Lemma 4.6 (p. 664) at `k = 0`: `G` is a cycle on at most `n` vertices, or it has a chain of
+  length `n` (`chainData_or_cycleData_of_noRigid`, `lem:chain-cycle-dichotomy`), by the walk from an
+  edge along vertices of degree two and the count of Katoh and Tanigawa's eqs. (4.6)–(4.9)
+  (pp. 664–665);
+* when `G` has at least four vertices and a chain `v₀v₁…v_n`, that `G_{v₁}^{v₀v₂}` is a simple
+  minimal `0`-dof-graph with fewer vertices (`chainData_extract`, `lem:chain-data-extract`), by KT
+  Lemmas 4.8(i) and 6.7(ii).
+
+Chains and cycle graphs (`def:chain-data`, `def:cycle-data`) are defined in `Operations.lean`.
 -/
 
 namespace Graph
 
 variable {α β : Type*}
 
-/-! ## E2d-1 — the path → `ChainData` bridge -/
+/-! ## A path of vertices of degree two is a chain -/
 
-/-- **A degree-2 vertex's incident edges are exactly its two named ones** (Katoh–Tanigawa 2011
-Lemma 4.6, the interior degree-2 closure `deg_two` a chain vertex needs). Given `G.degree v = 2`
-and two distinct edges `e₁ ≠ e₂` each incident to `v` (via `IsLink`), every `G`-edge at `v` is one
-of them: the loopless incidence set `E(G, v)` has `ncard` exactly `G.degree v = 2`
-(`degree_eq_ncard_inc`) and contains `{e₁, e₂}`, which itself has `ncard = 2` (`e₁ ≠ e₂`), so the
-two sets coincide (`Set.eq_of_subset_of_ncard_le`). -/
+/-- **The two edges at a vertex of degree two are all of its edges** (a step of
+`lem:chain-cycle-dichotomy`): in a loopless `G`, if `G.degree v = 2` and distinct edges `e₁ ≠ e₂`
+join `v` to `x₁` and to `x₂`, then every edge at `v` is `e₁` or `e₂`. The set `E(G, v)` of the edges
+at `v` has `G.degree v = 2` elements (`degree_eq_ncard_inc`) and contains `{e₁, e₂}`, which has two,
+so the two sets are equal (`Set.eq_of_subset_of_ncard_le`). -/
 theorem isLink_eq_of_degree_eq_two [Finite β] {G : Graph α β} [G.Loopless] {v x₁ x₂ : α}
     {e₁ e₂ : β} (hdeg : G.degree v = 2) (hne : e₁ ≠ e₂)
     (h₁ : G.IsLink e₁ v x₁) (h₂ : G.IsLink e₂ v x₂) :
@@ -59,14 +52,15 @@ theorem isLink_eq_of_degree_eq_two [Finite β] {G : Graph α β} [G.Loopless] {v
   rw [← heq] at hmem
   simpa using hmem
 
-/-- **A length-`n` path whose interior vertices all have degree `2` packages into a
-`Graph.ChainData n`** (Katoh–Tanigawa 2011 Lemma 4.6, the chain disjunct; ENTRY leaf E2d-1,
-`notes/Phase23-design.md` §(4.107.G.5)). The `WList`/`IsPath` walk `P` supplies the `Fin`-indexed
-records at the boundary: `vtx i := P.get i`, `edge i := P.edge[i]`, with `vtx_inj`/`edge_inj` from
-the path's vertex/edge `Nodup` (via `WList.idxOf_get` / `List.Nodup.getElem_inj_iff`), `link` the
-per-index `DInc` fact (`WList.DInc_get_get_succ` + `IsWalk.isLink_of_dInc`), and `deg_two` at an
-interior index `0 < i < d` from `hdeg` + `isLink_eq_of_degree_eq_two` applied to the two path edges
-flanking that vertex (`P.edge[i-1]`, oriented in via `.symm`, and `P.edge[i]`, oriented out). -/
+/-- **A path whose interior vertices have degree two is a chain** (a step of
+`lem:chain-cycle-dichotomy`): in a loopless `G`, a path `P` of length `n ≥ 1` whose vertices other
+than its ends have degree two gives a chain of length `n` (`def:chain-data`), with a label
+`e₀ ∉ E(G)`. Its vertices and edges are those of `P` in order, `vtx i := P.get i` and
+`edge i := P.edge[i]`. They are distinct as `P` is a path (`WList.idxOf_get`,
+`List.Nodup.getElem_inj_iff`), and the edge `i` joins `vtx i` and `vtx (i + 1)`
+(`WList.DInc_get_get_succ`). At an interior index `0 < i < n` the vertex has degree two, so its only
+edges are the two edges of `P` at it, `P.edge[i - 1]` and `P.edge[i]`
+(`isLink_eq_of_degree_eq_two`). -/
 theorem chainData_of_isPath [Finite β] {G : Graph α β} [G.Loopless] {n : ℕ}
     {P : WList α β} (hP : G.IsPath P) (hlen : P.length = n) (hn : 1 ≤ n)
     (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
@@ -141,17 +135,16 @@ theorem chainData_of_isPath [Finite β] {G : Graph α β} [G.Loopless] {n : ℕ}
            deg_two := hdeg_two
            e₀_fresh := he₀ }⟩
 
-/-! ## E2d-2 — the cycle-branch confinement -/
+/-! ## A cycle of vertices of degree two is the whole graph -/
 
-/-- **A closed all-degree-2 path confines the whole (preconnected) graph** (Katoh–Tanigawa 2011
-Lemma 4.6, the cycle disjunct; ENTRY leaf E2d-2, `notes/Phase23-design.md` §(4.107.G.5)). If `P` is
-a path with `G.IsLink f P.last P.first` closing it into a cycle (`f` not already a path edge) and
-every vertex of `P` has degree `2`, preconnectivity forces `V(G)`/`E(G)` to be exactly the
-walk's vertices/edges: any `y ∈ V(G)` is joined to `P.first` by a `G`-walk, and induction along
-it never leaves `P` — at each step the current vertex's known two incident edges (the flanking
-path edges, or `f` at an endpoint) are *all* of its incident edges (`isLink_eq_of_degree_eq_two`),
-and both known far ends already lie on `P`. Every edge of `G` is pinned the same way, from either
-of its (now-confined) endpoints. -/
+/-- **A cycle of vertices of degree two is the whole graph** (a step of
+`lem:chain-cycle-dichotomy`): let `G` be loopless and preconnected, let `P` be a path, closed into a
+cycle by an edge `f ∉ P.edge` that joins `P.last` and `P.first`, and let every vertex of `P` have
+degree two. Then the vertices of `G` are those of `P`, and its edges are `f` and those of `P`. At a
+vertex of `P` the two edges of the cycle are all of its edges (`isLink_eq_of_degree_eq_two`), and
+their other ends lie on `P`. So a walk of `G` from `P.first` stays on `P`, and as `G` is
+preconnected every vertex of `G` is on `P`. An edge of `G` is then an edge at a vertex of `P`, so it
+is `f` or an edge of `P`. -/
 theorem closed_path_degree_two_spanning [Finite β] {G : Graph α β} [G.Loopless]
     {P : WList α β} (hP : G.IsPath P) (hconn : G.Preconnected) {f : β}
     (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge)
@@ -161,14 +154,13 @@ theorem closed_path_degree_two_spanning [Finite β] {G : Graph α β} [G.Looples
   -- `P` has at least one edge: otherwise `f` would be a loop at `P.first = P.last`.
   have hn0 : P.length ≠ 0 := fun h0 =>
     hf.ne (by rw [← WList.get_length P, h0, WList.get_zero])
-  -- the per-index outgoing `IsLink` fact (as in E2d-1).
+  -- The edge `m` of `P` joins its vertices `m` and `m + 1` (as in `chainData_of_isPath`).
   have hlinkAt : ∀ (m : ℕ) (hm : m < P.length),
       G.IsLink (P.edge[m]'(by rw [WList.length_edge]; omega))
         (P.get m) (P.get (m + 1)) :=
     fun m hm => hP.isWalk.isLink_of_dInc (WList.DInc_get_get_succ hm)
-  -- **The confinement closure**: stepping from a `P`-vertex along any `G`-edge stays on `P`
-  -- (the vertex end) / among `P`'s edges plus `f` (the edge end). The friction-avoidance idiom
-  -- (TACTICS-QUIRKS § 48) applies throughout: no `i - a + b`-shaped arithmetic in source text.
+  -- The closure: from a vertex of `P`, an edge of `G` leads to a vertex of `P`, and it is `f` or
+  -- an edge of `P`. No `i - a + b` arithmetic appears in the source (`TACTICS-QUIRKS.md` §48).
   have hclosure : ∀ x, x ∈ P → ∀ e y, G.IsLink e x y →
       y ∈ P ∧ e ∈ insert f {e | e ∈ P.edge} := by
     intro x hx e y hxy
@@ -267,16 +259,16 @@ theorem closed_path_degree_two_spanning [Finite β] {G : Graph α β} [G.Looples
     · exact hf.edge_mem
     · exact hP.isWalk.edge_mem_of_mem he'
 
-/-! ## E2d-3 — the closed-walk packaging -/
+/-! ## A closed path as a cycle -/
 
-/-- **The shared `Fin`-cyclic packaging core** (Katoh–Tanigawa 2011 Lemma 4.6, the cycle disjunct;
-ENTRY leaf E2d-3, `notes/Phase23-design.md` §(4.107.G.5)). A path `P` closed into a cycle by an
-edge `f` (not already a path edge) repackages as `Fin (P.length + 1)`-cyclic data matching `P`'s
-own vertex/edge sets on the nose: `vtx i := P.get i` (`WList.get` is already total); `edge i :=
-P.edge.getD i f`, which is `P`'s own edge at interior indices and falls back to the closing edge
-`f` exactly at the wrap-around index `P.length` (`P.edge.length = P.length` by `length_edge`, so
-that index is the first out-of-range one for `List.getD`). This core serves both the `CycleData`
-consumer below and the lollipop's E2c call (E2d-4) — the same indexing work, written once. -/
+/-- **A closed path gives the vertices and edges of a cycle** (a step of
+`lem:chain-cycle-dichotomy`): a path `P` with `2 ≤ P.length`, closed by an edge `f ∉ P.edge` that
+joins `P.last` and `P.first`, gives injective maps `vtx` and `edge` on `Fin (P.length + 1)` such
+that `edge i` joins `vtx i` and `vtx (i + 1)`, indices modulo `P.length + 1`, with `vtx 0 = P.first`
+and with the vertices of `P`, and `f` and the edges of `P`, as their ranges. Here `vtx i := P.get i`
+and `edge i := P.edge.getD i f`, the edge `i` of `P` for `i < P.length` and `f` at `i = P.length`.
+`cycleData_of_closed_path` makes a cycle graph of them, and `chainWalk_trichotomy` a proper rigid
+subgraph when `P.first` has degree at least three (`cycle_isProperRigidSubgraph`). -/
 theorem exists_cyclic_data_of_closed_path {G : Graph α β} {P : WList α β}
     (hP : G.IsPath P) (h2 : 2 ≤ P.length) {f : β}
     (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge) :
@@ -286,13 +278,13 @@ theorem exists_cyclic_data_of_closed_path {G : Graph α β} {P : WList α β}
       vtx ⟨0, by omega⟩ = P.first ∧
       Set.range vtx = {x | x ∈ P} ∧ Set.range edge = insert f {e | e ∈ P.edge} := by
   classical
-  -- the per-index outgoing `IsLink` fact (as in E2d-1/E2d-2).
+  -- The edge `k` of `P` joins its vertices `k` and `k + 1` (as in `chainData_of_isPath`).
   have hlinkAt : ∀ (k : ℕ) (hk : k < P.length),
       G.IsLink (P.edge[k]'(by rw [WList.length_edge]; omega))
         (P.get k) (P.get (k + 1)) :=
     fun k hk => hP.isWalk.isLink_of_dInc (WList.DInc_get_get_succ hk)
   refine ⟨fun i => P.get (i : ℕ), fun i => P.edge.getD (i : ℕ) f, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · -- `vtx` injective (E2d-1's `hvtx_inj`).
+  · -- `vtx` injective (as in `chainData_of_isPath`).
     intro i j hij
     have hij' : P.get (i : ℕ) = P.get (j : ℕ) := hij
     have h1 := WList.idxOf_get hP.nodup (Nat.le_of_lt_succ i.isLt)
@@ -374,11 +366,11 @@ theorem exists_cyclic_data_of_closed_path {G : Graph α β} {P : WList α β}
         have hk' : k < P.length := by rwa [WList.length_edge] at hk
         exact ⟨⟨k, by omega⟩, (List.getD_eq_getElem (l := P.edge) (d := f) hk).trans hke⟩
 
-/-- **The `CycleData` consumer of the closed-walk core** (Katoh–Tanigawa 2011 Lemma 4.6, the
-cycle disjunct; ENTRY leaf E2d-3, `notes/Phase23-design.md` §(4.107.G.5)). Combines the core's
-`Fin`-cyclic data with E2d-2's confinement (`closed_path_degree_two_spanning`) to discharge
-`CycleData`'s two surjectivity fields: `V(G) = {x | x ∈ P} = Set.range vtx` and likewise for
-`E(G)`, so every `G`-vertex (resp. edge) is a cycle vertex (resp. edge). -/
+/-- **A closed path of vertices of degree two is a cycle graph** (a step of
+`lem:chain-cycle-dichotomy`): under the hypotheses of `closed_path_degree_two_spanning`, with
+`2 ≤ P.length`, `G` is a cycle on `P.length + 1` vertices (`def:cycle-data`). Its vertices and edges
+are those of `exists_cyclic_data_of_closed_path`, which are all of `G`'s by
+`closed_path_degree_two_spanning`. -/
 theorem cycleData_of_closed_path [Finite β] {G : Graph α β} [G.Loopless]
     {P : WList α β} (hP : G.IsPath P) (h2 : 2 ≤ P.length) {f : β}
     (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge)
@@ -403,16 +395,14 @@ theorem cycleData_of_closed_path [Finite β] {G : Graph α β} [G.Loopless]
               rw [hre]
               rwa [hEeq] at he }, rfl⟩
 
-/-! ## E2e — the numeric linking fact -/
+/-! ## The inequality before KT eq. (4.9) -/
 
-/-- **Katoh–Tanigawa 2011's display above (4.9)** (ENTRY leaf E2e,
-`notes/Phase23-design.md` §(4.107.G.5)): for `D = bodyBarDim n ≥ 3` (the molecular regime
-`n ≥ 2`, derived below via the `2D = n(n+1)` identity) and `i ≥ 3`, the KT (4.6)–(4.9) charging
-count's linking inequality `i(n−2) + 2 ≤ (D−1)(i−2)` holds. Cast to `ℤ` and closed by `nlinarith`
-against two nonnegative slack terms: `(n−2)(n−3) ≥ 0` (true for every natural `n`, since no
-integer lies strictly between `2` and `3`) accounts for the `i = 3` floor case (equality at
-`n = 2` and at `n = 3`), and `(i−3)(n²−n+2) ≥ 0` (the quadratic `n²−n+2` is always positive)
-accounts for the slope in `i` above that floor. -/
+/-- **The inequality before KT eq. (4.9)** (a step of `lem:chain-cycle-dichotomy`; Katoh–Tanigawa
+2011, p. 665): for `D = bodyBarDim n ≥ 3` and `i ≥ 3`, `i(n − 2) + 2 ≤ (D − 1)(i − 2)`. As
+`2D = n(n + 1)` and `D ≥ 3`, `n ≥ 2`. Cast to `ℤ`, the inequality follows by `nlinarith` from two
+products that are not negative: `(n − 2)(n − 3)`, twice the difference of the two sides at `i = 3`
+(no integer lies strictly between `2` and `3`), and `(i − 3)(n² − n + 2)`, twice the growth of that
+difference from `3` to `i`. -/
 theorem kt_lemma_46_linking {n i : ℕ} (hD : 3 ≤ bodyBarDim n) (hi : 3 ≤ i) :
     i * (n - 2) + 2 ≤ (bodyBarDim n - 1) * (i - 2) := by
   have hbb : 2 * bodyBarDim n = n * (n + 1) := by
@@ -438,10 +428,9 @@ theorem kt_lemma_46_linking {n i : ℕ} (hD : 3 ≤ bodyBarDim n) (hi : 3 ≤ i)
     linarith
   nlinarith [hbbZ, hslack, mul_nonneg hi3 hquad]
 
-/-- **The lollipop's cap** (ENTRY leaf E2e companion, `notes/Phase23-design.md` §(4.107.G.5)):
-`n ≤ bodyBarDim n`, via the `2 · bodyBarDim n = n(n+1)` identity — what keeps a `≤ n`-cycle's
-vertex count `m ≤ n` inside the `D = bodyBarDim n` floor `isKDof_zero_of_cycle` needs
-(E2d-4's lollipop-exclusion, §(4.107.G.7)(ii)). -/
+/-- **`n ≤ D`** (a step of `lem:chain-cycle-dichotomy`): `n ≤ bodyBarDim n`, as
+`2 · bodyBarDim n = n(n + 1)`. In `chainWalk_trichotomy` it gives a cycle on at most `n` vertices
+the bound `m ≤ D` that `cycle_isProperRigidSubgraph` asks. -/
 theorem le_bodyBarDim (n : ℕ) : n ≤ bodyBarDim n := by
   have hbb : 2 * bodyBarDim n = n * (n + 1) := by
     rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
@@ -450,18 +439,23 @@ theorem le_bodyBarDim (n : ℕ) : n ≤ bodyBarDim n := by
   · have h2 : n * 2 ≤ n * (n + 1) := Nat.mul_le_mul_left n (by omega)
     omega
 
-/-! ## E2d-4 — the capped trichotomy builder -/
+/-! ## The walk along vertices of degree two -/
 
-/-- **The capped chain-walk trichotomy** (Katoh–Tanigawa 2011 Lemma 4.6, the walk-builder;
-ENTRY leaf E2d-4, `notes/Phase23-design.md` §(4.107.G.3)/(G.5)). Starting from any incidence
-`(v₀, f, x₀)` of a minimal `0`-dof-graph with no proper rigid subgraph, extend a path at its
-last vertex (whose exit edge is supplied by the degree-`2` closure, `exists_splitOff_data_of_
-degree_eq_two`): either the path reaches length `n` (the chain disjunct, bridged via
-`chainData_of_isPath`), or it closes back onto its own start (the cycle disjunct, via
-`cycleData_of_closed_path` when the start also has degree `2` — the "lollipop" degree-`≥ 3`
-start is excluded, a parallel pair at length `2` via `G.Simple`, or via
-`cycle_isProperRigidSubgraph` + `hnp` at length `≥ 3`), or its last vertex has degree `≥ 3`
-(the terminated walk KT's charging count consumes). Strong induction on `n − P.length`. -/
+/-- **The walk along vertices of degree two** (a step of `lem:chain-cycle-dichotomy`): let `D ≥ 3`,
+let `G` be a minimal `0`-dof-graph with at least three vertices, no proper rigid subgraph and a
+label outside `E(G)`, and let the edge `f` join `v₀` and `x₀`. Then `G` has a chain of length `n` or
+is a cycle on at most `n` vertices, or there is a path from `v₀` with first edge `f`, of length
+between `1` and `n − 1`, whose vertices other than its ends have degree two and whose last vertex
+has degree at least three. This is the walk from `v₀` along `f` of the proof of
+`lem:chain-cycle-dichotomy`: a path whose last vertex `u` has degree two is extended by the other
+edge at `u` (`exists_splitOff_data_of_degree_eq_two`), by strong induction on `n` minus its length.
+It stops in one of three ways. If it reaches length `n`, it is a chain (`chainData_of_isPath`). If
+its last vertex has degree at least three, it is the path of the third case. Otherwise the new edge
+returns to `v₀`, and the cycle has at least three vertices, as `G` is simple
+(`simple_of_isMinimalKDof_of_noRigid`), and at most `n`. If `v₀` has degree two, `G` is the cycle
+(`cycleData_of_closed_path`); otherwise the cycle is a proper rigid subgraph
+(`cycle_isProperRigidSubgraph`), which `G` has none of. The new edge cannot end at another vertex of
+the path, whose vertices other than its ends have both of their edges on it. -/
 theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
@@ -492,11 +486,11 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
   have hx₀G : x₀ ∈ V(G) := hf.right_mem
   have hv₀x₀ : v₀ ≠ x₀ := hf.ne
   have hdegv0ge2 : 2 ≤ G.degree v₀ := two_le_degree_of_isKDof_zero hD1 hG.1 hv₀G hV2
-  -- The per-`Q` outgoing-`IsLink` fact at an index, shared across the recursion (E2d-1/2/3 style).
+  -- The edge `k` of a walk `Q` joins its vertices `k` and `k + 1`, for every `Q` of the induction.
   have hlinkAt : ∀ (Q : WList α β), G.IsWalk Q → ∀ (k : ℕ) (hk : k < Q.length),
       G.IsLink (Q.edge[k]'(by rw [WList.length_edge]; omega)) (Q.get k) (Q.get (k + 1)) :=
     fun Q hQ k hk => hQ.isLink_of_dInc (WList.DInc_get_get_succ hk)
-  -- `get` is injective on `[0, Q.length]` for a Nodup-vertex `Q` (E2d-1's `hvtx_inj`, generalized).
+  -- `get` is injective on `[0, Q.length]` for a `Q` without repeated vertices.
   have hget_inj : ∀ (Q : WList α β), Q.vertex.Nodup → ∀ {i j : ℕ},
       i ≤ Q.length → j ≤ Q.length → Q.get i = Q.get j → i = j := by
     intro Q hQ i j hi hj hij
@@ -525,8 +519,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
     rcases hx with rfl | rfl
     · exact absurd rfl hxfirst
     · exact absurd rfl hxlast
-  -- The general claim, by strong induction on `n − P.length` (Reduction.lean's precedent
-  -- pattern: `induction hM : … using Nat.strong_induction_on generalizing P`).
+  -- The claim for every path from `v₀` along `f`, by strong induction on `n − P.length`.
   have main : ∀ P : WList α β, G.IsPath P → P.first = v₀ →
       (∃ hne : P.Nonempty, hne.firstEdge = f) → 1 ≤ P.length → P.length ≤ n →
       (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) →
@@ -590,7 +583,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
             · exact hlt1 hk1
             · exact hlt2 hk2
         by_cases hxfirst : x = P.first
-        · -- Closed: `m := P.length + 1 ≤ n` (the cap already fired at length `n` above).
+        · -- Closed: a cycle on `m := P.length + 1 ≤ n` vertices, as `P.length < n`.
           subst hxfirst
           by_cases hlen1 : P.length = 1
           · -- length `2`: `entry_edge` and `g` are a parallel pair — excluded by `G.Simple`.
@@ -601,7 +594,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
           · have hlen2 : 2 ≤ P.length := by omega
             have hdegPfirst : 2 ≤ G.degree P.first := by rw [hPfirst]; exact hdegv0ge2
             by_cases hstart2 : G.degree P.first = 2
-            · -- genuine cycle.
+            · -- `G` is the cycle.
               have hdeg_all : ∀ y ∈ P, G.degree y = 2 := by
                 intro y hy
                 by_cases hyfirst : y = P.first
@@ -611,7 +604,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
                   · exact hdeg y hy hyfirst hylast
               obtain ⟨cy, hcym⟩ := cycleData_of_closed_path hP hlen2 hgx hgP hdeg_all hconn
               exact Or.inl (Or.inr ⟨cy, by omega⟩)
-            · -- the lollipop (length `≥ 3`, anchor degree `≥ 3`): excluded via E2c + `hnp`.
+            · -- `P.first` has degree at least three: the cycle is a proper rigid subgraph.
               have hstart3 : 3 ≤ G.degree P.first := by omega
               obtain ⟨vtx, edge, hvtx_inj, hedge_inj, hlink, hvtx0, hrv, -⟩ :=
                 exists_cyclic_data_of_closed_path hP hlen2 hgx hgP
@@ -724,19 +717,15 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
   exact main (WList.cons v₀ f (WList.nil x₀)) hP₀path (by simp)
     ⟨WList.cons_nonempty v₀ f (WList.nil x₀), rfl⟩ (by simp) (by simp; omega) hP₀deg
 
-/-! ## E2d-5 — chain-walk determinism -/
+/-! ## Two walks from one edge -/
 
-/-- **Chain walks from a shared incidence are prefix-comparable** (Katoh–Tanigawa 2011
-Lemma 4.6, the maximal-chain uniqueness the charging count needs; ENTRY leaf E2d-5,
-`notes/Phase23-design.md` §(4.107.G.5)). Two paths sharing their first vertex and first edge,
-each with all interior vertices of degree `2`, are comparable under `WList.IsPrefix`: structural
-induction on the pair — the shared first edge forces a shared second vertex (`IsLink` endpoint
-determinism), a nil tail is a prefix outright, and two nonempty tails share *their* first edge by
-the degree-`2` closure (`isLink_eq_of_degree_eq_two`) at the shared second vertex, which is
-interior to both paths (non-first since the start is fresh for the tail, non-last since the
-tail's start is fresh for the tail's own tail). The charging count (E2d-6) consumes this three
-ways: fiber-membership (a proper prefix ends at an interior vertex of the terminated walk),
-distinctness of the two charged incidences, and equal-incidence ⟹ equal-walk. -/
+/-- **Two walks from one edge are prefixes of one another** (a step of `lem:chain-cycle-dichotomy`):
+in a loopless `G`, two paths with the same first vertex and the same first edge, whose vertices
+other than their ends have degree two, are comparable under `WList.IsPrefix`. By induction on the
+first path: the common first edge gives a common second vertex. When one of the paths ends there, it
+is a prefix of the other. Otherwise that vertex is a vertex of the first path other than its ends,
+so it has degree two, and both paths leave it by the edge by which they did not arrive
+(`isLink_eq_of_degree_eq_two`). `chainWalk_isPrefix_of_terminated` uses it. -/
 theorem chainWalk_isPrefix_or_isPrefix [Finite β] {G : Graph α β} [G.Loopless]
     {P₁ P₂ : WList α β} (h₁ : G.IsPath P₁) (h₂ : G.IsPath P₂)
     (hfirst : P₁.first = P₂.first)
@@ -823,20 +812,16 @@ theorem chainWalk_isPrefix_or_isPrefix [Finite β] {G : Graph α β} [G.Loopless
           · exact Or.inl (WList.IsPrefix.cons u e _ _ h)
           · exact Or.inr (WList.IsPrefix.cons u e _ _ h)
 
-/-! ## E2d-6 — the charging bound (fiber lemma) -/
+/-! ## A walk that stops at a vertex of degree two -/
 
-/-- **The charging count's fiber lemma** (Katoh–Tanigawa 2011 (4.6)+(4.7), the per-incidence
-uniqueness the double count needs; ENTRY leaf E2d-6, `notes/Phase23-design.md` §(4.107.G.4)/(G.5)
-— the sanctioned candidate split-off, taken here because the choice bookkeeping for the full
-`chainWalk_charging` double count runs long on its own). A chain walk `P` sharing its start
-(vertex and first edge) with a **terminated** chain walk `T` — one whose last vertex has degree
-`≥ 3` — and itself ending at a degree-`2` vertex, is a *proper* prefix of `T`: its own last
-vertex sits at one of `T`'s `≤ T.length − 1` interior positions (`P.length < T.length`, and
-`T.get P.length = P.last` by `IsPrefix.get_eq_of_length_ge`). By chain-walk determinism (E2d-5)
-the two walks are prefix-comparable; the alternative (`T.IsPrefix P`) would place `T`'s
-high-degree last vertex at an interior position of `P`, forced to degree `2` by `P`'s own
-chain-walk hypothesis — absurd (and the equal-length sub-case forces `P = T` outright, against
-the degree mismatch). -/
+/-- **A walk that stops at a vertex of degree two is a proper prefix** (a step of
+`lem:chain-cycle-dichotomy`): in a loopless `G`, let `P` and `T` be paths with the same first vertex
+and the same first edge, whose vertices other than their ends have degree two, and let the last
+vertex of `T` have degree at least three and that of `P` degree two. Then `P` is a proper prefix of
+`T`. By `chainWalk_isPrefix_or_isPrefix` one of them is a prefix of the other, and `P ≠ T` by the
+degrees of their last vertices. If `T` were a proper prefix of `P`, the last vertex of `T` would be
+a vertex of `P` other than its ends (`WList.IsPrefix.get_eq_of_length_ge`), of degree two.
+`chainWalk_charging` applies it to a walk from a vertex of degree two, read backwards. -/
 theorem chainWalk_isPrefix_of_terminated [Finite β] {G : Graph α β} [G.Loopless]
     {P T : WList α β} (hP : G.IsPath P) (hT : G.IsPath T)
     (hfirst : P.first = T.first)
@@ -848,8 +833,7 @@ theorem chainWalk_isPrefix_of_terminated [Finite β] {G : Graph α β} [G.Loople
     P.IsPrefix T ∧ P.length < T.length := by
   classical
   have hne : P ≠ T := by rintro rfl; omega
-  -- `P.get` is injective on `[0, P.length]` for the `Nodup`-vertex path `P` (the E2d-1/E2d-4
-  -- `hget_inj` idiom, specialized to a single path).
+  -- `P.get` is injective on `[0, P.length]`, as `P` is a path (as in `chainWalk_trichotomy`).
   have hget_inj : ∀ {i j : ℕ}, i ≤ P.length → j ≤ P.length → P.get i = P.get j → i = j := by
     intro i j hi hj hij
     have h1 := WList.idxOf_get hP.nodup hi
@@ -884,22 +868,20 @@ theorem chainWalk_isPrefix_of_terminated [Finite β] {G : Graph α β} [G.Loople
       omega
     · exact hne (hTP.eq_of_length_ge heq.ge).symm
 
-/-! ## E2d-6 — the charging bound -/
+/-! ## The charging bound -/
 
-/-- **The charging count's double-count bound** (Katoh–Tanigawa 2011 (4.6)+(4.7); ENTRY leaf
-E2d-6, `notes/Phase23-design.md` §(4.107.G.4)/(G.5)). Under the all-starts-terminated hypothesis
-`hterm` (the assembly's `by_contra` residue — E2d-4's terminated-walk conclusion re-quantified
-over *every* incidence), `2·|X₂| ≤ (n−2)·Σ_{u : 3≤deg u} deg u`: reversing the terminated walk
-out of a degree-`2` vertex `v` along one of its incident edges produces a chain-walk *into* `v`
-from a high-degree incidence; the fiber lemma (`chainWalk_isPrefix_of_terminated`) places `v` at
-one of that incidence's own terminated walk's `≤ n−2` interior positions, and determinism
-(`chainWalk_isPrefix_or_isPrefix`, via the fiber lemma applied a second time) forces the map
-`(v, e) ↦ (incidence, position)` — from pairs of a degree-`2` vertex with an incident edge into
-pairs of a high-degree incidence with an interior position — to be injective. The bound follows
-from `Set.ncard_le_ncard_of_injOn` plus two disjoint-union cardinality identities (the domain is
-`2` copies of each `v ∈ X₂`, the incidence set `I` has `Σ_{u ∈ V₊} deg u` elements). The
-argument needs no deficiency or size hypothesis: `hterm`, `[G.Simple]` and finiteness give the
-degree-`2` extraction and the fiber lemma's hypotheses. -/
+/-- **The charging bound** (a step of `lem:chain-cycle-dichotomy`): let `G` be simple, and let every
+edge `f` at a vertex `v₀` begin a path from `v₀` of length between `1` and `n − 1` whose vertices
+other than its ends have degree two and whose last vertex has degree at least three (`hterm`). Then
+`2|X₂| ≤ (n − 2) Σ_{u ∈ V₊} deg u`, where `X₂` and `V₊` are the vertices of degree two and of degree
+at least three. Katoh and Tanigawa obtain this inequality from their eqs. (4.6) and (4.7) by
+counting maximal chains (p. 664). Read backwards, the path from a vertex `v` of degree two along an
+edge `e` at `v` leaves a vertex `u` of degree at least three along an edge `g` and ends at `v`. It
+is a proper prefix of the path from `u` along `g` (`chainWalk_isPrefix_of_terminated`), so `v` is on
+that path at a position between `1` and `n − 2`. The map `(v, e) ↦ ((g, u), position)` is injective,
+as a prefix of a path is determined by its length, and the path from `v` along `e` determines `v`
+and `e`. So `Set.ncard_le_ncard_of_injOn` bounds the `2|X₂|` pairs `(v, e)` by the
+`Σ_{u ∈ V₊} deg u` pairs `(g, u)` times the `n − 2` positions. The proof uses no deficiency. -/
 theorem chainWalk_charging [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} [G.Simple]
     (hterm : ∀ (v₀ x₀ : α) (f : β), G.IsLink f v₀ x₀ →
@@ -909,7 +891,7 @@ theorem chainWalk_charging [Finite α] [Finite β]
     2 * {v ∈ V(G) | G.degree v = 2}.ncard
       ≤ (n - 2) * ∑ᶠ u ∈ {u ∈ V(G) | 3 ≤ G.degree u}, G.degree u := by
   classical
-  -- Turn `hterm` into a genuine (classical) choice function `Tfun`, naming each conjunct
+  -- Turn `hterm` into a choice function `Tfun`, naming each conjunct
   -- (`choose` leaves the `Prop`-witnessed inner existential `hTfe` bundled; a second `choose`
   -- splits it into the nonempty-witness function `hTne` and its firstEdge spec `hTfeEq`).
   choose Tfun hTpath hTfirst hTfe hTlen1 hTlen hTdeg hTdeg3 using hterm
@@ -1097,25 +1079,21 @@ theorem chainWalk_charging [Finite α] [Finite β]
   calc 2 * X₂.ncard ≤ (∑ᶠ u ∈ Vge3, G.degree u) * (n - 2) := hbound
     _ = (n - 2) * ∑ᶠ u ∈ Vge3, G.degree u := mul_comm _ _
 
-/-! ## E2d-7 — the arithmetic close -/
+/-! ## KT eqs. (4.8) and (4.9) -/
 
-/-- **The KT (4.8)/(4.9) arithmetic close** (Katoh–Tanigawa 2011 Lemma 4.6, the final
-contradiction; ENTRY leaf E2d-7, `notes/Phase23-design.md` §(4.107.G.4)/(G.5)). Under the
-all-starts-terminated hypothesis `hterm` (the E2-assembly's `by_contra` residue — E2d-4's
-terminated-walk conclusion re-quantified over *every* incidence), the charging bound (E2d-6,
-`chainWalk_charging`) and the numeric linking fact (E2e, `kt_lemma_46_linking`), summed over
-`V₊ := {u ∈ V(G) | 3 ≤ deg u}`, force `D·|V(G)| ≤ (D−1)·|E(G)|` — directly contradicting the KT
-4.5(i) edge bound `no_rigid_edge_count` at `k = 0`.
-
-The chain (`notes/Phase23-design.md` §(4.107.G.4)): `kt_lemma_46_linking` summed pointwise over
-`V₊`, reshaped to avoid a per-term `ℕ`-subtraction (`i(n−2)+2 ≤ (D−1)(i−2)` plus `(D−1)·2` on
-both sides collapses the right-hand subtraction: `i(n−2) + 2D ≤ (D−1)i`), combines with the
-charging bound (`2|X₂| ≤ (n−2)Σ_{V₊}deg`) to give `(D−1)·Σ_{V₊}deg ≥ 2|X₂| + 2D|V₊|`;
-substituting the multigraph handshake (`Graph.handshake_degree_subtype`, vendored) split across
-the min-degree-`2` partition `V(G) = X₂ ⊔ V₊` (E2a) — `Σ_{V₊}deg = 2|E| − 2|X₂|` — turns this
-into `D·|V(G)| ≤ (D−1)·|E(G)|` after multiplying out and using `|V(G)| = |X₂| + |V₊|`. The
-`V₊ = ∅` corner needs no separate case: the chain above degenerates gracefully (`Σ_{V₊}deg = 0`),
-still yielding the same bound once combined with the handshake identity. -/
+/-- **The count of KT eqs. (4.8) and (4.9)** (a step of `lem:chain-cycle-dichotomy`; Katoh–Tanigawa
+2011, pp. 664–665): let `D ≥ 3`, let `G` be a minimal `0`-dof-graph with at least three vertices and
+no proper rigid subgraph, and let every edge begin a path that stops at a vertex of degree at least
+three (`hterm`, as in `chainWalk_charging`). Then `False`. Summed over `V₊`, the inequality before
+KT eq. (4.9) (`kt_lemma_46_linking`), with `2(D − 1)` added to both sides, gives
+`(n − 2) Σ_{V₊} deg + 2D|V₊| ≤ (D − 1) Σ_{V₊} deg`, and with the charging bound
+(`chainWalk_charging`, as `G` is simple by `simple_of_isMinimalKDof_of_noRigid`)
+`2|X₂| + 2D|V₊| ≤ (D − 1) Σ_{V₊} deg`. Every vertex has degree at least two
+(`two_le_degree_of_isKDof_zero`), so `V(G)` is the disjoint union of `X₂` and `V₊`, and the degrees
+sum to `2|E(G)|` (`Graph.handshake_degree_subtype`, of the `Matroid` package), so
+`Σ_{V₊} deg = 2|E(G)| − 2|X₂|`. Together these give `D|V(G)| ≤ (D − 1)|E(G)|`, against KT
+Lemma 4.5(i) at `k = 0` (`no_rigid_edge_count`): `(D − 1)|E(G)| < D(|V(G)| − 1) + D − 1`. The count
+holds as well when `V₊` is empty. -/
 theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ}
     (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
@@ -1133,8 +1111,7 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
   have hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
   have hloop : G.Loopless := loopless_of_isMinimalKDof hG
   have hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
-  -- The charging bound (E2d-6), folded against the min-degree-`2` partition `V(G) = X₂ ⊔ V₊`
-  -- (E2a) once named — `set` retroactively folds `hcharge`'s literal set-builders.
+  -- The charging bound; once `X₂` and `V₊` are named, `set` folds the set-builders of `hcharge`.
   have hcharge := chainWalk_charging hterm
   set X₂ : Set α := {v ∈ V(G) | G.degree v = 2} with hX₂def
   set Vge3 : Set α := {u ∈ V(G) | 3 ≤ G.degree u} with hVge3def
@@ -1165,9 +1142,8 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
       ring
     rw [hX₂sum] at hhand
     omega
-  -- E2e summed pointwise over `V₊`, reshaped to avoid the per-term subtraction: adding `2(D−1)`
-  -- to both sides of `kt_lemma_46_linking` collapses `(D−1)(i−2) + 2(D−1) = (D−1)i` and
-  -- `2 + 2(D−1) = 2D`.
+  -- `kt_lemma_46_linking` summed over `V₊`, without a subtraction in each term: adding `2(D−1)`
+  -- to both of its sides turns `(D−1)(i−2) + 2(D−1)` into `(D−1)i` and `2 + 2(D−1)` into `2D`.
   set sVge3 := (Set.toFinite Vge3).toFinset with hsVge3
   have hlinkAlt : ∀ u ∈ sVge3, G.degree u * (n - 2) + 2 * bodyBarDim n ≤
       (bodyBarDim n - 1) * G.degree u := by
@@ -1196,7 +1172,7 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
   -- notation's own definitional unfolding).
   rw [hSfin_eq] at hcharge hHS
   rw [← hVge3card] at hsum_link'
-  -- Cast to `ℤ` for the final combination (KT (4.8)/(4.9)'s numeric close).
+  -- Cast to `ℤ` for the final combination (KT eq. (4.9)).
   have hn2 : 2 ≤ n := by
     have hbb : 2 * bodyBarDim n = n * (n + 1) := by
       rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
@@ -1217,19 +1193,14 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
   have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
   nlinarith [hcharge, hsum_link', hDVc, hedge, hVpos]
 
-/-! ## E2-assembly — closing the ENTRY leaf E2 -/
+/-! ## KT Lemma 4.6 (`lem:chain-cycle-dichotomy`) -/
 
-/-- **Katoh–Tanigawa 2011 Lemma 4.6**, the ENTRY leaf **E2** (`notes/Phase23-design.md`
-§(4.107.D)'s pinned public signature): a minimal `0`-dof graph on `≥ 3` vertices with no proper
-rigid subgraph either packages a length-`n` chain (`Graph.ChainData n`) or a spanning-or-smaller
-cycle (`Graph.CycleData` with `cy.m ≤ n`). `by_contra` refutes the goal, pushing the negation into
-the capped trichotomy builder (E2d-4, `chainWalk_trichotomy`) at *every* incidence: its left
-(chain-or-cycle) arm is exactly the negated goal, so only its right (terminated-walk) arm survives,
-supplying the all-starts-terminated hypothesis `hterm` the arithmetic close (E2d-7,
-`chainWalk_terminated_contradiction`) needs to derive `False`. E2d-1…E2d-3/E2e/E2d-5/E2d-6 enter
-only through E2d-4/E2d-7's own hypotheses; **E2b is not consumed** (§(4.107.G.7)(i)) — the capped
-builder starts from an arbitrary incidence rather than a degree-`2` vertex, so the assembly never
-needs E2b's standalone existence witness. -/
+/-- **KT Lemma 4.6 at `k = 0`** (`lem:chain-cycle-dichotomy`; Katoh–Tanigawa 2011, p. 664): let
+`D ≥ 3`, and let `G` be a minimal `0`-dof-graph with at least three vertices, no proper rigid
+subgraph and a label outside `E(G)`. Then `G` has a chain of length `n` (`def:chain-data`), or `G`
+is a cycle on at most `n` vertices (`def:cycle-data`). If neither holds, every walk along vertices
+of degree two stops at a vertex of degree at least three (`chainWalk_trichotomy`), and the count of
+KT eqs. (4.6)–(4.9) is a contradiction (`chainWalk_terminated_contradiction`). -/
 theorem chainData_or_cycleData_of_noRigid [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ}
     (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
@@ -1248,30 +1219,19 @@ theorem chainData_or_cycleData_of_noRigid [DecidableEq β] [Finite α] [Finite �
     · exact h
   exact chainWalk_terminated_contradiction hD hV3 hG hnp hterm
 
-/-! ## E3 — the general extractor -/
+/-! ## The chain and its splitting off (`lem:chain-data-extract`) -/
 
-/-- **The general chain/cycle extractor** (Katoh–Tanigawa 2011 Lemma 4.6 + Lemma 4.8(i)/(ii),
-ENTRY leaf **E3**, `notes/Phase23-design.md` §(4.107.D)'s pinned public signature): composes
-**E2** (`chainData_or_cycleData_of_noRigid`) with the landed Lemma-4.8 stack at the interior
-chain vertex `v₁ = cd.vtx ⟨1, _⟩` — `splitOff_isMinimalKDof` (KT 4.8(i)),
-`splitOff_simple_of_noRigid_of_card` (KT 6.7(ii), on `G`, which is simple by
-`simple_of_isMinimalKDof_of_noRigid`), and the two measure facts (`2 ≤ |V'|`, `|V'| < |V|`) — to
-discharge the ENTRY interface `hextract` at general `n`: either a length-`n` chain whose `v₁`-split
-is again a smaller minimal `0`-dof-graph, or a cycle on `≤ n` vertices (forwarded unchanged from
-E2's right disjunct, feeding `hcycle`/E5). Composition only, no new combinatorics — mirrors the
-(since-removed) `d = 3` discharge's split-fact list verbatim.
-Below-contract file home (§(4.107.G.2)): `ChainExtraction.lean`, not §(4.107.D)'s literal
-`Reduction.lean` pin — `Reduction.lean` already carries the E2d ladder + E2-assembly for the same
-LoC-tripwire reason, and E3 is E2's sole consumer.
-
-Chain disjunct: with `i := ⟨1, by omega⟩ : Fin cd.d` (needs `cd.d ≥ 2`, from `cd.d_eq : cd.d = n`
-against the `n ≥ 2` floor `hD` forces via `2·bodyBarDim n = n(n+1)`), the predecessor/successor
-chain edges out of `v₁ = cd.vtx i.castSucc` are already oriented and closed exactly as the pin's
-literal `(cd.vtx ⟨1,_⟩) (cd.vtx ⟨0,_⟩) (cd.vtx ⟨2,_⟩)` slots need — the primitive fields
-`deg_two`/`isLink_pred_edge`/`isLink_succ_edge`/`pred_edge_ne` read at `i` give the `(a, b) =
-(vtx 0, vtx 2)` order directly (predecessor first, successor second), with no `splitOff_swap_ab`
-reconciliation needed (contrast the `d = 3` adapter, whose fixed `vtx = ![b, v, a, c]` labeling
-runs the other way). -/
+/-- **A chain and its splitting off** (`lem:chain-data-extract`; KT Lemmas 4.6, 4.8(i) and 6.7(ii)):
+let `D ≥ 3`, and let `G` be a minimal `0`-dof-graph with at least four vertices, no proper rigid
+subgraph and a label outside `E(G)`. Then `G` is a cycle on at most `n` vertices, or it has a chain
+`cd` of length `n`, `v₀v₁…v_n` with `n ≥ 2`, such that `G_{v₁}^{v₀v₂}`, whose new edge takes the
+chain's label `cd.e₀`, is a simple minimal `0`-dof-graph with at least two and fewer than `|V(G)|`
+vertices. By KT Lemma 4.6 (`chainData_or_cycleData_of_noRigid`), `G` is such a cycle or has such a
+chain. As `2D = n(n + 1)` and `D ≥ 3`, `n ≥ 2`, so `v₁` is an interior vertex of the chain, and its
+only edges join it to `v₀` and to `v₂`. Then `G_{v₁}^{v₀v₂}` is a minimal `0`-dof-graph by KT
+Lemma 4.8(i) (`splitOff_isMinimalKDof`), and simple by KT Lemma 6.7(ii)
+(`splitOff_simple_of_noRigid_of_card`), as `G` is simple (`simple_of_isMinimalKDof_of_noRigid`). Its
+vertices are those of `G` but `v₁` (`vertexSet_splitOff`, `splitOff_vertexSet_ncard_lt`). -/
 theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0)
     (hfresh : ∃ e₀ : β, e₀ ∉ E(G))

@@ -7,20 +7,26 @@ import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
 import CombinatorialRigidity.Molecular.Induction.Contraction
 
 /-!
-# The combinatorial induction — edge-splitting and acyclicity transport (KT Lemma 4.2)
+# The combinatorial induction: forest surgery at a vertex (KT Lemmas 4.1 and 4.2)
 
-Phase 20 (molecular-conjecture program; see `notes/MolecularConjecture.md`). The KT-Lemma-4.2 half
-of the `Induction/` capstone (the `ForestSurgery/` subdirectory; split in the post-Phase-22l
-molecular split round, `notes/Phase22l-perf.md`). On top of the contraction-minimality bridge
-(`Induction/Contraction`), this file builds the acyclicity machinery the forest-surgery reduction
-rests on:
+Results of the combinatorial induction (`sec:molecular-induction-forest`) after Katoh and Tanigawa
+(2011, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45**, §4.1, pp. 660–661). For
+a vertex `v` of a multigraph `G`, vertices `a, b ≠ v`, the label `e₀ ∉ E(G)` of the new edge `ab` of
+the splitting off `G_v^{ab}`, `D = bodyBarDim n`, `G̃ = (D - 1)·G` and `G_v = G - v`, it proves:
 
-* the **acyclicity transport** across the degree-2 short-circuit, the fiber-degree substrate, and
-  the degree-2 reroute (forward and reverse) (`lem:forest-surgery-split`, surgery crux);
-* the **edge-splitting extension** (`lem:edge-splitting`, Katoh–Tanigawa 2011 §3.4 Lemma 4.2).
+* that the edges of `G̃_v^{ab}` other than the copies `ẽ₀ = edgeFiber e₀ n` of `ab` are those of
+  `(G_v)̃`, with the same ends, so that forests pass between `G̃`, `(G_v)̃` and `G̃_v^{ab}`;
+* that a forest of `G̃` has at most one copy of an edge whose ends differ, and a forest of
+  `G̃_v^{ab}` at most one copy of `ab` when `a ≠ b`;
+* the changes that Katoh and Tanigawa make to one forest at `v`: in the proof of KT Lemma 4.1,
+  removing its edges at `v` (`lem:reroute-vfree-transport`) and replacing its two edges at `v` by a
+  copy of `ab` (`lem:reroute-cycle-lift`); in that of KT Lemma 4.2, replacing a copy of `ab` by two
+  edges at `v` (`lem:reverse-reroute-cycle-lift`) and adding an edge at `v`
+  (`lem:reverse-pendant-insert`);
+* KT Lemma 4.2 (`lem:edge-splitting`, `lem:forest-surgery-unsplit`).
 
-The reduction + forest-surgery count + Theorem 4.9 built on top live in `ForestSurgery/Reduction`.
-See `ROADMAP.md` §20 / `notes/Phase20.md` and the `sec:molecular-induction` dep-graph.
+`Reduction.lean` performs the surgery of KT Lemma 4.1 on a base (`lem:forest-surgery-count`,
+`lem:forest-surgery-split`).
 -/
 
 namespace Graph
@@ -29,34 +35,20 @@ open Set Matroid
 
 variable {α β : Type*}
 
-/-! ## Acyclicity transport across the short-circuit (`lem:forest-surgery-split`, surgery crux)
+/-! ## Forests of `G̃`, `(G_v)̃` and `G̃_v^{ab}`
 
-The genuine combinatorial crux of the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery: the
-reroute of the `D` forests across the degree-2 vertex `v` must **preserve acyclicity** —
-each rerouted forest of the splitting-off `G_v^{ab}` is still a forest. The fibers of the
-multiplied splitting-off `G̃_v^{ab}` split into the *fresh* short-circuit fiber `ã̃b =
-edgeFiber e₀ n` (the `D-1` parallel copies of the new edge `e₀`) and the *surviving* fibers
-(`p.1 ≠ e₀`), which are exactly the fibers of `G̃` whose underlying `G`-edge avoids `v`.
+An edge of `G̃_v^{ab}` that is not a copy of the new edge `ab` is a copy of an edge of `G` whose
+ends differ from `v`, with the same ends. So deleting the copies `ẽ₀ = edgeFiber e₀ n` of `ab` from
+`G̃_v^{ab}` gives a subgraph of `G̃`, and when `e₀ ∉ E(G)`, `(G_v)̃` is a subgraph of `G̃_v^{ab}`
+whose edges are those of `G̃_v^{ab}` outside `ẽ₀`. A forest of a graph is a forest of every graph of
+which that graph is a subgraph. -/
 
-The surviving part transports cleanly: deleting the fresh fiber from `G̃_v^{ab}` gives a
-subgraph of `G̃` (`mulTilde_splitOff_deleteFiber_le`), because every non-`e₀` link of the
-splitting-off is a link of `G` (it keeps `G`'s `e ≠ e₀` links avoiding `v`). So a
-cycle-matroid-acyclic fiber set of `G̃_v^{ab}` that avoids `ã̃b` is acyclic in `G̃`
-(`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`) — the half of the surgery's
-acyclicity-preservation that needs no rerouting (the forests with `dᶠ(v) ≤ 1`, which drop
-their `v`-edge rather than swap onto `ã̃b`). The rerouting half (`dᶠ(v) = 2` forests
-swapping their two `v`-edges for one `ã̃b` copy, with the `v`-traversing path lift) is landed
-as `isAcyclicSet_splitOff_reroute` below; what remains of the still-red
-`lem:forest-surgery-split` is only the per-`D`-forest bookkeeping assembly. -/
-
-/-- **Deleting the fresh fiber from the multiplied splitting-off lands inside `G̃`**
-(`lem:forest-surgery-split`, surgery crux). The multiplied splitting-off `G̃_v^{ab}` with
-its fresh short-circuit fiber `ã̃b = edgeFiber e₀ n` deleted is a subgraph of the multiplied
-original `G̃ = (D-1)·G`. Every surviving fiber `p` (`p.1 ≠ e₀`) of `G̃_v^{ab}` is a copy of
-an `e₀`-distinct edge of `G` avoiding `v`, so it carries exactly the same link in `G̃` — the
-splitting-off only *adds* the fresh `e₀`-fiber and *removes* the `v`-incident fibers, both of
-which lie outside the deleted-fiber subgraph. This is the structural fact the acyclicity
-transport `isAcyclicSet_mulTilde_of_splitOff_of_disjoint` runs on. -/
+/-- **`G̃_v^{ab}` without the copies of `ab` is a subgraph of `G̃`** (a step of
+`lem:reroute-cycle-lift`, `lem:reverse-reroute-cycle-lift` and `lem:edge-splitting`): deleting the
+copies `ẽ₀ = edgeFiber e₀ n` of the new edge from `G̃_v^{ab}` gives a subgraph of `G̃ = (D - 1)·G`.
+Its vertices are those of `G` but `v`, and an edge of `G̃_v^{ab}` that is not a copy of `e₀` is a
+copy of an edge of `G` whose ends differ from `v`, with the same ends (`splitOff_isLink`). The label
+`e₀` may lie in `E(G)`. -/
 lemma mulTilde_splitOff_deleteFiber_le {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ) :
     ((G.splitOff v a b e₀).mulTilde n).deleteEdges (edgeFiber e₀ n) ≤ G.mulTilde n := by
   refine ⟨?_, ?_⟩
@@ -72,17 +64,12 @@ lemma mulTilde_splitOff_deleteFiber_le {G : Graph α β} {v a b : α} {e₀ : β
     · -- The `e₀`-fiber case is excluded: `p.1 = e₀` puts `p ∈ edgeFiber e₀ n`.
       exact absurd (show p ∈ edgeFiber e₀ n from hlink.1) hpfiber
 
-/-- **The multiplied vertex-removal lands inside the multiplied splitting-off**
-(`lem:forest-surgery-split`, surgery crux, reverse inclusion). The converse companion of
-`mulTilde_splitOff_deleteFiber_le`: the multiplied vertex-removal `(G_v)̃ = ((G - v))̃` is a
-subgraph of the multiplied splitting-off `G̃_v^{ab}`, *provided the short-circuit edge `e₀`
-is fresh* (`e₀ ∉ E(G)`): `(G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n`.
-Both graphs carry the vertex set `V(G) \ {v}`; every fiber `p` of `(G_v)̃` is a copy of an
-edge of `G` avoiding `v` (`removeVertex_isLink`), and freshness forces `p.1 ≠ e₀`, so
-`splitOff` keeps that very link (its first disjunct). This is the structural fact the
-rerouting half of the surgery runs on: the part of a `G̃`-forest avoiding `v` (the forests
-with `dᶠ(v) ≤ 1` reduced to `G_v`) transports verbatim into `G̃_v^{ab}` — only the
-`v`-traversing tree-path of a `dᶠ(v) = 2` forest needs the `ã̃b` swap. -/
+/-- **`(G_v)̃` is a subgraph of `G̃_v^{ab}`** (a step of `lem:reroute-vfree-transport` and
+`lem:reverse-reroute-cycle-lift`): when `e₀ ∉ E(G)`, the multiplied removal `(G_v)̃`, where
+`G_v = G - v`, is a subgraph of `G̃_v^{ab}`. Both have the vertices of `G` but `v`, and an edge of
+`(G_v)̃` is a copy of an edge of `G` whose ends differ from `v` (`removeVertex_isLink`). That edge
+is not `e₀`, so `G_v^{ab}` keeps it, with the same ends. `removeVertex_le_splitOff` states the same
+of `G_v` and `G_v^{ab}`. -/
 lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ)
     (he₀ : e₀ ∉ E(G)) :
     (G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n := by
@@ -99,24 +86,12 @@ lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : �
     -- `p.1 ≠ e₀`: `p.1 ∈ E(G)` (it carries the link `hlink`) but `e₀ ∉ E(G)`.
     rintro rfl; exact he₀ hlink.edge_mem
 
-/-- **The surviving fibers of the multiplied splitting-off are exactly `E((G_v)̃)`**
-(`lem:reduction-step`, splitting-off minimality transport; Katoh–Tanigawa 2011 Lemmas 4.7–4.8,
-ground-set bridge). With the short-circuit edge `e₀` fresh (`e₀ ∉ E(G)`), the multiplied
-splitting-off `G̃_v^{ab}` has ground set the disjoint union of the fresh short-circuit fiber
-`ã̃b = edgeFiber e₀ n` and the surviving fibers, and the surviving fibers
-(`E(G̃_v^{ab}) ∖ ã̃b`) are *precisely* the fibers of the multiplied vertex-removal
-`(G_v)̃ = ((G − v))̃`:
-`E((G_v^{ab}))̃ ∖ ã̃b = E((G_v))̃`.
-
-This is the ground-set decomposition the by-hand base correspondence of KT 4.8 runs on:
-splitting-off only *adds* the fresh `e₀`-fiber to and *removes* the two `v`-incident fibers
-from `G̃`, so deleting the fresh fiber recovers exactly the `v`-free fibers — which are the
-ground set of `M((G_v)̃)`. Sharpens the one-sided inclusions
-`mulTilde_splitOff_deleteFiber_le` / `mulTilde_removeVertex_le_splitOff` to the edge-set
-equality the base lift needs to identify the surviving matroid's ground set. The two `⊆`
-directions are: a non-`e₀` fiber of `G̃_v^{ab}` carries a `v`-avoiding `G`-link (so its edge
-lies in `E(G_v)`), and conversely a fiber of `(G_v)̃` is `v`-free with a fresh-distinct edge
-(forced by `e₀ ∉ E(G)`), hence kept by `splitOff`'s first disjunct. -/
+/-- **The edges of `G̃_v^{ab}` other than the copies of `ab` are those of `(G_v)̃`** (a step of
+`lem:reverse-reroute-cycle-lift`, `lem:reverse-pendant-insert` and `lem:reduction-step`): when
+`e₀ ∉ E(G)`, `E(G̃_v^{ab}) ∖ ẽ₀ = E((G_v)̃)`, where `ẽ₀ = edgeFiber e₀ n`. An edge of `G_v^{ab}`
+other than `e₀` is an edge of `G` whose ends differ from `v`, so an edge of `G_v`; conversely, an
+edge of `G_v` is an edge of `G`, so it is not `e₀`, and `G_v^{ab}` keeps it. `Reduction.lean` uses
+it to compare the matroids of `G̃_v^{ab}` and of `(G_v)̃`. -/
 lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ)
     (he₀ : e₀ ∉ E(G)) :
     E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) := by
@@ -134,20 +109,9 @@ lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ 
     · rintro rfl; exact he₀ hl.edge_mem
     · rintro rfl; exact he₀ hl.edge_mem
 
-/-- **A forest of the multiplied vertex-removal is a forest of the multiplied splitting-off**
-(`lem:forest-surgery-split`, surgery crux, reverse acyclicity transport; Katoh–Tanigawa 2011
-Lemma 4.1). The reverse companion of `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`: any
-cycle-matroid-acyclic fiber set `F` of the multiplied vertex-removal `(G_v)̃ = ((G - v))̃` is
-acyclic in the multiplied splitting-off `G̃_v^{ab}`, whenever the short-circuit edge `e₀` is
-fresh (`e₀ ∉ E(G)`):
-`((G - v))̃.cycleMatroid.Indep F → ((G_v^{ab}))̃.cycleMatroid.Indep F`.
-
-This is the half of the surgery's acyclicity-preservation that transports *into* `G̃_v^{ab}`
-without rerouting: a forest of `G̃` reduced to the vertex-removal `G_v` (its `v`-edges
-dropped) is a forest of `G̃_v^{ab}` verbatim, because deleting `v` strictly precedes the
-short-circuit. No disjointness hypothesis is needed — `(G_v)̃` carries no `v`-incident fibers
-at all, so it sits below `G̃_v^{ab}` unconditionally (`mulTilde_removeVertex_le_splitOff`); the
-`v`-traversing tree-path that *does* need the `ã̃b` swap is the residual rerouting crux. -/
+/-- **A forest of `(G_v)̃` is a forest of `G̃_v^{ab}`** (a step of `lem:reroute-vfree-transport`):
+when `e₀ ∉ E(G)`, a set of edges independent in the cycle matroid of `(G_v)̃` is independent in that
+of `G̃_v^{ab}`, as `(G_v)̃` is a subgraph of `G̃_v^{ab}` (`mulTilde_removeVertex_le_splitOff`). -/
 lemma isAcyclicSet_mulTilde_splitOff_of_removeVertex {G : Graph α β} {v a b : α} {e₀ : β}
     {n : ℕ} (he₀ : e₀ ∉ E(G)) {F : Set (β × Fin (bodyHingeMult n))}
     (hF : ((G.removeVertex v).mulTilde n).cycleMatroid.Indep F) :
@@ -155,19 +119,13 @@ lemma isAcyclicSet_mulTilde_splitOff_of_removeVertex {G : Graph α β} {v a b : 
   rw [cycleMatroid_indep] at hF ⊢
   exact hF.mono (mulTilde_removeVertex_le_splitOff n he₀)
 
-/-- **Acyclicity transports across the short-circuit** (`lem:forest-surgery-split`, surgery
-crux; Katoh–Tanigawa 2011 Lemma 4.1). A fiber set `F` that is cycle-matroid-independent
-(acyclic) in the multiplied splitting-off `G̃_v^{ab}` and **disjoint from the fresh fiber**
-`ã̃b = edgeFiber e₀ n` is acyclic in the multiplied original `G̃ = (D-1)·G`:
-`(G̃_v^{ab}).cycleMatroid.Indep F → Disjoint F (edgeFiber e₀ n) → (G̃).cycleMatroid.Indep F`.
-
-This is the half of the surgery's acyclicity-preservation that needs no rerouting — the
-forests with `dᶠ(v) ≤ 1` at the degree-2 vertex `v`, which drop their single `v`-edge and
-survive verbatim inside `G̃`. The transport routes through `mulTilde_splitOff_deleteFiber_le`
-(deleting `ã̃b` from `G̃_v^{ab}` lands in `G̃`): `F`'s disjointness from `ã̃b` means `F` lives
-in that deleted subgraph, where acyclicity is monotone up to `G̃` (`IsAcyclicSet.mono`,
-`Graph.cycleMatroid_indep`). The rerouting half (the `dᶠ(v) = 2` forests swapping their two
-`v`-edges for one `ã̃b` copy) is the residual crux of the still-red surgery. -/
+/-- **A forest of `G̃_v^{ab}` with no copy of `ab` is a forest of `G̃`** (a step of
+`lem:reverse-pendant-insert` and `lem:edge-splitting`): a set `F` of edges independent in the cycle
+matroid of `G̃_v^{ab}` and disjoint from the copies `ẽ₀ = edgeFiber e₀ n` of the new edge is
+independent in that of `G̃`. It is a forest of `G̃_v^{ab}` with `ẽ₀` deleted, a subgraph of `G̃`
+(`mulTilde_splitOff_deleteFiber_le`). In the proof of KT Lemma 4.2 it applies to the forests of a
+partition of an independent set of `M(G̃_v^{ab})` that contain no copy of `ab`
+(`splitOff_reroute_packing`, `isAcyclicSet_mulTilde_insert_vfiber_of_splitOff`). -/
 lemma isAcyclicSet_mulTilde_of_splitOff_of_disjoint {G : Graph α β} {v a b : α} {e₀ : β}
     {n : ℕ} {F : Set (β × Fin (bodyHingeMult n))}
     (hF : ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep F)
@@ -175,7 +133,7 @@ lemma isAcyclicSet_mulTilde_of_splitOff_of_disjoint {G : Graph α β} {v a b : �
     (G.mulTilde n).cycleMatroid.Indep F := by
   rw [cycleMatroid_indep] at hF ⊢
   -- `F` is acyclic in `G̃_v^{ab}` and avoids the deleted fiber, hence acyclic in the
-  -- deleted subgraph `G̃_v^{ab} ＼ ã̃b`.
+  -- deleted subgraph `G̃_v^{ab} ＼ ẽ₀`.
   have hFdel : (((G.splitOff v a b e₀).mulTilde n).deleteEdges (edgeFiber e₀ n)).IsAcyclicSet F :=
       by
     refine ⟨?_, fun C hC hCF ↦ ?_⟩
@@ -183,42 +141,23 @@ lemma isAcyclicSet_mulTilde_of_splitOff_of_disjoint {G : Graph α β} {v a b : �
       exact Set.subset_sdiff.mpr ⟨hF.1, hdisj⟩
     · -- A cyclic walk in the deleted subgraph is one in `G̃_v^{ab}`, contradicting `hF`.
       exact hF.2 C (hC.of_le (deleteEdges_le)) hCF
-  -- Transport acyclicity up the subgraph `… ＼ ã̃b ≤ G̃`.
+  -- Transport acyclicity up the subgraph `… ＼ ẽ₀ ≤ G̃`.
   exact hFdel.mono (mulTilde_splitOff_deleteFiber_le n)
 
-/-! ## Degree of a vertex in a fiber set (`lem:forest-surgery-split`, degree substrate)
+/-! ## The edges of `G̃` at `v`
 
-The forest surgery of Katoh–Tanigawa 2011 Lemma 4.1 reroutes the `D` edge-disjoint
-forests `F₀, …, F_{D-1}` of an `M(G̃)`-independent set across a degree-2 vertex `v`.
-Per forest `Fᵢ`, the reroute is driven by the **degree of `v` in `Fᵢ`** — the number
-`dᶠ(v)` of fibers of `Fᵢ` incident to `v` in `G̃`. KT's surgery splits the forests by
-`dᶠ(v) ∈ {0, 1, 2}` (a forest meeting `v` at `0` fibers is untouched; at `1` fiber its
-`v`-edge is dropped; at `2` fibers its two `v`-edges are swapped for one `ãb` copy),
-and the `< D − 1` short-circuit-copy count `h' ≤ D − 2` is read off these per-forest
-degrees.
+The edges of `G̃` incident with `v` (`fiberAtVertex`) are the copies of the edges of `G` at `v`.
+Katoh and Tanigawa's proof of KT Lemma 4.1 (p. 660) changes each forest `F_i` of a partition at
+these edges, according to their number `d_{F_i}(v)` (`fiberDegree`); `forest_surgery_count`
+(`Reduction.lean`) uses `fiberAtVertex`. -/
 
-This subsection lands the **degree substrate** the surgery bottoms out on: the set of
-fibers of `G̃` incident to `v` (`fiberAtVertex`), the reduction of `G̃`-incidence to
-`G`-incidence at the underlying edge (`mulTilde_inc`), the per-fiber-set degree
-`fiberDegree`, and the count `|fibers at v in E(G̃)| = (D − 1)·|incident G-edges at v|`
-(`fiberAtVertex_inter_edgeSet_ncard`) — so a *degree-2* vertex `v` of `G` has exactly
-`2(D − 1)` incident fibers, the quantity the `h' ≤ D − 2` bound is counted against. The
-acyclicity-preserving reroute itself (a `G̃ᵥᵃᵇ`-cycle through `ãb` lifts to a
-`v`-traversing path of `G̃`) is landed as `isAcyclicSet_splitOff_reroute` (reroute wiring
-step 2); what remains of the still-red `lem:forest-surgery-split` is only the per-`D`-forest
-bookkeeping assembly. -/
-
-/-- **The fibers of `G̃` incident to a vertex `v`** (`lem:forest-surgery-split`, degree
-substrate): the set of fibers `p` of the multiplied graph `G̃ = (D-1)·G` with `v` as an
-endpoint. These are the fibers the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery reroutes
-when it short-circuits the two edges through a degree-2 vertex `v`. -/
+/-- **The edges of `G̃` at `v`**: the elements of `β × Fin (D - 1)` incident with `v` in
+`G̃ = (D - 1)·G`, the copies of the edges of `G` at `v` (`mem_fiberAtVertex`). -/
 def fiberAtVertex (G : Graph α β) (n : ℕ) (v : α) : Set (β × Fin (bodyHingeMult n)) :=
   {p | (G.mulTilde n).Inc p v}
 
-/-- **`G̃`-incidence reduces to `G`-incidence at the underlying edge**
-(`lem:forest-surgery-split`, degree substrate): a fiber `p` of `G̃ = (D-1)·G` is incident
-to a vertex `v` exactly when its underlying `G`-edge `p.1` is. Each parallel copy `p` of
-an edge `e` of `G` carries the same incidences as `e`. -/
+/-- **Incidence in `G̃`**: a copy `p` of an edge of `G` is incident with `v` in `G̃` exactly when
+the edge `p.1` is incident with `v` in `G` (`edgeMultiply_inc`). -/
 lemma mulTilde_inc {G : Graph α β} {n : ℕ} {p : β × Fin (bodyHingeMult n)} {v : α} :
     (G.mulTilde n).Inc p v ↔ G.Inc p.1 v := by
   rw [mulTilde, edgeMultiply_inc]
@@ -228,10 +167,8 @@ lemma mem_fiberAtVertex {G : Graph α β} {n : ℕ} {v : α} {p : β × Fin (bod
     p ∈ G.fiberAtVertex n v ↔ G.Inc p.1 v := by
   rw [fiberAtVertex, Set.mem_ofPred_eq, mulTilde_inc]
 
-/-- **The fibers at `v` are the copies of `v`'s incident edges**
-(`lem:forest-surgery-split`, degree substrate): inside `E(G̃)`, the fibers incident to
-`v` are exactly the fibers `ẽ` of the `G`-edges `e` incident to `v`. So the fibers at `v`
-in `E(G̃)` partition by the underlying incident edge. -/
+/-- **The edges of `G̃` at `v` are the copies of the edges of `G` at `v`**: within `E(G̃)`,
+`fiberAtVertex` is the set of the copies of the edges of `G` incident with `v`. -/
 lemma fiberAtVertex_inter_edgeSet {G : Graph α β} {n : ℕ} {v : α} :
     G.fiberAtVertex n v ∩ E(G.mulTilde n) =
       {p : β × Fin (bodyHingeMult n) | p.1 ∈ {e | G.Inc e v}} := by
@@ -240,13 +177,8 @@ lemma fiberAtVertex_inter_edgeSet {G : Graph α β} {n : ℕ} {v : α} :
     Set.mem_ofPred_eq]
   exact ⟨fun ⟨hinc, _⟩ ↦ hinc, fun hinc ↦ ⟨hinc, hinc.edge_mem⟩⟩
 
-/-- **Count of the fibers at `v`** (`lem:forest-surgery-split`, degree substrate;
-Katoh–Tanigawa 2011 Lemma 4.1). The number of fibers of `G̃ = (D-1)·G` incident to `v`
-inside `E(G̃)` is `(D − 1)` times the number of `G`-edges incident to `v`:
-`|fibers at v in E(G̃)| = bodyHingeMult n · |{e | G.Inc e v}|`. For a degree-2 vertex `v`
-of `G` (exactly two incident edges) this is `2(D − 1)`, the total fiber count the surgery
-distributes among the `D` forests and counts the `h' ≤ D − 2` short-circuit copies
-against. -/
+/-- **The number of edges of `G̃` at `v`**: `D - 1` times the number of edges of `G` at `v`, so
+`2(D - 1)` when two edges of `G` are incident with `v`. -/
 lemma fiberAtVertex_inter_edgeSet_ncard {G : Graph α β} {n : ℕ} {v : α} :
     (G.fiberAtVertex n v ∩ E(G.mulTilde n)).ncard
       = bodyHingeMult n * {e | G.Inc e v}.ncard := by
@@ -257,50 +189,35 @@ lemma fiberAtVertex_inter_edgeSet_ncard {G : Graph α β} {n : ℕ} {v : α} :
   rw [hprod, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin,
     mul_comm]
 
-/-- **The degree of `v` in a fiber set `F`** (`lem:forest-surgery-split`, degree
-substrate): the number `dᶠ(v)` of fibers of `F` incident to `v` in `G̃ = (D-1)·G`. This
-is the per-forest quantity Katoh–Tanigawa 2011 Lemma 4.1's surgery splits on
-(`dᶠ(v) ∈ {0, 1, 2}` when `v` is a degree-2 vertex), driving the reroute of each forest
-`Fᵢ` across the short-circuit `ab`. -/
+/-- **The number of edges at `v` of a set `F`**: the number of elements of `F` incident with `v` in
+`G̃`, Katoh and Tanigawa's `d_{F_i}(v)` for a forest `F_i` (KT p. 660). -/
 noncomputable def fiberDegree (G : Graph α β) (n : ℕ) (v : α)
     (F : Set (β × Fin (bodyHingeMult n))) : ℕ :=
   (F ∩ G.fiberAtVertex n v).ncard
 
-/-- **Degree monotonicity** (`lem:forest-surgery-split`, degree substrate): the degree of
-`v` in a subset `F' ⊆ F` is at most its degree in `F`. The surgery drops the `v`-edges of
-each forest, reducing `dᶠ(v)`; this is the monotonicity that bounds the rerouted degrees. -/
+/-- **The number of edges at `v` is monotone**: for `F' ⊆ F`, `F'` has at most as many edges at `v`
+as `F`. -/
 lemma fiberDegree_mono [Finite β] {G : Graph α β} {n : ℕ} {v : α}
     {F' F : Set (β × Fin (bodyHingeMult n))} (h : F' ⊆ F) :
     G.fiberDegree n v F' ≤ G.fiberDegree n v F :=
   Set.ncard_le_ncard (Set.inter_subset_inter_left _ h) (Set.toFinite _)
 
-/-- **The fiber-degree at `v` is bounded by the total fiber count at `v`**
-(`lem:forest-surgery-split`, degree substrate). For a fiber set `F ⊆ E(G̃)`, the degree
-`dᶠ(v)` is at most `(D − 1)·|incident G-edges at v|`; for a degree-2 vertex `v` this is
-`2(D − 1)`, so the per-forest degrees sum to at most `2(D − 1)` across the `D` forests of
-an independent set, the count the surgery's `h' ≤ D − 2` short-circuit bound rests on. -/
+/-- **A bound on the number of edges at `v` of a set**: for `F ⊆ E(G̃)`, the number of edges of `F`
+at `v` is at most `D - 1` times the number of edges of `G` at `v`
+(`fiberAtVertex_inter_edgeSet_ncard`). -/
 lemma fiberDegree_le [Finite β] {G : Graph α β} {n : ℕ} {v : α}
     {F : Set (β × Fin (bodyHingeMult n))} (hF : F ⊆ E(G.mulTilde n)) :
     G.fiberDegree n v F ≤ bodyHingeMult n * {e | G.Inc e v}.ncard := by
   rw [fiberDegree, ← fiberAtVertex_inter_edgeSet_ncard]
   refine Set.ncard_le_ncard (fun p hp ↦ ⟨hp.2, hF hp.1⟩) (Set.toFinite _)
 
-/-- **The `v`-free part of a `G̃`-forest transports verbatim into `G̃_v^{ab}`**
-(`lem:forest-surgery-split`, reroute wiring step 1; Katoh–Tanigawa 2011 Lemma 4.1). Given a
-cycle-matroid-acyclic (forest) fiber set `F` of the multiplied graph `G̃ = (D-1)·G` and a
-*fresh* short-circuit edge `e₀ ∉ E(G)`, the part of `F` avoiding the degree-2 vertex `v` —
-`F ∖ fiberAtVertex v`, the fibers KT's surgery keeps untouched (`dᶠ(v) = 0` forests entirely,
-and the surviving non-`v`-edges of the `dᶠ(v) ∈ {1,2}` forests) — is acyclic in the multiplied
-splitting-off `G̃_v^{ab}`.
-
-This is the half of KT 4.1's per-forest reroute that needs *no* `ã̃b` swap: every `v`-free
-fiber `p` of `F` is a copy of a `v`-avoiding edge of `G`, hence a fiber of the multiplied
-vertex-removal `(G_v)̃`. The `v`-free part is a subset of `F`, so acyclic in `G̃`; it lives in
-`E((G_v)̃) ⊆ E(G̃)`, so by `IsAcyclicSet.anti_inter` along `(G_v)̃ = ((G − v))̃ ≤ G̃`
-(`edgeMultiply_mono` of `deleteVerts_le`) it is acyclic already in `(G_v)̃`, and
-`isAcyclicSet_mulTilde_splitOff_of_removeVertex` lifts that into `G̃_v^{ab}`. The residual
-reroute crux — the `dᶠ(v) = 2` forest swapping its two `v`-edges for one `ã̃b` copy (a
-`v`-traversing tree-path lift) — is the still-open second wiring step. -/
+/-- **Removing the edges at `v` from a forest** (`lem:reroute-vfree-transport`; KT Lemma 4.1,
+p. 660): when `e₀ ∉ E(G)`, the edges of a forest `F` of `G̃` that are not incident with `v`,
+`F ∖ fiberAtVertex v`, form a forest of `G̃_v^{ab}`. They are edges of `(G_v)̃`, a subgraph of `G̃`
+(`edgeMultiply_mono`), and they contain no cycle there, as `F` contains none
+(`IsAcyclicSet.anti_inter`). As `(G_v)̃` is a subgraph of `G̃_v^{ab}`, they form a forest of
+`G̃_v^{ab}` (`isAcyclicSet_mulTilde_splitOff_of_removeVertex`). In the surgery, a forest with one
+edge at `v` loses it (`forest_surgery_count`). -/
 lemma isAcyclicSet_splitOff_of_diff_fiberAtVertex {G : Graph α β} {v a b : α} {e₀ : β}
     {n : ℕ} (he₀ : e₀ ∉ E(G)) {F : Set (β × Fin (bodyHingeMult n))}
     (hF : ((G.mulTilde n).cycleMatroid).Indep F) :
@@ -326,26 +243,17 @@ lemma isAcyclicSet_splitOff_of_diff_fiberAtVertex {G : Graph α β} {v a b : α}
   have := hanti.anti_inter hle
   rwa [Set.inter_eq_self_of_subset_right hsub] at this
 
-/-! ## At most one fresh copy per forest (`lem:forest-surgery-split`, reroute count substrate)
+/-! ## A forest has at most one copy of an edge
 
-The rerouting half of the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery swaps the two
-`v`-edges of each `dᶠ(v) = 2` forest for a *single* fresh copy of the short-circuit fiber
-`ã̃b = edgeFiber e₀ n`. The bound that makes the `< D - 1` short-circuit-copy count
-(`h' ≤ D - 2`) go through is that **each rerouted forest absorbs at most one `ã̃b` copy**:
-an acyclic fiber set of the multiplied splitting-off `G̃_v^{ab}` cannot contain two distinct
-parallel copies of `e₀`, since two parallel copies of the same edge between distinct
-endpoints `a ≠ b` form a 2-cycle. Aggregated across the `D` forests this caps the total
-`ã̃b`-copy count at `D`, and the per-forest single-copy fact is what drives the reroute's
-edge-disjointness bookkeeping (the residual rerouting transport itself — a `v`-traversing
-tree-path lift — is the still-open crux). -/
+Two copies of an edge whose ends differ form a cycle. So a forest of `G̃` has at most one copy of
+such an edge, which the proof of `lem:forest-surgery-count` uses for `eₐ` and `e_b`, and when
+`a ≠ b` a forest of `G̃_v^{ab}` has at most one copy of the new edge `ab`, which the proofs of
+`lem:reverse-reroute-cycle-lift` and `lem:edge-splitting` use. -/
 
-/-- **Two distinct parallel copies of the short-circuit edge form a 2-cycle**
-(`lem:forest-surgery-split`, reroute count substrate). When the splitting-off `G_v^{ab}` at
-a degree-2 vertex `v` with *distinct* neighbours `a ≠ b` (`a, b ≠ v`, `a, b ∈ V(G)`) inserts
-its fresh edge `e₀`, any two distinct copies `p ≠ q` of `e₀` in the multiplied splitting-off
-`G̃_v^{ab}` are a cycle-edge-set: `{p, q}` is `IsCycleSet` of `G̃_v^{ab}`. Both copies join
-the same endpoints `a, b` (`splitOff`'s fresh-edge disjunct), so the length-2 closed walk
-`a —p→ b —q→ a` is a cyclic walk. -/
+/-- **Two copies of `ab` form a cycle of `G̃_v^{ab}`** (a step of `lem:edge-splitting`): when
+`a ≠ b` are vertices of `G` other than `v`, two distinct copies `p ≠ q` of the new edge `e₀` form a
+cycle of `G̃_v^{ab}`. Both join `a` and `b` (`splitOff_isLink`), so `a —p→ b —q→ a` is a cyclic
+walk. -/
 lemma isCycleSet_pair_edgeFiber_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {n : ℕ}
     (hab : a ≠ b) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
     {p q : β × Fin (bodyHingeMult n)} (hp : p.1 = e₀) (hq : q.1 = e₀) (hpq : p ≠ q) :
@@ -372,17 +280,11 @@ lemma isCycleSet_pair_edgeFiber_splitOff {G : Graph α β} {v a b : α} {e₀ : 
   · -- No repeated vertices in the tail `[b, a]`: `a ≠ b`.
     simp [hab.symm]
 
-/-- **A forest of the multiplied splitting-off carries at most one short-circuit copy**
-(`lem:forest-surgery-split`, reroute count substrate; Katoh–Tanigawa 2011 Lemma 4.1). When the
-splitting-off `G_v^{ab}` at a degree-2 vertex `v` with distinct neighbours `a ≠ b`
-(`a, b ≠ v`, `a, b ∈ V(G)`) inserts its fresh edge `e₀`, any cycle-matroid-acyclic (forest)
-fiber set `F` of the multiplied splitting-off `G̃_v^{ab}` meets the fresh short-circuit fiber
-`ã̃b = edgeFiber e₀ n` in at most one element: `(F ∩ edgeFiber e₀ n).Subsingleton`.
-
-Two distinct copies of `e₀` form a 2-cycle (`isCycleSet_pair_edgeFiber_splitOff`), so a forest
-— containing no cycle — can keep at most one. This is the per-forest cap behind KT 4.1's
-`< D - 1` short-circuit-copy count: across the `D` rerouted forests the total number of
-`ã̃b` copies retained is at most `D`, each forest absorbing one swapped `v`-traversing path. -/
+/-- **A forest of `G̃_v^{ab}` has at most one copy of `ab`** (a step of
+`lem:reverse-reroute-cycle-lift` and `lem:edge-splitting`): when `a ≠ b` are vertices of `G` other
+than `v`, a set `F` of edges independent in the cycle matroid of `G̃_v^{ab}` meets the copies
+`ẽ₀ = edgeFiber e₀ n` of the new edge in at most one element, as two of them form a cycle
+(`isCycleSet_pair_edgeFiber_splitOff`). -/
 lemma fiber_inter_subsingleton_of_isAcyclicSet_splitOff {G : Graph α β}
     {v a b : α} {e₀ : β} {n : ℕ} (hab : a ≠ b) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G))
     (hbV : b ∈ V(G)) {F : Set (β × Fin (bodyHingeMult n))}
@@ -399,12 +301,9 @@ lemma fiber_inter_subsingleton_of_isAcyclicSet_splitOff {G : Graph α β}
   rw [← hCpq]
   exact Set.insert_subset hp.1 (Set.singleton_subset_iff.mpr hq.1)
 
-/-- **Two distinct parallel copies of an edge of `G` form a 2-cycle in `G̃`**
-(`lem:forest-surgery-count`, degree-cap substrate). If `e` is an edge of `G` linking two
-*distinct* vertices `x ≠ y`, any two distinct copies `p ≠ q` of `e` in the multiplied graph
-`G̃ = (D-1)·G` are a cycle-edge-set: `{p, q}` is `IsCycleSet` of `G̃`. Both copies link the
-same endpoints `x, y`, so `x —p→ y —q→ x` is a length-2 cyclic walk. (This is the plain-`G̃`
-analogue of `isCycleSet_pair_edgeFiber_splitOff`; it caps each forest's `v`-degree at `2`.) -/
+/-- **Two copies of an edge form a cycle of `G̃`** (a step of `lem:forest-surgery-count`): if `e`
+joins distinct vertices `x ≠ y` of `G`, two distinct copies `p ≠ q` of `e` form a cycle of `G̃`,
+`x —p→ y —q→ x`, as in `isCycleSet_pair_edgeFiber_splitOff`. -/
 lemma isCycleSet_pair_edgeFiber_mulTilde {G : Graph α β} {n : ℕ} {e : β} {x y : α}
     (hxy : x ≠ y) (hl : G.IsLink e x y)
     {p q : β × Fin (bodyHingeMult n)} (hp : p.1 = e) (hq : q.1 = e) (hpq : p ≠ q) :
@@ -422,11 +321,10 @@ lemma isCycleSet_pair_edgeFiber_mulTilde {G : Graph α β} {n : ℕ} {e : β} {x
   · simp
   · simp [hxy.symm]
 
-/-- **A `G̃`-forest holds at most one copy of any single edge** (`lem:forest-surgery-count`,
-degree-cap substrate). For a cycle-matroid-acyclic (forest) fiber set `F` of `G̃` and an edge
-`e` of `G` between *distinct* endpoints, `F` meets the fiber `ẽ = edgeFiber e n` in at most one
-element. Two distinct copies of `e` form a 2-cycle (`isCycleSet_pair_edgeFiber_mulTilde`),
-which a forest cannot contain. -/
+/-- **A forest of `G̃` has at most one copy of an edge** (a step of `lem:forest-surgery-count`): if
+`e` joins distinct vertices of `G`, a set `F` of edges independent in the cycle matroid of `G̃`
+meets the copies `ẽ = edgeFiber e n` in at most one element (`isCycleSet_pair_edgeFiber_mulTilde`).
+So a forest has at most one edge in `ẽₐ` and at most one in `ẽ_b`. -/
 lemma fiber_inter_subsingleton_of_isAcyclicSet_mulTilde {G : Graph α β} {n : ℕ} {e : β}
     {x y : α} (hxy : x ≠ y) (hl : G.IsLink e x y) {F : Set (β × Fin (bodyHingeMult n))}
     (hF : (G.mulTilde n).cycleMatroid.Indep F) : (F ∩ edgeFiber e n).Subsingleton := by
@@ -439,37 +337,22 @@ lemma fiber_inter_subsingleton_of_isAcyclicSet_mulTilde {G : Graph α β} {n : �
   rw [← hCpq]
   exact Set.insert_subset hp.1 (Set.singleton_subset_iff.mpr hq.1)
 
-/-! ## The degree-2 reroute preserves acyclicity (`lem:forest-surgery-split`, reroute wiring step 2)
+/-! ## Replacing the two edges at `v` by a copy of `ab` (`lem:reroute-cycle-lift`)
 
-The genuine combinatorial crux of the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery: a balanced
-forest `F` of `G̃` that uses **both** of its two `v`-edges (`dᶠ(v) = 2`: the `va`-copy `pa` and
-the `vb`-copy `pb`) trades them for a single short-circuit copy `r` of the fresh edge `e₀`. The
-rerouted forest `(F ∖ {pa, pb}) ∪ {r}` must stay acyclic in the multiplied splitting-off
-`G̃_v^{ab}`.
+Katoh and Tanigawa's proof of KT Lemma 4.1 (p. 660) replaces the two edges `pa` and `pb` at `v` of a
+forest `F` of `G̃` by a copy `r` of the new edge `ab`, and `(F ∖ {pa, pb}) ∪ {r}` is a forest of
+`G̃_v^{ab}`. A cycle `C` of `G̃_v^{ab}` in that set gives a cycle of `G̃` in `F`. If `C` avoids `r`,
+it is a cycle of `G̃_v^{ab}` without copies of `ab`, so a cycle of `G̃`
+(`mulTilde_splitOff_deleteFiber_le`). Otherwise `C` passes through `r` once, and the rest of `C` is
+a walk from `b` to `a` with edges in `F ∖ {pa, pb}` (`exists_directedWalk_of_isCyclicWalk_isLink`).
+With `pa` and `pb` it closes into a closed trail of `G̃` with edges in `F`, which contains a cycle
+(`IsTour.exists_isCyclicWalk`). -/
 
-The acyclicity rests on a **cycle-lift**: any cycle `C` of `G̃_v^{ab}` whose edges lie in
-`(F ∖ {pa, pb}) ∪ {r}` lifts to a cyclic structure of `G̃` inside `F`, contradicting `F`'s
-acyclicity. Two cases. If `C` avoids `r`, its edges lie in `F ∖ {pa, pb}` (so avoid the fresh
-fiber), and deleting the fresh fiber from `G̃_v^{ab}` lands in `G̃`
-(`mulTilde_splitOff_deleteFiber_le`), so `C` is already a cycle of `G̃` in `F`. If `C` uses `r` —
-exactly once, as a trail has distinct edges — rotate `C` so `r` is its first edge,
-`C = cons x r w'` with `{x, w'.first} = {a, b}`. The fresh edge `r` joins `a, b` in `G̃_v^{ab}`;
-substituting the `v`-traversing 2-path `a —pa— v —pb— b` of `G̃` for `r` turns `C` into a closed
-`G̃`-trail (the substituted `pa, pb ∉ E(w')`, distinct from each other and from `w'`'s edges), and
-a closed trail contains a cycle (`IsTour.exists_isCyclicWalk`) whose edges are a sublist — hence
-still inside `F = (F ∖ {pa, pb}) ∪ {pa, pb}`. Either way `F`
-carries a `G̃`-cycle, contradiction. This is the last open wiring step; with it the per-forest
-reroute map and the deficiency-relation assembly close `lem:forest-surgery-split`. -/
-
-/-- **Rotate a cyclic walk to a directed sub-walk across one of its edges** (shared reroute
-combinator, `lem:forest-surgery-split` / `lem:edge-splitting`). A cyclic walk `C` of `H`
-containing an edge `e` with `H.IsLink e s t` yields a walk `w` running **from `t` to `s`** that
-avoids `e`, keeps distinct edges (`w.edge.Nodup`), and whose edge set sits inside `C`'s. This
-folds the rotate-to-first-edge step (`exists_rotate_firstEdge_eq` → `nonempty_iff_exists_cons` →
-`cons_isWalk_iff`/`cons_isClosed_iff` → `eq_and_eq_or_eq_and_eq`) together with the
-reverse-or-not reorientation into one brick — shared by the forward reroute
-`isAcyclicSet_splitOff_reroute` and the reverse swap `isAcyclicSet_mulTilde_of_splitOff_reroute`
-(the latter using it twice). -/
+/-- **A cycle through an edge gives a walk between its ends** (a step of `lem:reroute-cycle-lift`
+and `lem:reverse-reroute-cycle-lift`): if a cyclic walk `C` of `H` contains an edge `e` that joins
+`s` and `t`, there is a walk `w` of `H` from `t` to `s` whose edges are distinct edges of `C` other
+than `e`. It is `C`, rotated to begin with `e` (`WList.exists_rotate_firstEdge_eq`), without `e`,
+and reversed when `C` traverses `e` from `t` to `s`. -/
 private lemma exists_directedWalk_of_isCyclicWalk_isLink {γ : Type*} {H : Graph α γ}
     {C : WList α γ} {e : γ} {s t : α}
     (hC : H.IsCyclicWalk C) (heC : e ∈ C.edgeSet) (hlink : H.IsLink e s t) :
@@ -507,21 +390,11 @@ private lemma exists_directedWalk_of_isCyclicWalk_isLink {γ : Type*} {H : Graph
     · rw [WList.reverse_edge]; exact List.nodup_reverse.mpr hw'nodup
     · rw [WList.reverse_edge]; simpa using henw'
 
-/-- **The degree-2 reroute preserves acyclicity** (`lem:forest-surgery-split`, reroute wiring
-step 2; Katoh–Tanigawa 2011 Lemma 4.1 p.660). Let `v` be a degree-2 vertex of `G` with distinct
-neighbours `a ≠ b` (`a, b ≠ v`, `a, b ∈ V(G)`) and `e₀ ∉ E(G)` the fresh short-circuit edge. Let
-`F` be a `(G̃).cycleMatroid`-independent (forest) fiber set whose two `v`-incident fibers are
-exactly `pa` (a `v—a` copy) and `pb` (a `v—b` copy) — the `dᶠ(v) = 2` case of the surgery — and
-let `r` be any copy of `e₀` (`r.1 = e₀`). Then the **rerouted forest** `(F ∖ {pa, pb}) ∪ {r}`,
-obtained by swapping the two `v`-edges for the single short-circuit copy `r`, is acyclic in the
-multiplied splitting-off `G̃_v^{ab}`:
-`((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep (insert r (F \ {pa, pb}))`.
-
-This is the rerouting half of KT 4.1's per-forest acyclicity preservation — the half
-`isAcyclicSet_splitOff_of_diff_fiberAtVertex` (reroute wiring step 1, the `v`-free part) does
-*not* cover. The proof lifts a hypothetical `G̃_v^{ab}`-cycle through `r` to a `G̃`-cycle inside
-`F` (substituting `r` by the 2-path through `v`), contradicting acyclicity; see the section
-preamble. -/
+/-- **Replacing the two edges at `v` of a forest by a copy of `ab`** (`lem:reroute-cycle-lift`; KT
+Lemma 4.1, p. 660): let `a, b ≠ v` be vertices of `G`, let `e₀ ∉ E(G)`, and let `F` be a forest of
+`G̃` that contains `pa`, which joins `v` and `a`, and `pb ≠ pa`, which joins `v` and `b`, as its
+only edges incident with `v`. Then for a copy `r` of `e₀`, `(F ∖ {pa, pb}) ∪ {r}` is a forest of
+`G̃_v^{ab}`, by the argument of the section. Neither the degree of `v` nor `a ≠ b` is assumed. -/
 lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {n : ℕ}
     (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
     {F : Set (β × Fin (bodyHingeMult n))} {pa pb r : β × Fin (bodyHingeMult n)}
@@ -541,7 +414,7 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
     rw [hK, mulTilde_isLink] at hpa; exact hpa.edge_mem
   have hpbE : pb.1 ∈ E(G) := by
     rw [hK, mulTilde_isLink] at hpb; exact hpb.edge_mem
-  -- `pa, pb` are not copies of the fresh edge.
+  -- `pa, pb` are not copies of `e₀`.
   have hpane₀ : pa.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpaE)
   have hpbne₀ : pb.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpbE)
   have hrE : r ∈ E(Ksp) := by
@@ -576,7 +449,7 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
     (fun he ↦ hpbne₀ (by rw [he, hr]))
     (fun ⟨_, hne⟩ ↦ hne (Or.inr rfl))
   by_cases hrC : r ∈ C.edgeSet
-  · -- `C` uses the short-circuit copy `r`: substitute the 2-path through `v`.
+  · -- `C` uses the copy `r` of `ab`: substitute the 2-path through `v`.
     -- `r` joins `a, b` in `Ksp`; rotate + reorient `C` to a walk `w` running `b → a` off `r`.
     have hrlink : Ksp.IsLink r a b := by
       rw [hKsp, mulTilde_isLink, splitOff_isLink]
@@ -588,7 +461,7 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
       intro p hp
       have hpS : p ∈ S := hCS (hw_sub (WList.mem_edgeSet_iff.mpr hp))
       exact (Set.mem_insert_iff.mp hpS).resolve_left (fun h ↦ hr_nw (h ▸ hp))
-    -- `w` avoids the fresh fiber, hence lifts to a `K = G̃`-walk.
+    -- `w` has no copy of `e₀`, hence lifts to a `K = G̃`-walk.
     have hw_fresh : Disjoint w.edgeSet (edgeFiber e₀ n) := by
       rw [Set.disjoint_left]; intro p hp hpf
       have hp1 : p.1 = e₀ := hpf
@@ -622,7 +495,7 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
     obtain ⟨T, hT, hTF⟩ := hkey
     obtain ⟨C', hC', hsub⟩ := hT.exists_isCyclicWalk
     exact hF.2 C' hC' (hsub.edge_subset.trans hTF)
-  · -- `C` avoids `r`, so its edges lie in `F ∖ {pa, pb}` and avoid the fresh fiber;
+  · -- `C` avoids `r`, so its edges lie in `F ∖ {pa, pb}` and are not copies of `e₀`;
     -- `C` is then a cycle of `K = G̃` inside `F`, contradicting `hF`.
     have hCF : C.edgeSet ⊆ F := by
       intro p hp
@@ -644,52 +517,23 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
         (mulTilde_splitOff_deleteFiber_le n)
     exact hF.2 C hCK hCF
 
-/-! ## The reverse degree-2 swap preserves acyclicity (`lem:edge-splitting`, KT 4.2 forest core)
+/-! ## Replacing a copy of `ab` by the two edges at `v` (`lem:reverse-reroute-cycle-lift`)
 
-The reverse companion of `isAcyclicSet_splitOff_reroute`, and the genuinely new engine of the
-edge-splitting extension (Katoh–Tanigawa 2011 Lemma 4.2, the forest core of the all-`k` layer).
-Where the forward reroute trades a degree-2 forest's two `v`-edges for one short-circuit copy,
-the reverse swap **undoes** that move: a forest `F'` of the multiplied splitting-off `G̃_v^{ab}`
-that uses a short-circuit copy `r` of the fresh edge `e₀` trades it back for the two `v`-edges
-`pa` (a `v—a` copy) and `pb` (a `v—b` copy). The swapped set `(F' ∖ {r}) ∪ {pa, pb}` must stay
-acyclic in the multiplied original `G̃ = (D−1)·G`.
+Katoh and Tanigawa's proof of KT Lemma 4.2 (pp. 660–661) reverses the change: a forest `F'` of
+`G̃_v^{ab}` that contains a copy `r` of `ab` loses `r` and gains a copy `pa` of the edge joining `v`
+and `a` and a copy `pb` of the edge joining `v` and `b`. As `F'` has at most one copy of `ab`
+(`fiber_inter_subsingleton_of_isAcyclicSet_splitOff`), the edges of `F' ∖ {r}` are edges of `(G_v)̃`
+(`edgeSet_mulTilde_splitOff_diff_fiber`), none of them incident with `v`. So a cycle `C` of `G̃`
+with edges in `(F' ∖ {r}) ∪ {pa, pb}` uses both `pa` and `pb`, or neither. If neither, `C` is a
+cycle of `(G_v)̃`, so of `G̃_v^{ab}`, with edges in `F'`. If both, the rest of `C` is a walk from
+`a` to `b` with edges in `F' ∖ {r}`, and with `r` it closes into a closed trail of `G̃_v^{ab}` with
+edges in `F'`, which contains a cycle. Both are impossible. -/
 
-The acyclicity rests on the dual cycle-lift: any cycle `C` of `G̃` whose edges lie in
-`(F' ∖ {r}) ∪ {pa, pb}` lifts to a cyclic structure of `G̃_v^{ab}` inside `F'`, contradicting
-`F'`'s acyclicity. The fresh vertex `v` is incident in the swapped set to exactly `pa, pb`
-(every fiber of `F'` lives in `E(G̃_v^{ab})`, which omits `v`), so a cycle either avoids both
-`v`-edges or uses both — using exactly one would leave `v` with degree 1, impossible in a cycle.
-If `C` avoids both, its edges lie in `F' ∖ {r} ⊆ E((G_v)̃)` (the short-circuit copies of `F'`
-are a subsingleton, so removing `r` clears the fresh fiber), and `(G_v)̃ ≤ G̃_v^{ab}` lifts `C`
-into `G̃_v^{ab}` inside `F'`. If `C` uses both, rotate it so `pa` is its first edge; its last
-edge is forced to be `pb` (the only other `v`-edge in the swapped set, reached because `C`
-closes at `v`), so `C = (a —pa— v —pb— b) ⋯ a` with the middle stretch `w₂` from `a` to `b`
-avoiding `v`. Substituting the short-circuit copy `r` (which joins `a, b` in `G̃_v^{ab}`) for the
-`v`-traversing 2-path turns `C` into a closed `G̃_v^{ab}`-trail whose edges sit inside `F'`,
-hence contains a `G̃_v^{ab}`-cycle inside `F'`. Either way `F'` carries a cycle, contradiction.
-
-This is the brick the all-`k` edge-splitting extension `splitOff_indep_extend_of_fiber_lt`
-(KT 4.2(i)/(ii)) runs on: each split-side forest using one `e₀`-copy is converted up to a
-`G̃`-forest using the two `v`-edges. Its companion pendant-insert brick — a `v`-avoiding
-`G̃_v^{ab}`-forest absorbing a single `v`-edge copy — composes the landed acyclicity transport
-`isAcyclicSet_mulTilde_of_splitOff_of_disjoint` with `acyclicSet_insert_vfiber_of_not_inc`. -/
-
-/-- **The reverse degree-2 swap preserves acyclicity** (`lem:edge-splitting`, KT 4.2 forest
-core; Katoh–Tanigawa 2011 Lemma 4.2 p.660). The reverse companion of
-`isAcyclicSet_splitOff_reroute`. Let `v` be a vertex of `G` with distinct neighbours `a ≠ b`
-(`a, b ≠ v`, `a, b ∈ V(G)`) and `e₀ ∉ E(G)` the fresh short-circuit edge. Let `F'` be a
-`(G̃_v^{ab}).cycleMatroid`-independent (forest) fiber set of the multiplied splitting-off that
-contains a copy `r` of `e₀` (`r.1 = e₀`, `r ∈ F'`), and let `pa, pb` be a `v—a` copy and a
-`v—b` copy of `G̃` (necessarily distinct, since `a ≠ b`). Then the **reverse-swapped forest**
-`(F' ∖ {r}) ∪ {pa, pb}`, obtained by trading the short-circuit copy `r` for the two `v`-edges,
-is acyclic in the multiplied original `G̃ = (D−1)·G`:
-`(G.mulTilde n).cycleMatroid.Indep (insert pa (insert pb (F' \ {r})))`.
-
-This is the rerouting half of KT 4.2's per-forest acyclicity preservation, undoing the forward
-`isAcyclicSet_splitOff_reroute` (the swap and the cycle-lift run in the opposite direction). The
-proof lifts a hypothetical `G̃`-cycle through `pa, pb` to a `G̃_v^{ab}`-cycle inside `F'`
-(substituting the 2-path through `v` by `r`), contradicting acyclicity; see the section
-preamble. -/
+/-- **Replacing a copy of `ab` in a forest by the two edges at `v`**
+(`lem:reverse-reroute-cycle-lift`; KT Lemma 4.2, pp. 660–661): let `a ≠ b` be vertices of `G` other
+than `v`, let `e₀ ∉ E(G)`, let `F'` be a forest of `G̃_v^{ab}` that contains a copy `r` of `e₀`, and
+let `pa` and `pb` be edges of `G̃` that join `v` to `a` and to `b`. Then `(F' ∖ {r}) ∪ {pa, pb}` is
+a forest of `G̃`, by the argument of the section. The degree of `v` is not assumed. -/
 lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {n : ℕ}
     (hab : a ≠ b) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
     {F' : Set (β × Fin (bodyHingeMult n))} {pa pb r : β × Fin (bodyHingeMult n)}
@@ -702,7 +546,7 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
   set K := G.mulTilde n with hK
   set Ksp := (G.splitOff v a b e₀).mulTilde n with hKsp
   rw [cycleMatroid_indep] at hF'
-  -- `pa, pb` are not copies of the fresh edge (their `G`-edges live in `E(G)`, but `e₀` doesn't).
+  -- `pa, pb` are not copies of `e₀` (their edges of `G` lie in `E(G)`, but `e₀` does not).
   have hpaE : pa.1 ∈ E(G) := by rw [hK, mulTilde_isLink] at hpa; exact hpa.edge_mem
   have hpbE : pb.1 ∈ E(G) := by rw [hK, mulTilde_isLink] at hpb; exact hpb.edge_mem
   have hpane₀ : pa.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpaE)
@@ -710,7 +554,7 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
   -- `pa, pb ∈ E(K)`.
   have hpaEK : pa ∈ E(K) := hpa.edge_mem
   have hpbEK : pb ∈ E(K) := hpb.edge_mem
-  -- The fresh-fiber-avoiding core `F' ∖ {r}` lives in `E((G_v)̃)` (a forest holds ≤ 1 `e₀`-copy).
+  -- The core `F' ∖ {r}` has no copy of `e₀` (`F'` has at most one), so it lies in `E((G_v)̃)`.
   have hsubsing : (F' ∩ edgeFiber e₀ n).Subsingleton :=
     fiber_inter_subsingleton_of_isAcyclicSet_splitOff hab ha hb haV hbV
       (by rw [cycleMatroid_indep]; exact hF')
@@ -768,7 +612,7 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
     -- Rotate + reorient `C` to a walk `wab` running `a → v` off `pa` (`hpa : IsLink pa v a`).
     obtain ⟨wab, hwab_walk, hwab_first, hwab_last, hwab_sub, hwab_nodup, hpa_nwab⟩ :=
       exists_directedWalk_of_isCyclicWalk_isLink hCcyc hpaC hpa
-    -- `wab` is nonempty (`a ≠ v`), so its last edge `pb := wab.lastEdge` exists.
+    -- `wab` is nonempty (`a ≠ v`), so its last edge `qpb := wab.lastEdge` exists.
     have hwab_ne : wab.Nonempty := by
       by_contra hnil
       rw [WList.not_nonempty_iff] at hnil
@@ -786,7 +630,6 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
     have hconcat_walk : K.IsWalk (w₂.concat qpb v) := hwab_eq ▸ hwab_walk
     rw [concat_isWalk_iff] at hconcat_walk
     obtain ⟨hw₂_walk, hqpb_link⟩ := hconcat_walk
-    -- `qpb` is `v`-incident, so `qpb = pa ∨ qpb = pb`; it is `≠ pa` (nodup), so `qpb = pb`.
     have hqpb_inc : K.Inc qpb v := hqpb_link.symm.inc_left
     -- `qpb` is `v`-incident, so `qpb = pa ∨ qpb = pb`; it is `≠ pa` (`pa ∉ wab.edge`), so `= pb`.
     have hqpb_eq : qpb = pb :=
@@ -831,11 +674,11 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
       hw₂_walk.isWalk_le_of_nonempty hle_Gv_K
         (by intro p hp; exact hw₂_edgeSet_Gv hp) hw₂_ne
     have hw₂_Ksp : Ksp.IsWalk w₂ := hw₂_Gv.of_le (mulTilde_removeVertex_le_splitOff n he₀)
-    -- The short-circuit copy `r` joins `a, b` in `Ksp`.
+    -- The copy `r` of `ab` joins `a, b` in `Ksp`.
     have hrlink : Ksp.IsLink r a b := by
       rw [hKsp, mulTilde_isLink, splitOff_isLink]
       exact Or.inr ⟨hr, ha, hb, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩
-    -- `r ∉ w₂.edge` (it lives in the fresh fiber, the core avoids it).
+    -- `r ∉ w₂.edge` (it is a copy of `e₀`, which the core avoids).
     have hr_nw₂ : r ∉ w₂.edge := fun h ↦ (hw₂_edge_core r h).2 rfl
     -- Build the closed `Ksp`-trail `T = w₂.concat r a`: `a → ⋯ → b —r— a`.
     set T := w₂.concat r a with hT
@@ -895,22 +738,13 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
       ⟨hC_Gv_tour.of_le (mulTilde_removeVertex_le_splitOff n he₀), hCcyc.nodup⟩
     exact hF'.2 C hC_Ksp_cyc (fun p hp ↦ (hCcore p hp).1)
 
-/-- **A split-off forest absorbs a `v`-edge copy as a pendant** (`lem:edge-splitting`, KT 4.2
-forest core, the pendant-insert companion to `isAcyclicSet_mulTilde_of_splitOff_reroute`;
-Katoh–Tanigawa 2011 Lemma 4.2 p.660). Let `F` be a `(G̃_v^{ab}).cycleMatroid`-independent
-(forest) fiber set of the multiplied splitting-off that **avoids the fresh short-circuit fiber**
-`ã̃b = edgeFiber e₀ n` (`Disjoint F (ã̃b)`, with `e₀ ∉ E(G)` fresh), and let `x` be a copy of a
-`v`-incident `G`-edge linking `v` to a distinct vertex `w` (`(G̃).IsLink x v w`, `w ≠ v`). Then
-`insert x F` is acyclic in the multiplied original `G̃ = (D−1)·G`:
-`(G.mulTilde n).cycleMatroid.Indep (insert x F)`.
-
-This is the brick KT 4.2's edge-splitting extension `splitOff_indep_extend_of_fiber_lt` runs on
-for the forests that pick up a single `v`-edge (the `h' < i ≤ D−1` forests, which gain one
-`eₐ`-copy, and `F_D`, which gains one `e_b`-copy). It composes the landed acyclicity transport
-`isAcyclicSet_mulTilde_of_splitOff_of_disjoint` (a fresh-fiber-avoiding `G̃_v^{ab}`-forest is a
-`G̃`-forest) with the redistribution kernel `acyclicSet_insert_vfiber_of_not_inc` (a `v`-avoiding
-`G̃`-forest absorbs a `v`-edge as a pendant): the transported `F` avoids `v` (it lives in
-`(G_v)̃`, which omits `v`), so the pendant insert applies. -/
+/-- **Adding an edge at `v` to a forest with no copy of `ab`** (`lem:reverse-pendant-insert`; KT
+Lemma 4.2, pp. 660–661): when `e₀ ∉ E(G)`, let `F` be a forest of `G̃_v^{ab}` disjoint from the
+copies `ẽ₀ = edgeFiber e₀ n` of the new edge, and let `x` be an edge of `G̃` that joins `v` to a
+vertex `w ≠ v`. Then `insert x F` is a forest of `G̃`. The set `F` is a forest of `G̃`
+(`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`) whose edges are edges of `(G_v)̃`
+(`edgeSet_mulTilde_splitOff_diff_fiber`), so none of them is incident with `v`, and
+`acyclicSet_insert_vfiber_of_not_inc` (`lem:acyclic-insert-vfiber`) adds `x` to it. -/
 lemma isAcyclicSet_mulTilde_insert_vfiber_of_splitOff {G : Graph α β} {v a b : α} {e₀ : β}
     {n : ℕ} (he₀ : e₀ ∉ E(G)) {F : Set (β × Fin (bodyHingeMult n))}
     {x : β × Fin (bodyHingeMult n)} {w : α}
@@ -938,40 +772,31 @@ lemma isAcyclicSet_mulTilde_insert_vfiber_of_splitOff {G : Graph α β} {v a b :
     · exact hzv hzw
   exact acyclicSet_insert_vfiber_of_not_inc hFK hxvw hwv hFv
 
-/-! ## The edge-splitting extension (`lem:edge-splitting`, KT Lemma 4.2)
+/-! ## KT Lemma 4.2 (`lem:edge-splitting`)
 
-The count-level assembly of the reverse forest surgery: Katoh–Tanigawa 2011 Lemma 4.2
-(pp. 660–661). Where the forward surgery (`forest_surgery_count`, KT Lemma 4.1) reroutes a
-forest packing of `M(G̃)` across the degree-2 vertex `v` *down* to one of the multiplied
-splitting-off `M(G̃_v^{ab})`, this is the *up* direction: an independent set `I'` of
-`M(G̃_v^{ab})` extends to an independent set `I` of `M(G̃)`, recovering the `v`-edges that
-the splitting-off short-circuited away.
+KT Lemma 4.2 (pp. 660–661) is the converse of KT Lemma 4.1 for edge-splitting: an independent set
+`I'` of `M(G̃_v^{ab})` extends to an independent set `I` of `M(G̃)`. The construction
+(`splitOff_reroute_packing`) partitions `I'` into `D` pairwise disjoint forests of `G̃_v^{ab}`
+(`matroidMG_indep_iff_exists_forest_packing`, made disjoint by `disjointed`). A forest that contains
+the copy `(e₀, j)` of `ab` trades it for `(eₐ, j)` and `(e_b, j)`
+(`isAcyclicSet_mulTilde_of_splitOff_reroute`). If `I'` contains the `D - 1` copies of `ab` (KT
+Lemma 4.2(ii)), the one other forest is a forest of `G̃` as it is
+(`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`), and `|I| + 1 = |I'| + D`. If it contains
+`h' < D - 1` of them (KT Lemma 4.2(i)), each forest with no copy of `ab` but one gains a copy
+`(eₐ, j)` with `(e₀, j) ∉ I'`, and the last one a copy `(e_b, j)` with `(e₀, j) ∉ I'`
+(`isAcyclicSet_mulTilde_insert_vfiber_of_splitOff`), so `|I| = |I'| + D`, and `I` has `h' + 1`
+copies of `e_b`. In both cases `I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ẽ₀`, an equation that `lem:edge-splitting`
+adds to Katoh and Tanigawa's statement, as their proof of KT Lemma 4.3 relies on it (p. 661).
+`Reduction.lean` uses the lemma for KT Lemmas 4.3(ii), 4.4 and 4.8(ii)
+(`lem:splitoff-kdof-criterion`, `lem:removal-deficiency-equality`, `lem:reduction-step-pos`). -/
 
-The construction partitions `I'` into `D = bodyBarDim n` edge-disjoint forests of
-`G̃_v^{ab}` (`matroidMG_indep_iff_exists_forest_packing`, made disjoint by the `disjointed`
-pattern), then trades each fresh short-circuit copy `r` of `ã̃b = edgeFiber e₀ n` for the two
-`v`-edges it short-circuits — a `va`-copy `(eₐ, r.2)` and a `vb`-copy `(e_b, r.2)` — via the
-reverse cycle-lift `isAcyclicSet_mulTilde_of_splitOff_reroute`; the one forest holding no
-`ã̃b`-copy transports down verbatim (`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`). Each
-rerouted forest grows by exactly one (`−1` for `r`, `+2` for the recovered `v`-edges), the
-pendant forest is unchanged, and the inserted copies are distinct across forests (distinct
-`r.2`), so the union is again a `D`-forest packing — `M(G̃)`-independent.
-
-This subsection ships the **full-fiber case** (KT 4.2(ii), `h' = D − 1`): when the whole
-fresh fiber `ã̃b` lies in `I'`, all `D − 1` of its copies are recovered, giving the count
-`|I| + 1 = |I'| + D` and the *survivor conjunct* `I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ã̃b` (the two sides
-agree off the three special fibers). The survivor conjunct carries the 4.8(ii) minimality
-transport (a base avoiding `ẽ` extends to a base still avoiding `ẽ`). -/
-
-/-- **Shared reroute-packing engine** for the edge-splitting extension (`lem:edge-splitting`,
-KT Lemma 4.2; Katoh–Tanigawa 2011 pp. 660–661). The common spine of both arms of the extension
-(`splitOff_indep_extend_of_fiber_subset` / `_lt`): disjointify the `M(G̃_v^{ab})`-forest packing
-of `I'`, reroute each fresh short-circuit copy back to its two `v`-edges, and — when
-`(I' ∩ ã̃b).ncard < D − 1` (room to spare) — absorb the copy-free forests' surplus into fresh
-`eₐ`/`e_b` pendants. Produces the `M(G̃)`-independent set `I`, the survivor conjunct
-`I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ã̃b`, and both arms' counts guarded by the fiber-fullness dichotomy
-(`= D − 1` full-fiber vs `< D − 1` partial-fiber). Both public arms are thin wrappers selecting
-the relevant guard. Private; see the two wrappers for the KT-4.2(ii)/(i) statements. -/
+/-- **The construction of KT Lemma 4.2** (a step of `lem:edge-splitting`; Katoh–Tanigawa 2011,
+pp. 660–661): let `D ≥ 2`, let the edges `eₐ ≠ e_b` join `v` to `a ≠ b`, both other than `v`, let
+`e₀ ∉ E(G)`, and let `I'` be independent in `M(G̃_v^{ab})`. Then `M(G̃)` has an independent set `I`
+with `I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ẽ₀`, such that `|I| + 1 = |I'| + D` if `I'` has `D - 1` copies of `ab`,
+and `|I| = |I'| + D`, with `h' + 1` copies of `e_b` in `I`, if it has `h' < D - 1`. The construction
+is the section's. Both cases share the partition of `I'` and the final count, and each pin of
+`lem:edge-splitting` takes one of them. -/
 private theorem splitOff_reroute_packing [DecidableEq β] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
@@ -991,7 +816,7 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite β]
   have hbV : b ∈ V(G) := hlb.right_mem
   have heane₀ : eₐ ≠ e₀ := fun h ↦ he₀ (h ▸ hla.edge_mem)
   have hebne₀ : e_b ≠ e₀ := fun h ↦ he₀ (h ▸ hlb.edge_mem)
-  -- Disjointify a forest packing of `I'` into a genuine partition.
+  -- Make a forest packing of `I'` pairwise disjoint.
   obtain ⟨hI'E, Fs₀, hcover₀, hindep₀⟩ :=
     (matroidMG_indep_iff_exists_forest_packing (G.splitOff v a b e₀) n).mp hI'
   set Ds := disjointed Fs₀ with hDs
@@ -1456,18 +1281,12 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite β]
     · intro hg; exact absurd hg (by omega)
     · intro _; exact ⟨hcount, heb⟩
 
-/-- **The edge-splitting extension, full-fiber case** (`lem:edge-splitting`, KT Lemma 4.2(ii);
-Katoh–Tanigawa 2011 pp. 660–661). Let `v` be a vertex of `G` joined to distinct `a ≠ b`
-(`a, b ≠ v`) by edges `eₐ ≠ e_b` (`G.IsLink eₐ v a`, `G.IsLink e_b v b`; `v` need not have
-degree two), and `e₀ ∉ E(G)` the fresh short-circuit edge, `D = bodyBarDim n ≥ 2`.
-Given an `M(G̃_v^{ab})`-independent fiber set `I'` that **contains the whole fresh fiber**
-`ã̃b = edgeFiber e₀ n` (`hsub`), there is an `M(G̃)`-independent set `I` with
-`I.ncard + 1 = I'.ncard + bodyBarDim n` and the *survivor conjunct*
-`I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ã̃b`.
-
-This is KT 4.2's `h' = D − 1` arm: every one of the `D − 1` short-circuit copies of `I'` is
-traded back for the `v`-edges it short-circuited. A thin wrapper over `splitOff_reroute_packing`
-(the shared reroute-packing engine), selecting the full-fiber guard. See the section preamble. -/
+/-- **KT Lemma 4.2(ii)** (`lem:edge-splitting`; Katoh–Tanigawa 2011, pp. 660–661): let `D ≥ 2`, let
+the edges `eₐ ≠ e_b` join `v` to `a ≠ b`, both other than `v`, and let `e₀ ∉ E(G)`; `v` need not
+have degree two. If an independent set `I'` of `M(G̃_v^{ab})` contains the `D - 1` copies
+`ẽ₀ = edgeFiber e₀ n` of the new edge (`hsub`), then `M(G̃)` has an independent set `I` with
+`|I| + 1 = |I'| + D` and `I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ẽ₀`. Each copy `(e₀, j)` is traded for `(eₐ, j)` and
+`(e_b, j)` (`splitOff_reroute_packing`). -/
 theorem splitOff_indep_extend_of_fiber_subset [DecidableEq β] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
@@ -1483,22 +1302,13 @@ theorem splitOff_indep_extend_of_fiber_subset [DecidableEq β] [Finite β]
     rw [Set.inter_eq_right.mpr hsub, edgeFiber_ncard]
   exact ⟨I, hI, hc1 hfull, hsurv⟩
 
-/-- **The edge-splitting extension, partial-fiber case** (`lem:edge-splitting`, KT Lemma 4.2(i);
-Katoh–Tanigawa 2011 pp. 660–661). Same data as the full-fiber arm
-`splitOff_indep_extend_of_fiber_subset`, but now the `M(G̃_v^{ab})`-independent set `I'` contains
-**fewer than the whole** fresh fiber `ã̃b = edgeFiber e₀ n`
-(`hlt : (I' ∩ ã̃b).ncard < bodyHingeMult n`, i.e. `h' < D − 1`). Then there is an
-`M(G̃)`-independent set `I` with `I.ncard = I'.ncard + bodyBarDim n`,
-the `e_b`-count `(I ∩ ẽ_b).ncard = (I' ∩ ã̃b).ncard + 1`, and the *survivor conjunct*
-`I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ã̃b`.
-
-This is KT 4.2's `h' < D − 1` arm. The `h'` short-circuit copies of `I'` are still traded for the
-`v`-edges they short-circuit (the reverse cycle-lift, as in the full-fiber arm); additionally the
-`D − 1 − h'` copy-free forests each absorb a fresh `eₐ`-pendant and one further forest an
-`e_b`-pendant (`isAcyclicSet_mulTilde_insert_vfiber_of_splitOff`), so the packing gains `D` edges
-with no `−1`
-correction. A thin wrapper over `splitOff_reroute_packing` (the shared reroute-packing engine),
-selecting the partial-fiber guard. See the section preamble. -/
+/-- **KT Lemma 4.2(i)** (`lem:edge-splitting`, `lem:forest-surgery-unsplit`; Katoh–Tanigawa 2011,
+pp. 660–661): under the hypotheses of `splitOff_indep_extend_of_fiber_subset`, if an independent set
+`I'` of `M(G̃_v^{ab})` contains `h' < D - 1` of the copies `ẽ₀ = edgeFiber e₀ n` of the new edge
+(`hlt`), then `M(G̃)` has an independent set `I` with `|I| = |I'| + D`, `h' + 1` copies of `e_b` and
+`I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ẽ₀`. The `h'` copies of `ab` are traded for two edges at `v` each, as in KT
+Lemma 4.2(ii), and each of the other `D - h'` forests gains one edge at `v`: all but one a copy of
+`eₐ`, and the last a copy of `e_b` (`splitOff_reroute_packing`). -/
 theorem splitOff_indep_extend_of_fiber_lt [DecidableEq β] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
