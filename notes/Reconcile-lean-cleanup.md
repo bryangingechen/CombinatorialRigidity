@@ -16,8 +16,9 @@ deletions, `F-090`'s shim among them (the check 422 → 390), task 7 `F-061`'s r
 tasks 8–12 dropped L6–L8's unused or derivable hypotheses (the planar layer, the pebble game's
 `hloops`, the deficiency and the induction, the chain extraction, the algebraic induction; task
 11.1 cured task 11's forward edge, `F-270`), task 13 made the forest packing one disjoint cover,
-task 14 had the descent call the packing move. **Next concrete task:** task 15, KT Lemma 4.8's
-shorter case (*Lemma checklist*). Round manual: `CLEANUP.md`.
+task 14 had the descent call the packing move, task 15 shortened KT Lemma 4.8(ii) to KT 4.3's
+minimality argument. **Next concrete task:** task 16, the recon of the pebble game's search
+(*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -27,19 +28,20 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 14 is done** (this commit, in one: no 14.1); nothing is mid-stream.
+**Task 15 is done** (this commit, in one: no 15.1); nothing is mid-stream.
 
-**Task 14, the descent calls the move** (`F-088` in part, `F-087`; new `F-272`):
-`exists_packing_move_of_not_inc` concluded only `x ∈ Fs' j`, which a swap of indices satisfies
-without its hypotheses (`F-272`, a `lake lean` witness), so it now concludes the re-choice
-(`Fs' j = insert x (Fs j)`, `Fs' i = Fs i \ {x}` for `i ≠ j`), and `exists_balanced_forest_packing`
-`obtain`s it in place of its inline move (statement unchanged). Restated: `lem:packing-move`;
-`lem:balanced-forest-packing`'s proof `\uses` it (740 < 761). The dump exactly as the line's
-*Expected*; `--summary` as listed there, Lean constants 7 174 → 7 172 (the descent's auxiliary
-lemmas); gate 7 the open's; gate 9 387, task 13's report net of line numbers. The ledger: 272
-entries, 154 `done`, 9 `left`, 106 `reported`, 3 `open` (task 38's); the next ID is `F-273`.
+**Task 15, KT Lemma 4.8's shorter case** (`F-097` in part; new `F-273`): in
+`splitOff_isMinimalKDof_of_pos` a base missing $\tilde e$ holds $\tilde e_0$ by the criterion step
+(else $\operatorname{def}(H) = k$), so $e \neq e_0$, as KT 4.3's minimality argument has it (p.
+661); KT 4.7 is not called. `hV3` dropped from it (then unused) and from
+`removeVertex_deficiency_gt_of_noRigid` (the distinct $a, b \in V(G) \setminus \{v\}$ give it),
+`CaseII.lean` following. Restated: `lem:removal-deficiency-strict`, `lem:reduction-step-pos` (its
+`\uses` without the two, its proof with `lem:rigid-full-rank`). The dump and `--summary` exactly as
+the line's *Expected* (dead pins 168 → 172: the four pins stay with their nodes); Lean constants
+7 172; gate 7 the open's; gate 9 387, task 14's report. The ledger: 273 entries, 154 `done`, 9
+`left`, 107 `reported`, 3 `open` (task 38's); the next ID is `F-274`.
 
-**Done before** (tasks 3–13): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
+**Done before** (tasks 3–14): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
 them; the pins they left without a caller stay with their nodes), `F-090`'s shim, `F-061`'s rename
 to `_starForest`, the planar layer's five hypotheses (`F-013`, `F-017`, `F-021`, `F-024`;
 `lem:trivialMotionFamily-linearIndependent` restated), the pebble game's `hloops` (`F-039`;
@@ -49,8 +51,10 @@ extraction's (`F-108`; `isKDof_zero_of_triangle` now the case $m = 3$ of `isKDof
 `lem:chain-data-extract` restated), `F-270`'s cure (task 11.1: `lem:cycle-zero-dof` moved to
 `deficiency.tex`), and the algebraic induction's (task 12: `F-104`, `F-102`, `F-070`, `F-063`,
 `F-140`; `rigidContract_exterior_rank_transport` deleted, two cut-edge statements restated; new
-`F-271`, task 38's), and one disjoint cover (task 13, `F-055`: the lemma in `TreePacking.lean`,
-`lem:k-frame-forest-packing-of-sparse` restated). Gate 2 runs block (c) since task 5.
+`F-271`, task 38's), one disjoint cover (task 13, `F-055`: the lemma in `TreePacking.lean`,
+`lem:k-frame-forest-packing-of-sparse` restated), and the descent calling the packing move (task
+14, `F-087`, `F-088` in part; new `F-272`; `lem:packing-move` restated to the re-choice). Gate 2
+runs block (c) since task 5.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -242,52 +246,38 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **5. L9: `exists_good_realization_const`, `exists_finite_spanning_rigidityRows` and their five
   dead callers** (`F-265`; `F-256`, `F-233` in part): seven deleted, the two pins orphaned stay;
   gate 9 390.
-- [x] **6. L9: `F-090`'s shim, and `cor:forest-surgery-deficiency` repinned** (`F-090`): the shim
-  deleted, the corollary on `forest_surgery_split`; the dump's `lean_decls` hash and pin line as
-  expected, implied 2 424 → 2 430, no Lean basis 133 → 134; gate 9 390.
-- [x] **7. `F-061`'s rename** (`F-061`; `F-233` in part): the two `_forest` lemmas renamed
-  `_starForest`, their docstrings and `lem:own-end-rows-independent`'s pins with them; the dump's
-  `lean_decls` hash and pin line as expected; gate 9 388. The forest lemma is the phase's (c).
+- [x] **6. L9: `F-090`'s shim** (`F-090`): deleted, `cor:forest-surgery-deficiency` on
+  `forest_surgery_split`; implied 2 424 → 2 430, no Lean basis 133 → 134; gate 9 390.
+- [x] **7. `F-061`'s rename** (`F-061`; `F-233` in part): `_forest` to `_starForest`, the pins
+  following; gate 9 388. The forest lemma is the phase's (c).
 - [x] **8. L6–L7: the planar layer** (`F-013`, `F-017`, `F-021`, `F-024`): the two `hab`, the two
-  `hF_finite` and `[Finite V]` dropped, the callers following;
-  `lem:trivialMotionFamily-linearIndependent` restated; the dump byte-identical; gate 9 388.
+  `hF_finite` and `[Finite V]`; `lem:trivialMotionFamily-linearIndependent` restated; gate 9 388.
 - [x] **9. L7: the pebble game's `hloops`** (`F-039`): derived from `himg`; the orphaned
-  `edgeListSorted_no_loops` gone; the dump byte-identical; gate 9 388.
-- [x] **10. L6: the deficiency and the induction** (`F-075`, `F-077`, `F-092`, `F-094`): `hD`,
-  `_hinj`, `_hdeg2` and `heab` dropped, with the binders two pass-throughs and
-  `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof` were left holding; twenty-six call sites;
-  `lem:deficiency-ear-merge` restated; the dump byte-identical; gate 9 388.
-- [x] **11. L6–L8: the chain extraction** (`F-108`): `chainData_extract` without `hV3` and
-  `[G.Simple]`, `chainWalk_charging` without its three, `isKDof_zero_of_triangle` the case $m = 3$
-  of `isKDof_zero_of_cycle`; `lem:chain-data-extract` restated; the dump byte-identical; one
-  missing forward edge, new: `F-270`; gate 9 388.
-- [x] **11.1. `F-270`'s cure** (docs only): `lem:cycle-zero-dof` to `deficiency.tex`,
-  `lem:splitoff-simple`'s proof `\uses` it; the dump as listed before editing (1 526 edges);
-  `--summary` missing 0, unbacked 84 and 133; gate 7 the open's; gate 9 388.
+  `edgeListSorted_no_loops` gone; gate 9 388.
+- [x] **10. L6: the deficiency and the induction** (`F-075`, `F-077`, `F-092`, `F-094`): four
+  binders and those they stranded, 26 call sites; `lem:deficiency-ear-merge` restated; gate 9 388.
+- [x] **11. L6–L8: the chain extraction** (`F-108`): `hV3`, `[G.Simple]` and three more, the triangle
+  the cycle's case $m = 3$; `lem:chain-data-extract` restated; new `F-270`; gate 9 388.
+- [x] **11.1. `F-270`'s cure** (docs only): `lem:cycle-zero-dof` to `deficiency.tex`; 1 526 edges.
 - [x] **12. L6–L7 and S17: the algebraic induction** (`F-104`, `F-102`, `F-070`, `F-063`, `F-140`):
-  the cut-edge lemmas without `_hV3`, `_gp_gen`'s hypothesis its first conjunct; `hcLoop` from
-  `hKmin`; the hub at the links only; `_htransport` without the `∀ Q`, its pass-through consumer
-  `rigidContract_exterior_rank_transport` deleted; two statements and five notes restated; the dump
-  byte-identical; new: `F-271`; gate 9 387. Coordinator's correction, in task 13: `-gp`'s
-  statement `\uses` `def:rank-hypothesis`, the pin's predicate (no Lean basis 134 → 133).
-- [x] **13. L8: one disjoint cover** (`F-055`): the lemma in `TreePacking.lean`, a disjoint cover
-  its three consumers call as it is; `lem:k-frame-forest-packing-of-sparse` restated,
-  `thm:tutte-nash-williams`'s proof `\uses` it; the dump as listed (1 525 edges); gate 9 387.
-- [x] **14. L8: the descent calls the move** (`F-088` in part, `F-087`; G5's packing move):
-  `exists_packing_move_of_not_inc` concludes the re-choice, which its old `x ∈ Fs' j` did not
-  (a swap satisfied it: new `F-272`, done), and `exists_balanced_forest_packing` calls it;
-  `lem:packing-move` restated, `lem:balanced-forest-packing`'s proof `\uses` it (740 < 761). The
-  dump as listed before editing (`scratch/reconcile-lean/t14-tred.py` on `dump-t13.txt`): 1 525
-  edges, the drawn `lem:acyclic-insert-vfiber ->` the node replaced by `lem:packing-move ->` it, its
-  `\uses` line; dead pins 169 → 168, unbacked transitive 84 → 85 (that edge, now through the move);
-  gate 9 387.
-- [ ] **15. L8: KT Lemma 4.8's shorter case** (`F-097`). In `splitOff_isMinimalKDof_of_pos`
-  (`ForestSurgery/Reduction.lean` 1868) the case $e = e_0$ from the other case's criterion step,
-  without `removeVertex_deficiency_gt_of_noRigid` (KT 4.7) or `lem:edge-set-indep-pos`'s pin; `hV3`
-  derived there and in `removeVertex_deficiency_gt_of_noRigid` (1789). `lem:reduction-step-pos`
-  (`molecular-induction.tex` 1792): proof prose to the shorter case, `\uses` neither uses removed.
-  `hD : 3 ≤ D` stays (*Decisions*). *Expected:* up to two proof `\uses` removed
-  (`lem:edge-set-indep-pos`, `lem:removal-deficiency-strict`), listed before editing.
+  five hypotheses dropped or cut, `rigidContract_exterior_rank_transport` deleted; two statements
+  restated; new `F-271`; gate 9 387 (task 13 added `-gp`'s edge to `def:rank-hypothesis`).
+- [x] **13. L8: one disjoint cover** (`F-055`): the lemma in `TreePacking.lean`;
+  `lem:k-frame-forest-packing-of-sparse` restated; 1 525 edges; gate 9 387.
+- [x] **14. L8: the descent calls the move** (`F-088` in part, `F-087`): the move concludes the
+  re-choice (new `F-272`, done), the descent calls it; `lem:packing-move` restated; the dump as
+  listed (1 525 edges); dead pins 169 → 168, unbacked transitive 84 → 85; gate 9 387.
+- [x] **15. L8: KT Lemma 4.8's shorter case** (`F-097` in part): in `splitOff_isMinimalKDof_of_pos`
+  the case $e = e_0$ by the other case's criterion step, without KT 4.7's or
+  `lem:edge-set-indep-pos`'s pin; `hV3` dropped there (unused) and from
+  `removeVertex_deficiency_gt_of_noRigid` (derived); `hD : 3 ≤ D` stays (new `F-273`, for the PI).
+  `lem:reduction-step-pos` and `lem:removal-deficiency-strict` restated, the former's proof prose
+  KT 4.3's. The dump as listed before editing (`t15-tred.py` on `dump-t14.txt`, `t15-model.py` on
+  the cache): the two leave both `\uses`, the proof gains `lem:rigid-full-rank` (step (2)'s, an
+  ancestor only through `lem:edge-set-indep-pos`: else missing); 1 526 edges, the drawn
+  `lem:removal-deficiency-strict ->` the node removed, `lem:circuit-induces-rigid ->` it (dashed)
+  and `lem:rigid-full-rank ->` it added; dead pins 168 → 172 (KT 4.7's, 4.5(ii)'s two, 4.4's second
+  assertion's), implied 2 431 → 2 429, unbacked transitive 85 → 84, missing 0; gate 9 387.
 - [ ] **16. L1–L2: the recon** (`F-033`, `F-047`; a design pass, its verdict committed here). One
   visited set threaded through the sibling calls of `reachableFindingAux` (`Search/DFS.lean` 578,
   the call at 588); how `reachableFindingAux_sound` (622) and `_complete` (687, inducting along the
@@ -409,7 +399,9 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 
 `S` and `M` findings this round makes, one line each naming the ledger ID.
 
-- None yet.
+- `F-273` (task 15): `lem:reduction-step-pos`'s $D \ge 3$, which its pin now uses only as $D \ge 2$;
+  the two are one condition on $D = n(n+1)/2$ (a `lake lean` witness), so a change would alter
+  only the form. `hD` stays.
 
 ## Moved to a later round
 
@@ -440,20 +432,16 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 15**, at Opus, Lean: KT Lemma 4.8's shorter case (`F-097`; *Lemma checklist*). In
-`splitOff_isMinimalKDof_of_pos` the case $e = e_0$ settled by the other case's criterion step, so
-that it calls neither `removeVertex_deficiency_gt_of_noRigid` nor `lem:edge-set-indep-pos`'s pin;
-`hV3` derived there and in `removeVertex_deficiency_gt_of_noRigid`, callers following;
-`lem:reduction-step-pos`'s proof prose and `\uses` to the shorter case. Before editing, make the
-line's *Expected* exact (the `\uses` removed, the drawn-edge change by
-`scratch/reconcile-lean/t14-tred.py` adapted, and the dead-pin and unbacked counts, as a pin the
-proof stops calling may go dead). Re-`grep` the line numbers. Gates 1–3, 2 (the statement grep
-for each signature that drops `hV3`), 5–6 (the parent `scratch/reconcile-lean/dump-t14.txt`,
-gitignored; regenerate it if missing), 9 (387) and 10. One commit if the criterion step applies
-as it stands; if the case needs a new lemma, land that as 15 and the call as 15.1.
-Carried in: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it); `F-268`,
-`F-269` and `F-271` for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which
-is attended.
+**Next: task 16**, at Opus, docs only: the recon of the pebble game's search (`F-033`, `F-047`;
+*Lemma checklist*), a design pass whose verdict is committed here: one visited set threaded through
+`reachableFindingAux`'s sibling calls; how `_sound` and `_complete` re-prove, with
+`reachClosureComputable` and the pebble game's callers unchanged in statement; whether a
+kernel-reducible form is cheap (`decide` on `Examples.k4MinusE.IsLaman`); the timing script's form
+and place. It makes tasks 17–18 exact, with sub-tasks if the build takes more than one commit.
+Re-`grep` the line numbers. Gates 6 (the parent `scratch/reconcile-lean/dump-t15.txt`, gitignored;
+regenerate it if missing), 9 (387) and 10. Carried in: `F-252` and `F-273` for the PI; `F-268`,
+`F-269`, `F-271` and FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38. After the round
+the queue stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -491,5 +479,10 @@ is attended.
 - **A forward missing edge** (task 11): a Lean change whose reach makes one gets an `E` entry and a
   cure task right after, a node moved so the edge points back (round 2's rule,
   `notes/Reconcile-statements-cleanup.md` *Decisions*), as gate 7 bars the forward `\uses`.
-- **`F-097`'s `hD`** (the open): weakening `3 ≤ D` to `2 ≤ D` is a statement change beyond L8's
-  suggestion; task 15 records it under *Candidates* if the shorter proof holds there.
+- **`F-097`'s `hD`** (the open; task 15): weakening `3 ≤ D` to `2 ≤ D` is a statement change
+  beyond L8's suggestion. The shorter proof holds there, and the two are one condition on
+  `bodyBarDim n`, so `hD` stays and `F-273` reports the form to the PI.
+- **A `\uses` removed can strand an implied edge** (task 15): `lem:rigid-full-rank`, reached by the
+  pin, was an ancestor only through the removed `lem:edge-set-indep-pos`, so the removal alone
+  makes it missing. A task's *Expected* models the summary on the cache (`t15-model.py`) and adds
+  such an edge in the same commit (backward here, 170 < 1793).

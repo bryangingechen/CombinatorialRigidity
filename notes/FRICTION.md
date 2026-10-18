@@ -125,6 +125,17 @@ to be re-derived by re-reading entries later.
   caller that does not ascribe the result's type.
 - **Status:** idiom.
 
+### [open] `(edgeFiber e n).Nonempty` from `2 ≤ bodyBarDim n` is a three-rewrite step, now at two sites
+- **Where it bit:** RECONCILE round 3 task 15, `splitOff_isMinimalKDof_of_pos`
+  (`Induction/ForestSurgery/Reduction.lean`): the case $e = e_0$ of the minimality needs $\tilde e_0$
+  nonempty, by `rw [← Set.ncard_pos (Set.toFinite _), edgeFiber_ncard, bodyHingeMult]; omega`, the
+  line `ForestSurgery/EdgeSplitting.lean` already carries for the balanced cover's `rOf`.
+- **Friction:** a three-argument `rw` for one step, copied rather than named.
+- **Proposed fix:** `edgeFiber_nonempty (hD : 2 ≤ bodyBarDim n) (e : β) :
+  (edgeFiber e n).Nonempty` beside `edgeFiber_ncard` (`Molecular/Deficiency.lean`), the two sites
+  calling it; a candidate for the round's §B screen (task 38).
+- **Status:** open.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

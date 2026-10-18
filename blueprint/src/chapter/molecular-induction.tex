@@ -1598,10 +1598,10 @@ that assertion and KT Lemma~4.7.
   \lean{Graph.removeVertex_deficiency_gt_of_noRigid}
   \leanok
   \uses{def:k-dof, def:rigid-subgraph}
-  Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with at least
-  three vertices and no proper rigid subgraph. Let $v$ be a vertex of $G$
-  of degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct
-  vertices $a, b \neq v$. Then $\operatorname{def}(\widetilde{G_v}) > k$.
+  Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with no proper
+  rigid subgraph. Let $v$ be a vertex of $G$ of degree two, whose edges
+  $e_a$ and $e_b$ join $v$ to distinct vertices $a, b \neq v$. Then
+  $\operatorname{def}(\widetilde{G_v}) > k$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1610,10 +1610,11 @@ that assertion and KT Lemma~4.7.
   KT Lemma~4.4 (\cref{lem:removal-deficiency}) gives
   $\operatorname{def}(\widetilde{G_v}) \ge k$, and we show that
   equality fails. Suppose that $\operatorname{def}(\widetilde{G_v}) = k$.
-  If $k = 0$, then $G_v$ is a rigid subgraph of $G$ with
-  $|V(G)| - 1 \ge 2$ vertices, not all of those of $G$, which is
-  impossible. If $k > 0$, then by \cref{lem:removal-deficiency-equality}
-  some base $B$ of $M(\tilde G)$ has $|\tilde e_b \cap B| = 1$. But
+  If $k = 0$, then $G_v$ is a rigid subgraph of $G$ whose vertices, those
+  of $G$ other than $v$, include $a$ and $b$: at least two, and not all
+  of those of $G$. This is impossible. If $k > 0$, then by
+  \cref{lem:removal-deficiency-equality} some base $B$ of $M(\tilde G)$
+  has $|\tilde e_b \cap B| = 1$. But
   $B = E(\tilde G)$ (\cref{lem:edge-set-indep-pos}), which contains all
   $D - 1 \ge 2$ copies of $e_b$. This is Katoh and Tanigawa's
   proof~\cite[p.~665]{katohTanigawa2011}.
@@ -1792,16 +1793,16 @@ minimal $0$-dof-graph (\cref{lem:rigidContract-isMinimalKDof}).
   \label{lem:reduction-step-pos}
   \lean{Graph.splitOff_isMinimalKDof_of_pos}
   \leanok
-  \uses{lem:dof-tracking, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:edge-set-indep-pos, lem:removal-deficiency-strict, lem:circuit-induces-rigid}
-  Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with $k > 0$, at
-  least three vertices and no proper rigid subgraph. Let $v$ be a vertex
-  of $G$ of degree two, whose edges $e_a$ and $e_b$ join $v$ to distinct
-  vertices $a, b \neq v$. Then $G_v^{ab}$ is a minimal
-  $(k-1)$-dof-graph.
+  \uses{lem:dof-tracking, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:circuit-induces-rigid}
+  Let $D \ge 3$, and let $G$ be a minimal $k$-dof-graph with $k > 0$ and
+  no proper rigid subgraph. Let $v$ be a vertex of $G$ of degree two,
+  whose edges $e_a$ and $e_b$ join $v$ to distinct vertices
+  $a, b \neq v$. Then $G_v^{ab}$ is a minimal $(k-1)$-dof-graph.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:dof-tracking, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:edge-set-indep-pos, lem:removal-deficiency-strict, lem:circuit-induces-rigid}
+  \uses{lem:dof-tracking, lem:splitoff-kdof-criterion, lem:edge-splitting,
+    lem:circuit-induces-rigid, lem:rigid-full-rank}
   Let $G' = G_v^{ab}$. Its vertices are the $|V(G)| - 1$ vertices of $G$
   other than $v$, and by \cref{lem:dof-tracking},
   $\operatorname{def}(\widetilde{G'})$ is $k - 1$ or $k$.
@@ -1833,18 +1834,15 @@ minimal $0$-dof-graph (\cref{lem:rigidContract-isMinimalKDof}).
 
   It remains to show that $G'$ is minimal: every base $B'$ of
   $M(\widetilde{G'})$ meets $\tilde e$ for every edge $e$ of $G'$. This
-  is the minimality clause of KT Lemma~4.3(i). By KT eq.~(2.4),
-  $|B'| = D(|V(G)| - 2) - (k - 1)$. Suppose that $B'$ misses $\tilde e$.
-  If $e = ab$, then $B'$ is an independent set of $M(\widetilde{G_v})$,
-  where $G_v = G - v$. So KT eq.~(2.4) gives
-  $\operatorname{def}(\widetilde{G_v}) \le k - 1$, against KT Lemma~4.7
-  (\cref{lem:removal-deficiency-strict}). If $e \neq ab$, then $e$ is an
-  edge of $G$ other than $e_a$ and $e_b$, and we follow Katoh and
-  Tanigawa's proof~\cite[p.~661]{katohTanigawa2011}. As $G'$ is not a
-  $k$-dof-graph, $B'$ contains all $D - 1$ copies of $ab$
-  (\cref{lem:splitoff-kdof-criterion}). By case~(ii) of KT Lemma~4.2
-  (\cref{lem:edge-splitting}), $M(\tilde G)$ has an independent set $J$
-  with $|J| = |B'| + D - 1 = D(|V(G)| - 1) - k$ and
+  is the minimality clause of KT Lemma~4.3(i), and we follow Katoh and
+  Tanigawa's proof of it~\cite[p.~661]{katohTanigawa2011}. As $G'$ is
+  not a $k$-dof-graph, $B'$ contains all $D - 1$ copies of $ab$
+  (\cref{lem:splitoff-kdof-criterion}), and so it meets
+  $\widetilde{ab}$. Suppose that $B'$ misses $\tilde e$. Then
+  $e \neq ab$, and $e$ is an edge of $G$ other than $e_a$ and $e_b$. By
+  KT eq.~(2.4), $|B'| = D(|V(G)| - 2) - (k - 1)$. By case~(ii) of KT
+  Lemma~4.2 (\cref{lem:edge-splitting}), $M(\tilde G)$ has an
+  independent set $J$ with $|J| = |B'| + D - 1 = D(|V(G)| - 1) - k$ and
   $J \setminus (\tilde e_a \cup \tilde e_b) = B' \setminus \widetilde{ab}$.
   By KT eq.~(2.4), $J$ is a base of $M(\tilde G)$, and it does not meet
   $\tilde e$, against the minimality of $G$.

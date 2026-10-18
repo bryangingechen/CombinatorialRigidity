@@ -3227,6 +3227,18 @@ declaration's name as its header writes it:
   *Disposition:* done (`64a531db`): (2) is pinned on the two, beside (1)'s five, its note saying
   which clause each gives; a `lake lean` witness derives (1)'s conclusions at the rescaled normals
   from them and (1)'s pins (`scratch/reconcile-statements/T91Witness.lean`, gitignored).
+- **F-273** · S · `lem:reduction-step-pos` (`molecular-induction.tex`;
+  `splitOff_isMinimalKDof_of_pos`, `Induction/ForestSurgery/Reduction.lean`): since RECONCILE round
+  3 task 15 (`F-097`) the pin uses `hD : 3 ≤ bodyBarDim n` only as `2 ≤ bodyBarDim n`, so the
+  node's "Let $D \ge 3$" could read $D \ge 2$, the bound of the KT 4.2 and 4.3 pins it calls. The
+  two are one condition: $D = n(n+1)/2$ takes no value 2, so the change would alter the form, not
+  the theorem. The same holds of each `2 ≤ bodyBarDim n` and `3 ≤ bodyBarDim n` the chapter's pins
+  take; `removeVertex_deficiency_gt_of_noRigid`'s docstring called its `3 ≤ D` sharp "at `D = 2`"
+  (removed in task 15).
+  *Evidence:* read (the body: `hD` feeds only `hD2` and `hD1`); a `lake lean` witness of
+  `2 ≤ bodyBarDim n ↔ 3 ≤ bodyBarDim n` (`scratch/reconcile-lean/BodyBarDimTwo.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 15.
+  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
 
 ## L — Lean
 
@@ -3591,7 +3603,11 @@ declaration's name as its header writes it:
   degree-two step "the remaining `lem:reducible-vertex` work".
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.15.
-  *Disposition:* reported (`notes/Prose-report.md`, L8).
+  *Disposition:* reported (`notes/Prose-report.md`, L8); round 3: the case $e = e_0$ by the other
+  case's criterion step, as KT Lemma 4.3's minimality argument (p. 661) has it, and `hV3` dropped
+  from both pins; `lem:reduction-step-pos` and `lem:removal-deficiency-strict` restated, and KT 4.7's,
+  4.5(ii)'s and 4.4's second assertion's pins now outside every main result's closure, dead pins
+  168 → 172 (task 15). The $D \ge 2$ question is `F-273`'s.
 - **F-104** · L · the pins of KT Theorem 4.9, KT Lemma 6.1 and the $d = 3$ pair
   (`Induction/ForestSurgery/Reduction.lean`, `Induction/ReducibleVertex.lean`,
   `AlgebraicInduction/Theorem55.lean`, `AlgebraicInduction/PanelHinge.lean`):

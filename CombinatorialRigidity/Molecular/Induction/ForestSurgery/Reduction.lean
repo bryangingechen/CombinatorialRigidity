@@ -1751,15 +1751,14 @@ proper rigid subgraph and a degree-2 vertex `v`, the vertex-removal `G_v` has de
 `removeVertex_deficiency_ge` (which gives `def(G̃_v) ≥ k`); the strictness is the content.
 
 The argument: `def(G̃_v) ≥ k` is `removeVertex_deficiency_ge`. For `k = 0`, equality
-`def(G̃_v) = 0` would make `G_v` a proper rigid subgraph of `G` (proper on `≥ 2` vertices
-since `|V(G)| ≥ 3` and `v ∈ V(G)`), contradicting `hnp`. For `k > 0`, equality would give
+`def(G̃_v) = 0` would make `G_v` a proper rigid subgraph of `G` (its vertex set `V(G) ∖ {v}`
+holds the distinct `a, b` and misses `v`), contradicting `hnp`. For `k > 0`, equality would give
 (by `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`) a base `B` of `M(G̃)` with
 `|ẽ_b ∩ B| = 1`; but `k > 0` + `hnp` + `isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos`
-force every base to equal `E(G̃)`, with `|ẽ_b ∩ E(G̃)| = D − 1 ≥ 2` (`hD : 3 ≤ D` is sharp:
-at `D = 2`, `D − 1 = 1` and the contradiction vanishes) — contradiction. -/
+force every base to equal `E(G̃)`, with `|ẽ_b ∩ E(G̃)| = D − 1 ≥ 2` (by `hD : 3 ≤ D`) —
+contradiction. -/
 theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ} {k : ℤ}
-    (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 3 ≤ bodyBarDim n)
     {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
@@ -1798,9 +1797,9 @@ theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Fini
       le_antisymm (not_lt.mp hkpos) (by rw [← hG.deficiency_eq]; exact G.deficiency_nonneg n hVne)
     subst hk0
     refine hnp (G.removeVertex v) ⟨⟨G.removeVertex_le v, hGv⟩, ?_, ?_⟩
-    · -- `2 ≤ |V(G_v)| = |V(G)| − 1` from `hV3`.
-      rw [vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem hvG]
-      omega
+    · -- `2 ≤ |V(G_v)|`: the distinct `a, b` lie in `V(G) ∖ {v}`.
+      rw [vertexSet_removeVertex]
+      exact (Set.one_lt_ncard_iff).mpr ⟨a, b, ⟨hla.right_mem, hav⟩, ⟨hlb.right_mem, hbv⟩, hab⟩
     · -- `V(G) \ {v} ⊊ V(G)` since `v ∈ V(G)`.
       rw [vertexSet_removeVertex]
       exact Set.sdiff_singleton_ssubset.mpr hvG
@@ -1830,14 +1829,14 @@ size `D(|V(K)|−1)`, so `def(K̃) ≤ 0` and `K` is a proper rigid subgraph of 
 contradicting `hnp`.
 
 **(3) Minimality at `def(H) = k−1`.** For any base `B'` of `M(H̃)` and `e ∈ E(H)`,
-show `B' ∩ ẽ ≠ ∅`. Case `e = e₀`: `B' ⊆ E(G̃ᵥ)` (avoids `ẽ₀`), so
-`rank M(G̃ᵥ) ≥ |B'| = D(|V ∖ v|−1) − (k−1)`, giving `def(G̃ᵥ) ≤ k−1 < k` —
-contradicts KT 4.7 (`removeVertex_deficiency_gt_of_noRigid`). Case `e ≠ e₀`: if
-`ẽ₀ ⊄ B'` then 4.3(ii)-reverse gives `def(H) = k` (contradiction). So `ẽ₀ ⊆ B'`; KT
-4.2(ii) (`splitOff_indep_extend_of_fiber_subset`) lifts `B'` to a `M(G̃)`-base `J` with
-`J ∩ ẽ = ∅` — contradicting `hG.2`. -/
+show `B' ∩ ẽ ≠ ∅`; suppose not. If `ẽ₀ ⊄ B'`, then 4.3(ii)-reverse
+(`splitOff_isKDof_of_exists_base_inter_fiber_lt`) gives `def(H) = k` (contradiction). So
+`ẽ₀ ⊆ B'`, and as `ẽ₀` is nonempty, `e ≠ e₀`. KT 4.2(ii)
+(`splitOff_indep_extend_of_fiber_subset`) lifts `B'` to a `M(G̃)`-base `J` with
+`J ∩ ẽ = ∅` — contradicting `hG.2`. This is the minimality argument of KT Lemma 4.3
+(Katoh–Tanigawa 2011, p. 661). -/
 theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 3 ≤ bodyBarDim n)
     (hk : 0 < k) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
     (hvG : v ∈ V(G)) (heab : eₐ ≠ e_b) (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
@@ -2005,121 +2004,97 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
   refine ⟨hdefH, fun B' hB' e heH => ?_⟩
   rw [Set.nonempty_iff_ne_empty]; intro hemp
   have hB'fib : B' ∩ edgeFiber e n = ∅ := hemp
-  -- Case split: `e = e₀` vs `e ≠ e₀`.
-  by_cases he : e = e₀
-  · -- Case `e = e₀`: `B' ⊆ E(G̃ᵥ)` (avoids `ẽ₀`).
-    subst he
-    have hB'sub : B' ⊆ E((G.removeVertex v).mulTilde n) := by
-      rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
-      exact Set.subset_sdiff.mpr ⟨hB'.subset_ground, by
-        rw [Set.disjoint_left]; intro q hqB' hqfib
-        exact Set.notMem_empty q (hB'fib ▸ ⟨hqB', hqfib⟩)⟩
-    -- `B'` is `M(G̃ᵥ)`-independent.
-    have hleGv : G.removeVertex v ≤ H := hHdef ▸ removeVertex_le_splitOff he₀
-    have hB'indepGv : ((G.removeVertex v).matroidMG n).Indep B' := by
-      rw [← matroidMG_restrict_mulTilde hleGv n, Matroid.restrict_indep_iff]
-      exact ⟨hB'.indep, hB'sub⟩
-    have hVGvne : V(G.removeVertex v).Nonempty :=
-      ⟨a, by rw [vertexSet_removeVertex]; exact ⟨haV, hav⟩⟩
-    have hB'card := H.isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
-    rw [hdefH] at hB'card
-    have hVeq : (V(H).ncard : ℤ) = (V(G.removeVertex v).ncard : ℤ) := by
-      rw [hHdef, vertexSet_splitOff, vertexSet_removeVertex]
-    -- `def(G̃ᵥ) ≤ k−1 < k`, contradicting 4.7.
-    have hGvrank := G.removeVertex v |>.rank_add_deficiency_eq n hD1 hVGvne
-    have hGvdeflt : (G.removeVertex v).deficiency n ≤ k - 1 := by
-      have hle : (B'.ncard : ℤ) ≤ ((G.removeVertex v).matroidMG n).rank :=
-        by exact_mod_cast hB'indepGv.ncard_le_rank
-      have heqC : (B'.ncard : ℤ) + (k - 1) =
-          ((G.removeVertex v).matroidMG n).rank + (G.removeVertex v).deficiency n := by
-        rw [hVeq] at hB'card; linarith [hGvrank]
-      linarith
-    linarith [removeVertex_deficiency_gt_of_noRigid hD hV3 hab hav hbv heab hla hlb
-      hdeg2 he₀ hG hnp]
-  · -- Case `e ≠ e₀`: if `ẽ₀ ⊄ B'`, 4.3(ii)-reverse gives `def(H) = k`.
-    by_cases hfibsub : edgeFiber e₀ n ⊆ B'
-    · -- `ẽ₀ ⊆ B'`: apply 4.2(ii) to lift `B'` to a `M(G̃)`-base `J`.
-      obtain ⟨J, hJindep, hJcard, hJsurvive⟩ :=
-        splitOff_indep_extend_of_fiber_subset hD2 hab hav hbv heab hla hlb he₀ hB'.indep hfibsub
-      -- `|J| + 1 = |B'| + D = D(|V|−1) − (k−1) + D = D(|V|−1) − k + 1`,
-      -- so `|J| = D(|V|−1) − k`.
-      have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
-        rw [hHdef, vertexSet_splitOff, Set.ncard_sdiff_singleton_of_mem hvG]
-        have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
-        omega
-      have hB'card := H.isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
-      rw [hdefH, hVHcard, mul_sub, mul_one] at hB'card
-      have hJcardZ : (J.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k := by
-        have hJcardN : (J.ncard : ℤ) + 1 = B'.ncard + bodyBarDim n := by exact_mod_cast hJcard
-        linarith [hJcardN, hB'card]
-      -- `|J| = rank M(G̃)`, so `J` is a base of `M(G̃)`.
-      have hGrank := G.rank_add_deficiency_eq n hD1 hVne
-      rw [hG.deficiency_eq, mul_sub, mul_one] at hGrank
-      have hGFin : (G.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := G.matroidMG n)
-      have hJbase : (G.matroidMG n).IsBase J := by
-        apply hJindep.isBase_of_ncard
-        have : ((G.matroidMG n).rank : ℤ) ≤ J.ncard := by linarith [hJcardZ, hGrank]
-        exact_mod_cast this
-      -- `e ∈ E(G)` from the `e ≠ e₀` surviving case of `edgeSet_splitOff`.
-      have heG : e ∈ E(G) := by
-        have := heH; rw [hHdef, edgeSet_splitOff] at this
-        rcases this with ⟨rfl, _⟩ | ⟨_, x, y, hl, _, _⟩
-        · exact absurd rfl he
-        · exact hl.edge_mem
-      -- `e ≠ eₐ` and `e ≠ e_b` from the `edgeSet_splitOff` survivor condition.
-      have heane : e ≠ eₐ := by
-        intro h; subst h
-        have := heH; rw [hHdef, edgeSet_splitOff] at this
-        rcases this with ⟨hae0, -⟩ | ⟨-, x, y, hxy, hxv, hyv⟩
-        · exact he₀ (hae0 ▸ hla.edge_mem)
-        · have hend := hla.endSet_eq.symm.trans hxy.endSet_eq
-          -- hend : {v, a} = {x, y}; v ∈ {x, y}
-          have hvin : v ∈ ({x, y} : Set α) := hend ▸ Set.mem_insert v {a}
-          rcases Set.mem_insert_iff.mp hvin with rfl | hva
-          · exact hxv rfl
-          · exact hyv (Set.mem_singleton_iff.mp hva).symm
-      have hebne : e ≠ e_b := by
-        intro h; subst h
-        have := heH; rw [hHdef, edgeSet_splitOff] at this
-        rcases this with ⟨hbe0, -⟩ | ⟨-, x, y, hxy, hxv, hyv⟩
-        · exact he₀ (hbe0 ▸ hlb.edge_mem)
-        · have hend := hlb.endSet_eq.symm.trans hxy.endSet_eq
-          have hvin : v ∈ ({x, y} : Set α) := hend ▸ Set.mem_insert v {b}
-          rcases Set.mem_insert_iff.mp hvin with rfl | hvb
-          · exact hxv rfl
-          · exact hyv (Set.mem_singleton_iff.mp hvb).symm
-      -- `J ∩ ẽ = ∅`: `hJsurvive` gives `J \ (ẽₐ ∪ ẽ_b) = B' \ ẽ₀`;
-      -- combined with `B' ∩ ẽ = ∅` and `e ≠ eₐ, e_b, e₀`.
-      have hJfib : J ∩ edgeFiber e n = ∅ := by
-        rw [Set.eq_empty_iff_forall_notMem]
-        intro q ⟨hqJ, hqe⟩
-        have hqfib : q.1 = e := by rwa [mem_edgeFiber] at hqe
-        have hqna : q ∉ edgeFiber eₐ n := by
-          rw [mem_edgeFiber]; exact fun h => heane (hqfib.symm.trans h)
-        have hqnb : q ∉ edgeFiber e_b n := by
-          rw [mem_edgeFiber]; exact fun h => hebne (hqfib.symm.trans h)
-        have hqn0 : q ∉ edgeFiber e₀ n := by
-          rw [mem_edgeFiber]; exact fun h => he (hqfib.symm.trans h)
-        have hqsurvive : q ∈ J \ (edgeFiber eₐ n ∪ edgeFiber e_b n) :=
-          ⟨hqJ, by simp [hqna, hqnb]⟩
-        have hqB' : q ∈ B' := by
-          rw [hJsurvive] at hqsurvive; exact hqsurvive.1
-        -- `q ∈ B' ∩ ẽ` but `B' ∩ ẽ = ∅`.
-        exact Set.notMem_empty q (hB'fib ▸ ⟨hqB', hqe⟩)
-      -- `hG.2` says the base `J` meets `ẽ`.
-      exact absurd (hG.2 J hJbase e heG) (by rw [hJfib]; exact Set.not_nonempty_empty)
-    · -- `ẽ₀ ⊄ B'`: 4.3(ii)-reverse gives `def(H) = k`, contradicting `hdefH`.
-      have hlt' : (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n := by
-        obtain ⟨q, hqfib, hqnB'⟩ := Set.not_subset.mp hfibsub
-        calc (B' ∩ edgeFiber e₀ n).ncard
-            ≤ (edgeFiber e₀ n \ {q}).ncard :=
-              Set.ncard_le_ncard (fun r ⟨hrB', hrfib⟩ =>
-                ⟨hrfib, fun h => hqnB' (h ▸ hrB')⟩) (Set.toFinite _)
-          _ < (edgeFiber e₀ n).ncard := Set.ncard_sdiff_singleton_lt_of_mem hqfib (Set.toFinite _)
-          _ = bodyHingeMult n := edgeFiber_ncard e₀ n
-      have hHk : H.deficiency n = k :=
-        splitOff_isKDof_of_exists_base_inter_fiber_lt hD2 hab hav hbv heab hla hlb
-          hdeg2 he₀ hG.1 hB' hlt'
-      linarith
+  -- `ẽ₀ ⊆ B'`: otherwise 4.3(ii)-reverse gives `def(H) = k`, against `hdefH`.
+  have hfibsub : edgeFiber e₀ n ⊆ B' := by
+    by_contra hfibsub
+    have hlt' : (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n := by
+      obtain ⟨q, hqfib, hqnB'⟩ := Set.not_subset.mp hfibsub
+      calc (B' ∩ edgeFiber e₀ n).ncard
+          ≤ (edgeFiber e₀ n \ {q}).ncard :=
+            Set.ncard_le_ncard (fun r ⟨hrB', hrfib⟩ =>
+              ⟨hrfib, fun h => hqnB' (h ▸ hrB')⟩) (Set.toFinite _)
+        _ < (edgeFiber e₀ n).ncard := Set.ncard_sdiff_singleton_lt_of_mem hqfib (Set.toFinite _)
+        _ = bodyHingeMult n := edgeFiber_ncard e₀ n
+    have hHk : H.deficiency n = k :=
+      splitOff_isKDof_of_exists_base_inter_fiber_lt hD2 hab hav hbv heab hla hlb
+        hdeg2 he₀ hG.1 hB' hlt'
+    linarith
+  -- So `e ≠ e₀`: `B'` holds the `D − 1 ≥ 1` copies of `e₀` and none of `e`.
+  have he : e ≠ e₀ := by
+    intro he
+    obtain ⟨q, hq⟩ : (edgeFiber e₀ n).Nonempty := by
+      rw [← Set.ncard_pos (Set.toFinite _), edgeFiber_ncard, bodyHingeMult]; omega
+    rw [he] at hB'fib
+    exact Set.notMem_empty q (hB'fib ▸ ⟨hfibsub hq, hq⟩)
+  -- KT 4.2(ii) lifts `B'` to a `M(G̃)`-base `J`.
+  obtain ⟨J, hJindep, hJcard, hJsurvive⟩ :=
+    splitOff_indep_extend_of_fiber_subset hD2 hab hav hbv heab hla hlb he₀ hB'.indep hfibsub
+  -- `|J| + 1 = |B'| + D = D(|V|−1) − (k−1) + D = D(|V|−1) − k + 1`,
+  -- so `|J| = D(|V|−1) − k`.
+  have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
+    rw [hHdef, vertexSet_splitOff, Set.ncard_sdiff_singleton_of_mem hvG]
+    have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
+    omega
+  have hB'card := H.isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
+  rw [hdefH, hVHcard, mul_sub, mul_one] at hB'card
+  have hJcardZ : (J.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k := by
+    have hJcardN : (J.ncard : ℤ) + 1 = B'.ncard + bodyBarDim n := by exact_mod_cast hJcard
+    linarith [hJcardN, hB'card]
+  -- `|J| = rank M(G̃)`, so `J` is a base of `M(G̃)`.
+  have hGrank := G.rank_add_deficiency_eq n hD1 hVne
+  rw [hG.deficiency_eq, mul_sub, mul_one] at hGrank
+  have hGFin : (G.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := G.matroidMG n)
+  have hJbase : (G.matroidMG n).IsBase J := by
+    apply hJindep.isBase_of_ncard
+    have : ((G.matroidMG n).rank : ℤ) ≤ J.ncard := by linarith [hJcardZ, hGrank]
+    exact_mod_cast this
+  -- `e ∈ E(G)` from the `e ≠ e₀` surviving case of `edgeSet_splitOff`.
+  have heG : e ∈ E(G) := by
+    have := heH; rw [hHdef, edgeSet_splitOff] at this
+    rcases this with ⟨rfl, _⟩ | ⟨_, x, y, hl, _, _⟩
+    · exact absurd rfl he
+    · exact hl.edge_mem
+  -- `e ≠ eₐ` and `e ≠ e_b` from the `edgeSet_splitOff` survivor condition.
+  have heane : e ≠ eₐ := by
+    intro h; subst h
+    have := heH; rw [hHdef, edgeSet_splitOff] at this
+    rcases this with ⟨hae0, -⟩ | ⟨-, x, y, hxy, hxv, hyv⟩
+    · exact he₀ (hae0 ▸ hla.edge_mem)
+    · have hend := hla.endSet_eq.symm.trans hxy.endSet_eq
+      -- hend : {v, a} = {x, y}; v ∈ {x, y}
+      have hvin : v ∈ ({x, y} : Set α) := hend ▸ Set.mem_insert v {a}
+      rcases Set.mem_insert_iff.mp hvin with rfl | hva
+      · exact hxv rfl
+      · exact hyv (Set.mem_singleton_iff.mp hva).symm
+  have hebne : e ≠ e_b := by
+    intro h; subst h
+    have := heH; rw [hHdef, edgeSet_splitOff] at this
+    rcases this with ⟨hbe0, -⟩ | ⟨-, x, y, hxy, hxv, hyv⟩
+    · exact he₀ (hbe0 ▸ hlb.edge_mem)
+    · have hend := hlb.endSet_eq.symm.trans hxy.endSet_eq
+      have hvin : v ∈ ({x, y} : Set α) := hend ▸ Set.mem_insert v {b}
+      rcases Set.mem_insert_iff.mp hvin with rfl | hvb
+      · exact hxv rfl
+      · exact hyv (Set.mem_singleton_iff.mp hvb).symm
+  -- `J ∩ ẽ = ∅`: `hJsurvive` gives `J \ (ẽₐ ∪ ẽ_b) = B' \ ẽ₀`;
+  -- combined with `B' ∩ ẽ = ∅` and `e ≠ eₐ, e_b, e₀`.
+  have hJfib : J ∩ edgeFiber e n = ∅ := by
+    rw [Set.eq_empty_iff_forall_notMem]
+    intro q ⟨hqJ, hqe⟩
+    have hqfib : q.1 = e := by rwa [mem_edgeFiber] at hqe
+    have hqna : q ∉ edgeFiber eₐ n := by
+      rw [mem_edgeFiber]; exact fun h => heane (hqfib.symm.trans h)
+    have hqnb : q ∉ edgeFiber e_b n := by
+      rw [mem_edgeFiber]; exact fun h => hebne (hqfib.symm.trans h)
+    have hqn0 : q ∉ edgeFiber e₀ n := by
+      rw [mem_edgeFiber]; exact fun h => he (hqfib.symm.trans h)
+    have hqsurvive : q ∈ J \ (edgeFiber eₐ n ∪ edgeFiber e_b n) :=
+      ⟨hqJ, by simp [hqna, hqnb]⟩
+    have hqB' : q ∈ B' := by
+      rw [hJsurvive] at hqsurvive; exact hqsurvive.1
+    -- `q ∈ B' ∩ ẽ` but `B' ∩ ẽ = ∅`.
+    exact Set.notMem_empty q (hB'fib ▸ ⟨hqB', hqe⟩)
+  -- `hG.2` says the base `J` meets `ẽ`.
+  exact absurd (hG.2 J hJbase e heG) (by rw [hJfib]; exact Set.not_nonempty_empty)
 
 end Graph
