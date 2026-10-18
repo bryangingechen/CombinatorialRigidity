@@ -10,14 +10,15 @@ each of the 16 main results outside S1's and S2's rows, and the docstring sweep 
 L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–29.1 are done (*Current state*): the open, the docstring-label check
-(gate 9: 422 at task 2, 333 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
+wait for the phase. Tasks 1–30 are done (*Current state*): the open, the docstring-label check
+(gate 9: 422 at task 2, 319 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
 hypotheses and repeated derivations, the pebble game's search with one visited set and its texts
 (tasks 16–20), the sixteen non-vacuity witnesses (tasks 21–24), and the docstrings of every
 top-level file but `Nonvacuity.lean`, of `Search/`, of `Mathlib/`, of `PebbleGame/`, of `Matroid/`
-and of `BodyBar/` (tasks 25–28) and of `Molecular/Deficiency.lean` (tasks 29–29.1).
-**Next concrete task:** task 30, the docstrings of `Molecular/Induction/` but `ForestSurgery/`
-(*Lemma checklist*).
+and of `BodyBar/` (tasks 25–28), of `Molecular/Deficiency.lean` (tasks 29–29.1) and of
+`Molecular/Induction/Operations.lean` (task 30).
+**Next concrete task:** task 30.1, the docstrings of `Molecular/Induction/` but `Operations.lean`
+and `ForestSurgery/` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -28,23 +29,22 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 29.1 is done** (this commit); nothing is mid-stream.
+**Task 30 is done** (this commit); nothing is mid-stream.
 
-**Tasks 29–29.1** (`F-053`, `F-074`, `F-077`, `F-080`, `F-081`, `F-194`, `F-244` `done`; `F-108`,
-`F-210`, `F-235`, `F-240`, `F-250` in part; new `F-280` and `F-281`, `open` for task 38): every
-docstring of `Molecular/Deficiency.lean` (3 671 lines, split at the tight partitions) read against
-its body under the sweep's form; credits checked in `.refs/` (KT 2011 pp. 654–677; JJ 2008 §§2–3
-and 5 with its references; JJ 2010 pp. 580–583). Their messages name the false claims (29.1's:
-an edge lemma said to compare `f`-images it never mentions, the components of `G̃ ↾ Y₀` said to
-have exactly `Y₀` inside their parts, the merged-deficiency section calling two pinned
-declarations unpinned, KT eq. (2.4) credited to JJ's Theorem 6.1). Gate 9 357 → 346 → 333. The
-ledger: 281 entries, 179 `done`, 9 `left`, 85 `reported`, 8 `open`.
+**Task 30** (`F-235` `done`; `F-085`, `F-088`, `F-097`, `F-108`, `F-148`, `F-168`, `F-172`, `F-240`
+in part; `F-279` gains twenty-two; new `F-282`, `open` for task 38): every docstring and comment of
+`Molecular/Induction/Operations.lean` (3 348 lines; the hand-off's split, 30/30.1) read against
+its body under the sweep's form; credits checked in `.refs/` (KT 2011 pp. 658–698, the arXiv
+version's Lemma 5.1). Its message names the false claims (among them KT Lemma 4.5(ii)'s eq. (4.4)
+credited to KT Lemma 4.6, the triangle lemma called a case of the cycle lemma, `ChainData`'s `n`
+called the dof regime, KT Lemma 4.6 placed in §6.4.2, uses by four declarations that do not
+exist). Gate 9 333 → 319. The ledger: 282 entries, 180 `done`, 9 `left`, 84 `reported`, 9 `open`.
 
-**Tasks 25–28** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`,
-`F-057`, `F-176`, `F-198`, `F-200`, `F-205`, `F-230` `done`; `F-020`, `F-053`, `F-186`, `F-194`,
-`F-210`, `F-215`, `F-228`, `F-243`, `F-244` in part; new `F-278`, `F-279`): the planar files,
-`Search/DFS.lean`, the 35 files of `Mathlib/`, the five of `PebbleGame/`, the eight of
-`Matroid/Constructions/` and `BodyBar/`, and the ten square-graph and generic-rigidity files, under
+**Tasks 25–29.1** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`,
+`F-053`, `F-057`, `F-074`, `F-077`, `F-080`, `F-081`, `F-176`, `F-194`, `F-198`, `F-200`, `F-205`,
+`F-230`, `F-244` `done`; others in part; new `F-278` to `F-281`): the planar files, `Search/`,
+`Mathlib/`, `PebbleGame/`, `Matroid/Constructions/`, `BodyBar/`, the square-graph and
+generic-rigidity files, and `Molecular/Deficiency.lean` (split at the tight partitions), under
 *Decisions*' sweep form; their messages name each false claim.
 
 **Done before** (tasks 3–24; their `[x]` lines and messages carry the detail): L9's thirty-nine
@@ -266,28 +266,19 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   implied 2 429, unbacked transitive 84.
 - [x] **15.1. L6: task 15's lemma without its derivable vertex hypotheses** (new `F-274`; the
   siblings' `F-275`): the dump byte-identical; gate 9 387.
-- [x] **16. L1–L2: the recon** (`F-033`, `F-047`; docs only): the spike closes; tasks 17–18 exact,
-  task 20 adjusted; the dump byte-identical; gate 9 387.
-- [x] **17. L1: the search with one visited set** (`F-033` in part): task 16's spike in
-  `Search/DFS.lean`, `dropUntilBundle` deleted, `dfs.tex`'s search and proof restated; new `F-276`
-  and `F-277`, both `reported`; the dump byte-identical; gate 9 387.
-- [x] **18. L1: the timing script; the `decide` facts** (`F-033`, `F-047` in part):
-  `scripts/DFSTiming.lean`; at $n = 18$ the per-walk search 2196 ms, the new one 157 µs; the five
-  facts hold; the dump byte-identical.
-- [x] **19. L2: `parsePair` on any whitespace** (`F-047`): `LAMAN` on `k4-minus-e.txt` with tabs
-  (before: malformed) and on its CRLF copy; the dump byte-identical.
-- [x] **20. L1–L2: one rewrite of the texts** (`F-033`, `F-047`, both `done`): no bound claimed,
-  the search's timing stated as measured, the script's `decide` facts; also `pebble-game.tex`'s
-  per-walk paragraph and four "`decide` fires"; the dump byte-identical; gate 9 387.
-- [x] **21. Non-vacuity witnesses, 1: the planar and matroid rows** (§1's proposal):
-  `CombinatorialRigidity/Nonvacuity.lean`, five witnesses at `K₂` and at the double edge with
-  $k = 2$; `PHASE-BOUNDARIES.md` names the file; none failed; the dump byte-identical.
-- [x] **22. Witnesses, 2: the body-bar and body-hinge rows**: in the plane, at the triple edge
-  (`IsGenericEndpoints` by the abundance lemma's corollary) and `K₃`; none failed.
-- [x] **23. Witnesses, 3: the molecular rows**: in the plane, at the single edge (`hfresh` from a
-  label headroom), the double edge and the star `K₁,₃`; none failed.
-- [x] **24. Witnesses, 4: the molecule and Jacobs rows**: in 3-space, at `K₃` (with six trees and
-  a generic placement), the path `P₃` and the paw; none failed; the dump byte-identical.
+- [x] **16. L1–L2: the recon** (`F-033`, `F-047`; docs only): the spike closes; task 20 adjusted.
+- [x] **17. L1: the search with one visited set** (`F-033` in part): `dropUntilBundle` deleted,
+  `dfs.tex` restated; new `F-276` and `F-277`, both `reported`.
+- [x] **18. L1: the timing script; the `decide` facts**: `scripts/DFSTiming.lean` (at $n = 18$,
+  2196 ms per walk, 157 µs for the new search).
+- [x] **19. L2: `parsePair` on any whitespace** (`F-047`): tabs and CRLF read.
+- [x] **20. L1–L2: one rewrite of the texts** (`F-033`, `F-047`, both `done`): no bound claimed.
+- [x] **21. Witnesses, 1: the planar and matroid rows**: `Nonvacuity.lean`, at `K₂` and the
+  double edge with $k = 2$; `PHASE-BOUNDARIES.md` names the file.
+- [x] **22. Witnesses, 2: the body-bar and body-hinge rows**: at the triple edge and `K₃`.
+- [x] **23. Witnesses, 3: the molecular rows**: at the single and double edges and `K₁,₃`.
+- [x] **24. Witnesses, 4: the molecule and Jacobs rows**: in 3-space, at `K₃`, `P₃` and the paw;
+  none of the sixteen failed.
 - *The docstring sweep, tasks 25–37, by directory.* Each docstring read against its body; each
   label it names checked by task 2's script; process narration (phase numbers, design codes,
   "brick", "producer", "seed", "genuine", "motive", "carry", "this commit") removed; credits as the
@@ -327,9 +318,13 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `done`; `F-250`, `F-210` in part; new `F-281`): from the tight partitions to the end, with a
   docstring for `rank_matroidMG_le`; credits JJ 2008 §§2–3, 5 and JJ 2010 Theorem 4.1(a); the
   dump byte-identical; gate 9 346 → 333.
-- [ ] **30. `Molecular/Induction/` but `ForestSurgery/`** (`F-085`, `F-094`; the parts in
-  `Operations.lean`, `ReducibleVertex.lean`, `Contraction.lean`, `SplitOffDeficiency.lean` of
-  `F-088`, `F-097`, `F-104`, `F-108`, `F-148`, `F-168`, `F-172`, `F-235`, `F-236`, `F-238`, `F-240`).
+- [x] **30. `Molecular/Induction/Operations.lean`** (`F-235` `done`; the parts there of `F-085`,
+  `F-088`, `F-097`, `F-108`, `F-148`, `F-168`, `F-172`, `F-240`; new `F-282`): credits KT 2011
+  pp. 658–698; `F-279` gains twenty-two; the dump byte-identical; gate 9 333 → 319.
+- [ ] **30.1. `Molecular/Induction/` but `Operations.lean` and `ForestSurgery/`** (`F-094`; the parts
+  in `ReducibleVertex.lean`, `Contraction.lean`, `SplitOffDeficiency.lean` and
+  `SparseDeficiency.lean` of `F-085`, `F-088`, `F-097`, `F-104`, `F-236`, `F-238`). *Expected:* the
+  dump byte-identical; gate 9 319 → 312 (its seven lines there).
 - [ ] **31. `Molecular/Induction/ForestSurgery/`** (`F-092`; the parts there of `F-088`, `F-097`,
   `F-104`, `F-108`, `F-156`, `F-236`).
 - [ ] **32. `Molecular/RigidityMatrix/`, `Meet.lean`, `Extensor.lean`** (`F-064`, `F-114`, `F-164`,
@@ -359,8 +354,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   (`Modelling.lean`: the link is projective duality), `F-210`, `F-243`).
 - [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
   `F-269`'s eight declarations and `F-271`'s `case_I_realization` through block (b); `F-275`'s
-  derivable vertex hypotheses, `F-278`'s and `F-280`'s two each and `F-281`'s five, L6's;
-  `F-279`'s unused declarations). The smell
+  derivable vertex hypotheses, `F-278`'s and `F-280`'s two each, `F-281`'s five and `F-282`'s nine,
+  L6's, and `F-282`'s repeated derivation, L8's; `F-279`'s unused declarations). The smell
   counts again (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's; each
   `@[nolint …]` and `set_option linter` site checked for its one-line justification (task 8 found
   that one of the seven bridge "false positives" `notes/ToolchainBumps.md` counts was a real unused
@@ -415,17 +410,18 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 30**, at Opus: the docstrings of `Molecular/Induction/` but `ForestSurgery/` (the
-IDs and parts its checklist line names; under the sweep's rules and *Decisions*' sweep form). Its
-five files have 7 562 lines, so it may split as 30/30.1 (`Operations.lean`, 3 348 lines, then the
-other four), as task 29 did; a split amends the checklist line in the same commit. *Expected:* the
-dump byte-identical; gate 9 333 → 312 (its 21 lines there, 14 in `Operations.lean`). Gates 1–3
-(gate 3's witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t29-1.lean`), 5, 6, 9 and
-10 (the parent dump `scratch/reconcile-lean/dump-t29.1.txt`, gitignored; regenerate it if
-missing). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`,
-`F-271`, `F-275`, `F-278`, `F-279`, `F-280`, `F-281` and FRICTION's `edgeFiber_nonempty` (task 15)
-and count-matroid (task 21) entries for task 38. After the round the queue stops before
-`RECONCILE-FORMAL`, which is attended.
+**Next: task 30.1**, at Opus: the docstrings of `ReducibleVertex.lean`, `Contraction.lean`,
+`SplitOffDeficiency.lean` and `SparseDeficiency.lean` in `Molecular/Induction/` (4 214 lines; the IDs
+and parts its checklist line names; under the sweep's rules and *Decisions*' sweep form).
+*Expected:* the dump byte-identical; gate 9 319 → 312. Gates 1–3 (gate 3's witnesses: the sixteen
+of `scratch/reconcile-lean/Witnesses-t30.lean`), 5, 6, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t30.txt`, gitignored; regenerate it if missing). Task 30's screens
+may serve (gitignored): `scratch/reconcile-lean/t30/unused_src.py` finds unused declarations from
+the code, as the Lean cache counts a shared `_proof_N` auxiliary as a use, and `t30/binders.py`
+lists named hypotheses absent from their proofs (`lake lint` missed two, `F-282`). Carried in:
+`F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to
+`F-282` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries for
+task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 

@@ -8,27 +8,41 @@ import CombinatorialRigidity.Mathlib.GroupTheory.Perm.List
 import Matroid.Graph.Minor.Defs
 
 /-!
-# The combinatorial induction — graph operations and contraction bridges (`sec:molecular-induction`)
+# The combinatorial induction: circuits, contraction and the graph operations
 
-Phase 20, the fourth phase of the molecular-conjecture program (Phases 17–26; see
-`notes/MolecularConjecture.md`). This is the base file of the `Induction/` subdirectory.
-Building on `Molecular/Deficiency.lean` (Phase 19, the matroid `M(G̃)` + `D`-deficiency +
-`k`-dof hierarchy), this file develops the foundations of Katoh–Tanigawa's Theorem 4.9
-(Katoh–Tanigawa 2011, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45**,
-§3.4–3.5, §4):
+The first file of the combinatorial induction (`sec:molecular-induction`), after Katoh and
+Tanigawa (2011, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45**, §§3.2,
+4 and 6). For a multigraph `G` and `D = bodyBarDim n`, with `G̃ = (D-1)·G` and its matroid `M(G̃)`
+from `Molecular/Deficiency.lean`, it proves:
 
-* the vertex-induced subgraph from a fiber set (`inducedSpan`) and the canonical endpoint
-  selector (`endsOf`, `def:graph-operations`);
-* **circuit-induces-rigid** (`circuit_induces_isRigidSubgraph`, `lem:circuit-induces-rigid`;
-  KT Lemma 3.4): a circuit of `M(G̃)` minus an edge is `(D,D)`-tight on its vertex span;
-* the forest-packing decomposition of `M(G̃)`-independent sets (`lem:forest-surgery-split`);
-* the contraction rank and deficiency bridges (`lem:contraction-minimality`);
-* the graph operations `removeVertex` and `splitOff` with their basic lemmas.
+* the subgraph `G[V(X)]` induced by the ends of a set `X` of edges of `G̃` (`inducedSpan`,
+  `def:induced-span`), KT Lemma 3.4 (a circuit induces a rigid subgraph,
+  `lem:circuit-induces-rigid`), and two consequences for a loopless `G` with no proper rigid
+  subgraph, from the proofs of KT Lemma 4.5 (i) and (ii); `sec:molecular-induction-inherited`;
+* a proper rigid subgraph when every degree is at least three (`lem:pencil-min-degree-rigid`,
+  `sec:pencil-reduction`);
+* the independent sets of `M(G̃)` as unions of `D` forests (`lem:forest-packing-decomp`), and
+  KT Lemma 4.1 failing at the empty set (`ex:kt-41-overquantified`);
+  `sec:molecular-induction-forest`;
+* the rank of a rigid subgraph and the contraction of `M(G̃)` by its edges
+  (`lem:rigid-full-rank`, `lem:contract-rank-bridge`, `lem:contract-deficiency-conservation`),
+  the deficiency half of KT Lemma 3.5; `sec:molecular-induction-inherited`;
+* removal and splitting off at a vertex (`def:graph-operations`) and their common subgraph
+  (`lem:splitoff-edge-substitution`), `sec:molecular-induction-operations`, with an endpoint
+  choice for the edges of `G` (`endsOf`, `fmlnote:graph-operations`) and the vertex count after
+  splitting off (`lem:reduction-measure`);
+* KT Lemma 6.7(ii), that splitting off keeps the graph simple (`lem:splitoff-simple`,
+  `sec:simplicity-and-adjacent-pair`), and a cycle through a vertex of degree at least three as
+  a proper rigid subgraph (`lem:chain-cycle-dichotomy`);
+* the three-vertex case of KT Lemma 6.7(i) (`lem:triangle-third-edge`) and KT's isomorphism from
+  `G_a^{vc}` to `G_v^{ab}` (`lem:splitOff-isLink-relabel`), in `case-iii.tex`;
+* the chains and cycles of KT Lemma 4.6 (`ChainData`, `def:chain-data`; `CycleData`,
+  `def:cycle-data`), with the renamings of a chain that Case III of the algebraic induction uses
+  at every `d` (KT eqs. (6.54) and (6.55)).
 
-The deficiency-tracking, reducible-vertex, contraction-minimality, and forest-surgery layers
-build on top in the sibling files `SplitOffDeficiency`, `ReducibleVertex`, `Contraction`, and
-`ForestSurgery`. See `ROADMAP.md` §20 / `notes/Phase20.md` and the `sec:molecular-induction`
-dep-graph of `blueprint/src/chapter/molecular-induction.tex`.
+The deficiency bounds, the reducible vertex, the contraction of a graph and the forest surgery
+are in the sibling files `SplitOffDeficiency.lean`, `ReducibleVertex.lean`, `Contraction.lean`
+and `ForestSurgery/`.
 -/
 
 namespace Graph
@@ -37,18 +51,17 @@ open Set Matroid
 
 variable {α β : Type*}
 
-/-! ## The vertex-induced subgraph from a fiber set -/
+/-! ## The subgraph induced by the ends of a set of edges (`def:induced-span`) -/
 
-/-- The set of vertices **spanned** by a fiber set `X` of the multiplied graph
-`G̃ = (D-1)·G`: `V(X) = (G̃).spanningVerts X`, the vertices of `G` incident to some fiber
-of `X`. This is the `V(X)` of Katoh–Tanigawa 2011 Lemma 3.4. -/
+/-- The **vertices spanned by a set of edges of `G̃`** (`def:induced-span`): for a set `X` of
+edges of `G̃ = (D-1)·G`, the set `V(X) = (G̃).spanningVerts X` of the vertices incident with an
+edge of `X`. It is the `V(X)` of KT Lemma 3.4 (p. 658). -/
 def fiberSpan (G : Graph α β) (n : ℕ) (X : Set (β × Fin (bodyHingeMult n))) : Set α :=
   (G.mulTilde n).spanningVerts X
 
-/-- The **vertex-induced subgraph** `G[V(X)]` of `G` on the vertices `V(X)` spanned by a
-fiber set `X` of `G̃ = (D-1)·G` (`def:graph-operations`, the induced-from-an-edge-set
-construction): mathlib's `Graph.induce` applied to `G.fiberSpan n X`. This is the subgraph
-Katoh–Tanigawa 2011 Lemma 3.4 concludes is rigid. -/
+/-- The **subgraph induced by the ends of a set of edges** `G[V(X)]` (`def:induced-span`): for a
+set `X` of edges of `G̃ = (D-1)·G`, mathlib's `Graph.induce` of `G` on `V(X) = G.fiberSpan n X`.
+KT Lemma 3.4 (p. 658) says that it is rigid when `X` is a circuit of `M(G̃)`. -/
 def inducedSpan (G : Graph α β) (n : ℕ) (X : Set (β × Fin (bodyHingeMult n))) : Graph α β :=
   G.induce (G.fiberSpan n X)
 
@@ -57,49 +70,33 @@ lemma vertexSet_inducedSpan (G : Graph α β) (n : ℕ) (X : Set (β × Fin (bod
     V(G.inducedSpan n X) = G.fiberSpan n X := by
   rw [inducedSpan, vertexSet_induce]
 
-/-! ## A canonical endpoint selector (`def:graph-operations`, the `ends` selector)
+/-! ## The endpoint choice of a graph (`fmlnote:graph-operations`)
 
-The from-scratch panel-hinge realization `PanelHingeFramework.ofParam G ends param` of the
-algebraic induction (Phase 21b) takes an *endpoint selector* `ends : β → α × α` choosing an
-ordered pair of endpoints for each edge. Case I orients the rigid block's spanning forest along
-this selector; the Case-I realization producer (`lem:case-I-realization`, Phase 21b) requires it
-to be *consistent* with the graph — `G.IsLink (e j) (u j) (other j)` and
-`ends (e j) = (u j, other j)` for the forest hinges. This section lands the canonical such
-selector once, as a reusable `Graph`
-primitive, rather than re-deriving the per-edge `obtain ⟨x, y, hlink⟩` choice inline at each use
-(the pattern `exists_isLink_of_mem_edgeSet` is repeated a dozen times across the molecular files).
+The formalization fixes, for each edge of `G`, an ordered pair of its ends, the *endpoint
+choice* of `G` (`fmlnote:graph-operations`). The realizations of the algebraic induction take
+the ends of the edges of `G` from it, as the endpoint selector `ends : β → α × α` of a
+panel-hinge framework (`fmlnote:panel-hinge-nondegenerate`).
 -/
 
 open Classical in
-/-- **The canonical endpoint selector of a graph** (`def:graph-operations`): for each edge
-`e : β`, an ordered pair `(x, y) : α × α` of endpoints, chosen (via `Classical.choice`) to be a
-genuine link `G.IsLink e x y` whenever `e ∈ E(G)`. On non-edges it returns the junk constant
-`(default, default)`; the only contract is consistency on `E(G)` (`isLink_endsOf`). This is the
-`ends` selector the from-scratch panel realization `PanelHingeFramework.ofParam` consumes: it
-supplies, for every edge, an orientation along which the rigid block's spanning forest is laid
-out, with the link witnessed by `isLink_endsOf`. -/
+/-- **The endpoint choice of a graph** (`fmlnote:graph-operations`): for each `e : β`, an ordered
+pair `(x, y)`, chosen with `Classical.choice` so that `G.IsLink e x y` when `e ∈ E(G)`
+(`isLink_endsOf`). At an `e ∉ E(G)` it is `(default, default)`. -/
 noncomputable def endsOf [Inhabited α] (G : Graph α β) (e : β) : α × α :=
   if h : ∃ x y, G.IsLink e x y then (h.choose, h.choose_spec.choose) else (default, default)
 
-/-- **The canonical endpoint selector is a genuine link on every edge** (`def:graph-operations`):
-if `e ∈ E(G)` then `G.IsLink e (G.endsOf e).1 (G.endsOf e).2`. The endpoint pair `G.endsOf e` is
-chosen by `Classical.choice` from `exists_isLink_of_mem_edgeSet`, so its components are an actual
-pair of ends of `e`. This is the consistency contract the Case-I realization producer
-(`lem:case-I-realization`, Phase 21b) requires of its forest hinges (`hlink`), discharging the
-per-edge `obtain ⟨x, y, hlink⟩` choice once and for all. -/
+/-- **The endpoint choice gives the ends of every edge** (`fmlnote:graph-operations`): if
+`e ∈ E(G)`, then `G.IsLink e (G.endsOf e).1 (G.endsOf e).2`, as an edge has ends
+(`exists_isLink_of_mem_edgeSet`). -/
 lemma isLink_endsOf [Inhabited α] (G : Graph α β) {e : β} (he : e ∈ E(G)) :
     G.IsLink e (G.endsOf e).1 (G.endsOf e).2 := by
   have h : ∃ x y, G.IsLink e x y := exists_isLink_of_mem_edgeSet he
   rw [endsOf, dite_eq_left h]
   exact h.choose_spec.choose_spec
 
-/-- **The canonical endpoint selector orients along a given link** (`def:graph-operations`): if
-`G.IsLink e x y`, then `G.endsOf e` is one of the two oriented pairs `(x, y)` or `(y, x)`. The
-two ends of an edge are determined up to order (`IsLink.eq_and_eq_or_eq_and_eq`), so the canonical
-selector — itself a genuine link (`isLink_endsOf`) — must agree with `(x, y)` as an unordered
-pair. Lets a consumer that has *named* endpoints `x y` recover them (up to swap) from the canonical
-selector, which is what the Case-I spanning-forest orientation needs to match `ends (e j) =
-(u j, other j)` against a forest edge it already linked. -/
+/-- **The endpoint choice of a link** (`fmlnote:graph-operations`): if `G.IsLink e x y`, then
+`G.endsOf e` is `(x, y)` or `(y, x)`. The ends of an edge are determined up to order
+(`IsLink.eq_and_eq_or_eq_and_eq`), and `G.endsOf e` is a pair of ends of `e` (`isLink_endsOf`). -/
 lemma endsOf_eq_or_swap [Inhabited α] (G : Graph α β) {e : β} {x y : α} (h : G.IsLink e x y) :
     G.endsOf e = (x, y) ∨ G.endsOf e = (y, x) := by
   have hl := G.isLink_endsOf h.edge_mem
@@ -107,28 +104,21 @@ lemma endsOf_eq_or_swap [Inhabited α] (G : Graph α β) {e : β} {x y : α} (h 
   · exact Or.inl (Prod.ext h1 h2)
   · exact Or.inr (Prod.ext h1 h2)
 
-/-- **The canonical endpoint selector's two ends are distinct on every link of a loopless graph**
-(`def:graph-operations`): if `G` is loopless and `e ∈ E(G)`, then `(G.endsOf e).1 ≠ (G.endsOf e).2`.
-The canonical selector is a genuine link (`isLink_endsOf`), and a loopless graph's links join
-*distinct* bodies (`IsLink.ne`). This is the edge-restricted endpoint-distinctness fact the Case-I
-leg-transport brick `hasGenericRealization_transport_ends` consumes (KT eq. (6.6), Phase 22b): the
-all-`β` form `∀ e, (G.endsOf e).1 ≠ (G.endsOf e).2` is *unsatisfiable* for `endsOf` (it returns the
-junk constant `(default, default)` on non-edges), so the transversality input must be restricted to
-the links, where it is discharged from `G.Simple`/`G.Loopless`. -/
+/-- **The endpoint choice of a loopless graph has distinct ends** (`fmlnote:graph-operations`): if
+`G` is loopless and `e ∈ E(G)`, then `(G.endsOf e).1 ≠ (G.endsOf e).2`, as the two are the ends
+of `e` (`isLink_endsOf`) and a loopless graph's links join distinct vertices (`IsLink.ne`). The
+lemma is stated for the edges of `G`: at an `e ∉ E(G)` both ends are `default`. -/
 lemma endsOf_fst_ne_snd [Inhabited α] (G : Graph α β) [G.Loopless] {e : β} (he : e ∈ E(G)) :
     (G.endsOf e).1 ≠ (G.endsOf e).2 :=
   (G.isLink_endsOf he).ne
 
-/-! ## A circuit induces a rigid subgraph (`lem:circuit-induces-rigid`; KT Lemma 3.4 full form) -/
+/-! ## A circuit induces a rigid subgraph (`lem:circuit-induces-rigid`; KT Lemma 3.4) -/
 
-/-- **A circuit exceeds the sparsity bound on its vertex span** (Katoh–Tanigawa 2011
-Lemma 3.4, lower-bound half). For a circuit `X` of `M(G̃)`, `|X| + D > D·|V(X)|`, i.e.
-`|X| > D(|V(X)| − 1)`. A circuit is a *minimal* dependent set: every proper subset is
-independent, hence `(D,D)`-sparse, so the sparsity failure of the dependent `X` can only
-occur at `X` itself. Concretely, picking any `e ∈ X`, the proper subset `X \ {e}` is
-independent (`IsCircuit.diff_singleton_indep`) hence `(D,D)`-sparse, so if `X` itself also
-satisfied the bound, every nonempty subset of `X` would, making `(G̃ ↾ X)` sparse and `X`
-independent — contradicting that `X` is a circuit. -/
+/-- **A circuit exceeds the sparsity bound** (a step of `lem:circuit-induces-rigid`; KT p. 658):
+for a circuit `X` of `M(G̃)`, `D·|V(X)| < |X| + D`, that is, `|X| > D(|V(X)| − 1)`. If `X`
+satisfied the bound `|X| + D ≤ D·|V(X)|`, it would be independent: a nonempty `E'' ⊊ X` misses
+some `e ∈ X` and lies in the independent, hence sparse, set `X \ {e}`
+(`IsCircuit.sdiff_singleton_indep`), so every nonempty subset of `X` satisfies the bound. -/
 theorem circuit_ncard_gt [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     {X : Set (β × Fin (bodyHingeMult n))} (hX : (G.matroidMG n).IsCircuit X) :
     bodyBarDim n * (G.fiberSpan n X).ncard < X.ncard + bodyBarDim n := by
@@ -159,19 +149,15 @@ theorem circuit_ncard_gt [DecidableEq β] [Finite α] [Finite β] {G : Graph α 
     have hsp := hsparse E'' hE''edge hE''ne
     rwa [spanningVerts_restrict_of_subset hsub] at hsp
 
-/-- **A circuit induces a rigid subgraph** (`lem:circuit-induces-rigid`; Katoh–Tanigawa 2011
-Lemma 3.4, full form). Let `X` be a circuit of `M(G̃)` and `e ∈ X`. Then `X − e` is
-`(D,D)`-tight on its vertex span `V(X)`: `|X − e| + D = D·|V(X)|`, equivalently
-`|X − e| = D(|V(X)| − 1)`. Thus `X − e` packs `D` edge-disjoint spanning trees on `V(X)`
-and the vertex-induced subgraph `G[V(X)]` is rigid (`0`-dof).
+/-- **The count of KT Lemma 3.4** (`lem:circuit-induces-rigid`; KT p. 658): for a circuit `X` of
+`M(G̃)` and `e ∈ X`, `|X − e| + D = D·|V(X)|`, that is, `|X − e| = D(|V(X)| − 1)`. By KT, `X − e`
+is then the union of `D` edge-disjoint spanning trees on `V(X)`, which is not formalized;
+`circuit_induces_isRigidSubgraph` gives the rigidity of `G[V(X)]`.
 
-The upper bound `|X − e| + D ≤ D·|V(X)|`: `X − e` is independent
-(`IsCircuit.diff_singleton_indep`), so `(G̃ ↾ (X − e))` is `(D,D)`-sparse
-(`isSparse_diff_singleton_of_isCircuit`); applying sparsity to `X − e` itself gives
-`|X − e| + D ≤ D·|spanningVerts(X − e)| ≤ D·|V(X)|` (a circuit minus an edge spans no more
-vertices, `spanningVerts (X − e) ⊆ spanningVerts X = V(X)`). The lower bound
-`D·|V(X)| ≤ |X − e| + D` is `circuit_ncard_gt` (`|X| > D(|V(X)| − 1)`) with `|X| =
-|X − e| + 1` (`e ∈ X`). -/
+The upper bound: `G̃ ↾ (X − e)` is `(D,D)`-sparse (`isSparse_diff_singleton_of_isCircuit`). If
+`X − e` is not empty, sparsity applied to `X − e` itself gives
+`|X − e| + D ≤ D·|V(X − e)| ≤ D·|V(X)|`; if it is empty, `V(X)` is not, so `D ≤ D·|V(X)|`. The
+lower bound is `circuit_ncard_gt` with `|X| = |X − e| + 1`. -/
 theorem circuit_induces_isTight [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     {X : Set (β × Fin (bodyHingeMult n))} (hX : (G.matroidMG n).IsCircuit X)
     {e : β × Fin (bodyHingeMult n)} (he : e ∈ X) :
@@ -208,11 +194,9 @@ theorem circuit_induces_isTight [DecidableEq β] [Finite α] [Finite β] {G : Gr
         _ ≤ bodyBarDim n * (G.fiberSpan n X).ncard := by gcongr
   omega
 
-/-- **A circuit's fibers are edges of the induced subgraph** (`lem:circuit-induces-rigid`,
-support): every fiber `p ∈ X` of a fiber set `X` of `G̃` has its underlying edge `p.1`
-joining two vertices of the vertex span `V(X) = fiberSpan X`, hence `p ∈ E((G[V(X)])̃)`.
-This is the inclusion `X ⊆ E((inducedSpan X)̃)` that lets the `M(G̃)`-circuit `X` be read
-as an edge set of the induced subgraph `G[V(X)]`. -/
+/-- **The edges of `X` are edges of `H̃`** (a step of `lem:circuit-induces-rigid`): for a set `X`
+of edges of `G̃` and `H = G[V(X)]`, `X ⊆ E(H̃)`, as the ends of each `p ∈ X`, which are those of
+the edge `p.1` of `G`, lie in `V(X)`. -/
 theorem subset_edgeSet_mulTilde_inducedSpan {G : Graph α β} {n : ℕ}
     {X : Set (β × Fin (bodyHingeMult n))} (hX : X ⊆ E(G.mulTilde n)) :
     X ⊆ E((G.inducedSpan n X).mulTilde n) := by
@@ -225,18 +209,17 @@ theorem subset_edgeSet_mulTilde_inducedSpan {G : Graph α β} {n : ℕ}
   simp only [mem_edgeSet_mulTilde, inducedSpan, edgeSet_induce]
   exact ⟨x, y, hl1, hxV, hyV⟩
 
-/-- **A circuit induces a rigid subgraph** (`lem:circuit-induces-rigid`; Katoh–Tanigawa 2011
-Lemma 3.4, full form — rigid-subgraph conclusion). Let `X` be a circuit of `M(G̃)`. Then the
-vertex-induced subgraph `G[V(X)]` on the vertex span `V(X) = fiberSpan X` is a **rigid
-subgraph** of `G`: `G[V(X)] ≤ G` and `def((G[V(X)])̃) = 0`, i.e. it is `0`-dof.
+/-- **A circuit induces a rigid subgraph** (`lem:circuit-induces-rigid`; KT Lemma 3.4, p. 658):
+for `D ≥ 1` and a circuit `X` of `M(G̃)`, `H = G[V(X)]` is a rigid subgraph of `G`, that is,
+`H ≤ G` and `def(H̃) = 0`. Katoh and Tanigawa use it in this form in the proofs of their
+Lemmas 4.5 and 4.8.
 
-This packages the tightness *equality* `circuit_induces_isTight` (`|X − e| = D(|V(X)| − 1)`)
-into the `IsRigidSubgraph` predicate Katoh–Tanigawa's Lemmas 4.5(i)/4.8 consume ("Lemma 3.4
-implies `G[V(X)]` is a (proper) rigid subgraph"). The rank of `M((G[V(X)])̃)` is pinned to
-`D(|V(X)| − 1)` from both sides: the upper bound is `rank_matroidMG_le`, and the lower bound
-is the independent `X − e` of size `D(|V(X)| − 1)` (independent in `M((G[V(X)])̃) = M(G̃) ↾
-E((G[V(X)])̃)` by `matroidMG_restrict_mulTilde`, since `X ⊆ E((G[V(X)])̃)`). The def\,=\,corank
-bridge `rank_add_deficiency_eq` then forces the deficiency to `0`. -/
+Let `e ∈ X`. The rank of `M(H̃)` is at most `D(|V(H)| − 1)`
+(`rank_matroidMG_le`). The set `X − e` lies in `E(H̃)` (`subset_edgeSet_mulTilde_inducedSpan`)
+and is independent in `M(G̃)`, hence in its restriction `M(H̃)` (`matroidMG_restrict_mulTilde`),
+and it has `D(|V(X)| − 1)` elements (`circuit_induces_isTight`). So
+`rank M(H̃) = D(|V(H)| − 1)`, and KT eq. (2.4) (`rank_add_deficiency_eq`) gives
+`def(H̃) = 0`. -/
 theorem circuit_induces_isRigidSubgraph [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
     {n : ℕ} (hD : 1 ≤ bodyBarDim n) {X : Set (β × Fin (bodyHingeMult n))}
     (hX : (G.matroidMG n).IsCircuit X) :
@@ -291,22 +274,13 @@ theorem circuit_induces_isRigidSubgraph [DecidableEq β] [Finite α] [Finite β]
       = (bodyBarDim n : ℤ) * ((G.fiberSpan n X).ncard : ℤ) - (bodyBarDim n : ℤ) := by ring
   linarith
 
-/-- **The fundamental circuit of an out-of-base fiber spans all of `G`, given no proper
-rigid subgraph** (`lem:no-rigid-edge-count`, support; Katoh–Tanigawa 2011 Lemma 4.5(i),
-the spanning step). Let `B` be a base of `M(G̃)` and `p ∈ E(G̃) ∖ B` a fiber element
-outside it. Its fundamental circuit `X = fundCircuit p B` induces a rigid subgraph
-`G[V(X)]` (`circuit_induces_isRigidSubgraph`, via `IsBase.fundCircuit_isCircuit`); if `G`
-has **no proper rigid subgraph**, that rigid subgraph cannot be proper, so it must span all
-of `G`: `V(G[V(X)]) = V(X) = V(G)`.
-
-This is the "Lemma 3.4 ⟹ `V(X) = V(G)`" reduction Katoh–Tanigawa use inside the KT 4.5(i)
-edge-count bound `lem:no-rigid-edge-count` (and again in the KT 4.7–4.8 reduction step): the
-fundamental circuit of any redundant fiber is forced to be *spanning*, which is what lets the
-later base-exchange relocate redundancy onto a single fiber `ẽ`. It isolates the clean,
-matroid-API half of KT 4.5(i) (the rigid-subgraph / no-proper-rigid reasoning) from the
-remaining base-exchange count. The `[G.Loopless]` hypothesis (which the caller derives from
-minimality via `loopless_of_isMinimalKDof`) feeds the `2 ≤ |V(H)|` conjunct of
-`IsProperRigidSubgraph`: a circuit of a loopless graph spans two distinct vertices. -/
+/-- **With no proper rigid subgraph, a fundamental circuit spans `V(G)`** (a step of
+`lem:no-rigid-edge-count`; from the proof of KT Lemma 4.5(i), p. 663): let `G` be loopless with
+no proper rigid subgraph, `B` a base of `M(G̃)` and `p ∈ E(G̃) ∖ B`. Then the fundamental circuit
+`X` of `p` with respect to `B` has `V(X) = V(G)`. Indeed `G[V(X)]` is a rigid subgraph
+(`circuit_induces_isRigidSubgraph`), and it has at least two vertices, as an edge of the loopless
+`G` has two distinct ends; so it is not proper. Its caller, `no_rigid_edge_count`, has
+`G` loopless as a minimal `k`-dof-graph (`loopless_of_isMinimalKDof`). -/
 theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} [G.Loopless] {n : ℕ} (hD : 1 ≤ bodyBarDim n)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
@@ -340,21 +314,17 @@ theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finit
   exact hnp (G.inducedSpan n X)
     ⟨hrigid, hV2, hsub.ssubset_of_ne (fun heq ↦ hnotle heq.ge)⟩
 
-/-- **No proper rigid subgraph + positive deficiency ⟹ `M(G̃)` has no redundant fiber**
-(the non-rigid half of KT Lemma 4.6's edge bound, off minimality). For a **loopless** `G`
-with **no proper rigid subgraph** and strictly positive deficiency `def(G̃) > 0`, the whole
-ground set `E(G̃)` is independent in `M(G̃)` (i.e. `M(G̃)` is free — every base is all of
-`E(G̃)`).
+/-- **With no proper rigid subgraph and positive deficiency, `E(G̃)` is independent** (KT
+Lemma 4.5(ii), eq. (4.4), pp. 663–664, in Katoh and Tanigawa's form): for a loopless `G` with no
+proper rigid subgraph and `def(G̃) > 0`, `E(G̃)` is independent in `M(G̃)`, so it is the only
+base. `lem:edge-set-indep-pos` states it for a minimal `k`-dof-graph
+(`indep_edgeSet_mulTilde_of_noRigid_of_pos`).
 
-Proof: by contradiction. Were `E(G̃)` dependent, a base `B` of `M(G̃)` would miss some fiber
-`p ∈ E(G̃) ∖ B` (otherwise `E(G̃) ⊆ B` and `E(G̃)` is independent as a subset of the base).
-Its fundamental circuit `X = fundCircuit p B` spans all of `V(G)`
-(`fundCircuit_inducedSpan_vertexSet_eq`, off the no-proper-rigid hypothesis) and induces a
-rigid — hence `0`-dof — subgraph `G[V(X)]` (`circuit_induces_isRigidSubgraph`). Deficiency is
-antitone at a fixed vertex set (`deficiency_le_deficiency_of_le_vertexSet_eq`), so the
-spanning `G[V(X)] ≤ G` with `V(G[V(X)]) = V(G)` forces `def(G̃) ≤ def((G[V(X)])̃) = 0`,
-contradicting `def(G̃) > 0`. This is the minimality-free replacement of KT 4.5(i)'s edge
-count in the non-rigid (`k > 0`) regime. -/
+If `E(G̃)` were dependent, a base `B` of `M(G̃)` would miss some `p ∈ E(G̃)`. The fundamental
+circuit `X` of `p` has `V(X) = V(G)` (`fundCircuit_inducedSpan_vertexSet_eq`), and `G[V(X)]` is a
+rigid subgraph (`circuit_induces_isRigidSubgraph`). The deficiency does not increase from a
+subgraph with the same vertices to `G` (`deficiency_le_deficiency_of_le_vertexSet_eq`), so
+`def(G̃) ≤ 0`. -/
 theorem indep_matroidMG_of_noRigid_of_deficiency_pos [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} [G.Loopless] {n : ℕ} (hD : 1 ≤ bodyBarDim n)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) (hk : 0 < G.deficiency n) :
@@ -385,32 +355,25 @@ theorem indep_matroidMG_of_noRigid_of_deficiency_pos [DecidableEq β] [Finite α
   have hzero : (G.inducedSpan n ((G.matroidMG n).fundCircuit p B)).deficiency n = 0 := hrigid.2
   omega
 
-/-! ## A minimum-degree-`3` vertex forces a proper rigid subgraph
-(`lem:min-degree-proper-rigid`, W3-L1; `notes/Phase39-design.md` §"W3 leaf decomposition")
+/-! ## A proper rigid subgraph when every degree is at least three (`lem:pencil-min-degree-rigid`)
 
-The keystone of the `pencil_reduction` skeleton (Phase 39, W3): a loopless multigraph on
-`≥ 3` bodies with every degree `≥ 3` has a proper rigid subgraph, **without any minimality
-hypothesis** — this is what makes KT's dispatch total on *every* spanning multigraph, not just
-the minimal ones. Pick a vertex `v` of minimum degree `δ ≥ 3`; the handshake identity gives
-`δ · |V| ≤ 2|E|`, so the edges avoiding `v` number `|E| − δ ≥ δ(|V| − 2)/2 ≥ 3(|V| − 2)/2`.
-Their `(D − 1)`-fold fiber in `M(G̃)` then has size `(D − 1)(|E| − δ) > D(|V| − 2)` for
-`D = bodyBarDim n ≥ 4` — strictly more than the `(D, D)`-sparsity cap on any vertex set
-avoiding `v` (at most `|V| − 1` vertices) — so the fiber is dependent (`matroidMG_indep_iff`),
-hence contains a circuit; its induced span is rigid (`circuit_induces_isRigidSubgraph`), spans
-`≥ 2` vertices (looplessness), and avoids `v` (all its edges do), hence is proper.
+The lemma is here, not beside `IsProperRigidSubgraph` in `Molecular/Deficiency.lean`, because its
+proof uses `circuit_induces_isRigidSubgraph`. -/
 
-This lemma is homed here, downstream of `circuit_induces_isRigidSubgraph`, rather than
-alongside `IsProperRigidSubgraph` in `Molecular/Deficiency.lean`: that lemma (and `inducedSpan`)
-live in this file precisely because `Deficiency.lean` is imported *by* `Operations.lean`, so a
-circuit-based constructor of `IsProperRigidSubgraph` cannot sit upstream of its own
-`circuit_induces_isRigidSubgraph` ingredient without a cyclic import — the same constraint
-already routes the sibling circuit-based producer `indep_edgeSet_mulTilde_of_noRigid_of_pos`
-to `Induction/ReducibleVertex.lean`, further downstream still. -/
--- `[DecidableEq β]` is pinned by the `notes/Phase39-design.md` W3-L1 signature (matching
--- `circuit_induces_isRigidSubgraph`/`matroidMG`'s standing requirement); the proof opens with
--- `classical`, so the elaborated term routes decidability through `Classical.propDecidable`
--- instead, making the named instance a genuine false positive for this narrower-scoped lint.
+-- `linter.unusedDecidableInType` reports `[DecidableEq β]`, which the statement does not use. The
+-- proof opens with `classical`, so the lemma also holds without the instance.
 set_option linter.unusedDecidableInType false in
+/-- **A proper rigid subgraph when every degree is at least three**
+(`lem:pencil-min-degree-rigid`): for `D ≥ 4`, a loopless multigraph `G` with at least three
+vertices, each of degree at least three, has a proper rigid subgraph. No minimality is assumed:
+`pencil_reduction` (`thm:pencil-reduction`) applies it to find a vertex of degree two.
+
+Let `v` be a vertex of least degree `δ ≥ 3`. As `δ·|V(G)| ≤ 2|E(G)|`, the edges of `G` not at `v`
+number `|E(G)| − δ ≥ δ(|V(G)| − 2)/2`, and their `(D − 1)(|E(G)| − δ)` copies in `G̃` are more
+than `D(|V(G)| − 2)` when `D ≥ 4`, the bound of `(D, D)`-sparsity on the at most `|V(G)| − 1`
+vertices other than `v`. So the copies are dependent in `M(G̃)` (`matroidMG_indep_iff`) and
+contain a circuit `X`. Then `G[V(X)]` is a rigid subgraph (`circuit_induces_isRigidSubgraph`)
+with at least two vertices, as `G` has no loops, and without `v`, so it is proper. -/
 theorem exists_isProperRigidSubgraph_of_three_le_degree
     [DecidableEq β] [Finite α] [Finite β] {n : ℕ} {G : Graph α β}
     (hD : 4 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hloop : G.Loopless)
@@ -531,33 +494,18 @@ theorem exists_isProperRigidSubgraph_of_three_le_degree
     (ssubset_iff_of_subset (hVHsub.trans sdiff_subset)).mpr ⟨v, hvV, hvnotH⟩
   exact ⟨H, hHrigid, hVH2, hVHssub⟩
 
-/-! ## Forest-packing decomposition of `M(G̃)`-independent sets (`lem:forest-surgery-split`)
+/-! ## The independent sets of `M(G̃)` as unions of forests (`lem:forest-packing-decomp`)
 
-The matroidal substrate the Katoh–Tanigawa forest surgery (KT Lemmas 4.1/4.2) operates on.
-`M(G̃)` is the `D`-fold union of the cycle matroid of `G̃` restricted to `E(G̃)`
-(`def:matroid-MG`), so by the matroid-union characterization (`Matroid.union_indep_iff`,
-Nash-Williams 1966 / Edmonds) an independent set `I` of `M(G̃)` is exactly one that decomposes into
-`D = bodyBarDim n` cycle-matroid-independent fiber sets `F₀, …, F_{D-1}` — the **`D`
-edge-disjoint forests on `V(G̃)`** of Katoh–Tanigawa's proof. This pins the **framing** of
-the surgery (the open Phase-20 blocker): a "forest" of `G̃` is a cycle-matroid-independent
-fiber set (mathlib `Matroid.Graph.cycleMatroid` independence = acyclicity), and the
-`D`-forest partition is the `Matroid.union_indep_iff` decomposition — *no* hand-rolled
-graph-theoretic acyclicity predicate is introduced. KT 4.1's surgery then reroutes each of
-these `D` forests across the degree-2 vertex `v`. -/
+Katoh and Tanigawa begin their proofs of Lemmas 4.1 and 4.2 (p. 660) with a partition of an
+independent set of `M(G̃)` into `D` edge-disjoint forests. A forest of `G̃` is here a set
+independent in its cycle matroid `(G̃).cycleMatroid`, whose independent sets are the acyclic
+ones. -/
 
-/-- **Forest-packing decomposition of an `M(G̃)`-independent set** (`lem:forest-surgery-split`,
-framing; Katoh–Tanigawa 2011, the "partition `I` into `D` edge-disjoint forests on `V`" step
-opening the proofs of Lemmas 4.1/4.2). A fiber set `I ⊆ E(G̃)` is independent in `M(G̃)` iff it
-is covered by `D = bodyBarDim n` cycle-matroid-independent fiber sets (the `D` edge-disjoint
-forests of `G̃`): `∃ Fs : Fin D → Set _, ⋃ i, Fs i = I ∧ ∀ i, (G̃.cycleMatroid).Indep (Fs i)`.
-
-This is the matroidal reading of "`I` partitions into `D` edge-disjoint forests": `M(G̃)` is the
-`D`-fold cycle-matroid union restricted to `E(G̃)` (`def:matroid-MG`), so independence unfolds
-through `Matroid.restrict_indep_iff` and `Matroid.union_indep_iff` (Nash-Williams 1966 /
-Edmonds). It fixes
-the framing of the Katoh–Tanigawa forest surgery: a "forest" is a `(G̃).cycleMatroid`-independent
-fiber set, and the surgery of KT Lemma 4.1 reroutes each of these `D` forests across the
-degree-2 vertex. -/
+/-- **The independent sets of `M(G̃)` are the unions of `D` forests** (`lem:forest-packing-decomp`):
+a set `I` of edges of `G̃` is independent in `M(G̃)` if and only if `I ⊆ E(G̃)` and `I` is the
+union of `D` sets independent in the cycle matroid of `G̃`. As `M(G̃)` is the restriction to
+`E(G̃)` of the union of `D` copies of that cycle matroid (`def:matroid-MG`), this unfolds
+`Matroid.restrict_indep_iff` and `Matroid.union_indep_iff` (`lem:union-indep-iff`). -/
 theorem matroidMG_indep_iff_exists_forest_packing [DecidableEq β] [Finite β]
     (G : Graph α β) (n : ℕ) {I : Set (β × Fin (bodyHingeMult n))} :
     (G.matroidMG n).Indep I ↔ I ⊆ E(G.mulTilde n) ∧
@@ -566,33 +514,22 @@ theorem matroidMG_indep_iff_exists_forest_packing [DecidableEq β] [Finite β]
   rw [matroidMG, Matroid.restrict_indep_iff, Matroid.union_indep_iff]
   tauto
 
-/-! ### Katoh–Tanigawa Lemma 4.1 is over-quantified (`lem:forest-surgery-split`, off-path note)
+/-! ### KT Lemma 4.1 holds only for bases (`rem:kt-lemma-41`)
 
-Katoh–Tanigawa 2011 Lemma 4.1 (p.660; the 2009 arXiv predecessor Lemma 5.1, p.11) is
-quantified "**for any** independent set `I` of `M(G̃)` … there exists `I'` … with
-`|I'| = |I| − D`". As literally quantified over *all* independent `I` this is **false**:
-for any `I` with `|I| < D` — e.g. `I = ∅` — it demands `|I'| = |I| − D < 0`, impossible.
-The intended quantifier is over **bases** of `M(G̃)`; the universal form must be restricted.
+KT Lemma 4.1 (p. 660; Lemma 5.1, p. 11, of the arXiv version, 2009) states that for any
+independent set `I` of `M(G̃)` there is an independent set `I'` of `M(G̃_v^{ab})` with
+`|I'| = |I| − D` and fewer than `D − 1` copies of `ab`. No `I'` has `|I'| = |I| − D` when
+`|I| < D`, for instance at `I = ∅` (`ex:kt-41-overquantified`). Katoh and Tanigawa apply the
+lemma to a base, in the proof of their Lemma 4.3, and the blueprint reads it for bases.
+`rem:kt-lemma-41` also shows that a base has the partition into forests that the proof assumes
+(`lem:balanced-forest-packing`), and that the induction needs the lemma only through the
+deficiency bound of KT Lemma 4.3(i), which `lem:dof-tracking` proves by comparing partitions of
+`V(G)`. -/
 
-We record the literal disproof as a named lemma (the `I = ∅`, ℕ-cardinality witness:
-no `I'` can satisfy `|I'| + D = 0` because `D = bodyBarDim n ≥ 1`). This is a narrow
-*statement-as-quantified* observation, **not** a refutation of KT's theorem: the molecular
-conjecture and KT's proof stand. The intended (base-form) content the induction consumes —
-the deficiency inequality `def(G̃ᵥᵃᵇ) ≤ def(G̃)` — is true and is established directly via
-the deficiency-count route (`lem:splitoff-deficiency`), bypassing the forest surgery. A
-separate, subtler gap (KT's base-case proof silently assumes a *balanced* `D`-forest packing
-at the degree-2 vertex `v`, which we could neither justify nor recover) gates only the
-deferred surgery TODO; see `notes/Phase20.md` *Finding* / *Replan*. The framing here is
-deliberately "KT omits / we did not recover", never "KT errs". -/
-
-/-- **KT Lemma 4.1's universal quantification over independent sets is not satisfiable**
-(`lem:forest-surgery-split`, over-quantification note; Katoh–Tanigawa 2011 Lemma 4.1 p.660 /
-2009 arXiv Lemma 5.1 p.11). The lemma as stated promises, *for any* independent set `I` of
-`M(G̃)`, an `I'` with `|I'| = |I| − D` (i.e. `|I'| + D = |I|`). Taking `I = ∅` (independent
-in any matroid) makes the demand `|I'| + D = 0` in ℕ, which fails whenever `D = bodyBarDim n
-≥ 1`. So the universal-over-`I` reading is formally false; the intended quantifier is over
-*bases*. See the section docstring and `notes/Phase20.md` for the three-layer framing — this
-is the *statement-as-quantified* layer only, not a refutation of KT's theorem. -/
+/-- **KT Lemma 4.1 fails at `I = ∅`** (`ex:kt-41-overquantified`; KT p. 660): for `D ≥ 1`, no set
+`I'` has `|I'| + D = |∅| = 0`. The empty set is independent in `M(G̃)`, so no independent `I'` of
+`M(G̃_v^{ab})` has `|I'| = |∅| − D`, as KT Lemma 4.1, stated for every independent set, would
+give (`rem:kt-lemma-41`). -/
 theorem kt_lemma_41_overquantified (n : ℕ) (hD : 1 ≤ bodyBarDim n) :
     ¬ ∃ I' : Set (β × Fin (bodyHingeMult n)),
         I'.ncard + bodyBarDim n = (∅ : Set (β × Fin (bodyHingeMult n))).ncard := by
@@ -600,26 +537,18 @@ theorem kt_lemma_41_overquantified (n : ℕ) (hD : 1 ≤ bodyBarDim n) :
   rw [Set.ncard_empty] at hI'
   omega
 
-/-! ## A rigid subgraph attains full rank (`lem:contraction-minimality`, rank core)
+/-! ## The rank of a rigid subgraph and the contraction of `M(G̃)` (KT Lemma 3.5)
 
-The matroidal arithmetic the rigid-subgraph contraction of KT Lemma 3.5 opens on: a
-*rigid* subgraph `H` (`def(H̃) = 0`) has `rank M(H̃) = D(|V(H)| − 1)`, the maximal value
-allowed by the rank upper bound. This is the `def = 0` reading of the def\,$=$\,corank
-bridge (`thm:def-eq-corank`, Phase 19's `rank_add_deficiency_eq`): a `0`-dof graph's
-multiplied form packs `D` edge-disjoint spanning trees on its `|V(H)|` vertices, exactly
-`D(|V(H)| − 1)` edges. Contracting such an `H` removes precisely this rank from `M(G̃)`
-and the matching `D(|V(H)| − 1)` from the ambient `D(|V| − 1)`, leaving the corank — hence
-the deficiency — unchanged; that is the engine of Case I of the algebraic induction. -/
+The deficiency half of KT Lemma 3.5 (pp. 658–659), for the contraction of the matroid `M(G̃)`
+by the edges of `H̃` (`sec:molecular-induction-inherited`). A rigid subgraph `H` has
+`rank M(H̃) = D(|V(H)| − 1)` (`lem:rigid-full-rank`); contracting `E(H̃)` lowers the rank of
+`M(G̃)` by `rank M(H̃)` (`lem:contract-rank-bridge`); so the contraction keeps the deficiency
+(`lem:contract-deficiency-conservation`). The minimality half is
+`contract_minimality_transport` (`Contraction.lean`). -/
 
-/-- **A rigid subgraph attains full rank** (`lem:contraction-minimality`, rank core;
-Katoh–Tanigawa 2011 Lemma 3.5, the rank-conservation fact its proof opens on). For a
-rigid subgraph — `H.IsKDof n 0`, i.e. `def(H̃) = 0` — with `V(H).Nonempty` and
-`D = bodyBarDim n ≥ 1`, the matroid `M(H̃)` has full rank `rank M(H̃) = D(|V(H)| − 1)`.
-
-Immediate from the def\,$=$\,corank bridge `rank_add_deficiency_eq` (Phase 19) with the
-deficiency `def(H̃) = 0` of the rigid hypothesis: `rank M(H̃) + 0 = D(|V(H)| − 1)`. This
-is the rank quantity contraction of a rigid subgraph removes from both `rank M(G̃)` and
-the ambient `D(|V| − 1)`, leaving the corank/deficiency unchanged (KT 3.5). -/
+/-- **The rank of a rigid subgraph** (`lem:rigid-full-rank`; the first step of KT Lemma 3.5,
+p. 658): for `D ≥ 1` and a `0`-dof-graph `H` with a vertex, `rank M(H̃) = D(|V(H)| − 1)`, by KT
+eq. (2.4) (`rank_add_deficiency_eq`) with `def(H̃) = 0`. -/
 theorem rank_matroidMG_of_isKDof_zero [DecidableEq β] [Finite α] [Finite β] {H : Graph α β}
     {n : ℕ} (hD : 1 ≤ bodyBarDim n) (hne : V(H).Nonempty) (hrigid : H.IsKDof n 0) :
     ((H.matroidMG n).rank : ℤ) = bodyBarDim n * ((V(H).ncard : ℤ) - 1) := by
@@ -627,24 +556,10 @@ theorem rank_matroidMG_of_isKDof_zero [DecidableEq β] [Finite α] [Finite β] {
   rw [hrigid.deficiency_eq] at hbridge
   simpa using hbridge
 
-/-! ## The matroid contraction rank bridge (`lem:contraction-minimality`, contraction arithmetic)
-
-The graph↔matroid side of KT Lemma 3.5: contracting a rigid subgraph `H` removes exactly
-`rank M(H̃) = D(|V(H)| − 1)` from `rank M(G̃)`. On the matroid this is the rank-conservation
-identity for a contraction, `rank(M ／ C) + rank(M ↾ C) = rank M`, specialized to
-`C = E(H̃)` via the restriction identity `M(G̃) ↾ E(H̃) = M(H̃)` (`matroidMG_restrict_mulTilde`,
-Phase 19). The rank-conservation identity is the abstract matroid chain rule
-`eRelRk C M.E + eRk C = eRk M.E` (`Matroid.eRelRk_add_eRk_eq`), read through
-`(M ／ C).eRank = eRelRk C M.E` and `(M ↾ C).eRank = eRk C`; together with the rank core
-`rank_matroidMG_of_isKDof_zero` it pins the rank contraction removes, the input to the
-deficiency-conservation half of `lem:contraction-minimality`. -/
-
-/-- **Contraction rank-conservation** for a matroid: `rank(M ／ C) + rank(M ↾ C) = rank M`
-in a rank-finite matroid. This is the standard matroid identity `r(M/C) = r(M) − r_M(C)`
-in additive form, the contraction arithmetic the rigid-subgraph contraction of
-Katoh–Tanigawa 2011 Lemma 3.5 runs on. The contraction half is the vendored relative-rank
-identity `Matroid.contract_rank_cast_int_eq` (`r(M/C) = r(M) − r_M(C)`); the restriction's
-rank is `r_M(C)` since `(M ↾ C).E = C` (`Matroid.restrict_rk_eq`). -/
+/-- **The rank of a contraction** (a step of `lem:contract-rank-bridge`): in a matroid `M` of
+finite rank, `rank(M ／ C) + rank(M ↾ C) = rank M`. This is `r(M/C) = r(M) − r_M(C)`, which
+follows from Proposition 3.1.6 of Oxley (2011), and which is `Matroid.contract_rank_cast_int_eq`
+of the `Matroid` package, as the restriction has rank `r_M(C)` (`Matroid.restrict_rk_eq`). -/
 theorem _root_.Matroid.rank_contract_add_rank_restrict {γ : Type*} (M : Matroid γ)
     [M.RankFinite] (C : Set γ) :
     (M ／ C).rank + (M ↾ C).rank = M.rank := by
@@ -653,15 +568,10 @@ theorem _root_.Matroid.rank_contract_add_rank_restrict {γ : Type*} (M : Matroid
   have hcontract : ((M ／ C).rank : ℤ) = (M.rank : ℤ) - (M.rk C : ℤ) := M.contract_rank_cast_int_eq C
   omega
 
-/-- **The contraction rank bridge for `M(G̃)`** (`lem:contraction-minimality`, contraction
-arithmetic; Katoh–Tanigawa 2011 Lemma 3.5). For a subgraph `H ≤ G`, contracting the
-edge-fibers `E(H̃)` in `M(G̃)` removes exactly `rank M(H̃)`:
-`rank(M(G̃) ／ E(H̃)) + rank M(H̃) = rank M(G̃)`. The restriction `M(G̃) ↾ E(H̃)` is
-`M(H̃)` (`matroidMG_restrict_mulTilde`, Phase 19), so this is the abstract contraction
-rank-conservation `Matroid.rank_contract_add_rank_restrict` read through that identity.
-Combined with the rank core `rank_matroidMG_of_isKDof_zero` (rigid `H` ⟹
-`rank M(H̃) = D(|V(H)| − 1)`), it pins the rank contraction of a *rigid* subgraph removes
-from `rank M(G̃)` — the deficiency-conservation input of KT 3.5's Case-I engine. -/
+/-- **The rank of `M(G̃) ／ E(H̃)`** (`lem:contract-rank-bridge`): for a subgraph `H ≤ G`,
+`rank(M(G̃) ／ E(H̃)) + rank M(H̃) = rank M(G̃)`. It is `Matroid.rank_contract_add_rank_restrict`,
+as the restriction `M(G̃) ↾ E(H̃)` is `M(H̃)` (`matroidMG_restrict_mulTilde`,
+`lem:matroid-restrict-subgraph`). -/
 theorem contract_matroidMG_rank [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
     (h : H ≤ G) (n : ℕ) :
     ((G.matroidMG n) ／ E(H.mulTilde n)).rank + (H.matroidMG n).rank = (G.matroidMG n).rank := by
@@ -670,35 +580,15 @@ theorem contract_matroidMG_rank [DecidableEq β] [Finite α] [Finite β] {H G : 
   rw [← hrestrict]
   exact (G.matroidMG n).rank_contract_add_rank_restrict _
 
-/-! ## Contracting a rigid subgraph conserves the deficiency (`lem:contraction-minimality`)
+/-- **Contracting a rigid subgraph keeps the deficiency** (`lem:contract-deficiency-conservation`;
+KT Lemma 3.5, p. 658): for `D ≥ 1` and a `0`-dof-graph `H ≤ G` with a vertex,
+`D(|V(G)| − |V(H)|) − rank(M(G̃) ／ E(H̃)) = def(G̃)`. The contraction of `H` to one of its vertices
+has `|V(G)| − |V(H)| + 1` vertices, so `D(|V(G)| − |V(H)|)` is its `D(|V| − 1)`.
 
-The deficiency-conservation half of KT Lemma 3.5: contracting a *rigid* proper subgraph
-`H` of `G` leaves the deficiency unchanged. Stated on the *matroid* side — against the
-matroid contraction `M(G̃) / E(H̃)`, matching how KT's proof reasons — this is pure
-bookkeeping over the two rank facts already in hand. Contracting `H` collapses `|V(H)|`
-vertices to one, so the contraction lives over `|V(G)| − |V(H)| + 1` vertices and its
-ambient trivial-motion count drops by `D(|V(H)| − 1)`; `lem:contract-rank-bridge` removes
-the *matching* `rank M(H̃) = D(|V(H)| − 1)` (`lem:rigid-full-rank`) from the rank, so the
-corank — hence the deficiency (`thm:def-eq-corank`) — is unchanged. The minimality-transport
-half (every base of the contracted matroid meets every surviving edge-fiber) is the second
-half of `lem:contraction-minimality`, scheduled next. -/
-
-/-- **Contracting a rigid subgraph conserves the deficiency** (`lem:contraction-minimality`,
-deficiency-conservation half; Katoh–Tanigawa 2011 Lemma 3.5). For a rigid subgraph
-`H ≤ G` (`H.IsKDof n 0`) with `V(H).Nonempty` and `D = bodyBarDim n ≥ 1`, the corank of
-the matroid contraction `M(G̃) / E(H̃)` at the *reduced* ambient `D(|V(G)| − |V(H)|)`
-(the trivial-motion count of the contracted graph, which has `|V(G)| − |V(H)| + 1`
-vertices) equals `def(G̃)`:
-`D(|V(G)| − |V(H)|) − rank(M(G̃) / E(H̃)) = def(G̃)`.
-
-Pure matroid bookkeeping over the two rank facts: `contract_matroidMG_rank`
-(`rank(M(G̃)/E(H̃)) + rank M(H̃) = rank M(G̃)`) with the rank core
-`rank_matroidMG_of_isKDof_zero` (`rank M(H̃) = D(|V(H)| − 1)`) gives
-`rank(M(G̃)/E(H̃)) = rank M(G̃) − D(|V(H)| − 1)`; substituting into the def\,$=$\,corank
-bridge `rank_add_deficiency_eq` (`rank M(G̃) + def(G̃) = D(|V(G)| − 1)`) and cancelling the
-`D(|V(H)| − 1)` between the rank drop and the ambient drop leaves `def(G̃)`. No
-graph↔matroid `map` correspondence is needed — the statement is against the matroid
-contraction directly. -/
+By `contract_matroidMG_rank` and `rank_matroidMG_of_isKDof_zero`,
+`rank(M(G̃) ／ E(H̃)) = rank M(G̃) − D(|V(H)| − 1)`, and KT eq. (2.4) for `G`
+(`rank_add_deficiency_eq`) gives `rank M(G̃) = D(|V(G)| − 1) − def(G̃)`. This is Katoh and
+Tanigawa's count. -/
 theorem contract_matroidMG_deficiency_eq [DecidableEq β] [Finite α] [Finite β]
     {H G : Graph α β} (h : H ≤ G) (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hVHne : V(H).Nonempty)
     (hVGne : V(G).Nonempty) (hrigid : H.IsKDof n 0) :
@@ -714,16 +604,14 @@ theorem contract_matroidMG_deficiency_eq [DecidableEq β] [Finite α] [Finite β
   zify at hbridge
   linarith [hrankH, hbridge, hdefcorank]
 
-/-! ## Graph operations (`def:graph-operations`, `def:rigid-contraction`)
+/-! ## Removal and splitting off (`def:graph-operations`)
 
-The four operations on `Graph α β` that drive the Katoh–Tanigawa induction
-(`def:graph-operations`, `def:rigid-contraction`): vertex removal, splitting-off at
-a degree-2 vertex, its inverse edge-splitting, and rigid-subgraph contraction. These
-are graph-level constructions; their *deficiency* behaviour (the forest-surgery core,
-KT 4.1–4.5) routes through the matroid `M(G̃)` of Phase 19 in later nodes. -/
+Two of the operations of `def:graph-operations` (`sec:molecular-induction-operations`): the
+removal of a vertex and splitting off at a vertex (KT §4.1, p. 660). Edge-splitting and the
+contraction of a subgraph (`def:rigid-contraction`) are in `ReducibleVertex.lean`. -/
 
-/-- **Vertex removal** `G_v := G − v` (`def:graph-operations`): delete `v` and all its
-incident edges. Realized through mathlib's `Graph.deleteVerts {v}`. -/
+/-- **Removal** `G_v = G − v` (`def:graph-operations`): delete `v` and its edges, as mathlib's
+`Graph.deleteVerts {v}`. -/
 def removeVertex (G : Graph α β) (v : α) : Graph α β :=
   G.deleteVerts {v}
 
@@ -738,35 +626,26 @@ lemma removeVertex_isLink {G : Graph α β} {v : α} {e : β} {x y : α} :
   rw [removeVertex, deleteVerts_isLink]
   simp [Set.mem_singleton_iff]
 
-/-- **Vertex removal is a subgraph** (`def:graph-operations`): `G_v = G − v ≤ G`. The
-common-subgraph lower bound for the splitting-off edge-substitution bridge below
-(`removeVertex_le_splitOff`); both `G` and `G_v^{ab}` sit *above* `G − v`. -/
+/-- **`G − v` is a subgraph of `G`** (`lem:splitoff-edge-substitution`): `G.removeVertex v ≤ G`.
+With `removeVertex_le_splitOff`, `G − v` is a common subgraph of `G` and `G_v^{ab}`. -/
 lemma removeVertex_le (G : Graph α β) (v : α) : G.removeVertex v ≤ G := by
   rw [removeVertex]; exact G.deleteVerts_le
 
-/-- **Every link of `G` lost by removing `v` is incident to `v`** (`lem:case-II`, the
-`hinc` brick of the genericity-gated tightness). The common lower bound of the Case II
-edge-substitution is `G − v` (`removeVertex_le` / `removeVertex_le_splitOff`): both the
-parent graph `G` and the splitting-off `G_v^{ab}` re-add edges *over* `G − v`. The hinge
-constraints those re-added edges impose on a `v`-pinned motion collapse to a single span
-membership at the non-`v` endpoint, but only because every link of `G` outside `G − v` is
-incident to `v` — which is exactly this lemma: a link `e u w` of `G` that does *not* survive
-the vertex removal must have `u = v ∨ w = v` (else it avoids `v` and `removeVertex_isLink`
-would keep it). This is the graph-side hypothesis `hinc` of
-`BodyHingeFramework.hnew_of_isLink_incident` instantiated at the Case II common lower bound
-`G' = G − v`, so it discharges the incidence side of `hnew` for the splitting-off
-1-extension (leaving only the genericity span membership `hspan`, Claim 6.9). -/
+/-- **An edge of `G` not in `G − v` has `v` as an end** (`lem:splitoff-edge-substitution`): if
+`G.IsLink e u w` and `e` does not join `u` and `w` in `G − v`, then `u = v` or `w = v`, as a link
+of `G` avoiding `v` is a link of `G − v` (`removeVertex_isLink`). It gives the hypothesis `hinc`
+of `BodyHingeFramework.hnew_of_isLink_incident` for a framework on `G` and `G' = G − v`. -/
 lemma isLink_incident_of_not_removeVertex {G : Graph α β} {v : α} {e : β} {u w : α}
     (h : G.IsLink e u w) (hg : ¬(G.removeVertex v).IsLink e u w) : u = v ∨ w = v := by
   by_contra hc
   rw [not_or] at hc
   exact hg (removeVertex_isLink.mpr ⟨h, hc.1, hc.2⟩)
 
-/-- **Splitting-off** `G_v^{ab}` at a degree-2 vertex `v` with neighbours `a`, `b`
-(`def:graph-operations`): delete `v` and replace the two edges through `v` by a single
-fresh edge `e₀` joining `a` and `b`. Edges other than `e₀` are kept iff they avoid `v`;
-the new edge `e₀` links exactly `a` and `b` (requiring `a, b ≠ v` so the construction is
-a well-formed graph on the surviving vertices). -/
+/-- **Splitting off** `G_v^{ab}` (`def:graph-operations`): delete `v` and its edges, and add an
+edge with the label `e₀` joining `a` and `b` when `a, b ∈ V(G)` differ from `v`. An edge of `G`
+with the label `e₀` is deleted too, so this is `G_v^{ab}` when no edge of `G − v` has the label
+`e₀`, as when `e₀ ∉ E(G)` (`fmlnote:graph-operations`). The definition takes any `v`, `a` and
+`b`; the blueprint applies it at a vertex `v` of degree two with neighbours `a` and `b`. -/
 def splitOff (G : Graph α β) (v a b : α) (e₀ : β) : Graph α β where
   vertexSet := V(G) \ {v}
   IsLink e x y :=
@@ -797,12 +676,10 @@ def splitOff (G : Graph α β) (v a b : α) (e₀ : β) : Graph α β where
 lemma vertexSet_splitOff (G : Graph α β) (v a b : α) (e₀ : β) :
     V(G.splitOff v a b e₀) = V(G) \ {v} := rfl
 
-/-- **Splitting-off strictly decreases the vertex count** (`lem:reduction-step`, the
-"reduces to a smaller graph" measure). Splitting off a vertex `v ∈ V(G)` deletes `v`
-(`V(G_v^{ab}) = V(G) ∖ {v}`), so `|V(G_v^{ab})| < |V(G)|`. This is the well-founded measure
-on which Katoh–Tanigawa 2011's Theorem 4.9 inducts in the splitting-off branch (the
-no-proper-rigid-subgraph case): each reduction step lands on a strictly smaller minimal
-`k`-dof-graph. -/
+/-- **Splitting off lowers the number of vertices** (`lem:reduction-measure`; from the proof of KT
+Theorem 4.9, pp. 666–667): for `v ∈ V(G)`, `|V(G_v^{ab})| < |V(G)|`, as
+`V(G_v^{ab}) = V(G) ∖ {v}`. Katoh and Tanigawa prove their Theorem 4.9 by induction on the
+number of vertices. -/
 lemma splitOff_vertexSet_ncard_lt [Finite α] {G : Graph α β} {v a b : α} {e₀ : β}
     (hv : v ∈ V(G)) : V(G.splitOff v a b e₀).ncard < V(G).ncard := by
   rw [vertexSet_splitOff]
@@ -815,12 +692,9 @@ lemma splitOff_isLink {G : Graph α β} {v a b : α} {e₀ : β} {e : β} {x y :
         (e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧
           ((x = a ∧ y = b) ∨ (x = b ∧ y = a))) := Iff.rfl
 
-/-- **Splitting-off is symmetric in its two re-attachment endpoints** (`def:graph-operations`).
-The fresh short-circuit edge `e₀` is *unordered* between `a` and `b` — `splitOff`'s `IsLink`
-condition records `((x = a ∧ y = b) ∨ (x = b ∧ y = a))`, symmetric in `(a, b)` — and the vertex
-set drops only `v`, so swapping the two neighbours gives the *same* graph. (Useful when a base
-`v₁`-split is fired in one neighbour order, `(a, b)`, but a downstream relabel intertwiner
-— e.g. `splitOff_isLink_shiftRelabel_iff` — was stated in the other, `(b, a)`.) -/
+/-- **Splitting off along `ab` and along `ba` agree** (`def:graph-operations`):
+`G.splitOff v a b e₀ = G.splitOff v b a e₀`, as the condition on the new edge is symmetric in `a`
+and `b`. -/
 lemma splitOff_swap_ab (G : Graph α β) (v a b : α) (e₀ : β) :
     G.splitOff v a b e₀ = G.splitOff v b a e₀ := by
   refine Graph.ext rfl fun e x y => ?_
@@ -831,13 +705,9 @@ lemma splitOff_swap_ab (G : Graph α β) (v a b : α) (e₀ : β) :
   · exact Or.inl ⟨hne, hG, hx, hy⟩
   · exact Or.inr ⟨he, hb, ha, hbV, haV, hxy.symm⟩
 
-/-- **Edge set of a splitting-off** `G_v^{ab}` (`def:graph-operations`): an edge `e`
-survives the splitting-off iff either `e = e₀` is the fresh short-circuit edge (which is
-present exactly when its endpoints `a, b` are distinct from `v` and lie in `V(G)`), or `e`
-is an `e₀`-distinct edge of `G` not incident to the deleted vertex `v`. The condition for
-the fresh edge `e₀` records that the splitting-off at a degree-2 vertex `v` with neighbours
-`a, b` short-circuits the two `v`-edges into a single `ab` edge. This is the edge-level
-bookkeeping the forest surgery of `lem:forest-surgery-split` (KT 4.1) runs on. -/
+/-- **The edges of `G_v^{ab}`** (`def:graph-operations`): `e` is an edge of `G_v^{ab}` if and only
+if `e = e₀` with `a, b ∈ V(G)` different from `v` (the new edge), or `e ≠ e₀` is an edge of `G`
+whose ends differ from `v`. -/
 lemma edgeSet_splitOff {G : Graph α β} {v a b : α} {e₀ : β} :
     E(G.splitOff v a b e₀) =
       {e | e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G)} ∪
@@ -853,13 +723,9 @@ lemma edgeSet_splitOff {G : Graph α β} {v a b : α} {e₀ : β} :
     · exact ⟨a, b, Or.inr ⟨rfl, ha, hb, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩⟩
     · exact ⟨x, y, Or.inl ⟨hne, h, hx, hy⟩⟩
 
-/-- **The fresh short-circuit fiber `ã̃b` lives in `E(G̃_v^{ab})`** (`def:graph-operations`):
-when the splitting-off `G_v^{ab}` at a degree-2 vertex `v` with neighbours `a, b`
-(`a, b ≠ v`, `a, b ∈ V(G)`) actually inserts its short-circuit edge `e₀`, the whole fiber
-`ẽ₀ = {p | p.1 = e₀}` of `D - 1 = bodyHingeMult n` parallel copies lies in
-`E(G̃_v^{ab})`. This is the `ã̃b` fiber the forest surgery of `lem:forest-surgery-split`
-(KT 4.1) reroutes its degree-2 forests onto, and the fibers whose count must stay
-`< D - 1` in the surgery's output. -/
+/-- **The copies of the new edge are edges of `G̃_v^{ab}`** (`def:graph-operations`): if
+`a, b ∈ V(G)` differ from `v`, the `D − 1` copies `ẽ₀ = edgeFiber e₀ n` of the new edge `ab` lie
+in `E(G̃_v^{ab})`. They are the copies of `ab` in KT Lemma 4.1 (p. 660). -/
 lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} {e₀ : β}
     (n : ℕ) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G)) :
     edgeFiber e₀ n ⊆ E((G.splitOff v a b e₀).mulTilde n) := by
@@ -869,22 +735,12 @@ lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} 
   rw [hp, edgeSet_splitOff]
   exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
 
-/-- **Edge-substitution bridge for splitting-off** (`def:graph-operations`, the
-graph-level brick of `lem:case-II`). The splitting-off `G_v^{ab} = G.splitOff v a b e₀`
-is *not* a subgraph of `G`: it deletes `v`'s two edges `eₐ, e_b` but adds a *fresh*
-short-circuit edge `e₀` joining `a` and `b` (with `e₀ ∉ E(G)`). The two graphs are instead
-an **edge substitution** of each other, sharing the common subgraph `G − v` (all of `G`
-away from `v`): `G − v ≤ G` (`removeVertex_le`) and `G − v ≤ G_v^{ab}` (this lemma). The
-inclusion holds because every link of `G − v` is a link of `G` avoiding `v`
-(`removeVertex_isLink`), and its edge — being an edge of `G` — is `≠ e₀` (else `e₀ ∈ E(G)`,
-contradicting `he₀`), so it survives into `G_v^{ab}` through `splitOff`'s `e ≠ e₀` branch.
-
-This is the missing graph-level piece Case II's 1-extension needs to wire the inductive
-realization of `G_v^{ab}` (placed *above* `G − v`) into the parent framework on `G` (also
-above `G − v`) via `withGraph`: both re-add edges over the shared `G − v`, so the
-`withGraph`-routed monotonicity / rank machinery (`pinnedMotions_le_withGraph` et al.,
-all requiring `G' ≤ F.graph`) applies through the common lower bound `G − v` rather than
-the (false) direct comparison `G_v^{ab} ≤ G`. -/
+/-- **`G − v` is a subgraph of `G_v^{ab}`** (`lem:splitoff-edge-substitution`): if `e₀ ∉ E(G)`,
+then `G.removeVertex v ≤ G.splitOff v a b e₀`. A link of `G − v` is a link of `G` whose ends
+differ from `v` (`removeVertex_isLink`), and its edge, an edge of `G`, is not `e₀`. So `G − v` is
+a common subgraph of `G` (`removeVertex_le`) and of `G_v^{ab}`, which is not a subgraph of `G`.
+Its callers are `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`
+(`lem:removal-deficiency-equality`) and `splitOff_removeVertex_minimalKDof`. -/
 lemma removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (he₀ : e₀ ∉ E(G)) :
     G.removeVertex v ≤ G.splitOff v a b e₀ := by
   refine ⟨?_, ?_⟩
@@ -897,31 +753,13 @@ lemma removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (he₀
     rw [splitOff_isLink]
     exact Or.inl ⟨fun hee => he₀ (hee ▸ h.1.edge_mem), h.1, h.2.1, h.2.2⟩
 
-/-- **Splitting-off simplicity criterion** (the splitting-off sibling of the green Case-I
-`rigidContract_simple`, Contraction.lean; the graph-side input to Theorem 5.5's *generic*
-Case-III/splitting inductive hypothesis `hsplitGP`). The splitting-off `G_v^{ab}` is simple
-provided
-
-* `hloop` — no surviving edge is a loop: a link `e x y` of `G_v^{ab}` always has `x ≠ y`
-  (rules out the fresh `e₀`-loop `a`-`a`, i.e. forces `a ≠ b`, and rules out any surviving
-  `G`-edge becoming a self-link);
-* `hpar` — no two surviving edges share an end-pair: links `e₁ x y` and `e₂ x y` of `G_v^{ab}`
-  force `e₁ = e₂` (rules out a `G`-edge parallel to the fresh `e₀ = ab`, which is the
-  obstruction KT Lemma 6.7(ii) routes to a triangle).
-
-`splitOff` does **not** preserve simplicity unconditionally — it can manufacture both a loop
-(when `a = b`) and a parallel pair (when `ab ∈ E(G)` already), which is why simplicity is a
-*conditioned* fact rather than an instance (matching `map_simple`'s `Simple`-not-preserved-by-`map`
-note). The hypotheses are phrased directly on `G_v^{ab}`'s links (the final edges), the analogue of
-`rigidContract_simple`'s realized-graph `hloop`/`hpar`.
-
-KT Lemma 6.7(ii) (Katoh–Tanigawa 2011, p. 677) discharges both from `G.Simple` together with the
-no-proper-rigid-subgraph assumption `¬ ∃ H, H.IsProperRigidSubgraph G n`: a parallel edge to
-`e₀ = ab` would force `ab ∈ E(G)`, giving the triangle `G[{va, vb, ab}]`, a `0`-dof (hence proper
-rigid) subgraph — contradicting the assumption. That discharge (the `splitOff` analogue of Case I's
-G2c step, itself routing through the not-yet-formalized "a triangle is `0`-dof" fact) is a separate
-graph-side leaf; this lemma is the bounded criterion it feeds, exactly as `rigidContract_simple` is
-the criterion its own composer discharges. -/
+/-- **When `G_v^{ab}` is simple** (a step of `lem:splitoff-simple`): `G_v^{ab}` is simple if none
+of its links joins a vertex to itself (`hloop`) and any two of its links between the same two
+vertices are the same edge (`hpar`). Splitting off need not keep a graph simple: the new edge is
+a loop when `a = b`, and it is parallel to every edge of `G` that joins `a` and `b`. When `G` is
+simple and has no proper rigid subgraph, KT Lemma 6.7(ii) (p. 677) excludes both
+(`splitOff_simple_of_noRigid`). `rigidContract_simple` (`Contraction.lean`) is the same criterion
+for the contraction. -/
 lemma splitOff_simple {G : Graph α β} {v a b : α} {e₀ : β}
     (hloop : ∀ e x y, (G.splitOff v a b e₀).IsLink e x y → x ≠ y)
     (hpar : ∀ e₁ e₂ x y, (G.splitOff v a b e₀).IsLink e₁ x y →
@@ -930,10 +768,10 @@ lemma splitOff_simple {G : Graph α β} {v a b : α} {e₀ : β}
   not_isLoopAt e x h := hloop e x x (isLink_self_iff.mp h) rfl
   eq_of_isLink e f x y he hf := hpar e f x y he hf
 
-/-- **The splitting-off `G_v^{ab}` is simple when the ends are not adjacent** (the pencil open-ear
-steps' simplicity criterion, Phase 40i ORBIT): from `H.Simple`, `a ≠ b`, and `¬ H.Adj a b`, both
-`splitOff_simple` hypotheses hold outright — no surviving edge parallels the fresh `ab`, since `a`
-and `b` are not linked in `H` at all. -/
+/-- **`H_v^{ab}` is simple when `a` and `b` are not adjacent**: if `H` is simple, `a ≠ b` and no
+edge of `H` joins `a` and `b`, then `H_v^{ab}` is simple (`splitOff_simple`), as no edge of `H` is
+parallel to the new edge. `exists_oneEar_base` and `X0Attains.of_splitOff`
+(`Molecule/Pencil/MainComponent/`) use it. -/
 lemma splitOff_simple_of_not_adj {H : Graph α β} (hS : H.Simple) {v a b : α}
     {e₀ : β} (hab : a ≠ b) (hnadj : ¬ H.Adj a b) : (H.splitOff v a b e₀).Simple := by
   refine splitOff_simple (fun f u w h => ?_) (fun f₁ f₂ u w h₁ h₂ => ?_)
@@ -950,25 +788,16 @@ lemma splitOff_simple_of_not_adj {H : Graph α β} (hS : H.Simple) {v a b : α}
       exacts [absurd ⟨f₂, h₂⟩ hnadj, absurd ⟨f₂, h₂.symm⟩ hnadj]
     · rfl
 
-/-- **The splitting-off `G_v^{ab}` is simple** (KT Lemma 6.7(ii), Katoh–Tanigawa 2011 p. 677; the
-graph-side discharge feeding Theorem 5.5's *generic* Case-III hypothesis `hsplitGP`). It discharges
-both hypotheses of `splitOff_simple` from `G.Simple`, the splitting data, and the
-no-proper-rigid-subgraph assumption `hnoRigid`, through the not-yet-formalized triangle brick
-`htri`. The two combinatorial halves are bounded:
-
-* **Loop-freeness.** A surviving `G`-edge inherits `G`'s looplessness; the fresh edge `e₀` links the
-  *distinct* neighbours `a ≠ b` (`a = b` would make `eₐ, e_b` parallel `va`-edges, contradicting
-  `G.Simple` via `heab`).
-* **No parallel pair.** Two surviving `G`-edges with a shared end-pair coincide by `G.Simple`; two
-  fresh edges both equal `e₀`; a *mixed* pair is the KT obstruction — a surviving `G`-edge `f`
-  sharing `e₀`'s end-pair `{a, b}` is a pre-existing edge `f` with `G.IsLink f a b`, which together
-  with `eₐ` (`va`) and `e_b` (`vb`) closes the triangle `G[{v, a, b}]`.
-
-The triangle's rigidity is the one non-routine ingredient, carried here as `htri`: an `ab`-edge
-yields a *proper* rigid subgraph of `G` (KT: "a triangle is a `0`-dof-graph", `def((K₃)̃) = 0`).
-Combined with `hnoRigid` it is the contradiction that rules out the mixed parallel pair. Phrasing
-`htri` as the proper-rigid-subgraph existence isolates the deficiency computation `def((K₃)̃) = 0`
-(not yet in tree, the sibling sub-leaf) from the bounded edge bookkeeping done here. -/
+/-- **`G_v^{ab}` is simple, given the triangle** (a step of `lem:splitoff-simple`; KT Lemma 6.7(ii),
+p. 677): let `G` be simple with no proper rigid subgraph, and let edges `eₐ ≠ e_b` join `v` to `a`
+and to `b`. If an edge of `G` joining `a` and `b` would give a proper rigid subgraph (`htri`), then
+`G_v^{ab}` is simple (`splitOff_simple`). The new edge is not a loop, as `a = b` would make `eₐ` and
+`e_b` parallel; the other edges of `G_v^{ab}` are edges of the simple `G`; and an edge parallel to
+the new edge would join `a` and `b` in `G`, which `htri` excludes. Katoh and Tanigawa's reason is
+that such an edge closes a triangle with `eₐ` and `e_b`, and "a triangle is a `0`-dof-graph".
+`splitOff_simple_of_noRigid_of_card` proves `htri` with `triangle_isProperRigidSubgraph` when
+`|V(G)| ≥ 4`; `PanelHingeFramework.case_II_realization_all_k` shows instead that no edge of `G`
+joins `a` and `b`. -/
 lemma splitOff_simple_of_noRigid {G : Graph α β} {v a b : α} {eₐ e_b e₀ : β} {n : ℕ}
     [G.Simple] (heab : eₐ ≠ e_b) (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
@@ -1001,19 +830,13 @@ lemma splitOff_simple_of_noRigid {G : Graph α β} {v a b : α} {eₐ e_b e₀ :
         exacts [h₂, h₂.symm]
       · rfl
 
-/-- **The triangle on a split vertex and its neighbours is a proper rigid subgraph** (KT
-Lemma 6.7(ii), Katoh–Tanigawa 2011 p. 677; the `htri` brick `splitOff_simple_of_noRigid`
-carries). Given the splitting data — the `va`-edge `eₐ`, the `vb`-edge `e_b`, and a real
-`ab`-edge `f` (the parallel-pair obstruction the splitting-off must avoid) — the
-vertex-induced triangle `H = G.induce {v, a, b}` is a *proper* rigid subgraph of `G`: it is
-`0`-dof by `isKDof_zero_of_triangle` (`def((K₃)̃) = 0`, the `D ≥ 3` triangle tightness), and
-it is *proper* because `|V(G)| ≥ 4` (the splitting branch never reaches the `|V| ≤ 3` base
-case), so its three vertices are a strict subset of `V(G)`.
-
-The edge-set computation `E(H) = {eₐ, e_b, f}` is where `G.Simple` enters: a fourth edge
-inside `{v, a, b}` would be parallel to one of the three (its loopless ends are one of the
-three vertex pairs), contradicting `G.Simple`. This isolates the `def((K₃)̃) = 0` deficiency
-count (`isKDof_zero_of_triangle`) from the bounded edge/vertex bookkeeping done here. -/
+/-- **The triangle `vab` is a proper rigid subgraph** (`lem:splitoff-simple`; KT Lemma 6.7(ii),
+p. 677): let `D ≥ 3`, let `G` be simple with `|V(G)| ≥ 4`, and let edges `eₐ`, `e_b` and `f` join
+`v` to `a`, `v` to `b` and `a` to `b`, with `a ≠ b`. Then `H = G.induce {v, a, b}` is a proper
+rigid subgraph of `G`. As `G` is simple, the edges of `H` are `eₐ`, `e_b` and `f`, so `H` is a
+triangle and a `0`-dof-graph (`isKDof_zero_of_triangle`); its three vertices are fewer than
+those of `G`. It is the triangle of KT's proof, and `splitOff_simple_of_noRigid_of_card` applies
+it as `htri`. -/
 lemma triangle_isProperRigidSubgraph [Finite α] {G : Graph α β} [G.Simple] {v a b : α}
     {eₐ e_b f : β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hG_ea : G.IsLink eₐ v a)
     (hG_eb : G.IsLink e_b v b) (hf : G.IsLink f a b) (hab : a ≠ b)
@@ -1059,12 +882,10 @@ lemma triangle_isProperRigidSubgraph [Finite α] {G : Graph α β} [G.Simple] {v
       exact Nat.add_le_add (Set.ncard_insert_le _ _) le_rfl |>.trans (by simp)
     rw [heq] at h3; omega
 
-/-- **A third edge at a vertex of degree `≥ 3`, avoiding two named edges** (a bookkeeping bridge
-feeding `cycle_isProperRigidSubgraph`'s properness argument). For a loopless graph, a vertex `v`
-of degree `≥ 3` always has an incident edge distinct from any two given edges `e₁, e₂`: the
-incident-edge set `E(G, v)` (which is exactly `v`'s degree-count by looplessness,
-`degree_eq_ncard_inc`) has `ncard ≥ 3 > 2 ≥ ncard {e₁, e₂}`, so it cannot be a subset of
-`{e₁, e₂}`. -/
+/-- **A third edge at a vertex of degree at least three** (a step of `lem:chain-cycle-dichotomy`):
+in a loopless graph, a vertex `v` of degree at least three has an edge other than any two given
+edges `e₁` and `e₂`, as its `G.degree v ≥ 3` edges (`degree_eq_ncard_inc`) do not fit in
+`{e₁, e₂}`. `cycle_isProperRigidSubgraph` uses it. -/
 theorem exists_isLink_not_eq_of_three_le_degree [Finite β] {G : Graph α β} [G.Loopless] {v : α}
     (hdeg : 3 ≤ G.degree v) (e₁ e₂ : β) :
     ∃ g z, G.IsLink g v z ∧ g ≠ e₁ ∧ g ≠ e₂ := by
@@ -1081,24 +902,18 @@ theorem exists_isLink_not_eq_of_three_le_degree [Finite β] {G : Graph α β} [G
   obtain ⟨z, hz⟩ : G.Inc g v := hg
   exact ⟨g, z, hz, hgne.1, hgne.2⟩
 
-/-- **A cycle strictly inside a larger simple graph is a proper rigid subgraph** (KT Lemma 4.6,
-Katoh–Tanigawa 2011, cycle branch, ENTRY leaf E2c; the general `triangle_isProperRigidSubgraph`,
-which is the `m = 3` case with the anchor degree bound automatic from `G.Simple`). Given cyclic
-data on `Fin m` — injective `vtx`/`edge`, the cyclic links `hlink`, and, at every index but a
-distinguished *anchor* `i₀`, the closure `hcl` pinning that vertex's incident edges to its two
-cycle edges — together with `3 ≤ G.degree (vtx i₀)` at the anchor, the vertex-induced subgraph
-`H = G.induce (range vtx)` is a *proper* rigid subgraph of `G`.
-
-Unlike `triangle_isProperRigidSubgraph`, no `4 ≤ |V(G)|` hypothesis is needed: properness comes
-directly from the anchor's excess degree. `0`-dof is `isKDof_zero_of_cycle`; `E(H) = range edge`
-is the antisymmetry argument any induced edge has two distinct (loopless) ends in `range vtx`, at
-most one of which is the anchor, and `hcl` at the other end pins the edge to one of the two cycle
-edges at that index. Properness: `exists_isLink_not_eq_of_three_le_degree` gives a third anchor
-edge `g` avoiding the anchor's two cycle edges; its far end cannot be a non-anchor cycle vertex
-`vtx k` (`hcl` at `k` would force `g` back to being one of the two cycle edges at `k`, and the
-cyclic link at `k`'s other end then pins it to one of the anchor's two named edges after all — a
-contradiction via edge-endpoint uniqueness `IsLink.eq_and_eq_or_eq_and_eq`/`left_unique`), so `g`
-witnesses a vertex outside `range vtx`. -/
+/-- **A cycle through a vertex of degree at least three is a proper rigid subgraph**
+(`lem:chain-cycle-dichotomy`; from the proof of KT Lemma 4.6, pp. 664–665): let `G` be simple, let
+`3 ≤ m ≤ D`, and let `vtx` and `edge` be injective on `Fin m`, with `edge i` joining `vtx i` and
+`vtx (i + 1)`, such that every `vtx i` with `i ≠ i₀` has no edges but `edge (i − 1)` and `edge i`
+(`hcl`), and `vtx i₀` has degree at least three. Then `H = G.induce (range vtx)` is a proper rigid
+subgraph of `G`. An edge of `H` has two distinct ends on the cycle, one of them other than `vtx i₀`,
+where `hcl` makes it a cycle edge; so `H` is the cycle on `m ≤ D` vertices, a `0`-dof-graph
+(`isKDof_zero_of_cycle`). A third edge at `vtx i₀` (`exists_isLink_not_eq_of_three_le_degree`) has
+its other end off the cycle, by `hcl` there, so `H` misses a vertex of `G`. This is the case of
+KT's proof in which a walk closes up at a vertex of degree at least three.
+`triangle_isProperRigidSubgraph` is not a case of it: it asks neither `hcl` nor a degree, but
+`|V(G)| ≥ 4`. -/
 lemma cycle_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β} [G.Simple] {n : ℕ}
     (hD : 3 ≤ bodyBarDim n) {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
     {vtx : Fin m → α} {edge : Fin m → β} {i₀ : Fin m}
@@ -1163,12 +978,10 @@ lemma cycle_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β} [G.S
           rw [hidx]; abel
         exact hg2 (by rw [hgk, hk])
 
-/-- **The splitting-off `G_v^{ab}` is simple** (KT Lemma 6.7(ii), Katoh–Tanigawa 2011
-p. 677), with the triangle-rigidity brick `htri` discharged: this is the fully
-hypothesis-free form of `splitOff_simple_of_noRigid`, supplying its `htri` from
-`triangle_isProperRigidSubgraph` (the proper rigid triangle `G[{v, a, b}]` an `ab`-edge
-would create) and `hnoRigid`. The proper-ness guard `4 ≤ |V(G)|` is the splitting branch's
-standing hypothesis (KT §6.4 only splits when the base case `|V| ≤ 3` is not reached). -/
+/-- **Splitting off keeps the graph simple** (`lem:splitoff-simple`; KT Lemma 6.7(ii), p. 677):
+let `D ≥ 3`, let `G` be simple with `|V(G)| ≥ 4` and no proper rigid subgraph, and let edges
+`eₐ ≠ e_b` join `v` to `a` and to `b`. Then `G_v^{ab}` is simple, by `splitOff_simple_of_noRigid`
+with the triangle of `triangle_isProperRigidSubgraph`. -/
 lemma splitOff_simple_of_noRigid_of_card [Finite α] {G : Graph α β} {v a b : α}
     {eₐ e_b e₀ : β} {n : ℕ} [G.Simple] (hD : 3 ≤ bodyBarDim n) (heab : eₐ ≠ e_b)
     (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hcard : 4 ≤ V(G).ncard)
@@ -1178,17 +991,15 @@ lemma splitOff_simple_of_noRigid_of_card [Finite α] {G : Graph α β} {v a b : 
   exact splitOff_simple_of_noRigid heab hG_ea hG_eb hnoRigid
     fun f hf ↦ triangle_isProperRigidSubgraph hD hG_ea hG_eb hf hab hcard
 
-/-- **The `|V|=3` triangle base — vertex and edge pin** (KT §6.4 §1.48(1), Katoh–Tanigawa 2011
-p. 659). Given a minimal `n`-dof-0 graph `G` on exactly three vertices, with two edges `eₐ : v–a`
-and `e_b : v–b` and `eₐ ≠ e_b`, the third vertex pair `a–b` is distinct (`a ≠ b`) and `G` has an
-edge `f` linking them.
+/-- **A minimal `0`-dof-graph on three vertices is a triangle** (`lem:triangle-third-edge`; from
+the proof of KT Lemma 6.7(i), p. 677): let `D ≥ 3`, let `G` be a simple minimal `0`-dof-graph with
+three vertices, and let edges `eₐ ≠ e_b` join `v` to `a ≠ v` and to `b ≠ v`. Then `a ≠ b`,
+`V(G) = {v, a, b}`, and an edge of `G` joins `a` and `b`.
 
-**Proof.** (1) `a ≠ b`: if `a = b` then `eₐ` and `e_b` are parallel, contradicting `G.Simple`.
-(2) Vertex pin: `{v,a,b} ⊆ V(G)` from the `IsLink` hypotheses; `|{v,a,b}| = 3 = |V(G)|` gives
-`V(G) = {v,a,b}`. (3) Third edge: the rank formula `rank(G̃) = D·(|V|−1) = 2D` and the rank bound
-`rank(G̃) ≤ (D−1)·|E|` force `|E| ≥ 3`, so some third edge `f ∉ {eₐ, e_b}` exists. Its endpoints
-are in `{v,a,b}` (same vertex set); the Simple hypothesis and `unique_edge` eliminate all cases
-except `f : a–b`. -/
+As `G` is simple, `a ≠ b`, so `v`, `a` and `b` are the three vertices of `G`. By KT eq. (2.4),
+`rank M(G̃) = 2D` (`rank_matroidMG_of_isKDof_zero`), and `M(G̃)` has the `(D − 1)|E(G)|` elements
+of `E(G̃)`, so `G` has an edge other than `eₐ` and `e_b`. Its ends are two of `v`, `a`, `b`, and as
+`G` is simple, they are `a` and `b`. -/
 theorem exists_isLink_of_isMinimalKDof_card_three [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} [G.Simple]
     (hD : 3 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0)
@@ -1249,24 +1060,20 @@ theorem exists_isLink_of_isMinimalKDof_card_three [DecidableEq β] [Finite α] [
   · exact ⟨f, hfxy.symm⟩
   · exact absurd rfl hfxy.ne
 
-/-- **G4c-i: IsLink correspondence under the `ρ = (a v)` relabel** (the graph-side half of the
-`d = 3` Case-III `ρ`-relabel transport; KT 2011 eq. (6.31), p. 686). Given the chain data
-`G.IsLink eₐ v a`, `G.IsLink e_b v b`, `G.IsLink e_c a c` with degree-2 closures at `v` and `a`,
-and fresh edges `e₀ ∉ E(G)`, `e₁ ∉ E(G)`, `e₁ ≠ e₀`, the two splitting-offs are related by:
+/-- **The isomorphism from `G_a^{vc}` to `G_v^{ab}`** (`lem:splitOff-isLink-relabel`; KT p. 686):
+let edges `eₐ`, `e_b`, `e_c` join `v` to `a`, `v` to `b` and `a` to `c`, with `a`, `b`, `c`
+different from `v`, `c ≠ a`, `eₐ ≠ e_b` and `eₐ ≠ e_c`, and let `eₐ`, `e_b` be the only edges at
+`v` and `eₐ`, `e_c` the only edges at `a`. Let `e₀ ≠ e₁` be labels outside `E(G)` for the new
+edges `ab` of `G_v^{ab}` and `vc` of `G_a^{vc}`. With `ρ = Equiv.swap a v` and
+`σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`,
 
-  `(G.splitOff a v c e₁).IsLink e x y ↔ (G.splitOff v a b e₀).IsLink (σ e) (ρ x) (ρ y)`
+  `(G.splitOff a v c e₁).IsLink e x y ↔ (G.splitOff v a b e₀).IsLink (σ e) (ρ x) (ρ y)`.
 
-where `ρ = Equiv.swap a v` (vertex transposition) and `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`
-(edge permutation). The bijection maps:
-* `e_b ↦ e₀` (the surviving `v`-`b` edge becomes the fresh `a`-`b` edge), carrying `vb ↦ ab`;
-* `e₁ ↦ e_c` (the fresh `v`-`c` edge becomes the surviving `a`-`c` edge), carrying `vc ↦ ac`;
-* all other edges are fixed (including `eₐ`, which is absent from both graphs as each
-  deletes one of its endpoints).
-
-The proof works by expanding `splitOff_isLink` on both sides and exhaustively matching the cases
-using the degree-2 closures (only `eₐ, e_b` incident to `v`; only `eₐ, e_c` incident to `a`)
-to show that surviving edges not equal to `e_b` have both endpoints away from both `a` and `v`,
-so `σ` and `ρ` fix them. -/
+On the edges of `G_a^{vc}`, `σ` maps `e_b` (`vb`) to the new edge `e₀` (`ab`), the new edge `e₁`
+(`vc`) to `e_c` (`ac`), and fixes the others, which meet neither `v` nor `a`. This is Katoh and
+Tanigawa's isomorphism `ρ` with `ρ(v) = a`, and its map on edges is that of their eq. (6.31)
+(p. 687). The proof expands `splitOff_isLink` on both sides and uses that `v` and `a` have no
+other edges. -/
 lemma splitOff_isLink_relabel [DecidableEq α] [DecidableEq β] {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
     (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
@@ -1530,18 +1337,14 @@ lemma splitOff_isLink_relabel [DecidableEq α] [DecidableEq β] {G : Graph α β
           · rw [hρ_other x hxa hxv] at hρx_b; exact hxnb hρx_b
         exact Or.inl ⟨he_b_ne_e₁, hxb ▸ hyv ▸ hG_eb.symm, hxb ▸ hba, hyv ▸ hav.symm⟩
 
-/-- **Commuting square: induce then split off = split off then induce** (used by
-`lem:reduction-step-pos`, KT 4.8(ii)). Given a vertex `v ∉ S` with neighbours `a, b ∈ S ∩ V(G)`
-and a fresh edge `e₀ ∉ E(G)`, splitting off `v` from the `v`-augmented induced subgraph
-`G.induce (insert v S)` produces the same graph as splitting off `v` from `G` and then
-inducing on `S`:
+/-- **Inducing and splitting off commute** (a step of `lem:reduction-step-pos`): for `v ∉ S` and
+`a, b ∈ S ∩ V(G)`,
 
-  `(G.induce (insert v S)).splitOff v a b e₀ = (G.splitOff v a b e₀).induce S`
+  `(G.induce (insert v S)).splitOff v a b e₀ = (G.splitOff v a b e₀).induce S`.
 
-The vertex sets agree: both equal `S` (the LHS deletes `v` from `insert v S`). The link
-relations agree: in the surviving case `e ≠ e₀`, the `insert v S` membership with `x,y ≠ v`
-reduces to `x, y ∈ S`; in the fresh-edge case `e = e₀`, the LHS uses `a, b ∈ insert v S`
-while the RHS requires `a, b ∈ V(G)`, so `haV`/`hbV` are needed as hypotheses. -/
+Both graphs have the vertices `S`. An edge `e ≠ e₀` joins `x` and `y` in either exactly when it
+joins them in `G` and `x, y ∈ S`; the new edge joins `a` and `b` in both, which needs
+`a, b ∈ V(G)` on the right. -/
 lemma induce_insert_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {S : Set α}
     (hvS : v ∉ S) (haS : a ∈ S) (hbS : b ∈ S)
     (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (he₀ : e₀ ∉ E(G)) :
@@ -1584,79 +1387,57 @@ lemma induce_insert_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {S : Set
           exact Or.inr ⟨rfl, hav, hbv,
             Set.mem_insert_of_mem _ hyS, Set.mem_insert_of_mem _ hxS, Or.inr ⟨rfl, rfl⟩⟩
 
-/-! ## Length-`d` Case-III chain data (KT §6.4.2, the chain `v₀v₁…v_d`)
+/-! ## Chains of length `d` (`def:chain-data`; KT Lemma 4.6)
 
-The combinatorial witness the general-`d` Case-III argument (Katoh–Tanigawa 2011 §6.4.2,
-eqs. 6.46–6.59) consumes: a length-`d` chain `v₀v₁…v_d` of distinct vertices, joined by chain
-edges `edge i = vᵢvᵢ₊₁`, whose interior vertices `v₁,…,v_{d−1}` have degree exactly two in `G`
-(their only edges are the two chain edges at that vertex), together with a fresh short-circuit
-label `e₀` for the `v₁`-split `G.splitOff v₁ v₀ v₂ e₀` (KT's `G^{v₀v₂}_{v₁}`).
+A chain `v₀v₁…v_d` of length `d` in `G` (KT Lemma 4.6, p. 664) has distinct vertices `v₀, …, v_d`
+and edges `vᵢvᵢ₊₁`, and its interior vertices `v₁, …, v_{d−1}` have degree two. `chainData_extract`
+(`lem:chain-data-extract`) gives one, and Case III of the algebraic induction splits off at its
+interior vertices for every `d` (KT Lemma 6.13, pp. 692–698; `lem:case-III-chain-dispatch`). The
+structure records the chain and a label `e₀ ∉ E(G)` for the new edge of a splitting off
+(`fmlnote:graph-operations`). At `d = 3` the chain `v₀v₁v₂v₃` is Katoh and Tanigawa's `b v a c`
+(p. 680), with `vtx = ![b, v, a, c]` and `edge = ![e_b, eₐ, e_c]`. -/
 
-This is the **shared interface** between the chain *extractor* (KT Lemma 4.6 / Lemma 4.8, the
-ENTRY obligation reshaping `exists_chain_data_of_noRigid` from the fixed 4-tuple to a `ChainData`
-producer) and the chain *dispatch* (the general-`d` Case-III realization assembly, CHAIN-2/CHAIN-5
-in `AlgebraicInduction/CaseIII/`). It carries only the *combinatorial* chain — the base framework
-`(G₁,q₁)` on `G.splitOff (vtx 1) (vtx 0) (vtx 2) e₀` and the surrounding minimality / IH data stay
-on the producer/dispatch signatures (the chain-data contract; see `notes/Phase23-design.md`
-§"CHAIN↔ENTRY chain-data contract" C.1).
-
-**The `d=3` specialization** (the zero-regression wrapper of the contract C.4 map): the chain
-`v₀v₁v₂v₃` is `b—v—a—c`, i.e. `vtx = ![b, v, a, c]`, `edge = ![e_b, eₐ, e_c]`. The two degree-2
-closures `hclv` (every `v`-edge is `eₐ` or `e_b`) and `hcla` (every `a`-edge is `eₐ` or `e_c`) of
-the existing 4-tuple extractor are exactly `deg_two` at the interior indices `i = 1` (vertex
-`vtx 1 = v`, chain edges `edge 0 = e_b` and `edge 1 = eₐ`) and `i = 2` (vertex `vtx 2 = a`, chain
-edges `edge 1 = eₐ` and `edge 2 = e_c`). -/
-
-/-- **Length-`d` Case-III chain data** (Katoh–Tanigawa 2011 §6.4.2, the chain `v₀v₁…v_d`): a chain
-of `d + 1` distinct vertices `vtx 0, …, vtx d`, the `d` chain edges `edge i = vtx i — vtx (i+1)`, a
-fresh short-circuit label `e₀ ∉ E(G)`, and the degree-2 closure of the interior vertices
-`vtx 1, …, vtx (d−1)`. The index `n` records the `k`-dof regime the chain lives in (the ambient
-`IsMinimalKDof n 0` hypothesis) so the contract signatures can write `G.ChainData n`; the `d_eq`
-field pins the chain length to it (`d = n`, KT-structural). See the section docstring for the `d=3`
-map. -/
+/-- **A chain of length `d`** (`def:chain-data`; KT Lemma 4.6, p. 664): distinct vertices
+`vtx 0, …, vtx d` of `G` and distinct edges `edge i` joining `vtx i` and `vtx (i + 1)`, such that
+every edge of `G` at an interior vertex `vtx i`, `1 ≤ i ≤ d − 1`, is `edge (i − 1)` or `edge i`;
+with a label `e₀ ∉ E(G)` for the new edge of a splitting off (`fmlnote:graph-operations`). The
+parameter `n` is the dimension, `D = bodyBarDim n`, and the chain has length `d = n` (`d_eq`). -/
 structure ChainData (G : Graph α β) (n : ℕ) where
-  /-- The chain length (= the body-bar dimension index; `d = 3` at the `d=3` regime). -/
+  /-- The length of the chain. -/
   d : ℕ
-  /-- The chain is nondegenerate: `d ≥ 1` (so there is at least one chain edge). -/
+  /-- The chain has an edge: `d ≥ 1`. -/
   hd : 1 ≤ d
-  /-- **The chain length equals the dof-regime index** (Katoh–Tanigawa 2011 §6.4.2): the chain has
-  exactly `n` edges, i.e. `d = n`. This is KT-structural — the `d` Case-III candidates are the `d`
-  panels of the chain, and the panel discriminator that selects candidate `i` is `Fin (k+1)`-
-  indexed, so the chain index `i : Fin d` and the panel index align only via `d = k + 1`; stated
-  here against the record parameter `n` (with `n = k + 1` recovered at use sites from the ambient
-  `bodyBarDim n = screwDim k`, since `k` is not a record parameter). Set at construction by the
-  ENTRY extractor (KT Lemma 4.6 builds the chain to length `n`), not proved after the fact. At the
-  `d=3` regime `n = 3`, so `d_eq : d = 3` is the zero-regression specialization. -/
+  /-- The length is the dimension: `d = n`, where `D = bodyBarDim n` (KT Lemma 4.6's chains have
+  length `d`). -/
   d_eq : d = n
-  /-- The chain vertices `v₀, …, v_d` (KT eq. 6.46). -/
+  /-- The vertices `v₀, …, v_d` of the chain. -/
   vtx : Fin (d + 1) → α
-  /-- The chain edges: `edge i` joins `vtx i` to `vtx (i+1)`. -/
+  /-- The edges of the chain: `edge i` joins `vtx i` and `vtx (i + 1)`. -/
   edge : Fin d → β
-  /-- The fresh short-circuit label for the `v₁`-split (KT eq. 6.46). -/
+  /-- The label of the new edge when splitting off at an interior vertex of the chain. -/
   e₀ : β
-  /-- Every chain vertex lies in `G`. -/
+  /-- The vertices of the chain are vertices of `G`. -/
   vtx_mem : ∀ i, vtx i ∈ V(G)
-  /-- The chain vertices are pairwise distinct (KT eq. 6.67 affine-independence prep). -/
+  /-- The vertices of the chain are distinct. -/
   vtx_inj : Function.Injective vtx
-  /-- `edge i` is a genuine `G`-link from `vtx i` to its successor `vtx (i+1)`. -/
+  /-- `edge i` joins `vtx i` and `vtx (i + 1)` in `G`. -/
   link : ∀ i : Fin d, G.IsLink (edge i) (vtx i.castSucc) (vtx i.succ)
-  /-- The chain edges are pairwise distinct. -/
+  /-- The edges of the chain are distinct. -/
   edge_inj : Function.Injective edge
-  /-- **Interior degree-2 closure** (KT eq. 6.46, `d_G(vᵢ) = 2` for `1 ≤ i ≤ d−1`): every edge of
-  `G` incident to an interior chain vertex `vtx i` (`0 < i`, so `i` ranges over `1, …, d−1` via
-  `i.castSucc`) is one of the two chain edges at that vertex, `edge (i−1)` or `edge i`. -/
+  /-- **The interior vertices have degree two** (KT's `d_G(vᵢ) = 2` for `1 ≤ i ≤ d − 1`): every
+  edge of `G` at `vtx i`, for `0 < i < d`, is `edge (i − 1)` or `edge i`. -/
   deg_two : ∀ i : Fin d, 0 < (i : ℕ) →
               (∀ e x, G.IsLink e (vtx i.castSucc) x →
                 e = edge ⟨(i : ℕ) - 1, by omega⟩ ∨ e = edge i)
-  /-- The short-circuit label is fresh: `e₀ ∉ E(G)`. -/
+  /-- The label `e₀` is not an edge of `G`. -/
   e₀_fresh : e₀ ∉ E(G)
 
 namespace ChainData
 
 variable {G : Graph α β} {n : ℕ}
 
-/-- The two chain edges `edge (i−1)` and `edge i` at an interior vertex `vtx i` (`0 < i`) named by
-`deg_two` are distinct (immediate from `edge_inj`). -/
+/-- The two edges `edge (i − 1)` and `edge i` at an interior vertex (`0 < i`) are distinct
+(`edge_inj`). -/
 lemma pred_edge_ne (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     cd.edge ⟨(i : ℕ) - 1, by omega⟩ ≠ cd.edge i := by
   intro h
@@ -1664,32 +1445,26 @@ lemma pred_edge_ne (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
   simp only at this
   omega
 
-/-- The chain edge `edge i` links `vtx i` to its chain-successor `vtx (i+1)` (the `link` field, as
-a dot-accessible lemma). -/
+/-- `edge i` joins `vtx i` and `vtx (i + 1)` (the field `link`). -/
 lemma isLink_edge (cd : G.ChainData n) (i : Fin cd.d) :
     G.IsLink (cd.edge i) (cd.vtx i.castSucc) (cd.vtx i.succ) := cd.link i
 
-/-! ### Interior-vertex split data (the per-`i` `case_III_rank_certification` tuple)
+/-! ### Splitting off at an interior vertex
 
-For an interior chain index `i` (`0 < i`, so `i ∈ {1, …, d−1}`), the chain pins the geometry the
-general-`d` Case-III per-candidate reduction (CHAIN-2a) feeds to
-`PanelHingeFramework.case_III_rank_certification`: the split body is the interior vertex
-`vtx i.castSucc`, its two chain edges are `edge i` (to the chain-successor `vtx i.succ`) and the
-predecessor `edge (i−1)` (from the chain-predecessor `vtx (i−1).castSucc`), and the interior
-degree-2 closure says every `G`-edge at the split body is one of those two. These accessors expose
-that geometry in the `(v, a, b, e_a, e_b)` shape `case_III_rank_certification` consumes, with the
-two chain edges already oriented *out of* the split body. -/
+For an interior index `i` (`0 < i`), Case III splits off at `v = vtx i` along its neighbours
+`a = vtx (i + 1)` and `b = vtx (i − 1)`, whose edges to `v` are `e_a = edge i` and
+`e_b = edge (i − 1)`. These lemmas give the tuple `(v, a, b, e_a, e_b)` in the form that
+`PanelHingeFramework.chainData_split_realization` and
+`PanelHingeFramework.chainData_dispatch_interior` read it, with both edges leaving `v`. -/
 
-/-- The predecessor chain edge `edge (i−1)` of an interior vertex `vtx i.castSucc` (`0 < i`) has
-that interior vertex as its *successor* endpoint: `(⟨i−1, _⟩ : Fin cd.d).succ = i.castSucc`. -/
+/-- For `0 < i`, the successor of the index `i − 1` of the edges is the index `i` of the
+vertices: `(⟨i − 1, _⟩ : Fin cd.d).succ = i.castSucc`. -/
 lemma pred_succ_eq_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).succ = i.castSucc :=
   Fin.ext (by simp only [Fin.val_succ, Fin.val_castSucc]; omega)
 
-/-- The predecessor chain edge `edge (i−1)` at an interior vertex `vtx i.castSucc` (`0 < i`), as a
-`G`-link *out of* the interior vertex: `G.IsLink (edge (i−1)) (vtx i.castSucc) (vtx (i−1).castSucc)`
-(the `link` field at `⟨i−1, _⟩`, with its successor endpoint rewritten to `vtx i.castSucc` and then
-flipped). -/
+/-- For `0 < i`, `edge (i − 1)` joins `vtx i` to `vtx (i − 1)` (the field `link` at `i − 1`,
+reversed). -/
 lemma isLink_pred_edge (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     G.IsLink (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (cd.vtx i.castSucc)
       (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) := by
@@ -1697,14 +1472,12 @@ lemma isLink_pred_edge (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) 
   rw [cd.pred_succ_eq_castSucc hi] at h
   exact h.symm
 
-/-- The successor chain edge `edge i` at an interior vertex `vtx i.castSucc` (`0 < i`), as a
-`G`-link *out of* the interior vertex: `G.IsLink (edge i) (vtx i.castSucc) (vtx i.succ)` (the
-`link` field at `i`). -/
+/-- `edge i` joins `vtx i` to `vtx (i + 1)` (the field `link`, as `isLink_edge`). -/
 lemma isLink_succ_edge (cd : G.ChainData n) (i : Fin cd.d) :
     G.IsLink (cd.edge i) (cd.vtx i.castSucc) (cd.vtx i.succ) := cd.isLink_edge i
 
-/-- The two chain edges out of an interior vertex `vtx i.castSucc` (`0 < i`) land on distinct
-neighbors: `vtx i.succ ≠ vtx (i−1).castSucc` (immediate from `vtx_inj`, the two indices differ). -/
+/-- For `0 < i`, the two neighbours of `vtx i` on the chain are distinct:
+`vtx (i + 1) ≠ vtx (i − 1)` (`vtx_inj`). -/
 lemma succ_ne_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     cd.vtx i.succ ≠ cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc := by
   intro h
@@ -1712,34 +1485,27 @@ lemma succ_ne_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : �
   simp only [Fin.val_succ, Fin.val_castSucc] at this
   omega
 
-/-- The **interior degree-2 closure**, restated for the `(v, a, b, e_a, e_b)` split tuple at an
-interior vertex `vtx i.castSucc` (`0 < i`): every `G`-edge incident to the split body is the
-successor chain edge `edge i` or the predecessor chain edge `edge (i−1)`. (The `deg_two` field,
-read at `i`.) -/
+/-- For `0 < i`, every edge of `G` at `vtx i` is `edge i` or `edge (i − 1)` (the field
+`deg_two`, its two cases exchanged). -/
 lemma deg_two_split (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     ∀ e x, G.IsLink e (cd.vtx i.castSucc) x →
       e = cd.edge i ∨ e = cd.edge ⟨(i : ℕ) - 1, by omega⟩ :=
   fun e x hlink => (cd.deg_two i hi e x hlink).symm
 
-/-- Two chain vertices `vtx ⟨m,_⟩`, `vtx ⟨m',_⟩` are distinct when their `ℕ`-indices differ
-(`vtx_inj`, the namespace-level form of the local `hvtx_ne_of` haves in the graphiso bricks). The
-per-moved-body distinctness conjuncts of the cycle-W9a chain (CHAIN-2c-ii-transport-W9a) read off
-this. -/
+/-- Two vertices `vtx ⟨m, _⟩` and `vtx ⟨m', _⟩` of the chain with `m ≠ m'` are distinct
+(`vtx_inj`). -/
 lemma vtx_ne {m m' : ℕ} (cd : G.ChainData n) (hm : m < cd.d + 1) (hm' : m' < cd.d + 1)
     (hne : m ≠ m') : cd.vtx ⟨m, hm⟩ ≠ cd.vtx ⟨m', hm'⟩ :=
   fun he => hne (by have := congrArg Fin.val (cd.vtx_inj he); simpa using this)
 
-/-- The interior split body `vtx i.castSucc` (`0 < i`) is distinct from its successor neighbor
-`vtx i.succ` (the `(v, a)` distinctness `v ≠ a` of the arm split tuple; indices `i` vs `i+1`). -/
+/-- `vtx i ≠ vtx (i + 1)`, the `v ≠ a` of the split at `vtx i` (`vtx_ne`). -/
 lemma castSucc_ne_succ (cd : G.ChainData n) (i : Fin cd.d) :
     cd.vtx i.castSucc ≠ cd.vtx i.succ := by
   rw [show i.castSucc = (⟨(i : ℕ), by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp),
     show i.succ = (⟨(i : ℕ) + 1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp)]
   exact cd.vtx_ne _ _ (by omega)
 
-/-- The interior split body `vtx i.castSucc` (`0 < i`) is distinct from its predecessor neighbor
-`vtx (i−1).castSucc` (the `(v, b)` distinctness `v ≠ b` of the arm split tuple; indices `i` vs
-`i−1`). -/
+/-- For `0 < i`, `vtx i ≠ vtx (i − 1)`, the `v ≠ b` of the split at `vtx i` (`vtx_ne`). -/
 lemma castSucc_ne_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     cd.vtx i.castSucc ≠ cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc := by
   rw [show i.castSucc = (⟨(i : ℕ), by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp),
@@ -1747,35 +1513,27 @@ lemma castSucc_ne_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i
         = (⟨(i : ℕ) - 1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp)]
   exact cd.vtx_ne _ _ (by omega)
 
-/-! ### The interior-vertex `removeVertex` split (the arm `Gv = G − v` membership tuple)
+/-! ### Removing an interior vertex
 
-For an interior chain index `i` (`0 < i`), the general-`d` Case-III dispatch (CHAIN-2c-iii
-`chainData_dispatch`) feeds the chain-arm spine `case_III_arm_realization_chain` / engine
-`case_III_arm_realization` the split tuple `(v, a, b, e_a, e_b) = (vtx i.castSucc, vtx i.succ,
-vtx (i−1).castSucc, edge i, edge (i−1))` over the vertex-removal `Gv = G.removeVertex v`. These
-accessors expose the three `Gv`-membership facts (`v ∉ V(Gv)`, `a ∈ V(Gv)`, `b ∈ V(Gv)`) that
-those arms require, alongside the `isLink_succ_edge` / `isLink_pred_edge` link facts and the
-`castSucc_ne_*` distinctnesses above. (The link-out-of-`Gv`, degree-2-closure, and ncard facts the
-dispatch also threads are the existing `isLink_*` / `deg_two_split` accessors plus the standard
-`removeVertex` ncard rewrites; these three are the missing membership pieces.) -/
+The split at `v = vtx i` (`0 < i`) of the previous section, read on `G_v = G − v`: `v` is not a
+vertex of `G_v`, its neighbours `a = vtx (i + 1)` and `b = vtx (i − 1)` are, and every edge of `G`
+is `edge i`, `edge (i − 1)` or an edge of `G_v`.
+`PanelHingeFramework.chainData_interior_realization_hρGv` (`CaseIII/Realization.lean`) reads these
+facts. -/
 
-/-- The interior split body `v = vtx i.castSucc` (`0 < i`) is removed from `Gv = G − v`:
-`v ∉ V(G.removeVertex (vtx i.castSucc))` (the arm's `hvVc`). -/
+/-- `vtx i` is not a vertex of `G − vtx i`. -/
 lemma notMem_vertexSet_removeVertex_castSucc (cd : G.ChainData n) (i : Fin cd.d) :
     cd.vtx i.castSucc ∉ V(G.removeVertex (cd.vtx i.castSucc)) := by
   rw [Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
 
-/-- The successor neighbor `a = vtx i.succ` (`0 < i`) survives the removal of the split body
-`v = vtx i.castSucc`: `a ∈ V(G.removeVertex v)` (the arm's `haVc`; `a ∈ V(G)` by `vtx_mem`, and
-`a ≠ v` by `castSucc_ne_succ`). -/
+/-- `vtx (i + 1)` is a vertex of `G − vtx i` (`vtx_mem` and `castSucc_ne_succ`). -/
 lemma succ_mem_vertexSet_removeVertex_castSucc (cd : G.ChainData n) (i : Fin cd.d) :
     cd.vtx i.succ ∈ V(G.removeVertex (cd.vtx i.castSucc)) := by
   rw [Graph.vertexSet_removeVertex]
   exact ⟨cd.vtx_mem _, (cd.castSucc_ne_succ i).symm⟩
 
-/-- The predecessor neighbor `b = vtx (i−1).castSucc` (`0 < i`) survives the removal of the split
-body `v = vtx i.castSucc`: `b ∈ V(G.removeVertex v)` (the arm's `hbVc`; `b ∈ V(G)` by `vtx_mem`,
-and `b ≠ v` by `castSucc_ne_pred_castSucc`). -/
+/-- For `0 < i`, `vtx (i − 1)` is a vertex of `G − vtx i` (`vtx_mem` and
+`castSucc_ne_pred_castSucc`). -/
 lemma pred_castSucc_mem_vertexSet_removeVertex_castSucc (cd : G.ChainData n) {i : Fin cd.d}
     (hi : 0 < (i : ℕ)) :
     cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc ∈
@@ -1783,12 +1541,9 @@ lemma pred_castSucc_mem_vertexSet_removeVertex_castSucc (cd : G.ChainData n) {i 
   rw [Graph.vertexSet_removeVertex]
   exact ⟨cd.vtx_mem _, fun h => cd.castSucc_ne_pred_castSucc hi h.symm⟩
 
-/-- **The interior-split edge partition** (`0 < i`, the arm's `hsplitG`): every `G`-edge `e u w`
-is one of the two chain edges at the split body `v = vtx i.castSucc` — the successor `edge i` or
-the predecessor `edge (i−1)` — or a link of the vertex-removal `Gv = G − v`. (The `d=3` dispatch's
-`hsplitG`, generalized: case on whether an endpoint is the split body `v`; if so, the degree-2
-closure `deg_two_split` names the edge; otherwise both endpoints survive and the link is a
-`Gv`-link.) -/
+/-- **The edges of `G` at and away from an interior vertex** (`0 < i`): if `G.IsLink e u w`, then
+`e = edge i`, `e = edge (i − 1)`, or `e` joins `u` and `w` in `G − vtx i`. If `u` or `w` is
+`vtx i`, `deg_two_split` names the edge; otherwise it is a link of `G − vtx i`. -/
 lemma isLink_eq_succ_or_pred_or_removeVertex (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
     {e : β} {u w : α} (hlink : G.IsLink e u w) :
     e = cd.edge i ∨ e = cd.edge ⟨(i : ℕ) - 1, by omega⟩ ∨
@@ -1803,15 +1558,10 @@ lemma isLink_eq_succ_or_pred_or_removeVertex (cd : G.ChainData n) {i : Fin cd.d}
       · exact Or.inr (Or.inl h)
     · exact Or.inr (Or.inr (Graph.removeVertex_isLink.mpr ⟨hlink, hu, hw⟩))
 
-/-- **The two interior chain edges are off `Gv = G − v`** (`0 < i`, the arm/dispatch's `heab_off`):
-every link of the vertex-removal `Gv = G.removeVertex (vtx i.castSucc)` uses an edge distinct from
-both split-body chain edges `e_a = edge i` and `e_b = edge (i−1)`. Both chain edges are incident to
-the removed split body `v = vtx i.castSucc` (`isLink_succ_edge` / `isLink_pred_edge`), but a
-`Gv`-link has *both* endpoints `≠ v` (`removeVertex_isLink`); the endpoint-matching
-`eq_and_eq_or_eq_and_eq` then forces one of the `Gv`-link's endpoints to be `v`, a contradiction.
-This is the off-slot condition the general-`d` dispatch (CHAIN-2c-iii `chainData_dispatch`) feeds
-the per-member `hS` router `bottomRelabel_image_mem_span_caseIIICandidate` (the `vᵢ`-incident
-candidate slots `e_a`, `e_b` are kept clear of every surviving candidate-edge row). -/
+/-- **The two edges at an interior vertex are not edges of `G − vtx i`** (`0 < i`): an edge `e`
+joining two vertices in `G − vtx i` is neither `edge i` nor `edge (i − 1)`, as both have the end
+`vtx i` (`isLink_succ_edge`, `isLink_pred_edge`) and the ends of `e` differ from `vtx i`
+(`removeVertex_isLink`). -/
 lemma removeVertex_isLink_edge_succ_pred_off (cd : G.ChainData n) {i : Fin cd.d}
     (hi : 0 < (i : ℕ)) :
     ∀ e x y, (G.removeVertex (cd.vtx i.castSucc)).IsLink e x y →
@@ -1826,23 +1576,16 @@ lemma removeVertex_isLink_edge_succ_pred_off (cd : G.ChainData n) {i : Fin cd.d}
     · exact hxv hx.symm
     · exact hyv hy.symm
 
-/-! ### The index-shift cycle `shiftPerm` (KT eq. 6.54)
+/-! ### The cycle `shiftPerm` of KT eq. (6.54)
 
-For an interior candidate, the general-`d` Case-III argument (Katoh–Tanigawa 2011 §6.4.2, eq. 6.54)
-views the `i`-th candidate framework `(Gᵢ, qᵢ)` as the `v₁`-base framework `(G₁, q₁)` *read through*
-the index-shift isomorphism `ρᵢ`, the cyclic permutation `v₁ → v₂ → ⋯ → vᵢ → v₁` of the first `i`
-interior chain vertices (fixing everything else). These lemmas package `ρᵢ` as a Lean
-`Equiv.Perm α` (`shiftPerm i`, built from `List.formPerm` on `[vtx 1, …, vtx i]`) together with its
-action: it shifts each interior vertex `vtx j` (`1 ≤ j < i`) to its chain-successor `vtx (j+1)`,
-wraps the top vertex `vtx i` back to `vtx 1`, and fixes every vertex off the cycle.
+For `2 ≤ i ≤ d − 1`, Case III builds its `i`-th framework on `Gᵢ = G_{vᵢ}^{vᵢ₋₁vᵢ₊₁}`. Katoh and
+Tanigawa's isomorphism `ρᵢ` from `Gᵢ` to `G₁ = G_{v₁}^{v₀v₂}` maps `vₗ` to `vₗ₊₁` for
+`1 ≤ l ≤ i − 1` and fixes the other vertices (KT eq. (6.54), p. 694). `shiftPerm i` is the
+permutation of `α` that agrees with `ρᵢ` and maps `vᵢ` to `v₁`: the cycle
+`v₁ ↦ v₂ ↦ ⋯ ↦ vᵢ ↦ v₁`, the `σᵢ` of `case-iii.tex`, as `List.formPerm` of
+`shiftCycle i = [v₁, …, vᵢ]`. At `i = 2` it is the transposition of `v₁` and `v₂`. -/
 
-This brick is graph-free (pure `Equiv.Perm`/`List`/`Fin` arithmetic over the `vtx` family); it is
-the foundation the interior-candidate relabel arm of the dispatch (CHAIN-2c) consumes. The d=3 `M₃`
-arm is the bespoke `i = 2` instance, where the cycle `v₁ → v₂ → v₁` degenerates to the transposition
-`Equiv.swap (vtx 1) (vtx 2)`. -/
-
-/-- The vertices of the index-shift cycle `[vtx 1, vtx 2, …, vtx i]` (the support of `shiftPerm i`),
-for a top index `i : Fin (cd.d + 1)`. -/
+/-- The list `[vtx 1, …, vtx i]`, the cycle of `shiftPerm i`, for `i : Fin (cd.d + 1)`. -/
 def shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) : List α :=
   List.ofFn fun j : Fin (i : ℕ) => cd.vtx ⟨(j : ℕ) + 1, by omega⟩
 
@@ -1854,15 +1597,15 @@ lemma getElem_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) (j : ℕ)
     (cd.shiftCycle i)[j] = cd.vtx ⟨j + 1, by simp only [length_shiftCycle] at hj; omega⟩ := by
   simp only [shiftCycle, List.getElem_ofFn]
 
-/-- The shift cycle has no repeated vertices (the chain vertices are distinct). -/
+/-- The list `shiftCycle i` has no repeated vertices, as those of the chain are distinct. -/
 lemma nodup_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) : (cd.shiftCycle i).Nodup := by
   rw [shiftCycle, List.nodup_ofFn]
   intro a b hab
   have := cd.vtx_inj hab
   simpa [Fin.ext_iff] using this
 
-/-- A chain vertex `vtx m` lies on the cycle `[vtx 1, …, vtx i]` iff `1 ≤ m ≤ i` (the chain vertices
-are distinct, so membership pins the index). -/
+/-- `vtx m` lies on `shiftCycle i = [vtx 1, …, vtx i]` if and only if `1 ≤ m ≤ i`, as the vertices
+of the chain are distinct. -/
 lemma vtx_mem_shiftCycle_iff (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ} (hm : m < cd.d + 1) :
     cd.vtx ⟨m, hm⟩ ∈ cd.shiftCycle i ↔ 1 ≤ m ∧ m ≤ (i : ℕ) := by
   rw [shiftCycle, List.mem_ofFn]
@@ -1874,9 +1617,7 @@ lemma vtx_mem_shiftCycle_iff (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ}
   · rintro ⟨hm1, hmi⟩
     exact ⟨⟨m - 1, by omega⟩, by congr 1; simp only [Fin.mk.injEq]; omega⟩
 
-/-- A vertex `x` (of any shape) lies on the cycle `[vtx 1, …, vtx i]` iff it equals one of the
-chain vertices `vtx m` with `1 ≤ m ≤ i` (the general-`x` form of `vtx_mem_shiftCycle_iff`,
-unfolding `shiftCycle = List.ofFn …`). -/
+/-- A vertex `x` lies on `shiftCycle i` if and only if `x = vtx m` for some `1 ≤ m ≤ i`. -/
 lemma mem_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α} :
     x ∈ cd.shiftCycle i ↔ ∃ m, ∃ h : m < cd.d + 1, 1 ≤ m ∧ m ≤ (i : ℕ) ∧ x = cd.vtx ⟨m, h⟩ := by
   rw [shiftCycle, List.mem_ofFn]
@@ -1886,9 +1627,7 @@ lemma mem_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α} :
   · rintro ⟨m, hm, hm1, hmi, rfl⟩
     exact ⟨⟨m - 1, by omega⟩, by congr 1; simp only [Fin.mk.injEq]; omega⟩
 
-/-- The shift cycle `[vtx 1, …, vtx i]` head-peels into `vtx 1 :: [vtx 2, …, vtx i]`, where the tail
-`[vtx 2, …, vtx i]` is the `List.ofFn` of the chain vertices `vtx 2, …, vtx i` (the `cons`-on-head
-form of `shiftCycle`, available once the cycle is nondegenerate, `1 ≤ i`). -/
+/-- For `1 ≤ i`, `shiftCycle i = vtx 1 :: [vtx 2, …, vtx i]`, the tail as a `List.ofFn`. -/
 lemma shiftCycle_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 1 ≤ (i : ℕ)) :
     cd.shiftCycle i
       = cd.vtx ⟨1, by omega⟩
@@ -1909,26 +1648,24 @@ section ShiftPerm
 
 variable [DecidableEq α]
 
-/-- The **index-shift permutation** `ρᵢ` (KT eq. 6.54): the `i`-cycle
-`vtx 1 → vtx 2 → ⋯ → vtx i → vtx 1` on the first `i` interior chain vertices, fixing every other
-vertex. Built as `List.formPerm` on `shiftCycle i = [vtx 1, …, vtx i]`. -/
+/-- **The cycle `σᵢ` extending KT's `ρᵢ`** (KT eq. (6.54), p. 694): the permutation
+`vtx 1 ↦ vtx 2 ↦ ⋯ ↦ vtx i ↦ vtx 1` of `α`, fixing every other vertex; `List.formPerm` of
+`shiftCycle i`. -/
 def shiftPerm (cd : G.ChainData n) (i : Fin (cd.d + 1)) : Equiv.Perm α :=
   (cd.shiftCycle i).formPerm
 
-/-- `shiftPerm i` fixes every vertex off the cycle `[vtx 1, …, vtx i]`. -/
+/-- `shiftPerm i` fixes every vertex not on `shiftCycle i`. -/
 lemma shiftPerm_apply_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α}
     (hx : x ∉ cd.shiftCycle i) : cd.shiftPerm i x = x :=
   List.formPerm_apply_of_notMem hx
 
-/-- `shiftPerm i` fixes a chain vertex `vtx m` whose index lies off the cycle range `1 ≤ m ≤ i`
-(i.e. the chain base `vtx 0` and the tail `vtx (i+1), …`). -/
+/-- `shiftPerm i` fixes `vtx m` when `m = 0` or `i < m`. -/
 lemma shiftPerm_apply_vtx_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ} (hm : m < cd.d + 1)
     (hoff : m = 0 ∨ (i : ℕ) < m) : cd.shiftPerm i (cd.vtx ⟨m, hm⟩) = cd.vtx ⟨m, hm⟩ :=
   cd.shiftPerm_apply_off i fun hmem => by
     rw [cd.vtx_mem_shiftCycle_iff i hm] at hmem; omega
 
-/-- `shiftPerm i` sends an interior vertex `vtx j` (`1 ≤ j < i`) to its chain-successor `vtx (j+1)`
-(KT eq. 6.54). -/
+/-- `shiftPerm i` maps `vtx j` to `vtx (j + 1)` for `1 ≤ j < i`, as `ρᵢ` does (KT eq. (6.54)). -/
 lemma shiftPerm_apply_interior (cd : G.ChainData n) (i : Fin (cd.d + 1)) {j : ℕ}
     (hj1 : 1 ≤ j) (hji : j < (i : ℕ)) :
     cd.shiftPerm i (cd.vtx ⟨j, by omega⟩) = cd.vtx ⟨j + 1, by omega⟩ := by
@@ -1941,8 +1678,8 @@ lemma shiftPerm_apply_interior (cd : G.ChainData n) (i : Fin (cd.d + 1)) {j : �
   rw [shiftPerm, ← hget,
     List.formPerm_apply_lt_getElem _ (cd.nodup_shiftCycle i) (j - 1) hsucc, hget']
 
-/-- `shiftPerm i` wraps the top vertex `vtx i` back to the cycle head `vtx 1` (KT eq. 6.54, the
-cyclic closure), for a nondegenerate cycle (`1 ≤ i`). -/
+/-- For `1 ≤ i`, `shiftPerm i` maps `vtx i` to `vtx 1`; `vtx i` is not a vertex of `Gᵢ`, so this
+value extends KT's `ρᵢ`. -/
 lemma shiftPerm_vtx_top (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i : ℕ)) :
     cd.shiftPerm i (cd.vtx ⟨(i : ℕ), by omega⟩) = cd.vtx ⟨1, by omega⟩ := by
   have hlen : (cd.shiftCycle i).length = (i : ℕ) := cd.length_shiftCycle i
@@ -1958,14 +1695,8 @@ lemma shiftPerm_vtx_top (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i
   congr 1
   simp only [hmod]
 
-/-- **The `shiftPerm` head-peel factorization** (the recursion handle for the cycle-induction
-transport of the interior-candidate relabel arm, CHAIN-2c-ii). For a cycle of length `≥ 2`
-(`2 ≤ i`), the index-shift permutation `shiftPerm i = formPerm [vtx 1, …, vtx i]` factors as the
-leading transposition `Equiv.swap (vtx 1) (vtx 2)` composed with the `formPerm` of the cycle's tail
-`[vtx 2, …, vtx i]` (KT eq. 6.54 read step-by-step; `List.formPerm_cons_cons`). This is the
-single-transposition peel each step of the cycle-W9a transport (the genuinely-new piece of route B,
-`notes/Phase23-design.md` §(o″)) composes: the head transposition moves the one adjacent degree-2
-body `vtx 1`, the tail cycle is the same shift on the remaining bodies `vtx 2, …, vtx i`. -/
+/-- For `2 ≤ i`, `shiftPerm i` is the transposition of `vtx 1` and `vtx 2` times the
+`List.formPerm` of `[vtx 2, …, vtx i]` (`List.formPerm_cons_cons`). -/
 lemma shiftPerm_eq_swap_mul (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ)) :
     cd.shiftPerm i
       = Equiv.swap (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩)
@@ -1980,89 +1711,56 @@ lemma shiftPerm_eq_swap_mul (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 �
     | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
   rw [shiftPerm, cd.shiftCycle_eq_cons i (by omega), htail, List.formPerm_cons_cons, ← htail]
 
-/-! ### The inverse index-shift cycle `(shiftPerm i)⁻¹` (CHAIN-2c-ii-inv, vertex side)
+/-! ### The inverse of `shiftPerm`
 
-The interior-candidate relabel arm of the dispatch (CHAIN-2c) transports row-memberships
-**base→candidate** through the *inverse* cycle `(shiftPerm i)⁻¹` (KT §6.4.2 eq. 6.62, the
-one-step-down correspondence `vⱼ₋₁ ⇐⇒ vⱼ`): paired with the seed `qᵢ = q ∘ shiftPerm i`, the
-inversion cancels the seed shift (`qᵢ ((shiftPerm i)⁻¹ x) = q (shiftPerm i ((shiftPerm i)⁻¹ x))
-= q x`), so an annihilation of the base rows transports into candidate `i`'s role. These lemmas
-package the action of `(shiftPerm i)⁻¹`, the step-by-step inverses of the forward `shiftPerm`
-action: it sends each interior chain-successor `vtx (j+1)` back to its predecessor `vtx j`
-(`1 ≤ j < i`), wraps the head `vtx 1` to the top `vtx i`, and fixes every vertex off the cycle.
-Each is an `Equiv.Perm.inv_eq_iff_eq` rewrite of the corresponding forward lemma. -/
+`lem:case-III-chain-relabel-rows` renames the rows of `R(G₁, q)` along `σᵢ⁻¹ = (shiftPerm i)⁻¹`,
+with the normals `qᵢ = q ∘ σᵢ` (KT eqs. (6.55) and (6.62), pp. 694–696): the form `f` becomes
+`S ↦ f(S ∘ σᵢ⁻¹)`. These lemmas give the values of `(shiftPerm i)⁻¹`, each from the matching
+value of `shiftPerm i` (`Equiv.Perm.inv_eq_iff_eq`). -/
 
-/-- `(shiftPerm i)⁻¹` sends an interior chain-successor `vtx (j+1)` back to its chain-predecessor
-`vtx j` (`1 ≤ j < i`); the inverse of `shiftPerm_apply_interior` (KT eq. 6.54, read backwards). -/
+/-- `(shiftPerm i)⁻¹` maps `vtx (j + 1)` to `vtx j` for `1 ≤ j < i` (`shiftPerm_apply_interior`). -/
 lemma shiftPerm_inv_apply_interior (cd : G.ChainData n) (i : Fin (cd.d + 1)) {j : ℕ}
     (hj1 : 1 ≤ j) (hji : j < (i : ℕ)) :
     (cd.shiftPerm i)⁻¹ (cd.vtx ⟨j + 1, by omega⟩) = cd.vtx ⟨j, by omega⟩ := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_interior i hj1 hji]
 
-/-- `(shiftPerm i)⁻¹` wraps the cycle head `vtx 1` back to the top vertex `vtx i` (the inverse of
-the cyclic closure `shiftPerm_vtx_top`), for a nondegenerate cycle (`1 ≤ i`). -/
+/-- For `1 ≤ i`, `(shiftPerm i)⁻¹` maps `vtx 1` to `vtx i` (`shiftPerm_vtx_top`). -/
 lemma shiftPerm_inv_vtx_one (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i : ℕ)) :
     (cd.shiftPerm i)⁻¹ (cd.vtx ⟨1, by omega⟩) = cd.vtx ⟨(i : ℕ), by omega⟩ := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_vtx_top hi]
 
-/-- `(shiftPerm i)⁻¹` fixes every vertex off the cycle `[vtx 1, …, vtx i]` (inverse of
-`shiftPerm_apply_off`; a permutation and its inverse share their fixed points). -/
+/-- `(shiftPerm i)⁻¹` fixes every vertex not on `shiftCycle i` (`shiftPerm_apply_off`). -/
 lemma shiftPerm_inv_apply_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α}
     (hx : x ∉ cd.shiftCycle i) : (cd.shiftPerm i)⁻¹ x = x := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_off i hx]
 
-/-- `(shiftPerm i)⁻¹` fixes a chain vertex `vtx m` whose index lies off the cycle range `1 ≤ m ≤ i`
-(the chain base `vtx 0` and the tail `vtx (i+1), …`); inverse of `shiftPerm_apply_vtx_off`. -/
+/-- `(shiftPerm i)⁻¹` fixes `vtx m` when `m = 0` or `i < m` (`shiftPerm_apply_vtx_off`). -/
 lemma shiftPerm_inv_apply_vtx_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ}
     (hm : m < cd.d + 1) (hoff : m = 0 ∨ (i : ℕ) < m) :
     (cd.shiftPerm i)⁻¹ (cd.vtx ⟨m, hm⟩) = cd.vtx ⟨m, hm⟩ := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_vtx_off i hm hoff]
 
-/-! ### Candidate-seed coincidence under the inverse-cycle relabel (CHAIN-2c-ii-arm)
+/-! ### The normals `qᵢ = q ∘ σᵢ`
 
-The interior-candidate relabel arm `chainData_relabel_arm` (CHAIN-2c-ii, `notes/Phase23-design.md`
-§(o‴)(H)/(I.3)) transports the `v₁`-base rigidity rows into candidate `i`'s split by the **inverse**
-cycle relabel `(shiftPerm i)⁻¹` paired with the seed `qᵢ = q ∘ shiftPerm i` (KT eqs. (6.56)/(6.62),
-the one-step-DOWN row correspondence). The genuine-row arm reads candidate `i`'s seed `qᵢ` at the
-**relabelled** body `(shiftPerm i)⁻¹ x`; these two lemmas package the two seed identities that this
-read makes — the cycle generalizations of the d=3 `M₃` arm's single-swap `qρ`-coincidence facts
-(`AlgebraicInduction/CaseIII/Relabel/Arm.lean`, `case_III_arm_realization_M3`'s `hqρc`/`hqρv` and
-the off-edge `simp only [hqρ, swap_apply_of_ne_of_ne …]` step). At the `d = 3` `M₃` instance `i = 2`
-the cycle `shiftPerm 2 = (v₁ v₂)` is the single swap and these reduce to those facts. Graph-free
-over the chain vertices (pure `Equiv.Perm`/`vtx` algebra), beside the inverse-cycle action
-lemmas above. -/
+The `i`-th framework of Case III has the normals `qᵢ = q ∘ σᵢ`, where `σᵢ = shiftPerm i`
+(`case-iii.tex`; KT eq. (6.55), p. 694). For `q : α × γ → K`, which gives each vertex the
+coordinates of its normal, these lemmas give `qᵢ` at the vertices that the split at `vtx i`
+names. At `i = 2`, `σ₂` is the transposition of `v₁` and `v₂`. -/
 
-/-- **Seed cancellation: candidate `i`'s seed `qᵢ = q ∘ shiftPerm i` read at the inverse-relabelled
-body `(shiftPerm i)⁻¹ x` coincides componentwise with the base seed `q` at `x`** (CHAIN-2c-ii-arm).
-This is the identity the genuine-row arm of `chainData_relabel_arm` uses to transport an
-annihilation: the relabel `(shiftPerm i)⁻¹` cancels the `shiftPerm i` in the candidate seed, so a
-base extensor at `x` reappears as candidate `i`'s extensor at `(shiftPerm i)⁻¹ x` (KT eq. (6.59)
-substitution). The `d = 3` `M₃` involution case is its degenerate instance
-(`(shiftPerm 2)⁻¹ = shiftPerm 2`). -/
+/-- `qᵢ = q ∘ σᵢ` at `σᵢ⁻¹ x` is `q` at `x`. -/
 theorem seedShift_inv_cancel (cd : G.ChainData n) (i : Fin (cd.d + 1))
     {γ : Type*} {K : Type*} (q : α × γ → K) (x : α) :
     (fun j => q (cd.shiftPerm i ((cd.shiftPerm i)⁻¹ x), j)) = (fun j => q (x, j)) := by
   funext j; rw [← Equiv.Perm.mul_apply, mul_inv_cancel, Equiv.Perm.one_apply]
 
-/-- **Off-cycle seed coincidence: candidate `i`'s seed `qᵢ = q ∘ shiftPerm i` equals the base seed
-`q` at every body off the cycle `[vtx 1, …, vtx i]`** (CHAIN-2c-ii-arm). At a body the relabel
-fixes, `qᵢ` reads the *unrelabelled* `q`, so a genuine base row at an off-cycle (non-moving)
-recorded endpoint stays genuine in candidate `i`'s framework — the cycle generalization of the d=3
-`M₃` arm's `qρ = q` step at endpoints `∉ {a, v}`. -/
+/-- `qᵢ` is `q` at a vertex not on `shiftCycle i`. -/
 theorem seedShift_off_cycle (cd : G.ChainData n) (i : Fin (cd.d + 1))
     {γ : Type*} {K : Type*} (q : α × γ → K) {x : α} (hx : x ∉ cd.shiftCycle i) :
     (fun j => q (cd.shiftPerm i x, j)) = (fun j => q (x, j)) := by
   rw [cd.shiftPerm_apply_off i hx]
 
-/-- **Candidate `i`'s seed read at the interior arm's successor neighbour `a = vtx i.succ`**
-(CHAIN-2c-ii-arm, the cycle generalization of the `d = 3` `M₃` arm's `hqρc`). The engine
-`case_III_arm_realization` consumes the interior matched candidate `i` (`0 < i`) at the relabelled
-seed `qρ = q ∘ shiftPerm i.castSucc` (KT eq. (6.56)); its successor neighbour role `a = vtx i.succ`
-has index `i + 1`, which lies *off* the cycle `[vtx 1, …, vtx i]` (the cycle tops out at `vtx i`),
-so the relabel fixes it and `qρ(a, ·)` reads the unrelabelled base seed `q(vtx i.succ, ·)`. This is
-the read the arm's `hLn` / `hgab` / `hρgate` gate slots reduce through (their `a`-side
-`panelSupportExtensor` argument is `qρ(a, ·)`), exactly as `M₃`'s `hqρc` reduces the `c`-side gates;
-at `i = 2` the cycle degenerates to the single swap and this is `M₃`'s off-`{a, v}` seed read. -/
+/-- **`qᵢ` at `vtx (i + 1)`**: for `i : Fin cd.d`, `σᵢ` fixes `vtx (i + 1)`, so `qᵢ` is `q` there.
+`PanelHingeFramework.chainData_interior_realization_hρGv` reads it. -/
 theorem seedShift_succ_castSucc (cd : G.ChainData n) (i : Fin cd.d)
     {γ : Type*} {K : Type*} (q : α × γ → K) :
     (fun j => q (cd.shiftPerm i.castSucc (cd.vtx i.succ), j))
@@ -2072,16 +1770,9 @@ theorem seedShift_succ_castSucc (cd : G.ChainData n) (i : Fin cd.d)
   rw [cd.shiftPerm_apply_vtx_off i.castSucc (by have := i.isLt; omega)
     (Or.inr (by simp only [Fin.val_castSucc]; omega))]
 
-/-- **Candidate `i`'s seed read at the interior arm's predecessor neighbour
-`b = vtx (i−1).castSucc`** (CHAIN-2c-ii-arm, the cycle generalization of the `d = 3` `M₃` arm's
-`hqρv`). For an interior matched candidate `i` (`2 ≤ i`), the predecessor neighbour role
-`b = vtx (i−1).castSucc` has index
-`i − 1`, which (since `2 ≤ i`) is an *interior* cycle vertex `1 ≤ i − 1 < i`, so the relabel
-`shiftPerm i.castSucc` shifts it one step to its chain-successor `vtx i = vtx i.castSucc` (KT
-eq. (6.54)); hence `qρ(b, ·)` reads the base seed at the *split body* `q(vtx i.castSucc, ·)`. This
-is the read the arm's `hgab` / `hρe₀` slots use on the `b`-side, the cycle analogue of `M₃`'s `hqρv`
-(`qρ(v, ·) = q(a, ·)` at the single swap); the body `b` lands on the split body's seed exactly as
-`M₃`'s relabelled `v` reads body `a`'s seed. -/
+/-- **`qᵢ` at `vtx (i − 1)`**: for `2 ≤ i`, `σᵢ` maps `vtx (i − 1)` to `vtx i` (KT eq. (6.54)), so
+`qᵢ` at `vtx (i − 1)` is `q` at `vtx i`. `PanelHingeFramework.chainData_interior_realization_hρGv`
+reads it. -/
 theorem seedShift_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (h2i : 2 ≤ (i : ℕ))
     {γ : Type*} {K : Type*} (q : α × γ → K) :
     (fun j => q (cd.shiftPerm i.castSucc
@@ -2096,26 +1787,19 @@ theorem seedShift_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (h2i : 2 ≤
 
 end ShiftPerm
 
-/-! ### The cycle-W9a moved-body list `shiftBodyList` (CHAIN-2c-ii-transport-W9a)
+/-! ### `shiftPerm` as a product of transpositions
 
-The cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) moves the chain of `i − 1` adjacent degree-2 bodies
-`v₁, …, v_{i−1}` one step each. The cycle-W9a transport (the genuinely-new piece of route B,
-`notes/Phase23-design.md` §(o″)) iterates the single-step W9a transport `BodyHingeFramework.wstep`
-over these bodies via `wstep_foldr_mem_span_rigidityRows`, which reads its body triples off a
-`List (α × α × α)`. This is that body list: in the `(v, a, c)` shape of one W9a step (swap `(a v)`,
-the degree-2 body `a` moving to `v`, its surviving neighbour `c`), the `s`-th cycle step moves
-`vₛ₊₁` to `vₛ₊₂` (`shiftPerm` sends `vⱼ ↦ vⱼ₊₁`), so its body triple is
-`(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)` — the body `vₛ₊₁`, its post-swap position `vₛ₊₂`, and its chain
-predecessor `vₛ` (the only surviving neighbour of the degree-2 body once its successor edge is
-cut). The `foldr` applies the head body last, matching the head-peel
-`shiftPerm i = (vtx 1 vtx 2) * (tail)` (`shiftPerm_eq_swap_mul`): the head body `[0] = (v₂, v₁, v₀)`
-is the leading transposition `(v₁ v₂)`'s degree-2 body `v₁`. Graph-free over the chain vertices
-(pure `vtx` indexing), mirroring `shiftCycle`/`shiftEdgeCycle`. -/
+The Case III proofs at general `d` in `CaseIII/Relabel/` rename the rows of a framework along
+`σᵢ = shiftPerm i` one transposition of consecutive vertices of the chain at a time. A step
+`(v, a, c)` exchanges a vertex `a` of degree two with `v`, where `c` is the other neighbour of `a`
+(`BodyHingeFramework.wstep`, iterated by `BodyHingeFramework.wstep_foldr_mem_span_rigidityRows` and
+`BodyHingeFramework.wstep_foldl_mem_span_rigidityRows`, `CaseIII/Relabel/Basic.lean`). This section
+lists the steps in two orders, gives the facts about the chain that each step needs, and shows that
+the transpositions multiply to `shiftPerm i`. -/
 
-/-- The moved-body list `[(v₂, v₁, v₀), (v₃, v₂, v₁), …, (vᵢ, v_{i−1}, v_{i−2})]` of the cycle
-`shiftPerm i` (length `i − 1`, one `(v, a, c)` triple per moved degree-2 body), for a top index
-`i : Fin (cd.d + 1)`. The `s`-th triple `(vtx (s+2), vtx (s+1), vtx s)` is the W9a step that moves
-the degree-2 body `vtx (s+1)` to `vtx (s+2)` past its surviving predecessor `vtx s`. -/
+/-- The steps `[(v₂, v₁, v₀), (v₃, v₂, v₁), …, (vᵢ, vᵢ₋₁, vᵢ₋₂)]` of `shiftPerm i`, for
+`i : Fin (cd.d + 1)`: for `s < i − 1`, the step `(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)` moves `vₛ₊₁` to
+`vₛ₊₂`, past `vₛ`. A `List.foldr` over it applies the first step last. -/
 def shiftBodyList (cd : G.ChainData n) (i : Fin (cd.d + 1)) : List (α × α × α) :=
   List.ofFn fun s : Fin ((i : ℕ) - 1) =>
     (cd.vtx ⟨(s : ℕ) + 2, by omega⟩, cd.vtx ⟨(s : ℕ) + 1, by omega⟩, cd.vtx ⟨(s : ℕ), by omega⟩)
@@ -2131,20 +1815,15 @@ lemma getElem_shiftBodyList (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
         cd.vtx ⟨s, by simp only [length_shiftBodyList] at hs; omega⟩) := by
   simp only [shiftBodyList, List.getElem_ofFn]
 
-/-- The head body of the moved-body list, available once the cycle is nondegenerate (`2 ≤ i`, so
-the list is nonempty): `[0] = (vtx 2, vtx 1, vtx 0)`, the degree-2 body `vtx 1` of the leading
-transposition `(vtx 1 vtx 2)` (`shiftPerm_eq_swap_mul`). -/
+/-- For `2 ≤ i`, the first step of `shiftBodyList i` is `(vtx 2, vtx 1, vtx 0)`. -/
 lemma getElem_shiftBodyList_zero (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ))
     (h0 : 0 < (cd.shiftBodyList i).length) :
     (cd.shiftBodyList i)[0] =
       (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨1, by omega⟩, cd.vtx ⟨0, by omega⟩) := by
   rw [cd.getElem_shiftBodyList i 0 h0]
 
-/-- The moved-body list head-peels into `(vtx 2, vtx 1, vtx 0) :: (the tail body list)`, where the
-tail `[(vtx 3, vtx 2, vtx 1), …]` is the `s ↦ (vtx (s+3), vtx (s+2), vtx (s+1))` `List.ofFn` — the
-`cons` form mirroring `shiftCycle_eq_cons`, available once the cycle is nondegenerate (`2 ≤ i`).
-The tail is itself the moved-body list of the index-shifted chain (each triple shifted up by one),
-the recursion the cycle-W9a `List.foldr` over `shiftBodyList` follows. -/
+/-- For `2 ≤ i`, `shiftBodyList i` is `(vtx 2, vtx 1, vtx 0)` followed by the steps
+`(vtx (s + 3), vtx (s + 2), vtx (s + 1))`. -/
 lemma shiftBodyList_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ)) :
     cd.shiftBodyList i
       = (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨1, by omega⟩, cd.vtx ⟨0, by omega⟩)
@@ -2157,25 +1836,14 @@ lemma shiftBodyList_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 �
   | 0 => simp
   | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
 
-/-! ### The ascending (base→candidate) moved-body list `shiftBodyListAsc` (CHAIN-2c-ii-arm)
+/-! ### The steps of `shiftPerm` in ascending order
 
-The corrected-Fix-A relabel arm transports row memberships **base→candidate** with the seed
-*advancing* one swap per step (`notes/Phase23-design.md` §(o‴)(H.10)), the opposite orientation of
-the (now orphaned-for-the-arm) candidate→base `shiftBodyList` fold. The single-step W9a transport
-`BodyHingeFramework.wstep v a c` is read in the `(v, a, c)` shape the de-risk gate
-`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` fixes: at chain step `s` the swap is
-`(a v) = (vtx (s+2) vtx (s+1))`, the surviving chain-successor is `c = vtx (s+3)`, so the step's
-body triple is `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))`. This is that ascending body list,
-the forward analogue of `shiftBodyList`'s `(vtx (s+2), vtx (s+1), vtx s)`, with the chain running
-source-at-bottom `F 0 = G − v₁` up to target-at-top `F (i−1) = G − vᵢ` (the seed-advancing `foldl`
-core `wstep_foldl_mem_span_rigidityRows`). Graph-free over the chain vertices (pure `vtx` indexing),
-mirroring `shiftBodyList`. -/
+The same transpositions, as the steps `(v, a, c) = (vₛ₊₁, vₛ₊₂, vₛ₊₃)` for `s < i − 1`: each moves
+`vₛ₊₂` to `vₛ₊₁`, past `vₛ₊₃`. A `List.foldl` over them
+(`BodyHingeFramework.wstep_foldl_mem_span_rigidityRows`) renames from `G − v₁` up to `G − vᵢ`. -/
 
-/-- The ascending (base→candidate) moved-body list `[(v₁, v₂, v₃), (v₂, v₃, v₄), …, (v_{i−1}, vᵢ,
-v_{i+1})]` of the corrected-Fix-A relabel arm (length `i − 1`, one `(v, a, c)` triple per cycle
-step, the seed-advancing `foldl` order). The `s`-th triple `(vtx (s+1), vtx (s+2), vtx (s+3))` is
-the de-risk gate's W9a step that moves the degree-2 body `vtx (s+2)` into the freed slot `vtx (s+1)`
-past its surviving chain-successor `vtx (s+3)`. -/
+/-- The steps `[(v₁, v₂, v₃), (v₂, v₃, v₄), …, (vᵢ₋₁, vᵢ, vᵢ₊₁)]`, for `i : Fin cd.d`: for
+`s < i − 1`, the step `(vₛ₊₁, vₛ₊₂, vₛ₊₃)` moves `vₛ₊₂` to `vₛ₊₁`, past `vₛ₊₃`. -/
 def shiftBodyListAsc (cd : G.ChainData n) (i : Fin cd.d) : List (α × α × α) :=
   List.ofFn fun s : Fin ((i : ℕ) - 1) =>
     (cd.vtx ⟨(s : ℕ) + 1, by have := i.2; omega⟩, cd.vtx ⟨(s : ℕ) + 2, by have := i.2; omega⟩,
@@ -2192,40 +1860,27 @@ lemma getElem_shiftBodyListAsc (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ)
         cd.vtx ⟨s + 3, by have := i.2; simp only [length_shiftBodyListAsc] at hs; omega⟩) := by
   simp only [shiftBodyListAsc, List.getElem_ofFn]
 
-/-! ### Per-moved-body chain geometry (CHAIN-2c-ii-transport-W9a chain `hstep` conjuncts)
+/-! ### The chain at a step
 
-The cycle-W9a `List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over the moved-body
-list `shiftBodyList i = [(v₂,v₁,v₀), (v₃,v₂,v₁), …]` (`(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)` at step `s`,
-moving the degree-2 body `a = vₛ₊₁` to `vₛ₊₂` past its surviving chain-predecessor `c = vₛ`). Its
-per-step `hstep` hypothesis demands, for each step `s` (`s + 1 < i`, so the body `vₛ₊₁` is an
-interior chain vertex `1 ≤ s+1 ≤ i−1`), the combinatorial geometry of that body in `G`: its two
-chain edges (`edge s` to `vₛ`, `edge (s+1)` to `vₛ₊₂`), the degree-2 closure at it, and the
-distinctness of the three triple vertices. These accessors expose that geometry off the `ChainData`
-fields (`link`, `deg_two`, `vtx_inj`) in the `(v, a, c)` shape, so the chain `F`'s `hstep` reads
-them directly (the per-step framework-specific facts — the successor edge `edge (s+1)` *cut* in
-`F (s+1)`, leaving `edge s` the lone surviving link at the body — follow once `F (s+1)` is pinned,
-this being their `G`-level substrate). The body index `s+1` is interior (`⟨s+1,_⟩ : Fin cd.d`, since
-`s + 1 ≤ i − 1 < d`), so `deg_two`/`link` apply at it. -/
+For a step `s` with `s + 1 < i ≤ d`, the moved vertex `vₛ₊₁` is an interior vertex of the chain.
+These lemmas give its two edges `edge (s + 1)` (to `vₛ₊₂`) and `edge s` (to `vₛ`), its degree two,
+and the distinctness of `vₛ`, `vₛ₊₁` and `vₛ₊₂`, as the steps of the descending fold ask them. -/
 
-/-- The successor chain edge `edge (s+1)` at the moved-body `vₛ₊₁` (step `s`, `s + 1 < i`): the
-`G`-link out of the body to its post-swap position `v = vₛ₊₂` (the link the chain step cuts). -/
+/-- `edge (s + 1)` joins `vₛ₊₁` and `vₛ₊₂`, for `s + 1 < i ≤ d`. -/
 lemma shiftBody_isLink_succ_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
     (hi : i < cd.d + 1) :
     G.IsLink (cd.edge ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) := by
   have h := cd.isLink_edge ⟨s + 1, by omega⟩
   simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
 
-/-- The predecessor chain edge `edge s` at the moved-body `vₛ₊₁` (step `s`, `s + 1 < i`): the
-`G`-link out of the body to its surviving chain-predecessor `c = vₛ` (the `e_c` of the W9a step). -/
+/-- `edge s` joins `vₛ₊₁` and `vₛ`, for `s + 1 < i ≤ d`. -/
 lemma shiftBody_isLink_pred_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
     (hi : i < cd.d + 1) :
     G.IsLink (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) := by
   have h := cd.isLink_edge ⟨s, by omega⟩
   simpa only [Fin.castSucc_mk, Fin.succ_mk] using h.symm
 
-/-- The **degree-2 closure at the moved-body** `vₛ₊₁` (step `s`, `s + 1 < i`): every `G`-edge
-incident to the body is its successor chain edge `edge (s+1)` or its predecessor chain edge
-`edge s` (the `deg_two` field at the interior index `⟨s+1,_⟩`). -/
+/-- For `s + 1 < i ≤ d`, every edge of `G` at `vₛ₊₁` is `edge (s + 1)` or `edge s` (`deg_two`). -/
 lemma shiftBody_deg_two (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
     ∀ e x, G.IsLink e (cd.vtx ⟨s + 1, by omega⟩) x →
       e = cd.edge ⟨s + 1, by omega⟩ ∨ e = cd.edge ⟨s, by omega⟩ := by
@@ -2234,61 +1889,36 @@ lemma shiftBody_deg_two (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : 
     (by simpa only [Fin.castSucc_mk] using hlink)
   simpa only [show ((⟨s + 1, by omega⟩ : Fin cd.d) : ℕ) - 1 = s from rfl] using hd.symm
 
-/-- The moved-body `a = vₛ₊₁` and its surviving predecessor `c = vₛ` are distinct (`vtx_ne`). -/
+/-- `vₛ ≠ vₛ₊₁` (`vtx_ne`). -/
 lemma shiftBody_pred_ne (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
     cd.vtx ⟨s, by omega⟩ ≠ cd.vtx ⟨s + 1, by omega⟩ :=
   cd.vtx_ne (by omega) (by omega) (by omega)
 
-/-- The post-swap position `v = vₛ₊₂` and the surviving predecessor `c = vₛ` are distinct
-(`vtx_ne`). -/
+/-- `vₛ ≠ vₛ₊₂` (`vtx_ne`). -/
 lemma shiftBody_pred_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
     (hi : i < cd.d + 1) :
     cd.vtx ⟨s, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
   cd.vtx_ne (by omega) (by omega) (by omega)
 
-/-- The moved-body `a = vₛ₊₁` and its post-swap position `v = vₛ₊₂` are distinct (`vtx_ne`). -/
+/-- `vₛ₊₁ ≠ vₛ₊₂` (`vtx_ne`). -/
 lemma shiftBody_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
     cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
   cd.vtx_ne (by omega) (by omega) (by omega)
 
-/-! ### The partially-shifted intermediate-graph chain (CHAIN-2c-ii-transport-W9a, graph layer)
+/-! ### The graphs `G − vₛ₊₁` of the steps
 
-The cycle-W9a `List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over a chain of
-*intermediate frameworks* `F : ℕ → BodyHingeFramework` (one body moved per step), each `F s` an
-`ofNormals` framework over an intermediate *graph* `shiftBodyGraph s`. Mirroring the d=3 `M₃` arm's
-single-step W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, whose endpoints `Fv`/`Fva` are
-the `ofNormals (G − v)` / `ofNormals (G − a)` removeVertex frameworks), the chain endpoints are the
-removeVertex frameworks `F (i−1) = ofNormals (G − vᵢ)`, `F 0 = ofNormals (G − v₁)` — **not** the
-candidate-`i` / `v₁`-base splits (those enter only at the arm closer
-`chainData_relabel_arm`, via the W6b/W9b/seed composition, as in d=3 `M₃`). This block builds that
-graph chain and its per-step `G`-level geometry, the substrate the framework chain
-`F = ofNormals ∘ shiftBodyGraph` sits on.
+The descending fold renames rows through frameworks on the graphs `shiftBodyGraph s = G − vₛ₊₁`,
+from `G − vᵢ` down to `G − v₁`. The step `s`, `(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)`, goes from
+`G − vₛ₊₂ = G − v` to `G − vₛ₊₁ = G − a`. In `G − v` the vertex `a` keeps only its edge `edge s`
+to `c`, as `edge (s + 1)` goes to `v`, and every edge of `G − v` that does not meet `a` is an edge
+of `G − a`. The frameworks on these graphs are built in `CaseIII/Relabel/Basic.lean` and
+`CaseIII/Relabel/Chain.lean`. -/
 
-The intermediate graph at chain step `s` is `shiftBodyGraph s := G − vₛ₊₁` — the parent `G` with the
-chain vertex `vtx (s+1)` deleted. The step `s` of the cycle-W9a fold moves the degree-2 body
-`a = vₛ₊₁` to its post-swap position `v = vₛ₊₂` past its surviving chain-predecessor `c = vₛ`
-(`shiftBodyList`'s `s`-th triple `(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)`); the W9a step is the framework drop
-`F (s+1) → F s`, i.e. the graph drop `(G − vₛ₊₂) → (G − vₛ₊₁)`. This mirrors the d=3 `M₃` arm's
-single step `Fv/Fva = ofNormals (G − v)/(G − a)` (`case_III_arm_realization_M3`,
-`CaseIII/Relabel/Arm.lean`): `F (s+1) = G − v` keeps the body `a` at degree 2 (its successor edge
-`edge (s+1)` to `v` is cut by the removal), and `F s = G − a` is the smaller graph the off-`a` links
-transport into. These accessors are graph-free of the rigidity layer (pure
-`ChainData`/`removeVertex` reads); the framework chain `F` + its `hingeRowBlock`-agreement half (the
-`htrans` block of W9a) build on top in `CaseIII/Relabel/Basic.lean`. -/
-
-/-- The intermediate graph at chain step `s` of the cycle-W9a transport: `G` with the chain vertex
-`vtx (s+1)` deleted (`G − vₛ₊₁`). Indexed only by the chain-vertex validity `s + 1 < cd.d + 1` (it
-is a graph operation, decoupled from the cycle top index `i`).
-`shiftBodyGraph (s+1) → shiftBodyGraph s` is the framework drop the `s`-th cycle step performs
-(`F (s+1) → F s`), moving the degree-2 body `a = vₛ₊₁` (still present, at degree 2, in
-`shiftBodyGraph (s+1) = G − vₛ₊₂`) to `v = vₛ₊₂` and dropping into `G − vₛ₊₁`. -/
+/-- The graph `G − vₛ₊₁` of the step `s`, for `s + 1 ≤ d`. -/
 def shiftBodyGraph (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) : Graph α β :=
   G.removeVertex (cd.vtx ⟨s + 1, hs⟩)
 
-/-- The **surviving (predecessor) chain edge** at the moved body in
-`shiftBodyGraph (s+1) = G − vₛ₊₂`:
-the predecessor edge `edge s` links the body `a = vₛ₊₁` to its chain-predecessor `c = vₛ`, and both
-endpoints survive removing `v = vₛ₊₂` (the `e_c`-link of the W9a step `F (s+1) → F s`). -/
+/-- `edge s` joins `vₛ₊₁` and `vₛ` in `G − vₛ₊₂`, for `s + 1 < i ≤ d`. -/
 lemma shiftBodyGraph_isLink_pred_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
     (hi : i < cd.d + 1) :
     (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink (cd.edge ⟨s, by omega⟩)
@@ -2297,10 +1927,8 @@ lemma shiftBodyGraph_isLink_pred_edge (cd : G.ChainData n) {i s : ℕ} (hs : s +
   exact ⟨cd.shiftBody_isLink_pred_edge hs hi,
     cd.vtx_ne (by omega) (by omega) (by omega), cd.vtx_ne (by omega) (by omega) (by omega)⟩
 
-/-- The **degree-2 closure at the moved body** in `shiftBodyGraph (s+1) = G − vₛ₊₂`: the only
-`shiftBodyGraph (s+1)`-link out of the body `a = vₛ₊₁` is the surviving predecessor edge `edge s`
-(its successor edge `edge (s+1)` to `vₛ₊₂` is cut by the removal). The `hdeg2` half of the W9a step.
--/
+/-- **`vₛ₊₁` has the one edge `edge s` in `G − vₛ₊₂`**, for `s + 1 < i ≤ d`: every link of
+`G − vₛ₊₂` at `vₛ₊₁` is `edge s`, as `edge (s + 1)` has the end `vₛ₊₂`. -/
 lemma shiftBodyGraph_deg_two (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
     ∀ f x, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f
         (cd.vtx ⟨s + 1, by omega⟩) x →
@@ -2313,16 +1941,14 @@ lemma shiftBodyGraph_deg_two (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (
     exact absurd ((cd.shiftBody_isLink_succ_edge hs hi).right_unique hGlink).symm hxv
   · rfl
 
-/-- The mirror of `shiftBodyGraph_deg_two` for links with the moved body on the *right*. -/
+/-- `shiftBodyGraph_deg_two`, with `vₛ₊₁` as the second end of the link. -/
 lemma shiftBodyGraph_deg_two_right (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
     (hi : i < cd.d + 1) :
     ∀ f x, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x
         (cd.vtx ⟨s + 1, by omega⟩) → f = cd.edge ⟨s, by omega⟩ :=
   fun f x hlink => cd.shiftBodyGraph_deg_two hs hi f x hlink.symm
 
-/-- **Off the post-swap position** in `shiftBodyGraph (s+1) = G − vₛ₊₂`: every link of the
-intermediate graph avoids `v = vₛ₊₂` at both endpoints (immediate from `removeVertex`). The `hnov`
-half of the W9a step. -/
+/-- The links of `G − vₛ₊₂` have no end `vₛ₊₂`, for `s + 1 < i ≤ d`. -/
 lemma shiftBodyGraph_off_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
     ∀ f x y, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x y →
       x ≠ cd.vtx ⟨s + 2, by omega⟩ ∧ y ≠ cd.vtx ⟨s + 2, by omega⟩ := by
@@ -2330,15 +1956,8 @@ lemma shiftBodyGraph_off_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) 
   rw [shiftBodyGraph, removeVertex_isLink] at hlink
   exact ⟨hlink.2.1, hlink.2.2⟩
 
-/-- **The per-step link correspondence** of the cycle-W9a chain (the graph layer of the W9a step's
-`htrans`): a link of `shiftBodyGraph (s+1) = G − vₛ₊₂` *off the moved body* `a = vₛ₊₁` is a link of
-`shiftBodyGraph s = G − vₛ₊₁`. (A link of `G − vₛ₊₂` is a `G`-link avoiding `vₛ₊₂`; with both
-endpoints `≠ vₛ₊₁` it then survives removing `vₛ₊₁`.) This is the un-relabelled inclusion the fold
-core `wstep_foldr_mem_span_rigidityRows`'s `hstep` consumes between consecutive intermediate
-graphs — the cycle generalization of the d=3 `M₃` arm's `Fv/Fva` agreement off `{a, v}`
-(`case_III_arm_realization_M3`'s `htrans`). The framework-level `hingeRowBlock` agreement (the
-second conjunct of W9a's `htrans`) builds on this once the framework chain
-`F = ofNormals ∘ shiftBodyGraph` is pinned. -/
+/-- **A link of `G − vₛ₊₂` that does not meet `vₛ₊₁` is a link of `G − vₛ₊₁`**, for
+`s + 1 < i ≤ d`: it is a link of `G` with ends other than `vₛ₊₁`. -/
 lemma shiftBodyGraph_isLink_of_off_body (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
     (hi : i < cd.d + 1) :
     ∀ f x y, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x y →
@@ -2349,19 +1968,11 @@ lemma shiftBodyGraph_isLink_of_off_body (cd : G.ChainData n) {i s : ℕ} (hs : s
   rw [shiftBodyGraph, removeVertex_isLink]
   exact ⟨hlink.1, hxa, hya⟩
 
-/-- **`shiftPerm` is the product of the moved-body swaps** (the permutation-level identification of
-the cycle-W9a `List.foldr` with the named index-shift relabel, CHAIN-2c-ii-transport-W9a route B,
-`notes/Phase23-design.md` §(o″)). The index-shift cycle `shiftPerm i` factors as the left-to-right
-product `Equiv.swap v₁ v₂ * Equiv.swap v₂ v₃ * ⋯ * Equiv.swap v_{i−1} vᵢ` of the per-moved-body
-transpositions read off the moved-body list `shiftBodyList i`: the `s`-th body triple
-`(v, a, c) = (vtx (s+2), vtx (s+1), vtx s)` contributes the swap `Equiv.swap a v = Equiv.swap
-(vtx (s+1)) (vtx (s+2))`, the swap the single-step W9a transport `BodyHingeFramework.wstep v a c`
-applies on the `funLeft` side. This is exactly the relabel composite the cycle-W9a fold
-`wstep_foldr_mem_span_rigidityRows` builds (head body applied last, leftmost factor), so it is the
-bridge identifying that fold's relabel with `funLeft (shiftPerm i)`. The cycle is the iterated
-adjacent transposition `List.formPerm_eq_prod_zipWith_swap_tail` of the cycle
-`shiftCycle i = [vtx 1, …, vtx i]`, whose adjacent pairs `(vtx (s+1), vtx (s+2))` match the
-`shiftBodyList` swaps element-for-element. -/
+/-- **`shiftPerm i` is the product of the transpositions of its steps**:
+`shiftPerm i = swap v₁ v₂ * swap v₂ v₃ * ⋯ * swap vᵢ₋₁ vᵢ`, the transposition `swap a v` of each
+step `(v, a, c)` of `shiftBodyList i` in order. It is `List.formPerm_eq_prod_zipWith_swap_tail`
+for `shiftCycle i`, whose consecutive pairs are those of the steps. So the composite of the
+renamings of the descending fold is the renaming along `shiftPerm i`. -/
 lemma shiftPerm_eq_prod_map_swap_shiftBodyList [DecidableEq α] (cd : G.ChainData n)
     (i : Fin (cd.d + 1)) :
     cd.shiftPerm i
@@ -2372,21 +1983,10 @@ lemma shiftPerm_eq_prod_map_swap_shiftBodyList [DecidableEq α] (cd : G.ChainDat
   simp only [List.getElem_zipWith, List.getElem_map, getElem_shiftBodyList,
     List.getElem_tail, getElem_shiftCycle]
 
-/-- **`shiftPerm` is the product of the *ascending* moved-body swaps** (the ascending companion of
-`shiftPerm_eq_prod_map_swap_shiftBodyList`, the permutation-level G1 bridge of the seed-advancing
-relabel arm, CHAIN-2c-ii-arm route B, `notes/Phase23-design.md` §(o‴)(H.10)). The index-shift cycle
-`shiftPerm i.castSucc` (for the candidate index `i : Fin cd.d`) factors as the product of the
-per-moved-body transpositions read off the *ascending* moved-body list `shiftBodyListAsc i`: the
-`s`-th body triple `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))` contributes the swap
-`Equiv.swap a v = Equiv.swap (vtx (s+2)) (vtx (s+1))`, the swap the single-step W9a transport
-`BodyHingeFramework.wstep v a c` applies on the `funLeft` side in the seed-advancing `foldl` fold.
-
-The ascending list `shiftBodyListAsc i` and the descending list `shiftBodyList i.castSucc` carry the
-**same per-body swap** at every index (`shiftBodyListAsc`'s `s`-th swap is `swap (vtx (s+2)) (vtx
-(s+1))`, `shiftBodyList`'s is `swap (vtx (s+1)) (vtx (s+2))` — equal by `Equiv.swap_comm`), and have
-the same length `(i : ℕ) − 1`, so the two swap-product lists coincide element-for-element. The lemma
-therefore reduces to the landed descending bridge `shiftPerm_eq_prod_map_swap_shiftBodyList` at
-`i.castSucc`. -/
+/-- **`shiftPerm i` is the product of the transpositions of its ascending steps**: for
+`i : Fin cd.d`, `shiftPerm i` is the product of the transpositions `swap a v` of the steps
+`(v, a, c)` of `shiftBodyListAsc i` in order. They are those of `shiftBodyList i`, with the two
+vertices exchanged (`Equiv.swap_comm`), so this is `shiftPerm_eq_prod_map_swap_shiftBodyList`. -/
 lemma shiftPerm_eq_prod_map_swap_shiftBodyListAsc [DecidableEq α] (cd : G.ChainData n)
     (i : Fin cd.d) :
     cd.shiftPerm i.castSucc
@@ -2398,45 +1998,29 @@ lemma shiftPerm_eq_prod_map_swap_shiftBodyListAsc [DecidableEq α] (cd : G.Chain
   simp only [List.getElem_map, getElem_shiftBodyList, getElem_shiftBodyListAsc]
   exact Equiv.swap_comm _ _
 
-/-! ### The index-shift edge permutation `shiftEdgePerm` (the edge side of KT eq. 6.54)
+/-! ### The permutation `shiftEdgePerm` of the labels (KT eq. (6.54) on edges)
 
-The vertex cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) carries the candidate-`i` interior split
-`G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀` to the `v₁`-base split `G.splitOff v₁ v₂ v₀ e₀`. The accompanying
-*edge* relabel `σ = shiftEdgePerm i` is the bijection on `β` that puts the two splits' links in
-correspondence: it cycles the chain edges and the short-circuit label along the same cycle. Reading
-the candidate split's links into the base split's, it must send
-* the base-edge `edge 0` (= `v₀v₁`, surviving in the candidate split) to the fresh `e₀`
-  (the base split's short-circuit edge, joining `v₂` and `v₀`, since `shiftPerm` sends `v₁ ↦ v₂`);
-* the fresh `e₀` (the candidate split's short-circuit edge, joining `vᵢ₊₁` and `vᵢ₋₁`) to the
-  top chain edge `edge i` (= `vᵢvᵢ₊₁`, surviving in the base split, since `shiftPerm` sends
-  `vᵢ₋₁ ↦ vᵢ`);
-* each interior chain edge `edge j` (= `vⱼvⱼ₊₁`, `1 ≤ j ≤ i−2`) to its successor `edge (j+1)`
-  (since `shiftPerm` sends `vⱼ ↦ vⱼ₊₁`, `vⱼ₊₁ ↦ vⱼ₊₂`);
-* every other label to itself (in particular the two edges `edge (i−1)`, `edge i` incident to the
-  deleted vertex `vᵢ` complete the cycle but never appear as candidate-split links).
-
-Built as `List.formPerm` on the edge cycle `[edge 0, e₀, edge i, edge 1, …, edge (i−1)]`, mirroring
-`shiftPerm`/`shiftCycle` on the vertex side. The brick is graph-free (pure `Equiv.Perm`/`List`
-arithmetic over the `edge`/`e₀` data); it is consumed by the `shiftPerm`-relabel `splitOff_isLink`
-brick (the `hiso` supplier of the CHAIN-2c interior-candidate relabel arm). The d=3 `M₃` arm is the
-degenerate `i = 2` instance, where the cycle is the transposition piece of the bespoke
-`Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`. -/
+For `2 ≤ i ≤ d − 1`, `shiftPerm i` maps `Gᵢ = G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀` onto
+`G₁ = G.splitOff v₁ v₂ v₀ e₀`, and `shiftEdgePerm i` is the permutation of the labels that goes
+with it, extending KT's `ρᵢ` on edges. It maps the edge `edge 0` (`v₀v₁`) of `Gᵢ` to the new edge
+`e₀` (`v₀v₂`) of `G₁`, the new edge `e₀` (`vᵢ₋₁vᵢ₊₁`) of `Gᵢ` to `edge i` (`vᵢvᵢ₊₁`), and
+`edge j` to `edge (j + 1)` for `1 ≤ j ≤ i − 2`. It is `List.formPerm` of
+`shiftEdgeCycle i = [edge 0, e₀, edge i, edge 1, …, edge (i − 1)]`, so it also maps `edge i` to
+`edge 1` and `edge (i − 1)` to `edge 0`, the two edges at `vᵢ`, which are not edges of `Gᵢ`; it
+fixes every other label. -/
 
 -- The edge-relabel layer is on the *edge* type only; the vertex-side `DecidableEq α` from the
 -- `shiftPerm` section above is out of scope here. `DecidableEq β` is introduced just before
 -- `shiftEdgePerm` (only `List.formPerm` needs it; the cycle list + its `Nodup` do not).
 
-/-- The edges of the index-shift cycle `[edge 0, e₀, edge i, edge 1, …, edge (i−1)]` (the support of
-`shiftEdgePerm i`), for an interior candidate index `i : Fin cd.d`. The head index `0` is in range
-because `Fin cd.d` is inhabited (`0 ≤ i < cd.d`); the tail indices satisfy `j + 1 ≤ i − 1 + 1 = i <
-cd.d`. -/
+/-- The list `[edge 0, e₀, edge i, edge 1, …, edge (i − 1)]`, the cycle of `shiftEdgePerm i`, for
+`i : Fin cd.d`. -/
 def shiftEdgeCycle (cd : G.ChainData n) (i : Fin cd.d) : List β :=
   cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ :: cd.e₀ :: cd.edge i ::
     List.ofFn fun j : Fin ((i : ℕ) - 1) =>
       cd.edge ⟨(j : ℕ) + 1, lt_of_le_of_lt (by have := j.isLt; omega) i.isLt⟩
 
-/-- Length of the edge cycle: `i + 2` (head `edge 0`, `e₀`, top `edge i`, then the `i − 1` interior
-edges `edge 1, …, edge (i−1)`); requires `0 < i` so the truncated count `i − 1` is exact. -/
+/-- For `0 < i`, `shiftEdgeCycle i` has `i + 2` entries. -/
 lemma length_shiftEdgeCycle (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
     (cd.shiftEdgeCycle i).length = (i : ℕ) + 2 := by
   simp only [shiftEdgeCycle, List.length_cons, List.length_ofFn]
@@ -2454,8 +2038,7 @@ lemma getElem_shiftEdgeCycle_two (cd : G.ChainData n) (i : Fin cd.d)
     (hl : 2 < (cd.shiftEdgeCycle i).length) :
     (cd.shiftEdgeCycle i)[2] = cd.edge i := rfl
 
-/-- The tail entries of the edge cycle: position `k + 3` holds the interior chain edge
-`edge (k + 1)`. -/
+/-- The entry `k + 3` of `shiftEdgeCycle i` is `edge (k + 1)`. -/
 lemma getElem_shiftEdgeCycle_tail (cd : G.ChainData n) (i : Fin cd.d) (k : ℕ)
     (hk : k + 3 < (cd.shiftEdgeCycle i).length) :
     (cd.shiftEdgeCycle i)[k + 3] = cd.edge ⟨k + 1, by
@@ -2463,13 +2046,12 @@ lemma getElem_shiftEdgeCycle_tail (cd : G.ChainData n) (i : Fin cd.d) (k : ℕ)
       have := i.isLt; omega⟩ := by
   simp only [shiftEdgeCycle, List.getElem_cons_succ, List.getElem_ofFn]
 
-/-- The short-circuit label `e₀` is distinct from every chain edge (it is fresh, the chain edges
-lie in `E(G)`). -/
+/-- The label `e₀` is none of the edges of the chain, as it is not an edge of `G`. -/
 lemma e₀_ne_edge (cd : G.ChainData n) (j : Fin cd.d) : cd.e₀ ≠ cd.edge j :=
   fun h => cd.e₀_fresh (h ▸ (cd.isLink_edge j).edge_mem)
 
-/-- The edge cycle has no repeated labels (the chain edges are distinct by `edge_inj`, and the fresh
-`e₀` lies off `E(G)`). -/
+/-- For `0 < i`, `shiftEdgeCycle i` has no repeated labels: the edges of the chain are distinct
+(`edge_inj`), and `e₀` is none of them (`e₀_ne_edge`). -/
 lemma nodup_shiftEdgeCycle (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
     (cd.shiftEdgeCycle i).Nodup := by
   rw [shiftEdgeCycle]
@@ -2496,21 +2078,18 @@ lemma nodup_shiftEdgeCycle (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : �
 
 variable [DecidableEq β]
 
-/-- The **index-shift edge permutation** `σ = shiftEdgePerm i` (the edge side of KT eq. 6.54): the
-cycle `edge 0 → e₀ → edge i → edge 1 → ⋯ → edge (i−1) → edge 0` on the chain edges and the
-short-circuit label. Built as `List.formPerm` on `shiftEdgeCycle i`. -/
+/-- **The permutation of the labels extending KT's `ρᵢ`** (KT eq. (6.54), p. 694): the cycle
+`edge 0 ↦ e₀ ↦ edge i ↦ edge 1 ↦ ⋯ ↦ edge (i − 1) ↦ edge 0`, fixing every other label;
+`List.formPerm` of `shiftEdgeCycle i`. -/
 def shiftEdgePerm (cd : G.ChainData n) (i : Fin cd.d) : Equiv.Perm β :=
   (cd.shiftEdgeCycle i).formPerm
 
-/-- `shiftEdgePerm i` fixes every label off the cycle
-`[edge 0, e₀, edge i, edge 1, …, edge (i−1)]`. -/
+/-- `shiftEdgePerm i` fixes every label not on `shiftEdgeCycle i`. -/
 lemma shiftEdgePerm_apply_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
     (he : e ∉ cd.shiftEdgeCycle i) : cd.shiftEdgePerm i e = e :=
   List.formPerm_apply_of_notMem he
 
-/-- `shiftEdgePerm i` fixes a label that is neither the fresh `e₀` nor one of the chain edges
-`edge 0, …, edge i` on the cycle (the off-support form of `shiftEdgePerm_apply_off`, stated against
-the edge data). -/
+/-- `shiftEdgePerm i` fixes a label that is neither `e₀` nor any of `edge 0, …, edge i`. -/
 lemma shiftEdgePerm_apply_edge_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
     (he₀ : e ≠ cd.e₀) (hedge : ∀ m : ℕ, m ≤ (i : ℕ) → ∀ h : m < cd.d, e ≠ cd.edge ⟨m, h⟩) :
     cd.shiftEdgePerm i e = e := by
@@ -2523,8 +2102,7 @@ lemma shiftEdgePerm_apply_edge_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
   · exact hedge (i : ℕ) le_rfl i.isLt h
   · exact hedge ((j : ℕ) + 1) (by omega) (by omega) h.symm
 
-/-- `shiftEdgePerm i` sends the base chain edge `edge 0` to the fresh short-circuit label `e₀`
-(the head step of the cycle). -/
+/-- For `0 < i`, `shiftEdgePerm i` maps `edge 0` to `e₀`. -/
 lemma shiftEdgePerm_apply_edge_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
     cd.shiftEdgePerm i (cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩) = cd.e₀ := by
   have hlen := cd.length_shiftEdgeCycle i hi
@@ -2533,8 +2111,7 @@ lemma shiftEdgePerm_apply_edge_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 
     List.formPerm_apply_lt_getElem _ (cd.nodup_shiftEdgeCycle i hi) 0 h1,
     cd.getElem_shiftEdgeCycle_one i (by rw [hlen]; omega)]
 
-/-- `shiftEdgePerm i` sends the fresh short-circuit label `e₀` to the top chain edge `edge i`
-(the second step of the cycle). -/
+/-- For `0 < i`, `shiftEdgePerm i` maps `e₀` to `edge i`. -/
 lemma shiftEdgePerm_apply_e₀ (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
     cd.shiftEdgePerm i cd.e₀ = cd.edge i := by
   have hlen := cd.length_shiftEdgeCycle i hi
@@ -2543,8 +2120,8 @@ lemma shiftEdgePerm_apply_e₀ (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i 
     List.formPerm_apply_lt_getElem _ (cd.nodup_shiftEdgeCycle i hi) 1 h1,
     cd.getElem_shiftEdgeCycle_two i (by rw [hlen]; omega)]
 
-/-- `shiftEdgePerm i` sends an interior chain edge `edge j` (`1 ≤ j ≤ i − 2`) to its successor
-`edge (j + 1)` (KT eq. 6.54, the edge side of the interior shift `vⱼ ↦ vⱼ₊₁`). -/
+/-- `shiftEdgePerm i` maps `edge j` to `edge (j + 1)` for `1 ≤ j ≤ i − 2`, as `ρᵢ` maps `vⱼ` to
+`vⱼ₊₁` and `vⱼ₊₁` to `vⱼ₊₂` (KT eq. (6.54)). -/
 lemma shiftEdgePerm_apply_edge_interior (cd : G.ChainData n) (i : Fin cd.d) {j : ℕ}
     (hj1 : 1 ≤ j) (hji : j + 1 < (i : ℕ)) :
     cd.shiftEdgePerm i (cd.edge ⟨j, by have := i.isLt; omega⟩)
@@ -2565,10 +2142,7 @@ lemma shiftEdgePerm_apply_edge_interior (cd : G.ChainData n) (i : Fin cd.d) {j :
   rw [shiftEdgePerm, ← hget, hstep, hget']
   congr 1; simp only [Fin.mk.injEq]; omega
 
-/-- `shiftEdgePerm i` sends the top chain edge `edge i` to the head chain edge `edge 1` (the
-closure-into-tail step of the cycle `… → edge i → edge 1 → …`). One of the two closure edges
-incident to the deleted top vertex `vtx i`; surfaced for the backward leg of the relabel brick
-(where a base-split survivor pulls back to a candidate-split link). -/
+/-- For `1 < i`, `shiftEdgePerm i` maps `edge i` to `edge 1`. -/
 lemma shiftEdgePerm_apply_edge_top (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
     cd.shiftEdgePerm i (cd.edge i) = cd.edge ⟨1, by have := i.isLt; omega⟩ := by
   have hi0 : 0 < (i : ℕ) := by omega
@@ -2580,9 +2154,7 @@ lemma shiftEdgePerm_apply_edge_top (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 <
   rw [shiftEdgePerm, ← cd.getElem_shiftEdgeCycle_two i (by rw [hlen]; omega),
     List.formPerm_apply_lt_getElem _ (cd.nodup_shiftEdgeCycle i hi0) 2 h2, hget']
 
-/-- `shiftEdgePerm i` sends the predecessor closure edge `edge (i−1)` back to the base chain edge
-`edge 0` (the cyclic-wrap step `edge (i−1) → edge 0`). The other closure edge incident to the
-deleted top vertex `vtx i`; surfaced for the backward leg of the relabel brick. -/
+/-- For `1 < i`, `shiftEdgePerm i` maps `edge (i − 1)` to `edge 0`. -/
 lemma shiftEdgePerm_apply_edge_pred (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
     cd.shiftEdgePerm i (cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩)
       = cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ := by
@@ -2602,57 +2174,45 @@ lemma shiftEdgePerm_apply_edge_pred (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 
   simp only [hmod]
   exact cd.getElem_shiftEdgeCycle_zero i (by rw [hlen]; omega)
 
-/-! ### The inverse index-shift edge permutation `(shiftEdgePerm i)⁻¹` (CHAIN-2c-ii-inv, edge side)
+/-! ### The inverse of `shiftEdgePerm`
 
-The edge companions of the inverse vertex cycle (above): the relabel arm reads candidate-`i` split
-links back into the base split through `(shiftPerm i.castSucc, shiftEdgePerm i)⁻¹`, so it needs the
-inverse edge action alongside the inverse vertex action. These package `(shiftEdgePerm i)⁻¹` as the
-step-by-step inverses of the forward `shiftEdgePerm` action (KT eq. 6.54, edge side, read
-backwards): `e₀ ↦ edge 0`, `edge i ↦ e₀`, `edge (j+1) ↦ edge j` (interior),
-`edge 1 ↦ edge i` (the wrap into the top), and
-`edge 0 ↦ edge (i−1)` (the predecessor closure), plus the off-support fixers. Each is an
-`Equiv.Perm.inv_eq_iff_eq` rewrite of the matching forward lemma. -/
+The values of `(shiftEdgePerm i)⁻¹`, each from the matching value of `shiftEdgePerm i`
+(`Equiv.Perm.inv_eq_iff_eq`). -/
 
-/-- `(shiftEdgePerm i)⁻¹` fixes every label off the cycle (inverse of `shiftEdgePerm_apply_off`). -/
+/-- `(shiftEdgePerm i)⁻¹` fixes every label not on `shiftEdgeCycle i`. -/
 lemma shiftEdgePerm_inv_apply_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
     (he : e ∉ cd.shiftEdgeCycle i) : (cd.shiftEdgePerm i)⁻¹ e = e := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_off i he]
 
-/-- `(shiftEdgePerm i)⁻¹` fixes a label that is neither the fresh `e₀` nor a chain edge `edge 0, …,
-edge i` on the cycle (inverse of `shiftEdgePerm_apply_edge_off`, stated against the edge data). -/
+/-- `(shiftEdgePerm i)⁻¹` fixes a label that is neither `e₀` nor any of `edge 0, …, edge i`. -/
 lemma shiftEdgePerm_inv_apply_edge_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
     (he₀ : e ≠ cd.e₀) (hedge : ∀ m : ℕ, m ≤ (i : ℕ) → ∀ h : m < cd.d, e ≠ cd.edge ⟨m, h⟩) :
     (cd.shiftEdgePerm i)⁻¹ e = e := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_off i he₀ hedge]
 
-/-- `(shiftEdgePerm i)⁻¹` sends the fresh short-circuit label `e₀` back to the base chain edge
-`edge 0` (inverse of `shiftEdgePerm_apply_edge_zero`). -/
+/-- For `0 < i`, `(shiftEdgePerm i)⁻¹` maps `e₀` to `edge 0`. -/
 lemma shiftEdgePerm_inv_apply_e₀ (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
     (cd.shiftEdgePerm i)⁻¹ cd.e₀ = cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_zero i hi]
 
-/-- `(shiftEdgePerm i)⁻¹` sends the top chain edge `edge i` back to the fresh short-circuit label
-`e₀` (inverse of `shiftEdgePerm_apply_e₀`). -/
+/-- For `0 < i`, `(shiftEdgePerm i)⁻¹` maps `edge i` to `e₀`. -/
 lemma shiftEdgePerm_inv_apply_edge_top (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
     (cd.shiftEdgePerm i)⁻¹ (cd.edge i) = cd.e₀ := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_e₀ i hi]
 
-/-- `(shiftEdgePerm i)⁻¹` sends an interior chain edge `edge (j+1)` back to its predecessor `edge j`
-(`1 ≤ j ≤ i − 2`); inverse of `shiftEdgePerm_apply_edge_interior`. -/
+/-- `(shiftEdgePerm i)⁻¹` maps `edge (j + 1)` to `edge j` for `1 ≤ j ≤ i − 2`. -/
 lemma shiftEdgePerm_inv_apply_edge_interior (cd : G.ChainData n) (i : Fin cd.d) {j : ℕ}
     (hj1 : 1 ≤ j) (hji : j + 1 < (i : ℕ)) :
     (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨j + 1, by have := i.isLt; omega⟩)
       = cd.edge ⟨j, by have := i.isLt; omega⟩ := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_interior i hj1 hji]
 
-/-- `(shiftEdgePerm i)⁻¹` sends the head chain edge `edge 1` back to the top chain edge `edge i`
-(the wrap into the top; inverse of `shiftEdgePerm_apply_edge_top`). -/
+/-- For `1 < i`, `(shiftEdgePerm i)⁻¹` maps `edge 1` to `edge i`. -/
 lemma shiftEdgePerm_inv_apply_edge_one (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
     (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨1, by have := i.isLt; omega⟩) = cd.edge i := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_top i hi]
 
-/-- `(shiftEdgePerm i)⁻¹` sends the base chain edge `edge 0` back to the predecessor closure edge
-`edge (i−1)` (inverse of `shiftEdgePerm_apply_edge_pred`). -/
+/-- For `1 < i`, `(shiftEdgePerm i)⁻¹` maps `edge 0` to `edge (i − 1)`. -/
 lemma shiftEdgePerm_inv_apply_edge_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
     (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩)
       = cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ := by
@@ -2660,27 +2220,20 @@ lemma shiftEdgePerm_inv_apply_edge_zero (cd : G.ChainData n) (i : Fin cd.d) (hi 
 
 variable [DecidableEq α]
 
-/-! ### The `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick (CHAIN-2c-ii-graphiso)
+/-! ### `shiftPerm` and `shiftEdgePerm` map `Gᵢ` onto `G₁` (KT eq. (6.54))
 
-The general-`d` Case-III interior-candidate relabel arm (KT eq. 6.54) views the candidate-`i`
-interior split `Gᵢ = G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀` as the `v₁`-base split
-`G₁ = G.splitOff v₁ v₂ v₀ e₀` read through the index-shift isomorphism `(ρ, σ) = (shiftPerm i,
-shiftEdgePerm i)`. This brick is the graph-side intertwining the framework transport
-(`ofNormals_relabel_perm`, 2c-ii-β) consumes as its `hiso` hypothesis: a link of the candidate
-split corresponds, under `(ρ, σ)`, to a link of the base split. It is the d≥3 analogue of the
-d=3 single-transposition `splitOff_isLink_relabel`, with the cycle `v₁ → ⋯ → vᵢ → v₁` in place of
-the swap `a ↔ v`. Stated for an interior index `2 ≤ i ≤ d−1` (`1 < i`, so the cycle is
-nondegenerate; the `i = 1` instance is the base split itself, handled by the `M₀` arm). The
-`shiftPerm` is taken at `i.castSucc : Fin (cd.d + 1)` (lifting the candidate index `i : Fin cd.d`
-to a cycle top), matching `(i.castSucc : ℕ) = (i : ℕ)`. -/
+For `2 ≤ i ≤ d − 1`, with `Gᵢ = G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀` and `G₁ = G.splitOff v₁ v₂ v₀ e₀`, an
+edge `e` joins `x` and `y` in `Gᵢ` if and only if `shiftEdgePerm i e` joins `shiftPerm i x` and
+`shiftPerm i y` in `G₁`: KT's isomorphism `ρᵢ` from `Gᵢ` to `G₁` (KT eq. (6.54), p. 694). At
+`d = 3` and `i = 2`, `splitOff_isLink_relabel` is the same statement, with the transposition of `v`
+and `a` and two labels for the new edges. `shiftPerm` is taken at `i.castSucc`, the index
+`i : Fin cd.d` read as an index of the vertices. -/
 
-/-- **`shiftPerm`/`shiftEdgePerm`-relabel of a candidate-split link into the base split, forward
-direction** (CHAIN-2c-ii-graphiso, the survivor + fresh-edge ⇒ base-link half). A link of the
-candidate-`i` interior split, read through `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`,
-is a link of the `v₁`-base split. The proof expands `splitOff_isLink` on the candidate split,
-splits the survivor `e` by whether either endpoint lies on the index-shift cycle `[vtx 1, …, vtx i]`
-(forcing `e` to be a chain edge there, via the interior degree-2 closure) or both lie off it (so
-`ρ`/`σ` fix the data), and reads the resulting `G`-link into the base split. -/
+/-- **`ρᵢ` maps the links of `Gᵢ` to links of `G₁`** (`1 < i`): if `e` joins `x` and `y` in `Gᵢ`,
+then `shiftEdgePerm i e` joins `shiftPerm i x` and `shiftPerm i y` in `G₁`. The proof expands
+`splitOff_isLink` on `Gᵢ`. An edge of `G` with an end on `[v₁, …, vᵢ]` is an edge of the chain
+there (`deg_two`), whose image the values of `shiftEdgePerm` give; both permutations fix an edge
+with no such end and its ends. -/
 lemma splitOff_isLink_shiftRelabel_forward (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
     {e : β} {x y : α}
     (h : (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
@@ -2859,17 +2412,12 @@ lemma splitOff_isLink_shiftRelabel_forward (cd : G.ChainData n) (i : Fin cd.d) (
       exact Or.inl ⟨hedge_ne₀, hlink.symm, hvtx_ne1 (by omega) (by omega),
         hvtx_ne1 (by omega) (by omega)⟩
 
-/-- **`shiftPerm`/`shiftEdgePerm`-relabel of a base-split link into the candidate split, backward
-direction** (CHAIN-2c-ii-graphiso, the `mpr` half of the packaged iff). A link of the `v₁`-base
-split read at the transported data `(σ e, ρ x, ρ y)` comes from a link `e x y` of the candidate-`i`
-interior split. The proof expands `splitOff_isLink` on the base split; in the survivor branch it
-splits on whether either pre-image `x`/`y` lies on the index-shift cycle `[vtx 1, …, vtx i]` (so
-`ρ x` is an interior base vertex, forcing `σ e` to be a base chain edge there by the degree-2
-closure, whence `e` and `y` are read back through `σ⁻¹`/`ρ⁻¹` via the action lemmas — *including*
-the two closure values `σ (edge i) = edge 1`, `σ (edge (i−1)) = edge 0` on the wrap, which the
-forward leg did not need) or both lie off it (so `σ`/`ρ` fix the data and the edge survives the
-candidate split unchanged). The fresh base edge `e₀` pulls back to the candidate chain edge
-`edge 0`. -/
+/-- **The converse** (`1 < i`): if `shiftEdgePerm i e` joins `shiftPerm i x` and `shiftPerm i y`
+in `G₁`, then `e` joins `x` and `y` in `Gᵢ`. The proof expands `splitOff_isLink` on `G₁`. If `x`
+or `y` lies on `[v₁, …, vᵢ]`, its image is a vertex of the chain of degree two in `G`, so the
+image of `e` is an edge of the chain there (`deg_two`), and the values of `shiftPerm` and
+`shiftEdgePerm` give `e`, `x` and `y`; otherwise both permutations fix them. The new edge `e₀` of
+`G₁` comes from `edge 0`. -/
 lemma splitOff_isLink_shiftRelabel_backward (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
     {e : β} {x y : α}
     (h : (G.splitOff (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
@@ -3076,13 +2624,10 @@ lemma splitOff_isLink_shiftRelabel_backward (cd : G.ChainData n) (i : Fin cd.d) 
       exact Or.inl ⟨hedge_ne₀, hlink.symm, hvtx_nei (by omega) (by omega),
         hvtx_nei (by omega) (by omega)⟩
 
-/-- **`shiftPerm`/`shiftEdgePerm`-relabel of the candidate split as the `v₁`-base split** (the
-packaged `hiso`, CHAIN-2c-ii-graphiso). For an interior candidate index `2 ≤ i ≤ d−1` (`1 < i`,
-the nondegenerate cycle), the candidate-`i` interior split and the `v₁`-base split correspond
-link-for-link under the index-shift isomorphism `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`
-(KT eq. 6.54). This is the `hiso` hypothesis the framework transport `ofNormals_relabel_perm`
-(2c-ii-β) consumes; it bundles the forward (`splitOff_isLink_shiftRelabel_forward`) and backward
-(`splitOff_isLink_shiftRelabel_backward`) halves. -/
+/-- **`ρᵢ` is an isomorphism from `Gᵢ` to `G₁`** (KT eq. (6.54), p. 694): for `1 < i`, `e` joins
+`x` and `y` in `Gᵢ` if and only if `shiftEdgePerm i e` joins `shiftPerm i x` and `shiftPerm i y`
+in `G₁`, by `splitOff_isLink_shiftRelabel_forward` and `splitOff_isLink_shiftRelabel_backward`. It
+has the form of the hypothesis `hiso` of `PanelHingeFramework.ofNormals_relabel_perm`. -/
 lemma splitOff_isLink_shiftRelabel_iff (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
     {e : β} {x y : α} :
     (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
@@ -3095,25 +2640,18 @@ lemma splitOff_isLink_shiftRelabel_iff (cd : G.ChainData n) (i : Fin cd.d) (hi :
   ⟨cd.splitOff_isLink_shiftRelabel_forward i hi,
     cd.splitOff_isLink_shiftRelabel_backward i hi⟩
 
-/-! ### The interior-candidate relabel-image selector/seed (CHAIN-2c-iii, LEAF-1)
+/-! ### The endpoint selector and the normals of the `i`-th framework
 
-For an interior candidate index `i`, the general-`d` Case-III dispatch (CHAIN-2c-iii
-`chainData_dispatch`) realizes the candidate framework `(Gᵢ, qᵢ)` as the `v₁`-base framework
-`(G₁, q₁)` read through the index-shift isomorphism `(ρ, σ) = (shiftPerm i.castSucc,
-shiftEdgePerm i)` (Katoh–Tanigawa 2011 §6.4.2 eqs. 6.54–6.56). These two accessors package the
-relabelled `ends`/seed the dispatch feeds the corner-data ASSEMBLY producer
-`case_III_arm_corner_assembly`, in exactly the shape the per-member genuine-row transport
-`chainData_bottom_relabel` (`Relabel/Chain.lean`) lands its image rows in: the `ends` selector
-post-composes `(ρ.symm)` on each recorded endpoint and pre-composes the edge cycle `σ`, and the
-seed pre-composes `ρ` on the body coordinate. The dispatch then OVERRIDES the `ends` selector at
-the two re-inserted hinges `e_a`, `e_b` (the `Function.update` pattern of the d=3 dispatch). -/
+For `1 < i`, `PanelHingeFramework.chainData_bottom_relabel` (`lem:case-III-chain-relabel-rows`)
+renames the rows of a framework on `G − v₁` with an endpoint selector `ends₀` and normals `q` into
+rows of a framework on `G − vᵢ` with the selector `candidateEnds i ends₀` and the normals `q ∘ σᵢ`:
+`ends₀` and `q` read through KT's `ρᵢ` (KT eqs. (6.54) and (6.55), p. 694). -/
 
-/-- The **interior-candidate relabel-image `ends` selector** (`endsσρ`, CHAIN-2c-iii eq. 6.54): the
-base recorded-endpoint selector `ends₀` read through the index-shift isomorphism `(ρ, σ) =
-(shiftPerm i.castSucc, shiftEdgePerm i)` — `ends₀` pre-composed with the edge cycle `σ` and each
-endpoint post-composed with `ρ.symm`. This is exactly the target `ends` of
-`chainData_bottom_relabel` (`Relabel/Chain.lean`), so the dispatch's corner-data assembly inherits
-its image-row membership. -/
+/-- **The endpoint selector of the `i`-th framework**: `ends₀` renamed along `ρᵢ`, that is,
+`e ↦ (σᵢ⁻¹ u, σᵢ⁻¹ w)` where `(u, w) = ends₀ (shiftEdgePerm i e)` and `σᵢ = shiftPerm i`. It is
+the selector in the conclusion of `PanelHingeFramework.chainData_bottom_relabel`, and
+`candidateEnds_records_splitOff_isLink` shows that it gives the ends of the edges of `Gᵢ` when
+`ends₀` gives those of `G₁`. -/
 def candidateEnds (cd : G.ChainData n) (i : Fin cd.d) (ends₀ : β → α × α) : β → α × α :=
   fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
     (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)
@@ -3124,12 +2662,8 @@ def candidateEnds (cd : G.ChainData n) (i : Fin cd.d) (ends₀ : β → α × α
         (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2) :=
   rfl
 
-/-- The **interior-candidate relabel-image seed** (`qρ`, CHAIN-2c-iii eq. 6.54): the base seed `q`
-pre-composed with the index-shift permutation `ρ = shiftPerm i.castSucc` on the body coordinate
-(the homogeneous fibre coordinate is untouched). This is the target seed of
-`chainData_bottom_relabel` (`Relabel/Chain.lean`); the dispatch feeds it to
-`case_III_arm_corner_assembly`. Generic in the fibre type `γ` (the consumer instantiates
-`γ = Fin (k+2)`). -/
+/-- **The normals `q ∘ σᵢ` of the `i`-th framework**: `p ↦ q (σᵢ p.1, p.2)` for
+`q : α × γ → K`, where `σᵢ = shiftPerm i`. -/
 def candidateSeed {γ : Type*} {K : Type*} (cd : G.ChainData n) (i : Fin cd.d) (q : α × γ → K) :
     α × γ → K :=
   fun p => q (cd.shiftPerm i.castSucc p.1, p.2)
@@ -3139,48 +2673,32 @@ omit [DecidableEq β] in
     (q : α × γ → K) (p : α × γ) : cd.candidateSeed i q p = q (cd.shiftPerm i.castSucc p.1, p.2) :=
   rfl
 
-/-! ### The Case-III panel→vertex selector `candidateVtx` (CHAIN-2c-iii, LEAF-3)
+/-! ### The vertices `uᵢ` of the panels (KT eq. (6.67))
 
-The general-`d` Case-III dispatch (CHAIN-2c-iii `chainData_dispatch`) feeds the Claim-6.12 panel
-discriminator (`exists_chainData_discriminator_pick_of_LI`, via the RELAX product route's
-`exists_tupleLI_polynomial` panel-LI factor) the `d`-tuple of *candidate vertices* whose
-panels `Πᵢ` the discriminator tests (Katoh–Tanigawa 2011 §6.4.2, eq. 6.67): the `d` panels are
-`Π₀ = Π(v₀)` and `Πᵢ = Π(v_{i+1})` for `1 ≤ i ≤ d − 1`, so the panel index `i : Fin d` selects the
-chain vertex `v₀` (at `i = 0`) or `v_{i+1}` (at `i ≥ 1`). `candidateVtx` packages that selector and
-proves it injective (the `Function.Injective cand` hypothesis `exists_tupleLI_polynomial` needs to
-build that LI factor) — the `v₀,
-v₂, …, v_d` it hits are pairwise distinct chain vertices (the base body `v₁` is omitted; `vtx_inj`).
+The `d` panels of KT eq. (6.67) (p. 698) are those of `u₀ = v₀` and of `uᵢ = vᵢ₊₁` for
+`1 ≤ i ≤ d − 1` (`lem:case-III-chain-discriminator`). `candidateVtx` is `i ↦ uᵢ`, which is
+injective, as `v₁` is left out. `Graph.ChainData.candidatePanel` (`CaseIII/Realization.lean`)
+reindexes it by `Fin (k + 1)`, as `d = k + 1` (`Graph.ChainData.d_eq_kAdd`). -/
 
-This is the record-local (`k`-free) half of the discriminator-index plumbing; the dispatch composes
-it with the `cd.d = k + 1` bridge `Graph.ChainData.d_eq_kAdd` to obtain the `Fin (k + 1) → α`
-selector the discriminator pick consumes (the index transport across `d = k + 1`,
-`notes/Phase23-design.md` §I.8.24(4.11)). -/
-
-/-- The **Case-III panel→vertex selector** (CHAIN-2c-iii, eq. 6.67): the panel index `i : Fin cd.d`
-maps to the chain vertex whose panel `Πᵢ` the Claim-6.12 discriminator tests — `v₀` at `i = 0`
-(panel `Π₀ = Π(v₀)`), `v_{i+1}` at `i ≥ 1` (panel `Πᵢ = Π(v_{i+1})`). The omitted vertex is the
-base body `v₁ = vtx 1`. -/
+/-- **The vertex `uᵢ` of the `i`-th panel** (KT eq. (6.67)): `u₀ = vtx 0`, and `uᵢ = vtx (i + 1)`
+for `1 ≤ i ≤ d − 1`. -/
 def candidateVtx (cd : G.ChainData n) (i : Fin cd.d) : α :=
   cd.vtx (if (i : ℕ) = 0 then 0 else ⟨(i : ℕ) + 1, by omega⟩)
 
 omit [DecidableEq α] [DecidableEq β] in
-/-- The panel→vertex selector at the head panel `Π₀` is the chain base `v₀ = vtx 0`. -/
+/-- `u₀ = vtx 0`. -/
 @[simp] lemma candidateVtx_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : (i : ℕ) = 0) :
     cd.candidateVtx i = cd.vtx 0 := by rw [candidateVtx, ite_eq_left hi]
 
 omit [DecidableEq α] [DecidableEq β] in
-/-- The panel→vertex selector at an interior panel `Πᵢ` (`0 < i`) is the chain vertex `v_{i+1} =
-vtx ⟨i+1, _⟩` (i.e. `vtx i.succ` as a `Fin (cd.d + 1)` index). -/
+/-- For `0 < i`, `uᵢ = vtx (i + 1)`. -/
 @[simp] lemma candidateVtx_succ (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     cd.candidateVtx i = cd.vtx ⟨(i : ℕ) + 1, by omega⟩ := by
   rw [candidateVtx, ite_eq_right (by omega)]
 
 omit [DecidableEq α] [DecidableEq β] in
-/-- **The panel→vertex selector is injective** (CHAIN-2c-iii): the chain vertices `v₀, v₂, …, v_d`
-the `d` panels select are pairwise distinct (`vtx_inj`, the omitted base body `v₁` keeping the
-`i = 0 ↦ v₀` value clear of every `i ≥ 1 ↦ v_{i+1}`). This is the `Function.Injective cand`
-hypothesis `exists_tupleLI_polynomial` requires to build the panel-LI factor the discriminator pick
-consumes. -/
+/-- **The vertices `uᵢ` are distinct**: `v₀, v₂, …, v_d` are distinct vertices of the chain
+(`vtx_inj`). -/
 lemma candidateVtx_injective (cd : G.ChainData n) : Function.Injective cd.candidateVtx := by
   intro i i' he
   rw [candidateVtx, candidateVtx] at he
@@ -3189,66 +2707,52 @@ lemma candidateVtx_injective (cd : G.ChainData n) : Function.Injective cd.candid
     exact Fin.ext (by omega)
 
 omit [DecidableEq α] [DecidableEq β] in
-/-- **The interior panel↔chain-candidate match** (CHAIN-2c-iii, the LEAF-3 discriminator-routing
-identity; Katoh–Tanigawa 2011 §6.4.2 eq. 6.67). At an interior panel index `i` (`0 < i`) the
-selector's chosen vertex `candidateVtx i = v_{i+1}` is *the same vertex* as the interior-split arm's
-successor neighbour `vtx i.succ` (`= vtx ⟨i+1, _⟩` as a `Fin (cd.d + 1)` index, the
-`a := vtx i.succ` of `chainData_split_realization` / `case_III_arm_corner_assembly`). This is the
-combinatorial bridge the general-`d` dispatch (CHAIN-2c-iii `chainData_dispatch`) uses to route the
-Claim-6.12 panel discriminator's chosen panel `u` to the chain arm at the matched candidate `i`: the
-discriminator's gate at `candidateVtx i` becomes the arm's gate at `vtx i.succ` by this `rfl`-level
-`Fin` identity.
-The omitted base body `v₁ = vtx 1` is the `i = 0 ↦ v₀ = vtx 0` case (`candidateVtx_zero`), routed to
-the d=3-floor / base engine instead. (Not `@[simp]`: `candidateVtx_succ` already carries the simp
-normal form `vtx ⟨i+1, _⟩` for `candidateVtx i`; this is the `vtx i.succ`-shaped alias the arm
-re-index consumes by name.) -/
+/-- For `0 < i`, `uᵢ = vtx i.succ`, the neighbour `a = vtx (i + 1)` of the split at `vtx i`, in the
+form `PanelHingeFramework.chainData_dispatch_interior` reads it. It is not `@[simp]`:
+`candidateVtx_succ` gives the simp normal form. -/
 lemma candidateVtx_succ_eq (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
     cd.candidateVtx i = cd.vtx i.succ := by rw [cd.candidateVtx_succ hi, Fin.succ_mk]
 
 end ChainData
 
-/-! ## Cycle data (KT Lemma 4.6, the cycle branch; ENTRY leaf E1)
+/-! ## Cycle graphs (`def:cycle-data`; KT Lemma 4.6)
 
-Katoh–Tanigawa Lemma 4.6 (§6.4.2, printed pp. 664–665) is a dichotomy: a 2-edge-connected minimal
-`k`-dof-graph with no proper rigid subgraph either contains a length-`d` chain (`ChainData` above)
-or **is** a cycle graph of at most `d` vertices. `CycleData` packages the second disjunct — `G` is
-exactly the cycle `vtx 0 — vtx 1 — … — vtx (m − 1) — vtx 0`, cyclically indexed by `Fin m` (the
-`+ 1` wraps via `Fin m`'s mod-`m` addition). Indexing by `Fin m` (rather than the Matroid package's
-walk-based cycle API) matches the chain side's `Fin (d + 1)` indexing, so the Lemma-5.4 realization
-brick (E5) can reuse the same `ofNormals`-style per-index machinery; revisit only if E5's build
-finds the package API strictly better (`notes/Phase23-design.md` §(4.107.D)). -/
+By KT Lemma 4.6 (p. 664), a `2`-edge-connected minimal `k`-dof-graph with no proper rigid
+subgraph is a cycle graph on at most `d` vertices or has a chain of length `d` (`ChainData`).
+`CycleData` presents `G` as the cycle `vtx 0, vtx 1, …, vtx (m − 1)`, indexed by `Fin m`, whose
+addition wraps `vtx (m − 1)` around to `vtx 0`. -/
 
-/-- **Cycle-graph data** (Katoh–Tanigawa 2011 §6.4.2, Lemma 4.6's cycle branch): a cycle of `m ≥ 3`
-distinct vertices `vtx 0, …, vtx (m − 1)`, the `m` cycle edges `edge i = vtx i — vtx (i + 1)`
-(cyclic successor), covering all of `V(G)`/`E(G)`. -/
+/-- **A cycle graph** (`def:cycle-data`; KT Lemma 4.6, p. 664): distinct vertices
+`vtx 0, …, vtx (m − 1)`, `m ≥ 3`, and distinct edges `edge i` joining `vtx i` and `vtx (i + 1)`,
+with indices modulo `m`, which are all the vertices and all the edges of `G`. -/
 structure CycleData (G : Graph α β) where
-  /-- The number of cycle vertices (= the number of cycle edges). -/
+  /-- The number of vertices of the cycle, which is also its number of edges. -/
   m : ℕ
-  /-- The cycle is nondegenerate: at least a triangle. -/
+  /-- `m ≥ 3`. -/
   hm : 3 ≤ m
-  /-- The cycle vertices, indexed cyclically by `Fin m`. -/
+  /-- The vertices of the cycle. -/
   vtx : Fin m → α
-  /-- The cycle edges: `edge i` joins `vtx i` to its cyclic successor `vtx (i + 1)`. -/
+  /-- The edges of the cycle: `edge i` joins `vtx i` and `vtx (i + 1)`. -/
   edge : Fin m → β
-  /-- The cycle vertices are pairwise distinct. -/
+  /-- The vertices are distinct. -/
   vtx_inj : Function.Injective vtx
-  /-- The cycle edges are pairwise distinct. -/
+  /-- The edges are distinct. -/
   edge_inj : Function.Injective edge
-  /-- `edge i` is a genuine `G`-link from `vtx i` to its cyclic successor `vtx (i + 1)`. -/
+  /-- `edge i` joins `vtx i` and `vtx (i + 1)` in `G`. -/
   link : ∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩))
-  /-- Every `G`-vertex is a cycle vertex. -/
+  /-- Every vertex of `G` is a vertex of the cycle. -/
   vtx_surj : ∀ x ∈ V(G), ∃ i, vtx i = x
-  /-- Every `G`-edge is a cycle edge. -/
+  /-- Every edge of `G` is an edge of the cycle. -/
   edge_surj : ∀ e ∈ E(G), ∃ i, edge i = e
 
 namespace CycleData
 
 variable {G : Graph α β}
 
-/-- **The cycle vertices are exactly `V(G)`** (from `link`/`vtx_surj`: every cycle vertex is a
-link endpoint, and every `G`-vertex is a cycle vertex). This is the vertex-set transport the
-Lemma-5.4 realization brick (`PanelHingeFramework.cycle_realization`, ENTRY leaf E5) uses to carry
-the `α`-level cycle rigidity `IsInfinitesimallyRigidOn (Set.range cy.vtx)` over to `V(G)`. -/
+/-- **The vertices of the cycle are those of `G`** (`def:cycle-data`): `range vtx = V(G)`, as each
+`vtx i` is an end of `edge i` and every vertex of `G` is some `vtx i`. So `|V(G)| = m`.
+`PanelHingeFramework.cycle_realization` (`lem:cycle-realization`) uses it to pass from rigidity
+on the vertices of the cycle to rigidity on `V(G)`. -/
 theorem range_vtx (cy : G.CycleData) : Set.range cy.vtx = V(G) := by
   apply Set.Subset.antisymm
   · rintro x ⟨i, rfl⟩
@@ -3257,17 +2761,14 @@ theorem range_vtx (cy : G.CycleData) : Set.range cy.vtx = V(G) := by
     obtain ⟨i, hi⟩ := cy.vtx_surj x hx
     exact ⟨i, hi⟩
 
-/-- **The `|V| = 3` triangle base as a `3`-cycle** (Katoh–Tanigawa 2011 §6.4; Phase 31). A simple
-minimal `0`-dof-graph `G` on exactly three vertices, presented by two edges `eₐ : v–a`, `e_b : v–b`
-from a common vertex `v` (with `eₐ ≠ e_b`, `a ≠ v`, `b ≠ v`), **is** the triangle `C₃`, packaged
-here as `G.CycleData` with `m = 3`. The third edge `f : a–b` and the vertex-set pin
-`V(G) = {v,a,b}` come from `exists_isLink_of_isMinimalKDof_card_three` (`lem:triangle-third-edge`);
-the cycle is `vtx = ![v, a, b]`, `edge = ![eₐ, f, e_b]`, traversing `v → a → b → v`.
-
-This is the constructor that lets the Case-III triangle floor be realized directly as the `m = 3`
-instance of the Lemma-5.4 cycle family (`PanelHingeFramework.cycle_realization`), rather than
-through the separate `hasGenericFullRankRealization_of_triangle` assembly (retained as worked-case
-exposition) — KT state Lemma 5.4 at `3 ≤ |V| ≤ D`, so the merge is source-faithful. -/
+/-- **A minimal `0`-dof-graph on three vertices as a cycle** (from the proof of KT Lemma 6.7(i),
+p. 677): let `D ≥ 3`, let `G` be a simple minimal `0`-dof-graph with three vertices, and let edges
+`eₐ ≠ e_b` join `v` to `a ≠ v` and `b ≠ v`. Then `G` is the cycle with `m = 3`, `vtx = ![v, a, b]`
+and `edge = ![eₐ, f, e_b]`, where `f` joins `a` and `b`
+(`exists_isLink_of_isMinimalKDof_card_three`, `lem:triangle-third-edge`). Katoh and Tanigawa realize
+the triangle by their Lemma 5.4 (p. 670), for cycle graphs with `3 ≤ |V| ≤ D`, and so does
+`PanelHingeFramework.case_III_hsplit_producer_all_k`, with
+`PanelHingeFramework.cycle_realization`. -/
 noncomputable def ofCardThree [DecidableEq β] [Finite α] [Finite β] {n : ℕ} [G.Simple]
     (hD : 3 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hcard : V(G).ncard = 3)
     {v a b : α} {eₐ e_b : β}
@@ -3335,8 +2836,7 @@ noncomputable def ofCardThree [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
       · exact ⟨1, (hexy.symm.unique_edge hf).symm⟩
       · exact absurd rfl hexy.ne }
 
-/-- The `3`-cycle produced by `ofCardThree` has `m = 3` (the triangle-floor bound `cy.m = 3 ≤ n`
-that `PanelHingeFramework.cycle_realization` consumes). -/
+/-- The cycle `ofCardThree` has `m = 3`, by `rfl`. -/
 @[simp] theorem ofCardThree_m [DecidableEq β] [Finite α] [Finite β] {n : ℕ} [G.Simple]
     {hD : 3 ≤ bodyBarDim n} {hG : G.IsMinimalKDof n 0} {hcard : V(G).ncard = 3}
     {v a b : α} {eₐ e_b : β} {hG_ea : G.IsLink eₐ v a} {hG_eb : G.IsLink e_b v b}

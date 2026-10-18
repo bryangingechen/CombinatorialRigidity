@@ -3612,7 +3612,12 @@ declaration's name as its header writes it:
   simp lemmas mention `edgeSplit`.
   *Evidence:* read (the docstrings; a `grep` for `edgeSplit`).
   *Found:* round 2 task 2.11.
-  *Disposition:* reported (`notes/Prose-report.md`, L10).
+  *Disposition:* reported (`notes/Prose-report.md`, L10); round 3: in `Induction/Operations.lean`,
+  the leads of `inducedSpan`, `rank_matroidMG_of_isKDof_zero`, `contract_matroidMG_rank` and
+  `contract_matroidMG_deficiency_eq` name `def:induced-span`, `lem:rigid-full-rank`,
+  `lem:contract-rank-bridge` and `lem:contract-deficiency-conservation`, and the section before
+  them names `contract_minimality_transport` for the minimality half (task 30); `edgeSplit`'s is
+  task 30.1's.
 - **F-088** · L · the balanced-partition pins (`Induction/Operations.lean`,
   `Induction/ReducibleVertex.lean`, `Induction/ForestSurgery/Reduction.lean`):
   `exists_balanced_forest_packing` repeats the move of `exists_packing_move_of_not_inc` inline, while
@@ -3627,7 +3632,13 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and sections; the body of `exists_balanced_forest_packing`).
   *Found:* round 2 task 2.12.
   *Disposition:* reported (`notes/Prose-report.md`, L8); round 3: the descent calls the move,
-  whose conclusion now states the re-choice (`F-272`) (task 14).
+  whose conclusion now states the re-choice (`F-272`) (task 14); in `Induction/Operations.lean`,
+  the section before `kt_lemma_41_overquantified` follows `rem:kt-lemma-41` (a base has the
+  balanced partition, `lem:balanced-forest-packing`), and the leads of that lemma and of
+  `matroidMG_indep_iff_exists_forest_packing` name `ex:kt-41-overquantified` and
+  `lem:forest-packing-decomp`, the second with `lem:union-indep-iff` for the union and without the
+  credit (task 30); `ReducibleVertex.lean`'s and `ForestSurgery/Reduction.lean`'s are tasks 30.1
+  and 31's.
 - **F-092** · L · the surgery's pins (`Induction/ForestSurgery/EdgeSplitting.lean`,
   `Induction/ForestSurgery/Reduction.lean`): `splitOff_indep_extend_of_fiber_subset` and
   `splitOff_indep_extend_of_fiber_lt` take the degree-two hypothesis `_hdeg2` and do not use it.
@@ -3671,7 +3682,9 @@ declaration's name as its header writes it:
   case's criterion step, as KT Lemma 4.3's minimality argument (p. 661) has it, and `hV3` dropped
   from both pins; `lem:reduction-step-pos` and `lem:removal-deficiency-strict` restated, and KT 4.7's,
   4.5(ii)'s and 4.4's second assertion's pins now outside every main result's closure, dead pins
-  168 → 172 (task 15). The $D \ge 2$ question is `F-273`'s.
+  168 → 172 (task 15); `splitOff_vertexSet_ncard_lt`'s lead names `lem:reduction-measure` (task
+  30), and `rigidContract_vertexSet_ncard_lt`'s and the two sections are task 30.1's. The
+  $D \ge 2$ question is `F-273`'s.
 - **F-104** · L · the pins of KT Theorem 4.9, KT Lemma 6.1 and the $d = 3$ pair
   (`Induction/ForestSurgery/Reduction.lean`, `Induction/ReducibleVertex.lean`,
   `AlgebraicInduction/Theorem55.lean`, `AlgebraicInduction/PanelHinge.lean`):
@@ -3706,7 +3719,9 @@ declaration's name as its header writes it:
   `hV3` and `[G.Simple]`, both derived in its body, `chainWalk_charging` without the three, and
   `isKDof_zero_of_triangle` proved as the case $m = 3$ of `isKDof_zero_of_cycle`, after it in the
   file; `lem:chain-data-extract` restated without simplicity, and `F-270` (task 11);
-  `Deficiency.lean`'s cycle and triangle sections without "ENTRY leaf E2c" and "brick" (task 29).
+  `Deficiency.lean`'s cycle and triangle sections without "ENTRY leaf E2c" and "brick" (task 29);
+  `ChainData`'s docstrings without KT eq. (6.46), the chain credited to KT Lemma 4.6 (p. 664)
+  (task 30); `ChainExtraction.lean`'s are task 31's.
 - **F-114** · L · the pins of `meet.tex` (`Molecular/Meet.lean`): the file's header lists
   `meet_ne_zero_iff` and "the geometric reading" as deliverables, which no declaration provides, and
   narrates phases, commits and design codes ("this commit", "route (ii)", "N3b-2b-α", "CHAIN-3",
@@ -3881,7 +3896,11 @@ declaration's name as its header writes it:
   "producer", "brick" and "stratum".
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, L3).
+  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3: in `Induction/Operations.lean`,
+  `isLink_incident_of_not_removeVertex`'s lead names `lem:splitoff-edge-substitution`, without
+  "brick", and `removeVertex_le_splitOff`'s names its callers (`lem:removal-deficiency-equality`'s
+  pin and `splitOff_removeVertex_minimalKDof`), not Case II (task 30); `Pinning.lean`'s,
+  `CaseII.lean`'s and `PanelHinge.lean`'s are tasks 33, 34 and 36's.
 - **F-153** · L · the docstrings of `genericity-and-count.tex`'s pins
   (`Molecular/AlgebraicInduction/GenericityDevice.lean`, `CaseI.lean`, `CaseII.lean`,
   `Pinning.lean`; `Molecular/RigidityMatrix/Basic.lean`). The file header and
@@ -3969,7 +3988,9 @@ declaration's name as its header writes it:
   *Found:* round 3 task 2.14.
   *Disposition:* reported (`notes/Prose-report.md`, L4); round 3:
   `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow` deleted
-  (task 4).
+  (task 4); `splitOff_isLink_relabel`'s docstring without "G4c-i", with KT p. 686 for the
+  isomorphism and p. 687 for eq. (6.31) (task 30); `Claim612.lean`'s and `CaseIII/`'s are tasks 32
+  and 35's.
 - **F-172** · L · the docstrings of the pins of `case-iii.tex`'s general case
   (`CaseIII/Realization.lean`, `CaseIII/Arms.lean`, `Molecular/Induction/Operations.lean`).
   `chainData_fire_discriminator`'s and `chainData_dispatch`'s say that they have no `\lean` pin;
@@ -3981,7 +4002,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and statements of the six pins; KT 2011 pp. 659, 677 and
   692, `.refs/`).
   *Found:* round 3 task 2.15.
-  *Disposition:* reported (`notes/Prose-report.md`, L5).
+  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3:
+  `exists_isLink_of_isMinimalKDof_card_three` credited to the proof of KT Lemma 6.7(i) (p. 677),
+  and the docstrings of `Induction/Operations.lean`'s chain without their process codes (task 30);
+  `CaseIII/`'s are task 35's.
 - **F-176** · L · the docstrings of `bar-joint-3d.tex`'s pins (`GenericRigidityMatroid.lean`). The
   module header narrates process ("Phase 24", "This file lands the forward-mode chapter … end to
   end", "Phase 14's"), and `genericRank`'s cites "Phase 26". In the same file
@@ -4243,11 +4267,12 @@ declaration's name as its header writes it:
   says `def:graph-operations`, though its pin is at `def:induced-span`.
   *Evidence:* read (the docstrings).
   *Found:* round 5 task 3.4.
-  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: in `Molecular/Deficiency.lean`,
+  *Disposition:* done (task 30): in `Molecular/Deficiency.lean`,
   the leads of `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` name
   `lem:two-edge-connected-degree`, that of `partitionDef_split_of_sides`
   `lem:separated-partition-value`, and the three `cutLabeling` helpers are steps of
-  `lem:two-edge-connected-degree` (task 29); `inducedSpan`'s is task 30's.
+  `lem:two-edge-connected-degree` (task 29); `inducedSpan`'s lead names `def:induced-span` (task
+  30); reported (`notes/Prose-report.md`, L11).
 - **F-236** · L · the declarations round 5's task 3.5 moved or unpinned
   (`Molecular/Induction/ForestSurgery/Reduction.lean`, `Molecular/Induction/ReducibleVertex.lean`,
   `Molecular/Induction/Operations.lean`). The section header before
@@ -4303,8 +4328,10 @@ declaration's name as its header writes it:
   *Found:* round 5 task 3.8.
   *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: in `Molecular/Deficiency.lean`,
   the section header and the lead of `isKDof_zero_of_triangle` name `lem:splitoff-simple` (task
-  29); the docstrings in `Induction/Operations.lean` are task 30's, and
-  `exists_independent_panelRow_subfamily_of_le_finrank`'s task 34's.
+  29); in `Induction/Operations.lean`, the leads of `triangle_isProperRigidSubgraph` and
+  `splitOff_simple_of_noRigid_of_card` name `lem:splitoff-simple`, and
+  `splitOff_simple_of_noRigid`'s says that `triangle_isProperRigidSubgraph` gives its `htri` (task
+  30); `exists_independent_panelRow_subfamily_of_le_finrank`'s is task 34's.
 - **F-241** · L · the declarations round 5's task 3.9 pinned (`CaseIII/Candidate.lean`). The
   docstrings of `exists_redundant_panelRow_ab_lam_of_rigidOn` and of its caller
   `exists_candidateRow_bottomRows_of_rigidOn` name `lem:case-III-claim612-r`, a label the blueprint
@@ -4634,7 +4661,19 @@ declaration's name as its header writes it:
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38). Task 28 adds two in
   `SquareGraph.lean`, `square_mono` and `three_le_ncard_closedNeighborSet_of_two_le_degree`, whose
   docstrings said the proof of `thm:jacobs` and the square-graph dictionary use them (no
-  declaration does; the cache at `0819b42e`).
+  declaration does; the cache at `0819b42e`). Task 30 adds twenty-two in
+  `Molecular/Induction/Operations.lean`: `splitOff_swap_ab`,
+  `ChainData.removeVertex_isLink_edge_succ_pred_off`, `shiftCycle_eq_cons` (used only by the next),
+  `shiftPerm_eq_swap_mul`, `shiftPerm_inv_apply_off`, `shiftPerm_inv_vtx_one`,
+  `seedShift_inv_cancel`, `seedShift_off_cycle`, `getElem_shiftBodyList_zero`,
+  `shiftBodyList_eq_cons`, `shiftBody_ne_succ`, the seven `shiftEdgePerm_inv_*` lemmas,
+  `shiftEdgePerm_apply_edge_off`, `_edge_top` and `_edge_pred` (used only by three of those), and
+  the definition `candidateSeed` (used only by its `rfl` lemma), all under `Graph.ChainData` but the
+  first; their docstrings named consumers that do not use them or do not exist
+  (`chainData_relabel_arm`, `bottomRelabel_image_mem_span_caseIIICandidate`,
+  `case_III_arm_corner_assembly`). Its screen reads the code, comments stripped, for each name, to
+  a fixed point, as the cache counts a shared `_proof_N` auxiliary as a use
+  (`scratch/reconcile-lean/t30/unused_src.py`, gitignored; at `722c88ef`).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -4660,6 +4699,28 @@ declaration's name as its header writes it:
   `classical`), each on the three standard axioms (`scratch/reconcile-lean/Hyps-t29-1.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 29.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-282** · L · nine hypotheses of seven declarations of `Molecular/Induction/Operations.lean`
+  that the others give or the proof does not use, and a repeated derivation:
+  `Graph.exists_isProperRigidSubgraph_of_three_le_degree`'s `[DecidableEq β]`, which its statement
+  does not use (hence its `set_option linter.unusedDecidableInType false`) and its proof, opening
+  with `classical`, does not need; `Graph.cycle_isProperRigidSubgraph`'s `hD : 3 ≤ bodyBarDim n`,
+  which `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` give (as for `F-280`'s `isKDof_zero_of_cycle`);
+  `Graph.triangle_isProperRigidSubgraph`'s `hab : a ≠ b`, which `hf : G.IsLink f a b` gives in the
+  simple `G` (the note after `lem:splitoff-simple` says so); the `hav : a ≠ v` and `hbv : b ≠ v` of
+  `Graph.exists_isLink_of_isMinimalKDof_card_three` and `Graph.CycleData.ofCardThree`, which
+  `hG_ea` and `hG_eb` give in the simple `G`; and `Graph.induce_insert_splitOff`'s
+  `he₀ : e₀ ∉ E(G)` and `Graph.splitOff_isLink_relabel`'s `heac : eₐ ≠ e_c`, which their proofs do
+  not use (`lake lint` reports neither). Also `Graph.indep_edgeSet_mulTilde_of_noRigid_of_pos`
+  (`lem:edge-set-indep-pos`, `ReducibleVertex.lean`) proves again, by its own circuit argument,
+  what `Graph.indep_matroidMG_of_noRigid_of_deficiency_pos` gives with `loopless_of_isMinimalKDof`
+  and `G.deficiency n = k`.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: each statement without the
+  hypothesis, proved by the lemma with `classical`, `by omega`, `hf.ne` or `hG_ea.ne.symm` for it;
+  copies of the last two without `he₀` and `heac` that elaborate with the same proofs; and the pin
+  of `lem:edge-set-indep-pos` from the other lemma; all on the three standard axioms
+  (`scratch/reconcile-lean/Hyps-t30.lean` and `Hyps-t30-2.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 30.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
