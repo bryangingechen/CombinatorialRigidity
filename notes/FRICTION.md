@@ -111,6 +111,17 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [open] The dependency's `Graph.OfSimpleGraph` has no `Simple` instance
+- **Where it bit:** RECONCILE round 3, task 23: `pencil_realization_theorem_witness` and
+  `pencilPair_of_nonempty_witness` (`Nonvacuity.lean`) need `(Graph.OfSimpleGraph H).Simple` for
+  the star `SimpleGraph.starGraph 0`; neither the `Matroid` dependency nor the project has it.
+- **Friction:** a private two-field proof (`ofSimpleGraph_simple`: a loop is `H.irrefl`, two links
+  of the same ends have the edge `s(x, y)`). Also, passing the graph as `_` and fixing it by a
+  later argument `singleEdge … 0` elaborated the edge label `0` at `ℕ`; naming the graph fixed it.
+- **Proposed fix:** an `instance : (Graph.OfSimpleGraph H).Simple` beside `Graph.OfSimpleGraph`
+  (`Matroid/Graph/Constructions/Basic.lean`, upstream); a mirror only if a second caller appears.
+- **Status:** open.
+
 ### [idiom] Mathlib's `Graph.ofSimpleGraph` cannot be imported beside the `Matroid` dependency — use its `Graph.OfSimpleGraph`
 - **Where it bit:** RECONCILE round 3, task 22: `body_hinge_tay_witness` (`Nonvacuity.lean`) takes
   the triangle `K₃` as a multigraph. `import Mathlib.Combinatorics.Graph.Simple` fails: "environment

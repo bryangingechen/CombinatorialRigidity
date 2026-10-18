@@ -7,7 +7,10 @@ import CombinatorialRigidity.BodyBar.BodyHinge
 import CombinatorialRigidity.BodyBar.GenericLift
 import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
+import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
 import CombinatorialRigidity.PebbleGame.Correctness
+import Mathlib.Combinatorics.SimpleGraph.Star
 
 /-!
 # Non-vacuity witnesses for the main results
@@ -50,10 +53,26 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   endpoint assignment, at the triple edge: an orientation and an endpoint assignment generic for
   row independence (a non-root of the abundance polynomial), at which the realization placing each
   bar between its endpoints is isostatic.
+* `theorem_55_minimalKDof_gen_witness`: Katoh and Tanigawa's Theorem 5.5 at the single edge, a
+  minimal `1`-dof-graph, its fresh-edge supply from a label headroom. The single edge is simple, so
+  it has a panel realization in general position and one with a nondegenerate hinge, at rank
+  `3 · (2 - 1) - 1 = 2`.
+* `molecular_conjecture_multigraph_witness`: Tay and Whiteley's molecular conjecture, proved by
+  Katoh and Tanigawa, for multigraphs, at the double edge, which is `0`-dof. The multigraph
+  Theorem 5.6 gives it a rigid hinge-coplanar panel realization, so by the equivalence it has a
+  rigid body-hinge realization with nondegenerate hinges.
+* `pencil_realization_theorem_witness`: the pencil realization theorem at the star `K₁,₃`, the
+  least simple graph with a body of degree three, the least degree at which the pencil condition
+  (a body's hinges pass through one point) is not automatic. The star is simple, so it has a pencil
+  realization at the deficiency rank whose adjacent bodies have distinct points.
+* `pencilPair_of_nonempty_witness`: the pencil realization theorem's general form at the same star
+  on four of five bodies, a graph that is not spanning, with the same conclusion.
 
 The body-bar and body-hinge rows are taken in the plane, `n = 2`, where `d = bodyBarDim 2 = 3` and
 each hinge is two bars (`bodyHingeMult 2 = 2`): at `n = 1` a hinge carries no bar
-(`bodyHingeMult 1 = 0`) and a body's one motion is a translation (`bodyBarDim 1 = 1`).
+(`bodyHingeMult 1 = 0`) and a body's one motion is a translation (`bodyBarDim 1 = 1`). So are
+Theorem 5.5 and the molecular conjecture for multigraphs, whose least dimension is `n = 2` (a panel
+is a line and a hinge a point); the pencil rows are stated at `n = 3`.
 -/
 
 open scoped Graph
@@ -215,5 +234,126 @@ theorem isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff_witness :
   obtain ⟨q, hq⟩ := exists_isGenericEndpoints (n := 2) _ D
   exact ⟨D, q, hq,
     (isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff hq).mpr banana_isTight_three_three⟩
+
+
+/-! ### The molecular rows -/
+
+section
+
+open Molecular
+
+/-- The single edge on two bodies is a minimal `1`-dof-graph when `D = bodyBarDim n ≥ 2`. A
+partition separating its two bodies has `D`-deficiency `D · 1 - (D - 1) · 1 = 1` and the one-part
+partition `0`, so `def(G̃) = 1`. A base of `M(G̃)` then has `D(2 - 1) - 1 = D - 1 ≥ 1` elements
+(`Graph.isBase_ncard_add_deficiency_eq`), each a copy of the one edge, so it meets that edge's
+copies. -/
+private theorem singleEdge_isMinimalKDof_one {β : Type*} [Finite β] [DecidableEq β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (e : β) :
+    (Graph.singleEdge (0 : Fin 2) 1 e).IsMinimalKDof n 1 := by
+  classical
+  have hpd : ∀ f : Fin 2 → Fin 2,
+      (Graph.singleEdge (0 : Fin 2) 1 e).partitionDef n f = if f 0 = f 1 then 0 else 1 := by
+    intro f
+    have hcross : (Graph.singleEdge (0 : Fin 2) 1 e).crossingEdges f =
+        if f 0 = f 1 then ∅ else {e} := by
+      ext e'
+      simp only [Graph.crossingEdges, Graph.edgeSet_singleEdge, Graph.singleEdge_isLink]
+      split_ifs with h <;> simp [h, eq_comm]
+    have hparts : (Graph.singleEdge (0 : Fin 2) 1 e).numParts f = if f 0 = f 1 then 1 else 2 := by
+      rw [Graph.numParts, Graph.vertexSet_singleEdge, Set.image_pair]
+      split_ifs with h
+      · simp [h]
+      · exact Set.ncard_pair h
+    rw [Graph.partitionDef, hcross, hparts]
+    split_ifs <;> simp
+  have hdef : (Graph.singleEdge (0 : Fin 2) 1 e).IsKDof n 1 := by
+    have : Nonempty (Fin 2 → Fin 2) := ⟨id⟩
+    refine le_antisymm (ciSup_le fun f ↦ ?_) ?_
+    · rw [hpd]
+      split_ifs <;> simp
+    · simpa [hpd] using (Graph.singleEdge (0 : Fin 2) 1 e).partitionDef_le_deficiency n id
+  refine ⟨hdef, fun B hB e' he' ↦ ?_⟩
+  have hcard := (Graph.singleEdge (0 : Fin 2) 1 e).isBase_ncard_add_deficiency_eq n (by omega)
+    ⟨0, by simp⟩ hB
+  rw [hdef.deficiency_eq, Graph.vertexSet_singleEdge, Set.ncard_pair (by decide)] at hcard
+  obtain ⟨p, hp⟩ : B.Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  have hpE : p.1 ∈ E(Graph.singleEdge (0 : Fin 2) 1 e) := hB.subset_ground hp
+  rw [Graph.edgeSet_singleEdge, Set.mem_singleton_iff] at hpE he'
+  exact ⟨p, hp, hpE.trans he'.symm⟩
+
+/-- **Katoh and Tanigawa's Theorem 5.5 at the single edge, in the plane**:
+`Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen` at `n = 2` and grade `k = 1`
+(`bodyBarDim 2 = screwDim 1 = 3`), at the single edge on two bodies, a minimal `1`-dof-graph. Its
+fresh-edge supply `hfresh` comes from the label headroom `3 · (2 - 1) < 4`
+(`Graph.freshEdgeSupply_of_card_lt`), the bound `molecular_conjecture_witness` meets at `n = 3`.
+The single edge is simple, so both sides of the conditioned pair hold: a panel-hinge realization
+whose two panels are distinct (independent normals), and a panel realization whose hinge is
+nondegenerate and lies in both panels, each with rigidity matrix of rank `3 · (2 - 1) - 1 = 2`. -/
+theorem theorem_55_minimalKDof_gen_witness :
+    PanelHingeFramework.HasGenericFullRankRealization ℝ 1 2
+        (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) ∧
+      HasPanelRealization ℝ 1 2 (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) := by
+  obtain ⟨hgen, hpanel⟩ := PanelHingeFramework.theorem_55_minimalKDof_gen (K := ℝ) le_rfl
+    (Graph.three_le_bodyBarDim_of_two_le le_rfl)
+    (Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num))
+    (Graph.freshEdgeSupply_of_card_lt (by decide) (by simp only [Nat.card_fin]; decide))
+    (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) (singleEdge_isMinimalKDof_one (by decide) 0)
+    (by rw [Graph.vertexSet_singleEdge]; exact (Set.ncard_pair (by decide)).ge)
+  exact ⟨hgen (Graph.singleEdge_simple (by decide) 0), hpanel⟩
+
+/-- **The molecular conjecture for multigraphs at the double edge, in the plane**:
+`Molecular.molecular_conjecture_multigraph` at `n = 2` (a panel is a line and a hinge a point) at
+the double edge, two bodies joined by two parallel hinges, which the simple-graph form
+`molecular_conjecture` excludes; the label headroom is `3 · (2 - 1) < 4`. The double edge
+is `0`-dof (`Graph.isKDof_zero_of_parallel_pair`), so the multigraph Theorem 5.6
+(`theorem_55_6_multigraph_gen`) gives it a hinge-coplanar panel realization at full rank, which is
+infinitesimally rigid (`BodyHingeFramework.rankHypothesis_zero_iff`). By the equivalence, the
+double edge has an infinitesimally rigid body-hinge realization with every hinge nondegenerate. -/
+theorem molecular_conjecture_multigraph_witness :
+    ∃ F : BodyHingeFramework ℝ 1 (Fin 2) (Fin 4),
+      F.graph = Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4)) ∧
+        (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid := by
+  have hspan : V(Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))) = Set.univ :=
+    Set.eq_univ_of_forall fun x ↦ by fin_cases x <;> simp
+  have hcard : Graph.bodyBarDim 2 * (Nat.card (Fin 2) - 1) < Nat.card (Fin 4) := by
+    simp only [Nat.card_fin]; decide
+  have hdef : (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).deficiency 2 = 0 :=
+    Graph.isKDof_zero_of_parallel_pair (by decide) (x := 0) (y := 1) (e₁ := 0) (e₂ := 1)
+      (by decide) (by simp) (by simp) (by decide) (by simp) (by simp)
+  obtain ⟨F, normal, hF, hrank⟩ := theorem_55_6_multigraph_gen (K := ℝ) le_rfl hcard _ hspan
+  rw [hdef] at hrank
+  exact (molecular_conjecture_multigraph le_rfl hcard _ hspan).mpr
+    ⟨F, normal, hF, (BodyHingeFramework.rankHypothesis_zero_iff F).mp hrank⟩
+
+/-- The dependency's graph of a simple graph, `Graph.OfSimpleGraph H`, is simple: a link is an
+adjacency of `H`, which is irreflexive, and its edge is the pair of its ends. -/
+private theorem ofSimpleGraph_simple {V : Type*} (H : SimpleGraph V) :
+    (Graph.OfSimpleGraph H).Simple where
+  not_isLoopAt _ _ h := H.irrefl h.1
+  eq_of_isLink _ _ _ _ he hf := he.2.symm.trans hf.2
+
+/-- **The pencil realization theorem at the star `K₁,₃`**: `Molecular.pencil_realization_theorem`
+at the star on four bodies centred at `0`, which is spanning. At a body of degree at most two the
+pencil condition (the body's hinges pass through one point of its panel) is automatic, two
+coplanar hinges always meeting (`exists_concurrency_point_of_extensorInPanel_pair`); the centre has
+degree three, and `K₁,₃` is the least simple graph with such a body. The star is simple, so the
+conditioned pair gives it a pencil realization at the deficiency rank whose adjacent bodies have
+distinct points. -/
+theorem pencil_realization_theorem_witness :
+    HasDistinctPencilRealization ℝ 3 (Graph.OfSimpleGraph (SimpleGraph.starGraph (0 : Fin 4))) :=
+  (pencil_realization_theorem _ (Graph.vertexSet_OfSimpleGraph _)).2.1 (ofSimpleGraph_simple _)
+
+/-- **The pencil realization theorem's general form at a graph that is not spanning**:
+`Molecular.pencilPair_of_nonempty` at the star `K₁,₃` on four of five bodies (the star centred at
+`0` on five bodies, the fifth deleted). The general form asks only for a body, and its rank target
+counts the graph's own four bodies. As in `pencil_realization_theorem_witness`, the star gives a
+pencil realization at the deficiency rank whose adjacent bodies have distinct points. -/
+theorem pencilPair_of_nonempty_witness :
+    HasDistinctPencilRealization ℝ 3
+      (Graph.OfSimpleGraph (SimpleGraph.starGraph (0 : Fin 5)) - {4}) :=
+  have := ofSimpleGraph_simple (SimpleGraph.starGraph (0 : Fin 5))
+  (pencilPair_of_nonempty _ ⟨0, by simp⟩).2.1 inferInstance
+
+end
 
 end CombinatorialRigidity

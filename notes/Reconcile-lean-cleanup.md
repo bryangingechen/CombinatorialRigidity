@@ -15,9 +15,10 @@ wait for the phase. Tasks 1–15.1 are done: the open, the docstring-label check
 repeated derivations (*Current state*). Task 16, the recon of the pebble game's search, settled its
 fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set;
 task 18 committed the script that times it and checks the `decide` facts; task 19 had the
-executable split its input on any whitespace; task 20 rewrote the texts; tasks 21–22 landed the
-planar, matroid, body-bar and body-hinge rows' non-vacuity witnesses. **Next concrete task:** task
-23, the molecular rows' witnesses (*Lemma checklist*). Round manual: `CLEANUP.md`.
+executable split its input on any whitespace; task 20 rewrote the texts; tasks 21–23 landed the
+planar, matroid, body-bar, body-hinge and molecular rows' non-vacuity witnesses. **Next concrete
+task:** task 24, the molecule and Jacobs rows' witnesses (*Lemma checklist*). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -27,18 +28,18 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 22 is done** (this commit); nothing is mid-stream.
+**Task 23 is done** (this commit); nothing is mid-stream.
 
-**Tasks 21–22** (no ledger entry; §1's proposal): `CombinatorialRigidity/Nonvacuity.lean`, imported
-by `CombinatorialRigidity.lean`, eight closed theorems, every hypothesis discharged (*Decisions*):
-task 21's five at `K₂` and the double edge; task 22's three in the plane ($n = 2$, $d = 3$), the
-triple edge carrying an isostatic body-bar framework (`tay_witness_nonvacuous`), `K₃` (the
-dependency's `Graph.OfSimpleGraph ⊤`) an isostatic body-hinge one (`body_hinge_tay_witness`), and at
-the triple edge an orientation and a generic endpoint assignment (`exists_isGenericEndpoints`) where
-the endpoint realization is isostatic. Task 21's private `(2, 2)` lemma is now `banana_isSparse`,
-for any multiplicity. None failed, so no `S` entry; all eight's `#print axioms`
-(`scratch/reconcile-lean/Witnesses-t22.lean`) give the three. FRICTION: task 22's idiom (mathlib's
-`Graph.ofSimpleGraph` clashes with the dependency); task 21's count-matroid entry waits for task 38.
+**Tasks 21–23** (no ledger entry; §1's proposal): `CombinatorialRigidity/Nonvacuity.lean`, imported
+by `CombinatorialRigidity.lean`, twelve closed theorems, every hypothesis discharged (*Decisions*):
+task 21's five at `K₂` and the double edge; task 22's three in the plane at the triple edge and
+`K₃` (isostatic body-bar and body-hinge frameworks, a generic endpoint assignment); task 23's four.
+In the plane, Theorem 5.5 at the single edge (minimal `1`-dof, a private lemma; `hfresh` by
+`freshEdgeSupply_of_card_lt`), both conjuncts; the multigraph equivalence at the double edge, its
+body-hinge side by `mpr` from Theorem 5.6's rigid panel realization; the pencil rows at the star
+`K₁,₃`, spanning and on four of five bodies, the distinct-point conjunct. None failed, so no `S`
+entry; all twelve's `#print axioms` (`scratch/reconcile-lean/Witnesses-t23.lean`) give the three.
+FRICTION: tasks 22–23's `OfSimpleGraph` entries; task 21's count-matroid entry waits for task 38.
 The ledger: 277 entries, 157 `done`, 9 `left`, 107 `reported`, 4 `open`.
 
 **Tasks 16–20** (`F-033`, `F-047`, both `done`): task 20 rewrote the texts on the search, its
@@ -293,11 +294,10 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **22. Witnesses, 2: the body-bar and body-hinge rows**: in the plane, `tay_witness_nonvacuous`
   and the generic endpoint row's (`IsGenericEndpoints` by the abundance lemma's corollary) at the
   triple edge, `body_hinge_tay_witness` at `K₃`; none failed; the dump byte-identical; gate 9 387.
-- [ ] **23. Witnesses, 3: the molecular rows**: `theorem_55_minimalKDof_gen` (`hfresh` from a label
-  headroom, as `molecular_conjecture_witness` does), `molecular_conjecture_multigraph`,
-  `pencil_realization_theorem`, `pencilPair_of_nonempty`. As task 21: in `Nonvacuity.lean`, one
-  closed theorem per row, the row at a minimal input of its class, every hypothesis discharged, the
-  conclusion's substantive side stated (*Decisions*).
+- [x] **23. Witnesses, 3: the molecular rows**: in the plane, `theorem_55_minimalKDof_gen` at the
+  single edge (`hfresh` from a label headroom) and `molecular_conjecture_multigraph` at the double
+  edge; `pencil_realization_theorem` and `pencilPair_of_nonempty` at the star `K₁,₃`; none failed;
+  the dump byte-identical; gate 9 387.
 - [ ] **24. Witnesses, 4: the molecule and Jacobs rows**: `molecule_rank_formula`, `jacobs`,
   `degree_one_rank`, `molecule_generic_square_packing` (its six trees and generic placement
   exhibited). As task 21.
@@ -415,11 +415,11 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 23**, at Opus: the non-vacuity witnesses of the molecular rows (*Lemma checklist*),
-added to `CombinatorialRigidity/Nonvacuity.lean` in tasks 21–22's form (*Decisions*). A witness
-that fails is a new `S` entry for the phase, not a stop. Gates 1–3 (gate 3 adding the new
-witnesses' `#print axioms` beside the eight of `scratch/reconcile-lean/Witnesses-t22.lean`), 5, 6,
-9 and 10 (the parent dump `scratch/reconcile-lean/dump-t22.txt`, gitignored; regenerate it if
+**Next: task 24**, at Opus: the non-vacuity witnesses of the molecule and Jacobs rows (*Lemma
+checklist*), added to `CombinatorialRigidity/Nonvacuity.lean` in tasks 21–23's form (*Decisions*).
+A witness that fails is a new `S` entry for the phase, not a stop. Gates 1–3 (gate 3 adding the new
+witnesses' `#print axioms` beside the twelve of `scratch/reconcile-lean/Witnesses-t23.lean`), 5, 6,
+9 and 10 (the parent dump `scratch/reconcile-lean/dump-t23.txt`, gitignored; regenerate it if
 missing; gate 9 387). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`,
 `F-269`, `F-271`, `F-275` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task
 21) entries for task 38; the three "verified-iterative" for task 26. After the round the queue
@@ -476,13 +476,14 @@ stops before `RECONCILE-FORMAL`, which is attended.
   the kernel stops at core's `List.mergeSort` (`Finset.sort`) and, from a `module` file, at each
   body not `@[expose]`d. The texts name `#eval`, `lake exe` and `native_decide`; the coordinator
   does not queue the route (`F-276`, reported).
-- **The witnesses' form** (tasks 21–22): `Nonvacuity.lean` is not a `module` (the body-bar and
+- **The witnesses' form** (tasks 21–23): `Nonvacuity.lean` is not a `module` (the body-bar and
   molecular rows' files are not). A witness is `CombinatorialRigidity.<name>_witness`
   (`tay_witness`'s: `tay_witness_nonvacuous`), at the smallest input of its row's class where what
   it states is not degenerate (`K₂`; the double edge at $k = 2$; in the plane, as at $n = 1$ a hinge
-  has no bar, the least tight inputs, the triple edge and `K₃`), and states, for an `iff`, the side
-  derived there (of an independent and an isostatic pair, the isostatic), and for an equation or
-  `∃`, the instance and what it gives there. A shared fact about the input is a `private` lemma.
+  has no bar, the triple edge, `K₃`, the single and double edges; for the pencil rows `K₁,₃`, as at
+  degree two the pencil condition is automatic), and states, for an `iff`, the side derived there,
+  and for an equation, `∃` or conditioned pair, what it gives there. A shared fact about the input
+  is a `private` lemma.
 - **The texts' running time and `decide`** (task 20): a text states a running time only as
   measured, naming the script, or claims no bound; and `decide`'s behaviour only as the committed
   script's facts and the ledger's reasons (`F-276`). A claim on the line's subject that a re-`grep`
