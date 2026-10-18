@@ -3555,7 +3555,10 @@ declaration's name as its header writes it:
   "boundary-regime cleanliness".
   *Evidence:* read (the docstrings; `countMatroid`'s signature, `CountMatroid.lean`).
   *Found:* round 2 task 2.8.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* done (task 29): `matroidMG`'s docstring says that `M(G̃)` is the union of `D`
+  copies of the cycle matroid of `G̃`, restricted to `E(G̃)`, and that `countMatroid` does not apply
+  as a matroid on `Sym2 V`; `matroidMG_indep_iff` and `loopless_of_isMinimalKDof` without
+  "boundary regime" and "cleanliness"; reported (`notes/Prose-report.md`, L4).
 - **F-075** · L · `Graph.deficiency_eq_of_cutEdges_ncard_le_one` (`Molecular/Deficiency.lean`): its
   hypothesis `hD : 1 ≤ bodyBarDim n` is unused (the proof discards it, "part of the public API").
   `exists_cut_decomposition_of_not_twoEdgeConnected` and `Graph.deficiency_induce_union_singleton`
@@ -3578,8 +3581,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; the bodies of `circuit_ncard_gt` and
   `deficiency_induce_le_of_ear_of_merge`).
   *Found:* round 2 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hinj` dropped, its caller
-  following, and `lem:deficiency-ear-merge` restated for a walk (task 10).
+  *Disposition:* done (task 29): `_hinj` dropped, its caller following, and
+  `lem:deficiency-ear-merge` restated for a walk (task 10); `isSparse_diff_singleton_of_isCircuit`'s
+  docstring names `lem:circuit-induces-rigid` and `circuit_ncard_gt` for the rest of KT Lemma 3.4,
+  and `matroidMG_restrict_mulTilde`'s names its node (task 29); reported
+  (`notes/Prose-report.md`, L6).
 - **F-080** · L · docstrings in `Molecular/Deficiency.lean` around `thm:def-eq-corank`:
   `isBase_ncard_add_deficiency_eq`'s says that it "closes" `prop:rigidity-matrix-prop11`, which
   `rigidityMatrix_prop11` (`AlgebraicInduction/PanelHinge.lean`) proves; `rank_add_deficiency_le`'s
@@ -3694,7 +3700,8 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, L7); round 3: `chainData_extract` without
   `hV3` and `[G.Simple]`, both derived in its body, `chainWalk_charging` without the three, and
   `isKDof_zero_of_triangle` proved as the case $m = 3$ of `isKDof_zero_of_cycle`, after it in the
-  file; `lem:chain-data-extract` restated without simplicity, and `F-270` (task 11).
+  file; `lem:chain-data-extract` restated without simplicity, and `F-270` (task 11);
+  `Deficiency.lean`'s cycle and triangle sections without "ENTRY leaf E2c" and "brick" (task 29).
 - **F-114** · L · the pins of `meet.tex` (`Molecular/Meet.lean`): the file's header lists
   `meet_ne_zero_iff` and "the geometric reading" as deliverables, which no declaration provides, and
   narrates phases, commits and design codes ("this commit", "route (ii)", "N3b-2b-α", "CHAIN-3",
@@ -4110,7 +4117,8 @@ declaration's name as its header writes it:
   *Found:* round 4 task 2.9.
   *Disposition:* reported (`notes/Prose-report.md`, L4); round 3: `GenericRigidityMatroid.lean`'s
   abundance lemma without "Phase 34 PROSPECT G3" (its credit dropped, as the node gives none)
-  (task 28).
+  (task 28); `Molecular/Deficiency.lean`'s header without the year 2009 (task 29), the rest of
+  that file task 29.1's.
 
 - **F-215** · L · the docstrings of task 2.10's pins (`BodyBar/GenericLift.lean`).
   `exists_isGenericEndpoints_abundance` calls its polynomial one "in the `2n|E(G)|` endpoint
@@ -4226,7 +4234,11 @@ declaration's name as its header writes it:
   says `def:graph-operations`, though its pin is at `def:induced-span`.
   *Evidence:* read (the docstrings).
   *Found:* round 5 task 3.4.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: in `Molecular/Deficiency.lean`,
+  the leads of `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` name
+  `lem:two-edge-connected-degree`, that of `partitionDef_split_of_sides`
+  `lem:separated-partition-value`, and the three `cutLabeling` helpers are steps of
+  `lem:two-edge-connected-degree` (task 29); `inducedSpan`'s is task 30's.
 - **F-236** · L · the declarations round 5's task 3.5 moved or unpinned
   (`Molecular/Induction/ForestSurgery/Reduction.lean`, `Molecular/Induction/ReducibleVertex.lean`,
   `Molecular/Induction/Operations.lean`). The section header before
@@ -4280,7 +4292,10 @@ declaration's name as its header writes it:
   name no node (now `lem:splitoff-simple` and `lem:independent-rows-of-rank`).
   *Evidence:* read (the docstrings and the section header).
   *Found:* round 5 task 3.8.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: in `Molecular/Deficiency.lean`,
+  the section header and the lead of `isKDof_zero_of_triangle` name `lem:splitoff-simple` (task
+  29); the docstrings in `Induction/Operations.lean` are task 30's, and
+  `exists_independent_panelRow_subfamily_of_le_finrank`'s task 34's.
 - **F-241** · L · the declarations round 5's task 3.9 pinned (`CaseIII/Candidate.lean`). The
   docstrings of `exists_redundant_panelRow_ab_lam_of_rigidOn` and of its caller
   `exists_candidateRow_bottomRows_of_rigidOn` name `lem:case-III-claim612-r`, a label the blueprint
@@ -4606,6 +4621,15 @@ declaration's name as its header writes it:
   `SquareGraph.lean`, `square_mono` and `three_le_ncard_closedNeighborSet_of_two_le_degree`, whose
   docstrings said the proof of `thm:jacobs` and the square-graph dictionary use them (no
   declaration does; the cache at `0819b42e`).
+- **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
+  (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
+  `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
+  the second's `hne : V₁.Nonempty` is used only for `Nonempty α`, which `hssub : V₁ ⊂ V(G)` gives.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness, the first called with
+  `by omega` for `hD` and a copy of the second without `hne` that elaborates with the same proof
+  (`scratch/reconcile-lean/Hyps-t29.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 29.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 
@@ -4683,8 +4707,8 @@ declaration's name as its header writes it:
   polymatroid rank formula to Edmonds and Rota with Oxley's numbers as Oxley's, the union to
   Nash-Williams, its rank formula to Nash-Williams and Edmonds, and Edmonds 1965's Theorem 1 as
   the partition criterion (`Union_pow_indep_iff_count`), as `TreePacking.lean`'s
-  `Union_pow_rank_eq` now does (task 27); `Molecular/Deficiency.lean`'s "Edmonds matroid-partition
-  rank formula" (2593–2821) is task 29's.
+  `Union_pow_rank_eq` now does (task 27); `Molecular/Deficiency.lean`'s header without "the
+  Edmonds-optimal `Y₀`" (task 29); its "Edmonds matroid-partition rank formula" is task 29.1's.
 - **F-081** · M · the credit for KT eq. (2.4), $\operatorname{rank} M(\tilde G) +
   \operatorname{def}(\tilde G) = D(|V|-1)$ (`thm:def-eq-corank`): the blueprint credited it to
   Jackson and Jordán's Theorem 6.1, "whose Corollary 6.2" is the deficiency-zero case. JJ 2009's
@@ -4699,7 +4723,9 @@ declaration's name as its header writes it:
   and 6.3, about realizations, for KT Proposition 2.2 at $\tilde G$).
   *Evidence:* read (JJ 2009 pp. 580–583; KT 2011 pp. 655–656; both in `.refs/`; the docstrings).
   *Found:* round 2 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, M4).
+  *Disposition:* reported (`notes/Prose-report.md`, M4); round 3: `Molecular/Deficiency.lean`'s
+  header credits KT eq. (2.4), without "Jackson–Jordán 2009 Thm 6.1 / Cor 6.2" (task 29); the
+  docstrings of the four declarations are task 29.1's.
 - **F-118** · M · the route of Cases I–III (`algebraic-induction/case-i.tex` … `case-iii.tex`): the
   prose presents as steps of the induction several nodes that no main result's proof takes. Every
   pin of these nodes lies outside every main result's closure, and the pins of the live nodes that

@@ -10,98 +10,54 @@ import Matroid.Graph.Tree
 /-!
 # The matroid `M(G̃)`, deficiency, and `k`-dof graphs (`sec:molecular-deficiency`)
 
-Phase 19, the third phase of the molecular-conjecture program (Phases 17–26; see
-`notes/MolecularConjecture.md`). Where `Molecular/RigidityMatrix.lean` (Phase 18)
-built the *analytic* side — the panel-hinge rigidity matrix `R(G,p)`, its rank,
-and the three rank lemmas — this file builds the *matroidal* side: the matroid
-`M(G̃)`, the `D`-deficiency, the `k`-degree-of-freedom hierarchy, rigid subgraphs,
-and the bridge `def(G̃) = corank M(G̃)` of Katoh–Tanigawa 2011
-(*A proof of the molecular conjecture*, Discrete Comput. Geom. **45**, §2.5, §3).
+The combinatorics of Katoh–Tanigawa 2011 (*A proof of the molecular conjecture*, Discrete Comput.
+Geom. **45**, §2.5 and §3) on the multigraph `G̃ = (D-1)·G` of a multigraph `G`, in which each edge
+of `G` is repeated `D - 1` times (`mulTilde`), with `D = bodyBarDim n`. The blueprint presents the
+file in `sec:molecular-deficiency`, except the structure of tight partitions
+(`sec:jacobs-tight-partitions`), the triangle (`isKDof_zero_of_triangle`,
+`sec:simplicity-and-adjacent-pair`), and `partitionDef_map` and `deficiencyMerged_le_deficiency`
+(`sec:main-component-sparse`).
 
-This file lands the `sec:molecular-deficiency` dep-graph in dependency order. The
-leaf node landing here:
+## Main definitions
 
-* `matroidMG` (`def:matroid-MG`) — the matroid `M(G̃)`, where `G̃ = (D-1)·G` is the
-  multiplied graph of Phase 16 (`Graph.edgeMultiply`, with `D = bodyBarDim n` so
-  `D - 1 = bodyHingeMult n`). `M(G̃)` is the `(D,D)`-count matroid of `G̃` at the
-  **boundary regime** `ℓ = 2k = D`: the `D`-fold union of the cycle (graphic)
-  matroid of `G̃`, restricted to `E(G̃)`. This is *not* covered by the
-  matroidal-regime construction of `CountMatroid.lean` (built for `ℓ < 2k`);
-  `M(G̃)` is instead the `D`-fold graphic-matroid union of Phases 13/14, whose
-  independence characterization is Tutte–Nash-Williams tree-packing.
-* `matroidMG_indep_iff` (`def:matroid-MG`, the boundary-regime cleanliness check) —
-  confirms the boundary regime is clean before the rest of the chapter relies on
-  it: a bar set `E'` is independent in `M(G̃)` iff `E' ⊆ E(G̃)` and the
-  edge-restricted subgraph `G̃ ↾ E'` is `(D,D)`-sparse, equivalently (by
-  Tutte–Nash-Williams, `tutte_nash_williams`) decomposes into `D` edge-disjoint
-  forests. The forward route is `unionPow_cycleMatroid_indep_iff_isSparse_restrict`
-  (Phase 13) under matroid restriction `Matroid.restrict_indep_iff`.
-* `partitionDef` / `deficiency` (`def:D-deficiency`) — the `D`-deficiency of a partition
-  `P` of `V(G)`, `def(P) = D(|P| - 1) - (D-1)·d_G(P)`, and `def = max_P def(P)`. Partitions
-  are encoded as labelings `f : α → α` (the fibers are the parts); `numParts` counts the
-  parts `|P| = |f '' V(G)|` and `crossingEdges` collects the edges `d_G(P)` joining distinct
-  parts. The deficiency is `ℤ`-valued (genuinely signed) and `≥ 0` by the trivial one-part
-  partition (`partitionDef_one`). `exists_normalized_labeling` re-labels any partition so that its
-  labels are vertices of `G` and the vertices outside `V(G)` are their own labels, keeping its parts
-  and crossing edges (the normalization the relative hub of `AlgebraicInduction/PanelLayer.lean`
-  uses).
+* `Graph.matroidMG` — the matroid `M(G̃)`, the union of `D` copies of the cycle matroid of `G̃`,
+  restricted to `E(G̃)` (`def:matroid-MG`).
+* `Graph.partitionDef`, `Graph.deficiency` — the `D`-deficiency `D(|P| - 1) - (D-1)·d_G(P)` of a
+  partition `P` of `V(G)`, and its largest value `def(G̃)` (`def:D-deficiency`). A partition is a
+  labeling `f : α → α`, whose parts are the sets of vertices of `G` with a common label
+  (`fmlnote:partition-labeling`): `numParts` counts the parts, and `crossingEdges` is the set of
+  edges whose ends get different labels.
+* `Graph.IsKDof`, `Graph.IsMinimalKDof`, `Graph.edgeFiber` — the `k`-dof-graphs, with
+  `def(G̃) = k`, and the minimal ones, in which every base of `M(G̃)` meets the `D - 1` copies of
+  each edge (`def:k-dof`).
+* `Graph.IsRigidSubgraph`, `Graph.IsProperRigidSubgraph` (`def:rigid-subgraph`);
+  `Graph.cutEdges`, `Graph.TwoEdgeConnected` (`def:cut-edges-2ec`); `Graph.IsTightPartition`
+  (`def:tight-partition`); `Graph.deficiencyMerged` (`def:deficiency-merged`).
 
-* `IsKDof` / `IsMinimalKDof` / `edgeFiber` (`def:k-dof`) — `G` is a `k`-dof-graph
-  when `def(G̃) = k`; minimal when additionally every base of `M(G̃)` meets every
-  edge-fiber `ẽ` (the `D-1` parallel copies of `e ∈ E(G)`).
-* `IsRigidSubgraph` / `IsProperRigidSubgraph` (`def:rigid-subgraph`) — a subgraph
-  `H ≤ G` is *rigid* when it is `0`-dof, *proper rigid* when additionally
-  `2 ≤ |V(H)|` and `V(H) ⊊ V(G)` (KT p. 659's `1 < |V′|`; without the lower bound a
-  single vertex is vacuously rigid and "no proper rigid subgraph" is unsatisfiable).
-  A *circuit* of `M(G̃)` is `Matroid.IsCircuit (G.matroidMG n)`.
-* `matroidMG_restrict_mulTilde` (`lem:matroid-restrict-subgraph`) — the engine of
-  KT Lemma 3.3: `M(G̃) ↾ E(H̃) = M(H̃)` for `H ≤ G`, via `Matroid.ext_indep` through
-  `matroidMG_indep_iff` (so it never touches the `Matroid.Union` internals).
-* `subgraph_minimality` (`lem:subgraph-minimality`, KT Lemma 3.3) — a subgraph
-  `H ≤ G` of a minimal `k`-dof-graph `G`, with `def(H̃) = k'`, is a minimal
-  `k'`-dof-graph. The base/fiber-meeting minimality transports from `G` to `H` over
-  the restriction identity: a base `B'` of `M(H̃) = M(G̃) ↾ E(H̃)` extends to a base
-  `B` of `M(G̃)` with `B' = B ∩ E(H̃)`, and each fiber `ẽ` of `e ∈ E(H) ⊆ E(G)` lies
-  in `E(H̃)`, so `B ∩ ẽ ≠ ∅` (from `G`'s minimality) descends to `B' ∩ ẽ ≠ ∅`.
+## Main results
 
-* `two_le_crossingEdges_of_isKDof_zero` (`lem:two-edge-conn`, KT Lemma 3.1) — a
-  body-hinge-rigid (`0`-dof) graph is `2`-edge-connected, in cut form: any nonempty
-  proper `V' ⊊ V(G)` separating `V(G)` has `d_G(V') ≥ 2`. (Mathlib has no
-  edge-connectivity predicate for `Graph α β`, so the conclusion is the cut form KT's
-  proof uses.) The bridge cut `{V', V∖V'}` (a two-part partition, `cutLabeling` /
-  `numParts_cutLabeling`) would otherwise witness `def ≥ D - (D-1)·d_G(V') ≥ 1 > 0`
-  through `partitionDef_le_deficiency`, contradicting `def = 0`.
-
-* `rank_matroidMG_le` (`lem:rank-matroidMG-le`, the conjecture-relevant half of
-  `thm:def-eq-corank`) — the rank upper bound `rank M(G̃) ≤ D·(|V(G)| - 1)` for
-  `V(G).Nonempty`. Every base is `(D,D)`-sparse (boundary-regime cleanliness), so
-  applying sparsity to the base itself gives `|B| + D ≤ D·|spanningVerts B| ≤ D·|V|`,
-  i.e. `|B| ≤ D(|V|-1)`. This is the matroidal mirror of Phase 18's analytic
-  `rank R(G,p) ≤ D(|V|-1)`; it is the upper-bound half the molecular conjecture
-  (Thm 5.6) needs from the def = corank bridge — the reverse direction of the full
-  Jackson–Jordán min–max identity (the partition attaining the rank) is deferred until
-  a downstream node needs the full equality (risk #4, prove-vs-hypothesize).
-
-* `isSparse_diff_singleton_of_isCircuit` (`lem:circuit-rigid`, KT Lemma 3.4 matroidal
-  core) — for a circuit `X` of `M(G̃)` and `e ∈ X`, the set `X \ {e}` is `(D,D)`-sparse,
-  equivalently an `M(G̃)`-basis of `X`: a circuit is exactly one edge short of being
-  independent on its span. This is the upper-bound / maximal-sparse-subset form that KT's
-  fundamental-circuit arguments (Phases 21–22) consume; the full `G[V(X)]`-is-rigid
-  (`def = 0`, tightness *equality*) conclusion is `Graph.circuit_induces_isTight` /
-  `Graph.circuit_induces_isRigidSubgraph` (`lem:circuit-induces-rigid`,
-  `Molecular/Induction/Operations.lean`, Phase 20), built on the vertex-induced-subgraph
-  construction `Graph.inducedSpan` there.
-
-* `rank_add_deficiency_eq` / `isBase_ncard_add_deficiency_eq` (`thm:def-eq-corank`;
-  Jackson–Jordán 2009 Thm 6.1 / Cor 6.2) — the **def = corank bridge**
-  `rank M(G̃) + def(G̃) = D(|V| - 1)` (equivalently `|B| + def(G̃) = D(|V| - 1)` for any
-  base `B`), the `le_antisymm` of weak duality `rank_add_deficiency_le` (`def ≤ corank`) and
-  its reverse `le_rank_add_deficiency` (`def ≥ corank`, the substantive JJ09 min–max content:
-  the partition into the connected components of `G̃ ↾ Y₀`, for the Edmonds-optimal `Y₀`,
-  attains the rank). Axiom-free.
-
-See `ROADMAP.md` §19 / `notes/Phase19.md` and the `sec:molecular-deficiency`
-dep-graph of `blueprint/src/chapter/deficiency.tex`.
+* `Graph.matroidMG_indep_iff` — a set `F` is independent in `M(G̃)` iff `F ⊆ E(G̃)` and `G̃ ↾ F` is
+  `(D, D)`-sparse (`def:matroid-MG`).
+* `Graph.rank_add_deficiency_eq`, `Graph.isBase_ncard_add_deficiency_eq` — KT eq. (2.4),
+  `rank M(G̃) + def(G̃) = D(|V(G)| - 1)` for `D ≥ 1` and `V(G)` nonempty (`thm:def-eq-corank`),
+  from weak duality (`rank_add_deficiency_le`) and its reverse (`le_rank_add_deficiency`).
+* `Graph.deficiency_eq_zero_iff_exists_spanningTrees` — KT Proposition 2.2: for `D ≥ 2` and
+  `V(G)` nonempty, `def(G̃) = 0` iff `G̃` contains `D` edge-disjoint spanning trees
+  (`lem:deficiency-zero-iff-tree-packing`).
+* `Graph.two_le_crossingEdges_of_isKDof_zero`, `Graph.twoEdgeConnected_of_isKDof_zero` — KT
+  Lemma 3.1, a `0`-dof-graph is `2`-edge-connected (`lem:two-edge-conn`,
+  `lem:two-edge-connected-degree`).
+* `Graph.subgraph_minimality` — KT Lemma 3.3 (`lem:subgraph-minimality`).
+* `Graph.isSparse_diff_singleton_of_isCircuit` — the first step of KT Lemma 3.4
+  (`lem:circuit-rigid`).
+* `Graph.deficiency_eq_of_cutEdges_ncard_le_one` — KT Lemma 3.6, the deficiency at a cut of at
+  most one edge (`lem:cut-edge-decomposition`).
+* `Graph.deficiency_eq_add_of_cutVertex` — the deficiency at a cut vertex
+  (`lem:deficiency-cut-vertex`).
+* `Graph.exists_isMinimalKDof_spanning_subgraph` — a minimal spanning subgraph of the same
+  deficiency (`lem:minimal-kdof-spanning-subgraph`).
+* `Graph.isMinimalKDof_ncard_le_two_trichotomy` — the minimal `k`-dof-graphs with at most two
+  vertices (`lem:two-vertex-trichotomy`).
 -/
 
 namespace Graph
@@ -110,59 +66,49 @@ open Set Matroid
 
 variable {α β : Type*}
 
-/-- The **multiplied graph** `G̃ = (D-1)·G` of the molecular conjecture
-(`def:matroid-MG`), where `D = bodyBarDim n`. Each hinge (edge) of `G` is replaced
-by the `D - 1 = bodyHingeMult n` parallel copies that the body-hinge reduction of
-Phase 16 attaches to it (`Graph.edgeMultiply`); the edge type becomes
-`β × Fin (bodyHingeMult n)`. This is the graph the matroid `M(G̃)` lives over. -/
+/-- The **multiplied graph** `G̃ = (D-1)·G` (the multigraph of `def:matroid-MG`), where
+`D = bodyBarDim n`: each edge of `G` is replaced by `D - 1 = bodyHingeMult n` parallel copies
+(`Graph.edgeMultiply`, `def:edge-multiply`), so the edge type is `β × Fin (bodyHingeMult n)`. The
+matroid `M(G̃)` is a matroid on its edges. -/
 def mulTilde (G : Graph α β) (n : ℕ) : Graph α (β × Fin (bodyHingeMult n)) :=
   G.edgeMultiply (bodyHingeMult n)
 
 /-- **Edge-set membership of `G̃ = (D-1)·G`** (`def:matroid-MG`): a copy `p` is an edge of
-the multiplied graph iff its underlying hinge `p.1` is an edge of `G`. The fused mirror of
-the `mulTilde`/`edgeMultiply_edgeSet`/`Set.mem_setOf_eq` unfold tower; tagged `@[simp]` so a
-bare `simp` reaches through the `mulTilde` `def` wrapper that does not unfold on its own. -/
+the multiplied graph iff its underlying edge `p.1` is an edge of `G`. It fuses the unfolding of
+`mulTilde`, `edgeMultiply_edgeSet` and `Set.mem_setOf_eq`; it is `@[simp]` so that `simp` sees
+through `mulTilde`, which does not unfold on its own. -/
 @[simp]
 lemma mem_edgeSet_mulTilde (G : Graph α β) (n : ℕ) {p : β × Fin (bodyHingeMult n)} :
     p ∈ E(G.mulTilde n) ↔ p.1 ∈ E(G) := Iff.rfl
 
 /-- **Incidence of `G̃ = (D-1)·G`** (`def:matroid-MG`): the copy `p` links `x` and `y` in the
-multiplied graph iff its underlying hinge `p.1` links them in `G`. The fused mirror of the
-`mulTilde`/`edgeMultiply_isLink` unfold pair; `@[simp]` for the same wrapper reason as
-`mem_edgeSet_mulTilde`. -/
+multiplied graph iff its underlying edge `p.1` links them in `G`. It fuses the unfolding of
+`mulTilde` and `edgeMultiply_isLink`; `@[simp]` for the same reason as `mem_edgeSet_mulTilde`. -/
 @[simp]
 lemma mulTilde_isLink (G : Graph α β) (n : ℕ) {p : β × Fin (bodyHingeMult n)} {x y : α} :
     (G.mulTilde n).IsLink p x y ↔ G.IsLink p.1 x y := Iff.rfl
 
-/-- The **matroid `M(G̃)`** (`def:matroid-MG`; Katoh–Tanigawa 2011 §2.5): the
-`(D,D)`-count matroid of the multiplied graph `G̃ = (D-1)·G` at the boundary regime
-`ℓ = 2k = D` with `D = bodyBarDim n`. Concretely it is the `D`-fold union of the
-cycle (graphic) matroid of `G̃`, restricted to the edge set `E(G̃)`.
+/-- The **matroid `M(G̃)`** (`def:matroid-MG`; Katoh–Tanigawa 2011 §2.5, p. 655): the union of
+`D = bodyBarDim n` copies of the cycle matroid of the multiplied graph `G̃ = (D-1)·G`
+(`Matroid.Union (fun _ : Fin D ↦ (G̃).cycleMatroid)`), restricted to the edge set `E(G̃)`. KT
+define `M(G̃)` as the matroid induced by `F ↦ D(|V(F)| - 1)` and remark that it is this union. Its
+independent sets are the sets `F` with `G̃ ↾ F` `(D, D)`-sparse (`matroidMG_indep_iff`). The count
+matroid of `CountMatroid.lean` does not apply: it is a matroid on `Sym2 V`, the edges of a simple
+graph, and `G̃` has parallel edges.
 
-This is the matroidal substrate of the molecular-conjecture program. The boundary
-regime `ℓ = 2k = D` is *not* the matroidal regime `ℓ < 2k` of `CountMatroid.lean`;
-`M(G̃)` is built instead from the `D`-fold graphic-matroid union of Phases 13/14
-(`Matroid.Union (fun _ : Fin D ↦ (G̃).cycleMatroid)`), whose independence
-characterization is Tutte–Nash-Williams tree-packing. The restriction `↾ E(G̃)` is
-forced exactly as in Phase 14's `kFrameMatroid`: the vendored `Matroid.Union` has
-ground set `univ : Set (β × Fin (bodyHingeMult n))`, so without the restriction
-every non-edge would be a loop. -/
+`Matroid.Union` is a matroid on all of `β × Fin (bodyHingeMult n)`, in which a pair outside `E(G̃)`
+is a loop; the restriction to `E(G̃)` removes those pairs, as for `kFrameMatroid`
+(`fmlnote:k-frame-union-restriction`). -/
 noncomputable def matroidMG [DecidableEq β] (G : Graph α β) (n : ℕ) :
     Matroid (β × Fin (bodyHingeMult n)) :=
   (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)) ↾ E(G.mulTilde n)
 
-/-- **Boundary-regime cleanliness** of `M(G̃)` (`def:matroid-MG`): a bar set `E'` is
-independent in `M(G̃)` if and only if `E' ⊆ E(G̃)` and the edge-restricted subgraph
-`G̃ ↾ E'` is `(D,D)`-sparse, with `D = bodyBarDim n` and `G̃ = (D-1)·G`. This
-confirms — as the first formalization step of Phase 19 — that the boundary regime
-`ℓ = 2k = D` is clean before the rest of the chapter relies on it: the independent
-sets of `M(G̃)` are exactly the `(D,D)`-sparse subsets of `G̃`.
-
-By Tutte–Nash-Williams (`tutte_nash_williams`, applied to `G̃ ↾ E'`) these are
-equivalently the bar subsets that decompose into `D` edge-disjoint forests. The
-proof unfolds the restriction (`Matroid.restrict_indep_iff`) and feeds the
-`D`-fold cycle-matroid union to Phase 13's
-`unionPow_cycleMatroid_indep_iff_isSparse_restrict`. -/
+/-- **The independent sets of `M(G̃)`** (`def:matroid-MG`): a set `E'` is independent in `M(G̃)`
+if and only if `E' ⊆ E(G̃)` and the multigraph `G̃ ↾ E'` is `(D, D)`-sparse, with
+`D = bodyBarDim n` and `G̃ = (D-1)·G`. By `tutte_nash_williams`, applied to `G̃ ↾ E'`, these are
+the sets that are the union of `D` edge-disjoint forests. The proof unfolds the restriction
+(`Matroid.restrict_indep_iff`) and applies `unionPow_cycleMatroid_indep_iff_isSparse_restrict`
+to the union of `D` copies of the cycle matroid of `G̃`. -/
 theorem matroidMG_indep_iff [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
     {E' : Set (β × Fin (bodyHingeMult n))} :
     (G.matroidMG n).Indep E' ↔ E' ⊆ E(G.mulTilde n) ∧ ((G.mulTilde n) ↾ E').IsSparse
@@ -174,13 +120,10 @@ theorem matroidMG_indep_iff [DecidableEq β] [Finite α] [Finite β] (G : Graph 
   · rintro ⟨hsub, hsparse⟩
     exact ⟨(unionPow_cycleMatroid_indep_iff_isSparse_restrict hsub).mpr hsparse, hsub⟩
 
-/-- The `(D,D)`-sparsity of a bar set `E'` inside the edge-restriction `G̃ ↾ S` agrees
-with its `(D,D)`-sparsity inside `H̃ ↾ S` whenever `H ≤ G` and `S` lies within `E(H̃)`:
-restriction to a fiber subset of the smaller graph cannot see the difference between
-`H` and `G`. The edge sets coincide (`E(G̃ ↾ S) = S = E(H̃ ↾ S)`) and the spanned-vertex
-counts coincide because the incidences of an edge `e ∈ E' ⊆ E(H̃)` agree under the
-subgraph relation. This is the `IsSparse`-level engine of the matroid-restriction
-identity `matroidMG_restrict_mulTilde`. -/
+/-- A step of `lem:matroid-restrict-subgraph`: for `H ≤ G` and a set `E'` of edges of `H̃` (inside
+a set `S ⊆ E(H̃)`), `G̃ ↾ E'` is `(D, D)`-sparse iff `H̃ ↾ E'` is. The two multigraphs have the
+edge set `E'`, and an edge of `E'` has the same ends in `G̃` as in `H̃`, so each set of edges spans
+the same vertices in both. -/
 private theorem isSparse_restrict_mulTilde_congr {H G : Graph α β} (h : H ≤ G) (n : ℕ)
     {S : Set (β × Fin (bodyHingeMult n))} (hS : S ⊆ E(H.mulTilde n)) {E' : Set _} (hE' : E' ⊆ S) :
     ((G.mulTilde n) ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n) ↔
@@ -210,14 +153,11 @@ private theorem isSparse_restrict_mulTilde_congr {H G : Graph α β} (h : H ≤ 
     rw [hspan Y hYE']
     exact hsp Y (hYsub.trans_eq hedge) hYne
 
-/-- **Matroid restriction descends to subgraphs** (`lem:subgraph-minimality`, engine):
-for `H ≤ G`, restricting `M(G̃)` to the edge set `E(H̃)` of the smaller multiplied graph
-recovers `M(H̃)`, `M(G̃) ↾ E(H̃) = M(H̃)`. This is the matroid identity Katoh–Tanigawa's
-Lemma 3.3 runs on: matroid restriction commutes with the `D`-fold cycle-matroid union
-construction. Proved by `Matroid.ext_indep`, routing both sides through the
-boundary-regime characterization `matroidMG_indep_iff` (an `E'` is independent in either
-matroid iff it is `(D,D)`-sparse, and those sparsities agree by
-`isSparse_restrict_mulTilde_congr`). -/
+/-- **The matroid of a subgraph is a restriction** (`lem:matroid-restrict-subgraph`): for `H ≤ G`,
+restricting `M(G̃)` to the edge set `E(H̃)` gives `M(H̃)`, `M(G̃) ↾ E(H̃) = M(H̃)`. Katoh and
+Tanigawa's proof of their Lemma 3.3 (p. 657) starts from it. By `Matroid.ext_indep`: a set
+`E' ⊆ E(H̃)` is independent in either matroid iff its restriction is `(D, D)`-sparse
+(`matroidMG_indep_iff`), and the two conditions agree (`isSparse_restrict_mulTilde_congr`). -/
 theorem matroidMG_restrict_mulTilde [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
     (h : H ≤ G) (n : ℕ) :
     (G.matroidMG n) ↾ E(H.mulTilde n) = H.matroidMG n := by
@@ -233,52 +173,49 @@ theorem matroidMG_restrict_mulTilde [DecidableEq β] [Finite α] [Finite β] {H 
       exact ⟨⟨hsub.trans hground, (isSparse_restrict_mulTilde_congr h n subset_rfl hsub).mpr
         hsparse⟩, hsub⟩
 
-/-! ## `D`-deficiency (`def:D-deficiency`)
+/-! ## The `D`-deficiency (`def:D-deficiency`)
 
-A *partition* `P` of `V(G)` is encoded by a labeling `f : α → α` (the kernel of `f`,
-i.e. its fibers, give the parts; vertices outside `V(G)` are irrelevant). The
-*number of parts* `|P|` is the number of distinct `f`-labels carried by the
-vertices of `G`, `|f '' V(G)|`, and the *crossing-edge count* `d_G(P)` is the
-number of edges of `G` whose two endpoints receive different labels. KT's
-`def_{\tilde G}(P) = D(|P| - 1) - (D-1)·d_G(P)` (`D = bodyBarDim n`) is genuinely
-signed — a fine partition crossing many edges has *negative* deficiency — so it is
-`ℤ`-valued; the deficiency `def(\tilde G) = max_P def_{\tilde G}(P)` takes the
-maximum and is `≥ 0` (witnessed by the trivial one-part partition, `partitionDef_one`). -/
+A *partition* `P` of `V(G)` is a labeling `f : α → α`: its parts are the sets of vertices of `G`
+with a common label, and the labels of the vertices outside `V(G)` do not matter
+(`fmlnote:partition-labeling`). The number of parts `|P|` is the number `|f '' V(G)|` of labels on
+`V(G)`, and `d_G(P)` is the number of edges of `G` whose ends get different labels. KT's
+`def_{G̃}(P) = D(|P| - 1) - (D-1)·d_G(P)` (`D = bodyBarDim n`) is negative for a partition into
+many parts crossed by many edges, so it is `ℤ`-valued. The deficiency `def(G̃)` is its supremum
+over the labelings, attained when `α` is finite, and `≥ 0` when `V(G)` is nonempty (the partition
+into one part has value `0`, `partitionDef_one`). -/
 
-/-- The number of edges of `G` **crossing** the partition `P` (encoded by a labeling
-`f : α → α`): edges `e ∈ E(G)` with endpoints `x, y` such that `f x ≠ f y`. This is
-`d_G(P)` in Katoh–Tanigawa 2011 §2.5. Counted with `Set.ncard` to match the project's
-edge-counting idiom. -/
+/-- The set of edges of `G` **crossing** the partition `P` encoded by a labeling `f : α → α`: the
+edges `e ∈ E(G)` with ends `x, y` such that `f x ≠ f y`. This is Katoh and Tanigawa's `δ_G(P)`
+(2011, p. 654), and its size is the `d_G(P)` of `def:D-deficiency`. -/
 def crossingEdges (G : Graph α β) (f : α → α) : Set β :=
   {e ∈ E(G) | ∃ x y, G.IsLink e x y ∧ f x ≠ f y}
 
 /-- The number of **parts** `|P|` of the partition of `V(G)` encoded by a labeling
-`f : α → α`: the number of distinct labels carried by the vertices of `G`,
-`|f '' V(G)|`. -/
+`f : α → α`: the number `|f '' V(G)|` of distinct labels of the vertices of `G`. -/
 noncomputable def numParts (G : Graph α β) (f : α → α) : ℕ := (f '' V(G)).ncard
 
-/-- The **`D`-deficiency** of a partition `P` of `V(G)` (`def:D-deficiency`;
-Katoh–Tanigawa 2011 §2.5): `def_{\tilde G}(P) = D(|P| - 1) - (D-1)·d_G(P)`, with
-`D = bodyBarDim n`, `|P| = numParts G f` the number of parts, and `d_G(P) =
-|crossingEdges G f|` the number of edges crossing `P`. `ℤ`-valued because the
-quantity is genuinely signed (a fine partition crossing many edges is negative). -/
+/-- The **`D`-deficiency** of a partition `P` of `V(G)` (`def:D-deficiency`; Katoh–Tanigawa 2011
+§2.5, p. 655): `def_{G̃}(P) = D(|P| - 1) - (D-1)·d_G(P)`, with `D = bodyBarDim n`,
+`|P| = numParts G f` the number of parts, and `d_G(P) = |crossingEdges G f|` the number of edges
+crossing `P`. It is `ℤ`-valued, as it is negative for a partition crossed by many edges. -/
 noncomputable def partitionDef (G : Graph α β) (n : ℕ) (f : α → α) : ℤ :=
   (bodyBarDim n : ℤ) * ((G.numParts f : ℤ) - 1)
     - (bodyBarDim n - 1 : ℤ) * (G.crossingEdges f).ncard
 
-/-- The **`D`-deficiency** of `\tilde G` (`def:D-deficiency`; Katoh–Tanigawa 2011 §2.5):
-`def(\tilde G) = max_P def_{\tilde G}(P)`, the maximum of `partitionDef` over all
-partitions `P` of `V(G)`. Partitions are quantified as labelings `f : α → α`; over the
-`ConditionallyCompleteLinearOrder` `ℤ` the supremum is taken with `iSup`, and under
-`[Finite α]` it is a finite supremum, hence attained, bounded, and `≥ 0` (the trivial
-one-part partition, `partitionDef_one`, witnesses `0`). It measures how far `\tilde G`
-is from being independently realizable as a rigid body-hinge framework. -/
+/-- The **`D`-deficiency** of `G̃` (`def:D-deficiency`; Katoh–Tanigawa 2011 §2.5, p. 655):
+`def(G̃) = max_P def_{G̃}(P)`, the largest value of `partitionDef` over the partitions `P` of
+`V(G)`. The partitions are the labelings `f : α → α`, and the maximum is the `iSup` in the
+`ConditionallyCompleteLinearOrder` `ℤ`. When `α` is finite there are finitely many labelings, so
+the supremum is attained (`partitionDef_le_deficiency`); when moreover `V(G)` is nonempty it is
+`≥ 0` (`deficiency_nonneg`). By Jackson and Jordán's rank formula (KT Proposition 2.3,
+`prop:rigidity-matrix-prop11`), a generic body-hinge realization of `G` has `def(G̃)` degrees of
+freedom. -/
 noncomputable def deficiency (G : Graph α β) (n : ℕ) : ℤ :=
   ⨆ f : α → α, G.partitionDef n f
 
-/-- The trivial one-part partition (every vertex labeled identically) crosses no edge
-and has a single part, so its `D`-deficiency is `0`. This is the witness that
-`def(\tilde G) ≥ 0`. -/
+/-- The partition into one part (every vertex labeled `a`) of a graph with a vertex crosses no
+edge and has a single part, so its `D`-deficiency is `0`. This gives `def(G̃) ≥ 0`
+(`deficiency_nonneg`). -/
 theorem partitionDef_one (G : Graph α β) (n : ℕ) (a : α) (hne : V(G).Nonempty) :
     G.partitionDef n (fun _ => a) = 0 := by
   have hcross : G.crossingEdges (fun _ => a) = ∅ := by
@@ -294,48 +231,43 @@ theorem partitionDef_one (G : Graph α β) (n : ℕ) (a : α) (hne : V(G).Nonemp
   rw [partitionDef, hcross, hparts]
   simp
 
-/-- Under `[Finite α]` the partition-deficiency function `f ↦ def_{\tilde G}(P_f)` ranges
-over a finite set (its domain `α → α` is finite), hence its range is bounded above. This
-is what makes the `iSup`-form `deficiency` a genuine (attained) finite maximum rather than
-the junk value `iSup` returns on an unbounded family; it feeds `le_ciSup` in
-`partitionDef_le_deficiency`. -/
+/-- When `α` is finite, the function `f ↦ def_{G̃}(P_f)` on the labelings takes finitely many
+values (its domain `α → α` is finite), so its range is bounded above. So `deficiency`, an `iSup`,
+is a maximum and not the value `iSup` takes on a family unbounded above:
+`partitionDef_le_deficiency` applies `le_ciSup` with this bound. -/
 theorem bddAbove_range_partitionDef [Finite α] (G : Graph α β) (n : ℕ) :
     BddAbove (Set.range (G.partitionDef n)) :=
   (Set.finite_range _).bddAbove
 
-/-- Each partition's `D`-deficiency is a lower bound for `def(\tilde G)`: `def_{\tilde G}(P_f)
-≤ def(\tilde G)` for every labeling `f`. This is the `le_ciSup` half of
-`deficiency = ⨆ f, partitionDef n f` and the engine behind every "a partition witnesses a
-deficiency lower bound" step (the trivial one-part partition for `def ≥ 0`, and the
-`{V', V∖V'}` cut partition used by the structural lemmas). -/
+/-- Each partition's `D`-deficiency is a lower bound for `def(G̃)`: `def_{G̃}(P_f) ≤ def(G̃)` for
+every labeling `f`, when `α` is finite. This is the `le_ciSup` half of
+`deficiency = ⨆ f, partitionDef n f`, and every lower bound on the deficiency by a partition goes
+through it (the partition into one part for `def ≥ 0`, and the cut partition `{V', V(G) ∖ V'}` of
+the lemmas below). -/
 theorem partitionDef_le_deficiency [Finite α] (G : Graph α β) (n : ℕ) (f : α → α) :
     G.partitionDef n f ≤ G.deficiency n :=
   le_ciSup (G.bddAbove_range_partitionDef n) f
 
-/-- The `D`-deficiency of a nonempty graph is nonnegative, `def(\tilde G) ≥ 0`: the trivial
-one-part partition (`partitionDef_one`) has deficiency `0`, and `def` is an upper bound for
-every partition (`partitionDef_le_deficiency`). The `k` in a `k`-dof graph is therefore
-always `≥ 0` for `V(G).Nonempty`. -/
+/-- The `D`-deficiency of a graph with a vertex is nonnegative, `def(G̃) ≥ 0`: the partition into
+one part has value `0` (`partitionDef_one`), and `def(G̃)` bounds the value of every partition
+(`partitionDef_le_deficiency`). So the `k` of a `k`-dof-graph with a vertex is `≥ 0`. -/
 theorem deficiency_nonneg [Finite α] (G : Graph α β) (n : ℕ) (hne : V(G).Nonempty) :
     0 ≤ G.deficiency n := by
   obtain ⟨a, ha⟩ := hne
   calc (0 : ℤ) = G.partitionDef n (fun _ => a) := (G.partitionDef_one n a ⟨a, ha⟩).symm
     _ ≤ G.deficiency n := G.partitionDef_le_deficiency n _
 
-/-- **Normalizing a labeling into `V(G)`**: every labeling `f` of a finite vertex type induces the
-same partition of `V(G)` as a labeling `g` whose labels on `V(G)` are vertices of `G` and which
-fixes every vertex outside `V(G)`. So `g` has the same parts and crossing edges as `f`, and its
-range is its `numParts f` labels on `V(G)` together with the `|V(G)ᶜ|` outside vertices, each its
-own label.
+/-- **Normalizing a labeling into `V(G)`**: every labeling `f` of a finite vertex type gives the
+same partition of `V(G)` as a labeling `g` whose labels on `V(G)` are vertices of `G`. So `g` has
+the same parts and crossing edges as `f`, and its range has `numParts f + |V(G)ᶜ|` elements.
 
-Take `ι` injective on the carried labels `f '' V(G)` with `ι '' (f '' V(G)) ⊆ V(G)`
+Take `ι` injective on the labels `f '' V(G)` used on `V(G)`, with `ι '' (f '' V(G)) ⊆ V(G)`
 (`Set.Finite.exists_injOn_of_encard_le`; there are at most `|V(G)|` of them), and set
-`g x = ι (f x)` on `V(G)`, `g x = x` off it.
+`g x = ι (f x)` on `V(G)` and `g x = x` off it, so that each vertex outside `V(G)` is its own label.
 
-This is the normalization the relative hub uses, the `BodyHingeFramework` lemma
-`screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
-(`AlgebraicInduction/PanelLayer.lean`), which applies the `|range g|`-form motion bound at
-`g`. -/
+`BodyHingeFramework.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`
+(`AlgebraicInduction/PanelLayer.lean`) applies at `g` a bound that counts the range of a labeling
+(`BodyHingeFramework.screwDim_mul_range_card_sub_le_finrank_partitionMotions`). -/
 theorem exists_normalized_labeling [Finite α] (G : Graph α β) (f : α → α) :
     ∃ g : α → α, g '' V(G) ⊆ V(G) ∧ G.numParts g = G.numParts f ∧
       G.crossingEdges g = G.crossingEdges f ∧
@@ -371,14 +303,11 @@ theorem exists_normalized_labeling [Finite α] (G : Graph α β) (f : α → α)
       ncard_union_eq (disjoint_compl_right.mono_left hsub)]
     exact congrArg (· + V(G)ᶜ.ncard) hnp
 
-/-- **Deleting a loop leaves the deficiency unchanged** (`sec:molecular-deficiency`, W3-L3
-ingredient, Phase 39): for a loop `e` at `v`, `def((G ＼ {e})\tilde{}) = def(\tilde G)`, with no
-finiteness or `D`-size hypothesis at all. A loop never crosses any partition — `G.IsLink e x y`
-forces `x = y` (`IsLoopAt.eq_of_isLink`), so `f x ≠ f y` is impossible — so `crossingEdges` (hence
-`partitionDef`, hence the `iSup` `deficiency`) agrees pointwise between `G` and `G ＼ {e}`; the
-vertex set is unchanged by edge deletion, so `numParts` agrees too. This is the panel/molecular
-theory's "loops cost nothing" fact (`theorem_55_6_multigraph_of_two_le`'s step 3, `Theorem55.lean`)
-read off directly at the deficiency level, without the panel-realization apparatus. -/
+/-- **Deleting a loop leaves the deficiency unchanged** (`def:D-deficiency`): for a loop `e` at
+`v`, the deficiency of `G ＼ {e}` is that of `G`, with no finiteness hypothesis and for every `n`. A
+loop crosses no partition (`G.IsLink e x y` forces `x = y`, `IsLoopAt.eq_of_isLink`), so
+`crossingEdges`, and with it `partitionDef`, agrees between `G` and `G ＼ {e}` at every labeling;
+deleting an edge keeps the vertex set, so `numParts` agrees too. -/
 theorem deficiency_deleteEdges_singleton_eq_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
     (he : G.IsLoopAt e v) :
     (G ＼ ({e} : Set β)).deficiency n = G.deficiency n := by
@@ -404,14 +333,13 @@ theorem deficiency_deleteEdges_singleton_eq_of_isLoopAt {G : Graph α β} {n : �
 
 /-! ## `k`-dof and minimal `k`-dof graphs (`def:k-dof`)
 
-A multigraph `G` is a *`k`-dof-graph* (`k` degrees of freedom) when
-`def(G̃) = k`; the `0`-dof case is exactly the body-hinge-rigid case
-(`thm:body-hinge-tay`). `G` is a *minimal `k`-dof-graph* when, additionally, no
-edge can be deleted without changing the deficiency — encoded matroidally as:
-every base `B` of `M(G̃)` meets every *edge-fiber* `ẽ` (the `D-1` parallel
-copies `{p | p.1 = e}` of an edge `e ∈ E(G)`). Minimal `k`-dof-graphs are the
-objects the combinatorial induction of Phase 20 (Theorem 4.9) reduces to the
-two-vertex double edge. -/
+A multigraph `G` is a *`k`-dof-graph* (`k` degrees of freedom) when `def(G̃) = k` (Katoh–Tanigawa
+2011 §3, p. 656). They call a `0`-dof-graph *body-hinge rigid*: for `D ≥ 2` and `V(G)` nonempty,
+`G̃` then contains `D` edge-disjoint spanning trees (KT Proposition 2.2,
+`deficiency_eq_zero_iff_exists_spanningTrees`). KT call a `k`-dof-graph *minimal* when deleting any
+edge changes the deficiency, and observe from their eq. (2.4) that this holds iff every base `B`
+of `M(G̃)` meets every *edge-fiber* `ẽ`, the `D - 1` copies `{p | p.1 = e}` of an edge
+`e ∈ E(G)` (pp. 656–657); the formal definition is this condition on bases. -/
 
 /-- The **edge-fiber** `ẽ` of an edge `e ∈ E(G)` in the multiplied graph
 `G̃ = (D-1)·G` (`def:k-dof`): the `D - 1 = bodyHingeMult n` parallel copies of `e`,
@@ -419,17 +347,16 @@ i.e. the set `{p : β × Fin (bodyHingeMult n) | p.1 = e}`. A base of `M(G̃)` m
 `ẽ` exactly when it retains at least one of the `D-1` copies of `e`. -/
 def edgeFiber (e : β) (n : ℕ) : Set (β × Fin (bodyHingeMult n)) := {p | p.1 = e}
 
-/-- **Membership in the edge-fiber** (`def:k-dof`): `p ∈ ẽ` iff `p`'s underlying `G`-edge
-`p.1` is `e`. Kills the repeated `edgeFiber`-unfold-then-membership hand chain at every
-call site. -/
+/-- **Membership in the edge-fiber** (`def:k-dof`): `p ∈ ẽ` iff `p`'s underlying edge `p.1` of
+`G` is `e`; a `simp` lemma, so that a proof need not unfold `edgeFiber`. -/
 @[simp]
 lemma mem_edgeFiber {e : β} {n : ℕ} {p : β × Fin (bodyHingeMult n)} :
     p ∈ edgeFiber e n ↔ p.1 = e := Iff.rfl
 
-/-- **The edge-fiber has `D - 1` elements** (`def:k-dof`): `|ẽ| = bodyHingeMult n =
-D - 1`, the number of parallel copies of `e` in `G̃ = (D-1)·G`. This is the `|ã̃b| = D − 1`
-bound the forest surgery of `lem:forest-surgery-split` (Katoh–Tanigawa 2011 Lemma 4.1)
-counts against: the surgery uses fewer than `D - 1` copies of the short-circuit fiber. -/
+/-- **The edge-fiber has `D - 1` elements** (`def:k-dof`): `|ẽ| = bodyHingeMult n = D - 1`, the
+number of copies of `e` in `G̃ = (D-1)·G`. Katoh and Tanigawa's proof of their Lemma 4.1 (p. 660,
+`lem:forest-surgery-split`) uses `|ãb| = D - 1`: the forests it builds use fewer than `D - 1`
+copies of the new edge `ab`. -/
 @[simp]
 lemma edgeFiber_ncard (e : β) (n : ℕ) : (edgeFiber e n).ncard = bodyHingeMult n := by
   have : edgeFiber e n = ({e} : Set β) ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
@@ -437,43 +364,38 @@ lemma edgeFiber_ncard (e : β) (n : ℕ) : (edgeFiber e n).ncard = bodyHingeMult
   rw [this, Set.ncard_prod, Set.ncard_singleton, Set.ncard_univ, Nat.card_eq_fintype_card,
     Fintype.card_fin, one_mul]
 
-/-- `G` is a **`k`-dof-graph** (`def:k-dof`; Katoh–Tanigawa 2011 §2.5): its
-multiplied graph `G̃ = (D-1)·G` has `D`-deficiency `def(G̃) = k`, with
-`D = bodyBarDim n`. The `0`-dof case is exactly the body-hinge-rigid case
-(`thm:body-hinge-tay`): `G̃` packs `D` edge-disjoint spanning trees. -/
+/-- `G` is a **`k`-dof-graph** (`def:k-dof`; Katoh–Tanigawa 2011 §3, p. 656): its multiplied
+graph `G̃ = (D-1)·G` has `D`-deficiency `def(G̃) = k`, with `D = bodyBarDim n`. For `D ≥ 2` and
+`V(G)` nonempty, `G` is a `0`-dof-graph iff `G̃` contains `D` edge-disjoint spanning trees
+(`deficiency_eq_zero_iff_exists_spanningTrees`). -/
 def IsKDof (G : Graph α β) (n : ℕ) (k : ℤ) : Prop := G.deficiency n = k
 
-/-- **Body-surfacing accessor for `IsKDof`.** `IsKDof G n k` is *definitionally*
-`G.deficiency n = k`, but the `def` is non-reducible, so `linarith` / `omega` / `▸`
-will not see through it (`TACTICS-GOLF.md` §4). Use this to surface the deficiency
-equation on a hypothesis rather than hand-writing `have hk := hG` / `rw [IsKDof] at hG`. -/
+/-- **The deficiency equation of an `IsKDof` hypothesis.** `IsKDof G n k` is definitionally
+`G.deficiency n = k`, but the `def` is not reducible, so `linarith`, `omega` and `▸` do not see
+through it (`TACTICS-GOLF.md` §4). Use this rather than `have hk := hG` or
+`rw [IsKDof] at hG`. -/
 lemma IsKDof.deficiency_eq {G : Graph α β} {n : ℕ} {k : ℤ} (h : G.IsKDof n k) :
     G.deficiency n = k := h
 
-/-- `G` is a **minimal `k`-dof-graph** (`def:k-dof`; Katoh–Tanigawa 2011 §2.5):
-it is a `k`-dof-graph and every base `B` of `M(G̃)` meets every edge-fiber `ẽ`
-of an edge `e ∈ E(G)` — no edge of `G` can be deleted without lowering the rank
-of `M(G̃)`, hence changing the deficiency. The base/fiber-meeting condition is
-phrased over `Matroid.IsBase` and `Graph.edgeFiber`. These are the objects the
-combinatorial induction of Phase 20 (Theorem 4.9) reduces to the two-vertex
-double edge. -/
+/-- `G` is a **minimal `k`-dof-graph** (`def:k-dof`; Katoh–Tanigawa 2011 §3.1, pp. 656–657): it
+is a `k`-dof-graph and every base `B` of `M(G̃)` meets the edge-fiber `ẽ` of every edge
+`e ∈ E(G)`. So deleting an edge of `G` lowers the rank of `M(G̃)`, which by KT eq. (2.4) changes
+the deficiency; KT define minimality by the latter and observe that it is the condition on
+bases. -/
 def IsMinimalKDof [DecidableEq β] (G : Graph α β) (n : ℕ) (k : ℤ) : Prop :=
   G.IsKDof n k ∧ ∀ B, (G.matroidMG n).IsBase B → ∀ e ∈ E(G), (B ∩ edgeFiber e n).Nonempty
 
-/-- **Body-surfacing accessor for `IsMinimalKDof`** (companion of `IsKDof.deficiency_eq`):
-the `k`-dof conjunct's deficiency equation `G.deficiency n = k`, surfaced for
-`linarith` / `omega` / `▸` past the `def`-opacity of both predicates (`TACTICS-GOLF.md` §4). -/
+/-- **The deficiency equation of an `IsMinimalKDof` hypothesis** (as `IsKDof.deficiency_eq`):
+`G.deficiency n = k`, for `linarith`, `omega` and `▸`, which do not see through either
+predicate (`TACTICS-GOLF.md` §4). -/
 lemma IsMinimalKDof.deficiency_eq [DecidableEq β] {G : Graph α β} {n : ℕ} {k : ℤ}
     (h : G.IsMinimalKDof n k) : G.deficiency n = k := h.1
 
-/-- **A minimal `k`-dof-graph is loopless** (the loopless-from-minimality brick of the
-`d = 3` assembly, Phase 22h G5/G0; implicit in Katoh–Tanigawa 2011, who work with simple
-graphs throughout). A loop `e` at `x` would put a copy `p ∈ ẽ` into some base `B` of
-`M(G̃)` — the base/fiber-meeting conjunct of `IsMinimalKDof` forces `B ∩ ẽ ≠ ∅` — but the
-singleton `{p}` is *dependent*: by boundary-regime cleanliness (`matroidMG_indep_iff`)
-its independence would make `G̃ ↾ {p}` `(D,D)`-sparse, demanding `1 + D ≤ D·|{x}| = D`.
-This is what lets the circuit-side producers of `IsProperRigidSubgraph` read off that a
-circuit-induced subgraph spans at least two vertices. -/
+/-- **A minimal `k`-dof-graph has no loops** (a step of `lem:two-vertex-trichotomy`). Katoh and
+Tanigawa assume that their multigraphs have no loops (2011, §2.5, p. 654). A loop `e` at `x` would
+put a copy `p ∈ ẽ` into some base `B` of `M(G̃)`, since `G` is minimal, but `{p}` is dependent:
+by `matroidMG_indep_iff` its independence would make `G̃ ↾ {p}` `(D, D)`-sparse, which needs
+`1 + D ≤ D·|{x}| = D`. -/
 theorem loopless_of_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
     {n : ℕ} {k : ℤ} (hG : G.IsMinimalKDof n k) : G.Loopless where
   not_isLoopAt e x hloop := by
@@ -505,54 +427,44 @@ theorem loopless_of_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : 
 
 /-! ## Rigid subgraphs and circuits (`def:rigid-subgraph`)
 
-A subgraph `H ⊆ G` (`H ≤ G`, the multigraph `Graph.IsSubgraph` order) is *rigid*
-when it is `0`-dof — `def(H̃) = 0` — equivalently (`thm:body-hinge-tay`) `H̃` packs
-`D` edge-disjoint spanning trees. It is a *proper* rigid subgraph when its vertex
-set is a proper subset on at least two vertices, `2 ≤ |V(H)|` and `V(H) ⊊ V(G)`
-(Katoh–Tanigawa 2011 p. 659 requires `1 < |V′|`; without the lower bound the
-single-vertex no-edge subgraph is vacuously rigid, so "no proper rigid subgraph"
-would be unsatisfiable on any `G` with `2 ≤ |V(G)|`). A *circuit* of `M(G̃)` is a
-minimal dependent edge set; this is mathlib's `Matroid.IsCircuit (G.matroidMG n)`.
-These are the structural objects the algebraic induction of Phases 21–23 reduces
-against (rigid subgraphs feed Case I, circuits feed `lem:circuit-rigid`). -/
+A subgraph `H ≤ G` (the order `Graph.IsSubgraph`) is *rigid* when it is a `0`-dof-graph,
+`def(H̃) = 0`; for `D ≥ 2` and `V(H)` nonempty, `H̃` then contains `D` edge-disjoint spanning trees
+(`deficiency_eq_zero_iff_exists_spanningTrees`). It is a *proper* rigid subgraph when moreover
+`2 ≤ |V(H)|` and `V(H) ⊊ V(G)` (Katoh–Tanigawa 2011, p. 659: `1 < |V′| < |V|`). Without the lower
+bound, a subgraph with one vertex and no edge is rigid, as its only partition has one part, so
+"no proper rigid subgraph" would fail on every `G` with `2 ≤ |V(G)|`. A *circuit* of `M(G̃)` is a
+minimal dependent set, `Matroid.IsCircuit (G.matroidMG n)`. -/
 
-/-- `H` is a **rigid subgraph** of `G` (`def:rigid-subgraph`; Katoh–Tanigawa 2011 §3):
-`H ≤ G` (a subgraph in the multigraph `Graph.IsSubgraph` order) and `H` is `0`-dof,
-i.e. `def(H̃) = 0` with `H̃ = (D-1)·H` and `D = bodyBarDim n`. By
-`thm:body-hinge-tay` this is exactly the body-hinge-rigid case: `H̃` packs `D`
-edge-disjoint spanning trees. -/
+/-- `H` is a **rigid subgraph** of `G` (`def:rigid-subgraph`; Katoh–Tanigawa 2011 §3.2, p. 658):
+`H ≤ G` (the order `Graph.IsSubgraph`) and `H` is a `0`-dof-graph, `def(H̃) = 0` with
+`H̃ = (D-1)·H` and `D = bodyBarDim n`. KT ask that `H̃` contain `D` edge-disjoint spanning trees on
+`V(H)`, which for `D ≥ 2` and `V(H)` nonempty is the same (KT Proposition 2.2,
+`deficiency_eq_zero_iff_exists_spanningTrees`). -/
 def IsRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop := H ≤ G ∧ H.IsKDof n 0
 
-/-- `H` is a **proper rigid subgraph** of `G` (`def:rigid-subgraph`; Katoh–Tanigawa
-2011 §3, p. 659): a rigid subgraph on at least two vertices whose vertex set is a
-proper subset of `G`'s, `2 ≤ |V(H)|` and `V(H) ⊊ V(G)`. The `2 ≤ |V(H)|` lower bound
-is KT's `1 < |V′|`: without it the single-vertex no-edge subgraph (vacuously `0`-dof —
-every partition of one vertex has one part and no crossing edges) would make
-`∃ H, IsProperRigidSubgraph` provable on any `G` with two vertices, so the standing
-"no proper rigid subgraph" hypothesis of the Case-III layer would be unsatisfiable.
-Proper rigid subgraphs are the case-I objects of the algebraic induction
-(Phases 21–23). -/
+/-- `H` is a **proper rigid subgraph** of `G` (`def:rigid-subgraph`; Katoh–Tanigawa 2011, p. 659): a
+rigid subgraph with `2 ≤ |V(H)|` and `V(H) ⊊ V(G)`. The bound `2 ≤ |V(H)|` is KT's `1 < |V′|`.
+Without it, a subgraph with one vertex and no edge (a `0`-dof-graph, as every partition of one
+vertex has one part and no crossing edge) would be a proper rigid subgraph of every `G` with at
+least two vertices, and the hypothesis "no proper rigid subgraph" of KT's Lemmas 4.6 and 6.7 would
+never hold. KT's induction contracts proper rigid subgraphs (§4, p. 659). -/
 def IsProperRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop :=
   H.IsRigidSubgraph G n ∧ 2 ≤ V(H).ncard ∧ V(H) ⊂ V(G)
 
-/-- A proper rigid subgraph has a nonempty vertex set (from the `2 ≤ |V(H)|`
-conjunct) — the weakening the Case-I geometry consumers read off. -/
+/-- A proper rigid subgraph has a nonempty vertex set, by its conjunct `2 ≤ |V(H)|`. -/
 lemma IsProperRigidSubgraph.vertexSet_nonempty {H G : Graph α β} {n : ℕ}
     (h : H.IsProperRigidSubgraph G n) : V(H).Nonempty :=
   Set.nonempty_of_ncard_ne_zero (by have := h.2.1; omega)
 
-/-! ## A parallel pair is `0`-dof (G0 brick, Phase 22h) -/
+/-! ## The two-vertex double edge is a `0`-dof-graph (`lem:two-vertex-zero-dof`) -/
 
-/-- **A parallel pair is body-hinge-rigid** (`0`-dof) for `D = bodyBarDim n ≥ 2`
-(the K₂-is-0-dof partition brick; sibling of `isKDof_zero_of_triangle`, used in G0
-`simple_of_isMinimalKDof_of_noRigid`). Let `H` be a two-vertex multigraph: two distinct
-vertices `x, y` pairwise joined by two distinct parallel edges `e₁, e₂` (with `V(H) = {x, y}`
-and `E(H) = {e₁, e₂}` exactly). Then `def(H̃) = 0`.
+/-- **The two-vertex double edge is a `0`-dof-graph** (`lem:two-vertex-zero-dof`), for
+`D = bodyBarDim n ≥ 2`. Let `H` have two distinct vertices `x, y` and two distinct edges
+`e₁, e₂`, each joining them (`V(H) = {x, y}` and `E(H) = {e₁, e₂}`). Then `def(H̃) = 0`.
 
-Proof: `def ≤ 0` by `ciSup_le`, since for every partition `f`: if `f x = f y` (one part,
-no crossings) the deficiency is `0`; if `f x ≠ f y` (two parts, both edges cross) the
-deficiency is `D·1 − (D−1)·2 = 2 − D ≤ 0` for `D ≥ 2`. Combined with `def ≥ 0`
-(`deficiency_nonneg`) this forces `def(H̃) = 0`. -/
+`def ≤ 0` by `ciSup_le`: for a labeling `f`, if `f x = f y` (one part, no crossing edge) the value
+is `0`, and if `f x ≠ f y` (two parts, both edges cross) it is `D·1 − (D−1)·2 = 2 − D ≤ 0`. With
+`def ≥ 0` (`deficiency_nonneg`), `def(H̃) = 0`. -/
 theorem isKDof_zero_of_parallel_pair [Finite α] {H : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) {x y : α} {e₁ e₂ : β}
     (hxy : x ≠ y)
@@ -615,26 +527,21 @@ theorem isKDof_zero_of_parallel_pair [Finite α] {H : Graph α β} {n : ℕ}
       exact Set.ncard_pair hne
     rw [hpts, hcr]; push_cast; nlinarith [hDpos, hD2]
 
-/-! ## A cycle is `0`-dof (the general triangle; KT Lemma 4.6 cycle branch, ENTRY leaf E2c) -/
+/-! ## A short cycle is a `0`-dof-graph (`lem:cycle-zero-dof`) -/
 
 open Fin.NatCast Fin.CommRing in
-/-- **A cycle is body-hinge-rigid** (`0`-dof) for `D = bodyBarDim n ≥ 3`, provided its length
-`m` satisfies `m ≤ D` (Katoh–Tanigawa 2011 §6.4.2, the cycle branch of Lemma 4.6; the general
-form of `isKDof_zero_of_triangle`, which is the `m = 3` case). Let `H` be an `m`-cycle: `m`
-distinct vertices `vtx 0, …, vtx (m−1)` joined cyclically by `m` distinct edges
-`edge i : vtx i — vtx (i + 1)` (cyclic successor via `Fin m` addition), with `V(H) = range vtx`
-and `E(H) = range edge` exactly. Then `def(H̃) = 0`.
+/-- **A short cycle is a `0`-dof-graph** (`lem:cycle-zero-dof`), for `3 ≤ m ≤ D = bodyBarDim n`.
+Let `H` have the vertices `vtx 0, …, vtx (m−1)`, not necessarily distinct, and `m` distinct edges,
+`edge i` joining `vtx i` and `vtx (i + 1)` (indices in `Fin m`), with `V(H) = range vtx` and
+`E(H) = range edge`. Then `def(H̃) = 0`. A cycle of at most `d` vertices is one of the two cases of
+Katoh and Tanigawa's Lemma 4.6 (2011, p. 664), and `isKDof_zero_of_triangle` is the case `m = 3`.
 
-Like the triangle (`isKDof_zero_of_triangle`) and unlike a circuit-induced rigid subgraph, a
-cycle at the regime `3 ≤ m ≤ D` is *tight*, so this is the direct `def ≤ 0` computation:
-`def(H̃) = ⨆_f def_{H̃}(P_f) ≤ 0` by `ciSup_le`, because every partition `P_f` has
-`def_{H̃}(P_f) = D(|P| − 1) − (D−1)·d(P) ≤ 0`. The crux is the cyclic counting bound
-`|P| ≤ d(P)` whenever `|P| ≥ 2`: a color class of `f` on the cyclic index `Fin m` that is
-nonempty and (for ≥ 2 parts) a *proper* subset cannot be closed under the cyclic successor
-(the successor generates `Fin m`), so each part has a boundary index whose edge crosses `P` —
-an injection parts ↪ crossing edges. Combined with `|P| ≤ m ≤ D`, the arithmetic
-`(D−1)·d(P) ≥ (D−1)|P| ≥ D(|P|−1)` closes; with `def(H̃) ≥ 0` (`deficiency_nonneg`) this forces
-`def(H̃) = 0`. -/
+`def(H̃) ≤ 0` by `ciSup_le`: every labeling `f` gives a partition `P` with
+`D(|P| − 1) − (D−1)·d(P) ≤ 0`. The key is `|P| ≤ d(P)` when `|P| ≥ 2`: a part is then a nonempty
+proper subset of the vertices, so as a set of indices of `Fin m` it is not closed under the
+successor, and some index `i` in it has `vtx (i + 1)` in another part, so that `edge i` crosses
+`P`; distinct parts give distinct edges. With `|P| ≤ m ≤ D`,
+`(D−1)·d(P) ≥ (D−1)|P| ≥ D(|P|−1)`. With `def(H̃) ≥ 0` (`deficiency_nonneg`), `def(H̃) = 0`. -/
 theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n : ℕ}
     (hD : 3 ≤ bodyBarDim n) {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
     {vtx : Fin m → α} {edge : Fin m → β}
@@ -739,13 +646,12 @@ theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n : ℕ}
       mul_nonneg (by linarith : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1)
         (by linarith : (0 : ℤ) ≤ ((H.crossingEdges f).ncard : ℤ) - (H.numParts f : ℤ))]
 
-/-! ## A triangle is `0`-dof (`lem:case-III`, the `splitOff`-simplicity triangle brick) -/
+/-! ## A triangle is a `0`-dof-graph (`lem:splitoff-simple`) -/
 
-/-- **A triangle is body-hinge-rigid** (`0`-dof) for `D = bodyBarDim n ≥ 3`
-(Katoh–Tanigawa 2011, "a triangle is a `0`-dof-graph", the `splitOff`-simplicity
-obstruction of Lemma 6.7(ii)). Let `H` be a *triangle*: three distinct vertices
-`x, y, z` pairwise joined by three edges `exy, eyz, exz` (with `V(H) = {x, y, z}` and
-`E(H) = {exy, eyz, exz}` exactly). Then `def(H̃) = 0`.
+/-- **A triangle is a `0`-dof-graph** (`lem:splitoff-simple`; Katoh–Tanigawa 2011, p. 677, in the
+proof of Lemma 6.7(ii)), for `D = bodyBarDim n ≥ 3`. Let `H` have three distinct vertices
+`x, y, z` and three edges `exy, eyz, exz` joining them in pairs (`V(H) = {x, y, z}` and
+`E(H) = {exy, eyz, exz}`). Then `def(H̃) = 0`.
 
 The three edges are distinct, as no two of them join the same two vertices, so `H` is the
 cycle `x y z`, and this is the case `m = 3 ≤ D` of `isKDof_zero_of_cycle`. -/
@@ -778,20 +684,17 @@ theorem isKDof_zero_of_triangle [Finite α] {H : Graph α β} {n : ℕ}
 
 /-! ## Subgraph minimality (`lem:subgraph-minimality`; KT Lemma 3.3) -/
 
-/-- **Subgraph minimality** (`lem:subgraph-minimality`; Katoh–Tanigawa 2011 Lemma 3.3):
-a subgraph `H ≤ G` of a minimal `k`-dof-graph `G` is itself a minimal `k'`-dof-graph,
-where `k' = def(H̃)` is whatever deficiency `H` happens to have. (In particular a
-*rigid* subgraph — `k' = 0` — of a minimal `k`-dof-graph is a minimal `0`-dof-graph,
-the form used in Cases I/III of the algebraic induction.)
+/-- **Minimality passes to subgraphs** (`lem:subgraph-minimality`; Katoh–Tanigawa 2011 Lemma 3.3,
+p. 657): a subgraph `H ≤ G` of a minimal `k`-dof-graph `G` is a minimal `k'`-dof-graph, where
+`k' = def(H̃)`. In particular a rigid subgraph (`k' = 0`) of a minimal `k`-dof-graph is a minimal
+`0`-dof-graph.
 
-The deficiency half (`H.IsKDof n k'`) is supplied as a hypothesis (it is the definition
-of `k'`); the content is the base/fiber-meeting minimality transport. The engine is the
-matroid identity `M(G̃) ↾ E(H̃) = M(H̃)` (`matroidMG_restrict_mulTilde`): a base `B'` of
-`M(H̃)` is an `M(G̃)`-basis of `E(H̃)` (`isBase_restrict_iff'`), so it extends to a base
-`B ⊇ B'` of `M(G̃)` (`Indep.exists_isBase_superset`) with `B' = B ∩ E(H̃)` by maximality
-(`IsBasis'.eq_of_subset_indep`). Each edge-fiber `ẽ` of an `e ∈ E(H) ⊆ E(G)` lies inside
-`E(H̃)`, so `G`'s minimality (`B ∩ ẽ ≠ ∅`) transports to `B' ∩ ẽ = (B ∩ E(H̃)) ∩ ẽ =
-B ∩ ẽ ≠ ∅`. -/
+The hypothesis `H.IsKDof n k'` says what `k'` is; the content is the condition on bases. By
+`M(G̃) ↾ E(H̃) = M(H̃)` (`matroidMG_restrict_mulTilde`), a base `B'` of `M(H̃)` is a basis of
+`E(H̃)` in `M(G̃)` (`isBase_restrict_iff'`), so it extends to a base `B ⊇ B'` of `M(G̃)`
+(`Indep.exists_isBase_superset`), and `B' = B ∩ E(H̃)` by maximality
+(`IsBasis'.eq_of_subset_indep`). The edge-fiber `ẽ` of an edge `e ∈ E(H) ⊆ E(G)` lies in `E(H̃)`,
+so `B ∩ ẽ ≠ ∅`, from the minimality of `G`, gives `B' ∩ ẽ = B ∩ ẽ ≠ ∅`. -/
 theorem subgraph_minimality [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
     (h : H ≤ G) {n : ℕ} {k k' : ℤ} (hG : G.IsMinimalKDof n k) (hH : H.IsKDof n k') :
     H.IsMinimalKDof n k' := by
@@ -813,19 +716,15 @@ theorem subgraph_minimality [DecidableEq β] [Finite α] [Finite β] {H G : Grap
   obtain ⟨p, hp⟩ := hG.2 B hB e (h.edgeSet_mono he)
   exact ⟨p, by rw [hBeq]; exact ⟨⟨hp.1, hfiber hp.2⟩, hp.2⟩⟩
 
-/-- **A vertex-cardinality-maximal proper rigid subgraph exists** (the existence half of
-Katoh–Tanigawa 2011 Claim 6.6, p. 676–677; the leaf the Lemma-6.5 vertex-removal arm of the
-Case-I dispatch bottoms out on). If `G` has *any* proper rigid subgraph, then it has one,
-`G'`, whose vertex set is of maximal cardinality among all proper rigid subgraphs. Maximality
-is recorded against `V(·).ncard`; since `V(H) ⊆ V(G)` for every subgraph, a strict
-vertex-superset would have strictly larger cardinality, so the cardinality-maximal witness is
-also vertex-inclusionwise maximal — the form Claim 6.6 consumes when it extends `G'` by the
-removed vertex `v` and forces `V(G) = V(G') ∪ {v}`.
+/-! ## A proper rigid subgraph with the most vertices (for `lem:claim-6-6`) -/
 
-The pick is a finite-maximum argument: with `α` finite, the achievable vertex-cardinalities
-form a nonempty (`hrig`) set of naturals bounded above by `|V(G)|`, so `Nat.findGreatest`
-locates the largest one and a witnessing subgraph. No rigidity-matrix or genericity content —
-purely the bounded-maximum existence. -/
+/-- **A proper rigid subgraph with the most vertices** (a step of `lem:claim-6-6`; Katoh–Tanigawa
+2011, Claim 6.6, p. 676): if `G` has a proper rigid subgraph, then it has one, `G'`, with
+`|V(H)| ≤ |V(G')|` for every proper rigid subgraph `H`. As `α` is finite, a proper rigid subgraph
+whose vertex set strictly contains `V(G')` would have more vertices, so `G'` is also
+vertex-inclusionwise maximal, which is how KT choose it. The vertex counts of the proper rigid
+subgraphs form a nonempty set of naturals bounded by `|V(G)|`, and `Nat.findGreatest` picks the
+largest. -/
 theorem exists_maximal_isProperRigidSubgraph [Finite α] {G : Graph α β} {n : ℕ}
     (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n) :
     ∃ G' : Graph α β, G'.IsProperRigidSubgraph G n ∧
@@ -846,19 +745,16 @@ theorem exists_maximal_isProperRigidSubgraph [Finite α] {G : Graph α β} {n : 
   rw [hG'card, hm]
   exact Nat.le_findGreatest (hbound H hH) ⟨H, hH, rfl⟩
 
-/-- **Deficiency is antitone under edge addition at fixed vertex set** (`def:D-deficiency`):
-if `H ≤ H'` (a subgraph relation) and `V(H) = V(H')` (equal vertex sets), then
-`def(H̃') ≤ def(H̃)`. More edges at the same vertex set can only *increase* crossing counts,
-which *decreases* each partition's deficiency `D(|P|−1) − (D−1)·d(P)` (since `D−1 ≥ 0`).
+/-- **Adding edges does not raise the deficiency** (`def:D-deficiency`): if `H ≤ H'`,
+`V(H) = V(H')` and `D ≥ 1`, then `def(H̃') ≤ def(H̃)`. More edges on the same vertices do not
+lower the number of crossing edges of a partition, so they do not raise its value
+`D(|P|−1) − (D−1)·d(P)`, as `D − 1 ≥ 0`.
 
-Concretely: the vertex-set equality gives `numParts H f = numParts H' f` (same image
-`f '' V(H) = f '' V(H')`), and the subgraph relation gives `crossingEdges H f ⊆
-crossingEdges H' f` (every `H`-link is an `H'`-link). So `partitionDef H' n f ≤
-partitionDef H n f` for every labeling `f`, and the supremum respects this order.
-
-This is the one new brick the loop-case fix (§1.70(c′)) needs: it lifts `G₀`'s rigidity
-(`IsKDof n 0`) to the induced subgraph `G' := G.induce V(G₀)`, which carries every
-`G`-edge inside `V(G₀)` by `edgeSet_induce`, making `G' ≥ G₀` at equal vertex sets. -/
+At a labeling `f`, the equal vertex sets give `numParts H f = numParts H' f`, and `H ≤ H'` gives
+`crossingEdges H f ⊆ crossingEdges H' f` (every link of `H` is a link of `H'`). So
+`partitionDef H' n f ≤ partitionDef H n f` for every `f`, and the suprema compare the same way.
+`exists_maximal_induced_isProperRigidSubgraph` uses it to pass rigidity from a subgraph `G₀` to the
+induced subgraph `G[V(G₀)]`. -/
 theorem deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] [Finite β]
     {H H' : Graph α β} {n : ℕ} (hD : 1 ≤ bodyBarDim n)
     (hle : H ≤ H') (hV : V(H) = V(H')) :
@@ -886,27 +782,20 @@ theorem deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] [Finite β]
   -- Step 4: `⨆ f, partitionDef H' n f ≤ H.deficiency n` via `partitionDef_le_deficiency`.
   exact hpd.trans (H.partitionDef_le_deficiency n f)
 
-/-- **A vertex-cardinality-maximal *induced* proper rigid subgraph exists** (the
-induced-saturation opener of Katoh–Tanigawa 2011 Claim 6.6, the §1.70(c′) loop-case fix of
-the Lemma-6.5 vertex-removal arm of the Case-I dispatch). The plain
-`exists_maximal_isProperRigidSubgraph` returns a vertex-maximal proper rigid *subgraph* `G₀`,
-but `IsProperRigidSubgraph` is the plain-subgraph relation — a `G`-edge with both ends in
-`V(G₀)` need not lie in `E(G₀)`. KT's argument silently assumes the maximal subgraph is
-edge-saturated within its vertex set; that is exactly the *induced* subgraph.
+/-- **An induced proper rigid subgraph with the most vertices** (a step of `lem:claim-6-6`;
+Katoh–Tanigawa 2011, Claim 6.6, p. 676): if `G` has a proper rigid subgraph, then it has one, `G'`,
+that has the most vertices (as in `exists_maximal_isProperRigidSubgraph`) and contains every edge
+of `G` with both ends in `V(G')`. A proper rigid subgraph need not contain those edges. KT read the
+non-simplicity of `G/E(G')` as two edges joining a vertex outside `V(G')` to `V(G')`, which needs
+the second property: otherwise an edge of `G` with both ends in `V(G')` could give a loop of
+`G/E(G')`. The second conjunct is the hypothesis `hHsat` of
+`exists_isLink_pair_of_rigidContract_not_simple`, which gives these two edges.
 
-This lemma supplies the saturated form directly: a proper rigid subgraph `G'` that is (a)
-vertex-cardinality-maximal among all proper rigid subgraphs and (b) **induced-saturated** —
-every `G`-edge with both ends in `V(G')` already lies in `E(G')`. The saturation conjunct is
-the `hHsat` hypothesis of `exists_isLink_pair_of_rigidContract_not_simple`, so a caller fed
-`G'` here can take the contraction-non-simplicity straight to its parallel disjunct (the loop
-disjunct being vacuous on a saturated subgraph).
-
-Construction: take the plain maximal `G₀` (`exists_maximal_isProperRigidSubgraph`) and replace
-it by its induced saturation `G' := G.induce V(G₀)`. Then `V(G') = V(G₀)`, so `G'` inherits
-`G₀`'s cardinality-maximality and properness; `G₀ ≤ G'` at the same vertex set lifts `G₀`'s
-rigidity to `G'` via `deficiency_le_deficiency_of_le_vertexSet_eq` (more edges at the same
-vertices only lower the deficiency, and `deficiency_nonneg` pins it back to `0`); and saturation
-is the defining property of `induce` (`edgeSet_induce`). -/
+The proof replaces the subgraph `G₀` of `exists_maximal_isProperRigidSubgraph` by the induced
+subgraph `G' = G[V(G₀)]`. As `V(G') = V(G₀)`, `G'` has the most vertices and is proper; `G₀ ≤ G'`
+on the same vertices gives `def(G̃') ≤ def(G̃₀) = 0`
+(`deficiency_le_deficiency_of_le_vertexSet_eq`), and `deficiency_nonneg` gives `def(G̃') ≥ 0`; the
+second property is `edgeSet_induce`. -/
 theorem exists_maximal_induced_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β}
     {n : ℕ} (hD : 1 ≤ bodyBarDim n) (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n) :
     ∃ G' : Graph α β, G'.IsProperRigidSubgraph G n ∧
@@ -939,25 +828,18 @@ theorem exists_maximal_induced_isProperRigidSubgraph [Finite α] [Finite β] {G 
     rw [hVeq] at hx hy
     exact ⟨x, y, h, hx, hy⟩
 
-/-! ## A circuit yields a rigid subgraph (`lem:circuit-rigid`; KT Lemma 3.4) -/
+/-! ## A circuit minus an edge (`lem:circuit-rigid`; KT Lemma 3.4, first step) -/
 
-/-- **A circuit minus an edge is a maximal sparse subset** (`lem:circuit-rigid`;
-Katoh–Tanigawa 2011 Lemma 3.4, matroidal core). Let `X` be a circuit of `M(G̃)` and
-`e ∈ X`. Then `X \ {e}` is `(D,D)`-sparse — equivalently, an `M(G̃)`-basis of `X`
-(`X \ {e}` is a maximal independent subset of `X`, and `X` itself is dependent). This
-is the structural content KT's fundamental-circuit arguments consume (Lemmas 4.5,
-6.10–6.11 of the algebraic induction, Phases 21–22): a circuit is exactly one edge
-short of being independent on its vertex span.
+/-- **A circuit minus an edge is a maximal sparse subset** (`lem:circuit-rigid`; the first step of
+Katoh–Tanigawa 2011 Lemma 3.4, p. 658). Let `X` be a circuit of `M(G̃)` and `e ∈ X`. Then
+`G̃ ↾ (X \ {e})` is `(D, D)`-sparse, and `X \ {e}` is a basis of `X` in `M(G̃)`: it is independent,
+and `X` itself is dependent.
 
-KT's full Lemma 3.4 concludes that the vertex-induced subgraph `G[V(X)]` is *rigid*
-(`0`-dof) — more precisely that `X − e` partitions into `D` edge-disjoint spanning
-trees on `V(X)`, i.e. `|X − e| = D(|V(X)| − 1)` exactly. That tightness *equality*
-(and the `def(G[V(X)]̃) = 0` reading of it) needs the **lower** bound `|X| >
-D(|V(X)| − 1)` forced by `X` being dependent, which in this count matroid is the
-reverse direction of the full `def = corank` min–max (`thm:def-eq-corank`, the JJ09
-generic-rank identity, risk #4) — deferred with that node. The `(D,D)`-sparse /
-basis form here is the upper-bound half, self-contained on the boundary-regime
-cleanliness `matroidMG_indep_iff`. -/
+KT's Lemma 3.4 says more: `G[V(X)]` is a rigid subgraph, and `X - e` is the union of `D`
+edge-disjoint spanning trees on `V(X)`. That is `lem:circuit-induces-rigid`
+(`circuit_induces_isTight` and `circuit_induces_isRigidSubgraph`,
+`Molecular/Induction/Operations.lean`), which also uses the bound `|X| > D(|V(X)| - 1)`
+(`circuit_ncard_gt`). -/
 theorem isSparse_diff_singleton_of_isCircuit [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} {X : Set (β × Fin (bodyHingeMult n))}
     (hX : (G.matroidMG n).IsCircuit X) {e : β × Fin (bodyHingeMult n)} (he : e ∈ X) :
@@ -968,25 +850,22 @@ theorem isSparse_diff_singleton_of_isCircuit [DecidableEq β] [Finite α] [Finit
 
 /-! ## Two-edge-connectivity (`lem:two-edge-conn`; KT Lemma 3.1)
 
-A body-hinge-rigid (`0`-dof) graph `G` is `2`-edge-connected. Mathlib carries no
-edge-connectivity predicate for the multigraph `Graph α β` (only for `SimpleGraph`),
-so — as flagged in `notes/Phase19.md` — the lemma is phrased directly in the cut form
-Katoh–Tanigawa's proof actually uses: for the cut `{V', V∖V'}` induced by a nonempty
-proper vertex set `V' ⊊ V(G)`, the number of edges crossing the cut is `≥ 2`. A
-crossing count of `≤ 1` would let the trivial bridge cut `{V', V∖V'}` witness
-`def(G̃) ≥ D·(2-1) - (D-1)·d_G(P) ≥ D - (D-1) = 1`, contradicting `def(G̃) = 0`. -/
+A `0`-dof-graph `G` is `2`-edge-connected, in the cut form of Katoh and Tanigawa's proof (p. 656):
+for `D ≥ 1` and a set `V'` of vertices with `∅ ≠ V' ≠ V(G)`, at least two edges of `G` join `V'`
+to `V(G) ∖ V'`. With at most one such edge, the partition `{V', V(G) ∖ V'}` would have value
+`D·(2 - 1) - (D-1)·d_G(V') ≥ 1`, against `def(G̃) = 0`. The partition is the labeling
+`cutLabeling`, and the predicate `TwoEdgeConnected` below states the lemma without labels. -/
 
-/-- The **cut labeling** of a vertex set `V'`: the labeling `f : α → α` collapsing `V'`
-to a representative `a` and its complement to `b`. Its fibers on `V(G)` are `V'` and
-`V(G) ∖ V'`, so it encodes the partition `P = {V', V∖V'}` whose crossing edges are
-`d_G(V')`. Used by `lem:two-edge-conn` to feed a bridge cut to `partitionDef`. -/
+/-- The **cut labeling** of a vertex set `V'` (`lem:two-edge-conn`): the labeling sending `V'` to
+`a` and every other vertex to `b`. For `a ≠ b` its parts on `V(G)` are `V(G) ∩ V'` and
+`V(G) ∖ V'` (when both are nonempty), so it encodes the partition `{V', V(G) ∖ V'}` of
+`lem:two-edge-conn`, whose crossing edges are those joining `V'` to `V(G) ∖ V'`. -/
 def cutLabeling (V' : Set α) (a b : α) [∀ x, Decidable (x ∈ V')] : α → α :=
   fun x => if x ∈ V' then a else b
 
-/-- The cut labeling of a vertex set `V'` separating `V(G)` (both `a ∈ V' ⊆ V(G)` and a
-distinct `b ∈ V(G) ∖ V'`) has exactly two parts: `numParts G (cutLabeling V' a b) = 2`.
-The image of `V(G)` is `{a, b}` (every vertex maps to one or the other; both are hit by
-`a` itself and `b` itself), and `a ≠ b` because `b ∉ V'`. -/
+/-- **The cut labeling has two parts** (`lem:two-edge-conn`): for `a ∈ V' ∩ V(G)` and
+`b ∈ V(G) ∖ V'`, `numParts G (cutLabeling V' a b) = 2`. The image of `V(G)` is `{a, b}` (every
+vertex goes to one of them, and `a` and `b` go to themselves), and `a ≠ b` because `b ∉ V'`. -/
 theorem numParts_cutLabeling {G : Graph α β} {V' : Set α} {a b : α}
     [∀ x, Decidable (x ∈ V')] (ha : a ∈ V') (hb : b ∈ V(G)) (hbV' : b ∉ V')
     (haV : a ∈ V(G)) : G.numParts (cutLabeling V' a b) = 2 := by
@@ -1003,17 +882,14 @@ theorem numParts_cutLabeling {G : Graph α β} {V' : Set α} {a b : α}
         rw [hx]; simp [cutLabeling, hbV']
   rw [numParts, himg, Set.ncard_pair hab]
 
-/-- **Two-edge-connectivity in cut form** (`lem:two-edge-conn`; Katoh–Tanigawa 2011
-Lemma 3.1): a body-hinge-rigid (`0`-dof) graph `G` admits no bridge cut. For a nonempty
-proper vertex set `V' ⊊ V(G)` that separates `V(G)` (witnessed by `a ∈ V' ⊆ V(G)` and a
-distinct `b ∈ V(G) ∖ V'`), at least two edges cross the cut `{V', V∖V'}`:
-`2 ≤ d_G(V') = |crossingEdges G (cutLabeling V' a b)|`.
+/-- **A `0`-dof-graph is `2`-edge-connected, in cut form** (`lem:two-edge-conn`; Katoh–Tanigawa
+2011 Lemma 3.1, p. 656): for `D = bodyBarDim n ≥ 1`, a `0`-dof-graph `G` and a set `V'` with a
+vertex `a ∈ V'` of `G` and a vertex `b ∈ V(G) ∖ V'`, at least two edges cross the partition
+`P = {V', V(G) ∖ V'}`: `2 ≤ d_G(P) = |crossingEdges G (cutLabeling V' a b)|`.
 
-Proof (KT Lemma 3.1): the cut `{V', V∖V'}` is a two-part partition
-(`numParts_cutLabeling`), so `def_{G̃}(P) = D·(2-1) - (D-1)·d_G(P) = D - (D-1)·d_G(P)`.
-If `d_G(P) ≤ 1` then `def_{G̃}(P) ≥ D - (D-1) = 1 > 0 = def(G̃)`, contradicting that the
-deficiency (an upper bound for every partition, `partitionDef_le_deficiency`) is `0`.
-With `D = bodyBarDim n ≥ 1` this forces `d_G(P) ≥ 2`. -/
+KT's proof: `P` has two parts (`numParts_cutLabeling`), so `def_{G̃}(P) = D - (D-1)·d_G(P)`. If
+`d_G(P) ≤ 1`, then `def_{G̃}(P) ≥ D - (D-1) = 1 > 0 = def(G̃)`, against
+`partitionDef_le_deficiency`. -/
 theorem two_le_crossingEdges_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) {V' : Set α} {a b : α}
     [∀ x, Decidable (x ∈ V')] (ha : a ∈ V') (haV : a ∈ V(G)) (hb : b ∈ V(G))
@@ -1032,23 +908,22 @@ theorem two_le_crossingEdges_of_isKDof_zero [Finite α] {G : Graph α β} {n : �
   nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ (bodyBarDim n : ℤ) - 1)
     (by linarith : (0:ℤ) ≤ 1 - ((G.crossingEdges (cutLabeling V' a b)).ncard : ℤ))]
 
-/-! ### Crossing-edges at the singleton cut (`def:cut-edges-2ec`)
+/-! ### Cuts and `2`-edge-connectivity (`def:cut-edges-2ec`, `lem:two-edge-connected-degree`)
 
-The four lemmas below are the degree-bridge infrastructure for the L1a slice of Phase 22i:
-`crossingEdges_cutLabeling_singleton_subset` and `crossingEdges_cutLabeling_singleton_ncard_le`
-give the cut↔degree bridge at a single vertex; `cutEdges`/`TwoEdgeConnected` introduce the
-labeling-free V2 predicate; `cutEdges_eq_crossingEdges_cutLabeling` transfers between the two
-encodings; `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` are the
-two main consequences. `preconnected_of_twoEdgeConnected` adds the connectivity half; the
-`IsKDof n 0` compositions `two_le_degree_of_isKDof_zero` / `preconnected_of_isKDof_zero`
-(ENTRY leaf E2a, `notes/Phase23-design.md` §(4.107.D)) package both for KT Lemma 4.6. -/
+`cutEdges G V'` is the set `δ_G(V')` of edges joining `V'` to `V(G) ∖ V'`, without labels, and
+`TwoEdgeConnected` asks for at least two of them at every `V'` with `∅ ≠ V' ⊊ V(G)`.
+`cutEdges_eq_crossingEdges_cutLabeling` identifies `δ_G(V')` with the crossing edges of the cut
+labeling, so KT Lemma 3.1 gives `twoEdgeConnected_of_isKDof_zero`. At a vertex `v`, the crossing
+edges of the cut `{{v}, V(G) ∖ {v}}` are edges at `v` that are not loops, at most the degree of
+`v` in number, which gives `two_le_degree_of_twoEdgeConnected`; `preconnected_of_twoEdgeConnected`
+gives connectivity. For a `0`-dof-graph these are `two_le_degree_of_isKDof_zero` and
+`connected_of_isKDof_zero` (`lem:deficiency-zero-connected`). -/
 
-/-- **Crossing edges of the single-vertex cut are nonloop edges at `v`**
-(`lem:reducible-vertex`, cut↔degree bridge; also used by `def:cut-edges-2ec`). The edges of
-`G` crossing the two-part cut `{{v}, V(G) ∖ {v}}` (encoded by `cutLabeling {v} a b` with
-`a ≠ b`) are exactly the *nonloop* edges incident to `v`: an edge crosses iff exactly one of
-its endpoints is `v`. This is the structural fact linking the project's cut count `d_G(V')`
-to the vendored multigraph degree `Graph.degree`. -/
+/-- **The crossing edges of a one-vertex cut are edges at the vertex** (a step of
+`lem:two-edge-connected-degree`): the edges of `G` crossing the partition encoded by
+`cutLabeling {v} a b` are edges at `v` that are not loops, as an edge crosses only if exactly one
+of its ends is `v`. This relates the cut count `d_G({v})` to the degree `Graph.degree v`
+(`crossingEdges_cutLabeling_singleton_ncard_le`). -/
 lemma crossingEdges_cutLabeling_singleton_subset {G : Graph α β} {v a b : α}
     [∀ x, Decidable (x ∈ ({v} : Set α))] :
     G.crossingEdges (cutLabeling {v} a b) ⊆ {e | G.IsNonloopAt e v} := by
@@ -1067,12 +942,11 @@ lemma crossingEdges_cutLabeling_singleton_subset {G : Graph α β} {v a b : α}
       exact ⟨x, hx, hlink.symm⟩
     · simp [hx, hy] at hfxy
 
-/-- **The cut-crossing count is at most the multigraph degree at `v`**
-(`lem:reducible-vertex`, cut↔degree bridge; also used by `def:cut-edges-2ec`). For the
-single-vertex cut `{v}`, the number of crossing edges `d_G({v})` is at most the vendored
-multigraph degree `Graph.degree v`: the crossing edges are the nonloop edges at `v`
-(`crossingEdges_cutLabeling_singleton_subset`), and the degree counts each nonloop edge at
-least once (`Graph.degree_eq_ncard_add_ncard`). -/
+/-- **A one-vertex cut has at most the degree in crossing edges** (a step of
+`lem:two-edge-connected-degree`): for the cut labeling of `{v}`, the number of crossing edges is
+at most `Graph.degree v`. The crossing edges are edges at `v` that are not loops
+(`crossingEdges_cutLabeling_singleton_subset`), and the degree counts each such edge once
+(`Graph.degree_eq_ncard_add_ncard`). -/
 lemma crossingEdges_cutLabeling_singleton_ncard_le [Finite β] {G : Graph α β} {v a b : α}
     [∀ x, Decidable (x ∈ ({v} : Set α))] :
     (G.crossingEdges (cutLabeling {v} a b)).ncard ≤ G.degree v := by
@@ -1081,28 +955,24 @@ lemma crossingEdges_cutLabeling_singleton_ncard_le [Finite β] {G : Graph α β}
         Set.ncard_le_ncard crossingEdges_cutLabeling_singleton_subset (Set.toFinite _)
     _ ≤ G.degree v := by rw [G.degree_eq_ncard_add_ncard v]; omega
 
-/-- **The edges of `G` crossing the cut `{V', V(G) ∖ V'}`** (`def:cut-edges-2ec`).
-Labeling-free encoding of the cut crossing count `d_G(V')`; a mirror of
-`{e ∈ E(G) | e crosses the bipartition (V', V(G) ∖ V')}` without choosing
-representative labels. An edge `e` is in `cutEdges G V'` iff it has an endpoint in
-`V'` and an endpoint outside `V'` (taking one `IsLink`-direction for the definition;
-the symmetric direction is the `IsLink.symm` image). -/
+/-- **The edges of `G` joining `V'` to `V(G) ∖ V'`** (`def:cut-edges-2ec`): Katoh and Tanigawa's
+`δ_G(V')` (2011, p. 654), whose size is `d_G(V')`, without the labels of `cutLabeling`. An edge
+`e` is in `cutEdges G V'` iff it has an end in `V'` and an end outside `V'` (the definition
+takes the link `e x y` with `x ∈ V'`; the other orientation is its `IsLink.symm`). -/
 def cutEdges (G : Graph α β) (V' : Set α) : Set β :=
   {e ∈ E(G) | ∃ x y, G.IsLink e x y ∧ x ∈ V' ∧ y ∉ V'}
 
-/-- **KT's 2-edge-connectivity predicate** (`def:cut-edges-2ec`; Katoh–Tanigawa 2011
-§6). Labeling-free: every nonempty proper vertex set `V' ⊊ V(G)` is crossed by at
-least two edges. Connectivity is **included** automatically: a connected component `V'`
-of a disconnected `G` would have `cutEdges G V' = ∅`, violating the `2 ≤` bound (since
-`∅.ncard = 0 < 2`). At `|V(G)| ≤ 1` the predicate holds vacuously (KT's convention). -/
+/-- **`2`-edge-connectivity** (`def:cut-edges-2ec`): every set `V'` with `∅ ≠ V' ⊊ V(G)` has at
+least two edges joining it to `V(G) ∖ V'`. It implies connectivity
+(`preconnected_of_twoEdgeConnected`): the vertex set `V'` of a component of a disconnected `G`
+would have `cutEdges G V' = ∅`. When `|V(G)| ≤ 1` it holds vacuously. -/
 def TwoEdgeConnected (G : Graph α β) : Prop :=
   ∀ V' : Set α, V'.Nonempty → V' ⊂ V(G) → 2 ≤ (G.cutEdges V').ncard
 
-/-- **Transfer between `cutEdges` and `crossingEdges (cutLabeling …)`** (`def:cut-edges-2ec`).
-The labeling-free `cutEdges G V'` equals the existing `crossingEdges G (cutLabeling V' a b)`
-when `a ∈ V'` and `b ∉ V'`. An edge `e` crosses `V'` in the labeling-free sense iff its
-`IsLink`-endpoints have one in `V'` and one outside — which is exactly when the
-`cutLabeling`-values of its endpoints differ. -/
+/-- **`cutEdges` are the crossing edges of the cut labeling** (a step of
+`lem:two-edge-connected-degree`): `cutEdges G V' = crossingEdges G (cutLabeling V' a b)` when
+`a ∈ V'` and `b ∉ V'`. An edge has one end in `V'` and one outside exactly when the cut labeling
+gives its ends different labels. -/
 lemma cutEdges_eq_crossingEdges_cutLabeling {G : Graph α β} {V' : Set α} {a b : α}
     [∀ x, Decidable (x ∈ V')] (ha : a ∈ V') (hb : b ∉ V') :
     G.cutEdges V' = G.crossingEdges (cutLabeling V' a b) := by
@@ -1129,14 +999,10 @@ lemma cutEdges_eq_crossingEdges_cutLabeling {G : Graph α β} {V' : Set α} {a b
         exact hfxy rfl
       exact ⟨heG, y, x, hlink.symm, hyV', hxV'⟩
 
-/-- **`cutEdges` restricted to the complementary side is a subset of `cutEdges V'`**
-(`def:cut-edges-2ec`; Phase 39 W5-L5 L5-cut-iv, the two-sided cut-arm sub-case's feasibility
-restriction on the "other" side): an edge crossing `V(G) ∖ V'` — an endpoint in it, an endpoint
-outside it — also crosses `V'`, by swapping which endpoint plays which role
-(`hl.symm`; the endpoint outside `V(G) ∖ V'` and in `V(G)` is forced into `V'`). Both directions
-hold (the same argument applies with `V'` and `V(G) ∖ V'` swapped, since `cutEdges` only reads
-membership, not the ambient-subset hypothesis), but this one-directional subset form is all
-downstream users need — chiefly `Set.ncard_le_ncard` for the companion cardinality bound. -/
+/-- **The cut of the other side** (`def:cut-edges-2ec`): an edge joining `V(G) ∖ V'` to the rest
+of `G` joins `V'` to the rest, `δ_G(V(G) ∖ V') ⊆ δ_G(V')`. Swap the ends (`hl.symm`): the end
+outside `V(G) ∖ V'` is a vertex of `G`, so it lies in `V'`. The reverse inclusion holds as well,
+by the same argument; its callers need only this one, for `Set.ncard_le_ncard`. -/
 theorem cutEdges_diff_subset (G : Graph α β) (V' : Set α) :
     G.cutEdges (V(G) \ V') ⊆ G.cutEdges V' := by
   rintro f ⟨hfE, x, y, hl, hx, hy⟩
@@ -1145,12 +1011,9 @@ theorem cutEdges_diff_subset (G : Graph α β) (V' : Set α) :
   have hx' : x ∉ V' := fun hx' => hx.2 hx'
   exact ⟨hfE, y, x, hl.symm, hy', hx'⟩
 
-/-- **Under `≤ 1` crossing edge, every crossing link is the pinned cut edge**
-(`def:cut-edges-2ec`; Phase 39 W5-L5): a link `e = xy` with `x ∈ V₁` and `y ∉ V₁` is a member of
-`G.cutEdges V₁`, which contains the pinned `e₀` and has at most one member. The dispatch fact of
-the cut cases: both cut-edge assemblies (`case_cut_edge_realization_gen`,
-`hasPencilRealization_of_not_twoEdgeConnected_core`) and the pencil cut arm's edge-closed sides
-(`Molecule/Pencil/Motive.lean`). -/
+/-- **A cut of at most one edge** (`def:cut-edges-2ec`): if `δ_G(V₁)` has at most one edge and
+contains the edge `e₀` (a link `u₀ w₀` with `u₀ ∈ V₁` and `w₀ ∉ V₁`), then every link `e = xy` with
+`x ∈ V₁` and `y ∉ V₁` is `e₀`, as `e` lies in `G.cutEdges V₁` too. -/
 theorem eq_cutEdge_of_isLink_crossing [Finite β] {G : Graph α β} {V₁ : Set α}
     {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1) {e : β} {x y : α}
@@ -1159,10 +1022,9 @@ theorem eq_cutEdge_of_isLink_crossing [Finite β] {G : Graph α β} {V₁ : Set 
   have he₀ : e₀ ∈ G.cutEdges V₁ := ⟨hl₀.edge_mem, u₀, w₀, hl₀, hu₀, hw₀⟩
   exact (Set.ncard_le_one (Set.toFinite _)).mp hcut e he e₀ he₀
 
-/-- **Under `≤ 1` crossing edge, a crossing link's endpoints pin to the cut edge's**
-(`def:cut-edges-2ec`): a link `e = xy` with `x ∈ V₁` and `y ∉ V₁` is not just the same edge as the
-pinned `e₀ = u₀w₀` (`Graph.eq_cutEdge_of_isLink_crossing`), its endpoints agree in orientation too
-— the swapped orientation `x = w₀` contradicts `hx : x ∈ V₁` against `hw₀ : w₀ ∉ V₁`. -/
+/-- **A cut of at most one edge, with the ends** (`def:cut-edges-2ec`): under the hypotheses of
+`eq_cutEdge_of_isLink_crossing`, a link `e = xy` with `x ∈ V₁` and `y ∉ V₁` is `e₀ = u₀w₀` with
+`x = u₀` and `y = w₀`: the other orientation, `x = w₀`, contradicts `x ∈ V₁` and `w₀ ∉ V₁`. -/
 theorem eq_and_eq_of_isLink_crossing [Finite β] {G : Graph α β} {V₁ : Set α}
     {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1) {e : β} {x y : α}
@@ -1172,11 +1034,10 @@ theorem eq_and_eq_of_isLink_crossing [Finite β] {G : Graph α β} {V₁ : Set �
   · exact ⟨rfl, rfl, rfl⟩
   · exact absurd hx hw₀
 
-/-- **A `0`-dof graph is `2`-edge-connected** (`def:cut-edges-2ec`; KT Lemma 3.1 in
-labeling-free form). For a body-hinge-rigid (`0`-dof) graph `G` and `D = bodyBarDim n ≥ 1`,
-the predicate `G.TwoEdgeConnected` holds: given any nonempty proper vertex set `V' ⊊ V(G)`,
-the ssubset witnesses yield representative labels `a ∈ V' ⊆ V(G)` and `b ∈ V(G) ∖ V'`,
-so `two_le_crossingEdges_of_isKDof_zero` delivers `2 ≤ d_G(V')` after transferring via
+/-- **A `0`-dof-graph is `2`-edge-connected** (`lem:two-edge-connected-degree`; KT Lemma 3.1
+without labels): for `D = bodyBarDim n ≥ 1` and a `0`-dof-graph `G`, `G.TwoEdgeConnected`. A set
+`V'` with `∅ ≠ V' ⊊ V(G)` has vertices `a ∈ V'` and `b ∈ V(G) ∖ V'`, so
+`two_le_crossingEdges_of_isKDof_zero` gives `2 ≤ d_G(V')`, through
 `cutEdges_eq_crossingEdges_cutLabeling`. -/
 theorem twoEdgeConnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) : G.TwoEdgeConnected := by
@@ -1194,12 +1055,11 @@ theorem twoEdgeConnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
   rw [cutEdges_eq_crossingEdges_cutLabeling haV' hbV']
   exact two_le_crossingEdges_of_isKDof_zero hD hrigid haV' haV hbV hbV'
 
-/-- **`2`-edge-connectivity implies minimum degree `≥ 2`** (`def:cut-edges-2ec`). For a
-`2`-edge-connected graph `G` with `2 ≤ |V(G)|`, every vertex `v ∈ V(G)` has multigraph
-degree `G.degree v ≥ 2`. Proof: the singleton cut `{v}` is a nonempty proper vertex set
-(proper since `|V| ≥ 2`), so `htec` gives `2 ≤ |cutEdges G {v}|`; the transfer
-`cutEdges_eq_crossingEdges_cutLabeling` and then `crossingEdges_cutLabeling_singleton_ncard_le`
-give `|cutEdges G {v}| ≤ G.degree v`. -/
+/-- **`2`-edge-connectivity gives minimum degree at least `2`** (`lem:two-edge-connected-degree`):
+in a `2`-edge-connected graph `G` with `2 ≤ |V(G)|`, every vertex `v ∈ V(G)` has
+`G.degree v ≥ 2`. The set `{v}` is nonempty, and proper as `|V(G)| ≥ 2`, so
+`2 ≤ |cutEdges G {v}|`; and `|cutEdges G {v}| ≤ G.degree v` by
+`cutEdges_eq_crossingEdges_cutLabeling` and `crossingEdges_cutLabeling_singleton_ncard_le`. -/
 theorem two_le_degree_of_twoEdgeConnected [Finite β] {G : Graph α β}
     (htec : G.TwoEdgeConnected) {v : α} (hv : v ∈ V(G)) (hV2 : 2 ≤ V(G).ncard) :
     2 ≤ G.degree v := by
@@ -1226,14 +1086,11 @@ theorem two_le_degree_of_twoEdgeConnected [Finite β] {G : Graph α β}
   rw [cutEdges_eq_crossingEdges_cutLabeling (Set.mem_singleton v) (by simpa using hbv)] at hcut
   exact le_trans hcut (crossingEdges_cutLabeling_singleton_ncard_le (v := v) (a := v) (b := b))
 
-/-- **`2`-edge-connectivity implies connectivity** (`def:cut-edges-2ec`): the labeling-free
-`TwoEdgeConnected` predicate folds connectivity in "for free" (its own docstring), and this
-makes that fact usable as `Graph.Preconnected`. If `G` were not preconnected, the component
-`V' = {z | G.ConnBetween x z}` of some `x ∈ V(G)` would be a nonempty proper vertex set —
-missing some `y ∈ V(G)` not `ConnBetween`-reachable from `x` — so `htec` would give
-`2 ≤ |cutEdges G V'|`; but no `G`-edge can cross a connected component (an edge from
-`u ∈ V'` to `v` would extend the component to reach `v` too), so `cutEdges G V' = ∅` —
-contradiction. -/
+/-- **`2`-edge-connectivity gives connectivity** (`def:cut-edges-2ec`), as `Graph.Preconnected`.
+If `G` were not preconnected, the component `V' = {z | G.ConnBetween x z}` of some `x ∈ V(G)` would
+miss some `y ∈ V(G)`, so `∅ ≠ V' ⊊ V(G)` and `2 ≤ |cutEdges G V'|`. But no edge of `G` joins `V'`
+to a vertex outside it (an edge from `u ∈ V'` to `v` puts `v` in the component), so
+`cutEdges G V' = ∅`. -/
 theorem preconnected_of_twoEdgeConnected {G : Graph α β} (htec : G.TwoEdgeConnected) :
     G.Preconnected := by
   by_contra hcon
@@ -1277,50 +1134,39 @@ theorem Preconnected.eq_of_forall_isLink {M : Type*} {G : Graph α β} (hG : G.P
     (hy : y ∈ V(G)) : s x = s y :=
   (hG x y hx hy).eq_of_forall_isLink hs
 
-/-- **A `0`-dof graph has minimum degree `≥ 2`** (`def:cut-edges-2ec`; Katoh–Tanigawa 2011
-Lemma 4.6's degree hypothesis — KT's `X₀ = X₁ = ∅` — ENTRY leaf E2a alongside
-`preconnected_of_isKDof_zero`, `notes/Phase23-design.md` §(4.107.D); replaces KT's own
-`2`-edge-connectivity hypothesis, per §(4.107.B)). Composes `twoEdgeConnected_of_isKDof_zero`
-with `two_le_degree_of_twoEdgeConnected`. -/
+/-- **A `0`-dof-graph has minimum degree at least `2`** (`lem:deficiency-zero-connected`): for
+`D ≥ 1` and `2 ≤ |V(G)|`, `twoEdgeConnected_of_isKDof_zero` followed by
+`two_le_degree_of_twoEdgeConnected`. Katoh and Tanigawa note that a `2`-edge-connected graph has
+no vertex of degree `0` or `1` in the proof of their Lemma 4.6 (2011, p. 664). -/
 theorem two_le_degree_of_isKDof_zero [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) {v : α} (hv : v ∈ V(G))
     (hV2 : 2 ≤ V(G).ncard) : 2 ≤ G.degree v :=
   two_le_degree_of_twoEdgeConnected (twoEdgeConnected_of_isKDof_zero hD hrigid) hv hV2
 
-/-- **A `0`-dof graph is connected** (`def:cut-edges-2ec`; the connectivity half of KT Lemma
-4.6's `2`-edge-connectivity hypothesis, the connectivity companion to
-`two_le_degree_of_isKDof_zero`, ENTRY leaf E2a, `notes/Phase23-design.md` §(4.107.D)).
-Composes `twoEdgeConnected_of_isKDof_zero` with `preconnected_of_twoEdgeConnected`. -/
+/-- **A `0`-dof-graph is preconnected** (a step of `lem:deficiency-zero-connected`): for `D ≥ 1`,
+`twoEdgeConnected_of_isKDof_zero` followed by `preconnected_of_twoEdgeConnected`. -/
 theorem preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) : G.Preconnected :=
   preconnected_of_twoEdgeConnected (twoEdgeConnected_of_isKDof_zero hD hrigid)
 
-/-- **A `0`-dof graph with a vertex is connected** (`lem:deficiency-zero-connected`, Phase 40f;
-the connectivity half of the standing hypotheses at a `def₂`-rigid core): `G.Connected` is
-`preconnected_of_isKDof_zero` plus a vertex. -/
+/-- **A `0`-dof-graph with a vertex is connected** (`lem:deficiency-zero-connected`): for `D ≥ 1`,
+`G.Connected` is `preconnected_of_isKDof_zero` and a vertex. -/
 theorem connected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) (hV : V(G).Nonempty) : G.Connected :=
   connected_iff.mpr ⟨hV, preconnected_of_isKDof_zero hD hrigid⟩
 
-/-- **A body-hinge-rigid (`0`-dof) graph's multiplied graph is connected** (Track-A
-N4a infrastructure below `lem:rigidContract-isMinimalKDof`; `notes/Phase22.md`). For a
-`0`-dof graph `G` with `D = bodyBarDim n ≥ 2` (so `bodyHingeMult n = D - 1 ≥ 1`, i.e.
-`G̃` carries an edge copy of each hinge — the regime KT works in, `n ≥ 2`), the multiplied
-graph `G̃ = (D-1)·G` is preconnected: every pair of vertices is joined by a walk
-(vacuous on the empty graph, so no nonemptiness hypothesis). This is the
-hypothesis a `cycleMatroid`-under-vertex-collapse argument needs to license the
-`collapseTo r V(H)` collapse on a proper rigid subgraph `H` (a disconnected `H` would
-collapse several components to one representative, which is not the connected contraction
-the cycle matroid sees).
+/-- **The multiplied graph of a `0`-dof-graph is preconnected** (a step of
+`lem:rigidContract-isMinimalKDof`): for a `0`-dof-graph `G` with `bodyHingeMult n = D - 1 ≥ 1`, so
+that each edge of `G` has a copy in `G̃`, every two vertices of `G̃ = (D-1)·G` are joined by a walk
+(vacuously when `V(G)` is empty). Katoh and Tanigawa's proof of their Lemma 3.5 contracts a rigid
+subgraph `H` to one vertex, as `H` is connected by their Lemma 3.1 (2011, p. 658); the cycle
+matroid of the contraction (`Molecular/Induction/Contraction.lean`) uses that `H̃` is connected.
 
-Proof (the cut-partition contradiction of `two_le_crossingEdges_of_isKDof_zero`, run for
-connectivity rather than two-edge-connectivity): if `G̃` were *not* preconnected, two
-vertices `x, y ∈ V(G)` would lie in distinct components. The connected component
-`V' = {z | G̃.ConnBetween x z}` is then a nonempty proper subset of `V(G)` that no edge of
-`G` crosses — every `G`-edge `e` linking `u ∈ V'` to `v` lifts to a `G̃`-edge (copy `0`),
-so `v` is connected to `x`, hence `v ∈ V'`. The induced two-part cut therefore has
-`d_G(V') = 0`, so its deficiency is `D·(2-1) - (D-1)·0 = D ≥ 1 > 0 = def(G̃)`,
-contradicting `partitionDef_le_deficiency`. -/
+The proof is that of `two_le_crossingEdges_of_isKDof_zero`, for connectivity: if two vertices
+`x, y ∈ V(G)` lay in different components of `G̃`, no edge of `G` would join the component
+`V' = {z | G̃.ConnBetween x z}` to a vertex `v` outside it, as such an edge has a copy in `G̃` (copy
+`0`) putting `v` in `V'`. So the partition `{V', V(G) ∖ V'}` has value
+`D·(2-1) - (D-1)·0 = D ≥ 1 > 0 = def(G̃)`, against `partitionDef_le_deficiency`. -/
 theorem mulTilde_preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
     [NeZero (bodyHingeMult n)] (hrigid : G.IsKDof n 0) :
     (G.mulTilde n).Preconnected := by
@@ -1339,7 +1185,7 @@ theorem mulTilde_preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : 
   set V' : Set α := {z | (G.mulTilde n).ConnBetween x z} with hV'def
   have hxV' : x ∈ V' := ConnBetween.refl hx
   have hyV' : y ∉ V' := hxy
-  -- `f = cutLabeling V' x y` is a genuine two-part partition (`x ∈ V'`, `y ∉ V'`, distinct).
+  -- `f = cutLabeling V' x y` has two parts (`x ∈ V'`, `y ∉ V'`).
   have hparts : G.numParts (cutLabeling V' x y) = 2 :=
     numParts_cutLabeling hxV' hyV hyV' hxV
   -- No edge of `G` crosses the cut: a crossing `G`-edge lifts (copy `0`) to a `G̃`-edge
@@ -1366,15 +1212,18 @@ theorem mulTilde_preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : 
   have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (by omega : 1 ≤ bodyBarDim n)
   linarith
 
-/-! ## KT Lemma 3.6 bricks (`lem:cut-edge-decomposition`)
+/-! ## The deficiency at a cut of at most one edge (`lem:cut-edge-decomposition`; KT Lemma 3.6)
 
-Five lemmas for the cut-edge decomposition (KT Lemma 3.6, p. 659):
-`partitionDef_congr` (reads `f` only on `V(G)`), `partitionDef_comp_of_injOn`
-(relabeling invariance), `partitionDef_split_of_sides` (the exact split of a
-side-separated labeling), `exists_sides_separated_partitionDef_le` (the refinement
-bound: `≤ 1` cut edge means a side refinement does not decrease `partitionDef`),
-and `deficiency_eq_of_cutEdges_ncard_le_one` (KT Lemma 3.6). The ¬2EC packaging
-`exists_cut_decomposition_of_not_twoEdgeConnected` follows in the same section. -/
+Katoh and Tanigawa prove their Lemma 3.6 (2011, p. 659) by writing `M(G̃)` as a direct sum; the
+proof here compares partitions, as `lem:cut-edge-decomposition` does. The value of a labeling
+depends only on its labels on `V(G)` (`partitionDef_congr`) and does not change when they are
+renamed injectively (`partitionDef_comp_of_injOn`). A labeling none of whose labels is used on
+both sides of the cut splits exactly (`partitionDef_split_of_sides`,
+`lem:separated-partition-value`), and when at most one edge crosses the cut, splitting the parts
+that meet both sides does not lower the value (`exists_sides_separated_partitionDef_le`). Then
+`deficiency_eq_of_cutEdges_ncard_le_one` is KT Lemma 3.6, and
+`exists_cut_decomposition_of_not_twoEdgeConnected` applies it to a minimal `k`-dof-graph that is
+not `2`-edge-connected. -/
 
 /-- Helper: `EqOn f g V(G)` implies `crossingEdges G f = crossingEdges G g`. -/
 private lemma crossingEdges_congr {G : Graph α β} {f g : α → α}
@@ -1385,18 +1234,16 @@ private lemma crossingEdges_congr {G : Graph α β} {f g : α → α}
   · exact ⟨heE, x, y, hlink, by rwa [h hlink.left_mem, h hlink.right_mem] at hne⟩
   · exact ⟨heE, x, y, hlink, by rwa [← h hlink.left_mem, ← h hlink.right_mem] at hne⟩
 
-/-- **`partitionDef` reads `f` only on `V(G)`** (`lem:cut-edge-decomposition`).
-If `f` and `g` agree on the vertex set `V(G)` (i.e. `Set.EqOn f g V(G)`), then
-`partitionDef G n f = partitionDef G n g`. Both `numParts` and `crossingEdges`
-only observe `f`-values at vertices of `G`. -/
+/-- **`partitionDef` reads `f` only on `V(G)`** (a step of `lem:cut-edge-decomposition`): if `f`
+and `g` agree on `V(G)` (`Set.EqOn f g V(G)`), then `partitionDef G n f = partitionDef G n g`, as
+`numParts` and `crossingEdges` read only the labels of vertices of `G`. -/
 lemma partitionDef_congr {G : Graph α β} {n : ℕ} {f g : α → α}
     (h : Set.EqOn f g V(G)) : G.partitionDef n f = G.partitionDef n g := by
   simp only [partitionDef, numParts, Set.image_congr h, crossingEdges_congr h]
 
-/-- **Relabeling invariance** (`lem:cut-edge-decomposition`): post-composition with
-a map `g` that is injective on the carried labels `f '' V(G)` does not change
-`partitionDef`. That is, `partitionDef G n (g ∘ f) = partitionDef G n f` when
-`g` is injective on `f '' V(G)`.
+/-- **Renaming the labels** (a step of `lem:cut-edge-decomposition` and
+`lem:deficiency-cut-vertex`): composing with a map `g` that is injective on the labels `f '' V(G)`
+used on `V(G)` does not change the value, `partitionDef G n (g ∘ f) = partitionDef G n f`.
 
 Proof: `|(g ∘ f) '' V(G)| = |g '' (f '' V(G))| = |f '' V(G)|`
 (by `Set.InjOn.ncard_image`); and `g (f x) ≠ g (f y) ↔ f x ≠ f y` for
@@ -1434,10 +1281,9 @@ private lemma crossingEdges_induce {G : Graph α β} {X : Set α} {g : α → α
   · rintro ⟨heE, x, y, hlink, hxX, hyX, hne⟩
     exact ⟨⟨x, y, hlink, hxX, hyX⟩, x, y, ⟨hlink, hxX, hyX⟩, hne⟩
 
-/-- **Exact split of a side-separated labeling** (`lem:cut-edge-decomposition`).
-For a labeling `g` that is *side-separated* (no label crosses the bipartition
-`{V₁, V(G) ∖ V₁}`: `∀ x ∈ V₁, ∀ y ∈ V(G) ∖ V₁, g x ≠ g y`), the `D`-deficiency
-of `G` under `g` splits exactly as:
+/-- **The value of a separated partition** (`lem:separated-partition-value`): for `V₁ ⊆ V(G)` and a
+labeling `g` that is *separated*, no label used both on `V₁` and on `V(G) ∖ V₁`
+(`∀ x ∈ V₁, ∀ y ∈ V(G) ∖ V₁, g x ≠ g y`), the `D`-deficiency of `G` under `g` splits as:
 
   `partitionDef G n g`
     `= partitionDef (G.induce V₁) n g + partitionDef (G.induce (V(G) ∖ V₁)) n g`
@@ -1536,20 +1382,20 @@ lemma partitionDef_split_of_sides [Finite α] [Finite β]
   push_cast
   ring
 
-/-- **Side-separation refinement does not decrease `partitionDef`**
-(`lem:cut-edge-decomposition`). Given a vertex set `V₁ ⊆ V(G)` with at most one
-crossing edge (`|cutEdges G V₁| ≤ 1`) and any labeling `f : α → α`, there exists a
-side-separated labeling `g` (no label crosses the bipartition) such that
+/-- **Separating the sides does not lower the value** (a step of `lem:cut-edge-decomposition`):
+for `V₁ ⊆ V(G)` with at most one edge joining `V₁` to `V(G) ∖ V₁` (`|cutEdges G V₁| ≤ 1`) and a
+labeling `f : α → α`, some separated labeling `g` (as in `partitionDef_split_of_sides`) has
 `G.partitionDef n f ≤ G.partitionDef n g`.
 
-Proof: define `g` by injecting the pairs `(f x, side x)` (where `side x = 0` if `x ∈ V₁`,
-else `1`) into `V(G)` via `Set.Finite.exists_injOn_of_encard_le` (there are at most
-`|V(G)|` such pairs since each pair determines a vertex up to its piece). The injection `ι`
-is then set `g x = ι (pair x)` for `x ∈ V(G)`. Side-separation is immediate from
-injectivity (pairs in `V₁` have second coordinate `0`, pairs outside have `1`, so they
-are always distinct). Counting: `numParts G g ≥ numParts G f + s` (`s` = straddling parts),
-`crossingEdges G g` gains at most one new edge (only a cut edge inside an `f`-part can newly
-cross under `g`, and `hcut` bounds the cut). The net change is `≥ D·s − (D−1)·1 ≥ 0`. -/
+Let `side x` be `0` for `x ∈ V₁` and `1` otherwise. The pairs `(f x, side x)` with `x ∈ V(G)` are
+at most `|V(G)|` in number, so some `ι` maps them injectively into `V(G)`
+(`Set.Finite.exists_injOn_of_encard_le`); set `g x = ι (f x, side x)` for `x ∈ V(G)` and
+`g x = f x` otherwise. Then `g` is separated, as the pairs on the two sides differ in their second
+coordinate. Every edge crossing `f` crosses `g`. If `s` parts of `f` meet both sides, `g` has at
+least `numParts G f + s` parts, and at most `s` more crossing edges: a new one is an edge of
+`cutEdges G V₁` inside such a part, so there is at most one, and none when `s = 0`. So for
+`D ≥ 1` the value grows by at least `D·s − (D−1)·s = s`, and for `D = 0` it is the number of
+crossing edges, which does not drop. -/
 lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     {V₁ : Set α} (hsub : V₁ ⊆ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) (f : α → α) :
     ∃ g : α → α, (∀ x ∈ V₁, ∀ y ∈ V(G) \ V₁, g x ≠ g y) ∧
@@ -1742,14 +1588,16 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
               show (0 : ℤ) ≤ (straddle.ncard : ℤ) from Int.natCast_nonneg _,
               mul_comm (bodyBarDim n : ℤ) ((G.numParts g : ℤ) - 1)]
 
-/-- **KT Lemma 3.6** (`lem:cut-edge-decomposition`): when at most one edge crosses the
-cut `{V₁, V(G) ∖ V₁}`, the deficiency of `G` splits over the two sides.
+/-- **The deficiency at a cut of at most one edge** (`lem:cut-edge-decomposition` (1);
+Katoh–Tanigawa 2011 Lemma 3.6, p. 659): for `∅ ≠ V₁ ⊊ V(G)` with at most one edge joining `V₁` to
+`V₂ = V(G) ∖ V₁`, the deficiency of `G` splits over the sides `G₁ = G[V₁]` and `G₂ = G[V₂]`:
+`def(G̃) = def(G̃₁) + def(G̃₂) + D - (D-1)·d_G(V₁)`. So the cut adds `D - (D-1) = 1` when
+`d_G(V₁) = 1` and `D` when `d_G(V₁) = 0`, KT's two cases.
 
-`d_G(V₁) = 1` arm: `def(G̃) = def(G̃₁) + def(G̃₂) + D - (D-1)`.
-`d_G(V₁) = 0` arm: `def(G̃) = def(G̃₁) + def(G̃₂) + D`.
-
-Both arms collapse to the single formula
-`def(G̃) = def(G̃₁) + def(G̃₂) + D - (D-1)·|cutEdges G V₁|`. -/
+`≤`: separate the sides of a labeling (`exists_sides_separated_partitionDef_le`) and split it
+(`partitionDef_split_of_sides`). `≥`: rename the labels of attaining labelings of the two sides
+into `V₁` and `V₂` (`partitionDef_comp_of_injOn`, `partitionDef_congr`), so that they combine into
+one separated labeling of `G`. -/
 theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Graph α β}
     {n : ℕ} {V₁ : Set α} (hne : V₁.Nonempty)
     (hssub : V₁ ⊂ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) :
@@ -1854,11 +1702,11 @@ theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Grap
     rw [← hh_V₁_def, ← hh_compl_def, ← hsplit_h]
     exact G.partitionDef_le_deficiency n h
 
-/-- **The `hcut` producer's opener** (`lem:cut-edge-decomposition`): cut decomposition
-for minimal `k`-dof-graphs that are not `2`-edge-connected (KT Lemma 3.6 + Lemma 3.3
-sides-minimal). When `G` is a minimal `k`-dof-graph that fails `2`-edge-connectivity,
-there is a nonempty proper cut `V₁ ⊂ V(G)` with at most one crossing edge such that
-both sides are minimal `k₁`- and `k₂`-dof-graphs (for some `k₁, k₂ ≥ 0`) and
+/-- **A minimal `k`-dof-graph that is not `2`-edge-connected splits at a cut**
+(`lem:cut-edge-decomposition` (2); KT Lemmas 3.6 and 3.3, the first step of Katoh and Tanigawa's
+proof of their Lemma 6.1, 2011, p. 672): there is a set `V₁` with `∅ ≠ V₁ ⊊ V(G)` and at most one
+edge joining it to `V(G) ∖ V₁` such that the sides `G[V₁]` and `G[V(G) ∖ V₁]` are minimal `k₁`- and
+`k₂`-dof-graphs (so `k₁` and `k₂` are their deficiencies) and
 `k = k₁ + k₂ + D - (D-1)·|cutEdges G V₁|`. -/
 theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finite α]
     [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ}
