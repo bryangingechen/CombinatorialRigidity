@@ -81,14 +81,15 @@ git = "https://github.com/leanprover-community/mathlib4.git"
 [[lean_lib]]
 name = "CombinatorialRigidity"
 
-# `lake exe pebble-game` — Phase 10 Layer 5 CLI binary. Reads a simple
-# edge-list file (leading `n m` line, then `m` lines of two
-# whitespace-separated integers `0 ≤ u, v < n`) and prints one of
-# `LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE` on stdout. The
-# classification routes through Phase 10 Layer 3's
-# `SimpleGraph.instDecidableIsLaman` and `instDecidableIsSparse`,
-# which reduce through the compiled `runPebbleGameExec` body in
-# polynomial time. See `blueprint/src/chapter/executable.tex`
+# `lake exe pebble-game` — the command-line pebble game (`Main.lean`).
+# Reads a simple edge-list file (leading `n m` line, then `m` lines of
+# two integers `0 ≤ u, v < n`, separated by any whitespace) and prints
+# one of `LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE` on stdout, then the
+# verdict's witness lines. The classification calls
+# `PartialOrientation.runPebbleGameExec` at `(k, ℓ) = (2, 3)` directly;
+# the `Decidable` instances `SimpleGraph.instDecidableIsLaman` and
+# `instDecidableIsSparse` run the same function. No bound on its running
+# time is proved. See `blueprint/src/chapter/executable.tex`
 # *CLI binary* for the input/output spec.
 [[lean_exe]]
 name = "pebble-game"

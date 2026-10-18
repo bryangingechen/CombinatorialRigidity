@@ -67,9 +67,10 @@ theorem `runPebbleGameWith_correct` of Phase 10 Layer 2:
   `(runPebbleGameExec G k ℓ h_matroidal.out).isAccept`
   (Phase 11 Layer 4b — maximal reshape; was Layer 4's
   `(runPebbleGameExec_result _).isAccept`, and earlier Layer 3's
-  `(runPebbleGameExec _).isRight`). Runs in polynomial time in
-  `|V| + |E|`; the source forbids competing brute-force instances per
-  `DESIGN.md` *One `Decidable` instance per project predicate*.
+  `(runPebbleGameExec _).isRight`). No bound on its running time is
+  proved; the source forbids competing brute-force instances per
+  `DESIGN.md` *One `Decidable` instance per project predicate*, which
+  also says what `decide` and `decide +kernel` do with it.
 * `SimpleGraph.instDecidableIsTight` — Layer 3. The canonical
   `Decidable (G.IsTight k ℓ)` instance, derived from
   `instDecidableIsSparse` plus the decidable `ℕ` equation
@@ -77,8 +78,8 @@ theorem `runPebbleGameWith_correct` of Phase 10 Layer 2:
   `G.edgeSet.ncard` / `Nat.card V` form in the `IsTight`
   definition is bridged to the `Finset.card` / `Fintype.card` form
   via the mirror `ncard_edgeSet_eq_card_edgeFinset` and
-  `Nat.card_eq_fintype_card` — both pure rewrites, decided in
-  polynomial time alongside the sparsity check.
+  `Nat.card_eq_fintype_card` — both pure rewrites; the equation is
+  decided by computing both sides, after the sparsity check.
 * `SimpleGraph.instDecidableIsLaman` — Layer 3, closer. One-line
   corollary of `instDecidableIsTight` at `(k, ℓ) = (2, 3)`: since
   `IsLaman := IsTight 2 3` as an `@[expose] def`, the Laman case is
@@ -346,23 +347,25 @@ re-route: was Layer 4's `(runPebbleGameExec_result _).isAccept`; is now
 `(runPebbleGameExec _).isAccept` directly (the `_result` suffix retired
 as `runPebbleGameExec` now returns `PebbleGameResult` directly).
 
-The reduction body still routes through the same compiled
-`runPebbleGameWith`-on-`empty` chain as Phase 10's `Sum`-shaped
-`runPebbleGameExec`; the verdict wrapper is structural metadata (a `Sum`
-constructor re-packaged as an inductive constructor), so the
-polynomial-time runtime claim is unchanged. Every
-`#eval (decide (G.IsSparse k ℓ))`, `native_decide` on a sparsity goal,
-and `lake exe pebble-game` invocation routes through the same compiled
-body.
+The body runs `runPebbleGameExec`, which runs `runPebbleGameWith` from the
+empty orientation; the verdict's proofs are erased in compiled code.
+`#eval (decide (G.IsSparse k ℓ))` runs it in the interpreter,
+`native_decide` on a sparsity goal runs it compiled, and
+`lake exe pebble-game` runs `runPebbleGameExec` compiled. No bound on its
+running time is proved. The elaborator's `decide` does not evaluate it,
+since `tryAddEdgeWith` and the search are defined by well-founded
+recursion; `DESIGN.md` *One `Decidable` instance per project predicate*
+says what `decide +kernel` does.
 
 **One `Decidable` instance per project predicate.** This is the canonical
 decidability instance for `IsSparse k ℓ` in the matroidal regime. A
 brute-force `∀ s : Finset V, …` iteration via
 `Fintype.decidableForallFintype` would also produce a valid
-`Decidable (G.IsSparse k ℓ)`, but would reduce in exponential time;
-introducing it as a competing instance would silently cause typeclass search
-to pick the slow path. Do not register competing instances. See `DESIGN.md`
-*One `Decidable` instance per project predicate* for the project rule. -/
+`Decidable (G.IsSparse k ℓ)`, but on a sparse graph it checks all
+`2 ^ |V|` vertex subsets; introducing it as a competing instance would
+silently cause typeclass search to pick it instead. Do not register
+competing instances. See `DESIGN.md` *One `Decidable` instance per
+project predicate* for the project rule. -/
 instance instDecidableIsSparse [LinearOrder V] [Fintype V] (G : SimpleGraph V)
     [Fintype G.edgeSet] (k ℓ : ℕ) [h_matroidal : Fact (ℓ < 2 * k)] :
     Decidable (G.IsSparse k ℓ) :=
@@ -382,8 +385,8 @@ half (via Phase 11 Layer 4b's `runPebbleGameExec.isAccept`) and a
 `Nat.card_eq_fintype_card`.
 **One `Decidable` instance per project predicate.** Per `DESIGN.md`, do not
 register competing instances; the canonical reduction body is the same
-pebble game body as `instDecidableIsSparse`, paired with a constant-time
-`Nat` equality. -/
+pebble game body as `instDecidableIsSparse`, paired with a check of the
+`Nat` equation. -/
 instance instDecidableIsTight [LinearOrder V] [Fintype V] (G : SimpleGraph V)
     [Fintype G.edgeSet] (k ℓ : ℕ) [Fact (ℓ < 2 * k)] :
     Decidable (G.IsTight k ℓ) :=
@@ -409,7 +412,7 @@ with the top-level `Fact (3 < 2 * 2)` instance plugged in automatically. Reduces
 through the same compiled `runPebbleGameWith`-on-`empty` body as
 `instDecidableIsSparse` / `instDecidableIsTight` (Phase 11 Layer 4b
 verdict re-routing is invisible at the reduction body); the only added
-work is the constant-time edge-count equation.
+work is the edge-count equation.
 **One `Decidable` instance per project predicate.** Per `DESIGN.md`, do not
 register competing instances. -/
 instance instDecidableIsLaman [LinearOrder V] [Fintype V] (G : SimpleGraph V)

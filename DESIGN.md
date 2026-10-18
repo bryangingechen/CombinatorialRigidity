@@ -574,8 +574,10 @@ on `V`* above). The pebble-game files depart because:
   orientations and iterates over `Finset V` out-neighbourhoods; the
   state machine cannot run at `[Finite V]` strength (no `Finset.univ`,
   no enumeration).
-- `#eval` and `decide` should actually fire on extracted certificates,
-  which requires the typeclasses end-to-end.
+- `#eval`, `native_decide` and the compiled executable should actually
+  run on extracted certificates, which requires the typeclasses
+  end-to-end. (The elaborator's `decide` does not evaluate them: see
+  *One `Decidable` instance per project predicate*.)
 - The certificate-form correctness theorems bridge to the
   noncomputable `IsSparse` / `IsTight` statements via a thin shim
   section; bridge instances propagate one-way (caller `[Fintype V]`
@@ -593,8 +595,8 @@ in mathlib (it lifts through `Multiset.toList`'s `Classical`-flavored
 `Quotient.lift`; there is no canonical permutation representative of
 an unordered collection). A DFS / pebble-game body that enumerates
 out-neighbours via `(succ v).attach.toList` therefore propagates
-`noncomputable` to the whole algorithm — blocking the `#eval` and
-small-graph `decide` goals above. The style island resolves this by
+`noncomputable` to the whole algorithm — blocking the `#eval` goal
+above. The style island resolves this by
 splitting:
 
 - *Exec layer* — algorithm inputs that need enumeration are typed
@@ -605,8 +607,9 @@ splitting:
   (deduplication, membership, complement) stays `Finset V`. The DFS
   warmup's `visited : Finset V` is the canonical instance: the
   termination measure `(Finset.univ \ visited).card` lives on the
-  math layer, while children enumeration `(succ v).attach.findSome?`
-  lives on the exec layer.
+  math layer, while the enumeration of children, the list `succ v`
+  that the sibling loop `reachableFindingList` walks, lives on the
+  exec layer.
 
 Callers that hold adjacency data in `Finset` form should expose a
 list projection at the algorithm boundary (with an optional `Nodup`
@@ -658,7 +661,7 @@ is noncomputable — math/exec layer split* for the design history.
 
 Phase 10 registers `Decidable` instances for `IsSparse k ℓ` (in the
 matroidal regime `ℓ < 2 * k`), `IsTight k ℓ`, and `IsLaman`, each
-backed by the polynomial-time pebble game `runPebbleGameExec`. The
+backed by the pebble game `runPebbleGameExec`. The
 project rule is: **each of these predicates carries exactly one
 canonical `Decidable` instance, the pebble-game-backed one.** Do not
 register a second `Decidable` instance for the same predicate, even if
@@ -680,14 +683,48 @@ type-correct decision procedures:
   reduction.
 
 Both the pebble-game instance and the brute-force instance produce a
-valid `Decidable` of the same `Prop`; they differ only in the
-*reduction body* — what `decide` / `#eval` / `native_decide` actually
-unfolds when asked to evaluate. The pebble-game body runs in time
-polynomial in `|V| + |E|`; the brute-force body runs in time
-exponential in `|V|`. Registering both as `instance` would silently
-expose users to the slow path on any code that happened to trigger
+valid `Decidable` of the same `Prop`; they differ only in the *body*
+that `#eval` and `native_decide` run. The brute-force body checks all
+$2^{|V|}$ vertex subsets on a sparse graph. No bound on the
+pebble-game body's running time is proved: Lee–Streinu's $O(m_a n)$
+(2008, §3, p. 1430) bounds their game, not this formalization of it.
+What is measured is the search the game calls, alone:
+`scripts/DFSTiming.lean` (run with `lake lean`) times
+`Search.reachableFinding`, which enters each vertex at most once,
+beside the search it replaced, which marked only the vertices of the
+current walk, on a chain of `n` diamonds with `2 ^ n` walks end to
+end and no vertex satisfying the predicate; at `n = 18` the old search
+took about two seconds and the new one under a millisecond.
+Registering both instances would silently expose users to the
+brute-force path on any code that happened to trigger
 typeclass-search priority in the wrong direction — a regression that
 is hard to detect in normal code review and easy to introduce.
+
+**What `decide` does with these instances.** It does not prove
+`Examples.k4MinusE.IsLaman`, with or without `+kernel`, so the texts
+name `#eval`, `lake exe` and `native_decide` as the ways to run them:
+
+- The elaborator's `decide` evaluates an instance by reduction, and
+  does not unfold definitions by well-founded recursion, as
+  `tryAddEdgeWith` and the search are.
+- `decide +kernel` leaves the reduction to the kernel, which unfolds
+  that recursion but not core's `List.mergeSort`, the sort under
+  `Finset.sort` in `outListSorted` and `edgeListSorted`; from a
+  `module` file, moreover, it sees no body that is not `@[expose]`d.
+  From a non-`module` file it proves `(⊤ : SimpleGraph (Fin 2)).IsLaman`
+  but not `Examples.k4MinusE.IsLaman`.
+- `native_decide` proves `Examples.k4MinusE.IsLaman` and
+  `¬ Examples.k4.IsLaman` by running the compiled instance, so it
+  trusts the compiler; mathlib's `linter.style.nativeDecide` bars it
+  from the library.
+
+`scripts/DFSTiming.lean`, a non-`module` file, holds these five facts
+as tactics that fail the file if one changes. The `mergeSort` and
+`@[expose]` reasons are RECONCILE round 3's probes
+(`notes/Prose-findings.md`, `F-047` and `F-276`): a `decide +kernel`
+proof of a pebble-game goal would need a sort with an exposed body in
+the two list builders and `@[expose]` across the game's and the
+search's definitions, which the project has not queued.
 
 The project therefore registers **exactly one** canonical instance per
 predicate and forbids competitors in the relevant source files'
@@ -709,9 +746,9 @@ docstrings. The canonical instances live in
 The pebble game requires the matroidal regime `ℓ < 2 * k` (Phase 7's
 hypothesis, threaded through Phase 9's correctness theorem); the
 `IsSparse` instance therefore takes a `[Fact (ℓ < 2 * k)]` typeclass
-hypothesis rather than an unconditional registration. The blueprint
-explainer for the runtime / backend matrix (`#eval` / `lake exe` /
-`by decide` / `native_decide`) lives in
+hypothesis rather than an unconditional registration. The blueprint's
+list of the ways to run them (`#eval`, `lake exe`, `native_decide`,
+and why `decide` does not) lives in
 `blueprint/src/chapter/executable.tex`
 *Runtime and backends* and is the user-facing version of this
 rationale.

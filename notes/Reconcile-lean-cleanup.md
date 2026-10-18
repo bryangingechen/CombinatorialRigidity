@@ -15,8 +15,8 @@ wait for the phase. Tasks 1–15.1 are done: the open, the docstring-label check
 repeated derivations (*Current state*). Task 16, the recon of the pebble game's search, settled its
 fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set;
 task 18 committed the script that times it and checks the `decide` facts; task 19 had the
-executable split its input on any whitespace. **Next concrete task:** task 20, one rewrite of the
-texts (*Lemma checklist*). Round manual: `CLEANUP.md`.
+executable split its input on any whitespace; task 20 rewrote the texts. **Next concrete task:**
+task 21, the first non-vacuity witnesses (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -26,37 +26,30 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 19 is done** (this commit); nothing is mid-stream.
+**Task 20 is done** (this commit); nothing is mid-stream.
 
-**Task 19** (`F-047` in part): `parsePair` (`Main.lean`) splits on `Char.isWhitespace` through
-`String.splitToList`, dropping empty tokens as before, so a tab between the numbers or a carriage
-return ending the line (a CRLF file) no longer makes a line malformed. The input: the data lines of
-`examples/k4-minus-e.txt` with each space a tab (`perl -pe 's/ /\t/g unless /^#/'`). At task 18's
-tree the executable printed `malformed header … got: 4<tab>5`, exit 1; at this commit `lake exe
-pebble-game` prints `LAMAN` and the five `ARCS` lines of the space-separated file, exit 0. The CRLF
-copy: malformed before, `LAMAN` after. The four `examples/*.txt` give the outputs their comments
-document; three tokens or a non-number on a line stay malformed. Output in
-`scratch/reconcile-lean/t19/` (gitignored). `lake build pebble-game` warning-clean.
+**Task 20** (`F-033` and `F-047`, both now `done`; docstrings, comments and prose only): the texts
+on the search, its running time, `decide` and the input. No text claims a bound; the measured
+figure (task 18's script, the search alone, about two seconds against under a millisecond at
+$n = 18$) is in `Search/DFS.lean`'s reach-closure section and `DESIGN.md`. `DESIGN.md` *One
+`Decidable` instance per project predicate* states the script's five `decide` facts with
+`F-276`'s reasons, and `executable.tex` *Runtime and backends* states them for a reader. A
+re-`grep` found the same claims beyond the line's surfaces, fixed here: `pebble-game.tex`'s
+paragraph on Lee–Streinu's count (task 17 had left it describing the per-walk marking; the count
+checked at p. 1430), and "`decide` fires" in `DESIGN.md`'s style island, the module docstrings of
+`Search/DFS.lean` and `PebbleGame/Basic.lean`, and ROADMAP's convention. A probe
+(`scratch/reconcile-lean/t20/`, gitignored) confirmed that `decide +kernel` fails on
+`[2, 1].mergeSort` and on `¬ k4.IsLaman`; the texts state only the script's facts and `F-276`'s.
+The ledger: 277 entries, 157 `done`, 9 `left`, 107 `reported`, 4 `open`.
 
-**Task 18** (`F-033`, `F-047` in part; no library change): `scripts/DFSTiming.lean`, not a
-`module`, run as `lake lean scripts/DFSTiming.lean`; its output is
-`scratch/reconcile-lean/dfs-timing-t18.log` (gitignored). On the diamond chain at
-$n = 8, 10, \ldots, 18$ ($3n + 1$ vertices, $4n$ arcs, $2^n$ walks end to end, the three
-computed), with `P` false, the per-walk search (`671366e4`'s body, renamed) took 1.5, 6.2, 26.8,
-120.5, 521.2 and 2196.0 ms (`F-033`'s round-1 figures: 2, 6, 29, 128, 631 and 3071 ms; task 16's:
-1, 5, 25, 114, 498 and 2291), and the search with one marked set 124, 63, 76, 120, 133 and
-157 µs, marking 25, 31, …, 55 vertices ($3n + 1$, the figure that does not move). The `decide`
-facts hold, each a tactic that fails the file if it changes: `decide` and `decide +kernel` fail on
-`k4MinusE.IsLaman`, `decide +kernel` proves `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and
-`native_decide` proves `k4MinusE.IsLaman` and `¬ k4.IsLaman`. Task 20 states them. The ledger:
-`F-033`'s and `F-047`'s dispositions gain their task-18 notes; the counts are task 17's.
-
-**Tasks 16–17** (`F-033` in part): task 16's spike (`scratch/reconcile-lean/t16/`, gitignored,
-with its `decide` probes) in `Search/DFS.lean`, the search returning its marked set and its sibling
-loop `reachableFindingList`, re-proved; `dropUntilBundle` deleted; `dfs.tex` restated; no statement
-of `reachableFinding`, its theorems or `reachClosureComputable`'s changed. New `F-276` and `F-277`,
-both `reported`. The ledger: 277 entries, 155 `done`, 9 `left`, 109 `reported`, 4 `open` (task
-38's); the next ID is `F-278`.
+**Tasks 16–19** (`F-033`, `F-047`): task 16's recon (`scratch/reconcile-lean/t16/`) settled the
+search with one marked set; task 17 landed it in `Search/DFS.lean`, re-proved, `dropUntilBundle`
+deleted and `dfs.tex` restated (new `F-276` and `F-277`, both `reported`); task 18 committed
+`scripts/DFSTiming.lean` (run by `lake lean`, not a `module`): on the diamond chain at
+$n = 8, \ldots, 18$ the per-walk search took 1.5 to 2196 ms and the new one 63 to 157 µs, marking
+$3n + 1$ vertices, and the five `decide` facts hold; task 19 had `parsePair` split on
+`Char.isWhitespace`, so `lake exe pebble-game` reads a tab-separated or CRLF `k4-minus-e.txt` as
+`LAMAN` (malformed before).
 
 **Done before** (tasks 3–15.1; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -288,15 +281,9 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   so a tab no longer makes a line malformed; `lake exe pebble-game` on a tab-separated input,
   recorded: `LAMAN` on `k4-minus-e.txt` with tabs (before: malformed), and on its CRLF copy; the
   dump byte-identical; gate 9 387.
-- [ ] **20. L1–L2: one rewrite of the texts** (`F-033`, `F-047`). What the search does and the bound
-  measured or none: `Search/DFS.lean`'s section docstring (785), `PebbleGame/Exec.lean` (71, 82,
-  367), `Main.lean`'s module docstring (21–38: the input, `executable.tex`'s list for its "three-row
-  matrix"), `PebbleGame/Examples.lean` (17–20), the `lakefile.toml` comment (84–91: the
-  classification through `runPebbleGameExec`), `DESIGN.md` *One `Decidable` instance per project
-  predicate* (657: what `decide` and `decide +kernel` unfold, per task 16's *Decisions* and task
-  18's script), and `executable.tex` where it states a bound or what `decide` does (23; 253–261)
-  or the input's separator (306, "spaces": any whitespace since task 19). `dfs.tex` is task 17's.
-  *Expected:* TeX prose only; the dump byte-identical.
+- [x] **20. L1–L2: one rewrite of the texts** (`F-033`, `F-047`, both `done`): no bound claimed,
+  the search's timing stated as measured, the script's `decide` facts; also `pebble-game.tex`'s
+  per-walk paragraph and four "`decide` fires"; the dump byte-identical; gate 9 387.
 - [ ] **21. Non-vacuity witnesses, 1: the planar and matroid rows** (§1's proposal; the rule in
   `PHASE-BOUNDARIES.md`). A module `CombinatorialRigidity/Nonvacuity.lean`, imported by
   `CombinatorialRigidity.lean`, with one named closed theorem per row, as the precedent
@@ -328,7 +315,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   (17, 190, 263, 708, 749–761, 839–918: the induction is on $|V|$), `LinearRigidityMatroid.lean`
   (16, 59, 76, 204). The credit as round 1 settled it (`F-025`'s verdict).
 - [ ] **26. `PebbleGame/`** (`F-035`, `F-040`, `F-045`, `F-230`): `Basic.lean`, `Algorithm.lean`,
-  `Correctness.lean`, `Exec.lean`; the running-time claims are task 20's.
+  `Correctness.lean`, `Exec.lean`; task 20 took the running-time and `decide` claims. Also the
+  three "verified-iterative" (`Basic.lean` 1028, 1052; `Algorithm.lean` 250): the search recurses.
 - [ ] **27. `Matroid/` and `BodyBar/`** (M4's `F-053`; `F-057`; `F-215` but S13's part; `F-243`'s
   `BodyBar/GenericLift.lean` header; M2's `TayTheorem.lean` 548): `Matroid/Constructions/{Submodular,
   Union}.lean` (ported from `apnelson1/Matroid`; its credit stays), `BodyBar/{Framework, TayTheorem,
@@ -428,16 +416,16 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 20**, at Opus: one rewrite of the texts (`F-033`, `F-047`; *Lemma checklist*): what
-the search does and the bound measured or none, from task 16's *Decisions* and task 18's figures
-and facts (*Current state*), and the input as task 19 left it (any whitespace; a CRLF file reads).
-Re-`grep` the line numbers. The docstrings are Lean edits: `Main.lean` is outside the default
-target (`lakefile.toml`'s `defaultTargets`), so `lake build pebble-game` builds it beside gate 1's
-build, its output given the same `warning:` scan. Gates 1–3, 5, 6, 8, 9 and 10 (the parent dump
-`scratch/reconcile-lean/dump-t19.txt`, gitignored; regenerate it if missing; gate 9 387). Carried
-in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275` and
-FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38. After the round the queue stops before
-`RECONCILE-FORMAL`, which is attended.
+**Next: task 21**, at Opus: the non-vacuity witnesses of the planar and matroid rows (*Lemma
+checklist*): `CombinatorialRigidity/Nonvacuity.lean`, imported by `CombinatorialRigidity.lean`, one
+named closed theorem per row on the model of `molecular_conjecture_witness`
+(`Molecular/AlgebraicInduction/Nonvacuity.lean`), and `PHASE-BOUNDARIES.md`'s witness sentence (185)
+naming the file. A witness that fails is a new `S` entry for the phase, not a stop. Gates 1–3 (gate
+3 adding the five witnesses' `#print axioms`, the same three axioms), 5, 6, 9 and 10 (the parent
+dump `scratch/reconcile-lean/dump-t20.txt`, gitignored; regenerate it if missing; gate 9 387).
+Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275`
+and FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38; the three "verified-iterative"
+for task 26. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -490,3 +478,8 @@ FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38. After the round the
   the kernel stops at core's `List.mergeSort` (`Finset.sort`) and, from a `module` file, at each
   body not `@[expose]`d. The texts name `#eval`, `lake exe` and `native_decide`; the coordinator
   does not queue the route (`F-276`, reported).
+- **The texts' running time and `decide`** (task 20): a text states a running time only as
+  measured, naming the script, or claims no bound; and `decide`'s behaviour only as the committed
+  script's facts and the ledger's reasons (`F-276`). A claim on the line's subject that a re-`grep`
+  finds beyond its surfaces is fixed in the same commit (`pebble-game.tex`'s per-walk paragraph,
+  four "`decide` fires").

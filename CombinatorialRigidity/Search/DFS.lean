@@ -73,8 +73,12 @@ measure*, departing from the rest of the project's `[Finite V]` +
 inline `Fintype.ofFinite V` bridge idiom. The state machine cannot
 run at `[Finite V]` strength (no `Finset.univ`, no enumeration); the
 DFS body is fully computable (`succ : V → List V`, no
-`Finset.toList`) so `#eval` / `decide` fire on extracted certificates.
-See `../../DESIGN.md` *Pebble-game style island* for the rationale.
+`Finset.toList`), so `#eval` and compiled code run it on extracted
+certificates. The elaborator's `decide` does not unfold it, since it is
+defined by well-founded recursion (`../../DESIGN.md` *One `Decidable`
+instance per project predicate*, which also says what `decide +kernel`
+does). See `../../DESIGN.md` *Pebble-game style island* for the
+rationale.
 
 ## References
 
@@ -803,17 +807,20 @@ packaged as a `Finset V`. Unlike a `Classical.decPred`-filtered
 formulation, this version is fully computable so callers can take
 `Decidable`-flavoured downstream consequences.
 
-Implementation strategy: route through the verified DFS primitive
-`reachableFinding` already in scope. A candidate vertex `w` belongs
-to the closure exactly when `reachableFinding succ (· = w) v`
-returns `some`. This re-uses the iterative DFS already proved
-sound/complete against `Relation.ReflTransGen`, lifting both
-directions to the closure with one-line proofs. The asymptotic cost
-is $O(n)$ DFS invocations — quadratic in the worst case — but the
-math-layer view of reachability is rarely materialised; the
-algorithm side queries reachability once per pending edge via
-`tryReachPebble`. Replacing this implementation with a single-DFS
-accumulating variant is a future opportunity.
+Implementation: a candidate vertex `w` belongs to the closure exactly
+when `reachableFinding succ (· = w) v` returns `some`, so soundness and
+completeness lift from `reachableFinding_sound` and
+`reachableFinding_complete` with one-line proofs. The closure runs the
+search once for each vertex of `V`, and each search enters each vertex
+at most once (*The DFS primitive* above). No bound on the running time
+is proved. What is measured is the search alone:
+`scripts/DFSTiming.lean` (run with `lake lean`) times it, with `P`
+false everywhere, on a chain of `n` diamonds (`3n + 1` vertices, `2 ^ n`
+walks end to end) beside the search it replaced, which marked only the
+vertices of the current walk and so followed every walk; at `n = 18`
+that search took about two seconds and this one under a millisecond.
+The pebble game computes the closure only when it rejects an edge
+(`tryAddEdgeWith`), from both of the edge's ends.
 
 Used by the pebble game's completeness side: the blocking-witness
 set is built as `D.reach u ∪ D.reach v` for a partial orientation

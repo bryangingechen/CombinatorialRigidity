@@ -50,7 +50,9 @@ departing from the project's default `[Finite V]` + inline
 `Finset (V × V)`-backed partial orientations and iterates over
 out-neighbourhoods; the state machine cannot run at `[Finite V]`
 strength (no `Finset.univ`, no enumeration), and the certificate-form
-correctness statement requires `#eval` and `decide` to fire end-to-end.
+correctness statement requires `#eval` and compiled code to run
+end-to-end (the elaborator's `decide` does not: `../../DESIGN.md` *One
+`Decidable` instance per project predicate*).
 The math layer / exec layer split (state stays `Finset`-backed, while
 enumeration goes through `List V` to dodge `Finset.toList`'s
 non-computability) is established in `Search/DFS.lean`; the

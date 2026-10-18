@@ -6,34 +6,34 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.PebbleGame.Exec
 
 /-!
-# `lake exe pebble-game` — Phase 10 Layer 5 / Phase 11 Layer 5 CLI binary
+# `lake exe pebble-game`: the pebble game on a graph read from a file
 
 This file is the entry point for the `lake exe pebble-game` executable
 target declared in `lakefile.toml`. It reads a simple edge-list file
 and prints the Laman / sparse / non-sparse classification of the
-encoded finite simple graph on `Fin n` for some `n` given in the file,
-together with the witness data surfaced by Phase 11 Layer 4b's
-verdict-bearing `PebbleGameResult`.
+encoded finite simple graph on `Fin n`, for the `n` given in the file,
+together with the witness that the verdict (`PebbleGameResult`)
+carries.
 
-The classification + witness extraction is delivered through Phase 11
-Layer 4b's verdict-bearing `runPebbleGameExec` (in
-`CombinatorialRigidity.PebbleGame.Exec`), which reduces through the
-compiled `runPebbleGameWith`-on-`empty` body in polynomial time in
-`|V| + |E|`. The same compiled body underlies the `#eval (decide …)`
-worked examples in `CombinatorialRigidity/PebbleGame/Examples.lean`
-and the `native_decide` tactic; see `blueprint/src/chapter/executable.tex`
-*Runtime and backends* for the three-row matrix.
+`classify` calls `runPebbleGameExec` (in
+`CombinatorialRigidity.PebbleGame.Exec`) at `(k, ℓ) = (2, 3)`, compiled
+to native code. The `Decidable` instances behind the `#eval (decide …)`
+worked examples in `CombinatorialRigidity/PebbleGame/Examples.lean` and
+the `native_decide` tactic run the same function. No bound on its
+running time is proved; `blueprint/src/chapter/executable.tex` *Runtime
+and backends* lists the three ways to run it.
 
 ## Input format
 
-One whitespace-separated edge per line. The first non-blank,
-non-`#`-commented line is `n m` giving the vertex count `n` and the
-edge count `m` (both base-10 non-negative integers). The next `m`
-non-blank, non-`#`-commented lines each contain two whitespace-separated
-integers `u v` with `0 ≤ u, v < n`. Edges with `u = v` are silently
-discarded by `SimpleGraph.fromEdgeSet` (matches the simple-graph
-convention); duplicate edges collapse on `Finset` insertion. Vertex
-labels outside `[0, n)` are an error.
+The first non-blank, non-`#`-commented line is `n m`, giving the vertex
+count `n` and the edge count `m` (both base-10 non-negative integers).
+The next `m` non-blank, non-`#`-commented lines each give one edge, as
+two integers `u v` with `0 ≤ u, v < n`. The numbers on a line are
+separated by any whitespace (spaces or tabs), and a line may end in a
+carriage return, so a file with CRLF line endings reads. Edges with
+`u = v` are silently discarded by `SimpleGraph.fromEdgeSet` (matches the
+simple-graph convention); duplicate edges collapse on `Finset`
+insertion. Vertex labels outside `[0, n)` are an error.
 
 Blank lines and lines whose first non-whitespace character is `#` are
 ignored anywhere in the file.
@@ -48,7 +48,7 @@ A leading verdict line on stdout — one of:
   not hit the tightness bound.
 * `NOT_SPARSE` — `G` violates `(2, 3)`-sparsity at some vertex subset.
 
-followed by **witness lines** (Phase 11 Layer 5):
+followed by **witness lines**:
 
 * On `LAMAN` / `SPARSE_NOT_TIGHT`: one `ARCS u v` line per directed
   arc `(u, v)` of the accepting partial orientation `D` returned by
@@ -65,8 +65,7 @@ followed by **witness lines** (Phase 11 Layer 5):
   constructor of `PebbleGameResult`).
 
 Scripts that only need the trichotomy label can read the first line
-and ignore the rest; the witness lines are an additive refinement of
-the Phase-10-era trichotomy-only output.
+and ignore the rest.
 
 Errors (malformed input, out-of-range labels, declared edge count
 mismatch with the actual number of edge lines, …) are reported on

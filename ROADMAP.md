@@ -1325,9 +1325,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   task 16, a recon, settled the fix of the pebble game's search: one set of marked vertices
   threaded through the search, its completeness proved from the set it returns, and `decide` left
   to the texts, task 17 landed that search, re-proved, with the chapter restated, task 18
-  committed a script that times it beside the old search and checks what `decide` proves, and
-  task 19 had the executable read its input split on any whitespace, tabs included.
-  **Next:** task 20, one rewrite of the texts on the search's cost and the executable's input.
+  committed a script that times it beside the old search and checks what `decide` proves,
+  task 19 had the executable read its input split on any whitespace, tabs included, and task 20
+  rewrote the texts on the search's cost (measured, no bound claimed), `decide` and the input.
+  **Next:** task 21, the non-vacuity witnesses of the planar and matroid rows.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
@@ -1381,8 +1382,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   (`Search/DFS.lean`, `PebbleGame/`) deliberately depart from this
   rule and take `[Fintype V] [DecidableEq V]` end-to-end as a
   localized style island — the state machines iterate over
-  `Finset V` / `Finset (V × V)` directly, and `#eval` / `decide`
-  must fire on extracted certificates. See `DESIGN.md`
+  `Finset V` / `Finset (V × V)` directly, and `#eval` and compiled
+  code must run on extracted certificates. See `DESIGN.md`
   *Pebble-game style island: `[Fintype V] [DecidableEq V]`* for the
   rationale + the math-layer / exec-layer (`-With`) split that keeps
   the island from contaminating the rest of the project's API.

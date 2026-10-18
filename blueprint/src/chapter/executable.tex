@@ -253,13 +253,27 @@ A decision procedure registered for a proposition $P$, such as
   \item The tactic \texttt{native\_decide} proves $P$ by running the
     compiled procedure. The proof rests on an axiom, added for it, that
     states the program's answer. So it trusts Lean's compiler, and
-    mathlib does not accept such proofs. The tactic \texttt{decide}
-    would instead prove $P$ by evaluating the procedure by reduction,
-    trusting only Lean's type checker. It does not evaluate these
-    procedures. The processing of an edge (\cref{def:tryAddEdge}) and the
-    search of \cref{def:reachable-finding} are defined by well-founded
-    recursion, which \texttt{decide} does not unfold.
+    mathlib does not accept such proofs. It proves that the graph
+    obtained from $K_4$ by deleting an edge is Laman, and that $K_4$ is
+    not.
 \end{itemize}
+The tactic \texttt{decide} would instead prove $P$ by evaluating the
+procedure by reduction, trusting only Lean's type checker. It does not
+evaluate these procedures. The processing of an edge
+(\cref{def:tryAddEdge}) and the search of \cref{def:reachable-finding}
+are defined by well-founded recursion, which \texttt{decide} does not
+unfold. With the option \texttt{+kernel}, \texttt{decide} leaves the
+reduction to the type checker itself, which does unfold that recursion
+but does not evaluate the sort that builds the sorted lists of
+\cref{sec:executable-list-views}. It proves that the graph on two
+vertices with its one edge is Laman, but not that the graph obtained
+from $K_4$ by deleting an edge is. A Lean file in the repository,
+\texttt{scripts/DFSTiming.lean}, checks these facts, and those about
+\texttt{native\_decide} above. It is not a module of Lean's module
+system: in a module, the type checker sees the body of a definition
+from another module only if that module exports it, and there
+\texttt{decide +kernel} does not prove even that the graph on two
+vertices with its one edge is Laman.
 
 \subsection{Worked examples}
 \label{sec:executable-examples}
@@ -304,9 +318,9 @@ reads a graph from a file and decides whether it is Laman. The first
 line of the file is $n$~$m$, the numbers of vertices and of edges. Each
 of the next $m$ lines is $u$~$v$, for an edge between the vertices $u$
 and $v$, where $0 \le u, v < n$. Numbers on a line are separated by
-spaces, and blank lines and lines that start with \texttt{\#} are
-skipped. If the file does not have this form, the program prints an
-error message.
+spaces or tabs, a line may end in a carriage return, and blank lines and
+lines that start with \texttt{\#} are skipped. If the file does not
+have this form, the program prints an error message.
 
 The program takes for $G$ the simple graph on $\{0, \ldots, n - 1\}$
 whose edges are the pairs read, leaving out a pair with $u = v$. It runs

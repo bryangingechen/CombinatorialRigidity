@@ -9,16 +9,16 @@ public import CombinatorialRigidity.PebbleGame.Exec
 public meta import CombinatorialRigidity.PebbleGame.Exec
 
 /-!
-# Executable pebble game — worked examples (Phase 10 Layer 4)
+# Executable pebble game — worked examples
 
-This file exercises Phase 10's `Decidable` instances for
-`SimpleGraph.IsSparse`, `SimpleGraph.IsTight`, and `SimpleGraph.IsLaman`
-(registered in `CombinatorialRigidity.PebbleGame.Exec`) on a small
-fixed set of `Fin n` graphs, end-to-end. Each `#eval (decide …)` line
-reduces through the compiled `runPebbleGameExec` body of
-`CombinatorialRigidity.PebbleGame.Exec`; the polynomial-time guarantee
-of `lake exe pebble-game` is exercised here as a sub-second
-bytecode-interpreter run on these graphs.
+This file runs the `Decidable` instances for `SimpleGraph.IsSparse`,
+`SimpleGraph.IsTight`, and `SimpleGraph.IsLaman` (registered in
+`CombinatorialRigidity.PebbleGame.Exec`) on a small fixed set of `Fin n`
+graphs, end-to-end. Each `#eval (decide …)` line runs the instance,
+whose body calls `runPebbleGameExec`, in Lean's interpreter, and the
+comment above it records the expected answer. No bound on the running
+time is proved; `lake exe pebble-game` (`Main.lean`) runs the same
+function compiled, on the same graphs as `examples/*.txt`.
 
 ## Worked examples
 

@@ -53,10 +53,9 @@ graphs to tight graphs.
 Lee and Streinu bound the running time of their basic game by
 $O(m_a n)$, where $m_a$ is the number of accepted edges, counting at
 most $\ell + 1$ depth-first searches for each
-edge~\cite[p.~1430]{leeStreinu2008}. Our pebble search marks only the
-vertices of the walk it follows, so it may visit a vertex once for each
-simple walk to it (\cref{sec:dfs}). Their count therefore does not
-apply to it, and we prove no bound on the running time of our game.
+edge~\cite[p.~1430]{leeStreinu2008}. Our pebble search enters each
+vertex at most once (\cref{sec:dfs}), but we prove no bound on the
+running time of our game.
 
 \subsection{State and moves}
 \label{sec:pebble-game-state}

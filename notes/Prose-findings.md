@@ -3344,11 +3344,16 @@ declaration's name as its header writes it:
   vertices, $4n$ arcs, $2^n$ simple walks end to end) took 2, 6, 29, 128, 631 and 3071 ms at
   $n = 8, 10, \ldots, 18$.
   *Found:* round 1 task 5.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L1); round 3: the search threads one marked set
-  through its sibling calls, `reachableFinding_sound` and `_complete` re-proved, `dfs.tex` restated
-  (task 17); round 3: the timing re-measured by the committed `scripts/DFSTiming.lean`, the old
-  search beside the new, 2196 ms and 157 µs at $n = 18$, the new one marking $3n + 1$ vertices
-  (task 18).
+  *Disposition:* done (tasks 17, 18 and 20): the search threads one marked set through its sibling
+  calls, `reachableFinding_sound` and `_complete` re-proved, `dfs.tex` restated (task 17); the
+  timing re-measured by the committed `scripts/DFSTiming.lean`, the old search beside the new,
+  2196 ms and 157 µs at $n = 18$, the new one marking $3n + 1$ vertices (task 18); the texts
+  rewritten (task 20): the section docstring above `reachClosureComputable` says what the closure
+  runs, that no bound is proved and what the script measures, without "quadratic" or "iterative";
+  `Exec.lean`'s docstrings claim no bound; and `pebble-game.tex`'s paragraph on Lee–Streinu's count,
+  which task 17 left describing the per-walk marking, says that the search enters each vertex at
+  most once and that no bound is proved. The closure's one search per vertex is `F-277`'s. Before:
+  reported (`notes/Prose-report.md`, L1).
 - **F-035** · L · `PebbleGame/Basic.lean`, `PebbleGame/Algorithm.lean`: docstrings that describe
   other states of the code. Basic.lean's *Path reversal* section header says the lemmas about
   `out`, `peb`, `span` and `outOn` "follow in a subsequent commit"; they are in that section.
@@ -3418,13 +3423,20 @@ declaration's name as its header writes it:
   `getReducibilityStatus` reports both definitions `irreducible`; `native_decide` proves
   `k4MinusE.IsLaman` and `¬ k4.IsLaman`; `"3\t4".splitOn` is one token.
   *Found:* round 1 task 5.16.
-  *Disposition:* reported (`notes/Prose-report.md`, L2); round 3: `scripts/DFSTiming.lean` holds
-  five of these facts as tactics that fail the file if one changes: `decide` and `decide +kernel`
-  fail on `k4MinusE.IsLaman`, `decide +kernel` proves `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and
-  `native_decide` proves `k4MinusE.IsLaman` and `¬ k4.IsLaman` (task 18); round 3: `parsePair`
-  splits on `Char.isWhitespace`, so a tab, or a CRLF file's carriage return, no longer makes a line
+  *Disposition:* done (tasks 18, 19 and 20): `scripts/DFSTiming.lean` holds five of these facts as
+  tactics that fail the file if one changes: `decide` and `decide +kernel` fail on
+  `k4MinusE.IsLaman`, `decide +kernel` proves `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and
+  `native_decide` proves `k4MinusE.IsLaman` and `¬ k4.IsLaman` (task 18); `parsePair` splits on
+  `Char.isWhitespace`, so a tab, or a CRLF file's carriage return, no longer makes a line
   malformed; `lake exe pebble-game` on `examples/k4-minus-e.txt` with tabs prints `LAMAN`, where
-  task 18's tree printed "malformed header" (task 19).
+  task 18's tree printed "malformed header" (task 19); the texts rewritten (task 20): `Main.lean`'s
+  module docstring, `Examples.lean`'s and the `lakefile.toml` comment claim no bound, name what
+  `classify` calls and the input's separators, and point at `executable.tex`'s list;
+  `DESIGN.md`'s section says what `decide` and `decide +kernel` do, with the script's facts and
+  `F-276`'s reasons, and the pebble-game style island, `Search/DFS.lean`'s and `Basic.lean`'s
+  module docstrings and ROADMAP's convention no longer say that `decide` fires; `executable.tex`
+  states the facts for `decide +kernel` and `native_decide`, and the input's tabs and carriage
+  returns. Before: reported (`notes/Prose-report.md`, L2).
 - **F-055** · L · `Graph.exists_forestPacking_cover_of_isSparse_restrict` (`BodyBar/KFrame.lean`;
   `lem:k-frame-forest-packing-of-sparse`): it derives the forward half of `Graph.tutte_nash_williams`
   (`TreePacking.lean`, which `KFrame.lean` imports) again, at $G \restriction E'$ and without
