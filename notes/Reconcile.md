@@ -40,14 +40,14 @@ task 19 had `parsePair` split on any whitespace, so a tab-separated input reads,
 rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
 input, and tasks 21–24 landed the non-vacuity witnesses of the sixteen main results outside S1's
 and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last,
-and tasks 25–33 swept the docstrings of the thirteen planar files, of `Search/`, of
+and tasks 25–34 swept the docstrings of the thirteen planar files, of `Search/`, of
 `Mathlib/`, of `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and
 generic-rigidity files (every top-level file but `Nonvacuity.lean`), of
 `Molecular/Deficiency.lean`, of `Molecular/Induction/`, of `RigidityMatrix/`, of
-`Molecular/Meet.lean` and `Extensor.lean`, and of `AlgebraicInduction/Pinning.lean` and
-`PanelLayer.lean`.
-**Next concrete task:** round 3's task 34, the docstrings of `AlgebraicInduction/CaseI.lean`,
-`CaseII.lean`, `GenericityDevice.lean` and `Coupling.lean` (this round's parts; the footprint).
+`Molecular/Meet.lean` and `Extensor.lean`, of `AlgebraicInduction/Pinning.lean` and
+`PanelLayer.lean`, and of `CaseI.lean` and `CaseII.lean` (this round's parts; the footprint).
+**Next concrete task:** round 3's task 34.1, the docstrings of
+`AlgebraicInduction/GenericityDevice.lean` and `Coupling.lean` (this round's parts; the footprint).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
@@ -265,9 +265,9 @@ both concern how a carrier relates edge labels to $E(G)$. It sizes the ~70 const
 - **(a) the carriers**: S2's structure field, then S1's refactor, restating the S1 and S2 main
   results, their nodes and notes, the rows and README (removing round 1's scope sentences);
   `cor:theorem-55-d3-spanning` fixed; S13 and S18 within; G6's row; the non-vacuity witnesses of
-  these rows; the footprint's docstrings: `F-123`, `F-130` and `F-220`, and the parts of `F-126`,
-  `F-133`, `F-210`, `F-215`, `F-225`, `F-237` and `F-243` that round 3's open moved here
-  (`notes/Reconcile-lean-cleanup.md` *Moved to a later round*).
+  these rows; the footprint's docstrings: `F-123`, `F-130` and `F-220`, and the parts of `F-122`,
+  `F-126`, `F-133`, `F-210`, `F-215`, `F-225`, `F-237` and `F-243` that round 3 moved here (its
+  open, and task 34 for `F-122`'s; `notes/Reconcile-lean-cleanup.md` *Moved to a later round*).
 - **(b) M1**: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1).
 - **(c) the claims no declaration states**: S22–S25, S31, S3, S16 and S19, G5 (`def:blockingWitness`,
   `def:dof-generic`, the Plücker expansion; the packing move was round 3's task 14, L8's `F-088`),

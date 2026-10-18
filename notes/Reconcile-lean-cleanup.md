@@ -10,15 +10,15 @@ each of the 16 main results outside S1's and S2's rows, and the docstring sweep 
 L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–33 are done (*Current state*): the open, the docstring-label check
-(gate 9: 422 at task 2, 175 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
+wait for the phase. Tasks 1–34 are done (*Current state*): the open, the docstring-label check
+(gate 9: 422 at task 2, 162 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
 hypotheses and repeated derivations, the pebble game's search with one visited set and its texts
 (tasks 16–20), the sixteen non-vacuity witnesses (tasks 21–24), and the docstrings of every
 top-level file but `Nonvacuity.lean`, of `Search/`, of `Mathlib/`, of `PebbleGame/`, of `Matroid/`
 and of `BodyBar/` (tasks 25–28), of `Molecular/Deficiency.lean` (tasks 29–29.1), of
 `Molecular/Induction/` (tasks 30–31.1), of `RigidityMatrix/`, `Meet.lean` and `Extensor.lean`
-(tasks 32–32.2), and of `AlgebraicInduction/Pinning.lean` and `PanelLayer.lean` (task 33).
-**Next concrete task:** task 34, the docstrings of `CaseI.lean`, `CaseII.lean`,
+(tasks 32–32.2), of `AlgebraicInduction/Pinning.lean` and `PanelLayer.lean` (task 33), and of
+`CaseI.lean` and `CaseII.lean` (task 34). **Next concrete task:** task 34.1, the docstrings of
 `GenericityDevice.lean` and `Coupling.lean`, this round's parts (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
@@ -30,27 +30,27 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 33 is done** (this commit); nothing is mid-stream.
+**Task 34 is done** (this commit); nothing is mid-stream.
 
-**Task 33** (`F-233` `done`; `F-126`, `F-132`, `F-133`, `F-135`, `F-140`, `F-148`, `F-153`,
-`F-210`, `F-237`, `F-238` in part; `F-279` gains eight; new `F-289`, `open` for task 38): every
-docstring and comment of `AlgebraicInduction/Pinning.lean` and `PanelLayer.lean` (3 922 lines,
-outside the footprint) read against its body under the sweep's form; credits checked in `.refs/`
-(KT 2011 pp. 648–685, JJ 2010 §4, Crapo and Whiteley 1982 Proposition 3.4). `F-254`'s part was
-done at task 3; the docstring keeps it. The message names the false claims (among them KT
-Proposition 1.1 for the deficiency bound, a retirement note that does not exist, and the
-contraction read as a subgraph). Gate 9 219 → 175 (the report's 44 lines in the two files). The
-ledger: 289 entries, 193 `done`, 9 `left`, 71 `reported`, 16 `open`.
+**Task 34**, split at the file boundary (`F-232` `done`; `F-069`, `F-140`, `F-148`, `F-153` in part;
+new `F-290`, `open` for task 38): every docstring and comment of `AlgebraicInduction/CaseI.lean` and
+`CaseII.lean` (2 785 lines, in the footprint) read against its body under the sweep's form; credits
+checked in `.refs/` (KT 2011 pp. 669–684). The sentences on what a selector records and what
+`ofNormals` gives back wait for the phase (*Moved to a later round*, `F-122`'s). The message names
+the false claims (among them a Case I hypothesis "KT Claim 6.4" that the code does not take, a lemma
+`hasFullRankRealization_of_generic` that does not exist, and an identity transport called
+`e₀`-dropping). Gate 9 175 → 162 (the report's 13 lines in `CaseI.lean`). The ledger: 290 entries,
+194 `done`, 9 `left`, 70 `reported`, 17 `open`.
 
-**Tasks 25–32.2** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`,
+**Tasks 25–33** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`,
 `F-053`, `F-057`, `F-064`, `F-074`, `F-077`, `F-080`, `F-081`, `F-085`, `F-088`, `F-092`, `F-094`,
-`F-097`, `F-108`, `F-114`, `F-164`, `F-176`, `F-194`, `F-198`, `F-200`, `F-205`, `F-230`, `F-235`,
-`F-236`, `F-244`, `F-253`, `F-263` `done`; others in part; new `F-278` to `F-288`): the planar
-files, `Search/`, `Mathlib/`, `PebbleGame/`, `Matroid/Constructions/`, `BodyBar/`, the square-graph
-and generic-rigidity files, `Molecular/Deficiency.lean` (split at the tight partitions),
-`Molecular/Induction/` (split at `Operations.lean` and twice in `ForestSurgery/`),
-`RigidityMatrix/` (split twice) and `Meet.lean` and `Extensor.lean`, under *Decisions*' sweep form;
-their messages name each false claim.
+`F-097`, `F-108`, `F-114`, `F-164`, `F-176`, `F-194`, `F-198`, `F-200`, `F-205`, `F-230`, `F-233`,
+`F-235`, `F-236`, `F-244`, `F-253`, `F-263` `done`; others in part; new `F-278` to `F-289`): the
+planar files, `Search/`, `Mathlib/`, `PebbleGame/`, `Matroid/Constructions/`, `BodyBar/`, the
+square-graph and generic-rigidity files, `Molecular/Deficiency.lean` (split at the tight
+partitions), `Molecular/Induction/` (split at `Operations.lean` and twice in `ForestSurgery/`),
+`RigidityMatrix/` (split twice), `Meet.lean`, `Extensor.lean`, `Pinning.lean` and `PanelLayer.lean`,
+under *Decisions*' sweep form; their messages name each false claim.
 
 **Done before** (tasks 3–24; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -312,31 +312,27 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `done`; new `F-283`; `F-279` gains four): gate 9 312.
 - [x] **31. `ForestSurgery/ChainExtraction.lean` and `EdgeSplitting.lean`** (`F-108` `done`; new
   `F-284`; `F-279` gains five): credits KT 2011 pp. 660–665; gate 9 293.
-- [x] **31.1. `ForestSurgery/Reduction.lean`** (`F-088`, `F-092`, `F-097`, `F-236` `done`; `F-104`,
-  `F-156` in part; new `F-285`): docstrings for eight declarations whose text was a section comment;
-  credits KT 2011 pp. 660–684; the dump byte-identical; gate 9 293 → 291.
-- [x] **32. `RigidityMatrix/Basic.lean` and `Bricks.lean`** (`F-064`, `F-253` `done`; `F-153`,
-  `F-161`, `F-233` in part; `F-279` gains four; new `F-286`): credits KT 2011 pp. 653–687; the dump
-  byte-identical; gate 9 291 → 260.
+- [x] **31.1. `ForestSurgery/Reduction.lean`** (`F-088`, `F-092`, `F-097`, `F-236` `done`; new
+  `F-285`): eight docstrings that were section comments; gate 9 293 → 291.
+- [x] **32. `RigidityMatrix/Basic.lean` and `Bricks.lean`** (`F-064`, `F-253` `done`; new `F-286`):
+  gate 9 291 → 260.
 - [x] **32.1. `RigidityMatrix/Claim612.lean` and `Meet.lean`** (`F-114`, `F-164`, `F-263` `done`;
-  `F-168`, `F-232`, `F-242` in part; `F-279` gains seven; new `F-287`): `mem_hingeRowBlock_iff` and
-  the file's header name `def:hinge-row-block`; credits KT 2011 pp. 651 and 680–698; the dump
-  byte-identical; gate 9 260 → 219.
-- [x] **32.2. `RigidityMatrix/Concrete.lean` and `Molecular/Extensor.lean`** (`F-225` in part;
-  `F-279` gains `Concrete.lean`'s 81 declarations and two; new `F-288`): credits KT 2011 pp. 651–698
-  and Barnabei, Brini and Rota 1985; the dump byte-identical; gate 9 219.
-- [x] **33. `AlgebraicInduction/Pinning.lean` and `PanelLayer.lean`** (`F-233` `done`; `F-126`,
-  `F-132`, `F-133`, `F-135`, `F-140`, `F-148`, `F-153`, `F-210`, `F-237`, `F-238` in part; `F-279`
-  gains eight; new `F-289`): credits KT 2011 pp. 648–685, JJ 2010 and Crapo and Whiteley 1982; the
-  dump byte-identical; gate 9 219 → 175.
-- [ ] **34. The footprint: `CaseI.lean`, `CaseII.lean`, `GenericityDevice.lean`, `Coupling.lean`**
-  (`F-069`, `F-256`: `exists_good_realization` (110), `_reindex` (139) and their section header are
-  not `lem:genericity-device`'s; the parts there of `F-140`, `F-148`, `F-153`, `F-232`, `F-238`,
-  `F-240`). Also the sentence task 7 rewrote in `exists_independent_panelRow_subfamily_of_rigidOn`'s
-  docstring (`GenericityDevice.lean` 650–651): the star-forest rows number "at most `(D−1)(|V|−1)`
-  in all, fewer than `D(|V|−1)`", which needs `|V| ≥ 2` (at `|V| = 1` both are 0; the
-  coordinator's finding from task 7's diff, which named task 29's `Deficiency.lean`, whose
-  rewritten sentence, a fraction `(D−1)/D`, holds).
+  new `F-287`): gate 9 260 → 219.
+- [x] **32.2. `RigidityMatrix/Concrete.lean` and `Molecular/Extensor.lean`** (`F-279` gains
+  `Concrete.lean`'s 81 declarations; new `F-288`): gate 9 219.
+- [x] **33. `AlgebraicInduction/Pinning.lean` and `PanelLayer.lean`** (`F-233` `done`; new `F-289`):
+  credits KT 2011 pp. 648–685, JJ 2010 and Crapo and Whiteley 1982; gate 9 219 → 175.
+- [x] **34. The footprint: `CaseI.lean` and `CaseII.lean`** (`F-232` `done`; `F-069`, `F-140`,
+  `F-148`, `F-153` in part; new `F-290`): credits KT 2011 pp. 669–684; the selector sentences wait
+  (`F-122`'s, *Moved to a later round*); the dump byte-identical; gate 9 175 → 162.
+- [ ] **34.1. The footprint: `GenericityDevice.lean`, `Coupling.lean`** (`F-256`:
+  `exists_good_realization` (110), `_reindex` (139) and their section header are not
+  `lem:genericity-device`'s; the parts there of `F-069` (`Coupling.lean`'s three pins), `F-140`,
+  `F-153`, `F-238`, `F-240`). Also the sentence task 7 rewrote in
+  `exists_independent_panelRow_subfamily_of_rigidOn`'s docstring (`GenericityDevice.lean` 650–651):
+  the star-forest rows number "at most `(D−1)(|V|−1)` in all, fewer than `D(|V|−1)`", which needs
+  `|V| ≥ 2` (at `|V| = 1` both are 0; the coordinator's finding from task 7's diff, which named task
+  29's `Deficiency.lean`, whose rewritten sentence, a fraction `(D−1)/D`, holds).
 - [ ] **35. The footprint: `CaseIII/`** (`F-156`, `F-172`, `F-241`; the parts there of `F-135`,
   `F-161`, `F-168`, `F-242`, and `F-264`'s if task 4 left any).
 - [ ] **36. The footprint: `Theorem55.lean`, `PanelHinge.lean`, this round's parts** (`F-132`,
@@ -349,7 +345,7 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
   `F-269`'s eight declarations and `F-271`'s `case_I_realization` through block (b); `F-275`'s
   derivable vertex hypotheses, `F-278`'s and `F-280`'s two each, `F-281`'s five, `F-282`'s nine,
-  `F-283`'s six, `F-284`'s four, `F-285`'s three, `F-286`'s, `F-287`'s, `F-288`'s and `F-289`'s,
+  `F-283`'s six, `F-284`'s four, `F-285`'s three, `F-286`'s to `F-290`'s,
   L6's, and `F-282`'s and `F-289`'s repeated derivations, L8's; `F-279`'s unused declarations). The
   smell counts again (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's;
   each `@[nolint …]` and `set_option linter` site checked for its one-line justification (task 8
@@ -398,6 +394,10 @@ Items outside this round's scope, one line each, mirrored in the same commit int
   (a).
 - `F-215` in part: `exists_isGenericEndpoints_abundance`'s "`2n|E(G)|` endpoint coordinates"
   (S13, within S1's refactor). The phase's (a).
+- `F-122` in part (task 34; S2's structure field): in `CaseI.lean` and `CaseII.lean`, the sentences
+  on what a selector records and what `ofNormals` gives back (the transports' selector swap,
+  `Q = ofNormals Q.graph Q.ends …`, the last conjunct of `HasGenericFullRankRealization`), kept as
+  they stand, true. The phase's (a).
 
 ## Blockers / open questions
 
@@ -405,30 +405,32 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 34**, at Opus: the docstrings of `AlgebraicInduction/CaseI.lean` (1 689 lines),
-`CaseII.lean` (1 096), `GenericityDevice.lean` (1 969) and `Coupling.lean` (1 348), in the
-footprint: this round's parts only (*Scope*: a part that says what `PanelHingeFramework`'s fields
-mean or what its constructors guarantee, or documents a declaration of S1's or S2's rows or a node
-the phase restates, waits), with the parts there of the ledger IDs its checklist line names, under
-the sweep's rules and *Decisions*' sweep form. The 6 102 lines are about one and a half times task
-33's 3 922: split at the file boundary, `CaseI.lean` and `CaseII.lean` first (2 785), the checklist
-line split in the same commit. *Expected:* the dump byte-identical; gate 9 falls from 175 by what
-the task fixes (the report has 13 lines in `CaseI.lean`, none in `CaseII.lean`, 19 in each of the
-others). Gates 1–3 (gate 3's witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t33.lean`),
-5, 6, 9 and 10 (the parent dump `scratch/reconcile-lean/dump-t33.txt`, gitignored; regenerate it if
-missing). The screens may serve (gitignored): `scratch/reconcile-lean/t30/unused_src.py` and
-`t30/binders.py` (`lake lint` missed the hypotheses of `F-282` to `F-289`), `t32/rw2.py`, which
-renders doc-comment blocks wrapped at 100 columns without breaking a backticked name, keeps an
-indented display line, and replaces line ranges (task 33's edit scripts `t33/edit_pinning.py` and
-`t33/edit_panellayer.py` use it), `t321/codecmp.py`, which checks that a file's code, comments
-stripped, is unchanged, `t33/info.py`, which lists for a module's declarations their pins, liveness,
-callers and the nodes an unpinned one's callers serve, `t33/blocks.py`, which lists a file's doc
-blocks with the declaration each documents, and `t322/names.py`, which writes the `#check` harness
-for the backticked names. Task 35 also takes `CaseIII/Candidate.lean`'s comments that present its
-`hsupp` lemmas as inputs of `Concrete.lean`'s `_Gab` lemmas, which nothing uses (`F-279`). Carried
-in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to
-`F-289` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries for task
-38. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
+**Next: task 34.1**, at Opus: the docstrings of `AlgebraicInduction/GenericityDevice.lean` (1 969
+lines) and `Coupling.lean` (1 348), in the footprint: this round's parts only (*Scope*: a part that
+says what `PanelHingeFramework`'s fields mean or what its constructors guarantee, or documents a
+declaration of S1's or S2's rows or a node the phase restates, waits), with the parts there of the
+ledger IDs its checklist line names and its `|V| ≥ 2` sentence, under the sweep's rules and
+*Decisions*' sweep form. Task 34 is the footprint's model: it kept the sentences on what a selector
+records and what `ofNormals` gives back, true as they stand, and listed them under *Moved to a
+later round*. The 3 317 lines are fewer than task 33's 3 922, so no split is planned. *Expected:*
+the dump byte-identical; gate 9 falls from 162 by what the task fixes (the report has 19 lines in
+each file). Gates 1–3 (gate 3's witnesses: the sixteen of
+`scratch/reconcile-lean/Witnesses-t34.lean`), 5, 6, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t34.txt`, gitignored; regenerate it if missing). The screens may serve
+(gitignored): `scratch/reconcile-lean/t30/unused_src.py` and `t30/binders.py` (`lake lint` missed
+the hypotheses of `F-282` to `F-290`), `t32/rw2.py`, which renders doc-comment blocks wrapped at 100
+columns without breaking a backticked name and replaces line ranges (task 34's edit scripts
+`t34/edit_casei.py` and `t34/edit_caseii.py` use it, line comments included), `t321/codecmp.py`,
+which checks that a file's code, comments stripped, is unchanged, `t33/info.py`, which lists for a
+module's declarations their pins, liveness, callers and the nodes an unpinned one's callers serve,
+`t33/blocks.py`, which lists a file's doc blocks with the declaration each documents, `t34/pins.py`,
+which gives the nodes that pin a short name, and `t322/names.py`, which writes the `#check` harness
+for the backticked names (open `PanelHingeFramework` in it, as task 34 did). Task 35 also takes
+`CaseIII/Candidate.lean`'s comments that present its `hsupp` lemmas as inputs of `Concrete.lean`'s
+`_Gab` lemmas, which nothing uses (`F-279`). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for
+the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to `F-290` and FRICTION's `edgeFiber_nonempty`
+(task 15) and count-matroid (task 21) entries for task 38. After the round the queue stops before
+`RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 

@@ -2541,14 +2541,17 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, `Theorem55.lean`; a `grep` for
   `IsHingeCoplanar`).
   *Found:* round 3 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, S2); round 1: the molecular conjecture's
-  scope stated (its panel side places no condition on the selector, so its body-hinge to
-  panel-hinge direction concludes less than a panel-hinge realization) on its `main_results` row,
-  its and JJ 2008's `alignment` entries, README, the home page, `intro.tex` and ROADMAP §23, beside
-  the link-recording form, which gives the panel side with each hinge at its edge's ends by the
-  same argument (a `lake lean` witness, script not retained: `molecular_conjecture`'s proof with
+  *Disposition:* reported (`notes/Prose-report.md`, S2); round 1: the molecular conjecture's scope
+  stated (its panel side places no condition on the selector, so its body-hinge to panel-hinge
+  direction concludes less than a panel-hinge realization) on its `main_results` row, its and JJ
+  2008's `alignment` entries, README, the home page, `intro.tex` and ROADMAP §23, beside the
+  link-recording form, which gives the panel side with each hinge at its edge's ends by the same
+  argument (a `lake lean` witness, script not retained: `molecular_conjecture`'s proof with
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` in place of the genuine form proves the
-  iff with the link conjunct on the panel side) (b0eb63eb).
+  iff with the link conjunct on the panel side) (b0eb63eb); round 3: in `CaseI.lean` and
+  `CaseII.lean`, the docstrings' sentences on what a selector records and what `ofNormals` gives
+  back (the transports' selector swap, `Q = ofNormals Q.graph Q.ends …`, the last conjunct of
+  `HasGenericFullRankRealization`), kept as they stand, moved to the phase (task 34).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -3538,7 +3541,9 @@ declaration's name as its header writes it:
   (`CaseI.lean`) names `lem:case-I-realization-all-k`, which does not exist.
   *Evidence:* read (the docstrings; a `grep` for the labels in `blueprint/src/`).
   *Found:* round 2 task 2.7.
-  *Disposition:* reported (`notes/Prose-report.md`, L10).
+  *Disposition:* reported (`notes/Prose-report.md`, L10); round 3:
+  `finrank_span_rigidityRows_ofNormals_relabel_eq`'s lead names its node
+  `lem:rank-transport-relabel-of-le-finrank` (task 34); `Coupling.lean`'s three are task 34.1's.
 - **F-070** · L · `PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj`
   (`AlgebraicInduction/CaseI.lean`): its hypothesis `hcLoop` (the contraction has no loops)
   follows from `hKmin` (it is a minimal $k$-dof-graph) by `Graph.loopless_of_isMinimalKDof`.
@@ -3917,16 +3922,19 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers).
   *Found:* round 3 task 2.7.
   *Disposition:* reported (`notes/Prose-report.md`, L6); round 3:
-  `rigidContract_exterior_rank_transport_htransport` states its conclusion without the `∀ Q` and
-  the three hypotheses, and `rigidContract_exterior_rank_transport` (unpinned), which took that form
-  as its hypothesis and was left a pass-through, was deleted, `case_I_realization` calling the pin
+  `rigidContract_exterior_rank_transport_htransport` states its conclusion without the `∀ Q` and the
+  three hypotheses, and `rigidContract_exterior_rank_transport` (unpinned), which took that form as
+  its hypothesis and was left a pass-through, was deleted, `case_I_realization` calling the pin
   directly; `lem:claim-6-4`'s note no longer says the pin states its conclusion for every such
   realization (task 12); in `Pinning.lean` (task 33), `rankHypothesis_iff_finrank_pinnedMotionsOn`'s
   docstring without "GREEN-modulo-21b", `lem:contraction-minimality` and Claim 6.4, `hglue` given as
   the lower bound of KT eq. (6.3) in terms of motions;
   `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le`'s names its users, the relative counts at one
   body; `isInfinitesimallyRigidOn_of_splice`'s says that the contraction is not a subgraph, without
-  "honest"; `GenericityDevice.lean`'s and `PanelHinge.lean`'s parts are tasks 34 and 36's.
+  "honest"; in `CaseI.lean` (task 34), `rigidContract_exterior_rank_transport_htransport`'s
+  docstring carries no code (U1–U4, Phase 22b) and says that only `case_I_realization`, which no
+  declaration uses, calls it; `GenericityDevice.lean`'s and `PanelHinge.lean`'s parts are tasks 34.1
+  and 36's.
 - **F-144** · L · the docstrings of `case-i.tex`'s last four pins
   (`Molecular/AlgebraicInduction/Theorem55.lean`). `case_I_dispatch_gen`'s calls "the `d = 3`
   `case_I_dispatch` below" its `k = 2` wrapper; the docstrings of `case_I_realization_h65_gen` and
@@ -3967,8 +3975,9 @@ declaration's name as its header writes it:
   saying that no declaration uses it, `rankHypothesis_iff_finrank_pinnedMotions`'s lead names
   `lem:case-II-rank-lift`, and `pinnedMotions_withGraph_eq`'s, `hnew_of_isLink_incident`'s and their
   siblings' carry neither `lem:case-II`, Claim 6.9, general position nor
-  `exists_independent_panelSupportExtensor`; `CaseII.lean`'s and `PanelHinge.lean`'s are tasks 34
-  and 36's.
+  `exists_independent_panelSupportExtensor`; in `CaseII.lean` (task 34),
+  `case_II_realization_all_k`'s docstring carries none of the codes (Phase 22i L6b, `hsplitPos`,
+  W-suite, Brick A) or the words; `PanelHinge.lean`'s are task 36's.
 - **F-153** · L · the docstrings of `genericity-and-count.tex`'s pins
   (`Molecular/AlgebraicInduction/GenericityDevice.lean`, `CaseI.lean`, `CaseII.lean`,
   `Pinning.lean`; `Molecular/RigidityMatrix/Basic.lean`). The file header and
@@ -3994,7 +4003,11 @@ declaration's name as its header writes it:
   no longer has `exists_independent_panelSupportExtensor` supply the nondegenerate hinge,
   `span_panelRow_linking_eq_rigidityRows`'s lead names `lem:independent-rows-of-rank`, not the
   absent `lem:case-I-splice-placement`, and the file carries none of the codes (B0, N1, N3, N7a,
-  N7b-1 to N7b-3, Phase 21b) or the words; the other files' are task 34's.
+  N7b-1 to N7b-3, Phase 21b) or the words; in `CaseII.lean` (task 34), `case_II_placement_eq612`'s
+  docstring states its hypotheses on a subgraph `Gv ≤ G`, says that its node starts from the
+  split-off and that no declaration uses it, and calls it no brick; `CaseI.lean` and `CaseII.lean`
+  carry none of the codes (N3, N7a, N7b-0 to N7b-3, stratum 1) or the words;
+  `GenericityDevice.lean`'s are task 34.1's.
 - **F-156** · L · the docstrings of `case-iii.tex`'s KT Claim 6.11 pins
   (`Molecular/Induction/ForestSurgery/Reduction.lean`, `Molecular/AlgebraicInduction/CaseIII/
   Candidate.lean`, `Realization.lean`). `splitOff_exists_base_inter_fiber_lt`'s places KT Lemma 4.3
@@ -4323,14 +4336,15 @@ declaration's name as its header writes it:
   uses the per-set forms.
   *Evidence:* read (the docstrings; a `grep` for each name's callers in `CombinatorialRigidity/`).
   *Found:* round 5 task 3.2.
-  *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the six without a caller outside
-  themselves deleted, with `blockPiSpan` and its two lemmas, and the docstrings that named them
-  repointed or cut (task 4); `extensor_join_proportional_complementIso_meet`'s lead names
-  `lem:meet-two-hyperplanes`, and those of `exists_line_data_of_homogeneousIncidence` and
+  *Disposition:* done (task 34): the six without a caller outside themselves deleted, with
+  `blockPiSpan` and its two lemmas, and the docstrings that named them repointed or cut (task 4);
+  `extensor_join_proportional_complementIso_meet`'s lead names `lem:meet-two-hyperplanes`, and those
+  of `exists_line_data_of_homogeneousIncidence` and
   `exists_complementIso_ne_zero_of_homogeneousIncidence` give them as steps of
   `lem:case-III-candidate-dispatch-d3` (task 32.1);
-  `hasGenericFullRankRealization_of_rigidOn_ofNormals`'s (`AlgebraicInduction/CaseI.lean`) is task
-  34's.
+  `hasGenericFullRankRealization_of_rigidOn_ofNormals`'s lead names
+  `lem:generic-realization-of-rigid` (`AlgebraicInduction/CaseI.lean`, task 34). Before: reported
+  (`notes/Prose-report.md`, L9).
 - **F-233** · L · the declarations round 5's task 3.3 moved or unpinned
   (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`). Their
   docstrings name the nodes their pins left: `screwSpace_finrank` and the five row-independence
@@ -4843,6 +4857,11 @@ declaration's name as its header writes it:
   `hingeRowBlock_not_le_of_supportExtensor_not_mem_span` (`Concrete.lean`) consumes it,
   `screwDim_le_finrank_infinitesimalMotions`, `trivialMotions_le_partitionMotions` and the `@[simp]`
   lemma `mem_partitionMotions`. Removing them leaves no other declaration without a caller.
+  Task 34 adds none (the same screen and the cache, at `b03f8530`): of the four it finds in
+  `CaseI.lean`, `hasFullRankRealization_of_independent_rigidityRow` and
+  `hasFullRankRealization_of_candidateSelector` are `F-268`'s, and `case_I_realization` is
+  `F-271`'s, as is `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`, which
+  only it uses; it finds none in `CaseII.lean`.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5022,6 +5041,22 @@ declaration's name as its header writes it:
   arithmetic by `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`, on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t33.lean`, gitignored).
   *Found:* RECONCILE round 3 task 33.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-290** · L · hypotheses of `Molecular/AlgebraicInduction/CaseI.lean` and `CaseII.lean` that the
+  proofs do not use or the others give. `case_II_placement_eq612`'s `_hG_ea : G.IsLink e_a v a`,
+  which its proof does not use (the dead pin of `lem:case-II-realization-placement`, S3's node,
+  `F-150`); `rigidContract_exterior_rank_transport_htransport`'s
+  `hne : V(G.rigidContract H r).Nonempty` (`lem:claim-6-4`), which `hr` and `hHsub` give, as `r` is
+  a vertex of the contraction; the `hnesH : sH.Nonempty` of
+  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` and of its `_kdof` form,
+  which `hcH : c ∈ sH` gives; and `case_I_realization`'s `hVH2 : 2 ≤ V(H).ncard`, the second
+  conjunct of `hH` (`F-271`'s declaration). `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: a copy of
+  `case_II_placement_eq612` without `_hG_ea` and with the same proof, on the three standard axioms,
+  and the others called or met with the hypothesis derived (`⟨r, …⟩` through
+  `Graph.vertexSet_rigidContract`, `⟨c, hcH⟩`, `hH.2.1`) (`scratch/reconcile-lean/Hyps-t34.lean`,
+  gitignored).
+  *Found:* RECONCILE round 3 task 34.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
