@@ -8,32 +8,28 @@ import CombinatorialRigidity.GenericRigidityMatroid
 /-!
 # General-position placements in `ℝ³`
 
-Phase 25 (`sec:molecule-modelling-general-position`). The square-graph dictionary (`lem:screw-
-determination`, `thm:molecular-iff-square-bar-joint`) needs a placement whose points are not just
-generic for row independence (Phase 24, `SimpleGraph.IsGenericPlacement`) but genuinely in
-**general position**: no four points affinely dependent, so in particular the placement is
-injective and no three points are collinear. This file supplies that notion
-(`IsGeneralPositionPlacement`) and its existence, strengthened to hold simultaneously with
-Phase 24's genericity (`exists_isGenericPlacement_isGeneralPositionPlacement`).
+The square-graph dictionary (`lem:screw-determination`, `thm:molecular-iff-square-bar-joint`) needs
+a placement whose points are not just generic for row independence
+(`SimpleGraph.IsGenericPlacement`) but in **general position up to order four**: the points of every
+set of at most four vertices affinely independent, so in particular the placement is injective and
+no three points are collinear. This file supplies that notion (`IsGeneralPositionPlacement`) and its
+existence, together with genericity (`exists_isGenericPlacement_isGeneralPositionPlacement`).
 
-The witness is the classical **moment curve** `a ↦ (φ(a), φ(a)², φ(a)³)` at an injective
-parameter `φ`: any four of its points are affinely independent, since the difference-matrix
-determinant is a Vandermonde product (`Matrix.det_powerDifferences`,
-`Mathlib/LinearAlgebra/Vandermonde.lean`), nonzero by injectivity. To extend this fact from
-exactly-four-point tuples to *every* subfamily of size `≤ 4` (including subsets of a possibly
-small `V`), the parameter space is padded with `Fin 4` fresh values (`V ⊕ Fin 4`): a `≤4`-element
-subset of `V` embeds into some injective `Fin 4 → V ⊕ Fin 4` tuple that fills any deficit with
-fresh padding elements, and `AffineIndependent.comp_embedding` restricts the four-point fact down
-to the subset. Combining with genericity reruns the Phase-24 style interpolation argument: along
-the affine path from a generic placement (`t = 0`) to the moment curve (`t = 1`), both genericity
-(for the finitely many edge sets independent at some placement) and general position (for the
-finitely many `≤4`-element subsets) are cofinite-in-`t` conditions
-(`LinearIndependent.finite_setOf_not_along_affine_path`), so their (finite) union of bad `t`'s
-misses some common good `t`.
+The witness is the **moment curve** `a ↦ (φ(a), φ(a)², φ(a)³)` at an injective parameter `φ`: any
+four of its points are affinely independent, since the determinant of their differences is a
+Vandermonde product (`Matrix.det_powerDifferences`), nonzero by injectivity. To pass from tuples
+of exactly four points to *every* subfamily of at most four (also when `V` has fewer than four
+elements), the parameter type is padded with four fresh values (`V ⊕ Fin 4`): a subset of `V` of
+at most four elements is part of an injective tuple `Fin 4 → V ⊕ Fin 4` that fills the remaining
+slots with padding, and `AffineIndependent.comp_embedding` restricts the four-point fact to the
+subset. Genericity is added by the interpolation argument of `exists_isGenericPlacement`: along
+the affine path from a generic placement (`t = 0`) to the moment curve (`t = 1`), row independence
+of each edge set independent at some placement, and affine independence of each subset of at
+most four vertices, fail for only finitely many `t`
+(`LinearIndependent.finite_setOf_not_along_affine_path`), so some `t` avoids them all.
 
-See `notes/Phase25.md` and `notes/Phase25-design.md` §2.5, §3 (leaf W5), and
-`blueprint/src/chapter/molecule-modelling.tex` (`def:general-position-placement`,
-`lem:exists-generic-general-position`).
+The blueprint presents the file in `sec:molecule-modelling-general-position` and, for the last
+section, in `sec:jacobs-easy`.
 
 ## Main definitions
 
@@ -44,7 +40,9 @@ See `notes/Phase25.md` and `notes/Phase25-design.md` §2.5, §3 (leaf W5), and
 
 * `SimpleGraph.exists_isGeneralPositionPlacement` — general-position placements exist.
 * `SimpleGraph.exists_isGenericPlacement_isGeneralPositionPlacement` — a placement can be
-  simultaneously generic for row independence (Phase 24) and in general position.
+  generic for row independence and in general position at once.
+* `SimpleGraph.isLaman3_of_genericRigidityMatroid_indep` — an edge set independent in
+  `genericRigidityMatroid V 3` is Laman (the easy direction of Jacobs' conjecture).
 -/
 
 open WithLp
@@ -62,8 +60,8 @@ def IsGeneralPositionPlacement (p : V → EuclideanSpace ℝ (Fin 3)) : Prop :=
 /-! ### The moment-curve witness
 
 Affine independence of any four points on the degree-`3` moment curve at distinct parameters,
-mirroring `affineIndependent_of_difference_det_ne_zero` in `RigidityMatroid.lean` (specialised
-here to `d = 3`, over an arbitrary parameter type rather than `V` itself, so it can be reused
+as in the private `affineIndependent_of_difference_det_ne_zero` of `RigidityMatroid.lean`
+(here at `d = 3`, over an arbitrary parameter type rather than `V` itself, so that it applies
 after padding with fresh parameters). -/
 
 section MomentCurve
@@ -109,9 +107,10 @@ private theorem affineIndependent_momentCurve3_of_injective
 
 end MomentCurve
 
-/-- **Existence of general-position placements** (`lem:exists-generic-general-position`, existence
-half). The moment curve on `V ⊕ Fin 4` (the `Fin 4` summand supplies fresh padding parameters),
-restricted to `V` via `Sum.inl`. -/
+/-- **Existence of general-position placements** (the moment-curve placement after
+`def:general-position-placement`; a step of `lem:exists-generic-general-position`). The moment
+curve on `V ⊕ Fin 4` (the `Fin 4` summand supplies fresh padding parameters), restricted to `V`
+via `Sum.inl`. -/
 theorem exists_isGeneralPositionPlacement [Finite V] :
     ∃ p : Framework V 3, IsGeneralPositionPlacement p := by
   classical
@@ -170,13 +169,12 @@ theorem exists_isGeneralPositionPlacement [Finite V] :
   rw [← h_comp]
   exact hAI_4.comp_embedding f
 
-/-- **Existence of placements simultaneously generic for row independence and in general
-position** (`lem:exists-generic-general-position`). Re-runs the Phase-24 finite-family
-interpolation `exists_isGenericPlacement` with the finitely many order-`≤ 4` affine-independence
-conditions added to the avoided sets: along the affine path from a generic placement `p₀` to a
-general-position placement `q`, genericity is cofinite in `t` (witnessed at `t = 0`) and general
-position is cofinite in `t` (witnessed at `t = 1`), so a `t` avoiding the finite union of both bad
-sets works for both. -/
+/-- **Generic placements in general position** (`lem:exists-generic-general-position`). There is
+a placement generic for row independence and in general position up to order four. Along the
+affine path from a generic placement `p₀` (`t = 0`) to a general-position placement `q` (`t = 1`),
+each of the finitely many conditions, row independence of an edge set independent at some
+placement (true at `t = 0`) and affine independence of a set of at most four vertices (true at
+`t = 1`), fails for only finitely many `t`, so a `t` outside all of these works for both. -/
 theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
     ∃ p : Framework V 3, IsGenericPlacement p ∧ IsGeneralPositionPlacement p := by
   classical
@@ -189,7 +187,8 @@ theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
   have h_pt_one : pt 1 = q := by
     have : p₀ + (1 : ℝ) • r = q := by rw [hr_def, one_smul]; abel
     simpa [hpt_def] using this
-  -- The row-independence family at `pt t` matches the affine family used in Phase 24.
+  -- The row-independence family at `pt t` matches the affine family of
+  -- `exists_isGenericPlacement`.
   have h_row_iff : ∀ (t : ℝ) (I : Set (⊤ : SimpleGraph V).edgeSet),
       (⊤ : SimpleGraph V).EdgeSetRowIndependent (pt t) I ↔
         LinearIndependent ℝ fun i : I =>
@@ -272,16 +271,16 @@ theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
   · by_contra h_not
     exact ht_gp s (by simp [S, hs]) h_not
 
-/-! ### Extracting linear independence of coordinate differences
+/-! ### Linear independence of coordinate differences
 
-The screw-determination lemmas (`eq_zero_of_screwVel_eq_zero`, `existsUnique_screwVel_eq`) take
-linear independence of the *coordinate difference vectors* `ofLp (c b) - ofLp (c a)` in
-`Fin 3 → ℝ`; general position provides affine independence of the *point* families. These helpers
-bridge the two: `affineIndependent_comp` reindexes the `Finset`-based `IsGeneralPositionPlacement`
-onto an explicit injective tuple, `linearIndependent_ofLp_vsub` turns affine independence of a
-`Fin (n+1)` point family into linear independence of the `n` difference vectors based at the first
-point, and the `pair` and `triple` lemmas package the exact `![…]` shapes the two-edge and
-three-edge determination arguments consume. -/
+The screw-determination lemmas (`lem:screw-determination`) take linear independence of the
+*coordinate difference vectors* `ofLp (c b) - ofLp (c a)` in `Fin 3 → ℝ`; general position gives
+affine independence of the *points*. These lemmas pass from one to the other:
+`affineIndependent_comp` reindexes the `Finset`-based `IsGeneralPositionPlacement` along an
+injective tuple, `linearIndependent_ofLp_vsub` turns affine independence of a `Fin (n+1)` point
+family into linear independence of the `n` difference vectors based at the first point, and the
+`pair` and `triple` lemmas state the `![…]` forms that the two- and three-point steps of the
+screw-determination arguments use. -/
 
 open scoped Matrix
 
@@ -321,8 +320,8 @@ theorem linearIndependent_ofLp_vsub {n : ℕ} {q : Fin (n + 1) → EuclideanSpac
   exact h2
 
 /-- **Non-collinearity of a triple in general position**: for three distinct vertices, the two edge
-vectors `ofLp (c b) − ofLp (c a)`, `ofLp (c d) − ofLp (c a)` are linearly independent (the shape the
-triangle case of the screw-determination lemma consumes). -/
+vectors `ofLp (c b) − ofLp (c a)`, `ofLp (c d) − ofLp (c a)` are linearly independent (the form the
+three-point step of the screw-determination lemmas uses). -/
 theorem IsGeneralPositionPlacement.linearIndependent_vsub_pair {c : V → EuclideanSpace ℝ (Fin 3)}
     (hc : IsGeneralPositionPlacement c) {a b d : V} (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d) :
     LinearIndependent ℝ ![ofLp (c b) - ofLp (c a), ofLp (c d) - ofLp (c a)] := by
@@ -336,8 +335,9 @@ theorem IsGeneralPositionPlacement.linearIndependent_vsub_pair {c : V → Euclid
   rw [heq]; exact hLI
 
 /-- **Order-four general position**: for four distinct vertices, the three edge vectors from `j` to
-`a, b, d` are linearly independent (the shape the extra-point step of the screw-determination lemma
-consumes — the affine independence up to order four that rules out the coplanar `K₄` flex). -/
+`a, b, d` are linearly independent (the form the extra-point step of the screw-determination
+lemma uses: the affine independence up to order four that excludes the flex of four coplanar
+points). -/
 theorem IsGeneralPositionPlacement.linearIndependent_vsub_triple {c : V → EuclideanSpace ℝ (Fin 3)}
     (hc : IsGeneralPositionPlacement c) {a b d j : V} (haj : a ≠ j) (hbj : b ≠ j) (hdj : d ≠ j)
     (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d) :
@@ -371,8 +371,9 @@ An edge set independent in the generic rigidity matroid `genericRigidityMatroid 
 (`cor:genericMatroid-indep-isLaman3`), witnessed at a placement simultaneously generic for row
 independence and in general position. -/
 
-/-- **Independent edge sets are Laman** (Jacobs' conjecture, easy direction). Let `H` be a graph
-on `V` with `E(H)` independent in `genericRigidityMatroid V 3`. Then `H` is Laman (`IsLaman3`).
+/-- **Independent edge sets are Laman** (`cor:genericMatroid-indep-isLaman3`; the easy direction
+of Jacobs' conjecture). Let `H` be a graph on `V` with `E(H)` independent in
+`genericRigidityMatroid V 3`. Then `H` is Laman (`IsLaman3`).
 
 Choose a placement simultaneously generic for row independence and in general position up to
 order four (`exists_isGenericPlacement_isGeneralPositionPlacement`). Independence makes `E(H)`
@@ -380,9 +381,7 @@ row-independent at it (`genericRigidityMatroid_indep_iff`), and general position
 subset of at least four points affinely spanning (any four of them are affinely independent, by
 `IsGeneralPositionPlacement.affineIndependent_comp`, and the affine span of an affinely
 independent `Fin 4`-family is already all of `EuclideanSpace ℝ (Fin 3)`), so
-`isLaman3_of_edgeSetRowIndependent_dim_three` applies.
-
-**Blueprint:** `cor:genericMatroid-indep-isLaman3`. -/
+`isLaman3_of_edgeSetRowIndependent_dim_three` applies. -/
 theorem isLaman3_of_genericRigidityMatroid_indep {V : Type*} [Finite V] {H : SimpleGraph V}
     (hH : (genericRigidityMatroid V 3).Indep H.edgeSet) : H.IsLaman3 := by
   classical

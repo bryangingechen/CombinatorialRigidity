@@ -14,21 +14,22 @@ import CombinatorialRigidity.Molecular.Molecule.Application
 /-!
 # Jacobs' conjecture (`sec:jacobs-theorem`)
 
-Phase 32. Jackson–Jordán 2008 Conjecture 5.1 / Theorem 5.4 (resolved unconditionally by
-Katoh–Tanigawa's Molecular Conjecture, Phase 26 — see `Molecular/Molecule/Application.lean`):
-`E(G²)` is independent in the `3`-dimensional generic rigidity matroid iff `G²` is Laman. This
-file lands the minimum-degree-two case (`thm:jacobs-min-degree-two`), a short chain of the
-counting bound (`SimpleGraph.laman_square_count`, `JacobsCounting.lean`) against the molecule
-rank formula (`SimpleGraph.molecule_rank_formula`, Phase 26): both sandwich `r(G²)` between
-`|E(G²)|` and `3|V| - 6 - def(G̃)`, forcing equality, i.e. independence. It then assembles the
-unconditional theorem (`thm:jacobs`) by strong induction on `G.edgeSet.ncard`, peeling
-degree-one vertices via the `0`-extension corollary (`sec:jacobs-zero-extension`) down to the
-minimum-degree-two core.
+Jacobs' conjecture (Jacobs 1998; Jackson–Jordán 2008 Conjecture 5.1): `E(G²)` is independent in the
+`3`-dimensional generic rigidity matroid iff `G²` is Laman. Jackson–Jordán derive it from their rank
+formula (Conjecture 2.2; their Theorem 5.4), which is KT Corollary 5.7, the molecule rank formula
+(`SimpleGraph.molecule_rank_formula`, `Molecular/Molecule/Application.lean`). This file proves the
+minimum-degree-two case (`thm:jacobs-min-degree-two`) from the counting bound
+(`SimpleGraph.laman_square_count`, `JacobsCounting.lean`) and the molecule rank formula, which give
+`|E(G²)| ≤ 3|V| - 6 - def(G̃) = r(G²)`, so `E(G²)` is independent. It then proves the conjecture
+(`thm:jacobs`) by strong induction on `G.edgeSet.ncard`, deleting the edges at degree-one vertices
+by the `0`-extension corollary (`sec:jacobs-zero-extension`) and restricting to the support once the
+minimum degree is two. The blueprint presents the file in `sec:jacobs-theorem`.
 
 ## Main results
 
 * `SimpleGraph.jacobs_min_degree_two` — `thm:jacobs-min-degree-two`.
-* `SimpleGraph.jacobs` — `thm:jacobs`, the full unconditional iff.
+* `SimpleGraph.jacobs` — `thm:jacobs`, the equivalence for every simple graph on a finite vertex
+  set.
 -/
 
 namespace SimpleGraph
@@ -38,7 +39,7 @@ graph of minimum degree at least two on a finite nonempty vertex set `V`. If `G�
 `E(G²)` is independent in the `3`-dimensional generic rigidity matroid.
 
 By the counting bound (`laman_square_count`, JJ Theorem 5.3) and the molecule rank formula
-(`molecule_rank_formula`, Phase 26), `|E(G²)| ≤ 3|V| - 6 - def(G̃) = r(G²)`, while
+(`molecule_rank_formula`, KT Corollary 5.7), `|E(G²)| ≤ 3|V| - 6 - def(G̃) = r(G²)`, while
 `r(G²) ≤ |E(G²)|` always (rank is bounded by cardinality, `Matroid.rk_le_toFinset_card`); the two
 force `r(G²) = |E(G²)|`, which is exactly independence
 (`Matroid.indep_iff_eRk_eq_encard_of_finite`). -/
@@ -59,8 +60,8 @@ theorem jacobs_min_degree_two {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGr
     ← Matroid.cast_rk_eq_eRk_of_finite _ hXfin, heq]
   exact hXfin.cast_ncard_eq
 
-/-- **`thm:jacobs`'s hard direction, by strong induction on the edge count.** If `G` has a
-degree-one vertex `v` (neighbor `u`), delete `v`'s star: the square shrinks the same way
+/-- **The hard direction of `thm:jacobs`, by strong induction on the edge count.** If `G` has a
+degree-one vertex `v` (neighbor `u`), delete the edge at `v`: the square loses the edges at `v`
 (`square_deleteIncidenceSet_of_degree_le_one`), stays Laman (`IsLaman3.mono_left`), and `v`'s
 `G²`-degree is `d_G(u) ≤ 3` (`ncard_neighborSet_square_of_degree_eq_one`,
 `IsLaman3.degree_le_three`), so the `0`-extension iff
@@ -139,15 +140,15 @@ private theorem jacobs_of_isLaman3_of_ncard {V : Type*} [Finite V] :
           exact edgesIn_eq_edgeSet_of_support_subset (square_support_subset G)
         rwa [heq] at himg
 
-/-- **Jacobs' conjecture** (`thm:jacobs`; JJ Conjecture 5.1, Theorem 5.4 — resolved
-unconditionally). Let `G` be a simple graph on a finite vertex set `V`. Then `E(G²)` is
-independent in the `3`-dimensional generic rigidity matroid iff `G²` is Laman.
+/-- **Jacobs' conjecture** (`thm:jacobs`; JJ Conjecture 5.1, Theorem 5.4). Let `G` be a simple
+graph on a finite vertex set `V`. Then `E(G²)` is independent in the `3`-dimensional generic
+rigidity matroid iff `G²` is Laman.
 
 Independence implies Laman by `isLaman3_of_genericRigidityMatroid_indep`
 (`cor:genericMatroid-indep-isLaman3`); the converse is `jacobs_of_isLaman3_of_ncard`, by strong
-induction on the edge count. This makes Jackson–Jordán's conditional Theorem 5.4 unconditional
-— the passage from maximum degree three to the minimum-degree-two core, asserted
-in `jacksonJordan2008` without proof, is exactly that induction's degree-one peeling step. -/
+induction on the edge count. JJ's Theorem 5.4 derives the conjecture from their rank formula,
+which `molecule_rank_formula` proves; its reduction of a graph of maximum degree at most three to
+its core, which JJ state in one sentence, is that induction. -/
 theorem jacobs {V : Type*} [Finite V] (G : SimpleGraph V) :
     (genericRigidityMatroid V 3).Indep G.square.edgeSet ↔ G.square.IsLaman3 :=
   ⟨isLaman3_of_genericRigidityMatroid_indep, jacobs_of_isLaman3_of_ncard G.edgeSet.ncard G rfl⟩

@@ -12,18 +12,17 @@ public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Finite
 /-!
 # The square of a graph
 
-Phase 25 (`sec:molecule-modelling`). The **square** `G.square` of a graph `G = (V, E)` is
-`G` together with an edge for every pair of vertices at distance exactly two — the graph
-`G² = (V, E²)` of Katoh–Tanigawa 2011, p. 650, used there to state the molecule modelling
-equivalence: a molecule (atoms as bodies, bonds as hinges) is a bar-joint framework on `G²`
-exactly when it is a hinge-concurrent body-hinge framework on `G`. This file supplies the
-combinatorial substrate that equivalence needs: the square itself, and the fact that a closed
-neighborhood `N[v] = {v} ∪ N(v)` induces a complete subgraph of `G²` covering every edge of
-`G²` (KT p. 650: "in the square of a graph a vertex and its neighbors form a complete graph").
-
-See `notes/Phase25.md` and `notes/Phase25-design.md` §3 (leaf W3) for the phase plan, and
-`blueprint/src/chapter/molecule-modelling.tex` (`def:square-graph`, `lem:square-cliques`) for
-the corresponding blueprint nodes.
+The **square** `G.square` of a graph `G = (V, E)` is `G` together with an edge for every pair of
+vertices at distance exactly two: the graph `G² = (V, E²)` that Katoh–Tanigawa 2011 define on
+p. 650, where a molecule whose atoms and bonds form `G` is modelled as a bar-joint framework on
+`G²`, and also as a body-hinge framework on `G` with the hinges at each body meeting in one
+point, because in `G²` a vertex and its neighbors form a complete graph (the equivalence of the
+two models is Whiteley's; `sec:molecule-modelling`). This file supplies the square, the fact
+that a closed neighborhood `N[v] = {v} ∪ N(v)` induces a complete subgraph of `G²`, every edge of
+`G²` lying in one, and what squaring does under the deletion of the edges at a vertex of degree
+at most one and under the restriction to a set containing the support. The blueprint presents
+the file in `sec:molecule-modelling-defs` (`def:square-graph`, `lem:square-cliques`), with the
+clique at a singleton part in `sec:jacobs-counting` and the rest in `sec:jacobs-zero-extension`.
 
 ## Main definitions
 
@@ -35,26 +34,23 @@ the corresponding blueprint nodes.
 * `SimpleGraph.le_square` — `G` is a subgraph of `G.square`.
 * `SimpleGraph.isClique_closedNeighborSet_square` — every closed neighborhood is a clique
   of the square.
-* `SimpleGraph.isClique_neighborSet_square` — the open neighborhood is also a clique (Phase 32,
-  `lem:singleton-part-neighborhood`).
+* `SimpleGraph.isClique_neighborSet_square` — the open neighborhood is also a clique
+  (`lem:singleton-part-neighborhood`).
 * `SimpleGraph.exists_mem_closedNeighborSet_of_square_adj` — every edge of `G.square` lies
   inside the closed neighborhood of some vertex of `G`.
 * `SimpleGraph.three_le_ncard_closedNeighborSet_of_two_le_degree` — a vertex of degree at
-  least two has a closed neighborhood of size at least three (the fact the square-graph
-  dictionary of `def:hinge-concurrent` uses to determine a body's screw from its neighbors'
-  velocities).
-* `SimpleGraph.square_mono` — squaring is monotone under `≤` (Phase 32, trivial glue for the
-  `thm:jacobs` induction peel).
+  least two has a closed neighborhood of size at least three.
+* `SimpleGraph.square_mono` — squaring is monotone under `≤`.
 * `SimpleGraph.square_deleteIncidenceSet_of_degree_le_one`,
   `SimpleGraph.neighborSet_square_of_degree_eq_one`,
   `SimpleGraph.ncard_neighborSet_square_of_degree_eq_one`,
-  `SimpleGraph.isClique_neighborSet_square_of_degree_eq_one` — Phase 32
-  (`lem:square-delete-degree-le-one`, `lem:square-leaf-neighborhood`): deleting a degree-≤-one
-  vertex's edges commutes with squaring, and a degree-one vertex's square-neighborhood is the
-  closed neighborhood of its unique neighbor (minus itself), hence a clique of the same size.
-* `SimpleGraph.square_support_subset`, `SimpleGraph.square_induce_of_support_subset` — Phase 32
-  (`lem:square-induce-support`): the square of `G` has support inside `G`'s, so squaring
-  commutes with restriction to any support-covering vertex set.
+  `SimpleGraph.isClique_neighborSet_square_of_degree_eq_one` (`lem:square-delete-degree-le-one`,
+  `lem:square-leaf-neighborhood`): deleting the edges at a vertex of degree at most one commutes
+  with squaring, and the neighborhood in `G²` of a degree-one vertex is the closed neighborhood of
+  its neighbor `u` without itself, a clique of `G²` with `d_G(u)` elements.
+* `SimpleGraph.square_support_subset`, `SimpleGraph.square_induce_of_support_subset`
+  (`lem:square-induce-support`): the support of the square lies inside `G`'s, and squaring
+  commutes with the restriction to any set containing the support.
 -/
 
 @[expose] public section
@@ -67,7 +63,7 @@ variable {V : Type*} {G : SimpleGraph V}
 
 /-- The **square** of a graph `G`: distinct vertices `u, v` are adjacent in `G.square` when
 they are already adjacent in `G`, or when they share a common neighbor in `G` (i.e. are at
-graph distance exactly two). Katoh–Tanigawa 2011, p. 650. -/
+graph distance exactly two). `def:square-graph`; Katoh–Tanigawa 2011, p. 650. -/
 def square (G : SimpleGraph V) : SimpleGraph V where
   Adj u v := u ≠ v ∧ (G.Adj u v ∨ (G.commonNeighbors u v).Nonempty)
   symm := ⟨fun u v => by
@@ -83,10 +79,8 @@ theorem square_adj {u v : V} :
 /-- `G` is a subgraph of its own square: every original edge survives. -/
 theorem le_square (G : SimpleGraph V) : G ≤ G.square := fun _ _ h => ⟨h.ne, Or.inl h⟩
 
-/-- **Subgraph monotonicity of squaring.** If `G ≤ G'` then `G.square ≤ G'.square`: an edge or
-common-neighbor witness for `G` is also one for `G'`. Trivial glue for the `thm:jacobs`
-degree-one induction peel (Phase 32), which needs `IsLaman3.mono_left` transported along the
-squaring of a deleted-edge subgraph. -/
+/-- **Monotonicity of squaring.** If `G ≤ G'` then `G.square ≤ G'.square`: an edge or common
+neighbor in `G` is one in `G'`. -/
 theorem square_mono {G G' : SimpleGraph V} (h : G ≤ G') : G.square ≤ G'.square := by
   rintro x y ⟨hne, hadj | hcn⟩
   · exact ⟨hne, Or.inl (h hadj)⟩
@@ -107,8 +101,9 @@ theorem mem_closedNeighborSet {u v : V} :
 theorem self_mem_closedNeighborSet (G : SimpleGraph V) (v : V) : v ∈ G.closedNeighborSet v :=
   Or.inl rfl
 
-/-- Closed neighborhoods induce complete subgraphs of the square: any two distinct vertices
-of `N[v]` are within distance two of each other, through `v` if neither is `v` itself. -/
+/-- Closed neighborhoods induce complete subgraphs of the square (`lem:square-cliques`): any two
+distinct vertices of `N[v]` are within distance two of each other, through `v` if neither is `v`
+itself. -/
 theorem isClique_closedNeighborSet_square (G : SimpleGraph V) (v : V) :
     G.square.IsClique (G.closedNeighborSet v) := by
   intro x hx y hy hxy
@@ -118,16 +113,16 @@ theorem isClique_closedNeighborSet_square (G : SimpleGraph V) (v : V) :
   · exact ⟨hxy, Or.inl hx.symm⟩
   · exact ⟨hxy, Or.inr ⟨v, hx.symm, hy.symm⟩⟩
 
-/-- The **open neighborhood** is also a clique of the square: a special case of
-`isClique_closedNeighborSet_square`, restricting from `N[v]` to `N(v) ⊆ N[v]`. This is the form
-Jackson–Jordán's counting bound (`lem:singleton-part-neighborhood`) uses at a singleton part. -/
+/-- The **open neighborhood** is also a clique of the square (`lem:singleton-part-neighborhood`,
+the clique): a special case of `isClique_closedNeighborSet_square`, restricting from `N[v]` to
+`N(v) ⊆ N[v]`. This is the form the counting bound uses at a singleton part. -/
 theorem isClique_neighborSet_square (G : SimpleGraph V) (v : V) :
     G.square.IsClique (G.neighborSet v) :=
   (isClique_closedNeighborSet_square G v).subset (Set.subset_insert v _)
 
-/-- Every edge of `G.square` lies inside the closed neighborhood of some vertex of `G`: an
-original edge `uv` inside `N[u]`, a distance-two edge `uv` through a common neighbor `w`
-inside `N[w]`. -/
+/-- Every edge of `G.square` lies inside the closed neighborhood of some vertex of `G`
+(`lem:square-cliques`): an original edge `uv` inside `N[u]`, a distance-two edge `uv` through a
+common neighbor `w` inside `N[w]`. -/
 theorem exists_mem_closedNeighborSet_of_square_adj {u v : V} (h : G.square.Adj u v) :
     ∃ w, u ∈ G.closedNeighborSet w ∧ v ∈ G.closedNeighborSet w := by
   obtain ⟨-, hadj | hcn⟩ := h
@@ -142,10 +137,8 @@ theorem ncard_closedNeighborSet (G : SimpleGraph V) (v : V) [Fintype (G.neighbor
   rw [closedNeighborSet, Set.ncard_insert_of_notMem G.notMem_neighborSet_self,
     ncard_neighborSet_eq_degree]
 
-/-- **Minimum-degree transfer.** A vertex of degree at least two has a closed neighborhood of
-size at least three: itself plus (at least) two distinct neighbors. This is the combinatorial
-fact behind KT's "in the square of a graph a vertex and its neighbors form a complete graph"
-(p. 650) having enough points to determine a screw (`lem:screw-determination`). -/
+/-- **A closed neighborhood of at least three vertices.** A vertex of degree at least two has a
+closed neighborhood of size at least three: itself and at least two distinct neighbors. -/
 theorem three_le_ncard_closedNeighborSet_of_two_le_degree
     (G : SimpleGraph V) {v : V} [Fintype (G.neighborSet v)] (hv : 2 ≤ G.degree v) :
     3 ≤ (G.closedNeighborSet v).ncard := by
@@ -154,11 +147,11 @@ theorem three_le_ncard_closedNeighborSet_of_two_le_degree
 
 /-! ## Degree-one vertices
 
-Phase 32 (`sec:jacobs-zero-extension`). Jackson–Jordán's reduction of Jacobs' conjecture to
-the minimum-degree-two case, and the degree-one rank formula (JJ Lemma 4.2), both peel off a
-degree-one vertex `v` and pass to `G' = G - E_G(v)`. The two facts below package what squaring
-does under that peel: it commutes with the deletion, and it turns `v`'s single edge into a
-clique of size `d_G(u)` at `v`'s unique neighbor `u`. -/
+The proof of Jacobs' conjecture (`thm:jacobs`) and the degree-one rank formulas (JJ Lemma 4.2)
+both delete the edge at a degree-one vertex `v` and pass to `G' = G - E_G(v)`. The lemmas below
+say what squaring does under that deletion (`sec:jacobs-zero-extension`): it commutes with it,
+and in `G²` the vertex `v` has the `d_G(u)` neighbors `N_G[u] \ {v}`, `u` its neighbor, which
+form a clique. -/
 
 /-- **Deleting the edges at a vertex of degree at most one commutes with squaring**
 (`lem:square-delete-degree-le-one`). A path of length two between vertices `x, y ≠ v` cannot
@@ -185,11 +178,10 @@ theorem square_deleteIncidenceSet_of_degree_le_one {G : SimpleGraph V} {v : V}
           deleteIncidenceSet_adj.mpr ⟨hw.1, hxv, hwv⟩,
             deleteIncidenceSet_adj.mpr ⟨hw.2, hyv, hwv⟩⟩⟩
 
-/-- **The square-neighborhood of a degree-one vertex** (`lem:square-leaf-neighborhood`). If `v`
-has degree one in `G` with neighbor `u`, its square-neighborhood is the closed neighborhood of
-`u`, minus `v` itself: every square-neighbor of `v` is either `u` (`v`'s only edge) or a
-neighbor of `u` (through the length-two path via `u`, `v`'s only possible common-neighbor
-hop). -/
+/-- **The neighborhood in the square of a degree-one vertex** (`lem:square-leaf-neighborhood`).
+If `v` has degree one in `G` with neighbor `u`, its neighborhood in `G.square` is the closed
+neighborhood of `u` without `v`: every neighbor of `v` in `G.square` is `u` (`v`'s only edge) or
+a neighbor of `u` (`u` being the only possible common neighbor). -/
 theorem neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : V}
     [Fintype (G.neighborSet v)] (hdeg : G.degree v = 1) (hu : G.Adj v u) :
     G.square.neighborSet v = G.closedNeighborSet u \ {v} := by
@@ -207,9 +199,10 @@ theorem neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : V}
     · exact ⟨fun h => hwv h.symm, Or.inl hu⟩
     · exact ⟨fun h => hwv h.symm, Or.inr ⟨u, hu, hadj.symm⟩⟩
 
-/-- **Degree count, `lem:square-leaf-neighborhood` (continued).** A degree-one vertex `v` has
-the same `G.square`-degree as its unique neighbor `u`: the closed neighborhood of `u` has
-`d_G(u) + 1` elements, and removing `v` (which lies in it) drops exactly one. -/
+/-- **The degree in the square of a degree-one vertex** (`lem:square-leaf-neighborhood`). A
+degree-one vertex `v` has `G.square`-degree the `G`-degree of its neighbor `u`: the closed
+neighborhood of `u` has `d_G(u) + 1` elements, and removing `v` (which lies in it) drops exactly
+one. -/
 theorem ncard_neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : V}
     [Fintype (G.neighborSet v)] [Fintype (G.neighborSet u)]
     (hdeg : G.degree v = 1) (hu : G.Adj v u) :
@@ -220,8 +213,8 @@ theorem ncard_neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : V}
     ncard_closedNeighborSet]
   omega
 
-/-- **Clique, `lem:square-leaf-neighborhood` (continued).** A degree-one vertex's
-square-neighborhood is a clique of `G.square`: a subset of the clique `N_G[u]`
+/-- **The neighborhood in the square of a degree-one vertex is a clique**
+(`lem:square-leaf-neighborhood`): it is a subset of the clique `N_G[u]`
 (`isClique_closedNeighborSet_square`). -/
 theorem isClique_neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : V}
     [Fintype (G.neighborSet v)] (hdeg : G.degree v = 1) (hu : G.Adj v u) :
@@ -229,14 +222,15 @@ theorem isClique_neighborSet_square_of_degree_eq_one {G : SimpleGraph V} {v u : 
   rw [neighborSet_square_of_degree_eq_one hdeg hu]
   exact (isClique_closedNeighborSet_square G u).subset Set.sdiff_subset
 
-/-! ## Restriction to a support-covering vertex set
+/-! ## Restriction to a set containing the support
 
-Phase 32 (`lem:square-induce-support`). The `thm:jacobs` induction's base case restricts `G`
-to the support of its non-isolated vertices; squaring needs to commute with that restriction. -/
+When no vertex has degree one, the proof of Jacobs' conjecture (`thm:jacobs`) restricts `G` to its
+support, the set of its non-isolated vertices; squaring commutes with that restriction
+(`lem:square-induce-support`). -/
 
-/-- **Squaring does not grow the support.** Every edge of `G.square` already has both endpoints
-in `G`'s own support: a direct edge or a common-neighbor witness of `G` puts each endpoint in
-`G.support` directly. -/
+/-- **Squaring does not grow the support** (`lem:square-induce-support`). Every edge of `G.square`
+has both endpoints in `G`'s support: an edge or a common neighbor in `G` puts each endpoint in
+`G.support`. -/
 theorem square_support_subset (G : SimpleGraph V) : G.square.support ⊆ G.support := by
   rintro x ⟨y, -, hadj | hcn⟩
   · exact hadj.left_mem_support
@@ -244,7 +238,7 @@ theorem square_support_subset (G : SimpleGraph V) : G.square.support ⊆ G.suppo
     rw [mem_commonNeighbors] at hw
     exact hw.1.left_mem_support
 
-/-- **Squaring commutes with restriction to a support-covering set**
+/-- **Squaring commutes with the restriction to a set containing the support**
 (`lem:square-induce-support`). If `S` contains every non-isolated vertex of `G`, the square of
 the induced subgraph `G[S]` is the induced subgraph of `G.square` on `S`: a length-two path
 between vertices of `S` has its middle vertex non-isolated (`square_support_subset`), hence in

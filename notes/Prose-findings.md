@@ -3981,7 +3981,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the nine pins and of the abundance lemma; `grep
   -i gram` over `blueprint/src`).
   *Found:* round 4 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, L12).
+  *Disposition:* done (task 28): the header names the file's results and the blueprint sections
+  that present them; `genericRank` cites KT Corollary 5.7 without "Phase 26"; the abundance lemma
+  says its proof is the node's (a maximal minor for each witnessed edge set, multiplied) with no
+  Gram determinant and no "PROSPECT G3"; reported (`notes/Prose-report.md`, L12).
 - **F-182** · L · the docstrings of task 2.2's pins (`Molecule/ScrewVelocity.lean`, `Duality.lean`,
   `ProjectiveInvariance.lean`, `Dictionary.lean`). `ScrewVelocity.lean`'s header says that
   $\omega_S$ pairs two affine directions and $t_S$ a direction with the homogenizing coordinate;
@@ -4005,7 +4008,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the five pins, `IsGeneralPosition4` and
   `exists_generalPosition4_polynomial`).
   *Found:* round 4 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, L5).
+  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3: `GeneralPositionPlacement.lean`'s
+  header and docstrings without Phases 24–25, leaf W5 and "genuinely" (task 28); the other three
+  files are the footprint's or task 37's.
 - **F-190** · L · the docstrings of task 2.4's pins (`Molecule/Carrier.lean`,
   `Molecule/Application.lean`). `Carrier.lean`'s header says that the labels `Sym2 V` alone are too
   few "e.g. for `Nat.card V ≤ 10`"; at $|V| = 10$ they number $55 > 54 = 6 \cdot 9$, and at
@@ -4034,7 +4039,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins and of `exists_fresh_label`; JJ
   2008 §3, its closing remarks and its references).
   *Found:* round 4 task 2.5.
-  *Disposition:* reported (`notes/Prose-report.md`, L5).
+  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3: `Jacobs.lean`'s header and
+  `IsLaman3.ncard_edgesIn_le` without "Phase 32" and "Thm 5.3 assembly", and `EdgesIn.lean`'s
+  header and docstrings without their phase pointers (task 28); `Deficiency.lean`'s are task 29's.
 - **F-198** · L · the docstrings of task 2.6's pins (`JacobsCounting.lean`, `Jacobs.lean`,
   `SquareGraph.lean`). Five name `lem:normal-cross-count` for declarations pinned at the nodes split
   from it (`rootedAt_inj`, `ncard_inPartNeighbors_eq_two`, `mk_mem_squareNormalCrossEdgesRootedAt`,
@@ -4050,7 +4057,12 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the 25 pins and of the unpinned lemmas of
   `laman_square_count`'s proof; JJ 2008 §§2, 3 and 5, `.refs/`).
   *Found:* round 4 task 2.6.
-  *Disposition:* reported (`notes/Prose-report.md`, L10).
+  *Disposition:* done (task 28): the five leads name their own nodes
+  (`lem:normal-cross-count-rooted`, `-local`, `-producer`, `-partition` twice);
+  `fmlnote:normal-cross-split` is cited only for what it says (the classes defined for every
+  partition, the empty vertex set); the crossing count is the chapter's `d_G(P)`, JJ's `e_G(P)`;
+  the header and docstrings have no process narration, and `G.shadowGraph` is the multigraph of
+  `lem:molecule-graph-carrier`; reported (`notes/Prose-report.md`, L10).
 - **F-200** · L · the docstrings of task 2.7's pins (`JacobsZeroExtension.lean`,
   `RigidityMatroid.lean`, `SquareGraph.lean`, `GenericRigidityMatroid.lean`,
   `GeneralPositionPlacement.lean`, `Jacobs.lean`). They agree with their bodies, but narrate
@@ -4062,8 +4074,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the 16 pins, of
   `zero_extension_edgeSetRowIndependent_extend` and of the three `K₅` lemmas).
   *Found:* round 4 task 2.7.
-  *Disposition:* reported (`notes/Prose-report.md`, L12); round 3: `RigidityMatroid.lean`'s
-  zero-extension section (task 25).
+  *Disposition:* done (task 28): `JacobsZeroExtension.lean`'s header and `SquareGraph.lean`'s
+  two section headers say what the file and the sections prove, with no phase, slice or "crux"
+  narration, as do the pins' docstrings in `GenericRigidityMatroid.lean`,
+  `GeneralPositionPlacement.lean` and `Jacobs.lean`; `RigidityMatroid.lean`'s zero-extension
+  section (task 25); reported (`notes/Prose-report.md`, L12).
 - **F-205** · L · the docstrings of task 2.8's pins (`JacobsTheorem.lean`, `JacobsDegreeOne.lean`,
   `TwoCore.lean`). They agree with their bodies, but narrate process: the three file headers
   ("Phase 32", "Phase 26", "the L2 slice plan, T1", "T3–T4", "This file lands", "the rank glue",
@@ -4074,7 +4089,10 @@ declaration's name as its header writes it:
   `jacobs_of_isLaman3_of_ncard`, `degree_one_rank_tree_of_ncard` and `degree_one_rank_of_ncard`;
   JJ 2008 §4).
   *Found:* round 4 task 2.8.
-  *Disposition:* reported (`notes/Prose-report.md`, L5).
+  *Disposition:* done (task 28): the three headers say what their files prove and name the
+  blueprint section, with no phase, slice or T-step pointers; the private strengthenings cite the
+  lemmas they use; `twoCore` credits JJ §4, where the core is defined before Lemma 4.2; reported
+  (`notes/Prose-report.md`, L5).
 - **F-210** · L · the docstrings of task 2.9's pins (`GenericLift/PanelGeneric.lean`,
   `GenericRigidityMatroid.lean`, `Molecule/Application.lean`). `IsGenericNormals` "subsumes
   Jackson and Jordán's edge-induced-submatrix maximum-rank condition": not over all normal
@@ -4090,7 +4108,9 @@ declaration's name as its header writes it:
   eight; it is 2010 (task 2.9 corrected the bibliography).
   *Evidence:* read (the docstrings and bodies of the twelve pins; `grep` for the year).
   *Found:* round 4 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* reported (`notes/Prose-report.md`, L4); round 3: `GenericRigidityMatroid.lean`'s
+  abundance lemma without "Phase 34 PROSPECT G3" (its credit dropped, as the node gives none)
+  (task 28).
 
 - **F-215** · L · the docstrings of task 2.10's pins (`BodyBar/GenericLift.lean`).
   `exists_isGenericEndpoints_abundance` calls its polynomial one "in the `2n|E(G)|` endpoint
@@ -4314,7 +4334,10 @@ declaration's name as its header writes it:
   three nodes now pin.
   *Evidence:* read (the docstrings and module header).
   *Found:* round 5 task 3.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: `JacobsCounting.lean`'s (the
+  lead of `rootedAt_inj` names `lem:normal-cross-count-rooted`, the section docstring no process)
+  and `TwoCore.lean`'s header (it names the three nodes) (task 28); the docstrings of
+  `Deficiency.lean` are task 29's.
 - **F-245** · L · `linearIndepOn_pencilChartNormal_closedHubNbhd` (`Molecular/Molecule/Pencil/Chart.lean`):
   its docstring calls it the `lem:pencil-nondegenerate` companion, a label the blueprint lacks; the
   node is `def:pencil-nondegenerate`, and no node pins the declaration. The docstrings of the five
@@ -4579,7 +4602,10 @@ declaration's name as its header writes it:
   task 25.3, at `05b0dae4` for task 26 and at `7e5c1cb2` for task 27; `rfl` lemmas left out);
   read (`Chart.lean`'s proof and import closure; `pebOn_addArc`'s proof).
   *Found:* RECONCILE round 3 tasks 25.2, 25.3, 26 and 27.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38). Task 28 adds two in
+  `SquareGraph.lean`, `square_mono` and `three_le_ncard_closedNeighborSet_of_two_le_degree`, whose
+  docstrings said the proof of `thm:jacobs` and the square-graph dictionary use them (no
+  declaration does; the cache at `0819b42e`).
 
 ## M — mathematics and sources
 

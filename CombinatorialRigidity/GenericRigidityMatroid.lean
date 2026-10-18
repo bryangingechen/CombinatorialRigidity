@@ -9,61 +9,62 @@ import CombinatorialRigidity.BodyBar.KFrame
 /-!
 # The generic bar-joint rigidity matroid
 
-Phase 24. Packages the *generic* (dimension-general) bar-joint rigidity matroid, on the
-`Framework`/`Matroid.ofFun` substrate of `Framework.lean` and `LinearRigidityMatroid.lean`. In
-dimension 2 that substrate was measured against the combinatorial `(2, 3)`-count matroid
-(`LinearRigidityMatroid.exists_uniform_rowIndependent_placement_dim_two`); in general dimension
-no combinatorial description is known, so a placement is declared *generic for row independence*
-directly — every edge set row-independent at some placement is row-independent at it — and such
-placements exist by the same linear-interpolation argument, with witness placements supplied by
-the defining property itself rather than by a sparsity characterization.
+The `d`-dimensional (bar-joint) generic rigidity matroid of a finite vertex set, on the
+`Framework` and `Matroid.ofFun` setting of `Framework.lean` and `LinearRigidityMatroid.lean`. In
+the plane one placement was found at which the linear rigidity matroid is the `(2, 3)`-count
+matroid (`SimpleGraph.exists_uniform_rowIndependent_placement_dim_two`). In general dimension no
+combinatorial description is known, so a placement is declared *generic for row independence*
+directly (every edge set row-independent at some placement is row-independent at it), and such
+placements exist by the interpolation argument of the planar case, each edge set's witness
+placement given by the definition rather than by a sparsity characterization.
 
-This file lands the forward-mode chapter `blueprint/src/chapter/bar-joint-3d.tex` end to end:
-`IsGenericPlacement`, its existence `exists_isGenericPlacement`, the matroid
-`genericRigidityMatroid` (`Matroid.ofFun` packaging at a chosen generic placement), its
-independence characterization `genericRigidityMatroid_indep_iff`, placement-independence
-`linearRigidityMatroid_eq_genericRigidityMatroid`, the dimension-two reconciliation
-`genericRigidityMatroid_two_eq_rigidityMatroid` with the combinatorial planar rigidity matroid,
-and the rank function `genericRank` with its row-space form `genericRank_eq_finrank_span`
-(reusing Phase 14's `Matroid.Rep.finrank_span_image_eq_rk`, `BodyBar/KFrame.lean`).
+The file defines `IsGenericPlacement`, proves its existence (`exists_isGenericPlacement`) and its
+abundance (`exists_isGenericPlacement_abundance`), defines the matroid `genericRigidityMatroid`
+as the linear rigidity matroid at a chosen generic placement, characterizes its independent sets
+(`genericRigidityMatroid_indep_iff`), shows that it does not depend on the placement
+(`linearRigidityMatroid_eq_genericRigidityMatroid`) and is the planar rigidity matroid in
+dimension two (`genericRigidityMatroid_two_eq_rigidityMatroid`), and gives the rank function
+`genericRank` with its row-space form (`genericRank_eq_finrank_span`, through
+`Matroid.Rep.finrank_span_image_eq_rk` of `BodyBar/KFrame.lean`) and its transport to a subset of
+the vertices (`genericRank_eq_rk_image`). The blueprint presents the file in `sec:bar-joint-3d`,
+the abundance lemma in `sec:generic-lift-abundance`, the bound at an arbitrary placement in
+`sec:molecule-application-domination` and the transport in `sec:jacobs-zero-extension`.
 
-Non-`module`: imports `LinearRigidityMatroid.lean`, which is itself non-`module` (blocked on
-`apnelson1/Matroid`'s `Matroid.Representation.Map`; see `notes/PERFORMANCE.md`), and a `module`
-file cannot import a non-`module` one.
-
-See `ROADMAP.md` §24, `notes/Phase24.md`, and `blueprint/src/chapter/bar-joint-3d.tex`.
+Not a `module` file: it imports `LinearRigidityMatroid.lean`, which imports `apnelson1/Matroid`'s
+`Matroid.Representation.Map` and is not a `module` file, and a `module` file cannot import a
+non-`module` one.
 -/
 
 namespace SimpleGraph
 
 variable {V : Type*} {d : ℕ}
 
-/-- A placement `p : Framework V d` is **generic for row independence** if every edge subset
-`I ⊆ E(K_V)` that is row-independent at *some* placement is row-independent at `p`.
+/-- A placement `p : Framework V d` is **generic for row independence**
+(`def:generic-placement`) if every edge subset `I ⊆ E(K_V)` that is row-independent at *some*
+placement is row-independent at `p`.
 
-A placement with algebraically independent coordinates would realize every row rank that any
-placement realizes; this definition asks only for that consequence — all the matroid
-construction (`genericRigidityMatroid` and downstream) uses — so existence
-(`exists_isGenericPlacement`) is provable by an elementary perturbation argument rather than by
-transcendence degree. -/
+A placement with algebraically independent coordinates realizes every row rank that any
+placement realizes; this definition asks only for that consequence, which is all the
+construction of `genericRigidityMatroid` uses, so existence (`exists_isGenericPlacement`) is
+provable by an elementary interpolation argument rather than by transcendence degree. -/
 def IsGenericPlacement (p : Framework V d) : Prop :=
   ∀ I : Set (⊤ : SimpleGraph V).edgeSet,
     (∃ q : Framework V d, (⊤ : SimpleGraph V).EdgeSetRowIndependent q I) →
       (⊤ : SimpleGraph V).EdgeSetRowIndependent p I
 
-/-- **Existence of generic placements.** For every finite `V` and every dimension `d` there is a
-placement `p : Framework V d` generic for row independence.
+/-- **Existence of generic placements** (`lem:exists-generic-placement`). For every finite `V`
+and every dimension `d` there is a placement `p : Framework V d` generic for row independence.
 
-Induction on the cardinality of the finite family
+Induction over the finite family
 `F := {I ⊆ E(K_V) | I is row-independent at some placement}` (`Set (⊤ : SimpleGraph V).edgeSet` is
-finite since `V` is finite, so this comprehension is too), matching the shape of
-`LinearRigidityMatroid.exists_uniform_rowIndependent_placement_dim_two`'s dimension-2 induction:
-here a member `I ∈ F` carries its witness placement by definition, so no sparsity bridge is
-needed. Given `p₀` row-independent on every member of a subfamily and a new member `I₀` with
-witness `q`, each condition "`S` is row-independent at `p_t := p₀ + t • (q - p₀)`" is the
-non-vanishing of a one-variable polynomial in `t` (the affine-path helper
-`LinearIndependent.finite_setOf_not_along_affine_path`), nonzero at `t = 0` for the subfamily
-members and at `t = 1` for `I₀`; a `t` avoiding the finitely many roots enlarges the subfamily. -/
+finite since `V` is finite, so this comprehension is too), as in the planar
+`SimpleGraph.exists_uniform_rowIndependent_placement_dim_two`: here a member `I ∈ F` has its
+witness placement by definition, so no sparsity characterization is needed. Given `p₀`
+row-independent on every member of a subfamily and a new member `I₀` with witness `q`, each
+condition "`S` is row-independent at `p_t := p₀ + t • (q - p₀)`" fails for only finitely many `t`
+(the rows are affine in `t`, `LinearIndependent.finite_setOf_not_along_affine_path`), as it holds
+at `t = 0` for the subfamily's members and at `t = 1` for `I₀`; a `t` outside these finitely many
+values enlarges the subfamily. -/
 theorem exists_isGenericPlacement {V : Type*} [Finite V] (d : ℕ) :
     ∃ p : Framework V d, IsGenericPlacement p := by
   have : Fintype V := Fintype.ofFinite V
@@ -142,22 +143,19 @@ theorem exists_isGenericPlacement {V : Type*} [Finite V] (d : ℕ) :
     simp only [bad, Set.mem_iUnion]
     exact ⟨I, hI, h_not_LI⟩
 
-/-- **Abundance of generic placements** (`lem:generic-placement-abundance`; Phase 34 PROSPECT G3,
-the Jackson–Jordán 2010 coordinate route). There is a nonzero polynomial `P` in the
-`finrank ℝ (Framework V d) = d * Fintype.card V` basis coordinates of a placement (the coordinate
-identification `(Module.finBasis ℝ (Framework V d)).equivFun`) such that every placement `p` at
-which `P` does not vanish is generic for row independence: the non-generic placements are confined
-to the zero set of a single nonzero polynomial.
+/-- **Abundance of generic placements** (`lem:generic-placement-abundance`). There is a nonzero
+polynomial `P` in the `finrank ℝ (Framework V d) = d * Fintype.card V` basis coordinates of a
+placement (the coordinate identification `(Module.finBasis ℝ (Framework V d)).equivFun`) such
+that every placement `p` at which `P` does not vanish is generic for row independence: the
+non-generic placements lie in the zero set of a single nonzero polynomial.
 
 For each edge subset `I ⊆ E(K_V)` row-independent at some witness placement, the rigidity rows
-indexed by `I` are linear in the placement's basis coordinates (the bilinearity underlying
-`rigidityRow_add_smul`, packaged here as the `MvPolynomial` family `c`), so
-`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` supplies a nonzero polynomial `Q_I`
-witnessing `I`'s row-independence away from its zero set; `P` is the finite product of the `Q_I`
-over the (finitely many, since `V` is finite) edge subsets carrying such a witness — matching the
-blueprint's Gram-determinant sketch in substance (a per-subset nonzero witnessing polynomial,
-multiplied over the finite witnessed family) while routing through the project's landed
-maximal-minor engine rather than a literal Gram determinant. -/
+indexed by `I` are linear in the placement's basis coordinates (the linearity behind
+`rigidityRow_add_smul`, written here as the `MvPolynomial` family `c`), so
+`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` supplies a nonzero polynomial `Q_I`, a
+maximal minor, at whose non-zeros `I` is row-independent; `P` is the finite product of the `Q_I`
+over the (finitely many, since `V` is finite) edge subsets with a witness, as in the node's
+proof. -/
 theorem exists_isGenericPlacement_abundance (V : Type*) [Finite V] (d : ℕ) :
     ∃ P : MvPolynomial (Fin (Module.finrank ℝ (Framework V d))) ℝ, P ≠ 0 ∧
       ∀ p : Framework V d,
@@ -228,15 +226,16 @@ theorem exists_isGenericPlacement_abundance (V : Type*) [Finite V] (d : ℕ) :
 
 /-! ### The generic rigidity matroid and its rank function
 
-The matroid `Matroid.ofFun`-packaging at a chosen generic placement (any placement works, by
-`linearRigidityMatroid_eq_genericRigidityMatroid` below), and the identification of its
-independent sets with "row-independent at some placement"
+The linear rigidity matroid at a chosen generic placement (every generic placement gives the
+same matroid, by `linearRigidityMatroid_eq_genericRigidityMatroid` below), and the identification
+of its independent sets with the edge sets row-independent at some placement
 (`genericRigidityMatroid_indep_iff`). -/
 
-/-- The **generic (`d`-dimensional bar-joint) rigidity matroid** of a finite vertex set `V`: the
-linear rigidity matroid (`LinearRigidityMatroid.linearRigidityMatroid`) at a placement generic for
-row independence (`exists_isGenericPlacement`). By `linearRigidityMatroid_eq_genericRigidityMatroid`
-the matroid does not depend on the choice of generic placement. -/
+/-- The **generic (`d`-dimensional bar-joint) rigidity matroid** of a finite vertex set `V`
+(`def:genericRigidityMatroid`): the linear rigidity matroid (`linearRigidityMatroid`) at a
+placement generic for row independence (`exists_isGenericPlacement`). By
+`linearRigidityMatroid_eq_genericRigidityMatroid` the matroid does not depend on the choice of
+generic placement. -/
 noncomputable def genericRigidityMatroid (V : Type*) [Finite V] (d : ℕ) : Matroid (Sym2 V) :=
   linearRigidityMatroid V d (exists_isGenericPlacement d).choose
 
@@ -245,9 +244,9 @@ theorem genericRigidityMatroid_ground (V : Type*) [Finite V] (d : ℕ) :
     (genericRigidityMatroid V d).E = (⊤ : SimpleGraph V).edgeSet :=
   linearRigidityMatroid_ground V d _
 
-/-- **Independence in the generic rigidity matroid.** An edge subset `I ⊆
-(⊤ : SimpleGraph V).edgeSet` is independent in `genericRigidityMatroid V d` if and only if it is
-row-independent at *some* placement `q : Framework V d`.
+/-- **Independence in the generic rigidity matroid** (`lem:genericRigidityMatroid-indep-iff`).
+An edge subset `I ⊆ (⊤ : SimpleGraph V).edgeSet` is independent in `genericRigidityMatroid V d`
+if and only if it is row-independent at *some* placement `q : Framework V d`.
 
 Independence in `linearRigidityMatroid V d p` (`p` the chosen generic placement) is row
 independence at `p` (`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`); row independence at
@@ -260,7 +259,8 @@ theorem genericRigidityMatroid_indep_iff {V : Type*} [Finite V] {d : ℕ}
   rw [genericRigidityMatroid, linearRigidityMatroid_indep_iff_edgeSetRowIndependent]
   exact ⟨fun h => ⟨_, h⟩, fun ⟨q, hq⟩ => (exists_isGenericPlacement d).choose_spec I ⟨q, hq⟩⟩
 
-/-- **Placement independence.** For every placement `p : Framework V d` generic for row
+/-- **Placement independence** (`lem:linearRigidityMatroid-eq-genericRigidityMatroid`). For
+every placement `p : Framework V d` generic for row
 independence, `linearRigidityMatroid V d p = genericRigidityMatroid V d`.
 
 Both matroids have ground set `(⊤ : SimpleGraph V).edgeSet`, so by `Matroid.ext_indep` it suffices
@@ -281,9 +281,9 @@ theorem linearRigidityMatroid_eq_genericRigidityMatroid {V : Type*} [Finite V] {
       genericRigidityMatroid_indep_iff]
     exact ⟨fun h => ⟨p, h⟩, fun ⟨q, hq⟩ => hp I ⟨q, hq⟩⟩
 
-/-- **Dimension-2 generic rigidity matroid equals the combinatorial planar rigidity matroid.**
-
-The matroid `genericRigidityMatroid V 2` at the chosen generic placement coincides with
+/-- **Dimension two: the planar rigidity matroid**
+(`lem:genericRigidityMatroid-two-eq-rigidityMatroid`). The matroid `genericRigidityMatroid V 2`
+coincides with
 `SimpleGraph.rigidityMatroid V`, the `(2, 3)`-count matroid. Both have ground set
 `(⊤ : SimpleGraph V).edgeSet`, and both independence predicates say "row-independent at some
 placement" (`genericRigidityMatroid_indep_iff` and
@@ -302,25 +302,28 @@ theorem genericRigidityMatroid_two_eq_rigidityMatroid {V : Type*} [Finite V] :
 
 /-! ### The generic rank function
 
-The rank function of `genericRigidityMatroid` (`def:genericRank`) and its row-space
-characterization (`lem:genericRank-eq-finrank-span`), closing the chapter. -/
+The rank function of `genericRigidityMatroid` (`def:genericRank`), its row-space
+characterization (`lem:genericRank-eq-finrank-span`), and the rank of the rigidity map at an
+arbitrary placement (`lem:square-rank-le-genericRank`) and at a generic one
+(`lem:rigidityMap-rank-at-generic`). -/
 
-/-- The **generic (`d`-dimensional bar-joint) rank** of a graph `H` on `V`: the rank of `E(H)` in
-`genericRigidityMatroid V d`. At `d = 3` this is the rank function `r(·)` of the molecule rank
-formula (KT Corollary 5.7, Phase 26). -/
+/-- The **generic (`d`-dimensional bar-joint) rank** of a graph `H` on `V` (`def:genericRank`):
+the rank of `E(H)` in `genericRigidityMatroid V d`. At `d = 3` this is the rank function `r(·)`
+of the molecule rank formula (KT Corollary 5.7). -/
 noncomputable def genericRank {V : Type*} [Finite V] (H : SimpleGraph V) (d : ℕ) : ℕ :=
   (genericRigidityMatroid V d).rk H.edgeSet
 
-/-- **Row-space form of the generic rank.** For every placement `p : Framework V d` generic for
-row independence and every graph `H` on `V`, `H.genericRank d` is the `ℝ`-dimension of the span of
-the rigidity rows of `H`'s edges at `p`.
+/-- **Row-space form of the generic rank** (`lem:genericRank-eq-finrank-span`). For every
+placement `p : Framework V d` generic for row independence and every graph `H` on `V`,
+`H.genericRank d` is the `ℝ`-dimension of the span of the rigidity rows of `H`'s edges at `p`.
 
-By `linearRigidityMatroid_eq_genericRigidityMatroid`, `genericRigidityMatroid V d =
-linearRigidityMatroid V d p = Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)`.
-The vendored `Matroid.repOfFun` packages `linearRigidityRow p` as a representation of that matroid,
-so `Matroid.Rep.finrank_span_image_eq_rk` (`BodyBar/KFrame.lean`) identifies the rank of `E(H)`
-with the dimension of the span of `linearRigidityRow p '' E(H)`. That span agrees with the span of
-the `(⊤).rigidityRow p`-image of `E(H)`, since `linearRigidityRow p` restricts to `rigidityRow` on
+By `linearRigidityMatroid_eq_genericRigidityMatroid`, `genericRigidityMatroid V d` is
+`linearRigidityMatroid V d p`, that is,
+`Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)`. `apnelson1/Matroid`'s
+`Matroid.repOfFun` packages `linearRigidityRow p` as a representation of that matroid, so
+`Matroid.Rep.finrank_span_image_eq_rk` (`BodyBar/KFrame.lean`) identifies the rank of `E(H)` with
+the dimension of the span of `linearRigidityRow p '' E(H)`. That span agrees with the span of the
+`(⊤).rigidityRow p`-image of `E(H)`, since `linearRigidityRow p` restricts to `rigidityRow` on
 `E(K_V)` (`linearRigidityRow_subtype_val`) and `E(H) ⊆ E(K_V)`. -/
 theorem genericRank_eq_finrank_span {V : Type*} [Finite V] {d : ℕ} {p : Framework V d}
     (hp : IsGenericPlacement p) (H : SimpleGraph V) :
@@ -350,19 +353,17 @@ theorem genericRank_eq_finrank_span {V : Type*} [Finite V] {d : ℕ} {p : Framew
   change (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).rk H.edgeSet = _
   rw [← hrep, himg]
 
-/-- **The generic rank dominates the rank at any placement.** For *every* placement `p :
-Framework V d` (not necessarily generic for row independence) and every graph `H` on `V`, the
-dimension of the span of `H`'s rigidity rows at `p` is at most `H`'s generic rank `H.genericRank
-d`; equivalently `rank R(H, p) ≤ r_d(H)` for the bar-joint rigidity matrix at `p`.
+/-- **The generic rank bounds the rank at any placement** (`lem:square-rank-le-genericRank`,
+row-span form). For *every* placement `p : Framework V d` (not necessarily generic for row
+independence) and every graph `H` on `V`, the dimension of the span of the rigidity rows of
+`K_V` at `p` indexed by `E(H)` is at most `H`'s generic rank `H.genericRank d`.
 
-Same row-span computation as `genericRank_eq_finrank_span` (via
-`Matroid.Rep.finrank_span_image_eq_rk` on the *specific*, possibly non-generic,
-`linearRigidityMatroid V d p`), landing at its matroid rank `(linearRigidityMatroid V d
-p).rk H.edgeSet` rather than converting to `genericRigidityMatroid V d`.
-The inequality closes the gap: a subset of `H.edgeSet` independent at `p` is row-independent at
-*some* placement (namely `p` itself), hence independent in `genericRigidityMatroid V d`
-(`genericRigidityMatroid_indep_iff`), so its cardinality is at most the generic rank
-(`Indep.ncard_le_rk_of_subset`). -/
+The row-span computation of `genericRank_eq_finrank_span` (`Matroid.Rep.finrank_span_image_eq_rk`
+on `linearRigidityMatroid V d p`, at a placement that need not be generic) gives the rank
+`(linearRigidityMatroid V d p).rk H.edgeSet`. A subset of `H.edgeSet` independent there is
+row-independent at *some* placement (namely `p` itself), hence independent in
+`genericRigidityMatroid V d` (`genericRigidityMatroid_indep_iff`), so its cardinality is at most
+the generic rank (`Matroid.Indep.ncard_le_rk_of_subset`). -/
 theorem finrank_span_rigidityRow_le_genericRank {V : Type*} [Finite V] {d : ℕ}
     (p : Framework V d) (H : SimpleGraph V) :
     Module.finrank ℝ (Submodule.span ℝ
@@ -406,15 +407,14 @@ theorem finrank_span_rigidityRow_le_genericRank {V : Type*} [Finite V] {d : ℕ}
   rw [hI'_image] at hgen
   exact hgen.ncard_le_rk_of_subset hI_sub
 
-/-- **Row rank equals column rank, `RigidityMap`-range form.** For every placement `p :
-Framework V d` and every graph `H` on `V`, `finrank (range (H.RigidityMap p))` — the rank of `H`'s
-rigidity matrix at `p` — equals the dimension of the span of the *ambient* `(⊤ : SimpleGraph V)`'s
-rigidity rows restricted to `E(H)`. Converts row rank to column rank (`span_range_rigidityRow` +
-`LinearMap.finrank_range_dualMap_eq_finrank_range`), reconciling `H`'s own `rigidityRow` family
-with the ambient one via the graph-independence of `rigidityRow` (`rigidityRow_congr`). The shared
-computation behind `finrank_range_rigidityMap_le_genericRank` and
-`finrank_range_rigidityMap_eq_genericRank`, which each combine it with a domination or an equality
-for the row-span side. -/
+/-- **Row rank equals column rank, `RigidityMap`-range form.** For every placement
+`p : Framework V d` and every graph `H` on `V`, `finrank (range (H.RigidityMap p))`, the rank of
+`H`'s rigidity map at `p`, equals the dimension of the span of the rigidity rows of
+`(⊤ : SimpleGraph V)` at `p` indexed by `E(H)`. Converts row rank to column rank
+(`span_range_rigidityRow` and `LinearMap.finrank_range_dualMap_eq_finrank_range`), and identifies
+`H`'s own rigidity rows with those of `⊤` (`rigidityRow_congr`). The common step of
+`finrank_range_rigidityMap_le_genericRank` and `finrank_range_rigidityMap_eq_genericRank`, which
+combine it with the bound and the equality on the row-span side. -/
 private theorem finrank_range_rigidityMap_eq_finrank_span_rigidityRow {V : Type*} [Finite V]
     {d : ℕ} (H : SimpleGraph V) (p : Framework V d) :
     Module.finrank ℝ (LinearMap.range (H.RigidityMap p)) = Module.finrank ℝ (Submodule.span ℝ
@@ -434,19 +434,19 @@ private theorem finrank_range_rigidityMap_eq_finrank_span_rigidityRow {V : Type*
       exact ⟨⟨e, heH⟩, rigidityRow_congr H (⊤ : SimpleGraph V) p heH heTop⟩
   rw [← LinearMap.finrank_range_dualMap_eq_finrank_range, ← H.span_range_rigidityRow p, hset]
 
-/-- **The generic rank dominates the realized rank at any placement, `RigidityMap` form.** For
-every placement `p : Framework V d` (not necessarily generic) and every graph `H` on `V`, the rank
-of `H`'s rigidity matrix at `p` — `finrank (range (H.RigidityMap p))` — is at most `H`'s generic
-rank. -/
+/-- **The generic rank bounds the rank at any placement** (`lem:square-rank-le-genericRank`,
+rigidity-map form). For every placement `p : Framework V d` (not necessarily generic) and every
+graph `H` on `V`, the rank of `H`'s rigidity map at `p`, `finrank (range (H.RigidityMap p))`, is
+at most `H`'s generic rank. -/
 theorem finrank_range_rigidityMap_le_genericRank {V : Type*} [Finite V] {d : ℕ}
     (H : SimpleGraph V) (p : Framework V d) :
     Module.finrank ℝ (LinearMap.range (H.RigidityMap p)) ≤ H.genericRank d := by
   rw [finrank_range_rigidityMap_eq_finrank_span_rigidityRow]
   exact finrank_span_rigidityRow_le_genericRank p H
 
-/-- **The generic rank equals the realized rank at a generic placement, `RigidityMap` form.** For
-every placement `p : Framework V d` generic for row independence and every graph `H` on `V`, the
-rank of `H`'s rigidity matrix at `p` — `finrank (range (H.RigidityMap p))` — equals `H`'s generic
+/-- **The rank of the rigidity map at a generic placement** (`lem:rigidityMap-rank-at-generic`).
+For every placement `p : Framework V d` generic for row independence and every graph `H` on `V`,
+the rank of `H`'s rigidity map at `p`, `finrank (range (H.RigidityMap p))`, equals `H`'s generic
 rank; the `RigidityMap`-range restatement of `genericRank_eq_finrank_span`. -/
 theorem finrank_range_rigidityMap_eq_genericRank {V : Type*} [Finite V] {d : ℕ}
     (H : SimpleGraph V) {p : Framework V d} (hp : IsGenericPlacement p) :
@@ -457,16 +457,16 @@ theorem finrank_range_rigidityMap_eq_genericRank {V : Type*} [Finite V] {d : ℕ
 /-! ### Independence and rank under vertex-set restriction
 
 For `S ⊆ V` and a graph `H` on the subtype `↥S`, independence and rank in the generic rigidity
-matroid transport along the inclusion `Subtype.val : ↥S → V` (`lem:genericMatroid-induce-transport`,
-Phase 32 S5). Powers the degree-one induction of Jacobs' theorem (`thm:jacobs`, restricting to the
-support of `G`) and the degree-one rank formula (`thm:degree-one-rank-tree`/`thm:degree-one-rank`,
-dropping an isolated vertex), `blueprint/src/chapter/jacobs.tex`. -/
+matroid transport along the inclusion `Subtype.val : ↥S → V`
+(`lem:genericMatroid-induce-transport`). The proof of Jacobs' conjecture (`thm:jacobs`) uses the
+independence half, restricting to the support of `G`; the degree-one rank formulas keep the
+vertex set fixed and use neither half (`fmlnote:degree-one-fixed-carrier`). -/
 
-/-- **Independence in the generic matroid of a graph's own edge set, row-LI form.** For a graph
-`G` on a finite `V`, `E(G)` is independent in `genericRigidityMatroid V d` iff `G`'s edges are
-row-independent at some placement. Reusable glue: `genericRigidityMatroid_indep_iff` is stated
-relative to the `(⊤ : SimpleGraph V).edgeSet`-indexed subtype `I`; this specializes to `I =
-Subtype.val ⁻¹' G.edgeSet` and converts the row-independence side to `G`'s own edge set via
+/-- **Independence in the generic matroid of a graph's own edge set, row-LI form.** For a graph `G`
+on a finite `V`, `E(G)` is independent in `genericRigidityMatroid V d` iff `G`'s edges are
+row-independent at some placement. `genericRigidityMatroid_indep_iff` is stated for a subset `I` of
+the subtype `(⊤ : SimpleGraph V).edgeSet`; this specializes it to `I = Subtype.val ⁻¹' G.edgeSet`
+and converts the row-independence side to `G`'s own edge set via
 `edgeSetRowIndependent_univ_iff_top`. -/
 theorem genericRigidityMatroid_indep_iff_edgeSetRowIndependent {V : Type*} [Finite V] {d : ℕ}
     (G : SimpleGraph V) :
@@ -486,11 +486,12 @@ independence half). Let `S ⊆ V` and `H` a graph on the subtype `↥S`. Then `E
 independent in `genericRigidityMatroid V d`.
 
 Both sides reduce, via `genericRigidityMatroid_indep_iff_edgeSetRowIndependent`, to full row
-independence of a graph's own edges (`H` and the pushed-forward `Himg := fromEdgeSet (Sym2.map
-Subtype.val '' H.edgeSet)`, whose edge set is exactly the image since `Subtype.val` is injective).
-The two directions transport row-independence along the injective vertex map `Subtype.val`
-(`linearIndependent_rigidityRow_lift_of_injective`/`_of_lift`); the forward direction reindexes
-against a choice function picking, for each edge of `Himg`, its unique `H`-preimage. -/
+independence of a graph's own edges (`H` and the pushed-forward
+`Himg := fromEdgeSet (Sym2.map Subtype.val '' H.edgeSet)`, whose edge set is exactly the image since
+`Subtype.val` is injective). The two directions transport row-independence along the injective
+vertex map `Subtype.val` (`linearIndependent_rigidityRow_lift_of_injective`,
+`linearIndependent_rigidityRow_of_lift`); the forward direction reindexes against a choice function
+picking, for each edge of `Himg`, its unique `H`-preimage. -/
 theorem genericRigidityMatroid_indep_image_iff {V : Type*} [Finite V] {d : ℕ} {S : Set V}
     (H : SimpleGraph ↥S) :
     (genericRigidityMatroid ↥S d).Indep H.edgeSet ↔
@@ -547,8 +548,9 @@ theorem genericRigidityMatroid_indep_image_iff {V : Type*} [Finite V] {d : ℕ} 
     exact linearIndependent_rigidityRow_of_lift φ hcompat hlift (hq.comp _ hginj)
 
 /-- **Rank under vertex-set restriction** (`lem:genericMatroid-induce-transport`, rank half). Let
-`S ⊆ V` and `H` a graph on the subtype `↥S`. Then the rank of `E(H)` in `genericRigidityMatroid ↥S
-d` equals the rank of its image under `Subtype.val : ↥S → V` in `genericRigidityMatroid V d`.
+`S ⊆ V` and `H` a graph on the subtype `↥S`. Then the rank of `E(H)` in
+`genericRigidityMatroid ↥S d` equals the rank of its image under `Subtype.val : ↥S → V` in
+`genericRigidityMatroid V d`.
 
 Two `Matroid.rk_le_iff` inequalities, each reducing (via `genericRigidityMatroid_indep_image_iff`,
 applied to the sub-edge-set graph `fromEdgeSet I'`) an independent subset on one side to an

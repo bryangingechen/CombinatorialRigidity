@@ -15,19 +15,17 @@ import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
 import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 
 /-!
-# The rank glue for the degree-one/tree formulas (`sec:jacobs-degree-one`)
+# The degree-one rank formulas (`sec:jacobs-degree-one`)
 
-Phase 32 (`sec:jacobs-degree-one`, L2 slice plan T3–T4). Jackson–Jordán 2008's degree-one and
-tree rank formulas (Lemma 4.2) both peel a degree-one vertex `v` and track how `G.square`'s
-generic rank changes. This file supplies the two rank facts that peel needs (T3): the base case
-(a single edge has generic rank exactly `1`) and the inductive step (peeling a degree-one vertex
-`v` drops `G.square`'s generic rank by exactly `min 3 (d_G(u))`, where `u` is `v`'s unique
-neighbor); and (T4) assembles the tree rank formula itself, by strong induction on the edge
-count over a fixed vertex type `V` (`fmlnote:degree-one-fixed-carrier`): peeling a leaf keeps it
-in `V` as an isolated vertex, so the induction runs on a support-relative strengthening rather
-than a type-changing one.
-
-See `notes/Phase32.md` (the L2 slice plan, T3–T4) for the phase plan.
+Jackson–Jordán 2008's rank formulas for trees and for graphs with vertices of degree one (their
+Lemma 4.2) both delete a degree-one vertex `v` and track how the generic rank of the square
+changes. This file proves the two rank facts these deletions need, the base case (a single edge
+has generic rank exactly `1`) and the step (deleting the edge at a degree-one vertex `v` lowers
+the generic rank of `G.square` by exactly `min 3 (d_G(u))`, where `u` is `v`'s neighbor), and
+the two formulas, by strong induction on the number of edges over a fixed vertex type `V`
+(`fmlnote:degree-one-fixed-carrier`): the deleted vertex stays in `V`, isolated, so the induction
+runs on a strengthening relative to the support rather than on a changing vertex type. The
+blueprint presents the file in `sec:jacobs-degree-one`.
 
 ## Main results
 
@@ -35,18 +33,19 @@ See `notes/Phase32.md` (the L2 slice plan, T3–T4) for the phase plan.
   rank `1`: the degree-≤-three `0`-extension rank formula
   (`zero_extension_genericRank_add_degree`) applied to the endpoint `x`, whose deletion leaves
   the empty graph (`Matroid.rk_empty`).
-* `SimpleGraph.genericRank_square_peel` — peeling a degree-one vertex `v` (with neighbor `u`)
-  drops `G.square`'s generic rank by exactly `min 3 (d_G(u))`: the clique-neighborhood
-  `0`-extension rank formula (`zero_extension_genericRank_add_min_of_isClique`), applied to
-  `G.square` at `v` (whose square-neighborhood is a clique of size `d_G(u)`, by
-  `isClique_neighborSet_square_of_degree_eq_one` / `ncard_neighborSet_square_of_degree_eq_one`),
-  composed with `square_deleteIncidenceSet_of_degree_le_one` to identify the deleted graph's
-  square with the square of the deleted graph.
-* `SimpleGraph.degree_one_rank_tree` — `thm:degree-one-rank-tree` (JJ Lemma 4.2(a), due to
-  Franzblau 2000 for trees): a tree's squared rank is `2|V| - 5 + |V_1(G)|`.
+* `SimpleGraph.genericRank_square_peel` — deleting the edge at a degree-one vertex `v` (with
+  neighbor `u`) lowers `G.square`'s generic rank by exactly `min 3 (d_G(u))`: the rank formula
+  of the `0`-extension at a clique neighborhood (`zero_extension_genericRank_add_min_of_isClique`),
+  applied to `G.square` at `v` (whose neighborhood in `G.square` is a clique of size `d_G(u)`, by
+  `isClique_neighborSet_square_of_degree_eq_one` and `ncard_neighborSet_square_of_degree_eq_one`),
+  with `square_deleteIncidenceSet_of_degree_le_one` to identify the square of the smaller graph
+  with `G.square` less the edges at `v`.
+* `SimpleGraph.degree_one_rank_tree` — `thm:degree-one-rank-tree` (JJ Lemma 4.2(a), which JJ
+  credit to Franzblau 2000): for a tree on at least two vertices, the rank of its square is
+  `2|V| - 5 + |V_1(G)|`.
 * `SimpleGraph.degree_one_rank` — `thm:degree-one-rank` (JJ Lemma 4.2(b)): for a connected
-  non-tree `G`, the squared rank reduces to the square of the core (the maximal subgraph of
-  minimum degree at least two, `SimpleGraph.twoCore`):
+  `G` that is not a tree, the rank of `G²` is given through that of the square of the core (the
+  maximal subgraph of minimum degree at least two, `SimpleGraph.twoCore`):
   `r(G²) = r((G^core)²) + 2|V \ V(G^core)| + |V₁(G)|`.
 -/
 
@@ -91,7 +90,8 @@ theorem genericRank_single_edge {G : SimpleGraph V} [Finite V] {x y : V} (hxy : 
   rw [hdelrank, hnbr_eq] at hrank
   omega
 
-/-- **Peeling a degree-one vertex drops the squared rank by `min 3 (d_G(u))`.** If `v` has degree
+/-- **Deleting the edge at a degree-one vertex lowers the rank of the square by
+`min 3 (d_G(u))`.** If `v` has degree
 one in `G` with neighbor `u`, then `G.square`'s generic rank equals `(G - E_G(v)).square`'s
 generic rank plus `min 3 (d_G(u))`.
 
@@ -116,24 +116,23 @@ theorem genericRank_square_peel {G : SimpleGraph V} [Finite V] {v u : V}
 
 /-! ## The tree rank formula (`thm:degree-one-rank-tree`)
 
-Jackson–Jordán 2008 Lemma 4.2(a) (due to Franzblau 2000 for trees): a tree's squared rank is
-`2|V| - 5 + |V_1(G)|`, where `V_1(G)` is the set of degree-one vertices. The induction runs on
-a *fixed* vertex type `V`, over a support-relative strengthening
-(`fmlnote:degree-one-fixed-carrier`): `|V|` is read as the size of the support, connectivity as
-reachability between support vertices, so peeling a leaf's incident edges just leaves it
-isolated in `V` rather than forcing a type-changing induction. -/
+Jackson–Jordán 2008 Lemma 4.2(a), which JJ credit to Franzblau 2000: for a tree on at least two
+vertices, the rank of its square is `2|V| - 5 + |V_1(G)|`, where `V_1(G)` is the set of
+degree-one vertices. The induction runs on a *fixed* vertex type `V`, over a strengthening
+relative to the support (`fmlnote:degree-one-fixed-carrier`): `|V|` is read as the size of the
+support and connectivity as reachability between support vertices, so deleting the edge at a
+leaf leaves it isolated in `V` rather than changing the vertex type. -/
 
-/-- **The degree-one rank formula for trees, by strong induction on the edge count** (private
+/-- **The degree-one rank formula for trees, by strong induction on the edge count** (the
 strengthening of `degree_one_rank_tree`). Base case, two support vertices `a, b`: any neighbor
 of a support vertex is itself a support vertex, so `a`'s only possible neighbor is `b`, giving
 `G.Adj a b`; squaring adds nothing new (every edge of `G.square` has both endpoints in the
 support, hence in `{a, b}`), so `genericRank_single_edge` applies directly to `G.square`, and
-`{a, b}` is exactly the degree-one set. Step, at least three support vertices: peel a leaf `v`
+`{a, b}` is exactly the degree-one set. Step, at least three support vertices: take a leaf `v`
 with neighbor `u` (`exists_degree_eq_one`); `d_G(u) ≥ 2` (`two_le_degree_of_adj_degree_eq_one`),
-so the peel (`genericRank_square_peel`) drops the rank by `min 3 (d_G(u))`, matched by the drop
-in `2 * |support| + |V_1(G)|` via the T2 maintenance identities
-(`support_deleteIncidenceSet_of_degree_eq_one`,
-`setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` /
+so deleting the edge at `v` (`genericRank_square_peel`) lowers the rank by `min 3 (d_G(u))`, as
+it lowers `2 * |support| + |V_1(G)|` (`support_deleteIncidenceSet_of_degree_eq_one`,
+`setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` and
 `setOf_degree_eq_one_deleteIncidenceSet_of_degree_eq_two`). -/
 private theorem degree_one_rank_tree_of_ncard [Fintype V] :
     ∀ n, ∀ (G : SimpleGraph V) [DecidableRel G.Adj], G.edgeSet.ncard = n →
@@ -257,9 +256,10 @@ private theorem degree_one_rank_tree_of_ncard [Fintype V] :
       have hcard1 : {w | G.degree w = 1}.ncard = 2 := by rw [hset_eq]; exact Set.ncard_pair hne
       omega
 
-/-- **The degree-one rank formula for trees** (`thm:degree-one-rank-tree`; JJ Lemma 4.2(a), due
-to Franzblau 2000 for trees). Let `G` be a tree on a finite vertex set `V` with `|V| ≥ 2`. Then
-`r(G²) = 2|V| - 5 + |V_1(G)|`.
+/-- **The degree-one rank formula for trees** (`thm:degree-one-rank-tree`; JJ Lemma 4.2(a), which
+JJ credit to Franzblau 2000). Let `G` be a tree on a finite vertex set `V` with `|V| ≥ 2`. Then
+`r(G²) = 2|V| - 5 + |V_1(G)|`, stated as `r(G²) + 5 = 2|V| + |V_1(G)|` to avoid
+`ℕ`-subtraction.
 
 A connected graph on at least two vertices has support all of `V`
 (`Preconnected.support_eq_univ`), so the strengthened form `degree_one_rank_tree_of_ncard`, run
@@ -279,24 +279,25 @@ theorem degree_one_rank_tree {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj
 
 /-! ## The degree-one rank formula (`thm:degree-one-rank`)
 
-Jackson–Jordán 2008 Lemma 4.2(b): for a connected non-tree `G`, the squared rank reduces to
-the square of the core: `r(G²) = r((G^core)²) + 2|V \ V(G^core)| + |V₁(G)|`. As for the tree
-formula, the induction runs on a *fixed* vertex type `V` over a support-relative
-strengthening (`fmlnote:degree-one-fixed-carrier`): `|V|` is read as the size of the support,
-connectivity as reachability between support vertices, and the non-tree hypothesis as the
-edge count `|E(G)| ≥ |V(G)|`. -/
+Jackson–Jordán 2008 Lemma 4.2(b): for a connected `G` that is not a tree, the rank of `G²` is
+given through that of the square of the core: `r(G²) = r((G^core)²) + 2|V \ V(G^core)| + |V₁(G)|`.
+As for the tree formula, the induction runs on a *fixed* vertex type `V`, over a strengthening
+relative to the support (`fmlnote:degree-one-fixed-carrier`): `|V|` is read as the size of the
+support, connectivity as reachability between support vertices, and "not a tree" as the edge
+count `|E(G)| ≥ |V(G)|`. -/
 
-/-- **The degree-one rank formula, by strong induction on the edge count** (private
-strengthening of `degree_one_rank`). If `V₁(G) = ∅` then every support vertex has degree at
+/-- **The degree-one rank formula, by strong induction on the edge count** (the strengthening of
+`degree_one_rank`). If `V₁(G) = ∅` then every support vertex has degree at
 least two, so `G` is its own core (`twoCore_eq_self_of_minDegree`) and both sides agree.
-Otherwise peel a leaf `v` with neighbor `u`: the support cannot have exactly two vertices
+Otherwise take a leaf `v` with neighbor `u`: the support cannot have exactly two vertices
 (that would force `G` to be a single edge, contradicting the edge-count hypothesis
-`|V(G)| ≤ |E(G)|`), so `d_G(u) ≥ 2` (`two_le_degree_of_adj_degree_eq_one`) and the peel
-(`genericRank_square_peel`) drops the rank by `min 3 (d_G(u))`. The core is unchanged
+`|V(G)| ≤ |E(G)|`), so `d_G(u) ≥ 2` (`two_le_degree_of_adj_degree_eq_one`) and deleting the edge
+at `v` (`genericRank_square_peel`) lowers the rank by `min 3 (d_G(u))`. The core is unchanged
 (`twoCore_deleteIncidenceSet`) while `v` leaves the support but was never in the core's
-support (`notMem_support_twoCore`), so the non-core-vertex count drops by exactly one; the
-`V₁` maintenance identities (`setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` /
-`_of_degree_eq_two`) balance the remaining bookkeeping in the two degree cases. -/
+support (`notMem_support_twoCore`), so the number of vertices outside the core drops by exactly
+one; the changes of `V₁` (`setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` and
+`setOf_degree_eq_one_deleteIncidenceSet_of_degree_eq_two`) account for the rest in the two
+cases of `d_G(u)`. -/
 private theorem degree_one_rank_of_ncard [Fintype V] :
     ∀ n, ∀ (G : SimpleGraph V) [DecidableRel G.Adj], G.edgeSet.ncard = n →
     (∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y) →
@@ -413,9 +414,10 @@ private theorem degree_one_rank_of_ncard [Fintype V] :
         omega
 
 /-- **The degree-one rank formula** (`thm:degree-one-rank`; JJ Lemma 4.2(b)). Let `G` be a
-connected graph on a finite vertex set `V` that is not a tree. Then
+connected graph on a finite vertex set `V` that is not a tree (so `|V| ≥ 2`). Then
 `r(G²) = r((G^core)²) + 2|V \ V(G^core)| + |V₁(G)|`, where `G^core` is the core of `G`
-(`SimpleGraph.twoCore`) and `V(G^core)` its support.
+(`SimpleGraph.twoCore`) and `V(G^core)` its support, written `(G.twoCore.support)ᶜ` for
+`V \ V(G^core)`.
 
 A connected non-tree has a nontrivial vertex set (a connected graph on a subsingleton is a
 tree, `IsTree.of_subsingleton`), hence support all of `V` (`Preconnected.support_eq_univ`),

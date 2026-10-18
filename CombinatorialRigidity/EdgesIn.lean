@@ -21,7 +21,9 @@ the sparsity definition (see `Sparsity.lean`).
 
 The closest mathlib analogues are `SimpleGraph.Subgraph.induce` and
 `SimpleGraph.induce`, both of which materialize the same content as a
-graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
+graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale. The
+blueprint presents the file in `sec:edgesIn`, with the edge count of a clique
+in `sec:jacobs-laman3`.
 
 ## Main definition
 
@@ -41,22 +43,18 @@ graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
 * `SimpleGraph.mem_edgesIn_compl_singleton`, `edgesIn_compl_singleton` — vertex-deletion
   identities.
 * `SimpleGraph.ncard_edgesIn_compl_singleton_add_ncard_incidenceSet` — vertex-deletion
-  cardinality identity, the keystone for the Phase 2 minimum-degree argument.
+  cardinality identity, used for the minimum degree of a Laman graph
+  (`lem:isLaman-two-le-degree`).
 * `SimpleGraph.edgesIn_inter` — edges-in distributes over intersection.
 * `SimpleGraph.edgesIn_ncard_add_le` — supermodularity of edge counts:
   `(edgesIn S).ncard + (edgesIn T).ncard ≤ (edgesIn (S ∪ T)).ncard + (edgesIn (S ∩ T)).ncard`.
-  The Phase 5 tight-set union-closure lemma's edge-arithmetic input.
+  The edge arithmetic of the closure of tight sets under union (`thm:isTightOn-union-inter`).
 * `SimpleGraph.IsClique.ncard_edgesIn` — a clique's edge count: for `X : Finset V` a clique of
-  `G`, `(G.edgesIn ↑X).ncard = X.card.choose 2`. The JJ Lemma 5.2 counting input (Phase 32).
+  `G`, `(G.edgesIn ↑X).ncard = X.card.choose 2` (`lem:clique-edgesIn-count`), the count of
+  Jackson–Jordán's Lemma 5.2.
 * `SimpleGraph.edgesIn_eq_edgeSet_of_support_subset` — `G.edgesIn S = G.edgeSet` whenever `S`
-  contains every non-isolated vertex of `G`. The `thm:jacobs` assembly's support-restriction
-  glue (Phase 32).
-
-## Project context
-
-This file is part of the combinatorial-rigidity formalization. See
-`ROADMAP.md` for the project plan and `notes/Phase1.md` for the
-Phase 1 work log (this file's content is Phase 1).
+  contains every non-isolated vertex of `G`, used in the proof of `thm:jacobs` to restrict to
+  the support.
 -/
 
 public section
@@ -65,7 +63,7 @@ namespace SimpleGraph
 
 variable {V : Type*} (G : SimpleGraph V)
 
-/-- The set of edges of `G` whose both endpoints lie in `s`. -/
+/-- The set of edges of `G` whose both endpoints lie in `s` (`def:edgesIn`). -/
 @[expose] def edgesIn (s : Set V) : Set (Sym2 V) := G.edgeSet ∩ s.sym2
 
 variable {G}
@@ -75,9 +73,9 @@ variable {G}
   rw [edgesIn, Set.mem_inter_iff, Set.mem_sym2_iff_subset]
 
 /-- Specialised constructor for `mem_edgesIn` at an explicit pair `s(x, y)`: an adjacent pair with
-both endpoints in `s` lies in `G.edgesIn s`. Collapses the
-`mem_edgesIn.mpr ⟨_, by rw [Sym2.coe_mk]; exact Set.insert_subset_iff.mpr ⟨_,
-Set.singleton_subset_iff.mpr _⟩⟩` boilerplate that recurs in the Phase 5 blocker proofs. -/
+both endpoints in `s` lies in `G.edgesIn s`. Replaces the term `mem_edgesIn.mpr ⟨_, by …⟩`, with
+its rewrites by `Sym2.coe_mk`, `Set.insert_subset_iff` and `Set.singleton_subset_iff`, that recurs
+across the project's proofs. -/
 lemma mk_mem_edgesIn {x y : V} {s : Set V} (h : G.Adj x y) (hx : x ∈ s) (hy : y ∈ s) :
     s(x, y) ∈ G.edgesIn s :=
   mem_edgesIn.mpr ⟨h, by
@@ -131,8 +129,8 @@ lemma edgesIn_fromEdgeSet_of_off_diag {X : Set (Sym2 V)}
   unfold edgesIn
   rw [edgeSet_fromEdgeSet_of_off_diag hX]
 
-/-- A singleton set spans no edges: a single vertex contains no edge of a simple graph because
-edges are non-loops. -/
+/-- A singleton set spans no edges (`lem:edgesIn-corners`): a single vertex contains no edge of a
+simple graph because edges are non-loops. -/
 @[simp] lemma edgesIn_singleton (G : SimpleGraph V) (v : V) : G.edgesIn ({v} : Set V) = ∅ := by
   ext e
   refine e.ind fun x y => ?_
@@ -173,11 +171,11 @@ lemma ncard_edgesIn_eq_ncard_induce_edgeSet (G : SimpleGraph V) (S : Set V) :
   rw [edgesIn_eq_image_induce_edgeSet,
     Set.ncard_image_of_injective _ (Sym2.map.injective Subtype.val_injective)]
 
-/-- **Support-covering restriction.** If `S` contains every non-isolated vertex of `G`, every
-edge of `G` already has both endpoints in `S`: `G.edgesIn S = G.edgeSet`. The specialisation of
-`edgesIn_univ` from the universal set to any support-covering set. Phase 32 (`thm:jacobs`):
-composes with `edgesIn_eq_image_induce_edgeSet` to identify the image of a support-restricted
-induced subgraph's edge set with the original edge set. -/
+/-- **A set containing the support spans every edge.** If `S` contains every non-isolated vertex
+of `G`, every edge of `G` has both endpoints in `S`: `G.edgesIn S = G.edgeSet`. The extension of
+`edgesIn_univ` from the universal set to any set containing the support. With
+`edgesIn_eq_image_induce_edgeSet` it identifies, in the proof of `thm:jacobs`, the image of the
+edge set of `G` restricted to its support with the edge set of `G`. -/
 lemma edgesIn_eq_edgeSet_of_support_subset {S : Set V} (hS : G.support ⊆ S) :
     G.edgesIn S = G.edgeSet := by
   refine Set.eq_of_subset_of_subset (edgesIn_subset_edgeSet S) fun e he => ?_
@@ -191,23 +189,24 @@ lemma edgesIn_eq_edgeSet_of_support_subset {S : Set V} (hS : G.support ⊆ S) :
 /-! ### Vertex deletion: edges avoiding a vertex
 
 Edges of `G` whose both endpoints differ from `v` are exactly the edges of `G` that are not
-incident to `v`. This bridges `edgesIn` and `incidenceSet`, and is the keystone for vertex-
-deletion edge-count arguments (Phase 2). -/
+incident to `v`. This relates `edgesIn` and `incidenceSet`, for the edge counts of vertex
+deletion (`lem:mem-edgesIn-compl-singleton`, `lem:ncard-edgesIn-compl-singleton`). -/
 
 lemma mem_edgesIn_compl_singleton {v : V} {e : Sym2 V} :
     e ∈ G.edgesIn ({v}ᶜ : Set V) ↔ e ∈ G.edgeSet ∧ v ∉ e := by
   rw [mem_edgesIn, Set.subset_compl_singleton_iff]
   rfl
 
-/-- Edges with both endpoints in `{v}ᶜ` are precisely the edges not incident to `v`. -/
+/-- Edges with both endpoints in `{v}ᶜ` are precisely the edges not incident to `v`
+(`lem:mem-edgesIn-compl-singleton`). -/
 lemma edgesIn_compl_singleton (v : V) :
     G.edgesIn ({v}ᶜ : Set V) = G.edgeSet \ G.incidenceSet v := by
   ext e
   grind [mem_edgesIn_compl_singleton, incidenceSet]
 
 /-- Edges of `G` partition into "not incident to `v`" plus "incident to `v`": the cardinality
-identity `#(edgesIn {v}ᶜ) + #(incidenceSet v) = #edgeSet`. The vertex-deletion edge-count
-keystone for sparsity arguments. -/
+identity `#(edgesIn {v}ᶜ) + #(incidenceSet v) = #edgeSet` (`lem:ncard-edgesIn-compl-singleton`),
+the edge count of vertex deletion. -/
 lemma ncard_edgesIn_compl_singleton_add_ncard_incidenceSet [Finite V] (v : V) :
     (G.edgesIn ({v}ᶜ : Set V)).ncard + (G.incidenceSet v).ncard = G.edgeSet.ncard := by
   rw [edgesIn_compl_singleton]
@@ -218,10 +217,11 @@ lemma ncard_edgesIn_compl_singleton_add_ncard_incidenceSet [Finite V] (v : V) :
 `edgesIn` distributes exactly over set-intersection but only sub-distributes over union —
 an edge `{x, y}` with `x ∈ S \ T` and `y ∈ T \ S` lies in `edgesIn (S ∪ T)` but in neither
 `edgesIn S` nor `edgesIn T`. The cardinality consequence is the "supermodular edge count"
-inequality `edgesIn_ncard_add_le`, the only edge-arithmetic input of the Phase 5 tight-set
-union-closure argument. -/
+inequality `edgesIn_ncard_add_le`, the only edge arithmetic of the closure of tight sets under
+union (`thm:isTightOn-union-inter`). -/
 
-/-- `edgesIn` distributes over intersection: `G.edgesIn (S ∩ T) = G.edgesIn S ∩ G.edgesIn T`.
+/-- `edgesIn` distributes over intersection (`lem:edgesIn-inter`):
+`G.edgesIn (S ∩ T) = G.edgesIn S ∩ G.edgesIn T`.
 The companion union direction is only an inclusion (cf. `edgesIn_ncard_add_le`). -/
 lemma edgesIn_inter (S T : Set V) :
     G.edgesIn (S ∩ T) = G.edgesIn S ∩ G.edgesIn T := by
@@ -229,10 +229,10 @@ lemma edgesIn_inter (S T : Set V) :
   simp only [Set.mem_inter_iff, mem_edgesIn, Set.subset_inter_iff]
   tauto
 
-/-- **Supermodularity of `edgesIn` counts.** For any two vertex sets `S, T`, the sum
-`(edgesIn S).ncard + (edgesIn T).ncard` is at most `(edgesIn (S ∪ T)).ncard +
-(edgesIn (S ∩ T)).ncard`. The "edges crossing `S \ T` to `T \ S`" are counted on the right
-but not on the left, so the inequality can be strict; intersection cancels via
+/-- **Supermodularity of `edgesIn` counts** (`lem:edgesIn-ncard-add-le`). For any two vertex sets
+`S, T`, the sum `(edgesIn S).ncard + (edgesIn T).ncard` is at most
+`(edgesIn (S ∪ T)).ncard + (edgesIn (S ∩ T)).ncard`. The "edges crossing `S \ T` to `T \ S`" are
+counted on the right but not on the left, so the inequality can be strict; intersection cancels via
 `edgesIn_inter`. The lift of `Set.ncard_union_add_ncard_inter` to `edgesIn`. -/
 lemma edgesIn_ncard_add_le [Finite V] (S T : Set V) :
     (G.edgesIn S).ncard + (G.edgesIn T).ncard ≤
@@ -255,8 +255,9 @@ The edges induced on a clique are exactly the two-element subsets of it: transpo
 complete on a clique (`induce_eq_top`), and count the complete graph's edges
 (`ncard_edgeSet_top_eq_card_choose_two`). -/
 
-/-- A clique's edge count: if `X : Finset V` is a clique of `G` (every two distinct vertices
-of `X` adjacent), the edges of `G` inside `X` number exactly `C(#X, 2)`. -/
+/-- A clique's edge count (`lem:clique-edgesIn-count`): if `X : Finset V` is a clique of `G`
+(every two distinct vertices of `X` adjacent), the edges of `G` inside `X` number exactly
+`C(#X, 2)`. -/
 theorem IsClique.ncard_edgesIn {X : Finset V} (h : G.IsClique (↑X : Set V)) :
     (G.edgesIn (↑X : Set V)).ncard = X.card.choose 2 := by
   classical

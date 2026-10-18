@@ -11,97 +11,86 @@ import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Molecule.Carrier
 
 /-!
-# The counting bound for Laman squares: edge classification (`sec:jacobs-counting`)
+# The counting bound for Laman squares (`sec:jacobs-counting`)
 
-Phase 32. Jackson–Jordán 2008 (*On the rigidity of molecular graphs*, Combinatorica **28**)
-prove their counting bound (Theorem 5.3) by classifying the edges of `G²` against a partition
-of `V` attaining the deficiency. This file lays the foundations that classification needs:
-the bridge from the `SimpleGraph V` square `G²` to the `Graph`-carrier tight-partition
-machinery of `Molecular/Deficiency.lean`, and the four edge classes with the structural facts
-that make them well defined.
+Jackson–Jordán 2008 (*On the rigidity of molecular graphs*, Combinatorica **28**) prove their
+counting bound (Theorem 5.3) by classifying the edges of `G²` against a partition of `V` that
+attains the deficiency, and counting each class part by part. This file proves the bound
+(`laman_square_count`, `thm:laman-square-count`); the blueprint presents it in
+`sec:jacobs-counting`.
 
-## The shadow-carrier bridge (encoding decision (b))
+## Tight partitions of a simple graph
 
-A "tight partition of `V` at `D = 6`" is, concretely, a labeling `f : V → V` that is a tight
-partition of the shadowing multigraph `G.shadowGraph` (`Molecular/Molecule/Carrier.lean`) at
-`n = 3` (where `bodyBarDim 3 = 6`); the packaged predicate is `SimpleGraph.IsSquareTightPartition`.
-The shadow graph has `V(G.shadowGraph) = univ` and `G.shadowGraph.Adj = G.Adj`
-(`shadowGraph_adj_iff`), so the tight-partition lemmas of `Molecular/Deficiency.lean` — stated
-`D`-generically over `Graph α β` — transport directly to `SimpleGraph`/`f : V → V` language. The
-one transported here is common-neighbor uniqueness (`IsTightPartition.eq_of_common_nbr`, JJ
-Lemma 3.2 at `D ≥ 5`): `IsSquareTightPartition.eq_of_common_nbr`.
+A tight partition of `V` at `D = 6` is a labeling `f : V → V` that is a tight partition of the
+multigraph `G.shadowGraph` of `lem:molecule-graph-carrier` at `n = 3` (where
+`bodyBarDim 3 = 6`); the predicate is `SimpleGraph.IsSquareTightPartition`. That multigraph has
+vertex set `univ` and the adjacencies of `G` (`shadowGraph_adj_iff`), so the lemmas on tight
+partitions of `Molecular/Deficiency.lean`, stated for every `D` over `Graph α β`, transport to
+`SimpleGraph` and `f : V → V`: the uniqueness of a common neighbor
+(`IsSquareTightPartition.eq_of_common_nbr`), the parts (`IsSquareTightPartition.parts`), and the
+two consequences of `lem:tight-partition-cross-pair-mult` and `lem:tight-partition-subfamily`
+that `lem:singleton-part-neighborhood` uses (`IsSquareTightPartition.not_adj_adj_of_same_part`,
+`IsSquareTightPartition.not_adj_triangle`).
 
-## The four edge classes (encoding decision (a))
+## The four edge classes
 
-Following Jackson–Jordán §5, an edge `e = uw` of `G²` is classified by two binary criteria — do
-its endpoints share a part (`(e.map f).IsDiag`, i.e. `f u = f w`), and is `e` an edge of `G`:
+Following Jackson–Jordán §5, an edge `e = uw` of `G²` is classified by whether its endpoints
+share a part (`(e.map f).IsDiag`, i.e. `f u = f w`) and whether `e` is an edge of `G`:
 
 * `squareInPartEdges` — edges of `G²` inside a part;
-* `squareGCrossEdges` — edges of `G` joining distinct parts (their count is `d_G(P)`);
+* `squareGCrossEdges` — edges of `G` joining distinct parts (their number is `d_G(P)`);
 * `squareCrossEdges` — **cross edges**: edges of `G²` joining distinct parts that are not edges
   of `G`. Such an edge has a common neighbor (`exists_apex_of_mem_squareCrossEdges`), unique
-  under tightness (`IsSquareTightPartition.eq_of_common_nbr`).
+  for a tight partition (`IsSquareTightPartition.eq_of_common_nbr`).
 
 A cross edge `uw` with common neighbor `v` is **normal** if `v` shares a part with an endpoint
-(`f v ∈ e.map f`) and **special** otherwise:
-
-* `squareNormalCrossEdges`, `squareSpecialCrossEdges`.
+(`f v ∈ e.map f`) and **special** otherwise: `squareNormalCrossEdges`, `squareSpecialCrossEdges`.
+The classes are defined for every partition, from *some* common neighbor
+(`fmlnote:normal-cross-split`).
 
 ## Main results
 
-* `SimpleGraph.square_edgeSet_eq_union` — `E(G²)` is the union of the in-part, `G`-cross, and
+* `SimpleGraph.square_edgeSet_eq_union` — `E(G²)` is the union of the in-part, `G`-cross and
   cross classes, pairwise disjoint (`disjoint_inPart_gCross`, `disjoint_inPart_cross`,
-  `disjoint_gCross_cross`).
-* `SimpleGraph.squareCrossEdges_eq_union` — cross edges split as normal ∪ special,
-* `SimpleGraph.squareNormalCrossEdges_disjoint_special` — disjointly, under tightness;
-* `SimpleGraph.squareGCrossEdges_ncard_eq_crossingEdges` — the `G`-cross class numbers `d_G(P)`.
+  `disjoint_gCross_cross`). With `squareCrossEdges_eq_union` (normal and special cross edges),
+  `squareNormalCrossEdges_disjoint_special` (disjoint for a tight partition),
+  `squareGCrossEdges_ncard_eq_crossingEdges` (the `G`-cross class numbers `d_G(P)`), and
+  `squareSpecialCrossEdges_singleton_part`, `squareNormalCrossEdges_part_three_le` (where the
+  common neighbor of a special and of a normal cross edge lies), this is
+  `lem:square-cross-classification`.
+* `SimpleGraph.IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part` and
+  `SimpleGraph.exists_unique_singleton_part_of_mem_squareSpecialCrossEdges` — the special cross
+  edges at a singleton part and their converse (`lem:singleton-part-neighborhood`,
+  `lem:singleton-part-converse`; JJ eqs. (5) and (7)).
+* `SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges` — a
+  part `A` with `|A| ≥ 3` roots exactly `2 d_G(A)` normal cross edges (`lem:normal-cross-count`;
+  JJ eq. (6)), from the lemmas `lem:normal-cross-count-rooted` to
+  `lem:normal-cross-count-partition`.
+* `SimpleGraph.laman_square_count` — **the counting bound for Laman squares** (JJ Theorem 5.3,
+  `thm:laman-square-count`): for `G` of minimum degree at least two on a finite `V` with `G²`
+  Laman, `|E(G²)| ≤ 3|V| - 6 - def(G̃)`.
 
-Together these are the disjoint-union half of `lem:square-cross-classification`. The *moreover*
-clause is the common-neighbor-part characterization, established here by transporting
-`Graph.IsTightPartition.parts` (`SimpleGraph.IsSquareTightPartition.parts`) and using
-`SimpleGraph.IsLaman3.degree_le_three`:
+## The proof of the bound
 
-* `SimpleGraph.squareSpecialCrossEdges_singleton_part` — the common neighbor of a special cross
-  edge forms a singleton part;
-* `SimpleGraph.squareNormalCrossEdges_part_three_le` — the common neighbor of a normal cross
-  edge lies in a part of ≥ 3 vertices, together with exactly one endpoint of the edge.
-
-This completes `lem:square-cross-classification`. The JJ eq. (5)–(7) counting lemmas
-(`lem:singleton-part-neighborhood`, `lem:normal-cross-count`) build on it in later commits. See
-`notes/Phase32.md` and `blueprint/src/chapter/jacobs.tex` (`sec:jacobs-counting`).
-
-## The Thm 5.3 assembly (`thm:laman-square-count`)
-
-`thm:laman-square-count`'s closing arithmetic needs the finite label set of a partition
+The arithmetic of `thm:laman-square-count` needs the finite set of labels of a partition
 (`partLabels`), two handshakes (`sum_gCutEdges_eq_two_mul_squareGCrossEdges`,
-`sum_ncard_eq_card`), the per-part bound on `G²`'s in-part edge count (`edgesIn_square_part_le`
-at parts of size ≥ 3, `edgesIn_square_singleton_part_eq_zero` at singleton parts), and — since the
-classification's four edge classes need to sum *over `partLabels f`*, not just at one part — a
-`partLabels f`-indexed decomposition of the three remaining classes, each via the same
-`_eq_biUnion` / `_pairwiseDisjoint` / `sum_ncard_...` trio: the in-part class
-(`squareInPartEdges_eq_biUnion`), the normal-cross class (`squareNormalCrossEdges_eq_biUnion`,
-via the **rooted-at-a-part** predicate `squareNormalCrossEdgesRootedAt`), and the special-cross
-class (`squareSpecialCrossEdges_eq_biUnion`, via the analogous `squareSpecialCrossEdgesRootedAt` —
-indexing special cross edges by their apex's *label* rather than by the apex vertex itself, which
-lets this class join the other two in one `partLabels f`-indexed sum without a separate
-label↔witness bridge; an earlier witness-indexed design was superseded, see *Decisions made*).
-Two small per-part facts (`gCutEdges_singleton_part_ncard_eq_degree`,
+`sum_ncard_eq_card`), the bound on the edges of `G²` inside a part (`edgesIn_square_part_le` for
+a part of at least three vertices, `edgesIn_square_singleton_part_eq_zero` for a singleton), and
+a decomposition over `partLabels f` of three of the classes, each by an `_eq_biUnion`, a
+`_pairwiseDisjoint` and a sum lemma: the in-part class (`squareInPartEdges_eq_biUnion`), the
+normal cross edges (`squareNormalCrossEdges_eq_biUnion`, through the edges **rooted** at a part,
+`squareNormalCrossEdgesRootedAt`), and the special ones (`squareSpecialCrossEdges_eq_biUnion`,
+through `squareSpecialCrossEdgesRootedAt`, which indexes a special cross edge by the label of its
+common neighbor, as `def:rooted-cross-edges` does). Four facts at one part
+(`gCutEdges_singleton_part_ncard_eq_degree`,
 `squareNormalCrossEdgesRootedAt_eq_empty_of_lt_three`,
 `squareSpecialCrossEdgesRootedAt_eq_empty_of_three_le`,
-`IsSquareTightPartition.squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet`) and the part
-dichotomy (`IsSquareTightPartition.ncard_eq_one_or_three_le`) combine into the per-part inequality
-`IsSquareTightPartition.perPart_le`, summed by `IsSquareTightPartition.sum_perPart_le`. The
-classification's `ncard` identity (`square_ncard_eq_sum_classes`) and the numParts bridge
-(`partLabels_card_eq_numParts`) close the arithmetic in `SimpleGraph.laman_square_count`
-(`thm:laman-square-count`, JJ Theorem 5.3). This is Lean-side glue the blueprint chapter
-deliberately does not track as its own node (it is internal to the Thm 5.3 proof, not a named
-step of Jackson–Jordán §5) apart from the theorem itself.
-
-## Main results (continued)
-
-* `SimpleGraph.laman_square_count` — **the counting bound for Laman squares** (JJ Theorem 5.3,
-  `thm:laman-square-count`): for `G` of minimum degree ≥ 2 on a finite nonempty `V` with `G²`
-  Laman, `|E(G²)| ≤ 3|V| - 6 - def(G̃)`.
+`IsSquareTightPartition.squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet`) and the
+dichotomy of the parts (`IsSquareTightPartition.ncard_eq_one_or_three_le`) give the inequality at
+a part, `IsSquareTightPartition.perPart_le`, which `IsSquareTightPartition.sum_perPart_le` sums.
+The classification's count (`square_ncard_eq_sum_classes`) and the number of parts
+(`partLabels_card_eq_numParts`) close the arithmetic in `SimpleGraph.laman_square_count`. These
+are steps of the proof of `thm:laman-square-count`; no other node states them.
 -/
 
 open scoped Graph
@@ -110,26 +99,27 @@ namespace SimpleGraph
 
 variable {V : Type*} {G : SimpleGraph V}
 
-/-! ## The shadow-carrier tight partition -/
+/-! ## Tight partitions of a simple graph -/
 
 /-- **A tight partition of `V` at `D = 6`**: a labeling `f : V → V` that is a tight partition
-(`Graph.IsTightPartition`) of the shadowing multigraph `G.shadowGraph` at `n = 3`, where
-`bodyBarDim 3 = 6` is Jackson–Jordán's `D`. This is the partition against which the counting
-bound (JJ Theorem 5.3) classifies the edges of `G²`. -/
+(`Graph.IsTightPartition`, `def:tight-partition`) of the multigraph `G.shadowGraph` of
+`lem:molecule-graph-carrier` at `n = 3`, where `bodyBarDim 3 = 6` is the `D` of
+`def:D-deficiency`. This is the partition against which the counting bound (JJ Theorem 5.3)
+classifies the edges of `G²`. -/
 def IsSquareTightPartition (G : SimpleGraph V) (f : V → V) : Prop :=
   G.shadowGraph.IsTightPartition 3 f
 
-/-- Adjacency in the shadow carrier is exactly adjacency in `G`: `G.shadowGraph.Adj u v ↔
-G.Adj u v`. Unfolds `Graph.Adj` to `∃ e, IsLink e u v` and applies `shadowGraph_isLink_iff`. -/
+/-- Adjacency in `G.shadowGraph` is exactly adjacency in `G`: `G.shadowGraph.Adj u v ↔ G.Adj u v`.
+Unfolds `Graph.Adj` to `∃ e, IsLink e u v` and applies `shadowGraph_isLink_iff`. -/
 theorem shadowGraph_adj_iff (u v : V) : G.shadowGraph.Adj u v ↔ G.Adj u v := by
   rw [Graph.Adj]
   exact shadowGraph_isLink_iff G u v
 
 /-- **Uniqueness of the common neighbor of a cross pair**, in `SimpleGraph` terms
-(`lem:tight-partition-cross-pair-nbr` transported through the shadow carrier). Two vertices
-`u, w` in distinct parts of a tight partition (`f u ≠ f w`) have at most one common neighbor:
-any two common neighbors `v, v'` coincide. This makes the common neighbor of a cross edge —
-and hence the normal/special dichotomy — well defined.
+(`lem:tight-partition-cross-pair-nbr` for `G.shadowGraph`). Two vertices `u, w` in distinct parts of
+a tight partition (`f u ≠ f w`) have at most one common neighbor: any two common neighbors `v, v'`
+coincide. This makes the common neighbor of a cross edge — and hence the normal/special dichotomy —
+well defined.
 
 `bodyBarDim 3 = 6 ≥ 5` supplies the `D ≥ 5` hypothesis of `Graph.IsTightPartition.eq_of_common_nbr`;
 `G.shadowGraph` is simple, and its adjacencies are `G`'s (`shadowGraph_adj_iff`). -/
@@ -141,21 +131,20 @@ theorem IsSquareTightPartition.eq_of_common_nbr [Finite V] {f : V → V}
     ((shadowGraph_adj_iff u v).mpr huv) ((shadowGraph_adj_iff v w).mpr hwv.symm)
     ((shadowGraph_adj_iff u v').mpr huv') ((shadowGraph_adj_iff v' w).mpr hwv'.symm)
 
-/-- Helper for the pair-multiplicity and triangle-exclusion transports below: an edge of `G`
-between vertices carrying two labels in `S` is a shadow-graph crossing edge within `S`. -/
+/-- For the two lemmas below: an edge of `G` between vertices with distinct labels in `S` is a
+crossing edge of `G.shadowGraph` within `S`. -/
 private theorem mem_crossingEdgesWithin_shadowGraph {f : V → V} {S : Set V} {x y : V}
     (hxy : G.Adj x y) (hx : f x ∈ S) (hy : f y ∈ S) (hne : f x ≠ f y) :
     (Sum.inl s(x, y) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ∈
       G.shadowGraph.crossingEdgesWithin f S :=
   ⟨⟨x, y, hxy, rfl⟩, x, y, ⟨hxy, rfl⟩, hx, hy, hne⟩
 
-/-- **At most one edge between two parts, transported** (`lem:tight-partition-cross-pair-mult`).
-If `v` is adjacent to two distinct vertices `u, w` (`u ≠ w`) that share a part (`f u = f w`)
-different from `v`'s own (`f v ≠ f u`), tightness is violated: the edges `vu`, `vw` both cross
-between the parts `f v` and `f u`, exceeding
-`Graph.IsTightPartition.crossingEdgesWithin_pair_le_one`'s bound of one (`D = 6 ≥ 3`). This is
-the "two neighbors in one part put two edges between it and `{v}`" step of
-`lem:singleton-part-neighborhood`. -/
+/-- **Two neighbors in one other part** (a step of `lem:singleton-part-neighborhood` and
+`lem:normal-cross-count-producer`, by `lem:tight-partition-cross-pair-mult`). If `v` is adjacent
+to two distinct vertices `u, w` (`u ≠ w`) that share a part (`f u = f w`) other than `v`'s own
+(`f v ≠ f u`), tightness is violated: the edges `vu`, `vw` both join the parts `f v` and `f u`,
+exceeding the bound of one of `Graph.IsTightPartition.crossingEdgesWithin_pair_le_one`
+(`D = 6 ≥ 3`). -/
 theorem IsSquareTightPartition.not_adj_adj_of_same_part [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) {u v w : V} (hfvu : f v ≠ f u) (hfuw : f u = f w)
     (hvu : G.Adj v u) (hvw : G.Adj v w) (huw : u ≠ w) : False := by
@@ -183,12 +172,12 @@ theorem IsSquareTightPartition.not_adj_adj_of_same_part [Finite V] {f : V → V}
   have hle2 := Set.ncard_le_ncard hsub (Set.toFinite _)
   omega
 
-/-- **No triangle across three distinct parts, transported** (`lem:tight-partition-subfamily`).
-Three pairwise-adjacent vertices `u, v, w` carrying three pairwise distinct labels violate
-tightness: the edges `uv`, `vw`, `uw` all cross within the three-label subfamily
-`{f u, f v, f w}`, exceeding `Graph.IsTightPartition.subfamily_le`'s bound (`(D-1)*3 ≤ D*2`
-forces `D ≤ 3`, contradicting `D = 6`). This is the "nonadjacent" step of
-`lem:singleton-part-neighborhood`. -/
+/-- **No triangle across three parts** (a step of `lem:singleton-part-neighborhood`, by
+`lem:tight-partition-subfamily`). Three pairwise adjacent vertices `u, v, w` with pairwise
+distinct labels violate tightness: the edges `uv`, `vw`, `uw` all join members of the subfamily
+`{f u, f v, f w}`, exceeding the bound of `Graph.IsTightPartition.subfamily_le` (`(D-1)*3 ≤ D*2`
+forces `D ≤ 3`, against `D = 6`). This is the step of `lem:singleton-part-neighborhood` that
+shows two neighbors of a singleton part nonadjacent. -/
 theorem IsSquareTightPartition.not_adj_triangle [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) {u v w : V}
     (hfuv : f u ≠ f v) (hfvw : f v ≠ f w) (hfuw : f u ≠ f w)
@@ -256,23 +245,23 @@ and `e ∈ G.edgeSet ↔ G.Adj u w`. The classes below partition `E(G²)` by the
 def squareInPartEdges (G : SimpleGraph V) (f : V → V) : Set (Sym2 V) :=
   {e ∈ G.square.edgeSet | (e.map f).IsDiag}
 
-/-- Edges of `G` joining distinct parts. Their number is Jackson–Jordán's `d_G(P)`. As `G` is a
-subgraph of `G²`, these are edges of `G²`. -/
+/-- Edges of `G` joining distinct parts. Their number is the chapter's `d_G(P)` (JJ write
+`e_G(P)`). As `G` is a subgraph of `G²`, these are edges of `G²`. -/
 def squareGCrossEdges (G : SimpleGraph V) (f : V → V) : Set (Sym2 V) :=
   {e ∈ G.edgeSet | ¬ (e.map f).IsDiag}
 
 /-- **Cross edges**: edges of `G²` joining distinct parts that are not edges of `G`. A cross
-edge's endpoints have a (unique, under tightness) common neighbor
+edge's endpoints have a common neighbor, unique for a tight partition
 (`exists_apex_of_mem_squareCrossEdges`, `IsSquareTightPartition.eq_of_common_nbr`). -/
 def squareCrossEdges (G : SimpleGraph V) (f : V → V) : Set (Sym2 V) :=
   {e ∈ G.square.edgeSet | ¬ (e.map f).IsDiag ∧ e ∉ G.edgeSet}
 
-/-- **Normal cross edges**: a cross edge with a common neighbor `v` whose part contains an
+/-- **Normal cross edges**: cross edges with a common neighbor `v` whose part contains an
 endpoint (`f v ∈ e.map f`, i.e. `f v = f u` or `f v = f w`). -/
 def squareNormalCrossEdges (G : SimpleGraph V) (f : V → V) : Set (Sym2 V) :=
   {e ∈ G.squareCrossEdges f | ∃ v, (∀ z ∈ e, G.Adj z v) ∧ f v ∈ e.map f}
 
-/-- **Special cross edges**: a cross edge with a common neighbor `v` in a part containing neither
+/-- **Special cross edges**: cross edges with a common neighbor `v` in a part containing neither
 endpoint (`f v ∉ e.map f`). -/
 def squareSpecialCrossEdges (G : SimpleGraph V) (f : V → V) : Set (Sym2 V) :=
   {e ∈ G.squareCrossEdges f | ∃ v, (∀ z ∈ e, G.Adj z v) ∧ f v ∉ e.map f}
@@ -289,12 +278,12 @@ theorem mem_squareCrossEdges {f : V → V} {u w : V} :
     s(u, w) ∈ G.squareCrossEdges f ↔ G.square.Adj u w ∧ f u ≠ f w ∧ ¬ G.Adj u w := by
   simp only [squareCrossEdges, Set.mem_ofPred_eq, mem_edgeSet, Sym2.map_mk, Sym2.mk_isDiag_iff]
 
-/-! ## The classification (disjoint-union half)
+/-! ## The classification: the disjoint union
 
 `E(G²)` splits into the in-part, `G`-cross, and cross classes (`square_edgeSet_eq_union`),
 pairwise disjoint; the cross class splits further into normal and special
-(`squareCrossEdges_eq_union`), disjointly under tightness. This is the first sentence of
-`lem:square-cross-classification`; its *moreover* clause is deferred. -/
+(`squareCrossEdges_eq_union`), disjointly for a tight partition. This is the first sentence of
+`lem:square-cross-classification`; its *moreover* clause is the next section. -/
 
 /-- Every cross edge has a common neighbor: a `G²`-edge that is not a `G`-edge joins two vertices
 at graph distance exactly two, which by definition of the square share a neighbor in `G`. -/
@@ -327,8 +316,9 @@ theorem disjoint_gCross_cross (f : V → V) :
   rintro e ⟨hG, _⟩ ⟨_, _, hnG⟩
   exact hnG hG
 
-/-- **`E(G²)` is the union of the in-part, `G`-cross, and cross classes.** An edge of `G²` is
-in-part or crosses parts; a cross edge is an edge of `G` (`G`-cross) or not (cross). -/
+/-- **`E(G²)` is the union of the in-part, `G`-cross, and cross classes**
+(`lem:square-cross-classification`). An edge of `G²` is in-part or crosses parts; a cross edge is an
+edge of `G` (`G`-cross) or not (cross). -/
 theorem square_edgeSet_eq_union (f : V → V) :
     G.square.edgeSet =
       G.squareInPartEdges f ∪ G.squareGCrossEdges f ∪ G.squareCrossEdges f := by
@@ -347,9 +337,9 @@ theorem square_edgeSet_eq_union (f : V → V) :
     · exact edgeSet_subset_edgeSet.mpr G.le_square hG
     · exact he
 
-/-- **Cross edges split as normal ∪ special.** Every cross edge has a common neighbor
-(`exists_apex_of_mem_squareCrossEdges`), whose part either contains an endpoint (normal) or does
-not (special). -/
+/-- **Cross edges split as normal ∪ special** (`lem:square-cross-classification`). Every cross edge
+has a common neighbor (`exists_apex_of_mem_squareCrossEdges`), whose part either contains an
+endpoint (normal) or does not (special). -/
 theorem squareCrossEdges_eq_union (f : V → V) :
     G.squareCrossEdges f = G.squareNormalCrossEdges f ∪ G.squareSpecialCrossEdges f := by
   ext e
@@ -362,10 +352,10 @@ theorem squareCrossEdges_eq_union (f : V → V) :
     · exact Or.inr ⟨he, v, hv, hfv⟩
   · rintro (⟨he, _⟩ | ⟨he, _⟩) <;> exact he
 
-/-- **Normal and special cross edges are disjoint**, under tightness. A cross edge in both would
-have a common neighbor `v` inside an endpoint's part and a common neighbor `v'` outside both; by
-uniqueness of the common neighbor (`IsSquareTightPartition.eq_of_common_nbr`) `v = v'`, a
-contradiction. -/
+/-- **Normal and special cross edges are disjoint** for a tight partition
+(`lem:square-cross-classification`). A cross edge in both would have a common neighbor `v` inside an
+endpoint's part and a common neighbor `v'` outside both; by uniqueness of the common neighbor
+(`IsSquareTightPartition.eq_of_common_nbr`) `v = v'`, a contradiction. -/
 theorem squareNormalCrossEdges_disjoint_special [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) :
     Disjoint (G.squareNormalCrossEdges f) (G.squareSpecialCrossEdges f) := by
@@ -378,11 +368,11 @@ theorem squareNormalCrossEdges_disjoint_special [Finite V] {f : V → V}
   rw [hvv'] at hfv
   exact hfv' hfv
 
-/-- **The `G`-cross class numbers `d_G(P)`.** The `G`-edges joining distinct parts biject, via
-`s(x, y) ↦ Sum.inl s(x, y)`, with the crossing edges `G.shadowGraph.crossingEdges f` of the
-shadow carrier — whose count is Jackson–Jordán's `d_G(P)` (the `crossingEdges` term of
-`partitionDef`/`deficiency`). This is the "numbering `d_G(P)`" clause of
-`lem:square-cross-classification` and the crossing-count bridge the Thm 5.3 assembly consumes. -/
+/-- **The `G`-cross class numbers `d_G(P)`** (`lem:square-cross-classification`). The edges of
+`G` joining distinct parts biject, via `s(x, y) ↦ Sum.inl s(x, y)`, with the crossing edges
+`G.shadowGraph.crossingEdges f`, whose number is `d_G(P)` (the `crossingEdges` term of
+`partitionDef` and `deficiency`; JJ write `e_G(P)`). The proof of `thm:laman-square-count` uses
+it to identify that term. -/
 theorem squareGCrossEdges_ncard_eq_crossingEdges (f : V → V) :
     (G.squareGCrossEdges f).ncard = (G.shadowGraph.crossingEdges f).ncard := by
   have himg : G.shadowGraph.crossingEdges f =
@@ -398,20 +388,20 @@ theorem squareGCrossEdges_ncard_eq_crossingEdges (f : V → V) :
       exact ⟨⟨x, y, hadj, rfl⟩, x, y, ⟨hadj, rfl⟩, hne⟩
   rw [himg, (Sum.inl_injective.injOn).ncard_image]
 
-/-! ## The classification (moreover clause)
+/-! ## The classification: the common neighbors
 
-The common-neighbor part of a special cross edge is a singleton, and of a normal cross edge a
-part of ≥ 3 vertices containing exactly one endpoint. Both rest on the tight-partition part
-dichotomy transported through the shadow bridge (`IsSquareTightPartition.parts`); the special
-case additionally uses the Laman degree bound (`IsLaman3.degree_le_three`). This is the
-*moreover* clause of `lem:square-cross-classification`. -/
+The part of the common neighbor of a special cross edge is a singleton, and that of a normal
+cross edge has at least three vertices and contains exactly one endpoint. Both rest on the parts
+of a tight partition (`IsSquareTightPartition.parts`); the special case also uses the degree
+bound (`IsLaman3.degree_le_three`). This is the *moreover* clause of
+`lem:square-cross-classification`. -/
 
-/-- **Part dichotomy for the square's tight partition** (`lem:tight-partition-parts` transported
-through the shadow carrier). If two distinct vertices `v ≠ w` share a part (`f w = f v`), then
-`v`'s part has at least three vertices and `v` has at least two neighbors inside it. The vertex
-half rewrites `Graph.IsTightPartition.parts`'s `V(G.shadowGraph) = univ` slice; the neighbor
-half converts its shadow-edge count through the bijection `y ↦ Sum.inl s(v, y)` between `v`'s
-in-part shadow-edges and `v`'s in-part `G`-neighbors. -/
+/-- **The parts of a tight partition** (`lem:tight-partition-parts` for `G.shadowGraph`). If two
+distinct vertices `v ≠ w` share a part (`f w = f v`), then `v`'s part has at least three vertices
+and `v` has at least two neighbors inside it. The first half rewrites the part of
+`Graph.IsTightPartition.parts` within `V(G.shadowGraph) = univ`; the second converts its count of
+edges of `G.shadowGraph` through the bijection `y ↦ Sum.inl s(v, y)` between those edges at `v`
+inside the part and `v`'s neighbors in `G` inside it. -/
 theorem IsSquareTightPartition.parts [Finite V] {f : V → V} (hf : G.IsSquareTightPartition f)
     {v w : V} (hvw : w ≠ v) (hfw : f w = f v) :
     3 ≤ {x | f x = f v}.ncard ∧ 2 ≤ {y | G.Adj v y ∧ f y = f v}.ncard := by
@@ -442,8 +432,9 @@ theorem IsSquareTightPartition.parts [Finite V] {f : V → V} (hf : G.IsSquareTi
     calc (2 : ℕ) ≤ T_e.ncard := hedge
       _ = T_v.ncard := by rw [himg, hinj.ncard_image]
 
-/-- **Special cross edge ⇒ singleton common-neighbor part.** The common neighbor `v` of a special
-cross edge `s(u, w)` forms a singleton part: every vertex with label `f v` is `v` itself.
+/-- **The common neighbor of a special cross edge forms a singleton part**
+(`lem:square-cross-classification`). The common neighbor `v` of a special cross edge `s(u, w)` forms
+a singleton part: every vertex with label `f v` is `v` itself.
 
 Both `u` and `w` lie outside `v`'s part (special), so `v` has the two distinct out-of-part
 neighbors `u ≠ w`; if `v`'s part were not a singleton, `v` would have two further in-part
@@ -487,8 +478,8 @@ theorem squareSpecialCrossEdges_singleton_part [Finite V] {f : V → V}
   have hle3 : G.degree v ≤ 3 := hlaman.degree_le_three v
   omega
 
-/-- **Normal cross edge ⇒ common neighbor in a part of ≥ 3 vertices, with exactly one endpoint.**
-The common neighbor `v` of a normal cross edge `s(u, w)` shares a part with exactly one endpoint
+/-- **The common neighbor of a normal cross edge** (`lem:square-cross-classification`). The
+common neighbor `v` of a normal cross edge `s(u, w)` shares a part with exactly one endpoint
 (the endpoints lie in distinct parts, `f u ≠ f w`), and that part has at least three vertices.
 
 `v` shares its part with the endpoint `u` (or `w`) it is `f`-equal to; those two are adjacent and
@@ -518,20 +509,19 @@ theorem squareNormalCrossEdges_part_three_le [Finite V] {f : V → V}
 
 /-! ## Special cross edges at a singleton part (`lem:singleton-part-neighborhood`)
 
-For a singleton part `{v}`, `N_G(v)` is a clique of `G²` (`isClique_neighborSet_square`,
-unconditional) numbering `2 d_G(v) - 3` edges (`ncard_edgesIn_neighborSet_square`, Phase 32's
-`Jacobs.lean`, also unconditional). What the singleton-part hypothesis supplies is that every
-one of those clique edges is a *special cross* edge with common neighbor `v`
-(JJ eq. (5), (7)): two neighbors of `v` lie in distinct parts (else two edges would cross
-between one part and `v`'s singleton part, `not_adj_adj_of_same_part`) and are themselves
-nonadjacent in `G` (else a triangle would cross a three-part subfamily,
-`not_adj_triangle`), so the edge between them is a cross edge; it is special because `v`'s
-singleton part contains neither endpoint, and unique to `v` by `eq_of_common_nbr`. -/
+For a singleton part `{v}`, `N_G(v)` is a clique of `G²` (`isClique_neighborSet_square`, for
+every graph) with `2 d_G(v) - 3` edges when `G²` is Laman and `d_G(v) ≥ 2`
+(`ncard_edgesIn_neighborSet_square`, `Jacobs.lean`, for no partition). The singleton part makes
+each of those edges a *special cross* edge with common neighbor `v` (JJ eqs. (5) and (7)): two
+neighbors of `v` lie in distinct parts (else two edges would join one part and `v`'s singleton
+part, `not_adj_adj_of_same_part`) and are nonadjacent in `G` (else a triangle would join three
+parts, `not_adj_triangle`), so the edge between them is a cross edge; it is special because
+`v`'s singleton part contains neither endpoint, and `v` is its only common neighbor by
+`eq_of_common_nbr`. -/
 
-/-- **Special cross edges at a singleton part; JJ eq. (5), (7)**
-(`lem:singleton-part-neighborhood`). For a singleton part `{v}` (`∀ x, f x = f v → x = v`), two
-distinct neighbors `u, w` of `v` form a special cross edge of `G²` whose unique common neighbor
-is `v`. -/
+/-- **Special cross edges at a singleton part** (`lem:singleton-part-neighborhood`; JJ eqs. (5) and
+(7)). For a singleton part `{v}` (`∀ x, f x = f v → x = v`), two distinct neighbors `u, w` of `v`
+form a special cross edge of `G²` whose unique common neighbor is `v`. -/
 theorem IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part [Finite V]
     {f : V → V} (hf : G.IsSquareTightPartition f) {v : V} (hsing : ∀ x, f x = f v → x = v)
     {u w : V} (hu : u ∈ G.neighborSet v) (hw : w ∈ G.neighborSet v) (huw : u ≠ w) :
@@ -561,15 +551,14 @@ theorem IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part [Fi
   simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hz
   exact (hf.eq_of_common_nbr hfuw hvu.symm hvw.symm hz.1 hz.2).symm
 
-/-! ## The converse: every special cross edge arises from a unique singleton part
-(`lem:singleton-part-converse`) -/
+/-! ## The converse: special cross edges come from singleton parts (`lem:singleton-part-converse`)
+-/
 
 /-- **Every special cross edge arises from exactly one singleton part**
-(`lem:singleton-part-converse`). Existence unfolds the special-cross-edge apex `v` given by the
-membership `he` and applies
-`squareSpecialCrossEdges_singleton_part` for the singleton-part half, `mk_mem_edgesIn` for the
-`edgesIn`-membership half; uniqueness is `IsSquareTightPartition.eq_of_common_nbr` applied to any
-other witnessing common neighbor `v'`. -/
+(`lem:singleton-part-converse`). Existence takes the common neighbor `v` given by the membership
+`he` and applies `squareSpecialCrossEdges_singleton_part` for the singleton part and
+`mk_mem_edgesIn` for the membership in `edgesIn`; uniqueness is
+`IsSquareTightPartition.eq_of_common_nbr` applied to any other such vertex `v'`. -/
 theorem exists_unique_singleton_part_of_mem_squareSpecialCrossEdges [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3) {e : Sym2 V}
     (he : e ∈ G.squareSpecialCrossEdges f) :
@@ -598,30 +587,31 @@ theorem exists_unique_singleton_part_of_mem_squareSpecialCrossEdges [Finite V] {
 /-! ## Normal cross edges rooted at a part (`lem:normal-cross-count`)
 
 A normal cross edge, unlike a special one, has its common neighbor `v` in the *same* part as one
-of its endpoints. Following Jackson–Jordán, say the edge is **rooted** at the part containing `v`
-(labeled `f v`); the root is well defined (`IsSquareTightPartition.rootedAt_inj`, via
-common-neighbor uniqueness) and — by the *moreover* clause of `lem:square-cross-classification`
-(`squareNormalCrossEdges_part_three_le`) — a part of at least three vertices.
+of its endpoints. Following Jackson–Jordán, the edge is **rooted** at the part containing `v`
+(labeled `f v`); the root is unique (`IsSquareTightPartition.rootedAt_inj`, by the uniqueness of
+the common neighbor) and, by the *moreover* clause of `lem:square-cross-classification`
+(`squareNormalCrossEdges_part_three_le`), a part of at least three vertices.
 
-The count of normal cross edges rooted at a fixed part `A` with `|A| ≥ 3` is `2 · d_G(A)`
-(JJ eq. (6)), where `d_G(A)` is the number of `G`-edges with exactly one endpoint in `A`. The
-`fmlnote:normal-cross-split` decomposition splits that count into the **local count** — each
-crossing edge `vw` at `A` (`v ∈ A`, `w ∉ A`) contributes exactly two pairs `(vw, u)`, indexed by
-the in-part neighbors `u ∈ N_G(v) ∩ A` of `v` (`ncard_inPartNeighbors_eq_two`) — and the global
-injectivity of the pair-to-edge assignment `(vw, u) ↦ s(u, w)`. This commit lands the "rooted
-at" definition, the well-definedness of the root, and the local count; the global assembly is a
-later slice. -/
+The normal cross edges rooted at a part `A` with `|A| ≥ 3` number `2 · d_G(A)` (JJ eq. (6)),
+where `d_G(A)` is the number of edges of `G` with exactly one endpoint in `A`. Each edge `vw` of
+`G` with `v ∈ A`, `w ∉ A` gives the two edges `s(u, w)`, `u ∈ N_G(v) ∩ A`
+(`ncard_inPartNeighbors_eq_two`, `mk_mem_squareNormalCrossEdgesRootedAt`,
+`ncard_normalCrossEdges_of_crossing_eq_two`), and every normal cross edge rooted at `A` arises
+from exactly one such edge (`squareNormalCrossEdgesRootedAt_eq_biUnion`,
+`squareCutPairs_pairwiseDisjoint`). -/
 
-/-- **Normal cross edges rooted at a part.** A normal cross edge is **rooted** at the part
-`{x | f x = a}` when its common neighbor `v` carries the label `a` (`f v = a`). Under tightness
-the common neighbor — and hence the root — is unique (`IsSquareTightPartition.rootedAt_inj`). -/
+/-- **Normal cross edges rooted at a part** (`def:rooted-cross-edges`). A normal cross edge is
+**rooted** at the part `{x | f x = a}` when a common neighbor `v` of its endpoints has the
+label `a` (`f v = a`). For a tight partition the common neighbor, and hence the root, is unique
+(`IsSquareTightPartition.rootedAt_inj`). -/
 def squareNormalCrossEdgesRootedAt (G : SimpleGraph V) (f : V → V) (a : V) : Set (Sym2 V) :=
   {e ∈ G.squareNormalCrossEdges f | ∃ v, (∀ z ∈ e, G.Adj z v) ∧ f v = a}
 
-/-- **The root of a normal cross edge is unique** (the "rooted at exactly one part" clause of
-`lem:normal-cross-count`). If a normal cross edge is rooted at both `a` and `a'`, then `a = a'`:
-its two witnessing common neighbors coincide by `IsSquareTightPartition.eq_of_common_nbr` (the
-endpoints lie in distinct parts, so `f u ≠ f w`), hence carry the same label. -/
+/-- **The root of a normal cross edge is unique** (`lem:normal-cross-count-rooted`; its last clause
+is `squareNormalCrossEdges_part_three_le`). If a normal cross edge is rooted at both `a` and `a'`,
+then `a = a'`: its two witnessing common neighbors coincide by
+`IsSquareTightPartition.eq_of_common_nbr` (the endpoints lie in distinct parts, so `f u ≠ f w`),
+hence have the same label. -/
 theorem IsSquareTightPartition.rootedAt_inj [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) {a a' : V} {e : Sym2 V}
     (h : e ∈ G.squareNormalCrossEdgesRootedAt f a)
@@ -635,15 +625,14 @@ theorem IsSquareTightPartition.rootedAt_inj [Finite V] {f : V → V}
   have hvv' : v = v' := hf.eq_of_common_nbr hfuw hv.1 hv.2 hv'.1 hv'.2
   rw [← hfv, ← hfv', hvv']
 
-/-- **The local count: each crossing edge at a big part contributes exactly two pairs** (the
-local half of `lem:normal-cross-count` / JJ eq. (6), per `fmlnote:normal-cross-split`). Let `v`
-lie in a part of at least two vertices (witnessed by a distinct part-mate `v₀`, `f v₀ = f v`) and
-have an out-of-part neighbor `w` (`G.Adj v w`, `f w ≠ f v`) — i.e. `v` lies on a crossing edge of
-its part. Then `v` has **exactly two** neighbors inside its own part.
+/-- **Two neighbors in the part** (`lem:normal-cross-count-local`). Let `v` lie in a part of at
+least two vertices (witnessed by a vertex `v₀ ≠ v` with `f v₀ = f v`) and have a neighbor `w`
+outside its part (`G.Adj v w`, `f w ≠ f v`). Then `v` has **exactly two** neighbors inside its
+own part.
 
-Lower bound: the in-part-neighbor half of `IsSquareTightPartition.parts`. Upper bound: `v`'s
-in-part and out-of-part neighbors partition `N_G(v)`, whose size is `d_G(v) ≤ 3`
-(`IsLaman3.degree_le_three`); the out-of-part side is nonempty (it holds `w`), leaving at most two
+Lower bound: the second half of `IsSquareTightPartition.parts`. Upper bound: `v`'s neighbors
+inside and outside its part partition `N_G(v)`, whose size is `d_G(v) ≤ 3`
+(`IsLaman3.degree_le_three`); the outside is nonempty (it holds `w`), leaving at most two
 neighbors inside the part. -/
 theorem IsSquareTightPartition.ncard_inPartNeighbors_eq_two [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3)
@@ -676,18 +665,17 @@ theorem IsSquareTightPartition.ncard_inPartNeighbors_eq_two [Finite V] {f : V �
   have hle3 : G.degree v ≤ 3 := hlaman.degree_le_three v
   omega
 
-/-- **Producing a normal cross edge from a crossing edge and an in-part neighbor** (the
-constructive core of `lem:normal-cross-count`, JJ eq. (6)). Let `v` have an in-part neighbor `u`
-(`G.Adj v u`, `f u = f v`) and an out-of-part neighbor `w` (`G.Adj v w`, `f w ≠ f v`). Then
-`s(u, w)` is a normal cross edge rooted at `v`'s part (label `f v`), and `v` is its unique common
-neighbor.
+/-- **A normal cross edge from two edges at a vertex** (`lem:normal-cross-count-producer`). Let
+`v` have a neighbor `u` inside its part (`G.Adj v u`, `f u = f v`) and a neighbor `w` outside it
+(`G.Adj v w`, `f w ≠ f v`). Then `s(u, w)` is a normal cross edge rooted at `v`'s part (label
+`f v`), and `v` is its unique common neighbor.
 
 `s(u, w)` is a `G²`-edge (`u, w ∈ N_G(v)`, `u ≠ w`, `isClique_neighborSet_square`), joins
 distinct parts (`f u = f v ≠ f w`), and is not a `G`-edge — otherwise `vw` and `uw` would be two
 edges between `v`'s part and `w`'s (`not_adj_adj_of_same_part`). Its common neighbor `v` lies in
 `u`'s part (`f v = f u`), so the edge is normal and rooted at `f v`; uniqueness of the common
-neighbor is `eq_of_common_nbr`. This is the map `(vw, u) ↦ s(u, w)` of the double count; the
-residual global assembly (`lem:normal-cross-count`) sums it over `A`'s `d_G(A)` crossing edges. -/
+neighbor is `eq_of_common_nbr`. This is the map `(vw, u) ↦ s(u, w)` of the double count of
+`lem:normal-cross-count`, over the `d_G(A)` edges leaving the part. -/
 theorem IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) {v u w : V}
     (hu : G.Adj v u) (hfu : f u = f v) (hw : G.Adj v w) (hfw : f w ≠ f v) :
@@ -717,24 +705,23 @@ theorem IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt [Finite V] 
     simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hz
     exact (hf.eq_of_common_nbr hfuw hu.symm hw.symm hz.1 hz.2).symm
 
-/-- **The edges of `G` cut by a part** — Jackson–Jordán's `d_G(A)`. For a labeling `f` and a
-label `a`, these are the edges of `G` with *exactly one* endpoint in the part `{x | f x = a}`:
-edges `s(x, y)` with `f x = a` and `f y ≠ a`. Its `Set.ncard` is `d_G(A)`, the base of the
-double count of `lem:normal-cross-count` (each cut edge contributes two rooted normal cross
-edges). -/
+/-- **The edges of `G` leaving a part** (`def:g-cut-edges`; their number is Jackson–Jordán's
+degree `d_G(A)` of the part). For a labeling `f` and a label `a`, these are the edges of `G` with
+*exactly one* endpoint in the part `{x | f x = a}`: edges `s(x, y)` with `f x = a` and
+`f y ≠ a`. The double count of `lem:normal-cross-count` runs over them (each gives two rooted
+normal cross edges). -/
 def gCutEdges (G : SimpleGraph V) (f : V → V) (a : V) : Set (Sym2 V) :=
   {e ∈ G.edgeSet | ∃ x y, e = s(x, y) ∧ f x = a ∧ f y ≠ a}
 
-/-- **Two rooted normal cross edges per crossing edge** (`lem:normal-cross-count-fiber`, the
-per-crossing-edge fiber of the `2·d_G(A)` double count). For a crossing edge `vw` of `G` at a big
-part (`v` in a part of ≥ 2 vertices, witnessed by `v₀ ≠ v` with `f v₀ = f v`; `w ∉` that part),
-the normal cross edges produced from `vw` by the in-part neighbors `u` of `v` — the image of
-`{u | G.Adj v u ∧ f u = f v}` under `u ↦ s(u, w)` — number exactly two and are rooted normal
-cross edges.
+/-- **Two normal cross edges for each edge leaving a part** (`lem:normal-cross-count-fiber`, a
+fiber of the double count `2·d_G(A)`). For an edge `vw` of `G` with `v` in a part of at least two
+vertices (witnessed by `v₀ ≠ v` with `f v₀ = f v`) and `w` outside it, the edges `s(u, w)` for the
+neighbors `u` of `v` in its part (the image of `{u | G.Adj v u ∧ f u = f v}` under
+`u ↦ s(u, w)`) number exactly two and are normal cross edges rooted at the part.
 
 The map `u ↦ s(u, w)` is injective on the in-part neighbors (shared endpoint `w`, and `u ≠ w`
 since `f u = f v ≠ f w`), so `Set.InjOn.ncard_image` transfers the count
-`ncard_inPartNeighbors_eq_two`; each image edge is rooted normal by
+`ncard_inPartNeighbors_eq_two`; each image edge is a rooted normal cross edge by
 `mk_mem_squareNormalCrossEdgesRootedAt`. -/
 theorem IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3)
@@ -757,28 +744,26 @@ theorem IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two [Finite
     simp only [Set.mem_ofPred_eq] at hu
     exact (hf.mk_mem_squareNormalCrossEdgesRootedAt hu.1 hu.2 hvw hfw).1
 
-/-! ## The disjoint cover of the rooted normal cross edges (`lem:normal-cross-count`, steps iii–iv)
+/-! ## Rooted normal cross edges by the edges leaving a part (`lem:normal-cross-count-partition`)
 
-The normal cross edges rooted at part `a` are the disjoint union, over the *oriented* crossing
-edges `(v, w)` of the part (`squareCutPairs`: `f v = a`, `f w ≠ a`, `G.Adj v w`), of the fibers
-`(fun u => s(u, w)) '' {u | G.Adj v u ∧ f u = f v}`. Combined with the per-fiber count of two
-(`ncard_normalCrossEdges_of_crossing_eq_two`) and the bijection of oriented crossing edges with
-the cut edges `gCutEdges f a` (`ncard_squareCutPairs_eq_gCutEdges`, so there are `d_G(A)` of
-them), a disjoint-union `ncard` sum gives `|rooted a| = 2·d_G(A)`. This section lands the
-structural half (cover + disjointness + the `d_G(A)` count); the `ncard` sum is the closing
-slice. -/
+The normal cross edges rooted at part `a` are the disjoint union, over the pairs `(v, w)` leaving
+the part (`squareCutPairs`: `f v = a`, `f w ≠ a`, `G.Adj v w`), of the fibers
+`(fun u => s(u, w)) '' {u | G.Adj v u ∧ f u = f v}`. With the count of two in each fiber
+(`ncard_normalCrossEdges_of_crossing_eq_two`) and the bijection of these pairs with the edges
+`gCutEdges f a` leaving the part (`ncard_squareCutPairs_eq_gCutEdges`, so there are `d_G(A)` of
+them), summing over the disjoint union gives `2·d_G(A)`. -/
 
-/-- **The oriented crossing edges at a part** — the pairs `(v, w)` with `v` in the part
+/-- **The pairs leaving a part** (`def:g-cut-edges`): the pairs `(v, w)` with `v` in the part
 `{x | f x = a}`, `w` outside it, and `vw ∈ E(G)`. These index the fibers of the double count of
-`lem:normal-cross-count`; the forgetful map `(v, w) ↦ s(v, w)` is a bijection onto `gCutEdges f a`
+`lem:normal-cross-count`; the map `(v, w) ↦ s(v, w)` is a bijection onto `gCutEdges f a`
 (`ncard_squareCutPairs_eq_gCutEdges`), so there are `d_G(A)` of them. -/
 def squareCutPairs (G : SimpleGraph V) (f : V → V) (a : V) : Set (V × V) :=
   {p | f p.1 = a ∧ f p.2 ≠ a ∧ G.Adj p.1 p.2}
 
-/-- **The oriented crossing edges number `d_G(A)`.** The forgetful map `(v, w) ↦ s(v, w)` is a
-bijection from `squareCutPairs f a` onto `gCutEdges f a` — injective because the labeling fixes
-the orientation (`f v = a ≠ f w`), and surjective because a cut edge has an endpoint in the part
-and one outside. -/
+/-- **The pairs leaving a part number `d_G(A)`** (`lem:normal-cross-count-partition`, the
+bijection). The map `(v, w) ↦ s(v, w)` is a bijection from `squareCutPairs f a` onto
+`gCutEdges f a`: injective because the labeling fixes the order (`f v = a ≠ f w`), and surjective
+because an edge leaving the part has one endpoint in it and one outside. -/
 theorem ncard_squareCutPairs_eq_gCutEdges (f : V → V) (a : V) :
     (G.squareCutPairs f a).ncard = (G.gCutEdges f a).ncard := by
   have hinj : Set.InjOn (fun p : V × V => s(p.1, p.2)) (G.squareCutPairs f a) := by
@@ -799,15 +784,15 @@ theorem ncard_squareCutPairs_eq_gCutEdges (f : V → V) (a : V) :
       exact ⟨u, z, ⟨hfu, hfz, G.mem_edgeSet.mp he⟩, rfl⟩
   rw [← himg, hinj.ncard_image]
 
-/-- **The rooted normal cross edges are covered by the fibers over the oriented crossing edges**
-(the cover half of `lem:normal-cross-count`). Every normal cross edge rooted at `a` is `s(u, w)`
-for a unique oriented crossing edge `(v, w) ∈ squareCutPairs f a` and an in-part neighbor
-`u ∈ N_G(v)` with `f u = f v`; conversely each such produces a rooted normal cross edge
-(`mk_mem_squareNormalCrossEdgesRootedAt`).
+/-- **The normal cross edges rooted at a part are the union of the fibers over the pairs leaving
+it** (`lem:normal-cross-count-partition`, the union). Every normal cross edge rooted at `a` is
+`s(u, w)` for a pair `(v, w) ∈ squareCutPairs f a` and a neighbor `u ∈ N_G(v)` with `f u = f v`
+(the pair is unique by `squareCutPairs_pairwiseDisjoint`); conversely each such edge is a rooted
+normal cross edge (`mk_mem_squareNormalCrossEdgesRootedAt`).
 
-Forward: the common neighbor `v` of the rooted edge has `f v = a` and (moreover clause
-`squareNormalCrossEdges_part_three_le`) exactly one endpoint in `v`'s part, so orient the edge as
-`(v, out-endpoint)`. Backward: the producer. -/
+Forward: the common neighbor `v` of the rooted edge has `f v = a` and exactly one endpoint in
+`v`'s part (`squareNormalCrossEdges_part_three_le`), so the pair is `v` with the other endpoint.
+Backward: `mk_mem_squareNormalCrossEdgesRootedAt`. -/
 theorem IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) (a : V) :
     G.squareNormalCrossEdgesRootedAt f a =
@@ -828,11 +813,11 @@ theorem IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion [Finite
     rw [← hs, ← hfp1]
     exact (hf.mk_mem_squareNormalCrossEdgesRootedAt hadju' hfu' hadjp (by rw [hfp1]; exact hfp2)).1
 
-/-- **The fibers over distinct oriented crossing edges are disjoint** (the disjointness half of
-`lem:normal-cross-count`). If `s(u, w)` lies in the fibers of both `(v, w)` and `(v', w')`, then
-`{u, w} = {u', w'}` as endpoint sets; the labeling forces `u = u'`, `w = w'` (the in-part vertex
-`u` has `f u = a`, the out vertex `w` has `f w ≠ a`), and then `v = v'` by uniqueness of the
-common neighbor (`eq_of_common_nbr`), so `(v, w) = (v', w')`. -/
+/-- **The fibers over distinct pairs leaving a part are disjoint**
+(`lem:normal-cross-count-partition`, the disjointness). If `s(u, w)` lies in the fibers of both
+`(v, w)` and `(v', w')`, then `{u, w} = {u', w'}` as endpoint sets; the labeling forces `u = u'`,
+`w = w'` (the in-part vertex `u` has `f u = a`, the out vertex `w` has `f w ≠ a`), and then `v = v'`
+by uniqueness of the common neighbor (`eq_of_common_nbr`), so `(v, w) = (v', w')`. -/
 theorem IsSquareTightPartition.squareCutPairs_pairwiseDisjoint [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) (a : V) :
     (G.squareCutPairs f a).PairwiseDisjoint
@@ -853,14 +838,13 @@ theorem IsSquareTightPartition.squareCutPairs_pairwiseDisjoint [Finite V] {f : V
     exact hpq (by rw [hvv', hw'w])
   · exact hfw (hu'w ▸ hfu'a)
 
-/-- **`lem:normal-cross-count`: the double count.** For a part `A` with `|A| ≥ 3`, the normal
-cross edges rooted at `A` number exactly `2 · d_G(A)` (JJ eq. (6)). This closes
-`fmlnote:normal-cross-split`: the rooted normal cross edges are the disjoint union of the fibers
-over the `d_G(A)` oriented crossing edges (`squareNormalCrossEdgesRootedAt_eq_biUnion`,
-`squareCutPairs_pairwiseDisjoint`), each fiber has exactly two elements
-(`ncard_normalCrossEdges_of_crossing_eq_two`, fed a big-part witness pulled from `hbig`), and
-summing the constant `2` over the `d_G(A)` fibers (`ncard_squareCutPairs_eq_gCutEdges`) gives
-`2 · d_G(A)`. -/
+/-- **Normal cross edges rooted at a part** (`lem:normal-cross-count`; JJ eq. (6)). For a part
+`A` with `|A| ≥ 3`, the normal cross edges rooted at `A` number exactly `2 · d_G(A)`. They are
+the disjoint union of the fibers over the `d_G(A)` pairs leaving `A`
+(`squareNormalCrossEdgesRootedAt_eq_biUnion`, `squareCutPairs_pairwiseDisjoint`,
+`ncard_squareCutPairs_eq_gCutEdges`), and each fiber has exactly two elements
+(`ncard_normalCrossEdges_of_crossing_eq_two`, with a second vertex of the part taken from
+`hbig`). -/
 theorem IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges [Finite V]
     {f : V → V} (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3) {a : V}
     (hbig : 3 ≤ {x | f x = a}.ncard) :
@@ -883,23 +867,22 @@ theorem IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdg
     mul_finsum_mem]
   simp
 
-/-! ## Part-Finset and the handshake identity (Thm 5.3 assembly infrastructure)
+/-! ## The labels of a partition and the handshake identity
 
-`thm:laman-square-count`'s closing arithmetic sums the per-part cut count `d_G(P_i)` (`gCutEdges`)
-over the parts of a tight partition and needs the total to be `2 d_G(P)` (twice the whole
-partition's cross-edge count, `squareGCrossEdges`), since each `G`-cross edge is counted once from
-each endpoint's part. `V` need not carry a `Fintype` instance (only `[Finite V]`), so the finite
-set of labels actually used is packaged as a `Finset` via `Set.Finite.toFinset`
-(`partLabels`), and the handshake identity is proved by double-counting the oriented cross pairs
-`(v, w)` with `G.Adj v w` and `f v ≠ f w`: fibering by `f p.1` (the part) recovers the per-part cut
-sets (`squareCutPairs`), already known to number `d_G(A)`
-(`ncard_squareCutPairs_eq_gCutEdges`); fibering by the underlying edge `s(p.1, p.2)` is 2-to-1 onto
-the `G`-cross edges. -/
+The arithmetic of `thm:laman-square-count` sums the degree `d_G(P_i)` of each part (`gCutEdges`)
+over the parts of a tight partition and needs the total to be `2 d_G(P)` (twice the number of
+edges of `G` joining distinct parts, `squareGCrossEdges`), since each such edge is counted once
+from each endpoint's part. `V` need not have a `Fintype` instance (only `[Finite V]`), so the
+finite set of labels in use is a `Finset` via `Set.Finite.toFinset` (`partLabels`), and the
+handshake identity is proved by double-counting the ordered pairs `(v, w)` with `G.Adj v w` and
+`f v ≠ f w`: grouped by the part `f p.1` they are the pairs leaving each part (`squareCutPairs`),
+which number `d_G(A)` (`ncard_squareCutPairs_eq_gCutEdges`); grouped by the edge `s(p.1, p.2)`
+they are two for each edge of `G` joining distinct parts. -/
 
 /-- **The finite label set of a partition.** For a labeling `f : V → V` (`V` finite but not
 necessarily tagged `Fintype`), the parts actually in use — the image of `f` — packaged as a
-`Finset V`. Depends only on `f` (not on a graph), unlike the rest of this file's definitions;
-indexes the handshake sum `sum_gCutEdges_eq_two_mul_squareGCrossEdges`. -/
+`Finset V`. Depends only on `f` (not on a graph), unlike the rest of this file's definitions; it
+indexes the sums of the proof of `thm:laman-square-count`. -/
 noncomputable def partLabels (f : V → V) [Finite V] : Finset V :=
   (Set.finite_univ.image f).toFinset
 
@@ -907,8 +890,9 @@ theorem mem_partLabels [Finite V] (f : V → V) (a : V) :
     a ∈ partLabels f ↔ a ∈ Set.range f := by
   rw [partLabels, Set.Finite.mem_toFinset, Set.image_univ]
 
-/-- **The handshake identity.** Summing the cut-edge count `d_G(A)` (`gCutEdges`) over every part
-`A` of `f` counts each `G`-cross edge exactly twice — once from each endpoint's part. -/
+/-- **The handshake identity.** Summing the degree `d_G(A)` (`gCutEdges`) over every part `A` of
+`f` counts each edge of `G` joining distinct parts exactly twice, once from each endpoint's
+part. -/
 theorem sum_gCutEdges_eq_two_mul_squareGCrossEdges [Finite V] (f : V → V) :
     ∑ a ∈ partLabels f, (G.gCutEdges f a).ncard = 2 * (G.squareGCrossEdges f).ncard := by
   classical
@@ -978,16 +962,15 @@ theorem sum_gCutEdges_eq_two_mul_squareGCrossEdges [Finite V] (f : V → V) :
         rw [Finset.sum_const, smul_eq_mul, Set.ncard_eq_toFinset_card _ hSfin]
         ring
 
-/-! ## The vertex handshake and the per-part edge bound (Thm 5.3 assembly)
+/-! ## The vertex handshake and the edges inside a part
 
-Two more bricks for `thm:laman-square-count`'s closing arithmetic. The companion vertex
-handshake `∑_i |P_i| = |V|` (`sum_ncard_eq_card`) mirrors the edge handshake above via the same
-fiberwise-count idiom, but 1-to-1 rather than 2-to-1: every vertex belongs to exactly one part.
-The per-part edge bound on `G²` inside a part `{x | f x = a}` splits into the two cases a tight
-partition's parts can take (`IsTightPartition.parts`/`IsSquareTightPartition.parts`: singleton
-or `≥ 3`): at `|P_a| ≥ 3` it is the Laman condition restated for a `Set`
-(`IsLaman3.ncard_edgesIn_le`, `Jacobs.lean`); a singleton part collapses to `0` edges directly
-(`edgesIn_singleton`), needing no partition structure at all. -/
+Two more facts for the arithmetic of `thm:laman-square-count`. The vertex handshake
+`∑_i |P_i| = |V|` (`sum_ncard_eq_card`) is proved like the edge handshake above, by counting
+fiberwise, but one-to-one rather than two-to-one: every vertex lies in exactly one part. The bound
+on the edges of `G²` inside a part `{x | f x = a}` has the two cases a part of a tight partition
+can take (`IsSquareTightPartition.parts`: a singleton or at least three vertices): at
+`|P_a| ≥ 3` it is the Laman condition for a `Set` (`IsLaman3.ncard_edgesIn_le`, `Jacobs.lean`);
+a singleton part spans no edge (`edgesIn_singleton`), for any partition. -/
 
 /-- **The vertex handshake.** Summing the part sizes `|P_a|` over every label `a` used by `f`
 counts each vertex exactly once. -/
@@ -1010,29 +993,29 @@ theorem sum_ncard_eq_card [Finite V] (f : V → V) :
     _ = hVfin.toFinset.card := (Finset.card_eq_sum_card_fiberwise hfiber).symm
     _ = Nat.card V := by rw [← Set.ncard_eq_toFinset_card _ hVfin, Set.ncard_univ]
 
-/-- **The per-part edge bound, big-part case.** If `G²` is Laman and a part `{x | f x = a}` has
-at least three vertices, `G²`'s edges inside it number at most `3|P_a| - 6` (additive form). A
-direct application of `IsLaman3.ncard_edgesIn_le` — no tight-partition structure needed. -/
+/-- **The edges inside a part of at least three vertices.** If `G²` is Laman and a part
+`{x | f x = a}` has at least three vertices, `G²`'s edges inside it number at most `3|P_a| - 6`
+(additive form). An application of `IsLaman3.ncard_edgesIn_le`, for any partition. -/
 theorem edgesIn_square_part_le [Finite V] {f : V → V} (hlaman : G.square.IsLaman3) {a : V}
     (h3 : 3 ≤ {x : V | f x = a}.ncard) :
     (G.square.edgesIn {x : V | f x = a}).ncard + 6 ≤ 3 * {x : V | f x = a}.ncard :=
   hlaman.ncard_edgesIn_le (Set.toFinite _) h3
 
-/-- **The per-part edge bound, singleton case.** A singleton part spans no edge of `G²` at all:
-`edgesIn` of a one-vertex set is always empty. -/
+/-- **The edges inside a singleton part.** A singleton part spans no edge of `G²`: `edgesIn` of a
+one-vertex set is empty. -/
 theorem edgesIn_square_singleton_part_eq_zero {f : V → V} {a : V}
     (h1 : {x : V | f x = a}.ncard = 1) : (G.square.edgesIn {x : V | f x = a}).ncard = 0 := by
   obtain ⟨v, hv⟩ := Set.ncard_eq_one.mp h1
   rw [hv, edgesIn_singleton, Set.ncard_empty]
 
-/-! ## In-part edges sum to the per-part count (Thm 5.3 assembly, classification decomposition)
+/-! ## The edges inside the parts, part by part
 
-`squareInPartEdges f`'s edges split further, by their shared label, into the per-part in-part
-edge sets `G.square.edgesIn {x | f x = a}` — unlike the cross classes, no common-neighbor
-argument is needed here: an edge's shared label is pinned by either endpoint, so distinct labels
-give disjoint edge sets outright. -/
+The edges of `squareInPartEdges f` split, by their shared label, into the sets
+`G.square.edgesIn {x | f x = a}` of edges inside each part. Unlike the cross classes, this needs
+no common neighbor: either endpoint gives an edge's label, so distinct labels give disjoint edge
+sets. -/
 
-/-- **`squareInPartEdges` is the union of the per-part in-part edge sets.** -/
+/-- **`squareInPartEdges` is the union of the edges inside the parts.** -/
 theorem squareInPartEdges_eq_biUnion [Finite V] (f : V → V) :
     G.squareInPartEdges f =
       ⋃ a ∈ (↑(partLabels f) : Set V), G.square.edgesIn {x : V | f x = a} := by
@@ -1046,7 +1029,7 @@ theorem squareInPartEdges_eq_biUnion [Finite V] (f : V → V) :
   · rintro ⟨a, -, hadj, hu, hw⟩
     exact ⟨hadj, hu.trans hw.symm⟩
 
-/-- **Distinct labels give disjoint per-part in-part edge sets.** -/
+/-- **Distinct labels give disjoint sets of edges inside the parts.** -/
 theorem squareInPartEdges_pairwiseDisjoint [Finite V] (f : V → V) :
     (↑(partLabels f) : Set V).PairwiseDisjoint (fun a => G.square.edgesIn {x : V | f x = a}) := by
   intro a _ a' _ hne
@@ -1057,10 +1040,9 @@ theorem squareInPartEdges_pairwiseDisjoint [Finite V] (f : V → V) :
     Set.mem_ofPred_eq] at hea hea'
   exact hne (hea.2.1.symm.trans hea'.2.1)
 
-/-- **`squareInPartEdges` sums to the per-part in-part edge counts.** The 1-to-1 analogue of the
-vertex handshake `sum_ncard_eq_card`, but for `G²`'s in-part edges rather than vertices: each
-in-part edge belongs to exactly one part (its shared label), so summing the per-part counts
-recovers the total exactly — unlike the cross-class handshakes, no factor of two. -/
+/-- **`squareInPartEdges` is the sum of the edges inside each part.** The analogue of the vertex
+handshake `sum_ncard_eq_card` for the edges of `G²` inside the parts: each lies in exactly one
+part (its shared label), so summing over the parts gives the total, with no factor of two. -/
 theorem sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges [Finite V] (f : V → V) :
     ∑ a ∈ partLabels f, (G.square.edgesIn {x : V | f x = a}).ncard =
       (G.squareInPartEdges f).ncard := by
@@ -1069,21 +1051,18 @@ theorem sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges [Finite V] (f : V → 
       (G.squareInPartEdges_pairwiseDisjoint f),
     finsum_mem_coe_finset]
 
-/-! ## Normal cross edges sum to the per-part rooted count (Thm 5.3 assembly, classification
-decomposition)
+/-! ## The normal cross edges, part by part
 
-`squareNormalCrossEdges f`'s edges split, by their (tightness-unique) root part, into the
-per-part rooted normal cross edge sets `squareNormalCrossEdgesRootedAt f a`
-(`lem:normal-cross-count`'s subject) — every normal cross edge has *some* root by definition (no
-tightness needed for the union itself), and distinct parts can't both root the same edge
-(`IsSquareTightPartition.rootedAt_inj`, which does need tightness). This is the cross-class
-analogue of the in-part decomposition above, mirrored via the same `Set.Finite.ncard_biUnion` +
-`finsum_mem_coe_finset` route. -/
+The edges of `squareNormalCrossEdges f` split, by their root, into the sets
+`squareNormalCrossEdgesRootedAt f a` of `lem:normal-cross-count`: every normal cross edge has
+*some* root by definition (the union needs no tightness), and two distinct parts do not root the
+same edge (`IsSquareTightPartition.rootedAt_inj`, which needs tightness). The proof is that of
+the in-part decomposition above (`Set.Finite.ncard_biUnion`, `finsum_mem_coe_finset`). -/
 
-/-- **`squareNormalCrossEdges` is the union of the per-part rooted normal cross edge sets.** No
-tightness hypothesis needed: every normal cross edge has *some* root by the very definition of
-`squareNormalCrossEdges` (the disjointness that makes the root unique is a separate fact,
-`squareNormalCrossEdgesRootedAt_pairwiseDisjoint`). -/
+/-- **`squareNormalCrossEdges` is the union of the rooted normal cross edges of the parts.** No
+tightness is needed: every normal cross edge has *some* root by the definition of
+`squareNormalCrossEdges` (the disjointness that makes the root unique is
+`IsSquareTightPartition.squareNormalCrossEdgesRootedAt_pairwiseDisjoint`). -/
 theorem squareNormalCrossEdges_eq_biUnion [Finite V] (f : V → V) :
     G.squareNormalCrossEdges f =
       ⋃ a ∈ (↑(partLabels f) : Set V), G.squareNormalCrossEdgesRootedAt f a := by
@@ -1101,8 +1080,8 @@ theorem squareNormalCrossEdges_eq_biUnion [Finite V] (f : V → V) :
     rw [squareNormalCrossEdgesRootedAt, Set.mem_ofPred_eq] at ha
     exact ha.1
 
-/-- **Distinct parts give disjoint rooted normal cross edge sets.** Immediate from the root's
-uniqueness under tightness (`IsSquareTightPartition.rootedAt_inj`). -/
+/-- **Distinct parts give disjoint rooted normal cross edge sets.** Immediate from the uniqueness
+of the root for a tight partition (`IsSquareTightPartition.rootedAt_inj`). -/
 theorem IsSquareTightPartition.squareNormalCrossEdgesRootedAt_pairwiseDisjoint [Finite V]
     {f : V → V} (hf : G.IsSquareTightPartition f) :
     (↑(partLabels f) : Set V).PairwiseDisjoint (fun a => G.squareNormalCrossEdgesRootedAt f a) := by
@@ -1111,10 +1090,9 @@ theorem IsSquareTightPartition.squareNormalCrossEdgesRootedAt_pairwiseDisjoint [
   intro e hea hea'
   exact hne (hf.rootedAt_inj hea hea')
 
-/-- **`squareNormalCrossEdges` sums to the per-part rooted counts.** Mirrors
-`sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`; the disjointness input differs
-(`rootedAt_inj`'s common-neighbor argument rather than trivial label-uniqueness), so this one
-needs the tightness hypothesis. -/
+/-- **`squareNormalCrossEdges` is the sum of the rooted normal cross edges of the parts.** As
+`sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`, but the disjointness comes from the common
+neighbor (`rootedAt_inj`) rather than from the labels, so this one needs tightness. -/
 theorem IsSquareTightPartition.sum_ncard_rootedAt_eq_ncard_normalCrossEdges
     [Finite V] {f : V → V} (hf : G.IsSquareTightPartition f) :
     ∑ a ∈ partLabels f, (G.squareNormalCrossEdgesRootedAt f a).ncard =
@@ -1124,15 +1102,16 @@ theorem IsSquareTightPartition.sum_ncard_rootedAt_eq_ncard_normalCrossEdges
       hf.squareNormalCrossEdgesRootedAt_pairwiseDisjoint,
     finsum_mem_coe_finset]
 
-/-! ## Two small per-part facts for the closing inequality (Thm 5.3 assembly)
+/-! ## Two facts at one part
 
-The per-part inequality (item 5 of the hand-off) needs a singleton part's cut-edge count to be
-exactly its vertex's degree, and a normal cross edge to never root at a small (non-big) part. -/
+The inequality at a part (`IsSquareTightPartition.perPart_le`) needs the degree of a singleton
+part to be the degree of its vertex, and a part of fewer than three vertices to root no normal
+cross edge. -/
 
-/-- **A singleton part's cut edges are exactly its vertex's incident edges.** For a singleton
-part `{v}` (`f v = a`, `∀ x, f x = a → x = v`), every `G`-edge at `v` is automatically a cut edge
-of `a` — its other endpoint lies outside the singleton part — and conversely; so `gCutEdges f a`
-bijects with `G.neighborSet v` via `w ↦ s(v, w)`, giving `(gCutEdges f a).ncard = deg_G(v)`. -/
+/-- **The edges leaving a singleton part are the edges at its vertex.** For a singleton part
+`{v}` (`f v = a`, `∀ x, f x = a → x = v`), every edge of `G` at `v` leaves the part, its other
+endpoint lying outside it, and conversely; so `gCutEdges f a` is in bijection with
+`G.neighborSet v` via `w ↦ s(v, w)`, giving `(gCutEdges f a).ncard = deg_G(v)`. -/
 theorem gCutEdges_singleton_part_ncard_eq_degree {f : V → V} {a v : V}
     [Fintype (G.neighborSet v)] (hfv : f v = a) (hsing : ∀ x, f x = a → x = v) :
     (G.gCutEdges f a).ncard = G.degree v := by
@@ -1154,9 +1133,9 @@ theorem gCutEdges_singleton_part_ncard_eq_degree {f : V → V} {a v : V}
     · exact h2.trans h1
   rw [himg, hinj.ncard_image, ncard_neighborSet_eq_degree]
 
-/-- **No normal cross edge roots at a small part.** If `{x | f x = a}.ncard < 3`, no normal cross
-edge is rooted at `a`: the *moreover* clause of the classification
-(`squareNormalCrossEdges_part_three_le`) already forces every root's part to have at least three
+/-- **No normal cross edge is rooted at a part of fewer than three vertices.** If
+`{x | f x = a}.ncard < 3`, no normal cross edge is rooted at `a`: the *moreover* clause of the
+classification (`squareNormalCrossEdges_part_three_le`) makes every root a part of at least three
 vertices. -/
 theorem squareNormalCrossEdgesRootedAt_eq_empty_of_lt_three [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) {a : V} (ha : {x : V | f x = a}.ncard < 3) :
@@ -1171,27 +1150,24 @@ theorem squareNormalCrossEdgesRootedAt_eq_empty_of_lt_three [Finite V] {f : V �
   rw [hfv] at h3
   omega
 
-/-! ## Special cross edges sum to the per-part rooted count (Thm 5.3 assembly, classification
-decomposition)
+/-! ## The special cross edges, part by part
 
-`squareSpecialCrossEdges f`'s edges split, by their (tightness-unique) apex's label, into the
-per-part rooted special cross edge sets `squareSpecialCrossEdgesRootedAt f a` — mirroring
-`squareNormalCrossEdgesRootedAt`'s shape exactly (`IsSquareTightPartition.eq_of_common_nbr`
-supplies uniqueness here too, since a special cross edge is a cross edge, so its endpoints carry
-distinct labels). Indexing by label rather than by singleton-part witness (an earlier design,
-superseded — see *Decisions made*) lets this class join the other two in a single
-`partLabels f`-indexed sum, which the top-level assembly needs. -/
+The edges of `squareSpecialCrossEdges f` split, by the label of their common neighbor (unique for
+a tight partition), into the sets `squareSpecialCrossEdgesRootedAt f a`, as the normal ones do
+(`IsSquareTightPartition.eq_of_common_nbr` gives uniqueness here too, since the endpoints of a
+cross edge have distinct labels). Indexing by the label lets this class join the other two in one
+sum over `partLabels f`. -/
 
-/-- **Special cross edges rooted at a part.** A special cross edge is **rooted** at the part
-`{x | f x = a}` when its common neighbor `v` carries the label `a` (`f v = a`). Under tightness
-the common neighbor — and hence the root — is unique
+/-- **Special cross edges rooted at a part** (`def:rooted-cross-edges`). A special cross edge is
+**rooted** at the part `{x | f x = a}` when a common neighbor `v` of its endpoints has the
+label `a` (`f v = a`). For a tight partition the common neighbor, and hence the root, is unique
 (`IsSquareTightPartition.specialRootedAt_inj`). -/
 def squareSpecialCrossEdgesRootedAt (G : SimpleGraph V) (f : V → V) (a : V) : Set (Sym2 V) :=
   {e ∈ G.squareSpecialCrossEdges f | ∃ v, (∀ z ∈ e, G.Adj z v) ∧ f v = a}
 
-/-- **The root of a special cross edge is unique.** Mirrors `IsSquareTightPartition.rootedAt_inj`:
-the two witnessing common neighbors coincide by `eq_of_common_nbr` (a special cross edge is a
-cross edge, so its endpoints carry distinct labels), hence carry the same label. -/
+/-- **The root of a special cross edge is unique.** As `IsSquareTightPartition.rootedAt_inj`: the
+two common neighbors coincide by `eq_of_common_nbr` (a special cross edge is a cross edge, so its
+endpoints have distinct labels), hence have the same label. -/
 theorem IsSquareTightPartition.specialRootedAt_inj [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) {a a' : V} {e : Sym2 V}
     (h : e ∈ G.squareSpecialCrossEdgesRootedAt f a)
@@ -1205,9 +1181,9 @@ theorem IsSquareTightPartition.specialRootedAt_inj [Finite V] {f : V → V}
   have hvv' : v = v' := hf.eq_of_common_nbr hfuw hv.1 hv.2 hv'.1 hv'.2
   rw [← hfv, ← hfv', hvv']
 
-/-- **`squareSpecialCrossEdges` is the union of the per-part rooted special cross edge sets.**
-Mirrors `squareNormalCrossEdges_eq_biUnion`: no tightness hypothesis needed, every special cross
-edge has *some* root by definition. -/
+/-- **`squareSpecialCrossEdges` is the union of the rooted special cross edges of the parts.** As
+`squareNormalCrossEdges_eq_biUnion`: no tightness is needed, every special cross edge has *some*
+root by definition. -/
 theorem squareSpecialCrossEdges_eq_biUnion [Finite V] (f : V → V) :
     G.squareSpecialCrossEdges f =
       ⋃ a ∈ (↑(partLabels f) : Set V), G.squareSpecialCrossEdgesRootedAt f a := by
@@ -1225,7 +1201,7 @@ theorem squareSpecialCrossEdges_eq_biUnion [Finite V] (f : V → V) :
     rw [squareSpecialCrossEdgesRootedAt, Set.mem_ofPred_eq] at ha
     exact ha.1
 
-/-- **Distinct parts give disjoint rooted special cross edge sets.** Mirrors
+/-- **Distinct parts give disjoint rooted special cross edge sets.** As
 `IsSquareTightPartition.squareNormalCrossEdgesRootedAt_pairwiseDisjoint`. -/
 theorem IsSquareTightPartition.squareSpecialCrossEdgesRootedAt_pairwiseDisjoint [Finite V]
     {f : V → V} (hf : G.IsSquareTightPartition f) :
@@ -1236,7 +1212,7 @@ theorem IsSquareTightPartition.squareSpecialCrossEdgesRootedAt_pairwiseDisjoint 
   intro e hea hea'
   exact hne (hf.specialRootedAt_inj hea hea')
 
-/-- **`squareSpecialCrossEdges` sums to the per-part rooted counts.** Mirrors
+/-- **`squareSpecialCrossEdges` is the sum of the rooted special cross edges of the parts.** As
 `IsSquareTightPartition.sum_ncard_rootedAt_eq_ncard_normalCrossEdges`. -/
 theorem IsSquareTightPartition.sum_ncard_specialRootedAt_eq_ncard_specialCrossEdges
     [Finite V] {f : V → V} (hf : G.IsSquareTightPartition f) :
@@ -1247,9 +1223,9 @@ theorem IsSquareTightPartition.sum_ncard_specialRootedAt_eq_ncard_specialCrossEd
       hf.squareSpecialCrossEdgesRootedAt_pairwiseDisjoint,
     finsum_mem_coe_finset]
 
-/-- **No special cross edge roots at a big part.** If `3 ≤ {x | f x = a}.ncard`, no special
-cross edge is rooted at `a`: a special cross edge's apex always lies in a singleton part
-(`squareSpecialCrossEdges_singleton_part`), contradicting a part of size ≥ 3. -/
+/-- **No special cross edge is rooted at a part of at least three vertices.** If
+`3 ≤ {x | f x = a}.ncard`, no special cross edge is rooted at `a`: the common neighbor of a
+special cross edge forms a singleton part (`squareSpecialCrossEdges_singleton_part`). -/
 theorem squareSpecialCrossEdgesRootedAt_eq_empty_of_three_le [Finite V] {f : V → V}
     (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3) {a : V}
     (ha : 3 ≤ {x : V | f x = a}.ncard) :
@@ -1265,10 +1241,12 @@ theorem squareSpecialCrossEdgesRootedAt_eq_empty_of_three_le [Finite V] {f : V �
   rw [hfv] at h1
   omega
 
-/-- **A singleton part's rooted special cross edges are exactly its vertex's clique edges.** For
-a singleton-part witness `v` (`∀ x, f x = f v → x = v`), the special cross edges rooted at `v`'s
-part are exactly `N_G(v)`'s `G²`-clique edges (`edgesIn (neighborSet v)`) — the producer
-(`mem_squareSpecialCrossEdges_of_singleton_part`) and its apex-uniqueness clause combined. -/
+/-- **The special cross edges rooted at a singleton part are the edges of `G²` inside the
+neighborhood of its vertex.** For a vertex `v` forming a singleton part
+(`∀ x, f x = f v → x = v`), the special cross edges rooted at `v`'s part are exactly the edges of
+`G²` inside `N_G(v)` (`edgesIn (neighborSet v)`): a root `v'` has `f v' = f v`, so `v' = v` and
+the edge lies inside `N_G(v)`; conversely `mem_squareSpecialCrossEdges_of_singleton_part` makes
+each such edge a special cross edge with common neighbor `v`. -/
 theorem IsSquareTightPartition.squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet [Finite V]
     {f : V → V} (hf : G.IsSquareTightPartition f) {v : V} (hsing : ∀ x, f x = f v → x = v) :
     G.squareSpecialCrossEdgesRootedAt f (f v) = G.square.edgesIn (G.neighborSet v) := by
@@ -1295,12 +1273,12 @@ theorem IsSquareTightPartition.squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighb
     simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq]
     exact ⟨((mem_neighborSet G v u).mp hu).symm, ((mem_neighborSet G v w).mp hw).symm⟩
 
-/-! ## The per-part dichotomy and inequality (Thm 5.3 assembly)
+/-! ## The inequality at a part
 
-Every part of a tight partition is either a singleton or has at least three vertices
-(`IsSquareTightPartition.parts` — no size-2 part is possible). Combining the per-part edge bound,
-the exact normal/special counts, and this dichotomy gives the per-part inequality the top-level
-assembly sums over `partLabels f`. -/
+Every part of a tight partition is a singleton or has at least three vertices
+(`IsSquareTightPartition.parts`: no part has two). With the bound on the edges inside a part and
+the counts of the normal and special cross edges, this gives the inequality at a part, which the
+proof of `thm:laman-square-count` sums over `partLabels f`. -/
 
 /-- **A part is a singleton or has at least three vertices.** -/
 theorem IsSquareTightPartition.ncard_eq_one_or_three_le [Finite V] {f : V → V}
@@ -1321,15 +1299,15 @@ theorem IsSquareTightPartition.ncard_eq_one_or_three_le [Finite V] {f : V → V}
       exact hw x hxv hx
     rw [heq, Set.ncard_singleton]
 
-/-- **The per-part inequality** (additive form, avoiding `ℕ`-subtraction): at a part `{x | f x =
-a}`, the sum of the in-part edges, the normal cross edges rooted there, and the special cross
-edges rooted there is at most `3|P_a| - 6 + 2 d_G(A)`. At a part of size `≥ 3`: the Laman bound
-(`edgesIn_square_part_le`) covers the in-part edges, the normal-cross count is *exact*
+/-- **The inequality at a part** (additive form, avoiding `ℕ`-subtraction): at a part
+`{x | f x = a}`, the edges of `G²` inside it, the normal cross edges rooted there and the special
+cross edges rooted there number at most `3|P_a| - 6 + 2 d_G(A)`. At a part of size `≥ 3`: the Laman
+bound (`edgesIn_square_part_le`) covers the in-part edges, the normal-cross count is *exact*
 (`ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`), and no special cross edge roots there
-(`squareSpecialCrossEdgesRootedAt_eq_empty_of_three_le`). At a singleton part `{v}`: the in-part
-and normal-cross counts are `0`, and the special-cross count is *exactly* `2 deg_G(v) - 3`
-(`ncard_edgesIn_neighborSet_square`, via `squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet`)
-— equal to `(3 · 1 - 6) + 2 d_G(A)` since `d_G(A) = deg_G(v)`
+(`squareSpecialCrossEdgesRootedAt_eq_empty_of_three_le`). At a singleton part `{v}`: the in-part and
+normal-cross counts are `0`, and the special-cross count is *exactly* `2 deg_G(v) - 3`
+(`ncard_edgesIn_neighborSet_square`, via `squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet`) —
+equal to `(3 · 1 - 6) + 2 d_G(A)` since `d_G(A) = deg_G(v)`
 (`gCutEdges_singleton_part_ncard_eq_degree`). -/
 theorem IsSquareTightPartition.perPart_le {f : V → V} [Fintype V] [DecidableRel G.Adj]
     (hf : G.IsSquareTightPartition f)
@@ -1368,13 +1346,13 @@ theorem IsSquareTightPartition.perPart_le {f : V → V} [Fintype V] [DecidableRe
       exact Set.ncard_empty _
     omega
 
-/-! ## The top-level sum and the theorem (Thm 5.3 assembly) -/
+/-! ## The sum over the parts and the theorem -/
 
-/-- **Summing the per-part inequality over `partLabels f`.** Folds the four per-part sums into
-the classes' total `ncard`s (`sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`,
+/-- **Summing the inequality at a part over `partLabels f`.** Folds the four sums over the parts
+into the classes' total `ncard`s (`sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`,
 `sum_ncard_rootedAt_eq_ncard_normalCrossEdges`,
-`sum_ncard_specialRootedAt_eq_ncard_specialCrossEdges`) and the two handshakes
-(`sum_ncard_eq_card`, `sum_gCutEdges_eq_two_mul_squareGCrossEdges`). -/
+`sum_ncard_specialRootedAt_eq_ncard_specialCrossEdges`) and the two handshakes (`sum_ncard_eq_card`,
+`sum_gCutEdges_eq_two_mul_squareGCrossEdges`). -/
 theorem IsSquareTightPartition.sum_perPart_le {f : V → V} [Fintype V] [DecidableRel G.Adj]
     (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3) (hmin : ∀ v, 2 ≤ G.degree v) :
     (G.squareInPartEdges f).ncard + (G.squareNormalCrossEdges f).ncard +
@@ -1421,15 +1399,19 @@ theorem square_ncard_eq_sum_classes [Finite V] {f : V → V} (hf : G.IsSquareTig
   rw [square_edgeSet_eq_union f]
   omega
 
-/-- **The number of parts equals `numParts` of the shadow-carrier labeling.** -/
+/-- **The number of labels in use is `numParts` of the labeling of `G.shadowGraph`.** -/
 theorem partLabels_card_eq_numParts [Finite V] (f : V → V) :
     (partLabels f).card = G.shadowGraph.numParts f := by
   simp only [Graph.numParts, shadowGraph_vertexSet, partLabels,
     ← Set.ncard_eq_toFinset_card (f '' Set.univ) (Set.finite_univ.image f)]
 
-/-- **The counting bound for Laman squares; Jackson–Jordán 2008 Theorem 5.3**
-(`thm:laman-square-count`). Let `G` be a simple graph of minimum degree at least two on a finite
-nonempty vertex set `V`, and suppose `G²` is Laman. Then `|E(G²)| ≤ 3|V| - 6 - def(G̃)`. -/
+/-- **The counting bound for Laman squares** (`thm:laman-square-count`; Jackson–Jordán 2008
+Theorem 5.3). Let `G` be a simple graph of minimum degree at least two on a finite vertex set
+`V`, and suppose `G²` is Laman. Then `|E(G²)| ≤ 3|V| - 6 - def(G̃)`, with `def(G̃)` the
+deficiency of `G.shadowGraph` at `n = 3` (`D = 6`). `V` need not be nonempty: for `V = ∅` both
+sides are `0`, as the empty partition has value `-6` (`fmlnote:normal-cross-split`). Against a
+tight partition (`Graph.exists_isTightPartition`), the four classes
+(`square_ncard_eq_sum_classes`) are bounded by `IsSquareTightPartition.sum_perPart_le`. -/
 theorem laman_square_count {V : Type*} [Fintype V] (G : SimpleGraph V)
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) (hlaman : G.square.IsLaman3) :
     (G.square.edgeSet.ncard : ℤ) ≤ 3 * (Nat.card V : ℤ) - 6 - G.shadowGraph.deficiency 3 := by

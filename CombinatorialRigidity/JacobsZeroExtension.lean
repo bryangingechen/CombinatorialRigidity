@@ -10,14 +10,17 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.GeneralPositionPlacement
 
 /-!
-# Zero-extension at degree at most three (`cor:zero-extension-degree-le-three`)
+# Zero-extensions in dimension three (`sec:jacobs-zero-extension`)
 
-Phase 32 (`sec:jacobs-zero-extension`, S3). The corollary of the S2 row-independence lift
-(`SimpleGraph.zero_extension_edgeSetRowIndependent_lift`) discharging its hypotheses at a
-placement simultaneously generic for row independence and in general position
-(`exists_isGenericPlacement_isGeneralPositionPlacement`): for a vertex `v` of degree at most three,
-the generic rank grows by exactly `deg v`, and independence transfers in both directions across
-the `0`-extension.
+The two corollaries of the row-independence lift
+`SimpleGraph.zero_extension_edgeSetRowIndependent_lift` (`lem:zero-extension-rowIndependent`) for
+the generic rank in dimension three. At a placement generic for row independence and in general
+position up to order four (`exists_isGenericPlacement_isGeneralPositionPlacement`) the lift's
+hypotheses hold, so at a vertex `v` of degree at most three the generic rank grows by exactly
+`d_H(v)` and independence transfers in both directions (`cor:zero-extension-degree-le-three`). At a
+vertex of any degree whose neighborhood is a clique the rank grows by `min 3 (d_H(v))`
+(`cor:zero-extension-clique-rank`), by an argument on the complete graph `K₅`. The blueprint
+presents the file in `sec:jacobs-zero-extension`.
 
 ## Main results
 
@@ -26,24 +29,23 @@ the `0`-extension.
 * `SimpleGraph.zero_extension_indep_iff_of_degree_le_three` — `E(H)` is independent in
   `genericRigidityMatroid V 3` iff `E(H - E_H(v))` is, for `d_H(v) ≤ 3`.
 
-Both discharge `cor:zero-extension-degree-le-three`.
+Together they are `cor:zero-extension-degree-le-three`.
 
 * `SimpleGraph.zero_extension_genericRank_add_min_le` — the lower half of
   `cor:zero-extension-clique-rank`: `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`, with no hypothesis on
   the neighborhood of `v`.
-* `SimpleGraph.indep_k5_sub_edge` — a crux fact for the matching upper bound: `K₅` minus one edge
-  is independent in `genericRigidityMatroid V 3`. Built from the empty graph by four applications
-  of the degree-≤-three `0`-extension, each attaching one more vertex on its star to the vertices
-  already placed.
-* `SimpleGraph.dep_k5` — a second crux fact: the full ten-edge `K₅` is dependent in
-  `genericRigidityMatroid V 3` (the clique-count argument of `IsLaman3.degree_le_three`, applied
-  directly to the five named vertices).
-* `SimpleGraph.mem_closure_k5_sub_edge` — combines the two: the missing edge lies in the matroid
+* `SimpleGraph.indep_k5_sub_edge` — for the matching upper bound: `K₅` minus one edge is
+  independent in `genericRigidityMatroid V 3`. Built from the empty graph by four applications
+  of the degree-≤-three `0`-extension, each joining one more vertex to at most three of the
+  vertices already placed.
+* `SimpleGraph.dep_k5` — the ten edges of `K₅` are dependent in `genericRigidityMatroid V 3`
+  (the clique count of `IsLaman3.degree_le_three`, applied to the five named vertices).
+* `SimpleGraph.mem_closure_k5_sub_edge` — from the two: the missing edge lies in the matroid
   closure of the other nine, via `Matroid.Indep.mem_closure_iff_of_notMem`.
-* `SimpleGraph.zero_extension_genericRank_add_min_of_isClique` — the full corollary
+* `SimpleGraph.zero_extension_genericRank_add_min_of_isClique` — the corollary
   (`cor:zero-extension-clique-rank`): `r(H) = r(H - E_H(v)) + min 3 (d_H(v))`, when `N_H(v)` is a
-  clique of `H`. The lower bound is `zero_extension_genericRank_add_min_le`, unconditionally; the
-  matching upper bound (`d_H(v) ≥ 4` case) is the K₅-closure assembly, via
+  clique of `H`. The lower bound is `zero_extension_genericRank_add_min_le`, for any `N_H(v)`; the
+  matching upper bound (the case `d_H(v) ≥ 4`) closes each further edge at `v` on a `K₅`, via
   `mem_closure_k5_sub_edge` and closure monotonicity.
 -/
 
@@ -57,18 +59,18 @@ most three elements. Then `r(H) = r(H - E_H(v)) + d_H(v)`.
 
 *Upper bound.* `H.edgeSet` is the disjoint union of `(H.deleteIncidenceSet v).edgeSet` and the star
 at `v` (`H.incidenceSet v`, of cardinality `d_H(v)` via `incidenceSetEquivNeighborSet`), so
-submodularity of the matroid rank (`Matroid.rk_union_le_rk_add_rk`) against the cardinality bound
-on the star gives `r(H) ≤ r(H - E_H(v)) + d_H(v)`.
+subadditivity of the matroid rank (`Matroid.rk_union_le_rk_add_rk`) with the cardinality bound on
+the star gives `r(H) ≤ r(H - E_H(v)) + d_H(v)`.
 
 *Lower bound.* Pick a placement `p` simultaneously generic for row independence and in general
 position (`exists_isGenericPlacement_isGeneralPositionPlacement`), and a maximal independent
 subset `J` of `(H.deleteIncidenceSet v).edgeSet` (a matroid basis, `Matroid.exists_isBasis'`) —
 `J` is independent, hence row-independent at some placement, hence (genericity of `p`)
-row-independent at `p` itself. The graph `H₃` carrying `J`'s edges together with the full star at
+row-independent at `p` itself. The graph `H₃` with `J`'s edges together with the full star at
 `v` — obtained from `H` by deleting the edges of `H - E_H(v)` outside `J` — has
 `H₃ - E_{H₃}(v) = J` and `N_{H₃}(v) = N_H(v)`; general position makes the (≤ three) neighbor
-images affinely independent, so the S2 lift (`zero_extension_edgeSetRowIndependent_lift`)
-produces a placement at which all of `H₃`'s edges are row-independent, i.e. `H₃.edgeSet` is
+images affinely independent, so the lift (`zero_extension_edgeSetRowIndependent_lift`)
+gives a placement at which all of `H₃`'s edges are row-independent, i.e. `H₃.edgeSet` is
 independent in the matroid. Since `H₃.edgeSet ⊆ H.edgeSet` and
 `|H₃.edgeSet| = r(H - E_H(v)) + d_H(v)`, monotonicity of the rank gives the reverse inequality. -/
 theorem zero_extension_genericRank_add_degree {V : Type*} [Finite V] {H : SimpleGraph V} {v : V}
@@ -132,7 +134,7 @@ theorem zero_extension_genericRank_add_degree {V : Type*} [Finite V] {H : Simple
     rw [← hI_image, genericRigidityMatroid_indep_iff] at hJindep
     obtain ⟨q, hq⟩ := hJindep
     have hI_rowIndep : (⊤ : SimpleGraph V).EdgeSetRowIndependent p I := hp_gen I ⟨q, hq⟩
-    -- The graph `H₃` carrying `J`'s edges together with the full star at `v`.
+    -- The graph `H₃` with `J`'s edges together with the full star at `v`.
     set H₃ : SimpleGraph V := H.deleteEdges ((H.deleteIncidenceSet v).edgeSet \ J) with hH₃_def
     have hH₃edge : H₃.edgeSet = (H.edgeSet \ (H.deleteIncidenceSet v).edgeSet) ∪ J := by
       simp only [hH₃_def, edgeSet_deleteEdges, Set.sdiff_sdiff_right, Set.inter_eq_right.mpr hJHE]
@@ -263,9 +265,9 @@ theorem zero_extension_indep_iff_of_degree_le_three {V : Type*} [Finite V] {H : 
       ← Matroid.cast_rk_eq_eRk_of_finite _ hHfin, h2]
     exact hHfin.cast_ncard_eq
 
-/-- **Lower bound for the clique-neighborhood `0`-extension** (`cor:zero-extension-clique-rank`,
-lower half). With no hypothesis on `N_H(v)`, deleting the edges at `v` drops the generic rank by
-at most `min 3 (d_H(v))`:
+/-- **Lower bound for the `0`-extension at a vertex of any degree**
+(`cor:zero-extension-clique-rank`, lower half). With no hypothesis on `N_H(v)`, deleting the edges
+at `v` lowers the generic rank by at least `min 3 (d_H(v))`:
 `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`.
 
 For `d_H(v) ≤ 3` this is the rank formula (`zero_extension_genericRank_add_degree`, an equality).
@@ -349,16 +351,16 @@ theorem zero_extension_genericRank_add_min_le {V : Type*} [Finite V] {H : Simple
       ((genericRigidityMatroid V 3).isRkFinite_of_finite (Set.toFinite _)).rk_le_of_subset hH₃sub
     omega
 
-/-! ### `K₅` minus an edge is independent (`cor:zero-extension-clique-rank`, crux fact (a))
+/-! ### `K₅` minus an edge is independent (a step of `cor:zero-extension-clique-rank`)
 
-The K₅-closure argument for the matching upper bound needs that `K₅` minus one edge is
-independent in `genericRigidityMatroid V 3`: built from the empty graph by four applications of
-the degree-≤-three `0`-extension (`zero_extension_indep_iff_of_degree_le_three`), each attaching
-one more vertex on its star to (at most three of) the vertices already placed. The two private
-lemmas below are the reusable steps: `indep_zero_extension_star` attaches a fresh vertex `v`,
-isolated in the starting graph, on its star to a finite set `T` of at most three vertices;
-`incidenceSet_sup_star_eq_empty` propagates a vertex's isolation through one more such star, so
-the later attachments can reuse an earlier isolation fact without recomputing it. -/
+The matching upper bound of `cor:zero-extension-clique-rank` needs that `K₅` minus one edge is
+independent in `genericRigidityMatroid V 3`: it is built from the empty graph by four applications
+of the degree-≤-three `0`-extension (`zero_extension_indep_iff_of_degree_le_three`), each joining
+one more vertex to at most three of the vertices already placed. The two private lemmas below are
+the steps: `indep_zero_extension_star` joins a vertex `v`, isolated in the starting graph, to a
+finite set `T` of at most three vertices; `incidenceSet_sup_star_eq_empty` keeps another vertex
+isolated through one such step, so that each step's isolation hypothesis follows from
+the previous one. -/
 
 /-- **A `0`-extension step for a fresh vertex.** If `E(H')` is independent and `v` is isolated in
 `H'` (no edge of `H'` touches `v`), attaching `v`'s star to a finite set `T` of at most three
@@ -452,7 +454,7 @@ private theorem incidenceSet_sup_star_eq_empty {V : Type*} {H' : SimpleGraph V} 
     · exact hxv h
     · exact hTx (h ▸ hu)
 
-/-- **`K₅` minus an edge is independent** (`cor:zero-extension-clique-rank`, crux fact (a)). Let
+/-- **`K₅` minus an edge is independent** (a step of `cor:zero-extension-clique-rank`). Let
 `v, u₁, u₂, u₃, w` be five pairwise distinct vertices of `V`. The nine edges of the complete graph
 on `{v, u₁, u₂, u₃, w}` other than `vw` are independent in `genericRigidityMatroid V 3`.
 
@@ -589,17 +591,16 @@ theorem indep_k5_sub_edge {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
   rw [hfinal] at h4
   exact h4
 
-/-! ### `K₅` is dependent, and closes on its missing edge (`cor:zero-extension-clique-rank`,
-crux fact (b) plus the closure step)
+/-! ### `K₅` is dependent, and its missing edge lies in the closure of the other nine
 
 `K₅` itself (all ten edges on five vertices) violates the Laman bound: the clique count
-`C(5, 2) = 10` exceeds `3 · 5 - 6 = 9` (the same argument as `IsLaman3.degree_le_three`, applied
-directly to the five named vertices rather than to a degree-≥-4 vertex's closed neighborhood).
-Combined with `indep_k5_sub_edge` via the closure criterion for an independent set
+`C(5, 2) = 10` exceeds `3 · 5 - 6 = 9` (the argument of `IsLaman3.degree_le_three`, applied to
+the five named vertices rather than to the closed neighborhood of a vertex of degree at least
+four). With `indep_k5_sub_edge` and the closure criterion for an independent set
 (`Matroid.Indep.mem_closure_iff_of_notMem`), this places the missing edge `vw` in the matroid
-closure of the other nine — the step the K₅-closure argument for the matching upper bound needs. -/
+closure of the other nine, the step the upper bound of `cor:zero-extension-clique-rank` needs. -/
 
-/-- **`K₅` is dependent** (`cor:zero-extension-clique-rank`, crux fact (b)). Let `v, u₁, u₂, u₃, w`
+/-- **`K₅` is dependent** (a step of `cor:zero-extension-clique-rank`). Let `v, u₁, u₂, u₃, w`
 be five pairwise distinct vertices of `V`. The ten edges of the complete graph on
 `{v, u₁, u₂, u₃, w}` are dependent in `genericRigidityMatroid V 3`.
 
@@ -695,12 +696,12 @@ theorem dep_k5 {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
   rw [hcard] at hLaman
   omega
 
-/-- **`K₅ ∖ e` closes on the missing edge** (`cor:zero-extension-clique-rank`, crux facts (a) and
-(b) combined). Let `v, u₁, u₂, u₃, w` be five pairwise distinct vertices of `V`. The missing edge
-`vw` lies in the matroid closure of the other nine edges of the complete graph on
+/-- **The missing edge of `K₅ ∖ e` lies in the closure of the other nine** (a step of
+`cor:zero-extension-clique-rank`). Let `v, u₁, u₂, u₃, w` be five pairwise distinct vertices of `V`.
+The missing edge `vw` lies in the matroid closure of the other nine edges of the complete graph on
 `{v, u₁, u₂, u₃, w}`: those nine edges are independent (`indep_k5_sub_edge`), and inserting `vw`
-into them gives the full (dependent, `dep_k5`) `K₅`, so the closure criterion for an independent
-set (`Matroid.Indep.mem_closure_iff_of_notMem`) applies directly. -/
+into them gives the full (dependent, `dep_k5`) `K₅`, so the closure criterion for an independent set
+(`Matroid.Indep.mem_closure_iff_of_notMem`) applies directly. -/
 theorem mem_closure_k5_sub_edge {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
     (hvu₁ : v ≠ u₁) (hvu₂ : v ≠ u₂) (hvu₃ : v ≠ u₃) (hvw : v ≠ w)
     (hu₁u₂ : u₁ ≠ u₂) (hu₁u₃ : u₁ ≠ u₃) (hu₁w : u₁ ≠ w)
@@ -745,16 +746,16 @@ theorem mem_closure_k5_sub_edge {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
   rw [hI.mem_closure_iff_of_notMem heI]
   exact dep_k5 hvu₁ hvu₂ hvu₃ hvw hu₁u₂ hu₁u₃ hu₁w hu₂u₃ hu₂w hu₃w
 
-/-! ### The K₅-closure assembly (`cor:zero-extension-clique-rank`)
+/-! ### The rank at a clique neighborhood (`cor:zero-extension-clique-rank`)
 
-The full corollary combines the unconditional lower bound
-(`zero_extension_genericRank_add_min_le`) with a matching upper bound. For `d_H(v) ≤ 3` the upper
-bound is the equality case of the degree-≤-three rank formula. For `d_H(v) ≥ 4`, fix three
-neighbors `u₁, u₂, u₃` and form `H₃` — `H - E_H(v)` together with the three star edges `vu₁, vu₂,
-vu₃` — exactly as in `zero_extension_genericRank_add_min_le`'s own `d ≥ 4` branch, so
-`r(H₃) = r(H - E_H(v)) + 3`. Every further star edge `vw`, `w ∈ N_H(v) ∖ {u₁, u₂, u₃}`, then lies
-in the matroid closure of `H₃.edgeSet`: the nine other edges of the `K₅` on `{v, u₁, u₂, u₃, w}`
-are already in `H₃.edgeSet` (the three kept star edges by construction, the six edges among
+The corollary combines the lower bound, which holds for any neighborhood
+(`zero_extension_genericRank_add_min_le`), with a matching upper bound. For `d_H(v) ≤ 3` the upper
+bound is the equality case of the degree-≤-three rank formula. For `d_H(v) ≥ 4`, fix three neighbors
+`u₁, u₂, u₃` and form `H₃` — `H - E_H(v)` together with the three star edges `vu₁, vu₂, vu₃` —
+exactly as in `zero_extension_genericRank_add_min_le`'s own `d ≥ 4` branch, so
+`r(H₃) = r(H - E_H(v)) + 3`. Every further star edge `vw`, `w ∈ N_H(v) ∖ {u₁, u₂, u₃}`, then lies in
+the matroid closure of `H₃.edgeSet`: the nine other edges of the `K₅` on `{v, u₁, u₂, u₃, w}` are
+already in `H₃.edgeSet` (the three kept star edges by construction, the six edges among
 `u₁, u₂, u₃, w` via the clique hypothesis on `N_H(v)`, none of them incident to `v`), so
 `mem_closure_k5_sub_edge` plus closure monotonicity place `vw` in the closure. Hence
 `H.edgeSet ⊆ M.closure H₃.edgeSet`, giving `r(H) ≤ r(H₃)` via `Matroid.eRk_mono` +
@@ -764,9 +765,9 @@ are already in `H₃.edgeSet` (the three kept star edges by construction, the si
 `H` be a graph on a finite `V` and `v` a vertex of `H` whose neighborhood is a clique of `H`. Then
 `r(H) = r(H - E_H(v)) + min 3 (d_H(v))`.
 
-The lower bound is `zero_extension_genericRank_add_min_le`, unconditionally. For the upper bound,
-`d_H(v) ≤ 3` is the equality case of `zero_extension_genericRank_add_degree`; the `d_H(v) ≥ 4` case
-is the K₅-closure assembly (see the section docstring above). -/
+The lower bound is `zero_extension_genericRank_add_min_le`, for any neighborhood. For the upper
+bound, `d_H(v) ≤ 3` is the equality case of `zero_extension_genericRank_add_degree`; the case
+`d_H(v) ≥ 4` is the closure argument on `K₅` of the section docstring above. -/
 theorem zero_extension_genericRank_add_min_of_isClique {V : Type*} [Finite V] {H : SimpleGraph V}
     {v : V} (hclique : H.IsClique (H.neighborSet v)) :
     H.genericRank 3 = (H.deleteIncidenceSet v).genericRank 3 + min 3 (H.neighborSet v).ncard := by
