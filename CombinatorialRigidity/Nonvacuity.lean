@@ -5,9 +5,12 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.BodyBar.BodyHinge
 import CombinatorialRigidity.BodyBar.GenericLift
+import CombinatorialRigidity.JacobsDegreeOne
+import CombinatorialRigidity.JacobsTheorem
 import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+import CombinatorialRigidity.Molecular.Molecule.Application
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
 import CombinatorialRigidity.PebbleGame.Correctness
 import Mathlib.Combinatorics.SimpleGraph.Star
@@ -67,12 +70,26 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   realization at the deficiency rank whose adjacent bodies have distinct points.
 * `pencilPair_of_nonempty_witness`: the pencil realization theorem's general form at the same star
   on four of five bodies, a graph that is not spanning, with the same conclusion.
+* `molecule_rank_formula_witness`: Jackson and Jordán's molecule rank formula (Katoh and
+  Tanigawa's Corollary 5.7) at the triangle `K₃`, the least simple graph of minimum degree two.
+  Its multigraph is a triangle, `0`-dof, so the square `K₃² = K₃` has generic rank `3 · 3 - 6 = 3`.
+* `jacobs_witness`: Jacobs' conjecture (Jackson and Jordán's Theorem 5.4) at the path `P₃`, the
+  least graph whose square has an edge it lacks. Its square, the triangle, meets the
+  three-dimensional Laman count, so its edges are independent in the generic rigidity matroid.
+* `degree_one_rank_witness`: Jackson and Jordán's degree-one rank formula at the paw (a triangle
+  with a pendant edge), the least connected non-tree whose core is not the whole graph. Its core
+  is the triangle, so the pendant vertex adds `2 + 1 = 3` to the rank of the square.
+* `molecule_generic_square_packing_witness`: Jackson and Jordán's generic rigidity of squares from
+  six spanning trees at `K₃`, the least simple graph on more than one vertex whose multiplied graph
+  `5·G` has six edge-disjoint spanning trees. The six trees are paths of length two, exhibited, and
+  so is a generic placement, at which the triangle is infinitesimally rigid in 3-space.
 
 The body-bar and body-hinge rows are taken in the plane, `n = 2`, where `d = bodyBarDim 2 = 3` and
 each hinge is two bars (`bodyHingeMult 2 = 2`): at `n = 1` a hinge carries no bar
 (`bodyHingeMult 1 = 0`) and a body's one motion is a translation (`bodyBarDim 1 = 1`). So are
 Theorem 5.5 and the molecular conjecture for multigraphs, whose least dimension is `n = 2` (a panel
-is a line and a hinge a point); the pencil rows are stated at `n = 3`.
+is a line and a hinge a point); the pencil rows are stated at `n = 3`, and the molecule and Jacobs
+rows, about the square of a graph, in 3-space.
 -/
 
 open scoped Graph
@@ -355,5 +372,160 @@ theorem pencilPair_of_nonempty_witness :
   (pencilPair_of_nonempty _ ⟨0, by simp⟩).2.1 inferInstance
 
 end
+
+/-! ### The molecule and Jacobs rows, in 3-space -/
+
+/-- The multigraph `K̃₃ = K₃.shadowGraph` of the triangle is a triangle, so it is `0`-dof in
+3-space (`Graph.isKDof_zero_of_triangle`, as `bodyBarDim 3 = 6 ≥ 3`). -/
+private theorem top_fin_three_shadowGraph_isKDof_zero :
+    (⊤ : SimpleGraph (Fin 3)).shadowGraph.IsKDof 3 0 := by
+  refine Graph.isKDof_zero_of_triangle (by decide) (x := 0) (y := 1) (z := 2)
+    (exy := Sum.inl s(0, 1)) (eyz := Sum.inl s(1, 2)) (exz := Sum.inl s(0, 2))
+    (by decide) (by decide) (by decide) ⟨by decide, rfl⟩ ⟨by decide, rfl⟩ ⟨by decide, rfl⟩ ?_ ?_
+  · rw [shadowGraph_vertexSet]
+    ext x
+    fin_cases x <;> simp
+  · ext e
+    rw [Graph.edgeSet_eq_setOfPred_exists_isLink]
+    constructor
+    · rintro ⟨x, y, hxy, rfl⟩
+      fin_cases x <;> fin_cases y <;> simp_all [Sym2.eq_swap]
+    · rintro (rfl | rfl | rfl) <;> exact ⟨_, _, by decide, rfl⟩
+
+/-- **Jackson and Jordán's molecule rank formula (Katoh and Tanigawa's Corollary 5.7) at the
+triangle**: `SimpleGraph.molecule_rank_formula` at `K₃`, the least simple graph of minimum degree
+two, its hypothesis met with equality. `K₃` is its own square, and its multigraph `K̃₃` is a
+triangle, which is `0`-dof, so the formula gives `r(K₃²) = 3 · 3 - 6 - 0 = 3`: the triangle is
+generically rigid in 3-space. -/
+theorem molecule_rank_formula_witness :
+    (⊤ : SimpleGraph (Fin 3)).square.genericRank 3 = 3 := by
+  have h := molecule_rank_formula (⊤ : SimpleGraph (Fin 3)) fun v ↦ by simp
+  rw [top_fin_three_shadowGraph_isKDof_zero.deficiency_eq, Nat.card_fin] at h
+  omega
+
+/-- The square of the path on three vertices satisfies the three-dimensional Laman condition: a
+set of at least three of its vertices is all three, and spans at most `3 = 3 · 3 - 6` edges. -/
+private theorem pathGraph_three_square_isLaman3 : (pathGraph 3).square.IsLaman3 := by
+  classical
+  intro s hs
+  have h1 : s.card ≤ 3 := (Finset.card_le_univ s).trans_eq (Fintype.card_fin 3)
+  have h2 : ((pathGraph 3).square.edgesIn ↑s).ncard ≤ 3 := by
+    refine (Set.ncard_le_ncard (fun e he => he.1) (Set.toFinite _)).trans ?_
+    rw [← SimpleGraph.coe_edgeFinset, Set.ncard_coe_finset]
+    exact (card_edgeFinset_le_card_choose_two).trans_eq (by simp)
+  omega
+
+/-- **Jacobs' conjecture (Jackson and Jordán's Theorem 5.4) at the path on three vertices**:
+`SimpleGraph.jacobs` at `P₃`, the least graph whose square has an edge it lacks. Its square, the
+triangle, meets the three-dimensional Laman count `|E(X)| + 6 ≤ 3|X|` (with equality at its three
+vertices), so by the theorem's converse direction the square's edges are independent in the
+3-dimensional generic rigidity matroid. -/
+theorem jacobs_witness :
+    (genericRigidityMatroid (Fin 3) 3).Indep (pathGraph 3).square.edgeSet :=
+  (jacobs _).mpr pathGraph_three_square_isLaman3
+
+/-- **Jackson and Jordán's degree-one rank formula (their Lemma 4.2) at the paw**:
+`SimpleGraph.degree_one_rank` at the triangle `0 1 2` with the pendant edge `0 3`, the least
+connected graph that is not a tree and whose core is not the whole graph (on three vertices the one
+connected non-tree is `K₃`, its own core). Its core is the triangle (`notMem_support_twoCore` at
+the pendant vertex `3`, `le_twoCore` for the triangle), whose support misses only `3`, the one
+vertex of degree one. So the formula gives `r(G²) = r(K₃²) + 2 · 1 + 1`: the pendant vertex adds
+three to the rank of the square. -/
+theorem degree_one_rank_witness :
+    (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} : SimpleGraph (Fin 4)).square.genericRank 3 =
+      (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2)} : SimpleGraph (Fin 4)).square.genericRank 3 + 3 := by
+  have hconn : (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} :
+      SimpleGraph (Fin 4)).Connected := by
+    rw [connected_iff_exists_forall_reachable]
+    refine ⟨0, fun w ↦ ?_⟩
+    fin_cases w
+    · rfl
+    all_goals exact Adj.reachable (by decide)
+  -- Not a tree: its degrees sum to `8`, so it has four edges on four vertices.
+  have hnt : ¬ (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} :
+      SimpleGraph (Fin 4)).IsTree := by
+    intro h
+    have h1 := h.card_edgeFinset
+    have h2 := (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} :
+      SimpleGraph (Fin 4)).sum_degrees_eq_twice_card_edges
+    have h3 : ∑ v, (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} :
+        SimpleGraph (Fin 4)).degree v = 8 := by
+      decide
+    simp only [Fintype.card_fin, ← Set.ncard_coe_finset, coe_edgeFinset] at h1 h2
+    omega
+  have hcore : (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} : SimpleGraph (Fin 4)).twoCore =
+      fromEdgeSet {s(0, 1), s(0, 2), s(1, 2)} := by
+    have h3 : (3 : Fin 4) ∉ (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} :
+        SimpleGraph (Fin 4)).twoCore.support :=
+      notMem_support_twoCore (by rw [Set.ncard_eq_toFinset_card']; decide)
+    refine le_antisymm (fun a b hab ↦ ?_) (le_twoCore (fun a b ↦ ?_) fun v _ ↦ ?_)
+    · have ha : a ≠ 3 := by rintro rfl; exact h3 ⟨b, hab⟩
+      have hb : b ≠ 3 := by rintro rfl; exact h3 ⟨a, hab.symm⟩
+      have key : ∀ a b : Fin 4, a ≠ 3 → b ≠ 3 →
+          (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} : SimpleGraph (Fin 4)).Adj a b →
+            (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2)} : SimpleGraph (Fin 4)).Adj a b := by
+        decide
+      exact key a b ha hb (twoCore_le _ hab)
+    · revert a b
+      decide
+    · rw [Set.ncard_eq_toFinset_card']
+      revert v
+      decide
+  have hsupp :
+      (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2)} : SimpleGraph (Fin 4)).supportᶜ.ncard = 1 := by
+    rw [Set.ncard_eq_toFinset_card']
+    decide
+  have hdeg : {w | (fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)} :
+      SimpleGraph (Fin 4)).degree w = 1}.ncard = 1 := by
+    rw [Set.ncard_eq_toFinset_card']
+    decide
+  have h := degree_one_rank hconn hnt
+  rw [hcore, hsupp, hdeg] at h
+  omega
+
+/-- The path `a - m - b` in `K₃.shadowGraph.mulTilde 3`, the multiplied graph `5·K₃`: the `c`-th
+copy of the edge `s(a, m)`, then the `d`-th copy of `s(m, b)`. -/
+private def path3 (a m b : Fin 3) (c d : Fin (Graph.bodyHingeMult 3)) :
+    WList (Fin 3)
+      ((Sym2 (Fin 3) ⊕ Fin (6 * (Nat.card (Fin 3) - 1) + 1)) × Fin (Graph.bodyHingeMult 3)) :=
+  .cons a (Sum.inl s(a, m), c) (.cons m (Sum.inl s(m, b), d) (.nil b))
+
+/-- Six edge-disjoint spanning trees of `5·K₃`, two paths through each vertex `m`: the `k`-th
+(`k = 0, 1`) takes, on its edge from `m` to `o`, copy `k` when `m < o` and copy `2 + k` when
+`o < m`. So the four paths through an edge take its copies `0` to `3`. -/
+private def treeWalk : Fin 6 → WList (Fin 3)
+    ((Sym2 (Fin 3) ⊕ Fin (6 * (Nat.card (Fin 3) - 1) + 1)) × Fin (Graph.bodyHingeMult 3)) :=
+  ![path3 1 0 2 ⟨0, by decide⟩ ⟨0, by decide⟩, path3 1 0 2 ⟨1, by decide⟩ ⟨1, by decide⟩,
+    path3 0 1 2 ⟨2, by decide⟩ ⟨0, by decide⟩, path3 0 1 2 ⟨3, by decide⟩ ⟨1, by decide⟩,
+    path3 0 2 1 ⟨2, by decide⟩ ⟨2, by decide⟩, path3 0 2 1 ⟨3, by decide⟩ ⟨3, by decide⟩]
+
+/-- **Jackson and Jordán's generic rigidity of squares from six spanning trees, at the
+triangle**: `SimpleGraph.molecule_generic_square_packing` at `K₃`, with its six trees and a generic
+placement exhibited. On one vertex the conclusion holds without the trees, and on two no simple
+graph has six edge-disjoint spanning trees in `5·G` (it has at most five edges), so `K₃` is the
+least input where the hypothesis bites. `5·K₃` has fifteen edges, five copies of each edge of the
+triangle, and the six paths of length two of `treeWalk` use twelve of them; a placement generic for
+row independence exists (`exists_isGenericPlacement`). So at that placement the triangle, its own
+square, is infinitesimally rigid in 3-space. -/
+theorem molecule_generic_square_packing_witness :
+    ∃ p : Framework (Fin 3) 3, IsGenericPlacement p ∧
+      (⊤ : SimpleGraph (Fin 3)).square.IsInfinitesimallyRigid p := by
+  have hV : V((⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3) = Set.univ := rfl
+  have hL : ∀ e x y, (⊤ : SimpleGraph (Fin 3)).shadowGraph.IsLink e x y ↔
+      x ≠ y ∧ Sum.inl s(x, y) = e := fun _ _ _ ↦ Iff.rfl
+  have hP : ∀ i, ((⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3).IsPath (treeWalk i) := by
+    intro i
+    fin_cases i <;> simp [treeWalk, path3, Graph.cons_isPath_iff, hV, hL]
+  have hspan : ∀ i, (treeWalk i).toGraph ≤s (⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3 := by
+    refine fun i ↦ ⟨(hP i).isWalk.toGraph_le, ?_⟩
+    rw [WList.toGraph_vertexSet, hV]
+    fin_cases i <;> (ext x; fin_cases x <;> simp [treeWalk, path3])
+  have hdisj : Pairwise (Function.onFun Disjoint fun i ↦ E((treeWalk i).toGraph)) := by
+    intro i j hij
+    simp only [Function.onFun, WList.toGraph_edgeSet]
+    fin_cases i <;> fin_cases j <;> simp_all [treeWalk, path3]
+  obtain ⟨p, hp⟩ := exists_isGenericPlacement (V := Fin 3) 3
+  exact ⟨p, hp, molecule_generic_square_packing _ hspan
+    (fun i ↦ ⟨(hP i).toGraph_isForest, (hP i).isWalk.toGraph_connected⟩) hdisj hp⟩
 
 end CombinatorialRigidity

@@ -111,6 +111,33 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [open] `SimpleGraph.shadowGraph` has no `IsLink` or edge-set lemma in the plain form
+- **Where it bit:** RECONCILE round 3, task 24: `molecule_rank_formula_witness` and
+  `molecule_generic_square_packing_witness` (`Nonvacuity.lean`) need the links and the edge set of
+  `K₃.shadowGraph` (the triangle's `isKDof_zero_of_triangle` arguments; the six trees' `IsPath` in
+  `K₃.shadowGraph.mulTilde 3`). `shadowGraph_isLink_iff` is the `∃ e` form only.
+- **Friction:** a local `hL : … IsLink e x y ↔ x ≠ y ∧ Sum.inl s(x, y) = e := Iff.rfl` fed to
+  `simp`; `simp [shadowGraph]` instead unfolds the structure, after which `V(_.mulTilde 3)` no
+  longer matches the local `hV : … = univ := rfl`. The edge set went through
+  `Graph.edgeSet_eq_setOfPred_exists_isLink` and an `ext`. `Fin (bodyHingeMult 3)` has no `NeZero`,
+  so its elements were `⟨c, by decide⟩`.
+- **Proposed fix:** `@[simp] shadowGraph_isLink : G.shadowGraph.IsLink e x y ↔ G.Adj x y ∧ Sum.inl
+  s(x, y) = e := Iff.rfl` beside `shadowGraph_isLink_iff` (`Molecular/Molecule/Carrier.lean`);
+  an edge-set lemma if a second caller appears.
+- **Status:** open.
+
+### [idiom] Two `edgeFinset` instances are two `omega` atoms; `decide` stalls on `edgeFinset.card`
+- **Where it bit:** RECONCILE round 3, task 24: `degree_one_rank_witness` (`Nonvacuity.lean`), the
+  paw `fromEdgeSet {s(0, 1), s(0, 2), s(1, 2), s(0, 3)}` on `Fin 4` is not a tree.
+- **Friction:** `decide` on its `edgeFinset.card` stalls (the instance does not reduce).
+  `IsTree.card_edgeFinset` and `sum_degrees_eq_twice_card_edges` carry different `Fintype
+  G.edgeSet` instances, so `omega` failed on goals that print the same. Separately, `decide` could
+  not synthesize `Decidable (∀ a b : Fin 4, G.Adj a b → a ≠ 3 → b ≠ 3 → H.Adj a b)` but did with the
+  premises ordered `a ≠ 3 → b ≠ 3 → G.Adj a b → …` (not understood; compare TACTICS-QUIRKS § 101).
+- **Proposed fix:** `simp only [← Set.ncard_coe_finset, coe_edgeFinset] at h1 h2` rewrites both
+  to `G.edgeSet.ncard`; count the edges by `decide` on `∑ v, G.degree v`.
+- **Status:** idiom.
+
 ### [open] The dependency's `Graph.OfSimpleGraph` has no `Simple` instance
 - **Where it bit:** RECONCILE round 3, task 23: `pencil_realization_theorem_witness` and
   `pencilPair_of_nonempty_witness` (`Nonvacuity.lean`) need `(Graph.OfSimpleGraph H).Simple` for
