@@ -10,14 +10,12 @@ public import CombinatorialRigidity.Henneberg
 /-!
 # Henneberg moves — reverse decomposition and worked example
 
-The *reverse* half of `Henneberg.lean`. Splits out the iso constructors that
-bridge flat-form reverse decompositions to operation-form forward-preservation
-theorems, the flat-form Henneberg reverse decomposition for Laman graphs
-(`IsLaman.exists_typeI_or_typeII_reverse`), and the K₄-minus-one-edge worked
-example. Downstream files that only need the forward `typeI` / `typeII`
-operations and per-move Laman preservation (e.g. `HennebergRigidity.lean`)
-import `Henneberg.lean` alone; files that need the reverse decomposition
-(`LamanTheorem.lean`, `MatroidIdentification.lean`) import this file.
+The *reverse* half of the Henneberg moves of `Henneberg.lean`: the iso constructors that
+bridge flat-form reverse decompositions to operation-form forward-preservation theorems, the
+flat-form Henneberg reverse decomposition for Laman graphs
+(`IsLaman.exists_typeI_or_typeII_reverse`), and the K₄-minus-one-edge worked example.
+`HennebergRigidity.lean` imports `Henneberg.lean` alone; `LamanTheorem.lean` and
+`MatroidIdentification.lean`, which use its iso constructors, import this file.
 
 ## Main definitions / theorems
 
@@ -28,12 +26,8 @@ import `Henneberg.lean` alone; files that need the reverse decomposition
   Laman graph on `n ≥ 3` vertices admits a Henneberg reverse.
 * `SimpleGraph.top_fin_four_minus_edge_isLaman` — `K₄ \ {s(2, 3)}` is Laman.
 
-## Project context
-
-See `ROADMAP.md` for the project plan and `notes/Phase3.md` /
-`notes/Phase7.md` for the work logs that produced this material. The
-forward / reverse split was extracted in the Phase 8 perf pass; see
-`notes/Phase8-perf.md` for the structural rationale.
+The blueprint's `sec:henneberg` presents this file, in its reverse decomposition
+(`sec:henneberg-decomp`) and its closing example.
 -/
 
 public section
@@ -51,13 +45,14 @@ data at a chosen vertex `v`, the canonical iso `G ≃g typeI G' a b` (resp.
 `G ≃g typeII G' a b c`) along the equivalence `(Equiv.optionSubtypeNe v).symm`. They are the
 bridge between flat-form reverse decomposition theorems (which describe the smaller graph
 `G'` directly via `G.comap Subtype.val` and `fromEdgeSet`) and operation-form forward-
-preservation theorems (`typeI_isGenericallyRigidInj_two` / `typeII_isGenericallyRigidInj_two`,
-which operate on `typeI G' a b` / `typeII G' a b c`). The forward = operation / reverse = flat
-split is documented in `DESIGN.md` *Statement-form conventions*. -/
+preservation theorems, which operate on `typeI G' a b` / `typeII G' a b c`: the rigidity steps
+`typeI_isGenericallyRigidInj_two` / `typeII_isGenericallyRigidInj_two` of `LamanTheorem.lean`'s
+induction, and the row-independence lifts of `MatroidIdentification.lean`'s. The forward =
+operation / reverse = flat split is documented in `DESIGN.md` *Statement-form conventions*. -/
 
 /-- Build a graph iso `G ≃g H` along the canonical `V ≃ Option {w : V // w ≠ v}` equivalence,
-given the adjacency-equivalence at each of the four `(u, w)` cases w.r.t. `v`. The `(none, none)`
-case is `H` losing the loop, and the `(none, some)` and `(some, none)` cases are related by
+given the adjacency-equivalence at the `(u, w)` cases w.r.t. `v`. For `(none, none)`, `hnone`
+says that `H` has no loop at `none`; the `(none, some)` and `(some, none)` cases are related by
 adjacency-symmetry, so only one of them is asked for. The `(some, some)` case carries any
 move-specific bridging-edge logic. -/
 private def isoOfOptionSubtypeNe [DecidableEq V] {G : SimpleGraph V} (v : V)
@@ -71,7 +66,7 @@ private def isoOfOptionSubtypeNe [DecidableEq V] {G : SimpleGraph V} (v : V)
   map_rel_iff' {u w} := by
     by_cases hu : u = v <;> by_cases hw : w = v
     · subst hu; subst hw
-      -- `simp` uses `hnone` (and `G.irrefl`) from context; explicit hints would be redundant.
+      -- `simp` closes it: neither graph has a loop (`SimpleGraph.irrefl`).
       simp
     · subst hu
       rw [Equiv.optionSubtypeNe_symm_self, Equiv.optionSubtypeNe_symm_of_ne hw]
@@ -83,8 +78,10 @@ private def isoOfOptionSubtypeNe [DecidableEq V] {G : SimpleGraph V} (v : V)
     · rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_of_ne hw]
       exact hss hu hw
 
-/-- Iso from `G` to a Type I move applied to its induced subgraph on `{w // w ≠ v}`, when `v` is a
-degree-2 vertex with neighbors `a, b`. The membership-style hypothesis `hN` says `N(v) = {a, b}`. -/
+/-- Iso from `G` to a Type I move applied to its induced subgraph on `{w // w ≠ v}`, when the
+neighbors of `v` are exactly `a` and `b`: the membership-style hypothesis `hN` says
+`N(v) = {a, b}`. The statement does not ask `a ≠ b`; at `a = b` the vertex `v` has degree 1,
+the case `MatroidIdentification.lean`'s induction applies it to. -/
 def isoTypeIOfTwoNeighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
     (hva : v ≠ a) (hvb : v ≠ b) (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b) :
     G ≃g typeI (G.comap (Subtype.val : {w : V // w ≠ v} → V))
@@ -94,7 +91,8 @@ def isoTypeIOfTwoNeighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
     (fun _ _ => Iff.rfl)
 
 /-- Iso from `G` to a Type II move applied to (induced subgraph + bridging edge `s(a, b)`), when
-`v` has degree 3 with neighbors `a, b, c` and `a, b` are non-adjacent in `G`. -/
+the neighbors of `v` are exactly `a`, `b` and `c` (`hN`) and `a, b` are non-adjacent in `G`. The
+statement does not ask that `c` differ from `a` and `b`; `v` has degree 3 when it does. -/
 def isoTypeIIOfThreeNeighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
     (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c) (hab : a ≠ b)
     (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c) (hnab : ¬ G.Adj a b) :
@@ -115,22 +113,19 @@ def isoTypeIIOfThreeNeighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
 /-! ### Flat-form Henneberg reverse decomposition for Laman graphs
 
 Every Laman graph on `n ≥ 3` vertices admits a Henneberg reverse to another Laman graph on
-one fewer vertex. Thin shell over `IsSparse.exists_typeI_or_typeII_reverse`: applies the sparse
-flat-form decomposition to `h.isSparse`, discards the pendant branch via `IsLaman.two_le_degree`,
-and bumps `G'.IsSparse 2 3` to `G'.IsLaman` via the typeI iso combined with `typeI_isLaman_iff`
-(Type I) or the typeII iso combined with `typeII_edgeSet_ncard` plus the bridge-edge count
-(Type II).
+one fewer vertex. Thin shell over `IsSparse.exists_typeI_or_typeII_reverse`: it applies the
+sparse flat-form decomposition to `h.isSparse` and discards its pendant branch
+(`G.degree v = 1`) by `IsLaman.two_le_degree`. In the Type I branch `G'` is Laman by
+`typeI_isLaman_iff` along the typeI iso; in the Type II branch the sparse decomposition's
+`G'.IsSparse 2 3` and the edge count from the typeII iso, `typeII_edgeSet_ncard` and the bridge
+edge make `G'` Laman.
 
-**Phase 5 milestone 1.** Phase 7 re-presented the sparse decomposition as a 3-way split (Commit
-12), so the Laman shell here drops the pendant branch (`G.degree v = 1`) by contradicting
-`IsLaman.two_le_degree`; the surviving Type I / Type II branches consume the sparse 3-way
-exactly as before. Callers reconstruct the iso to `typeI G' a b` / `typeII G' a b c` via
-`isoTypeIOfTwoNeighbors` / `isoTypeIIOfThreeNeighbors` at the callsite, before invoking
-the operation-form forward-preservation theorems (`typeI_isGenericallyRigidInj_two` /
-`typeII_isGenericallyRigidInj_two`) and transporting along the iso. See `DESIGN.md`
-*Statement-form conventions* for the forward = operation / reverse = flat split. -/
+`LamanTheorem.lean`'s induction rebuilds the iso to `typeI G' a b` / `typeII G' a b c` at the
+call site, by `isoTypeIOfTwoNeighbors` / `isoTypeIIOfThreeNeighbors`, before applying the
+operation-form steps `typeI_isGenericallyRigidInj_two` / `typeII_isGenericallyRigidInj_two` and
+transporting along the iso. -/
 
-/-- **Strengthened decomposition theorem (flat form).** Every Laman graph `G` on `n ≥ 3`
+/-- **Laman reverse decomposition (flat form).** Every Laman graph `G` on `n ≥ 3`
 vertices admits a Henneberg reverse to another Laman graph on the subtype `{w // w ≠ v}`:
 either some vertex `v` has degree exactly 2 with two distinct neighbors `a, b` such that the
 induced subgraph `G.comap Subtype.val` is Laman (Type I reverse), or some vertex `v` has
@@ -143,9 +138,7 @@ The Laman analogue of `IsSparse.exists_typeI_or_typeII_reverse`. Proof: apply th
 `IsLaman.two_le_degree` forces `2 ≤ deg v`; dispatch via `absurd`. The Type I branch
 (`deg v = 2`) feeds directly into `typeI_isLaman_iff` after iso transport. In the Type II
 branch, the typeII iso transports `G`'s Laman to `(typeII G' x y c).IsLaman`, and
-`typeII_edgeSet_ncard` plus the bridge-edge presence pins down `G'`'s tight edge count.
-
-**Phase 5 milestone 1.** -/
+`typeII_edgeSet_ncard` plus the bridge-edge presence pins down `G'`'s tight edge count. -/
 theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
     {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsLaman)
     (hV : 3 ≤ Fintype.card V) :

@@ -2142,7 +2142,8 @@ declaration's name as its header writes it:
   statements and `shadowGraph`); a `lake lean` witness, every graph on `Fin 2` at every $p$ in
   $d = 3$, by `Submodule.finrank_le` and `Framework.finrank` ($6 \le 3 \cdot 4 / 2$).
   *Found:* round 1 task 5.4.
-  *Disposition:* reported (`notes/Prose-report.md`, S12).
+  *Disposition:* reported (`notes/Prose-report.md`, S12); round 3: `IsInfinitesimallyRigid`'s
+  docstring and `Framework.lean`'s header state the divergence (task 25.1).
 - **F-026** · S · `lem:span-range-rigidityRow` (`laman-theorem.tex`): the statement assumes $V$
   finite, which its pin `span_range_rigidityRow` does not: it takes only `[Finite G.edgeSet]`. The
   statement is weaker than the pin, as in `F-015`.
@@ -4501,6 +4502,15 @@ declaration's name as its header writes it:
   proved.
   *Found:* RECONCILE round 3 task 16.
   *Disposition:* reported (`notes/Reconcile-lean-cleanup.md` *Candidates for the PI*).
+- **F-278** · L · `SimpleGraph.Henneberg.isoOfOptionSubtypeNe` (private) and
+  `SimpleGraph.Henneberg.isoTypeIIOfThreeNeighbors` (`HennebergReverse.lean`): the first's
+  `hnone : ¬ H.Adj none none` holds for every simple graph (`SimpleGraph.irrefl`; its callers pass
+  `by simp`), and the second's `hab : a ≠ b` is not needed, as the iso holds at `a = b` too.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness, copies without the two
+  that elaborate with the same proofs (`scratch/reconcile-lean/Docstrings-t25-1.lean`,
+  gitignored).
+  *Found:* RECONCILE round 3 task 25.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 

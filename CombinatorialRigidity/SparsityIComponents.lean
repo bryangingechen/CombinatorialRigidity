@@ -10,28 +10,23 @@ public import CombinatorialRigidity.Sparsity
 /-!
 # Matroidal-regime I-components and augmentation for `(k, ℓ)`-sparsity
 
-The Phase 7 matroid-side scaffolding on top of `Sparsity.lean`, in the
-matroidal regime `ℓ < 2 * k` (Whiteley 1996, Lee–Streinu 2008). Two
-subsections:
+The tight sets of a `(k, ℓ)`-sparse graph in the matroidal regime `ℓ < 2 * k`, on top of
+`Sparsity.lean`, and the augmentation lemma of the `(k, ℓ)`-count matroid. Lee and Streinu
+(2008) call the subgraph a tight set induces a *block*, and a maximal one a *component*.
+`IsSparse.maxBlock_isTightOn` follows from their Theorem 5(1) (`IsTightOn.union_inter_of_pair`,
+`Sparsity.lean`), and `IsSparse.maxBlock_eq_of_subset_maxBlock` gives their Theorem 5(2) in
+this regime. Two subsections:
 
-* **Maximal `I`-blocks (I-components).** For a sparse edge set `I` and a
-  Finset `X ⊆ V` with `|X| ≥ 2`, the family of `(fromEdgeSet I)`-tight
-  Finsets containing `X` is closed under pairwise union; their union
-  `G.maxBlock k ℓ X` is itself `G`-tight when non-empty (the maximal
-  `I`-block containing `X`). Distinct I-components share at most one
-  vertex, hence are edge-disjoint.
-* **Matroid augmentation.** For sparse `I, J ⊆ E(K_V)` with `|I| < |J|`,
-  some `e ∈ J \ I` extends `I` to a sparser set
-  (`IsSparse.exists_aug_of_lt_two_mul`). The combinatorial heart of the
-  `(k, ℓ)`-count matroid (`CountMatroid.lean`).
+* **Maximal `I`-blocks (I-components).** For a sparse graph `G` (the graph `fromEdgeSet I` of a
+  sparse edge set `I`, in the augmentation) and a Finset `X ⊆ V` with `|X| ≥ 2`, the family of
+  `G`-tight Finsets containing `X` is closed under pairwise union; their union
+  `G.maxBlock k ℓ X` is itself `G`-tight when the family is non-empty (the maximal block
+  containing `X`). Distinct components share at most one vertex, hence are edge-disjoint.
+* **Matroid augmentation.** For sparse `I, J ⊆ E(K_V)` with `|I| < |J|`, the set `insert e I`
+  is sparse for some `e ∈ J \ I` (`IsSparse.exists_aug_of_lt_two_mul`): the augmentation axiom
+  of the `(k, ℓ)`-count matroid (`CountMatroid.lean`, which gives the matroid's credit).
 
-Split out from `Sparsity.lean` at the post-Phase-8 perf pass per the
-audit in `notes/PERFORMANCE.md` *Post-Phase-8 file-structure audit →
-Split candidates ranked by leverage* §1: this block has exactly one
-downstream consumer (`CountMatroid.lean` uses
-`IsSparse.exists_aug_of_lt_two_mul` once), so eight of the ten
-downstream files can drop ~354 LoC of matroid-regime machinery from
-their transitive import set.
+Only `CountMatroid.lean` imports this file. The blueprint's `sec:count-matroid-aug` presents it.
 -/
 
 public section
@@ -42,23 +37,23 @@ variable {V : Type*}
 
 /-! ### Matroidal-regime maximal I-blocks (I-components)
 
-For a `(k, ℓ)`-sparse edge set `I` in the matroidal regime `ℓ < 2 * k`, the family of
-`(fromEdgeSet I)`-tight Finsets containing a fixed Finset `X ⊆ V` with `|X| ≥ 2` is
-closed under pairwise union (`IsTightOn.union_inter_of_pair`); the union of the whole
-family — `G.maxBlock k ℓ X` — is therefore itself `G`-tight when
-non-empty, the maximal `I`-block containing `X` (or *I-component* of `X`, in
-Lee–Streinu's terminology). Distinct I-components share at most one vertex, hence are
-edge-disjoint: each non-free I-edge lies in a unique I-component. This scaffolding
-drives Phase 7's `(k, ℓ)`-augmentation lemma `IsSparse.exists_aug_of_lt_two_mul`
-(Commit 17c). -/
+For a `(k, ℓ)`-sparse graph `G` in the matroidal regime `ℓ < 2 * k` (in the augmentation,
+`G = fromEdgeSet I`), the family of `G`-tight Finsets containing a fixed Finset `X ⊆ V` with
+`|X| ≥ 2` is closed under pairwise union (`IsTightOn.union_inter_of_pair`); the union of the
+whole family — `G.maxBlock k ℓ X` — is therefore itself `G`-tight when the family is
+non-empty, the maximal block containing `X` (the *component* of `X`, in Lee and Streinu's
+terms; an *I-component* when `G = fromEdgeSet I`). Distinct components share at most one
+vertex, hence are edge-disjoint: an edge of `K_V` inside one component lies in no other.
+The augmentation lemma `IsSparse.exists_aug_of_lt_two_mul` below rests on this. -/
 
 section IComponents
 
 variable [Finite V]
 
-/-- Predicate: some `G`-tight Finset contains `X`. The `maxBlock X` is non-empty
-exactly when this holds. Defined for any graph; the matroidal-regime closure
-properties (`IsSparse.maxBlock_isTightOn` and friends) need additional sparsity. -/
+/-- Predicate: some `G`-tight Finset contains `X`. For non-empty `X`, `maxBlock X` is non-empty
+exactly when this holds (at `X = ∅` and `ℓ = 0` the empty set is tight, and may be the only
+tight set). Defined for any graph; the matroidal-regime closure properties
+(`IsSparse.maxBlock_isTightOn` and friends) need additional sparsity. -/
 def HasBlock (G : SimpleGraph V) (k ℓ : ℕ) (X : Finset V) : Prop :=
   ∃ S : Finset V, G.IsTightOn k ℓ S ∧ X ⊆ S
 
@@ -160,8 +155,8 @@ lemma IsSparse.maxBlock_isTightOn {G : SimpleGraph V} {k ℓ : ℕ}
   · exact h_tight
 
 /-- **Edge-disjointness of distinct components.** For sparse `G` in the
-matroidal regime, if `Y ⊆ maxBlock X` with both `|X|, |Y| ≥ 2`, then
-`maxBlock Y = maxBlock X`. Two distinct non-empty components therefore share
+matroidal regime, if some `G`-tight Finset contains `X` and `Y ⊆ maxBlock X`, with both
+`|X|, |Y| ≥ 2`, then `maxBlock Y = maxBlock X`. Two distinct components therefore share
 at most one vertex (and so contain no common off-diagonal edge of `K_V`). -/
 lemma IsSparse.maxBlock_eq_of_subset_maxBlock {G : SimpleGraph V} {k ℓ : ℕ}
     (hI : G.IsSparse k ℓ) (hℓ : ℓ < 2 * k)
@@ -194,14 +189,14 @@ end IComponents
 
 /-! ### Augmentation in the matroidal regime (`ℓ < 2 * k`)
 
-The combinatorial heart of the `(k, ℓ)`-count matroid (Whiteley 1996, Lee–Streinu 2008):
-for `(k, ℓ)`-sparse edge sets `I, J ⊆ E(K_V)` with `|I| < |J|`, some `e ∈ J \ I` extends
-`I` to a sparser set. The proof argues by contradiction via the *I-component* partition
-(`SimpleGraph.maxBlock` from the previous section): if no augmentation exists, every
-`e ∈ J \ I` forces its endpoints into a (non-trivial) I-component, which then accounts
-for `e`. J-sparsity at each I-component vs I-tightness at the same component bounds the
-J-edge count from above by the I-edge count; the free edges (no endpoints in any
-I-component) on the J-side embed into the I-side; summing gives `|J| ≤ |I|`. -/
+The augmentation axiom of the `(k, ℓ)`-count matroid: for `(k, ℓ)`-sparse edge sets
+`I, J ⊆ E(K_V)` with `|I| < |J|`, the set `insert e I` is sparse for some `e ∈ J \ I`. The proof
+argues by contradiction via the *I-component* partition (`SimpleGraph.maxBlock` from the previous
+section), as Lee and Streinu's proof (2008) rests on the structure of tight sets: if no augmentation
+exists, every `e ∈ J \ I` forces its endpoints into a (non-trivial) I-component, which then
+accounts for `e`. J-sparsity at each I-component vs I-tightness at the same component bounds the
+J-edge count from above by the I-edge count; the free edges (those inside no I-component) on
+the J-side embed into the I-side; summing gives `|J| ≤ |I|`. -/
 
 section Augmentation
 
@@ -218,10 +213,12 @@ private lemma ne_of_mem_top_edgeSet {V : Type*} {u v : V}
 if `I, J ⊆ E(K_V)` are both `(k, ℓ)`-sparse with `|I| < |J|`, then some `e ∈ J \ I`
 extends `I` to a `(k, ℓ)`-sparse edge set: `(fromEdgeSet (insert e I)).IsSparse k ℓ`.
 
-The combinatorial axiom of the `(k, ℓ)`-count matroid (Whiteley 1996, Lee–Streinu 2008).
-Proof via the I-component decomposition: assuming no augmentation, every `e ∈ J \ I` is
-forced into a component (`SimpleGraph.maxBlock` of its endpoints), and the partition
-identity `|J| = ∑_C |edgesIn(J) C| + |J_free| ≤ ∑_C |edgesIn(I) C| + |I_free| = |I|`
+The augmentation axiom of the `(k, ℓ)`-count matroid, which goes back to Lorea and,
+independently, to White and Whiteley; Whiteley (1996, Proposition A.1.1) proves it for
+hypergraphs, and Lee and Streinu (2008, Theorem 2) a version for multigraphs. Proof via the
+I-component decomposition: assuming no augmentation, every `e ∈ J \ I` is forced into a
+component (`SimpleGraph.maxBlock` of its endpoints), and the partition identity
+`|J| = ∑_C |edgesIn(J) C| + |J_free| ≤ ∑_C |edgesIn(I) C| + |I_free| = |I|`
 contradicts `|I| < |J|`. -/
 theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
     {I J : Set (Sym2 V)} (hI : (fromEdgeSet I).IsSparse k ℓ)

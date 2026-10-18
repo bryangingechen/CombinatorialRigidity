@@ -17,13 +17,17 @@ public import Mathlib.Logic.Equiv.Option
 /-!
 # Henneberg moves
 
-Two vertex-extension operations on simple graphs that, iterated from `K₂`,
-construct exactly the Laman graphs (Henneberg's theorem; future work).
+Two vertex-extension operations on simple graphs. The Laman graphs are exactly the graphs
+built from `K₂` by them, a characterization due to Henneberg (1911), Pollaczek-Geiringer (1927)
+and Laman (1970). The project proves its two inductive steps, not the characterization itself:
+the moves preserve the Laman property (this file), and every Laman graph on at least three
+vertices is, up to isomorphism, a move applied to a smaller Laman graph
+(`HennebergReverse.lean`).
 
-* **Type I** adds a fresh vertex of degree 2 joined to two existing
-  vertices `a` and `b`.
-* **Type II** deletes an edge `{a, b}` and adds a fresh vertex of degree 3
-  joined to `a`, `b`, and a third existing vertex `c`.
+* **Type I** joins a fresh vertex to two existing vertices `a` and `b` (degree 2 when
+  `a ≠ b`).
+* **Type II** deletes the edge `s(a, b)`, if present, and joins a fresh vertex to `a`, `b` and a
+  third existing vertex `c` (degree 3 when the three are distinct).
 
 The fresh vertex is represented as `none : Option V`, with old vertices
 embedded via `some`. This is mathlib's canonical "add one element" idiom
@@ -35,10 +39,7 @@ every move and keeps the type signatures readable.
 * `SimpleGraph.Henneberg.typeI G a b : SimpleGraph (Option V)`.
 * `SimpleGraph.Henneberg.typeII G a b c : SimpleGraph (Option V)`.
 
-## Project context
-
-See `ROADMAP.md` for the project plan and `notes/Phase3.md` for the
-Phase 3 work log.
+The blueprint's `sec:henneberg` presents this file.
 -/
 
 public section
@@ -75,8 +76,9 @@ move preserves the Laman property only under `a ≠ b`. -/
 edge `s(a, b)` and adding a fresh vertex of degree 3 joined to `a`, `b`, and a
 third vertex `c`. The output graph lives on `Option V`.
 
-The move is well-defined for any `a b c : V`. It preserves the Laman property
-only under `a ≠ b`, `c ≠ a`, `c ≠ b`, and `G.Adj a b`. -/
+The move is well-defined for any `a b c : V`. It preserves the Laman property when
+`G.Adj a b` (so `a ≠ b`) and `c` is neither `a` nor `b` (`typeII_isLaman`); at `a = b` it is
+the Type I move at `a` and `c`. -/
 @[expose] def typeII (G : SimpleGraph V) (a b c : V) : SimpleGraph (Option V) where
   Adj
     | some u, some v => G.Adj u v ∧ s(u, v) ≠ s(a, b)
@@ -137,7 +139,7 @@ instance instDecidableTypeIIAdj [DecidableEq V] (G : SimpleGraph V) [DecidableRe
 `typeI_isLaman` and `typeII_isLaman` decompose `(typeI/II _).edgesIn ↑s` into "old" edges (image
 under `some`) plus the subset of fresh edges (each of the form `s(none, some _)`) that lie in
 `s.sym2`. The three helpers below isolate the recurring set-cardinality steps used in the
-sparsity case analysis. They are stated against `s.eraseNone` (mathlib's name for the
+sparsity case analysis. The last two are stated against `s.eraseNone` (mathlib's name for the
 some-preimage of a `Finset (Option V)`) so callers can pass the produced equalities /
 non-memberships directly. -/
 
@@ -449,10 +451,6 @@ end Henneberg
 
 end SimpleGraph
 
--- Iso constructors (`isoTypeIOfTwoNeighbors`, `isoTypeIIOfThreeNeighbors`), the
--- flat-form Henneberg reverse decomposition (`IsLaman.exists_typeI_or_typeII_reverse`),
--- and the K₄-minus-one-edge worked example live in
--- `CombinatorialRigidity/HennebergReverse.lean`. Files that only need the forward
--- typeI/typeII operations and per-move Laman preservation (e.g. `HennebergRigidity.lean`)
--- can import this file alone; `MatroidIdentification.lean` and `LamanTheorem.lean` import
--- the reverse half.
+-- The iso constructors (`isoTypeIOfTwoNeighbors`, `isoTypeIIOfThreeNeighbors`), the Laman
+-- reverse decomposition (`IsLaman.exists_typeI_or_typeII_reverse`) and the example of `K₄`
+-- minus an edge are in `HennebergReverse.lean`.

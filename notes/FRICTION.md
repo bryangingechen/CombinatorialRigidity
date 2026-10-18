@@ -111,6 +111,15 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `simp` makes no progress on `0 = s.card ↔ s = ∅`
+- **Where it bit:** RECONCILE round 3, task 25.1: a scratch witness that `HasBlock ∅` can hold
+  while `maxBlock ∅` is empty (`scratch/reconcile-lean/Docstrings-t25-1.lean`, gitignored).
+  Unfolding `IsTightOn` at `k = 1`, `ℓ = 0` leaves `0 = S.card ↔ S = ∅`.
+- **Friction:** `simp`, with or without `eq_comm`, makes no progress on it (a `lake lean` probe):
+  `Finset.card_eq_zero` fires only in the `S.card = 0` orientation. One iteration.
+- **Proposed fix:** `rw [eq_comm, Finset.card_eq_zero]`, or `Finset.card_eq_zero.mp h.symm`.
+- **Status:** idiom.
+
 ### [open] `SimpleGraph.shadowGraph` has no `IsLink` or edge-set lemma in the plain form
 - **Where it bit:** RECONCILE round 3, task 24: `molecule_rank_formula_witness` and
   `molecule_generic_square_packing_witness` (`Nonvacuity.lean`) need the links and the edge set of

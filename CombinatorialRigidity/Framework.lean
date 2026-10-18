@@ -24,12 +24,14 @@ the differentiability machinery — none of which the rank/kernel arguments
 downstream need.
 
 A framework is **infinitesimally rigid** when the kernel of the rigidity
-map has dimension at most `d (d+1) / 2`, the dimension of trivial Euclidean
-motions (translations + infinitesimal rotations). It is **generically
-rigid** when *some* placement is infinitesimally rigid.
+map has dimension at most `d (d+1) / 2`, the dimension of the space of trivial
+Euclidean motions (translations and infinitesimal rotations). It is **generically
+rigid** when *some* placement is infinitesimally rigid. We follow Jordán (2016, §1.2);
+the definition of infinitesimal rigidity agrees with his when `|V| ≥ d` or `|V| ≤ 1`, so
+always in the plane, and is weaker otherwise (`IsInfinitesimallyRigid`).
 
-These definitions are stated for general dimension `d`; the Laman-relevant
-specialization to `d = 2` happens at the Phase 5 boundary.
+These definitions are stated for general dimension `d`; Laman's theorem
+(`LamanTheorem.lean`) takes `d = 2`.
 
 ## Main definitions
 
@@ -38,13 +40,9 @@ specialization to `d = 2` happens at the Phase 5 boundary.
 * `SimpleGraph.IsInfinitesimallyRigid G p` — kernel-dimension bound.
 * `SimpleGraph.IsGenericallyRigid G d` — existence of a rigid placement.
 * `SimpleGraph.IsGenericallyRigidInj G d` — existence of a rigid *injective*
-  placement; the strengthened predicate maintained through the Phase 5
-  Henneberg induction (see `notes/Phase5.md` *Blockers*).
+  placement; the predicate the Henneberg induction of Laman's theorem maintains.
 
-## Project context
-
-See `ROADMAP.md` for the project plan and `notes/Phase4.md` for the Phase 4
-work log.
+The blueprint's `sec:frameworks` presents this file.
 -/
 
 @[expose] public section
@@ -141,13 +139,17 @@ theorem rigidityMap_finrank_range_le [Finite V] (G : SimpleGraph V) (p : Framewo
     _ = G.edgeSet.ncard := (Set.ncard_eq_card_coe _).symm
 
 /-- A framework `p` is **infinitesimally rigid** for `G` if the kernel of the
-rigidity map has dimension at most `d (d+1) / 2`, the dimension of trivial
-Euclidean motions (translations + infinitesimal rotations).
+rigidity map has dimension at most `d (d+1) / 2`, the dimension of the space of trivial
+Euclidean motions (translations and infinitesimal rotations).
 
-When this kernel is *equal* to the trivial motions, the framework is rigid in
-the textbook sense; the inequality formulation is the always-correct upper
-bound and is what fits naturally into the rank-nullity argument used
-downstream. -/
+When the points `p v` affinely span `ℝ^d`, the trivial infinitesimal motions of `p` lie in the
+kernel and have that dimension, so the bound says that every infinitesimal motion is trivial,
+Jordán's definition (2016, p. 36). In general it says that the rigidity map has rank at least
+`d|V| − d(d+1)/2`, where Jordán's equivalent rank form (pp. 36–37) asks for his bound
+`S(|V|, d)`. The two agree when `|V| ≥ d` or `|V| ≤ 1`, so always at `d = 2`; when
+`2 ≤ |V| ≤ d − 1` this definition is weaker (two vertices with no edge, anywhere in `ℝ³`,
+satisfy it). The blueprint's `fmlnote:infinitesimal-rigidity` gives the comparison. The kernel
+bound is the form the rank–nullity arguments downstream use. -/
 -- The `[Finite V]` instance is semantically required (otherwise `Module.finrank`
 -- of the kernel is vacuously `0` and the definition is meaningless), but is not
 -- consumed by elaboration of the body. The instance acts as a contract guard so
@@ -164,9 +166,10 @@ def IsInfinitesimallyRigid [Finite V] (G : SimpleGraph V) (p : Framework V d) : 
 /-- A graph `G` is **generically rigid** in dimension `d` if some placement is
 infinitesimally rigid.
 
-This avoids the algebraic-geometry machinery of "generic placement"; the
-equivalence to "rank max on a Zariski-open set of placements" is downstream
-and not needed for either direction of Laman's theorem under the present plan. -/
+Defining it through a single placement avoids generic placements (those whose coordinates are
+algebraically independent over `ℚ`), which neither direction of Laman's theorem
+(`LamanTheorem.lean`) needs. No declaration relates it to rigidity at generic placements; the
+blueprint's remark after `def:isGenericallyRigid` compares it with Jordán's definition. -/
 def IsGenericallyRigid [Finite V] (G : SimpleGraph V) (d : ℕ) : Prop :=
   ∃ p : Framework V d, G.IsInfinitesimallyRigid p
 
@@ -287,10 +290,12 @@ theorem IsInfinitesimallyRigid.eventually [Finite V] {G : SimpleGraph V}
   omega
 
 /-- A graph `G` is **generically rigid with an injective placement** in dimension `d` if some
-infinitesimally rigid placement is also injective. Strictly stronger than `IsGenericallyRigid`;
-the Phase 5 Henneberg induction maintains the injective placement at each step (the per-move
-preservation arguments need `p a ≠ p b`, which vanilla `IsGenericallyRigid` does not supply) and
-weakens to `IsGenericallyRigid` at the end via `IsGenericallyRigidInj.toIsGenericallyRigid`. -/
+infinitesimally rigid placement is also injective. It implies `IsGenericallyRigid`
+(`IsGenericallyRigidInj.toIsGenericallyRigid`), strictly at `d = 0`, where `K₂` has no injective
+placement; the blueprint's remark after `def:isGenericallyRigidInj` compares the two. The
+Henneberg induction of Laman's theorem (`LamanTheorem.lean`) maintains the injective placement at
+each step (the per-move arguments of `HennebergRigidity.lean` need `p a ≠ p b`, which
+`IsGenericallyRigid` does not supply) and weakens to `IsGenericallyRigid` at the end. -/
 def IsGenericallyRigidInj [Finite V] (G : SimpleGraph V) (d : ℕ) : Prop :=
   ∃ p : Framework V d, G.IsInfinitesimallyRigid p ∧ Function.Injective p
 
@@ -314,7 +319,7 @@ theorem IsGenericallyRigidInj.iso {V W : Type*} [Finite V] [Finite W]
   exact ⟨p ∘ φ.symm, hp_rig.iso φ, hp_inj.comp φ.symm.toEquiv.injective⟩
 
 /-- A generically rigid graph in dimension `d` on `n` vertices has at least
-`d * n − d(d+1)/2` edges. Phrased additively per the no-`ℕ`-subtraction rule.
+`d * n − d(d+1)/2` edges. Phrased additively, to avoid `ℕ` subtraction.
 
 The proof is rank-nullity: pick an infinitesimally rigid placement `p`; then
 `d * n = dim Framework = dim range + dim ker ≤ #E + d(d+1)/2`. -/
@@ -329,8 +334,8 @@ theorem IsGenericallyRigid.card_mul_le [Fintype V] {G : SimpleGraph V}
   have h_range := G.rigidityMap_finrank_range_le p
   omega
 
-/-- The K₂ worked example, *injective* form: for `d ≥ 1`, the complete graph on two vertices is
-generically rigid in dimension `d + 1` with an injective placement. Witnessed by `p 0 = 0`,
+/-- The K₂ worked example, *injective* form: the complete graph on two vertices is generically
+rigid with an injective placement in every positive dimension `d + 1`. Witnessed by `p 0 = 0`,
 `p 1 = e₀` (first standard basis vector). -/
 theorem top_fin_two_isGenericallyRigidInj (d : ℕ) :
     (⊤ : SimpleGraph (Fin 2)).IsGenericallyRigidInj (d + 1) := by
@@ -367,8 +372,8 @@ theorem top_fin_two_isGenericallyRigidInj (d : ℕ) :
 
 /-- The K₂ worked example: the complete graph on two vertices is generically
 rigid in any dimension `d`. For `d ≥ 1`, weakened from the injective form
-`top_fin_two_isGenericallyRigidInj`; for `d = 0` the framework space is itself
-zero-dimensional and any placement is vacuously rigid. -/
+`top_fin_two_isGenericallyRigidInj`; for `d = 0` the framework space is
+zero-dimensional, so the kernel is, and any placement is rigid. -/
 theorem top_fin_two_isGenericallyRigid (d : ℕ) :
     (⊤ : SimpleGraph (Fin 2)).IsGenericallyRigid d := by
   rcases d with _ | d
