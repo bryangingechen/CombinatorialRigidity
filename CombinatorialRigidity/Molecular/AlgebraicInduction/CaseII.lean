@@ -429,8 +429,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
       (fun f hf => False.elim (h_no_fab f hf))
   -- Gab is minimal (k-1)-dof by KT 4.8 (splitOff_isMinimalKDof_of_pos).
   have hGab : Gab.IsMinimalKDof n (c - 1) :=
-    Graph.splitOff_isMinimalKDof_of_pos hD3 hc hab hav hbv haG hbG hvG heab
-      hG_ea hG_eb hclv he₀ hG hnoRigid
+    Graph.splitOff_isMinimalKDof_of_pos hD3 hc hab hav hbv heab hG_ea hG_eb hclv he₀ hG hnoRigid
   -- Gab has fewer vertices: |V(Gab)| < |V(G)|.
   have hGab_lt : V(Gab).ncard < V(G).ncard := by
     rw [hGab_def]; exact Graph.splitOff_vertexSet_ncard_lt hvG

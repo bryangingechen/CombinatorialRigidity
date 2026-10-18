@@ -1319,9 +1319,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   dropped the algebraic induction's unused or derivable hypotheses (the cut-edge lemmas' among
   them), task 13 made the forest-packing lemma give a disjoint cover, which Tutte–Nash-Williams
   and its two other callers use as it is, task 14 had the balanced packing's descent call the
-  packing move, whose statement now says what the move does, and task 15 shortened
+  packing move, whose statement now says what the move does, task 15 shortened
   Katoh–Tanigawa Lemma 4.8(ii)'s minimality to their Lemma 4.3's argument, which needs no Lemma
-  4.7. **Next:** task 16, the recon of the pebble game's search (docs only).
+  4.7, and task 15.1 dropped three vertex hypotheses of that lemma which its edge hypotheses
+  imply. **Next:** task 16, the recon of the pebble game's search (docs only).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

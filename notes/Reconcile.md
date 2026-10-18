@@ -28,10 +28,11 @@ forward edge (`F-270`), task 11.1 moved the cycle lemma to `deficiency.tex` so t
 points back, task 12 dropped the algebraic induction's unused or derivable hypotheses (the
 cut-edge lemmas' among them), task 13 made the forest-packing lemma give a disjoint cover,
 which Tutte–Nash-Williams and its two other callers use as it is, task 14 had the balanced
-packing's descent call the packing move, whose statement now says what the move does, and task
-15 shortened Katoh–Tanigawa Lemma 4.8(ii)'s minimality to their Lemma 4.3's argument, which
-needs no Lemma 4.7. **Next concrete task:** round 3's task 16, the recon of the pebble game's
-search (docs only).
+packing's descent call the packing move, whose statement now says what the move does, task 15
+shortened Katoh–Tanigawa Lemma 4.8(ii)'s minimality to their Lemma 4.3's argument, which needs
+no Lemma 4.7, and task 15.1 dropped three vertex hypotheses of that lemma which its edge
+hypotheses imply (`F-274`). **Next concrete task:** round 3's task 16, the recon of the pebble
+game's search (docs only).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

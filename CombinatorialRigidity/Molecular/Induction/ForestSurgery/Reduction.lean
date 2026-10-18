@@ -1838,8 +1838,8 @@ show `B' ∩ ẽ ≠ ∅`; suppose not. If `ẽ₀ ⊄ B'`, then 4.3(ii)-reverse
 theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 3 ≤ bodyBarDim n)
     (hk : 0 < k) {v a b : α} {eₐ e_b e₀ : β}
-    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
-    (hvG : v ∈ V(G)) (heab : eₐ ≠ e_b) (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
     (hG : G.IsMinimalKDof n k) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (G.splitOff v a b e₀).IsMinimalKDof n (k - 1) := by
@@ -1847,6 +1847,10 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
   have : G.Loopless := loopless_of_isMinimalKDof hG
   have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  -- The ends of the two links are vertices.
+  have haV : a ∈ V(G) := hla.right_mem
+  have hbV : b ∈ V(G) := hlb.right_mem
+  have hvG : v ∈ V(G) := hla.left_mem
   set H := G.splitOff v a b e₀ with hHdef
   -- Step (1): `def(H) ∈ {k−1, k}` from `dof_tracking`.
   have htrack := dof_tracking hD2 hav hbv heab hla hlb hdeg2 he₀

@@ -4419,6 +4419,26 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 3 task 14.
   *Disposition:* done (task 14): the conclusion states the re-choice, $F'_j = F_j \cup \{x\}$
   and $F'_i = F_i \setminus \{x\}$ for $i \neq j$; the node restated.
+- **F-274** · L · `Graph.splitOff_isMinimalKDof_of_pos` (`Induction/ForestSurgery/Reduction.lean`):
+  `haV : a ∈ V(G)`, `hbV : b ∈ V(G)` and `hvG : v ∈ V(G)` follow from `hla : G.IsLink eₐ v a` and
+  `hlb : G.IsLink e_b v b` (the ends of a link are vertices). Its one caller,
+  `case_II_realization_all_k` (`AlgebraicInduction/CaseII.lean`), derives its own and uses them
+  elsewhere.
+  *Evidence:* read (the statement and body).
+  *Found:* RECONCILE round 3 task 15.
+  *Disposition:* done (task 15.1): the three dropped, derived in the body by `IsLink.right_mem` and
+  `IsLink.left_mem`; `lem:reduction-step-pos`, which states none of them, unchanged.
+- **F-275** · L · `Graph.splitOff_isMinimalKDof` (`lem:reduction-step`), `Graph.forest_surgery_count`
+  (`lem:forest-surgery-count`; both `Induction/ForestSurgery/Reduction.lean`) and
+  `PanelHingeFramework.case_III_candidate_dispatch` (`lem:case-III-candidate-dispatch-d3`,
+  `CaseIII/Realization.lean`): `F-274`'s pattern, vertex memberships the link hypotheses give. The
+  first takes `haV`, `hbV`, `hvG` beside `hla`, `hlb`; the second `haV`, `hbV`; the third `hvG`,
+  `haG`, `hbG`, `hcG` beside `hlea`, `hleb`, `hlec`. None is a pass-through of `F-274`'s pin. The
+  first's one caller takes its two from `exists_splitOff_data_of_degree_eq_two`, whose conclusion
+  states `a ∈ V(G)` and `b ∈ V(G)` beside the two links that give them.
+  *Evidence:* read (the statements; a signature scan of the Lean, not retained).
+  *Found:* RECONCILE round 3 task 15.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 
