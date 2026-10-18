@@ -13,22 +13,23 @@ public import Mathlib.Algebra.MvPolynomial.Funext
 `Mathlib.Algebra.MvPolynomial.Funext` proves `MvPolynomial.funext`: over an infinite integral
 domain, two multivariate polynomials that agree on every point are equal. Its immediate
 contrapositive — *a nonzero `MvPolynomial` over an infinite integral domain has a point where its
-evaluation is nonzero* — is the multivariate analogue of `Polynomial.exists_eval_ne_zero_of_…`
-but is not packaged in mathlib as a standalone lemma.
+evaluation is nonzero* — is the multivariate analogue of
+`Polynomial.exists_eval_ne_zero_of_natDegree_lt_card` but is not packaged in mathlib as a
+standalone lemma.
 
-This `MvPolynomial.exists_eval_ne_zero` is the foundational brick of the Phase-21b genericity
-device (Katoh–Tanigawa 2011 Claim 6.4/6.9): the panel-hinge rigidity matrix `R(G,p)` has entries
-that are polynomials in the panel coordinates `p`, so a Gram-determinant minor that is nonzero at
-one realization is a *nonzero* `MvPolynomial`, hence non-vanishing at a generic `p` — the "generic
-point attains the maximum rank" mechanism. It feeds the matrix/vector specialization lemmas in
+The combinatorial-rigidity project's genericity device (the blueprint's `lem:genericity-device`,
+after Katoh–Tanigawa 2011, §5.1) rests on `MvPolynomial.exists_eval_ne_zero`: the panel-hinge
+rigidity matrix `R(G,p)` has entries that are polynomials in the panel coordinates `p`, so a minor
+that is nonzero at one realization is a *nonzero* `MvPolynomial`, hence non-vanishing at a generic
+`p`; a generic point attains the largest rank. It feeds the matrix specialization lemmas in
 `Mathlib/LinearAlgebra/Matrix/Rank.lean`.
 
-`MvPolynomial.exists_mem_eval_ne_zero₂` is the fibre-wise form needed by Phase 40b CARRIER
-(`lem:pencil-x0-fibre-intersection`, `blueprint/src/chapter/main-component.tex`): two nonvanishing
-loci restricted to a submodule still meet, proved by moving along the line through their two
-witnesses and invoking `Polynomial.funext` on the univariate restriction. It is the fibre
-intersection `X₀`'s generic-point argument needs, since the two witnesses `exists_eval_ne_zero₂`
-would otherwise supply need not lie in the same fibre `L(q)`.
+`MvPolynomial.exists_mem_eval_ne_zero₂` is the fibre-wise form, the blueprint's
+`lem:pencil-x0-fibre-intersection`: two nonvanishing loci restricted to a submodule still meet,
+proved by moving along the line through their two witnesses and invoking `Polynomial.funext` on
+the univariate restriction. The generic-point argument for the set `X₀` of the pencil's main
+component needs it, since the two witnesses `exists_eval_ne_zero₂` would otherwise supply need
+not lie in the same fibre `L(q)`.
 
 Mirror path: `Mathlib/Algebra/MvPolynomial/Funext.lean`. Promotion to mathlib is a copy-paste into
 the upstream `Funext` file, directly below `MvPolynomial.funext`.
@@ -57,11 +58,10 @@ is a single point `x : σ → R` at which *every* `p i` evaluates to a nonzero v
 Proof: the product `∏ i, p i` is nonzero because `R` is a domain, so `exists_eval_ne_zero` supplies
 a common non-root, and `map_prod` factors the evaluation of the product.
 
-This is the "pick a common non-root of finitely many nonzero polynomials" combinator underlying the
-genericity-device seed shots (Katoh–Tanigawa 2011): it turns the per-factor nonzero hypotheses
-directly into per-factor `eval ≠ 0` facts at one seed, replacing the hand-written
-`mul_ne_zero` + `map_mul` + `ring` chains. The fixed-arity forms `exists_eval_ne_zero₂/₃/₄` below
-are the ergonomic wrappers for the small arities that occur in practice. -/
+This picks a common non-root of finitely many nonzero polynomials: it turns the per-factor
+nonzero hypotheses directly into per-factor `eval ≠ 0` facts at one point, replacing hand-written
+`mul_ne_zero` + `map_mul` + `ring` chains. The fixed-arity forms `exists_eval_ne_zero₂/₃/₄`
+below are the wrappers the combinatorial-rigidity project's genericity arguments call. -/
 theorem exists_eval_ne_zero_of_forall_ne_zero {ι : Type*} [Finite ι]
     (p : ι → MvPolynomial σ R) (hp : ∀ i, p i ≠ 0) :
     ∃ x : σ → R, ∀ i, MvPolynomial.eval x (p i) ≠ 0 := by
@@ -108,13 +108,13 @@ carries no membership in `L`). Instead, restrict both polynomials to the line
 `t ↦ z₁ + t • (z₂ - z₁)` through the two witnesses — a submodule is closed under it, so every point
 of the line lies in `L` — giving two univariate polynomials (via `MvPolynomial.aeval` of that
 affine-linear substitution) that are each nonzero (evaluating at `t = 0`, `t = 1` recovers the two
-hypotheses), hence their product is nonzero by `Polynomial.funext`, and a non-root of the product is
-a common non-root of both restrictions.
+hypotheses). Their product is nonzero, so by `Polynomial.funext` it has a non-root, which is a
+common non-root of both restrictions.
 
-The fibre `L(q)` of the pencil `X₀` argument (Phase 40b CARRIER,
-`lem:pencil-x0-fibre-intersection`) is exactly such a submodule: the generic point of `X₀`
-intersects the attaining heights with the nondegenerate ones inside one fibre, two open conditions
-that must be shown to meet *inside* `L(q)`, not merely somewhere in the ambient space. -/
+The fibre `L(q)` of the pencil's `X₀` argument (`lem:pencil-x0-fibre-intersection`) is such a
+submodule: the generic point of `X₀` intersects the attaining heights with the nondegenerate ones
+inside one fibre, two open conditions that must be shown to meet *inside* `L(q)`, not merely
+somewhere in the ambient space. -/
 theorem exists_mem_eval_ne_zero₂ {L : Submodule R (σ → R)} {p₁ p₂ : MvPolynomial σ R}
     (h₁ : ∃ z ∈ L, MvPolynomial.eval z p₁ ≠ 0) (h₂ : ∃ z ∈ L, MvPolynomial.eval z p₂ ≠ 0) :
     ∃ z ∈ L, MvPolynomial.eval z p₁ ≠ 0 ∧ MvPolynomial.eval z p₂ ≠ 0 := by

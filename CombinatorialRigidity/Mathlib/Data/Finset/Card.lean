@@ -12,7 +12,7 @@ public import Mathlib.Data.Fintype.Card
 # Mirror file: `Mathlib/Data/Finset/Card.lean`
 
 Upstream-eligible lemmas about `Finset.card`. See `DESIGN.md`
-*Mirror directory* and `notes/FRICTION.md` *Mirrored* for the project convention.
+*Mirror directory* for the project convention.
 -/
 
 @[expose] public section

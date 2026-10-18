@@ -1330,9 +1330,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   rewrote the texts on the search's cost (measured, no bound claimed), `decide` and the input,
   and tasks 21–24 gave each of the sixteen main results outside S1's and S2's rows its
   non-vacuity witness, a closed theorem applying it at a small input with every hypothesis met
-  (`Nonvacuity.lean`), and tasks 25–25.1 checked the docstrings of the thirteen planar files
-  against their proofs and credits.
-  **Next:** task 25.2, the docstrings of the search and of the project's mathlib additions.
+  (`Nonvacuity.lean`), and tasks 25–25.2 checked the docstrings of the thirteen planar files,
+  of the search and of all but two of the project's mathlib additions against their proofs and
+  credits.
+  **Next:** task 25.3, the docstrings of the last two mathlib additions, on matrix rank and
+  dimension.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

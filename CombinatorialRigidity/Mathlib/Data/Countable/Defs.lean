@@ -18,15 +18,13 @@ a copy-paste. See `DESIGN.md` "Mirror directory".
 
 * `Countable.exists_injective_of_infinite` — `∃ f : α → β, Function.Injective f`
   for `[Countable α] [Infinite β]`. Composes the natural-number embedding
-  `Countable.exists_injective_nat` with `Infinite.natEmbedding β : ℕ ↪ β`. Used by
-  the Phase-21b Case-I realization producer to supply the injective panel
-  parameter map `param : α → K` (`PanelHingeFramework.ofParam`, `K` an infinite
-  field) from finiteness of the body set alone, discharging the
-  `Function.Injective param` obligation — the named replacement (Phase 33
-  PROSPECT G1) for the hidden-`[CharZero K]` trap of composing
-  `Countable.exists_injective_nat` with the numeral cast `ℕ → K` directly (that
-  cast is injective only in characteristic zero; `Infinite.natEmbedding` has no
-  such hypothesis).
+  `Countable.exists_injective_nat` with `Infinite.natEmbedding β : ℕ ↪ β`.
+  Composing with the cast `ℕ → K` into a field instead would need characteristic
+  zero, as that cast is injective only there; `Infinite.natEmbedding` needs only
+  `Infinite β`. The combinatorial-rigidity project's algebraic induction
+  (`Molecular/AlgebraicInduction/`) uses it to choose an injective map from the
+  finite set of bodies to an infinite field `K`, at whose moment-curve normals the
+  general-position polynomial is nonzero (`exists_generalPosition_polynomial`).
 -/
 
 @[expose] public section

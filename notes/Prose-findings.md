@@ -4511,6 +4511,21 @@ declaration's name as its header writes it:
   gitignored).
   *Found:* RECONCILE round 3 task 25.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-279** · L · twelve unpinned declarations of `Search/DFS.lean` and of `Mathlib/` outside
+  `Matrix/Rank.lean` and `Dimension/Constructions.lean` that no declaration of the project uses:
+  `Fin.ofNat_eq_mk` (used only by the next) and `Fin.two_eq_mk_of_lt`,
+  `Sym2.mk_mem_image_map_some_iff`, `Pi.basisFun_dualBasis`, `LinearIndepOn.dualMap_of_surjective`,
+  `ExteriorAlgebra.ιMulti_family_congr`, `exteriorPower.coe_pairingDualEquiv`;
+  `reachClosureComputable_closed`, `self_mem_reachClosureComputable`,
+  `DirectedWalk.card_reversedArcsFinset`, `DirectedWalk.fst_mem_vertices_of_mem_reversedArcsFinset`,
+  `DirectedWalk.mapRel_length`. Also `cross₃_ne_zero_iff_linearIndependent`
+  (`Molecule/Pencil/Chart.lean`) builds, in each direction, the chain that
+  `Matrix.linearIndependent_rows_iff_det_ne_zero` packages, which its imports do not reach.
+  *Evidence:* measured (the reverse dependencies of statements and bodies in the Lean cache of
+  `scripts/blueprint-deps.py`, at `522a0c0a` plus task 25.2's docstrings; `rfl` lemmas left out);
+  read (`Chart.lean`'s proof and import closure).
+  *Found:* RECONCILE round 3 task 25.2.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 

@@ -15,10 +15,10 @@ form of substituting each variable by a univariate polynomial and then evaluatin
 not the `aeval` form, in which a substitution by polynomials over `R` usually appears; `aeval` is
 definitionally `eval₂` at the algebra map.
 
-The combinatorial-rigidity project uses it to specialize the planar rank theorem's non-vanishing
-polynomial along a univariate curve of normals (the curve-limit lemma,
-`PanelHingeFramework.finite_setOf_finrank_lt_of_curve`,
-`Molecular/Molecule/Pencil/MainComponent/Bridge.lean`, Phase 40j SPLITOFF): substituting the curve
+The combinatorial-rigidity project uses it to specialize the rank polynomial of a panel-hinge
+framework (`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`) along a univariate
+curve of normals (`PanelHingeFramework.finite_setOf_finrank_lt_of_curve`,
+`Molecular/Molecule/Pencil/MainComponent/Bridge.lean`): substituting the curve
 `c : α × Fin (k + 2) → Polynomial K` into the rank polynomial and evaluating at `t` agrees with
 evaluating the rank polynomial directly at the curve's value `c · eval t`.
 

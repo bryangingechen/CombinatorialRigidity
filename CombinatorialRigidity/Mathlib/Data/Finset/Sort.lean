@@ -11,7 +11,7 @@ public import Mathlib.Data.Finset.Sort
 # Mirror file: `Mathlib/Data/Finset/Sort.lean`
 
 Upstream-eligible lemmas about `Finset.orderEmbOfFin`. See `DESIGN.md`
-*Mirror directory* and `notes/FRICTION.md` *Mirrored* for the project convention.
+*Mirror directory* for the project convention.
 -/
 
 @[expose] public section

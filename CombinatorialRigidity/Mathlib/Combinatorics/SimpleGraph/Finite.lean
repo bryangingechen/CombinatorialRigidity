@@ -15,8 +15,8 @@ Mathlib has `Fintype.card` / `Finset.card`-flavored equalities for
 `SimpleGraph.edgeSet`, `SimpleGraph.incidenceSet`, and the complete graph in
 `Mathlib/Combinatorics/SimpleGraph/Finite.lean`. The lemmas below are the
 `Set.ncard` companions that the combinatorial-rigidity project repeatedly
-needs, plus (Phase 32) a degree-one uniqueness fact companion to the
-existing `degree_eq_one_iff_existsUnique_adj`.
+needs, plus a degree-one uniqueness fact companion to the existing
+`degree_eq_one_iff_existsUnique_adj`.
 
 The Lean namespace is the upstream one (`SimpleGraph`), not the project's, so
 promotion to mathlib is a copy-paste alongside the existing `card_*_eq_*`

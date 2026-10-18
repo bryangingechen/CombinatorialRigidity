@@ -37,11 +37,10 @@ numeric measure on a finite data structure; here the measure is
 `(Finset.univ \ visited).card` for a finset of already-visited
 vertices.
 
-This file is pre-Phase-9 infrastructure: the pebble game's
-`tryReachPebble` (Phase 9) specialises `reachableFinding` and
-post-composes a path-reversal step. The DFS itself is reusable across
-that and any future application that needs reachability with a
-witness path.
+The pebble game's `tryReachPebbleWith` (`PebbleGame/Algorithm.lean`)
+runs `reachableFinding` on an orientation's out-neighbours, and its
+result's `newOrient` reverses the returned path. Nothing here depends
+on the pebble game. The blueprint presents the file in `sec:dfs`.
 
 ## Main declarations
 
@@ -83,8 +82,9 @@ rationale.
 ## References
 
 * A. Lee, I. Streinu, *Pebble game algorithms and sparse graphs*,
-  Discrete Math. **308** (2008) 1425–1437 — motivates the
-  reachability primitive (§3, "free pebble reachable from `u` or `v`").
+  Discrete Math. **308** (2008) 1425–1437 — §3, where the pebble game
+  runs at most `ℓ + 1` depth-first searches through its orientation
+  for each edge.
 * `Batteries.UnionFind` — pattern model for the strictly-decreasing
   numeric termination measure on a finite data structure.
 -/
@@ -152,7 +152,7 @@ count lemmas to derive endpoint inequalities under `IsPath`. -/
 
 /-- A walk with distinct endpoints has positive length: the `nil` walk forces
 `u = w`, so an `u ≠ w` hypothesis discharges that case and leaves only the
-`cons` branch with length `≥ 1`. Used by `tryAddEdge`'s termination argument to
+`cons` branch with length `≥ 1`. Used by `tryAddEdgeWith`'s termination argument to
 turn the predicate-supplied `r.target ≠ u` into the `0 < r.walk.length`
 precondition of `peb_reverse_head`. -/
 lemma length_pos_of_ne {u w : V} {p : DirectedWalk R u w} (h : u ≠ w) :
@@ -198,28 +198,26 @@ lemma mapRel_isPath_iff {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a
 /-! ### Arcs of a walk
 
 A walk carries an ordered list of arcs `(u_i, u_{i+1})` from each `cons`
-constructor. For path-reversal moves on a `PartialOrientation`
-(`PebbleGame.lean`'s `def:path-reversal`), we need the multiset of these
-arcs and the multiset of their reversals as `Finset (V × V)`s. For an
-`IsPath` walk, both sets have cardinality `length p`; the helpers below
-expose the key membership relationships and the consequence that a path
-traverses neither a self-loop nor both directions of any arc. -/
+constructor. The path reversal on a `PartialOrientation`
+(`PartialOrientation.reverse`, `PebbleGame/Basic.lean`; blueprint
+`def:path-reversal`) needs the set of these arcs and the set of their
+reversals as `Finset (V × V)`s. The helpers below give their membership
+relations, the number of arcs at each source vertex, and the consequence
+that a path traverses neither a self-loop nor both directions of any arc. -/
 
 section ArcsFinset
 
 variable [DecidableEq V]
 
 /-- The arcs of an `R`-walk as a `Finset (V × V)`. Each `cons` contributes
-its source-target pair; the empty walk contributes nothing. For an `IsPath`
-walk, the cardinality matches `length p` (consumers downstream of
-`def:path-reversal` may use this). -/
+its source-target pair; the empty walk contributes nothing. -/
 @[expose]
 def arcsFinset : ∀ {u w : V}, DirectedWalk R u w → Finset (V × V)
   | _, _, .nil _ => ∅
   | u, _, .cons (v := v) _ q => insert (u, v) q.arcsFinset
 
 /-- The arcs of an `R`-walk *with each arrow reversed*, as a `Finset (V × V)`.
-Used in `def:path-reversal` to express the moved orientation. -/
+`PartialOrientation.reverse` inserts these arcs (`def:path-reversal`). -/
 @[expose]
 def reversedArcsFinset : ∀ {u w : V}, DirectedWalk R u w → Finset (V × V)
   | _, _, .nil _ => ∅
@@ -250,9 +248,9 @@ lemma mem_reversedArcsFinset_iff {u w : V} (p : DirectedWalk R u w) (a b : V) :
     tauto
 
 /-- Every arc in `p.arcsFinset` is `R`-related: arcs come from `cons`
-constructors, each of which carries an `R`-witness. Specialised by
-consumers (e.g. `PebbleGame.PartialOrientation.reverse`) to recover
-ambient containment when `R := fun a b => (a, b) ∈ D.arcs`. -/
+constructors, each of which carries an `R`-witness. At
+`R := fun a b => (a, b) ∈ D.arcs` it gives `p.arcsFinset ⊆ D.arcs`
+(`PebbleGame.PartialOrientation.arcsFinset_subset_arcs`). -/
 lemma mem_arcsFinset_imp {u w : V} (p : DirectedWalk R u w)
     {a b : V} (h : (a, b) ∈ p.arcsFinset) : R a b := by
   induction p with
@@ -376,9 +374,9 @@ For a simple walk `p`, the number of arcs of `p` sourced at a vertex `v` is
 either `0` or `1`. Specifically, `v` is the source of exactly one arc when
 `v ∈ p.vertices` and `v` is not the walk's terminal (so `v` is initial or
 interior); for the reversed-arc finset, the role of the terminal is taken by
-the walk's initial vertex. These two facts drive the structural lemmas about
-`PartialOrientation.reverse`'s effect on per-vertex out-degree
-(`PebbleGame.lean`, `out_reverse_*` family). -/
+the walk's initial vertex. These two facts give the effect of
+`PartialOrientation.reverse` on each vertex's out-degree
+(`PebbleGame/Basic.lean`, `out_reverse_add`). -/
 
 /-- For a simple walk `p : DirectedWalk R u w`, the source-`v` slice of
 `p.arcsFinset` has cardinality `1` exactly when `v` is on `p` and is not the
@@ -563,7 +561,7 @@ def reachableFindingList (succ : V → List V) (base : Finset V) (v : V)
 -- telescope, which changes the recursive-call shape and takes the
 -- well-founded-recursion machinery (and the `.induct` principle the two
 -- invariant proofs below use) down with it. The inline binders are load-bearing
--- *for the recursion*, not decoration; see `notes/ToolchainBumps.md` item 4c.
+-- *for the recursion*, not decoration; see `TACTICS-QUIRKS.md` §108.
 /-- DFS body for `reachableFinding`: search for a `P`-satisfying vertex
 reachable from `v` along `succ`-arcs, with the vertices of `visited`
 marked. A marked `v` fails; a `v` with `P v` is returned with the walk of
@@ -822,11 +820,11 @@ that search took about two seconds and this one under a millisecond.
 The pebble game computes the closure only when it rejects an edge
 (`tryAddEdgeWith`), from both of the edge's ends.
 
-Used by the pebble game's completeness side: the blocking-witness
-set is built as `D.reach u ∪ D.reach v` for a partial orientation
-`D`, where `D.reach v := reachClosureComputable D.outList v`; the
-out-closure of this set drives `D.outOn (...) = 0` via
-`reachClosureComputable_closed`. -/
+Used by the pebble game's completeness side: `tryAddEdgeWith` builds
+its blocking set as `reachClosureComputable (toSucc D) u ∪
+reachClosureComputable (toSucc D) v`, and `PartialOrientation.reach`
+is `reachClosureComputable D.outList`; both reason about the set
+through `mem_reachClosureComputable`. -/
 
 /-- The reachability closure of `v` along `fun a b => b ∈ succ a`,
 as a `Finset V`. Computable: tests each candidate vertex `w` via
@@ -884,9 +882,7 @@ lemma self_mem_reachClosureComputable (succ : V → List V) (v : V) :
   mem_reachClosureComputable.mpr Relation.ReflTransGen.refl
 
 /-- The reach closure is closed under the `succ`-relation: if `a` is
-in the closure of `v` and `b ∈ succ a`, then `b` is too. Used by the
-pebble game's completeness side to argue that
-`D.outOn (D.reach u ∪ D.reach v) = 0`. -/
+in the closure of `v` and `b ∈ succ a`, then `b` is too. -/
 lemma reachClosureComputable_closed {succ : V → List V} {v a b : V}
     (ha : a ∈ reachClosureComputable succ v) (hab : b ∈ succ a) :
     b ∈ reachClosureComputable succ v := by

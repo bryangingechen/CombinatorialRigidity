@@ -22,10 +22,11 @@ is not in mathlib. It is the direct consequence of `RingHom.map_det` applied to
 `evalRingHom t : α[X] →+* α`, plus a pointwise simplification of the entries of
 `(evalRingHom t).mapMatrix (X • A.map C + B.map C)` back to `t • A + B`.
 
-The combinatorial-rigidity project uses this at the analysis leaf of the
-d-general affinely-spanning rigid placement proof (`RigidityMatroid.lean`, over
-the fixed coordinate field `ℝ` that file works in — the lemma itself is
-carrier-agnostic, any `CommRing α`): the polynomial
+The combinatorial-rigidity project uses this to perturb a placement in dimension
+`d` until every `d + 1` of its points affinely span
+(`exists_affinelySpanning_of_eventually`, `RigidityMatroid.lean`, over the
+coordinate field `ℝ` of that file; the lemma itself holds over any `CommRing α`):
+the polynomial
 `P := det (X • M₁.map C + M₀.map C) ∈ α[X]` has leading coefficient
 `det M₁ ≠ 0` and per-tuple bad-`t` set `{t | P.IsRoot t}`, identified via
 `eval_det_X_add_C` with `{t | det (t • M₁ + M₀) = 0}` — i.e. the difference

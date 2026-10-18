@@ -14,8 +14,8 @@ Mathlib has `Sym2.mem_map` for membership of a single element of `β` in
 `Sym2.map f z`, and `Sym2.coe_map` for the underlying-set coercion. What was
 missing — and repeatedly needed in the combinatorial-rigidity project — is a
 *pointwise* characterization, in terms of `f`-preimages, of the situation
-"there is an `e` with property `P` such that `Sym2.map f e` equals a specific
-ordered pair `s(x, y)`."
+"there is an `e` with property `P` such that `Sym2.map f e` equals a given
+pair `s(x, y)`."
 
 The main lemma here is `Sym2.exists_and_map_eq_mk_iff`:
 
@@ -91,7 +91,7 @@ lemma exists_and_map_eq_mk_iff {f : α → β} {P : Sym2 α → Prop} {x y : β}
   · rintro ⟨p, q, rfl, rfl, hP⟩
     exact ⟨s(p, q), hP, by rw [Sym2.map_mk]⟩
 
-/-- An ordered-pair edge `s(x, y)` lies in `Sym2.map f '' S` iff there is a
+/-- An edge `s(x, y)` lies in `Sym2.map f '' S` iff there is a
 preimage pair `(p, q)` with `f p = x`, `f q = y`, and `s(p, q) ∈ S`.
 
 This is the "natural" hand-driven form. The companion `simp`-form

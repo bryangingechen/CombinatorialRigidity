@@ -9,11 +9,10 @@ public import Mathlib.LinearAlgebra.Dual.Basis
 public import Mathlib.LinearAlgebra.StdBasis
 
 /-!
-# Upstream candidates: standard-basis-dual lemmas and the constructive
-row-rank-equals-column-rank identity.
+# Upstream candidates: standard-basis-dual lemmas and the row space as a span
 
 Three facts adjacent to `Module.Basis.dualBasis` and `LinearMap.dualMap` that
-the combinatorial-rigidity project needed and that mathlib does not ship:
+mathlib does not ship:
 
 1. **`Pi.basisFun_dualBasis`** identifies the dual-basis-of-the-standard-basis
    on `η → R` with the coordinate projection: the chain
@@ -29,20 +28,18 @@ the combinatorial-rigidity project needed and that mathlib does not ship:
    argument; the bilinear evaluation against two arbitrary vectors of `η → R` is
    not packaged.
 
-3. **`LinearMap.range_dualMap_eq_span_image_dualBasis`** is the constructive
-   (span) form of row-rank-equals-column-rank: for any basis `b` on the
-   codomain, the range of `f.dualMap` is the `R`-linear span of
-   `f.dualMap '' (range b.dualBasis)`. Mathlib's
-   `LinearMap.finrank_range_dualMap_eq_finrank_range` is the
-   *dimension-level* statement of the same fact (Part 1 of Strang's
-   Fundamental Theorem of Linear Algebra); the underlying span identity that
-   *implies* it is missing.
+3. **`LinearMap.range_dualMap_eq_span_image_dualBasis`** says that the row
+   space is spanned by the rows: for any basis `b` on the codomain, the range
+   of `f.dualMap` is the `R`-linear span of `f.dualMap '' (range b.dualBasis)`.
+   Mathlib's `LinearMap.finrank_range_dualMap_eq_finrank_range` (row rank
+   equals column rank) is a statement about dimensions only; this span
+   identity is missing.
 
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/Dual/Basis.lean`,
 adding the `import Mathlib.LinearAlgebra.StdBasis` line. The Lean namespaces
 (`Pi`, `LinearMap`) match upstream conventions.
 
-See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
+See `DESIGN.md` *Mirror directory*.
 -/
 
 @[expose] public section
@@ -78,13 +75,9 @@ variable {ι R M N : Type*} [CommSemiring R]
   [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
   [Finite ι] [DecidableEq ι]
 
-/-- **Row-rank-equals-column-rank, constructive form.** The range of the dual
-map `f.dualMap` is the `R`-linear span of the family
-`fun i ↦ f.dualMap (b.dualBasis i)` for any basis `b` on the codomain.
-
-Combined with `LinearMap.finrank_range_dualMap_eq_finrank_range` this is the
-span-form precursor to Part 1 of Strang's Fundamental Theorem of Linear
-Algebra (row rank = column rank). -/
+/-- **The row space is spanned by the rows.** The range of the dual map
+`f.dualMap` is the `R`-linear span of the family
+`fun i ↦ f.dualMap (b.dualBasis i)` for any basis `b` on the codomain. -/
 theorem range_dualMap_eq_span_image_dualBasis (b : Module.Basis ι R N)
     (f : M →ₗ[R] N) :
     LinearMap.range f.dualMap =

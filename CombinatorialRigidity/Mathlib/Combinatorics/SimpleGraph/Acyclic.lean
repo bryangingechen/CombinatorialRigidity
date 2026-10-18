@@ -12,18 +12,17 @@ public import Mathlib.Data.Set.Subsingleton
 /-!
 # Upstream candidates: leaf existence on a graph's own support
 
-Phase 32 (`sec:jacobs-degree-one`, L2 slice plan T2 second half). Jackson–Jordán 2008's
-degree-one rank formulas (Lemma 4.2) peel a leaf at each inductive step; this file supplies
-the existence half — an acyclic graph whose support has at least two vertices and is
-reachability-connected (the support-relative strengthening the induction runs on, rather than
-`G.Connected` on all of `V`) has a degree-one vertex, obtained by restricting mathlib's
+Jackson and Jordán prove their degree-one rank formulas (Jackson–Jordán 2008, Lemma 4.2) by
+deleting a vertex of degree one at each step. The combinatorial-rigidity project's proof
+(`JacobsDegreeOne.lean`, presented in the blueprint's `sec:jacobs-degree-one`) needs such a
+vertex to exist, and this file supplies it: an acyclic graph whose support has at least two
+vertices and is reachability-connected (the induction's hypothesis, in place of `G.Connected`
+on all of `V`) has a degree-one vertex, obtained by restricting mathlib's
 `IsTree.exists_vert_degree_one_of_nontrivial` to the induced subgraph on the support.
 
 The Lean namespace is the upstream one (`SimpleGraph`), so promotion to mathlib is a
 copy-paste alongside `IsTree.exists_vert_degree_one_of_nontrivial`. See `DESIGN.md` "Mirror
 directory".
-
-See `notes/Phase32.md` (the L2 slice plan, T2) for the phase plan.
 
 ## Contents (target file: `Mathlib/Combinatorics/SimpleGraph/Acyclic.lean`)
 

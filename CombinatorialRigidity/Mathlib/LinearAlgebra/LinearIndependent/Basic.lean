@@ -35,7 +35,8 @@ an independent `v` with one more vector `x` (packaged as `Sum.elim v (fun _ : Un
 `Sum.elim … (fun _ : Unit => x)` companion of mathlib's `LinearIndepOn.notMem_span_iff`
 (which is phrased for `insert a s`); the `Sum.elim`-of-a-`Unit`-singleton shape is the
 one the rigidity project's block-assembly functionals come in (the new block plus one
-augmenting candidate row, `RigidityMatrix.lean`'s candidate-completion).
+augmenting candidate row, `linearIndependent_sumElim_candidateRow_iff` in
+`Molecular/RigidityMatrix/Claim612.lean`).
 
 The proof is `linearIndependent_sum` (the iff splitting an `ι ⊕ ι'` family into the two
 sub-families plus span-disjointness) specialised to `ι' = Unit`, where the second
@@ -49,8 +50,8 @@ keeps the augmented family independent. It is the "adding to each candidate row 
 the base rows preserves rank" fact; the proof passes to `M ⧸ span (range base)` (where `cand` and
 `cand'` have the same image) and rebuilds via `LinearIndependent.sumElim_of_quotient`. The
 rigidity project's general-`d` Case III consumes it (in the `Sum.elim (Sum.elim rn cand) ro`
-shape, `RigidityMatrix/Basic.lean`'s `linearIndependent_sumElim_candidateBlock_swap`) as the
-length-`d` chain row-correspondence.
+shape, `linearIndependent_sumElim_candidateBlock_swap` in `Molecular/RigidityMatrix/Basic.lean`)
+as the length-`d` chain row-correspondence.
 
 `linearIndependent_sum_smul_ne_zero` is the elementary fact that a finite linear
 combination `∑ j, c j • v j` of a linearly independent family with at least one
@@ -74,8 +75,8 @@ others is the candidate vector `r̂`, with the redundant index's coefficient pin
 `LinearIndependent`): rescaling each member of an independent-on-`s` family `v` by a
 per-index unit `w i` keeps it independent on `s`. Immediate from the mathlib lemma applied
 to the restricted family `s.restrict v`, since `LinearIndepOn` unfolds to exactly that. The
-rigidity project's cut-arm transport (`Molecule/Pencil/Motive.lean`, Phase 39 W5-L5) uses
-it for the per-body projective-scalar congruence a chart reproduction needs.
+rigidity project uses it to transport independence along a pointwise nonzero rescaling
+(`linearIndepOn_of_forall_smul`, `Molecular/Molecule/Pencil/MainComponent/GenericBase.lean`).
 
 `LinearIndependent.pair_map` completes mathlib's `pair_iff`/`pair_symm_iff`/`pair_iff'` family
 with the missing functoriality step: an injective linear map carries an independent *pair* to an
@@ -83,7 +84,7 @@ independent pair. Mathlib has the general-family form (`LinearIndependent.map'`,
 `f`), but only for `f ∘ v`, and there is no `f ∘ ![x, y] = ![f x, f y]` bridge in
 `Data/Fin/VecNotation.lean`, so the general form cannot be used on a `![·, ·]` goal without
 hand-rolling that step — which is exactly the friction this lemma removes. The rigidity
-project's cut arm (`Molecule/Pencil/Arms.lean`, Phase 39) uses it to push one side's
+project's cut arm (`Molecular/Molecule/Pencil/Arms.lean`) uses it to push one side's
 adjacent-point distinctness through the repositioning automorphism.
 
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
@@ -95,7 +96,7 @@ from `Dimension.Constructions` (so it would land downstream of those, not in `Ba
 `LinearIndepOn.units_smul` needs only `LinearIndependent.units_smul` itself, already in the
 same file.
 
-See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
+See `DESIGN.md` *Mirror directory*.
 -/
 
 @[expose] public section

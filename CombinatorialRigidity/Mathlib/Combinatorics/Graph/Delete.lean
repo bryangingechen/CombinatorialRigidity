@@ -13,10 +13,10 @@ public import Mathlib.Combinatorics.Graph.Delete
 Mathlib's multigraph `Graph.induce` (`Mathlib/Combinatorics/Graph/Delete.lean`)
 carries `induce_vertexSet` (`G.induce V(G) = G`) but no composition law for two
 successive induces. The lemma below is the idempotence `(G.induce S).induce T =
-G.induce T` for `T ⊆ S`, which the combinatorial-rigidity project's cut-edge
-deficiency bookkeeping needs (Phase 39 W5-L5: the edge-closed side
-`Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` re-induced on its own side `Vᵢ` recovers
-`G.induce Vᵢ`).
+G.induce T` for `T ⊆ S`, which the combinatorial-rigidity project's deficiency
+bookkeeping on induced subgraphs uses (`Molecular/Induction/SparseDeficiency.lean`;
+in `Molecular/Molecule/Pencil/Motive.lean` the side `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})`
+of a cut edge, re-induced on `Vᵢ`, is `G.induce Vᵢ`).
 
 The Lean namespace is the upstream one (`Graph`), so promotion to mathlib is a
 copy-paste alongside `Graph.induce_vertexSet`. See `DESIGN.md` "Mirror

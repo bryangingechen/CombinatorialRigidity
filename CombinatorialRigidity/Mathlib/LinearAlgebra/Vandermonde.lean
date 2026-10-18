@@ -19,12 +19,15 @@ This is the classical row-reduction identity: in the Vandermonde matrix
 determinant and turns column 0 into `(1, 0, …, 0)`; cofactor-expansion along
 column 0 then collapses the `(n + 1) × (n + 1)` determinant to the `n × n`
 minor of `power-difference` entries. The combinatorial-rigidity project uses
-the identity at the leading-coefficient step of the moment-curve
-`affinely-spanning rigid placement` proof in dimension `d`: the perturbed
+the identity when it perturbs a placement in dimension `d` along the moment
+curve until every `d + 1` of its points affinely span
+(`exists_affinelySpanning_of_eventually`, `RigidityMatroid.lean`): the perturbed
 difference matrix `M(t) = M_0 + t · M_1` has `det M_1` equal to the
 power-difference determinant on the perturbation parameters, so injectivity of
 the parameters implies `det M_1 ≠ 0`, hence the polynomial `t ↦ det M(t)` has
-finitely many roots.
+finitely many roots. It also gives the affine independence of points on the
+moment curve in 3-space (`affineIndependent_momentCurve3_of_injective`,
+`GeneralPositionPlacement.lean`).
 
 The lemma is upstream-eligible: pure linear algebra over a `CommRing` with no
 project-specific concepts. The proof uses the polynomial-evaluation identity
@@ -47,8 +50,8 @@ open Polynomial Finset
 determinant equal to the `(n + 1) × (n + 1)` Vandermonde determinant
 `∏_{0 ≤ i < j ≤ n} (v j - v i)`.
 
-Geometrically, `M` is the matrix of differences `(p i - p 0)` for `p : Fin (n+1) →
-R` defined by the moment curve `p i = (v i, v i^2, …, v i^n)`. -/
+Geometrically, row `i` of `M` is the difference `p i.succ - p 0` of points on the
+moment curve, `p i = (v i, v i ^ 2, …, v i ^ n) ∈ Rⁿ`. -/
 theorem det_powerDifferences {n : ℕ} {R : Type*} [CommRing R] (v : Fin (n + 1) → R) :
     (Matrix.of (fun i j : Fin n => v i.succ ^ (j.val + 1) - v 0 ^ (j.val + 1))).det =
       ∏ i : Fin (n + 1), ∏ j ∈ Finset.Ioi i, (v j - v i) := by

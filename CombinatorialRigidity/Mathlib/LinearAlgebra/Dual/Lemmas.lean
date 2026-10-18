@@ -12,19 +12,17 @@ public import Mathlib.LinearAlgebra.LinearIndependent.Basic
 # Upstream candidate: surjective pullback preserves dual linear independence
 
 `LinearIndependent.map'` plus `LinearMap.dualMap_injective_of_surjective` plus
-`LinearMap.ker_eq_bot` is a three-line chain that recurs whenever the rigidity
-project restricts a placement along an injective vertex map: the framework
-restriction is `LinearMap.funLeft`, surjective by injectivity of the vertex map,
-so its dual is injective and pulls linear independence back through the dual.
-Both Phase 6's `isSparse_of_edgeSetRowIndependent_dim_two` and Phase 7's
-`typeI_edgeSetRowIndependent_extend` build this chain by hand; the `LinearIndepOn`
-form folds straight into a `LinearIndepOn.union` partition.
+`LinearMap.ker_eq_bot` is a three-line chain, packaged here. The combinatorial-rigidity
+project meets it when it restricts a placement along an injective vertex map: the
+restriction is `LinearMap.funLeft`, surjective by injectivity of the vertex map, so its
+dual is injective and keeps linearly independent rows independent
+(`linearIndependent_rigidityRow_lift_of_injective`, `RigidityMatroid.lean`).
 
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/Dual/Lemmas.lean`
 (or any file that imports both `Dual.Defs` and `LinearIndependent.Basic`); the
 namespaces (`LinearIndependent`, `LinearIndepOn`) match upstream conventions.
 
-See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
+See `DESIGN.md` *Mirror directory*.
 -/
 
 @[expose] public section

@@ -17,8 +17,7 @@ public import Mathlib.Tactic.FinCases
 
 Companion of `Finset.coe_compl_singleton` in
 `CombinatorialRigidity/Mathlib/Data/Finset/BooleanAlgebra.lean`. The
-`card` form requires `Fintype α`, so it lands next to `Finset.card_compl`
-in `Mathlib/Data/Fintype/Card.lean`.
+`card` form lands next to `Finset.card_compl` in `Mathlib/Data/Fintype/Card.lean`.
 
 `Fintype.card_subtype_fst_lt_snd` counts the strictly-increasing ordered pairs of a linearly-ordered
 fintype as `(Fintype.card α).choose 2`, via the bijection with two-element subsets

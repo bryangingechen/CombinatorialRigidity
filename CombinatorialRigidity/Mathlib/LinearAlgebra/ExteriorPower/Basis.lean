@@ -15,7 +15,8 @@ public import CombinatorialRigidity.Mathlib.Data.Finset.Sort
 # Upstream candidates: the top exterior power iso and the `pairingDual` iso
 
 Two upstream-eligible facts about exterior-power bases that mathlib does not yet
-ship, both consumed by the Grassmann–Cayley *meet* of Phase 21a.
+ship, with their companions. The combinatorial-rigidity project builds the
+Grassmann–Cayley *meet* on them (`Molecular/Meet.lean`).
 
 ## The canonical top exterior power iso `⋀ⁿ (Fin n → R) ≃ₗ R`
 
@@ -35,10 +36,10 @@ the standard carrier `Fin n → R`:
   composed with the unique-index evaluation `LinearEquiv.funUnique`. Its value on
   the wedge of all standard basis vectors is `1` (`topEquiv_ιMulti_family_default`).
 
-This is the first deliverable of Phase 21a (the Grassmann–Cayley *meet* / dual
-half of the extensor algebra): the volume-form / orientation iso through which the
-`⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ R` perfect wedge pairing lands in the base ring, on
-which `complementIso` and the regressive product `meet` are built.
+It is the volume form through which the perfect wedge pairing
+`⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ R` lands in the base ring, on which
+`Molecular/Meet.lean` builds `complementIso` and the regressive product `meet`.
+`topEquiv_map_eq_det_smul` is the identity `⋀ⁿ f = det f` for it.
 
 ## The `pairingDual` iso `⋀ⁿ (M*) ≃ₗ (⋀ⁿ M)*` for finite free `M`
 
@@ -55,17 +56,20 @@ coordinate forms of `b.exteriorPower n`). This file packages that as
 * **`exteriorPower.coe_pairingDualEquiv`** — its identification with the underlying
   `pairingDual` linear map, so the equiv is `pairingDual` upgraded in place.
 
-This is Phase 21a's second deliverable, the projective-duality dictionary entry
-`⋀ʲ(V*) ≃ (⋀ʲ V)*` reused by the Crapo–Whiteley invariance of Phase 25.
+It is the projective-duality dictionary entry `⋀ʲ(V*) ≃ (⋀ʲ V)*`
+(`screwAlgebraPairingDualEquiv` in `Molecular/Meet.lean`).
 
 Promotion to mathlib: the `Unique` instance, `topEquiv`, `pairingDualEquiv`, and the
 volume-form change-of-variables fact `topEquiv_map_eq_det_smul` (`topEquiv (map n f X)
 = det f • topEquiv X`, the standard "`⋀ⁿ f = det f`" identity on `Fin n → R`) copy-paste
 into `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` (which already supplies
 `Module.Basis.exteriorPower`, `finrank_eq`, and the `pairingDual` / `ιMultiDual` API);
-the Lean namespaces (`Set.powersetCard`, `exteriorPower`) match upstream conventions.
+the Lean namespaces (`Set.powersetCard`, `exteriorPower`) match upstream conventions. The
+two companions on the exterior algebra go with them: `map_coe_eq_exteriorAlgebra_map`
+(`exteriorPower.map` is `ExteriorAlgebra.map` on the underlying element) and
+`ExteriorAlgebra.ιMulti_family_congr`.
 
-See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
+See `DESIGN.md` *Mirror directory*.
 -/
 
 @[expose] public section
@@ -148,7 +152,7 @@ theorem topEquiv_map_ιMulti_family_default_eq_det
     LinearMap.toMatrix'_apply, Basis.coord_apply, Pi.basisFun_apply, Pi.basisFun_repr]
 
 /-- **The top exterior power transforms by the determinant** (the volume-form change-
-of-variables fact, OD-8 sub-leaf (h-0) of the `complementIso` O(n)-equivariance). For
+of-variables fact). For
 an endomorphism `f` of `Fin n → R`, the induced map on the top exterior power
 `exteriorPower.map n f` followed by the volume form `topEquiv` scales by the
 determinant of `f`: `topEquiv (map n f X) = (det f) • topEquiv X` for every
@@ -178,8 +182,8 @@ every `X : ⋀ⁿ M`. Both sides are `R`-linear in `X` and agree on the `ιMulti
 generators (`exteriorPower.map_apply_ιMulti` / `ιMulti_apply_coe` on the left,
 `ExteriorAlgebra.map_apply_ιMulti` on the right), which span `⋀ⁿ M`
 (`exteriorPower.span`). The bridge that lets the multiplicativity of
-`ExteriorAlgebra.map f` (an `AlgHom`) push through the graded wedge product `wedgeProd`
-of the screw algebra. -/
+`ExteriorAlgebra.map f` (an `AlgHom`) push through a wedge product of exterior powers
+(`wedgeProd` in `Molecular/Meet.lean`). -/
 theorem map_coe_eq_exteriorAlgebra_map {R : Type*} [CommRing R] {n : ℕ}
     {M : Type*} [AddCommGroup M] [Module R M] {N : Type*} [AddCommGroup N] [Module R N]
     (f : M →ₗ[R] N) (X : ⋀[R]^n M) :

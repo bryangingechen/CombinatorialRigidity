@@ -17,10 +17,10 @@ i.e. the product over `zipWith Equiv.swap l l.tail` (the adjacent pairs `(l[s], 
 This is the iterated form of the already-mathlib `List.formPerm_cons_cons`
 (`(x :: y :: l).formPerm = Equiv.swap x y * (y :: l).formPerm`): unfolding that
 recursion all the way down spells `formPerm` as the left-to-right product of the
-window swaps. The combinatorial-rigidity project uses it to identify the
-`shiftPerm` index-shift cycle (KT 2011 eq. (6.54), the `i`-cycle
-`v₁ → ⋯ → vᵢ → v₁`) with the iterated single-transposition transport its
-cycle-W9a row-span fold composes (one adjacent swap per moved degree-2 body).
+window swaps. The combinatorial-rigidity project uses it to factor the index
+shift `shiftPerm` (Katoh–Tanigawa 2011, eq. (6.54): the cycle
+`v₁ → ⋯ → vᵢ → v₁`) into one adjacent transposition per moved body of degree two
+(`shiftPerm_eq_prod_map_swap_shiftBodyList`, `Molecular/Induction/Operations.lean`).
 
 The lemma is upstream-eligible: a pure fact about `List.formPerm` with no
 project-specific concepts.

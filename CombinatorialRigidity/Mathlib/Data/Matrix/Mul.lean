@@ -8,10 +8,10 @@ module
 public import Mathlib.Data.Matrix.Mul
 
 /-!
-# Upstream candidates: `dotProduct` against an affine combination
+# Upstream candidates: `dotProduct` against a linear combination
 
-Phase 40-cleanup B7: the recurring `rw [dotProduct_add, dotProduct_smul, …, smul_eq_mul, …]`
-three-plus-argument towers, fused into one lemma each.
+The rewrite chains `rw [dotProduct_add, dotProduct_smul, …, smul_eq_mul, …]` of three or more
+lemmas, fused into one lemma each.
 
 The Lean namespace has no owner upstream (`dotProduct_add` / `dotProduct_smul` /
 `smul_eq_mul` are root-level), so these stay unnamespaced too; promotion to mathlib is a
@@ -23,7 +23,7 @@ copy-paste. See `DESIGN.md` "Mirror directory".
   `dotProduct_add` + `dotProduct_smul` + `smul_eq_mul` for a dot product against a sum of a
   plain vector and a scaled one.
 * `dotProduct_smul_add_smul` — `v ⬝ᵥ (c • pa + d • pb) = c * (v ⬝ᵥ pa) + d * (v ⬝ᵥ pb)`. Same
-  fusion, one level deeper, for a dot product against an affine combination of two vectors.
+  fusion, one level deeper, for a dot product against a linear combination of two vectors.
 -/
 
 @[expose] public section
@@ -36,7 +36,7 @@ theorem dotProduct_add_smul (v u w : m → α) (c : α) :
     v ⬝ᵥ (u + c • w) = v ⬝ᵥ u + c * (v ⬝ᵥ w) := by
   rw [dotProduct_add, dotProduct_smul, smul_eq_mul]
 
-/-- A dot product against an affine combination of two vectors: fuses `dotProduct_add`,
+/-- A dot product against a linear combination of two vectors: fuses `dotProduct_add`,
 two `dotProduct_smul`s and two `smul_eq_mul`s. -/
 theorem dotProduct_smul_add_smul (v pa pb : m → α) (c d : α) :
     v ⬝ᵥ (c • pa + d • pb) = c * (v ⬝ᵥ pa) + d * (v ⬝ᵥ pb) := by

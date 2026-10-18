@@ -14,7 +14,7 @@ Mathlib's `Finset.coe_compl` and `Finset.coe_singleton` give the two ingredient
 rewrites; this file packages their composition as a single `simp`/`norm_cast`
 lemma.
 
-Companion `card_compl_singleton` (which needs `Fintype α`) lives in
+The companion `card_compl_singleton` belongs beside `Finset.card_compl` in
 `Mathlib/Data/Fintype/Card.lean` (mirrored at
 `CombinatorialRigidity/Mathlib/Data/Fintype/Card.lean`).
 

@@ -12,10 +12,11 @@ public import Mathlib.Data.Set.Card
 /-!
 # Upstream candidates: deleting the incidence set of a degree-≤-one vertex
 
-Phase 32 (`sec:jacobs-degree-one`, L2 slice plan T2). Jackson–Jordán 2008's tree/degree-one
-rank formulas (Lemma 4.2) peel a degree-one (*leaf*) vertex `v` one at a time via
-`G.deleteIncidenceSet v`, tracking how a neighbor `u`'s degree and the graph's set of
-degree-one vertices change under the peel. Mathlib's `Mathlib/Combinatorics/SimpleGraph/
+Jackson and Jordán prove their degree-one rank formulas (Jackson–Jordán 2008, Lemma 4.2) by
+deleting a vertex of degree one at each step. The combinatorial-rigidity project's proof
+(`JacobsDegreeOne.lean`, presented in the blueprint's `sec:jacobs-degree-one`) peels such a
+*leaf* `v` as `G.deleteIncidenceSet v`, tracking how its neighbor `u`'s degree and the graph's
+set of degree-one vertices change under the peel. Mathlib's `Mathlib/Combinatorics/SimpleGraph/
 DeleteEdges.lean` already supplies `deleteIncidenceSet` and its edge-set / support-subset
 facts; this file supplies the leaf-peel-specific companions: how `neighborSet`, `degree`, and
 `support` behave *exactly* (not just up to a subset/bound) once the peeled vertex has degree
@@ -24,8 +25,6 @@ at most one, plus how the set of degree-one vertices changes across the peel.
 The Lean namespace is the upstream one (`SimpleGraph`), so promotion to mathlib is a
 copy-paste alongside `deleteIncidenceSet_adj` / `support_deleteIncidenceSet_subset`. See
 `DESIGN.md` "Mirror directory".
-
-See `notes/Phase32.md` (the L2 slice plan, T2) for the phase plan.
 
 ## Contents (target file: `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`)
 
@@ -37,7 +36,7 @@ See `notes/Phase32.md` (the L2 slice plan, T2) for the phase plan.
   `v` with neighbor `u`: every other vertex's degree is unchanged, `u`'s drops by exactly
   one, and `v`'s drops to zero.
 * `support_deleteIncidenceSet_of_degree_eq_one` — the exact support identity for a
-  degree-one peel whose neighbor `u` keeps degree at least two after the peel (companion to
+  degree-one peel whose neighbor `u` has degree at least two (companion to
   the mathlib `support_deleteIncidenceSet_subset`, sharpened to equality under this
   hypothesis).
 * `ncard_edgeSet_deleteIncidenceSet` — the `Set.ncard` form of the mathlib
@@ -45,8 +44,8 @@ See `notes/Phase32.md` (the L2 slice plan, T2) for the phase plan.
 * `setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` /
   `setOf_degree_eq_one_deleteIncidenceSet_of_degree_eq_two` — how the set of degree-one
   vertices changes across a degree-one peel at `v` with neighbor `u`: it loses `v` outright
-  when `u` keeps degree at least three, and swaps `v` for `u` when `u`'s degree was exactly
-  two (so `u` becomes a new leaf).
+  when `u` has degree at least three, and swaps `v` for `u` when `u` has degree exactly two
+  (so `u` becomes a new leaf).
 -/
 
 @[expose] public section
@@ -74,8 +73,8 @@ theorem neighborSet_deleteIncidenceSet_self {v : V} :
 /-! ## Degree corollaries of a degree-one peel -/
 
 /-- Peeling a degree-one vertex `v` (with neighbor `u`) leaves every other vertex's degree
-unchanged: `v` cannot be a neighbor of `w` without being `w`'s *only* neighbor `u` (since `v`
-has a unique neighbor), so if `w ≠ u` then `v` was never a neighbor of `w` to begin with. -/
+unchanged: `w` cannot be a neighbor of `v` without being `v`'s *only* neighbor `u`, so if
+`w ≠ u` then `v` was never a neighbor of `w` to begin with. -/
 theorem degree_deleteIncidenceSet_of_ne_of_ne {v u w : V} [Fintype (G.neighborSet v)]
     [Fintype (G.neighborSet w)] [Fintype ((G.deleteIncidenceSet v).neighborSet w)]
     (hv : G.degree v = 1) (hu : G.Adj v u) (hw1 : w ≠ v) (hw2 : w ≠ u) :
@@ -103,7 +102,7 @@ theorem degree_deleteIncidenceSet_self {v : V}
 
 /-! ## Support -/
 
-/-- If `v` has degree one with neighbor `u`, and `u` keeps degree at least two, then peeling
+/-- If `v` has degree one with neighbor `u`, and `u` has degree at least two, then peeling
 `v`'s incidence set removes exactly `v` from the support (sharpening the unconditional
 mathlib subset bound `support_deleteIncidenceSet_subset` to an equality): `u` still has a
 neighbor other than `v` (from its degree bound), and no other support vertex `w` could have
@@ -143,10 +142,10 @@ theorem ncard_edgeSet_deleteIncidenceSet [Fintype V] [DecidableRel G.Adj] (v : V
 
 variable [Fintype V] [DecidableEq V] [DecidableRel G.Adj]
 
-/-- If `v` has degree one with neighbor `u`, and `u` keeps degree at least three after losing
-its edge to `v`, then peeling `v`'s incidence set simply removes `v` from the set of
-degree-one vertices: `v` itself drops to degree zero (`degree_deleteIncidenceSet_self`), `u`
-stays above degree one (`degree_deleteIncidenceSet_add_one_of_adj`), and every other vertex's
+/-- If `v` has degree one with neighbor `u`, and `u` has degree at least three, then peeling
+`v`'s incidence set simply removes `v` from the set of degree-one vertices: `v` itself drops
+to degree zero (`degree_deleteIncidenceSet_self`), `u` stays above degree one
+(`degree_deleteIncidenceSet_add_one_of_adj`), and every other vertex's
 degree is unchanged (`degree_deleteIncidenceSet_of_ne_of_ne`). -/
 theorem setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree {v u : V}
     (hv : G.degree v = 1) (hu : G.Adj v u) (h3 : 3 ≤ G.degree u) :

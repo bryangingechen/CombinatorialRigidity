@@ -27,15 +27,15 @@ subspace.
 Upstream target: a new file `Mathlib/LinearAlgebra/AffineSpace/AffineSubspace/Cover.lean`
 (parallel to `Mathlib/GroupTheory/CosetCover.lean` but in the affine-space hierarchy,
 importing `GroupTheory.CosetCover` for the underlying `AddSubgroup` machinery and
-`AffineSubspace.Defs` for the affine API).
+`AffineSubspace.Basic` and `AffineSpace.FiniteDimensional` for the affine API).
 
 ## Main results
 
 * `AffineSubspace.biUnion_ne_univ_of_top_notMem` — a vector space over an infinite
   division ring is not a finite union of proper affine subspaces.
 * `AffineSubspace.affineSpan_ne_top_of_ncard_le_finrank` — a finite set in a
-  finite-dimensional vector space whose cardinality is at most `finrank` has an
-  affine span that is not the whole space. Natural upstream home is
+  vector space whose cardinality is at most `finrank` has an affine span that is
+  not the whole space. Natural upstream home is
   `Mathlib/LinearAlgebra/AffineSpace/FiniteDimensional.lean` (alongside
   `finrank_vectorSpan_image_finset_le`).
 -/
@@ -115,11 +115,11 @@ section ProperAffineSpan
 variable {k V : Type*} [DivisionRing k] [AddCommGroup V] [Module k V]
 
 open Module in
-/-- A finite set in a finite-dimensional vector space whose cardinality does not exceed
-`finrank` has an affine span that is not the whole space. Generalizes "a single point
-spans no more than itself" and "two points span at most a line" — useful for ruling out
-`affineSpan k s = ⊤` from a cardinality bound, e.g., the proper-affine-subspaces
-side-condition of `AffineSubspace.biUnion_ne_univ_of_top_notMem`. -/
+/-- A finite set in a vector space whose cardinality does not exceed `finrank` has an affine
+span that is not the whole space (in infinite dimension `finrank` is `0`, so the set is
+empty). Generalizes "a single point spans no more than itself" and "two points span at most a
+line" — useful for ruling out `affineSpan k s = ⊤` from a cardinality bound, e.g., the
+proper-affine-subspaces side-condition of `AffineSubspace.biUnion_ne_univ_of_top_notMem`. -/
 theorem AffineSubspace.affineSpan_ne_top_of_ncard_le_finrank
     {s : Set V} (hsf : s.Finite) (hs : s.ncard ≤ finrank k V) :
     affineSpan k s ≠ ⊤ := by

@@ -12,7 +12,7 @@ public import Mathlib.Data.Set.Insert
 # Mirror file: `Mathlib/Data/Finset/Insert.lean`
 
 Upstream-eligible lemmas about `Finset` pairs `{a, b}`. See `DESIGN.md`
-*Mirror directory* and `notes/FRICTION.md` *Mirrored* for the project convention.
+*Mirror directory* for the project convention.
 -/
 
 @[expose] public section

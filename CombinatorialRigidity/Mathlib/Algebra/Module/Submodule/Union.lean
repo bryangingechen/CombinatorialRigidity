@@ -17,10 +17,10 @@ over an *infinite* field is not a finite union of proper submodules
 submodules no size hypothesis on the scalars is needed at all: the classical
 exchange argument (`u ∈ S \ U`, `w ∈ S \ W`, else `u + w` escapes both) works
 over any ring. The relative form below — an element of `S` avoiding both `U`
-and `W` whenever neither contains `S` — is the workhorse the
-combinatorial-rigidity project's repositioning constructions use to pick frame
-vectors subject to two span avoidances over an arbitrary field (Phase 39
-W5-L5, the cut arm's strengthened repositioning lemma).
+and `W` whenever neither contains `S` — is what the combinatorial-rigidity
+project's repositioning lemma uses to pick vectors subject to two span
+avoidances over an arbitrary field (`exists_reposition_cross_incidences_avoiding`,
+`Molecular/Molecule/Pencil/Arms.lean`).
 
 The Lean namespace is the upstream one (`Submodule`), so promotion to mathlib
 is a copy-paste alongside its union lemmas. See `DESIGN.md` "Mirror directory".

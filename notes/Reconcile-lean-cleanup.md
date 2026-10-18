@@ -10,15 +10,13 @@ each of the 16 main results outside S1's and S2's rows, and the docstring sweep 
 L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–15.1 are done: the open, the docstring-label check (gate 9: 422 at task
-2, 387 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, and L6–L8's hypotheses and
-repeated derivations (*Current state*). Task 16, the recon of the pebble game's search, settled its
-fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set;
-task 18 committed the script that times it and checks the `decide` facts; task 19 had the
-executable split its input on any whitespace; task 20 rewrote the texts; tasks 21–24 landed the
-sixteen non-vacuity witnesses; task 25 swept the docstrings of the nine planar files it names,
-and task 25.1 the four it did not. **Next concrete task:** task 25.2, the docstrings of
-`Search/` and `Mathlib/` (*Lemma checklist*).
+wait for the phase. Tasks 1–25.2 are done (*Current state*): the open, the docstring-label check
+(gate 9: 422 at task 2, 387 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
+hypotheses and repeated derivations, the pebble game's search with one visited set and its texts
+(tasks 16–20), the sixteen non-vacuity witnesses (tasks 21–24), and the docstrings of the planar
+files, of `Search/` and of `Mathlib/` but two files (tasks 25–25.2). **Next concrete task:** task
+25.3, the docstrings of `Mathlib/LinearAlgebra/Matrix/Rank.lean` and
+`Mathlib/LinearAlgebra/Dimension/Constructions.lean` (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -29,26 +27,24 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 25.1 is done** (this commit); nothing is mid-stream.
+**Task 25.2 is done** (this commit); nothing is mid-stream.
 
-**Tasks 25–25.1** (task 25: `F-018`, `F-022`, `F-023`, `F-030`, `F-032` `done`, `F-025`, `F-228`,
-`F-200` in part; task 25.1: `F-020` in part, new `F-278`): the thirteen planar files' docstrings
-read against their bodies, under *Decisions*' sweep form; each claim a body contradicts is named
-in its commit's message (task 25.1's: `typeII`'s "only under", the iso constructors' degrees,
-`HasBlock`'s "exactly when" at `X = ∅`, the "free edges", `top_fin_two_isGenericallyRigidInj`'s
-`d ≥ 1`). The label check's report is unchanged (387; none of its lines are in these files). The
-ledger: 278 entries, 162 `done`, 9 `left`, 102 `reported`, 5 `open`.
+**Tasks 25–25.2** (task 25: `F-018`, `F-022`, `F-023`, `F-030`, `F-032` `done`, `F-025`, `F-228`,
+`F-200` in part; task 25.1: `F-020` in part, new `F-278`; task 25.2: new `F-279`): the docstrings
+of the thirteen planar files, `Search/DFS.lean` and 33 of `Mathlib/`'s 35 files read against
+their bodies, under *Decisions*' sweep form; each claim a body contradicts is named in its
+commit's message (task 25.2's: uses the Lean does not have, of `reachClosureComputable_closed`
+and of the mirrors in `NonsingularInverse.lean`, `Dual/Lemmas.lean` and `LinearIndepOn.units_smul`;
+the project's leaf peel credited to Jackson and Jordán; the peel's "keeps degree"; KT's Claim
+6.9; Strang). The label check's report is unchanged (387; none of its lines are in these files).
+The ledger: 279 entries, 162 `done`, 9 `left`, 102 `reported`, 6 `open`.
 
 **Tasks 21–24** (§1's proposal): `CombinatorialRigidity/Nonvacuity.lean`, sixteen closed
-theorems, one per main result outside S1's and S2's rows, every hypothesis discharged
-(*Decisions*), none failed; all sixteen's `#print axioms`
-(`scratch/reconcile-lean/Witnesses-t24.lean`) give the three. FRICTION: tasks 22–24's entries;
-task 21's count-matroid entry waits for task 38.
+theorems, one per main result outside S1's and S2's rows, none failed, all on the three axioms.
+FRICTION: tasks 22–24's entries; task 21's count-matroid entry waits for task 38.
 
-**Tasks 16–20** (`F-033`, `F-047`, both `done`): task 16's recon settled the search with one
-marked set; task 17 landed it in `Search/DFS.lean` (new `F-276`, `F-277`, `reported`); task 18
-committed `scripts/DFSTiming.lean` (at $n = 18$: 2196 ms per-walk, 157 µs now) and checked the
-`decide` facts; task 19 had `parsePair` split on any whitespace; task 20 rewrote the texts.
+**Tasks 16–20** (`F-033`, `F-047`, both `done`; new `F-276`, `F-277`, `reported`): the search
+with one marked set, `scripts/DFSTiming.lean`, `parsePair` on any whitespace, the texts.
 
 **Done before** (tasks 3–15.1; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -310,8 +306,11 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **25.1. The planar files no task named** (`F-020` in part; new `F-278`): `Framework.lean`,
   `Henneberg.lean`, `HennebergReverse.lean`, `SparsityIComponents.lean`; the dump byte-identical;
   gate 9 387.
-- [ ] **25.2. `Search/` and `Mathlib/`**, which no task names: 22 files with phase pointers, 33 in
-  `Mathlib/LinearAlgebra/Matrix/Rank.lean` (task 25's grep). *Expected:* as 25.1.
+- [x] **25.2. `Search/` and `Mathlib/` but two files** (new `F-279`): `Search/DFS.lean` and 33
+  files; the mirrors in mathlib's register; the dump byte-identical; gate 9 387.
+- [ ] **25.3. `Mathlib/LinearAlgebra/Matrix/Rank.lean` and `Dimension/Constructions.lean`**, split
+  from 25.2: the phase pointers (41 lines in `Rank.lean`) and the KT equation numbers, checked
+  in `.refs/`; `F-279`'s screen on the two. *Expected:* as 25.2.
 - [ ] **26. `PebbleGame/`** (`F-035`, `F-040`, `F-045`, `F-230`): `Basic.lean`, `Algorithm.lean`,
   `Correctness.lean`, `Exec.lean`; task 20 took the running-time and `decide` claims. Also the
   three "verified-iterative" (`Basic.lean` 1028, 1052; `Algorithm.lean` 250): the search recurses.
@@ -359,7 +358,7 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   (`Modelling.lean`: the link is projective duality), `F-210`, `F-243`).
 - [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
   `F-269`'s eight declarations and `F-271`'s `case_I_realization` through block (b); `F-275`'s
-  derivable vertex hypotheses and `F-278`'s two, L6's). The smell
+  derivable vertex hypotheses and `F-278`'s two, L6's; `F-279`'s unused declarations). The smell
   counts again (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's; each
   `@[nolint …]` and `set_option linter` site checked for its one-line justification (task 8 found
   that one of the seven bridge "false positives" `notes/ToolchainBumps.md` counts was a real unused
@@ -414,14 +413,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 25.2**, at Opus: the docstrings of `Search/` and `Mathlib/` (*Lemma checklist*,
-under the sweep's rules and *Decisions*' sweep form). *Expected:* the dump byte-identical; gate 9
-falls by what the task fixes (none of its lines are in these directories today, so 387). Gates
-1–3 (gate 3's witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t25-1.lean`), 5, 6, 9
-and 10 (the parent dump `scratch/reconcile-lean/dump-t25-1.txt`, gitignored; regenerate it if
-missing). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`,
-`F-271`, `F-275`, `F-278` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task
-21) entries for task 38; the three "verified-iterative" for task 26. After the round the queue stops before
+**Next: task 25.3**, at Opus: the docstrings of `Mathlib/LinearAlgebra/Matrix/Rank.lean` and
+`Mathlib/LinearAlgebra/Dimension/Constructions.lean` (*Lemma checklist*, under the sweep's rules
+and *Decisions*' sweep form). *Expected:* the dump byte-identical; gate 9 falls by what the task
+fixes (none of its lines are in these files today, so 387). Gates 1–3 (gate 3's witnesses: the
+sixteen of `scratch/reconcile-lean/Witnesses-t25-2.lean`), 5, 6, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t25-2.txt`, gitignored; regenerate it if missing). Carried in:
+`F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278`,
+`F-279` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries for
+task 38; the three "verified-iterative" for task 26. After the round the queue stops before
 `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
@@ -493,4 +493,6 @@ missing). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`,
   presents the file; a credit is the chapter's, and one a docstring keeps beyond it (a page, a
   theorem number) is checked in `.refs/`; a docstring claim the body contradicts is fixed in the
   same pass and named in the commit. A hypothesis the sweep finds derivable or unneeded is a new
-  `L` entry for task 38, not a signature change in a docstring task (task 25.1, `F-278`).
+  `L` entry for task 38, not a signature change in a docstring task (task 25.1, `F-278`), and so
+  is a declaration nothing uses (task 25.2, `F-279`). `Mathlib/`'s mirrors keep mathlib's
+  register, with a pointer to the project file that uses a mirror (task 25.2).

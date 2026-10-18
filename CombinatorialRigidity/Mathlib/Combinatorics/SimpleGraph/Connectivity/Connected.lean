@@ -14,22 +14,20 @@ public import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 /-!
 # Upstream candidates: reachability facts for a leaf-peel and a graph's own support
 
-Phase 32 (`sec:jacobs-degree-one`, L2 slice plan T2 second half). Jackson–Jordán 2008's
-degree-one rank formulas (Lemma 4.2) run their induction on a *support-relative*
-strengthening: connectivity is read as reachability between support vertices, so the
-induction can peel a leaf's incident edges while leaving the leaf itself in the ambient
-vertex type `V` as an isolated vertex (no rank transport, no type-changing induction). This
-file supplies the three reachability facts that strengthening needs: peeling a degree-≤-one
-vertex's incidence set preserves reachability among the other vertices, a degree-one vertex's
-unique neighbor keeps degree at least two once the graph has a third support vertex, and a
-graph's own support is connected (as an induced subgraph) once every pair of support vertices
-is reachable.
+The combinatorial-rigidity project proves Jackson and Jordán's degree-one rank formulas
+(Jackson–Jordán 2008, Lemma 4.2; `JacobsDegreeOne.lean`, presented in the blueprint's
+`sec:jacobs-degree-one`) by an induction on a *support-relative* strengthening: connectivity
+is read as reachability between support vertices, so the induction can peel a leaf's incident
+edges while leaving the leaf itself in the ambient vertex type `V` as an isolated vertex (no
+rank transport, no type-changing induction). This file supplies the three reachability facts
+that strengthening needs: peeling a degree-≤-one vertex's incidence set preserves reachability
+among the other vertices, a degree-one vertex's unique neighbor has degree at least two once the
+graph has a third support vertex, and a graph's own support is connected (as an induced
+subgraph) once every pair of support vertices is reachable.
 
 The Lean namespace is the upstream one (`SimpleGraph`), so promotion to mathlib is a
 copy-paste alongside `IsTrail.not_mem_support_of_subsingleton_neighborSet` /
 `mem_support_of_mem_walk_support`. See `DESIGN.md` "Mirror directory".
-
-See `notes/Phase32.md` (the L2 slice plan, T2) for the phase plan.
 
 ## Contents (target file: `Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean`)
 
