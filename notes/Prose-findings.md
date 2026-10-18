@@ -3765,7 +3765,15 @@ declaration's name as its header writes it:
   them, and the second and `exteriorPower_map_subtype_injective` have no caller (`F-111`).
   *Evidence:* read (the bodies and docstrings; a `grep` for the callers).
   *Found:* round 2 task 2.18.
-  *Disposition:* reported (`notes/Prose-report.md`, L9).
+  *Disposition:* done (task 32.1): the header names the file's results and nodes and narrates no
+  process; `screwAlgebraPairingDualEquiv`'s docstring says the formal proof uses the map
+  `exteriorPower.pairingDual`, not the isomorphism; `screwAlgebraTopEquiv_map_eq_det_smul`'s gives
+  the factor `det g` of `complementIso_map_contragredient_eq`; the wedge-pairing lemmas call
+  `ε_S = ±1` a fact the proofs do not need; the duality lemmas give `n'` as the normal of a second
+  plane through the line; and `finrank_exteriorPower_two_eq_one` and
+  `exteriorPower_finrank_eq_one_proportional` are `lem:complement-iso-line-one-dim`'s case `n = 2`,
+  the count the formal proof uses being `finrank_exteriorPower_self_eq_one`. Before: reported
+  (`notes/Prose-report.md`, L9).
 - **F-123** · L · the docstrings of `panel-layer.tex`'s first pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`): the field `ends` of `PanelHingeFramework` is
   documented as "the two bodies `e` joins", which nothing enforces (`F-122`);
@@ -4008,7 +4016,11 @@ declaration's name as its header writes it:
   "seed", "leaf" and "feeding".
   *Evidence:* read (the docstrings and bodies).
   *Found:* round 3 task 2.13.
-  *Disposition:* reported (`notes/Prose-report.md`, L3).
+  *Disposition:* done (task 32.1): each lead names its own node; no docstring calls a node red or
+  ties a determinant to `lem:genericity-device`; `span_omitTwoExtensor_eq_top`'s calls the omit-two
+  extensor of `i < j` the join of the vectors with `l ≠ i, j`;
+  `exists_affineIndependent_panel_incidence`'s gives its normals as the first three standard basis
+  vectors; and no process code or word remains. Before: reported (`notes/Prose-report.md`, L3).
 - **F-168** · L · the docstrings of the pins of `case-iii.tex`'s three frameworks and KT Claim 6.12
   (`Molecular/RigidityMatrix/Claim612.lean`, `CaseIII/Relabel/Basic.lean`, `Relabel/Chain.lean`,
   `CaseIII/Realization.lean`, `Molecular/Induction/Operations.lean`).
@@ -4029,8 +4041,8 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, L4); round 3:
   `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow` deleted
   (task 4); `splitOff_isLink_relabel`'s docstring without "G4c-i", with KT p. 686 for the
-  isomorphism and p. 687 for eq. (6.31) (task 30); `Claim612.lean`'s and `CaseIII/`'s are tasks 32
-  and 35's.
+  isomorphism and p. 687 for eq. (6.31) (task 30); `RigidityMatrix/Claim612.lean`'s docstrings
+  without process codes or words (task 32.1); `CaseIII/`'s are task 35's.
 - **F-172** · L · the docstrings of the pins of `case-iii.tex`'s general case
   (`CaseIII/Realization.lean`, `CaseIII/Arms.lean`, `Molecular/Induction/Operations.lean`).
   `chainData_fire_discriminator`'s and `chainData_dispatch`'s say that they have no `\lean` pin;
@@ -4274,7 +4286,12 @@ declaration's name as its header writes it:
   *Found:* round 5 task 3.2.
   *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the six without a caller outside
   themselves deleted, with `blockPiSpan` and its two lemmas, and the docstrings that named them
-  repointed or cut (task 4).
+  repointed or cut (task 4); `extensor_join_proportional_complementIso_meet`'s lead names
+  `lem:meet-two-hyperplanes`, and those of `exists_line_data_of_homogeneousIncidence` and
+  `exists_complementIso_ne_zero_of_homogeneousIncidence` give them as steps of
+  `lem:case-III-candidate-dispatch-d3` (task 32.1);
+  `hasGenericFullRankRealization_of_rigidOn_ofNormals`'s (`AlgebraicInduction/CaseI.lean`) is task
+  34's.
 - **F-233** · L · the declarations round 5's task 3.3 moved or unpinned
   (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelLayer.lean`). Their
   docstrings name the nodes their pins left: `screwSpace_finrank` and the five row-independence
@@ -4403,7 +4420,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` for the callers); measured (the closure of
   `case_III_realization_all_k` in `scripts/blueprint-deps.py`'s Lean cache, at task 3.10).
   *Found:* round 5 task 3.10.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3:
+  `exists_homogeneousIncidence_of_normals_gen`'s lead names
+  `lem:case-III-claim612-points-affineIndep-real-normals`, and the wrapper's gives it as a step of
+  `lem:case-III-candidate-dispatch-d3` and as that node's case `d = 3` (task 32.1); the docstrings
+  in `CaseIII/Relabel/` are task 35's.
 - **F-243** · L · the declarations round 5's task 3.11 pinned or unpinned
   (`Molecular/Molecule/Duality.lean`, `Pencil/Statement.lean`;
   `Molecular/GenericLift/HingeGeneric.lean`; `BodyBar/GenericLift.lean`). The docstrings of
@@ -4522,7 +4543,9 @@ declaration's name as its header writes it:
   round 2 task 12 it is a pin of `def:hinge-row-block` (`rigidity-matrix.tex`, `F-248`).
   *Evidence:* read (the docstring and the header; the two nodes' pins).
   *Found:* RECONCILE round 2 task 12.
-  *Disposition:* reported (`notes/Reconcile.md` §3): round 3's docstring sweep (*Moved to a later round*).
+  *Disposition:* done (task 32.1): the lead names `def:hinge-row-block`, and the file's header lists
+  the lemma as a pin of that node, in `rigidity-matrix.tex`. Before: reported (`notes/Reconcile.md`
+  §3): round 3's docstring sweep (*Moved to a later round*).
 - **F-264** · L · `PanelHingeFramework.case_III_realization`
   (`Molecular/AlgebraicInduction/CaseIII/Realization.lean`): its docstring gives it as
   `lem:case-III`'s, and the file's header (17) and its first section's (35) call it the all-$k$
@@ -4743,6 +4766,13 @@ declaration's name as its header writes it:
   `span_range_hingeRow_blockSpanning_eq_rigidityRows` (whose `hmem` `hspan` gives) and
   `span_range_hingeRow_crossFramework_eq_rigidityRows_of_off`; the file's two others,
   `linearIndependent_sumElim_candidateRow_swap` and `_candidateBlock_swap`, are `F-269`'s.
+  Task 32.1 adds seven (the same screen and the cache, at `0bdbf32a`): in
+  `Molecular/RigidityMatrix/Claim612.lean`, `exists_independent_perp_family_escape`, whose docstring
+  said the discriminator builds its second normal through it (it uses
+  `exists_independent_perp_family`), and `omitTwoExtensor_homogenize_eq_extensor_kept`, whose
+  docstring named a caller `case_III_claim612` that does not exist; in `Molecular/Meet.lean`,
+  `coe_gradedMul`, `wedgeProdBilin_apply`, `piBasisFun_toDual_symm`, and the `d = 3` forms
+  `extensor_mem_range_map_subtype_of_mem` and `exists_smul_eq_of_mem_range_map_subtype`.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -4866,6 +4896,25 @@ declaration's name as its header writes it:
   of the third without `[Finite α]` as well fails (`scratch/reconcile-lean/Hyps-t32.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 32.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-287** · L · hypotheses of `Molecular/Meet.lean` that the statements need not take, and a
+  lemma's place. `meet`'s `ha : a ≤ k + 2` and `hb : b ≤ k + 2`, which `hab : a + b ≤ k + 2` gives
+  (`def:meet` states `a + b ≤ d + 1` alone). `extensor_join_proportional_complementIso_meet`'s
+  `hp : LinearIndependent K p` (`lem:meet-two-hyperplanes`, the second statement): for a dependent
+  `p` the join is `0`, and `c = 0` serves; without it,
+  `exists_line_data_of_homogeneousIncidence_gen` (`RigidityMatrix/Claim612.lean`) needs neither its
+  `hpbar` nor its conclusion's `LinearIndependent K p`, which serve only `hp` (through
+  `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`).
+  `exists_smul_extensor_eq_of_mem_span_range`'s `hv : LinearIndependent K v`: for a dependent `v`
+  the span has dimension at most `1`, so `u` is dependent, and `c = 0` serves. The node states `hp`,
+  so dropping it restates the node. And `mem_hingeRowBlock_iff` (`def:hinge-row-block`) is in
+  `RigidityMatrix/Claim612.lean`, apart from `hingeRowBlock` in `Basic.lean`, which `Claim612.lean`
+  imports (`CombinatorialRigidity/CLAUDE.md`: a lemma goes in the file of its definition).
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: a copy of `meet` without `ha`
+  and `hb`, equal to `meet` by `rfl`; copies of the other two without `hp` and `hv`, which call the
+  lemmas when the family is independent and take `c = 0` otherwise; all on the three standard axioms
+  (`scratch/reconcile-lean/Hyps-t321.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 32.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

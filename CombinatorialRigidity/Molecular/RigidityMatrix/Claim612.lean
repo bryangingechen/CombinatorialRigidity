@@ -9,24 +9,36 @@ public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 public import CombinatorialRigidity.Mathlib.Data.Fintype.Card
 
 /-!
-# The panel-hinge rigidity matrix — Claim 6.12 panel geometry + candidate-row machinery
+# KT Claim 6.12: the joins of KT eq. (6.45), the points and the blocks
 
-Phase 22 (molecular-conjecture program). The `d=3` Claim-6.12 layer of the rigidity-matrix
-subdirectory (`RigidityMatrix/`; the post-Phase-22l molecular split round,
-`notes/Phase22l-perf.md`). On top of the core API in `RigidityMatrix/Basic`, this file carries the
-realization-only machinery — the part the blueprint puts in `case-iii.tex` rather than
-`rigidity-matrix.tex`:
+The lemmas of `sec:molecular-algebraic-induction-claim612`, the case `d = 3` of Case III, after
+Katoh and Tanigawa (2011, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45**,
+§6.4.1, pp. 680–691), with the forms for every `d` that `lem:case-III-chain-discriminator` uses (KT
+§6.4.2, p. 698). As in `Basic.lean`, `d = k + 1`, so that the screw space is `⋀^k K^(k+2)`. The file
+proves:
 
-* the **Claim 6.12 panel geometry** — the standalone `Fin 4` / `⋀²K⁴` spanning, affine-independence,
-  and homogeneous-incidence / line-data witnesses (KT §6.4.1, eq. (6.45));
-* the **`D`-candidate disjunction and row-space criterion** — `mem_hingeRowBlock_iff`,
-  `linearIndependent_sumElim_candidateRow_iff`, the candidate rows' column-operation identities,
-  `candidateRow_ne_zero` / `candidateRow_ac_eq_neg`, the Claim 6.12 capstone `case_III_claim612`,
-  and the duality witnesses handing the producer its nonzero-candidate-row input.
+* the span of the `D` omit-two extensors of `d + 1` linearly independent vectors of `K^(d+1)`
+  (`lem:case-III-claim612-extensor-span`, from KT Lemma 2.1), and that a linear form that vanishes
+  on a spanning set is zero (`lem:case-III-claim612-orthseq-vanish`);
+* the points of KT p. 691: a common nonzero vector of at most `d` panels
+  (`lem:case-III-claim612-panel-point-exists`); three lemmas on their affine choice, which the
+  formal proof does not use (`lem:case-III-claim612-points-affineIndep-producer`,
+  `lem:case-III-claim612-detpoly`, `lem:case-III-claim612-points-affineIndep`); and linearly
+  independent vectors with their incidences, for given normals
+  (`lem:case-III-claim612-points-affineIndep-real-normals`);
+* for each join of these vectors, a panel that contains it and a second hyperplane through it;
+* the membership test of a hinge-row block (`mem_hingeRowBlock_iff`, a pin of `def:hinge-row-block`
+  in `rigidity-matrix.tex`) and the nonsingularity test of KT's blocks
+  (`lem:case-III-claim612-block-iff-perp`, KT eq. (6.42), p. 690);
+* rows after the column operation and the projection that zeroes the screw of `v` (steps of
+  `lem:case-III-rank-certification`); the restriction of a row to the screws of one body, and KT
+  eq. (6.44) (`lem:case-III-claim612-eq644`, p. 691); and `r ≠ 0`
+  (`lem:case-III-claim612-r-nonzero`, p. 690);
+* KT Claim 6.12 (`lem:case-III-claim612`, pp. 690–691), and the step from a join on which `r` does
+  not vanish to a hinge in a panel on whose extensor `r` does not vanish, for `d = 3`
+  (`lem:case-III-candidate-dispatch-d3`) and for every `d` (`lem:case-III-chain-discriminator`).
 
-The shared block-triangular-rank machinery these build on (the column operation `columnOp`, the
-pinned-block independence lemmas) stays in `RigidityMatrix/Basic` — it is also used by
-`RigidityMatrix/Bricks`. See `ROADMAP.md` §18 / §22 and the `case-iii.tex` dep-graph.
+`Basic.lean` defines the hinge-row block `hingeRowBlock` and the column operation `columnOp`.
 -/
 
 @[expose] public section
@@ -37,26 +49,21 @@ open scoped Matrix
 
 variable {K : Type*} [Field K]
 
-/-! ## Claim 6.12 panel geometry: spanning, incidence, and witness lines (KT §6.4.1, eq. (6.45))
+/-! ## The joins of KT eq. (6.45) and the points of KT p. 691
 
-Standalone `Fin 4` / `⋀²K⁴` panel-support geometry feeding the `d=3` Claim 6.12 — the `D`-extensor
-spanning result, the affine-independence producers, and the homogeneous-incidence / line-data
-witnesses. `BodyHingeFramework`-free (only `ScrewSpace` + the Phase 17 extensor / meet API). -/
+The span of the omit-two extensors, the points of KT Claim 6.12 and their homogeneous form for given
+normals, and for each join a panel that contains it and a second hyperplane through it. No framework
+enters. -/
 
-/-- **The `D` panel-support `k`-extensors of `k+2` linearly-independent homogeneous vectors span
-`ScrewSpace K k`** (`lem:case-III-claim612-extensor-span`, Katoh–Tanigawa eq. (6.45) via Lemma 2.1).
-For `k + 2` linearly-independent homogeneous vectors `pbar : Fin (k+2) → K^(k+2)` the
-`binom(k+2, 2) = D` panel-support `k`-extensors `omitTwoExtensor pbar` — one per pair, the join
-`pᵢ ∨ pⱼ` of the codim-2 panel through each pair — span all of `⋀^k K^(k+2) = ScrewSpace K k`. By
-Lemma 2.1 (`omitTwoExtensor_linearIndependent_of_li` at `e = k`) the `D` are linearly independent in
-the `D`-dimensional `ScrewSpace K k` (`screwSpace_finrank`), and a linearly independent family of
-`D = finrank K (ScrewSpace K k)` vectors is a basis, hence spans (the card `(k+2 choose 2) = D` is
-`Fintype.card_subtype_fst_lt_snd`). This is the spanning input to the Claim-6.12 contrapositive
-(`lem:case-III-claim612`): a single nonzero `r ∈ ScrewSpace K k` annihilating every supporting
-extensor in the union (6.45) is forced to be `0`. The bare-LI hypothesis is what the producer feeds
-directly (`exists_homogeneousIncidence_of_normals` at `d = 3`), sparing the de-homogenization to
-affine points (`notes/Phase22-realization-design.md` §1.42). General-`d` carrier lift (Phase 23a,
-Leaf 2). -/
+/-- **The omit-two extensors of `d + 1` linearly independent vectors span the screw space**
+(`lem:case-III-claim612-extensor-span`; from KT Lemma 2.1, p. 651): for linearly independent
+`pbar : Fin (k+2) → K^(k+2)`, the `D = (k+2 choose 2)` extensors `omitTwoExtensor pbar`, one for
+each pair `i < j`, span `ScrewSpace K k`. The omit-two extensor of `i < j` is the join of the
+`k = d − 1` vectors `pbar l` with `l ≠ i, j`, in increasing order of `l`; at `d = 3` the six of them
+are the joins `pbar l ∨ pbar m` of two of the four vectors. They are linearly independent
+(`omitTwoExtensor_linearIndependent_of_li`, `lem:extensor-independence`), and there are
+`D = dim ScrewSpace K k` of them (`screwSpace_finrank`, `Fintype.card_subtype_fst_lt_snd`), so they
+form a basis. -/
 theorem span_omitTwoExtensor_eq_top {k : ℕ} {pbar : Fin (k + 2) → Fin (k + 2) → K}
     (hp : LinearIndependent K pbar) :
     Submodule.span K
@@ -66,9 +73,8 @@ theorem span_omitTwoExtensor_eq_top {k : ℕ} {pbar : Fin (k + 2) → Fin (k + 2
   set c : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} → ScrewSpace K k :=
     fun q => ScrewSpace.mk (omitTwoExtensor pbar (ne_of_lt q.2))
       (extensor_mem_exteriorPower _)
-  -- The coerced family is the Lemma-2.1 omit-two family, linearly independent; transport
-  -- the independence through the (injective) submodule inclusion (the opaque carrier's
-  -- `.val` is the underlying exterior-algebra element).
+  -- The omit-two family is linearly independent in the exterior algebra (KT Lemma 2.1); move the
+  -- independence along the injective map from the screw space to the exterior algebra.
   have hcoe : LinearIndependent K
       (fun q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} =>
         omitTwoExtensor pbar (ne_of_lt q.2)) :=
@@ -89,36 +95,23 @@ theorem span_omitTwoExtensor_eq_top {k : ℕ} {pbar : Fin (k + 2) → Fin (k + 2
   have hbasis := (basisOfLinearIndependentOfCardEqFinrank hLI hcard).span_eq
   rwa [coe_basisOfLinearIndependentOfCardEqFinrank] at hbasis
 
-/-- **A functional annihilating a spanning set is zero** (`lem:case-III-claim612-orthseq-vanish`,
-the Claim-6.12 contrapositive's non-degeneracy step). If a screw-space functional
-`r : Module.Dual K (ScrewSpace K k)` vanishes on every element of a set `S` whose span is all of
-`ScrewSpace K k`, then `r = 0`. Two linear maps agreeing on a spanning set are equal
-(`LinearMap.ext_on`); `r` agrees with the zero functional on `S` and `span S = ⊤`, so `r = 0` — the
-non-degeneracy of the dual pairing on `K^D`. This is
-the final step of the Claim-6.12 contrapositive (`lem:case-III-claim612`): the common vector `r` is
-orthogonal to every supporting extensor in KT's union (6.45), which the six panel-support extensors
-of four affinely-independent points force to span `ScrewSpace K 2`
-(`span_omitTwoExtensor_eq_top`), so
-`r = 0`, contradicting `r ≠ 0`. -/
+/-- **A linear form that vanishes on a spanning set is zero**
+(`lem:case-III-claim612-orthseq-vanish`; from the proof of KT Claim 6.12, p. 691): if `r` vanishes
+on every element of a set `S` whose span is `ScrewSpace K k`, then `r = 0`, as `r` and `0` agree on
+`S` (`LinearMap.ext_on`). With `span_omitTwoExtensor_eq_top`, a form that vanishes on all the joins
+of KT eq. (6.45) is zero. -/
 theorem eq_zero_of_annihilates_span_top {k : ℕ} {S : Set (ScrewSpace K k)}
     (hS : Submodule.span K S = ⊤) {r : Module.Dual K (ScrewSpace K k)}
     (hr : ∀ x ∈ S, r x = 0) : r = 0 :=
   -- `r` agrees with `0` on the spanning set `S`, hence everywhere (`LinearMap.ext_on`).
   LinearMap.ext_on hS (fun x hx => by simp [hr x hx])
 
-/-- **The intersection of `< d+1` panel hyperplanes in `K^(d+1)` is nonempty as a projective
-locus** (`lem:case-III-claim612-points-affineIndep`, the existence half of KT eq. (6.45)'s point
-choice; the `j`-hyperplane intersection brick). Given a family `n : Fin m → (Fin (d+1) → K)` of
-`m` panel normals with `m < d + 1`, the homogeneous incidence system `⟨p̄, n i⟩ = 0` for all `i`
-has a *nonzero* solution `p̄ : Fin (d+1) → K`: the `m × (d+1)` coefficient matrix has strictly more
-columns than rows, so its null space is nontrivial. This is the geometric existence step behind
-KT's "for any `j` of the hyperplanes their intersection forms a `(d-j)`-dimensional affine space"
-(p. 698, eq. (6.67)): with `m = j` panels, the homogeneous (projective) solution set is a genuine
-`(d+1-j)`-dimensional subspace, hence nonempty, so a representative homogeneous point exists on
-every one of the chosen panels. (The *affine independence* of the four chosen points — that they
-span an affine `3`-simplex at `d = 3` — is the genericity content of the full
-`lem:case-III-claim612-points-affineIndep`, still red: it needs the affine-independence determinant
-nonvanishing from the algebraic independence of the panel coefficients, `lem:genericity-device`.) -/
+/-- **A common nonzero vector of at most `d` panels** (`lem:case-III-claim612-panel-point-exists`;
+for the points of KT Claim 6.12): for `m < d + 1` vectors `n i` of `K^(d+1)`, some nonzero `p` has
+`p ⬝ᵥ n i = 0` for every `i`. The map `p ↦ (p ⬝ᵥ n i)_i` from `K^(d+1)` to `K^m` has a kernel of
+dimension at least `d + 1 − m > 0`. Katoh and Tanigawa take a point on `j` generic panels, which
+meet in an affine space of dimension `d − j` (KT p. 698); the formal proof takes such a vector of
+homogeneous coordinates instead (`exists_homogeneousIncidence_of_normals_gen`). -/
 theorem exists_ne_zero_dotProduct_eq_zero {d m : ℕ} (hm : m < d + 1)
     (n : Fin m → Fin (d + 1) → K) :
     ∃ p : Fin (d + 1) → K, p ≠ 0 ∧ ∀ i, p ⬝ᵥ n i = 0 := by
@@ -143,53 +136,30 @@ theorem exists_ne_zero_dotProduct_eq_zero {d m : ℕ} (hm : m < d + 1)
   refine ⟨p, fun h => hpne (Subtype.ext (by simpa using h)), fun i => ?_⟩
   exact congrFun (LinearMap.mem_ker.mp hp) i
 
-/-- **The product-route producer for generic affine independence**
-(`lem:case-III-claim612-points-affineIndep`, the genericity-to-realization closure half). Suppose
-the `d + 1` candidate points are built as functions `p : (σ → K) → Fin (d+1) → Fin d → K` of a
-panel-coordinate seed `q : σ → K`, and their affine-independence determinant — the homogenization
-determinant `det (homogenize ∘ (p q)) : K` of `affineIndependent_fin_iff_det_homogenize` — is the
-evaluation of a *nonzero* multivariate polynomial `P : MvPolynomial σ K` in `q` (`hdet`). Then there
-is a seed `q` at which the points `p q` are **affinely independent**.
-
-This is the genericity-free *closure* step: it composes the device's foundational non-root brick
-`MvPolynomial.exists_eval_ne_zero` (over the infinite field `K`, a nonzero polynomial does not
-vanish identically; the same brick Case I uses to pick a shared seed) with the determinant
-characterization `affineIndependent_fin_iff_det_homogenize` (Lemma 2.1, top-extensor form). It
-carries the genericity *content* as the hypothesis `hdet` — that the affine-independence
-determinant, as a function of the seed, is a nonzero polynomial — which is the irreducible
-genericity remainder of N3a (KT p. 691/698, `lem:genericity-device`: the determinant is nonzero
-because the panel coefficients are algebraically independent over `ℚ`). Parallel to the existence
-half `exists_ne_zero_dotProduct_eq_zero`, this isolates the genuinely genericity-bearing fact
-(`P ≠ 0`) from the surrounding linear-algebra glue. -/
+/-- **Affine independence off the zeros of a polynomial**
+(`lem:case-III-claim612-points-affineIndep-producer`): over an infinite field `K`, let `p t` be
+`d + 1` points of `K^d` for each `t : σ → K`, and let a nonzero polynomial `P` take at every `t` the
+value of the determinant of the homogeneous coordinates of the points `p t` (`hdet`). Then the
+points `p t` are affinely independent for some `t`: `P` has a non-root
+(`MvPolynomial.exists_eval_ne_zero`), and a nonzero determinant gives affine independence
+(`affineIndependent_fin_iff_det_homogenize`, `lem:affine-indep-iff`). The formal proof of KT
+Claim 6.12 chooses no points (`exists_homogeneousIncidence_of_normals_gen`). -/
 theorem exists_affineIndependent_of_det_polynomial_ne_zero [Infinite K] {d : ℕ} {σ : Type*}
     (p : (σ → K) → Fin (d + 1) → Fin d → K) {P : MvPolynomial σ K} (hP : P ≠ 0)
     (hdet : ∀ q, MvPolynomial.eval q P = (Matrix.of fun i => homogenize (p q i)).det) :
     ∃ q : σ → K, AffineIndependent K (p q) := by
-  -- A nonzero polynomial over the infinite field `K` has a non-vanishing point.
+  -- A nonzero polynomial over the infinite field `K` has a non-root.
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP
-  -- At that seed the determinant is nonzero, so the points are affinely independent.
+  -- There the determinant is nonzero, so the points are affinely independent.
   exact ⟨q, (affineIndependent_fin_iff_det_homogenize (p q)).mpr (hdet q ▸ hq)⟩
 
-/-- **The affine-independence determinant of polynomial-valued candidate points is a polynomial in
-the seed** (`lem:case-III-claim612-points-affineIndep`, the determinant-polynomial bridge feeding
-the closure half). Suppose the `d + 1` candidate points are built coordinate-by-coordinate as
-multivariate polynomials in the panel-coordinate seed: a family `pp : Fin (d+1) → Fin d →
-MvPolynomial σ K`, with the point `p q i := fun j => eval q (pp i j)`. Then their
-affine-independence determinant — the homogenization determinant
-`det (homogenize ∘ (p q)) : K` of `affineIndependent_fin_iff_det_homogenize` — is the evaluation at
-`q` of a *single* polynomial `P : MvPolynomial σ K`, namely the determinant of the
-`(d+1) × (d+1)` polynomial matrix whose rows are the homogenized polynomial points
-`Fin.snoc (pp i) 1`.
-
-This discharges the `hdet` hypothesis of the closure producer
-`exists_affineIndependent_of_det_polynomial_ne_zero`: the ring homomorphism `eval q` commutes with
-`det` (`RingHom.map_det`) and with `Fin.snoc · 1` (it sends the constant final coordinate `1` to
-`1`), so evaluating the polynomial determinant at `q` reproduces the real homogenization determinant
-of the evaluated points. It isolates the *polynomial-in-the-seed* structure of the determinant from
-the genuinely genericity-bearing fact that this polynomial is nonzero (`P ≠ 0`, the irreducible
-remainder of N3a, the genericity device `lem:genericity-device`), exactly as the existence half
-`exists_ne_zero_dotProduct_eq_zero` and the closure half
-`exists_affineIndependent_of_det_polynomial_ne_zero` isolate their own ingredients. -/
+/-- **The determinant of points with polynomial coordinates is a polynomial**
+(`lem:case-III-claim612-detpoly`): if the coordinates of `d + 1` points of `K^d` are polynomials
+`pp i j` in variables `σ`, then some polynomial `P` takes at every `t` the value of the determinant
+of the homogeneous coordinates of the points at `t`. `P` is the determinant of the matrix of
+polynomials with the rows `Fin.snoc (pp i) 1`: evaluation at `t` is a ring homomorphism, so it
+commutes with the determinant (`RingHom.map_det`), and it sends the last coordinate `1` to `1`. This
+gives the hypothesis `hdet` of `exists_affineIndependent_of_det_polynomial_ne_zero`. -/
 theorem exists_detPolynomial_of_pointPolynomial {d : ℕ} {σ : Type*}
     (pp : Fin (d + 1) → Fin d → MvPolynomial σ K) :
     ∃ P : MvPolynomial σ K, ∀ q : σ → K,
@@ -208,30 +178,14 @@ theorem exists_detPolynomial_of_pointPolynomial {d : ℕ} {σ : Type*}
   · simp [homogenize, Matrix.map_apply]
   · simp [homogenize, Matrix.map_apply]
 
-/-- **The explicit good seed: four affinely-independent points realizing the
-`Π(a)/Π(b)/Π(c)` incidence pattern** (`lem:case-III-claim612-points-affineIndep`, the `P ≠ 0`
-existence witness; KT eq. (6.45) point choice). At `d = 3` there exist three panel normals
-`n : Fin 3 → K⁴` in *nonparallel* position (`LinearIndependent`) and four **affinely-independent**
-points `p : Fin 4 → K³` realizing the triple-intersection incidence pattern of KT eq. (6.45):
-`p 0 ∈ Π(a) ∩ Π(b) ∩ Π(c)`, `p 1 ∈ Π(a) ∩ Π(b) ∖ Π(c)`, `p 2 ∈ Π(b) ∩ Π(c) ∖ Π(a)`,
-`p 3 ∈ Π(c) ∩ Π(a) ∖ Π(b)`, where panel incidence `p i ∈ Π(u) ⟺ ⟨homogenize (p i), n u⟩ = 0`
-(the `⬝ᵥ` of the homogenization with the panel normal).
-
-This is the **existence-route residual** of `lem:case-III-claim612-points-affineIndep`: by the
-converse of `MvPolynomial.exists_eval_ne_zero` (the foundational non-root brick the closure half
-`exists_affineIndependent_of_det_polynomial_ne_zero` runs forward) and the determinant-polynomial
-bridge `exists_detPolynomial_of_pointPolynomial`, the residual `P ≠ 0` of the cross-product
-construction (the affine-independence determinant as a polynomial in the panel-coordinate seed) is
-*logically equivalent* to exhibiting **one** seed at which the constructed points are affinely
-independent — no algebraic independence of the seed is needed, exactly the existence/Zariski route
-the pre-Phase-22d genericity sites (Claim 6.4/6.9) used. Here the witness is the coordinate-aligned
-seed: panel normals `n_a = e₀`, `n_b = e₁`, `n_c = e₂` (the first three standard covectors of `K⁴`,
-hence linearly independent — the nonparallel hypothesis the framework supplies) and the standard
-affine `3`-simplex `p = (0, e₃, e₁, e₂)` of `K³` (origin plus three axis points). The incidence
-pattern is then immediate from the coordinates: `homogenize (p i)` is orthogonal to exactly the
-panel normals whose coordinate it vanishes at, and the `4 × 4` homogenization determinant is
-`±1 ≠ 0` (`affineIndependent_fin_iff_det_homogenize` via the explicit `Matrix.det_succ_row_zero`
-cofactor expansion). -/
+/-- **Three planes with the points of KT Claim 6.12, at the coordinate planes**
+(`lem:case-III-claim612-points-affineIndep`; the points of KT p. 691): there are linearly
+independent `n : Fin 3 → K⁴` and affinely independent `p : Fin 4 → K³` with `p 0` on the three
+planes, and `p 1`, `p 2` and `p 3` each on two of them and off the third, in the pattern of KT
+p. 691; `p i` lies on the plane of `n u` when `homogenize (p i) ⬝ᵥ n u = 0`. The normals are the
+first three standard basis vectors of `K⁴`, so that the planes are the coordinate planes of `K³`,
+and the points are `0`, `e₃`, `e₁` and `e₂`; the determinant of their homogeneous coordinates is
+`±1` (`affineIndependent_fin_iff_det_homogenize`). -/
 theorem exists_affineIndependent_panel_incidence :
     ∃ (n : Fin 3 → Fin 4 → K) (p : Fin 4 → Fin 3 → K),
       AffineIndependent K p ∧ LinearIndependent K n ∧
@@ -262,33 +216,22 @@ theorem exists_affineIndependent_panel_incidence :
     · simpa [Fin.sum_univ_succ] using hg' 0
     · simpa [Fin.sum_univ_succ] using hg' 1
     · simpa [Fin.sum_univ_succ] using hg' 2
-  -- The four incidence bullets are pure coordinate arithmetic. `Fin.castLT` is the load-bearing
-  -- simp argument: `simp` normalizes the `Fin.snoc` index of `homogenize` to `Fin.castPred k ⋯`,
-  -- and unfolding that to a `Fin.mk` literal is what lets the numeral simprocs evaluate
-  -- `![0, 0, 1] 2 = 1`. Without it each bullet stalls on a `Fin`-defeq residual
-  -- (`¬![0, 0, 1] (Fin.castPred 2 ⋯) = 0` and friends) closable only by a rigid defeq closer
-  -- *after* the flexible `simp`. `linter.flexible` reports the `exact one_ne_zero` that used to
-  -- close the second bullet but not the sibling bullets' `rfl`s, so folding the reduction into the
-  -- simp set fixes the reported site and three unreported ones of the same shape at once.
-  -- TACTICS-QUIRKS § 107.
+  -- The incidences are coordinate arithmetic. `Fin.castLT` lets `simp` reduce the index
+  -- `Fin.castPred k ⋯` of `Fin.snoc` in `homogenize` to a literal, so that the numeral simprocs
+  -- evaluate entries such as `![0, 0, 1] 2 = 1` (TACTICS-QUIRKS § 107).
   · intro u; fin_cases u <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ, Fin.castLT]
   · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ, Fin.castLT]
   · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ, Fin.castLT]
   · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ, Fin.castLT]
 
-/-- **The kept-points tabulation of the `D` spanning joins, general `d`**
-(`lem:case-III-claim612`, the producer-direction (R1-affine) form; Katoh–Tanigawa 2011 §6.4.1
-eqs. (6.45)/(6.67), Phase 23b CHAIN-4). The general-`d` (`d = e + 1`, ambient `Fin (e+2)`) lift of
-the `Fin 4` `omitTwoExtensor_eq_extensor_kept`: for a homogeneous family
-`pbar : Fin (e+2) → Fin (e+2) → K` and a join `q : {q // q.1 < q.2}` (the omitted pair), the
-spanning join `omitTwoExtensor pbar (ne_of_lt q.2)` is the point-join `extensor (fun k => pbar
-(emb k))` of the `e = d − 1` increasing complement indices `emb : Fin e ↪o Fin (e+2)` of
-`{q.1, q.2}` — the `d − 1` points the join's line `L` actually spans (KT p. 698: a line's
-homogeneous span is `(d−1)`-dimensional, so the point-join is an `(d−1)`-extensor; at `d = 3`,
-`e = 2`, recovering the two-point `Fin 4` form). Each kept index differs from both omitted ones
-(`orderEmbOfFin_mem` lands in the complement). Graph-free; pure `Finset.orderEmbOfFin` arithmetic —
-the omit-two extensor is *by definition* the extensor along the complement enumeration, so the
-identity is `rfl`. -/
+/-- **An omit-two extensor is the join of the kept vectors** (a step of
+`lem:case-III-chain-discriminator` and `lem:case-III-candidate-dispatch-d3`): for
+`pbar : Fin (e+2) → K^(e+2)` and a pair `q = (i, j)` with `i < j`, there is an order embedding
+`emb : Fin e ↪o Fin (e+2)` that misses `i` and `j` with
+`omitTwoExtensor pbar = extensor (pbar ∘ emb)`. `emb` enumerates the complement of `{i, j}` in
+increasing order, and the equation holds by definition (`rfl`). Here `e = d − 1`: at `d = 3` the two
+kept vectors give a join of KT eq. (6.45), the extensor of the line through two of the four points
+(KT p. 691), and for general `d` the join of `d − 1` of the `d + 1` points (KT p. 698). -/
 theorem omitTwoExtensor_eq_extensor_kept_gen {e : ℕ} (pbar : Fin (e + 2) → Fin (e + 2) → K)
     (q : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2}) :
     ∃ emb : Fin e ↪o Fin (e + 2), (∀ k, emb k ≠ q.1.1 ∧ emb k ≠ q.1.2) ∧
@@ -302,58 +245,33 @@ theorem omitTwoExtensor_eq_extensor_kept_gen {e : ℕ} (pbar : Fin (e + 2) → F
   rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at h
   exact h
 
-/-- **The kept-points tabulation of the six spanning joins** (`lem:case-III-claim612`, N3a/N3b
-glue; Katoh–Tanigawa 2011 §6.4.1 eq. (6.45), Phase 22g). For the four affinely-independent points
-`p : Fin 4 → K³` of `exists_affineIndependent_panel_incidence` (N3a) and a join
-`q : {q // q.1 < q.2}` (the omitted pair), the spanning join
-`omitTwoExtensor (homogenize ∘ p) (ne_of_lt q.2)` — the `2`-extensor of the two points **kept** by
-the omit-two operation — is the point-join `extensor ![homogenize (p c), homogenize (p d)]` of the
-two increasing complement indices `c < d` of `{q.1, q.2}`. This is the purely combinatorial
-`orderEmbOfFin`-computation half of the per-join `hduality` witness (`case_III_claim612`): it pins
-down, for each of the six joins, *which two points* span the join, so the `hduality` dispatch can
-look up the panel(s) the join's line `pᵢpⱼ` lies in (the incidence tabulation of N3a) and supply the
-two normals `{n_u, n'}` the per-line transfer
-(`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`) consumes.
-
-The six joins and their kept (complement) pairs: `(0,1)↦(2,3)`, `(0,2)↦(1,3)`, `(0,3)↦(1,2)`,
-`(1,2)↦(0,3)`, `(1,3)↦(0,2)`, `(2,3)↦(0,1)`. The `d = 3` (`e = 2`) homogenize-form instance of
-`omitTwoExtensor_eq_extensor_kept_gen` at `fun i => homogenize (p i)`, kept as the zero-regression
-`Fin 4` wrapper its caller (`case_III_claim612`) consumes. Graph-free; pure `Finset.orderEmbOfFin`
-arithmetic on `Fin 4`. -/
+/-- **The omit-two extensor of four points as the join of the two kept points**: for points
+`p : Fin 4 → K³` and a pair `q = (i, j)` with `i < j`, the omit-two extensor of the homogeneous
+coordinates of `p` is `homogenize (p c) ∨ homogenize (p d)` for the two indices `c < d` other than
+`i` and `j`: the case `e = 2` of `omitTwoExtensor_eq_extensor_kept_gen`, at
+`fun i => homogenize (p i)`. The pairs: `(0,1) ↦ (2,3)`, `(0,2) ↦ (1,3)`, `(0,3) ↦ (1,2)`,
+`(1,2) ↦ (0,3)`, `(1,3) ↦ (0,2)` and `(2,3) ↦ (0,1)`. -/
 theorem omitTwoExtensor_homogenize_eq_extensor_kept (p : Fin 4 → Fin 3 → K)
     (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) :
     ∃ c d : Fin 4, c < d ∧ c ≠ q.1.1 ∧ c ≠ q.1.2 ∧ d ≠ q.1.1 ∧ d ≠ q.1.2 ∧
       omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)
         = extensor ![homogenize (p c), homogenize (p d)] := by
-  -- The homogenized family `fun i => homogenize (p i) : Fin 4 → K⁴` is the bare-vector input of the
-  -- general kept-points tabulation; at `e = 2` the two kept indices `emb 0 < emb 1` form the pair.
+  -- The homogeneous coordinates `fun i => homogenize (p i) : Fin 4 → K⁴` as the family of the
+  -- general form; at `e = 2` the two kept indices `emb 0 < emb 1` form the pair.
   obtain ⟨emb, hmem, heq⟩ := omitTwoExtensor_eq_extensor_kept_gen (e := 2)
     (fun i => homogenize (p i)) q
   refine ⟨emb 0, emb 1, emb.strictMono (by decide), (hmem 0).1, (hmem 0).2, (hmem 1).1,
     (hmem 1).2, heq.trans ?_⟩
   congr 1; ext k; fin_cases k <;> rfl
 
-/-- **A second panel normal through a line in `K^{k+2}`** (`lem:case-III-claim612`, N3a/N3b glue;
-the general-`d` form, `k = d − 1`, ambient `Fin (k+2) = Fin (d+1)`). Given two points `pi, pj`
-of a line `L = pi pj` in `K^{k+2}` and one normal `n_u` to which both are dot-orthogonal
-(`pi ⬝ᵥ n_u = pj ⬝ᵥ n_u = 0`), with `n_u ≠ 0` and `2 ≤ k`, there is a *second* normal `n'`,
-linearly independent from `n_u`, to which both points are also orthogonal — i.e. a second
-hyperplane through the line `L`. This is the constructed second normal KT's contrapositive needs
-for the "opposite" joins `pᵢ ∨ pⱼ` through a single panel `Π(u)` (eq. (6.45)): the per-line
-transfer (`extensor_join_proportional_complementIso_meet`, the join=meet duality) consumes a pair
-`{n_u, n'}` of independent normals, but a single-panel join supplies only one panel normal
-directly, so the second is read off the geometry here.
-
-The per-line normal space (CHAIN-3-finish recon, `notes/Phase23-design.md` §"CHAIN"(f)) is **always
-2-dimensional**: a line's homogeneous span has `dim = d − 1 = k`, so `dim L^⊥ = (k+2) − k = 2`.
-What this lemma needs is only that `L^⊥` is **at least** 2-dimensional, which the common-perp of the
-*two points* (a superspace of `L^⊥`, since they span `L`) supplies whenever `2 ≤ k`:
-
-The common-perp space `W = {x | pi ⬝ᵥ x = 0 ∧ pj ⬝ᵥ x = 0}` is the kernel of
-`x ↦ ![pi ⬝ᵥ x, pj ⬝ᵥ x] : K^{k+2} → K²`, so by rank–nullity `finrank W ≥ (k+2) − 2 = k ≥ 2 > 1 =
-finrank (span K {n_u})`; the span is therefore a *proper* subspace of `W`, and
-`SetLike.exists_of_lt` exhibits `n' ∈ W ∖ span K {n_u}`, which `LinearIndependent.pair_iff'`
-upgrades to independence. -/
+/-- **A second hyperplane through two vectors** (a step of `lem:case-III-candidate-dispatch-d3`):
+let `2 ≤ k`, and let `pi`, `pj` and `n_u ≠ 0` be vectors of `K^(k+2)` with
+`pi ⬝ᵥ n_u = pj ⬝ᵥ n_u = 0`. Then some `n'`, linearly independent of `n_u`, has
+`pi ⬝ᵥ n' = pj ⬝ᵥ n' = 0`. The vectors orthogonal to `pi` and `pj` form the kernel of a map from
+`K^(k+2)` to `K²`, of dimension at least `k ≥ 2`; it contains the line `span {n_u}`, and so a vector
+`n'` outside it (`SetLike.exists_of_lt`). In the proof of KT Claim 6.12 (`lem:case-III-claim612`), a
+join `pi ∨ pj` lies in a panel with normal `n_u`, and `n'` is the normal of a second plane through
+its line. -/
 theorem exists_independent_perp_pair_gen {k : ℕ} (hk : 2 ≤ k) (pi pj n_u : Fin (k + 2) → K)
     (hi : pi ⬝ᵥ n_u = 0) (hj : pj ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) :
     ∃ n' : Fin (k + 2) → K, LinearIndependent K ![n_u, n'] ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n' = 0 := by
@@ -396,25 +314,20 @@ theorem exists_independent_perp_pair_gen {k : ℕ} (hk : 2 ≤ k) (pi pj n_u : F
   intro a heq
   exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
 
-/-- **A second panel normal through a line in `K⁴`** — the `d = 3` (`k = 2`) instance of
-`exists_independent_perp_pair_gen`, kept as the zero-regression `Fin 4` wrapper its callers
-(`exists_line_data_of_homogeneousIncidence`, `case_III_claim612`) consume. -/
+/-- **A second plane through two vectors of `K⁴`** (a step of `lem:case-III-candidate-dispatch-d3`):
+the case `k = 2` of `exists_independent_perp_pair_gen`. -/
 theorem exists_independent_perp_pair (pi pj n_u : Fin 4 → K)
     (hi : pi ⬝ᵥ n_u = 0) (hj : pj ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) :
     ∃ n' : Fin 4 → K, LinearIndependent K ![n_u, n'] ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n' = 0 :=
   exists_independent_perp_pair_gen (k := 2) le_rfl pi pj n_u hi hj hn_u
 
-/-- **A second panel normal through the line spanned by a family of `m ≤ k` points in `K^{k+2}`**
-(`lem:case-III-claim612`, the general-`d` `hone`-builder, `k = d − 1`, ambient `Fin (k+2)`). The
-multi-point generalization of `exists_independent_perp_pair_gen`: given `m` points `p : Fin m →
-K^{k+2}` (`m ≤ k`) and one normal `n_u ≠ 0` orthogonal to all of them, there is a *second* normal
-`n'`, linearly independent from `n_u`, also orthogonal to all the points — a second hyperplane
-through the line the points span. At `m = k` (the CHAIN-4b "single shared panel" case, where the
-join's line is spanned by the `k = d − 1` kept points) the common perp `{x | ∀ i, p i ⬝ᵥ x = 0}`
-has `finrank ≥ (k+2) − m = (k+2) − k = 2 > 1 = finrank (span K {n_u})`, so the span is a *proper*
-subspace and `SetLike.exists_of_lt` exhibits `n' ∉ span K {n_u}` in it; the count
-`finrank (range (mulVecLin (of p))) ≤ m` makes this hold without an independence hypothesis on `p`.
-The `d = 3` two-point form is the `m := 2`/`k := 2` instance (callers feed the two kept points). -/
+/-- **A second hyperplane through the span of `m ≤ k` vectors** (a step of
+`lem:case-III-chain-discriminator`): let `m ≤ k`, let `p : Fin m → K^(k+2)`, and let `n_u ≠ 0` be
+orthogonal to every `p i`. Then some `n'`, linearly independent of `n_u`, is orthogonal to every
+`p i`. The vectors orthogonal to all the `p i` form a space of dimension at least `(k+2) − m ≥ 2`,
+which contains the line `span {n_u}` and so a vector outside it; the `p i` need not be independent.
+In the general case `m = k = d − 1`, and the `p i` are the kept vectors of a join
+(`exists_line_data_of_homogeneousIncidence_gen`). -/
 theorem exists_independent_perp_family {k m : ℕ} (hm : m ≤ k)
     (p : Fin m → Fin (k + 2) → K) (n_u : Fin (k + 2) → K)
     (hp : ∀ i, p i ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) :
@@ -450,30 +363,12 @@ theorem exists_independent_perp_family {k m : ℕ} (hm : m ≤ k)
   intro a heq
   exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
 
-/-- **A second panel normal through the line, additionally escaping a given plane**
-(`lem:case-III` general-`d`, the Phase-23f corner 3-normal-LI source; Katoh–Tanigawa 2011 §6.4.2,
-Lemma 6.13). The strengthening of `exists_independent_perp_family` the Case-III chain corner
-consumes: on top of the second normal `n'` (orthogonal to the `m ≤ k` kept points `p`, independent
-from the chosen panel normal `n_u`), `n'` *escapes* the 2-plane `span K {n_u, w}` for **any** extra
-vector `w` that is **not** orthogonal to all of `p` (`∃ i, p i ⬝ᵥ w ≠ 0`).
-
-This is exactly what the interior-arm corner `hA` needs (route (a), `notes/Phase23-design.md`
-§(4.75.3)): the corner block-incomparability bottoms out on the 3-normal linear independence
-`![n_u, n', w]` (with `n_u = q(candidateVtx i,·)` the matched candidate panel normal and `w =
-q(vtx(i−1),·)` the preceding chain panel normal), which is the present escape `n' ∉ span K {n_u, w}`
-together with `![n_u, n'] LI`. The discriminator
-(`exists_chainData_discriminator_pick_of_LI`/`exists_line_data_of_homogeneousIncidence_gen`) builds
-`n'` through this lemma, so its transversal escapes the chain plane.
-
-The mechanism extends the base lemma's count by one observation: the common perp
-`W₀ = {x | ∀ i, p i ⬝ᵥ x = 0} = ker (mulVecLin (of p))` has `finrank ≥ (k+2) − m ≥ 2`, contains
-`n_u`, and meets `span K {n_u, w}` in **exactly** `span K {n_u}` (1-dimensional) — any
-`a • n_u + b • w ∈ W₀` forces `b • w ∈ W₀` (subtract `a • n_u ∈ W₀`), hence `b = 0` since
-`w ∉ W₀`. So `span K {n_u, w} ⊓ W₀ = span K {n_u}` is a *proper* subspace of `W₀`
-(`finrank 1 < 2 ≤ finrank W₀`) and `SetLike.exists_of_lt` exhibits `n' ∈ W₀ \ span K {n_u, w}`. The
-side hypothesis `w ∉ W₀` is the geometric general-position fact the dispatch supplies (KT's panels
-in general position; the preceding chain panel is not orthogonal to the join's kept points).
-Graph-free; pure `Fin (k+2)` panel geometry. -/
+/-- **A second hyperplane through the span of `m ≤ k` vectors, outside a given plane**: as
+`exists_independent_perp_family`, and moreover `n'` lies outside `span {n_u, w}` for a vector `w`
+that is not orthogonal to all the `p i` (`hw`). The vectors orthogonal to the `p i` form a space
+`W₀` of dimension at least `2`, which contains `n_u` and not `w`. If `a • n_u + b • w ∈ W₀`, then
+`b • w ∈ W₀`, so `b = 0`; hence `span {n_u, w} ⊓ W₀ = span {n_u}`, a line, and `W₀` has a vector
+outside it. -/
 theorem exists_independent_perp_family_escape {k m : ℕ} (hm : m ≤ k)
     (p : Fin m → Fin (k + 2) → K) (n_u w : Fin (k + 2) → K)
     (hp : ∀ i, p i ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) (hw : ∃ i, p i ⬝ᵥ w ≠ 0) :
@@ -535,34 +430,19 @@ theorem exists_independent_perp_family_escape {k m : ℕ} (hm : m ≤ k)
     exact hn'notW (heq ▸ Submodule.smul_mem _ a (Submodule.subset_span (by left; rfl)))
   exact ⟨n', hLI, fun i => (hmemW n').1 hn'ker i, hn'notW⟩
 
-/-- **The homogeneous incidence core of the witness points, parameterized by the real panel
-normals, general `d`** (`lem:case-III-claim612-points-affineIndep`, the (R1) reconciliation core;
-Katoh–Tanigawa 2011 §6.4.1 eqs. (6.45)/(6.67), Phase 23b CHAIN-4a). The general-`d` (`k = d − 1`,
-ambient `Fin (k+2) = Fin (d+1)`) lift of the `Fin 3 → Fin 4`
-`exists_homogeneousIncidence_of_normals`.
-Given `k + 1` real panel normals `n : Fin (k+1) → (Fin (k+2) → K)` in *nonparallel* position
-(`LinearIndependent K n` — the genericity the `hsplit` producer reads off its GP split-leg,
-`notes/Phase22-realization-design.md` §1.41), there exist `k + 2` homogeneous coordinate vectors
-`pbar : Fin (k+2) → (Fin (k+2) → K)` that are **linearly independent** and realize KT eq. (6.45)'s
-multiple-intersection incidence pattern *relative to the real `n`*: `pbar 0` lies on all `k+1`
-panels (`⟨pbar 0, n u⟩ = 0`), and each `pbar (i+1)` lies on all panels but the `i`-th
-(`⟨pbar (i+1), n j⟩ = 0` for `j ≠ i`, `≠ 0` for `j = i`) — the off-one-panel incidence.
+/-- **Linearly independent vectors with the incidences of KT's points, for given normals**
+(`lem:case-III-claim612-points-affineIndep-real-normals`; the points of KT pp. 691 and 698): for
+linearly independent normals `n : Fin (k+1) → K^(k+2)`, there are linearly independent
+`pbar : Fin (k+2) → K^(k+2)` with `pbar 0` orthogonal to every `n u`, and `pbar (i+1)` orthogonal to
+every `n j` with `j ≠ i` and not to `n i`. They stand for Katoh and Tanigawa's points in homogeneous
+coordinates: `pbar 0` on all `d = k + 1` panels, and `pbar (i+1)` on all of them but the `i`-th.
 
-This is the (R1) replacement, at the **homogeneous-vector** layer, for the hardcoded-normals
-`exists_affineIndependent_panel_incidence` (which fixes `n = e₀,…,e_{k}`): the producer's witness
-points must be orthogonal to the *real* split-leg panel normals, not to a fixed coordinate frame.
-The construction is **genericity-free** (the OD-4 verdict §(i) made concrete — existence/linear, no
-genericity device): the `(k+1) × (k+2)` row matrix `A = of n` has linearly independent rows, so
-`A.rank = k+1 = finrank K^{k+1}` (`LinearIndependent.rank_matrix`); its image then is all of
-`K^{k+1}`, so `A.mulVecLin` is **surjective**, giving for *any* pairing target `t : Fin (k+1) → K`
-an `x : Fin (k+2) → K` with `x ⬝ᵥ n u = t u`. The points `pbar (i+1)` are the preimages of the
-standard covectors `Pi.single i 1` (giving exactly the off-one-panel incidence), and `pbar 0` is the
-nonzero common-perp from `exists_ne_zero_dotProduct_eq_zero` (`k+1 < k+2`). Linear independence is
-the triangular argument: pairing `∑ gᵢ • pbar i = 0` against `n u` kills the common-perp term and
-isolates `g (u+1)` (the unique off-`u` point), so each `g (i+1) = 0`; then `g 0 • pbar 0 = 0` with
-`pbar 0 ≠ 0` forces `g 0 = 0`. Graph-free; pure `Fin (k+2)` panel geometry. The affine
-de-homogenization (the genericity-bearing residual) is the remaining (R1) sub-leaf. The `Fin 3`
-lemma is the `k := 2` wrapper below. -/
+The normals are linearly independent rows, so the map `x ↦ (x ⬝ᵥ n u)_u` from `K^(k+2)` to `K^(k+1)`
+has rank `k + 1` and is onto (`LinearIndependent.rank_matrix`). `pbar (i+1)` is a preimage of the
+`i`-th standard basis vector, and `pbar 0` a nonzero vector orthogonal to all the normals
+(`exists_ne_zero_dotProduct_eq_zero`). If `∑ i, g i • pbar i = 0`, the dot product with `n u` gives
+`g (u+1) = 0`, and then `g 0 = 0`, as `pbar 0 ≠ 0`. The node states the case `d = 3`, which
+`exists_homogeneousIncidence_of_normals` derives. -/
 theorem exists_homogeneousIncidence_of_normals_gen {k : ℕ}
     {n : Fin (k + 1) → Fin (k + 2) → K} (hn : LinearIndependent K n) :
     ∃ pbar : Fin (k + 2) → Fin (k + 2) → K, LinearIndependent K pbar ∧
@@ -599,7 +479,7 @@ theorem exists_homogeneousIncidence_of_normals_gen {k : ℕ}
     obtain ⟨x, hx⟩ := hpre (Pi.single i 1)
     exact ⟨x, fun j => by rw [hx j, Pi.single_apply]⟩
   choose psucc hpsucc using hpsucc
-  -- Assemble the witness family `pbar = (p0, psucc)` via `Fin.cons`.
+  -- Assemble the family `pbar = (p0, psucc)` by `Fin.cons`.
   set pbar : Fin (k + 2) → Fin (k + 2) → K := Fin.cons p0 psucc with hpbar
   have hb0 : ∀ u, pbar 0 ⬝ᵥ n u = 0 := fun u => by rw [hpbar, Fin.cons_zero]; exact hp0 u
   have hbi : ∀ i : Fin (k + 1),
@@ -636,25 +516,12 @@ theorem exists_homogeneousIncidence_of_normals_gen {k : ℕ}
   · exact hg0
   · exact hgsucc u
 
-/-- **The homogeneous incidence core of the witness points, parameterized by the real panel
-normals** (`lem:case-III-claim612-points-affineIndep`, the (R1) reconciliation core; Katoh–Tanigawa
-2011 §6.4.1 eq. (6.45), Phase 22g). Given **three** real panel normals `n : Fin 3 → K⁴` in
-*nonparallel* position (`LinearIndependent K n` — the genericity the `d = 3` `hsplit` producer reads
-off its GP split-leg, `notes/Phase22-realization-design.md` §1.41), there exist four homogeneous
-coordinate vectors `pbar : Fin 4 → K⁴` that are **linearly independent** and realize KT eq.
-(6.45)'s triple-intersection incidence pattern *relative to the real `n`*: `pbar 0` lies on all
-three panels (`⟨pbar 0, n u⟩ = 0`), and each `pbar (i+1)` lies on two of the panels but strictly off
-the third.
-
-This is the **`k := 2` wrapper** of the general-`d` `exists_homogeneousIncidence_of_normals_gen`
-(Phase 23b CHAIN-4a), kept as the zero-regression `Fin 4` form its consumer (the `d = 3` Case-III
-discriminator, `CaseIII/Realization.lean`) destructures into the explicit `pbar 1/2/3` conjuncts.
-The general lemma states "`pbar (i+1)` is off panel `n i`"; the `d = 3` cyclic off-one-panel pattern
-(`pbar 1` off `n 2`, `pbar 2` off `n 0`, `pbar 3` off `n 1`) is recovered by feeding `_gen` the
-reordered normals `m = ![n 2, n 0, n 1] = n ∘ ![2, 0, 1]` and reading its `m`-pairings back through
-the (bijective) reorder. The general construction is **genericity-free** (the OD-4 verdict): the
-points are preimages of the standard covectors under the surjective `(k+1) × (k+2)` row-matrix
-pairing map, with `pbar 0` the nonzero common-perp; LI is the triangular argument. -/
+/-- **The vectors for three given normals of `K⁴`** (a step of `lem:case-III-candidate-dispatch-d3`;
+the case `d = 3` of `lem:case-III-claim612-points-affineIndep-real-normals`): for linearly
+independent `n : Fin 3 → K⁴`, there are linearly independent `pbar : Fin 4 → K⁴` with `pbar 0`
+orthogonal to the three normals, and `pbar 1`, `pbar 2` and `pbar 3` orthogonal to two of them and
+not to `n 2`, `n 0` and `n 1` respectively. It applies `exists_homogeneousIncidence_of_normals_gen`
+to the normals `n 2`, `n 0` and `n 1`, in this order. -/
 theorem exists_homogeneousIncidence_of_normals {n : Fin 3 → Fin 4 → K}
     (hn : LinearIndependent K n) :
     ∃ pbar : Fin 4 → Fin 4 → K, LinearIndependent K pbar ∧
@@ -663,9 +530,9 @@ theorem exists_homogeneousIncidence_of_normals {n : Fin 3 → Fin 4 → K}
       (pbar 2 ⬝ᵥ n 1 = 0 ∧ pbar 2 ⬝ᵥ n 2 = 0 ∧ pbar 2 ⬝ᵥ n 0 ≠ 0) ∧
       (pbar 3 ⬝ᵥ n 2 = 0 ∧ pbar 3 ⬝ᵥ n 0 = 0 ∧ pbar 3 ⬝ᵥ n 1 ≠ 0) := by
   classical
-  -- Reorder the normals so the general `_gen` "`pbar (i+1)` off `n i`" pattern, read through the
-  -- reordering, reproduces the `d = 3` cyclic off-one-panel incidence (`pbar 1` off `n 2`,
-  -- `pbar 2` off `n 0`, `pbar 3` off `n 1`): take `m = ![n 2, n 0, n 1]` (`= n ∘ ![2, 0, 1]`).
+  -- Reorder the normals, so that the pattern of `exists_homogeneousIncidence_of_normals_gen`
+  -- (`pbar (i+1)` not orthogonal to the `i`-th normal) gives `pbar 1`, `pbar 2`, `pbar 3` not
+  -- orthogonal to `n 2`, `n 0`, `n 1`: take `m = ![n 2, n 0, n 1]` (`= n ∘ ![2, 0, 1]`).
   set m : Fin 3 → Fin 4 → K := ![n 2, n 0, n 1] with hm
   have hmeq : m = n ∘ ![2, 0, 1] := by ext i j; fin_cases i <;> rfl
   have hmLI : LinearIndependent K m := by
@@ -682,16 +549,10 @@ theorem exists_homogeneousIncidence_of_normals {n : Fin 3 → Fin 4 → K}
   · exact ⟨(hi 1).1 2 (by decide), (hi 1).1 0 (by decide), (hi 1).2⟩
   · exact ⟨(hi 2).1 0 (by decide), (hi 2).1 1 (by decide), (hi 2).2⟩
 
-/-- **The kept-points tabulation of the six spanning joins, at the homogeneous-vector layer**
-(`lem:case-III-claim612`, the producer-direction (R1-affine) form; Katoh–Tanigawa 2011 §6.4.1
-eq. (6.45), Phase 22g). The `d = 3` (`e = 2`) instance of `omitTwoExtensor_eq_extensor_kept_gen`,
-kept as the zero-regression `Fin 4` wrapper its callers (`exists_line_data_of_homogeneousIncidence`)
-consume: for a homogeneous family `pbar : Fin 4 → K⁴` and a join `q : {q // q.1 < q.2}` (the omitted
-pair), the spanning join `omitTwoExtensor pbar (ne_of_lt q.2)` is the point-join
-`extensor ![pbar c, pbar d]` of the two increasing complement indices `c < d` of `{q.1, q.2}` — the
-two points the join's line `p̄_c p̄_d` actually spans (at `d = 3` the `d − 1 = 2` kept points form a
-genuine pair). The producer feeds `pbar` directly from `exists_homogeneousIncidence_of_normals` (no
-affine de-homogenization, §1.42 R1-affine). -/
+/-- **An omit-two extensor of four vectors as the join of the two kept vectors** (a step of
+`lem:case-III-candidate-dispatch-d3`): for `pbar : Fin 4 → K⁴` and a pair `q = (i, j)` with `i < j`,
+`omitTwoExtensor pbar = pbar c ∨ pbar d` for the two indices `c < d` other than `i` and `j`: the
+case `e = 2` of `omitTwoExtensor_eq_extensor_kept_gen`. -/
 theorem omitTwoExtensor_eq_extensor_kept (pbar : Fin 4 → Fin 4 → K)
     (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) :
     ∃ c d : Fin 4, c < d ∧ c ≠ q.1.1 ∧ c ≠ q.1.2 ∧ d ≠ q.1.1 ∧ d ≠ q.1.2 ∧
@@ -701,14 +562,10 @@ theorem omitTwoExtensor_eq_extensor_kept (pbar : Fin 4 → Fin 4 → K)
     (hmem 1).2, heq.trans ?_⟩
   congr 1; ext k; fin_cases k <;> rfl
 
-/-- **The off-one-panel incidence as a single membership rule, general `d`**
-(`lem:case-III-claim612`, the §(i) combinatorial core, `k = d − 1`, ambient `Fin (k+2)`). The two
-incidence hypotheses of
-`exists_homogeneousIncidence_of_normals_gen` — point `0` on every panel (`h0`), point `i.succ` on
-every panel except possibly `n i` (`hi`) — combine into one rule: **the homogeneous point `pbar v`
-lies on panel `n j` whenever `v ≠ j.succ`** (point `v` misses *only* the panel `n (v−1)`, if any).
-This is what makes the per-join membership of CHAIN-4b combinatorial: a kept index `v ∉ {a, b}` lies
-on a candidate panel `n j` as soon as `j.succ ∈ {a, b}` (so `v ≠ j.succ`). -/
+/-- **The incidences of `exists_homogeneousIncidence_of_normals_gen` as one rule** (a step of
+`lem:case-III-chain-discriminator`): if `pbar 0` is orthogonal to every `n u` (`h0`) and
+`pbar (i+1)` to every `n j` with `j ≠ i` (`hi`), then `pbar v` is orthogonal to `n j` whenever
+`v ≠ j + 1`. So the kept vectors of a join that omits `j + 1` are orthogonal to `n j`. -/
 theorem pbar_dotProduct_eq_zero_of_ne_succ {k : ℕ} {n : Fin (k + 1) → Fin (k + 2) → K}
     {pbar : Fin (k + 2) → Fin (k + 2) → K}
     (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
@@ -719,42 +576,22 @@ theorem pbar_dotProduct_eq_zero_of_ne_succ {k : ℕ} {n : Fin (k + 1) → Fin (k
   · exact h0 j
   · exact hi w j (by rintro rfl; exact hvj rfl)
 
-/-- **The per-join witness line data from the homogeneous incidence, general `d`** (CHAIN-4b,
-`lem:case-III-claim612`, `k = d − 1`, ambient `Fin (k+2) = Fin (d+1)`; Katoh–Tanigawa 2011 §6.4.2
-eqs. (6.46)–(6.67)). The general-`d` lift of the `Fin 4` `exists_line_data_of_homogeneousIncidence`:
-for the `k + 1 = d` real panel normals `n` (LI) and the `k + 2 = d + 1` homogeneous points `pbar`
-realizing the off-one-panel incidence (`h0`: point `0` on all panels; `hi`: point `i.succ` on all
-but possibly `n i`), each omitted pair `q = {a, b}` (`a < b`) yields a **discriminating panel
-index** `u : Fin (k+1)`, a **second hyperplane** `n'` through the join's line independent from
-`n u`, and the `k = d − 1` **kept points** `p` (the increasing complement of `{a, b}`,
-`omitTwoExtensor_eq_extensor_kept_gen`) the join spans — with all `k` kept points orthogonal to both
-`n u` and `n'`, and `omitTwoExtensor pbar = extensor p`.
+/-- **For each join, a panel that contains it and a second hyperplane** (a step of
+`lem:case-III-chain-discriminator`; KT p. 698): let `n : Fin (k+1) → K^(k+2)` be linearly
+independent normals, and let `pbar` be linearly independent vectors with the incidences `h0` and
+`hi` of `exists_homogeneousIncidence_of_normals_gen`, without its conditions `≠ 0`. For each pair
+`q = (a, b)` with `a < b`, there are an index `u`, a vector `n'` with `n u` and `n'` linearly
+independent, and the `k` kept vectors `p` of the join (`omitTwoExtensor_eq_extensor_kept_gen`),
+linearly independent and orthogonal to `n u` and `n'`, with `omitTwoExtensor pbar = extensor p`.
+Katoh and Tanigawa note that the subspace spanned by `d − 1` of their points lies in the union of
+the panels (KT p. 698).
 
-*The §(i) combinatorial dispatch.* Membership is uniform via `pbar_dotProduct_eq_zero_of_ne_succ`: a
-kept index `v ∉ {a, b}` lies on panel `n u` iff `u.succ ∈ {a, b}`. So the candidate panels are
-exactly those `u` with `u.succ ∈ {a, b}`, and the two cases are on whether `0 ∈ {a, b}`:
-
-* **`0 ∉ {a, b}`** (`a ≠ 0`, the two-panel case): both `a, b` are successors `a = u_a.succ`,
-  `b = u_b.succ` with `u_a ≠ u_b`, so the line lies in the **two** real panels `Π(u_a), Π(u_b)`;
-  take `u = u_a`, `n' = n u_b` (independent as a subfamily of `n`). This is the `htwo` analog.
-* **`0 ∈ {a, b}`** (`a = 0`, the one-panel case): only `b = u_b.succ` is a successor, so the line
-  lies in the **single** real panel `Π(u_b)`; take `u = u_b` and read the second normal `n'` off the
-  geometry of the `k` kept points via `exists_independent_perp_family` (needs `m = k ≤ k`, i.e. the
-  perp of `k` points in `K^{k+2}` is `≥ 2`-dimensional). This is the `hone` analog.
-
-**This is the one CHAIN-4 leaf whose build confirms the §(i) claim** (where a hidden
-geometric/alg-independence need would surface if §(i) were wrong); the build closing means the
-per-join membership is purely combinatorial — no genericity device, matching the OD-4 verdict.
-
-Two faithful divergences from the `Fin 4` `exists_line_data_of_homogeneousIncidence` (so the `d = 3`
-body stays its own zero-regression green lemma rather than a `k := 2` wrapper — re-pointing is the
-not-forced "h-5" decision, `notes/Phase23b.md`): (1) the incidence is the **off-one-panel** form
-`hi` of `exists_homogeneousIncidence_of_normals_gen` (point `i.succ` off panel `n i` only), not the
-`d = 3` cyclic `h1/h2/h3`; (2) the conclusion now carries `LinearIndependent K p`, which the line's
-own line data does not force — it is the subfamily LI of `pbar` (the new `hpbar` hypothesis, which
-CHAIN-4d supplies from its `LinearIndependent K pbar`) along the injective complement `emb`.
-CHAIN-4d needs it: `extensor_join_proportional_complementIso_meet` (CHAIN-3 (h-4)) takes
-`LinearIndependent K p`. Graph-free. -/
+By `pbar_dotProduct_eq_zero_of_ne_succ`, the kept vectors are orthogonal to `n u` whenever
+`u + 1 ∈ {a, b}`. If `a = 0`, then `b = u + 1` for one `u`, and `n'` comes from
+`exists_independent_perp_family`; otherwise `a = u + 1` and `b = w + 1` with `u ≠ w`, and
+`n' = n w`. The kept vectors are linearly independent as a subfamily of `pbar` (`hpbar`). The case
+`d = 3`, `exists_line_data_of_homogeneousIncidence`, takes the incidences in the order of
+`exists_homogeneousIncidence_of_normals` and has its own proof. -/
 theorem exists_line_data_of_homogeneousIncidence_gen {k : ℕ}
     {n : Fin (k + 1) → Fin (k + 2) → K} (hn : LinearIndependent K n)
     {pbar : Fin (k + 2) → Fin (k + 2) → K} (hpbar : LinearIndependent K pbar)
@@ -802,29 +639,15 @@ theorem exists_line_data_of_homogeneousIncidence_gen {k : ℕ}
     have hpub : ∀ i, p i ⬝ᵥ n ub = 0 := fun i => hon i ub (hub ▸ (hmem i).2 : emb i ≠ ub.succ)
     exact ⟨ua, n ub, p, hpair ua ub huab, hpLI, hpua, hpub, hkept⟩
 
-/-- **The per-join witness line data from the homogeneous incidence** (`lem:case-III-claim612`, the
-"extract the witness line `L`" leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011 §6.4.1
-eqs. (6.42)–(6.45), Phase 22g). The producer-direction analogue of the (now `hann`-obsolete)
-`exists_hduality_witness_of_panel_incidence`: where that lemma carried a meet-annihilation premise
-`hann` and concluded the per-join annihilation, this strips both and hands over only the **geometric
-line data**, on the **homogeneous-vector** layer (bare `pbar`, fed by
-`exists_homogeneousIncidence_of_normals`, §1.42 R1-affine). For each of the six joins `q`, it
-produces a **discriminating witness index** `u : Fin 3` (so the witness panel normal is the real
-split-leg normal `n u` — the `Fin 3`-valued M₁/M₂/M₃ dispatch input the `hcand`-discharge reads,
-§1.50(a)), a second hyperplane `n'` through the join line `L = p̄_c p̄_d` independent from `n u`,
-and the two kept points `pi = pbar c, pj = pbar d` the join spans — all four facts the candidate
-placement needs: `LinearIndependent ![n u, n']`, the four `⬝ᵥ`-orthogonalities
-`{pi, pj} ⊥ {n u, n'}`, and the join identity
-`omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj]`.
-
-This is exactly the input `exists_complementIso_ne_zero_of_homogeneousIncidence` consumes, with the
-per-line duality `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, to turn Claim 6.12's
-existential witness `r̂(p̄_i ∨ p̄_j) ≠ 0` into a panel-meet `r̂(C(L)) ≠ 0` of the line `L` in the
-panel `Π(n u)`, the nonzero candidate-row input the row-space criterion fires on. The construction
-mirrors `exists_hduality_witness_of_panel_incidence`'s two builders: the three joins through `p̄ 0`
-lie on **two** N3a panels (use two real normals `n u, n w`); the three "opposite"
-joins share **one** panel `Π(u)` (use `n u` and a constructed second normal from
-`exists_independent_perp_pair`). Graph-free; pure `Fin 4` panel geometry. -/
+/-- **For each of the six joins of four vectors, a panel that contains it and a second plane** (a
+step of `lem:case-III-candidate-dispatch-d3`; KT p. 691): let `n : Fin 3 → K⁴` be linearly
+independent, and let `pbar : Fin 4 → K⁴` have the incidences of
+`exists_homogeneousIncidence_of_normals` without its conditions `≠ 0` (`h0` to `h3`). For each pair
+`q`, there are an index `u`, a vector `n'` with `n u` and `n'` linearly independent, and vectors
+`pi`, `pj` orthogonal to `n u` and `n'` with `omitTwoExtensor pbar = pi ∨ pj`. The three joins that
+keep `pbar 0` have both kept vectors orthogonal to two of the normals, and `n'` is the second; the
+other three have them orthogonal to one normal, and `n'` comes from `exists_independent_perp_pair`.
+Katoh and Tanigawa observe that any two of their four points lie on a common panel (KT p. 691). -/
 theorem exists_line_data_of_homogeneousIncidence
     {n : Fin 3 → Fin 4 → K} (hn : LinearIndependent K n)
     {pbar : Fin 4 → Fin 4 → K}
@@ -836,14 +659,13 @@ theorem exists_line_data_of_homogeneousIncidence
       ∃ (u : Fin 3) (n' pi pj : Fin 4 → K), LinearIndependent K ![n u, n'] ∧
         pi ⬝ᵥ n u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
         omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj] := by
-  -- Two N3a panel normals `n a, n b` are independent (subfamily of the independent `n`).
+  -- Two of the normals are linearly independent (a subfamily of the independent `n`).
   have hpair : ∀ a b : Fin 3, a ≠ b → LinearIndependent K ![n a, n b] := by
     intro a b hab
     have := hn.comp ![a, b] (by intro x y hxy; fin_cases x <;> fin_cases y <;> simp_all)
     rwa [show (n ∘ ![a, b]) = ![n a, n b] from by ext x; fin_cases x <;> rfl] at this
-  -- **Two-panel join builder** (the three joins through `p̄ 0`): the kept points `e₁, e₂` both lie
-  -- on panels `Π(u)` *and* `Π(w)` (two N3a normals); the discriminating witness normal is `n u`,
-  -- the second hyperplane `n' = n w` (so `u : Fin 3` is the dispatch index the producer reads).
+  -- The joins that keep `pbar 0`: the kept vectors `e₁, e₂` are orthogonal to two normals `n u`
+  -- and `n w`, and `n' = n w`.
   have htwo : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (u w : Fin 3) (e₁ e₂ : Fin 4 → K),
       u ≠ w → e₁ ⬝ᵥ n u = 0 → e₁ ⬝ᵥ n w = 0 → e₂ ⬝ᵥ n u = 0 → e₂ ⬝ᵥ n w = 0 →
       omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![e₁, e₂] →
@@ -852,9 +674,8 @@ theorem exists_line_data_of_homogeneousIncidence
         omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj] :=
     fun _ u w e₁ e₂ huw h1u h1w h2u h2w hkept =>
       ⟨u, n w, e₁, e₂, hpair u w huw, h1u, h1w, h2u, h2w, hkept⟩
-  -- **One-panel join builder** (the three "opposite" joins, single shared panel `Π(u)`): both kept
-  -- points lie on `Π(u)`; the discriminating witness normal is `n u` and
-  -- `exists_independent_perp_pair` builds the second hyperplane `n'`.
+  -- The other joins: the kept vectors are orthogonal to one normal `n u`, and
+  -- `exists_independent_perp_pair` gives `n'`.
   have hone : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (u : Fin 3) (e₁ e₂ : Fin 4 → K),
       e₁ ⬝ᵥ n u = 0 → e₂ ⬝ᵥ n u = 0 →
       omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![e₁, e₂] →
@@ -865,7 +686,7 @@ theorem exists_line_data_of_homogeneousIncidence
       obtain ⟨n', hpair', h1', h2'⟩ :=
         exists_independent_perp_pair e₁ e₂ (n u) h1u h2u (hn.ne_zero u)
       exact ⟨u, n', e₁, e₂, hpair', h1u, h1', h2u, h2', hkept⟩
-  -- The per-join kept-points identity (concrete `c, d` per join), from the general tabulation.
+  -- The join of the kept vectors `pbar c`, `pbar d` of each pair, by the general form.
   have hkept : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (c d : Fin 4), c < d →
       c ≠ q.1.1 → c ≠ q.1.2 → d ≠ q.1.1 → d ≠ q.1.2 →
       omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pbar c, pbar d] := by
@@ -877,11 +698,11 @@ theorem exists_line_data_of_homogeneousIncidence
     exact heq
   intro q
   obtain ⟨h1a, h1b⟩ := h1; obtain ⟨h2a, h2b⟩ := h2; obtain ⟨h3a, h3b⟩ := h3
-  -- For each of the six joins, the kept points come off the increasing complement of the omitted
-  -- pair, and the common panel(s) from the incidence tabulation: `(0,1)↦keep(2,3)`, `n2` (one);
-  -- `(0,2)↦keep(1,3)`, `n0`; `(0,3)↦keep(1,2)`, `n1`; `(1,2)↦keep(0,3)`, `{n0,n2}` (two);
-  -- `(1,3)↦keep(0,2)`, `{n1,n2}`; `(2,3)↦keep(0,1)`, `{n0,n1}`. The builders take `q` explicitly so
-  -- the heavy `omitTwoExtensor` carrier need not be `whnf`'d to infer it (TACTICS-QUIRKS §38).
+  -- For each of the six joins, the kept vectors and the common normals: `(0,1) ↦ (2,3)`, `n 2`;
+  -- `(0,2) ↦ (1,3)`, `n 0`; `(0,3) ↦ (1,2)`, `n 1`; `(1,2) ↦ (0,3)`, `n 0` and `n 2`;
+  -- `(1,3) ↦ (0,2)`, `n 1` and `n 2`; `(2,3) ↦ (0,1)`, `n 0` and `n 1`. The pair `q` is given
+  -- explicitly, so that elaboration does not reduce an `omitTwoExtensor` term to infer it
+  -- (TACTICS-QUIRKS §38).
   fin_cases q
   · exact hone ⟨(0, 1), by decide⟩ 2 _ _ h2b h3a
       (hkept ⟨(0, 1), by decide⟩ 2 3 (by decide) (by decide) (by decide) (by decide) (by decide))
@@ -900,21 +721,18 @@ namespace BodyHingeFramework
 
 variable {k : ℕ} {α β : Type*}
 
-/-! ## Claim 6.12: the `D`-candidate disjunction and the row-space criterion (KT §6.4.1)
+/-! ## The blocks of KT eq. (6.42) and KT Claim 6.12 (KT pp. 685–691)
 
-The row-space criterion `r̂(C) ≠ 0 ⟺ full rank`, the candidate rows' column-operation identities,
-the Claim 6.12 capstone (`case_III_claim612`, contrapositive of the panel-geometry span result), and
-the duality witnesses handing the producer its nonzero-candidate-row input. -/
+The membership test of a hinge-row block (`def:hinge-row-block`) and the nonsingularity test of KT's
+blocks (`lem:case-III-claim612-block-iff-perp`); rows after the column operation and the projection
+that zeroes the screw of `v`; the restriction of a row to the screws of one body, and KT eq. (6.44)
+(`lem:case-III-claim612-eq644`); `r ≠ 0` (`lem:case-III-claim612-r-nonzero`); and KT Claim 6.12
+(`lem:case-III-claim612`), with the step from a join to a hinge in a panel. -/
 
-/-- **A row functional lies in the hinge-row block iff it annihilates the supporting extensor**
-(`lem:case-III-claim612-block-iff-perp`, the membership half of KT's eq.~(6.42) row-space criterion;
-Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The hinge-row block `r(p(e)) = (span C(p(e)))^⊥` is the
-dual annihilator of the line `span {C(p(e))}` (`hingeRowBlock`), so a candidate functional
-`r̂ : Module.Dual K (ScrewSpace K k)` lies in it iff it annihilates the supporting extensor itself:
-`r̂ ∈ r(p(e)) ⟺ r̂ (C(p(e))) = 0`. The forward direction evaluates the annihilator at
-`C ∈ span {C}`; the converse scales `r̂ (a • C) = a • r̂ C = 0` across the span singleton. This is
-the `(span C)^⊥` membership test the Claim-6.12 row-space criterion negates
-(`r̂ ∉ (span C)^⊥ ⟺ r̂(C) ≠ 0`). -/
+/-- **A form lies in the hinge-row block if and only if it vanishes at the extensor**
+(`def:hinge-row-block`): `r ∈ F.hingeRowBlock e ↔ r (C(e)) = 0`. The block is the space of the forms
+that vanish on `span {C(e)}` (`hingeRowBlock`), and a form vanishes on the multiples of `C(e)` if
+and only if it vanishes at `C(e)` (the remark after `def:hinge-row-block`). -/
 theorem mem_hingeRowBlock_iff (F : BodyHingeFramework K k α β) (e : β)
     (r : Module.Dual K (ScrewSpace K k)) :
     r ∈ F.hingeRowBlock e ↔ r (F.supportExtensor e) = 0 := by
@@ -923,20 +741,14 @@ theorem mem_hingeRowBlock_iff (F : BodyHingeFramework K k α β) (e : β)
   obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hx
   rw [map_smul, h, smul_zero]
 
-/-- **The Claim-6.12 row-space criterion: the candidate's top-left `D × D` block is full rank iff
-`r̂(C) ≠ 0`** (`lem:case-III-claim612-block-iff-perp`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1,
-Phase 22e). Given the `D − 1` rows `rn` of a candidate's hinge block at `e` — linearly independent
-and spanning the whole hinge-row block `r(p(e)) = (span C)^⊥` (the `(D−1)`-dimensional orthogonal
-complement of the supporting line; `lem:case-II-placement-new-rows` supplies them) — the augmented
-`D`-functional family (the `D − 1` block rows `rn` plus the candidate row `r̂`) is linearly
-independent **iff** `r̂` is not orthogonal to the supporting extensor:
-`r̂ ∉ (span C)^⊥ ⟺ r̂ (C(p(e))) ≠ 0`. The `D − 1` block rows already span the hyperplane
-`(span C)^⊥`; appending `r̂` raises the dimension to `D` iff `r̂` is fresh
-(`linearIndependent_sumElim_unit_iff`, the row-space criterion), and freshness off the hinge-row
-block is exactly `r̂ (C) ≠ 0` (`mem_hingeRowBlock_iff`). This is the conditional `hnewpinaug` of the
-candidate-completion assembly (`linearIndependent_sum_augment_candidateRow_restriction`) recast as a
-clean orthogonality test — the eq.~(6.42) full-rank-of-the-top-left-block fact the `D`-candidate
-disjunction (`lem:case-III-claim612`) discharges. -/
+/-- **When the blocks of KT eq. (6.42) are nonsingular** (`lem:case-III-claim612-block-iff-perp`; KT
+p. 690): let `rn` be linearly independent forms that span the hinge-row block of `e`. Then `rn`
+together with one more form `r` is linearly independent if and only if `r (C(e)) ≠ 0`. A form
+extends `rn` to an independent family exactly when it lies outside the span of `rn`
+(`linearIndependent_sumElim_unit_iff`), which is the block, and `mem_hingeRowBlock_iff` tests the
+block. In Katoh and Tanigawa's blocks `M₁` and `M₂`, the forms `rn` are the rows of a hinge `L` and
+the last row is the form `r` of Claim 6.12, so a block is singular exactly when `r` vanishes on
+`C(L)`. -/
 theorem linearIndependent_sumElim_candidateRow_iff (F : BodyHingeFramework K k α β) (e : β)
     {ι : Type*} {rn : ι → Module.Dual K (ScrewSpace K k)} (hrn : LinearIndependent K rn)
     (hspan : Submodule.span K (Set.range rn) = F.hingeRowBlock e)
@@ -944,18 +756,10 @@ theorem linearIndependent_sumElim_candidateRow_iff (F : BodyHingeFramework K k �
     LinearIndependent K (Sum.elim rn (fun _ : Unit => r)) ↔ r (F.supportExtensor e) ≠ 0 := by
   rw [linearIndependent_sumElim_unit_iff hrn, hspan, Ne, ← mem_hingeRowBlock_iff]
 
-/-- **The operated candidate row pinned to `v`'s column is the candidate functional `ρ` itself**
-(`lem:case-III-claim612-p2-placement`, the bridge feeding the row-space criterion to the
-candidate-completion assembly; Katoh–Tanigawa 2011 §6.4.1, Phase 22e). Precomposing the candidate
-row `hingeRow v b ρ` with the column op `Φ = columnOp hvb` (`col_b += col_v`) and then with body
-`v`'s screw-column injection `single v` recovers `ρ` exactly: by `hingeRow_comp_columnOp_apply`,
-`(hingeRow v b ρ ∘ₗ Φ) S = ρ(S v)`, and `single v x` reads `x` at `v`, so the composite is
-`x ↦ ρ x`. This identifies the operated, pinned `(vb)i^*`-row — the candidate-completion's extra
-top-left-block row — with the abstract candidate functional `ρ` on `ScrewSpace K k`,
-so the row-space
-criterion `linearIndependent_sumElim_candidateRow_iff` (stated on `ScrewSpace K k`)
-reads directly on
-the assembly's `hnewpinaug`. -/
+/-- **After the column operation, the row `hingeRow v b ρ` restricted to the screws of `v` is `ρ`**
+(a step of `lem:case-III-rank-certification`): for `v ≠ b` and `Φ = columnOp hvb`,
+`(hingeRow v b ρ ∘ₗ Φ) ∘ₗ single v = ρ`. By `hingeRow_comp_columnOp_apply`,
+`hingeRow v b ρ (Φ S) = ρ (S v)`, and `single v x` has the value `x` at `v`. -/
 theorem hingeRow_comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v ≠ b)
     (ρ : Module.Dual K (ScrewSpace K k)) :
     ((hingeRow (k := k) (α := α) v b ρ).comp (columnOp (k := k) hvb).toLinearMap).comp
@@ -964,17 +768,12 @@ theorem hingeRow_comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v 
     simp only [LinearMap.comp_apply, LinearEquiv.coe_coe,
       hingeRow_comp_columnOp_apply, LinearMap.single_apply, Pi.single_eq_same]
 
-/-- **The operated, off-`v`-restricted `vb`-transport IS the `ab`-row** (KT eqs.~(6.26)–(6.28), the
-membership-by-construction in functional form; Katoh–Tanigawa 2011 §6.4.1, Phase 22h). Brick 1 of
-the W6 restriction-transport: composing the transported candidate row `hingeRow v b ρ` of
-`R(G, p_1)` with the column op `Φ = columnOp hva` (`col_a += col_v`) and then the off-`v` projection
-`P_v = id − single v ∘ₗ proj v` (W4's restriction) recovers the genuine `ab`-row `hingeRow a b ρ`.
-The mechanism: `P_v S` zeroes the `v`-coordinate, so `(Φ (P_v S)) v = (P_v S) v + (P_v S) a = S a`
-(using `v ≠ a`), while `(Φ (P_v S)) b = (P_v S) b = S b` (using `v ≠ b`, `Φ` only touches `v`);
-hence `(hingeRow v b ρ)(Φ (P_v S)) = ρ(S a − S b) = (hingeRow a b ρ) S`. This is the reading of
-KT's "`R(G, p_1; (vb)_j, v) = r_j(p_1(vb)) = r_j(q(ab))`" reproduction: in the operated, restricted
-frame the `(vb)_j`-row coincides with the `(ab)_j`-row, so the certified `t = 0` family rebases onto
-genuine `G_v^{ab}`-rows. -/
+/-- **The row `hingeRow v b ρ`, after the column operation and the projection that zeroes the screw
+of `v`, is `hingeRow a b ρ`** (a step of `lem:case-III-rank-certification`): for `v ≠ a`, `v ≠ b`,
+`Φ = columnOp hva` and `P = id − single v ∘ₗ proj v`, `hingeRow v b ρ ∘ₗ Φ ∘ₗ P = hingeRow a b ρ`.
+`P S` vanishes at `v`, so `Φ (P S)` has the value `S a` at `v` and `S b` at `b`, and the row takes
+the value `ρ (S a − S b)`. This is Katoh and Tanigawa's correspondence between the rows of `vb` in
+`R(G, p₁)` and those of `ab` in `R(G_v^{ab}, q)` (KT p. 685). -/
 theorem hingeRow_comp_columnOp_comp_offProj [DecidableEq α] {v a b : α}
     (hva : v ≠ a) (hvb : v ≠ b) (ρ : Module.Dual K (ScrewSpace K k)) :
     ((hingeRow (k := k) (α := α) v b ρ).comp (columnOp (k := k) hva).toLinearMap).comp
@@ -989,15 +788,11 @@ theorem hingeRow_comp_columnOp_comp_offProj [DecidableEq α] {v a b : α}
       LinearMap.coe_single, Pi.sub_apply, Pi.single_eq_same, Pi.single_eq_of_ne hva.symm,
       Pi.single_eq_of_ne hvb.symm, sub_zero, sub_self, zero_add]
 
-/-- **A row reading nothing on `v`'s column is untouched by the operated restriction** (KT
-eqs.~(6.26)–(6.28); Katoh–Tanigawa 2011 §6.4.1, Phase 22h). Brick 2 of the W6 restriction-transport:
-when a functional `g` annihilates body `v`'s screw column (`g.comp (single v) = 0`), composing it
-with the column op `Φ = columnOp hva` and the off-`v` projection `P_v` leaves it unchanged. Both
-`Φ S = S + single v (S a)` and `P_v S = S − single v (S v)` differ from `S` only by `single v (·)`
-terms, on which `g` vanishes, so `g (Φ (P_v S)) = g S`. This is the certificate that the genuine
-`G_v`-rows (which read nothing on the re-inserted body `v`'s column) survive the operated
-restriction verbatim — the "bottom rows are genuine `F₀`-rows" half of the W6 rebase, complementing
-`hingeRow_comp_columnOp_comp_offProj`'s candidate-row tag. -/
+/-- **A form that vanishes on the screws of `v` is unchanged by the column operation and the
+projection** (a step of `lem:case-III-rank-certification`): for `v ≠ a`, `Φ = columnOp hva` and `P`
+as in `hingeRow_comp_columnOp_comp_offProj`, a form `g` with `g ∘ₗ single v = 0` has
+`g ∘ₗ Φ ∘ₗ P = g`, as `Φ (P S) = S + single v (S a − S v)`. The rows of the edges that do not meet
+`v` are such forms. -/
 theorem comp_columnOp_comp_offProj_of_single_eq_zero [DecidableEq α] {v a : α} (hva : v ≠ a)
     {g : Module.Dual K (α → ScrewSpace K k)}
     (hg : g.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v) = 0) :
@@ -1039,13 +834,10 @@ theorem comp_columnOp_comp_offProj_of_single_eq_zero [DecidableEq α] {v a : α}
       · simp [Function.update_of_ne hy, Pi.single_eq_of_ne hy]
     simp only [hupd, map_add, hgsingle, add_zero]
 
-/-- **A hinge row restricted to its tail body's screw column is the block functional** (the
-column-restriction leaf of KT eq.~(6.43)/(6.44); Katoh–Tanigawa 2011 §6.4.1, Phase 22e). For a
-hinge oriented out of body `a` (the tail) into a distinct body `b`, precomposing
-`hingeRow a b ρ` with body `a`'s screw-column injection `single a` recovers `ρ` exactly:
-`(hingeRow a b ρ)(single a x) = ρ((single a x) a − (single a x) b) = ρ(x − 0) = ρ x`, since
-`single a x` reads `x` at `a` and `0` at the distinct `b`. This is the "the `ab`-row contributes
-`ρ` to the `a`-column" half of the eq.~(6.43) `a`-column regrouping. -/
+/-- **The restriction of a row to the screws of its first end** (`lem:case-III-claim612-eq644`; KT
+p. 691): for `a ≠ b`, `hingeRow a b ρ ∘ₗ single a = ρ`, as `single a x` has the value `x` at `a` and
+`0` at `b`. In the proof of KT eq. (6.44), the rows at `ab` and `ac` restrict so to the screw
+assignments that vanish off `a`. -/
 theorem hingeRow_comp_single_tail [DecidableEq α] {a b : α} (hab : a ≠ b)
     (ρ : Module.Dual K (ScrewSpace K k)) :
     (hingeRow (k := k) (α := α) a b ρ).comp
@@ -1054,14 +846,11 @@ theorem hingeRow_comp_single_tail [DecidableEq α] {a b : α} (hab : a ≠ b)
     simp only [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply, Pi.single_eq_same,
       Pi.single_eq_of_ne (Ne.symm hab), sub_zero]
 
-/-- **A hinge row restricted to a body incident to neither endpoint is zero** (the
-column-restriction leaf of KT eq.~(6.43)/(6.44); Katoh–Tanigawa 2011 §6.4.1, Phase 22e). When body
-`a` is incident to neither endpoint of the hinge `uw` (`a ≠ u`, `a ≠ w`), precomposing
-`hingeRow u w ρ` with body `a`'s screw-column injection `single a` is `0`: `single a x` reads `0`
-at both `u` and `w`, so `(hingeRow u w ρ)(single a x) = ρ(0 − 0) = 0`. This is the
-"every other edge contributes `0` to the `a`-column" half of the eq.~(6.43)/(6.44) regrouping ---
-the degree-2-at-`a` fact that, in `G_v^{ab}`, only the `ab`- and `ac`-rows survive in body `a`'s
-column. -/
+/-- **The restriction of a row to the screws of a body off its ends is zero**
+(`lem:case-III-claim612-eq644`; KT p. 691): for `a ≠ u` and `a ≠ w`,
+`hingeRow u w ρ ∘ₗ single a = 0`, as `single a x` vanishes at `u` and at `w`. In the proof of KT
+eq. (6.44), the rows of the edges that do not meet `a` vanish on the screw assignments that vanish
+off `a`. -/
 theorem hingeRow_comp_single_off [DecidableEq α] {u w a : α} (hau : a ≠ u) (haw : a ≠ w)
     (ρ : Module.Dual K (ScrewSpace K k)) :
     (hingeRow (k := k) (α := α) u w ρ).comp
@@ -1071,48 +860,24 @@ theorem hingeRow_comp_single_off [DecidableEq α] {u w a : α} (hau : a ≠ u) (
       Pi.single_eq_of_ne hau.symm, Pi.single_eq_of_ne haw.symm, sub_zero, map_zero,
       LinearMap.zero_apply]
 
-/-- **The common vector `r̂` of the `D`-candidate disjunction is nonzero**
-(`lem:case-III-claim612-r-nonzero`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1, Phase 22e).
-The candidate row shared by all three
-blocks `M₁/M₂/M₃` of Claim~6.12 is `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))`, where the `r_j` are the
-`D − 1` linearly independent rows of the `ab`-hinge block (`lem:case-II-placement-new-rows`) and
-the coefficients `λ_{(ab)j}` come from the redundant-`ab`-row decomposition of eqs.~(6.24)/(6.25)
-with the redundant index's coefficient pinned to `λ_{(ab)i^*} = 1`
-(`exists_redundant_panelRow_ab_decomposition`). Since `r̂` is a linear combination of the
-linearly independent `r_j` carrying the unit (hence nonzero) coefficient `1` on the member `i^*`,
-it is nonzero (`linearIndependent_sum_smul_ne_zero`). This is the `r ≠ 0` leaf the Claim-6.12
-capstone (`lem:case-III-claim612`) contradicts after the three blocks' joint dependence forces
-`r̂ = 0`. -/
+/-- **The form `r` is not zero** (`lem:case-III-claim612-r-nonzero`; KT p. 690): a combination
+`∑ j, lam j • r j` of linearly independent forms with a coefficient `lam i = 1` is not zero
+(`linearIndependent_sum_smul_ne_zero`). In KT Claim 6.12, `r = ∑ j λ_{(ab)j} r_j(q(ab))`, with
+`λ_{(ab)i*} = 1` (KT eq. (6.25)). -/
 theorem candidateRow_ne_zero {ι : Type*} [Fintype ι] {r : ι → Module.Dual K (ScrewSpace K k)}
     (hr : LinearIndependent K r) {lam : ι → K} {i : ι} (hlam : lam i = 1) :
     ∑ j, lam j • r j ≠ 0 :=
   linearIndependent_sum_smul_ne_zero hr (i := i) (hlam ▸ one_ne_zero)
 
-/-- **Eq.~(6.44): the `M₃` candidate row equals `−r̂`, routing the third candidate onto the same
-common vector** (`lem:case-III-claim612-eq644`, KT eq.~(6.44); Katoh–Tanigawa 2011 §6.4.1,
-Phase 22e). The `a`-column block of the eq.~(6.24) vanishing combination `g` is `0`
-(`exists_redundant_panelRow_ab_decomposition_acolumn_zero`, eq.~(6.43)): `g.comp (single a) = 0`.
-KT's eq.~(6.44) is what that restriction *says* once the combination is regrouped by which edge
-each term sits on. In `G_v^{ab}` body `a` is a **degree-2** vertex --- only the `ab`- and `ac`-edges
-are incident to it --- so by the column-restriction leaves (`hingeRow_comp_single_tail` /
-`hingeRow_comp_single_off`) the only terms of `g` surviving in body `a`'s screw column are the
-`ab`-sum, whose `a`-column restriction is the common candidate row `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))`,
-and the `ac`-sum, with restriction `rAC := ∑_j λ_{(ac)j} r_j(q(ac))`. Hence
-`0 = g.comp (single a) = r̂ + rAC`, i.e.\ KT's eq.~(6.44)
-\[ r̂ \;=\; -\,\mathrm{rAC} \;=\; -\sum_j λ_{(ac)j}\, r_j(q(ac)). \]
-The `M₃` candidate's full-rank criterion is `rAC ∉ (\operatorname{span} C(L''))^\perp`
-(`lem:case-III-claim612-p3-placement`); eq.~(6.44) rewrites it as `r̂ ⊥ C(L'')` --- the same common
-vector `r̂` the `M₁/M₂` criteria use, which is exactly what lets the Claim-6.12 capstone
-(`lem:case-III-claim612`) force the *single* `r̂` orthogonal to all of `C(L), C(L'), C(L'')` and so
-to a spanning set, contradicting `r̂ ≠ 0`.
-
-Stated abstractly (graph-free, matching the candidate-completion chain): the `ab`-sum and `ac`-sum
-are explicit `hingeRow`-sums out of the common tail body `a` (into the distinct bodies `b`, `c`),
-and `grest` is the remaining edges' contribution, which the degree-2-at-`a` fact (`hrest`: every
-such edge is incident to neither endpoint at `a`) makes vanish on `a`'s column. The conclusion is
-the `M₃` row `rAC := ∑_j λac_j • rac_j` equal to `-r̂` with `r̂ := ∑_j λab_j • rab_j`. The `ab`/`ac`
-column restrictions are computed by `hingeRow_comp_single_tail`; the `grest` one by
-`hingeRow_comp_single_off`. -/
+/-- **KT eq. (6.44): the last row of `M₃` is `−r`** (`lem:case-III-claim612-eq644`; KT pp. 690–691):
+let `a ≠ b` and `a ≠ c`, and let the form
+`∑ j, lamAB j • hingeRow a b (rab j) + ∑ j, lamAC j • hingeRow a c (rac j) + grest` vanish on the
+screw assignments that vanish off `a` (`hcol`), as `grest` does (`hrest`). Then
+`∑ j, lamAC j • rac j = −∑ j, lamAB j • rab j`, as the rows at `ab` and `ac` restrict to `rab j` and
+`rac j` there (`hingeRow_comp_single_tail`). In Katoh and Tanigawa's proof, the form is the
+combination of KT eq. (6.24), which vanishes there (KT eq. (6.43)); as `a` has degree two, the rows
+of the other edges vanish there (`hingeRow_comp_single_off`), and the conclusion is KT eq. (6.44),
+with `r = ∑ j λ_{(ab)j} r_j`. -/
 theorem candidateRow_ac_eq_neg [DecidableEq α] {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
     {a b c : α} (hab : a ≠ b) (hac : a ≠ c)
     (lamAB : ιab → K) (rab : ιab → Module.Dual K (ScrewSpace K k))
@@ -1124,11 +889,8 @@ theorem candidateRow_ac_eq_neg [DecidableEq α] {ιab ιac : Type*} [Fintype ιa
     (hrest : grest.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = 0) :
     ∑ j, lamAC j • rac j = -∑ j, lamAB j • rab j := by
   refine eq_neg_of_add_eq_zero_right ?_
-  -- Strip the `grest` term (`hrest`) and read the equation column-wise:
-  -- at each `x : ScrewSpace K k`
-  -- the `ab`-sum and `ac`-sum restrict to their block-functional sums
-  -- (`hingeRow_comp_single_tail`), the `grest` term vanishes (`hrest`), so the eq. (6.43) `0`
-  -- reads `r̂ + rAC = 0` at `x`.
+  -- Drop the `grest` term (`hrest`) and read the equation at each `x : ScrewSpace K k`: the rows
+  -- at `ab` and `ac` restrict to `rab j` and `rac j` (`hingeRow_comp_single_tail`).
   rw [LinearMap.add_comp, LinearMap.add_comp, hrest, add_zero] at hcol
   refine LinearMap.ext fun x => ?_
   have hx := LinearMap.congr_fun hcol x
@@ -1141,77 +903,44 @@ theorem candidateRow_ac_eq_neg [DecidableEq α] {ιab ιac : Type*} [Fintype ιa
   simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sum_apply,
     LinearMap.smul_apply, e1, e2, LinearMap.zero_apply] using hx
 
-/-- **Claim 6.12 — for some line choice, the candidate block is full rank**
-(`lem:case-III-claim612`, Katoh–Tanigawa 2011 §6.4.1, Claim 6.12, eqs. (6.30)–(6.45); Phase 22g).
-The capstone of the candidate-selection argument at `d = 3`, stated as the **existential** it
-actually is: KT's lines `L ⊂ Π(u)` are *freely chosen* (eqs. (6.12)/(6.42)), so the claim is that
-*for some* choice the candidate's top-left `D × D` block is full rank — equivalently (the row-space
-criterion `linearIndependent_sumElim_candidateRow_iff` at the candidate's hinge) the common
-candidate row `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))` is **not** orthogonal to that block's supporting
-extensor. Since a candidate's hinge support is the panel-meet of a line `L` (PanelHinge, `rfl`) and
-the panel-meet of a line through two of the four points is exactly one of their six joins
-`pᵢ ∨ pⱼ = omitTwoExtensor (homogenize ∘ p)`, the existential is stated over those **six joins**:
-`∃ q, r̂(pᵢ ∨ pⱼ) ≠ 0`.
+/-- **KT Claim 6.12: a nonzero form does not vanish on all the joins** (`lem:case-III-claim612`; KT
+pp. 690–691): for a nonzero linear form `r` on `ScrewSpace K k` and linearly independent
+`pbar : Fin (k+2) → K^(k+2)`, `r` does not vanish on some omit-two extensor `omitTwoExtensor pbar`.
+These extensors span the screw space (`span_omitTwoExtensor_eq_top`, from KT Lemma 2.1), so a form
+that vanishes on all of them is zero (`eq_zero_of_annihilates_span_top`). At `d = 3` they are the
+six joins `pbar i ∨ pbar j` of KT eq. (6.45); for general `d`, the joins of `d − 1` of the `d + 1`
+vectors (KT eq. (6.67), p. 698).
 
-The argument is a clean contrapositive of the existential. If `r̂` annihilated *every* one of the
-six joins — KT's union-(6.45) "for *every* choice of lines `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`"
-— then since those six joins of four linearly-independent homogeneous vectors
-**span** `ScrewSpace K 2
-= ⋀²K⁴` (`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1), `r̂` would annihilate their
-span and so be `0` (`eq_zero_of_annihilates_span_top`, N2), contradicting `r̂ ≠ 0` (N5). The
-annihilation hypothesis is *not* a carried premise: it is precisely the internal `by_contra`
-negation `∀ q, r̂(join q) = 0`. The earlier three-fixed-`Cᵢ` disjunction conclusion
-(`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` at three *hardcoded* lines) was *mathematically
-undischargeable* — three `2`-extensors span ≤ 3 of the 6 dimensions of `⋀²K⁴`, so `r̂ ⊥ C₁,C₂,C₃`
-cannot force `r̂ = 0`; only the full line sweep (Lemma 2.1) does. The producer
-(`case_III_hsplit_producer_all_k`) consumes the existential by building its candidate placement so
-its hinge line *is* the witness join's line `L = p̄ᵢ p̄ⱼ`. The points enter at the
-**homogeneous-vector**
-layer (bare `LinearIndependent K pbar`, fed by `exists_homogeneousIncidence_of_normals`); no affine
-de-homogenization is needed (`notes/Phase22-realization-design.md` §1.42, R1-affine). -/
+KT Claim 6.12 follows for the vectors of `exists_homogeneousIncidence_of_normals_gen` at the normals
+of the panels: the join on which `r` does not vanish is a multiple of the extensor of a hinge in a
+panel (`exists_complementIso_ne_zero_of_homogeneousIncidence` and its form for every `d`). The
+hinges are chosen after `r`; the extensors of three fixed lines span at most three of the six
+dimensions of `⋀² K⁴`, so a nonzero `r` can vanish on all three. -/
 theorem case_III_claim612_gen {k : ℕ}
     {r : Module.Dual K (ScrewSpace K k)} (hr : r ≠ 0)
     {pbar : Fin (k + 2) → Fin (k + 2) → K} (hp : LinearIndependent K pbar) :
     ∃ q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2},
       r ⟨omitTwoExtensor pbar (ne_of_lt q.2),
         extensor_mem_exteriorPower _⟩ ≠ 0 := by
-  -- Contrapositive of the existential (verbatim lift of the `d = 3` body): if `r̂` annihilated
-  -- *every* one of the `D` panel-support joins of the `k+2` linearly-independent homogeneous
-  -- vectors, it would annihilate their span `= ScrewSpace K k` (`span_omitTwoExtensor_eq_top`, N1,
-  -- via Lemma 2.1 — already general) and so be `0` (`eq_zero_of_annihilates_span_top`, N2 —
-  -- already general), contradicting `r̂ ≠ 0` (N5). The annihilation `∀ q, r̂(join q) = 0` is the
-  -- internal `by_contra` negation — KT's union-(6.45) "for *every* choice of lines" hypothesis —
-  -- not a premise carried in. §(i) D-span finish: needs only LI of `pbar`, no affine independence.
+  -- If `r` vanished on every omit-two extensor, it would vanish on their span, the screw space
+  -- (`span_omitTwoExtensor_eq_top`), and so be `0` (`eq_zero_of_annihilates_span_top`).
   by_contra h
   push Not at h
   exact hr (eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp)
     (by rintro x ⟨q, rfl⟩; exact h q))
 
-/-- **The witness panel-meet a nonzero screw functional fails to annihilate**
-(`lem:case-III-claim612-line-in-panel-union`, the Claim 6.12 → candidate-row glue of the `d = 3`
-`hsplit` producer's `n_a`/`n_b` arms, KT eq. (6.45); Phase 22h). The forward (existence) dual of
-`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`: rather than transferring annihilation,
-it produces, from a **nonzero** functional `r` and the homogeneous incidence data of four
-affinely-independent points `pbar` against three independent panel normals `n`, a
-**discriminating index** `u : Fin 3` and a line `L` in panel `Π(n u)` whose **panel-meet**
-`C(L) = complementIso (n u ∧ n')` the functional `r` does *not* annihilate.
-
-This is the contrapositive of KT's Claim 6.12 union argument made constructive: Claim 6.12
-(`case_III_claim612`) supplies a witness join `pᵢ ∨ pⱼ = omitTwoExtensor pbar (ne_of_lt q.2)` with
-`r(pᵢ ∨ pⱼ) ≠ 0`; the per-join line data (`exists_line_data_of_homogeneousIncidence`) exhibits the
-join line `L = pᵢ pⱼ` inside a panel `Π(n u)` with a second hyperplane `n'`; and the per-line
-duality (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, contrapositive) forces
-`r(C(L)) ≠ 0` from `r(pᵢ ∨ pⱼ) ≠ 0`. The resulting `u`, `{n u, n'}` with
-`r(complementIso (n u ∧ n')) ≠ 0` is the nonzero-candidate-row input the producer's eq. (6.12)
-candidate placement consumes (its hinge line is built to be exactly this witness line `L`); the
-returned `u : Fin 3` is the M₁/M₂/M₃ dispatch index the `hcand`-discharge reads (§1.50(a)).
-Graph-free (pure `Fin 4` / `⋀²K⁴` geometry, off the `ofNormals` `whnf` trap, TACTICS-QUIRKS §38);
-the `r`/`pbar`/`n` data is supplied by the producer at instantiation.
-
-Its sole caller is `case_III_candidate_dispatch`
-(`Molecular/AlgebraicInduction/CaseIII/Realization.lean`), the `d = 3` worked-instance
-dispatch kept off the general induction's live path on purpose (PROSPECT S1 adjudication,
-2026-07-10; `notes/Prospect.md`) — not dead code awaiting a liveness sweep. -/
+/-- **From a join to a hinge in a panel, for `d = 3`** (a step of
+`lem:case-III-candidate-dispatch-d3`; the proof of `lem:case-III-claim612`, KT p. 691): let `r ≠ 0`
+be a linear form on `ScrewSpace K 2`, `pbar : Fin 4 → K⁴` linearly independent, and `n : Fin 3 → K⁴`
+linearly independent normals with the incidences of `exists_line_data_of_homogeneousIncidence`. Then
+there are an index `u` and a vector `n'`, with `n u` and `n'` linearly independent, such that
+`r (C(n u, n')) ≠ 0`, where `C(n u, n') = complementIso (n u ∨ n')` is the panel support extensor
+(`def:panel-support-extensor`). KT Claim 6.12 (`case_III_claim612_gen`) gives a join on which `r`
+does not vanish, `exists_line_data_of_homogeneousIncidence` a normal `n u` and a vector `n'`
+orthogonal to its kept vectors, and the join is a multiple of `C(n u, n')`
+(`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`,
+`lem:case-III-claim612-line-in-panel-union`). `C(n u, n')` is a nonzero multiple of the extensor of
+the line in which the plane of `n u` meets that of `n'`. -/
 theorem exists_complementIso_ne_zero_of_homogeneousIncidence
     {r : Module.Dual K (ScrewSpace K 2)} (hr : r ≠ 0)
     {pbar : Fin 4 → Fin 4 → K} (hp : LinearIndependent K pbar)
@@ -1223,56 +952,32 @@ theorem exists_complementIso_ne_zero_of_homogeneousIncidence
     ∃ (u : Fin 3) (n' : Fin 4 → K), LinearIndependent K ![n u, n'] ∧
       r (complementIso (k := 2) (j := 2) (by omega)
         ⟨extensor ![n u, n'], extensor_mem_exteriorPower _⟩) ≠ 0 := by
-  -- Claim 6.12: a witness join `pᵢ ∨ pⱼ = omitTwoExtensor pbar (ne_of_lt q.2)` with `r(·) ≠ 0`.
+  -- KT Claim 6.12: a join `omitTwoExtensor pbar (ne_of_lt q.2)` on which `r` does not vanish.
   obtain ⟨q, hq⟩ := case_III_claim612_gen hr hp
-  -- The per-join line data: the join line `L = pᵢ pⱼ ⊂ Π(n u)` for a discriminating index
-  -- `u : Fin 3` (the witness panel normal is the real split-leg normal `n u`), and a second
-  -- hyperplane `n'`.
+  -- A normal `n u` and a vector `n'` orthogonal to the two kept vectors `pi`, `pj` of the join.
   obtain ⟨u, n', pi, pj, hpair, hi_u, hi_u', hj_u, hj_u', hkept⟩ :=
     exists_line_data_of_homogeneousIncidence hn h0 h1 h2 h3 q
   refine ⟨u, n', hpair, fun hC => hq ?_⟩
-  -- Contrapositive of the per-line duality: `r(C(L)) = 0` forces `r(pᵢ ∨ pⱼ) = 0`, i.e.
-  -- `r` annihilates the witness join — contradicting `hq`.
+  -- If `r (C(n u, n')) = 0`, then `r` vanishes on the join `pi ∨ pj`, contradicting `hq`.
   rw [show (⟨omitTwoExtensor pbar (ne_of_lt q.2), extensor_mem_exteriorPower _⟩ :
         ⋀[K]^2 (Fin 4 → K)) = ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ from
       Subtype.ext hkept]
   exact extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct (n u) n' pi pj hpair
     hi_u hi_u' hj_u hj_u' r hC
 
-/-- **The witness panel-meet a nonzero screw functional fails to annihilate — the general-`d` form**
-(`lem:case-III-claim612-line-in-panel-union`, CHAIN-4d, the capstone of the Claim 6.12
-discriminator; Katoh–Tanigawa 2011 §6.4.1 eq. (6.45), Phase 23b). The `k = d − 1` generalization of
-the `d = 3` `exists_complementIso_ne_zero_of_homogeneousIncidence`: from a **nonzero** screw
-functional `r : Dual (ScrewSpace K k)` and the homogeneous incidence data of `k + 2`
-linearly-independent homogeneous vectors `pbar` against `k + 1` independent panel normals `n`
-(`pbar 0` on every panel, `pbar i.succ` off panel `n i` only — the off-one-panel form
-`exists_homogeneousIncidence_of_normals_gen` emits), it produces a **discriminating index**
-`u : Fin (k + 1)` and a line `L` in panel `Π(n u)` whose **panel-meet** `C(L) = complementIso
-(n u ∧ n')` the functional `r` does *not* annihilate.
-
-The assembly of three landed pieces (no residual openness):
-* **CHAIN-4c** `case_III_claim612_gen` supplies a witness join `omitTwoExtensor pbar (ne_of_lt q.2)`
-  with `r(·) ≠ 0` (the `D`-span existential — only `LinearIndependent K pbar` is used, no affine
-  independence, §(i) D-span finish).
-* **CHAIN-4b** `exists_line_data_of_homogeneousIncidence_gen` exhibits the join line `L = p̄ᵢ … p̄ⱼ`
-  inside panel `Π(n u)` with a second hyperplane `n'`: a discriminating index `u`, the second
-  normal `n'` (independent from `n u`), the `k` kept points `p : Fin k` spanning `L`
-  (`LinearIndependent K p`, each `⬝ᵥ`-orthogonal to both `n u` and `n'`), and the join identity
-  `omitTwoExtensor pbar = extensor p`.
-* **CHAIN-3 (h-4)** `extensor_join_proportional_complementIso_meet` (the `k`-form, `Meet.lean`)
-  is the per-line join=meet duality: `∃ c, c • complementIso ⟨extensor ![n u, n'], _⟩ = extensor p`.
-  So `r(complementIso ⟨extensor ![n u, n'], _⟩) = 0` forces `r(extensor p) = 0`, i.e. `r` kills
-  the witness join — contradicting CHAIN-4c. (The contrapositive of the `d = 3`
-  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, lifted to the `Fin k` point family.)
-
-Note the `complementIso` is `(j := 2)`, NOT `(j := d − 1)` — a line has exactly **2** normals at
-every `d` (the §(f)/§(i) correction), so the panel-meet is the meet of 2 hyperplanes. The
-dot-product incidence of CHAIN-4b is converted to the standard-basis pairing CHAIN-3 (h-4) takes via
-`Pi.basisFun_toDual_apply`. The `Fin 3` discriminator
-(`exists_complementIso_ne_zero_of_homogeneousIncidence`) stays its own green `d = 3` body
-(re-pointing it at this lemma's `k := 2` instance is the not-forced h-5 decision); the consumer
-`case_III_candidate_dispatch` is unchanged. Graph-free; the `r`/`pbar`/`n` data is supplied by the
-producer at instantiation. -/
+/-- **From a join to a hinge in a panel, for every `d`** (a step of
+`lem:case-III-chain-discriminator`; KT p. 698): let `r ≠ 0` be a linear form on `ScrewSpace K k`,
+`pbar : Fin (k+2) → K^(k+2)` linearly independent, and `n : Fin (k+1) → K^(k+2)` linearly
+independent normals with the incidences `h0` and `hi` of
+`exists_homogeneousIncidence_of_normals_gen`, without its conditions `≠ 0`. Then there are an index
+`u` and a vector `n'`, with `n u` and `n'` linearly independent, such that `r (C(n u, n')) ≠ 0`. KT
+Claim 6.12 (`case_III_claim612_gen`) gives a join on which `r` does not vanish;
+`exists_line_data_of_homogeneousIncidence_gen` gives `u`, `n'` and the `k` kept vectors of the join,
+linearly independent and orthogonal to `n u` and `n'`; and their join is a multiple of `C(n u, n')`
+(`extensor_join_proportional_complementIso_meet`, `lem:meet-two-hyperplanes`). A hinge is the meet
+of two hyperplanes at every `d`, so `complementIso` is taken at `j = 2`; the dot products become
+coordinate pairings by `Pi.basisFun_toDual_apply`. The case `d = 3`,
+`exists_complementIso_ne_zero_of_homogeneousIncidence`, has its own proof. -/
 theorem exists_complementIso_ne_zero_of_homogeneousIncidence_gen {k : ℕ}
     {r : Module.Dual K (ScrewSpace K k)} (hr : r ≠ 0)
     {pbar : Fin (k + 2) → Fin (k + 2) → K} (hp : LinearIndependent K pbar)
@@ -1282,24 +987,23 @@ theorem exists_complementIso_ne_zero_of_homogeneousIncidence_gen {k : ℕ}
     ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → K), LinearIndependent K ![n u, n'] ∧
       r (complementIso (k := k) (j := 2) (by omega)
         ⟨extensor ![n u, n'], extensor_mem_exteriorPower _⟩) ≠ 0 := by
-  -- CHAIN-4c (Claim 6.12): a witness join `omitTwoExtensor pbar (ne_of_lt q.2)` with `r(·) ≠ 0`.
+  -- KT Claim 6.12: a join `omitTwoExtensor pbar (ne_of_lt q.2)` on which `r` does not vanish.
   obtain ⟨q, hq⟩ := case_III_claim612_gen hr hp
-  -- CHAIN-4b: the per-join line data — the discriminating index `u`, second normal `n'`, and the
-  -- `k` kept points `p` (LI, each `⬝ᵥ`-orthogonal to both `n u`, `n'`) spanning the join line.
+  -- The index `u`, the vector `n'` and the `k` kept vectors `p` of the join, linearly independent
+  -- and orthogonal to `n u` and `n'`.
   obtain ⟨u, n', p, hpair, hpLI, hpu, hpu', hkept⟩ :=
     exists_line_data_of_homogeneousIncidence_gen hn hp h0 hi q
   refine ⟨u, n', hpair, fun hC => hq ?_⟩
-  -- Contrapositive of the per-line join=meet duality (CHAIN-3 (h-4)): `r(C(L)) = 0` forces
-  -- `r(extensor p) = 0`, and `omitTwoExtensor pbar = extensor p`, so `r` kills the witness join.
+  -- If `r (C(n u, n')) = 0`, then `r (extensor p) = 0`, as the join is a multiple of the meet,
+  -- and `omitTwoExtensor pbar = extensor p`: `r` vanishes on the join.
   obtain ⟨c, hc⟩ := extensor_join_proportional_complementIso_meet ![n u, n'] p hpLI hpair
     (fun i j => by
       rw [Pi.basisFun_toDual_apply]; fin_cases j
       · exact hpu i
       · exact hpu' i)
-  -- `r` applied to the proportionality `c • C(L) = extensor p` (`r.map_smul`) sends the witness
-  -- join `omitTwoExtensor pbar = extensor p` to `c • r(C(L)) = c • 0 = 0`. Close with the
-  -- `r.map_smul c _` term (`exact … .trans …`), not `rw [map_smul]`: the latter mis-fires on the
-  -- `⋀^k`↔`ScrewSpace K k` smul instance (defeq carriers, but `rw` is syntactic).
+  -- Apply `r` to `c • C(n u, n') = extensor p`. Close with the term `r.map_smul c _`, not
+  -- `rw [map_smul]`, which fails on the scalar actions of `⋀^k` and `ScrewSpace K k` (defeq, but
+  -- `rw` is syntactic).
   rw [show (⟨omitTwoExtensor pbar (ne_of_lt q.2), extensor_mem_exteriorPower _⟩ :
         ⋀[K]^k (Fin (k + 2) → K)) = ⟨extensor p, extensor_mem_exteriorPower _⟩ from
       Subtype.ext hkept, ← hc]

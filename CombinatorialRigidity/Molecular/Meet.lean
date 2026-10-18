@@ -13,54 +13,33 @@ public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
 /-!
-# Grassmann–Cayley meet / projective-duality foundations (`sec:molecular-meet`)
+# The complement isomorphism and the meet (`sec:molecular-meet`)
 
-Phase 21a, a prerequisite sub-phase of the algebraic induction (Phase 21), inserted by
-the 2026-06-03 panel re-scope. Where Phase 17 (`Molecular/Extensor.lean`) built the
-*join* (progressive product `∨ₑ`, the symbolic exterior product on
-`ExteriorAlgebra K (Fin (k+2) → K)`) plus a coordinatized Plücker bridge, this file
-builds the dual half — the *meet* (regressive product) and the projective-duality
-dictionary it rests on — on the same concrete carrier. The meet is the device the
-panel-coplanarity layer (DESIGN.md *Panel-hinge = hinge-coplanar body-hinge*), the
-cycle-realization Lemma 5.4, and the Crapo–Whiteley projective invariance (Phase 25)
-all consume; see `notes/Phase21a.md` for the deliverable plan and `notes/MolecularConjecture.md`
-for the program-level placement.
+The definitions and lemmas of `sec:molecular-meet`. The meet is the operation of the
+Grassmann–Cayley algebra dual to the join (Barnabei, Brini and Rota 1985; White 1994), whom Katoh
+and Tanigawa cite for the algebra (2011, *A proof of the molecular conjecture*, Discrete Comput.
+Geom. **45**, §2.1); they use the join and not the meet. Here `V = K^(k+2)` and `N = k + 2`, so that
+`d = k + 1`, over any field `K`: the constructions use the standard basis of `V`, and no order on
+`K` or hypothesis on its characteristic. The file proves:
 
-**Field generality (Phase 33 G1 sweep, Slice 3).** The construction is pure exterior/projective
-algebra with no metric, order, or infiniteness content, so it holds over any field `K`
-(`variable {K : Type*} [Field K]`, threaded throughout; no characteristic restriction —
-originally developed over `ℝ`, Phases 17–26). This is the `K`-generalization of the metric-free
-route Spike A (`notes/Phase33.md`) landed at Slice 0: the GL-contragredient equivariance
-(`complementIso_map_contragredient_eq`) and the field-general `toDual`-perp count
-(`finrank_toDualPerp_pair_eq`) replace the retired `MeetHodge.lean`'s Gram–Schmidt / O(n)-only
-route, so no field-specific step remains anywhere in the file.
+* the volume form `⋀^N V ≃ K` and the duality `⋀^j V* ≃ (⋀^j V)*` (`def:meet-top-equiv`,
+  `def:meet-pairing-dual`), the cases of `exteriorPower.topEquiv` and
+  `exteriorPower.pairingDualEquiv` at `V`;
+* the wedge pairing `(X, Y) ↦ vol (X ∨ Y)` of `⋀^j V` and `⋀^(N−j) V`, which is nondegenerate, the
+  complement isomorphism `*` that it gives, and its defining property (`def:meet-complement-iso`,
+  `lem:complement-iso-toDual`); the meet `A ∧ B = *(*A ∨ *B)` (`def:meet`); the formula
+  `*e_S = ε_S • e_{Sᶜ}` and the transformation law of `*` under a linear automorphism of `V`; and
+  the meet of two hyperplanes, an extensor of their intersection and a multiple of the join of
+  `d − 1` linearly independent vectors in it (`lem:meet-two-hyperplanes`);
+* for `d = 3`, that the meet of two planes is a multiple of the join of two points of their line
+  (`lem:complement-iso-decomposable-wedge-perp`, `lem:case-III-claim612-line-in-panel-union`), the
+  facts on `⋀² W` for a plane `W` that identify the line of `⋀² K⁴` on which both lie
+  (`lem:complement-iso-line-one-dim`, `lem:complement-iso-exterior-map-injective`), and that equal
+  nonzero `2`-extensors span the same plane (`lem:decomposable-extensor-span-unique`);
+* the coordinate pairing of `V` as the dot product, and the dimension of the space of vectors
+  orthogonal to a family, which `Molecule/Pencil/` uses as well.
 
-The construction is metric-free: projective geometry needs no inner product, only the
-top-power volume form (orientation). Deliverables, in dependency order
-(`N = k+2`, `V = Fin (k+2) → K`):
-
-1. **`topEquiv`** (this commit) — the canonical top-power iso `⋀ᴺ V ≃ₗ K`. The
-   orientation through which the perfect wedge pairing lands in `K`. Mirrored as the
-   general fact `exteriorPower.topEquiv` (over any `CommRing`, on `Fin n → R`) under
-   `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`; `screwAlgebraTopEquiv` below is the
-   `N = k+2` specialization on the screw-algebra carrier.
-2. **`pairingDualEquiv`** (this commit) — the projective-duality dictionary entry
-   `⋀ʲ(V*) ≃ₗ (⋀ʲ V)*` reused by Phase 25, the upgrade of mathlib's
-   `exteriorPower.pairingDual` (a bare `→ₗ`) to an iso for finite free `V`. Mirrored
-   as the general fact `exteriorPower.pairingDualEquiv` (over any `CommRing`, for any
-   finite free `M` with an ordered basis) under
-   `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`; `screwAlgebraPairingDualEquiv`
-   below is the screw-algebra specialization at the standard basis.
-3. `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V` — from the perfect wedge pairing, shown
-   nondegenerate. The genuinely new core.
-4. `meet` (regressive product) + `meet_ne_zero_iff` and the geometric reading.
-
-## Carrier
-
-The full exterior algebra `ExteriorAlgebra K (Fin (k+2) → K)` of Phase 17 (the
-`affineSubspaceExtensor` / join carrier). The top graded piece is
-`⋀[K]^(k+2) (Fin (k+2) → K)`, free of rank `(k+2).choose (k+2) = 1`, hence
-`≃ₗ K` — the volume form.
+`rem:meet-kt-steps` says which of these the formal proof of KT Theorem 5.5 uses.
 -/
 
 @[expose] public section
@@ -69,61 +48,47 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] (k : ℕ)
 
-/-- The canonical top-power volume-form iso `⋀^(k+2) (Fin (k+2) → K) ≃ₗ K` on the
-screw-algebra carrier of Phase 17, the `N = k+2` specialization of the general mirror
-`exteriorPower.topEquiv`. The orientation through which the perfect wedge pairing
-`⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V` lands in `K`, on which the regressive product `meet` is built.
-Metric-free: no inner product, only the volume form. -/
+/-- **The volume form** (`def:meet-top-equiv`): the linear isomorphism `vol : ⋀^(k+2) V ≃ K` that
+sends the join of the standard basis vectors to `1`, the case `n = k + 2` of
+`exteriorPower.topEquiv`. It takes `v₁ ∨ ⋯ ∨ v_(k+2)` to the determinant of the matrix with these
+rows. -/
 noncomputable def screwAlgebraTopEquiv :
     ⋀[K]^(k + 2) (Fin (k + 2) → K) ≃ₗ[K] K :=
   exteriorPower.topEquiv (k + 2)
 
-/-- **The volume form transforms by the determinant under `exteriorPower.map`** (OD-8
-sub-leaf (h-0), the change-of-variables fact behind the `complementIso`
-O(n)-equivariance (h-1)). For an endomorphism `f` of `K^{k+2}`, the screw-algebra
-volume form `screwAlgebraTopEquiv` post-composed with the induced top-power map
-`exteriorPower.map (k+2) f` scales by `LinearMap.det f`:
-`screwAlgebraTopEquiv (map (k+2) f X) = (det f) • screwAlgebraTopEquiv X`. The `N = k+2`
-specialization of the general mirror `exteriorPower.topEquiv_map_eq_det_smul`. Since
-`complementIso` is built from `screwAlgebraTopEquiv` (the volume form) and the standard
-dot product (`Pi.basisFun.toDual`) — i.e. it *is* the Hodge star `⋆` — this is one of
-the two transformation laws (volume-by-det and dot-product O-invariance) from which the
-panel-meet `complementIso` inherits its O(n)-equivariance. -/
+/-- **The volume form scales by the determinant** (a step of `lem:meet-two-hyperplanes`): for a
+linear map `f` of `V`, `vol (map (k+2) f X) = det f • vol X`, the case `n = k + 2` of
+`exteriorPower.topEquiv_map_eq_det_smul`. With `wedgeProd_map` it gives `wedgePairing_map`, and so
+the factor `det g` of the transformation law of `*` (`complementIso_map_contragredient_eq`). -/
 theorem screwAlgebraTopEquiv_map_eq_det_smul (f : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K))
     (X : ⋀[K]^(k + 2) (Fin (k + 2) → K)) :
     screwAlgebraTopEquiv k (exteriorPower.map (k + 2) f X)
       = (LinearMap.det f) • screwAlgebraTopEquiv k X :=
   exteriorPower.topEquiv_map_eq_det_smul (k + 2) f X
 
-/-- The projective-duality dictionary iso on the screw-algebra carrier:
-`⋀ʲ((Fin (k+2) → K)*) ≃ₗ (⋀ʲ (Fin (k+2) → K))*`, the `j`-graded specialization of the
-general mirror `exteriorPower.pairingDualEquiv` at the standard basis. This is the
-projective-duality dictionary entry `⋀ʲ(V*) ≃ (⋀ʲ V)*` reused by the Crapo–Whiteley
-projective invariance of Phase 25; it is mathlib's bare `exteriorPower.pairingDual`
-upgraded in place to an iso (`exteriorPower.coe_pairingDualEquiv`). -/
+/-- **The duality of exterior powers** (`def:meet-pairing-dual`): the linear isomorphism
+`⋀^j V* ≃ (⋀^j V)*` that sends `φ₁ ∨ ⋯ ∨ φ_j` to the form `v₁ ∨ ⋯ ∨ v_j ↦ det (φ_a (v_b))`, the case
+of `exteriorPower.pairingDualEquiv` at the standard basis of `V`. Its underlying map is mathlib's
+`exteriorPower.pairingDual` (`exteriorPower.coe_pairingDualEquiv`). The formal proof uses that map
+and its determinant formula (`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`), not this
+isomorphism (`rem:meet-kt-steps`). -/
 noncomputable def screwAlgebraPairingDualEquiv (j : ℕ) :
     ⋀[K]^j (Module.Dual K (Fin (k + 2) → K)) ≃ₗ[K]
       Module.Dual K (⋀[K]^j (Fin (k + 2) → K)) :=
   exteriorPower.pairingDualEquiv (Pi.basisFun K (Fin (k + 2))) j
 
-/-! ## The graded wedge product `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V`
+/-! ## The join into the top exterior power (`def:meet-complement-iso`)
 
-The first ingredient of the perfect wedge pairing on which `complementIso`
-(`def:meet-complement-iso`) and the regressive product `meet` (`def:meet`) are
-built (route (ii); `notes/Phase21a.md`). It is the join (Phase 17, the symbolic
-exterior product in the full `ExteriorAlgebra`) landed back in the *top* graded
-piece `⋀^(k+2) V` via the graded-monoid structure `SetLike.GradedMonoid` on
-`fun i ↦ ⋀^i V`: the product of a `j`-graded and an `(N−j)`-graded element is
-`(j + (N−j)) = N`-graded. Composing with the volume form `screwAlgebraTopEquiv`
-sends it into `K`, the pairing whose nondegeneracy is the next deliverable. -/
+For `j ≤ N`, the join of an element of `⋀^j V` and one of `⋀^(N−j) V` lies in `⋀^N V`, as the
+degrees of the exterior algebra add (`wedgeProd`). Followed by the volume form, it gives the wedge
+pairing from which `def:meet-complement-iso` builds `*`. -/
 
 variable {k}
 
-/-- The graded wedge product `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V` (`N = k+2`): the join /
-exterior product of `A` and `B`, landed in the *top* graded piece via the graded
-monoid structure on `fun i ↦ ⋀^i V`. The bilinear ingredient of the perfect wedge
-pairing on which `complementIso` (`def:meet-complement-iso`) is built; on extensors
-it agrees with the Phase-17 `join` (`coe_wedgeProd`). -/
+/-- **The join into the top exterior power** (for `def:meet-complement-iso`): for `j ≤ k + 2`,
+`A : ⋀^j V` and `B : ⋀^(k+2−j) V`, the product `A ∨ B` of the exterior algebra, as an element of
+`⋀^(k+2) V` (`SetLike.mul_mem_graded`). Its value in the exterior algebra is the join
+(`coe_wedgeProd`). -/
 noncomputable def wedgeProd {j : ℕ} (hj : j ≤ k + 2)
     (A : ⋀[K]^j (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - j) (Fin (k + 2) → K)) :
     ⋀[K]^(k + 2) (Fin (k + 2) → K) := by
@@ -132,10 +97,8 @@ noncomputable def wedgeProd {j : ℕ} (hj : j ≤ k + 2)
   have := SetLike.mul_mem_graded A.2 B.2
   rwa [h] at this
 
-/-- The underlying exterior-algebra element of `wedgeProd` is the join (Phase-17
-`∨ₑ`, the full-algebra exterior product) of the two factors: `wedgeProd` is the
-join landed in the top graded piece. The bridge from the meet's graded pairing to
-the Phase-17 join API. -/
+/-- **`wedgeProd` is the join** (`def:join`): its value in the exterior algebra is `A ∨ₑ B`, by
+`rfl`. -/
 @[simp]
 theorem coe_wedgeProd {j : ℕ} (hj : j ≤ k + 2)
     (A : ⋀[K]^j (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - j) (Fin (k + 2) → K)) :
@@ -144,18 +107,11 @@ theorem coe_wedgeProd {j : ℕ} (hj : j ≤ k + 2)
         (B : ExteriorAlgebra K (Fin (k + 2) → K)) :=
   rfl
 
-/-! ## The perfect wedge pairing `⋀ʲ V →ₗ Dual K (⋀^(N−j) V)`
+/-! ## The wedge pairing (`def:meet-complement-iso`)
 
-The bilinear ingredient (b) of the perfect wedge pairing on which `complementIso`
-(`def:meet-complement-iso`) is built (route (ii); `notes/Phase21a.md`). The graded
-wedge product `wedgeProd` is bilinear — its underlying element `↑A * ↑B` is bilinear
-in the full algebra, and the subtype inclusion `⋀ᴺ V ↪ ExteriorAlgebra` is a linear
-map, so `wedgeProd` inherits bilinearity (`wedgeProdBilin`). Composing the second
-slot with the volume form `screwAlgebraTopEquiv : ⋀ᴺ V ≃ₗ K` lands the pairing in
-`K`, giving `wedgePairing j : ⋀ʲ V →ₗ Dual K (⋀^(N−j) V)`, `A ↦ B ↦
-screwAlgebraTopEquiv (wedgeProd A B)`. Its nondegeneracy (the signed-permutation
-basis computation) is the next ingredient; `complementIso` is then `wedgePairing`
-as an equiv composed with `toDualEquiv.symm`. -/
+`wedgeProd` is bilinear (`wedgeProdBilin`). Followed by the volume form, it gives the wedge pairing
+`wedgePairing : ⋀^j V → (⋀^(N−j) V)*`, `X ↦ (Y ↦ vol (X ∨ Y))`, which scales by the determinant
+under the maps induced by a linear map of `V` (`wedgePairing_map`). -/
 
 /-- `wedgeProd` is additive in its first slot: the underlying product `↑A * ↑B` is
 additive in `↑A` and the subtype inclusion `⋀ᴺ V ↪ ExteriorAlgebra` is linear. -/
@@ -186,9 +142,8 @@ theorem wedgeProd_smul_right {j : ℕ} (hj : j ≤ k + 2) (c : K)
   apply Subtype.ext
   simp [wedgeProd]
 
-/-- The graded wedge product `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V` packaged as an `K`-bilinear
-map. The `LinearMap.mk₂` bundling of `wedgeProd`, whose bilinearity is
-`wedgeProd_{add,smul}_{left,right}`. -/
+/-- **`wedgeProd` as a bilinear map** (`LinearMap.mk₂`), by `wedgeProd_add_left`,
+`wedgeProd_add_right`, `wedgeProd_smul_left` and `wedgeProd_smul_right`. -/
 noncomputable def wedgeProdBilin {j : ℕ} (hj : j ≤ k + 2) :
     ⋀[K]^j (Fin (k + 2) → K) →ₗ[K]
       ⋀[K]^(k + 2 - j) (Fin (k + 2) → K) →ₗ[K] ⋀[K]^(k + 2) (Fin (k + 2) → K) :=
@@ -201,12 +156,10 @@ theorem wedgeProdBilin_apply {j : ℕ} (hj : j ≤ k + 2)
     wedgeProdBilin hj A B = wedgeProd hj A B :=
   rfl
 
-/-- The perfect wedge pairing `⋀ʲ V →ₗ Module.Dual K (⋀^(N−j) V)` (`N = k+2`):
-`A ↦ B ↦ screwAlgebraTopEquiv (wedgeProd A B)`, the graded wedge product composed
-with the top-power volume form `screwAlgebraTopEquiv : ⋀ᴺ V ≃ₗ K`. The bilinear
-pairing whose nondegeneracy makes `complementIso` (`def:meet-complement-iso`) an
-isomorphism; `Module.Dual K (⋀^(N−j) V) = (⋀^(N−j) V) →ₗ K` is the second-slot
-codomain after the volume form. -/
+/-- **The wedge pairing** (for `def:meet-complement-iso`): `X ↦ (Y ↦ vol (X ∨ Y))`, a linear map
+from `⋀^j V` to the linear forms on `⋀^(N−j) V`, `N = k + 2`: `wedgeProd` followed by the volume
+form `screwAlgebraTopEquiv`. It is injective (`wedgePairing_injective`), and `complementIso` is
+built from it. -/
 noncomputable def wedgePairing (k : ℕ) {j : ℕ} (hj : j ≤ k + 2) :
     ⋀[K]^j (Fin (k + 2) → K) →ₗ[K]
       Module.Dual K (⋀[K]^(k + 2 - j) (Fin (k + 2) → K)) :=
@@ -218,15 +171,11 @@ theorem wedgePairing_apply {j : ℕ} (hj : j ≤ k + 2)
     wedgePairing k hj A B = screwAlgebraTopEquiv k (wedgeProd hj A B) :=
   rfl
 
-/-- **The graded wedge product is covariant under `exteriorPower.map`** (OD-8 sub-leaf,
-the change-of-frame step behind the `complementIso` O(n)-equivariance (h-1)). For an
-endomorphism `f` of `K^{k+2}`, transporting both factors of the graded wedge product by
-the induced exterior-power maps and then taking the product is the same as taking the
-product first and transporting by the top exterior-power map:
-`wedgeProd (map j f A) (map (N−j) f B) = map N f (wedgeProd A B)`. The underlying
-exterior-algebra elements are products `↑A * ↑B`, and the exterior-algebra morphism
-`ExteriorAlgebra.map f` is multiplicative; the bridge `map_coe_eq_exteriorAlgebra_map`
-pushes the per-grade `exteriorPower.map` through the product. -/
+/-- **The join into the top power commutes with the maps induced by a linear map** (a step of
+`lem:meet-two-hyperplanes`): for a linear map `f` of `V`,
+`wedgeProd (map j f A) (map (N−j) f B) = map N f (wedgeProd A B)`, as `ExteriorAlgebra.map f` is
+multiplicative and agrees with `exteriorPower.map` on each degree
+(`exteriorPower.map_coe_eq_exteriorAlgebra_map`). -/
 theorem wedgeProd_map {j : ℕ} (hj : j ≤ k + 2)
     (f : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K))
     (A : ⋀[K]^j (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - j) (Fin (k + 2) → K)) :
@@ -237,17 +186,10 @@ theorem wedgeProd_map {j : ℕ} (hj : j ≤ k + 2)
     exteriorPower.map_coe_eq_exteriorAlgebra_map, ← map_mul,
     exteriorPower.map_coe_eq_exteriorAlgebra_map, coe_wedgeProd, join_def]
 
-/-- **The perfect wedge pairing transforms by the determinant under `exteriorPower.map`**
-(OD-8 sub-leaf, the algebraic core of the `complementIso` O(n)-equivariance (h-1)). For an
-endomorphism `f` of `K^{k+2}`, transporting both factors of the wedge pairing by the
-induced exterior-power maps scales the pairing by `LinearMap.det f`:
-`wedgePairing (map j f A) (map (N−j) f B) = det f • wedgePairing A B`. Immediate from the
-covariance of the graded wedge product (`wedgeProd_map`, the join transforms covariantly)
-composed with the volume form's change-of-variables law
-(`screwAlgebraTopEquiv_map_eq_det_smul`, sub-leaf (h-0)). Since `complementIso` is built
-from this pairing and the standard dot product (`Pi.basisFun.toDual`), this is one of the
-two transformation laws (volume-by-det and dot-product O-invariance) the panel-meet
-`complementIso` inherits its O(n)-equivariance from. -/
+/-- **The wedge pairing scales by the determinant** (a step of `lem:meet-two-hyperplanes`): for a
+linear map `f` of `V`, `wedgePairing (map j f A) (map (N−j) f B) = det f • wedgePairing A B`, by
+`wedgeProd_map` and `screwAlgebraTopEquiv_map_eq_det_smul`. It gives the factor `det g` of the
+transformation law of `*` (`complementIso_map_contragredient_eq`). -/
 theorem wedgePairing_map {j : ℕ} (hj : j ≤ k + 2)
     (f : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K))
     (A : ⋀[K]^j (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - j) (Fin (k + 2) → K)) :
@@ -256,36 +198,19 @@ theorem wedgePairing_map {j : ℕ} (hj : j ≤ k + 2)
   simp only [wedgePairing_apply, wedgeProd_map, screwAlgebraTopEquiv_map_eq_det_smul,
     smul_eq_mul]
 
-/-! ## Nondegeneracy of the wedge pairing on the standard basis (ingredient (c))
+/-! ## The wedge pairing on the standard bases (`def:meet-complement-iso`)
 
-The third ingredient of `complementIso` (`def:meet-complement-iso`): the perfect
-wedge pairing `wedgePairing` is nondegenerate, computed on the standard
-exterior-power basis. The basis of `⋀ʲ V` is indexed by the `j`-element subsets
-`S : Set.powersetCard (Fin (k+2)) j`, with basis vector
-`exteriorPower.ιMulti_family K j (Pi.basisFun …) S` — the wedge `e_{S₀} ∧ ⋯` of the
-standard basis vectors indexed by `S` in increasing order; similarly the basis of
-`⋀^(N−j) V` is indexed by `(N−j)`-element subsets `T`.
+For a `j`-element set `S` of indices, let `e_S` be the join of the standard basis vectors `e_s`,
+`s ∈ S`, in increasing order (`exteriorPower.ιMulti_family`); these form the standard basis of
+`⋀^j V`. The join of `e_S` and an `e_T` of `⋀^(N−j) V` is the extensor of the family that lists the
+`e_s` and then the `e_t` (`coe_wedgeProd_ιMulti_family`). If `S` and `T` meet, the family repeats a
+vector, and the pairing is `0`. As `|S| + |T| = N`, the sets are disjoint exactly when `T = Sᶜ`, and
+then the pairing `ε_S` is not `0`; it is `±1`, which the proofs do not need. So the matrix of the
+pairing in these bases has one nonzero entry in each row and each column. -/
 
-The pairing of two such basis vectors is `screwAlgebraTopEquiv (e_S ∨ₑ e_T)`. Since
-the join is the exterior product of two extensors of standard basis vectors
-(`join_extensor`, with `coe_wedgeProd`), it is the extensor of the concatenated
-family `Fin.append (eₛ) (eₜ)`. That family is injective iff `S` and `T` are disjoint;
-given `|S| = j` and `|T| = (k+2)−j`, disjointness is equivalent to `T = Sᶜ`. Hence:
-
-* **off-diagonal** (`T ≠ Sᶜ`, this commit): `S, T` overlap, so the append family
-  repeats a standard basis vector and the extensor vanishes
-  (`extensor_eq_zero_of_not_injective`), giving pairing `= 0`;
-* **diagonal** (`T = Sᶜ`): the append family is a permutation of all standard basis
-  vectors, so the extensor is `±` the top basis vector and the pairing is `±1` (the
-  permutation sign — the *open sign subproblem* of `notes/Phase21a.md`, deferred).
--/
-
-/-- The underlying exterior-algebra element of the wedge product of two standard
-exterior-power basis vectors is the extensor of the concatenated indexing family:
-the join `e_S ∨ₑ e_T` is the `(k+2)`-extensor of `Fin.append` of the two ordered
-families of standard basis vectors. The bridge from the graded pairing on basis
-vectors to the Phase-17 single-extensor API, on which the disjointness ⇒ vanishing
-computation runs. -/
+/-- **The join of two standard basis elements is an extensor** (for `def:meet-complement-iso`): the
+value of `wedgeProd e_S e_T` in the exterior algebra is the extensor of `Fin.append` of the two
+increasing families of standard basis vectors (`join_extensor`). -/
 theorem coe_wedgeProd_ιMulti_family {j : ℕ} (hj : j ≤ k + 2)
     (S : Set.powersetCard (Fin (k + 2)) j)
     (T : Set.powersetCard (Fin (k + 2)) (k + 2 - j)) :
@@ -300,15 +225,10 @@ theorem coe_wedgeProd_ιMulti_family {j : ℕ} (hj : j ≤ k + 2)
       ∨ₑ (extensor (Pi.basisFun K (Fin (k + 2)) ∘ Set.powersetCard.ofFinEmbEquiv.symm T)) = _
   rw [join_extensor]
 
-/-- **Off-diagonal vanishing of the wedge pairing** (ingredient (c), this commit).
-If the indexing subsets `S` (size `j`) and `T` (size `(k+2)−j`) of the two standard
-exterior-power basis vectors are *not* disjoint — equivalently, since they have
-complementary sizes, `T ≠ Sᶜ` — then the wedge pairing of the basis vectors
-vanishes. A shared index `x ∈ S ∩ T` makes the standard basis vector `eₓ` appear in
-both factors of the concatenated family `Fin.append`, so the extensor vanishes by
-the alternating law (`extensor_eq_zero_of_not_injective`) and the volume form sends
-it to `0`. The complementary diagonal case (`T = Sᶜ`, value `±1`) is the open sign
-subproblem of `notes/Phase21a.md`. -/
+/-- **The wedge pairing of `e_S` and `e_T` vanishes when `S` and `T` meet** (for
+`def:meet-complement-iso`): an index `x ∈ S ∩ T` puts `e_x` twice in the family of
+`coe_wedgeProd_ιMulti_family`, so its extensor is `0` (`extensor_eq_zero_of_eq`). The case `T = Sᶜ`
+is `wedgePairing_ιMulti_family_compl_ne_zero`. -/
 theorem wedgePairing_ιMulti_family_eq_zero_of_not_disjoint {j : ℕ} (hj : j ≤ k + 2)
     (S : Set.powersetCard (Fin (k + 2)) j)
     (T : Set.powersetCard (Fin (k + 2)) (k + 2 - j))
@@ -334,13 +254,10 @@ theorem wedgePairing_ιMulti_family_eq_zero_of_not_disjoint {j : ℕ} (hj : j �
       omega
   rw [hzero, map_zero]
 
-/-- **Off-diagonal vanishing, complement form** (ingredient (c)). The `T ≠ Sᶜ`
-restatement of `wedgePairing_ιMulti_family_eq_zero_of_not_disjoint`, matching the
-`notes/Phase21a.md` deliverable shape "`±1` if `T = Sᶜ` else `0`": when the index `T`
-is *not* the complement of `S` (using mathlib's complement equivalence
-`Set.powersetCard.compl` on the complementary-cardinality subtypes), the two index
-sets overlap (`Finset.disjoint_iff_eq_compl`), so the basis-vector pairing vanishes.
-The complementary `T = Sᶜ` diagonal (value `±1`) is the open sign subproblem. -/
+/-- **The wedge pairing of `e_S` and `e_T` vanishes unless `T = Sᶜ`** (for
+`def:meet-complement-iso`): `S` and `T` have `j` and `N − j` elements, so they are disjoint only
+when `T` is the complement of `S` (`Finset.disjoint_iff_eq_compl`, `Set.powersetCard.compl`);
+otherwise `wedgePairing_ιMulti_family_eq_zero_of_not_disjoint` applies. -/
 theorem wedgePairing_ιMulti_family_eq_zero_of_ne_compl {j : ℕ} (hj : j ≤ k + 2)
     (S : Set.powersetCard (Fin (k + 2)) j)
     (T : Set.powersetCard (Fin (k + 2)) (k + 2 - j))
@@ -353,18 +270,13 @@ theorem wedgePairing_ιMulti_family_eq_zero_of_ne_compl {j : ℕ} (hj : j ≤ k 
   intro h
   exact hT (by rw [← Subtype.coe_inj, Set.powersetCard.coe_compl, h])
 
-/-- **Diagonal non-vanishing of the wedge pairing** (ingredient (c), the diagonal half).
-On the diagonal `T = Sᶜ` (mathlib's complement equivalence on the complementary-cardinality
-subtypes), the wedge pairing of the two standard exterior-power basis vectors is nonzero —
-in fact `±1`, the sign of the permutation interleaving `S` and `Sᶜ` into increasing order, but
-only non-vanishing is needed downstream. The concatenated indexing family
-`Fin.append (e ∘ φ_S) (e ∘ φ_{Sᶜ})` is `e` (the standard basis, hence injective) precomposed
-with the bijection `Fin.append φ_S φ_{Sᶜ}` (injective: `φ_S`, `φ_{Sᶜ}` are order embeddings
-with disjoint ranges `S`, `Sᶜ`), so it is a linearly independent family of standard basis
-vectors and its extensor is nonzero (`extensor_ne_zero_iff_linearIndependent`); the volume
-form `screwAlgebraTopEquiv`, being injective, keeps it nonzero. Together with the off-diagonal
-`wedgePairing_ιMulti_family_eq_zero_of_ne_compl` this makes the pairing matrix on the standard
-basis a signed-permutation matrix, hence nondegenerate — the input to `complementIso`. -/
+/-- **The wedge pairing of `e_S` and `e_{Sᶜ}` is not zero** (for `def:meet-complement-iso`): the
+family of `coe_wedgeProd_ιMulti_family` is the standard basis composed with `Fin.append` of the
+increasing enumerations of `S` and `Sᶜ`, which is injective, so the family is linearly independent
+and its extensor is not zero (`extensor_ne_zero_iff_linearIndependent`); the volume form is
+injective. The value is `±1`, the sign of the permutation that lists `S` and then `Sᶜ`, which the
+proofs do not need. With `wedgePairing_ιMulti_family_eq_zero_of_ne_compl`, the matrix of the pairing
+in the standard bases has one nonzero entry in each row and each column. -/
 theorem wedgePairing_ιMulti_family_compl_ne_zero {j : ℕ} (hj : j ≤ k + 2)
     (S : Set.powersetCard (Fin (k + 2)) j) :
     wedgePairing k hj (exteriorPower.ιMulti_family K j (Pi.basisFun K (Fin (k + 2))) S)
@@ -405,28 +317,17 @@ theorem wedgePairing_ιMulti_family_compl_ne_zero {j : ℕ} (hj : j ≤ k + 2)
     exact (Pi.basisFun K (Fin (k + 2))).linearIndependent.comp _ hinj
   exact fun hz => hne ((map_eq_zero_iff _ (screwAlgebraTopEquiv k).injective).mp hz)
 
-/-! ## The complement isomorphism `⋀ʲ V ≃ₗ ⋀^(N−j) V` (ingredient (d), `def:meet-complement-iso`)
+/-! ## The complement isomorphism (`def:meet-complement-iso`, `lem:complement-iso-toDual`)
 
-The perfect wedge pairing `wedgePairing` is nondegenerate (ingredient (c): its matrix on
-the standard exterior-power bases is a signed-permutation matrix — off-diagonal `0` by
-`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`, diagonal `≠ 0` by
-`wedgePairing_ιMulti_family_compl_ne_zero`). Hence `wedgePairing k hj : ⋀ʲ V →ₗ
-Module.Dual K (⋀^(N−j) V)` is **injective**: evaluating `wedgePairing k hj m` at the
-complementary basis vector `e_{Sᶜ}` of `⋀^(N−j) V` reads off the `S`-coordinate of `m`
-up to the nonzero diagonal scalar, so a zero pairing forces every coordinate of `m` to
-vanish. Domain and codomain have equal finrank (`(k+2).choose j` on both sides, since
-`Module.Dual` preserves finrank and `(k+2).choose j = (k+2).choose (k+2−j)`), so
-injectivity upgrades to a `LinearEquiv` via `LinearMap.linearEquivOfInjective`; one more
-post-composition with the dual-evaluation iso of `⋀^(N−j) V` lands `complementIso` in
-`⋀^(N−j) V` itself. -/
+The wedge pairing is injective: the value of `wedgePairing X` at `e_{Sᶜ}` is the coordinate of `X`
+at `e_S` times the nonzero `ε_S`. The two sides have dimension `(k+2 choose j)`, so it is an
+isomorphism onto `(⋀^(N−j) V)*` (`LinearMap.linearEquivOfInjective`), and `complementIso` follows it
+with the inverse of the coordinate identification of `⋀^(N−j) V` with its dual. -/
 
-/-- **Injectivity of the wedge pairing** (ingredient (c) → (d)). The perfect wedge pairing
-`wedgePairing k hj : ⋀ʲ V →ₗ Module.Dual K (⋀^(N−j) V)` is injective: its matrix on the
-standard exterior-power bases is a signed-permutation matrix (nonzero diagonal
-`wedgePairing_ιMulti_family_compl_ne_zero`, vanishing off-diagonal
-`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`), so evaluating a zero pairing at each
-complementary basis vector forces all standard-basis coordinates of the argument to
-vanish. The nondegeneracy input to `complementIso` (`def:meet-complement-iso`). -/
+/-- **The wedge pairing is injective** (for `def:meet-complement-iso`): if `wedgePairing X = 0`, its
+value at `e_{Sᶜ}` is the coordinate of `X` at `e_S` times the nonzero pairing of `e_S` and `e_{Sᶜ}`
+(`wedgePairing_ιMulti_family_compl_ne_zero`), as the other terms vanish
+(`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`); so every coordinate of `X` is `0`. -/
 theorem wedgePairing_injective {j : ℕ} (hj : j ≤ k + 2) :
     Function.Injective (wedgePairing (K := K) k hj) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -434,7 +335,7 @@ theorem wedgePairing_injective {j : ℕ} (hj : j ≤ k + 2) :
   set bj := (Pi.basisFun K (Fin (k + 2))).exteriorPower j with hbj
   apply bj.ext_elem_iff.mpr
   intro S
-  -- read off the `S`-coordinate by evaluating the zero functional at `e_{Sᶜ}`
+  -- Read off the coordinate at `e_S` by evaluating the zero form at `e_{Sᶜ}`.
   set T : Set.powersetCard (Fin (k + 2)) (k + 2 - j) :=
     Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S with hT
   have hval : wedgePairing k hj m
@@ -456,11 +357,10 @@ theorem wedgePairing_injective {j : ℕ} (hj : j ≤ k + 2) :
     rw [wedgePairing_ιMulti_family_eq_zero_of_ne_compl (K := K) hj S' T this, mul_zero]
   · intro h; exact absurd (Finset.mem_univ S) h
 
-/-- The finrank of `⋀ʲ (Fin (k+2) → K)` equals the finrank of `Module.Dual K (⋀^(k+2−j)
-(Fin (k+2) → K))`: both are `(k+2).choose j`. The dual preserves finrank, and the binomial
-symmetry `(k+2).choose j = (k+2).choose (k+2−j)` (`Nat.choose_symm_diff`, valid for
-`j ≤ k+2`) matches the two exterior powers. The dimension match feeding
-`LinearMap.linearEquivOfInjective` in `complementIso`. -/
+/-- **`⋀^j V` and the linear forms on `⋀^(N−j) V` have the same dimension** (for
+`def:meet-complement-iso`): both are `(k+2 choose j)`, as a finite-dimensional space and its dual
+have the same dimension and `(k+2 choose j) = (k+2 choose (k+2−j))` for `j ≤ k + 2`
+(`Nat.choose_symm`). -/
 theorem finrank_exteriorPower_eq_finrank_dual {j : ℕ} (hj : j ≤ k + 2) :
     Module.finrank K (⋀[K]^j (Fin (k + 2) → K)) =
       Module.finrank K (Module.Dual K (⋀[K]^(k + 2 - j) (Fin (k + 2) → K))) := by
@@ -468,32 +368,23 @@ theorem finrank_exteriorPower_eq_finrank_dual {j : ℕ} (hj : j ≤ k + 2) :
     Module.finrank_fin_fun]
   exact (Nat.choose_symm hj).symm
 
-/-- **The complement isomorphism** `⋀ʲ V ≃ₗ ⋀^(N−j) V` (`N = k+2`, `def:meet-complement-iso`):
-the genuinely new core of the Grassmann–Cayley meet. Built from the nondegenerate perfect
-wedge pairing `wedgePairing` (ingredient (c)): injectivity (`wedgePairing_injective`) plus
-the equal finrank (`finrank_exteriorPower_eq_finrank_dual`) make `wedgePairing` a
-`LinearEquiv` onto `Module.Dual K (⋀^(N−j) V)` via `LinearMap.linearEquivOfInjective`, and
-post-composing with the dual-evaluation iso `(b.exteriorPower (k+2−j)).toDualEquiv.symm`
-lands the result in `⋀^(N−j) V`. The regressive product `meet` is the next deliverable
-above this. -/
+/-- **The complement isomorphism** `* : ⋀^j V ≃ ⋀^(N−j) V`, `N = k + 2` (`def:meet-complement-iso`):
+the wedge pairing, an isomorphism onto the linear forms on `⋀^(N−j) V` (`wedgePairing_injective`,
+`finrank_exteriorPower_eq_finrank_dual`, `LinearMap.linearEquivOfInjective`), followed by the
+inverse of the coordinate identification `Z ↦ ⟨Z, ·⟩` of `⋀^(N−j) V` with its dual, for the standard
+basis (`Module.Basis.toDualEquiv`). On the standard bases, `*e_S = ε_S • e_{Sᶜ}`
+(`complementIso_exteriorPower_basis_eq_smul_compl`), so `*` is the Hodge star operator of the
+standard basis. -/
 noncomputable def complementIso {j : ℕ} (hj : j ≤ k + 2) :
     ⋀[K]^j (Fin (k + 2) → K) ≃ₗ[K] ⋀[K]^(k + 2 - j) (Fin (k + 2) → K) :=
   (LinearMap.linearEquivOfInjective (wedgePairing k hj) (wedgePairing_injective hj)
       (finrank_exteriorPower_eq_finrank_dual hj)) ≪≫ₗ
     ((Pi.basisFun K (Fin (k + 2))).exteriorPower (k + 2 - j)).toDualEquiv.symm
 
-/-- **The defining wedge-pairing property of `complementIso`** (`def:meet-complement-iso`, the
-staging lemma for the point-join ↔ panel-meet duality `lem:case-III-claim612-line-in-panel-union`).
-Pairing `complementIso hj X` against any `B : ⋀^(N−j) V` through the standard exterior-power basis's
-`toDual` reproduces the wedge pairing of `X` with `B`:
-`(b.exteriorPower (N−j)).toDual (complementIso hj X) B = screwAlgebraTopEquiv (X ∨ₑ B)`, i.e. the
-volume of the join `X ∧ B`. This is the characterizing identity of the complement iso — by
-construction `complementIso = (wedgePairing as an equiv) ≪≫ toDualEquiv.symm`, so applying
-`toDualEquiv` undoes the second factor and leaves `wedgePairing X` (`LinearEquiv.apply_symm_apply` +
-`linearEquivOfInjective_apply`). It is the metric-free Grassmann–Cayley duality dictionary entry the
-duality bridge consumes: it turns membership/annihilation statements about the panel-meet
-`complementIso (n_u ∧ n')` into the volume form `vol((n_u ∧ n') ∧ B)`, the bilinear pairing on
-which the point-join ↔ panel-meet proportionality rests. -/
+/-- **The defining property of `*`** (`lem:complement-iso-toDual`): `⟨*X, B⟩ = vol (X ∨ B)` for
+`X : ⋀^j V` and `B : ⋀^(N−j) V`, where `⟨·, ·⟩` is the coordinate pairing of the standard basis,
+`(b.exteriorPower (N−j)).toDual`. By construction, the coordinate identification undoes the second
+factor of `complementIso` and leaves `wedgePairing X`. -/
 theorem complementIso_toDual {j : ℕ} (hj : j ≤ k + 2)
     (X : ⋀[K]^j (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - j) (Fin (k + 2) → K)) :
     ((Pi.basisFun K (Fin (k + 2))).exteriorPower (k + 2 - j)).toDual (complementIso hj X) B
@@ -501,41 +392,26 @@ theorem complementIso_toDual {j : ℕ} (hj : j ≤ k + 2)
   rw [complementIso, LinearEquiv.trans_apply, ← Module.Basis.toDualEquiv_apply,
     LinearEquiv.apply_symm_apply, LinearMap.linearEquivOfInjective_apply]
 
-/-! ## The regressive product (meet) `⋀^(N−a) V × ⋀^(N−b) V → ⋀^(N−(a+b)) V` (`def:meet`)
+/-! ## The meet (`def:meet`)
 
-The Grassmann–Cayley **meet** (regressive product), the dual of the Phase-17 join.
-Where the join `A ∨ₑ B` spans the two subspaces (and lands in grade `p + q`), the meet
-`A ∧ₑ B` *intersects* them: it is the join conjugated by the complement iso
-`complementIso` (`def:meet-complement-iso`), which plays the role of the projective dual
-(a `*`-operator `⋀^j V → ⋀^(N−j) V`).
+For `A : ⋀^(N−a) V` and `B : ⋀^(N−b) V` with `a + b ≤ N`, the meet is `A ∧ B = *(*A ∨ *B)`: `*A` and
+`*B` lie in `⋀^a V` and `⋀^b V`, their join in `⋀^(a+b) V` (`gradedMul`), and `*` takes it to
+`⋀^(N−(a+b)) V`. For nonzero extensors of subspaces whose sum is `V`, the meet is a nonzero extensor
+of their intersection (the passage after `def:meet`, not formalized). The formal proof uses
+`*(n_A ∨ n_B)` for the normals of two hyperplanes, not the meet itself (`lem:meet-two-hyperplanes`).
+-/
 
-Concretely, for `A : ⋀^(N−a) V` and `B : ⋀^(N−b) V` (`N = k+2`, with `a + b ≤ N` the
-transversality grade budget), the meet is
-
-  `meet A B := complementIso (gradedMul (complementIso A) (complementIso B))`,
-
-i.e. `*(*A ∨ₑ *B)`: `complementIso A : ⋀^a V`, `complementIso B : ⋀^b V`, their graded
-product `gradedMul` lands in `⋀^(a+b) V`, and a third `complementIso` brings it to
-`⋀^(N−(a+b)) V`. Geometrically, when `A`, `B` are the supporting `(N−a)`- and
-`(N−b)`-extensors of two subspaces of `V`, the meet is the supporting extensor of their
-codimension-`(a+b)` intersection; in the screw-space arithmetic of
-`sec:molecular-rigidity-matrix` the meet of two hyperplane normals (`a = b = 1`) is the
-supporting `(N−2) = k`-extensor of their codimension-2 intersection, landing in
-`ScrewSpace k`. -/
-
-/-- The general graded wedge product `⋀^p V × ⋀^q V → ⋀^(p+q) V` (`N = k+2`): the join /
-exterior product `↑A * ↑B` landed in the `(p+q)`-graded piece via the graded monoid
-structure on `fun i ↦ ⋀^i V`. The grade-general form of `wedgeProd` (which is the
-`q = N−p` top-piece specialization); the join transport on which the regressive product
-`meet` (`def:meet`) is built. -/
+/-- **The join of `⋀^p V` and `⋀^q V` into `⋀^(p+q) V`** (for `def:meet`): the product `A ∨ B` of
+the exterior algebra, as an element of `⋀^(p+q) V`. `wedgeProd` is the same product for `q = N − p`.
+-/
 noncomputable def gradedMul {p q : ℕ}
     (A : ⋀[K]^p (Fin (k + 2) → K)) (B : ⋀[K]^q (Fin (k + 2) → K)) :
     ⋀[K]^(p + q) (Fin (k + 2) → K) :=
   ⟨(A : ExteriorAlgebra K (Fin (k + 2) → K)) * (B : ExteriorAlgebra K (Fin (k + 2) → K)),
     SetLike.mul_mem_graded A.2 B.2⟩
 
-/-- The underlying exterior-algebra element of `gradedMul` is the Phase-17 join `∨ₑ`
-of the two factors. The bridge from the meet's graded product to the join API. -/
+/-- **`gradedMul` is the join** (`def:join`): its value in the exterior algebra is `A ∨ₑ B`, by
+`rfl`. -/
 @[simp]
 theorem coe_gradedMul {p q : ℕ}
     (A : ⋀[K]^p (Fin (k + 2) → K)) (B : ⋀[K]^q (Fin (k + 2) → K)) :
@@ -544,15 +420,10 @@ theorem coe_gradedMul {p q : ℕ}
         (B : ExteriorAlgebra K (Fin (k + 2) → K)) :=
   rfl
 
-/-- **The regressive product (meet)** `⋀^(N−a) V × ⋀^(N−b) V → ⋀^(N−(a+b)) V`
-(`N = k+2`, `def:meet`): the Grassmann–Cayley meet, the projective dual of the
-Phase-17 join. It is the graded product `gradedMul` of the two complements (via
-`complementIso` as the `*`-operator), conjugated by a third `complementIso` —
-`*(*A ∨ₑ *B)`: `complementIso A : ⋀^a V`, `complementIso B : ⋀^b V`, their product lands
-in `⋀^(a+b) V`, and `complementIso` returns it to `⋀^(N−(a+b)) V`. Geometrically the supporting
-extensor of the codimension-`(a+b)` intersection of the two factors' subspaces; for
-`a = b = 1` the meet of two hyperplane normals is the supporting `k`-extensor of their
-codimension-2 intersection, landing in `ScrewSpace k`. -/
+/-- **The meet** (`def:meet`): for `a + b ≤ N`, `A : ⋀^(N−a) V` and `B : ⋀^(N−b) V`,
+`A ∧ₑ B = *(*A ∨ *B) : ⋀^(N−(a+b)) V`, where `*A : ⋀^a V` and `*B : ⋀^b V` (the degrees cast by
+`N − (N − a) = a`) and their join is `gradedMul`. Nothing in the project uses `meet`: the formal
+proof forms `*(n_A ∨ n_B)` directly (`rem:meet-kt-steps`). -/
 noncomputable def meet {a b : ℕ} (ha : a ≤ k + 2) (hb : b ≤ k + 2) (hab : a + b ≤ k + 2)
     (A : ⋀[K]^(k + 2 - a) (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - b) (Fin (k + 2) → K)) :
     ⋀[K]^(k + 2 - (a + b)) (Fin (k + 2) → K) := by
@@ -565,25 +436,15 @@ noncomputable def meet {a b : ℕ} (ha : a ≤ k + 2) (hb : b ≤ k + 2) (hab : 
 
 @[inherit_doc] scoped infixl:70 " ∧ₑ " => meet
 
-/-! ## Step (i) of the point-join ↔ panel-meet duality: the complement of a decomposable lies in
-the wedge-orthogonal complement (`lem:case-III-claim612-line-in-panel-union`)
+/-! ## The complement of a `2`-extensor and the `2`-extensors that share a vector with it
+(`lem:complement-iso-decomposable-wedge-perp`)
 
-The first remaining leaf of the duality bridge beyond the green dictionary entry
-`complementIso_toDual`. Geometrically: the complement `complementIso (n_u ∧ n')` of the grade-2
-decomposable `n_u ∧ n'` lands in `⋀²W` for `W = {n_u, n'}^⊥` — i.e. it is annihilated by every
-`2`-extensor that shares a factor with `n_u ∧ n'`. The metric-free reading, through the dictionary
-entry, is that pairing `complementIso (n_u ∧ n')` against any `B` whose wedge with `n_u ∧ n'`
-vanishes gives `0`; the concrete vanishing is the alternating law (`extensor_eq_zero_of_eq`) on the
-concatenated family of two `2`-extensors sharing a vector. -/
+If `X ∨ B = 0`, then `⟨*X, B⟩ = vol (X ∨ B) = 0`, and two `2`-extensors that share a vector have the
+join `0`. So `*(n₁ ∨ n₂)` is orthogonal, for the coordinate pairing, to every `2`-extensor `n₁ ∨ c`.
+-/
 
-/-- **Step (i), the dictionary half: `complementIso` of a wedge-orthogonal element vanishes**
-(`lem:case-III-claim612-line-in-panel-union`). If the graded wedge `X ∨ₑ B` of `X : ⋀ʲ V` with
-`B : ⋀^(N−j) V` vanishes (`wedgeProd hj X B = 0`), then `complementIso hj X` is annihilated by `B`
-through the standard exterior-power basis's `toDual`. Immediate from the defining wedge-pairing
-property `complementIso_toDual` (`b.toDual (complementIso X) B = vol(X ∨ₑ B)`) and the volume form's
-linearity: a vanishing wedge has volume `0`. This is the metric-free criterion turning
-"`X ∨ₑ B = 0`" (a shared factor) into "`complementIso X ⊥ B`", i.e. `complementIso X` lies in the
-wedge-orthogonal complement of every such `B`. -/
+/-- **If `X ∨ B = 0`, then `⟨*X, B⟩ = 0`** (`lem:complement-iso-decomposable-wedge-perp`, part (1)):
+by `complementIso_toDual`, `⟨*X, B⟩ = vol (X ∨ B) = vol 0 = 0`. -/
 theorem complementIso_toDual_eq_zero_of_wedgeProd_eq_zero {j : ℕ} (hj : j ≤ k + 2)
     (X : ⋀[K]^j (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - j) (Fin (k + 2) → K))
     (hwedge : wedgeProd hj X B = 0) :
@@ -591,14 +452,10 @@ theorem complementIso_toDual_eq_zero_of_wedgeProd_eq_zero {j : ℕ} (hj : j ≤ 
         (complementIso hj X) B = 0 := by
   simp only [complementIso_toDual, wedgePairing_apply, hwedge, map_zero]
 
-/-- **Step (i), the concrete half: the wedge of two `2`-extensors sharing a vector vanishes**
-(`lem:case-III-claim612-line-in-panel-union`, the `d = 3` / `ScrewSpace 2 = ⋀²K⁴` case). If the
-families `n, c : Fin 2 → K⁴` share a vector (here `n 0 = c 0`, the shared panel normal `n_u`), the
-graded wedge `wedgeProd (extensor n) (extensor c)` vanishes: its underlying element is the join
-`extensor n ∨ₑ extensor c = extensor (Fin.append n c)` (`join_extensor`), whose concatenated family
-repeats the shared vector, so the extensor is `0` by the alternating law `extensor_eq_zero_of_eq`.
-This supplies the hypothesis of `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` for the
-decomposable `n_u ∧ n' = extensor n`, putting `complementIso (n_u ∧ n')` in `⋀²W`. -/
+/-- **Two `2`-extensors of `K⁴` that share a vector have the join `0`**
+(`lem:complement-iso-decomposable-wedge-perp`, part (2)): if `n 0 = c 0`, then
+`wedgeProd (extensor n) (extensor c) = 0`, as `extensor n ∨ extensor c` is the extensor of
+`Fin.append n c` (`join_extensor`), which repeats `n 0` (`extensor_eq_zero_of_eq`). -/
 theorem wedgeProd_extensor_eq_zero_of_shared_vector (n c : Fin 2 → Fin 4 → K) (hshare : n 0 = c 0) :
     wedgeProd (k := 2) (j := 2) (by omega)
       ⟨extensor n, extensor_mem_exteriorPower n⟩
@@ -611,18 +468,11 @@ theorem wedgeProd_extensor_eq_zero_of_shared_vector (n c : Fin 2 → Fin 4 → K
   · rw [Fin.append_left, Fin.append_right, hshare]
   · decide
 
-/-- **Step (i) of the point-join ↔ panel-meet duality**
-(`lem:case-III-claim612-line-in-panel-union`): `complementIso (n_u ∧ n')` lands in `⋀²W` for
-`W = {n_u, n'}^⊥`, in operational dual form. At `d = 3` (`k = 2`, `ScrewSpace 2 = ⋀²K⁴`), for the
-grade-2 decomposable `n_u ∧ n' = extensor n` (family `n : Fin 2 → K⁴` of two panel normals), its
-complement `complementIso (n_u ∧ n')` is annihilated — through the standard exterior-power basis's
-`toDual` — by every `2`-extensor `extensor c` sharing a vector with `n` (`n 0 = c 0`). This is the
-decomposable-of-orthogonal-complement step: composing the dictionary half
-`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` with the concrete wedge vanishing
-`wedgeProd_extensor_eq_zero_of_shared_vector`. With step (ii) (`dim ⋀²W = 1`) it forces the
-point-join `p_i ∨ p_j` and the panel-meet `C(L) = complementIso (n_u ∧ n')` to be scalar multiples,
-so an `r` annihilating every `C(L)` annihilates each spanning join — the contrapositive glue of the
-Claim 6.12 capstone. -/
+/-- **`*(n₁ ∨ n₂)` is orthogonal to the `2`-extensors `n₁ ∨ c`**
+(`lem:complement-iso-decomposable-wedge-perp`, part (2)): for `n c : Fin 2 → K⁴` with `n 0 = c 0`,
+`⟨*(extensor n), extensor c⟩ = 0`, by `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` and
+`wedgeProd_extensor_eq_zero_of_shared_vector`. The proof of `complementIso_smul_eq_extensor_join`
+obtains the case of a shared `n 1` from the first of these. -/
 theorem complementIso_toDual_extensor_eq_zero_of_shared_vector
     (n c : Fin 2 → Fin 4 → K) (hshare : n 0 = c 0) :
     ((Pi.basisFun K (Fin (2 + 2))).exteriorPower (2 + 2 - 2)).toDual
@@ -631,106 +481,64 @@ theorem complementIso_toDual_extensor_eq_zero_of_shared_vector
   complementIso_toDual_eq_zero_of_wedgeProd_eq_zero (by omega) _ _
     (wedgeProd_extensor_eq_zero_of_shared_vector n c hshare)
 
-/-! ## Step (ii) of the point-join ↔ panel-meet duality: `⋀²W` is `1`-dimensional for a `2`-dim `W`
-(`lem:case-III-claim612-line-in-panel-union`)
+/-! ## The top exterior power of a space is a line (`lem:complement-iso-line-one-dim`)
 
-The second remaining leaf of the duality bridge. Step (i) put both the point-join `p̄ᵢ ∨ p̄ⱼ` and
-the panel-meet `C(L) = complementIso (n_u ∧ n')` in `⋀²W` for the `2`-dimensional
-`W = {n_u, n'}^⊥ = span{p̄ᵢ, p̄ⱼ}`. Step (ii) is the dimension count: `dim ⋀²W = (dim W).choose 2 =
-2.choose 2 = 1`, so the exterior square of a `2`-dimensional space is a *line*, and two nonzero
-members of a line are scalar multiples. This forces `p̄ᵢ ∨ p̄ⱼ = λ · C(L)` (the projective scale of
-the line), the proportionality on which the annihilation transfer `r(C(L)) = 0 ⟹ r(p̄ᵢ ∨ p̄ⱼ) = 0`
-rests. The proportionality itself is the general `finrank_eq_one_iff_of_nonzero'`; the
-exterior-square dimension count is the genuinely new content here. -/
+For a vector space `W` of dimension `n`, `⋀^n W` has dimension `(n choose n) = 1`, so every element
+of it is a multiple of a nonzero one. The formal proof uses the count in degree `d − 1`
+(`finrank_exteriorPower_self_eq_one`, in `exists_smul_eq_of_mem_range_map_subtype_grade`); the node
+states its case `n = 2`. -/
 
-/-- **Step (ii) at general grade, the top-grade dimension count: `⋀^n W` is `1`-dimensional for an
-`n`-dimensional `W`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the general-`d`
-restatement of `finrank_exteriorPower_two_eq_one`, replacing the `⋀²`-pinned `d=3` route). For a
-finite free `K`-module `W` of dimension `n`, its top exterior power `⋀^n W` has dimension
-`(dim W).choose n = n.choose n = 1` by `exteriorPower.finrank_eq` + `Nat.choose_self` — the grade is
-free here, the count is the genuinely-general content. At the CHAIN proportionality site
-`W = {n_u}^⊥ ∩ ⋯` is the `(d−1)`-dimensional span of the chain points and the grade is `d−1`, so
-`⋀^{d−1}W` is the line carrying both the point-join and the panel-meet; the `d=3` instance recovers
-`finrank_exteriorPower_two_eq_one` (`n = 2`). -/
+/-- **The top exterior power of an `n`-dimensional space is a line** (a step of
+`lem:meet-two-hyperplanes`; `lem:complement-iso-line-one-dim` for every `n`): if `finrank W = n`,
+then `finrank (⋀^n W) = (n choose n) = 1` (`exteriorPower.finrank_eq`, `Nat.choose_self`). -/
 theorem finrank_exteriorPower_self_eq_one {W : Type*} [AddCommGroup W] [Module K W]
     [Module.Free K W] [Module.Finite K W] {n : ℕ} (hW : Module.finrank K W = n) :
     Module.finrank K (⋀[K]^n W) = 1 := by
   rw [exteriorPower.finrank_eq, hW, Nat.choose_self]
 
-/-- **Step (ii), the dimension count: `⋀²W` is `1`-dimensional for a `2`-dimensional `W`**
-(`lem:case-III-claim612-line-in-panel-union`). The `d=3` instance (grade `2`) of the grade-generic
-`finrank_exteriorPower_self_eq_one`. For a finite free `K`-module `W` of dimension `2`, its exterior
-square `⋀²W` has dimension `(dim W).choose 2 = 2.choose 2 = 1`. Geometrically, the supporting
-extensors of a projective line — written either as the join of two points on it or as the meet of
-two hyperplanes through it — live in this `1`-dimensional exterior square, so any two nonzero ones
-are proportional (`exteriorPower_finrank_eq_one_proportional`). -/
+/-- **The exterior square of a `2`-dimensional space is a line**
+(`lem:complement-iso-line-one-dim`): the case `n = 2` of `finrank_exteriorPower_self_eq_one`. -/
 theorem finrank_exteriorPower_two_eq_one {W : Type*} [AddCommGroup W] [Module K W]
     [Module.Free K W] [Module.Finite K W] (hW : Module.finrank K W = 2) :
     Module.finrank K (⋀[K]^2 W) = 1 :=
   finrank_exteriorPower_self_eq_one hW
 
-/-- **Step (ii), the proportionality: two nonzero members of `⋀²W` are scalar multiples**
-(`lem:case-III-claim612-line-in-panel-union`). For a `2`-dimensional `W`, `⋀²W` is a line
-(`finrank_exteriorPower_two_eq_one`), so any element `y` of it is a scalar multiple of a fixed
-nonzero `x` (`finrank_eq_one_iff_of_nonzero'`). This is the duality bridge's payoff: with both the
-point-join `p̄ᵢ ∨ p̄ⱼ` and the panel-meet `C(L)` placed in `⋀²W` by step (i), one is `λ` times the
-other, so a functional annihilating `C(L)` annihilates the join. -/
+/-- **Every element of the exterior square of a plane is a multiple of a nonzero one**
+(`lem:complement-iso-line-one-dim`): for `dim W = 2` and `x ≠ 0` in `⋀² W`, every `y` is `c • x` for
+some `c` (`finrank_eq_one_iff_of_nonzero'`). -/
 theorem exteriorPower_finrank_eq_one_proportional {W : Type*} [AddCommGroup W] [Module K W]
     [Module.Free K W] [Module.Finite K W] (hW : Module.finrank K W = 2)
     {x : ⋀[K]^2 W} (hx : x ≠ 0) (y : ⋀[K]^2 W) : ∃ c : K, c • x = y :=
   (finrank_eq_one_iff_of_nonzero' x hx).mp (finrank_exteriorPower_two_eq_one hW) y
 
-/-! ## The point-join ↔ panel-meet duality assembly, N3b-1: the inclusion `⋀²W ↪ ⋀²K⁴`
-(`lem:case-III-claim612-line-in-panel-union`)
+/-! ## The exterior power of a subspace and its image (`lem:complement-iso-exterior-map-injective`)
 
-The first sub-leaf of the duality *assembly* (Phase 22f) on top of the green operational steps (i)
-(`complementIso_toDual_extensor_eq_zero_of_shared_vector`, placing the panel-meet in `⋀²W`) and (ii)
-(`exteriorPower_finrank_eq_one_proportional`, `⋀²W` is a line). The assembly places both the
-point-join `p̄ᵢ ∨ p̄ⱼ` and the panel-meet `C(L)` in a common `⋀²W` — for `W = {n_u, n'}^⊥` the
-2-dim space spanned by the two points — and extracts the proportionality scalar there. To pull the
-two members of `⋀²K⁴` back into `⋀²W` (where step (ii) bites) one needs the inclusion
-`exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²K⁴` to be injective. Over the field `K`, injectivity of
-the inclusion `⋀²W ↪ ⋀²K⁴` follows from injectivity of `W.subtype` by the general
-`exteriorPower.map_injective_field` (no retraction needed — the `CommRing`-level
-`exteriorPower.map_injective` requiring an explicit retraction is the fallback, unused over a
-field). -/
+For a subspace `W` of `V`, the map `⋀^g W → ⋀^g V` induced by the inclusion is injective, over a
+field (`exteriorPower.map_injective_field`). A `g`-extensor of vectors of `W` lies in its image, and
+when `dim W = g` the image is a line, so that two of its elements are proportional when one is not
+zero. -/
 
-/-- **N3b-1 at general grade: the inclusion `⋀^g W ↪ ⋀^g (K^{d+1})` is injective**
-(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the grade-generic restatement of the
-`⋀²`-pinned `d=3` `exteriorPower_map_subtype_injective`). For a submodule `W` of `K^{d+1}` and any
-grade `g`, the exterior-power map `exteriorPower.map g W.subtype : ⋀^g W →ₗ ⋀^g (K^{d+1})` induced
-by the (injective) inclusion `W.subtype` is injective. Over the field `K` this is immediate from
-injectivity of `W.subtype` (`Submodule.injective_subtype`) via `exteriorPower.map_injective_field`
-— the grade enters nothing. This is the pull-back map of the CHAIN proportionality: it transports
-the two `⋀^{d−1}(K^{d+1})` members (the point-join and the panel-meet, both lying in the image
-`⋀^{d−1}W` by `extensor_mem_range_map_subtype_of_mem_grade`) into the line `⋀^{d−1}W`, where the
-top-grade count (`finrank_exteriorPower_self_eq_one`) makes them proportional. -/
+/-- **The exterior power of a subspace embeds, in every degree** (a step of
+`lem:meet-two-hyperplanes`; `lem:complement-iso-exterior-map-injective` in degree `g`): for a
+subspace `W` of `K^(d+1)`, the map `exteriorPower.map g W.subtype : ⋀^g W → ⋀^g K^(d+1)` is
+injective, as `W.subtype` is (`exteriorPower.map_injective_field`). -/
 theorem exteriorPower_map_subtype_injective_grade {d : ℕ} (g : ℕ)
     (W : Submodule K (Fin (d + 1) → K)) :
     Function.Injective (exteriorPower.map g W.subtype) :=
   exteriorPower.map_injective_field W.injective_subtype
 
-/-- **N3b-1 of the point-join ↔ panel-meet duality assembly: the inclusion `⋀²W ↪ ⋀²K⁴` is
-injective** (`lem:case-III-claim612-line-in-panel-union`). The `d=3` instance (grade `2`,
-ambient `Fin 4`) of the grade-generic `exteriorPower_map_subtype_injective_grade`. For a submodule
-`W` of `K⁴`, the exterior-power map `exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²K⁴` is injective. This
-is the pull-back map of the assembly: it transports the two `⋀²K⁴` members (the point-join
-`p̄ᵢ ∨ p̄ⱼ` and the panel-meet `C(L)`, both lying in the image `⋀²W` by N3b-2) back into the line
-`⋀²W`, where step (ii) (`exteriorPower_finrank_eq_one_proportional`) makes them proportional. -/
+/-- **The exterior square of a subspace of `K⁴` embeds**
+(`lem:complement-iso-exterior-map-injective`): the case `d = 3`, `g = 2` of
+`exteriorPower_map_subtype_injective_grade`. -/
 theorem exteriorPower_map_subtype_injective (W : Submodule K (Fin 4 → K)) :
     Function.Injective (exteriorPower.map 2 W.subtype) :=
   exteriorPower_map_subtype_injective_grade (d := 3) 2 W
 
-/-- **Range push-forward of `⋀^g` along an endomorphism carrying one submodule into another**
-(`def:meet-complement-iso`, the transport step of the OD-8 panel-meet range-membership). For an
-endomorphism `O` of `K^{k+2}` and submodules `W'`, `W` with `O(W') ⊆ W`, the induced map
-`exteriorPower.map g O` carries the range of the inclusion `⋀^g W' ↪ ⋀^g (K^{k+2})` into the range
-of the inclusion `⋀^g W ↪ ⋀^g (K^{k+2})`: if `X` is the image of some `Y : ⋀^g W'`, then
-`map g O X` is the image of `map g f Y` where `f : W' →ₗ W` corestricts `O ∘ W'.subtype`.
-The metric-free transport lemma the panel-meet range-membership composes with the
-GL-contragredient equivariance `complementIso_map_contragredient_eq`: a coordinate-complement
-membership pushes forward along the contragredient frame map `h` (with `h` sending the coordinate
-complement into `W = {n}^⊥`) to the target-`W` membership. -/
+/-- **A linear map that sends `W'` into `W` sends the image of `⋀^g W'` into that of `⋀^g W`** (a
+step of `lem:meet-two-hyperplanes`): for a linear map `O` of `V` with `O w ∈ W` for `w ∈ W'`, if `X`
+is the image of `Y : ⋀^g W'`, then `map g O X` is the image of `map g f Y`, for `f : W' → W` the
+restriction of `O`. The proof of `complementIso_extensor_mem_range_map_subtype` applies it to an
+inverse transpose. -/
 theorem exteriorPower_map_mem_range_map_subtype_of_mapsTo {g : ℕ}
     (O : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K))
     (W' W : Submodule K (Fin (k + 2) → K)) (hO : ∀ w ∈ W', O w ∈ W)
@@ -743,19 +551,11 @@ theorem exteriorPower_map_mem_range_map_subtype_of_mapsTo {g : ℕ}
   rw [← LinearMap.comp_apply, ← exteriorPower.map_comp, ← LinearMap.comp_apply,
     ← exteriorPower.map_comp, LinearMap.subtype_comp_codRestrict]
 
-/-- **N3b-2 with the grade decoupled from the ambient dimension: a `j`-extensor of vectors in `W`
-lies in `⋀^j W ↪ ⋀^j (K^{d+1})`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3, OD-8 — the
-first general-`d` duality brick, replacing the `Fin 4`-pinned `d=3` route). If every vector of a
-family `v : Fin j → K^{d+1}` lies in a subspace `W ⊆ K^{d+1}`, the `j`-extensor `extensor v` (as an
-element of `⋀^j (K^{d+1})`) lies in the range of the inclusion
-`exteriorPower.map j W.subtype : ⋀^j W →ₗ ⋀^j (K^{d+1})` — it is the image of the abstract wedge
-`exteriorPower.ιMulti K j` of the family lifted into `W` (`fun i ↦ ⟨v i, hv i⟩`). The grade `j` is
-**decoupled** from the ambient `d` (the `_grade` form below ties it to `d − 1`): the OD-8 panel-meet
-membership needs the *grade-2* extensor `extensor ![n₀, n₁]` of the two line-normals in the ambient
-`Fin (k + 2) = Fin ((k+1)+1)`, grade `2 ≠ (k+1) − 1 = k`, so the grade must be a free parameter. The
-proof is *grade-generic verbatim* (the same `exteriorPower.map_apply_ιMulti` +
-`exteriorPower.ιMulti_apply_coe` + `Subtype.ext` chain — no `finrank` count, no `fin_cases`):
-nothing in it depends on the grade. -/
+/-- **A `j`-extensor of vectors of `W` lies in the image of `⋀^j W`** (a step of
+`lem:meet-two-hyperplanes`): if every `v i` lies in the subspace `W` of `K^(d+1)`, then `extensor v`
+is the image of `ιMulti K j (fun i => ⟨v i, hv i⟩)` under the map induced by the inclusion. The
+degree `j` is independent of `d`; `extensor_mem_range_map_subtype_of_mem_grade` takes `j = d − 1`.
+-/
 theorem extensor_mem_range_map_subtype_of_mem_jgrade {d j : ℕ}
     (W : Submodule K (Fin (d + 1) → K)) (v : Fin j → Fin (d + 1) → K)
     (hv : ∀ i, v i ∈ W) :
@@ -767,12 +567,9 @@ theorem extensor_mem_range_map_subtype_of_mem_jgrade {d j : ℕ}
   rw [exteriorPower.ιMulti_apply_coe]
   rfl
 
-/-- **N3b-2 at the grade `d − 1`: a `(d−1)`-extensor of vectors in `W` lies in
-`⋀^{d−1}W ↪ ⋀^{d−1}(K^{d+1})`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3). The
-grade-and-ambient-coupled (`grade = d − 1`) instance of the decoupled
-`extensor_mem_range_map_subtype_of_mem_jgrade`, the form the point-join half of the duality
-consumes (`W` = the `(d−1)`-dim span of the chain points, grade `d − 1`). The `d=3` instance
-recovers `extensor_mem_range_map_subtype_of_mem` (`d−1 = 2`, `d+1 = 4`). -/
+/-- **A `(d−1)`-extensor of vectors of `W` lies in the image of `⋀^(d−1) W`** (a step of
+`lem:meet-two-hyperplanes`): the case `j = d − 1` of `extensor_mem_range_map_subtype_of_mem_jgrade`,
+the degree of a join of `d − 1` points. -/
 theorem extensor_mem_range_map_subtype_of_mem_grade {d : ℕ}
     (W : Submodule K (Fin (d + 1) → K)) (v : Fin (d - 1) → Fin (d + 1) → K)
     (hv : ∀ i, v i ∈ W) :
@@ -780,39 +577,20 @@ theorem extensor_mem_range_map_subtype_of_mem_grade {d : ℕ}
       ∈ LinearMap.range (exteriorPower.map (d - 1) W.subtype) :=
   extensor_mem_range_map_subtype_of_mem_jgrade W v hv
 
-/-- **N3b-2, the point-join half (`d=3` instance): a `2`-extensor of vectors in `W` lies in
-`⋀²W ↪ ⋀²K⁴`** (`lem:case-III-claim612-line-in-panel-union`). Second sub-leaf of the point-join ↔
-panel-meet duality assembly (Phase 22f); the `d=3` specialization of
-`extensor_mem_range_map_subtype_of_mem_grade` (`d−1 = 2`, `d+1 = 4`). Applied to the point-join
-`p̄ᵢ ∨ p̄ⱼ = extensor ![p̄ᵢ, p̄ⱼ]` at `W = span{p̄ᵢ, p̄ⱼ} = {n_u, n'}^⊥` (each `p̄ᵢ ∈ W` by the
-incidence `⟨p̄ᵢ, n_u⟩ = ⟨p̄ᵢ, n'⟩ = 0`), this places the join in the line `⋀²W`, the first of the
-two members N3b-3 pulls back to apply step (ii). The companion panel-meet membership
-(`C(L) = complementIso (n_u ∧ n') ∈ ⋀²W`, the range-membership upgrade of step (i)) lands next. -/
+/-- **A `2`-extensor of vectors of a subspace `W` of `K⁴` lies in the image of `⋀² W`**: the case
+`d = 3` of `extensor_mem_range_map_subtype_of_mem_grade`. -/
 theorem extensor_mem_range_map_subtype_of_mem
     (W : Submodule K (Fin 4 → K)) (v : Fin 2 → Fin 4 → K) (hv : ∀ i, v i ∈ W) :
     (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin 4 → K))
       ∈ LinearMap.range (exteriorPower.map 2 W.subtype) :=
   extensor_mem_range_map_subtype_of_mem_grade (d := 3) W v hv
 
-/-- **N3b-2b-line at general grade, the proportionality engine: `range (⋀^{d−1}W ↪ ⋀^{d−1}K^{d+1})`
-is the line `span{x}` of any nonzero member, so two of its members are proportional**
-(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the grade-generic restatement of the
-`⋀²`-pinned `d=3` `exists_smul_eq_of_mem_range_map_subtype`; the leaf's genuine new count).
-For a `(d−1)`-dimensional `W ⊆ K^{d+1}`, the range of the injective inclusion
-`exteriorPower.map (d−1) W.subtype : ⋀^{d−1}W →ₗ ⋀^{d−1}(K^{d+1})`
-(`exteriorPower_map_subtype_injective_grade`, N3b-1) is `1`-dimensional: `finrank (range) =
-finrank ⋀^{d−1}W = (d−1).choose (d−1) = 1` (`LinearMap.finrank_range_of_inj` +
-`finrank_exteriorPower_self_eq_one` at the *top* grade `d−1` of `W` — the general count for
-the `d=3` `finrank_exteriorPower_two_eq_one`). Hence for any nonzero member `x` of the range,
-`span{x}` already exhausts it (`Submodule.eq_of_le_of_finrank_eq`, two `1`-dim subspaces with
-`span{x} ≤ range`), so every other member `y` is a scalar multiple `c • x = y`
-(`Submodule.mem_span_singleton`).
-
-This is the proportionality engine of the CHAIN duality *in `⋀^{d−1}(K^{d+1})`*: with the point-join
-of the chain points placed in the range as the nonzero `x` (`W` = their `(d−1)`-dim span), once the
-panel-meet `C(L)` is also shown to be in the range (CHAIN-4's spanning leaf), this yields
-`C(L) = λ · (join)` directly — the proportionality lives in `⋀^{d−1}(K^{d+1})` itself, so no
-pull-back into the pulled-back `⋀^{d−1}W` is needed. -/
+/-- **Two elements of the image of `⋀^(d−1) W` are proportional** (a step of
+`lem:meet-two-hyperplanes`): if `dim W = d − 1`, the image of the injective map
+`⋀^(d−1) W → ⋀^(d−1) K^(d+1)` (`exteriorPower_map_subtype_injective_grade`) has dimension `1`
+(`finrank_exteriorPower_self_eq_one`), so for a nonzero `x` in it, `span {x}` is the image
+(`Submodule.eq_of_le_of_finrank_eq`), and every `y` in it is `c • x` for some `c`. The proof of
+`lem:meet-two-hyperplanes` applies it to a join of `d − 1` vectors and to `*(n₁ ∨ n₂)`. -/
 theorem exists_smul_eq_of_mem_range_map_subtype_grade {d : ℕ}
     (W : Submodule K (Fin (d + 1) → K)) (hW : Module.finrank K W = d - 1)
     {x y : ⋀[K]^(d - 1) (Fin (d + 1) → K)}
@@ -828,20 +606,8 @@ theorem exists_smul_eq_of_mem_range_map_subtype_grade {d : ℕ}
   rw [← Submodule.mem_span_singleton, hspan]
   exact hy
 
-/-- **N3b-2b-line, the line identity: `range (⋀²W ↪ ⋀²K⁴)` is the line `span{x}` of any nonzero
-member, so two of its members are proportional** (`lem:case-III-claim612-line-in-panel-union`).
-The `d=3` instance (grade `2`, ambient `Fin 4`, `finrank W = 2`) of the grade-generic
-`exists_smul_eq_of_mem_range_map_subtype_grade`. For a `2`-dimensional `W ⊆ K⁴`, the range of the
-injective inclusion `exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²K⁴` is `1`-dimensional, so every two
-of its members are proportional.
-
-This is the proportionality engine of the assembly *in `⋀²K⁴`*: with the point-join
-`p̄ᵢ ∨ p̄ⱼ = extensor ![p̄ᵢ, p̄ⱼ]` placed in the range as the nonzero `x` (N3b-2a,
-`W = span{p̄ᵢ, p̄ⱼ}`), once the
-panel-meet `C(L) = complementIso (n_u ∧ n')` is also shown to be in the range (N3b-2b-α, the
-spanning leaf), this leaf yields the proportionality `complementIso (n_u ∧ n') = λ · (p̄ᵢ ∨ p̄ⱼ)`
-directly — subsuming the phase-open N3b-3 pull-back/push-forward wiring, since the proportionality
-lives in `⋀²K⁴` itself rather than in the pulled-back `⋀²W`. -/
+/-- **Two elements of the image of `⋀² W` in `⋀² K⁴` are proportional**, for `dim W = 2`: the case
+`d = 3` of `exists_smul_eq_of_mem_range_map_subtype_grade`. -/
 theorem exists_smul_eq_of_mem_range_map_subtype
     (W : Submodule K (Fin 4 → K)) (hW : Module.finrank K W = 2)
     {x y : ⋀[K]^2 (Fin 4 → K)}
@@ -850,21 +616,11 @@ theorem exists_smul_eq_of_mem_range_map_subtype
     ∃ c : K, c • x = y :=
   exists_smul_eq_of_mem_range_map_subtype_grade (d := 3) W hW hx hxne hy
 
-/-- **Two `2`-extensors of pairs spanning the same plane are proportional**
-(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3, OD-8 — the input-side proportionality of the
-panel-meet range-membership). For a linearly independent pair `v : Fin 2 → K^{d+1}` and any pair
-`u : Fin 2 → K^{d+1}` whose two vectors lie in the plane `P = span(range v)`, the `2`-extensor
-`extensor u` is a scalar multiple of `extensor v`. Both lie in the line
-`range (exteriorPower.map 2 P.subtype)` (`⋀²P` is `1`-dimensional, `P` being `2`-dimensional —
-`finrank_exteriorPower_self_eq_one`), and `extensor v ≠ 0` (`v` independent,
-`extensor_ne_zero_iff_linearIndependent`), so the line-proportionality engine yields the scalar.
-This is the input half of the OD-8 panel-meet range-membership: it lets the panel-meet `extensor n`
-(`n` the two line-normals) be replaced — up to a nonzero scalar, which `complementIso` linearity and
-the submodule-closed-under-`•` membership target both absorb — by the `2`-extensor of an
-*orthonormal* pair spanning the same plane, the pair an orthogonal change-of-frame carries to a
-coordinate blade (the standard-frame membership of OD-8 route-(α)). Grade-2-specific (the count
-`⋀²P` line needs grade = `finrank P = 2`); ambient `Fin (d+1)` general (the `Fin (k+2)` site is
-`d := k + 1`). -/
+/-- **Two `2`-extensors of pairs in the same plane are proportional** (a step of
+`lem:pencil-generic-steer`): for a linearly independent pair `v` and a pair `u` whose vectors lie in
+`span (range v)`, `c • extensor v = extensor u` for some `c`. Both lie in the image of `⋀² P`,
+`P = span (range v)`, which is a line (`finrank_exteriorPower_self_eq_one`), and `extensor v ≠ 0`
+(`extensor_ne_zero_iff_linearIndependent`). `span_range_eq_of_extensor_eq` is a converse. -/
 theorem exists_smul_extensor_eq_of_mem_span_range
     {d : ℕ} (u v : Fin 2 → Fin (d + 1) → K) (hv : LinearIndependent K v)
     (hu : ∀ i, u i ∈ Submodule.span K (Set.range v)) :
@@ -882,7 +638,7 @@ theorem exists_smul_extensor_eq_of_mem_span_range
     extensor_mem_range_map_subtype_of_mem_jgrade _ u hu
   have hvne : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin (d + 1) → K)) ≠ 0 := by
     rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent v).2 hv
-  -- `range (map 2 P.subtype)` is a line; both extensors lie in it, so they are proportional.
+  -- The image of `⋀² P` is a line; both extensors lie in it, so they are proportional.
   have hR : Module.finrank K
       (LinearMap.range (exteriorPower.map 2 (Submodule.span K (Set.range v)).subtype)) = 1 := by
     rw [LinearMap.finrank_range_of_inj (exteriorPower_map_subtype_injective_grade (d := d) 2 _),
@@ -895,19 +651,15 @@ theorem exists_smul_extensor_eq_of_mem_span_range
   rw [← Submodule.mem_span_singleton, hspan]
   exact hxu
 
-/-! ## Plücker injectivity: a decomposable `2`-extensor determines its plane
+/-! ## Equal nonzero `2`-extensors span the same plane (`lem:decomposable-extensor-span-unique`)
 
-The companion (converse) of `exists_smul_extensor_eq_of_mem_span_range`: that lemma sends a shared
-span to proportional extensors; this pair sends an *equal* nonzero decomposable `2`-extensor back to
-an equal span (Plücker injectivity on decomposables). It is the span-uniqueness the pencil-stratum
-necessity direction consumes (`sec:pencil-extension`, Phase 39 W2 remainder). -/
+A converse of `exists_smul_extensor_eq_of_mem_span_range`: a nonzero `2`-extensor determines the
+plane spanned by its two vectors. -/
 
-/-- **A vector lies in the plane of a `2`-extensor iff wedging kills it**
-(`sec:pencil-extension`, Plücker plumbing). For a linearly independent pair `a, b : K^{d+1}` and any
-`x`, the grade-`3` extensor `extensor ![x, a, b]` vanishes iff `x` lies in the plane
-`span{a, b}`. Immediate from `extensor_ne_zero_iff_linearIndependent` and
-`linearIndependent_finCons` (`![x, a, b] = Fin.cons x ![a, b]`): the triple is dependent exactly
-when `x` is in the span of the independent pair. -/
+/-- **A vector lies in the plane of an independent pair exactly when its join with the pair is `0`**
+(a step of `lem:decomposable-extensor-span-unique`): for linearly independent `a, b`,
+`extensor ![x, a, b] = 0 ↔ x ∈ span {a, b}`, as `x, a, b` are linearly dependent exactly then
+(`extensor_ne_zero_iff_linearIndependent`, `linearIndependent_finCons`). -/
 theorem extensor_triple_eq_zero_iff {d : ℕ} {a b : Fin (d + 1) → K} (x : Fin (d + 1) → K)
     (hab : LinearIndependent K ![a, b]) :
     extensor ![x, a, b] = 0 ↔ x ∈ Submodule.span K (Set.range ![a, b]) := by
@@ -922,18 +674,12 @@ theorem extensor_triple_eq_zero_iff {d : ℕ} {a b : Fin (d + 1) → K} (x : Fin
     rw [hcons, linearIndependent_finCons]
     rintro ⟨-, hns⟩; exact hns hx
 
-/-- **Equal nonzero decomposable `2`-extensors span the same plane**
-(`lem:decomposable-extensor-span-unique`; Plücker injectivity on decomposables; the converse of
-`exists_smul_extensor_eq_of_mem_span_range`). If two pairs `p, p' : Fin 2 → K^{d+1}` have the same
-nonzero `2`-extensor `extensor p = extensor p'`, then they span the same plane:
-`span (range p') = span (range p)`.
-
-The join factorizes a grade-`3` extensor through its grade-`2` block: `extensor ![x, c, d] =
-extensor ![x] ∨ₑ extensor ![c, d]` (`join_extensor`), so `extensor p = extensor p'` gives
-`extensor ![x, p 0, p 1] = extensor ![x, p' 0, p' 1]` for every `x`. By
-`extensor_triple_eq_zero_iff` at both pairs, `x` lies in one plane iff the corresponding triple
-vanishes iff `x` lies in the other, so the two planes are equal. This is the span-uniqueness the
-pencil-stratum extension iff rests on (`sec:pencil-extension`, Phase 39 W2). -/
+/-- **Equal nonzero `2`-extensors span the same plane** (`lem:decomposable-extensor-span-unique`):
+if `extensor p = extensor p' ≠ 0`, then `span (range p') = span (range p)`. For every `x`,
+`extensor ![x, p 0, p 1] = extensor ![x] ∨ extensor p` (`join_extensor`), so it equals
+`extensor ![x, p' 0, p' 1]`, and `x` lies in either plane exactly when this is `0`
+(`extensor_triple_eq_zero_iff`). It is the case `j = 2` of the proposition of Barnabei, Brini and
+Rota recalled after `def:join`. -/
 theorem span_range_eq_of_extensor_eq {d : ℕ} {p p' : Fin 2 → Fin (d + 1) → K}
     (hp : extensor p ≠ 0) (heq : extensor p = extensor p') :
     Submodule.span K (Set.range p') = Submodule.span K (Set.range p) := by
@@ -944,7 +690,7 @@ theorem span_range_eq_of_extensor_eq {d : ℕ} {p p' : Fin 2 → Fin (d + 1) →
   have hp'c : (![p' 0, p' 1] : Fin 2 → Fin (d + 1) → K) = p' := by funext i; fin_cases i <;> rfl
   have habp : LinearIndependent K ![p 0, p 1] := by rw [hpc]; exact hpli
   have habp' : LinearIndependent K ![p' 0, p' 1] := by rw [hp'c]; exact hp'li
-  -- The grade-3 triple depends on the pair only through its 2-extensor (join factorization).
+  -- The `3`-extensor depends on the pair only through its join (`join_extensor`).
   have key : ∀ x : Fin (d + 1) → K, extensor ![x, p 0, p 1] = extensor ![x, p' 0, p' 1] := by
     intro x
     have e1 : extensor ![x, p 0, p 1] = extensor ![x] * extensor ![p 0, p 1] := by
@@ -956,28 +702,16 @@ theorem span_range_eq_of_extensor_eq {d : ℕ} {p p' : Fin 2 → Fin (d + 1) →
   rw [← hpc, ← hp'c, ← extensor_triple_eq_zero_iff x habp', ← extensor_triple_eq_zero_iff x habp,
     key]
 
-/-! ## N3b-2b-α building block: wedge-with-a-fixed-vector `⋀²K⁴` and its 3-dim range
-(`lem:case-III-claim612-line-in-panel-union`)
+/-! ## The `2`-extensors `a ∨ v` (`lem:case-III-claim612-line-in-panel-union`)
 
-The foundational sub-leaf of the panel-meet range membership N3b-2b-α (Phase 22f). The spanning
-fact the membership rests on — that the shared-direction 2-extensors of `n = ![n_u, n']` span a
-5-dimensional hyperplane of `⋀²K⁴` — is, via inclusion–exclusion, built from the two grade-2
-subspaces `n_u ∧ K⁴` and `n' ∧ K⁴`, each the range of the *wedge-with-a-fixed-vector* map
-`v ↦ n_u ∧ v` (resp. `n' ∧ v`). This block builds that map `wedgeFixedLeft a : K⁴ →ₗ ⋀²K⁴`,
-identifies its kernel as the line `span{a}` (`a ∧ v = 0 ⟺ a, v` dependent ⟺ `v ∈ span{a}`, for
-`a ≠ 0`), and reads off `finrank (range) = 4 − 1 = 3` by rank–nullity. The full `5 = 3 + 3 − 1`
-span count (and the panel-meet membership it discharges) is the next sub-leaf above this. -/
+The map `v ↦ a ∨ v` from `K^(d+1)` to `⋀² K^(d+1)`, its kernel `span {a}` for `a ≠ 0`, and the
+dimension `d` of its image. In the proof of `lem:case-III-claim612-line-in-panel-union`, the space
+`Φ` spanned by the `n₁ ∨ v` and the `n₂ ∨ v` is the sum of two such images. -/
 
-/-- **The wedge-with-a-fixed-vector map** `v ↦ a ∧ v : K^{d+1} →ₗ ⋀²K^{d+1}`
-(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — ambient-generic over `Fin (d+1)`; the
-`d=3` instance recovers the `Fin 4` map by `d+1 = 4`), the building block of the N3b-2b-α spanning
-fact. It is the left exterior multiplication `LinearMap.mulLeft K (ι a)` by the homogeneous degree-1
-element `ι a`, postcomposed with `ι` and corestricted to the grade-2 piece `⋀²K^{d+1}` (the product
-`ι a * ι v` is grade `1 + 1 = 2`). On the underlying algebra it sends `v` to `extensor ![a, v]`
-(`coe_wedgeFixedLeft`); its kernel is the line `span{a}` (`ker_wedgeFixedLeft`) and its range is
-therefore `d`-dimensional (`finrank_range_wedgeFixedLeft`, `= (d+1) − 1`; `3` at `d=3`), the
-`a ∧ K^{d+1}` summand of the shared-direction span. The proof is ambient-generic verbatim — `d`
-enters only the ambient type, the grade is fixed at `2`. -/
+/-- **The map `v ↦ a ∨ v`** (for `lem:case-III-claim612-line-in-panel-union`): left multiplication
+by `ι a` after `ι`, a linear map from `K^(d+1)` to `⋀² K^(d+1)`, as the product of two elements of
+degree `1` has degree `2`. Its value in the exterior algebra is `extensor ![a, v]`
+(`coe_wedgeFixedLeft`). -/
 noncomputable def wedgeFixedLeft {d : ℕ} (a : Fin (d + 1) → K) :
     (Fin (d + 1) → K) →ₗ[K] ⋀[K]^2 (Fin (d + 1) → K) :=
   LinearMap.codRestrict (⋀[K]^2 (Fin (d + 1) → K))
@@ -989,9 +723,8 @@ noncomputable def wedgeFixedLeft {d : ℕ} (a : Fin (d + 1) → K) :
         simp [List.ofFn_succ]
       rw [h]; exact extensor_mem_exteriorPower _
 
-/-- The underlying exterior-algebra element of `wedgeFixedLeft a v` is the `2`-extensor
-`extensor ![a, v] = a ∧ v` (`lem:case-III-claim612-line-in-panel-union`). The bridge from the
-linear-map packaging to the `extensor` API on which the kernel computation runs. -/
+/-- **`wedgeFixedLeft a v` is `a ∨ v`** (a step of `lem:case-III-claim612-line-in-panel-union`): its
+value in the exterior algebra is `extensor ![a, v]`. -/
 @[simp]
 theorem coe_wedgeFixedLeft {d : ℕ} (a v : Fin (d + 1) → K) :
     (wedgeFixedLeft a v : ExteriorAlgebra K (Fin (d + 1) → K)) = extensor ![a, v] := by
@@ -999,13 +732,10 @@ theorem coe_wedgeFixedLeft {d : ℕ} (a v : Fin (d + 1) → K) :
     extensor_apply, ExteriorAlgebra.ιMulti_apply]
   simp [List.ofFn_succ]
 
-/-- **The kernel of `wedgeFixedLeft a` is the line `span{a}`** for `a ≠ 0`
-(`lem:case-III-claim612-line-in-panel-union`). `a ∧ v = 0` exactly when `![a, v]` is linearly
-dependent (`extensor_ne_zero_iff_linearIndependent`), and for `a ≠ 0` a pair `![a, v]` is
-dependent iff `v` lies in `span{a}` (`LinearIndependent.pair_iff'` ↔
-`Submodule.mem_span_singleton`).
-The rank–nullity input pinning `finrank (range (wedgeFixedLeft a)) = 3`
-(`finrank_range_wedgeFixedLeft`). -/
+/-- **The kernel of `v ↦ a ∨ v` is `span {a}`** (a step of
+`lem:case-III-claim612-line-in-panel-union`): for `a ≠ 0`, `a ∨ v = 0` exactly when `a, v` are
+linearly dependent (`extensor_ne_zero_iff_linearIndependent`), that is, when `v ∈ span {a}`
+(`LinearIndependent.pair_iff'`). -/
 theorem ker_wedgeFixedLeft {d : ℕ} {a : Fin (d + 1) → K} (ha : a ≠ 0) :
     LinearMap.ker (wedgeFixedLeft a) = Submodule.span K {a} := by
   ext v
@@ -1013,50 +743,30 @@ theorem ker_wedgeFixedLeft {d : ℕ} {a : Fin (d + 1) → K} (ha : a ≠ 0) :
     coe_wedgeFixedLeft, ← not_iff_not, not_exists, ← ne_eq,
     extensor_ne_zero_iff_linearIndependent, LinearIndependent.pair_iff' ha]
 
-/-- **The range of `wedgeFixedLeft a` is `d`-dimensional** for `a ≠ 0`
-(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — ambient-generic; `3` at `d=3`). By
-rank–nullity (`LinearMap.finrank_range_add_finrank_ker`) on
-`wedgeFixedLeft a : K^{d+1} →ₗ ⋀²K^{d+1}`, with the kernel the line `span{a}`
-(`ker_wedgeFixedLeft`, `finrank = 1` for `a ≠ 0`) and the domain `K^{d+1}` (`finrank = d+1`), the
-range has `finrank = (d+1) − 1 = d`. This is the `a ∧ K^{d+1}` summand of the shared-direction span
-`Φ̃`; the general inclusion–exclusion count assembles `d−1` such summands (a panel `Π(u)` has `d−1`
-normals), the genuinely-new count above this. -/
+/-- **The image of `v ↦ a ∨ v` has dimension `d`** (a step of
+`lem:case-III-claim612-line-in-panel-union`): for `a ≠ 0`, by rank–nullity, with the kernel
+`span {a}` (`ker_wedgeFixedLeft`). For `d = 3` it is `3`, the dimension of the image of `v ↦ n ∨ v`
+in the proof of the lemma. -/
 theorem finrank_range_wedgeFixedLeft {d : ℕ} {a : Fin (d + 1) → K} (ha : a ≠ 0) :
     Module.finrank K (LinearMap.range (wedgeFixedLeft a)) = d := by
   have hrn := LinearMap.finrank_range_add_finrank_ker (wedgeFixedLeft a)
   rw [ker_wedgeFixedLeft ha, finrank_span_singleton ha, Module.finrank_fin_fun] at hrn
   omega
 
-/-! ## N3b-recon: the coordinate `toDual` of `⋀ⁿK⁴` is the Gram-determinant pairing
-(`lem:case-III-claim612-line-in-panel-union`)
+/-! ## The coordinate pairing of extensors as a determinant
+(`lem:case-III-claim612-line-in-panel-union`, `lem:meet-two-hyperplanes`)
 
-The pivot infrastructure of the membership route (route A-corrected, Phase 22f): the `Module.Basis`
-coordinate pairing `(b.exteriorPower n).toDual` on `⋀ⁿK⁴` (an opaque Kronecker pairing of the
-exterior-power basis) is reconciled with the *computable* `exteriorPower.pairingDual` evaluated on
-dual coordinates — the latter expands, via `exteriorPower.pairingDual_ιMulti_ιMulti`, as a **Gram
-determinant** of dot products. This is what turns `b.toDual (w₀ ∧ w₁) (extensor c)` into
-`det [[w₀·c₀, w₀·c₁], [w₁·c₀, w₁·c₁]]`, so the incidence `wᵢ · c₀ = 0` (both in `{n_u,n'}^⊥`) zeros
-a column and kills the point-join — fact 2 of route A-corrected — and likewise pins
-`dim (dualCoannihilator Φ̃) = 6 − 5 = 1` (fact 3), since `b.toDual` is a perfect pairing.
+The coordinate pairing `(b.exteriorPower n).toDual` of the standard basis `b` on `⋀^n K^(d+1)` is
+`exteriorPower.pairingDual` after the map induced by `b.toDual` (`def:meet-pairing-dual`). On two
+extensors it is the determinant of the dot products of their vectors
+(`exteriorPower.pairingDual_ιMulti_ιMulti`). -/
 
-Both sides are linear maps `⋀ⁿK⁴ →ₗ Dual ⋀ⁿK⁴`; equality is by double `Module.Basis.ext` on the
-exterior-power basis, after which the coordinate pairing collapses to a Kronecker delta
-(`Module.Basis.toDual_apply`) and the `pairingDual`/`map` side collapses to the determinant of
-that same Kronecker matrix (`map_apply_ιMulti_family` + `pairingDual_ιMulti_ιMulti`). -/
-
-/-- **N3b-recon at general grade and ambient: the coordinate `toDual` of `⋀ⁿ(K^{d+1})` is the
-Gram-determinant pairing** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the grade- and
-ambient-generic restatement of the `Fin 4`-pinned `d=3`
-`exteriorPower_basis_toDual_eq_pairingDual_comp_map`). For the standard basis
-`b = Pi.basisFun K (Fin (d+1))` and any grade `n`, the `Module.Basis` coordinate pairing
-`(b.exteriorPower n).toDual` on `⋀ⁿ(K^{d+1})` equals the computable
-`exteriorPower.pairingDual ∘ exteriorPower.map n b.toDual` (the Gram-determinant pairing). The proof
-is **ambient- and grade-generic verbatim** (`Module.Basis.ext` ×2, then `Module.Basis.toDual_apply`
-collapses the coordinate side to a Kronecker delta and `map_apply_ιMulti_family` +
-`pairingDual_ιMulti_ιMulti` collapse the other side to the determinant of that same Kronecker
-matrix; the diagonal/off-diagonal split uses only the equal-cardinality fact
-`Set.powersetCard.card_eq`, no `Fin 4`-arity). The `d=3` instance recovers
-`exteriorPower_basis_toDual_eq_pairingDual_comp_map` (`d+1 = 4`). -/
+/-- **The coordinate pairing of `⋀^n K^(d+1)` is the determinant pairing** (a step of
+`lem:meet-two-hyperplanes` and `lem:case-III-claim612-line-in-panel-union`): for the standard basis
+`b`, `(b.exteriorPower n).toDual = pairingDual ∘ₗ map n b.toDual`. Both sides are bilinear; on two
+standard basis elements `e_s` and `e_t`, the left side is `1` if `s = t` and `0` otherwise, and the
+right side is the determinant of the matrix of the pairings of their vectors, which is the identity
+if `s = t` and has a zero row otherwise. -/
 theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade {d : ℕ} (n : ℕ) :
     ((Pi.basisFun K (Fin (d + 1))).exteriorPower n).toDual =
       (exteriorPower.pairingDual K (Fin (d + 1) → K) n).comp
@@ -1087,56 +797,29 @@ theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade {d : ℕ} (n : 
     exact ite_eq_right fun h =>
       hxs ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem s x).1 ⟨j, h⟩)
 
-/-- **N3b-recon (`d=3` instance): the coordinate `toDual` of `⋀ⁿK⁴` is the Gram-determinant
-pairing** (`lem:case-III-claim612-line-in-panel-union`). The `d=3` instance (ambient `Fin 4`) of the
-grade- and ambient-generic `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade` (`d+1 = 4`).
-The `Module.Basis` coordinate pairing `(b.exteriorPower n).toDual` on `⋀ⁿK⁴` is reconciled with the
-computable `exteriorPower.pairingDual` evaluated on dual coordinates — the latter expands, via
-`exteriorPower.pairingDual_ιMulti_ιMulti`, as a **Gram determinant** of dot products. This is what
-turns `b.toDual (w₀ ∧ w₁) (extensor c)` into `det [[w₀·c₀, w₀·c₁], [w₁·c₀, w₁·c₁]]`, so the
-incidence `wᵢ · c₀ = 0` (both in `{n_u,n'}^⊥`) zeros a column and kills the point-join — fact 2 of
-route A-corrected — and likewise pins `dim (dualCoannihilator Φ̃) = 6 − 5 = 1` (fact 3), since
-`b.toDual` is a perfect pairing. -/
+/-- **The coordinate pairing of `⋀^n K⁴` is the determinant pairing** (a step of
+`lem:case-III-claim612-line-in-panel-union`): the case `d = 3` of
+`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`. On two `2`-extensors `w₀ ∨ w₁` and
+`c₀ ∨ c₁` it is the determinant of the dot products `wᵢ · c_j` (the proof of the lemma). -/
 theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
     ((Pi.basisFun K (Fin 4)).exteriorPower n).toDual =
       (exteriorPower.pairingDual K (Fin 4 → K) n).comp
         (exteriorPower.map n (Pi.basisFun K (Fin 4)).toDual) :=
   exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade (d := 3) n
 
-/-! ## Fact 2 of the membership route: the point-join is `toDual`-orthogonal to a shared extensor
+/-! ## The join of two vectors orthogonal to `n` and the `2`-extensors `n ∨ v`
 (`lem:case-III-claim612-line-in-panel-union`)
 
-The genuinely-new annihilation of the membership route (route A-corrected, Phase 22f). The
-point-join `w₀ ∧ w₁ = extensor w` of two vectors orthogonal to a shared panel normal `c i₀` is
-annihilated, under the standard exterior-power basis's coordinate pairing `toDual`, by every
-`2`-extensor `extensor c` through that normal. Through the reconciliation
-`b.toDual = pairingDual ∘ map b.toDual` (N3b-recon), the pairing
-`b.toDual (extensor w) (extensor c)` is the **Gram determinant**
-`det (Matrix.of fun i j => b.toDual (w j) (c i))` (`pairingDual_ιMulti_ιMulti`); the incidence
-hypothesis `b.toDual (w j) (c i₀) = 0` for every `j` makes row `i₀` vanish, so the determinant is
-`0` (`Matrix.det_eq_zero_of_row_eq_zero`).
+If `w₀` and `w₁` are orthogonal to `c i₀`, the coordinate pairing of `w₀ ∨ w₁` and `c₀ ∨ c₁` is a
+determinant with a zero row. So the join `x ∨ y` of the lemma is orthogonal to every `n_i ∨ v`, and
+lies in the space `Ω` of its proof. This holds for the coordinate pairing, not for the wedge pairing
+`vol (· ∨ ·)`, under which `w₀ ∨ w₁` and `c₀ ∨ c₁` pair to `det (w₀, w₁, c₀, c₁)`. -/
 
-This is the companion of green step (i)
-(`complementIso_toDual_extensor_eq_zero_of_shared_vector`, the panel-meet's annihilation): step (i)
-puts `complementIso(n_u ∧ n')` in `Ω = dualCoannihilator Φ̃`, this fact puts the point-join
-`w₀ ∧ w₁` (`wᵢ ∈ W = {n_u, n'}^⊥`) there too. With `dim Ω = 1` (fact 3,
-`finrank_sup_range_wedgeFixedLeft`) the two members are proportional — the membership that subsumes
-N3b-3. Both `wᵢ` orthogonal to the shared normal is exactly the incidence `wᵢ ∈ W`; the prior
-commit's "Route A overturned" tested the volume/wedge pairing `vol(· ∧ ·)` here by mistake, where
-the point-join is *not* annihilated — under the coordinate pairing `b.toDual`, the Gram
-determinant, it is. -/
-
-/-- **Fact 2 of the membership route: the point-join is `toDual`-orthogonal to a shared extensor**
-(`lem:case-III-claim612-line-in-panel-union`). At `d = 3` (`⋀²K⁴`), if every vector of
-`w : Fin 2 → K⁴` is `toDual`-orthogonal to the shared vector `c i₀` of a second family
-`c : Fin 2 → K⁴` (`hperp : ∀ j, (Pi.basisFun K (Fin 4)).toDual (w j) (c i₀) = 0`), then the
-point-join `extensor w` is annihilated, through the standard exterior-power basis's `toDual`, by
-`extensor c`. Via N3b-recon (`exteriorPower_basis_toDual_eq_pairingDual_comp_map`) the pairing is
-the Gram determinant `det (Matrix.of fun i j => b.toDual (w j) (c i))`
-(`pairingDual_ιMulti_ιMulti`), whose row `i₀` vanishes by `hperp`, so it is `0`
-(`Matrix.det_eq_zero_of_row_eq_zero`). The point-join analogue of green step (i)'s panel-meet
-annihilation: both land in `Ω = dualCoannihilator Φ̃`, a line by fact 3, forcing the
-proportionality of meet and join. -/
+/-- **A join of vectors orthogonal to `c i₀` is orthogonal to `extensor c`** (a step of
+`lem:case-III-claim612-line-in-panel-union`): for `w c : Fin 2 → K⁴` with `w j · c i₀ = 0` for both
+`j`, the coordinate pairing of `extensor w` and `extensor c` is `0`. By
+`exteriorPower_basis_toDual_eq_pairingDual_comp_map` it is the determinant of the matrix with the
+entries `w j · c i` (`exteriorPower.pairingDual_ιMulti_ιMulti`), whose row `i₀` is zero. -/
 theorem extensor_toDual_extensor_eq_zero_of_perp (w c : Fin 2 → Fin 4 → K) (i₀ : Fin 2)
     (hperp : ∀ j, (Pi.basisFun K (Fin 4)).toDual (w j) (c i₀) = 0) :
     ((Pi.basisFun K (Fin 4)).exteriorPower 2).toDual
@@ -1154,32 +837,18 @@ theorem extensor_toDual_extensor_eq_zero_of_perp (w c : Fin 2 → Fin 4 → K) (
   rw [Matrix.of_apply, Function.comp_apply]
   exact hperp j
 
-/-! ## N3b-2b-β: the shared-direction span `Φ̃ = n_u ∧ K⁴ + n' ∧ K⁴` is `5`-dimensional
+/-! ## The span `Φ` of the `n₁ ∨ v` and the `n₂ ∨ v` has dimension `5`
 (`lem:case-III-claim612-line-in-panel-union`)
 
-Fact 3 of the membership route (route A-corrected, Phase 22f): the count pinning the dual
-coannihilator `Ω = dualCoannihilator Φ̃` to a line. The shared-direction span
-`Φ̃ = n_u ∧ K⁴ + n' ∧ K⁴` (the join of the two wedge-with-a-fixed-normal ranges, each
-`3`-dimensional by `finrank_range_wedgeFixedLeft`) is `5`-dimensional by inclusion–exclusion
-(`3 + 3 − 1`, `Submodule.finrank_sup_add_finrank_inf_eq`); the genuine content is the
-**decomposable intersection** `n_u ∧ K⁴ ⊓ n' ∧ K⁴ = span{n_u ∧ n'}` (`inf_range_wedgeFixedLeft`,
-`finrank = 1`). With `b.toDual` a perfect pairing on the `6`-dimensional `⋀²K⁴`, this gives
-`dim Ω = 6 − 5 = 1`, so the panel-meet (green step (i)) and the point-join (fact 2), both in `Ω`,
-are proportional. -/
+For linearly independent `a` and `b`, the images of `v ↦ a ∨ v` and `v ↦ b ∨ v` meet in
+`span {a ∨ b}`, so for `d = 3` their sum has dimension `3 + 3 − 1 = 5`. -/
 
-/-- **The decomposable intersection: `n_u ∧ K^{d+1} ⊓ n' ∧ K^{d+1} = span{n_u ∧ n'}`**
-(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — ambient-generic over `Fin (d+1)`; the `d=3`
-instance recovers the `Fin 4` statement by `d+1 = 4`). The genuine sub-content of the span count
-(fact 3 of the membership route). For two linearly-independent vectors `a, b ∈ K^{d+1}`, the
-wedge-with-a range `a ∧ K^{d+1}` (`range (wedgeFixedLeft a)`) and `b ∧ K^{d+1}` meet exactly in the
-line `span{a ∧ b}`. `⊇` is direct: `a ∧ b = wedgeFixedLeft a b` lies in `range (wedgeFixedLeft a)`,
-and `= b ∧ (−a) = wedgeFixedLeft b (−a)` (anticommutativity `ExteriorAlgebra.ι_add_mul_swap`) lies
-in `range (wedgeFixedLeft b)`. `⊆`: an element `a ∧ v = b ∧ w` in both ranges, left-multiplied by
-`b`, gives `b ∧ a ∧ v = b ∧ b ∧ w = 0` (repeated factor), so `extensor ![b, a, v] = 0`, i.e.
-`{b, a, v}` is dependent; with `{a, b}` independent (`linearIndependent_finSnoc`) this forces
-`v ∈ span{a, b}`, whence `a ∧ v = β · (a ∧ b) ∈ span{a ∧ b}` (`a ∧ a = 0`). The proof is
-ambient-generic verbatim — `d` enters only the ambient type, the family arities (`Fin 2`, `Fin 3`)
-are fixed. -/
+/-- **The images of `v ↦ a ∨ v` and `v ↦ b ∨ v` meet in `span {a ∨ b}`** (a step of
+`lem:case-III-claim612-line-in-panel-union`): for linearly independent `a, b` of `K^(d+1)`. The join
+`a ∨ b` lies in both, as `a ∨ b = b ∨ (−a)` (`ExteriorAlgebra.ι_add_mul_swap`). Conversely, if
+`a ∨ v = b ∨ w`, the join with `b` on the left gives `b ∨ a ∨ v = b ∨ b ∨ w = 0`, so `b, a, v` are
+linearly dependent and `v ∈ span {a, b}` (`linearIndependent_finSnoc`); then `a ∨ v` is a multiple
+of `a ∨ b`. -/
 theorem inf_range_wedgeFixedLeft {d : ℕ} (a b : Fin (d + 1) → K)
     (hab : LinearIndependent K ![a, b]) :
     LinearMap.range (wedgeFixedLeft a) ⊓ LinearMap.range (wedgeFixedLeft b)
@@ -1231,17 +900,12 @@ theorem inf_range_wedgeFixedLeft {d : ℕ} (a b : Fin (d + 1) → K)
     rw [map_neg, mul_neg]
     exact (eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap a b)).symm
 
-/-- **N3b-2b-β: the shared-direction span `n_u ∧ K⁴ + n' ∧ K⁴` is `5`-dimensional**
-(`lem:case-III-claim612-line-in-panel-union`). Fact 3 of the membership route (route A-corrected,
-Phase 22f). For two linearly-independent `a, b ∈ K⁴`, the join `a ∧ K⁴ + b ∧ K⁴` (the
-shared-direction span `Φ̃`) has dimension `5`. By inclusion–exclusion
-(`Submodule.finrank_sup_add_finrank_inf_eq`), `dim (a ∧ K⁴ ⊔ b ∧ K⁴) = dim (a ∧ K⁴) + dim (b ∧ K⁴) −
-dim (a ∧ K⁴ ⊓ b ∧ K⁴) = 3 + 3 − 1 = 5`, the two summand dimensions from
-`finrank_range_wedgeFixedLeft` and the intersection dimension `1` from the decomposable
-intersection `inf_range_wedgeFixedLeft` (with `a ∧ b ≠ 0` by independence). Since `b.toDual` is a
-perfect pairing on the `6`-dimensional `⋀²K⁴`, this forces
-`dim Ω = dim (dualCoannihilator Φ̃) = 6 − 5 = 1` — the line into which fact 2 (the point-join) and
-green step (i) (the panel-meet) both fall, making them proportional. -/
+/-- **For `d = 3`, the sum of the images of `v ↦ a ∨ v` and `v ↦ b ∨ v` has dimension `5`** (a step
+of `lem:case-III-claim612-line-in-panel-union`): for linearly independent `a, b ∈ K⁴`, each image
+has dimension `3` (`finrank_range_wedgeFixedLeft`), and they meet in the line `span {a ∨ b}`
+(`inf_range_wedgeFixedLeft`, with `a ∨ b ≠ 0`), so the sum has dimension `3 + 3 − 1 = 5`
+(`Submodule.finrank_sup_add_finrank_inf_eq`). In the proof of the lemma, the elements of the
+`6`-dimensional `⋀² K⁴` orthogonal to this sum for the coordinate pairing then form a line `Ω`. -/
 theorem finrank_sup_range_wedgeFixedLeft (a b : Fin 4 → K) (hab : LinearIndependent K ![a, b]) :
     Module.finrank K
         ((LinearMap.range (wedgeFixedLeft a) ⊔ LinearMap.range (wedgeFixedLeft b) :
@@ -1259,37 +923,26 @@ theorem finrank_sup_range_wedgeFixedLeft (a b : Fin 4 → K) (hab : LinearIndepe
   -- hypothesis `hsum : finrank(…) + 1 = 3 + 3` closes the `= 5` goal directly.
   simpa using hsum
 
-/-! ## The point-join ↔ panel-meet duality (the membership assembly N3b, KT eq. (6.45))
-(`lem:case-III-claim612-line-in-panel-union`)
+/-! ## The meet of two planes and the join of two points of their line
+(`lem:case-III-claim612-line-in-panel-union`; KT eq. (6.45), p. 691)
 
-The capstone of the duality bridge (Phase 22f): the point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![p̄ᵢ, p̄ⱼ]`
-and the panel-meet `C(L) = complementIso(n_u ∧ n')` of the *same* line `L = p̄ᵢ p̄ⱼ ⊂ Π(u)` are
-scalar multiples in `⋀²K⁴`. The membership route (route A-corrected, *Decisions made*): both lie
-in the common `1`-dimensional space `Ω = dualAnnihilator Φ̃` transported across the perfect pairing
-`b.toDualEquiv : ⋀²K⁴ ≃ₗ Dual(⋀²K⁴)`, where `Φ̃ = n_u ∧ K⁴ + n' ∧ K⁴` is the `5`-dimensional
-shared-direction span (fact 3, `finrank_sup_range_wedgeFixedLeft`); `dim Ω = 6 − 5 = 1`. The
-point-join is in `Ω` by the Gram-determinant orthogonality (fact 2,
-`extensor_toDual_extensor_eq_zero_of_perp`, applied to each summand `n_u ∧ v` / `n' ∧ v`, since
-`p̄ᵢ, p̄ⱼ` are `toDual`-orthogonal to both `n_u` and `n'`); the panel-meet is in `Ω` by the
-dictionary half (fact 1 = green step (i), `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`, the
-`n_u ∧ v` summand sharing `n_u` directly, the `n' ∧ v` summand via the shared `n'` in the appended
-family). Two members of a line, the panel-meet nonzero (`{n_u, n'}` independent), are proportional.
+For linearly independent `n₁, n₂ ∈ K⁴` and `x, y` orthogonal to both, `x ∨ y` is a multiple of
+`*(n₁ ∨ n₂)`. Let `Φ` be the span of the `n₁ ∨ v` and the `n₂ ∨ v`, of dimension `5`
+(`finrank_sup_range_wedgeFixedLeft`), and `Ω` the space of the elements of `⋀² K⁴` orthogonal to `Φ`
+for the coordinate pairing, a line. The join lies in `Ω`
+(`extensor_toDual_extensor_eq_zero_of_perp`), and so does `*(n₁ ∨ n₂)`
+(`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`), which is not zero. So a linear form that
+vanishes on the meet vanishes on the join. Katoh and Tanigawa write the extensor of a line as the
+join of two of its points (KT §2.1, p. 651), and use the joins in KT eq. (6.45); the formal proof
+gives a hinge by the meet of two panels (`def:panel-support-extensor`). -/
 
-The annihilation transfer is then immediate: a screw functional `r` with `r(C(L)) = 0` has
-`r(p̄ᵢ ∨ p̄ⱼ) = c · r(C(L)) = 0` for the scale `c`. This is the duality KT use implicitly reading
-eq. (6.45): the spanning point-joins and the annihilated panel-meets are the *same* extensors of
-the lines in the panel union (KT §6.4.1). -/
-
-/-- **The point-join ↔ panel-meet proportionality** (`lem:case-III-claim612-line-in-panel-union`,
-N3b assembly). At `d = 3` (`⋀²K⁴`), let `n_u, n'` be the two panel normals of a panel `Π(u)`
-(`{n_u, n'}` independent) and `pi, pj` two points whose connecting line `L = pi pj` lies in `Π(u)`
-(each `pi, pj` is `toDual`-orthogonal to both normals — the incidence `⟨p̄, n_u⟩ = ⟨p̄, n'⟩ = 0`).
-Then the point-join `extensor ![pi, pj]` is a scalar multiple of the panel-meet
-`complementIso (n_u ∧ n')`: `∃ c, c • complementIso(n_u ∧ n') = extensor ![pi, pj]`. Both are the
-Plücker vector of `L`, up to the projective scale. Membership route A-corrected: both lie in the
-`1`-dimensional `Ω = dualAnnihilator Φ̃` (fact 3) — the point-join by the Gram-determinant
-orthogonality (fact 2), the panel-meet by the dictionary half (green step (i)) — and the panel-meet
-is nonzero, so the two are proportional. -/
+/-- **The join of two points of a line is a multiple of the meet of two planes through it**
+(`lem:case-III-claim612-line-in-panel-union`; KT eq. (6.45), p. 691): for linearly independent
+`n_u, n'` of `K⁴` and `pi, pj` orthogonal to both (for the coordinate pairing `b.toDual`, the dot
+product), `c • *(n_u ∨ n') = pi ∨ pj` for some `c`. Here `n_u` is the normal of the panel `Π(u)` and
+`n'` that of a second plane, which meets `Π(u)` in the line through the points with the homogeneous
+coordinates `pi` and `pj`. Both extensors lie in the line `Ω` of the section above, and
+`*(n_u ∨ n') ≠ 0`. -/
 theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
     (hpair : LinearIndependent K ![n_u, n'])
     (hi_u : (Pi.basisFun K (Fin 4)).toDual pi n_u = 0)
@@ -1304,7 +957,7 @@ theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
     LinearMap.range (wedgeFixedLeft n_u) ⊔ LinearMap.range (wedgeFixedLeft n') with hΦ
   set Ω : Submodule K (⋀[K]^2 (Fin 4 → K)) :=
     Φ.dualAnnihilator.comap (b.exteriorPower 2).toDualEquiv.toLinearMap with hΩ
-  -- `dim Ω = 6 − dim Φ̃ = 6 − 5 = 1` (fact 3 + the perfect pairing's annihilator count).
+  -- `dim Ω = 6 − dim Φ = 6 − 5 = 1`, as the coordinate pairing is nondegenerate.
   have hdim : Module.finrank K Ω = 1 := by
     rw [hΩ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
     have h6 : Module.finrank K (⋀[K]^2 (Fin 4 → K)) = 6 := by
@@ -1312,7 +965,7 @@ theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
     have hkey := Subspace.finrank_add_finrank_dualAnnihilator_eq Φ
     have h5 : Module.finrank K Φ = 5 := finrank_sup_range_wedgeFixedLeft n_u n' hpair
     omega
-  -- A member that `toDual`-kills all of `Φ̃` lies in `Ω`.
+  -- An element orthogonal to all of `Φ` lies in `Ω`.
   have hmem : ∀ Z : ⋀[K]^2 (Fin 4 → K),
       (∀ φ ∈ Φ, (b.exteriorPower 2).toDual Z φ = 0) → Z ∈ Ω := by
     intro Z hZ
@@ -1320,7 +973,7 @@ theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
     intro φ hφ
     rw [LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply]
     exact hZ φ hφ
-  -- Killing both summand ranges `n_u ∧ K⁴`, `n' ∧ K⁴` kills all of `Φ̃`.
+  -- An element orthogonal to the images of `v ↦ n_u ∨ v` and `v ↦ n' ∨ v` is orthogonal to `Φ`.
   have hkills : ∀ Z : ⋀[K]^2 (Fin 4 → K),
       (∀ v, (b.exteriorPower 2).toDual Z (wedgeFixedLeft n_u v) = 0) →
       (∀ v, (b.exteriorPower 2).toDual Z (wedgeFixedLeft n' v) = 0) → Z ∈ Ω := by
@@ -1329,7 +982,7 @@ theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
     rw [hΦ, Submodule.mem_sup] at hφ
     obtain ⟨x, ⟨vx, hx⟩, y, ⟨vy, hy⟩, rfl⟩ := hφ
     rw [map_add, ← hx, ← hy, hu, hv', add_zero]
-  -- The point-join `extensor ![pi, pj] ∈ Ω`: fact 2 (Gram-det orthogonality) on each summand.
+  -- The join `extensor ![pi, pj]` lies in `Ω`, by `extensor_toDual_extensor_eq_zero_of_perp`.
   have hJ : (⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ : ⋀[K]^2 (Fin 4 → K)) ∈ Ω := by
     refine hkills _ (fun v => ?_) (fun v => ?_)
     · rw [show (wedgeFixedLeft n_u v) = (⟨extensor ![n_u, v], extensor_mem_exteriorPower _⟩ :
@@ -1342,8 +995,9 @@ theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
       exact extensor_toDual_extensor_eq_zero_of_perp ![pi, pj] ![n', v] 0
         (by simp only [Fin.forall_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one]
             exact ⟨hi_u', hj_u'⟩)
-  -- The panel-meet `complementIso (n_u ∧ n') ∈ Ω`: green step (i) on each summand (the `n'`
-  -- summand through the appended-family shared `n'`).
+  -- The meet `complementIso (n_u ∨ n')` lies in `Ω`: the join of `n_u ∨ n'` with `n_u ∨ v` and
+  -- with `n' ∨ v` is `0`, as a vector repeats
+  -- (`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`).
   have hC : (complementIso (k := 2) (j := 2) (by omega)
       ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) ∈ Ω := by
     refine hkills _ (fun v => ?_) (fun v => ?_)
@@ -1365,8 +1019,8 @@ theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
       exact complementIso_toDual_eq_zero_of_wedgeProd_eq_zero (k := 2) (j := 2) (by omega)
         ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩
         ⟨extensor ![n', v], extensor_mem_exteriorPower _⟩ hwp
-  -- The panel-meet is nonzero (`{n_u, n'}` independent), so the two members of the line `Ω` are
-  -- proportional.
+  -- The meet is not zero (`n_u`, `n'` independent), so it spans the line `Ω`, which contains the
+  -- join.
   have hXne : (⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩ : ⋀[K]^2 (Fin 4 → K)) ≠ 0 := by
     rw [Ne, Subtype.ext_iff, ZeroMemClass.coe_zero]
     exact (extensor_ne_zero_iff_linearIndependent ![n_u, n']).mpr hpair
@@ -1378,16 +1032,10 @@ theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
   rw [← Submodule.mem_span_singleton, hspan]
   exact hJ
 
-/-- **Point-join ↔ panel-meet duality: the annihilation transfer**
-(`lem:case-III-claim612-line-in-panel-union`, N3b, KT eq. (6.45)). At `d = 3` (`⋀²K⁴`), with the
-line incidence of `complementIso_smul_eq_extensor_join` (`{n_u, n'}` independent panel normals of
-`Π(u)`, the two points `pi, pj` of the line `L = pi pj ⊂ Π(u)` orthogonal to both normals), a screw
-functional `r : Dual(⋀²K⁴)` annihilating the panel-meet `C(L) = complementIso (n_u ∧ n')` also
-annihilates the spanning point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]`. Immediate from the
-proportionality `extensor ![pi, pj] = c • complementIso (n_u ∧ n')`
-(`complementIso_smul_eq_extensor_join`): `r(extensor ![pi, pj]) = c · r(C(L)) = 0`. This is the
-contrapositive glue of the Claim 6.12 capstone: an `r` annihilating every panel-meet of lines in
-`Π(a) ∪ Π(b) ∪ Π(c)` annihilates each spanning join, forcing `r = 0`. -/
+/-- **A form that vanishes on the meet vanishes on the join**
+(`lem:case-III-claim612-line-in-panel-union`): under the hypotheses of
+`complementIso_smul_eq_extensor_join`, a linear form `r` on `⋀² K⁴` with `r (*(n_u ∨ n')) = 0` has
+`r (pi ∨ pj) = 0`, as `pi ∨ pj = c • *(n_u ∨ n')`. -/
 theorem extensor_join_eq_zero_of_complementIso_eq_zero (n_u n' pi pj : Fin 4 → K)
     (hpair : LinearIndependent K ![n_u, n'])
     (hi_u : (Pi.basisFun K (Fin 4)).toDual pi n_u = 0)
@@ -1401,22 +1049,12 @@ theorem extensor_join_eq_zero_of_complementIso_eq_zero (n_u n' pi pj : Fin 4 →
   obtain ⟨c, hc⟩ := complementIso_smul_eq_extensor_join n_u n' pi pj hpair hi_u hi_u' hj_u hj_u'
   rw [← hc, map_smul, hr, smul_zero]
 
-/-- **Point-join ↔ panel-meet duality, the dot-product incidence form**
-(`lem:case-III-claim612-line-in-panel-union`, N3b, KT eq. (6.45); Phase 22g). The N3a-compatible
-restatement of `extensor_join_eq_zero_of_complementIso_eq_zero`: the panel incidence is phrased as
-the plain dot product `pi ⬝ᵥ n_u = 0` (the form `exists_affineIndependent_panel_incidence`, N3a,
-emits) rather than the standard-basis pairing `(Pi.basisFun K (Fin 4)).toDual pi n_u = 0` of the
-exterior-algebra core. At `d = 3` (`⋀²K⁴`), with `{n_u, n'}` independent panel normals of `Π(u)` and
-two points `pi, pj` of the line `L = pi pj ⊂ Π(u)` (each dot-orthogonal to both normals), a screw
-functional `r` annihilating the panel-meet `C(L) = complementIso (n_u ∧ n')` also annihilates the
-spanning point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]`.
-
-This is the per-line annihilation transfer the Claim-6.12 capstone (`case_III_claim612`'s
-`hduality`) dispatches over the six joins `pᵢ ∨ pⱼ` of the four affinely-independent points of
-eq. (6.45): each join lies in (at least) one of the three panels `Π(a) ∪ Π(b) ∪ Π(c)`, so `r`
-orthogonal to that panel's meet annihilates it. The only content over the core is the incidence-form
-conversion, via the self-pairing identity `Pi.basisFun_toDual_apply`
-(`(Pi.basisFun K (Fin 4)).toDual x y = x ⬝ᵥ y`). -/
+/-- **The same, with the orthogonality as dot products**
+(`lem:case-III-claim612-line-in-panel-union`): the hypotheses `pi ⬝ᵥ n_u = 0` and the like,
+converted by `Pi.basisFun_toDual_apply`. The formal proof of the case `d = 3`
+(`lem:case-III-candidate-dispatch-d3`) applies it, through
+`exists_complementIso_ne_zero_of_homogeneousIncidence`, to a join of KT eq. (6.45) on which the form
+`r` of KT Claim 6.12 does not vanish. -/
 theorem extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct (n_u n' pi pj : Fin 4 → K)
     (hpair : LinearIndependent K ![n_u, n'])
     (hi_u : pi ⬝ᵥ n_u = 0) (hi_u' : pi ⬝ᵥ n' = 0)
@@ -1430,30 +1068,18 @@ theorem extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct (n_u n' pi pj 
     (by rw [Pi.basisFun_toDual_apply]; exact hj_u) (by rw [Pi.basisFun_toDual_apply]; exact hj_u')
     r hr
 
-/-! ## The `complementIso` of a standard basis blade is the complementary blade
-(`def:meet-complement-iso`)
+/-! ## `*e_S = ε_S • e_{Sᶜ}` (`def:meet-complement-iso`)
 
-The foundational `complementIso`-image fact, the base case of the route-(α) panel-meet
-range-membership (CHAIN-3, OD-8). The complement isomorphism `complementIso hj : ⋀ʲ V ≃ₗ ⋀^(N−j) V`
-(`N = k+2`) sends a standard exterior-power basis blade `e_S` (`S ⊆ Fin (k+2)`, `|S| = j`) to a
-scalar multiple of the complementary blade `e_{Sᶜ}` — the projective dual of a coordinate subspace
-is the complementary coordinate subspace. The scalar is the `±1` wedge pairing
-`wedgePairing k hj (e_S) (e_{Sᶜ})` (`wedgePairing_ιMulti_family_compl_ne_zero`, the
-signed-permutation diagonal). -/
+The complement of a standard basis element of `⋀^j V` is a multiple of the complementary one: the
+formula after `lem:complement-iso-toDual`, by which `*` is the Hodge star operator of the standard
+basis. -/
 
-/-- **The `complementIso` of a standard basis blade is the complementary blade**
-(`def:meet-complement-iso`, CHAIN-3 — the foundational `complementIso`-image leaf for the OD-8
-route-(α) panel-meet range-membership). `complementIso hj` sends the standard `⋀ʲ` basis blade
-`e_S` to the scalar multiple `(wedgePairing k hj e_S e_{Sᶜ}) • e_{Sᶜ}` of the complementary
-`⋀^(N−j)` basis blade `e_{Sᶜ}` (`Sᶜ` via `Set.powersetCard.compl`), with the `±1` scalar the
-signed-permutation diagonal entry (`wedgePairing_ιMulti_family_compl_ne_zero` for its
-non-vanishing). Read off the change-of-basis matrix: the `t`-coordinate of `complementIso hj e_S`
-is `wedgePairing k hj e_S e_t` (the dual-basis reading `Module.Basis.coord_toDualEquiv_symm_apply`
-of `complementIso = wedgePairing ≪≫ toDualEquiv.symm`), which vanishes off the diagonal `t = Sᶜ`
-(`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`), so only the `Sᶜ` term survives. Geometrically
-the complement of the coordinate `j`-subspace `span{e_i : i ∈ S}` is the complementary coordinate
-`(N−j)`-subspace `span{e_i : i ∈ Sᶜ}` — the standard-frame instance of "the projective dual of a
-decomposable is the decomposable of the orthogonal complement". -/
+/-- **`*e_S = ε_S • e_{Sᶜ}`** (`def:meet-complement-iso`; the formula after
+`lem:complement-iso-toDual`): `complementIso` sends the standard basis element `e_S` of `⋀^j V` to
+`ε_S • e_{Sᶜ}`, where `ε_S = wedgePairing e_S e_{Sᶜ}`, which is not zero
+(`wedgePairing_ιMulti_family_compl_ne_zero`). The coordinate of `*e_S` at `e_t` is
+`wedgePairing e_S e_t` (`Module.Basis.coord_toDualEquiv_symm_apply`), which vanishes unless `t = Sᶜ`
+(`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`). -/
 theorem complementIso_exteriorPower_basis_eq_smul_compl {j : ℕ} (hj : j ≤ k + 2)
     (S : Set.powersetCard (Fin (k + 2)) j) :
     complementIso hj ((Pi.basisFun K (Fin (k + 2))).exteriorPower j S)
@@ -1464,8 +1090,8 @@ theorem complementIso_exteriorPower_basis_eq_smul_compl {j : ℕ} (hj : j ≤ k 
           (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S)) := by
   set b := (Pi.basisFun K (Fin (k + 2))).exteriorPower (k + 2 - j) with hb
   have hcard : (k + 2 - j) + j = Fintype.card (Fin (k + 2)) := by rw [Fintype.card_fin]; omega
-  -- Both sides agree in every `b`-coordinate: the `t`-coordinate of `complementIso hj e_S` is the
-  -- wedge pairing `wedgePairing e_S e_t`, which vanishes off the diagonal `t = Sᶜ`.
+  -- Compare the coordinates at each `e_t`: that of `complementIso hj e_S` is the wedge pairing
+  -- of `e_S` and `e_t`, which vanishes unless `t = Sᶜ`.
   refine b.repr.injective (Finsupp.ext fun t => ?_)
   have hcoord : b.repr (complementIso hj ((Pi.basisFun K (Fin (k + 2))).exteriorPower j S)) t
       = wedgePairing k hj ((Pi.basisFun K (Fin (k + 2))).exteriorPower j S)
@@ -1484,27 +1110,17 @@ theorem complementIso_exteriorPower_basis_eq_smul_compl {j : ℕ} (hj : j ≤ k 
       exteriorPower.basis_apply, exteriorPower.basis_apply,
       wedgePairing_ιMulti_family_eq_zero_of_ne_compl hj S t ht]
 
-/-! ## The standard-frame range-membership of a `complementIso`'d coordinate blade
-(`def:meet-complement-iso`)
+/-! ## The complement of a coordinate `2`-element (`lem:meet-two-hyperplanes`)
 
-The range-membership packaging of the base case `complementIso_exteriorPower_basis_eq_smul_compl`,
-the standard-frame (coordinate-subspace) instance of the OD-8 panel-meet range-membership leaf
-`complementIso_extensor_mem_range_map_subtype` (CHAIN-3, the `j = 2` form feeding CHAIN-4). The
-general-decomposable lift (an arbitrary grade-2 `extensor n` with `W = {n₀, n₁}^⊥`) is the
-remaining content of route (α). -/
+For a `2`-element set `S`, `*e_S` lies in the image of `⋀^k W` for every subspace `W` that contains
+the `e_t` with `t ∉ S`: the first statement of `lem:meet-two-hyperplanes` for coordinate planes. -/
 
-/-- **The `complementIso` of a coordinate `2`-blade lands in `⋀^k W` for any `W` containing the
-complementary coordinate vectors** (`def:meet-complement-iso`, CHAIN-3 — the standard-frame
-range-membership packaging of `complementIso_exteriorPower_basis_eq_smul_compl`). For a coordinate
-`2`-subset `S` of `Fin (k+2)` and any submodule `W ⊆ K^{k+2}` containing every complementary
-standard basis vector `eₜ` (`t ∈ Sᶜ`), the `complementIso (j := 2)` image of the basis blade `e_S`
-lies in the range of the inclusion `exteriorPower.map k W.subtype : ⋀^k W →ₗ ⋀^k K^{k+2}`. Immediate
-from the base case (`complementIso e_S = (±1) • e_{Sᶜ}`): the complementary blade `e_{Sᶜ}` is the
-`k`-extensor of the standard basis vectors indexed by `Sᶜ`, each in `W` by hypothesis, so it lies in
-the range by `extensor_mem_range_map_subtype_of_mem_grade`, and a scalar multiple stays in the range
-(a submodule is closed under `•`). This is the coordinate-subspace instance of the OD-8 panel-meet
-range-membership; the general-`W = {n₀, n₁}^⊥` case (an arbitrary grade-2 decomposable) is the
-remaining route-(α) content. -/
+/-- **The complement of a coordinate `2`-element lies in the image of `⋀^k W`** (a step of
+`lem:meet-two-hyperplanes`): for a `2`-element `S ⊆ Fin (k+2)` and a subspace `W` of `V` that
+contains the standard basis vectors `e_t` with `t ∉ S`, `*e_S` lies in the image of
+`exteriorPower.map k W.subtype`. By `complementIso_exteriorPower_basis_eq_smul_compl`,
+`*e_S = ε_S • e_{Sᶜ}`, and `e_{Sᶜ}` is the extensor of the `e_t` with `t ∉ S`
+(`extensor_mem_range_map_subtype_of_mem_grade`). -/
 theorem complementIso_exteriorPower_basis_mem_range_map_subtype
     (S : Set.powersetCard (Fin (k + 2)) 2) (W : Submodule K (Fin (k + 2) → K))
     (hW : ∀ t ∈ (Set.powersetCard.compl (n := 2) (m := k) (by rw [Fintype.card_fin]) S :
@@ -1525,19 +1141,14 @@ theorem complementIso_exteriorPower_basis_mem_range_map_subtype
   refine extensor_mem_range_map_subtype_of_mem_grade (d := k + 1) W _ fun i => ?_
   exact hW _ ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem _ _).mp ⟨i, rfl⟩)
 
-/-! ## General-field `toDual` facts (`def:meet-complement-iso`)
+/-! ## The dot product as the coordinate pairing
 
-Field-general algebraic replacements for the `EuclideanSpace`/Gram–Schmidt metric transport
-`MeetHodge.lean` used to reach the same facts (the TACTICS-QUIRKS § 59 quarantine, now retired):
-the standard-basis `toDual` pairing is the bare dot product over *any* field, and the
-`toDual`-perp of two independent vectors has the expected dimension by a `dualAnnihilator`
-count — no inner product, no orthogonal complement, no orderedness, no characteristic hypothesis.
-Feeds the GL-contragredient equivariance below, which replaces the O(n)-only route this file used
-to need `MeetHodge.lean` for. -/
+On `K^m`, the coordinate pairing of the standard basis is the dot product, over any field, and the
+dimension of the space of the vectors orthogonal to a family, plus that of the span of the family,
+is `m`. -/
 
-/-- The standard-basis `toDual` pairing on `Fin m → K` is the bilinear form `∑ i, w i * v i` —
-purely algebraic, over any field. Replaces the `EuclideanSpace.inner_eq_basisFun_toDual` transport
-`MeetHodge.lean` used to reach the same fact through the L² inner product. -/
+/-- **The coordinate pairing of `K^m` is the dot product**:
+`(Pi.basisFun K (Fin m)).toDual w v = ∑ i, w i * v i`, over any field. -/
 theorem piBasisFun_toDual_eq_sum {m : ℕ} (w v : Fin m → K) :
     (Pi.basisFun K (Fin m)).toDual w v = ∑ i, w i * v i := by
   conv_lhs => rw [← (Pi.basisFun K (Fin m)).sum_repr v]
@@ -1545,21 +1156,17 @@ theorem piBasisFun_toDual_eq_sum {m : ℕ} (w v : Fin m → K) :
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [map_smul, Module.Basis.toDual_eq_repr, smul_eq_mul, Pi.basisFun_repr, mul_comm]
 
-/-- Metric-free symmetry of the standard-basis `toDual` pairing, over any field (replaces the
-`EuclideanSpace.inner_eq_basisFun_toDual` + `real_inner_comm` transport `MeetHodge.lean`'s
-`hsymm` used). -/
+/-- **The coordinate pairing of `K^m` is symmetric**, by `piBasisFun_toDual_eq_sum`. -/
 theorem piBasisFun_toDual_symm {m : ℕ} (w v : Fin m → K) :
     (Pi.basisFun K (Fin m)).toDual w v = (Pi.basisFun K (Fin m)).toDual v w := by
   rw [piBasisFun_toDual_eq_sum, piBasisFun_toDual_eq_sum]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
-/-- **The joint `toDual`-perp of a family and the span of that family have complementary
-dimension** (`def:meet-complement-iso`; the common dimension count behind
-`finrank_toDualPerp_pair_eq` below and its triple/single/`≤` companions in `Pencil/`, one proof for
-all five). The joint kernel is the `toDualEquiv`-preimage of the dual annihilator of
-`span (range n)`, so `finrank(⨅ perp) + finrank(span) = finrank(dualAnnihilator) + finrank(span) =
-N` by `Subspace.finrank_add_finrank_dualAnnihilator_eq`. No inner product, no orthogonal
-complement, no orderedness, no characteristic hypothesis, and no independence hypothesis on `n`. -/
+/-- **The vectors orthogonal to a family and the span of the family have complementary dimensions**:
+for `n : ι → K^N`, the dimension of the common kernel of the forms `⟨·, n j⟩` plus that of
+`span (range n)` is `N`. The kernel is the preimage of the dual annihilator of the span under
+`b.toDualEquiv` (`Subspace.finrank_add_finrank_dualAnnihilator_eq`); `n` need not be independent.
+`finrank_toDualPerp_pair_eq` and several counts in `Molecule/Pencil/` apply it. -/
 theorem finrank_toDualPerp_add_finrank_span {ι : Type*} {N : ℕ} (n : ι → Fin N → K) :
     Module.finrank K
         (⨅ j, LinearMap.ker ((Pi.basisFun K (Fin N)).toDual.flip (n j))
@@ -1581,11 +1188,9 @@ theorem finrank_toDualPerp_add_finrank_span {ι : Type*} {N : ℕ} (n : ι → F
   rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq, add_comm,
     Subspace.finrank_add_finrank_dualAnnihilator_eq, Module.finrank_fin_fun]
 
-/-- **The `toDual`-perp of two independent normals in `K^{m+2}` has dimension `m`, over any
-field** (`def:meet-complement-iso`; replaces `MeetHodge.lean`'s `EuclideanSpace`-transport reproof
-of the same fact — the metric route TACTICS-QUIRKS § 59 quarantined). From
-`finrank_toDualPerp_add_finrank_span` and `finrank_span_eq_card`: `finrank(perp) = (m+2) −
-finrank(span) = (m+2) − 2 = m`. -/
+/-- **The vectors orthogonal to two independent vectors of `K^(m+2)` form an `m`-dimensional space**
+(a step of `lem:meet-two-hyperplanes`): by `finrank_toDualPerp_add_finrank_span`, as the span has
+dimension `2` (`finrank_span_eq_card`). -/
 theorem finrank_toDualPerp_pair_eq {m : ℕ} {n : Fin 2 → Fin (m + 2) → K}
     (hn : LinearIndependent K n) :
     Module.finrank K
@@ -1595,24 +1200,18 @@ theorem finrank_toDualPerp_pair_eq {m : ℕ} {n : Fin 2 → Fin (m + 2) → K}
   rw [finrank_span_eq_card hn, Fintype.card_fin] at this
   omega
 
-/-! ## The GL-contragredient equivariance of `complementIso` (`def:meet-complement-iso`)
+/-! ## The transformation law of `*` (`lem:meet-two-hyperplanes`)
 
-Replaces the O(n)-only equivariance `complementIso_map_orthogonal_eq` this file used to state
-(retired with `MeetHodge.lean`, along with its Gram-invariance half
-`exteriorPower_basis_toDual_map_orthogonal_eq`): for a surjective frame map `g` and its
-`toDual`-contragredient `h` (`⟨h x, g y⟩ = ⟨x, y⟩`, i.e. `h = (gᵀ)⁻¹` w.r.t. the standard pairing
-`Pi.basisFun.toDual`), `complementIso` intertwines `map g` and `map h` up to `det g` — an *exact*
-equation, not merely up-to-determinant, and with no orthogonality/isotropy hypothesis: the
-contragredient of an invertible `g` exists over every field, for every `g`. This is what lets the
-panel-meet range-membership below extend an independent normal pair by an *arbitrary* complement
-(`Submodule.exists_isCompl`) rather than a Gram–Schmidt orthonormal one, removing the
-`EuclideanSpace` dependency `MeetHodge.lean` needed (TACTICS-QUIRKS § 59). -/
+For a linear automorphism `g` of `V` and its inverse transpose `h` for the coordinate pairing
+(`⟨h x, g y⟩ = ⟨x, y⟩`), `*(map j g X) = det g • map (N−j) h (*X)`; with `*e_S = ε_S • e_{Sᶜ}`, this
+gives the formula displayed after `def:meet`. Any two linearly independent vectors are `g e₀` and
+`g e₁` for some `g` (`exists_linearEquiv_basisFun_pair`). -/
 
-/-- **Two-map Gram invariance** (replaces the O(n)-only
-`exteriorPower_basis_toDual_map_orthogonal_eq`, whose `h = g = O` case this generalizes): if `h`,
-`g` are `toDual`-dual to each other (`⟨h x, g y⟩ = ⟨x, y⟩` for all `x, y`), the induced
-exterior-power pairing is invariant under transporting the two slots by `map n h` and `map n g`
-respectively. -/
+/-- **The coordinate pairing is invariant under a map and its inverse transpose** (a step of
+`lem:meet-two-hyperplanes`): if `⟨h x, g y⟩ = ⟨x, y⟩` for all `x, y`, then
+`⟨map n h Z, map n g B⟩ = ⟨Z, B⟩` on `⋀^n K^(d+1)`. On extensors both sides are determinants of
+coordinate pairings of vectors (`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`), and the
+extensors span (`exteriorPower.ιMulti_span`). -/
 theorem exteriorPower_basis_toDual_map_dualPair_eq {d : ℕ} (n : ℕ)
     (g h : (Fin (d + 1) → K) →ₗ[K] (Fin (d + 1) → K))
     (hgh : ∀ x y, (Pi.basisFun K (Fin (d + 1))).toDual (h x) (g y)
@@ -1645,12 +1244,12 @@ theorem exteriorPower_basis_toDual_map_dualPair_eq {d : ℕ} (n : ℕ)
   have := LinearMap.congr_fun (LinearMap.congr_fun key B) Z
   simpa only [LinearMap.comp_apply, LinearMap.flip_apply] using this
 
-/-- **GL-contragredient equivariance of `complementIso`** (replaces
-`complementIso_map_orthogonal_eq`): for a surjective `g` and any `h` `toDual`-dual to it,
-`complementIso hj (map j g X) = (det g) • map (k+2−j) h (complementIso hj X)`. Proof mirrors the
-retired O(n) lemma verbatim: pair against `B = map (k+2−j) g B'` (`g` surjective on the
-finite-dimensional `Fin (k+2) → K`), use `wedgePairing_map` on the left and the two-map Gram
-invariance above on the right. -/
+/-- **The transformation law of `*`** (a step of `lem:meet-two-hyperplanes`): for a surjective
+linear map `g` of `V` and `h` with `⟨h x, g y⟩ = ⟨x, y⟩`, `*(map j g X) = det g • map (N−j) h (*X)`.
+Pair both sides with `B = map (N−j) g B'`, which is every `B` as `g` is onto: the left side gives
+`vol (map j g X ∨ map (N−j) g B') = det g • vol (X ∨ B')` (`complementIso_toDual`,
+`wedgePairing_map`), and the right side `det g • ⟨*X, B'⟩`
+(`exteriorPower_basis_toDual_map_dualPair_eq`). -/
 theorem complementIso_map_contragredient_eq {j : ℕ} (hj : j ≤ k + 2)
     (g h : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K))
     (hgsurj : Function.Surjective g)
@@ -1667,18 +1266,18 @@ theorem complementIso_map_contragredient_eq {j : ℕ} (hj : j ≤ k + 2)
   simp only [complementIso_toDual, wedgePairing_map, map_smul, LinearMap.smul_apply,
     exteriorPower_basis_toDual_map_dualPair_eq (k + 2 - j) g h hgh, smul_eq_mul]
 
-/-- The `toDual`-contragredient of a linear automorphism `g`: the unique `h` with
-`⟨h x, g y⟩ = ⟨x, y⟩` (in matrix terms, the inverse transpose). Exists for every invertible `g`
-over every field — this is what replaces "extend the normal frame orthonormally"
-(`exists_orthonormalBasis_span_pair_eq`, retired with `MeetHodge.lean`), and why no non-isotropy
-hypothesis is needed below. -/
+/-- **The inverse transpose of a linear automorphism** (for `lem:meet-two-hyperplanes`): the map `h`
+with `⟨h x, g y⟩ = ⟨x, y⟩` for the coordinate pairing (`contragredient_toDual_pairing`), the dual
+map of `g⁻¹` between the coordinate identifications of `V` with its dual. It exists for every linear
+automorphism, over every field. -/
 noncomputable def contragredient (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K)) :
     (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K) :=
   (Pi.basisFun K (Fin (k + 2))).toDualEquiv.symm.toLinearMap ∘ₗ
     (g.symm : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K)).dualMap ∘ₗ
     (Pi.basisFun K (Fin (k + 2))).toDualEquiv.toLinearMap
 
-/-- The defining `toDual`-contragredient pairing: `⟨contragredient g x, g y⟩ = ⟨x, y⟩`. -/
+/-- **The pairing of the inverse transpose** (a step of `lem:meet-two-hyperplanes`):
+`⟨contragredient g x, g y⟩ = ⟨x, y⟩`. -/
 theorem contragredient_toDual_pairing (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K))
     (x y : Fin (k + 2) → K) :
     (Pi.basisFun K (Fin (k + 2))).toDual (contragredient g x) (g y)
@@ -1692,11 +1291,10 @@ theorem contragredient_toDual_pairing (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k
   rw [hd]
   simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]
 
-/-- **Basis extension with prescribed first two vectors** (replaces
-`exists_orthonormalBasis_span_pair_eq`, retired with `MeetHodge.lean`): a linearly independent
-pair extends to a linear automorphism `g` with `g e₀ = n 0`, `g e₁ = n 1`. Pure field linear
-algebra — a complement of the span (`Submodule.exists_isCompl`) plus
-`basisOfLinearIndependentOfCardEqFinrank` — with no Gram–Schmidt, no inner product. -/
+/-- **Two independent vectors are the images of `e₀` and `e₁` under a linear automorphism** (a step
+of `lem:meet-two-hyperplanes`): for linearly independent `n 0, n 1` of `K^(k+2)`, some `g` has
+`g e₀ = n 0` and `g e₁ = n 1`. Extend the pair by a basis of a complement of its span
+(`Submodule.exists_isCompl`) to a basis of `V`, and let `g` send the standard basis to it. -/
 theorem exists_linearEquiv_basisFun_pair (n : Fin 2 → Fin (k + 2) → K)
     (hn : LinearIndependent K n) :
     ∃ g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K),
@@ -1748,20 +1346,15 @@ theorem exists_linearEquiv_basisFun_pair (n : Fin 2 → Fin (k + 2) → K)
     simp only [Equiv.refl_apply, hbq, coe_basisOfLinearIndependentOfCardEqFinrank, hq,
       Function.comp_apply, h1, hv, Sum.elim_inl]
 
-/-! ## The panel-meet range-membership and the point-join duality, metric-free
-(`def:meet-complement-iso`, `lem:case-III-claim612-line-in-panel-union`)
+/-! ## The meet of two hyperplanes and the join of `d − 1` vectors (`lem:meet-two-hyperplanes`)
 
-The two leaves `MeetHodge.lean` used to carry via Gram–Schmidt and O(n)-equivariance, now reproved
-metric-free: GL-frame extension (`exists_linearEquiv_basisFun_pair`) + contragredient equivariance
-(`complementIso_map_contragredient_eq`) replace Gram–Schmidt + O(n)-equivariance, and the perp
-dimension count is the field-general `finrank_toDualPerp_pair_eq` above. This removes the
-`EuclideanSpace` dependency TACTICS-QUIRKS § 59 quarantined into a separate file. -/
+For `n : Fin 2 → V`, `*(n 0 ∨ n 1)` lies in the image of `⋀^k W` for the `k`-dimensional space `W`
+of the vectors orthogonal to `n 0` and `n 1`. If `n 0, n 1` are linearly independent and `k`
+linearly independent vectors lie in `W`, their join is a multiple of `*(n 0 ∨ n 1)`. -/
 
-/-- `exteriorPower.map 2 f` sends the grade-2 decomposable `extensor v` to the extensor of the
-image family `fun i => f (v i)` (`map` acts on decomposables by mapping the factors). Extracted
-from `complementIso_extensor_mem_range_map_subtype` below, where inlining it was the single largest
-elaboration cost; as its own declaration the panel-meet proof stays within the default heartbeat
-budget. -/
+/-- **The map induced by `f` on a `2`-extensor** (a step of `lem:meet-two-hyperplanes`):
+`map 2 f (extensor v) = extensor (f ∘ v)`. It is a lemma of its own so that the proof of
+`complementIso_extensor_mem_range_map_subtype` stays within the default heartbeat budget. -/
 theorem exteriorPower_map_two_extensor
     (f : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K)) (v : Fin 2 → Fin (k + 2) → K) :
     exteriorPower.map 2 f ⟨extensor v, extensor_mem_exteriorPower v⟩
@@ -1773,24 +1366,16 @@ theorem exteriorPower_map_two_extensor
   rw [hv2, exteriorPower.map_apply_ιMulti, exteriorPower.ιMulti_apply_coe]
   rfl
 
-/-- **The `complementIso` of an arbitrary grade-2 decomposable `extensor n` lands in `⋀^k W` for
-`W` the `toDual`-orthogonal complement of `{n 0, n 1}`** (`def:meet-complement-iso`, the panel-meet
-range-membership leaf). For two line-normals `n : Fin 2 → K^{k+2}` and a submodule `W ⊆ K^{k+2}`
-that is `toDual`-orthogonal to both (`hWperp`) and of dimension `k` (`hWdim`, forcing `W =
-{n 0, n 1}^⊥`), the `complementIso (j := 2)` image of the panel-meet `extensor n` lies in the
-range of the inclusion `exteriorPower.map k W.subtype : ⋀^k W →ₗ ⋀^k K^{k+2}`.
-
-Proved by an *arbitrary* (not orthonormal) GL frame `g` with `g e₀ = n 0`, `g e₁ = n 1`
-(`exists_linearEquiv_basisFun_pair`) and its contragredient `h := contragredient g`: `h` sends the
-coordinate complement of `{e₀, e₁}` into `W` (each generator's `toDual`-pairing against
-`n 0`/`n 1` collapses to a Kronecker delta via `contragredient_toDual_pairing`), so the LANDED
-standard-frame membership `complementIso_exteriorPower_basis_mem_range_map_subtype` transports
-through `h` by the range push-forward `exteriorPower_map_mem_range_map_subtype_of_mapsTo`, and the
-coordinate blade `map 2 g e_S` is *exactly* `extensor n` (no proportionality scalar needed —
-hitting `n` on the nose is what the exact contragredient equation buys over the up-to-determinant
-O(n) route). The dependent (`extensor n = 0`) case is trivial (`complementIso 0 = 0 ∈ range`).
-Feeds the assembly `extensor_join_proportional_complementIso_meet` (the per-line join=meet
-duality KT leaves implicit). -/
+/-- **The meet of two hyperplanes lies in the image of `⋀^k W`** (`lem:meet-two-hyperplanes`, the
+first statement): for `n : Fin 2 → K^(k+2)` and a `k`-dimensional subspace `W` whose vectors are
+orthogonal to `n 0` and `n 1`, `*(n 0 ∨ n 1)` lies in the image of `exteriorPower.map k W.subtype`.
+If `n` is dependent, `n 0 ∨ n 1 = 0`. Otherwise `W` is the space of all the vectors orthogonal to
+`n` (`finrank_toDualPerp_pair_eq`). Take `g` with `g e₀ = n 0` and `g e₁ = n 1`
+(`exists_linearEquiv_basisFun_pair`) and its inverse transpose `h`. Then `n 0 ∨ n 1 = map 2 g e_S`
+for `S = {0, 1}`, so `*(n 0 ∨ n 1) = det g • map k h (*e_S)`
+(`complementIso_map_contragredient_eq`). `*e_S` lies in the image of `⋀^k W₀`, for `W₀` the span of
+the `e_t` with `t ∉ S` (`complementIso_exteriorPower_basis_mem_range_map_subtype`), and `h` sends
+`W₀` into `W` (`exteriorPower_map_mem_range_map_subtype_of_mapsTo`). -/
 theorem complementIso_extensor_mem_range_map_subtype
     (n : Fin 2 → Fin (k + 2) → K)
     (W : Submodule K (Fin (k + 2) → K))
@@ -1807,7 +1392,7 @@ theorem complementIso_extensor_mem_range_map_subtype
     rw [h0, map_zero]
     exact Submodule.zero_mem _
   classical
-  -- The `toDual`-perp `Q` of `{n 0, n 1}`; `W = Q` by the metric-free dimension count.
+  -- The space `Q` of the vectors orthogonal to `n 0` and `n 1`; `W = Q` by dimension.
   set Q : Submodule K (Fin (k + 2) → K) :=
     ⨅ j, LinearMap.ker ((Pi.basisFun K (Fin (k + 2))).toDual.flip (n j)) with hQ
   have hWQ : W ≤ Q := by
@@ -1816,12 +1401,12 @@ theorem complementIso_extensor_mem_range_map_subtype
     exact hWperp w hw
   have hQdim : Module.finrank K Q = k := finrank_toDualPerp_pair_eq hn
   have hWQeq : W = Q := Submodule.eq_of_le_of_finrank_eq hWQ (by rw [hWdim, hQdim])
-  -- The GL frame `g` with `g e₀ = n 0`, `g e₁ = n 1`, and its contragredient `h`.
+  -- The automorphism `g` with `g e₀ = n 0`, `g e₁ = n 1`, and its inverse transpose `h`.
   obtain ⟨g, hg0, hg1⟩ := exists_linearEquiv_basisFun_pair n hn
   set h : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K) := contragredient g with hh
   have hgh : ∀ x y, (Pi.basisFun K (Fin (k + 2))).toDual (h x) (g y)
       = (Pi.basisFun K (Fin (k + 2))).toDual x y := contragredient_toDual_pairing g
-  -- The coordinate `2`-subset `S = {0, 1}` and its enumerated frame vectors `vS`.
+  -- The `2`-element set `S = {0, 1}` and its enumerated standard basis vectors `vS`.
   set S : Set.powersetCard (Fin (k + 2)) 2 :=
     ⟨{0, 1}, by simp [Finset.card_insert_of_notMem, show (0 : Fin (k + 2)) ≠ 1 from by
       simp only [Ne, Fin.ext_iff, Fin.val_zero, Fin.val_one]; omega]⟩ with hS
@@ -1870,7 +1455,7 @@ theorem complementIso_extensor_mem_range_map_subtype
     congr 1
     funext i
     exact hgvS i
-  -- Every contragredient image `h e_t` (`t ∉ {0, 1}`) lies in `W = Q`.
+  -- Every image `h e_t` with `t ∉ {0, 1}` lies in `W = Q`.
   set complS := (Set.powersetCard.compl (n := 2) (m := k) (by rw [Fintype.card_fin]) S :
     Finset (Fin (k + 2))) with hcomplS
   have hhW : ∀ t ∈ complS, h (Pi.basisFun K (Fin (k + 2)) t) ∈ W := by
@@ -1909,7 +1494,7 @@ theorem complementIso_extensor_mem_range_map_subtype
     | zero => rw [map_zero]; exact Submodule.zero_mem _
     | add a c _ _ ha hc => rw [map_add]; exact Submodule.add_mem _ ha hc
     | smul r a _ ha => rw [map_smul]; exact Submodule.smul_mem _ _ ha
-  -- The standard-frame range-membership for the coordinate blade `e_S`.
+  -- `*e_S` lies in the image of `⋀^k W₀`.
   have hstd : complementIso (k := k) (j := 2) (by omega)
       ((Pi.basisFun K (Fin (k + 2))).exteriorPower 2 S)
       ∈ LinearMap.range (exteriorPower.map k W₀.subtype) :=
@@ -1921,25 +1506,16 @@ theorem complementIso_extensor_mem_range_map_subtype
   refine Submodule.smul_mem _ _ ?_
   exact exteriorPower_map_mem_range_map_subtype_of_mapsTo h W₀ W hhW₀ hstd
 
-/-- **The per-line point-join ↔ panel-meet duality at general `d`**
-(`lem:case-III-claim612-line-in-panel-union`, the assembly closing the panel-meet ↔ point-join
-duality). For the two normals `n : Fin 2 → K^{k+2}` cutting out a line `L` (homogeneous span
-`dim k = d−1`) inside a panel and the `k = d−1` points `p : Fin k → K^{k+2}` spanning `L` (each
-`toDual`-orthogonal to both normals, `hperp`), the panel-meet `complementIso (j := 2) ⟨extensor n,
-_⟩` and the point-join `⟨extensor p, _⟩` are proportional in `⋀^k (Fin (k+2) → K)`:
-`∃ c, c • (panel-meet) = (point-join)`.
-
-This is the join=meet equality KT leave implicit reading eq. (6.45)/(6.66)/(6.67) — `C(Lᵢ)` is
-written agnostically as both the *meet* of the 2 panels cutting out `Lᵢ` (the rank side) and the
-*join* of the `d−1` points spanning `Lᵢ` (the `D`-span side); this lemma is the one step the Lean
-must spell out. With `W = {n 0, n 1}^⊥` (`dim W = k`, the `toDual`-perp of the 2 independent
-normals via `finrank_toDualPerp_pair_eq`), both the point-join (`p i ∈ W` from `hperp`,
-`extensor_mem_range_map_subtype_of_mem_grade`) and the panel-meet
-(`complementIso_extensor_mem_range_map_subtype` above) land in the line `range
-(exteriorPower.map k W.subtype)` (`⋀^k W` is `1`-dimensional, by
-`finrank_exteriorPower_self_eq_one`); the point-join is nonzero (`hp` +
-`extensor_ne_zero_iff_linearIndependent`), so `exists_smul_eq_of_mem_range_map_subtype_grade`
-yields the scalar. -/
+/-- **The join of `d − 1` vectors orthogonal to the normals of two hyperplanes is a multiple of
+their meet** (`lem:meet-two-hyperplanes`, the second statement): for linearly independent
+`n : Fin 2 → K^(k+2)` and linearly independent `p : Fin k → K^(k+2)` orthogonal to `n 0` and `n 1`,
+`c • *(n 0 ∨ n 1) = extensor p` for some `c`. With `W` the space of the vectors orthogonal to `n`,
+of dimension `k` (`finrank_toDualPerp_pair_eq`), both lie in the image of `⋀^k W`
+(`complementIso_extensor_mem_range_map_subtype`, `extensor_mem_range_map_subtype_of_mem_grade`),
+which is a line (`exists_smul_eq_of_mem_range_map_subtype_grade`); both are nonzero, so the scalar
+can be inverted. Katoh and Tanigawa take the extensors of KT eq. (6.67) as joins of `d − 1` points
+(KT p. 698), while the formal proof gives a hinge by the meet of two panels
+(`def:panel-support-extensor`); this lemma compares the two. -/
 theorem extensor_join_proportional_complementIso_meet
     (n : Fin 2 → Fin (k + 2) → K)
     (p : Fin k → Fin (k + 2) → K)
@@ -1956,7 +1532,7 @@ theorem extensor_join_proportional_complementIso_meet
   have hWmem : ∀ w, w ∈ W ↔ ∀ j, (Pi.basisFun K (Fin (k + 2))).toDual w (n j) = 0 := by
     intro w
     simp only [hW, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
-  -- `hWperp` for the range-membership leaf is the membership characterization.
+  -- The hypothesis `hWperp` of `complementIso_extensor_mem_range_map_subtype`, from `hWmem`.
   have hWperp : ∀ w ∈ W, ∀ j, (Pi.basisFun K (Fin (k + 2))).toDual w (n j) = 0 :=
     fun w hw => (hWmem w).1 hw
   -- `finrank W = k`: the shared `toDual`-perp dimension count.
@@ -1971,8 +1547,8 @@ theorem extensor_join_proportional_complementIso_meet
       ∈ LinearMap.range (exteriorPower.map k W.subtype) :=
     extensor_mem_range_map_subtype_of_mem_grade (d := k + 1) W p
       fun i => (hWmem (p i)).2 (hperp i)
-  -- Point-join `≠ 0` (`hp`); panel-meet `≠ 0` (`complementIso` injective + `extensor n ≠ 0` from
-  -- `hpair`), so the proportionality scalar is invertible.
+  -- The join is not zero (`hp`), and the meet is not zero (`complementIso` is injective, and
+  -- `extensor n ≠ 0` by `hpair`).
   have hjoinne : (⟨extensor p, extensor_mem_exteriorPower p⟩ : ⋀[K]^k (Fin (k + 2) → K)) ≠ 0 := by
     rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent p).2 hp
   have hmeetne : complementIso (k := k) (j := 2) (by omega)
@@ -1980,9 +1556,8 @@ theorem extensor_join_proportional_complementIso_meet
     rw [Ne, map_eq_zero_iff _ (complementIso (k := k) (j := 2) (by omega)).injective,
       Subtype.ext_iff]
     exact (extensor_ne_zero_iff_linearIndependent n).2 hpair
-  -- Both members of the line `range (⋀^k W ↪)`; the point-join is nonzero, so it generates the
-  -- line and the panel-meet is a multiple of it. Invert the (nonzero) scalar to orient the
-  -- proportionality `(panel-meet) ↦ (point-join)` (the form the discriminator consumes).
+  -- Both lie in the line, the image of `⋀^k W`, and the join is not zero, so the meet is a
+  -- multiple of it; invert the scalar to write the join as a multiple of the meet.
   obtain ⟨c, hc⟩ :=
     exists_smul_eq_of_mem_range_map_subtype_grade (d := k + 1) W hWdim hjoin hjoinne hmeet
   have hcne : c ≠ 0 := by
