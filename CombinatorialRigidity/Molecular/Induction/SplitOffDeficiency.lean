@@ -6,28 +6,22 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Induction.Operations
 
 /-!
-# The combinatorial induction — deficiency tracking under the operations (`sec:molecular-induction`)
+# The combinatorial induction: the deficiency after splitting off and after removal
 
-Phase 20 (molecular-conjecture program; see `notes/MolecularConjecture.md`). On top of the graph
-operations (`Induction/Operations`), this file tracks how the `D`-deficiency moves under
-splitting-off and vertex removal (Katoh–Tanigawa 2011 §4):
+Results of the combinatorial induction (`sec:molecular-induction-dof`) after Katoh and Tanigawa
+(2011, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45**, §4.1). For a vertex `v`
+of a multigraph `G` whose only edges `eₐ` and `e_b` join it to `a, b ≠ v`, and `D = bodyBarDim n`,
+it proves by comparing the values of partitions (`def:D-deficiency`):
 
-* **splitting-off does not increase the deficiency** and lowers it by at most one
-  (`splitOff_deficiency_le` / `splitOff_deficiency_ge`, `lem:splitoff-deficiency`; KT 4.3(i));
-* **vertex removal raises the deficiency** (`removeVertex_deficiency_ge`, `lem:removal-deficiency`;
-  KT Lemma 4.4);
-* the combined degrees-of-freedom bookkeeping (`dof_tracking`, `lem:dof-tracking`; KT 4.3–4.5);
-* **the label-reusing form of the upper bound**, suppressing a degree-2 body by relinking one of
-  its own edge labels rather than a fresh one (`splitOff_deficiency_le_of_eq_left`,
-  `lem:splitoff-deficiency-reuse`), the form the pencil open-ear steps consume (Phase 40h SHORT);
-* **the merged-deficiency form of the upper bound**, comparing against `Graph.deficiencyMerged`
-  at a pair of bodies rather than the plain deficiency
-  (`splitOff_deficiency_add_le_of_deficiencyMerged`, `lem:splitoff-deficiency-merged`), the form
-  the pencil open ears at non-adjacent ends consume (Phase 40i ORBIT).
+* the bounds `def(G̃) - 1 ≤ def(G̃_v^{ab}) ≤ def(G̃)` of KT Lemma 4.3(i)
+  (`lem:splitoff-deficiency`), the upper bound also when the new edge takes the label `eₐ`
+  (`lem:splitoff-deficiency-reuse`);
+* the bound `def(G̃) ≤ def(G̃_v)` of KT Lemma 4.4 (`lem:removal-deficiency`), and the three bounds
+  together (`lem:dof-tracking`);
+* a bound on the deficiency after splitting off from the merged deficiency of `G - v` at `a` and `b`
+  (`lem:splitoff-deficiency-merged`), for `main-component.tex`.
 
-The reducible-vertex, contraction-minimality, and forest-surgery layers build on top in
-`ReducibleVertex`, `Contraction`, and `ForestSurgery`. See `ROADMAP.md` §20 / `notes/Phase20.md`
-and the `sec:molecular-induction` dep-graph.
+Katoh and Tanigawa prove these bounds with forests (`rem:kt-lemma-41`, `rem:kt-lemma-44`).
 -/
 
 namespace Graph
@@ -36,30 +30,18 @@ open Set Matroid
 
 variable {α β : Type*}
 
-/-! ## Splitting-off does not increase the deficiency (`lem:splitoff-deficiency`)
+/-! ## Splitting off does not raise the deficiency (`lem:splitoff-deficiency`)
 
-The substantive splitting-off fact the combinatorial induction consumes (Katoh–Tanigawa
-2011 Lemma 4.3(i)), established directly via the **deficiency-count route** that bypasses
-the forest surgery of `lem:forest-surgery-split` (see `rem:kt-lemma-41` /
-`notes/Phase20.md` *Replan*). For a degree-2 vertex `v` of `G` with neighbours `a, b`,
-splitting-off `G_v^{ab}` does not increase the deficiency: `def(G̃_v^{ab}) ≤ def(G̃)`.
+The upper bound `def(G̃_v^{ab}) ≤ def(G̃)` of KT Lemma 4.3(i) (p. 661), without forests
+(`rem:kt-lemma-41` (3)). A partition `P'` of `V(G) ∖ {v}` extends to a partition `P` of `V(G)` by
+adding `v` to the part of `a` (`f = update f' v (f' a)`). Then `|P| = |P'|`, `eₐ` joins two vertices
+of one part of `P`, `e_b` joins two parts of `P` exactly when the new edge `ab` joins two parts of
+`P'`, and every other edge has the same ends in both graphs. So the value of `P'` for `G̃_v^{ab}` is
+at most that of `P` for `G̃`. -/
 
-The proof is a per-partition comparison on the green `deficiency` infrastructure of
-`Molecular/Deficiency.lean`, *no forests*. Take any partition `P'` of
-`V(G_v^{ab}) = V(G) ∖ {v}` and extend it to a partition `P` of `V(G)` by dropping `v`
-into `a`'s block (`f = update f' v (f' a)`). Then `|P| = |P'|` (the label of `v`, `f' a`,
-is already carried by `a ∈ V(G) ∖ {v}`), and the crossing-edge count does not increase:
-the `va`-edge no longer crosses `P` (both endpoints carry `f' a`), the `vb`-edge crosses
-`P` exactly when the short-circuit `e₀ = ab` crosses `P'`, and every other edge survives
-verbatim with the same crossing status. So `def_{G̃}(P) ≥ def_{G̃_v^{ab}}(P')`, and taking
-`P'` over the supremum gives `def(G̃) ≥ def(G̃_v^{ab})`. -/
-
-/-- The shared core of `splitOff_deficiency_le` and `splitOff_deficiency_le_of_eq_left`: the
-same per-partition comparison, taking the relinked label `e₀` either fresh (`e₀ ∉ E(G)`) or
-equal to the reused edge `eₐ`. The single fact both callers' proofs actually need is that `e₀`
-never crosses the extended partition `f`; this derives it from either side of `he₀` (trivially
-in the fresh case, via `hfv`/`hfa` as `eₐ`'s own endpoints in the reused case) and then runs one
-proof. Both public corollaries below just fix `he₀`'s side of the disjunction. -/
+/-- The common proof of `splitOff_deficiency_le` and `splitOff_deficiency_le_of_eq_left`: the label
+`e₀` of the new edge is either not an edge of `G` or `eₐ` (`he₀`). In both cases `e₀` does not join
+two parts of the extended partition, which is all the proof uses of it. -/
 private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v)
@@ -92,8 +74,8 @@ private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α
     · rintro _ ⟨x, ⟨hx, hxv⟩, rfl⟩
       exact ⟨x, hx, hfne x (by simpa using hxv)⟩
   have hfa : f a = f' a := hfne a hav
-  -- `e₀` never crosses `f`: trivial if fresh (`∉ E(G)`); if reused (`= eₐ`), its endpoints
-  -- `v, a` both carry `f' a`.
+  -- `e₀` does not cross `f`: it is not an edge of `G`, or it is `eₐ`, whose ends `v` and `a` both
+  -- have the label `f' a`.
   have he₀cross : e₀ ∉ G.crossingEdges f := by
     rcases he₀ with he₀ | rfl
     · exact fun h => he₀ h.1
@@ -170,19 +152,12 @@ private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α
     nlinarith [Int.ofNat_le.mpr hcross]
   exact hmono.trans (G.partitionDef_le_deficiency n f)
 
-/-- **Splitting-off does not increase the deficiency** (`lem:splitoff-deficiency`,
-KT Lemma 4.3(i)). Let `v` be a vertex of `G` with neighbours `a, b`, carried by edges `eₐ`
-(joining `v, a`) and `e_b` (joining `v, b`) that are the *only* edges of `G` incident to `v`
-(`hdeg2`; so `v` has degree two when `eₐ ≠ e_b`), with `a, b ≠ v`. With the short-circuit label
-`e₀` fresh (`e₀ ∉ E(G)`), the splitting-off `G_v^{ab}` satisfies
-`def(G̃_v^{ab}) ≤ def(G̃)`.
-
-Proved by the deficiency-count route (no forest surgery): each partition `P'` of
-`V(G) ∖ {v}` extends to a partition `P` of `V(G)` (drop `v` into `a`'s block) with
-`|P| = |P'|` and `d_G(P) ≤ d_{G_v^{ab}}(P')`, via the crossing-edge injection
-`e_b ↦ e₀`, identity elsewhere. See `rem:kt-lemma-41` and `notes/Phase20.md` for why this
-replaces KT's forest surgery (`lem:forest-surgery-split`). This is the fresh-label case of
-the shared core `splitOff_deficiency_le_aux`. -/
+/-- **Splitting off does not raise the deficiency** (`lem:splitoff-deficiency`; KT Lemma 4.3(i)):
+let `D ≥ 1`, let `eₐ` and `e_b` be the only edges of `G` at `v` (`hdeg2`), joining it to `a, b ≠ v`,
+and let the label `e₀` of the new edge not be an edge of `G`. Then `def(G̃_v^{ab}) ≤ def(G̃)`. A
+partition `P'` of `V(G) ∖ {v}` extends to one `P` of `V(G)` by adding `v` to the part of `a`, with
+`|P| = |P'|`, and the map sending `e_b` to `e₀` and fixing the other edges is injective from the
+edges of `G` across `P` to those of `G_v^{ab}` across `P'`. -/
 theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v)
@@ -192,28 +167,17 @@ theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : �
     (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n :=
   splitOff_deficiency_le_aux hD hav hbv hla hlb hdeg2 (Or.inl he₀)
 
-/-! ### Suppressing a body by reusing one of its own edge labels (`lem:splitoff-deficiency-reuse`)
+/-! ### The new edge with the label `eₐ` (`lem:splitoff-deficiency-reuse`)
 
-The label-reusing form of `splitOff_deficiency_le`: instead of a fresh short-circuit label `e₀ ∉
-E(G)`, the new `a–b` edge reuses the label `eₐ` itself (`G.splitOff v a b eₐ`), the form in which
-the pencil open-ear steps suppress a body (`main-component.tex`,
-`sec:main-component-short`). `eₐ` never crosses the extended partition `f = update f' v (f' a)` —
-its endpoints `v, a` both carry `f' a` — so it plays the role the fresh `e₀ ∉ E(G)` played there:
-the crossing-edge injection is again `e_b ↦ eₐ`, identity elsewhere, and the same argument as
-`splitOff_deficiency_le` carries through with `eₐ ∉ G.crossingEdges f` (not `eₐ ∉ E(G)`, which
-now fails) standing in for `e₀ ∉ E(G)`. -/
+The upper bound when the new edge `ab` takes the label `eₐ` (`G.splitOff v a b eₐ`), the form in
+which the open-ear steps of `main-component.tex` suppress a vertex of degree two
+(`sec:main-component-short`). `eₐ` does not join two parts of the extended partition, as its ends
+`v` and `a` are in one part, so the proof of `splitOff_deficiency_le` goes through. -/
 
-/-- **Suppressing a body of degree two, reusing one of its own edge labels** (`lem:splitoff-
-deficiency-reuse`, the label-reusing form of `splitOff_deficiency_le`, KT Lemma 4.3(i)): with the
-same degree-2 hypotheses as `splitOff_deficiency_le` (the two `v`-incident edges `eₐ`, `e_b`), but
-reusing the label `eₐ` itself as the new `a–b` edge in place of a fresh short-circuit label,
-`def(G̃'') ≤ def(G̃)`.
-
-Proved by the same deficiency-count route as `splitOff_deficiency_le`: `eₐ` is internal under the
-extended partition `f` (its endpoints `v, a` share the label `f' a`), so the crossing-edge
-injection `e_b ↦ eₐ` is again well-defined and injective, this time using `eₐ ∉
-G.crossingEdges f` in place of `e₀ ∉ E(G)`. This is the reused-label case of the shared core
-`splitOff_deficiency_le_aux`. -/
+/-- **Suppressing a vertex of degree two** (`lem:splitoff-deficiency-reuse`): under the hypotheses
+of `splitOff_deficiency_le`, with the label `eₐ` for the new edge, `def(G̃'') ≤ def(G̃)`, where
+`G'' = G.splitOff v a b eₐ` is `G` with the end `v` of `eₐ` replaced by `b`, and with `v` and `e_b`
+deleted. It is the case `e₀ = eₐ` of `splitOff_deficiency_le_aux`. -/
 theorem splitOff_deficiency_le_of_eq_left [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v)
@@ -224,24 +188,17 @@ theorem splitOff_deficiency_le_of_eq_left [Finite α] [Finite β] {G : Graph α 
 
 /-! ### Splitting off with a gap in the merged deficiency (`lem:splitoff-deficiency-merged`)
 
-A companion form of the upper bound, compared against the **merged** deficiency
-(`Graph.deficiencyMerged`, `Molecular/Deficiency.lean`) at the pair `a, b` rather than against
-`def(G̃')` directly: if every partition of `V(G')` keeping `a` and `b` together already falls
-`D - 1` short of `def(G̃')`, then splitting off at `v` and relinking the label `e₀` (whose every
-`G`-link already has `v` as an end, so it need not be one of `v`'s own edges) to join `a` and `b`
-lowers the whole graph's deficiency by that same gap. This is the form the pencil open-ear steps
-at non-adjacent ends consume (`sec:main-component-orbit`).
-
-Proved by the same per-partition comparison as the other splitting-off bounds: every partition of
-`V₁ = V(G) ∖ {v}` extends to one of `V(H) = V₁` unchanged, the parts are the same, and a partition
-separating `a, b` gains exactly the one crossing edge `e₀`; one merging them is bounded directly by
-`deficiencyMerged`. -/
+The open-ear steps of `main-component.tex` at non-adjacent ends use this bound
+(`sec:main-component-orbit`). Let `G' = G[V(G) ∖ {v}]`, and let `H` be `G` split off at `v` with the
+label `e₀`, all of whose links in `G` are at `v`. Then `H` is `G'` with one more edge `e₀` joining
+`a` and `b`. A partition that separates `a` and `b` has one more edge across it in `H` than in `G'`,
+so its value drops by `D - 1`; one with `a` and `b` in one part has value at most the merged
+deficiency (`deficiencyMerged`). -/
 
 /-- **Splitting off with a gap in the merged deficiency** (`lem:splitoff-deficiency-merged`): let
-`v` be a body of `G`, let `a, b ≠ v` be bodies of `G`, and let `e₀` be a label every link of which
-in `G` has `v` as an end. With `V₁ = V(G) ∖ {v}`, `G' = G[V₁]`, and `H` the splitting-off relinking
-`e₀` to join `a` and `b`, if the merged deficiency of `G'` at `a, b` falls `D - 1` (`D = bodyBarDim
-n ≥ 1`) short of `def(G̃')`, then `def(H̃)` falls that same gap short of `def(G̃')`. -/
+`D ≥ 1`, let `a, b ≠ v` be vertices of `G`, let every link of `e₀` in `G` be at `v` (`he₀`), and let
+`V₁ = V(G) ∖ {v}`, `G' = G[V₁]` and `H = G.splitOff v a b e₀`. If the merged deficiency of `G'` at
+`a` and `b` is at most `def(G̃') - (D - 1)` (`hδ`), then so is `def(H̃)`. -/
 theorem splitOff_deficiency_add_le_of_deficiencyMerged [Finite α] [Finite β] {G : Graph α β}
     {n : ℕ} (hD : 1 ≤ bodyBarDim n) {V₁ : Set α} {v a b : α} {e₀ : β} (hV₁ : V(G) \ {v} = V₁)
     (hav : a ≠ v) (hbv : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
@@ -307,40 +264,20 @@ theorem splitOff_deficiency_add_le_of_deficiencyMerged [Finite α] [Finite β] {
   exact (ciSup_le fun f => by linarith [hsup f] : ⨆ f, H.partitionDef n f ≤
     G'.deficiency n - ((bodyBarDim n : ℤ) - 1)) |> fun h => by linarith
 
-/-! ### Splitting-off lowers the deficiency by at most one (`lem:splitoff-deficiency`, KT 4.3(ii))
+/-! ### Splitting off lowers the deficiency by at most one (`lem:splitoff-deficiency`)
 
-The companion lower bound to `splitOff_deficiency_le`: splitting-off at a degree-2 vertex
-`v` drops the deficiency by at most `1`, `def(G̃_v^{ab}) ≥ def(G̃) − 1`. Combined with the
-upper bound `def(G̃_v^{ab}) ≤ def(G̃)` (`splitOff_deficiency_le`), this pins
-`def(G̃_v^{ab}) ∈ {def(G̃), def(G̃) − 1}` — the "`G_v^{ab}` is a `k`-dof-graph or a
-`(k−1)`-dof-graph" alternative of KT Lemma 4.3(i)/(ii). The dof-tracking assembly
-(`lem:dof-tracking`) consumes this two-sided bound; the matroid-base characterization of
-*which* of the two holds (`∃` base `B'` with `|ã̃b ∩ B'| < D − 1`) is KT's reading via the
-deferred forest surgery (`rem:kt-lemma-41`) and is not needed for Theorem 4.9.
+The lower bound `def(G̃) - 1 ≤ def(G̃_v^{ab})` of KT Lemma 4.3(i), with which `G_v^{ab}` is a
+`k`-dof-graph or a `(k - 1)`-dof-graph when `G` is a `k`-dof-graph. Take a partition `f` of `V(G)`
+of value `def(G̃)` (`exists_eq_ciSup_of_finite`), and the same labels on `V(G) ∖ {v}`. If another
+vertex has the label of `v`, the number of parts is unchanged, and the edges across do not increase,
+as the new edge `ab` crosses only if `eₐ` or `e_b` does. If `v` is alone in its part, there is one
+part fewer, and both `eₐ` and `e_b` cross while `ab` replaces at most one of them, so the value
+drops by at most `D - (D - 1) = 1`. -/
 
-The proof is again a per-partition deficiency-count comparison, *no forests*, dual to
-`splitOff_deficiency_le`: take a partition `f` of `V(G)` attaining `def(G̃)` (finite
-supremum, `exists_eq_ciSup_of_finite`), reuse the *same* labeling on `V(G) ∖ {v}`, and
-case-split on whether `v`'s label is shared by another vertex.
-* If `v`'s label is shared, `|P|` is unchanged and the crossing count does not increase
-  (the `va`/`vb` edges leaving and the short-circuit `ab` entering crosses at most as
-  often), so `def_{G̃_v^{ab}}(P) ≥ def_{G̃}(P) = def(G̃)`.
-* If `v` is isolated in its part, `|P|` drops by exactly `1` and the crossing count drops
-  by at least `1` (both `va`, `vb` left, `ab` enters), so `def_{G̃_v^{ab}}(P) ≥
-  D(|P| − 2) − (D−1)(d_G(P) − 1) = def(G̃) − 1`. -/
-
-/-- **Splitting-off lowers the deficiency by at most one** (`lem:splitoff-deficiency`,
-KT Lemma 4.3(i)/(ii) refinement). With the same degree-2 hypotheses as
-`splitOff_deficiency_le` (the two `v`-incident edges `eₐ`, `e_b` and the fresh `e₀ ∉ E(G)`),
-`def(G̃) − 1 ≤ def(G̃_v^{ab})`. Together with `splitOff_deficiency_le` this confines the
-splitting-off deficiency to `{def(G̃), def(G̃) − 1}`: `G_v^{ab}` is a `k`-dof- or a
-`(k−1)`-dof-graph.
-
-Proved by the deficiency-count route (no forest surgery), dual to `splitOff_deficiency_le`:
-a partition `f` attaining `def(G̃)` is reused on `V(G) ∖ {v}`; a case split on whether `v`'s
-label is shared bounds the change in parts and crossing edges. See `rem:kt-lemma-41` and
-`notes/Phase20.md` for why the matroid-base form of KT 4.3(ii) is off the Theorem-4.9
-critical path. -/
+/-- **Splitting off lowers the deficiency by at most one** (`lem:splitoff-deficiency`; KT
+Lemma 4.3(i)): under the hypotheses of `splitOff_deficiency_le`, with `eₐ ≠ e_b`,
+`def(G̃) - 1 ≤ def(G̃_v^{ab})`. With `splitOff_deficiency_le`, `G_v^{ab}` is a `k`-dof-graph or a
+`(k - 1)`-dof-graph when `G` is a `k`-dof-graph. The proof compares partitions as above. -/
 theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
@@ -505,50 +442,20 @@ theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : �
     have : (G.numParts f : ℤ) = (H.numParts f : ℤ) + 1 := hparts
     nlinarith [Int.ofNat_le.mpr hcross, this]
 
-/-! ### Vertex removal raises the deficiency (`lem:removal-deficiency`, KT Lemma 4.4)
+/-! ### Removal does not lower the deficiency (`lem:removal-deficiency`)
 
-The other half of the local dof bookkeeping at a degree-2 vertex `v`: deleting `v`
-(`removeVertex`) does **not** decrease the deficiency, `def(G̃) ≤ def(G̃ᵥ)`. Equivalently,
-if `def(G̃) = k` then `def(G̃ᵥ) ≥ k` — Katoh–Tanigawa 2011 Lemma 4.4 (p.662).
+The bound `def(G̃) ≤ def(G̃_v)` of KT Lemma 4.4 (p. 662), without forests; Katoh and Tanigawa prove
+it with forests (`rem:kt-lemma-44`). Take a partition `f` of `V(G)` of value `def(G̃)` and the same
+labels on `V(G) ∖ {v}`. The edges of `G_v` across it are those of `G` across it other than `eₐ` and
+`e_b`, so `c ∈ {0, 1, 2}` fewer edges cross. If another vertex has the label of `v`, the number of
+parts is unchanged, and the value rises by `(D - 1)c`. If `v` is alone in its part, there is one
+part fewer, but `a` and `b` are in other parts, so `c = 2`, and the value rises by
+`2(D - 1) - D = D - 2 ≥ 0`, as `D ≥ 2`. -/
 
-This is proved by the **same deficiency-count route** that carried `splitOff_deficiency_le`
-/ `splitOff_deficiency_ge`, *no forests* — refuting `notes/Phase20.md` *Finding 2* (which
-had claimed KT 4.4's lower bound is not a deficiency-counting fact, gated on the unsplit
-forest surgery). The removal case is in fact structurally *simpler* than splitting-off:
-`removeVertex v = deleteVerts {v}` adds **no** fresh edge `e₀`/`ab`, so the crossing count
-strictly drops with no replacement. Take a partition `f` of `V(G)` attaining `def(G̃) = k`
-(finite supremum), and reuse the *same* labeling on `V(Gᵥ) = V(G) ∖ {v}`. The crossing
-edges of `Gᵥ` are exactly the crossing edges of `G` other than the two `v`-incident edges
-`eₐ`, `e_b` (`hdeg2`), so `d_{Gᵥ}(P) = d_G(P) − c` with `c ∈ {0, 1, 2}` the number of
-`v`-edges that crossed. Case-split on whether `v`'s label is shared:
-* **shared** — `|P|` unchanged, so `def_{Gᵥ}(P) = k + (D−1)·c ≥ k` (the dropped `v`-edges
-  *help*, since `partitionDef` carries `−(D−1)·d`; we only need `d_{Gᵥ}(P) ≤ d_G(P)`).
-* **isolated** — `|P|` drops by exactly `1`, but `v`'s neighbours `a, b` are then forced
-  into *different* blocks from `v`, so **both** `eₐ` and `e_b` crossed (`c = 2`), giving
-  `def_{Gᵥ}(P) = k − D + 2(D−1) = k + (D−2) ≥ k`. The `+2(D−1)` crossing-drop exactly
-  pays for the `−D` part-loss precisely because `D ≥ 2`.
-
-The `2 ≤ bodyBarDim n` hypothesis (strengthening the bare `1 ≤ bodyBarDim n` the
-splitting-off lemmas carry) is where the molecular regime `n ≥ 2 ⟹ D = n(n+1)/2 ≥ 3`
-enters; it is the genuine signature difference from `splitOff_deficiency_ge`, forcing the
-isolated case to break even. Degree-2 (`hdeg2`: `eₐ`, `e_b` are the only `v`-incident
-edges) is what forces `c = 2` in the isolated case. -/
-
-/-- **Vertex removal raises the deficiency** (`lem:removal-deficiency`, KT Lemma 4.4,
-p.662). Let `v` be a degree-2 vertex of `G` with neighbours `a, b`, carried by the two
-distinct edges `eₐ` (joining `v, a`) and `e_b` (joining `v, b`) that are the *only* edges
-of `G` incident to `v` (`hdeg2`), with `a, b ≠ v`. With `D = bodyBarDim n ≥ 2`, vertex
-removal does not decrease the deficiency: `def(G̃) ≤ def(G̃ᵥ)`. So if `G` is a `k`-dof-graph
-then `G_v` has `def(G̃ᵥ) ≥ k`.
-
-Proved by the deficiency-count route (no forest surgery), parallel to
-`splitOff_deficiency_ge` but simpler — there is no fresh short-circuit edge, so the
-crossing count strictly drops. A partition `f` attaining `def(G̃)` is reused on
-`V(G) ∖ {v}`; a case split on whether `v`'s label is shared bounds the change in parts and
-crossing edges. In the isolated case both `v`-edges necessarily cross (`c = 2`), and the
-`D ≥ 2` hypothesis makes the `+2(D−1)` crossing-drop pay for the `−D` part-loss. This is
-the deficiency-count proof that **refutes** `notes/Phase20.md` *Finding 2*'s claim that
-KT 4.4 needed the unsplit forest surgery. See `notes/Phase20.md` and `rem:kt-lemma-44`. -/
+/-- **Removal does not lower the deficiency** (`lem:removal-deficiency`; KT Lemma 4.4, p. 662): let
+`D ≥ 2`, and let the distinct edges `eₐ` and `e_b` be the only edges of `G` at `v` (`hdeg2`),
+joining it to `a, b ≠ v`. Then `def(G̃) ≤ def(G̃_v)`; so if `G` is a `k`-dof-graph, `def(G̃_v) ≥ k`.
+The proof compares partitions as above. -/
 theorem removeVertex_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
@@ -659,36 +566,13 @@ theorem removeVertex_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n 
     rw [partitionDef, partitionDef]
     nlinarith [Int.ofNat_le.mpr hcross, hparts]
 
-/-! ### Degrees of freedom under vertex removal and splitting-off (`lem:dof-tracking`, KT 4.3–4.5)
+/-! ### The deficiency after splitting off and after removal (`lem:dof-tracking`) -/
 
-The local degree-of-freedom bookkeeping at a degree-2 vertex `v`, packaged from the three
-green per-partition deficiency bounds. For a `k`-dof-graph `G` (`def(G̃) = k`) with a
-degree-2 vertex `v` of neighbours `a, b`:
-* the splitting-off `G_v^{ab}` is a `k`-dof- or a `(k−1)`-dof-graph — `def(G̃_v^{ab}) ∈
-  {k, k − 1}` — by `splitOff_deficiency_le` (`≤ k`) and `splitOff_deficiency_ge` (`≥ k − 1`);
-* the removal `G_v` is at least a `k`-dof-graph — `def(G̃_v) ≥ k` — by
-  `removeVertex_deficiency_ge`.
-
-These are the dof-conservation laws the combinatorial induction (KT 4.6–4.9) tracks: each
-reduction step (splitting-off or vertex removal) keeps the deficiency `k` invariant or drops
-it by exactly one, so the target `k` is preserved along the reduction chain. KT phrases the
-"which alternative" refinement (whether `G_v^{ab}` keeps `k` or drops to `k − 1`) via the
-fundamental-circuit count of the new edge `ab` through the forest surgery (`rem:kt-lemma-41`);
-that refinement is off the Theorem-4.9 critical path (the induction consumes only the
-two-sided bound), so it is omitted. -/
-
-/-- **Degrees of freedom under vertex removal and splitting-off** (`lem:dof-tracking`,
-KT Lemmas 4.3–4.5). Let `v` be a degree-2 vertex of `G` with neighbours `a, b`, carried by
-the two distinct edges `eₐ`/`e_b` that are the *only* edges of `G` incident to `v`
-(`hdeg2`), and let `D = bodyBarDim n ≥ 2`. If `G` is a `k`-dof-graph (`def(G̃) = k`), then
-with the fresh short-circuit label `e₀ ∉ E(G)`:
-* `def(G̃) − 1 ≤ def(G̃_v^{ab}) ≤ def(G̃)` — the splitting-off `G_v^{ab}` is a `k`-dof- or a
-  `(k−1)`-dof-graph;
-* `def(G̃) ≤ def(G̃_v)` — the removal `G_v` has deficiency `≥ k`.
-
-A packaging lemma over the three deficiency-count bounds `splitOff_deficiency_le`,
-`splitOff_deficiency_ge`, `removeVertex_deficiency_ge` (no forests; see `rem:kt-lemma-41`).
-These are the dof-conservation laws the induction toward Theorem 4.9 tracks. -/
+/-- **The deficiency after splitting off and after removal** (`lem:dof-tracking`; KT Lemmas 4.3(i)
+and 4.4): let `D ≥ 2`, let the distinct edges `eₐ` and `e_b` be the only edges of `G` at `v`,
+joining it to `a, b ≠ v`, and let `e₀ ∉ E(G)`. Then
+`def(G̃) - 1 ≤ def(G̃_v^{ab}) ≤ def(G̃) ≤ def(G̃_v)`, by `splitOff_deficiency_ge`,
+`splitOff_deficiency_le` and `removeVertex_deficiency_ge`. -/
 theorem dof_tracking [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)

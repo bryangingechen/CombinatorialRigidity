@@ -3612,12 +3612,14 @@ declaration's name as its header writes it:
   simp lemmas mention `edgeSplit`.
   *Evidence:* read (the docstrings; a `grep` for `edgeSplit`).
   *Found:* round 2 task 2.11.
-  *Disposition:* reported (`notes/Prose-report.md`, L10); round 3: in `Induction/Operations.lean`,
+  *Disposition:* done (task 30.1): in `Induction/Operations.lean`,
   the leads of `inducedSpan`, `rank_matroidMG_of_isKDof_zero`, `contract_matroidMG_rank` and
   `contract_matroidMG_deficiency_eq` name `def:induced-span`, `lem:rigid-full-rank`,
   `lem:contract-rank-bridge` and `lem:contract-deficiency-conservation`, and the section before
-  them names `contract_minimality_transport` for the minimality half (task 30); `edgeSplit`'s is
-  task 30.1's.
+  them names `contract_minimality_transport` for the minimality half (task 30); `edgeSplit`'s says
+  what the definition does, KT's edge-splitting when its new vertex and edges are new, and no
+  longer claims an identity no declaration states (task 30.1); reported (`notes/Prose-report.md`,
+  L10).
 - **F-088** · L · the balanced-partition pins (`Induction/Operations.lean`,
   `Induction/ReducibleVertex.lean`, `Induction/ForestSurgery/Reduction.lean`):
   `exists_balanced_forest_packing` repeats the move of `exists_packing_move_of_not_inc` inline, while
@@ -3637,8 +3639,11 @@ declaration's name as its header writes it:
   balanced partition, `lem:balanced-forest-packing`), and the leads of that lemma and of
   `matroidMG_indep_iff_exists_forest_packing` name `ex:kt-41-overquantified` and
   `lem:forest-packing-decomp`, the second with `lem:union-indep-iff` for the union and without the
-  credit (task 30); `ReducibleVertex.lean`'s and `ForestSurgery/Reduction.lean`'s are tasks 30.1
-  and 31's.
+  credit (task 30); in `Induction/ReducibleVertex.lean`, the docstrings and sections of
+  `isBase_vfiber_ncard_ge`, `acyclicSet_insert_vfiber_of_not_inc` and
+  `exists_packing_move_of_not_inc` name their nodes, follow `rem:kt-lemma-41` (the descent is
+  `exists_balanced_forest_packing`), and no longer tie the step to the degree of $v$ (task 30.1);
+  `ForestSurgery/Reduction.lean`'s are task 31's.
 - **F-092** · L · the surgery's pins (`Induction/ForestSurgery/EdgeSplitting.lean`,
   `Induction/ForestSurgery/Reduction.lean`): `splitOff_indep_extend_of_fiber_subset` and
   `splitOff_indep_extend_of_fiber_lt` take the degree-two hypothesis `_hdeg2` and do not use it.
@@ -3662,8 +3667,10 @@ declaration's name as its header writes it:
   forest surgery "deferred"; `removeVertex_deficiency_ge`'s cites `notes/Phase20.md` *Finding 2*.
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.14.
-  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3: `heab` dropped from the three,
-  the callers following (task 10).
+  *Disposition:* done (task 30.1): `heab` dropped from the three, the callers following (task
+  10); the header, the sections and `dof_tracking`'s docstring credit KT Lemmas 4.3(i) and 4.4,
+  the lower bound as part of 4.3(i), without the "deferred" surgery and `notes/Phase20.md` (task
+  30.1); reported (`notes/Prose-report.md`, L5).
 - **F-097** · L · the pins of KT Lemmas 4.5–4.8 (`Induction/ReducibleVertex.lean`,
   `Induction/Operations.lean`, `Induction/ForestSurgery/Reduction.lean`): in
   `splitOff_isMinimalKDof_of_pos`, the case $e = e_0$ of the minimality applies KT 4.7
@@ -3683,8 +3690,11 @@ declaration's name as its header writes it:
   from both pins; `lem:reduction-step-pos` and `lem:removal-deficiency-strict` restated, and KT 4.7's,
   4.5(ii)'s and 4.4's second assertion's pins now outside every main result's closure, dead pins
   168 → 172 (task 15); `splitOff_vertexSet_ncard_lt`'s lead names `lem:reduction-measure` (task
-  30), and `rigidContract_vertexSet_ncard_lt`'s and the two sections are task 30.1's. The
-  $D \ge 2$ question is `F-273`'s.
+  30), and those of `rigidContract_vertexSet_ncard_lt` and `rigidContract_vertexSet_ncard` (task
+  30.1); in `Induction/ReducibleVertex.lean`, `no_rigid_edge_count`'s section and docstring give
+  every $k$, and those before `mulTilde_edgeSet_ncard` and `exists_degree_le_two` no longer call KT
+  4.5(i) or the degree-two step unfinished (task 30.1); task 31 reads
+  `ForestSurgery/Reduction.lean`'s. The $D \ge 2$ question is `F-273`'s.
 - **F-104** · L · the pins of KT Theorem 4.9, KT Lemma 6.1 and the $d = 3$ pair
   (`Induction/ForestSurgery/Reduction.lean`, `Induction/ReducibleVertex.lean`,
   `AlgebraicInduction/Theorem55.lean`, `AlgebraicInduction/PanelHinge.lean`):
@@ -3702,7 +3712,8 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hV3` dropped from
   `case_cut_edge_realization_gen` and `_gp_gen`, and the second conjunct from the latter's
   hypothesis (`F-102`), the call in `theorem_55_minimalKDof_gen` following, its statement
-  unchanged; both nodes no longer ask three vertices (task 12).
+  unchanged; both nodes no longer ask three vertices (task 12); `exists_adjacent_degree_two_pair`'s
+  docstring says $d \ge 3$ (task 30.1).
 - **F-108** · L · the pins of KT Lemma 4.6's nodes (`Induction/ForestSurgery/ChainExtraction.lean`,
   `Induction/Operations.lean`, `Molecular/Deficiency.lean`): `chainData_extract` takes
   `hV3 : 3 ≤ V(G).ncard` beside `hV4 : 4 ≤ V(G).ncard`, and `[G.Simple]`, which
@@ -4284,7 +4295,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.5.
   *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: `CycleData.vertexSet_ncard`
-  deleted, and `def:cycle-data`'s note no longer names it (task 3).
+  deleted, and `def:cycle-data`'s note no longer names it (task 3); the leads of
+  `rigidContract_vertexSet_ncard` and `_lt` name `lem:reduction-measure` (task 30.1); the section in
+  `ForestSurgery/Reduction.lean` is task 31's.
 - **F-237** · L · the declarations round 5's task 3.6 pinned or unpinned
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`). The five $d = 3$ base wrappers
   `theorem_55_base_producer_empty`, `_empty_gp`, `_single_edge`, `_single_edge_gp` and
@@ -4315,7 +4328,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.7.
   *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the three `Fin m` cycle forms
-  deleted with their step (`F-266`), and `case_I_realization_nonsimple` (task 3).
+  deleted with their step (`F-266`), and `case_I_realization_nonsimple` (task 3); the leads of the
+  two theorems of KT Claim 6.6 (`Induction/Contraction.lean`) name `lem:claim-6-6` (task 30.1).
 - **F-240** · L · the declarations round 5's task 3.8 pinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`, `Molecular/AlgebraicInduction/GenericityDevice.lean`). The
   section header over `isKDof_zero_of_triangle` names `lem:case-III`, which is not its node, and the
@@ -4673,7 +4687,14 @@ declaration's name as its header writes it:
   (`chainData_relabel_arm`, `bottomRelabel_image_mem_span_caseIIICandidate`,
   `case_III_arm_corner_assembly`). Its screen reads the code, comments stripped, for each name, to
   a fixed point, as the cache counts a shared `_proof_N` auxiliary as a use
-  (`scratch/reconcile-lean/t30/unused_src.py`, gitignored; at `722c88ef`).
+  (`scratch/reconcile-lean/t30/unused_src.py`, gitignored; at `722c88ef`). Task 30.1 adds four in
+  `Molecular/Induction/` (the same screen, at `552051eb`): `Graph.rigidContract_eq_contract`, whose
+  docstring called it the entry point of `lem:rigidContract-isMinimalKDof`'s proof (that proof uses
+  `rigidContract_eq_contract'`), `Graph.exists_adjacent_degree_two_pair_of_edgeBound` (used only by
+  the next) and `Graph.exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos`, whose
+  docstring said it discharged a "safe-vertex obligation" (`ReducibleVertex.lean`), and
+  `Matroid.Union_pow_isBasis'_split_of_rk_saturated` (`Contraction.lean`), which two docstrings
+  said took the rank equality that `Matroid.Union_pow_contract_eq_contract_of_rk_saturated` takes.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -4721,6 +4742,25 @@ declaration's name as its header writes it:
   of `lem:edge-set-indep-pos` from the other lemma; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t30.lean` and `Hyps-t30-2.lean`, gitignored).
   *Found:* RECONCILE round 3 task 30.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-283** · L · six hypotheses of six declarations of `Molecular/Induction/` that the proofs do
+  not use or the others give: `Graph.splitOff_deficiency_ge`'s `hdeg2`, which its proof does not use
+  (`SplitOffDeficiency.lean`; `lake lint` does not report it);
+  `Graph.exists_degree_two_removeVertex_of_no_simple_contraction`'s `_hV3`, which its proof does
+  not use, and `Graph.deficiency_eq_zero_of_simple_rigid_no_simpleContraction`'s `hV3`, both
+  `3 ≤ V(G).ncard`, which `hrig` gives, as a proper rigid subgraph has two vertices and not all of
+  `G`'s (`lem:claim-6-6` states it); `Graph.contraction_isMinimalKDof`'s `hVGne : V(G).Nonempty`,
+  which `hH` gives; `Graph.rigidContract_deficiency_eq`'s `[DecidableEq β]`, which its statement
+  does not use (hence its `set_option linter.unusedDecidableInType false`) and `classical` supplies
+  (`Contraction.lean`); and `Graph.not_simple_of_isMinimalKDof_of_ncard_two`'s
+  `hG : G.IsMinimalKDof n 0`, used only as `G.IsKDof n 0`, with which its `[DecidableEq β]` goes
+  too (`ReducibleVertex.lean`; `lem:theorem-55-base-producer`).
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: a copy of the first without
+  `hdeg2`, and of the last with `G.IsKDof n 0`, that elaborate with the same proofs (`hG` for
+  `hG.1` in the last); the second, third and fourth called with the hypothesis derived from `hrig`
+  or `hH`; the fifth with `classical`; all on the three standard axioms
+  (`scratch/reconcile-lean/Hyps-t301.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 30.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

@@ -6,23 +6,22 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
 
 /-!
-# The combinatorial induction — contraction preserves minimality (`sec:molecular-induction`)
+# The combinatorial induction: the contraction of a proper rigid subgraph
 
-Phase 20 (molecular-conjecture program; see `notes/MolecularConjecture.md`). On top of the
-rigid-subgraph contraction `rigidContract` (`Induction/ReducibleVertex`), this file shows that
-contracting a proper rigid subgraph preserves minimal `0`-dof-ness (Katoh–Tanigawa 2011 §3–4):
+Results of the combinatorial induction (`sec:molecular-induction-inherited`) after Katoh and
+Tanigawa (2011, *A proof of the molecular conjecture*, Discrete Comput. Geom. **45**, §§3.2 and
+6.2). For a multigraph `G`, `D = bodyBarDim n`, `G̃ = (D-1)·G` with its matroid `M(G̃)`, and the
+contraction `G / E(H)` of a subgraph `H` (`rigidContract`, `ReducibleVertex.lean`), it proves:
 
-* the cycle matroid under the vertex-collapse map (N4b) and the **simplicity** of a
-  rigid-subgraph contraction (G2b);
-* the union↔contraction crux (N4c), routed through the abstract matroid-union lemmas
-  `Union_pow_isBasis'_split_of_rk_saturated` / `Union_pow_contract_eq_contract_of_rk_saturated`
-  (the `namespace Matroid` block here);
-* minimality transport along a contraction and the graph-level bridge
-  `rigidContract_isMinimalKDof` (N4, `lem:rigidContract-isMinimalKDof`,
-  `lem:contraction-minimality`).
-
-The forest-surgery layer and Theorem 4.9 build on top in `ForestSurgery`. See `ROADMAP.md` §20 /
-`notes/Phase20.md` and the `sec:molecular-induction` dep-graph.
+* KT Lemma 3.5 for the matroid contraction `M(G̃) / E(H̃)` (`lem:contract-minimality-transport`,
+  `lem:contraction-minimality`), and for the graph `G / E(H)` when `H` is a proper rigid subgraph
+  (`lem:rigidContract-isMinimalKDof`), through `M((G / E(H))̃) = M(G̃) / E(H̃)`
+  (`matroidMG_rigidContract_eq_contract`), which rests on a fact about the union of copies of a
+  matroid (`Matroid.Union_pow_contract_eq_contract_of_rk_saturated`);
+* that the contraction of a proper rigid subgraph keeps the deficiency, without minimality
+  (`lem:pencil-contraction-deficiency`, `sec:pencil-reduction`);
+* when the contraction is simple, and KT Claim 6.6: a vertex of degree two when no proper rigid
+  subgraph has a simple contraction (`lem:claim-6-6`, `sec:molecular-algebraic-induction-caseI`).
 -/
 
 namespace Graph
@@ -31,35 +30,26 @@ open Set Matroid
 
 variable {α β : Type*}
 
-/-! ## The cycle matroid under the vertex-collapse map (N4b; `lem:rigidContract-isMinimalKDof`)
+/-! ## The cycle matroid of the contraction (`lem:rigidContract-isMinimalKDof`)
 
-The graph-side brick of the contraction-minimality bridge: edge multiplication commutes with
-rigid-subgraph contraction, and — once the multiplied rigid subgraph `H̃` is preconnected
-(`mulTilde_preconnected_of_isKDof_zero`, N4a) — the cycle matroid of the contracted multiplied
-graph is the matroid contraction `(G̃).cycleMatroid ／ E(H̃)`. This is the per-cycle-matroid
-step the `Matroid.Union` substrate of `matroidMG` is built on (N4c lifts it through the union).
--/
+Multiplying the edges commutes with the contraction, and when `H̃` is connected, the cycle matroid
+of `(G / E(H))̃` is the contraction of that of `G̃` by `E(H̃)`. -/
 
-/-- **Edge multiplication commutes with rigid-subgraph contraction** (N4b graph-side brick):
-`(G / E(H))̃ = G̃ / E(H̃)`, i.e. `(G.rigidContract H r).mulTilde n = (G.mulTilde n).rigidContract
-(H.mulTilde n) r`. Both `deleteEdges` (lifted along the first projection) and the vertex-relabel
-`map` commute with the `Fin (D-1)`-indexing of `edgeMultiply`, so multiplying the edges of the
-delete-then-relabel contraction agrees with contracting the multiplied graph. The collapse map
-`collapseTo r V(H)` is unchanged because `V(H̃) = V(H)`. This puts `mulTilde`-of-`rigidContract`
-into the shape `cycleMatroid_contract` (vendored) is stated against. -/
+/-- **Multiplying the edges commutes with the contraction** (a step of
+`lem:rigidContract-isMinimalKDof`): `(G / E(H))̃ = G̃ / E(H̃)`, as deleting edges and relabelling
+vertices commute with taking `D - 1` copies of each edge, and `V(H̃) = V(H)`. -/
 lemma mulTilde_rigidContract (G H : Graph α β) (r : α) (n : ℕ) :
     (G.rigidContract H r).mulTilde n = (G.mulTilde n).rigidContract (H.mulTilde n) r := by
   refine Graph.ext (by simp [mulTilde, rigidContract]) fun p x y => ?_
   obtain ⟨e, i⟩ := p
   simp [mulTilde, rigidContract, edgeMultiply_isLink, Graph.map_isLink, deleteEdges_isLink]
 
-/-- **The collapse map represents the connected components of a preconnected `H̃`** (N4b
-brick): for a preconnected multiplied subgraph `H̃` with representative `r ∈ V(H)`, the
-vertex-collapse `collapseTo r V(H)` is a representative function for `H̃`'s connectivity
-partition. Outside `V(H̃) = V(H)` it is the identity; on `V(H)` it sends everything to `r`,
-and preconnectedness makes `r` connected to each such vertex, so `collapseTo` respects the
-single connected component. This is the hypothesis the vendored `cycleMatroid_contract`
-demands; `mulTilde_preconnected_of_isKDof_zero` (N4a) supplies the preconnectedness. -/
+/-- **The collapse map picks a vertex of a connected `H̃`** (a step of
+`lem:rigidContract-isMinimalKDof`): if `H̃` is preconnected and `r ∈ V(H)`, then `collapseTo r V(H)`
+is a representative function of the partition of `V(H̃)` into connected components
+(`Partition.IsRepFun`): it fixes the vertices outside `V(H)` and sends those of `V(H)`, all
+connected to `r`, to `r`. `cycleMatroid_contract` of the `Matroid` package asks for it, and
+`mulTilde_preconnected_of_isKDof_zero` gives the connectivity when `H` is rigid. -/
 lemma rigidContract_collapseTo_isRepFun {H : Graph α β} {r : α} (hr : r ∈ V(H)) (n : ℕ)
     (hconn : (H.mulTilde n).Preconnected) :
     (H.mulTilde n).connPartition.IsRepFun (collapseTo r V(H)) := by
@@ -77,38 +67,27 @@ lemma rigidContract_collapseTo_isRepFun {H : Graph α β} {r : α} (hr : r ∈ V
     have hyV : y ∈ V(H) := hsupp.mp hxy.right_mem
     simp [collapseTo, hxV, hyV]
 
-/-- **Rigid-subgraph contraction as the direct vendored contraction** (N4b brick): the
-delete-then-relabel `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` *is* the
-vendored `G /[E(H), collapseTo r V(H)]` (which expands to `(collapseTo r V(H) ''ᴳ G) ＼ E(H)`),
-because the `map` commutes with the `＼ E(H)` (`map_deleteEdges_comm`). The shape
-`cycleMatroid_contract` consumes directly — without the spurious inner `＼ E(H)` that the
-delete-first phrasing `rigidContract_eq_contract` carries on the contracted matroid side. -/
+/-- **The contraction as a contraction of the `Matroid` package** (a step of
+`lem:rigidContract-isMinimalKDof`): `G / E(H) = G /[E(H), collapseTo r V(H)]`, the package's
+`(collapseTo r V(H) ''ᴳ G) ＼ E(H)`, as relabelling the vertices commutes with deleting edges
+(`map_deleteEdges_comm`). It is the form `cycleMatroid_contract` takes. -/
 lemma rigidContract_eq_contract' (G H : Graph α β) (r : α) :
     G.rigidContract H r = G /[E(H), collapseTo r V(H)] := by
   rw [rigidContract, Graph.contract, ← Graph.map_deleteEdges_comm]
 
-/-! ## Simplicity of a rigid-subgraph contraction (G2b; `lem:case-I-realization`)
+/-! ## When the contraction is simple
 
-The combinatorial obligation behind the *generic* (general-position) inductive hypothesis of
-Theorem 5.5's Case I: when does the contraction `G / E(H)` stay simple? Katoh–Tanigawa 2011's
-Case I trifurcates on exactly this question (printed pp. 673, 676): Lemma 6.3 *assumes* a proper
-rigid subgraph `H` with `G / E(H)` simple, while Lemma 6.5 handles the complementary case (no
-such `H`) by a *degree-2 vertex removal* rather than a contraction. So the contraction can
-genuinely fail to be simple — collapsing `V(H)` to one vertex can create a loop (an edge with
-both ends in `V(H)`, but such edges lie in `E(H)` and are deleted) or a parallel pair (two edges
-of `G ＼ E(H)` joining the same collapsed end-pair). The honest formalization therefore states a
-*positive* `map`-simplicity criterion (`map_simple`, the genuinely new graph-theoretic content,
-absent from the fork's `Simple` API) and specializes it to `rigidContract` (`rigidContract_simple`),
-reducing `(G / E(H)).Simple` to two graph-side hypotheses on `G ＼ E(H)` under the collapse map —
-the exact shape KT Lemma 6.3 supplies. -/
+Contracting a subgraph of a simple graph can create loops and parallel edges. Katoh and Tanigawa
+divide Case I of the proof of their Theorem 5.5 by whether some proper rigid subgraph has a simple
+contraction (p. 673): Lemma 6.3 takes one (p. 674), and Lemma 6.5 the rest (p. 676). Relabelling the
+vertices gives a simple graph when it creates neither loops nor parallel edges (`map_simple`), and
+the contraction is such a relabelling (`rigidContract_simple`). The converse forms
+(`map_not_simple`, `rigidContract_not_simple`) give the vertex of KT Claim 6.6. -/
 
-/-- **Vertex-relabel simplicity criterion** (G2b abstract kernel; the fork has no `map`-simplicity
-lemma). The relabelled graph `f ''ᴳ G` is simple when (i) `f` never identifies the two ends of an
-edge (`hloop`: no edge of `G` becomes a loop under `f`) and (ii) `f` never identifies two distinct
-edges' end-pairs (`hpar`: edges with `f`-equal end-pairs are equal). Both are necessary: a `map`
-can manufacture both loops (collapsing an edge's endpoints) and parallel edges (collapsing two
-edges onto the same pair), which is why simplicity is *not* preserved by `map` unconditionally
-(unlike `↾`/`＼`/`-`/induce, all subgraph operations with `Simple` instances in the fork). -/
+/-- **When relabelling the vertices gives a simple graph** (a step of `lem:claim-6-6`): `f ''ᴳ G` is
+simple if `f` sends the two ends of no edge of `G` to one vertex (`hloop`), and any two edges whose
+ends `f` sends to the same pair are equal (`hpar`). Relabelling can create both loops and parallel
+edges. -/
 lemma map_simple {α' : Type*} {f : α → α'} {G : Graph α β}
     (hloop : ∀ e x y, G.IsLink e x y → f x ≠ f y)
     (hpar : ∀ e₁ e₂ x₁ y₁ x₂ y₂, G.IsLink e₁ x₁ y₁ → G.IsLink e₂ x₂ y₂ →
@@ -124,23 +103,10 @@ lemma map_simple {α' : Type*} {f : α → α'} {G : Graph α β}
     obtain ⟨u₂, v₂, h₂, hu₂, hv₂⟩ := he₂
     exact hpar e₁ e₂ u₁ v₁ u₂ v₂ h₁ h₂ hu₂ hv₂
 
-/-- **Rigid-subgraph contraction stays simple under KT Lemma 6.3's hypotheses** (G2b; the
-combinatorial fact feeding Theorem 5.5's *generic* Case-I inductive hypothesis). Specializing
-`map_simple` to `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))`: the contraction is
-simple provided
-
-* `hloop` — no surviving edge has both collapsed ends equal: an edge `e ∈ E(G) ＼ E(H)` linking
-  `x`,`y` never has `collapseTo r V(H) x = collapseTo r V(H) y`. Equivalently no surviving edge has
-  *both* endpoints in `V(H)` (which would collapse to the loop `r`-`r`), nor links `r`-adjacent
-  vertices that both land in `V(H)`;
-* `hpar` — no two surviving edges collapse to the same end-pair.
-
-These are KT Lemma 6.3's standing hypotheses ("`G` is simple and `G / E'` is simple", printed
-p. 673) read off the realized graph; KT itself takes `G / E'` simple as a *case hypothesis*
-(routing the failure to Lemma 6.5's vertex-removal), so this lemma is the faithful statement of
-that case's combinatorial input rather than an unconditional preservation theorem. The
-hypotheses are phrased on the surviving graph `G ＼ E(H)` directly (whose edge set is `E(G) ＼ E(H)`
-by `edgeSet_rigidContract`); G2c discharges them from `H.IsProperRigidSubgraph G n` + `G.Simple`. -/
+/-- **When the contraction is simple** (`def:rigid-contraction`): `G / E(H)` is simple if
+`collapseTo r V(H)` sends the two ends of no edge of `G.deleteEdges E(H)` to one vertex (`hloop`),
+and any two of its edges whose ends it sends to the same pair are equal (`hpar`): `map_simple` for
+`G / E(H) = (G.deleteEdges E(H)).map (collapseTo r V(H))`. -/
 lemma rigidContract_simple {G H : Graph α β} {r : α}
     (hloop : ∀ e x y, (G.deleteEdges E(H)).IsLink e x y →
       collapseTo r V(H) x ≠ collapseTo r V(H) y)
@@ -152,16 +118,10 @@ lemma rigidContract_simple {G H : Graph α β} {r : α}
   rw [rigidContract]
   exact map_simple hloop hpar
 
-/-- **The non-simplicity unpacking for a vertex relabel** (the contrapositive of `map_simple`;
-the genuinely-new graph input the Lemma-6.5 vertex-removal arm of the Case-I dispatch bottoms
-out on). If a relabelled graph `f ''ᴳ G` is *not* simple, then `f` either manufactures a
-**loop** — an edge `e` whose two ends collapse (`f x = f y`) — or a **parallel pair** —
-two *distinct* edges `e₁ ≠ e₂` whose end-pairs collapse to a common collapsed pair
-(`f x₁ = f x₂`, `f y₁ = f y₂`). This is exactly the two failure modes `map_simple` rules out, so
-the proof is the contrapositive: were both disjuncts false, the `map_simple` hypotheses would
-hold and force simplicity. The loop alternative does *not* carry `x ≠ y` — `map_not_simple`
-makes no looplessness assumption on `G`, so the underlying `G`-edge may itself be a loop; a
-caller in a *simple* `G` recovers `x ≠ y` from the link's `IsLink.ne`. -/
+/-- **When relabelling the vertices gives a graph that is not simple** (a step of `lem:claim-6-6`):
+if `f ''ᴳ G` is not simple, then `f` sends the two ends of some edge of `G` to one vertex, or two
+distinct edges of `G` with ends `x₁, y₁` and `x₂, y₂` have `f x₁ = f x₂` and `f y₁ = f y₂`; the
+contrapositive of `map_simple`. The first case does not give `x ≠ y`, as `G` may have loops. -/
 lemma map_not_simple {α' : Type*} {f : α → α'} {G : Graph α β}
     (h : ¬ (f ''ᴳ G).Simple) :
     (∃ e x y, G.IsLink e x y ∧ f x = f y) ∨
@@ -175,17 +135,11 @@ lemma map_not_simple {α' : Type*} {f : α → α'} {G : Graph α β}
   · by_contra hne
     exact hne (hpar e₁ e₂ x₁ y₁ x₂ y₂ h₁ h₂ hx hy)
 
-/-- **The non-simplicity unpacking for a rigid-subgraph contraction** (the contrapositive of
-`rigidContract_simple`; specializing `map_not_simple` to `rigidContract = (G ＼ E(H)).map
-(collapseTo r V(H))`). If `G / E(H)` is not simple, then either a surviving edge
-`e ∈ E(G) ＼ E(H)` has its two ends collapsed together (`collapseTo r V(H) x =
-collapseTo r V(H) y`, a loop at the representative), or two *distinct* surviving edges
-`e₁ ≠ e₂` collapse to a common end-pair (a parallel pair). This is the exact two-mode
-case-split KT Claim 6.6 (p. 676–677) reads off the contraction-non-simplicity hypothesis of
-the Lemma-6.5 arm: a parallel pair pulls back to a vertex outside `V(H)` with two edges into
-`V(H)`. The surviving-edge data is delivered against `G.deleteEdges E(H)` (whose links are
-`G`-links off `E(H)`, `deleteEdges_isLink`), matching `rigidContract_simple`'s hypothesis
-shape; a caller with `G.Simple` recovers `x ≠ y` in the loop case from `IsLink.ne`. -/
+/-- **When the contraction is not simple** (a step of `lem:claim-6-6`): if `G / E(H)` is not simple,
+then `collapseTo r V(H)` sends the two ends of some edge of `G.deleteEdges E(H)` to one vertex, or
+two distinct edges of `G.deleteEdges E(H)` have their ends sent to the same pair; this is
+`map_not_simple`. `exists_isLink_pair_of_rigidContract_not_simple` reads the vertex of KT Claim 6.6
+off it. -/
 lemma rigidContract_not_simple {G H : Graph α β} {r : α}
     (h : ¬ (G.rigidContract H r).Simple) :
     (∃ e x y, (G.deleteEdges E(H)).IsLink e x y ∧
@@ -196,18 +150,11 @@ lemma rigidContract_not_simple {G H : Graph α β} {r : α}
         collapseTo r V(H) y₁ = collapseTo r V(H) y₂ ∧ e₁ ≠ e₂) :=
   map_not_simple (f := collapseTo r V(H)) (by rwa [rigidContract] at h)
 
-/-- **The cycle matroid of a contracted multiplied graph** (N4b, the per-cycle-matroid step;
-`lem:rigidContract-isMinimalKDof`). For a subgraph `H ≤ G` whose multiplied graph `H̃` is
-preconnected (`mulTilde_preconnected_of_isKDof_zero`, N4a) with representative `r ∈ V(H)`, the
-cycle matroid of the multiplied rigid-subgraph contraction equals the matroid contraction:
-`((G / E(H))̃).cycleMatroid = (G̃).cycleMatroid ／ E(H̃)`. This is the genuinely new content of
-N4b — there is *no* vendored `cycleMatroid`-under-`map` lemma, so it must route through the
-vendored `cycleMatroid_contract` (which contracts an edge set rather than relabelling vertices).
-The bridge to `cycleMatroid_contract` is the commutation `mulTilde_rigidContract` (edge
-multiplication commutes with contraction) plus `rigidContract_eq_contract'` (the contraction is
-the vendored `G̃ /[E(H̃), collapseTo r V(H̃)]`), and its `IsRepFun` hypothesis is supplied by
-`rigidContract_collapseTo_isRepFun` from N4a's preconnectedness. The result lifts through the
-`Matroid.Union` of `matroidMG` in N4c (`ext_indep`). -/
+/-- **The cycle matroid of the contraction** (a step of `lem:rigidContract-isMinimalKDof`): for
+`H ≤ G` with `H̃` preconnected and `r ∈ V(H)`, the cycle matroid of `(G / E(H))̃` is
+`(G̃).cycleMatroid ／ E(H̃)` (Oxley 2011, Proposition 3.2.1). The proof rewrites by
+`mulTilde_rigidContract` and `rigidContract_eq_contract'`, and applies `cycleMatroid_contract` of
+the `Matroid` package with `rigidContract_collapseTo_isRepFun`. -/
 lemma cycleMatroid_mulTilde_rigidContract {H G : Graph α β} (hle : H ≤ G) {r : α} (hr : r ∈ V(H))
     (n : ℕ) (hconn : (H.mulTilde n).Preconnected) :
     ((G.rigidContract H r).mulTilde n).cycleMatroid
@@ -217,42 +164,29 @@ lemma cycleMatroid_mulTilde_rigidContract {H G : Graph α β} (hle : H ≤ G) {r
   exact Graph.cycleMatroid_contract (rigidContract_collapseTo_isRepFun hr n hconn)
     (edgeMultiply_mono hle _)
 
-/-! ## Isolating the union↔contraction crux of N4c (`lem:rigidContract-isMinimalKDof`)
+/-! ## The two sides of `M((G / E(H))̃) = M(G̃) / E(H̃)` (`lem:rigidContract-isMinimalKDof`)
 
-N4c is the union-level independence bridge `M((G/E(H))̃) = M(G̃) ／ E(H̃)`, the genuinely hard
-leaf flagged at Phase-22 launch: the `D`-fold `Matroid.Union` of `matroidMG` does **not**
-commute with contraction in general (`Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`), so the per-cycle-matroid
-contraction `cycleMatroid_mulTilde_rigidContract` (N4b) cannot push through the union directly.
+`M(G̃)` is the union of `D` copies of the cycle matroid `M_c` of `G̃`, restricted to `E(G̃)`, and a
+union of matroids does not commute with contraction in general. On the common ground set
+`E(G̃) \ E(H̃)`, `M((G / E(H))̃)` is the restricted union of `D` copies of `M_c ／ E(H̃)`
+(`matroidMG_rigidContract_eq`), and `M(G̃) / E(H̃)` is the restricted contraction of the union of
+`D` copies of `M_c` (`matroidMG_contract_eq_restrict`). The two agree when the union has rank `D`
+times the cycle rank on `E(H̃)` (`Matroid.Union_pow_contract_eq_contract_of_rk_saturated`), which
+holds when `H` is rigid (`union_cycleMatroid_rk_saturated_of_isKDof_zero`). -/
 
-The two bricks below reduce both sides of N4c to the **same restricted ground**
-`S = E(G̃) \ E(H̃)` and rewrite each as a restriction of a `D`-fold-union construction over
-`G̃.cycleMatroid`, isolating the irreducible crux to the single matroid equality
-`Union (fun _ ↦ G̃.cycleMatroid ／ E(H̃)) ↾ S = (Union (fun _ ↦ G̃.cycleMatroid) ／ E(H̃)) ↾ S`
-— union-of-contractions vs. contraction-of-union on the surviving fibers. That equality is
-where the rigidity input bites: `E(H̃)` is the full edge set of the rigid (hence `D`-spanning-
-tree-packing) `H̃`, so an `N`-basis of `E(H̃)` splits as one `G̃.cycleMatroid`-basis per factor,
-the condition under which the union commutes with the contraction on `S`. See `notes/Phase22.md`
-*Hand-off* for the remaining `ext_indep` + forest-packing argument the crux still needs. -/
-
-/-- **The ground set of the multiplied rigid-subgraph contraction** (N4c brick): the multiplied
-graph of `G.rigidContract H r` carries exactly the surviving fibers `E(G̃) \ E(H̃)`. The
-rigid contraction deletes `E(H)` and vertex-relabels (a `map`, edge-preserving), so its edge
-set is `E(G) \ E(H)`; multiplying lifts that fiberwise to `E(G̃) \ E(H̃)`
-(`p ∈ E(K̃) ↔ p.1 ∈ E(G) \ E(H) ↔ p ∈ E(G̃) \ E(H̃)`). This is the common restricted ground
-the two sides of N4c are matched on. -/
+/-- **The edges of `(G / E(H))̃`** (a step of `lem:rigidContract-isMinimalKDof`):
+`E((G / E(H))̃) = E(G̃) \ E(H̃)`, as `E(G / E(H)) = E(G) \ E(H)`, and a copy `p` is an edge of a
+multiplied graph exactly when `p.1` is an edge of the graph. -/
 lemma edgeSet_mulTilde_rigidContract (G H : Graph α β) (r : α) (n : ℕ) :
     E((G.rigidContract H r).mulTilde n) = E(G.mulTilde n) \ E(H.mulTilde n) := by
   ext p
   simp only [mem_edgeSet_mulTilde, rigidContract, edgeSet_map, edgeSet_deleteEdges, Set.mem_sdiff]
 
-/-- **The contraction side of N4c reduces to a restricted contraction-of-union** (N4c brick).
-For `H ≤ G`, the matroid contraction `M(G̃) ／ E(H̃)` is the `D`-fold cycle-matroid union of `G̃`,
-*contracted* by `E(H̃)` and then restricted to the surviving fibers `E(G̃) \ E(H̃)`. Pure matroid
-bookkeeping: `matroidMG G = N ↾ E(G̃)` with `N = Union (fun _ ↦ G̃.cycleMatroid)`, and the
-restrict-then-contract commutes to contract-then-restrict because `E(H̃) ⊆ E(G̃)`
-(`Matroid.restrict_contract_eq_contract_restrict`). Together with `matroidMG_rigidContract_eq`
-(the matching union-of-contractions form for `M(K̃)`), this leaves N4c as the single
-union↔contraction equality on `E(G̃) \ E(H̃)`; see the section docstring. -/
+/-- **`M(G̃) / E(H̃)` as a restricted contraction of a union** (a step of
+`lem:rigidContract-isMinimalKDof`): for `H ≤ G`, `M(G̃) ／ E(H̃)` is the union of `D` copies of
+`(G̃).cycleMatroid`, contracted by `E(H̃)` and restricted to `E(G̃) \ E(H̃)`. `M(G̃)` is that union
+restricted to `E(G̃)`, and restricting to `E(G̃)` commutes with contracting by `E(H̃) ⊆ E(G̃)`
+(`Matroid.restrict_contract_eq_contract_restrict`). -/
 lemma matroidMG_contract_eq_restrict [DecidableEq β] {H G : Graph α β}
     (hle : H ≤ G) (n : ℕ) :
     (G.matroidMG n) ／ E(H.mulTilde n) =
@@ -261,14 +195,10 @@ lemma matroidMG_contract_eq_restrict [DecidableEq β] {H G : Graph α β}
   have hsub : E(H.mulTilde n) ⊆ E(G.mulTilde n) := (edgeMultiply_mono hle _).edgeSet_mono
   rw [matroidMG, Matroid.restrict_contract_eq_contract_restrict _ hsub]
 
-/-- **The contracted side of N4c as a restricted union-of-contractions** (N4c brick). The
-matroid `M((G/E(H))̃)` of the multiplied rigid-subgraph contraction is the `D`-fold union of
-the *per-factor contracted* cycle matroids `G̃.cycleMatroid ／ E(H̃)`, restricted to the
-surviving fibers `E(G̃) \ E(H̃)`. Combines `cycleMatroid_mulTilde_rigidContract` (N4b: each
-factor `K̃.cycleMatroid = G̃.cycleMatroid ／ E(H̃)`) with `edgeSet_mulTilde_rigidContract` (the
-ground `E(K̃) = E(G̃) \ E(H̃)`). Paired with `matroidMG_contract_eq_restrict`, the two sides of
-N4c sit over the same ground and differ only by union↔contraction order; see the section
-docstring. -/
+/-- **`M((G / E(H))̃)` as a restricted union of contractions** (a step of
+`lem:rigidContract-isMinimalKDof`): for `H ≤ G` with `H̃` preconnected and `r ∈ V(H)`,
+`M((G / E(H))̃)` is the union of `D` copies of `(G̃).cycleMatroid ／ E(H̃)`, restricted to
+`E(G̃) \ E(H̃)`, by `cycleMatroid_mulTilde_rigidContract` and `edgeSet_mulTilde_rigidContract`. -/
 lemma matroidMG_rigidContract_eq [DecidableEq β] {H G : Graph α β}
     (hle : H ≤ G) {r : α} (hr : r ∈ V(H)) (n : ℕ) (hconn : (H.mulTilde n).Preconnected) :
     (G.rigidContract H r).matroidMG n =
@@ -278,15 +208,11 @@ lemma matroidMG_rigidContract_eq [DecidableEq β] {H G : Graph α β}
   rw [matroidMG, edgeSet_mulTilde_rigidContract,
     funext fun _ : Fin (bodyBarDim n) ↦ cycleMatroid_mulTilde_rigidContract hle hr n hconn]
 
-/-! ### The rank-saturated packing of the contracted-out set (N4c crux input)
+/-! ### A union of copies of a matroid whose rank on a set is the sum of the ranks
 
-The union↔contraction crux of N4c bites exactly where the contracted-out set `c = E(H̃)`
-packs into `D` `G̃.cycleMatroid`-bases — the rigidity input. The abstract matroid fact behind
-that packing: when the `k`-fold union `N = Union (fun _ : Fin k ↦ M)` *saturates* its rank
-on `c` (`N.rk c = k · M.rk c`), an `N`-basis of `c` splits as `k` per-factor sets, each itself
-an `M`-basis of `c`. (For the molecular crux `M = G̃.cycleMatroid`, `k = D`, and the saturation
-`rk M(H̃) = D(|V(H)|−1) = D·(|V(H)|−1) = D·r_cyc(E(H̃))` is the Jackson–Jordán def=corank bridge
-for a rigid `H`, since `H̃` is connected — `isBase_ncard_add_deficiency_eq` + N4a.) -/
+Let `N` be the union of `k` copies of a matroid `M`, and let `N.rk c = k · M.rk c`. For the cycle
+matroid of `G̃`, with `k = D` and `c = E(H̃)` for a rigid `H`, this is
+`union_cycleMatroid_rk_saturated_of_isKDof_zero`. -/
 
 end Graph
 
@@ -296,14 +222,11 @@ open Set
 
 variable {α : Type*}
 
-/-- **A rank-saturated `k`-fold union splits an `N`-basis of `c` into `k` `M`-bases of `c`**
-(N4c crux input). If `N := Matroid.Union (fun _ : Fin k ↦ M)` attains `N.rk c = k · M.rk c`
-on a set `c`, then there is a family `J : Fin k → Set α` with `⋃ i, J i` an `N`-basis of `c`
-and each `J i` an `M`-basis of `c`. The forcing is a counting argument: an `N`-basis `B` of
-`c` decomposes (`union_indep_iff`) into per-factor `M`-independent `J i ⊆ c` with `⋃ J i = B`;
-then `|B| = N.rk c = k · M.rk c`, while `|B| ≤ ∑ |J i| ≤ k · M.rk c` (each `|J i| ≤ M.rk c` as
-an `M`-independent subset of `c`), so the chain is tight and every `|J i| = M.rk c`, making
-each `J i` an `M`-basis of `c`. -/
+/-- **A basis of `c` in the union, split into bases**: if `N = Matroid.Union (fun _ : Fin k ↦ M)`
+has `N.rk c = k · M.rk c`, then some `J : Fin k → Set α` has `⋃ i, J i` a basis of `c` in `N` and
+each `J i` a basis of `c` in `M`. A basis `B` of `c` in `N` is a union of sets `J i ⊆ c` independent
+in `M` (`union_indep_iff`), and `k · M.rk c = |B| ≤ ∑ |J i| ≤ k · M.rk c`, so `|J i| = M.rk c` for
+each `i`. -/
 lemma Union_pow_isBasis'_split_of_rk_saturated [DecidableEq α] [Finite α]
     (M : Matroid α) (k : ℕ) (c : Set α)
     (hsat : (Matroid.Union (fun _ : Fin k ↦ M)).rk c = k * M.rk c) :
@@ -343,27 +266,18 @@ lemma Union_pow_isBasis'_split_of_rk_saturated [DecidableEq α] [Finite α]
       (Set.eq_of_subset_of_ncard_le hJK (by rw [hKc, hcard_eq i]) hKfin).symm] at hK
   exact ⟨J, hJunion ▸ hB, hJbasis⟩
 
-/-- **A rank-saturated `k`-fold union commutes with contraction by the saturating set**
-(the abstract N4c crux). For `M : Matroid α` on a finite ground with `[RankFinite M]`,
-a set `C` on which the `k`-fold union `N := Matroid.Union (fun _ : Fin k ↦ M)` *saturates*
-its rank (`N.rk C = k · M.rk C`), and any `I` disjoint from `C`, the two natural matroids
-on `I` agree:
-`(Matroid.Union (fun _ : Fin k ↦ M ／ C)).Indep I ↔ (N ／ C).Indep I`.
-In general `Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`; equality of the independent sets holds *here*
-because `C` saturates the union rank.
-
-The proof is a rank-count argument, symmetric in both directions, avoiding the
-matroid-union *matching* re-decomposition. Pick an `N`-basis `J'` of `C`; by saturation
-`|J'| = N.rk C = k · M.rk C`. Both independence predicates expand to count conditions via
-`Union_pow_indep_iff_count` (independence in a `k`-fold union ⟺ `|Y| ≤ k · r(Y)` on all
-subsets), with `(N ／ C).Indep I ⟺ N.Indep (I ∪ J')` (`IsBasis'.contract_indep_iff`):
-* **forward** (`Union (M ／ C)` ⟹ `N ／ C`): for `Z ⊆ I ∪ J'`, split `Z = Y ⊔ W`
-  (`Y = Z ∩ I`, `W = Z \ I ⊆ J' ⊆ C`); the count on `Y` gives `|Y| ≤ k·(M.rk(Y∪C) − r_C)`,
-  submodularity `r(Y∪W) + r_C ≥ r(Y∪C) + r(W)` (since `W ⊆ C`) and the count on `W ⊆ J'`
-  (`J'` is `N`-independent) close `|Z| = |Y| + |W| ≤ k·M.rk Z`;
-* **reverse** (`N ／ C` ⟹ `Union (M ／ C)`): for `Y ⊆ I`, the count on `Z := Y ∪ J'` gives
-  `|Y| + k·r_C = |Y ∪ J'| ≤ k·M.rk(Y ∪ J') ≤ k·M.rk(Y ∪ C)` (monotonicity, `J' ⊆ C`), i.e.
-  `|Y| ≤ k·(M.rk(Y∪C) − r_C) = k·(M ／ C).rk Y`. -/
+/-- **The union commutes with contraction by a set where its rank is the sum** (a step of
+`lem:rigidContract-isMinimalKDof`): let `M` have finite rank, let
+`N = Matroid.Union (fun _ : Fin k ↦ M)` have `N.rk C = k · M.rk C`, and let `I` be disjoint from
+`C`. Then `I` is independent in the union of `k` copies of `M ／ C` if and only if it is independent
+in `N ／ C`; in general the two differ. Let `J'` be a basis of `C` in `N`, so that
+`|J'| = k · M.rk C`. Then `I` is independent in `N ／ C` if and only if `I ∪ J'` is independent in
+`N` (Oxley 2011, Proposition 3.1.7; `IsBasis'.contract_indep_iff`), and independence in a union of
+`k` copies is the condition `|Y| ≤ k · r(Y)` on the subsets (`Union_pow_indep_iff_count`, Edmonds'
+matroid-partition theorem, `thm:matroid-partition`). Forward, a subset `Z` of `I ∪ J'` splits as
+`Y = Z ∩ I` and `W = Z \ I ⊆ J'`, and submodularity, `r(Y ∪ C) + r(W) ≤ r(Y ∪ W) + r(C)`, joins the
+conditions on `Y` and on `W`. Backward, the condition on `Y ∪ J'` for `Y ⊆ I` gives
+`|Y| ≤ k · (r(Y ∪ C) - r(C)) = k · (M ／ C).rk Y`. -/
 lemma Union_pow_contract_eq_contract_of_rk_saturated [DecidableEq α] [Finite α]
     (M : Matroid α) [RankFinite M] (k : ℕ) {C I : Set α} (hIC : Disjoint I C)
     (hsat : (Matroid.Union (fun _ : Fin k ↦ M)).rk C = k * M.rk C) :
@@ -444,23 +358,11 @@ open Set Matroid
 
 variable {α β : Type*}
 
-/-! ### The rank-saturation specialization for a rigid subgraph (N4c crux input, II)
+/-! ### The rank of `E(H̃)` in the union for a rigid `H` (`lem:rigidContract-isMinimalKDof`) -/
 
-The abstract crux input `Matroid.Union_pow_isBasis'_split_of_rk_saturated` consumes a
-rank-saturation hypothesis `N.rk c = k · M.rk c` on the contracted-out set `c = E(H̃)`. For
-the molecular crux that hypothesis is supplied *here*, for a rigid subgraph `H` (`H.IsKDof n 0`):
-the `D`-fold cycle-matroid union of `G̃` rank-saturates on `E(H̃)` because `H̃` is connected
-(N4a `mulTilde_preconnected_of_isKDof_zero`), so `G̃.cycleMatroid` ranks `E(H̃)` at `|V(H)| − 1`,
-and the Jackson–Jordán def=corank bridge (`isBase_ncard_add_deficiency_eq`, with
-`def(H̃) = 0`) ranks `M(H̃)` — equivalently the union of `G̃.cycleMatroid` restricted to the
-common ground `E(H̃)` — at `D(|V(H)| − 1) = D · (|V(H)| − 1)`. The two computations close the
-saturation `N.rk E(H̃) = D · G̃.cycleMatroid.rk E(H̃)`. -/
-
-/-- The cycle matroid of a multiplied subgraph is the restriction of the larger graph's cycle
-matroid to its edge fibers: `H̃.cycleMatroid = G̃.cycleMatroid ↾ E(H̃)`, for `H ≤ G`. The
-edge-relabel is a `≤`-monotone (`edgeMultiply_mono`) so `cycleMatroid_isRestriction_of_le` gives
-the restriction; the ground sets pin the restriction set to `E(H̃)`. The bridge that lets a
-cycle-matroid rank on `E(H̃)` be computed in either graph. -/
+/-- **The cycle matroid of `H̃` is a restriction** (a step of `lem:rigidContract-isMinimalKDof`):
+for `H ≤ G`, `(H̃).cycleMatroid = (G̃).cycleMatroid ↾ E(H̃)`, by `cycleMatroid_isRestriction_of_le`,
+as `H̃ ≤ G̃` (`edgeMultiply_mono`). -/
 lemma cycleMatroid_mulTilde_eq_restrict {H G : Graph α β} (hle : H ≤ G) (n : ℕ) :
     (H.mulTilde n).cycleMatroid = (G.mulTilde n).cycleMatroid ↾ E(H.mulTilde n) := by
   have hHG : H.mulTilde n ≤ G.mulTilde n := edgeMultiply_mono hle _
@@ -470,13 +372,13 @@ lemma cycleMatroid_mulTilde_eq_restrict {H G : Graph α β} (hle : H ≤ G) (n :
     simpa using this.symm
   rw [hR, hground]
 
-/-- **Rank saturation of the `D`-fold cycle-matroid union on a rigid subgraph's fibers**
-(N4c crux input, II; `lem:rigidContract-isMinimalKDof`). For a rigid subgraph `H` of `G`
-(`H.IsKDof n 0`, `H ≤ G`, `V(H) ≠ ∅`, `D = bodyBarDim n ≥ 2` so that `H̃` has edge copies),
-the `D`-fold cycle-matroid union `N = Union (fun _ ↦ G̃.cycleMatroid)` *saturates* its rank on
-the contracted-out fibers `E(H̃)`: `N.rk E(H̃) = D · G̃.cycleMatroid.rk E(H̃)`. This is the
-hypothesis `Union_pow_isBasis'_split_of_rk_saturated` consumes; it bites exactly because `H̃` is
-connected (N4a), so `r_cyc(E(H̃)) = |V(H)| − 1` and, by def=corank, `rk M(H̃) = D(|V(H)| − 1)`. -/
+/-- **The union has `D` times the cycle rank on `E(H̃)` for a rigid `H`** (a step of
+`lem:rigidContract-isMinimalKDof`; the count behind KT eq. (3.1), p. 658): let `D ≥ 2`, and let
+`H ≤ G` be a `0`-dof-graph with a vertex. Then the union `N` of `D` copies of `(G̃).cycleMatroid`
+has `N.rk E(H̃) = D · (G̃).cycleMatroid.rk E(H̃)`. `H̃` is connected
+(`mulTilde_preconnected_of_isKDof_zero`), so the cycle rank of `E(H̃)` is `|V(H)| - 1`
+(`Connected.eRk_cycleMatroid_restrict_add_one`), and `N.rk E(H̃)` is the rank of `M(H̃)`, which is
+`D(|V(H)| - 1)` by KT eq. (2.4) (`rank_add_deficiency_eq`). -/
 lemma union_cycleMatroid_rk_saturated_of_isKDof_zero [DecidableEq β]
     [Finite α] [Finite β] {H G : Graph α β} {n : ℕ} [NeZero (bodyHingeMult n)]
     (hle : H ≤ G) (hrigid : H.IsKDof n 0) (hVHne : V(H).Nonempty) :
@@ -538,28 +440,15 @@ lemma union_cycleMatroid_rk_saturated_of_isKDof_zero [DecidableEq β]
     exact_mod_cast this
   rw [hcyc, hunion]
 
-/-! ### The union↔contraction crux of N4c (`lem:rigidContract-isMinimalKDof`)
+/-! ### `M((G / E(H))̃) = M(G̃) / E(H̃)` for a rigid `H` (`lem:rigidContract-isMinimalKDof`) -/
 
-The genuinely-hard leaf of N4c, now closed. The two reduction bricks
-(`matroidMG_rigidContract_eq`, `matroidMG_contract_eq_restrict`) put both sides of the
-N4c identity over the common ground `S = E(G̃) \ E(H̃)`, leaving exactly the abstract
-union↔contraction equality on `S`. That equality holds here — though `Union Mᵢ ／ C` and
-`Union (Mᵢ ／ C)` differ in general — because the contracted-out `C = E(H̃)` is the full
-edge set of the rigid `H̃`, on which the `D`-fold cycle-matroid union *saturates* its rank
-(`union_cycleMatroid_rk_saturated_of_isKDof_zero`). The abstract
-`Matroid.Union_pow_contract_eq_contract_of_rk_saturated` turns that saturation into
-equality of independent sets, and `matroidMG_indep` lifts it to the graph-level
-`matroidMG`. -/
-
-/-- **The graph↔matroid contraction-minimality bridge** (N4c; `lem:rigidContract-isMinimalKDof`):
-the matroid of the multiplied rigid-subgraph contraction is the matroid contraction,
-`M((G/E(H))̃) = M(G̃) ／ E(H̃)`. For a rigid subgraph `H` of `G` (`H.IsKDof n 0`, `H ≤ G`,
-`r ∈ V(H)`, `D = bodyBarDim n ≥ 2` so `H̃` has edge copies and is preconnected). Combines
-the two reduction bricks — `matroidMG_rigidContract_eq` (the contracted side as a restricted
-union-of-contractions) and `matroidMG_contract_eq_restrict` (the contraction side as a
-restricted contraction-of-union) — with the union↔contraction crux closed by the abstract
-`Matroid.Union_pow_contract_eq_contract_of_rk_saturated`, whose saturation hypothesis is the
-rigid-subgraph specialization `union_cycleMatroid_rk_saturated_of_isKDof_zero`. -/
+/-- **The matroid of the contraction is the contraction of the matroid** (a step of
+`lem:rigidContract-isMinimalKDof`): let `D ≥ 2`, let `H ≤ G` be a `0`-dof-graph with a vertex, and
+let `r ∈ V(H)`. Then `M((G / E(H))̃) = M(G̃) ／ E(H̃)`. The two sides are restrictions to
+`E(G̃) \ E(H̃)` of a union of contractions and of a contraction of a union
+(`matroidMG_rigidContract_eq`, `matroidMG_contract_eq_restrict`), which have the same independent
+sets there by `Matroid.Union_pow_contract_eq_contract_of_rk_saturated` and
+`union_cycleMatroid_rk_saturated_of_isKDof_zero`. -/
 theorem matroidMG_rigidContract_eq_contract [DecidableEq β] [Finite α] [Finite β]
     {H G : Graph α β} {n : ℕ} [NeZero (bodyHingeMult n)] (hle : H ≤ G) {r : α} (hr : r ∈ V(H))
     (hrigid : H.IsKDof n 0) (hVHne : V(H).Nonempty) :
@@ -569,7 +458,7 @@ theorem matroidMG_rigidContract_eq_contract [DecidableEq β] [Finite α] [Finite
     haveI : (G.mulTilde n).EdgeFinite := ⟨Set.toFinite _⟩
     inferInstance
   have hconn : (H.mulTilde n).Preconnected := mulTilde_preconnected_of_isKDof_zero hrigid
-  -- The union↔contraction crux on the common ground `S = E(G̃) \ E(H̃)`, via saturation.
+  -- The two restricted matroids on `E(G̃) \ E(H̃)` agree, by the rank of `E(H̃)` in the union.
   have hcrux : Matroid.Union
         (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid ／ E(H.mulTilde n))
         ↾ (E(G.mulTilde n) \ E(H.mulTilde n)) =
@@ -583,26 +472,20 @@ theorem matroidMG_rigidContract_eq_contract [DecidableEq β] [Finite α] [Finite
       (union_cycleMatroid_rk_saturated_of_isKDof_zero hle hrigid hVHne)
   rw [matroidMG_rigidContract_eq hle hr n hconn, hcrux, matroidMG_contract_eq_restrict hle n]
 
-/-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
+/-! ## KT Lemma 3.5 for the matroid contraction (`lem:contract-minimality-transport`,
+`lem:contraction-minimality`)
 
-The minimality-transport half of KT Lemma 3.5: contracting a (rigid) subgraph `H` of a
-minimal `k`-dof-graph `G` leaves the minimality condition intact — every base of the
-matroid contraction `M(G̃) / E(H̃)` meets every *surviving* edge-fiber `ẽ`
-(`e ∈ E(G) \ E(H)`). This is the contraction analogue of `subgraph_minimality` (KT 3.3),
-which transports minimality along a *restriction*; here the transport is along the
-contraction, lifting a base `B'` of `M(G̃) / E(H̃)` to a base `B' ∪ J` of `M(G̃)` for an
-`M(G̃)`-basis `J` of the contracted-out `E(H̃)` (`Matroid.IsBase.union_isBasis_of_contract`),
-applying `G`'s minimality there, and pushing the fiber witness back to `B'` since the
-basis part `J ⊆ E(H̃)` is disjoint from every surviving fiber. Stated on the matroid side
-`M(G̃) / E(H̃)` — no graph↔matroid `map` correspondence. -/
+Katoh and Tanigawa's Lemma 3.5 (pp. 658–659) says that contracting a rigid subgraph `H` of a minimal
+`k`-dof-graph `G` gives a minimal `k`-dof-graph. For the matroid contraction `M(G̃) / E(H̃)`, its
+two halves are the deficiency (`contract_matroidMG_deficiency_eq`, `Operations.lean`,
+`lem:contract-deficiency-conservation`) and the minimality: every base of `M(G̃) / E(H̃)` meets the
+copies of each edge of `G` not in `H`. -/
 
-/-- **A base of a matroid contraction lifts to a base of the matroid** (the abstract
-matroid fact behind the contraction analogue of `subgraph_minimality`). For a base `B'`
-of `M ／ C` and an `M`-basis `J` of `C` (`M.IsBasis' J C`), the union `B' ∪ J` is a base
-of `M`. Via `IsBasis'.contract_eq_contract_delete` (`M ／ C = M ／ J ＼ (C \ J)`): the
-deleted `C \ J` consists of loops of `M ／ J` (it lies in `closure J`), so a base `B'` of
-`M ／ C` is a base of `M ／ J`, and `Indep.contract_isBase_iff` then gives `B' ∪ J` a base
-of `M`. -/
+/-- **A base of a contraction with a basis of the contracted set is a base** (a step of
+`lem:contract-minimality-transport`; one half of Oxley 2011, Corollary 3.1.8): if `B'` is a base of
+`M ／ C` and `J` is a basis of `C` in `M` (`M.IsBasis' J C`), then `B' ∪ J` is a base of `M`. As
+`M ／ C = M ／ J ＼ (C \ J)` (`IsBasis'.contract_eq_contract_delete`) and the elements of `C \ J` are
+loops of `M ／ J`, `B'` is a base of `M ／ J`, and `Indep.contract_isBase_iff` gives the claim. -/
 theorem _root_.Matroid.IsBase.union_isBasis_of_contract {γ : Type*} {M : Matroid γ}
     {B' J C : Set γ} (hB' : (M ／ C).IsBase B') (hJ : M.IsBasis' J C) :
     M.IsBase (B' ∪ J) := by
@@ -624,20 +507,11 @@ theorem _root_.Matroid.IsBase.union_isBasis_of_contract {γ : Type*} {M : Matroi
   rw [hJ.indep.contract_isBase_iff] at hBJ
   exact hBJ.1
 
-/-- **Minimality transports along a contraction** (`lem:contraction-minimality`, second
-half; Katoh–Tanigawa 2011 Lemma 3.5). For a subgraph `H` of a minimal `k`-dof-graph `G`,
-every base `B'` of the matroid contraction `M(G̃) ／ E(H̃)` meets every *surviving*
-edge-fiber `ẽ` of an edge `e ∈ E(G) \ E(H)`: `B' ∩ ẽ ≠ ∅`. This is the contraction
-analogue of `subgraph_minimality` (KT 3.3, restriction transport). (No `H ≤ G` hypothesis
-is needed: the argument is entirely on the matroid contraction `M(G̃) ／ E(H̃)`, using only
-that the contracted-out fibers `E(H̃)` are the multiplied edges of `H` and the surviving
-edge `e ∉ E(H)`; `H ≤ G` enters only the deficiency-conservation half.)
-
-A base `B'` of `M(G̃) ／ E(H̃)` is disjoint from `E(H̃)` (it lies in the contraction's
-ground `E(G̃) \ E(H̃)`). Picking an `M(G̃)`-basis `J` of `E(H̃)`, the union `B' ∪ J` is a
-base of `M(G̃)` (`Matroid.IsBase.union_isBasis_of_contract`), so `G`'s minimality gives
-`(B' ∪ J) ∩ ẽ ≠ ∅`. The surviving fiber `ẽ` (with `e ∉ E(H)`) is disjoint from `E(H̃) ⊇ J`
-(`p ∈ E(H̃) ↔ p.1 ∈ E(H)`, but `p.1 = e ∉ E(H)`), so the witness lands in `B'`. -/
+/-- **Minimality passes to the contraction** (`lem:contract-minimality-transport`; KT Lemma 3.5,
+p. 659): let `G` be a minimal `k`-dof-graph. Then every base `B'` of `M(G̃) ／ E(H̃)` meets `ẽ` for
+every edge `e ∈ E(G) \ E(H)`. Let `J` be a basis of `E(H̃)` in `M(G̃)`. Then `B' ∪ J` is a base of
+`M(G̃)` (`Matroid.IsBase.union_isBasis_of_contract`), so it meets `ẽ` as `G` is minimal; and as the
+copies of `e ∉ E(H)` are not in `E(H̃) ⊇ J`, `B'` meets `ẽ`. The proof does not use `H ≤ G`. -/
 theorem contract_minimality_transport [DecidableEq β] {H G : Graph α β}
     {n : ℕ} {k : ℤ} (hG : G.IsMinimalKDof n k) {B' : Set (β × Fin (bodyHingeMult n))}
     (hB' : ((G.matroidMG n) ／ E(H.mulTilde n)).IsBase B') {e : β} (heG : e ∈ E(G))
@@ -664,33 +538,15 @@ theorem contract_minimality_transport [DecidableEq β] {H G : Graph α β}
       rwa [mem_edgeSet_mulTilde] at hmem
     exact absurd hpH (hfiberdisj hp.2)
 
-/-! ## Rigid-subgraph contraction preserves minimality (`lem:contraction-minimality`)
+/-! ## The contraction of a proper rigid subgraph (`lem:contraction-minimality`) -/
 
-The full Katoh–Tanigawa Lemma 3.5: contracting a *proper rigid* subgraph `H` of a minimal
-`k`-dof-graph `G` again yields a minimal `k`-dof-graph, with the deficiency unchanged. The
-assembly packages the two halves already in hand. **No graph↔matroid `map` correspondence
-is needed** — both halves are stated against the matroid contraction `M(G̃) / E(H̃)`, and so
-is the assembled conclusion: the matroid contraction is itself a *minimal `k`-dof matroid*,
-i.e. it has corank `def(G̃)` at the reduced ambient `D(|V(G)| − |V(H)|)`
-(`contract_matroidMG_deficiency_eq`, deficiency conservation) **and** every base of it meets
-every surviving edge-fiber `ẽ` (`contract_minimality_transport`, minimality transport). This
-is the Case-I engine of the algebraic induction (Phases 21–23). -/
-
-/-- **Rigid-subgraph contraction preserves minimality** (`lem:contraction-minimality`;
-Katoh–Tanigawa 2011 Lemma 3.5, full form). For a *proper rigid* subgraph `H` of a minimal
-`k`-dof-graph `G` (`hG : G.IsMinimalKDof n k`, `hH : H.IsProperRigidSubgraph G n`) with
-`D = bodyBarDim n ≥ 1`, the matroid contraction `M(G̃) / E(H̃)` is a *minimal `k`-dof
-matroid* at the reduced ambient `D(|V(G)| − |V(H)|)`:
-
-* **deficiency conservation** — its corank at `D(|V(G)| − |V(H)|)` equals `def(G̃) = k`:
-  `D(|V(G)| − |V(H)|) − rank(M(G̃) / E(H̃)) = k`;
-* **minimality transport** — every base `B'` of `M(G̃) / E(H̃)` meets every surviving
-  edge-fiber `ẽ` of an edge `e ∈ E(G) \ E(H)`: `B' ∩ ẽ ≠ ∅`.
-
-The assembly is the conjunction of `contract_matroidMG_deficiency_eq` (rewriting its
-`G.deficiency n` RHS to `k` via `hG.1`) and `contract_minimality_transport`. Stated on the
-matroid side directly — no graph↔matroid `map` correspondence, matching how Katoh–Tanigawa's
-proof reasons. This is the Case-I engine of the algebraic induction (Phases 21–23). -/
+/-- **The contraction of a proper rigid subgraph** (`lem:contraction-minimality`,
+`lem:reduction-step`; KT Lemma 3.5, pp. 658–659): let `D ≥ 1`, let `G` be a minimal `k`-dof-graph
+with a vertex, and let `H` be a proper rigid subgraph of `G`. Then
+`D(|V(G)| - |V(H)|) - rank(M(G̃) ／ E(H̃)) = k`, and every base of `M(G̃) ／ E(H̃)` meets `ẽ` for
+every edge `e ∈ E(G) \ E(H)`: the first is `contract_matroidMG_deficiency_eq` with `def(G̃) = k`,
+and the second `contract_minimality_transport`. `rigidContract_isMinimalKDof` gives the same for the
+graph `G / E(H)`. -/
 theorem contraction_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
     {n : ℕ} {k : ℤ} (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n k)
     (hH : H.IsProperRigidSubgraph G n) (hVGne : V(G).Nonempty) :
@@ -705,38 +561,17 @@ theorem contraction_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G 
   have hdef := contract_matroidMG_deficiency_eq hle n hD hVHne hVGne hrigid
   rwa [hG.deficiency_eq] at hdef
 
-/-! ## The graph-level contraction-minimality bridge (N4; `lem:rigidContract-isMinimalKDof`)
+/-! ## The contraction is a minimal `k`-dof-graph (`lem:rigidContract-isMinimalKDof`) -/
 
-The Case-I producer of the algebraic induction applies the strong induction hypothesis of
-`thm:theorem-55` to the *graph* `G/E(H)`, so it needs `G/E(H)` to be itself a minimal
-`0`-dof-graph. The matroid-side fact — the matroid contraction `M(G̃)/E(H̃)` is a minimal
-`0`-dof *matroid* — is `contraction_isMinimalKDof`; what this node adds is the
-**graph↔matroid bridge** that the matroid of the *graph* contraction `G/E(H)` *is* that
-matroid contraction (`matroidMG_rigidContract_eq_contract`, N4c, green), plus the
-**vertex-count reconciliation** that the reduced matroid ambient `D(|V(G)|−|V(H)|)` is exactly
-`D(|V(G/E(H))|−1)` under the collapse-count `|V(G/E(H))| = |V(G)|−|V(H)|+1`
-(`rigidContract_vertexSet_ncard`). The minimality half transports directly: an edge of
-`G/E(H)` is a surviving `G`-edge (`edgeSet_rigidContract`), and a base of `K.matroidMG`
-is a base of the contraction (N4c). The deficiency half runs the def=corank bridge on
-`G/E(H)` against the conserved rank `rank(M(G̃)/E(H̃)) = D(|V(G)|−|V(H)|)`. -/
-
-/-- **Graph-level minimality of the rigid-subgraph contraction** (`lem:rigidContract-isMinimalKDof`;
-the graph↔matroid bridge of Katoh–Tanigawa 2011 Lemma 3.5, graph form). Contracting a proper
-rigid subgraph `H` of a minimal `k`-dof-graph `G` again yields a minimal `k`-dof-graph:
-`G.IsMinimalKDof n k`, `H` proper rigid `⟹ (G.rigidContract H r).IsMinimalKDof n k`, under
-`D = bodyBarDim n ≥ 2` (`[NeZero (bodyHingeMult n)]`) and `r ∈ V(H)`. This is the Case-I
-producer's reduction step: it names `G/E(H)` and proves its minimality so the induction
-hypothesis of `thm:theorem-55` applies, with the strict vertex drop from
-`rigidContract_vertexSet_ncard_lt`.
-
-The matroid contraction `M(G̃)/E(H̃)` is already a minimal `k`-dof matroid
-(`contraction_isMinimalKDof`), and `matroidMG_rigidContract_eq_contract` (N4c) identifies it
-with `M((G/E(H))̃)`. So the two halves of `IsMinimalKDof` transport: the base/fiber-meeting
-condition reads each edge `e ∈ E(G/E(H)) = E(G) \ E(H)` as a surviving `G`-edge
-(`edgeSet_rigidContract`); the deficiency `def((G/E(H))̃) = k` follows from the def=corank
-bridge `rank_add_deficiency_eq` on `G/E(H)`, the conserved rank
-`rank(M(G̃)/E(H̃)) = D(|V(G)|−|V(H)|)`, and the collapse vertex-count
-`|V(G/E(H))| = |V(G)|−|V(H)|+1` (`rigidContract_vertexSet_ncard`). -/
+/-- **The contraction is a minimal `k`-dof-graph** (`lem:rigidContract-isMinimalKDof`; KT
+Lemma 3.5): let `D ≥ 2`, let `G` be a minimal `k`-dof-graph, let `H` be a proper rigid subgraph of
+`G`, and let `r ∈ V(H)`. Then `G / E(H)` is a minimal `k`-dof-graph. By
+`matroidMG_rigidContract_eq_contract`, `M((G / E(H))̃) = M(G̃) ／ E(H̃)`, so
+`contraction_isMinimalKDof` gives the minimality, as `E(G / E(H)) = E(G) \ E(H)`
+(`edgeSet_rigidContract`), and the rank. As `G / E(H)` has `|V(G)| - |V(H)| + 1` vertices
+(`rigidContract_vertexSet_ncard`), KT eq. (2.4) (`rank_add_deficiency_eq`) gives
+`def((G / E(H))̃) = k`. Case I of the algebraic induction applies the induction hypothesis to
+`G / E(H)`, which has fewer vertices (`rigidContract_vertexSet_ncard_lt`). -/
 theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
     {n : ℕ} {k : ℤ} [NeZero (bodyHingeMult n)] (hG : G.IsMinimalKDof n k)
     (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H)) :
@@ -748,7 +583,7 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
   -- `D = bodyBarDim n ≥ 2` from `bodyHingeMult n = D - 1 ≥ 1`.
   have hD : 1 ≤ bodyBarDim n := by
     have hmult := NeZero.ne (bodyHingeMult n); rw [bodyHingeMult] at hmult; omega
-  -- N4c: the matroid of the graph contraction is the matroid contraction.
+  -- The matroid of the graph contraction is the matroid contraction.
   have hN4c : (G.rigidContract H r).matroidMG n = (G.matroidMG n) ／ E(H.mulTilde n) :=
     matroidMG_rigidContract_eq_contract hle hr hrigid hVHne
   -- The matroid-side minimal-`k`-dof packaging of `M(G̃)/E(H̃)`.
@@ -774,33 +609,18 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
     rw [edgeSet_rigidContract] at heK
     exact hmin B (hN4c ▸ hB) e heK.1 heK.2
 
-/-! ## The deficiency-only bookkeeping, minimality-free (W3-L6a, Phase 39)
+/-! ## The contraction keeps the deficiency (`lem:pencil-contraction-deficiency`)
 
-Katoh–Tanigawa 2011 Lemma 3.5 itself never needs `G` minimal — only the algebraic
-induction's *use* of the contraction (Case I, `thm:theorem-55`) does, to recurse the
-strong induction hypothesis. Phase 39's `Graph.pencil_reduction` contract arm needs
-exactly the deficiency-conservation half with no minimality hypothesis on `G` at all:
-the ingredients are already there. `contract_matroidMG_deficiency_eq`
-(`Induction/Operations.lean`) is already minimality-free — it concludes
-`D(|V(G)|−|V(H)|) − rank(M(G̃)/E(H̃)) = def(G̃)` directly, not `= k` via a `G`-minimality
-hypothesis — so only `contraction_isMinimalKDof`'s `hcons` (the `= k` restatement) was
-minimality-dependent; the graph↔matroid bridge `matroidMG_rigidContract_eq_contract` and
-the vertex-count reconciliation `rigidContract_vertexSet_ncard` above are unaffected. -/
+The deficiency half of `rigidContract_isMinimalKDof` does not use the minimality of `G`, as
+`contract_matroidMG_deficiency_eq` (`Operations.lean`) does not. -/
 
--- `[DecidableEq β]` is genuinely load-bearing here (dropping it breaks elaboration of the
--- `contract_matroidMG_deficiency_eq` / `matroidMG_rigidContract_eq_contract` /
--- `rank_add_deficiency_eq` call sites below, each of which pins its own `[DecidableEq β]`) —
--- a false positive of this linter's narrower usage-detection, which doesn't count an instance
--- threaded only as a callee's instance-implicit argument (the same linter family as the
--- `classical`-shadowing false positive of W3-L1/W3-L2, a different root within it).
+-- `linter.unusedDecidableInType` reports `[DecidableEq β]`, which the statement does not use. The
+-- proof uses it through `matroidMG`; with `classical`, the lemma also holds without the instance.
 set_option linter.unusedDecidableInType false in
-/-- **Contracting a proper rigid subgraph conserves the deficiency, no minimality
-needed** (W3-L6a, `lem:pencil-contraction-deficiency`): for a proper rigid subgraph `H`
-of `G` (no `IsMinimalKDof` hypothesis on `G`) and `r ∈ V(H)`, `G.rigidContract H r` has
-the same deficiency as `G`. Same shape as the deficiency half of
-`rigidContract_isMinimalKDof` above, with its minimality-dependent `hcons` (from
-`contraction_isMinimalKDof`) replaced by the already minimality-free
-`contract_matroidMG_deficiency_eq`. -/
+/-- **The contraction keeps the deficiency** (`lem:pencil-contraction-deficiency`): for a proper
+rigid subgraph `H` of `G`, `r ∈ V(H)` and `D ≥ 2`, `def((G / E(H))̃) = def(G̃)`, without minimality.
+The proof is the deficiency half of `rigidContract_isMinimalKDof`, with
+`contract_matroidMG_deficiency_eq` in place of `contraction_isMinimalKDof`. -/
 theorem rigidContract_deficiency_eq [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
     {n : ℕ} [NeZero (bodyHingeMult n)]
     (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H)) :
@@ -812,7 +632,7 @@ theorem rigidContract_deficiency_eq [DecidableEq β] [Finite α] [Finite β] {H 
   -- `D = bodyBarDim n ≥ 1` from `bodyHingeMult n = D - 1 ≥ 1` (the `NeZero` instance).
   have hD : 1 ≤ bodyBarDim n := by
     have hmult := NeZero.ne (bodyHingeMult n); rw [bodyHingeMult] at hmult; omega
-  -- N4c: the matroid of the graph contraction is the matroid contraction.
+  -- The matroid of the graph contraction is the matroid contraction.
   have hN4c : (G.rigidContract H r).matroidMG n = (G.matroidMG n) ／ E(H.mulTilde n) :=
     matroidMG_rigidContract_eq_contract hle hr hrigid hVHne
   -- The minimality-free deficiency-conservation identity, at the matroid level.
@@ -831,14 +651,11 @@ theorem rigidContract_deficiency_eq [DecidableEq β] [Finite α] [Finite β] {H 
   rw [hvc] at hbridge
   linarith [hbridge, hcons]
 
-/-! ## The shared-vertex extraction of Claim 6.6 (the Lemma-6.5 arm, step 2) -/
+/-! ## KT Claim 6.6 (`lem:claim-6-6`) -/
 
-/-- **The collapse map merges two distinct vertices only inside `V(H)`** (the auxiliary fact the
-shared-vertex extraction reads off). With the representative `r ∈ V(H)`, the only fiber of
-`collapseTo r V(H)` carrying more than one vertex is `r`'s, reached exactly from `V(H)`: if
-`collapseTo r V(H) x = collapseTo r V(H) y` with `x ≠ y`, then both `x, y ∈ V(H)`. (The mixed
-case `x ∈ V(H)`, `y ∉ V(H)` forces `y = r ∈ V(H)`, a contradiction; the both-outside case forces
-`x = y`.) -/
+/-- **The collapse map identifies two vertices only in `S`** (a step of `lem:claim-6-6`): if
+`r ∈ S`, `x ≠ y` and `collapseTo r S x = collapseTo r S y`, then `x, y ∈ S`, as a vertex outside `S`
+is fixed and differs from `r ∈ S`. -/
 lemma collapseTo_eq_imp_mem_of_ne {r : α} {S : Set α} (hr : r ∈ S) {x y : α}
     (heq : collapseTo r S x = collapseTo r S y) (hne : x ≠ y) : x ∈ S ∧ y ∈ S := by
   classical
@@ -849,24 +666,16 @@ lemma collapseTo_eq_imp_mem_of_ne {r : α} {S : Set α} (hr : r ∈ S) {x y : α
   · simp only [ite_eq_right hx, ite_eq_left hy] at heq; exact absurd (heq ▸ hr) hx
   · simp only [ite_eq_right hx, ite_eq_right hy] at heq; exact absurd heq hne
 
-/-- **A non-simple rigid-subgraph contraction of an induced rigid subgraph yields a vertex with
-two edges into the subgraph** (Katoh–Tanigawa 2011 Claim 6.6, p. 676–677, step 2; the genuinely
-new combinatorial content of the Lemma-6.5 vertex-removal arm of the Case-I dispatch). When `G`
-is simple, `H` is edge-saturated within its vertex set (`hHsat` — every `G`-edge with both ends in
-`V(H)` already lies in `E(H)`, which holds e.g. for an *induced* `H`), and the contraction
-`G / E(H)` is *not* simple at representative `r ∈ V(H)`, then there is a vertex `v ∉ V(H)`
-incident to two distinct edges `eₐ, e_b` whose other endpoints `a, b` lie in `V(H)` (with
-`a ≠ b`, forced by `G`-simplicity since `eₐ ≠ e_b`).
-
-The proof reads `rigidContract_not_simple`: its loop disjunct is killed by `hHsat` (a surviving
-edge with both collapsed-equal ends would, by `collapseTo_eq_imp_mem_of_ne` on the simple `G`,
-have both endpoints in `V(H)`, hence lie in `E(H)` — but surviving edges are off `E(H)`); its
-parallel disjunct supplies two distinct surviving edges with collapsed-equal end-pairs. Each
-surviving edge, being off `E(H)`, has a non-`V(H)` endpoint (`hHsat`); were both its endpoints
-outside `V(H)` the collapse would fix the pair, and the matched second edge would share that pair,
-contradicting `G`-simplicity. So each edge has exactly one endpoint in `V(H)` (collapsed to `r`)
-and one outside; the ordered-pair match forces the two outside endpoints to coincide — the
-common `v`. -/
+/-- **A vertex with two edges into `H` when the contraction is not simple** (a step of
+`lem:claim-6-6`; KT Claim 6.6, p. 676): let `G` be simple, let every edge of `G` with both ends in
+`V(H)` be an edge of `H` (`hHsat`, as for an induced `H`), let `r ∈ V(H)`, and let `G / E(H)` not be
+simple. Then some `v ∉ V(H)` is joined by edges `eₐ ≠ e_b` to vertices `a ≠ b` of `V(H)`. By
+`rigidContract_not_simple`, an edge of `G` not in `H` has its ends identified, or two such edges
+have their ends identified in pairs. In the first case the edge joins two vertices of `V(H)`
+(`collapseTo_eq_imp_mem_of_ne`), so it is an edge of `H` by `hHsat`. In the second, each edge has an
+end outside `V(H)` by `hHsat`, and an end in `V(H)`, as two edges with both ends outside would be
+parallel in `G`; so their ends outside `V(H)` are one vertex `v`, and `a ≠ b` as `G` is simple.
+Katoh and Tanigawa read off `v` directly; the reading needs the hypothesis on `H`. -/
 lemma exists_isLink_pair_of_rigidContract_not_simple {G H : Graph α β} [G.Simple] {r : α}
     (hr : r ∈ V(H))
     (hHsat : ∀ e x y, G.IsLink e x y → x ∈ V(H) → y ∈ V(H) → e ∈ E(H))
@@ -976,31 +785,19 @@ lemma exists_isLink_pair_of_rigidContract_not_simple {G H : Graph α β} [G.Simp
       rintro rfl
       exact hee (hl₁'.unique_edge hl₂')
 
-/-! ## The Leaf-1 assembly: degree-2 vertex with minimal `0`-dof removal (KT Claim 6.6, full) -/
-
-/-- **A non-simple contraction forces a degree-2 vertex whose removal is minimal `0`-dof**
-(Katoh–Tanigawa 2011 Claim 6.6, p. 676–677; the full Leaf-1 assembly of the Lemma-6.5
-vertex-removal arm of the Case-I dispatch, Phase 22k L8a).
-
-Given a minimal `0`-dof simple graph `G` on at least 3 vertices with a proper rigid
-subgraph, but where **every** proper rigid subgraph has a non-simple contraction at every
-representative, there exists a vertex `v` of degree exactly 2 in `G` (incident to two
-distinct edges `eₐ`, `e_b` with endpoints `a`, `b ∈ V(G)`, `a ≠ b`, `a, b ≠ v`) such
-that `G.removeVertex v` is a minimal `0`-dof simple graph.
-
-**Proof sketch.** Take `G'` = the vertex-cardinality-maximal *induced-saturated* proper
-rigid subgraph (`exists_maximal_induced_isProperRigidSubgraph`). Pick any `r ∈ V(G')` and
-apply `exists_isLink_pair_of_rigidContract_not_simple` (the hypothesis `hnoSimpleContr` at
-`G'`) to get `v ∉ V(G')` with two edges `eₐ : v–a`, `e_b : v–b`, `a, b ∈ V(G')`.
-Build `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`. Then:
-* `G'' ≤ G` (by `addEdge_le` twice, using `G.IsLink eₐ v a` and `G.IsLink e_b v b`);
-* `v` has degree exactly 2 in `G''` (the only `v`-links are the two new edges);
-* `G''.removeVertex v = G'` (links avoiding `v` are exactly the links of `G'`);
-* `def(G'') = 0` (by `removeVertex_deficiency_ge` at `G'' / v` → `def(G'') ≤ def(G') = 0`);
-* maximality of `G'` forces `V(G'') = V(G)` (else `G''` beats `G'` in cardinality);
-* `G = G''` by `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof`.
-With `G = G''`, `v` has degree exactly 2 in `G`, and `G − v = G'.removeVertex v = G'` is
-minimal `0`-dof (by `subgraph_minimality`) and simple (`hSimple.mono`). -/
+/-- **KT Claim 6.6: a vertex of degree two whose removal is minimal** (`lem:claim-6-6`; KT p. 676):
+let `D ≥ 2`, and let `G` be a simple minimal `0`-dof-graph with at least three vertices that has a
+proper rigid subgraph, none of which has a simple contraction `G / E(H)` at any `r ∈ V(H)`. Then
+some vertex `v` has exactly two edges `eₐ ≠ e_b`, joining it to vertices `a ≠ b` other than `v`, and
+`G - v` is a simple minimal `0`-dof-graph. Let `G'` be a proper rigid subgraph with the most
+vertices, every edge of `G` with both ends in `V(G')` being an edge of `G'`
+(`exists_maximal_induced_isProperRigidSubgraph`), and let `r ∈ V(G')`.
+`exists_isLink_pair_of_rigidContract_not_simple` gives `v ∉ V(G')` with edges `eₐ` and `e_b` to
+`a ≠ b` in `V(G')`. Let `G''` be `G'` with `v`, `eₐ` and `e_b` added. As `G'' - v = G'`, KT
+Lemma 4.4 (`removeVertex_deficiency_ge`) gives `def(G̃'') ≤ def(G̃') = 0`, so `G''` is rigid; by the
+choice of `G'` it is not proper, so `V(G'') = V(G)`, and `G = G''` as `G` is minimal
+(`eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof`). Then `v` has degree two, and `G - v = G'`
+is minimal (`subgraph_minimality`, KT Lemma 3.3) and simple. -/
 theorem exists_degree_two_removeVertex_of_no_simple_contraction [DecidableEq β] [Finite α]
     [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) (_hV3 : 3 ≤ V(G).ncard)
@@ -1036,7 +833,7 @@ theorem exists_degree_two_removeVertex_of_no_simple_contraction [DecidableEq β]
     rcases hlb.eq_and_eq_or_eq_and_eq (hxy.of_le hG'le) with ⟨h1, _⟩ | ⟨h2, _⟩
     · exact hvH (h1 ▸ hxy.left_mem)
     · exact hvH (h2 ▸ hxy.right_mem)
-  -- Step 3: build the carrier `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`.
+  -- Step 3: `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`.
   set G1 := G'.addEdge eₐ v a with hG1
   -- `e_b ∉ E(G1)`: `e_b ∉ E(G')` and `e_b ≠ eₐ`.
   have heb_notG1 : e_b ∉ E(G1) := by
@@ -1138,7 +935,7 @@ theorem exists_degree_two_removeVertex_of_no_simple_contraction [DecidableEq β]
     have hG''prop : G''.IsProperRigidSubgraph G n :=
       ⟨⟨hG''le, hG''0⟩, hG''2, hss⟩
     linarith [hG'max G'' hG''prop]
-  -- Step 4b: `G = G''` by the minimality-equality brick.
+  -- Step 4b: `G = G''`, as `G` is minimal (`eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof`).
   have hGeq : G = G'' :=
     eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof hD' hG hG''le hVG''G hG''0
   -- Step 5: conclude. With `G = G''`, `v` has degree exactly 2 in `G`, and `G − v = G'`.
@@ -1158,16 +955,11 @@ theorem exists_degree_two_removeVertex_of_no_simple_contraction [DecidableEq β]
   · -- `(G.removeVertex v).Simple`
     rw [hGrv]; exact hSimple.mono hG'le
 
-/-- **The 6.5 arm is vacuous at `k > 0`** (Phase 22k L9): given a minimal `k`-dof simple graph
-`G` on ≥ 3 vertices with a proper rigid subgraph but where every proper rigid subgraph has a
-non-simple contraction at every representative, we have `k = 0`.
-
-**Proof.** The carrier construction (steps 1–4a of
-`exists_degree_two_removeVertex_of_no_simple_contraction`)
-produces `G'' ≤ G` with `V(G'') = V(G)` and `G''.deficiency n = 0`, working for **any** `k`
-(the `k = 0` step in the full assembly uses `eq_of_isMinimalKDof_of_le` — not needed here).
-Then `deficiency_le_deficiency_of_le_vertexSet_eq` gives `G.deficiency n ≤ G''.deficiency n = 0`,
-so `k = G.deficiency n = 0`. -/
+/-- **KT Claim 6.6: the deficiency is zero** (`lem:claim-6-6`; KT p. 676): under the hypotheses of
+`exists_degree_two_removeVertex_of_no_simple_contraction`, but for a minimal `k`-dof-graph `G`,
+`k = 0`. The first four steps of that proof do not use `k = 0`. They give `G'' ≤ G` with
+`V(G'') = V(G)` and `def(G̃'') = 0`, and then `def(G̃) ≤ def(G̃'') = 0`
+(`deficiency_le_deficiency_of_le_vertexSet_eq`). -/
 theorem deficiency_eq_zero_of_simple_rigid_no_simpleContraction [DecidableEq β] [Finite α]
     [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ}
     (hD : 2 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
@@ -1201,7 +993,7 @@ theorem deficiency_eq_zero_of_simple_rigid_no_simpleContraction [DecidableEq β]
     rcases hlb.eq_and_eq_or_eq_and_eq (hxy.of_le hG'le) with ⟨h1, _⟩ | ⟨h2, _⟩
     · exact hvH (h1 ▸ hxy.left_mem)
     · exact hvH (h2 ▸ hxy.right_mem)
-  -- Step 3: build the carrier `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`.
+  -- Step 3: `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`.
   set G1 := G'.addEdge eₐ v a with hG1
   have heb_notG1 : e_b ∉ E(G1) := by
     rw [hG1]; simp only [Graph.addEdge, Graph.edgeSet_union, Graph.edgeSet_singleEdge,

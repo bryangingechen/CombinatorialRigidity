@@ -7,57 +7,47 @@ import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
 import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
 
 /-!
-# The deficiency kit — value calculus (Phase 40l COVERAGE-REDUCE, `sec:main-component-sparse`)
+# The deficiency of a sparse graph
 
-The value form of the deficiency of Katoh–Tanigawa 2011 (`def:D-deficiency`) that COVERAGE's
-REDUCE sub-phase supplies to the `X₀` induction
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-sparse`): the singleton-optimal
-bound, the rigid set inside a set of nonpositive singleton value, the merge-along-a-rigid-set
-step, the add-one-body identity, the tight-set-is-rigid step, the core bound, the additive core,
-and the one- and two-body chain estimates, each stated at the `partitionDef` value level
-(`Molecular/Deficiency.lean`) rather than as a `deficiency`-only inequality. The nine lemmas are
-the pencil workbook's claims (MC-75)(i), (MC-76), (MC-79), (MC-87) at their Lean strength, with
-the recon's proof-level departures D1–D3 (`notes/Phase40l.md` *Architectural choices*).
+Estimates on the values of partitions (`def:D-deficiency`) that the main-component induction uses
+(`sec:main-component-sparse`), stated with `partitionDef` (`Molecular/Deficiency.lean`). For
+`X ⊆ V(G)`, the *singleton value* `s_D(X) = (G.induce X).partitionDef n id` is the value
+`D(|X| - 1) - (D - 1)e(X)` of the partition of `G[X]` into single vertices, and `s = s_3` is its
+case `n = 2`. We write `def₂` and `def₃` for `deficiency 2` and `deficiency 3`, and `def₂(G; a, b)`
+and `def₃(G; a, b)` for `deficiencyMerged 2 a b` and `deficiencyMerged 3 a b`. A set `W` is *rigid*
+if `def₃(G[W]) = 0`, and `G` is *sparse* if `s(X) ≥ 1` for every `X ⊆ V(G)` with `|X| ≥ 2`; a set
+`X` of at least three vertices is *tight* if `G[X]` is sparse and `s(X) = 1`.
 
 ## Main statements
 
-* `Graph.partitionDef_le_partitionDef_id` / `Graph.partitionDef_add_partitionDef_induce_id_le`
-  (`lem:deficiency-singleton-bound`) — if every nonempty subset has nonnegative singleton value,
-  singletons are the optimal partition, and the distinguished part `Z₀ ∋ v` of any `f` can be
-  split off without loss.
-* `Graph.partitionDef_induce_insert` / `Graph.deficiency_induce_insert_eq_zero` /
-  `Graph.partitionDef_two_induce_insert_id` (`lem:deficiency-add-body`) — the value identity for
-  adding one body `u` to `X`, (MC-75)(i): a body with two neighbours in a rigid set joins it, and
-  its singleton-partition specialization at `n = 2` (Phase 40p REDUCE+CLOSE).
-* `Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos` /
-  `Graph.one_le_partitionDef_induce_id` (`lem:deficiency-sparse`) — a minimal set of nonpositive
-  singleton value is rigid, hence (MC-76): a rigid-set-free graph has singleton value at least
-  `1` on every set of two or more bodies.
-* `Graph.exists_partitionDef_le_mergeOn` / `Graph.deficiencyMerged_eq_deficiency_of_mem`
-  (`lem:deficiency-merge-rigid`) — merging the parts that meet a rigid set does not lower the
-  value, hence (MC-79)(i): two bodies in a common rigid set have `deficiencyMerged = deficiency`
-  (with `Graph.deficiencyMerged_le_deficiency`, `Molecular/Deficiency.lean`, the other direction).
-* `Graph.deficiency_three_induce_eq_zero_of_tight` (`lem:deficiency-tight-rigid`) — a set of
-  three or more bodies with singleton value at most `1`, every subset of two or more bodies
-  having singleton value at least `1`, is rigid; D3, replacing (MC-78) Lemma T.
-* `Graph.deficiency_three_induce_eq_zero_of_le` / `Graph.partitionDef_induce_id_le_of_maximal`
-  (`lem:deficiency-core-bound`) — a maximal rigid set `W` avoiding a small `X₀` bounds the
-  singleton value of every superset `X ⊇ W` below by that of `W`; D1, by a minimal
-  counterexample, new proofs of (MC-87)(ii).
-* `Graph.deficiency_induce_add_deficiency_rigidContract_le` (`lem:deficiency-additive-core`) —
-  under the core bound, the planar deficiency is additive across the rigid-contraction split:
-  `def₂(G[W]) + def₂(G/G[W]) ≤ def₂(G)` ((MC-87)(i)'s "if" half, the `≤` form).
-* `Graph.not_adj_and_deficiencyMerged_two_add_two_le` / `Graph.deficiencyMerged_three_add_five_le`
-  (`lem:deficiency-one-body-chain`) — the two estimates at the ends of a one-body chain
-  ((MC-79)(ii); D2 refines the first bullet).
-* `Graph.deficiencyMerged_two_add_two_le` (`lem:deficiency-two-body-chain`) — the estimate at the
-  ends of a two-body chain ((MC-79)(iii), via the tight-set step).
+* `Graph.partitionDef_le_partitionDef_id`, `Graph.partitionDef_add_partitionDef_induce_id_le`
+  (`lem:deficiency-singleton-bound`): when the singleton values are nonnegative, the singletons
+  bound every partition, and a part `Z` splits off with the value `s_D(Z)`.
+* `Graph.partitionDef_induce_insert`, `Graph.deficiency_induce_insert_eq_zero`,
+  `Graph.partitionDef_two_induce_insert_id` (`lem:deficiency-add-body`): the value after adding a
+  vertex, and a vertex with two neighbours in a set of deficiency zero joins it when `D ≥ 3`.
+* `Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos`,
+  `Graph.one_le_partitionDef_induce_id` (`lem:deficiency-sparse`): a set of nonpositive singleton
+  value contains a set of deficiency zero, so with no such set of two or more vertices, every such
+  set has singleton value at least `1`.
+* `Graph.exists_partitionDef_le_mergeOn`, `Graph.deficiencyMerged_eq_deficiency_of_mem`
+  (`lem:deficiency-merge-rigid`): merging the parts that meet a set of deficiency zero does not
+  lower the value, so two vertices of such a set have `deficiencyMerged = deficiency`.
+* `Graph.deficiency_three_induce_eq_zero_of_tight` (`lem:deficiency-tight-rigid`): a tight set is
+  rigid.
+* `Graph.deficiency_three_induce_eq_zero_of_le`, `Graph.partitionDef_induce_id_le_of_maximal`
+  (`lem:deficiency-core-bound`): a maximal rigid set `W` avoiding a set `X₀` of at most one vertex
+  has `s(W) ≤ s(X)` for every `X ⊇ W`.
+* `Graph.deficiency_induce_add_deficiency_rigidContract_le` (`lem:deficiency-additive-core`):
+  `def₂(G[W]) + def₂(G / G[W]) ≤ def₂(G)` under that bound.
+* `Graph.not_adj_and_deficiencyMerged_two_add_two_le`, `Graph.deficiencyMerged_three_add_five_le`
+  (`lem:deficiency-one-body-chain`) and `Graph.deficiencyMerged_two_add_two_le`
+  (`lem:deficiency-two-body-chain`): the merged deficiencies at the ends of a chain of one or two
+  vertices.
 
-## Project context
-
-See `notes/Phase40l.md` and `ROADMAP.md` §40 for the phase; the D5 pins paid on this file's
-blueprint nodes are `Graph.deficiencyMerged_le_deficiency` and `Graph.partitionDef_map`, which live
-in `Molecular/Deficiency.lean` and are pinned as they stand, not re-derived.
+`Graph.deficiencyMerged_le_deficiency` and `Graph.partitionDef_map`, which
+`lem:deficiency-merge-rigid` and `lem:deficiency-additive-core` also pin, are in
+`Molecular/Deficiency.lean`.
 -/
 
 open scoped Graph
@@ -66,17 +56,20 @@ namespace Graph
 
 variable {α β : Type*}
 
-/-! ## Singleton-optimal partitions (`lem:deficiency-singleton-bound`) -/
+/-! ## The singletons bound the partitions (`lem:deficiency-singleton-bound`) -/
 
-/-- **A constant labeling has zero value**: if `f w = f v` for every `w ∈ V(G)`, then
-`G.partitionDef n f = 0`. -/
+/-- **A constant labeling has value zero** (a step of `lem:deficiency-singleton-bound`): if
+`f w = f v` for every `w ∈ V(G)` and `v ∈ V(G)`, then `G.partitionDef n f = 0`. -/
 lemma partitionDef_eq_zero_of_forall_eq {G : Graph α β} {n : ℕ} {f : α → α} {v : α}
     (hv : v ∈ V(G)) (hf : ∀ w ∈ V(G), f w = f v) : G.partitionDef n f = 0 := by
   rw [partitionDef_congr (g := fun _ => f v) (fun w hw => hf w hw)]
   exact partitionDef_one G n (f v) ⟨v, hv⟩
 
-/-- **Singletons are optimal when no set has negative singleton value**: if every nonempty
-`Z ⊆ V(G)` has `0 ≤ val_{G[Z]}(singletons)`, then `val_G(f) ≤ val_G(singletons)` for every `f`. -/
+/-- **The singletons are optimal when no singleton value is negative**
+(`lem:deficiency-singleton-bound`): if every nonempty `Z ⊆ V(G)` has `s_D(Z) ≥ 0`, then every
+labeling `f` has value at most `s_D(V(G))`. By induction on `|V(G)|`: the part `Z₀` of a vertex `v`
+splits off both partitions (`partitionDef_split_of_sides`), with the values `0` and `s_D(Z₀) ≥ 0` on
+`G[Z₀]`. -/
 theorem partitionDef_le_partitionDef_id [Finite α] [Finite β] {n : ℕ} :
     ∀ {G : Graph α β}, (∀ Z ⊆ V(G), Z.Nonempty → 0 ≤ (G.induce Z).partitionDef n id) →
       ∀ f : α → α, G.partitionDef n f ≤ G.partitionDef n id := by
@@ -108,9 +101,9 @@ theorem partitionDef_le_partitionDef_id [Finite α] [Finite β] {n : ℕ} :
   have hZ := hS Z₀ hZ₀V ⟨v, hv, rfl⟩
   linarith
 
-/-- **The distinguished-part bound** (the value identity's consumed form): if every nonempty set
-of bodies outside the part `Z₀ ∋ v` of `f` has nonnegative singleton value, then
-`val_G(f) + val_{G[Z₀]}(singletons) ≤ val_G(singletons)`. -/
+/-- **A part splits off with its singleton value** (`lem:deficiency-singleton-bound`): let `Z₀` be
+the part of `v ∈ V(G)` under `f`. If every nonempty set of vertices outside `Z₀` has nonnegative
+singleton value, then `G.partitionDef n f + s_D(Z₀) ≤ s_D(V(G))`. -/
 theorem partitionDef_add_partitionDef_induce_id_le [Finite α] [Finite β] {G : Graph α β}
     {n : ℕ} (f : α → α) {v : α} (hv : v ∈ V(G))
     (hS : ∀ Z ⊆ V(G) \ {w | f w = f v}, Z.Nonempty → 0 ≤ (G.induce Z).partitionDef n id) :
@@ -135,16 +128,20 @@ theorem partitionDef_add_partitionDef_induce_id_le [Finite α] [Finite β] {G : 
     refine hS Z (fun z hz => ⟨(hZ hz).1, fun hfz => (hZ hz).2 ⟨(hZ hz).1, hfz⟩⟩) hne) f
   linarith
 
-/-! ## A minimal counterexample to (S) is rigid (`lem:deficiency-sparse`) -/
+/-! ## A set of nonpositive singleton value (`lem:deficiency-sparse`) -/
 
-/-- **A singleton part has zero value**: `(G.induce {v}).partitionDef n id = 0`. -/
+/-- **A single vertex has singleton value zero** (a step of `lem:deficiency-sparse`):
+`(G.induce {v}).partitionDef n id = 0`. -/
 lemma partitionDef_induce_singleton_id (G : Graph α β) (n : ℕ) (v : α) :
     (G.induce {v}).partitionDef n id = 0 :=
   partitionDef_eq_zero_of_forall_eq (G := G.induce {v}) (v := v) rfl fun w hw => by
     simpa using hw
 
-/-- **A set of nonpositive singleton value contains a rigid set** ((MC-76)'s minimal-counterexample
-step, at any `n`): a minimal `Y ⊆ X`, `|Y| ≥ 2`, with `val_{G[Y]}(singletons) ≤ 0` is rigid. -/
+/-- **A set of nonpositive singleton value contains a set of deficiency zero**
+(`lem:deficiency-sparse`): if `X ⊆ V(G)`, `|X| ≥ 2` and `s_D(X) ≤ 0`, then some `Y ⊆ X` with
+`|Y| ≥ 2` has `def(G̃[Y]) = 0`. A minimal such `Y` works: its nonempty proper subsets have
+nonnegative singleton value, so a partition of `Y` with a part `Z ⊊ Y` has value at most
+`s_D(Y) - s_D(Z) ≤ 0` (`partitionDef_add_partitionDef_induce_id_le`). -/
 theorem exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} :
     ∀ {X : Set α}, X ⊆ V(G) → 2 ≤ X.ncard → (G.induce X).partitionDef n id ≤ 0 →
@@ -188,8 +185,9 @@ theorem exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos [Finite α] [
     linarith
   · exact Set.nonempty_of_ncard_ne_zero (s := X) (by omega)
 
-/-- **(MC-76), the direction consumed**: no rigid set of two or more bodies gives (S) in value
-form. -/
+/-- **With no set of deficiency zero, the singleton values are positive** (`lem:deficiency-sparse`):
+if no `X ⊆ V(G)` with `|X| ≥ 2` has `def(G̃[X]) = 0`, then `s_D(X) ≥ 1` for every such `X`; at
+`n = 2`, `G` is sparse. -/
 theorem one_le_partitionDef_induce_id [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hS : ∀ X ⊆ V(G), 2 ≤ X.ncard → (G.induce X).deficiency n ≠ 0) :
     ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef n id := by
@@ -199,10 +197,12 @@ theorem one_le_partitionDef_induce_id [Finite α] [Finite β] {G : Graph α β} 
     exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos (n := n) hX hX2 (by omega)
   exact hS Y (hYX.trans hX) hY2 hYd
 
-/-! ## Merging along a rigid set (`lem:deficiency-merge-rigid`) -/
+/-! ## Merging along a set of deficiency zero (`lem:deficiency-merge-rigid`) -/
 
-/-- **Merging the parts that meet a rigid set does not lower the value** (the coarsening step of
-(MC-77) and (MC-79)(i); (MC-67)(b)'s one line). -/
+/-- **Merging along a set of deficiency zero** (`lem:deficiency-merge-rigid`): let `D ≥ 1`, and let
+`W ⊆ V(G)` be nonempty with `def(G̃[W]) = 0`. Every labeling `f` has a coarsening `g`, with `W` in
+one part, of at least its value. Merging the parts that meet `W` lowers the value by at most the
+value of `f` on `G[W]` (`partitionDef_merge`), which is at most zero. -/
 theorem exists_partitionDef_le_mergeOn [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hn : 1 ≤ bodyBarDim n) {W : Set α} (hW : W ⊆ V(G)) (hdef : (G.induce W).deficiency n = 0)
     (f : α → α) (hWne : W.Nonempty) :
@@ -233,7 +233,10 @@ theorem exists_partitionDef_le_mergeOn [Finite α] [Finite β] {G : Graph α β}
   rw [Graph.partitionDef, Graph.numParts, Graph.vertexSet_induce] at hval
   linarith
 
-/-- (MC-79)(i), the direction consumed: two bodies in a common rigid set have `δ = 0`. -/
+/-- **Two vertices of a set of deficiency zero** (`lem:deficiency-merge-rigid`): let `D ≥ 1`, and
+let `Y ⊆ V(G)` have `def(G̃[Y]) = 0`. For `a, b ∈ Y`, `deficiencyMerged n a b = deficiency n`:
+merging a partition attaining `def(G̃)` along `Y` (`exists_partitionDef_le_mergeOn`) puts `a` and
+`b` in one part, and `deficiencyMerged_le_deficiency` is the other bound. -/
 theorem deficiencyMerged_eq_deficiency_of_mem [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hn : 1 ≤ bodyBarDim n) {Y : Set α} (hY : Y ⊆ V(G)) (hdef : (G.induce Y).deficiency n = 0)
     {a b : α} (ha : a ∈ Y) (hb : b ∈ Y) : G.deficiencyMerged n a b = G.deficiency n := by
@@ -244,18 +247,21 @@ theorem deficiencyMerged_eq_deficiency_of_mem [Finite α] [Finite β] {G : Graph
     _ ≤ G.partitionDef n g := hfg
     _ ≤ G.deficiencyMerged n a b := G.partitionDef_le_deficiencyMerged n (hgY a ha b hb)
 
-/-! ## Value-calculus helpers -/
+/-! ## Two facts on values -/
 
-/-- `val₃(f) = 2 val₂(f) − d(f)`. -/
+/-- **The value at `n = 3` from the value at `n = 2`** (a step of `lem:deficiency-tight-rigid`):
+`val₃(f) = 2 val₂(f) - d(f)`, with `d(f)` the number of edges across `f`, as `D = 6` at `n = 3` and
+`D = 3` at `n = 2`. -/
 lemma partitionDef_three_eq (G : Graph α β) (f : α → α) :
     G.partitionDef 3 f = 2 * G.partitionDef 2 f - (G.crossingEdges f).ncard := by
   simp only [partitionDef, bodyBarDim_two, bodyBarDim_three]
   push_cast
   ring
 
-/-- **Singleton value propagates to every nonempty subset**: if every `Z ⊆ X` with `2 ≤ |Z|` has
-`1 ≤ val_{G[Z]}(id)`, then every nonempty `Z ⊆ X` has `0 ≤ val_{G[Z]}(id)` (singletons by
-`partitionDef_induce_singleton_id`, the rest by hypothesis). -/
+/-- **Positive singleton values on the larger sets give nonnegative ones** (a step of
+`lem:deficiency-tight-rigid`): if every `Z ⊆ X` with `|Z| ≥ 2` has `s_D(Z) ≥ 1`, then every nonempty
+`Z ⊆ X` has `s_D(Z) ≥ 0`, as a single vertex has singleton value zero
+(`partitionDef_induce_singleton_id`). -/
 lemma partitionDef_induce_id_nonneg [Finite α] {G : Graph α β} {n : ℕ} {X : Set α}
     (hSv : ∀ Z ⊆ X, 2 ≤ Z.ncard → 1 ≤ (G.induce Z).partitionDef n id) :
     ∀ Z ⊆ X, Z.Nonempty → 0 ≤ (G.induce Z).partitionDef n id := by
@@ -266,10 +272,10 @@ lemma partitionDef_induce_id_nonneg [Finite α] {G : Graph α β} {n : ℕ} {X :
     exact (partitionDef_induce_singleton_id G n z).ge
   · exact (hSv Z hZ h).trans' (by norm_num)
 
-/-! ## Adding one body (`lem:deficiency-add-body`) -/
+/-! ## Adding one vertex (`lem:deficiency-add-body`) -/
 
-/-- Membership in `(G.induce S).crossingEdges g`: an edge of `G` with both ends in `S` carrying
-different `g`-labels. -/
+/-- **The edges of `G[S]` across a labeling** (a step of `lem:deficiency-add-body`): an edge of `G`
+with both ends in `S` whose ends have different labels under `g`. -/
 lemma mem_crossingEdges_induce {G : Graph α β} {S : Set α} {g : α → α} {e : β} :
     e ∈ (G.induce S).crossingEdges g ↔ ∃ x y, G.IsLink e x y ∧ x ∈ S ∧ y ∈ S ∧ g x ≠ g y := by
   constructor
@@ -281,9 +287,9 @@ lemma mem_crossingEdges_induce {G : Graph α β} {S : Set α} {g : α → α} {e
     exact ⟨hl'.edge_mem, x, y, hl', hne⟩
 
 open Classical in
-/-- **Adding one body** (the vertex count behind (MC-75)(i), (MC-79)(ii) and the core bound):
-`val_{G[X ∪ u]}(g) = val_{G[X]}(g) + D·[g u is a new label] − (D − 1)·t`, with `t` the edges from
-`u` into `X` whose far end has a different label. -/
+/-- **Adding one vertex** (`lem:deficiency-add-body`): for `u ∉ X` and a labeling `g`,
+`val_{G[X ∪ u]}(g) = val_{G[X]}(g) + D·[g u is a new label] - (D - 1)·t`, where `t` is the number of
+edges from `u` to the vertices of `X` with a label other than `g u`. -/
 theorem partitionDef_induce_insert [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {X : Set α}
     {u : α} (huX : u ∉ X) (g : α → α) :
     (G.induce (insert u X)).partitionDef n g =
@@ -325,8 +331,9 @@ theorem partitionDef_induce_insert [Finite α] [Finite β] {G : Graph α β} {n 
   rw [hcard, hparts]
   split_ifs <;> push_cast <;> ring
 
-/-- **The singleton value of adding one body**: `s′(Y ∪ u) = s′(Y) + 3 − 2 t`, `t` the edges from
-`u` into `Y` (`partitionDef_induce_insert` at `n = 2` and the singleton partition). -/
+/-- **The singleton value after adding one vertex** (`lem:deficiency-add-body`): for `u ∉ Y`,
+`s(Y ∪ u) = s(Y) + 3 - 2t`, with `t` the number of edges from `u` into `Y`
+(`partitionDef_induce_insert` at `n = 2` and the singletons). -/
 theorem partitionDef_two_induce_insert_id [Finite α] [Finite β] {G : Graph α β}
     {u : α} {Y : Set α} (huY : u ∉ Y) :
     (G.induce (insert u Y)).partitionDef 2 id =
@@ -340,7 +347,11 @@ theorem partitionDef_two_induce_insert_id [Finite α] [Finite β] {G : Graph α 
       fun ⟨y, hy, hl⟩ => ⟨y, hy, hl, fun h' => huY ((show y = u from h') ▸ hy)⟩⟩
   rw [hset]; push_cast; ring
 
-/-- **(MC-75)(i)**: a body with two neighbours in a rigid set joins it (`D ≥ 3`). -/
+/-- **A vertex with two neighbours in a set of deficiency zero joins it**
+(`lem:deficiency-add-body`): let `D ≥ 3` and `def(G̃[W]) = 0`, and let `u ∉ W` be adjacent to
+distinct `c₁, c₂ ∈ W`. Then `def(G̃[W ∪ u]) = 0`: a labeling under which `u` shares its label with a
+vertex of `W` has value at most its value on `G[W]`, and one with `u` alone has both edges to `c₁`
+and `c₂` across, so value at most `D - 2(D - 1) < 0`. -/
 theorem deficiency_induce_insert_eq_zero [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hn : 3 ≤ bodyBarDim n) {W : Set α} (hdef : (G.induce W).deficiency n = 0) {u c₁ c₂ : α}
     (huW : u ∉ W) (hc₁ : c₁ ∈ W) (hc₂ : c₂ ∈ W) (hne : c₁ ≠ c₂) (h₁ : G.Adj u c₁)
@@ -372,8 +383,8 @@ theorem deficiency_induce_insert_eq_zero [Finite α] [Finite β] {G : Graph α �
       exact_mod_cast h2
     nlinarith
 
-/-- **A maximal rigid superset inside `U`**: given `Y ⊆ U` rigid, some `W` with `Y ⊆ W ⊆ U` is
-rigid and maximal among rigid subsets of `U` containing `Y`. -/
+/-- **A maximal set of deficiency zero between `Y` and `U`**: if `Y ⊆ U` and `def(G̃[Y]) = 0`, then
+some `W` with `Y ⊆ W ⊆ U` and `def(G̃[W]) = 0` is maximal among such sets. -/
 theorem exists_maximal_deficiency_induce_eq_zero [Finite α] (G : Graph α β) (n : ℕ)
     {Y U : Set α} (hYU : Y ⊆ U) (hY : (G.induce Y).deficiency n = 0) :
     ∃ W, Y ⊆ W ∧ W ⊆ U ∧ (G.induce W).deficiency n = 0 ∧
@@ -385,10 +396,11 @@ theorem exists_maximal_deficiency_induce_eq_zero [Finite α] (G : Graph α β) (
   exact (Set.eq_of_subset_of_ncard_le hWW' (hmax W' ⟨hYW.trans hWW', hW'U, hW'd⟩)
     (Set.toFinite _)).symm
 
-/-! ## Re-indexing helpers -/
+/-! ## Relabelling -/
 
-/-- **Value depends only on the kernel**: labelings `f`, `g` inducing the same partition of
-`V(G)` (agreeing on which vertices share a label) give the same value. -/
+/-- **The value depends only on the partition** (a step of `lem:deficiency-one-body-chain`):
+labelings `f` and `g` that give the same pairs of vertices of `V(G)` the same label have the same
+value. -/
 lemma partitionDef_eq_of_forall_iff {G : Graph α β} {n : ℕ} {f g : α → α}
     (h : ∀ u ∈ V(G), ∀ w ∈ V(G), f u = f w ↔ g u = g w) :
     G.partitionDef n f = G.partitionDef n g := by
@@ -406,8 +418,9 @@ lemma partitionDef_eq_of_forall_iff {G : Graph α β} {n : ℕ} {f g : α → α
   rw [← partitionDef_comp_of_injOn (g := ι) hinj]
   exact partitionDef_congr fun u hu => hιf u hu
 
-/-- **Gluing two labelings across a side split**: a side-separated labeling with the kernel of
-`g` on `X` and of `f` off `X`. -/
+/-- **Gluing two labelings** (a step of `lem:deficiency-one-body-chain`): some labeling `h`
+separates `X` from `V(G) \ X`, gives two vertices of `X` the same label exactly when `g` does, and
+two vertices of `V(G) \ X` the same label exactly when `f` does. -/
 lemma exists_glue (G : Graph α β) (X : Set α) (g f : α → α) :
     ∃ h : α → α, (∀ x ∈ X, ∀ y ∈ V(G) \ X, h x ≠ h y) ∧
       (∀ u ∈ X, ∀ w ∈ X, h u = h w ↔ g u = g w) ∧
@@ -440,9 +453,12 @@ lemma exists_glue (G : Graph α β) (X : Set α) (g f : α → α) :
 
 /-! ## A tight set is rigid (`lem:deficiency-tight-rigid`) -/
 
-/-- **A tight set of three or more bodies is rigid** (replaces (MC-78) Lemma T in
-(MC-79)(iii)'s use): under (S) on the subsets of `X`, `s′(X) ≤ 1` and `|X| ≥ 3` give
-`def₃(G[X]) = 0`. -/
+/-- **A tight set is rigid** (`lem:deficiency-tight-rigid`): let `X` have at least three vertices,
+let `s(Z) ≥ 1` for every `Z ⊆ X` with `|Z| ≥ 2`, and let `s(X) ≤ 1`. Then `def₃(G[X]) = 0`. A
+partition with a part `Z`, `2 ≤ |Z| < |X|`, has planar value at most `s(X) - s(Z) ≤ 0`, so its value
+at `n = 3` is at most `0` (`partitionDef_three_eq`). For the singletons, `s(X) ≤ 1` gives
+`2e(X) ≥ 3|X| - 4 ≥ 5`, so their value at `n = 3`, `2s(X) - e(X)`, is negative. The partition `{X}`
+has value zero. -/
 theorem deficiency_three_induce_eq_zero_of_tight [Finite α] [Finite β] {G : Graph α β}
     {X : Set α} (hSv : ∀ Z ⊆ X, 2 ≤ Z.ncard → 1 ≤ (G.induce Z).partitionDef 2 id)
     (hX3 : 3 ≤ X.ncard) (hX1 : (G.induce X).partitionDef 2 id ≤ 1) :
@@ -498,10 +514,12 @@ theorem deficiency_three_induce_eq_zero_of_tight [Finite α] [Finite β] {G : Gr
 
 /-! ## The core bound (`lem:deficiency-core-bound`) -/
 
-/-- **The core rigidity step** (the new proof of (MC-87)(ii), minimal-counterexample form): if
-`W ⊆ Y`, `W` rigid, `s′(Y) ≤ s′(W)` and every `Q` with `W ⊆ Q ⊊ Y` has `s′(W) ≤ s′(Q)`, then
-`G[Y]` is rigid. Merge the parts meeting `W` (value does not drop), then bound by the part
-containing `W`. -/
+/-- **A set above a rigid set with no smaller singleton value is rigid**
+(`lem:deficiency-core-bound` (1)): let `s(Z) ≥ 1` for every `Z ⊆ Y` with `|Z| ≥ 2`, let `W ⊆ Y` be
+nonempty and rigid, let `s(Y) ≤ s(W)`, and let `s(W) ≤ s(Q)` for every `Q` with `W ⊆ Q ⊊ Y`. Then
+`def₃(G[Y]) = 0`. Merging the parts of a partition that meet `W` does not lower its value
+(`exists_partitionDef_le_mergeOn`), and the part `Q ⊇ W` of the result bounds its planar value by
+`s(Y) - s(Q) ≤ 0` if `Q ≠ Y`. -/
 theorem deficiency_three_induce_eq_zero_of_le [Finite α] [Finite β] {G : Graph α β}
     {W Y : Set α} (hSv : ∀ Z ⊆ Y, 2 ≤ Z.ncard → 1 ≤ (G.induce Z).partitionDef 2 id)
     (hWY : W ⊆ Y) (hWne : W.Nonempty) (hWd : (G.induce W).deficiency 3 = 0)
@@ -535,9 +553,13 @@ theorem deficiency_three_induce_eq_zero_of_le [Finite α] [Finite β] {G : Graph
   have : (0 : ℤ) ≤ ((G.induce Y).crossingEdges g).ncard := by positivity
   linarith
 
-/-- **The core bound** ((MC-87)(ii), both cases, by a new proof): let `W` be maximal among the
-rigid sets avoiding `X₀`, where `X₀` is empty or one body sending at most two edges anywhere and
-at most one into `W`. Then `s′(W) ≤ s′(X)` for every `X ⊇ W`. -/
+/-- **A maximal rigid set bounds the singleton values above it** (`lem:deficiency-core-bound` (2)):
+let `G` be sparse, let `W` be nonempty and rigid, and let `X₀` be empty or one vertex outside `W`
+that sends at most two edges into each set avoiding it and at most one into `W`. If `W` is maximal
+among the rigid sets that contain it and avoid `X₀`, then `s(W) ≤ s(X)` for every `X` with
+`W ⊆ X ⊆ V(G)`. The proof takes a smallest counterexample `X` and applies
+`deficiency_three_induce_eq_zero_of_le` to `X`, or to `X` less the vertex of `X₀`
+(`partitionDef_induce_insert`). -/
 theorem partitionDef_induce_id_le_of_maximal [Finite α] [Finite β] {G : Graph α β}
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id)
     {W X₀ : Set α} (hWne : W.Nonempty) (hWX₀ : Disjoint W X₀)
@@ -604,7 +626,8 @@ theorem partitionDef_induce_id_le_of_maximal [Finite α] [Finite β] {G : Graph 
 
 /-! ## The additive core (`lem:deficiency-additive-core`) -/
 
-/-- A labeling constant on `W` sees the same value on `G` and on `G` with `W`'s edges deleted. -/
+/-- **Deleting the edges of `G[W]` keeps the value of a labeling constant on `W`** (a step of
+`lem:deficiency-additive-core`): none of the deleted edges is across the labeling. -/
 lemma partitionDef_deleteEdges_induce_eq {G : Graph α β} {n : ℕ} {W : Set α} {f : α → α}
     (hf : ∀ u ∈ W, ∀ w ∈ W, f u = f w) :
     (G.deleteEdges E(G.induce W)).partitionDef n f = G.partitionDef n f := by
@@ -624,8 +647,12 @@ lemma partitionDef_deleteEdges_induce_eq {G : Graph α β} {n : ℕ} {W : Set α
       exact ⟨⟨he, hnot⟩, x, y, ⟨hl, hnot⟩, hne⟩
   simp only [partitionDef, numParts, vertexSet_deleteEdges, hce]
 
-/-- **(MC-87)(i)'s "if" half, in the `≤` form CONTRACT-A consumes** (`hadd`): under (S), if
-`s′(W) ≤ s′(X)` for every `X ⊇ W`, then `def₂(G[W]) + def₂(G/G[W]) ≤ def₂(G)`. -/
+/-- **The planar deficiencies of a core and its contraction** (`lem:deficiency-additive-core` (2)):
+let `G` be sparse, let `r ∈ W ⊆ V(G)`, and let `s(W) ≤ s(X)` for every `X` with `W ⊆ X ⊆ V(G)`. Then
+`def₂(G[W]) + def₂(G / G[W]) ≤ def₂(G)`, where `G / G[W]` contracts `G[W]` to `r`. The singletons
+are optimal, so `def₂(G[W]) ≤ s(W)` (`partitionDef_le_partitionDef_id`); a partition of `G / G[W]`
+pulls back to one of `V(G)` with `W` in one part `Z`, of value at most
+`s(V(G)) - s(Z) ≤ s(V(G)) - s(W)`; and `s(V(G)) ≤ def₂(G)`. -/
 theorem deficiency_induce_add_deficiency_rigidContract_le [Finite α] [Finite β]
     {G : Graph α β} (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id)
     {W : Set α} (hW : W ⊆ V(G)) {r : α} (hr : r ∈ W)
@@ -657,13 +684,15 @@ theorem deficiency_induce_add_deficiency_rigidContract_le [Finite α] [Finite β
   have h3 : G.partitionDef 2 id ≤ G.deficiency 2 := partitionDef_le_deficiency _ _ _
   linarith
 
-/-! ## The one-body and two-body chain estimates (`lem:deficiency-one-body-chain`,
+/-! ## The chains of one and two vertices (`lem:deficiency-one-body-chain`,
 `lem:deficiency-two-body-chain`) -/
 
-/-- **(MC-79)(ii), first bullet, by a new proof** (SPLITOFF's `hδ` supplier): for `V₁ ⊆ V(G)` and
-a body `x ∉ V₁` joined to `a ≠ b` in `V₁` (at a chain, `V₁ = V(G) ∖ {x}`), if `x` lies in no
-rigid set of `G`, then `deficiencyMerged₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])`. Otherwise, with `Q` the
-part of `a, b` in an optimal merged partition of `G[V₁]`, `G[Q ∪ x]` is rigid. -/
+/-- **The merged deficiency at a vertex of degree two, at `n = 3`** (`lem:deficiency-one-body-chain`
+(2)): let `V₁ ⊆ V(G)`, and let `x ∉ V₁` be joined by edges to `a ≠ b` in `V₁`. If no set of at least
+two vertices containing `x` is rigid, then `def₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])`. Otherwise let `Q`
+be the part of `a` and `b` in a partition attaining the merged deficiency. Every labeling then has
+value at most `4` on `G[Q]`, and at most `0` if it gives `a` and `b` the same label (`exists_glue`,
+`partitionDef_split_of_sides`), and so `G[Q ∪ x]` is rigid (`partitionDef_induce_insert`). -/
 theorem deficiencyMerged_three_add_five_le [Finite α] [Finite β] {G : Graph α β}
     {V₁ : Set α} {x a b : α} {e₀ e₁ : β} (hV₁ : V₁ ⊆ V(G)) (hxV₁ : x ∉ V₁) (ha : a ∈ V₁)
     (hb : b ∈ V₁) (hab : a ≠ b) (h₀ : G.IsLink e₀ x a) (h₁ : G.IsLink e₁ x b)
@@ -758,9 +787,12 @@ theorem deficiencyMerged_three_add_five_le [Finite α] [Finite β] {G : Graph α
   have := Set.ncard_le_ncard hsub (Set.toFinite _)
   rwa [Set.ncard_pair (a := x) (b := a) (fun h' : x = a => hxV₁ (h' ▸ ha))] at this
 
-/-- **(MC-79)(iii), by a new proof** (ORBIT's `hδ₂` supplier at `k = 2`): under (S), for
-non-adjacent `a ≠ b` with `δ₃ ≠ 0`, `δ₂ ≥ 2`. A pair with `δ₂ ≤ 1` lies in a tight set of three
-or more bodies, which is rigid (`deficiency_three_induce_eq_zero_of_tight`). -/
+/-- **A non-adjacent pair outside every rigid set** (`lem:deficiency-two-body-chain`): let `G` be
+sparse, and let `a ≠ b` be non-adjacent vertices with `def₃(G; a, b) ≠ def₃(G)`. Then
+`def₂(G; a, b) + 2 ≤ def₂(G)`. Otherwise the part `Z` of `a` and `b` in a partition attaining the
+planar merged deficiency has `s(Z) ≤ 1`. As `s({a, b}) = 3`, `|Z| ≥ 3`, so `Z` is rigid
+(`deficiency_three_induce_eq_zero_of_tight`), and then `def₃(G; a, b) = def₃(G)`
+(`deficiencyMerged_eq_deficiency_of_mem`). -/
 theorem deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β}
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) {a b : α}
     (ha : a ∈ V(G)) (hb : b ∈ V(G)) (hab : a ≠ b) (hnadj : ¬ G.Adj a b)
@@ -786,7 +818,7 @@ theorem deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β
     have := Set.ncard_le_ncard (Set.pair_subset haZ hbZ) (Set.toFinite _)
     rwa [Set.ncard_pair hab] at this
   rcases Nat.lt_or_ge Z.ncard 3 with hZ3 | hZ3
-  · -- `Z = {a, b}`, an edgeless pair, has `s′ = 3`
+  · -- `Z = {a, b}`, a pair with no edge, has `s = 3`
     have hZab : Z = {a, b} := (Set.eq_of_subset_of_ncard_le (Set.pair_subset haZ hbZ)
       (by rw [Set.ncard_pair hab]; omega) (Set.toFinite _)).symm
     have hbna : b ∉ ({a} : Set α) := fun h' => hab (Set.mem_singleton_iff.mp h').symm
@@ -806,8 +838,13 @@ theorem deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β
       (fun Y hY => hSv Y (hY.trans hZV)) hZ3 hZ1
     exact hδ (deficiencyMerged_eq_deficiency_of_mem (by decide) hZV hZd haZ hbZ)
 
-/-- **(MC-79)(ii), its first claims** (ORBIT's `hδ₂` supplier at `k = 1`): for `V₁ ⊆ V(G)` and a
-body `x ∉ V₁` with edges to `a ≠ b` in `V₁`, under (S), `a ≁ b` and `δ₂(G[V₁]; a, b) ≥ 2`. -/
+/-- **The planar merged deficiency at a vertex of degree two** (`lem:deficiency-one-body-chain`
+(1)): let `G` be sparse, let `V₁ ⊆ V(G)`, and let `x ∉ V₁` be joined by edges to `a ≠ b` in `V₁`.
+Then `a` and `b` are not adjacent, and `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`. An edge `ab` would
+give the triangle `{x, a, b}` singleton value `0`. Adding `x` to a set containing `a` and `b` lowers
+its singleton value by at least one, so the part `Z` of `a` and `b` in a partition attaining the
+merged deficiency has `s(Z) ≥ 2`, and its value is at most `s(V₁) - s(Z)`
+(`partitionDef_add_partitionDef_induce_id_le`). -/
 theorem not_adj_and_deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G : Graph α β}
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) {V₁ : Set α}
     {x a b : α} {e₀ e₁ : β} (hV₁ : V₁ ⊆ V(G)) (hxV₁ : x ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
@@ -821,7 +858,7 @@ theorem not_adj_and_deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G :
     rcases h₀.right_eq_or_eq h₁ with h' | h'
     · exact hxV₁ (h' ▸ ha)
     · exact hab h'
-  -- adding `x` to a set containing `a, b` lowers `s′` by at least one
+  -- adding `x` to a set containing `a, b` lowers `s` by at least one
   have hx : ∀ Z ⊆ V₁, a ∈ Z → b ∈ Z → (G.induce (insert x Z)).partitionDef 2 id ≤
       (G.induce Z).partitionDef 2 id - 1 := by
     intro Z hZ haZ hbZ
@@ -845,7 +882,7 @@ theorem not_adj_and_deficiencyMerged_two_add_two_le [Finite α] [Finite β] {G :
       (Set.toFinite (insert x Z))
     rwa [Set.ncard_pair (a := x) (b := a) (fun h' : x = a => hxV₁ (h' ▸ ha))] at this
   refine ⟨fun ⟨f, hf⟩ => ?_, ?_⟩
-  · -- a triangle `x a b` would have `s′ ≤ 0`
+  · -- a triangle `x a b` would have `s ≤ 0`
     have hpair : (G.induce {a, b}).partitionDef 2 id ≤ 1 := by
       have hbna : b ∉ ({a} : Set α) := fun h' => hab (Set.mem_singleton_iff.mp h').symm
       rw [show ({a, b} : Set α) = insert b {a} from Set.pair_comm a b,

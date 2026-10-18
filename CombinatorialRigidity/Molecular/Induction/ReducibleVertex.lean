@@ -6,24 +6,28 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Induction.SplitOffDeficiency
 
 /-!
-# The combinatorial induction — the reducible vertex (`sec:molecular-induction`)
+# The combinatorial induction: KT Lemmas 4.5 and 4.6, and the contraction of a subgraph
 
-Phase 20 (molecular-conjecture program; see `notes/MolecularConjecture.md`). On top of the
-deficiency tracking (`Induction/SplitOffDeficiency`), this file locates the degree-2 vertex the
-reduction step operates on (Katoh–Tanigawa 2011 §4):
+Results of the combinatorial induction (`sec:molecular-induction`) after Katoh and Tanigawa (2011,
+*A proof of the molecular conjecture*, Discrete Comput. Geom. **45**, §§4 and 6). For a multigraph
+`G` and `D = bodyBarDim n`, with `G̃ = (D-1)·G` and its matroid `M(G̃)`, it proves:
 
-* every base of `M(G̃)` meets `≥ D` of the fibers at a degree-2 vertex, with the
-  forest-packing redistribution kernel and one rebalancing move of the descent;
-* the total fiber count and the **edge-count bound with no proper rigid subgraph**
-  (`no_rigid_edge_count`, `lem:no-rigid-edge-count`, the F′ core);
-* the **reducible vertex** (`exists_degree_le_two` / `exists_degree_eq_two`,
-  `lem:reducible-vertex`, the F″ core), upgrading degree `≤ 2` to `= 2` via two-edge-connectivity;
-* the graph operations `edgeSplit`, `collapseTo`, and the **rigid-subgraph contraction**
-  `rigidContract` (`def:rigid-contraction`) with their basic lemmas.
+* that a base of `M(G̃)` contains at least `D` copies of the two edges at a vertex of degree two
+  (`lem:base-vfiber-count`), and that an edge at `v` can move into a forest with no edge at `v`
+  (`lem:acyclic-insert-vfiber`, `lem:packing-move`), the steps of `rem:kt-lemma-41`;
+  `sec:molecular-induction-forest`;
+* KT Lemma 4.5 (i) and (ii) (`lem:no-rigid-edge-count`, `lem:edge-set-indep-pos`), and from the
+  proof of KT Lemma 4.6 a vertex of degree at most two and one of degree two
+  (`lem:low-degree-vertex`, `lem:reducible-vertex`); `sec:molecular-induction-dof`;
+* that a minimal `k`-dof-graph with no proper rigid subgraph is simple
+  (`lem:simple-minimal-noRigid`), and two adjacent vertices of degree two when `d ≥ 3`
+  (`lem:adjacent-degree-two-pair`); `sec:simplicity-and-adjacent-pair`;
+* that a minimal `0`-dof-graph with two vertices is not simple (`lem:theorem-55-base-producer`);
+* edge-splitting (`def:graph-operations`), the contraction `G / E(H)` of a subgraph
+  (`def:rigid-contraction`), and its number of vertices (`lem:reduction-measure`).
 
-The contraction-minimality and forest-surgery layers build on top in `Contraction` and
-`ForestSurgery`. See `ROADMAP.md` §20 / `notes/Phase20.md` and the `sec:molecular-induction`
-dep-graph.
+`Contraction.lean` proves that the contraction of a proper rigid subgraph of a minimal `k`-dof-graph
+is again one.
 -/
 
 namespace Graph
@@ -32,31 +36,18 @@ open Set Matroid
 
 variable {α β : Type*}
 
-/-! ### Every base of `M(G̃)` meets ≥ `D` of the fibers at a degree-2 vertex
-(`lem:forest-surgery-split`, the balanced-packing counting half)
+/-! ### A base contains `D` copies of the edges at `v` (`lem:base-vfiber-count`) -/
 
-The deferred forest surgery (`lem:forest-surgery-split`, KT~4.1) is gated on the
-*balanced-packing* assumption Katoh–Tanigawa gloss (`rem:kt-lemma-41`~(2)): that a base of
-`M(G̃)` admits a `D`-forest partition with **every** one of the `D` forests meeting the
-degree-2 vertex `v`. The pure-counting half of that assumption is *true* and provable on
-the green deficiency infrastructure: every base `B` of `M(G̃)` already contains **at least
-`D`** of the `2(D−1)` fibers incident to `v`.
-
-The argument is a rank count, **not** a forest reroute. Deleting `v`'s fibers from `B`
-lands inside `E((G_v)̃)` (the only `v`-incident `G`-edges are `eₐ`, `e_b` by `hdeg2`, so a
-surviving fiber's underlying edge avoids `v`), where the remainder is independent in
-`M((G_v)̃) = M(G̃) ↾ E((G_v)̃)` (`matroidMG_restrict_mulTilde`). Hence
-`|B ∖ v-fibers| ≤ rank M((G_v)̃)`, and the def\,$=$\,corank bridge
-(`isBase_ncard_add_deficiency_eq` / `rank_add_deficiency_eq`) turns
-`|B ∩ v-fibers| = |B| − |B ∖ v-fibers|` into
-`≥ D + (def((G_v)̃) − def(G̃))`, which is `≥ D` by the removal bound
-`removeVertex_deficiency_ge` (KT~4.4, `def(G̃) ≤ def((G_v)̃)`). Needs `2 ≤ bodyBarDim n`.
-
-This reduces the open balanced-packing assumption to a *redistribution* question — given
-`≥ D` `v`-fibers (each forest taking at most one `va`-copy and one `vb`-copy), can the `D`
-forests be rechosen so each meets `v`? — isolating exactly the combinatorial step KT's
-proof omits a justification for (`rem:kt-lemma-41`~(2)); the counting obstruction
-("pigeonhole when `h < D`") cannot arise. -/
+/-- **A base contains at least `D` copies of the edges at a vertex of degree two**
+(`lem:base-vfiber-count`): let `D ≥ 2`, and let the edges `eₐ ≠ e_b` join `v` to `a, b ≠ v` and be
+the only edges of `G` at `v` (`hdeg2`). Then every base `B` of `M(G̃)` contains at least `D` of the
+`2(D - 1)` copies of `eₐ` and `e_b`. The other elements of `B` are edges of `(G_v)̃`, where
+`G_v = G - v`, and they are independent in its matroid, a restriction of `M(G̃)`
+(`matroidMG_restrict_mulTilde`). So KT eq. (2.4) (`isBase_ncard_add_deficiency_eq`,
+`rank_add_deficiency_eq`) gives `|B ∩ (ẽₐ ∪ ẽ_b)| ≥ D + def((G_v)̃) - def(G̃)`, and KT Lemma 4.4
+(`removeVertex_deficiency_ge`, which uses `D ≥ 2`) gives `def(G̃) ≤ def((G_v)̃)`. `rem:kt-lemma-41`
+uses the count to partition a base into `D` forests each of which has an edge at `v`
+(`exists_balanced_forest_packing`, `lem:balanced-forest-packing`). -/
 theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
@@ -120,45 +111,23 @@ theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Gra
     linarith [hdiffleZ, hremoval, hBrank, hsplitZ, hHrank]
   exact_mod_cast key
 
-/-! ### Redistribution kernel: a `v`-avoiding forest accepts any `v`-fiber as a pendant
-(`lem:forest-surgery-split`, the balanced-packing redistribution half)
+/-! ### Moving an edge at `v` into a forest with none (`lem:acyclic-insert-vfiber`,
+`lem:packing-move`)
 
-With the *counting* half of the balanced-packing assumption discharged
-(`isBase_vfiber_ncard_ge`: a base meets `≥ D` of the `2(D−1)` fibers at the degree-2
-vertex `v`), the residual *redistribution* question (`rem:kt-lemma-41`~(2)) is: given the
-`D`-forest packing of a base and `≥ D` `v`-fibers among them, can the forests be rechosen
-so each meets `v`? This kernel resolves it **affirmatively** — confirming Katoh–Tanigawa's
-Lemma 4.1 proof has a *gap, not an error* (the balanced packing is achievable for a base).
+The step of `rem:kt-lemma-41` (2): if a forest of a partition of a base of `M(G̃)` into `D` forests
+has no edge at `v`, then another has two of the at least `D` copies at `v`
+(`isBase_vfiber_ncard_ge`), and moving one of them gives a new partition, as the moved edge is a
+pendant edge at `v`. Each move lowers the number of forests with no edge at `v`;
+`exists_balanced_forest_packing` (`ForestSurgery/Reduction.lean`) repeats it. -/
 
-The mechanism turns entirely on **`v` having degree 2** in `G`. A forest `F` (a
-`(G̃).cycleMatroid`-independent fiber set) that contains no `v`-incident fiber has `v`
-isolated in `G̃ ↾ F`; so for any `v`-fiber `x` (a copy of `eₐ` or `e_b`), `x` is a *pendant*
-edge in `G̃ ↾ insert x F` — its `v`-endpoint has degree 1 — hence a bridge, and adding a
-bridge to a forest keeps it a forest. So `insert x F` is again `(G̃).cycleMatroid`-
-independent. The repacking descent (move a `v`-fiber from a forest holding two of them
-into a `v`-avoiding forest; the pigeonhole donor always exists since `≥ D` fibers sit in
-`< D` non-empty forests) strictly raises the number of `v`-meeting forests, terminating
-with every forest meeting `v`. This kernel is the single load-bearing step of that descent;
-the descent itself (a `Fin D → Set _` repacking with a well-founded measure) is the
-remaining surgery work, off the Theorem-4.9 critical path. -/
-
-/-- **A `v`-avoiding forest accepts a `v`-fiber as a pendant** (`lem:forest-surgery-split`,
-balanced-packing redistribution kernel; Katoh–Tanigawa 2011 Lemma 4.1 p.660). Let `F` be a
-`(G̃).cycleMatroid`-independent fiber set (a "forest") whose edges all *avoid* `v`
-(`∀ p ∈ F, ¬ (G̃).Inc p v`), and let `x` be a fiber joining `v` to a distinct vertex `w`
-(`(G̃).IsLink x v w`, `w ≠ v` — a *non-loop* copy of a `v`-incident `G`-edge, exactly the
-shape of the `va`/`vb` fibers at a degree-2 vertex). Then `insert x F` is still
-`(G̃).cycleMatroid`-independent. (The non-loop hypothesis is essential: a loop at `v` is
-itself a cycle, so `insert (loop) F` is never acyclic.)
-
-Proof: by `cycleMatroid_indep`, `insert x F` is acyclic iff `G̃ ↾ insert x F` is a forest;
-since `F` is acyclic, it suffices (`IsForest.of_deleteEdges_singleton`) that `x` is a bridge
-of `G̃ ↾ insert x F`. `x` is a bridge iff `v` and `w` are disconnected after deleting `x`
-(`IsLink.isBridge_iff_not_connBetween`). But in `(G̃ ↾ insert x F) ＼ {x}` the vertex `v` is
-*isolated*: its only `insert x F`-edge was `x`, now deleted, and no `F`-edge touches `v`. So
-`Isolated.connBetween_iff_eq` forces any `v`–`w` connection to have `v = w`, contradicting
-`w ≠ v`. This is the single combinatorial step KT's Lemma 4.1 base-case proof needs and
-glosses; it holds because `v` has degree 2 (so a `v`-avoiding forest has `v` isolated). -/
+/-- **A forest with no edge at `v` accepts an edge at `v`** (`lem:acyclic-insert-vfiber`): let `F`
+be independent in the cycle matroid of `G̃` (a forest) with no edge incident with `v`, and let `x`
+be an edge of `G̃` joining `v` to a vertex `w ≠ v`. Then `insert x F` is a forest. In
+`G̃ ↾ insert x F` the only edge at `v` is `x`, so deleting `x` leaves `v` isolated and separates it
+from `w` (`Isolated.connBetween_iff_eq`): `x` is a bridge (`IsLink.isBridge_iff_not_connBetween`),
+and a forest with a bridge added is a forest (`IsForest.of_deleteEdges_singleton`). The argument
+uses only that no edge of `F` is at `v`, not the degree of `v`; it needs `w ≠ v`, as a loop is a
+cycle. -/
 theorem acyclicSet_insert_vfiber_of_not_inc {G : Graph α β} {n : ℕ}
     {F : Set (β × Fin (bodyHingeMult n))} {x : β × Fin (bodyHingeMult n)} {v w : α}
     (hF : ((G.mulTilde n).cycleMatroid).Indep F)
@@ -204,28 +173,14 @@ theorem acyclicSet_insert_vfiber_of_not_inc {G : Graph α β} {n : ℕ}
     exact hwv ((hvisol.connBetween_iff_eq).mp hconn).symm
   exact Graph.IsForest.of_deleteEdges_singleton hbridge hRforest_del
 
-/-! ### One rebalancing move of the forest-packing descent
-(`lem:forest-surgery-split`, the balanced-packing redistribution descent step)
-
-The two halves of the balanced-packing assumption — the counting half
-(`isBase_vfiber_ncard_ge`: a base meets `≥ D` of the `v`-fibers) and the redistribution
-kernel (`acyclicSet_insert_vfiber_of_not_inc`: a `v`-avoiding forest absorbs a free
-`v`-fiber as a pendant) — assemble into the balanced packing through a **finite repacking
-descent**: as long as some forest `Fs j` of the `D`-forest packing of a base avoids `v`,
-*move* a spare `v`-fiber `x` into it, raising the count of `v`-meeting forests.
-
-This lemma is the single load-bearing step of that descent: the **move preserves the
-packing**. Given a forest packing `Fs : Fin D → Set _` covering `I` (`⋃ i, Fs i = I`, each
-`Fs i` a `(G̃).cycleMatroid`-independent fiber set), a designated `v`-avoiding forest
-`Fs j` (`∀ p ∈ Fs j, ¬ (G̃).Inc p v`), and a `v`-fiber `x ∈ I` (`(G̃).IsLink x v w`, `w ≠ v`),
-the re-choice `Fs' i = insert x (Fs j)` at `i = j` and `Fs i ∖ {x}` elsewhere is again a
-forest packing covering `I`. The recipient `Fs j` stays acyclic by the kernel (`x` is a
-pendant at the isolated `v`); every donor `Fs i ∖ {x}` stays acyclic as a subset; and the
-union is unchanged because `x ∈ I` is re-added at `j` while removed elsewhere. The new
-forest `Fs' j` *meets* `v` (it contains `x`), so a descent driven by the count of
-`v`-avoiding forests terminates with a balanced packing. The descent's well-founded measure
-and the pigeonhole that always supplies such a spare `x` (`≥ D` fibers among `< D` non-empty
-forests) are the remaining surgery work, off the Theorem-4.9 critical path. -/
+/-- **Moving an edge at `v` into a forest with none** (`lem:packing-move`): let `Fs : Fin D → Set _`
+be forests of `G̃` (`hindep`) with union `I` (`hcover`), let no edge of `Fs j` be incident with `v`
+(`hFjv`), and let `x ∈ I` join `v` to a vertex `w ≠ v` in `G̃`. Then the family `Fs'` with
+`Fs' j = insert x (Fs j)` and `Fs' i = Fs i \ {x}` for `i ≠ j` is again a family of forests with
+union `I`: `Fs' j` is a forest by `acyclicSet_insert_vfiber_of_not_inc`, the others are subsets of
+forests, and `x ∈ I` moves from the others to `Fs' j`. The conclusion names the new family, which
+`exists_balanced_forest_packing` uses to keep the forests disjoint and to count those with an edge
+at `v`. -/
 theorem exists_packing_move_of_not_inc {G : Graph α β} {n : ℕ}
     {I : Set (β × Fin (bodyHingeMult n))}
     {Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n))}
@@ -271,63 +226,28 @@ theorem exists_packing_move_of_not_inc {G : Graph α β} {n : ℕ}
   · simp only [↓reduceIte]
   · exact fun i hij ↦ ite_eq_right hij
 
-/-! ### Total fiber count of `G̃` (`lem:no-rigid-edge-count`, support)
+/-! ### KT Lemma 4.5(i): an edge bound with no proper rigid subgraph (`lem:no-rigid-edge-count`) -/
 
-The KT 4.5(i) edge-count bound (`lem:no-rigid-edge-count`, the prerequisite for the
-existence of a reducible degree-2 vertex, KT 4.6) is a statement about `|E(G)|`, while the
-matroid `M(G̃)` lives over the fiber set `E(G̃)`. The bridge is the elementary cardinality
-identity `|E(G̃)| = (D − 1)·|E(G)|`: the multiplied graph `G̃ = (D−1)·G` replaces each edge
-of `G` by `D − 1 = bodyHingeMult n` parallel copies (`Graph.edgeMultiply`), so its edge set
-has `(D − 1)·|E(G)|` fibers. This is the per-edge `edgeFiber_ncard` (`|ẽ| = D − 1`) summed
-over the `|E(G)|` edges, packaged as a single `mulTilde`-level count. It is the support fact
-that lets the matroidal corank bound `corank M(G̃) ≤ D − 2` (the substantive content of KT
-4.5(i), still to land — see `notes/Phase20.md` *Hand-off*) be read off as the graph-level
-edge bound `(D−1)|E| < D(|V|−1) + (D−1)`, and it also feeds the degree-handshake
-`∑_v d(v) = 2|E|` of the average-degree count (KT 4.6, the `F″` sub-step). -/
-
-/-- **The fiber set of `G̃` has `(D − 1)·|E(G)|` elements** (`lem:no-rigid-edge-count`,
-support): `|E(G̃)| = bodyHingeMult n · |E(G)| = (D − 1)·|E(G)|`, since the multiplied graph
-`G̃ = (D−1)·G` (`mulTilde`, `Graph.edgeMultiply (bodyHingeMult n)`) replaces each edge of `G`
-by `D − 1 = bodyHingeMult n` parallel fiber copies. Immediate from
-`edgeMultiply_edgeSet_ncard`. This bridges the matroidal corank of `M(G̃)` (which counts
-fibers of `E(G̃)`) to the graph-level edge count `|E(G)|` of the KT 4.5(i)/4.6 edge bound. -/
+/-- **`G̃` has `(D - 1)|E(G)|` edges** (a step of `lem:no-rigid-edge-count`):
+`|E(G̃)| = bodyHingeMult n · |E(G)|`, as `G̃ = (D-1)·G` has `D - 1 = bodyHingeMult n` copies of each
+edge of `G` (`edgeMultiply_edgeSet_ncard`). It turns a count of the edges of `G̃` into one of the
+edges of `G`. -/
 theorem mulTilde_edgeSet_ncard (G : Graph α β) (n : ℕ) :
     E(G.mulTilde n).ncard = bodyHingeMult n * E(G).ncard := by
   rw [mulTilde, edgeMultiply_edgeSet_ncard]
 
-/-! ### The edge-count bound with no proper rigid subgraph (`lem:no-rigid-edge-count`, F′ core)
-
-The matroidal heart of Katoh–Tanigawa 2011 Lemma 4.5(i) (printed p.663). For a minimal
-`0`-dof-graph `G` with **no proper rigid subgraph** and `D = bodyBarDim n ≥ 2`, the redundant
-fibers of `M(G̃)` concentrate on a single edge-fiber `ẽ` — equivalently the corank is at most
-`D − 2` — giving the graph-level edge bound `(D−1)|E| < D(|V|−1) + (D−1)`.
-
-The argument is Katoh–Tanigawa's fundamental-circuit swap (KT eq. 4.3, `Ẽ∖ẽ ⊂ B*`). Fix an
-edge `e`, let `h* = minₐ |ẽ ∩ B|` over bases of `M(G̃)`, attained at `B*`; minimality of `G`
-forces `h* ≥ 1` (every base meets `ẽ`). For any out-of-`B*` fiber `f ∉ ẽ`, the fundamental
-circuit `X = fundCircuit f B*` induces a rigid `G[V(X)]` and — no proper rigid subgraph —
-spans `V` (`fundCircuit_inducedSpan_vertexSet_eq`). Then `X ∩ ẽ ≠ ∅`: otherwise `X ⊆ Ẽ∖ẽ` and
-`X − ej` (any `ej ∈ X`) is an independent set of full rank `D(|V|−1)` (it is `(D,D)`-tight on
-`V(X) = V` by `circuit_induces_isTight`), hence a *base* avoiding `ẽ` — contradicting
-minimality. The `X∩ẽ≠∅` step is therefore a direct base-meets-fiber contradiction, **not**
-forest reasoning. A base exchange `B = insert f B* − ej` (with `ej ∈ X ∩ ẽ`, independent by
-`Indep.mem_fundCircuit_iff`) then has `|B ∩ ẽ| = h* − 1 < h*`, contradicting the choice of
-`B*`. So `Ẽ∖ẽ ⊆ B*`, and `|E(G̃)| = |B*| + (|ẽ| − h*) ≤ D(|V|−1) + (D − 2)`. -/
-
-/-- **KT Lemma 4.5(i) edge-count bound, F′ swap core** (`lem:no-rigid-edge-count`;
-Katoh–Tanigawa 2011 Lemma 4.5(i), printed p.663). For a minimal `k`-dof-graph `G` with **no
-proper rigid subgraph** and `D = bodyBarDim n ≥ 2`,
-`(D − 1)·|E(G)| < D·(|V(G)| − 1) + (D − 1) − k` (in `ℤ`, `|V|−1` written
-`V(G).ncard - 1`). At `k = 0` this specialises to the standard edge bound
-`(D−1)|E| < D(|V|−1) + (D−1)`.
-
-Proof: the fundamental-circuit swap (KT eq. 4.3). For a fixed edge `e`, the minimum
-`h* = minₐ |ẽ ∩ B|` over bases is `≥ 1` by minimality; every out-of-base fiber `f ∉ ẽ` has a
-fundamental circuit spanning `V` (`fundCircuit_inducedSpan_vertexSet_eq`) that must meet `ẽ`
-(else `X − ej` is independent of size `D(|V|−1)`, but rank is `D(|V|−1) − k`, forcing `k ≤ 0`
-then `k = 0`; the base-meets-fiber minimality contradiction then closes), so a base exchange
-drops `|B ∩ ẽ|` below `h*` unless `f ∈ B*`. Hence `Ẽ∖ẽ ⊆ B*`, and
-`|E(G̃)| = |B*| + (|ẽ| − h*) ≤ D(|V|−1) − k + (D−2)`. -/
+/-- **KT Lemma 4.5(i): an edge bound with no proper rigid subgraph** (`lem:no-rigid-edge-count`; KT
+p. 663): let `D ≥ 2`, and let `G` be a minimal `k`-dof-graph with a vertex and no proper rigid
+subgraph. Then `(D - 1)|E(G)| < D(|V(G)| - 1) - k + (D - 1)`, in `ℤ`. Katoh and Tanigawa prove it
+for `k = 0`, and the proof follows theirs at every `k`. If `G` has no edge, the right side is
+`rank M(G̃) + D - 1 > 0` (KT eq. (2.4), `rank_add_deficiency_eq`). Otherwise fix an edge `e`, and
+let `B*` be a base of `M(G̃)` meeting `ẽ` in the least number `h*` of elements, where `h* ≥ 1` as
+`G` is minimal. Every edge `f ∉ ẽ` of `G̃` lies in `B*` (KT eq. (4.3)). Otherwise its fundamental
+circuit `X` has `V(X) = V(G)` (`fundCircuit_inducedSpan_vertexSet_eq`). If `X` missed `ẽ`, then `X`
+less one element would be an independent set with `D(|V(G)| - 1)` elements
+(`circuit_induces_isTight`), so `k = 0`, and it would be a base missing `ẽ`. So `X` contains a copy
+`e_j ∈ ẽ`, and `insert f B* \ {e_j}` is a base meeting `ẽ` in `h* - 1` elements. Hence
+`(D - 1)|E(G)| = |B*| + (D - 1 - h*) ≤ D(|V(G)| - 1) - k + (D - 2)`. -/
 theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     {k : ℤ} (hD : 2 ≤ bodyBarDim n) (hVne : V(G).Nonempty) (hG : G.IsMinimalKDof n k)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
@@ -489,30 +409,15 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   -- `(D−1)|E| = |Bs| + |E∖Bs| ≤ D(|V|−1) + (D−1−h*) < D(|V|−1) + (D−1)` since `h* ≥ 1`.
   nlinarith [hsplit, hfibersplit, hdiffle, hstarpos, hBscard, hhstar]
 
-/-! ### Independence of `E(G̃)` and base uniqueness at `k > 0`
-(`lem:edge-set-indep-pos`, KT 4.5(ii))
+/-! ### KT Lemma 4.5(ii): `E(G̃)` is independent when `k > 0` (`lem:edge-set-indep-pos`) -/
 
-Katoh–Tanigawa 2011 Lemma 4.5(ii) (printed p.663): in a minimal `k`-dof-graph with `k > 0` and
-no proper rigid subgraph, the whole edge-set `E(G̃)` is **independent** in `M(G̃)`. Equivalently,
-it is the **unique** base. This is the `k > 0` counterpart of KT 4.5(i)'s edge-count bound and
-the key uniqueness fact the KT 4.7/4.8(ii) assembly relies on.
-
-Proof of independence: if `E(G̃)` were dependent it would contain a circuit `C`
-(`Matroid.Dep.exists_isCircuit_subset`). `circuit_induces_isRigidSubgraph` promotes `C` to a
-rigid subgraph `H = G.inducedSpan n C ≤ G`. Looplessness (`loopless_of_isMinimalKDof`) gives
-`2 ≤ |V(H)|` (the circuit spans ≥ 2 vertices). The no-proper-rigid hypothesis (`hnp`) then forces
-`V(H) = V(G)` (else `H` is a proper rigid subgraph), so `H.IsKDof n 0` already means
-`G.deficiency n = 0`, contradicting `k > 0`. Uniqueness: `E(G̃)` independent + `B ⊆ E(G̃)` +
-`IsBase.eq_of_subset_indep`. -/
-
-/-- **KT Lemma 4.5(ii): `E(G̃)` is independent when `k > 0` and no proper rigid subgraph**
-(`lem:edge-set-indep-pos`; Katoh–Tanigawa 2011 Lemma 4.5(ii), printed p.663). For a minimal
-`k`-dof-graph `G` with `k > 0`, no proper rigid subgraph, and `D = bodyBarDim n ≥ 2`, the
-edge-set `E(G.mulTilde n)` is independent in `M(G̃)`.
-
-Proof: if dependent, it contains a circuit `C`; `circuit_induces_isRigidSubgraph` gives a rigid
-`H = G.inducedSpan n C`; looplessness gives `2 ≤ |V(H)|`; `hnp` forces `V(H) = V(G)`, so the
-rigid subgraph spans all of `G`, giving `def(G̃) = 0` and contradicting `k > 0`. -/
+/-- **KT Lemma 4.5(ii): `E(G̃)` is independent when `k > 0`** (`lem:edge-set-indep-pos`; KT p. 663):
+let `D ≥ 2`, and let `G` be a minimal `k`-dof-graph with `k > 0` and no proper rigid subgraph. Then
+`E(G̃)` is independent in `M(G̃)`. Otherwise it contains a circuit `C`, and `H = G[V(C)]` is a rigid
+subgraph (`circuit_induces_isRigidSubgraph`) with at least two vertices, as `G` has no loops
+(`loopless_of_isMinimalKDof`); so `V(H) = V(G)`. Then `M(H̃)` has rank `D(|V(G)| - 1)`
+(`rank_matroidMG_of_isKDof_zero`) and is a restriction of `M(G̃)` (`matroidMG_restrict_mulTilde`),
+and KT eq. (2.4) (`rank_add_deficiency_eq`) gives `k ≤ 0`. -/
 theorem indep_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
     (hG : G.IsMinimalKDof n k) (hk : 0 < k)
@@ -583,11 +488,10 @@ theorem indep_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [F
   have hkDef : G.deficiency n = k := hG.deficiency_eq
   linarith [hrankG_ge, hbridge, hkDef]
 
-/-- **The unique base at `k > 0` with no proper rigid subgraph is `E(G̃)`**
-(`lem:edge-set-indep-pos`, uniqueness corollary; Katoh–Tanigawa 2011 Lemma 4.5(ii)). Under the
-same hypotheses as `indep_edgeSet_mulTilde_of_noRigid_of_pos`, every base of `M(G̃)` equals
-`E(G.mulTilde n)`. Since `E(G̃)` is independent (`indep_edgeSet_mulTilde_of_noRigid_of_pos`)
-and any base `B ⊆ E(G̃) = M.E`, `IsBase.eq_of_subset_indep` gives `B = E(G̃)`. -/
+/-- **`E(G̃)` is the only base when `k > 0`** (`lem:edge-set-indep-pos`; KT Lemma 4.5(ii)): under
+the hypotheses of `indep_edgeSet_mulTilde_of_noRigid_of_pos`, every base `B` of `M(G̃)` is `E(G̃)`,
+as `E(G̃)` is independent and contains `B` (`IsBase.eq_of_subset_indep`).
+`removeVertex_deficiency_gt_of_noRigid` (KT Lemma 4.7) uses it. -/
 theorem isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
     (hG : G.IsMinimalKDof n k) (hk : 0 < k)
@@ -601,30 +505,16 @@ theorem isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α
   have hBsub : B ⊆ E(G.mulTilde n) := hME ▸ hB.subset_ground
   exact hB.eq_of_subset_indep hindep hBsub
 
-/-! ### A low-degree vertex by the average-degree count (`lem:reducible-vertex`, F″ core)
+/-! ### A vertex of degree two, from the proof of KT Lemma 4.6 (`lem:low-degree-vertex`,
+`lem:reducible-vertex`) -/
 
-Katoh–Tanigawa 2011 Lemma 4.6 forces a degree-`2` vertex in a minimal `0`-dof-graph with no
-proper rigid subgraph. The arithmetic is the average-degree bound `d_avg = 2|E|/|V| <
-2D/(D−1) ≤ 3` (for `D = bodyBarDim n ≥ 3`, the molecular regime `n ≥ 2`): with `2|E|/|V| <
-3`, the multigraph **handshake** `∑_v deg(v) = 2|E|` (`Graph.handshake_degree_subtype`,
-vendored from `apnelson1/Matroid`'s `Graph.degree`/`incFun` API) forces some vertex to have
-degree `< 3`, i.e. `≤ 2`. The strict edge bound is the green KT 4.5(i) count
-`no_rigid_edge_count`: `(D−1)|E| < D(|V|−1) + (D−1) = D|V| − 1`, which multiplied by `2` and
-cancelled against `3(D−1)|V|` (using `D ≥ 3` and `|V| ≥ 1`) gives `2|E| < 3|V|`.
-
-This is the F″ core of `lem:reducible-vertex`. Pairing it with two-edge-connectivity
-(`two_le_crossingEdges_of_isKDof_zero`, KT 3.1, which rules out degree `≤ 1`) yields the
-degree-`exactly`-2 vertex Theorem 4.9 splits off; that refinement and the full reducibility
-packaging are the remaining `lem:reducible-vertex` work. -/
-
-/-- **A minimal `k`-dof-graph with no proper rigid subgraph has a vertex of degree `≤ 2`**
-(`lem:low-degree-vertex`; Katoh–Tanigawa 2011 Lemma 4.6, printed p.664). For
-`D = bodyBarDim n ≥ 3` (the molecular regime `n ≥ 2`) and `V(G).Nonempty`, the average-degree
-bound `2|E|/|V| < 2D/(D−1) ≤ 3` forces some `v ∈ V(G)` with multigraph degree `G.degree v ≤
-2`. Combines the all-`k` KT 4.5(i) edge bound (`no_rigid_edge_count`) with the multigraph
-handshake `∑_v deg(v) = 2|E|` (`Graph.handshake_degree_subtype`, vendored) via a Finset
-pigeonhole (`Finset.exists_lt_of_sum_lt`). The two-edge-connectivity (KT 3.1) needed to
-upgrade `≤ 2` to `= 2` is a separate step. -/
+/-- **A vertex of degree at most two** (`lem:low-degree-vertex`; from the proof of KT Lemma 4.6,
+eq. (4.5), p. 664): let `D ≥ 3`, that is `n ≥ 2`, and let `G` be a minimal `k`-dof-graph with a
+vertex and no proper rigid subgraph. Then some `v ∈ V(G)` has `G.degree v ≤ 2`. As `k ≥ 0`, KT
+Lemma 4.5(i) (`no_rigid_edge_count`) gives `(D - 1)|E(G)| < D|V(G)| - 1`, so `2|E(G)| < 3|V(G)|` as
+`D ≥ 3`. The degrees sum to `2|E(G)|` (`Graph.handshake_degree_subtype`, of the `Matroid` package),
+so one of them is less than `3` (`Finset.exists_lt_of_sum_lt`). `exists_degree_eq_two` gives a
+vertex of degree exactly two. -/
 theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     {k : ℤ} (hD : 3 ≤ bodyBarDim n) (hVne : V(G).Nonempty) (hG : G.IsMinimalKDof n k)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
@@ -657,20 +547,11 @@ theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph
   obtain ⟨v, hvs, hvdeg⟩ := Finset.exists_lt_of_sum_lt hsum_lt
   exact ⟨v, (by rwa [hs, Set.Finite.mem_toFinset] at hvs), by omega⟩
 
-/-! ### Upgrading degree `≤ 2` to `= 2` via two-edge-connectivity (`lem:reducible-vertex`)
-
-Katoh–Tanigawa 2011 Lemma 4.6 needs a degree-`exactly`-2 vertex, not merely a degree-`≤ 2`
-one. The average-degree count (`exists_degree_le_two`) supplies the `≤ 2` half; the
-`= 2` upgrade comes from `two_le_degree_of_twoEdgeConnected` (KT 3.1 in labeling-free form):
-the `TwoEdgeConnected` hypothesis forces `degree v ≥ 2`. The call-site at `k = 0`
-supplies `twoEdgeConnected_of_isKDof_zero`; the general `k` form takes it as a hypothesis. -/
-
-/-- **A minimal `k`-dof-graph with no proper rigid subgraph, `2`-edge-connectivity, and
-`|V| ≥ 2` has a vertex of degree exactly `2`** (`lem:reducible-vertex`; Katoh–Tanigawa 2011
-Lemma 4.6). For `D = bodyBarDim n ≥ 3` (the molecular regime `n ≥ 2`) and `2 ≤ |V(G)|`, the
-average-degree count (`exists_degree_le_two`) gives a vertex `v` of multigraph degree `≤ 2`,
-and the `TwoEdgeConnected` hypothesis (`two_le_degree_of_twoEdgeConnected`, KT 3.1) rules out
-`degree v ≤ 1`. This is the reducible degree-2 vertex Theorem 4.9 splits off. -/
+/-- **A vertex of degree two** (`lem:reducible-vertex`; from the proof of KT Lemma 4.6, p. 664): let
+`D ≥ 3`, and let `G` be a `2`-edge-connected minimal `k`-dof-graph with at least two vertices and no
+proper rigid subgraph. Then `G` has a vertex of degree two: `exists_degree_le_two` gives one of
+degree at most two, and every vertex has degree at least two (`two_le_degree_of_twoEdgeConnected`,
+`lem:two-edge-connected-degree`). -/
 theorem exists_degree_eq_two [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     {k : ℤ} (hD : 3 ≤ bodyBarDim n) (hV2 : 2 ≤ V(G).ncard) (hG : G.IsMinimalKDof n k)
     (htec : G.TwoEdgeConnected)
@@ -685,17 +566,15 @@ theorem exists_degree_eq_two [DecidableEq β] [Finite α] [Finite β] {G : Graph
   have hge := two_le_degree_of_twoEdgeConnected htec hvG hV2
   omega
 
-/-! ### Simplicity from minimality and no proper rigid subgraph (G0, Phase 22h) -/
+/-! ### A minimal `k`-dof-graph with no proper rigid subgraph is simple
+(`lem:simple-minimal-noRigid`) -/
 
 /-- **A minimal `k`-dof-graph with no proper rigid subgraph is simple**
-(G0; Katoh–Tanigawa 2011 p. 682 "As remarked…, G is a simple graph"). For
-`D = bodyBarDim n ≥ 2` and `3 ≤ |V(G)|`:
-
-* **Loopless:** from `loopless_of_isMinimalKDof`.
-* **No parallel edges:** a parallel pair `e₁ ≠ e₂` from `x` to `y` makes the two-vertex induced
-  subgraph `G.induce {x, y}` a `0`-dof-graph (`isKDof_zero_of_parallel_pair`) with `2 ≤ |V(H)|`
-  and `V(H) ⊊ V(G)` (proper because `3 ≤ |V(G)|`), contradicting `hnp`. The proof is
-  `k`-independent (the parallel-pair subgraph is `0`-dof regardless of `k`). -/
+(`lem:simple-minimal-noRigid`; KT p. 677, in the proof of their Lemma 6.7): let `D ≥ 2`, and let `G`
+be a minimal `k`-dof-graph with at least three vertices and no proper rigid subgraph. Then `G` is
+simple. It has no loops (`loopless_of_isMinimalKDof`). If edges `e ≠ f` joined `x` and `y`, then the
+subgraph of `G` with the vertices `x`, `y` and the edges `e`, `f` would be a `0`-dof-graph
+(`isKDof_zero_of_parallel_pair`) with two vertices, fewer than `G` has: a proper rigid subgraph. -/
 theorem simple_of_isMinimalKDof_of_noRigid [Finite α] [Finite β] [DecidableEq β]
     {G : Graph α β} {n : ℕ} {k : ℤ}
     (hD : 2 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard)
@@ -755,17 +634,14 @@ theorem simple_of_isMinimalKDof_of_noRigid [Finite α] [Finite β] [DecidableEq 
       have h2 : ({x, y} : Set α).ncard = 2 := Set.ncard_pair hxy
       rw [heq] at h2; omega
 
-/-! ### Two-vertex minimal `0`-dof graphs are not simple (L5b′, Phase 22h) -/
+/-! ### A minimal `0`-dof-graph with two vertices is not simple (`lem:theorem-55-base-producer`) -/
 
-/-- **A minimal `0`-dof graph with exactly two vertices is not simple**
-(L5b′, Phase 22h; Katoh–Tanigawa 2011 p. 671, the `|V| = 2` base trichotomy). The three
-two-vertex minimal `k`-dof cases are (i) no edges (`0`-dof → impossible, `def ≥ D`), (ii) one edge
-(`0`-dof → impossible for `D ≥ 1`, the cut bound), and (iii) the parallel pair (`0`-dof via the
-`D = 1` count). Only case (iii) is `0`-dof, and a parallel pair is not simple.
-
-Lean route: `two_le_crossingEdges_of_isKDof_zero` at the single-vertex cut `{u}` yields two
-distinct crossing edges, both of which link `u v` (the only option with `V(G) = {u, v}`); but
-`G.Simple.eq_of_isLink` would collapse them to one edge — contradiction. -/
+/-- **A minimal `0`-dof-graph with two vertices is not simple** (`lem:theorem-55-base-producer`; KT
+p. 671): let `D ≥ 1`, and let `G` be a minimal `0`-dof-graph with two vertices `u` and `v`. Then `G`
+is not simple: at least two edges join `u` to the other vertex
+(`two_le_crossingEdges_of_isKDof_zero`), and each of them joins `u` and `v`. This is the case of two
+parallel edges of the base case of Katoh and Tanigawa's induction for their Theorem 5.5
+(`lem:two-vertex-trichotomy`). -/
 theorem not_simple_of_isMinimalKDof_of_ncard_two
     [Finite α] [Finite β] [DecidableEq β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hV : V(G).ncard = 2) :
@@ -807,25 +683,20 @@ theorem not_simple_of_isMinimalKDof_of_ncard_two
   -- Simplicity collapses e₁ = e₂, contradicting e₁ ≠ e₂.
   exact hne (hSimple.eq_of_isLink (isLink_of_cross e₁ he₁) (isLink_of_cross e₂ he₂))
 
-/-! ### Adjacent degree-2 pair in the Case-III `d = 3` regime (G4a-i, Phase 22h)
+/-! ### Two adjacent vertices of degree two (`lem:adjacent-degree-two-pair`)
 
-Katoh–Tanigawa 2011 Lemma 4.6 at `d = 3` (`D ≥ 6`) — two adjacent degree-2 vertices
-— proved by a cheaper double-count than KT's maximal-chain argument. -/
+For `d ≥ 3`, that is `D ≥ 6`, a count of degrees gives two adjacent vertices of degree two, where
+Katoh and Tanigawa prove their Lemma 4.6 with maximal chains (pp. 664–665). -/
 
-/-- **An adjacent degree-2 pair exists** (G4a-i, Phase 22h; Katoh–Tanigawa 2011 Lemma 4.6 at
-`d = 3`). In a minimal `0`-dof-graph with no proper rigid subgraph, `D ≥ 6` (the `d = 3`
-regime), and `3 ≤ |V(G)|`, there exist adjacent vertices `v, a` both of degree exactly `2`.
-
-Proof: by contradiction. Assume no two degree-2 vertices are adjacent. Let
-`X₂ = {v ∈ V(G) | deg v = 2}`, `X₃₊ = V(G) \ X₂`. Then:
-
-1. `Σdeg ≥ 2|X₂| + 3|X₃₊|` (degrees ≥ 2 on X₂ and ≥ 3 on X₃₊, by two-edge-connectivity).
-2. `Σ_{w ∈ X₃₊} deg w ≥ Σ_{v ∈ X₂} deg v = 2|X₂|`: for each edge type `e`, the number of
-   X₂ endpoints `≤` the number of X₃₊ endpoints (one X₂ endpoint forces the other in X₃₊;
-   two X₂ endpoints are impossible by hypothesis). By `incFun`/`Finset.sum_comm`, summing over
-   all edges gives `Σ_{X₂} deg ≤ Σ_{X₃₊} deg`, hence `Σdeg ≥ 4|X₂|`.
-3. Combined with `no_rigid_edge_count`: `(D−1)·Σdeg < 2D·|V| − 2`. The two lower bounds and
-   `D ≥ 6`, `|V| ≥ 3` yield a numeric contradiction via `nlinarith`. -/
+/-- **Two adjacent vertices of degree two** (`lem:adjacent-degree-two-pair`; from KT Lemma 4.6, for
+`d ≥ 3`): let `D ≥ 6`, and let `G` be a minimal `0`-dof-graph with at least three vertices and no
+proper rigid subgraph. Then two adjacent vertices of `G` have degree two. Suppose not, and let `X₂`
+be the set of vertices of degree two and `X₃` that of the others. Two edges of a `0`-dof-graph leave
+each vertex (`two_le_crossingEdges_of_isKDof_zero`), so the vertices of `X₃` have degree at least
+three, and the degrees sum to at least `2|X₂| + 3|X₃|`. An edge at a vertex of `X₂` has its other
+end in `X₃`, so the degrees on `X₂` sum to at most those on `X₃` (an exchange of sums over
+`incFun`), and the degrees sum to at least `4|X₂|`. Hence `5|E(G)| ≥ 6|V(G)|`, against KT
+Lemma 4.5(i) (`no_rigid_edge_count`) at `k = 0` as `D ≥ 6`. -/
 theorem exists_adjacent_degree_two_pair [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ}
     (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard)
@@ -985,22 +856,12 @@ theorem exists_adjacent_degree_two_pair [DecidableEq β] [Finite α] [Finite β]
   zify at hedge hsum_lb1 hsum_lb2 hhand hs2s3card
   nlinarith [Nat.cast_nonneg (α := ℤ) s2.card, Nat.cast_nonneg (α := ℤ) s3p.card]
 
-/-- **Adjacent degree-2 pair from an explicit edge bound** (Katoh–Tanigawa 2011 Lemma 4.6 at
-`d = 3`, generalized off `IsMinimalKDof n 0`). The minimality-free core of
-`exists_adjacent_degree_two_pair`: for a **loopless**, `2`-edge-connected `G` with `D ≥ 6`,
-`3 ≤ |V(G)|`, and the explicit KT-4.5(i) edge bound
-`(D−1)|E| < D(|V|−1) + (D−1)` (in `ℤ`), there are two adjacent degree-`2` vertices.
-
-Proof: identical to `exists_adjacent_degree_two_pair`, but (i) the minimum-degree-`3` bound on
-`X₃₊ = {deg ≠ 2}` comes from `2`-edge-connectivity (`two_le_degree_of_twoEdgeConnected`) rather
-than the `0`-dof crossing-edge count, and (ii) the KT-4.5(i) edge count is taken as the explicit
-hypothesis `hedge` rather than derived from minimality (`no_rigid_edge_count`). The degree
-double-count (`2|X₂| + 3|X₃₊| ≤ Σdeg` and `Σ_{X₂}deg ≤ Σ_{X₃₊}deg`, giving `Σdeg ≥ 4|X₂|`) uses
-no minimality; the final `nlinarith` contradicts `Σdeg ≥ 4|X₂|` and `5|E| ≥ 6|V|` against
-`hedge`. (Off minimality both the `[DecidableEq β]` and no-proper-rigid-subgraph hypotheses of
-the KT-4.6 form `exists_adjacent_degree_two_pair` become inert — the sole rigidity uses were the
-now-dropped `no_rigid_edge_count`/`two_le_crossingEdges_of_isKDof_zero` — so they are omitted,
-leaving a strictly more general statement.) -/
+/-- **Two adjacent vertices of degree two, from an edge bound** (the count of
+`exists_adjacent_degree_two_pair` without minimality): let `G` be loopless and `2`-edge-connected
+with at least three vertices, let `D ≥ 6`, and let `(D - 1)|E(G)| < D(|V(G)| - 1) + (D - 1)` in `ℤ`
+(`hedge`, the bound of KT Lemma 4.5(i) at `k = 0`). Then two adjacent vertices of `G` have degree
+two. The proof is that of `exists_adjacent_degree_two_pair`, with the lower bound on the degrees
+from `two_le_degree_of_twoEdgeConnected` and the edge bound from `hedge`. -/
 theorem exists_adjacent_degree_two_pair_of_edgeBound [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} [G.Loopless]
     (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (h2ec : G.TwoEdgeConnected)
@@ -1125,20 +986,13 @@ theorem exists_adjacent_degree_two_pair_of_edgeBound [Finite α] [Finite β]
   zify at hedge hsum_lb1 hsum_lb2 hhand hs2s3card
   nlinarith [Nat.cast_nonneg (α := ℤ) s2.card, Nat.cast_nonneg (α := ℤ) s3p.card]
 
-/-- **A coordinator-safe reducible vertex exists in the non-rigid habitat** (the non-rigid half
-of the W5-L6a split-arm safe-vertex existence; Katoh–Tanigawa 2011 Lemma 4.6, off minimality).
-For a **loopless**, `2`-edge-connected `G` with no proper rigid subgraph, `D ≥ 6`, `3 ≤ |V(G)|`,
-and strictly positive deficiency `def(G̃) > 0`, there are two adjacent degree-`2` vertices. Under
-`2`-edge-connectivity (`¬ PencilHub w ↔ deg w = 2`) such a pair is exactly a coordinator-safe
-split vertex, so this discharges the split-arm safe-vertex obligation for the whole non-rigid
-habitat — with no minimality hypothesis anywhere.
-
-Proof: positive deficiency makes `M(G̃)` free
-(`indep_matroidMG_of_noRigid_of_deficiency_pos`), so the ground set `E(G̃)` is a base of size
-`|E(G̃)| = (D−1)|E(G)|`; `isBase_ncard_add_deficiency_eq` then gives
-`(D−1)|E| + def(G̃) = D(|V|−1)`. Since `def(G̃) > 0` (and `D − 1 ≥ 0`) this yields the KT-4.5(i)
-edge bound `(D−1)|E| < D(|V|−1) + (D−1)`, which `exists_adjacent_degree_two_pair_of_edgeBound`
-consumes. -/
+/-- **Two adjacent vertices of degree two when the deficiency is positive**: let `G` be loopless and
+`2`-edge-connected with at least three vertices, no proper rigid subgraph and `def(G̃) > 0`, and let
+`D ≥ 6`; `G` need not be minimal. Then two adjacent vertices of `G` have degree two. As
+`def(G̃) > 0`, `E(G̃)` is independent in `M(G̃)` (`indep_matroidMG_of_noRigid_of_deficiency_pos`),
+hence a base, and KT eq. (2.4) (`isBase_ncard_add_deficiency_eq`) gives
+`(D - 1)|E(G)| + def(G̃) = D(|V(G)| - 1)`, the bound that
+`exists_adjacent_degree_two_pair_of_edgeBound` takes. -/
 theorem exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos [Finite α]
     [Finite β] {G : Graph α β} {n : ℕ} [G.Loopless]
     (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard) (h2ec : G.TwoEdgeConnected)
@@ -1167,12 +1021,12 @@ theorem exists_adjacent_degree_two_pair_of_noRigid_of_deficiency_pos [Finite α]
     linarith
   exact exists_adjacent_degree_two_pair_of_edgeBound hD hV h2ec hedge
 
-/-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
-Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
-replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,
-`v`) and `e₂` (joining `v`, `b`). Every edge of `H` other than `e₀` is kept; the new
-vertex `v` and the two new edges realize the subdivision. It satisfies
-`(H_{ab}^v)_v^{ab} = H` (the `lem:forest-surgery-unsplit` identity, established later). -/
+/-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`; KT p. 660), the reverse of splitting off:
+`H.edgeSplit a b v e₀ e₁ e₂` has the vertices of `H` and `v`. It keeps the edges of `H` other than
+`e₀`, `e₁` and `e₂`, and it adds `e₁` joining `a` and `v` when `a ∈ V(H)`, and `e₂`, if `e₂ ≠ e₁`,
+joining `v` and `b` when `b ∈ V(H)`. When `e₀` joins `a` and `b` in `H`, `v ∉ V(H)`, and `e₁ ≠ e₂`
+are not edges of `H`, it replaces the edge `e₀` by the path `a v b`, as Katoh and Tanigawa define
+it. -/
 def edgeSplit (H : Graph α β) (a b v : α) (e₀ e₁ e₂ : β) : Graph α β where
   vertexSet := insert v V(H)
   IsLink e x y :=
@@ -1221,19 +1075,16 @@ lemma edgeSplit_isLink {H : Graph α β} {a b v : α} {e₀ e₁ e₂ : β} {e :
         (e = e₁ ∧ ((x = a ∧ y = v) ∨ (x = v ∧ y = a)) ∧ a ∈ V(H)) ∨
         (e = e₂ ∧ e ≠ e₁ ∧ ((x = v ∧ y = b) ∨ (x = b ∧ y = v)) ∧ b ∈ V(H)) := Iff.rfl
 
-/-- **Collapse map** `collapseTo r S` (`def:rigid-contraction`, auxiliary): the vertex
-map `α → α` sending every vertex of `S` to the representative `r` and fixing all others.
-The vertex identification underlying rigid-subgraph contraction. -/
+/-- **The collapse map** `collapseTo r S` (the vertex map of `def:rigid-contraction`): the map
+`α → α` sending every vertex of `S` to `r` and fixing the others. -/
 noncomputable def collapseTo (r : α) (S : Set α) : α → α :=
   open Classical in fun x => if x ∈ S then r else x
 
-/-- **Rigid-subgraph contraction** `G / E(H)` (`def:rigid-contraction`): collapse the
-vertex set `V(H)` of a (rigid) subgraph `H ≤ G` to a single representative vertex `r`,
-discard the edges of `H`, and retain every other edge of `G` with its endpoints in `V(H)`
-redirected to `r`. Realized as `(G.deleteEdges E(H)).map (collapseTo r V(H))`: deleting
-`E(H)` discards the rigid subgraph's edges, and `map` identifies `V(H)` to `r`. On the
-matroid side this is the matroid contraction `M(G̃) / E(H̃)` restricted to the surviving
-fibers (used in `lem:contraction-minimality`). -/
+/-- **The contraction of a subgraph** `G / E(H)` (`def:rigid-contraction`): `G` with the edges of
+`H` deleted and every vertex of `V(H)` sent to `r`, `(G.deleteEdges E(H)).map (collapseTo r V(H))`.
+An edge of `G` not in `H` keeps its label, and each of its ends in `V(H)` becomes `r`. When `H` is a
+rigid subgraph of `G` with `r ∈ V(H)` and `D ≥ 2`, the matroid of `(G / E(H))̃` is the contraction
+`M(G̃) / E(H̃)` (`matroidMG_rigidContract_eq_contract`, `Contraction.lean`). -/
 noncomputable def rigidContract (G H : Graph α β) (r : α) : Graph α β :=
   (G.deleteEdges E(H)).map (collapseTo r V(H))
 
@@ -1241,14 +1092,10 @@ noncomputable def rigidContract (G H : Graph α β) (r : α) : Graph α β :=
 lemma vertexSet_rigidContract (G H : Graph α β) (r : α) :
     V(G.rigidContract H r) = collapseTo r V(H) '' V(G) := rfl
 
-/-- **Rigid-subgraph contraction strictly decreases the vertex count** (`lem:reduction-step`,
-the "reduces to a smaller graph" measure). Contracting a subgraph `H ≤ G` whose vertex set
-`V(H) ⊆ V(G)` has at least two vertices collapses `V(H)` to the single representative `r`, so
-`V(G / E(H)) = collapseTo r V(H) '' V(G)` has cardinality at most `|V(G)| − |V(H)| + 1 <
-|V(G)|`. The `2 ≤ |V(H)|` hypothesis is the genuine requirement: collapsing a single-vertex
-`H` is a vertex-set no-op (KT's Case I always contracts a proper rigid subgraph spanning at
-least two vertices). This is the well-founded measure on which Katoh–Tanigawa 2011's
-Theorem 4.9 inducts in the contraction branch. -/
+/-- **The contraction has fewer vertices** (`lem:reduction-measure`): if `V(H) ⊆ V(G)` has at least
+two vertices, then `|V(G / E(H))| < |V(G)|`, as `V(G / E(H)) = collapseTo r V(H) '' V(G)` lies in
+`(V(G) \ V(H)) ∪ {r}`. KT Theorem 4.9's induction contracts proper rigid subgraphs, which have at
+least two vertices, and so lowers the number of vertices (p. 667). -/
 lemma rigidContract_vertexSet_ncard_lt [Finite α] {G H : Graph α β} {r : α}
     (hHsub : V(H) ⊆ V(G)) (hH2 : 2 ≤ V(H).ncard) :
     V(G.rigidContract H r).ncard < V(G).ncard := by
@@ -1270,12 +1117,10 @@ lemma rigidContract_vertexSet_ncard_lt [Finite α] {G H : Graph α β} {r : α}
         have hVH : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
         omega
 
-/-- **The exact vertex count of a rigid-subgraph contraction** (the count form of
-`lem:reduction-step`, sharpening `rigidContract_vertexSet_ncard_lt`). Collapsing `V(H) ⊆ V(G)`
-to its representative `r ∈ V(H)` sends `V(H)` to `{r}` and fixes `V(G) \ V(H)`, so the image
-is exactly `(V(G) \ V(H)) ∪ {r}` with `r ∉ V(G) \ V(H)`: `|V(G/E(H))| = (|V(G)| − |V(H)|) + 1`.
-This is the vertex-count bookkeeping the contraction-minimality bridge `rigidContract_isMinimalKDof`
-needs to match the reduced matroid ambient `D(|V(G)|−|V(H)|)` against `D(|V(G/E(H))|−1)`. -/
+/-- **The number of vertices of the contraction** (`lem:reduction-measure`): if `r ∈ V(H)` and
+`V(H) ⊆ V(G)`, then `|V(G / E(H))| = (|V(G)| - |V(H)|) + 1`, as `collapseTo r V(H)` maps `V(G)` onto
+`(V(G) \ V(H)) ∪ {r}`. `rigidContract_isMinimalKDof` and `rigidContract_deficiency_eq`
+(`Contraction.lean`) use it to compare `D(|V(G / E(H))| - 1)` with `D(|V(G)| - |V(H)|)`. -/
 lemma rigidContract_vertexSet_ncard [Finite α] {G H : Graph α β} {r : α} (hr : r ∈ V(H))
     (hHsub : V(H) ⊆ V(G)) :
     V(G.rigidContract H r).ncard = (V(G).ncard - V(H).ncard) + 1 := by
@@ -1297,26 +1142,17 @@ lemma rigidContract_vertexSet_ncard [Finite α] {G H : Graph α β} {r : α} (hr
     simp only [Set.disjoint_singleton_right, Set.mem_sdiff, not_and, not_not]; exact fun _ ↦ hr)
     (Set.toFinite _) (Set.toFinite _), Set.ncard_singleton, Set.ncard_sdiff hHsub (Set.toFinite _)]
 
-/-- **The edge set of a rigid-subgraph contraction** (graph-side brick of
-`lem:rigidContract-isMinimalKDof`). `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))` is a
-pure vertex-relabel of the `E(H)`-deletion, and `map` preserves the edge set, so
-`E(G/E(H)) = E(G) \ E(H)` — the surviving edges are exactly `G`'s non-`H` edges. The
-contraction-minimality bridge reads an edge `e ∈ E(G/E(H))` as `e ∈ E(G)` and `e ∉ E(H)`
-through this identity. -/
+/-- **The edges of the contraction** (a step of `lem:rigidContract-isMinimalKDof`):
+`E(G / E(H)) = E(G) \ E(H)`, as relabelling the vertices (`map`) keeps the edges. -/
 lemma edgeSet_rigidContract (G H : Graph α β) (r : α) :
     E(G.rigidContract H r) = E(G) \ E(H) := by
   simp [rigidContract, edgeSet_deleteEdges]
 
-/-- **Rigid-subgraph contraction is mathlib's graph contraction** (graph-side brick of
-`lem:rigidContract-isMinimalKDof`). The project's `rigidContract G H r =
-(G ＼ E(H)).map (collapseTo r V(H))` (delete-then-relabel) coincides with the vendored
-`apnelson1/Matroid` graph contraction `(G ＼ E(H)) /[E(H), collapseTo r V(H)]`. The vendored
-contraction `H' /[C, φ]` is `(φ ''ᴳ H') ＼ C`, but `H' = G ＼ E(H)` already has its edge set
-`E(G) \ E(H)` disjoint from `C = E(H)`, so the trailing `＼ E(H)` is a no-op and
-`contract_eq_map_of_disjoint` collapses it to the bare `map` form. This brick is the entry
-point of the graph↔matroid bridge for `lem:rigidContract-isMinimalKDof`: it puts
-`rigidContract` in the shape `cycleMatroid_contract` (and the `Matroid.Union`-of-`cycleMatroid`
-substrate of `matroidMG`) is stated against. -/
+/-- **The contraction as a contraction of the `Matroid` package** (`def:rigid-contraction`):
+`G / E(H) = (G.deleteEdges E(H)) /[E(H), collapseTo r V(H)]`. The package's contraction `G' /[C, φ]`
+is `(φ ''ᴳ G') ＼ C`, and here its deletion does nothing, as `E(G')` misses `E(H)`
+(`contract_eq_map_of_disjoint`). The proofs use `rigidContract_eq_contract'` (`Contraction.lean`),
+`G / E(H) = G /[E(H), collapseTo r V(H)]`. -/
 lemma rigidContract_eq_contract (G H : Graph α β) (r : α) :
     G.rigidContract H r = (G.deleteEdges E(H)) /[E(H), collapseTo r V(H)] := by
   rw [contract_eq_map_of_disjoint (by simpa using Set.disjoint_sdiff_left), rigidContract]
