@@ -38,9 +38,9 @@ landed that search, re-proved, with `dfs.tex` restated, task 18 committed
 `scripts/DFSTiming.lean`, which times it beside the old search and holds the `decide` facts,
 task 19 had `parsePair` split on any whitespace, so a tab-separated input reads, task 20
 rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
-input, and task 21 landed the planar and matroid rows' non-vacuity witnesses in
-`CombinatorialRigidity/Nonvacuity.lean`.
-**Next concrete task:** round 3's task 22, the witnesses of the body-bar and body-hinge rows.
+input, and tasks 21–22 landed the planar, matroid, body-bar and body-hinge rows' non-vacuity
+witnesses in `CombinatorialRigidity/Nonvacuity.lean`.
+**Next concrete task:** round 3's task 23, the witnesses of the molecular rows.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

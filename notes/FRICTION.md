@@ -111,6 +111,18 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] Mathlib's `Graph.ofSimpleGraph` cannot be imported beside the `Matroid` dependency — use its `Graph.OfSimpleGraph`
+- **Where it bit:** RECONCILE round 3, task 22: `body_hinge_tay_witness` (`Nonvacuity.lean`) takes
+  the triangle `K₃` as a multigraph. `import Mathlib.Combinatorics.Graph.Simple` fails: "environment
+  already contains 'Graph.Simple.casesOn' from Matroid.Graph.Simple" (both packages declare
+  `Graph.Simple`).
+- **Friction:** one probe iteration; then `Set.ncard_eq_toFinset_card'` on the edge set found no
+  `Fintype ↑E(Graph.OfSimpleGraph ⊤)` until the edge set was rewritten first.
+- **Proposed fix:** the dependency's `Graph.OfSimpleGraph` (`Matroid/Graph/Constructions/Basic.lean`,
+  already in the import closure); count its edges by `rw [Graph.edgeSet_OfSimpleGraph,
+  Set.ncard_eq_toFinset_card']` and `decide`.
+- **Status:** idiom.
+
 ### [open] A graph's edge set independent in the count matroid ↔ its sparsity is a two-rewrite step, now at three sites
 - **Where it bit:** RECONCILE round 3, task 21: two witnesses in `Nonvacuity.lean` reduce
   `(countMatroid V k ℓ hℓ).Indep G.edgeSet` to `G.IsSparse k ℓ` by `rw [countMatroid_indep_iff,
