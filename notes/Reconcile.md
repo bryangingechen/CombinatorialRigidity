@@ -25,9 +25,10 @@ layer's unused or derivable hypotheses, task 9 the pebble game's `hloops`, which
 task 10 the unused hypotheses of the deficiency and the induction, task 11 the chain
 extraction's, its triangle lemma now the case $m = 3$ of the cycle lemma, which left one missing
 forward edge (`F-270`), task 11.1 moved the cycle lemma to `deficiency.tex` so that the edge
-points back, and task 12 dropped the algebraic induction's unused or derivable hypotheses (the
-cut-edge lemmas' among them). **Next concrete task:** round 3's task 13, one disjoint cover for
-the forest packing.
+points back, task 12 dropped the algebraic induction's unused or derivable hypotheses (the
+cut-edge lemmas' among them), and task 13 made the forest-packing lemma give a disjoint cover,
+which Tutte–Nash-Williams and its two other callers use as it is. **Next concrete task:** round
+3's task 14, the balanced packing's descent calling the packing move.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

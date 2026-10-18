@@ -2827,6 +2827,20 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   route went from 77 to 52 lines, each branch's singleton from 5 lines to 2.
 - **Status:** idiom.
 
+### [idiom] Disjointifying a `Fin k`-indexed set cover: `disjointed`, not `Fintype.exists_disjointed_le`
+- **Where it bit:** RECONCILE round 3 task 13 (`F-055`), `BodyBar/TreePacking.lean`'s
+  `exists_forestPacking_cover_of_isSparse_restrict`, which now gives the disjoint cover its three
+  consumers each built. `Fintype.exists_disjointed_le` returns `univ.sup g = univ.sup f`, so each
+  site spent a five-argument `rw` (`Set.iSup_eq_iUnion` and `Finset.sup_univ_eq_iSup`, twice each)
+  to reach `⋃ i, g i = ⋃ i, f i`.
+- **Resolution:** on a linearly ordered, locally finite index (`Fin k`, `ℕ`) use `disjointed f`
+  directly: `iUnion_disjointed`, `disjoint_disjointed` and `disjointed_le` give the union, the
+  disjointness and the inclusion in one term each, and `disjointed f j = f j \ ⋃_{i<j} f i` is the
+  blueprint's construction verbatim. Also: `cycleMatroid_indep` is an equation of predicates
+  (`G.cycleMatroid.Indep = G.IsAcyclicSet`), so `rw [cycleMatroid_indep] at h` turns an
+  independence hypothesis into acyclicity; the `←` form is for a goal (one build cycle).
+- **Status:** idiom.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

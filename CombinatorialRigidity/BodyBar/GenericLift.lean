@@ -537,10 +537,9 @@ theorem linearIndependent_rigidityRow_mapPlacement {F : BodyBarFramework n α β
 rigidity rows on `E'`.
 
 `E' = ∅` is trivial (vacuous linear independence). Otherwise: `E'` decomposes into `d` disjoint
-forests (`exists_forestPacking_cover_of_isSparse_restrict`, disjointified via
-`Fintype.exists_disjointed_le`, matching `linearIndepOn_kFrameRow_of_isSparse_restrict`'s pattern
-in `KFrame.lean`); a nonempty forest packing witnesses `Fin (bodyBarDim n)` inhabited, letting the
-forest-index map extend arbitrarily off `E'` (`choose`). The standard-basis witness on this
+forests (`exists_forestPacking_cover_of_isSparse_restrict`); a nonempty forest packing witnesses
+`Fin (bodyBarDim n)` inhabited, letting the forest-index map extend arbitrarily off `E'`
+(`choose`). The standard-basis witness on this
 packing is linearly independent on `E'`
 (`stdFramework_rigidityRow_linearIndependent_restrict`). The change-of-coordinates map `M` sending
 the standard basis to the coordinate-segment two-extensor basis (`Module.Basis.equiv`, applied to
@@ -562,14 +561,9 @@ theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {
     have : IsEmpty (Subtype.val ⁻¹' (∅ : Set β) : Set ↥E(G)) := by
       simp [Set.isEmpty_coe_sort]
     exact ⟨fun _ => 0, linearIndependent_empty_type⟩
-  -- A disjoint forest packing covering `E'`
-  -- (mirrors `linearIndepOn_kFrameRow_of_isSparse_restrict`).
-  obtain ⟨Is, hcover, hacyc⟩ := exists_forestPacking_cover_of_isSparse_restrict hE' hsparse
-  obtain ⟨Fs, hgle, hgsup, hgdisj⟩ := Fintype.exists_disjointed_le Is
-  have hFcover : ⋃ i, Fs i = E' := by
-    rw [← hcover, ← Set.iSup_eq_iUnion, ← Set.iSup_eq_iUnion, ← Finset.sup_univ_eq_iSup,
-      ← Finset.sup_univ_eq_iSup, hgsup]
-  have hFacyc : ∀ i, G.IsAcyclicSet (Fs i) := fun i => (hacyc i).anti (hgle i)
+  -- A disjoint forest packing covering `E'`.
+  obtain ⟨Fs, hFcover, hgdisj, hFacyc⟩ :=
+    exists_forestPacking_cover_of_isSparse_restrict hE' hsparse
   have hmemE' : ∀ e : E(G), (e : β) ∈ E' → ∃ i, (e : β) ∈ Fs i := fun e he => by
     rw [← hFcover] at he; exact Set.mem_iUnion.mp he
   -- A witnessing forest index, from `E'`'s nonemptiness: `Fin (bodyBarDim n)` is inhabited.

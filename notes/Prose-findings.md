@@ -3412,7 +3412,10 @@ declaration's name as its header writes it:
   `tutte_nash_williams`'s proof uses. One lemma giving a disjoint cover would serve all three.
   *Evidence:* read (the bodies of the four declarations).
   *Found:* round 2 task 2.2.
-  *Disposition:* reported (`notes/Prose-report.md`, L8).
+  *Disposition:* done (task 13): the lemma moved to `TreePacking.lean` and gives a disjoint cover
+  (`disjointed`); `tutte_nash_williams`'s converse is it at `E' = E(G)`, and the two callers lost
+  their disjointifications; the node states the disjoint forests, and the theorem's proof `\uses`
+  it.
 - **F-057** · L · docstrings of `BodyBar/` (`body-bar.tex`'s Tay nodes): three disagree with
   the declarations or the sources. `Graph.isSpanningTreePacking_of_isTight` credits Whiteley 1988
   Theorem 13, which is about frameworks on the flat torus (p. 249; only its (ii)⇔(iii) is the

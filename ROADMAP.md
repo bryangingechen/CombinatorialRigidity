@@ -1315,9 +1315,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   the pebble game's `hloops`, which `himg` implies, task 10 the unused hypotheses of the
   deficiency and the induction, task 11 the chain extraction's, its triangle lemma now the
   case $m = 3$ of the cycle lemma, which left one missing forward edge (`F-270`), task 11.1
-  moved the cycle lemma to the deficiency chapter so that the edge points back, and task 12
+  moved the cycle lemma to the deficiency chapter so that the edge points back, task 12
   dropped the algebraic induction's unused or derivable hypotheses (the cut-edge lemmas' among
-  them). **Next:** task 13, one disjoint cover for the forest packing.
+  them), and task 13 made the forest-packing lemma give a disjoint cover, which Tutte–Nash-Williams
+  and its two other callers use as it is. **Next:** task 14, the balanced packing's descent
+  calling the packing move.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

@@ -332,14 +332,14 @@ over $R$, which contains the entries of every $k$-frame row.
   denominator of its coefficients gives one over $R$.
 \end{proof}
 
-\begin{lemma}[A $(k, k)$-sparse set of bars is a union of $k$ forests]
+\begin{lemma}[A $(k, k)$-sparse set of bars is a union of $k$ disjoint forests]
   \label{lem:k-frame-forest-packing-of-sparse}
   \lean{Graph.exists_forestPacking_cover_of_isSparse_restrict}
   \leanok
   \uses{thm:unionPow-cycle-indep-iff-sparse}
   Let $E' \subseteq E(G)$ be a set of bars such that $G \restriction E'$
   is $(k, k)$-sparse. Then $E' = F_1 \cup \dots \cup F_k$ for some
-  forests $F_1, \dots, F_k$ of $G$.
+  pairwise disjoint forests $F_1, \dots, F_k$ of $G$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -347,7 +347,10 @@ over $R$, which contains the entries of every $k$-frame row.
   By \cref{thm:unionPow-cycle-indep-iff-sparse}, $E'$ is independent in
   the union of $k$ copies of the cycle matroid. By
   \cref{lem:union-indep-iff}, it is the union of $k$ sets independent in
-  the cycle matroid, that is, of $k$ forests.
+  the cycle matroid, that is, of $k$ forests $F_1, \dots, F_k$. The sets
+  $F_j \setminus (F_1 \cup \dots \cup F_{j-1})$ are pairwise disjoint,
+  have the same union, and are forests, since a subset of a forest is a
+  forest.
 \end{proof}
 
 \begin{lemma}[Specializing the $k$-frame rows on a forest packing]
@@ -393,9 +396,7 @@ over $R$, which contains the entries of every $k$-frame row.
   We follow the converse half of Whiteley's
   proof~\cite[Theorem~1]{whiteley1988}. By
   \cref{lem:k-frame-forest-packing-of-sparse}, $E'$ is the union of
-  forests $F_1, \dots, F_k$. We may take them pairwise disjoint, by
-  replacing each $F_j$ with $F_j \setminus (F_1 \cup \dots \cup F_{j-1})$,
-  since a subset of a forest is a forest. Let $\varphi$ be the
+  pairwise disjoint forests $F_1, \dots, F_k$. Let $\varphi$ be the
   homomorphism of \cref{lem:k-frame-specialize-identity}. It maps the
   row of each bar $e \in F_j$ to $a_e^{(j)}$. These vectors are
   linearly independent over $K$ (\cref{lem:k-frame-specialize-li}), and
@@ -488,15 +489,15 @@ from Edmonds' theorem, as we do~\cite[Proposition~11.3.14]{oxley2011}.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:unionPow-cycle-indep-iff-sparse, lem:union-indep-iff}
-  The set $E(G)$ is a union of $k$ forests if and only if it is
-  independent in the union of $k$ copies of the cycle matroid
-  (\cref{lem:union-indep-iff}). As $G \restriction E(G) = G$, this holds
-  if and only if $G$ is $(k, k)$-sparse
-  (\cref{thm:unionPow-cycle-indep-iff-sparse}). If $E(G)$ is the union
-  of forests $F_1, \dots, F_k$, then it is also the union of the
-  pairwise disjoint sets $F_j \setminus (F_1 \cup \dots \cup F_{j-1})$,
-  and these are forests, since a subset of a forest is a forest.
+  \uses{thm:unionPow-cycle-indep-iff-sparse, lem:union-indep-iff,
+    lem:k-frame-forest-packing-of-sparse}
+  If $E(G)$ is the union of $k$ forests, then it is independent in the
+  union of $k$ copies of the cycle matroid (\cref{lem:union-indep-iff}).
+  As $G \restriction E(G) = G$, the multigraph $G$ is then
+  $(k, k)$-sparse (\cref{thm:unionPow-cycle-indep-iff-sparse}).
+  Conversely, if $G$ is $(k, k)$-sparse, then
+  \cref{lem:k-frame-forest-packing-of-sparse}, applied to $E' = E(G)$,
+  gives the $k$ pairwise disjoint forests.
 \end{proof}
 
 \begin{corollary}[Tight multigraphs are unions of spanning trees]

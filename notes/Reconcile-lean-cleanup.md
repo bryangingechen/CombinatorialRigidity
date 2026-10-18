@@ -15,8 +15,9 @@ round into 39 one-commit tasks; task 2 committed the docstring-label check, task
 deletions, `F-090`'s shim among them (the check 422 → 390), task 7 `F-061`'s rename (388),
 tasks 8–12 dropped L6–L8's unused or derivable hypotheses (the planar layer, the pebble game's
 `hloops`, the deficiency and the induction, the chain extraction, the algebraic induction; task
-11.1 cured task 11's forward edge, `F-270`). **Next concrete task:** task 13, one disjoint cover
-(*Lemma checklist*). Round manual: `CLEANUP.md`.
+11.1 cured task 11's forward edge, `F-270`), task 13 made the forest packing one disjoint cover.
+**Next concrete task:** task 14, the descent calls the packing move (*Lemma checklist*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -26,39 +27,32 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 12 is done** (this commit, in one: no 12.1); nothing is mid-stream.
+**Task 13 is done** (this commit, in one: no 13.1); nothing is mid-stream.
 
-**Task 12, the algebraic induction's signatures** (`F-104`, `F-102`, `F-070`, `F-063`, `F-140`):
-`case_cut_edge_realization_gen` and `_gp_gen` without `_hV3`, the second's hypothesis its first
-conjunct, the call in `theorem_55_minimalKDof_gen` projecting it (statement unchanged);
-`exists_rankPolynomial_of_IH_relabel_linking_set_proj` without `hcLoop`
-(`Graph.loopless_of_isMinimalKDof hKmin`); the hub
-`screwDim_add_deficiency_le_finrank_infinitesimalMotions` asks $C(e) \ne 0$ at the links of $G$,
-its four callers passing their `∀ e` form;
-`rigidContract_exterior_rank_transport_htransport` without the `∀ Q` and its three hypotheses, and
-`rigidContract_exterior_rank_transport` (unpinned, dead), left a pass-through, deleted after
-block (b) (no blocker, no orphan) and the trial deletion, `case_I_realization` calling the pin.
-Restated: `lem:case-cut-edge-realization` and `-gp` (no three vertices); the notes of `-gp`,
-`lem:rank-polynomial-IH-relabel-proj`, `lem:claim-6-4`, `rem:molecular-conjecture-essential` and the
-molecule rank formula's. The dump byte-identical to task 11.1's; `--summary`: Lean constants 7 175 →
-7 174, implied 2 430 → 2 432 (`lem:rank-polynomial-IH-relabel-proj`'s proof now reaches
-`def:edge-multiply` and `def:graph-sparse`, both ancestors), no Lean basis 133 → 134
-(`lem:case-cut-edge-realization-gp`'s statement edge to `def:genuine-hinge-realization`, the dropped
-conjunct's); gate 9 388 → 387 (the deleted wrapper's line); `verify.sh` 9 `WARNING:` lines,
-`print.log` 0 `LaTeX Warning`. New: `F-271` (`case_I_realization`, unpinned and uncalled; task
-38). The ledger: 271 entries, 151 `done`, 10 `left`, 107 `reported`, 3 `open` (`F-268`, `F-269`,
-`F-271`, task 38's); the next ID is `F-272`.
+**Task 13, one disjoint cover** (`F-055`): `exists_forestPacking_cover_of_isSparse_restrict` moved
+from `KFrame.lean` to `TreePacking.lean` and concludes pairwise disjointness (`disjointed`);
+`tutte_nash_williams`'s converse is it at `E' = E(G)` (statement unchanged), and
+`linearIndepOn_kFrameRow_of_isSparse_restrict` and `exists_endpoints_linearIndependent_rigidityRow`
+lost their disjointifications. Restated: `lem:k-frame-forest-packing-of-sparse` (disjoint forests);
+the proofs of `thm:tutte-nash-williams` (now `\uses` the lemma), `lem:k-frame-specialize-forest`
+and `lem:endpoint-witness`. With it, task 12's correction: `lem:case-cut-edge-realization-gp`'s
+statement `\uses` `def:rank-hypothesis`, not `def:genuine-hinge-realization`. The dump exactly as
+the line's *Expected*; `--summary`: implied 2 432 → 2 431, no Lean basis 134 → 133, Lean constants
+7 174, missing 0, dead pins 169; gate 7 the open's; gate 9 387, its report task 12's. The ledger:
+271 entries, 152 `done`, 10 `left`, 106 `reported`, 3 `open` (`F-268`, `F-269`, `F-271`, task
+38's); the next ID is `F-272`.
 
-**Done before** (tasks 3–11.1): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
+**Done before** (tasks 3–12): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
 them; the pins they left without a caller stay with their nodes), `F-090`'s shim, `F-061`'s rename
 to `_starForest`, the planar layer's five hypotheses (`F-013`, `F-017`, `F-021`, `F-024`;
 `lem:trivialMotionFamily-linearIndependent` restated), the pebble game's `hloops` (`F-039`;
 `edgeListSorted_no_loops` deleted), the deficiency's and the induction's unused binders (`F-075`,
 `F-077`, `F-092`, `F-094`; `lem:deficiency-ear-merge` restated for a walk), and the chain
 extraction's (`F-108`; `isKDof_zero_of_triangle` now the case $m = 3$ of `isKDof_zero_of_cycle`,
-`lem:chain-data-extract` restated; Lean constants 7 175), and `F-270`'s cure (task 11.1:
-`lem:cycle-zero-dof` moved to `deficiency.tex`, the graph again without a missing edge). Gate 2
-runs block (c) since task 5.
+`lem:chain-data-extract` restated), `F-270`'s cure (task 11.1: `lem:cycle-zero-dof` moved to
+`deficiency.tex`), and the algebraic induction's (task 12: `F-104`, `F-102`, `F-070`, `F-063`,
+`F-140`; `rigidContract_exterior_rank_transport` deleted, two cut-edge statements restated; new
+`F-271`, task 38's). Gate 2 runs block (c) since task 5.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -276,13 +270,15 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   the cut-edge lemmas without `_hV3`, `_gp_gen`'s hypothesis its first conjunct; `hcLoop` from
   `hKmin`; the hub at the links only; `_htransport` without the `∀ Q`, its pass-through consumer
   `rigidContract_exterior_rank_transport` deleted; two statements and five notes restated; the dump
-  byte-identical; implied 2 432, no Lean basis 134; new: `F-271`; gate 9 387.
-- [ ] **13. L8: one disjoint cover** (`F-055`). `exists_forestPacking_cover_of_isSparse_restrict`
-  (`BodyBar/KFrame.lean` 360) gives a disjoint cover, so `tutte_nash_williams` (`TreePacking.lean`
-  432), `linearIndepOn_kFrameRow_of_isSparse_restrict` (`KFrame.lean` 478) and
-  `exists_endpoints_linearIndependent_rigidityRow` (`BodyBar/GenericLift.lean` 552) drop their
-  disjointifications; `lem:k-frame-forest-packing-of-sparse` (`body-bar.tex` 337) states what its
-  pin proves. *Expected:* that node's statement; its edges per the reach report, listed.
+  byte-identical; implied 2 432, no Lean basis 134; new: `F-271`; gate 9 387. Coordinator's
+  correction, in task 13: `-gp`'s statement `\uses` `def:rank-hypothesis`, the pin's predicate,
+  not `def:genuine-hinge-realization` (no Lean basis 134 → 133).
+- [x] **13. L8: one disjoint cover** (`F-055`): the lemma moved to `TreePacking.lean`, a disjoint
+  cover; `tutte_nash_williams` (statement unchanged) and the two others call it as it is;
+  `lem:k-frame-forest-packing-of-sparse` restated, `thm:tutte-nash-williams`'s proof `\uses` it
+  (335 < 480); with task 12's correction the dump as listed before editing: 1 526 → 1 525 edges
+  (TNW's two drawn in-edges replaced by the lemma's; `-gp`'s from `def:rank-hypothesis`), two
+  `\uses` lines; implied 2 431, no Lean basis 133; gate 9 387.
 - [ ] **14. L8: the descent calls the move** (`F-088`; G5's packing move). `exists_balanced_forest_packing`
   (`ForestSurgery/Reduction.lean` 916) calls `exists_packing_move_of_not_inc`
   (`ReducibleVertex.lean` 229) instead of repeating it; `lem:balanced-forest-packing`'s proof
@@ -447,15 +443,14 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 13**, at Opus, Lean: one disjoint cover (`F-055`; *Lemma checklist*).
-`exists_forestPacking_cover_of_isSparse_restrict` gives a disjoint cover, so `tutte_nash_williams`,
-`linearIndepOn_kFrameRow_of_isSparse_restrict` and
-`exists_endpoints_linearIndependent_rigidityRow` drop their disjointifications, and
-`lem:k-frame-forest-packing-of-sparse` (`body-bar.tex`) states what its pin proves. Before editing,
-make the line's *Expected* exact: that node's statement and its edges per the reach report, listed
-in the line. Re-`grep` the line numbers. Gates 1–3 (the axioms harness `cmp`-identical to the
-open's), 2 (the statement grep over `blueprint/src/`), 5–6 (the parent
-`scratch/reconcile-lean/dump-t12.txt`, gitignored; regenerate it if missing), 9 (387) and 10.
+**Next: task 14**, at Opus, Lean: the descent calls the move (`F-088`; *Lemma checklist*).
+`exists_balanced_forest_packing` calls `exists_packing_move_of_not_inc` instead of repeating its
+move, and `lem:balanced-forest-packing`'s proof `\uses{lem:packing-move}`. Before editing, make
+the line's *Expected* exact (the drawn-edge change, as `scratch/reconcile-lean/t13-tred.py` computes
+one from the parent dump, and the dead-pin count). Re-`grep` the line numbers. Gates 1–3 (the
+axioms harness `cmp`-identical to the open's), 2 (the statement grep over `blueprint/src/`), 5–6
+(the parent `scratch/reconcile-lean/dump-t13.txt`, gitignored; regenerate it if missing), 7 (a
+`\uses` added), 9 (387) and 10.
 Carried in: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it); `F-268`,
 `F-269` and `F-271` for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which
 is attended.

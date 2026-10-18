@@ -307,30 +307,6 @@ theorem linearIndepOn_kFrameRow_iff_over_polyRing (E' : Set β) :
   (LinearIndependent.iff_fractionRing (MvPolynomial (β × Fin k) ℚ) (KFrameField β k)
     (b := kFrameRow k D ∘ ((↑) : E' → β))).symm
 
-/-- **A `(k, k)`-sparse bar set decomposes as a `k`-forest packing covering it**
-(`lem:k-frame-forest-packing-of-sparse`, the forest-extraction step of the reverse half). If the
-edge-restriction `G ↾ E'` is `(k, k)`-sparse, then there is a `k`-tuple `Fs : Fin k → Set β`
-of acyclic bar sets (forests of `G`) whose union is exactly `E'`. This is the family on which
-the block-diagonal specialization (`specRow_linearIndependent`) places its full-rank matrix:
-each bar `e ∈ E'` lies in some `Fs j`, and the specialization sending the block-`j` indeterminate
-`X_{(e,j)} ↦ 1` on `Fs j` (and `0` elsewhere) turns `kFrameRow k D e` into the block-`single` row.
-
-Routes through `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (Phase 13): `(k, k)`-sparsity of
-`G ↾ E'` is independence of `E'` in the `k`-fold cycle-matroid union, and `Matroid.union_indep_iff`
-unpacks that into a per-copy acyclic cover (`cycleMatroid_indep`'s acyclic-set characterization).
-The step that this full-rank specialization witnesses generic independence of
-the `k`-frame rows over the polynomial ring `R` (a nonzero polynomial minor specializing to a
-nonzero value cannot vanish identically) is `linearIndepOn_kFrameRow_of_isSparse_restrict`. -/
-theorem exists_forestPacking_cover_of_isSparse_restrict [Finite α] [Finite β]
-    {E' : Set β} (hE' : E' ⊆ E(G)) (hsparse : (G ↾ E').IsSparse k k) :
-    ∃ Fs : Fin k → Set β, ⋃ i, Fs i = E' ∧ ∀ i, G.IsAcyclicSet (Fs i) := by
-  classical
-  have hindep : (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E' :=
-    (unionPow_cycleMatroid_indep_iff_isSparse_restrict hE').mpr hsparse
-  rw [Matroid.union_indep_iff] at hindep
-  obtain ⟨Fs, hcover, hacyc⟩ := hindep
-  exact ⟨Fs, hcover, fun i ↦ by rw [← cycleMatroid_indep]; exact hacyc i⟩
-
 /-- **Ring-hom naturality of the signed incidence matrix.** The signed incidence row of a bar
 `e` has entries in `{0, 1, -1}`, so applying any ring homomorphism `φ : R →+* S` entrywise turns
 `signedIncMatrix R e` into `signedIncMatrix S e`. The reverse half specializes the
@@ -433,9 +409,9 @@ suffices to argue over the polynomial ring `R = MvPolynomial (β × Fin k) ℚ`,
 matrix form, to the minor-nonvanishing engine
 `Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero` with the forest-packing
 evaluation hom `forestEval Fs` (`Fs` a *disjoint* forest packing covering `E'`, from
-`exists_forestPacking_cover_of_isSparse_restrict` disjointified via `Fintype.exists_disjointed_le`):
-by `forestEval_kFrameRowR_eq_single` the specialized rows are the block-`single` forest matrix,
-which is LI over ℚ (`specRow_linearIndependent`, reindexed along the disjoint-cover bijection
+`exists_forestPacking_cover_of_isSparse_restrict`): by `forestEval_kFrameRowR_eq_single` the
+specialized rows are the block-`single` forest matrix, which is LI over ℚ
+(`specRow_linearIndependent`, reindexed along the disjoint-cover bijection
 `Set.unionEqSigmaOfDisjoint`), so it has a nonsingular maximal minor
 (`Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows`) — the nonzero specialized
 determinant the engine consumes. -/
@@ -449,12 +425,8 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
   set D := G.orientation_nonempty.some with hD
   set R := MvPolynomial (β × Fin k) ℚ with hR
   -- A disjoint forest packing covering `E'`.
-  obtain ⟨Is, hcover, hacyc⟩ := exists_forestPacking_cover_of_isSparse_restrict hE' hsparse
-  obtain ⟨Fs, hgle, hgsup, hgdisj⟩ := Fintype.exists_disjointed_le Is
-  have hFcover : ⋃ i, Fs i = E' := by
-    rw [← hcover, ← Set.iSup_eq_iUnion, ← Set.iSup_eq_iUnion, ← Finset.sup_univ_eq_iSup,
-      ← Finset.sup_univ_eq_iSup, hgsup]
-  have hFacyc : ∀ i, G.IsAcyclicSet (Fs i) := fun i => (hacyc i).anti (hgle i)
+  obtain ⟨Fs, hFcover, hgdisj, hFacyc⟩ :=
+    exists_forestPacking_cover_of_isSparse_restrict hE' hsparse
   -- The disjoint cover gives `↥(⋃ Fs) ≃ Σ j, Fs j`; compose with `E' = ⋃ Fs`.
   let eqv : ↥E' ≃ Σ j : Fin k, (Fs j : Set β) :=
     (Equiv.setCongr hFcover.symm).trans (Set.unionEqSigmaOfDisjoint hgdisj)
