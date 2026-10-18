@@ -235,9 +235,9 @@ theorem exists_packing_move_of_not_inc {G : Graph α β} {n : ℕ}
     {j : Fin (bodyBarDim n)} (hFjv : ∀ p ∈ Fs j, ¬ (G.mulTilde n).Inc p v) :
     ∃ Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
       (⋃ i, Fs' i = I) ∧ (∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs' i)) ∧
-        x ∈ Fs' j := by
+        Fs' j = insert x (Fs j) ∧ ∀ i ≠ j, Fs' i = Fs i \ {x} := by
   classical
-  refine ⟨fun i => if i = j then insert x (Fs j) else Fs i \ {x}, ?_, ?_, ?_⟩
+  refine ⟨fun i => if i = j then insert x (Fs j) else Fs i \ {x}, ?_, ?_, ?_, ?_⟩
   · -- The union is unchanged: `x` is re-added at `j`, removed elsewhere, and `x ∈ I`.
     apply Set.Subset.antisymm
     · rintro p hp
@@ -268,7 +268,8 @@ theorem exists_packing_move_of_not_inc {G : Graph α β} {n : ℕ}
       exact acyclicSet_insert_vfiber_of_not_inc (hindep i) hxvw hwv hFjv
     · simp only [ite_eq_right hij]
       exact (hindep i).subset Set.sdiff_subset
-  · simp only [↓reduceIte]; exact Set.mem_insert _ _
+  · simp only [↓reduceIte]
+  · exact fun i hij ↦ ite_eq_right hij
 
 /-! ### Total fiber count of `G̃` (`lem:no-rigid-edge-count`, support)
 

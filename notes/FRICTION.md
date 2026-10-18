@@ -2841,6 +2841,20 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   independence hypothesis into acyclicity; the `←` form is for a goal (one build cycle).
 - **Status:** idiom.
 
+### [idiom] A one-step lemma whose `∃` hides the witness's shape cannot serve the loop that iterates it
+- **Where it bit:** RECONCILE round 3 task 14 (`F-088`, `F-272`), `Induction/ReducibleVertex.lean`'s
+  `exists_packing_move_of_not_inc`, written as the descent's move but concluding only
+  `x ∈ Fs' j`: a swap of indices satisfies that with none of the move's hypotheses
+  (`Fs ∘ Equiv.swap i j`, a `lake lean` witness), so `exists_balanced_forest_packing`, which needs
+  disjointness kept and only `x` removed from the donors, re-did the move inline and the lemma had
+  no caller.
+- **Resolution:** the conclusion states the re-choice (`Fs' j = insert x (Fs j)`,
+  `∀ i ≠ j, Fs' i = Fs i \ {x}`), and the descent `obtain`s it and rewrites with the two equations.
+  Before landing a step lemma, ask what its caller's invariant needs from the witness, and whether
+  a trivial witness already satisfies the `∃`. (`if_neg` is deprecated for `ite_eq_right`,
+  `notes/ToolchainBumps.md`: one MCP diagnostic.)
+- **Status:** idiom.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

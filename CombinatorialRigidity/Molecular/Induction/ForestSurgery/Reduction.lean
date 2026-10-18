@@ -1020,59 +1020,30 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
       intro p hpFj hpinc
       have : p ∈ Fs j ∩ vfib := ⟨hpFj, (hinciff p (hBE (hssubB j hpFj))).mp hpinc⟩
       rw [hj] at this; exact this
-    -- The explicit move.
-    set Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)) :=
-      fun k => if k = j then insert x (Fs j) else Fs k \ {x} with hFs'
-    have hcover' : ⋃ k, Fs' k = B := by
-      apply Set.Subset.antisymm
-      · rintro p hp
-        rw [Set.mem_iUnion] at hp
-        obtain ⟨k, hk⟩ := hp
-        by_cases hkj : k = j
-        · subst hkj; simp only [hFs', ↓reduceIte] at hk
-          rcases Set.mem_insert_iff.mp hk with rfl | hk'
-          · exact hxB
-          · exact hssubB k hk'
-        · simp only [hFs', ite_eq_right hkj] at hk; exact hssubB k hk.1
-      · rw [← hcover]
-        rintro p hp
-        rw [Set.mem_iUnion] at hp ⊢
-        obtain ⟨k, hk⟩ := hp
-        by_cases hpx : p = x
-        · exact ⟨j, by simp only [hFs', ↓reduceIte]; exact Set.mem_insert_iff.mpr (Or.inl hpx)⟩
-        · by_cases hkj : k = j
-          · subst hkj
-            exact ⟨k, by simp only [hFs', ↓reduceIte]; exact Set.mem_insert_iff.mpr (Or.inr hk)⟩
-          · exact ⟨k, by simp only [hFs', ite_eq_right hkj]; exact ⟨hk, by simpa using hpx⟩⟩
-    have hindep' : ∀ k, ((G.mulTilde n).cycleMatroid).Indep (Fs' k) := by
-      intro k
-      by_cases hkj : k = j
-      · subst hkj
-        simp only [hFs', ↓reduceIte]
-        exact acyclicSet_insert_vfiber_of_not_inc (hindep k) hxvw hwv hFjv
-      · simp only [hFs', ite_eq_right hkj]; exact (hindep k).subset Set.sdiff_subset
+    -- The move (`exists_packing_move_of_not_inc`): `x` into `Fs j`, out of every other forest.
+    obtain ⟨Fs', hcover', hindep', hFs'j, hFs'k⟩ :=
+      exists_packing_move_of_not_inc hcover hindep hxvw hwv hxB hFjv
     have hdisj' : Pairwise (Function.onFun Disjoint Fs') := by
       intro k l hkl
-      simp only [Function.onFun, hFs']
+      simp only [Function.onFun]
       rcases eq_or_ne k j with rfl | hk
-      · simp only [↓reduceIte, ite_eq_right (Ne.symm hkl), Set.disjoint_left]
+      · rw [hFs'j, hFs'k l (Ne.symm hkl), Set.disjoint_left]
         rintro p hpins ⟨hpFl, hpx⟩
         rcases Set.mem_insert_iff.mp hpins with rfl | hpFj
         · exact hpx rfl
         · exact (hdisj (Ne.symm hkl)).le_bot ⟨hpFl, hpFj⟩
-      · simp only [ite_eq_right hk]
+      · rw [hFs'k k hk]
         rcases eq_or_ne l j with rfl | hl
-        · simp only [↓reduceIte, Set.disjoint_right]
+        · rw [hFs'j, Set.disjoint_right]
           rintro p hpins ⟨hpFk, hpx⟩
           rcases Set.mem_insert_iff.mp hpins with rfl | hpFj
           · exact hpx rfl
           · exact (hdisj hk).le_bot ⟨hpFk, hpFj⟩
-        · simp only [ite_eq_right hl]
+        · rw [hFs'k l hl]
           exact (hdisj hkl).mono Set.sdiff_subset Set.sdiff_subset
     -- The `v`-avoiding count strictly drops: `j` leaves it; `i` and others don't enter it.
     -- `x ∈ Fs' j ∩ vfib`, so `j` no longer avoids `v`.
-    have hxFs'j : x ∈ Fs' j ∩ vfib :=
-      ⟨by simp only [hFs', ↓reduceIte]; exact Set.mem_insert _ _, hxvfib⟩
+    have hxFs'j : x ∈ Fs' j ∩ vfib := ⟨hFs'j ▸ Set.mem_insert _ _, hxvfib⟩
     have hdrop : {k | (Fs' k ∩ vfib) = ∅}.ncard < {k | (Fs k ∩ vfib) = ∅}.ncard := by
       apply Set.ncard_lt_ncard _ (Set.toFinite _)
       constructor
@@ -1084,7 +1055,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
           -- `Fs' j ⊇ {x}`, `x ∈ vfib`, so `Fs' j ∩ vfib ≠ ∅` — `hk` is impossible.
           exact absurd (hk ▸ hxFs'j) (Set.notMem_empty x)
         · -- `Fs' k = Fs k \ {x}`. Show `Fs k ∩ vfib = ∅`.
-          simp only [hFs', ite_eq_right hkj] at hk
+          rw [hFs'k k hkj] at hk
           rw [Set.eq_empty_iff_forall_notMem] at hk ⊢
           intro p hp
           rcases eq_or_ne p x with hpx | hpx

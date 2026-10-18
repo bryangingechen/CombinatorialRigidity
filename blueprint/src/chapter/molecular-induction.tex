@@ -744,17 +744,16 @@ and~4.2 with such a partition.
   Let $G$ be a multigraph with a vertex $v$ of degree two, and let
   $F_1, \dots, F_D$ be forests of $\tilde G$ with union $I$. Suppose
   that no edge of $F_j$ is incident with $v$, and let $x \in I$ be an
-  edge of $\tilde G$ that joins $v$ to a vertex $w \neq v$. Then there
-  are forests $F'_1, \dots, F'_D$ of $\tilde G$ with union $I$ such that
-  $x \in F'_j$.
+  edge of $\tilde G$ that joins $v$ to a vertex $w \neq v$. Then the
+  sets $F'_j = F_j \cup \{x\}$ and $F'_i = F_i \setminus \{x\}$ for
+  $i \neq j$ are forests of $\tilde G$ with union $I$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Let $F'_j = F_j \cup \{x\}$, and let $F'_i = F_i \setminus \{x\}$ for
-  $i \neq j$. Then $F'_j$ is a forest by
-  \cref{lem:acyclic-insert-vfiber}, and each $F'_i$ with $i \neq j$ is
-  a forest as a subset of $F_i$. The union is still $I$, since $x \in I$
-  moves from the other forests to $F'_j$.
+  The set $F'_j$ is a forest by \cref{lem:acyclic-insert-vfiber}, and
+  each $F'_i$ with $i \neq j$ is a forest as a subset of $F_i$. The
+  union is still $I$, since $x \in I$ moves from the other forests to
+  $F'_j$.
 \end{proof}
 
 \begin{lemma}[A base has a balanced partition into forests]
@@ -769,6 +768,7 @@ and~4.2 with such a partition.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:packing-move}
   By \cref{lem:forest-packing-decomp}, $B$ is the union of $D$ forests,
   which we make pairwise disjoint as above. We induct on the number of
   these forests with no edge incident with $v$. If there is none, we are
@@ -777,14 +777,14 @@ and~4.2 with such a partition.
   $D - 1$ forests other than $F_j$. So one of these, $F_i$, contains two
   of them. Let $x$ be one of the two. It joins $v$ to $a$ or to $b$.
 
-  Move $x$ from $F_i$ to $F_j$, as in the proof of
-  \cref{lem:packing-move}. The new $F_j$ is a forest
-  (\cref{lem:acyclic-insert-vfiber}), and the forests are still pairwise
-  disjoint with union $B$, since $x$ lay in $F_i$ only. Now $F_j$ has an
-  edge incident with $v$, and $F_i$ keeps its other one. So the number
-  of forests with no edge incident with $v$ drops by one, and the
-  induction hypothesis gives the partition. Katoh and Tanigawa's proof
-  of their Lemma~4.1 assumes such a partition (\cref{rem:kt-lemma-41}).
+  Move $x$ from $F_i$ to $F_j$ (\cref{lem:packing-move}): the new $F_j$
+  is a forest by \cref{lem:acyclic-insert-vfiber}, and the forests still
+  have union $B$. They are still pairwise disjoint, since $x$ lay in
+  $F_i$ only. Now $F_j$ has an edge incident with $v$, and $F_i$ keeps
+  its other one. So the number of forests with no edge incident with $v$
+  drops by one, and the induction hypothesis gives the partition. Katoh
+  and Tanigawa's proof of their Lemma~4.1 assumes such a partition
+  (\cref{rem:kt-lemma-41}).
 \end{proof}
 
 We now perform the surgery on a balanced partition of a base.

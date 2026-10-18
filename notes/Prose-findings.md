@@ -1271,8 +1271,9 @@ declaration's name as its header writes it:
   `lem:packing-move`, the edge unbacked at `lem:balanced-forest-packing`); read (the body of
   `exists_balanced_forest_packing`).
   *Found:* round 2 task 2.12.
-  *Disposition:* left (exposition of the move; having the descent call the pin is a Lean change,
-  `F-088`).
+  *Disposition:* done (task 14): the descent calls the pin, now live, which backs the edge; the
+  node kept, its statement the move's re-choice (`F-272`). Before: left (exposition of the move;
+  having the descent call the pin is a Lean change, `F-088`).
 - **F-090** · N · `cor:forest-surgery-deficiency` (`molecular-induction.tex`): it restates
   `lem:forest-surgery-split`. Its pin `splitOff_deficiency_le_of_forest_surgery` is a
   `@[deprecated]` narrative-bridge shim that applies `forest_surgery_split` to the same hypotheses
@@ -3549,7 +3550,8 @@ declaration's name as its header writes it:
   `matroidMG_indep_iff_exists_forest_packing` credits "Nash-Williams 1966 / Edmonds" (`F-053`).
   *Evidence:* read (the docstrings and sections; the body of `exists_balanced_forest_packing`).
   *Found:* round 2 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L8).
+  *Disposition:* reported (`notes/Prose-report.md`, L8); round 3: the descent calls the move,
+  whose conclusion now states the re-choice (`F-272`) (task 14).
 - **F-092** · L · the surgery's pins (`Induction/ForestSurgery/EdgeSplitting.lean`,
   `Induction/ForestSurgery/Reduction.lean`): `splitOff_indep_extend_of_fiber_subset` and
   `splitOff_indep_extend_of_fiber_lt` take the degree-two hypothesis `_hdeg2` and do not use it.
@@ -4391,6 +4393,16 @@ declaration's name as its header writes it:
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at task 11.1's tree).
   *Found:* RECONCILE round 3 task 12.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-272** · L · `exists_packing_move_of_not_inc` (`Induction/ReducibleVertex.lean`) and
+  `lem:packing-move` (`molecular-induction.tex`): the conclusion, forests $F'_1, \dots, F'_D$ with
+  union $I$ and $x \in F'_j$, holds without the move's hypotheses: swap the index of a forest that
+  holds $x$ with $j$. So it does not state the move, and the descent, which needs the forests to
+  stay disjoint and only $x$ to leave the donors, could not call it (`F-088`).
+  *Evidence:* read (the statement; the descent's body); a `lake lean` witness at `3510e6da`
+  (`Fs ∘ Equiv.swap i j` for `x ∈ Fs i`, by `Equiv.iSup_comp`; not retained).
+  *Found:* RECONCILE round 3 task 14.
+  *Disposition:* done (task 14): the conclusion states the re-choice, $F'_j = F_j \cup \{x\}$
+  and $F'_i = F_i \setminus \{x\}$ for $i \neq j$; the node restated.
 
 ## M — mathematics and sources
 

@@ -26,9 +26,10 @@ task 10 the unused hypotheses of the deficiency and the induction, task 11 the c
 extraction's, its triangle lemma now the case $m = 3$ of the cycle lemma, which left one missing
 forward edge (`F-270`), task 11.1 moved the cycle lemma to `deficiency.tex` so that the edge
 points back, task 12 dropped the algebraic induction's unused or derivable hypotheses (the
-cut-edge lemmas' among them), and task 13 made the forest-packing lemma give a disjoint cover,
-which Tutte–Nash-Williams and its two other callers use as it is. **Next concrete task:** round
-3's task 14, the balanced packing's descent calling the packing move.
+cut-edge lemmas' among them), task 13 made the forest-packing lemma give a disjoint cover,
+which Tutte–Nash-Williams and its two other callers use as it is, and task 14 had the balanced
+packing's descent call the packing move, whose statement now says what the move does. **Next
+concrete task:** round 3's task 15, Katoh–Tanigawa Lemma 4.8's shorter case.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
@@ -251,7 +252,7 @@ both concern how a carrier relates edge labels to $E(G)$. It sizes the ~70 const
   (`notes/Reconcile-lean-cleanup.md` *Moved to a later round*).
 - **(b) M1**: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1).
 - **(c) the claims no declaration states**: S22–S25, S31, S3, S16 and S19, G5 (`def:blockingWitness`,
-  `def:dof-generic`, the Plücker expansion; the packing move is round 3's task 14, L8's `F-088`),
+  `def:dof-generic`, the Plücker expansion; the packing move was round 3's task 14, L8's `F-088`),
   and `F-061`'s forest lemma; each
   node restated or repinned when its declaration lands. Round 2's open moved these here, with S18
   to (a) (`notes/Reconcile-statements-cleanup.md` *Moved to a later round*).
