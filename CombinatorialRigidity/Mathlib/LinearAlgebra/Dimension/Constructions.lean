@@ -11,7 +11,7 @@ public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
 /-!
 # Finrank of a constant (non-dependent) `Pi` type, an independent `Fin`-family inside a
-  finite-dimensional submodule, and a finrank pigeonhole for redundant family members
+  finite-dimensional submodule, and finrank bounds modulo a subspace
 
 Upstream-eligible mirrors:
 
@@ -24,14 +24,14 @@ Upstream-eligible mirrors:
 
 * `Submodule.exists_linearIndependent_fin_of_finrank_eq` — a finite-dimensional subspace `W`
   of finrank `n` (over a field) carries a linearly independent family `Fin n → V` of vectors,
-  *valued in the ambient space* but all lying in `W`. This is the basis `W` owns, with its
-  vectors coerced out into the ambient space. Stated this way (an existence statement over the
-  abstract field, with no reference to a concrete carrier) it lets a downstream consumer obtain
-  `n` independent ambient vectors inside `W` without ever unfolding the carrier's definition —
-  important when the ambient space is a heavy `abbrev` (e.g. a `Module.Dual` of an exterior
-  power) whose `whnf` is expensive. The basis-coercion is `Basis.linearIndependent.map'` along
-  the injective `Submodule.subtype`. When promoted upstream this lives beside the
-  `FiniteDimensional` basis API; the namespace stays `Submodule`.
+  *valued in the ambient space* but all lying in `W`: the basis `W` owns, with its vectors coerced
+  out into the ambient space (`Basis.linearIndependent.map'` along the injective
+  `Submodule.subtype`). Stated as an existence statement over the abstract field, it lets a caller
+  obtain `n` independent ambient vectors inside `W` without unfolding the definition of the
+  ambient space, which matters when that space is an `abbrev` whose `whnf` is expensive (e.g. a
+  `Module.Dual` of an exterior power). When promoted upstream this lives beside the
+  `FiniteDimensional` basis API; the namespace stays `Submodule`. Its companions for a named
+  basis are `Module.Basis.linearIndependent_coe_subtype` and `Module.Basis.span_coe_eq`.
 
 * `Submodule.finrank_map_mkQ` — the finrank of the image `S.map W.mkQ` of a submodule under the
   quotient projection `W.mkQ : V → V ⧸ W` is `finrank (W ⊔ S) − finrank W`. (Rank–nullity on
@@ -49,53 +49,46 @@ Upstream-eligible mirrors:
   `finrank (W ⊔ span (range g)) = finrank W + |ι|` (via `finrank_map_mkQ`). When promoted
   upstream this lives beside the finrank/span API; the namespace stays `Submodule`.
 
-* `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` — a basis-free **block-rank-additivity
-  lower bound**: for a subspace `W ≤ S` of a finite-dimensional space and a finite family
-  `g : ι → V` lying in `S` (`∀ i, g i ∈ S`) whose images mod `W` are linearly independent
-  (`LinearIndependent K (W.mkQ ∘ g)`), the rank of `S` is at least the rank of the corner block
-  `W` plus the size of the independent-modulo-`W` family: `finrank W + |ι| ≤ finrank S`. This is
-  the rank-decomposition shape `rank S ≥ rank(corner W) + dim(quotient block)` (with the quotient
-  block exhibited by the `|ι|` members of `g` independent modulo `W`). The proof exhibits the
-  intermediate `W ⊔ span (range g) ≤ S`, computes `finrank (W ⊔ span (range g)) = finrank W + |ι|`
-  via `finrank_map_mkQ` + `finrank_span_eq_card`, and monotones up to `S`. When promoted upstream
-  this lives beside the quotient finrank API in
-  `Mathlib/LinearAlgebra/Dimension/RankNullity.lean`; the namespace stays `Submodule`.
+* `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` — a basis-free lower bound for the rank
+  of a block-triangular family: for a subspace `W ≤ S` of a finite-dimensional space and a finite
+  family `g : ι → V` lying in `S` whose images mod `W` are linearly independent
+  (`LinearIndependent K (W.mkQ ∘ g)`), `finrank W + |ι| ≤ finrank S`. The proof computes
+  `finrank (W ⊔ span (range g)) = finrank W + |ι|` via `finrank_map_mkQ` + `finrank_span_eq_card`
+  and goes up to `S` by monotonicity. When promoted upstream this lives beside the quotient
+  finrank API in `Mathlib/LinearAlgebra/Dimension/RankNullity.lean`; the namespace stays
+  `Submodule`.
 
-* `Submodule.exists_le_finrank_eq_card_of_injective_map` — package the image of a linearly
-  independent family under an injective linear map `L : V →ₗ[K] W` (landing in a target submodule
-  `S`) as a *subspace* `W' ≤ S` of known finrank `|ι|`: given `LinearIndependent K f`, `L`
-  injective, and `∀ i, L (f i) ∈ S`, there is a `W' ≤ S` with `finrank W' = |ι|`. The base block
-  the block-rank-additivity lower bound (`finrank_add_card_le_of_linearIndependent_mkQ`) consumes
-  as its `W` when the corner sits *over* a relabel-image base: `L = (funLeft σ⁻¹).dualMap` carries
-  a base rigidity-row family to candidate rows, and the image span is the `W` of finrank
-  `D(m−1)`. The image family is LI of the same card (`LinearIndependent.map'` along the injective
-  `L`, the pattern the `d=3` `M₃` arm uses for its `w`), so `finrank_span_eq_card` reads off the
-  finrank and `span_le` gives `W' ≤ S`. When promoted upstream this lives beside the
-  `LinearIndependent`/finrank-span API; the namespace stays `Submodule`.
+* `Submodule.exists_le_finrank_eq_card_of_injective_map` — the image of a linearly independent
+  family under an injective linear map `L : V →ₗ[K] W`, landing in a submodule `S`, spans a
+  subspace `W' ≤ S` of finrank `|ι|` (`LinearIndependent.map'` along `L`, then
+  `finrank_span_eq_card` and `span_le`). It supplies the `W` of
+  `finrank_add_card_le_of_linearIndependent_mkQ` when that subspace is the image of a known
+  independent family. When promoted upstream this lives beside the `LinearIndependent`/finrank-span
+  API; the namespace stays `Submodule`.
 
-* `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span` — append-one linear independence
-  modulo `W`: extend a family `f : ι → V` independent mod `W` by one extra vector `x` whose class
-  mod `W` is *not* in the span of the others' classes, and the augmented `ι ⊕ Unit`-family
-  `Sum.elim f (fun _ : Unit => x)` is still independent mod `W`. The corner-block independence
-  criterion the block-rank-additivity lower bound consumes as its `hLI` when the corner is a
-  panel-row family augmented by a single redundancy / `±r` row (KT 2011 (6.65): the `Mᵢ` block is
-  full-rank `⟺ r ∉ rowspace r(Lᵢ)`). A push through `W.mkQ` + the `Sum`-append independence
+* `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span` — appending one vector `x` to a
+  family `f : ι → V` independent mod `W` keeps it independent mod `W` when the class of `x` mod
+  `W` is not in the span of the others' classes: the family `Sum.elim f (fun _ : Unit => x)` is
+  independent mod `W`. A push through `W.mkQ` + the `Sum`-append independence
   (`LinearIndependent.sum_type` with `disjoint_span_singleton'`). When promoted upstream this lives
   beside the `LinearIndependent` `Sum`/`Option` API; the namespace stays `Submodule`.
 
 * `Submodule.linearIndependent_mkQ_of_comp` — independence modulo `W` from independence after a
-  linear map that *kills* `W`: if a family `f : ι → V` becomes linearly independent after applying
-  a linear map `T : V →ₗ[K] W'` (`LinearIndependent K (T ∘ f)`) and `W ≤ ker T`, then `f` is
-  already linearly independent modulo `W` (`LinearIndependent K (W.mkQ ∘ f)`). The other half of
-  the corner-block `hLI` (paired with the append-one criterion above): when the corner's panel-row
-  block must be shown independent *modulo* the base block `W`, and the panel rows are independent
-  after the block-triangular column projection `T` (e.g. precomposition with a pin-a-body
-  `single v`, which the base block annihilates — KT 2011 (6.16)'s column split), this strips the
-  `W`-quotient down to the already-known post-`T` independence. The factor map is the quotient
-  lift `W.liftQ T hW`, which satisfies `(W.liftQ T hW) ∘ W.mkQ = T` (`liftQ_mkQ`), so
+  linear map that *kills* `W`: if `LinearIndependent K (T ∘ f)` for a linear map
+  `T : V →ₗ[K] W'` with `W ≤ ker T`, then `LinearIndependent K (W.mkQ ∘ f)`. The factor map is the
+  quotient lift `W.liftQ T hW`, which satisfies `(W.liftQ T hW) ∘ W.mkQ = T` (`liftQ_mkQ`), so
   `LinearIndependent.of_comp` applied to it turns the post-`T` independence into the modulo-`W`
   independence. When promoted upstream this lives beside the `LinearIndependent`/quotient API; the
   namespace stays `Submodule`.
+
+The last four give the rank bound of Katoh–Tanigawa 2011 drawn after (6.65) from the block form
+(6.64), `rank R(G, pᵢ) ≥ rank Mᵢ + rank R(G₁ ∖ {(v₀v₂)ᵢ*}, q₁)`, in span form: `W` is spanned by
+rows of the bottom block, and `g` holds the rows of the corner block. The combinatorial-rigidity
+project applies them in `Molecular/AlgebraicInduction/CaseIII/Candidate.lean`
+(`finrank_span_rigidityRows_ge_of_corner`,
+`exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`,
+`linearIndependent_mkQ_corner_of_gate`, `linearIndependent_mkQ_panelRow_of_edge`), and the
+pigeonhole in `exists_redundant_panelRow_of_edge_of_finrank_lt` there.
 -/
 
 @[expose] public section
@@ -118,7 +111,7 @@ namespace Submodule
 
 /-- A finite-dimensional subspace `W` of finrank `n` carries a linearly independent family
 `Fin n → V` of *ambient* vectors all lying in `W` (the basis `W` owns, coerced into the ambient
-space). Existence form so the consumer never unfolds `V`'s carrier; the LI is the basis
+space). Stated as an existence so the caller never unfolds the type `V`; the LI is the basis
 independence pushed along the injective inclusion `W.subtype`. -/
 theorem exists_linearIndependent_fin_of_finrank_eq {K V : Type*} [Field K] [AddCommGroup V]
     [Module K V] (W : Submodule K V) [Module.Finite K W] {n : ℕ}
@@ -131,11 +124,11 @@ theorem exists_linearIndependent_fin_of_finrank_eq {K V : Type*} [Field K] [AddC
 
 /-- The vectors of a basis of a submodule `W ≤ V`, coerced into the ambient space `V`, form a
 linearly independent family in `V`. This is `Basis.linearIndependent` pushed along the injective
-inclusion `W.subtype` (`Submodule.ker_subtype`). Stated over the abstract `V` so the consumer can
-instantiate it at a heavy carrier (e.g. a `Module.Dual` of an exterior power) without ever forcing
-the carrier's `whnf` — the `Basis.linearIndependent.map'` step is elaborated *here*, against the
-abstract `V`, not at the call site. The named-family complement of
-`exists_linearIndependent_fin_of_finrank_eq` (which gives only an *existence* form): a consumer that
+inclusion `W.subtype` (`Submodule.ker_subtype`). Stated over the abstract `V` so the caller can
+instantiate it at a type whose `whnf` is expensive (e.g. a `Module.Dual` of an exterior power)
+without ever forcing that `whnf`: the `Basis.linearIndependent.map'` step is elaborated *here*,
+against the abstract `V`, not at the call site. The named-family complement of
+`exists_linearIndependent_fin_of_finrank_eq` (which gives only an *existence* form): a caller that
 needs the LI of a *specific* submodule basis applies this lemma directly. When promoted upstream
 this lives beside the `Module.Basis` ambient-coercion API; the namespace stays `Module.Basis`. -/
 theorem _root_.Module.Basis.linearIndependent_coe_subtype {K V ι : Type*} [Field K]
@@ -148,10 +141,10 @@ theorem _root_.Module.Basis.linearIndependent_coe_subtype {K V ι : Type*} [Fiel
 `W`. This is `Basis.span_eq` (which spans `⊤` *inside* `W`) pushed along the inclusion `W.subtype`
 via `Submodule.span_image` and `Submodule.map_subtype_top`. The span companion of
 `Module.Basis.linearIndependent_coe_subtype`: the two together say a coerced submodule basis is a
-basis of `W` *as a subset of the ambient `V`*, the form a row-space / append-one criterion consumes
-(`span (range (coerced basis)) = W`) without unfolding the ambient carrier (e.g. a `Module.Dual` of
-an exterior power). When promoted upstream this lives beside the `Module.Basis` ambient-coercion
-API; the namespace stays `Module.Basis`. -/
+basis of `W` *as a subset of the ambient `V`*, in the form `span (range (coerced basis)) = W`,
+without unfolding the ambient type (e.g. a `Module.Dual` of an exterior power). When promoted
+upstream this lives beside the `Module.Basis` ambient-coercion API; the namespace stays
+`Module.Basis`. -/
 theorem _root_.Module.Basis.span_coe_eq {K V ι : Type*} [Field K]
     [AddCommGroup V] [Module K V] {W : Submodule K V} (b : Module.Basis ι K W) :
     Submodule.span K (Set.range (fun i => (b i : V))) = W := by
@@ -228,12 +221,12 @@ theorem exists_mem_sup_span_image_compl_of_finrank_lt {K V : Type*} [Field K] [A
     Submodule.finrank_mono le_sup_left
   omega
 
-/-- A basis-free block-rank-additivity lower bound. For a subspace `W ≤ S` of a
-finite-dimensional space and a finite family `g : ι → V` lying in `S` whose images mod `W` are
-linearly independent, the rank of `S` is at least `finrank W + |ι|` — KT's
-`rank R(G,pᵢ) ≥ rank Mᵢ + rank(base ∖ row)` block decomposition (6.64–6.65) in span/`finrank`
-form, with `W` the base-minus-redundant-row block and the `|ι|` images of `g` the corner block
-independent modulo `W`.
+/-- A basis-free lower bound for the rank of a block-triangular family. For a subspace `W ≤ S` of
+a finite-dimensional space and a finite family `g : ι → V` lying in `S` whose images mod `W` are
+linearly independent, the rank of `S` is at least `finrank W + |ι|`. In the span form of the bound
+Katoh–Tanigawa 2011 draw after (6.65) from the block form (6.64),
+`rank R(G, pᵢ) ≥ rank Mᵢ + rank R(G₁ ∖ {(v₀v₂)ᵢ*}, q₁)`, `W` is spanned by rows of the bottom block
+and `g` holds the rows of the corner block, independent modulo `W`.
 
 The intermediate `W ⊔ span (range g)` has finrank exactly `finrank W + |ι|`: its quotient image
 `(span (range g)).map W.mkQ` equals `span (range (W.mkQ ∘ g))` of finrank `|ι|`
@@ -266,12 +259,10 @@ of known finrank inside a target submodule. For `f : ι → V` linearly independ
 injective, and `S : Submodule K W` containing every image `L (f i)`, there is a subspace `W' ≤ S`
 with `finrank W' = |ι|` — namely `W' = span (range (L ∘ f))`.
 
-This is the base-block packaging the block-rank-additivity lower bound
-(`finrank_add_card_le_of_linearIndependent_mkQ`) consumes as its `W` when the corner block sits
-over a relabel-image base: `L` carries an LI base family to candidate rows, and the resulting `W'`
-is the relabel-image base block with the matching finrank. The image family is linearly
-independent of the same cardinality (`LinearIndependent.map'` along the injective `L`), so
-`finrank_span_eq_card` reads off `finrank W' = |ι|`, and `span_le` gives `W' ≤ S`. -/
+The image family is linearly independent of the same cardinality (`LinearIndependent.map'` along
+the injective `L`), so `finrank_span_eq_card` reads off `finrank W' = |ι|`, and `span_le` gives
+`W' ≤ S`. It supplies the `W` of `finrank_add_card_le_of_linearIndependent_mkQ` when that subspace
+is the image of a known independent family. -/
 theorem exists_le_finrank_eq_card_of_injective_map {K V W : Type*} [Field K]
     [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W] {ι : Type*} [Fintype ι]
     {f : ι → V} (hf : LinearIndependent K f) {L : V →ₗ[K] W} (hL : Function.Injective L)
@@ -286,12 +277,11 @@ theorem exists_le_finrank_eq_card_of_injective_map {K V W : Type*} [Field K]
 span of the others' classes: the augmented `ι ⊕ Unit`-family
 `Sum.elim f (fun _ : Unit => x)` is still linearly independent modulo `W`.
 
-This is the corner-block independence criterion the block-rank-additivity lower bound
-(`finrank_add_card_le_of_linearIndependent_mkQ`) consumes as its `hLI` when the corner block is a
-panel-row family `f` (independent mod the base `W`) augmented by KT's single redundancy / `±r` row
-`x`: the augment stays independent precisely because the `±r` row's class mod `W` is not in the
-panel rows' span (KT 2011 (6.65): the `Mᵢ` block has full rank `⟺ r ∉ rowspace r(Lᵢ)`). The push
-through `W.mkQ` turns `Sum.elim f (·)` into `Sum.elim (W.mkQ ∘ f) (·)`, then
+It gives the hypothesis `hLI` of `finrank_add_card_le_of_linearIndependent_mkQ` when the corner
+block is a family `f` independent mod `W` with one more row `x`. In the proof of
+Katoh–Tanigawa 2011, (6.65), the corner block `Mᵢ` is the rows of `r(Lᵢ)` with one more row,
+`r` or (by (6.66)) `±r`, and `Mᵢ` has full rank iff `r` is not in the row space of `r(Lᵢ)`. The
+push through `W.mkQ` turns `Sum.elim f (·)` into `Sum.elim (W.mkQ ∘ f) (·)`, then
 `LinearIndependent.sum_type` reduces to the single-vector independence
 (`x`'s class nonzero, from the `notMem_span` hypothesis) and the span-disjointness
 (`disjoint_span_singleton'`, again from `notMem_span`). -/
@@ -314,15 +304,14 @@ theorem linearIndependent_mkQ_sumElim_unit_of_notMem_span {K V : Type*} [Field K
 (`W ≤ ker T` and `LinearIndependent K (T ∘ f)`), then `f` is linearly independent *modulo* `W`
 (`LinearIndependent K (W.mkQ ∘ f)`).
 
-This is the other half of the corner-block `hLI` (paired with
-`linearIndependent_mkQ_sumElim_unit_of_notMem_span`): the panel-row block of KT's `Mᵢ` corner
-must be shown independent *modulo* the base block `W`, and the panel rows are independent after
-the block-triangular column projection `T` (precomposition with a pin-a-body `single v`, which
-the base block annihilates — KT 2011 (6.16)'s column split). The proof factors `T` through the
-quotient: the lift `W.liftQ T hW : V ⧸ W →ₗ[K] W'` satisfies `(W.liftQ T hW) ∘ W.mkQ = T`
-(`liftQ_mkQ`), so `(W.liftQ T hW) ∘ (W.mkQ ∘ f) = T ∘ f`, and
-`LinearIndependent.of_comp (W.liftQ T hW)` recovers the independence of `W.mkQ ∘ f` from that of
-`T ∘ f`. -/
+With `linearIndependent_mkQ_sumElim_unit_of_notMem_span` it gives the hypothesis `hLI` of
+`finrank_add_card_le_of_linearIndependent_mkQ`: rows that are independent after restriction to
+the columns of one body (`T`), on which the rows spanning `W` vanish, are independent modulo `W`,
+as for the columns of `v` in the block form of Katoh–Tanigawa 2011, (6.16), where the rows of
+`Ev` vanish. The proof factors `T` through the quotient: the lift
+`W.liftQ T hW : V ⧸ W →ₗ[K] W'` satisfies `(W.liftQ T hW) ∘ W.mkQ = T` (`liftQ_mkQ`), so
+`(W.liftQ T hW) ∘ (W.mkQ ∘ f) = T ∘ f`, and `LinearIndependent.of_comp (W.liftQ T hW)` recovers
+the independence of `W.mkQ ∘ f` from that of `T ∘ f`. -/
 theorem linearIndependent_mkQ_of_comp {K V W' : Type*} [Field K]
     [AddCommGroup V] [Module K V] [AddCommGroup W'] [Module K W']
     (W : Submodule K V) {ι : Type*} {f : ι → V}

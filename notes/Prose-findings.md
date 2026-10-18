@@ -4511,20 +4511,29 @@ declaration's name as its header writes it:
   gitignored).
   *Found:* RECONCILE round 3 task 25.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
-- **F-279** · L · twelve unpinned declarations of `Search/DFS.lean` and of `Mathlib/` outside
-  `Matrix/Rank.lean` and `Dimension/Constructions.lean` that no declaration of the project uses:
+- **F-279** · L · unpinned declarations of `Search/DFS.lean` and of `Mathlib/` that no declaration
+  of the project uses, twenty-one: outside `Matrix/Rank.lean` and `Dimension/Constructions.lean`,
   `Fin.ofNat_eq_mk` (used only by the next) and `Fin.two_eq_mk_of_lt`,
   `Sym2.mk_mem_image_map_some_iff`, `Pi.basisFun_dualBasis`, `LinearIndepOn.dualMap_of_surjective`,
   `ExteriorAlgebra.ιMulti_family_congr`, `exteriorPower.coe_pairingDualEquiv`;
   `reachClosureComputable_closed`, `self_mem_reachClosureComputable`,
   `DirectedWalk.card_reversedArcsFinset`, `DirectedWalk.fst_mem_vertices_of_mem_reversedArcsFinset`,
-  `DirectedWalk.mapRel_length`. Also `cross₃_ne_zero_iff_linearIndependent`
-  (`Molecule/Pencil/Chart.lean`) builds, in each direction, the chain that
-  `Matrix.linearIndependent_rows_iff_det_ne_zero` packages, which its imports do not reach.
+  `DirectedWalk.mapRel_length`; in `Matrix/Rank.lean` (task 25.3; none in
+  `Dimension/Constructions.lean`), `Matrix.det_mem_range_of_entries`,
+  `Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero`,
+  `Matrix.linearIndependent_row_of_zero_left_cols`, `Matrix.rowOp_isUnit_det`,
+  `Matrix.exists_rowOp_of_strictInjection`,
+  `Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` and `Matrix.rowOp_zeroes_upperRight`
+  (used only by the previous),
+  `LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite` and
+  `LinearIndependent.le_finrank_span_along_affine_path_cofinite` (used only by the previous). Also
+  `cross₃_ne_zero_iff_linearIndependent` (`Molecule/Pencil/Chart.lean`) builds, in each direction,
+  the chain that `Matrix.linearIndependent_rows_iff_det_ne_zero` packages, which its imports do not
+  reach.
   *Evidence:* measured (the reverse dependencies of statements and bodies in the Lean cache of
-  `scripts/blueprint-deps.py`, at `522a0c0a` plus task 25.2's docstrings; `rfl` lemmas left out);
-  read (`Chart.lean`'s proof and import closure).
-  *Found:* RECONCILE round 3 task 25.2.
+  `scripts/blueprint-deps.py`, at `522a0c0a` plus task 25.2's docstrings, and at `0c34177f` for
+  task 25.3; `rfl` lemmas left out); read (`Chart.lean`'s proof and import closure).
+  *Found:* RECONCILE round 3 tasks 25.2 and 25.3.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

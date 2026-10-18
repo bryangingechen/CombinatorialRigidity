@@ -18,59 +18,44 @@ public import Mathlib.Data.Real.Basic
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 
 /-!
-# Upstream candidates: rectangular linear independence via rank, and the genericity engine
+# Rectangular linear independence via rank, polynomial-entry matrices, and block-triangular rank
 
 `Mathlib.LinearAlgebra.Matrix.NonsingularInverse` has `Matrix.linearIndependent_rows_iff_isUnit`
-for **square** matrices over a field (rows are LI iff the matrix is a unit, iff its determinant
-is a unit, iff over a field it is nonzero). The corresponding **rectangular** characterizations
-— that rows of `A : Matrix m n R` are LI iff `A.rank = #m`, and over an ordered field iff
-`(A * Aᵀ).det ≠ 0` (the *Gram determinant* form) — are direct consequences of
-`Matrix.rank_self_mul_transpose` / `Matrix.rank_eq_finrank_span_row` /
-`LinearIndependent.rank_matrix` in `Mathlib.LinearAlgebra.Matrix.Rank`, but are not packaged
-in mathlib as iff lemmas. The Gram-determinant form (`linearIndependent_rows_iff_det_mul_transpose_
-ne_zero`) is genuinely ordered-field-only (it can vanish on full-rank isotropic rows outside an
-ordered field) and is retained below as an upstream candidate in its own right, but the
-genericity engine this file exists for no longer routes through it.
+for **square** matrices over a field. The **rectangular** characterizations — the rows of
+`A : Matrix m n R` are linearly independent iff `A.rank = #m`, and over a linearly ordered field
+iff `(A * Aᵀ).det ≠ 0` (the Gram determinant) — follow from `Matrix.rank_self_mul_transpose`,
+`Matrix.rank_eq_finrank_span_row` and `LinearIndependent.rank_matrix` in
+`Mathlib.LinearAlgebra.Matrix.Rank`, but are not packaged in mathlib as iff lemmas.
 
-The combinatorial-rigidity project's genericity engine characterizes "the rows of a
-polynomial-entry matrix `P(t)` (or `P(p)`, multivariate) are LI at a parameter value" as the
-non-vanishing of a single witnessing minor polynomial — over **any field `K`** (any
-characteristic; infinite only where a point must actually be *produced*, not merely shown
-cofinite). The engine reroutes off the Gram-determinant iff onto the **maximal-minor twin**
-(`exists_submatrix_det_ne_zero_of_linearIndependent_rows` +
-`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`): a single column selection `e`
-witnessing the rows LI at the base point picks out one minor `Q := det (P selected on columns e)`,
-whose evaluation is the specialized minor's determinant; the "minor nonzero ⟹ rows LI" direction
-of the twin is all the reverse implication ever needs — no per-minor union, no
-product-of-minors polynomial. The univariate case (`finite_setOf_not_linearIndependent_rows_
-along_affine_path` / `_of_polynomial`) concludes `{bad parameters}.Finite` via
-`Polynomial.finite_setOf_isRoot` — the linear-interpolation-perturbation step of the Phase 8
-target `linearRigidityMatroid_eq_rigidityMatroid` (see `LinearRigidityMatroid.lean`) — needing no
-infiniteness or characteristic hypothesis on `K` at all.
+Most of the file concerns polynomial-entry matrices, over **any field `K`**: that the rows of
+`P(t)` (or of `P(p)`, with a multivariate parameter) are linearly independent at a parameter value
+is witnessed by one minor. A column selection `e` at which the rows are independent at a base point
+(`exists_submatrix_det_ne_zero_of_linearIndependent_rows`) picks out the minor
+`Q := det (P selected on columns e)`, whose evaluation is the specialized minor's determinant, and
+the rows are independent wherever that determinant is nonzero
+(`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`). Unlike the Gram determinant,
+this needs no linear order on `K`.
 
-The Phase-21b genericity device (Katoh–Tanigawa 2011 Claim 6.4/6.9) needs the *rank-form*
-generalization of the cofiniteness lemma — lower semicontinuity of `finrank` of the span of
-an affine vector family along the path, not just the full-rank (LI) case. That is
-`LinearIndependent.le_finrank_span_along_affine_path_cofinite` below: a single realization
-at the target rank lifts to cofinitely many parameter values at *at least* that rank, the
-"generic point attains the maximum rank" mechanism the device runs on.
-
-The affine engine handles only a single line `t ↦ a i + t • b i`. The genuine Claim 6.4 is the
-**multivariate** statement: the panel-hinge rigidity-matrix entries are degree-two polynomials in
-the panel coordinates `p : σ → K`, so no single affine line reaches the consumers' realizations.
-The multivariate bricks below mirror the affine engine's shape but over `MvPolynomial σ K`-entry
-families: `Matrix.exists_linearIndependent_rows_specialize` (matrix `∃`-form),
-`exists_le_finrank_span_polynomial` (vector rank-`#s` `∃`-form), the consumer-facing
-`exists_finrank_dualCoannihilator_polynomial` (codimension/null-space form), and the *constructive*
-`exists_polynomial_ne_zero_of_linearIndependent_at` (exposes the witnessing minor polynomial
-itself, so several families' polynomials can be multiplied and the funext step applied once to
-the product). Where the affine lemmas conclude `{bad parameters}.Finite`, the multivariate lemmas
-conclude `∃ p, good` directly: the witnessing minor is a *nonzero* `MvPolynomial`, hence
-non-vanishing at *some* point by `MvPolynomial.exists_eval_ne_zero` (the contrapositive of
-`MvPolynomial.funext` over the infinite domain `K` — the **only** place `[Infinite K]` enters the
-matrix-level engine; a second, independent locus lives in the univariate consumer
-`LinearIndependent.exists_notMem_of_polynomial_repr`, which picks a generic parameter out of a
-cofinite set via `Set.Finite.infinite_compl`).
+* **Along a line** (`finite_setOf_not_linearIndependent_rows_along_affine_path`, `_of_polynomial`
+  and their vector forms) the parameters where independence fails are finitely many
+  (`Polynomial.finite_setOfPred_isRoot`), with no hypothesis on `K`. The combinatorial-rigidity
+  project uses the vector form for `exists_uniform_rowIndependent_placement_dim_two`, the step
+  behind `linearRigidityMatroid_eq_rigidityMatroid` (`LinearRigidityMatroid.lean`), and for the
+  generic placements of `GenericRigidityMatroid.lean`.
+* **Over a multivariate parameter** (`Matrix.exists_linearIndependent_rows_specialize`,
+  `exists_le_finrank_span_polynomial`, `exists_finrank_dualCoannihilator_polynomial`) some point is
+  good when `K` is infinite: the minor is a nonzero `MvPolynomial`, so it does not vanish somewhere
+  (`MvPolynomial.exists_eval_ne_zero`). `exists_polynomial_ne_zero_of_linearIndependent_at`
+  returns the minor instead, so that the minors of several families can be multiplied and one
+  common non-root chosen. The project's genericity device (the blueprint's
+  `lem:genericity-device`, after Katoh–Tanigawa 2011, §5.1) rests on these lemmas: the entries of
+  the panel-hinge rigidity matrix are polynomials in the panel coordinates, so a rank attained at
+  one realization is attained at a generic one, and no single line need reach the realizations
+  the device is applied to.
+* **Block-triangular matrices**: the rank is at least the row counts of two diagonal blocks with
+  independent rows, also through unit-determinant row and column operations. The project applies
+  these lemmas to the rigidity matrix in the block forms of Katoh–Tanigawa 2011, (6.60)–(6.64), in
+  `Molecular/RigidityMatrix/Concrete.lean`.
 
 Mirror path: `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Promotion to mathlib is a copy-paste
 into the upstream file, alongside `Matrix.rank_self_mul_transpose` and
@@ -87,17 +72,11 @@ selected subfamily `χ ∘ sel` is linearly independent (and, being of size `N =
 necessarily spans the same subspace, so `finrank (span (χ ∘ sel)) = N` follows immediately by
 `finrank_span_eq_card`).
 
-This is the *free maximal-rank basis-pick* the Phase-23f Case-III bottom-block selection needs
-(`notes/Phase23-design.md` §(4.58.E) **BOT-2**; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64)): the
-operated `(6.64)` bottom block `toBlocks₂₂` is row-LI once a `card m₂`-element subfamily of the
-candidate's `a`-shifted edge functionals is independent, and the spanning identity
-(`span_range_hingeRow_crossFramework_eq_rigidityRows`, **BOT-1**) plus the def-`0` rank count
-`finrank (span R(Gab).rigidityRows) = card m₂` certify that the full family spans a space of
-`finrank = card m₂` — so a free LI selection of that size exists. Unlike
-`exists_submatrix_det_ne_zero_of_linearIndependent_rows` (whose family spans the *whole* coordinate
-space `m → K`, so the selection is a basis of `⊤`), here the span is a proper finite-dimensional
-subspace, so the selection is built as a basis of that submodule (`Module.Basis.mk` on the
-co-restricted family) rather than of `⊤`. No matrix structure; carrier-agnostic. -/
+Unlike `exists_submatrix_det_ne_zero_of_linearIndependent_rows`, whose family spans the whole
+coordinate space `m → K`, here the span is any finite-dimensional subspace, so the selection is
+built as a basis of that submodule (`Module.Basis.mk` on the co-restricted family). The
+combinatorial-rigidity project uses it to choose rows of a bottom block with independent rows
+(`bottom_selection_of_crossFramework_span` in `Molecular/RigidityMatrix/Concrete.lean`). -/
 theorem exists_finCard_linearIndependent_selection
     {K ι V : Type*} [Field K] [Finite ι] [AddCommGroup V] [Module K V]
     (χ : ι → V) {N : ℕ}
@@ -160,13 +139,8 @@ analogue of `Matrix.linearIndependent_rows_iff_isUnit` (the square case, where t
 iff `det A ≠ 0` directly). Routes through `rank_self_mul_transpose` and the square
 `linearIndependent_rows_iff_isUnit` at `A * Aᵀ`.
 
-The project's genericity engine (below) has been rerouted onto the maximal-minor twin
-(`exists_submatrix_det_ne_zero_of_linearIndependent_rows` +
-`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`), which works over any field — the
-Gram form genuinely needs the linear order (it can vanish on full-rank isotropic rows outside an
-ordered field), so this lemma is retained at its correct maximal generality even though the
-reroute leaves it with no in-project caller; it is an upstream candidate in its own right
-(Phase 33 PROSPECT G1 sweep adjudication). -/
+The order is needed: over `ℂ` the single row `(1, i)` is independent, while `A * Aᵀ = 1 + i² = 0`.
+The lemmas below use a maximal minor instead, which needs no order. -/
 theorem linearIndependent_rows_iff_det_mul_transpose_ne_zero
     [Field R] [LinearOrder R] [IsStrictOrderedRing R]
     [Fintype m] [DecidableEq m] [Fintype n] (A : Matrix m n R) :
@@ -177,8 +151,8 @@ theorem linearIndependent_rows_iff_det_mul_transpose_ne_zero
 
 /-- **Linear independence of rows from a specialized nonzero minor.** Let `M : ι → κ → R` be
 a (possibly rectangular) family of rows over an integral domain `R`, with `ι` finite. If there
-is a column selection `e : ι → κ` and a ring homomorphism `φ : R →+* S` into a nontrivial
-commutative ring `S` such that the square submatrix `(i, j) ↦ M i (e j)` has a determinant whose
+is a column selection `e : ι → κ` and a ring homomorphism `φ : R →+* S` into a commutative ring
+`S` such that the square submatrix `(i, j) ↦ M i (e j)` has a determinant whose
 image under `φ` is nonzero, then the rows `M` are linearly independent over `R`.
 
 This is the "a polynomial minor with a nonzero specialization is itself nonzero, hence the generic
@@ -201,7 +175,7 @@ theorem linearIndependent_rows_of_specialized_submatrix_det_ne_zero
   exact Matrix.linearIndependent_rows_of_det_ne_zero hRne
 
 /-- **A matrix with linearly independent rows over a field has a nonsingular maximal minor.**
-Let `M : Matrix m n K` over a field `K` with `m` finite. If the rows of `M` are linearly
+Let `M : Matrix m n K` over a field `K` with `m` and `n` finite. If the rows of `M` are linearly
 independent, then there is a square column selection `e : m → n` such that the `m × m` submatrix
 `(i, j) ↦ M i (e j)` has nonzero determinant.
 
@@ -245,17 +219,18 @@ theorem exists_submatrix_det_ne_zero_of_linearIndependent_rows
 field `K`. If the rows of `A + t₀ • B` are linearly independent for some `t₀ : K`, then the rows
 of `A + t • B` are linearly independent for all but finitely many `t : K`.
 
-Routes through the maximal-minor twin rather than the ordered-field Gram determinant
-(`linearIndependent_rows_iff_det_mul_transpose_ne_zero`, which needs a linear order and so cannot
-generalize past `ℝ`/`ℚ`): a column selection `e` witnessing the rows LI at `t₀`
+The proof uses a maximal minor rather than the Gram determinant
+(`linearIndependent_rows_iff_det_mul_transpose_ne_zero`, which needs a linear order): a column
+selection `e` witnessing the rows LI at `t₀`
 (`exists_submatrix_det_ne_zero_of_linearIndependent_rows`) picks out a *single* minor
-`Q := det (P selected on columns e) : Polynomial K` of the polynomial-entry matrix
-`P := X • C(B) + C(A)`, whose evaluation at `t` is the specialized minor's determinant
-(`(evalRingHom t).map_det`). `Q` is nonzero (nonzero at `t₀`), hence has finitely many roots
-(`Polynomial.finite_setOf_isRoot`); at any non-root `t` the specialized minor is nonsingular, so
-the rows are LI there too (`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`, the
-reverse direction of the twin). No infiniteness or characteristic hypothesis on `K` is needed —
-the argument only ever uses that a nonzero univariate polynomial has finitely many roots. -/
+`Q := det (P selected on columns e) : Polynomial K` of the
+polynomial-entry matrix `P := X • C(B) + C(A)`, whose evaluation at `t` is the specialized minor's
+determinant (`(evalRingHom t).map_det`). `Q` is nonzero (nonzero at `t₀`), hence has finitely many
+roots (`Polynomial.finite_setOfPred_isRoot`); at any non-root `t` the specialized minor is
+nonsingular, so the rows are LI there too
+(`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`). No infiniteness or characteristic
+hypothesis on `K` is needed: the argument only uses that a nonzero univariate polynomial has
+finitely many roots. -/
 theorem finite_setOf_not_linearIndependent_rows_along_affine_path
     {K : Type*} [Field K] [Finite m] [Finite n] (A B : Matrix m n K) {t₀ : K}
     (h : LinearIndependent K (A + t₀ • B).row) :
@@ -303,14 +278,13 @@ arbitrary polynomial-entry matrix `P : Matrix m n (Polynomial K)` over a field `
 the specialization `P.map (eval t₀)` are linearly independent at some `t₀ : K`, then the rows of
 `P.map (eval t)` are linearly independent for all but finitely many `t : K`.
 
-Same maximal-minor-twin argument as the affine case: a column selection `e` witnessing LI at `t₀`
+The same maximal-minor argument as the affine case: a column selection `e` witnessing LI at `t₀`
 (`exists_submatrix_det_ne_zero_of_linearIndependent_rows`) picks out the single minor
 `Q := det (P selected on columns e) : Polynomial K`, whose evaluation at `t` is the specialized
-minor's determinant; `Q` is nonzero (nonzero at `t₀`), so `Polynomial.finite_setOf_isRoot` bounds
-the bad-`t` set, and at any non-root `t` the reverse twin
-(`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`) certifies LI. The affine engine is
-the special case `P = X • B.map C + A.map C`. No infiniteness or characteristic hypothesis on `K`
-is needed. -/
+minor's determinant; `Q` is nonzero (nonzero at `t₀`), so `Polynomial.finite_setOfPred_isRoot`
+bounds the bad-`t` set, and at any non-root `t`
+`linearIndependent_rows_of_specialized_submatrix_det_ne_zero` gives LI. The affine case is
+`P = X • B.map C + A.map C`. No infiniteness or characteristic hypothesis on `K` is needed. -/
 theorem finite_setOf_not_linearIndependent_rows_of_polynomial
     {K : Type*} [Field K] [Finite m] [Finite n] (P : Matrix m n (Polynomial K)) {t₀ : K}
     (h : LinearIndependent K (P.map (Polynomial.evalRingHom t₀)).row) :
@@ -343,13 +317,12 @@ field and `P : Matrix m n (MvPolynomial σ K)` a polynomial-entry matrix. If the
 specialization `P.map (eval p₀)` are linearly independent at some point `p₀ : σ → K`, then there
 is a point `p : σ → K` at which the rows of `P.map (eval p)` are linearly independent.
 
-Same maximal-minor-twin argument, but the finiteness step is replaced by an existence step: a
+The same maximal-minor argument, with an existence step in place of the finiteness step: a
 column selection `e` witnessing LI at `p₀` picks out the single minor
 `Q := det (P selected on columns e) : MvPolynomial σ K`. `Q` is nonzero (nonzero at `p₀`), hence
 non-vanishing at some point `p` (`MvPolynomial.exists_eval_ne_zero`, the contrapositive of
-`MvPolynomial.funext` over the infinite domain `K` — the one place `[Infinite K]` enters this
-engine); there the reverse twin
-(`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`) certifies LI. Unlike the univariate
+`MvPolynomial.funext` over the infinite domain `K`, where `[Infinite K]` is used); there
+`linearIndependent_rows_of_specialized_submatrix_det_ne_zero` gives LI. Unlike the univariate
 (affine-line) case, the bad set `{p | rows dependent}` is generally not finite — it is the zero
 locus of `Q`, whose complement is merely *nonempty* — so the conclusion is `∃ p, …` rather than
 `{bad}.Finite`. -/
@@ -380,27 +353,18 @@ theorem exists_linearIndependent_rows_specialize {K σ : Type*} [Field K] [Infin
   exact ⟨p, linearIndependent_rows_of_specialized_submatrix_det_ne_zero
     (P.map (MvPolynomial.eval p)).row (RingHom.id K) e (by rwa [RingHom.id_apply])⟩
 
-/-- **Block-triangular rank additivity, as an inequality** (Katoh–Tanigawa 2011 eq. (6.64);
-Phase 23d route-A piece A3). For a block-triangular matrix `fromBlocks A B 0 D` over a field
-(lower-left block zero), if the rows of the diagonal blocks `A` and `D` are each linearly
-independent, then the rank of the whole matrix is at least the sum of the two diagonal-block
-row counts:
+/-- **Block-triangular rank additivity, as an inequality.** For a block-triangular matrix
+`fromBlocks A B 0 D` over a field (lower-left block zero), if the rows of the diagonal blocks `A`
+and `D` are each linearly independent, then the rank of the whole matrix is at least the sum of the
+two diagonal-block row counts:
 `#m₁ + #m₂ ≤ (fromBlocks A B 0 D).rank`.
 
-This is the matrix-level analogue of the dual-space block cert
-`Submodule.finrank_add_card_le_of_linearIndependent_mkQ`: where the dual-space version expresses
-KT's (6.61) submatrix-containment as a span *membership* (which walled — see
-`notes/Phase23-design.md` §(4.18)–(4.30)), the matrix version is a structural fact about a literal
-block matrix and never forms a membership. The proof is exactly the (6.64) block-triangular minor
-argument: `A`'s LI rows give a full-rank square minor (column selection `e₁`, nonzero det), `D`'s
-give another (`e₂`); the combined `(m₁ ⊕ m₂)`-square minor of `fromBlocks A B 0 D` over those
-columns is itself block-triangular, so its determinant is the product of the two minor dets
-(`Matrix.det_fromBlocks_zero₂₁`) — nonzero — hence the minor has linearly independent rows, rank
-`#m₁ + #m₂`, and `rank ≤ (fromBlocks A B 0 D).rank` by `rank_submatrix_le`.
-
-In the KT application `A = Mᵢ` is the full-rank `D × D` corner block and `D` is the IH's
-bottom-block `R(G₁ ＼ row, q₁)` (both full row rank), so the LI-rows hypotheses are exactly what
-the realization arm supplies. -/
+`A`'s LI rows give a full-rank square minor (column selection `e₁`, nonzero det), `D`'s give
+another (`e₂`); the combined `(m₁ ⊕ m₂)`-square minor of `fromBlocks A B 0 D` over those columns is
+itself block-triangular, so its determinant is the product of the two minor dets
+(`Matrix.det_fromBlocks_zero₂₁`), nonzero. Hence the minor has linearly independent rows, rank
+`#m₁ + #m₂`, and `rank ≤ (fromBlocks A B 0 D).rank` by `rank_submatrix_le`. The span form is
+`Submodule.finrank_add_card_le_of_linearIndependent_mkQ`. -/
 theorem rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows
     {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
     [Fintype n₁] [Fintype n₂] {A : Matrix m₁ n₁ K} (B : Matrix m₁ n₂ K) {D : Matrix m₂ n₂ K}
@@ -436,32 +400,22 @@ theorem rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows
         rw [hNsub]
         exact Matrix.rank_submatrix_le (n₀ := m₁ ⊕ m₂) M id c
 
-/-- **Block-triangular rank lower bound through a unit-det column operation** (Katoh–Tanigawa 2011
-eqs. (6.61)→(6.64); Phase 23d route-A piece A4, the column-op bridge into A3). For a matrix `M`
-over a field, a *unit-determinant* square matrix `U` (the explicit invertible column operation —
-KT (6.61)'s "add `vᵢ`'s columns to `vᵢ₊₁`'s"), and reindexing equivalences `em`, `en` exhibiting
-`M * U` (after the column op) in the block-triangular shape `fromBlocks A B 0 D` with the rows of
-both diagonal blocks `A`, `D` linearly independent, the rank of the *original* `M` is at least the
-sum of the two diagonal-block row counts:
+/-- **Block-triangular rank lower bound through a unit-det column operation.** For a matrix `M`
+over a field, a *unit-determinant* square matrix `U` (an invertible column operation), and
+reindexing equivalences `em`, `en` exhibiting `M * U` in the block-triangular shape
+`fromBlocks A B 0 D` with the rows of both diagonal blocks `A`, `D` linearly independent, the rank
+of the *original* `M` is at least the sum of the two diagonal-block row counts:
 `#m₁ + #m₂ ≤ M.rank`.
 
-This is the matrix-level realization of KT's "(6.61) submatrix containment is not difficult to
-see": where the dual-space chain cert was forced to read (6.61) as a *span membership* (which
-walled — `notes/Phase23-design.md` §(4.18)–(4.30)), the literal-`Matrix` model reads it as a
-*right-multiply by a unit-det column-operation matrix* (`Matrix.rank_mul_eq_left_of_isUnit_det`,
-rank-invariant) followed by a *structural reindexing* into `fromBlocks` — never a membership, so
-the override-meets-gate collision never arises. The proof is a single `calc`: A3
-(`rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`) bounds `rank (fromBlocks A B 0 D)` below
-by `#m₁ + #m₂`, then `rank_reindex` (the reindexing is rank-preserving) and
-`rank_mul_eq_left_of_isUnit_det` (the column op is rank-preserving) carry that bound back to
-`M.rank`.
+The proof is a single `calc`: `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` bounds
+`rank (fromBlocks A B 0 D)` below by `#m₁ + #m₂`, then `rank_reindex` and
+`rank_mul_eq_left_of_isUnit_det` (the reindexing and the column operation preserve rank) transfer
+that bound to `M.rank`.
 
-In the KT application `M = R(G,pᵢ)` (the concrete panel-hinge rigidity matrix), `U` is the (6.61)
-column-operation matrix, `A = Mᵢ` is the full-rank `D × D` corner block, and `D` is the IH's
-bottom-block `R(G₁ ＼ row, q₁)` — both with linearly independent rows — so the hypotheses are
-exactly what the realization arm supplies. The rigidity-matrix consumer is
-`BodyHingeFramework.rigidityMatrix_mul_rank` (`Molecular/RigidityMatrix/Concrete.lean`), the
-column-op rank-invariance specialized to `R(G,p)`. -/
+The combinatorial-rigidity project applies it to the rigidity matrix with `U` the column
+operation of Katoh–Tanigawa 2011 that takes (6.60) to (6.61), adding the columns of `vᵢ` to those
+of `vᵢ₊₁` (`finrank_span_rigidityRows_ge_of_edge_fromBlocks` in
+`Molecular/RigidityMatrix/Concrete.lean`). -/
 -- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
 -- needs this instance to elaborate; it does not survive into the proof term.
 @[nolint unusedArguments]
@@ -485,28 +439,24 @@ theorem rank_ge_of_isUnit_mul_reindex_fromBlocks
     _ = (M * U).rank := rank_reindex em en (M * U)
     _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
 
-/-- **Block-triangular rank lower bound through a unit-det column operation — row-submatrix form**
-(Katoh–Tanigawa 2011 eqs. (6.61)→(6.64); Phase 23d route-A piece A4 in its row-*submatrix* shape,
-option (4b′)). This is the row-injection generalization of
-`rank_ge_of_isUnit_mul_reindex_fromBlocks`: instead of a row *equivalence* `em : p ≃ m₁ ⊕ m₂`
-exhibiting the *whole* column-operated matrix `M * U` as `fromBlocks A B 0 D`, it takes an arbitrary
-row map `re : m₁ ⊕ m₂ → p` (an *injection* in the application — selecting a row subset) and a column
-equivalence `en : (n₁ ⊕ n₂) ≃ q`, exhibiting the *row submatrix* `(M * U).submatrix re en` in the
-block-triangular shape, with the rows of both diagonal blocks `A`, `D` linearly independent. The
-conclusion is the same lower bound `#m₁ + #m₂ ≤ M.rank`.
+/-- **Block-triangular rank lower bound through a unit-det column operation, row-submatrix
+form.** The generalization of `rank_ge_of_isUnit_mul_reindex_fromBlocks` from a row *equivalence*
+`em : p ≃ m₁ ⊕ m₂`, which places *every* row of the column-operated matrix `M * U` in one of the
+blocks, to an arbitrary row map `re : m₁ ⊕ m₂ → p`: given a column equivalence
+`en : (n₁ ⊕ n₂) ≃ q` exhibiting the *row submatrix* `(M * U).submatrix re en` in the
+block-triangular shape `fromBlocks A B 0 D`, with the rows of both diagonal blocks `A`, `D`
+linearly independent, the same lower bound `#m₁ + #m₂ ≤ M.rank` holds.
 
-The motivation for the row-submatrix shape over the total-bijection `reindex` shape is that the
-realization arm is *isostatic* (`(D−1)·|E(G)| = D·(|V(G)|−1)`), so a total row bijection of all edge
-rows would force the *whole* edge matrix to be full row rank at the degenerate `t = 0` shear — which
-is **false**: there are `D − 2` surplus rows incident to the re-inserted body that become dependent
-(the redundancy KT Claim 6.11 exploits). KT's (6.64) block-additivity is a *subspace* statement that
-ignores those surplus rows, so the certificate must select a row subset — the `D` corner rows plus
-the `D·(|V_Gv|−1)` IH-bottom rows — and drop the surplus (`notes/Phase23-design.md` §I.8.24(4.33)).
-This mirrors `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`'s *column*-submatrix step
-(`N = M.submatrix id c`): both keep only the rows/columns the block-triangular minor needs.
+Rows outside the range of `re` are ignored, so `M` may have more rows than the two blocks hold, and
+rows that would break the zero block can be left out. This is
+`rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`'s *column*-submatrix step
+(`N = M.submatrix id c`) on the rows: both keep only the rows and columns the block-triangular minor
+needs.
 
 The proof is the same `calc` as the `reindex` form, with `Matrix.rank_submatrix_le` (a row submatrix
-can only drop the rank) in place of the rank-preserving `rank_reindex`. -/
+can only drop the rank) in place of the rank-preserving `rank_reindex`. The combinatorial-rigidity
+project applies it in `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks`
+(`Molecular/RigidityMatrix/Concrete.lean`). -/
 theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks
     {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype q] [DecidableEq q]
     [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
@@ -526,25 +476,23 @@ theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks
     _ ≤ (M * U).rank := rank_submatrix_le (M * U) re en
     _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
 
-/-- **Block-triangular rank additivity, upper-right-zero (A3-transposed) form** (Katoh–Tanigawa 2011
-eq. (6.64); Phase 23e route, the A3-transposed cert leaf). For a block-triangular matrix
+/-- **Block-triangular rank additivity, upper-right-zero form.** For a block-triangular matrix
 `fromBlocks A 0 C D` over a field (*upper-right* block zero, the transpose of
 `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`'s lower-left-zero shape), if the rows of the
 diagonal blocks `A` and `D` are each linearly independent, then the rank of the whole matrix is at
 least the sum of the two diagonal-block row counts:
 `#m₁ + #m₂ ≤ (fromBlocks A 0 C D).rank`.
 
-The proof is the trivial mirror of `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`, swapping
-`Matrix.det_fromBlocks_zero₂₁ → Matrix.det_fromBlocks_zero₁₂` for the combined block-triangular
-minor's determinant: `A`'s LI rows give a full-rank square minor (columns `e₁`), `D`'s give another
-(`e₂`), the combined `(m₁ ⊕ m₂)`-square minor of `fromBlocks A 0 C D` over those columns is
-upper-triangular, so its determinant is the product of the two minor dets (nonzero) and the minor
-has rank `#m₁ + #m₂ ≤ (fromBlocks A 0 C D).rank` by `rank_submatrix_le`.
+The proof is that of `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` with
+`Matrix.det_fromBlocks_zero₁₂` for the combined minor's determinant: `A`'s LI rows give a full-rank
+square minor (columns `e₁`), `D`'s give another (`e₂`), the combined `(m₁ ⊕ m₂)`-square minor of
+`fromBlocks A 0 C D` over those columns is block-triangular, so its determinant is the product of
+the two minor dets (nonzero) and the minor has rank `#m₁ + #m₂ ≤ (fromBlocks A 0 C D).rank` by
+`rank_submatrix_le`.
 
-This is the cert shape Phase 23e adopts (`notes/Phase23-design.md` §(4.49)): the zero *upper-right*
-block is produced by a row op zeroing the corner's off-`v` content `B` (leaving the bottom `[C D]`
-untouched as the landed full-rank `mixedBottom` block), so `A = A'` is the row-op'd `Mᵢ` corner and
-`[C D]` is the IH bottom block — both full row rank. -/
+This is the shape of Katoh–Tanigawa 2011, (6.64), where the rows of the corner block `Mᵢ` vanish off
+the columns of `vᵢ`, and the bound they draw after (6.65),
+`rank R(G, pᵢ) ≥ rank Mᵢ + rank R(G₁ ∖ {(v₀v₂)ᵢ*}, q₁)`. -/
 theorem rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows
     {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
     [Fintype n₁] [Fintype n₂] {A : Matrix m₁ n₁ K} {D : Matrix m₂ n₂ K} (C : Matrix m₂ n₁ K)
@@ -580,27 +528,25 @@ theorem rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows
         rw [hNsub]
         exact Matrix.rank_submatrix_le (n₀ := m₁ ⊕ m₂) M id c
 
-/-- **Block-triangular rank lower bound through a unit-det row *and* column operation —
-upper-right-zero (A3-transposed), row-submatrix form** (Katoh–Tanigawa 2011 eqs. (6.61)→(6.64);
-Phase 23e route, the A3-transposed A4 leaf with the threaded LEFT row op). The `fromBlocks A 0 C D`
-(upper-right zero) analogue of `rank_ge_of_isUnit_mul_submatrix_fromBlocks`, additionally threading
-a *unit-determinant* LEFT factor `Lrow` (the block elementary row op zeroing the corner's off-`v`
-content, `rowOp_isUnit_det`/`rowOp_zeroes_upperRight`): for a matrix `M` over a field, a unit-det
-square row op `Lrow : Matrix p p K`, a unit-det square column op `U : Matrix q q K`, a row injection
-`re : m₁ ⊕ m₂ → p` and a column equivalence `en : (n₁ ⊕ n₂) ≃ q` exhibiting the row submatrix
-`(Lrow * M * U).submatrix re en` in the block-triangular shape `fromBlocks A 0 C D` with the rows of
-both diagonal blocks `A`, `D` linearly independent, the rank of the original `M` is at least the sum
-of the two diagonal-block row counts: `#m₁ + #m₂ ≤ M.rank`.
+/-- **Block-triangular rank lower bound through unit-det row and column operations,
+upper-right-zero row-submatrix form.** The `fromBlocks A 0 C D` (upper-right zero) analogue of
+`rank_ge_of_isUnit_mul_submatrix_fromBlocks`, with a *unit-determinant* left factor as well: for a
+matrix `M` over a field, a unit-det square row operation `Lrow : Matrix p p K`, a unit-det square
+column operation `U : Matrix q q K`, a row map `re : m₁ ⊕ m₂ → p` and a column equivalence
+`en : (n₁ ⊕ n₂) ≃ q` exhibiting the row submatrix `(Lrow * M * U).submatrix re en` in the
+block-triangular shape `fromBlocks A 0 C D` with the rows of both diagonal blocks `A`, `D` linearly
+independent, the rank of the original `M` is at least the sum of the two diagonal-block row counts:
+`#m₁ + #m₂ ≤ M.rank`.
 
-The LEFT factor is needed because the cert's `hblock` is producible only after a row op zeros the
-upper-right block (the column op alone gives the *lower*-left-zero shape; `notes/Phase23-design.md`
-§(4.53)). The proof extends the `calc` of the column-op-only version by *two* rank-invariance
-rewrites: `rank_mul_eq_left_of_isUnit_det` carries the column op `U` back, then
-`rank_mul_eq_right_of_isUnit_det` carries the row op `Lrow` back — both unit-det multiplies preserve
-rank. In the Phase 23e application `A = A' = A − L₀C` is the row-op'd full-rank `D × D` corner block
-(`Mᵢ`, the `e_a` panel rows + the adjusted `±r` corner row) and `[C D]` is the IH's full-rank
-`mixedBottom` block (`R(Gab, q₁)`, untouched by the row op), so the LI-rows hypotheses are exactly
-what the realization arm supplies (`notes/Phase23-design.md` §(4.49)–(4.53)). -/
+The proof extends the `calc` of the column-operation version by two rank-invariance rewrites:
+`rank_mul_eq_left_of_isUnit_det` removes the column operation `U`, then
+`rank_mul_eq_right_of_isUnit_det` the row operation `Lrow`. In Katoh–Tanigawa 2011 the column
+operation takes (6.60) to (6.61), whose corner rows need not vanish off the columns of `vᵢ`, and
+the row operation (6.63) then gives the upper-right zero of (6.64);
+`exists_rowOp_of_strictInjection` builds such an `Lrow` from the block operation of
+`rowOp_zeroes_upperRight`. The combinatorial-rigidity project applies
+it in `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂`
+(`Molecular/RigidityMatrix/Concrete.lean`). -/
 theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
     {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype p] [DecidableEq p] [Fintype q] [DecidableEq q]
     [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
@@ -622,27 +568,23 @@ theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
     _ = (Lrow * M).rank := rank_mul_eq_left_of_isUnit_det U (Lrow * M) hU
     _ = M.rank := rank_mul_eq_right_of_isUnit_det Lrow M hLrow
 
-/-- **The block elementary row operation `[1, -L₀; 0, 1]` has unit determinant** (Katoh–Tanigawa
-2011 eq. (6.63); Phase 23e route, the row-op factor's invertibility). The block-upper-triangular
-matrix subtracting `L₀ ·` (the lower `m₂`-row block) from the upper `m₁`-row block is unimodular:
-its determinant is `det 1 · det 1 = 1` (via `Matrix.det_fromBlocks_zero₂₁`), hence a unit. This is
-the unit-det `Lrow` left factor the A3-transposed cert threads to zero the corner's off-`v` block
-without changing the rank (`notes/Phase23-design.md` §(4.53), LEAF-RowOp-1). -/
+/-- **The block elementary row operation `[1, -L₀; 0, 1]` has unit determinant.** The
+block-upper-triangular matrix subtracting `L₀ ·` (the lower `m₂`-row block) from the upper `m₁`-row
+block is unimodular: its determinant is `det 1 · det 1 = 1` (via `Matrix.det_fromBlocks_zero₂₁`),
+hence a unit, so as a left factor it preserves rank (`rank_mul_eq_right_of_isUnit_det`). -/
 theorem rowOp_isUnit_det {K m₁ m₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂] [DecidableEq m₁]
     [DecidableEq m₂] (L₀ : Matrix m₁ m₂ K) :
     IsUnit (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K)).det := by
   rw [Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one]
   exact isUnit_one
 
-/-- **The block elementary row operation zeros the upper-right block** (Katoh–Tanigawa 2011 eq.
-(6.63); Phase 23e route, the row-op action). Left-multiplying a block matrix `fromBlocks A B C D` by
-`[1, -L₀; 0, 1]` subtracts `L₀ ·` the lower row block from the upper one: the new top-left is
-`A − L₀ C` and the new top-right is `B − L₀ D`, which is `0` exactly when `B = L₀ D` (`hB`); the
-lower blocks `C`, `D` are untouched. Pure `Matrix.fromBlocks_multiply` + `hB` arithmetic. In the
-Phase 23e application `B` is the corner's off-`v` `ab`-fill, `D` is the (full-rank) `mixedBottom`
-bottom block, and `L₀` is the `cGv`-weighted combination realizing `B = L₀ D`, so the row op zeros
-the corner's upper-right block leaving the bottom untouched — the cert's `fromBlocks A' 0 C D` shape
-(`notes/Phase23-design.md` §(4.53), LEAF-RowOp-2). -/
+/-- **The block elementary row operation zeros the upper-right block.** Left-multiplying a block
+matrix `fromBlocks A B C D` by `[1, -L₀; 0, 1]` subtracts `L₀ ·` the lower row block from the upper
+one: the new top-left is `A − L₀ C` and the new top-right is `B − L₀ D`, which is `0` when
+`B = L₀ D` (`hB`); the lower blocks `C`, `D` are untouched. Pure `Matrix.fromBlocks_multiply` + `hB`
+arithmetic. This is the shape of the row operation of Katoh–Tanigawa 2011, (6.63), which adds a
+weighted sum of the lower rows to a corner row so that its entries off the columns of `vᵢ` vanish
+(by their (6.52)). -/
 theorem rowOp_zeroes_upperRight {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
     [DecidableEq m₁] [DecidableEq m₂]
     {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
@@ -653,20 +595,13 @@ theorem rowOp_zeroes_upperRight {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Finty
   simp [sub_eq_add_neg]
 
 /-- **A matrix whose every row is a fixed-weight linear combination of another matrix's rows
-factors as `L₀ * D`** (Phase 23e route, the `B = L₀ * D` matrix-conversion the row op
-`rowOp_zeroes_upperRight` consumes; Katoh–Tanigawa 2011 eq. (6.63)/(6.66)). Given
-`D : Matrix m₂ n K` and a weight family `w : m₁ → m₂ → K` such that each row `B i` is the
-`w i`-weighted combination of
-`D`'s rows (`hcomb : ∀ i j, B i j = ∑ i', w i i' * D i' j`), then `B = Matrix.of w * D`. This is the
-matrix-algebra step that turns a *per-row* linear-combination hypothesis — the form the Case-III
-`cGv` widening produces (`hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`, KT eq.
-(6.66), each summand a bottom `Gv`-row) — into the matrix product `B = L₀ * D` that the block
-elementary row op `[1, -L₀; 0, 1]` needs to zero the corner's off-`v` upper-right block. Immediate
-from `Matrix.mul_apply` and `Matrix.ext`: the row op factor is `L₀ := Matrix.of w`. The bottom-row
-index `m₂` is the cert's `mixedBottom` rows; the weight `w i i'` selects the `cGv`-coefficient of
-the `i'`-th bottom row in the `i`-th corner row's expansion (zero on the rows the corner row doesn't
-use). NO rank argument; this is pure matrix arithmetic, separable from the arm's `re`/`m₂`
-construction. -/
+factors as `L₀ * D`.** Given `D : Matrix m₂ n K` and a weight family `w : m₁ → m₂ → K` such that
+each row `B i` is the `w i`-weighted combination of `D`'s rows
+(`hcomb : ∀ i j, B i j = ∑ i', w i i' * D i' j`), then `B = Matrix.of w * D`. Immediate from
+`Matrix.mul_apply` and `Matrix.ext`. It turns a per-row linear-combination hypothesis into the
+product `B = L₀ * D` that `rowOp_zeroes_upperRight` needs, with `L₀ := Matrix.of w`; the
+combinatorial-rigidity project applies it to rigidity-matrix rows in `matrix_eq_mul_of_span_mem`
+and `matrix_eq_mul_of_dual_row_comb` (`Molecular/RigidityMatrix/Concrete.lean`). -/
 theorem of_eq_mul_of_row_comb {K m₁ m₂ n : Type*} [Fintype m₂] [CommRing K]
     (B : Matrix m₁ n K) (D : Matrix m₂ n K) (w : m₁ → m₂ → K)
     (hcomb : ∀ i j, B i j = ∑ i', w i i' * D i' j) :
@@ -675,34 +610,22 @@ theorem of_eq_mul_of_row_comb {K m₁ m₂ n : Type*} [Fintype m₂] [CommRing K
   rw [Matrix.mul_apply, hcomb]
   rfl
 
-/-- **The block elementary row op `[1, -L₀; 0, 1]` lifts along a strict row INJECTION to a unit-det
-row op on the full index, leaving the off-image rows fixed** (Katoh–Tanigawa 2011 eq. (6.63); Phase
-23f route, the strict-injection unit-det / rank-invariance bridge, geometry leaf **B1**). The
-A3-transposed cert (`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`) threads a unit-det LEFT row
-op `Lrow : Matrix p p K` over the *full* row index `p`, but the `m₁ ⊕ m₂` block elementary matrix
-`[1, -L₀; 0, 1]` acts only on the rows the injection `re : m₁ ⊕ m₂ → p` selects. For the general
-Case-III arm `re` is a **strict** injection — `card m₁ + card m₂ = D(|V|−1) ≤ (D−1)|E| = card p` is
-an inequality, not forced equality (`notes/Phase23-design.md` §(4.55)), so no bijection
-`(m₁ ⊕ m₂) ≃ p` exists and a row op carried by such a bijection (`Matrix.reindex e e`, needing one)
-does NOT serve. This lemma replaces the missing bijection with the **extended** equivalence
+/-- **The block elementary row operation `[1, -L₀; 0, 1]` extends along a row injection to a
+unit-det row operation on the full index, fixing the rows outside the image.**
+`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` takes a unit-det left factor
+`Lrow : Matrix p p K` on the *full* row index `p`, while the block matrix `[1, -L₀; 0, 1]` acts
+only on the rows the injection `re : m₁ ⊕ m₂ → p` selects. When `re` is not surjective there is no
+bijection `(m₁ ⊕ m₂) ≃ p` to reindex along; this lemma uses instead the equivalence
 `e' : (m₁ ⊕ m₂) ⊕ ↥(Set.range re)ᶜ ≃ p` (`Equiv.ofInjective re` onto `range re`, then
-`Equiv.Set.sumCompl`), carries the row op as the block-diagonal `Lrow := reindex e' e' (fromBlocks
-[1, -L₀; 0, 1] 0 0 1)` (the op on the `re`-image block, identity on the off-image complement), and
-re-selects the `re`-image block back out.
+`Equiv.Set.sumCompl`), and takes `Lrow := reindex e' e' (fromBlocks [1, -L₀; 0, 1] 0 0 1)`, the
+operation on the image of `re` and the identity on its complement.
 
-It produces the facts the wrapper / leaf B2 need: `IsUnit Lrow.det` (via `det_reindex_self` +
-`det_fromBlocks_zero₂₁` reducing the block-diagonal to the inner block, then the landed
-`rowOp_isUnit_det` for `[1, -L₀; 0, 1]`), `Lrow.submatrix re re = [1, -L₀; 0, 1]` (since
-`re = ⇑e' ∘ Sum.inl` the double relabelling cancels to `toBlocks₁₁ (fromBlocks …)`), **and** the
-off-image vanishing `Lrow (re i) x = 0` for `x ∉ range re` (the image rows touch only image columns,
-because `Bext`'s upper-right block is `0`) — the structural fact leaf B2 uses to split the matrix
-product through the injection without an `Equiv`. The cert derives rank invariance
-`(Lrow * M).rank = M.rank` itself from `IsUnit Lrow.det` (`rank_mul_eq_right_of_isUnit_det`), so B1
-need not export it.
-Carrier/field-agnostic; the `m₁`/`m₂`
-indices carry `[Finite]` (only `p` is type-relevant, `Fintype.ofFinite` recovers the proof-side
-instances) — the project's standing `unusedFintypeInType` fix. Separable from the arm's `re`/`L₀`
-construction (`notes/Phase23-design.md` §(4.55), `notes/Phase23f.md` leaf B1). -/
+It gives `IsUnit Lrow.det` (`det_reindex_self` and `det_fromBlocks_zero₂₁` reduce it to the inner
+block, whose determinant is `1`), `Lrow.submatrix re re = [1, -L₀; 0, 1]` (since
+`re = ⇑e' ∘ Sum.inl`, the double relabelling cancels), and `Lrow (re i) x = 0` for `x ∉ range re`
+(the upper-right block of the extended matrix is `0`), which lets
+`rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` split a product through `re`. The indices
+`m₁`, `m₂` need only be `Finite`; `Fintype.ofFinite` supplies the instances inside the proof. -/
 theorem exists_rowOp_of_strictInjection {K p m₁ m₂ : Type*} [Field K] [Fintype p] [DecidableEq p]
     [Finite m₁] [Finite m₂] [DecidableEq m₁] [DecidableEq m₂]
     {re : m₁ ⊕ m₂ → p} (hre : Function.Injective re) (L₀ : Matrix m₁ m₂ K) :
@@ -747,26 +670,19 @@ theorem exists_rowOp_of_strictInjection {K p m₁ m₂ : Type*} [Field K] [Finty
     rw [Matrix.reindex_apply, Matrix.submatrix_apply, hreEq i, hc, hBext,
       Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]
 
-/-- **The strict-injection row op zeros the upper-right block of a row-selected column matrix**
-(Katoh–Tanigawa 2011 eq. (6.63)/(6.66); Phase 23f, the strict-injection `hblock` reducer, geometry
-leaf **B2**). The `_zero₁₂` reducer for the strict-injection `Lrow` that leaf **B1**
-(`exists_rowOp_of_strictInjection`) builds. The bijection variant splits the product through a
-middle **bijection** `e : (m₁ ⊕ m₂) ≃ p` (`submatrix_mul_equiv`); for the general Case-III arm `re`
-is a
-**strict** injection (`card m₁ + card m₂ ≤ card p`, an inequality — `notes/Phase23-design.md`
-§(4.55)), so no such `e` exists. Instead B2 consumes B1's two structural facts about `Lrow` — the
-selected block `hLsub : Lrow.submatrix re re = [1, -L₀; 0, 1]` and the off-image vanishing
-`hzero : ∀ i x, x ∉ range re → Lrow (re i) x = 0` — and splits the matrix product *entrywise* by
-`Fintype.sum_of_injective`: the contracted sum `∑ x : p, Lrow (re i) x * M' x (en j)` drops to
-`∑ k : m₁ ⊕ m₂, [1, -L₀; 0, 1] i k * (M'.submatrix re en) k j` (the off-image columns vanish by
-`hzero`; the image columns reindex by `re` with `Lrow (re i) (re k) = [1, -L₀; 0, 1] i k` from
-`hLsub`), i.e. `(Lrow * M').submatrix re en = [1, -L₀; 0, 1] * M'.submatrix re en`. Then `hM' : =
-fromBlocks A B C D` and leaf (i)'s `hB : B = L₀ * D` close it via `rowOp_zeroes_upperRight`.
+/-- **A row operation extended along a row injection zeros the upper-right block of the selected
+rows.** For `Lrow` with the two properties `exists_rowOp_of_strictInjection` provides, the selected
+block `hLsub : Lrow.submatrix re re = [1, -L₀; 0, 1]` and the vanishing
+`hzero : ∀ i x, x ∉ range re → Lrow (re i) x = 0`, if `M'.submatrix re en = fromBlocks A B C D`
+and `B = L₀ * D`, then `(Lrow * M').submatrix re en = fromBlocks (A - L₀ * C) 0 C D`.
 
-Subsumes the bijection special case (when `re` is bijective the off-image set
-is empty and the `Fintype.sum_of_injective` reindex is the `submatrix_mul_equiv` split). Carrier/
-field-agnostic; separable from the arm's `re`/`L₀`/`en` construction (`notes/Phase23-design.md`
-§(4.55), `notes/Phase23f.md` leaf B2). -/
+The product splits *entrywise* by `Fintype.sum_of_injective`: the contracted sum
+`∑ x : p, Lrow (re i) x * M' x (en j)` drops to
+`∑ k : m₁ ⊕ m₂, [1, -L₀; 0, 1] i k * (M'.submatrix re en) k j` (the terms outside the image vanish
+by `hzero`; the others reindex by `re`, with `Lrow (re i) (re k) = [1, -L₀; 0, 1] i k` from
+`hLsub`), i.e. `(Lrow * M').submatrix re en = [1, -L₀; 0, 1] * M'.submatrix re en`, and
+`rowOp_zeroes_upperRight` closes it. When `re` is bijective this is the split
+`submatrix_mul_equiv` gives. -/
 theorem rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂
     {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype p] [Finite m₁] [Fintype m₂]
     [DecidableEq m₁] [DecidableEq m₂]
@@ -800,15 +716,11 @@ theorem rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂
 /-- **Dropping all-zero left columns preserves row linear independence.** For `N : Matrix m
 (n₁ ⊕ n₂) R` whose left-block columns all vanish (`N i (Sum.inl j) = 0` for every row `i` and left
 column `j`), the rows of `N` are linearly independent iff the rows of the right-column submatrix
-`N.submatrix id Sum.inr` are. The all-zero left columns carry no information: each `N.row i` is the
+`N.submatrix id Sum.inr` are. The all-zero left columns contribute nothing: each `N.row i` is the
 zero-extension `Sum.elim 0 (right row)` of the corresponding submatrix row, and the zero-extension
 linear map `Sum.elimZeroLeft : (n₂ → R) →ₗ[R] (n₁ ⊕ n₂ → R)` is injective (its kernel is `⊥`), so it
-preserves and reflects linear independence (`LinearMap.linearIndependent_iff`).
-
-Phase 23d `R(Gab)`-bottom reshape, the **L-hD** support lemma: the (6.64) bottom block `toBlocks₂₂`
-drops the re-inserted body `v`'s `D` columns from the full product-column matrix, and every bottom
-row reads zero on body `v` (its support extensor lives off `v` after the column op), so its row-LI
-is unchanged by the column restriction. -/
+preserves and reflects linear independence (`LinearMap.linearIndependent_iff`). The
+independence companion of `rank_submatrix_inr_of_zero_left_cols`. -/
 theorem linearIndependent_row_of_zero_left_cols
     {R m n₁ n₂ : Type*} [CommRing R]
     (N : Matrix m (n₁ ⊕ n₂) R)
@@ -835,9 +747,9 @@ generated by `N`'s columns; the left-block columns are the zero vector (and so l
 submodule), and the right-block columns are exactly the columns of the submatrix, so the two column
 spans coincide and `Matrix.rank_eq_finrank_span_cols` gives equal ranks.
 
-Phase 23d `R(Gab)`-bottom reshape, the **L-rank** support lemma: it carries the full product-column
-rank (where `Matrix.rank_of_coordEquiv` computes the row-functional span finrank) down to the
-column-restricted (6.64) bottom block `toBlocks₂₂`, whose dropped body-`v` columns are zero. -/
+The combinatorial-rigidity project uses it to drop the columns of a body on which the rows of a
+bottom block vanish (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` and
+`rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab` in `Molecular/RigidityMatrix/Concrete.lean`). -/
 theorem rank_submatrix_inr_of_zero_left_cols
     {R m n₁ n₂ : Type*} [CommRing R] [Fintype n₁] [Fintype n₂]
     (N : Matrix m (n₁ ⊕ n₂) R)
@@ -910,15 +822,9 @@ for all but finitely many `t : K` the span of the *full* family at `t` has `finr
 
 This is the rank-form generalization of `LinearIndependent.finite_setOf_not_along_affine_path`
 (which handles only the full-rank case where `s` is all of `ι` and the bound is "the family is
-LI"): a maximal independent subfamily witnessing `finrank ≥ r` at `t₀` stays independent for
-cofinitely many `t` (the LI lemma applied to that subfamily), and an LI subfamily of size `#s`
-forces the full span's `finrank ≥ #s` (`finrank_span_eq_card` + `Submodule.finrank_mono`).
-This is the analytic core of the Phase-21b genericity device (Katoh–Tanigawa 2011 Claim
-6.4/6.9): the panel-hinge rigidity matrix's entries are polynomials in the panel coordinates,
-so a single realization at the target rank lifts to the generic realization at *at least* that
-rank — the "generic point attains the maximum rank over the parametrized family" step the
-device supplies to `lem:case-I`'s gluing, `lem:case-II`'s span membership, and the
-generic-rank lower bound of `prop:rigidity-matrix-prop11`. No infiniteness or characteristic
+LI"): the subfamily on `s` stays independent for cofinitely many `t` (the LI lemma applied to that
+subfamily), and an LI subfamily of size `#s` forces the full span's `finrank ≥ #s`
+(`finrank_span_eq_card` + `Submodule.finrank_mono`). No infiniteness or characteristic
 hypothesis on `K` is needed. -/
 theorem LinearIndependent.le_finrank_span_along_affine_path_cofinite
     {K ι W : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W] [Module.Finite K W]
@@ -951,14 +857,11 @@ kernel of the *full* functional family at `t` — packaged as the dual coannihil
 (`Submodule.coe_dualCoannihilator_span`) — has `finrank` at most `finrank V - #s`. I.e. the
 null-space dimension is cofinitely bounded *above* by any corank witnessed once.
 
-This is the exact shape the Phase-21b genericity device feeds its consumers: each carries an
-*upper* bound on a null-space dimension (`dim Z(G,p) ≤ …`, the codimension/rank-nullity reading
-of `rank R(G,p) ≥ …`), so the span-form `le_finrank_span_along_affine_path_cofinite` is dualized
-here once. The span and its coannihilator have complementary dimension at *every* `t`
+The span and its coannihilator have complementary dimension at *every* `t`
 (`Subspace.finrank_add_finrank_dualAnnihilator_eq` + `Subspace.finrank_dualCoannihilator_eq`:
 `finrank coann + finrank span = finrank (Dual K V) = finrank V`), so "span finrank ≥ #s
-cofinitely" turns into "coann finrank ≤ finrank V − #s cofinitely" verbatim. The conclusion is
-stated in the additive form `finrank V < #s + finrank coann` to sidestep `ℕ`-subtraction. No
+cofinitely" turns into "coann finrank ≤ finrank V − #s cofinitely" verbatim. The exceptional set
+is stated in the additive form `finrank V < #s + finrank coann` to sidestep `ℕ`-subtraction. No
 infiniteness or characteristic hypothesis on `K` is needed. -/
 theorem LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite
     {K ι V : Type*} [Field K] [Finite ι] [AddCommGroup V] [Module K V] [Module.Finite K V]
@@ -988,13 +891,10 @@ a point `p : σ → K` at which the span of the *full* family `g p` has `finrank
 
 This is the multivariate analogue of `LinearIndependent.le_finrank_span_along_affine_path_cofinite`
 (which handles a single affine line and concludes `{bad}.Finite`): here the parameter ranges over
-all of `σ → K` and a *single* good point is produced (`∃ p`, not a cofinite set), via the matrix
-brick `Matrix.exists_linearIndependent_rows_specialize` — the site `[Infinite K]` enters this decl
-from. The subfamily on `s` is LI at the produced `p`, forcing the full span's `finrank ≥ #s`
-(`finrank_span_eq_card` + `Submodule.finrank_mono`). This is the analytic core of the Phase-21b
-genericity device (Katoh–Tanigawa 2011 Claim 6.4/6.9): the panel-hinge rigidity-matrix entries are
-degree-two polynomials in the panel coordinates, so a single realization at the target rank lifts
-to a *generic* realization at *at least* that rank. -/
+all of `σ → K` and a *single* good point is produced (`∃ p`, not a cofinite set), by
+`Matrix.exists_linearIndependent_rows_specialize`, whence the `[Infinite K]`. The subfamily on `s`
+is LI at the produced `p`, forcing the full span's `finrank ≥ #s` (`finrank_span_eq_card` +
+`Submodule.finrank_mono`). -/
 theorem exists_le_finrank_span_polynomial
     {K ι W σ : Type*} [Field K] [Infinite K] [Finite ι] [AddCommGroup W] [Module K W]
     [Module.Finite K W]
@@ -1020,7 +920,7 @@ theorem exists_le_finrank_span_polynomial
       ↔ LinearIndependent K (P.map (MvPolynomial.eval p)).row := by
     intro p; rw [hrow p]
     exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
-  -- Produce a good point from the matrix brick.
+  -- Produce a good point from the matrix form.
   obtain ⟨p, hp⟩ := P.exists_linearIndependent_rows_specialize ((hiff p₀).mp h)
   have hsubLI : LinearIndependent K (fun i : s => g p i) := (hiff p).mpr hp
   refine ⟨p, ?_⟩
@@ -1041,16 +941,16 @@ family — the dual coannihilator
 `(span (range (g p))).dualCoannihilator = {x : V | ∀ i, g p i x = 0}`
 (`Submodule.coe_dualCoannihilator_span`) — has `finrank` at most `finrank V − #s`.
 
-This is the exact shape the Phase-21b genericity device feeds its consumers: each carries an
-*upper* bound on a null-space dimension (`dim Z(G,p) ≤ …`, the codimension/rank-nullity reading of
-`rank R(G,p) ≥ …`), so the span-form `exists_le_finrank_span_polynomial` is dualized here once
-(inheriting its `[Infinite K]`). The span and its coannihilator have complementary dimension
+The span form `exists_le_finrank_span_polynomial` is dualized here (inheriting its
+`[Infinite K]`). The span and its coannihilator have complementary dimension
 (`Subspace.finrank_add_finrank_dualAnnihilator_eq` + `Subspace.finrank_dualCoannihilator_eq`:
 `finrank coann + finrank span = finrank (Dual K V) = finrank V`), so "span finrank ≥ #s at the
 produced `p`" turns into "coann finrank ≤ finrank V − #s" verbatim. The conclusion is stated
 additively (`#s + finrank coann ≤ finrank V`) to sidestep `ℕ`-subtraction — the same shape as
 `LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite`, but as `∃ p` rather than
-`{bad}.Finite`. -/
+`{bad}.Finite`. The combinatorial-rigidity project's genericity device, `exists_good_realization`
+(`Molecular/AlgebraicInduction/GenericityDevice.lean`), applies it with `V` the space of screw
+assignments, where the coannihilator contains the infinitesimal motions. -/
 theorem exists_finrank_dualCoannihilator_polynomial
     {K ι V σ : Type*} [Field K] [Infinite K] [Finite ι] [AddCommGroup V] [Module K V]
     [Module.Finite K V]
@@ -1083,10 +983,10 @@ if the subfamily indexed by a subset `s : Set ι` is linearly independent at som
 This is the *constructive* refinement of `exists_le_finrank_span_polynomial` (which produces a
 single good point `p` via `MvPolynomial.exists_eval_ne_zero`, discarding the polynomial, and so
 needs `[Infinite K]`): here the witnessing minor
-`Q := det (P.submatrix on a maximal column selection)` is exposed instead, so several legs'
-polynomials can be **multiplied** and the funext step (`MvPolynomial.exists_eval_ne_zero`) applied
-to the product once elsewhere, producing one shared non-vanishing point at which *all* legs are
-independent — this decl itself never picks a point, so it needs no infiniteness or characteristic
+`Q := det (P.submatrix on a maximal column selection)` is exposed instead, so several families'
+polynomials can be **multiplied** and `MvPolynomial.exists_eval_ne_zero` applied to the product
+once elsewhere, producing one shared non-vanishing point at which *all* the families are
+independent. This lemma itself never picks a point, so it needs no infiniteness or characteristic
 hypothesis on `K`. `Q` is built by selecting, via
 `exists_submatrix_det_ne_zero_of_linearIndependent_rows`, a square column subset `e` of the
 polynomial-entry submatrix `P : Matrix s (Fin (finrank K W)) (MvPolynomial σ K)` whose specialized
@@ -1094,9 +994,11 @@ minor at `p₀` is nonsingular; `eval p Q` is then the specialized minor's deter
 (`(eval p).map_det`), so `eval p₀ Q ≠ 0` by construction and
 `linearIndependent_rows_of_specialized_submatrix_det_ne_zero` upgrades any other non-root `p` back
 to row independence. The LI of vectors ↔ LI of `φ`-coordinate rows is the same `φ`-pullback used in
-`exists_le_finrank_span_polynomial`. This is the per-leg "rigid locus ⟹ nonzero rank polynomial"
-brick the Phase-22 Case-I seed witness-transfer couples across its two legs (Katoh–Tanigawa 2011
-§6.2, eq. (6.6)). -/
+`exists_le_finrank_span_polynomial`. The combinatorial-rigidity project applies it through
+`exists_rankPolynomial_of_rigidOn` and its variants
+(`Molecular/AlgebraicInduction/GenericityDevice.lean`), and Case I of its algebraic induction
+(`CaseI.lean`) multiplies such minors, so that one point serves the two realizations that
+Katoh–Tanigawa 2011 combine in (6.6), in the proof of their Lemma 6.3. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_at
     {K ι W σ : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W]
     (g : (σ → K) → ι → W) (c : ι → Fin (Module.finrank K W) → MvPolynomial σ K)
@@ -1140,16 +1042,18 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_at
     rw [RingHom.id_apply, ← heval p]
     exact hp
 
-/-- **`exists_polynomial_ne_zero_of_linearIndependent_at`, basis-flexible column-index form**
-(Phase 34 PROSPECT G3, the abundance-lemma helper). The reindexing companion of
-`exists_polynomial_ne_zero_of_linearIndependent_at`, matching the
-`exists_good_realization`/`exists_good_realization_reindex` pair above: it accepts the coordinate
+/-- **`exists_polynomial_ne_zero_of_linearIndependent_at`, basis-flexible column-index form.**
+The reindexing companion of `exists_polynomial_ne_zero_of_linearIndependent_at`, as
+`exists_good_realization_reindex` is of `exists_good_realization`
+(`Molecular/AlgebraicInduction/GenericityDevice.lean`): it accepts the coordinate
 identification `φ` against an *arbitrary* finite basis index `ν` (with the cardinality bridge
 `e : Fin (finrank K W) ≃ ν`) rather than forcing the canonical `Fin (finrank K W)` literally, since
 a concrete basis (e.g. `b.dualBasis.equivFun` for a project-supplied basis `b`) is indexed by
 whatever type `b` itself is indexed by, not by `Fin (finrank K W)` up to defeq. Reduces to the base
 lemma by precomposing `φ` with the index reindexing `LinearEquiv.funCongrLeft K K e` and pulling `c`
-back along `e`, exactly as `exists_good_realization_reindex` does. -/
+back along `e`, exactly as `exists_good_realization_reindex` does. The combinatorial-rigidity
+project's abundance lemmas (`SimpleGraph.exists_isGenericPlacement_abundance` and its body-bar,
+panel and hinge analogues) and the files of `Molecular/Molecule/Pencil/` use it. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_at_reindex
     {K ι W σ ν : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W]
     (e : Fin (Module.finrank K W) ≃ ν)
@@ -1167,13 +1071,7 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_at_reindex
 
 /-- **The determinant of a matrix with entries in the range of a ring hom is in the range.** If
 every entry of `M : Matrix n n S` lies in `f.range` for a ring hom `f : R →+* S`, so does `M.det`:
-choose a preimage matrix `M₀ : Matrix n n R` (`M = M₀.map f`) and apply `RingHom.map_det`. A general
-`Matrix`-namespaced subring-closure fact (mirrored, `notes/FRICTION.md`); no live consumer in this
-project as of the Phase 30 RELAX slice (e) sweep. Its former use was a rationality refinement of
-`exists_polynomial_ne_zero_of_linearIndependent_at`, certifying the witnessing polynomial rational
-under a rationality hypothesis on the coordinate family — deleted in that sweep once the
-hypothesis's own consumer (KT's footnote-6 algebraically-independent-seed transfer) was retired
-(Phase 30 RELAX slice (d)), leaving the refinement an exact duplicate of the plain engine. -/
+choose a preimage matrix `M₀ : Matrix n n R` (`M = M₀.map f`) and apply `RingHom.map_det`. -/
 theorem Matrix.det_mem_range_of_entries {R S : Type*} [CommRing R] [CommRing S] {n : Type*}
     [Fintype n] [DecidableEq n] (f : R →+* S) (M : Matrix n n S)
     (hM : ∀ i j, M i j ∈ f.range) : M.det ∈ f.range := by
@@ -1183,26 +1081,26 @@ theorem Matrix.det_mem_range_of_entries {R S : Type*} [CommRing R] [CommRing S] 
   rw [RingHom.map_det]
   exact congrArg Matrix.det (Matrix.ext fun i j => hM₀ i j)
 
-/-- **One-variable rank transfer along a polynomial-coordinate family** (Phase-22h leaf B, the
-KT-Lemma-5.2 transfer brick — Katoh–Tanigawa 2011 pp. 668–669: each minor of `R(G, p_t)` is
-continuous in `t`). For a basis `b : Basis κ K M` over an infinite field `K` (with `κ` finite) and
-a family `g : K → ι → M` (with `ι` finite) whose basis coordinates are *univariate-polynomial
+/-- **One-variable rank transfer along a polynomial-coordinate family.** For a basis
+`b : Basis κ K M` over an infinite field `K` (with `κ` finite) and a family `g : K → ι → M`
+(with `ι` finite) whose basis coordinates are *univariate-polynomial
 evaluations* — a fixed `P : ι → κ → Polynomial K` with `b.repr (g t i) j = (P i j).eval t` — if the
 family `g 0` is linearly independent at `t = 0`, then there is a `t` avoiding any prescribed finite
 bad set and nonzero (`t ∉ bad`, `t ≠ 0`) at which `g t` is again linearly independent.
 
-The basis-free, graph-free shape the molecular Case-III realization (KT §6.4.1) consumes: the
-`t = 0` hinge-level family is certified independent, then transferred along the one-parameter shear,
-the prescribed bad set being the shears that break the `vb`-hinge
-(`setOf_not_shear_linearIndependent_subsingleton`). The proof
-pulls `g t` back along `φ := b.equivFun : M ≃ₗ[K] (κ → K)` (so `φ (g t i) j = b.repr (g t i) j =
-(P i j).eval t`, i.e. `φ ∘ g t` is the row family of `(Matrix.of P).map (evalRingHom t)`); LI
-transfers across `φ` (`LinearMap.linearIndependent_iff`), so
-`finite_setOf_not_linearIndependent_rows_of_polynomial` makes the dependent-`t` set finite (needing
-no infiniteness itself), and `K`'s infinitude (`[Infinite K]` — the second point-extractor
-`Set.Finite.infinite_compl` needs, alongside `Matrix.exists_linearIndependent_rows_specialize`'s
-`MvPolynomial.exists_eval_ne_zero` site) supplies a `t` outside that set together with the finite
-`bad ∪ {0}`. -/
+The proof pulls `g t` back along `φ := b.equivFun : M ≃ₗ[K] (κ → K)` (so
+`φ (g t i) j = b.repr (g t i) j = (P i j).eval t`, i.e. `φ ∘ g t` is the row family of
+`(Matrix.of P).map (evalRingHom t)`); LI transfers across `φ` (`LinearMap.linearIndependent_iff`),
+so `finite_setOf_not_linearIndependent_rows_of_polynomial` makes the dependent-`t` set finite
+(needing no infiniteness itself), and since `K` is infinite (`Set.Finite.infinite_compl`) some `t`
+lies outside that set and the finite `bad ∪ {0}`.
+
+This is the polynomial form of a step in the proof of Katoh–Tanigawa 2011, Lemma 5.2 (p. 669),
+where each minor of `R(G, pₜ)` is a continuous function of `t`. The combinatorial-rigidity project
+applies it along the one-parameter shear of Case III (`caseIIICandidate_exists_good_shear` in
+`Molecular/AlgebraicInduction/CaseIII/Candidate.lean`): the family is independent at `t = 0`, and
+the bad set holds the shears at which the sheared normal is parallel to another
+(`setOf_not_shear_linearIndependent_subsingleton` in `PanelLayer.lean`). -/
 theorem LinearIndependent.exists_notMem_of_polynomial_repr
     {K ι κ M : Type*} [Field K] [Infinite K] [Finite ι] [Finite κ] [AddCommGroup M] [Module K M]
     (b : Module.Basis κ K M) (g : K → ι → M) (P : ι → κ → Polynomial K)
