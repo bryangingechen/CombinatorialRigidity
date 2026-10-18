@@ -111,6 +111,17 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [open] A graph's edge set independent in the count matroid ↔ its sparsity is a two-rewrite step, now at three sites
+- **Where it bit:** RECONCILE round 3, task 21: two witnesses in `Nonvacuity.lean` reduce
+  `(countMatroid V k ℓ hℓ).Indep G.edgeSet` to `G.IsSparse k ℓ` by `rw [countMatroid_indep_iff,
+  fromEdgeSet_edgeSet]` and the carrier condition `G.edgeSet ⊆ ⊤.edgeSet`, as
+  `countMatroid_indep_iff_runPebbleGame`'s proof (`PebbleGame/Correctness.lean`) does.
+- **Friction:** a two-lemma `rw` bridging one conversion, copied rather than named.
+- **Proposed fix:** `countMatroid_indep_edgeSet_iff {G : SimpleGraph V} : (countMatroid V k ℓ
+  hℓ).Indep G.edgeSet ↔ G.IsSparse k ℓ` beside `countMatroid_indep_iff` (`CountMatroid.lean`), the
+  three sites calling it; a candidate for the round's §B screen (task 38).
+- **Status:** open.
+
 ### [idiom] `String.split` returns an iterator of slices on Lean v4.34 — `String.splitToList s p` is the `List String` form
 - **Where it bit:** RECONCILE round 3, task 19: `parsePair` (`Main.lean`) splitting on
   `Char.isWhitespace`. `s.split Char.isWhitespace` is a `Std.Iter String.Slice` (no `Repr`, no

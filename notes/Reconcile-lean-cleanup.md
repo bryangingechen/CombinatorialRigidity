@@ -15,8 +15,9 @@ wait for the phase. Tasks 1–15.1 are done: the open, the docstring-label check
 repeated derivations (*Current state*). Task 16, the recon of the pebble game's search, settled its
 fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set;
 task 18 committed the script that times it and checks the `decide` facts; task 19 had the
-executable split its input on any whitespace; task 20 rewrote the texts. **Next concrete task:**
-task 21, the first non-vacuity witnesses (*Lemma checklist*). Round manual: `CLEANUP.md`.
+executable split its input on any whitespace; task 20 rewrote the texts; task 21 landed the planar
+and matroid rows' non-vacuity witnesses. **Next concrete task:** task 22, the body-bar and
+body-hinge rows' witnesses (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -26,23 +27,24 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 20 is done** (this commit); nothing is mid-stream.
+**Task 21 is done** (this commit); nothing is mid-stream.
 
-**Task 20** (`F-033` and `F-047`, both now `done`; docstrings, comments and prose only): the texts
-on the search, its running time, `decide` and the input. No text claims a bound; the measured
-figure (task 18's script, the search alone, about two seconds against under a millisecond at
-$n = 18$) is in `Search/DFS.lean`'s reach-closure section and `DESIGN.md`. `DESIGN.md` *One
-`Decidable` instance per project predicate* states the script's five `decide` facts with
-`F-276`'s reasons, and `executable.tex` *Runtime and backends* states them for a reader. A
-re-`grep` found the same claims beyond the line's surfaces, fixed here: `pebble-game.tex`'s
-paragraph on Lee–Streinu's count (task 17 had left it describing the per-walk marking; the count
-checked at p. 1430), and "`decide` fires" in `DESIGN.md`'s style island, the module docstrings of
-`Search/DFS.lean` and `PebbleGame/Basic.lean`, and ROADMAP's convention. A probe
-(`scratch/reconcile-lean/t20/`, gitignored) confirmed that `decide +kernel` fails on
-`[2, 1].mergeSort` and on `¬ k4.IsLaman`; the texts state only the script's facts and `F-276`'s.
-The ledger: 277 entries, 157 `done`, 9 `left`, 107 `reported`, 4 `open`.
+**Task 21** (no ledger entry; §1's proposal): `CombinatorialRigidity/Nonvacuity.lean`, imported by
+`CombinatorialRigidity.lean`, five closed theorems, every hypothesis discharged (*Decisions*):
+`isGenericallyRigid_two_iff_exists_isLaman_le_witness` (`K₂` generically rigid in the plane),
+`linearRigidityMatroid_eq_rigidityMatroid_witness` (on `Fin 2`, a placement where the matroids
+agree and `K₂`'s edge is independent), `countMatroid_indep_iff_runPebbleGame_witness` (the game at
+$(2, 3)$ accepts `K₂`), and at the double edge `Graph.banana 0 1 univ` and $k = 2$
+`tutte_nash_williams_witness` (two forests) and `kFrameMatroid_eq_unionPow_cycleMatroid_witness`
+(the equation, and both bars independent in the 2-frame matroid). None failed, so no `S` entry;
+their `#print axioms` (`scratch/reconcile-lean/Witnesses-t21.lean`) give the three.
+`PHASE-BOUNDARIES.md`'s sentence names the file and the naming; FRICTION's new count-matroid entry
+waits for task 38. The ledger: 277 entries, 157 `done`, 9 `left`, 107 `reported`, 4 `open`.
 
-**Tasks 16–19** (`F-033`, `F-047`): task 16's recon (`scratch/reconcile-lean/t16/`) settled the
+**Tasks 16–20** (`F-033`, `F-047`, both `done`): task 20 rewrote the texts on the search, its
+running time (measured, no bound), `decide` (the script's five facts, `F-276`'s reasons) and the
+input, and `pebble-game.tex`'s per-walk paragraph and four "`decide` fires" a re-`grep` found;
+task 16's recon (`scratch/reconcile-lean/t16/`) settled the
 search with one marked set; task 17 landed it in `Search/DFS.lean`, re-proved, `dropUntilBundle`
 deleted and `dfs.tex` restated (new `F-276` and `F-277`, both `reported`); task 18 committed
 `scripts/DFSTiming.lean` (run by `lake lean`, not a `module`): on the diamond chain at
@@ -284,18 +286,15 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **20. L1–L2: one rewrite of the texts** (`F-033`, `F-047`, both `done`): no bound claimed,
   the search's timing stated as measured, the script's `decide` facts; also `pebble-game.tex`'s
   per-walk paragraph and four "`decide` fires"; the dump byte-identical; gate 9 387.
-- [ ] **21. Non-vacuity witnesses, 1: the planar and matroid rows** (§1's proposal; the rule in
-  `PHASE-BOUNDARIES.md`). A module `CombinatorialRigidity/Nonvacuity.lean`, imported by
-  `CombinatorialRigidity.lean`, with one named closed theorem per row, as the precedent
-  `molecular_conjecture_witness` (`Molecular/AlgebraicInduction/Nonvacuity.lean`, S2's row's): the
-  row's declaration at a minimal input of its intended class, every hypothesis discharged, the
-  conclusion's substantive side stated. Rows: `isGenericallyRigid_two_iff_exists_isLaman_le`,
-  `linearRigidityMatroid_eq_rigidityMatroid`, `countMatroid_indep_iff_runPebbleGame`,
-  `tutte_nash_williams`, `kFrameMatroid_eq_unionPow_cycleMatroid`. `PHASE-BOUNDARIES.md`'s witness
-  sentence names the file. *Expected:* the dump byte-identical.
+- [x] **21. Non-vacuity witnesses, 1: the planar and matroid rows** (§1's proposal):
+  `CombinatorialRigidity/Nonvacuity.lean`, five `<name>_witness` theorems, at `K₂` and at the
+  double edge with $k = 2$; `PHASE-BOUNDARIES.md`'s sentence names the file; none failed; the dump
+  byte-identical; gate 9 387.
 - [ ] **22. Witnesses, 2: the body-bar and body-hinge rows**: `tay_witness`, `body_hinge_tay`,
   `isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff` (its `IsGenericEndpoints` from the
-  abundance lemma). As task 21.
+  abundance lemma). As task 21: in `Nonvacuity.lean`, one closed theorem per row, the row at a
+  minimal input of its class, every hypothesis discharged, the conclusion's substantive side
+  stated (*Decisions*); `tay_witness`'s needs a name that does not repeat `_witness`.
 - [ ] **23. Witnesses, 3: the molecular rows**: `theorem_55_minimalKDof_gen` (`hfresh` from a label
   headroom, as `molecular_conjecture_witness` does), `molecular_conjecture_multigraph`,
   `pencil_realization_theorem`, `pencilPair_of_nonempty`. As task 21.
@@ -416,16 +415,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 21**, at Opus: the non-vacuity witnesses of the planar and matroid rows (*Lemma
-checklist*): `CombinatorialRigidity/Nonvacuity.lean`, imported by `CombinatorialRigidity.lean`, one
-named closed theorem per row on the model of `molecular_conjecture_witness`
-(`Molecular/AlgebraicInduction/Nonvacuity.lean`), and `PHASE-BOUNDARIES.md`'s witness sentence (185)
-naming the file. A witness that fails is a new `S` entry for the phase, not a stop. Gates 1–3 (gate
-3 adding the five witnesses' `#print axioms`, the same three axioms), 5, 6, 9 and 10 (the parent
-dump `scratch/reconcile-lean/dump-t20.txt`, gitignored; regenerate it if missing; gate 9 387).
-Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275`
-and FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38; the three "verified-iterative"
-for task 26. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
+**Next: task 22**, at Opus: the non-vacuity witnesses of the body-bar and body-hinge rows (*Lemma
+checklist*), added to `CombinatorialRigidity/Nonvacuity.lean` in task 21's form (*Decisions*). A
+witness that fails is a new `S` entry for the phase, not a stop. Gates 1–3 (gate 3 adding the new
+witnesses' `#print axioms` beside task 21's five, `scratch/reconcile-lean/Witnesses-t21.lean`), 5,
+6, 9 and 10 (the parent dump `scratch/reconcile-lean/dump-t21.txt`, gitignored; regenerate it if
+missing; gate 9 387). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`,
+`F-269`, `F-271`, `F-275` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task
+21) entries for task 38; the three "verified-iterative" for task 26. After the round the queue
+stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -478,6 +476,12 @@ for task 26. After the round the queue stops before `RECONCILE-FORMAL`, which is
   the kernel stops at core's `List.mergeSort` (`Finset.sort`) and, from a `module` file, at each
   body not `@[expose]`d. The texts name `#eval`, `lake exe` and `native_decide`; the coordinator
   does not queue the route (`F-276`, reported).
+- **The witnesses' form** (task 21): `Nonvacuity.lean` is not a `module` (the body-bar and
+  molecular rows' files are not). A witness is `CombinatorialRigidity.<name>_witness`, at the
+  smallest input of its row's class where what it states is not degenerate (`K₂`, the least
+  `2 ≤ |V|` admits; the double edge at $k = 2$, the least multigraph needing two forests), and
+  states, for an `iff`, the side derived there, and for an equation or `∃`, the instance and what it
+  gives there (an independent set). A shared fact about the input is a `private` lemma there.
 - **The texts' running time and `decide`** (task 20): a text states a running time only as
   measured, naming the script, or claims no bound; and `decide`'s behaviour only as the committed
   script's facts and the ledger's reasons (`F-276`). A claim on the line's subject that a re-`grep`

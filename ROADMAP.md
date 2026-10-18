@@ -1326,9 +1326,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   threaded through the search, its completeness proved from the set it returns, and `decide` left
   to the texts, task 17 landed that search, re-proved, with the chapter restated, task 18
   committed a script that times it beside the old search and checks what `decide` proves,
-  task 19 had the executable read its input split on any whitespace, tabs included, and task 20
-  rewrote the texts on the search's cost (measured, no bound claimed), `decide` and the input.
-  **Next:** task 21, the non-vacuity witnesses of the planar and matroid rows.
+  task 19 had the executable read its input split on any whitespace, tabs included, task 20
+  rewrote the texts on the search's cost (measured, no bound claimed), `decide` and the input,
+  and task 21 gave the planar and matroid rows their non-vacuity witnesses, each a closed theorem
+  applying its row at a small input with every hypothesis met (`Nonvacuity.lean`).
+  **Next:** task 22, the witnesses of the body-bar and body-hinge rows.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

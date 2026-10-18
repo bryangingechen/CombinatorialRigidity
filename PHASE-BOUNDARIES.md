@@ -188,8 +188,15 @@ of* the per-commit checklists above:
   hypothesis set no input satisfies; the generic body-hinge and panel
   theorems were green and axiom-clean while `hfresh` and `hends`
   contradicted each other at every minimal k-dof-graph (`F-207`,
-  `F-252`). The phase-close commit is not done without one; the
-  existing rows' witnesses are RECONCILE round 3's. **The headline-axioms check's harness**
+  `F-252`). The phase-close commit is not done without one. The
+  witnesses live in `CombinatorialRigidity/Nonvacuity.lean`, one named
+  closed theorem per row (its declaration's name with `_witness`, as
+  `tutte_nash_williams_witness`), stating what the conclusion says at
+  its input (for an `iff`, the side derived there); a new row's joins
+  that file, and `molecular_conjecture`'s is
+  `molecular_conjecture_witness` in
+  `Molecular/AlgebraicInduction/Nonvacuity.lean`. The existing rows'
+  witnesses are RECONCILE round 3's. **The headline-axioms check's harness**
   (Phase 40's close ran it, and every post-Phase-40 cleanup round's
   open and close re-ran it against the same main results; round 5's
   open is the fullest worked description — `notes/Phase40-docs.md`
