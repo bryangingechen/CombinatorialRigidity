@@ -3344,7 +3344,9 @@ declaration's name as its header writes it:
   vertices, $4n$ arcs, $2^n$ simple walks end to end) took 2, 6, 29, 128, 631 and 3071 ms at
   $n = 8, 10, \ldots, 18$.
   *Found:* round 1 task 5.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L1).
+  *Disposition:* reported (`notes/Prose-report.md`, L1); round 3: the search threads one marked set
+  through its sibling calls, `reachableFinding_sound` and `_complete` re-proved, `dfs.tex` restated
+  (task 17).
 - **F-035** · L · `PebbleGame/Basic.lean`, `PebbleGame/Algorithm.lean`: docstrings that describe
   other states of the code. Basic.lean's *Path reversal* section header says the lemmas about
   `out`, `peb`, `span` and `outOn` "follow in a subsequent commit"; they are in that section.
@@ -4439,6 +4441,36 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements; a signature scan of the Lean, not retained).
   *Found:* RECONCILE round 3 task 15.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-276** · L · `SimpleGraph.instDecidableIsLaman` and the definitions under it
+  (`PebbleGame/Exec.lean`, `PebbleGame/Algorithm.lean`, `Search/DFS.lean`): `decide +kernel` does
+  not evaluate the pebble game's `Decidable` instances. The kernel unfolds the well-founded
+  recursion of the search and of `tryAddEdgeWith`, but not core's `List.mergeSort`, which
+  `Finset.sort` uses in `outListSorted` and `edgeListSorted`; and from a `module` file, as
+  `PebbleGame/Examples.lean` is, it sees no body that is not `@[expose]`d, mathlib's
+  `List.insertionSort` among them. A `decide +kernel` proof of `Examples.k4MinusE.IsLaman` would
+  need a sort with an exposed body in the two list builders and `@[expose]` across the pebble game's
+  and the search's definitions.
+  *Evidence:* measured, script not retained (task 16's probes, `scratch/reconcile-lean/t16/`,
+  gitignored): `[3, 1, 2].mergeSort` does not reduce in the kernel; with sort-free lists, and with
+  insertion-sorted ones, `runPebbleGameWith` accepts K4 − e and rejects K4 under `decide +kernel` in
+  a non-module file; from a `module` file `decide +kernel` fails on
+  `(⊤ : SimpleGraph (Fin 2)).IsLaman`, which it proves from a non-module file, on the search alone,
+  and on `List.insertionSort`.
+  *Found:* RECONCILE round 3 task 16.
+  *Disposition:* reported (to the PI at the round's close, as a possible later item: task 16 found
+  the route not cheap, and the round does not queue it).
+- **F-277** · L · `CombinatorialRigidity.Search.reachClosureComputable` (`Search/DFS.lean`;
+  `def:reachClosureComputable`): it runs the search once for each vertex `w`, with the predicate
+  `· = w`. Since task 17 a search from no marked vertex that fails returns a marked set that holds
+  its start and is closed under the arcs (`reachableFindingAux_complete`), and each vertex it marks
+  is reachable from the start, so one search with `P` false everywhere returns the region as its
+  marked set. That body would restate `def:reachClosureComputable` (the region as the vertices `w`
+  whose search for $P_w$ does not fail), a statement change under the round's hygiene rule.
+  *Evidence:* read (the bodies of `reachClosureComputable` and of task 17's `reachableFindingAux`;
+  the statement of `reachableFindingAux_complete`); that the marked vertices are reachable is not
+  proved.
+  *Found:* RECONCILE round 3 task 16.
+  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md` *Candidates for the PI*).
 
 ## M — mathematics and sources
 

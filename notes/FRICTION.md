@@ -111,6 +111,17 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `induction … using f.induct (P := P)` stops at "Alternative `succ` has not been provided" — name every explicit parameter before the motive
+- **Where it bit:** RECONCILE round 3, tasks 16–17: `reachableFindingAux_sound` and
+  `reachableFindingAux_complete` over the threaded search (`Search/DFS.lean`), whose recursive call
+  sits in a lambda passed to the sibling loop `reachableFindingList`. The old proofs' form,
+  `induction visited, v using reachableFindingAux.induct (P := P)`, read the explicit parameter
+  `succ` of the new principle as a case and stopped there.
+- **Friction:** one fix iteration in the spike.
+- **Proposed fix:** pass each explicit parameter that precedes the motive by name:
+  `reachableFindingAux.induct (succ := succ) (P := P)`.
+- **Status:** idiom.
+
 ### [idiom] Dropping an unused hypothesis can strand an implicit that only it mentioned — pin it by name at untyped callers
 - **Where it bit:** RECONCILE round 3, task 10: `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   without `hD : 1 ≤ bodyBarDim n`. Its `n` then occurs only in the conclusion, so a caller that

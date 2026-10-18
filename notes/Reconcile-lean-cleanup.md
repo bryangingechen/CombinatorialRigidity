@@ -13,8 +13,8 @@ changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`
 wait for the phase. Tasks 1–15.1 are done: the open, the docstring-label check (gate 9: 422 at task
 2, 387 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, and L6–L8's hypotheses and
 repeated derivations (*Current state*). Task 16, the recon of the pebble game's search, settled its
-fix with a spike that closes, and left `decide` to the texts (*Decisions*). **Next concrete task:**
-task 17, the search with one visited set (*Lemma checklist*). Round manual: `CLEANUP.md`.
+fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set.
+**Next concrete task:** task 18, the timing script (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,20 +24,24 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 16 is done** (this commit, docs only); nothing is mid-stream.
+**Task 17 is done** (this commit); nothing is mid-stream.
 
-**Task 16** (`F-033`, `F-047`; the recon): the spike `scratch/reconcile-lean/t16/DFSThreadedC.lean`
-(gitignored) builds the search with one visited set and re-proves `reachableFinding_sound`,
-`reachableFinding_complete` and `reachClosureComputable`'s two halves with their statements, with no
-`sorry`: `lake lean` exit 0 and 0 warnings, `#print axioms`
-`[propext, Classical.choice, Quot.sound]`. Its non-`module` copy `KernelC.lean` has `decide +kernel`
-evaluate the new search, and times both searches with `P` false on the diamond chain at
-$n = 8, 10, \ldots, 18$: 1, 5, 25, 114, 498 and 2291 ms before, at most 1 ms after (measured, script
-not retained; task 18 commits one). Beside them are the `decide` probes (`DecideProbe*.lean`,
-`KernelSort.lean`, `ModuleProbe*.lean`) and the refuted mutual form (`DFSThreaded.lean`,
-`DFSTimingSpike.lean`). The verdict is under *Decisions*; tasks 17–18 are written from it, and task
-20's line follows it. The ledger is unchanged: 275 entries, 155 `done`, 9 `left`, 107 `reported`, 4
-`open` (task 38's); the next ID is `F-276`.
+**Task 17** (`F-033` in part): task 16's spike landed in `Search/DFS.lean`: the sibling loop
+`reachableFindingList` (it needs no `[DecidableEq V]`, so it takes none), `reachableFindingAux`
+returning its marked set, the loop's two invariants, `reachableFindingAux_sound` and the private
+`_complete` restated, `reachableFinding_complete` by the closure of the returned set, and
+`DirectedWalk.vertices_eq_cons_tail` new. `dropUntilBundle`, left without a caller, is deleted
+(block (b); the trial deletion; block (c) empty; `notes/Reconcile.md` §3 repointed). The statements
+of `reachableFinding`, its two theorems and `reachClosureComputable`'s are unchanged, and so are the
+callers. `dfs.tex`: the section's opening, `def:reachable-finding`, the paragraph after it and the
+correctness proof restated. New `F-276` (the `decide +kernel` route) and `F-277` (one search for the
+region), both `reported`. The ledger: 277 entries, 155 `done`, 9 `left`, 109 `reported`, 4 `open`
+(task 38's); the next ID is `F-278`.
+
+**Task 16** (the recon, docs only): the spike `scratch/reconcile-lean/t16/DFSThreadedC.lean`
+(gitignored) closed; its non-`module` copy `KernelC.lean` timed both searches with `P` false on the
+diamond chain at $n = 8, 10, \ldots, 18$: 1, 5, 25, 114, 498 and 2291 ms before, at most 1 ms after
+(measured, script not retained; task 18 commits one). The `decide` probes are beside it.
 
 **Done before** (tasks 3–15.1; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -258,45 +262,21 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   siblings' `F-275`): the dump byte-identical; gate 9 387.
 - [x] **16. L1–L2: the recon** (`F-033`, `F-047`; docs only): the spike closes; tasks 17–18 exact,
   task 20 adjusted; the dump byte-identical; gate 9 387.
-- [ ] **17. L1: the search with one visited set** (`F-033` in part). `Search/DFS.lean` as the spike
-  `scratch/reconcile-lean/t16/DFSThreadedC.lean` has it, its bodies and proofs as they are, without
-  the `SpikeC` namespace: (a) new, above `reachableFindingAux` (578), with inline binders, the
-  sibling loop `reachableFindingList succ base v f s hs l hl`, structural on `l : List V`
-  (`hl : ∀ u ∈ l, u ∈ succ v`), returning `{s' : Finset V // s ⊆ s'} × Option (Σ w, …)`, where
-  `f : (s : Finset V) → base ⊆ s → (u : V) → {s' // s ⊆ s'} × Option (…)` searches from one
-  out-neighbour and `hs : base ⊆ s`; (b) `reachableFindingAux` returning
-  `{s : Finset V // visited ⊆ s} × Option (…)`, its third branch (the call at 588) the loop from
-  `insert v visited` with `f := fun s _hs u => reachableFindingAux succ P s u`, its `termination_by`
-  kept and `decreasing_by` from `_hs`; (c) `reachableFinding` (614) the `.2` of the search from `∅`,
-  its statement unchanged; (d) `reachableFindingList_sound` and `_complete`, new, in a section with
-  `variable [DecidableEq V]` above line 601's `variable`; `reachableFindingAux_sound` (622) restated
-  on `.2 = some wp`, and the private `reachableFindingAux_complete` (687) restated as the invariant
-  `(… visited v).2 = none → v ∈ S ∧ ∀ x ∈ S, x ∉ visited → P x = false ∧ ∀ y ∈ succ x, y ∈ S` (`S`
-  its `.1.1`; the loop's, `∀ u ∈ l, u ∈ S` and the same for `x ∉ s`), both by
-  `reachableFindingAux.induct (succ := succ) (P := P)`; (e) `reachableFinding_complete` (747) by
-  `Relation.ReflTransGen` induction into the returned set, and `DirectedWalk.vertices_eq_cons_tail`
-  new, beside `head_mem_vertices` (161); (f) `dropUntilBundle` (140), left without a caller, deleted
-  (gate 4: block (b), block (c), the trial deletion; gate 2's `grep`). The changed declarations'
-  docstrings are rewritten; the section docstring (771) is task 20's. In the same commit (the
-  definition-faithfulness gate), `dfs.tex`: the section's opening (12–20), `def:reachable-finding`'s
-  step 3 and the set the search returns (52–76), the paragraph after the note (89–99) and the
-  correctness proof's completeness half (117–154), with no `\uses` or pin moved.
-  `reachClosureComputable` (802) and the callers (`PebbleGame/Algorithm.lean` 107 and 206,
-  `Basic.lean` 1056) are unchanged. One commit: the spike has no residual goal. *Expected:* the dump
-  byte-identical; `--summary` identical but for the cache's name (only unpinned declarations
-  change); gate 9 387 (no new docstring leads with a node); gates 1–5, 8 and 10.
+- [x] **17. L1: the search with one visited set** (`F-033` in part): task 16's spike in
+  `Search/DFS.lean`, `dropUntilBundle` deleted, `dfs.tex`'s search and proof restated; new `F-276`
+  and `F-277`, both `reported`; the dump byte-identical; gate 9 387.
 - [ ] **18. L1: the timing script; the `decide` facts** (`F-033`, `F-047` in part).
   `scripts/DFSTiming.lean`, not a `module` (as `scripts/BlueprintDeps.lean`), run as
   `lake lean scripts/DFSTiming.lean`, with no driver and no `lake exe` (the lakefile is out of
-  scope): the per-walk search as it stood before task 17 (its body, renamed, citing task 17's
-  parent), the spike's diamond chain `diamondSucc n` ($3n + 1$ vertices, $4n$ arcs, $2^n$ simple
-  walks end to end), and one `#eval` that times both searches with `P` false at
-  $n = 8, 10, \ldots, 18$ in one run and prints the size of the set the new search marks ($3n + 1$,
-  the figure that does not move; the times do). Then the facts task 20 states, each a tactic that
-  fails the file if it changes: `fail_if_success decide` and `fail_if_success decide +kernel` on
-  `Examples.k4MinusE.IsLaman`, `decide +kernel` on `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and
-  `native_decide` on `k4MinusE.IsLaman` and on `¬ Examples.k4.IsLaman`. Its output in `scratch/`,
-  its figures here beside `F-033`'s. No library change. *Expected:* the dump byte-identical.
+  scope): the per-walk search as it stood before task 17 (its body, renamed, citing `671366e4`), the
+  spike's diamond chain `diamondSucc n` ($3n + 1$ vertices, $4n$ arcs, $2^n$ simple walks end to
+  end), and one `#eval` that times both searches with `P` false at $n = 8, 10, \ldots, 18$ in one
+  run and prints the size of the set the new search marks ($3n + 1$, the figure that does not move;
+  the times do). Then the facts task 20 states, each a tactic that fails the file if it changes:
+  `fail_if_success decide` and `fail_if_success decide +kernel` on `Examples.k4MinusE.IsLaman`,
+  `decide +kernel` on `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and `native_decide` on `k4MinusE.IsLaman`
+  and on `¬ Examples.k4.IsLaman`. Its output in `scratch/`, its figures here beside `F-033`'s. No
+  library change. *Expected:* the dump byte-identical.
 - [ ] **19. L2: `parsePair` on any whitespace** (`F-047`). `Main.lean` 100 splits on any whitespace,
   so a tab no longer makes a line malformed; `lake exe pebble-game` on a tab-separated input,
   recorded. *Expected:* the dump byte-identical.
@@ -407,6 +387,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - `F-273` (task 15): `lem:reduction-step-pos`'s $D \ge 3$, which its pin now uses only as $D \ge 2$;
   the two are one condition on $D = n(n+1)/2$ (a `lake lean` witness), so a change would alter
   only the form. `hD` stays.
+- `F-277` (task 16): `reachClosureComputable` by one search with `P` false, whose marked set is the
+  region; it would restate `def:reachClosureComputable`, so the per-vertex body stays.
 
 ## Moved to a later round
 
@@ -437,15 +419,12 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 17**, at Opus, Lean and TeX: the search with one visited set (`F-033`; *Lemma
-checklist*). The spike `scratch/reconcile-lean/t16/DFSThreadedC.lean` lands in `Search/DFS.lean` as
-it is (it closes), `dropUntilBundle` is deleted, and `dfs.tex`'s search and correctness proof are
-restated. Re-`grep` the line numbers. Gates 1–6 and 8–10 (the parent dump
-`scratch/reconcile-lean/dump-t16.txt`, gitignored; regenerate it if missing; gate 9 387). Carried
-in: `F-252` and `F-273` for the PI; `F-268`, `F-269`, `F-271`, `F-275` and FRICTION's
-`edgeFiber_nonempty` entry (task 15) for task 38; whether to queue a `decide +kernel` route
-(*Decisions*) is the coordinator's or the PI's. After the round the queue stops before
-`RECONCILE-FORMAL`, which is attended.
+**Next: task 18**, at Opus: the timing script `scripts/DFSTiming.lean` and the `decide` facts
+(`F-033`, `F-047` in part; *Lemma checklist*), with no library change. Re-`grep` the line numbers.
+Gates 5, 6, 9 and 10 (the parent dump `scratch/reconcile-lean/dump-t17.txt`, gitignored; regenerate
+it if missing; gate 9 387). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`,
+`F-269`, `F-271`, `F-275` and FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38. After the
+round the queue stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -490,11 +469,11 @@ in: `F-252` and `F-273` for the PI; `F-268`, `F-269`, `F-271`, `F-275` and FRICT
   pin, was an ancestor only through the removed `lem:edge-set-indep-pos`, so the removal alone
   makes it missing. A task's *Expected* models the summary on the cache (`t15-model.py`) and adds
   such an edge in the same commit (backward here, 170 < 1793).
-- **The search's fix** (task 16; the spike closes): the visit keeps its `ℕ` measure and returns its
+- **The search's fix** (task 16; landed by task 17): the visit keeps its `ℕ` measure and returns its
   marked set; the sibling loop, structural on the list, takes the visit as an argument and threads
-  the set. Completeness needs no stack invariant and no walk: when the search fails, each vertex it
-  newly marked fails `P` and has its out-neighbours marked, so from `∅` the set holds `v` and is
-  closed under the arcs. A mutual form on a lexicographic measure proves too; the kernel does not
-  unfold it. `decide` is not cheap: the kernel stops at core's `List.mergeSort` (in `Finset.sort`,
-  the two list builders), and from a `module` file at each body not `@[expose]`d, the search's and
-  mathlib's `List.insertionSort` among them. The texts name `#eval`, `lake exe` and `native_decide`.
+  the set. Completeness needs no stack invariant and no walk: on failure each newly marked vertex
+  fails `P` and has its out-neighbours marked, so from `∅` the set holds `v` and is closed under the
+  arcs. A mutual form on a lexicographic measure the kernel does not unfold. `decide` is not cheap:
+  the kernel stops at core's `List.mergeSort` (`Finset.sort`) and, from a `module` file, at each
+  body not `@[expose]`d. The texts name `#eval`, `lake exe` and `native_decide`; the coordinator
+  does not queue the route (`F-276`, reported).

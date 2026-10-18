@@ -127,40 +127,15 @@ def vertices : ∀ {u w : V}, DirectedWalk R u w → List V
 @[expose]
 def IsPath (p : DirectedWalk R u w) : Prop := p.vertices.Nodup
 
-/-- Drop the prefix of a walk up to (and including) the first occurrence of
-`target`, yielding a sub-walk that starts at `target`, bundled with two
-witnesses: the truncation's length is at most the original walk's length,
-and its vertex set is a subset of the original.
-
-Bundled (rather than `dropUntil` + separate lemmas) so the recursion's
-reductions don't have to round-trip through equational simp lemmas;
-the single `induction p` handles all three obligations at once.
-Consumed by `reachableFindingAux_complete`'s inner length induction to
-shorten a walk that revisits the current source vertex. -/
-def dropUntilBundle [DecidableEq V] (target : V) :
-    ∀ {u w : V} (p : DirectedWalk R u w), target ∈ p.vertices →
-      { q : DirectedWalk R target w //
-          q.length ≤ p.length ∧ ∀ x ∈ q.vertices, x ∈ p.vertices }
-  | _, _, .nil _, h => by
-    rw [vertices, List.mem_singleton] at h
-    subst h
-    exact ⟨.nil _, Nat.le_refl _, fun _ hx => hx⟩
-  | u, _, .cons h_arc q, h => by
-    by_cases htgt : target = u
-    · subst htgt
-      exact ⟨.cons h_arc q, Nat.le_refl _, fun _ hx => hx⟩
-    · rw [vertices, List.mem_cons] at h
-      obtain ⟨q', hlen, hmem⟩ := dropUntilBundle target q (h.resolve_left htgt)
-      refine ⟨q', ?_, ?_⟩
-      · rw [length]; exact hlen.trans (Nat.le_succ _)
-      · intro x hx
-        rw [vertices, List.mem_cons]
-        exact Or.inr (hmem x hx)
-
 /-- The source vertex always sits at the head of `p.vertices`. -/
 @[simp] lemma head_mem_vertices {u w : V} (p : DirectedWalk R u w) :
     u ∈ p.vertices := by
   cases p <;> simp [vertices]
+
+/-- The vertex list of a walk from `u` is `u` followed by its tail. -/
+lemma vertices_eq_cons_tail {u w : V} (p : DirectedWalk R u w) :
+    p.vertices = u :: p.vertices.tail := by
+  cases p <;> rfl
 
 /-- The target vertex always sits at the tail of `p.vertices`. Mirror of
 `head_mem_vertices`; both hold without `IsPath`. Used by the path-arc source-
@@ -546,7 +521,35 @@ end DirectedWalk
 
 `reachableFinding succ P v` searches outward from `v` along
 `succ`-arcs, returning the first vertex `w` reachable from `v` with
-`P w`, packaged with a simple walk from `v` to `w`. -/
+`P w`, packaged with a simple walk from `v` to `w`. One set of marked
+vertices is threaded through the whole search: a vertex is marked when
+the search enters it and stays marked, so the search enters each vertex
+at most once. -/
+
+/-- The sibling loop of `reachableFindingAux`: try the out-neighbours `l`
+of `v` in order, searching from each with `f` and the marked set the
+previous search returned, and stop at the first search that finds a
+vertex, prepending the arc from `v` to its walk. Returns the marked set
+at the end, which contains `s`, the set the loop started with.
+
+`f` is the search itself, passed in as an argument, so that the loop is
+structural recursion on `l`. The loop calls `f` only on sets containing
+`base`, which is what the search's termination measure needs. -/
+def reachableFindingList (succ : V → List V) (base : Finset V) (v : V)
+    (f : (s : Finset V) → base ⊆ s → (u : V) →
+      {s' : Finset V // s ⊆ s'} × Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) u w))
+    (s : Finset V) (hs : base ⊆ s) :
+    (l : List V) → (∀ u ∈ l, u ∈ succ v) →
+      {s' : Finset V // s ⊆ s'} × Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w)
+  | [], _ => (⟨s, Finset.Subset.refl _⟩, none)
+  | u :: l, hl =>
+    let r := f s hs u
+    match r.2 with
+    | some ⟨w, p⟩ => (r.1, some ⟨w, .cons (hl u List.mem_cons_self) p⟩)
+    | none =>
+      let r' := reachableFindingList succ base v f r.1.1 (hs.trans r.1.2) l
+        (fun x hx => hl x (List.mem_cons_of_mem _ hx))
+      (⟨r'.1.1, r.1.2.trans r'.1.2⟩, r'.2)
 
 -- `Fintype V` / `DecidableEq V` are bound **inline** on this one declaration,
 -- and the section `variable` line for them deliberately sits *below* it
@@ -558,44 +561,113 @@ end DirectedWalk
 -- invariant proofs below use) down with it. The inline binders are load-bearing
 -- *for the recursion*, not decoration; see `notes/ToolchainBumps.md` item 4c.
 /-- DFS body for `reachableFinding`: search for a `P`-satisfying vertex
-reachable from `v` along `succ`-arcs, skipping vertices already in
-`visited`. Returns the first match packaged with a witness walk from
-`v`, or `none` if no such vertex is reachable without revisiting.
+reachable from `v` along `succ`-arcs, with the vertices of `visited`
+marked. A marked `v` fails; a `v` with `P v` is returned with the walk of
+length zero; otherwise `v` is marked and `reachableFindingList` searches
+from the out-neighbours of `v` in turn, each with the marked set the
+previous one returned. Returns the marked set at the end, which contains
+`visited`, beside the first match packaged with a witness walk from `v`,
+or `none`.
 
-The recursion threads `visited` as it grows: each recursive call adds
-the current `v` to `visited`, so the termination measure
+Every recursive call is made with a marked set containing
+`insert v visited`, so the termination measure
 `(Finset.univ \ visited).card` strictly decreases (cf. the file
-docstring's *Batteries.UnionFind* comparison). The children of `v` are
-tried via `List.findSome?` on `(succ v).attach`; on the first
-successful sub-search the returned walk gets the arc `v → u` prepended
-via `DirectedWalk.cons`.
+docstring's *Batteries.UnionFind* comparison).
 
-The `visited` set stays a `Finset V` because the termination measure
-needs `Finset.univ \ visited` for cardinality; this is *math-layer*
-state, never enumerated. The *exec-layer* enumeration of children
-goes through `succ : V → List V` so the body stays computable
-(`Finset.toList` would force `noncomputable`). -/
+The marked set stays a `Finset V` because the termination measure needs
+`Finset.univ \ visited` for cardinality; this is *math-layer* state,
+never enumerated. The *exec-layer* enumeration of children goes through
+`succ : V → List V` so the body stays computable (`Finset.toList` would
+force `noncomputable`). -/
 def reachableFindingAux [Fintype V] [DecidableEq V]
-    (succ : V → List V) (P : V → Bool)
-    (visited : Finset V) (v : V) :
-    Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w) :=
+    (succ : V → List V) (P : V → Bool) (visited : Finset V) (v : V) :
+    {s : Finset V // visited ⊆ s} ×
+      Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w) :=
   if _hv : v ∈ visited then
-    none
+    (⟨visited, Finset.Subset.refl _⟩, none)
   else if P v = true then
-    some ⟨v, .nil v⟩
+    (⟨visited, Finset.Subset.refl _⟩, some ⟨v, .nil v⟩)
   else
-    (succ v).attach.findSome? fun ⟨u, hu⟩ =>
-      (reachableFindingAux succ P (insert v visited) u).map fun ⟨w, p⟩ =>
-        ⟨w, .cons hu p⟩
+    let r := reachableFindingList succ (insert v visited) v
+      (fun s _hs u => reachableFindingAux succ P s u) (insert v visited)
+      (Finset.Subset.refl _) (succ v) (fun _ h => h)
+    (⟨r.1.1, (Finset.subset_insert _ _).trans r.1.2⟩, r.2)
   termination_by (Finset.univ \ visited).card
   decreasing_by
-    -- Recursive call passes `insert v visited`; since `v ∉ visited`,
-    -- the set `Finset.univ \ visited` loses exactly `v` and shrinks.
+    -- The recursive call's marked set `s` contains `insert v visited`, and
+    -- `v ∉ visited`, so `Finset.univ \ s` misses `v` and shrinks.
     apply Finset.card_lt_card
     refine Finset.ssubset_iff_of_subset (Finset.sdiff_subset_sdiff
-      (Finset.Subset.refl _) (Finset.subset_insert _ _)) |>.mpr ⟨v, ?_, ?_⟩
+      (Finset.Subset.refl _) ((Finset.subset_insert _ _).trans _hs)) |>.mpr ⟨v, ?_, ?_⟩
     · simp [_hv]
-    · simp
+    · simp [_hs (Finset.mem_insert_self _ _)]
+
+section Loop
+
+variable {succ : V → List V} {base : Finset V} {v : V}
+  {f : (s : Finset V) → base ⊆ s → (u : V) →
+      {s' : Finset V // s ⊆ s'} × Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) u w)}
+
+/-- Soundness invariant for the sibling loop, given that of the search `f`:
+a returned walk steps from `v` to an out-neighbour and then follows a
+simple walk to a `P`-vertex that avoids the set `s` the loop started
+with. -/
+theorem reachableFindingList_sound (P : V → Bool)
+    (hf : ∀ s hs u wp, (f s hs u).2 = some wp →
+      P wp.1 = true ∧ wp.2.IsPath ∧ ∀ x ∈ wp.2.vertices, x ∉ s)
+    (s : Finset V) (hs : base ⊆ s) (l : List V) (hl : ∀ u ∈ l, u ∈ succ v)
+    (wp : Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w)
+    (h : (reachableFindingList succ base v f s hs l hl).2 = some wp) :
+    P wp.1 = true ∧ wp.2.vertices.tail.Nodup ∧ ∀ x ∈ wp.2.vertices.tail, x ∉ s := by
+  induction l generalizing s with
+  | nil => simp [reachableFindingList] at h
+  | cons u l ih =>
+    rw [reachableFindingList] at h
+    rcases hr : (f s hs u).2 with _ | ⟨w, p⟩
+    · simp only [hr] at h
+      obtain ⟨hPw, hnd, hav⟩ := ih _ _ _ h
+      exact ⟨hPw, hnd, fun x hx hxs => hav x hx ((f s hs u).1.2 hxs)⟩
+    · simp only [hr] at h
+      cases h
+      exact hf s hs u ⟨w, p⟩ hr
+
+/-- Completeness invariant for the sibling loop, given that of the search
+`f`: if the loop fails, the marked set it returns contains every vertex of
+`l`, and every vertex of that set outside `s` fails `P` and has all its
+out-neighbours in the set. -/
+private theorem reachableFindingList_complete (P : V → Bool)
+    (hf : ∀ s hs u, (f s hs u).2 = none → u ∈ (f s hs u).1.1 ∧
+      ∀ x ∈ (f s hs u).1.1, x ∉ s → P x = false ∧ ∀ y ∈ succ x, y ∈ (f s hs u).1.1)
+    (s : Finset V) (hs : base ⊆ s) (l : List V) (hl : ∀ u ∈ l, u ∈ succ v)
+    (h : (reachableFindingList succ base v f s hs l hl).2 = none) :
+    (∀ u ∈ l, u ∈ (reachableFindingList succ base v f s hs l hl).1.1) ∧
+    ∀ x ∈ (reachableFindingList succ base v f s hs l hl).1.1, x ∉ s →
+      P x = false ∧ ∀ y ∈ succ x, y ∈ (reachableFindingList succ base v f s hs l hl).1.1 := by
+  induction l generalizing s with
+  | nil =>
+    rw [reachableFindingList]
+    exact ⟨by simp, fun y hy hys => absurd hy hys⟩
+  | cons u l ih =>
+    rw [reachableFindingList] at h ⊢
+    rcases hr : (f s hs u).2 with _ | ⟨w, p⟩
+    · simp only [hr] at h ⊢
+      obtain ⟨hu, h1⟩ := hf s hs u hr
+      obtain ⟨hl2, h2⟩ := ih _ _ _ h
+      have hsub := (reachableFindingList succ base v f (f s hs u).1.1 (hs.trans (f s hs u).1.2) l
+        (fun x hx => hl x (List.mem_cons_of_mem _ hx))).1.2
+      refine ⟨?_, ?_⟩
+      · intro u' hu'
+        rcases List.mem_cons.mp hu' with rfl | hu'
+        · exact hsub hu
+        · exact hl2 u' hu'
+      · intro x hxs hxv
+        by_cases hx1 : x ∈ (f s hs u).1.1
+        · obtain ⟨hPx, hsx⟩ := h1 x hx1 hxv
+          exact ⟨hPx, fun y hy => hsub (hsx y hy)⟩
+        · exact h2 x hxs hx1
+    · simp [hr] at h
+
+end Loop
 
 -- Below `reachableFindingAux` on purpose — see the comment above it.
 variable [Fintype V] [DecidableEq V]
@@ -608,61 +680,51 @@ along the relation `fun a b => b ∈ succ a`.
 * On failure: `none`, in which case no vertex in the `succ`-closure
   of `v` satisfies `P` (cf. `reachableFinding_complete`).
 
-Termination is by `(Finset.univ \ visited).card` on the internal
-recursive helper that threads a `visited` set; cf. the file
-docstring's *Batteries.UnionFind* comparison. -/
+The search starts with no vertex marked and threads one marked set
+through all of its recursive calls (`reachableFindingAux`); termination
+is by `(Finset.univ \ visited).card`, cf. the file docstring's
+*Batteries.UnionFind* comparison. -/
 def reachableFinding (succ : V → List V) (P : V → Bool) (v : V) :
     Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w) :=
-  reachableFindingAux succ P ∅ v
+  (reachableFindingAux succ P ∅ v).2
 
 /-- Strengthened soundness invariant for `reachableFindingAux`: every match
-returned from `visited`-state `s` has its witness walk entirely outside `s`.
-The extra clause is what turns the recursive case's `Nodup` obligation
-(`v` not appearing in the suffix walk) into the IH at `insert v visited`. -/
+returned with marked set `visited` has its witness walk entirely outside
+`visited`. The extra clause is what turns the recursive case's `Nodup`
+obligation (`v` not appearing in the suffix walk) into the invariant at
+`insert v visited`, through `reachableFindingList_sound`. -/
 theorem reachableFindingAux_sound (succ : V → List V) (P : V → Bool) :
     ∀ (visited : Finset V) (v : V)
       (wp : Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w),
-      reachableFindingAux succ P visited v = some wp →
+      (reachableFindingAux succ P visited v).2 = some wp →
       P wp.1 = true ∧ wp.2.IsPath ∧ ∀ x ∈ wp.2.vertices, x ∉ visited := by
   intro visited v
-  induction visited, v using reachableFindingAux.induct (P := P) with
-  | case1 visited v hvis =>
-    -- Visited-revisit branch returns `none`, contradicting `= some _`.
-    rintro ⟨w, p⟩ hres
-    rw [reachableFindingAux, dite_eq_left hvis] at hres
-    exact absurd hres (by simp)
-  | case2 visited v hvis hP =>
-    -- `P v = true` branch returns `some ⟨v, .nil v⟩`.
-    rintro ⟨w, p⟩ hres
-    rw [reachableFindingAux, dite_eq_right hvis, ite_eq_left hP, Option.some.injEq,
-        Sigma.mk.injEq] at hres
-    obtain ⟨rfl, hh⟩ := hres
-    cases hh
-    refine ⟨hP, ?_, ?_⟩
-    · simp [DirectedWalk.IsPath, DirectedWalk.vertices]
-    · intro x hx
-      simp only [DirectedWalk.vertices, List.mem_singleton] at hx
-      exact hx ▸ hvis
-  | case3 visited v hvis hP ih =>
-    -- Recursive branch: `findSome?` over `(succ v).attach` returned a match.
-    rintro ⟨w, p⟩ hres
-    rw [reachableFindingAux, dite_eq_right hvis, ite_eq_right hP] at hres
-    obtain ⟨⟨u, hu⟩, _, hmap⟩ := List.exists_of_findSome?_eq_some hres
-    rw [Option.map_eq_some_iff] at hmap
-    obtain ⟨⟨w', p'⟩, hrec, hwp⟩ := hmap
-    rw [Sigma.mk.injEq] at hwp
-    obtain ⟨rfl, hh⟩ := hwp
-    cases hh
-    obtain ⟨hPw, hp'Path, hp'V⟩ := ih u ⟨w', p'⟩ hrec
+  induction visited, v using reachableFindingAux.induct (succ := succ) (P := P) with
+  | case1 visited v hv =>
+    -- A marked vertex returns `none`, contradicting `= some _`.
+    intro wp h
+    simp [reachableFindingAux, hv] at h
+  | case2 visited v hv hP =>
+    -- `P v = true` returns `some ⟨v, .nil v⟩`.
+    intro wp h
+    rw [reachableFindingAux, dite_eq_right hv, ite_eq_left hP] at h
+    cases h
+    refine ⟨hP, by simp [DirectedWalk.IsPath, DirectedWalk.vertices], ?_⟩
+    simpa [DirectedWalk.vertices] using hv
+  | case3 visited v hv hP ih =>
+    -- The sibling loop from `insert v visited` returned a match.
+    intro wp h
+    rw [reachableFindingAux, dite_eq_right hv, ite_eq_right hP] at h
+    obtain ⟨hPw, hnd, hav⟩ := reachableFindingList_sound P (fun s hs u => ih s hs u) _ _ _ _ wp h
     refine ⟨hPw, ?_, ?_⟩
-    · -- `(cons hu p').IsPath`: `v ∉ p'.vertices` since IH excludes `insert v visited`.
-      rw [DirectedWalk.IsPath, DirectedWalk.vertices, List.nodup_cons]
-      refine ⟨fun hv_in => hp'V v hv_in (Finset.mem_insert_self _ _), hp'Path⟩
+    · -- `v` is not on the walk's tail, which avoids `insert v visited`.
+      rw [DirectedWalk.IsPath, wp.2.vertices_eq_cons_tail, List.nodup_cons]
+      exact ⟨fun hv' => hav v hv' (Finset.mem_insert_self _ _), hnd⟩
     · intro x hx
-      rw [DirectedWalk.vertices, List.mem_cons] at hx
+      rw [wp.2.vertices_eq_cons_tail, List.mem_cons] at hx
       rcases hx with rfl | hx
-      · exact hvis
-      · exact fun hxv => hp'V x hx (Finset.mem_insert_of_mem hxv)
+      · exact hv
+      · exact fun hxv => hav x hx (Finset.mem_insert_of_mem hxv)
 
 /-- **Soundness.** If `reachableFinding succ P v = some ⟨w, p⟩`, then
 `P w` holds and the returned walk `p` is simple. -/
@@ -673,72 +735,42 @@ theorem reachableFinding_sound {succ : V → List V} {P : V → Bool} {v : V}
   let ⟨hP, hPath, _⟩ := reachableFindingAux_sound succ P ∅ v ⟨w, p⟩ hres
   ⟨hP, hPath⟩
 
-/-- Strengthened completeness invariant for `reachableFindingAux`: if the
-DFS returns `none` from `(visited, v)`, then no `succ`-walk from `v` to a
-`P`-satisfying vertex with all vertices outside `visited` exists.
-
-The inner induction on a length bound `n` is what discharges the
-recursive case when the walk revisits the current source vertex `v`:
-`DirectedWalk.dropUntilBundle` produces a strictly shorter walk from `v`,
-re-using the same `visited` (so we recurse via the inner IH, not the
-outer one). When `v` is not revisited, the walk-tail's vertices avoid
-`insert v visited`, and the outer IH at `(insert v visited, v')` closes
-the case. -/
+/-- Completeness invariant for `reachableFindingAux`: if the search from
+`(visited, v)` fails, the marked set `S` it returns contains `v`, and every
+vertex of `S` outside `visited` fails `P` and has all its out-neighbours in
+`S`. With `visited = ∅`, `S` is closed under the `succ`-arcs, which is what
+`reachableFinding_complete` uses. -/
 private theorem reachableFindingAux_complete (succ : V → List V) (P : V → Bool) :
-    ∀ (visited : Finset V) (v : V),
-      reachableFindingAux succ P visited v = none →
-      ∀ (n : ℕ) (w : V) (p : DirectedWalk (fun a b => b ∈ succ a) v w),
-        p.length ≤ n → (∀ x ∈ p.vertices, x ∉ visited) → P w ≠ true := by
+    ∀ (visited : Finset V) (v : V), (reachableFindingAux succ P visited v).2 = none →
+      v ∈ (reachableFindingAux succ P visited v).1.1 ∧
+      ∀ x ∈ (reachableFindingAux succ P visited v).1.1, x ∉ visited →
+        P x = false ∧ ∀ y ∈ succ x, y ∈ (reachableFindingAux succ P visited v).1.1 := by
   intro visited v
-  induction visited, v using reachableFindingAux.induct (P := P) with
-  | case1 visited v hvis =>
-    intro _ _ w p _ hpV hPw
-    have hv_in : v ∈ p.vertices := by
-      cases p <;> simp [DirectedWalk.vertices]
-    exact hpV v hv_in hvis
-  | case2 visited v hvis hP =>
-    intro hres
-    rw [reachableFindingAux, dite_eq_right hvis, ite_eq_left hP] at hres
-    exact absurd hres (by simp)
-  | case3 visited v hvis hP ih =>
-    intro hres
-    rw [reachableFindingAux, dite_eq_right hvis, ite_eq_right hP] at hres
-    intro n
-    induction n with
-    | zero =>
-      intro w p hlen hpV hPw
-      cases p with
-      | nil => exact hP hPw
-      | cons _ _ => simp [DirectedWalk.length] at hlen
-    | succ n ih_inner =>
-      intro w p hlen hpV hPw
-      cases p with
-      | nil => exact hP hPw
-      | @cons _ v' _ h_arc p' =>
-        rw [DirectedWalk.length] at hlen
-        have hp'_len : p'.length ≤ n := Nat.le_of_succ_le_succ hlen
-        by_cases hv_in : v ∈ p'.vertices
-        · obtain ⟨q, hq_len, hq_mem⟩ := DirectedWalk.dropUntilBundle v p' hv_in
-          have hq_n : q.length ≤ n := hq_len.trans hp'_len
-          have hq_V : ∀ x ∈ q.vertices, x ∉ visited := by
-            intro x hx
-            refine hpV x ?_
-            rw [DirectedWalk.vertices, List.mem_cons]
-            exact Or.inr (hq_mem x hx)
-          exact ih_inner w q hq_n hq_V hPw
-        · have hp'_none : reachableFindingAux succ P (insert v visited) v' = none := by
-            rw [List.findSome?_eq_none_iff] at hres
-            have hr := hres ⟨v', h_arc⟩ (List.mem_attach _ _)
-            rwa [Option.map_eq_none_iff] at hr
-          have hp'V : ∀ x ∈ p'.vertices, x ∉ insert v visited := by
-            intro x hx hx_in
-            rw [Finset.mem_insert] at hx_in
-            rcases hx_in with rfl | hx_in_visited
-            · exact hv_in hx
-            · refine hpV x ?_ hx_in_visited
-              rw [DirectedWalk.vertices, List.mem_cons]
-              exact Or.inr hx
-          exact ih v' hp'_none n w p' hp'_len hp'V hPw
+  induction visited, v using reachableFindingAux.induct (succ := succ) (P := P) with
+  | case1 visited v hv =>
+    -- A marked vertex returns `visited` itself, which contains `v`.
+    intro _
+    rw [reachableFindingAux, dite_eq_left hv]
+    exact ⟨hv, fun x hx hxv => absurd hx hxv⟩
+  | case2 visited v hv hP =>
+    intro h
+    rw [reachableFindingAux, dite_eq_right hv, ite_eq_left hP] at h
+    simp at h
+  | case3 visited v hv hP ih =>
+    -- The sibling loop from `insert v visited` failed: `v` fails `P`, and its
+    -- out-neighbours are in the returned set by the loop's invariant.
+    intro h
+    rw [reachableFindingAux, dite_eq_right hv, ite_eq_right hP] at h ⊢
+    dsimp only at h ⊢
+    obtain ⟨hl, hx⟩ := reachableFindingList_complete P (fun s hs u => ih s hs u) _ _ _ _ h
+    refine ⟨(reachableFindingList succ (insert v visited) v
+      (fun s _ u => reachableFindingAux succ P s u) (insert v visited) (Finset.Subset.refl _)
+      (succ v) (fun _ h => h)).1.2 (Finset.mem_insert_self _ _), ?_⟩
+    intro x hxs hxv
+    by_cases hxv' : x = v
+    · subst hxv'
+      exact ⟨by simpa using hP, hl⟩
+    · exact hx x hxs (by simp [hxv', hxv])
 
 /-- **Completeness.** If some vertex `w` in the `succ`-reachability
 closure of `v` satisfies `P`, then `reachableFinding` returns
@@ -748,25 +780,20 @@ theorem reachableFinding_complete {succ : V → List V} {P : V → Bool} {v : V}
     (h : ∃ w : V, Relation.ReflTransGen (fun a b => b ∈ succ a) v w ∧ P w = true) :
     ∃ (w' : V) (p : DirectedWalk (fun a b => b ∈ succ a) v w'),
       reachableFinding succ P v = some ⟨w', p⟩ := by
-  -- Lift the `ReflTransGen` witness to an explicit `DirectedWalk` via
-  -- `head_induction_on` (which prepends arcs at the head, matching
-  -- `DirectedWalk.cons`), then forward-prove the conclusion by
-  -- contrapositive against `reachableFindingAux_complete`.
   obtain ⟨w, hReach, hPw⟩ := h
-  have hwalk : ∃ p : DirectedWalk (fun a b => b ∈ succ a) v w, True := by
-    induction hReach using Relation.ReflTransGen.head_induction_on with
-    | refl => exact ⟨.nil _, trivial⟩
-    | head hab _ ih => obtain ⟨q, _⟩ := ih; exact ⟨.cons hab q, trivial⟩
-  obtain ⟨p, _⟩ := hwalk
-  -- If `reachableFinding` were `none`, the helper would forbid `p`.
-  by_contra hne
-  push Not at hne
-  have hnone : reachableFinding succ P v = none := by
-    cases h_eq : reachableFinding succ P v with
-    | none => rfl
-    | some wp => exact absurd h_eq (hne wp.1 wp.2)
-  exact absurd hPw (reachableFindingAux_complete succ P ∅ v hnone p.length w p
-    (Nat.le_refl _) (fun _ _ hx => Finset.notMem_empty _ hx))
+  cases hres : reachableFinding succ P v with
+  | some wp => exact ⟨wp.1, wp.2, rfl⟩
+  | none =>
+    -- A failed search returns a marked set that contains `v`, is closed under
+    -- the `succ`-arcs and has `P` false throughout; `w` lies in it.
+    exfalso
+    obtain ⟨hv, hclosed⟩ := reachableFindingAux_complete succ P ∅ v hres
+    have hw : w ∈ (reachableFindingAux succ P ∅ v).1.1 := by
+      clear hPw
+      induction hReach with
+      | refl => exact hv
+      | tail _ hab ih => exact (hclosed _ ih (Finset.notMem_empty _)).2 _ hab
+    simp [(hclosed w hw (Finset.notMem_empty _)).1] at hPw
 
 /-! ## Reachability closure (computable)
 

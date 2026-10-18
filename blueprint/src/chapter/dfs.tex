@@ -13,10 +13,10 @@ The search works with any relation $R$ on a finite set $V$, given by a
 list of out-neighbours at each vertex, and with any predicate $P$ on
 $V$. Started at a vertex $v$, it follows walks from $v$ along $R$
 depth first, trying the out-neighbours of a vertex in the order of
-its list. It never returns to a vertex of the walk it is following,
-and it stops at the first vertex that satisfies $P$. It then returns
-that vertex together with the walk from $v$ to it. If it finds no
-such vertex, it fails. The section uses nothing from the earlier
+its list. It marks each vertex it enters and never enters a marked
+vertex again, and it stops at the first vertex that satisfies $P$.
+It then returns that vertex together with the walk from $v$ to it. If
+it finds no such vertex, it fails. The section uses nothing from the earlier
 sections.
 
 We first define directed walks (\cref{def:directed-walk}) and the
@@ -59,20 +59,25 @@ start, since we prove its correctness by induction over all such sets.
   with $(a, b) \in R$ when $b$ appears in $N^+(a)$, and let $P$ be a
   predicate on $V$. For a set $S \subseteq V$ of \emph{marked}
   vertices and a vertex $x$, the \emph{search for $P$ from $x$ with
-  $S$ marked} runs as follows.
+  $S$ marked} returns a set $S' \supseteq S$ of marked vertices,
+  together with either a vertex $w$ and a walk from $x$ to $w$, or a
+  failure. It runs as follows.
   \begin{enumerate}
-    \item If $x \in S$, the search fails.
+    \item If $x \in S$, the search fails, with $S' = S$.
     \item Otherwise, if $P(x)$ holds, it returns $x$ and the walk of
-      length $0$ at $x$.
-    \item Otherwise, for each out-neighbour $y$ of $x$ in the order
-      of $N^+(x)$, it runs the search for $P$ from $y$ with
-      $S \cup \{x\}$ marked. At the first of these searches that
-      returns a vertex $w$ and a walk $p$ from $y$ to $w$, it stops.
-      It then returns $w$ and the walk from $x$ that steps to $y$ and
-      follows $p$. If all of these searches fail, the search fails.
+      length $0$ at $x$, with $S' = S$.
+    \item Otherwise, let $y_1, \ldots, y_k$ be the out-neighbours of
+      $x$ in the order of $N^+(x)$, and let $S_0 = S \cup \{x\}$. For
+      $i = 1, \ldots, k$ in turn, it runs the search for $P$ from
+      $y_i$ with $S_{i-1}$ marked. If this search returns a vertex $w$
+      and a walk $p$ from $y_i$ to $w$, it stops, and returns $w$, the
+      walk from $x$ that steps to $y_i$ and follows $p$, and the set
+      that this search returned. If it fails, with the set $S_i$, the
+      search goes on to $y_{i+1}$. If all $k$ of these searches fail,
+      the search fails, with $S' = S_k$.
   \end{enumerate}
   The \emph{search for $P$ from $v$} is the case $S = \varnothing$ and
-  $x = v$.
+  $x = v$, without its set $S'$.
 \end{definition}
 
 \begin{fmlnote}
@@ -86,17 +91,13 @@ start, since we prove its correctness by induction over all such sets.
   a function from $V$ to $\{\mathrm{true}, \mathrm{false}\}$.
 \end{fmlnote}
 
-The search terminates, since each search started in step~3 has one
-more marked vertex than the search that starts it, and $V$ is finite.
-When the search from $v$ reaches a vertex $x$ along a walk
-$v, \ldots, x$, the marked vertices are those of this walk before $x$.
-The searches from the out-neighbours of $x$ all start with the same
-marked set, so a vertex that an earlier one visited is not marked for
-a later one. Hence the search may visit a vertex once for each simple
-walk from $v$ to it. When no vertex satisfies $P$, it follows every
-simple directed $R$-walk from $v$, and there can be exponentially many
-of these in $|V|$. In this it differs from a depth-first search that
-marks each vertex once for the whole search.
+The search terminates, since each search started in step~3 starts
+with a set that contains $S \cup \{x\}$, so with fewer unmarked
+vertices than the search that starts it, and $V$ is finite. A vertex
+that the search enters is marked, it stays marked for the rest of the
+search, and the search does not enter a marked vertex again. So the
+search from $v$ enters each vertex at most once, and starts at most one
+search for each entry of each list $N^+(a)$.
 
 \begin{theorem}[Correctness of the search]
   \label{thm:reachable-finding-correct}
@@ -127,30 +128,32 @@ marks each vertex once for the whole search.
   no vertex of $p$ lies in $S$. If the search returns in step~2, then
   $w = x$, $P(x)$ holds, $x \notin S$, and $p$ has the single vertex
   $x$. Otherwise it returns in step~3, and $p$ steps from $x$ to an
-  out-neighbour $y$ and then follows a walk $p'$, which the search
-  from $y$ with $S \cup \{x\}$ marked returned. By induction, $P(w)$
-  holds, $p'$ is simple, and no vertex of $p'$ lies in $S \cup \{x\}$.
-  Since $x \notin S$, the walk $p$ is simple and avoids $S$.
+  out-neighbour $y_i$ and then follows a walk $p'$, which the search
+  from $y_i$ with $S_{i-1}$ marked returned. By induction, $P(w)$
+  holds, $p'$ is simple, and no vertex of $p'$ lies in $S_{i-1}$, which
+  contains $S \cup \{x\}$. Since $x \notin S$, the walk $p$ is simple
+  and avoids $S$.
 
   For completeness we show: if the search for $P$ from $x$ with $S$
-  marked fails, then no directed $R$-walk from $x$ that avoids $S$ ends
-  at a vertex satisfying $P$. This gives completeness, since a vertex
-  reachable from $v$ is the end of a directed $R$-walk from $v$. If
-  $x \in S$, every walk from $x$ meets $S$ at its first vertex. If
-  $P(x)$ holds, the search does not fail. So let $x \notin S$, and let
-  $P(x)$ fail. Since the search fails in step~3, the search from every
-  out-neighbour of $x$ with $S \cup \{x\}$ marked fails.
+  marked fails, with the set $S'$, then $x \in S'$, and every vertex
+  of $S' \setminus S$ fails $P$ and has all its out-neighbours in $S'$.
+  If $x \in S$, then $S' = S$, which contains $x$. If $P(x)$ holds, the
+  search does not fail. So let $x \notin S$, and let $P(x)$ fail. Then
+  the searches from $y_1, \ldots, y_k$ in step~3 all fail, with sets
+  $S_0 \subseteq S_1 \subseteq \cdots \subseteq S_k = S'$. By
+  induction, $y_i \in S_i \subseteq S'$, and every vertex of
+  $S_i \setminus S_{i-1}$ fails $P$ and has all its out-neighbours in
+  $S_i \subseteq S'$. Since $S_0 = S \cup \{x\}$, a vertex of
+  $S' \setminus S$ is either $x$, which fails $P$ and whose
+  out-neighbours are $y_1, \ldots, y_k$, or a vertex of
+  $S_i \setminus S_{i-1}$ for some $i$. And $x \in S_0 \subseteq S'$.
 
-  Let $p$ be a directed $R$-walk from $x$ to $w$ that avoids $S$. We
-  show that $P(w)$ fails, by induction on the length of $p$. If $p$
-  has length $0$, then $w = x$. Otherwise $p$ steps from $x$ to an
-  out-neighbour $y$ and then follows a walk $p'$ from $y$ to $w$. If
-  $p'$ visits $x$, the part of $p'$ that starts at its first visit to
-  $x$ is a shorter walk from $x$ to $w$ that avoids $S$, and the
-  induction on length applies. Otherwise $p'$ avoids $S \cup \{x\}$.
-  The search from $y$ with $S \cup \{x\}$ marked fails and has fewer
-  unmarked vertices, so $P(w)$ fails by the induction on unmarked
-  vertices.
+  This gives completeness. If the search for $P$ from $v$ fails, with
+  the set $S'$, then $v \in S'$, and every vertex of $S'$ fails $P$ and
+  has all its out-neighbours in $S'$, since nothing was marked at the
+  start. By induction on the length of a directed $R$-walk from $v$,
+  every vertex reachable from $v$ lies in $S'$, so none satisfies
+  $P$.
 \end{proof}
 
 \subsection{Reachability regions}

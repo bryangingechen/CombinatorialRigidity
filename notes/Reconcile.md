@@ -31,10 +31,11 @@ which Tutte–Nash-Williams and its two other callers use as it is, task 14 had 
 packing's descent call the packing move, whose statement now says what the move does, task 15
 shortened Katoh–Tanigawa Lemma 4.8(ii)'s minimality to their Lemma 4.3's argument, which needs
 no Lemma 4.7, task 15.1 dropped three vertex hypotheses of that lemma which its edge
-hypotheses imply (`F-274`), and task 16, a recon, settled the fix of the pebble game's search
+hypotheses imply (`F-274`), task 16, a recon, settled the fix of the pebble game's search
 (one marked set threaded through the sibling calls, completeness from the set it returns) and
-found a kernel-reducible `decide` not cheap, so the texts name `native_decide`. **Next concrete
-task:** round 3's task 17, the search with one visited set.
+found a kernel-reducible `decide` not cheap, so the texts name `native_decide`, and task 17
+landed that search, re-proved, with `dfs.tex` restated. **Next concrete task:** round 3's task
+18, the timing script.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
@@ -206,10 +207,10 @@ the footprint's docstrings to the phase's list.
   pin.
 - **Non-vacuity witnesses** for every main result outside S1, S2 and G6's rows. A witness that
   fails is a new `S` entry for the phase, not a stop.
-- **L1–L2, the algorithm**: a recon first (the completeness proof inducts along the walk,
-  `dropUntilBundle`), then one visited set threaded through sibling calls, with
-  `reachableFinding_sound` and `_complete` re-proved, and the diamond-chain timing re-measured by a
-  committed script. Then `parsePair` on any whitespace, and one rewrite of the texts: the
+- **L1–L2, the algorithm**: a recon first (the completeness proof then inducted along the walk with
+  `dropUntilBundle`, which task 17 deleted), then one visited set threaded through sibling calls,
+  with `reachableFinding_sound` and `_complete` re-proved, and the diamond-chain timing re-measured
+  by a committed script. Then `parsePair` on any whitespace, and one rewrite of the texts: the
   docstrings, `Main.lean`, `Examples.lean`, the `lakefile.toml` comment, `DESIGN.md`'s section and
   `dfs.tex`. The recon also settles `decide`: a kernel-reducible form if one is cheap, else the
   texts name `native_decide` as measured.
