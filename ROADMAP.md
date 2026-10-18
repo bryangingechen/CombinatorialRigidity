@@ -1313,10 +1313,11 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `forest_surgery_split`, task 7 renamed `F-061`'s two `_forest` pins `_starForest`, the shape
   their hypothesis forces, task 8 dropped the planar layer's unused or derivable hypotheses, task 9
   the pebble game's `hloops`, which `himg` implies, task 10 the unused hypotheses of the
-  deficiency and the induction, and task 11 the chain extraction's, its triangle lemma now the
-  case $m = 3$ of the cycle lemma, which left one missing forward edge (`F-270`), and task 11.1
-  moved the cycle lemma to the deficiency chapter so that the edge points back. **Next:** task 12,
-  the algebraic induction's unused or derivable hypotheses.
+  deficiency and the induction, task 11 the chain extraction's, its triangle lemma now the
+  case $m = 3$ of the cycle lemma, which left one missing forward edge (`F-270`), task 11.1
+  moved the cycle lemma to the deficiency chapter so that the edge points back, and task 12
+  dropped the algebraic induction's unused or derivable hypotheses (the cut-edge lemmas' among
+  them). **Next:** task 13, one disjoint cover for the forest packing.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

@@ -2414,7 +2414,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the pin's statement and body, `Molecular/AlgebraicInduction/Theorem55.lean`,
   and its call in `theorem_55_minimalKDof_gen`).
   *Found:* round 2 task 2.16.
-  *Disposition:* reported (`notes/Prose-report.md`, S17).
+  *Disposition:* done (task 12): the pin's hypothesis is the first conjunct, the statement's
+  (`F-104`); the note's sentences on the second are gone. Before: reported
+  (`notes/Prose-report.md`, S17).
 - **F-107** · S · `lem:chain-cycle-dichotomy` (`molecular-induction.tex`): at the open the
   statement also said that both branches occur: for $d \ge 4$, minimal $0$-dof cycle graphs on
   $4 \le m \le d$ vertices have no chain of length $d$. No pin states this. `isKDof_zero_of_cycle`
@@ -3444,7 +3446,12 @@ declaration's name as its header writes it:
   in the same file asks it only at the edges of $G$.
   *Evidence:* read (the two statements).
   *Found:* round 2 task 2.5.
-  *Disposition:* reported (`notes/Prose-report.md`, L7).
+  *Disposition:* done (task 12): the hypothesis is `∀ e u v, F.graph.IsLink e u v →
+  F.supportExtensor e ≠ 0`, the relative bound's; its four callers (`rigidityMatrix_prop11`, the
+  two forms of the molecular conjecture, `molecule_rank_upper_bound`'s proof) pass their `∀ e`
+  form at the edges and keep it (the first three state it: two main results, and S18's node, the
+  phase's); the notes of `rem:molecular-conjecture-essential` and the molecule rank formula no
+  longer say the bound asks every label. Before: reported (`notes/Prose-report.md`, L7).
 - **F-064** · L · `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
   (`Molecular/RigidityMatrix/Bricks.lean`): its docstring names the node
   `lem:rigidityRows-cut-rank-add`, which does not exist; the declaration is pinned on
@@ -3467,7 +3474,10 @@ declaration's name as its header writes it:
   follows from `hKmin` (it is a minimal $k$-dof-graph) by `Graph.loopless_of_isMinimalKDof`.
   *Evidence:* read (the statement and body; `Graph.loopless_of_isMinimalKDof`, `Deficiency.lean`).
   *Found:* round 2 task 2.7.
-  *Disposition:* reported (`notes/Prose-report.md`, L7).
+  *Disposition:* done (task 12): `hcLoop` dropped, the body deriving it from `hKmin` by
+  `Graph.loopless_of_isMinimalKDof`; the caller, `case_I_realization_all_k_gen`, passes one argument
+  fewer; `lem:rank-polynomial-IH-relabel-proj`'s note no longer calls it a separate hypothesis.
+  Before: reported (`notes/Prose-report.md`, L7).
 - **F-074** · L · docstrings in `Molecular/Deficiency.lean`: `Graph.matroidMG`'s says that
   $M(\tilde G)$ is "the boundary regime `ℓ = 2k = D`", not "the matroidal regime `ℓ < 2k` of
   `CountMatroid.lean`". The $(D,D)$ count has $\ell = k$, inside $\ell < 2k$; `countMatroid` does
@@ -3591,7 +3601,10 @@ declaration's name as its header writes it:
   `d = 3` regime", which is $d \ge 3$.
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.16.
-  *Disposition:* reported (`notes/Prose-report.md`, L6).
+  *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hV3` dropped from
+  `case_cut_edge_realization_gen` and `_gp_gen`, and the second conjunct from the latter's
+  hypothesis (`F-102`), the call in `theorem_55_minimalKDof_gen` following, its statement
+  unchanged; both nodes no longer ask three vertices (task 12).
 - **F-108** · L · the pins of KT Lemma 4.6's nodes (`Induction/ForestSurgery/ChainExtraction.lean`,
   `Induction/Operations.lean`, `Molecular/Deficiency.lean`): `chainData_extract` takes
   `hV3 : 3 ≤ V(G).ncard` beside `hV4 : 4 ≤ V(G).ncard`, and `[G.Simple]`, which
@@ -3744,7 +3757,12 @@ declaration's name as its header writes it:
   (U1–U4, "Phase 22b route (i) Commit 5") and calls the dead `case_I_realization` the composer.
   *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers).
   *Found:* round 3 task 2.7.
-  *Disposition:* reported (`notes/Prose-report.md`, L6).
+  *Disposition:* reported (`notes/Prose-report.md`, L6); round 3:
+  `rigidContract_exterior_rank_transport_htransport` states its conclusion without the `∀ Q` and
+  the three hypotheses, and `rigidContract_exterior_rank_transport` (unpinned), which took that form
+  as its hypothesis and was left a pass-through, was deleted, `case_I_realization` calling the pin
+  directly; `lem:claim-6-4`'s note no longer says the pin states its conclusion for every such
+  realization (task 12).
 - **F-144** · L · the docstrings of `case-i.tex`'s last four pins
   (`Molecular/AlgebraicInduction/Theorem55.lean`). `case_I_dispatch_gen`'s calls "the `d = 3`
   `case_I_dispatch` below" its `k = 2` wrapper; the docstrings of `case_I_realization_h65_gen` and
@@ -4361,6 +4379,14 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache after task 5).
   *Found:* RECONCILE round 3 task 5.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-271** · L · `PanelHingeFramework.case_I_realization` (`AlgebraicInduction/CaseI.lean`): an
+  unpinned declaration that no main result's proof reaches and nothing calls; it is the only caller
+  of `lem:claim-6-4`'s pin, `rigidContract_exterior_rank_transport_htransport`, which stays with
+  its node. `F-139` and `F-140` call it dead; no L9 entry names it.
+  *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
+  *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at task 11.1's tree).
+  *Found:* RECONCILE round 3 task 12.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

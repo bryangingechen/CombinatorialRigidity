@@ -1213,7 +1213,7 @@ theorem span_rigidityRows_eq_of_supportExtensor_agree {Gᵢ : Graph α β}
 (`lem:case-cut-edge-realization`, bare conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the
 `not-2EC` branch; Phase 22i, Phase 23b OD-7 tail general-`k` lift).
 
-Given a minimal `c`-dof-graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected, the
+Given a minimal `c`-dof-graph `G` that is not 2-edge-connected, the
 bare panel-realization conjunct `HasPanelRealization K k n G` holds.
 
 **Proof sketch.** `exists_cut_decomposition_of_not_twoEdgeConnected` yields a cut
@@ -1235,8 +1235,7 @@ carry has been collapsed away, Phase 23-cleanup S2 — same rationale as `theore
 above). -/
 theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
-    (hntec : ¬ G.TwoEdgeConnected)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hntec : ¬ G.TwoEdgeConnected)
     (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
       V(G').ncard < V(G).ncard → HasPanelRealization K k n G') :
     HasPanelRealization K k n G := by
@@ -1371,11 +1370,11 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
 (`lem:case-cut-edge-realization-gp`, GP conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the
 `not-2EC` GP arm; Phase 22i, Phase 23b OD-7 tail general-`k` lift).
 
-Given a minimal `c`-dof simple graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected, the
+Given a minimal `c`-dof simple graph `G` that is not 2-edge-connected, the
 generic-motive conjunct `HasGenericFullRankRealization K k n G` holds.
 
 **Proof sketch.** Cut decomposition (as L4a). Each side `G.induce Vᵢ` is simple (induced subgraph
-of a simple graph), so the conditioned IH's `.1 hSimpleᵢ` supplies a side GP framework `QFᵢ`.
+of a simple graph), so the conditioned IH at `hSimpleᵢ` supplies a side GP framework `QFᵢ`.
 Seed `q₀ᵢ := fun p => QFᵢ.normal p.1 p.2`; GP transfers to `ofNormals (G.induce Vᵢ) G.endsOf q₀ᵢ`
 (same normals, motion-space equality by swap-invariance → same finrank). W6e +
 `exists_rankPolynomial_of_le_finrank_linking` → `Qᵢ_rank` transferring `Nᵢ = finrank QFᵢ`
@@ -1398,12 +1397,11 @@ Consumed directly at `k := 2` by `theorem_55_minimalKDof_gen`'s `hcut_k` carry (
 rationale as `theorem_55_base_producer` above). -/
 theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c)
     (hntec : ¬ G.TwoEdgeConnected) (hSimple : G.Simple)
     (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
       V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G') ∧
-        HasPanelRealization K k n G') :
+      G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   -- ── Step 1: Cut decomposition ─────────────────────────────────────────────────────────
@@ -1431,9 +1429,9 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     hSimple.mono (G.induce_le Set.sdiff_subset)
   -- ── Step 4: Side GP frameworks from IH ─────────────────────────────────────────────────
   obtain ⟨QF₁, hQF₁g, hQF₁gp, hQF₁rank, hQF₁rec⟩ :=
-    (hIH c₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard).1 hSimple₁
+    hIH c₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard hSimple₁
   obtain ⟨QF₂, hQF₂g, hQF₂gp, hQF₂rank, hQF₂rec⟩ :=
-    (hIH c₂ (G.induce V₂) hG₂ hV₂ne hV₂ncard).1 hSimple₂
+    hIH c₂ (G.induce V₂) hG₂ hV₂ne hV₂ncard hSimple₂
   -- ── Step 5: Side seeds ─────────────────────────────────────────────────────────────────
   -- Each side IH framework is literally `ofNormals (G.induce Vᵢ) QFᵢ.ends q₀ᵢ`
   -- at the seed `q₀ᵢ := fun p => QFᵢ.normal p.1 p.2`.
@@ -1968,8 +1966,8 @@ hypothesis supplies:
 The block-triangular coupling is assembled from:
 * **`H`-leg**: `exists_rankPolynomial_of_rigidOn_linking_set` — same as the `0`-dof case;
 * **surviving block**: `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (L5b-ii-b) —
-  the deficiency-tolerant mirror of `rigidContract_exterior_rank_transport` + `_proj` chain,
-  carrying the contraction IH's rank across the collapse-relabel selector swap with the `−c`
+  the deficiency-tolerant mirror of `rigidContract_exterior_rank_transport_htransport` + `_proj`
+  chain, carrying the contraction IH's rank across the collapse-relabel selector swap with the `−c`
   deficiency;
 * **coupler**: `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`
   (L5b-ii-c) — the `−c`-aware restate of the rigid coupler.
@@ -2056,10 +2054,9 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
   -- (L5b-ii-b) The deficiency-aware `_proj` rank polynomial for the surviving block.
   -- Uses `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (the all-k mirror of the rigid
   -- `rigidContract_exterior_rank_transport_htransport` + `_proj` packaging).
-  have hcLoop : (G.rigidContract H r).Loopless := hcSimple.toLoopless
   obtain ⟨Qc, hQc_ne, hsc_proj_indep⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
-      G H ends hr hHsub hKmin hQcf hcLoop hendsGc
+      G H ends hr hHsub hKmin hQcf hendsGc
   -- (3) Feed both legs into the block-triangular deficiency-aware coupler (L5b-ii-c).
   -- Extra inputs vs the rigid coupler: `hn` (B2) and `hne_G` (extensor nonzero).
   exact
@@ -2295,9 +2292,10 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_gen
     -- hbase_k: `theorem_55_base_producer_gen` (any dof, |V| ≤ 2).
     (fun c G hG hne hV2 => theorem_55_base_producer_gen hk1 (by omega) hn G hG hne hV2)
     -- hcut_k: GP from `case_cut_edge_realization_gp_gen`, bare from its non-GP form.
-    (fun c G hG hV3 hntec hIH => ⟨
-      fun hSimple => case_cut_edge_realization_gp_gen (by omega) hn G hG hV3 hntec hSimple hIH,
-      case_cut_edge_realization_gen (by omega) hn G hG hV3 hntec
+    (fun c G hG _ hntec hIH => ⟨
+      fun hSimple => case_cut_edge_realization_gp_gen (by omega) hn G hG hntec hSimple
+        (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).1),
+      case_cut_edge_realization_gen (by omega) hn G hG hntec
         (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩)
     -- hcontract_k: the general-grade `case_I_hcontract_gen` (Case-I dispatch for `c = 0`, manual
     -- dispatch for `c > 0`).
@@ -2900,7 +2898,7 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
   · -- (⇒) body-hinge ⇒ panel-hinge, via `def(G̃) = 0` and Theorem 5.6.
     rintro ⟨F, hFg, hFC, hFrig⟩
     -- The genericity-free lower bound `D + def(G̃) ≤ dim Z(F)` (genuine hinges).
-    have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hFC
+    have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions fun e _ _ _ => hFC e
     rw [hFg] at hub
     -- Rigidity fixes `dim Z(F) = D`.
     have hZF : (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim (n - 1) := by
@@ -3292,7 +3290,7 @@ theorem molecular_conjecture_multigraph [Infinite K]
   constructor
   · -- (⇒) body-hinge ⇒ coplanar panel, via `def(G̃) = 0` and the multigraph Theorem 5.6.
     rintro ⟨F, hFg, hFC, hFrig⟩
-    have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hFC
+    have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions fun e _ _ _ => hFC e
     rw [hFg] at hub
     have hZF : (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim (n - 1) := by
       have h0 : (Module.finrank K F.infinitesimalMotions : ℤ) = (screwDim (n - 1) : ℤ) + 0 :=

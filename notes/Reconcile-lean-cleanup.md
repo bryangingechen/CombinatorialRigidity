@@ -13,11 +13,10 @@ changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`
 wait for the phase. The open (task 1, docs only) reproduced round 2's close values and sliced the
 round into 39 one-commit tasks; task 2 committed the docstring-label check, tasks 3–6 made L9's
 deletions, `F-090`'s shim among them (the check 422 → 390), task 7 `F-061`'s rename (388),
-tasks 8–11 dropped L6–L8's unused or derivable hypotheses (the planar layer, the pebble game's
-`hloops`, the deficiency and the induction, the chain extraction), and task 11.1 moved
-`lem:cycle-zero-dof` to `deficiency.tex` so that task 11's one missing edge (`F-270`) points back.
-**Next concrete task:** task 12, the algebraic induction (*Lemma checklist*). Round manual:
-`CLEANUP.md`.
+tasks 8–12 dropped L6–L8's unused or derivable hypotheses (the planar layer, the pebble game's
+`hloops`, the deficiency and the induction, the chain extraction, the algebraic induction; task
+11.1 cured task 11's forward edge, `F-270`). **Next concrete task:** task 13, one disjoint cover
+(*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -27,28 +26,39 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 11.1 is done** (this commit; docs only); nothing is mid-stream, and the graph has no
-missing edge.
+**Task 12 is done** (this commit, in one: no 12.1); nothing is mid-stream.
 
-**Task 11.1, `F-270`'s cure**: `lem:cycle-zero-dof` moved to `deficiency.tex` after
-`lem:two-vertex-zero-dof` (both pins are `Molecular/Deficiency.lean`'s), the cycle stated in its own
-words, so its statement edge to `def:cycle-data` (no Lean basis) is gone; `lem:splitoff-simple`'s
-proof `\uses` it for `def:D-deficiency`, the triangle the cycle on three vertices; the leads of
-`deficiency.tex`'s rigid-subgraph subsection and two-vertex paragraph, and of the KT Lemma 4.6
-subsection, follow. The dump as the checklist line expected (1 526 edges, the `lean_decls` hash
-`5d8c0cfb7a2d68a1`); `--summary` missing 1 → 0, unbacked transitive 85 → 84, none 134 → 133; gate
-7 the open's 33/17 and 4/4; gate 9 388, task 11's report byte for byte; `verify.sh` 9 `WARNING:`
-lines, `print.log` 0 `LaTeX Warning`. The ledger: 270 entries, 148 `done`, 10 `left`, 110
-`reported`, 2 `open` (`F-268`, `F-269`, task 38's); the next ID is `F-271`.
+**Task 12, the algebraic induction's signatures** (`F-104`, `F-102`, `F-070`, `F-063`, `F-140`):
+`case_cut_edge_realization_gen` and `_gp_gen` without `_hV3`, the second's hypothesis its first
+conjunct, the call in `theorem_55_minimalKDof_gen` projecting it (statement unchanged);
+`exists_rankPolynomial_of_IH_relabel_linking_set_proj` without `hcLoop`
+(`Graph.loopless_of_isMinimalKDof hKmin`); the hub
+`screwDim_add_deficiency_le_finrank_infinitesimalMotions` asks $C(e) \ne 0$ at the links of $G$,
+its four callers passing their `∀ e` form;
+`rigidContract_exterior_rank_transport_htransport` without the `∀ Q` and its three hypotheses, and
+`rigidContract_exterior_rank_transport` (unpinned, dead), left a pass-through, deleted after
+block (b) (no blocker, no orphan) and the trial deletion, `case_I_realization` calling the pin.
+Restated: `lem:case-cut-edge-realization` and `-gp` (no three vertices); the notes of `-gp`,
+`lem:rank-polynomial-IH-relabel-proj`, `lem:claim-6-4`, `rem:molecular-conjecture-essential` and the
+molecule rank formula's. The dump byte-identical to task 11.1's; `--summary`: Lean constants 7 175 →
+7 174, implied 2 430 → 2 432 (`lem:rank-polynomial-IH-relabel-proj`'s proof now reaches
+`def:edge-multiply` and `def:graph-sparse`, both ancestors), no Lean basis 133 → 134
+(`lem:case-cut-edge-realization-gp`'s statement edge to `def:genuine-hinge-realization`, the dropped
+conjunct's); gate 9 388 → 387 (the deleted wrapper's line); `verify.sh` 9 `WARNING:` lines,
+`print.log` 0 `LaTeX Warning`. New: `F-271` (`case_I_realization`, unpinned and uncalled; task
+38). The ledger: 271 entries, 151 `done`, 10 `left`, 107 `reported`, 3 `open` (`F-268`, `F-269`,
+`F-271`, task 38's); the next ID is `F-272`.
 
-**Done before** (tasks 3–11): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
+**Done before** (tasks 3–11.1): L9's thirty-nine deletions (`F-266`'s and `F-267`'s orphans among
 them; the pins they left without a caller stay with their nodes), `F-090`'s shim, `F-061`'s rename
 to `_starForest`, the planar layer's five hypotheses (`F-013`, `F-017`, `F-021`, `F-024`;
 `lem:trivialMotionFamily-linearIndependent` restated), the pebble game's `hloops` (`F-039`;
 `edgeListSorted_no_loops` deleted), the deficiency's and the induction's unused binders (`F-075`,
 `F-077`, `F-092`, `F-094`; `lem:deficiency-ear-merge` restated for a walk), and the chain
 extraction's (`F-108`; `isKDof_zero_of_triangle` now the case $m = 3$ of `isKDof_zero_of_cycle`,
-`lem:chain-data-extract` restated; Lean constants 7 175). Gate 2 runs block (c) since task 5.
+`lem:chain-data-extract` restated; Lean constants 7 175), and `F-270`'s cure (task 11.1:
+`lem:cycle-zero-dof` moved to `deficiency.tex`, the graph again without a missing edge). Gate 2
+runs block (c) since task 5.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -247,13 +257,10 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `_starForest`, their docstrings and `lem:own-end-rows-independent`'s pins with them; the dump's
   `lean_decls` hash and pin line as expected; gate 9 388. The forest lemma is the phase's (c).
 - [x] **8. L6–L7: the planar layer** (`F-013`, `F-017`, `F-021`, `F-024`): the two `hab`, the two
-  `hF_finite` and `[Finite V]` with its `@[nolint]` dropped, the callers following
-  (`contradiction_one_pair`'s `[Finite V]` with them); `lem:trivialMotionFamily-linearIndependent`
-  restated; the dump byte-identical; gate 9 388.
-- [x] **9. L7: the pebble game's `hloops`** (`F-039`): dropped from the three, derived from `himg`
-  in `runPebbleGameWith_underline_eq`; `runPebbleGame_edges_discharges`' no-loops conjunct and the
-  orphaned `edgeListSorted_no_loops` gone, the callers following; the dump byte-identical; gate 9
-  388.
+  `hF_finite` and `[Finite V]` dropped, the callers following;
+  `lem:trivialMotionFamily-linearIndependent` restated; the dump byte-identical; gate 9 388.
+- [x] **9. L7: the pebble game's `hloops`** (`F-039`): derived from `himg`; the orphaned
+  `edgeListSorted_no_loops` gone; the dump byte-identical; gate 9 388.
 - [x] **10. L6: the deficiency and the induction** (`F-075`, `F-077`, `F-092`, `F-094`): `hD`,
   `_hinj`, `_hdeg2` and `heab` dropped, with the binders two pass-throughs and
   `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof` were left holding; twenty-six call sites;
@@ -262,22 +269,14 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `[G.Simple]`, `chainWalk_charging` without its three, `isKDof_zero_of_triangle` the case $m = 3$
   of `isKDof_zero_of_cycle`; `lem:chain-data-extract` restated; the dump byte-identical; one
   missing forward edge, new: `F-270`; gate 9 388.
-- [x] **11.1. `F-270`'s cure** (docs only): `lem:cycle-zero-dof` to `deficiency.tex` after
-  `lem:two-vertex-zero-dof`, the cycle in its own words without `def:cycle-data`;
-  `lem:splitoff-simple`'s proof `\uses` it for `def:D-deficiency`; the dump as listed before
-  editing (1 525 → 1 526 edges, the `lean_decls` hash kept; `def:cycle-data` → `lem:cycle-zero-dof`
-  gone, `def:cycle-data` → `lem:chain-cycle-dichotomy` and `lem:cycle-zero-dof` →
-  `lem:splitoff-simple` new); `--summary` missing 0, unbacked 84 and 133; gate 7 the open's; gate 9
-  388.
-- [ ] **12. L6–L7 and S17: the algebraic induction** (`F-104`, `F-102`, `F-070`, `F-063`, `F-140`).
-  S17: `case_cut_edge_realization_gen` and `_gp_gen` (`Theorem55.lean` 1337, 1500) without `_hV3`,
-  the second without its hypothesis's second conjunct; the call in `theorem_55_minimalKDof_gen`
-  follows, its statement unchanged; `lem:case-cut-edge-realization-gp`'s note (`panel-layer.tex`
-  716). `hcLoop` of `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (`CaseI.lean` 893), from
-  `hKmin`. `screwDim_add_deficiency_le_finrank_infinitesimalMotions` (`PanelLayer.lean` 2039) asks
-  $C(e) \ne 0$ at the edges only. `rigidContract_exterior_rank_transport_htransport` (`CaseI.lean`
-  745) without the three hypotheses its proof discards. May split (12.1, 12.2). *Expected:* the
-  dump byte-identical; node text where a change reaches it.
+- [x] **11.1. `F-270`'s cure** (docs only): `lem:cycle-zero-dof` to `deficiency.tex`,
+  `lem:splitoff-simple`'s proof `\uses` it; the dump as listed before editing (1 526 edges);
+  `--summary` missing 0, unbacked 84 and 133; gate 7 the open's; gate 9 388.
+- [x] **12. L6–L7 and S17: the algebraic induction** (`F-104`, `F-102`, `F-070`, `F-063`, `F-140`):
+  the cut-edge lemmas without `_hV3`, `_gp_gen`'s hypothesis its first conjunct; `hcLoop` from
+  `hKmin`; the hub at the links only; `_htransport` without the `∀ Q`, its pass-through consumer
+  `rigidContract_exterior_rank_transport` deleted; two statements and five notes restated; the dump
+  byte-identical; implied 2 432, no Lean basis 134; new: `F-271`; gate 9 387.
 - [ ] **13. L8: one disjoint cover** (`F-055`). `exists_forestPacking_cover_of_isSparse_restrict`
   (`BodyBar/KFrame.lean` 360) gives a disjoint cover, so `tutte_nash_williams` (`TreePacking.lean`
   432), `linearIndepOn_kFrameRow_of_isSparse_restrict` (`KFrame.lean` 478) and
@@ -397,14 +396,14 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [ ] **37. `Molecular/Molecule/`** (`F-182`, `F-190`, `F-245`, `F-246`; the parts there of `F-186`
   (`Modelling.lean`: the link is projective duality), `F-210`, `F-243`).
 - [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
-  `F-269`'s eight declarations through block (b)). The smell counts again
-  (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's; each `@[nolint …]`
-  and `set_option linter` site checked for its one-line justification (task 8 found that one of
-  the seven bridge "false positives" `notes/ToolchainBumps.md` counts was a real unused binder, and
-  dropped it: that note's "11 such sites in the tree today" is now 10 `grep` lines, 9 sites, and
-  the others want the same `lake lean` check); §C's ranking, the top ten
-  walked with the four questions (expected no-op, §C's calibration). A fix found is a task appended
-  before the close. *Expected:* docs only.
+  `F-269`'s eight declarations and `F-271`'s `case_I_realization` through block (b)). The smell
+  counts again (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the open's; each
+  `@[nolint …]` and `set_option linter` site checked for its one-line justification (task 8 found
+  that one of the seven bridge "false positives" `notes/ToolchainBumps.md` counts was a real unused
+  binder, and dropped it: that note's "11 such sites in the tree today" is now 10 `grep` lines, 9
+  sites, and the others want the same `lake lean` check); §C's ranking, the top ten walked with the
+  four questions (expected no-op, §C's calibration). A fix found is a task appended before the
+  close. *Expected:* docs only.
 - [ ] **39. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check with the
   witnesses; the build, `lake lint` and gates 5–10 at the last task's values; the script's report
   and the forward screen beside the open's; the smell counts; the ledger's dispositions, task
@@ -448,18 +447,18 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 12**, at Opus, Lean: the algebraic induction's signatures (`F-104`, `F-102`, `F-070`,
-`F-063`, `F-140`; *Lemma checklist*), four changes in `Theorem55.lean`, `CaseI.lean` (two) and
-`PanelLayer.lean`. If they do not fit one commit, land S17's as 12.1
-(`case_cut_edge_realization_gen` and `_gp_gen` without `_hV3`, the second without its hypothesis's
-second conjunct, the call in `theorem_55_minimalKDof_gen` following, its statement unchanged) and
-the other three as 12.2, splitting the checklist line in that commit. Re-`grep` the line numbers.
-Gates 1–3 (the axioms harness `cmp`-identical to the open's), gate 2's statement grep of each
-changed name over `blueprint/src/` (`lem:case-cut-edge-realization-gp`'s note, `panel-layer.tex`
-716, is named), 5–6 (the parent `scratch/reconcile-lean/dump-t11_1.txt`, gitignored; regenerate it
-if missing; byte-identical unless node text changes), 9 (388) and 10. Carried in: `F-252` for the
-PI (round 1's *Candidates*; the phase's (a) removes it); `F-268` and `F-269` for task 38. After
-the round the queue stops before `RECONCILE-FORMAL`, which is attended.
+**Next: task 13**, at Opus, Lean: one disjoint cover (`F-055`; *Lemma checklist*).
+`exists_forestPacking_cover_of_isSparse_restrict` gives a disjoint cover, so `tutte_nash_williams`,
+`linearIndepOn_kFrameRow_of_isSparse_restrict` and
+`exists_endpoints_linearIndependent_rigidityRow` drop their disjointifications, and
+`lem:k-frame-forest-packing-of-sparse` (`body-bar.tex`) states what its pin proves. Before editing,
+make the line's *Expected* exact: that node's statement and its edges per the reach report, listed
+in the line. Re-`grep` the line numbers. Gates 1–3 (the axioms harness `cmp`-identical to the
+open's), 2 (the statement grep over `blueprint/src/`), 5–6 (the parent
+`scratch/reconcile-lean/dump-t12.txt`, gitignored; regenerate it if missing), 9 (387) and 10.
+Carried in: `F-252` for the PI (round 1's *Candidates*; the phase's (a) removes it); `F-268`,
+`F-269` and `F-271` for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which
+is attended.
 
 ## Decisions made during this round
 
@@ -479,7 +478,9 @@ the round the queue stops before `RECONCILE-FORMAL`, which is attended.
   `eq_succ_of_isInfinitesimalMotion_cycle` (unpinned, dead) without a caller, so it went with them,
   as L9's "no caller outside themselves" covers (`F-266`); block (b) now lists such orphans (task 4,
   `F-267`). A signature change's orphan goes too, after block (b) and the trial deletion (task 9:
-  `edgeListSorted_no_loops`, the discharge of a dropped hypothesis).
+  `edgeListSorted_no_loops`, the discharge of a dropped hypothesis), and so does a consumer the
+  change leaves a pass-through (task 12: `rigidContract_exterior_rank_transport`, whose hypothesis
+  was `_htransport`'s dropped form).
 - **The rename's name** (task 7): `_starForest`, the shape `hu` and `hsep` force (`F-061`).
 - **A caller's binder the change leaves unused goes with it** (task 8): dropping `hF_finite` left
   `contradiction_one_pair`'s `[Finite V]` unused (it had passed `Set.toFinite _` for it), which

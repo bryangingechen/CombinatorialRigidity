@@ -1939,12 +1939,13 @@ Jackson–Jordán 2009 Thm 6.1). Maximizing the dimension lower bound
 `def`-attaining `f` (`exists_eq_ciSup_of_finite`, a finite supremum under `[Finite α]`) the left
 side reads `D + partitionDef(P) = D + def(G̃)` once `screwDim k = bodyBarDim (k+1)` reconciles the
 two `D` conventions (`(k+2 choose 2) = (k+1)(k+2)/2`), and the transfer
-`partitionMotions f ≤ infinitesimalMotions` carries the bound to `dim Z`. Every hinge is required
-genuine (`F.supportExtensor e ≠ 0`), the `C(e) ≠ 0` the per-crossing-edge cut needs. This is the
-explicit `hub` hypothesis of `rigidityMatrix_prop11` (at `n = k + 1`); discharging it removes the
-genericity-free lower bound from that node's premises. -/
+`partitionMotions f ≤ infinitesimalMotions` carries the bound to `dim Z`. The hinge of every edge of
+`G` is required genuine (`F.supportExtensor e ≠ 0`), the `C(e) ≠ 0` the per-crossing-edge cut
+needs. This is the explicit `hub` hypothesis of `rigidityMatrix_prop11` (at `n = k + 1`);
+discharging it removes the genericity-free lower bound from that node's premises. -/
 theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [Finite α] [Finite β]
-    (F : BodyHingeFramework K k α β) (hC : ∀ e, F.supportExtensor e ≠ 0) :
+    (F : BodyHingeFramework K k α β)
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
     (screwDim k : ℤ) + F.graph.deficiency (k + 1)
       ≤ (Module.finrank K F.infinitesimalMotions : ℤ) := by
   have : Fintype α := Fintype.ofFinite α
@@ -1958,7 +1959,9 @@ theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [F
   obtain ⟨f, hf⟩ := exists_eq_ciSup_of_finite (f := F.graph.partitionDef (k + 1))
   rw [Graph.deficiency, ← hf]
   -- The dimension lower bound at this `f`, and the transfer `partitionMotions f ≤ Z`.
-  have hlb := F.screwDim_mul_numParts_sub_le_finrank_partitionMotions f (fun e _ => hC e)
+  have hlb := F.screwDim_mul_numParts_sub_le_finrank_partitionMotions f fun e he => by
+    obtain ⟨_, x, y, hlink, _⟩ := he
+    exact hC e x y hlink
   have hmono : Module.finrank K (F.partitionMotions f)
       ≤ Module.finrank K F.infinitesimalMotions :=
     Submodule.finrank_mono (F.partitionMotions_le_infinitesimalMotions f)
