@@ -15,10 +15,11 @@ Modifications made in the port:
   the Set-valued lift `IsCircuitS C := ∃ C₀ : Finset α, ↑C₀ = C ∧ Minimal P C₀`
   of the Finset-valued circuit predicate, matching the `Graph.cycleMatroid`
   precedent.
-* Reconstructed the three helper lemmas that lived in the never-committed
-  `IsCircuitAxioms` (`setOf_minimal_antichain`, `intro_elimination_nontrivial`)
-  and the commented-out `ForMathlib/Finset.lean` lemma
-  (`exists_minimal_satisfying_subset`), here as `private` lemmas.
+* Reconstructed three helper lemmas as `private` lemmas: the two that lived in the
+  never-committed `IsCircuitAxioms` (`setOf_minimal_antichain`,
+  `intro_elimination_nontrivial`) and the commented-out `ForMathlib/Finset.lean` lemma
+  (`exists_minimal_satisfying_subset`).
+* Added in this project: `PolymatroidFn.zero_at_empty`, the `Finset` form of `zero_at_bot`.
 -/
 import Matroid.Axioms.Circuit
 import Matroid.Rank.Nat
@@ -32,29 +33,28 @@ import Mathlib.Data.Fintype.Inv
 /-!
 # Matroids from submodular functions
 
-This file ports the matroid-from-submodular-function construction of
-Edmonds 1970 (*Submodular functions, matroids, and certain polyhedra*) from
-Peter Nelson's `apnelson1/Matroid` package. A nonnegative-integer-valued
-submodular, monotone set function `f` on a finite ground set induces a matroid
-`Matroid.ofSubmodular` whose circuits are the minimal nonempty sets `C` with
-`f C < C.card`, equivalently whose independent sets are those `I` with
-`I'.card ≤ f I'` for every nonempty `I' ⊆ I`.
-
-This is Phase 12 (matroid foundations) of the body-bar program; see
-`notes/Phase12.md` and `blueprint/src/chapter/matroid-union.tex`.
+The matroid of a monotone submodular function (Edmonds and Rota 1966; Oxley 2011, §11.1),
+ported from Peter Nelson's `apnelson1/Matroid` package, and Rado's theorem on independent
+transversals. A monotone submodular `f : Finset α → ℤ` induces a matroid `Matroid.ofSubmodular`
+on all of `α` whose circuits are the minimal nonempty finite sets `C` with `f C < C.card`;
+equivalently, a finite set `I` is independent when `I'.card ≤ f I'` for every nonempty
+`I' ⊆ I`. The blueprint presents the file in `sec:matroid-union-submodular` and, for Rado's
+theorem, `sec:matroid-union-union`.
 
 ## Main declarations
 
-* `Matroid.Submodular f` — the submodularity predicate on a lattice-valued
-  domain (`def:submodular`).
+* `Matroid.Submodular f` — the submodularity predicate for a function on a lattice
+  (`def:submodular`).
 * `Matroid.ofSubmodular` — the induced matroid of a monotone submodular
   `f : Finset α → ℤ` (`def:ofSubmodular`).
 * `Matroid.circuit_ofSubmodular_iff` / `Matroid.indep_ofSubmodular_iff` —
   the circuit and independence characterizations.
 * `Matroid.PolymatroidFn` / `Matroid.ofPolymatroidFn` — a polymatroid rank
-  function and its induced matroid.
-* `Matroid.polymatroid_rank_eq` — the polymatroid rank formula (Edmonds 1970,
-  Prop. 11.1.7): `r_{M_f}(X) = min over Y ⊆ X of (f Y + |X \ Y|)`.
+  function and its induced matroid (`def:polymatroidFn`, `def:ofPolymatroidFn`).
+* `Matroid.polymatroid_rank_eq` — the polymatroid rank formula (`lem:polymatroid-rank`;
+  Oxley 2011, Proposition 11.1.7): `r_{M_f}(X) = min over Y ⊆ X of (f Y + |X \ Y|)`.
+* `Matroid.generalized_halls_marriage` — Welsh's theorem on systems of representatives
+  (Oxley 2011, Theorem 11.2.3), and `Matroid.rado` — Rado's theorem (`lem:rado`).
 -/
 
 open Finset
@@ -63,10 +63,10 @@ namespace Matroid
 
 variable {α β : Type*}
 
-/-- A function from a lattice to a linearly ordered additive commutative monoid
-is *submodular* if `f (X ⊓ Y) + f (X ⊔ Y) ≤ f X + f Y` for all `X, Y`. (Only
-the additive and order structure enters the statement, so the order-compatibility
-instance is not required in the signature.) -/
+/-- **Submodularity** (`def:submodular`): a function from a lattice to an additive commutative
+monoid with a linear order is *submodular* if `f (X ⊓ Y) + f (X ⊔ Y) ≤ f X + f Y` for all
+`X, Y`. (Only the additive and order structure enters the statement, so no compatibility
+between them is required in the signature.) -/
 def Submodular [Lattice α] [AddCommMonoid β] [LinearOrder β] (f : α → β) :=
   ∀ X Y, f (X ⊓ Y) + f (X ⊔ Y) ≤ f X + f Y
 
@@ -78,8 +78,9 @@ private lemma setOf_minimal_antichain (P : Finset α → Prop) :
   have hle' : C₁ ≤ C₂ := hle
   exact hne <| le_antisymm hle' (hC₂.2 hC₁.1 hle')
 
-/-- Among the subsets of `s` satisfying a predicate `P`, there is one minimal
-under `⊆`. (Revival of the commented-out `ForMathlib/Finset.lean` lemma.) -/
+/-- If some subset `e` of `s` satisfies a predicate `P`, then some subset of `s` satisfying `P`
+is minimal under `⊆` among the sets satisfying `P`. (The package's commented-out
+`ForMathlib/Finset.lean` lemma.) -/
 private lemma exists_minimal_satisfying_subset (P : Finset α → Prop)
     {s : Finset α} {e : Finset α} (he : e ⊆ s) (hP : P e) :
     ∃ a ⊆ s, P a ∧ ∀ ⦃a'⦄, P a' → a' ⊆ a → a ⊆ a' := by
@@ -93,8 +94,8 @@ private lemma exists_minimal_satisfying_subset (P : Finset α → Prop)
   refine ⟨a, h₁.1, h₁.2, fun a' hPa' ha' ↦ ?_⟩
   exact h₂ (ha'.trans h₁.1) hPa' ha'
 
-/-- Two distinct circuits (minimal sets failing the rank bound) sharing an
-element are both nontrivial. -/
+/-- Two distinct circuits (minimal nonempty sets `X` with `f X < X.card`) sharing an element,
+among circuits that form an antichain, both have at least two elements. -/
 private lemma intro_elimination_nontrivial {f : Finset α → ℤ}
     {C₁ C₂ : Finset α} {e : α}
     (h_anti : IsAntichain (· ⊆ ·) {C | Minimal (fun X ↦ X.Nonempty ∧ f X < X.card) C})
@@ -116,9 +117,9 @@ private lemma intro_elimination_nontrivial {f : Finset α → ℤ}
     exact hne <| h_anti.eq hD₁ hD₂ (hD₁_eq ▸ singleton_subset_iff.mpr he₂)
   exact ⟨key hC₁ hC₂ h_ne heC₁ heC₂, key hC₂ hC₁ h_ne.symm heC₂ heC₁⟩
 
-/-- The matroid induced by a monotone submodular function `f : Finset α → ℤ`
-(Edmonds 1970, Prop. 11.1.1): its circuits are the minimal nonempty sets `C`
-with `f C < C.card`. -/
+/-- **The matroid of a monotone submodular function** (`def:ofSubmodular`; Edmonds and Rota
+1966, Oxley 2011, Proposition 11.1.1): for a monotone submodular `f : Finset α → ℤ`, the matroid
+on all of `α` whose circuits are the minimal nonempty finite sets `C` with `f C < C.card`. -/
 @[simps! E] def ofSubmodular [DecidableEq α] {f : Finset α → ℤ} (h_sub : Submodular f)
     (h_mono : Monotone f) : Matroid α := by
   set P := fun X ↦ X.Nonempty ∧ f X < X.card with hP
@@ -236,9 +237,8 @@ with `f C < C.card`. -/
     have := h C₀ hC₀I hC₀.1.1
     exact absurd (lt_of_le_of_lt (by exact_mod_cast this) hC₀.1.2) (lt_irrefl _)
 
-/-- A *polymatroid (rank) function* on a finite ground set is a normalized
-(`f ⊥ = 0`), monotone, submodular set function (Edmonds 1970, the definition at
-the bottom of p.406). -/
+/-- **A polymatroid rank function** (`def:polymatroidFn`; Oxley 2011, p. 406, calls it a
+polymatroid): a monotone submodular function on a lattice with `⊥` that vanishes at `⊥`. -/
 structure PolymatroidFn [Lattice α] [Bot α] [AddCommMonoid β] [LinearOrder β]
     (f : α → β) : Prop where
   /-- A polymatroid rank function is submodular. -/
@@ -248,15 +248,14 @@ structure PolymatroidFn [Lattice α] [Bot α] [AddCommMonoid β] [LinearOrder β
   /-- A polymatroid rank function is normalized: it vanishes at `⊥`. -/
   zero_at_bot : f ⊥ = 0
 
-/-- A `Finset`-valued polymatroid rank function vanishes at `∅`. The `Finset`
-specialization of `zero_at_bot` (`⊥ = ∅`), fusing the `← bot_eq_empty,
-zero_at_bot` rewrite pair the rank-formula proofs reach for repeatedly. -/
+/-- A polymatroid rank function on `Finset α` vanishes at `∅`: the `Finset` form of
+`zero_at_bot` (`⊥ = ∅`), which the rank-formula proofs use. -/
 theorem PolymatroidFn.zero_at_empty [DecidableEq α] {f : Finset α → ℤ}
     (hf : PolymatroidFn f) : f ∅ = 0 := by
   rw [← bot_eq_empty]; exact hf.zero_at_bot
 
-/-- The matroid `M_f` induced by a polymatroid rank function `f`, i.e.
-`Matroid.ofSubmodular` specialized to `f` (Edmonds 1970). -/
+/-- **The matroid of a polymatroid rank function** (`def:ofPolymatroidFn`): the matroid `M_f`
+induced by a polymatroid rank function `f`, that is, `Matroid.ofSubmodular` at `f`. -/
 @[simps! E] def ofPolymatroidFn [DecidableEq α] {f : Finset α → ℤ}
     (h : PolymatroidFn f) : Matroid α :=
   ofSubmodular h.submodular h.mono
@@ -304,9 +303,9 @@ private theorem polymatroid_rank_eq_on_indep [DecidableEq α] {f : Finset α →
   rw [hY_nonempty, card_empty, hf.zero_at_empty]
   simp only [Nat.cast_zero, sub_zero, zero_add, le_refl]
 
-/-- The polymatroid rank formula (Edmonds 1970, Prop. 11.1.7): for the matroid
-`M_f` induced by a polymatroid rank function `f`, the rank of any `X` is the
-minimum of `f Y + |X \ Y|` over `Y ⊆ X`. -/
+/-- **The polymatroid rank formula** (`lem:polymatroid-rank`; Edmonds and Rota 1966, Oxley
+2011, Proposition 11.1.7): for the matroid `M_f` induced by a polymatroid rank function `f`, the
+rank of any finite `X` is the minimum of `f Y + |X \ Y|` over `Y ⊆ X`. -/
 theorem polymatroid_rank_eq [DecidableEq α] {f : Finset α → ℤ}
     (hf : PolymatroidFn f) (X : Finset α) :
     (∃ Y ⊆ X, f Y + (X \ Y).card ≤ (ofPolymatroidFn hf).rk X) ∧
@@ -473,13 +472,11 @@ theorem polymatroid_rank_eq [DecidableEq α] {f : Finset α → ℤ}
   obtain ⟨e, he⟩ := hx
   exact h_subset e he
 
-/-- The submodular generalization of Hall's / Rado's marriage condition (the
-inductive core underlying Rado's theorem — Rado 1942; see Oxley 2011, *Matroid
-Theory*, §11.2 for the presentation we follow): for a monotone submodular
-`f : Finset α → ℕ` and a finite family of nonempty sets `A i`, a choice of
-representatives `e i ∈ A i` with `|K| ≤ f (image e K)` for all `K` exists iff
-`|K| ≤ f (K.biUnion A)` for all `K`. (Port of `apnelson1/Matroid`'s
-`WIP/Submodular.lean`.) -/
+/-- **Welsh's theorem on systems of representatives** (a step of `lem:rado`; Welsh 1971, Oxley
+2011, Theorem 11.2.3, from which Oxley derives Rado's theorem): for a monotone submodular
+`f : Finset α → ℕ` and a finite family of nonempty sets `A i`, a choice of representatives
+`e i ∈ A i`, not necessarily distinct, with `|K| ≤ f (image e K)` for all `K` exists iff
+`|K| ≤ f (K.biUnion A)` for all `K`. (Port of `apnelson1/Matroid`'s `WIP/Submodular.lean`.) -/
 theorem generalized_halls_marriage {ι : Type*} [Finite ι] [DecidableEq α]
     {A : ι → Finset α}
     (hA_nonempty : ∀ i, (A i).Nonempty)
@@ -928,8 +925,8 @@ lemma PartialTransversal.exists_subset_card_eq {T : PartialTransversal A} {n : �
 /-- Rado's theorem, total-transversal form: a family `A : ι → Finset α` admits a
 *total* partial transversal whose covered elements are independent in `M` iff the
 rank condition `|K| ≤ r_M (⋃ K A)` holds for every `K` (Rado 1942; Oxley 2011,
-*Matroid Theory*, Thm 11.2.2). The submodular core is `generalized_halls_marriage`
-applied to `f S = r_M S`. (Port of `apnelson1/Matroid`'s `WIP/Submodular.lean`.) -/
+Theorem 11.2.2). The submodular core is `generalized_halls_marriage` applied to
+`f S = r_M S`. (Port of `apnelson1/Matroid`'s `WIP/Submodular.lean`.) -/
 theorem rado_v2 [Finite ι] [Finite α] [DecidableEq α] (M : Matroid α)
     (A : ι → Finset α) :
     (∃ T : PartialTransversal A, T.Total ∧ M.Indep T.right) ↔
@@ -1089,9 +1086,10 @@ lemma transverses_of_subset_image_univ {T : Finset α} [Fintype ι] [DecidableEq
     Transverses T A := by
   exact transverses_mono (transverses_of_image_univ hi) hf
 
-/-- Rado's theorem (Rado 1942; Oxley 2011, *Matroid Theory*, Thm 11.2.2): the
-family `A : ι → Finset α` has a transversal independent in `M` iff
-`|K| ≤ r_M (⋃ K A)` for every `K`. -/
+/-- **Rado's theorem** (`lem:rado`; Rado 1942, Oxley 2011, Theorem 11.2.2): the family
+`A : ι → Finset α` has a transversal independent in `M` iff `|K| ≤ r_M (⋃ K A)` for every
+`K`. Welsh's theorem (`generalized_halls_marriage`) at `f S = r_M S` gives representatives,
+which the condition at two-element sets `K` makes distinct. -/
 theorem rado [Finite ι] [DecidableEq α] (M : Matroid α) (A : ι → Finset α) :
     (∃ e, Transversal e A ∧ M.Indep (Set.range e)) ↔
     (∀ K : Finset ι, K.card ≤ M.rk (K.biUnion A)) := by

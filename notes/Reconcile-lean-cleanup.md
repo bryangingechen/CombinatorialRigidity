@@ -10,12 +10,13 @@ each of the 16 main results outside S1's and S2's rows, and the docstring sweep 
 L10–L12, M2's, M4's and M5's docstrings, round 2's six `L` entries). No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–26 are done (*Current state*): the open, the docstring-label check
-(gate 9: 422 at task 2, 381 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
+wait for the phase. Tasks 1–27 are done (*Current state*): the open, the docstring-label check
+(gate 9: 422 at task 2, 369 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, L6–L8's
 hypotheses and repeated derivations, the pebble game's search with one visited set and its texts
 (tasks 16–20), the sixteen non-vacuity witnesses (tasks 21–24), and the docstrings of the planar
-files, of `Search/`, of `Mathlib/` and of `PebbleGame/` (tasks 25–26). **Next concrete task:**
-task 27, the docstrings of `Matroid/` and `BodyBar/` (*Lemma checklist*).
+files, of `Search/`, of `Mathlib/`, of `PebbleGame/`, of `Matroid/` and of `BodyBar/` (tasks
+25–27). **Next concrete task:** task 28, the docstrings of the square-graph and
+generic-rigidity files (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
@@ -26,19 +27,25 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 26 is done** (this commit); nothing is mid-stream.
+**Task 27 is done** (this commit); nothing is mid-stream.
 
-**Task 26** (`F-035`, `F-040`, `F-045`, `F-230` `done`; `F-279` gains five of `Basic.lean`): the
-docstrings of the five files of `PebbleGame/` (`Examples.lean` with the four the line names) read
-against their bodies; the three "verified-iterative" gone; the false claims named in the commit
-(among them `certifies_against` said to call Lemma 13's graph form, consumers that do not exist or
-do not call, "Feeds (2)" for (3), `Finset.toList` said to lift through `Quotient.lift`, fixed also
-in `Search/DFS.lean` and `DESIGN.md`). Gate 9 387 → 381 (its six lines in `PebbleGame/`). The
-ledger: 279 entries, 166 `done`, 9 `left`, 98 `reported`, 6 `open`.
+**Task 27** (`F-025`, `F-057` `done`; `F-053`, `F-215` but S13's part, `F-243` in part; `F-279`
+gains sixty-five): the docstrings of the eight files of `Matroid/Constructions/` and `BodyBar/`
+(`KFrame.lean` and `TreePacking.lean`, which no task named, with the six the line names) read
+against their bodies, under the sweep's form; credits checked in `.refs/` (Oxley, Edmonds 1965,
+Whiteley 1988, Jackson–Jordán 2010); the ported files' headers list the project's additions;
+the false claims named in the commit (among them the standard basis vectors as "degenerate"
+two-extensors, `n ≥ 2` in `TayTheorem.lean`'s header and `body_hinge_tay`'s docstring, the hinge's
+`δ - 1` vectors said to form a basis, Welsh's theorem credited to Rado,
+`specRow_linearIndependent` said to hold over `K` only, `TreePacking.lean`'s reverse count said
+deferred), and, by the re-`grep` rule, ROADMAP §12's credits and §15–§16's "deferred" generic
+lift. Gate 9 381 → 369 (its twelve lines in these files). The ledger: 279 entries, 168 `done`, 9 `left`, 96 `reported`,
+6 `open`.
 
-**Tasks 25–25.3** (`F-018`, `F-022`, `F-023`, `F-030`, `F-032` `done`; `F-020`, `F-025`, `F-200`,
-`F-228` in part; new `F-278`, `F-279`): the planar files, `Search/DFS.lean` and the 35 files of
-`Mathlib/`, under *Decisions*' sweep form; their messages name each false claim.
+**Tasks 25–26** (`F-018`, `F-022`, `F-023`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`, `F-230`
+`done`; `F-020`, `F-200`, `F-228` in part; new `F-278`, `F-279`): the planar files,
+`Search/DFS.lean`, the 35 files of `Mathlib/` and the five of `PebbleGame/`, under *Decisions*'
+sweep form; their messages name each false claim.
 
 **Done before** (tasks 3–24; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -311,16 +318,18 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   files and `Examples.lean`, which no task named; the three "verified-iterative" gone; task 20's
   running-time texts kept; `Quotient.lift` also in `DFS.lean` and `DESIGN.md`; the dump
   byte-identical; gate 9 381.
-- [ ] **27. `Matroid/` and `BodyBar/`** (M4's `F-053`; `F-057`; `F-215` but S13's part; `F-243`'s
+- [x] **27. `Matroid/` and `BodyBar/`** (M4's `F-053`; `F-057`; `F-215` but S13's part; `F-243`'s
   `BodyBar/GenericLift.lean` header; M2's `TayTheorem.lean` 548): `Matroid/Constructions/{Submodular,
   Union}.lean` (ported from `apnelson1/Matroid`; its credit stays), `BodyBar/{Framework, TayTheorem,
-  BodyHinge, GenericLift}.lean`.
+  BodyHinge, GenericLift}.lean`, and `KFrame.lean`, `TreePacking.lean`, which no task named;
+  `F-025`, `F-057` `done`, `F-279` gains sixty-five; the dump byte-identical; gate 9 369.
 - [ ] **28. The square-graph and generic-rigidity files** (`F-176`, `F-198`, `F-205`; the parts
   there of `F-186`, `F-194`, `F-200`, `F-210`, `F-244`): `GenericRigidityMatroid.lean`,
   `GeneralPositionPlacement.lean`, `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean`,
   `EdgesIn.lean`.
 - [ ] **29. `Molecular/Deficiency.lean`** (`F-074`, `F-080`, M4's `F-081`; the parts there of
-  `F-077`, `F-108`, `F-194`, `F-210` (the year), `F-235`, `F-240`, `F-244`, `F-250`): `matroidMG`
+  `F-053` (the "Edmonds matroid-partition rank formula", 2593–2821), `F-077`, `F-108`, `F-194`,
+  `F-210` (the year), `F-235`, `F-240`, `F-244`, `F-250`): `matroidMG`
   (150) to `loopless_of_isMinimalKDof` (477), the triangle's section (563), the cut helpers
   (1226–1323), the tight partitions (2035), the def = corank group (2611–3252).
 - [ ] **30. `Molecular/Induction/` but `ForestSurgery/`** (`F-085`, `F-094`; the parts in
@@ -410,14 +419,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 27**, at Opus: the docstrings of `Matroid/` and `BodyBar/` (the IDs its checklist
-line names; under the sweep's rules and *Decisions*' sweep form). `BodyBar/KFrame.lean` and
-`TreePacking.lean` are in its directory and no task names them: take them, or split them off as
-27.1 (task 25.1's precedent). *Expected:* the dump byte-identical; gate 9 falls by what the task
-fixes (10 of its lines are in the six named files: `Union.lean` 1, `GenericLift.lean` 4,
-`TayTheorem.lean` 3, `BodyHinge.lean` 2; `KFrame.lean` has 2). Gates 1–3 (gate 3's witnesses: the
-sixteen of `scratch/reconcile-lean/Witnesses-t26.lean`), 5, 6, 9 and 10 (the parent dump
-`scratch/reconcile-lean/dump-t26.txt`, gitignored; regenerate it if missing).
+**Next: task 28**, at Opus: the docstrings of the square-graph and generic-rigidity files (the
+IDs its checklist line names; under the sweep's rules and *Decisions*' sweep form):
+`GenericRigidityMatroid.lean`, `GeneralPositionPlacement.lean`, the five `Jacobs*.lean`,
+`SquareGraph.lean`, `TwoCore.lean`, `EdgesIn.lean`; with them every top-level file but
+`Nonvacuity.lean` (this round's) has had its sweep. *Expected:* the dump byte-identical; gate 9
+falls by what the task fixes (12 of its lines are in these files: `GeneralPositionPlacement.lean`
+2, `JacobsCounting.lean` 7, `JacobsZeroExtension.lean` 3). Gates 1–3 (gate 3's witnesses: the
+sixteen of `scratch/reconcile-lean/Witnesses-t27.lean`), 5, 6, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t27.txt`, gitignored; regenerate it if missing).
 Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275`,
 `F-278`, `F-279` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries
 for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
@@ -465,14 +475,8 @@ for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is
   pin, was an ancestor only through the removed `lem:edge-set-indep-pos`, so the removal alone
   makes it missing. A task's *Expected* models the summary on the cache (`t15-model.py`) and adds
   such an edge in the same commit (backward here, 170 < 1793).
-- **The search's fix** (task 16; landed by task 17): the visit keeps its `ℕ` measure and returns its
-  marked set; the sibling loop, structural on the list, takes the visit as an argument and threads
-  the set. Completeness needs no stack invariant and no walk: on failure each newly marked vertex
-  fails `P` and has its out-neighbours marked, so from `∅` the set holds `v` and is closed under the
-  arcs. A mutual form on a lexicographic measure the kernel does not unfold. `decide` is not cheap:
-  the kernel stops at core's `List.mergeSort` (`Finset.sort`) and, from a `module` file, at each
-  body not `@[expose]`d. The texts name `#eval`, `lake exe` and `native_decide`; the coordinator
-  does not queue the route (`F-276`, reported).
+- **The search's fix** (tasks 16–17): one search threading a marked set, its completeness from
+  closure under the arcs; `decide` stops at `List.mergeSort` and unexposed bodies (`F-276`).
 - **The witnesses' form** (tasks 21–24): `Nonvacuity.lean` is not a `module` (the body-bar and
   molecular rows' files are not). A witness is `CombinatorialRigidity.<name>_witness`
   (`tay_witness`'s: `tay_witness_nonvacuous`), at the smallest input of its row's class where what
@@ -481,11 +485,9 @@ for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is
   3-space `K₃`, the path `P₃` and the paw), and states, for an `iff`, the side derived there, and
   for an equation, `∃` or conditioned pair, what it gives there. A shared fact about the input is a
   `private` lemma.
-- **The texts' running time and `decide`** (task 20): a text states a running time only as
-  measured, naming the script, or claims no bound; and `decide`'s behaviour only as the committed
-  script's facts and the ledger's reasons (`F-276`). A claim on the line's subject that a re-`grep`
-  finds beyond its surfaces is fixed in the same commit (`pebble-game.tex`'s per-walk paragraph,
-  four "`decide` fires").
+- **The texts' running time and `decide`** (task 20): a running time only as measured, naming
+  the script, or no bound; `decide` only as the committed script's facts and `F-276`'s reasons. A
+  claim on the line's subject that a re-`grep` finds beyond its surfaces is fixed in the same commit.
 - **The sweep's form** (task 25): a header's process narration (a *Project context* section, phase
   and commit numbers, `notes/` pointers) becomes one sentence naming the blueprint section that
   presents the file; a credit is the chapter's, and one a docstring keeps beyond it (a page, a

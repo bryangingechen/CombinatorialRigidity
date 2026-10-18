@@ -3490,7 +3490,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the three declarations' statements and bodies; Whiteley 1988 pp. 243, 249, in
   `.refs/`).
   *Found:* round 2 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* done (task 27): `isSpanningTreePacking_of_isTight` cites no Whiteley theorem
+  (the chapter's node credits none); `exists_isIsostatic_of_isTight`'s docstring assumes tightness
+  only and names the forest packing; the three files call a standard basis vector the Plücker
+  vector of a line (Whiteley 1988, proof of Theorem 8, p. 243) and the placement unconstrained.
 - **F-061** · L · `BodyHingeFramework.linearIndependent_hingeRow_forest` and
   `exists_independent_rigidityRows_of_forest` (`Molecular/RigidityMatrix/Basic.lean`): the names
   and docstrings speak of a spanning forest, but the hypothesis `hsep` (no other end of an edge is
@@ -4103,7 +4106,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins and the private lemmas; JJ 2010
   §5, pp. 581–582).
   *Found:* round 4 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, L3).
+  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3: all but S13's part (task 27):
+  `coordPoint`'s origin is the chapter's `c₀` and JJ's `p₀` (2010, p. 581), the two private
+  lemmas say JJ's table has the opposite signs on the direction coordinates, and the process
+  narration is gone; S13's part, `exists_isGenericEndpoints_abundance`'s "`2n|E(G)|` endpoint
+  coordinates", moved to the phase.
 
 - **F-220** · L · the docstrings of task 2.11's pins (`GenericLift/HingeGeneric.lean`). Six credit
   their construction to "Jackson–Jordán 2010 §6", which has neither hinge points nor the row
@@ -4292,7 +4299,9 @@ declaration's name as its header writes it:
   `lem:hinge-rows-polynomial-in-points` to pins those nodes no longer have.
   *Evidence:* read (the docstrings and module headers; a `grep` for the callers).
   *Found:* round 5 task 3.11.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: `BodyBar/GenericLift.lean`'s
+  header maps each node to its pins, and `twoExtensorPoly_eval`'s docstring names
+  `lem:two-extensor-polynomial` (task 27).
 - **F-244** · L · the declarations round 5's task 3.12 pinned or moved (`Molecular/Deficiency.lean`,
   `JacobsCounting.lean`, `TwoCore.lean`). The docstrings of `IsTightPartition` and
   `crossingEdgesWithin` name `lem:exists-tight-partition` and `lem:partitionDef-merge`, now
@@ -4531,8 +4540,9 @@ declaration's name as its header writes it:
   gitignored).
   *Found:* RECONCILE round 3 task 25.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
-- **F-279** · L · unpinned declarations of `Search/DFS.lean`, of `Mathlib/` and of `PebbleGame/`
-  that no declaration of the project uses, twenty-six: outside `Matrix/Rank.lean`,
+- **F-279** · L · unpinned declarations of `Search/DFS.lean`, of `Mathlib/`, of `PebbleGame/`, of
+  `Matroid/` and of `BodyBar/` that no declaration of the project uses: twenty-six in the first
+  three and sixty-five in the last two. Outside `Matrix/Rank.lean`,
   `Dimension/Constructions.lean` and `PebbleGame/`, `Fin.ofNat_eq_mk` (used only by the next) and
   `Fin.two_eq_mk_of_lt`,
   `Sym2.mk_mem_image_map_some_iff`, `Pi.basisFun_dualBasis`, `LinearIndepOn.dualMap_of_surjective`,
@@ -4550,15 +4560,25 @@ declaration's name as its header writes it:
   `LinearIndependent.le_finrank_span_along_affine_path_cofinite` (used only by the previous); in
   `PebbleGame/Basic.lean` (task 26), `out_reverse_le_of_outle`, `peb_reverse_tail`,
   `peb_addArc_source` (whose statement `pebOn_addArc` re-derives in its proof), `span_addArc` and
-  `span_empty`. Also
+  `span_empty`. In `Matroid/` and `BodyBar/` (task 27, the screen run to a fixed point, so a
+  declaration that only others of the set use counts; `rfl` lemmas and generated names left
+  out): in the files ported from `apnelson1/Matroid`, `Submodular.lean`'s structure
+  `PartialTransversal` with its four fields, its `HasSubset` instance and the 42 declarations
+  under its name, `rado_v2` (Rado's theorem in that form), `Transverses`, `Transverses'` and their
+  seven lemmas, and `generalized_halls_marriage'`, and `Union.lean`'s `matroid_partition_eRk'`
+  and `matroid_partition'` (used only by the previous), where removing package code is also a
+  question about the port, whose credit stays; in the project's files, `Union_pow_rank_eq` and
+  `cycleMatroid_eRk_add_numberOfComponents_restrict` (`TreePacking.lean`),
+  `stdPlacement_rigidityMap_apply` (`TayTheorem.lean`) and `spanningVerts_edgeMultiply`
+  (`BodyHinge.lean`; `body-hinge.tex`'s prose names it). Also
   `cross₃_ne_zero_iff_linearIndependent` (`Molecule/Pencil/Chart.lean`) builds, in each direction,
   the chain that `Matrix.linearIndependent_rows_iff_det_ne_zero` packages, which its imports do not
   reach.
   *Evidence:* measured (the reverse dependencies of statements and bodies in the Lean cache of
   `scripts/blueprint-deps.py`, at `522a0c0a` plus task 25.2's docstrings, at `0c34177f` for
-  task 25.3 and at `05b0dae4` for task 26; `rfl` lemmas left out); read (`Chart.lean`'s proof and
-  import closure; `pebOn_addArc`'s proof).
-  *Found:* RECONCILE round 3 tasks 25.2, 25.3 and 26.
+  task 25.3, at `05b0dae4` for task 26 and at `7e5c1cb2` for task 27; `rfl` lemmas left out);
+  read (`Chart.lean`'s proof and import closure; `pebOn_addArc`'s proof).
+  *Found:* RECONCILE round 3 tasks 25.2, 25.3, 26 and 27.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
@@ -4591,7 +4611,10 @@ declaration's name as its header writes it:
   (pp. 91–98), with the statements and bodies of the four pins and of
   `IsSparse.exists_rowIndependent_placement`.
   *Found:* round 1 task 5.7.
-  *Disposition:* reported (`notes/Prose-report.md`, M2); round 1: the verdict. LY credit the
+  *Disposition:* done (task 27): the docstrings credit Laman, with Pollaczek-Geiringer (task 25,
+  the planar files), and `BodyBar/TayTheorem.lean`'s converse section no longer calls its rank
+  bound "Lovász–Yemini-style" (task 27); reported (`notes/Prose-report.md`, M2); round 1: the
+  verdict. LY credit the
   characterization to Laman themselves: their abstract gives "a new proof of Laman's theorem" (p.
   91); Theorem 1, the generic degree of freedom $2n - 3 - \min \sum (2|V(G_i)| - 3)$ over covers, is
   "a slight generalization of a theorem of Laman", with "an independent proof" (p. 92); Corollary
@@ -4609,8 +4632,7 @@ declaration's name as its header writes it:
   presentation followed is Jordán's, credited). Fixed: `formalization.yaml` (the LY `sources`
   entry, `status.scope`, the linear-matroid row's description, `alignment`'s source), ROADMAP (the
   layout line, the Phase 7 row and heading, §6's and §7's texts, *References*), `DESIGN.md`'s two
-  (b408df1a). The docstrings are round 3's, `BodyBar/TayTheorem.lean`'s among them; round 3: the
-  planar files' credit Pollaczek-Geiringer and Laman (task 25).
+  (b408df1a). The docstrings were round 3's, `BodyBar/TayTheorem.lean`'s among them.
 - **F-053** · M · the credit for the matroid of a submodular function, the polymatroid rank formula
   and the union's rank formula (`matroid-union.tex`, `intro.tex`, `deficiency.tex`,
   `molecular-induction.tex`; Lean docstrings). The blueprint credited the first two to Edmonds 1970.
@@ -4630,7 +4652,13 @@ declaration's name as its header writes it:
   *Evidence:* read (Oxley 2011 pp. 404–407, 411–412, 416, 427–430; Schrijver pp. 725–726, 775;
   Edmonds 1965 p. 69; all in `.refs/`). Edmonds 1970 and Nash-Williams 1966 are not in `.refs/`.
   *Found:* round 2 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, M4).
+  *Disposition:* reported (`notes/Prose-report.md`, M4); round 3: the docstrings of
+  `Submodular.lean` and `Union.lean` credit the matroid of a submodular function and the
+  polymatroid rank formula to Edmonds and Rota with Oxley's numbers as Oxley's, the union to
+  Nash-Williams, its rank formula to Nash-Williams and Edmonds, and Edmonds 1965's Theorem 1 as
+  the partition criterion (`Union_pow_indep_iff_count`), as `TreePacking.lean`'s
+  `Union_pow_rank_eq` now does (task 27); `Molecular/Deficiency.lean`'s "Edmonds matroid-partition
+  rank formula" (2593–2821) is task 29's.
 - **F-081** · M · the credit for KT eq. (2.4), $\operatorname{rank} M(\tilde G) +
   \operatorname{def}(\tilde G) = D(|V|-1)$ (`thm:def-eq-corank`): the blueprint credited it to
   Jackson and Jordán's Theorem 6.1, "whose Corollary 6.2" is the deficiency-zero case. JJ 2009's

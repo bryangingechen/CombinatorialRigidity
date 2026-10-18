@@ -8,47 +8,33 @@ import Mathlib.Combinatorics.Graph.Basic
 import Matroid.Graphic
 
 /-!
-# Tutte–Nash-Williams tree-packing — rank adapter and `Graph`-native sparsity
+# Tutte–Nash-Williams tree-packing — the union of cycle matroids and `Graph`-native sparsity
 
-Phase 13. Specializes Phase 12's matroid-partition rank formula
-(`Matroid.matroid_partition'` / `Matroid.Union_rank_eq`, Edmonds 1965) to the
-`k`-fold union of a single matroid — the shape the Tutte–Nash-Williams
-tree-packing chain reaches for, with `Matroid.Graph.cycleMatroid` as its first
-consumer.
+The `(k, ℓ)`-sparsity of a multigraph; independence in the union of `k` copies of its cycle
+matroid, the bar sets whose restriction is `(k, k)`-sparse (the part of Whiteley 1988,
+Corollary 3, that the project uses); the decomposition into forests of Tutte and Nash-Williams;
+and its spanning-tree form for connected tight multigraphs. The blueprint presents the file in
+`sec:body-bar-matroid-union` and `sec:body-bar-tree-packing`.
 
-This file is the **thin rank adapter** of Phase 13: it restates the indexed
-partition formula `Matroid.Union_rank_eq` for the *constant* family
-`fun _ : Fin k ↦ M` in `Set`-`Y` / `ℕ` / `Set.ncard` / `[Finite]` idiom,
-absorbing once the three pieces of plumbing that would otherwise recur across
-Phases 13–15: the constant-family sum collapse `∑ᵢ r(Y) = k · r(Y)`, the
-`Finset.univ \ Y` ↦ `univ \ ↑Y` cardinality bridge (`.card` ↦ `Set.ncard`),
-and the `[Fintype α]` ↦ `[Finite α]` weakening. The `Set.ncard` / `[Finite]`
-output lines up with both the Phases-1–11 convention and the eventual
-`Graph`-native `(k, ℓ)`-sparsity predicate, so there is exactly one conversion
-layer (sparsity-count ↔ matroid-rank), not two. See `DESIGN.md`
-*Set/Finset and rank-flavor boundary at the matroid layer (Phases 13–15)* for
-the rationale, and `ROADMAP.md` §13 / `notes/Phase13.md`.
-
-The eventual tree-packing nodes (`thm:unionPow-cycle-indep-iff-sparse`,
-`thm:tutte-nash-williams`, `cor:k-spanning-trees`) of
-`blueprint/src/chapter/body-bar.tex` build on this adapter; the
-`Graph.cycleMatroid` consumer applies `Union_pow_rank_eq` with
-`M := G.cycleMatroid` directly (its ground set is the edge type `β`).
+`Matroid.Union_pow_rank_eq` restates the rank formula `Matroid.Union_rank_eq` for the
+*constant* family `fun _ : Fin k ↦ M` in `Set`-`Y` / `ℕ` / `Set.ncard` / `[Finite]` form: the
+constant-family sum collapse `∑ᵢ r(Y) = k · r(Y)`, the `Finset.univ \ Y` ↦ `univ \ ↑Y`
+cardinality bridge (`.card` ↦ `Set.ncard`), and the `[Fintype α]` ↦ `[Finite α]` weakening.
+See `DESIGN.md` *Set/Finset and rank-flavor boundary at the matroid layer* for the convention.
+The tree-packing theorems below go through Edmonds' matroid-partition theorem
+(`Matroid.Union_pow_indep_iff_count`) with `M := G.cycleMatroid` instead.
 
 ## `Graph`-native `(k, ℓ)`-sparsity (`def:graph-sparse`)
 
 This file also introduces the **`Graph`-native `(k, ℓ)`-sparsity / tightness
 predicate** for the carrier `Graph α β` (mathlib core), under `namespace Graph`
-for dot-notation alongside `Graph.cycleMatroid`. It is fresh to Phase 13 — **not**
-migrated from the Phase 9/10 `SimpleGraph.IsSparse` (which is vertex-`Finset`-
-indexed via `edgesIn`) — and is phrased **edge-subset-side**: it quantifies over
-non-empty bar sets `E' ⊆ E(G)`, with `V'` the vertices those bars span
-(`Graph.spanningVerts`). That is the shape the downstream union-independence
-theorem reaches for (independence in `⋃ⱼ cycleMatroid` is a condition on edge
-subsets), and it is `Set`-side throughout (`Set.ncard`, `ℕ`, `[Finite]`) so it
-lines up with the adapter output in one conversion step. The count is written
-additively (`E'.ncard + ℓ ≤ k * V'.ncard`) to avoid `ℕ`-subtraction. See
-`DESIGN.md` *Set/Finset and rank-flavor boundary …* item 1.
+for dot-notation alongside `Graph.cycleMatroid`. It is separate from
+`SimpleGraph.IsSparse` (which is vertex-`Finset`-indexed via `edgesIn`) and is phrased
+**edge-subset-side**: it quantifies over non-empty bar sets `E' ⊆ E(G)`, with `V'` the vertices
+those bars span (`Graph.spanningVerts`). That is the shape the union-independence theorem uses
+(independence in `⋃ⱼ cycleMatroid` is a condition on edge subsets), and it is `Set`-side
+throughout (`Set.ncard`, `ℕ`, `[Finite]`). The count is written additively
+(`E'.ncard + ℓ ≤ k * V'.ncard`) to avoid `ℕ`-subtraction.
 -/
 
 namespace Matroid
@@ -57,11 +43,10 @@ open Set Function
 
 variable {α : Type*}
 
-/-- Edmonds' matroid-partition rank formula for the `k`-fold union of a single
-matroid `M` (Edmonds 1965), in `Set`-`Y` / `ℕ` / `Set.ncard` / `[Finite]`
-idiom: the rank of `Matroid.Union (fun _ : Fin k ↦ M)` attains
-`min_Y (k · r_M(Y) + |Yᶜ|)`. The thin Phase-13 rank adapter — the constant-family
-`Set`-side specialization of `Matroid.Union_rank_eq`. (`thm:matroid-partition-rank`.) -/
+/-- **The rank of the union of `k` copies of one matroid** (a case of
+`thm:matroid-partition-rank`), in `Set`-`Y` / `ℕ` / `Set.ncard` / `[Finite]` form: the rank of
+`Matroid.Union (fun _ : Fin k ↦ M)` attains `min_Y (k · r_M(Y) + |Yᶜ|)`. The constant-family
+`Set`-side specialization of `Matroid.Union_rank_eq`. -/
 theorem Union_pow_rank_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) :
     (∃ Y : Set α, k * M.rk Y + (univ \ Y).ncard ≤ (Matroid.Union (fun _ : Fin k ↦ M)).rank) ∧
     (∀ Y : Set α, (Matroid.Union (fun _ : Fin k ↦ M)).rank ≤ k * M.rk Y + (univ \ Y).ncard) := by
@@ -96,16 +81,16 @@ lemma spanningVerts_subset_vertexSet (G : Graph α β) (E' : Set β) :
     G.spanningVerts E' ⊆ V(G) := by
   rintro x ⟨e, _, hinc⟩; exact hinc.vertex_mem
 
-/-- A multigraph `G : Graph α β` is **`(k, ℓ)`-sparse** if every non-empty set of
-bars `E' ⊆ E(G)` spanning vertex set `V'` satisfies `|E'| ≤ k|V'| - ℓ`. Phrased
+/-- A multigraph `G : Graph α β` is **`(k, ℓ)`-sparse** (`def:graph-sparse`) if every non-empty
+set of bars `E' ⊆ E(G)` spanning vertex set `V'` satisfies `|E'| ≤ k|V'| - ℓ`. Phrased
 additively (`|E'| + ℓ ≤ k|V'|`) to avoid `ℕ`-subtraction, `Set`-side throughout.
-Body-bar Tay is the `ℓ = k = d` case. (`def:graph-sparse`.) -/
+Body-bar Tay is the `ℓ = k = d` case. -/
 def IsSparse (G : Graph α β) (k ℓ : ℕ) : Prop :=
   ∀ E' ⊆ E(G), E'.Nonempty → E'.ncard + ℓ ≤ k * (G.spanningVerts E').ncard
 
-/-- A multigraph `G : Graph α β` is **`(k, ℓ)`-tight** if it is `(k, ℓ)`-sparse and
-the total bar count meets the bound with global equality, `|E| = k|V| - ℓ`
-(additively, `|E| + ℓ = k|V|`). (`def:graph-sparse`.) -/
+/-- A multigraph `G : Graph α β` is **`(k, ℓ)`-tight** (`def:graph-sparse`) if it is
+`(k, ℓ)`-sparse and the total bar count meets the bound with global equality, `|E| = k|V| - ℓ`
+(additively, `|E| + ℓ = k|V|`). -/
 def IsTight (G : Graph α β) (k ℓ : ℕ) : Prop :=
   G.IsSparse k ℓ ∧ E(G).ncard + ℓ = k * V(G).ncard
 
@@ -118,10 +103,11 @@ open Set
 `E'` in `G.cycleMatroid` is `|V| - c(G ↾ E')`, additively `r(E') + c(G ↾ E') = |V|`. Here
 `c(G ↾ E')` is the number of connected components of the subgraph on the bars of `E'` (counting
 every vertex of `G`, including the isolated ones, as the matroid restriction keeps the full
-vertex set). This is the substantive content behind `thm:unionPow-cycle-indep-iff-sparse`:
-it specializes `Graph.eRank_cycleMatroid_add_numberOfComponents` (applied to `G ↾ E'`) to the
-rank of a subset, through the matroid-restriction bridge `(G ↾ E').cycleMatroid =
-G.cycleMatroid ↾ E'` and `Matroid.eRank_restrict`. -/
+vertex set; Oxley 2011, (1.3.8), counts only the vertices the bars meet, as
+`cycleMatroid_eRk_add_numberOfComponents_spanningVerts` does). It specializes
+`Graph.eRank_cycleMatroid_add_numberOfComponents` (applied to `G ↾ E'`) to the rank of a subset,
+through the matroid-restriction bridge `(G ↾ E').cycleMatroid = G.cycleMatroid ↾ E'` and
+`Matroid.eRank_restrict`. -/
 lemma cycleMatroid_eRk_add_numberOfComponents_restrict {G : Graph α β} {E' : Set β}
     (hE' : E' ⊆ E(G)) :
     G.cycleMatroid.eRk E' + c(G ↾ E') = V(G).encard := by
@@ -152,12 +138,13 @@ lemma vertexSet_deleteVerts_isolatedSet_restrict {G : Graph α β} {E' : Set β}
     rw [not_isolated_iff hxV]
     exact ⟨e, restrict_inc.mpr ⟨hinc, heE'⟩⟩
 
-/-- **Cycle-matroid rank formula** on `spanningVerts` (`eRk` form): for a bar set `E' ⊆ E(G)`,
-`r(E') + c'(E') = |spanningVerts E'|`, where `c'(E') := c((G ↾ E') - Isol(G ↾ E'))` counts only
-the *non-trivial* components of the bars of `E'` (the isolated vertices of `V(G)` are deleted).
-This is the form the `(k, ℓ)`-sparsity bridge consumes: both sides live on `spanningVerts E'`,
-so the isolated-vertex singleton components that `cycleMatroid_eRk_add_numberOfComponents_restrict`
-counted on both sides have cancelled. Proof: apply the full-vertex-set formula to
+/-- **Cycle-matroid rank formula** on `spanningVerts` (`eRk` form; Oxley 2011, (1.3.8)): for a bar
+set `E' ⊆ E(G)`, `r(E') + c'(E') = |spanningVerts E'|`, where
+`c'(E') := c((G ↾ E') - Isol(G ↾ E'))` counts only the *non-trivial* components of the bars of
+`E'` (the isolated vertices of `V(G)` are deleted). This is the form the `(k, ℓ)`-sparsity count
+uses: both sides live on `spanningVerts E'`, without the singleton components of the isolated
+vertices that `cycleMatroid_eRk_add_numberOfComponents_restrict` counts on both sides. Proof:
+apply the full-vertex-set formula `Graph.eRank_cycleMatroid_add_numberOfComponents` to
 `(G ↾ E') - Isol(G ↾ E')`, whose cycle matroid agrees with `(G ↾ E')`'s
 (`cycleMatroid_deleteVerts_isolatedSet`) and whose vertex set is `spanningVerts E'`
 (`vertexSet_deleteVerts_isolatedSet_restrict`). -/
@@ -204,15 +191,15 @@ lemma cycleMatroid_rk_add_one_le_spanningVerts_ncard [Finite α] [Finite β] {G 
   rw [← Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite E'), ← hfin.cast_ncard_eq] at heRk
   exact_mod_cast heRk
 
-/-- **Count condition implies `(k, k)`-sparsity** — the easy half of
-`thm:unionPow-cycle-indep-iff-sparse`. If every bar set `Y ⊆ E(G)` satisfies the
-union-independence count condition `|Y| ≤ k · r(Y)` (the matroid-side characterization of
-independence in the `k`-fold cycle-matroid union, `Matroid.Union_pow_indep_iff_count`), then `G`
-is `(k, k)`-sparse. Each non-empty `Y` has `r(Y) + 1 ≤ |spanningVerts Y|`
-(`cycleMatroid_rk_add_one_le_spanningVerts_ncard`, the `c'(Y) ≥ 1` slack), so
-`|Y| ≤ k · r(Y) ≤ k · (|spanningVerts Y| - 1) = k · |spanningVerts Y| - k`, i.e.
+/-- **Count condition implies `(k, k)`-sparsity** (a step of `thm:unionPow-cycle-indep-iff-sparse`,
+its easy half). If every bar set `Y ⊆ E(G)` satisfies the union-independence count condition
+`|Y| ≤ k · r(Y)` (the matroid-side characterization of independence in the `k`-fold cycle-matroid
+union, `Matroid.Union_pow_indep_iff_count`), then `G` is `(k, k)`-sparse. Each non-empty `Y` has
+`r(Y) + 1 ≤ |spanningVerts Y|` (`cycleMatroid_rk_add_one_le_spanningVerts_ncard`, the `c'(Y) ≥ 1`
+slack), so `|Y| ≤ k · r(Y) ≤ k · (|spanningVerts Y| - 1) = k · |spanningVerts Y| - k`, i.e.
 `|Y| + k ≤ k · |spanningVerts Y|`. The reverse implication (`(k, k)`-sparsity ⟹ the count
-condition) needs the connected-component decomposition of `Y` and is deferred. -/
+condition) needs the connected-component decomposition of `Y`:
+`le_mul_cycleMatroid_rk_of_isSparse_restrict`. -/
 lemma isSparse_of_forall_le_cycleMatroid_rk [Finite α] [Finite β] {G : Graph α β} {k : ℕ}
     (h : ∀ Y ⊆ E(G), Y.ncard ≤ k * G.cycleMatroid.rk Y) : G.IsSparse k k := by
   intro Y hYE hne
@@ -231,13 +218,13 @@ lemma cycleMatroid_rk_restrict_of_subset {G : Graph α β} {E' Y : Set β} (hE' 
     (hY : Y ⊆ E') : (G ↾ E').cycleMatroid.rk Y = G.cycleMatroid.rk Y := by
   rw [cycleMatroid_restrict, Matroid.restrict_rk_eq G.cycleMatroid (subset_inter (hY.trans hE') hY)]
 
-/-- **Forward direction** of `thm:unionPow-cycle-indep-iff-sparse`: if a bar set `E' ⊆ E(G)` is
-independent in the `k`-fold cycle-matroid union, then the edge-restricted subgraph `G ↾ E'` is
-`(k, k)`-sparse. Reads off the matroid-side count characterization
+/-- **Forward direction** (a step of `thm:unionPow-cycle-indep-iff-sparse`): if a bar set
+`E' ⊆ E(G)` is independent in the `k`-fold cycle-matroid union, then the edge-restricted subgraph
+`G ↾ E'` is `(k, k)`-sparse. Reads off the matroid-side count characterization
 (`Matroid.Union_pow_indep_iff_count` with `M := G.cycleMatroid`) — `∀ Y ⊆ E', |Y| ≤ k · r(Y)` — and
-feeds it through the easy graphic half (`isSparse_of_forall_le_cycleMatroid_rk` applied to
-`G ↾ E'`), using the rank restriction bridge (`cycleMatroid_rk_restrict_of_subset`) to translate
-the per-subset count condition from `G ↾ E'` back to `G`. -/
+passes it through the easy graphic half (`isSparse_of_forall_le_cycleMatroid_rk` applied to
+`G ↾ E'`), using the rank restriction bridge (`cycleMatroid_rk_restrict_of_subset`) to translate the
+per-subset count condition from `G ↾ E'` back to `G`. -/
 lemma isSparse_restrict_of_union_pow_indep [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
     {k : ℕ} {E' : Set β} (hE' : E' ⊆ E(G))
     (h : (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E') : (G ↾ E').IsSparse k k := by
@@ -301,9 +288,9 @@ lemma spanningVerts_restrict_of_subset {G : Graph α β} {E' Y : Set β} (hY : Y
   simp only [mem_spanningVerts, restrict_inc]
   exact ⟨fun ⟨e, heY, hinc, _⟩ ↦ ⟨e, heY, hinc⟩, fun ⟨e, heY, hinc⟩ ↦ ⟨e, heY, hinc, hY heY⟩⟩
 
-/-- **Reverse direction** of `thm:unionPow-cycle-indep-iff-sparse`'s count condition: if the
-edge-restricted subgraph `G ↾ E'` is `(k, k)`-sparse, then every bar set `Y ⊆ E'` satisfies the
-union-independence count condition `|Y| ≤ k · r(Y)` (rank in `G.cycleMatroid`).
+/-- **Reverse direction** (a step of `thm:unionPow-cycle-indep-iff-sparse`): if the edge-restricted
+subgraph `G ↾ E'` is `(k, k)`-sparse, then every bar set `Y ⊆ E'` satisfies the union-independence
+count condition `|Y| ≤ k · r(Y)` (rank in `G.cycleMatroid`).
 
 The substantive content. Sparsity alone only gives `|Y| ≤ k(|spanV Y| − 1)`, weaker than the count
 `|Y| ≤ k · r(Y) = k(|spanV Y| − c'(Y))` when `Y` has several non-trivial components `c'(Y) > 1`. We
@@ -393,12 +380,12 @@ lemma le_mul_cycleMatroid_rk_of_isSparse_restrict [Finite α] [Finite β] {G : G
     ← Nat.cast_mul] at hmain
   exact_mod_cast hmain
 
-/-- **Union independence by the count** (Whiteley 1988, Corollary 3;
-`thm:unionPow-cycle-indep-iff-sparse`): a bar set `E' ⊆ E(G)` is independent in the `k`-fold
-cycle-matroid union `⋃ⱼ G.cycleMatroid` if and only if the edge-restricted subgraph `G ↾ E'` is
-`(k, k)`-sparse. The forward direction is `isSparse_restrict_of_union_pow_indep`; the reverse
-reads the count condition `∀ Y ⊆ E', |Y| ≤ k · r(Y)` off `(k, k)`-sparsity via the
-connected-component decomposition (`le_mul_cycleMatroid_rk_of_isSparse_restrict`) and feeds it to
+/-- **Union independence by the count** (`thm:unionPow-cycle-indep-iff-sparse`; part of Whiteley
+1988, Corollary 3): a bar set `E' ⊆ E(G)` is independent in the `k`-fold cycle-matroid union
+`⋃ⱼ G.cycleMatroid` if and only if the edge-restricted subgraph `G ↾ E'` is `(k, k)`-sparse. The
+forward direction is `isSparse_restrict_of_union_pow_indep`; the reverse reads the count condition
+`∀ Y ⊆ E', |Y| ≤ k · r(Y)` off `(k, k)`-sparsity via the connected-component decomposition
+(`le_mul_cycleMatroid_rk_of_isSparse_restrict`) and passes it to
 `Matroid.Union_pow_indep_iff_count`. -/
 theorem unionPow_cycleMatroid_indep_iff_isSparse_restrict [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {k : ℕ} {E' : Set β} (hE' : E' ⊆ E(G)) :
@@ -411,7 +398,7 @@ theorem unionPow_cycleMatroid_indep_iff_isSparse_restrict [DecidableEq β] [Fini
 edge-disjoint forests of `G` whose bar sets cover `E(G)`. Concretely, an indexed
 family `Fs : Fin k → Set β` of pairwise-disjoint bar sets with `⋃ᵢ Fs i = E(G)`,
 each of which is a forest in `G` (`G.IsAcyclicSet`, i.e. `G ↾ Fs i` is acyclic).
-This is the "edge-disjoint union of `k` forests" of Tutte–Nash-Williams. -/
+This is the "edge-disjoint union of `k` forests" of `thm:tutte-nash-williams`. -/
 def IsForestPacking (G : Graph α β) (k : ℕ) : Prop :=
   ∃ Fs : Fin k → Set β, ⋃ i, Fs i = E(G) ∧ Pairwise (Function.onFun Disjoint Fs) ∧
     ∀ i, G.IsAcyclicSet (Fs i)
@@ -442,9 +429,10 @@ theorem exists_forestPacking_cover_of_isSparse_restrict [Finite α] [Finite β] 
   exact ⟨disjointed Is, iUnion_disjointed.trans hcover, disjoint_disjointed Is,
     fun i ↦ (hIs i).anti (disjointed_le Is i)⟩
 
-/-- **Tutte–Nash-Williams tree-packing** (Tutte 1961, Nash-Williams 1961;
-`thm:tutte-nash-williams`): a multigraph `G` is the edge-disjoint union of `k`
-forests if and only if it is `(k, k)`-sparse.
+/-- **Tutte–Nash-Williams tree-packing** (`thm:tutte-nash-williams`; Tutte 1961, Nash-Williams 1961
+and 1964, as Whiteley 1988 credits it in the remark after Corollary 3; Oxley 2011, Proposition
+11.3.14): a multigraph `G` is the edge-disjoint union of `k` forests if and only if it is
+`(k, k)`-sparse.
 
 A forest packing is an acyclic cover of `E(G)`, so `E(G)` is independent in the `k`-fold
 cycle-matroid union (`Matroid.union_indep_iff`, with `cycleMatroid_indep`'s acyclic-set
@@ -463,12 +451,11 @@ theorem tutte_nash_williams [Finite α] [Finite β] {G : Graph α β} {k : ℕ} 
     (Matroid.union_indep_iff.mpr ⟨Fs, hcover, hacyc⟩)
   rwa [restrict_self] at hsparse
 
-/-- A **`k`-spanning-tree packing** of a connected multigraph `G : Graph α β`: a
-forest packing (`IsForestPacking`) whose `k` edge-disjoint forests are in fact
-*spanning trees* — each `Fs i` is a maximal acyclic set (`G.IsMaximalAcyclicSet`,
-equivalently a base of `G.cycleMatroid`; on a connected `G` this is a spanning
-tree via `Graph.IsMaximalAcyclicSet.isTree`). This is the conclusion of
-`cor:k-spanning-trees`. -/
+/-- A **`k`-spanning-tree packing** of a multigraph `G : Graph α β`: a
+forest packing (`IsForestPacking`) whose `k` edge-disjoint forests are maximal: each `Fs i` is a
+maximal acyclic set (`G.IsMaximalAcyclicSet`, equivalently a base of `G.cycleMatroid`), which on
+a connected `G` is a *spanning tree* (`Graph.IsMaximalAcyclicSet.isTree`). This is the
+conclusion of `cor:k-spanning-trees`. -/
 def IsSpanningTreePacking (G : Graph α β) (k : ℕ) : Prop :=
   ∃ Fs : Fin k → Set β, ⋃ i, Fs i = E(G) ∧ Pairwise (Function.onFun Disjoint Fs) ∧
     ∀ i, G.IsMaximalAcyclicSet (Fs i)
@@ -534,10 +521,9 @@ lemma spanningVerts_edgeSet_induce_subset (G : Graph α β) (X : Set α) :
   obtain ⟨a, b, hab, haX, hbX⟩ := he
   rcases hinc.eq_or_eq_of_isLink hab with rfl | rfl <;> assumption
 
-/-- **Tightness forces connectivity** (the two-component sparsity count): a nonempty,
-`(k, k)`-tight multigraph with `k ≥ 1` is connected. This is the ingredient
-`isSpanningTreePacking_of_isTight` needs to drop its separate `hconn` hypothesis when only
-tightness (not connectivity) is known in advance.
+/-- **Tightness forces connectivity** (the two-component sparsity count): a nonempty, `(k, k)`-tight
+multigraph with `k ≥ 1` is connected. With it a caller that knows only tightness supplies
+`isSpanningTreePacking_of_isTight`'s `hconn` (as `Molecular/Deficiency.lean` does).
 
 If `G` were disconnected, a `Separation` `S` (`Graph.Separation`) splits `V(G)` into two
 nonempty parts with no edge between them, so `E(G)` splits disjointly into the edges of the
@@ -575,10 +561,9 @@ theorem IsTight.connected [Finite α] [Finite β] {G : Graph α β} {k : ℕ} (h
   have htightcount := htight.2
   omega
 
-/-- **Spanning-tree refinement of Tutte–Nash-Williams** (Whiteley 1988,
-Theorem~13; `cor:k-spanning-trees`): a connected `(k, k)`-tight multigraph `G` is
-the edge-disjoint union of `k` *spanning trees*. This is the "union of `d`
-spanning trees" form of Tay's theorem.
+/-- **Spanning-tree refinement of Tutte–Nash-Williams** (`cor:k-spanning-trees`): a connected
+`(k, k)`-tight multigraph `G` is the edge-disjoint union of `k` *spanning trees*. At `k = d` this is
+the "union of `d` spanning trees" form in which Tay states his theorem.
 
 The forest packing from `tutte_nash_williams` (applied to `htight.isSparse`) is
 upgraded copy-by-copy to a spanning-tree packing by

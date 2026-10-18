@@ -362,9 +362,10 @@ constructor, so it became a real local formalization phase (12). See
 
 Complete. Formalizes the abstract-matroid prerequisites of the body-bar
 route, **locally** under `CombinatorialRigidity/Matroid/`: matroid-from-
-submodular-function + polymatroid rank (Edmonds 1970), matroid union
-(Nash-Williams 1966 / Edmonds), Rado's theorem (Rado 1942), and Edmonds'
-matroid-partition rank formula (Edmonds 1965). The Lean is **ported from
+submodular-function + polymatroid rank (Edmonds and Rota 1966; Oxley §11.1),
+matroid union (Nash-Williams) and its rank formula (Nash-Williams, Edmonds),
+Rado's theorem (Rado 1942), and Edmonds' matroid-partition theorem (Edmonds
+1965, Theorem 1). The Lean is **ported from
 Peter Nelson's `apnelson1/Matroid`** (Apache-2.0), rebased onto its live
 `FiniteCircuitMatroid` constructor — an explicit exception to the
 small-mirror convention (`DESIGN.md` *Local mirror of the matroid-union
@@ -414,9 +415,9 @@ body-bar framework in `ℝⁿ` iff `(d,d)`-sparse (resp. tight):
 `isSparse_of_isIndependent` (the body-bar analogue of Phase 6's
 easy-direction converse, via the block-diagonal rank upper bound + the
 cycle-matroid bound `r(E')+1 ≤ |V'|`). Architectural decisions: carrier
-mathlib `Graph α β`, Plücker/two-extensor coordinates handled **inline**
-(degenerate permitted, standard-basis witness only); Whiteley's "almost
-all realizations rigid" lift deferred to Phase 16. Forward-mode;
+mathlib `Graph α β`, each bar's vector unconstrained (as in Tay's
+frameworks), the witness's standard basis vectors being Plücker vectors of
+lines; the "almost all realizations rigid" form came with Phase 34. Forward-mode;
 per-node map → `notes/Phase15.md` + `body-bar.tex`.
 
 ### Phase 16 — Body-hinge Tay–Whiteley theorem (existence form)
@@ -434,8 +435,8 @@ body-hinge framework *defined* as the induced body-bar framework on
 body-hinge framework iff `(δ−1)·G` is `(δ,δ)`-sparse (resp. tight),
 via `tay_witness` transported across the body-hinge ⇔ body-bar
 bijection + `tutte_nash_williams`. Carrier mathlib `Graph α β`,
-standard-basis witness only; the "almost all rigid" lift remains
-deferred. Forward-mode; per-node map → `notes/Phase16.md` +
+standard-basis witness only; the "almost all rigid" lift came with
+Phase 34. Forward-mode; per-node map → `notes/Phase16.md` +
 `body-hinge.tex`.
 
 ### Phase 17+ — The Molecular Conjecture program
@@ -1330,10 +1331,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   rewrote the texts on the search's cost (measured, no bound claimed), `decide` and the input,
   and tasks 21–24 gave each of the sixteen main results outside S1's and S2's rows its
   non-vacuity witness, a closed theorem applying it at a small input with every hypothesis met
-  (`Nonvacuity.lean`), and tasks 25–26 checked the docstrings of the thirteen planar files,
-  of the search, of the project's mathlib additions and of the pebble game's files against
-  their proofs and credits.
-  **Next:** task 27, the docstrings of the matroid constructions and of the body-bar files.
+  (`Nonvacuity.lean`), and tasks 25–27 checked the docstrings of the thirteen planar files,
+  of the search, of the project's mathlib additions, of the pebble game's files, of the matroid
+  constructions and of the body-bar files against their proofs and credits.
+  **Next:** task 28, the docstrings of the square-graph and generic-rigidity files.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

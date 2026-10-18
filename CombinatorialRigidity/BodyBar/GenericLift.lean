@@ -8,33 +8,33 @@ import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
 /-!
-# The generic lift, Layer BB — generic body-and-bar endpoint assignments
+# The generic body-and-bar realizations: endpoint assignments
 
-Phase 34 (PROSPECT G3, the Jackson–Jordán 2010 coordinate route; see `notes/Phase34.md` and
-`blueprint/src/chapter/generic-lift.tex`, `sec:generic-lift-bodybar`). This file opens the
-body-and-bar layer of the generic lift: the *endpoint* parameterization of a body-bar framework
-(Jackson–Jordán 2010 §5), its two-extensor coordinatization, and the transfer-form genericity of
-an endpoint assignment, with its abundance and existence — the definition-plus-abundance leaf
-group of the chapter extension. Everything here is at `ℝ`, matching the body-bar chapter's
-carrier (`notes/Phase34.md` adjudication item 3).
+Tay's theorem at every generic choice of endpoints, by the coordinate argument of Jackson and
+Jordán (2010): the *endpoint* parameterization of a body-bar framework (Jackson–Jordán 2010,
+§§2.1 and 3), its two-extensor coordinates, and the genericity of an endpoint assignment, with
+its abundance and existence. Everything here is at `ℝ`, as in the body-bar chapter. The
+blueprint presents the file in `sec:generic-lift-bodybar`.
 
-A body-and-bar realization places each bar $e$ as a line segment between two endpoints
-$p_e, p'_e \in \R^n$; the two-extensor $T(p_e, p'_e)$ of that segment is its coordinate in the
-`bodyBarDim n`-dimensional extensor space of `Graph.BodyBarFramework`. The two-extensor is a
-polynomial map of its endpoints (the `2 \times 2` minors of the homogeneous lifts), so — exactly
+A body-and-bar realization places each bar `e` as a line segment between two endpoints
+`p_e, p'_e ∈ ℝⁿ`; the two-extensor `T(p_e, p'_e)` of that segment is its vector in the
+`bodyBarDim n`-dimensional space of `Graph.BodyBarFramework`. The two-extensor is a
+polynomial map of its endpoints (the `2 × 2` minors of the homogeneous lifts), so — exactly
 as for the bar-joint placements of `GenericRigidityMatroid.lean` and the panel normals of
 `Molecular/GenericLift/PanelGeneric.lean` — the rigidity rows of an endpoint realization are
 polynomial in the endpoint coordinates, and the abundance argument goes through unchanged with the
 maximal-minor engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`.
 
-* `def:two-extensor` — `pairIdxEquiv` (a fixed enumeration of the pairs `0 ≤ i < j ≤ n` by
-  `Fin (bodyBarDim n)`; any equiv works, the coordinate formula is the contract), `twoExtensor`
-  (the `2×2`-minor vector `T(p, p')`), and `twoExtensorPoly` (its `MvPolynomial` coordinatization
-  in the endpoint variables, with the evaluation identity `twoExtensorPoly_eval`).
+* `def:two-extensor` — `twoExtensor` (the `2×2`-minor vector `T(p, p')`), its coordinates
+  indexed through `pairIdxEquiv` (a fixed enumeration of the pairs `0 ≤ i < j ≤ n` by
+  `Fin (bodyBarDim n)`; any equiv works, the coordinate formula is the contract).
+* `lem:two-extensor-polynomial` — `twoExtensorPoly_eval`: the evaluation identity of
+  `twoExtensorPoly`, the two-extensor's `MvPolynomial` coordinatization in the endpoint
+  variables.
 * `def:generic-endpoints` — `ofEndpoints` (the body-bar framework placing each bar at the
-  two-extensor of its assigned endpoint pair) and `IsGenericEndpoints` (the Phase-24 transfer form:
-  every bar set whose rigidity rows are linearly independent at *some* endpoint assignment has
-  linearly independent rows at `q`).
+  two-extensor of its assigned endpoint pair) and `IsGenericEndpoints` (genericity in transfer
+  form: every bar set whose rigidity rows are linearly independent at *some* endpoint assignment
+  has linearly independent rows at `q`).
 * `lem:generic-endpoints-abundance` — `exists_isGenericEndpoints_abundance`: one nonzero
   `MvPolynomial` whose non-vanishing forces genericity, via the maximal-minor engine per bar subset,
   exactly the bar-joint / panel-normal abundance shape (rows quadratic in the endpoint coordinates
@@ -42,13 +42,15 @@ maximal-minor engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
 * `lem:exists-generic-endpoints` — `exists_isGenericEndpoints`: a nonzero real polynomial has a
   non-root (`MvPolynomial.exists_eval_ne_zero`, `ℝ` infinite), which is a generic assignment.
 
-The witness slice continues with two structural lemmas independent of any graph:
-`lem:coordinate-extensor-basis` (`linearIndependent_twoExtensor_coordPoint`) shows the
-coordinate-segment two-extensors of Jackson–Jordán's Lemma 5.1 form a basis of the extensor space,
-and `lem:extensor-map-rows` (`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`) shows a
-fixed invertible extensor-space map, applied bodywise, preserves row independence — the
-change-of-coordinates route the two together supply for the forest-packing witness
-(`lem:endpoint-witness`, `exists_endpoints_linearIndependent_rigidityRow`).
+The witness for a sparse bar set (`lem:endpoint-witness`,
+`exists_endpoints_linearIndependent_rigidityRow`; Jackson–Jordán 2010, Lemma 5.1) comes from
+the framework of `prop:tay-witness-exists` by a change of coordinates, the linear form of the
+argument Jackson and Jordán credit to Whiteley (remark after their Lemma 5.1). Two lemmas
+independent of any graph supply it: `lem:coordinate-extensor-basis`
+(`linearIndependent_twoExtensor_coordPoint`) shows the two-extensors of the edges of the
+coordinate simplex form a basis of `ℝ^(bodyBarDim n)`, and `lem:extensor-map-rows`
+(`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`) shows a fixed invertible linear
+map, applied to every bar's vector, preserves row independence.
 
 The file closes with the generic form of Tay's theorem itself: `thm:bodybar-generic-independence`
 (`linearIndependent_rigidityRow_ofEndpoints_iff`) is the per-bar-set independence iff at a generic
@@ -56,7 +58,7 @@ endpoint assignment, proved from the witness (`⟸`) and the genericity-free con
 `isSparse_of_isIndependent_restrict` (`⟹`); `cor:bodybar-generic-tay`
 (`isIndependent_ofEndpoints_iff`, `isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff`)
 specializes it to `E' = E(G)` against the `IsIndependent`/`IsInfinitesimallyRigid` rank forms,
-mirroring `tay_witness`'s own isostatic-count arithmetic. This closes Layer BB.
+as `tay_witness` does for its isostatic count.
 -/
 
 namespace Graph
@@ -68,7 +70,7 @@ variable {n : ℕ} {α β : Type*}
 /-! ### The two-extensor of a segment (`def:two-extensor`) -/
 
 /-- **A fixed enumeration of the pairs `0 ≤ i < j ≤ n` by `Fin (bodyBarDim n)`**
-(`def:two-extensor`; Jackson–Jordán 2010 §5, Phase 34). Any equiv between the two types works —
+(`def:two-extensor`'s fixed bijection). Any equiv between the two types works —
 the coordinate formula of `twoExtensor`/`twoExtensorPoly` is the contract the abundance engine
 reads, not this particular enumeration — so it is built from the matching cardinalities: the
 subtype of increasing pairs of `Fin (n+1)` is equivalent (via `(i, j) ↦ ⟨j, i, _⟩`) to
@@ -102,7 +104,7 @@ noncomputable def pairIdxEquiv (n : ℕ) :
   exact Fintype.equivFinOfCardEq hcard
 
 /-- **The homogeneous lift** `h(p) = (1, p) : Fin (n+1) → ℝ` of `p : Fin n → ℝ`
-(`def:two-extensor`). Internal to `twoExtensor`'s coordinate formula; pinning its type via a
+(`def:two-extensor`'s `h`). Internal to `twoExtensor`'s coordinate formula; pinning its type via a
 top-level `def` (rather than inlining `Fin.cons 1 p` at a compound index) keeps `Fin.cons`'s motive
 non-dependent at every call site, avoiding a higher-order-unification failure when the index is a
 compound expression like `((pairIdxEquiv n).symm m).1.1`. -/
@@ -113,7 +115,9 @@ private def homLift (p : Fin n → ℝ) : Fin (n + 1) → ℝ := Fin.cons 1 p
 @[simp] private theorem homLift_succ (p : Fin n → ℝ) (i : Fin n) :
     homLift p i.succ = p i := Fin.cons_succ _ _ _
 
-/-- **The two-extensor of a segment** (`def:two-extensor`; Jackson–Jordán 2010 §5, Phase 34).
+/-- **The two-extensor of a segment** (`def:two-extensor`; Jackson–Jordán 2010, §2.1, p. 576,
+with the homogeneous coordinate `1` first rather than last, which negates the direction
+coordinates).
 For an ordered pair of points `p, p' : Fin n → ℝ`, the two-extensor
 `T(p, p') ∈ ℝ^(bodyBarDim n)` is the vector of `2×2` minors
 `T(p, p')_{(i,j)} = h(p)_i h(p')_j - h(p)_j h(p')_i` of the
@@ -132,14 +136,14 @@ theorem twoExtensor_apply (p p' : Fin n → ℝ) (m : Fin (bodyBarDim n)) :
       homLift p ((pairIdxEquiv n).symm m).1.2 * homLift p' ((pairIdxEquiv n).symm m).1.1 :=
   rfl
 
-/-- The symbolic homogeneous lift feeding `twoExtensorPoly`: `homLiftPoly e b` is `Fin.cons 1` of
+/-- The symbolic homogeneous lift used by `twoExtensorPoly`: `homLiftPoly e b` is `Fin.cons 1` of
 the coordinate variables `X (e, b, ·)`, the polynomial-ring analogue of `homLift`. -/
 private noncomputable def homLiftPoly (e : β) (b : Bool) :
     Fin (n + 1) → MvPolynomial (β × Bool × Fin n) ℝ :=
   Fin.cons 1 (fun i => MvPolynomial.X (e, b, i))
 
-/-- **The `MvPolynomial` coordinatization of the two-extensor** (`def:two-extensor`;
-Jackson–Jordán 2010 §5, Phase 34). For a bar label `e` and a coordinate `m`,
+/-- **The `MvPolynomial` coordinatization of the two-extensor** (a step of
+`lem:two-extensor-polynomial`). For a bar label `e` and a coordinate `m`,
 `twoExtensorPoly e m` is the same `2×2`-minor formula as `twoExtensor`, symbolically in the
 `β × Bool × Fin n`-indexed endpoint variables (`false`/`true` selecting the bar's two
 endpoints); its evaluation at any endpoint assignment `q` recovers the two-extensor of the pair
@@ -152,11 +156,11 @@ noncomputable def twoExtensorPoly (e : β) (m : Fin (bodyBarDim n)) :
     homLiftPoly e false ((pairIdxEquiv n).symm m).1.2
       * homLiftPoly e true ((pairIdxEquiv n).symm m).1.1
 
-/-- **The two-extensor evaluation identity** (`def:two-extensor`): evaluating `twoExtensorPoly e m`
-at an endpoint assignment `q` recovers the two-extensor of the pair `q` assigns to `e`. The
-`Fin.comp_cons` naturality of `Fin.cons` under `MvPolynomial.eval q` identifies `eval q ∘
-homLiftPoly e b` with `homLift (fun i' => q (e, b, i'))` pointwise, and the minor formula is then a
-direct `map_sub`/`map_mul` computation. -/
+/-- **The two-extensor evaluation identity** (`lem:two-extensor-polynomial`): evaluating
+`twoExtensorPoly e m` at an endpoint assignment `q` recovers the two-extensor of the pair `q`
+assigns to `e`. The `Fin.comp_cons` naturality of `Fin.cons` under `MvPolynomial.eval q`
+identifies `eval q ∘ homLiftPoly e b` with `homLift (fun i' => q (e, b, i'))` pointwise, and the
+minor formula is then a direct `map_sub`/`map_mul` computation. -/
 theorem twoExtensorPoly_eval (e : β) (m : Fin (bodyBarDim n)) (q : β × Bool × Fin n → ℝ) :
     MvPolynomial.eval q (twoExtensorPoly e m) =
       twoExtensor (fun i => q (e, false, i)) (fun i => q (e, true, i)) m := by
@@ -172,10 +176,11 @@ theorem twoExtensorPoly_eval (e : β) (m : Fin (bodyBarDim n)) (q : β × Bool �
 
 /-! ### Endpoint realizations and generic endpoint assignments (`def:generic-endpoints`) -/
 
-/-- **The endpoint realization of an assignment** (`def:generic-endpoints`; Jackson–Jordán 2010
-§5, Phase 34). Fix a multigraph `G`. An *endpoint assignment* `q : β × Bool × Fin n → ℝ` gives
-each bar `e` an ordered pair of points of `ℝⁿ` (`false`/`true` selecting the two endpoints);
-its *endpoint realization* places each bar at the two-extensor of its assigned pair.
+/-- **The endpoint realization of an assignment** (`def:generic-endpoints`; Jackson and Jordán's
+body-and-bar realizations, 2010, §§2.1 and 3). Fix a multigraph `G`. An *endpoint assignment*
+`q : β × Bool × Fin n → ℝ` gives each bar `e` an ordered pair of points of `ℝⁿ` (`false`/`true`
+selecting the two endpoints); its *endpoint realization* places each bar at the two-extensor of
+its assigned pair.
 
 Marked `@[reducible]`: consumers form `Set ↥E((ofEndpoints G q).graph)`-indexed families and apply
 `(ofEndpoints G q).rigidityRow` to elements of `Set ↥E(G)` directly (`IsGenericEndpoints` below),
@@ -196,15 +201,15 @@ theorem ofEndpoints_placement (G : Graph α β) (q : β × Bool × Fin n → ℝ
     (ofEndpoints G q).placement e =
       twoExtensor (fun i => q ((e : β), false, i)) (fun i => q ((e : β), true, i)) := rfl
 
-/-- **An endpoint assignment generic for row independence** (`def:generic-endpoints`;
-Jackson–Jordán 2010 §5, Phase 34). The Phase-24 transfer form, transported to the body-bar
-endpoint space: `q` is *generic* when every bar set whose rigidity rows are linearly independent
-at the endpoint realization of *some* assignment has linearly independent rows at the endpoint
-realization of `q`. It subsumes Jackson and Jordán's edge-induced-submatrix maximum-rank
-condition; the transfer runs over endpoint assignments only, since independence witnessed by a
-framework outside the endpoint parameter space (e.g. the standard-basis witness of
-`prop:tay-witness-exists`) does not transfer (`notes/Phase34.md`, the R0-era witness claim
-refuted). -/
+/-- **An endpoint assignment generic for row independence** (`def:generic-endpoints`). The
+transfer form of genericity, as for bar-joint placements, on the body-bar endpoint space: `q` is
+*generic* when every bar set whose rigidity rows are linearly independent at the endpoint
+realization of *some* assignment has linearly independent rows at the endpoint realization of
+`q`. For a finite loopless `G` and `n ≥ 1` it agrees with Jackson and Jordán's genericity, the
+maximum rank of the rigidity matrix and of its edge-induced submatrices (2010, §5, p. 582; the
+remarks after `lem:exists-generic-endpoints`). The transfer runs over endpoint assignments only:
+the framework of `prop:tay-witness-exists`, with standard basis vectors on the bars, is in
+general no endpoint realization (the remarks after `def:two-extensor`). -/
 def IsGenericEndpoints (G : Graph α β) (D : Graph.orientation G)
     (q : β × Bool × Fin n → ℝ) : Prop :=
   ∀ s : Set ↥E(G), (∃ q' : β × Bool × Fin n → ℝ,
@@ -213,18 +218,18 @@ def IsGenericEndpoints (G : Graph α β) (D : Graph.orientation G)
 
 /-! ### Abundance and existence of generic endpoint assignments -/
 
-/-- **Abundance of generic endpoint assignments** (`lem:generic-endpoints-abundance`;
-Jackson–Jordán 2010 §5, Phase 34). There is a nonzero polynomial `P` in the `2n|E(G)|` endpoint
-coordinates such that every assignment `q` with `P(q) ≠ 0` is generic for row independence; the
-non-generic assignments are confined to the zero set of one nonzero polynomial.
+/-- **Abundance of generic endpoint assignments** (`lem:generic-endpoints-abundance`). There is a
+nonzero polynomial `P` in the `2n|E(G)|` endpoint coordinates such that every assignment `q` with
+`P(q) ≠ 0` is generic for row independence; the non-generic assignments are confined to the zero
+set of one nonzero polynomial.
 
 The coordinate family is read against the standard basis `Pi.basis (fun _ : α =>
 (EuclideanSpace.basisFun (Fin (bodyBarDim n)) ℝ).toBasis)` of body motions `Motion n α`: the row
-coordinates are, up to a per-bar incidence sign, the degree-two two-extensor polynomials
-`twoExtensorPoly` (the evaluation identity `hg` below, computed exactly as in `stdPlacement_
-rigidityMap_apply`/`rigidityRow_eq`'s sign convention but directly through `rigidityMap_apply` and
-`Pi.single`, rather than through `blockPairing`). For each bar subset `s` linearly independent at
-some assignment, the maximal-minor engine
+coordinates are, up to a per-bar incidence sign, the two-extensor polynomials `twoExtensorPoly`,
+of degree at most two (the evaluation identity `hg` below, with the sign convention of
+`stdPlacement_rigidityMap_apply` and `rigidityRow_eq`, computed directly through
+`rigidityMap_apply` and `Pi.single` rather than through `blockPairing`). For each bar subset `s`
+linearly independent at some assignment, the maximal-minor engine
 `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` supplies a nonzero witnessing minor
 polynomial `Q s`; `P` is the finite product of the `Q s` over the (finitely many, since the bar set
 is finite) subsets — the same product route as the bar-joint
@@ -292,10 +297,10 @@ theorem exists_isGenericEndpoints_abundance [Finite α] [Finite β] (G : Graph �
   rw [heval] at hq
   exact hQ s q ((Finset.prod_ne_zero_iff.mp hq) s (Finset.mem_univ s)) hs
 
-/-- **Existence of generic endpoint assignments** (`lem:exists-generic-endpoints`;
-Jackson–Jordán 2010 §5, Phase 34). A generic endpoint assignment exists: the abundance
-polynomial of `exists_isGenericEndpoints_abundance` is nonzero, so it has a non-root over the
-infinite field `ℝ` (`MvPolynomial.exists_eval_ne_zero`), which is a generic assignment. -/
+/-- **Existence of generic endpoint assignments** (`lem:exists-generic-endpoints`). A generic
+endpoint assignment exists: the abundance polynomial of `exists_isGenericEndpoints_abundance` is
+nonzero, so it has a non-root over the infinite field `ℝ` (`MvPolynomial.exists_eval_ne_zero`),
+which is a generic assignment. -/
 theorem exists_isGenericEndpoints [Finite α] [Finite β] (G : Graph α β)
     (D : Graph.orientation G) :
     ∃ q : β × Bool × Fin n → ℝ, IsGenericEndpoints G D q := by
@@ -305,17 +310,17 @@ theorem exists_isGenericEndpoints [Finite α] [Finite β] (G : Graph α β)
 
 /-! ### The coordinate-segment basis of the extensor space (`lem:coordinate-extensor-basis`) -/
 
-/-- **The standard coordinate points of Jackson–Jordán's Lemma 5.1**
-(`lem:coordinate-extensor-basis`). `coordPoint n 0 = 0 ∈ ℝⁿ` is the origin ($c_0$ in the paper's
-naming), and `coordPoint n i.succ` is the standard basis point of `ℝⁿ` with a `1` at coordinate `i`
-($c_{i+1}$, `1 ≤ i + 1 ≤ n`). -/
+/-- **The coordinate points of Jackson–Jordán's Lemma 5.1** (used in
+`lem:coordinate-extensor-basis`). `coordPoint n 0 = 0 ∈ ℝⁿ` is the origin (`c₀` in the chapter;
+Jackson and Jordán write `p₀`, 2010, §5, p. 581), and `coordPoint n i.succ` is the standard basis
+point of `ℝⁿ` with a `1` at coordinate `i` (`c_{i+1}`, `1 ≤ i + 1 ≤ n`). -/
 def coordPoint (n : ℕ) : Fin (n + 1) → Fin n → ℝ :=
   Fin.cases 0 (fun i => Function.update 0 i 1)
 
 /-- **The homogeneous lift of a coordinate point** has a `1` at coordinate `0` and a `1` at its own
 index, `0` elsewhere — both conditions coincide when the index itself is `0`, so the two-branch
-`if` is uniform in `a`. Internal to the two vector identities feeding
-`linearIndependent_twoExtensor_coordPoint`. -/
+`if` is uniform in `a`. Internal to the two vector identities that
+`linearIndependent_twoExtensor_coordPoint` uses. -/
 private theorem homLift_coordPoint (n : ℕ) (a x : Fin (n + 1)) :
     homLift (coordPoint n a) x = if x = 0 then (1 : ℝ) else if x = a then 1 else 0 := by
   induction x using Fin.cases with
@@ -333,7 +338,7 @@ private theorem homLift_coordPoint (n : ℕ) (a x : Fin (n + 1)) :
 /-- **A coordinate `m : Fin (bodyBarDim n)` equals `pairIdxEquiv n` of a pair** iff the pair `ab`
 that `(pairIdxEquiv n).symm m` reads off agrees with it — the mechanical bridge letting the two
 vector identities below rewrite an `if m = pairIdxEquiv n ⟨_, _⟩` condition as a condition on plain
-`Fin (n + 1)` pairs, on which `omega` can finish. -/
+`Fin (n + 1)` pairs, which `simp` then decides. -/
 private theorem pairIdxEquiv_eq_iff {n : ℕ} {m : Fin (bodyBarDim n)} {a b : Fin (n + 1)}
     (hab : a < b) :
     m = pairIdxEquiv n ⟨(a, b), hab⟩ ↔ ((pairIdxEquiv n).symm m).1 = (a, b) := by
@@ -345,9 +350,10 @@ private theorem pairIdxEquiv_eq_iff {n : ℕ} {m : Fin (bodyBarDim n)} {a b : Fi
     exact congrArg (pairIdxEquiv n) (Subtype.ext h)
 
 /-- **The direction-coordinate two-extensor of the origin and a coordinate point** is the standard
-basis vector at the direction coordinate `(0, k)` — the `h = 0` row of the entry table in the proof
-of Jackson–Jordán's Lemma 5.1. Base case of `linearIndependent_twoExtensor_coordPoint`'s spanning
-argument. -/
+basis vector at the direction coordinate `(0, k)`. Jackson and Jordán list this vector in the
+proof of their Lemma 5.1 (2010, p. 581) with the sign of the direction coordinate reversed, as
+they put the homogeneous coordinate `1` last. Base case of
+`linearIndependent_twoExtensor_coordPoint`'s spanning argument. -/
 private theorem twoExtensor_coordPoint_zero {n : ℕ} {k : Fin (n + 1)}
     (hk : (0 : Fin (n + 1)) < k) :
     twoExtensor (coordPoint n 0) (coordPoint n k) =
@@ -363,10 +369,10 @@ private theorem twoExtensor_coordPoint_zero {n : ℕ} {k : Fin (n + 1)}
 
 /-- **The moment-coordinate two-extensor of two coordinate points** has exactly three nonzero
 entries: `+1` at the moment coordinate `(h, k)`, `+1` at the direction coordinate `(0, k)`, and
-`-1` at `(0, h)` — the `h ≥ 1` row of the entry table in the proof of Jackson–Jordán's Lemma 5.1.
-Moment-coordinate step of `linearIndependent_twoExtensor_coordPoint`'s spanning argument, built from
-the already-established `twoExtensor_coordPoint_zero` direction vectors, so no induction on pairs is
-needed. -/
+`-1` at `(0, h)`. Jackson and Jordán list this vector in the proof of their Lemma 5.1 (2010,
+p. 581) with the signs of the direction coordinates reversed. Moment-coordinate step of
+`linearIndependent_twoExtensor_coordPoint`'s spanning argument, proved entrywise; that argument
+combines it with the direction vectors of `twoExtensor_coordPoint_zero`. -/
 private theorem twoExtensor_coordPoint_succ {n : ℕ} {h k : Fin (n + 1)}
     (h0h : (0 : Fin (n + 1)) < h) (hhk : h < k) :
     twoExtensor (coordPoint n h) (coordPoint n k) =
@@ -393,10 +399,9 @@ private theorem twoExtensor_coordPoint_succ {n : ℕ} {h k : Fin (n + 1)}
     simp only [ha0, hbne0, ite_false]
     split_ifs <;> simp_all
 
-/-- **The coordinate-segment two-extensors form a basis** (`lem:coordinate-extensor-basis`;
-Jackson–Jordán 2010 §5, Phase 34). The `bodyBarDim n` two-extensors `T(c_i, c_j)`, `i < j`, of the
-coordinate points are linearly independent, hence — matching the cardinality of the extensor space
-— a basis of `ℝ^(bodyBarDim n)`.
+/-- **The coordinate-segment two-extensors form a basis** (`lem:coordinate-extensor-basis`). The
+`bodyBarDim n` two-extensors `T(c_i, c_j)`, `i < j`, of the coordinate points are linearly
+independent, hence — matching the cardinality of the extensor space — a basis of `ℝ^(bodyBarDim n)`.
 
 Proved by exhibiting every standard basis vector as a combination of these two-extensors: the
 direction-coordinate vectors directly (`twoExtensor_coordPoint_zero`), and the moment-coordinate
@@ -475,8 +480,8 @@ theorem mapPlacement_placement (F : BodyBarFramework n α β)
 /-- **The adjoint of a linear equivalence of a finite-dimensional real inner product space is
 again a linear equivalence** (internal to `linearIndependent_rigidityRow_mapPlacement`). The
 two-sided-inverse identities are the contravariant adjoint-of-composition law
-(`LinearMap.adjoint_comp`) applied to `M.symm.toLinearMap.comp M.toLinearMap = id` and its
-mirror, closed by `LinearMap.adjoint_id`. -/
+(`LinearMap.adjoint_comp`) applied to `M.symm.toLinearMap.comp M.toLinearMap = id` and to the
+same identity with `M` and `M.symm` exchanged, closed by `LinearMap.adjoint_id`. -/
 private noncomputable def adjointEquiv {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (M : E ≃ₗ[ℝ] E) : E ≃ₗ[ℝ] E :=
   LinearEquiv.ofLinearMap (LinearMap.adjoint (M : E →ₗ[ℝ] E))
@@ -502,13 +507,12 @@ private theorem adjointEquiv_apply {E : Type*} [NormedAddCommGroup E] [InnerProd
     adjointEquiv M x = LinearMap.adjoint (M : E →ₗ[ℝ] E) x := rfl
 
 /-- **A fixed invertible extensor-space map, applied bodywise to a body-bar framework's placement,
-preserves linear independence of rigidity rows** (`lem:extensor-map-rows`; Jackson–Jordán 2010 §5,
-Remark, Phase 34). The transformed row at a bar `e` evaluates a motion `m` to
-`⟪M b_e, m_u − m_v⟫ = ⟪b_e, M† (m_u − m_v)⟫` (`M†` the adjoint of `M`), i.e. the original row
-precomposed with the invertible bodywise-`M†` motion equivalence (`LinearEquiv.piCongrRight` of
-`adjointEquiv M` at every body); precomposition with a bijective linear map on the dual side
-preserves linear independence (`LinearIndependent.map'` along `Φ.dualMap`, injective since `Φ` is
-bijective). -/
+preserves linear independence of rigidity rows** (`lem:extensor-map-rows`). The transformed row at a
+bar `e` evaluates a motion `m` to `⟪M b_e, m_u − m_v⟫ = ⟪b_e, M† (m_u − m_v)⟫` (`M†` the adjoint of
+`M`), i.e. the original row precomposed with the invertible bodywise-`M†` motion equivalence
+(`LinearEquiv.piCongrRight` of `adjointEquiv M` at every body); precomposition with a bijective
+linear map on the dual side preserves linear independence (`LinearIndependent.map'` along
+`Φ.dualMap`, injective since `Φ` is bijective). -/
 theorem linearIndependent_rigidityRow_mapPlacement {F : BodyBarFramework n α β}
     (D : Graph.orientation F.graph)
     (M : EuclideanSpace ℝ (Fin (bodyBarDim n)) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n)))
@@ -532,15 +536,14 @@ theorem linearIndependent_rigidityRow_mapPlacement {F : BodyBarFramework n α β
 /-! ### The forest-packing witness for a sparse bar set (`lem:endpoint-witness`) -/
 
 /-- **A sparse bar set has a linearly independent witness at some endpoint assignment**
-(`lem:endpoint-witness`; Jackson–Jordán 2010 §5, Phase 34). If the edge-restriction `G ↾ E'` is
-`(d, d)`-sparse, `d = bodyBarDim n`, some endpoint assignment `q` has linearly independent
-rigidity rows on `E'`.
+(`lem:endpoint-witness`; Jackson–Jordán 2010, Lemma 5.1, by the change of coordinates they credit to
+Whiteley). If the edge-restriction `G ↾ E'` is `(d, d)`-sparse, `d = bodyBarDim n`, some endpoint
+assignment `q` has linearly independent rigidity rows on `E'`.
 
 `E' = ∅` is trivial (vacuous linear independence). Otherwise: `E'` decomposes into `d` disjoint
 forests (`exists_forestPacking_cover_of_isSparse_restrict`); a nonempty forest packing witnesses
-`Fin (bodyBarDim n)` inhabited, letting the forest-index map extend arbitrarily off `E'`
-(`choose`). The standard-basis witness on this
-packing is linearly independent on `E'`
+`Fin (bodyBarDim n)` inhabited, letting the forest-index map extend arbitrarily off `E'` (`choose`).
+The standard-basis witness on this packing is linearly independent on `E'`
 (`stdFramework_rigidityRow_linearIndependent_restrict`). The change-of-coordinates map `M` sending
 the standard basis to the coordinate-segment two-extensor basis (`Module.Basis.equiv`, applied to
 the basis `linearIndependent_twoExtensor_coordPoint` supplies via
@@ -641,10 +644,10 @@ theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {
 /-! ### Independence at a generic endpoint assignment (`thm:bodybar-generic-independence`,
 `cor:bodybar-generic-tay`) -/
 
-/-- **Independence at a generic endpoint assignment** (`thm:bodybar-generic-independence`;
-Jackson–Jordán 2010 §5, Phase 34). For a generic endpoint assignment `q`, the rigidity rows of
-the endpoint realization of `q` indexed by a bar set `E'` are linearly independent iff the
-edge-restriction `G ↾ E'` is `(d, d)`-sparse, `d = bodyBarDim n`.
+/-- **Independence at a generic endpoint assignment** (`thm:bodybar-generic-independence`). For a
+generic endpoint assignment `q`, the rigidity rows of the endpoint realization of `q` indexed by a
+bar set `E'` are linearly independent iff the edge-restriction `G ↾ E'` is `(d, d)`-sparse,
+`d = bodyBarDim n`.
 
 `⟸`: `lem:endpoint-witness` supplies a witness assignment with independent rows on `E'`, and
 genericity (`IsGenericEndpoints`, applied at `s := Subtype.val ⁻¹' E'`) transfers that
@@ -662,7 +665,7 @@ theorem linearIndependent_rigidityRow_ofEndpoints_iff [Finite α] [Finite β] {G
   exact hq _ ⟨q', hq'⟩
 
 /-- **Tay's theorem at a generic endpoint assignment, independence half**
-(`cor:bodybar-generic-tay`; Jackson–Jordán 2010 §5, Phase 34). For a generic endpoint assignment
+(`cor:bodybar-generic-tay`; Tay, and Jackson–Jordán 2010, §5). For a generic endpoint assignment
 `q`, the endpoint realization of `q` is independent iff `G` is `(d, d)`-sparse.
 
 Specializes `linearIndependent_rigidityRow_ofEndpoints_iff` to `E' = E(G)`: the bar-set-indexed
@@ -682,10 +685,9 @@ theorem isIndependent_ofEndpoints_iff [Finite α] [Finite β] {G : Graph α β}
     exact linearIndepOn_univ_iff.symm
   exact isIndependent_iff_linearIndependent_rigidityRow.trans (hmid.trans hiff)
 
-/-- **Tay's theorem at a generic endpoint assignment** (`cor:bodybar-generic-tay`;
-Jackson–Jordán 2010 §5, Phase 34). For a generic endpoint assignment `q`, the endpoint
-realization of `q` is isostatic (independent and infinitesimally rigid) iff `G` is `(d, d)`-tight,
-`d = bodyBarDim n`.
+/-- **Tay's theorem at a generic endpoint assignment** (`cor:bodybar-generic-tay`; Tay, and
+Jackson–Jordán 2010, §5). For a generic endpoint assignment `q`, the endpoint realization of `q` is
+isostatic (independent and infinitesimally rigid) iff `G` is `(d, d)`-tight, `d = bodyBarDim n`.
 
 `⟹`: sparsity is `isIndependent_ofEndpoints_iff`; the count `|E| + d = d|V|` substitutes the
 independence rank equality into the rigidity count, exactly as in `tay_witness`'s isostatic

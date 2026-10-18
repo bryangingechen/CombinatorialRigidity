@@ -11,42 +11,42 @@ import Mathlib.Combinatorics.Graph.Basic
 /-!
 # Body-hinge Tay–Whiteley theorem — edge multiplication and body-hinge frameworks
 
-Phase 16. The body-hinge / panel-hinge Tay–Whiteley theorem in `n`-space reduces
-to the body-bar Tay theorem (Phase 15) through a single combinatorial device:
-replace each hinge by a bundle of `δ - 1` coincident body-bars, where
-`δ = bodyBarDim n`. Combinatorially this is **parallel-edge multiplication** of
-the underlying multigraph — the `(δ-1) · G` of Katoh–Tanigawa 2011's molecular
-conjecture statement.
+The body-hinge Tay–Whiteley theorem in `n`-space (Tay 1989, §7; Whiteley 1988, Theorem 10)
+reduces to the body-bar Tay theorem through Whiteley's device (1988, proof of Theorem 10,
+p. 244): a hinge leaves its two bodies one relative degree of freedom, so it acts as a bundle of
+`δ - 1` bars, `δ = bodyBarDim n`. Combinatorially this is **parallel-edge multiplication** of
+the underlying multigraph — the `(δ-1) · G`, written `G̃`, of Katoh and Tanigawa (2011, §1).
 
-This file lands all four `body-hinge.tex` dep-graph nodes of Phase 16:
+The file holds the four nodes of `body-hinge.tex`:
 
 - `def:edge-multiply` — the multiplied multigraph `m · G` on the carrier
-  `Graph α β` (mathlib core), and its three transport facts.
+  `Graph α β` (mathlib core), and the facts about it below.
 - `def:body-hinge-framework` — the body-hinge framework `Graph.BodyHingeFramework`
   as a thin wrapper over the induced `Graph.BodyBarFramework` on `(δ-1)·G`
-  (`toBodyBar`), with independence / infinitesimal rigidity inherited verbatim.
+  (`toBodyBar`), with independence and infinitesimal rigidity read off it.
 - `lem:edge-multiply-sparse` — `edgeMultiply_isSparse_iff`, the body-hinge ⇔
   body-bar existential transport (`exists_toBodyBar_iff`) composed with the
   body-bar Tay theorem (`tay_witness`) on `(δ-1)·G`.
-- `thm:body-hinge-tay` — `body_hinge_tay`, the chapter target: the tree-packing
-  reformulation (`tutte_nash_williams` on `(δ-1)·G`) of `edgeMultiply_isSparse_iff`.
+- `thm:body-hinge-tay` — `body_hinge_tay`: `edgeMultiply_isSparse_iff` with
+  `(δ-1)·G`'s sparsity read as a forest packing (`tutte_nash_williams` on `(δ-1)·G`).
 
 ## `m · G` (`def:edge-multiply`)
 
 For `m : ℕ`, `G.edgeMultiply m : Graph α (β × Fin m)` keeps the vertex set of `G`
 and replaces each edge `e` by the `m` parallel copies `(e, 0), …, (e, m-1)`, each
 linking the same endpoints as `e`. The edge type is `β × Fin m`; the incidence
-`(m · G).IsLink (e, i) x y` holds exactly when `G.IsLink e x y`. The three
-transport facts the hinge-to-bar reduction reaches for:
+`(m · G).IsLink (e, i) x y` holds exactly when `G.IsLink e x y`. The facts about it:
 
 - `vertexSet_edgeMultiply` — `V(m · G) = V(G)` (definitionally).
 - `edgeMultiply_edgeSet_ncard` — `|E(m · G)| = m · |E(G)|`.
 - `spanningVerts_edgeMultiply` — a bar set `E'` in `G` spans the same vertices as
-  its preimage `(· .1 ∈ E')` in `m · G`.
+  its preimage `(· .1 ∈ E')` in `m · G`, for `m ≠ 0`.
+- `edgeMultiply_inc` and `edgeMultiply_mono` — incidence, and monotonicity in the subgraph
+  order.
 
 Phrased `Set`-side throughout (`Set.ncard`, `[Finite]`) to line up with the
-Phase-13 `Graph.IsSparse` predicate (`def:graph-sparse`). See `ROADMAP.md` §16 /
-`notes/Phase16.md` and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
+`Graph.IsSparse` predicate (`def:graph-sparse`). The blueprint presents the file in
+`sec:body-hinge`.
 -/
 
 namespace Graph
@@ -59,7 +59,8 @@ variable {α β : Type*}
 on the same vertex set as `G : Graph α β` in which each edge `e` is replaced by `m`
 parallel copies indexed by `Fin m`. The edge type is `β × Fin m`, and
 `(m · G).IsLink (e, i) x y` holds exactly when `G.IsLink e x y`. The hinge-to-bar
-reduction of the body-hinge Tay–Whiteley theorem takes `m = bodyBarDim n - 1`. -/
+reduction of the body-hinge Tay–Whiteley theorem takes `m = bodyBarDim n - 1`
+(`bodyHingeMult n`). -/
 @[simps! vertexSet isLink]
 def edgeMultiply (G : Graph α β) (m : ℕ) : Graph α (β × Fin m) where
   vertexSet := V(G)
@@ -100,8 +101,8 @@ lemma edgeMultiply_edgeSet_ncard (G : Graph α β) (m : ℕ) :
 /-- A bar set `E'` in `G` spans the same vertices as its preimage under the first
 projection in `m · G` (`def:edge-multiply`): `spanningVerts` transports across edge
 multiplication. Requires `m ≠ 0` so each `G`-edge has at least one parallel copy
-(for `m = 0` the multiplied graph is edgeless); the reduction uses
-`m = bodyBarDim n - 1 ≥ 1`. -/
+(for `m = 0` the multiplied graph is edgeless); `m = bodyBarDim n - 1` is at least `2` for
+`n ≥ 2`. -/
 @[simp]
 lemma spanningVerts_edgeMultiply (G : Graph α β) (m : ℕ) [NeZero m] (E' : Set β) :
     (G.edgeMultiply m).spanningVerts {p : β × Fin m | p.1 ∈ E'} = G.spanningVerts E' := by
@@ -122,49 +123,41 @@ lemma edgeMultiply_mono {H G : Graph α β} (h : H ≤ G) (m : ℕ) :
 
 /-! ## Body-hinge frameworks (`def:body-hinge-framework`)
 
-A **body-hinge framework** in `ℝⁿ` on a multigraph `G : Graph α β` assigns each
-hinge (edge) `e` an `(δ-1)`-dimensional space of bar coordinates dual to the hinge,
-`δ = bodyBarDim n`. Following Whiteley 1988's matroid-union reduction (specialized
-to the standard-basis witness; see `notes/Phase16.md`), a hinge constrains all but
-one of the `δ` relative screw freedoms of the two bodies it joins, so it behaves
-like a bundle of `δ - 1` coincident body-bars whose two-extensor coordinates span
-the hinge's dual space. Combinatorially this is the parallel-edge multiplication
-`(δ-1)·G` (`edgeMultiply` above): the body-hinge framework is *defined* as the
-induced body-bar framework on `(δ-1)·G`, with the `δ - 1` bars of each hinge
-carrying a basis of its dual space.
+A **body-hinge framework** in `ℝⁿ` on a multigraph `G : Graph α β` (`def:body-hinge-framework`)
+joins bodies by hinges, `(n-2)`-dimensional affine subspaces (Whiteley 1988, §3.3). A hinge
+constrains all but one of the `δ` relative screw freedoms of the two bodies it joins,
+`δ = bodyBarDim n`, so it behaves like a bundle of `δ - 1` bars meeting the hinge whose Plücker
+vectors are linearly independent (Whiteley 1988, proof of Theorem 10, p. 244). Combinatorially
+this is the parallel-edge multiplication `(δ-1)·G` (`edgeMultiply` above).
 
-No new linear algebra: rigidity, independence, and infinitesimal rigidity are
-**inherited verbatim** from the induced `Graph.BodyBarFramework` on `(δ-1)·G`
-(Phase 15, `BodyBar/Framework.lean`). The standard-basis witness on `(δ-1)·G`
-routes through without glue — the only Phase-16-specific data is the
-edge-multiplication device and the per-hinge placement, both bookkeeping. -/
+The formalization records a body-hinge framework by the vectors of these bars alone: it *is* a
+body-bar framework on `(δ-1)·G`, with no hinge and no condition on the `δ - 1` vectors of an
+edge (they need not span a hinge's space, nor be independent). Independence and infinitesimal
+rigidity are those of this body-bar framework (`BodyBar/Framework.lean`). -/
 
 /-- The edge-multiplication factor of the body-hinge reduction: `δ - 1`, where
 `δ = bodyBarDim n`. A hinge constrains all but one of a body's `δ` relative screw
-freedoms, so each hinge becomes `bodyHingeMult n` coincident body-bars. For `n ≥ 2`
-this is `≥ 2` (`δ ≥ 3`), so `[NeZero (bodyHingeMult n)]` is available downstream and
-`spanningVerts_edgeMultiply` applies. -/
+freedoms, so each hinge becomes `bodyHingeMult n` bars. For `n ≥ 2` this is `≥ 2`
+(`δ ≥ 3`); the lemmas that need a copy of every edge assume `[NeZero (bodyHingeMult n)]`. -/
 def bodyHingeMult (n : ℕ) : ℕ := bodyBarDim n - 1
 
 /-- A **body-hinge framework** in `ℝⁿ` on a multigraph `G : Graph α β`
-(`def:body-hinge-framework`; Whiteley 1988, Tay 1989). The combinatorial data is
+(`def:body-hinge-framework`; Whiteley 1988, §3.3). The combinatorial data is
 the multigraph `G`; the geometric data is a **placement** assigning each of the
-`δ - 1` parallel bars of every hinge a two-extensor (Plücker) coordinate in `ℝᵈ`,
-`d = bodyBarDim n`. Per the reduction, the `δ - 1` bars of a hinge collectively
-carry a basis of the `(δ-1)`-dimensional space dual to the hinge.
+`δ - 1` parallel bars of every hinge a vector of `ℝᵈ`, `d = bodyBarDim n`. In the source a
+hinge's `δ - 1` vectors are a basis of the span of the Plücker vectors of the lines meeting the
+hinge; here they are arbitrary, and no hinge is recorded.
 
 The placement is typed as a placement on the multiplied multigraph `(δ-1)·G`
 (`graph.edgeMultiply (bodyHingeMult n)`, edge type `β × Fin (δ-1)`); the induced
 body-bar framework `toBodyBar` is then *literally* the `Graph.BodyBarFramework` on
-`(δ-1)·G` carrying that placement, and all rigidity notions are inherited from it.
-Degenerate two-extensors are permitted (existence-of-realization scope), matching
-`Graph.BodyBarFramework`. -/
+`(δ-1)·G` carrying that placement, and all rigidity notions are inherited from it. -/
 structure BodyHingeFramework (n : ℕ) (α β : Type*) where
   /-- The underlying multigraph: bodies are vertices, hinges are edges. -/
   graph : Graph α β
   /-- The placement: each of the `δ - 1` parallel bars of every hinge gets a
-  two-extensor coordinate in `ℝᵈ`, `d = bodyBarDim n`. Equivalently a placement on
-  the multiplied multigraph `(δ-1)·G`; degenerate coordinates are permitted. -/
+  vector of `ℝᵈ`, `d = bodyBarDim n`. Equivalently a placement on the multiplied
+  multigraph `(δ-1)·G`; the vectors are unconstrained. -/
   placement : E(graph.edgeMultiply (bodyHingeMult n)) →
     EuclideanSpace ℝ (Fin (bodyBarDim n))
 
@@ -174,10 +167,9 @@ variable {n : ℕ} {α β : Type*}
 
 /-- The **induced body-bar framework** of a body-hinge framework on `(δ-1)·G`
 (`def:body-hinge-framework`): the `Graph.BodyBarFramework` on the multiplied
-multigraph `(δ-1)·G` carrying `F`'s per-bar placement. The body-hinge rigidity map
-is *defined* as this framework's body-bar rigidity map
-(`Graph.BodyBarFramework.rigidityMap`); the hinge-to-bar reduction reads all
-rigidity data off `toBodyBar`. -/
+multigraph `(δ-1)·G` carrying `F`'s per-bar placement. Its rigidity map
+(`Graph.BodyBarFramework.rigidityMap`) is the body-hinge framework's, and `IsIndependent` and
+`IsInfinitesimallyRigid` below are read off it. -/
 def toBodyBar (F : BodyHingeFramework n α β) :
     Graph.BodyBarFramework n α (β × Fin (bodyHingeMult n)) where
   graph := F.graph.edgeMultiply (bodyHingeMult n)
@@ -192,16 +184,16 @@ theorem toBodyBar_placement (F : BodyHingeFramework n α β) :
     F.toBodyBar.placement = F.placement := rfl
 
 /-- A body-hinge framework `F` is **independent** at an orientation `D` of `(δ-1)·G`
-when its induced body-bar framework is (`def:body-hinge-framework`): the bar-constraint
-rows of the `δ - 1` bars of every hinge are linearly independent. Inherited verbatim
+(`def:body-hinge-framework`'s independence) when its induced body-bar framework is: the rows of
+all the bars of `(δ-1)·G` are linearly independent. Inherited verbatim
 from `Graph.BodyBarFramework.IsIndependent`. -/
 def IsIndependent (F : BodyHingeFramework n α β)
     (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))) : Prop :=
   F.toBodyBar.IsIndependent D
 
 /-- A body-hinge framework `F` is **infinitesimally rigid** at an orientation `D` of
-`(δ-1)·G` when its induced body-bar framework is (`def:body-hinge-framework`):
-`rank + δ = δ·b` for `δ = bodyBarDim n` and `b` the number of bodies. Inherited
+`(δ-1)·G` (`def:body-hinge-framework`'s infinitesimal rigidity) when its induced body-bar
+framework is: `rank + δ = δ·b` for `δ = bodyBarDim n` and `b` the number of bodies. Inherited
 verbatim from `Graph.BodyBarFramework.IsInfinitesimallyRigid`; `[Finite α]` is the
 same semantic contract guard as there (finite body set). -/
 def IsInfinitesimallyRigid [Finite α] (F : BodyHingeFramework n α β)
@@ -209,10 +201,10 @@ def IsInfinitesimallyRigid [Finite α] (F : BodyHingeFramework n α β)
   F.toBodyBar.IsInfinitesimallyRigid D
 
 /-- A body-bar framework on the multiplied multigraph `(δ-1)·G` arises from a body-hinge
-framework on `G`: `toBodyBar` is a bijection from `BodyHingeFramework`s with `graph = G`
-onto `BodyBarFramework`s with `graph = (δ-1)·G`, given by passing the placement through
-unchanged. This is the existential transport underlying `lem:edge-multiply-sparse`: the
-body-hinge frameworks on `G` and the body-bar frameworks on `(δ-1)·G` are *the same data*. -/
+framework on `G`: a property `P` holds at `toBodyBar` of some body-hinge framework on `G` iff
+it holds at some body-bar framework on `(δ-1)·G` (the placement passes through unchanged).
+This is the existential transport of `lem:edge-multiply-sparse`'s proof: the body-hinge
+frameworks on `G` and the body-bar frameworks on `(δ-1)·G` are *the same data*. -/
 theorem exists_toBodyBar_iff (G : Graph α β)
     (P : BodyBarFramework n α (β × Fin (bodyHingeMult n)) → Prop) :
     (∃ F : BodyHingeFramework n α β, F.graph = G ∧ P F.toBodyBar) ↔
@@ -227,8 +219,9 @@ theorem exists_toBodyBar_iff (G : Graph α β)
     cases Fb with
     | mk graph placement => cases hgraph; rfl
 
-/-- **Sparsity transports across edge multiplication** (`lem:edge-multiply-sparse`; Tay 1989 §7,
-Whiteley 1988). For `δ = bodyBarDim n`, a multigraph `G` carries an *independent* body-hinge
+/-- **Tay's theorem for the multiplied multigraph** (`lem:edge-multiply-sparse`; the reduction of
+Whiteley 1988, proof of Theorem 10). For `δ = bodyBarDim n`, a multigraph `G` carries an
+*independent* body-hinge
 framework in `ℝⁿ` **iff** `(δ-1)·G` is `(δ,δ)`-sparse, and an *isostatic* one **iff** `(δ-1)·G`
 is `(δ,δ)`-tight. The proof is the body-bar Tay theorem (`tay_witness`) applied to the multiplied
 multigraph `(δ-1)·G`, transported across the body-hinge ⇔ body-bar existential bijection
@@ -265,18 +258,18 @@ theorem edgeMultiply_isSparse_iff [Finite α] [Finite β] (G : Graph α β) :
           (fun Fb => ∃ D, Fb.IsIndependent D ∧ Fb.IsInfinitesimallyRigid D)).mpr ⟨Fb, hg, D, hD⟩
       exact ⟨F, rfl, hP⟩
 
-/-- **Body-hinge Tay–Whiteley theorem, independent form** (`thm:body-hinge-tay`;
-Tay 1989 §7, Whiteley 1988). For `n ≥ 2` and `δ = bodyBarDim n = n(n+1)/2`, a multigraph
-`G` carries an *independent* body-hinge framework in `ℝⁿ` **iff** `(δ-1)·G` is
-`(δ,δ)`-sparse — equivalently the edge-disjoint union of `δ` forests
-(`Graph.IsForestPacking`) — and an *isostatic* one **iff** `(δ-1)·G` is `(δ,δ)`-tight.
+/-- **Body-hinge Tay–Whiteley theorem** (`thm:body-hinge-tay`; Tay 1989, §7, and Whiteley
+1988, Theorem 10). For `δ = bodyBarDim n = n(n+1)/2`, a multigraph `G` carries an
+*independent* body-hinge framework in `ℝⁿ` **iff** `E((δ-1)·G)` is the edge-disjoint union of
+`δ` forests (`Graph.IsForestPacking`), and an *isostatic* one **iff** `(δ-1)·G` is
+`(δ,δ)`-tight. As the definition records a body-hinge framework by its bars alone, the
+frameworks need not come from hinges.
 
-The chapter target of Phase 16. The sparse/tight characterizations are
-`edgeMultiply_isSparse_iff` (the body-hinge ⇔ body-bar reduction composed with the
-body-bar Tay theorem `tay_witness` on `(δ-1)·G`); the forest-packing reformulation is
-`tutte_nash_williams` applied to `(δ-1)·G`. The connected-tight spanning-tree refinement
-(each of the `δ` forests upgrades to a spanning tree) is `isSpanningTreePacking_of_isTight`
-applied to `(δ-1)·G`, available at the call site under `(δ-1)·G).Connected`. -/
+The sparse/tight characterizations are `edgeMultiply_isSparse_iff` (the body-hinge ⇔ body-bar
+reduction composed with the body-bar Tay theorem `tay_witness` on `(δ-1)·G`); the forest-packing
+reformulation is `tutte_nash_williams` applied to `(δ-1)·G`. When `(δ-1)·G` is connected, the
+tight case is a packing of `δ` spanning trees by `isSpanningTreePacking_of_isTight` applied to
+`(δ-1)·G`. -/
 theorem body_hinge_tay [Finite α] [Finite β] (G : Graph α β) :
     ((∃ (F : BodyHingeFramework n α β) (_ : F.graph = G)
         (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))), F.IsIndependent D) ↔

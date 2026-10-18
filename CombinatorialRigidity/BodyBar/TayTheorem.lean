@@ -11,20 +11,20 @@ import Mathlib.LinearAlgebra.Dual.Lemmas
 /-!
 # Tay's theorem, existence form (`thm:tay-witness`)
 
-Phase 15. Whiteley 1988 (*The union of matroids and the rigidity of frameworks*,
-SIAM J. Disc. Math. **1**, Theorem 8), in the existence-of-realization form: for
-`n ≥ 2` and `d = bodyBarDim n = n(n+1)/2`, a multigraph `G` carries an independent
-body-bar framework in `ℝⁿ` iff it is `(d, d)`-sparse (equivalently — Phase 13 — the
-edge-disjoint union of `d` forests), and an isostatic one iff `(d, d)`-tight (the
-union of `d` spanning trees).
+Tay's theorem (Tay 1984, Theorem 5.3) with Whiteley's Theorem 8 (Whiteley 1988, *The union of
+matroids and the rigidity of frameworks*, SIAM J. Disc. Math. **1**), in the
+existence-of-realization form: for `d = bodyBarDim n = n(n+1)/2`, a multigraph `G` carries an
+independent body-bar framework in `ℝⁿ` iff it is `(d, d)`-sparse (equivalently, by
+`thm:tutte-nash-williams`, the edge-disjoint union of `d` forests), and an isostatic one iff it
+is `(d, d)`-tight (for connected `G`, the union of `d` spanning trees, `cor:k-spanning-trees`).
 
 ## Witness construction
 
-The witness specializes each bar's two-extensor coordinate to a **standard basis
-vector** `b_e = e_{j(e)} ∈ ℝᵈ`, where `j(e)` is the index of `e`'s forest in a
-chosen tree-packing partition (`thm:tutte-nash-williams`). These degenerate
-two-extensors lie on the Plücker variety vacuously (existence-of-realization scope;
-see `Framework.lean`'s module docstring), so they form a valid body-bar realization.
+The witness specializes each bar's vector to a **standard basis vector** `b_e = e_{j(e)} ∈ ℝᵈ`,
+where `j(e)` is the index of `e`'s forest in a disjoint forest packing
+(`thm:tutte-nash-williams`). Each standard basis vector satisfies the quadratic Plücker
+relations, so it is the Plücker vector of a line (Whiteley 1988, proof of Theorem 8, p. 243):
+the witness is also a framework whose bars are lines.
 
 With this placement the rigidity-map row for a bar `e` collapses to the single
 coordinate `j(e)` of the relative body velocity (`stdPlacement_rigidityMap_apply`):
@@ -33,21 +33,20 @@ coordinate `j(e)` of the relative body velocity (`stdPlacement_rigidityMap_apply
 signed incidence matrix of the forest `Fs j` (over `ℝ`). Each block has full row
 rank (a forest's incidence rows are linearly independent —
 `Graph.orientation.isAcyclicSet_linearIndepOn`), so the row rank of the whole matrix
-is `Σⱼ |Fs j| = |E|`, i.e. the framework is independent. This is the reverse
-direction of `thm:k-frame-union-cycle`
-(`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`) lifted from indeterminate to
-real coefficients.
+is `Σⱼ |Fs j| = |E|`, i.e. the framework is independent. This is the specialization in the
+proof of `lem:k-frame-specialize-forest` (`specRow_linearIndependent`,
+`lem:k-frame-specialize-li`), with real entries.
 
 ## Contents
 
-This file ships the witness placement, the bar-row reduction, the block-diagonal
-rank count (`stdFramework_finrank_range`), both the **existence (⟸) direction**
-(`prop:tay-witness-exists`: `exists_isIndependent_of_isSparse` and
-`exists_isIsostatic_of_isTight`, the standard-basis witness on a tree packing) and
-the **converse (⟹) direction** (`isSparse_of_isIndependent`, the block-diagonal rank
-upper bound forcing `(d, d)`-sparsity), and hence the full `thm:tay-witness` iff
-(`tay_witness`). See `notes/Phase15.md` and the §`sec:body-bar-tay` subsection of
-`blueprint/src/chapter/body-bar.tex`.
+The witness placement, the bar-row reduction, the block-diagonal rank count
+(`stdFramework_finrank_range`), the **existence (⟸) direction** (`prop:tay-witness-exists`:
+`exists_isIndependent_of_isSparse` and `exists_isIsostatic_of_isTight`, the standard-basis
+witness on a forest packing), the **converse (⟹) direction** (`isSparse_of_isIndependent`,
+`lem:tay-isSparse-of-independent`: the block-diagonal rank upper bound forcing
+`(d, d)`-sparsity), and the full `thm:tay-witness` iff (`tay_witness`). The blueprint presents
+the file in `sec:body-bar-tay`, and the row identity `rigidityRow_eq` in
+`sec:body-bar-framework`.
 -/
 
 open scoped InnerProductSpace
@@ -61,9 +60,9 @@ variable {α β : Type*} {n : ℕ}
 /-- The **standard-basis placement** of a multigraph `G` from a forest-index map
 `j : E(G) → Fin (bodyBarDim n)`: each bar `e` is assigned the standard basis
 vector `e_{j(e)} = EuclideanSpace.single (j e) 1 ∈ ℝᵈ`, `d = bodyBarDim n`. This is
-the witness placement of Tay's theorem (Whiteley 1988 §3): `j(e)` is the index of
-`e`'s forest in a tree-packing partition, and `e_{j(e)}` is a (degenerate)
-two-extensor. -/
+the witness placement of Tay's theorem, from Whiteley's proof of his Theorem 8 (1988, p. 243):
+`j(e)` is the index of `e`'s forest in a disjoint forest packing, and `e_{j(e)}` is the
+Plücker vector of a line. -/
 noncomputable def stdPlacement (G : Graph α β) (n : ℕ)
     (j : E(G) → Fin (bodyBarDim n)) :
     E(G) → EuclideanSpace ℝ (Fin (bodyBarDim n)) :=
@@ -91,11 +90,11 @@ theorem stdFramework_placement (G : Graph α β) (n : ℕ)
     (j : E(G) → Fin (bodyBarDim n)) :
     (stdFramework G n j).placement = stdPlacement G n j := rfl
 
-/-- **Bar-row reduction at a standard-basis placement** (the foundational step of
-the witness argument). With each bar `e` placed at the standard basis vector
-`e_{j(e)}`, the rigidity-map row at `e` evaluated at a motion `m` collapses to the
-single coordinate `j(e)` of the relative body velocity at `e`'s oriented endpoints
-`(u, v) = D.dInc e`:
+/-- **Bar-row reduction at a standard-basis placement**, in evaluation form (the witness
+argument uses the row form `stdFramework_rigidityRow_eq`). With each bar `e` placed at the
+standard basis vector `e_{j(e)}`, the rigidity-map row at `e` evaluated at a motion `m`
+collapses to the single coordinate `j(e)` of the relative body velocity at `e`'s oriented
+endpoints `(u, v) = D.dInc e`:
 `(stdFramework G n j).rigidityMap D m e = (m u − m v) (j e)`.
 
 This is what makes the rigidity matrix block-diagonal across the `d = bodyBarDim n`
@@ -113,17 +112,17 @@ theorem stdPlacement_rigidityMap_apply (G : Graph α β) (n : ℕ)
 
 /-! ### Block-diagonal rank count
 
-The independent-form half of `thm:tay-witness`: at the standard-basis placement of a
+The independence half of `prop:tay-witness-exists`: at the standard-basis placement of a
 *disjoint forest packing*, the body-bar rigidity map has rank `|E(G)|`, so the framework
-is independent. The argument is the reverse direction of `thm:k-frame-union-cycle`
-(`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`) at the single real specialization
-`b_e = e_{j(e)}`: the rigidity matrix is block-diagonal across the `d = bodyBarDim n`
+is independent. The argument is the specialization in the proof of
+`lem:k-frame-specialize-forest` (`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`), at the
+real placement `b_e = e_{j(e)}`: the rigidity matrix is block-diagonal across the `d = bodyBarDim n`
 coordinates, the block at index `j` being the signed incidence matrix of the forest
 `Fs j` — full row rank by `Graph.orientation.isAcyclicSet_linearIndepOn` — so the rows
 are linearly independent and the rank is `Σⱼ |Fs j| = |E(G)|`.
 
-We follow Phase 6's `RigidityMatroid.lean` route to relate the row rank to the rank of
-the map: the `e`-th `rigidityRow` is the functional `m ↦ rigidityMap D m e`, the span of
+As in `RigidityMatroid.lean`, the row rank is related to the rank of the map: the `e`-th
+`rigidityRow` is the functional `m ↦ rigidityMap D m e`, the span of
 the rows is the range of the map's `dualMap`, and `finrank_range_dualMap_eq_finrank_range`
 identifies the two ranks. -/
 
@@ -142,7 +141,7 @@ theorem rigidityRow_apply (F : BodyBarFramework n α β) (D : Graph.orientation 
 `LinearMap.finrank_range_dualMap_eq_finrank_range` this is the row-rank-equals-column-rank
 identity for the body-bar rigidity matrix; in span form it is
 `LinearMap.range_dualMap_eq_span_image_dualBasis` applied to `Pi.basisFun ℝ E(F.graph)`.
-Mirror of `SimpleGraph.span_range_rigidityRow`. -/
+The body-bar analogue of `SimpleGraph.span_range_rigidityRow`. -/
 theorem span_range_rigidityRow (F : BodyBarFramework n α β) [Finite E(F.graph)]
     (D : Graph.orientation F.graph) :
     Submodule.span ℝ (Set.range (F.rigidityRow D)) =
@@ -218,8 +217,9 @@ theorem blockPairing_injective {α : Type*} [Fintype α] {d : ℕ} :
 placement `b = F.placement`, the rigidity row at `e` is the block-pairing of the block
 vector `fun c ↦ (b_e)_c • signedIncMatrix e` (up to sign):
 `F.rigidityRow D e = -(blockPairing α d (fun c ↦ F.placement e c • D.signedIncMatrix ℝ e))`.
-The row for `e` is the real-coefficient combination `∑_c (b_e)_c · (block-`c` incidence row
-of e)`, mirroring the indeterminate `kFrameRow = ∑_j X_{(e,j)} • (block-`j` incidence row)`.
+The row for `e` is the real-coefficient combination `∑_c (b_e)_c · (block-c incidence row
+of e)`, the indeterminate `k`-frame row `kFrameRow` (`X_{(e,j)} • (signed incidence row of e)`
+in block `j`) with each `X_{(e,c)}` replaced by `(b_e)_c`.
 The standard-basis witness `b_e = e_{j(e)}` specializes it to the block-`single` row
 (`stdFramework_rigidityRow_eq`). -/
 theorem rigidityRow_eq [Fintype α] [DecidableEq α] {F : BodyBarFramework n α β}
@@ -253,8 +253,8 @@ theorem rigidityRow_eq [Fintype α] [DecidableEq α] {F : BodyBarFramework n α 
 /-- **The standard-basis rigidity row is the block-pairing of a block-`single` incidence
 row** (up to sign). With `b_e = e_{j(e)}`, the rigidity row `m ↦ rigidityMap D m e` equals
 `-(blockPairing (Pi.single (j e) (signedIncMatrix ℝ e)))`: the row lives entirely in block
-`j(e)`, where it is `e`'s signed incidence row. This is what feeds the block-diagonal
-matrix of `specRow_linearIndependent` into the rank count.
+`j(e)`, where it is `e`'s signed incidence row. Through it the rank count uses the
+block-diagonal family of `specRow_linearIndependent`.
 
 The special case of `rigidityRow_eq` at the standard-basis placement `b_e = e_{j(e)}`: there
 `F.placement e c = (e_{j(e)})_c = δ_{c, j(e)}`, so the block vector
@@ -278,9 +278,9 @@ theorem stdFramework_rigidityRow_eq [Fintype α] [DecidableEq α] {G : Graph α 
 independent.** If `Fs : Fin (bodyBarDim n) → Set β` is a *disjoint* packing of `G` into
 `bodyBarDim n` forests that covers `E(G)`, and `j` is the forest-index map
 (`(e : β) ∈ Fs (j e)`), then the rigidity rows of `stdFramework G n j` at any orientation
-`D` are linearly independent. This is the reverse direction of `thm:k-frame-union-cycle`
-(`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`) at the single real specialization
-`b_e = e_{j(e)}`: each row is the block-`single` incidence row
+`D` are linearly independent. This is the specialization in the proof of
+`lem:k-frame-specialize-forest` (`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`), at the
+real placement `b_e = e_{j(e)}`: each row is the block-`single` incidence row
 (`stdFramework_rigidityRow_eq`), and the block-diagonal family is linearly independent
 over `ℝ` by `specRow_linearIndependent` (`Graph.orientation.isAcyclicSet_linearIndepOn`),
 reindexed along the disjoint-cover bijection `Set.unionEqSigmaOfDisjoint`. -/
@@ -332,7 +332,7 @@ subfamily indexed by `E'ₛ = Subtype.val ⁻¹' E'`: the disjoint cover `⋃ i,
 `E'ₛ ≃ Σ i, Fs i` (via `Equiv.Set.image` identifying `E'ₛ` with `↥E'`, then the same
 `Set.unionEqSigmaOfDisjoint` reindexing as the unrestricted lemma), and `j` need only place each
 `e ∈ E'` in its forest (`hj` is vacuous off `E'`). This is what `lem:endpoint-witness` needs: the
-witness only assigns standard-basis extensors to the bars of a sparse subset `E'`, not to all of
+witness only assigns standard basis vectors to the bars of a sparse subset `E'`, not to all of
 `E(G)`. -/
 theorem stdFramework_rigidityRow_linearIndependent_restrict [Finite α] {G : Graph α β}
     {E' : Set β} (hE' : E' ⊆ E(G))
@@ -383,8 +383,8 @@ theorem stdFramework_rigidityRow_linearIndependent_restrict [Finite α] {G : Gra
   exact hrow ▸ (hvec.map' (blockPairing α (bodyBarDim n))
     (LinearMap.ker_eq_bot.mpr blockPairing_injective)).neg
 
-/-- **Block-diagonal rank count for the standard-basis witness** (the independent-form half
-of `thm:tay-witness`). For a disjoint forest packing `Fs` of `G` into `d = bodyBarDim n`
+/-- **Block-diagonal rank count for the standard-basis witness** (a step of
+`prop:tay-witness-exists`). For a disjoint forest packing `Fs` of `G` into `d = bodyBarDim n`
 forests covering `E(G)`, with forest-index map `j`, the body-bar rigidity map of the
 standard-basis framework `stdFramework G n j` at any orientation `D` has rank exactly
 `|E(G)|`, so the framework is independent. The rank equals the dimension of the span of the
@@ -417,8 +417,8 @@ the placement here is unconstrained: the row for a bar `e` is the inner product
 witness case — `rigidityRow_eq` — but with the block-`single` of `stdFramework_rigidityRow_eq`
 replaced by the full block vector `fun c ↦ (b_e)_c • signedIncMatrix e`.
 
-The bound is the real specialization of Whiteley §2.1's forward rank count
-(`Graph.forest_count_of_linearIndepOn_kFrameRow`): each pushed-back row lies in the
+The bound is the rank count of `lem:k-frame-nonzero-monomial-forest`
+(`Graph.forest_count_of_linearIndepOn_kFrameRow`) over `ℝ`: each pushed-back row lies in the
 block-diagonal product subspace whose `ℝ`-dimension is `d · r(E')` (the real analogue of
 `Graph.finrank_blockPiSpanOn`, assembled from the *field-generic* helpers
 `Graph.finrank_constPiSpan` + `Graph.finrank_span_signedIncMatrix_eq_cycleMatroid_rk`). -/
@@ -494,8 +494,8 @@ open Submodule in
 /-- **Block-diagonal rank upper bound on a bar set** (the converse rank bound). For *any* body-bar
 framework `F` on `G = F.graph` and any bar set `E' ⊆ E(G)`, the `ℝ`-dimension of the span of the
 rigidity rows on `E'` is at most `d · r(E')`, `d = bodyBarDim n` and `r` the cycle-matroid rank.
-The body-bar analogue of the rank-upper-bound half of Phase 6's
-`rigidityMap_finrank_range_le_of_affinelySpanning`, proved at the real specialization rather than
+The body-bar analogue of the rank upper bound
+`rigidityMap_finrank_range_le_of_affinelySpanning`, proved from the rows rather than
 through trivial motions: each row factors through `blockPairing` (`rigidityRow_eq`) as the
 block vector `fun c ↦ (b_e)_c • signedIncMatrix e`, which lies in the real block-diagonal product
 subspace of dimension `d · r(E')` (`finrank_realBlockPiSpanOn`). -/
@@ -537,22 +537,23 @@ theorem finrank_rigidityRow_span_le [Finite α] [Finite β] (F : BodyBarFramewor
 
 /-! ### Tay's theorem (existence-of-realization form)
 
-The chapter target, `thm:tay-witness`, in its existence-of-realization direction
-(`⟸`): a `(d, d)`-sparse multigraph carries an *independent* body-bar framework in
-`ℝⁿ`, and a `(d, d)`-tight connected multigraph carries an *isostatic* (independent
-and infinitesimally rigid) one. Both are witnessed by the standard-basis framework
-`stdFramework G n j` on a tree-packing partition (`thm:tutte-nash-williams`); the
+`thm:tay-witness`, in its existence-of-realization direction (`⟸`,
+`prop:tay-witness-exists`): a `(d, d)`-sparse multigraph carries an *independent* body-bar
+framework in `ℝⁿ`, and a `(d, d)`-tight multigraph carries an *isostatic* (independent and
+infinitesimally rigid) one. Both are witnessed by the standard-basis framework
+`stdFramework G n j` on a disjoint forest packing (`thm:tutte-nash-williams`); the
 content is `stdFramework_finrank_range` (rank `= |E(G)|`).
 
-The converse direction (an independent framework forces `(d, d)`-sparsity) is the
-Lovász–Yemini-style rank-upper-bound argument (`finrank_rigidityRow_span_le`), the body-bar
-analogue of Phase 6's `isSparse_of_edgeSetRowIndependent_dim_two`. -/
+The converse direction (an independent framework forces `(d, d)`-sparsity,
+`lem:tay-isSparse-of-independent`) is the rank upper bound `finrank_rigidityRow_span_le`, the
+body-bar analogue of `isSparse_of_edgeSetRowIndependent_dim_two`; Whiteley derives the count
+from the independence of the general `d`-frame instead (1988, proof of Corollary 3). -/
 
-/-- **Tay's theorem, independent existence direction** (`thm:tay-witness` `⟸`). For
-`d = bodyBarDim n`, a `(d, d)`-sparse multigraph `G` carries an independent body-bar
-framework in `ℝⁿ`: the standard-basis framework `stdFramework G n j` on a tree-packing
-partition of `G` (`thm:tutte-nash-williams`) is independent (`IsIndependent`, rank
-`= |E(G)|`) at any orientation.
+/-- **Tay's theorem, independent existence direction** (`prop:tay-witness-exists`, the `⟸` of
+`thm:tay-witness`'s first statement). For `d = bodyBarDim n`, a `(d, d)`-sparse multigraph `G`
+carries an independent body-bar framework in `ℝⁿ`: the standard-basis framework
+`stdFramework G n j` on a disjoint forest packing of `G` (`thm:tutte-nash-williams`) is
+independent (`IsIndependent`, rank `= |E(G)|`) at every orientation.
 
 By `tutte_nash_williams`, `(d, d)`-sparsity gives a disjoint acyclic cover `Fs` of
 `E(G)` by `d` forests; choosing the forest index `j e` of each bar `e` and applying
@@ -571,12 +572,12 @@ theorem exists_isIndependent_of_isSparse [Finite α] [Finite β] {G : Graph α �
   refine ⟨stdFramework G n j, rfl, Classical.choice Graph.orientation_nonempty, ?_⟩
   exact stdFramework_finrank_range hcover hdisj hacyc j hj _
 
-/-- **Tay's theorem, isostatic existence direction** (`thm:tay-witness` `⟸`, count
-form). For `d = bodyBarDim n`, a connected `(d, d)`-tight multigraph `G` carries an
-*isostatic* body-bar framework in `ℝⁿ` — one that is both independent (`IsIndependent`)
-and infinitesimally rigid (`IsInfinitesimallyRigid`), the count `|E| = d(b - 1)` of
-Tay 1984. The witness is again the standard-basis framework on the tree-packing (here,
-by `cor:k-spanning-trees`, a *spanning-tree* packing).
+/-- **Tay's theorem, isostatic existence direction** (`prop:tay-witness-exists`, the `⟸` of
+`thm:tay-witness`'s second statement). For `d = bodyBarDim n`, a `(d, d)`-tight multigraph `G`
+carries an *isostatic* body-bar framework in `ℝⁿ` — one that is both independent
+(`IsIndependent`) and infinitesimally rigid (`IsInfinitesimallyRigid`). The witness is the
+framework of `exists_isIndependent_of_isSparse`, on a disjoint forest packing; no connectivity
+is assumed.
 
 Independence is `exists_isIndependent_of_isSparse` applied to `htight.isSparse`; the
 infinitesimal-rigidity count `rank + d = d·b` then follows from independence (`rank =
@@ -611,9 +612,9 @@ theorem rigidityRow_linearIndependent [Finite β] {F : BodyBarFramework n α β}
 /-- **`IsIndependent` iff the full rigidity-row family is linearly independent.** The converse of
 `rigidityRow_linearIndependent`: a linearly independent row family already forces `IsIndependent`,
 by the same row-rank identity read the other way (`stdFramework_finrank_range`'s argument,
-generalized from the standard-basis witness to an arbitrary framework). Needed by the generic
-body-bar Tay pair (`GenericLift.lean`, `cor:bodybar-generic-tay`) to bridge the endpoint-genericity
-theorem's row-independence conclusion into the rank-valued `IsIndependent`. -/
+generalized from the standard-basis witness to an arbitrary framework). `GenericLift.lean`'s
+`isIndependent_ofEndpoints_iff` (`cor:bodybar-generic-tay`) uses it to turn the row
+independence of `thm:bodybar-generic-independence` into the rank-valued `IsIndependent`. -/
 theorem isIndependent_iff_linearIndependent_rigidityRow [Finite β]
     {F : BodyBarFramework n α β} {D : Graph.orientation F.graph} :
     F.IsIndependent D ↔ LinearIndependent ℝ (F.rigidityRow D) := by
@@ -623,11 +624,12 @@ theorem isIndependent_iff_linearIndependent_rigidityRow [Finite β]
   rw [← LinearMap.finrank_range_dualMap_eq_finrank_range, ← span_range_rigidityRow F D,
     finrank_span_eq_card hLI, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]
 
-/-- **Tay's theorem, sparsity (converse) direction** (`thm:tay-witness` `⟹`). For `d = bodyBarDim
-n`, an independent body-bar framework `F` on `G = F.graph` forces `G` to be `(d, d)`-sparse: every
-non-empty bar set `E' ⊆ E(G)` spanning `V'` satisfies `|E'| + d ≤ d · |V'|`.
+/-- **Tay's theorem, sparsity (converse) direction** (`lem:tay-isSparse-of-independent`, the `⟹`
+of `thm:tay-witness`). For `d = bodyBarDim n`, an independent body-bar framework `F` on
+`G = F.graph` forces `G` to be `(d, d)`-sparse: every non-empty bar set `E' ⊆ E(G)` spanning
+`V'` satisfies `|E'| + d ≤ d · |V'|`.
 
-The body-bar analogue of Phase 6's `isSparse_of_edgeSetRowIndependent_dim_two`. Independence makes
+The body-bar analogue of `isSparse_of_edgeSetRowIndependent_dim_two`. Independence makes
 the rigidity rows linearly independent (`rigidityRow_linearIndependent`), so on each `E'` the
 `|E'|` rows are linearly independent and span an `|E'|`-dimensional subspace; the block-diagonal
 rank upper bound `finrank_rigidityRow_span_le` caps this by `d · r(E')`, and the cycle-matroid rank
@@ -672,8 +674,8 @@ no independence elsewhere in the framework needed. Same argument as `isSparse_of
 starting one step later: instead of deriving the row family on `E'ₛ` from full-framework
 independence (`rigidityRow_linearIndependent hindep`), it takes that restricted independence
 directly as the hypothesis, then restricts *further* to each candidate bar set
-`E'' ⊆ E' = E(F.graph ↾ E')` exactly as the unrestricted proof does. This is what
-`thm:bodybar-generic-independence`'s `⟹` arm needs: the per-subset iff only ever has independence
+`E'' ⊆ E' = E(F.graph ↾ E')` exactly as the unrestricted proof does. This is what the `⟹` of
+`thm:bodybar-generic-independence` needs: the per-subset iff only ever has independence
 on the subset `E'` itself, not on all of `E(G)`. -/
 theorem isSparse_of_isIndependent_restrict [Finite α] [Finite β] {F : BodyBarFramework n α β}
     {D : Graph.orientation F.graph} {E' : Set β} (hE' : E' ⊆ E(F.graph))
@@ -712,15 +714,16 @@ theorem isSparse_of_isIndependent_restrict [Finite α] [Finite β] {F : BodyBarF
     _ = bodyBarDim n * (F.graph.cycleMatroid.rk E'' + 1) := by ring
     _ ≤ bodyBarDim n * (F.graph.spanningVerts E'').ncard := Nat.mul_le_mul_left _ hle2
 
-/-- **Tay's theorem, existence-of-realization form** (`thm:tay-witness`; Whiteley 1988 Theorem 8,
-Tay 1984). For `n` and `d = bodyBarDim n = n(n+1)/2`, a multigraph `G` carries an *independent*
-body-bar framework in `ℝⁿ` **iff** `G` is `(d, d)`-sparse — equivalently (Phase 13,
-`tutte_nash_williams`) the edge-disjoint union of `d` forests. It carries an *isostatic*
-(independent + infinitesimally rigid) body-bar framework iff `G` is `(d, d)`-tight — equivalently
-(`cor:k-spanning-trees`) the union of `d` spanning trees, the count `|E| = d(b − 1)` of Tay 1984.
+/-- **Tay's theorem, existence-of-realization form** (`thm:tay-witness`; Whiteley 1988, Theorem 8,
+and Tay 1984, Theorem 5.3). For `d = bodyBarDim n = n(n+1)/2`, a multigraph `G` carries an
+*independent* body-bar framework in `ℝⁿ` **iff** `G` is `(d, d)`-sparse — equivalently
+(`tutte_nash_williams`) the edge-disjoint union of `d` forests. It carries an *isostatic*
+(independent + infinitesimally rigid) body-bar framework iff `G` is `(d, d)`-tight — for
+connected `G`, equivalently (`cor:k-spanning-trees`) the union of `d` spanning trees, the form
+in which Tay states his theorem.
 
 The (`⟸`) existence directions are `exists_isIndependent_of_isSparse` /
-`exists_isIsostatic_of_isTight` (the standard-basis witness on a tree packing); the (`⟹`)
+`exists_isIsostatic_of_isTight` (the standard-basis witness on a forest packing); the (`⟹`)
 converses are `isSparse_of_isIndependent` (the block-diagonal rank upper bound) and, for the
 isostatic count, the independence-plus-rigidity arithmetic `|E| + d = d·|V|`. -/
 theorem tay_witness [Finite α] [Finite β] (G : Graph α β) :

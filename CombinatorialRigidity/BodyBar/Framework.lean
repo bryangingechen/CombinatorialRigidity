@@ -10,24 +10,21 @@ import Matroid.Graph.Matrix
 /-!
 # Body-bar frameworks (`def:body-bar-framework`)
 
-Phase 15. Following Whiteley 1988 (*The union of matroids and the rigidity of
-frameworks*, SIAM J. Disc. Math. **1**) §3 and Tay 1984 (*Rigidity of
-multi-graphs. I*, J. Combin. Theory Ser. B **36**) §5, a **body-bar framework**
-in `ℝⁿ` on a multigraph `G : Graph α β` pairs `G` with a *placement* assigning
-each bar `e ∈ E(G)` a two-extensor (Plücker) coordinate in `ℝᵈ`, where
-`d = n(n+1)/2` is the dimension of the space of infinitesimal rigid motions of
-`ℝⁿ` (translations + infinitesimal rotations).
+Following Tay 1984 (*Rigidity of multi-graphs. I*, J. Combin. Theory Ser. B **36**,
+Definition 5.1) and Whiteley 1988 (*The union of matroids and the rigidity of frameworks*,
+SIAM J. Disc. Math. **1**, §3), a **body-bar framework** in `ℝⁿ` on a multigraph
+`G : Graph α β` pairs `G` with a *placement* assigning each bar `e ∈ E(G)` a vector of `ℝᵈ`,
+where `d = n(n+1)/2` is the dimension of the space of infinitesimal rigid motions of `ℝⁿ`
+(translations + infinitesimal rotations).
 
-A two-extensor is a point of the Plücker embedding of `Gr(2, n+1)` into `ℝᵈ`;
-geometrically it records the line carrying the bar together with its direction.
-Per ROADMAP §15 / `notes/Phase15.md`, we handle the Plücker coordinates
-**inline** with **degenerate coordinates permitted** — i.e. the placement is an
-unconstrained map into `ℝᵈ`, not a map into the Plücker variety. This is the
-"existence-of-realization" scope: Tay's theorem (`thm:tay-witness`) is witnessed
-by the standard-basis specialization `b_e = e_{j(e)}`, whose coordinates are
-themselves degenerate two-extensors, so no variety-membership constraint is
-needed for the existence direction (Whiteley's "almost all realizations are
-rigid" lift via the irreducible Plücker variety is deferred — see ROADMAP §15).
+Whiteley takes for each bar the Plücker coordinates of its line, a two-extensor: a vector of
+`ℝᵈ`, the space into which the Plücker embedding sends the lines of projective `n`-space, that
+satisfies the quadratic Plücker relations. As Tay does, the placement here is an unconstrained
+map into `ℝᵈ`, not a map into the Plücker variety. The existence half of Tay's theorem
+(`thm:tay-witness`) is witnessed by the standard-basis placement `b_e = e_{j(e)}`; each standard
+basis vector satisfies the Plücker relations and is the Plücker vector of a line (Whiteley 1988,
+proof of Theorem 8, p. 243), so the theorem also holds for bars that are lines. Its generic form
+for bars given by their endpoints is `BodyBar/GenericLift.lean`'s.
 
 ## Main definitions
 
@@ -36,15 +33,12 @@ rigid" lift via the irreducible Plücker variety is deferred — see ROADMAP §1
   with a placement `E(G) → EuclideanSpace ℝ (Fin (bodyBarDim n))`.
 * `Graph.BodyBarFramework.rigidityMap` — the bar-constraint rigidity map, an
   `ℝ`-linear map from body motions (`α → ℝᵈ`) to bar constraints
-  (`E(G) → ℝ`), one row per bar (Whiteley §3).
+  (`E(G) → ℝ`), one row per bar (`def:rigidity-map-body-bar`).
+* `Graph.BodyBarFramework.IsIndependent`, `Graph.BodyBarFramework.IsInfinitesimallyRigid` —
+  independence and infinitesimal rigidity, by the rank of the rigidity map
+  (`def:independent-body-bar`, `def:infinitesimally-rigid-body-bar`).
 
-## Project context
-
-See `ROADMAP.md` §15, `notes/Phase15.md`, and the
-§`sec:body-bar-framework` subsection of `blueprint/src/chapter/body-bar.tex`.
-The body-bar **infinitesimal rigidity** (`def:infinitesimally-rigid-body-bar`)
-builds on the rigidity map, en route to **Tay's theorem**
-(`thm:tay-witness`).
+The blueprint presents the file in `sec:body-bar-framework`.
 -/
 
 open scoped InnerProductSpace
@@ -56,8 +50,8 @@ variable {α β : Type*}
 /-- The **body-bar dimension** of `ℝⁿ`: `d = n(n+1)/2`, the dimension of the
 space of infinitesimal rigid motions of `ℝⁿ` (the `n` translations plus the
 `n(n-1)/2` independent infinitesimal rotations). Equivalently the dimension of
-the Plücker space `ℝᵈ` into which two-extensors of `ℝⁿ⁺¹` embed; a bar in `ℝⁿ`
-carries a two-extensor coordinate in this space. -/
+the space `ℝᵈ` of the two-extensors of `ℝⁿ⁺¹`, the Plücker coordinates of lines; a bar in
+`ℝⁿ` carries a vector of this space. -/
 def bodyBarDim (n : ℕ) : ℕ := n * (n + 1) / 2
 
 /-- `bodyBarDim 2 = 3`: two translations plus one planar rotation. -/
@@ -66,40 +60,34 @@ lemma bodyBarDim_two : bodyBarDim 2 = 3 := rfl
 /-- `bodyBarDim 3 = 6`: three translations plus three spatial rotations. -/
 lemma bodyBarDim_three : bodyBarDim 3 = 6 := rfl
 
-/-- **The body-bar dimension is at least `6` once `n ≥ 3`** (Phase 23-cleanup E2, the
-consumer-surface headroom floor): `3 ≤ n ⟺ 6 ≤ bodyBarDim n`, since `bodyBarDim` is the
-monotone integer sequence `0, 1, 3, 6, 10, …`. This packages the `d = 3` numeral floor
-`6 ≤ bodyBarDim n` the molecular-program headline theorems need as a one-hypothesis
-consequence of the natural `3 ≤ n` a caller states directly. -/
+/-- **The body-bar dimension is at least `6` once `n ≥ 3`**: `bodyBarDim` is the increasing
+sequence `0, 1, 3, 6, 10, …`. This turns the hypothesis `3 ≤ n` that a caller states into the
+bound `6 ≤ bodyBarDim n` that the theorems for `n ≥ 3` use. -/
 theorem six_le_bodyBarDim {n : ℕ} (hn : 3 ≤ n) : 6 ≤ bodyBarDim n := by
   rw [bodyBarDim, Nat.le_div_iff_mul_le (by norm_num)]
   calc 6 * 2 = 3 * 4 := by norm_num
     _ ≤ n * (n + 1) := Nat.mul_le_mul hn (by omega)
 
-/-- **The body-bar dimension is at least `3` once `n ≥ 2`** (Phase 40a, SPINE2's `n = 2` sizing:
-the Katoh–Tanigawa spine's floor weakens from `6 ≤ bodyBarDim n` to `3 ≤ bodyBarDim n`, which
-`n = 2` (the planar case) already clears — `bodyBarDim 2 = 3`). Same monotone-sequence argument
-as `six_le_bodyBarDim`, one step down. -/
+/-- **The body-bar dimension is at least `3` once `n ≥ 2`**, the bound the theorems for
+`n ≥ 2` use (`bodyBarDim 2 = 3`). From `2 · bodyBarDim n = n(n+1)` by `nlinarith`. -/
 theorem three_le_bodyBarDim_of_two_le {n : ℕ} (hn : 2 ≤ n) : 3 ≤ bodyBarDim n := by
   have hbb : 2 * bodyBarDim n = n * (n + 1) := by
     rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
   nlinarith
 
 /-- A **body-bar framework** in `ℝⁿ` on a multigraph `G : Graph α β`
-(Whiteley 1988 §3, Tay 1984 §5; `def:body-bar-framework`): the multigraph `G`
-together with a **placement** `p` assigning each bar `e ∈ E(G)` a two-extensor
-(Plücker) coordinate in `ℝᵈ`, `d = n(n+1)/2` (`Graph.bodyBarDim n`).
+(`def:body-bar-framework`; Tay 1984, Definition 5.1): the multigraph `G` together with a
+**placement** assigning each bar `e ∈ E(G)` a vector of `ℝᵈ`, `d = n(n+1)/2`
+(`Graph.bodyBarDim n`).
 
-The placement is an unconstrained map into `EuclideanSpace ℝ (Fin (bodyBarDim n))`
-— degenerate two-extensors are permitted, so no Plücker-variety membership
-constraint is imposed (existence-of-realization scope; see the module
-docstring). The bundled `G` matches the Phase-13/14 `Graph`-native style, where
-the multigraph carries the combinatorial data the matroid-union route consumes. -/
+The placement is an unconstrained map into `EuclideanSpace ℝ (Fin (bodyBarDim n))`: a bar's
+vector need not satisfy the Plücker relations that make it the Plücker vector of a line, as
+Whiteley's bars do (1988, §3; see the module docstring). -/
 structure BodyBarFramework (n : ℕ) (α β : Type*) where
   /-- The underlying multigraph: bodies are vertices, bars are edges. -/
   graph : Graph α β
-  /-- The placement: each bar `e ∈ E(graph)` gets a two-extensor coordinate in
-  `ℝᵈ`, `d = n(n+1)/2`. Degenerate coordinates are permitted. -/
+  /-- The placement: each bar `e ∈ E(graph)` gets a vector of `ℝᵈ`, `d = n(n+1)/2`, any
+  vector, not only the Plücker vector of a line. -/
   placement : E(graph) → EuclideanSpace ℝ (Fin (bodyBarDim n))
 
 namespace BodyBarFramework
@@ -115,11 +103,10 @@ returns. -/
 abbrev Motion (n : ℕ) (α : Type*) : Type _ := α → EuclideanSpace ℝ (Fin (bodyBarDim n))
 
 /-- The `(u, v)`-**bar row** of a body-bar framework as a linear functional on
-body motions: `m ↦ ⟪bₑ, m u - m v⟫_ℝ`, where `bₑ` is the bar's two-extensor
-coordinate. The body-bar analogue of `SimpleGraph.edgeRow`; with the
-infinitesimal-rotation factor absorbed into `bₑ`'s Plücker coordinates the
-constraint is just the inner product of `bₑ` against the relative body velocity
-(Whiteley~1988 §3). Internal building block for `rigidityMap`. -/
+body motions: `m ↦ ⟪bₑ, m u - m v⟫_ℝ`, where `bₑ` is the bar's vector. The body-bar
+analogue of `SimpleGraph.edgeRow`: with the screws written in dual coordinates the constraint
+is the inner product of `bₑ` with the relative body velocity (Whiteley 1988, §3). Internal
+building block for `rigidityMap`. -/
 noncomputable def barRow (bₑ : EuclideanSpace ℝ (Fin (bodyBarDim n))) (u v : α) :
     Motion n α →ₗ[ℝ] ℝ :=
   ((innerSL ℝ bₑ).toLinearMap).comp
@@ -131,7 +118,7 @@ theorem barRow_apply (bₑ : EuclideanSpace ℝ (Fin (bodyBarDim n))) (u v : α)
     (m : Motion n α) : barRow bₑ u v m = ⟪bₑ, m u - m v⟫_ℝ := rfl
 
 /-- The **rigidity map** of a body-bar framework `F` for a choice of orientation
-`D` (Whiteley~1988 §3; `def:rigidity-map-body-bar`): the `ℝ`-linear map sending a
+`D` (`def:rigidity-map-body-bar`; Whiteley 1988, §3): the `ℝ`-linear map sending a
 body motion `m : Motion n α` to the family of bar constraints
 `e ↦ ⟪F.placement e, m u - m v⟫_ℝ` indexed by the bars `e ∈ E(F.graph)`, where
 `(u, v) = D.dInc e` are the bar's oriented endpoints.
@@ -155,24 +142,24 @@ theorem rigidityMap_apply {α β : Type*} (F : BodyBarFramework n α β)
     (D : Graph.orientation F.graph) (m : Motion n α) (e : E(F.graph)) :
     F.rigidityMap D m e = ⟪F.placement e, m (D.dInc e).1 - m (D.dInc e).2⟫_ℝ := rfl
 
-/-- A body-bar framework `F` is **independent** at an orientation `D` when its
-rigidity map has full row rank — `rank = |E(F.graph)|`, i.e. its bar-constraint
-rows are linearly independent (no redundant bars). This is the body-bar analogue
-of `SimpleGraph.EdgeSetRowIndependent` on the whole edge set; it is the notion of
-"independent body-bar framework" in Tay's theorem (`thm:tay-witness`). The rank is
-orientation-independent (see `rigidityMap`), so independence does not depend on the
-choice of `D`. -/
+/-- A body-bar framework `F` is **independent** at an orientation `D`
+(`def:independent-body-bar`) when its rigidity map has full row rank — `rank = |E(F.graph)|`,
+i.e. its bar-constraint rows are linearly independent (no redundant bars). This is the body-bar
+analogue of `SimpleGraph.EdgeSetRowIndependent` on the whole edge set, and the notion of
+independence in Tay's theorem (`thm:tay-witness`). Reversing a bar negates its row, so
+independence does not depend on the choice of `D`. -/
 def IsIndependent {α β : Type*} (F : BodyBarFramework n α β)
     (D : Graph.orientation F.graph) : Prop :=
   Module.finrank ℝ (LinearMap.range (F.rigidityMap D)) = E(F.graph).ncard
 
 /-- A body-bar framework `F` on `b = F.graph.vertexSet.ncard` bodies is
-**infinitesimally rigid** (Whiteley~1988 §3; `def:infinitesimally-rigid-body-bar`)
-when its rigidity map for an orientation `D` has rank `d·b − d`, `d = bodyBarDim n` —
-equivalently its kernel is exactly the `d`-dimensional space of trivial screw
-motions of `ℝⁿ` (the body-bar analogue of `SimpleGraph.IsInfinitesimallyRigid`'s
-kernel bound). Following the project's no-ℕ-subtraction convention, the count
-`d·b − d` is phrased as the equality `rank + d = d·b`.
+**infinitesimally rigid** (`def:infinitesimally-rigid-body-bar`; Whiteley 1988, §3)
+when its rigidity map for an orientation `D` has rank `d·b − d`, `d = bodyBarDim n` (the
+body-bar analogue of `SimpleGraph.IsInfinitesimallyRigid`'s rank count). When every element of
+`α` is a body and there is at least one, this says that the kernel is the `d`-dimensional space
+of constant motions, Whiteley's trivial motions; a motion is a function on all of `α`, so its
+values off `V(F.graph)` also lie in the kernel. Following the project's no-ℕ-subtraction
+convention, the count `d·b − d` is phrased as the equality `rank + d = d·b`.
 
 The orientation `D` only fixes per-row signs, so the rank — and hence this
 predicate — is orientation-independent (see `rigidityMap`). -/

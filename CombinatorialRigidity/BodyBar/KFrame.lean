@@ -11,22 +11,22 @@ import Mathlib.RingTheory.MvPolynomial.Basic
 /-!
 # The generic `k`-frame matroid (`def:k-frame-matroid`)
 
-Phase 14. Whiteley 1988 (*The union of matroids and the rigidity of frameworks*,
-SIAM J. Disc. Math. **1**, Theorem 1) introduces, for a multigraph `G : Graph α β`
-and `k ≥ 1`, the generic **`k`-frame matroid** `F(G, X)`: the linear matroid (via
-`Matroid.ofFun`, the same `apnelson1/Matroid` constructor `LinearRigidityMatroid.lean`
-uses for the planar case) of the formal `k · |V|`-column matrix whose row for a bar
-`e` carries indeterminate coefficients across `k` vertex blocks, with each block
-placing a copy of the (signed) graph-incidence pattern of `e`.
-
-This file ships the definition and the identification `F(G, X) = (⋃ⱼ G.cycleMatroid) ↾ E(G)`
-(`thm:k-frame-union-cycle`, `kFrameMatroid_eq_unionPow_cycleMatroid`), Phase 14's target.
+Whiteley's general `k`-frame (Whiteley 1988, *The union of matroids and the rigidity of
+frameworks*, SIAM J. Disc. Math. **1**, Definition 2.2): for a multigraph `G : Graph α β`, the
+matrix with `k · |V|` columns whose row for a bar `e` carries indeterminate coefficients across
+`k` vertex blocks, each block holding a copy of the signed incidence pattern of `e`. Its
+**`k`-frame matroid** `F(G, X)` is the linear matroid of the rows (via `Matroid.ofFun`, the
+`apnelson1/Matroid` constructor `LinearRigidityMatroid.lean` uses for the planar case), and
+Whiteley's Theorem 1 identifies it with the union of `k` copies of the cycle matroid:
+`F(G, X) = (⋃ⱼ G.cycleMatroid) ↾ E(G)` (`thm:k-frame-union-cycle`,
+`kFrameMatroid_eq_unionPow_cycleMatroid`). The blueprint presents the file in
+`sec:body-bar-k-frame`.
 
 ## Coefficient encoding
 
 The genericity is realized over **true indeterminates**, not a real placement (cf.
-the Phase-8 `linearRigidityMatroid`, which parametrizes by `p : Framework V d` and
-proves genericity by a separate ℝ-perturbation): the coefficient field is
+`SimpleGraph.linearRigidityMatroid`, which is parametrized by a placement
+`p : Framework V d`): the coefficient field is
 
   `K := FractionRing (MvPolynomial (β × Fin k) ℚ)`,
 
@@ -39,13 +39,13 @@ the generic matroid (orientations differ only by a per-row sign). The row vector
 in `Fin k → α → K`, the `k`-fold copy of the incidence-row space `α → K` —
 `k · |V|`-dimensional, the blueprint's "`k` vertex blocks".
 
-This indeterminate encoding is what powers
-`thm:k-frame-union-cycle`'s column-reorder / nonzero-monomial argument (Whiteley §2.1):
-a nonzero monomial of an `|E|`-minor's determinant, with its variables set to `1` and
-the rest to `0`, exhibits a block-diagonal forest-incidence matrix.
-
-See `ROADMAP.md` §14, `notes/Phase14.md`, and the *The `k`-frame matroid as a union of
-cycle matroids* subsection of `blueprint/src/chapter/body-bar.tex`.
+The two directions of the identification: independent rows on a bar set `E'` give the count
+`|Y| ≤ k · r(Y)` on every `Y ⊆ E'` by a dimension bound (`forest_count_of_linearIndepOn_kFrameRow`;
+Whiteley proves this direction from a nonzero minor instead), and a `(k, k)`-sparse `E'` has
+independent rows by Whiteley's specialization (his proof of Theorem 1, p. 239): on a disjoint
+forest packing, setting `X (e, j)` to `1` when `e` lies in the `j`-th forest and to `0`
+otherwise gives a block-diagonal matrix of forest incidence rows
+(`linearIndepOn_kFrameRow_of_isSparse_restrict`).
 -/
 
 namespace Graph
@@ -56,7 +56,7 @@ variable {α β : Type*}
 
 /-- The coefficient field of the generic `k`-frame matroid: the field of fractions of
 the multivariate polynomial ring `MvPolynomial (β × Fin k) ℚ`, carrying one indeterminate
-`MvPolynomial.X (e, j)` per (bar, block) pair `(e, j) : β × Fin k`. A genuine field (the
+`MvPolynomial.X (e, j)` per (bar, block) pair `(e, j) : β × Fin k`. A field (the
 fraction field of an integral domain), as `Matroid.ofFun` requires a `DivisionRing`. -/
 abbrev KFrameField (β : Type*) (k : ℕ) : Type _ :=
   FractionRing (MvPolynomial (β × Fin k) ℚ)
@@ -78,7 +78,7 @@ noncomputable def kFrameRow {G : Graph α β} (k : ℕ) (D : Graph.orientation G
   fun e j => kFrameIndet k e j • D.signedIncMatrix (KFrameField β k) e
 
 /-- The **generic `k`-frame matroid** `F(G, X)` of a multigraph `G : Graph α β`
-(Whiteley 1988, Theorem 1; `def:k-frame-matroid`): the linear matroid on the bar type
+(`def:k-frame-matroid`; Whiteley 1988, Definition 2.2): the linear matroid on the bar type
 `β`, with ground set `E(G)`, of the `k`-frame row function over the indeterminate
 coefficient field `KFrameField β k`. Built via `Matroid.ofFun`, like the planar
 `SimpleGraph.linearRigidityMatroid`. The orientation is picked by
@@ -100,10 +100,10 @@ open Submodule
 
 variable {G : Graph α β} {k : ℕ} {D : Graph.orientation G}
 
-/-- The `Fin k`-fold constant product subspace `Submodule.pi univ (fun _ ↦ W)` is linearly
-equivalent to the plain product `Fin k → ↥W` of the block submodule with itself. The forward
-map projects each block; the inverse re-bundles. Generic-block helper for the dimension count
-`finrank (constPiSpan) = k · finrank W`. -/
+/-- **A product subspace as a product** (`lem:k-frame-pi-finrank`): the `Fin n`-fold constant
+product subspace `Submodule.pi univ (fun _ ↦ W)` is linearly equivalent to the plain product
+`Fin n → ↥W` of the block submodule with itself. The forward map projects each block; the
+inverse re-bundles. It gives the dimension count `finrank_constPiSpan`. -/
 def constPiSpanEquiv {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
     (n : ℕ) (W : Submodule R M) :
     (Submodule.pi Set.univ (fun _ : Fin n ↦ W) : Submodule R (Fin n → M)) ≃ₗ[R] (Fin n → W) where
@@ -114,23 +114,24 @@ def constPiSpanEquiv {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
   left_inv _ := rfl
   right_inv _ := rfl
 
-/-- The `K`-dimension of the constant `Fin k`-fold product subspace is `k` times the dimension of
-the block submodule `W`. Piece (1) of the forward rank count of Whiteley §2.1
-(`lem:k-frame-nonzero-monomial-forest`): applied with `W` the `K`-span of the signed incidence
-rows of a bar set, it turns the `blockPiSpanOn` upper bound into
-`k · (incidence-span dimension)`. -/
+/-- **The dimension of a product subspace** (`lem:k-frame-pi-finrank`): the dimension of the
+constant `Fin n`-fold product subspace over a division ring `R` is `n` times the dimension of
+the block submodule `W`. Piece (1) of the rank count of `lem:k-frame-nonzero-monomial-forest`:
+applied with `W` the `K`-span of the signed incidence rows of a bar set, it turns the
+`blockPiSpanOn` upper bound into `k · (incidence-span dimension)`. -/
 theorem finrank_constPiSpan {R M : Type*} [DivisionRing R] [AddCommGroup M] [Module R M]
     (n : ℕ) (W : Submodule R M) [Module.Finite R W] :
     Module.finrank R (Submodule.pi Set.univ (fun _ : Fin n ↦ W) : Submodule R (Fin n → M))
       = n * Module.finrank R W := by
   simp [(constPiSpanEquiv n W).finrank_eq, Module.finrank_pi_fintype R]
 
-/-- The `Fin k`-fold product subspace whose `j`-th block is the `KFrameField β k`-span of the
+/-- **The product of incidence spans on a bar set** (`lem:k-frame-span-le-pi`'s `A_Y^k`): the
+`Fin k`-fold product subspace whose `j`-th block is the `KFrameField β k`-span of the
 signed incidence rows indexed by a bar set `Y`. For `e ∈ Y` the `k`-frame row `kFrameRow k D e`
 lies in this subspace (`kFrameRow_mem_blockPiSpanOn`), so the span of the `k`-frame rows on `Y`
 is contained in it (`span_kFrameRowOn_le_blockPiSpanOn`); its `K`-dimension is `k` times the
 dimension of the `Y`-incidence-row span, i.e. `k · r_{cycleMatroid}(Y)` — the per-`Y` upper bound
-in Whiteley §2.1's rank count. -/
+in the rank count of `lem:k-frame-nonzero-monomial-forest`. -/
 noncomputable def blockPiSpanOn (G : Graph α β) (k : ℕ) (D : Graph.orientation G) (Y : Set β) :
     Submodule (KFrameField β k) (Fin k → α → KFrameField β k) :=
   letI : DecidableEq α := Classical.decEq α
@@ -138,8 +139,8 @@ noncomputable def blockPiSpanOn (G : Graph α β) (k : ℕ) (D : Graph.orientati
   Submodule.pi Set.univ
     (fun _ : Fin k ↦ span (KFrameField β k) ((D.signedIncMatrix (KFrameField β k)) '' Y))
 
-/-- Each `k`-frame row `kFrameRow k D e` of a bar `e ∈ Y` lies in the `Y`-restricted
-block-diagonal product subspace `blockPiSpanOn G k D Y`: in each block `j` the row is the scalar
+/-- **The `k`-frame row of a bar of `Y` lies in `blockPiSpanOn G k D Y`**
+(`lem:k-frame-span-le-pi`): in each block `j` the row is the scalar
 multiple `X_{(e,j)} • signedIncMatrix e`, which lies in the span of the incidence rows over `Y`
 (since `e ∈ Y`). -/
 theorem kFrameRow_mem_blockPiSpanOn {Y : Set β} {e : β} (he : e ∈ Y) :
@@ -149,18 +150,19 @@ theorem kFrameRow_mem_blockPiSpanOn {Y : Set β} {e : β} (he : e ∈ Y) :
   rw [kFrameRow]
   exact Submodule.smul_mem _ _ (subset_span ⟨e, he, rfl⟩)
 
-/-- The span of the `k`-frame rows indexed by `Y` is contained in the `Y`-restricted
-block-diagonal product subspace `blockPiSpanOn G k D Y`. -/
+/-- **The span of the `k`-frame rows indexed by `Y` lies in `blockPiSpanOn G k D Y`**
+(`lem:k-frame-span-le-pi`). -/
 theorem span_kFrameRowOn_le_blockPiSpanOn {Y : Set β} :
     span (KFrameField β k) (kFrameRow k D '' Y) ≤ blockPiSpanOn G k D Y := by
   rw [span_le]
   rintro _ ⟨e, he, rfl⟩
   exact kFrameRow_mem_blockPiSpanOn he
 
-/-- **Span finrank = matroid rank, via a representation** (`lem:k-frame-nonzero-monomial-forest`,
-piece (2)). For any finite-rank matroid `M` with a representation `v : M.Rep K W`, the `K`-dimension
-of the span of `v '' Y` equals the matroid rank `M.rk Y`. A basis `I` of `Y` has `v '' Y ⊆ span (v
-'' I)` and `LinearIndepOn K v I` (`Rep.isBasis'_iff`), so the two spans coincide; the LI image has
+/-- **Span finrank = matroid rank, via a representation** (`lem:k-frame-incidence-finrank-rk`;
+piece (2) of `lem:k-frame-nonzero-monomial-forest`'s rank count). For any finite-rank matroid `M`
+with a representation `v : M.Rep K W`, the `K`-dimension of the span of `v '' Y` equals the
+matroid rank `M.rk Y`. A basis `I` of `Y` has `v '' Y ⊆ span (v '' I)` and
+`LinearIndepOn K v I` (`Rep.isBasis'_iff`), so the two spans coincide; the LI image has
 `finrank = (v '' I).ncard = I.ncard = M.rk Y` (`finrank_span_set_eq_card` + `IsBasis'.card`). -/
 theorem _root_.Matroid.Rep.finrank_span_image_eq_rk {γ K W : Type*} [Field K] [AddCommGroup W]
     [Module K W] {M : Matroid γ} [M.RankFinite] (v : M.Rep K W) (Y : Set γ) :
@@ -175,14 +177,15 @@ theorem _root_.Matroid.Rep.finrank_span_image_eq_rk {γ K W : Type*} [Field K] [
   rw [hspan, finrank_span_set_eq_card hindep.id_image, ← Set.ncard_eq_toFinset_card',
     hindep.injOn.ncard_image, hI.card]
 
-/-- **Incidence-span finrank = cycle-matroid rank** (`lem:k-frame-nonzero-monomial-forest`,
-piece (2)). For the orientation `G.orientation_nonempty.some` underlying `cycleMatroidRep` (the same
+/-- **Incidence-span finrank = cycle-matroid rank** (`lem:k-frame-incidence-finrank-rk`, its
+second statement; piece (2) of `lem:k-frame-nonzero-monomial-forest`'s rank count). For the
+orientation `G.orientation_nonempty.some` underlying `cycleMatroidRep` (the same
 one `kFrameMatroid` uses), the `K`-dimension of the span of the signed incidence rows indexed by `Y`
 equals the cycle-matroid rank `G.cycleMatroid.rk Y`. This is the cycle-matroid
 specialization of `Matroid.Rep.finrank_span_image_eq_rk` to `Graph.cycleMatroidRep`, whose
 representation map is exactly `signedIncMatrix` for that orientation; it turns the
-`finrank blockPiSpanOn = k · (incidence-span finrank)` bound of the forward rank count into
-`k · r_{cycleMatroid}(Y)`. -/
+`finrank blockPiSpanOn = k · (incidence-span finrank)` bound of the rank count into
+`k · r_{cycleMatroid}(Y)`. Stated over any field `K`, so the body-bar converse uses it over `ℝ`. -/
 theorem finrank_span_signedIncMatrix_eq_cycleMatroid_rk [Finite β] (K : Type*) [Field K]
     (Y : Set β) :
     letI : DecidableEq α := Classical.decEq α
@@ -199,9 +202,9 @@ theorem finrank_span_signedIncMatrix_eq_cycleMatroid_rk [Finite β] (K : Type*) 
   exact hrep
 
 /-- The `K`-dimension of the `Y`-restricted block-diagonal product subspace is `k` times the
-dimension of the `Y`-incidence-row span, which is `k · r_{cycleMatroid}(Y)` (pieces (1) and (2)
-of the forward rank count). Assembled from `finrank_constPiSpan` and
-`finrank_span_signedIncMatrix_eq_cycleMatroid_rk`. -/
+dimension of the `Y`-incidence-row span, which is `k · r_{cycleMatroid}(Y)` (a step of
+`lem:k-frame-nonzero-monomial-forest`: pieces (1) and (2) of its rank count). Assembled from
+`finrank_constPiSpan` and `finrank_span_signedIncMatrix_eq_cycleMatroid_rk`. -/
 theorem finrank_blockPiSpanOn [Finite β] (Y : Set β) :
     Module.finrank (KFrameField β k)
         (blockPiSpanOn G k (G.orientation_nonempty.some) Y)
@@ -215,9 +218,10 @@ theorem finrank_blockPiSpanOn [Finite β] (Y : Set β) :
   congr 1
   exact finrank_span_signedIncMatrix_eq_cycleMatroid_rk (G := G) (KFrameField β k) Y
 
-/-- **Generic independence ⟹ forest count** (`lem:k-frame-nonzero-monomial-forest`, the forward
-half of Whiteley §2.1 by the rank count). If the generic `k`-frame rows on a bar set `E'` are
-linearly independent over `K`, then `|Y| ≤ k · r_{cycleMatroid}(Y)` for every `Y ⊆ E'`.
+/-- **Generic independence ⟹ the count** (`lem:k-frame-nonzero-monomial-forest`; the direction of
+Whiteley's Theorem 1 that he proves from a nonzero minor, here by a dimension bound). If the
+generic `k`-frame rows on a bar set `E'` are linearly independent over `K`, then
+`|Y| ≤ k · r_{cycleMatroid}(Y)` for every `Y ⊆ E'`.
 
 Restricting `hLI` to `Y` keeps the `|Y|` rows independent, so `|Y| = finrank (span (kFrameRow ''
 Y))` (`finrank_span_set_eq_card`); that span sits inside the `Y`-restricted block-diagonal product
@@ -259,13 +263,13 @@ open Submodule
 variable {G : Graph α β} {k : ℕ} {D : Graph.orientation G}
 
 /-- **Block-diagonal specialization of the `k`-frame rows on a forest packing**
-(`lem:k-frame-specialize-li`, the linear-algebra core of the reverse half of Whiteley §2.1).
-Given a `k`-tuple of acyclic bar sets `Fs : Fin k → Set β` (a forest packing), the rows obtained
+(`lem:k-frame-specialize-li`, the linear-algebra core of the converse half of Whiteley's proof of
+his Theorem 1). Given a `k`-tuple of acyclic bar sets `Fs : Fin k → Set β`, the rows obtained
 by placing, for a bar `e ∈ Fs j`, the signed incidence row `signedIncMatrix D e` in block `j` and
-`0` elsewhere — i.e. `Pi.single j (signedIncMatrix D e)` — are linearly independent over
-`KFrameField β k`, indexed by the disjoint union `Σ j, ↥(Fs j)`.
+`0` elsewhere — i.e. `Pi.single j (signedIncMatrix D e)` — are linearly independent over any
+field `𝔽`, indexed by the disjoint union `Σ j, ↥(Fs j)`.
 
-This is the specialized-to-full-rank matrix of the reverse half: setting the block-`j`
+This is the specialized-to-full-rank matrix of the converse half: setting the block-`j`
 indeterminate `X_{(e,j)}` to `1` on `Fs j` and `0` elsewhere turns each generic `k`-frame row
 `kFrameRow k D e` into exactly this block-`single` row, and the resulting block-diagonal matrix
 has full row rank because each block is the signed-incidence matrix of a forest
@@ -287,7 +291,7 @@ theorem specRow_linearIndependent (𝔽 : Type*) [Field 𝔽]
     (fun j ↦ D.isAcyclicSet_linearIndepOn (𝔽 := 𝔽) (hFs j))
 
 /-- **Generic `k`-frame independence reduces to independence over the polynomial ring**
-(`lem:k-frame-li-over-poly-ring`, the first half of the genericity-lift step of the reverse
+(`lem:k-frame-li-over-poly-ring`, the first half of the genericity-lift step of the converse
 direction). The coefficient field `KFrameField β k = FractionRing (MvPolynomial (β × Fin k) ℚ)`
 is the field of fractions of the polynomial ring `R = MvPolynomial (β × Fin k) ℚ`, and the
 `k`-frame rows of any bar set `E'` are linearly independent over `KFrameField β k` **iff** they
@@ -297,7 +301,7 @@ the algebra map, with the scalar tower `IsScalarTower R K M` inherited from the 
 
 The point is to move the remaining nonzero-minor / specialization argument off the fraction field
 (awkward — no general ring hom extends to it) and onto the integral domain `R`, where the
-indeterminate-coefficient minors are honest polynomials. The reverse step — that a
+indeterminate-coefficient minors are honest polynomials. That step — that a
 forest-packing specialization of full rank witnesses linear independence of the generic rows over
 `R` (a nonzero polynomial minor specializing to a nonzero value cannot vanish identically) — is
 `linearIndepOn_kFrameRow_of_isSparse_restrict`. -/
@@ -309,7 +313,7 @@ theorem linearIndepOn_kFrameRow_iff_over_polyRing (E' : Set β) :
 
 /-- **Ring-hom naturality of the signed incidence matrix.** The signed incidence row of a bar
 `e` has entries in `{0, 1, -1}`, so applying any ring homomorphism `φ : R →+* S` entrywise turns
-`signedIncMatrix R e` into `signedIncMatrix S e`. The reverse half specializes the
+`signedIncMatrix R e` into `signedIncMatrix S e`. The converse half specializes the
 indeterminate-coefficient `k`-frame matrix down to `ℚ` via an `MvPolynomial`-evaluation hom; this
 lemma is what lets that specialization commute past the incidence pattern (which is the same over
 every ring). Local to this file — a statement about the `apnelson1/Matroid`-package
@@ -329,12 +333,13 @@ theorem signedIncMatrix_map {R S : Type*} [CommRing R] [CommRing S]
       Graph.orientation.signedIncMatrix_apply_of_not_mem he]
     simp
 
-/-- The **`k`-frame row function over the polynomial ring** `R = MvPolynomial (β × Fin k) ℚ`: the
-row for bar `e` places in each vertex block `j` the indeterminate scaling
-`X_{(e, j)} • signedIncMatrix R e` of `e`'s signed incidence row. This is the `R`-valued analogue
+/-- The **`k`-frame row function over the polynomial ring** `R = MvPolynomial (β × Fin k) ℚ`
+(`lem:k-frame-specialize-identity`'s `R`-valued rows): the row for bar `e` places in each vertex
+block `j` the indeterminate scaling `X_{(e, j)} • signedIncMatrix R e` of `e`'s signed incidence
+row. This is the `R`-valued analogue
 of `kFrameRow` (which is its image under `algebraMap R (KFrameField β k)`, by
 `kFrameRow_eq_map_kFrameRowR`); moving the row family onto the integral domain `R` is what makes the
-reverse half's determinant / specialization argument (over `R`, then `φ`-specialized to `ℚ`)
+converse half's determinant / specialization argument (over `R`, then `φ`-specialized to `ℚ`)
 available. -/
 noncomputable def kFrameRowR (k : ℕ) (D : Graph.orientation G) :
     β → (Fin k → α → MvPolynomial (β × Fin k) ℚ) :=
@@ -360,10 +365,10 @@ theorem kFrameRow_eq_map_kFrameRowR (e : β) :
     (algebraMap (MvPolynomial (β × Fin k) ℚ) (KFrameField β k)) D e]
 
 /-- The **forest-packing specialization homomorphism** `R →+* ℚ` of a `k`-tuple
-`Fs : Fin k → Set β`: the `MvPolynomial`-evaluation sending each indeterminate `X_{(e, j)}` to `1`
-if `e ∈ Fs j` and `0`
-otherwise. Specializing the polynomial-ring `k`-frame matrix `kFrameRowR` along this hom turns the
-generic rows into the block-diagonal forest matrix of `specRow_linearIndependent`
+`Fs : Fin k → Set β` (`lem:k-frame-specialize-identity`'s `φ`): the `MvPolynomial`-evaluation
+sending each indeterminate `X_{(e, j)}` to `1` if `e ∈ Fs j` and `0` otherwise. Specializing the
+polynomial-ring `k`-frame matrix `kFrameRowR` along this hom turns the generic rows into the
+block-diagonal forest matrix of `specRow_linearIndependent`
 (`forestEval_kFrameRowR_eq_single`). -/
 noncomputable def forestEval (Fs : Fin k → Set β) :
     MvPolynomial (β × Fin k) ℚ →+* ℚ :=
@@ -371,15 +376,16 @@ noncomputable def forestEval (Fs : Fin k → Set β) :
   MvPolynomial.eval (fun p : β × Fin k => if p.1 ∈ Fs p.2 then (1 : ℚ) else 0)
 
 /-- **The forest-packing specialization sends `kFrameRowR` to the block-single row**
-(`lem:k-frame-specialize-identity`, the specialization identity of the reverse half). For a
+(`lem:k-frame-specialize-identity`, the specialization identity of the converse half). For a
 *disjoint* `k`-forest packing `Fs` and a bar `e ∈ Fs j₀`, applying `forestEval Fs` entrywise to the
 polynomial-ring row `kFrameRowR k D e` yields exactly `Pi.single j₀ (signedIncMatrix ℚ e)` — the
 block-`single` row that `specRow_linearIndependent` proves linearly independent. In block `j₀` the
 coefficient `X_{(e, j₀)}` evaluates to `1` (as `e ∈ Fs j₀`), leaving the real signed incidence row;
 in every other block `j ≠ j₀` disjointness gives `e ∉ Fs j`, so `X_{(e, j)}` evaluates to `0` and
 the block vanishes. Incidence-pattern commutation with the evaluation hom is `signedIncMatrix_map`.
-This is the identity that, fed to the minor-nonvanishing engine
-`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`, finishes the reverse half. -/
+With the minor-nonvanishing engine
+`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`, this identity finishes the
+converse half. -/
 theorem forestEval_kFrameRowR_eq_single (Fs : Fin k → Set β)
     (hdisj : Pairwise (Function.onFun Disjoint Fs)) {e : β} {j₀ : Fin k} (he : e ∈ Fs j₀) :
     letI : DecidableEq α := Classical.decEq α
@@ -398,15 +404,16 @@ theorem forestEval_kFrameRowR_eq_single (Fs : Fin k → Set β)
   · have hne : e ∉ Fs j := fun hmem => (hdisj hj).ne_of_mem hmem he rfl
     simp only [ite_eq_right hne, zero_mul, Pi.single_eq_of_ne hj, Pi.zero_apply]
 
-/-- **Forest decomposition ⟹ generic independence** (`lem:k-frame-specialize-forest`, the reverse
-half of Whiteley §2.1). If the edge-restriction `G ↾ E'` is `(k, k)`-sparse, then the generic
-`k`-frame rows on `E'` are linearly independent over the coefficient field `K = KFrameField β k`.
+/-- **Forest decomposition ⟹ generic independence** (`lem:k-frame-specialize-forest`, the converse
+half of Whiteley's proof of his Theorem 1, 1988, p. 239). If the edge-restriction `G ↾ E'` is
+`(k, k)`-sparse, then the generic `k`-frame rows on `E'` are linearly independent over the
+coefficient field `K = KFrameField β k`.
 
-The wiring of all the reverse-half pieces. By `linearIndepOn_kFrameRow_iff_over_polyRing` it
+The proof combines the converse-half lemmas. By `linearIndepOn_kFrameRow_iff_over_polyRing` it
 suffices to argue over the polynomial ring `R = MvPolynomial (β × Fin k) ℚ`, and via
 `kFrameRow_eq_map_kFrameRowR` (the generic row is the entrywise `algebraMap R K`-image of the
-`R`-valued row `kFrameRowR`) over the `R`-valued rows. Those are fed, in curried-to-`Fin k × α`
-matrix form, to the minor-nonvanishing engine
+`R`-valued row `kFrameRowR`) over the `R`-valued rows. Those are passed, in uncurried
+`Fin k × α` matrix form, to the minor-nonvanishing engine
 `Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero` with the forest-packing
 evaluation hom `forestEval Fs` (`Fs` a *disjoint* forest packing covering `E'`, from
 `exists_forestPacking_cover_of_isSparse_restrict`): by `forestEval_kFrameRowR_eq_single` the
@@ -414,7 +421,7 @@ specialized rows are the block-`single` forest matrix, which is LI over ℚ
 (`specRow_linearIndependent`, reindexed along the disjoint-cover bijection
 `Set.unionEqSigmaOfDisjoint`), so it has a nonsingular maximal minor
 (`Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows`) — the nonzero specialized
-determinant the engine consumes. -/
+determinant the engine takes. -/
 theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
     {E' : Set β} (hE' : E' ⊆ E(G)) (hsparse : (G ↾ E').IsSparse k k) :
     LinearIndepOn (KFrameField β k) (kFrameRow k (G.orientation_nonempty.some)) E' := by
@@ -511,12 +518,13 @@ variable {G : Graph α β} {k : ℕ}
 
 /-- **Generic `k`-frame independence by the count** (`lem:k-frame-indep-iff-count`). A bar set
 `E' ⊆ E(G)` is independent in the generic `k`-frame matroid `F(G, X)` if and only if the
-edge-restriction `G ↾ E'` is `(k, k)`-sparse. This packages both halves of Whiteley §2.1: the
+edge-restriction `G ↾ E'` is `(k, k)`-sparse. The two directions of Whiteley's Theorem 1, by
+`lem:k-frame-nonzero-monomial-forest` and `lem:k-frame-specialize-forest`: the
 `Matroid.ofFun` independence predicate unfolds to linear independence of the generic `k`-frame rows
 on `E'`, the forward direction (`forest_count_of_linearIndepOn_kFrameRow`) reads off the count
-`∀ Y ⊆ E', |Y| ≤ k · r_{cycleMatroid}(Y)`, and the reverse
+`∀ Y ⊆ E', |Y| ≤ k · r_{cycleMatroid}(Y)`, and the converse
 (`linearIndepOn_kFrameRow_of_isSparse_restrict`) recovers linear independence from sparsity. The
-count is exactly what Phase 13's `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (via
+count is exactly what `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (via
 `Matroid.Union_pow_indep_iff_count`) attaches to `(k, k)`-sparsity, which is what makes
 `thm:k-frame-union-cycle` collapse to matroid extensionality. -/
 theorem kFrameMatroid_indep_iff_isSparse_restrict [Finite α] [Finite β]
@@ -531,7 +539,7 @@ theorem kFrameMatroid_indep_iff_isSparse_restrict [Finite α] [Finite β]
   · exact linearIndepOn_kFrameRow_of_isSparse_restrict hE' hsparse
 
 /-- **The generic `k`-frame matroid is the `k`-fold cycle-matroid union**
-(Whiteley 1988, Theorem 1; `thm:k-frame-union-cycle`). For every multigraph
+(`thm:k-frame-union-cycle`; Whiteley 1988, Theorem 1). For every multigraph
 `G : Graph α β` and `k`, the generic `k`-frame matroid `F(G, X)` equals the
 `k`-fold union `⋃ⱼ G.cycleMatroid` of the cycle matroid, **restricted to** the
 bar set `E(G)`. Both sides are matroids on the edge type `β` with ground set
@@ -543,9 +551,8 @@ ground set is `univ : Set β`, not `E(G)` — elements of `univ \ E(G)` sit in t
 union as loops). Restricting to `E(G)` discards those loops and recovers the
 ground set `E(G)` of `kFrameMatroid` (`Matroid.ofFun … E(G) …`). On `E' ⊆ E(G)`
 both sides are independent exactly when `G ↾ E'` is `(k, k)`-sparse: the
-`kFrameMatroid` side is `kFrameMatroid_indep_iff_isSparse_restrict` (Whiteley
-§2.1, both genericity halves), the union side is Phase 13's
-`unionPow_cycleMatroid_indep_iff_isSparse_restrict`, so the equality is
+`kFrameMatroid` side is `kFrameMatroid_indep_iff_isSparse_restrict` (both directions), the
+union side is `unionPow_cycleMatroid_indep_iff_isSparse_restrict`, so the equality is
 `Matroid.ext_indep`. -/
 theorem kFrameMatroid_eq_unionPow_cycleMatroid [DecidableEq β] [Finite α] [Finite β] :
     G.kFrameMatroid k = (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)) ↾ E(G) := by

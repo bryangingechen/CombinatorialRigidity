@@ -14,14 +14,17 @@ Modifications made in the port:
   (which itself rebases `ofSubmodular` / polymatroid onto the live
   `FiniteCircuitMatroid` constructor).
 * Reconstructed the commented-out `ForMathlib/Set.lean` lemma
-  `exists_pairwiseDisjoint_iUnion_eq` here as a `private` lemma (matching the
-  L2a precedent for the commented `ForMathlib/Finset.lean` helpers).
+  `exists_pairwiseDisjoint_iUnion_eq` here as a `private` lemma, as `Submodular.lean`
+  does for the commented-out `ForMathlib/Finset.lean` lemma.
 * This file ports the matroid-union *construction* and its independence
   characterizations (`Matroid.Union`, `Matroid.union`, `union_indep_iff`,
   `union_indep_iff'`), together with the polymatroid-of-adjMap bridge
   (`polymatroid_of_adjMap`), the rank-distribution lemmas over `Matroid.sum'`,
-  and Edmonds' matroid-partition rank formula (`matroid_partition'` /
+  and the rank formula of the binary union (`matroid_partition'` /
   `matroid_partition_eRk'`).
+* Added in this project: the rank formula for an indexed family (`Union_rank_eq`), its
+  per-set forms (`adjMap_rk_eq`, `Union_pow_rk_eq`), and Edmonds' matroid-partition
+  theorem (`Union_pow_indep_iff_count`).
 -/
 import Matroid.Constructions.Matching
 import Matroid.Rank.Nat
@@ -29,16 +32,15 @@ import Mathlib.Combinatorics.Matroid.Sum
 import CombinatorialRigidity.Matroid.Constructions.Submodular
 
 /-!
-# Matroid union (independence characterization)
+# Matroid union
 
-This file ports the matroid-union construction of Nash-Williams 1966 /
-Edmonds from Peter Nelson's `apnelson1/Matroid` package. The union of a finite
-indexed family of matroids on a common ground set is realized via the
-bipartite-matching adjunction `Matroid.adjMap` applied to the direct sum
-`Matroid.sum'`.
-
-This is Phase 12 (matroid foundations) of the body-bar program; see
-`notes/Phase12.md` and `blueprint/src/chapter/matroid-union.tex`.
+The union of a finite indexed family of matroids on a common ground set, introduced by
+Nash-Williams (Oxley 2011, §11.3, p. 427), ported from Peter Nelson's `apnelson1/Matroid`
+package: the matroid that `Matroid.adjMap` induces from the direct sum `Matroid.sum'` by the
+bipartite graph joining each copy `(i, x)` to `x`. Its independent sets, its rank (the
+matroid-union theorem of Nash-Williams and Edmonds), and Edmonds' matroid-partition theorem
+(Edmonds 1965, Theorem 1) for `k` copies of one matroid. The blueprint presents the file in
+`sec:matroid-union-union`.
 
 ## Main declarations
 
@@ -49,16 +51,17 @@ This is Phase 12 (matroid foundations) of the body-bar program; see
   in the union iff it decomposes as a union of independent sets, one from each
   factor (`lem:union-indep-iff`).
 * `Matroid.polymatroid_of_adjMap` — the `adjMap`-matroid is realized as the
-  matroid of the polymatroid rank function `f Y = M.rk {v | ∃ u ∈ Y, Adj v u}`.
-* `Matroid.matroid_partition'` / `Matroid.matroid_partition_eRk'` — Edmonds'
-  matroid-partition rank formula for the (binary) union
-  (`thm:matroid-partition-rank`).
-* `Matroid.Union_rank_eq` / `Matroid.adjMap_rk_eq` / `Matroid.Union_pow_rk_eq` —
-  the indexed and per-set forms of the partition rank formula.
+  matroid of the polymatroid rank function `f Y = M.rk {v | ∃ u ∈ Y, Adj v u}`
+  (Oxley 2011, Lemma 11.2.13).
+* `Matroid.matroid_partition'` / `Matroid.matroid_partition_eRk'` — the rank formula of the
+  binary union (the case `k = 2`, `X = E` of `thm:matroid-partition-rank`).
+* `Matroid.Union_rank_eq`, `Matroid.Union_pow_rk_eq` — the rank formula for an indexed
+  family, and its per-set form for `k` copies of one matroid (`thm:matroid-partition-rank`);
+  `Matroid.adjMap_rank_eq` / `Matroid.adjMap_rk_eq` — the rank of the `adjMap`-matroid they
+  rest on.
 * `Matroid.Union_pow_indep_iff_count` — a set is independent in the `k`-fold
   union `Matroid.Union (fun _ : Fin k ↦ M)` iff every subset `Y` satisfies
-  `|Y| ≤ k · r_M(Y)`; the matroid-side half of Tutte--Nash-Williams
-  (`thm:unionPow-cycle-indep-iff-sparse`).
+  `|Y| ≤ k · r_M(Y)`: Edmonds' matroid-partition theorem (`thm:matroid-partition`).
 -/
 
 namespace Matroid
@@ -100,9 +103,9 @@ def AdjIndep' (M : Matroid α) (Adj : α → β → Prop) (I : Set β) :=
         exact BijOn.subset_left hm.1 hJ
       · refine fun v hv ↦ hm.2 v (hJ hv)
 
-/-- The union of a finite indexed family of matroids on a common ground set
-(Nash-Williams 1966 / Edmonds): realized as the bipartite-matching adjunction
-`adjMap` applied to the direct sum `sum'`. -/
+/-- **The union of an indexed family of matroids** (`def:matroid-union`; introduced by
+Nash-Williams, Oxley 2011, §11.3, p. 427): the matroid on all of `α` that `adjMap` induces from
+the direct sum `sum'` by the bipartite graph joining each copy `(i, x)` to `x`. -/
 protected def Union [DecidableEq α] (Ms : ι → Matroid α) : Matroid α :=
   (Matroid.sum' Ms).adjMap (fun x y ↦ x.2 = y) univ
 
@@ -135,8 +138,8 @@ protected def union [DecidableEq α] (M : Matroid α) (N : Matroid α) : Matroid
     simp at this
 
 /-- Disjointification: any indexed family of sets admits a pairwise-disjoint
-shrinking with the same union. (Revival of the commented-out
-`Matroid.ForMathlib.Set` lemma `exists_pairwiseDisjoint_iUnion_eq`.) -/
+shrinking with the same union. (The package's commented-out `ForMathlib/Set.lean`
+lemma of this name.) -/
 private lemma exists_pairwiseDisjoint_iUnion_eq (s : ι → Set α) :
     ∃ t : ι → Set α, Pairwise (Disjoint on t) ∧ ⋃ i, t i = ⋃ i, s i ∧ ∀ i, t i ⊆ s i := by
   classical
@@ -214,9 +217,9 @@ lemma union_indep_aux' [DecidableEq α] [Finite α] {Ms : ι → Matroid α} {I 
       simp only [show (Function.invFunOn f {x | x.2 ∈ Is x.1} v).2 =
         f (Function.invFunOn f {x | x.2 ∈ Is x.1} v) by rfl, Function.invFunOn_eq (himage ▸ hv)]
 
-/-- Independence in the union of an indexed family (Nash-Williams 1966 /
-Edmonds): a set is independent iff it decomposes as a union of sets, one
-independent in each factor. -/
+/-- **Independence in the union of an indexed family** (`lem:union-indep-iff`; Oxley 2011,
+(11.3.2)): a set is independent iff it decomposes as a union of sets, one independent in each
+factor. -/
 lemma union_indep_iff [DecidableEq α] [Finite α] {Ms : ι → Matroid α} {I : Set α} :
     (Matroid.Union Ms).Indep I ↔
     ∃ Is : ι → Set α, ⋃ i, Is i = (I : Set α) ∧ ∀ i, (Ms i).Indep (Is i) := by
@@ -240,10 +243,12 @@ lemma union_indep_iff' [DecidableEq α] [Finite α] {M₁ : Matroid α} {M₂ : 
 /-- The neighbourhood of a single right-vertex `v` under `Adj`. -/
 def nbhd (Adj : α → β → Prop) (v : β) := {u | Adj u v}
 
-/-- The matroid `M.adjMap Adj univ` is the matroid of the polymatroid rank
-function `f Y = r_M (N Adj Y)`; this is the polymatroid-of-submodular
-realization of the matching matroid (the longest single proof of the port, the
-sufficiency direction routes through Rado's theorem `Matroid.rado`). -/
+/-- **The induced matroid is the matroid of a polymatroid rank function** (a step of
+`thm:matroid-partition-rank`; Oxley 2011, Lemma 11.2.13): the matroid `M.adjMap Adj univ` that
+the bipartite graph `Adj` induces from `M` is `ofPolymatroidFn` of a polymatroid rank function `f`
+with `f Y = r_M` of the set of neighbours of `Y`. A set matched onto an independent set satisfies
+the count of `ofPolymatroidFn`; conversely, Rado's theorem (`Matroid.rado`), applied to the
+neighbourhoods of the elements of a set satisfying the count, gives the matching. -/
 theorem polymatroid_of_adjMap [DecidableEq β] [Finite α] [Finite β] (M : Matroid α)
   (Adj : α → β → Prop) : ∃ f, ∃ h : (PolymatroidFn f), ofPolymatroidFn h = M.adjMap Adj univ ∧
   ∀ Y, f Y = M.rk {v | ∃ u ∈ Y, Adj v u} := by
@@ -469,8 +474,10 @@ theorem sum'_eRk_eq_eRk_sum_on_indep {α ι : Type*} [Fintype ι] [Finite α]
   · rw [Nat.cast_sum]
     simp_rw [cast_rk_eq]
 
-/-- Edmonds' matroid-partition rank formula in `adjMap` form (Edmonds 1965):
-the rank of the `adjMap`-matroid attains `min_Y (r_M (N Adj Y) + |Yᶜ|)`. -/
+/-- **The rank of the induced matroid** (a step of `thm:matroid-partition-rank`): the rank of
+`M.adjMap Adj univ` is the minimum, over `Y ⊆ β`, of `r_M(N(Y)) + |β \ Y|`, where `N(Y)` is the
+set of neighbours of `Y`. The polymatroid rank formula (`polymatroid_rank_eq`) for the function
+of `polymatroid_of_adjMap`. -/
 theorem adjMap_rank_eq [DecidableEq β] [Finite α] [Fintype β] (M : Matroid α)
   (Adj : α → β → Prop) :
   (∃ Y, M.rk {v | ∃ u ∈ Y, Adj v u} + (Finset.univ \ Y).card ≤ (M.adjMap Adj univ).rank) ∧
@@ -484,9 +491,9 @@ theorem adjMap_rank_eq [DecidableEq β] [Finite α] [Fintype β] (M : Matroid α
   simp only [Finset.subset_univ, Finset.coe_univ, true_and, true_implies] at hpoly
   exact hpoly
 
-/-- Edmonds' matroid-partition rank formula for the binary union (Edmonds 1965):
-the rank of `Matroid.union M₁ M₂` attains `min_Y (r_{M₁}(Y) + r_{M₂}(Y) +
-|Yᶜ|)`. (`thm:matroid-partition-rank`.) -/
+/-- **The rank of a binary union** (the case `k = 2`, `X = E` of
+`thm:matroid-partition-rank`; Oxley 2011, Theorem 11.3.1): the rank of `Matroid.union M₁ M₂`
+attains `min_Y (r_{M₁}(Y) + r_{M₂}(Y) + |Yᶜ|)`. -/
 theorem matroid_partition' [DecidableEq α] [Fintype α]
   (M₁ : Matroid α) (M₂ : Matroid α) :
   (∃ Y : Finset α, M₁.rk Y + M₂.rk Y + (Finset.univ \ Y).card ≤ (Matroid.union M₁ M₂).rank) ∧
@@ -498,8 +505,8 @@ theorem matroid_partition' [DecidableEq α] [Fintype α]
   simp only [exists_eq_right', preimage_ofPred_eq, Finset.setOfPred_mem, Fintype.sum_bool] at hY hle
   exact ⟨⟨Y, by omega⟩, fun Y ↦ by have := hle Y; omega⟩
 
-/-- The `eRk`-valued form of Edmonds' matroid-partition rank formula for the
-binary union (`thm:matroid-partition-rank`). -/
+/-- **The rank of a binary union, `eRk` form** (a case of `thm:matroid-partition-rank`): some
+`Y` attains `r_{M₁}(Y) + r_{M₂}(Y) + |Yᶜ| = eRank (M₁ ∪ M₂)`. -/
 theorem matroid_partition_eRk' [DecidableEq α] [Finite α]
   (M₁ : Matroid α) (M₂ : Matroid α) : ∃ Y : Set α, M₁.eRk Y + M₂.eRk Y + (univ \ Y).encard =
     (Matroid.union M₁ M₂).eRank := by
@@ -513,11 +520,10 @@ theorem matroid_partition_eRk' [DecidableEq α] [Finite α]
     Nat.cast_inj]
   refine ⟨Y, le_antisymm (by simp only [← this _, hY]) (by simp only [← this _, h Y])⟩
 
-/-- Edmonds' matroid-partition rank formula for the union of a finite indexed
-family (Edmonds 1965): the rank of `Matroid.Union Ms` attains
-`min_Y (∑ᵢ r_{Mᵢ}(Y) + |Yᶜ|)`. The indexed generalization of
-`matroid_partition'`, proved by the same `adjMap_rank_eq` + `sum'_rk_eq_rk_sum`
-route. (`thm:matroid-partition-rank`.) -/
+/-- **The rank of a matroid union** (`thm:matroid-partition-rank`, at `X = E`; the
+matroid-union theorem of Nash-Williams and Edmonds, Oxley 2011, (11.3.3)): the rank of
+`Matroid.Union Ms` attains `min_Y (∑ᵢ r_{Mᵢ}(Y) + |Yᶜ|)`. The indexed generalization of
+`matroid_partition'`, proved by the same `adjMap_rank_eq` + `sum'_rk_eq_rk_sum` route. -/
 theorem Union_rank_eq [DecidableEq α] [Fintype α] [Fintype ι] (Ms : ι → Matroid α) :
     (∃ Y : Finset α, (∑ i, (Ms i).rk Y) + (Finset.univ \ Y).card ≤ (Matroid.Union Ms).rank) ∧
     (∀ Y : Finset α, (Matroid.Union Ms).rank ≤ (∑ i, (Ms i).rk Y) + (Finset.univ \ Y).card) := by
@@ -527,11 +533,10 @@ theorem Union_rank_eq [DecidableEq α] [Fintype α] [Fintype ι] (Ms : ι → Ma
   simp only [exists_eq_right', preimage_ofPred_eq, Finset.setOfPred_mem] at hY hle
   exact ⟨⟨Y, by convert hY using 3⟩, fun Y ↦ by have := hle Y; convert this using 3⟩
 
-/-- Per-set form of Edmonds' matroid-partition rank formula in `adjMap` form
-(Edmonds 1965): for any `X`, the rank of `X` in the `adjMap`-matroid attains
-`min_{Y ⊆ X} (r_M (N Adj Y) + |X \ Y|)`. The `X := Finset.univ` case is
-`adjMap_rank_eq`; the per-set generalization is what the union-independence
-count condition consumes. -/
+/-- **The rank of a set in the induced matroid** (a step of `thm:matroid-partition-rank`): for
+any `X`, the rank of `X` in `M.adjMap Adj univ` attains `min_{Y ⊆ X} (r_M(N(Y)) + |X \ Y|)`,
+where `N(Y)` is the set of neighbours of `Y`. The `X := Finset.univ` case is `adjMap_rank_eq`;
+`Union_pow_rk_eq` specializes it to `k` copies of one matroid. -/
 theorem adjMap_rk_eq [DecidableEq β] [Finite α] [Finite β] (M : Matroid α)
     (Adj : α → β → Prop) (X : Finset β) :
     (∃ Y ⊆ X, M.rk {v | ∃ u ∈ Y, Adj v u} + (X \ Y).card ≤ (M.adjMap Adj univ).rk X) ∧
@@ -544,13 +549,11 @@ theorem adjMap_rk_eq [DecidableEq β] [Finite α] [Finite β] (M : Matroid α)
   obtain ⟨⟨Y, hYsub, hY⟩, hle⟩ := polymatroid_rank_eq hf_poly X
   exact ⟨⟨Y, hYsub, hY⟩, fun Y hYsub ↦ hle Y hYsub⟩
 
-/-- Per-set form of Edmonds' matroid-partition rank formula for the `k`-fold
-union of a single matroid `M`, `Set`-`X` / `ℕ` / `Set.ncard` / `[Finite]` idiom:
-for any `X`, the rank of `X` in `Matroid.Union (fun _ : Fin k ↦ M)` attains
-`min_{Y ⊆ X} (k · r_M(Y) + |X \ Y|)`. The per-set generalization of
-`Union_pow_rank_eq` (which is the `X := univ` case); the union-independence
-count condition (`thm:unionPow-cycle-indep-iff-sparse`) consumes this directly.
-(`thm:matroid-partition-rank`.) -/
+/-- **The rank of a set in the union of `k` copies of one matroid** (`thm:matroid-partition-rank`,
+the case `M₁ = ⋯ = M_k`), in `Set`/`ℕ`/`Set.ncard`/`[Finite]` form: for any `X`, the rank of `X`
+in `Matroid.Union (fun _ : Fin k ↦ M)` attains `min_{Y ⊆ X} (k · r_M(Y) + |X \ Y|)`. Its
+`X := univ` case is `Union_pow_rank_eq` (`BodyBar/TreePacking.lean`), and
+`Union_pow_indep_iff_count` reads the independence criterion off it. -/
 theorem Union_pow_rk_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) (X : Set α) :
     (∃ Y ⊆ X, k * M.rk Y + (X \ Y).ncard ≤ (Matroid.Union (fun _ : Fin k ↦ M)).rk X) ∧
     (∀ Y ⊆ X, (Matroid.Union (fun _ : Fin k ↦ M)).rk X ≤ k * M.rk Y + (X \ Y).ncard) := by
@@ -570,16 +573,13 @@ theorem Union_pow_rk_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) 
     rw [hcard Yf (Finset.coe_subset.mp hYsub)]
     have := hle Yf (Finset.coe_subset.mp hYsub); convert this using 2
 
-/-- **Union-independence count condition** (Edmonds 1965, the matroid-side half
-of Tutte--Nash-Williams): a set `E'` is independent in the `k`-fold union
-`Matroid.Union (fun _ : Fin k ↦ M)` if and only if every subset `Y ⊆ E'`
-satisfies `|Y| ≤ k · r_M(Y)`. The substantive matroid content behind
-`thm:unionPow-cycle-indep-iff-sparse`: independence in the `k`-fold union is the
-count condition that, for the graphic matroid, becomes `(k, k)`-sparsity. Proved
-from the per-set partition rank formula `Union_pow_rk_eq`: independence is
-`rk E' = |E'|`, which (since `rk ≤ |·|` always) is `|E'| ≤ rk E'`, and the
-formula turns `|E'| ≤ rk E'` into the count condition via `|E' \ Y| = |E'| - |Y|`
-on `Y ⊆ E'`. -/
+/-- **Edmonds' matroid-partition theorem** (`thm:matroid-partition`; Edmonds 1965,
+Theorem 1): a set `E'` is independent in the `k`-fold union `Matroid.Union (fun _ : Fin k ↦ M)`
+if and only if every subset `Y ⊆ E'` satisfies `|Y| ≤ k · r_M(Y)`. For the cycle matroid of a
+multigraph the count becomes `(k, k)`-sparsity (`thm:unionPow-cycle-indep-iff-sparse`). Proved
+from the per-set rank formula `Union_pow_rk_eq`: independence is `rk E' = |E'|`, which (since
+`rk ≤ |·|` always) is `|E'| ≤ rk E'`, and the formula turns `|E'| ≤ rk E'` into the count
+condition via `|E' \ Y| = |E'| - |Y|` on `Y ⊆ E'`. -/
 theorem Union_pow_indep_iff_count [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ)
     {E' : Set α} :
     (Matroid.Union (fun _ : Fin k ↦ M)).Indep E' ↔ ∀ Y ⊆ E', Y.ncard ≤ k * M.rk Y := by
