@@ -13,8 +13,9 @@ changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`
 wait for the phase. Tasks 1–15.1 are done: the open, the docstring-label check (gate 9: 422 at task
 2, 387 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, and L6–L8's hypotheses and
 repeated derivations (*Current state*). Task 16, the recon of the pebble game's search, settled its
-fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set.
-**Next concrete task:** task 18, the timing script (*Lemma checklist*). Round manual: `CLEANUP.md`.
+fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set;
+task 18 committed the script that times it and checks the `decide` facts. **Next concrete task:**
+task 19, `parsePair` on any whitespace (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -24,24 +25,31 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 17 is done** (this commit); nothing is mid-stream.
+**Task 18 is done** (this commit); nothing is mid-stream.
 
-**Task 17** (`F-033` in part): task 16's spike landed in `Search/DFS.lean`: the sibling loop
-`reachableFindingList` (it needs no `[DecidableEq V]`, so it takes none), `reachableFindingAux`
-returning its marked set, the loop's two invariants, `reachableFindingAux_sound` and the private
-`_complete` restated, `reachableFinding_complete` by the closure of the returned set, and
-`DirectedWalk.vertices_eq_cons_tail` new. `dropUntilBundle`, left without a caller, is deleted
-(block (b); the trial deletion; block (c) empty; `notes/Reconcile.md` §3 repointed). The statements
-of `reachableFinding`, its two theorems and `reachClosureComputable`'s are unchanged, and so are the
-callers. `dfs.tex`: the section's opening, `def:reachable-finding`, the paragraph after it and the
-correctness proof restated. New `F-276` (the `decide +kernel` route) and `F-277` (one search for the
-region), both `reported`. The ledger: 277 entries, 155 `done`, 9 `left`, 109 `reported`, 4 `open`
-(task 38's); the next ID is `F-278`.
+**Task 18** (`F-033`, `F-047` in part; no library change): `scripts/DFSTiming.lean`, not a
+`module`, run as `lake lean scripts/DFSTiming.lean`; its output is
+`scratch/reconcile-lean/dfs-timing-t18.log` (gitignored). On the diamond chain at
+$n = 8, 10, \ldots, 18$ ($3n + 1$ vertices, $4n$ arcs, $2^n$ walks end to end, the three
+computed), with `P` false, the per-walk search (`671366e4`'s body, renamed) took 1.5, 6.2, 26.8,
+120.5, 521.2 and 2196.0 ms (`F-033`'s round-1 figures: 2, 6, 29, 128, 631 and 3071 ms; task 16's:
+1, 5, 25, 114, 498 and 2291), and the search with one marked set 124, 63, 76, 120, 133 and
+157 µs, marking 25, 31, …, 55 vertices ($3n + 1$, the figure that does not move). The `decide`
+facts hold, each a tactic that fails the file if it changes: `decide` and `decide +kernel` fail on
+`k4MinusE.IsLaman`, `decide +kernel` proves `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and
+`native_decide` proves `k4MinusE.IsLaman` and `¬ k4.IsLaman`. Task 20 states them. The ledger:
+`F-033`'s and `F-047`'s dispositions gain their task-18 notes; the counts are task 17's.
+
+**Task 17** (`F-033` in part): task 16's spike in `Search/DFS.lean`, the search returning its
+marked set and its sibling loop `reachableFindingList`, re-proved; `dropUntilBundle` deleted;
+`dfs.tex` restated; no statement of `reachableFinding`, its theorems or `reachClosureComputable`'s
+changed. New `F-276` and `F-277`, both `reported`. The ledger: 277 entries, 155 `done`, 9 `left`,
+109 `reported`, 4 `open` (task 38's); the next ID is `F-278`.
 
 **Task 16** (the recon, docs only): the spike `scratch/reconcile-lean/t16/DFSThreadedC.lean`
-(gitignored) closed; its non-`module` copy `KernelC.lean` timed both searches with `P` false on the
-diamond chain at $n = 8, 10, \ldots, 18$: 1, 5, 25, 114, 498 and 2291 ms before, at most 1 ms after
-(measured, script not retained; task 18 commits one). The `decide` probes are beside it.
+(gitignored) closed; its non-`module` copy `KernelC.lean` timed both searches (1, 5, 25, 114, 498
+and 2291 ms before, at most 1 ms after), which task 18's script re-measures. The `decide` probes
+are beside it.
 
 **Done before** (tasks 3–15.1; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -265,18 +273,10 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **17. L1: the search with one visited set** (`F-033` in part): task 16's spike in
   `Search/DFS.lean`, `dropUntilBundle` deleted, `dfs.tex`'s search and proof restated; new `F-276`
   and `F-277`, both `reported`; the dump byte-identical; gate 9 387.
-- [ ] **18. L1: the timing script; the `decide` facts** (`F-033`, `F-047` in part).
-  `scripts/DFSTiming.lean`, not a `module` (as `scripts/BlueprintDeps.lean`), run as
-  `lake lean scripts/DFSTiming.lean`, with no driver and no `lake exe` (the lakefile is out of
-  scope): the per-walk search as it stood before task 17 (its body, renamed, citing `671366e4`), the
-  spike's diamond chain `diamondSucc n` ($3n + 1$ vertices, $4n$ arcs, $2^n$ simple walks end to
-  end), and one `#eval` that times both searches with `P` false at $n = 8, 10, \ldots, 18$ in one
-  run and prints the size of the set the new search marks ($3n + 1$, the figure that does not move;
-  the times do). Then the facts task 20 states, each a tactic that fails the file if it changes:
-  `fail_if_success decide` and `fail_if_success decide +kernel` on `Examples.k4MinusE.IsLaman`,
-  `decide +kernel` on `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and `native_decide` on `k4MinusE.IsLaman`
-  and on `¬ Examples.k4.IsLaman`. Its output in `scratch/`, its figures here beside `F-033`'s. No
-  library change. *Expected:* the dump byte-identical.
+- [x] **18. L1: the timing script; the `decide` facts** (`F-033`, `F-047` in part):
+  `scripts/DFSTiming.lean`, run by `lake lean`, no library change; at $n = 18$ the per-walk search
+  2196 ms, the new one 157 µs marking $3n + 1$; the five facts hold; the dump byte-identical; gate
+  9 387.
 - [ ] **19. L2: `parsePair` on any whitespace** (`F-047`). `Main.lean` 100 splits on any whitespace,
   so a tab no longer makes a line malformed; `lake exe pebble-game` on a tab-separated input,
   recorded. *Expected:* the dump byte-identical.
@@ -419,12 +419,15 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 18**, at Opus: the timing script `scripts/DFSTiming.lean` and the `decide` facts
-(`F-033`, `F-047` in part; *Lemma checklist*), with no library change. Re-`grep` the line numbers.
-Gates 5, 6, 9 and 10 (the parent dump `scratch/reconcile-lean/dump-t17.txt`, gitignored; regenerate
-it if missing; gate 9 387). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`,
-`F-269`, `F-271`, `F-275` and FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38. After the
-round the queue stops before `RECONCILE-FORMAL`, which is attended.
+**Next: task 19**, at Opus: `parsePair` on any whitespace (`F-047`; *Lemma checklist*), and
+`lake exe pebble-game` on a tab-separated input, recorded. Re-`grep` the line numbers. `Main.lean`
+is the executable's root, outside the default target (`lakefile.toml`'s `defaultTargets`), so gate
+1's `lake build` does not compile it: `lake exe pebble-game` builds it, and its output gets the
+same `warning:` scan. Gates 1–3, 5, 6, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t18.txt`, gitignored; regenerate it if missing; gate 9 387). Carried
+in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275` and
+FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38. After the round the queue stops before
+`RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 

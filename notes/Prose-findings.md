@@ -3346,7 +3346,9 @@ declaration's name as its header writes it:
   *Found:* round 1 task 5.12.
   *Disposition:* reported (`notes/Prose-report.md`, L1); round 3: the search threads one marked set
   through its sibling calls, `reachableFinding_sound` and `_complete` re-proved, `dfs.tex` restated
-  (task 17).
+  (task 17); round 3: the timing re-measured by the committed `scripts/DFSTiming.lean`, the old
+  search beside the new, 2196 ms and 157 µs at $n = 18$, the new one marking $3n + 1$ vertices
+  (task 18).
 - **F-035** · L · `PebbleGame/Basic.lean`, `PebbleGame/Algorithm.lean`: docstrings that describe
   other states of the code. Basic.lean's *Path reversal* section header says the lemmas about
   `out`, `peb`, `span` and `outOn` "follow in a subsequent commit"; they are in that section.
@@ -3416,7 +3418,10 @@ declaration's name as its header writes it:
   `getReducibilityStatus` reports both definitions `irreducible`; `native_decide` proves
   `k4MinusE.IsLaman` and `¬ k4.IsLaman`; `"3\t4".splitOn` is one token.
   *Found:* round 1 task 5.16.
-  *Disposition:* reported (`notes/Prose-report.md`, L2).
+  *Disposition:* reported (`notes/Prose-report.md`, L2); round 3: `scripts/DFSTiming.lean` holds
+  five of these facts as tactics that fail the file if one changes: `decide` and `decide +kernel`
+  fail on `k4MinusE.IsLaman`, `decide +kernel` proves `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and
+  `native_decide` proves `k4MinusE.IsLaman` and `¬ k4.IsLaman` (task 18).
 - **F-055** · L · `Graph.exists_forestPacking_cover_of_isSparse_restrict` (`BodyBar/KFrame.lean`;
   `lem:k-frame-forest-packing-of-sparse`): it derives the forward half of `Graph.tutte_nash_williams`
   (`TreePacking.lean`, which `KFrame.lean` imports) again, at $G \restriction E'$ and without
