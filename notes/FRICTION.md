@@ -111,6 +111,24 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `String.split` returns an iterator of slices on Lean v4.34 — `String.splitToList s p` is the `List String` form
+- **Where it bit:** RECONCILE round 3, task 19: `parsePair` (`Main.lean`) splitting on
+  `Char.isWhitespace`. `s.split Char.isWhitespace` is a `Std.Iter String.Slice` (no `Repr`, no
+  `List` API); a probe's `#eval` failed on it.
+- **Friction:** one probe iteration, none in the build.
+- **Proposed fix:** `(s.splitToList Char.isWhitespace).filter (· ≠ "")`, not deprecated on this
+  toolchain; `splitOn` with no argument splits on `" "` only.
+- **Status:** idiom.
+
+### [idiom] `lake lean` on a scratch file that imports nothing fails: "unknown configuration option 'linter.style.header'"
+- **Where it bit:** RECONCILE round 3, task 19: a core-only probe of the `String` API.
+- **Friction:** `lakefile.toml` sets `linter.style.header = false` without `weak.`, so `lake lean`
+  passes it as `-D`, and Lean rejects it when no import registers the option.
+- **Proposed fix:** give the probe one import (the module it is about, or any `Mathlib` one). A
+  `weak.` prefix on the lakefile option would also cure it; that is a lakefile change, not a
+  builder's.
+- **Status:** idiom.
+
 ### [idiom] `induction … using f.induct (P := P)` stops at "Alternative `succ` has not been provided" — name every explicit parameter before the motive
 - **Where it bit:** RECONCILE round 3, tasks 16–17: `reachableFindingAux_sound` and
   `reachableFindingAux_complete` over the threaded search (`Search/DFS.lean`), whose recursive call

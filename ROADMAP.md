@@ -1324,9 +1324,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   4.7, task 15.1 dropped three vertex hypotheses of that lemma which its edge hypotheses imply,
   task 16, a recon, settled the fix of the pebble game's search: one set of marked vertices
   threaded through the search, its completeness proved from the set it returns, and `decide` left
-  to the texts, task 17 landed that search, re-proved, with the chapter restated, and task 18
-  committed a script that times it beside the old search and checks what `decide` proves.
-  **Next:** task 19, the executable's input split on any whitespace.
+  to the texts, task 17 landed that search, re-proved, with the chapter restated, task 18
+  committed a script that times it beside the old search and checks what `decide` proves, and
+  task 19 had the executable read its input split on any whitespace, tabs included.
+  **Next:** task 20, one rewrite of the texts on the search's cost and the executable's input.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

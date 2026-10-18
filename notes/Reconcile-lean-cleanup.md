@@ -14,8 +14,9 @@ wait for the phase. Tasks 1–15.1 are done: the open, the docstring-label check
 2, 387 now), L9's deletions with `F-090`'s shim, `F-061`'s rename, and L6–L8's hypotheses and
 repeated derivations (*Current state*). Task 16, the recon of the pebble game's search, settled its
 fix and left `decide` to the texts (*Decisions*); task 17 landed the search with one visited set;
-task 18 committed the script that times it and checks the `decide` facts. **Next concrete task:**
-task 19, `parsePair` on any whitespace (*Lemma checklist*). Round manual: `CLEANUP.md`.
+task 18 committed the script that times it and checks the `decide` facts; task 19 had the
+executable split its input on any whitespace. **Next concrete task:** task 20, one rewrite of the
+texts (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -25,7 +26,17 @@ answers in an entry that starts `**PI, <date>:**`. No entries yet.
 
 ## Current state
 
-**Task 18 is done** (this commit); nothing is mid-stream.
+**Task 19 is done** (this commit); nothing is mid-stream.
+
+**Task 19** (`F-047` in part): `parsePair` (`Main.lean`) splits on `Char.isWhitespace` through
+`String.splitToList`, dropping empty tokens as before, so a tab between the numbers or a carriage
+return ending the line (a CRLF file) no longer makes a line malformed. The input: the data lines of
+`examples/k4-minus-e.txt` with each space a tab (`perl -pe 's/ /\t/g unless /^#/'`). At task 18's
+tree the executable printed `malformed header … got: 4<tab>5`, exit 1; at this commit `lake exe
+pebble-game` prints `LAMAN` and the five `ARCS` lines of the space-separated file, exit 0. The CRLF
+copy: malformed before, `LAMAN` after. The four `examples/*.txt` give the outputs their comments
+document; three tokens or a non-number on a line stay malformed. Output in
+`scratch/reconcile-lean/t19/` (gitignored). `lake build pebble-game` warning-clean.
 
 **Task 18** (`F-033`, `F-047` in part; no library change): `scripts/DFSTiming.lean`, not a
 `module`, run as `lake lean scripts/DFSTiming.lean`; its output is
@@ -40,16 +51,12 @@ facts hold, each a tactic that fails the file if it changes: `decide` and `decid
 `native_decide` proves `k4MinusE.IsLaman` and `¬ k4.IsLaman`. Task 20 states them. The ledger:
 `F-033`'s and `F-047`'s dispositions gain their task-18 notes; the counts are task 17's.
 
-**Task 17** (`F-033` in part): task 16's spike in `Search/DFS.lean`, the search returning its
-marked set and its sibling loop `reachableFindingList`, re-proved; `dropUntilBundle` deleted;
-`dfs.tex` restated; no statement of `reachableFinding`, its theorems or `reachClosureComputable`'s
-changed. New `F-276` and `F-277`, both `reported`. The ledger: 277 entries, 155 `done`, 9 `left`,
-109 `reported`, 4 `open` (task 38's); the next ID is `F-278`.
-
-**Task 16** (the recon, docs only): the spike `scratch/reconcile-lean/t16/DFSThreadedC.lean`
-(gitignored) closed; its non-`module` copy `KernelC.lean` timed both searches (1, 5, 25, 114, 498
-and 2291 ms before, at most 1 ms after), which task 18's script re-measures. The `decide` probes
-are beside it.
+**Tasks 16–17** (`F-033` in part): task 16's spike (`scratch/reconcile-lean/t16/`, gitignored,
+with its `decide` probes) in `Search/DFS.lean`, the search returning its marked set and its sibling
+loop `reachableFindingList`, re-proved; `dropUntilBundle` deleted; `dfs.tex` restated; no statement
+of `reachableFinding`, its theorems or `reachClosureComputable`'s changed. New `F-276` and `F-277`,
+both `reported`. The ledger: 277 entries, 155 `done`, 9 `left`, 109 `reported`, 4 `open` (task
+38's); the next ID is `F-278`.
 
 **Done before** (tasks 3–15.1; their `[x]` lines and messages carry the detail): L9's thirty-nine
 deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
@@ -277,17 +284,19 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `scripts/DFSTiming.lean`, run by `lake lean`, no library change; at $n = 18$ the per-walk search
   2196 ms, the new one 157 µs marking $3n + 1$; the five facts hold; the dump byte-identical; gate
   9 387.
-- [ ] **19. L2: `parsePair` on any whitespace** (`F-047`). `Main.lean` 100 splits on any whitespace,
+- [x] **19. L2: `parsePair` on any whitespace** (`F-047`). `Main.lean` 100 splits on any whitespace,
   so a tab no longer makes a line malformed; `lake exe pebble-game` on a tab-separated input,
-  recorded. *Expected:* the dump byte-identical.
+  recorded: `LAMAN` on `k4-minus-e.txt` with tabs (before: malformed), and on its CRLF copy; the
+  dump byte-identical; gate 9 387.
 - [ ] **20. L1–L2: one rewrite of the texts** (`F-033`, `F-047`). What the search does and the bound
   measured or none: `Search/DFS.lean`'s section docstring (785), `PebbleGame/Exec.lean` (71, 82,
   367), `Main.lean`'s module docstring (21–38: the input, `executable.tex`'s list for its "three-row
   matrix"), `PebbleGame/Examples.lean` (17–20), the `lakefile.toml` comment (84–91: the
   classification through `runPebbleGameExec`), `DESIGN.md` *One `Decidable` instance per project
   predicate* (657: what `decide` and `decide +kernel` unfold, per task 16's *Decisions* and task
-  18's script), and `executable.tex` where it states a bound or what `decide` does (23; 253–261).
-  `dfs.tex` is task 17's. *Expected:* TeX prose only; the dump byte-identical.
+  18's script), and `executable.tex` where it states a bound or what `decide` does (23; 253–261)
+  or the input's separator (306, "spaces": any whitespace since task 19). `dfs.tex` is task 17's.
+  *Expected:* TeX prose only; the dump byte-identical.
 - [ ] **21. Non-vacuity witnesses, 1: the planar and matroid rows** (§1's proposal; the rule in
   `PHASE-BOUNDARIES.md`). A module `CombinatorialRigidity/Nonvacuity.lean`, imported by
   `CombinatorialRigidity.lean`, with one named closed theorem per row, as the precedent
@@ -419,12 +428,13 @@ None.
 
 ## Hand-off / next phase
 
-**Next: task 19**, at Opus: `parsePair` on any whitespace (`F-047`; *Lemma checklist*), and
-`lake exe pebble-game` on a tab-separated input, recorded. Re-`grep` the line numbers. `Main.lean`
-is the executable's root, outside the default target (`lakefile.toml`'s `defaultTargets`), so gate
-1's `lake build` does not compile it: `lake exe pebble-game` builds it, and its output gets the
-same `warning:` scan. Gates 1–3, 5, 6, 9 and 10 (the parent dump
-`scratch/reconcile-lean/dump-t18.txt`, gitignored; regenerate it if missing; gate 9 387). Carried
+**Next: task 20**, at Opus: one rewrite of the texts (`F-033`, `F-047`; *Lemma checklist*): what
+the search does and the bound measured or none, from task 16's *Decisions* and task 18's figures
+and facts (*Current state*), and the input as task 19 left it (any whitespace; a CRLF file reads).
+Re-`grep` the line numbers. The docstrings are Lean edits: `Main.lean` is outside the default
+target (`lakefile.toml`'s `defaultTargets`), so `lake build pebble-game` builds it beside gate 1's
+build, its output given the same `warning:` scan. Gates 1–3, 5, 6, 8, 9 and 10 (the parent dump
+`scratch/reconcile-lean/dump-t19.txt`, gitignored; regenerate it if missing; gate 9 387). Carried
 in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`, `F-269`, `F-271`, `F-275` and
 FRICTION's `edgeFiber_nonempty` entry (task 15) for task 38. After the round the queue stops before
 `RECONCILE-FORMAL`, which is attended.

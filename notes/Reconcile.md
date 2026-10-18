@@ -34,9 +34,10 @@ no Lemma 4.7, task 15.1 dropped three vertex hypotheses of that lemma which its 
 hypotheses imply (`F-274`), task 16, a recon, settled the fix of the pebble game's search
 (one marked set threaded through the sibling calls, completeness from the set it returns) and
 found a kernel-reducible `decide` not cheap, so the texts name `native_decide`; task 17
-landed that search, re-proved, with `dfs.tex` restated, and task 18 committed
-`scripts/DFSTiming.lean`, which times it beside the old search and holds the `decide` facts.
-**Next concrete task:** round 3's task 19, `parsePair` on any whitespace.
+landed that search, re-proved, with `dfs.tex` restated, task 18 committed
+`scripts/DFSTiming.lean`, which times it beside the old search and holds the `decide` facts, and
+task 19 had `parsePair` split on any whitespace, so a tab-separated input reads.
+**Next concrete task:** round 3's task 20, one rewrite of the texts on the search and the input.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

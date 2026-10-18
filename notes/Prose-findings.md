@@ -3421,7 +3421,10 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, L2); round 3: `scripts/DFSTiming.lean` holds
   five of these facts as tactics that fail the file if one changes: `decide` and `decide +kernel`
   fail on `k4MinusE.IsLaman`, `decide +kernel` proves `(⊤ : SimpleGraph (Fin 2)).IsLaman`, and
-  `native_decide` proves `k4MinusE.IsLaman` and `¬ k4.IsLaman` (task 18).
+  `native_decide` proves `k4MinusE.IsLaman` and `¬ k4.IsLaman` (task 18); round 3: `parsePair`
+  splits on `Char.isWhitespace`, so a tab, or a CRLF file's carriage return, no longer makes a line
+  malformed; `lake exe pebble-game` on `examples/k4-minus-e.txt` with tabs prints `LAMAN`, where
+  task 18's tree printed "malformed header" (task 19).
 - **F-055** · L · `Graph.exists_forestPacking_cover_of_isSparse_restrict` (`BodyBar/KFrame.lean`;
   `lem:k-frame-forest-packing-of-sparse`): it derives the forward half of `Graph.tutte_nash_williams`
   (`TreePacking.lean`, which `KFrame.lean` imports) again, at $G \restriction E'$ and without

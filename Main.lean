@@ -98,7 +98,7 @@ private def stripComments (lines : List String) : List String :=
 /-- Parse a single whitespace-separated `Nat` pair `"u v"`. Returns `none`
 on malformed input (wrong token count, non-numeric tokens). -/
 private def parsePair (s : String) : Option (Nat × Nat) :=
-  match s.splitOn.filter (· ≠ "") with
+  match (s.splitToList Char.isWhitespace).filter (· ≠ "") with
   | [a, b] => do
       let u ← a.toNat?
       let v ← b.toNat?
