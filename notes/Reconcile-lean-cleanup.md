@@ -18,47 +18,47 @@ top-level file but `Nonvacuity.lean`, of `Search/`, of `Mathlib/`, of `PebbleGam
 and of `BodyBar/` (tasks 25–28), of `Molecular/Deficiency.lean` (tasks 29–29.1), of
 `Molecular/Induction/` (tasks 30–31.1), of `RigidityMatrix/`, `Meet.lean` and `Extensor.lean`
 (tasks 32–32.2), of `AlgebraicInduction/Pinning.lean` and `PanelLayer.lean` (task 33), and of
-`CaseI.lean` and `CaseII.lean` (task 34). **Next concrete task:** task 34.1, the docstrings of
-`GenericityDevice.lean` and `Coupling.lean`, this round's parts (*Lemma checklist*).
+`CaseI.lean` and `CaseII.lean` (task 34). **Blocked** since 2026-10-21: the toolchain's `lake`
+crashes on this machine (*Autopilot: for the PI*). **Next concrete task**, once it runs: task 34.1,
+the docstrings of `GenericityDevice.lean` and `Coupling.lean`, this round's parts (*Lemma checklist*).
 Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
 No planned stop (`notes/Reconcile.md` §4): the queue runs the three rounds unattended and stops
 before `RECONCILE-FORMAL`. An unplanned `NEEDS_PI` entry goes here, newest first, and the PI
-answers in an entry that starts `**PI, <date>:**`. No entries yet.
+answers in an entry that starts `**PI, <date>:**`.
+
+**2026-10-21, BLOCKED: the toolchain's `lake` crashes on this machine.** Every `lake` command of
+`leanprover/lean4:v4.34.0-rc2` aborts, `lake --version` included (it prints, then `malloc: pointer
+being freed was not allocated`, SIGTRAP, exit 133), in a clean environment and outside the sandbox.
+macOS went from 26.6.2 to 27.0.1 on 2026-10-20, after task 34. The installed `lake`,
+`libLake_shared`, `libleanshared` and `libInit_shared` are byte-identical to the release tarball's,
+so a reinstall does not help; the `lake`s of v4.29.0, v4.33.0-rc2, v4.34.1 and v4.35.0-rc2–rc4 run
+here, and bare `lean` reads the built tree. Gates 1 and 3 cannot run, so no Lean task (34.1–39) can
+land; task 34.1 was not dispatched, and nothing is mid-stream. **Asked:** how the round gets a
+working `lake`. (a) Fix the machine (a macOS fix, or `lake` built from v4.34.0-rc2's source), then
+resume at task 34.1: no commits here. (b) A bump to v4.34.1 (mathlib has the tag `v4.34.1`) as a
+queue item before this one, by `notes/ToolchainBumps.md` (this round's rules bar the toolchain): 1–3
+commits. (c) A stand-in gate for the docstring tasks (bare `lean` on the touched files, `LEAN_PATH`
+by hand, no `lake lint`), the full gates at the close: weaker, and a change to the round's gates.
 
 ## Current state
 
-**Task 34 is done** (this commit); nothing is mid-stream.
+**Task 34 is done**; nothing is mid-stream. **Blocked** since 2026-10-21: the toolchain's `lake`
+crashes on this machine (*Autopilot: for the PI*).
 
-**Task 34**, split at the file boundary (`F-232` `done`; `F-069`, `F-140`, `F-148`, `F-153` in part;
-new `F-290`, `open` for task 38): every docstring and comment of `AlgebraicInduction/CaseI.lean` and
-`CaseII.lean` (2 785 lines, in the footprint) read against its body under the sweep's form; credits
-checked in `.refs/` (KT 2011 pp. 669–684). The sentences on what a selector records and what
-`ofNormals` gives back wait for the phase (*Moved to a later round*, `F-122`'s). The message names
-the false claims (among them a Case I hypothesis "KT Claim 6.4" that the code does not take, a lemma
-`hasFullRankRealization_of_generic` that does not exist, and an identity transport called
-`e₀`-dropping). Gate 9 175 → 162 (the report's 13 lines in `CaseI.lean`). The ledger: 290 entries,
-194 `done`, 9 `left`, 70 `reported`, 17 `open`.
+**Task 34** (`F-232` `done`; `F-069`, `F-140`, `F-148`, `F-153` in part; new `F-290`): `CaseI.lean`
+and `CaseII.lean` swept, the selector sentences left for the phase (`F-122`'s); its message names
+the false claims. Gate 9 175 → 162. The ledger: 290 entries, 194 `done`, 9 `left`, 70 `reported`,
+17 `open`.
 
-**Tasks 25–33** (`F-018`, `F-022`, `F-023`, `F-025`, `F-030`, `F-032`, `F-035`, `F-040`, `F-045`,
-`F-053`, `F-057`, `F-064`, `F-074`, `F-077`, `F-080`, `F-081`, `F-085`, `F-088`, `F-092`, `F-094`,
-`F-097`, `F-108`, `F-114`, `F-164`, `F-176`, `F-194`, `F-198`, `F-200`, `F-205`, `F-230`, `F-233`,
-`F-235`, `F-236`, `F-244`, `F-253`, `F-263` `done`; others in part; new `F-278` to `F-289`): the
-planar files, `Search/`, `Mathlib/`, `PebbleGame/`, `Matroid/Constructions/`, `BodyBar/`, the
-square-graph and generic-rigidity files, `Molecular/Deficiency.lean` (split at the tight
-partitions), `Molecular/Induction/` (split at `Operations.lean` and twice in `ForestSurgery/`),
-`RigidityMatrix/` (split twice), `Meet.lean`, `Extensor.lean`, `Pinning.lean` and `PanelLayer.lean`,
-under *Decisions*' sweep form; their messages name each false claim.
-
-**Done before** (tasks 3–24; their `[x]` lines and messages carry the detail): L9's thirty-nine
-deletions (`F-266`'s and `F-267`'s orphans among them; the pins they left without a caller stay with
-their nodes), `F-090`'s shim, `F-061`'s rename to `_starForest`, L6–L8's unused or derivable
-hypotheses and repeated derivations (each node they reach restated in the same commit; gate 2 runs
-block (c) since task 5), the search with one marked set and its texts (tasks 16–20; `F-033`,
-`F-047` `done`, new `F-276`, `F-277` `reported`), and `Nonvacuity.lean`'s sixteen witnesses (tasks
-21–24, all on the three axioms; FRICTION: tasks 22–24's entries, task 21's waits for task 38).
+**Done before** (tasks 3–33; their `[x]` lines, with the IDs each acts on, and messages carry the
+detail): L9's thirty-nine deletions (the pins they left without a caller stay with their nodes),
+`F-090`'s shim, `F-061`'s rename, L6–L8's hypotheses and repeated derivations (each node they reach
+restated in the same commit; gate 2 runs block (c) since task 5), the search and its texts (tasks
+16–20), `Nonvacuity.lean`'s sixteen witnesses (tasks 21–24; FRICTION: tasks 22–24's entries, task
+21's waits for task 38), and every directory before the footprint swept (tasks 25–33).
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -401,10 +401,12 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 
 ## Blockers / open questions
 
-None.
+The toolchain's `lake` crashes on this machine (2026-10-21); the PI's question is *Autopilot: for
+the PI*'s entry, and no Lean task lands until it is answered.
 
 ## Hand-off / next phase
 
+**Blocked** (*Autopilot: for the PI*, 2026-10-21): resume here once the PI's entry answers it.
 **Next: task 34.1**, at Opus: the docstrings of `AlgebraicInduction/GenericityDevice.lean` (1 969
 lines) and `Coupling.lean` (1 348), in the footprint: this round's parts only (*Scope*: a part that
 says what `PanelHingeFramework`'s fields mean or what its constructors guarantee, or documents a
@@ -468,21 +470,15 @@ the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to `F-290` and FRICTION's `e
 - **A forward missing edge** (task 11): a Lean change whose reach makes one gets an `E` entry and a
   cure task right after, a node moved so the edge points back (round 2's rule,
   `notes/Reconcile-statements-cleanup.md` *Decisions*), as gate 7 bars the forward `\uses`.
-- **`F-097`'s `hD`** (the open; task 15): weakening `3 ≤ D` to `2 ≤ D` is a statement change
-  beyond L8's suggestion. The shorter proof holds there, and the two are one condition on
-  `bodyBarDim n`, so `hD` stays and `F-273` reports the form to the PI.
-- **A `\uses` removed can strand an implied edge** (task 15): `lem:rigid-full-rank`, reached by the
-  pin, was an ancestor only through the removed `lem:edge-set-indep-pos`, so the removal alone
-  makes it missing. A task's *Expected* models the summary on the cache (`t15-model.py`) and adds
-  such an edge in the same commit (backward here, 170 < 1793).
-- **The search's fix** (tasks 16–17): one search threading a marked set, its completeness from
-  closure under the arcs; `decide` stops at `List.mergeSort` and unexposed bodies (`F-276`).
+- **`F-097`'s `hD`** (task 15): `3 ≤ D` stays, one condition with `2 ≤ D` on `bodyBarDim n`; `F-273`.
+- **A `\uses` removed can strand an implied edge** (task 15): a task's *Expected* models the summary
+  on the cache (`t15-model.py`) and adds such an edge in the same commit.
+- **The search's fix** (tasks 16–17): one search threading a marked set (`F-276` for `decide`).
 - **The witnesses' form** (tasks 21–24): `CombinatorialRigidity.<name>_witness` in the
   non-`module` `Nonvacuity.lean`, at the smallest non-degenerate input of its row (the inputs in
   tasks 21–24's lines).
-- **The texts' running time and `decide`** (task 20): a running time only as measured, naming
-  the script, or no bound; `decide` only as the committed script's facts and `F-276`'s reasons. A
-  claim on the line's subject that a re-`grep` finds beyond its surfaces is fixed in the same commit.
+- **The texts' running time and `decide`** (task 20): a running time only as measured, or none;
+  `decide` only as the committed script's facts and `F-276`'s reasons.
 - **The sweep's form** (task 25): a header's process narration (a *Project context* section, phase
   and commit numbers, `notes/` pointers) becomes one sentence naming the blueprint section that
   presents the file; a credit is the chapter's, and one a docstring keeps beyond it (a page, a
