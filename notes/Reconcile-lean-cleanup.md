@@ -19,9 +19,9 @@ and of `BodyBar/` (tasks 25–28), of `Molecular/Deficiency.lean` (tasks 29–29
 `Molecular/Induction/` (tasks 30–31.1), of `RigidityMatrix/`, `Meet.lean` and `Extensor.lean`
 (tasks 32–32.2), of `AlgebraicInduction/Pinning.lean` and `PanelLayer.lean` (task 33), and of
 `CaseI.lean` and `CaseII.lean` (task 34). **Blocked** since 2026-10-21: the toolchain's `lake`
-crashes on this machine (*Autopilot: for the PI*). **Next concrete task**, once it runs: task 34.1,
-the docstrings of `GenericityDevice.lean` and `Coupling.lean`, this round's parts (*Lemma checklist*).
-Round manual: `CLEANUP.md`.
+crashes here, and a bump to Lean v4.36.0-rc1 runs first (*Autopilot: for the PI*). **Next
+concrete task**, once that bump closes: task 34.1, the docstrings of `GenericityDevice.lean` and
+`Coupling.lean`, this round's parts (*Lemma checklist*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -29,24 +29,32 @@ No planned stop (`notes/Reconcile.md` §4): the queue runs the three rounds unat
 before `RECONCILE-FORMAL`. An unplanned `NEEDS_PI` entry goes here, newest first, and the PI
 answers in an entry that starts `**PI, <date>:**`.
 
-**2026-10-21, BLOCKED: the toolchain's `lake` crashes on this machine.** Every `lake` command of
-`leanprover/lean4:v4.34.0-rc2` aborts, `lake --version` included (it prints, then `malloc: pointer
-being freed was not allocated`, SIGTRAP, exit 133), in a clean environment and outside the sandbox.
-macOS went from 26.6.2 to 27.0.1 on 2026-10-20, after task 34. The installed `lake`,
-`libLake_shared`, `libleanshared` and `libInit_shared` are byte-identical to the release tarball's,
-so a reinstall does not help; the `lake`s of v4.29.0, v4.33.0-rc2, v4.34.1 and v4.35.0-rc2–rc4 run
-here, and bare `lean` reads the built tree. Gates 1 and 3 cannot run, so no Lean task (34.1–39) can
-land; task 34.1 was not dispatched, and nothing is mid-stream. **Asked:** how the round gets a
-working `lake`. (a) Fix the machine (a macOS fix, or `lake` built from v4.34.0-rc2's source), then
-resume at task 34.1: no commits here. (b) A bump to v4.34.1 (mathlib has the tag `v4.34.1`) as a
-queue item before this one, by `notes/ToolchainBumps.md` (this round's rules bar the toolchain): 1–3
-commits. (c) A stand-in gate for the docstring tasks (bare `lean` on the touched files, `LEAN_PATH`
-by hand, no `lake lint`), the full gates at the close: weaker, and a change to the round's gates.
+**PI, 2026-10-21:** The crash is mimalloc's, fixed from Lean v4.34.1 on. v4.34.0-rc2 bundles
+mimalloc v3.4.1, which on macOS keeps each thread's heap in the reserved TSD slots 126 and 127, and
+macOS 27 runs a destructor on slots 125–127 at thread exit (a C thread that leaves a static pointer
+in one aborts; slots 89, 108 and 120 don't). When the thread `lake` runs `main` on ends, mimalloc
+resets slot 126 to the static `_mi_theap_empty`, which libpthread then `free`s. `lean --run` aborts
+the same way, so (c)'s bare `lean` is no safe stand-in, and (a) has no macOS fix to wait for:
+mimalloc issue #1333 is this backtrace, fixed by v3.4.4, which v4.34.1 backports (lean4 #14938).
+**Decision:** bump to Lean v4.36.0-rc1 (mimalloc v3.4.5), where `Matroid`'s tip `8ece630` sits,
+with its mathlib `930ae14` (115 commits past the tag `v4.36.0-rc1`, 1 476 past our pin), whose
+transitive pins are exactly `Matroid`'s; no `Matroid` rev since v4.29.0 sits on a stable release.
+A new autopilot queue item ahead of this round, by `notes/ToolchainBumps.md`; then resume here at
+task 34.1. More than (b)'s 1–3 commits: `ab64d1c` (hopscotch's issue #2) is in range, `Matroid` has
+absorbed it, and our Lean meets the rest.
+
+**2026-10-21, BLOCKED: the toolchain's `lake` crashes on this machine.** Since macOS went from
+26.6.2 to 27.0.1 (2026-10-20, after task 34), every `lake` command of
+`leanprover/lean4:v4.34.0-rc2` aborts after its output (`malloc: pointer being freed was not
+allocated`, SIGTRAP, exit 133); a reinstall does not help, and the `lake`s of v4.29.0, v4.33.0-rc2,
+v4.34.1 and v4.35.0-rc2–rc4 run. No Lean task (34.1–39) can land; nothing is mid-stream.
+**Asked:** how the round gets a working `lake`: (a) fix the machine; (b) bump to v4.34.1 as a
+queue item first (1–3 commits); (c) a stand-in gate of bare `lean`.
 
 ## Current state
 
 **Task 34 is done**; nothing is mid-stream. **Blocked** since 2026-10-21: the toolchain's `lake`
-crashes on this machine (*Autopilot: for the PI*).
+crashes here, until the bump to v4.36.0-rc1 (its own queue item) closes (*Autopilot: for the PI*).
 
 **Task 34** (`F-232` `done`; `F-069`, `F-140`, `F-148`, `F-153` in part; new `F-290`): `CaseI.lean`
 and `CaseII.lean` swept, the selector sentences left for the phase (`F-122`'s); its message names
@@ -401,12 +409,13 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 
 ## Blockers / open questions
 
-The toolchain's `lake` crashes on this machine (2026-10-21); the PI's question is *Autopilot: for
-the PI*'s entry, and no Lean task lands until it is answered.
+The toolchain's `lake` crashes on this machine (2026-10-21, v4.34.0-rc2's mimalloc). The PI's
+answer (*Autopilot: for the PI*) puts a bump to v4.36.0-rc1 ahead of this round; no Lean task
+lands here until it closes.
 
 ## Hand-off / next phase
 
-**Blocked** (*Autopilot: for the PI*, 2026-10-21): resume here once the PI's entry answers it.
+**Blocked** (*Autopilot: for the PI*, 2026-10-21): resume here once the bump to v4.36.0-rc1 closes.
 **Next: task 34.1**, at Opus: the docstrings of `AlgebraicInduction/GenericityDevice.lean` (1 969
 lines) and `Coupling.lean` (1 348), in the footprint: this round's parts only (*Scope*: a part that
 says what `PanelHingeFramework`'s fields mean or what its constructors guarantee, or documents a
@@ -439,10 +448,8 @@ the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to `F-290` and FRICTION's `e
 - **The slicing** (the open): 39 tasks; code before the docstring sweep that documents it.
 - **The footprint's measure** (the open): read from the Lean (block (a)), not the plan's count.
 - **L9 by the screen** (the open): only with every caller, transitively, unpinned and dead (`F-265`).
-- **`F-088` here** (the open): §3 gives L8's repeated derivations to this round, and G5's packing
-  move in the phase's (c) is the same change, so task 14 takes it and the phase's list says so.
-  Task 14: a conclusion strengthened so the caller can call it is L8's "repeated derivation
-  replaced", as task 13's disjoint cover was; its node is restated in the same commit.
+- **`F-088` here** (the open; task 14): G5's packing move is L8's repeated derivation, so task 14
+  took it, its strengthened conclusion's node restated in the same commit.
 - **The label check's own node** (task 2): a pin's docstring names its node in its lead, so a lead
   naming nodes none of which pins it is reported; an unpinned declaration's own node is its lead
   parenthetical's first item when that is a bare label of its kind (`def:` for definitions,
@@ -462,11 +469,8 @@ the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to `F-290` and FRICTION's `e
   `contradiction_one_pair`'s `[Finite V]` unused (it had passed `Set.toFinite _` for it), which
   `lake lint`'s `unusedArguments` reported; an unused hypothesis is the hygiene rule's, so it went, and
   `lake lint` runs to a fixed point (`notes/ToolchainBumps.md`: the linter cascades).
-- **A pin more general than its node's setting** (task 10): a node that states a dropped hypothesis
-  is restated (`lem:deficiency-ear-merge`'s distinct vertices, as task 8's finite $V$), but not
-  where it is the setting a definition node fixes: `def:graph-operations` defines $G_v$ and
-  $G_v^{ab}$ at a vertex of degree two, so `lem:edge-splitting`, `lem:forest-surgery-unsplit` and
-  `lem:removal-deficiency-equality` keep it, stating a case of what their pins prove.
+- **A pin more general than its node's setting** (task 10): a node stating a dropped hypothesis is
+  restated, except where a definition node fixes it as the setting (`def:graph-operations`).
 - **A forward missing edge** (task 11): a Lean change whose reach makes one gets an `E` entry and a
   cure task right after, a node moved so the edge points back (round 2's rule,
   `notes/Reconcile-statements-cleanup.md` *Decisions*), as gate 7 bars the forward `\uses`.

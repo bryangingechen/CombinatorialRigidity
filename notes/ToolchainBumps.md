@@ -43,11 +43,18 @@ the last-known-good rev
 artifacts — do not close either**, contra this section's previous plan
 (written while the false positive was still live).
 
-**Next concrete task:** none of this is blocking — the stack is on `master`
-and CI-green. The next real decision is a fresh one: whether to take PR #1's
-bump to `0258e25` (cheap, gated the usual way), or to chase the `ab64d1c`
-incompatibility to go further. Neither has been investigated yet; treat it as
-a new bump, not a continuation of this record.
+**Next concrete task (PI, 2026-10-21): the bump to Lean `v4.36.0-rc1`**, an
+autopilot queue item of its own ahead of `reconcile-lean`, which it unblocks.
+Since macOS 27, v4.34.0-rc2's `lake` aborts at exit: its bundled mimalloc
+3.4.1 uses TLS slots that macOS 27 claims (diagnosis:
+`notes/Reconcile-lean-cleanup.md` *Autopilot: for the PI*; any Lean from
+v4.34.1 on has the fix). Target `Matroid` at its tip `8ece630` (2026-10-20)
+and mathlib at that rev's own pin `930ae14` (1 476 commits past ours), whose
+transitive pins are exactly `Matroid`'s, so `scripts/bump-mathlib.sh 930ae14`
+plus the `Matroid` hand-edit sets every pin. `ab64d1c` is in range and
+`Matroid` has absorbed it, so PR #1 and issue #2 close with this bump. Not
+yet assessed: what those mathlib commits break in our own Lean. Treat it as
+a new bump record.
 
 ---
 
