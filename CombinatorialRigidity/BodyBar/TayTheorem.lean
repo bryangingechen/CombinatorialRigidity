@@ -294,9 +294,9 @@ theorem stdFramework_rigidityRow_linearIndependent [Finite α] {G : Graph α β}
   have : Fintype α := Fintype.ofFinite α
   -- The disjoint cover gives `↥E(G) ≃ Σ i, Fs i`; the index `(eqv e).1` is the forest of `e`.
   let eqv : E(G) ≃ Σ i : Fin (bodyBarDim n), (Fs i : Set β) :=
-    (Equiv.setCongr hcover.symm).trans (Set.unionEqSigmaOfDisjoint hdisj)
+    (Set.equivOfEq hcover.symm).trans (Set.unionEqSigmaOfDisjoint hdisj)
   have hsnd : ∀ e : E(G), ((eqv e).2 : β) = (e : β) := fun e => by
-    simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint, Equiv.setCongr_apply]
+    simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint, Set.equivOfEq_apply]
   -- `j e = (eqv e).1`: both forests contain `e`, and the packing is disjoint.
   have hjeq : ∀ e : E(G), j e = (eqv e).1 := fun e => by
     by_contra h
@@ -351,10 +351,10 @@ theorem stdFramework_rigidityRow_linearIndependent_restrict [Finite α] {G : Gra
   -- `E'ₛ ≃ ↥E'` (`Equiv.Set.image`), then the disjoint cover gives `↥E' ≃ Σ i, Fs i`.
   let eqv : E'ₛ ≃ Σ i : Fin (bodyBarDim n), (Fs i : Set β) :=
     (Equiv.Set.image _ E'ₛ Subtype.val_injective).trans
-      ((Equiv.setCongr himg).trans
-        ((Equiv.setCongr hcover.symm).trans (Set.unionEqSigmaOfDisjoint hdisj)))
+      ((Set.equivOfEq himg).trans
+        ((Set.equivOfEq hcover.symm).trans (Set.unionEqSigmaOfDisjoint hdisj)))
   have hsnd : ∀ e : E'ₛ, ((eqv e).2 : β) = (e.val : β) := fun e => by
-    simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint, Equiv.setCongr_apply,
+    simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint, Set.equivOfEq_apply,
       Equiv.Set.image_apply]
   -- `j e.val = (eqv e).1`: both forests contain `e`, and the packing is disjoint.
   have hjeq : ∀ e : E'ₛ, j e.val = (eqv e).1 := fun e => by

@@ -1,20 +1,18 @@
 # Toolchain bump to Lean v4.36.0-rc1 (work log)
 
-**Status:** in progress, and the build is RED on purpose. The pins are applied (Lean
-`v4.36.0-rc1`, mathlib `930ae14`, `Matroid` `8ece630`) and the blockers G1 and G2 are fixed. The
-build now stops at a third blocker, G3 (`BodyBar/KFrame.lean`): 69 of the default target's 154
-modules compile, 1 fails and 84 are never reached. A probe build with G3 and G4 also fixed, in the
-working tree only, compiled the whole tree, fragility zone included, so every site is now known:
-15 error lines outside the zone, 43 positioned warning sites and Lake's 22 module-system warnings.
-This tree is a documented intermediate state of a multi-commit bump on `master`, which the PI
-reviews before any push. **Next concrete task:** G3, 9 lines in 3 files (*Checklist*). Queue item
-`bump-4.36`; plan and playbook `notes/ToolchainBumps.md`; why: `notes/Reconcile-lean-cleanup.md`
-*Autopilot: for the PI*.
+**Status:** in progress. The build is green but not yet warning-clean. The pins are applied (Lean
+`v4.36.0-rc1`, mathlib `930ae14`, `Matroid` `8ece630`) and every error group, G1 to G4, is fixed:
+`build9` is exit 0, 0 `error`, "Build completed successfully (6159 jobs)", all 154 default-target
+modules compiled. What remains is warnings: 43 positioned sites plus Lake's 22 module-system
+pairs (W1 to W6). This tree is a documented intermediate state of a multi-commit bump on `master`,
+which the PI reviews before any push. **Next concrete task:** W1 + W3 + W6, the mechanical warning
+classes (*Hand-off*). Queue item `bump-4.36`; plan and playbook `notes/ToolchainBumps.md`; why:
+`notes/Reconcile-lean-cleanup.md` *Autopilot: for the PI*.
 
 ## Current state
 
-**Next:** G3 (*Hand-off*). **The build is RED** at G3; with G3 and G4 it compiles (the probe),
-leaving only warnings.
+**Next:** W1 + W3 + W6 (*Hand-off*). **The build is green** (`build9`, G1 to G4 fixed) but not
+warning-clean: 43 positioned warning sites plus W4's 22 Lake pairs remain.
 
 | | before | after |
 |---|---|---|
@@ -31,9 +29,13 @@ import graph: each module importing no failed module built, and none importing o
 | `build1` | the pins (`8936b312`) | 1 | 57 / 2 / 95 | G1, G2 |
 | `build2`, `build2b` | + G1, G2 (this commit) | 1 | 69 / 1 / 84 | G3 |
 | `build3-probe`…`8` | + G3, G4 (working tree) | 0 at `8` | 154 / 0 / 0 | each G4 site in turn |
+| `build9` | + G3, G4 (this commit, committed) | 0 | 154 / 0 / 0 | done: 0 `error`, warnings only |
 
 `build8-probe`: "Build completed successfully (6159 jobs)", 0 `error`. The probe's fixes are kept
 as `scratch/bump-4.36/probe-g3-g8.patch` (gitignored) and spelled out under *Checklist*.
+`build9` (the patch applied unchanged) has the same 87 `warning:` lines as
+`build8-probe` (the diff of the sorted sets is empty), none outside W1 to W6, and the 6 cascaded
+unused-simp-argument warnings at `KFrame.lean` are gone.
 
 **Verified at the open** (2026-10-21, `8936b312`'s message has the detail): no baseline build, as
 v4.34.0-rc2's `lake` exits 133 on macOS 27 (the Lean was unchanged since `f8a6f8ec`, green under
@@ -57,7 +59,7 @@ paths are under `CombinatorialRigidity/`.
   `public import Mathlib.Algebra.Polynomial.Roots` in `Mathlib/Algebra/MvPolynomial/Funext.lean`.
   `![…]` comes with it; a second import of `Mathlib.Data.Fin.VecNotation` was tested and dropped.
 - [x] **G2** (`Set` shape A, below): `(· ∈ S)` for `S` at `Jacobs.lean:132`.
-- [ ] **G3, the third blocker (84 modules behind it): `Equiv.setCongr` changed meaning.** It is now
+- [x] **G3, the third blocker (84 modules behind it): `Equiv.setCongr` changed meaning.** It is now
   `α ≃ β → Set α ≃ Set β` (`Mathlib/Logic/Equiv/Set.lean:177`); the equivalence of equal sets'
   subtypes is `Set.equivOfEq` (`:50`, simp lemma `Set.equivOfEq_apply`). The old name still
   exists, so no deprecation fires. 9 lines in 3 files: `BodyBar/KFrame.lean:439, 457, 475` (its 3
@@ -65,7 +67,7 @@ paths are under `CombinatorialRigidity/`.
   355, 357`, `JacobsZeroExtension.lean:184` (the last 6 sit behind KFrame; the probe fixed them
   before they compiled). Fix: `Equiv.setCongr h` → `Set.equivOfEq h`, `Equiv.setCongr_apply` →
   `Set.equivOfEq_apply`. Mechanical, ~9 lines; outside the zone.
-- [ ] **G4 (`Set` shape B, below), 6 sites in 5 files**, each a blocker in turn:
+- [x] **G4 (`Set` shape B, below), 6 sites in 5 files**, each a blocker in turn:
   `Molecular/Deficiency.lean:2389` (75 modules behind it), then
   `Molecular/Molecule/Pencil/MainComponent/Chain.lean:327` (10), `…/CoverageCut.lean:273, 283`
   (6), `…/GenericBase.lean:195` (3), `Nonvacuity.lean:413` (1). Mechanical, ~6 lines; outside the
@@ -138,12 +140,11 @@ Choices, for the coordinator or the PI; none blocks G3 or G4.
 
 ## Hand-off / next phase
 
-**Smallest next commit: G3.** Rename the 9 lines in `BodyBar/KFrame.lean`,
-`BodyBar/TayTheorem.lean` and `JacobsZeroExtension.lean` (*Checklist*), rebuild, and expect the
-build to stop at G4's first site, `Molecular/Deficiency.lean:2389`, with 75 modules behind it. G4
-can ride with it: the 6 one-line sites under shape B, after which the probe's tree compiled
-(`build8-probe`, exit 0). Both are mechanical and outside the fragility zone. Then W1–W6, then the
-close gates (`notes/ToolchainBumps.md` *The gate set*).
+**Smallest next commit: W1 + W3 + W6**, the mechanical warning classes (*Checklist*): one
+`scripts/sweep-deprecations.py --apply` for W1's 33 deprecated-name sites (then a build for line
+lengths), drop W3's two no-op `push Not` calls, and rewrite W6's `rwa`. The coordinator will pass a
+shaping block for W2, W4 and W5's choices (*Blockers*), which stay open. Then the close gates
+(`notes/ToolchainBumps.md` *The gate set*).
 
 **PI action, after the push** (none taken here: no push, no `gh` writes): close PR #1 and issue
 #2, which this bump supersedes (`notes/ToolchainBumps.md` *Where this stands*).
@@ -154,6 +155,8 @@ close gates (`notes/ToolchainBumps.md` *The gate set*).
   at the rev `Matroid`'s tip is tested against, not the tag, the rule of the v4.34 bumps.
 - **Committed RED, one group of fixes per commit**: the opening (`8936b312`) carried no fix, and
   this commit only G1 and G2 (the coordinator's scope); the remaining breakage is over ~10 sites.
+- **G3 and G4 landed as the probe's patch**, unchanged: the `Nonvacuity.lean:413` site uses
+  the named lemma `edgesIn_subset_edgeSet _` instead of a named binder (shape B's tighter form).
 - **Probe, then revert**: G3 and G4 were applied in the working tree, rebuilt to a green tree and
   reverted, so the taxonomy covers every module while each commit stays one group.
 - **The phase-note gate covers this log**: `notes/check-phase-note.py` matches `Bump-<version>.md`.

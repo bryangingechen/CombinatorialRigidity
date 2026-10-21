@@ -324,7 +324,8 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
     have hp := G.partitionDef_le_deficiency 3 id
     have hnp : G.numParts id = k + 2 := by rw [Graph.numParts, Set.image_id, hVcard]
     have hce : (G.crossingEdges id).ncard ≤ k + 2 :=
-      (Set.ncard_le_ncard (fun g' hg' => hg'.1) (Set.toFinite _)).trans hEcard
+      (Set.ncard_le_ncard (fun g' (hg' : g' ∈ G.crossingEdges id) => hg'.1)
+        (Set.toFinite _)).trans hEcard
     rw [Graph.partitionDef, hnp] at hp
     have hb3 : (Graph.bodyBarDim 3 : ℤ) = 6 := rfl
     rw [hb3] at hp

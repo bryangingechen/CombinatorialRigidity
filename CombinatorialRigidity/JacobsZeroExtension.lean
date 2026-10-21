@@ -181,7 +181,7 @@ theorem zero_extension_genericRank_add_degree {V : Type*} [Finite V] {H : Simple
     have hFinNbr₃ : Fintype ↥(H₃.neighborSet v) := hH₃nbr ▸ hFinNbr
     have hdeg₃ : Fintype.card ↥(H₃.neighborSet v) ≤ 3 := by
       have hc : Fintype.card ↥(H₃.neighborSet v) = Fintype.card ↥(H.neighborSet v) :=
-        Fintype.card_congr (Equiv.setCongr hH₃nbr)
+        Fintype.card_congr (Set.equivOfEq hH₃nbr)
       omega
     obtain ⟨p₃, -, hp₃_rowIndep⟩ :=
       zero_extension_edgeSetRowIndependent_lift hH₃delInc_rowIndep hdeg₃ hAI

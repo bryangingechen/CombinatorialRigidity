@@ -192,7 +192,7 @@ theorem partitionDef_add_one_le_of_eq [Finite α] [Finite β] {G : Graph α β}
       · exact ⟨hw, hf⟩
     have := Set.ncard_le_ncard hsub (Set.toFinite _)
     rwa [Set.ncard_pair huw] at this
-  have h1 := hsv _ (fun x hx => hx.1) hZ2
+  have h1 := hsv {x ∈ V(G) | f x = f u} (fun x hx => hx.1) hZ2
   have hid := G.partitionDef_le_deficiency 2 id
   linarith
 

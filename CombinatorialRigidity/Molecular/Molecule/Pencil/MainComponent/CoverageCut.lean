@@ -270,7 +270,8 @@ theorem _root_.Graph.IsX0Graph.splitOff [Finite α] {G : Graph α β} (hG : G.Is
         simp only [Graph.Neighbor, Set.mem_ofPred_eq, hadjS, Set.mem_insert_iff, Set.mem_sdiff,
           Set.mem_singleton_iff]
         tauto
-      rw [this, Set.ncard_insert_of_notMem (fun h => hnadj h.1) (Set.toFinite _),
+      rw [this, Set.ncard_insert_of_notMem (fun (h : w ∈ N(G, y) \ {v}) => hnadj h.1)
+          (Set.toFinite _),
         Set.ncard_sdiff_singleton_of_mem (show v ∈ N(G, y) from ⟨e₁, h₁.symm⟩)]
       omega
     by_cases hyw : y = w
@@ -280,7 +281,8 @@ theorem _root_.Graph.IsX0Graph.splitOff [Finite α] {G : Graph α β} (hG : G.Is
         simp only [Graph.Neighbor, Set.mem_ofPred_eq, hadjS, Set.mem_insert_iff, Set.mem_sdiff,
           Set.mem_singleton_iff]
         tauto
-      rw [this, Set.ncard_insert_of_notMem (fun h => hnadj h.1.symm) (Set.toFinite _),
+      rw [this, Set.ncard_insert_of_notMem (fun (h : u ∈ N(G, y) \ {v}) => hnadj h.1.symm)
+          (Set.toFinite _),
         Set.ncard_sdiff_singleton_of_mem (show v ∈ N(G, y) from ⟨e₂, h₂.symm⟩)]
       omega
     · have : N(S, y) = N(G, y) := by

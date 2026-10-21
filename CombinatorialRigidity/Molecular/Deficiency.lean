@@ -2386,7 +2386,8 @@ theorem Connected.numParts_le_ncard_crossingEdges_add_one [Finite α] [Finite β
   -- deleting the crossing edges lowers the rank by at most their number
   have h3 : G.cycleMatroid.eRank ≤ G.cycleMatroid.eRk Y + (G.crossingEdges f).encard := by
     rw [← Matroid.eRk_ground, show G.cycleMatroid.E = Y ∪ G.crossingEdges f by
-      rw [cycleMatroid_E, hYdef, sdiff_union_self, union_eq_left.mpr fun e he => he.1]]
+      rw [cycleMatroid_E, hYdef, sdiff_union_self,
+        union_eq_left.mpr fun e (he : e ∈ G.crossingEdges f) => he.1]]
     refine (Matroid.eRk_union_le_eRk_add_eRk _ _ _).trans ?_
     gcongr
     exact Matroid.eRk_le_encard _ _

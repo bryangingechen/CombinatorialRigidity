@@ -436,7 +436,7 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
     exists_forestPacking_cover_of_isSparse_restrict hE' hsparse
   -- The disjoint cover gives `↥(⋃ Fs) ≃ Σ j, Fs j`; compose with `E' = ⋃ Fs`.
   let eqv : ↥E' ≃ Σ j : Fin k, (Fs j : Set β) :=
-    (Equiv.setCongr hFcover.symm).trans (Set.unionEqSigmaOfDisjoint hgdisj)
+    (Set.equivOfEq hFcover.symm).trans (Set.unionEqSigmaOfDisjoint hgdisj)
   -- STEP 1 (engine): the `R`-valued rows over `E'`, in uncurried matrix form, are LI over `R`.
   have hR_uncurry : LinearIndependent R
       (fun e : E' => fun jx : Fin k × α => kFrameRowR k D (e : β) jx.1 jx.2) := by
@@ -454,7 +454,7 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
         have h1 : ((eqv e).2 : β) ∈ Fs (eqv e).1 := (eqv e).2.2
         have h2 : ((eqv e).2 : β) = (e : β) := by
           simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint,
-            Equiv.setCongr_apply]
+            Set.equivOfEq_apply]
         rwa [h2] at h1
       funext jx
       have := forestEval_kFrameRowR_eq_single (D := D) Fs hgdisj hmem
@@ -472,7 +472,7 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
         rw [Function.comp_apply, Function.comp_apply, hsingle e]
         have h2 : ((eqv e).2 : β) = (e : β) := by
           simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint,
-            Equiv.setCongr_apply]
+            Set.equivOfEq_apply]
         rw [LinearEquiv.coe_curry_symm, Function.uncurry_apply_pair, h2]
       rw [hcomp]
       -- the uncurried block-single family is LI over ℚ (uncurry is an equiv)

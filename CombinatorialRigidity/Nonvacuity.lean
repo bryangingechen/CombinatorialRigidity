@@ -410,7 +410,7 @@ private theorem pathGraph_three_square_isLaman3 : (pathGraph 3).square.IsLaman3 
   intro s hs
   have h1 : s.card ≤ 3 := (Finset.card_le_univ s).trans_eq (Fintype.card_fin 3)
   have h2 : ((pathGraph 3).square.edgesIn ↑s).ncard ≤ 3 := by
-    refine (Set.ncard_le_ncard (fun e he => he.1) (Set.toFinite _)).trans ?_
+    refine (Set.ncard_le_ncard (edgesIn_subset_edgeSet _) (Set.toFinite _)).trans ?_
     rw [← SimpleGraph.coe_edgeFinset, Set.ncard_coe_finset]
     exact (card_edgeFinset_le_card_choose_two).trans_eq (by simp)
   omega
