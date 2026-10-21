@@ -54,7 +54,12 @@ transitive pins are exactly `Matroid`'s, so `scripts/bump-mathlib.sh 930ae14`
 plus the `Matroid` hand-edit sets every pin. `ab64d1c` is in range and
 `Matroid` has absorbed it, so PR #1 and issue #2 close with this bump. Not
 yet assessed: what those mathlib commits break in our own Lean. Treat it as
-a new bump record.
+a new bump record. It runs as the queue item `bump-4.36` (work log
+`notes/Bump-v4.36.0-rc1.md`, opened by its first commit). **Install the
+toolchain by hand first** (`elan toolchain install
+leanprover/lean4:v4.36.0-rc1`): an agent session here cannot write elan's
+toolchains directory, sandbox or not (`Operation not permitted`,
+2026-10-21), so a bump session cannot install it.
 
 ---
 

@@ -23,6 +23,10 @@ Don't ask it. For every item in the queue:
   verbatim, and any planned stops (the five `40-*` rounds, all closed: `notes/Cleanup40.md`;
   PROSE's five `prose-*` rounds, all closed: `notes/Prose.md`; RECONCILE's three `reconcile-*`
   rounds: `notes/Reconcile.md`).
+- A toolchain bump's plan is `notes/ToolchainBumps.md`: *Where this stands* names the target pins,
+  the *Playbook* the route, and *The gate set to re-run after any bump* the checks (`bump-4.36`:
+  the PI, 2026-10-21). Its work log follows the `notes/PhaseN.md` template, and its close writes
+  the bump's record into `notes/ToolchainBumps.md`.
 - Moving a task to a later queued round, with a one-line reason in both work logs, is ordinary
   cleanup practice, not a stop.
 

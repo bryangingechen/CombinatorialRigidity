@@ -7,6 +7,7 @@
 # The five cleanup rounds' scope, order and stops: notes/Cleanup40.md (PI, 2026-09-29).
 # PROSE's five rounds' scope, order and stop: notes/Prose.md (PI, 2026-10-07).
 # RECONCILE's three rounds and its phase: notes/Reconcile.md (PI, 2026-10-15).
+# The toolchain bump ahead of RECONCILE 3/3: notes/ToolchainBumps.md (PI, 2026-10-21).
 
 [[item]]
 id = "40-cleanup"
@@ -91,6 +92,16 @@ title = "RECONCILE 2/3: every false statement, and KT's route explained"
 note = "notes/Reconcile-statements-cleanup.md"
 attended = false
 done = true
+
+# Ahead of RECONCILE 3/3, which it unblocks: v4.34.0-rc2's `lake` aborts on macOS 27 (the
+# diagnosis: notes/Reconcile-lean-cleanup.md *Autopilot: for the PI*). Its plan, pins and gates:
+# notes/ToolchainBumps.md *Where this stands*.
+[[item]]
+id = "bump-4.36"
+title = "Toolchain bump: Lean v4.36.0-rc1, mathlib 930ae14, Matroid 8ece630"
+note = "notes/Bump-v4.36.0-rc1.md"
+attended = false
+done = false
 
 [[item]]
 id = "reconcile-lean"
