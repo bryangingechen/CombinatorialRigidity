@@ -19,16 +19,24 @@ No planned stop (`notes/Reconcile.md` §4): the queue runs the three rounds unat
 before `RECONCILE-FORMAL`. An unplanned `NEEDS_PI` entry goes here, newest first, and the PI
 answers in an entry that starts `**PI, <date>:**`.
 
-**PI, 2026-10-21:** the crash is mimalloc's (v3.4.1 in Lean v4.34.0-rc2: on macOS 27 a thread-exit
-destructor frees its static empty heap; mimalloc issue #1333, fixed by v3.4.4, which v4.34.1
-backports, lean4 #14938), and bare `lean` aborts the same way. **Decision:** bump to Lean
-v4.36.0-rc1 (mimalloc v3.4.5), with `Matroid`'s tip `8ece630` and its mathlib `930ae14`, as a queue
-item ahead of this round (`notes/ToolchainBumps.md`), then resume at task 34.1. Done
-(`notes/Bump-v4.36.0-rc1.md`).
+**PI, 2026-10-21:** The crash is mimalloc's, fixed from Lean v4.34.1 on. v4.34.0-rc2 bundles
+mimalloc v3.4.1, which on macOS keeps each thread's heap in the reserved TSD slots 126 and 127, and
+macOS 27 runs a destructor on slots 125–127 at thread exit (a C thread that leaves a static pointer
+in one aborts; slots 89, 108 and 120 don't). When the thread `lake` runs `main` on ends, mimalloc
+resets slot 126 to the static `_mi_theap_empty`, which libpthread then `free`s. `lean --run` aborts
+the same way, so (c)'s bare `lean` is no safe stand-in, and (a) has no macOS fix to wait for:
+mimalloc issue #1333 is this backtrace, fixed by v3.4.4, which v4.34.1 backports (lean4 #14938).
+**Decision:** bump to Lean v4.36.0-rc1 (mimalloc v3.4.5), where `Matroid`'s tip `8ece630` sits,
+with its mathlib `930ae14` (115 commits past the tag `v4.36.0-rc1`, 1 476 past our pin), whose
+transitive pins are exactly `Matroid`'s; no `Matroid` rev since v4.29.0 sits on a stable release.
+A new autopilot queue item ahead of this round, by `notes/ToolchainBumps.md`; then resume here at
+task 34.1. More than (b)'s 1–3 commits: `ab64d1c` (hopscotch's issue #2) is in range, `Matroid` has
+absorbed it, and our Lean meets the rest.
 
 **2026-10-21, BLOCKED (answered above):** after macOS 27.0.1 every `lake` command of
 `leanprover/lean4:v4.34.0-rc2` aborted after its output (exit 133). **Asked:** (a) fix the machine;
-(b) bump to v4.34.1 first; (c) a stand-in gate of bare `lean`.
+(b) bump to v4.34.1 first; (c) a stand-in gate of bare `lean`. Resolved: the bump closed 2026-10-21
+(`notes/Bump-v4.36.0-rc1.md`).
 
 ## Current state
 
