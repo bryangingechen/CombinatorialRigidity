@@ -2575,7 +2575,14 @@ declaration's name as its header writes it:
   its panel), on what `ofNormals` gives at a label (the hinge and the rows do not read the graph)
   and on the selector of a generic full-rank realization (it gives each link its ends in some order,
   and two such selectors agree up to order), kept as they stand (the section on the structure with
-  KT's page, p. 648, and without a phase number), moved to the phase (task 36).
+  KT's page, p. 648, and without a phase number), moved to the phase (task 36); and in the first
+  half of `Theorem55.lean`, the docstrings of `reaim`, `reaimSub`, `reaimSubLink` and their three
+  lemmas on motions (steps of `cor:theorem-55-d3-spanning` and of S2's rows), kept as they stand but
+  for their leads (`reaim`'s gives a nonzero hinge at every label from general position and
+  `x₀ ≠ y₀`, where a link also needs the selector to give it its ends), and the sentences on what
+  `ofNormals` gives at a label (the hinge from the selector and the normals, which does not read the
+  graph) and on the selectors of generic full-rank realizations (each gives each link its ends in
+  some order), kept true, moved to the phase (task 36.1).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -3751,17 +3758,18 @@ declaration's name as its header writes it:
   `d = 3` regime", which is $d \ge 3$.
   *Evidence:* read (the bodies and docstrings).
   *Found:* round 2 task 2.16.
-  *Disposition:* reported (`notes/Prose-report.md`, L6); round 3: `_hV3` dropped from
-  `case_cut_edge_realization_gen` and `_gp_gen`, and the second conjunct from the latter's
-  hypothesis (`F-102`), the call in `theorem_55_minimalKDof_gen` following, its statement unchanged;
-  both nodes no longer ask three vertices (task 12); `exists_adjacent_degree_two_pair`'s docstring
-  says $d \ge 3$ (task 30.1); in `ForestSurgery/Reduction.lean`, neither the header nor
-  `minimal_kdof_reduction`'s docstring says that the algebraic induction runs it (it runs
-  `minimal_kdof_reduction_all_k`; nothing uses `minimal_kdof_reduction`), the docstring narrates no
-  phase and cites no note, and `exists_chain_data_of_noRigid`'s says $d \ge 3$ (task 31.1);
-  `PanelHinge.lean`'s section on the realization hypotheses says that the proof of KT Theorem 5.5
-  inducts by `Graph.minimal_kdof_reduction_all_k` (task 36); the docstrings of the two pins
-  (`Theorem55.lean`) are task 36.1's.
+  *Disposition:* done (task 36.1): `_hV3` dropped from `case_cut_edge_realization_gen` and
+  `_gp_gen`, and the second conjunct from the latter's hypothesis (`F-102`), the call in
+  `theorem_55_minimalKDof_gen` following, its statement unchanged; both nodes no longer ask three
+  vertices (task 12); `exists_adjacent_degree_two_pair`'s docstring says $d \ge 3$ (task 30.1); in
+  `ForestSurgery/Reduction.lean`, neither the header nor `minimal_kdof_reduction`'s docstring says
+  that the algebraic induction runs it (it runs `minimal_kdof_reduction_all_k`; nothing uses
+  `minimal_kdof_reduction`), the docstring narrates no phase and cites no note, and
+  `exists_chain_data_of_noRigid`'s says $d \ge 3$ (task 31.1); `PanelHinge.lean`'s section on the
+  realization hypotheses says that the proof of KT Theorem 5.5 inducts by
+  `Graph.minimal_kdof_reduction_all_k` (task 36); the docstrings of the two pins (`Theorem55.lean`)
+  say that `theorem_55_minimalKDof_gen` uses them at every `k` (task 36.1). Before: reported
+  (`notes/Prose-report.md`, L6).
 - **F-108** · L · the pins of KT Lemma 4.6's nodes (`Induction/ForestSurgery/ChainExtraction.lean`,
   `Induction/Operations.lean`, `Molecular/Deficiency.lean`): `chainData_extract` takes
   `hV3 : 3 ≤ V(G).ncard` beside `hV4 : 4 ≤ V(G).ncard`, and `[G.Simple]`, which
@@ -3874,11 +3882,15 @@ declaration's name as its header writes it:
   conditioned motive", "carry" and phases.
   *Evidence:* read (the docstrings and signatures; a `grep` for the callers).
   *Found:* round 3 task 2.4.
-  *Disposition:* reported (`notes/Prose-report.md`, L10); round 3: `Pinning.lean`'s and
-  `PanelLayer.lean`'s parts (task 33): `theorem_55_base`'s docstring without "general-position
-  hypothesis", `exists_linearIndependent_extensor_pair_perp`'s says that no declaration uses it,
-  without the claim that it feeds `theorem_55_base`, and `exists_triangle_normals`' lead says
-  `k ≥ 1`, not "`d = 3`"; `Theorem55.lean`'s part is task 36.1's.
+  *Disposition:* done (task 36.1): `Pinning.lean`'s and `PanelLayer.lean`'s parts (task 33):
+  `theorem_55_base`'s docstring without "general-position hypothesis",
+  `exists_linearIndependent_extensor_pair_perp`'s says that no declaration uses it, without the
+  claim that it feeds `theorem_55_base`, and `exists_triangle_normals`' lead says `k ≥ 1`, not
+  "`d = 3`"; in `Theorem55.lean` (task 36.1), the leads of the two `_empty` and the two
+  `_single_edge` forms name `lem:theorem-55-base-producer-empty` and
+  `lem:theorem-55-base-producer-single`, `theorem_55_base_producer_empty_gp_gen`'s does not call `G`
+  simple, and `theorem_55_base_producer_gen`'s narrates no spine, motive, carry or phase. Before:
+  reported (`notes/Prose-report.md`, L10).
 - **F-133** · L · the docstrings of `panel-layer.tex`'s framework-operation and multigraph pins
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `Theorem55.lean`):
   `BodyHingeFramework.withGraph`'s calls it "the carrier for the inductive constructions of Cases I
@@ -3998,7 +4010,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.8.
   *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the three `d = 3` wrappers
-  deleted, and the docstrings that named them repointed to their `_gen` forms (task 3).
+  deleted, and the docstrings that named them repointed to their `_gen` forms (task 3); in
+  `Theorem55.lean`, the header names no `case_I_dispatch`, and `case_I_realization_h65_gen`'s lead
+  names `lem:case-I-realization-h65` and its user `case_I_dispatch_gen`, without the codes (task
+  36.1); the docstrings of `case_I_dispatch_gen`, `case_I_realization_nonsimple_gen` and
+  `case_I_realization_all_k_gen` are task 36.2's.
 - **F-148** · L · the docstrings of `case-ii.tex`'s pins (`Molecular/AlgebraicInduction/Pinning.lean`,
   `PanelHinge.lean`, `CaseII.lean`; `Molecular/Induction/Operations.lean`). Those of
   `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
@@ -4506,7 +4522,8 @@ declaration's name as its header writes it:
   `_gen` forms' docstrings no longer name them as their lifts (task 3); in `PanelLayer.lean` (task
   33), `exists_extensor_eq_panelSupportExtensor_gen`'s lead names `lem:panel-support-extensor-join`,
   and `exists_extensor_eq_panelSupportExtensor`'s names its users, without the claim that it is kept
-  while `hasPanelRealization_of_generic` is at `k = 2`; `rankHypothesis_of_theorem_55_gen`'s moved
+  while `hasPanelRealization_of_generic` is at `k = 2`; in `Theorem55.lean`, the base `_gen` forms'
+  docstrings narrate no lift from `d = 3` (task 36.1); `rankHypothesis_of_theorem_55_gen`'s moved
   to the phase.
 - **F-238** · L · the declarations round 5's task 3.7 unpinned or pinned
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `PanelLayer.lean`,
@@ -4527,7 +4544,9 @@ declaration's name as its header writes it:
   two theorems of KT Claim 6.6 (`Induction/Contraction.lean`) name `lem:claim-6-6` (task 30.1);
   `PanelLayer.lean`'s `annihRowPoly_totalDegree_le` says that no declaration uses it (task 33);
   `exists_good_realization_ofParam`'s lead gives it as a step of `lem:relative-device-count`
-  (`GenericityDevice.lean`, task 34.1).
+  (`GenericityDevice.lean`, task 34.1); `case_I_realization_h65_gen`'s lead names
+  `lem:case-I-realization-h65` (`Theorem55.lean`, task 36.1); `case_I_hcontract_gen`'s is task
+  36.2's.
 - **F-240** · L · the declarations round 5's task 3.8 pinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`, `Molecular/AlgebraicInduction/GenericityDevice.lean`). The
   section header over `isKDof_zero_of_triangle` names `lem:case-III`, which is not its node, and the
@@ -5373,6 +5392,29 @@ declaration's name as its header writes it:
   `isGeneralPosition_ofParam`, on the three standard axioms (`scratch/reconcile-lean/Hyps-t36.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 36.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-297** · L · hypotheses the others give, and repeated derivations, in the first half of
+  `Molecular/AlgebraicInduction/Theorem55.lean`. `theorem_55_base_producer_gen`'s
+  `hD : 2 ≤ bodyBarDim n` (`lem:theorem-55-base-producer`) follows from `hk` and `hn`
+  (`two_le_screwDim`); `case_I_realization_h65_gen`'s `hD : 3 ≤ bodyBarDim n` from `hk` and `hn`
+  (`three_le_screwDim`), and its `hV3 : 3 ≤ V(G).ncard` from `hrig`, as a proper rigid subgraph has
+  at least two vertices, not all of `V(G)` (`lem:case-I-realization-h65`); the `hLI_va` and `hLI_ab`
+  of the private `case_I_h65_extensor_pair_LI` from `htriLI` (`triLI_subpairs`, as `F-289`'s for
+  `normalsJoin_pair_linearIndependent_of_triLI`). `finrank_span_rigidityRows_cutEdge_eq` uses its
+  `hD` only for `1 ≤ screwDim k`, which `one_le_screwDim` gives, and the two cut lemmas
+  (`lem:case-cut-edge-realization`, `-gp`) use theirs only to pass it on; its `hFcut` follows from
+  `hFgraph`, as its callers' short proofs of it show. The rank of the rows of the one edge is
+  derived twice, in `theorem_55_base_producer_single_edge_gen` and `_single_edge_gp_gen` (the
+  selector, the range of rows and `finrank_span_panelRow_edge`, some 30 lines each), and
+  `case_cut_edge_realization_gp_gen` writes out the same steps for each side of the cut (the
+  selector `G.endsOf`, the motions, the rank and the rank polynomial, some 60 lines each).
+  `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the two pins called with `hD`
+  (and `hV3`) derived, `htriLI`'s two pairs by `triLI_subpairs`, a copy of
+  `finrank_span_rigidityRows_cutEdge_eq` without `hD` and with the same proof but
+  `one_le_screwDim`, and `hFcut` from `hFgraph`, on the three standard axioms
+  (`scratch/reconcile-lean/Hyps-t361.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 36.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

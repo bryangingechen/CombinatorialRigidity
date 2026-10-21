@@ -7,25 +7,33 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Realization
 import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 
 /-!
-# The algebraic induction — Theorem 5.5 base producers + cut-edge + dispatch
+# KT Theorem 5.5, KT Theorem 5.6 and the molecular conjecture
 
-Phase 22 (molecular-conjecture program; see `notes/MolecularConjecture.md`). The tail of the
-algebraic-induction realization layer, carved off `AlgebraicInduction/CaseI.lean` in the
-post-Phase-22j perf pass (`notes/Phase22j-perf.md`; pure semantics-preserving file split, no decl
-renamed). On top of the Case-I / Case-II producers in `AlgebraicInduction/CaseI` and the Claim-6.11
-/ Case-III producers in `AlgebraicInduction/CaseIII`, this file carries:
+The proof of KT Theorem 5.5 (Katoh and Tanigawa 2011, *A proof of the molecular conjecture*,
+Discrete Comput. Geom. **45**, §6) and what follows from it, presented in
+`sec:molecular-algebraic-induction-base`, `sec:molecular-algebraic-induction-caseI` and
+`sec:molecular-coplanar-multigraph`. The file proves:
 
-* the **Theorem 5.5 base producers** (`theorem_55_base_producer_*` — the `|V| = 2`, `k = 0`
-  parallel-pair / empty / single-edge arms and their general-position forms, plus the grade-general
-  trichotomy dispatch `theorem_55_base_producer_gen`) and the `d = 3` full-motive form
-  `theorem_55_d3`;
-* the **cut-edge** realization producers (`case_cut_edge_realization{,_gp}_gen`);
-* the **non-simple** Case-I arm `case_I_realization_nonsimple_gen`, the all-`k`
-  simple-contraction producer `case_I_realization_all_k_gen`, and the simple-vs-non-simple
-  **dispatch** `case_I_dispatch`.
+* the base of the induction, the graphs with one or two vertices (`lem:theorem-55-base-producer`,
+  with `lem:theorem-55-base-producer-empty`, `lem:theorem-55-base-producer-single` and
+  `lem:theorem-55-base-producer-parallel`);
+* KT Lemma 6.5, Case I when no proper rigid subgraph has a simple contraction
+  (`lem:case-I-realization-h65`);
+* KT Lemma 6.1, the case of a graph that is not 2-edge-connected, for each form of the realization
+  hypothesis (`lem:case-cut-edge-realization`, `lem:case-cut-edge-realization-gp`), with a rank
+  count that the cut case of the pencil realization shares (`lem:pencil-cut-case`);
+* KT Lemmas 6.2 and 6.3 and Case I (`lem:case-I-realization-nonsimple`, `lem:case-I-realization`,
+  `lem:case-I-dispatch`, `lem:case-I-all-k`);
+* KT Theorem 5.5 (`thm:theorem-55`), and at `d = 3` (`thm:theorem-55-d3-instance`,
+  `cor:theorem-55-d3-spanning`);
+* KT Theorem 5.6 (`thm:theorem-55-6`, `thm:theorem-55-6-genuine`, `thm:theorem-55-6-rows`,
+  `thm:theorem-55-6-d3`) and the molecular conjecture for simple graphs
+  (`thm:molecular-conjecture`);
+* KT Theorem 5.6 and the molecular conjecture for multigraphs, in the hinge-coplanar model
+  (`def:coplanar-panel-realization`, `thm:theorem-55-6-multigraph`,
+  `cor:theorem-55-6-multigraph-d3`, `thm:molecular-conjecture-multigraph`).
 
-See `ROADMAP.md` §22 / `notes/Phase22i.md` and the `sec:molecular-algebraic-induction` dep-graph
-of `blueprint/src/chapter/algebraic-induction.tex`.
+Cases II and III of the induction are proved in `CaseII.lean` and `CaseIII/`.
 -/
 
 namespace CombinatorialRigidity.Molecular
@@ -37,27 +45,21 @@ open scoped Graph
 
 variable {α β : Type*}
 
-/-- **Theorem 5.5 base producer, parallel-pair arm — general grade `k`**
-(`lem:theorem-55-base-producer-parallel`, the `|V| = 2`, `k = 0` arm; Katoh–Tanigawa 2011 §5/§6,
-Lemma 5.3, p. 670; Phase 22i L3b / Phase 23b OD-7 tail). The general-grade lift of the
-genuinely-new geometric arm of the all-`k` base producer: a two-vertex minimal-`0`-dof-graph — a
-*parallel pair* of edges `e ≠ f` both linking `x ≠ y`, with `V(G) = {x, y}` and `def(G̃) = 0`
-(KT p. 671 case (iii), `isMinimalKDof_ncard_le_two_trichotomy`) — carries a genuine-hinge panel
-realization at the full target rank `D(|V|−1) − def = D·1 = D` (`D = screwDim k`).
+/-! ## The base of the induction (`lem:theorem-55-base-producer`) -/
 
-The construction places *coincident panels* `Π(x) = Π(y) = n^⊥` at a fixed nonzero normal
-`n := Pi.single 0 1` and assigns the two parallel hinges two **linearly-independent** supporting
-extensors inside that common panel `n^⊥` (`exists_linearIndependent_extensor_pair_perp_grade`, the
-already-general-`k` L3a brick; its distinct-`k`-subsets device needs `1 ≤ k`). The two independent
-extensors give the combined hinge-row blocks full rank `D` on the relative screw `S x − S y`, so
-`theorem_55_base` (already general-`k`) makes the framework infinitesimally rigid on `{x, y}`,
-i.e. on `V(G)`; bridge **B1**
-(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`, general-`k`) turns
-that into the M2 rank equality. This is the `|V| = 2`, `k = 0` leaf KT's p. 670 Lemma 5.3 realizes;
-it bottoms out on the two-independent-extensors-in-a-common-hyperplane device, the only new geometry
-the base producer needs (the empty and single-edge arms are bookkeeping / single-row counts). The
-whole proof is the verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k + 2)`,
-`ScrewSpace K 2 → ScrewSpace K k`. -/
+/-- **The base of KT Theorem 5.5: the double edge** (`lem:theorem-55-base-producer-parallel`; KT
+Lemma 5.3, p. 669, and its proof, p. 670): let `1 ≤ k`, and let `G` have the two vertices `x ≠ y`
+and the two edges `e ≠ f`, each of which joins them, with `def(G̃) = 0` at `n` (`hdef`). Then `G`
+has a nondegenerate-hinge panel realization (`HasPanelRealization`), of rank `D = screwDim k`. It
+holds over every field, and assumes `def(G̃) = 0` in place of minimality.
+
+Both bodies get the normal `n₀ = Pi.single 0 1`, so that their panels coincide, and `e` and `f` get
+two linearly independent extensors of points of `n₀^⊥`
+(`exists_linearIndependent_extensor_pair_perp_grade`, which needs `1 ≤ k`); every other label gets
+the hinge `0`. By `theorem_55_base` the framework is infinitesimally rigid on `{x, y} = V(G)`, so
+its rows have rank `D(|V(G)| − 1) = D`
+(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`), the target rank at
+`def(G̃) = 0`. -/
 theorem theorem_55_base_producer_parallel_pair_gen [Finite α] {n : ℕ} (hk : 1 ≤ k)
     (G : Graph α β) {x y : α} {e f : β}
     (hxy : x ≠ y) (hef : e ≠ f) (hVG : V(G) = {x, y}) (hEG : E(G) = {e, f})
@@ -68,7 +70,7 @@ theorem theorem_55_base_producer_parallel_pair_gen [Finite α] {n : ℕ} (hk : 1
   set n₀ : Fin (k + 2) → K := Pi.single 0 1 with hn₀
   have hn₀_ne : n₀ ≠ 0 := by
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
-  -- The L3a geometric brick: two point-tuples in `n₀^⊥` with linearly-independent extensors.
+  -- Two tuples of points of `n₀^⊥` with linearly independent extensors.
   obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp_grade hk n₀
   set Ce : ScrewSpace K k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hCe
   set Cf : ScrewSpace K k := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _) with hCf
@@ -103,33 +105,30 @@ theorem theorem_55_base_producer_parallel_pair_gen [Finite α] {n : ℕ} (hk : 1
     rcases hlink_cases e' u v he' with rfl | rfl
     · rw [hFe]; exact ⟨hCe_ne, hCein, hCein⟩
     · rw [hFf]; exact ⟨hCf_ne, hCfin, hCfin⟩
-  · -- The rank conjunct, via `theorem_55_base` (full rank on `{x,y}`) and bridge B1.
-    -- The two LI supporting extensors at the two parallel hinges make `F` rigid on `{x, y}`.
+  · -- The rank conjunct, by `theorem_55_base` and the rank of a rigid framework.
+    -- The two independent hinges at the two parallel edges make `F` rigid on `{x, y}`.
     have hgen : LinearIndependent K ![F.supportExtensor e, F.supportExtensor f] := by
       rw [hFe, hFf]; exact hpq_li
     have hrig : F.IsInfinitesimallyRigidOn {x, y} :=
       F.theorem_55_base hxy hgen hl_e hl_f
     have hrigV : F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
       rw [hFg, hVG]; exact hrig
-    -- B1 turns rigidity on `V(G)` into the full-rank count.
+    -- Rigidity on `V(G)` gives the rank `D(|V(G)| − 1)`.
     have hB1 := (F.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hne).mp hrigV
     rw [hFg] at hB1
     rw [hB1, hVcard, hdef]
     push_cast
     ring
 
-/-- **Theorem 5.5 base producer, empty arm — general grade `k`** (`lem:theorem-55-base-producer`;
-`hbase_k` carry, Phase 23b OD-7 tail). The general-grade lift of the bookkeeping arm of the all-`k`
-base producer: a minimal-`c`-dof graph on `1 ≤ |V| ≤ 2` with **empty edge set** (`E(G) = ∅`,
-trichotomy arm (i), `isMinimalKDof_ncard_le_two_trichotomy`) carries a genuine-hinge panel
-realization at rank `D(|V|−1) − def = D(|V|−1) − D(|V|−1) = 0`, where `D = screwDim k`.
+/-- **The base of KT Theorem 5.5: no edge, a nondegenerate-hinge realization**
+(`lem:theorem-55-base-producer-empty`; KT §6, p. 671): if `G` has no edge (`hE`) and is a minimal
+`D(|V(G)| − 1)`-dof-graph at `n`, with `D = screwDim k` (`hn`), then `G` has a nondegenerate-hinge
+panel realization (`HasPanelRealization`), of rank `0`. It holds over every field, for every `k` and
+any number of vertices.
 
-The all-zero-extensor framework `F := ⟨G, fun _ => 0⟩` fires no hinge constraint (no links), so
-`rigidityRows F = ∅`, `span ∅ = ⊥`, and `finrank ⊥ = 0`. The per-link conjunct is vacuous
-(`E(G) = ∅`). A fixed nonzero normal `n₀ := Pi.single 0 1` (now in `Fin (k + 2) → K`) supplies the
-panel-normal conjunct. No `Fin 4` / `⋀²ℝ⁴` geometry enters — the empty arm is pure bookkeeping, so
-the lift is a verbatim numeral pass (`Fin 4 → Fin (k + 2)`, `screwDim 2 → screwDim k`); the `hn`
-hypothesis carries the `bodyBarDim n = screwDim k` arithmetic the rank target needs. -/
+The framework on `G` has every hinge `0` and every normal `n₀ = Pi.single 0 1`. As `G` has no link,
+it has no rows, and the conjunct on the hinges is vacuous; its rank `0` is the target rank, as
+`def(G̃) = D(|V(G)| − 1)` (`IsMinimalKDof.deficiency_eq`). -/
 theorem theorem_55_base_producer_empty_gen [DecidableEq β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hE : E(G) = ∅)
@@ -173,23 +172,17 @@ theorem theorem_55_base_producer_empty_gen [DecidableEq β] {n : ℕ}
     push_cast
     ring
 
-/-- **Theorem 5.5 base producer, single-edge arm — general grade** (`lem:theorem-55-base-producer`;
-`hbase_k` carry, Phase 23b OD-7 tail). The second bookkeeping arm of the all-`k` base producer at
-general grade: a minimal-`1`-dof graph
-`G` with `V(G) = {x, y}` and `E(G) = {e}` (a single hinge joining distinct bodies; trichotomy arm
-(ii), `isMinimalKDof_ncard_le_two_trichotomy`) carries a genuine-hinge panel realization at rank
-`D(|V|−1) − def = D·1 − 1 = D − 1` (`D = screwDim k`).
+/-- **The base of KT Theorem 5.5: one edge, a nondegenerate-hinge realization**
+(`lem:theorem-55-base-producer-single`; KT §6, p. 671): let `1 ≤ k`, and let `G` be a minimal
+`1`-dof-graph at `n` with the two vertices `x ≠ y` and the one edge `e`, which joins them. Then `G`
+has a nondegenerate-hinge panel realization (`HasPanelRealization`), of rank `D − 1`, with
+`D = screwDim k`. It holds over every field.
 
-The construction places one nonzero supporting extensor `C ∈ n₀^⊥` on the single edge (from the
-already-general-`k` L3a brick `exists_linearIndependent_extensor_pair_perp_grade`, first component;
-its distinct-`k`-subsets device needs `1 ≤ k`), and the zero extensor on all other edges. The single
-hinge-row block has dimension `D − 1` (`finrank_span_panelRow_edge`, general-`k`), and via
-`span_panelRow_linking_eq_rigidityRows` (general-`k`) this equals the full rigidity-row span. No
-upper-bound argument (B2) is needed: the equality follows directly from the single-edge span
-identity. The whole proof is the verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k + 2)`,
-`ScrewSpace K 2 → ScrewSpace K k`, `screwDim 2 → screwDim k`, with the `1 ≤ screwDim k`
-cast supplied by
-`one_le_screwDim`. -/
+Every body gets the normal `n₀ = Pi.single 0 1`, and `e` the first of the two extensors of points of
+`n₀^⊥` that `exists_linearIndependent_extensor_pair_perp_grade` gives, which is nonzero and lies in
+the panel of `n₀`; every other label gets the hinge `0`. The rows of `G` are those of `e`
+(`span_panelRow_linking_eq_rigidityRows`), of rank `D − 1` (`finrank_span_panelRow_edge`), which is
+the target rank `D(2 − 1) − 1`. -/
 theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] {n : ℕ}
     (hk : 1 ≤ k)
     (G : Graph α β) {x y : α} {e : β}
@@ -201,7 +194,7 @@ theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] {n : ℕ}
   set n₀ : Fin (k + 2) → K := Pi.single 0 1 with hn₀
   have hn₀_ne : n₀ ≠ 0 := by
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
-  -- The L3a brick: two point-tuples in `n₀^⊥` with LI extensors; take the first tuple.
+  -- Two tuples of points of `n₀^⊥` with linearly independent extensors; take the first.
   obtain ⟨p, _, hp_perp, _, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp_grade hk n₀
   set C : ScrewSpace K k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hC_def
   have hC_ne : C ≠ 0 := by simpa [hC_def] using hpq_li.ne_zero 0
@@ -271,20 +264,17 @@ theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] {n : ℕ}
     push_cast [hVcard, hdef]
     ring
 
-/-- **Theorem 5.5 base producer, empty arm — general-position form, general grade `k`**
-(`lem:theorem-55-base`; `hbase` carry's GP conjunct, Phase 22i L3b / Phase 23b OD-7 tail). The
-GP-conjunct companion of `theorem_55_base_producer_empty_gen`: a *simple* minimal-`k`-dof graph
-`G` with **empty edge set** (`E(G) = ∅`, trichotomy arm (i)) carries a *generic* full-rank panel
-realization (`HasGenericFullRankRealization`) at rank `D(|V|−1) − def = 0`.
+/-- **The base of KT Theorem 5.5: no edge, a generic full-rank realization**
+(`lem:theorem-55-base-producer-empty`; KT §6, p. 671): if `K` is infinite, and `G` has a vertex
+(`hne`), no edge (`hE`), and is a minimal `D(|V(G)| − 1)`-dof-graph at `n`, with `D = screwDim k`
+(`hn`), then `G` has a generic full-rank realization (`HasGenericFullRankRealization`), of rank `0`.
+It holds for every `k` and any number of vertices.
 
-The framework `ofNormals G ends q₀` is built at a seed `q₀` chosen
-(`MvPolynomial.exists_eval_ne_zero`) as a non-root of the general-position
-polynomial (`exists_generalPosition_polynomial`, already general-`k`), so the panel normals are in
-general position. The rigidity-row span is `⊥` (no links fire,
-`E(G) = ∅`), so the rank is `0 = screwDim k * (|V|−1) − def` (the empty arm's
-`def = screwDim k * (|V|−1)`). Link-recording is vacuous (`E(G) = ∅`). **No `Fin 4`/`⋀²ℝ⁴`
-geometry** — verbatim numeral pass over the d=3 body (`Fin 4 → Fin (k + 2)`, `screwDim 2 → screwDim
-k`). -/
+The framework is `ofNormals G ends q₀`, with the constant selector at a vertex `w` of `G` and
+normals `q₀` off the zeros of the polynomial of `exists_generalPosition_polynomial`, which is not
+zero as `K` is infinite (`Countable.exists_injective_of_infinite`); so its normals are in general
+position. As `G` has no link, the framework has no rows, its rank `0` is the target rank, and the
+last conjunct is vacuous. -/
 theorem theorem_55_base_producer_empty_gp_gen
     [Infinite K] [DecidableEq β] [Finite α] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
@@ -300,7 +290,7 @@ theorem theorem_55_base_producer_empty_gp_gen
   -- The endpoint selector is irrelevant (no links); pick a constant body `w ∈ V(G)`.
   obtain ⟨w, _⟩ := hne
   set ends : β → α × α := fun _ => (w, w) with hends_def
-  -- The general-position polynomial and a seed `q₀` off its zero locus.
+  -- The general-position polynomial, and normals `q₀` off its zeros.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (K := K) (k := k) G ends
   have hQgpne : Qgp ≠ 0 := by
@@ -330,24 +320,18 @@ theorem theorem_55_base_producer_empty_gp_gen
     intro e u v hlink
     exact absurd hlink (hnoLink e u v)
 
-/-- **Theorem 5.5 base producer, single-edge arm — general-position form, general grade `k`**
-(`lem:theorem-55-base`; `hbase` carry's GP conjunct, the one base arm where the GP conjunct does
-real work, Phase 22i L3b / Phase 23b OD-7 tail). The GP-conjunct companion of
-`theorem_55_base_producer_single_edge_gen`: a *simple* minimal-`1`-dof graph `G` with
-`V(G) = {x, y}` (`x ≠ y`) and `E(G) = {e}` (a single hinge joining distinct bodies, trichotomy arm
-(ii)) carries a *generic* full-rank panel realization (`HasGenericFullRankRealization`) at rank
-`D(|V|−1) − def = D·1 − 1 = D − 1`.
+/-- **The base of KT Theorem 5.5: one edge, a generic full-rank realization**
+(`lem:theorem-55-base-producer-single`; KT §6, p. 671): if `K` is infinite and `G` is a minimal
+`1`-dof-graph at `n` with the two vertices `x ≠ y` and the one edge `e`, which joins them, then `G`
+has a generic full-rank realization (`HasGenericFullRankRealization`), of rank `D − 1`, with
+`D = screwDim k`.
 
-The genuine GP construction: the framework `ofNormals G ends q₀` (with `ends := fun _ => (x, y)`)
-is built at a seed `q₀` chosen
-(`MvPolynomial.exists_eval_ne_zero`) as a non-root of the general-position polynomial
-(`exists_generalPosition_polynomial`, already general-`k`). General position forces the single
-hinge's supporting extensor nonzero (`supportExtensor_ne_zero_of_isGeneralPosition`, since `x ≠ y`),
-and the single-hinge-row block has rank `D − 1` (`span_panelRow_linking_eq_rigidityRows` +
-`finrank_span_panelRow_edge`, both general-`k`). Link-recording holds since every link is at
-`e = xy` and `ends e = (x, y)`. Verbatim numeral pass over the d=3 body (`Fin 4 → Fin (k + 2)`,
-`Set.powersetCard (Fin 4) 2 → Set.powersetCard (Fin (k + 2)) k`, `screwDim 2 → screwDim k`), with
-`one_le_screwDim` replacing the d=3 `decide`-cast `1 ≤ screwDim 2`. -/
+The framework is `ofNormals G ends q₀`, with the constant selector `(x, y)` and normals `q₀` off the
+zeros of the polynomial of `exists_generalPosition_polynomial`, so in general position. Its hinge at
+`e` is then nonzero (`supportExtensor_ne_zero_of_isGeneralPosition`, as `x ≠ y`), and its rows,
+those of `e` (`span_panelRow_linking_eq_rigidityRows`), have rank `D − 1`
+(`finrank_span_panelRow_edge`), the target rank. Every link of `G` is `e`, from `x` to `y` or back,
+so the selector gives each link its ends. -/
 theorem theorem_55_base_producer_single_edge_gp_gen
     [Infinite K] [DecidableEq β] [Finite α] {n : ℕ}
     (G : Graph α β) {x y : α} {e : β}
@@ -356,7 +340,7 @@ theorem theorem_55_base_producer_single_edge_gp_gen
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   set ends : β → α × α := fun _ => (x, y) with hends_def
-  -- The general-position polynomial and a seed `q₀` off its zero locus.
+  -- The general-position polynomial, and normals `q₀` off its zeros.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (K := K) (k := k) G ends
   have hQgpne : Qgp ≠ 0 := by
@@ -425,39 +409,22 @@ theorem theorem_55_base_producer_single_edge_gp_gen
   push_cast [hVcard, hdef]
   ring
 
-/-- **Theorem 5.5 base producer, trichotomy dispatch — general grade `k`**
-(`lem:theorem-55-base-producer`; `hbase_k` carry, Phase 23b OD-7 tail; the general-`k` lift of
-the former d=3-only trichotomy dispatch). For a minimal-`c`-dof-graph `G` with `|V(G)| ≤ 2`
-(the base region of `minimal_kdof_reduction_all_k`), the **conditioned pair**
-`(G.Simple → HasGenericFullRankRealization K k n G) ∧ HasPanelRealization K k n G` — the L9 spine's
-conditioned motive `Pc G` (`def:rank-hypothesis`, M3 + M2) — holds.
+/-- **The base of KT Theorem 5.5** (`lem:theorem-55-base-producer`; KT §6, p. 671): let `1 ≤ k`, let
+`2 ≤ D` (`hD`) with `D = screwDim k` (`hn`), let `K` be infinite, and let `G` be a minimal
+`c`-dof-graph at `n` with one or two vertices. Then `G` has a nondegenerate-hinge panel realization
+(`HasPanelRealization`), and if `G` is simple, a generic full-rank realization
+(`HasGenericFullRankRealization`). `theorem_55_minimalKDof_gen` (`thm:theorem-55`) uses it for the
+graphs with at most two vertices.
 
-Dispatches via `isMinimalKDof_ncard_le_two_trichotomy` (grade-agnostic) to the L3b arm lemmas,
-now all general-`k`. The bare `HasPanelRealization` conjunct (the `.2`) comes from the three bare
-`_gen` arms; the conditioned `G.Simple → HasGenericFullRankRealization` conjunct (the `.1`) from
-the GP `_gen` arms (the empty and single-edge GP arms do the real work, the parallel-pair arm is
-vacuous by simplicity):
-* **(i) empty arm** (`E(G) = ∅`): the all-zero framework, rank 0 —
-  `theorem_55_base_producer_empty_gen` (bare) / `theorem_55_base_producer_empty_gp_gen` (the
-  single-body / empty GP framework at a general-position seed).
-* **(ii) single-edge arm** (`|V| = 2`, `|E| = 1`): rank `D − 1` —
-  `theorem_55_base_producer_single_edge_gen` (bare, one nonzero extensor in `n₀^⊥`) /
-  `theorem_55_base_producer_single_edge_gp_gen` (the genuine `def = 1 > 0` GP realization at the
-  general-position seed — the one base arm where the GP conjunct does real work).
-* **(iii) parallel-pair arm** (`|V| = 2`, `|E| = 2`, `c = 0`): coincident panels + two LI
-  extensors, rank `D` — `theorem_55_base_producer_parallel_pair_gen` (bare). GP conjunct: `G`
-  cannot be simple (`not_simple_of_isMinimalKDof_of_ncard_two`), so the `G.Simple →` antecedent
-  is vacuous.
+By `isMinimalKDof_ncard_le_two_trichotomy` (`lem:two-vertex-trichotomy`), `G` is one of three
+graphs:
 
-The `hk : 1 ≤ k` floor feeds the single-edge and parallel-pair arms' distinct-`k`-subsets device.
-The `hn : bodyBarDim n = screwDim k` hypothesis threads the dimension constraint into the empty
-arms' rank arithmetic (the empty arm's rank target needs the
-`deficiency = bodyBarDim n * (|V| − 1) = screwDim k * (|V| − 1)` equality). The whole proof is the
-verbatim numeral pass over the d=3 body — `ScrewSpace K 2 → ScrewSpace K k`, the five arm lemmas to
-their `_gen` forms. Consumed directly at `k := 2` by `theorem_55_minimalKDof_gen`'s `hbase_k` carry
-(the d=3-specific `k := 2` wrapper this file used to carry has been collapsed away, Phase
-23-cleanup S2: it had no caller besides the general spine and its own two blueprint pins, so it
-was pure duplication once the trichotomy dispatch itself went grade-general). -/
+* (i) no edge: `theorem_55_base_producer_empty_gen` and `theorem_55_base_producer_empty_gp_gen`;
+* (ii) two vertices and one edge, which joins them: `theorem_55_base_producer_single_edge_gen` and
+  `theorem_55_base_producer_single_edge_gp_gen`;
+* (iii) two vertices and two edges, each of which joins them, with `c = 0`:
+  `theorem_55_base_producer_parallel_pair_gen`. This `G` is not simple
+  (`not_simple_of_isMinimalKDof_of_ncard_two`), so the first conjunct is vacuous. -/
 theorem theorem_55_base_producer_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hk : 1 ≤ k)
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
@@ -467,17 +434,17 @@ theorem theorem_55_base_producer_gen [Infinite K] [DecidableEq β] [Finite α] [
       HasPanelRealization K k n G := by
   rcases Graph.isMinimalKDof_ncard_le_two_trichotomy hD hG hne hV with
     ⟨hE, hc⟩ | ⟨x, y, e, hxy, hVG, hEG, hl, hc⟩ | ⟨x, y, e, f, hxy, hef, hVG, hEG, hle, hlf, hc⟩
-  · -- (i) empty arm: `E(G) = ∅`, `c = bodyBarDim n * (ncard - 1)`.
-    -- Bare: all-zero framework, rank 0. GP (when `G.Simple`): empty GP framework at the seed.
+  · -- (i) no edge: `E(G) = ∅`, `c = bodyBarDim n * (ncard - 1)`.
+    -- The framework with every hinge zero, and, for a simple `G`, one in general position.
     exact ⟨fun _ => theorem_55_base_producer_empty_gp_gen hn G hE hne (hc ▸ hG),
       theorem_55_base_producer_empty_gen hn G hE (hc ▸ hG)⟩
-  · -- (ii) single-edge arm: `|V| = 2`, `|E| = 1`, `G.IsLink e x y`, `c = 1`.
-    -- Bare: one nonzero extensor, rank `D − 1`. GP (when `G.Simple`): the genuine `def = 1` GP
-    -- realization at a general-position seed.
+  · -- (ii) one edge: `|V| = 2`, `|E| = 1`, `G.IsLink e x y`, `c = 1`.
+    -- One nonzero hinge, of rank `D − 1`, and, for a simple `G`, normals in general position.
     exact ⟨fun _ => theorem_55_base_producer_single_edge_gp_gen G hxy hVG hEG hl (hc ▸ hG),
       theorem_55_base_producer_single_edge_gen hk G hxy hVG hEG hl (hc ▸ hG)⟩
-  · -- (iii) parallel-pair arm: `|V| = 2`, `|E| = {e,f}`, `c = 0`.
-    -- `G` is not simple (two parallel edges between the same pair), so the GP conjunct is vacuous.
+  · -- (iii) the double edge: `|V| = 2`, `|E| = {e,f}`, `c = 0`.
+    -- `G` is not simple (two edges join the same two vertices), so the first conjunct is
+    -- vacuous.
     have hVcard : V(G).ncard = 2 := by rw [hVG, Set.ncard_pair hxy]
     have hnotSimple : ¬ G.Simple :=
       Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) (hc ▸ hG) hVcard
@@ -487,19 +454,16 @@ theorem theorem_55_base_producer_gen [Infinite K] [DecidableEq β] [Finite α] [
       hdef
     exact ⟨fun hSimple => absurd hSimple hnotSimple, hprod⟩
 
-/-! ## L8c-2 — the KT Lemma-6.5 arm producer `case_I_realization_h65_gen`
+/-! ## Case I with no simple contraction (`lem:case-I-realization-h65`)
 
-The producer's elaboration-heavy geometric blocks are extracted as `private` helpers so each
-elaborates in isolation (the diffuse `ScrewSpace K 2` typeclass re-elaboration of the inline form
-overflows even a large heartbeat budget — TACTICS-QUIRKS §38, the generic-helper-extraction
-pattern). The main body (`case_I_realization_h65_gen`) does only graph bookkeeping, the IH call,
-the seed/selector setup, and the final assembly, delegating each geometric block to a helper
-below. -/
+The geometric steps of the proof of `case_I_realization_h65_gen` are the `private` lemmas below,
+each elaborated on its own (TACTICS-QUIRKS §38). -/
 
-/-- **L8c-2 helper: the two `v`-edge supporting extensors are independent** (the `hgen` block of
-`case_I_realization_h65_gen`). Isolates the `panelSupportExtensor_linearIndependent_iff` rewrite and
-the join-pair lemma `normalsJoin_pair_linearIndependent_of_triLI` from the producer's main body.
-General grade `k` (Phase 23b OD-7 tail). -/
+/-- **The hinges of the two edges at `v` are independent** (a step of `lem:case-I-realization-h65`):
+if the hinges of `FG` at `eₐ` and `e_b` are `C(q v, q a)` and `C(q v, q b)`, and the normals `q v`,
+`q a`, `q b` are linearly independent, so are the two hinges: by
+`panelSupportExtensor_linearIndependent_iff` they are when the joins `q v ∨ q a` and `q v ∨ q b`
+are, as they are (`normalsJoin_pair_linearIndependent_of_triLI`). -/
 private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFramework K k α β)
     {q : α × Fin (k + 2) → K} {v a b : α} {eₐ e_b : β}
     (hFGea : FG.supportExtensor eₐ = panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)))
@@ -524,11 +488,10 @@ private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFrame
          funext i; fin_cases i <;> simp]
   exact normalsJoin_pair_linearIndependent_of_triLI _ _ _ htriLI hLI_va hLI_ab
 
-/-- **L8c-2 helper: the OLD `G_v`-rows vanish on `v`'s screw column** (the `hold` block of
-`case_I_realization_h65_gen`). A `G_v`-link has both endpoints in `V(G_v)`, hence `≠ v` (as
-`v ∉ V(G_v)`), so its `panelRow` — a `hingeRow` on the two endpoints — vanishes when only `v`'s
-screw coordinate is set. Isolates the `panelRow`/`hingeRow` unfolding over `Function.update`.
-General grade `k` (Phase 23b OD-7 tail). -/
+/-- **The rows of `G_v` vanish in the columns of `v`** (a step of `lem:case-I-realization-h65`): if
+`v` is not a vertex of `Fv.graph`, and the edge of each index of `so` joins in `Fv.graph` the two
+bodies that `endsv` gives it, then each of these rows vanishes at the motion that is `x` at `v` and
+`0` elsewhere, as neither end of the edge is `v`. -/
 private theorem case_I_h65_old_vanish {α β : Type*} [DecidableEq α]
     (Fv : BodyHingeFramework K k α β)
     (endsv : β → α × α) {v : α}
@@ -545,13 +508,11 @@ private theorem case_I_h65_old_vanish {α β : Type*} [DecidableEq α]
   simp only [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
     Function.update_of_ne h1, Function.update_of_ne h2, Pi.zero_apply, sub_self, map_zero]
 
-/-- **L8c-2 helper: the OLD `G_v`-rows lie in `span FG.rigidityRows`** (the `hold_span` block of
-`case_I_realization_h65_gen`). Since `FG` and `Fv` share the seed and selector on `G_v`-links and
-`G_v ≤ G`, each OLD `Fv`-panel-row equals the corresponding `FG`-panel-row of a genuine `G`-link,
-hence a rigidity row. The per-row data — the recorded link `(u, w)`, the parent link `FG.graph`,
-the extensor agreement, and the matching selector value `endsv = (u, w)` — is supplied by `hrow`.
-Isolates the `panelRow_eq_hingeRow_annihRow_of_ends` rewrite + the extensor-agreement transport.
-General grade `k` (Phase 23b OD-7 tail). -/
+/-- **The rows of `G_v` are rows of `G`** (a step of `lem:case-I-realization-h65`): if at each index
+of `so` the selectors `ends` and `endsv` give its edge the same two bodies `u` and `w`, the edge
+joins them in `FG.graph`, and `FG` and `Fv` have the same hinge there (`hrow`), then the row of `Fv`
+at the index is the row of `FG` there (`panelRow_eq_hingeRow_annihRow_of_ends`), so it lies in the
+span of the rigidity rows of `FG`. -/
 private theorem case_I_h65_old_span {α β : Type*} (FG Fv : BodyHingeFramework K k α β)
     (ends endsv : β → α × α)
     (so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k))
@@ -568,12 +529,10 @@ private theorem case_I_h65_old_span {α β : Type*} (FG Fv : BodyHingeFramework 
   rw [hrow_eq]
   exact Submodule.subset_span (FG.panelRow_mem_rigidityRows_of_link ends hends_e hGlink t₁ t₂)
 
-/-- **L8c-2 helper: the supporting extensor of `ofNormals` at an edge** (the `hFGea`/`hFGeb` and
-extensor-agreement blocks of `case_I_realization_h65_gen`). Pure unfolding of
-`toBodyHinge_supportExtensor` / `ofNormals_ends` / `ofNormals_normal`; the value depends only on the
-selector and seed, not on the graph. Isolated so the producer does not re-run this `ofNormals`
-unfolding inline (each instance re-elaborates the `ScrewSpace K k` carrier).
-General grade `k` (Phase 23b OD-7 tail). -/
+/-- **The hinge of `ofNormals` at a label** (a step of `lem:case-I-realization-h65`): the hinge of
+`ofNormals G ends q` at `e` is `C(q (ends e).1, q (ends e).2)`, by `toBodyHinge_supportExtensor`,
+`ofNormals_ends` and `ofNormals_normal`. It depends only on the selector and the normals, not on the
+graph. -/
 private theorem case_I_h65_ofNormals_supportExtensor {α β : Type*} (G : Graph α β)
     (ends : β → α × α) (q : α × Fin (k + 2) → K) (e : β) :
     (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e =
@@ -581,47 +540,34 @@ private theorem case_I_h65_ofNormals_supportExtensor {α β : Type*} (G : Graph 
   rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
     PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
 
--- Note: previously needed 800000; now fits the default 200000 after geometric-block extraction.
-/-- **KT Lemma 6.5 arm: the Π°-placement producer — general grade `k`** (`lem:case-I-dispatch`, the
-Lemma-6.5 vertex-removal arm of `case_I_dispatch`; Katoh–Tanigawa 2011 §6, Lemma 6.5 / Claim 6.6;
-Phase 22k L8c-2, Phase 23b OD-7 tail general-`k` lift). When every proper rigid subgraph of the
-simple minimal `0`-dof-graph `G` has a non-simple contraction, KT Claim 6.6 (the L8a graph-side
-assembly `exists_degree_two_removeVertex_of_no_simple_contraction`) supplies a degree-2 vertex `v`
-with two incident edges `eₐ = va`, `e_b = vb` such that `G − v` is minimal `0`-dof and simple.
+/-- **Case I with no simple contraction** (`lem:case-I-realization-h65`; KT Lemma 6.5 and Claim 6.6,
+p. 676): let `1 ≤ k`, let `3 ≤ D` (`hD`) with `D = screwDim k` (`hn`), let `K` be infinite, and let
+`G` be a simple minimal `0`-dof-graph at `n` with `|V(G)| ≥ 3` that has a proper rigid subgraph
+(`hrig`), and in which no proper rigid subgraph `H` has a simple contraction `G/E(H)`
+(`hnoSimpleContr`). Suppose the induction hypothesis `hIH` for the minimal `0`-dof-graphs with at
+least two and fewer than `|V(G)|` vertices. Then `G` has a generic full-rank realization.
+`case_I_dispatch_gen` (`lem:case-I-dispatch`) uses it.
 
-The IH at `G − v` gives a generic full-rank realization `Q_v`; only its **q-free** link-recording
-selector `Q_v.ends` is consumed (Phase 30 RELAX, the device-seed product route — the motive's
-former algebraic-independence conjunct is deleted; `notes/Phase30.md`). Three base
-det/rank-polynomial factors
-are fixed *before* the seed: `P_v` (the `G_v` rank polynomial,
-`exists_rankPolynomial_of_IH_linking` at `Q_v.ends`), the general-position polynomial
-(`exists_generalPosition_polynomial` at the override selector `ends`, which records `(v, a)`,
-`(v, b)` at `eₐ, e_b` and restricts to `Q_v.ends` elsewhere), and the triple-LI det factor
-(`exists_tripleLI_polynomial` at `v, a, b`); one `MvPolynomial.exists_eval_ne_zero` shot on their
-product delivers a device seed `q` off all three zero loci. At that seed the vertex-removal
-framework `ofNormals G_v Q_v.ends q` is infinitesimally rigid (`P_v`'s `D(|V_v|−1) ≤ finrank`
-lower bound meets the B2 deficiency upper bound at `def = 0`), so the W6e subfamily extraction
-(`exists_independent_panelRow_subfamily_of_rigidOn_linking`) yields `D(|V_v|−1)` independent
-`G_v`-panel-rows, which transport into `span (ofNormals G ends q)` verbatim — same seed, and the
-selectors agree on `G_v`-links — (the OLD block, vanishing on `v`'s screw column since
-`G_v`-endpoints avoid `v`), while the
-two `v`-hinges contribute a full `D`-dimensional NEW block pinned through `v`'s screw column (the
-L8c-1 brick `exists_independent_pinned_two_edge_span_full`, fed the two independent supporting
-extensors `panelSupportExtensor (q v) (q a)`, `panelSupportExtensor (q v) (q b)` — independent
-because the triple `![q v, q a, q b]` is, by the triple det factor's transfer at the device seed;
-it is the one genuinely-new piece, needing `1 ≤ k`). The
-combined `Sum.elim` of the two blocks is independent (`linearIndependent_sum_pinned_block`) and lies
-in `span (rigidityRows)`
-with `D + D(|V_v|−1) = D(|V|−1)` members, so
-`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` makes the device-seed framework
-infinitesimally rigid on `V(G)`; the genericity-transfer keystone
-`hasGenericFullRankRealization_of_rigidOn_ofNormals` then upgrades this fixed-seed rigidity to
-the generic motive (general position at a fresh seed), no separate
-rank-polynomial transfer needed (both `G` and `G_v` are `0`-dof). KT Claim 6.6 forces `c = 0`, so
-the `c = 0`-only IH suffices (the L8 not-all-dof finding; the nested `G − v` is also `0`-dof).
+By KT Claim 6.6 (`exists_degree_two_removeVertex_of_no_simple_contraction`), `G` has a vertex `v` of
+degree two, joined to `a ≠ b` by `eₐ` and `e_b`, such that `G_v = G − v` is a simple minimal
+`0`-dof-graph. `hIH` gives it a generic full-rank realization `Q_v`, of which the proof uses only
+the selector; the selector `ends` of `G` is that of `Q_v`, but `(v, a)` at `eₐ` and `(v, b)` at
+`e_b`. The normals `q` are a common non-root of three nonzero polynomials: one off whose zeros
+`ofNormals G_v Q_v.ends q` has at least the rank of `Q_v` (`exists_rankPolynomial_of_IH_linking`),
+the polynomial of `exists_generalPosition_polynomial`, and one off whose zeros `q v`, `q a` and
+`q b` are linearly independent (`exists_tripleLI_polynomial`).
 
-The four geometric
-blocks are the `case_I_h65_*` helpers above, themselves general-`k` (TACTICS-QUIRKS §38). -/
+At `q`, the framework `ofNormals G_v Q_v.ends q` is rigid on `V(G_v)`, as its rank is at least
+`D(|V(G_v)| − 1)` and at most that (`finrank_span_rigidityRows_add_deficiency_le`), so
+`D(|V(G_v)| − 1)` of its rows are independent
+(`exists_independent_panelRow_subfamily_of_rigidOn_linking`). They are rows of `ofNormals G ends q`
+(`case_I_h65_old_span`) that vanish in the columns of `v` (`case_I_h65_old_vanish`). The hinges at
+`eₐ` and `e_b` are independent (`case_I_h65_extensor_pair_LI`), so their rows give `D` forms in the
+row space that are independent in the columns of `v`
+(`exists_independent_pinned_two_edge_span_full`). The `D(|V(G)| − 1)` forms together are independent
+(`linearIndependent_sum_pinned_block`), so `ofNormals G ends q` is rigid on `V(G)`
+(`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`), and it gives a generic full-rank
+realization (`hasGenericFullRankRealization_of_rigidOn_ofNormals`). -/
 theorem PanelHingeFramework.case_I_realization_h65_gen
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk : 1 ≤ k)
@@ -637,7 +583,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   have : Fintype α := Fintype.ofFinite α
-  -- Step 1 (L8a / KT Claim 6.6): degree-2 vertex `v` with `G − v` minimal `0`-dof + simple.
+  -- Step 1 (KT Claim 6.6): a vertex `v` of degree two with `G − v` simple and minimal `0`-dof.
   obtain ⟨v, a, b, eₐ, e_b, hav, hbv, hab, heab, hlea, hleb, hclv, hGvmin, hGvSimple⟩ :=
     Graph.exists_degree_two_removeVertex_of_no_simple_contraction (by omega) hV3 hG hSimple hrig
       hnoSimpleContr
@@ -655,9 +601,8 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have hGvV2 : 2 ≤ V(Gv).ncard := by omega
   have hGvne : V(Gv).Nonempty := ⟨a, haVGv⟩
   have hGle : Gv ≤ G := hGv_def ▸ Graph.removeVertex_le G v
-  -- Step 2: IH at `G_v` → the realization package `hQv`. Only its q-free link-recording selector
-  -- `Q_v.ends` is consumed (Phase 30 RELAX slice (b), the device-seed product route): the seed and
-  -- its algebraic-independence conjunct ride unused.
+  -- Step 2: `hIH` at `G_v` gives a generic full-rank realization `Q_v`; the proof uses only its
+  -- selector `Q_v.ends`, which gives each link of `G_v` its ends.
   have hQv : PanelHingeFramework.HasGenericFullRankRealization K k n Gv :=
     (hIH Gv hGvmin hGvV2 hGvlt).1 hGvSimple
   obtain ⟨Q_v, _, _, _, hQvrec⟩ := id hQv
@@ -670,7 +615,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     rcases hQvrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · rw [h1, h2]; exact he
     · rw [h1, h2]; exact he.symm
-  -- Step 3: the q-free selector `ends` (overriding `Q_v.ends` only at `eₐ, e_b`).
+  -- Step 3: the selector `ends`, which is `Q_v.ends` but at `eₐ` and `e_b`.
   set ends : β → α × α :=
     Function.update (Function.update Q_v.ends eₐ (v, a)) e_b (v, b) with hends_def
   have hends_ea : ends eₐ = (v, a) := by
@@ -689,7 +634,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
       exacts [hune h1.symm, hwne h1.symm]
   have hends_off : ∀ e, e ≠ eₐ → e ≠ e_b → ends e = Q_v.ends e := by
     intro e hea heb; rw [hends_def, Function.update_of_ne heb, Function.update_of_ne hea]
-  -- `ends` records every `G`-link (up to swap, via the producer's link witnesses).
+  -- `ends` gives every link of `G` its ends, in some order.
   have hends_G : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 := by
     intro e u w hlink
     by_cases hea : e = eₐ
@@ -708,9 +653,8 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     rcases hQvrec e u w hGvlink with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · rw [h1, h2]; exact hlink
     · rw [h1, h2]; exact hlink.symm
-  -- Step 3'. The three base det/rank-polynomial factors, fixed *before* the seed, and the device
-  -- seed off all three zero loci — the RELAX product route (`notes/Phase30.md` *R1 spike route*;
-  -- the templates are `case_III_candidate_dispatch` / `chainData_split_w6b_gates`).
+  -- Step 3': three nonzero polynomials, fixed before the normals, and normals `q` off the zeros of
+  -- all three.
   obtain ⟨N, hNeq, P_v, hP_vne, hP_vtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gv Q_v.ends hQv hGvloop hends_Gv
   obtain ⟨Qgp, hQgp_mc, hQgp_pos⟩ := exists_generalPosition_polynomial (K := K) (k := k) G ends
@@ -720,9 +664,9 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   obtain ⟨Ptri, hPtri_ne, hPtri_trans⟩ :=
     exists_tripleLI_polynomial (K := K) hk hav.symm hbv.symm hab
   obtain ⟨q, hq_v, hq_gp, hq_tri⟩ := MvPolynomial.exists_eval_ne_zero₃ hP_vne hQgp_ne hPtri_ne
-  -- Step 3''. At the device seed the vertex-removal framework `ofNormals Gv Q_v.ends q` is
-  -- infinitesimally rigid on `V(Gv)`: `P_v`'s `N ≤ finrank` lower bound meets the B2 deficiency
-  -- upper bound at `def = 0`, forcing the rank equality (the eq.-(6.18) template block).
+  -- Step 3'': at `q` the framework `ofNormals Gv Q_v.ends q` is infinitesimally rigid on `V(Gv)`:
+  -- `P_v`'s lower bound `N ≤ finrank` meets the upper bound of
+  -- `finrank_span_rigidityRows_add_deficiency_le` at `def = 0`.
   have hFv_graph : (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge.graph = Gv := by
     rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
   have hgpv : (PanelHingeFramework.ofNormals Gv Q_v.ends q).IsGeneralPosition := by
@@ -763,15 +707,15 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
       exact_mod_cast this
     rw [le_antisymm hfin_le hNle]
     zify [h1Gv]; linarith [hNeq]
-  -- Step 4: the framework `Q = ofNormals G ends q` and its general position (the `Q_gp` factor).
+  -- Step 4: the framework `Q = ofNormals G ends q`, in general position (`Qgp`).
   set Q := PanelHingeFramework.ofNormals G ends q with hQ_def
   set FG := Q.toBodyHinge with hFG_def
   have hFG_graph : FG.graph = G := by
     simp only [hFG_def, hQ_def, PanelHingeFramework.toBodyHinge_graph,
       PanelHingeFramework.ofNormals_graph]
   have hQgp : Q.IsGeneralPosition := by rw [hQ_def]; exact hQgp_pos q hq_gp
-  -- Step 5: triple-LI of the panel normals at `v, a, b` (the `P_tri` factor's transfer at the
-  -- device seed), the two `v`-edge extensor values + LI.
+  -- Step 5: the normals at `v`, `a` and `b` are independent (`Ptri`), so the hinges at `eₐ` and
+  -- `e_b` are nonzero and independent.
   have htriLI : LinearIndependent K
       (![fun i => q (v, i), fun i => q (a, i), fun i => q (b, i)] : Fin 3 → Fin (k + 2) → K) :=
     hPtri_trans q hq_tri
@@ -788,12 +732,12 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     rw [hFGeb, panelSupportExtensor_ne_zero_iff]; exact hLI_vb
   have hgen : LinearIndependent K ![FG.supportExtensor eₐ, FG.supportExtensor e_b] :=
     case_I_h65_extensor_pair_LI FG hFGea hFGeb htriLI hLI_va hLI_ab
-  -- Step 6: the NEW block — the two `v`-hinges span the full `D` (L8c-1 brick).
+  -- Step 6: the rows of `eₐ` and `e_b` give `D` forms, independent in the columns of `v`.
   obtain ⟨ιn, _, rn, hιn_card, hnewpin, hnew_span⟩ :=
     FG.exists_independent_pinned_two_edge_span_full (ends := ends) (v := v) (a := a) (b := b)
       hends_ea hends_eb hav hbv (hFG_graph ▸ hlea) (hFG_graph ▸ hleb) hne_a hne_b hgen
-  -- Step 7: the OLD block — `D(|V_v|−1)` rigid `G_v`-rows (W6e on the device-seed framework
-  -- `ofNormals Gv Q_v.ends q`, rigid by Step 3''), recast into `FG`.
+  -- Step 7: `D(|V(Gv)| − 1)` independent rows of `ofNormals Gv Q_v.ends q`, rigid by Step 3'', as
+  -- rows of `FG`.
   have hneFv : ∀ e,
       (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge.graph.IsLink e
         (Q_v.ends e).1 (Q_v.ends e).2 →
@@ -813,11 +757,11 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
       Q_v.ends q).toBodyHinge.exists_independent_panelRow_subfamily_of_rigidOn_linking
       hrecFv hneFv ⟨a, hFv_graph ▸ haVGv⟩ (hFv_graph ▸ hFvrig)
   rw [hFv_graph] at hso_card hso_link
-  -- `hold` (helper H3): the OLD rows vanish on `v`'s screw column.
+  -- `hold`: these rows vanish in the columns of `v`.
   have hold := case_I_h65_old_vanish (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge
     Q_v.ends (v := v) (hFv_graph ▸ hvVGv) so
     (by intro i hi; rw [hFv_graph]; exact hso_link i hi)
-  -- `hold_span` (helper H4): the OLD rows lie in `span FG.rigidityRows`.
+  -- `hold_span`: they lie in `span FG.rigidityRows`.
   have hold_span := case_I_h65_old_span FG
     (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge ends Q_v.ends so (by
     intro i hi
@@ -826,13 +770,12 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     refine ⟨(Q_v.ends (i : β × _ × _).1).1, (Q_v.ends (i : β × _ × _).1).2, ?_, ?_, ?_, ?_⟩
     · rw [hends_off _ (hGvOff _ _ _ hGvlink).1 (hGvOff _ _ _ hGvlink).2]
     · rw [hFG_graph]; exact hGvlink.of_le hGle
-    · -- extensor agreement: same device seed on both frameworks, and `ends = Q_v.ends` on this
-      -- `G_v`-edge.
+    · -- The same hinge: the same normals, and `ends = Q_v.ends` at this edge of `G_v`.
       rw [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor,
         hends_off _ (hGvOff _ _ _ hGvlink).1 (hGvOff _ _ _ hGvlink).2,
         case_I_h65_ofNormals_supportExtensor]
     · rfl)
-  -- `hne_q`: every `G`-link has a nonzero supporting extensor at the seed (general position).
+  -- `hne_q`: every link of `G` has a nonzero hinge at `q` (general position).
   have hne_q : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0 := by
     intro e he
@@ -841,8 +784,8 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
       rw [hQends]; intro heq
       exact hSimple.toLoopless.not_isLoopAt e _ (Graph.isLink_self_iff.mp (heq ▸ he))
     exact PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition Q hQgp hne_ends
-  -- Step 8: the combined block `Sum.elim rn ro` is independent (the pin-a-body block split) and
-  -- lies in `span FG.rigidityRows`; it has size `D + D(|V_v|−1) = D(|V|−1)`.
+  -- Step 8: the forms `Sum.elim rn ro` are independent (`linearIndependent_sum_pinned_block`) and
+  -- lie in `span FG.rigidityRows`; there are `D + D(|V(Gv)| − 1) = D(|V(G)| − 1)` of them.
   set ro : so → Module.Dual K (α → ScrewSpace K k) :=
     fun j => (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge.panelRow Q_v.ends
       (j : β × _ × _) with hro_def
@@ -852,7 +795,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
       Submodule.span K FG.rigidityRows := by
     rw [Submodule.span_le]; rintro _ ⟨(i | j), rfl⟩
     exacts [hnew_span i, hold_span j]
-  -- Step 9: the combined family forces rigidity on `V(G)`.
+  -- Step 9: these forms give rigidity on `V(G)`.
   have hFGne : FG.graph.vertexSet.Nonempty := hFG_graph ▸ ⟨v, hvG⟩
   have : Finite ιn := inferInstance
   have : Finite so := Set.Finite.to_subtype (Set.toFinite so)
@@ -864,18 +807,20 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have hrig : FG.IsInfinitesimallyRigidOn FG.graph.vertexSet :=
     FG.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows hcomb_LI hcomb_sub hFGne hcard
   rw [hFG_graph] at hrig
-  -- Step 10: the genericity-transfer keystone upgrades the fixed-seed rigidity to the motive.
+  -- Step 10: a rigid `ofNormals` framework gives a generic full-rank realization.
   have hrig' :
       (PanelHingeFramework.ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn V(G) := by
     rw [← hQ_def, ← hFG_def]; exact hrig
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends_G
     hne_q ⟨v, hvG⟩ hrig' n hG.1
 
-/-- **The off-edge selector re-aim** (Phase 22h L5d′ micro-brick): rebuild a panel-hinge framework
-with graph `G` and the same panel normals as `Q`, but with an endpoint selector that uses `Q.ends`
-on links of `G` and a fixed pair `(x₀, y₀)` on non-links. Since `IsInfinitesimalMotion` fires only
-on links, this preserves the motion space; and with `Q.IsGeneralPosition` + `x₀ ≠ y₀`, every
-edge's supporting extensor is nonzero. -/
+/-! ## Re-aimed selectors, for `cor:theorem-55-d3-spanning` and KT Theorem 5.6 -/
+
+/-- **The off-edge selector re-aim** (a step of `cor:theorem-55-d3-spanning`): rebuild a panel-hinge
+framework with graph `G` and the same panel normals as `Q`, but with an endpoint selector that uses
+`Q.ends` on links of `G` and a fixed pair `(x₀, y₀)` on non-links. Since `IsInfinitesimalMotion`
+fires only on links, this preserves the motion space; and with `Q.IsGeneralPosition` + `x₀ ≠ y₀`,
+every edge's supporting extensor is nonzero. -/
 private noncomputable def PanelHingeFramework.reaim (k : ℕ) {α β : Type*}
     (Q : PanelHingeFramework K k α β) (G : Graph α β) (x₀ y₀ : α) :
     PanelHingeFramework K k α β where
@@ -885,8 +830,9 @@ private noncomputable def PanelHingeFramework.reaim (k : ℕ) {α β : Type*}
     haveI := Classical.propDecidable (∃ u v, G.IsLink e u v)
     if _h : ∃ u v, G.IsLink e u v then Q.ends e else (x₀, y₀)
 
-/-- The `reaim` framework's `toBodyHinge` has the same `infinitesimalMotions` as `Q.toBodyHinge`
-(with graph `G`): only link extensors enter the constraint, and `reaim` agrees with `Q` on links. -/
+/-- **`reaim` keeps the motions** (a step of `cor:theorem-55-d3-spanning`): the `reaim` framework's
+`toBodyHinge` has the same `infinitesimalMotions` as `Q.toBodyHinge` (with graph `G`): only link
+extensors enter the constraint, and `reaim` agrees with `Q` on links. -/
 private theorem PanelHingeFramework.reaim_infinitesimalMotions {k : ℕ} {α β : Type*}
     (Q : PanelHingeFramework K k α β) (G : Graph α β) (x₀ y₀ : α)
     (hQg : Q.graph = G) :
@@ -898,13 +844,13 @@ private theorem PanelHingeFramework.reaim_infinitesimalMotions {k : ℕ} {α β 
   have : (∃ u' v', G.IsLink e u' v') := ⟨u, v, hQg ▸ he⟩
   simp [this]
 
-/-- **The subgraph off-edge selector re-aim** (Phase 22k L10c micro-brick, the `def > 0` variant
-of `reaim`): rebuild a panel-hinge framework with graph `G` and the same panel normals as `Q`, but
-with an endpoint selector that uses `Q.ends` on links of a *subgraph* `G' ≤ G` (the edges `Q`
-genuinely records) and a fixed pair `(x₀, y₀)` on every other edge. The selector keys on
-`G'.IsLink`, not `G.IsLink`, so the re-added edges `E(G) ∖ E(G')` — which `Q` does not record —
-get the explicit transversal pair. This is exactly the Theorem-5.6 re-add: the framework on the
-spanning subgraph realization, re-aimed onto the whole graph with a genuine hinge on every edge. -/
+/-- **The subgraph off-edge selector re-aim** (a step of `thm:theorem-55-6-genuine`; the variant of
+`reaim` at a subgraph): rebuild a panel-hinge framework with graph `G` and the same panel normals as
+`Q`, but with an endpoint selector that uses `Q.ends` on links of a *subgraph* `G' ≤ G` (the edges
+`Q` genuinely records) and a fixed pair `(x₀, y₀)` on every other edge. The selector keys on
+`G'.IsLink`, not `G.IsLink`, so the re-added edges `E(G) ∖ E(G')` — which `Q` does not record — get
+the explicit transversal pair. This is exactly the Theorem-5.6 re-add: the framework on the spanning
+subgraph realization, re-aimed onto the whole graph with a genuine hinge on every edge. -/
 private noncomputable def PanelHingeFramework.reaimSub (k : ℕ) {α β : Type*}
     (Q : PanelHingeFramework K k α β) (G G' : Graph α β) (x₀ y₀ : α) :
     PanelHingeFramework K k α β where
@@ -914,10 +860,11 @@ private noncomputable def PanelHingeFramework.reaimSub (k : ℕ) {α β : Type*}
     haveI := Classical.propDecidable (∃ u v, G'.IsLink e u v)
     if _h : ∃ u v, G'.IsLink e u v then Q.ends e else (x₀, y₀)
 
-/-- The `reaimSub` framework restricted back to the selector subgraph `G'` (via `withGraph`) has
-the same `infinitesimalMotions` as `Q.toBodyHinge` (with graph `G'`): only `G'`-link extensors
-enter that constraint family, and `reaimSub` agrees with `Q` on `G'`-links. This is the motion-
-space identity the `withGraph`-monotonicity `hgen` bound consumes. -/
+/-- **`reaimSub` keeps the motions of the subgraph** (a step of `thm:theorem-55-6-genuine`): the
+`reaimSub` framework restricted back to the selector subgraph `G'` (via `withGraph`) has the same
+`infinitesimalMotions` as `Q.toBodyHinge` (with graph `G'`): only `G'`-link extensors enter that
+constraint family, and `reaimSub` agrees with `Q` on `G'`-links. This is the motion-space identity
+the `withGraph`-monotonicity `hgen` bound consumes. -/
 private theorem PanelHingeFramework.reaimSub_withGraph_infinitesimalMotions {k : ℕ} {α β : Type*}
     (Q : PanelHingeFramework K k α β) (G G' : Graph α β) (x₀ y₀ : α)
     (hQg : Q.graph = G') :
@@ -930,17 +877,17 @@ private theorem PanelHingeFramework.reaimSub_withGraph_infinitesimalMotions {k :
   have : (∃ u' v', G'.IsLink e u' v') := ⟨u, v, hQg ▸ he⟩
   simp [this]
 
-/-- **The link-recording subgraph off-edge selector re-aim** (Phase 25 W6, the `reaimSub` F1 fix):
-the variant of `reaimSub` that records a genuine `G`-link on *every* edge of `G`, not just those of
-the selector subgraph `G'`. The endpoint selector uses `Q.ends e` on links of `G' ≤ G` (the edges
-`Q` genuinely records — preserved verbatim so the motion argument is unchanged), a *genuine* pair of
-`G`-link endpoints on the re-added edges `E(G) ∖ E(G')` (where `reaimSub` used the fixed off-edge
-pair `(x₀, y₀)`), and `(x₀, y₀)` only on labels outside `E(G)`. Unlike `reaimSub` this satisfies the
-edge-restricted link-recording hypothesis `hends : ∀ e u v, G.IsLink e u v →
-G.IsLink e (ends e).1 (ends e).2` — the `_of_le_finrank_linking` rank-polynomial family
-(`exists_rankPolynomial_of_le_finrank_linking`) requires it — while still keeping a genuine hinge on
-every edge (GP on `G'`-links / re-added `G`-links + `x₀ ≠ y₀` off-edge) and agreeing with `Q` on
-`G'`-links (so the `withGraph G'` motion space is untouched). -/
+/-- **The link-recording subgraph off-edge selector re-aim** (a step of `thm:theorem-55-6-genuine`
+and `thm:theorem-55-6-rows`): the variant of `reaimSub` that records a genuine `G`-link on *every*
+edge of `G`, not just those of the selector subgraph `G'`. The endpoint selector uses `Q.ends e` on
+links of `G' ≤ G` (the edges `Q` genuinely records — preserved verbatim so the motion argument is
+unchanged), a *genuine* pair of `G`-link endpoints on the re-added edges `E(G) ∖ E(G')` (where
+`reaimSub` used the fixed off-edge pair `(x₀, y₀)`), and `(x₀, y₀)` only on labels outside `E(G)`.
+Unlike `reaimSub` this satisfies the edge-restricted link-recording hypothesis
+`hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2` — the `_of_le_finrank_linking`
+rank-polynomial family (`exists_rankPolynomial_of_le_finrank_linking`) requires it — while still
+keeping a genuine hinge on every edge (GP on `G'`-links / re-added `G`-links + `x₀ ≠ y₀` off-edge)
+and agreeing with `Q` on `G'`-links (so the `withGraph G'` motion space is untouched). -/
 private noncomputable def PanelHingeFramework.reaimSubLink (k : ℕ) {α β : Type*}
     (Q : PanelHingeFramework K k α β) (G G' : Graph α β) (x₀ y₀ : α) :
     PanelHingeFramework K k α β where
@@ -953,12 +900,14 @@ private noncomputable def PanelHingeFramework.reaimSubLink (k : ℕ) {α β : Ty
     else if h' : ∃ u v, G.IsLink e u v then (h'.choose, h'.choose_spec.choose)
     else (x₀, y₀)
 
-/-- The `reaimSubLink` framework restricted back to the selector subgraph `G'` (via `withGraph`) has
-the same `infinitesimalMotions` as `Q.toBodyHinge` (with graph `G'`): on `G'`-links `reaimSubLink`
-uses `Q.ends e` verbatim (the outer branch), so its `G'`-linking supporting extensors are literally
-`Q`'s. This is the exact analogue of `reaimSub_withGraph_infinitesimalMotions` (the re-add's genuine
-`G`-link and off-edge pairs live outside `G'`, so they never enter the `withGraph G'` constraint
-family), and is the motion-space identity the `withGraph`-monotonicity `hgen` bound consumes. -/
+/-- **`reaimSubLink` keeps the motions of the subgraph** (a step of `thm:theorem-55-6-genuine` and
+`thm:theorem-55-6-rows`): the `reaimSubLink` framework restricted back to the selector subgraph `G'`
+(via `withGraph`) has the same `infinitesimalMotions` as `Q.toBodyHinge` (with graph `G'`): on
+`G'`-links `reaimSubLink` uses `Q.ends e` verbatim (the outer branch), so its `G'`-linking
+supporting extensors are literally `Q`'s. This is the exact analogue of
+`reaimSub_withGraph_infinitesimalMotions` (the re-add's genuine `G`-link and off-edge pairs live
+outside `G'`, so they never enter the `withGraph G'` constraint family), and is the motion-space
+identity the `withGraph`-monotonicity `hgen` bound consumes. -/
 private theorem PanelHingeFramework.reaimSubLink_withGraph_infinitesimalMotions {k : ℕ}
     {α β : Type*} (Q : PanelHingeFramework K k α β) (G G' : Graph α β) (x₀ y₀ : α)
     (hQg : Q.graph = G') :
@@ -973,18 +922,17 @@ private theorem PanelHingeFramework.reaimSubLink_withGraph_infinitesimalMotions 
   simp [this]
 
 /-- **Theorem 5.5 → Proposition 1.1, `def = 0`/simple/spanning stratum**
-(`prop:rigidity-matrix-prop11`, the `d = 3` instance; Katoh–Tanigawa 2011 §5.1/§5.2,
-Phase 22h L5d′). For a simple spanning
-minimal-`0`-dof graph on `≥ 2` bodies in `d = 3`, a generic panel-hinge realization produces
-a framework realizing the rank hypothesis at `def(G̃) = 0`: `dim Z(G, Q) = D = D + def(G̃)`.
+(`cor:theorem-55-d3-spanning`; Katoh–Tanigawa 2011 §5.1/§5.2). For a simple spanning minimal-`0`-dof
+graph on `≥ 2` bodies in `d = 3`, a generic panel-hinge realization produces a framework realizing
+the rank hypothesis at `def(G̃) = 0`: `dim Z(G, Q) = D = D + def(G̃)`.
 
 This is the first genuine `hgen` feed of `rigidityMatrix_prop11` (KT Prop 1.1): the spanning
 condition (`hspan : V(G) = Set.univ`) kills the complement so `dim Z = D·1 = D ≤ D + 0`, and the
 off-edge selector re-aim (`reaim`) satisfies `hC : ∀ e, supportExtensor e ≠ 0` by GP on links
 (link-recording + `IsLink.ne`) and the explicit pair `(x₀, y₀)` on non-links.
 
-This decl has no in-tree caller: it is the `d = 3` worked instance of the `def = 0` feed,
-kept deliberately as an accessible entry point (PROSPECT S1 adjudication, 2026-07-10;
+This decl has no in-tree caller: it is the `d = 3` worked instance of the `def = 0` feed, kept
+deliberately as an accessible entry point (PROSPECT S1 adjudication, 2026-07-10;
 `notes/Prospect.md`), not dead code awaiting a liveness sweep. -/
 theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
@@ -1074,45 +1022,40 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
     rigidityMatrix_prop11 Q'.toBodyHinge 3 (by omega) hC hgen
   exact ⟨Q', hQ'g, by simpa [toBodyHinge_graph, hQ'g] using hprop11⟩
 
--- ── Auxiliary: side-membership from an induce-IsLink witness ──────────────────────────────
--- Given `G.IsLink e u v` and `(G.induce V₁).IsLink e a b`, conclude `u ∈ V₁` and `v ∈ V₁`.
--- Proof: `eq_or_eq_of_isLink_of_isLink` gives `u = a ∨ u = b`; both options land in V₁.
-/-- **An endpoint of a `G`-link lying under an induced link is on the induced side (left)**
-(`sec:pencil-reduction`; shared by the panel-only cut-edge producers
-`case_cut_edge_realization_gen`/`_gp_gen` and the pencil reduction's glue
-`exists_hasPencilPanelRealization_glue`). If `G`-link `e u v` shares its edge with an induced link
-`(G.induce V₁).IsLink e a b`, then `u ∈ V₁` — the two links share endpoints, and both of the
-induced link's are in `V₁`. -/
+/-! ## KT Lemma 6.1: a cut of at most one edge (`lem:case-cut-edge-realization`) -/
+
+/-- **An end of a link through an induced link lies in the induced set (the first end)** (a step of
+`lem:case-cut-edge-realization` and `lem:pencil-cut-case`): if `e` links `u` and `v` in `G`, and
+links `a` and `b` in `G.induce V₁`, then `u ∈ V₁`, as `u` is `a` or `b`
+(`eq_or_eq_of_isLink_of_isLink`). -/
 theorem mem_of_induce_isLink_left {α β : Type*} {G : Graph α β} {V₁ : Set α}
     {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
     u ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
-/-- **An endpoint of a `G`-link lying under an induced link is on the induced side (right)**
-(`sec:pencil-reduction`). The `right` companion of `mem_of_induce_isLink_left`. -/
+/-- **An end of a link through an induced link lies in the induced set (the second end)** (a step of
+`lem:case-cut-edge-realization` and `lem:pencil-cut-case`): the form of `mem_of_induce_isLink_left`
+for `v`. -/
 theorem mem_of_induce_isLink_right {α β : Type*} {G : Graph α β} {V₁ : Set α}
     {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
     v ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl.symm hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
-/-- **Cut-edge rank-arithmetic assembly** (shared by the two not-2-edge-connected cut-edge
-realization producers `case_cut_edge_realization_gen`/`_gp_gen`, Phase 38 FACTOR T2a, and the
-pencil reduction's glue `exists_hasPencilPanelRealization_glue`, `sec:pencil-reduction` rank
-infra — no blueprint node of its own, technical rank arithmetic).
+/-- **The rank at a cut of at most one edge** (a step of `lem:case-cut-edge-realization`,
+`lem:case-cut-edge-realization-gp` and `lem:pencil-cut-case`): let `F` be a body-hinge framework on
+`G` with a nonzero hinge at every link (`hFext`), let `def(G̃) = c` at `n` (`hc`), and let at most
+one edge cross from `V₁` to `V₂ = V(G) ∖ V₁` (`hcut_le`), with `c = c₁ + c₂ + D − (D − 1)|C|` for
+the set `C` of crossing edges (`hk_eq`). If the rows of `F` at the edges of `G[V₁]` and `G[V₂]` span
+`S₁` and `S₂` (`hF₁span`, `hF₂span`), of ranks at least `D(|Vᵢ| − 1) − cᵢ` (`hlb₁`, `hlb₂`), then
+the rows of `F` have rank `D(|V(G)| − 1) − c`. A minimal `c`-dof-graph has `def(G̃) = c`
+(`IsMinimalKDof.deficiency_eq`); the pencil's cut case takes `c := G.deficiency n`.
 
-Given the assembled framework `F` on `G` (`hFgraph : F.graph = G`) with `G.deficiency n = c`
-(`hc`), the vertex-disjoint cut brick (`le_finrank_span_rigidityRows_of_cut`) lower bound and the B2
-upper bound (`finrank_span_rigidityRows_add_deficiency_le`) pin `finrank (span F.rigidityRows)` to
-`screwDim k · (|V(G)| − 1) − c`. The cut-edge count `(G.cutEdges V₁).ncard ∈ {0, 1}` is kept
-**abstract**: the brick's `(screwDim k − 1)·|C|` term together with the L1e decomposition
-arithmetic `hk_eq` carry it, so each producer feeds this helper once, over both `|C| = 0` and
-`|C| = 1`, with no per-arm numeral special-casing. The side ranks enter as the two span
-rewrites `hF₁span`/`hF₂span` (to abstract subspaces `S₁`, `S₂`) plus lower bounds `hlb₁`/`hlb₂`
-(exact equalities for the bare `_gen` and the pencil glue, `≤` for the generic `_gp_gen`). Uses the
-explicit `hkey` product-distribution + `linarith` — not `nlinarith` — over the heavy `finrank`
-atoms (the fragility note above `_gp_gen`). `hc` is the minimality-free replacement for a minimal
-`c`-dof-graph hypothesis (`G.IsMinimalKDof n c`), which only ever fed it through
-`IsMinimalKDof.deficiency_eq`; the pencil glue instantiates `c := G.deficiency n`, `hc := rfl`. -/
+The lower bound is `le_finrank_span_rigidityRows_of_cut` (`lem:block-rank-cut`) with `hk_eq` and
+`|V(G)| = |V₁| + |V₂|`, and the upper bound is `finrank_span_rigidityRows_add_deficiency_le`
+(`lem:relative-deficiency-rank-bound`). The number of crossing edges stays a variable, so one
+argument serves `|C| = 0` and `|C| = 1`, and `linarith` closes the bound, given the product
+`D(|V(G)| − 1)` split across the cut (`hkey`); an `nlinarith` there, which multiplies pairs of
+hypotheses over the `finrank` terms, needed a raised `maxHeartbeats`. -/
 theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     {c c₁ c₂ : ℤ} {G : Graph α β} {V₁ V₂ : Set α} (hc : G.deficiency n = c)
@@ -1133,9 +1076,7 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
     (hlb₂ : screwDim k * ((V₂.ncard : ℤ) - 1) - c₂ ≤ (Module.finrank K S₂ : ℤ)) :
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
-  -- A non-cut `G`-edge keeps both endpoints on the same side of the cut. Derived here from
-  -- `hFgraph` (it needs only `F.graph = G` and `G.cutEdges V₁`, nothing about the extensor), so
-  -- the two producers no longer construct + pass it (Phase 38 FACTOR T2d piece (a)).
+  -- An edge of `G` that does not cross the cut has both ends on one side.
   have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
       u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
     intro e u v hl hnotcut
@@ -1148,16 +1089,16 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
     · right; refine ⟨hu₁, ?_⟩
       by_contra hv₁
       exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
-  -- Lower bound: the vertex-disjoint cut brick, side spans rewritten to `S₁`, `S₂`.
+  -- Lower bound: `le_finrank_span_rigidityRows_of_cut`, the side spans rewritten to `S₁`, `S₂`.
   have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext
     (fun e u v hl he => hFE₁ e u v hl he) hFcut
   rw [hFgraph, ← hV₂, hF₁span, hF₂span] at hbrick
-  -- Upper bound: B2.
+  -- Upper bound: `finrank_span_rigidityRows_add_deficiency_le`.
   have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
   rw [hFgraph] at hB2
   have hB2' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by rw [hc] at hB2; linarith
-  -- Combined lower bound with the cut count kept abstract (brick + side ranks + L1e arithmetic).
+  -- The lower bound, with the number of crossing edges a variable.
   have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
       (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
     have hbrickZ : (Module.finrank K S₁ : ℤ) + (screwDim k - 1) * (G.cutEdges V₁).ncard +
@@ -1176,13 +1117,10 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
     linarith [hbrickZ, hlb₁, hlb₂, hk_eq, hkey]
   exact le_antisymm hB2' hlb
 
-/-- **Side span-equality brick** for the cut-edge rank assembly (Phase 38 FACTOR T2d piece (b);
-`sec:pencil-reduction` rank infra — no blueprint node of its own, technical rank arithmetic). If an
-assembled extensor `sideExt` agrees with a side framework `Fᵢ`'s `supportExtensor` on every
-`Gᵢ`-internal link, then the assembled side framework `⟨Gᵢ, sideExt⟩` spans the same rigidity-row
-subspace as `Fᵢ` — the row blocks are determined edge-by-edge by the supporting extensor. Feeds
-`case_cut_edge_realization_gen` (once per side `V₁`/`V₂`, the per-side `hagree` lambda selecting the
-matching `extF` branch) and the pencil reduction's glue `exists_hasPencilPanelRealization_glue`. -/
+/-- **Rows from the hinges at the links** (a step of `lem:case-cut-edge-realization`, of
+`lem:pencil-cut-case` and of lemmas of `sec:main-component`): if `sideExt` agrees with the hinges of
+`Fᵢ` at the links of `Gᵢ = Fᵢ.graph` (`hagree`), then the framework `⟨Gᵢ, sideExt⟩` has the rows of
+`Fᵢ`, as the rows of an edge are determined by its hinge; so the two spans of rows are equal. -/
 theorem span_rigidityRows_eq_of_supportExtensor_agree {Gᵢ : Graph α β}
     (sideExt : β → ScrewSpace K k) (Fᵢ : BodyHingeFramework K k α β) (hFᵢg : Fᵢ.graph = Gᵢ)
     (hagree : ∀ e u v, Gᵢ.IsLink e u v → sideExt e = Fᵢ.supportExtensor e) :
@@ -1201,38 +1139,20 @@ theorem span_rigidityRows_eq_of_supportExtensor_agree {Gᵢ : Graph α β}
     simp only [BodyHingeFramework.hingeRowBlock, hagree e u v hl']
     simpa [BodyHingeFramework.hingeRowBlock] using hr
 
--- `case_cut_edge_realization_gen` builds at the **default** `maxHeartbeats`. Two costs removed.
--- The Phase-22l opacity flip cleared the diffuse `ScrewSpace K k` re-elaboration
--- (the opaque carrier
--- head no longer re-unfolds the heavy `↥(⋀ᵏ …)` type-expression at every motive). And its lower
--- bound (in `finrank_span_rigidityRows_cutEdge_eq`) uses the same `linarith` + explicit
--- `screwDim k·(|V|−1)`
--- product idiom as `_gp` below (the `hkey` helpers), instead of an `nlinarith` that blind-squares
--- over the heavy `finrank` atoms (`notes/ScrewSpaceCarrier-design.md` OQ1).
-/-- **L4a bare-conjunct producer: cut-edge case — general grade `k`**
-(`lem:case-cut-edge-realization`, bare conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the
-`not-2EC` branch; Phase 22i, Phase 23b OD-7 tail general-`k` lift).
+/-- **Nondegenerate-hinge realization at a cut of at most one edge**
+(`lem:case-cut-edge-realization`; KT Lemma 6.1, p. 672): let `2 ≤ D` (`hD`) with `D = screwDim k`
+(`hn`), and let `G` be a minimal `c`-dof-graph at `n` that is not 2-edge-connected. If every minimal
+`c'`-dof-graph with at least one and fewer than `|V(G)|` vertices has a nondegenerate-hinge panel
+realization (`hIH`), so does `G`. It holds over every field. `theorem_55_minimalKDof_gen` uses it at
+every `k`.
 
-Given a minimal `c`-dof-graph `G` that is not 2-edge-connected, the
-bare panel-realization conjunct `HasPanelRealization K k n G` holds.
-
-**Proof sketch.** `exists_cut_decomposition_of_not_twoEdgeConnected` yields a cut
-`V₁ ⊔ V₂ = V(G)`, `|cutEdges G V₁| ≤ 1`, and `c = c₁ + c₂ + D - (D-1)|C|`. Apply the
-IH on each induced side. Assemble framework `F` with `supportExtensor` equal to `F₁`'s on
-edges inside `V₁`, `F₂`'s on edges inside `V₂`, and a nonzero element `C_cut` of
-`normal(u₀)^⊥ ∩ normal(v₀)^⊥` (from `exists_extensor_in_two_panels_grade`) on any cut edge. With
-no cut edge the hinge is `0` (`HasPanelRealization` asks a nonzero extensor only on links), so the
-branches `|C| = 0` and `|C| = 1` share one assembly.
-Rank lower bound: `le_finrank_span_rigidityRows_of_cut` + IH ranks. Rank upper bound: B2.
-The L1e arithmetic `c = c₁ + c₂ + D - (D-1)|C|` + `|V| = |V₁| + |V₂|` closes equality.
-
-Verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k+2)`, `ScrewSpace K 2 → ScrewSpace K k`,
-`screwDim 2 → screwDim k`, `exists_extensor_in_two_panels → …_grade`; all reach-ins
-(`le_finrank_span_rigidityRows_of_cut`, `finrank_span_rigidityRows_add_deficiency_le`, the cut
-decomposition) are already grade-parametric. Consumed directly at `k := 2` by
-`theorem_55_minimalKDof_gen`'s `hcut_k` carry (the d=3-specific `k := 2` wrapper this file used to
-carry has been collapsed away, Phase 23-cleanup S2 — same rationale as `theorem_55_base_producer`
-above). -/
+`exists_cut_decomposition_of_not_twoEdgeConnected` (`lem:cut-edge-decomposition`) gives a set `V₁`,
+with `V₂ = V(G) ∖ V₁`, such that at most one edge crosses from `V₁` to `V₂`, and `G[V₁]` and `G[V₂]`
+are minimal `c₁`- and `c₂`-dof-graphs with `c = c₁ + c₂ + D − (D − 1)|C|`; `hIH` realizes both. The
+framework `F` has the hinges of the two realizations at the edges of `G[V₁]` and `G[V₂]`, and at a
+crossing edge, if there is one, a nonzero extensor in the panels of its two ends
+(`exists_extensor_in_two_panels_grade`); each vertex has the normal of its side. Its rank is
+`D(|V(G)| − 1) − c` (`finrank_span_rigidityRows_cutEdge_eq`). -/
 theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hntec : ¬ G.TwoEdgeConnected)
@@ -1262,7 +1182,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     hIH c₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard
   obtain ⟨F₂, normal₂, hF₂g, hF₂ne, hF₂ext, hF₂rank⟩ :=
     hIH c₂ (G.induce V₂) hG₂ hV₂ne hV₂ncard
-  -- Side rank equalities (arm-independent; consumed by the shared assembly tail).
+  -- The ranks of the two sides.
   have hrank₁ : (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ)
       = screwDim k * ((V₁.ncard : ℤ) - 1) - c₁ := by
     rw [hVeq₁] at hF₁rank; rw [hF₁rank, hG₁.1]
@@ -1270,9 +1190,9 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
       = screwDim k * ((V₂.ncard : ℤ) - 1) - c₂ := by
     rw [hVeq₂] at hF₂rank; rw [hF₂rank, hG₂.1]
   -- ── Step 3: Assemble F ────────────────────────────────────────────────────────────────
-  -- Pick a representative vertex from each side (for the normal junk value on off-V(G) verts).
+  -- A vertex `u₀ ∈ V₁`, whose normal the bodies outside `V(G)` take.
   obtain ⟨u₀, hu₀⟩ := hV₁ne
-  -- Normal: use side IH normals; off-V(G) vertices get normal₁ u₀ as junk.
+  -- The normals: those of the two realizations, and `normal₁ u₀` outside `V(G)`.
   set normal : α → Fin (k + 2) → K := fun v =>
     if v ∈ V₁ then normal₁ v
     else if v ∈ V₂ then normal₂ v
@@ -1345,7 +1265,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     obtain ⟨_, a, b, hlab, ha, hb⟩ := he
     exact ⟨a, b, hlab, ha, hb⟩
   have hFVne : V(F.graph).Nonempty := ⟨u₀, hV₁sub.subset hu₀⟩
-  -- Shared assembly tail (the cut count kept abstract inside the helper).
+  -- The rank (`finrank_span_rigidityRows_cutEdge_eq`).
   have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn hG.deficiency_eq F rfl hV₂def hcut_le
     hFext hFcut hFVne hVcard hk_eq hF₁span hF₂span hrank₁.ge hrank₂.ge
   have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
@@ -1360,41 +1280,25 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
   rw [← hG.deficiency_eq] at hrank_eq
   exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
--- Builds at the **default** `maxHeartbeats` (no override). The former 400000 cost was a diffuse
--- `nlinarith` in the two `|C|=0/1` lower-bound arms: it blind-squares hypothesis pairs over the
--- heavy `finrank (span … rigidityRows)` atoms, while the goal is linear once the single
--- `screwDim k · (|V|−1)` product is distributed across the cut. The `hkey` helpers below feed that
--- product to `linarith` explicitly; the Phase-22l opacity flip had already cleared the separate
--- carrier-whnf component (`notes/ScrewSpaceCarrier-design.md` OQ1).
-/-- **L4b-2 GP-conjunct producer: cut-edge case — general grade `k`**
-(`lem:case-cut-edge-realization-gp`, GP conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the
-`not-2EC` GP arm; Phase 22i, Phase 23b OD-7 tail general-`k` lift).
+/-- **Generic full-rank realization at a cut of at most one edge**
+(`lem:case-cut-edge-realization-gp`; KT Lemma 6.1, p. 672): let `2 ≤ D` (`hD`) with `D = screwDim k`
+(`hn`), let `K` be infinite, and let `G` be a simple minimal `c`-dof-graph at `n` that is not
+2-edge-connected. If every simple minimal `c'`-dof-graph with at least one and fewer than `|V(G)|`
+vertices has a generic full-rank realization (`hIH`), so does `G`. `theorem_55_minimalKDof_gen` uses
+it at every `k`.
 
-Given a minimal `c`-dof simple graph `G` that is not 2-edge-connected, the
-generic-motive conjunct `HasGenericFullRankRealization K k n G` holds.
-
-**Proof sketch.** Cut decomposition (as L4a). Each side `G.induce Vᵢ` is simple (induced subgraph
-of a simple graph), so the conditioned IH at `hSimpleᵢ` supplies a side GP framework `QFᵢ`.
-Seed `q₀ᵢ := fun p => QFᵢ.normal p.1 p.2`; GP transfers to `ofNormals (G.induce Vᵢ) G.endsOf q₀ᵢ`
-(same normals, motion-space equality by swap-invariance → same finrank). W6e +
-`exists_rankPolynomial_of_le_finrank_linking` → `Qᵢ_rank` transferring `Nᵢ = finrank QFᵢ`
-rows. `exists_generalPosition_polynomial` → `Q_gp`. Fresh combined seed `q₀` from one
-`MvPolynomial.exists_eval_ne_zero` shot on the product `Q₁_rank · Q₂_rank · Q_gp` (Phase 30 RELAX:
-no algebraic independence). Set
-`QF := ofNormals G G.endsOf q₀`; global GP from `Q_gp`. Side rank bounds at `q₀` from the rank
-transfer polynomials. Seed-free L4a brick + L1e arithmetic → combined lower bound. B2 → upper bound;
-antisymmetry closes. Link-recording from `ofNormals_endsOf_recordsLinks`.
-
-Verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k+2)` (the `q₀ᵢ` seeds + the combined
-seed type), `BodyHingeFramework K 2 → BodyHingeFramework
-k`, `screwDim 2 → screwDim k`, dof `k → c`; all reach-ins (`ofNormals`,
-`exists_generalPosition_polynomial`, `exists_rankPolynomial_of_le_finrank_linking`,
-`recordsLinks_swap_endsOf`, `infinitesimalMotions_ofNormals_eq_of_ends_swap`,
-`ofNormals_endsOf_recordsLinks`, `le_finrank_span_rigidityRows_of_cut`,
-`finrank_span_rigidityRows_add_deficiency_le`, the cut decomposition) are already grade-parametric.
-Consumed directly at `k := 2` by `theorem_55_minimalKDof_gen`'s `hcut_k` carry (the d=3-specific
-`k := 2` wrapper this file used to carry has been collapsed away, Phase 23-cleanup S2 — same
-rationale as `theorem_55_base_producer` above). -/
+The cut `V₁`, `V₂` is that of `case_cut_edge_realization_gen`. `G[V₁]` and `G[V₂]` are simple, and
+`hIH` gives them generic full-rank realizations `QF₁` and `QF₂`. At the normals `q₀ᵢ` of `QFᵢ`, the
+framework `ofNormals G[Vᵢ] G.endsOf q₀ᵢ`, whose selector is `G.endsOf`, has the motions of `QFᵢ`, as
+the two selectors give each edge of `G[Vᵢ]` its ends, in some order
+(`infinitesimalMotions_ofNormals_eq_of_ends_swap`), and so it has the rank of `QFᵢ`.
+`exists_rankPolynomial_of_le_finrank_linking` gives polynomials `Q₁_rank` and `Q₂_rank` off whose
+zeros these ranks are kept, and `exists_generalPosition_polynomial` one off whose zeros the normals
+are in general position. At a common non-root `q₀` of the three, `ofNormals G G.endsOf q₀` has
+nonzero hinges, its rows at the edges of `G[Vᵢ]` have rank at least `D(|Vᵢ| − 1) − cᵢ`, and so it
+has the target rank (`finrank_span_rigidityRows_cutEdge_eq`); its selector gives each link its ends
+(`ofNormals_endsOf_recordsLinks`). Katoh and Tanigawa instead move one realization so that none of
+its panels is parallel to one of the other (KT p. 672). -/
 theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c)
@@ -1432,9 +1336,9 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     hIH c₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard hSimple₁
   obtain ⟨QF₂, hQF₂g, hQF₂gp, hQF₂rank, hQF₂rec⟩ :=
     hIH c₂ (G.induce V₂) hG₂ hV₂ne hV₂ncard hSimple₂
-  -- ── Step 5: Side seeds ─────────────────────────────────────────────────────────────────
-  -- Each side IH framework is literally `ofNormals (G.induce Vᵢ) QFᵢ.ends q₀ᵢ`
-  -- at the seed `q₀ᵢ := fun p => QFᵢ.normal p.1 p.2`.
+  -- ── Step 5: The normals of the sides ─────────────────────────────────────────────────────
+  -- Each side's framework `QFᵢ` is `ofNormals (G.induce Vᵢ) QFᵢ.ends q₀ᵢ`, with the normals
+  -- `q₀ᵢ := fun p => QFᵢ.normal p.1 p.2`.
   set q₀₁ : α × Fin (k + 2) → K := fun p => QF₁.normal p.1 p.2
   set q₀₂ : α × Fin (k + 2) → K := fun p => QF₂.normal p.1 p.2
   -- ── Step 6: GP transfers to the G.endsOf selector ────────────────────────────────────────
@@ -1515,7 +1419,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     rw [hmot₂, hmotQF₂] at hcompl1
     omega
   -- ── Step 8: Build per-side rank polynomials ─────────────────────────────────────────
-  -- Transversality witnesses at q₀ᵢ: nonzero extensor for (G.induce Vᵢ)-links at G.endsOf.
+  -- At `q₀ᵢ`, the hinges at the links of `G.induce Vᵢ`, with the selector `G.endsOf`, are nonzero.
   have hne₁ : ∀ e, (G.induce V₁).IsLink e (G.endsOf e).1 (G.endsOf e).2 →
       (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge.supportExtensor e
         ≠ 0 := by
@@ -1566,7 +1470,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   -- ── Step 9: GP polynomial ──────────────────────────────────────────────────────────────────
   obtain ⟨Q_gp, hQgpne_witness, hQgp_pos⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (K := K) (k := k) G G.endsOf
-  -- ── Step 10: Fresh combined seed (non-root of Q₁_rank · Q₂_rank · Q_gp) ─────────────────────
+  -- ── Step 10: Normals `q₀` off the zeros of `Q₁_rank`, `Q₂_rank` and `Q_gp` ───────────────────
   have hQ₁rane : Q₁_rank ≠ 0 := fun h => hQ₁ne (by rw [h, map_zero])
   have hQ₂rane : Q₂_rank ≠ 0 := fun h => hQ₂ne (by rw [h, map_zero])
   have hQgpne : Q_gp ≠ 0 := by
@@ -1615,17 +1519,16 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
         (Submodule.span K
           (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀).toBodyHinge.rigidityRows) :=
     hQ₂trans q₀ hq₀₂
-  -- ── Step 14: Apply the L4a brick ─────────────────────────────────────────────────────────
+  -- ── Step 14: The rank (`finrank_span_rigidityRows_cutEdge_eq`) ──────────────────────────────
   -- F := (ofNormals G G.endsOf q₀).toBodyHinge
   set F := (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge
   have hFgraph : F.graph = G := by simp [F, PanelHingeFramework.ofNormals_graph]
-  -- The Fcut hypothesis for the brick (FE₁ is now derived inside
-  -- `finrank_span_rigidityRows_cutEdge_eq`).
+  -- The hypotheses of `finrank_span_rigidityRows_cutEdge_eq`.
   have hFext' : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := by
     intro e u v hl
     rw [hFgraph] at hl
     exact hQFext e u v hl
-  -- Cut count is kept abstract in the shared assembly tail, so no `rcases` on `G.cutEdges V₁`.
+  -- The number of crossing edges stays a variable, so no case split on `G.cutEdges V₁`.
   have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
     intro e he; simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he
     obtain ⟨_, a, b, hlab, ha, hb⟩ := he
@@ -1638,8 +1541,8 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   have hrank₂eq : (Module.finrank K (Submodule.span K QF₂.toBodyHinge.rigidityRows) : ℤ)
       = screwDim k * ((V₂.ncard : ℤ) - 1) - c₂ := by
     have := hQF₂rank; rw [hVeq₂, hG₂.1] at this; exact this
-  -- Shared assembly tail; the side ranks enter as `≤` (rank-transfer bound composed with the
-  -- side IH equalities), where the bare `_gen` producer feeds equalities.
+  -- The side ranks enter as lower bounds, from the rank polynomials and the ranks of `QF₁` and
+  -- `QF₂`.
   have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn hG.deficiency_eq F hFgraph hV₂def
     hcut_le hFext' hFcut hFVne hVcard hk_eq hF₁span hF₂span
     (by rw [← hrank₁eq]; exact_mod_cast hrank₁_bound)
