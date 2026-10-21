@@ -6,19 +6,30 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Arms
 
 /-!
-# The algebraic induction — Case III relabel / split-off transport (M₃ machinery: defs + bridges)
+# Case III: renaming the bodies
 
-Phase 22 (molecular-conjecture program). First file of the `CaseIII/Relabel/` subdirectory (the
-Phase-23c split of the over-cap `CaseIII/Relabel.lean`, `notes/Phase23c.md`). The `ρ = (av)` relabel
-apparatus (`ofNormals_relabel`, `rigidityRows_ofNormals_relabel`,
-`hasGenericFullRankRealization_of_splitOff_relabel`) transporting the candidate `ρ`/`w` data across
-the `a ↔ v` swap, the `acolumn`/`hingeRow` span bridges, and the `wstep` / `shiftBody*` chain
-definitions (the candidate→base seed-fixed transport). The seed-advancing chain, the M₃ arm closer,
-the chain-column machinery, and the forked general-`d` arm are in the sibling
-`Relabel/{Chain,Arm,ChainColumn,ForkedArm}` files.
+Lemmas for Case III of KT Theorem 5.5 (Katoh and Tanigawa 2011, *A proof of the molecular
+conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
+`sec:molecular-algebraic-induction-caseIII`. The file proves:
 
-See `ROADMAP.md` §22 and the `sec:molecular-algebraic-induction-caseIII` dep-graph in
-`blueprint/src/chapter/algebraic-induction/case-iii.tex`.
+* that the framework `ofNormals` renamed along a permutation of the bodies and one of the edge
+  labels has, at each label, the hinge of the original at the corresponding label
+  (`ofNormals_supportExtensor_relabel_perm`), and that renaming takes a row to a row
+  (`rigidityRow_relabel_to_genuine`, `blockRow_relabel_perm`): steps of
+  `lem:case-III-chain-relabel-rows`;
+* in the case `d = 3`, Katoh and Tanigawa's realization of `G_a^{vc}` and its rows
+  (`ofNormals_relabel` and `hasGenericFullRankRealization_of_splitOff_relabel`,
+  `lem:splitOff-ofNormals-relabel`; `rigidityRows_ofNormals_relabel`,
+  `lem:splitOff-rigidityRows-relabel`), which no main result uses;
+* that moving a body `a`, whose only edge joins it to `c`, to a body `v` that no edge meets takes
+  the row space of one framework into that of another, once the form at `vc` given by the
+  restriction to `a` is subtracted (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`), and the
+  move along a chain (`wstep`, `wstep_foldl_mem_span_rigidityRows`, `seedAdvance_wstep_hstep`):
+  steps of `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-eq666`.
+
+It also has other forms of these lemmas, and the frameworks of a chain with fixed normals, which no
+declaration uses. `CaseIII/Relabel/Chain.lean` applies the renaming and the move to a chain, and
+`CaseIII/Relabel/Arm.lean` applies the move to the third framework of the case `d = 3`.
 -/
 
 namespace CombinatorialRigidity.Molecular
@@ -31,16 +42,22 @@ variable {α β : Type*}
 
 variable {K : Type*} [Field K]
 
-/-! ## Relabel / split-off transport (the M₃ machinery)
+/-! ## Renaming the bodies by a permutation
 
-The `ρ = (av)` relabel apparatus (`lem:splitOff-ofNormals-relabel`,
-`lem:splitOff-rigidityRows-relabel`) transporting the `ρ`/`w` data across the `a ↔ v` swap, the
-`a`-column span bridges, and the M₃ arm closer (W9c, built on the M₁ engine W7). -/
+Let `ρ` be a permutation of the bodies and `σ` one of the edge labels. The framework `ofNormals Gt`
+with the selector `e ↦ (ρ⁻¹ (ends₀ (σ e)).1, ρ⁻¹ (ends₀ (σ e)).2)` and the normals `q₀ ∘ ρ` is
+`ofNormals Gs ends₀ q₀` with its bodies renamed, when `σ` and `ρ` map the links of `Gt` to those of
+`Gs`, and its rows are the forms `S ↦ φ (S ∘ ρ⁻¹)` for the rows `φ` of `ofNormals Gs ends₀ q₀`. The
+proof of `lem:case-III-chain-relabel-rows` takes for `ρ` the cycle `shiftPerm i.castSucc`, which
+maps `v₁ ↦ v₂ ↦ ⋯ ↦ v_i ↦ v₁` (the permutation `σᵢ` of that node), and for `σ` the permutation
+`shiftEdgePerm i` of the labels. The first lemma, `hσσ_relabel`, serves the case `d = 3` below. -/
 
-/-- The edge permutation `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` of the `ρ = (av)` relabel is
-an involution. The two transpositions have disjoint supports (`{e_b, e₀}` and `{e₁, e_c}` are
-disjoint by the four distinctness facts), so each cancels: `σ ∘ σ = id`. The shared
-σ-cancellation step in `ofNormals_relabel` and `rigidityRows_ofNormals_relabel`. -/
+/-- **The permutation of the labels in the case `d = 3` is an involution** (a step of
+`lem:splitOff-ofNormals-relabel` and `lem:splitOff-rigidityRows-relabel`): if `e_b`, `e_c`, `e₀` and
+`e₁` are such that `{e_b, e₀}` and `{e₁, e_c}` are disjoint, then
+`σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` satisfies `σ (σ f) = f` for every label `f`, as the two
+transpositions commute. `ofNormals_relabel` and `rigidityRows_ofNormals_relabel` use it for the
+permutation of `Graph.splitOff_isLink_relabel`. -/
 private theorem hσσ_relabel {β : Type*} [DecidableEq β] {e_b e_c e₀ e₁ : β}
     (hbe₁ : e_b ≠ e₁) (hbec : e_b ≠ e_c) (h₀e₁ : e₀ ≠ e₁) (h₀ec : e₀ ≠ e_c) (f : β) :
     (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) f) = f := by
@@ -48,21 +65,18 @@ private theorem hσσ_relabel {β : Type*} [DecidableEq β] {e_b e_c e₀ e₁ :
   simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
   split_ifs <;> simp_all
 
-/-- **The support-extensor coincidence under a general `Equiv.Perm` relabel (CHAIN-2c-ii-arm, the
-`hsupp_of` foundation): the relabelled `ofNormals` framework's supporting extensor at an edge `f`
-equals the base framework's at the edge `σ f`** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the
-index-shift seed/selector coincidence eqs.~(6.54)–(6.56); Phase 23b). The relabelled framework
-reads the base seed `q₀` at the `ρ`-shifted body (`qρ p := q₀ (ρ p.1, p.2)`) and the base endpoints
-`ρ.symm`-shifted (`endsσρ e := (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)`); the matching
-`.symm`/forward choices make the forward `ρ` in `qρ` cancel the `ρ.symm` in `endsσρ`, so the hinge
-at `f` reads exactly the original hinge at `σ f` — **no involution needed**.
+/-- **Renaming keeps the hinges** (a step of `lem:case-III-chain-relabel-rows` and
+`lem:case-III-chain-eq666`): for a permutation `ρ` of the bodies and `σ` of the edge labels, the
+framework `ofNormals Gt` with the selector `e ↦ (ρ⁻¹ (ends₀ (σ e)).1, ρ⁻¹ (ends₀ (σ e)).2)` and the
+normals `q₀ ∘ ρ` has at `f` the hinge of `ofNormals Gt ends₀ q₀` at `σ f`, as in KT eq. (6.56)
+(p. 694).
 
-This is the support-extensor half of `ofNormals_relabel_perm` (the local `h_supp` step), extracted
-as a standalone lemma: it is the `hsupp` ingredient the genuine-row transport bricks
-(`rigidityRow_relabel_off_cycle`, `rigidityRow_relabel_to_genuine`) consume in the all-`d`
-candidate-reduction arm's per-row dispatch (`chainData_bottom_relabel`, 2c-ii). Instantiated at
-`(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` it supplies the per-branch support-extensor
-coincidence at the candidate-`i` split. -/
+The renamed framework reads the normals `q₀` at the body `ρ p.1` and the selector `ends₀` at `σ e`,
+moved back by `ρ⁻¹`, so the `ρ` of the normals cancels the `ρ⁻¹` of the selector, and the hinge at
+`f` is that of `ends₀` at `σ f`; no involution is needed. `chainData_bottom_relabel`
+(`lem:case-III-chain-relabel-rows`) and `chainData_freshEdge_perp_transport_base_to_candidate`
+(`CaseIII/Relabel/ChainColumn.lean`) use it at `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`.
+-/
 theorem PanelHingeFramework.ofNormals_supportExtensor_relabel_perm {Gt : Graph α β}
     (ρ : Equiv.Perm α) (σ : Equiv.Perm β)
     {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K} (f : β) :
@@ -73,34 +87,20 @@ theorem PanelHingeFramework.ofNormals_supportExtensor_relabel_perm {Gt : Graph �
   simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
     PanelHingeFramework.ofNormals_normal, Equiv.apply_symm_apply]
 
-/-- **The general-`Equiv.Perm` framework-transport (CHAIN-2c-ii-β): an arbitrary vertex relabel
-`ρ : Equiv.Perm α` (with edge relabel `σ : Equiv.Perm β`) intertwining two graphs transports the
-`ofNormals` generic-realization data from one to the other** (`lem:case-III` general-`d`, KT 2011
-§6.4.2 the index-shift isos eqs.~(6.54)–(6.56); Phase 23b). This is the involution-free
-generalization of `ofNormals_relabel` (`ρ = Equiv.swap a v` / `σ = Equiv.swap e_b e₀ *
-Equiv.swap e₁ e_c`), the load-bearing brick the all-`d` candidate-reduction arm
-(`chainData_relabel_arm`, 2c-ii) instantiates at `ρ := cd.shiftPerm i` for each interior chain
-candidate `i` — where KT's `ρᵢ` is a genuine `(i−1)`-cycle, **not** a transposition, so the
-swap-specific transport must be re-derived for a general permutation.
+/-- **A realization renamed along an isomorphism**: let `ρ` and `σ` be permutations of the bodies
+and the edge labels such that `e` joins `x` and `y` in `Gt` exactly when `σ e` joins `ρ x` and `ρ y`
+in `Gs` (`hiso`), and let `ρ` map `st` into `sr` (`hρst`). If `ofNormals Gs ends₀ q₀` is in general
+position and infinitesimally rigid on `sr`, and `ends₀` gives each link of `Gs` its ends in some
+order, then the renamed framework `ofNormals Gt` with the selector
+`e ↦ (ρ⁻¹ (ends₀ (σ e)).1, ρ⁻¹ (ends₀ (σ e)).2)` and the normals `q₀ ∘ ρ` is in general position and
+infinitesimally rigid on `st`, and its selector gives each link of `Gt` its ends in some order.
+These are the three conjuncts of the statement. It is `ofNormals_relabel` for any two permutations,
+which need not be involutions.
 
-The graph layer is abstracted into a single hypothesis: the two graphs `Gs` (source, KT's
-`v₁`-base split) and `Gt` (target, the candidate-`i` split) are `(ρ, σ)`-related by
-`hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` — exactly the shape `splitOff_isLink_relabel`
-proves for the d=3 swap pair, and the shape the arm closer supplies per candidate (a
-`shiftPerm`-relabel between two interior `splitOff`s). The rigidity region is abstracted into
-`sr`/`st` with the forward vertex transport `hρst : u ∈ st → ρ u ∈ sr`.
-
-The relabelled framework reads the original seed `q₀` at the `ρ`-shifted body
-(`qρ p := q₀ (ρ p.1, p.2)`) and the original endpoints `ρ.symm`-shifted
-(`endsσρ e := (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)`); the two `.symm`/forward choices
-make the support extensors agree across the relabel (`Q'.supportExtensor f = Q.supportExtensor
-(σ f)`) without an involution. The four conjuncts transport: **GP** by the injective `ρ`-reindex of
-`q₀`; **rigidity** by pulling a motion `S` of the target back to `S ∘ ρ.symm` of the source (each
-target link at `(ρ.symm p, ρ.symm p')` matches a source link `f p p'` through `hiso` at `σ.symm f`),
-which `Q`'s rigidity on `sr` forces constant, then forward `ρ` carries the conclusion to `st`;
-**link-recording** by the `.mp` direction of `hiso` through `ρ.symm`; **AlgIndep** by the injective
-`ρ`-reindex. When `ρ`, `σ` are the d=3 swaps (`ρ.symm = ρ`, `σ.symm = σ`) this is exactly
-`ofNormals_relabel`. -/
+The normals of the renamed framework are those of `q₀`, permuted by `ρ`. Its hinge at `f` is that of
+`ofNormals Gs ends₀ q₀` at `σ f`, so for an infinitesimal motion `S` of the renamed framework,
+`S ∘ ρ⁻¹` is one of `ofNormals Gs ends₀ q₀`, constant on `sr`, and `S` is constant on `st`. A link
+of `Gt` maps by `hiso` to a link of `Gs`, whose ends `ends₀` gives. No declaration uses it. -/
 theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
     (ρ : Equiv.Perm α) (σ : Equiv.Perm β) {sr st : Set α}
     (hiso : ∀ e x y, Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y))
@@ -173,26 +173,12 @@ theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
     · refine Or.inr ?_
       rw [h1]; exact Prod.ext (ρ.symm_apply_apply w) (ρ.symm_apply_apply u)
 
-/-- **The graph-iso genuine-row correspondence (CHAIN-2c-ii-arm, the genuine-row arm): an arbitrary
-relabel `(ρ, σ)` intertwining two graphs carries a genuine rigidity row of the source framework to a
-genuine rigidity row of the relabelled target framework** (`lem:case-III` general-`d`, KT 2011
-§6.4.2 the (6.62) row correspondence; Phase 23b). This is the row-membership half the all-`d`
-candidate-reduction arm (`chainData_relabel_arm`, 2c-ii) needs for the *genuine-row disjunct* of its
-`hwmem` slot — the cycle generalization of the d=3 `M₃` arm's genuine-row branch
-(`case_III_bottom_relabel`, the `Or.inl` cases where the swap fixes / moves a recorded endpoint),
-lifted from the single swap `Equiv.swap a v` to the whole `(i−1)`-cycle relabel `(shiftPerm i)⁻¹`.
-
-The geometry is abstracted exactly as in `ofNormals_relabel_perm`: the two graphs `Gs` (source, KT's
-`v₁`-base split) and `Gt` (target, the candidate-`i` split) are `(ρ, σ)`-related by
-`hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)`, the target framework reads the source seed
-`q₀` at the `ρ`-shifted body (`qρ p := q₀ (ρ p.1, p.2)`) and the source endpoints `ρ.symm`-shifted
-(`endsσρ e := (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)`); the matching `.symm`/forward
-choices make the support extensors agree across the relabel (`Q'.supportExtensor f =
-Q.supportExtensor (σ f)`, no involution needed). A genuine source row `hingeRow u w r` at the link
-`f` (with `r` in the `f`-hinge-row block) maps under `(funLeft ρ.symm).dualMap` to the genuine
-target row `hingeRow (ρ.symm u) (ρ.symm w) r` at the link `σ.symm f` (whose target support extensor
-equals the source one `r` annihilates). At the d=3 `M₃` swap (`ρ.symm = ρ`, `σ.symm = σ`) this is
-the `case_III_bottom_relabel` genuine-row branch. -/
+/-- **Renaming along an isomorphism takes rows to rows**: with `ρ`, `σ` and `hiso` as in
+`ofNormals_relabel_perm`, for a row `φ` of `ofNormals Gs ends₀ q₀`, the form `S ↦ φ (S ∘ ρ⁻¹)` is a
+row of the renamed framework. A row `hingeRow u w r` at a link `f` of `Gs` becomes
+`hingeRow (ρ⁻¹ u) (ρ⁻¹ w) r` (`hingeRow_funLeft_dualMap`), a row at the link `σ⁻¹ f` of `Gt`, whose
+hinge is that of `ofNormals Gs ends₀ q₀` at `f`. Only `rigidityRow_chainData_relabel` uses it, and
+no declaration uses that. -/
 theorem PanelHingeFramework.rigidityRow_relabel_perm {Gs Gt : Graph α β}
     (ρ : Equiv.Perm α) (σ : Equiv.Perm β)
     (hiso : ∀ e x y, Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y))
@@ -220,7 +206,7 @@ theorem PanelHingeFramework.rigidityRow_relabel_perm {Gs Gt : Graph α β}
   obtain ⟨f, u, w, hlink, r, hr, rfl⟩ := hφ
   rw [hQ_def, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
   rw [BodyHingeFramework.hingeRow_funLeft_dualMap]
-  -- The transported row `hingeRow (ρ.symm u) (ρ.symm w) r` is genuine in `Q'` at link `σ.symm f`.
+  -- The renamed row `hingeRow (ρ.symm u) (ρ.symm w) r` is a row of `Q'` at the link `σ.symm f`.
   refine ⟨σ.symm f, ρ.symm u, ρ.symm w, ?_, r, ?_, rfl⟩
   · -- the source link `f u w` is a target link at `(ρ.symm u, ρ.symm w)` via `hiso` at `σ.symm f`.
     rw [hQ'_def, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
@@ -232,25 +218,14 @@ theorem PanelHingeFramework.rigidityRow_relabel_perm {Gs Gt : Graph α β}
     rw [hQ_def] at hr ⊢
     exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
 
-/-- **The block-disjunct transport (CHAIN-2c-ii-arm, Leaf B): an arbitrary relabel `(ρ, σ)`
-intertwining two graphs carries a source `(ab)`-block candidate row `hingeRow a b ρ'` to a genuine
-rigidity row of the relabelled target framework, at any target edge `e_t` whose target support
-extensor equals the source `(ab)`-panel extensor** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the
-(6.39)/(6.62) `(ab)`-row correspondence; Phase 23b). This is the **block-disjunct** half of the
-all-`d` candidate-reduction arm's `hwmem` slot — the cycle generalization of the d=3 `M₃` arm's
-`(ab)`-block branch (`case_III_bottom_relabel`, the final `Or.inl` case mapping `hingeRow a b ρ'` to
-the genuine `e_b`-row `hingeRow v b ρ'`), lifted from the single swap `Equiv.swap a v` to the whole
-`(i−1)`-cycle relabel `(shiftPerm i)⁻¹`.
-
-The source row is the candidate `(ab)`-block tag `hingeRow a b ρ'` with `ρ'` annihilating the source
-`(ab)`-panel extensor `panelSupportExtensor (q₀ a) (q₀ b)` (the W6b bottom-family `(ab)`-block
-shape). Under `(funLeft ρ.symm).dualMap` it becomes `hingeRow (ρ.symm a) (ρ.symm b) ρ'`
-(`hingeRow_funLeft_dualMap`). The two graph-side facts the caller supplies place this as a genuine
-target row: `e_t` is a target link at `(ρ.symm a, ρ.symm b)` (the relabelled `(ab)`-edge survives in
-the candidate split — in d=3 `M₃`, `e_t = e_b` with `(ρ.symm a, ρ.symm b) = (v, b)`), and the target
-support extensor at `e_t` is exactly the source `(ab)`-panel extensor (`hsupp`, in d=3 from
-`ends₃ e_b = (v, b)` and `qρ(v,·) = q₀(a,·)`). At the d=3 `M₃` swap (`ρ.symm = ρ`) this is the
-`case_III_bottom_relabel` `(ab)`-block branch (`:1655–1670`). -/
+/-- **Renaming takes a form at the new edge to a row** (a step of
+`lem:case-III-chain-relabel-rows`): let `ρ'` vanish on `C(q₀(a), q₀(b))` (`hρ'`), and let `e_t` be a
+link of `Gt` from `ρ⁻¹ a` to `ρ⁻¹ b` (`hlink`) at which `ofNormals Gt endsσρ qρ` has the hinge
+`C(q₀(a), q₀(b))` (`hsupp`). Then the form `S ↦ hingeRow a b ρ' (S ∘ ρ⁻¹)`, which is
+`hingeRow (ρ⁻¹ a) (ρ⁻¹ b) ρ'`, is a row of `ofNormals Gt endsσρ qρ` at `e_t`.
+`chainData_bottom_relabel` uses it for the forms at the new edge `v₀v₂` of `G_1`, which the inverse
+of the cycle `shiftPerm i.castSucc` takes to the edge `v₀v₁` of `G − v_i` (KT eq. (6.62), p. 696).
+-/
 theorem PanelHingeFramework.blockRow_relabel_perm {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
     {a b : α} {q₀ : α × Fin (k + 2) → K} {e_t : β}
@@ -267,37 +242,17 @@ theorem PanelHingeFramework.blockRow_relabel_perm {Gt : Graph α β}
   · rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; exact hlink
   · rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]; exact hρ'
 
-/-- **The moving-genuine-row (interior-chain-edge) transport (CHAIN-2c-ii-arm, the genuine-row
-disjunct's interior-chain-edge branch): a base genuine rigidity row whose link endpoints the relabel
-`ρ` carries to a *different* pair of bodies that still span a surviving target link transports under
-`(funLeft ρ.symm).dualMap` to a genuine rigidity row of the relabelled target framework**
-(`lem:case-III` general-`d`, KT 2011 §6.4.2 the (6.62) one-step-down row correspondence
-`vⱼ₋₁vⱼ ⇐⇒ vⱼvⱼ₊₁`; Phase 23b).
+/-- **Renaming takes a row at a link to a row at a link** (a step of
+`lem:case-III-chain-relabel-rows`): let `r` vanish on the hinge of `ofNormals Gs ends₀ q₀` at `f`
+(`hr`), let `ρ⁻¹` take `u` and `w` to `u'` and `w'` (`hu`, `hw`), and let `f'` be a link of `Gt`
+from `u'` to `w'` (`hlinkGt`) at which `ofNormals Gt endsσρ qρ` has the hinge of
+`ofNormals Gs ends₀ q₀` at `f` (`hsupp`). Then the form `S ↦ hingeRow u w r (S ∘ ρ⁻¹)`, which is
+`hingeRow u' w' r`, is a row of `ofNormals Gt endsσρ qρ` at `f'`.
 
-This is the **interior-chain-edge / moving branch** of the genuine-row disjunct of the all-`d`
-candidate-reduction arm's `hwmem` slot (`chainData_bottom_relabel`, 2c-ii) — the genuinely-new
-branch the `d=3` `M₃` arm has no analogue of (at `d = 3` the cycle is the single swap `(v₁ v₂)`, so
-the chain interior is trivial and a moved genuine endpoint can only be the candidate fresh pair,
-i.e. the wrap-edge → block branch). At general `d` the inverse-cycle relabel `(shiftPerm i)⁻¹`
-sends an interior chain edge `edge s` (link `vₛvₛ₊₁`, `2 ≤ s ≤ i−1`) **down one step** to
-`edge (s−1)` (link `vₛ₋₁vₛ`) — both endpoints survive `removeVertex vᵢ` (their indices are `< i`),
-so the image stays a
-**genuine** row of the candidate split, not a block tag (KT (6.62) `e_j ⇐⇒ e_{j−1}`).
-
-This is the **removeVertex-level** transport the arm engine `case_III_arm_realization` needs (it
-binds `hwmem` at `ofNormals (G.removeVertex …) …`, **not** at a split, so the split-level
-`rigidityRow_relabel_perm` is orphaned-for-the-arm; design §(o‴)(I.5)/(I.6)). It strictly subsumes
-the sibling off-cycle branch `rigidityRow_relabel_off_cycle` (which delegates to it at
-`(u', w', f') = (u, w, f)`): there the relabel *fixes* both endpoints and the target link is the
-same edge `f`; here the relabel *moves* both endpoints (`hu : ρ.symm u = u'`, `hw : ρ.symm w = w'`
-with `u' ≠ u` / `w' ≠ w` in general) and the target link is the *shifted* edge `f'`
-(`hlinkGt : Gt.IsLink f' u' w'`). The seed/selector coincidence collapses, as in the off-cycle
-sibling, to the support-extensor equality `hsupp : Q'.supportExtensor f' = Q.supportExtensor f` (the
-caller discharges it from the chain step's seed-shift cancellation + the chain-edge correspondence —
-both bodies move one step, so the relabelled `qρ`-extensor at `f'` reads exactly the base
-`q₀`-extensor at `f`). The transported row `hingeRow (ρ.symm u) (ρ.symm w) r = hingeRow u' w' r`
-(`hu`/`hw`) is then a genuine target row at the shifted link `f'` (whose target support extensor `r`
-annihilates by `hr` + `hsupp`). -/
+`chainData_bottom_relabel` uses it for each row of `R(G − v₁, q)` whose ends the inverse of the
+cycle `shiftPerm i.castSucc` takes to the ends of an edge of `G − v_i`: an edge `v_l v_{l+1}` with
+`2 ≤ l ≤ i − 1` goes to `v_{l−1} v_l`, and an edge with no end among `v₁, …, v_i` to itself (KT
+eq. (6.62), p. 696). -/
 theorem PanelHingeFramework.rigidityRow_relabel_to_genuine {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
@@ -316,33 +271,9 @@ theorem PanelHingeFramework.rigidityRow_relabel_to_genuine {Gt : Graph α β}
   · rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]
     exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
 
-/-- **The off-cycle (fixed-endpoint) genuine-row transport (CHAIN-2c-ii-arm, the genuine-row
-disjunct's off-cycle branch): a base genuine rigidity row whose link endpoints are BOTH fixed by the
-relabel `ρ` transports under `(funLeft ρ.symm).dualMap` to a genuine rigidity row of the relabelled
-target framework, given a target link at the (unmoved) endpoints whose target support extensor
-agrees with the source's** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the (6.62) row correspondence
-at a non-cycle body; Phase 23b).
-
-This is the **off-cycle / surviving-link branch** of the genuine-row disjunct of the all-`d`
-candidate-reduction arm's `hwmem` slot (`chainData_bottom_relabel`, 2c-ii) — the
-**removeVertex-level** transport the arm engine `case_III_arm_realization` actually needs (the
-engine binds `hwmem` at `ofNormals (G.removeVertex …) …`, **not** at a split, so the split-level
-`rigidityRow_relabel_perm` is orphaned-for-the-arm; design §(o‴)(I.5)/(I.6)). It is the cycle
-generalization of the d=3 `M₃` arm's genuine-row branch (`case_III_bottom_relabel`, the final
-`Or.inl` case where the swap fixes both recorded endpoints, `:1690–1725`), lifted from the single
-swap `Equiv.swap a v` to the whole `(i−1)`-cycle relabel `(shiftPerm i)⁻¹`.
-
-The graph layer is abstracted into the two facts the caller supplies for this branch: the relabel
-`ρ` fixes both endpoints (`hu : ρ.symm u = u`, `hw : ρ.symm w = w` — `u`, `w` lie off the
-`(i−1)`-cycle, where `shiftPerm` is the identity, via `shiftPerm_inv_apply_off`), and the source
-link `f u w` survives into the target graph `Gt` (`hlinkGt`, here `Gt = G.removeVertex (vtxᵢ)`:
-both endpoints avoid the removed vertex because they avoid the whole cycle). The seed/selector
-coincidence collapses to the support-extensor equality `hsupp : Q'.supportExtensor f =
-Q.supportExtensor f` (the caller discharges it from `seedShift_off_cycle`, the off-cycle seed
-coincidence `qρ = q₀` at the fixed endpoints — the cycle generalization of the d=3 `M₃` arm's
-`qρ = q` step at endpoints `∉ {a, v}`). The transported row
-`hingeRow (ρ.symm u) (ρ.symm w) r = hingeRow u w r` (`hu`/`hw`) is then a genuine target row at the
-same link `f` (whose target support extensor `r` annihilates by `hr` + `hsupp`). -/
+/-- **Renaming takes a row at a link with fixed ends to a row at the same link**:
+`rigidityRow_relabel_to_genuine` when `ρ⁻¹` fixes `u` and `w` (`hu`, `hw`) and `f` itself is a link
+of `Gt` from `u` to `w` (`hlinkGt`). No declaration uses it. -/
 theorem PanelHingeFramework.rigidityRow_relabel_off_cycle {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
@@ -355,34 +286,16 @@ theorem PanelHingeFramework.rigidityRow_relabel_off_cycle {Gt : Graph α β}
     (LinearMap.funLeft K (ScrewSpace K k) ρ.symm).dualMap
         (BodyHingeFramework.hingeRow u w r) ∈
       (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.rigidityRows :=
-  -- The fixed-endpoint instance of the moving brick `rigidityRow_relabel_to_genuine`
-  -- (`(u', w', f') = (u, w, f)`): both endpoints unmoved, target link the same edge `f`.
+  -- `rigidityRow_relabel_to_genuine` at `(u', w', f') = (u, w, f)`.
   PanelHingeFramework.rigidityRow_relabel_to_genuine ρ hr hu hw hlinkGt hsupp
 
-/-- **The moved-endpoint genuine-row → `(a,b)`-block transport (CHAIN-2c-ii-arm, the genuine-row
-disjunct's wrap-edge branch): a base genuine rigidity row whose link endpoints the relabel `ρ` sends
-to the candidate's fresh-edge endpoints `(a, b)` transports under `(funLeft ρ.symm).dualMap` to the
-candidate `(a,b)`-BLOCK disjunct of the all-`d` candidate-reduction arm's `hwmem` slot**
-(`lem:case-III` general-`d`, KT 2011 §6.4.2 the (6.62) wrap-edge correspondence
-`vᵢvᵢ₊₁ ↦ vᵢ₋₁vᵢ₊₁`; Phase 23b).
-
-This is the **moving / wrap-edge branch** of the genuine-row disjunct of `chainData_bottom_relabel`
-(2c-ii): the base genuine row sits at the chain's top (wrap) edge `edge i` (link `vᵢvᵢ₊₁`), and the
-inverse-cycle relabel `(shiftPerm i)⁻¹` carries it to the candidate-`i` split's fresh short-circuit
-pair `(a, b) = (vᵢ₊₁, vᵢ₋₁)` — which is **not** a `G`-edge (it is the candidate's `e₀`), so the
-image lands in the candidate `(a,b)`-block disjunct rather than a genuine target row. It is the
-cycle generalization of the d=3 `M₃` arm's `x = a` / `y = a` genuine-row branches
-(`case_III_bottom_relabel`, `:1685–1734`, the degree-2 body's only edge mapping to the candidate
-block), lifted from the single swap `Equiv.swap a v` to the whole `(i−1)`-cycle relabel.
-
-The graph layer is abstracted into the two facts the caller supplies for this branch: the relabel
-`ρ` sends the recorded source endpoints to the candidate fresh-edge endpoints (`hu : ρ.symm u = a`,
-`hw : ρ.symm w = b`), and the candidate `(a,b)`-panel extensor (read at the relabelled seed `qρ`)
-coincides with the source `f`-extensor `r` annihilates (`hsupp`, the cycle generalization of the d=3
-`M₃` arm's `qρ(v,·) = q₀(a,·)` seed-coincidence step). With `ρ' := r` the transported row
-`hingeRow (ρ.symm u) (ρ.symm w) r = hingeRow a b r` (`hu`/`hw`) is then the `(a,b)`-block tag whose
-functional annihilates the candidate `(a,b)`-panel extensor (`hsupp` + `hr`). At the d=3 `M₃`
-involution case (`i = 2`, `ρ.symm = ρ`) this is the `case_III_bottom_relabel` block branch. -/
+/-- **Renaming takes a row to a form at the new edge**: let `r` vanish on the hinge of
+`ofNormals Gs ends₀ q₀` at `f` (`hr`), let `ρ⁻¹` take `u` and `w` to `a` and `b` (`hu`, `hw`), and
+let `C(qρ(a), qρ(b))` be that hinge (`hsupp`). Then the form `S ↦ hingeRow u w r (S ∘ ρ⁻¹)` is
+`hingeRow a b ρ'` for a form `ρ'`, here `r`, that vanishes on `C(qρ(a), qρ(b))`. This is the case of
+the edge `v_i v_{i+1}` of `G_1`, whose ends the inverse of the cycle `shiftPerm i.castSucc` takes to
+those of the new edge `v_{i−1} v_{i+1}` of `G_i` (KT eq. (6.62), p. 696); `chainData_bottom_relabel`
+makes this step itself. No declaration uses it. -/
 theorem PanelHingeFramework.rigidityRow_relabel_to_block
     (ρ : Equiv.Perm α) {qρ : α × Fin (k + 2) → K}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
@@ -399,24 +312,9 @@ theorem PanelHingeFramework.rigidityRow_relabel_to_block
   · rw [hsupp]; exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
   · rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw]
 
-/-- **The swapped-orientation moved-endpoint genuine-row → `(a,b)`-block transport (CHAIN-2c-ii-arm,
-the genuine-row disjunct's wrap-edge branch, `(b,a)`-order): the `(b,a)`-order sibling of
-`rigidityRow_relabel_to_block`** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the (6.62) wrap-edge
-correspondence; Phase 23b). Same statement as `rigidityRow_relabel_to_block` except the relabel
-`ρ` sends the recorded source endpoints to the candidate fresh-edge endpoints in the **reversed**
-order (`hu : ρ.symm u = b`, `hw : ρ.symm w = a`) — the orientation `ends₀ (edge i)` records the top
-edge `vᵢvᵢ₊₁` in when the assembly's per-row dispatch hits the wrap edge in the opposite recorded
-sense.
-
-The two block bricks together let the assembly's wrap case dispatch BOTH `ends₀ (edge i)`
-orientations. It models the d=3 `M₃` arm's ±r handling of the candidate block branch
-(`case_III_bottom_relabel`, `:1790–1821`, the `x = a` / `y = a` sub-cases tagging RIGHT with
-`ρ' := ±r` depending on which recorded endpoint the swap moves). With `ρ' := -r` the transported
-row `hingeRow (ρ.symm u) (ρ.symm w) r = hingeRow b a r = hingeRow a b (-r)`
-(`hingeRow_funLeft_dualMap` + `hu`/`hw` + `hingeRow_swap`) is the `(a,b)`-block tag; the negated
-functional `-r` still annihilates the candidate `(a,b)`-panel extensor (`hsupp` + `hr`, via
-`LinearMap.neg_apply` + `neg_eq_zero`). At the d=3 `M₃` involution case (`i = 2`, `ρ.symm = ρ`)
-this is the `case_III_bottom_relabel` `Or.inr ⟨-r, …⟩` block sub-case. -/
+/-- **Renaming takes a row to a form at the new edge, ends exchanged**:
+`rigidityRow_relabel_to_block` when `ρ⁻¹` takes `u` and `w` to `b` and `a` (`hu`, `hw`); then
+`ρ' = −r`, as `hingeRow b a r = hingeRow a b (−r)` (`hingeRow_swap`). No declaration uses it. -/
 theorem PanelHingeFramework.rigidityRow_relabel_to_block_swap
     (ρ : Equiv.Perm α) {qρ : α × Fin (k + 2) → K}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
@@ -434,22 +332,14 @@ theorem PanelHingeFramework.rigidityRow_relabel_to_block_swap
     exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
   · rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw, BodyHingeFramework.hingeRow_swap]
 
-/-- **The `ChainData` genuine-row `hwmem` disjunct (CHAIN-2c-ii-arm wiring): the interior-candidate
-genuine-row transport, instantiating `rigidityRow_relabel_perm` at the index-shift relabel
-`(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`** (`lem:case-III` general-`d`, KT 2011 §6.4.2
-eqs.~(6.54)/(6.62) the one-step-down row correspondence; Phase 23b). For an interior candidate index
-`2 ≤ i ≤ d−1` (`1 < i`, the nondegenerate cycle), a genuine rigidity row `φ` of the `v₁`-base split
-framework `ofNormals (G.splitOff v₁ v₀ v₂ e₀) ends₀ q` maps under
-`(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` to a genuine rigidity row of the candidate-`i` split
-framework `ofNormals (G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀) endsσρ qρ` — where `qρ = q ∘ shiftPerm i.castSucc`
-(KT (6.56), the candidate seed `qᵢ = q₁ ∘ ρᵢ`) and `endsσρ` the `(shiftPerm i.castSucc)⁻¹`-shifted
-selector. This is the genuine-row disjunct the relabel arm's `hwmem` slot feeds the engine
-`case_III_arm_realization` at the per-`i` roles: the abstract brick `rigidityRow_relabel_perm`
-(graph-iso `(ρ, σ)`) instantiated at the `ChainData` graph-iso
-`splitOff_isLink_shiftRelabel_iff` (the candidate split and the base split intertwined by
-`(shiftPerm i.castSucc, shiftEdgePerm i)`). At the `d = 3` `M₃` instance `i = 2` the cycle
-`shiftPerm 2 = (v₁ v₂)` is the single swap and this is the `case_III_bottom_relabel` genuine-row
-branch. -/
+/-- **Renaming takes the rows of `(G_1, q)` to rows of `(G_i, q_i)`**: for a chain `v₀ ⋯ v_d` and
+`1 < i < d`, the form `S ↦ φ (S ∘ π⁻¹)`, for `π` the cycle `shiftPerm i.castSucc` and a row `φ` of
+`ofNormals G_1 ends₀ q`, where `G_1 = G.splitOff v₁ v₂ v₀ e₀`, is a row of the framework on
+`G_i = G.splitOff v_i v_{i+1} v_{i−1} e₀` with the renamed selector and the normals `q ∘ π`. This is
+`rigidityRow_relabel_perm` at `(shiftPerm i.castSucc, shiftEdgePerm i)`, which map the links of
+`G_i` to those of `G_1` (`splitOff_isLink_shiftRelabel_iff`; KT's isomorphism `ρᵢ`, eq. (6.54),
+p. 694). No declaration uses it: `lem:case-III-chain-relabel-rows` renames the rows of
+`R(G − v₁, q)` and the forms at the new edge of `G_1` (`chainData_bottom_relabel`). -/
 theorem PanelHingeFramework.rigidityRow_chainData_relabel
     [DecidableEq α] [DecidableEq β] {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
@@ -470,36 +360,38 @@ theorem PanelHingeFramework.rigidityRow_chainData_relabel
   PanelHingeFramework.rigidityRow_relabel_perm (cd.shiftPerm i.castSucc) (cd.shiftEdgePerm i)
     (fun _ _ _ => cd.splitOff_isLink_shiftRelabel_iff i hi) hφ
 
-/-- **G4c-ii (fixed-seed form): the `ρ = (av)` relabel transports the concrete v-split `ofNormals`
-data to the concrete a-split `ofNormals` data at the SAME seed `q₀ ∘ ρ`**
-(`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31) framework side, Phase 22h).
+/-! ## The realization of `G_a^{vc}` (`lem:splitOff-ofNormals-relabel`,
+`lem:splitOff-rigidityRows-relabel`)
 
-This is the transport in the **producer's direction**: the induction hypothesis realizes the
-`v`-split `G.splitOff v a b e₀` (`G_v^{ab}` in KT) concretely as `ofNormals (G.splitOff v a b e₀)
-ends₀ q₀` with the three generic-realization conjuncts (general position, rigidity on `V(G)∖{v}`,
-link-recording), and the `M₃` arm of the Case-III producer needs the SAME
-data on the `a`-split `G.splitOff a v c e₁` (`G_a^{vc}`) at the SAME seed transported by
-`ρ = Equiv.swap a v` — *not* a fresh existential realization (an independent realization has a
-different seed, hence different `λ`s and a different `r̂`, collapsing the eq.-(6.44) trichotomy;
-KT §6.4.1, eqs. (6.31)/(6.44)). So the lemma is stated at the `ofNormals` level, naming the
-relabelled construction explicitly with
+In the case `d = 3`, Katoh and Tanigawa build their third framework `(G, p_3)` on a realization of
+`G_a^{vc}` with the panels of `(G_v^{ab}, q)`, through an isomorphism `ρ` from `G_a^{vc}` to
+`G_v^{ab}` (KT pp. 686–687 and eq. (6.31)). Here `ρ` is the transposition of `a` and `v`, and the
+permutation of the labels is that of `lem:splitOff-isLink-relabel`. No main result uses these
+lemmas: the proof of `lem:case-III` renames the bodies by the permutations of
+`lem:case-III-chain-relabel-rows`, and the proof of the case `d = 3` (`case_III_candidate_dispatch`)
+does not use them either (the note after `lem:case-III-chain-dispatch`). -/
 
-* edge permutation `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`,
-* seed `qρ (x, i) := q₀ (ρ x, i)` (the original seed reindexed by `ρ`),
-* selector `endsσρ e := (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)`,
+/-- **A realization of `G_a^{vc}`** (`lem:splitOff-ofNormals-relabel`; KT eq. (6.31), p. 687): let
+`v`, `a`, `b` and `c` be vertices of `G`, with `a`, `b` and `c` other than `v` and `c ≠ a`, such
+that the edges of `G` at `v` are `eₐ : va` and `e_b : vb` (`hclv`) and those at `a` are `eₐ` and
+`e_c : ac` (`hcla`), and let `e₀ ≠ e₁` outside `E(G)` label the new edges `ab` of
+`G_v^{ab} = G.splitOff v a b e₀` and `vc` of `G_a^{vc} = G.splitOff a v c e₁`. Let `ρ` be the
+transposition of `a` and `v`, and `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` the permutation of the
+labels of `lem:splitOff-isLink-relabel`. If `ofNormals G_v^{ab} ends₀ q₀` is in general position and
+infinitesimally rigid on `V(G_v^{ab})`, and `ends₀` gives each link of `G_v^{ab}` its ends in some
+order, then `ofNormals G_a^{vc}` with the selector `e ↦ (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)` and
+the normals `q₀ ∘ ρ` is in general position and infinitesimally rigid on `V(G_a^{vc})`, and its
+selector gives each link of `G_a^{vc}` its ends in some order. These are the three conjuncts of the
+statement.
 
-so the producer and `G4d-ii` can name the relabelled framework `ofNormals (G.splitOff a v c e₁)
-endsσρ qρ` directly (its row-space correspondence is `rigidityRows_ofNormals_relabel`, below).
-
-The four conjuncts transport via the graph-level iso `G4c-i` (`Graph.splitOff_isLink_relabel`),
-which `ρ`/`σ` intertwine. **GP:** `qρ`'s normals are `q₀`'s reindexed by the injective `ρ`.
-**Rigidity:** a motion `S` of the `a`-split framework pulls back to the motion `S ∘ ρ` of the
-`v`-split framework (using `splitOff_isLink_relabel` to move each `a`-split link to a `v`-split
-link, and the support-extensor equality across the two `ofNormals` terms); the `v`-split rigidity
-on `V(G)∖{v}` then forces `S` constant on `V(G)∖{a}` since `ρ` maps `V(G)∖{a} → V(G)∖{v}`
-bijectively. **Link-recording:** each `a`-split link maps forward to a `v`-split link whose
-endpoints `ends₀` records, transported through `ρ`. **AlgIndep:** `qρ` is an injective `ρ`-reindex
-of `q₀`. -/
+The normals `q₀ ∘ ρ` are those of `q₀`, permuted. As `ρ` and `σ` are involutions (`hσσ_relabel`),
+the hinge of the new framework at `f` is that of `ofNormals G_v^{ab} ends₀ q₀` at `σ f`, and `σ f`
+joins `ρ x` and `ρ y` in `G_v^{ab}` when `f` joins `x` and `y` in `G_a^{vc}`
+(`Graph.splitOff_isLink_relabel`). So for an infinitesimal motion `S` of the new framework, `S ∘ ρ`
+is one of `ofNormals G_v^{ab} ends₀ q₀`, constant on `V(G_v^{ab}) = V(G) ∖ {v}`, and `S` is constant
+on `V(G) ∖ {a} = V(G_a^{vc})`, which `ρ` maps onto `V(G) ∖ {v}`. A link of `G_a^{vc}` maps to a link
+of `G_v^{ab}`, whose ends `ends₀` gives. No declaration uses it but
+`hasGenericFullRankRealization_of_splitOff_relabel`. -/
 theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
@@ -614,20 +506,16 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     · refine Or.inr ?_
       rw [h1]; exact Prod.ext (hρρ w) (hρρ u)
 
-/-- **G4c-ii (row-space correspondence): the relabelled `a`-split framework's rigidity rows are the
-image of the `v`-split framework's under the dual of the `ρ`-coordinate permutation** (the
-deliverable `G4d-ii` consumes; KT 2011 eqs. (6.31)/(6.44), Phase 22h).
+/-- **The rows of the realization of `G_a^{vc}`** (`lem:splitOff-rigidityRows-relabel`; KT
+eq. (6.31), p. 687): with `G`, `v`, `a`, `b`, `c`, the labels, `ρ = Equiv.swap a v` and `σ` as in
+`ofNormals_relabel`, and for every selector `ends₀` and normals `q₀`, the rows of
+`ofNormals G_a^{vc}` with the selector `e ↦ (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)` and the normals
+`q₀ ∘ ρ` are the forms `S ↦ φ (S ∘ ρ)` for the rows `φ` of `ofNormals G_v^{ab} ends₀ q₀`.
 
-The coordinate-relabel map `LinearMap.funLeft K (ScrewSpace K k) ρ : (α → ScrewSpace K k) →ₗ[K]
-(α → ScrewSpace K k)`, `S ↦ S ∘ ρ`, has dual `(funLeft K _ ρ).dualMap` sending `φ ↦ φ ∘ (· ∘ ρ)`.
-Under it, each rigidity row `hingeRow u w r` of the `a`-split framework `ofNormals (G.splitOff a v c
-e₁) endsσρ qρ` is the image of the `v`-split framework's row `hingeRow (ρ u) (ρ w) r` — because
-`ρ ∘ ρ = id`, `(funLeft ρ).dualMap (hingeRow (ρ u) (ρ w) r) = hingeRow u w r`. As `G4c-i`
-(`Graph.splitOff_isLink_relabel`) puts the two graphs' links in `ρ`-correspondence and the
-hinge-row blocks at corresponding edges coincide (the same support extensor, by the same `q₀`
-reindex as in `ofNormals_relabel`), the two rigidity-row *sets* correspond exactly under
-`(funLeft ρ).dualMap`. This is the row-space identity the eq.-(6.44) `M₃` candidate-row membership
-step transports across. -/
+A row `hingeRow u w r` of the new framework at a link `f` is the image of the row
+`hingeRow (ρ u) (ρ w) r` at the link `σ f` of `G_v^{ab}` (`Graph.splitOff_isLink_relabel`), as `ρ`
+is an involution, and the two links have the same hinge, so the same block of rows. No main result
+uses it (the note after `lem:case-III-chain-dispatch`). -/
 theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [DecidableEq β]
     {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
@@ -707,15 +595,14 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [Dec
     · have := hdual (ρ u) (ρ w) r
       rwa [hρρ, hρρ] at this
 
-/-- **G4c-ii (existential corollary): the producer-direction transport at the level of the
-existential motive** (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31); Phase 22h). A short
-consequence of the fixed-seed `ofNormals_relabel`: a generic full-rank realization of the `v`-split
-`G.splitOff v a b e₀` (`G_v^{ab}`) transports to one of the `a`-split `G.splitOff a v c e₁`
-(`G_a^{vc}`) at the relabelled seed `q₀ ∘ ρ`. This is the *producer's* direction (it consumes the
-IH at the `v`-split, the form `theorem_55_minimalKDof_k_all_k`'s `hsplitZero` branch supplies, and
-yields the `a`-split datum the `M₃` arm needs); the fixed-seed form above is the load-bearing one,
-since the producer reads the concrete `ofNormals` framework and its row-space correspondence
-(`rigidityRows_ofNormals_relabel`), not the bare existential. -/
+/-- **A generic full-rank realization of `G_a^{vc}`** (`lem:splitOff-ofNormals-relabel`, its last
+claim; KT eq. (6.31), p. 687): with `G`, `v`, `a`, `b`, `c` and the labels as in
+`ofNormals_relabel`, if `G_v^{ab}` and `G_a^{vc}` have deficiency `0` and `G_v^{ab}` has a generic
+full-rank realization, then so has `G_a^{vc}`. At deficiency `0` the realization of `G_v^{ab}` has
+the rank `D(|V(G_v^{ab})| − 1)`, so it is infinitesimally rigid on `V(G_v^{ab})`
+(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`); `ofNormals_relabel` gives a
+framework on `G_a^{vc}`, infinitesimally rigid on `V(G_a^{vc})`, hence of the rank
+`D(|V(G_a^{vc})| − 1)` (`finrank_span_rigidityRows_of_rigidOn`). No declaration uses it. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [Finite α]
     {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
@@ -781,7 +668,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     rw [← hVncard_out]
     rw [← hVncard_out] at h1_out
     zify [h1_out] at hW2 ⊢; exact_mod_cast hW2
-  -- Repackage the link conjunct from Prod-equality form into the motive's And/Or form.
+  -- The link conjunct, from equalities of pairs to equalities of their components.
   refine ⟨_, rfl, hgp, hrank_out, fun e u w he => ?_⟩
   rcases hrec e u w he with h1 | h1
   · exact Or.inl ⟨by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).1],
@@ -789,20 +676,11 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
   · exact Or.inr ⟨by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).1],
       by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).2]⟩
 
-/-- **G4c-ii (membership transport): a `v`-split rigidity-row-span member transports to the
-relabelled `a`-split rigidity-row span under the dual of the `ρ`-coordinate permutation**
-(`lem:splitOff-rigidityRows-relabel`, the membership corollary of `rigidityRows_ofNormals_relabel`;
-KT 2011 eqs.~(6.31)/(6.44), Phase 22h). The `M₃` arm of the Case-III producer reads its candidate
-row off the `v`-split framework `R(G_v^{ab}, q)` (G4d-ii gives `hingeRow a c r̂ ∈ span` there), but
-the `a`-split realization it actually places is `ofNormals (G.splitOff a v c e₁) endsσρ qρ`. This is
-the transport across the relabel: since the two frameworks' rigidity-row *sets* correspond exactly
-under `(funLeft ρ).dualMap` (`rigidityRows_ofNormals_relabel`), the span of one is the
-`Submodule.map`-image of the span of the other (`Submodule.span_image`), so any `φ` in the `v`-split
-span sends to `(funLeft ρ).dualMap φ` in the `a`-split span (`Submodule.mem_map_of_mem`). Composed
-with `hingeRow_funLeft_dualMap` (which evaluates `(funLeft ρ).dualMap (hingeRow u w r) =
-hingeRow (ρ u) (ρ w) r` for the involution `ρ = (a v)`), this is exactly the `M₃` candidate-row
-membership the arm needs: `hingeRow a c r̂ ∈ span(v-split) ↦ hingeRow v c r̂ ∈ span(a-split)`
-(`ρ a = v`, `ρ c = c`). Graph-free over the carrier beyond the relabel lemma it invokes. -/
+/-- **Renaming takes the row space of `(G_v^{ab}, q)` into that of the realization of `G_a^{vc}`**:
+with the hypotheses of `rigidityRows_ofNormals_relabel`, for every `φ` in the span of the rows of
+`ofNormals G_v^{ab} ends₀ q₀`, the form `S ↦ φ (S ∘ ρ)` lies in the span of the rows of the new
+framework, by `rigidityRows_ofNormals_relabel` and `Submodule.span_image`. No declaration uses it.
+-/
 theorem PanelHingeFramework.mem_span_rigidityRows_ofNormals_relabel [DecidableEq α] [DecidableEq β]
     {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
@@ -825,27 +703,35 @@ theorem PanelHingeFramework.mem_span_rigidityRows_ofNormals_relabel [DecidableEq
       heab heac hclv hcla he₀ he₁ he₁₀ ends₀ q₀, Submodule.span_image]
   exact Submodule.mem_map_of_mem hφ
 
-/-- **W9a — the short-circuit-free relabel transport** (the `M₃` candidate/bottom-row span-induction
-core, design §1.52(b); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.31)/(6.39), Phase 22h). The G4d-i sibling
-that transports a vector in the span of the `v`-split framework `Fv`'s rigidity rows across the
-vertex relabel `(a v)` *with the `e_c`-content stripped*: for any `φ ∈ span Fv.rigidityRows`,
-$$(\mathrm{funLeft}\,(a\,v)).\mathrm{dualMap}\,\varphi
-\;-\; \mathrm{hingeRow}\;v\;c\;(\varphi\circ\mathrm{single}\,a)
-\;\in\; \mathrm{span}\;F_{va}.\mathrm{rigidityRows},$$
-where `Fva` is a second framework (concretely the `G − a` framework) whose links and hinge-row
-blocks agree with `Fv` off body `a` (`htrans`).
+/-! ## Moving a body in a combination of rows
 
-This is the relabel half of KT's eq.~(6.39) row correspondence read functional-wise. Under the
-degree-2-at-`a` hypothesis (the only `Fv`-links touching `a` are `e_c = ac`), the relabel
-`(funLeft (a v)).dualMap` of a generator `hingeRow x y r` lands in the target row span after the
-subtracted `a`-column hinge row cancels the `e_c`-content: a generator at `e_c` (endpoint `a`) maps
-to `hingeRow v c r`, which the subtracted `hingeRow v c (φ ∘ single a) = hingeRow v c (±r)` exactly
-cancels; an off-`a` generator is fixed by the swap (its endpoints avoid both `a` and `v`) and
-survives into `Fva`'s rows via `htrans`. The candidate-functional `hρGv`-slot of the `M₃` arm (W9c)
-reads this at `φ := hingeRow a b ρ`. Unlike the superseded `mem_span_rigidityRows_ofNormals_relabel`
-(whose `a`-split span target cannot strip the short-circuit `e₁`-block post hoc), this concludes
-directly in the `G − a`-row span. Graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read
-only `graph`/`hingeRowBlock`), so the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+Steps of `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-eq666`. Let `a` be a body
+whose only edge in a framework `Fv` joins it to `c`, and `v` a body that no edge of `Fv` meets. For
+a form `φ` in the span of the rows of `Fv`, the form `S ↦ φ (S ∘ τ)`, for the transposition `τ` of
+`a` and `v`, minus the form `S ↦ x(S(v) − S(c))`, for the restriction `x` of `φ` to the screw
+assignments that vanish off `a`, lies in the span of the rows of a framework `Fva` in which `v`
+takes the place of `a`. In the case `d = 3` this gives the form `S ↦ r(S(v) − S(c))` of the third
+framework (the note after `lem:case-III-claim612-p3-placement`); along a chain, the move is made at
+one vertex after another. -/
+
+/-- **Moving the body `a` to `v` in a combination of rows** (a step of
+`lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-eq666`): let `e_c` join `a` to `c` in
+`Fv`, where `c ≠ a` and `c ≠ v`, let `e_c` be the only link of `Fv` at `a` (`hdeg2`, `hdeg2r`), let
+no link of `Fv` meet `v` (`hnov`), and let every link of `Fv` that does not meet `a` be a link of
+`Fva` whose block of rows in `Fva` contains that in `Fv` (`htrans`). Then for every `φ` in the span
+of the rows of `Fv`, the form `(funLeft τ).dualMap φ − hingeRow v c (φ ∘ single a)`, that is,
+`S ↦ φ (S ∘ τ) − x(S(v) − S(c))` for the transposition `τ` of `a` and `v` and the restriction
+`x = φ ∘ single a` of `φ` to the screw assignments that vanish off `a`, lies in the span of the rows
+of `Fva`.
+
+As no link of `Fv` meets `v`, `φ (S ∘ τ)` is `φ` at the screw assignment `S'` that agrees with `S`
+but has `S'(a) = S(v)`, as in the proof of `lem:case-III-claim612-p3-placement`. The proof is by
+induction on the span: a row `hingeRow a c r` at `e_c` goes to `hingeRow v c r`, which the
+subtracted form cancels, and so does a row `hingeRow c a r`; a row at a link that meets neither `a`
+nor `v` is fixed, and it is a row of `Fva` by `htrans`. `case_III_arm_realization_M3` applies it at
+`φ = hingeRow a b ρ`, with `Fv` and `Fva` on `G − v` and `G − a`, and `wstep` makes it a linear map
+for a chain. Its frameworks are arbitrary, so the proof never unfolds a caller's `ofNormals`
+(TACTICS-QUIRKS §38). -/
 theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     [DecidableEq α] {Fv Fva : BodyHingeFramework K k α β}
     {v a c : α} {e_c : β}
@@ -920,8 +806,9 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
           hingeRow_swap c a r, hingeRow_comp_single_tail hca.symm, ← hingeRow_eq_dualMap,
           hingeRow_swap v c (-r), neg_neg, sub_self]
         exact Submodule.zero_mem _
-      · -- x ≠ a, y ≠ a: the swap fixes both endpoints (they also avoid v by hnov), the a-column
-        -- is 0, so the result is the generator itself — a genuine Fva-row via htrans.
+      · -- x ≠ a, y ≠ a: the transposition fixes both ends (they are not `v` either, by `hnov`), and
+        -- the restriction to `a` is 0, so the result is the generator itself, a row of `Fva` by
+        -- `htrans`.
         obtain ⟨hxv, hyv⟩ := hnov f x y hlink
         obtain ⟨hlink', hble⟩ := htrans f x y hlink hxa hya
         simp only [Equiv.swap_apply_of_ne_of_ne hxa hxv, Equiv.swap_apply_of_ne_of_ne hya hyv,
@@ -936,28 +823,14 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     intro t x _ hx
     rw [map_smul]; exact Submodule.smul_mem _ t hx
 
-/-- **W9a composes — the two-step relabel transport** (the cycle-W9a induction step, CHAIN-2c-ii
-route B, `notes/Phase23-design.md` §(o″)). Two single-swap W9a transports compose into one transport
-across the composite relabel `(a₂ v₂) ∘ (a₁ v₁)`, subtracting *two* a-columns — one per moved
-degree-2 body. Concretely: if W9a carries `span Fv.rigidityRows` to `span F₁.rigidityRows` across
-the swap `(a₁ v₁)` (stripping body `a₁`'s `e_{c₁} = a₁c₁` column), and a second W9a carries
-`span F₁.rigidityRows` to `span Fva.rigidityRows` across `(a₂ v₂)` (stripping `a₂`'s column), then
-for any `φ ∈ span Fv.rigidityRows`,
-$$(\mathrm{funLeft}\,((a_2\,v_2)\circ(a_1\,v_1))).\mathrm{dualMap}\,\varphi
-\;-\;\Bigl[(\mathrm{funLeft}\,(a_2\,v_2)).\mathrm{dualMap}
-       \bigl(\mathrm{hingeRow}\;v_1\;c_1\;(\varphi\circ\mathrm{single}\,a_1)\bigr)
-   \;+\;\mathrm{hingeRow}\;v_2\;c_2\;((T_1\varphi)\circ\mathrm{single}\,a_2)\Bigr]
-\;\in\;\mathrm{span}\;F_{va}.\mathrm{rigidityRows},$$
-where `T₁ φ := (funLeft (a₁ v₁)).dualMap φ − hingeRow v₁ c₁ (φ ∘ single a₁)` is the first step's
-output (the intermediate vector in `span F₁`). The proof is pure linearity over the two single-step
-memberships: feed `T₁ φ ∈ span F₁` (the first W9a) to the second W9a, then rewrite the nested
-`(funLeft (a₂ v₂)).dualMap ∘ (funLeft (a₁ v₁)).dualMap` to the composite relabel
-`(funLeft ((a₂ v₂) ∘ (a₁ v₁))).dualMap` via `LinearMap.funLeft_comp` (a `funLeft`-contravariance the
-dual map straightens). This is the genuinely-new content route B's cycle-W9a needs (the per-step
-a-column subtractions *do* compose cleanly — the design §(o″) telescoping concern); the cycle of
-`i − 1` adjacent degree-2 bodies iterates this step along the head-peel
-`shiftPerm i = (vtx 1 vtx 2) * (tail formPerm)` (`shiftPerm_eq_swap_mul`). Graph-free over the
-carrier, inheriting W9a's `§38`-clean discipline. -/
+/-- **Two moves composed**: the move of `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` from
+`Fv` to `F₁`, along the transposition of `a₁` and `v₁`, then from `F₁` to `Fva`, along that of `a₂`
+and `v₂`, takes `φ` in the span of the rows of `Fv` to the form of the statement in the span of the
+rows of `Fva`. With `T₁ φ = (funLeft (a₁ v₁)).dualMap φ − hingeRow v₁ c₁ (φ ∘ single a₁)`, the form
+of the first move, it is the composite renaming of `φ` minus
+`(funLeft (a₂ v₂)).dualMap (hingeRow v₁ c₁ (φ ∘ single a₁)) + hingeRow v₂ c₂ ((T₁ φ) ∘ single a₂)`.
+The dual maps compose by `LinearMap.dualMap_comp_dualMap` and `LinearMap.funLeft_comp`. No
+declaration uses it. -/
 theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows
     [DecidableEq α] {Fv F₁ Fva : BodyHingeFramework K k α β}
     {v₁ a₁ c₁ v₂ a₂ c₂ : α} {e_c₁ e_c₂ : β}
@@ -987,10 +860,10 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRow
                         (φ.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a₁))).comp
                   (LinearMap.single K (fun _ : α => ScrewSpace K k) a₂)))
       ∈ Submodule.span K Fva.rigidityRows := by
-  -- The first W9a transport: `T₁ φ ∈ span F₁.rigidityRows`.
+  -- The first move: `T₁ φ ∈ span F₁.rigidityRows`.
   have h₁ := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     (Fv := Fv) (Fva := F₁) hca₁ hcv₁ hlink_ec₁ hdeg2₁ hdeg2r₁ hnov₁ htrans₁ hφ
-  -- The second W9a transport, fed the intermediate vector `T₁ φ ∈ span F₁`.
+  -- The second move, at `T₁ φ ∈ span F₁`.
   have h₂ := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     (Fv := F₁) (Fva := Fva) hca₂ hcv₂ hlink_ec₂ hdeg2₂ hdeg2r₂ hnov₂ htrans₂ h₁
   -- `(funLeft (a₂ v₂)).dualMap` is linear, so it distributes over `T₁ φ`'s subtraction; the nested
@@ -1003,22 +876,23 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRow
   rw [sub_sub] at h₂
   exact h₂
 
-/-- **The six per-step W9a conjuncts of the base→candidate seed-advance step** (CHAIN-2c-ii-arm; the
-`hstep`-bundle factored out of `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`,
-`notes/Phase23-design.md` §(o‴)(H.10)). At chain step `s` (bound `s + 2 < cd.d`), this is the
-six-conjunct geometry of the W9a single step `Fv = ofNormals (G − vtx (s+1)) ends q` →
-`Fva = ofNormals (G − vtx (s+2)) ends' (q ∘ swap)` with roles
-`(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))` and `e_c = edge (s+2)`: the distinctness `c ≠ a ∧
-c ≠ v`, the surviving `a—c` link, the degree-2 closures at the moved body `a`, the off-`v` fact, and
-the **seed-advancing `htrans`** (the genuinely-new block agreement — an off-`a` link survives the
-removal and its supporting extensor coincides at the two seeds because the swap `(a v)` fixes the
-recorded endpoints `∉ {a, v}` and `ends' = ends` off the two moved edges). This is exactly the
-`hstep`-conjunct shape the `foldl` fold core `wstep_foldl_mem_span_rigidityRows` consumes at the
-ascending body triple `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))`, so the concrete fold instance
-`shiftBodyListAsc_foldl_mem_span_rigidityRows` feeds it directly. **§38:** graph reads go through
-`toBodyHinge_graph`/`ofNormals_graph` and extensor reads through
-`toBodyHinge_supportExtensor`/`ofNormals_ends`/`ofNormals_normal` — never `whnf` on the `ofNormals`
-carrier. -/
+/-- **A step along the chain satisfies the hypotheses of the move** (a step of
+`lem:case-III-chain-eq666`): for a chain `v₀ ⋯ v_d` and `s + 2 < d`, let `ends'` agree with `ends`
+off the edges `v_{s+1} v_{s+2}` and `v_{s+2} v_{s+3}` (`hends'_off`), and let `ends` give each link
+of `G − v_{s+1}` its ends in some order (`hrec`). Then `Fv = ofNormals (G − v_{s+1}) ends q` and
+`Fva = ofNormals (G − v_{s+2}) ends' (q ∘ τ)`, for the transposition `τ` of `v_{s+2}` and `v_{s+1}`,
+satisfy the six hypotheses of `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` at
+`(v, a, c) = (v_{s+1}, v_{s+2}, v_{s+3})` and the edge `e_c = v_{s+2} v_{s+3}`. These are the
+hypotheses that `wstep_foldl_mem_span_rigidityRows` asks for at each step, and
+`shiftBodyListAsc_foldl_mem_span_rigidityRows` (`CaseIII/Relabel/Chain.lean`) takes them from here.
+
+The vertex `v_{s+2}` is interior, so its edges in `G` are `v_{s+1} v_{s+2}` and `v_{s+2} v_{s+3}`
+(`ChainData.deg_two`), and only the second is an edge of `G − v_{s+1}`. A link of `G − v_{s+1}` that
+does not meet `v_{s+2}` is neither of the two edges, so `ends'` gives it the ends that `ends` gives,
+its own ends by `hrec`, which `τ` fixes: the two frameworks have the same hinge there. The proof
+reads the graphs and hinges through `toBodyHinge_graph`, `ofNormals_graph`,
+`toBodyHinge_supportExtensor`, `ofNormals_ends` and `ofNormals_normal`, not by `whnf`
+(TACTICS-QUIRKS §38). -/
 theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
     [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {s : ℕ}
     (hbound : s + 2 < cd.d) (ends ends' : β → α × α) (q : α × Fin (k + 2) → K)
@@ -1052,8 +926,8 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
                 (fun p => q (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1,
                   p.2))).toBodyHinge.hingeRowBlock f) := by
   classical
-  -- The W9a roles: `v` the freed slot (removed in the source), `a` the moving body, `c` its
-  -- surviving chain-successor; `e_c = edge (s+2)` the surviving `a—c` edge.
+  -- The roles of the move: `v` is not a vertex of `Fv`, `a` moves to `v`, and `e_c = edge (s+2)`
+  -- joins `a` to `c`.
   set v := cd.vtx ⟨s + 1, by omega⟩ with hv
   set a := cd.vtx ⟨s + 2, by omega⟩ with ha
   set c := cd.vtx ⟨s + 3, by omega⟩ with hc
@@ -1101,9 +975,9 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
     intro f x y hlink
     rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
     exact ⟨(Graph.removeVertex_isLink.mp hlink).2.1, (Graph.removeVertex_isLink.mp hlink).2.2⟩
-  -- The seed-advancing `htrans`: an off-`a` link of `G − v` survives `removeVertex a`, and its
-  -- supporting extensor coincides at the two seeds (the swap fixes the recorded endpoints
-  -- `∉ {a, v}`, and `ends'` agrees with `ends` off the moved edges).
+  -- `htrans`: a link of `G − v` that does not meet `a` is a link of `G − a`, and the two frameworks
+  -- have the same hinge there (the transposition fixes its ends, which are neither `a` nor `v`, and
+  -- `ends'` agrees with `ends` off the two edges at `a`).
   have htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
       Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f := by
     intro f x y hlink hxa hya
@@ -1135,53 +1009,21 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
       rw [hFv, PanelHingeFramework.toBodyHinge_supportExtensor,
         PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
         PanelHingeFramework.ofNormals_ends] at hr
-      -- `ends f`'s two recorded endpoints are the link endpoints `x, y` up to order (`hrec`),
-      -- which avoid `a` (`hxa`/`hya`) and `v` (`hxv`/`hyv`). The swap `(a v)` then fixes them, so
-      -- `qρ = q` at those slots and the `Fva`-extensor matches the `Fv`-extensor `r` kills (`hr`).
+      -- `ends f`'s two ends are `x` and `y` in some order (`hrec`), neither `a` (`hxa`, `hya`) nor
+      -- `v` (`hxv`, `hyv`). The transposition `(a v)` fixes them, so `qρ = q` there, and the hinge
+      -- of `Fva` is that of `Fv`, on which `r` vanishes (`hr`).
       rcases hrec f x y hlink with he | he <;> rw [he] at hr ⊢ <;>
         simp only [hqρ, Equiv.swap_apply_of_ne_of_ne hxa hxv,
           Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr
   exact ⟨⟨hca, hcv⟩, hFv_link_ec, hdeg2, hdeg2r, hnov, htrans⟩
 
-/-- **The base→candidate single-step seed-advance W9a transport** (CHAIN-2c-ii-arm de-risk gate,
-`notes/Phase23-design.md` §(o‴)(H.10), top-step generalization 2026-06-19). One step of the
-interior-candidate relabel arm's **base→candidate** row transport (KT 2011 §6.4.2 eq.~(6.62), the
-one-step-up correspondence `vⱼ ⇒ vⱼ₊₁`): at chain step `s` (bound `s + 2 < d`, so the moving body
-`vtx (s+2)` is itself an interior degree-2 chain vertex and its surviving neighbour `vtx (s+3)` is a
-valid chain vertex), a row of the source framework `Fv = ofNormals (G − vtx (s+1))`
-on seed `q` transports — across the swap `(a v) = (vtx (s+2) vtx (s+1))` with the seed *advancing*
-to `q' = q ∘ swap (vtx (s+2)) (vtx (s+1))` — into the target framework `Fva = ofNormals (G −
-vtx (s+2))` on `q'`, after the moved body `a = vtx (s+2)`'s `a`-column hinge row is subtracted.
-
-**Single bound `s + 2 < d` covers both interior and top steps** (the top-step de-risk outcome).
-The full base→candidate cycle fold for candidate `i` (`2 ≤ i ≤ d−1`) runs steps `s = 0, …, i−2`;
-the *interior* steps (`s + 2 < i`, the moving body a passing degree-2 body) and the *top* step
-(`s = i−2`, where `a = vtx (s+2) = vtx i` is the candidate vertex itself) both satisfy `s + 2 < d`
-— because the candidate `vᵢ` at `i ≤ d−1` is *itself* an interior degree-2 chain vertex (`vtx i`,
-`i < d`), so the candidate-vertex top step closes with the identical proof, off the same
-`deg_two`/`isLink_edge`/`vtx_ne` accessors. The §(o‴)-class concern that the top step is "different
-geometry" (the candidate vertex, not a passing body) dissolved: `i ≤ d−1` keeps `vtx i` interior.
-
-This is the chain-indexed, **seed-advancing** instance of `case_III_arm_realization_M3`'s `hρGv`
-slot (`CaseIII/Relabel.lean`, the d=3 M₃ arm): there the single step goes `Fv = ofNormals (G − v)
-ends q` → `Fva = ofNormals (G − a) ends₃ qρ` with `qρ = q ∘ swap a v`; here the same single step is
-indexed by the chain step `s`, with the W9a roles `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))`
-read off the chain (the body `a = vtx (s+2)` is present at degree two in `G − vtx (s+1)`, moving
-into the freed slot `v = vtx (s+1)` past its surviving chain-successor `c = vtx (s+3)`, its
-predecessor edge to `vtx (s+1)` being cut by the removal). It is the **base→candidate** orientation
-the arm needs (source `G − vtx (s+1)` lower-index / base side, target `G − vtx (s+2)` higher-index /
-candidate side) — the *opposite* of the landed candidate→base fold
-`shiftBodyList_foldr_mem_span_rigidityRows`, and the building block the corrected-Fix-A cycle fold
-(re-folded in opposite chain order, seed advancing one swap per step) iterates.
-
-The seed-advancing `htrans` (the genuinely-new piece beyond the seed-fixed
-`shiftBodyFramework_htrans`'s `le_refl`) is the extensor-coincidence argument the d=3 M₃ `hρGv`
-slot runs: an off-`a` link survives `removeVertex (vtx (s+2))`, and its supporting extensor at the
-two seeds coincides because the swap `(a v)` fixes the recorded endpoints (`ends' f = ends f` off
-the moved edges, and the swap fixes the link's `≠ {a, v}` endpoints, so `q' = q` there). The
-de-risk gate (verify the single step closes before pinning the cycle fold / arm signature, H.10);
-graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read only `graph`/`hingeRowBlock`), so
-the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+/-- **One move along the chain**: `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` with the
+frameworks and the hypotheses of `seedAdvance_wstep_hstep`. For `s + 2 < d` and `φ` in the span of
+the rows of `ofNormals (G − v_{s+1}) ends q`, the form `S ↦ φ (S ∘ τ) − x(S(v_{s+1}) − S(v_{s+3}))`,
+for the transposition `τ` of `v_{s+2}` and `v_{s+1}` and the restriction `x` of `φ` to `v_{s+2}`,
+lies in the span of the rows of `ofNormals (G − v_{s+2}) ends' (q ∘ τ)`. No declaration uses it:
+`wstep_foldl_mem_span_rigidityRows` makes the moves along the chain with the hypotheses of
+`seedAdvance_wstep_hstep`. -/
 theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows
     [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {s : ℕ}
     (hbound : s + 2 < cd.d) (ends ends' : β → α × α) (q : α × Fin (k + 2) → K)
@@ -1203,29 +1045,32 @@ theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_
           (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'
             (fun p => q (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1,
               p.2))).toBodyHinge.rigidityRows := by
-  -- Obtain the six per-step W9a conjuncts (the `hstep` bundle) and conclude via the landed
-  -- single-step W9a transport (already the base→candidate orientation).
+  -- The six hypotheses of the move, from `seedAdvance_wstep_hstep`.
   obtain ⟨⟨hca, hcv⟩, hFv_link_ec, hdeg2, hdeg2r, hnov, htrans⟩ :=
     cd.seedAdvance_wstep_hstep hbound ends ends' q hends'_off hrec
   exact BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     hca hcv hFv_link_ec hdeg2 hdeg2r hnov htrans hφ
 
+/-! ## The move along a chain
 
-/-- **The single-step W9a transport map** (the cycle-W9a building block, CHAIN-2c-ii route B,
-`notes/Phase23-design.md` §(o″)). The W9a relabel transport `φ ↦ (funLeft (a v)).dualMap φ −
-hingeRow v c (φ ∘ single a)` packaged as a single linear map `Dual K (α → ScrewSpace K k) →ₗ Dual`
-(the `T` of `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, named so the cycle fold over the
-chain of degree-2 bodies can iterate it). The subtracted `a`-column term `hingeRow v c (· ∘ single
-a)` is the linear composite `(screwDiff v c).dualMap ∘ₗ (single a).dualMap` (the `hTapply` form of
-W9a). -/
+Steps of `lem:case-III-chain-eq666`. `wstep v a c` is the move as a linear map (`wstep_apply`), and
+`wstep_foldl_mem_span_rigidityRows` composes it along a chain of frameworks, whose normals may
+change from one step to the next. No declaration uses the other lemmas of this section and the next:
+the composite in the other order, the composites of the renamings alone, and the frameworks of a
+chain with fixed normals. -/
+
+/-- **The move as a linear map** (a step of `lem:case-III-chain-eq666`): `wstep v a c` sends `φ` to
+`(funLeft τ).dualMap φ − hingeRow v c (φ ∘ single a)`, the form `S ↦ φ (S ∘ τ) − x(S(v) − S(c))` of
+`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, for the transposition `τ` of `a` and `v` and
+the restriction `x = φ ∘ single a`. The subtracted form is the composite
+`(screwDiff v c).dualMap ∘ₗ (single a).dualMap`. -/
 noncomputable def BodyHingeFramework.wstep [DecidableEq α] (v a c : α) :
     Module.Dual K (α → ScrewSpace K k) →ₗ[K] Module.Dual K (α → ScrewSpace K k) :=
   (LinearMap.funLeft K (ScrewSpace K k) (Equiv.swap a v)).dualMap
     - (screwDiff (k := k) (α := α) v c).dualMap.comp
         (LinearMap.single K (fun _ : α => ScrewSpace K k) a).dualMap
 
-/-- `wstep v a c φ` is the W9a transported difference `(funLeft (a v)).dualMap φ − hingeRow v c
-(φ ∘ single a)`. -/
+/-- `wstep v a c φ` is `(funLeft (a v)).dualMap φ − hingeRow v c (φ ∘ single a)`. -/
 theorem BodyHingeFramework.wstep_apply [DecidableEq α] (v a c : α)
     (φ : Module.Dual K (α → ScrewSpace K k)) :
     BodyHingeFramework.wstep (k := k) v a c φ
@@ -1234,30 +1079,13 @@ theorem BodyHingeFramework.wstep_apply [DecidableEq α] (v a c : α)
             (φ.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a)) := by
   rw [BodyHingeFramework.wstep, LinearMap.sub_apply, LinearMap.comp_apply, hingeRow_eq_dualMap]; rfl
 
-/-- **W9a iterates — the cycle-W9a `List`-fold transport** (the genuinely-new piece of route B,
-CHAIN-2c-ii-transport-W9a; `notes/Phase23-design.md` §(o″)). The single-step W9a transport `wstep`
-composes over a *list* of degree-2 bodies along a chain of intermediate frameworks: given a
-framework chain `F : ℕ → BodyHingeFramework K k α β` and a list `bodies : List (α × α × α)` of
-`(v, a, c)` body triples, if every step `s` is a valid single-swap W9a transport from `F (s+1)`
-*down to* `F s` (the per-step `htrans` / degree-2 / off-`v` hypotheses, the `s`-th body
-`bodies[s] = (vₛ, aₛ, cₛ)` moved over the framework drop `F (s+1) → F s`), then the iterated
-transport `(wstep v₀ a₀ c₀ ∘ ⋯ ∘ wstep vₘ aₘ cₘ) φ` of any `φ ∈ span (F bodies.length).rigidityRows`
-(the source, top of the chain) lands in `span (F 0).rigidityRows` (the target, bottom).
-
-The `foldr` applies the list *head* last (outermost), so the head body `bodies[0]` is the final
-framework drop `F 1 → F 0` and the chain runs source-at-top `F (length)` down to target-at-bottom
-`F 0` — matching `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`'s `Fv` (source) → `Fva`
-(target) orientation per step. This is the cycle generalization of W9a's *single* `a`-column
-subtraction: KT's `ρᵢ` is the `(i−1)`-cycle moving a chain of `i−1` adjacent degree-2 bodies
-(KT 2011 eq.~(6.66), `2 ≤ i ≤ d−1`), and `shiftPerm i` factors head-first as
-`(vtx 1 vtx 2) * (tail formPerm)` (`ChainData.shiftPerm_eq_swap_mul`), so the cycle is the
-left-fold of single transpositions and the transport is the iterated `wstep`. The proof is a clean
-`List` induction on `bodies`: the base case is `φ ∈ span (F 0)` itself; the step transports `φ`
-through the tail's `(rest.length)`-fold over the *shifted* chain `F (· + 1)` (landing in
-`span (F 1)` by the inductive hypothesis), then applies the head step's single W9a transport
-`F 1 → F 0`. The per-step `a`-column subtractions *do* compose cleanly (the §(o″) telescoping
-concern, settled at the binary `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`). Graph-free
-over the carrier, inheriting W9a's §38-clean discipline. -/
+/-- **The move along a chain of frameworks, downwards**: let the frameworks `F (s + 1)` and `F s`,
+with the triple `bodies[s] = (v, a, c)` and the label `ec s`, satisfy the hypotheses of
+`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` from `F (s + 1)` to `F s`, for each `s`
+(`hstep`). Then the composite of the maps `wstep v a c` along `bodies`, the first triple applied
+last, takes the span of the rows of `F bodies.length` into that of `F 0`. The proof is by induction
+on `bodies`. Only `shiftBodyList_foldr_mem_span_rigidityRows` uses it, and no declaration uses that.
+-/
 theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
     [DecidableEq α] (F : ℕ → BodyHingeFramework K k α β)
     (ec : ℕ → β) (bodies : List (α × α × α))
@@ -1283,42 +1111,23 @@ theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
     have htail := ih (fun s => F (s + 1)) (fun s => ec (s + 1))
       (fun s hs => hstep (s + 1) (by simpa using hs))
       (by simpa using hφ)
-    -- The head step's single-swap W9a transport `F 1 → F 0`, fed the tail output (in `span (F 1)`).
+    -- The first triple's move from `F 1` to `F 0`, at the value of the rest (in `span (F 1)`).
     obtain ⟨⟨hca, hcv⟩, hlink_ec, hdeg2, hdeg2r, hnov, htrans⟩ := hstep 0 (by simp)
     have hhead := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
       (Fv := F 1) (Fva := F 0) (v := b.1) (a := b.2.1) (c := b.2.2) hca hcv
       (e_c := ec 0) hlink_ec hdeg2 hdeg2r hnov htrans htail
-    -- Repackage: `foldr (b :: rest) φ = wstep b₀ (foldr rest φ)`, `wstep`'s apply is W9a's
-    -- difference.
+    -- `foldr (b :: rest) φ = wstep b (foldr rest φ)`, and `wstep_apply`.
     simpa [List.foldr_cons, BodyHingeFramework.wstep_apply] using hhead
 
-/-- **W9a iterates the other way — the cycle-W9a `List.foldl` base→candidate transport** (the
-seed-advancing fold core, CHAIN-2c-ii-arm; `notes/Phase23-design.md` §(o‴)(H.10)). The
-seed-*advancing* analogue of `wstep_foldr_mem_span_rigidityRows`: the single-step W9a transport
-`wstep` composes over a list of degree-2 bodies along an **ascending** chain of intermediate
-frameworks (the seed advancing one swap per step), running source-at-bottom `F 0` *up to*
-target-at-top `F bodies.length` — the **base→candidate** orientation the relabel arm's
-`hρGv`/`hwmem` slots need (the landed `wstep_foldr` runs candidate→base / seed-fixed, the converse
-implication, so it is orphaned for the arm; §(o‴)(H.10)).
-
-Given a framework chain `F : ℕ → BodyHingeFramework K k α β` and a list `bodies : List (α × α × α)`
-of `(v, a, c)` body triples, if every step `s` is a valid single-swap W9a transport from `F s` *up
-to* `F (s+1)` (the per-step `htrans` / degree-2 / off-`v` hypotheses, the `s`-th body
-`bodies[s] = (vₛ, aₛ, cₛ)` moved over the framework rise `F s → F (s+1)`), then the iterated
-transport of any `φ ∈ span (F 0).rigidityRows` (the source, bottom of the chain) lands in
-`span (F bodies.length).rigidityRows` (the target, top).
-
-The `foldl` applies the list *head* first (innermost), so the head body `bodies[0]` is the first
-framework rise `F 0 → F 1` and the chain runs source-at-bottom `F 0` up to target-at-top
-`F (length)` — matching `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`'s `Fv` (source) → `Fva`
-(target) orientation per step. The chain `F` is free to carry a *different seed* at each index `s`
-(unlike the seed-fixed `shiftBodyFramework` of the candidate→base fold), which is what makes this
-the seed-advancing core: a concrete instantiation supplies `F s = ofNormals (G − vₛ₊₁) ends qₛ`
-with the seed `qₛ` accumulating one swap per step (KT 2011 §6.4.2 eq.~(6.62)). The proof is a `List`
-right-induction (`reverseRec`): the empty fold is `φ ∈ span (F 0)` itself; the `append_singleton`
-step transports `φ` through the inner fold over `rest` (landing in `span (F rest.length)` by the
-inductive hypothesis), then applies the last step's single W9a transport `F rest.length →
-F (rest.length + 1)`. Graph-free over the carrier, inheriting W9a's §38-clean discipline. -/
+/-- **The move along a chain of frameworks, upwards** (a step of `lem:case-III-chain-eq666`): let
+the frameworks `F s` and `F (s + 1)`, with the triple `bodies[s] = (v, a, c)` and the label `ec s`,
+satisfy the hypotheses of `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` from `F s` to
+`F (s + 1)`, for each `s` (`hstep`). Then the composite of the maps `wstep v a c` along `bodies`,
+the first triple applied first, takes the span of the rows of `F 0` into that of `F bodies.length`.
+The frameworks may have different normals. `shiftBodyListAsc_foldl_mem_span_rigidityRows`
+(`CaseIII/Relabel/Chain.lean`) applies it along a chain, from `G − v₁` to `G − v_i`, with the steps
+of `seedAdvance_wstep_hstep` and the normals renamed by one transposition at each step. The proof is
+by induction on `bodies` from its end (`List.reverseRec`). -/
 theorem BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
     [DecidableEq α] (F : ℕ → BodyHingeFramework K k α β)
     (ec : ℕ → β) (bodies : List (α × α × α))
@@ -1353,7 +1162,7 @@ theorem BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
       have hidx : (rest ++ [b])[s]'hs' = rest[s] := by rw [List.getElem_append_left hs]
       have := hstep s hs'
       rwa [hidx] at this
-    -- the last step's single-swap W9a transport `F rest.length → F (rest.length + 1)`.
+    -- the last triple's move from `F rest.length` to `F (rest.length + 1)`.
     obtain ⟨⟨hca, hcv⟩, hlink_ec, hdeg2, hdeg2r, hnov, htrans⟩ := hstep rest.length (by simp)
     rw [hb] at hca hcv hlink_ec hdeg2 hdeg2r hnov htrans
     have hlast := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
@@ -1363,25 +1172,11 @@ theorem BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
     rw [show (rest ++ [b]).length = rest.length + 1 by simp]
     simpa [BodyHingeFramework.wstep_apply] using hlast
 
-/-- **The relabel side of the cycle-W9a fold is `funLeft` of the swap product** (the linear-map
-companion of the permutation-level `shiftPerm_eq_prod_map_swap_shiftBodyList`,
-CHAIN-2c-ii-transport-W9a route B, `notes/Phase23-design.md` §(o″)). The cycle-W9a `List.foldr`
-composes its single-step relabels `(funLeft (swap aₛ vₛ)).dualMap` — the leading (non-`a`-column)
-part of each `wstep` — over the moved-body list; this lemma identifies that *relabel-only* fold with
-the single named relabel `(funLeft (⇑((bodies.map (swap b.2.1 b.1)).prod))).dualMap` of the swap
-product. Composed with the permutation bridge `ChainData.shiftPerm_eq_prod_map_swap_shiftBodyList`
-(`shiftPerm i = ∏ (swap b.2.1 b.1)` over `shiftBodyList i`), it rewrites the fold's relabel
-component to `(funLeft (shiftPerm i)).dualMap` — the form the membership half of T-W9a needs.
-
-The proof is a clean `List` induction. The empty fold is `LinearMap.id`, matching
-`funLeft (⇑(1 : Equiv.Perm α)).dualMap = funLeft _root_.id |>.dualMap = id` (`Equiv.Perm.coe_one`,
-`funLeft_id`, `dualMap_id`). The `cons` step uses the FRICTION composition idiom: the head swap's
-`(funLeft (swap a₀ v₀)).dualMap` composed (outermost) with the tail relabel
-`(funLeft (⇑P)).dualMap` (the IH, `P` the tail's swap product) straightens via
-`dualMap_comp_dualMap` + `funLeft_comp` to `(funLeft (swap a₀ v₀ ∘ ⇑P)).dualMap`, and the swap
-product head-peels as `((swap a₀ v₀) * P)` whose coercion is `(swap a₀ v₀) ∘ ⇑P`
-(`Equiv.Perm.coe_mul`) — the two contravariances cancel, no order bookkeeping. Graph-free over the
-carrier. -/
+/-- **The renamings of the moves, composed**: the composite of the maps
+`(funLeft (Equiv.swap a v)).dualMap` along a list of triples `(v, a, c)`, the first applied last, is
+`(funLeft π).dualMap` for the product `π` of the transpositions in the order of the list. The proof
+is by induction on the list, with `LinearMap.dualMap_comp_dualMap` and `LinearMap.funLeft_comp`. No
+declaration uses it. -/
 theorem BodyHingeFramework.wstep_foldr_funLeft_eq [DecidableEq α] (bodies : List (α × α × α)) :
     (bodies.foldr
         (fun b T => ((LinearMap.funLeft K (ScrewSpace K k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
@@ -1400,33 +1195,12 @@ theorem BodyHingeFramework.wstep_foldr_funLeft_eq [DecidableEq α] (bodies : Lis
     simp only [List.foldr_cons, ih, List.map_cons, List.prod_cons, Equiv.Perm.coe_mul,
       LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]
 
-/-- **The relabel side of the *ascending* (seed-advancing) cycle-W9a fold is `funLeft` of the
-inverse swap product** (the `foldl` companion of `wstep_foldr_funLeft_eq`, the linear-map half of
-the G1 bridge of the seed-advancing relabel arm, CHAIN-2c-ii-arm route B,
-`notes/Phase23-design.md` §(o‴)(H.10)). The seed-advancing W9a `List.foldl` composes its single-step
-relabels `(funLeft (swap aₛ vₛ)).dualMap` — the leading (non-`a`-column) part of each `wstep` — over
-the *ascending* moved-body list `shiftBodyListAsc i`; this lemma identifies that *relabel-only*
-`foldl` with the single named relabel `(funLeft ⇑((bodies.map (swap b.2.1 b.1)).prod)⁻¹).dualMap` of
-the **inverse** swap product.
-
-The inverse is forced by the `foldl` accumulation order: `foldl` applies the *last* body outermost,
-so the relabel composite runs in the **opposite** order to the swap product `(bodies.map swap).prod`
-(which the perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` identifies with
-`shiftPerm i.castSucc`). Because the swaps are involutions, the reversed product is exactly the
-group inverse `((bodies.map swap).prod)⁻¹` — and composed with the perm bridge this rewrites the
-`foldl`'s relabel component to `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap = (funLeft (shiftPerm
-i.castSucc).symm).dualMap`, the **base→candidate** inverse-cycle relabel the arm's `hρGv` slot needs
-(matching the `hwmem` leaf `chainData_bottom_relabel`'s `(funLeft (shiftPerm i.castSucc).symm)`
-transport, design §(o‴)(I.6)).
-
-The proof is a `List` right-induction (`reverseRec`, matching the `foldl` base case at index 0). The
-empty fold is `LinearMap.id`, matching `funLeft ⇑(1 : Equiv.Perm α)⁻¹ = id` (`inv_one`,
-`Equiv.Perm.coe_one`, `funLeft_id`, `dualMap_id`). The `append_singleton` step peels the *last* swap
-`(funLeft (swap a v)).dualMap` (applied outermost) over the inner fold's `(funLeft ⇑P⁻¹).dualMap`
-(the IH, `P` the inner swap product); the inverse product head-peels as `(P * (swap a v))⁻¹ =
-(swap a v)⁻¹ * P⁻¹` (`mul_inv_rev`), the swap self-inverse drops `(swap a v)⁻¹ = swap a v`
-(`Equiv.swap_inv`), and the two contravariances of `funLeft_comp` + `dualMap_comp_dualMap` cancel.
-Graph-free over the carrier. -/
+/-- **The renamings of the moves, composed in the other order**: the composite of the maps
+`(funLeft (Equiv.swap a v)).dualMap` along a list of triples `(v, a, c)`, the first applied first,
+is `(funLeft π⁻¹).dualMap` for the product `π` of the transpositions in the order of the list, as
+each transposition is its own inverse (`mul_inv_rev`, `Equiv.swap_inv`). The proof is by induction
+on the list from its end. Only `shiftBodyListAsc_relabel_foldl_hingeRow` uses it, and no declaration
+uses that. -/
 theorem BodyHingeFramework.wstep_foldl_funLeft_eq [DecidableEq α] (bodies : List (α × α × α)) :
     (bodies.foldl
         (fun T b => ((LinearMap.funLeft K (ScrewSpace K k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
@@ -1444,27 +1218,12 @@ theorem BodyHingeFramework.wstep_foldl_funLeft_eq [DecidableEq α] (bodies : Lis
       mul_inv_rev, Equiv.swap_inv, Equiv.Perm.coe_mul, LinearMap.funLeft_comp,
       LinearMap.dualMap_comp_dualMap]
 
-/-- **LEAF-ρ2 — the relabel-only ascending fold sends a hinge row to its inverse-cycle-relabelled
-row** (CHAIN-2c-ii-arm, the `hρGv` literal-row identification; `notes/Phase23-design.md` §(o‴)(I.7),
-LEAF-ρ2). The *relabel-only* component of the seed-advancing cycle-W9a `foldl` — the bare
-`(funLeft (swap aₛ vₛ)).dualMap` fold over the ascending moved-body list `shiftBodyListAsc i`,
-without the per-step `a`-column residue subtractions — sends an arbitrary hinge row
-`hingeRow x y ρ₀` to the literal candidate row
-`hingeRow ((shiftPerm i.castSucc)⁻¹ x) ((shiftPerm i.castSucc)⁻¹ y) ρ₀`
-under the **base→candidate** inverse-cycle relabel.
-
-This is the d=3 `M₃` step-2/3 generalization (`case_III_arm_realization_M3`, `Relabel.lean:2490`):
-there the single relabel `(funLeft (a v)).dualMap (hingeRow a b ρ) = hingeRow v b ρ` identifies the
-W9a image's relabel component as the genuine `e_b`-row; here the `i − 1`-step fold's relabel
-component is the single named inverse-cycle relabel of the literal base redundancy. The proof is a
-pure rewrite over the two landed G1 bridges: `wstep_foldl_funLeft_eq` rewrites the relabel-only
-`foldl` to `(funLeft ⇑((bodies.map swap).prod)⁻¹).dualMap`, then
-`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` identifies the swap product with
-`shiftPerm i.castSucc` (so its inverse is `(shiftPerm i.castSucc)⁻¹`), and
-`hingeRow_funLeft_dualMap` evaluates the dual
-relabel on the literal row. The arm closer (`chainData_relabel_arm`, LEAF-ρ3) then resolves the two
-relabelled endpoints `(shiftPerm i.castSucc)⁻¹ x` / `…⁻¹ y` to the candidate roles via the landed
-`shiftPerm_inv_*` action lemmas (`Operations.lean:1550–1572`). Graph-free over the carrier. -/
+/-- **The renamings of the moves along the chain rename a row by the inverse cycle**: the composite
+of the maps `(funLeft (Equiv.swap a v)).dualMap` along `shiftBodyListAsc i`, the first applied
+first, takes `hingeRow x y ρ₀` to `hingeRow (π⁻¹ x) (π⁻¹ y) ρ₀` for the cycle
+`π = shiftPerm i.castSucc`, by `wstep_foldl_funLeft_eq`,
+`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` and `hingeRow_funLeft_dualMap`. No declaration uses
+it. -/
 theorem _root_.Graph.ChainData.shiftBodyListAsc_relabel_foldl_hingeRow [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (x y : α)
     (ρ₀ : Module.Dual K (ScrewSpace K k)) :
@@ -1477,59 +1236,44 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_relabel_foldl_hingeRow [Decidabl
     ← cd.shiftPerm_eq_prod_map_swap_shiftBodyListAsc i,
     BodyHingeFramework.hingeRow_funLeft_dualMap]
 
-/-- **The cycle-W9a intermediate-framework chain `F = ofNormals ∘ shiftBodyGraph`**
-(CHAIN-2c-ii-transport-W9a, the framework layer; `notes/Phase23-design.md` §(o″)). The
-`List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over a chain of *intermediate
-frameworks* `F : ℕ → BodyHingeFramework`, one degree-2 body moved per cycle step. This is that
-chain: the panel framework `ofNormals (cd.shiftBodyGraph s _) ends q` (turned into a
-`BodyHingeFramework` via `toBodyHinge`) over the intermediate graph `shiftBodyGraph s = G − vₛ₊₁`,
-with the panel selector `ends` and seed `q` **fixed across the chain** — only the graph shrinks,
-mirroring the d=3 `M₃` arm's `Fv/Fva = ofNormals (G − v)/(G − a)` at the *single* removeVertex step
-(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`). The bound `s + 1 < cd.d + 1` is the minimal
-chain-vertex validity of `shiftBodyGraph` (decoupled from the cycle top `i`); the total `F : ℕ →
-BodyHingeFramework` the fold core consumes is assembled (with the out-of-range tail filled by an
-arbitrary value) at the membership half (T-W9a). -/
+/-! ## The frameworks of a chain with fixed normals
+
+The frameworks `ofNormals (G − v_{s+1}) ends q` for the vertices of a chain, with one selector and
+one family of normals, and the move along them from `G − v_i` down to `G − v₁`. No declaration uses
+them: the proof of `lem:case-III-chain-eq666` moves from `G − v₁` up to `G − v_i`, renaming the
+normals at each step (`shiftBodyListAsc_foldl_mem_span_rigidityRows`, `CaseIII/Relabel/Chain.lean`).
+-/
+
+/-- **The frameworks of a chain with fixed normals**: for `s + 1 ≤ d`, the body-hinge framework of
+`ofNormals (shiftBodyGraph s) ends q`, where `shiftBodyGraph s` is `G − v_{s+1}`. The selector and
+the normals do not depend on `s`. Only the lemmas below use it, and no declaration uses them. -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFramework {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
     (q : α × Fin (k + 2) → K) :
     BodyHingeFramework K k α β :=
   (PanelHingeFramework.ofNormals (cd.shiftBodyGraph hs) ends q).toBodyHinge
 
-/-- The graph of the cycle-W9a intermediate framework `shiftBodyFramework s` is the intermediate
-graph `shiftBodyGraph s = G − vₛ₊₁`. -/
+/-- The graph of `shiftBodyFramework s` is `shiftBodyGraph s = G − v_{s+1}`. -/
 @[simp]
 theorem _root_.Graph.ChainData.shiftBodyFramework_graph {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
     (q : α × Fin (k + 2) → K) :
     (cd.shiftBodyFramework hs ends q).graph = cd.shiftBodyGraph hs := rfl
 
-/-- The supporting extensor of the cycle-W9a intermediate framework `shiftBodyFramework s` at an
-edge `f` reads only the fixed selector `ends` and seed `q` (the panels at `ends f`'s endpoints) —
-independent of the chain step `s` / the intermediate graph. This is why the per-step hinge-row
-blocks agree (`shiftBodyFramework_htrans`'s second conjunct is `le_refl`). -/
+/-- The hinge of `shiftBodyFramework s` at `f` is `C(q((ends f).1), q((ends f).2))`: it reads only
+the selector `ends` and the normals `q`, not `s`. So consecutive frameworks of the chain have the
+same block of rows at a common link (`shiftBodyFramework_htrans`). -/
 theorem _root_.Graph.ChainData.shiftBodyFramework_supportExtensor {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
     (q : α × Fin (k + 2) → K) (f : β) :
     (cd.shiftBodyFramework hs ends q).supportExtensor f =
       panelSupportExtensor (fun i => q ((ends f).1, i)) (fun i => q ((ends f).2, i)) := rfl
 
-/-- **The per-step `htrans` of the cycle-W9a framework chain** (CHAIN-2c-ii-transport-W9a, the
-framework layer's deliverable; `notes/Phase23-design.md` §(o″)). The second-conjunct hypothesis the
-fold core `wstep_foldr_mem_span_rigidityRows`'s `hstep` demands at each cycle step `s` (`s + 1 < i`,
-the moved body `a = vₛ₊₁` interior): a link of the upper framework `F (s+1) = ofNormals
-(G − vₛ₊₂)` *off the moved body* `a` transports to a genuine link of the lower framework `F s =
-ofNormals (G − vₛ₊₁)`, with the hinge-row blocks agreeing.
-
-This is the cycle generalization of the d=3 `M₃` arm's `htrans` (`case_III_arm_realization_M3`,
-`hρGv` case): there the seed/selector *change* (`q → qρ`, `ends → ends₃`), forcing an
-off-`{e_a,e_b,e_c}` extensor-coincidence argument; here the seed `q` and selector `ends` are
-**fixed across the chain** (only the graph shrinks under `removeVertex`), so the supporting
-extensors `panelSupportExtensor (q((ends f).1)) (q((ends f).2))` of `F (s+1)` and `F s` coincide
-*definitionally* and the block agreement is `le_refl`. The graph inclusion is the landed
-`shiftBodyGraph_isLink_of_off_body` lifted through `toBodyHinge_graph`/`ofNormals_graph`.
-
-Graph-free over the carrier (`graph`/`hingeRowBlock` read only `graph`/`supportExtensor`), so the
-`ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+/-- **The last hypothesis of the move between consecutive frameworks of the chain**: for
+`s + 1 < i ≤ d`, every link of `G − v_{s+2}` that does not meet `v_{s+1}` is a link of `G − v_{s+1}`
+(`shiftBodyGraph_isLink_of_off_body`), and `shiftBodyFramework (s + 1)` and `shiftBodyFramework s`
+have the same hinge there (`shiftBodyFramework_supportExtensor`), so the same block of rows. Only
+`shiftBodyList_foldr_mem_span_rigidityRows` uses it, and no declaration uses that. -/
 theorem _root_.Graph.ChainData.shiftBodyFramework_htrans {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) (ends : β → α × α)
     (q : α × Fin (k + 2) → K) :
@@ -1539,63 +1283,42 @@ theorem _root_.Graph.ChainData.shiftBodyFramework_htrans {G : Graph α β} {n : 
         (cd.shiftBodyFramework (s := s + 1) (by omega) ends q).hingeRowBlock f ≤
           (cd.shiftBodyFramework (s := s) (by omega) ends q).hingeRowBlock f := by
   intro f x y hlink hxa hya
-  -- The graph half: a link of `shiftBodyGraph (s+1) = G − vₛ₊₂` off the moved body `vₛ₊₁` is a link
-  -- of `shiftBodyGraph s = G − vₛ₊₁` (the landed un-relabelled inclusion), read through the
-  -- `shiftBodyFramework_graph` simp lemma.
+  -- The graph: a link of `shiftBodyGraph (s+1) = G − vₛ₊₂` that does not meet `vₛ₊₁` is a link of
+  -- `shiftBodyGraph s = G − vₛ₊₁`, read through the simp lemma `shiftBodyFramework_graph`.
   rw [cd.shiftBodyFramework_graph] at hlink
   refine ⟨?_, ?_⟩
   · rw [cd.shiftBodyFramework_graph]
     exact cd.shiftBodyGraph_isLink_of_off_body hs hi f x y hlink hxa hya
-  · -- The hinge-row block half: the seed `q` and selector `ends` are fixed across the chain, so the
-    -- supporting extensors of the two frameworks at `f` coincide
-    -- (`shiftBodyFramework_supportExtensor`, independent of `s`) — the blocks are equal, hence `≤`
-    -- by `le_refl` (no off-`{e_a,e_b,e_c}` extensor argument, unlike d=3 `M₃`'s seed/selector
-    -- change).
+  · -- The blocks of rows: the selector `ends` and the normals `q` do not depend on the step, so the
+    -- two frameworks have the same hinge at `f` (`shiftBodyFramework_supportExtensor`), and the
+    -- blocks are equal.
     rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock,
       cd.shiftBodyFramework_supportExtensor, cd.shiftBodyFramework_supportExtensor]
 
-/-- **The total cycle-W9a intermediate-framework chain** (CHAIN-2c-ii-transport-W9a, the membership
-half; `notes/Phase23-design.md` §(o″)). The fold core `wstep_foldr_mem_span_rigidityRows` runs over
-a total `F : ℕ → BodyHingeFramework`; this packages the partial `shiftBodyFramework` (defined only
-at chain-vertex indices `s + 1 < cd.d + 1`) into that total function, filling the out-of-range tail
-with the always-valid `s = 0` framework (`0 + 1 < cd.d + 1` from `cd.hd`). On the in-range indices
-the fold touches (`0, …, i − 1` for a cycle top `i ≤ cd.d`) it agrees with `shiftBodyFramework` by
-`shiftBodyFrameworkTotal_eq`. -/
+/-- **The frameworks of the chain at every index**: `shiftBodyFramework s` for `s + 1 < d + 1`, and
+`shiftBodyFramework 0` at the other indices, as `wstep_foldr_mem_span_rigidityRows` takes a
+framework at every natural number. It agrees with `shiftBodyFramework` wherever that is defined
+(`shiftBodyFrameworkTotal_eq`). -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkTotal {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → K) :
     ℕ → BodyHingeFramework K k α β :=
   fun s => if h : s + 1 < cd.d + 1 then cd.shiftBodyFramework h ends q
     else cd.shiftBodyFramework (s := 0) (by have := cd.hd; omega) ends q
 
-/-- On an in-range index `s + 1 < cd.d + 1`, the total chain `shiftBodyFrameworkTotal` agrees with
-the partial `shiftBodyFramework`. -/
+/-- For `s + 1 < d + 1`, `shiftBodyFrameworkTotal ends q s` is `shiftBodyFramework s`. -/
 theorem _root_.Graph.ChainData.shiftBodyFrameworkTotal_eq {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → K) {s : ℕ}
     (hs : s + 1 < cd.d + 1) :
     cd.shiftBodyFrameworkTotal ends q s = cd.shiftBodyFramework hs ends q := by
   rw [Graph.ChainData.shiftBodyFrameworkTotal, dite_eq_left hs]
 
-/-- **The cycle-W9a membership half** (CHAIN-2c-ii-transport-W9a route B, the genuinely-new crux;
-`notes/Phase23-design.md` §(o″)). The iterated W9a transport over the moved-body list
-`shiftBodyList i` carries the source row span at the top of the chain — `span (G − vᵢ)`-rows
-(`shiftBodyFramework (i − 1)`) — down to the target row span at the bottom — `span (G − v₁)`-rows
-(`shiftBodyFramework 0`). This is the membership content of KT eq.~(6.66): the index-shift cycle
-`ρᵢ = shiftPerm i` (the `(i − 1)`-cycle `v₁ → ⋯ → vᵢ → v₁`) moves the chain of `i − 1` adjacent
-degree-2 bodies, and the `i − 1` per-body `a`-column subtractions compose along the chain.
-
-This is the cycle generalization of the d=3 `M₃` arm's *single* W9a step
-(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, whose endpoints are the `ofNormals (G − v)` /
-`ofNormals (G − a)` removeVertex frameworks at the single moved body `a`): here the chain endpoints
-are the removeVertex frameworks `F (i − 1) = ofNormals (G − vᵢ)` / `F 0 = ofNormals (G − v₁)`, and
-the moved bodies are the interior chain vertices `v₁, …, v_{i−1}`. The proof feeds the fold core all
-six per-step `hstep` conjuncts off the landed graph-layer accessors
-(`shiftBodyGraph_isLink_pred_edge`,
-`shiftBodyGraph_deg_two(_right)`, `shiftBodyGraph_off_succ`) and the framework-layer per-step
-`htrans` (`shiftBodyFramework_htrans`), reading the moved-body triple
-`(shiftBodyList i)[s] = (vₛ₊₂, vₛ₊₁, vₛ)` off `getElem_shiftBodyList`. The relabel side (rewriting
-the `wstep` fold's leading `funLeft`-of-swap product to `funLeft (shiftPerm i)`) is the separate
-`wstep_foldr_funLeft_eq` + `shiftPerm_eq_prod_map_swap_shiftBodyList` bridge, applied by the arm
-closer. Graph-free over the carrier, inheriting W9a's §38-clean discipline. -/
+/-- **The move down the chain, with fixed normals**: for `2 ≤ i ≤ d`, the composite of the maps
+`wstep` along `shiftBodyList i`, the first triple applied last, takes the span of the rows of
+`ofNormals (G − v_i) ends q` into that of `ofNormals (G − v₁) ends q`:
+`wstep_foldr_mem_span_rigidityRows` at the frameworks `shiftBodyFrameworkTotal`. The `s`-th triple
+`(v, a, c)` is `(v_{s+2}, v_{s+1}, v_s)` (`getElem_shiftBodyList`), and the step goes from
+`G − v_{s+2}` to `G − v_{s+1}`, where `v_{s+1}` has the one edge `v_s v_{s+1}`. No declaration uses
+it. -/
 theorem _root_.Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows
     [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1))
     (hi : 2 ≤ (i : ℕ)) (ends : β → α × α) (q : α × Fin (k + 2) → K)
@@ -1637,16 +1360,16 @@ theorem _root_.Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows
   have hbody : (cd.shiftBodyList i)[s]'(by rw [cd.length_shiftBodyList]; omega)
       = (cd.vtx ⟨s + 2, by omega⟩, cd.vtx ⟨s + 1, by omega⟩, cd.vtx ⟨s, by omega⟩) :=
     cd.getElem_shiftBodyList i s (by rw [cd.length_shiftBodyList]; omega)
-  -- The per-step edge `ec s = edge s` (in range, `s < cd.d`): resolve the `dite` to the predecessor
-  -- edge `e_c = vₛ₊₁vₛ` of the W9a step.
+  -- The label `ec s = edge s` (in range, `s < cd.d`): resolve the `dite` to the edge `e_c = vₛ₊₁vₛ`
+  -- of the move.
   have hec : (if h : s < cd.d then cd.edge ⟨s, h⟩
       else cd.edge ⟨0, by have := cd.hd; omega⟩) = cd.edge ⟨s, by omega⟩ := dite_eq_left (by omega)
   simp only [hFs1, hFs, hbody, hec]
-  -- The six `hstep` conjuncts off the landed graph/framework accessors (the moved-body geometry).
+  -- The six hypotheses of the move, from the lemmas on `shiftBodyGraph`.
   refine ⟨⟨cd.shiftBody_pred_ne hsi hiv, cd.shiftBody_pred_ne_succ hsi hiv⟩, ?_, ?_, ?_, ?_, ?_⟩
   · -- `F (s+1).graph.IsLink (edge s) vₛ₊₁ vₛ`: the surviving predecessor link.
     rw [cd.shiftBodyFramework_graph]; exact cd.shiftBodyGraph_isLink_pred_edge hsi hiv
-  · -- hdeg2: the body `vₛ₊₁` is at degree 2 in `G − vₛ₊₂`, its only link is `edge s`.
+  · -- hdeg2: the body `vₛ₊₁` has one link in `G − vₛ₊₂`, `edge s`.
     intro f x hlink; rw [cd.shiftBodyFramework_graph] at hlink
     exact cd.shiftBodyGraph_deg_two hsi hiv f x hlink
   · -- hdeg2r: the right-side mirror.

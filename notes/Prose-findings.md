@@ -2561,7 +2561,11 @@ declaration's name as its header writes it:
   `CaseIII/Realization.lean`, the sentences on what `ofNormals` gives at a label (the rows read the
   selector only through the hinge at each link) and on the selector of a generic full-rank
   realization (it gives each link its ends in some order), kept as they stand, moved to the phase
-  (task 35.1).
+  (task 35.1); and in `CaseIII/Relabel/Basic.lean` and `Arm.lean`, the sentences on what `ofNormals`
+  gives at a label of a renamed framework (the hinge from the normals of the two bodies its selector
+  gives the label, so that the renaming of the normals cancels that of the selector, and which does
+  not read the graph) and on the selectors the renamings carry (each gives each link its ends in
+  some order), kept as they stand, moved to the phase (task 35.2).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -4123,7 +4127,10 @@ declaration's name as its header writes it:
   isomorphism and p. 687 for eq. (6.31) (task 30); `RigidityMatrix/Claim612.lean`'s docstrings
   without process codes or words (task 32.1); `case_III_candidate_dispatch`'s lead names
   `lem:case-III-candidate-dispatch-d3`, says that no main result uses it, the proof of `lem:case-III`
-  taking the case of a chain, and claims no `hcand` (task 35.1); `Relabel/`'s are tasks 35.2–35.3's.
+  taking the case of a chain, and claims no `hcand` (task 35.1); `ofNormals_relabel`'s gives the
+  three conjuncts of its statement, and `hasGenericFullRankRealization_of_splitOff_relabel`'s names
+  no `hsplitZero` branch and no user, as it has none (task 35.2); `Relabel/Chain.lean`'s are task
+  35.3's.
 - **F-172** · L · the docstrings of the pins of `case-iii.tex`'s general case
   (`CaseIII/Realization.lean`, `CaseIII/Arms.lean`, `Molecular/Induction/Operations.lean`).
   `chainData_fire_discriminator`'s and `chainData_dispatch`'s say that they have no `\lean` pin;
@@ -4954,6 +4961,30 @@ declaration's name as its header writes it:
   choice of a panel gives it at one, and the proof of `lem:case-III-chain-dispatch` does not use it.
   Removing it would leave `Graph.ChainData.succ_ne_pred_castSucc` (`Induction/Operations.lean`,
   unpinned) without a caller.
+  Task 35.2 adds thirty-one in `CaseIII/Relabel/` (the same screen, over `Basic.lean` and
+  `Arm.lean` together, and the Lean cache, at `2cbc6e2a`), none of them pinned. In `Basic.lean`:
+  the general renamings `ofNormals_relabel_perm`, `rigidityRow_relabel_perm` (used only by the next)
+  and `rigidityRow_chainData_relabel`, `rigidityRow_relabel_off_cycle`,
+  `rigidityRow_relabel_to_block` and `_to_block_swap`; `mem_span_rigidityRows_ofNormals_relabel`;
+  the two moves composed, `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`, and one move
+  along the chain, `Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`;
+  `wstep_foldr_funLeft_eq`, `wstep_foldl_funLeft_eq` (used only by
+  `Graph.ChainData.shiftBodyListAsc_relabel_foldl_hingeRow`, also unused) and
+  `wstep_foldr_mem_span_rigidityRows` (used only by the last of the next); and the frameworks of a
+  chain with fixed normals, the definitions `Graph.ChainData.shiftBodyFramework` and
+  `shiftBodyFrameworkTotal` with `shiftBodyFramework_graph`, `_supportExtensor`, `_htrans`,
+  `shiftBodyFrameworkTotal_eq` and `shiftBodyList_foldr_mem_span_rigidityRows`. In `Arm.lean`, all
+  under `Graph.ChainData`: the seven lemmas at `i = 3` (`i3_…_deRisk`),
+  `panelCorrespondence_supportExtensor` (used only by one of those and the next),
+  `candidate_supportExtensor_perp_of_base`, `freshEdge_interior_acolumn_sup` and
+  `freshEdge_surviving_row_mem_of_witness`. Their docstrings named users that do not exist
+  (`chainData_relabel_arm`, `exists_interior_redundancy_witness`, `ρ₀_perp_interior_chain_edge`) or
+  called them the steps of a proof still to come. Removing them would leave without a caller
+  `Relabel/Chain.lean`'s `BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` and
+  six lemmas of `Induction/Operations.lean` under `Graph.ChainData` (`shiftBody_pred_ne`,
+  `shiftBody_pred_ne_succ`, `shiftBodyGraph_isLink_pred_edge`, `shiftBodyGraph_deg_two_right`,
+  `shiftBodyGraph_off_succ`, `shiftBodyGraph_isLink_of_off_body`), all unpinned, and the pinned
+  `rigidityRows_ofNormals_relabel`, which stays with its node.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5203,6 +5234,25 @@ declaration's name as its header writes it:
   called with `hn ▸ three_le_screwDim hk1` for `hD`, and `2 ≤ cd.d` from `cd.d_eq_kAdd hn` and `hk1`
   by `omega`, on the three standard axioms (`scratch/reconcile-lean/Hyps-t351.lean`, gitignored).
   *Found:* RECONCILE round 3 task 35.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-294** · L · derivable hypotheses and repeated derivations in
+  `Molecular/AlgebraicInduction/CaseIII/Relabel/Basic.lean` and `Arm.lean`.
+  `BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` takes `hdeg2r`, which
+  `hdeg2` gives by `Graph.IsLink.symm`, as `case_III_arm_realization_M3` and
+  `Graph.ChainData.seedAdvance_wstep_hstep` derive it; the fourth conjunct of each step that
+  `wstep_foldl_mem_span_rigidityRows` and `wstep_foldr_mem_span_rigidityRows` take follows from the
+  third in the same way. `case_III_arm_realization_M3` takes `hV3 : 3 ≤ V(G).ncard`, which the
+  distinct ends `v`, `a` and `b` of `hG_ea` and `hG_eb` give under `[Finite α]`. The pins
+  `ofNormals_relabel` and `rigidityRows_ofNormals_relabel` write out the same derivations (the
+  involutions `ρ ∘ ρ` and `σ ∘ σ`, three inequalities of labels and the hinges at `f` and `σ f`),
+  and the first's proof is that of `ofNormals_relabel_perm` (`F-279`'s) at the transposition; the
+  `htrans` of `case_III_arm_realization_M3` and that of `seedAdvance_wstep_hstep` are one argument
+  (a link that does not meet `a` survives with its hinge, as the transposition fixes its ends) in
+  two forms. `lake lint` reports none.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the move called with
+  `fun f x h => hdeg2 f x h.symm` for `hdeg2r`, and `3 ≤ V(G).ncard` from the three distinct ends,
+  on the three standard axioms (`scratch/reconcile-lean/Hyps-t352.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 35.2.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
