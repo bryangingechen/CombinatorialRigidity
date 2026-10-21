@@ -159,7 +159,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
     intro hle
     have hm := Submodule.finrank_mono hle
     omega
-  obtain ⟨point_vc, hpvc_mem, hpvc_notmem⟩ := SetLike.not_le_iff_exists.mp hnotle
+  obtain ⟨point_vc, hpvc_mem, hpvc_notmem⟩ := IsConcreteLE.not_le_iff_exists.mp hnotle
   have hpvc_perp : point_vc ⬝ᵥ normal₁ u_c = 0 := (hker_mem (normal₁ u_c) point_vc).mp hpvc_mem
   have hpvc_ne : point_vc ≠ 0 := by
     intro h; apply hpvc_notmem; rw [h]; exact Submodule.zero_mem _
@@ -172,7 +172,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
     have hm := Submodule.finrank_mono hle
     simp only [finrank_bot] at hm
     omega
-  obtain ⟨normal_vc, hnvc_mem, hnvc_notbot⟩ := SetLike.not_le_iff_exists.mp hnvc_notle
+  obtain ⟨normal_vc, hnvc_mem, hnvc_notbot⟩ := IsConcreteLE.not_le_iff_exists.mp hnvc_notle
   have hnvc_p1 : normal_vc ⬝ᵥ point₁ u_c = 0 := (hker_mem (point₁ u_c) normal_vc).mp hnvc_mem.1
   have hnvc_pvc : normal_vc ⬝ᵥ point_vc = 0 := (hker_mem point_vc normal_vc).mp hnvc_mem.2
   have hnvc_ne : normal_vc ≠ 0 := by

@@ -32,6 +32,6 @@ variable {m K : Type*} [DecidableEq m] [Field K] [Fintype m]
 The determinant form of `Matrix.linearIndependent_rows_iff_isUnit`. -/
 theorem linearIndependent_rows_iff_det_ne_zero {A : Matrix m m K} :
     LinearIndependent K A.row ↔ A.det ≠ 0 := by
-  rw [linearIndependent_rows_iff_isUnit, isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
+  rw [linearIndependent_row_iff_isUnit, isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
 
 end Matrix

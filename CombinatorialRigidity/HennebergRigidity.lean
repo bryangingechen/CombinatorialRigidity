@@ -80,7 +80,7 @@ lemma exists_not_mem_span_singleton_dim_two
     {v : EuclideanSpace ℝ (Fin 2)} (hv : v ≠ 0) :
     ∃ w : EuclideanSpace ℝ (Fin 2),
       w ∉ Submodule.span ℝ ({v} : Set _) := by
-  refine SetLike.exists_not_mem_of_ne_top _ ?_
+  refine SetLike.exists_notMem_of_ne_top _ ?_
   intro h_top
   have h1 := finrank_span_singleton (K := ℝ) hv
   rw [h_top, finrank_top] at h1

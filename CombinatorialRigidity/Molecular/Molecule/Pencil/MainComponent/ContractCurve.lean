@@ -364,7 +364,7 @@ theorem eq_zero_of_dotProduct_pencilPicturePoint {q : α × Fin 2 → K} {s : Fi
     (hli : LinearIndependent K (fun i => pencilPicturePoint q (s i))) {h : Fin 3 → K}
     (hh : ∀ i, h ⬝ᵥ pencilPicturePoint q (s i) = 0) : h = 0 := by
   have hunit : IsUnit (Matrix.of fun j => pencilPicturePoint q (s j)) :=
-    Matrix.linearIndependent_rows_iff_isUnit.mp hli
+    Matrix.linearIndependent_row_iff_isUnit.mp hli
   have hz : (Matrix.of fun j => pencilPicturePoint q (s j)) *ᵥ h =
       (Matrix.of fun j => pencilPicturePoint q (s j)) *ᵥ 0 := by
     rw [Matrix.mulVec_zero]

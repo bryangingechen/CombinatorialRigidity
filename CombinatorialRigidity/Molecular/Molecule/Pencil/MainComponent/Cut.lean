@@ -215,7 +215,7 @@ theorem _root_.Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_l
     rw [Set.ncard_range_of_injective htinj, Nat.card_eq_fintype_card, Fintype.card_fin]
     exact h3
   set M : Matrix (Fin 3) (Fin 3) K := Matrix.of fun i => pencilPicturePoint q (t i) with hM
-  have hunit : IsUnit M := Matrix.linearIndependent_rows_iff_isUnit.mp hli
+  have hunit : IsUnit M := Matrix.linearIndependent_row_iff_isUnit.mp hli
   refine ⟨Matrix.mulVec M⁻¹ (fun i => z (t i)), fun w hw => ?_⟩
   rw [← hrange] at hw
   obtain ⟨i, rfl⟩ := hw

@@ -53,7 +53,10 @@ Follow it. Three more:
   flat monolith forces a structure-recovery read first (the post-Phase-22l
   perf round paid that on the flat 4000-line `CaseIII.lean`). When and how to
   split: `../notes/PERFORMANCE.md`.
-- **`@[deprecated <general-form> (since := "narrative-bridge")]`** has a
+- **`@[deprecated <general-form> +typeChanged (since := "narrative-bridge")]`**
+  (the flag is part of the pattern: a shim specializes its general form, so its
+  type always differs, and from Lean v4.36 a deprecation whose target has
+  another type warns unless `+typeChanged` is given) has a
   second project meaning: it marks a **narrative-bridge shim**, a one-line
   composition lemma that exists only to anchor a blueprint corollary's
   `\lean{...}` pin (the warning discourages new callsites). Authoring rule

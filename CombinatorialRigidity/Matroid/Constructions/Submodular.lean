@@ -163,7 +163,7 @@ on all of `α` whose circuits are the minimal nonempty finite sets `C` with `f C
       refine ⟨?_, ?_⟩
       · -- `D` is nonempty: else `C₁ = C₂ = {e}`.
         rw [Finset.nonempty_iff_ne_empty]
-        contrapose! h_ne'
+        contrapose h_ne'
         rw [hD, Finset.erase_eq_empty_of_mem
           (Finset.mem_union_left _ heC₁)] at h_ne'
         obtain ⟨rfl, rfl⟩ := singleton_subset_inter_and_union_subset_singleton
@@ -375,7 +375,7 @@ theorem polymatroid_rank_eq [DecidableEq α] {f : Finset α → ℤ}
       have ha : ↑a ∈ X \ B.toFinset := coe_mem a
       replace ha : ↑a ∉ I a := by
         specialize h_subset a
-        contrapose! ha
+        contrapose ha
         exact notMem_sdiff_of_mem_right <| h_subset ha
       simp only [singleton_biUnion, Ie]
       rw [← Int.lt_add_one_iff, ← Nat.cast_one, ← Nat.cast_add, ← card_insert_of_notMem ha]

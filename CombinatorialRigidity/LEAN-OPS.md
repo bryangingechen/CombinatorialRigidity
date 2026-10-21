@@ -27,9 +27,11 @@ implicitly at EOF; existing `namespace/end` pairs unchanged).
 **Constraints:**
 - A `module` file can only `import` (or `public import`) other `module`
   files — build error *"cannot import non-`module` X"*. Mathlib is
-  ~98.6% converted; the holdout that matters is
-  `Matroid.Representation.Map` (`apnelson1/Matroid`), which keeps
-  `LinearRigidityMatroid.lean` non-`module`. Non-`module` files import
+  ~98.6% converted. The holdout that kept
+  `LinearRigidityMatroid.lean` non-`module`, `Matroid.Representation.Map`
+  (`apnelson1/Matroid`), is itself a `module` since the `Matroid` pin `8ece630`,
+  so that reason has lapsed (the file stays non-`module` for now; see
+  `../notes/Bump-v4.36.0-rc1.md`). Non-`module` files import
   `module` files freely, so the rest of the project is unaffected.
 - `public section` hides `def` bodies for defeq *intra*-module too
   (≈ `@[irreducible]`). Symptom: *"Not a definitional equality"* on a

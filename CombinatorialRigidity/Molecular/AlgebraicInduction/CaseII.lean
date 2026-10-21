@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
-import CombinatorialRigidity.Mathlib.Data.Countable.Defs
+import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 
 /-!
 # Case II: putting back a vertex of degree two

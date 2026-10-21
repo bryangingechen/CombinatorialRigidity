@@ -14,7 +14,7 @@ public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.Algebra.Polynomial.Roots
 public import Mathlib.Algebra.MvPolynomial.Eval
 public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-public import Mathlib.Data.Real.Basic
+public import Mathlib.Basic.Real.Basic
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 
 /-!
@@ -146,7 +146,7 @@ theorem linearIndependent_rows_iff_det_mul_transpose_ne_zero
     [Fintype m] [DecidableEq m] [Fintype n] (A : Matrix m n R) :
     LinearIndependent R A.row ↔ (A * Aᵀ).det ≠ 0 := by
   rw [linearIndependent_rows_iff_rank_eq_card, ← rank_self_mul_transpose,
-    ← linearIndependent_rows_iff_rank_eq_card, linearIndependent_rows_iff_isUnit,
+    ← linearIndependent_rows_iff_rank_eq_card, linearIndependent_row_iff_isUnit,
     isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
 
 /-- **Linear independence of rows from a specialized nonzero minor.** Let `M : ι → κ → R` be
@@ -211,7 +211,7 @@ theorem exists_submatrix_det_ne_zero_of_linearIndependent_rows
   set N : Matrix m m K := Matrix.of (fun i j : m => M i ((a ∘ em) j)) with hN
   have hrow : Nᵀ.row = Mᵀ.row ∘ a ∘ em := rfl
   have hLIN : LinearIndependent K Nᵀ.row := by rw [hrow]; exact hli.comp ⇑em em.injective
-  have : IsUnit Nᵀ := Matrix.linearIndependent_rows_iff_isUnit.mp hLIN
+  have : IsUnit Nᵀ := Matrix.linearIndependent_row_iff_isUnit.mp hLIN
   rw [← Matrix.det_transpose]
   exact isUnit_iff_ne_zero.mp (Nᵀ.isUnit_iff_isUnit_det.mp this)
 

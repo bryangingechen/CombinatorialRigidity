@@ -6,7 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
-public import Mathlib.Data.Real.Basic
+public import Mathlib.Basic.Real.Basic
 public import Mathlib.LinearAlgebra.CrossProduct
 
 /-!
@@ -423,7 +423,7 @@ theorem linearIndependent_e1_e2_cross {e₁ e₂ : Fin 3 → ℝ}
       exact (triple_product_permutation (e₁ ⨯₃ e₂) e₁ e₂).symm
     rw [hdet_eq]
     exact fun h => hn (dotProduct_self_eq_zero.mp h)
-  exact Matrix.linearIndependent_rows_iff_isUnit.mpr
+  exact Matrix.linearIndependent_row_iff_isUnit.mpr
     ((Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet))
 
 /-- A vector orthogonal to a basis of `ℝ³` is zero: if `![v₀, v₁, v₂]` is linearly independent
@@ -432,7 +432,7 @@ theorem eq_zero_of_dotProduct_row_eq_zero {v : Fin 3 → Fin 3 → ℝ} {r : Fin
     (hv : LinearIndependent ℝ v) (h : ∀ i, v i ⬝ᵥ r = 0) : r = 0 := by
   have hdet : Matrix.det v ≠ 0 :=
     isUnit_iff_ne_zero.mp
-      ((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hv))
+      ((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_row_iff_isUnit.mp hv))
   refine Matrix.eq_zero_of_mulVec_eq_zero hdet (funext fun i => ?_)
   exact h i
 

@@ -279,7 +279,7 @@ theorem _root_.Graph.finrank_affineLifts [Finite α] {G : Graph α β} {q : α �
     intro h hh
     have htV : ∀ i, t i ∈ V(G) := fun i => Graph.closedNbhd_subset_vertexSet hv₀ (ht i)
     have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
-      Matrix.linearIndependent_rows_iff_isUnit.mp hli
+      Matrix.linearIndependent_row_iff_isUnit.mp hli
     have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ h =
         (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ 0 := by
       rw [Matrix.mulVec_zero]
@@ -639,7 +639,7 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
     · obtain ⟨t, ht, hli⟩ := hq.2 v hv
       -- the coefficient vector is orthogonal to three independent vectors of `K³`
       have hunit : IsUnit (Matrix.of fun j => pencilPicturePoint q (t j)) :=
-        Matrix.linearIndependent_rows_iff_isUnit.mp hli
+        Matrix.linearIndependent_row_iff_isUnit.mp hli
       have hzero : (Matrix.of fun j => pencilPicturePoint q (t j)) *ᵥ
           (fun i => x (Sum.inr (v, i))) = (Matrix.of fun j => pencilPicturePoint q (t j)) *ᵥ 0 := by
         rw [Matrix.mulVec_zero]

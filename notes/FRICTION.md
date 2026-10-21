@@ -3751,7 +3751,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
   of the ℕ→ℝ cast, which is injective only in characteristic zero — the field
   sweep's named ℕ-cast-trap replacement.
 - **Status:** mirrored.
-- **Mirror file:** `Mathlib/Data/Countable/Defs.lean`. Sits alongside
+- **Mirror file:** `Mathlib/Basic/Countable/Defs.lean`. Sits alongside
   `Countable.exists_injective_nat`.
 
 ### [mirrored] `exteriorPower.topEquiv` (+ `Set.powersetCard.instUniqueTop`) — the top-power volume-form iso `⋀ⁿ (Fin n → R) ≃ₗ R`

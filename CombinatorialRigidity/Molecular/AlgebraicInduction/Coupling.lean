@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
-import CombinatorialRigidity.Mathlib.Data.Countable.Defs
+import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 
 /-!

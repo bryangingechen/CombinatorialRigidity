@@ -1,18 +1,18 @@
 # Toolchain bump to Lean v4.36.0-rc1 (work log)
 
-**Status:** in progress. The build is green but not yet warning-clean. The pins are applied (Lean
-`v4.36.0-rc1`, mathlib `930ae14`, `Matroid` `8ece630`) and every error group, G1 to G4, is fixed:
-`build9` is exit 0, 0 `error`, "Build completed successfully (6159 jobs)", all 154 default-target
-modules compiled. What remains is warnings: 43 positioned sites plus Lake's 22 module-system
-pairs (W1 to W6). This tree is a documented intermediate state of a multi-commit bump on `master`,
-which the PI reviews before any push. **Next concrete task:** W1 + W3 + W6, the mechanical warning
-classes (*Hand-off*). Queue item `bump-4.36`; plan and playbook `notes/ToolchainBumps.md`; why:
-`notes/Reconcile-lean-cleanup.md` *Autopilot: for the PI*.
+**Status:** in progress. The build is green and warning-clean. The pins are applied (Lean
+`v4.36.0-rc1`, mathlib `930ae14`, `Matroid` `8ece630`), every error group G1 to G4 and every warning
+class W1 to W6 is fixed: `build10` is exit 0, 0 `error`, 0 `warning`, "Build completed successfully",
+and `lake build pebble-game` is clean too. This tree is a documented intermediate state of a
+multi-commit bump on `master`, which the PI reviews before any push. **Next concrete task:**
+`lake lint` to a fixed point, then the rest of the gate set (*Hand-off*). Queue item `bump-4.36`;
+plan and playbook `notes/ToolchainBumps.md`; why: `notes/Reconcile-lean-cleanup.md` *Autopilot: for
+the PI*.
 
 ## Current state
 
-**Next:** W1 + W3 + W6 (*Hand-off*). **The build is green** (`build9`, G1 to G4 fixed) but not
-warning-clean: 43 positioned warning sites plus W4's 22 Lake pairs remain.
+**Next:** `lake lint` to a fixed point (*Hand-off*). **The build is green and warning-clean**
+(`build10`, W1 to W6 fixed).
 
 | | before | after |
 |---|---|---|
@@ -29,7 +29,8 @@ import graph: each module importing no failed module built, and none importing o
 | `build1` | the pins (`8936b312`) | 1 | 57 / 2 / 95 | G1, G2 |
 | `build2`, `build2b` | + G1, G2 (this commit) | 1 | 69 / 1 / 84 | G3 |
 | `build3-probe`…`8` | + G3, G4 (working tree) | 0 at `8` | 154 / 0 / 0 | each G4 site in turn |
-| `build9` | + G3, G4 (this commit, committed) | 0 | 154 / 0 / 0 | done: 0 `error`, warnings only |
+| `build9` | + G3, G4 (committed, `1fac0646`) | 0 | 154 / 0 / 0 | done: 0 `error`, 87 warnings |
+| `build10` | + W1 to W6 (this commit) | 0 | 154 / 0 / 0 | done: 0 `error`, 0 `warning`, 6151 jobs; `lake build pebble-game` (`build10-pebble`) 0 warnings, 3913 jobs |
 
 `build8-probe`: "Build completed successfully (6159 jobs)", 0 `error`. The probe's fixes are kept
 as `scratch/bump-4.36/probe-g3-g8.patch` (gitignored) and spelled out under *Checklist*.
@@ -92,28 +93,28 @@ protected Mem : α → Prop`). Small: two shapes, 7 sites in 6 files across the 
 **Warnings, by class** (the whole tree, from `build8-probe`: G3 and G4 add or remove none, and
 shift no warned line). 43 positioned sites, plus W4's 22.
 
-- [ ] **W1: deprecated names, 33 sites in 20 files** (14 in the zone, in `Molecular/`:
+- [x] **W1: deprecated names, 33 sites in 20 files** (14 in the zone, in `Molecular/`:
   `Molecule/Pencil/{Arms,Chart}.lean`, `Molecule/Pencil/MainComponent/{Configuration,Cut,Flat,
   Lines}.lean`, `Molecule/ScrewVelocity.lean`, `RigidityMatrix/Claim612.lean`).
   17 × `Matrix.linearIndependent_rows_iff_isUnit` → `…_row_…`; 7 × `SetLike.not_le_iff_exists`
   and 3 × `SetLike.exists_of_lt` → `IsConcreteLE.…` (a namespace change: check dot notation); 6
   others; no "different type" note. One `--apply` of the sweep on a full build's log, then a
   build for line lengths.
-- [ ] **W2: deprecated imports, 6 sites in 5 files** (2 in the zone): `Mathlib.Data.Real.Basic` →
+- [x] **W2: deprecated imports, 6 sites in 5 files** (2 in the zone): `Mathlib.Data.Real.Basic` →
   `Mathlib.Basic.Real.Basic` at `Mathlib/LinearAlgebra/Matrix/Rank.lean:17`,
   `Molecular/AlgebraicInduction/PanelLayer.lean:8`, `Molecular/Molecule/ScrewVelocity.lean:9`;
   `PebbleGame/Exec.lean:9, 10` (→ `Mathlib.Order.Sym2`, `Mathlib.Order.Prod.Lex.Basic`);
   `Mathlib/Data/Countable/Defs.lean:8`, the mirror whose upstream file moved (*Blockers*).
-- [ ] **W3: `push Not` made no progress, 2 sites**: `Matroid/Constructions/Submodular.lean:166,
+- [x] **W3: `push Not` made no progress, 2 sites**: `Matroid/Constructions/Submodular.lean:166,
   378` (ported from `apnelson1/Matroid`). Drop the no-op.
-- [ ] **W4: Lake's module-system warning, 22 (file, import) pairs in 13 files** ("imports … from
+- [x] **W4: Lake's module-system warning, 22 (file, import) pairs in 13 files** ("imports … from
   package `mathlib`, which is designed for use with the module system"): exactly the 13 of our 89
   non-`module` files that import mathlib directly. `BodyBar/` 8 pairs (6 files),
-  `Matroid/Constructions/` 7 (2), `Molecular/` 6 (4), `Nonvacuity.lean` 1. A choice (*Blockers*).
-- [ ] **W5: a deprecation whose target has another type, 1 site**: the narrative-bridge shim
+  `Matroid/Constructions/` 7 (2), `Molecular/` 6 (4), `Nonvacuity.lean` 1. A choice (settled: `allowNonModules = true`, *Decisions made*).
+- [x] **W5: a deprecation whose target has another type, 1 site**: the narrative-bridge shim
   `SimpleGraph.IsLaman.exists_rowIndependent_placement` (`MatroidIdentification.lean:945`). Lean
   now checks the types; the shim's differ by design. Lean's fix is `+typeChanged` (*Blockers*).
-- [ ] **W6: deprecated syntax, 1 site**: `rwa [h'] at h0 ⊢`
+- [x] **W6: deprecated syntax, 1 site**: `rwa [h'] at h0 ⊢`
   (`Molecular/Molecule/Pencil/MainComponent/Flat.lean:202`, in the zone), "use `rw [...] at ...
   <;> assumption`". Mechanical.
 
@@ -123,28 +124,16 @@ count; shape B lifted to `TACTICS-QUIRKS.md` as a rescue pattern (symptom "Inval
 
 ## Blockers / open questions
 
-Choices, for the coordinator or the PI; none blocks G3 or G4.
-
-- **W4.** Lake's documented opt-out is `allowNonModules = true` on our `[[lean_lib]]` (one line:
-  we mix non-`module` files with module dependencies, knowingly). The fix at the source is
-  converting files to `module`, newly possible: `Matroid` at `8ece630` has a `module` header in
-  362 of its 365 files, which retires `LEAN-OPS.md`'s stated reason for the holdouts. That is a
-  round of its own over up to 89 files. Leaning: the one line for the bump, the conversion filed
-  as a later candidate.
-- **W5.** `+typeChanged` on the shim changes the documented shim pattern, so the same commit would
-  update `CombinatorialRigidity/CLAUDE.md` *Engineering conventions* and `blueprint/AUTHORING.md`
-  *Narrative-bridge corollaries*.
-- **W2's mirror.** `Mathlib/Data/Countable/Defs.lean` mirrors an upstream file that moved to
-  `Mathlib/Basic/Countable/Defs.lean`. `DESIGN.md` *Mirror directory* would move the mirror too (5
-  importers, 3 mentions in docs); the alternative keeps the path and changes only the import.
+None. **Candidate for the PI** (a later round, not a queue item): converting the 89 non-`module` files
+to `module`, which would retire the `allowNonModules` line. It is newly possible: `Matroid` at
+`8ece630` has a `module` header in 362 of its 365 files, including `Matroid.Representation.Map`.
 
 ## Hand-off / next phase
 
-**Smallest next commit: W1 + W3 + W6**, the mechanical warning classes (*Checklist*): one
-`scripts/sweep-deprecations.py --apply` for W1's 33 deprecated-name sites (then a build for line
-lengths), drop W3's two no-op `push Not` calls, and rewrite W6's `rwa`. The coordinator will pass a
-shaping block for W2, W4 and W5's choices (*Blockers*), which stay open. Then the close gates
-(`notes/ToolchainBumps.md` *The gate set*).
+**Smallest next commit: `lake lint`**, iterated to a fixed point per `notes/ToolchainBumps.md` *What
+the cleanup after a big bump costs* (the lint pass may open new warnings or style findings; fix them
+in their own commits), then the rest of *The gate set* (the blueprint gates, `checkdecls`, the "122"
+count correction) and the close items under *Checklist*.
 
 **PI action, after the push** (none taken here: no push, no `gh` writes): close PR #1 and issue
 #2, which this bump supersedes (`notes/ToolchainBumps.md` *Where this stands*).
@@ -160,3 +149,11 @@ shaping block for W2, W4 and W5's choices (*Blockers*), which stay open. Then th
 - **Probe, then revert**: G3 and G4 were applied in the working tree, rebuilt to a green tree and
   reverted, so the taxonomy covers every module while each commit stays one group.
 - **The phase-note gate covers this log**: `notes/check-phase-note.py` matches `Bump-<version>.md`.
+- **W4, W5, W2's mirror** (coordinator, 2026-10-21; in-workflow choices, not the PI's): W4 is
+  `allowNonModules = true` on the `CombinatorialRigidity` lib (mathlib's own `Cache` and
+  `MathlibTest` libs do the same), conversion deferred as a PI candidate; W5 is `+typeChanged` on the
+  narrative-bridge shim, placed before `(since := …)`, with the pattern amended in `CLAUDE.md` and
+  `blueprint/AUTHORING.md`; the Countable mirror moved to `Mathlib/Basic/Countable/Defs.lean` with its
+  upstream file. `LEAN-OPS.md`'s `Matroid.Representation.Map` holdout reason lapsed at `8ece630`.
+- **W3 and W6 forms**: the two no-op `push Not` were inside `contrapose!`, so they became
+  `contrapose`; W6 is `rw [h'] at h0 ⊢; assumption` (the linter rejects `<;>`).

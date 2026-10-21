@@ -114,7 +114,7 @@ theorem affineIndependent_fin_iff_det_homogenize (p : Fin (d + 1) → Fin d → 
       (Matrix.of (fun i => homogenize (p i))).det ≠ 0 := by
   rw [affineIndependent_iff_linearIndependent_homogenize,
     ← Matrix.of_row (fun i => homogenize (p i)),
-    Matrix.linearIndependent_rows_iff_isUnit, Matrix.isUnit_iff_isUnit_det,
+    Matrix.linearIndependent_row_iff_isUnit, Matrix.isUnit_iff_isUnit_det,
     isUnit_iff_ne_zero]
   rfl
 
@@ -494,7 +494,7 @@ private theorem pairAppend_injective {e : ℕ} (a b : Fin (e + 2)) (hab : a ≠ 
     Function.Injective (pairAppend a b hab) := by
   set emb := (({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab) with hemb
   rw [pairAppend, Fin.append_injective_iff]
-  refine ⟨injective_pair_iff_ne.mpr hab, emb.injective, ?_⟩
+  refine ⟨Matrix.injective_pair_iff_ne.mpr hab, emb.injective, ?_⟩
   -- the order embedding lands in `{a, b}ᶜ`, so it never equals `a` or `b`.
   intro i j
   have hmem : emb j ∈ ({a, b} : Finset (Fin (e + 2)))ᶜ := by

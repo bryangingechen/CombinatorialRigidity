@@ -548,7 +548,7 @@ theorem eq_zero_of_dotProduct_triple {a b c d : Fin 3 → K}
     (hLI : LinearIndependent K ![a, b, c]) (ha : d ⬝ᵥ a = 0) (hb : d ⬝ᵥ b = 0)
     (hc : d ⬝ᵥ c = 0) : d = 0 := by
   have hunit : IsUnit (Matrix.of ![a, b, c]) :=
-    Matrix.linearIndependent_rows_iff_isUnit.mp hLI
+    Matrix.linearIndependent_row_iff_isUnit.mp hLI
   have hzero : (Matrix.of ![a, b, c]) *ᵥ d = (Matrix.of ![a, b, c]) *ᵥ 0 := by
     rw [Matrix.mulVec_zero]
     funext i

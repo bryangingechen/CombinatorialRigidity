@@ -199,11 +199,11 @@ theorem _root_.Graph.finrank_liftingPlanes [Finite α] {G : Graph α β} {q : α
         have h0 : h (t i) ⬝ᵥ pencilPicturePoint q (t i) = 0 := by
           simpa [hT, Graph.liftingPlanesEval, htV] using congr_fun hT0 (t i)
         rcases ht i with h' | ⟨e, he⟩
-        · rwa [h'] at h0 ⊢
+        · rw [h'] at h0 ⊢; assumption
         · have := (hh e v (t i) he).2
           rwa [sub_dotProduct, h0, sub_zero] at this
       have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
-        Matrix.linearIndependent_rows_iff_isUnit.mp hli
+        Matrix.linearIndependent_row_iff_isUnit.mp hli
       have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ h v =
           (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ 0 := by
         rw [Matrix.mulVec_zero]

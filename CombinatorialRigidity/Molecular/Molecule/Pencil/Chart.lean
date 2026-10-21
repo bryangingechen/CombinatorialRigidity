@@ -214,7 +214,7 @@ theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
       exact fun h => hLI h.1
     rw [show Fin.snoc (![x, y, z] : Fin 3 → Fin 4 → K) w = ![x, y, z, w] from by
       funext i; fin_cases i <;> simp] at hsnoc
-    have := (Matrix.linearIndependent_rows_iff_isUnit
+    have := (Matrix.linearIndependent_row_iff_isUnit
       (A := Matrix.of ![x, y, z, w])).not.mp hsnoc
     rwa [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, not_not] at this
   · intro hLI hzero
@@ -233,7 +233,7 @@ theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
     rw [show Fin.snoc (![x, y, z] : Fin 3 → Fin 4 → K) w = ![x, y, z, w] from by
       funext i; fin_cases i <;> simp] at hsnoc
     have hdet : Matrix.det (Matrix.of ![x, y, z, w]) ≠ 0 := by
-      have hu := (Matrix.linearIndependent_rows_iff_isUnit
+      have hu := (Matrix.linearIndependent_row_iff_isUnit
         (A := Matrix.of ![x, y, z, w])).mp hsnoc
       rwa [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero] at hu
     apply hdet

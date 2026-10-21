@@ -124,7 +124,9 @@ composition with **no downstream caller**. Prose-only invites silent
 drift; a normal lemma proliferates API that competes with the general
 form. The pattern: keep it a full `\begin{corollary}` with `\lean{}` +
 `\leanok`, and formalize the Lean shim under `@[deprecated <general-form>
-(since := "narrative-bridge")]` with the intent in its doc-comment — the
++typeChanged (since := "narrative-bridge")]` (a shim specializes its general form, so its
+type always differs, and from Lean v4.36 a deprecation whose target has another type warns
+unless `+typeChanged` is given) with the intent in its doc-comment — the
 build still checks the prose (a rename breaks the shim body), the warning
 discourages callsites, the dep-graph greens. (Why the non-date `since`
 sentinel: `CombinatorialRigidity/CLAUDE.md` *Engineering conventions*.)

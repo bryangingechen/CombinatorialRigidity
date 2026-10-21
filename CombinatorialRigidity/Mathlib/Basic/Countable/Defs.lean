@@ -5,7 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import Mathlib.Data.Countable.Defs
+public import Mathlib.Basic.Countable.Defs
 public import Mathlib.Data.Fintype.EquivFin
 
 /-!
@@ -14,7 +14,7 @@ public import Mathlib.Data.Fintype.EquivFin
 The Lean namespace is the upstream one (`Countable`), so promotion to mathlib is
 a copy-paste. See `DESIGN.md` "Mirror directory".
 
-## Contents (target file: `Mathlib/Data/Countable/Defs.lean`)
+## Contents (target file: `Mathlib/Basic/Countable/Defs.lean`)
 
 * `Countable.exists_injective_of_infinite` — `∃ f : α → β, Function.Injective f`
   for `[Countable α] [Infinite β]`. Composes the natural-number embedding

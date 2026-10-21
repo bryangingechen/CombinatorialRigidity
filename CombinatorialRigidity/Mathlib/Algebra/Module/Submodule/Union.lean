@@ -46,8 +46,8 @@ done, and otherwise `u + w` avoids both (membership of the sum in `U` would
 force `u = (u + w) - w ∈ U`, and in `W` would force `w ∈ W`). -/
 theorem exists_mem_notMem_notMem {S U W : Submodule R M}
     (hU : ¬ S ≤ U) (hW : ¬ S ≤ W) : ∃ z ∈ S, z ∉ U ∧ z ∉ W := by
-  obtain ⟨u, huS, huU⟩ := SetLike.not_le_iff_exists.mp hU
-  obtain ⟨w, hwS, hwW⟩ := SetLike.not_le_iff_exists.mp hW
+  obtain ⟨u, huS, huU⟩ := IsConcreteLE.not_le_iff_exists.mp hU
+  obtain ⟨w, hwS, hwW⟩ := IsConcreteLE.not_le_iff_exists.mp hW
   by_cases huW : u ∈ W
   · by_cases hwU : w ∈ U
     · refine ⟨u + w, S.add_mem huS hwS, fun h => huU ?_, fun h => hwW ?_⟩

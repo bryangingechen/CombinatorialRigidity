@@ -128,7 +128,7 @@ theorem linearIndependent_pointJoin_tetra {p : Fin 4 → Fin 4 → K} (hp : Line
       ext i j; fin_cases i <;> rfl
     rw [e]
     exact ((Matrix.isUnit_iff_isUnit_det _).mp
-      ((Matrix.linearIndependent_rows_iff_isUnit (A := Matrix.of (p ∘ f))).mp
+      ((Matrix.linearIndependent_row_iff_isUnit (A := Matrix.of (p ∘ f))).mp
         (hp.comp f hf))).ne_zero
   have z : ∀ (a b c d : Fin 4), (a = c ∨ a = d ∨ b = c ∨ b = d) →
       (Matrix.of ![p a, p b, p c, p d]).det = 0 := by

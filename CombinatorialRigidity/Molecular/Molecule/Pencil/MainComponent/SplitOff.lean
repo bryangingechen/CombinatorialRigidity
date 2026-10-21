@@ -251,7 +251,7 @@ theorem _root_.Graph.planeDiff_eq_zero_of_splitOff [Fintype α] {G : Graph α β
       u ⬝ᵥ pencilPicturePoint q (x 0) = 0 → u ⬝ᵥ pencilPicturePoint q b = 0 → u = 0 := by
     intro u h1 h2 h3
     have hunit : IsUnit (Matrix.of ![pencilPicturePoint q a, pencilPicturePoint q (x 0),
-        pencilPicturePoint q b]) := Matrix.linearIndependent_rows_iff_isUnit.mp hli
+        pencilPicturePoint q b]) := Matrix.linearIndependent_row_iff_isUnit.mp hli
     have hz : (Matrix.of ![pencilPicturePoint q a, pencilPicturePoint q (x 0),
         pencilPicturePoint q b]) *ᵥ u = (Matrix.of ![pencilPicturePoint q a,
           pencilPicturePoint q (x 0), pencilPicturePoint q b]) *ᵥ 0 := by

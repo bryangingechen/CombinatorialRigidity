@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Coupling
-import CombinatorialRigidity.Mathlib.Data.Countable.Defs
+import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 
 /-!
 # Case I: the rows outside a rigid subgraph, and two realizations combined

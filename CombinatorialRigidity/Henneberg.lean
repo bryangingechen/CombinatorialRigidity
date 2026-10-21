@@ -266,7 +266,7 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
         have hG := h.isSparse s' (by omega)
         omega
     · -- Case `none ∉ s`. Then `T.ncard = 0` and `s.card = s'.card`.
-      have hsc : s.card = s'.card := (Finset.card_eraseNone_of_not_mem hnone).symm
+      have hsc : s.card = s'.card := (Finset.card_eraseNone_of_notMem hnone).symm
       have hT_empty : T.ncard = 0 :=
         fresh_sym2_ncard_eq_zero_of_none_notMem hnone _ (by rintro e (rfl | rfl) <;> simp)
       have hG := h.isSparse s' (by omega)
@@ -433,7 +433,7 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
               exact fresh_sym2_triple_inter_ncard_le_two hb
           omega
     · -- Case `none ∉ s`. Then `T'.ncard = 0` and `s.card = s'.card`.
-      have hsc : s.card = s'.card := (Finset.card_eraseNone_of_not_mem hnone).symm
+      have hsc : s.card = s'.card := (Finset.card_eraseNone_of_notMem hnone).symm
       have hT'_empty : T'.ncard = 0 :=
         fresh_sym2_ncard_eq_zero_of_none_notMem hnone _ (by rintro e (rfl | rfl | rfl) <;> simp)
       have hG := h.isSparse s' (by omega)

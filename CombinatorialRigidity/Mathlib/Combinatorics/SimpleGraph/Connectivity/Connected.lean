@@ -67,7 +67,7 @@ theorem reachable_deleteIncidenceSet {v x y : V} [Fintype (G.neighborSet v)]
   have hsub : (G.neighborSet v).Subsingleton :=
     Set.ncard_le_one_iff_subsingleton.mp (by rw [ncard_neighborSet_eq_degree]; exact hv)
   have hvnotin : v ∉ (p'.val).support :=
-    p'.property.isTrail.not_mem_support_of_subsingleton_neighborSet hx.symm hy.symm hsub
+    p'.property.isTrail.notMem_support_of_subsingleton_neighborSet hx.symm hy.symm hsub
   have hp : ∀ e ∈ (p'.val).edges, e ∉ G.incidenceSet v := by
     intro e he hve
     exact hvnotin (Walk.mem_support_of_mem_edges he hve.2)
@@ -111,7 +111,7 @@ theorem two_le_degree_of_adj_degree_eq_one {v u : V} [Fintype (G.neighborSet v)]
   have hsub_u : (G.neighborSet u).Subsingleton :=
     Set.ncard_le_one_iff_subsingleton.mp (by rw [ncard_neighborSet_eq_degree]; omega)
   have htrail : p.val.IsTrail := p.property.isTrail
-  exact (htrail.not_mem_support_of_subsingleton_neighborSet (Ne.symm hwu) hu.ne' hsub_u) hmem0
+  exact (htrail.notMem_support_of_subsingleton_neighborSet (Ne.symm hwu) hu.ne' hsub_u) hmem0
 
 /-- If every pair of support vertices is reachable and the support is nonempty, the induced
 subgraph on the support is connected: given two support vertices, a path between them (as

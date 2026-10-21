@@ -6,8 +6,8 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import Mathlib.Data.Finset.Sort
-public import Mathlib.Data.Sym.Sym2.Order
-public import Mathlib.Data.Prod.Lex
+public import Mathlib.Order.Sym2
+public import Mathlib.Order.Prod.Lex.Basic
 public import CombinatorialRigidity.Laman
 public import CombinatorialRigidity.PebbleGame.Correctness
 

@@ -269,7 +269,8 @@ let `2 ≤ k`, and let `pi`, `pj` and `n_u ≠ 0` be vectors of `K^(k+2)` with
 `pi ⬝ᵥ n_u = pj ⬝ᵥ n_u = 0`. Then some `n'`, linearly independent of `n_u`, has
 `pi ⬝ᵥ n' = pj ⬝ᵥ n' = 0`. The vectors orthogonal to `pi` and `pj` form the kernel of a map from
 `K^(k+2)` to `K²`, of dimension at least `k ≥ 2`; it contains the line `span {n_u}`, and so a vector
-`n'` outside it (`SetLike.exists_of_lt`). In the proof of KT Claim 6.12 (`lem:case-III-claim612`), a
+`n'` outside it (`IsConcreteLE.exists_of_lt`).
+In the proof of KT Claim 6.12 (`lem:case-III-claim612`), a
 join `pi ∨ pj` lies in a panel with normal `n_u`, and `n'` is the normal of a second plane through
 its line. -/
 theorem exists_independent_perp_pair_gen {k : ℕ} (hk : 2 ≤ k) (pi pj n_u : Fin (k + 2) → K)
@@ -308,7 +309,7 @@ theorem exists_independent_perp_pair_gen {k : ℕ} (hk : 2 ≤ k) (pi pj n_u : F
     have h1 : Module.finrank K (Submodule.span K {n_u}) = 1 := finrank_span_singleton hn_u
     rw [heq] at h1
     omega
-  obtain ⟨n', hn'W, hn'not⟩ := SetLike.exists_of_lt hlt
+  obtain ⟨n', hn'W, hn'not⟩ := IsConcreteLE.exists_of_lt hlt
   obtain ⟨hi', hj'⟩ := (hmemW n').1 hn'W
   refine ⟨n', (LinearIndependent.pair_iff' hn_u).2 ?_, hi', hj'⟩
   intro a heq
@@ -358,7 +359,7 @@ theorem exists_independent_perp_family {k m : ℕ} (hm : m ≤ k)
     have h1 : Module.finrank K (Submodule.span K {n_u}) = 1 := finrank_span_singleton hn_u
     rw [heq] at h1
     omega
-  obtain ⟨n', hn'W, hn'not⟩ := SetLike.exists_of_lt hlt
+  obtain ⟨n', hn'W, hn'not⟩ := IsConcreteLE.exists_of_lt hlt
   refine ⟨n', (LinearIndependent.pair_iff' hn_u).2 ?_, (hmemW n').1 hn'W⟩
   intro a heq
   exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
@@ -421,7 +422,7 @@ theorem exists_independent_perp_family_escape {k m : ℕ} (hm : m ≤ k)
     have h1 : Module.finrank K (LinearMap.ker L) = 1 := by
       rw [← heq, hinf_eq]; exact finrank_span_singleton hn_u
     omega
-  obtain ⟨n', hn'ker, hn'notinf⟩ := SetLike.exists_of_lt hlt
+  obtain ⟨n', hn'ker, hn'notinf⟩ := IsConcreteLE.exists_of_lt hlt
   -- `n' ∈ ker L` and `n' ∉ W ⊓ ker L`, hence `n' ∉ W`.
   have hn'notW : n' ∉ W := fun hWmem => hn'notinf (Submodule.mem_inf.mpr ⟨hWmem, hn'ker⟩)
   have hLI : LinearIndependent K ![n_u, n'] := by

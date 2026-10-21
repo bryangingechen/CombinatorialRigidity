@@ -295,7 +295,7 @@ theorem exists_perp_linearIndependent (m p : Fin 4 → K) (hp : p ≠ 0) :
     intro hle
     have := Submodule.finrank_mono hle
     rw [finrank_span_singleton hp] at this; omega
-  obtain ⟨w, hwker, hwnotin⟩ := SetLike.not_le_iff_exists.mp hnotle
+  obtain ⟨w, hwker, hwnotin⟩ := IsConcreteLE.not_le_iff_exists.mp hnotle
   refine ⟨w, ?_, ?_⟩
   · have hker : φ w = 0 := hwker
     rw [hφa] at hker; rw [dotProduct_comm]; exact hker
@@ -488,7 +488,7 @@ theorem exists_reposition_cross_incidences_avoiding
   have hVdim : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
   -- Input-side picks: `c' ∈ (t₁, t₂)-perp` off `span {pt₂v}`; `b ∈ n₂v-perp` off
   -- `span {w₁, w₂}` and `span {c', pt₂v}`; `c` off `n₂v-perp` and `span {b, c', pt₂v}`.
-  obtain ⟨c', hc'S, hc'sp⟩ := SetLike.not_le_iff_exists.mp
+  obtain ⟨c', hc'S, hc'sp⟩ := IsConcreteLE.not_le_iff_exists.mp
     (show ¬ (ker₁ t₁ ⊓ ker₁ t₂) ≤ Submodule.span K {pt₂v} from fun hle => by
       have hm := Submodule.finrank_mono hle
       have h2 : 2 ≤ Module.finrank K ((ker₁ t₁ ⊓ ker₁ t₂ : Submodule K (Fin 4 → K))) :=
@@ -520,7 +520,7 @@ theorem exists_reposition_cross_incidences_avoiding
       omega)
   -- Output-side picks: `m ∈ (s₁, s₂)-perp` off `span {pt₁u}`; `x ∈ n₁u-perp` off
   -- `span {q₁, q₂}` and `span {m, pt₁u}`; `m'` off `n₁u-perp` and `span {x, m, pt₁u}`.
-  obtain ⟨m, hmS, hmsp⟩ := SetLike.not_le_iff_exists.mp
+  obtain ⟨m, hmS, hmsp⟩ := IsConcreteLE.not_le_iff_exists.mp
     (show ¬ (ker₁ s₁ ⊓ ker₁ s₂) ≤ Submodule.span K {pt₁u} from fun hle => by
       have hm := Submodule.finrank_mono hle
       have h2 : 2 ≤ Module.finrank K ((ker₁ s₁ ⊓ ker₁ s₂ : Submodule K (Fin 4 → K))) :=

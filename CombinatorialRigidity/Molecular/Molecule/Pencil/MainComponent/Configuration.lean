@@ -565,7 +565,7 @@ theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar {G : Graph
   have hn2 : n 2 ≠ 0 := by
     intro h2
     have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
-      Matrix.linearIndependent_rows_iff_isUnit.mp hli
+      Matrix.linearIndependent_row_iff_isUnit.mp hli
     have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ ![n 0, n 1, n 3] =
         (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ 0 := by
       rw [Matrix.mulVec_zero]
