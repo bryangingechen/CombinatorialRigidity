@@ -6,36 +6,27 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 
 /-!
-# Non-vacuity witness for `molecular_conjecture` (the `hfresh` repair, F2; reshaped E2)
+# A non-vacuity witness for the molecular conjecture
 
-`notes/FreshEdgeSupply-design.md` found that the fresh-edge-supply hypothesis originally
-threaded through the Theorem-5.5 spine and `PanelHingeFramework.molecular_conjecture`,
-`∀ G', ∃ e₀, e₀ ∉ E(G')`, is unsatisfiable for every nonempty `α` (the all-loops-at-one-vertex
-graph has `E(G') = univ`), making the headline statements vacuous as stated. Phase F1 reshaped
-the binder to the **minimality-conditioned** form derived in `Deficiency.lean`
-(`Graph.freshEdgeSupply_of_card_lt`), and Phase 23-cleanup E2 repackaged the *consumer-facing*
-`molecular_conjecture` to take the closed arithmetic headroom bound directly (deriving `hfresh`
-internally), so the unsatisfiable-binder failure mode this file guards against is now
-structurally impossible on the public surface: `hcard` is a decidable numeral inequality, not a
-higher-order binder that could itself be unsatisfiable. This file still certifies non-vacuity by
-fully instantiating `molecular_conjecture` at a concrete `d = 3` instance, discharging every
-hypothesis with no `sorry`.
-
-The witness instance (`notes/FreshEdgeSupply-design.md` *Witness plan*): `n := 3`,
-`α := Fin 2`, `β := Fin 7` — the label-headroom bound `6 · (2 - 1) = 6 < 7` holds. The graph is
-the one-edge `Graph.singleEdge 0 1 0`, the KT base case (the two-vertex "double edge" minus one
-copy).
+`molecular_conjecture_witness` applies `PanelHingeFramework.molecular_conjecture`
+(`thm:molecular-conjecture`) at one input, with every hypothesis discharged, so that the hypotheses
+can all be met (`rem:molecular-conjecture-nonvacuous`): `K = ℝ`, `n = 3`, so that `d = 3` and the
+frameworks have `k = n − 1 = 2`, two bodies (`α = Fin 2`), seven edge labels (`β = Fin 7`), and the
+graph `Graph.singleEdge 0 1 0`, with one edge, which joins the two bodies. It is simple and spans
+the bodies, and the bound on the number of labels holds: `D(|α| − 1) = 6 · (2 − 1) = 6 < 7`
+(`rem:fresh-edge-supply`). `CombinatorialRigidity/Nonvacuity.lean` has the witnesses of other main
+results.
 -/
 
 namespace CombinatorialRigidity.Molecular
 
 open scoped Graph
 
-/-- **The end-to-end witness**: `molecular_conjecture` fully applied at the `d = 3` instance on
-the one-edge graph `Graph.singleEdge 0 1 0 : Graph (Fin 2) (Fin 7)` — every hypothesis of the
-headline theorem, including the label-headroom bound `hcard`, is met at a concrete instance. This
-is the closed `Prop` whose very existence certifies non-vacuity: an unsatisfiable headroom bound
-would make this declaration inexpressible. -/
+/-- **The molecular conjecture's hypotheses can all be met**
+(`rem:molecular-conjecture-nonvacuous`): `PanelHingeFramework.molecular_conjecture` at `K = ℝ`,
+`n = 3`, two bodies, seven edge labels and the one-edge graph `Graph.singleEdge 0 1 0`, with its
+hypotheses `2 ≤ n`, `6 · (2 − 1) < 7`, `2 ≤ |V(G)|`, `V(G) = univ` and the simplicity of `G`
+discharged. A hypothesis that no input meets would make this proof impossible. -/
 theorem molecular_conjecture_witness :
     (∃ F : BodyHingeFramework ℝ 2 (Fin 2) (Fin 7),
         F.graph = Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 7) ∧

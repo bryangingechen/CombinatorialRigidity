@@ -2570,7 +2570,12 @@ declaration's name as its header writes it:
   `ofNormals` gives at a label (the hinge from the selector and the normals, which does not read the
   graph, so that a block of rows does not depend on it) and on the selectors of the frameworks of a
   chain (each gives each link its ends in some order), kept as they stand, moved to the phase (task
-  35.3).
+  35.3); and in `PanelHinge.lean`, the sentences that say what the structure's fields mean and what
+  `toBodyHinge`, `withNormal`, `ofNormals` and `IsHingeCoplanar` give (the hinges at a body lie in
+  its panel), on what `ofNormals` gives at a label (the hinge and the rows do not read the graph)
+  and on the selector of a generic full-rank realization (it gives each link its ends in some order,
+  and two such selectors agree up to order), kept as they stand (the section on the structure with
+  KT's page, p. 648, and without a phase number), moved to the phase (task 36).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -3753,8 +3758,10 @@ declaration's name as its header writes it:
   says $d \ge 3$ (task 30.1); in `ForestSurgery/Reduction.lean`, neither the header nor
   `minimal_kdof_reduction`'s docstring says that the algebraic induction runs it (it runs
   `minimal_kdof_reduction_all_k`; nothing uses `minimal_kdof_reduction`), the docstring narrates no
-  phase and cites no note, and `exists_chain_data_of_noRigid`'s says $d \ge 3$ (task 31.1); the
-  docstrings of the two pins (`Theorem55.lean`) and `PanelHinge.lean`'s section are task 36's.
+  phase and cites no note, and `exists_chain_data_of_noRigid`'s says $d \ge 3$ (task 31.1);
+  `PanelHinge.lean`'s section on the realization hypotheses says that the proof of KT Theorem 5.5
+  inducts by `Graph.minimal_kdof_reduction_all_k` (task 36); the docstrings of the two pins
+  (`Theorem55.lean`) are task 36.1's.
 - **F-108** · L · the pins of KT Lemma 4.6's nodes (`Induction/ForestSurgery/ChainExtraction.lean`,
   `Induction/Operations.lean`, `Molecular/Deficiency.lean`): `chainData_extract` takes
   `hV3 : 3 ≤ V(G).ncard` beside `hV4 : 4 ≤ V(G).ncard`, and `[G.Simple]`, which
@@ -3811,7 +3818,12 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies); measured (`scripts/blueprint-deps.py --label` at
   `efa7ed2b`, dead pins).
   *Found:* round 3 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, L3).
+  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3: in `PanelHinge.lean` (task 36),
+  the docstrings of `isGeneralPosition_withMomentNormals` and `isGeneralPosition_ofParam` name
+  `lem:moment-curve-general-position`, call neither a construction that Case I needs, and say that
+  no declaration, or no main result, uses them; the leads of `withMomentNormals` and `ofParam` name
+  that node; the rest of the docstrings of `withMomentNormals` and `ofParam`, the field `ends`, and
+  `rigidityMatrix_prop11`'s header and docstring moved to the phase (the open).
 - **F-126** · L · the docstrings and comments of `panel-layer.tex`'s KT Theorem 5.5 pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `Pinning.lean`, `Theorem55.lean`):
   `HasFullRankRealization`'s docstring calls it "the motive Theorem 5.5's induction is run
@@ -3829,8 +3841,12 @@ declaration's name as its header writes it:
   `RankHypothesis`'s docstring gives it as the form `dim Z(G,p) = D + k'` of the target rank in
   which KT Theorem 5.6, the molecular conjecture and the rank formula are stated, and says that the
   induction of KT Theorem 5.5 states its realizations with `HasGenericFullRankRealization` and
-  `HasPanelRealization`; `PanelHinge.lean`'s and `Theorem55.lean`'s parts are task 36's or the
-  phase's.
+  `HasPanelRealization`; in `PanelHinge.lean` (task 36), `HasFullRankRealization`'s docstring says
+  that no main result uses it and that the proof of KT Theorem 5.5 states its realizations with the
+  other two, and `HasGenericFullRankRealization`'s places KT Theorem 5.5's "nonparallel, if G is
+  simple" on p. 670 and narrates no phase or retired route; `Theorem55.lean`'s part (the comments of
+  `theorem_55_minimalKDof_k_all_k`'s signature) is task 36.1's, and
+  `rankHypothesis_deficiency_of_theorem_55_d3`'s the phase's.
 - **F-130** · L · the docstrings of `panel-layer.tex`'s KT Theorem 5.6 and molecular-conjecture
   pins (`Molecular/AlgebraicInduction/Theorem55.lean`): `molecular_conjecture`'s says that dropping
   the nonzero-hinge conjunct "makes the statement false"; dropped from both sides, each side holds
@@ -3862,7 +3878,7 @@ declaration's name as its header writes it:
   `PanelLayer.lean`'s parts (task 33): `theorem_55_base`'s docstring without "general-position
   hypothesis", `exists_linearIndependent_extensor_pair_perp`'s says that no declaration uses it,
   without the claim that it feeds `theorem_55_base`, and `exists_triangle_normals`' lead says
-  `k ≥ 1`, not "`d = 3`"; `Theorem55.lean`'s part is task 36's.
+  `k ≥ 1`, not "`d = 3`"; `Theorem55.lean`'s part is task 36.1's.
 - **F-133** · L · the docstrings of `panel-layer.tex`'s framework-operation and multigraph pins
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `Theorem55.lean`):
   `BodyHingeFramework.withGraph`'s calls it "the carrier for the inductive constructions of Cases I
@@ -3888,7 +3904,9 @@ declaration's name as its header writes it:
   `BodyHingeFramework.withGraph`'s docstring without "the carrier for the inductive constructions of
   Cases I and II", and `finrank_infinitesimalMotions_le_of_graph_le`'s names its users, the proofs
   of KT Theorem 5.6 (`thm:theorem-55-6-genuine`, `thm:theorem-55-6-multigraph`), not
-  `prop:rigidity-matrix-prop11`'s step; the other parts moved to the phase or are task 36's.
+  `prop:rigidity-matrix-prop11`'s step; the other parts moved to the phase (the open), and in
+  `PanelHinge.lean` (task 36) `toBodyHinge_withNormal_pinnedMotions_eq`'s lead names its node,
+  `lem:with-normal-preserves`, the docstring otherwise kept as it stands.
 - **F-135** · L · the docstrings of `case-i.tex`'s first pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `PanelLayer.lean`, `Pinning.lean`,
   `CaseIII/Arms.lean`). `toBodyHinge_rankHypothesis_zero`'s calls
@@ -3915,15 +3933,20 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers); measured (the
   main results' closure over the `scripts/blueprint-deps.py` cache, at `8cfa4531`).
   *Found:* round 3 task 2.6.
-  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3: `PanelLayer.lean`'s and
+  *Disposition:* done (task 36): `PanelLayer.lean`'s and
   `Pinning.lean`'s parts (task 33): `exists_independent_normalsJoin`'s and
   `exists_independent_panelSupportExtensor`'s leads name `lem:exists-independent-panel-extensor`,
   not `lem:cycle-realization`, and their docstrings say that the pairs need not be the normals of a
   cycle and that no declaration uses the second; the four block-pin pins' docstrings no longer call
   them steps of Case I's gluing, and the block pin's section says that the formal proof uses it only
   through the counts relative to `V(G)` (`rem:case-I-kt-steps`); in `CaseIII/Arms.lean` (task 35),
-  `cycle_realization`'s docstring claims no `[G.Simple]` binder and carries no process code;
-  `PanelHinge.lean`'s part is task 36's.
+  `cycle_realization`'s docstring claims no `[G.Simple]` binder and carries no process code; in
+  `PanelHinge.lean` (task 36), the leads of `toBodyHinge_rankHypothesis_zero` and
+  `card_le_screwDim_of_supportExtensor_linearIndependent` name `lem:cycle-realization-base` and
+  `lem:cycle-realization-dim-bound`, neither docstring calls the general cycle red or its extensors
+  deferred, and their section says that the formal proof realizes the cycles it needs with the
+  normals of `lem:cycle-normals`; the two `Fin m` cycle forms were deleted (task 3, `F-238`).
+  Before: reported (`notes/Prose-report.md`, L3).
 - **F-140** · L · the docstrings of `case-i.tex`'s KT eq. (6.3) and Claim 6.4 pins
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `GenericityDevice.lean`,
   `CaseI.lean`). `rankHypothesis_iff_finrank_pinnedMotionsOn`'s calls the node "GREEN-modulo-21b",
@@ -3942,7 +3965,7 @@ declaration's name as its header writes it:
   (U1–U4, "Phase 22b route (i) Commit 5") and calls the dead `case_I_realization` the composer.
   *Evidence:* read (the docstrings, signatures and bodies; a `grep` for the callers).
   *Found:* round 3 task 2.7.
-  *Disposition:* reported (`notes/Prose-report.md`, L6); round 3:
+  *Disposition:* done (task 36):
   `rigidContract_exterior_rank_transport_htransport` states its conclusion without the `∀ Q` and the
   three hypotheses, and `rigidContract_exterior_rank_transport` (unpinned), which took that form as
   its hypothesis and was left a pass-through, was deleted, `case_I_realization` calling the pin
@@ -3956,8 +3979,11 @@ declaration's name as its header writes it:
   docstring carries no code (U1–U4, Phase 22b) and says that only `case_I_realization`, which no
   declaration uses, calls it; in `GenericityDevice.lean` (task 34.1),
   `exists_good_realization_ofParam`'s docstring names no hypothesis `hne` and no supplier of
-  `hindep`, and says that only `exists_relative_full_count_ofParam` uses it; `PanelHinge.lean`'s
-  part is task 36's.
+  `hindep`, and says that only `exists_relative_full_count_ofParam` uses it; in `PanelHinge.lean`
+  (task 36), `toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`'s docstring calls the block
+  pin no carrier of the contraction, gives `hglue` as the lower bound of KT eq. (6.3) in terms of
+  motions, not Claim 6.4, carries no "GREEN-modulo" or Phase 21b, and says that no declaration uses
+  it. Before: reported (`notes/Prose-report.md`, L6).
 - **F-144** · L · the docstrings of `case-i.tex`'s last four pins
   (`Molecular/AlgebraicInduction/Theorem55.lean`). `case_I_dispatch_gen`'s calls "the `d = 3`
   `case_I_dispatch` below" its `k = 2` wrapper; the docstrings of `case_I_realization_h65_gen` and
@@ -3990,7 +4016,7 @@ declaration's name as its header writes it:
   "producer", "brick" and "stratum".
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3: in `Induction/Operations.lean`,
+  *Disposition:* done (task 36): in `Induction/Operations.lean`,
   `isLink_incident_of_not_removeVertex`'s lead names `lem:splitoff-edge-substitution`, without
   "brick", and `removeVertex_le_splitOff`'s names its callers (`lem:removal-deficiency-equality`'s
   pin and `splitOff_removeVertex_minimalKDof`), not Case II (task 30); in `Pinning.lean` (task 33),
@@ -4000,7 +4026,11 @@ declaration's name as its header writes it:
   siblings' carry neither `lem:case-II`, Claim 6.9, general position nor
   `exists_independent_panelSupportExtensor`; in `CaseII.lean` (task 34),
   `case_II_realization_all_k`'s docstring carries none of the codes (Phase 22i L6b, `hsplitPos`,
-  W-suite, Brick A) or the words; `PanelHinge.lean`'s are task 36's.
+  W-suite, Brick A) or the words; in `PanelHinge.lean` (task 36), the docstrings of
+  `toBodyHinge_pinnedMotions_withGraph_eq` and `toBodyHinge_hnew_of_isLink_incident` carry neither
+  Claim 6.9, general position nor `exists_independent_panelSupportExtensor`,
+  `rankHypothesis_withNormal_iff_finrank_pinnedMotions`'s lead names `lem:case-II-rank-lift`, and
+  none carries a process code. Before: reported (`notes/Prose-report.md`, L3).
 - **F-153** · L · the docstrings of `genericity-and-count.tex`'s pins
   (`Molecular/AlgebraicInduction/GenericityDevice.lean`, `CaseI.lean`, `CaseII.lean`,
   `Pinning.lean`; `Molecular/RigidityMatrix/Basic.lean`). The file header and
@@ -4080,7 +4110,7 @@ declaration's name as its header writes it:
   "producer", "genuine", "seed", "green", "feeds", "threads" and "heart".
   *Evidence:* read (the docstrings and bodies; KT 2011 pp. 679 and 685–686, `.refs/`).
   *Found:* round 3 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3:
+  *Disposition:* done (task 36):
   `linearIndependent_sum_augment_candidateRow` deleted (task 4); in `RigidityMatrix/Basic.lean`,
   the docstrings of `hingeRow_comp_columnOp_apply`, `comp_columnOp_eq_comp_single_proj` and
   `linearIndependent_sum_pinned_block_augment` say neither that the column operation replaces
@@ -4090,7 +4120,10 @@ declaration's name as its header writes it:
   second says that no declaration uses it), `exists_candidate_row_eq612`'s lifts no rank and says
   that at its normals the block of KT eq. (6.29) is singular,
   `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`'s credits the shear identity to no KT equation, and
-  none carries a process code; `PanelHinge.lean`'s part is task 36's.
+  none carries a process code; in `PanelHinge.lean` (task 36),
+  `ofNormals_panelRow_eq_of_ends_seed_eq`'s docstring names `lem:case-III-seam`, credits KT
+  eq. (6.13) (p. 679), not eq. (6.26), and says nothing of a transported row vanishing off `v`'s
+  column. Before: reported (`notes/Prose-report.md`, L3).
 - **F-164** · L · the docstrings of the pins of `case-iii.tex`'s span and point choice
   (`Molecular/RigidityMatrix/Claim612.lean`). Those of `exists_ne_zero_dotProduct_eq_zero`,
   `exists_affineIndependent_of_det_polynomial_ne_zero`, `exists_detPolynomial_of_pointPolynomial`,
@@ -4615,7 +4648,7 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: the section docstring before
   `IsTightPartition` names `def:tight-partition` and `lem:exists-tight-partition`, without a
   chapter, and `sec:jacobs-tight-partitions` for the rest (task 29.1);
-  `theorem_55_minimalKDof_k`'s is task 36's.
+  `theorem_55_minimalKDof_k`'s is task 36.1's.
 - **F-253** · L · `infinitesimalMotions_mono_of_span_le` and
   `finrank_infinitesimalMotions_le_of_span_le` (`Molecular/RigidityMatrix/Basic.lean`): their
   docstrings call them KT Lemma 5.2 and the lower semicontinuity of the rank along a panel rotation,
@@ -5021,6 +5054,17 @@ declaration's name as its header writes it:
   (`notMem_span_mkQ_pmR_row_of_gate`). Removing them with task 35.2's would also leave without a
   caller the pinned `candidateRow_ac_eq_neg` (`RigidityMatrix/Claim612.lean`), which stays with its
   node.
+  Task 36 adds eight in `Molecular/AlgebraicInduction/PanelHinge.lean` (the same screen, over it and
+  `Nonvacuity.lean` and then with `Pinning.lean`, and the Lean cache, at `62dced48`; `rfl` lemmas
+  left out), none of them pinned: `ofNormals_withGraph`, `ofParam_eq_ofNormals_momentCurve`, the
+  `@[simp]` lemma `withNormal_normal_self`, `toBodyHinge_hnew_of_isLink_incident`,
+  `finrank_toBodyHinge_pinnedMotions_le_withGraph`,
+  `finrank_toBodyHinge_pinnedMotions_withGraph_eq`, and `toBodyHinge_pinnedMotions_le_withGraph` and
+  `toBodyHinge_pinnedMotions_withGraph_eq` (used only by the previous two). `Nonvacuity.lean` has
+  only its witness, which nothing is meant to use. With task 33's, removing them would also leave
+  without a caller `Pinning.lean`'s `pinnedMotions_le_withGraph`, `pinnedMotions_withGraph_eq` and
+  `hnew_of_isLink_incident` and `RigidityMatrix/Basic.lean`'s `hingeConstraint_comm`, all unpinned,
+  and the pinned `toBodyHinge_withGraph`, which stays with its node.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5317,6 +5361,18 @@ declaration's name as its header writes it:
   called with `3 ≤ cd.d` from `i.isLt` and `h2i`, on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t353.lean`, gitignored).
   *Found:* RECONCILE round 3 task 35.3.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-296** · L · repeated derivations in `Molecular/AlgebraicInduction/PanelHinge.lean`.
+  `momentCurve_pair_linearIndependent` proves again, for two points of the moment curve, the
+  argument of `pair_linearIndependent_of_leading_minor_ne_zero`, whose minor there is `t − s`; and
+  `isGeneralPosition_withMomentNormals` and `isGeneralPosition_ofParam` have one proof, as
+  `P.withMomentNormals param` has the normals of `ofParam P.graph P.ends param`. `lake lint` reports
+  none.
+  *Evidence:* read (the bodies); a `lake lean` witness: `momentCurve_pair_linearIndependent` from
+  `pair_linearIndependent_of_leading_minor_ne_zero`, and `isGeneralPosition_withMomentNormals` from
+  `isGeneralPosition_ofParam`, on the three standard axioms (`scratch/reconcile-lean/Hyps-t36.lean`,
+  gitignored).
+  *Found:* RECONCILE round 3 task 36.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
