@@ -13,9 +13,12 @@ never-`lake update` rule and its escape hatch) and *Automated mathlib bumps*
 
 ## Where this stands — and the next concrete task
 
-**Current pins (2026-08-24):** Lean `v4.34.0-rc2`, mathlib `8b36e867`,
-`Matroid` `2b92ee39`. Every gate green locally (the rc2 record's table), and
-this is still the tip: no bump has landed since.
+**Bump in progress (2026-10-21): to Lean `v4.36.0-rc1`**, mathlib `930ae14`,
+`Matroid` `8ece630`, applied on `master` with the build still red while the
+fixes land; its work log is **`notes/Bump-v4.36.0-rc1.md`** (state, breakage
+taxonomy, hand-off), and nothing is pushed until the PI reviews it. The last
+green pins, still `origin/master`'s: Lean `v4.34.0-rc2`, mathlib `8b36e867`,
+`Matroid` `2b92ee39` (2026-08-24; every gate green, the rc2 record's table).
 
 **Pushed and CI-validated (checked 2026-09-29 via `gh run list --branch
 master` / `gh run view`).** `origin/master` has long since caught up —
@@ -52,14 +55,13 @@ v4.34.1 on has the fix). Target `Matroid` at its tip `8ece630` (2026-10-20)
 and mathlib at that rev's own pin `930ae14` (1 476 commits past ours), whose
 transitive pins are exactly `Matroid`'s, so `scripts/bump-mathlib.sh 930ae14`
 plus the `Matroid` hand-edit sets every pin. `ab64d1c` is in range and
-`Matroid` has absorbed it, so PR #1 and issue #2 close with this bump. Not
-yet assessed: what those mathlib commits break in our own Lean. Treat it as
-a new bump record. It runs as the queue item `bump-4.36` (work log
-`notes/Bump-v4.36.0-rc1.md`, opened by its first commit). **Install the
-toolchain by hand first** (`elan toolchain install
-leanprover/lean4:v4.36.0-rc1`): an agent session here cannot write elan's
-toolchains directory, sandbox or not (`Operation not permitted`,
-2026-10-21), so a bump session cannot install it.
+`Matroid` has absorbed it, so PR #1 and issue #2 close with this bump. Treat
+it as a new bump record, written at the close. It runs as the queue item
+`bump-4.36`, **opened 2026-10-21**: the work log
+`notes/Bump-v4.36.0-rc1.md` carries what those mathlib commits break in our
+own Lean and the next fix. (The toolchain was installed by hand first: an
+agent session here cannot write elan's toolchains directory, sandbox or not,
+`Operation not permitted`, 2026-10-21.)
 
 ---
 

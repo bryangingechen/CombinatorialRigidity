@@ -132,7 +132,9 @@ template") was gated by hand -- every `40-docs` task ran `parse` and
 or CLEANUP.md's ad-hoc `<topic>-cleanup.md`) is now gated when its first line
 calls it a work log, as the template's title does. That takes in the cleanup,
 perf and structure-pass logs, and leaves out the design docs, verdicts and
-exemplar beside them, whose titles say what they are instead.
+exemplar beside them, whose titles say what they are instead. A toolchain
+bump's log (`Bump-<version>.md`, e.g. `Bump-v4.36.0-rc1.md`; 2026-10-21) is
+gated the same way; its pattern admits dots, which the other two do not.
 """
 import os
 import re
@@ -141,7 +143,8 @@ import sys
 
 NOTE_RE = re.compile(r"^Phase\d+[a-z]?\.md$")
 # A suffixed note is gated only if its title says "work log" (*Which files*).
-LOG_RE = re.compile(r"^(Phase\d+[a-z]?-[A-Za-z0-9-]+|[A-Za-z0-9-]+-cleanup)\.md$")
+LOG_RE = re.compile(
+    r"^(Phase\d+[a-z]?-[A-Za-z0-9-]+|[A-Za-z0-9-]+-cleanup|Bump-[A-Za-z0-9.-]+)\.md$")
 WORK_LOG_RE = re.compile(r"^#\s.*\bwork log\b", re.I)
 DIRNAME = "notes"
 

@@ -42,7 +42,7 @@ rev = "master"
 #
 # **The local fork is retired** (v4.34.0-rc1 bump, 2026-08-20): this pin is
 # plain upstream `apnelson1/Matroid`, at a revision with green CI -- and it
-# moves with each bump (the rev below is the v4.34.0-rc2 one; note the default
+# moves with each bump (the rev below is the v4.36.0-rc1 one; note the default
 # branch is `main`, not `master`). The fork
 # (`bryangingechen/Matroid`, branch `combinatorial-rigidity-fix`) had carried
 # two patches, and neither justifies a fork any more:
@@ -61,7 +61,7 @@ rev = "master"
 [[require]]
 name = "Matroid"
 git = "https://github.com/apnelson1/Matroid.git"
-rev = "2b92ee398d77429a5b4241d4012c8333a5a96e19"
+rev = "8ece6307a54854484c9b5fa40b9ed3c5ccc8e42b"
 
 # **`require mathlib` MUST STAY LAST.** Lake visits a package's requires in
 # REVERSE order, and `addDependencyEntries` stores a transitive pin only if the
