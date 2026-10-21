@@ -2554,7 +2554,10 @@ declaration's name as its header writes it:
   `HasGenericFullRankRealization`), kept as they stand, moved to the phase (task 34); and in
   `GenericityDevice.lean` and `Coupling.lean`, the sentences on what a selector gives, on what a
   selector over every edge label asks, and on what `ofNormals`, `ofParam` and `withGraph` give back,
-  kept as they stand, moved to the phase (task 34.1).
+  kept as they stand, moved to the phase (task 34.1); and in `CaseIII/Arms.lean` and
+  `Candidate.lean`, the sentences on what `ofNormals` gives at a label (the hinge from the normals
+  of the selector's two bodies, which does not read the graph) and what the selector `G.endsOf`
+  gives at a link, kept as they stand, moved to the phase (task 35).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -3905,8 +3908,9 @@ declaration's name as its header writes it:
   not `lem:cycle-realization`, and their docstrings say that the pairs need not be the normals of a
   cycle and that no declaration uses the second; the four block-pin pins' docstrings no longer call
   them steps of Case I's gluing, and the block pin's section says that the formal proof uses it only
-  through the counts relative to `V(G)` (`rem:case-I-kt-steps`); `PanelHinge.lean`'s and
-  `CaseIII/Arms.lean`'s parts are tasks 36 and 35's.
+  through the counts relative to `V(G)` (`rem:case-I-kt-steps`); in `CaseIII/Arms.lean` (task 35),
+  `cycle_realization`'s docstring claims no `[G.Simple]` binder and carries no process code;
+  `PanelHinge.lean`'s part is task 36's.
 - **F-140** · L · the docstrings of `case-i.tex`'s KT eq. (6.3) and Claim 6.4 pins
   (`Molecular/AlgebraicInduction/Pinning.lean`, `PanelHinge.lean`, `GenericityDevice.lean`,
   `CaseI.lean`). `rankHypothesis_iff_finrank_pinnedMotionsOn`'s calls the node "GREEN-modulo-21b",
@@ -4038,7 +4042,11 @@ declaration's name as its header writes it:
   `Induction/ForestSurgery/Reduction.lean`, `splitOff_exists_base_inter_fiber_lt`'s docstring places
   KT Lemma 4.3 on p. 661, `splitOff_removeVertex_minimalKDof`'s names
   `exists_nested_rankPolynomial_lower_all_k` (`lem:case-III-nested-rank-lower`) as the lemma that
-  uses it, and neither carries a process code (task 31.1); `CaseIII/`'s are task 35's.
+  uses it, and neither carries a process code (task 31.1); in `CaseIII/Candidate.lean` (task 35),
+  `exists_redundant_panelRow_ab_of_finrank_eq`'s docstring says that the formal proof makes `h622`
+  hold by the choice of `k'` and takes `k' ≤ D − 2` from `lem:case-III-nested-rank-lower`, and
+  neither it nor `exists_redundant_panelRow_ab_lam_of_rigidOn`'s calls anything deferred or carried
+  or has a process code; `Realization.lean`'s are task 35.1's.
 - **F-161** · L · the docstrings of `case-iii.tex`'s pins for KT eqs. (6.24)–(6.29)
   (`Molecular/RigidityMatrix/Basic.lean`, `Molecular/AlgebraicInduction/PanelHinge.lean`,
   `CaseIII/Candidate.lean`). `exists_redundant_panelRow_ab_decomposition`'s says that the transport
@@ -4060,8 +4068,13 @@ declaration's name as its header writes it:
   `linearIndependent_sum_augment_candidateRow` deleted (task 4); in `RigidityMatrix/Basic.lean`,
   the docstrings of `hingeRow_comp_columnOp_apply`, `comp_columnOp_eq_comp_single_proj` and
   `linearIndependent_sum_pinned_block_augment` say neither that the column operation replaces
-  eq. (6.43) nor that a row lifts a rank, and carry no process code (task 32); `PanelHinge.lean`'s
-  and `CaseIII/`'s are tasks 36 and 35's.
+  eq. (6.43) nor that a row lifts a rank, and carry no process code (task 32); in
+  `CaseIII/Candidate.lean` (task 35), `exists_redundant_panelRow_ab_decomposition`'s and
+  `_acolumn_zero`'s docstrings call nothing an open crux or the one fact a transport needs (the
+  second says that no declaration uses it), `exists_candidate_row_eq612`'s lifts no rank and says
+  that at its normals the block of KT eq. (6.29) is singular,
+  `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`'s credits the shear identity to no KT equation, and
+  none carries a process code; `PanelHinge.lean`'s part is task 36's.
 - **F-164** · L · the docstrings of the pins of `case-iii.tex`'s span and point choice
   (`Molecular/RigidityMatrix/Claim612.lean`). Those of `exists_ne_zero_dotProduct_eq_zero`,
   `exists_affineIndependent_of_det_polynomial_ne_zero`, `exists_detPolynomial_of_pointPolynomial`,
@@ -4101,7 +4114,7 @@ declaration's name as its header writes it:
   `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow` deleted
   (task 4); `splitOff_isLink_relabel`'s docstring without "G4c-i", with KT p. 686 for the
   isomorphism and p. 687 for eq. (6.31) (task 30); `RigidityMatrix/Claim612.lean`'s docstrings
-  without process codes or words (task 32.1); `CaseIII/`'s are task 35's.
+  without process codes or words (task 32.1); `CaseIII/`'s are tasks 35.1–35.3's.
 - **F-172** · L · the docstrings of the pins of `case-iii.tex`'s general case
   (`CaseIII/Realization.lean`, `CaseIII/Arms.lean`, `Molecular/Induction/Operations.lean`).
   `chainData_fire_discriminator`'s and `chainData_dispatch`'s say that they have no `\lean` pin;
@@ -4116,7 +4129,8 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, L5); round 3:
   `exists_isLink_of_isMinimalKDof_card_three` credited to the proof of KT Lemma 6.7(i) (p. 677),
   and the docstrings of `Induction/Operations.lean`'s chain without their process codes (task 30);
-  `CaseIII/`'s are task 35's.
+  `CaseIII/Arms.lean`'s docstrings without theirs, `case_III_hsplit_producer_all_k`'s citing
+  `lem:case-III` and no `hsplitZero` (task 35); `Realization.lean`'s are task 35.1's.
 - **F-176** · L · the docstrings of `bar-joint-3d.tex`'s pins (`GenericRigidityMatroid.lean`). The
   module header narrates process ("Phase 24", "This file lands the forward-mode chapter … end to
   end", "Phase 14's"), and `genericRank`'s cites "Phase 26". In the same file
@@ -4478,7 +4492,11 @@ declaration's name as its header writes it:
   `lem:case-III-rank-certification` and `def:case-III-candidate`).
   *Evidence:* read (the docstrings; a `grep` for the label in `blueprint/src`).
   *Found:* round 5 task 3.9.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* done (task 35): the leads of `exists_redundant_panelRow_ab_lam_of_rigidOn` and
+  `case_III_rank_certification` name their nodes, `exists_candidateRow_bottomRows_of_rigidOn`'s
+  gives it as a step of `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-discriminator`,
+  and `caseIIICandidate`'s names `def:case-III-candidate`. Before: reported
+  (`notes/Prose-report.md`, L11).
 - **F-242** · L · the declarations round 5's task 3.10 pinned or unpinned
   (`Molecular/RigidityMatrix/Claim612.lean`; `CaseIII/Relabel/Chain.lean`, `ChainColumn.lean`,
   `ForkedArm.lean`). The docstrings of `exists_homogeneousIncidence_of_normals_gen` and of its
@@ -4498,7 +4516,7 @@ declaration's name as its header writes it:
   `exists_homogeneousIncidence_of_normals_gen`'s lead names
   `lem:case-III-claim612-points-affineIndep-real-normals`, and the wrapper's gives it as a step of
   `lem:case-III-candidate-dispatch-d3` and as that node's case `d = 3` (task 32.1); the docstrings
-  in `CaseIII/Relabel/` are task 35's.
+  in `CaseIII/Relabel/` are task 35.3's.
 - **F-243** · L · the declarations round 5's task 3.11 pinned or unpinned
   (`Molecular/Molecule/Duality.lean`, `Pencil/Statement.lean`;
   `Molecular/GenericLift/HingeGeneric.lean`; `BodyBar/GenericLift.lean`). The docstrings of
@@ -4892,6 +4910,32 @@ declaration's name as its header writes it:
   `exists_independent_panelRow_subfamily_of_rigidOn`, `Pinning.lean`'s pinned
   `isInfinitesimallyRigidOn_of_splice` and unpinned `isInfinitesimallyRigidOn_of_finrank_le_set`,
   and `PanelHinge.lean`'s pinned `isGeneralPosition_ofParam`; the pinned ones stay with their nodes.
+  Task 35 adds thirteen in `CaseIII/Candidate.lean` (the same screen, over `Arms.lean` and
+  `Candidate.lean` together, and the Lean cache, at `d4ec064b`): the three lemmas on the hinges of
+  `F_0` and of a second framework (`caseIIICandidate_hsupp_of_rowClassifier`, and the two that only
+  it uses, `caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` and
+  `_reproduced_eq_ofNormals`), whose docstrings said that the dispatch supplies their hypotheses for
+  `Concrete.lean`'s `_Gab` lemmas, `caseIIICandidate_supportExtensor_ne_zero_of_genPos`, whose
+  docstring named a user `chainData_arm_realization_zero₁₂` that does not exist, and the nine
+  lemmas of its count modulo a base block: `finrank_span_rigidityRows_ge_of_corner`,
+  `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`,
+  `exists_genuine_relabelImage_base_block` and
+  `span_relabelImage_le_and_finrank_and_acolumn_vanish` (used only by it), `exists_seed_base_block`
+  and `ofNormals_removeVertex_rigidityRow_comp_single_self` (used only by it), and
+  `linearIndependent_mkQ_corner_of_gate` with `linearIndependent_mkQ_panelRow_of_edge` and
+  `notMem_span_mkQ_pmR_row_of_gate` (used only by it), whose docstrings named users
+  `case_III_arm_realization_chain`, `case_III_rank_certification_chain` and
+  `case_III_arm_corner_assembly` that do not exist. The screen's other three,
+  `case_III_old_new_blocks` and `Arms.lean`'s `candidateCompletion_index_injective` and
+  `_panelRow_packaging`, are `F-268`'s and `F-269`'s. Removing them would leave without a caller
+  `Submodule.finrank_add_card_le_of_linearIndependent_mkQ`,
+  `exists_le_finrank_eq_card_of_injective_map`, `linearIndependent_mkQ_sumElim_unit_of_notMem_span`
+  and `linearIndependent_mkQ_of_comp` (`Mathlib/LinearAlgebra/Dimension/Constructions.lean`), and
+  `BodyHingeFramework.exists_genuine_linearIndependent_basis_of_rigidityRows_diff` and
+  `span_rigidityRows_diff_singleton_eq_of_mem_span` (`RigidityMatrix/Basic.lean`); and
+  `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` with one user,
+  `funLeft_dualMap_genuineRow_mem_span_caseIIICandidate` (`Relabel/Chain.lean`), which no main
+  result reaches.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5110,6 +5154,18 @@ declaration's name as its header writes it:
   pinned ones, and a copy of the projected extraction without `hnev`, through the pinned `injOn`
   form, on the three standard axioms (`scratch/reconcile-lean/Hyps-t341.lean`, gitignored).
   *Found:* RECONCILE round 3 task 34.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-292** · L · unused hypotheses and repeated derivations in
+  `Molecular/AlgebraicInduction/CaseIII/Arms.lean` and `Candidate.lean`.
+  `case_III_hsplit_producer_all_k` takes `_hk1 : 1 ≤ k`, which its proof does not use (its one
+  caller, `case_III_realization_all_k`, passes `hk1`); `case_III_old_new_blocks` (`F-268`'s) takes
+  `_hG_eb` and `_hG_ea`, which its proof does not use. `case_III_realization_of_rank`'s `hGv_off`
+  is `case_III_rank_certification`'s `hGv_ne`, proof for proof (an edge of `Gv` is neither `e_a`
+  nor `e_b`). `cycle_realization` derives `n = k + 1` from `bodyBarDim n = screwDim k` inline
+  (`hnk`), as `Graph.ChainData.d_eq_kAdd` (`CaseIII/Realization.lean`, which `Arms.lean` does not
+  import) does for a chain's length; a lemma on `n` alone would serve both.
+  *Evidence:* read (the statements and bodies).
+  *Found:* RECONCILE round 3 task 35.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

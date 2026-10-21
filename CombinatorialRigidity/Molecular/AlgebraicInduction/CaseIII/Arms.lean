@@ -7,21 +7,25 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Candidate
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 
 /-!
-# The algebraic induction — Case III arm realizations (M₁ / M₂, triangle base, producer spine)
+# Case III: the rotation about `L`, the triangle and the cycle
 
-Phase 22 (molecular-conjecture program). The arm-realization layer of the Case-III block
-(`CaseIII/` subdirectory; the post-Phase-22l molecular split round, `notes/Phase22l-perf.md`). On
-top of the candidate built and certified in `CaseIII/Candidate`, this file carries the
-certify-then-rebase arm closers `case_III_arm_realization` (W7 = M₁) /
-`case_III_arm_realization_M2` (W8 = M₂), the `Sum.elim` index/packaging glue, the `|V| = 3`
-triangle base (`hasGenericFullRankRealization_of_triangle`, retained as exposition since Phase 31 —
-the producer's triangle floor folds through `cycle_realization` at `m = 3`), and the
-triangle-vs-chain producer dichotomy spine (`case_III_hsplit_producer_all_k`), plus the Lemma-5.4
-cycle brick `cycle_realization`. The M₃ arm + relabel transport is in `CaseIII/Relabel`; the
-dispatch + capstone in `CaseIII/Realization`.
+Lemmas for Case III of KT Theorem 5.5 (Katoh and Tanigawa 2011, *A proof of the molecular
+conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
+`sec:molecular-algebraic-induction-caseIII`. The file proves:
 
-See `ROADMAP.md` §22 and the `sec:molecular-algebraic-induction-caseIII` dep-graph in
-`blueprint/src/chapter/algebraic-induction/case-iii.tex`.
+* that the framework `(G, p_1)` of `def:case-III-candidate`, at rank `D(|V(G)| − 1)`, gives a
+  generic full-rank realization of `G`, by rotating the panel of `v` about the line `L`
+  (`case_III_realization_of_rank`); the same after the count of `lem:case-III-rank-certification`
+  (`case_III_arm_realization`), and with `a` and `b` exchanged (`case_III_arm_realization_M2`):
+  steps of `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-dispatch`;
+* KT Lemma 6.7(i) for the triangle (`lem:triangle-realization`), which no main result uses, and KT
+  Lemma 5.4 for cycles on at most `d + 1` vertices (`lem:cycle-realization`, in
+  `sec:molecular-algebraic-induction-caseI`);
+* `lem:case-III` from its case of a chain (`case_III_hsplit_producer_all_k`).
+
+It also has two lemmas on a family of rows indexed by a sum type, which no declaration uses.
+`CaseIII/Relabel/` renames the bodies for the third framework and for the general case, and
+`CaseIII/Realization.lean` proves the case `d = 3`, the case of a chain and `lem:case-III`.
 -/
 
 namespace CombinatorialRigidity.Molecular
@@ -34,37 +38,37 @@ variable {α β : Type*}
 
 variable {K : Type*} [Field K]
 
-/-! ## Case III arms M₁ / M₂, the triangle base, and the producer spine
+/-! ## The rotation about `L`
 
-The certify-then-rebase arm closers (W7 = M₁, W8 = M₂), the `Sum.elim` index/packaging glue, the
-`|V| = 3` triangle base (`lem:triangle-realization`), and the triangle-vs-chain producer
-dichotomy. -/
+Steps of `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-dispatch`: from the rank of
+the framework `F_0` of `def:case-III-candidate`, a generic full-rank realization of `G`, by rotating
+the panel of `v` about `L`, where Katoh and Tanigawa apply KT Lemma 5.2 (KT p. 691). -/
 
-/-- **The shared rank-to-realization tail of the Case-III arm** (`lem:case-III`, the W6e–W6f +
-GAP-2/GAP-3 stratum of the certify-then-rebase route; Katoh–Tanigawa 2011 §6.4.1, eq. (6.29)→(6.30),
-design §1.51(a)/(h), Phase 22h/23c). This is the part of `case_III_arm_realization` that depends
-**only** on the candidate rank bound `hrank` (KT's (6.29) full-rank certification of the `t = 0`
-candidate framework `F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`) and the
-split/seed data — *not* on how that rank was certified. Factored out so the two certifications share
-it verbatim: the landed `d = 3` engine `case_III_arm_realization` (which produces `hrank` via the
-`hρGv`-collapse cert `case_III_rank_certification`) and the forked general-`d` chain arm
-`case_III_arm_realization_chain` (which produces `hrank` via the `±r` block-rank-additivity cert
-`case_III_rank_certification_chain`, NO `hρGv`; design §(o‴)(I.8.24)(3), the SHARED W6a–W6f tail).
+/-- **From the rank of `F_0` to a generic full-rank realization** (a step of
+`lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-dispatch`): let `Gv` be a graph without
+`v` (`hvVc`), with `a, b ∈ V(Gv)`, whose links are links of `G` (`hleG`), and let every link of `G`
+be `e_a`, `e_b` or a link of `Gv` (`hsplitG`), where `e_a ≠ e_b` link `v` to `a` and `b`, with
+`ends e_a = (v, a)` and `ends e_b = (v, b)`. Let `ends` give the links of `Gv` their ends
+(`hends_Gv`), with nonzero hinges in `ofNormals Gv ends q` (`hne_Gv`), and let `q(a), n'` and
+`q(a), q(b)` be linearly independent (`hLn`, `hgab`). If the framework
+`F_0 = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`, Katoh and Tanigawa's `(G, p_1)`,
+has rank at least `D(|V(G)| − 1)` (`hrank`) and `G` has deficiency `0`, then `G` has a generic
+full-rank realization.
 
-The route, from `hrank`: (ii) W6e re-extracts from the rank a *literal* `F₀.panelRow` family of
-exactly `D(|V(G)|−1)` linking edges (each an `annihRow`-of-the-edge-extensor row, polynomial in the
-shear). (iii) W6f transfers that family along the one-parameter `t`-family `F(t)` to a good
-`t^* ≠ 0` outside the GAP-3 bad set, keeping it linearly independent and forcing
-`![n_a + t^*·n', n_b]` independent. (iv) Each `F(t^*)`-slot lies in
-`span (ofNormals G ends q₀).rigidityRows` (`q₀` shears `v` along `n_a + t^*·n'`; the candidate
-`e_a`-slot is `(-1/t^*) •` the genuine `e_a`-row). (v)
-`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` gives rigidity on `V(G)`, and GAP-2
-upgrades it to the generic motive.
-
-**§38:** the only concrete carrier reached is `ofNormals G ends q₀` in (iv)–(v); every extensor
-evaluation goes through the W6a simp lemmas plus `toBodyHinge_supportExtensor`/`ofNormals_normal`
-and the funext-`if_neg` `q₀`-override pattern, and every membership is an explicit link witness (the
-`hrow_mem` idiom, never `whnf` on the carrier). -/
+The proof, as in the proof of `lem:case-III-candidate-dispatch-d3`. Some `D(|V(G)| − 1)` panel rows
+of `F_0` at links of `G` are linearly independent
+(`exists_independent_panelRow_subfamily_of_le_finrank`, `lem:independent-rows-of-rank`). The rows of
+`F_t` are affine in `t`, so the same rows stay independent at some `t ≠ 0` off the at most one `t`
+at which `q(a) + t n'` and `q(b)` are dependent (`caseIIICandidate_exists_good_shear`,
+`setOf_not_shear_linearIndependent_subsingleton`). Let `q₀` be `q` with the normal `q(a) + t n'` at
+`v`, a panel through `L`. Each of these rows lies in the span of the rows of `ofNormals G ends q₀`:
+at `e_b` and at the links of `Gv` the two frameworks have the same hinge, and at `e_a` the hinge of
+`ofNormals G ends q₀` is `−t C(q(a), n')` (`panelSupportExtensor_add_smul_left`), so the row of
+`F_t` is `(−t)⁻¹` times a row of `ofNormals G ends q₀`. So `ofNormals G ends q₀` is infinitesimally
+rigid on `V(G)` (`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`), its hinges at links
+are nonzero, and `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+(`lem:generic-realization-of-rigid`) gives the realization. Only `case_III_arm_realization` uses it.
+-/
 theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     [Finite α] [Finite β] [DecidableEq β]
     (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → K}
@@ -93,18 +97,18 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
   have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
   have hvb : v ≠ b := fun h => hvVc (h ▸ hbVc)
   have hnev : V(G).Nonempty := ⟨v, hG_ea.left_mem⟩
-  -- (i) The (6.29) rank lower bound at the `t = 0` candidate framework `F₀` (supplied as `hrank`).
+  -- (i) The rank bound of KT eq. (6.29) at the framework `F₀` is `hrank`.
   set F₀ := PanelHingeFramework.caseIIICandidate G ends q e_a e_b na n' nb 0 with hF₀
-  -- The candidate / reproduced extensors at `F₀` (W6a simp lemmas), and their nonvanishing.
+  -- The hinges of `F₀` at `e_a` and `e_b`, and that they are nonzero.
   have hsuppea : F₀.supportExtensor e_a = panelSupportExtensor na n' :=
     PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q na n' nb 0 heab
   have hsuppeb : F₀.supportExtensor e_b = panelSupportExtensor na nb := by
     simp only [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul,
       add_zero]
-  -- (ii) W6e at `F₀`: the rank re-extracts that many literal linking `F₀.panelRow`s.
+  -- (ii) The rank gives that many linearly independent panel rows of `F₀` at links.
   -- `hends` at `F₀.graph = G`: every `G`-link is `e_a`, `e_b`, or a `Gᵥ`-link (`hsplitG`).
   have hF₀graph : F₀.graph = G := by rw [hF₀]; exact PanelHingeFramework.caseIIICandidate_graph ..
-  -- `hends`/`hne` at `G` (= `F₀.graph` definitionally), shared by W6e and the GAP-2 close.
+  -- `hends` and `hne` at `G` (`F₀.graph = G` by definition), for step (ii) and the last step.
   have hends_q₀ : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 := by
     intro e u w hlink
     rcases hsplitG e u w hlink with he | he | hGv
@@ -140,20 +144,21 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
       exact hne_Gv e (hends_Gv e _ _ hGv)
   obtain ⟨s, hs_link, hs_card, hs_indep⟩ :=
     F₀.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends) hends_G hne_F₀ hrank
-  -- (iii) W6f: transfer the re-extracted family to a good `t^* ≠ 0` outside the GAP-3 bad set.
+  -- (iii) The same rows stay independent at some `t ≠ 0` off the set `bad` of the `t` at which
+  -- `na + t·n'` and `nb` are dependent.
   have : Finite ↥s := Set.Finite.to_subtype (Set.toFinite s)
   set bad : Finset K :=
     (setOf_not_shear_linearIndependent_subsingleton na n' nb hgab).finite.toFinset with hbad
   obtain ⟨t, ht_bad, ht_ne, ht_li⟩ :=
     PanelHingeFramework.caseIIICandidate_exists_good_shear G ends q heab na n' nb
       (ι := ↥s) (fun i => (i : β × _ × _)) (by rw [← hF₀]; exact hs_indep) bad
-  -- `t ∉ bad` forces `![na + t·n', nb]` independent (the reproduced `vb`-hinge stays transversal).
+  -- `t ∉ bad` makes `![na + t·n', nb]` independent, so the hinge of `e_b` stays nonzero.
   have hnewtrans : LinearIndependent K ![na + t • n', nb] := by
     by_contra hdep
     refine ht_bad ?_
     rw [hbad, Set.Finite.mem_toFinset]
     exact hdep
-  -- (iv) The sheared seed `q₀ : v ↦ na + t·n'`, agreeing with `q` off `v`.
+  -- (iv) The normals `q₀`, with `na + t·n'` at `v`, agreeing with `q` off `v`.
   set Ft := PanelHingeFramework.caseIIICandidate G ends q e_a e_b na n' nb t with hFt
   set q₀ : α × Fin (k + 2) → K := fun p => if p.1 = v then (na + t • n') p.2 else q p with hq₀def
   set FG₀ := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG₀
@@ -163,10 +168,10 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
   have hq₀b : (fun i => q₀ (b, i)) = nb := by
     funext i; rw [hq₀def, hnb]; simp only [ite_eq_right hvb.symm]
   -- Off `v`, `q₀` agrees with `q`, so the `ofNormals G ends q₀` extensor of any edge avoiding `v`
-  -- equals the `ofNormals G ends q` one (= `F₀`/`Ft`'s seed off `{e_a, e_b}`).
+  -- equals the `ofNormals G ends q` one (that of `F₀` and `Ft` off `{e_a, e_b}`).
   have hq₀_off : ∀ u, u ≠ v → (fun i => q₀ (u, i)) = (fun i => q (u, i)) := by
     intro u hu; funext i; rw [hq₀def]; simp only [ite_eq_right hu]
-  -- The genuine `FG₀`-extensors at the three relevant kinds of edge.
+  -- The hinges of `FG₀` and `Ft` at `e_a` and `e_b`.
   have hFG₀_ea : FG₀.supportExtensor e_a = (-t) • panelSupportExtensor na n' := by
     rw [hFG₀, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends_ea]
@@ -179,7 +184,8 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     rw [hFt, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced]
   have hFt_ea : Ft.supportExtensor e_a = panelSupportExtensor na n' :=
     PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q na n' nb t heab
-  -- A `Gᵥ`-edge keeps both `Ft` and `FG₀` at the `q`-seed extensor (its endpoints avoid `v`).
+  -- At an edge of `Gᵥ`, `Ft` and `FG₀` have the `ofNormals G ends q` extensor (its endpoints avoid
+  -- `v`).
   have hGv_seed_eq : ∀ {e u w}, Gv.IsLink e u w →
       Ft.supportExtensor e = FG₀.supportExtensor e := by
     intro e u w hlink
@@ -201,8 +207,8 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     intro e u w t₁ t₂ hends_e hext
     rw [Ft.panelRow_eq_hingeRow_annihRow_of_ends ends hends_e,
       FG₀.panelRow_eq_hingeRow_annihRow_of_ends ends hends_e, hext]
-  -- The candidate `e_a`-slot: `Ft`-row is `(-1/t) •` the genuine `FG₀` `e_a`-row (extracted as a
-  -- standalone fact to avoid substituting `e_a`/`e_b` away in the `hmem` dispatch).
+  -- At `e_a`: a row of `Ft` is `(-t)⁻¹ •` a row of `FG₀` (a separate fact, so that the case split
+  -- of `hmem` does not substitute `e_a` and `e_b` away).
   have hmem_ea : ∀ t₁ t₂, Ft.panelRow ends (e_a, t₁, t₂) ∈ Submodule.span K FG₀.rigidityRows := by
     intro t₁ t₂
     have hFtrow : Ft.panelRow ends (e_a, t₁, t₂)
@@ -219,22 +225,22 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
         = (-t)⁻¹ • FG₀.panelRow ends (e_a, t₁, t₂) from by
           simp only [hFG₀row, smul_smul, inv_mul_cancel₀ (neg_ne_zero.mpr ht_ne), one_smul]]
     exact Submodule.smul_mem _ _ hmem_genuine
-  -- Membership of each `Ft`-slot in `span FG₀.rigidityRows`.
+  -- Each of the rows of `Ft` lies in `span FG₀.rigidityRows`.
   have hmem : ∀ i : ↥s, Ft.panelRow ends (i : β × _ × _) ∈ Submodule.span K FG₀.rigidityRows := by
     rintro ⟨⟨e, t₁, t₂⟩, hi⟩
     have hlink : G.IsLink e (ends e).1 (ends e).2 := hs_link _ hi
     change Ft.panelRow ends (e, t₁, t₂) ∈ Submodule.span K FG₀.rigidityRows
     rcases hsplitG e (ends e).1 (ends e).2 hlink with he | he | hGv
-    · -- `e = e_a`: the candidate slot, via `hmem_ea`.
+    · -- `e = e_a`: by `hmem_ea`.
       rw [he]; exact hmem_ea t₁ t₂
-    · -- `e = e_b`: the reproduced slot, extensors agree so it is a genuine `FG₀`-row.
+    · -- `e = e_b`: the hinges agree, so it is a row of `FG₀`.
       rw [he, hFG₀_eq_panelRow t₁ t₂ hends_eb (by rw [hFt_eb, hFG₀_eb])]
       exact Submodule.subset_span (FG₀.panelRow_mem_rigidityRows_of_link ends hends_eb hG_eb t₁ t₂)
-    · -- A `Gᵥ`-slot: extensors agree (`hGv_seed_eq`), so `Ft`-row is a genuine `FG₀`-row.
+    · -- An edge of `Gᵥ`: the hinges agree (`hGv_seed_eq`), so it is a row of `FG₀`.
       rw [hFG₀_eq_panelRow t₁ t₂ (Prod.mk.eta (p := ends e)) (hGv_seed_eq hGv)]
       exact Submodule.subset_span (FG₀.panelRow_mem_rigidityRows_of_link ends
         (Prod.mk.eta (p := ends e)) (hleG e _ _ (hends_Gv e _ _ hGv)) t₁ t₂)
-  -- (v) Rigidity on `V(G)` at `q₀`, then GAP-2 upgrades to the generic motive.
+  -- (v) Rigidity on `V(G)` at `q₀`, then a generic full-rank realization.
   have hsub : Submodule.span K
       (Set.range (fun i : ↥s => Ft.panelRow ends (i : β × _ × _)))
       ≤ Submodule.span K FG₀.rigidityRows := by
@@ -244,9 +250,9 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
   have hcard_s : screwDim k * (V(G).ncard - 1) ≤ Nat.card ↥s := hs_card.ge
   -- Feed the lemma at its own `FG₀.graph.vertexSet` shape (via `hFG₀graph`), then read the
   -- conclusion back as `V(G)` — `FG₀.graph = G` by `rfl`, so no defeq-check forces the heavy
-  -- `q₀`-seed open (TACTICS-QUIRKS §38).
-  -- GAP-2 `hne` at `q₀`: the linking-edge extensors are nonzero (`e_a ↦ (-t)·C(L)`, `e_b ↦ C(e₀)`
-  -- at the sheared `vb`, `Gᵥ` via `hne_Gv` through the `Ft`/`FG₀` extensor agreement).
+  -- framework at `q₀` open (TACTICS-QUIRKS §38).
+  -- `hne` at `q₀`: the hinges at links are nonzero (`e_a ↦ (-t)·C(L)`, `e_b ↦ C(na + t·n', nb)`, an
+  -- edge of `Gᵥ` by `hne_Gv`, as `Ft` and `FG₀` agree there).
   have hne_q₀ : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0 := by
     intro e hlink
@@ -262,8 +268,8 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
         t hne_a hne_b]
       exact hne_Gv e (hends_Gv e _ _ hGv)
   -- (v) Rigidity on `V(G)` at `q₀` — generalize the heavy `Ft.panelRow`-family to a plain `f` so
-  -- the `_of_span_le_rigidityRows` application never `whnf`s the `caseIIICandidate` carrier (§38),
-  -- then GAP-2 upgrades to the generic motive.
+  -- the `_of_span_le_rigidityRows` application never `whnf`s the `caseIIICandidate` carrier
+  -- (TACTICS-QUIRKS §38), then a generic full-rank realization.
   rw [hFG₀] at hsub
   set f : ↥s → Module.Dual K (α → ScrewSpace K k) := fun i => Ft.panelRow ends (i : β × _ × _)
     with hf_def
@@ -277,40 +283,21 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends_q₀
     hne_q₀ hnev hrig n hdef
 
-/-- **W7 — the M₁ arm closer: certify-then-rebase realizes the `d = 3` candidate at full rank**
-(`lem:case-II-realization` / `lem:case-III`, the role-parametric arm of the `hcand` discharge;
-Katoh–Tanigawa 2011 §6.4.1, eqs. (6.29)/(6.30), the certify-then-rebase route of design
-§1.51(a)/(h),
-Phase 22h). Given the unpacked split context — fresh body `v ∉ V(Gᵥ)` joined to `a, b ∈ V(Gᵥ)` by
-the two re-inserted hinges `e_a = va`, `e_b = vb`, the IH-rigid old subgraph `Gᵥ`, the witness
-second normal `n'` of `Π(a)` with its transversality data (`hLn`, `hgab`), and W6b's candidate /
-bottom-row package (`ρ`, `w`) — produces `HasGenericFullRankRealization K k G`.
+/-- **The count at `(G, p_1)`, then the rotation** (a step of `lem:case-III-candidate-dispatch-d3`
+and `lem:case-III-chain-dispatch`): under the hypotheses of `case_III_realization_of_rank` but
+`hrank`, with `|V(G)| = |V(Gv)| + 1 ≥ 2`, let `ρ` be a linear form with `ρ(C(q(a), n')) ≠ 0`
+(`hρgate`) and `ρ(C(q(a), q(b))) = 0` (`hρe₀`), such that the row `hingeRow a b ρ` lies in the span
+of the rows of `ofNormals Gv ends q` (`hρGv`), and let `w` be `D(|V(Gv)| − 1)` linearly independent
+forms, each a row of `ofNormals Gv ends q` or a form `hingeRow a b ρ'` with `ρ'(C(q(a), q(b))) = 0`
+(`hwmem`). If `G` has deficiency `0`, it has a generic full-rank realization.
 
-The route is KT's own reading of eq. (6.29) ("if the top-left `6×6` block is full rank then
-`rank R(G,p₁) = 6(|V|−1)`", p. 684), a statement about the *rank* of `R(G,p₁)`, not a distinguished
-row family. (i) W6d certifies the (6.29) count at the hinge-level framework
-`F₀ := caseIIICandidate G ends q e_a e_b n_a n' n_b 0` as the rank bound
-`D(|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`. (ii) W6e re-extracts from that rank a *literal*
-`F₀.panelRow` family of exactly `D(|V(G)|−1)` linking edges — each slot an
-`annihRow`-of-the-edge-extensor row, polynomial in the shear. (iii) W6f transfers that family along
-the one-parameter `t`-family `F(t)` to a good `t^* ≠ 0` outside the GAP-3 bad set
-(`setOf_not_shear_linearIndependent_subsingleton`), keeping it linearly independent and forcing
-`![n_a + t^*·n', n_b]` independent (the reproduced `vb`-hinge stays transversal). (iv) Each
-`F(t^*)`-slot lies in `span (ofNormals G ends q₀).rigidityRows`, where `q₀` shears `v` along
-`n_a + t^*·n'`: the `e_b`-slot and the `Gᵥ`-slots have extensors *equal* to the sheared seed's (the
-`e_b`-normals are `(n_a + t^*·n', n_b)` exactly; the `Gᵥ`-endpoints avoid `v`), so they are genuine
-rows, while the candidate `e_a`-slot is `(-1/t^*) •` the genuine `e_a`-row
-(`panelSupportExtensor_add_smul_left` makes the sheared `e_a`-extensor `(-t^*) • C(L)`, `annihRow`
-linear in the extensor scales the row, and `t^* ≠ 0` inverts). (v)
-`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` gives rigidity on `V(G)` at
-`ofNormals G ends q₀`, and GAP-2 `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades
-to the generic motive.
-
-Role-parametric over `(v, a, b, e_a, e_b, n')` so that W8 (the M₂ arm) is the instantiation at the
-swapped roles `a ↔ b` with `ρ' := -ρ`. **§38:** the only concrete carrier reached is
-`ofNormals G ends q₀` in (iv)–(v); every extensor evaluation goes through the W6a simp lemmas plus
-`toBodyHinge_supportExtensor`/`ofNormals_normal` and the funext-`if_neg` `q₀`-override pattern, and
-every membership is an explicit link witness (the `hrow_mem` idiom, never `whnf` on the carrier). -/
+`case_III_rank_certification` (`lem:case-III-rank-certification`) gives `F_0` the rank
+`D(|V(G)| − 1)`. This is the count of KT eq. (6.29) at `(G, p_1)`: "if the top-left 6 × 6-submatrix
+of (6.29) has full rank, then rank R(G, p1) = 6(|V| − 1)" (KT p. 684). Then
+`case_III_realization_of_rank` rotates the panel of `v`. Its users are
+`case_III_arm_realization_M2`, `case_III_arm_realization_M3` (`CaseIII/Relabel/Arm.lean`), the proof
+of the case `d = 3` (`case_III_candidate_dispatch`) and three steps of the case of a chain
+(`CaseIII/Realization.lean`). -/
 theorem PanelHingeFramework.case_III_arm_realization [Infinite K]
     [Finite α] [Finite β]
     (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → K}
@@ -342,11 +329,9 @@ theorem PanelHingeFramework.case_III_arm_realization [Infinite K]
     {n : ℕ} (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  -- (i) W6d: the (6.29) rank lower bound at the `t = 0` candidate framework `F₀` via the
-  -- `hρGv`-collapse certification `case_III_rank_certification`. Then the SHARED
-  -- rank-to-realization tail (`case_III_realization_of_rank`, W6e–W6f + GAP-2/GAP-3) closes — it is
-  -- agnostic to how the rank was certified, so the forked general-`d` arm reuses it verbatim
-  -- (design §(o‴)(I.8.24)(3)).
+  -- (i) The rank bound of KT eq. (6.29) at `F₀`, by `case_III_rank_certification`; then
+  -- `case_III_realization_of_rank`, which does not depend on how the rank was found, rotates the
+  -- panel of `v`.
   have hrank : screwDim k * (V(G).ncard - 1)
       ≤ Module.finrank K (Submodule.span K
         (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
@@ -356,25 +341,22 @@ theorem PanelHingeFramework.case_III_arm_realization [Infinite K]
   exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
     hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
 
-/-- **W8 — the M₂ arm closer: the candidate at `e_b` realizes the `d = 3` framework at full rank**
-(`lem:case-II-realization` / `lem:case-III`, the second of the three `hcand`-discharge arms;
-Katoh–Tanigawa 2011 §6.4.1, eq. (6.42)'s `M₂ = (r(L'); r̂)`, the swapped-role instantiation of
-design §1.51(i), Phase 22h). The M₂ arm carries the candidate line `L' ⊂ Π(b)` (the second
-normal `n''` of body `b`'s panel), so the witness gate sits at the `b`-side
-(`hρgate : ρ (panelSupportExtensor n_b n'') ≠ 0`, the `u = 1` discriminator branch). Everything
-tied to the inductive `(ab)`-row — the candidate functional `ρ`, its annihilation `ρ(C(e₀)) = 0`,
-its `Gᵥ`-row membership `hingeRow a b ρ ∈ span`, and the bottom family `w` — is **identical** to
-W7's (KT p. 686: "the same `λ_{(ab)j}` and the index `i^*` are used"), so W10 feeds both arms from
-one W6b invocation; only `hLn`/`hρgate` move to the `b`-side.
+/-- **The same with `a` and `b` exchanged** (a step of `lem:case-III-candidate-dispatch-d3` and
+`lem:case-III-chain-dispatch`): `case_III_arm_realization` with the line in the panel of `b`
+(`hLn : q(b), n''` linearly independent, `hρgate : ρ(C(q(b), n'')) ≠ 0`), where `ρ`, `hρe₀`, `hρGv`
+and the forms `w` are those of `case_III_arm_realization`, at `ab`. The framework is Katoh and
+Tanigawa's second, `(G, p_2)` of KT eq. (6.19) (p. 682), whose count is
+`lem:case-III-claim612-p2-placement`; it takes the same coefficients and index: "the same λ(ab)j, 1
+≤ j ≤ 5 and the index `i*` are used in (6.29) and (6.30)" (KT p. 686). Its last row "is indeed equal
+to r" (KT p. 681); the form here is `−ρ` only as `hingeRow b a` reverses the order of the ends of
+`ab`.
 
-This is a pure instantiation of `case_III_arm_realization` at the swapped roles
-`(a, b, e_a, e_b, n') := (b, a, e_b, e_a, n'')`, feeding `ρ' := -ρ`: the swapped-role candidate
-functional is `-ρ` because `r̂ = hingeRow a b ρ = hingeRow b a (-ρ)` (`hingeRow_swap`) — a
-Lean-orientation artifact, not a KT discrepancy (KT p. 681: "`r'` is indeed equal to `r`"; the
-row content is identical). The hypothesis conversions are `hingeRow_swap`, `LinearMap.neg_apply`
-(the functional-side `(-ρ) x = -(ρ x)`) + `panelSupportExtensor_swap` + `map_neg`, and
-`LinearIndependent.pair_symm_iff`. Graph-free over the carrier (it only reorders data and rewrites
-functionals); the §38 trap lives inside W7. -/
+The proof applies `case_III_arm_realization` with `a, e_a` and `b, e_b` exchanged and the form `−ρ`:
+as `hingeRow a b ρ = hingeRow b a (−ρ)` (`hingeRow_swap`) and `C(q(b), q(a)) = −C(q(a), q(b))`
+(`panelSupportExtensor_swap`), the hypotheses hold in the exchanged roles, and a form
+`hingeRow a b ρ'` of `w` is `hingeRow b a (−ρ')`. Its users are the proof of the case `d = 3`
+(`case_III_candidate_dispatch`) and a step of the case of a chain
+(`chainData_dispatch_floor_of_discriminator`). -/
 theorem PanelHingeFramework.case_III_arm_realization_M2 [Infinite K]
     [Finite α] [Finite β]
     (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → K}
@@ -389,11 +371,11 @@ theorem PanelHingeFramework.case_III_arm_realization_M2 [Infinite K]
       (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
     (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
     {n'' : Fin (k + 2) → K}
-    -- the candidate line `L' ⊂ Π(b)`: the witness normal `n''` is transversal to `n_b`
+    -- the line `L' ⊂ Π(b)`: `n''` and the normal of `b` are linearly independent
     (hLn : LinearIndependent K ![(fun i => q (b, i)), n''])
     (hgab : LinearIndependent K ![(fun i => q (a, i)), (fun i => q (b, i))])
     {ρ : Module.Dual K (ScrewSpace K k)}
-    -- the gate at the `b`-side line (the `u = 1` discriminator witness)
+    -- `ρ` does not vanish on the hinge `C(q(b), n'')` of `L'`
     (hρgate : ρ (panelSupportExtensor (fun i => q (b, i)) n'') ≠ 0)
     (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
     (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span K
@@ -408,8 +390,8 @@ theorem PanelHingeFramework.case_III_arm_realization_M2 [Infinite K]
     {n : ℕ} (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  -- Feed W7 at the swapped roles `a ↔ b`, `e_a ↔ e_b`, with `ρ' := -ρ`. The candidate row content
-  -- is invariant: `hingeRow a b ρ = hingeRow b a (-ρ)`.
+  -- Apply `case_III_arm_realization` with `a ↔ b`, `e_a ↔ e_b` and `-ρ`, as
+  -- `hingeRow a b ρ = hingeRow b a (-ρ)`.
   refine PanelHingeFramework.case_III_arm_realization (k := k) G Gv ends
     hvVc hbVc haVc hG_eb hG_ea hends_eb hends_ea heab.symm hleG
     (fun e u w hlink => by
@@ -431,24 +413,16 @@ theorem PanelHingeFramework.case_III_arm_realization_M2 [Infinite K]
     · exact Or.inr ⟨-ρ', by rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρ'e₀,
         neg_zero, neg_zero], by rw [hwj, ← BodyHingeFramework.hingeRow_swap]⟩
 
-/-- **L5 — the candidate-completion index map is injective** (`lem:case-II-realization` /
-`lem:case-III`, the `j`/`Sum.elim` packaging leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa
-2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly
-(`linearIndependent_sum_augment_candidateRow_restriction`) outputs a `Sum`-indexed family
-`(rn ⊕ {candidate row}) ⊕ ro` over `ι = (sn ⊕ Unit) ⊕ so`; the abstractly-indexed device feed
-(`hasFullRankRealization_of_independent_panelRow_index`) consumes it along an injective index map
-`j` placing each block index at its `(edge, ⋀ᵏ-pair)`. This certifies that `j` is injective — the
-candidate analog of the inline `hjinj` of `case_II_placement_eq612` (which has only the
-`sn ⊕ so` two-block split), with the extra `Unit` summand for the candidate row's edge `e_a`.
+/-! ## Rows indexed by a sum type
 
-The `sn`-indices use the new-block edge `e_b` (`hsn_e`); the candidate `Unit`-index uses `e_a`
-(the `va`-hinge of the re-inserted body `v`); the `so`-indices use `Gᵥ`-edges, none equal to `e_b`
-(`hso_ne_eb`, from `case_III_old_new_blocks`) nor `e_a` (`hso_ne_ea`; both link the fresh body
-`v ∉ V(Gᵥ)`). With `e_a ≠ e_b` (`heab`) the three blocks have pairwise-disjoint edge-supports, so
-the map is injective: a collision within `sn` or `so` is `Subtype.val`-injectivity, and any
-cross-block collision contradicts one of the three disjointness facts on the first coordinate. This
-is graph-free over the carrier (it reads only the edge labels), so the recurring `ofNormals`/
-`withGraph` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+Two lemmas on the family `(rows at sn ⊕ one row) ⊕ rows at so` of a framework: its index map and its
+count. No declaration uses them. -/
+
+/-- **The index map of a family of rows at `e_b`, at `e_a` and at the links of `Gv` is injective**:
+let every index in `sn` have the edge label `e_b`, and no index in `so` have `e_b` or `e_a`, where
+`e_a ≠ e_b`. Then the map `(sn ⊕ Unit) ⊕ so → β × _ × _` that sends `()` to `(e_a, ta, tb)` and
+every other index to itself is injective: within `sn` and within `so` as `Subtype.val` is, and
+across the blocks as their edge labels differ. No declaration uses it. -/
 theorem PanelHingeFramework.candidateCompletion_index_injective
     {sn so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     {e_a e_b : β} {ta tb : Set.powersetCard (Fin (k + 2)) k} (heab : e_a ≠ e_b)
@@ -481,31 +455,13 @@ theorem PanelHingeFramework.candidateCompletion_index_injective
   -- `so` vs `so`: `Subtype.val` injective.
   · exact congrArg Sum.inr (Subtype.ext hab)
 
-/-- **L5-pack — the candidate-completion `panelRow ∘ j` family identity and count**
-(`lem:case-II-realization` / `lem:case-III`, a packaging leaf for the `d = 3` `hsplit` producer;
-Katoh–Tanigawa 2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly
-(`linearIndependent_sum_augment_candidateRow_restriction`) outputs the family
-`Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow u w ρ)) ro` over `(sn ⊕ Unit) ⊕ so`; this leaf
-repackages it as a single `panelRow`-family `fam = fun i => F.panelRow ends (j i)` along an
-injective index `j` (the shape a panelRow-shaped device feed would need), supplying both halves
-once the three blocks are each a `panelRow`:
-
-* the **OLD/NEW blocks** are `panelRow`s of `F` directly — `rn i = F.panelRow ends i.val` for
-  `i : sn` and `ro i = F.panelRow ends i.val` for `i : so` (the L1 `case_III_old_new_blocks` output
-  is already in `panelRow` form);
-* the **`Unit`-summand candidate row** is the `panelRow` at the candidate edge `e_a` —
-  `hingeRow u w ρ = F.panelRow ends (e_a, ta, tb)`, with `ρ = annihRow (C(e_a)) ta tb` and
-  `ends e_a = (u, w)`, which is L3 (`panelRow_eq_hingeRow_annihRow_of_ends`). (This resolves the
-  §1.34 (F1) subtlety: the producer's `ρ` is realized as a single `annihRow` pair, so the `Unit`
-  summand IS one `panelRow`.)
-
-With those, the family is *definitionally* `F.panelRow ends ∘ j` for the L5-inj index map `j`
-(`Sum.elim`-of-`Sum.elim` against the matching `j`, closed by `funext`/`rcases`/`rfl`), so the
-identity needs no `whnf` of the carrier (graph-free, no TACTICS-QUIRKS §38 trap). The count
-`screwDim k * (V(G).ncard − 1) ≤ Nat.card ((sn ⊕ Unit) ⊕ so)` is the L1 block counts
-`Nat.card sn = D − 1`, `Nat.card so = D(|V(Gᵥ)|−1)` summed over the `+1` `Unit`, with
-`|V(Gᵥ)| = |V(G)| − 1`: `((D−1)+1) + D(m−2) = D(m−1)` for `m = |V(G)| ≥ 1` (the eq. (6.29)
-full count `D(|V|−1)`, the `+1` over the eq. (6.12) brick's `D(|V|−1)−1`). -/
+/-- **The family as panel rows along that index map, and its number of rows**: let
+`ρ = annihRow (C(e_a)) ta tb` with `ends e_a = (u, w)`. Then the family of the panel rows of `F` at
+`sn`, the row `hingeRow u w ρ` and the panel rows at `so` is the family of the panel rows along the
+index map of `candidateCompletion_index_injective`, as `hingeRow u w ρ` is the panel row at
+`(e_a, ta, tb)` (`panelRow_eq_hingeRow_annihRow_of_ends`). If `|sn| = D − 1`, `|so| = D(mVv − 1)`
+and `mVv = mV − 1` with `mV ≥ 1`, the family has at least `D(mV − 1)` members, the count of KT
+eq. (6.29). No declaration uses it. -/
 theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
     (F : BodyHingeFramework K k α β) (ends : β → α × α)
     {sn so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
@@ -514,7 +470,7 @@ theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
     (hends : ends e_a = (u, w)) (hρ : ρ = annihRow (F.supportExtensor e_a) ta tb)
     {mV mVv : ℕ} (hsn_card : Nat.card sn = screwDim k - 1)
     (hso_card : Nat.card so = screwDim k * (mVv - 1)) (hVcard : mVv = mV - 1) (hm : 1 ≤ mV) :
-    -- the `panelRow ∘ j` family identity (the device feed's shape)
+    -- the family is the family of panel rows along the index map
     (Sum.elim (Sum.elim (fun i : sn => F.panelRow ends (i : β × _ × _))
         (fun _ : Unit => BodyHingeFramework.hingeRow (k := k) (α := α) u w ρ))
       (fun i : so => F.panelRow ends (i : β × _ × _)) =
@@ -524,7 +480,7 @@ theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
     -- the eq. (6.29) full count `D(|V|−1) ≤ |(sn ⊕ Unit) ⊕ so|`
     screwDim k * (mV - 1) ≤ Nat.card ((sn ⊕ Unit) ⊕ so) := by
   refine ⟨?_, ?_⟩
-  · -- The `Unit` summand is the panel row at `e_a` (L3); the rest match `j`'s components by `rfl`.
+  · -- The row at `()` is the panel row at `e_a`; the others match by `rfl`.
     have hcand : BodyHingeFramework.hingeRow (k := k) (α := α) u w ρ
         = F.panelRow ends (e_a, ta, tb) := by
       rw [F.panelRow_eq_hingeRow_annihRow_of_ends ends hends ta tb, hρ]
@@ -541,28 +497,29 @@ theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
     | zero => simp
     | succ m' => rw [Nat.add_sub_cancel, Nat.mul_succ]; omega
 
-/-- **Triangle realization, generic motive** (`lem:triangle-realization`, T4; Katoh–Tanigawa 2011
-§6.4, KT Lemma 6.7(i) at `m = 3`; Phase 22h). The base of the `d = 3` split-off recursion
-for Case~III: a simple minimal `0`-dof-graph on exactly three vertices has the generic-motive
-realization `HasGenericFullRankRealization K k G`.
+/-! ## The triangle and the cycle
 
-**Retained as worked-case exposition (off the live path since Phase 31).** The Case-III triangle
-floor no longer routes through this assembly: `case_III_hsplit_producer_all_k` now closes `|V| = 3`
-by packaging `G = C₃` as a `3`-cycle (`Graph.CycleData.ofCardThree`) and invoking the general
-`cycle_realization` (KT Lemma 5.4, stated at `3 ≤ |V| ≤ D`), of which this triangle case is exactly
-the `m = 3` instance. This standalone three-vertex assembly is kept because its direct
-three-normal seed is the accessible worked instance of the general cyclic construction — the same
-retention call as the `d = 3` candidate-dispatch stack (PROSPECT S1).
+KT Lemma 6.7(i) for the triangle (`lem:triangle-realization`) and KT Lemma 5.4 for the cycles on at
+most `d + 1` vertices (`lem:cycle-realization`). The proof of `lem:case-III` uses the second for the
+triangle too, as the cycle on three vertices. -/
 
-**Construction.** T1 (`exists_isLink_of_isMinimalKDof_card_three`) gives `V(G) = {v,a,b}` and
-a third edge `f : a–b` completing the triangle. T3 (`exists_triangle_normals`) produces three
-normals `n₀, n₁, n₂ ∈ K^(k+2)` with pairwise nonvanishing joins and LI cyclic extensor family
-`panelSupportExtensor n₀ n₁, panelSupportExtensor n₁ n₂, panelSupportExtensor n₂ n₀`. The seed
-`q₀` assigns `v ↦ n₀`, `a ↦ n₁`, `b ↦ n₂` (junk elsewhere). The canonical `G.endsOf` selector
-orients each edge; the support extensor of each triangle edge is ± a member of T3's LI cyclic
-family (unit scalar from `endsOf` orientation), so T2 (`theorem_55_triangle`)'s independence
-hypothesis holds. T2 gives rigidity on `{v,a,b} = V(G)`, and
-`hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to the generic motive. -/
+/-- **A triangle has a generic full-rank realization** (`lem:triangle-realization`; KT Lemma 6.7(i),
+p. 677): let `bodyBarDim n ≥ 3` and `k ≥ 1`, let `G` be a simple minimal `0`-dof-graph with three
+vertices, and let `eₐ ≠ e_b` link a vertex `v` to vertices `a, b ≠ v`. Then `G` has a generic
+full-rank realization. The proof of `lem:case-III` realizes the triangle by `cycle_realization`
+instead, and no main result uses this lemma.
+
+The proof. `Graph.exists_isLink_of_isMinimalKDof_card_three` (`lem:triangle-third-edge`) gives
+`a ≠ b`, `V(G) = {v, a, b}` and an edge `f` that joins `a` and `b`. `exists_triangle_normals`
+(`lem:triangle-normals`) gives normals `n₀, n₁, n₂` with nonzero joins whose extensors `C(n₀, n₁)`,
+`C(n₁, n₂)` and `C(n₂, n₀)` are linearly independent. Let `q₀` give `v`, `a` and `b` these normals
+and every other body `0`. The selector `G.endsOf` orients each edge, and the support extensor of
+each edge of the triangle is ± one of the three extensors (the unit scalar from the `endsOf`
+orientation; `Graph.endsOf_eq_or_swap`, `panelSupportExtensor_swap`), so the three hinges are
+linearly independent and every hinge at a link is nonzero. `theorem_55_triangle`
+(`lem:theorem-55-triangle`) gives rigidity on `{v, a, b} = V(G)`, and
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` (`lem:generic-realization-of-rigid`) the
+realization. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite K]
     [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (G : Graph α β) [G.Simple]
     (hD : 3 ≤ Graph.bodyBarDim n) (hk : 1 ≤ k)
@@ -573,14 +530,14 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
     (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  -- T1: vertex set pin + third edge.
+  -- `V(G) = {v, a, b}` and the third edge (`lem:triangle-third-edge`).
   obtain ⟨hab, hVeq, f, hf⟩ :=
     Graph.exists_isLink_of_isMinimalKDof_card_three hD hG hcard hG_ea hG_eb hav hbv heab
-  -- T3: the triangle normals with LI cyclic extensor family and pairwise nonzero joins.
+  -- The normals of `lem:triangle-normals`: linearly independent cyclic extensors, nonzero joins.
   obtain ⟨n₀, n₁, n₂, ⟨hn₀₁, hn₁₂, hn₂₀⟩, hLI⟩ := exists_triangle_normals (K := K) (k := k) hk
-  -- Convert T3's fun-form LI to the `![C₀,C₁,C₂]` matrix form.
+  -- Convert that fun-form LI to the `![C₀,C₁,C₂]` matrix form.
   -- `fun i => panelSupportExtensor (![n₀,n₁,n₂] i) (![n₁,n₂,n₀] i)` equals
-  -- `![C₀, C₁, C₂]` where `Cᵢ = panelSupportExtensor (T3 pairs)`.
+  -- `![C₀, C₁, C₂]` where `Cᵢ = panelSupportExtensor` of those pairs.
   have hLI' : LinearIndependent K
       ![panelSupportExtensor (k := k) n₀ n₁, panelSupportExtensor n₁ n₂,
         panelSupportExtensor n₂ n₀] := by
@@ -589,7 +546,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
         fun i => panelSupportExtensor (![n₀, n₁, n₂] i) (![n₁, n₂, n₀] i) := by
       funext i; fin_cases i <;> rfl
     rw [heq]; exact hLI
-  -- Derive `panelSupportExtensor nᵢ nⱼ ≠ 0` from T3's join hypotheses.
+  -- Derive `panelSupportExtensor nᵢ nⱼ ≠ 0` from the nonzero joins.
   have hne₀₁ : panelSupportExtensor (k := k) n₀ n₁ ≠ 0 :=
     (panelSupportExtensor_ne_zero_iff n₀ n₁).mpr ((normalsJoin_ne_zero_iff n₀ n₁).mp hn₀₁)
   have hne₁₂ : panelSupportExtensor (k := k) n₁ n₂ ≠ 0 :=
@@ -598,7 +555,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
     (panelSupportExtensor_ne_zero_iff n₂ n₀).mpr ((normalsJoin_ne_zero_iff n₂ n₀).mp hn₂₀)
   -- `G.endsOf` needs `Inhabited α`.
   have : Inhabited α := ⟨v⟩
-  -- Build the seed `q₀`: vertex `v ↦ n₀`, `a ↦ n₁`, `b ↦ n₂`, junk elsewhere.
+  -- The normals `q₀`: `v ↦ n₀`, `a ↦ n₁`, `b ↦ n₂`, and `0` elsewhere.
   let q₀ : α × Fin (k + 2) → K :=
     fun p => if p.1 = v then n₀ p.2 else if p.1 = a then n₁ p.2 else if p.1 = b then n₂ p.2 else 0
   -- Normal evaluations: q₀ at the three vertices (pointwise, used below).
@@ -636,7 +593,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
     · exact Or.inl (by simp only [hsupp_raw, heo, hfn_a, hfn_b])
     · exact Or.inr (by rw [hsupp_raw, heo, hfn_b, hfn_a, panelSupportExtensor_swap])
   -- Support extensor at `e_b` (link `v-b`): either `panelSupportExtensor n₂ n₀` or its negative.
-  -- The T3 cyclic family is `n₀n₁, n₁n₂, n₂n₀`; `v-b` gives `n₀n₂ = -(n₂n₀)` or `n₂n₀`.
+  -- The cyclic family is `n₀n₁, n₁n₂, n₂n₀`; `v-b` gives `n₀n₂ = -(n₂n₀)` or `n₂n₀`.
   have hsupp_eb : F.supportExtensor e_b = panelSupportExtensor n₂ n₀ ∨
       F.supportExtensor e_b = -panelSupportExtensor n₂ n₀ := by
     rcases G.endsOf_eq_or_swap hG_eb with heo | heo
@@ -679,8 +636,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
           panelSupportExtensor_swap]
       exact neg_ne_zero.mpr hne₁₂
     · exact absurd (h1.trans h2.symm) hne12
-  -- `hgen`: the three triangle-edge extensors are LI.
-  -- Each is ± one member of the T3 cyclic family `![C₀,C₁,C₂]`; negation preserves LI via
+  -- `hgen`: the three extensors of the edges of the triangle are linearly independent.
+  -- Each is ± one member of the cyclic family `![C₀,C₁,C₂]`; negation preserves LI via
   -- `LinearIndependent.units_smul_iff`: `w • v` is LI ↔ `v` is LI (w units).
   have hgen : LinearIndependent K
       ![F.supportExtensor eₐ, F.supportExtensor f, F.supportExtensor e_b] := by
@@ -720,48 +677,38 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
     · have h := hLI_neg (Units.mk0 (-1 : K) (by norm_num)) (Units.mk0 (-1 : K) (by norm_num))
             (Units.mk0 (-1 : K) (by norm_num))
       convert h using 1; funext i; fin_cases i <;> rfl
-  -- T2: rigidity on `{v,a,b}` via `theorem_55_triangle`.
+  -- Rigidity on `{v, a, b}` (`theorem_55_triangle`).
   have hFgraph : F.graph = G := by
     simp only [hFdef, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
   have hrigVAB : F.IsInfinitesimallyRigidOn {v, a, b} :=
     BodyHingeFramework.theorem_55_triangle F hav.symm hab hbv.symm hgen
       (hFgraph ▸ hG_ea) (hFgraph ▸ hf) (hFgraph ▸ hG_eb.symm)
-  -- T1 vertex-set pin + upgrade to generic motive.
+  -- `V(G) = {v, a, b}`, and a generic full-rank realization.
   have hrig : F.IsInfinitesimallyRigidOn V(G) := by rwa [hVeq]
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G G.endsOf
     (fun e u w he => G.isLink_endsOf he.edge_mem) hne
     ⟨v, hG_ea.left_mem⟩ hrig n hG.1
 
-/-- **Cycle realization, generic motive** (`lem:cycle-realization`, ENTRY leaf E5; Katoh–Tanigawa
-2011 Lemma 5.4, whose geometric content is Crapo–Whiteley 1982 Prop. 3.4 / Whiteley 1999 Prop. 3;
-Phase 23g). The Lemma-5.4 brick discharging the `hcycle` green-modulo hypothesis of the Case-III
-producer/spine sites: a minimal `0`-dof-graph `G` that **is** a cycle on `cy.m ≤ n + 1` vertices
-has the generic-motive realization `HasGenericFullRankRealization K k n G`. KT state Lemma 5.4 for
-the full range `3 ≤ |V| ≤ D`; both consumers land inside it — the chain dichotomy's cycle disjunct
-supplies `4 ≤ |V| = cy.m ≤ n ≤ D`, and (since Phase 40a's `n = 2` repair, `D` weakened to `3 ≤ D`)
-the `|V| = 3` triangle floor supplies `cy.m = 3 ≤ n + 1` via `Graph.CycleData.ofCardThree`, folding
-the former separate triangle base (`hasGenericFullRankRealization_of_triangle`, retained as
-worked-case exposition) into this one brick (design §(4.108.A)). The `n + 1` floor (rather than
-`n`) is exactly what the triangle base needs at `n = 2` (`bodyBarDim 2 = 3`): only `3 ≤ n + 1`.
+/-- **A cycle has a generic full-rank realization** (`lem:cycle-realization`; KT Lemma 5.4, p. 670):
+let `bodyBarDim n = D` (`hn`), and let `G` be a minimal `0`-dof-graph that is a cycle `cy` on
+`m ≤ n + 1` vertices (`Graph.CycleData`). Then `G` has a generic full-rank realization. Katoh and
+Tanigawa state Lemma 5.4 for `3 ≤ m ≤ D`; the range `m ≤ d + 1` here (`n = d`) covers their uses,
+the triangle in the proof of KT Lemma 6.7(i) (p. 677) and the cycles on at most `d` vertices in the
+proof of KT Lemma 6.13 (p. 692), and the proof of `lem:case-III` applies it to the same cycles (the
+note after the node). For the computation in dimension `3` Katoh and Tanigawa refer to Crapo and
+Whiteley 1982 (Proposition 3.4) and to Whiteley 1999 (Proposition 3).
 
-**Construction** (the general-`m` line-by-line generalization of
-`hasGenericFullRankRealization_of_triangle`, stanzas per design §(4.108.D)). The dimension chain
-`hn` forces `n = k + 1` (the `ChainData.d_eq_kAdd` arithmetic), so `cy.m ≤ n + 1 = k + 2` and
-`exists_cycle_normals` (E5a) produces `m` normals with nonvanishing cyclic joins and LI cyclic
-extensor family. The seed `q₀` assigns `cy.vtx i ↦ nrm i` via `Function.extend` off `cy.vtx_inj`
-(junk elsewhere) — the general-`m` replacement for the triangle's 3-way nested-`if`. Each cycle
-edge's support extensor is `± panelSupportExtensor (nrm i) (nrm (i+1))` (`endsOf_eq_or_swap` +
-`panelSupportExtensor_swap`, `choose`-packaged as unit scalars), so the edge-extensor family is LI
-(`LinearIndependent.units_smul_iff`) and nonzero edge-by-edge (`edge_surj` pins every `G`-edge to
-a cycle edge). `theorem_55_cycle` (E5b) gives rigidity on `Set.range cy.vtx = V(G)`
-(`CycleData.range_vtx`), and `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to the
-generic motive.
-
-Binder honesty (design §(4.108.D)): the `[G.Simple]` instance is genuinely unused (the record +
-`hm` carry the structure; only `hG.1` feeds the deficiency input), kept by type for the
-`hcycle`-slot interface match. Phase 31 dropped the previously-documented-unused `_hk1`/`_hV4`
-binders when the triangle floor was folded in — the `4 ≤ |V|` floor no longer holds at the
-`cy.m = 3` triangle base. -/
+The proof. As `bodyBarDim n = screwDim k`, `n = k + 1`, so `m ≤ k + 2`, and `exists_cycle_normals`
+(`lem:cycle-normals`) gives `m` normals with nonzero consecutive joins whose consecutive extensors
+are linearly independent. Let `q₀` give the `i`-th vertex the `i`-th normal and every other body `0`
+(`Function.extend`). Each cycle edge's support extensor is
+`± panelSupportExtensor (nrm i) (nrm (i+1))` (`endsOf_eq_or_swap` + `panelSupportExtensor_swap`,
+`choose`-packaged as unit scalars), so the hinges are linearly independent
+(`LinearIndependent.units_smul_iff`), and every link of `G` is an edge of the cycle
+(`CycleData.edge_surj`), with a nonzero hinge. `theorem_55_cycle` (`lem:cycle-realization-rigid`)
+gives rigidity on the vertices of the cycle, which are `V(G)` (`CycleData.range_vtx`), and
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` (`lem:generic-realization-of-rigid`) the
+realization. Only `case_III_hsplit_producer_all_k` uses it. -/
 theorem PanelHingeFramework.cycle_realization [Infinite K]
     [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
@@ -772,13 +719,13 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
   have hm3 : 3 ≤ cy.m := cy.hm
   have : NeZero cy.m := ⟨by omega⟩
   have : Inhabited α := ⟨cy.vtx 0⟩
-  -- The record's cyclic successor `⟨1, _⟩` is the OfNat `1` (design §(4.108.C).2).
+  -- The successor `⟨1, _⟩` of the record is the numeral `1` of `Fin cy.m`.
   have hlink : ∀ i : Fin cy.m, G.IsLink (cy.edge i) (cy.vtx i) (cy.vtx (i + 1)) := by
     intro i
     have h := cy.link i
     rwa [show (⟨1, by omega⟩ : Fin cy.m) = 1 from
       Fin.ext (by rw [Fin.val_one']; exact (Nat.mod_eq_of_lt (by omega)).symm)] at h
-  -- The dimension chain: `n = k + 1` from `hn` (the `d_eq_kAdd` arithmetic), so `cy.m ≤ k + 2`.
+  -- `n = k + 1` from `hn` (as in `Graph.ChainData.d_eq_kAdd`), so `cy.m ≤ k + 2`.
   have hnk : n = k + 1 := by
     have key : ∀ m : ℕ, 2 * Nat.choose m 2 = m * (m - 1) := fun m => by
       rw [Nat.choose_two_right, Nat.mul_div_cancel' (Nat.even_mul_pred_self m).two_dvd]
@@ -789,9 +736,10 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
         show k + 2 - 1 = k + 1 from rfl]
     have hprod : n * (n + 1) = (k + 2) * (k + 1) := by omega
     nlinarith [hprod]
-  -- E5a: the cyclic shared-normal family.
+  -- The normals of `lem:cycle-normals`.
   obtain ⟨nrm, hjoin, hLI⟩ := exists_cycle_normals (K := K) (k := k) hm3 (by omega : cy.m ≤ k + 2)
-  -- The seed: `cy.vtx i ↦ nrm i`, junk elsewhere (`Function.extend` off `vtx_inj`).
+  -- The normals `q₀`: `cy.vtx i ↦ nrm i`, and `0` elsewhere (`Function.extend`, by
+  -- `CycleData.vtx_inj`).
   let q₀ : α × Fin (k + 2) → K := fun p => Function.extend cy.vtx nrm (fun _ => 0) p.1 p.2
   have hfn : ∀ i : Fin cy.m, (fun j => q₀ (cy.vtx i, j)) = nrm i := fun i =>
     cy.vtx_inj.extend_apply nrm (fun _ => 0) i
@@ -802,7 +750,8 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
         (fun i => q₀ ((G.endsOf e).2, i)) := fun e => by
     simp only [hFdef, PanelHingeFramework.toBodyHinge_supportExtensor,
                PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal]
-  -- Per-edge sign facts: each cycle edge's extensor is a unit multiple of the E5a extensor.
+  -- Per-edge sign facts: each cycle edge's extensor is a unit multiple of the extensor of
+  -- `lem:cycle-normals`.
   have hsupp : ∀ i : Fin cy.m, ∃ ε : Kˣ, F.supportExtensor (cy.edge i)
       = ε • panelSupportExtensor (nrm i) (nrm (i + 1)) := by
     intro i
@@ -812,7 +761,7 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
       rw [hsupp_raw, heo, hfn, hfn, panelSupportExtensor_swap, Units.smul_def, Units.val_mk0,
         neg_one_smul]
   choose ε hε using hsupp
-  -- `hgen` for E5b: sign-stable LI of the cycle-edge extensor family.
+  -- `hgen` for `theorem_55_cycle`: the hinges of the cycle are linearly independent.
   have hgen : LinearIndependent K fun i : Fin cy.m => F.supportExtensor (cy.edge i) := by
     have hEq : (fun i : Fin cy.m => F.supportExtensor (cy.edge i))
         = ε • fun i : Fin cy.m => panelSupportExtensor (nrm i) (nrm (i + 1)) := by
@@ -830,7 +779,7 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
     exact smul_ne_zero (Units.ne_zero _)
       ((panelSupportExtensor_ne_zero_iff _ _).mpr
         ((normalsJoin_ne_zero_iff _ _).mp (hjoin i)))
-  -- E5b: rigidity on `Set.range cy.vtx = V(G)`.
+  -- Rigidity on `Set.range cy.vtx = V(G)` (`theorem_55_cycle`).
   have hFgraph : F.graph = G := by
     simp only [hFdef, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
   have hlinkF : ∀ i : Fin cy.m, F.graph.IsLink (cy.edge i) (cy.vtx i) (cy.vtx (i + 1)) := by
@@ -838,65 +787,36 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
   have hrig : F.IsInfinitesimallyRigidOn V(G) := by
     have h := F.theorem_55_cycle cy.vtx cy.edge hlinkF hgen
     rwa [cy.range_vtx] at h
-  -- GAP-2 upgrade to the generic motive.
+  -- A generic full-rank realization.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G G.endsOf
     (fun e u w he => G.isLink_endsOf he.edge_mem) hne
     ⟨cy.vtx 0, (hlink 0).left_mem⟩ hrig n hG.1
 
+/-! ## The proof of `lem:case-III` from its case of a chain -/
 
-/-- **The general-`d` Case-III (`hsplit`) producer, `hsplitGP` callback shape**
-(`lem:case-II-realization` / `lem:case-III`, the `theorem_55_minimalKDof_k_all_k.hsplitZero` branch
-at `k = 0`; Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phases 22g–22h; Phase 23a Leaf 4 general-`k`
-lift). The conjecture's crux at general grade `k`, stated at the **generic-motive
-callback interface** that `theorem_55_minimalKDof_k_all_k`'s `hsplitZero` premise threads (the R2
-verdict (B), `notes/Phase22-realization-design.md` §1.41(5)): the producer receives `hnoRigid`,
-`G.Simple`, and the **full conditioned induction hypothesis** `hIH` (the `(G'.Simple → generic) ∧
-bare` pair over all smaller minimal `0`-dof-graphs, mirroring `hcontractGP`), **chooses its own
-adjacent degree-2 pair** via the chain dichotomy (§1.49(1), verdict (β)), and concludes the
-**generic** motive `HasGenericFullRankRealization K k G`. No split-vertex data is handed in — the
-producer re-selects it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its own proof.
+/-- **Case III from its case of a chain** (a step of `lem:case-III`): let `bodyBarDim n = D ≥ 3`
+(`hD`, `hn`), and let `G` be a simple minimal `0`-dof-graph with `|V(G)| ≥ 3`, no proper rigid
+subgraph and an edge label outside `E(G)` (`hfresh`). Suppose that every minimal `0`-dof-graph with
+at least two and fewer than `|V(G)|` vertices has a panel realization, and a generic full-rank
+realization if it is simple (`hIH`), and that `G` has a generic full-rank realization whenever the
+graph split off from a chain `cd` of length `n` (`Graph.ChainData`) at `v₁` along `v₀v₂` has
+deficiency `0` and a generic full-rank realization (`hcand`). Then `G` has a generic full-rank
+realization. The proof of `lem:case-III` (`case_III_realization_all_k`) applies it with `hcand` from
+`chainData_dispatch` (`lem:case-III-chain-dispatch`).
 
-**Dichotomy spine (G4a).** On `|V(G)|`:
-
-* `|V(G)| = 3` — the **triangle base**: since Phase 40a's `n = 2` repair (the floor weakened from
-  `6 ≤ D` to `3 ≤ D`), `Graph.exists_degree_eq_two_of_noRigid` (G4a-i) picks a single degree-2
-  vertex `v` and any other vertex `a` of the (`|V(G)| = 3`) graph as its companion —
-  `exists_adjacent_degree_two_pair` is false at `D = 3` (`K_{2,3}`, Prospect G2), but adjacency is
-  never used here — and `exists_splitOff_data_of_degree_eq_two` extracts `v`'s two edges; since
-  Phase 31 the triangle is closed as the `m = 3` instance of the cycle family —
-  `Graph.CycleData.ofCardThree` packages `G = C₃` as `3`-cycle data and `cycle_realization` (E5)
-  closes the generic motive (KT never splits a `|V| = 3` graph — §1.46 finding 2; KT state Lemma 5.4
-  at `3 ≤ |V| ≤ D`, so the merge is source-faithful). The former separate triangle assembly
-  `hasGenericFullRankRealization_of_triangle` (T4) is retained as worked-case exposition.
-* `|V(G)| ≥ 4` — the **chain arm**: the ENTRY extractor `Graph.chainData_extract` (E3, KT Lemma
-  4.6/4.8; consuming `hfresh`) runs the length-`n`-chain-vs-short-cycle dichotomy. The **chain
-  disjunct** returns a length-`n` `ChainData` `cd` together with the `v₁`-split's
-  minimality/simplicity/measure data (packaging `splitOff_isMinimalKDof`,
-  `splitOff_simple_of_noRigid_of_card` (R3, KT Lemma 6.7(ii)), and `splitOff_vertexSet_ncard_lt`),
-  so the IH's **GP `.1` conjunct** yields the **generic** `v`-split realization — the seed `q` whose
-  `IsGeneralPosition` conjunct *is* the placement transversal `hgab`, with the triple-LI supplied
-  since the Phase 30 RELAX reshape by the `exists_tripleLI_polynomial` det factor at the
-  device-chosen seed (§1.41(2), §1.48(2); the bare `.2`
-  conjunct provably cannot supply either — a rigid realization may have parallel panels). That
-  generic `v`-split realization feeds the carried **candidate-placement core** `hcand`. The
-  **short-cycle disjunct** (§C.5 shape 2) is closed directly by the Lemma-5.4 brick
-  `cycle_realization` (E5), which the dimension chain `hn` feeds.
-
-`hcand` is the single *explicit* hypothesis carrying the genuinely-hard remaining work, in the
-established "carry the analytic crux as `h…`, keep the node red" idiom (Phase 21b): it consumes the
-chosen chain data and the IH-derived **generic** `v`-split realization and yields
-`HasGenericFullRankRealization K k G` — internally its `M₁/M₂/M₃` dispatch arms end in the bare
-realization of `G`, and the discharge composes the landed GAP-2 upgrade
-`hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the concrete candidate (§1.49(5)). The
-§1.49(5) producer-assembly leaf discharges it (Leaf 2/3 + the G4c/G4d/G4e dispatch + the GAP-3
-good-`t` choice); `G.Simple`, `hnoRigid`, and `hfresh` remain available to that leaf as
-producer-level hypotheses. The dichotomy spine and the IH-at-`v`-split wiring built here are the
-rest of the producer. -/
+The proof, as in the proof of `lem:case-III`. If `|V(G)| = 3`, some vertex `v` has degree two
+(`Graph.exists_degree_eq_two_of_noRigid`), with edges to `a` and `b`
+(`Graph.exists_splitOff_data_of_degree_eq_two`, given another vertex of `G`), and `G` is the cycle
+on `v`, `a` and `b` (`Graph.CycleData.ofCardThree`), which `cycle_realization` realizes, as
+`3 ≤ n + 1`. If `|V(G)| ≥ 4`, `Graph.chainData_extract` (`lem:chain-data-extract`) gives a chain of
+length `n` whose split-off graph is a simple minimal `0`-dof-graph with at least two and fewer
+vertices, to which `hIH` gives the realization `hcand` takes, or shows that `G` is a cycle on at
+most `n` vertices, which `cycle_realization` realizes. -/
 theorem PanelHingeFramework.case_III_hsplit_producer_all_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (_hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n)
     (hn : Graph.bodyBarDim n = screwDim k) (G : Graph α β)
-    -- the `theorem_55_minimalKDof_k_all_k.hsplitZero` premise data (at `n`, dof `0`)
+    -- `G`: a minimal `0`-dof-graph with at least three vertices and no proper rigid subgraph
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hsimple : G.Simple)
@@ -904,15 +824,12 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G') ∧
         HasPanelRealization K k n G')
-    -- a fresh edge label for the short-circuit `ab`-edge, consumed by the ENTRY chain extractor
-    -- `Graph.chainData_extract` (E3; it returns `cd.e₀`) in the chain arm below. (§1.49(1) / C.2.)
+    -- an edge label outside `E(G)`, for the new edge `v₀v₂` of the chain
+    -- (`Graph.chainData_extract` returns it as `cd.e₀`)
     (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
-    -- the candidate-placement core (the still-unbuilt Leaf 2/3 + the `M₁/M₂/M₃` dispatch,
-    -- §1.49(5)): given the chain-data witness, the `v₁`-split's deficiency-0 fact and its
-    -- IH-derived **generic** realization (the seed `q` with `hgab`/alg-indep, §1.41(2)), it
-    -- produces the generic realization of `G`. Reshaped to the design §C.3 `ChainData` shape
-    -- (the router `chainData_dispatch` discharges it); the genuinely-hard residual is carried
-    -- here in the "explicit `h…` crux" idiom (Phase 21b).
+    -- the case of a chain: a generic full-rank realization of the graph split off at `v₁`
+    -- along `v₀v₂`, of deficiency `0`, gives one of `G` (`chainData_dispatch` proves it in the
+    -- proof of `lem:case-III`)
     (hcand : ∀ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
       (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
         (cd.vtx ⟨2, by omega⟩) cd.e₀).deficiency n = 0 →
@@ -926,16 +843,14 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
   have hD2 : 2 ≤ Graph.bodyBarDim n := by omega
   have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
   have := hsimple
-  -- Dichotomy on `|V(G)|`: the triangle base (`= 3`) versus the chain arm (`≥ 4`).
+  -- On `|V(G)|`: the triangle (`= 3`), or `|V(G)| ≥ 4`.
   rcases eq_or_lt_of_le hV3 with hV3eq | hV4
-  · -- **Triangle base (`|V(G)| = 3`).** Pick a degree-2 vertex and its two `v`-edges, then
-    -- realize the triangle as the `m = 3` instance of the Lemma-5.4 cycle family:
-    -- `CycleData.ofCardThree` packages `G = C₃` as `3`-cycle data, and `cycle_realization` (E5)
-    -- closes it (Phase 31 fold; `hasGenericFullRankRealization_of_triangle` kept as exposition).
+  · -- **The triangle (`|V(G)| = 3`).** A vertex of degree two and its two edges; then
+    -- `CycleData.ofCardThree` gives `G` as the cycle on three vertices, which
+    -- `cycle_realization` realizes (KT Lemma 5.4 at `m = 3`).
     have hcard3 : V(G).ncard = 3 := hV3eq.symm
-    -- `n = 2` repair (Phase 40a): a single degree-2 vertex (`D ≥ 3` suffices) replaces the adjacent
-    -- pair `exists_adjacent_degree_two_pair` needs (false at `D = 3`) — any other vertex serves as
-    -- companion, since adjacency is never used below.
+    -- A vertex `v` of degree two (`D ≥ 3`), and any other vertex `a`, which
+    -- `exists_splitOff_data_of_degree_eq_two` needs.
     obtain ⟨v, hvG, hdegv⟩ := Graph.exists_degree_eq_two_of_noRigid hD hV3 hG hnoRigid
     obtain ⟨a, haG, hav⟩ : ∃ a ∈ V(G), a ≠ v := by
       by_contra hcon
@@ -955,22 +870,19 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
       interval_cases n <;> omega
     exact PanelHingeFramework.cycle_realization hn hG
       (Graph.CycleData.ofCardThree hD3 hG hcard3 hlea' hleb ha'v hbv heab') hn2
-  · -- **Chain arm (`|V(G)| ≥ 4`).** Run the ENTRY dichotomy (`Graph.chainData_extract`, E3):
-    -- either the length-`n` chain data (+ the `v₁`-split's minimality/simplicity/measure data)
-    -- or the short-cycle disjunct (§C.5 shape 2).
+  · -- **`|V(G)| ≥ 4`.** `Graph.chainData_extract` (`lem:chain-data-extract`) gives a chain of
+    -- length `n`, whose graph split off at `v₁` is minimal, simple and smaller, or shows that
+    -- `G` is a cycle on at most `n` vertices.
     have hV4' : 4 ≤ V(G).ncard := hV4
     rcases Graph.chainData_extract hD hG hfresh hV4' hnoRigid with
       ⟨cd, hd2, hGv, hGvSimple, hGv2, hGvlt⟩ | ⟨cy, hcym⟩
-    · -- Chain disjunct: pull the `v₁`-split's **generic** realization from the IH's GP `.1`
-      -- conjunct (the placement seed `q`, whose `IsGeneralPosition` conjunct feeds the triple-LI
-      -- bridge — the data the bare `.2` conjunct cannot supply, §1.41(1)–(2)), and feed the
-      -- reshaped `hcand` (design §C.3).
+    · -- A chain: `hIH` gives the split-off graph a generic full-rank realization, its first
+      -- conjunct, as the graph is simple; then `hcand`.
       have hsplitGP : PanelHingeFramework.HasGenericFullRankRealization K k n
           (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀) :=
         (hIH _ hGv hGv2 hGvlt).1 hGvSimple
       exact hcand cd hd2 hGv.1 hsplitGP
-    · -- Cycle disjunct (`4 ≤ |V(G)| ≤ n`): the Lemma-5.4 brick `cycle_realization` (E5) realizes
-      -- `G` directly (`hcym : cy.m ≤ n`, weaker than the `cy.m ≤ n + 1` the brick now wants).
+    · -- A cycle (`4 ≤ |V(G)| ≤ n`): `cycle_realization` realizes `G`, as `cy.m ≤ n ≤ n + 1`.
       exact PanelHingeFramework.cycle_realization hn hG cy (by omega)
 
 end CombinatorialRigidity.Molecular
