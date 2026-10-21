@@ -2565,7 +2565,12 @@ declaration's name as its header writes it:
   gives at a label of a renamed framework (the hinge from the normals of the two bodies its selector
   gives the label, so that the renaming of the normals cancels that of the selector, and which does
   not read the graph) and on the selectors the renamings carry (each gives each link its ends in
-  some order), kept as they stand, moved to the phase (task 35.2).
+  some order), kept as they stand, moved to the phase (task 35.2); and in
+  `CaseIII/Relabel/Chain.lean`, `ChainColumn.lean` and `ForkedArm.lean`, the sentences on what
+  `ofNormals` gives at a label (the hinge from the selector and the normals, which does not read the
+  graph, so that a block of rows does not depend on it) and on the selectors of the frameworks of a
+  chain (each gives each link its ends in some order), kept as they stand, moved to the phase (task
+  35.3).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -4121,7 +4126,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; the signatures of `theorem_55_minimalKDof_k_all_k`
   and `case_III_hsplit_producer_all_k`; KT 2011 pp. 682 and 686, `.refs/`).
   *Found:* round 3 task 2.14.
-  *Disposition:* reported (`notes/Prose-report.md`, L4); round 3:
+  *Disposition:* done (task 35.3):
   `linearIndependent_sum_p2_candidateRow` and `linearIndependent_sum_p3_candidateRow` deleted
   (task 4); `splitOff_isLink_relabel`'s docstring without "G4c-i", with KT p. 686 for the
   isomorphism and p. 687 for eq. (6.31) (task 30); `RigidityMatrix/Claim612.lean`'s docstrings
@@ -4129,8 +4134,12 @@ declaration's name as its header writes it:
   `lem:case-III-candidate-dispatch-d3`, says that no main result uses it, the proof of `lem:case-III`
   taking the case of a chain, and claims no `hcand` (task 35.1); `ofNormals_relabel`'s gives the
   three conjuncts of its statement, and `hasGenericFullRankRealization_of_splitOff_relabel`'s names
-  no `hsplitZero` branch and no user, as it has none (task 35.2); `Relabel/Chain.lean`'s are task
-  35.3's.
+  no `hsplitZero` branch and no user, as it has none (task 35.2); in `Relabel/Chain.lean`, the
+  docstrings of `case_III_bottom_relabel`, `acolumn_mem_hingeRowBlock_of_span_rigidityRows` and
+  `hingeRow_acolumn_mem_span_rigidityRows` carry no process code (W9b, G4d-i, G4d-ii), the last two
+  give as their node no `lem:case-III-claim612-eq644`, which pins neither, and the first is credited
+  to the isomorphism of KT pp. 686–687 and the row correspondence of p. 688 (task 35.3). Before:
+  reported (`notes/Prose-report.md`, L4).
 - **F-172** · L · the docstrings of the pins of `case-iii.tex`'s general case
   (`CaseIII/Realization.lean`, `CaseIII/Arms.lean`, `Molecular/Induction/Operations.lean`).
   `chainData_fire_discriminator`'s and `chainData_dispatch`'s say that they have no `\lean` pin;
@@ -4531,11 +4540,14 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` for the callers); measured (the closure of
   `case_III_realization_all_k` in `scripts/blueprint-deps.py`'s Lean cache, at task 3.10).
   *Found:* round 5 task 3.10.
-  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3:
+  *Disposition:* done (task 35.3):
   `exists_homogeneousIncidence_of_normals_gen`'s lead names
   `lem:case-III-claim612-points-affineIndep-real-normals`, and the wrapper's gives it as a step of
-  `lem:case-III-candidate-dispatch-d3` and as that node's case `d = 3` (task 32.1); the docstrings
-  in `CaseIII/Relabel/` are task 35.3's.
+  `lem:case-III-candidate-dispatch-d3` and as that node's case `d = 3` (task 32.1); the leads of
+  `interior_hρe₀_of_baseWidening` and `chainData_relabel_arm_hρGv` name `lem:case-III-chain-eq666`,
+  that of `chainData_bottom_relabel` names `lem:case-III-chain-relabel-rows`, and
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`'s says that `chainData_dispatch_interior`
+  uses `chainData_relabel_arm_hρGv` (task 35.3). Before: reported (`notes/Prose-report.md`, L11).
 - **F-243** · L · the declarations round 5's task 3.11 pinned or unpinned
   (`Molecular/Molecule/Duality.lean`, `Pencil/Statement.lean`;
   `Molecular/GenericLift/HingeGeneric.lean`; `BodyBar/GenericLift.lean`). The docstrings of
@@ -4985,6 +4997,30 @@ declaration's name as its header writes it:
   `shiftBody_pred_ne_succ`, `shiftBodyGraph_isLink_pred_edge`, `shiftBodyGraph_deg_two_right`,
   `shiftBodyGraph_off_succ`, `shiftBodyGraph_isLink_of_off_body`), all unpinned, and the pinned
   `rigidityRows_ofNormals_relabel`, which stays with its node.
+  Task 35.3 adds twenty-one in `CaseIII/Relabel/` (the same screen, over `Chain.lean`,
+  `ChainColumn.lean` and `ForkedArm.lean` and then over the five files of the directory, and the
+  Lean cache, at `c3a4b34b`), none of them pinned. In `Chain.lean`: the definition
+  `Graph.ChainData.shiftEndsAdv` with `shiftEndsAdv_zero` and `_succ`,
+  `Graph.ChainData.shiftBodyFrameworkAsc_graph`, the two lemmas on the frameworks `F_t`
+  (`funLeft_dualMap_genuineRow_mem_span_caseIIICandidate`, used only by
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`), `hingeRow_acolumn_mem_span_rigidityRows`,
+  and three that only task 35.2's use, `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`,
+  `candidate_perp_two_incident_supportExtensors` and `candidate_perp_two_incident_panels` (used only
+  by the previous). In `ChainColumn.lean`, all under `Graph.ChainData` but the first:
+  `BodyHingeFramework.edgeIndexedCombination_comp_single_off`,
+  `interiorGroup_acolumn_two_group_decomp`, `baseRedundancy_group_acolumn_mem_inf` (used only by
+  `baseRedundancy_group_acolumn_perp`, also unused),
+  `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`,
+  `chainData_freshEdge_perp_of_witness`, and the five lemmas with the renamed selector:
+  `i3_candidateBlock_transport_deRisk` (used only by
+  `chainData_candidateRow_edgeGrouped_transport_blocks`),
+  `chainData_candidateRow_edgeGrouped_transport_comb`,
+  `chainData_freshEdge_perp_transport_base_to_candidate` (used only by the next) and
+  `chainData_freshEdge_slot_perp`. None in `ForkedArm.lean`. Their docstrings named users that do
+  not exist (`chainData_relabel_arm`, `case_III_rank_certification_chain`) or do not use them
+  (`notMem_span_mkQ_pmR_row_of_gate`). Removing them with task 35.2's would also leave without a
+  caller the pinned `candidateRow_ac_eq_neg` (`RigidityMatrix/Claim612.lean`), which stays with its
+  node.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5253,6 +5289,34 @@ declaration's name as its header writes it:
   `fun f x h => hdeg2 f x h.symm` for `hdeg2r`, and `3 ≤ V(G).ncard` from the three distinct ends,
   on the three standard axioms (`scratch/reconcile-lean/Hyps-t352.lean`, gitignored).
   *Found:* RECONCILE round 3 task 35.2.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-295** · L · derivable hypotheses and repeated derivations in
+  `Molecular/AlgebraicInduction/CaseIII/Relabel/Chain.lean`, `ChainColumn.lean` and
+  `ForkedArm.lean`. `BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows`,
+  `hingeRow_acolumn_mem_span_rigidityRows` and `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`
+  take `hdeg2r`, which `hdeg2` gives by `Graph.IsLink.symm` (`F-294`'s form). The `h3 : 3 ≤ cd.d` of
+  `Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel`, `interior_hρe₀_of_widening` and
+  the pins `interior_hρe₀_of_baseWidening` and `chainData_relabel_arm_hρGv` follows from
+  `i : Fin cd.d` and `h2i : 2 ≤ i`, and that of `chainData_freshEdge_perp_of_baseRedundancy` from
+  `h2s` and `hsd`, though the `by omega` proofs in the types of later hypotheses read it.
+  `interior_group_eq_baseRedundancy`, `interior_group_acolumn_eq_neg_baseRedundancy` and
+  `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` take variables `ab₁` and `ab₂` with
+  `hab₁ : ab₁ = vtx 0` and `hab₂ : ab₂ = vtx 2`, which the two callers outside the three pass as
+  `rfl`. The restriction to an interior vertex by edges (`hinc_ei`, `hinc_ep`, `hdeg`) is written
+  out in both `interiorGroup_acolumn_adjacency` and `interiorGroup_acolumn_two_group_decomp`; the
+  step from `−ρ₀` in a block of rows to `ρ₀` vanishing on its hinge, in both
+  `baseRedundancy_perp_interior_reproduced_panel` and `chainData_freshEdge_perp_of_baseRedundancy`;
+  and the case split on the order of the ends a selector gives (the hinge changes sign) in
+  `baseRedundancy_perp_interior_reproduced_panel`, `chainData_bottom_relabel`, three times in
+  `case_III_bottom_relabel` and four times in `chainData_freshEdge_slot_perp_ends₀`, where the
+  private `perp_panelSupportExtensor_swap` restates `panelSupportExtensor_swap` with `map_neg`.
+  `lake lint` reports none.
+  *Evidence:* read (the statements and bodies; the callers of the three lemmas with `ab₁` and
+  `ab₂`); a `lake lean` witness: `acolumn_mem_hingeRowBlock_of_span_rigidityRows` and its sum form
+  called with `fun f x h => hdeg2 f x h.symm` for `hdeg2r`, and `interior_hρe₀_of_baseWidening`
+  called with `3 ≤ cd.d` from `i.isLt` and `h2i`, on the three standard axioms
+  (`scratch/reconcile-lean/Hyps-t353.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 35.3.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

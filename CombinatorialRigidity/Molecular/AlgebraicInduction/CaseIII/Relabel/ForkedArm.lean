@@ -6,25 +6,18 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.ChainColumn
 
 /-!
-# The algebraic induction — Case III: the interior-`hρe₀` relabel bridge (Phase 23c)
+# Case III: the form `r` on the hinge of the new edge of `G_i`
 
-Phase 22/23 (molecular-conjecture program). Terminal file of the `CaseIII/Relabel/` subdirectory
-(the Phase-23c split of `CaseIII/Relabel.lean`, `notes/Phase23c.md`). Carries the interior-`hρe₀`
-relabel bridge of the honest geometry arm — the splice-perp crux
-`baseRedundancy_perp_interior_reproduced_panel` (KT 2011 eq.~(6.66)) and the cycle-relabel widening
-chain (`reproduced_panel_eq_splice_panel`, `interior_hρe₀_of_{splice_perp,widening,baseWidening}`)
-that turns the shared base redundancy `ρ₀`'s perp into the interior arm's reproduced-slot `hρe₀`
-slot. Consumed by the LIVE router branch `chainData_dispatch_interior` (`CaseIII/Realization`)
-feeding the interior arm `chainData_interior_realization_hρGv`. Built on `Relabel/ChainColumn`; this
-is the file `CaseIII/Realization` imports for the chain dispatch.
+Lemmas for Case III of KT Theorem 5.5 (Katoh and Tanigawa 2011, *A proof of the molecular
+conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
+`sec:molecular-algebraic-induction-caseIII`. For a chain `v₀ ⋯ v_d` with `d ≥ 3`, `2 ≤ i ≤ d − 1`,
+`σ_i = shiftPerm i.castSucc` and `q_i = q ∘ σ_i`, the file proves the first claim of
+`lem:case-III-chain-eq666` (KT eq. (6.66), p. 698): if `hingeRow v₀ v₂ ρ₀` is a combination of rows
+of `ofNormals (G − v₁) ends q`, then `ρ₀` vanishes on the hinge `C(q_i(v_{i+1}), q_i(v_{i−1}))` of
+the new edge `v_{i−1} v_{i+1}` of `(G_i, q_i)` (`interior_hρe₀_of_baseWidening`).
 
-The dead `_aug`/override/(D-substitution) fork that previously lived here (the chain-arm closer
-`case_III_arm_realization_chain`, the corner-data assembly, and the `ofNormals` (D-substitution)
-tail) was retired in the Phase-23f close (`notes/Phase23-design.md` §(4.106), deletion GROUP 2);
-the honest `k`-spine engine carries `d = 3` and the reshaped interior arm carries general `d`.
-
-See `ROADMAP.md` §§22–23 and the `sec:molecular-algebraic-induction-caseIII` dep-graph in
-`blueprint/src/chapter/algebraic-induction/case-iii.tex`.
+`CaseIII/Relabel/ChainColumn.lean` proves the second claim, and `CaseIII/Realization.lean`, which
+imports this file, applies both in the proof of `lem:case-III-chain-dispatch`.
 -/
 
 namespace CombinatorialRigidity.Molecular
@@ -37,40 +30,21 @@ variable {α β : Type*}
 
 variable {K : Type*} [Field K]
 
-/-! ## The interior-`hρe₀` relabel bridge (Phase 23c §I.8.24(4.13); KT 2011 eq.~(6.66))
+/-! ## The hinge of the new edge of `G_i`
 
-The honest interior arm `chainData_interior_realization_hρGv` (`CaseIII/Realization`) carries, at an
-interior matched candidate `i` (`2 ≤ i`), the *reproduced-slot* annihilation
-`hρe₀ : ρ₀ ⊥ panelSupportExtensor (qρ(a,·)) (qρ(b,·))` with `a = vtx i.succ`,
-`b = vtx (i−1).castSucc` the two chain neighbours of the degree-2 split body `v = vtx i.castSucc`,
-in candidate `i`'s relabelled seed `qρ = q ∘ shiftPerm i.castSucc` (KT eq.~(6.56)). These lemmas
-DISSOLVE the prior Route-A-vs-Route-B routing question into a single splice-perp crux: the
-`(a,b)` reproduced panel is, *under the cycle relabel*, the base-seed chain panel of the spliced
-edge `edge i` (`vᵢ`-incident, the KT eq.~(6.66) splice). So the leaf reduces to the one
-genuinely-new obligation `ρ₀ ⊥ (base-seed `edge i` splice panel)` (the un-landed
-`baseRedundancy_perp_interior_reproduced_panel`, KT eq.~(6.66)'s redundancy carry across the
-spliced body), and everything else is this pure-`shiftPerm`-algebra rewrite.
+The hinge `C(q_i(v_{i+1}), q_i(v_{i−1}))` of the new edge of `G_i` is `C(q(v_{i+1}), q(v_i))`, up to
+sign the hinge of the edge `v_i v_{i+1}` of `(G_1, q)` (`reproduced_panel_eq_splice_panel`; KT
+eq. (6.56), p. 694). Write `hingeRow v₀ v₂ ρ₀` as a combination of rows. Its terms at the edge
+`v_i v_{i+1}`, restricted to `v_i`, sum to `−ρ₀` (`interior_group_acolumn_eq_neg_baseRedundancy`,
+`CaseIII/Relabel/ChainColumn.lean`), a form in the block of rows of that edge, so `ρ₀` vanishes on
+its hinge (`baseRedundancy_perp_interior_reproduced_panel`). -/
 
-The seam was mis-pinned 3–4× by design prose; these lemmas are the compiler-checked replacement for
-that adjudication (the original spike, Phase 23c §I.8.24(4.13)). -/
-
-/-- **The reproduced-slot panel is the base-seed splice-edge panel, under the cycle relabel**
-(Phase 23c §I.8.24(4.13); Katoh–Tanigawa 2011 §6.4.2 eq.~(6.56) the candidate seed `qᵢ = q ∘ ρᵢ`,
-eq.~(6.66) the spliced panel). At an interior candidate `i` (`2 ≤ i`) the consumer's reproduced
-panel `panelSupportExtensor (qρ(vtx i.succ,·)) (qρ(vtx (i−1).castSucc,·))`, read at candidate `i`'s
-relabelled seed `qρ = q ∘ shiftPerm i.castSucc`, equals the BASE-seed panel of the spliced chain
-edge `edge i` — namely `panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))`. The two seed reads
-cancel the cycle shift:
-
-* `a = vtx i.succ` has index `i+1 > i`, *off* the cycle `[vtx 1, …, vtx i]`, so
-  `shiftPerm i.castSucc` fixes it (`shiftPerm_apply_vtx_off`): `qρ(a,·) = q(vtx (i+1),·)`;
-* `b = vtx (i−1).castSucc` has index `1 ≤ i−1 < i`, *interior* to the cycle, so
-  `shiftPerm i.castSucc` sends it to its chain-successor `vtx i` (`shiftPerm_apply_interior`):
-  `qρ(b,·) = q(vtx i,·)`.
-
-This is the cycle generalization of the `d = 3` `M₃` arm's single-swap seed-coincidence
-(`Relabel/Arm.lean`, `case_III_arm_realization_M3`'s `hqρv`/`hqρc`). Pure `shiftPerm`/`vtx`
-algebra. -/
+/-- **The hinge of the new edge of `G_i`** (a step of `lem:case-III-chain-eq666`; KT eq. (6.56),
+p. 694): for `2 ≤ i ≤ d − 1`, `σ_i = shiftPerm i.castSucc` and the normals `q_i = q ∘ σ_i`
+(`fun p => q (σ_i p.1, p.2)`), the extensor `C(q_i(v_{i+1}), q_i(v_{i−1}))` is
+`C(q(v_{i+1}), q(v_i))`. The cycle `σ_i` maps `v₁ ↦ v₂ ↦ ⋯ ↦ v_i ↦ v₁`, so it fixes `v_{i+1}`
+(`shiftPerm_apply_vtx_off`) and maps `v_{i−1}` to `v_i`, as `1 ≤ i − 1 < i`
+(`shiftPerm_apply_interior`). -/
 theorem _root_.Graph.ChainData.reproduced_panel_eq_splice_panel
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
@@ -112,42 +86,19 @@ theorem _root_.Graph.ChainData.reproduced_panel_eq_splice_panel
         = (fun j => q (cd.shiftPerm i.castSucc
           (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j)) from rfl, hb]
 
-/-- **The splice-perp crux — the eq.~(6.66) redundancy carry to the spliced candidate edge**
-(Phase 23c §I.8.24(4.13)/(4.16), THE conjecture-crux leaf; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)).
-The genuinely-new content of the interior-`hρe₀` leaf: the shared redundancy `ρ₀` annihilates the
-base-seed panel of the spliced chain edge `edge i` — `panelSupportExtensor (q(vtx (i+1),·))
-(q(vtx i,·))` — at an interior matched candidate `i` (`2 ≤ i < d`). This is exactly the `hsplice`
-hypothesis `interior_hρe₀_of_splice_perp` (below) consumes; the cycle-relabel bridge then turns it
-into the consumer's `hρe₀` slot.
+/-- **`ρ₀` vanishes on the hinge of the edge `v_i v_{i+1}`** (a step of `lem:case-III-chain-eq666`;
+KT eq. (6.66), p. 698): let `d ≥ 3` and `2 ≤ i ≤ d − 1`, and let
+`∑ c_j hingeRow (uv j) (vv j) (rv j)` be `hingeRow v₀ v₂ ρ₀` (`hcomb`), where each `ev j` joins
+`uv j` and `vv j` in `G` (`hlink`), each `rv j` lies in the block of rows of `ofNormals Gw ends q`
+at `ev j` (`hrv`), and every term at `v₂` is at the edge `v₂v₃` (`hdeg1`). If `ends` gives the edge
+`v_i v_{i+1}` its ends in some order (`hends_i`), then `ρ₀` vanishes on `C(q(v_{i+1}), q(v_i))`.
 
-**The carry "across `vᵢ`" needs no new argument — the LANDED value-read does it directly.** The seam
-was mis-pinned 3–4× (the wall-vs-escape conflation) precisely because the spliced `edge i` is
-`vᵢ`-incident, hence *not* an edge of `G − vᵢ`, so the surviving-edge perp leaf
-`chainData_freshEdge_perp_of_baseRedundancy` (which lives in the `G − vᵢ` framework) excludes it.
-But the target panel is read off the *base seed* `q` directly, not off any framework, and its block
-test `hingeRowBlock` depends only on `ends`/`q` — the graph is irrelevant (`hingeRowBlock e =
-(span {supportExtensor e})ᗮ`, and `ofNormals`' `supportExtensor` reads only `ends`/`q`). So the two
-LANDED bricks that produced the surviving-edge perps work verbatim at the spliced edge `edge i`:
-
-* `interior_group_acolumn_eq_neg_baseRedundancy` (the chain-induction LEAF 4, **framework-free**) —
-  the `edge i`-group's screw column at its tail body `vtx i` is the constant `−ρ₀`, carried along
-  the chain from the base redundancy `hcomb` and anchored at `vtx 2`. This holds for *every*
-  `2 ≤ i < d`, the candidate edge included (it never invokes a framework or the deletion `G − vᵢ`).
-* `edgeGroup_acolumn_mem_block` (the column-in-block core) — that same `edge i`-group column lies in
-  `(ofNormals Gw ends q).hingeRowBlock (edge i)` for the base framework `Gw` (here `Gw = G − v₁`,
-  what the LEAF-3 widening supplies; the graph is immaterial to the block).
-
-Combining, `−ρ₀ ∈ block (edge i)`, so `ρ₀ ∈ block` (negation-closed), so `ρ₀ ⊥ supportExtensor
-(edge i) = panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))` (`ofNormals_supportExtensor_eq_panel_
-of_ends`, given the `ends`-recording `hends_i`). No per-vertex eq.~(6.52) witness production, no
-inductive chain over `s`, no Grassmann–Cayley meet: the eq.~(6.66) carry IS the framework-free value
-read, applied one index deeper than the surviving-edge leaf dared.
-
-The carried inputs — the base redundancy `hcomb` (= the LEAF-3 widening's edge-grouped `G_v`-row
-form, KT eq.~(6.66)), the per-summand `G`-links `hlink` + base-framework block memberships `hrv`
-(the widening's `evGv`/`rvGv` data), the `ends`-recording `hends_i` at the spliced edge, and the
-degree-1-at-anchor closure `hdeg1` — are the LEAF-3 base bundle + widening outputs the dispatch
-threads in (LEAF-4 step (ii)); they are *not* a deferred crux. -/
+The terms at `v_i v_{i+1}`, restricted to `v_i`, sum to `−ρ₀`
+(`interior_group_acolumn_eq_neg_baseRedundancy`), a form in the block of rows of
+`ofNormals Gw ends q` at `v_i v_{i+1}` (`edgeGroup_acolumn_mem_block`). So `ρ₀` vanishes on the
+hinge there, which is `±C(q(v_{i+1}), q(v_i))` by `hends_i`. The block reads only the hinge, which
+`ofNormals` gives from the selector and the normals and not from the graph, so `Gw` is any graph;
+the caller takes `G − v₁`. -/
 theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
@@ -156,14 +107,12 @@ theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
     (rv : Fin m → Module.Dual K (ScrewSpace K k))
     {ρ₀ : Module.Dual K (ScrewSpace K k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
-    -- the base block memberships at the base framework `ofNormals Gw ends q` (graph-irrelevant
-    -- for `hingeRowBlock`, which reads only `ends`/`q`; `Gw = G − v₁` is the LEAF-3 widening's)
+    -- each `rv j` in the block of rows of `ofNormals Gw ends q` at `ev j` (a block reads only
+    -- `ends` and `q`, not the graph; the caller takes `Gw = G − v₁`):
     {Gw : Graph α β} (ends : β → α × α)
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge.hingeRowBlock (ev j))
-    -- the `ends`-recording of the matched chain edge `edge i`, in *either* orientation (the
-    -- discriminator's IH selector `Q.ends` records each link only up to a free disjunction). The
-    -- conclusion `ρ₀ ⊥ panel = 0` is orientation-invariant — the support extensor is antisymmetric
-    -- in its two normals, so the swapped recording only flips a sign that `= 0` absorbs.
+    -- `ends` gives the edge `v_i v_{i+1}` its ends in some order. Swapping the two normals changes
+    -- the sign of the extensor, which does not change whether `ρ₀` vanishes on it.
     (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc) ∨
       ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
@@ -174,7 +123,7 @@ theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
         (fun j => q (cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩, j))) = 0 := by
   classical
   set Fbase := (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge with hFbase
-  -- The `edge i`-group's `vtx i`-column is `−ρ₀` (chain induction LEAF 4, framework-free).
+  -- The terms at `edge i`, restricted to `vtx i`, sum to `−ρ₀`.
   have hcolval := cd.interior_group_acolumn_eq_neg_baseRedundancy h3 c ev uv vv rv hlink hcomb
     rfl rfl hdeg1 (i : ℕ) h2i i.isLt
   -- The `edge i`-group's `vtx i`-column lands in `Fbase.hingeRowBlock (edge i)`.
@@ -187,7 +136,7 @@ theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
     rwa [neg_neg] at this
   have hperp := (Fbase.mem_hingeRowBlock_iff (cd.edge ⟨(i : ℕ), by have := i.isLt; omega⟩) ρ₀).1
     hρ₀mem
-  -- Rewrite `Fbase.supportExtensor (edge i)` to the base-seed panel via the `ends`-recording.
+  -- `Fbase.supportExtensor (edge i)` is the extensor of the normals at the ends that `ends` gives.
   have hieq : (⟨(i : ℕ), by have := i.isLt; omega⟩ : Fin cd.d) = i := Fin.ext rfl
   rw [hieq] at hperp
   -- The two ends `vtx i.succ`, `vtx i.castSucc` are the panel reads `vtx (i+1)`, `vtx i`.
@@ -206,32 +155,20 @@ theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
     rw [hsucc, hcast] at hperp
     exact hperp
 
-/-- **The interior `hρe₀` leaf, produced from the splice-perp crux** (Phase 23c §I.8.24(4.13);
-Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). The exact `hρe₀` slot the honest interior arm
-`chainData_interior_realization_hρGv` consumes at an interior matched candidate `i` (`2 ≤ i`),
-produced from the SINGLE crux hypothesis
-`hsplice : ρ₀ ⊥ (base-seed `edge i` splice panel)` by the cycle-relabel bridge
-`reproduced_panel_eq_splice_panel`. With the crux `baseRedundancy_perp_interior_reproduced_panel`
-(above) now LANDED, `hsplice` is no longer a deferred obligation — the whole interior-`hρe₀` leaf is
-complete modulo the dispatch threading the crux's carried inputs (LEAF-4 step (ii)). This wrapper is
-kept in the carry-as-`h…` form so the dispatch can either supply `hsplice` from the crux directly or
-re-derive it inline.
-
-This DISSOLVES the prior Route-A-vs-Route-B fork: BOTH routes reduce to `hsplice`. Route A
-(`chainData_freshEdge_perp_of_baseRedundancy`) supplies the *surviving*-edge perps (`2 ≤ s`,
-`s+1 < i`) that feed the eq.~(6.66) carry as INPUTS — they are not themselves `hsplice` (the spliced
-`edge i` is `vᵢ`-incident, never a surviving edge). -/
+/-- **From the hinge of `v_i v_{i+1}` to that of the new edge of `G_i`** (a step of
+`lem:case-III-chain-eq666`): for `2 ≤ i ≤ d − 1`, if `ρ₀` vanishes on `C(q(v_{i+1}), q(v_i))`
+(`hsplice`), it vanishes on `C(q_i(v_{i+1}), q_i(v_{i−1}))` for `q_i = q ∘ shiftPerm i.castSucc`, as
+the two extensors are equal (`reproduced_panel_eq_splice_panel`). -/
 theorem _root_.Graph.ChainData.interior_hρe₀_of_splice_perp
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {q : α × Fin (k + 2) → K}
     {ρ₀ : Module.Dual K (ScrewSpace K k)}
-    -- the splice-perp crux: ρ₀ ⊥ the base-seed panel of the spliced chain edge `edge i`
-    -- (`vᵢ`-incident); the genuinely-new `baseRedundancy_perp_interior_reproduced_panel`:
+    -- `ρ₀` vanishes on `C(q(v_{i+1}), q(v_i))`:
     (hsplice : ρ₀ (panelSupportExtensor
         (fun j => q (cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩, j))
         (fun j => q (cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩, j))) = 0) :
-    -- the consumer's `hρe₀` at candidate `i`'s relabelled seed `qρ = q ∘ shiftPerm i.castSucc`:
+    -- then on `C(q_i(v_{i+1}), q_i(v_{i−1}))`, for the normals `q_i = q ∘ shiftPerm i.castSucc`:
     ρ₀ (panelSupportExtensor
           (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
           (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
@@ -239,26 +176,10 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_splice_perp
   rw [cd.reproduced_panel_eq_splice_panel i h2i]
   exact hsplice
 
-/-- **The interior `hρe₀` slot, produced end-to-end from the W6b edge-grouped widening bundle**
-(`lem:case-III general-d`, the option-(A) LEAF-4 interior-`hρe₀` call site; Phase 23c
-§I.8.24(4.13)/(4.16); Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). The chain dispatch's (CHAIN-2c-iii)
-interior branch `chainData_dispatch_interior` feeds the honest interior arm the `hρe₀` slot
-`ρ₀ ⊥ panelSupportExtensor (qρ(a,·)) (qρ(b,·))` at the matched interior candidate `i` (`2 ≤ i < d`),
-read at candidate `i`'s relabelled seed `qρ = q ∘ shiftPerm i.castSucc` (KT eq.~(6.56)). This leaf
-produces exactly that slot from the **single** input the W6b producer already computes — the
-edge-grouped `G_v`-row form of the shared redundancy `hingeRow (vtx 0) (vtx 2) ρ₀ =
-∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (KT eq.~(6.52)/(6.66), the `hedgeGv` bundle re-anchored to the
-spliced edge `e₀ = v₀v₂`'s endpoints `(vtx 0, vtx 2)`) — composing the two landed leaves with no
-intermediate `hsplice` threading:
-
-* `baseRedundancy_perp_interior_reproduced_panel` (THE conjecture-crux, framework-free) carries the
-  base redundancy across `vᵢ` to the spliced chain edge `edge i`: `ρ₀ ⊥` the base-seed panel
-  `panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))`;
-* `interior_hρe₀_of_splice_perp` (the cycle-relabel bridge `reproduced_panel_eq_splice_panel`)
-  rewrites that base-seed splice panel into the consumer's relabelled `qρ`-panel.
-
-So the dispatch threads the widening bundle ONCE and gets the assembly's `hρe₀` directly. NO `hρGv`,
-no new linear algebra — pure composition of the crux with the relabel bridge. -/
+/-- **`ρ₀` vanishes on the hinge of the new edge of `G_i`, from a combination at links of `G`** (a
+step of `lem:case-III-chain-eq666`): under the hypotheses of
+`baseRedundancy_perp_interior_reproduced_panel`, `ρ₀` vanishes on `C(q_i(v_{i+1}), q_i(v_{i−1}))`
+for `q_i = q ∘ shiftPerm i.castSucc`: that lemma, then `interior_hρe₀_of_splice_perp`. -/
 theorem _root_.Graph.ChainData.interior_hρe₀_of_widening
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
@@ -284,28 +205,19 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_widening
     (cd.baseRedundancy_perp_interior_reproduced_panel h3 i h2i c ev uv vv rv hlink ends hrv
       hends_i hcomb hdeg1)
 
-/-- **The interior `hρe₀` slot, produced directly from LEAF-3's base-`v₁`-split widening bundle**
-(`lem:case-III general-d`, the option-(A) LEAF-4 interior-`hρe₀` call site, the dispatch's bundle
-re-anchoring; Phase 23d; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). The chain dispatch (CHAIN-2c-iii)
-fires LEAF-3 (`exists_shared_redundancy_and_matched_candidate`) at the **base `v₁`-split**
-`(v, a, b) = (vtx 1, vtx 0, vtx 2)`, which re-exposes the W6b **edge-grouped `G_v`-row widening**
-of the shared redundancy `hingeRow (vtx 0) (vtx 2) ρ₀` (the `hedgeGv` bundle: an explicit per-edge
-`hingeRow` combination over `Gv = G − vtx 1`'s links). This leaf folds that bundle, in its native
-LEAF-3 shape, straight into `interior_hρe₀_of_widening` — the only re-anchoring it needs is
+/-- **`ρ₀` vanishes on the hinge of the new edge of `G_i`** (`lem:case-III-chain-eq666`, the first
+claim; KT eq. (6.66), p. 698): let `d ≥ 3`, `2 ≤ i ≤ d − 1`, `σ_i = shiftPerm i.castSucc` and
+`q_i = q ∘ σ_i`, let `ends` give the edge `v_i v_{i+1}` its ends in some order (`hends_i`), and let
+`hingeRow v₀ v₂ ρ₀` be a combination `∑ c_j hingeRow (uv j) (vv j) (rv j)` in which each `rv j` lies
+in the block of rows of `ofNormals (G − v₁) ends q` at a link `ev j` of `G − v₁` with ends `uv j`
+and `vv j` (`hedgeGv`). Then `ρ₀` vanishes on `C(q_i(v_{i+1}), q_i(v_{i−1}))`, the hinge of the new
+edge `v_{i−1} v_{i+1}` of `(G_i, q_i)`.
 
-* the per-summand `G − vtx 1`-link `hlinkGv` is a *`G`*-link (`removeVertex_le` /
-  `removeVertex_isLink`);
-* the bundle's `hcombGv : hingeRow (vtx 0) (vtx 2) ρ₀ = ∑ⱼ cⱼ • hingeRow (uⱼ)(vⱼ)(rⱼ)` is the
-  consumer's `hcomb` flipped (`.symm`); and
-* the degree-1-at-anchor closure `hdeg1` — a summand incident to the anchor `vtx 2` must use the
-  chain edge `edge 2`: the summand is a `G − vtx 1`-link, hence a `G`-edge at `vtx 2`, so by the
-  interior degree-2 closure (`deg_two` at `vtx 2`, valid since `3 ≤ d`) it is `edge 1` or `edge 2` —
-  but `edge 1` is incident to `vtx 1` (the `link` field at index 1), so it is *not* a
-  `G − vtx 1`-link, leaving `edge 2`.
-
-So the dispatch threads LEAF-3's `hedgeGv` bundle and `hends_i` (the `ends`-recording of the matched
-chain edge `edge i`) and reads off the consumer's `hρe₀` directly. NO `hρGv`, no new linear
-algebra — pure re-anchoring of the landed crux (`interior_hρe₀_of_widening`) to the bundle shape. -/
+The proof is `interior_hρe₀_of_widening`, whose hypothesis on the terms at `v₂` holds: a link of
+`G − v₁` at `v₂` is an edge of `G` at the interior vertex `v₂`, so it is `v₁v₂` or `v₂v₃`
+(`ChainData.deg_two`), and it is not `v₁v₂`, which meets `v₁`. `chainData_dispatch_interior`
+(`CaseIII/Realization.lean`) applies it to the combination that `chainData_fire_discriminator`
+gives. -/
 theorem _root_.Graph.ChainData.interior_hρe₀_of_baseWidening
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
@@ -314,7 +226,7 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_baseWidening
     {ρ₀ : Module.Dual K (ScrewSpace K k)}
     (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc) ∨
       ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
-    -- LEAF-3's W6b edge-grouped `G_v`-row widening bundle at the base `v₁`-split `(a,b) = (v₀,v₂)`:
+    -- `hingeRow v₀ v₂ ρ₀` as a combination of rows of `ofNormals (G − v₁) ends q`:
     (hedgeGv :
       ∃ (nGv : ℕ) (cGv : Fin nGv → K) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
           (rvGv : Fin nGv → Module.Dual K (ScrewSpace K k)),
