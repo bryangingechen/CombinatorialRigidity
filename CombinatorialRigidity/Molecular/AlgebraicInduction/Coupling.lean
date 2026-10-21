@@ -8,25 +8,27 @@ import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 
 /-!
-# The algebraic induction — Case I coupling foundations (coupling + `extProj`)
+# Case I: selectors, two subframeworks, and deleting columns
 
-Phase 22 (molecular-conjecture program; see `notes/MolecularConjecture.md`). The foundations head of
-the algebraic-induction realization layer, carved off `AlgebraicInduction/CaseI.lean` in the
-post-Phase-22j perf round (`notes/Phase22j-perf.md`; no decl renamed or re-namespaced). On top of
-the genericity device (`AlgebraicInduction/GenericityDevice`), this file carries the shared base the
-Case-I composer and the later cases all build on:
+Lemmas for Case I of KT Theorem 5.5 (Katoh and Tanigawa 2011, *A proof of the molecular conjecture*,
+Discrete Comput. Geom. **45**, §6.2), presented in `sec:molecular-algebraic-induction-caseI`, and
+for the deletion of columns of `sec:molecular-rigidity-matrix-blocks`. The file proves:
 
-* the **shared-seed / block-triangular coupling** producers
-  (`hasFullRankRealization_of_couple…`, `hasGenericFullRankRealization_of_couple…`) — KT eq. 6.3
-  rank-addition over one common framework;
-* the **exterior-column projection** `extProj` onto the surviving body columns, with its
-  apply/range/kernel lemmas;
-* the **projection-into-pinned-motions** bridges (`infinitesimalMotions_*_range_extProj_*`,
-  `BodyHingeFramework.injOn_extProj_dualMap_rigidityRows…`) and the projected
-  independent-subfamily extractors (`exists_independent_panelRow_subfamily_*_proj`).
+* that the selector `G.endsOf` gives every link of `G` its ends and agrees up to order with any
+  selector that gives the links of a subgraph theirs, that reordering the ends of edges changes no
+  motion, that a generic realization of a subgraph is rigid at the selector of `G`, and that `H` and
+  `G ＼ E(H)` cover `G` and share a body (steps of `lem:case-I-realization` and
+  `lem:case-cut-edge-realization-gp`);
+* the projection `extProj`, whose dual map deletes the columns of a set of bodies, the
+  block-triangular rank bound (`lem:block-rank-contract`), and the rows of `G ＼ E(H)` against those
+  of `G/E(H)` once the columns of `V(H)` are deleted, at the normals `degeneratePlacement` (steps of
+  `lem:claim-6-4`);
+* that deleting the columns of a set that meets `V(G)` in one body keeps the rank
+  (`lem:extProj-preserves-rank-of-inter`), with its forms for rigid frameworks and the independent
+  rows that survive the deletion.
 
-See `ROADMAP.md` §22a / `notes/Phase22a.md` and the `sec:molecular-algebraic-induction` dep-graph
-of `blueprint/src/chapter/algebraic-induction.tex`.
+It also has realizations from two subframeworks rigid at a common non-root of polynomials, and a
+lemma that assumes the rigidity it concludes, which no declaration uses.
 -/
 
 namespace CombinatorialRigidity.Molecular
@@ -38,40 +40,25 @@ open scoped Graph
 
 variable {α β : Type*}
 
-/-- **Case I shared-seed coupling: two rigid legs on the parent selector give a full-rank
-realization** (`lem:case-I-splice-placement` / `lem:case-I-realization`, the simple Case-I
-shared-seed coupling assembly N6b/N6c; Katoh–Tanigawa 2011 §6.2, eq. (6.6), the joint genericity of
-the two Case-I legs; Phase 22). The genuine remaining content of the simple Case I, assembled from
-the green leg-restricted rank polynomials and the general-position factor (G2): given the two
-inductive legs `GH`, `Gc` (both subgraphs of `G`, sharing the contracted body `c` and covering
-`V(G)`), each *infinitesimally rigid on its own vertex set* as a leg-native framework
-`ofNormals GH ends q_H` resp.\ `ofNormals Gc ends q_c` at the **parent endpoint selector** `ends`
-and at its **own** seed (`hrigH`/`hrigc`, the form the `ends`-swap brick
-`infinitesimalMotions_ofNormals_eq_of_ends_swap` delivers from each leg's
-`HasGenericFullRankRealization` inductive hypothesis), with transversal hinges at each leg's seed
-(`hneH`/`hnec`), the parent graph `G` has a full-rank panel realization
-`HasFullRankRealization K k G`.
+/-! ## Realizations from two subframeworks rigid at a common non-root
 
-This is the witness-transfer the prior scaffolding reduced the Case I geometry to, now a pure
-assembly of green bricks (the recon's `hends`-over-all-`β` obstruction was dissolved by the
-leg-restricted chain): (i) each leg's rigidity yields its leg-restricted rank polynomial `Q_H`/`Q_c`
-(`exists_rankPolynomial_of_rigidOn_linking`), nonzero at its own seed hence nonzero as a polynomial;
-(ii) the general-position factor `Q_gp` (`exists_generalPosition_polynomial`) is nonzero (witnessed
-at any moment-curve seed); (iii) the triple product `Q_H · Q_c · Q_gp` is a nonzero polynomial, so
-`MvPolynomial.exists_eval_ne_zero` exhibits one shared seed `q₀` at which all three factors are
-nonzero; (iv) at `q₀` each leg is rigid
-(`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking`,
-consuming each leg's `hsupp`) and the parent normals are in general position (the `Q_gp` non-root);
-(v) `hasFullRankRealization_of_splice_ofNormals` splices the two `q₀`-rigid legs along the shared
-body into the parent realization, with general position discharging the splice's `hgp`.
+Each lemma of this section takes a rank polynomial of each of two subgraphs `GH` and `Gc` of `G`
+(`exists_rankPolynomial_of_rigidOn_linking`, or its form on sets) and the polynomial of general
+position (`exists_generalPosition_polynomial`), chooses normals `q₀` off the zeros of their product
+(`MvPolynomial.exists_eval_ne_zero₃`), and combines the two subframeworks, rigid at `q₀`, by
+`isInfinitesimallyRigidOn_of_splice` (`lem:case-I-splice-seed`). No declaration uses them: the proof
+of `lem:case-I-realization` combines rows of `H` and of `G ＼ E(H)` instead
+(`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`, in `CaseI.lean`). -/
 
-The deliverable rank is concluded, not assumed (honesty gate): the inputs are the satisfiable
-per-leg single-seed rigidities and per-seed transversalities (each a
-`HasGenericFullRankRealization` leg, up
-to the `ends`-swap), not the parent rank. The remaining red content of `lem:case-I-realization` is
-the composer that supplies these leg hypotheses from the IH (the `ends`-swap step) and dispatches on
-simplicity (non-simple → `hasFullRankRealization_of_splice_of_supportExtensor_ofNormals`, N6a;
-simple → this lemma). -/
+/-- **A realization from two subframeworks rigid at their own normals**: let `GH` and `Gc` be
+subgraphs of `G` that share `c` and cover `V(G)`, let `ends` give every edge label a link of `G`
+with two distinct bodies (`hends`, `hne_ends`), and let `ofNormals GH ends qH` and
+`ofNormals Gc ends qc` be rigid on `V(GH)` and `V(Gc)` (`hrigH`, `hrigc`), with nondegenerate hinges
+at their links (`hneH`, `hnec`). Then `G` has a full-rank realization. Each subframework gives a
+rank polynomial, nonzero at its normals (`exists_rankPolynomial_of_rigidOn_linking`); at a common
+non-root `q₀` of these and of the polynomial of general position, both are rigid
+(`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking`) and `q₀` is in general
+position, and `hasFullRankRealization_of_splice_ofNormals` applies. -/
 theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals
     [Infinite K] [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
@@ -91,30 +78,29 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals
       (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
     PanelHingeFramework.HasFullRankRealization K k G := by
   classical
-  -- A leg's linking edge `e` (`GH.IsLink e u v`) links the parent selector *within the leg*: `e` is
-  -- in `E(GH)` and links `ends` in `G` (`hends`), so by `IsSubgraph.isLink_iff` it links in `GH`.
+  -- `ends` gives every link of `GH` its ends: a link of `GH` is at an edge of `GH`, to which `ends`
+  -- gives a link of `G`, and so of `GH` (`IsSubgraph.isLink_iff`).
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
   have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
-  -- (i) Each leg's leg-restricted rank polynomial: a `panelRow`-index subset `s` of full size and a
-  -- `MvPolynomial` `Q` nonzero at the leg's own seed whose every non-root gives the subfamily LI.
+  -- (i) The rank polynomials of `GH` and `Gc`: rows of full size at links, independent off the
+  -- zeros of a polynomial that does not vanish at `qH` (resp. `qc`).
   obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking GH ends hendsH hneH hnevH hrigH
   obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
-  -- (ii) The general-position factor: nonzero (witnessed at a moment-curve seed), non-roots general
-  -- position.
+  -- (ii) The polynomial of general position, nonzero at the moment curve.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (K := K) (k := k) G ends
-  -- (iii) The triple product is a nonzero polynomial (each factor nonzero), so it has a non-root.
+  -- (iii) The product of the three is nonzero, so it has a non-root `q₀`.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQcne hQgpne
-  -- (iv) At `q₀` each leg is rigid (consuming its `hsupp`), and the parent normals are general.
+  -- (iv) At `q₀` both subframeworks are rigid, and the normals are in general position.
   have hrigH₀ : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn
       V(GH) :=
     PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking
@@ -125,33 +111,14 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals
       Gc ends hnevc hsuppc hcardc hLIc hq₀c
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  -- (v) Splice the two `q₀`-rigid legs along the shared body into the parent realization.
+  -- (v) `hasFullRankRealization_of_splice_ofNormals` combines them.
   exact PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals G ends hends hne_ends hne
     hgp hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
-/-- **Case I shared-seed coupling, *generic* form: two rigid legs on the parent selector give a
-*general-position* full-rank realization** (`lem:case-I-realization`, the simple Case-I coupling at
-the strengthened motive, G2c; Katoh–Tanigawa 2011 §6.2, eq. (6.6); Phase 22a). The generic sibling
-of `hasFullRankRealization_of_couple_ofNormals`: from the *same* per-leg inputs — each leg
-`GH`, `Gc` infinitesimally rigid as a leg-native framework `ofNormals · ends ·` at its **own** seed
-and at the **parent** endpoint selector `ends`, with transversal hinges — it concludes the
-strengthened motive `HasGenericFullRankRealization K k G` rather than the bare
-`HasFullRankRealization K k G`.
-
-The proof is identical up to the final splice. Steps (i)–(iv) (each leg's leg-restricted rank
-polynomial × the general-position factor (G2) → a shared non-root `q₀` at which both legs are rigid
-*and* the parent normals are general position) are the same as the bare coupling, so this lemma
-shares the witness-transfer. Only step (v) differs: where the bare coupling splices the two
-`q₀`-rigid legs through the device-routing `hasFullRankRealization_of_splice_ofNormals` (which loses
-the general position of `q₀` on the way through the genericity device and so can only conclude the
-bare motive), the generic coupling splices through the genericity-device-free
-`hasGenericFullRankRealization_of_splice_ofNormals` (N6-G1), which realizes at the GP seed `q₀`
-*itself* and so keeps both the rigidity (from the block-triangular glue) and the general position
-(`hgp`). This is the producer the simple Case I (KT Lemma 6.3/6.5) consumes to discharge
-`theorem_55_minimalKDof_k_all_k`'s `hcontract` GP conjunct: the composer (N6-G3 / G2c) supplies the
-two leg rigidities from the conditioned IH (transported to the parent selector by
-`hasGenericRealization_transport_ends`) and this lemma lands the `G.Simple → GP G` conjunct of
-`theorem_55_minimalKDof_k_all_k`'s motive. -/
+/-- **The same, generic**: from the hypotheses of `hasFullRankRealization_of_couple_ofNormals`
+without `hne_ends`, and with `V(G)` nonempty and `def(G̃) = 0`, `ofNormals G ends q₀` at the common
+non-root `q₀` is a generic full-rank realization of `G`
+(`hasGenericFullRankRealization_of_splice_ofNormals`). -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals
     [Infinite K] [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
@@ -171,10 +138,9 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals
     (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  -- Steps (i)–(iv): both leg rank polynomials and the general-position factor are nonzero, so
-  -- one `MvPolynomial.exists_eval_ne_zero` shot on their product delivers a simultaneous non-root
-  -- `q₀` — both legs are rigid at `q₀` and the parent normals are in general position (Phase 30
-  -- RELAX: no algebraic independence).
+  -- (i)–(iv) As in `hasFullRankRealization_of_couple_ofNormals`: a common non-root `q₀` of the
+  -- three polynomials, at which both subframeworks are rigid and the normals are in general
+  -- position.
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
   have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
@@ -201,40 +167,19 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals
       Gc ends hnevc hsuppc hcardc hLIc hq₀c
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  -- (v') The generic splice: realize at the GP seed `q₀` itself (bypassing the device),
-  -- so general position survives and the conclusion is the strengthened generic motive. The all-`β`
-  -- `hends` weakens to the edge-restricted link-recording form the splice producer needs.
+  -- (v) `ofNormals G ends q₀` itself is the realization
+  -- (`hasGenericFullRankRealization_of_splice_ofNormals`, which asks `hends` only at links).
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals G ends
     (fun e _ _ _ => hends e) hgp hGH hGc hcH hcc hcover hrigH₀ hrigc₀ n hne hdef
 
-/-- **Case I shared-seed coupling, *body-set* form: two legs rigid on per-leg body sets `sH`/`sc`
-give a full-rank realization** (`lem:case-I-realization`, the body-set coupling N6-G3-G3c-ii;
-Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), Phase 22a). The body-set generalization of
-`hasFullRankRealization_of_couple_ofNormals`: where the all-of-`V(·)` coupling demands each leg
-rigid on its full vertex set `V(GH)`/`V(Gc)`, this threads per-leg body sets `sH`/`sc`
-(`c ∈ sH ∩ sc`, `V(G) ⊆ sH ∪ sc`), the form Case I's *contraction* leg `Gc = G ＼ E(H)` forces — it
-is rigid only on
-the surviving bodies `sc = (V(G)∖V(H)) ∪ {r}` (KT eq. (6.3)'s `V∖V′`), not all of `V(Gc) = V(G)`.
-
-The witness-transfer is the same five steps, lifted to the body-set bricks (design doc §1.9): (i)
-each leg's *body-set* leg-restricted rank polynomial `Q_H`/`Q_c`
-(`exists_rankPolynomial_of_rigidOn_linking_set`), nonzero at its own seed; (ii) the general-position
-factor `Q_gp`; (iii) the triple product has a shared non-root `q₀`; (iv) at `q₀` each leg is rigid
-*on its body set* (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set`, the
-body-set consumer — this is the only step that genuinely changes, since the body-set N3 needs the
-**complement-isolation equality** `hpinH`/`hpinc` `finrank (pinnedMotionsOn s) = D·|sᶜ|`, false off
-`V(G)` from the count alone) and the parent normals are in general position; (v) the body-set splice
-producer `hasFullRankRealization_of_splice_set_of_supportExtensor` glues the two body-set-rigid legs
-along the shared body into the parent's rigidity on `V(G) ⊆ sH ∪ sc` and lands the full-rank
-realization.
-
-The complement-isolation hypotheses `hpinH`/`hpinc` are quantified over all normal assignments
-(`∀ q, finrank (pinnedMotionsOn s) = D·|sᶜ|`) because the shared seed `q₀` is unknown at call time:
-the body-set pin dimension is graph-structural (which projection kernels the surviving edges leave
-free), so it is constant across normals, making this the honest leg-specific isolation fact. It is
-discharged per-leg by the composer (G3c-iii): `sH := V(H)` makes `hpinH` the green
-`finrank_pinnedMotionsOn_vertexSet`, and the contraction leg's interior bodies are isolated in
-`G ＼ E(H)`. The deliverable rank is concluded, not assumed. -/
+/-- **The same on sets of bodies**: `hasFullRankRealization_of_couple_ofNormals` with
+`ofNormals GH ends qH` rigid on a set `sH` and `ofNormals Gc ends qc` on a set `sc`, where
+`c ∈ sH ∩ sc` and `V(G) ⊆ sH ∪ sc`, given that the block pins of `sH` and `sc` have dimensions
+`D·|sHᶜ|` and `D·|scᶜ|` at all normals (`hpinH`, `hpinc`), which
+`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set` needs. At `sH = V(GH)`,
+`hpinH` holds (`finrank_pinnedMotionsOn_vertexSet`); for `Gc = G ＼ E(H)` at
+`sc = (V(G) ∖ V(H)) ∪ {r}`, `hpinc` can fail. The combination is
+`hasFullRankRealization_of_splice_set_of_supportExtensor`. -/
 theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set
     [Infinite K] [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
@@ -264,7 +209,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
   have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
-  -- (i) Each leg's *body-set* leg-restricted rank polynomial at its own seed.
+  -- (i) The rank polynomials of `GH` on `sH` and of `Gc` on `sc`.
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
@@ -272,15 +217,15 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (K := K) (k := k) G ends
-  -- (iii) The triple product has a shared non-root `q₀`.
+  -- (iii) The product of the three has a non-root `q₀`.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQcne hQgpne
-  -- (iv) At `q₀` each leg is rigid *on its body set* (body-set consumer, carrying the leg's
-  -- complement-isolation equality `hpinH`/`hpinc`), and the parent normals are general.
+  -- (iv) At `q₀` both are rigid on their sets (with `hpinH`, `hpinc`), and the normals are in
+  -- general position.
   have hrigH₀ :
       (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sH :=
     PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set
@@ -291,29 +236,20 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set
       Gc ends hnesc (hpinc q₀) hsuppc hcardc hLIc hq₀c
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  -- (v) The body-set splice glues the two body-set-rigid legs into the parent realization, with
-  -- general position discharging every hinge's transversality.
+  -- (v) `hasFullRankRealization_of_splice_set_of_supportExtensor` combines them; general position
+  -- makes every hinge nondegenerate.
   exact PanelHingeFramework.hasFullRankRealization_of_splice_set_of_supportExtensor G ends hends hne
     (fun e => (PanelHingeFramework.ofNormals G ends q₀).supportExtensor_ne_zero_of_isGeneralPosition
       hgp (by simpa using hne_ends e))
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
-/-- **The canonical-`endsOf` panel realization records its own graph's links** (`thm:theorem-55`,
-the motive's link-recording conjunct; Katoh–Tanigawa 2011 §6.2, Phase 22b route (i)). For the
-canonical endpoint selector `G.endsOf`, the free-normal panel framework `ofNormals G G.endsOf q₀`
-records every link of `G` up to swap: if `G.IsLink e u v` then its selector
-`(ofNormals G G.endsOf q₀).ends e = G.endsOf e` is `(u, v)` or its swap `(v, u)`.
+/-! ## Selectors, and the two subgraphs of Case I -/
 
-This is the **link-recording conjunct** the strengthened generic motive
-`HasGenericFullRankRealization` carries (Phase 22b route (i), design doc §1.24 Commit 2): it is the
-guarantee that the realizing framework's endpoint selector pins, for each link, the same unordered
-pair the link does — exactly what the `ends`-swap transport
-(`hasGenericRealization_transport_ends`'s `hswap`) and the contraction-leg alignment of Case I's
-composer consume. Every fresh producer builds `ofNormals G G.endsOf q₀` (the composer manufactures
-the canonical `endsOf` selector, `isLink_endsOf`), so this lemma is the term each one hands the
-strengthened motive. The content is `Graph.endsOf_eq_or_swap` (the canonical selector orients along
-any given link, up to order, via mathlib's `IsLink.eq_and_eq_or_eq_and_eq`) read componentwise
-through `ofNormals_ends`. -/
+/-- **The selector `G.endsOf` gives every link of `G` its ends** (a step of
+`lem:case-cut-edge-realization-gp`): at every link `e` of `G` from `u` to `v`, the selector of
+`ofNormals G G.endsOf q₀` gives `e` the pair `(u, v)` or `(v, u)` (`Graph.endsOf_eq_or_swap`,
+through `ofNormals_ends`). This is the last conjunct of `HasGenericFullRankRealization` for that
+framework. -/
 theorem PanelHingeFramework.ofNormals_endsOf_recordsLinks [Inhabited α]
     (G : Graph α β) (q₀ : α × Fin (k + 2) → K) :
     ∀ e u v, G.IsLink e u v →
@@ -327,20 +263,13 @@ theorem PanelHingeFramework.ofNormals_endsOf_recordsLinks [Inhabited α]
   · exact Or.inl ⟨by rw [h], by rw [h]⟩
   · exact Or.inr ⟨by rw [h], by rw [h]⟩
 
-/-- **A link-recording selector agrees up to swap with the canonical parent selector on a subgraph's
-links** (`lem:case-I-realization` infra, the `H`-leg alignment discharge; Katoh–Tanigawa 2011 §6.2,
-Phase 22b route (i), design doc §1.24 item 4, Commit 4a). If an endpoint selector `ends'` records
-every link of a subgraph `H ≤ G` up to swap (the link-recording conjunct of the strengthened motive
-`HasGenericFullRankRealization`, e.g. an inductive leg realization's `Q.ends`), then on every link
-of `H` it agrees, up to swap, with the canonical parent selector `G.endsOf`.
-
-This is the discharge of the `H`-leg `hswap` the Case-I composer previously carried as a `hbundle`
-hypothesis: an `H`-link `e u v` is also a `G`-link (`H ≤ G`, `IsLink.of_le`), so both selectors
-pin the *same* unordered pair — `ends'` by `hrec`, `G.endsOf` by `endsOf_eq_or_swap` — hence they
-agree up to order. The four cases of the two disjunctions collapse pairwise into the swap
-disjunction. This is precisely the "two link-recording selectors agree up to swap" reasoning the
-motive strengthening (route (i)) was designed to enable, now that the leg's IH realization carries
-link-recording. -/
+/-- **A selector that gives the links of a subgraph their ends agrees with `G.endsOf`** (a step of
+`lem:case-I-realization` and `lem:case-cut-edge-realization-gp`): if `ends'` gives every link of
+`H ≤ G` its ends, in one order or the other (`hrec`, the last conjunct of
+`HasGenericFullRankRealization` for a realization of `H`), then at every link of `H` the pair
+`ends' e` is `G.endsOf e` or its reverse, as a link of `H` is one of `G` (`IsLink.of_le`,
+`Graph.endsOf_eq_or_swap`). `recordsLinks_agree_swap` (`CaseI.lean`) is the form for two selectors
+of one graph. -/
 theorem PanelHingeFramework.recordsLinks_swap_endsOf [Inhabited α]
     {G H : Graph α β} (hle : H ≤ G) (ends' : β → α × α)
     (hrec : ∀ e u v, H.IsLink e u v →
@@ -355,30 +284,15 @@ theorem PanelHingeFramework.recordsLinks_swap_endsOf [Inhabited α]
     [exact Or.inl ⟨h1, h2⟩; exact Or.inr ⟨h1, h2⟩;
      exact Or.inr ⟨h1, h2⟩; exact Or.inl ⟨h1, h2⟩]
 
-/-- **Swapping a hinge's two endpoints leaves the panel framework's motion space unchanged**
-(`lem:case-I-splice-placement` infra, the `ends`-selector independence of leg rigidity;
-Katoh–Tanigawa 2011 §6.2, Phase 22). For two endpoint selectors `ends`, `ends'` that record the
-*same* unordered link of every edge of `G` (each `ends' e` is `ends e` or its swap, `hswap`), the
-free-normal panel frameworks `ofNormals G ends q` and `ofNormals G ends' q` on the *same* normal
-assignment `q` have the same null space (`infinitesimalMotions` of the two `toBodyHinge`
-interpretations agree).
-
-The motion space depends on the endpoint selector only through the support extensors of the
-*linking* edges (`infinitesimalMotions_eq_of_isLink_supportExtensor`), and the support extensor
-`panelSupportExtensor (q u) (q v) = complementIso (normalsJoin (q u) (q v))` is *anti-symmetric* in
-its two normals (`panelSupportExtensor_swap`: `normalsJoin` is the alternating `ιMulti K 2 ![·,·]`,
-so swapping the endpoints negates it). The hinge constraint is membership in
-`span {supportExtensor e}`, which is unchanged by negation, so swapping an edge's two endpoints
-leaves every hinge constraint — hence the whole motion space — fixed.
-
-This is the first decomposable brick of the Case-I shared-seed coupling
-(`lem:case-I-splice-placement`, red): it re-expresses one inductive leg's rigidity at its *own*
-endpoint selector `ends_H` (the form its `HasGenericFullRankRealization` IH supplies) at the
-*parent's* endpoint selector `ends` (the form the splice
-`hasFullRankRealization_of_splice_ofNormals` consumes). For an edge of the leg, `ends_H e` and
-`ends e` record the same `IsLink`, hence agree up
-to swap (`IsLink.left_eq_or_eq`), so the leg's rigidity is the same at both selectors — the
-recon-surfaced `ends`-alignment obstruction, dissolved on the *linking* edges. -/
+/-- **Reordering the ends of edges changes no motion** (a step of
+`lem:rank-transport-relabel-of-le-finrank`, `lem:case-I-realization` and
+`lem:case-cut-edge-realization-gp`): if at every link of `G` the pair `ends' e` is `ends e` or its
+reverse (`hswap`), then `ofNormals G ends q` and `ofNormals G ends' q` have the same infinitesimal
+motions. The motions depend on the selector only through the hinges at links
+(`infinitesimalMotions_eq_of_isLink_span_supportExtensor`), and reversing the ends negates the hinge
+(`panelSupportExtensor_swap`), which leaves the line it spans, and so the hinge constraint,
+unchanged: the remark after `def:panel-hinge-framework` that the hinge constraint does not depend on
+the order of the ends. -/
 theorem PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
     (G : Graph α β) (ends ends' : β → α × α) (q : α × Fin (k + 2) → K)
     (hswap : ∀ e u v, G.IsLink e u v →
@@ -396,33 +310,18 @@ theorem PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
   · rw [h1, h2]
   · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
 
-/-- **A leg's general-position rigid IH realization transports to the parent endpoint selector**
-(`lem:case-I-realization` infra, the N6-composer `ends`-swap step; Katoh–Tanigawa 2011 §6.2, Phase
-22). The genuine first decomposable piece of the Case-I composer: it bridges one inductive leg's
-`HasGenericFullRankRealization` (a *general-position* panel-hinge framework `Q` on the leg `GH`,
-infinitesimally rigid on `V(GH)`, recorded at the leg's *own* endpoint selector `Q.ends`) to the
-shape the shared-seed coupling `hasFullRankRealization_of_couple_ofNormals` consumes: a free-normal
-`ofNormals GH ends qH` at the **parent** selector `ends`, both *transversal at `ends`* (`hneH`) and
-*rigid on `V(GH)`* (`hrigH`).
-
-The two re-expressions are the brick's content. (1) **Selector transport.** `Q` is *literally* its
-own free-normal form `ofNormals GH Q.ends qH` with `qH p := Q.normal p.1 p.2` (`rfl` after
-`Q.graph = GH`); the `ends`-swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap` then carries
-its rigidity from `Q.ends` to the parent `ends`, since the two selectors record the same unordered
-link of every edge of `GH` (`hswap` — supplied by the composer from `GH ≤ G`: a leg edge's link is
-recorded by both selectors, so they agree up to swap). Rigidity-on-`V(GH)` is invariant under the
-`infinitesimalMotions` equality because `IsInfinitesimallyRigidOn` quantifies over
-`IsInfinitesimalMotion = (· ∈ infinitesimalMotions)`. (2) **Transversality at `ends`.** General
-position is a property of the normals `qH` alone (`ofNormals_normal`), unchanged by the selector, so
-`ofNormals GH ends qH` is again in general position; for any *linking* edge whose `ends`-endpoints
-are distinct (`hne_ends`, restricted to links — the all-`β` form is unsatisfiable for the canonical
-`endsOf` selector, which returns junk on non-edges; see `endsOf_fst_ne_snd`),
-`supportExtensor_ne_zero_of_isGeneralPosition` gives the transversal hinge `hneH`.
-
-This is the composer's per-leg adapter; the composer itself (`lem:case-I-realization`) supplies
-`hswap` from the leg-subgraph relation, applies this brick to each of the two legs (the rigid block
-`H` and the contraction `G/E(H)`), and feeds the two outputs to
-`hasFullRankRealization_of_couple_ofNormals`. -/
+/-- **A generic realization of a subgraph, at the selector of `G`** (a step of
+`lem:case-I-realization`): let `Q` be a framework on `GH` in general position, rigid on `V(GH)`
+(`hQrig`), whose selector agrees with `ends` up to order at the links of `GH` (`hswap`), and let the
+two bodies that `ends` gives at every link of `GH` differ (`hne_ends`). Then at the normals
+`qH (a, i) = Q.normal a i`, `ofNormals GH ends qH` is rigid on `V(GH)` and its hinges at those links
+are nondegenerate. `Q` is `ofNormals GH Q.ends qH` by definition, once `Q.graph = GH`, so the two
+frameworks have the same motions (`infinitesimalMotions_ofNormals_eq_of_ends_swap`); general
+position depends on the normals alone, and gives the hinges
+(`supportExtensor_ne_zero_of_isGeneralPosition`). The proof of KT Lemma 6.3
+(`case_I_realization_all_k_gen`, in `Theorem55.lean`) applies it to `H`, with `ends = G.endsOf`,
+which gives both ends `default` at a label outside `E(G)` (`endsOf_fst_ne_snd`): so `hne_ends` is
+asked only at links. -/
 theorem PanelHingeFramework.hasGenericRealization_transport_ends
     (GH : Graph α β) (ends : β → α × α) (Q : PanelHingeFramework K k α β)
     (hQg : Q.graph = GH) (hQgp : Q.IsGeneralPosition)
@@ -441,7 +340,8 @@ theorem PanelHingeFramework.hasGenericRealization_transport_ends
   have hgp' : (PanelHingeFramework.ofNormals Q.graph ends qH).IsGeneralPosition := by
     intro a b hab
     simpa only [hqH, PanelHingeFramework.ofNormals_normal] using hQgp a b hab
-  -- The swap brick equates the motion spaces of `Q = ofNormals … Q.ends …` and `ofNormals … ends`.
+  -- `infinitesimalMotions_ofNormals_eq_of_ends_swap`: `ofNormals … Q.ends …` and
+  -- `ofNormals … ends …` have the same motions.
   have hmot : (PanelHingeFramework.ofNormals Q.graph ends qH).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals Q.graph Q.ends qH).toBodyHinge.infinitesimalMotions :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap Q.graph ends Q.ends qH hswap
@@ -455,44 +355,16 @@ theorem PanelHingeFramework.hasGenericRealization_transport_ends
   rw [hmot] at hS
   exact hS
 
-/-- **The Case-I contraction leg's rigidity transports across the collapse map to the
-surviving-edge subgraph `G ＼ E(H)`** (`lem:case-I-realization` infra, the N6-G3-G3a Claim-6.4
-collapse transport; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.7), (6.9), Phase 22a).
-
-The second leg the Case-I splice consumes. KT's eq. (6.3) block decomposition of `R(G,p)` has the
-rigid block `H` in one block and the parent **restricted to the surviving edges**
-`R(G,p; E∖E′, V∖V′)` in the other — and the surviving-edge subgraph is `G.deleteEdges E(H)`
-(`edgeSet_rigidContract` reads `E(G/E(H)) = E(G) ∖ E(H)`), a *literal* `≤ G` subgraph, **not** the
-relabelled `G.rigidContract H r` (which collapses `V(H) ↦ r` and so is not comparable to `G`; no
-`rigidContract_le` exists or can). So the contraction leg of the splice coupling is `G ＼ E(H)`, and
-the collapse to the representative body `v∗ = r` lives entirely on the *placement* side (eq. (6.7)'s
-`p_{E∖E′}`).
-
-The genuinely-new analytic content this brick performs is **KT Claim 6.4** (eq. (6.9)): the
-contraction's inductive realization is a general-position rigid realization of the *abstract
-relabelled* graph `G.rigidContract H r` (the `HasGenericFullRankRealization` IH, `hQ`), and Claim
-6.4 transports its rank across the collapse map — because the joint panel coefficients are
-algebraically independent over ℚ (general position), the surviving-edge `p_{E∖E′}`-realization of
-`G ＼ E(H)` attains the contraction's rank. In the project's `V(G)`-relative rank language this is
-exactly: there is a seed `q_c` at which `(ofNormals (G.deleteEdges E(H)) ends q_c)` is
-infinitesimally rigid on the contraction's body set `(V(G) ∖ V(H)) ∪ {r}`. **This rank-attainment
-across the relabel is the last research-shaped Case-I brick** — no green brick converts a
-relabelled-graph rigidity into the original-endpoint rigidity, because the collapse map
-`collapseTo r V(H)` redirects each surviving edge's endpoints (hence which panel normals its support
-extensor uses), and recovering the rank at the *un-collapsed* endpoints is precisely the
-algebraic-independence statement of Claim 6.4. It is therefore carried here as the explicit
-hypothesis `htransport`, in the established Phase-21b green-modulo `h…` idiom (exactly as Cases I/II
-carried the genericity device before Phase 21b): `lem:case-III` / `thm:theorem-55` stay red, but
-every step this brick *discharges* is honest, and the obligation is tracked as a single visible
-hypothesis pinned to KT Claim 6.4 rather than buried in a `sorry` or an `axiom`.
-
-Given `htransport`, the brick is a thin repackaging: it forwards the seed `q_c` and the
-surviving-edge rigidity, both at the **parent** endpoint selector `ends` (the form the G2c coupling
-`hasGenericFullRankRealization_of_couple_ofNormals` consumes for its `Gc := G.deleteEdges E(H)`
-leg). The body set `(V(G) ∖ V(H)) ∪ {r}` is `V(G.rigidContract H r)`
-(`rigidContract_vertexSet_ncard`'s set form), the set on which the contraction's rank is the
-relevant `V(G)`-relative count; the coupling reads it as `V(G.deleteEdges E(H)) = V(G) ⊇` the
-cover. -/
+/-- **The rigidity of `G ＼ E(H)` on the bodies of the contraction, from a hypothesis that states
+it**: if the contraction `G.rigidContract H r` has a nonempty vertex set and a generic full-rank
+realization at deficiency zero (`hQ`, `hdef`), and `htransport` turns every framework on the
+contraction in general position and rigid on its vertex set into normals `q_c` at which
+`ofNormals (G.deleteEdges E(H)) ends q_c` is rigid on `(V(G) ∖ V(H)) ∪ {r}`, then there are such
+normals. The realization is rigid on its vertex set by its rank
+(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`), and `htransport` applies to
+it, so the hypothesis carries all the content. No declaration uses it. Case I bounds instead the
+rank of the rows of `G ＼ E(H)` with the columns of `V(H)` deleted (`lem:claim-6-4`, KT Claim 6.4,
+p. 675; `rigidContract_exterior_rank_transport_htransport`, in `CaseI.lean`). -/
 theorem PanelHingeFramework.rigidContract_rigidity_transport [Finite α]
     (G H : Graph α β) (ends : β → α × α) {r : α}
     (n : ℕ) (hne : V(G.rigidContract H r).Nonempty) (hdef : (G.rigidContract H r).deficiency n = 0)
@@ -519,29 +391,12 @@ theorem PanelHingeFramework.rigidContract_rigidity_transport [Finite α]
     zify [h1] at hQrank ⊢; exact_mod_cast hQrank
   exact htransport Q hQg hQgp hQrig
 
-/-- **The Case-I splice legs `H` and `G ＼ E(H)` cover `G` and share the body `r`** (N6-G3-G3b,
-the cover/shared-body/selector geometry of `lem:case-I-realization`; Katoh–Tanigawa 2011 §6.2,
-Phase 22a). The graph-combinatorics adapter that discharges the *geometric* inputs of the Case-I
-shared-seed coupling (`hasGenericFullRankRealization_of_couple_ofNormals` /
-`hasFullRankRealization_of_couple_ofNormals`) from the proper-rigid-subgraph data.
-
-The two splice legs are the rigid block `H` and the surviving-edge subgraph `G ＼ E(H)` (KT's
-`R(G,p; E∖E′, V∖V′)`, the contraction leg of the §1.7 recon; *not* the relabelled
-`G.rigidContract H r`, which is not `≤ G`). With a chosen representative body `r ∈ V(H)` they meet
-the coupling's combinatorial requirements:
-
-* both are subgraphs of `G` (`H ≤ G` from the rigid-subgraph hypothesis; `G ＼ E(H) ≤ G` always);
-* `r` is a shared body (`r ∈ V(H)` by choice; `r ∈ V(G ＼ E(H))` since `V(G ＼ E(H)) = V(G)` and
-  `r ∈ V(G)` because `V(H) ⊆ V(G)`);
-* the legs cover `G` (trivially — `V(G ＼ E(H)) = V(G)`, so the second leg alone covers);
-* both legs are nonempty (`V(H)` from the `2 ≤ |V(H)|` conjunct of the proper-rigid
-  predicate; `V(G ＼ E(H)) = V(G) ∋ r`).
-
-This is the §1.7 G3b brick: with the `Gc ≤ G` mismatch dissolved at the graph level (the splice's
-contraction leg is the literal subgraph `G ＼ E(H)`), the coupling's geometry inputs are pure
-graph combinatorics read off `IsProperRigidSubgraph`. The composer (G3c) feeds these facts, the
-per-leg rigidities (the `H`-leg IH and the G3a-transported `G ＼ E(H)` leg), and the parent endpoint
-selector into the coupling. -/
+/-- **`H` and `G ＼ E(H)` cover `G` and share a body** (a step of `lem:case-I-realization`): for a
+proper rigid subgraph `H` of `G` and `r ∈ V(H)`, both `H` and `G ＼ E(H)` are subgraphs of `G`, `r`
+lies in both, `V(G) ⊆ V(H) ∪ V(G ＼ E(H))`, and both vertex sets are nonempty, as
+`V(G ＼ E(H)) = V(G) ⊇ V(H)` (`Graph.vertexSet_deleteEdges`). The graph `G ＼ E(H)` has the edges of
+`G/E(H)`, with their ends in `G`, and Case I compares its rows with those of `G/E(H)`
+(`lem:claim-6-4`). -/
 theorem PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph
     {G H : Graph α β} {r : α} {n : ℕ}
     (hH : H.IsProperRigidSubgraph G n) (hr : r ∈ V(H)) :
@@ -556,22 +411,15 @@ theorem PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph
   · rw [hVc]; exact fun x hx => Or.inr hx
   · rw [hVc]; exact ⟨r, hrG⟩
 
-/-- **Case I splice producer, *generic* body-set form: legs rigid on per-leg body sets `sH`/`sc`
-at a GP seed give a *general-position* full-rank realization** (`lem:case-I-realization`,
-the body-set generic splice N6-G3-G3c-iii; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), the
-"nonparallel, if `G` is simple" strengthening; Phase 22a). The common generalization of the two
-N6-G1 / G3c-ii halves: the *generic* motive of `hasGenericFullRankRealization_of_splice_ofNormals`
-(N6-G1) combined with the *per-leg body set* `sH`/`sc` of
-`hasFullRankRealization_of_splice_set_of_supportExtensor` (G3c-ii).
+/-! ## Realizations from two subframeworks rigid on sets of bodies
 
-It is the producer the composer's *simple* Case-I branch needs: KT eq. (6.3)'s contraction block is
-rigid only on the surviving bodies `sc = (V(G)∖V(H)) ∪ {r}` (not all of `V(Gc) = V(G)`), so the
-all-of-`V(·)` generic splice N6-G1 does not fit; and the bare body-set splice G3c-ii loses general
-position through the genericity device (it concludes only the bare motive). This brick keeps both:
-the block-triangular splice glue `isInfinitesimallyRigidOn_of_splice` is genericity-free and (at
-`t := V(G)`, the cover) makes `ofNormals G ends q₀` rigid on the *parent's* full `V(G)` from the two
-body-set-rigid legs, so realizing at the GP seed `q₀` itself keeps the rigidity (from the glue) and
-the general position (`hgp`, by hypothesis). No device round-trip. -/
+The forms on sets of bodies of the realizations from two subframeworks. No declaration uses them. -/
+
+/-- **A generic full-rank realization from two subframeworks rigid on sets of bodies**:
+`hasGenericFullRankRealization_of_splice_ofNormals` with `ofNormals GH ends q₀` rigid on a set `sH`
+and `ofNormals Gc ends q₀` on a set `sc`, where `c ∈ sH ∩ sc` and `V(G) ⊆ sH ∪ sc`:
+`ofNormals G ends q₀` is rigid on `V(G)` (`isInfinitesimallyRigidOn_of_splice`), at the target rank,
+in general position. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals
     [Finite α] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -585,11 +433,11 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormal
     (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
-  -- Derive rigidity from the body-set splice glue.
+  -- The framework is rigid on `V(G)` (`isInfinitesimallyRigidOn_of_splice`).
   have hrig : F.IsInfinitesimallyRigidOn V(G) :=
     F.isInfinitesimallyRigidOn_of_splice (GH := GH) (Gc := Gc) (sH := sH) (sc := sc)
       (by rw [hF]; exact hGH) (by rw [hF]; exact hGc) hcH hcc hcover hblock hcontract
-  -- Convert rigidity to rank via W2 + hdef.
+  -- Its rank (`finrank_span_rigidityRows_of_rigidOn`), with `hdef`.
   have hFG : F.graph.vertexSet = V(G) := by
     rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
   have hne' : F.graph.vertexSet.Nonempty := by rw [hFG]; exact hne
@@ -602,26 +450,12 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormal
     PanelHingeFramework.ofNormals_graph G ends q₀, hgp, hrank,
     PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends⟩
 
-/-- **Case I shared-seed coupling, *generic* body-set form** (`lem:case-I-realization`, the body-set
-generic coupling N6-G3-G3c-iii; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), Phase 22a). The
-common generalization of the *generic* coupling G2c
-(`hasGenericFullRankRealization_of_couple_ofNormals`, all-of-`V(·)` legs) and the *bare* body-set
-coupling G3c-ii (`hasFullRankRealization_of_couple_ofNormals_set`): it threads per-leg body sets
-`sH`/`sc` through the same five-step witness-transfer as the bare body-set coupling but finishes on
-the *generic* body-set splice `hasGenericFullRankRealization_of_splice_set_ofNormals` (realizing at
-the shared GP seed `q₀` directly, keeping general position) instead of the device-routing bare
-body-set splice. This is the producer the simple Case-I composer feeds to discharge
-`theorem_55_minimalKDof_k_all_k`'s `hcontract` GP conjunct, with the contraction leg rigid only on
-the surviving bodies `sc = (V(G)∖V(H)) ∪ {r}`. The complement-isolation equalities `hpinH`/`hpinc`
-are discharged per-leg at the composer call site (see `couple_ofNormals_set`).
-
-The parent selector `hends` is taken in the **edge-restricted** form `∀ e u v, G.IsLink e u v →
-G.IsLink e (ends e).1 (ends e).2` (N6-G3-G3c-iii-a, design doc §1.11), not the all-`β`
-`∀ e, G.IsLink e (ends e).1 (ends e).2`: an all-`β` selector is unsatisfiable for a label type
-carrying non-edges, and the body uses `hends` *only* to derive the edge-restricted leg forms
-`hendsH`/`hendsc` (everything downstream takes those or the witnessed-index `hsupp`). An
-edge-restricted parent selector is constructible from `G` alone (the canonical `Graph.endsOf`, which
-links every edge by `isLink_endsOf`), so the composer can supply it. -/
+/-- **The same, generic**: from the hypotheses of `hasFullRankRealization_of_couple_ofNormals_set`
+without `hne_ends`, with `ends` asked only to give every link of `G` its ends, and with `V(G)`
+nonempty and `def(G̃) = 0`, `ofNormals G ends q₀` at the common non-root `q₀` is a generic full-rank
+realization of `G` (`hasGenericFullRankRealization_of_splice_set_ofNormals`). A selector that gives
+every edge label a link of `G` exists only when every label is an edge, while `G.endsOf` gives every
+link its ends (`isLink_endsOf`). -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_set [Infinite K]
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -646,16 +480,16 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
     (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  -- The parent's *edge-restricted* `hends` weakens to each leg via `GH ≤ G` / `Gc ≤ G`: a leg-link
-  -- is a parent-link, the parent records its endpoints, and `isLink_iff` reads them back as a
-  -- leg-link of the same edge (this is the only place the relaxed `hends` is used).
+  -- `ends` gives every link of `GH` (and of `Gc`) its ends: a link of the subgraph is one of `G`,
+  -- to which `ends` gives its ends, and these give a link of the subgraph
+  -- (`IsSubgraph.isLink_iff`).
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
   have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mp h))
-  -- (i) Each leg's *body-set* leg-restricted rank polynomial at its own seed.
+  -- (i) The rank polynomials of `GH` on `sH` and of `Gc` on `sc`.
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
@@ -663,16 +497,15 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (K := K) (k := k) G ends
-  -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the triple product delivers a
-  -- simultaneous non-root `q₀` (Phase 30 RELAX: no algebraic independence).
+  -- (iii) The product of the three has a non-root `q₀` (`MvPolynomial.exists_eval_ne_zero₃`).
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQcne hQgpne
-  -- (iv) At `q₀` each leg is rigid *on its body set* (body-set consumer, carrying `hpinH`/`hpinc`),
-  -- and the parent normals are general.
+  -- (iv) At `q₀` both are rigid on their sets (with `hpinH`, `hpinc`), and the normals are in
+  -- general position.
   have hrigH₀ :
       (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sH :=
     PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set
@@ -683,41 +516,17 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
       Gc ends hnesc (hpinc q₀) hsuppc hcardc hLIc hq₀c
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  -- (v) The *generic* body-set splice: realize at the GP seed `q₀` itself (bypassing the
-  -- device), so general position survives and the conclusion is the strengthened generic motive.
+  -- (v) `ofNormals G ends q₀` itself is the realization
+  -- (`hasGenericFullRankRealization_of_splice_set_ofNormals`).
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hends hgp
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀ n hne hdef
 
-/-- **Case I shared-seed coupling, *asymmetric* body-set form** (`lem:case-I-realization`, the
-asymmetric coupling N6-G3-G3c-iii-b; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a).
-The fix for the two-leg coupling KT Case I actually needs (design doc §1.12). The *symmetric*
-`hasGenericFullRankRealization_of_couple_ofNormals_set` runs **both** legs through the body-set
-rank-polynomial round-trip, and the body-set consumer it calls
-(`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set`) needs each leg's
-complement-isolation equality `hpin : finrank (pinnedMotionsOn s) = D·|sᶜ|`. For the **rigid block**
-leg `GH` rigid on its *full* vertex set `sH = V(GH)` that equality is the green
-`finrank_pinnedMotionsOn_vertexSet`; but for the **contraction** leg `Gc = G ＼ E(H)` rigid only on
-the surviving bodies `sc = (V(G)∖V(H))∪{r}` ⊊ `V(Gc) = V(G)`, the equality is **false** — the
-interior bodies `V(H)∖{r}` are *not* isolated in `G ＼ E(H)` (surviving boundary edges
-`δ_G(V(H))` constrain them; the project's `finrank_pinnedMotionsOn_le` proves only the *upper*
-bound). So the symmetric coupling forces a false hypothesis on the contraction leg.
-
-This asymmetric coupling matches KT eq. (6.6), which constructs **one** placement for all of `G`
-(it does *not* intersect two Zariski-open rigid loci): the `H`-leg's generic placement determines
-the shared seed, and the contraction leg's rigidity is read off *at that one seed* by Claim 6.4
-(eq. (6.9)). So the `H`-leg keeps the green round-trip — its rank polynomial `Q_H`
-(`exists_rankPolynomial_of_rigidOn_linking_set`) × the general-position factor `Q_gp`
-(`exists_generalPosition_polynomial`) produces the shared general-position non-root `q₀` — and the
-contraction leg's rigidity at `q₀` on `sc` is supplied **directly** by the Claim-6.4 hypothesis
-`hrigcGP`, *not* re-derived through the body-set N3 consumer. `hrigcGP` is quantified over all
-general-position seeds (matching KT eq. (6.9)'s "the rank is attained at generic placements"),
-decoupling the contraction obligation from the `H`-leg's internal seed search. The contraction leg
-therefore carries **no `hpinc`**, **no body-set rank polynomial**, and **no own-seed rigidity** —
-only the genuine Claim-6.4 content. Both `q₀`-rigid legs feed the generic body-set splice
-`hasGenericFullRankRealization_of_splice_set_ofNormals` directly.
-
-The parent selector `hends` is the edge-restricted form (N6-G3-G3c-iii-a, design doc §1.11), as in
-the symmetric coupling. -/
+/-- **The same, with the second subframework rigid wherever the normals are in general position**:
+as `hasGenericFullRankRealization_of_couple_ofNormals_set`, but `ofNormals Gc ends q` is assumed
+rigid on `sc` at every `q` at which `ofNormals G ends q` is in general position (`hrigcGP`). Only
+`GH` gives a rank polynomial, its product with the polynomial of general position has a non-root
+`q₀` (`MvPolynomial.exists_eval_ne_zero₂`), and no `hpinc` is needed: for `Gc = G ＼ E(H)` at
+`sc = (V(G) ∖ V(H)) ∪ {r}` it can fail (`hasFullRankRealization_of_couple_ofNormals_set`). -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNormals_set [Infinite K]
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -732,63 +541,55 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
     (hrigH :
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn sH)
-    -- The contraction leg's rigidity on `sc`, supplied **directly** at every general-position seed
-    -- (KT eq. (6.9) / Claim 6.4 — the rank is attained at generic placements). No body-set N3, no
-    -- `hpinc`, no rank-polynomial round-trip for this leg.
+    -- `ofNormals Gc ends q` is rigid on `sc` at every `q` at which the normals of `G` are in
+    -- general position.
     (hrigcGP : ∀ q : α × Fin (k + 2) → K,
       (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition →
       (PanelHingeFramework.ofNormals Gc ends q).toBodyHinge.IsInfinitesimallyRigidOn sc)
     (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  -- The parent's edge-restricted `hends` weakens to the `H`-leg via `GH ≤ G` (the only leg that
-  -- runs the rank-polynomial round-trip; the contraction leg is fed `hrigcGP` directly).
+  -- `ends` gives every link of `GH` its ends, as in
+  -- `hasGenericFullRankRealization_of_couple_ofNormals_set`.
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
-  -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed.
+  -- (i) The rank polynomial of `GH` on `sH`.
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (K := K) (k := k) G ends
-  -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q_H · Q_gp` delivers a
-  -- simultaneous non-root `q₀` (Phase 30 RELAX: no algebraic independence).
+  -- (iii) The product of the two has a non-root `q₀` (`MvPolynomial.exists_eval_ne_zero₂`).
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀H, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₂ hQHne hQgpne
-  -- (iv) The parent normals are general at `q₀`.
+  -- (iv) The normals are in general position at `q₀`.
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  -- The `H`-leg is rigid on `sH` at `q₀` (body-set consumer, with the honest `hpinH`).
+  -- `GH` is rigid on `sH` at `q₀` (with `hpinH`).
   have hrigH₀ :
       (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sH :=
     PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set
       GH ends hnesH (hpinH q₀) hsuppH hcardH hLIH hq₀H
-  -- The contraction leg is rigid on `sc` at `q₀` **directly** from `hrigcGP` (KT Claim 6.4); the
-  -- general-position non-root `q₀` is exactly the generic seed `hrigcGP` quantifies over.
+  -- `Gc` is rigid on `sc` at `q₀` by `hrigcGP`, as `q₀` is in general position.
   have hrigc₀ :
       (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc :=
     hrigcGP q₀ hgp
-  -- (v) The generic body-set splice: realize at the GP seed `q₀` itself.
+  -- (v) `ofNormals G ends q₀` itself is the realization.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hends hgp
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀ n hne hdef
 
-/-- **The exterior-column projection** (`lem:case-I-realization` Piece B infra, the block-triangular
-core; Katoh–Tanigawa 2011 §6.2, eq. (6.3), Phase 22a). The linear map on screw assignments that
-**zeroes out the bodies of `t`** (the rigid block `V(H)`) and keeps the rest: `extProj t S a = 0`
-for `a ∈ t`, `= S a` otherwise. Its dual map (precomposition) `(extProj t).dualMap` projects a
-rigidity-row functional onto its dependence on the **exterior columns** `α ∖ t`.
+/-! ## Deleting the columns of a set of bodies -/
 
-This is the column-side of KT eq. (6.3)'s block-triangular split: a rigidity row carried by an
-edge of the rigid block `H` (both endpoints in `V(H) = t`) reads only the `t`-columns, so it
-**vanishes** under `extProj t` (`hingeRow_comp_extProj_eq_zero`); a surviving edge's row generally
-does not. Projecting onto the exterior columns therefore separates the `H`-block rows (which land in
-the kernel) from the surviving-edge rows, exactly the top-right `0` of KT's block-triangular matrix.
-The Case-II/III analogue is the *pin-a-body* column split `linearIndependent_sum_pinned_block`
-(N7b-3); here the "pinned" columns are the whole rigid block `V(H)` rather than a single body. -/
+/-- **The projection that deletes the columns of `t`** (the map `π_t` of
+`sec:molecular-rigidity-matrix-blocks`, as its dual map): `extProj t S a` is `0` for `a ∈ t` and
+`S a` otherwise (`extProj_apply_mem`, `extProj_apply_not_mem`). Its dual map takes a form `φ` to
+`S ↦ φ (extProj t S)`, which is `π_t φ`: for a row of a rigidity matrix, the same row with the
+columns of `t` deleted. A row of an edge with both ends in `t` maps to `0`
+(`hingeRow_comp_extProj_eq_zero`), the zero block of KT eq. (6.3) (p. 673) for `t = V(H)`. -/
 noncomputable def extProj (t : Set α) :
     (α → ScrewSpace K k) →ₗ[K] (α → ScrewSpace K k) := by
   classical
@@ -805,16 +606,11 @@ theorem extProj_apply_not_mem {t : Set α} {a : α} (ha : a ∉ t) (S : α → S
   classical
   simp only [extProj, LinearMap.pi_apply, ite_eq_right ha, LinearMap.proj_apply]
 
-/-- **The exterior-column projection is invariant under the collapse relabel**
-(`lem:claim-6-4`, the U2 collapse-relabel reconciliation core; Katoh–Tanigawa 2011 §6.2, eq. (6.7),
-Phase 22b). For the collapse map `f = collapseTo r t` with the representative `r ∈ t`, the projected
-assignment reads the *same* value at a body `a` and at its collapsed image `f a`:
-`extProj t S (collapseTo r t a) = extProj t S a`. The two cases reconcile because the projection
-kills exactly the collapsed bodies: if `a ∈ t` then `f a = r ∈ t`, and both sides are `0`
-(`extProj_apply_mem`); if `a ∉ t` then `f a = a` and both sides are `S a`. This columnwise
-invariance is precisely what lets the exterior projection *reconcile* the collapse relabel of KT
-eq. (6.7) — the uncollapsed hinge row `hingeRow u v r` and the collapsed `hingeRow (f u) (f v) r`
-agree after `(extProj t).dualMap`, even though their endpoints differ on the interior block `t`. -/
+/-- **Deleting the columns of `t` commutes with collapsing `t` to `r`** (a step of `lem:claim-6-4`
+and `lem:rank-polynomial-IH-relabel-proj`): for `r ∈ t`,
+`extProj t S (collapseTo r t a) = extProj t S a`. For `a ∈ t` both are `0`, as
+`collapseTo r t a = r ∈ t`, and otherwise `collapseTo r t a = a`. So a hinge row and its image under
+the collapse agree once the columns of `t` are deleted (`hingeRow_collapseTo_comp_extProj_eq`). -/
 theorem extProj_apply_collapseTo {t : Set α} {r : α} (hr : r ∈ t) (S : α → ScrewSpace K k) (a : α) :
     extProj t S (Graph.collapseTo r t a) = extProj t S a := by
   classical
@@ -823,13 +619,10 @@ theorem extProj_apply_collapseTo {t : Set α} {r : α} (hr : r ∈ t) (S : α �
   · rw [extProj_apply_mem hr, extProj_apply_mem ha]
   · rfl
 
-/-- **A rigid-block row vanishes under the exterior-column projection** (`lem:case-I-realization`
-Piece B fact 2, the row-side of KT eq. (6.3)'s top-right `0`; Phase 22a). If both endpoints `u, v`
-of a hinge lie in the rigid block `t = V(H)`, the row functional `hingeRow u v r` precomposed with
-the exterior-column projection `extProj t` is the zero functional: `extProj t S` reads `0` at both
-`u ∈ t` and `v ∈ t`, so `hingeRow u v r (extProj t S) = r (0 − 0) = 0`. Hence
-`(extProj t).dualMap (hingeRow u v r) = 0`, i.e. every `H`-block rigidity row lies in
-`ker (extProj t).dualMap`. -/
+/-- **A row with both ends in `t` vanishes when the columns of `t` are deleted** (a step of
+`lem:block-rank-contract` and `lem:case-I-realization`): for `u, v ∈ t`,
+`hingeRow u v r ∘ extProj t = 0`, as `extProj t S` vanishes at `u` and `v`. This is the zero block
+of KT eq. (6.3) (p. 673). -/
 theorem hingeRow_comp_extProj_eq_zero {t : Set α} {u v : α} (hu : u ∈ t) (hv : v ∈ t)
     (r : Module.Dual K (ScrewSpace K k)) :
     (BodyHingeFramework.hingeRow (k := k) (α := α) u v r).comp (extProj t) = 0 := by
@@ -837,13 +630,12 @@ theorem hingeRow_comp_extProj_eq_zero {t : Set α} {u v : α} (hu : u ∈ t) (hv
   simp only [LinearMap.comp_apply, LinearMap.zero_apply, BodyHingeFramework.hingeRow_apply,
     extProj_apply_mem hu, extProj_apply_mem hv, sub_zero, map_zero]
 
-/-- **The block-triangular rank bound at a core** (`lem:block-rank-contract`; Katoh–Tanigawa 2011
-eq. (6.3), the `≥` of informal (MC-34); Phase 40f CONTRACT-R). At one normal assignment `n`, the
-rank of the core `G[W]` plus the rank of the rows of `G − E(G[W])` with the columns of `W` deleted
-(projected by `(extProj W).dualMap`) is at most the rank of `G`. The rows of `G[W]` read only the
-columns of `W`, so the projection kills them (`hingeRow_comp_extProj_eq_zero`), and both row sets
-lie in the row span of `G`; rank-nullity for the projection
-(`Submodule.finrank_add_finrank_map_le_of_le_ker`) gives the bound. -/
+/-- **The block-triangular rank bound** (`lem:block-rank-contract`; KT eq. (6.3), p. 673): at the
+normals `n`, the rank of `G[W]` plus the rank of the rows of `G ＼ E(G[W])` with the columns of `W`
+deleted is at most the rank of `G`. The rows of `G[W]` lie in the kernel of the deletion
+(`hingeRow_comp_extProj_eq_zero`), both row spaces lie in that of `G`, and rank–nullity for the
+deletion on the row space of `G` (`Submodule.finrank_add_finrank_map_le_of_le_ker`) gives the bound.
+Its one user is `Graph.X0Attains.of_additiveContract`, in the pencil's main component. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le [Finite α]
     (G : Graph α β) (W : Set α) (ends : β → α × α) (n : α × Fin (k + 2) → K) :
     Module.finrank K (Submodule.span K
@@ -866,21 +658,12 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le 
     rintro _ ⟨e, u, v, hl, ρ, hρ, rfl⟩
     exact ⟨e, u, v, hl.1, ρ, hρ, rfl⟩
 
-/-- **The exterior-column projection reconciles the collapse relabel of a hinge row**
-(`lem:claim-6-4`, the U2 collapse-relabel projected-row reproduction; Katoh–Tanigawa 2011 §6.2,
-eqs. (6.7)/(6.9), Phase 22b — the one research-shaped Case-I brick). This is the column-side of KT's
-algebraic-independence Claim 6.4: an *uncollapsed* hinge row `hingeRow u v ρ` (the surviving edge's
-row at its original endpoints) and its *collapsed* relabel `hingeRow (f u) (f v) ρ` (the same row
-after the rigid block `t = V(H)` is identified to the representative `r`) become the **same**
-functional once projected onto the exterior columns by `(extProj t).dualMap`, provided `r ∈ t`.
-
-The relabel is genuine — a surviving edge `e = uv` with `u ∈ t` reads `S u − S v` uncollapsed but
-`S r − S (f v)` collapsed — yet the exterior projection zeroes column `u ∈ t` *and* column
-`f u = r ∈ t` (`extProj_apply_collapseTo`), so the two rows read identically on the surviving
-columns. This is exactly the reconciliation §1.7's collapse-normal mismatch identified as the
-irreducible content of Claim 6.4, now isolated to a row equality across the relabel: it is what
-carries the contraction's rigid-row independence (read off `Qcf` over `Gc.map f`) back to the
-exterior-projected uncollapsed rows at the degenerate witness placement. -/
+/-- **A hinge row and its collapse agree once the columns of `t` are deleted** (a step of
+`lem:claim-6-4`, `lem:rank-polynomial-IH-relabel-proj` and `lem:case-I-realization-nonsimple`): for
+`r ∈ t`, `hingeRow (collapseTo r t u) (collapseTo r t v) ρ` and `hingeRow u v ρ` agree after
+composing with `extProj t` (`extProj_apply_collapseTo`). With `t = V(H)`, the row of an edge of
+`G ＼ E(H)` at its ends in `G` and its row at its ends in `G/E(H)` thus agree once the columns of
+`V(H)` are deleted, as in the proof of `lem:claim-6-4`. -/
 theorem hingeRow_collapseTo_comp_extProj_eq {t : Set α} {r : α} (hr : r ∈ t) (u v : α)
     (ρ : Module.Dual K (ScrewSpace K k)) :
     (BodyHingeFramework.hingeRow (k := k) (α := α) (Graph.collapseTo r t u)
@@ -890,20 +673,14 @@ theorem hingeRow_collapseTo_comp_extProj_eq {t : Set α} {r : α} (hr : r ∈ t)
   simp only [LinearMap.comp_apply, BodyHingeFramework.hingeRow_apply,
     extProj_apply_collapseTo hr]
 
-/-- **The degenerate collapsed placement `q₀^deg`** (`lem:claim-6-4`, the U1 degenerate witness
-bridge; Katoh–Tanigawa 2011 §6.2, eq. (6.7)'s `p2`, Phase 22b). The placement on the *original*
-body type `α` that pulls a contraction realization's normals back through the collapse map
-`f = collapseTo r V(H)`: it assigns each parent body `a` the panel normal `nrm (f a)` of its
-collapsed image — so bodies of the rigid block `V(H)` all share the single representative normal
-`nrm r` (KT's `p2`: all H-side panels forced equal to the `v∗` panel), and a surviving body
-`a ∈ V(G)∖V(H)` keeps its own `nrm a`. This is the *degenerate member* of KT's family embedding
-(6.7): not globally general position (the `V(H)` normals coincide), but a valid single witness for
-the existential `htransport` — no generic placement needed (design doc §1.19, Finding 2). Built as
-a plain pullback `(a, i) ↦ nrm (f a) i`; the reproduction `degeneratePlacement_ofNormals_normal`
-records that `ofNormals` at this placement has normal `nrm ∘ f`. (Not a `@[simp]` lemma: its
-left-hand side `(ofNormals … (degeneratePlacement …)).normal a` is already reducible by the existing
-`ofNormals_normal` simp lemma — `@[simp]` here is redundant and not in simp-normal form — so it is
-called by name from the row reproduction below.) -/
+/-- **The normals that give every body of `t` the normal of `r`** (the normals `q_0` of the proof of
+`lem:claim-6-4`): `degeneratePlacement r t nrm (a, i) = nrm (collapseTo r t a) i`, so a body of `t`
+gets `nrm r` and every other body `a` keeps `nrm a`. These are the normals of the placement `p_2` in
+Katoh and Tanigawa's proof of Claim 6.4 (p. 675): the bodies of `V(H)` get the panel of the vertex
+to which `H` is contracted. The bodies of `t` share a normal, so where `t` has two bodies these
+normals are not in general position. `degeneratePlacement_ofNormals_normal` reads the normals of
+`ofNormals` at them, `nrm ∘ collapseTo r t`; it is not `@[simp]`, as `ofNormals_normal` already
+rewrites its left side, and no declaration uses it. -/
 noncomputable def degeneratePlacement (r : α) (t : Set α) (nrm : α → Fin (k + 2) → K) :
     α × Fin (k + 2) → K :=
   fun p => nrm (Graph.collapseTo r t p.1) p.2
@@ -915,28 +692,16 @@ theorem degeneratePlacement_ofNormals_normal (G : Graph α β) (ends : β → α
   rw [PanelHingeFramework.ofNormals_normal]
   rfl
 
-/-- **The exterior-projected uncollapsed row reproduces the projected collapsed row at `q₀^deg`**
-(`lem:claim-6-4`, the U2 collapse-relabel projected-row reproduction; Katoh–Tanigawa 2011 §6.2,
-eqs. (6.7)/(6.9), Phase 22b — the research-shaped Case-I row brick, lifted from the U2 column core
-`hingeRow_collapseTo_comp_extProj_eq` to a full per-edge `panelRow` equality). For the degenerate
-placement `q₀^deg = degeneratePlacement r V(H) nrm` and any index `i = (e, t₁, t₂)`, the
-exterior-column projection of the *uncollapsed* surviving-edge panel row of
-`ofNormals Gc ends q₀^deg` (endpoints `(ends e).1, (ends e).2` over the original bodies) **equals**
-the exterior-column projection of the *collapsed* panel row of `ofNormals (Gc.map f) endsᶠ q₀^deg'`
-over the contracted graph — the row at the relabelled endpoints `(f (ends e).1, f (ends e).2)`
-carried by the *same* normals `nrm` and selector `endsᶠ e = (f (ends e).1, f (ends e).2)`.
-
-This is the column-side of KT eq. (6.7)/(6.9) lifted across the support-extensor / selector
-framings. The two `panelRow`s differ only in their `hingeRow` endpoints — the uncollapsed `(ends e)`
-vs. the relabelled `(f (ends e))` — *and* in nothing else: both read the *same* panel support
-extensor `panelSupportExtensor (nrm (f (ends e).1)) (nrm (f (ends e).2))` (the degenerate
-placement's normal is `nrm ∘ f` in both framings, so the support extensor at `e` is the collapsed
-one on both sides), hence the *same* annihilator functional `ρ = annihRow … i.2.1 i.2.2`. The column
-core `hingeRow_collapseTo_comp_extProj_eq` then reconciles the differing endpoints under
-`(extProj V(H)).dualMap`, since the projection reads the same value at a body and its collapsed
-image (`extProj_apply_collapseTo`). This is §1.7's irreducible collapse-normal mismatch isolated to
-a single row equality across the relabel — the step that, fed an independent surviving subfamily of
-the contraction (U3), carries that independence back to the exterior-projected uncollapsed rows. -/
+/-- **At these normals, a row of `Gc` and its row in the collapse agree once the columns are
+deleted** (a step of `lem:claim-6-4`, `lem:rank-polynomial-IH-relabel-proj` and
+`lem:pencil-contract-degenerate-rank`): for `r ∈ V(H)` and any index `i`, the row `panelRow ends i`
+of `ofNormals Gc ends (degeneratePlacement r V(H) nrm)` and the row `panelRow ends' i` of
+`ofNormals (Gc.map f) ends' nrm`, with `f = collapseTo r V(H)` and
+`ends' e = (f (ends e).1, f (ends e).2)`, agree once the columns of `V(H)` are deleted. Both rows
+read the hinge `C(nrm (f u), nrm (f v))` at the selected ends `u`, `v` of the edge, and differ only
+in the ends of the hinge row, which `hingeRow_collapseTo_comp_extProj_eq` reconciles. With
+`Gc = G ＼ E(H)`, `Gc.map f` is the contraction `G/E(H)`: this is the step of `lem:claim-6-4` by
+which the rows of `G ＼ E(H)` at `q_0` are those of `G/E(H)` at `n` after the deletion. -/
 theorem panelRow_collapseTo_comp_extProj_dualMap (Gc H : Graph α β) {r : α} (hr : r ∈ V(H))
     (nrm : α → Fin (k + 2) → K) (ends : β → α × α)
     (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
@@ -959,15 +724,11 @@ theorem panelRow_collapseTo_comp_extProj_dualMap (Gc H : Graph α β) {r : α} (
   dsimp only [degeneratePlacement]
   exact (hingeRow_collapseTo_comp_extProj_eq (k := k) (α := α) hr (ends i.1).1 (ends i.1).2 _).symm
 
-/-- **The range of the exterior-column projection is the kernel of the `proj`-projections**
-(`lem:claim-6-4`, the U3b dual-annihilator assembly infra; Katoh–Tanigawa 2011 §6.2, Phase 22b).
-The exterior-column projection `extProj proj` zeroes the `proj` columns and keeps the rest, so its
-range is exactly the screw assignments **vanishing on `proj`**: `range (extProj proj) =
-⨅ i ∈ proj, ker (proj i)`. `extProj proj` is idempotent (it is a coordinate projection), so an
-assignment `T` lies in the range iff `extProj proj T = T`, i.e.\ iff `T a = 0` for every `a ∈ proj`
-(`extProj_apply_mem`/`extProj_apply_not_mem`). This identifies the range as the `iInf`-of-kernels
-whose dimension is the free-isolated count `D·|projᶜ|` (`finrank_iInf_ker_proj_eq`), the `W`-term of
-the §1.22 `Z ⊔ W = ⊤` count. -/
+/-- **The assignments with the columns of a set deleted are those that vanish on it** (a step of
+`lem:extProj-preserves-rank-of-inter` and `lem:claim-6-4`): the range of `extProj proj` is
+`⨅ i ∈ proj, ker (proj i)`, as `extProj proj` keeps an assignment that vanishes on `proj` and makes
+every assignment vanish there (`extProj_apply_mem`, `extProj_apply_not_mem`). Its dimension is
+`D·|projᶜ|` (`finrank_iInf_ker_proj_eq`). -/
 theorem extProj_range_eq_iInf_ker_proj (proj : Set α) :
     LinearMap.range (extProj (K := K) (k := k) proj) =
       ⨅ i ∈ proj, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) := by
@@ -984,13 +745,14 @@ theorem extProj_range_eq_iInf_ker_proj (proj : Set α) :
     · rw [extProj_apply_mem ha, (hT a ha).symm]
     · rw [extProj_apply_not_mem ha]
 
-/-- **The trivial-and-pinned intersection is the block pin** (`lem:claim-6-4`, the U3b
-dual-annihilator assembly infra; Katoh–Tanigawa 2011 §6.2, Phase 22b). The intersection of the
-infinitesimal motions `Z = infinitesimalMotions` with the exterior-projection range
-`W = range (extProj proj)` is exactly the block pin `pinnedMotionsOn proj`: a member of `Z` is an
-infinitesimal motion, a member of `W` vanishes on `proj` (`extProj_range_eq_iInf_ker_proj`), and an
-assignment is both iff it is a motion vanishing on `proj` — the defining conjunction of
-`pinnedMotionsOn proj`. This is the `Z ⊓ W` term of the §1.22 inclusion–exclusion. -/
+/-! ## One body in common with `V(G)` (`lem:extProj-preserves-rank-of-inter`)
+
+The first three lemmas count dimensions for a framework rigid on `V(G)`; the three pinned ones that
+follow need no rigidity, and the last two give the independent rows that survive the deletion. -/
+
+/-- **The motions that vanish on `proj`** (a step of `lem:claim-6-4`):
+`Z(G,p) ⊓ range (extProj proj)` is the block pin `pinnedMotionsOn proj`
+(`extProj_range_eq_iInf_ker_proj`). Only `infinitesimalMotions_sup_range_extProj_eq_top` uses it. -/
 theorem infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn
     (F : BodyHingeFramework K k α β) (proj : Set α) :
     F.infinitesimalMotions ⊓ LinearMap.range (extProj (K := K) (k := k) proj)
@@ -1001,27 +763,16 @@ theorem infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn
   simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply, F.mem_pinnedMotionsOn,
     F.mem_infinitesimalMotions S]
 
-/-- **A framework rigid on its full vertex set, pinned at a block meeting `V(G)` in one body, spans
-together with the exterior-projection range** (`lem:claim-6-4`, the U3b `Z ⊔ W = ⊤` dual-annihilator
-assembly — the closing finrank count of the exterior-rank discharge; Katoh–Tanigawa 2011 §6.2
-eqs.\ (6.5)/(6.9), §5.1, Phase 22b). For `F` infinitesimally rigid on its whole vertex set `V(G)`
-and a block `proj` meeting `V(G)` in exactly the representative body `r` (`V(G) ∩ proj = {r}`), the
-infinitesimal motions `Z = infinitesimalMotions` and the exterior-projection range
-`W = range (extProj proj)` **jointly span everything**: `Z ⊔ W = ⊤`.
-
-This is the §1.22 closing fact: `Z ⊔ W = ⊤` is what makes the exterior-column projection
-`(extProj proj).dualMap` injective on the rigidity-row span `Φ`
-(`Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator = ⊥`), so the projection loses *zero* rank and the surviving
-block keeps its independent rank `D(|sc|−1)` (KT Claim 6.4 proper). It is proved by the finrank
-count `finrank(Z ⊔ W) + finrank(Z ⊓ W) = finrank Z + finrank W`
-(`Submodule.finrank_sup_add_finrank_inf_eq`) using the three confirmed dimensions:
-`finrank Z = D(|V(G)ᶜ| + 1)` (rigid-on-vertexSet,
-`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`),
-`finrank W = D·|projᶜ|` (`extProj_range_eq_iInf_ker_proj` + `finrank_iInf_ker_proj_eq`), and the
-rigid-block pin-count `finrank(Z ⊓ W) = finrank(pinnedMotionsOn proj) = D(|V(G)ᶜ| + 1 − |proj|)`
-(`infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn` + the §1.22 walling node
-`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`). The sum forces
-`finrank(Z ⊔ W) = D·|α| = finrank (α → ScrewSpace K k)`, whence `Z ⊔ W = ⊤`. -/
+/-- **Motions and the assignments that vanish on `proj` span all assignments, for a rigid
+framework** (a step of `lem:claim-6-4`): if every motion is constant on `V(G)` and
+`V(G) ∩ proj = {r}` with `r ∈ V(G)`, then `Z ⊔ W = ⊤` for `Z = Z(G,p)` and
+`W = range (extProj proj)`. It counts dimensions: `dim Z = D(|V(G)ᶜ| + 1)`
+(`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`), `dim W = D·|projᶜ|`, and
+`dim (Z ⊓ W) = D(|V(G)ᶜ| + 1 − |proj|)`
+(`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`), so
+`dim (Z ⊔ W) = D|α|` (`Submodule.finrank_sup_add_finrank_inf_eq`).
+`infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton` proves it without `hrig` and
+`hr`. -/
 theorem infinitesimalMotions_sup_range_extProj_eq_top
     [Finite α] (F : BodyHingeFramework K k α β) {proj : Set α} {r : α}
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
@@ -1029,7 +780,7 @@ theorem infinitesimalMotions_sup_range_extProj_eq_top
     F.infinitesimalMotions ⊔ LinearMap.range (extProj (K := K) (k := k) proj) = ⊤ := by
   classical
   have : Fintype α := Fintype.ofFinite α
-  -- The three confirmed dimensions of the §1.22 inclusion–exclusion.
+  -- The three dimensions of the count.
   have hZ : Module.finrank K F.infinitesimalMotions
       = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
     F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet ⟨r, hr⟩ hrig
@@ -1072,23 +823,13 @@ theorem infinitesimalMotions_sup_range_extProj_eq_top
     rw [← Nat.mul_add, ← Nat.mul_add, hcount]
   omega
 
-/-- **The exterior-column projection is injective on the rigidity-row span of a rigid block**
-(`lem:claim-6-4`, the U3b dual-annihilator core — the projection loses zero rank; Katoh–Tanigawa
-2011 §6.2 eqs.\ (6.5)/(6.9), Phase 22b). For `F` infinitesimally rigid on its whole vertex set
-`V(G)` and a block `proj` meeting `V(G)` in exactly the representative body `r`, the exterior-column
-projection's dual map `D = (extProj proj).dualMap` is **injective on the rigidity-row span**
-`Φ = span rigidityRows`. This is the §1.22 closing fact in injective form: `Φ ⊓ ker D = ⊥`.
-
-The chain is pure dual API on top of the `Z ⊔ W = ⊤` count
-(`infinitesimalMotions_sup_range_extProj_eq_top`, `Z = infinitesimalMotions`,
-`W = range (extProj proj)`):
-* `ker D = W.dualAnnihilator` (`LinearMap.ker_dualMap_eq_dualAnnihilator_range`);
-* `Φ = Z.dualAnnihilator` — `Z = Φ.dualCoannihilator` (`infinitesimalMotions_eq_dualCoannihilator`)
-  and the finite-dim double-annihilator `dualCoannihilator_dualAnnihilator_eq`;
-* `Φ ⊓ ker D = Z.dualAnnihilator ⊓ W.dualAnnihilator = (Z ⊔ W).dualAnnihilator`
-  (`Submodule.dualAnnihilator_sup_eq`) `= ⊤.dualAnnihilator = ⊥` (`dualAnnihilator_top`).
-Disjointness from the kernel is exactly injectivity on `Φ`
-(`Submodule.disjoint_ker_iff_injOn`). -/
+/-- **The deletion is injective on the row space of a rigid framework** (a step of `lem:claim-6-4`):
+under the hypotheses of `infinitesimalMotions_sup_range_extProj_eq_top`, `(extProj proj).dualMap` is
+injective on the row space `Φ`. As `Φ` is the annihilator of `Z`
+(`infinitesimalMotions_eq_dualCoannihilator`, `Subspace.dualCoannihilator_dualAnnihilator_eq`) and
+the kernel of the dual map is the annihilator of `W`
+(`LinearMap.ker_dualMap_eq_dualAnnihilator_range`), `Φ ⊓ ker = (Z ⊔ W).dualAnnihilator = ⊥`.
+`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` proves it without `hrig` and `hr`. -/
 theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows
     [Finite α] (F : BodyHingeFramework K k α β) {proj : Set α} {r : α}
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
@@ -1108,26 +849,13 @@ theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows
     infinitesimalMotions_sup_range_extProj_eq_top F hrig hr hinter,
     Submodule.dualAnnihilator_top]
 
-/-- **The motions and the exterior-projection range jointly span everything — at ANY rank, no
-rigidity** (`lem:rigidityRows-splice-rank-add`, the genuinely-new general-rank input of the L5a
-splice brick; Katoh–Tanigawa 2011 §6.2, eq. (6.5) / Lemma 5.1, Phase 22i L5a-ii). The
-**deficiency-tolerant** sibling of `infinitesimalMotions_sup_range_extProj_eq_top`: for *any*
-body-hinge framework `F` and a block `proj` meeting the vertex set in exactly the representative
-body `r` (`V(G) ∩ proj = {r}`), the infinitesimal motions `Z = infinitesimalMotions` and the
-exterior-projection range `W = range (extProj proj)` **jointly span everything**: `Z ⊔ W = ⊤`.
-
-Unlike the rigid sibling — which routes through the `Z ⊔ W` *finrank count* and needs full
-rigidity to pin the residual at `D(|V(G)ᶜ| + 1 − |proj|)` — this proves `Z ⊔ W = ⊤` by an
-**explicit decomposition** that needs no rank input at all. For any assignment `S`, set the
-"flattened-on-`V(G)`" motion `z a := if a ∈ V(G) then S r else S a`: `z` is an infinitesimal motion
-(every constraint has both endpoints in `V(G)`, where `z` is the constant `S r`, so the relative
-screw `z u − z v = 0 ∈ span C(p(e))`), and the residual `S − z` vanishes on `proj` (on `r`:
-`S r − S r = 0`; on `proj ∖ {r} ⊆ V(G)ᶜ`: `z a = S a`, so `S a − z a = 0`), hence lies in
-`W = ⨅ i ∈ proj, ker (proj i)` (`extProj_range_eq_iInf_ker_proj`). This is the algebraic
-content KT (6.5) invokes through Lemma 5.1: deleting the single shared body `r`'s columns
-(`extProj proj` zeroes exactly column `r` of the contraction's own bodies, since
-`V(G) ∩ proj = {r}`) preserves rank because the only `Z`-motion lost to the projection is the
-trivial `S r`-shift, recovered by the constant-on-`V(G)` motion `z`. -/
+/-- **Motions and the assignments that vanish on `proj` span all assignments**
+(`lem:extProj-preserves-rank-of-inter`, its first claim; KT eq. (6.5), p. 674): if
+`V(G) ∩ proj = {r}`, every screw assignment `S` is the sum of a motion and an assignment that
+vanishes on `proj`. The motion `z` is `S r` on `V(G)` and `S` elsewhere: both ends of every edge lie
+in `V(G)`, where `z` is constant. `S − z` vanishes at `r` and off `V(G)`, so on `proj`, whose other
+bodies lie off `V(G)`. The motion `z` plays the part of the trivial motion with value `S r` in the
+proof of KT Lemma 5.1 (p. 667). -/
 theorem infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton
     (F : BodyHingeFramework K k α β) {proj : Set α} {r : α}
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
@@ -1163,18 +891,11 @@ theorem infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton
     · simp only [Pi.add_apply, ite_eq_left haV, add_sub_cancel]
     · simp only [Pi.add_apply, ite_eq_right haV, add_zero]
 
-/-- **The exterior-column projection is injective on the rigidity-row span — at ANY rank, no
-rigidity** (`lem:rigidityRows-splice-rank-add`, the L5a `hInj` injectivity; Katoh–Tanigawa 2011
-§6.2 eq. (6.5) / Lemma 5.1, Phase 22i L5a-ii). The **deficiency-tolerant** sibling of
-`BodyHingeFramework.injOn_extProj_dualMap_rigidityRows`: for *any* body-hinge framework `F` and a
-block `proj` meeting `V(G)` in exactly the representative body `r`, the exterior-column projection's
-dual map `D = (extProj proj).dualMap` is **injective on the rigidity-row span** `Φ = span
-rigidityRows`. The chain is the *identical* dual-API computation as the rigid sibling
-(`ker D = W.dualAnnihilator`, `Φ = Z.dualAnnihilator`, so `Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator =
-⊥`), differing only in the `Z ⊔ W = ⊤` input: here the rigidity-free
-`infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton` rather than the rigid count.
-This is the projection-loses-zero-rank fact at a *deficient* contraction leg, which the landed
-rigidity-gated version cannot supply. -/
+/-- **Deleting the columns of `proj` is injective on the row space**
+(`lem:extProj-preserves-rank-of-inter`, its second claim): if `V(G) ∩ proj = {r}`,
+`(extProj proj).dualMap` is injective on the row space of `R(G,p)`: the computation of
+`injOn_extProj_dualMap_rigidityRows`, with `Z ⊔ W = ⊤` from
+`infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton`. -/
 theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton
     [Finite α] (F : BodyHingeFramework K k α β) {proj : Set α} {r : α}
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
@@ -1191,23 +912,12 @@ theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_single
     infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton F hinter,
     Submodule.dualAnnihilator_top]
 
-/-- **The exterior-column projection preserves the rigidity-row-span rank — at ANY rank, no
-rigidity** (`lem:rigidityRows-splice-rank-add`, the L5a brick's `hInj` interface hypothesis;
-Katoh–Tanigawa 2011 §6.2 eq. (6.5) / Lemma 5.1, Phase 22i L5a-ii). The direct `hInj`-form of the
-column-deletion rank invariance: for *any* body-hinge framework `F` and a block `proj` meeting
-`V(G)` in exactly the representative body `r`, the dual map `D = (extProj proj).dualMap` carries the
-rigidity-row span `Sc = span rigidityRows` to an image of the **same** dimension,
-
-  `finrank Sc = finrank (Sc.map D)`.
-
-This is exactly the `hInj` hypothesis of `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`
-(the L5a-i splice brick), discharged at a *deficient* contraction leg where the rigidity-gated route
-is unavailable. It is the genuinely-new linear algebra of L5: deleting the single shared body `r`'s
-columns preserves rank (KT Lemma 5.1, here as injectivity on `Sc` via
-`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`), so the surviving block keeps its full
-rank `D(|sc|−1) − k`. Immediate from injectivity on `Sc`
-(`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`) via rank-nullity for the restricted
-map. -/
+/-- **Deleting the columns of `proj` keeps the rank** (`lem:extProj-preserves-rank-of-inter`, its
+last claim; KT eq. (6.5), p. 674): if `V(G) ∩ proj = {r}`, the row space of `R(G,p)` and its image
+under `(extProj proj).dualMap` have the same dimension, by injectivity
+(`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`) and rank–nullity for the restricted
+map. This is the hypothesis `hInj` of `le_finrank_span_rigidityRows_of_splice`
+(`lem:rigidityRows-splice-rank-add`) for `π = π_{V(H)}`. -/
 theorem BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton
     [Finite α] (F : BodyHingeFramework K k α β) {proj : Set α} {r : α}
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
@@ -1238,26 +948,14 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inte
   rw [heq, hker0, add_zero] at hq
   exact hq.symm
 
-/-- **The projected-subfamily extraction: a framework rigid on its full vertex set, pinned at a
-block meeting `V(G)` in one body, carries `≥ D(|V(G)|−1)` independent *exterior-projected* panel
-rows of its linking edges** (`lem:claim-6-4`, the U3b projected U3-tool skeleton — the
-projected sibling of `exists_independent_panelRow_subfamily_of_rigidOn_linking_set`; Katoh–Tanigawa
-2011 §6.2 eqs.\ (6.5)/(6.9), §5.1, Phase 22b — KT Claim 6.4 proper). For `F` infinitesimally rigid
-on its whole vertex set `V(G)` and a block `proj` meeting `V(G)` in exactly the representative body
-`r` (`V(G) ∩ proj = {r}`), there is an index subset `t` whose `(extProj proj).dualMap ∘ panelRow
-ends`-subfamily is linearly independent, of size `≥ D(|V(G)|−1)`, every member of which links in
-`F.graph`.
-
-Unlike the un-projected parent — whose finrank bound the projection could in principle *lower* (that
-is exactly the content of Claim 6.4) — this brick uses the §1.22 `Z ⊔ W = ⊤` injectivity input
-(`injOn_extProj_dualMap_rigidityRows`): the exterior-column projection's dual map `D` is injective
-on the rigidity-row span `Φ` (the projection loses *zero* rank), so the un-projected independent
-subfamily of the green tool maps through `D` to an independent projected subfamily of the *same*
-size (`LinearIndependent.map_injOn`). The un-projected subfamily and its support/count are produced
-by `exists_independent_panelRow_subfamily_of_rigidOn_linking` (the equality-count form, whose
-`Nat.card t = D(|V(G)|−1)` gives the `≥` lower bound directly); each of its panel rows is a rigidity
-row of `F` (its edge links), so its span lies in `Φ` where `D` is injective. This is the final brick
-of the exterior-rank discharge that the rank-transport `htransport` consumes. -/
+/-- **Independent rows that survive the deletion, for a rigid framework** (a step of
+`lem:claim-6-4`): if `ends` gives every link its ends, the hinges at links are nondegenerate, every
+motion is constant on `V(G)`, and `V(G) ∩ proj = {r}` with `r ∈ V(G)`, then some `t` of at least
+`D(|V(G)| − 1)` rows at links stay linearly independent once the columns of `proj` are deleted. The
+rows are those of `exists_independent_panelRow_subfamily_of_rigidOn_linking`; they lie in the row
+space, on which the deletion is injective (`injOn_extProj_dualMap_rigidityRows`), so their images
+are independent (`LinearIndependent.map_injOn`). Only
+`rigidContract_exterior_rank_transport_htransport` (`CaseI.lean`) uses it. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α} {proj : Set α} {r : α}
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
@@ -1272,12 +970,13 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
       LinearIndependent K (fun i : t => (extProj (K := K) (k := k) proj).dualMap
         (F.panelRow ends (i : β × _ × _))) := by
   classical
-  -- The un-projected independent subfamily from the green tool.
+  -- Independent rows at links (`exists_independent_panelRow_subfamily_of_rigidOn_linking`).
   obtain ⟨t, hsupp, hcard, hindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn_linking hends hne hnev hrig
   refine ⟨t, hsupp, hcard.ge, ?_⟩
   -- A panel row of `F` whose edge links in `F.graph` is one of `F`'s rigidity rows, so the
-  -- subfamily's span lies in `Φ = span rigidityRows`, where `D` is injective (the §1.22 core).
+  -- subfamily's span lies in `Φ = span rigidityRows`, where `D` is injective
+  -- (`injOn_extProj_dualMap_rigidityRows`).
   have hrow_mem : ∀ i : t,
       F.panelRow ends (i : β × _ × _) ∈ Submodule.span K F.rigidityRows := by
     rintro ⟨⟨e', t₁, t₂⟩, hi⟩
@@ -1294,22 +993,13 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
   have hinj := F.injOn_extProj_dualMap_rigidityRows hrig hr hinter
   exact hindep.map_injOn _ (hinj.mono hspan_le)
 
-/-- **Deficiency-aware exterior-projected independent surviving subfamily** (the V6-b leaf,
-route-1 extractor; the `_le_finrank` analogue of
-`exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`, swapping the rigidity gate for
-a rank input + the rigidity-free `injOn` core; Katoh–Tanigawa 2011 §6.2 eqs. (6.5)/(6.9),
-Phase 22i L5b-ii-a). For a body-hinge framework `F` with a block `proj` meeting `V(G)` in exactly
-the representative body `r` (`V(G) ∩ proj = {r}`), and given any rank lower bound `N ≤ finrank
-(span F.rigidityRows)`, there is an index subset `t` whose
-`(extProj proj).dualMap ∘ panelRow ends`-subfamily is linearly independent, of size `≥ N`, every
-member of which links in `F.graph`.
-
-This is the deficiency-aware twin of
-`exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` (route 1 of §1.66): instead of
-deriving the un-projected subfamily from rigidity, it feeds the rank input `N` to the rank-input
-extractor `exists_independent_panelRow_subfamily_of_le_finrank` (W6e), then maps the result through
-the rigidity-free `injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` (L5a-ii). The proof
-body is the rigid extractor's proof verbatim with the two rigidity-gated calls swapped out. -/
+/-- **Independent rows that survive the deletion, from a bound on the rank** (a step of
+`lem:rank-polynomial-IH-relabel-proj` and `lem:pencil-contract-degenerate-rank`): if `ends` gives
+every link its ends, the hinges at links are nondegenerate, `V(G) ∩ proj = {r}` and
+`N ≤ rank R(G,p)`, then some `t` of at least `N` rows at links stay linearly independent once the
+columns of `proj` are deleted: the rows of `exists_independent_panelRow_subfamily_of_le_finrank`,
+under the deletion, which is injective on the row space
+(`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`). It needs no rigidity. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank_proj
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α} {proj : Set α} {r : α}
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
@@ -1323,12 +1013,12 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank_p
       LinearIndependent K (fun i : t => (extProj (K := K) (k := k) proj).dualMap
         (F.panelRow ends (i : β × _ × _))) := by
   classical
-  -- The un-projected independent subfamily from the rank-input tool (W6e).
+  -- Independent rows at links (`exists_independent_panelRow_subfamily_of_le_finrank`).
   obtain ⟨t, hsupp, hcard, hindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_le_finrank hends hne hN
   refine ⟨t, hsupp, hcard.ge, ?_⟩
   -- A panel row of `F` whose edge links in `F.graph` is one of `F`'s rigidity rows, so the
-  -- subfamily's span lies in `Φ = span rigidityRows`, where `D` is injective (the §1.22 core).
+  -- subfamily's span lies in `Φ = span rigidityRows`, where `D` is injective.
   have hrow_mem : ∀ i : t,
       F.panelRow ends (i : β × _ × _) ∈ Submodule.span K F.rigidityRows := by
     rintro ⟨⟨e', t₁, t₂⟩, hi⟩
@@ -1342,7 +1032,7 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank_p
   have hspan_le : Submodule.span K (Set.range (fun i : t => F.panelRow ends (i : β × _ × _)))
       ≤ Submodule.span K F.rigidityRows :=
     Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ hrow_mem i)
-  -- The rigidity-free `injOn` core (L5a-ii): no rigidity hypothesis needed.
+  -- The deletion is injective on the row space, with no rigidity.
   have hinj := F.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton hinter
   exact hindep.map_injOn _ (hinj.mono hspan_le)
 end CombinatorialRigidity.Molecular
