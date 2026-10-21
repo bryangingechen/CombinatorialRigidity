@@ -18,10 +18,10 @@ top-level file but `Nonvacuity.lean`, of `Search/`, of `Mathlib/`, of `PebbleGam
 and of `BodyBar/` (tasks 25–28), of `Molecular/Deficiency.lean` (tasks 29–29.1), of
 `Molecular/Induction/` (tasks 30–31.1), of `RigidityMatrix/`, `Meet.lean` and `Extensor.lean`
 (tasks 32–32.2), of `AlgebraicInduction/Pinning.lean` and `PanelLayer.lean` (task 33), and of
-`CaseI.lean` and `CaseII.lean` (task 34). **Blocked** since 2026-10-21: the toolchain's `lake`
-crashes here, and a bump to Lean v4.36.0-rc1 runs first (*Autopilot: for the PI*). **Next
-concrete task**, once that bump closes: task 34.1, the docstrings of `GenericityDevice.lean` and
-`Coupling.lean`, this round's parts (*Lemma checklist*). Round manual: `CLEANUP.md`.
+`CaseI.lean` and `CaseII.lean` (task 34). The 2026-10-21 blocker (*Autopilot: for the PI*) is
+lifted: the bump to Lean v4.36.0-rc1 closed that day. **Next concrete task:** task 34.1, the
+docstrings of `GenericityDevice.lean` and `Coupling.lean`, this round's parts (*Lemma checklist*).
+Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -53,8 +53,9 @@ queue item first (1–3 commits); (c) a stand-in gate of bare `lean`.
 
 ## Current state
 
-**Task 34 is done**; nothing is mid-stream. **Blocked** since 2026-10-21: the toolchain's `lake`
-crashes here, until the bump to v4.36.0-rc1 (its own queue item) closes (*Autopilot: for the PI*).
+**Task 34 is done**; nothing is mid-stream. **The blocker is lifted:** the bump to Lean v4.36.0-rc1
+closed 2026-10-21 (`notes/ToolchainBumps.md`). The build now runs 6151 jobs (2996 at the open), and
+the axioms harness's output is byte-identical to task 34's. **Next:** task 34.1.
 
 **Task 34** (`F-232` `done`; `F-069`, `F-140`, `F-148`, `F-153` in part; new `F-290`): `CaseI.lean`
 and `CaseII.lean` swept, the selector sentences left for the phase (`F-122`'s); its message names
@@ -409,13 +410,13 @@ Items outside this round's scope, one line each, mirrored in the same commit int
 
 ## Blockers / open questions
 
-The toolchain's `lake` crashes on this machine (2026-10-21, v4.34.0-rc2's mimalloc). The PI's
-answer (*Autopilot: for the PI*) puts a bump to v4.36.0-rc1 ahead of this round; no Lean task
-lands here until it closes.
+None. The toolchain's `lake` crash (2026-10-21, v4.34.0-rc2's mimalloc) ended with the bump to
+Lean v4.36.0-rc1, which the PI put ahead of this round (*Autopilot: for the PI*) and which closed
+the same day.
 
 ## Hand-off / next phase
 
-**Blocked** (*Autopilot: for the PI*, 2026-10-21): resume here once the bump to v4.36.0-rc1 closes.
+**Resume here** (the toolchain blocker lifted: the bump to Lean v4.36.0-rc1 closed 2026-10-21).
 **Next: task 34.1**, at Opus: the docstrings of `AlgebraicInduction/GenericityDevice.lean` (1 969
 lines) and `Coupling.lean` (1 348), in the footprint: this round's parts only (*Scope*: a part that
 says what `PanelHingeFramework`'s fields mean or what its constructors guarantee, or documents a

@@ -101,7 +101,7 @@ id = "bump-4.36"
 title = "Toolchain bump: Lean v4.36.0-rc1, mathlib 930ae14, Matroid 8ece630"
 note = "notes/Bump-v4.36.0-rc1.md"
 attended = false
-done = false
+done = true
 
 [[item]]
 id = "reconcile-lean"

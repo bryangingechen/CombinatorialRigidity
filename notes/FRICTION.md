@@ -301,6 +301,8 @@ to be re-derived by re-reading entries later.
   (2) `simp only [rigidityRows, Set.mem_ofPred_eq, h]` in `rigidityRows_congr_isLink` leaves
   `(⟨G₁, C⟩).hingeRowBlock e` against `(⟨G₂, C⟩).hingeRowBlock e`, equal by `rfl` only.
 - **Fix:** (1) pass the graphs explicitly; (2) close with `rfl`. One LSP round each, no build.
+- **See also:** (1)'s shape is `TACTICS-QUIRKS.md` § 117 for every `Set` membership since the
+  v4.36.0-rc1 bump, where `Set` became a structure.
 - **Status:** idiom.
 
 ### [idiom] `linear_combination h₁ - h₂` rejected ("argument `h₂` … expected to have type `K`") where `linear_combination h₁ + h₂.symm` works

@@ -13,55 +13,31 @@ never-`lake update` rule and its escape hatch) and *Automated mathlib bumps*
 
 ## Where this stands — and the next concrete task
 
-**Bump in progress (2026-10-21): to Lean `v4.36.0-rc1`**, mathlib `930ae14`,
-`Matroid` `8ece630`, applied on `master` with the build still red while the
-fixes land; its work log is **`notes/Bump-v4.36.0-rc1.md`** (state, breakage
-taxonomy, hand-off), and nothing is pushed until the PI reviews it. The last
-green pins, still `origin/master`'s: Lean `v4.34.0-rc2`, mathlib `8b36e867`,
-`Matroid` `2b92ee39` (2026-08-24; every gate green, the rc2 record's table).
+**Current pins (2026-10-21): Lean `v4.36.0-rc1`, mathlib `930ae145` (2026-10-20), `Matroid`
+`8ece6307` (2026-10-20)**, from the bump recorded below (*Bump record: v4.34.0-rc2 →
+v4.36.0-rc1*). Every gate of *The gate set* is green on the final tree; the results are in the
+record's gate table. **Not yet pushed.** The bump is five commits on local `master`, `8936b312`
+through its close, and the PI reviews them before any push. `origin/master` (`f39e35e6` as last
+fetched, 2026-10-15; local `master` is ahead by RECONCILE 3/3's tasks and this bump) still carries
+the v4.34.0-rc2 pins (Lean `v4.34.0-rc2`, mathlib `8b36e867`, `Matroid` `2b92ee39`),
+CI-validated at `91fcd24a` (checked 2026-09-29, [run
+36579395802](https://github.com/bryangingechen/CombinatorialRigidity/actions/runs/36579395802)).
 
-**Pushed and CI-validated (checked 2026-09-29 via `gh run list --branch
-master` / `gh run view`).** `origin/master` has long since caught up —
-sitting at `91fcd24a` (one commit behind local master), with its *Build &
-deploy site* run green: [run
-36579395802](https://github.com/bryangingechen/CombinatorialRigidity/actions/runs/36579395802).
-The stack has been exercised by every push since, not just once. The
-`bump/lean-4.34.0-rc1` / `bump/lean-4.34.0-rc2` branches used to carry this
-work; both are still local-only (`gh api .../git/ref/heads/bump/...` 404s on
-origin — they were never themselves pushed) and are now **498 commits behind**
-`master`, fully merged into it (`git merge-base --is-ancestor` confirms).
-Whether to delete them is the PI's call; not acted on here.
+**PI actions after the push** (none taken here: no push, no `gh` writes):
+- Check the push's *Build & deploy site* run (`gh run list --branch master`). It is the first CI
+  run on the new pins.
+- Close PR #1 and issue #2, which this bump supersedes. Issue #2 is hopscotch's tracking issue for
+  a genuine break, first-bad commit
+  [`ab64d1c`](https://github.com/leanprover-community/mathlib4/commit/ab64d1cdc0e5fd620fe0531593f8725c3cb079c8)
+  ("chore: don't inductively define sets (#42171)"). PR #1 offers the bump to the last-known-good
+  rev [`0258e25`](https://github.com/leanprover-community/mathlib4/commit/0258e251f94ee225ff7549af5b8f5d06050c9afc).
+  Both revs are behind the new mathlib pin, and `Matroid` at `8ece630` has absorbed `ab64d1c`.
+- Delete or keep the local `bump/lean-4.34.0-rc1` and `bump/lean-4.34.0-rc2` branches: never
+  pushed, fully merged into `master`.
+- Optional: the module conversion of the 90 non-`module` files (the record's last lesson).
 
-**Hopscotch stopped re-stamping issue #2 — it now tracks a real
-incompatibility, not the pin-order false positive.** Since the `require
-mathlib`-last fix and the push above, the daily `hopscotch (mathlib bump)`
-runs (all green in `gh run list`) bisect actual content again. Issue #2 was
-renamed once, on 2026-08-25, and has tracked the same genuine break since:
-first-bad commit
-[`ab64d1c`](https://github.com/leanprover-community/mathlib4/commit/ab64d1cdc0e5fd620fe0531593f8725c3cb079c8)
-("chore: don't inductively define sets (#42171)"). PR #1 offers the bump to
-the last-known-good rev
-[`0258e25`](https://github.com/leanprover-community/mathlib4/commit/0258e251f94ee225ff7549af5b8f5d06050c9afc),
-44 commits ahead of the current pin. **Both are live signal now, not stale
-artifacts — do not close either**, contra this section's previous plan
-(written while the false positive was still live).
-
-**Next concrete task (PI, 2026-10-21): the bump to Lean `v4.36.0-rc1`**, an
-autopilot queue item of its own ahead of `reconcile-lean`, which it unblocks.
-Since macOS 27, v4.34.0-rc2's `lake` aborts at exit: its bundled mimalloc
-3.4.1 uses TLS slots that macOS 27 claims (diagnosis:
-`notes/Reconcile-lean-cleanup.md` *Autopilot: for the PI*; any Lean from
-v4.34.1 on has the fix). Target `Matroid` at its tip `8ece630` (2026-10-20)
-and mathlib at that rev's own pin `930ae14` (1 476 commits past ours), whose
-transitive pins are exactly `Matroid`'s, so `scripts/bump-mathlib.sh 930ae14`
-plus the `Matroid` hand-edit sets every pin. `ab64d1c` is in range and
-`Matroid` has absorbed it, so PR #1 and issue #2 close with this bump. Treat
-it as a new bump record, written at the close. It runs as the queue item
-`bump-4.36`, **opened 2026-10-21**: the work log
-`notes/Bump-v4.36.0-rc1.md` carries what those mathlib commits break in our
-own Lean and the next fix. (The toolchain was installed by hand first: an
-agent session here cannot write elan's toolchains directory, sandbox or not,
-`Operation not permitted`, 2026-10-21.)
+**Next concrete task: none here.** Once the push lands, hopscotch's daily run tracks mathlib
+against the new pins; the next bump starts from the *Playbook*.
 
 ---
 
@@ -141,8 +117,14 @@ Fix: point `LAKE_CACHE_DIR` at a writable directory (a user cache dir works;
 `LAKE_CACHE_DIR=""` disables the cache entirely.)
 
 Sanity check after any build: `grep -c 'failed to cache artifact' <log>`
-should be `0`, and the `Built` + `Replayed` `CombinatorialRigidity.` lines
-together should account for all 122 files.
+should be `0`, and the build should cover the default target's whole import
+closure: **154 modules** at v4.36.0-rc1, the root `CombinatorialRigidity.lean`
+and the 153 files under `CombinatorialRigidity/` (122 at the v4.34 bumps). On a
+build that recompiles everything, the `Built` + `Replayed`
+`CombinatorialRigidity.` lines account for all of them. An incremental build
+prints only the modules it rebuilt or whose stored output it replays (the
+v4.36.0-rc1 close's `build11`: 66 `Built`, 1 `Replayed`), so there the check
+is exit 0 with "Build completed successfully".
 
 **Session-wide setting (2026-09-15).** Put the variable in the gitignored
 `.claude/settings.local.json`:
@@ -158,6 +140,11 @@ override), so no per-command prefix is needed and dispatched builders inherit
 it. The file is deliberately untracked (it holds a machine path); a fresh
 clone recreates it. The same `EPERM` also hits the toolchain dir with the
 sandbox disabled, so this is not a sandbox permission to grant.
+
+**A new toolchain is installed by hand.** An agent session cannot write elan's
+toolchains directory either (`Operation not permitted`, sandbox or not; the
+v4.36.0-rc1 bump, 2026-10-21), so a bump to a new Lean starts with a human
+running `elan toolchain install leanprover/lean4:<version>`.
 
 ### Two verification traps
 
@@ -180,11 +167,11 @@ sandbox disabled, so this is not a sandbox permission to grant.
 
 | check | notes |
 |---|---|
-| `LAKE_CACHE_DIR=<dir> lake build` | 0 errors, 0 warnings, 0 `failed to cache artifact`, 122/122 modules accounted for |
+| `LAKE_CACHE_DIR=<dir> lake build` | 0 errors, 0 warnings, 0 `failed to cache artifact`, all 154 modules accounted for (the root and 153; *Environment*) |
 | `LAKE_CACHE_DIR=<dir> lake lint` | batteries `runLinter`; separate from the in-build style linters |
 | `lake build pebble-game` | the exe is **not** in `defaultTargets`, so a plain `lake build` skips it |
-| `lake exe checkdecls blueprint/lean_decls` | silence + exit 0 = all 758 pinned blueprint declarations resolve |
-| `#print axioms` on the `formalization.yaml` main results (17 at the rc bumps; 19 since Phase 40's close) | expect `[propext, Classical.choice, Quot.sound]`, no `sorryAx` |
+| `lake exe checkdecls blueprint/lean_decls` | silence + exit 0 = every pinned blueprint declaration resolves (1 008 entries, 993 distinct, at v4.36.0-rc1); `blueprint/lean_decls` is generated by `blueprint/verify.sh`, so check it is newer than every `.tex` |
+| `#print axioms` on the `formalization.yaml` main results (17 at the v4.34 bumps; 19 since Phase 40's close) | expect `[propext, Classical.choice, Quot.sound]`, no `sorryAx`; a scratch harness run with `lake lean`, never `lake env lean` (`PHASE-BOUNDARIES.md` *When this commit closes a phase*) |
 | the 11 `PebbleGame/Examples.lean` `#eval`s | printed by the build itself as `info:` lines; each has its expected value in a comment |
 | the 4 `examples/*.txt` via `lake exe pebble-game` | each file carries its expected output in its own header |
 
@@ -199,7 +186,8 @@ reads as a wrong answer.
 
 Distilled from the rc1 queue (closed; details in *Cleanup queue* below). A
 one-rc bump may need none of this — rc2 needed nothing — but a multi-version
-jump will:
+jump can (v4.36.0-rc1's needed only the warning taxonomy: its lint passed on
+the first run):
 
 - **`unusedArguments` CASCADES — iterate `lake lint` to a fixed point.** The
   single most important thing to know before starting. Dropping a binder
@@ -248,6 +236,90 @@ need once.
 | 1 × `linter.flexible`, `Claim612.lean` | a new mirror lemma under `CombinatorialRigidity/Mathlib/`; "four other routes tried and dead" | **one more simp argument** (`Fin.castLT`). No lemma, and it retired three sibling bullets' trailing `rfl`s too |
 | 1 × overlapping instances, `Search/DFS.lean` | drop the `variable`-line instances, re-add inline on "the ~4 downstream lemmas" (really **11**) | **move the `variable` line *below* the one def with inline binders** — two lines, zero signature changes |
 | 3 × overlapping instances, `Induction/Operations.lean` | `section`-scope the `omit` dance, then re-derive which `omit … in` clauses survive | the `section` scoping, as predicted — and the four `omit … in` clauses needed **no** change |
+
+---
+
+## Bump record: v4.34.0-rc2 → v4.36.0-rc1 (2026-10-21)
+
+| | before | after |
+|---|---|---|
+| `lean-toolchain` | `v4.34.0-rc2` | `v4.36.0-rc1` |
+| mathlib | `8b36e867` (2026-08-24) | `930ae145` (2026-10-20; 1 476 commits on, 115 past the tag `v4.36.0-rc1`) |
+| `Matroid` | `2b92ee39` | `8ece6307` (`main`'s tip, 2026-10-20) |
+
+**Why.** Since macOS 27, v4.34.0-rc2's `lake` aborts at exit, because its bundled mimalloc 3.4.1
+keeps thread heaps in TSD slots that macOS 27 now runs destructors on (fixed from Lean v4.34.1 on),
+so no gate could run; the diagnosis and the PI's decision are `notes/Reconcile-lean-cleanup.md`
+*Autopilot: for the PI*. The bump ran as the autopilot queue item `bump-4.36`, ahead of RECONCILE
+3/3, which it unblocks; its work log is `notes/Bump-v4.36.0-rc1.md`.
+
+**Pin choice, the v4.34 bumps' rule:** mathlib at the rev `Matroid`'s tip is tested against, not
+the tag. `Matroid`'s manifest and mathlib's own at `930ae14` carry identical transitive pins, so
+`scripts/bump-mathlib.sh 930ae14 --apply` plus the `Matroid` hand-edit set every pin, and `lake
+exe cache get` hit all 9 058 files. There was no baseline build (the crash); the Lean was unchanged
+since `f8a6f8ec`, green under rc2.
+
+### What broke, by root cause
+
+**Errors:** 17 lines in 10 files, none in the fragility zone (`Molecular/AlgebraicInduction/`,
+`Molecular/RigidityMatrix/` and the files naming `ScrewSpace`, which compiled with no error).
+**Warnings:** 43 positioned sites plus W4's 22 pairs; the zone's 17 are all renames or imports.
+Each commit fixed one group: `8936b312` the pins (RED), `e91a16ad` G1 and G2, `1fac0646` G3 and
+G4, `6fbfe605` W1 to W6.
+
+| group | root cause | sites | fix shape |
+|---|---|---|---|
+| G1 | mathlib's `MvPolynomial/Funext` imports its polynomial layer privately, so our mirror of it loses `![…]` and `Polynomial` | 9 errors, 1 file | one `public import Mathlib.Algebra.Polynomial.Roots` in the mirror |
+| G2 | `Set` is a one-field structure (mathlib #41506), shape A: a set where a predicate is expected | 1 (`Jacobs.lean`) | `Function.Embedding.subtype (· ∈ S)` |
+| G3 | `Equiv.setCongr` changed meaning, to `α ≃ β → Set α ≃ Set β`, with no deprecation | 9 lines, 3 files (`KFrame`, `TayTheorem`, `JacobsZeroExtension`) | `Set.equivOfEq h`; `Set.equivOfEq_apply` |
+| G4 | the same `Set` change, shape B: an anonymous projection on a membership proof whose set is still a metavariable | 6 sites, 5 files | name the set (**TACTICS-QUIRKS § 117**) |
+| W1 | deprecated names | 33 sites, 20 files | one `scripts/sweep-deprecations.py --apply`: 17 × `Matrix.linearIndependent_rows_iff_isUnit` → `…_row_…`, 10 × `SetLike.` → `IsConcreteLE.` (a namespace change), 6 others; one docstring reflowed at the close |
+| W2 | deprecated imports | 6 sites, 5 files | the new module names; our `Countable` mirror moved with its upstream file, to `Mathlib/Basic/Countable/Defs.lean` |
+| W3 | `push Not` made no progress | 2 (`Matroid/Constructions/Submodular.lean`) | `contrapose!` → `contrapose` |
+| W4 | Lake's module-system warning (mathlib sets `requiresModuleSystem`) | 22 (file, import) pairs in 13 files, the non-`module` files importing mathlib directly | `allowNonModules = true` on the lib, as mathlib's own `Cache` and `MathlibTest` libs |
+| W5 | a deprecation whose target has another type now warns | 1, the narrative-bridge shim | `+typeChanged`, the pattern amended in `CombinatorialRigidity/CLAUDE.md` and `blueprint/AUTHORING.md` |
+| W6 | deprecated `rwa … at h ⊢` | 1 | `rw [h'] at h0 ⊢; assumption` (the linter rejects `<;>`) |
+
+As at rc1, **nothing was a mathematical break**: no statement changed, no proof needed a new idea,
+and the 19 main results' axioms are unchanged.
+
+### The gate table (the close, on the final tree)
+
+| check | result |
+|---|---|
+| `lake build` | exit 0, "Build completed successfully (6151 jobs)", 0 `error:`, 0 `warning`, 0 `failed to cache artifact`; the closure's 154 modules |
+| `lake lint` | "Linting passed for CombinatorialRigidity." on the first run (at `6fbfe605`), and again on the final tree |
+| `lake build pebble-game` | exit 0, 3913 jobs, 0 warnings |
+| `lake exe checkdecls blueprint/lean_decls` | silent, exit 0 (1 008 entries, 993 distinct; the file newer than every `.tex`) |
+| `#print axioms`, the 19 main results | each `[propext, Classical.choice, Quot.sound]`, no `sorryAx`; the harness, generated from the yaml, is `cmp`-identical to RECONCILE 3/3 task 34's, and its output equals that run's net of the harness path |
+| the 11 `PebbleGame/Examples.lean` `#eval`s | each `info:` line equals its comment's value (5, true, 11, true, 6, false, false, 4, true, false, false) |
+| the 4 `examples/*.txt` | each output equals its header line for line: `LAMAN` (`k4-minus-e`, `moser-spindle`), `NOT_SPARSE` (`k4`), `SPARSE_NOT_TIGHT` (`path5`), each with its witness lines |
+
+### The durable lessons
+
+- **Probe, then revert, sizes every blocked module in one commit.** The first build blocked 95 of
+  the 154 modules, and a commit per group sees only the next blocker. So G3 and G4 were applied in
+  the working tree, rebuilt one blocker at a time (`build3-probe` to `build8-probe`) to a green
+  tree, saved as a patch and reverted: the taxonomy covered every module while each commit stayed
+  one group. The patch then landed unchanged, with the probe's warning set exactly.
+- **A headline type refactor can cost almost nothing.** `Set` becoming a structure, the jump's
+  scariest changelog entry, cost 7 sites in 6 files in 2 shapes and no mirror lemma. None of the
+  anticipated shapes appeared (`Set.ext`/`funext` across the old defeq, `setOf` unfolding,
+  `show`/`change` through it, simp-lemma drift). Size from the build's taxonomy, not the changelog.
+- **A meaning-changed name gives no deprecation.** `Equiv.setCongr` still exists, at a new type,
+  so it surfaced as type errors in 3 files and 6 cascaded unused-simp-argument warnings, not as a
+  rename. When a name errors at its type after a bump, read its current upstream signature before
+  debugging the proof.
+- **The lint can be clean on the first run.** The rc1 cascade (64 → 9 → 2 → 0) began with a
+  changed linter flagging pre-existing code; this jump's `runLinter` flagged nothing, so nothing
+  cascaded. Budget the iteration, but a clean first run is done.
+- **The module conversion is filed for the PI, not done.** Of the 154 modules, 90 are not `module`
+  files (the work log said 89: its scan took `Carrier.lean`'s line "module docstring: …" for a
+  header; `CombinatorialRigidity/CLAUDE.md`'s "Every project file uses Lean's module system"
+  predates the count). `allowNonModules = true` silences W4, and converting the 90 would retire it.
+  That is newly possible: `Matroid` at `8ece630` has a `module` header in 362 of its 365 files,
+  `Matroid.Representation.Map` (the holdout reason in `CombinatorialRigidity/LEAN-OPS.md`) among
+  them. A later round's candidate, not a queue item.
 
 ---
 

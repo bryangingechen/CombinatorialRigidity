@@ -269,10 +269,9 @@ let `2 ≤ k`, and let `pi`, `pj` and `n_u ≠ 0` be vectors of `K^(k+2)` with
 `pi ⬝ᵥ n_u = pj ⬝ᵥ n_u = 0`. Then some `n'`, linearly independent of `n_u`, has
 `pi ⬝ᵥ n' = pj ⬝ᵥ n' = 0`. The vectors orthogonal to `pi` and `pj` form the kernel of a map from
 `K^(k+2)` to `K²`, of dimension at least `k ≥ 2`; it contains the line `span {n_u}`, and so a vector
-`n'` outside it (`IsConcreteLE.exists_of_lt`).
-In the proof of KT Claim 6.12 (`lem:case-III-claim612`), a
-join `pi ∨ pj` lies in a panel with normal `n_u`, and `n'` is the normal of a second plane through
-its line. -/
+`n'` outside it (`IsConcreteLE.exists_of_lt`). In the proof of KT Claim 6.12
+(`lem:case-III-claim612`), a join `pi ∨ pj` lies in a panel with normal `n_u`, and `n'` is the
+normal of a second plane through its line. -/
 theorem exists_independent_perp_pair_gen {k : ℕ} (hk : 2 ≤ k) (pi pj n_u : Fin (k + 2) → K)
     (hi : pi ⬝ᵥ n_u = 0) (hj : pj ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) :
     ∃ n' : Fin (k + 2) → K, LinearIndependent K ![n_u, n'] ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n' = 0 := by

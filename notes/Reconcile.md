@@ -46,11 +46,11 @@ generic-rigidity files (every top-level file but `Nonvacuity.lean`), of
 `Molecular/Deficiency.lean`, of `Molecular/Induction/`, of `RigidityMatrix/`, of
 `Molecular/Meet.lean` and `Extensor.lean`, of `AlgebraicInduction/Pinning.lean` and
 `PanelLayer.lean`, and of `CaseI.lean` and `CaseII.lean` (this round's parts; the footprint).
-Round 3 is **blocked** since 2026-10-21: the toolchain's `lake` crashes on this machine, and the
-PI puts a bump to Lean v4.36.0-rc1 ahead of it as a queue item (`notes/Reconcile-lean-cleanup.md`
-*Autopilot: for the PI*). **Next concrete task**, once that bump closes: round 3's task 34.1, the
-docstrings of
-`AlgebraicInduction/GenericityDevice.lean` and `Coupling.lean` (this round's parts; the footprint).
+Round 3's blocker of 2026-10-21, a toolchain `lake` that crashed on this machine, is lifted: the
+bump to Lean v4.36.0-rc1 that the PI put ahead of it as a queue item
+(`notes/Reconcile-lean-cleanup.md` *Autopilot: for the PI*) closed the same day. **Next concrete
+task:** round 3's task 34.1, the docstrings of `AlgebraicInduction/GenericityDevice.lean` and
+`Coupling.lean` (this round's parts; the footprint).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

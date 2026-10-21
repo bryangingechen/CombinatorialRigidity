@@ -147,6 +147,7 @@ failing pattern and the working fix.
 - `rw [h]` with `h : ∀ w, (fun j => f (w, j)) = …` finds nothing in `fun i => … (fun j => f (u i, j)) …`, *"Did not find an occurrence of the pattern `fun j ↦ f (?w, j)`"* → § 114 (`?w` would capture the bound `i`; state `h` over index functions `u : ι → α` at the `fun i` level)
 - `linter.unusedDecidableInType` flags a `[DecidableEq β]` (or any `Decidable*` binder) the theorem's *type* never mentions, even though the *proof* threads it to a callee that takes the same instance — and deleting the binder bare breaks every such callee with *"failed to synthesize instance of type class DecidableEq β"* → § 115 (the linter checks only the statement, never the proof; drop the binder and open the proof with `classical`, don't read the callee breakage as proof the binder was needed)
 - A `<;>`-chained flexible `simp`'s `linter.flexible` "Try this: simp only [...]" suggestion, substituted verbatim, leaves some branches of the chain unsolved or makes `norm_num`/a later tactic report *"no goals to be solved"* on others → § 116 (the suggestion is captured against one branch, not their union; run `simp?`/`lean_multi_attempt` at the chain's own position for the full per-goal set across every branch, then union them into one `simp only […]`)
+- `fun x hx => hx.1` (or `hx.2`, `hx.left`, `fun h => hnadj h.1`) given as a subset or non-membership argument fails with *"Invalid projection: Projection operates on types of the form `C ...`"* (or *"Invalid field notation"*), *"`hx` has type `?m.N.1 x`"*, where it compiled before the v4.36.0-rc1 bump → § 117 (`Set` is a structure now, so `x ∈ ?s` is a projection of a still-unassigned set, which the anonymous projection does not wait for; name the set: the named subset lemma, the set argument, or an ascribed binder)
 
 ## Sections
 
@@ -4470,5 +4471,46 @@ bare `simp` used everywhere else, rather than reflowing the whole set.
 
 FRICTION [resolved] *The four certificate eliminations: the `<;>` linter's advice and the flexible
 `simp … at`*.
+
+## 117. `hx.1` on a membership proof fails *"Invalid projection … `hx` has type `?m.N.1 x`"* — the set is still a metavariable; name it
+
+**Symptom.** A binder `fun x hx => hx.1` (or `hx.2`, `hx.left`, or `fun h => hnadj h.1`), given as
+the subset (`s ⊆ t`) or non-membership (`a ∉ s`) argument of a lemma, fails with *"Invalid
+projection: Projection operates on types of the form `C ...` where C is a constant. The expression
+`hx` has type `?m.17.1 x` which does not have the necessary form"* (*"Invalid field notation"* for
+`.left`). The lemma's sets are fixed only by unification that comes later: a `.trans` on the
+result (`(Set.ncard_le_ncard (fun x hx => hx.1) hs).trans hn`), a later explicit argument
+(`hsv _ (fun x hx => hx.1) hZ2`), or a `rw` term with no expected type (`union_eq_left.mpr fun e
+he => he.1`, `Set.ncard_insert_of_notMem (fun h => hnadj h.1) _`). The same binder against a type
+known up front (`Set.ncard_le_ncard (fun x hx => hx.1) hs : {x ∈ s | p x}.ncard ≤ s.ncard`) still
+compiles. The proofs compiled before the v4.36.0-rc1 bump and nothing in them changed.
+
+**Cause.** mathlib made `Set` a one-field structure (#41506, `ba9c63d`, 2026-10-13: `structure Set
+(α) where ofPred :: protected Mem : α → Prop`, `Mathlib/Data/Set/Defs.lean`), so `x ∈ ?s` unfolds
+to `?s.1 x`, a projection *of* the metavariable. The anonymous projection needs a constant at its
+type's head. It waits when the head is a metavariable, the old `Set α := α → Prop` shape (`hx : ?s
+x`: a `lake lean` witness at the bump, with `?s : ℕ → Prop`, still elaborates), but a projection of
+one fails at once. The same witness: `And.left hx` compiles where `hx.1` fails (the unifier
+postpones `?s.1 x =?= ?a ∧ ?b`), but it names nothing. A structure-typed graph hit this shape
+before `Set` did (FRICTION [idiom] *Two small elaboration traps re-proving the 2-cut layer…*,
+*"`?m.2 x y z`"*); now every set membership can.
+
+**Fix: name the set**, tightest first.
+1. **The named subset lemma**, when there is one: `Set.sep_subset _ _` for `{x ∈ s | p x} ⊆ s`;
+   `edgesIn_subset_edgeSet _` in `pathGraph_three_square_isLaman3` (`Nonvacuity.lean`).
+2. **The set argument**: `hsv {x ∈ V(G) | f x = f u} (fun x hx => hx.1) hZ2` in
+   `partitionDef_add_one_le_of_eq` (`MainComponent/GenericBase.lean`), or `(s := …)` by name. If
+   `linter.unusedVariables` then flags the point binder, write it `_`.
+3. **An ascribed binder**: `fun g' (hg' : g' ∈ G.crossingEdges id) => hg'.1` in
+   `Graph.X0Attains.of_cycle_of_certificate` (`MainComponent/Chain.lean`), the same with `f` in
+   `Connected.numParts_le_ncard_crossingEdges_add_one` (`Molecular/Deficiency.lean`), and `fun (h :
+   w ∈ N(G, y) \ {v}) => hnadj h.1` with its `u` twin in `Graph.IsX0Graph.splitOff`
+   (`MainComponent/CoverageCut.lean`).
+
+**Calibration.** These six sites were the bump's G4, each a blocker in turn (75 modules sat behind
+the `Deficiency.lean` one). With G2's one set passed where a predicate is expected
+(`Function.Embedding.subtype S` → `(· ∈ S)`, `Jacobs.lean`), they are the whole tree's cost of the
+`Set` refactor: 7 sites in 6 files, two shapes, no mirror lemma. The record:
+`notes/ToolchainBumps.md` *Bump record: v4.34.0-rc2 → v4.36.0-rc1*.
 
 ---
