@@ -1,19 +1,20 @@
 # Toolchain bump to Lean v4.36.0-rc1 (work log)
 
 **Status:** in progress, and the build is RED on purpose. The pins are applied (Lean
-`v4.36.0-rc1`, mathlib `930ae14`, `Matroid` `8ece630`) and `lake exe cache get` hit every file.
-The first `lake build` stops at two blocking errors: 57 of the default target's 154 modules
-compiled, 2 failed and 95 were never reached. This tree is a documented intermediate state of a
-multi-commit bump on `master`, which the PI reviews before any push. **Next concrete task:** fix
-G1 and G2, the two blockers (*Checklist*), rebuild, and extend the taxonomy over the 95 modules
-they unblock. Queue item `bump-4.36`; plan and playbook `notes/ToolchainBumps.md`; why:
-`notes/Reconcile-lean-cleanup.md` *Autopilot: for the PI*.
+`v4.36.0-rc1`, mathlib `930ae14`, `Matroid` `8ece630`) and the blockers G1 and G2 are fixed. The
+build now stops at a third blocker, G3 (`BodyBar/KFrame.lean`): 69 of the default target's 154
+modules compile, 1 fails and 84 are never reached. A probe build with G3 and G4 also fixed, in the
+working tree only, compiled the whole tree, fragility zone included, so every site is now known:
+15 error lines outside the zone, 43 positioned warning sites and Lake's 22 module-system warnings.
+This tree is a documented intermediate state of a multi-commit bump on `master`, which the PI
+reviews before any push. **Next concrete task:** G3, 9 lines in 3 files (*Checklist*). Queue item
+`bump-4.36`; plan and playbook `notes/ToolchainBumps.md`; why: `notes/Reconcile-lean-cleanup.md`
+*Autopilot: for the PI*.
 
 ## Current state
 
-**Next:** G1 and G2 in one commit (*Hand-off*). **The build is RED**: the pins and their checks
-are done, and the rest of the breakage is unknown until the 95 blocked modules compile, the
-fragility zone included.
+**Next:** G3 (*Hand-off*). **The build is RED** at G3; with G3 and G4 it compiles (the probe),
+leaving only warnings.
 
 | | before | after |
 |---|---|---|
@@ -21,98 +22,128 @@ fragility zone included.
 | mathlib | `8b36e867` (2026-08-24) | `930ae145` (1 476 commits on, 115 past `v4.36.0-rc1`) |
 | `Matroid` | `2b92ee39` | `8ece6307` (`main`'s tip, 2026-10-20) |
 
-**Verified at the open (2026-10-21):**
-- **No baseline build.** v4.34.0-rc2's `lake` aborts on macOS 27 (exit 133), so the pre-edit tree
-  cannot build here. Its Lean is unchanged since `f8a6f8ec` (RECONCILE 3/3's task 34), whose gates
-  ran green under v4.34.0-rc2: 2 998 jobs, 0 warnings, `lake lint` passed.
-- **The pins.** `scripts/bump-mathlib.sh 930ae14 --apply` resolved `930ae145516d…`, moved mathlib,
-  the 8 transitive revs and Cli's `inputRev` (`v4.34.0-rc2` → `v4.36.0-rc1`). `Matroid` is a
-  hand-edit: its `rev` and the "v4.34.0-rc2 one" comment in `lakefile.toml`, its `rev`/`inputRev`
-  in `lake-manifest.json`; `require mathlib` stays last. Re-checked rather than assumed:
-  `git ls-remote` gives `main` = `8ece630`, whose `lean-toolchain` is `v4.36.0-rc1` and whose
-  manifest pins the script's 9 revs, plus `loogle` `9f11169aaebf`, which is ours (unchanged).
-- `lake env lean --version`: "Lean (version 4.36.0-rc1, …, commit c9afcddf514a…, Release)", exit
-  0, after fetching every dep; `git status` shows only the three pin files.
-- `lake exe cache get`: "Attempting to download 9058 file(s)", 9058/9058 downloaded and
-  decompressed, exit 0: a full hit, so no transitive pin is stale.
-- **The first build** (`scratch/bump-4.36/build1.log`, gitignored): exit 1; 0 `failed to cache
-  artifact`; 0 mathlib modules built, 143 `Matroid` modules built from source. Our modules: the
-  default target's import closure is **154** (the root and 153 `CombinatorialRigidity.*`; the
-  *gate set*'s "122" dates from 2026-08). 57 built, 2 failed, 95 blocked, and the import graph
-  agrees exactly: every module importing neither failed one built, and none importing one did.
-  42 are blocked by G1 alone, 3 by G2 alone, 50 by both.
+**The builds** (logs under `scratch/bump-4.36/`, gitignored). Every log has 0 `failed to cache
+artifact` lines, no mathlib module is ever built from source, and every count agrees with the
+import graph: each module importing no failed module built, and none importing one did.
 
-**The fragility zone is unseen.** `Molecular/AlgebraicInduction/` (17 files, `CaseIII/` and
-`Theorem55.lean` among them) and `Molecular/RigidityMatrix/` (4 files; `Basic.lean` defines the
-`ScrewSpace` carrier) compiled 0 files; of the 43 files naming `ScrewSpace`, none compiled. No
-site below is in the zone but W4's two header-only ones (`PanelLayer.lean`, `Coupling.lean`).
-Proof repairs in the zone are dispatched at Opus.
+| log | tree | exit | built / failed / blocked | stops at |
+|---|---|---|---|---|
+| `build1` | the pins (`8936b312`) | 1 | 57 / 2 / 95 | G1, G2 |
+| `build2`, `build2b` | + G1, G2 (this commit) | 1 | 69 / 1 / 84 | G3 |
+| `build3-probe`…`8` | + G3, G4 (working tree) | 0 at `8` | 154 / 0 / 0 | each G4 site in turn |
+
+`build8-probe`: "Build completed successfully (6159 jobs)", 0 `error`. The probe's fixes are kept
+as `scratch/bump-4.36/probe-g3-g8.patch` (gitignored) and spelled out under *Checklist*.
+
+**Verified at the open** (2026-10-21, `8936b312`'s message has the detail): no baseline build, as
+v4.34.0-rc2's `lake` exits 133 on macOS 27 (the Lean was unchanged since `f8a6f8ec`, green under
+rc2); `scripts/bump-mathlib.sh 930ae14 --apply` plus the `Matroid` hand-edit, `require mathlib`
+last, `loogle` unchanged; `lake env lean --version` exit 0; `lake exe cache get` 9058/9058 files.
+
+**The fragility zone** (`Molecular/AlgebraicInduction/`, 17 files with `CaseIII/` and
+`Theorem55.lean`; `Molecular/RigidityMatrix/`, 4, whose `Basic.lean` defines `ScrewSpace`; and the
+43 files naming `ScrewSpace`) compiled in the probe **with no error**. Its share of the breakage is
+17 warning sites in 9 files, all renames or imports (W1, W2, W6). Proof repairs in the zone are
+dispatched at Opus, and there are none.
 
 ## Checklist (the fix tasks, in order)
 
-The taxonomy of the first build. Sites are deduplicated by (file, line, col), deprecations by
-`scripts/sweep-deprecations.py`; paths are under `CombinatorialRigidity/`.
+Sites are deduplicated by (file, line, col), deprecations by `scripts/sweep-deprecations.py`;
+paths are under `CombinatorialRigidity/`.
 
-**Errors, by root cause.** Both are blockers; fix them first.
+**Errors, by root cause.** 17 lines in 10 files in all, none in the fragility zone.
 
-- [ ] **G1: mathlib's `Mathlib.Algebra.MvPolynomial.Funext` now imports its polynomial layer
-  privately** (one `public import` of `…MvPolynomial.Rename`; plain `import`s of `…Polynomial.Roots`
-  and two more). Our mirror `Mathlib/Algebra/MvPolynomial/Funext.lean` imports only it, so `![…]`
-  and the `Polynomial` namespace are gone: 9 errors at 9 positions (79, 88, 97: `![p₁, …]` parses
-  as Bool `!` of a list; 123–125: unknown `Polynomial`, `Polynomial.C`, `Polynomial.X`; 120: the
-  goal left unsolved), plus a cascaded `unusedSectionVars` warning at 118. Fix: public imports for
-  what the file uses (`Polynomial.funext` is in `Mathlib.Algebra.Polynomial.Roots`, `![…]` in
-  `Mathlib.Data.Fin.VecNotation`). 1 file, ~2 lines. 92 modules wait on it (42 on it alone).
-- [ ] **G2: `Set` is now a one-field structure** (`Mathlib/Data/Set/Defs.lean`: `ofPred ::
-  protected Mem : α → Prop`), so a `Set V` no longer elaborates as a predicate `V → Prop`. 1 site:
-  `Jacobs.lean:132:56`, `Function.Embedding.subtype S` (its cascade at 133:34 goes with it). Fix:
-  pass the predicate (`(· ∈ S)`). 1 file, 1 line. 53 modules wait on it (3 on it alone). Expect
-  this class again among the 95 blocked modules, wherever a set is used as a function.
-- [ ] **The second build's taxonomy**: rebuild after G1 and G2 and add the 95 modules' groups here,
-  ordered, each with its files, a size and the fragility zone marked.
+- [x] **G1** (mathlib's `MvPolynomial/Funext` imports its polynomial layer privately now): one
+  `public import Mathlib.Algebra.Polynomial.Roots` in `Mathlib/Algebra/MvPolynomial/Funext.lean`.
+  `![…]` comes with it; a second import of `Mathlib.Data.Fin.VecNotation` was tested and dropped.
+- [x] **G2** (`Set` shape A, below): `(· ∈ S)` for `S` at `Jacobs.lean:132`.
+- [ ] **G3, the third blocker (84 modules behind it): `Equiv.setCongr` changed meaning.** It is now
+  `α ≃ β → Set α ≃ Set β` (`Mathlib/Logic/Equiv/Set.lean:177`); the equivalence of equal sets'
+  subtypes is `Set.equivOfEq` (`:50`, simp lemma `Set.equivOfEq_apply`). The old name still
+  exists, so no deprecation fires. 9 lines in 3 files: `BodyBar/KFrame.lean:439, 457, 475` (its 3
+  errors and 6 cascaded unused-simp-argument warnings), `BodyBar/TayTheorem.lean:297, 299, 354,
+  355, 357`, `JacobsZeroExtension.lean:184` (the last 6 sit behind KFrame; the probe fixed them
+  before they compiled). Fix: `Equiv.setCongr h` → `Set.equivOfEq h`, `Equiv.setCongr_apply` →
+  `Set.equivOfEq_apply`. Mechanical, ~9 lines; outside the zone.
+- [ ] **G4 (`Set` shape B, below), 6 sites in 5 files**, each a blocker in turn:
+  `Molecular/Deficiency.lean:2389` (75 modules behind it), then
+  `Molecular/Molecule/Pencil/MainComponent/Chain.lean:327` (10), `…/CoverageCut.lean:273, 283`
+  (6), `…/GenericBase.lean:195` (3), `Nonvacuity.lean:413` (1). Mechanical, ~6 lines; outside the
+  zone. The probe's fix per site is listed under shape B.
 
-**Warnings, by class** (from the 57 compiled modules; W4 from Lake's header check, which runs on
-blocked modules too).
+**The `Set` cascade, by shape** (`Mathlib/Data/Set/Defs.lean`: `structure Set (α) where ofPred ::
+protected Mem : α → Prop`). Small: two shapes, 7 sites in 6 files across the whole tree.
 
-- [ ] **W1: deprecated names, 10 sites in 6 files**: `Henneberg.lean` 2, `HennebergRigidity.lean`
-  1, `Mathlib/Algebra/Module/Submodule/Union.lean` 2,
-  `Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean` 2,
-  `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean` 1, `Molecular/Extensor.lean` 2. Six
-  renames, no "different type" note; `SetLike.not_le_iff_exists` → `IsConcreteLE.…` changes
-  namespace, so check its dot notation. Mechanical: one `--apply` of the sweep over the full
-  build's log.
-- [ ] **W2: deprecated imports, 3 sites in 2 files**: `Mathlib/Data/Countable/Defs.lean:8`
-  (`Mathlib.Data.Countable.Defs` → `Mathlib.Basic.Countable.Defs`: the mirror's own upstream path
-  moved, so the mirror may move with it), `PebbleGame/Exec.lean:9, 10` (→ `Mathlib.Order.Sym2`,
-  `Mathlib.Order.Prod.Lex.Basic`). By hand, small.
+- **Shape A, a set where a predicate is expected.** `Function.Embedding.subtype S`, `S : Set V`
+  (G2, the only site). Fix: pass `(· ∈ S)`.
+- **Shape B, an anonymous projection on a membership proof whose set is still a metavariable.** A
+  binder `fun x hx => hx.1` given as the subset or non-membership argument of a lemma whose sets
+  are fixed only by later unification (`union_eq_left.mpr`, `Set.ncard_le_ncard`,
+  `Set.ncard_insert_of_notMem`, a local `hsv _`). Error: "Invalid projection … `hx` has type
+  `?m.N.1 x`". Fix: name the set. Ascribe the binder (`fun g' (hg' : g' ∈ G.crossingEdges id) =>
+  hg'.1` at Chain:327, the same at Deficiency:2389, `(h : w ∈ N(G, y) \ {v})` at CoverageCut:273,
+  its `u` twin at 283); pass the set argument (`hsv {x ∈ V(G) | f x = f u} …`, GenericBase:195);
+  or use the named lemma (`edgesIn_subset_edgeSet _`, Nonvacuity:413). G4's six sites.
+- **Not seen anywhere in the tree:** `Set.ext`/`funext` across the old defeq, `setOf` unfolding,
+  `show`/`change` through it, simp-lemma drift. No shape needs a new mirror lemma or a wrapper.
+
+**Warnings, by class** (the whole tree, from `build8-probe`: G3 and G4 add or remove none, and
+shift no warned line). 43 positioned sites, plus W4's 22.
+
+- [ ] **W1: deprecated names, 33 sites in 20 files** (14 in the zone, in `Molecular/`:
+  `Molecule/Pencil/{Arms,Chart}.lean`, `Molecule/Pencil/MainComponent/{Configuration,Cut,Flat,
+  Lines}.lean`, `Molecule/ScrewVelocity.lean`, `RigidityMatrix/Claim612.lean`).
+  17 × `Matrix.linearIndependent_rows_iff_isUnit` → `…_row_…`; 7 × `SetLike.not_le_iff_exists`
+  and 3 × `SetLike.exists_of_lt` → `IsConcreteLE.…` (a namespace change: check dot notation); 6
+  others; no "different type" note. One `--apply` of the sweep on a full build's log, then a
+  build for line lengths.
+- [ ] **W2: deprecated imports, 6 sites in 5 files** (2 in the zone): `Mathlib.Data.Real.Basic` →
+  `Mathlib.Basic.Real.Basic` at `Mathlib/LinearAlgebra/Matrix/Rank.lean:17`,
+  `Molecular/AlgebraicInduction/PanelLayer.lean:8`, `Molecular/Molecule/ScrewVelocity.lean:9`;
+  `PebbleGame/Exec.lean:9, 10` (→ `Mathlib.Order.Sym2`, `Mathlib.Order.Prod.Lex.Basic`);
+  `Mathlib/Data/Countable/Defs.lean:8`, the mirror whose upstream file moved (*Blockers*).
 - [ ] **W3: `push Not` made no progress, 2 sites**: `Matroid/Constructions/Submodular.lean:166,
-  378` (ported from `apnelson1/Matroid`). Drop the no-op, small.
+  378` (ported from `apnelson1/Matroid`). Drop the no-op.
 - [ ] **W4: Lake's module-system warning, 22 (file, import) pairs in 13 files** ("imports … from
-  package `mathlib`, which is designed for use with the module system"), new in this Lake: mathlib
-  sets `requiresModuleSystem`. Complete already: exactly 13 of our 89 non-`module` files import
-  mathlib directly. `BodyBar/` 8 pairs (6 files), `Matroid/Constructions/` 7 (2), `Molecular/` 6
-  (4), `Nonvacuity.lean` 1. One decision (*Blockers*), then 1 line or a conversion.
+  package `mathlib`, which is designed for use with the module system"): exactly the 13 of our 89
+  non-`module` files that import mathlib directly. `BodyBar/` 8 pairs (6 files),
+  `Matroid/Constructions/` 7 (2), `Molecular/` 6 (4), `Nonvacuity.lean` 1. A choice (*Blockers*).
+- [ ] **W5: a deprecation whose target has another type, 1 site**: the narrative-bridge shim
+  `SimpleGraph.IsLaman.exists_rowIndependent_placement` (`MatroidIdentification.lean:945`). Lean
+  now checks the types; the shim's differ by design. Lean's fix is `+typeChanged` (*Blockers*).
+- [ ] **W6: deprecated syntax, 1 site**: `rwa [h'] at h0 ⊢`
+  (`Molecular/Molecule/Pencil/MainComponent/Flat.lean:202`, in the zone), "use `rw [...] at ...
+  <;> assumption`". Mechanical.
 
-**At the close:** the gate set in `notes/ToolchainBumps.md`, the "122" there corrected to the
-closure's count; the bump record; the ROADMAP row flipped; `done = true` in the queue.
+**At the close:** the gate set in `notes/ToolchainBumps.md`, its "122" corrected to the closure's
+count; shape B lifted to `TACTICS-QUIRKS.md` as a rescue pattern (symptom "Invalid projection …
+`?m.N.1 x`"); the bump record; the ROADMAP row flipped; `done = true` in the queue.
 
 ## Blockers / open questions
 
-- **W4's fix, to decide at W4.** Lake's documented opt-out is `allowNonModules = true` on our
-  `[[lean_lib]]` (one line: we mix non-`module` files with module dependencies, knowingly). The
-  fix at the source is converting files to `module`, newly possible: `Matroid` at `8ece630` has a
-  `module` header in 362 of its 365 files, which retires `LEAN-OPS.md`'s stated reason for the
-  holdouts. That is a round of its own over up to 89 files. Leaning: the one line for the bump,
-  the conversion filed as a later candidate.
+Choices, for the coordinator or the PI; none blocks G3 or G4.
+
+- **W4.** Lake's documented opt-out is `allowNonModules = true` on our `[[lean_lib]]` (one line:
+  we mix non-`module` files with module dependencies, knowingly). The fix at the source is
+  converting files to `module`, newly possible: `Matroid` at `8ece630` has a `module` header in
+  362 of its 365 files, which retires `LEAN-OPS.md`'s stated reason for the holdouts. That is a
+  round of its own over up to 89 files. Leaning: the one line for the bump, the conversion filed
+  as a later candidate.
+- **W5.** `+typeChanged` on the shim changes the documented shim pattern, so the same commit would
+  update `CombinatorialRigidity/CLAUDE.md` *Engineering conventions* and `blueprint/AUTHORING.md`
+  *Narrative-bridge corollaries*.
+- **W2's mirror.** `Mathlib/Data/Countable/Defs.lean` mirrors an upstream file that moved to
+  `Mathlib/Basic/Countable/Defs.lean`. `DESIGN.md` *Mirror directory* would move the mirror too (5
+  importers, 3 mentions in docs); the alternative keeps the path and changes only the import.
 
 ## Hand-off / next phase
 
-**Smallest next commit: G1 and G2.** Add the public imports that
-`Mathlib/Algebra/MvPolynomial/Funext.lean` needs (~2 lines) and pass a predicate at
-`Jacobs.lean:132` (1 line); rebuild to `scratch/bump-4.36/build2.log`; then add the 95 unblocked
-modules' breakage to *Checklist*, as above. If that breakage is large, the commit lands G1, G2 and
-the taxonomy with the build still RED, and the groups follow one per commit, in order. Neither
-site is in the fragility zone.
+**Smallest next commit: G3.** Rename the 9 lines in `BodyBar/KFrame.lean`,
+`BodyBar/TayTheorem.lean` and `JacobsZeroExtension.lean` (*Checklist*), rebuild, and expect the
+build to stop at G4's first site, `Molecular/Deficiency.lean:2389`, with 75 modules behind it. G4
+can ride with it: the 6 one-line sites under shape B, after which the probe's tree compiled
+(`build8-probe`, exit 0). Both are mechanical and outside the fragility zone. Then W1–W6, then the
+close gates (`notes/ToolchainBumps.md` *The gate set*).
 
 **PI action, after the push** (none taken here: no push, no `gh` writes): close PR #1 and issue
 #2, which this bump supersedes (`notes/ToolchainBumps.md` *Where this stands*).
@@ -121,7 +152,8 @@ site is in the fragility zone.
 
 - **The pins** are the PI's (2026-10-21, `notes/ToolchainBumps.md` *Where this stands*): mathlib
   at the rev `Matroid`'s tip is tested against, not the tag, the rule of the v4.34 bumps.
-- **The build is committed RED.** The visible breakage is already over ~10 sites (3 error sites,
-  37 warning sites) with 95 modules unseen, so no partial fix rides in the opening commit.
-- **The phase-note gate covers this log**: `notes/check-phase-note.py` now matches
-  `Bump-<version>.md` (its *Which files*).
+- **Committed RED, one group of fixes per commit**: the opening (`8936b312`) carried no fix, and
+  this commit only G1 and G2 (the coordinator's scope); the remaining breakage is over ~10 sites.
+- **Probe, then revert**: G3 and G4 were applied in the working tree, rebuilt to a green tree and
+  reverted, so the taxonomy covers every module while each commit stays one group.
+- **The phase-note gate covers this log**: `notes/check-phase-note.py` matches `Bump-<version>.md`.

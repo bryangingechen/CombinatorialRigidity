@@ -129,7 +129,7 @@ theorem IsLaman3.induce {G : SimpleGraph V} (hd : G.IsLaman3) (S : Set V) :
     (G.induce S).IsLaman3 := by
   classical
   intro t ht
-  set Y : Finset V := t.map (Function.Embedding.subtype S) with hY
+  set Y : Finset V := t.map (Function.Embedding.subtype (· ∈ S)) with hY
   have hcard : Y.card = t.card := Finset.card_map _
   have hsub : Sym2.map (Subtype.val : ↥S → V) '' ((G.induce S).edgesIn (↑t : Set ↥S)) ⊆
       G.edgesIn (↑Y : Set V) := by

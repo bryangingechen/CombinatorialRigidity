@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import Mathlib.Algebra.MvPolynomial.Funext
+public import Mathlib.Algebra.Polynomial.Roots
 
 /-!
 # Upstream candidate: a nonzero multivariate polynomial has a non-vanishing point
