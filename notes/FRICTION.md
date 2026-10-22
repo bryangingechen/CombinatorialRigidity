@@ -170,17 +170,6 @@ to be re-derived by re-reading entries later.
   Set.ncard_eq_toFinset_card']` and `decide`.
 - **Status:** idiom.
 
-### [open] A graph's edge set independent in the count matroid ↔ its sparsity is a two-rewrite step, now at three sites
-- **Where it bit:** RECONCILE round 3, task 21: two witnesses in `Nonvacuity.lean` reduce
-  `(countMatroid V k ℓ hℓ).Indep G.edgeSet` to `G.IsSparse k ℓ` by `rw [countMatroid_indep_iff,
-  fromEdgeSet_edgeSet]` and the carrier condition `G.edgeSet ⊆ ⊤.edgeSet`, as
-  `countMatroid_indep_iff_runPebbleGame`'s proof (`PebbleGame/Correctness.lean`) does.
-- **Friction:** a two-lemma `rw` bridging one conversion, copied rather than named.
-- **Proposed fix:** `countMatroid_indep_edgeSet_iff {G : SimpleGraph V} : (countMatroid V k ℓ
-  hℓ).Indep G.edgeSet ↔ G.IsSparse k ℓ` beside `countMatroid_indep_iff` (`CountMatroid.lean`), the
-  three sites calling it; a candidate for the round's §B screen (task 38).
-- **Status:** open.
-
 ### [idiom] `String.split` returns an iterator of slices on Lean v4.34 — `String.splitToList s p` is the `List String` form
 - **Where it bit:** RECONCILE round 3, task 19: `parsePair` (`Main.lean`) splitting on
   `Char.isWhitespace`. `s.split Char.isWhitespace` is a `Std.Iter String.Slice` (no `Repr`, no
@@ -223,17 +212,6 @@ to be re-derived by re-reading entries later.
   whose type mentions some implicit; if so, pass that implicit by name (`(n := n)`) at every
   caller that does not ascribe the result's type.
 - **Status:** idiom.
-
-### [open] `(edgeFiber e n).Nonempty` from `2 ≤ bodyBarDim n` is a three-rewrite step, now at two sites
-- **Where it bit:** RECONCILE round 3 task 15, `splitOff_isMinimalKDof_of_pos`
-  (`Induction/ForestSurgery/Reduction.lean`): the case $e = e_0$ of the minimality needs $\tilde e_0$
-  nonempty, by `rw [← Set.ncard_pos (Set.toFinite _), edgeFiber_ncard, bodyHingeMult]; omega`, the
-  line `ForestSurgery/EdgeSplitting.lean` already carries for the balanced cover's `rOf`.
-- **Friction:** a three-argument `rw` for one step, copied rather than named.
-- **Proposed fix:** `edgeFiber_nonempty (hD : 2 ≤ bodyBarDim n) (e : β) :
-  (edgeFiber e n).Nonempty` beside `edgeFiber_ncard` (`Molecular/Deficiency.lean`), the two sites
-  calling it; a candidate for the round's §B screen (task 38).
-- **Status:** open.
 
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
@@ -3294,6 +3272,30 @@ limitations. Worth a once-over so future agents don't re-litigate.
   ergonomics issue. Documented here so future agents know not to
   re-litigate it.
 - **Status:** wontfix (upstream concern).
+
+### [wontfix] A graph's edge set independent in the count matroid ↔ its sparsity is a two-rewrite step, now at three sites
+- **Where it bit:** RECONCILE round 3, task 21: two witnesses in `Nonvacuity.lean` reduce
+  `(countMatroid V k ℓ hℓ).Indep G.edgeSet` to `G.IsSparse k ℓ` by `rw [countMatroid_indep_iff,
+  fromEdgeSet_edgeSet]` and the carrier condition `G.edgeSet ⊆ ⊤.edgeSet`, as
+  `countMatroid_indep_iff_runPebbleGame`'s proof (`PebbleGame/Correctness.lean`) does.
+- **Friction:** a two-lemma `rw` bridging one conversion, copied rather than named.
+- **Proposed fix:** `countMatroid_indep_edgeSet_iff {G : SimpleGraph V} : (countMatroid V k ℓ
+  hℓ).Indep G.edgeSet ↔ G.IsSparse k ℓ` beside `countMatroid_indep_iff` (`CountMatroid.lean`), the
+  three sites calling it; a candidate for the round's §B screen (task 38).
+- **Status:** wontfix (RECONCILE round 3 task 38.1): the rewrite is one line at each of its three
+  sites, so a named lemma saves no line; the sites keep it.
+
+### [wontfix] `(edgeFiber e n).Nonempty` from `2 ≤ bodyBarDim n` is a three-rewrite step, now at two sites
+- **Where it bit:** RECONCILE round 3 task 15, `splitOff_isMinimalKDof_of_pos`
+  (`Induction/ForestSurgery/Reduction.lean`): the case $e = e_0$ of the minimality needs $\tilde e_0$
+  nonempty, by `rw [← Set.ncard_pos (Set.toFinite _), edgeFiber_ncard, bodyHingeMult]; omega`, the
+  line `ForestSurgery/EdgeSplitting.lean` already carries for the balanced cover's `rOf`.
+- **Friction:** a three-argument `rw` for one step, copied rather than named.
+- **Proposed fix:** `edgeFiber_nonempty (hD : 2 ≤ bodyBarDim n) (e : β) :
+  (edgeFiber e n).Nonempty` beside `edgeFiber_ncard` (`Molecular/Deficiency.lean`), the two sites
+  calling it; a candidate for the round's §B screen (task 38).
+- **Status:** wontfix (RECONCILE round 3 task 38.1): the rewrite is one line at each of its two
+  sites, so a named lemma saves no line; the sites keep it.
 
 ## Mirrored
 

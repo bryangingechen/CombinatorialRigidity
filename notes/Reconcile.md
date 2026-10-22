@@ -59,9 +59,12 @@ footprint), the sweep's last, after the bump to Lean v4.36.0-rc1 that the PI put
 lifted round 3's toolchain blocker of 2026-10-21. Task 38 screened `CLEANUP.md` §B (the smell
 counts, the 30 suppression sites, and the liveness screen of the dead declarations), and appended
 its fixes as tasks 38.2–38.10: seven deletions by directory, L8's re-seeding, and the suppression
-sites; `F-323`, three main results' unused `[DecidableEq β]`, is for the PI.
-**Next concrete task:** round 3's task 38.1, `CLEANUP.md` §C and the verdicts on the round's
-remaining `L` entries, docs only (each fix found becomes a task before the close).
+sites; `F-323`, three main results' unused `[DecidableEq β]`, is for the PI. Task 38.1 screened §C
+(its top ten need no restructuring) and gave each remaining `L` entry its verdict: fixes merged
+into tasks 38.3–38.6 and 38.10 or appended as tasks 38.11–38.27, by file; `F-324`, a main result's
+derivable `hD`, is for the PI.
+**Next concrete task:** round 3's task 38.2, the deletions in `CaseIII/` (then tasks 38.3–38.27 and
+the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
