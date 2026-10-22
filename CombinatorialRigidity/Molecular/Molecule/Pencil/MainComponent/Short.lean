@@ -6,63 +6,86 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
 
 /-!
-# Open ears with two, three or four interior bodies (Phase 40h SHORT)
+# Open ears with two, three or four interior bodies
 
-The ear steps of the `X₀` induction for an open ear `a − x 0 − ⋯ − x (k − 1) − b` on `V₁` with a
-few interior bodies, whose ends may be adjacent (`blueprint/src/chapter/main-component.tex`,
-`sec:main-component-short`; informal (MC-180), (MC-181) of Step MC13 and (MC-54) of Step MC14,
-§(K-main)). Every step shares CUT's contract (`MainComponent/Cut.lean`): it concludes
-`Graph.X0Attains K` at `G` from attainment at smaller graphs on the same `α`, `β`, and ends at
-`Graph.x0Attains_of_exists`. By the ear rank law
-(`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`) the step reduces to a lower bound on
-`dim(ρ + Λ)`, the relative screws of `G[V₁]` plus the ear's joins. With two interior bodies three
-independent joins suffice, given that the deficiency does not drop. With three or four interior
-bodies the step also uses the antecedent `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)`, `G` with its
-second interior body suppressed and the freed label relinked, and puts `x 1` back
-(`exists_insertion_three`, `exists_insertion_four`, `MainComponent/Lines.lean`).
+The steps of the induction on the general configuration at an open ear `a − x 0 − ⋯ − x (k − 1) − b`
+on `V₁` with two, three or four interior bodies, whose ends may be adjacent
+(`thm:pencil-x0-open-ear-two`, `thm:pencil-x0-open-ear-three`, `thm:pencil-x0-open-ear-four`,
+`sec:main-component-short`). An ear is given as in `MainComponent/Ear.lean`. The steps follow the
+scheme of `sec:main-component-cut` (`MainComponent/Cut.lean`), with the ear rank formula
+(`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, `lem:block-rank-ear`) for the count: a
+configuration over a main picture of `G`, at which `G[V₁]` has its target, has rank at least the
+target of `G` once `dim(ρ + Λ) ≥ k + 1 + def₃(G[V₁]) − def₃(G)`, the inequality `(⋆)` of the
+section, where `ρ` is the space of relative screws of `a` and `b` in `G[V₁]` and `Λ` the span of the
+joins of the ear.
 
-## Main statements
+With two interior bodies, given `def₃(G[V₁]) ≤ def₃(G)`, three independent joins of the ear give
+`(⋆)`. They are independent at one flat configuration, three joins of the closed hexagon of
+`lem:pencil-chain-span-certificates`, whose picture need not be admissible, and the heights `0` lie
+in every `L_G(q)`: `Graph.X0Attains.of_openEar_of_cert` (`MainComponent/Ear.lean`) does the rest, as
+at five or more interior bodies.
 
-* `Graph.X0Attains.of_openEar_two` — **(MC-54) at `k = 2`**, the open ear with two interior
-  bodies, under `def₃(G[V₁]) ≤ def₃(G)`.
-* `splitOff_ear_four`, `splitOff_ear_three`, `induce_splitOff_ear` — suppressing `x 1` leaves
-  the ear `a − x 0 − x 2 − x 3 − b`, resp. `a − x 0 − x 2 − b`, on `V₁`, with the same subgraph on
-  `V₁`;
-  `Graph.isLink_update_splitOff` — a selector of `G`, relinked at the freed label, orients the
-  split-off.
-* `linearIndependent_tetra_witness` — the four points of the tetrahedron witness are independent.
-* `Graph.exists_earBase_splitOff` — the base data of the steps with an antecedent (informal
-  (MC-180), (MC-181) Steps 1–2): a picture and heights at which `G[V₁]` and the antecedent attain,
-  fixed before the ear data, and what every ear datum then reads on `V₁`.
-* `Graph.X0Attains.of_openEar_splitOff` — the assembly of the steps with an antecedent: the two
-  rounds of ear data and the count, given that the suppressed body can be put back off a
+With three or four interior bodies no bound on the deficiencies is assumed. The step also uses
+`G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)`, `G` with its second interior body suppressed and the
+label `e 1` of `x 0 − x 1` relinked to `x 0 − x 2`. It has the same `G[V₁]`, an open ear on `V₁`
+with one interior body fewer, and a deficiency at most that of `G`
+(`Graph.splitOff_deficiency_le_of_eq_left`, `lem:splitoff-deficiency-reuse`). The count is against
+`G″`. With `W` the span of `ρ` and the joins of the ear of `G″`, the ear rank formula at `G″` bounds
+`dim W` below where `G[V₁]` and `G″` have their targets, and `(⋆)` then asks for no more than
+`min(dim W + 1, 6)` (`Graph.deficiency_induce_add_le_of_ear`, `lem:deficiency-ear`). Putting `x 1`
+back on a line through the point of `x 0` or of `x 2` gains the dimension, unless `W` already
+contains the star of that point, every line through it (`lem:pencil-insertion`,
+`lem:pencil-two-stars`). So it suffices that a `W` containing both stars be the whole screw space
+`Λ²K⁴`, and then `x 1` goes to the point of `x 0` (`exists_insertion_four`,
+`exists_insertion_three`, `MainComponent/Lines.lean`).
+
+At four interior bodies a `W` containing both stars contains the six joins of the points of `x 0`,
+`x 2`, `x 3` and `b`, which span `Λ²K⁴` when the four points are independent
+(`lem:pencil-tetrahedron`, the case `d = 3` of KT 2011 Lemma 2.1, pp. 651–652); the ear data are
+asked for the span, which holds at one ear datum (`linearIndependent_tetra_witness`). At three
+interior bodies the case split on `ρ` comes before the ear data. Either every relative screw pairs
+to zero with every line joining the planes of `a` and of `b`, and then `W` has dimension at most
+three and cannot contain both stars, which span at least five dimensions (`lem:pencil-bilinear`,
+`lem:pencil-two-stars`); or some `c ∈ ρ` does not, and the ear data are also asked for
+`⟨c, y₁ ∧ y₃⟩ ≠ 0`, `y₁` and `y₃` the points of `x 0` and `x 2`, written as the span bound
+`dim(ker⟨c, ·⟩ + K (y₁ ∧ y₃)) ≥ 6` and met at a pair of affine points
+(`exists_klein_liftPlane_affine_ne_zero`). Then a `W` containing both stars contains `c`, which lies
+outside them, and is `Λ²K⁴`.
+
+The configuration is chosen in two stages, the base data and then the ear data
+(`def:pencil-ear-data`, `MainComponent/EarGen.lean`). The base data are fixed first
+(`Graph.exists_earBase_splitOff`): a picture off the polynomials of the attainment at `G[V₁]` and at
+`G″` and off the main-picture polynomial of `G`, and a height of `G″` at which both have their
+targets, whose restriction to `V₁` fixes `ρ` and the rank of `G[V₁]` at every ear datum. One space
+of ear data serves `G` and `G″`, and each condition the step asks of them holds off the zero set of
+a polynomial that is nonzero at one ear datum (`lem:pencil-ear-data-picture`,
+`lem:pencil-ear-data-open`). The ear data are taken twice (`Graph.X0Attains.of_openEar_splitOff`):
+for `G″`, where it has at least its target rank and an admissible picture and `x 1` can be put back;
+then, with `x 1` put back, for `G`, off the zero sets of the span bound so reached and of the
+main-picture polynomial of `G`. The span bound asks no nonzero hinge of the ear datum where it
+holds, unlike the rank bound (`exists_mvPolynomial_le_finrank_sup_span_pointJoin`,
+`exists_mvPolynomial_le_finrank_ofNormals_bind`): the point where `x 1` is put back certifies
+`dim(ρ + Λ)`, not the rank of `G`, and may be the point of `x 0`, with a zero join.
+
+## Main results
+
+* `Graph.X0Attains.of_openEar_two`: `thm:pencil-x0-open-ear-two`, if `G` satisfies the standing
+  hypotheses, with an open ear on `V₁` with two interior bodies, its ends possibly adjacent, and
+  `def₃(G[V₁]) ≤ def₃(G)`, the general configuration of `G` attains when that of `G[V₁]` does.
+* `Graph.X0Attains.of_openEar_four` and `Graph.X0Attains.of_openEar_three`:
+  `thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`, the same at four and at three
+  interior bodies, with no bound on the deficiencies, when the general configurations of `G[V₁]` and
+  of `G″` attain.
+* `splitOff_ear_four` and `splitOff_ear_three`: steps of the two, `G″` has the open ear
+  `a − x 0 − x 2 − x 3 − b`, resp. `a − x 0 − x 2 − b`, on `V₁`; `induce_splitOff_ear`, with the
+  same `G[V₁]`; `Graph.isLink_update_splitOff` — a selector of `G`, relinked at the freed label,
+  orients the split-off.
+* `Graph.exists_earBase_splitOff` and `Graph.X0Attains.of_openEar_splitOff`: steps of the two, the
+  base data, and the two choices of ear data and the count, given that `x 1` can be put back off a
   polynomial in the ear data.
-* `Graph.X0Attains.of_openEar_four` — **(MC-180)**, the open ear with four interior bodies.
-* `Graph.X0Attains.of_openEar_three` — **(MC-181)**, the open ear with three interior bodies.
-
-## Design
-
-* **Two interior bodies need no antecedent and no ear data.** The heights `0` lie in every
-  `L_G(q)`, and a flat certificate (three joins of the closed hexagon) makes the three ear joins
-  independent there, as `Graph.X0Attains.of_openEar` does with six.
-* **The base data are fixed first, the ear data second** (`MainComponent/EarGen.lean`). One
-  parametrization, `G`'s ear data, serves `G` and `G″`: the coordinates of `x 1` are invisible to
-  `G″`, so `G″`'s rank is read at `ofNormals G″` of the same configuration.
-* **Two rounds of common non-roots, no determinant** (`Graph.X0Attains.of_openEar_splitOff`).
-  Round 1 picks ear data at which `G″` has its target rank, its picture is admissible, and the
-  suppressed body can be put back. At four interior bodies the last condition is that the six joins
-  of `x 0, x 2, x 3, b` span `Λ²K⁴`, certified at an explicit witness
-  (`linearIndependent_tetra_witness`) by the span transfer
-  `exists_mvPolynomial_le_finrank_sup_span_pointJoin`. Round 2 picks ear data of `G` off the span
-  bound for `dim(ρ + Λ)` at the reinserted point and off `G`'s main-picture polynomial.
-* **The span transfer needs no nonzero hinge at its witness; the rank transfer does.** So the
-  reinserted point certifies `dim(ρ + Λ)`, not `G`'s rank, and in the branch `W = Λ²K⁴` it may
-  collide with `x 0` (`exists_insertion_four`, `exists_insertion_three`).
-* **At three interior bodies the case split on `ρ` comes before the ear data.** If some `c ∈ ρ`
-  pairs to a nonzero value with a line joining the planes at `a` and `b`, round 1 also asks
-  `⟨c, y₁ ∧ y₃⟩ ≠ 0`, written as the span bound `dim(ker⟨c, ·⟩ + K (y₁ ∧ y₃)) ≥ 6` so that the
-  span transfer applies, with its witness at an affine pair
-  (`exists_klein_liftPlane_affine_ne_zero`).
+* `linearIndependent_tetra_witness`: a step of `thm:pencil-x0-open-ear-four`, the four independent
+  points at the ear datum where the six joins of the points of `x 0`, `x 2`, `x 3` and `b` span
+  `Λ²K⁴`.
 -/
 
 open scoped Graph
@@ -71,18 +94,20 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## The open ear with two interior bodies -/
+/-! ## The open ear with two interior bodies (`thm:pencil-x0-open-ear-two`) -/
 
-/-- **(MC-54) at `k = 2`, the open ear with two interior bodies** (`thm:pencil-x0-open-ear-two`).
-Let `G` satisfy (H), with an open ear `a − x 0 − x 1 − b` on `V₁` whose ends may be adjacent, and
-let `def₃(G[V₁]) ≤ def₃(G)`, which replaces (MC-54)'s `δ = 0` (the PI's decision 4(a),
-`notes/Phase40h.md`; `Graph.deficiency_induce_le_of_ear_of_merge` supplies it from a tight partition
-of `G[V₁]` with `a`, `b` in one part). If `X₀(G[V₁])` attains, `X₀(G)` attains; there is no
-antecedent. The heights `0` lie in every `L_G(q)`, and there the three ear joins are independent
-at a certificate picture putting `a, x 0, x 1, b` at `Y₄, Y₅, Y₀, Y₁`: three joins of the closed
-hexagon (`linearIndependent_pointJoin_certHexagon`). Independence is open in the picture, then in
-the heights, as in `Graph.X0Attains.of_openEar`. So the ear rank law adds at least `5 · 3 + 3 − 6`
-to the rank, the growth of the target when the deficiency does not drop. -/
+/-- **An open ear with two interior bodies** (`thm:pencil-x0-open-ear-two`). Let `G` satisfy the
+standing hypotheses, with an open ear `a − x 0 − x 1 − b` on `V₁` whose ends may be adjacent, and
+let `def₃(G[V₁]) ≤ def₃(G)`; `Graph.deficiency_induce_le_of_ear_of_merge`
+(`lem:deficiency-ear-merge`) gives it when some partition of `V₁` attaining `def₃(G[V₁])` puts `a`
+and `b` in one part. If the general configuration of `G[V₁]` attains, so does that of `G`.
+
+Proof. `Graph.X0Attains.of_openEar_of_cert`, with the three joins of the ear. The heights `0` lie in
+every `L_G(q)`, and at them the joins are independent at one picture (`certPicture`), which puts the
+points of `a`, `x 0`, `x 1` and `b` at `Y₄`, `Y₅`, `Y₀` and `Y₁`, and every other body's at `Y₄`:
+three joins of the closed hexagon (`linearIndependent_pointJoin_certHexagon`). Independence is open
+in the picture, then in the heights, and the ear rank formula adds at least `5 · 3 + 3 − 6 = 12` to
+the rank, no less than the growth `12 − def₃(G) + def₃(G[V₁])` of the target. -/
 theorem _root_.Graph.X0Attains.of_openEar_two [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 2 → α} {a b : α}
     {e : Fin 3 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
@@ -138,12 +163,12 @@ theorem _root_.Graph.X0Attains.of_openEar_two [Infinite K] [Finite α] [Finite �
   push_cast
   linarith
 
-/-! ## The antecedent `G″`: the ear with its second interior body suppressed -/
+/-! ## Suppressing the second interior body -/
 
 section Antecedent
 
-/-- **The antecedent of the four-body ear is a three-body ear** (`thm:pencil-x0-open-ear-four`):
-suppressing `x 1` and relinking `e 1` to `x 0 − x 2` leaves the ear
+/-- **Suppressing the second interior body of a four-body ear** (a step of
+`thm:pencil-x0-open-ear-four`): suppressing `x 1` and relinking `e 1` to `x 0 − x 2` leaves the ear
 `a − x 0 − x 2 − x 3 − b` on `V₁`, with the labels `e 0, e 1, e 3, e 4`. -/
 theorem splitOff_ear_four {G : Graph α β} {V₁ : Set α} {x : Fin 4 → α} {a b : α}
     {e : Fin 5 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
@@ -214,9 +239,9 @@ theorem splitOff_ear_four {G : Graph α β} {V₁ : Set α} {x : Fin 4 → α} {
       · exact hfe 3
     · exact absurd rfl (hfe 1)
 
-/-- **The antecedent of the three-body ear is a two-body ear** (`thm:pencil-x0-open-ear-three`):
-suppressing `x 1` and relinking `e 1` to `x 0 − x 2` leaves the ear `a − x 0 − x 2 − b` on `V₁`,
-with the labels `e 0, e 1, e 3`. -/
+/-- **Suppressing the second interior body of a three-body ear** (a step of
+`thm:pencil-x0-open-ear-three`): suppressing `x 1` and relinking `e 1` to `x 0 − x 2` leaves the ear
+`a − x 0 − x 2 − b` on `V₁`, with the labels `e 0, e 1, e 3`. -/
 theorem splitOff_ear_three {G : Graph α β} {V₁ : Set α} {x : Fin 3 → α} {a b : α}
     {e : Fin 4 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
     (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
@@ -279,7 +304,10 @@ theorem splitOff_ear_three {G : Graph α β} {V₁ : Set α} {x : Fin 3 → α} 
       · exact hfe 2
     · exact absurd rfl (hfe 1)
 
-/-- **`G[V₁]` sits inside the antecedent**, and **is its subgraph induced on `V₁`**. -/
+/-- **Splitting off an interior body keeps `G[V₁]`** (a step of `thm:pencil-x0-open-ear-four`,
+`thm:pencil-x0-open-ear-three` and `thm:pencil-x0-open-ear-two-orbit`): if `v` is an interior body
+of the ear, `u ∉ V₁`, and `e₀` links no two bodies of `V₁` in `G`, then `G[V₁]` is a subgraph of
+`G.splitOff v u w e₀`, and is its subgraph induced on `V₁`. -/
 theorem induce_splitOff_ear {G : Graph α β} {V₁ : Set α} {k : ℕ} {x : Fin k → α}
     (hcover : V(G) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁)
     {v u w : α} {e₀ : β} (hv : v ∈ Set.range x) (hu : u ∉ V₁)
@@ -306,9 +334,10 @@ theorem induce_splitOff_ear {G : Graph α β} {V₁ : Set α} {k : ℕ} {x : Fin
       exacts [h hy, h hy']
 
 open Classical in
-/-- **A selector of `G`, relinked at the new edge, is a selector of the split-off**: if `ends`
-orients every link of `G`, then `ends` with `e₀` sent to `(u, w)` orients every link of
-`G.splitOff v u w e₀`. -/
+/-- **A selector of `G`, relinked at the new edge, is a selector of the split-off** (a step of
+`thm:pencil-x0-splitoff`, `lem:pencil-splitoff-special-rank`, `thm:pencil-x0-open-ear-two-orbit`,
+`thm:pencil-x0-open-ear-three` and `thm:pencil-x0-open-ear-four`): if `ends` orients every link of
+`G`, then `ends` with `e₀` sent to `(u, w)` orients every link of `G.splitOff v u w e₀`. -/
 theorem _root_.Graph.isLink_update_splitOff {G : Graph α β} {v u w : α} {e₀ : β}
     {ends : β → α × α} (hends : ∀ f p p', G.IsLink f p p' → G.IsLink f (ends f).1 (ends f).2)
     (hl₀ : (G.splitOff v u w e₀).IsLink e₀ u w) (f : β) {p p' : α}
@@ -329,10 +358,13 @@ theorem _root_.Graph.isLink_update_splitOff {G : Graph α β} {v u w : α} {e₀
 
 end Antecedent
 
-/-! ## The tetrahedron witness -/
+/-! ## Four independent points (`thm:pencil-x0-open-ear-four`) -/
 
-/-- **Four points in the tetrahedron witness** (the base point `p_b`, one point over each of
-`p_b + (0, 1)` and `p_b + (1, 0)`, and one straight above `p_b`) are independent. -/
+/-- **Four independent points** (a step of `thm:pencil-x0-open-ear-four`, the ear datum at which the
+six joins span `Λ²K⁴`): the points over the pictures `(b₀, b₁ + 1)`, `(b₀, b₁)` and `(b₀ + 1, b₁)`
+at the heights `γ`, `b₂ + 1` and `δ`, and `(b₀, b₁, b₂, 1)`, are linearly independent for every `γ`
+and `δ`. In the step they are the points of `x 0`, `x 2`, `x 3` and `b`, with `(b₀, b₁)` the picture
+of `b` and `b₂` its height. -/
 theorem linearIndependent_tetra_witness (b₀ b₁ b₂ γ δ : K) :
     LinearIndependent K ![![b₀, b₁ + 1, γ, 1], ![b₀, b₁, b₂ + 1, 1], ![b₀ + 1, b₁, δ, 1],
       ![b₀, b₁, b₂, (1 : K)]] := by
@@ -351,14 +383,14 @@ theorem linearIndependent_tetra_witness (b₀ b₁ b₂ γ δ : K) :
   have g3 : g 3 = 0 := by rw [g0, g1, g2] at h3; simpa using h3
   intro i; fin_cases i <;> assumption
 
-/-! ## The base data of the three- and four-body steps -/
+/-! ## The base data of the steps at three and four interior bodies (`def:pencil-ear-data`) -/
 
 open Classical in
-/-- **The base data of a short ear step** (`thm:pencil-x0-open-ear-four`, the base data; informal
-(MC-180), (MC-181) Steps 1–2). Let `H = G.splitOff v u w e₀` carry an open ear `a − y − b` on
-`V₁` with at least two interior bodies, with the same subgraph on `V₁` as `G`, and let the ear data
-read the planes at `xf ∈ N_H[a]` and `xl ∈ N_H[b]`. If `G[V₁]` and `H` attain, there are base
-data `(q, z₁, la, lb)` with:
+/-- **The base data of the steps at three and four interior bodies** (a step of
+`thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`, their first stage). Let
+`H = G.splitOff v u w e₀` have an open ear `a − y − b` on `V₁` with at least two interior bodies,
+with the same subgraph on `V₁` as `G`, and let the ear data read the planes at `xf ∈ N_H[a]` and
+`xl ∈ N_H[b]`. If `G[V₁]` and `H` attain, there are base data `(q, z₁, la, lb)` with:
 * `q` off the given nonzero polynomial `Pm` and admissible for `H`;
 * over the picture of every ear datum, `z₁` a height of `G[V₁]` agreeing with the planes `la`,
   `lb` on the closed neighbourhoods of `a`, `b`;
@@ -553,24 +585,30 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
   · rw [hind, BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hC2 s)]
     exact hrk₁ s
 
-/-! ## The assembly of the three- and four-body steps -/
+/-! ## Three and four interior bodies, given that the suppressed body can be put back -/
 
 open Classical in
-/-- **The assembly of a short ear step with an antecedent** (`thm:pencil-x0-open-ear-four`,
-`thm:pencil-x0-open-ear-three`; informal (MC-180), (MC-181)). Let `G` satisfy (H), with an open
-ear `a − x 0 − ⋯ − x m − b` on `V₁`, and let `G″ = G.splitOff v u w e₀`, `G` with the interior body
-`v` suppressed and `e₀` relinked to `u − w`, carry the open ear `a − y − b` on `V₁`, with
-`def₃(G″) ≤ def₃(G)`. Suppose that `v` can be put back off a polynomial: over any base data
-`(q, z, la, lb)` and relative screws `ρ`, some nonzero polynomial in the ear data `s` has, at every
-`s` off it with `G″`'s picture admissible, an affine `x₂` such that every point assignment agreeing
-with `s`'s off `v` and putting `x₂` at `v` gives `dim(ρ + Λ_G) ≥ min(dim(ρ + Λ_{G″}) + 1, 6)`. If
-`X₀(G[V₁])` and `X₀(G″)` attain, `X₀(G)` attains. The base data are
-`Graph.exists_earBase_splitOff`'s. Round 1 picks ear data at which `G″` has its target rank and an
-admissible picture and `v` can be put back, so the ear rank law at `G″` bounds `dim(ρ + Λ_{G″})`;
-round 2 picks ear data of `G` off the resulting span bound and off `G`'s main-picture polynomial;
-the count is `Graph.deficiency_induce_add_le_of_ear`. The four-body step puts `v` back by the
-tetrahedron (`exists_insertion_four`), the three-body step by the case split on `ρ`
-(`exists_insertion_three`). -/
+/-- **The steps at three and four interior bodies, given that `v` can be put back** (a step of
+`thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`). Let `G` satisfy the standing
+hypotheses, with an open ear `a − x 0 − ⋯ − x m − b` on `V₁`, `m ≥ 2`, and let
+`G″ = G.splitOff v u w e₀`, `G` with the interior body `v` suppressed and `e₀` relinked from `u − v`
+to `u − w`, have the open ear `a − y − b` on `V₁`, with `def₃(G″) ≤ def₃(G)`. Suppose that `v` can
+be put back off a polynomial: over any base data `(q, z, la, lb)`, `z` on the plane `la` at `a` and
+on `lb` at `b`, and any subspace `ρ`, some nonzero polynomial in the ear data `s` has, at every `s`
+off it at which the picture is admissible for `G″`, an affine `x₂` such that every point assignment
+that agrees with the configuration of `s` off `v` and puts `x₂` at `v` gives
+`dim(ρ + Λ_G) ≥ min(dim(ρ + Λ_{G″}) + 1, 6)`, where `Λ_G` and `Λ_{G″}` are the spans of the joins of
+the ears of `G` and `G″`. If the general configurations of `G[V₁]` and of `G″` attain, so does that
+of `G`.
+
+Proof. The base data are `Graph.exists_earBase_splitOff`'s, at the main-picture polynomial of `G`,
+with `ρ` the relative screws of `a` and `b` in `G[V₁]`. Ear data off three polynomials give `G″` at
+least its target rank and an admissible picture, and let `v` be put back; the ear rank formula at
+`G″` bounds `dim(ρ + Λ_{G″})`, and with `v` put back the ear data of `G` meet `(⋆)`
+(`Graph.deficiency_induce_add_le_of_ear` for the bound `6`). Ear data of `G` off the polynomial of
+that span bound and off the main-picture polynomial of `G` then give `G` its target. The four-body
+step puts `v` back by the tetrahedron (`exists_insertion_four`), the three-body step by the case
+split on `ρ` (`exists_insertion_three`). -/
 theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {m : ℕ} (hm : 2 ≤ m)
     {x : Fin (m + 1) → α} {a b : α} {e : Fin (m + 2) → β} (hcover : V(G) = V₁ ∪ Set.range x)
@@ -662,7 +700,7 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
     rwa [eval_bind₁_earPicturePoly, hpicstar]
   have hne0 : ∀ {Q : MvPolynomial ((α × Fin 2) ⊕ α) K} {s}, MvPolynomial.eval s Q ≠ 0 → Q ≠ 0 :=
     fun h hQ => h (by rw [hQ, map_zero])
-  -- Round 1: a common non-root `y` of the three
+  -- the ear data of `G″`: a common non-root `sy` of the three
   obtain ⟨sy, hsy₂, hsya, hsyx⟩ := MvPolynomial.exists_eval_ne_zero₃ (hne0 hQ₂₀) (hne0 hPa'₀)
     hQx₀
   have hrank'' := hQ₂ sy hsy₂
@@ -718,7 +756,7 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
     (fun i : Fin (m + 2) => pathVertex a x b i.castSucc) (fun i => pathVertex a x b i.succ) hNt
   have hPm'₀ : MvPolynomial.eval sstar (MvPolynomial.bind₁ (earPicturePoly V₁ q') Pm) ≠ 0 := by
     rwa [eval_bind₁_earPicturePoly, hpicstar]
-  -- Round 2: a common non-root, main for `G`
+  -- the ear data of `G`: a common non-root `s₀`, main for `G`
   obtain ⟨s₀, hs₀a, hs₀b⟩ := MvPolynomial.exists_eval_ne_zero₂ (hne0 hQs₀) (hne0 hPm'₀)
   rw [eval_bind₁_earPicturePoly] at hs₀b
   have hqmain₀ := hmain _ hs₀b
@@ -749,17 +787,20 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
   push_cast at h₁ ⊢
   linarith
 
-/-! ## The open ear with four interior bodies -/
+/-! ## The open ear with four interior bodies (`thm:pencil-x0-open-ear-four`) -/
 
 open Classical in
-/-- **(MC-180), the open ear with four interior bodies** (`thm:pencil-x0-open-ear-four`). Let `G`
-satisfy (H), with an open ear `a − x 0 − x 1 − x 2 − x 3 − b` on `V₁` whose ends may be adjacent,
-and let `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)` be `G` with `x 1` suppressed, the freed label
-`e 1` relinked to `x 0 − x 2`. If `X₀(G[V₁])` and `X₀(G″)` attain, `X₀(G)` attains. The assembly
-is `Graph.X0Attains.of_openEar_splitOff`'s. `x 1` is put back at the point of
-`exists_insertion_four`, once the six joins of `x 0, x 2, x 3, b` span `Λ²K⁴`: an open condition on
-the ear data, certified at `linearIndependent_tetra_witness`. `def₃(G″) ≤ def₃(G)` is
-`Graph.splitOff_deficiency_le_of_eq_left`. -/
+/-- **An open ear with four interior bodies** (`thm:pencil-x0-open-ear-four`). Let `G` satisfy the
+standing hypotheses, with an open ear `a − x 0 − x 1 − x 2 − x 3 − b` on `V₁` whose ends may be
+adjacent, and let `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)` be `G` with `x 1` suppressed, the freed
+label `e 1` relinked to `x 0 − x 2`. If the general configurations of `G[V₁]` and of `G″` attain, so
+does that of `G`.
+
+Proof. `Graph.X0Attains.of_openEar_splitOff`, with the ear `a − x 0 − x 2 − x 3 − b` of `G″`
+(`splitOff_ear_four`) and `def₃(G″) ≤ def₃(G)` (`Graph.splitOff_deficiency_le_of_eq_left`). `x 1` is
+put back at the point of `exists_insertion_four` once the six joins of the points of `x 0`, `x 2`,
+`x 3` and `b` span `Λ²K⁴`: a condition on the ear data that holds off the zero set of a polynomial
+nonzero at the ear datum whose four points are those of `linearIndependent_tetra_witness`. -/
 theorem _root_.Graph.X0Attains.of_openEar_four [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 4 → α} {a b : α}
     {e : Fin 5 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
@@ -889,20 +930,25 @@ theorem _root_.Graph.X0Attains.of_openEar_four [Infinite K] [Finite α] [Finite 
   rw [Matrix.range_empty, Set.union_empty]
   exact hins
 
-/-! ## The open ear with three interior bodies -/
+/-! ## The open ear with three interior bodies (`thm:pencil-x0-open-ear-three`) -/
 
 open Classical in
-/-- **(MC-181), the open ear with three interior bodies** (`thm:pencil-x0-open-ear-three`). Let
-`G` satisfy (H), with an open ear `a − x 0 − x 1 − x 2 − b` on `V₁` whose ends may be adjacent, and
-let `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)` be `G` with `x 1` suppressed, the freed label `e 1`
-relinked to `x 0 − x 2`. If `X₀(G[V₁])` and `X₀(G″)` attain, `X₀(G)` attains. The assembly is
-`Graph.X0Attains.of_openEar_splitOff`'s, with `G″`'s ear `a − x 0 − x 2 − b`. Over the base data,
-the relative screws `ρ` either all pair to zero with every line joining the planes at `a` and `b`
-(`not_star_sup_star_le_of_klein`), or one, `c`, does not; then `⟨c, y₁ ∧ y₃⟩ ≠ 0` is a further
-open condition on the ear data, a span bound against the kernel of `⟨c, ·⟩` certified at an affine
-pair (`exists_klein_liftPlane_affine_ne_zero`), under which a span holding both stars is `Λ²K⁴`
-(`eq_top_of_star_sup_star_le`). `x 1` is put back at the point of `exists_insertion_three`;
-`def₃(G″) ≤ def₃(G)` is `Graph.splitOff_deficiency_le_of_eq_left`. -/
+/-- **An open ear with three interior bodies** (`thm:pencil-x0-open-ear-three`). Let `G` satisfy the
+standing hypotheses, with an open ear `a − x 0 − x 1 − x 2 − b` on `V₁` whose ends may be adjacent,
+and let `G″ = G.splitOff (x 1) (x 0) (x 2) (e 1)` be `G` with `x 1` suppressed, the freed label
+`e 1` relinked to `x 0 − x 2`. If the general configurations of `G[V₁]` and of `G″` attain, so does
+that of `G`.
+
+Proof. `Graph.X0Attains.of_openEar_splitOff`, with the ear `a − x 0 − x 2 − b` of `G″`
+(`splitOff_ear_three`) and `def₃(G″) ≤ def₃(G)` (`Graph.splitOff_deficiency_le_of_eq_left`). `x 1`
+is put back at the point of `exists_insertion_three`, which asks that the span `W` of `ρ` and the
+joins of the ear of `G″` be `Λ²K⁴` whenever it contains every line through the point `y₁` of `x 0`
+and every line through the point `y₃` of `x 2`, the two stars. Over the base data, either every
+relative screw pairs to zero with every line joining the planes `la` at `a` and `lb` at `b`, and
+then `W` does not contain both stars (`not_star_sup_star_le_of_klein`); or some `c ∈ ρ` does not,
+and then `⟨c, y₁ ∧ y₃⟩ ≠ 0` is a further condition on the ear data, a span bound against the kernel
+of `⟨c, ·⟩` that holds at a pair of affine points (`exists_klein_liftPlane_affine_ne_zero`), under
+which a `W` containing both stars is `Λ²K⁴` (`eq_top_of_star_sup_star_le`). -/
 theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 3 → α} {a b : α}
     {e : Fin 4 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
@@ -960,7 +1006,7 @@ theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite
     fun s => earConfig_first s (hxV₁ 0)
   have hpt2 : ∀ s, pt s (x 2) = liftPlane lb ![s (Sum.inl (x 2, 0)), s (Sum.inl (x 2, 1)), 1] :=
     fun s => earConfig_last s (hxV₁ 2) x02.symm
-  -- Step 4: the case split on `ρ`, made before the ear data
+  -- the case split on `ρ`, made before the ear data
   have hextra : ∃ Qx : MvPolynomial ((α × Fin 2) ⊕ α) K, Qx ≠ 0 ∧
       ∀ s, MvPolynomial.eval s Qx ≠ 0 → LinearIndependent K ![pt s (x 0), pt s (x 2)] →
         star (pt s (x 0)) ⊔ star (pt s (x 2)) ≤ ρ ⊔ Submodule.span K
@@ -969,7 +1015,8 @@ theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite
         ρ ⊔ Submodule.span K {pointJoin (pt s a) (pt s (x 0)),
           pointJoin (pt s (x 0)) (pt s (x 2)), pointJoin (pt s (x 2)) (pt s b)} = ⊤ := by
     by_cases hB : ∀ c ∈ ρ, ∀ u v, kleinLin (pointJoin (liftPlane la u) (liftPlane lb v)) c = 0
-    · -- Case B: `dim W ≤ 3`, so `W` holds neither both stars
+    · -- every relative screw pairs to zero with every line joining the two planes: `dim W ≤ 3`, so
+      -- `W` does not contain both stars
       refine ⟨1, one_ne_zero, fun s _ hli hle => absurd hle ?_⟩
       have hset : ({pointJoin (pt s a) (pt s (x 0)), pointJoin (pt s (x 0)) (pt s (x 2)),
           pointJoin (pt s (x 2)) (pt s b)} : Set (ScrewSpace K 2)) = Set.range
@@ -985,7 +1032,8 @@ theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite
         rw [hpt0, hpt2, ← hl]; exact pointJoin_liftPlane_mem_planeLines _ _ _
       · change pointJoin (pt s (x 2)) (pt s b) ∈ _
         rw [hpt2, hptb, ← hl]; exact pointJoin_liftPlane_mem_planeLines _ _ _
-    · -- Case A: some `c ∈ ρ` pairs to a nonzero value with the join `y₁ ∧ y₃`
+    · -- some `c ∈ ρ` pairs to a nonzero value with a line joining the two planes: ask
+      -- `⟨c, y₁ ∧ y₃⟩ ≠ 0` of the ear data
       push Not at hB
       obtain ⟨c, hc, u₀, v₀, hne⟩ := hB
       obtain ⟨u, v, hu, hv, hne'⟩ := exists_klein_liftPlane_affine_ne_zero hne
@@ -1025,7 +1073,7 @@ theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite
         omega
       exact eq_top_of_star_sup_star_le hli (Submodule.mem_sup_left hc) hks hle
   obtain ⟨Qx, hQx₀, hQx⟩ := hextra
-  -- Step 3: `x 1` is put back next to `y₁` or `y₃`, or at `y₁` when `W = Λ²K⁴`
+  -- `x 1` is put back next to `y₁` or `y₃`, or at `y₁` when `W = Λ²K⁴`
   refine ⟨Qx, hQx₀, fun s hs hadm => ?_⟩
   obtain ⟨x₂, hx₂3, hins⟩ := exists_insertion_three ρ (pt s a) (pt s (x 0)) (pt s (x 2))
     (pt s b) rfl rfl (hQx s hs

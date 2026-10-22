@@ -2621,7 +2621,11 @@ declaration's name as its header writes it:
   `Pencil/MainComponent/EarGen.lean`, the configuration points of ear data as the point function
   `ofNormals` reads (`earConfig`) and the witness's nonzero hinges at the links of `H`, at the labels
   where the selector gives a link (`exists_mvPolynomial_le_finrank_ofNormals_bind`), kept as they
-  stand, moved to the phase (task 37.15).
+  stand, moved to the phase (task 37.15); and in `Pencil/MainComponent/Short.lean`, the selector of
+  `G` relinked at the freed label (`Graph.isLink_update_splitOff`: it orients every link of the
+  split-off; and the header's bullet on it) and the ear datum of the base data at which `H`, with
+  the selector relinked, has nonzero hinges and its target rank (`Graph.exists_earBase_splitOff`),
+  kept as they stand but for their leads, moved to the phase (task 37.16).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -5923,6 +5927,31 @@ declaration's name as its header writes it:
   `lake lint` reports none of them.
   *Evidence:* read (the statements and bodies).
   *Found:* RECONCILE round 3 task 37.15.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-316** · L · repeated derivations and derivable hypotheses in
+  `Molecular/Molecule/Pencil/MainComponent/Short.lean`. `splitOff_ear_four` and `splitOff_ear_three`
+  are one proof (68 and 61 lines), the second with one interior body fewer, which one lemma at any
+  number of interior bodies from three would serve. `Graph.X0Attains.of_openEar_four` and
+  `Graph.X0Attains.of_openEar_three` derive the same `hdeg2` (the second interior body has degree
+  two; 14 and 12 lines, and a third time in `Graph.X0Attains.of_openEar_two_of_splitOff`,
+  `Orbit.lean`) and close by the same reindexing of the joins of the two ears (`e4` and `e5`, `e3`
+  and `e4`, about 25 lines each). `Graph.exists_earBase_splitOff` proves its two neighbourhood
+  conjuncts, at `a` and at `b`, by one argument with the ends swapped (7 lines each), and restricts
+  the selector to `G[V₁]` (`hendsI`) as `Graph.X0Attains.of_openEar_of_cert` (`Ear.lean`),
+  `Graph.X0Attains.of_openEar_one` and `Graph.X0Attains.of_openEar_two_of_splitOff` (`Orbit.lean`)
+  do. The body count `hcard` of `Graph.X0Attains.of_openEar_splitOff`, `|V(H)| = |V₁| + k` when
+  `V(H) = V₁ ∪ range z` with `z` injective and off `V₁`, is derived again in
+  `Graph.X0Attains.of_openEar_of_cert`, three times in `Orbit.lean`
+  (`Graph.X0Attains.of_openEar_one` once, `Graph.X0Attains.of_openEar_two_of_splitOff` twice) and in
+  `Graph.X0Attains.of_splitOff` (`SplitOff.lean`). Derivable hypotheses: the `hle` of
+  `Graph.exists_earBase_splitOff` follows from its `hcover` and `hind`, and the `hxfa` and `hxlb` of
+  `Graph.X0Attains.of_openEar_splitOff` from its `hxV₁`, `ha` or `hb`, `hpath`, `hv`, `hl₀`, `hxf`
+  or `hxl`, and `hvf` or `hvl` (the first and the last edge of the ear avoid `v`, so they stay links
+  of `G″`). `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: `hle`, `hxfa` and `hxlb`
+  derived from the others, on the standard axioms or fewer
+  (`scratch/reconcile-lean/t3716/Hyps-t3716.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.16.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
