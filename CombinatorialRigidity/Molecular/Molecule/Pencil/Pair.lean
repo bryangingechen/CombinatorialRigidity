@@ -7,36 +7,37 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.ArmsAssembly
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 
 /-!
-# The conditioned-pair arm re-derivations and successor (Phase 39 PENCIL, W5-L5)
+# The conditioned pair at a loop, on at most two bodies and at a cut edge
 
-New leaf, opened for the W5-L5 milestone (`notes/Phase39.md` *Hand-off*,
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5): the W3-L7 successor
-`pencilPair_of_arms` (spiked in the design doc; red node
-`thm:pencil-conditional-realization-pair` in `pencil.tex`) needs each of
-`Graph.pencil_reduction`'s loop/base/cut arms re-derived against the `PencilPair`
-conditioned-pair motive (`Molecule/Pencil/Motive.lean`), since the bare-motive arms
-(`Molecule/Pencil/Arms.lean`, W3) only ever produce/consume `HasPencilRealization`, not the
-generic conjunct the pair's first component asks for. Builds on `Molecule/Pencil/Motive.lean`
-(hence transitively on `Statement.lean`/`Arms.lean`); does not need the grade-0 chart
-(`Chart.lean`/`Engine.lean`/`Reseed.lean`) — the arm re-derivations below are pure
-graph-surgery + the motive's own vacuity/forgetful facts, not chart constructions.
+Steps of `lem:pencil-pair-loop-base-cut` (`sec:pencil-nondegenerate`): the loop, base and cut-edge
+cases of the reduction of `sec:pencil-reduction` for the conditioned pair (`PencilPair`). In each
+case its pencil realization at the deficiency rank is that of the bare case (`lem:pencil-loop-case`,
+`lem:pencil-base-case`, `lem:pencil-cut-case`; `Arms.lean`, `ArmsAssembly.lean`). At a loop the
+other two conjuncts hold vacuously, as a graph with a loop is neither simple nor
+nondegeneracy-feasible. On at most two bodies a simple graph has at most one edge, and a direct
+construction gives it a generic realization. At a cut edge this file gives the generic conjunct when
+no edge crosses the cut, and, when one edge crosses it, from generic realizations of the two sides
+each with the far end of the edge, for the case in which both sides have at least two bodies.
+`Pair2.lean` gives the case of a single body on one side, and puts the cut-edge case together. No
+step here uses the chart of `Chart.lean`; `Pair2.lean` does, through `lem:pencil-generic-steer`.
 
-This leaf landed the loop arm first (free, per the design doc: a loop already breaks
-`PencilNondegFeasible`, so its generic obligation is vacuous). The base arm's parallel-class
-sub-case was planned as vacuous too ("nondegeneracy-infeasible") but that plan is **refuted**
-below — see §"a base-arm finding" — surfacing a genuine blocker for `PencilPair`'s own generic
-conjunct, **resolved 2026-07-24 by the user's (b′) adjudication**: `PencilPair` is restated
-(`Molecule/Pencil/Motive.lean`) to condition the generic conjunct on `G.Simple` in addition to
-`PencilNondegFeasible`, exactly KT Theorem 5.5's own two-layer conditioning, restoring the base
-arm's parallel-class vacuity via the new `not_simple_of_parallel` helper — wired into the landed
-base-arm producer `pencilPair_of_ncard_le_two` below. The cut arm's generic half is **blocked at
-design level** (the 2026-07-24 cut-arm finding: its side-IH consumption is gapped both ways at a
-hub-status-changing cut endpoint — `notes/Phase39.md` *Blockers*; the route-neutral restriction
-infra lives in `Motive.lean`), and the successor assembly remains open — see `notes/Phase39.md`
-*Hand-off*.
+Two bodies joined by two edges are nondegeneracy-feasible
+(`exists_isNondegPencilRealization_parallel_pair`), and none of their nondegenerate realizations
+attains the deficiency rank. So the conditioned pair asks for a generic realization only of a graph
+that is simple, the condition of KT Theorem 5.5, as well as nondegeneracy-feasible (the remark
+before `def:pencil-conditioned-pair`).
 
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 leaf decomposition"), and
-`blueprint/src/chapter/pencil.tex`.
+## Main results
+
+* `pencilPair_of_isLoopAt`: the conditioned pair at a loop.
+* `pencilPair_of_ncard_le_two`: the conditioned pair on at most two bodies.
+* `hasGenericPencilRealization_of_cutEdges_eq_empty`: the generic conjunct at a cut that no edge
+  crosses.
+* `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`: the generic
+  conjunct at a cut that one edge crosses, from generic realizations of the two sides, each with the
+  far end of the edge.
+* `exists_isNondegPencilRealization_parallel_pair`: two bodies joined by two edges are
+  nondegeneracy-feasible.
 -/
 
 open scoped Matrix
@@ -47,21 +48,14 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## W5-L5: the loop arm against the conditioned-pair motive (Phase 39 PENCIL) -/
+/-! ## At a loop -/
 
-/-- **The loop arm of the pencil reduction, conditioned-pair motive** (Phase 39 W5-L5; the
-`PencilPair` analogue of the bare-motive `hasPencilRealization_of_isLoopAt`, W3-L3). Let `e` be a
-loop of `G` at `v`. If `G ＼ {e}` satisfies the conditioned pair at rank `n`, so does `G`: the bare
-half is `hasPencilRealization_of_isLoopAt` applied to the recursive bare half unchanged, and the
-generic half is **free** — `G` has a loop at `v`, so `not_pencilNondegFeasible_of_isLoopAt` already
-refutes `PencilNondegFeasible K G`, making the implication `G.Simple → PencilNondegFeasible K G →
-HasGenericPencilRealization K n G` vacuously true without consulting `hrec` or the `G.Simple`
-hypothesis at all (`¬ G.Simple` is also available at a loop, but the feasibility discharge already
-suffices). This is exactly the design doc's "loop arm free" verdict
-(`notes/Phase39-design.md` §"W5 leaf decomposition" L5), **one-line fixed 2026-07-24** for the
-(b′) restatement of `PencilPair` (an extra, unused `G.Simple` binder). The **third conjunct**
-(adjacent-distinct, added 2026-09-16 by the (α) decision) is free for the same reason at one
-remove: a loop is not simple (`Graph.Simple.toLoopless`), so that implication is vacuous too. -/
+/-- **The conditioned pair at a loop** (a step of `lem:pencil-pair-loop-base-cut`, case (1)): let
+`e` be a loop of `G` at `v`. If `G ＼ {e}` satisfies `PencilPair K n`, so does `G`. Its pencil
+realization at the deficiency rank comes from that of `G ＼ {e}` (`hasPencilRealization_of_isLoopAt`,
+`lem:pencil-loop-case`), and the other two conjuncts hold vacuously: `G` is not
+nondegeneracy-feasible (`not_pencilNondegFeasible_of_isLoopAt`), and not simple
+(`Graph.Simple.toLoopless`). -/
 theorem pencilPair_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
     (hloop : G.IsLoopAt e v) (hrec : PencilPair K n (G ＼ ({e} : Set β))) :
     PencilPair K n G :=
@@ -69,51 +63,28 @@ theorem pencilPair_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
     fun hSimple => absurd hloop (by have := hSimple.toLoopless; exact G.not_isLoopAt e v),
     hasPencilRealization_of_isLoopAt hloop hrec.2.2⟩
 
-/-! ## W5-L5: a base-arm finding — parallel classes are NOT nondegeneracy-infeasible, resolved via
-(b′) (Phase 39 PENCIL)
+/-! ## Two bodies joined by two edges
 
-The design doc's L5 spike (`notes/Phase39-design.md` §"W5 leaf decomposition") planned the base
-arm's parallel-class sub-case (`2 ≤ E(G).ncard` at `V(G).ncard = 2`) as vacuous — "parallel classes
-are nondegeneracy-infeasible" — mirroring `PencilNondegFeasible`'s own docstring ("refuted … at any
-graph with a `≥ 2`-fold parallel class between two hubs"). Re-deriving against the CURRENT
-`IsNondegPencilRealization` (the four-conjunct, W5-L4-restated motive) surfaces that this does
-**not** hold at the parallel *pair* itself (`E(G).ncard = 2`, the base arm's own instance, where
-neither endpoint is even a hub): `exists_isNondegPencilRealization_parallel_pair` below is a
-genuine, compiler-checked witness of `PencilNondegFeasible` there, using two independent panels and
-two independent concurrency points (`exists_extensor_two_pencils`) — nothing forces the panels or
-points together at this arity. This directly refutes vacuity for the base arm's own case.
+Two bodies `x ≠ y` joined by two edges are nondegeneracy-feasible: they get independent normals and
+independent points, each point orthogonal to both normals, and both edges get one hinge in both
+panels through both points (`exists_extensor_two_pencils`). Neither body is a hub, and each closed
+neighbourhood is `{x, y}`. Yet none of their nondegenerate realizations attains the deficiency rank,
+`6`: the points of the two bodies are independent, so the hinge of each edge, a nonzero extensor
+through both, is a nonzero multiple of their join
+(`exists_smul_eq_extensor_of_extensorThroughPoint_pair`), and the rows of the two edges span at most
+`screwDim 2 - 1 = 5` dimensions. The base case (`hasPencilRealization_of_ncard_le_two`) attains the
+rank there with the same point at both bodies. So feasibility alone does not give a generic
+realization, and `PencilPair` asks for one only of a graph that is also simple, which two bodies
+joined by two edges are not (`not_simple_of_parallel`). -/
 
-The tension this creates for the base arm's generic obligation (flagged, not resolved, here — see
-`notes/Phase39.md` *Blockers*): achieving the *full* target rank `D = 6` at a parallel class needs
-**two independent-direction hinges** (one alone gives at most `D − 1 = 5`, since
-`hingeRowBlock e = (span {supportExtensor e}).dualAnnihilator` depends only on the extensor's own
-line), and two edges both landing "through" the same two points `pt_u, pt_v` are forced onto the
-*same* line whenever `pt_u ≠ pt_v` (a decomposable `2`-extensor containing two given independent
-vectors is their span, uniquely) — so two independent hinges through the same pair of bodies force
-`pt_u = pt_v` (up to scale), which is exactly what `IsNondegPencilRealization`'s second conjunct
-(adjacent-point distinctness) forbids. The base arm's own
-`hasPencilRealization_of_ncard_le_two` (`ArmsAssembly.lean`) confirms this from the other side: its
-full-rank (`D = 6`) parallel-pair construction uses
-`point := fun _ => q₀`, the *same* point at both bodies. So `HasGenericPencilRealization` looks
-unsatisfiable at any `≥ 2`-fold parallel class, while `PencilNondegFeasible` is witnessed there —
-the base arm's `PencilNondegFeasible → HasGenericPencilRealization` obligation cannot be discharged
-as "vacuous" under feasibility-only conditioning. **Resolved 2026-07-24 by the user's (b′)
-adjudication:** `PencilPair`'s generic conjunct is restated (`Molecule/Pencil/Motive.lean`) to
-require `G.Simple` as well, exactly KT Theorem 5.5's own conditioning at parallel classes — a
-parallel pair is never simple (two edges linking the same pair, `not_simple_of_parallel`), so the
-base arm's parallel-class sub-case is vacuous again, this time by non-simplicity rather than by
-infeasibility. The witness below stays exactly as landed: it is now the documented proof that
-feasibility alone could not have replaced `G.Simple` as the conditioning; `not_simple_of_parallel`
-is wired into the base-arm producer `pencilPair_of_ncard_le_two` below. -/
-
-/-- **A parallel pair is nondegeneracy-feasible** (Phase 39 W5-L5; the base-arm finding above,
-compiler-checked): two edges `e ≠ f` both linking `x ≠ y`, with `V(G) = {x, y}` and
-`E(G) = {e, f}`, carry a genuine `IsNondegPencilRealization` — two independent panels `n₀, n₁` and
-two independent concurrency points `q₀ ∈ n₀^⊥, q₁ ∈ n₁^⊥` in the cross-incident position
-`exists_extensor_two_pencils` needs, both edges sharing the resulting hinge `C`. Neither `x` nor `y`
-needs to be a pencil hub for this: `closedHubNbhd v ⊆ V(G) = {x, y}` regardless (a pencil hub is in
-particular a vertex of `G`), and the two normals are already independent, so the third conjunct
-holds by `LinearIndepOn.mono` alone; likewise the fourth, from the two independent points. -/
+/-- **Two bodies joined by two edges are nondegeneracy-feasible** (the remark before
+`def:pencil-conditioned-pair`): if `V(G) = {x, y}` and `E(G) = {e, f}`, with `x ≠ y`, `e ≠ f` and
+both edges linking `x` and `y`, then `G` has a nondegenerate pencil realization. The normals at `x`
+and `y` are `n₀ = Pi.single 0 1` and `n₁ = Pi.single 1 1`, the points `q₀ = Pi.single 2 1` and
+`q₁ = Pi.single 3 1`, each orthogonal to both normals, and both edges get the nonzero hinge `C` of
+`exists_extensor_two_pencils`, in both panels and through both points. The two points are
+independent, and so are the two normals; each closed hub-neighbourhood and closed neighbourhood lies
+in `V(G) = {x, y}`, so `LinearIndepOn.mono` gives the last two conditions. -/
 theorem exists_isNondegPencilRealization_parallel_pair
     {G : Graph α β} {x y : α} {e f : β}
     (hxy : x ≠ y) (hef : e ≠ f) (hVG : V(G) = {x, y}) (hEG : E(G) = {e, f})
@@ -141,7 +112,7 @@ theorem exists_isNondegPencilRealization_parallel_pair
   have hnormaly : normal y = n₁ := ite_eq_right (Ne.symm hxy)
   have hpointx : point x = q₀ := ite_eq_left rfl
   have hpointy : point y = q₁ := ite_eq_right (Ne.symm hxy)
-  -- A unary bundle: every fact any single body in `{x, y}` needs, sidestepping which-side-is-which.
+  -- the facts each body of `{x, y}` needs, at either end of a link
   have hmem : ∀ v' ∈ ({x, y} : Set α), normal v' ≠ 0 ∧ ExtensorInPanel C (normal v') ∧
       point v' ≠ 0 ∧ point v' ⬝ᵥ normal v' = 0 ∧ ExtensorThroughPoint C (point v') := by
     rintro v' (rfl | rfl)
@@ -151,7 +122,7 @@ theorem exists_isNondegPencilRealization_parallel_pair
         hpointy ▸ hnormaly ▸ h11, hpointy ▸ hCq1⟩
   set F : BodyHingeFramework K 2 α β := { graph := G, supportExtensor := fun _ => C } with hF
   have hFg : F.graph = G := rfl
-  -- Every link's endpoints lie in `{x, y}` (`hVG`), regardless of which specific edge/order.
+  -- the ends of every link lie in `{x, y}` (`hVG`)
   have hend : ∀ e' u v', G.IsLink e' u v' → u ∈ ({x, y} : Set α) ∧ v' ∈ ({x, y} : Set α) :=
     fun _ u v' hl => ⟨hVG ▸ hl.left_mem, hVG ▸ hl.right_mem⟩
   refine ⟨F, normal, point,
@@ -162,8 +133,8 @@ theorem exists_isNondegPencilRealization_parallel_pair
       fun e' u v' hl =>
         ⟨(hmem u (hend e' u v' hl).1).2.2.2.2, (hmem v' (hend e' u v' hl).2).2.2.2.2⟩⟩,
     ?_, ?_, ?_⟩⟩
-  · -- Adjacent point distinctness: `{u, v'} = {x, y}` (edge uniqueness), so `point` is LI
-    -- on the pair (either order).
+  · -- the points of the two ends of a link: the link is `e` or `f`, from `x` to `y` or from `y` to
+    -- `x`
     have hLIxy : LinearIndependent K ![q₀, q₁] := by
       rw [LinearIndependent.pair_iff]
       refine fun c d hcd => ⟨?_, ?_⟩
@@ -180,7 +151,7 @@ theorem exists_isNondegPencilRealization_parallel_pair
     · rcases hl_f.isLink_iff.mp hl with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
       · rw [hpointx, hpointy]; exact hLIxy
       · rw [hpointx, hpointy]; exact hLIyx
-  · -- Hub-normal independence: `closedHubNbhd v' ⊆ V(G) = {x, y}`, where `normal` is already LI.
+  · -- the normals on a closed hub-neighbourhood, which lies in `V(G) = {x, y}`
     intro v' _
     have hsub : G.closedHubNbhd v' ⊆ ({x, y} : Set α) := fun w hw => hVG ▸ hw.1.1
     refine LinearIndepOn.mono ?_ hsub
@@ -188,7 +159,7 @@ theorem exists_isNondegPencilRealization_parallel_pair
     refine fun c d hcd => ⟨?_, ?_⟩
     · simpa [hnormalx, hnormaly, hn₀def, hn₁def] using congr_fun hcd 0
     · simpa [hnormalx, hnormaly, hn₀def, hn₁def] using congr_fun hcd 1
-  · -- Non-hub closed-neighbourhood independence: `closedNbhd v' ⊆ V(G) = {x, y}`.
+  · -- the points on a closed neighbourhood, which lies in `V(G) = {x, y}`
     intro v' hv' _
     have hsub : G.closedNbhd v' ⊆ ({x, y} : Set α) := hVG ▸ Graph.closedNbhd_subset_vertexSet hv'
     refine LinearIndepOn.mono ?_ hsub
@@ -197,33 +168,23 @@ theorem exists_isNondegPencilRealization_parallel_pair
     · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 2
     · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 3
 
-/-! ## W5-L5: the base arm against the (b′) conditioned-pair motive (Phase 39 PENCIL)
+/-! ## On at most two bodies
 
-`pencilPair_of_ncard_le_two` mirrors the bare-motive `hasPencilRealization_of_ncard_le_two`
-(W3-L5, `ArmsAssembly.lean`)'s own three-way case split (edgeless / single edge / `≥ 2`-fold
-parallel class), reusing its bare half verbatim for `PencilPair`'s **last** conjunct. The generic
-conjunct (`G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G`) dispatches on
-the same three cases: the parallel class is vacuous by `not_simple_of_parallel` (the case
-`G.Simple` excludes); the edgeless and single-edge cases are genuine producers, each needing a
-nondegenerate (not merely bare) witness — the edgeless graph gets one for free (every
-`closedHubNbhd`/`closedNbhd` collapses to `⊆ {v}`, so the bare arm's own constant `n₀`/`q₀` choice
-already satisfies `IsNondegPencilRealization`), while the single edge needs the same
-distinct-panel/distinct-point technique as `exists_isNondegPencilRealization_parallel_pair` above
-(one edge instead of two, so no edge-order dispatch), then the identical
-`exists_independent_rigidityRows_of_edge` rank sandwich the bare arm's own single-edge branch uses
-(it works for *any* nonzero support extensor, not a specific one). **Since 2026-09-16** that
-producer is split out as
-`hasGenericPencilRealization_of_ncard_le_two` (it never used the feasibility hypothesis), and
-`PencilPair`'s new adjacent-distinct conjunct forgets from it — so this arm needs no new
-construction and the *bare* arm's coincident single-edge witness stays untouched. -/
+A simple graph on at most two bodies has a generic pencil realization
+(`hasGenericPencilRealization_of_ncard_le_two`), case by case on its edges, as in the base case
+(`hasPencilRealization_of_ncard_le_two`, `ArmsAssembly.lean`). With no edge, the construction of the
+base case, the same normal and point at every body, is nondegenerate, as each closed neighbourhood
+is the body alone. With one edge, the two bodies get independent normals and independent points, as
+in the previous section, and the rank is that of the base case, whose argument holds for any nonzero
+hinge. A simple graph has no two edges joining the same two bodies (`not_simple_of_parallel`). The
+conditioned pair follows (`pencilPair_of_ncard_le_two`), its adjacent-distinct conjunct from the
+generic one (`hasDistinctPencilRealization_of_generic`). -/
 
-/-- **A simple multigraph on at most two bodies has a generic pencil realization** (Phase 39
-W5-L5, the base arm's own producer; **extracted from `pencilPair_of_ncard_le_two` 2026-09-16** so
-that the conditioned pair's new adjacent-distinct conjunct can reuse it). The dispatch on `E(G)`
-mirrors the bare arm's: edgeless and single-edge are genuine nondegenerate producers, and any
-`≥ 2`-fold parallel class is excluded outright by `G.Simple` (`not_simple_of_parallel`). Note the
-`PencilNondegFeasible` hypothesis of `PencilPair`'s generic conjunct is *not* needed here —
-simplicity alone suffices at this arity. -/
+/-- **A simple graph on at most two bodies has a generic pencil realization** (a step of
+`lem:pencil-pair-loop-base-cut`, case (2)): every simple loopless multigraph `G` on one or two
+bodies has a generic pencil realization at `n = 3`, case by case on its edges, as the section header
+says. It does not ask that `G` be nondegeneracy-feasible, as the generic conjunct of `PencilPair`
+may. -/
 theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
     (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) (hSimple : G.Simple) :
     HasGenericPencilRealization K 3 G := by
@@ -231,7 +192,7 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
   have := hloop
   have hb6 : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   by_cases hE : E(G) = ∅
-  · -- Edgeless: nondegenerate for free (every `closedHubNbhd`/`closedNbhd` collapses to `⊆ {v}`).
+  · -- no edge: the same normal and point at every body; each closed neighbourhood lies in `{v}`
     set n₀ : Fin 4 → K := Pi.single 0 1 with hn₀
     have hn₀_ne : n₀ ≠ 0 := by
       intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
@@ -268,7 +229,7 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
       · exact absurd hlink (hnoLink e v w)
     · rw [hfinrank, Graph.deficiency_of_edgeSet_empty hE, hb6]
       push_cast; ring
-  · -- Nonempty edges force `|V(G)| = 2` (a single vertex would be loop-free ⟹ edgeless).
+  · -- an edge: `|V(G)| = 2`, as an edge on a single body would be a loop
     have hE' : E(G).Nonempty := Set.nonempty_iff_ne_empty.mpr hE
     have hVpos : 0 < V(G).ncard := hne.ncard_pos
     have hV2eq : V(G).ncard = 2 := by
@@ -297,8 +258,7 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
       · exact hlink.symm
       · exact absurd rfl hlink.ne
     rcases (show E(G).ncard = 1 ∨ 2 ≤ E(G).ncard by have := hE'.ncard_pos; omega) with hE1 | hge2
-    · -- Single edge: a genuine nondegenerate producer at rank `D - 1 = 5`, distinct panels/points
-      -- mirroring `exists_isNondegPencilRealization_parallel_pair` (one edge, no order dispatch).
+    · -- one edge: independent normals and points, as for two bodies joined by two edges
       obtain ⟨e, hEe⟩ := Set.ncard_eq_one.mp hE1
       have heE : e ∈ E(G) := by rw [hEe]; exact Set.mem_singleton e
       have hl_e : G.IsLink e x y := hlinks e heE
@@ -346,7 +306,7 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
           fun e' u v' hl =>
             ⟨(hmem u (hend e' u v' hl).1).2.2.2.2, (hmem v' (hend e' u v' hl).2).2.2.2.2⟩⟩,
         ?_, ?_, ?_⟩, ?_⟩
-      · -- Adjacent point distinctness: the only link is `e`, forced onto `(x, y)` or `(y, x)`.
+      · -- the points of the two ends of a link: the link is `e`, from `x` to `y` or from `y` to `x`
         have hLIxy : LinearIndependent K ![q₀, q₁] := by
           rw [LinearIndependent.pair_iff]
           refine fun c d hcd => ⟨?_, ?_⟩
@@ -358,7 +318,7 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
         rcases hl_e.isLink_iff.mp hl with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
         · rw [hpointx, hpointy]; exact hLIxy
         · rw [hpointx, hpointy]; exact hLIyx
-      · -- Hub-normal independence: `closedHubNbhd v' ⊆ V(G) = {x, y}`, where `normal` is LI there.
+      · -- the normals on a closed hub-neighbourhood, which lies in `V(G) = {x, y}`
         intro v' _
         have hsub : G.closedHubNbhd v' ⊆ ({x, y} : Set α) := fun w hw => hVG ▸ hw.1.1
         refine LinearIndepOn.mono ?_ hsub
@@ -366,7 +326,7 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
         refine fun c d hcd => ⟨?_, ?_⟩
         · simpa [hnormalx, hnormaly, hn₀def, hn₁def] using congr_fun hcd 0
         · simpa [hnormalx, hnormaly, hn₀def, hn₁def] using congr_fun hcd 1
-      · -- Non-hub closed-neighbourhood independence: `closedNbhd v' ⊆ V(G) = {x, y}`.
+      · -- the points on a closed neighbourhood, which lies in `V(G) = {x, y}`
         intro v' hv' _
         have hsub : G.closedNbhd v' ⊆ ({x, y} : Set α) :=
           hVG ▸ Graph.closedNbhd_subset_vertexSet hv'
@@ -375,7 +335,7 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
         refine fun c d hcd => ⟨?_, ?_⟩
         · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 2
         · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 3
-      · -- Rank: the bare arm's own sandwich, unchanged (any nonzero single-edge extensor works).
+      · -- the rank: at most the deficiency rank, `5`, and at least the `5` independent rows of `e`
         have hdef : G.deficiency 3 = 1 :=
           Graph.deficiency_of_single_edge (n := 3) (by decide) hxy hl_e hVG hEe
         have hC : ∀ e' u v', G.IsLink e' u v' → F.supportExtensor e' ≠ 0 :=
@@ -395,20 +355,19 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
           rw [hV2eq, hdef, hscrew_nat]; norm_num
         rw [htarget] at hub ⊢
         exact le_antisymm hub (by exact_mod_cast hmono)
-    · -- Parallel class of `m ≥ 2` edges: contradicts the `G.Simple` hypothesis directly.
+    · -- two edges or more: two of them join `x` and `y`, so `G` is not simple
       obtain ⟨t, htE, ht2⟩ := Set.exists_subset_card_eq (s := E(G)) (n := 2) hge2
       obtain ⟨e, f, hef, hteq⟩ := Set.ncard_eq_two.mp ht2
       have heE : e ∈ E(G) := htE (hteq ▸ Set.mem_insert e {f})
       have hfE : f ∈ E(G) := htE (hteq ▸ Set.mem_insert_of_mem e (Set.mem_singleton f))
       exact absurd hSimple (not_simple_of_parallel hef (hlinks e heE) (hlinks f hfE))
 
-/-- **The base arm of the pencil reduction, conditioned-pair motive** (Phase 39 W5-L5; the
-`PencilPair` analogue of the bare-motive `hasPencilRealization_of_ncard_le_two`, W3-L5). A loopless
-multigraph on at most two bodies satisfies the conditioned pair at rank `3`: the bare half is
-`hasPencilRealization_of_ncard_le_two` unchanged, and both conditioned halves come from the
-simple-only producer `hasGenericPencilRealization_of_ncard_le_two` above — the generic one
-directly (its feasibility hypothesis is unused at this arity), the adjacent-distinct one
-(2026-09-16, decision (α)) through `hasDistinctPencilRealization_of_generic`. -/
+/-- **The conditioned pair on at most two bodies** (a step of `lem:pencil-pair-loop-base-cut`, case
+(2)): every loopless multigraph `G` on one or two bodies satisfies `PencilPair K 3`. Its pencil
+realization at the deficiency rank is the base case (`hasPencilRealization_of_ncard_le_two`,
+`lem:pencil-base-case`); at a simple `G`, its generic conjunct is
+`hasGenericPencilRealization_of_ncard_le_two`, without the feasibility hypothesis, and its
+adjacent-distinct conjunct follows (`hasDistinctPencilRealization_of_generic`). -/
 theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
     (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
     PencilPair K 3 G :=
@@ -417,32 +376,30 @@ theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
       (hasGenericPencilRealization_of_ncard_le_two hloop hne hV2 hSimple),
     hasPencilRealization_of_ncard_le_two hloop hne hV2⟩
 
-/-! ## W5-L5 cut arm, sub-case 2 (`|C| = 0`, disjoint union): a standalone generic producer
-(Phase 39 PENCIL)
+/-! ## At a cut that no edge crosses
 
-The cut-arm route verdict's easiest sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition"
-L5 "Cut-arm route verdict", item 2): with no crossing edge at all, no side ever demotes a hub, so
-the generic conjunct assembles by gluing the two sides' IH-supplied *generic* realizations
-directly (no `Gᵢ⁺` closure, no repositioning, no `[Infinite K]`) — through the bare arm's glue
-(`exists_hasPencilPanelRealization_glue`, `Arms.lean`), with the three new nondegeneracy conjuncts
-layered on top via the disjoint-sides structure lemmas
-(`Graph.degree_induce_of_forall_isLink_mem` / `Graph.closedHubNbhd_induce_of_forall_isLink_mem` /
-`Graph.closedNbhd_induce_of_forall_isLink_mem`, `Motive.lean`). Landed as a standalone producer
-(rather than folded into the not-yet-built full arm assembly `pencilPair_of_not_twoEdgeConnected`,
-L5-cut-iv) so it is complete on its own; the eventual assembly calls it verbatim for this branch. -/
+The generic conjunct at a cut `V₁` of `G` that no edge crosses, in the proof of
+`lem:pencil-pair-loop-base-cut`, case (3): the generic realizations of the two sides, which the
+induction hypothesis gives, together form one of `G`. Each side keeps the degree of each of its
+bodies (`Graph.degree_induce_of_forall_isLink_mem`), so it is simple and nondegeneracy-feasible, and
+its closed hub-neighbourhoods and closed neighbourhoods are those of `G`
+(`Graph.closedHubNbhd_induce_of_forall_isLink_mem`, `Graph.closedNbhd_induce_of_forall_isLink_mem`,
+`Motive.lean`). The two realizations glue as in the bare case
+(`exists_hasPencilPanelRealization_glue`, `Arms.lean`), with no link across the cut, and over any
+field. -/
 
-/-- **The cut arm's generic conjunct, disjoint-sides sub-case** (Phase 39 W5-L5, L5-cut-iv
-sub-case 2): if `G` is loopless with `V₁` a nonempty proper vertex subset crossed by *no* edge
-(`G.cutEdges V₁ = ∅`), `G` is simple and nondegeneracy-feasible, and the pencil-pair induction
-hypothesis holds at every smaller graph, then `G` has a generic pencil realization. Both sides
-`G.induce V₁`, `G.induce V₂` (`V₂ := V(G) ∖ V₁`) inherit simplicity (`Simple.mono`) and feasibility
-(`PencilNondegFeasible.mono`, no demotion since `Graph.degree_induce_of_forall_isLink_mem` shows
-every `Vᵢ`-vertex keeps its full `G`-degree), so the IH's generic halves fire on both sides. They
-glue by `exists_hasPencilPanelRealization_glue` (no link crosses, so any nonzero hinge serves),
-which gives the bare half and the rank, with the IH's *generic* rank equalities (`.ge`) as
-`hlb₁`/`hlb₂`. The three nondegeneracy conjuncts transfer wholesale via the disjoint-sides
-`closedHubNbhd`/`closedNbhd` equalities (no exception, unlike the `Gᵢ⁺` boundary identities)
-composed with the sides' own conjuncts through `LinearIndepOn.congr`. -/
+/-- **The generic conjunct at a cut that no edge crosses** (a step of
+`lem:pencil-pair-loop-base-cut`, case (3)): let `G` be simple and nondegeneracy-feasible, and
+`V₁ ⊂ V(G)` nonempty and crossed by no edge (`G.cutEdges V₁ = ∅`). If every nonempty graph on fewer
+bodies than `G` satisfies `PencilPair K n` (`hIH`), then `G` has a generic pencil realization. The
+two sides `G.induce V₁` and `G.induce V₂`, with `V₂ = V(G) \ V₁`, are simple (`Graph.Simple.mono`)
+and nondegeneracy-feasible (`PencilNondegFeasible.mono`, as no body of a side loses a neighbour), so
+`hIH` gives each a generic realization. They glue by `exists_hasPencilPanelRealization_glue`, with
+any nonzero hinge on the labels outside the sides and the ranks of the two realizations as the lower
+bounds it asks for, into a pencil realization of `G` at the deficiency rank. The other three
+conditions of a nondegenerate realization hold side by side (`LinearIndepOn.congr`), as each side
+has the links, the closed hub-neighbourhoods and the closed neighbourhoods that `G` has at its
+bodies. -/
 theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} {V₁ : Set α} (hne : V₁.Nonempty) (hssub : V₁ ⊂ V(G))
@@ -459,7 +416,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
   have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard := Set.ncard_lt_ncard hssub (Set.toFinite _)
   have hV₂ncard : V(G.induce V₂).ncard < V(G).ncard := by
     have hV₁pos : 0 < V₁.ncard := hne.ncard_pos; change V₂.ncard < _; omega
-  -- ── Adjacency closure of each side from `hC0`. ───────────────────────────────────────────
+  -- ── Each side is closed under the links of `G` (`hC0`). ──────────────────────────────────
   have hAdj₁ : ∀ e x y, G.IsLink e x y → x ∈ V₁ → y ∈ V₁ := by
     intro e x y hl hx
     by_contra hy
@@ -472,7 +429,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
       by_contra hy₁; exact hy ⟨hl.right_mem, hy₁⟩
     have hmem : e ∈ G.cutEdges V₁ := ⟨hl.edge_mem, y, x, hl.symm, hyV₁, hx.2⟩
     rw [hC0] at hmem; exact hmem
-  -- ── Side simplicity and feasibility (no demotion at all). ────────────────────────────────
+  -- ── Each side is simple and nondegeneracy-feasible. ──────────────────────────────────────
   have hSimple₁ : (G.induce V₁).Simple := hSimple.mono (Graph.induce_le hssub.subset)
   have hSimple₂ : (G.induce V₂).Simple := hSimple.mono (Graph.induce_le Set.sdiff_subset)
   have hfeas₁ : PencilNondegFeasible K (G.induce V₁) :=
@@ -481,7 +438,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
   have hfeas₂ : PencilNondegFeasible K (G.induce V₂) :=
     hfeas.mono (Graph.induce_le Set.sdiff_subset) (fun v hv hGhub => Or.inl ⟨hv, by
       rw [Graph.degree_induce_of_forall_isLink_mem hAdj₂ hv]; exact hGhub.2⟩)
-  -- ── IH's generic halves on both sides, glued. ────────────────────────────────────────────
+  -- ── The generic realizations of the two sides, glued. ────────────────────────────────────
   obtain ⟨F₁, normal₁, point₁, ⟨hreal₁, hadj₁, hhubLI₁, hnbhdLI₁⟩, hrank₁⟩ :=
     (hIH (G.induce V₁) hne hV₁ncard).1 hSimple₁ hfeas₁
   obtain ⟨F₂, normal₂, point₂, ⟨hreal₂, hadj₂, hhubLI₂, hnbhdLI₂⟩, hrank₂⟩ :=
@@ -497,7 +454,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
         exact hrank₂.ge)
     hC (fun e u v hl hu hv => absurd (show e ∈ G.cutEdges V₁ from ⟨hl.edge_mem, u, v, hl, hu, hv⟩)
       (by simp [hC0]))
-  -- ── The three new nondegeneracy conjuncts, transferred wholesale (no exception). ─────────
+  -- ── The other three conditions, side by side. ────────────────────────────────────────────
   have hadjLI : ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v] := by
     intro e u v hl
     by_cases hu₁ : u ∈ V₁
@@ -551,24 +508,21 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
       simp only [point, hxV₂.2, ↓reduceIte]
   exact ⟨F, normal, point, ⟨hreal, hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank⟩
 
-/-! ## W5-L5 cut arm, sub-case 1 (`|C| = 1`, two-sided): infrastructure (Phase 39 PENCIL)
+/-! ## At a cut that one edge crosses: the rank of a side
 
-The cut-arm route verdict's hard sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition" L5
-"Cut-arm route verdict", item 1): with a single crossing edge and both sides `≥ 2` vertices, the
-generic conjunct consumes the IH's generic half at the **edge-closed sides**
-`Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` rather than the bare induced sides, then reconciles the glued
-nondegeneracy conjuncts at the crossing endpoints via a repositioning steered by
-`exists_reposition_cross_incidences_avoiding`. This is a substantially larger assembly than
-sub-case 2 (the disjoint-union case above): this section lands its **rank half** first — the
-generic composition of the `Gᵢ⁺` IH rank via the drop brick — as a standalone, reusable lemma,
-mirroring how L5-cut-i landed the `Gᵢ⁺` structure layer ahead of the full assembly. The
-repositioning/gluing half (the hub-status case split driving the avoidance targets, and the final
-`hlinks`/nondegeneracy-conjunct wiring) remains open — `notes/Phase39.md` *Hand-off*. -/
+At a cut `V₁` that one edge `e₀` crosses, from `u₀ ∈ V₁` to `w₀ ∉ V₁`, the proof of
+`lem:pencil-pair-loop-base-cut`, case (3), takes a generic realization of the side with the far end
+of the edge, `G.induce (V₁ ∪ {w₀})`, in which `u₀` keeps its degree. Passing to `G.induce V₁`, which
+deletes `w₀` and `e₀`, lowers its rank by at most `screwDim 2 - 1 = 5`, while the deficiency and the
+number of bodies each fall by one, so that the rank of `G.induce V₁` is at least its deficiency
+rank, the lower bound that the glue asks for. `exists_subset_pair_of_ncard_le_two` serves the next
+section. -/
 
-/-- **A set of cardinality `≤ 2` embeds in a two-element set** (Phase 39 W5-L5, L5-cut-iv sub-case
-1 plumbing): the consumer-side companion of the `≤ 3` closed-(hub-)neighbourhood cardinality
-bounds — pads with an arbitrary element when the set has fewer than two members, so a
-repositioning avoidance target can be instantiated against it whether the cover is tight or not. -/
+/-- **A finite set of at most two members lies in a pair** (a step of
+`lem:pencil-pair-loop-base-cut`, case (3)): a finite `s` with `s.ncard ≤ 2`, in a nonempty type, is
+a subset of `{a, b}` for some `a` and `b`, arbitrary or repeated when `s` has fewer than two
+members. The next section applies it to a closed hub-neighbourhood or a closed neighbourhood less
+one body, for the vectors to avoid. -/
 theorem exists_subset_pair_of_ncard_le_two {ι : Type*} [Nonempty ι] {s : Set ι}
     (hfin : s.Finite) (hs : s.ncard ≤ 2) :
     ∃ a b : ι, s ⊆ {a, b} := by
@@ -580,18 +534,17 @@ theorem exists_subset_pair_of_ncard_le_two {ι : Type*} [Nonempty ι] {s : Set �
   · obtain ⟨a, b, -, hab⟩ := Set.ncard_eq_two.mp h2
     exact ⟨a, b, hab.le⟩
 
-/-- **The two-sided `|C| = 1` sub-case's rank bound via the `Gᵢ⁺` IH consumption** (Phase 39 W5-L5,
-L5-cut-iv sub-case 1 rank half; `notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm
-route verdict" item 1a). Given a nondegenerate realization of the edge-closed side
-`Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` attaining the deficiency-rank target there, dropping the crossing
-edge `e₀`'s rows (`finrank_span_rigidityRows_le_add_of_links_subset`,
-`RigidityMatrix/Bricks.lean`) converts it into exactly the induced-side lower bound
-`exists_hasPencilPanelRealization_glue` (`Arms.lean`) wants as `hlbᵢ` — the assembled side
-framework (`extF`, agreeing with `F.supportExtensor` on `V₁`-internal links) inherits the same
-bound via `span_rigidityRows_eq_of_supportExtensor_agree`. The `screwDim 2 − 1 = 5` the drop brick
-costs is exactly what the deficiency bookkeeping's `+ 1`
-(`Graph.deficiency_induce_union_singleton`) recovers. Stated generically in `V₁`/`e₀`/`u₀`/`w₀` so
-the eventual sub-case-1 assembly applies it verbatim to both crossing endpoints. -/
+/-- **The rank of a side, from the side with the far end of the crossing edge** (a step of
+`lem:pencil-pair-loop-base-cut`, case (3)): let `G` be loopless, and `e₀` link `u₀ ∈ V₁` to
+`w₀ ∉ V₁`, at most one edge crossing `V₁`. If a nondegenerate realization of `G.induce (V₁ ∪ {w₀})`
+by `F` attains its deficiency rank, then the framework on `G.induce V₁` with extensors `extF` that
+agree with those of `F` at its links has rank at least the deficiency rank of `G.induce V₁`, the
+lower bound of `exists_hasPencilPanelRealization_glue`. Every link of `G.induce (V₁ ∪ {w₀})` but
+`e₀` is one of `G.induce V₁` (`Graph.isLink_induce_union_singleton_of_isLink`), so dropping the rows
+of `e₀` lowers the rank by at most `screwDim 2 - 1`
+(`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`), while the deficiency falls
+by one (`Graph.deficiency_induce_union_singleton`) and the number of bodies by one; the rows depend
+only on the extensors at the links (`span_rigidityRows_eq_of_supportExtensor_agree`). -/
 theorem hlb_induce_of_isNondegPencilRealization_induce_union_singleton
     [Finite α] [Finite β] {n : ℕ}
     {G : Graph α β} [G.Loopless] {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
@@ -645,40 +598,50 @@ theorem hlb_induce_of_isNondegPencilRealization_induce_union_singleton
   push_cast at hdropZ
   linarith
 
-/-! ## W5-L5 cut arm, sub-case 1 (`|C| = 1`, two-sided): the repositioning/gluing half
-(Phase 39 PENCIL)
+/-! ## At a cut that one edge crosses: the glue
 
-The companion of the rank half above (`notes/Phase39-design.md` §"W5 leaf decomposition"
-L5-cut-iv, "Concrete guidance for the repositioning/gluing half"): given nondegenerate,
-target-rank realizations of the two edge-closed sides `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` — the IH's
-generic halves, which the eventual arm assembly supplies — reposition side 2 by the strengthened
-avoidance automorphism (`exists_reposition_cross_incidences_avoiding`, `Arms.lean`) and glue into
-a generic pencil realization of `G`. The eight avoidance-target arguments are picked per
-crossing-endpoint hub status ("complementary, never simultaneous"): the closed-hub-neighbourhood
-covers (steering 1/2) fire when the *other* endpoint is a `G`-hub, bounded `≤ 2` by the `≤ 3`
-cardinality bound on `G`'s **own** feasibility witness minus the crossing endpoint
-(`Set.ncard_diff_singleton_lt_of_mem` — the crossing endpoint is a genuine member exactly when it
-is a hub); the closed-neighbourhood covers (avoidance 3/4) fire at a non-hub endpoint, bounded via
-`ncard_closedNbhd_le_three_of_not_pencilHub` the same way. Idle slots pad with `0` — except the
-`q`-slot, which pads with `point₁ u_c` itself in the hub branch, so that
-`point₁ u_c ∈ span {q₁, q₂}` holds **unconditionally** and the cut hinge's second-conjunct pair-LI
-derives in every branch from avoidance 3 alone (`LinearIndependent.pair_iff'` — no need to force
-`q₁` to literally equal `point₁ u_c`, the membership fact suffices). -/
+At a cut `V₁` of `G` that one edge `e_c` crosses, from `u_c ∈ V₁` to `v_c ∉ V₁`, generic
+realizations of the two sides with the far ends of the edge, `G.induce (V₁ ∪ {v_c})` and
+`G.induce (V₂ ∪ {u_c})` with `V₂ = V(G) \ V₁`, which the induction hypothesis gives, glue into one
+of `G` (`lem:pencil-pair-loop-base-cut`, case (3), when both sides have at least two bodies). The
+second is moved by the automorphism of `exists_reposition_cross_incidences_avoiding` (`Arms.lean`),
+which puts the points of the two ends of `e_c` in both of their panels, and keeps four vectors off
+the spans of four pairs, so that the conditions of a nondegenerate realization that involve both
+sides hold:
 
-/-- **The two-sided `|C| = 1` sub-case's repositioning/gluing half** (Phase 39 W5-L5, L5-cut-iv
-sub-case 1; `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-iv). Given a loopless `G`
-with a single crossing edge `e_c = u_c v_c` over `V₁ ⊆ V(G)` and nondegenerate realizations of the
-two edge-closed sides `G₁⁺ = G.induce (V₁ ∪ {v_c})`, `G₂⁺ = G.induce (V₂ ∪ {u_c})`
-(`V₂ = V(G) ∖ V₁`) attaining their deficiency-rank targets, `G` has a generic pencil realization:
-reposition side 2 along `exists_reposition_cross_incidences_avoiding` (transported by
-`IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv`), take the crossing hinge from
-`exists_extensor_two_pencils`, and glue by `exists_hasPencilPanelRealization_glue` as the bare arm
-does, with both `hlbᵢ` supplied by the rank half
-`hlb_induce_of_isNondegPencilRealization_induce_union_singleton` (once per side).
-The three nondegeneracy conjuncts transfer via the `Gᵢ⁺` boundary identities
-(`closedHubNbhd`/`closedNbhd_induce_union_singleton`) with a single `LinearIndepOn.insert` at each
-crossing endpoint, fed by the four avoidance conclusions; `G`'s own feasibility witness `hfeas`
-enters only through the `≤ 3` closed-hub-neighbourhood cardinality bound. -/
+* the normal at `v_c` off the span of the normals of the rest of the closed hub-neighbourhood of
+  `u_c`, when `v_c` is a hub of `G`;
+* the normal at `u_c` off the span of the normals of the rest of the closed hub-neighbourhood of
+  `v_c`, when `u_c` is a hub;
+* the point at `v_c` off the span of the points of the rest of the closed neighbourhood of `u_c`,
+  when `u_c` is not a hub, and off the span of the point at `u_c` in every case, for the
+  independence of the points of the two ends of `e_c`;
+* the point at `u_c` off the span of the points of the rest of the closed neighbourhood of `v_c`,
+  when `v_c` is not a hub.
+
+Each such rest has at most two members, as the other end of `e_c` is a member of the whole when the
+rest is needed, and the whole has at most three: a closed hub-neighbourhood of `G`
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, at a nondegenerate realization of
+`G`), or the closed neighbourhood of a body that is not a hub
+(`ncard_closedNbhd_le_three_of_not_pencilHub`). A pair that is not needed is `0, 0`, but for the
+points at `u_c`, where it is `point₁ u_c, 0`. -/
+
+/-- **The generic conjunct at a cut that one edge crosses** (a step of
+`lem:pencil-pair-loop-base-cut`, case (3)): let `G` be loopless and nondegeneracy-feasible, and
+`e_c` link `u_c ∈ V₁` to `v_c ∉ V₁`, where `V₁ ⊆ V(G)` and at most one edge crosses `V₁`. Given
+nondegenerate realizations of `G.induce (V₁ ∪ {v_c})` and `G.induce (V₂ ∪ {u_c})`, with
+`V₂ = V(G) \ V₁`, at their deficiency ranks, `G` has a generic pencil realization. The second
+realization is moved by the automorphism of `exists_reposition_cross_incidences_avoiding`
+(`IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv`), at the same rank; `e_c` gets the
+hinge of `exists_extensor_two_pencils`; and the two sides glue by
+`exists_hasPencilPanelRealization_glue`, with the lower bounds on the ranks of the sides from
+`hlb_induce_of_isNondegPencilRealization_induce_union_singleton`. At a body of a side, the members
+of its closed hub-neighbourhood and closed neighbourhood in `G` other than the far end of `e_c` lie
+in the side (`Graph.closedHubNbhd_induce_union_singleton`,
+`Graph.closedNbhd_induce_union_singleton`), where the realization of the side with that end gives
+the independence; the far end, when it is a member, joins by `LinearIndepOn.insert` and the
+avoidances of the section header. The feasibility of `G` serves only to bound its closed
+hub-neighbourhoods (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`). -/
 theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton
     [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
@@ -708,11 +671,11 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
   have hne : V₁.Nonempty := ⟨u_c, hu_c⟩
   have hssub : V₁ ⊂ V(G) :=
     (Set.ssubset_iff_of_subset hV₁).mpr ⟨v_c, hl_c.right_mem, hv_c⟩
-  -- The unique crossing edge, and its endpoint pinning.
+  -- every link crossing `V₁` is `e_c`, from `u_c` to `v_c`
   have hcross_eq : ∀ e' x y, G.IsLink e' x y → x ∈ V₁ → y ∉ V₁ →
       e' = e_c ∧ x = u_c ∧ y = v_c :=
     fun e' x y hle hx hy => Graph.eq_and_eq_of_isLink_crossing hl_c hu_c hv_c hcut hle hx hy
-  -- Side membership of closed neighbourhoods (minus the crossing endpoint).
+  -- the closed neighbourhood of a body of a side lies in the side, but for the far end of `e_c`
   have hmemV₁ : ∀ {v w : α}, v ∈ V₁ → w ∈ G.closedNbhd v → w ≠ v_c → w ∈ V₁ := by
     intro v w hv hw hwne
     rcases Graph.closedNbhd_subset_of_mem hl_c hu_c hv_c hcut hv hw with h1 | h1
@@ -723,14 +686,14 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
     rcases Graph.closedNbhd_subset_of_mem hl_c.symm hv_c₂ hu_notin₂ hcut₂ hv hw with h1 | h1
     · exact h1
     · exact absurd h1 hwne
-  -- Nonzero-ness of the crossing endpoints' data (for the repositioning automorphism).
+  -- the normals and points at the ends of `e_c` are nonzero, as the repositioning asks
   have hn₁ne : normal₁ u_c ≠ 0 := hnd₁.1.1.2.1 u_c (Set.mem_union_left _ hu_c)
   have hp₁ne : point₁ u_c ≠ 0 := hnd₁.1.2.1 u_c (Set.mem_union_left _ hu_c)
   have hn₂ne : normal₂ v_c ≠ 0 := hnd₂.1.1.2.1 v_c (Set.mem_union_left _ hv_c₂)
   have hp₂ne : point₂ v_c ≠ 0 := hnd₂.1.2.1 v_c (Set.mem_union_left _ hv_c₂)
-  -- `G`'s own feasibility witness (the `≤ 3` closed-hub-neighbourhood bounds live on it).
+  -- a nondegenerate realization of `G`, which bounds its closed hub-neighbourhoods
   obtain ⟨F₀, normal₀, point₀, hnd₀⟩ := hfeas
-  -- ── The eight avoidance-target slots, picked per crossing-endpoint hub status. ────────────
+  -- ── The eight vectors to avoid, by which ends of `e_c` are hubs. ─────────────────────────
   obtain ⟨s₁, s₂, hscov⟩ : ∃ s₁ s₂ : Fin 4 → K, G.PencilHub v_c →
       normal₁ '' (G.closedHubNbhd u_c \ {v_c}) ⊆ {s₁, s₂} := by
     by_cases hv_hub : G.PencilHub v_c
@@ -788,7 +751,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
       obtain ⟨a, b, hab⟩ := exists_subset_pair_of_ncard_le_two (Set.toFinite _) h2
       exact ⟨point₂ a, point₂ b, fun _ => by
         rw [← Set.image_pair]; exact Set.image_mono hab⟩
-  -- ── Reposition side 2 (the strengthened avoidance automorphism, L5-cut-iii). ─────────────
+  -- ── Move the realization of the second side. ─────────────────────────────────────────────
   obtain ⟨g, h, hgh, hcross1, hcross2, havoid1, havoid2, havoid3, havoid4⟩ :=
     exists_reposition_cross_incidences_avoiding (normal₁ u_c) (point₁ u_c)
       (normal₂ v_c) (point₂ v_c) s₁ s₂ q₁ q₂ t₁ t₂ w₁ w₂ hn₁ne hp₁ne hn₂ne hp₂ne
@@ -801,7 +764,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
     exact hrank₂
   obtain ⟨⟨-, -, hp₁inc, -⟩, hadj₁, hhubLI₁, hnbhdLI₁⟩ := id hnd₁
   obtain ⟨⟨-, -, hp₂'inc, -⟩, hadj₂', hhubLI₂', hnbhdLI₂'⟩ := id hnd₂'
-  -- ── The glued data, the crossing hinge, and the glue. ─────────────────────────────────────
+  -- ── The glued normals and points, the hinge of `e_c`, and the glue. ──────────────────────
   set normal : α → Fin 4 → K := fun v => if v ∈ V₁ then normal₁ v else h (normal₂ v)
   set point : α → Fin 4 → K := fun v => if v ∈ V₁ then point₁ v else g (point₂ v)
   have hpt_uc : point u_c = point₁ u_c := by simp only [point, hu_c, ↓reduceIte]
@@ -823,7 +786,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
     hCne (fun e u v hl hu hv => by
       obtain ⟨-, rfl, rfl⟩ := hcross_eq e u v hl hu hv
       exact ⟨hCpn_u, hCpn_v, hCth_u, hCth_v⟩)
-  -- ── Conjunct 2: adjacent-point pair-LI. ──────────────────────────────────────────────────
+  -- ── The points of the two ends of each link are independent. ─────────────────────────────
   have hpair_cut : LinearIndependent K ![point₁ u_c, g (point₂ v_c)] := by
     rw [LinearIndependent.pair_iff' hp₁ne]
     intro a ha
@@ -853,7 +816,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         rw [hpu, hpv]
         exact hadj₂' e u v ((Graph.induce_isLink G (V₂ ∪ {u_c}) e u v).mpr
           ⟨hl, Set.mem_union_left _ hu₂, Set.mem_union_left _ hv₂'⟩)
-  -- ── Conjunct 3: closed-hub-neighbourhood normal LI. ──────────────────────────────────────
+  -- ── The normals on each closed hub-neighbourhood. ────────────────────────────────────────
   have hhubLI_glued : ∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v) := by
     intro v hv
     by_cases hv₁ : v ∈ V₁
@@ -920,7 +883,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
         exact havoid2 (Submodule.span_mono himg hmem)
       · rw [← Set.sdiff_singleton_eq_self huc_mem]
         exact hbase
-  -- ── Conjunct 4: non-hub closed-neighbourhood point LI. ───────────────────────────────────
+  -- ── The points on the closed neighbourhood of each body not a hub. ───────────────────────
   have hnbhdLI_glued : ∀ v ∈ V(G), ¬ G.PencilHub v →
       LinearIndepOn K point (G.closedNbhd v) := by
     intro v hv hnothub

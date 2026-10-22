@@ -5153,6 +5153,12 @@ declaration's name as its header writes it:
   `ArmsAssembly.lean` together, at `69fb2212`), not pinned: `le_finrank_toDualPerp_single`, which
   the docstring of `exists_reposition_cross_incidences_avoiding` said its choices use (they use
   `finrank_toDualPerp_single_eq`). Removing it leaves no other declaration without a caller.
+  Task 37.7 adds one in `Molecular/Molecule/Pencil/Pair.lean` (the same screen, over `Pair.lean` and
+  `Pair2.lean` together, at `d8f57d43`), not pinned:
+  `exists_isNondegPencilRealization_parallel_pair`, the witness that two bodies joined by two edges
+  are nondegeneracy-feasible, which the docstring of `PencilNondegFeasible` (`Motive.lean`) names
+  and whose claim the remark before `def:pencil-conditioned-pair` states. Removing it leaves no
+  other declaration without a caller.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5649,6 +5655,39 @@ declaration's name as its header writes it:
   the lemma on `IsFin3SelectorOf`, with `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` from
   it, on the three standard axioms (`scratch/reconcile-lean/t376/Hyps-t376.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.6.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-307** · L · hypotheses the others give, over-strong hypotheses and repeated derivations in
+  `Molecular/Molecule/Pencil/Pair.lean` and `Pair2.lean`. The `hD : 2 ≤ bodyBarDim n` of
+  `hasGenericPencilRealization_of_cutEdges_eq_empty`,
+  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`,
+  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI`,
+  `hasGenericPencilRealization_pendant_of_IH` and `pencilPair_of_not_twoEdgeConnected` follows from
+  `hn : bodyBarDim n = screwDim 2` alone, and each only passes it on, to the declarations of `F-303`
+  (`exists_hasPencilPanelRealization_glue` and the cut-edge case) or to one another. The `hloop` of
+  `hasGenericPencilRealization_of_ncard_le_two` follows from its `hSimple`
+  (`Graph.Simple.toLoopless`). `pencilPair_of_isLoopAt` takes `PencilPair K n (G ＼ {e})` and uses
+  only its pencil realization at the deficiency rank, and
+  `hlb_induce_of_isNondegPencilRealization_induce_union_singleton` takes a nondegenerate realization
+  and uses only its graph and its nonzero hinge at `e₀`.
+  `exists_isNondegPencilRealization_parallel_pair` and the one-edge case of
+  `hasGenericPencilRealization_of_ncard_le_two` build the same nondegenerate realization of two
+  bodies (some 70 lines each), which one lemma on a graph whose links all join `x` and `y` would
+  state. `hasGenericPencilRealization_of_cutEdges_eq_empty` takes each step for `V₁` and again for
+  `V₂` (some 30 lines a side), and
+  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton` derives its four
+  pairs of vectors to avoid by the same steps (some 13 lines each) and each of its last two
+  conditions for the two sides by the same steps with the sides exchanged (some 30 lines a side).
+  `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI` derives
+  `v = v_c` from `v ∈ V(G)`, `v ∉ V₁` and `hVG` seven times by the same three lines
+  (`hasGenericPencilRealization_pendant_of_IH` states it once, as `hoff`), and the two each derive
+  that `v_c` is not a hub from `Graph.degree_induce_union_singleton_far`. `lake lint` reports none
+  of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the five declarations called
+  with `hD` derived from `hn`, the generic realization on at most two bodies without `hloop`, the
+  conditioned pair at a loop from the pencil realization of `G ＼ {e}` alone, and the rank of a side
+  from the graph of `F` and its nonzero hinge at `e₀` alone, on the three standard axioms
+  (`scratch/reconcile-lean/t377/Hyps-t377.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.7.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
