@@ -5,14 +5,14 @@ plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot/que
 authority for which rounds are done. The round acts on the Lean: a script that checks the blueprint
 labels the docstrings name, L9's deletions after `CLEANUP.md` §B's trial deletion, `F-061`'s rename,
 L6–L8's signatures and repeated derivations with S17, L1–L2 (the pebble game's search), a
-non-vacuity witness for each of the 16 main results outside S1's and S2's rows, and the docstring
-sweep by directory. No main result's statement changes. In the footprint (34 files: the 33 that
-construct `PanelHingeFramework`, and `GenericLift/HingeGeneric.lean`) the docstrings that describe
-the carrier or S1's and S2's theorems wait for the phase. Tasks 1–37.21 are done (*Current state*;
-gate 9: 422 at task 2, 4 now), the docstring sweep with them, through `AlgebraicInduction/`,
-`Molecular/Molecule/`'s top level and all of `Pencil/`, in import order.
-**Next concrete task:** task 38, §B and §C screened over the round's `L` entries, docs only
-(*Hand-off*). Round manual: `CLEANUP.md`.
+non-vacuity witness for each of the 16 main results outside S1's and S2's rows, the docstring
+sweep by directory, and the §B–§C screen with the fixes it appends. No main result's statement
+changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
+`GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
+wait for the phase. Tasks 1–38 are done (*Current state*; gate 9: 422 at task 2, 4 now): the sweep,
+and §B's screen, whose fixes are tasks 38.2–38.10.
+**Next concrete task:** task 38.1, §C and the entries' verdicts, docs only (*Hand-off*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -41,26 +41,35 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 37.21 is done**, the docstring sweep's last; nothing is mid-stream. **Next:** task 38.
+**Task 38 is done**, §B of the screen; §C and the entries' verdicts did not fit the same sitting
+and are task 38.1, as the hand-off allowed. Nothing is mid-stream. **Next:** task 38.1.
 
-**Task 37.21** (new `F-321`): `MainComponent/GenericTriangle.lean` and `Statements.lean`, neither
-in the footprint, swept, each with a new header that describes the file; every pin's lead names its
-node with no code, every other bold lead the node its declaration is a step of; gate 9 stays at 4.
-Corrected: the extension's normals "independent on every closed hub-neighbourhood of `G`" (the Lean
-asks it at the bodies of `V₁`), "`c`'s plane" (the panel of `c`), and in the assembly's comments
-"the steered realization" for part (a)'s restriction (as task 37.20's) and an undefined `H`. The
-ledger: 321 entries, 217 `done`, 9 `left`, 48 `reported`, 47 `open`. The build rebuilt 4 modules,
-within the Bash tool's limit; the axioms harness's output is unchanged.
+**Task 38** (docs only; new `F-322`, `F-323`; scratch `scratch/reconcile-lean/t38/`, gitignored).
+*The counts* (`cleanup-smell-sweep.py --base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`, 153
+files, 101 954 lines, against the open's 152 and 110 881): `classical` 427 (430), `haveI-Fintype` 1
+(1), `nolint/linter` 33 (34), `noncomputable-def` 190 (191), `change/show` 167 (169), `rw4+` 276
+(282), `show-from-rfl` 39 (39), `maxHeartbeats` 1 (5; a docstring's word), `toFinset` 263 (253;
+`Nonvacuity.lean`'s witnesses 8), `Fintype.card` 311 (322). *The suppression sites* (30, as 33
+`grep` lines): the two `IsInfinitesimallyRigid` contract guards, `Bricks.lean`'s `openClassical` and
+the main results' three (`F-323`) stand; `F-286`, `F-298` and the `[DecidableEq β]` of
+`F-281`–`F-283` and `F-285` list ten; `F-322` lists twelve more that go; two go with task 38.5's
+deletion. Of the six bridge "false positives" left of `notes/ToolchainBumps.md`'s seven, task 8's
+`lake lean` check finds no false positive at the four it reaches (`TayTheorem.lean`'s and
+`GenericityDevice.lean`'s, `F-322`; `Bricks.lean`'s two, `F-286`). *Block (b)*: `F-268`, `F-269`,
+`F-271`, `F-279`'s parts and L8's two (`F-305`, `F-306`) screened in task order (the ledger's
+dispositions give the names, the orphans and what stays, with reasons); the deletions are tasks
+38.2–38.9 and the suppressions task 38.10. The ledger: 323 entries, 217 `done`, 9 `left`, 49
+`reported`, 48 `open`.
 
-**Done before** (tasks 3–37.20; the ledger's dispositions name the task of each part, and the
+**Done before** (tasks 3–37.21; the ledger's dispositions name the task of each part, and the
 messages carry the detail): L9's thirty-nine deletions (the pins they left without a caller stay
 with their nodes), `F-090`'s shim, `F-061`'s rename, L6–L8's hypotheses and repeated derivations
 (each node they reach restated in the same commit; gate 2 runs block (c) since task 5), the search
 and its texts (tasks 16–20), `Nonvacuity.lean`'s sixteen witnesses (tasks 21–24; FRICTION: tasks
-22–24's entries, task 21's waits for task 38), and the docstring sweep, a task per one to five files
-in import order: every directory before the footprint (tasks 25–33), the footprint's files of
-`AlgebraicInduction/` (tasks 34–36.2), `Molecule/`'s top level (tasks 37–37.1), and `Pencil/`'s top
-level and `MainComponent/` to `GenericEar.lean` (tasks 37.2–37.20; new `F-301` to `F-320`).
+22–24's entries, task 21's waits for task 38.1), and the docstring sweep, a task per one to five
+files in import order: every directory before the footprint (tasks 25–33), the footprint's files
+of `AlgebraicInduction/` (tasks 34–36.2), `Molecule/`'s top level (tasks 37–37.1), and `Pencil/`
+(tasks 37.2–37.21; new `F-301` to `F-321`).
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
@@ -81,15 +90,12 @@ OK (691 nodes, 689 pinned, 1 008 pins, 993 distinct, 169 dead pins, 0 missing ed
 forward-`\uses` screen 33 edges at 17 nodes to a later file and 4 at 4 within a file
 (`scratch/reconcile-lean/forward-open.txt`); the ledger's Lean baselines (`notes/Prose-findings.md`
 *Lean baselines*: `cleanup-smell-sweep.py`, 152 files, 110 881 lines), which task 38 re-runs.
-- **The footprint** (block (a) under *Scope*): 33 files whose declarations (257) name
-  `PanelHingeFramework.mk` or one of the eight definitions returning one (`ofNormals`, `ofParam`,
-  `withMomentNormals`, `withGraph`, `withNormal`, `Theorem55.lean`'s private `reaim`, `reaimSub`,
-  `reaimSubLink`), and `GenericLift/HingeGeneric.lean`, 34. Under `Molecular/`:
-  `AlgebraicInduction/{CaseI, CaseII, Coupling, GenericityDevice, PanelHinge, Theorem55}`,
-  `CaseIII/{Arms, Candidate, Realization}`, `CaseIII/Relabel/{Arm, Basic, Chain, ChainColumn,
-  ForkedArm}`, `GenericLift/{PanelGeneric, HingeGeneric}`, `Molecule/{Duality, GeneralPosition4,
-  Modelling, Theorem56}`, `Molecule/Pencil/MainComponent/{Bridge, Carrier, Chain, Configuration,
-  ContractAdditive, ContractCurve, Cut, Ear, EarGen, Flat, GenericBase, Orbit, Short, SplitOff}`.
+- **The footprint** (block (a) under *Scope*, which lists it): 33 files whose declarations (257)
+  name `PanelHingeFramework.mk` or one of the eight definitions returning one (`ofNormals`,
+  `ofParam`, `withMomentNormals`, `withGraph`, `withNormal`, `Theorem55.lean`'s private `reaim`,
+  `reaimSub`, `reaimSubLink`), and `GenericLift/HingeGeneric.lean`, 34: under `Molecular/`, six of
+  `AlgebraicInduction/`'s top level, all of `CaseIII/` (eight) and `GenericLift/` (two), four of
+  `Molecule/`'s and fourteen of `Pencil/MainComponent/`'s.
 - **The L9 screen** (block (b)) gave tasks 3–5 their 36 declarations and task 6 the shim, and kept
   the declarations that pinned or live ones reach (`F-265`'s message lists them).
 
@@ -243,40 +249,98 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `Matroid/`, `BodyBar/`, the square-graph and generic-rigidity files, `Deficiency.lean`,
   `Induction/`, `RigidityMatrix/`, `Meet.lean`, `Extensor.lean`, `Pinning.lean`, `PanelLayer.lean`
   (new `F-278`–`F-289`; `F-279` lists the unused declarations).
-- [x] **34–36. The footprint's `CaseI.lean`, `CaseII.lean`, `GenericityDevice.lean`,
-  `Coupling.lean`, `CaseIII/`, `PanelHinge.lean`, `AlgebraicInduction/Nonvacuity.lean`** (new
-  `F-290`–`F-296`), split by file.
-- [x] **36.1. `Theorem55.lean` to the cut case** (`F-104`, `F-132` `done`; new `F-297`).
-- [x] **36.2. `Theorem55.lean` from Case I on** (`F-144`, `F-238`, `F-250` `done`; `F-126`, `F-130`,
-  `F-133` in part; new `F-298`).
-- [x] **37. `Molecule/ScrewVelocity.lean`, `Duality.lean`, `ProjectiveInvariance.lean`,
-  `Dictionary.lean`** (`F-182` `done`; `F-243` in part; new `F-299`).
-- [x] **37.1. `Molecule/Carrier.lean`, `Application.lean`, `GeneralPosition4.lean`,
-  `Theorem56.lean`, `Modelling.lean`** (`F-186`, `F-190` `done`; `F-210` in part; new `F-300`).
-- [x] **37.2–37.21. `Molecule/Pencil/`'s top level and all of `MainComponent/`**, a task per one
-  to three files in import order (`F-243`'s part there; `F-245`, `F-246` `done`; new `F-301` to
-  `F-321`; `F-279` fifteen more; `F-122` in part; the messages name each task's files).
-- [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
-  `F-269`'s eight declarations and `F-271`'s `case_I_realization` through block (b); `F-275`'s
-  derivable vertex hypotheses, `F-278`'s and `F-280`'s two each, `F-281`'s five, `F-282`'s nine,
-  `F-283`'s six, `F-284`'s four, `F-285`'s three, `F-286`'s to `F-295`'s, `F-297`'s, `F-298`'s,
-  `F-300`'s three, `F-303`'s four, `F-304`'s three, `F-307`'s eight, `F-308`'s two, `F-309`'s
-  `[Finite α]`, `F-310`'s two over-strong hypotheses and repeated binder, `F-312`'s `hinj`,
-  `F-313`'s unused conjunct, `have` and rewrite, `F-314`'s `have`, `F-316`'s `hle`, `hxfa` and
-  `hxlb`, `F-317`'s two `hinj` and `hab`, `F-318`'s two `hinj`, `hab`, `_hv`, `obtain` and `have`s
-  and `F-319`'s `hne`, `hv`, `hyu`, `hwy`, `hwu` and `_hG`, `F-320`'s two `have`s and `F-321`'s
-  `hS`, two `have`s and two `hinj`, L6's, and `F-282`'s, `F-289`'s, `F-291`'s to `F-300`'s,
-  `F-302`'s to `F-321`'s repeated derivations, L8's
-  (`F-305`'s re-seeding and `F-306`'s `hubSlotNormal_ofCoord_toCoord` through block (b) and the
-  trial deletion); `F-279`'s unused declarations; `F-298`'s four needless `set_option`s; `F-299`'s,
-  `F-303`'s, `F-304`'s and `F-306`'s mathlib lemmas).
-  The smell counts again (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the
-  open's; each `@[nolint …]` and `set_option linter` site checked for its one-line justification
-  (task 8 found that one of the seven bridge "false positives" `notes/ToolchainBumps.md` counts was
-  a real unused binder, and dropped it: that note's "11 such sites in the tree today" is now 10
-  `grep` lines, 9 sites, and the others want the same `lake lean` check); §C's ranking, the top ten
-  walked with the four questions (expected no-op, §C's calibration). A fix found is a task appended
-  before the close. *Expected:* docs only.
+- [x] **34–37.21. The footprint's `AlgebraicInduction/` files, `Theorem55.lean` (36.1–36.2),
+  `Molecule/`'s top level (37–37.1), and `Pencil/` and `MainComponent/` (37.2–37.21)**, a task per
+  one to five files in import order (new `F-290`–`F-321`; `F-104`, `F-132`,
+  `F-144`, `F-182`, `F-186`, `F-190`, `F-238`, `F-245`, `F-246`, `F-250` `done`; `F-122`, `F-126`,
+  `F-130`, `F-133`, `F-210`, `F-243` in part; the messages name each task's files).
+- [x] **38. §B, screened** (`CLEANUP.md` §B; docs only; new `F-322`, `F-323`): the smell counts
+  beside the open's, the 30 suppression sites, and block (b) over `F-268`, `F-269`, `F-271`,
+  `F-279`'s parts and L8's two, in task order; §C and the entries' verdicts are task 38.1.
+- [ ] **38.1. §C and the entries' verdicts** (docs only; the rest of old task 38's line, as it
+  stood). §C's ranking (the ledger's command, *Lean baselines*), the top ten walked with the four
+  questions (expected no-op, §C's calibration). A verdict for `F-275`'s derivable vertex
+  hypotheses, `F-278`'s and `F-280`'s two each, `F-281`'s five, `F-282`'s nine, `F-283`'s six,
+  `F-284`'s four, `F-285`'s three (the `[DecidableEq β]` of `F-281`–`F-283` and `F-285` are task
+  38.10's), `F-286`'s to `F-295`'s, `F-297`'s, `F-298`'s (its `set_option`s are 38.10's), `F-300`'s
+  three, `F-303`'s four, `F-304`'s three, `F-307`'s eight, `F-308`'s two, `F-309`'s `[Finite α]`,
+  `F-310`'s two over-strong hypotheses and repeated binder, `F-312`'s `hinj`, `F-313`'s unused
+  conjunct, `have` and rewrite, `F-314`'s `have`, `F-316`'s `hle`, `hxfa` and `hxlb`, `F-317`'s two
+  `hinj` and `hab`, `F-318`'s two `hinj`, `hab`, `_hv`, `obtain` and `have`s and `F-319`'s `hne`,
+  `hv`, `hyu`, `hwy`, `hwu` and `_hG`, `F-320`'s two `have`s and `F-321`'s `hS`, two `have`s and two
+  `hinj`, L6's; `F-282`'s, `F-289`'s, `F-291`'s to `F-300`'s, `F-302`'s to `F-321`'s repeated
+  derivations, L8's (`F-305` and `F-306`'s first part are task 38.9's); `F-299`'s, `F-303`'s,
+  `F-304`'s and `F-306`'s mathlib lemmas and `F-279`'s `cross₃_ne_zero_iff_linearIndependent`;
+  `F-282`'s on `indep_matroidMG_of_noRigid_of_deficiency_pos` (made the step of
+  `lem:edge-set-indep-pos`'s pin, or deleted in task 38.6); FRICTION's `edgeFiber_nonempty` (task
+  15) and count-matroid (task 21) entries. Each fix a task appended after 38.10, by file in import
+  order, or merged into an unstarted task 38.2–38.10 of the same file. *Expected:* docs only.
+- *Tasks 38.2–38.9, the deletions §B's block (b) found* (`F-279`'s task-38 paragraph and the
+  dispositions of `F-268`, `F-269`, `F-271`, `F-305` and `F-306` give each name, its orphans and
+  what stays). Each runs gate 4 first (block (b) on its names at its own tree; an orphan it reports
+  goes too, a pinned or live one stays), then §B's trial deletion with gates 1–3, and gate 2's
+  `grep` and block (c) over every deleted name, each live reference repointed or removed
+  (docstrings, file headers' lists, `TACTICS-QUIRKS.md` and `DESIGN.md`, where a precedent may say
+  "since deleted"). *Expected* for each: the dump and `--summary` unchanged (no pin reaches a
+  deleted name), gate 9 at 4 or below.
+- [ ] **38.2. `CaseIII/`** (`F-268`'s `case_III_old_new_blocks`, `F-269`'s four, `F-279`'s tasks
+  35–35.3; 71 names): `CaseIII/{Candidate,Arms,Realization}.lean`, `Relabel/{Basic,Arm,Chain,
+  ChainColumn}.lean`, and 19 orphans in `Candidate.lean`, `RigidityMatrix/Basic.lean`,
+  `Induction/Operations.lean` and `Mathlib/LinearAlgebra/{Dimension/Constructions,
+  LinearIndependent/Basic}.lean`. The cache's callers of `chainData_freshEdge_slot_perp` and
+  `_perp_transport_base_to_candidate` are a shared auxiliary proof (the trial deletion confirms).
+- [ ] **38.3. `CaseI.lean`, `GenericityDevice.lean`, `Coupling.lean`** (`F-268`'s other three,
+  `F-271`'s two, `F-279`'s task 34.1; 26 names), and the orphan
+  `isInfinitesimallyRigidOn_of_finrank_le_set` (`Pinning.lean`); five pins stay, uncalled.
+- [ ] **38.4. `Pinning.lean`, `PanelLayer.lean`, `PanelHinge.lean`** (`F-279`'s tasks 33 and 36;
+  16 names), and four orphans in `Pinning.lean` and `RigidityMatrix/Basic.lean`.
+- [ ] **38.5. `RigidityMatrix/Concrete.lean` whole, and `Basic.lean`, `Claim612.lean`, `Meet.lean`,
+  `Extensor.lean`** (`F-279`'s tasks 32–32.2 but `pluckerCoord_univ`; 99 names): the file and its
+  imports in `CaseIII/Candidate.lean` and `CombinatorialRigidity.lean`, and twelve orphans in
+  `Mathlib/LinearAlgebra/{Matrix/Rank,Dimension/Constructions}.lean` and `RigidityMatrix/Basic.lean`
+  (two `nolint`s go with them); docstrings of `Rank.lean`, `PanelLayer.lean` and `Candidate.lean`
+  name the file.
+- [ ] **38.6. `Induction/`** (`F-279`'s tasks 30–31 and `candidateSeed_apply`; 30 names):
+  `Operations.lean`, `ReducibleVertex.lean`, `Contraction.lean`, `ForestSurgery/EdgeSplitting.lean`,
+  and the orphan `shiftBody_isLink_succ_edge`; `indep_matroidMG_of_noRigid_of_deficiency_pos` as
+  task 38.1 decides. The cache's caller of `shiftCycle_eq_cons` is a shared auxiliary proof.
+- [ ] **38.7. `Molecule/`** (`F-279`'s tasks 37–37.15 but `Pair.lean`'s; 15 names):
+  `ProjectiveInvariance.lean`, `Pencil/{Statement,Chart,Arms}.lean`,
+  `Pencil/MainComponent/{ContractCurve,Lines,EarGen}.lean`; no orphan.
+- [ ] **38.8. `Search/`, `PebbleGame/`, `Mathlib/`, `SquareGraph.lean`, `BodyBar/`** (`F-279`'s
+  tasks 25.2–28 but the vendored port's and `spanningVerts_edgeMultiply`; 31 names), and three
+  orphans in `PebbleGame/Basic.lean` and `Matrix/Rank.lean`.
+- [ ] **38.9. L8's re-seeding** (`F-305`; `F-306`'s first part). Add the selector of a set of at
+  most three members (`IsFin3SelectorOf`, `Pencil/Chart.lean`: by `Finset.toList`, injective by
+  `List.Nodup.getElem?_inj`; the witness `t375/Hyps-t375.lean`) and re-prove
+  `exists_pencilSeed_of_nondeg` (`Reseed.lean`, unpinned) from it,
+  `exists_pencilSeed_of_nondeg_of_selectors` and `Motive.lean`'s two bounds; delete `Engine.lean`'s
+  four re-seeding lemmas, the three helpers `F-305` names, and `range_cross₃L_eq_perp` if block (b)
+  then orphans it. Re-prove `pencilChartPoint_ofCoord_toCoord` (`Steer.lean`) as
+  `pencilChartPoint_congr` at `PencilSeed.ofCoord_toCoord_hubNormal` and `_fillHub` (the witness
+  `t376/Hyps-t376.lean`) and delete `hubSlotNormal_ofCoord_toCoord`. No statement changes.
+- [ ] **38.10. The suppression sites** (`F-322`; `F-298`'s four `set_option`s; the `[DecidableEq β]`
+  of `F-281`–`F-283` and `F-285`), by `TACTICS-QUIRKS.md` §115 and `CombinatorialRigidity/CLAUDE.md`
+  *Fix warnings at the source*. (a) Drop the `[DecidableEq β]`, its `set_option` and the sentence
+  justifying it, and open the proof with `classical`, at
+  `deficiency_eq_zero_iff_exists_spanningTrees`, `rigidContract_deficiency_eq`,
+  `exists_isProperRigidSubgraph_of_three_le_degree`, `pencil_reduction` (and §115's precedent
+  sentence on it), `rankHypothesis_of_theorem_55_d3`, `theorem_55_6_multigraph_gen`,
+  `theorem_55_6_multigraph_d3`, `exists_molecular_rankHypothesis_generalPosition` and the two
+  `exists_rankHypothesis_isGeneralPosition4` forms; a caller's binder left unused goes too (`lake
+  lint` to a fixed point); a step that computes with the instance keeps its site by §115 rule 2, its
+  reason written. (b) Drop only the `set_option` and its sentence at `F-298`'s four; the main
+  results keep theirs (`F-323`). (c) Drop the `@[nolint unusedArguments]` and its comment at
+  `finrank_realBlockPiSpanOn`, `exists_independent_panelRow_subfamily_of_le_finrank` and
+  `trivialMotions` (its docstring's last clause), and update `notes/ToolchainBumps.md`'s count of
+  such sites and its bullet expecting bridge false positives: on this toolchain the linter counts a
+  bridge `have` as a use even when nothing uses it (`F-286`'s copies). (d) Break the header of
+  `…_ofNormals_set_kdof` (`CaseI.lean`) after `theorem` (98 columns) and drop its `set_option`, or
+  keep it with a one-line reason. (e) `GenericBase.lean`: `exists_mem_forall_eval_ne_zero` at
+  `[Finite ι]` with the bridge; the primed theorem's proof moved into its pin after `have :=
+  Fintype.ofFinite α`, and the primed theorem deleted (gate 4) with both `set_option`s. Gates 1–3;
+  the nodes state no instance (gate 2's `grep` confirms). `F-300`'s `[Nonempty α]` drops at the same
+  three theorems may join (task 38.1).
 - [ ] **39. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check with the
   witnesses; the build, `lake lint` and gates 5–10 at the last task's values; the script's report
   and the forward screen beside the open's; the smell counts; the ledger's dispositions, task
@@ -297,6 +361,9 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - `F-301` (task 37.2): `def:extensor-through-point`'s remark that the zero element passes through
   every point, true for $k \ge 2$ and false at $k = 1$ (a `lake lean` witness); the chapter uses
   only $k = 2$, so the remark could say $k \ge 2$.
+- `F-323` (task 38): the `[DecidableEq β]` of three main results (`rankHypothesis_of_theorem_55_gen`,
+  `molecular_conjecture`, `molecular_conjecture_multigraph`), which their types do not use and
+  `classical` supplies; dropping it changes their statements, which the phase restates (S1, S2).
 
 ## Moved to a later round
 
@@ -336,27 +403,21 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 38**, at Opus: §B and §C, screened (`CLEANUP.md` §B–§C), the docstring sweep being done
-(tasks 25–37.21). Its inputs are its checklist line's, as they stand: the smell counts again beside
-the open's (`scripts/cleanup-smell-sweep.py` with
-`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`; the ledger's *Lean baselines*); each
-`@[nolint …]` and `set_option linter` site and its one-line justification, with task 8's `lake lean`
-check at the bridge sites; block (b) and §B's trial deletion for `F-268`'s and `F-269`'s eight
-declarations, `F-271`'s `case_I_realization`, `F-279`'s unused declarations and L8's two (`F-305`,
-`F-306`); the unused, derivable or over-strong hypotheses and the repeated derivations that the line
-lists by entry (`F-275`, `F-278`, and `F-280` to `F-321` but `F-301`), and L6's; `F-298`'s four
-needless `set_option`s and the mathlib lemmas of `F-299`, `F-303`, `F-304` and `F-306`; and §C's
-ranking, the top ten walked with the four questions (expected no-op, §C's calibration). **The
-smallest next commit:** the screen, docs only: its verdicts in this log and the ledger, and each fix
-it finds appended to the checklist as a task before the close (38.1, 38.2, …, one commit each, a
-Lean task with gates 1–3, and gate 4, §B's trial deletion, for a deletion). FRICTION's
-`edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries are read in the same screen. If
-the screen does not fit one sitting, task 38 is §B (the counts, the suppression sites and block
-(b)), and §C with the entries' verdicts is task 38.1; say so in this line. *Expected:* the dump
+**Next: task 38.1**, at Opus: §C and the entries' verdicts, docs only, the rest of task 38's
+screen (§B was task 38; *Current state*). Its inputs are its checklist line's, as they stand: §C's
+ranking with the ledger's command (*Lean baselines*), the top ten walked with the four questions
+(expected no-op, §C's calibration); a verdict on each part of the entries the line lists that tasks
+38.2–38.10 do not take (the unused, derivable or over-strong hypotheses and `have`s, the repeated
+derivations, the mathlib lemmas); `F-282`'s verdict on `indep_matroidMG_of_noRigid_of_deficiency_pos`
+(task 38.6 waits on it); and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21)
+entries. **The smallest next commit:** that screen, its verdicts in this log and the ledger, and
+each fix appended as a task after 38.10 (by file in import order; one commit each, a Lean task with
+gates 1–3, and gate 4 for a deletion) or merged into an unstarted task of tasks 38.2–38.10 on the
+same file; a fix outside *Scope*'s hygiene rule is an `S` entry. *Expected:* the dump
 byte-identical; gate 9 at 4. Gates 5, 6, 9 and 10 (the parent dump
-`scratch/reconcile-lean/dump-t3721.txt`, gitignored; regenerate it if missing); a fix task's gate 3
-adds the sixteen witnesses of `scratch/reconcile-lean/Witnesses-t378.lean` and
-`scratch/reconcile-lean/t36/MolWitness.lean`.
+`scratch/reconcile-lean/dump-t38.txt`, gitignored; regenerate it if missing). Then tasks 38.2–38.10
+and the appended ones in order, then the close; a fix task's gate 3 adds the sixteen witnesses of
+`scratch/reconcile-lean/Witnesses-t378.lean` and `scratch/reconcile-lean/t36/MolWitness.lean`.
 
 The whole-project build of an edit to a file the main results import can pass the Bash tool's 600 s
 (task 37.9's did; tasks 37.5–37.8's and 37.10–37.21's, 4 to 24 modules, did not) and go to the
@@ -375,10 +436,11 @@ parent's copies of the edited files put back (task 37.7). The screens may serve 
 declarations, their pins, liveness, callers and the nodes they serve), `t321/codecmp.py` (a file's
 code, comments stripped, unchanged), and the `Hyps-t*.lean` witnesses of tasks 29–37.21 (in
 `scratch/reconcile-lean/` and its task directories; each entry's *Evidence* names its own), each a
-trial of the proofs without the hypotheses or steps its entry names. Carried in: `F-252`, `F-273`,
-`F-276`, `F-277` and `F-301` for the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to `F-300`,
-`F-302` to `F-321` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21)
-entries for task 38. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
+trial of the proofs without the hypotheses or steps its entry names; task 38's `t38/blockb2.py` and
+`t38/seq.py` (block (b) over name files, and over the deletion tasks in order). Carried in: `F-252`,
+`F-273`, `F-276`, `F-277`, `F-301` and `F-323` for the PI; `F-275`, `F-278` to `F-300`, `F-302` to
+`F-321` and the FRICTION entries for task 38.1. After the round the queue stops before
+`RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 
@@ -418,6 +480,10 @@ entries for task 38. After the round the queue stops before `RECONCILE-FORMAL`, 
 - **A docstring the open moved whole** (task 36): kept as it stands but for its lead's label, which
   is this round's (*Scope*); the phase writes the rest once. A line comment in its declaration's
   body loses its codes, as the open moved docstrings, not comments (task 36.2).
+- **What the deletions leave** (task 38): a declaration that a chapter names as the Lean form of its
+  prose, or that witnesses a chapter's claim, stays though nothing calls it; so does the vendored
+  port's code (`DESIGN.md`: the rebased port stays whole for an upstream offer). Suppressions follow
+  `TACTICS-QUIRKS.md` §115, a main result's binder going to the phase (`F-323`).
 - **A file nothing uses** (task 32.2): its docstrings are swept like any other, its header says that
   no node presents it and no declaration outside it uses its declarations, and `F-279` lists the
-  file and the declarations its removal would leave without a caller, for task 38.
+  file and the declarations its removal would leave without a caller (task 38.5 deletes it).

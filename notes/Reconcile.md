@@ -56,9 +56,12 @@ of `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and generic-
 `CoverageCut.lean`, `CoverageTheoremS.lean`, `GoodEar.lean`, `GenericBase.lean`,
 `GenericEar.lean`, `GenericTriangle.lean` and `Statements.lean` (this round's parts; the
 footprint), the sweep's last, after the bump to Lean v4.36.0-rc1 that the PI put ahead of task 34.1
-lifted round 3's toolchain blocker of 2026-10-21.
-**Next concrete task:** round 3's task 38, `CLEANUP.md` §B and §C screened over the round's `L`
-entries, docs only (each fix found becomes a task before the close).
+lifted round 3's toolchain blocker of 2026-10-21. Task 38 screened `CLEANUP.md` §B (the smell
+counts, the 30 suppression sites, and the liveness screen of the dead declarations), and appended
+its fixes as tasks 38.2–38.10: seven deletions by directory, L8's re-seeding, and the suppression
+sites; `F-323`, three main results' unused `[DecidableEq β]`, is for the PI.
+**Next concrete task:** round 3's task 38.1, `CLEANUP.md` §C and the verdicts on the round's
+remaining `L` entries, docs only (each fix found becomes a task before the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

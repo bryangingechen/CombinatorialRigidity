@@ -3337,6 +3337,20 @@ declaration's name as its header writes it:
   (`scratch/reconcile-lean/t372/Zero.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.2.
   *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
+- **F-323** · S · `thm:theorem-55-6`, `thm:molecular-conjecture` and
+  `thm:molecular-conjecture-multigraph` (`panel-layer.tex`; their pins
+  `PanelHingeFramework.rankHypothesis_of_theorem_55_gen`, `PanelHingeFramework.molecular_conjecture`
+  and `molecular_conjecture_multigraph`, `AlgebraicInduction/Theorem55.lean`, three main results):
+  each pin takes a `[DecidableEq β]` its statement does not use (hence its `set_option
+  linter.unusedDecidableInType false in`), which `classical` supplies. `TACTICS-QUIRKS.md` §115's
+  rule 1 would drop it, which changes a main result's statement; its rule 3 keeps the suppression
+  meanwhile. The phase restates the three (S1, S2) and can drop it then; the nodes state no
+  decidability.
+  *Evidence:* read (the statements); a `lake lean` witness: the three stated without the instance
+  and proved by the theorems under `classical`, with no warning, on the three standard axioms
+  (`scratch/reconcile-lean/t38/MainDec.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 38.
+  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
 
 ## L — Lean
 
@@ -4888,7 +4902,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache after task 4).
   *Found:* RECONCILE round 3 task 4.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.2 and 38.3): task 38's
+  block (b) at `1b1d9d87` finds the four unpinned, dead and with no caller outside them;
+  `case_III_old_new_blocks` goes with task 38.2's deletion in `CaseIII/`, the other three with
+  task 38.3's.
 - **F-269** · L · `PanelHingeFramework.candidateCompletion_index_injective` and
   `candidateCompletion_panelRow_packaging` (`CaseIII/Arms.lean`),
   `BodyHingeFramework.linearIndependent_sumElim_candidateRow_swap` and
@@ -4898,7 +4915,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache after task 5).
   *Found:* RECONCILE round 3 task 5.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.2): task 38's block (b) at
+  `1b1d9d87` finds the four unpinned, dead and uncalled; deleting them leaves
+  `linearIndependent_sumElim_block_swap` (`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`,
+  unpinned) without a caller, and it goes with them.
 - **F-271** · L · `PanelHingeFramework.case_I_realization` (`AlgebraicInduction/CaseI.lean`): an
   unpinned declaration that no main result's proof reaches and nothing calls; it is the only caller
   of `lem:claim-6-4`'s pin, `rigidContract_exterior_rank_transport_htransport`, which stays with
@@ -4906,7 +4926,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at task 11.1's tree).
   *Found:* RECONCILE round 3 task 12.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.3): task 38's block (b) at
+  `1b1d9d87` finds it unpinned, dead and uncalled; with it goes
+  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`, which only it calls,
+  and `rigidContract_exterior_rank_transport_htransport` stays with `lem:claim-6-4`.
 - **F-272** · L · `exists_packing_move_of_not_inc` (`Induction/ReducibleVertex.lean`) and
   `lem:packing-move` (`molecular-induction.tex`): the conclusion, forests $F'_1, \dots, F'_D$ with
   union $I$ and $x \in F'_j$, holds without the move's hypotheses: swap the index of a forest that
@@ -5015,7 +5038,8 @@ declaration's name as its header writes it:
   task 25.3, at `05b0dae4` for task 26 and at `7e5c1cb2` for task 27; `rfl` lemmas left out);
   read (`Chart.lean`'s proof and import closure; `pebOn_addArc`'s proof).
   *Found:* RECONCILE round 3 tasks 25.2, 25.3, 26 and 27.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38). Task 28 adds two in
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.2 to 38.8; task 38's screen
+  ends this entry). Task 28 adds two in
   `SquareGraph.lean`, `square_mono` and `three_le_ncard_closedNeighborSet_of_two_le_degree`, whose
   docstrings said the proof of `thm:jacobs` and the square-graph dictionary use them (no
   declaration does; the cache at `0819b42e`). Task 30 adds twenty-two in
@@ -5228,6 +5252,49 @@ declaration's name as its header writes it:
   `earPicture_of_notMem` (`EarGen.lean`), off `V₁` the picture of ear data is its own coordinate,
   whose docstrings now say that no declaration uses them. Removing them leaves no other declaration
   without a caller.
+  Task 38's screen (block (b) of the work log's *Scope* over the Lean cache at `1b1d9d87`, the
+  deletions taken in task order, each after the earlier ones; `scratch/reconcile-lean/t38/seq.py`,
+  gitignored) finds each name above unpinned, dead and with no caller outside the set, but for four
+  callers the cache gives wrongly: `chainData_freshEdge_slot_perp` and
+  `chainData_freshEdge_perp_transport_base_to_candidate` (`ChainColumn.lean`) and
+  `Graph.ChainData.shiftCycle_eq_cons` (`Operations.lean`) are "called" by later declarations that
+  reuse their auxiliary `by omega` proofs (no use in the source), and `candidateSeed` by its `rfl`
+  lemma `candidateSeed_apply`, which goes with it. `shiftEdgePerm_apply_edge_top` and `_edge_pred`
+  have seven callers each, live ones among them, and stay. The tasks: 38.2, the `CaseIII/` parts
+  (tasks 35 to 35.3) with `F-268`'s and `F-269`'s there, and nineteen orphans:
+  `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`; in `RigidityMatrix/Basic.lean`,
+  `exists_genuine_linearIndependent_basis_of_rigidityRows_diff`,
+  `span_rigidityRows_diff_singleton_eq_of_mem_span` and `funLeft_dualMap_comp_single`; ten of
+  `Operations.lean` under `Graph.ChainData`, `succ_ne_pred_castSucc`, `shiftBody_pred_ne`,
+  `shiftBody_pred_ne_succ`, `shiftBody_deg_two`, `shiftBody_isLink_pred_edge`,
+  `shiftBodyGraph_deg_two`, `shiftBodyGraph_deg_two_right`, `shiftBodyGraph_isLink_pred_edge`,
+  `shiftBodyGraph_off_succ` and `shiftBodyGraph_isLink_of_off_body`;
+  `Dimension/Constructions.lean`'s four; and `linearIndependent_sumElim_block_swap`. The pinned
+  `rigidityRows_ofNormals_relabel` and `candidateRow_ac_eq_neg` stay. 38.3, task 34.1's part with
+  `F-268`'s three and `F-271`'s two, and the orphan `isInfinitesimallyRigidOn_of_finrank_le_set`
+  (`Pinning.lean`). 38.4, tasks 33's and 36's parts, and the orphans `pinnedMotions_le_withGraph`,
+  `pinnedMotions_withGraph_eq` and `hnew_of_isLink_incident` (`Pinning.lean`) and
+  `hingeConstraint_comm` (`RigidityMatrix/Basic.lean`). 38.5, the whole of `Concrete.lean`, tasks
+  32's and 32.1's parts and `join_assoc`, and twelve orphans, task 32.2's eleven and
+  `BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq`. 38.6, tasks 30's to 31's
+  parts with `candidateSeed_apply`, and the orphan `shiftBody_isLink_succ_edge`;
+  `Graph.indep_matroidMG_of_noRigid_of_deficiency_pos`, which task 30.1's two
+  `exists_adjacent_degree_two_pair_…` leave without a caller, waits for `F-282`'s repeated
+  derivation, which would make it the step of `lem:edge-set-indep-pos`'s pin (task 38.1 decides).
+  38.7, tasks 37's to 37.15's parts but `Pair.lean`'s. 38.8, tasks 25.2's, 25.3's, 26's and 28's
+  parts and task 27's three in `BodyBar/`, with the orphans `out_reverse_tail` and `spanArcs_empty`
+  (`PebbleGame/Basic.lean`) and `Matrix.linearIndependent_rows_iff_rank_eq_card`. Left: the vendored
+  port's part (`Submodular.lean`'s and `Union.lean`'s), as `DESIGN.md` keeps the rebased port whole
+  for an upstream offer; `spanningVerts_edgeMultiply` and `pluckerCoord_univ`, which
+  `body-hinge.tex` and `extensor.tex` name as the Lean form of their prose; and
+  `exists_isNondegPencilRealization_parallel_pair`, the Lean witness of the claim before
+  `def:pencil-conditioned-pair`. `cross₃_ne_zero_iff_linearIndependent` is a mathlib-lemma item,
+  task 38.1's. A whole-project screen of the cache (the declarations that no pin, main result,
+  witness or executable reaches; `t38/dead.py`) holds every name above but the three with a false
+  caller; its other hits are generated names, `@[simp]` and `rfl` lemmas whose uses leave no
+  constant in a proof, and some fifteen basic lemmas of their files' definitions
+  (`SimpleGraph.IsTight.isSparse`, `isLaman_iff`, `IsSparse.deleteEdges`,
+  `EdgeSetRowIndependent.mono`, …), which no sweep task listed; task 38 does not act on them.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5253,7 +5320,8 @@ declaration's name as its header writes it:
   `classical`), each on the three standard axioms (`scratch/reconcile-lean/Hyps-t29-1.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 29.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the
+  `[DecidableEq β]` and its `set_option`, task 38.1 for the rest.
 - **F-282** · L · nine hypotheses of seven declarations of `Molecular/Induction/Operations.lean`
   that the others give or the proof does not use, and a repeated derivation:
   `Graph.exists_isProperRigidSubgraph_of_three_le_degree`'s `[DecidableEq β]`, which its statement
@@ -5275,7 +5343,8 @@ declaration's name as its header writes it:
   of `lem:edge-set-indep-pos` from the other lemma; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t30.lean` and `Hyps-t30-2.lean`, gitignored).
   *Found:* RECONCILE round 3 task 30.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the
+  `[DecidableEq β]` and its `set_option`, task 38.1 for the rest.
 - **F-283** · L · six hypotheses of six declarations of `Molecular/Induction/` that the proofs do
   not use or the others give: `Graph.splitOff_deficiency_ge`'s `hdeg2`, which its proof does not use
   (`SplitOffDeficiency.lean`; `lake lint` does not report it);
@@ -5294,7 +5363,8 @@ declaration's name as its header writes it:
   or `hH`; the fifth with `classical`; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t301.lean`, gitignored).
   *Found:* RECONCILE round 3 task 30.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the
+  `[DecidableEq β]` and its `set_option`, task 38.1 for the rest.
 - **F-284** · L · three hypotheses of `Molecular/Induction/ForestSurgery/ChainExtraction.lean` that
   the proofs use less of than they give, or that the others give: `Graph.chainWalk_charging`'s
   `[G.Simple]`, used only through `G.Loopless`, with which
@@ -5326,7 +5396,8 @@ declaration's name as its header writes it:
   elaborate with the same proofs, on at most the three standard axioms
   (`scratch/reconcile-lean/Hyps-t311.lean`, gitignored).
   *Found:* RECONCILE round 3 task 31.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the
+  `[DecidableEq β]` and its `set_option`, task 38.1 for the rest.
 - **F-286** · L · hypotheses of `Molecular/RigidityMatrix/Bricks.lean` that the proofs do not use,
   or use less of than the statements give. `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
   (`lem:block-rank-cut`): its `_hE₁` (every other link inside `V₁` or outside it), which the proof
@@ -5351,7 +5422,11 @@ declaration's name as its header writes it:
   of the third without `[Finite α]` as well fails (`scratch/reconcile-lean/Hyps-t32.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 32.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.1). Task 38's suppression
+  screen agrees: a copy of the file without the two `@[nolint unusedArguments]` lints clean, and
+  one without the two `[Finite β]` and their `have : Fintype β` elaborates, the linter then
+  reporting the `[Finite β]` of `add_le_finrank_span_rigidityRows_induce_union_singleton`
+  (`scratch/reconcile-lean/t38/BricksCopy.lean`, `BricksNoBeta.lean`, gitignored).
 - **F-287** · L · hypotheses of `Molecular/Meet.lean` that the statements need not take, and a
   lemma's place. `meet`'s `ha : a ≤ k + 2` and `hb : b ≤ k + 2`, which `hab : a + b ≤ k + 2` gives
   (`def:meet` states `a + b ≤ d + 1` alone). `extensor_join_proportional_complementIso_meet`'s
@@ -5589,7 +5664,8 @@ declaration's name as its header writes it:
   `hfresh` (`theorem_55_6_multigraph_gen`'s) as the control, which warns; on the three standard
   axioms (`scratch/reconcile-lean/Hyps-t362.lean`, gitignored).
   *Found:* RECONCILE round 3 task 36.2.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the four
+  `set_option`s and their sentences, task 38.1 for the rest.
 - **F-299** · L · a missed mathlib lemma and a repeated derivation in `Molecular/Molecule/`.
   `screwCoord_injective` (`ScrewVelocity.lean`) proves by rank–nullity, from `screwCoord_surjective`
   and the two dimensions, what `LinearMap.injective_iff_surjective_of_finrank_eq_finrank` gives; and
@@ -5703,7 +5779,10 @@ declaration's name as its header writes it:
   `exists_pencilSeed_of_nondeg_of_selectors`, on the three standard axioms
   (`scratch/reconcile-lean/t375/Hyps-t375.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.5.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.9): task 38's block (b) at
+  `1b1d9d87` finds the four unpinned and live only through `exists_pencilSeed_of_nondeg`, which
+  calls the two `fill` lemmas and which the fix re-proves; the four and the three helpers above
+  then have no caller, and none is pinned.
 - **F-306** · L · a missed mathlib lemma and repeated derivations in
   `Molecular/Molecule/Pencil/Reseed.lean` and `Steer.lean`.
   `linearIndepOn_triple_of_linearIndependent` (`Steer.lean`) is mathlib's `linearIndepOn_range_iff`
@@ -5724,7 +5803,9 @@ declaration's name as its header writes it:
   the lemma on `IsFin3SelectorOf`, with `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` from
   it, on the three standard axioms (`scratch/reconcile-lean/t376/Hyps-t376.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.6.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.9 for
+  `pencilChartPoint_ofCoord_toCoord` and `hubSlotNormal_ofCoord_toCoord` (unpinned; its one
+  caller is the first, task 38's block (b) at `1b1d9d87`), task 38.1 for the rest.
 - **F-307** · L · hypotheses the others give, over-strong hypotheses and repeated derivations in
   `Molecular/Molecule/Pencil/Pair.lean` and `Pair2.lean`. The `hD : 2 ≤ bodyBarDim n` of
   `hasGenericPencilRealization_of_cutEdges_eq_empty`,
@@ -6117,6 +6198,44 @@ declaration's name as its header writes it:
   on the standard axioms (`scratch/reconcile-lean/t3721/Hyps-t3721.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.21.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-322** · L · the `@[nolint …]` and `set_option linter.* false` sites that `CLEANUP.md` §B's
+  suppression screen finds unneeded, unjustified or curable by `TACTICS-QUIRKS.md` §115's rule 1.
+  The `@[nolint unusedArguments]` of `Graph.BodyBarFramework.finrank_realBlockPiSpanOn`
+  (`BodyBar/TayTheorem.lean`) and of
+  `BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank`
+  (`AlgebraicInduction/GenericityDevice.lean`), whose comments call the report a false positive of
+  the `Fintype.ofFinite` bridge: copies without the attribute lint clean, as the linter sees each
+  `Finite` binder used, and a copy of each without one of them fails. That of
+  `BodyHingeFramework.trivialMotions` (`RigidityMatrix/Basic.lean`), whose docstring says the
+  attribute is for `_F`: Batteries' `unusedArguments` already skips an argument named with `_`. The
+  `set_option linter.style.longLine false in` of
+  `PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`
+  (`CaseI.lean`), with no comment, for its header line, 102 columns because of the name. The
+  `set_option linter.unusedDecidableInType false in` of `rankHypothesis_of_theorem_55_d3`,
+  `theorem_55_6_multigraph_gen` and `theorem_55_6_multigraph_d3` (`Theorem55.lean`; the last's
+  docstring does not justify it), `exists_molecular_rankHypothesis_generalPosition`
+  (`Modelling.lean`), and `exists_rankHypothesis_isGeneralPosition4_of_two_le` and
+  `exists_rankHypothesis_isGeneralPosition4` (`Theorem56.lean`): each `[DecidableEq β]` the type
+  does not use, which `classical` supplies (§115 rule 1: drop it). And the two
+  `set_option linter.unusedFintypeInType false in` of `Pencil/MainComponent/GenericBase.lean`:
+  `exists_mem_forall_eval_ne_zero`'s `[Fintype ι]`, where `[Finite ι]` and the bridge do
+  (`DESIGN.md` *Typeclass shape for finiteness on `V`*), and
+  `hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'`, whose one caller, the pin
+  `Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero`, only bridges its
+  `[Finite α]` to it. The others are justified or another entry's: the two `IsInfinitesimallyRigid`
+  contract guards (`Framework.lean`, `BodyBar/Framework.lean`; the linter reports both), the
+  `openClassical` of `Bricks.lean`, `F-286`'s two `nolint`s, the `unusedDecidableInType` of
+  `F-281`, `F-282`, `F-283` and `F-285` and `F-298`'s four, `F-323`'s three, and the `nolint`s of
+  `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` and `edgeRowSplit_corner_card`, which task
+  38.5 deletes.
+  *Evidence:* read (the sites, their comments and bodies; Batteries' `unusedArguments`); a `lake
+  lean` witness: copies of the declarations linted with `#lint only unusedArguments`, the two
+  contract guards reported and the other three not, a control with an unused `[Finite α]`
+  reported, and the copies without `[Finite β]` (the first) and `[Finite α]` (the second) failing
+  (`scratch/reconcile-lean/t38/Nolint1.lean` to `Nolint3.lean`, gitignored); rule 1's statements
+  follow from the theorems under `classical`, as `F-323`'s witness shows for three of them.
+  *Found:* RECONCILE round 3 task 38.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.10).
 
 ## M — mathematics and sources
 
