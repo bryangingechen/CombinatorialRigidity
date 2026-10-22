@@ -7,27 +7,35 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericStee
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageChain
 
 /-!
-# The one-body ear (Phase 40o EARS, Z1)
+# The generic realization across a one-body ear
 
-(MC-127)(a), (MC-185): a one-body ear at a pair of pencil hubs whose deficiency does not rise
-carries a generic pencil realization up from the smaller graph. The extension half places the ear
-body on the ends' closed hub-neighbourhoods' common orthogonal complement, off the line through
-the ends' points; the assembly half steers `G` and `G[V₁]`'s realizations (T2 + T3,
-`GenericSteer.lean`) to the conditions the extension needs.
+The step of the generic main-component statement at a body of degree two whose neighbours are pencil
+hubs (`lem:pencil-generic-one-ear`, `sec:main-component-statements`). Let `K` be infinite and `G`
+simple and nondegeneracy-feasible, with an open ear `a − x 0 − b` on `V₁` with one interior body
+(`def:open-ear`; an ear is given as in `MainComponent/Ear.lean`), whose ends are pencil hubs, and
+with `def₃(G[V₁]) ≤ def₃(G)`. If `G[V₁]` has a generic pencil realization whenever it is
+nondegeneracy-feasible, then `G` has one.
 
-## Main statements
+A nondegenerate realization of `G` whose restriction to `G[V₁]` is nondegenerate
+(`lem:pencil-generic-steer`(a)) shows that `G[V₁]` is nondegeneracy-feasible, so `G[V₁]` has a
+generic realization; at the realization of `G` the normals `n_a` and `n_b` are independent, and
+`p_a · n_b` and `p_b · n_a` are not both zero. Steering the generic realization of `G[V₁]`
+(`lem:pencil-generic-steer`(b)) gives one with the normals independent on every closed
+hub-neighbourhood in `G` of a body of `V₁` and at `a` and `b`, and with one of the two products
+nonzero. Then the line `n_a^⊥ ∩ n_b^⊥`, where the panels of `a` and `b` meet, is not the line
+through `p_a` and `p_b`, and the point of `x 0` goes on the first and off the second. The two new
+hinges are independent, so the rank rises by at least six (`lem:block-rank-ear`), and with
+`def₃(G[V₁]) ≤ def₃(G)` it reaches the deficiency rank of `G`.
 
-* `Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization` — (MC-127)(a), the
-  extension half: a nondegenerate realization of `G[V₁]` at the deficiency rank, with the ear
-  ends' closed hub-neighbourhoods promoted and the ear-body flag, extends across the ear to a
-  generic pencil realization of `G`.
-* `Graph.IsOpenEar.hasGenericPencilRealization_of_one` — (MC-127)(a) on the chart, Z1: a one-body
-  ear at a simple nondegeneracy-feasible `G` with `def₃(G[V₁]) ≤ def₃(G)` carries `G[V₁]`'s generic
-  pencil realization (whenever feasible) up to one of `G`.
+## Main results
 
-See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-127)(a), (MC-185),
-(MC-190), (MC-191)),
-and `blueprint/src/chapter/main-component.tex` (`lem:pencil-generic-one-ear`).
+* `Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization`:
+  `lem:pencil-generic-one-ear`, its extension: a nondegenerate realization of `G[V₁]` at the
+  deficiency rank, with the normals independent on every closed hub-neighbourhood in `G` of a body
+  of `V₁` and at `a` and `b`, and `p_a · n_b` and `p_b · n_a` not both zero, extends across the ear
+  to a generic pencil realization of `G`.
+* `Graph.IsOpenEar.hasGenericPencilRealization_of_one`: `lem:pencil-generic-one-ear`, the generic
+  realization across a one-body ear.
 -/
 
 open scoped Matrix Graph
@@ -36,9 +44,15 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## Z1 (part 1): the one-ear extension ((MC-185)) -/
+/-! ## The extension across the ear -/
 
-/-- The point of the ear body: on the line `π_a ∩ π_b`, off the line `p_a p_b`. -/
+/-- **The point of the ear body** (a step of `lem:pencil-generic-one-ear`): let `n_a` and `n_b` be
+independent, and `p_a ≠ 0` and `p_b ≠ 0` with `p_a · n_a = 0` and `p_b · n_b = 0`, where `p_a · n_b`
+and `p_b · n_a` are not both zero. Then some `p_x` with `p_x · n_a = p_x · n_b = 0` makes `p_a`,
+`p_x` and `p_b` independent. The points `p_a` and `p_b` are independent, as a dependency would put
+both in `n_a^⊥ ∩ n_b^⊥`. That space has dimension two (`finrank_toDualPerp_pair_eq`), as their span
+has, and it is not their span, as they do not both lie in it; any of its points off their span
+serves. -/
 theorem exists_mem_perp_pair_linearIndependent {na nb pa pb : Fin 4 → K}
     (hab : LinearIndependent K ![na, nb]) (hpa : pa ≠ 0) (hpb : pb ≠ 0)
     (ha : pa ⬝ᵥ na = 0) (hb : pb ⬝ᵥ nb = 0) (hflag : ¬ (pa ⬝ᵥ nb = 0 ∧ pb ⬝ᵥ na = 0)) :
@@ -51,7 +65,7 @@ theorem exists_mem_perp_pair_linearIndependent {na nb pa pb : Fin 4 → K}
     simp only [hm, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
       piBasisFun_toDual_eq_dotProduct, Fin.forall_fin_two, Matrix.cons_val_zero,
       Matrix.cons_val_one]
-  -- `p_a, p_b` are independent: a dependency would put both in `π_a ∩ π_b`.
+  -- `p_a, p_b` are independent: a dependency would put both in `n_a^⊥ ∩ n_b^⊥`.
   have hLIab : LinearIndependent K ![pa, pb] := by
     rw [LinearIndependent.pair_iff]
     intro s t hst
@@ -73,7 +87,7 @@ theorem exists_mem_perp_pair_linearIndependent {na nb pa pb : Fin 4 → K}
     have hpb' : pb = (-(t / s))⁻¹ • pa := by
       rw [hpa', inv_smul_smul₀ (by simp [hs, ht])]
     rw [hpb', smul_dotProduct, ha, smul_zero]
-  -- `π_a ∩ π_b` is not the line `p_a p_b`, so it has a point off it.
+  -- `n_a^⊥ ∩ n_b^⊥` is not the span of `p_a` and `p_b`, so it has a point off it.
   set S : Submodule K (Fin 4 → K) := Submodule.span K (Set.range ![pa, pb]) with hS
   have hSdim : Module.finrank K S = 2 := by rw [hS, finrank_span_eq_card hLIab]; simp
   have hnle : ¬ m ≤ S := by
@@ -94,7 +108,26 @@ theorem exists_mem_perp_pair_linearIndependent {na nb pa pb : Fin 4 → K}
   rw [hperm]
   exact h3.comp _ (by decide)
 
-/-- **(MC-127)(a), the extension half.** -/
+/-- **The generic realization across a one-body ear, its extension** (`lem:pencil-generic-one-ear`):
+let `G` be simple with an open ear `a − x 0 − b` on `V₁` with one interior body, whose ends are
+pencil hubs, and with `def₃(G[V₁]) ≤ def₃(G)`. A nondegenerate pencil realization of `G[V₁]` at the
+deficiency rank, whose normals are independent on the closed hub-neighbourhood in `G` of every body
+of `V₁` and at `a` and `b`, and with `p_a · n_b` and `p_b · n_a` not both zero, extends to a generic
+pencil realization of `G`.
+
+Proof. Put `p_{x 0}` in `n_a^⊥ ∩ n_b^⊥`, with `p_a`, `p_{x 0}` and `p_b` independent
+(`exists_mem_perp_pair_linearIndependent`); give `x 0` the normal `cross₃ p_{x 0} p_a p_b` of the
+plane through the three points, and `e 0` and `e 1` the joins `p_a ∧ p_{x 0}` and `p_{x 0} ∧ p_b`.
+Every other label keeps its hinge. This is a nondegenerate pencil realization of `G`. The body `x 0`
+has degree two, so it is not a hub and lies in no closed hub-neighbourhood; its own closed
+hub-neighbourhood lies in `{a, b}`, and its closed neighbourhood in `{x 0, a, b}`, whose points are
+independent. A body of `V₁` that is not a hub of `G` is not `a` or `b`, so its closed neighbourhood
+in `G` is the one in `G[V₁]`, where it is not a hub either. The two new hinges are independent
+(`linearIndependent_pointJoin_pair`), so the rank rises by at least six
+(`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, `lem:block-rank-ear`), and with
+`def₃(G[V₁]) ≤ def₃(G)` it reaches the deficiency rank of `G`, which bounds it
+(`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`,
+`lem:relative-deficiency-rank-bound`). -/
 theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization
     [Finite α] [Finite β] {G : Graph α β} [G.Simple]
     {V₁ : Set α} {x : Fin 1 → α} {a b : α} {e : Fin 2 → β} (hear : G.IsOpenEar V₁ x a b e)
@@ -233,7 +266,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
   have hpb' : point' b = pb := hpt_ne b hxb.symm
   have hna' : normal' a = na := hnm_ne a hxa.symm
   have hnb' : normal' b = nb := hnm_ne b hxb.symm
-  -- conjunct 1
+  -- a pencil realization
   have hreal : HasPencilPanelRealization G F normal' point' := by
     refine ⟨⟨rfl, fun v hv => ?_, hext_ne, fun f u v hl => ?_⟩, fun v hv => ?_, fun v hv => ?_,
       fun f u v hl => ?_⟩
@@ -264,7 +297,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
       · rw [hext1, hpb', hpt_x]; exact hthruPt.symm
       · rw [hextf f h0 h1, hpt_ne u (hV₁ne u hl'.2.1), hpt_ne v (hV₁ne v hl'.2.2)]
         exact hthru f u v hl'
-  -- conjunct 2
+  -- the points at the two ends of every link are independent
   have hadj' : ∀ f u v, G.IsLink f u v → LinearIndependent K ![point' u, point' v] := by
     intro f u v hl
     rcases hcls f u v hl with ⟨-, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ | ⟨-, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ |
@@ -274,7 +307,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
     · rw [hpb', hpt_x]; exact hLIxb
     · rw [hpb', hpt_x]; exact hLIbx
     · rw [hpt_ne u (hV₁ne u hl'.2.1), hpt_ne v (hV₁ne v hl'.2.2)]; exact hadj f u v hl'
-  -- conjunct 3
+  -- the normals are independent on every closed hub-neighbourhood
   have hhub' : ∀ v ∈ V(G), LinearIndepOn K normal' (G.closedHubNbhd v) := by
     intro v hv
     have heq : Set.EqOn normal' normal (G.closedHubNbhd v) := fun w hw =>
@@ -293,7 +326,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
       have hLIon : LinearIndepOn K normal {a, b} :=
         (LinearIndepOn.pair_iff normal hab').mpr (LinearIndependent.pair_iff.mp hab)
       exact (hLIon.mono hsub).congr heq.symm
-  -- conjunct 4
+  -- the points are independent on the closed neighbourhood of every body that is not a hub
   have hnbhd' : ∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point' (G.closedNbhd v) := by
     intro v hv hvhub
     rcases hmemV v hv with h | rfl
@@ -380,9 +413,11 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
     linarith
   exact ⟨F, normal', point', ⟨hreal, hadj', hhub', hnbhd'⟩, hrank'⟩
 
-/-! ## Z1 (part 2): the one-ear step (the assembly) -/
+/-! ## The generic realization across a one-body ear -/
 
-/-- **Three independent vectors do not all lie on two independent planes.** -/
+/-- **Three vectors orthogonal to two independent vectors are dependent** (a step of
+`lem:pencil-generic-one-ear`): they lie in `n_a^⊥ ∩ n_b^⊥`, of dimension two
+(`finrank_toDualPerp_pair_eq`). -/
 theorem not_linearIndependent_of_dotProduct_eq_zero_pair {na nb : Fin 4 → K}
     (hab : LinearIndependent K ![na, nb]) (p : Fin 3 → Fin 4 → K)
     (h : ∀ i, p i ⬝ᵥ na = 0 ∧ p i ⬝ᵥ nb = 0) : ¬ LinearIndependent K p := by
@@ -402,12 +437,28 @@ theorem not_linearIndependent_of_dotProduct_eq_zero_pair {na nb : Fin 4 → K}
   rw [Fintype.card_fin, hmdim] at this
   omega
 
-/-- **(MC-127)(a) on the chart** (with (MC-190), (MC-191)): a one-body ear with
-`def₃(G[V₁]) ≤ def₃(G)`, over a feasible simple `G`, carries the generic motive up from `G[V₁]`.
-The ends need not be assumed non-adjacent: at a feasible `G` a triangle `a x b` with the two hubs
-`a`, `b` cannot occur (`not_pencilNondegFeasible_of_triangle_two_hubs`).
-The step itself proves `G[V₁]` feasible (restriction of a steered realization of `G`), so it
-consumes the induction hypothesis in the conditioned form. -/
+/-- **The generic realization across a one-body ear** (`lem:pencil-generic-one-ear`): let `K` be
+infinite and `G` simple and nondegeneracy-feasible, with an open ear `a − x 0 − b` on `V₁` with one
+interior body, whose ends are pencil hubs, and with `def₃(G[V₁]) ≤ def₃(G)`. If `G[V₁]` has a
+generic pencil realization whenever it is nondegeneracy-feasible, then `G` has a generic pencil
+realization. The ends need not be assumed non-adjacent: at a nondegeneracy-feasible `G` they are
+not, as no triangle contains two pencil hubs (`not_pencilNondegFeasible_of_triangle_two_hubs`).
+
+Proof. A neighbour outside `V₁` of a body of `V₁` is `x 0`, which is not a hub. So `G` has a
+nondegenerate realization whose restriction to `G[V₁]` is nondegenerate
+(`exists_isNondegPencilRealization_restrict_of_demoted`, `lem:pencil-generic-steer`(a)); `G[V₁]` is
+then nondegeneracy-feasible, and by hypothesis it has a generic realization. At the realization of
+`G`, `n_a` and `n_b` are independent, as `a` and `b` lie in the closed hub-neighbourhood of `x 0`,
+and `p_a · n_b` and `p_b · n_a` are not both zero: otherwise the independent points of `x 0`, `a`
+and `b` would all lie in `n_a^⊥ ∩ n_b^⊥` (`not_linearIndependent_of_dotProduct_eq_zero_pair`).
+Steering the generic realization of `G[V₁]` (`exists_isNondegPencilRealization_steer`,
+`lem:pencil-generic-steer`(b)), with the sets the closed hub-neighbourhoods in `G` of the bodies of
+`V₁` and `{a, b}`, and the one pair `(a, b)` if `p_a · n_b ≠ 0` and `(b, a)` otherwise, gives a
+generic realization of `G[V₁]` with the normals independent on each set and the product of that pair
+nonzero. A hub of `G` that is not a hub of `G[V₁]` has three members in its closed neighbourhood in
+`G[V₁]` (`ncard_closedNbhd_eq_three_of_demoted`), as the steering asks. The extension
+`Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization` then gives `G` a generic
+pencil realization. -/
 theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
     [Infinite K] [Finite α] [Finite β] {G : Graph α β} (hS : G.Simple)
     (hfeas : PencilNondegFeasible K G)
@@ -435,20 +486,20 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
   have l1 : G.IsLink (e 1) (x 0) b := hear.isLink 1
   have hxhub : ¬ G.PencilHub (x 0) := fun h => by
     have := h.2; rw [hear.degree_eq_two 0] at this; omega
-  -- a vertex of `V(G)` off `V₁` is the ear body
+  -- a body of `G` outside `V₁` is `x 0`
   have hoff : ∀ y ∈ V(G), y ∉ V₁ → y = x 0 := by
     intro y hy hyV
     rw [hear.cover] at hy
     rcases hy with h | ⟨i, rfl⟩
     · exact absurd h hyV
     · rw [Subsingleton.elim i 0]
-  -- a `G`-neighbour of a body of `V₁` is an `H`-neighbour or the ear body
+  -- a neighbour in `G` of a body of `V₁` is `x 0` or a neighbour in `G[V₁]`
   have hNsub : ∀ v ∈ V₁, N(G, v) ⊆ {x 0} ∪ N(G.induce V₁, v) := by
     intro v hv y ⟨f, hf⟩
     by_cases hy : y ∈ V₁
     · exact Or.inr ⟨f, (Graph.induce_isLink G V₁ f v y).mpr ⟨hf, hv, hy⟩⟩
     · exact Or.inl (hoff y hf.right_mem hy)
-  -- T2: the steered realization of `G` and its restriction
+  -- a nondegenerate realization of `G` whose restriction to `G[V₁]` is nondegenerate
   obtain ⟨F, normal, point, hndG, hndH⟩ :=
     exists_isNondegPencilRealization_restrict_of_demoted hS hfeas hle (fun v hv _ _ y hy hyH => by
       have hvV₁ : v ∈ V₁ := by rwa [hVH] at hv
@@ -456,7 +507,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
       · rw [Set.mem_singleton_iff.mp h]; exact hxhub
       · exact absurd h hyH)
   obtain ⟨F₁, normal₁, point₁, hnd₁, hrank₁⟩ := hgen ⟨_, _, _, hndH⟩
-  -- the conditions at the steered realization: (MC-185)(i)–(iii)
+  -- at it, `n_a` and `n_b` are independent, and `p_a · n_b` and `p_b · n_a` are not both zero
   have hCx : ({a, b} : Set α) ⊆ G.closedHubNbhd (x 0) := by
     rintro w (rfl | rfl)
     · exact ⟨ha, Or.inr ⟨e 0, l0.symm⟩⟩
@@ -482,7 +533,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
         dotProduct_point_eq_zero_of_mem_closedNbhd hndG hx₀G (Or.inr ⟨e 1, l1⟩)⟩
     · exact ⟨hndG.1.2.2.1 a (hV₁ haV), hab'⟩
     · exact ⟨hba', hndG.1.2.2.1 b (hV₁ hbV)⟩
-  -- the `fillNbr`-free condition at the hubs of `G` in `V₁`
+  -- a hub of `G` in `V₁`, not one of `G[V₁]`, has three members in its closed neighbourhood there
   have hfree : ∀ w ∈ V₁, G.PencilHub w → ¬ (G.induce V₁).PencilHub w →
       ((G.induce V₁).closedNbhd w).ncard = 3 := by
     intro w hw hwG hwH
@@ -493,7 +544,8 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
     · exact hv
     · by_contra hwV
       exact hxhub (hoff w hf.right_mem hwV ▸ hwhub)
-  -- T3: one realization of `G[V₁]` at the rank with the promoted families and the flag
+  -- steer the generic realization of `G[V₁]`: the normals independent on each set `S k`, and one of
+  -- the two products nonzero
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   set S : α ⊕ Unit → Set α := fun k => match k with
     | Sum.inl v => if v ∈ V₁ then G.closedHubNbhd v else ∅
@@ -554,7 +606,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
       exact ⟨F', n', p', h1, h2, h3, fun hc => h4 hc.1⟩
     · obtain ⟨F', n', p', h1, h2, h3, h4⟩ := hsteer b a hbV haV ha h
       exact ⟨F', n', p', h1, h2, h3, fun hc => h4 hc.2⟩
-  -- (MC-185): the extension
+  -- the extension across the ear
   have hprom : ∀ v ∈ V₁, LinearIndepOn K n' (G.closedHubNbhd v) := by
     intro v hv
     have := hS' (Sum.inl v)

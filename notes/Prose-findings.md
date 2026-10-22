@@ -6052,6 +6052,34 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 3 task 37.19.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
+- **F-320** · L · repeated derivations, and unused steps, in
+  `Molecular/Molecule/Pencil/MainComponent/GenericBase.lean` and `GenericEar.lean`. Unused: the
+  `have hloopless` of `Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization` and
+  the `have hloop` of `Graph.IsOpenEar.hasGenericPencilRealization_of_one`, as the instance
+  `[G.Simple]` gives `G.Loopless`. Repeated derivations:
+  `not_linearIndependent_of_dotProduct_eq_zero_pair` (three vectors orthogonal to two independent
+  vectors are dependent) is derived again inside `not_pencilNondegFeasible_of_triangle_two_hubs` and
+  `not_isNondegPencilRealization_of_two_hubs_three_common` (`Molecule/Pencil/Motive.lean`, which
+  `GenericEar.lean` imports), and `exists_mem_perp_pair_linearIndependent` builds the same space
+  `n_a^⊥ ∩ n_b^⊥`, with its dimension and its membership, once more; the ear facts (`a, b ∈ V₁`,
+  `x 0 ∉ V₁`, `x 0 ≠ a, b`, `a ≠ b`, the two links) and that `x 0` is not a hub, in both theorems of
+  `GenericEar.lean`; the five reorderings of the three independent points in the extension, each by
+  `comp` and `convert`; in the extension, the case analysis of the links at `e 0` and at `e 1`,
+  written twice (`hcls`), and one case analysis bounding the closed hub-neighbourhood and the closed
+  neighbourhood of `x 0`, written twice; in `GenericBase.lean`, the two branches of
+  `addTwoEar_deficiency` with one new crossing link (at `u` and at `w`), `a ∉ V(G)` from
+  `some a ∉ V(G_{uw})` and the new body's membership twice each in `finrank_ker_inf_planeDiff_le`,
+  the split on zero, one or two members at a hub and again at a body that is not a hub in
+  `isNondeg_pencilConfig_of_planeDiff`, and the three families of polynomials of
+  `hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'`, each with the constant `1` at an
+  index outside its condition. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies, and `Motive.lean`'s two lemmas); a `lake lean`
+  witness: both theorems' proofs run without the two `have`s, on the standard axioms; the same test
+  found the `have : G.Simple` of `hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'`
+  needed (`hl.ne` asks `G.Loopless`) (`scratch/reconcile-lean/t3720/Hyps-t3720.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.20.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+
 ## M — mathematics and sources
 
 - **F-025** · M · the credit for "row-independent iff $(2,3)$-sparse" (`rigidity-matroid.tex`,
