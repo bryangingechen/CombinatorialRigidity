@@ -3852,9 +3852,9 @@ declaration's name as its header writes it:
   `HasPanelRealization`; in `PanelHinge.lean` (task 36), `HasFullRankRealization`'s docstring says
   that no main result uses it and that the proof of KT Theorem 5.5 states its realizations with the
   other two, and `HasGenericFullRankRealization`'s places KT Theorem 5.5's "nonparallel, if G is
-  simple" on p. 670 and narrates no phase or retired route; `Theorem55.lean`'s part (the comments of
-  `theorem_55_minimalKDof_k_all_k`'s signature) is task 36.1's, and
-  `rankHypothesis_deficiency_of_theorem_55_d3`'s the phase's.
+  simple" on p. 670 and narrates no phase or retired route; in `Theorem55.lean` (task 36.2), the
+  comments of `theorem_55_minimalKDof_k_all_k`'s signature say what each hypothesis asks, not that it
+  is "`d = 3`-pinned"; `rankHypothesis_deficiency_of_theorem_55_d3`'s part is the phase's.
 - **F-130** · L · the docstrings of `panel-layer.tex`'s KT Theorem 5.6 and molecular-conjecture
   pins (`Molecular/AlgebraicInduction/Theorem55.lean`): `molecular_conjecture`'s says that dropping
   the nonzero-hinge conjunct "makes the statement false"; dropped from both sides, each side holds
@@ -3867,7 +3867,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; `IsInfinitesimalMotion`,
   `Molecular/RigidityMatrix/Basic.lean`).
   *Found:* round 3 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* reported (`notes/Prose-report.md`, L4); round 3: the leads' labels and codes (task
+  36.2): `rankHypothesis_genuine_of_theorem_55_gen`'s names `thm:theorem-55-6-genuine`, and the
+  leads name no phase; the docstrings otherwise moved to the phase (the open).
 - **F-132** · L · the docstrings of `panel-layer.tex`'s base pins
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`, `Pinning.lean`): those of
   `theorem_55_base_producer_empty`, `_single_edge` and their `_gen` forms name
@@ -3918,7 +3920,11 @@ declaration's name as its header writes it:
   of KT Theorem 5.6 (`thm:theorem-55-6-genuine`, `thm:theorem-55-6-multigraph`), not
   `prop:rigidity-matrix-prop11`'s step; the other parts moved to the phase (the open), and in
   `PanelHinge.lean` (task 36) `toBodyHinge_withNormal_pinnedMotions_eq`'s lead names its node,
-  `lem:with-normal-preserves`, the docstring otherwise kept as it stands.
+  `lem:with-normal-preserves`, the docstring otherwise kept as it stands; in `Theorem55.lean` (task
+  36.2) the leads of `HasCoplanarPanelRealization` and `theorem_55_6_multigraph_of_two_le` carry no
+  code (the latter's gives it as a step of `thm:theorem-55-6-multigraph`), and the former's names
+  `BodyHingeFramework.IsHingeCoplanar`, not `PanelHingeFramework.IsHingeCoplanar`, which does not
+  exist; the docstrings otherwise kept as they stand.
 - **F-135** · L · the docstrings of `case-i.tex`'s first pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `PanelLayer.lean`, `Pinning.lean`,
   `CaseIII/Arms.lean`). `toBodyHinge_rankHypothesis_zero`'s calls
@@ -4009,12 +4015,13 @@ declaration's name as its header writes it:
   "producer", "motive", "seed" and "brick".
   *Evidence:* read (the docstrings and bodies; a `grep` for each name across `CombinatorialRigidity/`).
   *Found:* round 3 task 2.8.
-  *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the three `d = 3` wrappers
-  deleted, and the docstrings that named them repointed to their `_gen` forms (task 3); in
-  `Theorem55.lean`, the header names no `case_I_dispatch`, and `case_I_realization_h65_gen`'s lead
-  names `lem:case-I-realization-h65` and its user `case_I_dispatch_gen`, without the codes (task
-  36.1); the docstrings of `case_I_dispatch_gen`, `case_I_realization_nonsimple_gen` and
-  `case_I_realization_all_k_gen` are task 36.2's.
+  *Disposition:* done (task 36.2): the three `d = 3` wrappers deleted, and the docstrings that named
+  them repointed to their `_gen` forms (task 3); in `Theorem55.lean`, the header names no
+  `case_I_dispatch`, and `case_I_realization_h65_gen`'s lead names `lem:case-I-realization-h65` and
+  its user `case_I_dispatch_gen`, without the codes (task 36.1); the docstrings of
+  `case_I_dispatch_gen`, `case_I_realization_nonsimple_gen` and `case_I_realization_all_k_gen` name
+  no `case_I_dispatch` and no code, and give KT's three cases (task 36.2). Before: reported
+  (`notes/Prose-report.md`, L9).
 - **F-148** · L · the docstrings of `case-ii.tex`'s pins (`Molecular/AlgebraicInduction/Pinning.lean`,
   `PanelHinge.lean`, `CaseII.lean`; `Molecular/Induction/Operations.lean`). Those of
   `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
@@ -4539,14 +4546,14 @@ declaration's name as its header writes it:
   `lem:case-I-all-k` and `lem:claim-6-6`).
   *Evidence:* read (the docstrings; a `grep` for the callers).
   *Found:* round 5 task 3.7.
-  *Disposition:* reported (`notes/Prose-report.md`, L9); round 3: the three `Fin m` cycle forms
+  *Disposition:* done (task 36.2): the three `Fin m` cycle forms
   deleted with their step (`F-266`), and `case_I_realization_nonsimple` (task 3); the leads of the
   two theorems of KT Claim 6.6 (`Induction/Contraction.lean`) name `lem:claim-6-6` (task 30.1);
   `PanelLayer.lean`'s `annihRowPoly_totalDegree_le` says that no declaration uses it (task 33);
   `exists_good_realization_ofParam`'s lead gives it as a step of `lem:relative-device-count`
   (`GenericityDevice.lean`, task 34.1); `case_I_realization_h65_gen`'s lead names
-  `lem:case-I-realization-h65` (`Theorem55.lean`, task 36.1); `case_I_hcontract_gen`'s is task
-  36.2's.
+  `lem:case-I-realization-h65` (`Theorem55.lean`, task 36.1); `case_I_hcontract_gen`'s names
+  `lem:case-I-all-k` (task 36.2). Before: reported (`notes/Prose-report.md`, L9).
 - **F-240** · L · the declarations round 5's task 3.8 pinned (`Molecular/Deficiency.lean`,
   `Molecular/Induction/Operations.lean`, `Molecular/AlgebraicInduction/GenericityDevice.lean`). The
   section header over `isKDof_zero_of_triangle` names `lem:case-III`, which is not its node, and the
@@ -4664,10 +4671,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` of `CombinatorialRigidity/` for the six labels and
   for the chapters' file names).
   *Found:* round 5 task 5.3.
-  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: the section docstring before
-  `IsTightPartition` names `def:tight-partition` and `lem:exists-tight-partition`, without a
-  chapter, and `sec:jacobs-tight-partitions` for the rest (task 29.1);
-  `theorem_55_minimalKDof_k`'s is task 36.1's.
+  *Disposition:* done (task 36.2): the section docstring before `IsTightPartition` names
+  `def:tight-partition` and `lem:exists-tight-partition`, without a chapter, and
+  `sec:jacobs-tight-partitions` for the rest (task 29.1); `theorem_55_minimalKDof_k`'s names no
+  chapter (task 36.2). Before: reported (`notes/Prose-report.md`, L11).
 - **F-253** · L · `infinitesimalMotions_mono_of_span_le` and
   `finrank_infinitesimalMotions_le_of_span_le` (`Molecular/RigidityMatrix/Basic.lean`): their
   docstrings call them KT Lemma 5.2 and the lower semicontinuity of the rank along a panel rotation,
@@ -5415,6 +5422,36 @@ declaration's name as its header writes it:
   `one_le_screwDim`, and `hFcut` from `hFgraph`, on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t361.lean`, gitignored).
   *Found:* RECONCILE round 3 task 36.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-298** · L · hypotheses the others give, repeated derivations and four needless `set_option`s,
+  in the second half of `Molecular/AlgebraicInduction/Theorem55.lean`.
+  `case_I_realization_nonsimple_gen`'s `hD : 2 ≤ bodyBarDim n` (`lem:case-I-realization-nonsimple`)
+  follows from `hk` and `hn` (`two_le_screwDim`); the `hD : 3 ≤ bodyBarDim n` of
+  `case_I_dispatch_gen` and `case_I_hcontract_gen` (`lem:case-I-dispatch`, `lem:case-I-all-k`), of
+  `theorem_55_minimalKDof_k_all_k`, of the four KT Theorem 5.6 forms that take `hk1` and of
+  `theorem_55_6_multigraph_of_two_le` and `theorem_55_6_multigraph` from `hk1` (or `hk`) and `hn`
+  (`three_le_screwDim`), and the two Case I lemmas' `hV3` from `hrig`, as for `F-297`'s
+  `case_I_realization_h65_gen`; `theorem_55_minimalKDof_k`'s `hD` from `hn` alone
+  (`screwDim 2 = 6`). `theorem_55_minimalKDof_gen` has the same `hD`, but it is a main result, whose
+  statement stays. `case_I_hcontract_gen`'s case `c ≠ 0` repeats the case split of
+  `case_I_dispatch_gen` (some 20 lines); `rankHypothesis_genuine_of_theorem_55_gen`,
+  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` and
+  `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` repeat the strip, the
+  realization of the spanning subgraph, the re-aimed selector and its nonzero hinges (some 50 lines
+  each); `rankHypothesis_of_theorem_55_gen` and `theorem_55_6_multigraph` derive `def(G̃) = 0` on one
+  body the same way (some 20 lines each), and `molecular_conjecture` and
+  `molecular_conjecture_multigraph` derive it the same way from a rigid realization with nonzero
+  hinges. The `set_option linter.unusedDecidableInType false in` of
+  `rankHypothesis_genuine_of_theorem_55_gen`, `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`,
+  `theorem_55_6_multigraph_of_two_le` and `theorem_55_6_multigraph` is not needed, as their types
+  use `[DecidableEq β]` through `hfresh` (`IsMinimalKDof`), and the docstring sentences that justify
+  it go with it. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the three Case I pins and
+  `theorem_55_minimalKDof_k` called with `hD` (and `hV3`) derived, `3 ≤ bodyBarDim n` from `hk` and
+  `hn`, the four types restated without the `set_option` with no warning, and a type without
+  `hfresh` (`theorem_55_6_multigraph_gen`'s) as the control, which warns; on the three standard
+  axioms (`scratch/reconcile-lean/Hyps-t362.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 36.2.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

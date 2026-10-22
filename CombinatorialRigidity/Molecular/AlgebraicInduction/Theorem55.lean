@@ -1551,35 +1551,28 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   exact ⟨PanelHingeFramework.ofNormals G G.endsOf q₀, rfl, hQFgp, hrank_eq,
     PanelHingeFramework.ofNormals_endsOf_recordsLinks G q₀⟩
 
--- Note: previously needed 800000; now fits the default 200000.
-/-- **L5a-ii producer: non-simple Case I arm — general grade `k`**
-(`lem:case-I-realization-nonsimple`; KT Lemma 6.2, the parallel-edge contraction arm;
-Phase 22i, Phase 23b OD-7 tail general-`k` lift).
+/-! ## Case I: KT Lemmas 6.2 and 6.3, and the three cases (`lem:case-I-all-k`) -/
 
-Given a minimal `c`-dof graph `G` with `|V(G)| ≥ 3` that is **not simple** (has a parallel pair
-`e, f` joining some vertices `a, b`), the genuine-hinge panel realization motive
-`HasPanelRealization K k n G` holds (at body-bar dimension `bodyBarDim n = screwDim k`, `k ≥ 1`).
+/-- **Case I for a graph that is not simple** (`lem:case-I-realization-nonsimple`; KT Lemma 6.2,
+p. 673): let `1 ≤ k` and `2 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let `G` be a minimal
+`c`-dof-graph at `n` with `|V(G)| ≥ 3` that is not simple. If every minimal `c'`-dof-graph with at
+least one and fewer than `|V(G)|` vertices has a nondegenerate-hinge panel realization (`hIH`), so
+does `G`. It holds over every field.
 
-**Proof sketch.** `¬G.Simple` + looplessness (from `IsMinimalKDof`) gives vertices `a, b` and
-parallel edges `e, f` with `G.IsLink e a b` and `G.IsLink f a b` and `e ≠ f`. Build
-`H' := G[{a, b}] ↾ {e, f}`, a proper rigid subgraph (`isKDof_zero_of_parallel_pair`, `{a,b}` has
-ncard 2, and `|V(G)| ≥ 3`). Contract: `G.rigidContract H' a` is minimal `c`-dof
-(`rigidContract_isMinimalKDof`) with `|V(G.rigidContract H' a)| < |V(G)|`; IH gives `Fc_fw`.
-Build the H'-leg framework `FH` with coincident panels at `a` and `b` (degenerate placement
-`Fc_normal ∘ collapseTo a V(H')`, so both panels equal `Fc_normal a`) and LI extensors `Ce, Cf`
-(`exists_linearIndependent_extensor_pair_perp_grade hk`, the only grade-2-only swap). Rigidity of
-`FH` on `{a,b}` (`theorem_55_base`) + B1 gives `finrank FH = D`. Assemble `F` from `FH` for
-H'-edges, `Fc_fw` for surviving edges. Four splice-brick hypotheses: `hFH_ker` from
-`hingeRow_comp_extProj_eq_zero`; `hFc_surv_le` from `hingeRow_collapseTo_comp_extProj_eq`; `hInj`
-from `finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` +
-`rigidContract_vertexSet_inter_eq_singleton`. Brick gives `D + finrank Fc ≤ finrank F`; B2 gives
-`finrank F ≤ D(|V|−1) − c`; arithmetic (`D + (D(|V|−2)−c) = D(|V|−1)−c`) closes M2.
-
-Verbatim numeral pass over the d=3 body (dof renamed `k → c` to free the
-section grade `k`; `screwDim 2 → screwDim k`, `Fin 4 → Fin (k+2)`,
-`ScrewSpace/BodyHingeFramework K 2
-→ k`, `extProj (k := 2) → (k := k)`), plus the single `exists_linearIndependent_extensor_pair_perp
-→ …_perp_grade hk` swap. -/
+As `G` has no loop (`loopless_of_isMinimalKDof`), it has two edges `e ≠ f` that join the same
+vertices `a ≠ b`. The subgraph `H'` with the vertices `a` and `b` and the edges `e` and `f` is a
+proper rigid subgraph (`isKDof_zero_of_parallel_pair`), and its contraction `G.rigidContract H' a`
+is a minimal `c`-dof-graph with `|V(G)| − 1` vertices (`rigidContract_isMinimalKDof`), which `hIH`
+realizes. As Katoh and Tanigawa do, the framework gives `a` and `b` the normal of `a` in that
+realization, and every other vertex its own normal there; `e` and `f` get two linearly independent
+extensors in the panel of `a` (`exists_linearIndependent_extensor_pair_perp_grade`, which needs
+`1 ≤ k`), and every other edge its hinge in the realization of the contraction. The rows of `e` and
+`f` have rank `D` (`theorem_55_base`). The other rows, with the columns of `a` and `b` deleted,
+contain those of the contraction's realization with the columns of `a` deleted
+(`hingeRow_collapseTo_comp_extProj_eq`), which have its rank `D(|V(G)| − 2) − c`
+(`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`, KT eq. (6.5)). So the rank
+is at least `D(|V(G)| − 1) − c` (`le_finrank_span_rigidityRows_of_splice`, KT eq. (6.3)). As every
+hinge at a link is nonzero, it is at most that (`finrank_span_rigidityRows_add_deficiency_le`). -/
 theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
@@ -1589,7 +1582,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
     HasPanelRealization K k n G := by
   classical
   have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
-  -- ── Step 1: Extract looplessness + parallel pair ─────────────────────────────────────────
+  -- ── Step 1: Two parallel edges, as `G` has no loop ───────────────────────────────────────
   have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   -- ¬G.Simple + G.Loopless gives a parallel pair.
   have hpairs : ∃ e_edge f_edge : β, ∃ a b : α,
@@ -1648,7 +1641,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
     refine ⟨hHsub, fun hrev => ?_⟩
     have : V(G).ncard ≤ V(H').ncard := Set.ncard_le_ncard hrev (Set.toFinite _)
     rw [hVH'ncard] at this; omega
-  -- ── Step 4: IH on the contraction ────────────────────────────────────────────────────────
+  -- ── Step 4: `hIH` at the contraction ─────────────────────────────────────────────────────
   have hKlt : V(G.rigidContract H' a).ncard < V(G).ncard :=
     Graph.rigidContract_vertexSet_ncard_lt hHsub (by rw [hVH'ncard])
   have hKmin : (G.rigidContract H' a).IsMinimalKDof n c :=
@@ -1660,7 +1653,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
     hIH c (G.rigidContract H' a) hKmin hKne hKlt
   have hKcard : V(G.rigidContract H' a).ncard = V(G).ncard - 1 := by
     rw [Graph.rigidContract_vertexSet_ncard hH'a hHsub, hVH'ncard]; omega
-  -- ── Step 5: Degenerate normals ───────────────────────────────────────────────────────────
+  -- ── Step 5: The normals of the contraction's realization ─────────────────────────────────
   -- Both a and b get Fc_normal a
   -- (= Fc_normal (collapseTo a V(H') a) = Fc_normal (collapseTo a V(H') b)).
   set normal : α → Fin (k + 2) → K := fun v => Fc_normal (Graph.collapseTo a V(H') v)
@@ -1669,7 +1662,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
     apply hFcne
     simp only [Graph.vertexSet_rigidContract]
     exact ⟨v, hv, rfl⟩
-  -- ── Step 6: LI extensors Ce, Cf in (normal a)^⊥ ────────────────────────────────────────
+  -- ── Step 6: Independent extensors `Ce`, `Cf` in `(normal a)^⊥` ───────────────────────────
   obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ :=
     exists_linearIndependent_extensor_pair_perp_grade hk (normal a)
   set Ce : ScrewSpace K k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _)
@@ -1696,7 +1689,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   have hextF_surv : ∀ e' : β, e' ≠ e_edge → e' ≠ f_edge →
       extF e' = Fc_fw.supportExtensor e' := by
     intro e' hne1 hne2; simp [extF, hne1, hne2]
-  -- ── Step 8: finrank FH = D via theorem_55_base + B1 ──────────────────────────────────────
+  -- ── Step 8: The rows of `FH` have rank `D` (`theorem_55_base`) ───────────────────────────
   have hFH_li : LinearIndependent K ![FH.supportExtensor e_edge, FH.supportExtensor f_edge] := by
     change LinearIndependent K ![extF e_edge, extF f_edge]
     rw [hFe, hFf]; exact hpq_li
@@ -1712,7 +1705,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
       (hFHg ▸ hFH_rigV)
   have hFH_finrank : (Module.finrank K (Submodule.span K FH.rigidityRows) : ℤ) = screwDim k := by
     rw [hFH_finrank_nat, hVH'ncard]; push_cast; ring
-  -- ── Step 9: Splice brick hypotheses ─────────────────────────────────────────────────────
+  -- ── Step 9: The hypotheses of `le_finrank_span_rigidityRows_of_splice` ───────────────────
   set t := V(H') with ht_def
   set Dmap := (extProj (K := K) (k := k) t).dualMap
   -- (i) hFH_le: FH rows ≤ F rows (same extensor; H' ≤ G).
@@ -1742,7 +1735,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
       Module.finrank K ↥((Submodule.span K Fc_fw.rigidityRows).map Dmap) :=
     Fc_fw.finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton hFcg_inter
   -- (iv) hFc_surv_le: (span Fc rows).map Dmap ≤ (span F rows).map Dmap.
-  -- Strategy: for each generator hingeRow u' v' r' of Fc rows (where u' = collapseTo a t u,
+  -- For each generator hingeRow u' v' r' of Fc rows (where u' = collapseTo a t u,
   -- v' = collapseTo a t v for a G-surviving-edge link G.IsLink e' u v),
   -- Dmap(hingeRow u' v' r') = Dmap(hingeRow u v r') by hingeRow_collapseTo_comp_extProj_eq,
   -- and hingeRow u v r' ∈ F.rigidityRows (since extF e' = Fc_fw.supportExtensor e' for e' ∉ E(H')).
@@ -1775,10 +1768,10 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
       exact ⟨e', u, v, hFg ▸ hGlink, r', hr'F, rfl⟩
     -- Dmap(hingeRow u' v' r') = Dmap(hingeRow u v r') ∈ Dmap '' F.rigidityRows.
     exact ⟨BodyHingeFramework.hingeRow u v r', hrowF, hrow_eq.symm⟩
-  -- ── Step 10: Apply splice brick ──────────────────────────────────────────────────────────
+  -- ── Step 10: The lower bound ─────────────────────────────────────────────────────────────
   have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_splice F FH Fc_fw Dmap
     hFH_le hFH_ker hFc_surv_le hInj
-  -- ── Step 11: B2 upper bound ──────────────────────────────────────────────────────────────
+  -- ── Step 11: The upper bound, as every hinge at a link is nonzero ────────────────────────
   have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := by
     intro e u v hl
     simp only [F, extF]
@@ -1797,7 +1790,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   have hFVne : V(F.graph).Nonempty := by
     rw [hFg]; exact (Set.ncard_pos (Set.toFinite _)).mp (by omega)
   have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
-  -- ── Step 12: Fc finrank from IH ──────────────────────────────────────────────────────────
+  -- ── Step 12: The rank of the contraction's realization ───────────────────────────────────
   have hFcfinrank : (Module.finrank K (Submodule.span K Fc_fw.rigidityRows) : ℤ)
       = screwDim k * ((V(G.rigidContract H' a).ncard : ℤ) - 1) - c := by
     rw [hFcrank]; congr 1; rw [hKmin.deficiency_eq]
@@ -1853,34 +1846,25 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   rw [← hG.deficiency_eq] at hrank_eq
   exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
-/-- **Case I realization: the contraction producer, all-dof simple-contraction case — general
-grade `k`** (`lem:case-I-realization`, the all-dof GP restate of `case_I_realization`;
-KT Lemma~6.3 at general `k`-dof; Phase 22i L5b-ii-d, Phase 23b OD-7 tail general-`k` lift).
+/-- **Case I with a simple contraction** (`lem:case-I-realization`; KT Lemma 6.3, p. 674): let `K`
+be infinite and `2 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let `G` be a simple minimal
+`c`-dof-graph at `n` with `|V(G)| ≥ 3`, `H` a proper rigid subgraph of `G` and `r ∈ V(H)`, such that
+the contraction `G.rigidContract H r` is simple (`hcSimple`). If every minimal `c'`-dof-graph with
+at least one and fewer than `|V(G)|` vertices has a nondegenerate-hinge panel realization, and a
+generic full-rank realization if it is simple (`hIH`), then `G` has a generic full-rank realization
+(`HasGenericFullRankRealization`).
 
-The all-dof generalization of `case_I_realization` (the INTEGER deficiency `c : ℤ` replaces the
-rigid specialization `c = 0`), lifted to general grade `k`. Given a simple minimal `c`-dof-graph
-`G` with a proper rigid subgraph `H` (hence `0`-dof) sharing representative body `r`, and a simple
-contraction `G/E(H)` (KT Lemma~6.3's case hypothesis), the conditioned all-dof induction
-hypothesis supplies:
-* the `H`-leg at `0`-dof (H is rigid, hence `0`-dof, and simple as a subgraph of `G`);
-* the contraction leg `G/E(H)` at deficiency `c` (minimal `c`-dof by
-  `rigidContract_isMinimalKDof`).
-
-The block-triangular coupling is assembled from:
-* **`H`-leg**: `exists_rankPolynomial_of_rigidOn_linking_set` — same as the `0`-dof case;
-* **surviving block**: `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (L5b-ii-b) —
-  the deficiency-tolerant mirror of `rigidContract_exterior_rank_transport_htransport` + `_proj`
-  chain, carrying the contraction IH's rank across the collapse-relabel selector swap with the `−c`
-  deficiency;
-* **coupler**: `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`
-  (L5b-ii-c) — the `−c`-aware restate of the rigid coupler.
-
-Verbatim numeral pass over the d=3 body — `screwDim 2 → screwDim k`,
-`HasGenericFullRankRealization K 2 → … k`, dof `k → c`; all reach-ins
-(`couple_geometry_of_isProperRigidSubgraph`, `hasGenericRealization_transport_ends`,
-`exists_rankPolynomial_of_IH_relabel_linking_set_proj`,
-`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`) are already
-grade-parametric. -/
+`H` is a minimal `0`-dof-graph (`subgraph_minimality`), simple as `G` is, and the contraction a
+minimal `c`-dof-graph (`rigidContract_isMinimalKDof`); both have fewer vertices than `G`, so `hIH`
+gives generic full-rank realizations of both. The one of `H` is infinitesimally rigid on `V(H)`, and
+so, at its normals and with the selector `G.endsOf`, is the framework on `H`, whose hinges at the
+links are nonzero (`hasGenericRealization_transport_ends`). From the realization of the contraction,
+`exists_rankPolynomial_of_IH_relabel_linking_set_proj` gives a nonzero polynomial in the normals off
+whose zeros the rows of `G ＼ E(H)`, with the columns of `V(H)` deleted, have rank at least
+`D(|s_c| − 1) − c`, where `s_c = (V(G) ∖ V(H)) ∪ {r}` (KT Claim 6.4).
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof` combines the two at one
+set of normals in general position (KT eq. (6.3)), as `V(H)` and `s_c` share only `r` and cover
+`V(G)`. -/
 theorem PanelHingeFramework.case_I_realization_all_k_gen
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ}
@@ -1898,7 +1882,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
   obtain ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩ := hH
   have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
   have hVHlt : V(H).ncard < V(G).ncard := Set.ncard_lt_ncard hVHss (Set.toFinite _)
-  -- Manufacture the canonical parent endpoint selector `ends = G.endsOf`.
+  -- The selector `ends = G.endsOf` of `G`.
   have : Inhabited α := ⟨r⟩
   set ends := G.endsOf with hendsDef
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
@@ -1918,13 +1902,12 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
     by_cases hxH : x ∈ V(H)
     · exact Or.inl hxH
     · exact Or.inr (Or.inl ⟨hx, hxH⟩)
-  -- (1) The `H`-leg: H is a proper rigid subgraph (hence 0-dof and simple).
-  -- The all-`k` IH at `k' = 0` supplies the generic realization.
+  -- (1) `H`, a simple minimal `0`-dof-graph: `hIH` gives a generic full-rank realization `QH`.
   have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
   have hHne : V(H).Nonempty := ⟨r, hr⟩
   obtain ⟨QH, hQHg, hQHgp, hQHrank, hQHrec⟩ :=
     (hIH 0 H hHmin hHne hVHlt).1 (hSimple.mono hle)
-  -- Derive rigidity from hQHrank (B1.mpr). H is 0-dof so rank = D(|V(H)|−1) − 0.
+  -- `QH` is rigid on `V(H)`, as its rank is `D(|V(H)| − 1)`.
   have hne_QH : QH.toBodyHinge.graph.vertexSet.Nonempty := by
     rw [PanelHingeFramework.toBodyHinge_graph, hQHg]; exact hHne
   rw [hKDof, sub_zero] at hQHrank
@@ -1936,13 +1919,13 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
       BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
         QH.toBodyHinge hne_QH, hVH_eq]
     zify [h1H] at hQHrank ⊢; exact_mod_cast hQHrank
-  -- The `H`-leg `hswap` (U3a): the IH realization records `H`'s links up to swap.
+  -- `hswap`: `QH` records the links of `H` up to swap.
   obtain ⟨qH, hneH, hrigH⟩ :=
     PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
       (PanelHingeFramework.recordsLinks_swap_endsOf hle QH.ends hQHrec)
       (fun e he => hne_ends e (he.of_le hle))
-  -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller minimal `c`-dof-graph.
-  -- Apply the all-dof IH (at c' = c) to get `hQcf`.
+  -- (2) The contraction, a simple minimal `c`-dof-graph with fewer vertices than `G`: `hIH` gives
+  -- `hQcf`.
   have hKmin : (G.rigidContract H r).IsMinimalKDof n c :=
     Graph.rigidContract_isMinimalKDof hG hHprop hr
   have hKlt : V(G.rigidContract H r).ncard < V(G).ncard :=
@@ -1954,34 +1937,32 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
     omega
   have hQcf : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r) :=
     (hIH c (G.rigidContract H r) hKmin hKne hKlt).1 hcSimple
-  -- (L5b-ii-b) The deficiency-aware `_proj` rank polynomial for the surviving block.
-  -- Uses `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (the all-k mirror of the rigid
-  -- `rigidContract_exterior_rank_transport_htransport` + `_proj` packaging).
+  -- The rows of `G ＼ E(H)`, with the columns of `V(H)` deleted: a polynomial `Qc` off whose zeros
+  -- they have rank at least `D(|s_c| − 1) − c` (KT Claim 6.4).
   obtain ⟨Qc, hQc_ne, hsc_proj_indep⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
       G H ends hr hHsub hKmin hQcf hendsGc
-  -- (3) Feed both legs into the block-triangular deficiency-aware coupler (L5b-ii-c).
-  -- Extra inputs vs the rigid coupler: `hn` (B2) and `hne_G` (extensor nonzero).
+  -- (3) The two combined at one set of normals (KT eq. (6.3)); `hn` and the distinct ends of the
+  -- links give the upper bound on the rank.
   exact
     PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof
       G ends hends hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl)
       hcover ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne c
       hsc_proj_indep n hn hne_ends hG.1
 
-/-- **Case I dispatch: simple vs non-simple contraction, general grade `k`** (`lem:case-I-dispatch`,
-the grade-general lift of `case_I_dispatch`; KT Lemmas~6.2/6.3/6.5; Phase 23b OD-7 tail, the LAST
-`hcontract_k` leaf — a verbatim numeral pass over the d=3 `case_I_dispatch` `by_cases` plumbing,
-now feeding the three landed `_gen` producers). The `d = 3` `case_I_dispatch` below is its `k = 2`
-wrapper, blueprint pins unmoved.
+/-- **The three cases of Case I** (`lem:case-I-dispatch`; KT Lemmas 6.2, 6.3 and 6.5, KT §6.2,
+p. 673): let `K` be infinite, `1 ≤ k` and `3 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let `G`
+be a minimal `0`-dof-graph at `n` with `|V(G)| ≥ 3` and a proper rigid subgraph (`hrig`). If every
+minimal `k'`-dof-graph with at least one and fewer than `|V(G)|` vertices has a nondegenerate-hinge
+panel realization, and a generic full-rank realization if it is simple (`hIH`), then so does `G`.
 
-Dispatches on `G.Simple` at `c = 0`:
-- non-simple → `case_I_realization_nonsimple_gen` (KT Lemma 6.2, bare motive);
-- simple → inner dispatch on whether some `(H, r)` has simple contraction
-  `(G.rigidContract H r).Simple`:
-  - 6.3 arm (simple contraction): `case_I_realization_all_k_gen` + M4 forgetful map;
-  - 6.5 arm (all contractions non-simple): `case_I_realization_h65_gen`.
-
-`[NeZero k]` (for the M4 forget map `hasPanelRealization_of_generic`) is supplied from `hk`. -/
+If `G` is not simple, KT Lemma 6.2 gives the nondegenerate-hinge realization
+(`case_I_realization_nonsimple_gen`). If `G` is simple and some proper rigid subgraph `H` has a
+simple contraction to some `r ∈ V(H)`, KT Lemma 6.3 gives a generic full-rank realization
+(`case_I_realization_all_k_gen`); otherwise KT Lemma 6.5 does (`case_I_realization_h65_gen`), with
+`hIH` at deficiency `0`. A generic full-rank realization gives a nondegenerate-hinge one
+(`hasPanelRealization_of_generic`, with `NeZero k` from `hk`). `case_I_hcontract_gen` uses it at
+deficiency `0`. -/
 theorem case_I_dispatch_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (hk : 1 ≤ k)
     (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
@@ -1996,34 +1977,34 @@ theorem case_I_dispatch_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β
   have : NeZero k := ⟨by omega⟩
   have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   by_cases hSimple : G.Simple
-  · -- simple branch: GP conjunct + M4 forgetful bare
+  · -- `G` simple: a generic full-rank realization, and from it a nondegenerate-hinge one.
     have hGP : PanelHingeFramework.HasGenericFullRankRealization K k n G := by
       by_cases hd : ∃ H : Graph α β, ∃ r : α,
           H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple
       · obtain ⟨H, r, hH, hr, hcSimple⟩ := hd
         exact PanelHingeFramework.case_I_realization_all_k_gen (by omega) hn G hG hV3 hSimple hH hr
           hcSimple hIH
-      · -- KT Lemma 6.5 arm: all contractions non-simple; call `case_I_realization_h65_gen`
-        -- with the c=0-only IH specialised from the all-c IH.
+      · -- Otherwise KT Lemma 6.5, with `hIH` at deficiency `0`.
         exact PanelHingeFramework.case_I_realization_h65_gen hk hD hn G hG hV3 hrig hSimple
           (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩)
           (fun G' hG' hV2 hlt => hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
     exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩
-  · -- non-simple branch: GP vacuous, bare via case_I_realization_nonsimple_gen
+  · -- `G` not simple: the first conjunct is vacuous, and KT Lemma 6.2 gives the second.
     exact ⟨fun hS => absurd hS hSimple,
            case_I_realization_nonsimple_gen (by omega) hk hn G hG hV3 hSimple
              (fun k' G' hG' hne' hlt => (hIH k' G' hG' hne' hlt).2)⟩
 
-/-- **The `hcontract_k` slot-filler at general grade `k`** (the LAST OD-7 producer; Phase 23b
-CHAIN tail). Fills the `hcontract_k` carry of `theorem_55_minimalKDof_k_all_k` for any dof `c`:
-- `c = 0` → `case_I_dispatch_gen` (the Case-I rigid-subgraph dispatch);
-- `c > 0` → manual dispatch: simple → `case_I_realization_all_k_gen` (the
-  all-contractions-non-simple sub-branch is vacuous at `c > 0` by
-  `deficiency_eq_zero_of_simple_rigid_no_simpleContraction`),
-  non-simple → `case_I_realization_nonsimple_gen`.
+/-- **Case I** (`lem:case-I-all-k`; KT §6.2, p. 673): let `K` be infinite, `1 ≤ k` and `3 ≤ D`
+(`hD`), with `D = screwDim k` (`hn`), and let `G` be a minimal `c`-dof-graph at `n` with
+`|V(G)| ≥ 3` and a proper rigid subgraph (`hrig`). If every minimal `c'`-dof-graph with at least one
+and fewer than `|V(G)|` vertices has a nondegenerate-hinge panel realization, and a generic
+full-rank realization if it is simple (`hIH`), then so does `G`. `theorem_55_minimalKDof_gen` uses
+it for Case I.
 
-The `d = 3` `theorem_55_minimalKDof_k` wrapper fills the same carry inline at `k = 2`; this lemma
-discharges it once and for all at general `k`, ready for the general-`d` spine wrapper. -/
+For `c = 0` this is `case_I_dispatch_gen`. For `c ≠ 0` the case split is the same: KT Lemma 6.2 if
+`G` is not simple (`case_I_realization_nonsimple_gen`), and KT Lemma 6.3 if some proper rigid
+subgraph has a simple contraction (`case_I_realization_all_k_gen`); otherwise KT Claim 6.6 gives
+`c = 0` (`deficiency_eq_zero_of_simple_rigid_no_simpleContraction`), a contradiction. -/
 theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (hk : 1 ≤ k)
     (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (c : ℤ) (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV3 : 3 ≤ V(G).ncard)
@@ -2040,79 +2021,55 @@ theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite �
   by_cases hc : c = 0
   · -- c = 0: `case_I_dispatch_gen`.
     exact case_I_dispatch_gen hk hD hn G (hc ▸ hG) hV3 hrig hIH
-  · -- c > 0: manual dispatch.
+  · -- `c > 0`: the same case split, in which the case of KT Lemma 6.5 does not occur.
     by_cases hSimple : G.Simple
-    · -- Simple: dispatch on simple contraction.
+    · -- `G` simple: does some proper rigid subgraph have a simple contraction?
       have hGP : PanelHingeFramework.HasGenericFullRankRealization K k n G := by
         by_cases hd : ∃ H : Graph α β, ∃ r : α,
             H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple
         · obtain ⟨H, r, hH, hr, hcSimple⟩ := hd
           exact PanelHingeFramework.case_I_realization_all_k_gen (by omega) hn G hG hV3
             hSimple hH hr hcSimple hIH
-        · -- All contractions non-simple + c > 0 → False (c must be 0 by the carrier argument).
+        · -- No: KT Claim 6.6 gives `c = 0`, a contradiction.
           have hc0 : c = 0 := Graph.deficiency_eq_zero_of_simple_rigid_no_simpleContraction
             (by omega) hV3 hG hSimple hrig
             (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩)
           exact absurd hc0 hc
       exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩
-    · -- Non-simple: GP vacuous, bare via `case_I_realization_nonsimple_gen`.
+    · -- `G` not simple: the first conjunct is vacuous, and KT Lemma 6.2 gives the second.
       exact ⟨fun hS => absurd hS hSimple,
              case_I_realization_nonsimple_gen (by omega) hk hn G hG hV3 hSimple
                (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩
 
-/-- **KT Theorem 5.5, general-`k` (all-dimension) spine** (`thm:theorem-55`; Katoh–Tanigawa 2011
-Theorem 5.5, Phase 22k L10b base, Phase 23a Leaf 5 general-`k` lift). For a minimal `c`-dof graph
-on ≥ 2 vertices at body-bar dimension `bodyBarDim n = screwDim k` (`k ≥ 1`), the conditioned pair
-holds at grade `k`:
-- *GP conjunct*: if `G.Simple`, then `G` has a generic full-rank panel-hinge realization;
-- *Bare*: `G` has a panel-hinge realization.
+/-! ## KT Theorem 5.5 (`thm:theorem-55`) -/
 
-The induction skeleton (`minimal_kdof_reduction_all_k`) and every reduction-case producer are all
-grade-general as landed: the **Case-II / Case-III split arms** wire `case_II_realization_all_k`
-(23a Leaf 3) and `case_III_realization_all_k` (23a Leaf 4); the base producer
-(`theorem_55_base_producer_gen`), the cut producer (`case_cut_edge_realization_gp_gen` +
-`case_cut_edge_realization_gen`), the Case-I (rigid-subgraph) dispatch (`case_I_hcontract_gen`),
-and the **M4 forgetful map** (`hasPanelRealization_of_generic`) were lifted off their original
-`d = 3`-only forms by the Phase 23b OD-7 tail. This combinator therefore takes them as **explicit
-producer-shaped hypotheses** (the standing "carry the analytic crux as `h…`, keep the node red"
-idiom, Phase 21b — never a `sorry`) purely to stay grade-agnostic, not because any arm is still
-`d = 3`-pinned. Both zero-carry callers below — the general-grade `theorem_55_minimalKDof_gen` and
-its `d = 3` corollary `theorem_55_minimalKDof_k` — now fill every carry from the same grade-general
-producers (`theorem_55_minimalKDof_k` at `k := 2`; Phase 23-cleanup S2 collapsed the d=3-specific
-duplicate spine this combinator used to also serve).
+/-- **The induction of KT Theorem 5.5** (a step of `thm:theorem-55`): let `K` be infinite, `1 ≤ k`
+and `3 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let every minimal `c`-dof-graph miss some edge
+label (`hfresh`). For a graph `H`, let `P(H)` say that `H` has a nondegenerate-hinge panel
+realization, and a generic full-rank realization if `H` is simple. Suppose that `P` holds at the
+minimal `c`-dof-graphs with one or two vertices (`hbase_k`); that it holds at a minimal
+`c`-dof-graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected (`hcut_k`, KT Lemma 6.1) or has a
+proper rigid subgraph (`hcontract_k`, Case I), when it holds at every minimal `c'`-dof-graph with at
+least one and fewer than `|V(G)|` vertices (KT eq. (6.1)); and that a generic full-rank realization
+of a loopless graph with at least two vertices gives a nondegenerate-hinge one (`hforget_k`). Then
+`P(G)` holds for every minimal `c`-dof-graph `G` with `|V(G)| ≥ 2`.
 
-**Carry map** (general-grade producers, all at the conditioned-pair motive
-`P G := (G.Simple → HasGenericFullRankRealization K k n G) ∧ HasPanelRealization K k n G`):
-- `hbase_k`: the `theorem_55_base_producer_gen` shape (any dof, `|V| ≤ 2`);
-- `hcut_k`: the cut producer's conditioned pair
-  (`case_cut_edge_realization_gp_gen` + `case_cut_edge_realization_gen`);
-- `hcontract_k`: the Case-I (rigid-subgraph) conditioned-pair dispatch
-  (`case_I_hcontract_gen` + the `c > 0` arm);
-- `hforget_k`: the M4 forgetful map (`hasPanelRealization_of_generic`).
-
-Since CHAIN-5 (Phase 23g) the Case-III chain DISPATCH is discharged by the router inside
-`case_III_realization_all_k`, and since the ASSEMBLY producer-site rewire (Phase 23h, A1) the ENTRY
-chain **extraction** + short-cycle bricks (`Graph.chainData_extract` / `cycle_realization`, general
-`n`) are consumed directly inside the producer; this spine no longer carries any `hextract`/`hcycle`
-green-modulo binder — only the `hn`/`hD`/`hfresh` inputs those bricks need thread through.
-
-**Liftable split arms** (wired here):
-- `hsplitPos` (Case II, `c > 0`, 2EC, no rigid): G0 → `G.Simple`;
-  `case_II_realization_all_k` + `hforget_k`;
-- `hsplitZero` (Case III, `c = 0`, 2EC, no rigid): G0 → `G.Simple`;
-  `case_III_realization_all_k` + `hforget_k`.
-
-`theorem_55_d3` is the `c = 0` corollary of this general-`k` spine at `k = 2`. -/
+The induction on `|V(G)|` is `minimal_kdof_reduction_all_k`. In its two other cases `G` is
+2-edge-connected and has no proper rigid subgraph, so it is simple
+(`simple_of_isMinimalKDof_of_noRigid`): for `c > 0` Case II gives a generic full-rank realization
+(`case_II_realization_all_k`, KT Lemma 6.8), for `c = 0` Case III does
+(`case_III_realization_all_k`, KT Lemmas 6.10 and 6.13), and `hforget_k` gives the other conjunct.
+`theorem_55_minimalKDof_gen` gives the four hypotheses. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
-    -- base producer (any dof, `|V| ≤ 2`), `d = 3`-pinned in the landed tree → carried.
+    -- The base: `P` at the minimal `c`-dof-graphs with one or two vertices.
     (hbase_k : ∀ (c : ℤ) (G : Graph α β), G.IsMinimalKDof n c → V(G).Nonempty →
       V(G).ncard ≤ 2 →
       (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
         HasPanelRealization K k n G)
-    -- cut producer's conditioned pair, `d = 3`-pinned (`q : α × Fin 4`) → carried.
+    -- KT Lemma 6.1: `P(G)` if `G` is not 2-edge-connected, from `P` below `|V(G)|`.
     (hcut_k : ∀ (c : ℤ) (G : Graph α β), G.IsMinimalKDof n c → 3 ≤ V(G).ncard →
       ¬ G.TwoEdgeConnected →
       (∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
@@ -2121,7 +2078,7 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
           HasPanelRealization K k n G') →
       (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
         HasPanelRealization K k n G)
-    -- Case-I (rigid-subgraph) conditioned-pair dispatch, `d = 3`-pinned (`Fin 4`) → carried.
+    -- Case I: `P(G)` if `G` has a proper rigid subgraph, from `P` below `|V(G)|`.
     (hcontract_k : ∀ (c : ℤ) (G : Graph α β), G.IsMinimalKDof n c → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
       (∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
@@ -2130,8 +2087,8 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
           HasPanelRealization K k n G') →
       (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
         HasPanelRealization K k n G)
-    -- M4 forgetful map (GP → bare), `d = 3`-pinned (`exists_extensor_eq_panelSupportExtensor`) →
-    -- carried. `G.Loopless` is supplied at each call site (both split arms establish it).
+    -- A generic full-rank realization of a loopless graph gives a nondegenerate-hinge one; Cases II
+    -- and III below give `G.Loopless`.
     (hforget_k : ∀ (G : Graph α β), G.Loopless → 2 ≤ V(G).ncard →
       PanelHingeFramework.HasGenericFullRankRealization K k n G → HasPanelRealization K k n G)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
@@ -2141,13 +2098,13 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
     (P := fun G =>
       (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
         HasPanelRealization K k n G)
-    -- hbase: carried producer.
+    -- The base.
     hbase_k
-    -- hcut: carried producer.
+    -- KT Lemma 6.1.
     hcut_k
-    -- hcontract: carried producer (Case-I rigid-subgraph dispatch, any dof).
+    -- Case I.
     hcontract_k
-    -- hsplitPos: Case II (c > 0, 2EC, no rigid). G0 → simple; `case_II_realization_all_k` + M4.
+    -- Case II: `c > 0`, `G` 2-edge-connected with no proper rigid subgraph, so simple.
     (fun c G hG hcpos hV3 htec hnoRigid hIH => by
       have hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
@@ -2155,7 +2112,7 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
       have hGP := PanelHingeFramework.case_II_realization_all_k hk1 hn
         G (hfresh c G hG) hG hcpos hV3 htec hnoRigid hIH
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
-    -- hsplitZero: Case III (c = 0, 2EC, no rigid). G0 → simple; `case_III_realization_all_k` + M4.
+    -- Case III: `c = 0`, `G` 2-edge-connected with no proper rigid subgraph, so simple.
     (fun G hG hV3 _htec hnoRigid hIH => by
       have hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
@@ -2165,25 +2122,17 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     c G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
 
-/-- **KT Theorem 5.5 at general `d`, general-`c`-dof spine (the zero-carry general-grade wrapper)**
-(`thm:theorem-55`; Katoh–Tanigawa 2011 Theorem 5.5 / Lemma 6.13; Phase 23h A2). The general-grade
-analogue of `theorem_55_minimalKDof_k`: for a minimal `c`-dof graph on ≥ 2 vertices at any grade
-`1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k`, the conditioned pair
-`(G.Simple → HasGenericFullRankRealization K k n G) ∧ HasPanelRealization K k n G` holds.
+/-- **KT Theorem 5.5** (`thm:theorem-55`; KT Theorem 5.5, p. 670, and its proof, KT §6,
+pp. 671–698): let `K` be infinite, `1 ≤ k` and `3 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let
+every minimal `c'`-dof-graph miss some edge label (`hfresh`, `rem:fresh-edge-supply`). Then every
+minimal `c`-dof-graph `G` at `n` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel realization
+(`HasPanelRealization`), of rank `D(|V(G)| − 1) − c`, and if `G` is simple a generic full-rank
+realization (`HasGenericFullRankRealization`).
 
-This is the **zero-carry** general-`d` form: it fills every carry of the general-`k` spine
-`theorem_55_minimalKDof_k_all_k` from the grade-general producers now in tree —
-`theorem_55_base_producer_gen` (`hbase_k`), `case_cut_edge_realization_gp_gen` +
-`case_cut_edge_realization_gen` (`hcut_k`), `case_I_hcontract_gen` (`hcontract_k`), and
-`hasPanelRealization_of_generic` (`hforget_k`, `[NeZero k]` from `hk1`). The Case-III arm is
-discharged at general `n` by the CHAIN chain-dispatch router inside `case_III_realization_all_k` and
-the ENTRY chain-extraction / short-cycle bricks (`Graph.chainData_extract` / `cycle_realization`)
-consumed inside the producer (Phase 23h A1), so this spine carries no `hextract`/`hcycle` callback.
-The `hD : 3 ≤ bodyBarDim n` floor (Phase 40a SPINE2 weakens the Phase-20 chain extractors'
-original `6`-pinned floor to `3`) scopes this to `n ≥ 2` (`bodyBarDim 2 = 3`); the `d = 3` line is
-the `k = 2` specialization `theorem_55_minimalKDof_k`. This all-deficiency form, matching KT
-eq.~(6.1) exactly,
-is the direct blueprint pin for KT Theorem 5.5 (`thm:theorem-55`; Phase 23-cleanup B8). -/
+It is `theorem_55_minimalKDof_k_all_k`, with the base from `theorem_55_base_producer_gen`, KT
+Lemma 6.1 from `case_cut_edge_realization_gen` and `case_cut_edge_realization_gp_gen`, Case I from
+`case_I_hcontract_gen`, and a nondegenerate-hinge realization from a generic full-rank one by
+`hasPanelRealization_of_generic`. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_gen
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
@@ -2192,43 +2141,29 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_gen
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
       HasPanelRealization K k n G :=
   PanelHingeFramework.theorem_55_minimalKDof_k_all_k hk1 hD hn hfresh
-    -- hbase_k: `theorem_55_base_producer_gen` (any dof, |V| ≤ 2).
+    -- The base.
     (fun c G hG hne hV2 => theorem_55_base_producer_gen hk1 (by omega) hn G hG hne hV2)
-    -- hcut_k: GP from `case_cut_edge_realization_gp_gen`, bare from its non-GP form.
+    -- KT Lemma 6.1.
     (fun c G hG _ hntec hIH => ⟨
       fun hSimple => case_cut_edge_realization_gp_gen (by omega) hn G hG hntec hSimple
         (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).1),
       case_cut_edge_realization_gen (by omega) hn G hG hntec
         (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩)
-    -- hcontract_k: the general-grade `case_I_hcontract_gen` (Case-I dispatch for `c = 0`, manual
-    -- dispatch for `c > 0`).
+    -- Case I.
     (fun c G hG hV3 hrig hIH => case_I_hcontract_gen hk1 hD hn c G hG hV3 hrig hIH)
-    -- hforget_k: M4 forgetful map `hasPanelRealization_of_generic` (`NeZero k` from `hk1`; loopless
-    -- supplied at the arm).
+    -- A nondegenerate-hinge realization from a generic full-rank one, with `NeZero k` from `hk1`.
     (fun G hloop hV2 hGP => by
       have : NeZero k := ⟨by omega⟩
       have := hloop
       exact hasPanelRealization_of_generic hV2 hGP)
     G hG hV
 
-/-- **KT Theorem 5.5 at `d = 3`, general-`c`-dof spine (the `k = 2` corollary)** (`thm:theorem-55`;
-Katoh–Tanigawa 2011 Theorem 5.5, Phase 22k L10b; the `k = 2` specialization of
-`theorem_55_minimalKDof_gen`, Phase 23a Leaf 5, re-based Phase 23-cleanup S2). For a minimal
-`c`-dof graph on ≥ 2 vertices in `d = 3` (`bodyBarDim n = screwDim 2 = 6`), the conditioned pair
-holds.
-
-The `k = 2` specialization of the grade-general zero-carry spine `theorem_55_minimalKDof_gen`; the
-work — the full carry map and induction — lives there. This used to independently re-run
-`theorem_55_minimalKDof_k_all_k` against a parallel `d = 3`-only set of producers
-(`theorem_55_base_producer`, `case_cut_edge_realization{,_gp}`, plus a manual `case_I_hcontract_gen`
-dispatch); once the Phase 23b OD-7 tail made every one of those producers grade-general, that
-second spine was pure duplication with no caller of its own beyond this wrapper, so it was
-collapsed to a one-line corollary and the three now-orphaned `d = 3`-only producer wrappers were
-deleted (Phase 23-cleanup S2; their two blueprint pins — `thm:theorem-55-d3-instance` and
-`lem:theorem-55-base-producer` in `panel-layer.tex`, `lem:case-cut-edge-realization{,-gp}` in
-`molecular-induction.tex` — now point at the `_gen` forms instantiated at `k = 2`).
-
-`theorem_55_d3` is the `c = 0` corollary of this spine. -/
+/-- **KT Theorem 5.5 at `d = 3`** (a step of `thm:theorem-55-d3-instance`):
+`theorem_55_minimalKDof_gen` at `k = 2`, where `D = 6`. If `K` is infinite, `3 ≤ D` (`hD`) with
+`D = screwDim 2` (`hn`), and every minimal `c'`-dof-graph misses some edge label (`hfresh`), then
+every minimal `c`-dof-graph `G` at `n` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel
+realization, and if `G` is simple a generic full-rank realization. `theorem_55_d3` uses it at
+`c = 0`. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
@@ -2238,27 +2173,14 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k
       HasPanelRealization K 2 n G :=
   PanelHingeFramework.theorem_55_minimalKDof_gen (k := 2) (by norm_num) hD hn hfresh G hG hV
 
-/-- **Theorem 5.5 at `d = 3`, zero-carry instance (the consumer-facing form)**
-(`thm:theorem-55-d3-instance`; Katoh–Tanigawa 2011 Theorem 5.5, Phase 22k L9, reshaped Phase
-23-cleanup E2). For a minimal `0`-dof graph on ≥ 2 vertices in `d = 3`, the conditioned pair holds:
-GP conjunct (`G.Simple` → generic full-rank realization) and bare (`HasPanelRealization`).
+/-- **KT Theorem 5.5 at `d = 3` and deficiency zero** (`thm:theorem-55-d3-instance`; KT Theorem 5.5,
+p. 670): let `K` be infinite and `6(|α| − 1) < |β|` (`hcard`). Then every minimal `0`-dof-graph `G`
+at `n = 3` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel realization, of rank `6(|V(G)| − 1)`,
+and if `G` is simple a generic full-rank realization.
 
-All three adjudicated carries (`h622`, `hsplit`, `hcontract`) have been discharged:
-- `h622` at Phase 22k L7 (all-`k` IH → `exists_nested_rankPolynomial_lower_all_k`);
-- `hsplit` at Phase 22k L9 (G0 + M4; now `case_III_realization_all_k`);
-- `hcontract` at Phase 22i L5 + Phase 22k L8/L9 (`case_I_dispatch` + producers).
-
-The consumer-facing repackaging of `theorem_55_minimalKDof_k`'s `k = 0` special case: the
-label-headroom bound `6 * (|α| − 1) < |β|` stands in for the higher-order fresh-edge-supply binder
-(derived via `Graph.freshEdgeSupply_of_card_lt` at the literal `n := 3`), and the `hD`/`hn`
-grade-matching hypotheses are discharged by `decide` at the fixed numerals. The `{n}` binder of the
-former two-step wrapper — the general-`n` corollary composed with the literal-`n = 3` instance —
-is dropped, since `hD`/`hn` at `k = 2` jointly forced `n = 3` anyway; the two decls are merged here.
-The work — the full callback map and induction — lives in `theorem_55_minimalKDof_k`.
-
-This decl has no in-tree caller: it is the consumer-facing `d = 3` worked instance of
-`theorem_55_minimalKDof_k`, kept deliberately as an accessible entry point (PROSPECT S1
-adjudication, 2026-07-10; `notes/Prospect.md`), not dead code awaiting a liveness sweep. -/
+It is `theorem_55_minimalKDof_k` at `n = 3` and `c = 0`. `hcard` gives every minimal `c`-dof-graph
+an edge label outside its edge set (`Graph.freshEdgeSupply_of_card_lt`, `rem:fresh-edge-supply`),
+and `3 ≤ D` and `D = screwDim 2` hold at `n = 3` by `decide`. No declaration uses it. -/
 theorem PanelHingeFramework.theorem_55_d3 [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard) :
@@ -2268,9 +2190,11 @@ theorem PanelHingeFramework.theorem_55_d3 [Infinite K] [DecidableEq β] [Finite 
     (Graph.freshEdgeSupply_of_card_lt (n := 3) (by decide)
       (by simpa [Graph.bodyBarDim] using hcard)) G hG hV
 
+/-! ## KT Theorem 5.6 and the molecular conjecture for simple graphs (`thm:theorem-55-6`) -/
+
 set_option linter.unusedDecidableInType false in
-/-- **KT Theorem 5.6, genuine-hinge witness form** (`thm:theorem-55-6`, the `≥ 2`-body stratum;
-Katoh–Tanigawa 2011 §5.2, Phase 23h A5). The `|V| ≥ 2` case of `rankHypothesis_of_theorem_55_gen`
+/-- **KT Theorem 5.6, genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the `≥ 2`-body
+stratum; Katoh–Tanigawa 2011 §5.2, p. 670). The `|V| ≥ 2` case of `rankHypothesis_of_theorem_55_gen`
 extracted as a reusable lemma that *also* exposes the genuine-hinge witness
 `hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0` its construction already establishes: for a simple
 spanning graph on `≥ 2` bodies at any grade `1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k`, the
@@ -2351,14 +2275,15 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
       ≤ screwDim k + Q.toBodyHinge.graph.deficiency n := by
     rw [PanelHingeFramework.toBodyHinge_graph, hQg, ← hdefeq, ← hZ']
     exact_mod_cast hmono
-  -- Conclude via `rigidityMatrix_prop11`; its `n = k + 1` premise is the A4-L1 bridge.
+  -- Conclude via `rigidityMatrix_prop11`, with `n = k + 1` from `hn`
+  -- (`eq_add_one_of_bodyBarDim_eq_screwDim`).
   have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency n) :=
     rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen
   exact ⟨Q, hQg, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
 
 set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6, link-recording genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the
-link-recording strengthening; Katoh–Tanigawa 2011 §5.2; Phase 25 W6, the F1 fix). Identical to
+link-recording strengthening; Katoh–Tanigawa 2011 §5.2, p. 670). Identical to
 `rankHypothesis_genuine_of_theorem_55_gen` except the endpoint selector *records a genuine `G`-link
 on every edge of `G`* (`reaimSubLink` in place of `reaimSub`), so the framework additionally
 satisfies the edge-restricted link-recording hypothesis
@@ -2403,7 +2328,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
     omega
   obtain ⟨x₀⟩ := ‹Nonempty α›
   obtain ⟨y₀, hxy⟩ := Fintype.exists_ne_of_one_lt_card (by omega) x₀
-  -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge (the F1 fix).
+  -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge.
   let Q := Q'.reaimSubLink k G G' x₀ y₀
   have hQg : Q.graph = G := rfl
   -- `hends`: the selector records a genuine `G`-link on every `G`-link.
@@ -2440,7 +2365,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
       · rw [dite_eq_right hGlink]
         rw [panelSupportExtensor_ne_zero_iff]
         exact hQ'gp x₀ y₀ hxy.symm
-  -- `dim Z(G') = D + def(G̃')` via the rigidity-row/motion complement (verbatim base form).
+  -- `dim Z(G') = D + def(G̃')` via the rigidity-row/motion complement.
   have hcard : Nat.card α = V(G').ncard := by
     rw [hG'V, hspan, Set.ncard_univ]
   have hcompl := Q'.toBodyHinge.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
@@ -2463,18 +2388,19 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
       ≤ screwDim k + Q.toBodyHinge.graph.deficiency n := by
     rw [PanelHingeFramework.toBodyHinge_graph, hQg, ← hdefeq, ← hZ']
     exact_mod_cast hmono
-  -- Conclude via `rigidityMatrix_prop11`; its `n = k + 1` premise is the A4-L1 bridge.
+  -- Conclude via `rigidityMatrix_prop11`, with `n = k + 1` from `hn`
+  -- (`eq_add_one_of_bodyBarDim_eq_screwDim`).
   have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency n) :=
     rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen
   exact ⟨Q, hQg, hends, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
 
 /-- **KT Theorem 5.6, non-spanning row-rank form** (`thm:theorem-55-6-rows`; Katoh–Tanigawa 2011
-§5.2, p. 670; Phase 40a Slice 4). For a simple graph `G` on `≥ 2` bodies — *not* necessarily
-spanning `α` — at any grade `1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k` and over any infinite
-field, the strip-realize-re-add assembly of `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`
-produces a general-position panel-hinge realization `Q` of `G` whose selector records a genuine
-`G`-link on every edge, whose every supporting extensor is nonzero (total over `β`), and whose
-rigidity-row span has exactly the deficiency rank
+§5.2, p. 670). For a simple graph `G` on `≥ 2` bodies — *not* necessarily spanning `α` — at any
+grade `1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k` and over any infinite field, the
+strip-realize-re-add assembly of `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` produces a
+general-position panel-hinge realization `Q` of `G` whose selector records a genuine `G`-link on
+every edge, whose every supporting extensor is nonzero (total over `β`), and whose rigidity-row span
+has exactly the deficiency rank
 
   `rank R(G, Q) = D·(|V(G)| − 1) − def(G̃)`.
 
@@ -2574,7 +2500,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
       ≤ Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) := by
     rw [← hspan']
     exact Submodule.finrank_mono (Submodule.span_mono hsub)
-  -- `≤`: the `V(G)`-relative deficiency bound (B2), fed the genuine hinges on links.
+  -- `≤`: the `V(G)`-relative deficiency bound, fed the genuine hinges on links.
   have hup := Q.toBodyHinge.finrank_span_rigidityRows_add_deficiency_le hn
     (by rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne) (fun e _ _ _ => hC e)
   rw [PanelHingeFramework.toBodyHinge_graph, hQg] at hup
@@ -2585,12 +2511,12 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
   linarith
 
 /-- **KT Theorem 5.6 as the generic motive, for every simple graph on `≥ 2` bodies**
-(`thm:theorem-55-6-rows`, corollary form; Phase 40a Slice 4). Theorem 5.5's generic conclusion
-`HasGenericFullRankRealization K k n G` — stated by `theorem_55_minimalKDof_gen` for *minimal*
-`c`-dof graphs — holds for every simple graph on `≥ 2` bodies, spanning or not: repackage
+(`thm:theorem-55-6-rows`, corollary form; Katoh–Tanigawa 2011 §5.2, p. 670). Theorem 5.5's generic
+conclusion `HasGenericFullRankRealization K k n G` — stated by `theorem_55_minimalKDof_gen` for
+*minimal* `c`-dof graphs — holds for every simple graph on `≥ 2` bodies, spanning or not: repackage
 `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, turning its edge-restricted
-link-recording conjunct into the motive's up-to-swap form via `IsLink.eq_and_eq_or_eq_and_eq`
-(two links of one edge agree up to order) and dropping the total-over-`β` genuine-hinge witness. -/
+link-recording conjunct into the motive's up-to-swap form via `IsLink.eq_and_eq_or_eq_and_eq` (two
+links of one edge agree up to order) and dropping the total-over-`β` genuine-hinge witness. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen
     [Infinite K] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
@@ -2603,15 +2529,14 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen
   exact ⟨Q, hQg, hQgp, hrank, fun e u v he => (hends e u v he).eq_and_eq_or_eq_and_eq he⟩
 
 set_option linter.unusedDecidableInType false in
-/-- **KT Theorem 5.6 at general `d` (the consumer-facing form)** (`thm:theorem-55-6`;
-Katoh–Tanigawa 2011 §5.2 Theorem 5.6, Phase 23h A4, reshaped Phase 23-cleanup E2). For a simple
-spanning graph on `≥ 1` body at any dimension `n ≥ 2`, a panel-hinge realization at grade `n − 1`
-produces a framework realizing the rank hypothesis at the genuine deficiency `def(G̃)`:
-`dim Z(G, Q) = D + def(G̃)`. This is the `def > 0` feed of `rigidityMatrix_prop11` (KT Prop 1.1)
-at a *deficient* (non-rigid) graph, now at every dimension. The single `2 ≤ n` hypothesis and the
-label-headroom bound `bodyBarDim n * (|α| − 1) < |β|` repackage the internal grade/dimension
-plumbing and the higher-order fresh-edge-supply binder that the spine `theorem_55_minimalKDof_gen`
-takes directly, exactly as in `molecular_conjecture` below.
+/-- **KT Theorem 5.6 at general `d` (the consumer-facing form)** (`thm:theorem-55-6`; Katoh–Tanigawa
+2011 §5.2 Theorem 5.6, p. 670). For a simple spanning graph on `≥ 1` body at any dimension `n ≥ 2`,
+a panel-hinge realization at grade `n − 1` produces a framework realizing the rank hypothesis at the
+genuine deficiency `def(G̃)`: `dim Z(G, Q) = D + def(G̃)`. This is the `def > 0` feed of
+`rigidityMatrix_prop11` (KT Prop 1.1) at a *deficient* (non-rigid) graph, now at every dimension.
+The single `2 ≤ n` hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|`
+repackage the internal grade/dimension plumbing and the higher-order fresh-edge-supply binder that
+the spine `theorem_55_minimalKDof_gen` takes directly, exactly as in `molecular_conjecture` below.
 
 The assembly (KT p. 670, the strip + projective-move-free re-add) is the grade-general reading of
 the `d = 3` proof — every step already holds at general `k`/`n`:
@@ -2653,8 +2578,7 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
   have hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G') :=
     Graph.freshEdgeSupply_of_card_lt (by omega) hcard
   by_cases hV2 : 2 ≤ V(G).ncard
-  · -- Main case (`|V| ≥ 2`): the genuine-hinge witness form (the strip + re-add), forgetting
-    -- the genuine-hinge conjunct `hC` (this `def > 0` feed does not need it exposed).
+  · -- `|V| ≥ 2`: `rankHypothesis_genuine_of_theorem_55_gen`, without its conjunct `hC`.
     obtain ⟨Q, hQg, _hC, hrank⟩ :=
       PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen (K := K)
         (by omega) hD hn hfresh G hV2 hspan hSimple
@@ -2686,7 +2610,7 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
         · refine Set.eq_singleton_iff_nonempty_unique_mem.mpr ⟨⟨f a, a, ha, rfl⟩, ?_⟩
           rintro _ ⟨x, _, rfl⟩; rw [Subsingleton.elim x a]
       rw [hparts]
-      -- `1 ≤ D = bodyBarDim n` generalizes from the `hD` floor (was a `d = 3` numeral).
+      -- `1 ≤ D = bodyBarDim n`, from `hD`.
       have hDpos : (1 : ℤ) ≤ (Graph.bodyBarDim n : ℤ) := by
         have : (1 : ℕ) ≤ Graph.bodyBarDim n := by omega
         exact_mod_cast this
@@ -2704,13 +2628,13 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
     exact ⟨Q, hQg, hrh⟩
 
 set_option linter.unusedDecidableInType false in
-/-- **Theorem 5.5 → Proposition 1.1, the `def > 0` feed, `d = 3` instance**
-(`thm:theorem-55-6-d3`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6, Phase 22k L10c; the `n := 3`
-specialization of `rankHypothesis_of_theorem_55_gen`, Phase 23-cleanup 9(a)). For a simple
-spanning graph on `≥ 1` body in `d = 3`, a panel-hinge realization produces a framework realizing
-the rank hypothesis at the genuine deficiency `def(G̃)`: `dim Z(G, Q) = D + def(G̃)`. This is the
-first feed of `rigidityMatrix_prop11` (KT Prop 1.1) at a *deficient* (non-rigid) graph — the
-companion of the `def = 0` feed `rankHypothesis_deficiency_of_theorem_55_d3`.
+/-- **Theorem 5.5 → Proposition 1.1, the `def > 0` feed, `d = 3` instance** (`thm:theorem-55-6-d3`;
+Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; the `n := 3` specialization of
+`rankHypothesis_of_theorem_55_gen`). For a simple spanning graph on `≥ 1` body in `d = 3`, a
+panel-hinge realization produces a framework realizing the rank hypothesis at the genuine deficiency
+`def(G̃)`: `dim Z(G, Q) = D + def(G̃)`. This is the first feed of `rigidityMatrix_prop11` (KT Prop
+1.1) at a *deficient* (non-rigid) graph — the companion of the `def = 0` feed
+`rankHypothesis_deficiency_of_theorem_55_d3`.
 
 The `n = 3` specialization of the grade-general `def > 0` feed `rankHypothesis_of_theorem_55_gen`;
 the strip-realize-re-add assembly (KT p. 670) lives there, along with the single-body routing.
@@ -2736,14 +2660,14 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3 [Infinite K]
 
 set_option linter.unusedDecidableInType false in
 /-- **The Molecular Conjecture (the consumer-facing form)** (`thm:molecular-conjecture`;
-Katoh–Tanigawa 2011 Conjecture 1.2, posed by Tay–Whiteley 1984; Phase 23h A5, reshaped Phase
-23-cleanup E2). A simple spanning graph `G` on `≥ 2` bodies can be realized as an infinitesimally
-rigid **body-hinge** framework in `Kⁿ` iff it can be realized as an infinitesimally rigid
-**panel-hinge** framework, at grade `n − 1` — the headline statement of the molecular-conjecture
-program, at general dimension `d` (`n ≥ 2`, equivalently `3 ≤ bodyBarDim n`). The single `2 ≤ n`
-hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|` repackage the internal
-grade/dimension plumbing and the higher-order fresh-edge-supply binder that the spine
-`theorem_55_minimalKDof_gen` takes directly, exactly as in `rankHypothesis_of_theorem_55_gen` above.
+Katoh–Tanigawa 2011 Conjecture 1.2, p. 648, posed by Tay–Whiteley 1984). A simple spanning graph `G`
+on `≥ 2` bodies can be realized as an infinitesimally rigid **body-hinge** framework in `Kⁿ` iff it
+can be realized as an infinitesimally rigid **panel-hinge** framework, at grade `n − 1` — the
+headline statement of the molecular-conjecture program, at general dimension `d` (`n ≥ 2`,
+equivalently `3 ≤ bodyBarDim n`). The single `2 ≤ n` hypothesis and the label-headroom bound
+`bodyBarDim n * (|α| − 1) < |β|` repackage the internal grade/dimension plumbing and the
+higher-order fresh-edge-supply binder that the spine `theorem_55_minimalKDof_gen` takes directly,
+exactly as in `rankHypothesis_of_theorem_55_gen` above.
 
 "Realized as an infinitesimally rigid `⋯` framework" is `∃ F, F.graph = G ∧ (∀ e,
 F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid`: a framework on `G` whose every hinge is
@@ -2824,7 +2748,7 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
     exact ⟨Q.toBodyHinge, Q.toBodyHinge_graph.trans hQg, hQC, hQrig⟩
 
 /-! ## The multigraph molecular conjecture in the hinge-coplanar model
-(`sec:molecular-coplanar-multigraph`, Phase 35 COPLANAR)
+(`sec:molecular-coplanar-multigraph`)
 
 Katoh–Tanigawa state Theorem 5.6 and Conjecture 1.2 for multigraphs (KT p. 648, p. 670). For the
 meet-model `PanelHingeFramework` the multigraph equivalence is false: a hinge there *is* the meet of
@@ -2833,13 +2757,13 @@ its endpoint panels, while KT require only that each hinge *lie in* the panel of
 `HasCoplanarPanelRealization` states the panel side in KT's containment model; the two results below
 recover Theorem 5.6 and Conjecture 1.2 at full multigraph strength. -/
 
-/-- **W1: hinge-coplanar panel realization** (`def:coplanar-panel-realization`; Katoh–Tanigawa 2011
-§5.1, p. 668; Phase 35 COPLANAR). A body-hinge framework `F` on `G` together with a panel-normal
-assignment `normal : α → Fin (k + 2) → K` *is a hinge-coplanar panel realization of `G`* when
-`F.graph = G`, every body of `V(G)` has a nonzero normal, the supporting extensor of every edge
-label is nonzero (total over `β`, the same convention `molecular_conjecture` uses), and every link's
-supporting extensor lies in both endpoint panels (`ExtensorInPanel`: the extensor of `k` points of
-the hyperplane `nᵥ^⊥`).
+/-- **Hinge-coplanar panel realization** (`def:coplanar-panel-realization`; Katoh–Tanigawa 2011
+§5.1, p. 668). A body-hinge framework `F` on `G` together with a panel-normal assignment
+`normal : α → Fin (k + 2) → K` *is a hinge-coplanar panel realization of `G`* when `F.graph = G`,
+every body of `V(G)` has a nonzero normal, the supporting extensor of every edge label is nonzero
+(total over `β`, the same convention `molecular_conjecture` uses), and every link's supporting
+extensor lies in both endpoint panels (`ExtensorInPanel`: the extensor of `k` points of the
+hyperplane `nᵥ^⊥`).
 
 This is KT's *containment* model of hinge-coplanarity: all hinges at a body `v` lie in the single
 hyperplane `nᵥ^⊥`, so each body may be replaced by a rigid panel (KT p. 648). It is the honest bare
@@ -2847,7 +2771,7 @@ motive `HasPanelRealization` (M2, `def:genuine-hinge-realization`) with its per-
 conjunct strengthened to the total-over-`β` form, and the rank target dropped — the rank is
 *attained* by
 `theorem_55_6_multigraph`, not part of the realization notion. Unlike the meet-model
-`PanelHingeFramework.IsHingeCoplanar` (`∃ P, P.toBodyHinge = F`), at coincident panels this admits
+`BodyHingeFramework.IsHingeCoplanar` (`∃ P, P.toBodyHinge = F`), at coincident panels this admits
 any `(d-2)`-flat of the shared panel, exactly the freedom of KT Lemma 5.3 the meet model cannot
 express. Placed in the root `Molecular` namespace (it quantifies a free `BodyHingeFramework` and a
 normal assignment), matching `HasPanelRealization`. -/
@@ -2861,11 +2785,11 @@ def HasCoplanarPanelRealization (G : Graph α β) (F : BodyHingeFramework K k α
     ExtensorInPanel (F.supportExtensor e) (normal v))
 
 set_option linter.unusedDecidableInType false in
-/-- **KT Theorem 5.6, multigraph form — the `2 ≤ |V|` strip-and-re-add core**
-(`thm:theorem-55-6-multigraph`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR).
-Every spanning multigraph `G` on `≥ 2` bodies — parallel edges and loops admitted — at any grade
-`1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k` and over any infinite field `K` has a hinge-coplanar
-panel realization (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`) attaining the
+/-- **KT Theorem 5.6, multigraph form — the `2 ≤ |V|` strip-and-re-add core** (a step of
+`thm:theorem-55-6-multigraph`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670). Every spanning
+multigraph `G` on `≥ 2` bodies — parallel edges and loops admitted — at any grade `1 ≤ k` with
+`3 ≤ bodyBarDim n = screwDim k` and over any infinite field `K` has a hinge-coplanar panel
+realization (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`) attaining the
 deficiency rank, i.e. realizing the rank hypothesis `F.RankHypothesis (def(G̃))`. The public form
 `theorem_55_6_multigraph` wraps this with the single-body case and drops the `≥ 2` hypothesis.
 
@@ -2949,7 +2873,7 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
     · rw [hFse_neg e h]
       exact ((exists_extensor_in_two_panels_grade
         (normal' (ends e).1) (normal' (ends e).2)).choose_spec).1
-  -- W1: the coplanar realization data.
+  -- The hinge-coplanar realization.
   have hW1 : HasCoplanarPanelRealization G F normal' := by
     refine ⟨hFg, ?_, hC, ?_⟩
     · intro v hv
@@ -2999,25 +2923,22 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
   exact ⟨F, normal', hW1, hprop11⟩
 
 set_option linter.unusedDecidableInType false in
-/-- **KT Theorem 5.6, multigraph containment form** (`thm:theorem-55-6-multigraph`; Katoh–Tanigawa
-2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR; single-body drop, Phase 35 addendum). Every
-spanning multigraph `G` — parallel edges and loops admitted, on any nonempty body set — at any grade
-`1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k` and over any infinite field `K` has a hinge-coplanar
-panel realization (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`) attaining the
-deficiency rank, i.e. realizing the rank hypothesis `F.RankHypothesis (def(G̃))`. This matches KT's
-own statement (no `≥ 2`-body bound).
+/-- **KT Theorem 5.6 for multigraphs** (`thm:theorem-55-6-multigraph`; KT Theorem 5.6, p. 670): let
+`K` be infinite, `1 ≤ k` and `3 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let every minimal
+`c`-dof-graph miss some edge label (`hfresh`). Then every multigraph `G` on all of `α` (`hspan`),
+with parallel edges and loops allowed, has a hinge-coplanar panel realization `F`
+(`HasCoplanarPanelRealization`) at the target rank, `F.RankHypothesis (def(G̃))`. As in Katoh and
+Tanigawa's statement, `G` may have one vertex.
 
-Dispatches on the body count. The `2 ≤ |V|` core is `theorem_55_6_multigraph_of_two_le`, KT's
-removal-and-extension argument (p. 670) in the containment model (see there for the
-strip-realize-re-add steps). The `|V| = 1` case is the trivial single-body construction: `G` is a
-subsingleton, so `def(G̃) = 0` (every partition has one part), rigidity is automatic, and a
-hinge-coplanar realization is any constant nonzero normal `n₀` paired with a nonzero extensor of the
-single panel `n₀^⊥` (`exists_extensor_in_two_panels_grade n₀ n₀`). The containment model admits this
+For `|V(G)| ≥ 2` this is `theorem_55_6_multigraph_of_two_le`. For one vertex, `α` has one element,
+so `def(G̃) = 0` (every partition has one part) and every framework is infinitesimally rigid; the
+realization gives the body a constant nonzero normal `n₀` and every label one nonzero extensor in
+its panel (`exists_extensor_in_two_panels_grade n₀ n₀`). The containment model admits this
 single-body realization; the meet model cannot (`rem:coplanar-single-body`), which is why the
 single-body case is a genuine strengthening here and not in the meet-model `molecular_conjecture`.
-This mirrors the single-body routing of `rankHypothesis_of_theorem_55_gen`.
+`rankHypothesis_of_theorem_55_gen` derives `def(G̃) = 0` on one body the same way.
 
-`[DecidableEq β]` is used in the proof (through the `2 ≤ |V|` core's spanning strip) but not in the
+`[DecidableEq β]` is used in the proof (through `theorem_55_6_multigraph_of_two_le`) but not in the
 conclusion's type; the `unusedDecidableInType` suppression is correct, as in
 `rankHypothesis_of_theorem_55_gen`. -/
 theorem theorem_55_6_multigraph [Infinite K]
@@ -3060,7 +2981,7 @@ theorem theorem_55_6_multigraph [Infinite K]
         · refine Set.eq_singleton_iff_nonempty_unique_mem.mpr ⟨⟨f a, a, ha, rfl⟩, ?_⟩
           rintro _ ⟨x, _, rfl⟩; rw [Subsingleton.elim x a]
       rw [hparts]
-      -- `1 ≤ D = bodyBarDim n` generalizes from the `hD` floor.
+      -- `1 ≤ D = bodyBarDim n`, from `hD`.
       have hDpos : (1 : ℤ) ≤ (Graph.bodyBarDim n : ℤ) := by
         have : (1 : ℕ) ≤ Graph.bodyBarDim n := by omega
         exact_mod_cast this
@@ -3068,7 +2989,7 @@ theorem theorem_55_6_multigraph [Infinite K]
         mul_nonneg (by omega) (by positivity)
       push_cast
       nlinarith [hnn]
-    -- W1: the coplanar realization data (constant normal, one in-panel extensor).
+    -- The hinge-coplanar realization: a constant normal, one extensor in its panel.
     have hW1 : HasCoplanarPanelRealization G F normal := by
       refine ⟨rfl, ?_, ?_, ?_⟩
       · intro v _; exact hn₀
@@ -3083,24 +3004,19 @@ theorem theorem_55_6_multigraph [Infinite K]
     exact (BodyHingeFramework.rankHypothesis_zero_iff F).mpr hrig
 
 set_option linter.unusedDecidableInType false in
-/-- **KT Theorem 5.6, multigraph containment form (consumer-facing wrapper)**
-(`thm:theorem-55-6-multigraph`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR).
-The consumer-facing repackaging of `theorem_55_6_multigraph`: for a spanning multigraph `G` (any
-nonempty body set) at any dimension `2 ≤ n` (equivalently `3 ≤ bodyBarDim n`) and over any infinite
-field `K`, `G` has a hinge-coplanar panel realization (`HasCoplanarPanelRealization`) attaining the
-deficiency rank, at grade `k = n − 1`.
+/-- **KT Theorem 5.6 for multigraphs, at dimension `n`** (`thm:theorem-55-6-multigraph`; KT
+Theorem 5.6, p. 670): let `K` be infinite, `2 ≤ n`, and `D(|α| − 1) < |β|` with `D = bodyBarDim n`
+(`hcard`). Then every multigraph `G` on all of `α` (`hspan`), with parallel edges and loops allowed,
+has a hinge-coplanar panel realization `F` at grade `k = n − 1` (`HasCoplanarPanelRealization`) at
+the target rank, `F.RankHypothesis (def(G̃))`.
 
-The single `2 ≤ n` hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|`
-repackage the internal grade identity `hn`, the `3 ≤ bodyBarDim n` floor `hD`, and the higher-order
-fresh-edge-supply binder `hfresh` that `theorem_55_6_multigraph` takes directly — exactly the
-wrapper pattern of the simple-graph `rankHypothesis_of_theorem_55_gen` (via
-`Graph.three_le_bodyBarDim_of_two_le`, `Graph.bodyBarDim_eq_screwDim_sub_one`, and
-`Graph.freshEdgeSupply_of_card_lt`). It inherits the single-body case from the internal
-`theorem_55_6_multigraph` dispatch, so it carries no `≥ 2`-body hypothesis (Phase 35 addendum).
+It is `theorem_55_6_multigraph` at `k = n − 1`, as `rankHypothesis_of_theorem_55_gen` is
+`rankHypothesis_genuine_of_theorem_55_gen` there: `3 ≤ D` (`Graph.three_le_bodyBarDim_of_two_le`),
+`D = screwDim (n − 1)` (`Graph.bodyBarDim_eq_screwDim_sub_one`), and `hfresh` from `hcard`
+(`Graph.freshEdgeSupply_of_card_lt`, `rem:fresh-edge-supply`).
 
-`[DecidableEq β]` is used in the proof (through the internal form's spanning strip) but not in the
-conclusion's type; the `unusedDecidableInType` suppression is correct, as in
-`rankHypothesis_of_theorem_55_gen`. -/
+`[DecidableEq β]` is used in the proof, through `theorem_55_6_multigraph`, but not in the statement;
+the `unusedDecidableInType` suppression is correct, as in `rankHypothesis_of_theorem_55_gen`. -/
 theorem theorem_55_6_multigraph_gen [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hd : 2 ≤ n)
@@ -3116,16 +3032,15 @@ theorem theorem_55_6_multigraph_gen [Infinite K]
   exact theorem_55_6_multigraph (K := K) (by omega) hD hn hfresh G hspan
 
 set_option linter.unusedDecidableInType false in
-/-- **KT Theorem 5.6, multigraph containment form at `d = 3`** (`cor:theorem-55-6-multigraph-d3`;
-Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR). The `d = 3` (`n = 3`, so
-`k = 2` and `D = 6`) instance of `theorem_55_6_multigraph_gen`: a spanning multigraph (any nonempty
-body set) at dimension `d = 3` has a hinge-coplanar panel realization attaining the deficiency rank
-`6(|V| − 1) − def(G̃)`.
+/-- **KT Theorem 5.6 for multigraphs at `d = 3`** (`cor:theorem-55-6-multigraph-d3`; KT Theorem 5.6,
+p. 670): `theorem_55_6_multigraph_gen` at `n = 3`, where `k = 2` and `D = 6`. If `K` is infinite and
+`6(|α| − 1) < |β|` (`hcard`), every multigraph `G` on all of `α` (`hspan`) has a hinge-coplanar
+panel realization at the target rank `6(|V(G)| − 1) − def(G̃)`.
 
-`Graph.bodyBarDim 3 = 6` closes the label-headroom bound by unfolding, and
-`BodyHingeFramework K (3 - 1) α β` is defeq to `BodyHingeFramework K 2 α β` (kernel `Nat.sub`
-reduction on literals), so the corollary needs no cast at the return type — exactly as in the
-simple-graph `rankHypothesis_of_theorem_55_d3`. -/
+`Graph.bodyBarDim 3 = 6` gives `hcard` at `n = 3` by unfolding, and
+`BodyHingeFramework K (3 - 1) α β` is `BodyHingeFramework K 2 α β` by definition (`3 - 1` reduces to
+`2`), so the statement needs no cast, as in `rankHypothesis_of_theorem_55_d3`. No declaration uses
+it. -/
 theorem theorem_55_6_multigraph_d3 [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
@@ -3136,47 +3051,44 @@ theorem theorem_55_6_multigraph_d3 [Infinite K]
     (by simpa [Graph.bodyBarDim] using hcard) G hspan
 
 set_option linter.unusedDecidableInType false in
-/-- **The Molecular Conjecture, multigraph containment form**
-(`thm:molecular-conjecture-multigraph`; Katoh–Tanigawa 2011 Conjecture 1.2, p. 648, posed by
-Tay–Whiteley 1984; Phase 35 COPLANAR; single-body drop, Phase 35 addendum). A spanning multigraph
-`G` (any nonempty body set) — parallel edges and loops admitted — at any dimension `2 ≤ n`
-(equivalently `3 ≤ bodyBarDim n`) and over any infinite field `K` can be realized as an
-infinitesimally rigid **body-hinge** framework with
-nondegenerate hinges iff it can be realized as an infinitesimally rigid **hinge-coplanar
-panel-hinge** framework (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`), at grade
-`n − 1`. This is the
-multigraph-strength recovery of the simple-graph `PanelHingeFramework.molecular_conjecture`
+/-- **The molecular conjecture for multigraphs** (`thm:molecular-conjecture-multigraph`; KT
+Conjecture 1.2, p. 648, posed by Tay and Whiteley 1984): let `K` be infinite, `2 ≤ n`, and
+`D(|α| − 1) < |β|` with `D = bodyBarDim n` (`hcard`). A multigraph `G` on all of `α` (`hspan`), with
+parallel edges and loops allowed, has an infinitesimally rigid **body-hinge** realization with
+nonzero hinges if and only if it has an infinitesimally rigid **hinge-coplanar panel-hinge**
+realization (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`), at grade `n − 1`.
+This is the multigraph form of the simple-graph `PanelHingeFramework.molecular_conjecture`
 (`thm:molecular-conjecture`): the panel side is stated in KT's containment model (each hinge *lies
 in* the panel of each endpoint, KT §5.1 p. 668), not the meet model, so it holds at parallel edges
 and coincident panels where the meet-model equivalence fails (`rem:coplanar-conventions`,
 `fmlnote:molecular-conjecture-multigraph`).
 
 The body-hinge side is
-`∃ F, F.graph = G ∧ (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid` (every hinge genuine,
-all motions trivial — the same statement as `molecular_conjecture`'s LHS); the panel side packages a
-rigid `HasCoplanarPanelRealization` witness. The genuine-hinge conjunct is essential, as in
-`molecular_conjecture`: a degenerate hinge `C(p(e)) = 0` welds two bodies, so dropping it lets a
-welded framework be rigid on a combinatorially deficient graph. The `≥ 2`-body hypothesis, by
-contrast, is *not* needed here — unlike the meet-model simple case. At one body the meet-model panel
-side is unrealizable (`panelSupportExtensor (normal a) (normal a) = 0`, a repeated argument in an
-alternating join), which is why `molecular_conjecture` retains `≥ 2`; but the *containment* panel
-side is realizable at one body by a constant nonzero normal paired with a nonzero in-panel extensor
+`∃ F, F.graph = G ∧ (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid` (every hinge nonzero,
+every motion trivial: the left side of `molecular_conjecture`); the panel side asks for a rigid
+`HasCoplanarPanelRealization` witness. Both ask for nonzero hinges, as Katoh and Tanigawa's are: a
+zero hinge welds the two bodies of its edge, and a welded framework can be infinitesimally rigid at
+a graph of positive deficiency. The `≥ 2`-body hypothesis, by contrast, is *not* needed here —
+unlike the meet-model simple case. At one body the meet-model panel side is unrealizable
+(`panelSupportExtensor (normal a) (normal a) = 0`, a repeated argument in an alternating join),
+which is why `molecular_conjecture` retains `≥ 2`; but the *containment* panel side is realizable at
+one body by a constant nonzero normal paired with a nonzero in-panel extensor
 (`exists_extensor_in_two_panels_grade`), so the equivalence holds on a single body too
 (`rem:coplanar-single-body`). Loops cost nothing (`rem:coplanar-conventions`).
 
-Proof (KT §5.2). (⇐, elementary) A hinge-coplanar panel realization *is* a body-hinge realization:
-the witness is already a `BodyHingeFramework`, its `HasCoplanarPanelRealization` data supplies
-`F.graph = G` and the genuine-hinge conjunct, and rigidity is carried unchanged — no coercion is
-needed (unlike the meet-model `toBodyHinge` of `molecular_conjecture`). (⇒, KT's content) A genuine
-rigid body-hinge realization pins `def(G̃) = 0`: the genericity-free lower bound
-`D + def(G̃) ≤ dim Z(G,p)` (`screwDim_add_deficiency_le_finrank_infinitesimalMotions`) meets
-`dim Z = D` from rigidity (`rankHypothesis_zero_iff` at `k' = 0`). The multigraph Theorem 5.6
-(`theorem_55_6_multigraph_gen`) at `def(G̃) = 0` then produces a hinge-coplanar panel realization
-with `dim Z = D`, i.e. infinitesimally rigid.
+Proof (KT §5.2, p. 670). (⇐) A hinge-coplanar panel realization *is* a body-hinge realization: the
+witness is already a `BodyHingeFramework`, its `HasCoplanarPanelRealization` data supplies
+`F.graph = G` and the nonzero hinges, and rigidity is carried unchanged — no coercion is needed
+(unlike the meet-model `toBodyHinge` of `molecular_conjecture`). (⇒) A rigid body-hinge realization
+with nonzero hinges has `def(G̃) = 0`: the lower bound `D + def(G̃) ≤ dim Z(G,p)`
+(`screwDim_add_deficiency_le_finrank_infinitesimalMotions`), which needs the nonzero hinges, meets
+`dim Z = D` from rigidity (`rankHypothesis_zero_iff`), so `def(G̃) ≤ 0`, and `def(G̃) ≥ 0`
+(`deficiency_nonneg`). KT Theorem 5.6 for multigraphs (`theorem_55_6_multigraph_gen`) at
+`def(G̃) = 0` then gives a hinge-coplanar panel realization with `dim Z = D`, which is
+infinitesimally rigid.
 
 `[DecidableEq β]` is used in the proof (through Theorem 5.6's spanning strip) but not in the
-conclusion's type; the `unusedDecidableInType` suppression is correct, as in
-`molecular_conjecture`. -/
+statement; the `unusedDecidableInType` suppression is correct, as in `molecular_conjecture`. -/
 theorem molecular_conjecture_multigraph [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hd : 2 ≤ n)
