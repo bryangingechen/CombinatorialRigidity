@@ -6,73 +6,71 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 
 /-!
-# The configuration as a pencil framework, and the linear pencil condition (Phase 40b CARRIER)
+# The configuration as a pencil realization, and coplanarity
 
-The picture-to-normal API, the configuration as a pencil framework, the scale-and-affine-shift rank
-invariance, and the linear pencil condition, over the definitions of
-`Molecular/Molecule/Pencil/MainComponent/Carrier.lean`
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-carrier`; Phase 40b CARRIER slices
-C3, C4, and C5′, `notes/Phase40b.md`). Split out of `Carrier.lean` at the Phase 40h
-`Carrier.lean` split (`notes/Phase40h.md`, PI decision 5, 2026-09-27): no declaration here is
-renamed or re-stated, so no blueprint `\lean{...}` pin moved.
+The lemmas of `sec:main-component-carrier` that read a configuration as a pencil realization, over
+the definitions of `Carrier.lean`, and the configuration form of
+`lem:pencil-x0-two-hubs-obstruction` (`sec:main-component-statements`). The plane normal of a body
+(`pencilNormalOfPicture`) is nonzero when its three bodies have independent configuration points,
+which they have at every height when their picture points are independent; at a height in `L(q)`,
+when its three bodies lie in the closed neighbourhood, it is orthogonal to the configuration points
+of the whole closed neighbourhood (`lem:pencil-selector-plane-contains-nbhd`).
+
+The point-join framework (`pointJoinFramework`) has at each edge the join `p_u ∧ p_v` of the points
+of its ends; with a fixed nonzero hinge off `E(G)`, it is the framework `F_p` of
+`lem:pencil-config-point-join-rank` (`pencilConfigFramework`), whose rank is the rank of the
+configuration. Over an admissible picture and a height in `L(q)`, `F_p` with the plane normals and
+the configuration points is a pencil realization, adjacent-distinct and at the deficiency rank when
+the configuration is attaining (`lem:pencil-config-distinct-realization`); so if the general
+configuration of `G` attains, `G` has an adjacent-distinct pencil realization
+(`lem:pencil-x0-attains-distinct`). An invertible linear map of `K⁴` applied to the points keeps the
+rank (`lem:pencil-rank-collineation`), and so do scaling the heights and adding a globally affine
+height (`lem:pencil-rank-scale-shift`). Over an admissible picture, a height lies in `L(q)` exactly
+when the points of every closed neighbourhood lie in a plane, and if the heights there are
+`a x + b y + c`, every nonzero vector orthogonal to these points is a multiple of `(a, b, -1, c)`
+(`lem:pencil-condition-linear`).
+
+The rank of a configuration is taken at `PanelHingeFramework.ofNormals G ends` of its points, not of
+its plane normals. Each body's point `p_v` is then the normal of the polar plane `p_v^⊥`, and the
+hinge `panelSupportExtensor p_u p_v` is the polar of the line `p_u ∧ p_v`, so the rank is that of
+the point-join framework (the polarity is an invertible map of the screw space;
+`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`;
+`finrank_span_rigidityRows_pencilConfigFramework`), and the hinge is nonzero at every link as soon
+as the picture points differ. `ofNormals` at the plane normals would give the wrong rank: at a
+general picture, adjacent planes coincide on the whole fibre whenever the two bodies lie in a common
+planar-rigid set (`thm:pencil-jj-equality` there), as at every edge of a triangle, and at a flat
+configuration they coincide at every edge; `panelSupportExtensor n n = 0` there, and a zero hinge
+welds its bodies (its hinge-row block is every functional).
 
 ## Main definitions
 
-* `pointJoinFramework` — the body-hinge framework whose hinge at each label is the join
-  `p_u ∧ p_v` of its two ends' points.
-* `pencilConfigFramework` — the point-join framework of a configuration, patched off `E(G)` by a
-  fixed nonzero hinge: the framework of the pencil realization a configuration gives.
+* `pointJoinFramework`: the body-hinge framework whose hinge at each label is the join of the points
+  of its two ends.
+* `pencilConfigFramework`: the point-join framework of a configuration, with a fixed nonzero hinge
+  off `E(G)`; the framework `F_p` of `lem:pencil-config-point-join-rank`.
 
-## Main statements
+## Main results
 
-* `pencilNormalOfPicture_ne_zero_iff` — the normal is nonzero iff the selected configuration
-  triple is independent.
-* `linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint` — picture
-  independence gives configuration independence, at every height.
-* `dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd` — over `z ∈ L(q)`, the plane of a
-  valid selector at `v` is orthogonal to the whole closed neighbourhood of `v`, not only the three
-  selected bodies (CARRIER's C3, new; consumed by C4).
-* `ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework` — `ofNormals` at the points is the
-  polarity image of the point-join framework; `finrank_span_rigidityRows_pencilConfigFramework`
-  carries the rank to the patched configuration framework.
-* `Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework` — over an admissible
-  picture and a height in `L(q)`, the configuration is a pencil panel realization.
-* `Graph.IsAdmissiblePicture.hasDistinctPencilRealization` — an attaining configuration over an
-  admissible picture gives `HasDistinctPencilRealization K 3 G`;
-  `Graph.X0Attains.hasDistinctPencilRealization` is the resulting `X0Dist` leg, over an infinite
-  field.
-* `not_isNondeg_pencilConfigPoint_of_two_hubs_three_common` — the configuration form of the
-  two-hubs obstruction (Phase 40n MOTIVES M0): over a picture where three given bodies are not
-  collinear, no height gives a nondegenerate realization with the configuration points.
-* `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` — a collineation of the
-  normals preserves the row rank, at any invertible linear map of `K⁴`
-  (`lem:pencil-rank-collineation`, Phase 40k CONTRACT-A).
-* `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` — the rank is unchanged by
-  `z ↦ t • z + a` for `t ≠ 0` and `a ∈ Aff(q)` (the last clause of (MC-3)).
-* `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar` — over an admissible picture, coplanar
-  closed neighbourhoods force `z ∈ L(q)` (`lem:pencil-condition-linear`'s converse, CARRIER's C5′).
-* `Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar` — the iff `lem:pencil-condition-linear`
-  pins: `z ∈ L(q)` exactly when every closed neighbourhood is coplanar.
-* `Graph.IsAdmissiblePicture.exists_smul_eq_interpolant` — every nonzero normal of a closed
-  neighbourhood is a nonzero scalar multiple of the interpolant `(h₀, h₁, -1, h₂)`
-  (`lem:pencil-condition-linear`'s unique non-vertical plane, CARRIER's C5′).
-
-## Design
-
-* **The rank is taken at `ofNormals` of the configuration points, not of the plane normals.**
-  `X0Attains` reads `PanelHingeFramework.ofNormals G ends (p_·)`: each body's *point* `p_v` is the
-  normal of the polar plane `p_v^⊥`, and the hinge `panelSupportExtensor p_u p_v` is the polar of
-  the pencil line `p_u ∧ p_v`, so its row rank is the rank of the point-join framework the pencil
-  motives carry (the complement isomorphism is an invertible map of the screw space;
-  `BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`; the conversion is
-  `finrank_span_rigidityRows_pencilConfigFramework`, CARRIER's C4). It is
-  nonzero at every link as soon as the picture points differ. `ofNormals` at the *plane normals*
-  would be the wrong rank: adjacent planes coincide on the whole fibre whenever the two bodies lie
-  in a common planar-rigid subgraph ((MC-13)(c), e.g. every triangle edge at a generic picture,
-  and every edge at a flat configuration), `panelSupportExtensor n n = 0` there, and a zero hinge
-  welds its bodies (its hinge-row block is every functional).
-
-See `notes/Phase40b.md` (*Decisions made*, 2026-09-26 C1a) and `notes/Phase40-design.md` §3.
+* `pencilNormalOfPicture_ne_zero_iff`: the plane normal is nonzero exactly when its three
+  configuration points are independent.
+* `linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint`: independent picture
+  points give independent configuration points, at every height.
+* `dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`:
+  `lem:pencil-selector-plane-contains-nbhd`.
+* `finrank_span_rigidityRows_pencilConfigFramework` and
+  `Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_ne_zero`:
+  `lem:pencil-config-point-join-rank`.
+* `Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework` and
+  `Graph.IsAdmissiblePicture.hasDistinctPencilRealization`:
+  `lem:pencil-config-distinct-realization`.
+* `Graph.X0Attains.hasDistinctPencilRealization`: `lem:pencil-x0-attains-distinct`.
+* `not_isNondeg_pencilConfigPoint_of_two_hubs_three_common`: the configuration form of
+  `lem:pencil-x0-two-hubs-obstruction`.
+* `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`:
+  `lem:pencil-rank-collineation`.
+* `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts`: `lem:pencil-rank-scale-shift`.
+* `Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar` and
+  `Graph.IsAdmissiblePicture.exists_smul_eq_interpolant`: `lem:pencil-condition-linear`.
 -/
 
 open scoped Matrix
@@ -83,11 +81,11 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## The picture-to-normal API (Phase 40b CARRIER slice C3) -/
+/-! ## The plane normals -/
 
-/-- **The normal is nonzero iff the selected configuration triple is independent** (Phase 40b
-CARRIER slice C3, item 1). Direct unfold of `pencilNormalOfPicture` as `cross₃` of the three
-selected configuration points, plus `cross₃_ne_zero_iff_linearIndependent`. -/
+/-- **The plane normal is nonzero exactly when its three configuration points are independent**
+(`def:pencil-configuration`): `pencilNormalOfPicture` is the `cross₃` of the three configuration
+points, and `cross₃_ne_zero_iff_linearIndependent` applies. -/
 theorem pencilNormalOfPicture_ne_zero_iff (q : α × Fin 2 → K) (z : α → K) (sel : α → Fin 3 → α)
     (v : α) :
     pencilNormalOfPicture q z sel v ≠ 0 ↔
@@ -99,13 +97,13 @@ theorem pencilNormalOfPicture_ne_zero_iff (q : α × Fin 2 → K) (z : α → K)
   rw [heq]
   exact cross₃_ne_zero_iff_linearIndependent _ _ _
 
-/-- **Picture independence gives configuration independence, at every height** (Phase 40b CARRIER
-slice C3, item 2). The linear map `f : K⁴ →ₗ K³` dropping the height coordinate (projecting onto
-coordinates `0, 1, 3`) sends every configuration point `pencilConfigPoint q z w` to the picture
-point `pencilPicturePoint q w`, so an independent family of picture points forces the corresponding
-family of configuration points independent (`LinearIndependent.of_comp`, which needs no
-injectivity of `f`: a dependency relation among the domain vectors pushes forward to one among
-their images, so independent images force independent domain vectors). -/
+/-- **Independent picture points give independent configuration points, at every height** (a step of
+`lem:pencil-config-distinct-realization`, `lem:pencil-condition-linear`,
+`lem:pencil-x0-two-hubs-obstruction` and `lem:pencil-x0-conjunct-three`): the linear map
+`f : K⁴ →ₗ[K] K³` that drops the height coordinate (keeping the coordinates `0`, `1` and `3`) takes
+each configuration point `pencilConfigPoint q z w` to the picture point `pencilPicturePoint q w`, so
+a family of configuration points whose images are independent is independent
+(`LinearIndependent.of_comp`, which asks no injectivity of `f`). -/
 theorem linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint
     {q : α × Fin 2 → K} (z : α → K) {ι : Type*} {t : ι → α}
     (ht : LinearIndependent K (fun i => pencilPicturePoint q (t i))) :
@@ -122,20 +120,19 @@ theorem linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePo
     fin_cases j <;> rfl
   rwa [heq]
 
-/-- **The plane of a valid selector at `v` contains the whole closed neighbourhood** (Phase 40b
-CARRIER slice C3, item 3; new, consumed by C4). Over a height `z ∈ L(q)`, at a body `v ∈ V(G)`
-with a selector `sel v` valued in `G.closedNbhd v`, the normal `N = pencilNormalOfPicture q z sel
-v` annihilates every configuration point of the closed neighbourhood, not just the three selected
-ones. Route: `dotProduct_cross₃` reduces `N ⬝ᵥ p_w` to `det[p_{sel v 0}, p_{sel v 1}, p_{sel v 2},
-p_w]`. Membership in `L(q)` gives, at `v`, coefficients `h : Fin 3 → K` with every point over
-`G.closedNbhd v` an image of its picture point under the linear map `a ↦ (a 0, a 1, h ⬝ᵥ a, a 2)`
-— so all four rows are images, under one linear map, of four vectors in the `3`-dimensional `K³`,
-always dependent (`LinearIndependent.fintype_card_le_finrank`), and dependency of the domain
-vectors pushes forward through any linear map to the images, so the four rows are dependent too
-and the determinant vanishes (`linearIndependent_rows_iff_det_ne_zero`).
+/-- **The plane of a selector at `v` contains the whole closed neighbourhood**
+(`lem:pencil-selector-plane-contains-nbhd`): at a height `z ∈ L(q)` and a body `v` of `G` whose
+selector `sel v` names three members of `G.closedNbhd v`, the normal
+`N = pencilNormalOfPicture q z sel v` is orthogonal to the configuration point of every member of
+the closed neighbourhood, not only to the three it is computed from. By `dotProduct_cross₃`,
+`N ⬝ᵥ p_w` is `det[p_{sel v 0}, p_{sel v 1}, p_{sel v 2}, p_w]`. As `z ∈ L(q)`, some `h : Fin 3 → K`
+makes the point of every member of the closed neighbourhood the image of its picture point under the
+linear map `a ↦ (a 0, a 1, h ⬝ᵥ a, a 2)` of `K³` to `K⁴`. So the four rows are the images of four
+vectors of `K³`, which are dependent (`LinearIndependent.fintype_card_le_finrank`); a dependence
+among vectors is one among their images, so the four rows are dependent and the determinant vanishes
+(`Matrix.linearIndependent_rows_iff_det_ne_zero`).
 
-No independence hypothesis on the selected triple is needed: a dependent triple has `cross₃ = 0`,
-and the conclusion then holds trivially. -/
+It asks no independence of the three chosen points: when they are dependent, the normal is zero. -/
 theorem dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd {G : Graph α β}
     {q : α × Fin 2 → K} {z : α → K} (hz : z ∈ G.liftingSpace q) {v : α} (hv : v ∈ V(G))
     {sel : α → Fin 3 → α} (hsel : ∀ i, sel v i ∈ G.closedNbhd v)
@@ -186,23 +183,23 @@ theorem dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd {G : Graph α
   rw [pencilNormalOfPicture, dotProduct_cross₃]
   exact hdetzero
 
-/-! ## The configuration as a pencil framework (Phase 40b CARRIER slice C4) -/
+/-! ## The configuration as a pencil realization -/
 
-/-- **The point-join framework** (`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice
-C4): the body-hinge framework on `G` whose supporting extensor at every label `e` is the join
-`p_u ∧ p_v` of the points at `(u, v) = ends e`, the hinge of a pencil realization with concurrency
-points `p`. It is unpatched: at a label off `E(G)` the join is whatever `ends` names, possibly
-zero; the realization witness `pencilConfigFramework` patches it there. -/
+/-- **The point-join framework** (the framework of `lem:pencil-config-point-join-rank`, before its
+patch): the body-hinge framework on `G` whose supporting extensor at every label `e` is the join
+`p_u ∧ p_v` of the points at `(u, v) = ends e`, the hinge of a pencil realization with the points
+`p` as concurrency points. At a label off `E(G)` it is the join at whatever `ends` names, possibly
+zero; `pencilConfigFramework` patches it there. -/
 def pointJoinFramework (G : Graph α β) (ends : β → α × α) (p : α → Fin 4 → K) :
     BodyHingeFramework K 2 α β where
   graph := G
   supportExtensor e := ScrewSpace.mk (extensor ![p (ends e).1, p (ends e).2])
     (extensor_mem_exteriorPower _)
 
-/-- **`ofNormals` at the points is the polarity image of the point-join framework**
-(`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice C4). The panel-hinge framework whose
-panel normal at each body is its point `p_v` has, at every label, the meet
-`panelSupportExtensor p_u p_v` of the two polar planes, which the polarity `screwComplementIso`
+/-- **`ofNormals` at the points is the polarity image of the point-join framework** (a step of
+`lem:pencil-config-point-join-rank`, `lem:pencil-rank-collineation` and `thm:pencil-flat-rank`): the
+panel-hinge framework whose panel normal at each body is its point `p_v` has, at every label, the
+meet `panelSupportExtensor p_u p_v` of the two polar planes, which the polarity `screwComplementIso`
 takes the join `p_u ∧ p_v` to (`screwComplementIso_mk_extensor`, over every field). -/
 theorem ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework (G : Graph α β)
     (ends : β → α × α) (p : α → Fin 4 → K) :
@@ -219,13 +216,13 @@ theorem ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework (G : Graph α β
   exact congrArg (BodyHingeFramework.mk (k := 2) G) hsupp
 
 open Classical in
-/-- **The configuration as a pencil framework** (`lem:pencil-config-point-join-rank`; Phase 40b
-CARRIER slice C4): the point-join framework of the configuration points `p_w =
-pencilConfigPoint q z w`, patched off `E(G)`. At a label `e ∈ E(G)` the supporting extensor is the
-join `p_u ∧ p_v` at `(u, v) = ends e`; off `E(G)` it is the fixed nonzero join of two standard
-basis vectors, as in `pencilChartFramework` (`Molecule/Pencil/Chart.lean`), since
-`HasCoplanarPanelRealization` asks for a nonzero supporting extensor at every label of `β`. The
-endpoints are read from `ends`, not `Graph.endsOf`, so no `[Inhabited α]` is needed. -/
+/-- **The configuration as a pencil framework** (`lem:pencil-config-point-join-rank`): the framework
+`F_p` of the configuration points `p_w = pencilConfigPoint q z w`, the point-join framework patched
+off `E(G)`. At a label `e ∈ E(G)` the supporting extensor is the join `p_u ∧ p_v` at
+`(u, v) = ends e`; off `E(G)` it is the fixed nonzero join of two standard basis vectors, as in
+`pencilChartFramework` (`Molecule/Pencil/Chart.lean`), since `HasCoplanarPanelRealization` asks for
+a nonzero supporting extensor at every label of `β` (`fmlnote:pencil-config-point-join-rank`). The
+ends are read from `ends`, not `Graph.endsOf`, so no `[Inhabited α]` is needed. -/
 noncomputable def pencilConfigFramework (G : Graph α β) (ends : β → α × α) (q : α × Fin 2 → K)
     (z : α → K) : BodyHingeFramework K 2 α β where
   graph := G
@@ -257,15 +254,14 @@ theorem pencilConfigFramework_supportExtensor_of_not_mem_edgeSet {G : Graph α �
         (extensor_mem_exteriorPower _) :=
   ite_eq_right he
 
-/-- **The patched configuration framework has the rank of `ofNormals` at the configuration
-points** (`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice C4, the polar/primal rank
-equality). The patch agrees with the unpatched point-join framework on every link, so the two
-have the same rigidity-row span (`span_rigidityRows_eq_of_supportExtensor_agree`); the unpatched
-one is carried to `ofNormals` by the polarity
-(`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`), an invertible map of the screw space,
-which leaves the rank unchanged (`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). No
-hypothesis on `ends` is needed: a link's label lies in `E(G)`, where the patch is the join at
-whatever `ends` names, exactly as in the unpatched framework. -/
+/-- **The configuration framework has the rank of `ofNormals` at the configuration points**
+(`lem:pencil-config-point-join-rank`): the patch agrees with the point-join framework on every link,
+so the two have the same span of rigidity rows (`span_rigidityRows_eq_of_supportExtensor_agree`);
+the polarity, an invertible map of the screw space, takes the point-join framework to `ofNormals`
+(`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`) and keeps the rank
+(`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). It asks nothing of `ends`: the label
+of a link lies in `E(G)`, where the patch is the join at whatever `ends` names, as in the point-join
+framework. -/
 theorem finrank_span_rigidityRows_pencilConfigFramework (G : Graph α β) (ends : β → α × α)
     (q : α × Fin 2 → K) (z : α → K) :
     Module.finrank K (Submodule.span K (pencilConfigFramework G ends q z).rigidityRows)
@@ -278,11 +274,11 @@ theorem finrank_span_rigidityRows_pencilConfigFramework (G : Graph α β) (ends 
   rw [hspan, ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework G ends (pencilConfigPoint q z),
     BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
 
-/-- **The configuration framework's hinges are all nonzero over an admissible picture**
-(`lem:pencil-config-point-join-rank`; Phase 40b CARRIER slice C4). At a label of `E(G)`, `ends`
-names the two ends of a link, whose picture points differ, so their configuration points are
-independent at every height (`linearIndependent_pencilConfigPoint_pair`) and their join is
-nonzero; off `E(G)` the patch is nonzero (`extensor_stdBasis_pair_ne_zero`). -/
+/-- **The hinges of the configuration framework are nonzero over an admissible picture**
+(`lem:pencil-config-point-join-rank`): at a label of `E(G)`, `ends` names the two ends of a link,
+whose picture points differ, so their configuration points are independent at every height
+(`linearIndependent_pencilConfigPoint_pair`) and their join is nonzero; off `E(G)` the patch is
+nonzero (`extensor_stdBasis_pair_ne_zero`). -/
 theorem _root_.Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_ne_zero
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) (z : α → K) (e : β) :
@@ -299,17 +295,18 @@ theorem _root_.Graph.IsAdmissiblePicture.pencilConfigFramework_supportExtensor_n
       ScrewSpace.val_zero] at hval
     exact extensor_stdBasis_pair_ne_zero hval
 
-/-- **A configuration over an admissible picture is a pencil panel realization**
-(`lem:pencil-config-distinct-realization`; Phase 40b CARRIER slice C4). Over an admissible picture
-`q` and a height `z ∈ L(q)`, with a selector `sel` choosing at every body of `G` three members of
-its closed neighbourhood with independent picture points, the configuration framework
-`pencilConfigFramework G ends q z`, the plane normals `pencilNormalOfPicture q z sel` and the
-configuration points `pencilConfigPoint q z` form a pencil panel realization of `G`. The normals
-are nonzero (`pencilNormalOfPicture_ne_zero_iff`, with the picture-to-configuration independence
-transport); each normal is orthogonal to the points of the whole closed neighbourhood
-(`dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`), which contains both ends of every
-link at the body and the body itself, giving both panel containments and the incidence; each
-point has last coordinate `1`; and a link's join passes through both its ends by construction. -/
+/-- **A configuration over an admissible picture is a pencil realization**
+(`lem:pencil-config-distinct-realization`): over an admissible picture `q` and a height `z ∈ L(q)`,
+with a selector `sel` that names at every body of `G` three members of its closed neighbourhood with
+independent picture points, the configuration framework `pencilConfigFramework G ends q z`, the
+plane normals `pencilNormalOfPicture q z sel` and the configuration points `pencilConfigPoint q z`
+form a pencil realization of `G`. The normals are nonzero (`pencilNormalOfPicture_ne_zero_iff` and
+`linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint`); each normal is
+orthogonal to the points of the whole closed neighbourhood
+(`dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`), which contains the body itself and
+both ends of every link at it, so each hinge lies in the panels of its ends and each point lies in
+its panel; each point has last coordinate `1`; and the join at a link passes through the points of
+both its ends by construction. -/
 theorem _root_.Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -368,18 +365,17 @@ theorem _root_.Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigF
     · exact ⟨(hkey e u v he).2.2.1, (hkey e u v he).2.2.2⟩
     · exact ⟨(hkey e v u he.symm).2.2.2, (hkey e v u he.symm).2.2.1⟩
 
-/-- **An attaining configuration over an admissible picture is a distinct pencil realization at
-the deficiency rank** (`lem:pencil-config-distinct-realization`; Phase 40b CARRIER slice C4, the
-bridge to the distinct statement). If a configuration `(q, z)` with `q` admissible and
-`z ∈ L(q)` has row rank `6(|V(G)| − 1) − def₃(G)` at `ofNormals` of its points (the rank
-`Graph.X0Attains` reads), then `G` has an adjacent-distinct pencil realization at the deficiency
-rank (`HasDistinctPencilRealization`). The witness is the patched configuration framework
-(`pencilConfigFramework`) with the configuration points as concurrency points and, as normals,
-the plane normals at admissibility's own triple at each body (chosen classically, a dummy off
-`V(G)`): a pencil panel realization
-(`Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework`), adjacent points
-independent since adjacent picture points differ (`linearIndependent_pencilConfigPoint_pair`), at
-the rank of `ofNormals` (`finrank_span_rigidityRows_pencilConfigFramework`). -/
+/-- **An attaining configuration over an admissible picture gives an adjacent-distinct pencil
+realization at the deficiency rank** (`lem:pencil-config-distinct-realization`): if a configuration
+`(q, z)` with `q` admissible and `z ∈ L(q)` has row rank `6(|V(G)| − 1) − def₃(G)` at `ofNormals` of
+its points (the rank `Graph.X0Attains` reads), then `G` has an adjacent-distinct pencil realization
+at the deficiency rank (`HasDistinctPencilRealization`). It is the configuration framework
+(`pencilConfigFramework`) with the configuration points as concurrency points and, as normals, the
+plane normals at the triple that admissibility gives at each body (chosen classically, with a
+placeholder off `V(G)`): a pencil realization
+(`Graph.IsAdmissiblePicture.hasPencilPanelRealization_pencilConfigFramework`), with adjacent points
+independent as adjacent picture points differ (`linearIndependent_pencilConfigPoint_pair`), at the
+rank of `ofNormals` (`finrank_span_rigidityRows_pencilConfigFramework`). -/
 theorem _root_.Graph.IsAdmissiblePicture.hasDistinctPencilRealization {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -402,12 +398,13 @@ theorem _root_.Graph.IsAdmissiblePicture.hasDistinctPencilRealization {G : Graph
   rw [finrank_span_rigidityRows_pencilConfigFramework]
   exact hrank
 
-/-- **The configuration form of the two-hubs obstruction** (`lem:pencil-x0-two-hubs-obstruction`;
-Phase 40n MOTIVES M0). On the configurations of `X₀`: over a picture where `x, y, z` are not
-collinear, no height gives a nondegenerate realization with the configuration points, whatever the
-framework and the normals — `linearIndependent_pencilConfigPoint_of_linearIndependent_
-pencilPicturePoint` transports picture independence to configuration independence, at any height,
-and `not_isNondegPencilRealization_of_two_hubs_three_common` finishes. -/
+/-- **The configuration form of the two-hubs obstruction** (`lem:pencil-x0-two-hubs-obstruction`):
+let `a ≠ b` be pencil hubs of `G` with common neighbours `x`, `y` and `z`. Over a picture at which
+the picture points of `x`, `y` and `z` are not collinear, no height `h` gives a nondegenerate
+realization with the configuration points as concurrency points, whatever the framework and the
+normals: the configuration points of `x`, `y` and `z` are independent at every height
+(`linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint`), and
+`not_isNondegPencilRealization_of_two_hubs_three_common` applies. -/
 theorem not_isNondeg_pencilConfigPoint_of_two_hubs_three_common
     {G : Graph α β} {a b x y z : α} {ea eb fa fb ga gb : β} (hab : a ≠ b)
     (ha : G.PencilHub a) (hb : G.PencilHub b)
@@ -427,14 +424,14 @@ theorem not_isNondeg_pencilConfigPoint_of_two_hubs_three_common
   convert hLI using 1
   funext i; fin_cases i <;> rfl
 
-/-- **The general configuration attaining gives a distinct pencil realization at the deficiency
-rank** (`lem:pencil-x0-attains-distinct`; Phase 40b CARRIER slice C4, the `X0Dist` leg of
-`thm:pencil-x0-generic-attains`). Over an infinite field, `Graph.X0Attains K G` forces
-`HasDistinctPencilRealization K 3 G`: the nonzero picture polynomial `P` has a non-root `q`
-(`MvPolynomial.exists_eval_ne_zero`), which is admissible with a height `z ∈ L(q)` off the
-height polynomial's zero set, where the rank is attained; the bridge
-`Graph.IsAdmissiblePicture.hasDistinctPencilRealization` finishes. This is the consumer
-`Graph.X0Attains` was shaped for: the distinct motive uses only one attaining configuration. -/
+/-- **The general configuration attaining gives an adjacent-distinct pencil realization**
+(`lem:pencil-x0-attains-distinct`, `thm:pencil-x0-main-component`'s last claim): over an infinite
+field, `Graph.X0Attains K G` gives `HasDistinctPencilRealization K 3 G`. The nonzero picture
+polynomial `P` has a non-root `q` (`MvPolynomial.exists_eval_ne_zero`), which is admissible, with a
+height `z ∈ L(q)` off the zero set of the height polynomial, where the rank is attained;
+`Graph.IsAdmissiblePicture.hasDistinctPencilRealization` applies. It uses one attaining
+configuration, as the distinct main-component statement needs (`x0Dist`,
+`MainComponent/Statements.lean`). -/
 theorem _root_.Graph.X0Attains.hasDistinctPencilRealization [Infinite K] {G : Graph α β}
     (h : G.X0Attains K) : HasDistinctPencilRealization K 3 G := by
   obtain ⟨ends, P, hends, hP, hgood⟩ := h
@@ -442,12 +439,12 @@ theorem _root_.Graph.X0Attains.hasDistinctPencilRealization [Infinite K] {G : Gr
   obtain ⟨hadm, R, ⟨z, hz, hRz⟩, hall⟩ := hgood q hq
   exact hadm.hasDistinctPencilRealization hends hz (hall z hz hRz)
 
-/-! ## Scaling and affine shifts of the heights keep the rank (Phase 40b CARRIER, (MC-3)) -/
+/-! ## Collineations, and scaling and affine shifts of the heights, keep the rank -/
 
-/-- **A collineation of the points is a change of screw coordinates of the point-join framework**
-(`lem:pencil-rank-scale-shift`; Phase 40b CARRIER). Applying an invertible linear map `g` of `K⁴`
-to every point replaces each join `p_u ∧ p_v` by `g p_u ∧ g p_v`, its image under the induced
-screw-space automorphism (`BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor`). -/
+/-- **A collineation of the points is a change of screw coordinates of the point-join framework** (a
+step of `lem:pencil-rank-collineation`): applying an invertible linear map `g` of `K⁴` to every
+point replaces each join `p_u ∧ p_v` by `g p_u ∧ g p_v`, its image under the induced automorphism of
+the screw space (`BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor`). -/
 theorem pointJoinFramework_comp_eq_mapExtensor (G : Graph α β) (ends : β → α × α)
     (p : α → Fin 4 → K) (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) :
     pointJoinFramework G ends (fun v => g (p v))
@@ -463,15 +460,15 @@ theorem pointJoinFramework_comp_eq_mapExtensor (G : Graph α β) (ends : β → 
     funext i; fin_cases i <;> rfl
   exact congrArg (BodyHingeFramework.mk (k := 2) G) hsupp
 
-/-- **A collineation of the normals preserves the rank** (`lem:pencil-rank-collineation`; Phase 40k
-CONTRACT-A). If panel normals `p'` are the images of `p` under one invertible linear map `g` of
-`K⁴` at every body of `G`, the panel-hinge frameworks with normals `p` and with normals `p'` have
-the same row rank: both are `ofNormals` frameworks, whose hinge at a link is the polarity image of
-the join of its two ends' normals (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`), `g`
-carries one join to the other's screw-space image (`pointJoinFramework_comp_eq_mapExtensor`), and a
-`mapExtensor` isomorphism leaves the rank unchanged
-(`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). The special case of scaling the
-heights and shifting them by an affine height is
+/-- **A collineation of the normals preserves the rank** (`lem:pencil-rank-collineation`): if the
+panel normals `p'` are the images of `p` under one invertible linear map `g` of `K⁴` at every body
+of `G`, the panel-hinge frameworks with normals `p` and with normals `p'` have the same row rank.
+Both are `ofNormals` frameworks, whose hinge at a link is the polarity image of the join of its two
+ends' normals (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`); `g` takes one join to the
+image of the other under an automorphism of the screw space
+(`pointJoinFramework_comp_eq_mapExtensor`), and an automorphism keeps the rank
+(`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). Scaling the heights and adding a
+globally affine height is the case of
 `Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts` below. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv {G : Graph α β}
     {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -493,17 +490,13 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv {G :
     ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework G ends p,
     BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
 
-/-- **The rank of a configuration is unchanged by scaling the heights and shifting them by a
-globally affine height** (`lem:pencil-rank-scale-shift`; Phase 40b CARRIER, the last clause of
-informal (MC-3)). For `t ≠ 0` and `a ∈ Aff(q)` (`Graph.affineLifts`), the configurations `(q, z)`
-and `(q, t • z + a)` have the same row rank at `ofNormals` of their points. With
-`a_w = h ⬝ (x_w, y_w, 1)` on `V(G)`, the invertible linear map
-`(x, y, ζ, w) ↦ (x, y, t ζ + h ⬝ (x, y, w), w)` of `K⁴` carries `p_w` to the point of
-`(q, t • z + a)` at every body of `G`; the ends of every link are bodies of `G` (`hends`), so the
-two point-join frameworks agree on links (`span_rigidityRows_eq_of_supportExtensor_agree`), and a
-collineation leaves the point-join rank unchanged (`pointJoinFramework_comp_eq_mapExtensor`,
-`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`), as does the polarity back to
-`ofNormals` (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`). -/
+/-- **Scaling the heights and adding a globally affine height keep the rank**
+(`lem:pencil-rank-scale-shift`): for `t ≠ 0` and `a ∈ Aff(q)` (`Graph.affineLifts`), the
+configurations `(q, z)` and `(q, t • z + a)` have the same row rank at `ofNormals` of their points.
+With `a_w = h ⬝ᵥ (x_w, y_w, 1)` on `V(G)`, the invertible linear map
+`(ξ, η, ζ, ω) ↦ (ξ, η, t ζ + h ⬝ᵥ (ξ, η, ω), ω)` of `K⁴` takes `p_w` to the point of
+`(q, t • z + a)` at every body `w` of `G`, and
+`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` applies. -/
 theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts {G : Graph α β}
     {ends : β → α × α} (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     (q : α × Fin 2 → K) (z : α → K) {t : K} (ht : t ≠ 0) {a : α → K}
@@ -533,20 +526,19 @@ theorem _root_.Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts {G
   exact PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv hends g
     (fun w hw => (hg w hw).symm)
 
-/-! ## The pencil condition is linear in the heights (Phase 40b CARRIER slice C5′,
-`lem:pencil-condition-linear`) -/
+/-! ## Coplanarity is linear in the heights (`lem:pencil-condition-linear`) -/
 
-/-- **Coplanar closed neighbourhoods force `z ∈ L(q)`, over an admissible picture**
-(`lem:pencil-condition-linear`; Phase 40b CARRIER, informal (MC-1)'s converse). If a height `z`
-vanishes off `V(G)` and, at every body `v` of `G`, some nonzero `n : K⁴` annihilates the
-configuration point of every member of the closed neighbourhood of `v`, then `z ∈ L(q)`.
+/-- **Coplanar closed neighbourhoods force `z ∈ L(q)` over an admissible picture** (the converse
+half of `lem:pencil-condition-linear`): if a height `z` vanishes off `V(G)` and, at every body `v`
+of `G`, some nonzero `n : K⁴` is orthogonal to the configuration point of every member of the closed
+neighbourhood of `v`, then `z ∈ L(q)`.
 
-Route: expand `n ⬝ᵥ p_w` as `(n₀, n₁, n₃) ⬝ᵥ (x_w, y_w, 1) + n₂ z_w`. Admissibility gives, at `v`,
-three closed-neighbourhood members `t` with independent picture points; if `n₂ = 0` the relation at
-each `t i` puts `(n₀, n₁, n₃)` in the kernel of the unit matrix of their picture points
-(`Matrix.linearIndependent_rows_iff_isUnit`), forcing it (hence all of `n`, since `n₂ = 0`) to
-vanish, contradicting `n ≠ 0`. So `n₂ ≠ 0`, and solving the relation for `z_w` exhibits `L(q)`'s
-affine coefficients `h = -(n₂)⁻¹ • (n₀, n₁, n₃)` at `v`. -/
+Write `n ⬝ᵥ p_w` as `(n₀, n₁, n₃) ⬝ᵥ (x_w, y_w, 1) + n₂ z_w`. Admissibility gives, at `v`, three
+members of the closed neighbourhood with independent picture points. If `n₂ = 0`, the relation at
+each of them puts `(n₀, n₁, n₃)` in the kernel of the unit matrix of their picture points
+(`Matrix.linearIndependent_row_iff_isUnit`), so it vanishes, and so does `n`, a contradiction. So
+`n₂ ≠ 0`, and solving the relation for `z_w` gives the affine coefficients
+`h = -(n₂)⁻¹ • (n₀, n₁, n₃)` of `L(q)` at `v`. -/
 theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α → K}
     (hs : ∀ w ∉ V(G), z w = 0)
@@ -589,12 +581,14 @@ theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar {G : Graph
   field_simp
   linear_combination this
 
-/-- **`z ∈ L(q)` iff every closed neighbourhood is coplanar, over an admissible picture**
-(`lem:pencil-condition-linear`'s iff; Phase 40b CARRIER, informal (MC-1)). The converse is
-`mem_liftingSpace_of_coplanar`; the forward direction reads a selector's normal
-(`pencilNormalOfPicture`) off admissibility, nonzero by
-`linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint`, and orthogonal to
-the whole closed neighbourhood by `dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`. -/
+/-- **`z ∈ L(q)` exactly when every closed neighbourhood is coplanar, over an admissible picture**
+(`lem:pencil-condition-linear`, its first claim): a height `z` that vanishes off `V(G)` lies in
+`L(q)` exactly when, at every body of `G`, the configuration points of the closed neighbourhood are
+orthogonal to a nonzero vector. The converse is
+`Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar`; the direct implication takes at `v` the
+plane normal (`pencilNormalOfPicture`) of the three members that admissibility gives, nonzero by
+`linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint` and orthogonal to the
+whole closed neighbourhood by `dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`. -/
 theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α → K}
     (hs : ∀ w ∉ V(G), z w = 0) :
@@ -608,19 +602,17 @@ theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar {G : Grap
   · exact dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd hz hv (sel := fun _ => t)
       ht hw
 
-/-- **Every nonzero normal of a closed neighbourhood is the interpolant, up to a nonzero scalar**
-(`lem:pencil-condition-linear`; Phase 40b CARRIER, informal (MC-1)'s "unique, non-vertical plane",
-in interpolant form). Over an admissible picture, at a body `v` where `z` restricts on the closed
-neighbourhood to the affine function `h`, any nonzero `n : K⁴` orthogonal to the whole closed
-neighbourhood is a nonzero scalar multiple of `(h₀, h₁, -1, h₂)`: in particular its third
-coordinate is nonzero (the plane is non-vertical) and it is determined by `h` up to scale (the
-plane is unique).
+/-- **Every nonzero normal of a closed neighbourhood is a multiple of the interpolant**
+(`lem:pencil-condition-linear`, its second claim): over an admissible picture, at a body `v` where
+`z` agrees on the closed neighbourhood with the affine function `h`, every nonzero `n : K⁴`
+orthogonal to the points of the whole closed neighbourhood is a nonzero multiple of
+`(h₀, h₁, -1, h₂)`. So its height coordinate is nonzero (the plane is not vertical), and `h`
+determines it up to a scalar (the plane is unique).
 
-Route (a scalar-uniqueness argument, as for two selectors' normals at a common body): both `n` and
-the interpolant `m = (h₀, h₁, -1, h₂)` lie in the common perp `W` of the three independent
-configuration points an admissible selector at `v` supplies (`n` by hypothesis, `m` by direct
-computation from `hh`); `W` is one-dimensional (`finrank_toDualPerp_triple_eq`), so it is spanned
-by the nonzero `m` (`Submodule.eq_of_le_of_finrank_eq`), and `n` is a scalar multiple. -/
+Both `n` and the interpolant `m = (h₀, h₁, -1, h₂)` lie in the space `W` of vectors orthogonal to
+the three independent configuration points that admissibility gives at `v` (`n` by hypothesis, `m`
+from `hh`). `W` is one-dimensional (`finrank_toDualPerp_triple_eq`), so the nonzero `m` spans it
+(`Submodule.eq_of_le_of_finrank_eq`), and `n` is a multiple of `m`. -/
 theorem _root_.Graph.IsAdmissiblePicture.exists_smul_eq_interpolant {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {z : α → K} {v : α} (hv : v ∈ V(G))
     {h : Fin 3 → K} (hh : ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w)

@@ -2592,7 +2592,13 @@ declaration's name as its header writes it:
   KT Theorem 5.6's realization viewed as `ofNormals G Q₀.ends q₀` at its own normals, and the
   panel-hinge framework on the homogenized poles, which differs from `Q` by a nonzero rescaling of
   each supporting extensor, kept as they stand but for the word "genuine", moved to the phase (task
-  37.1).
+  37.1); and in `Pencil/MainComponent/Carrier.lean` and `Configuration.lean`, the selector of
+  `X0Attains` (it records every link of `G`), what `ofNormals` gives at the configuration points
+  (the polar of the point-join framework, the meet of the two polar planes at each label, a hinge
+  nonzero exactly when the normals at its ends are independent, and a zero hinge at the plane
+  normals where adjacent planes coincide), what `HasCoplanarPanelRealization` asks (a nonzero hinge
+  at every label) and that `ends` names the two ends of a link, kept as they stand but for their
+  pointers and codes, moved to the phase (task 37.9).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -4691,7 +4697,9 @@ declaration's name as its header writes it:
   `linearIndepOn_pencilChartNormal_closedHubNbhd` calls it a step of `lem:pencil-generic-steer` and
   names `def:pencil-nondegenerate`, the condition it gives (task 37.2); round 3: the lead of
   `Graph.closedNbhd_subset_vertexSet` (`Molecule/Pencil/Motive.lean`), one of the five, calls it a
-  step of `thm:pencil-jj-equality`, whose proof names it (task 37.4).
+  step of `thm:pencil-jj-equality`, whose proof names it (task 37.4); round 3: the lead of
+  `Graph.exists_isAdmissiblePicture` (`MainComponent/Carrier.lean`), one of the five, calls it a
+  step of `lem:pencil-x0-main-picture-open`, whose proof names it (task 37.9).
 - **F-246** · L · the declarations round 5's task 3.14 moved or unpinned
   (`Molecular/Molecule/Pencil/MainComponent/Bridge.lean`, `Carrier.lean`). The docstring of
   `Graph.embedEdges` names `lem:pencil-jj-embed-edges`, now `def:pencil-embed-edges`. The module
@@ -4703,7 +4711,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and module headers; a `grep` of `CombinatorialRigidity/` for the
   labels of task 3.14's nodes).
   *Found:* round 5 task 3.14.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: in `Carrier.lean`, the leads of
+  `IsAdmissiblePicture.exists_mvPolynomial` and `IsAdmissiblePicture.supportExtensor_ne_zero` call
+  each a step of the nodes whose proofs name it (the first also names the openness noted after
+  `def:pencil-admissible-picture`), and those of `liftingMatrix`, `map_ker_liftingMatrix` and
+  `finrank_ker_liftingMatrix` name their node, `def:pencil-lifting-system` (task 37.9).
 - **F-250** · L · the declarations of the nodes round 5's task 5.3 moved across chapters
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `Molecular/Deficiency.lean`). The docstring of
   `PanelHingeFramework.theorem_55_minimalKDof_k` places `lem:case-cut-edge-realization{,-gp}` in
@@ -5720,6 +5732,30 @@ declaration's name as its header writes it:
   `exists_isNondegPencilRealization_steer` with `hloop` derived from `hnd₁`, on the three standard
   axioms (`scratch/reconcile-lean/t378/Hyps-t378.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.8.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-309** · L · repeated derivations and an unneeded instance in
+  `Molecular/Molecule/Pencil/MainComponent/Carrier.lean` and `Configuration.lean`.
+  `Graph.liftingMatrix K G` is, by definition, `Graph.weightedLiftingMatrix K G` at the weights
+  `fun _ w => pencilPicturePointPoly w` (`rfl`), and `Graph.liftingMatrix_mulVec_eq_zero_iff`
+  repeats the proof of `Graph.weightedLiftingMatrix_mulVec_eq_zero_iff` (some 40 lines each), from
+  which it follows in two lines (`eval_pencilPicturePointPoly`).
+  `linearIndependent_pencilConfigPoint_pair` and `linearIndependent_pencilPicturePoint_pair` have
+  the same proof (16 lines each), and the first follows from the second by
+  `linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint`, which
+  `Configuration.lean` states. `Graph.finrank_ker_liftingMatrix` proves the injectivity of the
+  projection to the heights that `Graph.injective_liftingMatrix_ker_proj` states, and the second
+  derives it back from the first by rank–nullity. `Graph.isAdmissiblePicture_congr`,
+  `Graph.liftingSpace_congr` and `Graph.ker_liftingMatrix_congr` derive the same equality of picture
+  points by the same two lines, and `Graph.finrank_affineLifts`, `Graph.finrank_ker_liftingMatrix`
+  and `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar` each show that a vector with dot
+  product zero against three independent picture points is zero by the same steps through a unit
+  matrix (some 10 lines each). The `[Finite α]` of `Graph.finrank_affineLifts` is not needed.
+  `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the lifting system as the
+  weighted one (`rfl`), its kernel from the weighted one, the pair of configuration points from the
+  pair of picture points, and `Graph.finrank_affineLifts` without `[Finite α]`, on the three
+  standard axioms (`scratch/reconcile-lean/t379/Hyps-t379.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.9.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

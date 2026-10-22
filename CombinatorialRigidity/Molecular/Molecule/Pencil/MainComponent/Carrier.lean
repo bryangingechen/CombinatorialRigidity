@@ -9,85 +9,81 @@ import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
 
 /-!
-# The main component: planar pictures, the lifting space, and `X₀` attaining (Phase 40b CARRIER)
+# Planar pictures, the lifting space and the main pictures
 
-The definitions the `X₀` argument rests on and its one-witness upgrade
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-carrier`; Phase 40b CARRIER
-slices C1a, C1b, and C2, `notes/Phase40b.md`). A pencil
-configuration of `G` over a field `K` is read as a **planar picture** `q` (a point
-`(x_v, y_v) ∈ K²` per body) together with a **height** `z` (a scalar `z_v` per body); the body's
-homogeneous point is `p_v = (x_v, y_v, z_v, 1)`. Over a fixed admissible picture the heights for
-which every closed neighbourhood is coplanar form a linear space `L(q)` (informal (MC-1)), and the
-pictures of least `dim L(q)` form the open set `U` over which `X₀` is a vector bundle ((MC-2)).
+The definitions of `sec:main-component-carrier`, and its lemmas that do not read a configuration as
+a pencil realization (those are in `Configuration.lean`). A planar picture `q : α × Fin 2 → K`
+places each body `v` at `q_v = (x_v, y_v)`, and a height `z : α → K` lifts it to the configuration
+point `p_v = (x_v, y_v, z_v, 1) ∈ K⁴` (`pencilConfigPoint`). The picture is admissible when the two
+ends of every link sit at distinct points and no closed neighbourhood lies on a line
+(`Graph.IsAdmissiblePicture`). The lifting space `L(q)` is the space of heights that agree on every
+closed neighbourhood with an affine function of the picture (`Graph.liftingSpace`); over an
+admissible picture, these are the heights at which the configuration points of every closed
+neighbourhood lie in a plane (`lem:pencil-condition-linear`). In the language of scene analysis,
+`L(q)` is the space of heights of the liftings of `q`, for the incidence structure whose faces are
+the closed neighbourhoods, and the heights of one affine function at every body
+(`Graph.affineLifts`) are its trivial liftings (Whiteley 1996, §8.3). The main pictures are the
+admissible pictures at which `dim L(q)` is least (`Graph.IsMainPicture`). The general configuration
+of `G` attains when, off the zero set of a nonzero polynomial in the picture, the heights in `L(q)`
+at which the configuration has the deficiency rank contain a nonempty Zariski-open subset of `L(q)`
+(`Graph.X0Attains`).
 
-The picture-to-normal API, the configuration as a pencil framework, and the scale/affine-shift and
-linearity facts about `L(q)` are in `Configuration.lean` (Phase 40b CARRIER slices C3, C3 item 5,
-C4, and C5′, split out of this file at the Phase 40h `Carrier.lean` split, `notes/Phase40h.md`,
-PI decision 5).
+The lifting system (`Graph.liftingMatrix`) is a matrix of polynomials in the picture, whose
+solutions pair a height in `L(q)` with the affine functions that it agrees with on the closed
+neighbourhoods. With the polynomial section of a kernel (`lem:pencil-polynomial-section`), it
+extends a height at a main picture to heights at the general picture, which proves
+`lem:pencil-x0-one-witness` (`Graph.x0Attains_of_exists`): if one configuration over a main picture
+has the deficiency rank, the general configuration attains. For `lem:pencil-x0-main-picture-open`,
+the bodies placed on a parabola give an admissible picture, and the non-roots of a nonzero
+polynomial are main pictures. The difference of the planes at two bodies (`planeDiff`) serves the
+steps at an open ear with one or two interior bodies (`sec:main-component-orbit`), and the lifting
+system with weights (`Graph.weightedLiftingMatrix`) the contraction step
+(`sec:main-component-contract`).
+
+Pictures are uncurried, `q : α × Fin 2 → K`, as are the normals `α × Fin 4 → K` that
+`PanelHingeFramework.ofNormals` takes and the variables of the rank polynomials. `X0Attains` asks
+for a nonempty Zariski-open set of attaining heights over each picture, not for one height, so that
+a step can meet them with the non-roots of another polynomial on the same fibre `L(q)`
+(`lem:pencil-x0-fibre-intersection`).
 
 ## Main definitions
 
-* `pencilPicturePoint` — the homogeneous picture point `(x_w, y_w, 1) ∈ K³`.
-* `Graph.IsAdmissiblePicture` — adjacent picture points distinct, and every closed neighbourhood
-  carries three members with independent homogeneous picture points (not collinear).
-* `Graph.liftingSpace` — the lifting space `L(q)`: heights supported on `V(G)` that restrict on
-  every closed neighbourhood to an affine function of the picture.
-* `Graph.affineLifts` — `Aff(q)` restricted to `V(G)`: the range of `Graph.affineLiftMap`, a
-  single triple of affine coefficients applied at every body.
-* `Graph.IsMainPicture` — `U`: admissible pictures whose lifting space has the least dimension
-  among admissible pictures.
-* `pencilConfigPoint` — the homogeneous configuration point `p_w = (x_w, y_w, z_w, 1) ∈ K⁴`.
-* `pencilNormalOfPicture` — the plane normal at a body: `cross₃` of three selected configuration
-  points, polynomial and denominator-free.
-* `Graph.X0Attains` — "`X₀(G)`'s general point attains `6(|V| − 1) − def₃(G)`" ((MC-10)(a)): off
-  one nonzero polynomial in the picture coordinates, the picture is admissible and the attaining
-  heights contain a nonempty Zariski-open subset of `L(q)`.
-* `planeDiff a b` — the difference of the planes at `a` and `b` read off a point of the lifting
-  system's kernel, `(z, h) ↦ h_a − h_b` (Phase 40i ORBIT).
+* `pencilPicturePoint` and `pencilConfigPoint`: the homogeneous picture point `(x_v, y_v, 1)` and
+  the configuration point `(x_v, y_v, z_v, 1)`.
+* `Graph.IsAdmissiblePicture`: the admissible pictures.
+* `Graph.liftingSpace`, `Graph.affineLiftMap` and `Graph.affineLifts`: the lifting space `L(q)` and
+  the globally affine heights `Aff(q)`.
+* `Graph.IsMainPicture`: the main pictures.
+* `pencilNormalOfPicture`: the plane normal at a body, the `cross₃` of the configuration points of
+  three chosen bodies.
+* `Graph.X0Attains`: the general configuration of `G` attains.
+* `Graph.liftingMatrix` and `Graph.weightedLiftingMatrix`: the lifting system, and the lifting
+  system with weights.
+* `planeDiff`: the difference `h_a − h_b` of the planes at two bodies, at a solution of the lifting
+  system.
 
-## Main statements
+## Main results
 
-* `Graph.IsAdmissiblePicture.supportExtensor_ne_zero` — over an admissible picture every hinge of
-  the configuration is nonzero, at every height.
-* `Graph.IsAdmissiblePicture.exists_mvPolynomial` — admissibility is Zariski-open.
-* `Graph.isAdmissiblePicture_congr`, `Graph.liftingSpace_congr` — admissibility and `L(q)` read
-  the picture only at the bodies of `G` (Phase 40h SHORT).
-* `Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd`,
-  `Graph.IsAdmissiblePicture.linearIndependent_of_closedNbhd_subset` — every closed neighbourhood
-  at an admissible picture has at least three members, and any three bodies containing it have
-  independent picture points (Phase 40i ORBIT).
-* `Graph.liftingMatrix` — the lifting system, a matrix of polynomials in the picture whose kernel
-  projects onto `L(q)` (`Graph.map_ker_liftingMatrix`), isomorphically over an admissible picture
-  (`Graph.finrank_ker_liftingMatrix`).
-* `Graph.ker_liftingMatrix_congr`, `Graph.ker_liftingMatrix_le_of_le` — the lifting system's kernel
-  reads the picture only on `V(H)`, and shrinks when links are added on the same bodies (Phase 40j
-  SPLITOFF).
-* `Graph.injective_liftingMatrix_ker_proj`, `Graph.two_le_finrank_map_planeDiff` — the height
-  projection is injective on the lifting system's kernel at an admissible picture, so a
-  two-dimensional drop in lifting space at a pair of newly-joined bodies makes the two
-  `planeDiff` incidence functionals independent on it (`lem:pencil-flag-genericity`, Phase 40i
-  ORBIT).
-* `Graph.weightedLiftingMatrix` — the lifting system with an arbitrary polynomial weight point in
-  place of the picture point (`Graph.weightedLiftingMatrix_mulVec_eq_zero_iff`), the shape of the
-  contraction step's rescaled system.
-* `Graph.x0Attains_of_exists` — one attaining configuration over a main picture forces
-  `Graph.X0Attains` (the semicontinuity half of (MC-2)/(MC-10)).
-* `Graph.affineLifts_le_liftingSpace` — `Aff(q) ⊆ L(q)` at every picture.
-* `Graph.finrank_affineLifts` — `Aff(q)` is three-dimensional at an admissible picture with at
-  least one body; `Graph.three_le_finrank_liftingSpace` names the resulting `3 ≤ dim L(q)`.
-
-## Design
-
-* **Uncurried pictures** `q : α × Fin 2 → K`, the shape of `PanelHingeFramework.ofNormals`'s
-  coordinate argument and of the rank polynomials' variable type.
-* **Fibre-openness is part of `X0Attains`.** The generic motive intersects the attaining heights
-  with the nondegenerate ones inside one fibre `L(q)` ((MC-133)(ii)), so `X0Attains` carries a
-  nonempty Zariski-open set of attaining heights over each good picture, not one height; the
-  semicontinuity is proved once, in `Graph.x0Attains_of_exists` (slice C1b).
-* **`U` is a definition** (`Graph.IsMainPicture`): a witness over a picture of non-minimal fibre
-  dimension need not lie in `X₀`, so the C1b witness must sit over `U`.
-
-See `notes/Phase40b.md` (*Decisions made*, 2026-09-26 C1a) and `notes/Phase40-design.md` §3.
+* `Graph.isAdmissiblePicture_congr` and `Graph.liftingSpace_congr`: admissibility and `L(q)` read
+  the picture only at the bodies of `G`.
+* `Graph.affineLifts_le_liftingSpace`, `Graph.finrank_affineLifts` and
+  `Graph.three_le_finrank_liftingSpace`: `Aff(q) ⊆ L(q)`, and `dim Aff(q) = 3 ≤ dim L(q)` at an
+  admissible picture.
+* `Graph.IsAdmissiblePicture.supportExtensor_ne_zero`: over an admissible picture every hinge of the
+  configuration is nonzero, at every height.
+* `Graph.IsAdmissiblePicture.exists_mvPolynomial`: the admissible pictures contain the non-roots of
+  a polynomial nonzero at a given one.
+* `Graph.map_ker_liftingMatrix` and `Graph.finrank_ker_liftingMatrix`: the heights of the solutions
+  of the lifting system form `L(q)`, and over an admissible picture the solutions form a space of
+  dimension `dim L(q)`.
+* `Graph.ker_liftingMatrix_congr`: the solutions read the picture only at the bodies of the graph.
+* `Graph.two_le_finrank_map_planeDiff`: the incidence functionals at two bodies are independent
+  (`lem:pencil-flag-genericity`).
+* `Graph.x0Attains_of_exists`: one attaining configuration over a main picture makes the general
+  configuration attain.
+* `Graph.exists_isMainPicture`, `Graph.IsMainPicture.exists_mvPolynomial` and
+  `Graph.exists_mvPolynomial_isMainPicture`: the main pictures exist and contain the non-roots of a
+  nonzero polynomial.
 -/
 
 open scoped Matrix
@@ -100,28 +96,28 @@ variable {α β : Type*}
 
 /-! ## Planar pictures and admissibility -/
 
-/-- **The homogeneous picture point** (`def:pencil-admissible-picture`; Phase 40b CARRIER): the
-point `(x_w, y_w, 1) ∈ K³` of the planar picture `q` at body `w`. Three picture points are
-collinear exactly when their homogeneous points are linearly dependent. -/
+/-- **The homogeneous picture point** (`def:pencil-admissible-picture`): the point
+`(x_w, y_w, 1) ∈ K³` of the planar picture `q` at the body `w`. Three picture points are collinear
+exactly when their homogeneous picture points are linearly dependent. -/
 def pencilPicturePoint (q : α × Fin 2 → K) (w : α) : Fin 3 → K :=
   ![q (w, 0), q (w, 1), 1]
 
-/-- **An admissible planar picture** (`def:pencil-admissible-picture`; Phase 40b CARRIER, informal
-(MC-1)). The picture `q` puts adjacent bodies at distinct points of `K²`, and at every body `v` of
-`G` three members of the closed neighbourhood `G.closedNbhd v` have linearly independent
-homogeneous picture points, i.e. the picture points over the closed neighbourhood are not
-collinear. The triple form is the one the plane normal (`pencilNormalOfPicture`, via
-`cross₃_ne_zero_iff_linearIndependent`) and the openness of admissibility (one `3 × 3`
-determinant per body) consume directly. -/
+/-- **An admissible planar picture** (`def:pencil-admissible-picture`): the picture `q` puts the two
+ends of every link of `G` at distinct points of `K²`, and at every body `v` of `G` three members of
+the closed neighbourhood `G.closedNbhd v` have linearly independent homogeneous picture points, that
+is, the picture points of the closed neighbourhood do not lie on one line. The condition names three
+members, as the plane normal `pencilNormalOfPicture` is computed from three points
+(`cross₃_ne_zero_iff_linearIndependent`) and the openness of admissibility tests one `3 × 3`
+determinant per body (`Graph.IsAdmissiblePicture.exists_mvPolynomial`). -/
 def _root_.Graph.IsAdmissiblePicture (G : Graph α β) (q : α × Fin 2 → K) : Prop :=
   (∀ e u v, G.IsLink e u v → pencilPicturePoint q u ≠ pencilPicturePoint q v) ∧
   ∀ v ∈ V(G), ∃ t : Fin 3 → α, (∀ i, t i ∈ G.closedNbhd v) ∧
     LinearIndependent K (fun i => pencilPicturePoint q (t i))
 
-/-- **Admissibility reads the picture only on `V(G)`** (`lem:pencil-picture-local`, the
-admissibility half; Phase 40h SHORT): two pictures agreeing at every body of `G` are admissible
-for `G` together. Admissibility reads the picture at the two ends of each link and on each closed
-neighbourhood, and all of these are bodies of `G`. -/
+/-- **Admissibility reads the picture only on `V(G)`** (`lem:pencil-picture-local`, its first half):
+two pictures that agree at every body of `G` are admissible for `G` together. Admissibility reads
+the picture at the two ends of each link and on each closed neighbourhood, and all of these are
+bodies of `G`. -/
 theorem _root_.Graph.isAdmissiblePicture_congr {G : Graph α β} {q q' : α × Fin 2 → K}
     (hq : ∀ w ∈ V(G), ∀ i, q (w, i) = q' (w, i)) :
     G.IsAdmissiblePicture q ↔ G.IsAdmissiblePicture q' := by
@@ -137,9 +133,10 @@ theorem _root_.Graph.isAdmissiblePicture_congr {G : Graph α β} {q q' : α × F
       funext fun i => hpp _ (hN v hv _ (ht i))
     rw [this]
 
-/-- **An admissible picture puts three independent points in every closed neighbourhood**
-(Phase 40i ORBIT), so that neighbourhood has at least three members: the three admissible members
-are pairwise distinct, since three linearly independent vectors are pairwise distinct. -/
+/-- **An admissible picture puts three members in every closed neighbourhood** (a step of
+`thm:pencil-x0-splitoff` and `lem:pencil-one-ear-base`): at a body `v` of `G`, the closed
+neighbourhood has at least three members, as the three members with independent picture points that
+admissibility gives are pairwise distinct. -/
 theorem _root_.Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd [Finite α] {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α} (hv : v ∈ V(G)) :
     3 ≤ (G.closedNbhd v).ncard := by
@@ -149,8 +146,11 @@ theorem _root_.Graph.IsAdmissiblePicture.three_le_ncard_closedNbhd [Finite α] {
     (Set.toFinite _)
   rwa [Set.ncard_range_of_injective htinj, Nat.card_eq_fintype_card, Fintype.card_fin] at this
 
-/-- **A closed neighbourhood inside three bodies has independent picture points** at an admissible
-picture (Phase 40i ORBIT): the three admissible members span `K³`, and they lie among the three. -/
+/-- **A closed neighbourhood inside three bodies has independent picture points** (a step of
+`lem:pencil-splitoff-flexes` and `thm:pencil-x0-open-ear-one`): at an admissible picture, if the
+closed neighbourhood of a body `v` of `G` lies in `{u₀, u₁, u₂}`, the homogeneous picture points of
+`u₀`, `u₁` and `u₂` are linearly independent, as the three members that admissibility gives span
+`K³` and lie among them. -/
 theorem _root_.Graph.IsAdmissiblePicture.linearIndependent_of_closedNbhd_subset
     {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α} (hv : v ∈ V(G))
     {u₀ u₁ u₂ : α} (hN : G.closedNbhd v ⊆ {u₀, u₁, u₂}) :
@@ -171,13 +171,16 @@ theorem _root_.Graph.IsAdmissiblePicture.linearIndependent_of_closedNbhd_subset
 
 /-! ## The lifting space -/
 
-/-- **The lifting space `L(q)`** (`def:pencil-lifting-space`; Phase 40b CARRIER, informal (MC-1)).
-The heights `z : α → K` that vanish off `V(G)` and, at every body `v` of `G`, restrict on the
-closed neighbourhood `G.closedNbhd v` to an affine function of the picture: some `h : Fin 3 → K`
-has `z w = h ⬝ᵥ (x_w, y_w, 1)` for every `w` in the neighbourhood. Over an admissible picture
-these are exactly the heights for which every closed neighbourhood of the configuration
-`(q, z)` is coplanar. Vanishing off `V(G)` makes `L(q)` the space of heights on `V(G)` itself,
-so its dimension is the honest one for any `G` inside `α`, spanning or not. -/
+/-- **The lifting space `L(q)`** (`def:pencil-lifting-space`): the heights `z : α → K` that vanish
+off `V(G)` and, at every body `v` of `G`, agree on the closed neighbourhood `G.closedNbhd v` with an
+affine function of the picture: some `h : Fin 3 → K` has `z w = h ⬝ᵥ (x_w, y_w, 1)` for every `w` in
+the neighbourhood. Over an admissible picture, a height that vanishes off `V(G)` lies in `L(q)`
+exactly when the configuration points of every closed neighbourhood lie in a plane
+(`Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar`, `lem:pencil-condition-linear`). In the
+language of scene analysis, `L(q)` is the space of heights of the liftings of `q`, for the incidence
+structure whose faces are the closed neighbourhoods (Whiteley 1996, §8.3). As its heights vanish off
+`V(G)`, `dim L(q)` is the dimension of a space of heights on `V(G)`, also when `G` does not contain
+every body (`fmlnote:pencil-lifting-space`). -/
 def _root_.Graph.liftingSpace (G : Graph α β) (q : α × Fin 2 → K) : Submodule K (α → K) where
   carrier := {z | (∀ w ∉ V(G), z w = 0) ∧
     ∀ v ∈ V(G), ∃ h : Fin 3 → K, ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w}
@@ -200,10 +203,9 @@ theorem _root_.Graph.mem_liftingSpace {G : Graph α β} {q : α × Fin 2 → K} 
       ∀ v ∈ V(G), ∃ h : Fin 3 → K, ∀ w ∈ G.closedNbhd v, z w = h ⬝ᵥ pencilPicturePoint q w :=
   Iff.rfl
 
-/-- **The lifting space reads the picture only on `V(G)`** (`lem:pencil-picture-local`, the
-lifting-space half; Phase 40h SHORT): two pictures agreeing at every body of `G` have the same
-`L(q)`. The lifting space reads the picture on each closed neighbourhood, which consists of bodies
-of `G`. -/
+/-- **The lifting space reads the picture only on `V(G)`** (`lem:pencil-picture-local`, its second
+half): two pictures that agree at every body of `G` have the same `L(q)`. The lifting space reads
+the picture on each closed neighbourhood, whose members are bodies of `G`. -/
 theorem _root_.Graph.liftingSpace_congr {G : Graph α β} {q q' : α × Fin 2 → K}
     (hq : ∀ w ∈ V(G), ∀ i, q (w, i) = q' (w, i)) : G.liftingSpace q = G.liftingSpace q' := by
   have hpp : ∀ w ∈ V(G), pencilPicturePoint q w = pencilPicturePoint q' w := by
@@ -216,11 +218,12 @@ theorem _root_.Graph.liftingSpace_congr {G : Graph α β} {q q' : α × Fin 2 �
     forall₂_congr fun w hw => ?_
   rw [hpp w (hN v hv w hw)]
 
-/-- **The main pictures `U`** (`def:pencil-main-picture`; Phase 40b CARRIER, informal (MC-2)): the
-admissible pictures whose lifting space has the least dimension `ℓ₀` among all admissible
-pictures. Over `U` the pairs `(q, z)` with `z ∈ L(q)` form a vector bundle whose closure is
-`X₀`; a configuration over a picture of larger fibre dimension need not lie in `X₀`, which is why
-the one-witness upgrade (`Graph.x0Attains_of_exists`) asks for its picture here. -/
+/-- **The main pictures** (`def:pencil-main-picture`): the admissible pictures whose lifting space
+has the least dimension `ℓ₀` among all admissible pictures. Over the main pictures the
+configurations `(q, z)` with `z ∈ L(q)` form a vector bundle, whose closure is the main component of
+the pencil configuration space (`rem:pencil-x0-main-component`). `Graph.x0Attains_of_exists` asks
+for its configuration over a main picture `q₀`, so that `dim L(q) ≥ dim L(q₀)` at every admissible
+picture `q`. -/
 def _root_.Graph.IsMainPicture (G : Graph α β) (q : α × Fin 2 → K) : Prop :=
   G.IsAdmissiblePicture q ∧ ∀ q' : α × Fin 2 → K, G.IsAdmissiblePicture q' →
     Module.finrank K (G.liftingSpace q) ≤ Module.finrank K (G.liftingSpace q')
@@ -228,9 +231,9 @@ def _root_.Graph.IsMainPicture (G : Graph α β) (q : α × Fin 2 → K) : Prop 
 /-! ## The globally affine heights `Aff(q)` -/
 
 open Classical in
-/-- **The affine lift map** (`def:pencil-lifting-space`; Phase 40b CARRIER slice C2): the linear
-map sending a triple of affine coefficients `h : Fin 3 → K` to the height `w ↦ h ⬝ (x_w, y_w, 1)`
-on `V(G)`, zero off `V(G)`. Its range is `Graph.affineLifts`. -/
+/-- **The affine lift map** (the map onto `Aff(q)` of `def:pencil-lifting-space`): the linear map
+that sends a triple of affine coefficients `h : Fin 3 → K` to the height `w ↦ h ⬝ᵥ (x_w, y_w, 1)` on
+`V(G)`, zero off `V(G)`. Its range is `Graph.affineLifts`. -/
 noncomputable def _root_.Graph.affineLiftMap (G : Graph α β) (q : α × Fin 2 → K) :
     (Fin 3 → K) →ₗ[K] (α → K) where
   toFun h w := if w ∈ V(G) then h ⬝ᵥ pencilPicturePoint q w else 0
@@ -244,30 +247,29 @@ theorem _root_.Graph.affineLiftMap_apply (G : Graph α β) (q : α × Fin 2 → 
     G.affineLiftMap q h w = if w ∈ V(G) then h ⬝ᵥ pencilPicturePoint q w else 0 :=
   rfl
 
-/-- **The globally affine heights** `Aff(q)`, restricted to `V(G)` (`def:pencil-lifting-space`;
-Phase 40b CARRIER slice C2): the heights `w ↦ h ⬝ (x_w, y_w, 1)` of a single triple of affine
-coefficients `h : Fin 3 → K`, vanishing off `V(G)` exactly as `Graph.liftingSpace` does — the
-range of `Graph.affineLiftMap`. -/
+/-- **The globally affine heights `Aff(q)`** (`def:pencil-lifting-space`): the heights
+`w ↦ h ⬝ᵥ (x_w, y_w, 1)` of a single triple of affine coefficients `h : Fin 3 → K`, the same at
+every body, on `V(G)`, and zero off `V(G)` as in `Graph.liftingSpace`: the range of
+`Graph.affineLiftMap`. They are the trivial liftings of scene analysis, which put all the faces in
+one plane. -/
 noncomputable def _root_.Graph.affineLifts (G : Graph α β) (q : α × Fin 2 → K) :
     Submodule K (α → K) :=
   LinearMap.range (G.affineLiftMap q)
 
-/-- **`Aff(q) ⊆ L(q)`, at every picture** (`lem:pencil-lifting-space-affine`; Phase 40b CARRIER
-slice C2). A single triple of affine coefficients `h` trivially restricts to an affine function
-of the picture on every closed neighbourhood — the same `h` at every body of `G` — so no
-admissibility hypothesis is needed. -/
+/-- **`Aff(q) ⊆ L(q)`, at every picture** (`lem:pencil-lifting-space-affine`): a single triple of
+affine coefficients `h` gives an affine function of the picture on every closed neighbourhood, the
+same `h` at every body of `G`, so no admissibility is needed. -/
 theorem _root_.Graph.affineLifts_le_liftingSpace (G : Graph α β) (q : α × Fin 2 → K) :
     G.affineLifts q ≤ G.liftingSpace q := by
   rintro z ⟨h, rfl⟩
   refine ⟨fun w hw => by simp [hw], fun v hv => ⟨h, fun w hw => ?_⟩⟩
   simp [Graph.closedNbhd_subset_vertexSet hv hw]
 
-/-- **`Aff(q)` is three-dimensional at an admissible picture** (`lem:pencil-lifting-space-affine`;
-Phase 40b CARRIER slice C2, with `Graph.affineLifts_le_liftingSpace` giving `3 ≤ dim L(q)`). The
-affine lift map is injective: admissibility gives, at some body `v₀` of `G`, three
-closed-neighbourhood members (hence bodies of `G`) with linearly independent homogeneous picture
-points, and a triple `h` in the kernel dots to zero against all three, forcing `h = 0` since that
-`3 × 3` matrix is a unit. -/
+/-- **`Aff(q)` is three-dimensional at an admissible picture** (`lem:pencil-lifting-space-affine`):
+if `G` has a body, the affine lift map is injective. Admissibility gives, at a body `v₀` of `G`,
+three members of its closed neighbourhood, which are bodies of `G`, with linearly independent
+homogeneous picture points; a triple `h` in the kernel has dot product zero with all three, so
+`h = 0`, as the `3 × 3` matrix of these points is a unit. -/
 theorem _root_.Graph.finrank_affineLifts [Finite α] {G : Graph α β} {q : α × Fin 2 → K}
     (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
     Module.finrank K (G.affineLifts q) = 3 := by
@@ -291,11 +293,9 @@ theorem _root_.Graph.finrank_affineLifts [Finite α] {G : Graph α β} {q : α �
     exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
   rw [Graph.affineLifts, LinearMap.finrank_range_of_inj hinj, Module.finrank_fin_fun]
 
-/-- **`3 ≤ dim L(q)` at an admissible picture** (`lem:pencil-lifting-space-affine`; Phase 40b
-CARRIER, hygiene: the C2 checklist ticked this but no declaration stated it until now).
-Immediate from `Aff(q) ⊆ L(q)` (`Graph.affineLifts_le_liftingSpace`) and `dim Aff(q) = 3`
-(`Graph.finrank_affineLifts`), via monotonicity of `finrank` on submodules
-(`Submodule.finrank_mono`). -/
+/-- **`3 ≤ dim L(q)` at an admissible picture** (`lem:pencil-lifting-space-affine`): if `G` has a
+body, by `Aff(q) ⊆ L(q)` (`Graph.affineLifts_le_liftingSpace`) and `dim Aff(q) = 3`
+(`Graph.finrank_affineLifts`), as `finrank` is monotone on submodules (`Submodule.finrank_mono`). -/
 theorem _root_.Graph.three_le_finrank_liftingSpace [Finite α] {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
     3 ≤ Module.finrank K (G.liftingSpace q) := by
@@ -305,46 +305,47 @@ theorem _root_.Graph.three_le_finrank_liftingSpace [Finite α] {G : Graph α β}
 
 /-! ## Configuration points and plane normals -/
 
-/-- **The homogeneous configuration point** (`def:pencil-configuration`; Phase 40b CARRIER): the
-point `p_w = (x_w, y_w, z_w, 1) ∈ K⁴` of the configuration `(q, z)` at body `w`. It is affine in
-the picture and height coordinates, and its first, second and fourth coordinates are the
+/-- **The homogeneous configuration point** (`def:pencil-configuration`): the point
+`p_w = (x_w, y_w, z_w, 1) ∈ K⁴` of the configuration `(q, z)` at the body `w`. Its coordinates are
+affine in the picture and the height, and its first, second and fourth coordinates are those of the
 homogeneous picture point (`pencilPicturePoint`). -/
 def pencilConfigPoint (q : α × Fin 2 → K) (z : α → K) (w : α) : Fin 4 → K :=
   ![q (w, 0), q (w, 1), z w, 1]
 
-/-- **The plane normal of a configuration** (`def:pencil-configuration`; Phase 40b CARRIER,
-informal (MC-1)/(MC-3)): at body `v`, the `cross₃` of the configuration points of the three bodies
-the selector `sel v` names — the normal of the plane through them, polynomial and
-denominator-free in `(q, z)`. The selector is a plain triple of bodies, not an
-`IsFin3SelectorOf`: a closed neighbourhood may have more than three members, and no slot may be
-padded, since the normal must be read off the configuration. When the three bodies lie in
-`G.closedNbhd v` with non-collinear picture points and `z ∈ L(q)`, this is (up to a nonzero
-scalar) the normal of the plane carrying the whole closed neighbourhood (CARRIER's C3). -/
+/-- **The plane normal of a configuration** (`def:pencil-configuration`): at the body `v`, the
+`cross₃` of the configuration points of the three bodies that `sel v` names, a normal of the plane
+through them, polynomial in `(q, z)`. The selector is a plain triple of bodies, not an
+`IsFin3SelectorOf`, which lists every member of a set of at most three bodies and pads the empty
+slots: a closed neighbourhood may have more than three members, and the normal is read off three of
+their configuration points. When the three bodies lie in `G.closedNbhd v` with independent picture
+points and `z ∈ L(q)`, this normal is nonzero (`pencilNormalOfPicture_ne_zero_iff`) and orthogonal
+to the configuration points of the whole closed neighbourhood
+(`dotProduct_pencilNormalOfPicture_eq_zero_of_mem_closedNbhd`, `Configuration.lean`). -/
 noncomputable def pencilNormalOfPicture (q : α × Fin 2 → K) (z : α → K) (sel : α → Fin 3 → α)
     (v : α) : Fin 4 → K :=
   cross₃ (pencilConfigPoint q z (sel v 0)) (pencilConfigPoint q z (sel v 1))
     (pencilConfigPoint q z (sel v 2))
 
-/-! ## The general point of `X₀` attains -/
+/-! ## The general configuration attains -/
 
-/-- **`X₀(G)`'s general point attains the deficiency rank** (`def:pencil-x0-attains`; Phase 40b
-CARRIER, informal (MC-10)(a) in the two-level form of (MC-10)(b)). For some endpoint selector
-`ends` recording every link of `G` and some nonzero polynomial `P` in the picture coordinates,
-every picture `q` off the zero set of `P` is admissible, and the heights `z ∈ L(q)` at which the
-configuration's row rank equals `6(|V(G)| − 1) − def₃(G)` contain a nonempty Zariski-open subset
-of `L(q)`: the non-roots in `L(q)` of a polynomial `R` in the height coordinates, at least one of
-which lies in `L(q)`.
+/-- **The general configuration of `G` attains** (`def:pencil-x0-attains`): for some endpoint
+selector `ends` recording every link of `G` and some nonzero polynomial `P` in the picture
+coordinates, every picture `q` off the zero set of `P` is admissible, and the heights `z ∈ L(q)` at
+which the configuration's row rank equals `6(|V(G)| − 1) − def₃(G)` contain a nonempty Zariski-open
+subset of `L(q)`: the non-roots in `L(q)` of a polynomial `R` in the height coordinates, at least
+one of which lies in `L(q)`.
 
-The rank is that of `PanelHingeFramework.ofNormals G ends` at the configuration points (see the
-module docstring: the polar of the point-join framework, same rank, nonzero hinges wherever
-adjacent picture points differ). The fibre-open clause is what lets the generic motive intersect
-the attaining heights with the nondegenerate ones inside a single fibre ((MC-133)(ii)); the
-distinct motive uses only one attaining `(q, z)`.
+The rank is that of `PanelHingeFramework.ofNormals G ends` at the configuration points (the polar of
+the point-join framework, of the same rank, `lem:pencil-config-point-join-rank`, with nonzero hinges
+wherever adjacent picture points differ). The open set of attaining heights lets a step meet them
+with the non-roots of another polynomial that is nonzero somewhere on the same fibre `L(q)`
+(`lem:pencil-x0-fibre-intersection`); `lem:pencil-x0-attains-distinct` uses one attaining
+configuration.
 
 `P ≠ 0` means "off a proper Zariski-closed set of pictures" only over an infinite field: over a
 finite field a nonzero polynomial can vanish at every point (`X ^ |K| − X`), and `X0Attains` then
-holds vacuously. The program works over an infinite field (`[Infinite K]`) throughout, so the
-definition needs no such hypothesis of its own. -/
+holds vacuously. The lemmas that obtain a realization from it assume an infinite field
+(`[Infinite K]`), so the definition needs no such hypothesis of its own. -/
 def _root_.Graph.X0Attains (K : Type*) [Field K] (G : Graph α β) : Prop :=
   ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K),
     (∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) ∧ P ≠ 0 ∧
@@ -359,10 +360,11 @@ def _root_.Graph.X0Attains (K : Type*) [Field K] (G : Graph α β) : Prop :=
 
 /-! ## The hinges of a configuration over an admissible picture -/
 
-/-- **Configuration points over distinct picture points are independent** (Phase 40b CARRIER).
-Two configuration points `p_u = (x_u, y_u, z_u, 1)` and `p_v = (x_v, y_v, z_v, 1)` whose picture
-points differ are linearly independent, whatever the heights: a relation `s p_u + t p_v = 0` has
-`s + t = 0` in the last coordinate, so `s (q_u − q_v) = 0` in the picture coordinates. -/
+/-- **Configuration points over distinct picture points are independent** (a step of
+`lem:pencil-config-point-join-rank`): two configuration points `p_u = (x_u, y_u, z_u, 1)` and
+`p_v = (x_v, y_v, z_v, 1)` whose picture points differ are linearly independent, whatever the
+heights: a relation `s p_u + t p_v = 0` has `s + t = 0` in the last coordinate, so
+`s (q_u − q_v) = 0` in the picture coordinates. -/
 theorem linearIndependent_pencilConfigPoint_pair {q : α × Fin 2 → K} (z : α → K) {u v : α}
     (huv : pencilPicturePoint q u ≠ pencilPicturePoint q v) :
     LinearIndependent K ![pencilConfigPoint q z u, pencilConfigPoint q z v] := by
@@ -383,9 +385,10 @@ theorem linearIndependent_pencilConfigPoint_pair {q : α × Fin 2 → K} (z : α
     · simp [pencilPicturePoint]
   exact ⟨hs, by rwa [hs, zero_add] at h3⟩
 
-/-- **Distinct picture points are independent** (Phase 40c FLAT). Two homogeneous picture points
-`(x_u, y_u, 1)` and `(x_v, y_v, 1)` that differ are linearly independent: a relation
-`s p̂_u + t p̂_v = 0` has `s + t = 0` in the last coordinate, so `s (q_u − q_v) = 0`. -/
+/-- **Distinct picture points are independent** (a step of `lem:pencil-flat-split`,
+`lem:pencil-lifting-planes-motions` and `lem:pencil-lifting-space-deficiency`): two homogeneous
+picture points `(x_u, y_u, 1)` and `(x_v, y_v, 1)` that differ are linearly independent, as a
+relation `s p̂_u + t p̂_v = 0` has `s + t = 0` in the last coordinate, so `s (q_u − q_v) = 0`. -/
 theorem linearIndependent_pencilPicturePoint_pair {q : α × Fin 2 → K} {u v : α}
     (huv : pencilPicturePoint q u ≠ pencilPicturePoint q v) :
     LinearIndependent K ![pencilPicturePoint q u, pencilPicturePoint q v] := by
@@ -406,12 +409,12 @@ theorem linearIndependent_pencilPicturePoint_pair {q : α × Fin 2 → K} {u v :
     · simp [pencilPicturePoint]
   exact ⟨hs, by rwa [hs, zero_add] at h2⟩
 
-/-- **The hinges of a configuration over an admissible picture are nonzero** (Phase 40b CARRIER;
-the first clause of slice C4). Over an admissible picture `q`, at every height `z`, the framework
-`ofNormals G ends` at the configuration points has a nonzero support extensor at every link: the
-extensor is nonzero exactly when the two endpoint points are independent
-(`PanelHingeFramework.toBodyHinge_supportExtensor_ne_zero_iff`), and adjacent picture points
-differ (`linearIndependent_pencilConfigPoint_pair`). -/
+/-- **The hinges of a configuration over an admissible picture are nonzero** (a step of
+`lem:pencil-x0-one-witness`, whose proof names it): over an admissible picture `q`, at every height
+`z`, the framework `ofNormals G ends` at the configuration points has a nonzero support extensor at
+every link: the extensor is nonzero exactly when the two endpoint points are independent
+(`PanelHingeFramework.toBodyHinge_supportExtensor_ne_zero_iff`), and adjacent picture points differ
+(`linearIndependent_pencilConfigPoint_pair`). -/
 theorem _root_.Graph.IsAdmissiblePicture.supportExtensor_ne_zero {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {ends : β → α × α}
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) (z : α → K)
@@ -423,9 +426,9 @@ theorem _root_.Graph.IsAdmissiblePicture.supportExtensor_ne_zero {G : Graph α �
 
 /-! ## Admissibility is Zariski-open -/
 
-/-- **The homogeneous picture point as polynomials** (Phase 40b CARRIER): the vector
-`(X_{w,0}, X_{w,1}, 1)` of polynomials in the picture coordinates, evaluating to
-`pencilPicturePoint q w` (`eval_pencilPicturePointPoly`). -/
+/-- **The homogeneous picture point as polynomials**: the vector `(X_{w,0}, X_{w,1}, 1)` of
+polynomials in the picture coordinates, which evaluates to `pencilPicturePoint q w`
+(`eval_pencilPicturePointPoly`). -/
 noncomputable def pencilPicturePointPoly (w : α) : Fin 3 → MvPolynomial (α × Fin 2) K :=
   ![MvPolynomial.X (w, 0), MvPolynomial.X (w, 1), 1]
 
@@ -434,11 +437,13 @@ theorem eval_pencilPicturePointPoly (q : α × Fin 2 → K) (w : α) (i : Fin 3)
     MvPolynomial.eval q (pencilPicturePointPoly w i) = pencilPicturePoint q w i := by
   fin_cases i <;> simp [pencilPicturePointPoly, pencilPicturePoint]
 
-/-- **Admissibility is Zariski-open** (`def:pencil-admissible-picture`; Phase 40b CARRIER). Around
-an admissible picture `q₀` there is a polynomial `P` in the picture coordinates, nonzero at `q₀`,
-off whose zero set every picture is admissible: `P` is the product of one coordinate difference
-per adjacent pair (a coordinate in which the two picture points of `q₀` differ) and one `3 × 3`
-determinant per body (of the homogeneous picture points of a triple `q₀` makes independent). -/
+/-- **Admissibility is Zariski-open** (the openness noted after `def:pencil-admissible-picture`; a
+step of `lem:pencil-x0-one-witness` and `lem:pencil-x0-main-picture-open`, whose proofs name it):
+around an admissible picture `q₀` there is a polynomial `P` in the picture coordinates, nonzero at
+`q₀`, off whose zero set every picture is admissible. `P` is the product of one coordinate
+difference per ordered pair of adjacent bodies (in a coordinate in which their picture points at
+`q₀` differ) and one `3 × 3` determinant per body of `G` (of the homogeneous picture points of three
+members of its closed neighbourhood that are independent at `q₀`). -/
 theorem _root_.Graph.IsAdmissiblePicture.exists_mvPolynomial [Finite α] {G : Graph α β}
     {q₀ : α × Fin 2 → K} (hq₀ : G.IsAdmissiblePicture q₀) :
     ∃ P : MvPolynomial (α × Fin 2) K, MvPolynomial.eval q₀ P ≠ 0 ∧
@@ -510,15 +515,16 @@ theorem _root_.Graph.IsAdmissiblePicture.exists_mvPolynomial [Finite α] {G : Gr
 /-! ## The lifting system -/
 
 open Classical in
-/-- **The lifting system** (Phase 40b CARRIER; the matrix `M(q)` of informal (MC-1)/(MC-2)): a
-matrix of polynomials in the picture coordinates whose kernel at a picture `q` is the space of
-pairs `(z, h)` of a height `z` and per-body affine coefficients `h_v ∈ K³` with `z` vanishing off
-`V(G)`, `z_w = h_v ⬝ (x_w, y_w, 1)` on every closed neighbourhood, and `h_v = 0` off `V(G)`
-(`Graph.liftingMatrix_mulVec_eq_zero_iff`). Its height projection is the lifting space
-(`Graph.map_ker_liftingMatrix`), isomorphically over an admissible picture
-(`Graph.finrank_ker_liftingMatrix`). Rows: support rows for the heights, one affine row per
-`(v, w)` (zero unless `w` lies in the closed neighbourhood of a body `v`), support rows for the
-coefficients. Entries are constants or `-X`, so the kernel varies polynomially with `q`. -/
+/-- **The lifting system** (`def:pencil-lifting-system`): a matrix of polynomials in the picture
+coordinates whose kernel at a picture `q` is the space of pairs `(z, h)` of a height `z` and affine
+coefficients `h_v ∈ K³` at each body, with `z` zero off `V(G)`, `z_w = h_v ⬝ᵥ (x_w, y_w, 1)` for
+every body `v` of `G` and every `w` in its closed neighbourhood, and `h_v = 0` off `V(G)`
+(`Graph.liftingMatrix_mulVec_eq_zero_iff`). The heights of its solutions form the lifting space
+(`Graph.map_ker_liftingMatrix`), and over an admissible picture its solutions form a space of
+dimension `dim L(q)` (`Graph.finrank_ker_liftingMatrix`). Its rows: one per body for the support of
+the heights, one per pair `(v, w)` (zero unless `w` lies in the closed neighbourhood of a body `v`
+of `G`), and one per body and coordinate for the support of the coefficients. Its entries are
+constants and the negated picture coordinates. -/
 noncomputable def _root_.Graph.liftingMatrix (K : Type*) [Field K] (G : Graph α β) :
     Matrix (α ⊕ (α × α) ⊕ (α × Fin 3)) (α ⊕ (α × Fin 3)) (MvPolynomial (α × Fin 2) K) :=
   Matrix.of fun r c => match r, c with
@@ -534,10 +540,10 @@ noncomputable def _root_.Graph.liftingMatrix (K : Type*) [Field K] (G : Graph α
         if v ∉ V(G) then (if v' = v ∧ i' = i then 1 else 0) else 0
 
 
-/-- **The kernel of the lifting system** (Phase 40b CARRIER): at a picture `q`, a pair `x = (z, h)`
-lies in the kernel of the lifting system exactly when `z` vanishes off `V(G)`, restricts on every
-closed neighbourhood of a body `v` to the affine function with coefficients `h_v`, and `h`
-vanishes off `V(G)`. -/
+/-- **The kernel of the lifting system** (the solutions of `def:pencil-lifting-system`): at a
+picture `q`, a pair `x = (z, h)` lies in the kernel exactly when `z` vanishes off `V(G)`, agrees on
+the closed neighbourhood of every body `v` of `G` with the affine function of coefficients `h_v`,
+and `h` vanishes off `V(G)`. -/
 theorem _root_.Graph.liftingMatrix_mulVec_eq_zero_iff [Fintype α] {G : Graph α β}
     {q : α × Fin 2 → K} {x : α ⊕ (α × Fin 3) → K} :
     (G.liftingMatrix K).map (MvPolynomial.eval q) *ᵥ x = 0 ↔
@@ -587,9 +593,8 @@ theorem _root_.Graph.liftingMatrix_mulVec_eq_zero_iff [Fintype α] {G : Graph α
       · rfl
       · exact h3 v hv i
 
-/-- **Membership in the lifting system's kernel**, restated without unfolding `LinearMap.ker` /
-`Matrix.mulVecLin` at the call site (Phase 40-cleanup B7: the fused form of
-`Graph.liftingMatrix_mulVec_eq_zero_iff`). -/
+/-- **Membership in the kernel of the lifting system** (a step of `lem:pencil-splitoff-flexes`):
+`Graph.liftingMatrix_mulVec_eq_zero_iff`, stated for membership in the kernel of the linear map. -/
 theorem _root_.Graph.mem_ker_liftingMatrix_iff [Fintype α] {G : Graph α β}
     {q : α × Fin 2 → K} {x : α ⊕ (α × Fin 3) → K} :
     x ∈ LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin ↔
@@ -599,9 +604,9 @@ theorem _root_.Graph.mem_ker_liftingMatrix_iff [Fintype α] {G : Graph α β}
       ∀ v ∉ V(G), ∀ i, x (Sum.inr (v, i)) = 0 := by
   rw [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff]
 
-/-- **The lifting space is the height projection of the lifting system's kernel** (Phase 40b
-CARRIER): at every picture `q`, projecting the kernel of the lifting system to its height
-coordinates gives exactly `L(q)`. -/
+/-- **The heights of the solutions of the lifting system form the lifting space**
+(`def:pencil-lifting-system`): at every picture `q`, the projection of the kernel of the lifting
+system to its height coordinates is `L(q)`. -/
 theorem _root_.Graph.map_ker_liftingMatrix [Fintype α] (G : Graph α β) (q : α × Fin 2 → K) :
     (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin).map
       (LinearMap.funLeft K K Sum.inl) = G.liftingSpace q := by
@@ -619,9 +624,10 @@ theorem _root_.Graph.map_ker_liftingMatrix [Fintype α] (G : Graph α β) (q : �
     refine ⟨h1, fun v hv w hw => ?_, fun v hv i => by simp [hv]⟩
     simpa [hv] using hh v hv w hw
 
-/-- **Over an admissible picture the lifting system's kernel has the lifting space's dimension**
-(Phase 40b CARRIER): the height projection is injective on the kernel, since three independent
-homogeneous picture points in each closed neighbourhood pin the affine coefficients down. -/
+/-- **Over an admissible picture the solutions of the lifting system have the dimension of the
+lifting space** (`def:pencil-lifting-system`): the projection to the heights is injective on the
+kernel, as the three independent homogeneous picture points that admissibility gives in each closed
+neighbourhood determine the affine coefficients. -/
 theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q : α × Fin 2 → K}
     (hq : G.IsAdmissiblePicture q) :
     Module.finrank K (LinearMap.ker ((G.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin) =
@@ -649,10 +655,11 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
       exact congr_fun (Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero) i
     · exact h3 v hv i
 
-/-! ## The lifting system's kernel: locality and monotonicity (Phase 40j SPLITOFF) -/
+/-! ## The kernel of the lifting system: locality and monotonicity -/
 
-/-- **The lifting system's kernel reads the picture only on `V(H)`**: a closed neighbourhood of a
-body of `H` lies in `V(H)` (`Graph.closedNbhd_subset_vertexSet`). -/
+/-- **The kernel of the lifting system reads the picture only on `V(H)`**
+(`lem:pencil-weighted-lifting-system-local`): a closed neighbourhood of a body of `H` lies in `V(H)`
+(`Graph.closedNbhd_subset_vertexSet`). -/
 theorem _root_.Graph.ker_liftingMatrix_congr [Fintype α] {H : Graph α β} {q q' : α × Fin 2 → K}
     (hq : ∀ w ∈ V(H), ∀ i, q (w, i) = q' (w, i)) :
     LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin =
@@ -665,7 +672,9 @@ theorem _root_.Graph.ker_liftingMatrix_congr [Fintype α] {H : Graph α β} {q q
     forall₂_congr fun w hw => ?_
   rw [hpp w (Graph.closedNbhd_subset_vertexSet hv hw)]
 
-/-- **Adding links on the same bodies shrinks the lifting system's kernel.** -/
+/-- **Adding links on the same bodies shrinks the kernel of the lifting system** (a step of
+`thm:pencil-x0-splitoff`): if `H ≤ H'` with `V(H) = V(H')`, the kernel for `H'` lies in that for
+`H`, as each closed neighbourhood in `H` lies in that in `H'`. -/
 theorem _root_.Graph.ker_liftingMatrix_le_of_le [Fintype α] {H H' : Graph α β} (hle : H ≤ H')
     (hV : V(H) = V(H')) (q : α × Fin 2 → K) :
     LinearMap.ker ((H'.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin ≤
@@ -680,18 +689,21 @@ theorem _root_.Graph.ker_liftingMatrix_le_of_le [Fintype α] {H H' : Graph α β
   · exact Or.inl rfl
   · exact Or.inr ⟨f, hf.of_le hle⟩
 
-/-! ## The two-body incidence functionals (`lem:pencil-flag-genericity`, Phase 40i ORBIT) -/
+/-! ## The incidence functionals at two bodies (`lem:pencil-flag-genericity`) -/
 
-/-- **The difference of the planes at `a` and `b`**, read off a point `(z, h)` of the lifting
-system's kernel: `h_a − h_b`, an affine function of the picture (`D(z) = h_a − h_b`). -/
+/-- **The difference of the planes at `a` and `b`** (`lem:pencil-flag-genericity`): at a solution
+`(z, h)` of the lifting system, `h_a − h_b`, the coefficients of the difference of the affine
+functions at `a` and `b`. -/
 def planeDiff (a b : α) : (α ⊕ (α × Fin 3) → K) →ₗ[K] (Fin 3 → K) :=
   LinearMap.funLeft K K (fun i => Sum.inr (a, i)) - LinearMap.funLeft K K (fun i => Sum.inr (b, i))
 
 theorem planeDiff_apply (a b : α) (x : α ⊕ (α × Fin 3) → K) (i : Fin 3) :
     planeDiff a b x i = x (Sum.inr (a, i)) - x (Sum.inr (b, i)) := rfl
 
-/-- **The height projection is injective on the lifting system's kernel** at an admissible
-picture (the planes are pinned by three independent picture points). -/
+/-- **The projection to the heights is injective on the kernel of the lifting system** at an
+admissible picture (a step of `lem:pencil-flag-genericity`): the three independent picture points
+that admissibility gives in each closed neighbourhood determine the affine coefficients. The proof
+derives it from `Graph.finrank_ker_liftingMatrix` by rank–nullity. -/
 theorem _root_.Graph.injective_liftingMatrix_ker_proj [Fintype α] {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) :
     Function.Injective ((LinearMap.funLeft K K (Sum.inl : α → α ⊕ (α × Fin 3))).domRestrict
@@ -705,12 +717,13 @@ theorem _root_.Graph.injective_liftingMatrix_ker_proj [Fintype α] {G : Graph α
   rw [← LinearMap.ker_eq_bot]
   exact Submodule.finrank_eq_zero.mp (by omega)
 
-/-- **The incidence functionals at the two ends are independent** (`lem:pencil-flag-genericity`,
-(MC-48)(ii)'s argument, informal Step MC13/MC16; Phase 40i ORBIT). Let `H` be `G'` with the pair
-`a, b` joined (same bodies; each closed neighbourhood grows at most by the other end), and let the
-lifting space drop by two from `G'` to `H` at a picture admissible for `G'`. Then the two incidence
-functionals `z ↦ (h_a − h_b)(q_a)`, `(h_a − h_b)(q_b)` are independent on the lifting system's
-kernel of `G'`: their kernel projects injectively into `L_H(q)`. -/
+/-- **The incidence functionals at the two ends are independent** (`lem:pencil-flag-genericity`):
+let `H` have the bodies of `G'`, and let every closed neighbourhood in `H` lie in that of the same
+body in `G'`, except that the one of `a` may also contain `b` and the one of `b` may also contain
+`a` (as when `H` joins `a` and `b`). If `q` is admissible for `G'` and
+`dim L_H(q) + 2 ≤ dim L_{G'}(q)`, the two functionals `(z, h) ↦ (h_a − h_b) ⬝ᵥ (q_a, 1)` and
+`(z, h) ↦ (h_a − h_b) ⬝ᵥ (q_b, 1)` are linearly independent on the kernel of the lifting system of
+`G'`: their common zeros project injectively into `L_H(q)`. -/
 theorem _root_.Graph.two_le_finrank_map_planeDiff [Fintype α] {G' H : Graph α β}
     {q : α × Fin 2 → K} (hq : G'.IsAdmissiblePicture q) {a b : α} (hV : V(H) = V(G'))
     (hN : ∀ v ∈ V(G'), ∀ w ∈ H.closedNbhd v,
@@ -770,12 +783,12 @@ theorem _root_.Graph.two_le_finrank_map_planeDiff [Fintype α] {G' H : Graph α 
 /-! ## The lifting system with weights -/
 
 open Classical in
-/-- **The lifting system with weights** (`def:pencil-weighted-lifting-system`; Phase 40f
-CONTRACT-R): `Graph.liftingMatrix` with an arbitrary polynomial weight point `ω v w ∈ K[σ]³` in
-place of the homogeneous picture point `(x_w, y_w, 1)`. Its rows say `z_w = h_v ⬝ ω(v, w)` for `w`
-in the closed neighbourhood of a body `v`, plus the support rows for the heights and the
+/-- **The lifting system with weights** (`def:pencil-weighted-lifting-system`):
+`Graph.liftingMatrix` with a vector of polynomials `ω v w ∈ K[σ]³` in place of the homogeneous
+picture point `(x_w, y_w, 1)`. Its rows say `z_w = h_v ⬝ᵥ ω(v, w)` for `w` in the closed
+neighbourhood of a body `v` of `G`, with the rows for the support of the heights and of the
 coefficients (`Graph.weightedLiftingMatrix_mulVec_eq_zero_iff`). The contraction step reads the
-closed neighbourhoods meeting the core through other vectors than the picture points
+closed neighbourhoods that meet the core through other vectors than the picture points
 (`Graph.contractLiftingMatrix`). -/
 noncomputable def _root_.Graph.weightedLiftingMatrix {σ : Type*} (K : Type*) [Field K]
     (G : Graph α β) (ω : α → α → Fin 3 → MvPolynomial σ K) :
@@ -792,9 +805,10 @@ noncomputable def _root_.Graph.weightedLiftingMatrix {σ : Type*} (K : Type*) [F
     | Sum.inr (Sum.inr (v, i)), Sum.inr (v', i') =>
         if v ∉ V(G) then (if v' = v ∧ i' = i then 1 else 0) else 0
 
-/-- **The kernel of the lifting system with weights**: at a point `s` of the parameters, a pair
-`x = (z, h)` lies in the kernel exactly when `z` vanishes off `V(G)`, `z_w = h_v ⬝ ω(v, w)(s)` on
-every closed neighbourhood of a body `v`, and `h` vanishes off `V(G)`. -/
+/-- **The kernel of the lifting system with weights** (the solutions of
+`def:pencil-weighted-lifting-system`): at a point `s` of the parameters, a pair `x = (z, h)` lies in
+the kernel exactly when `z` vanishes off `V(G)`, `z_w = h_v ⬝ᵥ ω(v, w)(s)` for every body `v` of `G`
+and every `w` in its closed neighbourhood, and `h` vanishes off `V(G)`. -/
 theorem _root_.Graph.weightedLiftingMatrix_mulVec_eq_zero_iff {σ : Type*} [Fintype α]
     {G : Graph α β} {ω : α → α → Fin 3 → MvPolynomial σ K} {s : σ → K}
     {x : α ⊕ (α × Fin 3) → K} :
@@ -849,24 +863,26 @@ theorem _root_.Graph.weightedLiftingMatrix_mulVec_eq_zero_iff {σ : Type*} [Fint
 
 /-! ## One attaining configuration over a main picture forces the general one -/
 
-/-- **One attaining configuration over a main picture forces the general one**
-(`lem:pencil-x0-one-witness`; Phase 40b CARRIER slice C1b, the semicontinuity half of informal
-(MC-2)/(MC-10)). If a configuration `(q₀, z₀)` with `q₀` a main picture and `z₀ ∈ L(q₀)` has row
-rank at least `6(|V(G)| − 1) − def₃(G)`, then the general configuration of `G` attains
-(`Graph.X0Attains`).
+/-- **One attaining configuration over a main picture makes the general configuration attain**
+(`lem:pencil-x0-one-witness`, `thm:pencil-x0-main-component`'s third claim): let `G` have a body. If
+a configuration `(q₀, z₀)` with `q₀` a main picture and `z₀ ∈ L(q₀)` has row rank at least
+`6(|V(G)| − 1) − def₃(G)`, the general configuration of `G` attains (`Graph.X0Attains`).
 
-Proof. Admissibility is open at `q₀` (`Graph.IsAdmissiblePicture.exists_mvPolynomial`). The
-lifting space is the height projection of the kernel of the lifting system `M(q)`
-(`Graph.map_ker_liftingMatrix`), of the same dimension over admissible pictures
-(`Graph.finrank_ker_liftingMatrix`), so at a main `q₀` the kernel dimension is least among
-admissible pictures, and Cramer's rule gives a polynomial section `Z(q)` of the kernel with
-`Z(q₀)` over `z₀` (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`). The rank device
-(`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`, hinges nonzero by
-`Graph.IsAdmissiblePicture.supportExtensor_ne_zero`) gives a polynomial `Q` at the configuration
-points whose non-vanishing forces the rank lower bound. Then `P` = admissibility · the section's
-determinant · `Q` at the configuration `(q, Z(q))`, and `R` = `Q` at `(q, ·)`; the rank never
-exceeds the target once every hinge is nonzero
-(`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`). -/
+Admissibility is Zariski-open at `q₀` (`Graph.IsAdmissiblePicture.exists_mvPolynomial`). The heights
+of the solutions of the lifting system `M(q)` form `L(q)` (`Graph.map_ker_liftingMatrix`), and over
+an admissible picture the solutions form a space of dimension `dim L(q)`
+(`Graph.finrank_ker_liftingMatrix`), which is least at the main picture `q₀`. So the polynomial
+section of the kernel (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`,
+`lem:pencil-polynomial-section`) gives heights `Z(q) ∈ L(q)` at the general picture, polynomial in
+`q`, with `Z(q₀) = z₀`. As the hinges are nonzero
+(`Graph.IsAdmissiblePicture.supportExtensor_ne_zero`),
+`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`
+(`lem:rank-polynomial-of-le-finrank`) gives a polynomial `Q` in the configuration points, nonzero at
+`(q₀, z₀)`, at whose non-roots the rank is at least the target. Then `P` is the product of the
+polynomial of admissibility, the determinant of the section and `Q` at `(q, Z(q))`, and `R` is `Q`
+at `(q, ·)`. The rank never exceeds the target once every hinge is nonzero
+(`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`,
+`lem:relative-deficiency-rank-bound`). -/
 theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α β}
     (hV : V(G).Nonempty) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -877,7 +893,7 @@ theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α �
           (fun p => pencilConfigPoint q₀ z₀ p.1 p.2)).toBodyHinge.rigidityRows) : ℤ)) :
     G.X0Attains K := by
   have : Fintype α := Fintype.ofFinite α
-  -- The rank polynomial at the witness configuration.
+  -- The rank polynomial, nonzero at `(q₀, z₀)`.
   obtain ⟨Q, hQ₀, hQ⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends
     hends (q₀ := fun p => pencilConfigPoint q₀ z₀ p.1 p.2)
     (fun e he => hq₀.1.supportExtensor_ne_zero hends z₀ he) (Int.toNat_le.mpr hrank)
@@ -942,23 +958,24 @@ theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α �
 
 /-! ## An admissible picture exists -/
 
-/-- **Three points on a parabola at pairwise distinct parameters are not collinear** (Phase 40b
-CARRIER slice C2). The `3 × 3` determinant of `(a, a², 1)`, `(b, b², 1)`, `(c, c², 1)` is the
-permuted Vandermonde product `(b − a)(a − c)(b − c)`. -/
+/-- **Three points on a parabola at pairwise distinct parameters are not collinear** (a step of
+`lem:pencil-x0-main-picture-open`): the `3 × 3` determinant of `(a, a², 1)`, `(b, b², 1)` and
+`(c, c², 1)` is the Vandermonde product `(b − a)(a − c)(b − c)`, its columns permuted, which is
+nonzero at pairwise distinct parameters. -/
 private theorem det_moment_curve_triple (a b c : K) :
     (Matrix.of ![![a, a ^ 2, 1], ![b, b ^ 2, 1], ![c, c ^ 2, 1]] : Matrix (Fin 3) (Fin 3) K).det
       = (b - a) * (a - c) * (b - c) := by
   simp [Matrix.det_fin_three]
   ring
 
-/-- **An admissible planar picture exists** (Phase 40b CARRIER slice C2), when `G` is loopless and
-every closed neighbourhood has at least three members (both consequences of simplicity and minimum
-degree two). The moment curve `w ↦ (φ w, φ w ^ 2)` at an injective `φ : α → K` (composing a
-`Fintype` enumeration of `α`, `Fin.valEmbedding`, and `Infinite.natEmbedding K`) puts every pair of
-distinct bodies at distinct points, and any three distinct members of a closed neighbourhood (a
-three-element subset, `Set.exists_subset_card_eq` then `Set.ncard_eq_three`) at non-collinear
-points (`det_moment_curve_triple`, nonzero since `φ` is injective on the three pairwise-distinct
-members). -/
+/-- **An admissible planar picture exists** (a step of `lem:pencil-x0-main-picture-open`, whose
+proof names it): over an infinite field, when `G` is loopless and every closed neighbourhood has at
+least three members, as at a graph that satisfies the standing hypotheses
+(`def:pencil-x0-standing`). The parabola `w ↦ (φ w, φ w ^ 2)`, at an injective `φ : α → K` (an
+enumeration of `α`, `Fin.valEmbedding` and `Infinite.natEmbedding K`), puts distinct bodies at
+distinct points, and any three distinct members of a closed neighbourhood (a subset of three
+members, `Set.exists_subset_card_eq` and `Set.ncard_eq_three`) at points that are not collinear
+(`det_moment_curve_triple`, nonzero as `φ` is injective). -/
 theorem _root_.Graph.exists_isAdmissiblePicture [Infinite K] [Finite α] {G : Graph α β}
     (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ q : α × Fin 2 → K, G.IsAdmissiblePicture q := by
@@ -993,9 +1010,9 @@ theorem _root_.Graph.exists_isAdmissiblePicture [Infinite K] [Finite α] {G : Gr
         Matrix.linearIndependent_rows_iff_det_ne_zero.mpr hdetne
       exact hLI
 
-/-- **A main picture exists** (Phase 40b CARRIER slice C2). Among the (nonempty, by
-`Graph.exists_isAdmissiblePicture`) admissible pictures, the natural number `finrank L(q)` attains
-its least value at some admissible `q`, which is then a main picture by definition. -/
+/-- **A main picture exists** (`lem:pencil-x0-main-picture-open`): admissible pictures exist
+(`Graph.exists_isAdmissiblePicture`), so the natural number `dim L(q)` attains its least value at
+some admissible `q`, which is then a main picture. -/
 theorem _root_.Graph.exists_isMainPicture [Infinite K] [Finite α] {G : Graph α β}
     (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ q : α × Fin 2 → K, G.IsMainPicture q := by
@@ -1008,19 +1025,17 @@ theorem _root_.Graph.exists_isMainPicture [Infinite K] [Finite α] {G : Graph α
   rw [hqeq']
   exact Nat.sInf_le ⟨q', hq', rfl⟩
 
-/-! ## `U` is nonempty and Zariski-open -/
+/-! ## The main pictures are nonempty and Zariski-open -/
 
-/-- **Every main picture's own polynomial section is Zariski-open, and lands in `U`**
-(`lem:pencil-x0-main-picture-open`; Phase 40b CARRIER slice C2, generalized from a fixed minimizer
-to an arbitrary main picture `q₀`). Admissibility is open around `q₀`
-(`Graph.IsAdmissiblePicture.exists_mvPolynomial`, polynomial `Padm`), and the
-`Matrix.exists_mvPolynomial_section_mulVec_eq_zero` mirror at the trivial kernel vector `0` of the
-lifting system gives a second polynomial `D`, nonzero at `q₀`, off whose zero set the kernel of the
-lifting system is no larger than at `q₀` — the semicontinuity half of `Graph.x0Attains_of_exists`'s
-argument, reused here at the flat section instead of one through a witness height. Off the zero set
-of `Padm * D`, `q` is admissible with `finrank L(q) ≤ finrank L(q₀)`
-(`Graph.finrank_ker_liftingMatrix` at both ends), and since `q₀` already achieves the global minimum
-among admissible pictures, `q` does too: `q ∈ U`. -/
+/-- **The main pictures around a main picture** (`lem:pencil-x0-main-picture-open`): at every main
+picture `q₀`, some polynomial in the picture coordinates, nonzero at `q₀`, has only main pictures as
+non-roots. Admissibility is open around `q₀` (`Graph.IsAdmissiblePicture.exists_mvPolynomial`, the
+polynomial `Padm`), and the polynomial section of the kernel of the lifting system at `q₀` and its
+zero solution (`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`, `lem:pencil-polynomial-section`)
+gives a polynomial `D`, nonzero at `q₀`, off whose zero set the kernel has dimension at most its
+dimension at `q₀`. Off the zero set of `Padm * D`, `q` is admissible with `dim L(q) ≤ dim L(q₀)`
+(`Graph.finrank_ker_liftingMatrix` at both), and as `dim L(q₀)` is least among admissible pictures,
+`q` is a main picture. -/
 theorem _root_.Graph.IsMainPicture.exists_mvPolynomial [Finite α] {G : Graph α β}
     {q₀ : α × Fin 2 → K} (hq₀ : G.IsMainPicture q₀) :
     ∃ P : MvPolynomial (α × Fin 2) K, MvPolynomial.eval q₀ P ≠ 0 ∧
@@ -1038,9 +1053,10 @@ theorem _root_.Graph.IsMainPicture.exists_mvPolynomial [Finite α] {G : Graph α
     rwa [Graph.finrank_ker_liftingMatrix hadm, Graph.finrank_ker_liftingMatrix hq₀.1] at this
   exact ⟨hadm, fun q' hq' => hle.trans (hq₀.2 q' hq')⟩
 
-/-- **`U` is nonempty and Zariski-open** (`lem:pencil-x0-main-picture-open`; Phase 40b CARRIER
-slice C2), as `Graph.IsMainPicture.exists_mvPolynomial`'s corollary at a main picture
-(`Graph.exists_isMainPicture`). -/
+/-- **The main pictures are nonempty and Zariski-open** (`lem:pencil-x0-main-picture-open`,
+`thm:pencil-x0-main-component`'s first claim): some nonzero polynomial in the picture coordinates
+has only main pictures as non-roots; `Graph.IsMainPicture.exists_mvPolynomial` at the main picture
+of `Graph.exists_isMainPicture`. -/
 theorem _root_.Graph.exists_mvPolynomial_isMainPicture [Infinite K] [Finite α] {G : Graph α β}
     (hloop : G.Loopless) (h3 : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard) :
     ∃ P : MvPolynomial (α × Fin 2) K, P ≠ 0 ∧

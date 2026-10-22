@@ -177,7 +177,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 5/5: graph repairs and the findings report) | every chapter's dependency edges, pins and node shapes; the findings report | ✓ Complete — no missing edge left, the Lean unchanged; each finding done, left or reported in `notes/Prose-report.md` (see `notes/Prose-graph-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 1/3: the texts) | the status surfaces' scopes and credits, blueprint prose and two agent manuals (docs and prose only) | ✓ Complete — the scopes and credits fixed on the status surfaces, the Lean unchanged (see `notes/Reconcile-texts-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep at the pencil files, task 37.9 (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep at the pencil files, task 37.10 (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; not yet pushed (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -1332,7 +1332,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   rewrote the texts on the search's cost (measured, no bound claimed), `decide` and the input,
   and tasks 21–24 gave each of the sixteen main results outside S1's and S2's rows its
   non-vacuity witness, a closed theorem applying it at a small input with every hypothesis met
-  (`Nonvacuity.lean`), and tasks 25–37.8 checked the docstrings of the thirteen planar files, of the
+  (`Nonvacuity.lean`), and tasks 25–37.9 checked the docstrings of the thirteen planar files, of the
   search, of the project's mathlib additions, of the pebble game's files, of the matroid
   constructions, of the body-bar files, of the square-graph and generic-rigidity files, of the
   deficiency file, of the induction's files, of the rigidity matrix's files, of the meet's and the
@@ -1340,16 +1340,17 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   genericity, coupling, Case III, panel-hinge and Theorem 5.5 files, the molecular conjecture's
   witness, and the molecule files on screw velocities, projective invariance, the polarity, the
   square-graph dictionary, general position, Theorem 5.6's realization, molecular realizations and
-  the molecule rank formula, and the first thirteen pencil files, on pencil realizations, the chart
+  the molecule rank formula, and the first fifteen pencil files, on pencil realizations, the chart
   of their parameters, the loop, cut-edge and base cases of their induction, nondegenerate
   realizations, the chart's rows as polynomials in its parameters, a realization written in the
   chart, explicit parameters, the conditions met at one point of the chart, the loop, base and cut
   cases of the induction that asks for a generic realization, the reduction of the pencil
   realization theorem to its two main-component statements, and the nondegenerate and generic
-  realizations of a subgraph, against their proofs and credits, outside the parts that wait for the
-  next phase. **Next:** task 37.9, the docstrings of the two main-component files on planar
-  pictures, the heights that lift them and the configurations they give, outside the parts that
-  wait for the next phase.
+  realizations of a subgraph, and planar pictures, the heights that lift them and the configurations
+  they give, against their proofs and credits, outside the parts that wait for the next phase.
+  **Next:** task 37.10, the docstrings of the two main-component files on the rank of a
+  configuration with all heights zero and on the dimension of the lifting space at a general
+  picture, outside the parts that wait for the next phase.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
