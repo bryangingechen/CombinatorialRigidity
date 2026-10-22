@@ -4688,8 +4688,10 @@ declaration's name as its header writes it:
   labels of task 3.13's nodes).
   *Found:* round 5 task 3.13.
   *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: the lead of
-  `linearIndepOn_pencilChartNormal_closedHubNbhd` calls it a step of `lem:pencil-generic-steer`
-  and names `def:pencil-nondegenerate`, the condition it gives (task 37.2).
+  `linearIndepOn_pencilChartNormal_closedHubNbhd` calls it a step of `lem:pencil-generic-steer` and
+  names `def:pencil-nondegenerate`, the condition it gives (task 37.2); round 3: the lead of
+  `Graph.closedNbhd_subset_vertexSet` (`Molecule/Pencil/Motive.lean`), one of the five, calls it a
+  step of `thm:pencil-jj-equality`, whose proof names it (task 37.4).
 - **F-246** · L · the declarations round 5's task 3.14 moved or unpinned
   (`Molecular/Molecule/Pencil/MainComponent/Bridge.lean`, `Carrier.lean`). The docstring of
   `Graph.embedEdges` names `lem:pencil-jj-embed-edges`, now `def:pencil-embed-edges`. The module
@@ -5581,6 +5583,28 @@ declaration's name as its header writes it:
   with `hD` derived from `hn`, and the two bounds from `finrank_span_le_card`, on the three standard
   axioms (`scratch/reconcile-lean/t373/Hyps-t373.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.3.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-304** · L · an over-strong hypothesis, a missed mathlib lemma and repeated derivations in
+  `Molecular/Molecule/Pencil/Motive.lean`. `dotProduct_point_eq_zero_of_mem_closedNbhd` takes
+  `IsNondegPencilRealization` and uses only its first conjunct, the pencil realization
+  (`HasPencilPanelRealization`), and `dotProduct_point_eq_zero_of_mem_closedHubNbhd` and
+  `dotProduct_normal_eq_zero_of_mem_closedNbhd` only pass it on: the chapter derives the
+  orthogonality from a pencil realization (the remark after `def:pencil-nondegenerate`).
+  `linearIndependent_triple_of_linearIndepOn` is mathlib's `linearIndepOn_range_iff` at the
+  injective `![x, y, z]`, whose range is `{x, y, z}` (its docstring said that mathlib has no such
+  form). `hasPencilRealization_of_generic` is `hasPencilRealization_of_distinct` after
+  `hasDistinctPencilRealization_of_generic`. `Graph.degree_induce_union_singleton_of_mem`,
+  `Graph.degree_induce_of_forall_isLink_mem` and `Graph.degree_induce_eq_of_ne` each derive that the
+  loops and the non-loops at `v` of `G.induce S` are those of `G` (some 15 lines each), from the
+  links of `G` at `v` ending in `S`, which one lemma would state; the second uses its `hS` only at
+  `v`. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the orthogonality, in both
+  forms, from `HasPencilPanelRealization` alone, the triple from `linearIndepOn_range_iff` (its
+  range by `simp only` with `Matrix.range_cons`, `Matrix.range_empty`, `Set.union_empty` and
+  `Set.singleton_union`; `simp` with `Set.insert_eq` loops), the forgetful map as the composition,
+  and the three degree lemmas from one local form, on the three standard axioms
+  (`scratch/reconcile-lean/t374/Hyps-t374.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.4.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

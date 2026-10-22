@@ -7,30 +7,48 @@ import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Arms
 
 /-!
-# The pencil-nondegenerate motive (Phase 39 PENCIL, W5-L0)
+# Nondegenerate pencil realizations and the conditioned pair
 
-Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
-`notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
-the W5 design pass's final conditioned-pair motive (`PencilPair`, its `IsNondegPencilRealization` /
-`PencilNondegFeasible` / `HasGenericPencilRealization` ingredients, `Graph.PencilHub` /
-`Graph.closedHubNbhd` / `Graph.closedNbhd`), the forgetful map back to the W3 bare motive
-(`hasPencilRealization_of_generic`), and the loop-arm guard
-(`not_pencilNondegFeasible_of_isLoopAt`). Builds on `Molecule/Pencil/Statement.lean` (via
-`Molecule/Pencil/Arms.lean`). `Graph.closedNbhd` moved here 2026-07-24 from
-`Molecule/Pencil/Chart.lean` (its original home) — the W5-L4 restatement's new
-`IsNondegPencilRealization` conjunct needs it, and `Chart.lean` is downstream of this file.
-`PencilPair` **restated 2026-07-24** per the W5-L5 blocker recon's (b′) route, user-adjudicated
-(`notes/Phase39.md` *Blockers*): its generic conjunct is now conditioned on `G.Simple` in addition
-to `PencilNondegFeasible`, and this leaf gained the corresponding vacuity helper
-`not_simple_of_parallel`. The W5-L5 cut-arm restriction infra (`IsNondegPencilRealization.mono`
-and its monotonicity feeders, 2026-07-24) also lives here — the predicates it restricts are this
-file's.
+The definitions of `sec:pencil-nondegenerate`, and the facts about them that the induction of the
+conditioned pair uses. A pencil hub is a body of degree at least three, and a pencil realization is
+nondegenerate when the points at the two ends of every link are independent, the normals of the hubs
+among each body and its neighbours are independent, and, at each body that is not a hub, the points
+of the body and its neighbours are independent (`def:pencil-nondegenerate`). The conditioned pair
+asks of a multigraph a pencil realization at the deficiency rank, an adjacent-distinct one when it
+is simple, and a nondegenerate one at the deficiency rank when it is also nondegeneracy-feasible
+(`def:pencil-generic-motive`, `def:pencil-conditioned-pair`).
 
-This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
-namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
+The file also proves that a graph with a loop is not nondegeneracy-feasible; that a nondegenerate
+realization restricts to a subgraph, except at a hub of the graph that is not one of the subgraph,
+and moves by a linear automorphism of `K⁴` and a contragredient of it; that the point of a body is
+orthogonal to the normals of its closed neighbourhood, so that a feasible graph has at most three
+members in each closed hub-neighbourhood and no triangle with two hubs
+(`lem:pencil-feasible-hub-conditions`); and that two hubs with three common neighbours whose points
+are independent have no nondegenerate realization (`lem:pencil-x0-two-hubs-obstruction`). The last
+sections compare the degrees and neighbourhoods of a graph with those of the sides of a cut crossed
+by at most one edge, for the cut-edge case of the conditioned pair (`lem:pencil-pair-loop-base-cut`,
+case (3)): a side with the far end of the crossing edge, a side that no edge leaves, and the side
+opposite a single body.
 
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 design pass"), and
-`blueprint/src/chapter/pencil.tex`.
+## Main definitions
+
+* `Graph.PencilHub`, `Graph.closedHubNbhd`, `Graph.closedNbhd`, `IsNondegPencilRealization` and
+  `PencilNondegFeasible`: pencil hubs, closed hub-neighbourhoods, closed neighbourhoods,
+  nondegenerate pencil realizations and nondegeneracy-feasibility (`def:pencil-nondegenerate`).
+* `HasGenericPencilRealization`: a generic pencil realization (`def:pencil-generic-motive`).
+* `PencilPair`: the conditioned pair (`def:pencil-conditioned-pair`).
+
+## Main results
+
+* `Graph.three_le_ncard_closedNbhd`: in a simple graph, a body of degree at least two has at least
+  three members in its closed neighbourhood (`def:pencil-x0-standing`).
+* `PencilNondegFeasible.hub_conditions`: a feasible graph has at most three members in each closed
+  hub-neighbourhood, and no triangle with two pencil hubs (`lem:pencil-feasible-hub-conditions`).
+* `not_isNondegPencilRealization_of_two_hubs_three_common`: two hubs with three common neighbours
+  whose points are independent have no nondegenerate realization
+  (`lem:pencil-x0-two-hubs-obstruction`).
+* `Graph.deficiency_induce_union_singleton`: the deficiency of a side of a cut crossed by one edge,
+  with the far end of that edge, is that of the side plus one (`lem:cut-edge-decomposition`, (3)).
 -/
 
 open scoped Matrix
@@ -41,69 +59,47 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## W5-L0: the pencil-nondegenerate motive (Phase 39 PENCIL, W5 design pass)
+/-! ## Nondegenerate realizations and the conditioned pair
 
-The W5 design pass (`notes/Phase39-design.md` §"W5 design pass") pinned the final induction
-motive: a *conditioned pair*, mirroring KT Theorem 5.5's own `(G.Simple →
-HasGenericFullRankRealization) ∧ HasPanelRealization` shape (`Theorem55.lean`). The design pass's
-first cut conditioned the generic conjunct on the stratum's own nondegenerate-satisfiability
-(`PencilNondegFeasible`) *instead of* `G.Simple` — a `Simple`-conditioned generic conjunct alone is
-refuted at `K4` (every body's closed hub-neighbourhood has `4` members there, forcing every hub
-normal into a common orthogonal complement, so no nondegenerate point exists), and a
-bare-existential generic conjunct starves both downstream consumers (the product-route genericity
-argument needs a *nondegenerate* stratum point to perturb from, not merely a full-rank one).
-**Restated 2026-07-24** (W5-L5 blocker recon, the user's (b′) adjudication): a `≥ 2`-fold parallel
-class turns out to be nondegeneracy-*feasible* on its own
-(`exists_isNondegPencilRealization_parallel_pair`, `Pencil/Pair.lean`) yet caps the achievable rank
-one short of the target, so `PencilNondegFeasible` alone is not enough either — the generic
-conjunct now nests `PencilNondegFeasible` inside a `G.Simple` antecedent, exactly Theorem 5.5's own
-shape, with `PencilNondegFeasible` doing the additional `K4`-style work `G.Simple` alone cannot.
-This section lands the motive layer: the hub / closed-hub-neighbourhood combinatorics, the
-nondegeneracy predicate, its feasibility conditioning, the generic pencil motive, the
-conditioned-pair motive itself, the forgetful map back to the bare motive, the loop guard showing
-feasibility already fails at a loop (so the loop arm's generic obligation is free, mirroring the
-landed program's `loop ⟹ ¬Simple`), and the parallel-class vacuity guard `not_simple_of_parallel`
-(a `≥ 2`-fold parallel class already fails `G.Simple`, the same landed-program precedent applied to
-the pencil base arm). -/
+The definitions of `def:pencil-nondegenerate`, `def:pencil-generic-motive` and
+`def:pencil-conditioned-pair`, the bound on closed neighbourhoods behind the standing hypotheses of
+`sec:main-component` (`def:pencil-x0-standing`), and the maps between the three kinds of realization
+at the deficiency rank. -/
 
-/-- **A pencil hub** (`def:pencil-nondegenerate`; Phase 39 W5-L0): a body of `G` of degree at least
-three, exactly where the pencil pin bites (a degree-`≤ 2` body is automatically a pencil, two
-coplanar lines being automatically concurrent — `exists_concurrency_point_of_extensorInPanel_pair`).
--/
+/-- **A pencil hub** (`def:pencil-nondegenerate`): a body of `G` of degree at least three. The
+pencil condition constrains the hinges at a body only at a hub: two nonzero hinges in one panel pass
+through a common nonzero point of it (`exists_concurrency_point_of_extensorInPanel_pair`). -/
 def _root_.Graph.PencilHub (G : Graph α β) (v : α) : Prop :=
   v ∈ V(G) ∧ 3 ≤ G.degree v
 
-/-- **The closed hub-neighbourhood of `v`** (`def:pencil-nondegenerate`; Phase 39 W5-L0): the
-pencil hubs among `v` itself and its neighbours. These are exactly the bodies whose star-plane
-normal `v`'s concurrency point `point v` is forced orthogonal to — `v`'s own normal by the
-panel-point incidence, and a neighbouring hub `w`'s normal by the cross-incidence W2's necessity
-direction forces on the link's shared pencil line
-(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`). -/
+/-- **The closed hub-neighbourhood of `v`** (`def:pencil-nondegenerate`): the pencil hubs among `v`
+and the bodies linked to it. At a nondegenerate realization the point of a body `v` is orthogonal to
+the normal of each of them, as to that of every member of the closed neighbourhood `G.closedNbhd v`
+(`dotProduct_point_eq_zero_of_mem_closedNbhd`), so that each closed hub-neighbourhood has at most
+three members (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`). -/
 def _root_.Graph.closedHubNbhd (G : Graph α β) (v : α) : Set α :=
   {w | G.PencilHub w ∧ (w = v ∨ ∃ e, G.IsLink e v w)}
 
-/-- **`v`'s closed neighbourhood** (`def:pencil-nondegenerate`; Phase 39 W5-L0/W5-L4): `v` together
-with every body linked to it by an edge, hub or not. Unlike `closedHubNbhd` (which filters to hubs),
-this is the target set of the fourth `IsNondegPencilRealization` conjunct below — the pencil chart's
-own non-hub normal construction (`pencilChartNormal`, `Molecule/Pencil/Chart.lean`) reads exactly
-this set, so it is the target the chart's image needs to be characterized against — and, at a
-non-hub `v` (degree `≤ 2`), it always has at most three members, matching the arity the D6
-re-seeding sweep (`Molecule/Pencil/Engine.lean`) was built for. -/
+/-- **The closed neighbourhood of `v`** (`def:pencil-nondegenerate`): `v` and the bodies linked to
+it, hubs or not (`G.closedHubNbhd v` keeps the hubs among them). `IsNondegPencilRealization` asks
+for independent points on it at each body that is not a hub, where it has at most three members
+(`ncard_closedNbhd_le_three_of_not_pencilHub`). -/
 def _root_.Graph.closedNbhd (G : Graph α β) (v : α) : Set α :=
   {w | w = v ∨ ∃ e, G.IsLink e v w}
 
-/-- A closed neighbourhood of a body of `G` lies in `V(G)`. -/
+/-- **The closed neighbourhood of a body of `G` lies in `V(G)`** (a step of
+`thm:pencil-jj-equality`, whose proof names it, and of many lemmas of `sec:main-component`). -/
 theorem _root_.Graph.closedNbhd_subset_vertexSet {G : Graph α β} {v : α} (hv : v ∈ V(G)) :
     G.closedNbhd v ⊆ V(G) := by
   rintro w (rfl | ⟨e, he⟩)
   · exact hv
   · exact he.right_mem
 
-/-- **A body of degree at least two in a simple graph has at least three members in its closed
-neighbourhood** (`def:pencil-x0-standing`; Phase 40e): its `degree` distinct neighbours, and
-itself, which is none of them since `G` has no loops. This is how the standing hypotheses of the
-`X₀` induction (`Graph.IsX0Graph`, `Molecule/Pencil/MainComponent/Cut.lean`) supply the
-closed-neighbourhood bound `h3` its main-picture polynomial takes. -/
+/-- **In a simple graph, a body of degree at least two has at least three members in its closed
+neighbourhood** (`def:pencil-x0-standing`): its neighbours, which in a simple graph are as many as
+its degree, and itself, which is none of them, as `G` has no loops. From it
+`Graph.IsX0Graph.three_le_ncard_closedNbhd` (`MainComponent/Cut.lean`) gives the bound of the
+standing hypotheses. -/
 theorem _root_.Graph.three_le_ncard_closedNbhd [Finite α] {G : Graph α β} (hS : G.Simple)
     {v : α} (hdeg : 2 ≤ G.degree v) : 3 ≤ (G.closedNbhd v).ncard := by
   have hnot : v ∉ N(G, v) := fun h => by
@@ -113,21 +109,21 @@ theorem _root_.Graph.three_le_ncard_closedNbhd [Finite α] {G : Graph α β} (hS
   rw [heq, Set.ncard_insert_of_notMem hnot (Set.toFinite _), ← Graph.degree_eq_ncard_adj]
   omega
 
-/-- **Stratum nondegeneracy** (`def:pencil-nondegenerate`; Phase 39 W5-L0, **restated 2026-07-24 per
-the W5-L4 blocker recon**, `notes/Phase39-design.md` §"W5 leaf decomposition" L4 "Blocker verdict"):
-a pencil panel realization whose adjacent concurrency points are projectively distinct (every
-link's two endpoint points span a genuine line, not a single point counted twice), whose per-body
-closed-hub-neighbourhood normals are linearly independent — the pencil analogue of KT's "no two
-hinges parallel" nondegenerate-hinge condition (`def:genuine-hinge-realization`) — and whose
-per-body closed-neighbourhood points are linearly independent at every non-hub body. The fourth
-conjunct is the piece a compiler-checked collinear counterexample on the path `P₃` showed the
-first three do not already force: nothing in them forbids the two hinges at an ordinary
-degree-`2` body from coinciding projectively, which is exactly the degenerate case this conjunct
-rules out. It bites only at a `3`-member closed neighbourhood (a `≤ 2`-member one is already
-forced independent by nonzero-ness / the link pair-LI conjunct above), is invariant under
-independent per-body nonzero rescaling of `point`/`normal` (so it composes with the chart's
-projective reproduction contract, W5-L4), and must not be imposed at hubs (a degree-`≥ 4` hub's
-`≥ 5`-member `closedNbhd` is never LI in `K⁴`). -/
+/-- **A nondegenerate pencil realization** (`def:pencil-nondegenerate`): a pencil realization
+(`HasPencilPanelRealization`) of `G` whose points at the two ends of every link are linearly
+independent, whose normals are linearly independent on the closed hub-neighbourhood
+(`Graph.closedHubNbhd`) of every body, and whose points are linearly independent on the closed
+neighbourhood (`Graph.closedNbhd`) of every body that is not a pencil hub. It is the pencil analogue
+of the nonparallel realization that Katoh and Tanigawa ask of a simple graph (KT 2011, Theorem 5.5,
+p. 670).
+
+The last condition is not asked at a hub: there the points lie in the panel of the body
+(`dotProduct_normal_eq_zero_of_mem_closedNbhd`), of dimension `3`, and a hub of a simple graph has
+at least four members in its closed neighbourhood. At a body that is not a hub, it follows from the
+independence of adjacent points and from the nonzero point of the body, unless the body has two
+distinct neighbours. There it asks that the two hinges at the body be distinct lines, which the
+first two conditions do not imply: the path on three bodies has a pencil realization whose three
+points are distinct and collinear, and both of its hinges are then the line through them. -/
 def IsNondegPencilRealization (G : Graph α β) (F : BodyHingeFramework K 2 α β)
     (normal point : α → Fin 4 → K) : Prop :=
   HasPencilPanelRealization G F normal point ∧
@@ -135,105 +131,77 @@ def IsNondegPencilRealization (G : Graph α β) (F : BodyHingeFramework K 2 α �
   (∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v)) ∧
   (∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v))
 
-/-- **Nondegenerate-realization feasibility** (`def:pencil-nondegenerate`; Phase 39 W5-L0): the
-second conditioning predicate for the pencil induction's generic conjunct, nested inside a
-`G.Simple` antecedent (`PencilPair` below) — mirroring KT Theorem 5.5's own conditioned pair, with
-this extra layer because `G.Simple` alone does not exclude every degeneration of the pencil
-stratum: this predicate is refuted at `K4` (verdict 1, `notes/Phase39-design.md` §"W5 design pass"
-— every body's closed hub-neighbourhood has all four vertices, over-determining the panel normals
-against a nonzero point), a graph on which `G.Simple` alone says nothing. **Correction (2026-07-24,
-W5-L5):** the original verdict also claimed this predicate is refuted at any graph with a `≥ 2`-fold
-parallel class between two hubs — that claim is FALSE, refuted by a compiler-checked witness
-(`exists_isNondegPencilRealization_parallel_pair`, `Pencil/Pair.lean`): a parallel class is
-nondegeneracy-*feasible* (even without any hub, via two independent panels/points), even though the
-achievable rank there is capped one short of the target (`notes/Phase39.md` *Blockers*). **Resolved
-2026-07-24 by the user's (b′) adjudication:** this is exactly why `PencilPair`'s generic conjunct
-keeps a `G.Simple` layer alongside this predicate rather than dropping it in favor of feasibility
-alone — the witness above is the documented proof that feasibility cannot replace simplicity, and
-`not_simple_of_parallel` below discharges the parallel case by non-simplicity instead. -/
+/-- **Nondegeneracy-feasibility** (`def:pencil-nondegenerate`): `G` has a nondegenerate pencil
+realization (`IsNondegPencilRealization`) over `K`. With `G.Simple`, it is the condition under which
+`PencilPair` asks for a generic realization, and neither condition can be dropped. `K₄` is simple
+and not feasible, as each of its closed hub-neighbourhoods has four members
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`). Two bodies joined by two edges are
+feasible (`exists_isNondegPencilRealization_parallel_pair`, `Pair.lean`) and not simple
+(`not_simple_of_parallel`), and no nondegenerate realization of them attains the deficiency rank:
+their points are independent, so both hinges are the line through them, and the rank is `5`, not
+`6`. -/
 def PencilNondegFeasible (K : Type*) [Field K] (G : Graph α β) : Prop :=
   ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
     IsNondegPencilRealization G F normal point
 
-/-- **The generic pencil motive** (`def:pencil-generic-motive`; Phase 39 W5-L0): a nondegenerate
-pencil realization attaining the deficiency-rank target, the pencil analogue of
-`HasGenericFullRankRealization`. -/
+/-- **A generic pencil realization** (`def:pencil-generic-motive`): a nondegenerate pencil
+realization (`IsNondegPencilRealization`) of `G` whose rigidity rows span a space of dimension
+`screwDim 2 * (|V(G)| - 1) - G.deficiency n`, in `ℤ`, as in `HasPencilRealization`; the pencil form
+of `HasGenericFullRankRealization`. Generic names the property, not an algebraic independence of the
+coordinates. -/
 def HasGenericPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
   ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
     IsNondegPencilRealization G F normal point ∧
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
-/-- **The conditioned-pair motive** (`def:pencil-conditioned-pair`; Phase 39 W5-L0, **restated
-2026-07-24 per the user's (b′) adjudication** to the W5-L5 blocker recon
-(`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict"): the final `P` of the
-pencil reduction (`Graph.pencil_reduction`) — a bare pencil realization together with, when `G` is
-both simple and nondegeneracy-feasible, a genuinely generic one. Two-layer conditioning, each layer
-earning its keep: `G.Simple` excludes the multigraph degenerations exactly as KT Theorem 5.5's own
-conditioned pair does (`Theorem55.lean`) — a `≥ 2`-fold parallel class IS nondegeneracy-*feasible*
-(`exists_isNondegPencilRealization_parallel_pair`, `Pencil/Pair.lean`) but caps the achievable rank
-one short of the target, since two hinges through the same pair of bodies are forced onto a single
-supporting line — while `PencilNondegFeasible` excludes the stratum collapses a simplicity-only
-conditioning misses (`K4`, verdict 1, `notes/Phase39-design.md` §"W5 design pass"). This is now the
-exact Theorem-5.5 shape `(G.Simple → HasGenericFullRankRealization K k n G) ∧
-HasPanelRealization K k n G`, with `PencilNondegFeasible` nested inside the `G.Simple` antecedent
-rather than replacing it.
+/-- **The conditioned pair** (`def:pencil-conditioned-pair`): `G` has a pencil realization at the
+deficiency rank (`HasPencilRealization`); if `G` is simple, an adjacent-distinct one
+(`HasDistinctPencilRealization`); and if `G` is simple and nondegeneracy-feasible
+(`PencilNondegFeasible`), a generic one (`HasGenericPencilRealization`). It has the form of the
+statement of the induction of KT Theorem 5.5 in `Theorem55.lean`,
+`(G.Simple → HasGenericFullRankRealization K k n G) ∧ HasPanelRealization K k n G`, with feasibility
+added to the condition of the generic conjunct (neither condition suffices alone:
+`PencilNondegFeasible`), and with the adjacent-distinct conjunct.
 
-**Third conjunct added 2026-09-16** (Phase 39 checklist item 5, the PI's (α) decision on the
-item-4 recon's finding (b); `notes/Phase39-design.md` §"Kernel restatement"): a simple `G` also
-gets an *adjacent-distinct* realization (`HasDistinctPencilRealization`,
-`Molecule/Pencil/Statement.lean`) unconditionally on feasibility. The bare motive alone is too
-weak for kernel (K-bare)'s consumer: it attains the target rank at a parallel class only with
-both bodies at one point, so a bare witness need not be a point of the configuration variety the
-kernel's informal argument reasons about, and the infeasible split arm was unsound at the
-statement level as pinned. The conjunct must *not* be pushed down onto
-`HasPencilPanelRealization` — that would falsify the bare motive at every parallel class and
-break the stratum self-duality (`lem:pencil-self-dual`) — so it rides here, under `G.Simple`,
-where parallel classes are excluded outright. Every landed arm discharges it: vacuously at a loop
-or a parallel class (neither is simple), from the generic conjunct wherever a nondegenerate
-witness is already built (`hasDistinctPencilRealization_of_generic`), and by the cut arm's own
-adjacent-distinct sibling `hasDistinctPencilRealization_of_not_twoEdgeConnected`. The cost lands
-on the carried `hcontract` (W4), whose conclusion now carries it too
-(`notes/pencil/workbook/W4.md`). -/
+The adjacent-distinct conjunct asks only that `G` be simple. Two bodies joined by two edges, which
+are not simple, have no adjacent-distinct realization at the deficiency rank: both hinges would be
+the line through the two points (`HasDistinctPencilRealization`). -/
 def PencilPair (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
   (G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
     (G.Simple → HasDistinctPencilRealization K n G) ∧
     HasPencilRealization K n G
 
-/-- **A parallel class is never simple** (Phase 39 W5-L5, the (b′) repair's vacuity helper): two
-distinct edges linking the same pair of vertices already break `G.Simple`
-(`Graph.Simple.eq_of_isLink`). This is the fact `PencilPair`'s new `G.Simple` antecedent uses to
-route the base arm's parallel-class sub-case around `PencilNondegFeasible`'s own witness there
-(`exists_isNondegPencilRealization_parallel_pair`), mirroring the landed program's own
-`not_simple_of_isMinimalKDof_of_ncard_two` at the same graphs. -/
+/-- **Two edges with the same ends make a graph not simple** (a step of
+`lem:pencil-pair-loop-base-cut`, case (2)): distinct `e` and `f` that both link `x` and `y`
+contradict `Graph.Simple.eq_of_isLink`. So a simple graph on two bodies has at most one edge
+(`hasGenericPencilRealization_of_ncard_le_two`, `Pair.lean`). -/
 theorem not_simple_of_parallel {G : Graph α β} {e f : β} {x y : α}
     (hef : e ≠ f) (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) : ¬ G.Simple :=
   fun hSimple => hef (hSimple.eq_of_isLink hl_e hl_f)
 
-/-- **The forgetful map** (Phase 39 W5-L0, the pencil analogue of `hasPanelRealization_of_generic`):
-a generic pencil realization is in particular a bare pencil realization at the same rank — drop the
-nondegeneracy conjuncts. -/
+/-- **A generic pencil realization is one at the deficiency rank** (the remark after
+`def:pencil-distinct-motive`): forget the three conditions of nondegeneracy
+(`IsNondegPencilRealization`). The pencil form of `hasPanelRealization_of_generic`. -/
 theorem hasPencilRealization_of_generic {n : ℕ} {G : Graph α β}
     (h : HasGenericPencilRealization K n G) : HasPencilRealization K n G := by
   obtain ⟨F, normal, point, ⟨hreal, _, _, _⟩, hrank⟩ := h
   exact ⟨F, normal, point, hreal, hrank⟩
 
-/-- **The forgetful map, generic ⟹ adjacent-distinct** (Phase 39 PENCIL, checklist item 5 (α)):
-`HasDistinctPencilRealization` is `HasGenericPencilRealization` with only the *second*
-nondegeneracy conjunct (adjacent concurrency points projectively distinct) kept, so a generic
-pencil realization is one after dropping the hub-normal and closed-neighbourhood conjuncts. -/
+/-- **A generic pencil realization is adjacent-distinct** (the remark after
+`def:pencil-distinct-motive`): keep the realization, the independence of the points at the two ends
+of every link and the rank, and forget the other two conditions of nondegeneracy. -/
 theorem hasDistinctPencilRealization_of_generic {n : ℕ} {G : Graph α β}
     (h : HasGenericPencilRealization K n G) : HasDistinctPencilRealization K n G := by
   obtain ⟨F, normal, point, ⟨hreal, hadj, _, _⟩, hrank⟩ := h
   exact ⟨F, normal, point, hreal, hadj, hrank⟩
 
-/-- **The loop guard** (Phase 39 W5-L0): a loop already breaks nondegeneracy feasibility, the
-pencil analogue of `loop ⟹ ¬Simple`. A loop `e` at `v` is a link `G.IsLink e v v`, so
-`IsNondegPencilRealization`'s adjacent-distinct-points conjunct would force
-`LinearIndependent K ![point v, point v]` — impossible, since `1 • point v + (-1) • point v = 0`
-exhibits a nontrivial dependency (`LinearIndependent.pair_iff`). Consequently the loop arm's
-generic obligation (`PencilNondegFeasible K G → HasGenericPencilRealization K n G`) is vacuously
-true at any loop, mirroring the landed program's non-simple flows. -/
+/-- **A graph with a loop is not nondegeneracy-feasible** (a step of
+`lem:pencil-pair-loop-base-cut`, case (1)): a loop `e` at `v` is a link `G.IsLink e v v`, at which
+`IsNondegPencilRealization` asks that `![point v, point v]` be linearly independent, while
+`1 • point v + (-1) • point v = 0` (`LinearIndependent.pair_iff`). `pencilPair_of_isLoopAt`
+(`Pair.lean`) discharges with it the generic conjunct of `PencilPair` at a graph with a loop, which
+is also not simple. -/
 theorem not_pencilNondegFeasible_of_isLoopAt {G : Graph α β} {e : β} {v : α}
     (hloop : G.IsLoopAt e v) : ¬ PencilNondegFeasible K G := by
   rintro ⟨F, normal, point, _, hLI, _, _⟩
@@ -241,55 +209,46 @@ theorem not_pencilNondegFeasible_of_isLoopAt {G : Graph α β} {e : β} {v : α}
     (by rw [one_smul, neg_one_smul, add_neg_cancel])
   exact one_ne_zero h.1
 
-/-! ## W5-L5 cut-arm infra: nondegeneracy restricts to subgraphs, off demoted hubs (Phase 39)
+/-! ## Restriction to a subgraph
 
-The cut arm of the conditioned-pair reduction owes each side's induction hypothesis its own
-`PencilNondegFeasible` input (`notes/Phase39-design.md` §"W5 leaf decomposition" L5, "Long-run
-comparison" point 1). This section lands the route-neutral restriction core behind that: a
-nondegenerate pencil realization of `G` restricts to any subgraph `H ≤ G` — same supporting
-extensors, same panels and points — with every conjunct surviving by monotonicity **except** the
-fourth (non-hub closed-neighbourhood point LI) at a **demoted hub**: a body that is a pencil hub
-of `G` but not of `H`. There `G`'s witness genuinely carries nothing (the fourth conjunct is
-exempt at `G`-hubs, and the other three do not force it — `G` may legitimately place the two
-surviving `H`-hinges of a demoted hub on one common line), so `IsNondegPencilRealization.mono`
-takes the residual as an explicit hypothesis, and the feasibility corollary
-`PencilNondegFeasible.mono` discharges it whenever every demotion lands at `H`-degree `≤ 1`,
-where the closed neighbourhood has at most two members and the adjacent-point conjunct already
-carries it. Demotion to `H`-degree exactly `2` is the genuinely gapped case — see
-`notes/Phase39.md` *Blockers* (the 2026-07-24 cut-arm finding). -/
+A nondegenerate pencil realization of `G` restricts to a subgraph `H ≤ G`, with the same hinges,
+normals and points. The hubs of `H` are hubs of `G`, and its closed hub-neighbourhoods and closed
+neighbourhoods lie in those of `G`, so each condition at `H` follows from one at `G`, except the
+independence of the points of the closed neighbourhood of a body that is a hub of `G` and not of
+`H`, which the realization of `G` does not ask. `IsNondegPencilRealization.mono` takes it as a
+hypothesis; `PencilNondegFeasible.mono` gives it at such a body of degree at most one in `H`, and
+`exists_isNondegPencilRealization_restrict_of_demoted` (`lem:pencil-generic-steer`, (a)) chooses a
+realization of `G` that restricts when every such body loses only neighbours that are not hubs. -/
 
-/-- **A pencil hub of a subgraph is a pencil hub of the ambient graph** (Phase 39 W5-L5 cut-arm
-infra): vertex membership and degree are both monotone along `H ≤ G` (`Graph.vertexSet_mono`,
-`Graph.degree_mono`; the latter asks the ambient graph to be locally finite). -/
+/-- **A pencil hub of a subgraph is one of the graph**: for `H ≤ G`, a body of `H` is one of `G`
+(`Graph.vertexSet_mono`), and its degree in `G` is at least that in `H` (`Graph.degree_mono`, for a
+locally finite `G`). -/
 theorem _root_.Graph.PencilHub.of_le {G H : Graph α β} [G.LocallyFinite] {v : α}
     (h : H.PencilHub v) (hle : H ≤ G) : G.PencilHub v :=
   ⟨Graph.vertexSet_mono hle h.1, h.2.trans (Graph.degree_mono hle v)⟩
 
-/-- **The closed hub-neighbourhood is monotone along `H ≤ G`** (Phase 39 W5-L5 cut-arm infra):
-hubs promote to the ambient graph (`Graph.PencilHub.of_le`) and links persist
-(`Graph.IsLink.of_le`). -/
+/-- **The closed hub-neighbourhood grows with the graph**: for `H ≤ G`, a hub of `H` is one of `G`
+(`Graph.PencilHub.of_le`), and a link of `H` is one of `G` (`Graph.IsLink.of_le`). -/
 theorem _root_.Graph.closedHubNbhd_mono {G H : Graph α β} [G.LocallyFinite]
     (hle : H ≤ G) (v : α) : H.closedHubNbhd v ⊆ G.closedHubNbhd v := by
   rintro w ⟨hhub, rfl | ⟨e, hlink⟩⟩
   · exact ⟨hhub.of_le hle, Or.inl rfl⟩
   · exact ⟨hhub.of_le hle, Or.inr ⟨e, hlink.of_le hle⟩⟩
 
-/-- **The closed neighbourhood is monotone along `H ≤ G`** (Phase 39 W5-L5 cut-arm infra). -/
+/-- **The closed neighbourhood grows with the graph**: for `H ≤ G`, a link of `H` is one of `G`. -/
 theorem _root_.Graph.closedNbhd_mono {G H : Graph α β}
     (hle : H ≤ G) (v : α) : H.closedNbhd v ⊆ G.closedNbhd v := by
   rintro w (rfl | ⟨e, hlink⟩)
   · exact Or.inl rfl
   · exact Or.inr ⟨e, hlink.of_le hle⟩
 
-/-- **Restriction of a nondegenerate pencil realization to a subgraph** (Phase 39 W5-L5 cut-arm
-infra). A nondegenerate pencil realization of `G` restricts to any `H ≤ G` — keep the supporting
-extensors, panels, and points — with every conjunct surviving by monotonicity except the fourth
-at a **demoted hub** (`G.PencilHub v` but `¬ H.PencilHub v`), where `G`'s witness genuinely
-carries no closed-neighbourhood point LI; that residual is the explicit hypothesis `hdemote`.
-At a demoted body of `H`-degree `≤ 1` the residual follows from the adjacent-point conjunct
-(the closed neighbourhood has at most two members — `PencilNondegFeasible.mono` below packages
-this); at `H`-degree exactly `2` it is genuinely unavailable, since `G` may place the body's two
-surviving hinges on one common line (`notes/Phase39.md` *Blockers*, the cut-arm finding). -/
+/-- **A nondegenerate pencil realization restricts to a subgraph** (a step of
+`lem:pencil-generic-steer`, (a), and of `lem:pencil-pair-loop-base-cut`): for `H ≤ G`, the framework
+on `H` with the same supporting extensors, normals and points is a nondegenerate realization of `H`,
+given the independence of the points of the closed neighbourhood in `H` of each body of `H` that is
+a hub of `G` and not of `H` (`hdemote`). Each other condition at `H` is one at `G` on a smaller set
+(`Graph.closedHubNbhd_mono`, `Graph.closedNbhd_mono`); the realization of `G` asks nothing of the
+points at a hub of `G`. -/
 theorem IsNondegPencilRealization.mono {G H : Graph α β} [G.LocallyFinite]
     {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (hnd : IsNondegPencilRealization G F normal point) (hle : H ≤ G)
@@ -309,14 +268,13 @@ theorem IsNondegPencilRealization.mono {G H : Graph α β} [G.LocallyFinite]
   · exact hdemote v hv hGhub hvnothub
   · exact (hnbhdLI v (hV hv) hGhub).mono (Graph.closedNbhd_mono hle v)
 
-/-- **Feasibility restricts to subgraphs whose demotions are all pendant-or-isolated**
-(Phase 39 W5-L5 cut-arm infra). `PencilNondegFeasible` descends along `H ≤ G` whenever every
-`G`-pencil-hub of `H` either stays an `H`-hub or drops to `H`-degree `≤ 1`: the witness restricts
-by `IsNondegPencilRealization.mono`, and the residual fourth conjunct at a degree-`≤ 1` demotion
-follows from the adjacent-point conjunct — the closed neighbourhood is `{v}` or `{v, w}` for the
-unique pendant neighbour `w` (`Graph.Inc.isPendant_of_degree_le_one`). The `≤ 1` bound is sharp:
-at a demotion to `H`-degree `2` the residual genuinely has no source in `G`'s witness
-(`notes/Phase39.md` *Blockers*, the cut-arm finding). -/
+/-- **Feasibility restricts to a subgraph whose demoted hubs have degree at most one** (a step of
+`lem:pencil-pair-loop-base-cut`, case (3)): if each body of `H ≤ G` that is a hub of `G` is a hub of
+`H` or has degree at most one in `H`, and `G` is nondegeneracy-feasible, so is `H`. The realization
+restricts (`IsNondegPencilRealization.mono`). At a body `v` of degree at most one in `H` that is not
+a hub of `H`, the closed neighbourhood lies in `{v, w}` for its one neighbour `w`
+(`Graph.Inc.isPendant_of_degree_le_one`), whose points are independent as `v` and `w` are linked, or
+in `{v}`, whose point is nonzero. -/
 theorem PencilNondegFeasible.mono {G H : Graph α β} [G.LocallyFinite]
     (hfeas : PencilNondegFeasible K G) (hle : H ≤ G)
     (hhub : ∀ v ∈ V(H), G.PencilHub v → H.PencilHub v ∨ H.degree v ≤ 1) :
@@ -350,24 +308,19 @@ theorem PencilNondegFeasible.mono {G H : Graph α β} [G.LocallyFinite]
     exact (LinearIndepOn.singleton (i := v)
       (hpnz v (Graph.vertexSet_mono hle hv))).mono hsub
 
-/-! ## W5-L5 cut-arm infra: nondegeneracy transports along a contragredient pair (Phase 39,
-L5-cut-ii)
+/-! ## Moving a nondegenerate realization by an automorphism
 
-The cut arm's non-hub matching sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition" L5
-"Cut-arm route verdict" item 1b) repositions one side's realization by a linear automorphism `g`
-of `K⁴` (with contragredient `h`) before gluing. The panel-realization half of that transport is
-already landed (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`, W3-L4 infra,
-`Molecule/Pencil/Arms.lean`); this section layers the three nondegeneracy conjuncts on top —
-conjuncts 2–4 transport by injectivity of `g`/`h` alone (`LinearIndependent.map_injOn` /
-`LinearIndepOn.map_injOn`), with no further geometric content, since `G` itself is unchanged so
-`PencilHub`/`closedHubNbhd`/`closedNbhd` are unchanged too. -/
+The cut-edge case of the conditioned pair moves the realization of one side by a linear automorphism
+`g` of `K⁴` and a contragredient `h` of it, as the cut-edge case does for pencil realizations
+(`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`, `lem:pencil-projective-transport`,
+`Arms.lean`). The graph does not change, and neither do its hubs and neighbourhoods; the injective
+`g` and `h` keep each independence (`LinearIndependent.map_injOn`, `LinearIndepOn.map_injOn`). -/
 
-/-- **Nondegeneracy transports along a contragredient linear-equivalence pair**
-(Phase 39 W5-L5 cut-arm infra, L5-cut-ii; the `IsNondegPencilRealization` companion of
-`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`). Transporting a nondegenerate
-pencil realization `(F, normal, point)` along a linear automorphism `g` of `K⁴` (acting on the
-concurrency points) with contragredient `h` (acting on the panel normals, `g x ⬝ᵥ h y = x ⬝ᵥ y`)
-produces another nondegenerate realization on the same graph `G`. -/
+/-- **Moving a nondegenerate pencil realization** (a step of `lem:pencil-pair-loop-base-cut`, case
+(3); the nondegenerate form of `lem:pencil-projective-transport`): moving a nondegenerate pencil
+realization `(F, normal, point)` of `G` by a linear automorphism `g` of `K⁴` and a contragredient
+`h` of it (`g x ⬝ᵥ h y = x ⬝ᵥ y`), the hinges by `screwEquivOfLinearEquiv g`, the points by `g` and
+the normals by `h`, gives a nondegenerate pencil realization of `G`. -/
 theorem IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hgh : ∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y)
@@ -386,28 +339,22 @@ theorem IsNondegPencilRealization.mapExtensor_screwEquivOfLinearEquiv
   · have hli := (hnbhdLI v hv hnothub).map_injOn g.toLinearMap g.injective.injOn
     simpa [Function.comp_def] using hli
 
-/-! ## Motive-consequence incidence and cardinality lemmas (Phase 39 W5-L4, re-homed W5-L5)
+/-! ## Incidences and counts at a nondegenerate realization
 
-The cross-incidence orthogonality facts and the closed-hub-neighbourhood cardinality bound an
-*arbitrary* nondegenerate realization satisfies. Landed with W5-L4 in
-`Molecule/Pencil/Engine.lean`; **moved here 2026-07-24** (the W5-L5 cut-arm import-cone re-home,
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-i): they are consequences of the motive
-alone — their only nontrivial inputs are `Molecule/Pencil/Statement.lean`'s W2 necessity engine
-(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`) and perp-dimension count
-(`finrank_toDualPerp_single_eq`), both already in this file's import cone — and the cut arm's
-consumers (`Molecule/Pencil/Pair.lean`, which imports only this leaf) need them without pulling
-in the chart stack (`Chart`/`Engine`/`Reseed`). -/
+The point of a body is orthogonal to the normal of every member of its closed neighbourhood, by the
+incidences of a pencil realization (`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`,
+`lem:two-pencil-extension-iff`). So the normals of a closed hub-neighbourhood lie in a space of
+dimension `3`, and a nondegenerate realization has at most three members in each, as the chapter
+notes after `def:pencil-nondegenerate`. A body that is not a hub has at most three members in its
+closed neighbourhood. -/
 
-/-- **A nondegenerate realization's point is orthogonal to every selected closed-neighbour's
-normal** (Phase 39 W5-L4, the general form feeding both the cardinality bound below and the piece-3
-assembly): for `w ∈ closedNbhd v`, `point v ⬝ᵥ normal w = 0` — own-panel incidence when `w = v`; the
-W2 necessity cross-incidence (`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, via
-the linking edge's own-panel membership of `normal w` and through-point membership of `point v`)
-otherwise. The proof never uses a hub hypothesis on `w`, so this generalizes what used to be stated
-only for `closedHubNbhd` (`dotProduct_point_eq_zero_of_mem_closedHubNbhd` below is now a one-line
-corollary); this generalizes the chart's by-construction fact
-(`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`, `Molecule/Pencil/Chart.lean`) from
-the chart's own constructed data to an *arbitrary* nondegenerate realization. -/
+/-- **The point of a body is orthogonal to the normals of its closed neighbourhood** (a step of
+`lem:pencil-feasible-hub-conditions` and `lem:pencil-x0-two-hubs-obstruction`): at a nondegenerate
+realization, for `v ∈ V(G)` and `w ∈ G.closedNbhd v`, `point v ⬝ᵥ normal w = 0`. At `w = v` it is
+the incidence of the point of `v` in its panel. For a link `e` from `v` to `w`, the nonzero hinge of
+`e` lies in the panel of `w` and passes through the point of `v`
+(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`). The proof uses only that the
+realization is a pencil realization. -/
 theorem dotProduct_point_eq_zero_of_mem_closedNbhd
     {G : Graph α β} {F : BodyHingeFramework K 2 α β}
     {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
@@ -420,9 +367,9 @@ theorem dotProduct_point_eq_zero_of_mem_closedNbhd
   · exact dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint (hCne e)
       (hpanel e v w hlink).2 (hthru e v w hlink).1
 
-/-- **The `closedHubNbhd` specialization** (Phase 39 W5-L4): immediate from the general
-`closedNbhd` form above, forgetting the hub conjunct on `w` (`closedHubNbhd v ⊆ closedNbhd v`
-pointwise, `hw.2`). -/
+/-- **The point of a body is orthogonal to the normals of its closed hub-neighbourhood**:
+`dotProduct_point_eq_zero_of_mem_closedNbhd`, as the closed hub-neighbourhood lies in the closed
+neighbourhood. -/
 theorem dotProduct_point_eq_zero_of_mem_closedHubNbhd
     {G : Graph α β} {F : BodyHingeFramework K 2 α β}
     {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
@@ -430,12 +377,9 @@ theorem dotProduct_point_eq_zero_of_mem_closedHubNbhd
     point v ⬝ᵥ normal w = 0 :=
   dotProduct_point_eq_zero_of_mem_closedNbhd h hv hw.2
 
-/-- **The symmetric form: a nondegenerate realization's normal is orthogonal to every selected
-closed-neighbour's point** (Phase 39 W5-L4, feeding the piece-3 assembly's non-hub chart-normal
-reproduction): for `w ∈ closedNbhd v`, `point w ⬝ᵥ normal v = 0`. Applies the general fact above at
-`(w, v)` in place of `(v, w)`: the `w = v` case reduces to itself; the linked case transports `w`'s
-own graph membership via `hlink.right_mem` and rewrites `v ∈ closedNbhd w` from
-`w ∈ closedNbhd v` by symmetrizing the link (`hlink.symm`). -/
+/-- **The normal of a body is orthogonal to the points of its closed neighbourhood**: for `v ∈ V(G)`
+and `w ∈ G.closedNbhd v`, `point w ⬝ᵥ normal v = 0`, by `dotProduct_point_eq_zero_of_mem_closedNbhd`
+at `w = v`, or at `(w, v)` along the reversed link, as `w ∈ V(G)` and `v ∈ G.closedNbhd w`. -/
 theorem dotProduct_normal_eq_zero_of_mem_closedNbhd
     {G : Graph α β} {F : BodyHingeFramework K 2 α β}
     {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
@@ -445,15 +389,13 @@ theorem dotProduct_normal_eq_zero_of_mem_closedNbhd
   · exact dotProduct_point_eq_zero_of_mem_closedNbhd h hv (Or.inl rfl)
   · exact dotProduct_point_eq_zero_of_mem_closedNbhd h hlink.right_mem (Or.inr ⟨e, hlink.symm⟩)
 
-/-- **A nondegenerate realization's closed hub-neighbourhoods have `≤ 3` members**
-(Phase 39 W5-L4, the re-seeding assembly's cardinality bound — the same argument as the design
-doc's K4 refutation, `notes/Phase39-design.md` §"W5 design pass" verdict 1). Any `4`-member
-sub-family of an independent `normal` assignment on `closedHubNbhd v` would span all of `K⁴` (the
-ambient rank), forcing `point v` — orthogonal to every member (the cross-incidence lemma above) —
-to vanish, contradicting nondegeneracy. Concretely: the span of `normal '' closedHubNbhd v` sits
-inside `point v`'s `3`-dimensional perp (`finrank_toDualPerp_single_eq`), so its rank is `≤ 3`; the
-independence conjunct makes that rank exactly `(closedHubNbhd v).ncard` (`finrank_span_eq_card`,
-`[Finite α]` supplying the `Fintype` instance the plain `Set` needs). -/
+/-- **A nondegenerate realization has at most three members in each closed hub-neighbourhood** (a
+step of `lem:pencil-feasible-hub-conditions`, its first part): for `v ∈ V(G)`, the normals of
+`G.closedHubNbhd v` are orthogonal to the nonzero point of `v`
+(`dotProduct_point_eq_zero_of_mem_closedHubNbhd`), so they span a subspace of the vectors orthogonal
+to it, of dimension `3` (`finrank_toDualPerp_single_eq`); being independent, they span one of
+dimension `(G.closedHubNbhd v).ncard` (`finrank_span_eq_card`). So `K₄`, where each closed
+hub-neighbourhood has four members, has no nondegenerate realization. -/
 theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
     [Finite α] {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) {v : α} (hv : v ∈ V(G)) :
@@ -485,16 +427,10 @@ theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
   rw [hcard, ← hspan_eq]
   exact hspan_le
 
-/-- **A non-hub body's closed neighbourhood has `≤ 3` members** (Phase 39 W5-L4, the `closedNbhd`
-companion of the cardinality bound above — purely combinatorial, no genericity; **re-homed
-2026-07-25 from `Molecule/Pencil/Engine.lean`**, the same import-cone reason as the bound above —
-the W5-L5 cut arm's sub-case-1 producer needs it without the chart stack in the import cone): a
-non-hub `v` has degree `≤ 2` (`Graph.PencilHub`'s negation), and the distinct-neighbour set
-`N(G, v)` embeds into the incident-edge set via "an edge's other endpoint"
-(`Graph.encard_adj_le_encard_inc`, unconditional — no loopless/simple hypothesis needed), which has
-cardinality `≤ eDegree v = degree v` (`[Finite β]` supplying `LocallyFinite`,
-`Graph.natCast_degree_eq`); `closedNbhd v = insert v (N(G, v))` (`rfl`), so `Set.ncard_insert_le`
-gives the `+ 1`. -/
+/-- **A body that is not a pencil hub has at most three members in its closed neighbourhood**: its
+degree is at most `2` (a body outside `V(G)` has degree `0`); its neighbours are at most as many as
+the edges at it (`Graph.encard_adj_le_encard_inc`, `Graph.encard_inc_le_eDegree`, and
+`Graph.natCast_degree_eq` with `[Finite β]`); and `G.closedNbhd v = insert v N(G, v)`. -/
 theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β} {v : α}
     (hv : ¬ G.PencilHub v) :
     (G.closedNbhd v).ncard ≤ 3 := by
@@ -518,22 +454,16 @@ theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β}
     _ ≤ 2 + 1 := Nat.add_le_add_right hNcard 1
     _ = 3 := by norm_num
 
-/-! ## The triple-independence transfer lemma (Phase 39, moved from `Engine.lean` 2026-07-25)
+/-! ## Three independent vectors of `K⁴`
 
-`linearIndependent_triple_of_linearIndepOn` was landed at W5-L4 for the re-seeding sweep's
-arity-`3` case; **moved here 2026-07-25** for the same import-cone reason as the cross-incidence
-and cardinality lemmas above (its only dependency is `LinearIndependent.comp` on a `Fin 3 →
-↥{x,y,z}` map, general Mathlib — no chart-stack content), since the L5-cut-v-a triangle-hub
-finding below needs it in `Pair.lean`'s import cone, which excludes `Chart`/`Engine`/`Reseed`. -/
+Independence on a set `{x, y, z}` of three distinct bodies, read as that of the family
+`![f x, f y, f z]`, and the dimension `1` of the vectors orthogonal to three independent vectors.
+The triangle's obstruction below uses both. -/
 
-/-- **`LinearIndepOn` on an explicit `3`-element set transfers to the literal `Fin 3` triple**
-(Phase 39 W5-L4 piece 3, moved here 2026-07-25 — see the section note above): the `n = 3` analogue
-of mathlib's own `LinearIndepOn.pair_iff` (`n = 2`), which has no `n`-ary generalization upstream.
-Built directly: the pairwise-distinct witnesses give an (injective, since pairwise distinct) map
-`Fin 3 → ↥{x, y, z}`, and `LinearIndepOn` transports along it (`LinearIndependent.comp`) to exactly
-`![f x, f y, f z]`. Kept project-internal rather than mirrored upstream (`notes/FRICTION.md`
-[mirror-candidate]): a fully general `n`-ary version needs its own `Fintype.equivFin`-based
-infrastructure this project's fixed arities (`0`–`3`) don't otherwise need. -/
+/-- **Independence on three distinct bodies is that of their family**: for distinct `x, y, z`,
+`LinearIndepOn K f {x, y, z}` gives `LinearIndependent K ![f x, f y, f z]`, by
+`LinearIndependent.comp` along the injective map from `Fin 3` to `{x, y, z}`. Mathlib's
+`linearIndepOn_range_iff`, at the injective `![x, y, z]`, gives the same. -/
 theorem linearIndependent_triple_of_linearIndepOn (f : α → Fin 4 → K) {x y z : α}
     (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) (hLI : LinearIndepOn K f {x, y, z}) :
     LinearIndependent K ![f x, f y, f z] := by
@@ -550,13 +480,10 @@ theorem linearIndependent_triple_of_linearIndepOn (f : α → Fin 4 → K) {x y 
     funext i; fin_cases i <;> rfl
   rwa [heq] at hcomp
 
-/-- **The `⬝ᵥ`-perp of a linearly independent triple in `K⁴` has dimension `1`** (Phase 39 W5-L4,
-the arity-`3` companion of `finrank_toDualPerp_single_eq`/`Meet.lean`'s
-`finrank_toDualPerp_pair_eq`; **moved here 2026-07-25 from `Engine.lean`** — the same L5-cut-v-a
-import-cone reason as `linearIndependent_triple_of_linearIndepOn` above, and the new triangle-hub
-finding below needs it too): from `Meet.lean`'s `finrank_toDualPerp_add_finrank_span` and
-`finrank_span_eq_card`, specialized to an independent `Fin 3`-indexed family in `K⁴` (perp
-dimension `4 − 3 = 1`). -/
+/-- **The vectors of `K⁴` orthogonal to three independent vectors form a space of dimension `1`**:
+its dimension and that of the span of the three, which is `3` (`finrank_span_eq_card`), add up to
+`4` (`finrank_toDualPerp_add_finrank_span`). The form for three vectors of
+`finrank_toDualPerp_single_eq` and `finrank_toDualPerp_pair_eq` (`Meet.lean`). -/
 theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearIndependent K n) :
     Module.finrank K
         (⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (n j))
@@ -565,34 +492,32 @@ theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearInd
   rw [finrank_span_eq_card hn, Fintype.card_fin] at this
   omega
 
-/-! ## Triangle infeasibility (Phase 39 W5-L5, L5-cut-v-a)
+/-! ## Two obstructions to nondegeneracy
 
-The new obstruction mechanism the L5-cut-v assessment recon found
-(`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Feasibility propagation"): a triangle with
-two adjacent pencil hubs is nondegeneracy-infeasible, regardless of the third vertex's own hub
-status. This is what the pendant route (`hasGenericPencilRealization_pendant_of_IH`,
-`Pencil/Pair2.lean`) excludes via its `PencilNondegFeasible K G` (`hfeas`) antecedent at the
-adversarial "net" configuration (a triangle with two hubs), and it gates the hub witness (MC-188)
-of `lem:pencil-generic-steer` (`MainComponent/GenericSteer.lean`). -/
+A triangle with two pencil hubs is not nondegeneracy-feasible, and two hubs with three common
+neighbours whose points are independent have no nondegenerate realization with those points
+(`lem:pencil-feasible-hub-conditions`, `lem:pencil-x0-two-hubs-obstruction`). In each, the normals
+of the two hubs are independent, and the vectors orthogonal to both form a space of dimension `2`
+(`finrank_toDualPerp_pair_eq`). The first also serves `lem:pencil-generic-steer`
+(`MainComponent/GenericSteer.lean`). -/
 
-/-- **A triangle with two adjacent pencil hubs is nondegeneracy-infeasible** (Phase 39 W5-L5,
-L5-cut-v-a; derivation pinned in `notes/Phase39-design.md`'s "Feasibility propagation" finding).
-With `y, z` adjacent hubs (the edge `e₂`) and `x` the triangle's third vertex: conjunct 3 at `y`
-forces `normal y, normal z` independent, so their `2`-dimensional common perp
-(`finrank_toDualPerp_pair_eq`) contains all three triangle points (`dotProduct_point_eq_zero_of_
-mem_closedNbhd`, own-panel/cross incidence at every triangle edge). If `x` is not itself a hub,
-conjunct 4 forces `point x, point y, point z` independent — three vectors do not fit in a
-`2`-dimensional space. If `x` is also a hub, conjunct 3 at `x` forces `normal x, normal y, normal z`
-independent too, squeezing `point x, point y` into their `1`-dimensional common perp
-(`finrank_toDualPerp_triple_eq`) — but conjunct 2 (the `x`–`y` edge) forces them independent, and
-two vectors do not fit in a `1`-dimensional space. -/
+/-- **A triangle with two pencil hubs is not nondegeneracy-feasible** (a step of
+`lem:pencil-feasible-hub-conditions`, its second part): let `x, y, z` be the triangle, with `y` and
+`z` hubs. At a nondegenerate realization the normals of `y` and `z` are independent, both lying in
+the closed hub-neighbourhood of `y`, so the vectors orthogonal to both form a space of dimension `2`
+(`finrank_toDualPerp_pair_eq`), which holds the three points of the triangle
+(`dotProduct_point_eq_zero_of_mem_closedNbhd`, along its edges). If `x` is not a hub, the points of
+its closed neighbourhood, which contains `x, y, z`, are independent: three independent vectors in
+dimension `2`. If `x` is a hub, the normals of `x, y, z` are independent, so the points of `x` and
+`y` lie in a space of dimension `1` (`finrank_toDualPerp_triple_eq`), while the points at the two
+ends of the link `xy` are independent. -/
 theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
     {e₁ e₂ e₃ : β} {x y z : α} (hxy : x ≠ y) (hyz : y ≠ z) (hxz : x ≠ z)
     (h₁ : G.IsLink e₁ x y) (h₂ : G.IsLink e₂ y z) (h₃ : G.IsLink e₃ z x)
     (hy : G.PencilHub y) (hz : G.PencilHub z) :
     ¬ PencilNondegFeasible K G := by
   rintro ⟨F, normal, point, hnd⟩
-  -- `normal y, normal z` are independent (conjunct 3 at `y`, the adjacent hub `z`).
+  -- `normal y, normal z` are independent: both are in the closed hub-neighbourhood of `y`.
   have hsubyz : ({y, z} : Set α) ⊆ G.closedHubNbhd y := by
     rintro w (rfl | rfl)
     · exact ⟨hy, Or.inl rfl⟩
@@ -608,8 +533,8 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
     intro w
     simp only [hVyz, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
       piBasisFun_toDual_eq_dotProduct]
-  -- Every triangle point is orthogonal to both `normal y, normal z` (own-panel/cross incidence at
-  -- the triangle's three edges), hence lies in the `2`-dimensional perp `Vyz`.
+  -- Every point of the triangle is orthogonal to `normal y` and `normal z` (the incidences along
+  -- its three edges), so it lies in `Vyz`, of dimension `2`.
   have hxV : point x ∈ Vyz := by
     rw [hmemyz]; intro j; fin_cases j
     · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₁, h₁⟩)
@@ -624,9 +549,9 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
         dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₂.right_mem (Or.inr ⟨e₂, h₂.symm⟩)
     · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₂.right_mem (Or.inl rfl)
   by_cases hx : G.PencilHub x
-  · -- `x` is also a hub: `normal x, normal y, normal z` independent (conjunct 3 at `x`), squeezing
-    -- `point x, point y` into the `1`-dimensional triple perp — yet conjunct 2 forces them
-    -- independent, and `2 > 1`.
+  · -- `x` is a hub too: `normal x, normal y, normal z` are independent (the closed
+    -- hub-neighbourhood of `x`), so `point x, point y` lie in `Vxyz`, of dimension `1`, while the
+    -- link `e₁` makes them independent.
     have hsubxyz : ({x, y, z} : Set α) ⊆ G.closedHubNbhd x := by
       rintro w (rfl | rfl | rfl)
       · exact ⟨hx, Or.inl rfl⟩
@@ -669,8 +594,8 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
     have hmono := Submodule.finrank_mono hsub2
     rw [hdim2, hVxyzdim] at hmono
     omega
-  · -- `x` is not a hub: conjunct 4 forces `point x, point y, point z` independent, three vectors
-    -- that do not fit in the `2`-dimensional perp `Vyz`.
+  · -- `x` is not a hub: `point x, point y, point z` are independent (the closed neighbourhood of
+    -- `x`), three vectors in `Vyz`, of dimension `2`.
     have hsubpts : ({x, y, z} : Set α) ⊆ G.closedNbhd x := by
       rintro w (rfl | rfl | rfl)
       · exact Or.inl rfl
@@ -693,10 +618,10 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
     rw [hdim3, hVyzdim] at hmono
     omega
 
-/-- **Feasibility bounds the hub neighbourhoods** (`lem:pencil-feasible-hub-conditions`; Phase 40n
-MOTIVES M0): if `G` is nondegeneracy-feasible, every closed hub-neighbourhood has at most three
-members (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), and no triangle contains two
-pencil hubs (`not_pencilNondegFeasible_of_triangle_two_hubs`). -/
+/-- **Feasibility bounds the hub neighbourhoods** (`lem:pencil-feasible-hub-conditions`): if `G` is
+nondegeneracy-feasible, every closed hub-neighbourhood has at most three members
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`; it is empty at a body outside `V(G)`),
+and no triangle contains two pencil hubs (`not_pencilNondegFeasible_of_triangle_two_hubs`). -/
 theorem PencilNondegFeasible.hub_conditions [Finite α] {G : Graph α β}
     (hfeas : PencilNondegFeasible K G) :
     (∀ v, (G.closedHubNbhd v).ncard ≤ 3) ∧
@@ -714,14 +639,13 @@ theorem PencilNondegFeasible.hub_conditions [Finite α] {G : Graph α β}
       · exact hw hlink.left_mem
     rw [hempty]; simp
 
-/-- **Two hubs with three common neighbours obstruct nondegeneracy**
-(`lem:pencil-x0-two-hubs-obstruction`; Phase 40n MOTIVES M0). If `a ≠ b` are pencil hubs of `G` with
-three common neighbours `x, y, z` whose points are linearly independent, no nondegenerate pencil
-realization has those points: conjunct 3 at `x` forces `normal a, normal b` independent (both lie in
-the closed hub-neighbourhood of `x`), and their two-dimensional common perp
-(`finrank_toDualPerp_pair_eq`) would then have to hold three independent points, since each of
-`point x, point y, point z` is orthogonal to both normals (own-panel/cross incidence along the six
-links). -/
+/-- **Two hubs with three common neighbours** (`lem:pencil-x0-two-hubs-obstruction`, its first
+part): if `a ≠ b` are pencil hubs of `G` with common neighbours `x, y, z` whose points are linearly
+independent, the realization is not nondegenerate. Its normals at `a` and `b` would be independent,
+both lying in the closed hub-neighbourhood of `x`, and the vectors orthogonal to both form a space
+of dimension `2` (`finrank_toDualPerp_pair_eq`), which would hold the three independent points, each
+orthogonal to both normals along its links to `a` and `b`
+(`dotProduct_point_eq_zero_of_mem_closedNbhd`). -/
 theorem not_isNondegPencilRealization_of_two_hubs_three_common
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     {a b x y z : α} {ea eb fa fb ga gb : β} (hab : a ≠ b)
@@ -765,31 +689,23 @@ theorem not_isNondegPencilRealization_of_two_hubs_three_common
   rw [hdim3, hVdim] at hmono
   omega
 
-/-! ## W5-L5 cut-arm structure layer: the edge-closed side `Gᵢ⁺` (Phase 39)
+/-! ## The side of a cut with the far end of the crossing edge
 
-The cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route
-verdict") pinned the IH-consumption shape for the generic half: not the bare induced side
-`G.induce Vᵢ` (whose demoted-hub restriction gap is the recorded cut-arm finding) but the
-**edge-closed side** `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})`, where `far` is the single crossing edge's
-endpoint on the other side. With at most one crossing edge and a loopless `G`, this graph carries
-exactly the side's edges plus the cut edge, so every `Vᵢ`-vertex keeps its full `G`-degree (no
-demotion — the fourth conjunct restricts wholesale) and the far endpoint drops to degree `1`
-(a demotion `PencilNondegFeasible.mono` already bridges). This section lands that structure
-layer: the two degree lemmas, the feasibility corollary through `.mono`, and the deficiency
-bookkeeping `def(Gᵢ⁺) = def(G.induce Vᵢ) + 1` (the split `deficiency_eq_of_cutEdges_ncard_le_one`
-applied *inside* `Gᵢ⁺` at its singleton far side, whose induced side is edgeless; the re-induce
-collapses by the mirrored `Graph.induce_induce_of_subset`). The rank-side companion — dropping
-the cut edge's rows costs at most `screwDim k − 1` — is the new brick
-`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`
-(`RigidityMatrix/Bricks.lean` §CutEdgeBrick). The crossing-link dispatch the `Gᵢ⁺` lemmas share,
-`Graph.eq_cutEdge_of_isLink_crossing`, lives beside `cutEdges` in `Molecular/Deficiency.lean`. -/
+In the cut-edge case of the conditioned pair (`lem:pencil-pair-loop-base-cut`, case (3)), let one
+edge `e₀` join `u₀ ∈ V₁` to `w₀ ∉ V₁`, the only edge crossing `V₁`. When both sides have at least
+two bodies, the case uses each side with the far end of `e₀`, `G[V₁ ∪ {w₀}]`, rather than `G[V₁]`:
+each body of `V₁` keeps its degree there, so that no hub of `G` in `V₁` stops being one, and `w₀`
+has degree `1` when `G` is loopless, which `PencilNondegFeasible.mono` allows. Its links are those
+of `G[V₁]` and `e₀` (`Graph.isLink_induce_union_singleton_of_isLink`), so that removing `e₀` lowers
+its rank by at most `D - 1` (`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset`,
+`RigidityMatrix/Bricks.lean`), and its deficiency is that of `G[V₁]` plus one
+(`Graph.deficiency_induce_union_singleton`). A link of `G` crossing `V₁` is `e₀` by
+`Graph.eq_cutEdge_of_isLink_crossing` (`Molecular/Deficiency.lean`). -/
 
-/-- **The edge-closed side preserves own-side degrees** (Phase 39 W5-L5 cut-arm structure layer,
-degree lemma 1): with at most one crossing edge `e₀ = u₀w₀`, every `v ∈ V₁` has the same degree in
-`Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` as in `G` — an edge at `v` is either `V₁`-internal or the crossing
-`e₀` itself, and both survive the induce (`w₀` is exactly the vertex the closure adds). Hence no
-pencil hub of `G` on `V₁` is demoted in `Gᵢ⁺` — the gap the cut-arm finding exhibited for the bare
-side `G.induce V₁` closes structurally. -/
+/-- **A body of `V₁` keeps its degree in `G[V₁ ∪ {w₀}]`**: if `e₀` joins `u₀ ∈ V₁` to `w₀ ∉ V₁` and
+no other edge crosses `V₁`, each `v ∈ V₁` has the same degree in `G.induce (V₁ ∪ {w₀})` as in `G`.
+An edge at `v` ends in `V₁` or is `e₀`, which ends at `w₀`, so it is an edge of the induced graph.
+So no pencil hub of `G` in `V₁` stops being one there. -/
 theorem _root_.Graph.degree_induce_union_singleton_of_mem [Finite β] {G : Graph α β}
     {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
@@ -817,12 +733,10 @@ theorem _root_.Graph.degree_induce_union_singleton_of_mem [Finite β] {G : Graph
         · exact absurd hv hw₀
   rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
 
-/-- **The edge-closed side's far endpoint has degree exactly `1`** (Phase 39 W5-L5 cut-arm
-structure layer, degree lemma 2): in `Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` the closure vertex `w₀` is
-incident to the crossing edge `e₀` only — any other `Gᵢ⁺`-edge at `w₀` would have its far endpoint
-in `V₁`, making it a second crossing edge of `G` (impossible under `≤ 1`), and a loop at `w₀` is
-excluded by `[G.Loopless]`. In particular a `G`-pencil-hub `w₀` is demoted to `Gᵢ⁺`-degree `1`,
-exactly the demotion `PencilNondegFeasible.mono`'s adjacent-point bridge covers. -/
+/-- **The far end `w₀` has degree `1` in `G[V₁ ∪ {w₀}]`**: with `e₀`, `u₀`, `w₀` and `V₁` as in
+`Graph.degree_induce_union_singleton_of_mem`, and `G` loopless, `e₀` is the only edge of the induced
+graph at `w₀`: another would join `w₀` to a body of `V₁` and cross `V₁`. So a hub `w₀` of `G` has
+degree `1` there, which `PencilNondegFeasible.mono` allows. -/
 theorem _root_.Graph.degree_induce_union_singleton_far [Finite β] {G : Graph α β} [G.Loopless]
     {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
@@ -848,13 +762,11 @@ theorem _root_.Graph.degree_induce_union_singleton_far [Finite β] {G : Graph α
         ⟨hl₀.symm, Set.mem_union_right _ rfl, Set.mem_union_left _ hu₀⟩⟩
   rw [Graph.degree_eq_ncard_add_ncard, hloops, hnonloops, Set.ncard_empty, Set.ncard_singleton]
 
-/-- **Every `Gᵢ⁺`-link is either `Vᵢ`-internal or the pinned cut edge** (Phase 39 W5-L5, L5-cut-iv
-sub-case 1: the `hlinks` hypothesis the drop brick
-`finrank_span_rigidityRows_le_add_of_links_subset` (`RigidityMatrix/Bricks.lean`) wants at
-`G' := Gᵢ⁺`, `Gs := G.induce Vᵢ`). Dispatches on whether each endpoint is in `V₁` or is `w₀`: both
-in `V₁` survive the induce directly; one endpoint `w₀` forces the edge to be `e₀`
-(`Graph.eq_cutEdge_of_isLink_crossing`, in either orientation); both endpoints `w₀` is a loop,
-excluded by `[G.Loopless]`. -/
+/-- **A link of `G[V₁ ∪ {w₀}]` is one of `G[V₁]` or is `e₀`** (the hypothesis `hlinks` of
+`BodyHingeFramework.finrank_span_rigidityRows_le_add_of_links_subset` at `G[V₁ ∪ {w₀}]` and
+`G[V₁]`): a link with both ends in `V₁` is one of `G[V₁]`; one with an end `w₀` and the other in
+`V₁` crosses `V₁`, so it is `e₀` (`Graph.eq_cutEdge_of_isLink_crossing`); and one with both ends
+`w₀` is a loop, which the loopless `G` does not have. -/
 theorem _root_.Graph.isLink_induce_union_singleton_of_isLink [Finite β] {G : Graph α β}
     [G.Loopless] {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
@@ -875,13 +787,11 @@ theorem _root_.Graph.isLink_induce_union_singleton_of_isLink [Finite β] {G : Gr
       have huv : u = v := huw.trans hvw.symm
       exact absurd (huv ▸ hlG) (G.not_isLoopAt e v)
 
-/-- **Feasibility descends to the edge-closed side** (Phase 39 W5-L5 cut-arm structure layer, the
-IH-input corollary; the composition the cut-arm route verdict spiked): `PencilNondegFeasible K G`
-restricts to `Gᵢ⁺ = G.induce (V₁ ∪ {w₀})` through `PencilNondegFeasible.mono` — every `G`-hub on
-`V₁` keeps its full degree (degree lemma 1, no demotion), and the far endpoint `w₀` drops to
-degree `1` (degree lemma 2), the pendant demotion the `.mono` bridge already carries. This is the
-input half of the sub-case-1/2 IH consumption; the output half (transport of the glued conjuncts)
-is L5-cut-ii/iii. -/
+/-- **Feasibility passes to `G[V₁ ∪ {w₀}]`** (a step of `lem:pencil-pair-loop-base-cut`, case (3)):
+for a loopless `G`, `V₁ ⊆ V(G)`, and `e₀`, `u₀`, `w₀` as in
+`Graph.degree_induce_union_singleton_of_mem`, if `G` is nondegeneracy-feasible, so is
+`G.induce (V₁ ∪ {w₀})`, by `PencilNondegFeasible.mono`: a hub of `G` in `V₁` keeps its degree, and
+`w₀` has degree `1` (`Graph.degree_induce_union_singleton_far`). -/
 theorem PencilNondegFeasible.induce_union_singleton [Finite β] {G : Graph α β} [G.Loopless]
     {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hfeas : PencilNondegFeasible K G)
@@ -899,15 +809,13 @@ theorem PencilNondegFeasible.induce_union_singleton [Finite β] {G : Graph α β
       exact hGhub.2⟩
   · exact Or.inr (Graph.degree_induce_union_singleton_far hl₀ hu₀ hw₀ hcut).le
 
-/-- **The edge-closed side's deficiency bookkeeping** (Phase 39 W5-L5 cut-arm structure layer;
-`def(Gᵢ⁺) = def(G.induce V₁) + 1`): apply the cut split (KT Lemma 3.6,
-`deficiency_eq_of_cutEdges_ncard_le_one`) *inside* `Gᵢ⁺` at its singleton far side `{w₀}` — the
-unique crossing edge there is `e₀`, the singleton side is edgeless (`[G.Loopless]`) with
-deficiency `0` (`deficiency_of_edgeSet_empty`), the complementary side re-induces to
-`G.induce V₁` (`Graph.induce_induce_of_subset`), and the cut term contributes
-`D − (D − 1)·1 = 1` for every `D`. This is the bookkeeping that converts the IH rank at `Gᵢ⁺`
-(target `screwDim k · (|V₁| + 1 − 1) − def(Gᵢ⁺)`) into the bare-side form the landed cut assembly
-`finrank_span_rigidityRows_cutEdge_eq` consumes, once the drop brick removes the cut edge's rows. -/
+/-- **The deficiency of a side with the far end of the crossing edge**
+(`lem:cut-edge-decomposition`, (3)): for a loopless `G`, and `e₀`, `u₀`, `w₀` and `V₁` as in
+`Graph.degree_induce_union_singleton_of_mem`, `def(G[V₁ ∪ {w₀}]) = def(G[V₁]) + 1`. Apply (1)
+(`Graph.deficiency_eq_of_cutEdges_ncard_le_one`, KT Lemma 3.6) to `G[V₁ ∪ {w₀}]` and `{w₀}`: `e₀` is
+the only edge crossing `{w₀}` there; `G[{w₀}]` has no edge, as `G` is loopless, so its deficiency is
+`0` (`Graph.deficiency_of_edgeSet_empty`); the other side is `G[V₁]`
+(`Graph.induce_induce_of_subset`); and the cut adds `D - (D - 1) = 1`. -/
 theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {G : Graph α β}
     [G.Loopless] {n : ℕ} {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
@@ -956,22 +864,17 @@ theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {
   push_cast
   ring
 
-/-! ## W5-L5 cut-arm structure layer: boundary identities on `Vᵢ` (Phase 39, L5-cut-ii)
+/-! ## Neighbourhoods in `G[V₁ ∪ {w₀}]`
 
-The matching transport (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route
-verdict" item 1b) reads `Gᵢ⁺.closedHubNbhd`/`closedNbhd` at the crossing endpoint `u₀` and its
-neighbours, all inside `V₁`. This section identifies both against `G`'s own: `closedNbhd` agrees
-on the nose (no exception — every `G`-neighbour of a `V₁`-vertex already lies in `V₁ ∪ {w₀}`, the
-full vertex set of `Gᵢ⁺`, since any other crossing neighbour would be a second cut edge); the
-`closedHubNbhd` differs from `G`'s own only by dropping `w₀` (the single `u₀` exception the design
-doc records — `w₀` is never a `Gᵢ⁺`-hub, degree lemma 2), a difference that is a no-op away from
-`u₀` since no other `V₁`-vertex is `G`-adjacent to `w₀`. -/
+The cut-edge case reads the closed neighbourhood and the closed hub-neighbourhood of a body of `V₁`
+in `G[V₁ ∪ {w₀}]`. The first is that in `G`: every neighbour in `G` of a body of `V₁` lies in
+`V₁ ∪ {w₀}`, as any other would end a second edge crossing `V₁`. The second is that in `G` without
+`w₀`, which is not a hub of `G[V₁ ∪ {w₀}]`; as `u₀` is the only body of `V₁` linked to `w₀`,
+removing it changes only the closed hub-neighbourhood of `u₀`. -/
 
-/-- **`G`'s closed neighbourhood of a `V₁`-vertex stays inside `Gᵢ⁺`'s vertex set**
-(Phase 39 W5-L5 cut-arm structure layer): with at most one crossing edge, the only possible
-`V₁`-external `G`-neighbour of any `v ∈ V₁` is `w₀` itself (a second crossing destination would be
-a second cut edge, ruled out by `Graph.eq_cutEdge_of_isLink_crossing` forcing `v = u₀`, contradicted
-since `w₀ ∉ V₁`). -/
+/-- **The closed neighbourhood of a body of `V₁` lies in `V₁ ∪ {w₀}`**: with `e₀`, `u₀`, `w₀` and
+`V₁` as in `Graph.degree_induce_union_singleton_of_mem`, a link from `v ∈ V₁` that leaves `V₁`
+crosses it, so it is `e₀` (`Graph.eq_cutEdge_of_isLink_crossing`), whose other end is `w₀`. -/
 theorem _root_.Graph.closedNbhd_subset_of_mem [Finite β] {G : Graph α β}
     {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
@@ -986,11 +889,9 @@ theorem _root_.Graph.closedNbhd_subset_of_mem [Finite β] {G : Graph α β}
       · exact Set.mem_union_right _ rfl
       · exact absurd hv hw₀
 
-/-- **`Gᵢ⁺`'s closed neighbourhood of a `V₁`-vertex equals `G`'s own, on the nose**
-(Phase 39 W5-L5 cut-arm structure layer). No exception at `u₀`: `closedNbhd` carries no
-hub/degree filter, so every `G`-link at `v ∈ V₁` survives the induce verbatim
-(`Graph.closedNbhd_subset_of_mem` places the far endpoint inside `Gᵢ⁺`'s vertex set whenever it
-isn't already in `V₁`). -/
+/-- **A body of `V₁` has the same closed neighbourhood in `G[V₁ ∪ {w₀}]` as in `G`**: a link of the
+induced graph is one of `G`, and a link of `G` at `v ∈ V₁` has its other end in `V₁ ∪ {w₀}`
+(`Graph.closedNbhd_subset_of_mem`), so it is a link of the induced graph. -/
 theorem _root_.Graph.closedNbhd_induce_union_singleton [Finite β] {G : Graph α β}
     {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
@@ -1008,12 +909,11 @@ theorem _root_.Graph.closedNbhd_induce_union_singleton [Finite β] {G : Graph α
     · exact Or.inr ⟨e, (Graph.induce_isLink G (V₁ ∪ {w₀}) e v w).mpr
         ⟨hl, Set.mem_union_left _ hv, hwmem⟩⟩
 
-/-- **`Gᵢ⁺`'s closed hub-neighbourhood of a `V₁`-vertex is `G`'s own, minus `w₀`**
-(Phase 39 W5-L5 cut-arm structure layer; the design doc's "single `u₀` exception"). Hub status
-agrees on all of `V₁` (degree lemma 1, `Graph.degree_induce_union_singleton_of_mem`), and `w₀` is
-never a `Gᵢ⁺`-hub (degree lemma 2, `Graph.degree_induce_union_singleton_far` — degree `1 < 3`); the
-`\ {w₀}` correction is a no-op away from `u₀`, since no other `V₁`-vertex is `G`-adjacent to `w₀`
-(`Graph.closedNbhd_subset_of_mem`). -/
+/-- **A body of `V₁` has in `G[V₁ ∪ {w₀}]` the closed hub-neighbourhood it has in `G`, without
+`w₀`**: for a loopless `G` and `V₁ ⊆ V(G)`, a body of `V₁` is a hub of the induced graph exactly
+when it is one of `G` (`Graph.degree_induce_union_singleton_of_mem`), `w₀` is not a hub there
+(`Graph.degree_induce_union_singleton_far`), and the closed neighbourhoods agree
+(`Graph.closedNbhd_induce_union_singleton`). -/
 theorem _root_.Graph.closedHubNbhd_induce_union_singleton [Finite β] {G : Graph α β} [G.Loopless]
     {V₁ : Set α} {e₀ : β} {u₀ w₀ : α} (hV₁ : V₁ ⊆ V(G))
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
@@ -1049,21 +949,18 @@ theorem _root_.Graph.closedHubNbhd_induce_union_singleton [Finite β] {G : Graph
     rw [Graph.degree_induce_union_singleton_of_mem hl₀ hu₀ hw₀ hcut hw₁]
     exact hwG.2
 
-/-! ## W5-L5 cut-arm structure layer: the disjoint-sides case (Phase 39, L5-cut-iv sub-case 2)
+/-! ## A side that no edge leaves
 
-The `|C| = 0` sub-case of the cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf
-decomposition" L5 "Cut-arm route verdict", item 2) needs no `Gᵢ⁺` closure at all: with no crossing
-edge, every `G`-neighbour of a `V₁`-vertex already lies in `V₁` (and symmetrically for `V₂`), so
-degree, hub status, `closedHubNbhd`, and `closedNbhd` all transfer *on the nose* between `G` and
-each side — no exception, no demotion. This section lands the three general-purpose lemmas behind
-that, parametrized by an arbitrary "closed under `G`-adjacency" set `S` (reused for both `V₁` and
-`V₂` by the sub-case's producer, `Pencil/Pair.lean`), rather than duplicating the `Gᵢ⁺`-style
-per-side pair. -/
+When no edge crosses `V₁` (`lem:pencil-pair-loop-base-cut`, case (3)), generic realizations of
+`G[V₁]` and of `G[V(G) \ V₁]` together form one of `G`
+(`hasGenericPencilRealization_of_cutEdges_eq_empty`, `Pair.lean`). For a set `S` such that every
+link of `G` from a body of `S` ends in `S`, the degree, the closed hub-neighbourhood and the closed
+neighbourhood of a body of `S` are the same in `G[S]` as in `G`; the case applies this to both
+sides. -/
 
-/-- **A `G`-adjacency-closed set's induced degree agrees with `G`'s own** (Phase 39 W5-L5
-disjoint-sides structure layer): if every `G`-neighbour of a member of `S` stays in `S`, the
-induced subgraph `G.induce S` preserves the degree of every `v ∈ S` — every edge at `v` (loop or
-not) survives the induce, since its other endpoint is already in `S` (`hS`). -/
+/-- **A body of a set closed under links keeps its degree in the induced graph**: if every link of
+`G` from a body of `S` ends in `S`, each `v ∈ S` has the same degree in `G.induce S` as in `G`, as
+every edge at `v`, a loop or not, is an edge of `G.induce S`. -/
 theorem _root_.Graph.degree_induce_of_forall_isLink_mem [Finite β] {G : Graph α β} {S : Set α}
     (hS : ∀ e x y, G.IsLink e x y → x ∈ S → y ∈ S) {v : α} (hv : v ∈ S) :
     (G.induce S).degree v = G.degree v := by
@@ -1080,11 +977,9 @@ theorem _root_.Graph.degree_induce_of_forall_isLink_mem [Finite β] {G : Graph �
       exact ⟨y, hyv, (Graph.induce_isLink G S e v y).mpr ⟨hl, hv, hS e v y hl hv⟩⟩
   rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
 
-/-- **A `G`-adjacency-closed set's induced closed hub-neighbourhood agrees with `G`'s own**
-(Phase 39 W5-L5 disjoint-sides structure layer): every member `w` of the closed hub-neighbourhood
-on either side is itself in `S` (either `w = v` or linked to `v ∈ S`, `hS`), so degree agreement
-(`Graph.degree_induce_of_forall_isLink_mem`) transports hub status both ways; `hSVG` supplies the
-ambient vertex membership `Graph.PencilHub` needs on the `G`-side. -/
+/-- **A body of a set closed under links keeps its closed hub-neighbourhood in the induced graph**:
+with `S` as in `Graph.degree_induce_of_forall_isLink_mem` and `S ⊆ V(G)`, every member of either
+closed hub-neighbourhood of `v ∈ S` lies in `S`, where degrees, and so hubs, agree. -/
 theorem _root_.Graph.closedHubNbhd_induce_of_forall_isLink_mem [Finite β] {G : Graph α β}
     {S : Set α} (hSVG : S ⊆ V(G)) (hS : ∀ e x y, G.IsLink e x y → x ∈ S → y ∈ S) {v : α}
     (hv : v ∈ S) :
@@ -1108,9 +1003,8 @@ theorem _root_.Graph.closedHubNbhd_induce_of_forall_isLink_mem [Finite β] {G : 
       · exact Or.inl rfl
       · exact Or.inr ⟨e, (Graph.induce_isLink G S e v w).mpr ⟨hl, hv, hwS⟩⟩
 
-/-- **A `G`-adjacency-closed set's induced closed neighbourhood agrees with `G`'s own**
-(Phase 39 W5-L5 disjoint-sides structure layer): the `closedHubNbhd` lemma above without the hub
-filter, hence no ambient-membership hypothesis needed. -/
+/-- **A body of a set closed under links keeps its closed neighbourhood in the induced graph**: the
+form of `Graph.closedHubNbhd_induce_of_forall_isLink_mem` without hubs, and without `S ⊆ V(G)`. -/
 theorem _root_.Graph.closedNbhd_induce_of_forall_isLink_mem {G : Graph α β}
     {S : Set α} (hS : ∀ e x y, G.IsLink e x y → x ∈ S → y ∈ S) {v : α} (hv : v ∈ S) :
     (G.induce S).closedNbhd v = G.closedNbhd v := by
@@ -1123,30 +1017,18 @@ theorem _root_.Graph.closedNbhd_induce_of_forall_isLink_mem {G : Graph α β}
     · exact Or.inl rfl
     · exact Or.inr ⟨e, (Graph.induce_isLink G S e v w).mpr ⟨hl, hv, hS e v w hl hv⟩⟩
 
-/-! ## W5-L5 cut-arm structure layer: the pendant side (Phase 39, L5-cut-iv sub-case 3)
+/-! ## The side opposite a single body
 
-The `|V₃₋ᵢ| = 1` sub-case of the cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf
-decomposition" L5 "Cut-arm route verdict", item 3): the far side is a single pendant vertex, so
-`Gᵢ⁺ = G` and the edge-closed-side trick (L5-cut-i) is inapplicable — the induction hypothesis
-fires directly at the *bare* induced side `H := G.induce V₁`, one vertex smaller than `G`. Unlike
-the `Gᵢ⁺` structure layer, the two lemmas below need no far-vertex membership hypothesis on `G` at
-all: they are the same "at most one crossing edge" fact, read for the bare induced side rather than
-its edge-closure, so they hold regardless of how large the complementary side is (the pendant
-configuration only enters once the far vertex's own degree/hub-status needs pinning, which the
-pendant glue, `Pencil/Pair2.lean`, does locally). The crossing endpoint `u₀`'s hub status is
-the one place degree actually differs between `H` and `G` (by exactly one, the dropped crossing
-edge), unchanged when `G.degree u₀` avoids exactly `3` — the sharp value where a single dropped
-edge can flip pencil-hub status; the unified pendant route `lem:pencil-generic-steer`
-(`hasGenericPencilRealization_pendant_of_IH`) needs no such degree split, so this fact is no longer
-formalized separately (`40-simplify` task 10o). -/
+When one side of the cut is a single body `w₀`, joined to `u₀ ∈ V₁ = V(G) \ {w₀}` by the crossing
+edge `e₀` (`lem:pencil-pair-loop-base-cut`, case (3)), the side with the far end would be `G`
+itself, and the case uses `G[V₁] = G - w₀` (`Pair2.lean`). The two lemmas below hold for any `V₁`
+that `e₀` alone crosses: a body of `V₁` other than `u₀` keeps its degree in `G[V₁]`, and `u₀` loses
+one. -/
 
-/-- **The bare induced side keeps the ambient degree away from the crossing endpoint**
-(Phase 39 W5-L5 cut-arm structure layer, L5-cut-iv sub-case 3; dual to
-`Graph.degree_induce_union_singleton_of_mem`, read for the bare induced side instead of its
-edge-closure). With at most one crossing edge `e₀ = u₀w₀`, every `v ∈ V₁` other than `u₀` keeps the
-same degree in `G.induce V₁` as in `G`: any `G`-edge at `v` crossing out of `V₁` would, by
-uniqueness of the crossing edge, have to be `e₀` itself, forcing `v = u₀` — contradicting
-`v ≠ u₀`. -/
+/-- **A body of `V₁` other than `u₀` keeps its degree in `G[V₁]`**: with `e₀` joining `u₀ ∈ V₁` to
+`w₀ ∉ V₁`, the only edge crossing `V₁`, an edge of `G` at `v ∈ V₁` with an end outside `V₁` would be
+`e₀`, whose ends are `u₀ ≠ v` and `w₀ ∉ V₁`. The form of
+`Graph.degree_induce_union_singleton_of_mem` for `G[V₁]`. -/
 theorem _root_.Graph.degree_induce_eq_of_ne [Finite β] {G : Graph α β} {V₁ : Set α}
     {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) (hvne : v ≠ u₀) :
@@ -1171,11 +1053,10 @@ theorem _root_.Graph.degree_induce_eq_of_ne [Finite β] {G : Graph α β} {V₁ 
         · rw [hveq] at hv; exact hw₀ hv
   rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
 
-/-- **The crossing endpoint loses exactly the crossing edge's degree on the bare induced side**
-(Phase 39 W5-L5 cut-arm structure layer, L5-cut-iv sub-case 3): `G.degree u₀ = (G.induce
-V₁).degree u₀ + 1` — the nonloop edges at `u₀` are exactly the bare induced side's, plus `e₀`
-itself (any other crossing edge at `u₀` would duplicate `e₀` by crossing-edge uniqueness, and no
-`H`-internal edge is `e₀`, whose far endpoint `w₀` sits outside `V₁`). -/
+/-- **The end `u₀` loses one edge in `G[V₁]`**: for a loopless `G`, and `e₀`, `u₀`, `w₀` and `V₁` as
+in `Graph.degree_induce_eq_of_ne`, `G.degree u₀ = (G.induce V₁).degree u₀ + 1`. The edges of `G` at
+`u₀` are those of `G[V₁]` and `e₀`: another edge leaving `V₁` would cross it, and `e₀` is not an
+edge of `G[V₁]`, as `w₀ ∉ V₁`. -/
 theorem _root_.Graph.degree_eq_degree_induce_succ [Finite β] {G : Graph α β} [G.Loopless]
     {V₁ : Set α} {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1) :
