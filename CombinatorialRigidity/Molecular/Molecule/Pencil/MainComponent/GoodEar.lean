@@ -6,25 +6,36 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
 
 /-!
-# A minimal planar-rigid set has a good ear (Phase 40p REDUCE+CLOSE)
+# A body of degree two with hub neighbours, or a pendant triangle
 
-(MC-129) at a two-edge-connected graph (`blueprint/src/chapter/main-component.tex`,
-`sec:main-component-statements`): a minimal planar-rigid set of a graph satisfying the standing
-hypotheses gives a one-body open ear at hub ends across which the deficiency does not drop, or a
-pendant triangle at a body of degree at least four.
+The structure that the step of the generic conjunct (`thm:pencil-generic-step`) finds in a graph
+with a planar-rigid set (`lem:pencil-rigid-good-ear`, `sec:main-component-statements`). Let `G`
+satisfy the standing hypotheses and be 2-edge-connected on at least four bodies, with every closed
+hub-neighbourhood of at most three members and no triangle containing two pencil hubs, the two
+consequences of nondegeneracy-feasibility (`lem:pencil-feasible-hub-conditions`), and with a
+planar-rigid set. Then `G` has a body `y` of degree two whose neighbours are pencil hubs and whose
+removal does not raise the deficiency, `def₃(G − y) ≤ def₃(G)`, or a pendant triangle: two adjacent
+bodies of degree two with a common neighbour of degree at least four.
 
-## Main statements
+The proof takes a planar-rigid set `W₀` with as few bodies as possible. Then `s(W₀) ≤ 0`, every
+proper subset of at least two bodies has singleton value at least `1` (`lem:deficiency-sparse`),
+`|W₀| ≥ 3`, and every body of `W₀` has at least two links into the rest of `W₀`
+(`lem:deficiency-add-body`). Two distinct bodies of `W₀` with at most one link each into the rest
+make `W₀` a triangle (`Graph.exists_eq_triple_of_minimal`). If every body of `W₀` were a pencil hub,
+each would have at most two hub neighbours, and `W₀` would be a triangle of hubs, which is excluded.
+So some `y ∈ W₀` is not a hub, and it has degree two. If a neighbour of `y` is not a hub either,
+`W₀` is a pendant triangle, whose third body has degree at least four
+(`Graph.exists_closedEar_two_of_triangle`). If both are hubs, `W₀ \ {y}` is rigid, and removing `y`
+does not raise the deficiency.
 
-* `Graph.exists_eq_triple_of_minimal` — (MC-129) step 3, by the singleton count: a set of
-  singleton value at most `0` whose proper subsets of two or more bodies have singleton value at
-  least `1`, with two adjacent bodies each with at most one neighbour among the rest, is a
-  triangle.
-* `Graph.exists_closedEar_two_of_triangle` — a pendant triangle of a two-edge-connected graph on
-  at least four bodies: two adjacent bodies of degree two with a common neighbour form a closed
-  two-ear, and the common neighbour has degree at least four.
-* `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle` — (MC-129) itself, `lem:pencil-rigid-good-ear`.
+## Main results
 
-See `notes/Phase40p.md` and `ROADMAP.md` §40 for the phase.
+* `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`: `lem:pencil-rigid-good-ear`, a body of degree
+  two with hub neighbours whose removal does not raise the deficiency, as an open ear with one
+  interior body, or a pendant triangle, as a closed ear with two interior bodies.
+* `Graph.exists_eq_triple_of_minimal`: `lem:pencil-rigid-good-ear`, its triangle step.
+* `Graph.exists_closedEar_two_of_triangle`: `lem:pencil-rigid-good-ear`, a pendant triangle of a
+  2-edge-connected graph on at least four bodies is a closed ear whose end has degree at least four.
 -/
 
 open scoped Graph
@@ -33,10 +44,14 @@ namespace CombinatorialRigidity.Molecular
 
 variable {α β : Type*}
 
-/-- **The triangle step** ((MC-129) step 3, by the singleton count): in a set `W₀` of singleton
-value at most `0` whose proper subsets of two or more bodies have singleton value at least `1`,
-two adjacent bodies each with at most one neighbour among the rest span, with a third body, all of
-`W₀`, and the three are pairwise adjacent. -/
+/-- **Two bodies with few links into the rest make a triangle** (`lem:pencil-rigid-good-ear`, its
+triangle step): in a simple graph, let `W₀` have at least three bodies and `s(W₀) ≤ 0`, every proper
+subset of at least two bodies having singleton value at least `1`. If two distinct bodies `y` and
+`u` of `W₀` each have at most one link into `Z = W₀ \ {y, u}`, then `W₀ = {y, u, w}` with `y`, `u`
+and `w` pairwise adjacent. Putting `y` and then `u` back into `Z` does not lower the singleton value
+(`Graph.partitionDef_two_induce_insert_id`): `y` adds at least `3 − 2`, and `u`, with at most two
+links into `Z ∪ {y}`, at least `3 − 4`. So `s(Z) ≤ s(W₀) ≤ 0`, and `|Z| ≤ 1`. Then `Z = {w}`, and
+`s(W₀) ≤ 0` needs all three links. -/
 theorem _root_.Graph.exists_eq_triple_of_minimal [Finite α] [Finite β] {G : Graph α β}
     (hG : G.Simple) {W₀ : Set α}
     (hS : ∀ Z ⊆ W₀, Z ≠ W₀ → 2 ≤ Z.ncard → 1 ≤ (G.induce Z).partitionDef 2 id)
@@ -104,9 +119,12 @@ theorem _root_.Graph.exists_eq_triple_of_minimal [Finite α] [Finite β] {G : Gr
   · have := hS Z Set.sdiff_subset (fun h => hyZ (by rw [h]; exact hy)) hZ2
     omega
 
-/-- **A pendant triangle of a two-edge-connected graph on at least four bodies**: two adjacent
-bodies `y`, `u` of degree two with a common neighbour `w` form a closed two-ear at `w`, and `w`
-has degree at least four (the triangle is crossed by at least two edges, all at `w`). -/
+/-- **A pendant triangle is a closed ear** (`lem:pencil-rigid-good-ear`): in a simple
+2-edge-connected graph on at least four bodies, let `y` and `u` be adjacent bodies of degree two
+with a common neighbour `w`. Then `w − y − u − w` is a closed ear on `V(G) \ {y, u}` with two
+interior bodies, in the form of the hypotheses of `Graph.X0Attains.of_closedEar`, and `w` has degree
+at least four: at least two links leave the triangle, as `G` is 2-edge-connected on at least four
+bodies, and all of them are at `w`. -/
 theorem _root_.Graph.exists_closedEar_two_of_triangle [Finite β]
     {G : Graph α β} (hS : G.Simple) (htec : G.TwoEdgeConnected) (h4 : 4 ≤ V(G).ncard)
     {y u w : α} (hy2 : G.degree y = 2) (hu2 : G.degree u = 2) (hyu : y ≠ u) (hwy : w ≠ y)
@@ -209,9 +227,28 @@ theorem _root_.Graph.exists_closedEar_two_of_triangle [Finite β]
     have h3 := Set.ncard_le_ncard hsub1 (Set.toFinite _)
     omega
 
-/-- **(MC-129) at a two-edge-connected graph**: a planar-rigid set and at least four bodies give a
-one-body open ear at hub ends with `def₃(G[V₁]) ≤ def₃(G)`, or a pendant triangle at a body of
-degree at least four. -/
+/-- **A body of degree two with hub neighbours, or a pendant triangle**
+(`lem:pencil-rigid-good-ear`): let `G` satisfy the standing hypotheses and be 2-edge-connected on at
+least four bodies, with every closed hub-neighbourhood of at most three members, no triangle
+containing two pencil hubs, and a planar-rigid set. Then `G` has an open ear `a − x 0 − b` on `V₁`
+with one interior body, whose ends are pencil hubs, with `def₃(G[V₁]) ≤ def₃(G)`; or a closed ear
+`c − x 0 − x 1 − c` on `V₁` whose end `c` has degree at least four.
+
+A planar-rigid set `W₀` with as few bodies as possible has `s(W₀) ≤ 0`, and its proper subsets of at
+least two bodies have singleton value at least `1`
+(`Graph.exists_deficiency_induce_eq_zero_of_partitionDef_id_nonpos`, `lem:deficiency-sparse`). Then
+`|W₀| ≥ 3`, and every body of `W₀` has at least two links into the rest of `W₀`
+(`Graph.partitionDef_two_induce_insert_id`, `lem:deficiency-add-body`). If every body of `W₀` were a
+pencil hub, each would have at most two hub neighbours, and `W₀` would be a triangle of hubs
+(`Graph.exists_eq_triple_of_minimal`), which is excluded. A body `y ∈ W₀` that is not a hub has
+degree two, with both neighbours `a` and `b` in `W₀`. If one of them is not a hub, it has degree two
+too, and `W₀` is a pendant triangle (`Graph.exists_eq_triple_of_minimal`,
+`Graph.exists_closedEar_two_of_triangle`). If both are hubs, `X = W₀ \ {y}` has `s(X) ≤ 1` and at
+least three bodies, as two would form with `y` a triangle with two hubs. So `X` is rigid
+(`Graph.deficiency_three_induce_eq_zero_of_tight`, `lem:deficiency-tight-rigid`), and
+`def₃(G − y; a, b) = def₃(G − y)` (`Graph.deficiencyMerged_eq_deficiency_of_mem`,
+`lem:deficiency-merge-rigid`) gives `def₃(G − y) ≤ def₃(G)`
+(`Graph.IsOpenEar.deficiency_induce_le`). -/
 theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) (h4 : 4 ≤ V(G).ncard)
     (hF1 : ∀ v, (G.closedHubNbhd v).ncard ≤ 3)
@@ -229,7 +266,7 @@ theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Fin
   obtain ⟨W₀, ⟨hW₀V, hW₀2, hW₀d⟩, hmin⟩ := Set.exists_min_image
     {Y : Set α | Y ⊆ V(G) ∧ 2 ≤ Y.ncard ∧ (G.induce Y).deficiency 2 = 0} Set.ncard
     (Set.toFinite _) (by obtain ⟨Y, hY, h2, hd⟩ := hrig; exact ⟨Y, hY, h2, hd⟩)
-  -- (S) on the proper subsets of `W₀`
+  -- every proper subset of `W₀` of at least two bodies has singleton value at least `1`
   have hS : ∀ Z ⊆ W₀, Z ≠ W₀ → 2 ≤ Z.ncard → 1 ≤ (G.induce Z).partitionDef 2 id := by
     intro Z hZ hne hZ2
     by_contra hlt
@@ -282,7 +319,7 @@ theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Fin
     have hya : y ≠ a := fun h => haX.2 h.symm
     have hyb : y ≠ b := fun h => hbX.2 h.symm
     by_cases hab_hub : G.PencilHub a ∧ G.PencilHub b
-    · -- **the one-body ear**: `W₀ − y` is tight, hence `def₃`-rigid
+    · -- **the one-body ear**: `W₀ \ {y}` is tight, hence rigid
       obtain ⟨ha, hb⟩ := hab_hub
       left
       have hyX : y ∉ W₀ \ {y} := fun h => h.2 rfl
@@ -348,10 +385,10 @@ theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Fin
         Graph.exists_eq_triple_of_minimal hG.simple hS hW₀v hW₀3 hy hu.1 hyu hty htu
       exact Graph.exists_closedEar_two_of_triangle hG.simple htec h4 hy2 hu2 hyu hwy hwu hyw huw
         huy
-  · -- every body of `W₀` a hub: a triangle of hubs, excluded by (F2)
+  · -- every body of `W₀` a hub: a triangle of hubs, which `hF2` excludes
     push Not at hnh
     exfalso
-    -- (F1): a hub has at most one hub neighbour besides a given one
+    -- by `hF1`, a hub has at most one hub neighbour besides a given one
     have hnbrH : ∀ v, G.PencilHub v → ∀ u c₁ c₂, G.Adj v u → G.Adj v c₁ → G.Adj v c₂ →
         G.PencilHub u → G.PencilHub c₁ → G.PencilHub c₂ →
         v ≠ u → v ≠ c₁ → v ≠ c₂ → u ≠ c₁ → u ≠ c₂ → c₁ = c₂ := by

@@ -7,34 +7,42 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut
 import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
 
 /-!
-# Theorem S, the covering theorem and the pieces they compose from (Phase 40m THEOREM-S B4–B5)
+# Usable chains, a core when no chain is usable, and the structural coverage
 
-A usable chain's dispatch, contraction at a maximal planar-rigid set, and the count of bodies of
-degree two a sparse (H)-graph needs, all of which Theorem S composes from; Theorem S itself; and
-the covering theorem — every (H)-graph reduces by one landed step, hence `X₀`'s general point
-attains at every simple 2-edge-connected graph on at least three bodies
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-coverage`; (MC-75), (MC-76),
-(MC-79)ff, (MC-80), (MC-89), (MC-10)(a)).
+The structural coverage (`thm:pencil-x0-coverage`, `sec:main-component-coverage`): every graph
+satisfying the standing hypotheses reduces to the graphs smaller than it (`Graph.X0Reduces`). So,
+over an infinite field, the general configuration of every such graph attains, and in particular
+that of every simple 2-edge-connected graph on at least three bodies. The proof takes the cases of
+the chapter's table in order: a graph that is not 2-connected (`lem:pencil-x0-cut-reduces`,
+`MainComponent/CoverageCut.lean`); a cycle (`lem:pencil-x0-cycle-reduces`,
+`MainComponent/CoverageChain.lean`); equal deficiencies `def₂(G) = def₃(G)`; and a planar-rigid set,
+where `G` contracts a maximal one (`lem:pencil-x0-planar-rigid-reduces`). Otherwise `G` is sparse:
+every set `X` of at least two bodies has singleton value `s(X) ≥ 1`. Its bodies of degree two lie on
+chains (`lem:pencil-x0-chain-exists`). A usable chain (`def:pencil-x0-usable-chain`) gives an ear or
+split-off step (`lem:pencil-x0-chain-reduces`). If no chain is usable, there is a core
+(`thm:pencil-x0-theorem-s`), at which `G` contracts.
 
-## Main statements
+The core is a maximal rigid set containing a rigid set that the chains give: the `4`-cycle of a
+chain with two interior bodies, whose ends are then adjacent, or, at a chain with one interior body,
+a rigid set that exists as the chain is not usable. When `G` itself is rigid, the core is maximal
+among the rigid sets that avoid one body of degree two; the count of the bodies of degree two
+(`lem:pencil-x0-sparse-count`) finds that body and a rigid set avoiding it.
 
-* `Graph.ChainUsable` — **a usable chain** (`def:pencil-x0-usable-chain`): a chain long enough, or
-  short with a deficiency condition at its ends.
-* `Graph.IsChain.x0Reduces_of_chainUsable` — **the chain dispatch**
-  (`lem:pencil-x0-chain-reduces`): a usable chain gives a reduction, by the ear or split-off
-  clauses.
-* `Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid` — **contraction at a maximal planar-rigid
-  set** (`lem:pencil-x0-planar-rigid-reduces`).
-* `Graph.IsX0Graph.exists_degree_eq_two_notMem`,
-  `Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos` — **counting bodies of degree two**
-  (`lem:pencil-x0-sparse-count`): a sparse graph has at least four, and, when no two are adjacent,
-  removing any one of them keeps `val₃ ≤ 0`.
-* `Graph.IsX0Graph.exists_additiveCore` — **Theorem S** (`thm:pencil-x0-theorem-s`): an (S)-graph
-  none of whose chains is usable has an additive core with the attachment condition.
-* `Graph.IsX0Graph.x0Reduces`, `Graph.IsX0Graph.x0Attains`,
-  `Graph.X0Attains.of_twoEdgeConnected` — **the covering theorem** (`thm:pencil-x0-coverage`):
-  every (H)-graph reduces by one landed step, and consequently `X₀`'s general point attains at
-  every (H)-graph, in particular at every simple 2-edge-connected graph on at least three bodies.
+## Main results
+
+* `Graph.ChainUsable`: `def:pencil-x0-usable-chain`, a usable chain.
+* `Graph.IsChain.x0Reduces_of_chainUsable`: `lem:pencil-x0-chain-reduces`, a usable chain gives a
+  reduction.
+* `Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid`: `lem:pencil-x0-planar-rigid-reduces`,
+  contraction at a maximal planar-rigid set.
+* `Graph.IsX0Graph.exists_degree_eq_two_notMem` and
+  `Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos`: `lem:pencil-x0-sparse-count`, a sparse
+  graph has at least four bodies of degree two, and if no two bodies of degree two are adjacent,
+  then `s₆(V(G) \ {x}) ≤ 0` for every body `x` of degree two.
+* `Graph.IsX0Graph.exists_additiveCore`: `thm:pencil-x0-theorem-s`, a core when no chain is usable.
+* `Graph.IsX0Graph.x0Reduces`, `Graph.IsX0Graph.x0Attains` and
+  `Graph.X0Attains.of_twoEdgeConnected`: `thm:pencil-x0-coverage`, the structural coverage and the
+  attainment it gives.
 -/
 
 open scoped Graph
@@ -43,7 +51,12 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-- **A usable chain** ((MC-79)(v) in the Lean steps' own hypotheses). -/
+/-- **A usable chain** (`def:pencil-x0-usable-chain`): a chain `a − x 0 − ⋯ − x (k − 1) − b` on `V₁`
+is usable if `k ≥ 3`; or `k = 2` and either `def₃(G[V₁]; a, b) = def₃(G[V₁])`, or `a` and `b` are
+not adjacent and `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`; or `k = 1` and either
+`def₃(G[V₁]; a, b) = def₃(G[V₁])` or `def₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])`. The predicate reads only
+`V₁`, `k` and the ends. Its conditions are the chain rows of the chapter's table, with `k ≥ 3` split
+there by the step (`lem:pencil-x0-chain-reduces`). -/
 def _root_.Graph.ChainUsable (G : Graph α β) (V₁ : Set α) (k : ℕ) (a b : α) : Prop :=
   3 ≤ k ∨
   (k = 2 ∧ ((G.induce V₁).deficiencyMerged 3 a b = (G.induce V₁).deficiency 3 ∨
@@ -56,7 +69,13 @@ variable [Finite α] [Finite β]
 
 /-! ## The reductions at a usable chain and at a planar-rigid set -/
 
-/-- CONTRACT-A's producer: an additive core gives a reduction. -/
+/-- **An additive core gives a reduction** (a step of `thm:pencil-x0-coverage`): let `G` satisfy the
+standing hypotheses and be 2-edge-connected, and let `W ⊊ V(G)` have `|W| ≥ 2`, `def₃(G[W]) = 0` and
+`def₂(G[W]) + def₂(G/G[W]) ≤ def₂(G)`, with no body outside `W` adjacent to two bodies of `W`. Then
+`G` reduces to the graphs smaller than it, by the clause of contraction at an additive core
+(`Graph.X0Reduces.additiveContract`): `G[W]` and `G/G[W]` satisfy the standing hypotheses
+(`lem:pencil-contract-standing-rigid`, `lem:pencil-contract-standing`) and have fewer bodies than
+`G` (`lem:reduction-measure`). -/
 theorem _root_.Graph.IsX0Graph.x0Reduces_of_additiveCore {G : Graph α β} (hG : G.IsX0Graph)
     (htec : G.TwoEdgeConnected) {W : Set α} {r : α} (hr : r ∈ W) (hWss : W ⊂ V(G))
     (hW2 : 2 ≤ W.ncard) (hdef3 : (G.induce W).deficiency 3 = 0)
@@ -71,7 +90,12 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_additiveCore {G : Graph α β} (hG :
   · exact Graph.isX0Graph_rigidContract_induce hG htec hr hWss hatt
   · exact Graph.rigidContract_vertexSet_ncard_lt hWss.subset hW2
 
-/-- CONTRACT-R's producer: a `def₂`-rigid core with the attachment condition. -/
+/-- **Contraction at a planar-rigid set** (a step of `lem:pencil-x0-planar-rigid-reduces`): let `G`
+satisfy the standing hypotheses and be 2-edge-connected, and let `W ⊊ V(G)` have `|W| ≥ 2` and
+`def₂(G[W]) = 0`, with no body outside `W` adjacent to two bodies of `W`. Then `G` reduces to the
+graphs smaller than it, by the contraction clause (`Graph.X0Reduces.rigidContract`): `G/G[W]`
+satisfies the standing hypotheses (`lem:pencil-contract-standing`) and has fewer bodies than `G`
+(`lem:reduction-measure`). -/
 theorem _root_.Graph.IsX0Graph.x0Reduces_of_rigidCore {G : Graph α β} (hG : G.IsX0Graph)
     (htec : G.TwoEdgeConnected) {W : Set α} {r : α} (hr : r ∈ W) (hWss : W ⊂ V(G))
     (hW2 : 2 ≤ W.ncard) (hdef : (G.induce W).deficiency 2 = 0)
@@ -81,7 +105,12 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_rigidCore {G : Graph α β} (hG : G.
     ⟨Graph.isX0Graph_rigidContract_induce hG htec hr hWss hatt,
       Graph.rigidContract_vertexSet_ncard_lt hWss.subset hW2⟩
 
-/-- CONTRACT-R's producer at a maximal `def₂`-rigid set ((MC-75)(iii), (MC-89) step 4). -/
+/-- **Contraction at a maximal planar-rigid set** (`lem:pencil-x0-planar-rigid-reduces`): let `G`
+satisfy the standing hypotheses and be 2-edge-connected, with `def₂(G) > 0` and a planar-rigid set
+`Y`. Then `G` reduces to the graphs smaller than it, by the contraction clause at a maximal
+planar-rigid set `W ⊇ Y` (`Graph.exists_maximal_deficiency_induce_eq_zero`). It is proper, as
+`def₂(G) > 0`, and no body outside `W` is adjacent to two bodies of `W`, as such a body would
+enlarge it (`Graph.deficiency_induce_insert_eq_zero`, `lem:deficiency-add-body` at `d = 2`). -/
 theorem _root_.Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid {G : Graph α β}
     (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) (hpos : 0 < G.deficiency 2) {Y : Set α}
     (hY : Y ⊆ V(G)) (hY2 : 2 ≤ Y.ncard) (hYd : (G.induce Y).deficiency 2 = 0) :
@@ -102,7 +131,11 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid {G : Graph α �
   exact hu (this ▸ Set.mem_insert u W)
 
 omit [Finite β] in
-/-- `δ = 0` gives SHORT's and ORBIT's `hdef` (through the landed ear-merge bound). -/
+/-- If the merged deficiency `defₙ(G[V₁]; a, b)` at the ends of an open ear equals `defₙ(G[V₁])`,
+then `defₙ(G[V₁]) ≤ defₙ(G)` (a step of `lem:pencil-x0-chain-reduces` and
+`lem:pencil-rigid-good-ear`): some partition of `G[V₁]` with `a` and `b` in one part attains
+`defₙ(G[V₁])`, and putting the interior bodies into that part does not change its value
+(`Graph.deficiency_induce_le_of_ear_of_merge`, `lem:deficiency-ear-merge`). -/
 theorem _root_.Graph.IsOpenEar.deficiency_induce_le {G : Graph α β} {V₁ : Set α} {k : ℕ}
     {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} (hear : G.IsOpenEar V₁ x a b e) {n : ℕ}
     (h : (G.induce V₁).deficiencyMerged n a b = (G.induce V₁).deficiency n) :
@@ -115,8 +148,9 @@ theorem _root_.Graph.IsOpenEar.deficiency_induce_le {G : Graph α β} {V₁ : Se
   rw [← h]
   exact hpeq
 
-/-- (MC-79)(ii), its first two claims: at a one-body chain of an (S)-graph, `a ≁ b` and
-`δ₂ ≥ 2` (ORBIT's `hδ₂` at `k = 1`). -/
+/-- At an open ear with one interior body of a sparse graph, the ends `a` and `b` are not adjacent
+and `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])` (a step of `lem:pencil-x0-chain-reduces`), by
+`Graph.not_adj_and_deficiencyMerged_two_add_two_le` (`lem:deficiency-one-body-chain`). -/
 theorem _root_.Graph.IsOpenEar.not_adj_and_two_le_pairDelta_two {G : Graph α β} {V₁ : Set α}
     {x : Fin 1 → α} {a b : α} {e : Fin 2 → β} (hear : G.IsOpenEar V₁ x a b e)
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) :
@@ -128,7 +162,15 @@ theorem _root_.Graph.IsOpenEar.not_adj_and_two_le_pairDelta_two {G : Graph α β
     (hear.cover ▸ Set.subset_union_left) (hear.notMem 0) hear.left_mem hear.right_mem hear.ne
     h₀ h₁
 
-/-- The chain dispatch: a usable chain gives a reduction ((MC-79)(v)). -/
+/-- **A usable chain gives a reduction** (`lem:pencil-x0-chain-reduces`): let `G` satisfy the
+standing hypotheses and be sparse, with `G − v` connected for every body `v`. If a chain on `V₁` is
+usable, then `G` reduces to the graphs smaller than it, by the ear clause of its row of the
+chapter's table, or by the split-off clause at one interior body with
+`def₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])`. The graphs `G[V₁]` and `G` with an interior body suppressed
+satisfy the standing hypotheses (`lem:pencil-x0-chain-standing`) and have fewer bodies than `G`
+(`lem:reduction-measure`). Where `def₃(G[V₁]; a, b) = def₃(G[V₁])`, `def₃(G[V₁]) ≤ def₃(G)`
+(`Graph.IsOpenEar.deficiency_induce_le`). At one interior body, sparsity makes `a` and `b` not
+adjacent, with `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])` (`lem:deficiency-one-body-chain`). -/
 theorem _root_.Graph.IsChain.x0Reduces_of_chainUsable {G : Graph α β} (hG : G.IsX0Graph)
     (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected)
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id)
@@ -155,7 +197,7 @@ theorem _root_.Graph.IsChain.x0Reduces_of_chainUsable {G : Graph α β} (hG : G.
     exact .splitOff hear hnadj
       ⟨hear.isX0Graph_splitOff_one hG hnadj, Graph.splitOff_vertexSet_ncard_lt (hxV 0)⟩ hδ
 
-/-! ## Counting bodies of degree two -/
+/-! ## Counting bodies of degree two (`lem:pencil-x0-sparse-count`) -/
 
 /-- The degree sum `2|E|` over `V(G)` is at least `3|V| − |D₂|`, `D₂` the bodies of degree two. -/
 theorem _root_.Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard {G : Graph α β}
@@ -185,8 +227,11 @@ theorem _root_.Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard {G : Graph α β}
   push_cast [hD] at hsum
   linarith
 
-/-- H1/H2 ((MC-76)'s count): under (S), `Σ (3 − deg) ≥ 4`, so a degree-two body avoids any
-three given bodies. -/
+/-- **Counting bodies of degree two** (`lem:pencil-x0-sparse-count`(1)): if `G` satisfies the
+standing hypotheses and is sparse, at least four bodies have degree two, so one of them lies outside
+any set `s` of at most three bodies. Sparsity at `V(G)` gives `2|E(G)| ≤ 3|V(G)| − 4`, while
+`3|V(G)| − |D₂| ≤ 2|E(G)|`, `D₂` the bodies of degree two
+(`Graph.IsX0Graph.three_mul_sub_le_two_mul_ncard`). -/
 theorem _root_.Graph.IsX0Graph.exists_degree_eq_two_notMem {G : Graph α β} (hG : G.IsX0Graph)
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) {s : Set α}
     (hs : s.ncard ≤ 3) : ∃ v ∈ V(G), G.degree v = 2 ∧ v ∉ s := by
@@ -236,8 +281,12 @@ theorem _root_.Graph.IsX0Graph.two_mul_ncard_le_ncard_edgeSet {G : Graph α β}
     finsum_mem_congr rfl hcard, finsum_mem_const, smul_eq_mul] at this
   omega
 
-/-- H3 ((MC-80)'s rigid case, all chains of one body): if every body of degree two has only
-hubs as neighbours, then `5|E| ≥ 6|V|`, so `val₃(G − x, singletons) ≤ −2 ≤ 0`. -/
+/-- **Counting bodies of degree two** (`lem:pencil-x0-sparse-count`(2)): let `G` satisfy the
+standing hypotheses, with every neighbour of a body of degree two of degree at least three. Then
+`s₆(V(G) \ {x}) ≤ 0` for every body `x` of degree two, the value at `d = 3` of the partition of
+`G − x` into singletons. With `m` bodies of degree two, their `2m` links are distinct
+(`Graph.IsX0Graph.two_mul_ncard_le_ncard_edgeSet`), while `2|E(G)| ≥ 2m + 3(|V(G)| − m)`. So
+`5|E(G)| ≥ 6|V(G)|`, and as removing `x` removes one body and two links, `s₆(V(G) \ {x}) ≤ −2`. -/
 theorem _root_.Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos {G : Graph α β}
     (hG : G.IsX0Graph) (hhubs : ∀ v w, G.degree v = 2 → G.Adj v w → 3 ≤ G.degree w)
     {x : α} (hx : x ∈ V(G)) (hx2 : G.degree x = 2) :
@@ -270,9 +319,12 @@ theorem _root_.Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos {G : Graph 
   push_cast at hins
   linarith
 
-/-! ## The 4-cycle of a two-body chain -/
+/-! ## The `4`-cycle of a chain with two interior bodies -/
 
-/-- The 4-cycle of a two-body chain with adjacent ends is rigid (under (S), it is tight). -/
+/-- The `4`-cycle of an open ear with two interior bodies and adjacent ends is rigid in a sparse
+graph (a step of `thm:pencil-x0-theorem-s`): the set `{a, x 0, x 1, b}` of four bodies spans the
+links `e 0`, `e 1`, `e 2` and `a − b`, so its singleton value is at most `1`, and it is tight, hence
+rigid (`Graph.deficiency_three_induce_eq_zero_of_tight`, `lem:deficiency-tight-rigid`). -/
 theorem _root_.Graph.IsOpenEar.deficiency_three_induce_cycle {G : Graph α β} (_hG : G.IsX0Graph)
     {V₁ : Set α} {x : Fin 2 → α} {a b : α} {e : Fin 3 → β} (hear : G.IsOpenEar V₁ x a b e)
     (hadj : G.Adj a b) (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) :
@@ -339,10 +391,20 @@ theorem _root_.Graph.IsOpenEar.deficiency_three_induce_cycle {G : Graph α β} (
   exact ⟨hXV, by omega, Graph.deficiency_three_induce_eq_zero_of_tight
     (fun Z hZ => hSv Z (hZ.trans hXV)) (by omega) hval⟩
 
-/-! ## Theorem S and the covering theorem -/
+/-! ## A core when no chain is usable, and the structural coverage -/
 
-/-- The core producer: a maximal rigid superset of a rigid `Y` avoiding `X₀` is an additive core
-with the attachment condition. -/
+/-- **A maximal rigid set is a core** (a step of `thm:pencil-x0-theorem-s`): let `G` satisfy the
+standing hypotheses and be sparse. Let `X₀` be a set of at most one body, each of degree at most two
+and with at most one neighbour in every rigid set that avoids `X₀`, and let `X₀` be nonempty when
+`def₃(G) = 0`. Let `Y` be a rigid set avoiding `X₀`. Then a maximal rigid set `W` among those that
+contain `Y` and avoid `X₀` is a core: `W ⊊ V(G)`, no body outside `W` is adjacent to two bodies of
+`W`, and `def₂(G[W]) + def₂(G/G[W]) ≤ def₂(G)`, with any `r ∈ W` as the body of the contraction.
+
+`W ≠ V(G)`, as `X₀` is nonempty when `G` is rigid. A body outside `W` and `X₀` with two neighbours
+in `W` would enlarge it (`Graph.deficiency_induce_insert_eq_zero`, `lem:deficiency-add-body`). Then
+`s(W) ≤ s(X)` for every `X ⊇ W` (`Graph.partitionDef_induce_id_le_of_maximal`,
+`lem:deficiency-core-bound`), and `Graph.deficiency_induce_add_deficiency_rigidContract_le`
+(`lem:deficiency-additive-core`) gives the inequality. -/
 theorem _root_.Graph.IsX0Graph.exists_additiveCore_of_rigid {G : Graph α β}
     (hG : G.IsX0Graph)
     (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id)
@@ -382,8 +444,27 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore_of_rigid {G : Graph α β}
   exact ⟨W, r, hr, hWss, hW2, hWd,
     Graph.deficiency_induce_add_deficiency_rigidContract_le hSv hWV hr hmono, hattW⟩
 
-/-- **Theorem S** in the Lean steps' form ((MC-80) with (MC-87)): an (S)-graph none of whose
-chains is usable has an additive core with the attachment condition. -/
+/-- **A core when no chain is usable** (`thm:pencil-x0-theorem-s`): let `G` satisfy the standing
+hypotheses, with `G − v` connected for every body `v`, some body of degree other than two, and no
+planar-rigid set. If no chain of `G` is usable, then there are `W ⊊ V(G)` with `|W| ≥ 2` and
+`def₃(G[W]) = 0`, no body outside `W` adjacent to two bodies of `W`, and `r ∈ W`, with
+`def₂(G[W]) + def₂(G/G[W]) ≤ def₂(G)`.
+
+`G` is sparse (`Graph.one_le_partitionDef_induce_id`, `lem:deficiency-sparse`), so it has bodies of
+degree two (`lem:pencil-x0-sparse-count`), each on a chain (`Graph.IsX0Graph.exists_isChain`). No
+chain has three or more interior bodies. A chain with two has adjacent ends, as otherwise
+`Graph.deficiencyMerged_two_add_two_le` (`lem:deficiency-two-body-chain`) would make it usable, and
+its `4`-cycle is rigid (`Graph.IsOpenEar.deficiency_three_induce_cycle`). When `def₃(G) > 0`, the
+chain through a body of degree two gives a rigid set: its `4`-cycle, or, at one interior body, some
+rigid set, as otherwise `Graph.deficiencyMerged_three_add_five_le` (`lem:deficiency-one-body-chain`)
+would make the chain usable. When `def₃(G) = 0`, the proof takes a body `x` of degree two and a
+rigid set avoiding it: off the `4`-cycle of a chain with two interior bodies if two bodies of degree
+two are adjacent, and otherwise inside `V(G) \ {x}`, as `s₆(V(G) \ {x}) ≤ 0`
+(`lem:pencil-x0-sparse-count`, `lem:deficiency-sparse`). A neighbour of `x` in a rigid set avoiding
+`x` has degree at least three (`Graph.two_le_degree_of_isKDof_zero`,
+`lem:deficiency-zero-connected`), and two of them would make `a − x − b` a usable chain
+(`Graph.deficiencyMerged_eq_deficiency_of_mem`, `lem:deficiency-merge-rigid`). Both cases end at
+`Graph.IsX0Graph.exists_additiveCore_of_rigid`. -/
 theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX0Graph)
     (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected)
     (hhub : ∃ w ∈ V(G), G.degree w ≠ 2)
@@ -395,7 +476,7 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX
         G.deficiency 2 ∧
       ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂ := by
   have hSv := Graph.one_le_partitionDef_induce_id hS
-  -- a blocked two-body chain has adjacent ends, and its 4-cycle is rigid
+  -- a chain with two interior bodies that is not usable has adjacent ends
   have hk2 : ∀ (V₁ : Set α) (x : Fin 2 → α) (a b : α) (e : Fin 3 → β),
       G.IsChain V₁ x a b e → G.Adj a b := by
     intro V₁ x a b e hC
@@ -481,7 +562,7 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX
     have hWd' : ((G.induce (V(G) \ {y})).induce W).deficiency 3 = 0 := by
       rwa [Graph.induce_induce_of_subset G hW]
     exact Graph.deficiencyMerged_eq_deficiency_of_mem (by decide) hW hWd' hc₁ hc₂
-  · -- the non-rigid case: one blocked chain lies in a rigid set
+  · -- the case `def₃(G) > 0`: the chain found gives a rigid set
     obtain ⟨Y, hYV, hY2, hYd⟩ : ∃ Y ⊆ V(G), 2 ≤ Y.ncard ∧ (G.induce Y).deficiency 3 = 0 := by
       have hk1 := hC.one_le
       obtain rfl | rfl : k = 1 ∨ k = 2 := by omega
@@ -498,8 +579,13 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX
     exact hG.exists_additiveCore_of_rigid hSv (X₀ := ∅) Set.subsingleton_empty
       (Set.empty_subset _) (by simpa using hYV) hY2 hYd (fun _ => hrig) (by simp) (by simp)
 
-/-- (MC-89)'s step 5: an (S)-graph that is 2-connected and not a cycle reduces (θ-graphs
-included: their longest path is a usable chain, and Theorem S's proof does not exclude them). -/
+/-- **The sparse case of the structural coverage** (a step of `thm:pencil-x0-coverage`): let `G`
+satisfy the standing hypotheses and be 2-edge-connected, with `G − v` connected for every body `v`,
+some body of degree other than two, and no planar-rigid set. Then `G` reduces to the graphs smaller
+than it: at a usable chain (`Graph.IsChain.x0Reduces_of_chainUsable`), or, when no chain is usable,
+by contraction at the core that `Graph.IsX0Graph.exists_additiveCore` gives
+(`Graph.IsX0Graph.x0Reduces_of_additiveCore`). This covers the `θ`-graphs: in a sparse one the
+longest path is a usable chain (`rem:pencil-x0-theta`). -/
 theorem _root_.Graph.IsX0Graph.x0Reduces_of_sparse {G : Graph α β} (hG : G.IsX0Graph)
     (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected) (htec : G.TwoEdgeConnected)
     (hhub : ∃ w ∈ V(G), G.degree w ≠ 2)
@@ -514,8 +600,12 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_sparse {G : Graph α β} (hG : G.IsX
     obtain ⟨W, r, hr, hWss, hW2, hdef3, hadd, hatt⟩ := hG.exists_additiveCore h2c hhub hS hu
     exact hG.x0Reduces_of_additiveCore htec hr hWss hW2 hdef3 hadd hatt
 
-/-- **The covering theorem** ((MC-89)'s case analysis): every (H)-graph reduces by one landed
-step to smaller (H)-graphs. -/
+/-- **The structural coverage** (`thm:pencil-x0-coverage`): every graph satisfying the standing
+hypotheses reduces to the graphs smaller than it. The cases of the table, in order: `G` not
+2-edge-connected, or `G − v` disconnected for a body `v` (`lem:pencil-x0-cut-reduces`); every body
+of degree two (`lem:pencil-x0-cycle-reduces`); `def₂(G) = def₃(G)` (`Graph.X0Reduces.flat`); a
+planar-rigid set (`lem:pencil-x0-planar-rigid-reduces`), where `def₂(G) > def₃(G) ≥ 0`
+(`lem:deficiency-antitone`); otherwise the sparse case (`Graph.IsX0Graph.x0Reduces_of_sparse`). -/
 theorem _root_.Graph.IsX0Graph.x0Reduces {G : Graph α β} (hG : G.IsX0Graph) :
     G.X0Reduces G.X0Below := by
   by_cases htec : G.TwoEdgeConnected
@@ -541,14 +631,21 @@ theorem _root_.Graph.IsX0Graph.x0Reduces {G : Graph α β} (hG : G.IsX0Graph) :
   push Not at hrig
   exact hG.x0Reduces_of_sparse h2c htec hcyc hrig
 
-/-- **(MC-10)(a)**: `X₀(G)`'s general point attains at every simple connected graph of minimum
-degree two. Pinned at `thm:pencil-x0-coverage` (whose statement carries this attainment
-consequence); also `thm:pencil-x0-generic-attains`'s first sentence, pinned at MOTIVES. -/
+/-- **The general configuration attains** (`thm:pencil-x0-coverage`, and the first claim of
+`thm:pencil-x0-generic-attains`): over an infinite field, the general configuration of every graph
+satisfying the standing hypotheses (simple and connected, of minimum degree at least two) attains,
+by the induction on the number of bodies (`Graph.X0Attains.of_isX0Graph_of_x0Reduces`,
+`thm:pencil-x0-reduction-attains`) with the structural coverage as its hypothesis. -/
 theorem _root_.Graph.IsX0Graph.x0Attains [Infinite K] {G : Graph α β} (hG : G.IsX0Graph) :
     G.X0Attains K :=
   Graph.X0Attains.of_isX0Graph_of_x0Reduces (fun _ hG' => hG'.x0Reduces) hG
 
-/-- The consumer's form (MOTIVES, `X0Dist`'s graphs): simple, 2EC, `3 ≤ |V|`. -/
+/-- **The general configuration of a simple 2-edge-connected graph on at least three bodies
+attains** (`thm:pencil-x0-coverage`, its last claim), over an infinite field. Such a graph satisfies
+the standing hypotheses: it is connected (`Graph.preconnected_of_twoEdgeConnected`), and every body
+has degree at least two (`Graph.two_le_degree_of_twoEdgeConnected`,
+`lem:two-edge-connected-degree`). The distinct statement `X0Dist` follows from it (`x0Dist`,
+`lem:pencil-x0-distinct-statement`). -/
 theorem _root_.Graph.X0Attains.of_twoEdgeConnected [Infinite K] {G : Graph α β}
     (hS : G.Simple) (hV : 3 ≤ V(G).ncard) (htec : G.TwoEdgeConnected) : G.X0Attains K :=
   Graph.IsX0Graph.x0Attains

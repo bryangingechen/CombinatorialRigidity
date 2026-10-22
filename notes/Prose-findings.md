@@ -6022,6 +6022,36 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 3 task 37.18.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
+- **F-319** · L · repeated derivations, and derivable or unused hypotheses, in
+  `Molecular/Molecule/Pencil/MainComponent/CoverageCut.lean`, `CoverageTheoremS.lean` and
+  `GoodEar.lean`. Derivable hypotheses: the `hne` of `Graph.IsX0Graph.splitOff`, from `h₁`, `h₂` and
+  `huw` (a label links `v` to one body), which each of its four callers
+  (`Graph.IsOpenEar.isX0Graph_splitOff_four`, `_three`, `_orbit` and `_one`) derives in four or five
+  lines; the `hv` of `Graph.IsX0Graph.x0Reduces_of_not_connected`, from `hdisc` and connectivity
+  (for `v ∉ V(G)`, `G − v` is `G`); and the `hyu`, `hwy` and `hwu` of
+  `Graph.exists_closedEar_two_of_triangle`, from `huy`, `hyw` and `huw` (adjacent bodies of a simple
+  graph are distinct). Unused: the `_hG` of `Graph.IsOpenEar.deficiency_three_induce_cycle`, which
+  its proof never reads. Repeated derivations: `Graph.IsOpenEar.isX0Graph_splitOff_four` and
+  `_three` are one proof at `Fin 4` and at `Fin 3`; `Graph.IsChain.isX0Graph_induce` writes out the
+  two ends (`y = a`, `y = b`) twice; the maximality step (a body outside a maximal set of deficiency
+  zero with two neighbours in it would enlarge it) is derived in
+  `Graph.IsX0Graph.x0Reduces_of_deficiency_two_rigid` and in
+  `Graph.IsX0Graph.exists_additiveCore_of_rigid`; that a body of degree two of a loopless graph has
+  two non-loop links, in `Graph.IsX0Graph.two_mul_ncard_le_ncard_edgeSet` and
+  `Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos`; `k < 3` from a chain that is not usable,
+  twice in `Graph.IsX0Graph.exists_additiveCore`; `x i ≠ a` and `x i ≠ b` again in
+  `Graph.IsOpenEar.deficiency_three_induce_cycle` (`F-318`'s five); and in
+  `Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, the singleton-value step at `W₀ \ {y}`
+  (`ht2`'s `h` and the one-body ear's `hins`), the degree two of a body that is not a pencil hub
+  (`hy2`, `hu2`), and the link count at a pair (the `hone` of `Graph.exists_eq_triple_of_minimal`,
+  again in `hW₀3`). `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: `hne`, `hv` and the three
+  distinctness hypotheses derived from the others and the three theorems applied without them, and
+  `deficiency_three_induce_cycle`'s proof without `_hG`, on the standard axioms or fewer
+  (`scratch/reconcile-lean/t3719/Hyps-t3719.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.19.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+
 ## M — mathematics and sources
 
 - **F-025** · M · the credit for "row-independent iff $(2,3)$-sparse" (`rigidity-matroid.tex`,
