@@ -6,66 +6,90 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 
 /-!
-# The geometry of lines for the short ears (Phase 40h SHORT)
+# The geometry of lines for the open-ear steps
 
-The line geometry the open-ear steps with two, three and four interior bodies use
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-short`; informal (MC-179)(a)–(d),
-Step MC13 of §(K-main)). Everything is read in the join model `ScrewSpace K 2 = Λ²K⁴`, in the flat
-coordinates `flatScrewEquiv S = (σ S, π S)` of `MainComponent/Flat.lean`.
+The geometry of lines that the steps at an open ear with three and four interior bodies use
+(`thm:pencil-x0-open-ear-three`, `thm:pencil-x0-open-ear-four`), collected in
+`sec:main-component-short`, and the insertion of the step at an open ear with two interior bodies at
+non-adjacent ends (`lem:pencil-insertion-two`, `sec:main-component-orbit`). Everything is read in
+the screw space `ScrewSpace K 2 = Λ²K⁴`, in the flat coordinates `(σ S, π S)` of the flat split
+`flatScrewEquiv` (`MainComponent/Flat.lean`, `lem:pencil-join-flat`; the chapter writes `τ` for
+`π`). The join of two points `p, p' ∈ K⁴` is the screw `p ∧ p'` (`pointJoin`); a point is affine
+when its last coordinate is `1`, and at infinity when it is `0`.
+
+The pairing of lines `⟨c, J⟩ = σ c ⬝ π J + σ J ⬝ π c` is written in the flat coordinates, so that
+the pairing of two joins is a determinant by a ring computation, and two lines through a common
+point pair to zero. In the steps at three and four interior bodies the body `x₂` is suppressed, and
+the span `W` of the relative screws `ρ` and the joins of the smaller ear is raised by putting `x₂`
+back next to `x₁` or `x₃`, on a line `y ∧ u` through the point `y` of that body which `W` misses
+(`lem:pencil-insertion`). So it suffices that a `W` containing every line through the points `y₁` of
+`x₁` and `y₃` of `x₃` be all of `Λ²K⁴`. At four interior bodies the six joins of four independent
+points span it (`lem:pencil-tetrahedron`). At three, the lines through two independent points span
+at least five dimensions and pair to zero with `y₁ ∧ y₃` (`lem:pencil-two-stars`), so a `W`
+containing both stars and a relative screw pairing to a nonzero value with `y₁ ∧ y₃` is the whole
+space; and if every relative screw pairs to zero with every line joining the planes of `a` and of
+`b`, then `W` has dimension at most three (`lem:pencil-plane-lines`, `lem:pencil-bilinear`).
+
+The insertions need no polynomial. With `R = ρ + span F` the rest of the span, the span with the
+body at `y + t u` between `y` and `y′` contains, for `t ≠ 0`,
+`R + K (y ∧ u) + K (y ∧ y′ + t (u ∧ y′))`, and a vector `v ∉ S` has `v + t w ∉ S` for one of any two
+distinct nonzero `t` (`exists_ne_zero_add_smul_notMem`), two of which an infinite field supplies. At
+two interior bodies at non-adjacent ends both bodies move, `x₁` on the plane of `a` and `x₂` on that
+of `b`, along one of four curves (`exists_insertion_two_aux`), chosen by which join of a basis of
+`K⁴` lies outside the span.
 
 ## Main definitions
 
-* `kleinLin J` — the pairing of lines `⟨c, J⟩ = σ c ⬝ π J + σ J ⬝ π c`, as a linear form in `c`.
-* `tetA`, `tetB` — the two ends of the six edges of the tetrahedron on `Fin 4`.
-* `star y` — the span of the lines `y ∧ u` through a point `y`.
-* `liftPlane h u` — the point `(u₀, u₁, h ⬝ u, u₂)` of the plane `z = h ⬝ (x, y, w)`;
-  `planeLines h` — the lines of that plane, the screws with `σ = −h ×₃ π`.
+* `kleinLin J`: the pairing `c ↦ ⟨c, J⟩` against a fixed screw `J`, as a linear form
+  (`def:pencil-line-pairing`).
+* `tetA`, `tetB`: the two ends of the six edges of the tetrahedron on `Fin 4`.
+* `star y`: the span of the lines `y ∧ u` through a point `y` (`lem:pencil-two-stars`).
+* `liftPlane h u`: the point `(u₀, u₁, h ⬝ u, u₂)` of the plane `z = h ⬝ (x, y, w)` over `u ∈ K³`;
+  `planeLines h`: the lines of that plane, the screws with `σ = −h ×₃ π` (`lem:pencil-plane-lines`).
 
-## Main statements
+## Main results
 
-* `klein_pointJoin_pointJoin` — `⟨p ∧ q, r ∧ s⟩ = det[p; q; r; s]`; `klein_pointJoin_same` — two
-  lines through a common point pair to zero (`lem:pencil-line-pairing-join`).
-* `linearIndependent_pointJoin_tetra`, `span_pointJoin_tetra_eq_top` — the six joins of four
-  independent points are independent, so they span `Λ²K⁴` (`lem:pencil-tetrahedron`, (MC-179)(a)).
-* `linearIndependent_pointJoin_pair` — two joins through a middle point of three independent
-  points are independent (Phase 40i ORBIT).
-* `star_sup_star_le_ker_klein`, `five_le_finrank_star_sup_star` — every line through `y₁` or `y₂`
-  pairs to zero with `y₁ ∧ y₂`, and the lines through two independent points span at least five
-  dimensions (`lem:pencil-two-stars`, (MC-179)(b)).
-* `pointJoin_liftPlane_mem_planeLines`, `finrank_planeLines_le` — the join of two points of a plane
-  is a line of the plane, and the lines of a plane span at most three dimensions
-  (`lem:pencil-plane-lines`).
-* `klein_liftPlane`, `finrank_sup_le_three_of_klein` — the bilinear lemma: a screw pairing to zero
-  with every line joining two planes vanishes when the planes differ and is a line of the plane
-  when they agree; so a subspace of such screws together with three lines of the plane spans at
-  most three dimensions (`lem:pencil-bilinear`, (MC-179)(c)).
-* `exists_insertion_gain` — putting a body back at `y + t u` between `y` and `y′` raises the span
-  by one for some `t ≠ 0` when `y ∧ u` lies outside it (`lem:pencil-insertion`, (MC-179)(d)).
-* `exists_notMem_pointJoin_of_not_star_le`, `exists_insertion_of_star_sup_star` — a star outside
-  `W` has a line `y ∧ u` outside it with `u` at infinity; so one affine point put back between `y₁`
-  and `y₃` raises `W = R + K (y₁ ∧ y₃)` to at least `min(dim W + 1, 6)` once a `W` holding both
-  stars is `Λ²K⁴`. The four- and three-body insertions below are its corollaries.
-* `exists_insertion_four` — at four interior bodies, the tetrahedron supplies that hypothesis
-  (`thm:pencil-x0-open-ear-four`, (MC-180) Steps 3–4).
+* `klein_pointJoin_pointJoin`: `lem:pencil-line-pairing-join`, `⟨p ∧ q, r ∧ s⟩ = det[p; q; r; s]`;
+  `klein_pointJoin_same`, a step of `lem:pencil-two-stars`, two lines through a common point pair to
+  zero.
+* `linearIndependent_pointJoin_tetra` and `span_pointJoin_tetra_eq_top`: `lem:pencil-tetrahedron`,
+  the six joins of four independent points are independent, so they span `Λ²K⁴` (the case `d = 3` of
+  KT 2011 Lemma 2.1).
+* `linearIndependent_pointJoin_pair`: a step of `thm:pencil-x0-open-ear-one` and of
+  `lem:pencil-generic-one-ear`, the two joins through the middle one of three independent points are
+  independent.
+* `star_sup_star_le_ker_klein` and `five_le_finrank_star_sup_star`: `lem:pencil-two-stars`, every
+  line through `y₁` or `y₂` pairs to zero with `y₁ ∧ y₂`, and the lines through two independent
+  points span at least five dimensions.
+* `pointJoin_liftPlane_mem_planeLines` and `finrank_planeLines_le`: `lem:pencil-plane-lines`, the
+  join of two points of a plane is a line of the plane, and the lines of a plane span at most three
+  dimensions.
+* `klein_liftPlane` and `finrank_sup_le_three_of_klein`: `lem:pencil-bilinear`, a screw pairing to
+  zero with every line joining two planes vanishes when the planes differ and is a line of the plane
+  when they agree; so a subspace of such screws, with three screws that are lines of the plane when
+  the planes agree, spans at most three dimensions.
+* `exists_insertion_gain`: `lem:pencil-insertion`, putting a body back at `y + t u` between `y` and
+  `y′` raises the span by one for some `t ≠ 0` when `y ∧ u` lies outside it.
+* `exists_notMem_pointJoin_of_not_star_le` and `exists_insertion_of_star_sup_star`: steps of
+  `thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`. The star of an affine point not
+  contained in `W` has a line `y ∧ u` outside `W` with `u` at infinity; so, with
+  `W = R + K (y₁ ∧ y₃)` for affine `y₁` and `y₃`, if `W` is `Λ²K⁴` whenever it contains both stars,
+  one affine point `x₂` put back between `y₁` and `y₃` gives `R + span(y₁ ∧ x₂, x₂ ∧ y₃)` dimension
+  at least `min(dim W + 1, 6)`.
+* `exists_insertion_four`: a step of `thm:pencil-x0-open-ear-four`, where the six joins of `y₁`,
+  `y₃`, `y₄` and `p_b` give that hypothesis.
 * `eq_top_of_star_sup_star_le`, `exists_klein_liftPlane_affine_ne_zero`,
-  `not_star_sup_star_le_of_klein`, `exists_insertion_three` — at three interior bodies: a span
-  holding both stars and a screw pairing to a nonzero value with `y₁ ∧ y₃` is `Λ²K⁴`; a nonzero
-  pairing with the lines joining two planes is nonzero at affine points; a span of screws pairing
-  to zero with all of them holds neither both stars; so one affine point put back raises the span
-  to at least `min(dim W + 1, 6)` (`thm:pencil-x0-open-ear-three`, (MC-181) Steps 3–4).
-* `exists_insertion_two_aux`, `exists_insertion_two` — at two interior bodies on two planes
-  meeting in a line, with the flag pair in orbit (i): moving one body along the meeting line finds
-  affine points on each plane whose two joins with the fixed ends raise the span to at least
-  `min(dim W + 1, 6)`, without a chart polynomial (`lem:pencil-insertion-two`, (MC-173), Phase 40i
-  ORBIT).
-
-## Design
-
-* **The pairing is written in flat coordinates**, where `σ` and `π` are already landed; the
-  determinant identity is then a ring computation.
-* **The insertion lemmas need no polynomial.** For `t ≠ 0` the new span contains
-  `R + K (y ∧ u) + K (y ∧ y′ + t (u ∧ y′))`, and a vector `v ∉ S` has `v + t w ∉ S` for one of any
-  two distinct nonzero `t` (`exists_ne_zero_add_smul_notMem`); an infinite field supplies two.
+  `not_star_sup_star_le_of_klein` and `exists_insertion_three`: steps of
+  `thm:pencil-x0-open-ear-three`. A span containing both stars and a screw pairing to a nonzero
+  value with `y₁ ∧ y₃` is `Λ²K⁴`; a nonzero pairing with the lines joining two planes is nonzero at
+  the join of two affine points; a span of dimension at most three, as `lem:pencil-bilinear` gives
+  when every relative screw pairs to zero with every line joining the two planes, does not contain
+  both stars; so one affine point put back raises the span to at least `min(dim W + 1, 6)`.
+* `exists_insertion_two`: `lem:pencil-insertion-two`, at two interior bodies, with `p_a` on the
+  plane of `a` off that of `b`, `p_b` the other way round and `y` on both, some affine points `x₁`
+  and `x₂` on the two planes give `ρ` and the three joins `p_a ∧ x₁`, `x₁ ∧ x₂`, `x₂ ∧ p_b`
+  dimension at least `min(dim(ρ + span(p_a ∧ y, y ∧ p_b)) + 1, 6)`; `exists_insertion_two_aux`, a
+  step of it, is the curve that moves one body.
 -/
 
 open scoped Matrix
@@ -74,7 +98,7 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K]
 
-/-! ## The pairing of lines -/
+/-! ## The pairing of lines (`def:pencil-line-pairing`, `lem:pencil-line-pairing-join`) -/
 
 /-- **The pairing of lines against a fixed screw** `J` (`def:pencil-line-pairing`): the linear
 form `c ↦ σ c ⬝ π J + σ J ⬝ π c` in the flat coordinates. -/
@@ -108,7 +132,7 @@ theorem klein_pointJoin_same (p u u' : Fin 4 → K) :
     kleinLin (pointJoin p u') (pointJoin p u) = 0 := by
   rw [klein_pointJoin_pointJoin, Matrix.det_zero_of_row_eq (i := 0) (j := 2) (by decide) rfl]
 
-/-! ## The tetrahedron: six independent joins -/
+/-! ## The tetrahedron: six independent joins (`lem:pencil-tetrahedron`) -/
 
 /-- The first ends of the six edges of the tetrahedron on `Fin 4`. -/
 def tetA : Fin 6 → Fin 4 := ![0, 0, 0, 1, 1, 2]
@@ -116,9 +140,11 @@ def tetA : Fin 6 → Fin 4 := ![0, 0, 0, 1, 1, 2]
 /-- The second ends of the six edges of the tetrahedron on `Fin 4`. -/
 def tetB : Fin 6 → Fin 4 := ![1, 2, 3, 2, 3, 3]
 
-/-- **The six joins of four independent points are independent** (`lem:pencil-tetrahedron`,
-(MC-179)(a)). Pair a vanishing combination with the edge opposite each edge: two edges pair to the
-nonzero `± det` when they are opposite and to `0` when they share a point. -/
+/-- **The six joins of four independent points are independent** (`lem:pencil-tetrahedron`; the case
+`d = 3` of KT 2011 Lemma 2.1, pp. 651–652, for any four linearly independent vectors). Pair a
+vanishing combination with the edge opposite each edge: two edges pair to the nonzero `± det` when
+they are opposite and to `0` when they share a point. KT's proof, with the pairing in place of the
+join with the opposite edge. -/
 theorem linearIndependent_pointJoin_tetra {p : Fin 4 → Fin 4 → K} (hp : LinearIndependent K p) :
     LinearIndependent K (fun i => pointJoin (p (tetA i)) (p (tetB i))) := by
   have nz : ∀ f : Fin 4 → Fin 4, Function.Injective f →
@@ -167,9 +193,9 @@ theorem span_pointJoin_tetra_eq_top {p : Fin 4 → Fin 4 → K} (hp : LinearInde
   (linearIndependent_pointJoin_tetra hp).span_eq_top_of_card_eq_finrank'
     (by rw [Fintype.card_fin, screwSpace_finrank]; rfl)
 
-/-- **Two joins through a middle point of three independent points are independent**
-(Phase 40i ORBIT): extend `p, u, r` to a basis of `K⁴`; the joins `p ∧ u`, `u ∧ r` are two of its
-six tetrahedron joins. -/
+/-- **The two joins through the middle one of three independent points are independent** (a step of
+`thm:pencil-x0-open-ear-one` and of `lem:pencil-generic-one-ear`): extend `p, u, r` to a basis of
+`K⁴`; the joins `p ∧ u`, `u ∧ r` are two of the six joins of its tetrahedron. -/
 theorem linearIndependent_pointJoin_pair {p u r : Fin 4 → K}
     (h : LinearIndependent K ![p, u, r]) :
     LinearIndependent K ![pointJoin p u, pointJoin u r] := by
@@ -180,7 +206,7 @@ theorem linearIndependent_pointJoin_pair {p u r : Fin 4 → K}
   funext i
   fin_cases i <;> rfl
 
-/-! ## The lines through a point -/
+/-! ## The lines through a point (`lem:pencil-two-stars`) -/
 
 /-- **The star of a point** `y` (`lem:pencil-two-stars`): the span of the lines `y ∧ u` through
 it. -/
@@ -191,13 +217,13 @@ noncomputable def star (y : Fin 4 → K) : Submodule K (ScrewSpace K 2) :=
 theorem pointJoin_mem_star (y u : Fin 4 → K) : pointJoin y u ∈ star y :=
   Submodule.subset_span ⟨u, rfl⟩
 
-/-- A line `u ∧ y` lies in the star of `y`. -/
+/-- A line `u ∧ y` lies in the star of `y`. No declaration uses it. -/
 theorem pointJoin_mem_star_right (y u : Fin 4 → K) : pointJoin u y ∈ star y := by
   rw [pointJoin_swap]; exact (star y).neg_mem (pointJoin_mem_star y u)
 
-/-- **Every line through an affine point is a join with a vector at infinity**
-(`thm:pencil-x0-open-ear-four`): if the star of `y` (`y 3 = 1`) is not in `W`, some `u` with
-`u 3 = 0` has `y ∧ u ∉ W`, since `y ∧ v = y ∧ (v − v₃ y)`. -/
+/-- **Every line through an affine point is a join with a point at infinity** (a step of
+`thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`): if the star of `y` (`y 3 = 1`) is
+not in `W`, some `u` with `u 3 = 0` has `y ∧ u ∉ W`, since `y ∧ v = y ∧ (v − v₃ y)`. -/
 theorem exists_notMem_pointJoin_of_not_star_le {y : Fin 4 → K} (hy : y 3 = 1)
     {W : Submodule K (ScrewSpace K 2)} (h : ¬ star y ≤ W) :
     ∃ u : Fin 4 → K, u 3 = 0 ∧ pointJoin y u ∉ W := by
@@ -206,8 +232,8 @@ theorem exists_notMem_pointJoin_of_not_star_le {y : Fin 4 → K} (hy : y 3 = 1)
   refine ⟨v + (-v 3) • y, by simp [hy], ?_⟩
   rwa [pointJoin_add_smul_self_right]
 
-/-- **Every line through `y₁` or `y₂` meets the line `y₁ y₂`** (`lem:pencil-two-stars`,
-(MC-179)(b)): `star y₁ ⊔ star y₂` pairs to zero with `y₁ ∧ y₂`. -/
+/-- **Every line through `y₁` or `y₂` meets the line `y₁ y₂`** (`lem:pencil-two-stars`):
+`star y₁ ⊔ star y₂` pairs to zero with `y₁ ∧ y₂`. -/
 theorem star_sup_star_le_ker_klein (y₁ y₂ : Fin 4 → K) :
     star y₁ ⊔ star y₂ ≤ LinearMap.ker (kleinLin (pointJoin y₁ y₂)) := by
   refine sup_le (Submodule.span_le.mpr ?_) (Submodule.span_le.mpr ?_) <;> rintro _ ⟨u, rfl⟩
@@ -216,8 +242,8 @@ theorem star_sup_star_le_ker_klein (y₁ y₂ : Fin 4 → K) :
       (Matrix.det_zero_of_row_eq (i := 0) (j := 3) (by decide) rfl)
 
 /-- **The lines through two independent points span at least five dimensions**
-(`lem:pencil-two-stars`, (MC-179)(b)). Extend `y₁, y₂` to a basis of `K⁴`: five of the six
-tetrahedron joins lie in the two stars. -/
+(`lem:pencil-two-stars`). Extend `y₁, y₂` to a basis of `K⁴`: five of the six joins of its
+tetrahedron lie in the two stars. -/
 theorem five_le_finrank_star_sup_star {y₁ y₂ : Fin 4 → K} (hy : LinearIndependent K ![y₁, y₂]) :
     5 ≤ Module.finrank K ↥(star y₁ ⊔ star y₂) := by
   obtain ⟨x, hx⟩ := exists_linearIndependent_snoc_of_lt_finrank hy
@@ -236,12 +262,11 @@ theorem five_le_finrank_star_sup_star {y₁ y₂ : Fin 4 → K} (hy : LinearInde
   · exact Submodule.mem_sup_right (pointJoin_mem_star y₂ _)
   · exact Submodule.mem_sup_right (pointJoin_mem_star y₂ _)
 
-/-- **A span holding both stars and a screw off them is everything**
-(`thm:pencil-x0-open-ear-three`, the case where some relative screw pairs to a nonzero value with
-the line `y₁ y₃`; informal (MC-181) Step 4). If `y₁`, `y₃` are independent, `W` contains every line
-through `y₁` and every line through `y₃`, and some `c ∈ W` has `⟨c, y₁ ∧ y₃⟩ ≠ 0`, then
-`W = Λ²K⁴`: the two stars span at least five dimensions and pair to zero with `y₁ ∧ y₃`, so `c`
-lies outside them. -/
+/-- **A span containing both stars and a screw off them is everything** (a step of
+`thm:pencil-x0-open-ear-three`, in the case where some relative screw pairs to a nonzero value with
+the line `y₁ y₃`). If `y₁`, `y₃` are independent, `W` contains every line through `y₁` and every
+line through `y₃`, and some `c ∈ W` has `⟨c, y₁ ∧ y₃⟩ ≠ 0`, then `W = Λ²K⁴`: the two stars span at
+least five dimensions and pair to zero with `y₁ ∧ y₃`, so `c` lies outside them. -/
 theorem eq_top_of_star_sup_star_le {W : Submodule K (ScrewSpace K 2)} {c : ScrewSpace K 2}
     {y₁ y₃ : Fin 4 → K} (hy : LinearIndependent K ![y₁, y₃]) (hc : c ∈ W)
     (hne : kleinLin c (pointJoin y₁ y₃) ≠ 0) (hle : star y₁ ⊔ star y₃ ≤ W) : W = ⊤ := by
@@ -256,9 +281,10 @@ theorem eq_top_of_star_sup_star_le {W : Submodule K (ScrewSpace K 2)} {c : Screw
   exact Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _)
     (by rw [finrank_screwSpace_two]; exact h6))
 
-/-! ## The lines of a plane, and the lines joining two planes -/
+/-! ## Lines in a plane and between two planes (`lem:pencil-plane-lines`, `lem:pencil-bilinear`) -/
 
-/-- **The point of the plane `z = h ⬝ (x, y, w)` over `u = (x, y, w)`**: `(u₀, u₁, h ⬝ u, u₂)`. -/
+/-- **The point of the plane `z = h ⬝ (x, y, w)` over `u = (x, y, w)`** (a point of `π̂_h`,
+`lem:pencil-plane-lines`): `(u₀, u₁, h ⬝ u, u₂)`. -/
 def liftPlane (h u : Fin 3 → K) : Fin 4 → K := ![u 0, u 1, h ⬝ᵥ u, u 2]
 
 /-- The planar part of `liftPlane h u` is `u`. -/
@@ -296,10 +322,10 @@ theorem pointJoin_liftPlane_mem_planeLines (h u v : Fin 3 → K) :
   funext j; fin_cases j <;>
     simp [liftPlane, dotProduct, Fin.sum_univ_three, cross_apply] <;> ring
 
-/-- **The bilinear lemma** (`lem:pencil-bilinear`, (MC-179)(c)). If `c` pairs to zero with every
-line joining a point of the plane of `h` to a point of the plane of `h'`, then `c = 0` when the
-planes differ, and `c` is a line of the plane (`σ c = −h ×₃ π c`) when they agree. The nine joins
-of the lifted unit vectors suffice. -/
+/-- **Lines joining two planes** (`lem:pencil-bilinear`). If `c` pairs to zero with every line
+joining a point of the plane of `h` to a point of the plane of `h'`, then `c = 0` when the planes
+differ, and `c` is a line of the plane (`σ c = −h ×₃ π c`) when they agree. The nine joins of the
+lifted unit vectors suffice. -/
 theorem klein_liftPlane {h h' : Fin 3 → K} {c : ScrewSpace K 2}
     (hc : ∀ u v, kleinLin (pointJoin (liftPlane h u) (liftPlane h' v)) c = 0) :
     (h ≠ h' → c = 0) ∧ (h = h' → flatSigma c = -crossProduct h (flatPi c)) := by
@@ -364,9 +390,9 @@ theorem klein_liftPlane {h h' : Fin 3 → K} {c : ScrewSpace K 2}
     · linear_combination e20
     · linear_combination e01
 
-/-- **What the bilinear lemma gives the three-body ear** (`lem:pencil-bilinear`). If every
-`c ∈ ρ` pairs to zero with every line joining the plane of `h` to the plane of `h'`, and the three
-vectors `f i` are lines of the plane when the planes agree, then `dim(ρ ⊔ span f) ≤ 3`. -/
+/-- **The dimension bound for lines joining two planes** (`lem:pencil-bilinear`, its consequence).
+If every `c ∈ ρ` pairs to zero with every line joining the plane of `h` to the plane of `h'`, and
+the three screws `f i` are lines of the plane when the planes agree, then `dim(ρ ⊔ span f) ≤ 3`. -/
 theorem finrank_sup_le_three_of_klein {h h' : Fin 3 → K} {ρ : Submodule K (ScrewSpace K 2)}
     (hρ : ∀ c ∈ ρ, ∀ u v, kleinLin (pointJoin (liftPlane h u) (liftPlane h' v)) c = 0)
     (f : Fin 3 → ScrewSpace K 2) (hf : h = h' → ∀ i, f i ∈ planeLines h) :
@@ -379,9 +405,10 @@ theorem finrank_sup_le_three_of_klein {h h' : Fin 3 → K} {ρ : Submodule K (Sc
     rw [hρ0, bot_sup_eq]
     exact (finrank_range_le_card f).trans (by simp)
 
-/-- **The pairing with a line joining two planes, in coordinates**: for `u`, `v` in the planes of
-`h` and `h'`, `⟨u ∧ v, c⟩ = σ c ⬝ (u ×₃ v) + ((h ⬝ u) v − (h' ⬝ v) u) ⬝ π c`, bilinear in
-`(u, v)`. -/
+/-- **The pairing with a line joining two planes, in coordinates** (a step of
+`thm:pencil-x0-open-ear-three`; the formula of `lem:pencil-bilinear`'s proof): for the points
+`û = liftPlane h u` and `v̂ = liftPlane h' v` over `u, v ∈ K³`,
+`⟨û ∧ v̂, c⟩ = σ c ⬝ (u ×₃ v) + ((h ⬝ u) v − (h' ⬝ v) u) ⬝ π c`, bilinear in `(u, v)`. -/
 theorem kleinLin_pointJoin_liftPlane (h h' u v : Fin 3 → K) (c : ScrewSpace K 2) :
     kleinLin (pointJoin (liftPlane h u) (liftPlane h' v)) c =
       flatSigma c ⬝ᵥ crossProduct u v + ((h ⬝ᵥ u) • v - (h' ⬝ᵥ v) • u) ⬝ᵥ flatPi c := by
@@ -389,11 +416,11 @@ theorem kleinLin_pointJoin_liftPlane (h h' u v : Fin 3 → K) (c : ScrewSpace K 
     planarProj_liftPlane]
   exact add_comm _ _
 
-/-- **A nonzero pairing with the lines joining two planes is nonzero at affine points**
-(`thm:pencil-x0-open-ear-three`, informal (MC-181) Step 4). If `⟨c, u₀ ∧ v₀⟩ ≠ 0` for `u₀`, `v₀`
-in the planes of `h`, `h'`, the same holds at some `u`, `v` with last coordinate `1`: the pairing is
-bilinear in `(u, v)` (`kleinLin_pointJoin_liftPlane`), and `(0, 0, 1)`, `(1, 0, 1)`, `(0, 1, 1)`
-span `K³`. -/
+/-- **A nonzero pairing with the lines joining two planes is nonzero at affine points** (a step of
+`thm:pencil-x0-open-ear-three`). If `c` pairs to a nonzero value with the join of the points over
+`u₀` and `v₀` on the planes of `h` and `h'`, it does with the join of the points over some `u`, `v`
+with last coordinate `1`, which are affine: the pairing is bilinear in `(u, v)`
+(`kleinLin_pointJoin_liftPlane`), and `(0, 0, 1)`, `(1, 0, 1)`, `(0, 1, 1)` span `K³`. -/
 theorem exists_klein_liftPlane_affine_ne_zero {h h' : Fin 3 → K} {c : ScrewSpace K 2}
     {u₀ v₀ : Fin 3 → K}
     (h₀ : kleinLin (pointJoin (liftPlane h u₀) (liftPlane h' v₀)) c ≠ 0) :
@@ -423,11 +450,10 @@ theorem exists_klein_liftPlane_affine_ne_zero {h h' : Fin 3 → K} {c : ScrewSpa
     u₀ 0 * v₀ 1 * e12 + u₀ 1 * (v₀ 2 - v₀ 0 - v₀ 1) * e20 + u₀ 1 * v₀ 0 * e21 +
     u₀ 1 * v₀ 1 * e22
 
-/-- **A span of screws pairing to zero with the lines joining two planes holds neither both
-stars** (`thm:pencil-x0-open-ear-three`, the case where every relative screw pairs to zero with
-every line joining the two planes; informal (MC-181) Step 4). Under the hypotheses of
-`finrank_sup_le_three_of_klein`, `ρ ⊔ span f` has dimension at most three, and the lines through
-two independent points span at least five. -/
+/-- **The span does not contain both stars** (a step of `thm:pencil-x0-open-ear-three`, in the case
+where every relative screw pairs to zero with every line joining the two planes). Under the
+hypotheses of `finrank_sup_le_three_of_klein`, `ρ ⊔ span f` has dimension at most three, and the
+lines through two independent points `y₁`, `y₃` span at least five. -/
 theorem not_star_sup_star_le_of_klein {h h' : Fin 3 → K} {ρ : Submodule K (ScrewSpace K 2)}
     (hρ : ∀ c ∈ ρ, ∀ u v, kleinLin (pointJoin (liftPlane h u) (liftPlane h' v)) c = 0)
     (f : Fin 3 → ScrewSpace K 2) (hf : h = h' → ∀ i, f i ∈ planeLines h)
@@ -437,10 +463,11 @@ theorem not_star_sup_star_le_of_klein {h h' : Fin 3 → K} {ρ : Submodule K (Sc
     ((Submodule.finrank_mono hle).trans (finrank_sup_le_three_of_klein hρ f hf))
   omega
 
-/-! ## Putting a body back next to a neighbour -/
+/-! ## Putting a body back next to a neighbour (`lem:pencil-insertion`) -/
 
-/-- **A vector off a subspace stays off it along a line, at some nonzero parameter** (infinite
-`K`): if `v + 1 • w` and `v + s • w` both lay in `S` for some `s ∉ {0, 1}`, so would `w` and `v`. -/
+/-- **A vector off a subspace stays off it along a line, at some nonzero parameter** (a step of
+`lem:pencil-insertion` and `lem:pencil-insertion-two`, over an infinite `K`): if `v + 1 • w` and
+`v + s • w` both lay in `S` for some `s ∉ {0, 1}`, so would `w` and `v`. -/
 theorem exists_ne_zero_add_smul_notMem [Infinite K] {V : Type*} [AddCommGroup V] [Module K V]
     {S : Submodule K V} {v : V} (hv : v ∉ S) (w : V) : ∃ t : K, t ≠ 0 ∧ v + t • w ∉ S := by
   classical
@@ -454,10 +481,10 @@ theorem exists_ne_zero_add_smul_notMem [Infinite K] {V : Type*} [AddCommGroup V]
     rw [sub_smul, one_smul]; abel
   exact hv (by simpa using S.sub_mem h1 hw)
 
-/-- **Putting a body back next to a neighbour raises the span** (`lem:pencil-insertion`,
-(MC-179)(d)). Let `W = ρ ⊔ span F ⊔ K (y ∧ y')`, and put the body at `y + t u` between `y` and
-`y'`: the two new joins are `y ∧ (y + t u) = t (y ∧ u)` and `(y + t u) ∧ y'`. If `y ∧ u ∉ W`, then
-for some `t ≠ 0` the new span has dimension at least `dim W + 1`. -/
+/-- **Putting a body back next to a neighbour raises the span** (`lem:pencil-insertion`). Let
+`W = ρ ⊔ span F ⊔ K (y ∧ y')`, and put the body at `y + t u` between `y` and `y'`: the two new joins
+are `y ∧ (y + t u) = t (y ∧ u)` and `(y + t u) ∧ y'`. If `y ∧ u ∉ W`, then for some `t ≠ 0` the new
+span has dimension at least `dim W + 1`. -/
 theorem exists_insertion_gain [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) {n : ℕ}
     (F : Fin n → ScrewSpace K 2) (y y' u : Fin 4 → K)
     (hu : pointJoin y u ∉ ρ ⊔ Submodule.span K (Set.range F) ⊔ K ∙ pointJoin y y') :
@@ -501,14 +528,14 @@ theorem exists_insertion_gain [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) {
       ← Submodule.finrank_sup_span_singleton hnot]
     exact Submodule.finrank_mono (hle t ht)
 
-/-- **The insertion between two bodies whose stars fill the span** (`thm:pencil-x0-open-ear-four`
-and `thm:pencil-x0-open-ear-three`, putting `x₂` back; informal (MC-180)/(MC-181) Steps 3–4). Let
-`W = R + K (y₁ ∧ y₃)`. If `W` is `Λ²K⁴` as soon as it contains every line through `y₁` and every
-line through `y₃`, some affine point `x₂` put back between `y₁` and `y₃` has
+/-- **The insertion between two bodies whose stars fill the span** (a step of
+`thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`, putting `x₂` back). Let
+`W = R + K (y₁ ∧ y₃)`, with `y₁` and `y₃` affine. If `W` is `Λ²K⁴` as soon as it contains every line
+through `y₁` and every line through `y₃`, some affine point `x₂` put back between `y₁` and `y₃` has
 `dim(R + span(y₁ ∧ x₂, x₂ ∧ y₃)) ≥ min(dim W + 1, 6)`: next to `y₁` or `y₃` when `W` misses a line
 through it (`exists_insertion_gain`, with `R` for `ρ` and no further joins), and at `y₁` itself when
-`W = Λ²K⁴`. The four- and three-body steps are its corollaries (`exists_insertion_four`,
-`exists_insertion_three`). -/
+`W = Λ²K⁴`. The insertions at four and at three interior bodies are its corollaries
+(`exists_insertion_four`, `exists_insertion_three`). -/
 theorem exists_insertion_of_star_sup_star [Infinite K] (R : Submodule K (ScrewSpace K 2))
     (y₁ y₃ : Fin 4 → K) (hy₁ : y₁ 3 = 1) (hy₃ : y₃ 3 = 1)
     (hG : star y₁ ⊔ star y₃ ≤ R ⊔ K ∙ pointJoin y₁ y₃ → R ⊔ K ∙ pointJoin y₁ y₃ = ⊤) :
@@ -539,12 +566,12 @@ theorem exists_insertion_of_star_sup_star [Infinite K] (R : Submodule K (ScrewSp
     obtain ⟨t, -, ht⟩ := gain y₁ y₃ u hu
     exact ⟨y₁ + t • u, by simp [hy₁, hu3], (min_le_left _ _).trans ht⟩
 
-/-- **The insertion at four interior bodies** (`thm:pencil-x0-open-ear-four`, putting `x₂` back;
-informal (MC-180) Steps 3–4). Let `W = ρ + span(p_a ∧ y₁, y₁ ∧ y₃, y₃ ∧ y₄, y₄ ∧ p_b)`. If the six
-joins of `y₁, y₃, y₄, p_b` span `Λ²K⁴`, some affine point `x₂` put back between `y₁` and `y₃` has
-`dim(ρ + span(p_a ∧ y₁, y₁ ∧ x₂, x₂ ∧ y₃, y₃ ∧ y₄, y₄ ∧ p_b)) ≥ min(dim W + 1, 6)`
+/-- **The insertion at four interior bodies** (a step of `thm:pencil-x0-open-ear-four`, putting `x₂`
+back). Let `W = ρ + span(p_a ∧ y₁, y₁ ∧ y₃, y₃ ∧ y₄, y₄ ∧ p_b)`, with `y₁` and `y₃` affine. If the
+six joins of `y₁, y₃, y₄, p_b` span `Λ²K⁴`, some affine point `x₂` put back between `y₁` and `y₃`
+has `dim(ρ + span(p_a ∧ y₁, y₁ ∧ x₂, x₂ ∧ y₃, y₃ ∧ y₄, y₄ ∧ p_b)) ≥ min(dim W + 1, 6)`
 (`exists_insertion_of_star_sup_star`, with `ρ + span(p_a ∧ y₁, y₃ ∧ y₄, y₄ ∧ p_b)` for `R`): a `W`
-holding both stars holds the tetrahedron, so is `Λ²K⁴`. -/
+containing both stars contains the six joins, so is `Λ²K⁴`. -/
 theorem exists_insertion_four [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
     (pa y₁ y₃ y₄ pb : Fin 4 → K) (hy₁ : y₁ 3 = 1) (hy₃ : y₃ 3 = 1)
     (htet : Submodule.span K (Set.range fun i =>
@@ -579,13 +606,13 @@ theorem exists_insertion_four [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
   rw [sup_assoc, ← Submodule.span_union, Set.insert_union, Set.union_comm, Set.insert_union,
     Set.singleton_union]
 
-/-- **The insertion at three interior bodies** (`thm:pencil-x0-open-ear-three`, putting `x₂`
-back; informal (MC-181) Steps 3–4). Let `W = ρ + span(p_a ∧ y₁, y₁ ∧ y₃, y₃ ∧ p_b)`. If `W` is
+/-- **The insertion at three interior bodies** (a step of `thm:pencil-x0-open-ear-three`, putting
+`x₂` back). Let `W = ρ + span(p_a ∧ y₁, y₁ ∧ y₃, y₃ ∧ p_b)`, with `y₁` and `y₃` affine. If `W` is
 `Λ²K⁴` as soon as it contains every line through `y₁` and every line through `y₃`, some affine point
 `x₂` put back between `y₁` and `y₃` has
 `dim(ρ + span(p_a ∧ y₁, y₁ ∧ x₂, x₂ ∧ y₃, y₃ ∧ p_b)) ≥ min(dim W + 1, 6)`
-(`exists_insertion_of_star_sup_star`, with `ρ + span(p_a ∧ y₁, y₃ ∧ p_b)` for `R`).
-The hypothesis is supplied by `eq_top_of_star_sup_star_le` or `not_star_sup_star_le_of_klein`. -/
+(`exists_insertion_of_star_sup_star`, with `ρ + span(p_a ∧ y₁, y₃ ∧ p_b)` for `R`). The hypothesis
+is supplied by `eq_top_of_star_sup_star_le` or `not_star_sup_star_le_of_klein`. -/
 theorem exists_insertion_three [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
     (pa y₁ y₃ pb : Fin 4 → K) (hy₁ : y₁ 3 = 1) (hy₃ : y₃ 3 = 1)
     (hG : star y₁ ⊔ star y₃ ≤ ρ ⊔ Submodule.span K
@@ -607,13 +634,14 @@ theorem exists_insertion_three [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
   rw [sup_assoc, ← Submodule.span_union, Set.insert_union, Set.union_comm, Set.insert_union,
     Set.singleton_union]
 
-/-! ## Putting two bodies back at once (`lem:pencil-insertion-two`, (MC-173), Phase 40i ORBIT) -/
+/-! ## Putting the second body back between the two end planes (`lem:pencil-insertion-two`) -/
 
-/-- **Moving one body off a degenerate placement** (the curve family (α) of (MC-173)'s proof, as an
-insertion): with `x₂ = y + σ (Q − y)` on the line `y Q` (`σ ≠ 1`) and `x₁ = y + t u`, the three
-joins `P ∧ x₁`, `x₁ ∧ x₂`, `x₂ ∧ Q` span, for some `t ≠ 0`, at least as much with `ρ` as `P ∧ y`,
-`y ∧ Q` and the limit direction `u ∧ x₂`. For `t ≠ 0` they contain `y ∧ Q`, `u ∧ x₂` and
-`P ∧ y + t (P ∧ u)`; a vector off a subspace stays off it at some `t ≠ 0`. -/
+/-- **Moving one body off a degenerate placement** (a step of `lem:pencil-insertion-two`, the curve
+of its proof): with `x₂ = y + σ (Q − y)` on the line `y Q` (`σ ≠ 1`) and `x₁ = y + t u`, the three
+joins `P ∧ x₁`, `x₁ ∧ x₂`, `x₂ ∧ Q` span with `ρ`, for some `t ≠ 0`, at least as much as `P ∧ y`,
+`y ∧ Q` and the limit direction `u ∧ x₂` do. For `t ≠ 0` they contain `y ∧ Q`, `u ∧ x₂` and
+`P ∧ y + t (P ∧ u)`; a vector off a subspace stays off it at some `t ≠ 0`
+(`exists_ne_zero_add_smul_notMem`). -/
 theorem exists_insertion_two_aux [Infinite K] (ρ : Submodule K (ScrewSpace K 2))
     (P y Q u : Fin 4 → K) {σ : K} (hσ : σ ≠ 1) :
     ∃ t : K, t ≠ 0 ∧ Module.finrank K ↥(ρ ⊔ Submodule.span K
@@ -671,15 +699,20 @@ theorem exists_insertion_two_aux [Infinite K] (ρ : Submodule K (ScrewSpace K 2)
     exact Submodule.finrank_mono (hnew t ht)
 
 
-/-- **The insertion at two interior bodies** (informal (MC-173), orbit (i), without the chart
-polynomial): let `p_a`, `y` lie on the plane `z = la ⬝ (x, y, w)`, `y`, `p_b` on `z = lb ⬝ (·)`, all
-affine, with `p_b` off the first plane and `p_a` off the second (orbit (i)). For every `ρ`, some
-affine `x₁` on the first plane and `x₂` on the second have
-`dim(ρ + span(p_a ∧ x₁, x₁ ∧ x₂, x₂ ∧ p_b)) ≥ min(dim(ρ + span(p_a ∧ y, y ∧ p_b)) + 1, 6)`. With
-`u₀` the direction of the line `m` of both planes, `p_a, y, u₀, p_b` is a basis; if
-`W = ρ + Λ₁(y)` is not everything, one of `y ∧ u₀`, `u₀ ∧ p_b`, `p_a ∧ u₀`, `p_a ∧ p_b` is off
-`W`, and the matching curve of (MC-173)'s proof raises the span by one
-(`exists_insertion_two_aux`). -/
+/-- **Putting the second body back between the two end planes** (`lem:pencil-insertion-two`): let
+`p_a` and `y` lie on the plane `p₂ = la ⬝ p̄` of `K⁴`, and `y` and `p_b` on the plane
+`p₂ = lb ⬝ p̄`, where `p̄ = planarProj p = (p₀, p₁, p₃)`, all three affine, with `p_b` off the first
+plane and `p_a` off the second. For every `ρ`, some affine `x₁` on the first plane and `x₂` on the
+second have `dim(ρ + span(p_a ∧ x₁, x₁ ∧ x₂, x₂ ∧ p_b)) ≥ min(dim W + 1, 6)`, where
+`W = ρ + span(p_a ∧ y, y ∧ p_b)`.
+
+Proof. When `W = Λ²K⁴`, both bodies go to `y`. Otherwise let `u₀` be a direction at infinity of the
+line of both planes. Then `p_a, y, u₀, p_b` is a basis of `K⁴`, so one of the joins `y ∧ u₀`,
+`u₀ ∧ p_b`, `p_a ∧ u₀`, `p_a ∧ p_b` lies outside `W` (`span_pointJoin_tetra_eq_top`), and a curve of
+`exists_insertion_two_aux` for the first of them outside `W` raises the span by one. For the four
+joins in turn: `x₁` moves along `u₀` with `x₂` at `y`; `x₁` moves along `u₀` with `x₂` on the line
+`y p_b`; `x₂` moves along `u₀` with `x₁` on the line `y p_a`, the two planes exchanged; `x₁` moves
+along the line `y p_a` with `x₂` on the line `y p_b`. -/
 theorem exists_insertion_two [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) (la lb : Fin 3 → K)
     {pa y pb : Fin 4 → K} (hpa : pa 2 = la ⬝ᵥ planarProj pa) (hpb : pb 2 = lb ⬝ᵥ planarProj pb)
     (hya : y 2 = la ⬝ᵥ planarProj y) (hyb : y 2 = lb ⬝ᵥ planarProj y)
@@ -794,7 +827,7 @@ theorem exists_insertion_two [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) (l
     · exact h1
     · exact hypbW
     · exact h2
-  -- one curve of (MC-173)'s proof per limit direction off `W`
+  -- one curve (`exists_insertion_two_aux`) for each join of the basis that may lie off `W`
   have hWc : ∀ c, ρ ⊔ Submodule.span K {pointJoin pa y, pointJoin y pb, c} = W ⊔ K ∙ c := by
     intro c
     rw [hW, show ({pointJoin pa y, pointJoin y pb, c} : Set (ScrewSpace K 2)) =

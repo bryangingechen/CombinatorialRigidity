@@ -40,7 +40,7 @@ task 19 had `parsePair` split on any whitespace, so a tab-separated input reads,
 rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
 input, and tasks 21–24 landed the non-vacuity witnesses of the sixteen main results outside S1's
 and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last,
-and tasks 25–37.14 swept the docstrings of the thirteen planar files, of `Search/`, of `Mathlib/`,
+and tasks 25–37.15 swept the docstrings of the thirteen planar files, of `Search/`, of `Mathlib/`,
 of `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and generic-rigidity files
 (every top-level file but `Nonvacuity.lean`), of `Molecular/Deficiency.lean`, of
 `Molecular/Induction/`, of `RigidityMatrix/`, of `Molecular/Meet.lean` and `Extensor.lean`, of
@@ -51,11 +51,11 @@ of `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and generic-
 `Arms.lean`, `ArmsAssembly.lean`, `Motive.lean`, `Engine.lean`, `Reseed.lean`, `Witness.lean`,
 `Steer.lean`, `Pair.lean`, `Pair2.lean`, `X0.lean`, and `MainComponent/GenericSteer.lean`,
 `Carrier.lean`, `Configuration.lean`, `Flat.lean`, `Bridge.lean`, `Cut.lean`, `Ear.lean`,
-`ContractCurve.lean`, `ContractAdditive.lean`, `Contract.lean` and `Chain.lean` (this round's parts;
-the footprint), after the bump to Lean v4.36.0-rc1 that the PI put ahead of task 34.1 lifted round
-3's toolchain blocker of 2026-10-21.
-**Next concrete task:** round 3's task 37.15, the docstrings of
-`Molecule/Pencil/MainComponent/Lines.lean` and `EarGen.lean`.
+`ContractCurve.lean`, `ContractAdditive.lean`, `Contract.lean`, `Chain.lean`, `Lines.lean` and
+`EarGen.lean` (this round's parts; the footprint), after the bump to Lean v4.36.0-rc1 that the PI
+put ahead of task 34.1 lifted round 3's toolchain blocker of 2026-10-21.
+**Next concrete task:** round 3's task 37.16, the docstrings of
+`Molecule/Pencil/MainComponent/Short.lean`.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
@@ -276,7 +276,7 @@ both concern how a carrier relates edge labels to $E(G)$. It sizes the ~70 const
   these rows; the footprint's docstrings: `F-123`, `F-130` and `F-220`, and the parts of `F-122`,
   `F-126`, `F-133`, `F-210`, `F-215`, `F-225`, `F-237` and `F-243` that round 3 moved here (its
   open, and tasks 34, 34.1, 35, 35.1, 35.2, 35.3, 36, 36.1, 36.2, 37, 37.1, 37.9, 37.10, 37.11,
-  37.12 and 37.13 for `F-122`'s; `notes/Reconcile-lean-cleanup.md` *Moved to a later round*).
+  37.12, 37.13 and 37.15 for `F-122`'s; `notes/Reconcile-lean-cleanup.md` *Moved to a later round*).
 - **(b) M1**: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1).
 - **(c) the claims no declaration states**: S22–S25, S31, S3, S16 and S19, G5 (`def:blockingWitness`,
   `def:dof-generic`, the Plücker expansion; the packing move was round 3's task 14, L8's `F-088`),

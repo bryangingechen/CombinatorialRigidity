@@ -2617,7 +2617,11 @@ declaration's name as its header writes it:
   their pointers and codes, moved to the phase (task 37.12); and in
   `Pencil/MainComponent/ContractCurve.lean`, the hinges of `G/H` at the normals (every one nonzero)
   and the rows of the `ofNormals` framework of `G − E(H)` at the collapsed placement (those of `G/H`
-  with the column of `r` deleted), kept as they stand, moved to the phase (task 37.13).
+  with the column of `r` deleted), kept as they stand, moved to the phase (task 37.13); and in
+  `Pencil/MainComponent/EarGen.lean`, the configuration points of ear data as the point function
+  `ofNormals` reads (`earConfig`) and the witness's nonzero hinges at the links of `H`, at the labels
+  where the selector gives a link (`exists_mvPolynomial_le_finrank_ofNormals_bind`), kept as they
+  stand, moved to the phase (task 37.15).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -5205,6 +5209,12 @@ declaration's name as its header writes it:
   `30a83572`), not pinned: `Graph.IsAdmissiblePicture.eq_of_forall_closedNbhd`, two coefficient
   vectors that agree on the picture points of a closed neighbourhood are equal, whose docstring now
   says that no declaration uses it. Removing it leaves no other declaration without a caller.
+  Task 37.15 adds two in `Molecular/Molecule/Pencil/MainComponent/` (the same screen, over
+  `Lines.lean` and `EarGen.lean` together, and the cache, at `68a88088`), neither pinned:
+  `pointJoin_mem_star_right` (`Lines.lean`), a line `u ∧ y` lies in the star of `y`, and
+  `earPicture_of_notMem` (`EarGen.lean`), off `V₁` the picture of ear data is its own coordinate,
+  whose docstrings now say that no declaration uses them. Removing them leaves no other declaration
+  without a caller.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5895,6 +5905,24 @@ declaration's name as its header writes it:
   `Graph.X0Attains.of_cycle_of_certificate` without `hcover'`, on the three standard axioms
   (`scratch/reconcile-lean/t3714/Hyps-t3714.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.14.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-315** · L · repeated derivations in `Molecular/Molecule/Pencil/MainComponent/Lines.lean` and
+  `EarGen.lean`. `Graph.earHeight_mem_liftingSpace` (`EarGen.lean`) repeats the proof of
+  `Graph.earExtend_mem_liftingSpace` (`Ear.lean`) step for step (about 40 lines, through
+  `Graph.mem_liftingSpace_of_ear` and `Graph.mem_closedNbhd_induce_of_ear`), with the planes and the
+  free heights explicit, as its docstring says; with `earHeight` in `Ear.lean`, the second would
+  follow from the first. `exists_insertion_gain` and `exists_insertion_two_aux` close by the same
+  step, a case split on whether a vector `v` lies in a span `R`, then
+  `exists_ne_zero_add_smul_notMem` and `Submodule.finrank_sup_span_singleton`, which one lemma (for
+  spans `S t ⊇ R ⊔ K (v + t w)` at every `t ≠ 0`, `dim(R ⊔ K v) ≤ dim S t` at some `t ≠ 0`) would
+  serve. The three branches of `klein_liftPlane`'s `ht0` (6 lines each) are one argument with the
+  indices permuted. `exists_insertion_two` shows by hand (`hL`, `hR`, 36 lines) that reversing the
+  joins of a family keeps its span, which `exists_insertion_of_star_sup_star` does in one rewrite
+  (`pointJoin_swap`, `Set.neg_insert`, `Submodule.span_neg`). `exists_insertion_four` and
+  `exists_insertion_three` regroup their spans by the same two rewrites (`hW` and the last `rw`).
+  `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies).
+  *Found:* RECONCILE round 3 task 37.15.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
