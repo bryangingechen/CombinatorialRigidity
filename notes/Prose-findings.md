@@ -5606,6 +5606,29 @@ declaration's name as its header writes it:
   (`scratch/reconcile-lean/t374/Hyps-t374.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.4.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-305** · L · a repeated derivation in `Molecular/Molecule/Pencil/Engine.lean`: the re-seeding
+  at selectors it chooses. `exists_hubSlotOf_isNondegPencilRealization`,
+  `exists_hubSel_fillHub_of_isNondegPencilRealization`,
+  `exists_nbrSlotOf_isNondegPencilRealization` and
+  `exists_nbrSel_fillNbr_of_isNondegPencilRealization` (some 370 lines), which
+  `exists_pencilSeed_of_nondeg` (`Reseed.lean`) puts together, build a selector and the padding at
+  each body, case by case on the number of members of its closed hub-neighbourhood or closed
+  neighbourhood. `exists_pencilSeed_of_nondeg_of_selectors` (`Reseed.lean`) builds the padding for
+  any given selectors, so `exists_pencilSeed_of_nondeg` follows from it and a selector of each set
+  of at most three members, by the bounds
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` and
+  `ncard_closedNbhd_le_three_of_not_pencilHub` (`Motive.lean`). Without the four,
+  `exists_cross₃_eq_of_ne_zero`, `exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`
+  and `exists_linearIndependent_triple_of_ne_zero` would have no caller. `lake lint` reports none of
+  them.
+  *Evidence:* read (the statements and bodies; the callers from `scripts/blueprint-deps.py`'s Lean
+  cache); a `lake lean` witness: the selector of a set of at most three members (by
+  `Finset.toList`, 19 lines; its injectivity by `List.Nodup.getElem?_inj`, which takes the index
+  bound before the `Nodup`), and the statement of `exists_pencilSeed_of_nondeg` from it and
+  `exists_pencilSeed_of_nondeg_of_selectors`, on the three standard axioms
+  (`scratch/reconcile-lean/t375/Hyps-t375.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.5.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 

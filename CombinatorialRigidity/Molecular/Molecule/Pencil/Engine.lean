@@ -6,21 +6,51 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
 
 /-!
-# The rows-polynomial identity and the re-seeding sweep (Phase 39 PENCIL, W5-L3/L4)
+# The pencil chart in coordinates, and a realization in the chart
 
-Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
-`notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
-the rows-polynomial identity and engine hookup (W5-L3: `pencilAnnihRowPoly`, `pencilRow`,
-`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`, the product-route workhorse) and D6's
-re-seeding lemma's per-arity sweep helpers and selector construction (W5-L4; the cardinality bound
-and its cross-incidence feeders were re-homed to `Molecule/Pencil/Motive.lean` 2026-07-24, the
-W5-L5 cut-arm import-cone move). Builds on the grade-0 chart in `Molecule/Pencil/Chart.lean`.
+Two parts of the proof of `lem:pencil-generic-steer` (`sec:main-component-statements`), on the chart
+of `Chart.lean`.
 
-This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
-namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
+The first writes the chart in coordinates. A point `q : α × Fin 4 × Fin 4 → K` gives the parameters
+`PencilSeed.ofCoord q`: at each body `v`, `hubNormal v` is `q (v, 0, ·)`, and the padding vector `j`
+of both `fillHub v` and `fillNbr v` is `q (v, j.succ, ·)`. For fixed selectors, the coordinates of
+the points and normals of the chart, of the join of the points of two bodies, and of the forms
+`annihRow` that vanish at that join are polynomials in `q`, as the coordinates of `cross₃` are
+determinants (`cross₃_apply`). So are those of the rows of the chart's rigidity matrix, read through
+an endpoint selector (`pencilRow`). A family of rows, of points or of normals that is linearly
+independent at some `q₀` is independent at every non-root of a polynomial nonzero at `q₀`, a minor
+of the matrix of its coordinates (`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`); and
+over an infinite field, finitely many polynomials, each nonzero at some point, have a common
+non-root.
 
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 design pass" and §"W5 leaf
-decomposition"), and `blueprint/src/chapter/pencil.tex`.
+The second writes a given nondegenerate realization in the chart, up to a nonzero scalar at each
+point, and at the normal of each body that is not a hub. At a body `v`, the normals of the closed
+hub-neighbourhood are independent, orthogonal to the point of `v` and at most three; completed by
+padding vectors to an independent triple orthogonal to the point, their `cross₃` is a nonzero
+multiple of it. The normal of a body that is not a hub comes in the same way from the points of the
+chart on its closed neighbourhood. `exists_pencilSeed_of_nondeg` (`Reseed.lean`) puts the two sides
+together. The file also computes the `cross₃` of three standard basis vectors, for part (a) of
+`lem:pencil-generic-steer` (`MainComponent/GenericSteer.lean`).
+
+## Main definitions
+
+* `PencilSeed.ofCoord`: the parameters of the chart at a point of `α × Fin 4 × Fin 4 → K`.
+* `pencilChartPointPoly`, `pencilChartNormalPoly` and `pencilAnnihRowPoly`: the points and the
+  normals of the chart, and the coordinates of its rows, as polynomials.
+* `pencilRow`: the rows of the chart at a coordinate point, read through an endpoint selector.
+
+## Main results
+
+* `exists_polynomial_ne_zero_of_linearIndependent_pencilRow`,
+  `exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint` and
+  `exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal`: a family of rows, of points or
+  of normals independent at one coordinate point is independent at every non-root of a polynomial
+  nonzero there.
+* `exists_common_seed_pencilRow_and_polynomials`: over an infinite field, rows independent at some
+  `q₀` and finitely many polynomials, each nonzero at some point, are at one point independent and
+  nonzero.
+* `exists_hubSel_fillHub_of_isNondegPencilRealization` and
+  `exists_nbrSel_fillNbr_of_isNondegPencilRealization`: the two sides of a realization in the chart.
 -/
 
 open scoped Matrix
@@ -31,68 +61,42 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## W5-L3: the rows-polynomial identity and the engine hookup (Phase 39 PENCIL, W5 design pass)
+/-! ## The chart as polynomials in its parameters
 
-The design doc's L3 bullet (`notes/Phase39-design.md` §"W5 leaf decomposition"): the pencil
-`annihRowPoly` mirror (constructed points degree ≤ 3 in the seeds, hinge rows degree ≤ 6), the
-hookup to the landed engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
-(`Mathlib/LinearAlgebra/Matrix/Rank.lean`), and the product-route workhorse.
+A point `q : α × Fin 4 × Fin 4 → K` gives the parameters `PencilSeed.ofCoord q`: its first factor is
+the body, its second the vector, `0` for `hubNormal` and `j.succ` for the padding vector `j` of both
+triples, and its third the coordinate. The variable at `(v, r, i)` is `pencilXPoly r v i`.
 
-**The coordinate space**: `PencilSeed`'s hub-normal vector and `fillHub` fill triple (each
-`Fin 4 → K`; this L3 machinery is entirely about the *point* construction, so it never needs the
-independent `fillNbr` field the W5-L4 re-seeding assembly later added — `ofCoord` sets `fillNbr` to
-mirror `fillHub`, a harmless coupled special case since no L3 consumer reads `fillNbr` at all)
-flatten into one seed-coordinate space `α × Fin 4 × Fin 4` — the "role" `Fin 4` picks which of the
-four `Fin 4 → K` vectors (`0` = the hub-normal, `Fin.succ` of `0/1/2` = fill slots `0/1/2`), the
-second `Fin 4` the `K`-coordinate — exactly the flat style of the panel layer's
-`q : α × Fin (k+2) → K` (`PanelGeneric.lean`), extended by the extra "role" factor pencil's four
-seed-vectors-per-body needs. `PencilSeed.ofCoord` reconstructs the seed from a coordinate point.
+Each construction of the chart has a polynomial form, whose value at `q` is the construction at
+`PencilSeed.ofCoord q`, as evaluation is a ring homomorphism and commutes with `Matrix.det`
+(`RingHom.map_det`): `cross₃Poly`, by `cross₃_apply`, which writes the coordinate `i` of
+`cross₃ x y z` as `det[x, y, z, e_i]`; the slots of the two selectors (`hubSlotNormalPoly`,
+`nbrSlotPointPoly`); the points and the normals (`pencilChartPointPoly`, `pencilChartNormalPoly`);
+the coordinates in `screwBasis 2` of the join of the points of two bodies, the `2 × 2` minors of
+their coordinates (`pencilPointJoinPoly`); and the coordinates of the forms `annihRow` that vanish
+at that join (`pencilAnnihRowPoly`), as `annihRowPoly` (`PanelLayer.lean`) gives them at the join of
+two panels.
 
-**The polynomial identity** (`pencilChartPointPoly`/`_eval`, `pencilPointJoinPoly`/`_eval`,
-`pencilAnnihRowPoly`/`_eval`): every stage of the chart is a fixed-selector composition of `X`
-variables and `Matrix.det`s, so `MvPolynomial.eval`'s naturality under `Matrix.det`
-(`RingHom.map_det`) pushes each construction's eval identity up from the raw `X` variables:
-`cross₃`'s cofactor-determinant shape (`cross₃_apply`, a new companion to the W5-L1 `cross₃`
-machinery) makes the constructed points (`pencilChartPointPoly`) literal `4×4` determinants of
-degree-≤1 rows, hence degree ≤ 3; the point-join's screw-basis coordinate (`pencilPointJoinPoly`)
-is, exactly as the body-and-hinge layer's `hingeExtensorPoly` (`GenericLift/HingeGeneric.lean`, "no
-`complementIso` staging" — the pencil hinge is *already* grade-2, unlike the panel layer's meet), a
-`2×2` minor of the two points, hence degree ≤ 6; `pencilAnnihRowPoly` assembles the per-pair
-annihilator on top exactly as the panel layer's `annihRowPoly` does on `panelSupportPoly`, linear in
-the extensor so the degree bound survives.
+`pencilRow` is the family of rows `hingeRow u v (annihRow C t₁ t₂)`, where `(u, v)` are the bodies
+an endpoint selector gives an edge and `C` is the join of their points: the chart's counterpart of
+`PanelHingeFramework.normalRow` (`GenericLift/PanelGeneric.lean`). It reads no graph: at the
+selector `G.endsOf` and an edge of `G`, it is a rigidity row of the chart's framework on `G`
+(`pencilRow_mem_rigidityRows_of_mem_edgeSet`, `Steer.lean`). Its coordinates are the polynomials
+`pencilAnnihRowPoly`, times `[u = a] − [v = a]` at the coordinates of a body `a`, so a subfamily
+independent at some `q₀` is independent at every non-root of a polynomial nonzero at `q₀`
+(`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`). -/
 
-**The graph-free row family** (`pencilRow`) mirrors `PanelHingeFramework.normalRow`: it reads only
-an endpoint selector `ends` and a seed-coordinate point, not a carrier graph, so genericity is a
-property of the coordinate point alone; a consumer instantiates it over a specific multigraph via
-an `hends`-style link hypothesis (not built here — no consumer needs the graph bridge yet; the
-design's L4/L7 work directly with the graph-free family, matching the `PencilPair` motive's own
-"no standing transfer-form conjunct" choice, RELAX precedent).
-
-**The engine hookup** (`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`): a direct
-application of the landed maximal-minor engine to `pencilRow`'s coordinate family — for any
-subfamily linearly independent at some seed, a nonzero polynomial whose non-roots preserve that
-independence.
-
-**The product-route workhorse** (`exists_common_eval_ne_zero_of_forall_exists`,
-`exists_common_seed_pencilRow_and_polynomials`): finitely many polynomials each nonvanishing
-somewhere have a *common* non-root over an infinite field (the finite product is nonzero, hence has
-a non-root, avoiding every factor); combined with the engine hookup, an LI-at-some-seed row
-subfamily and finitely many separately-satisfiable polynomial conditions (e.g. L7's rank target and
-its candidate-`M₁` escape polynomial) hold *simultaneously* at one common seed. -/
-
-/-- **Seed data reconstructed from a flat coordinate point** (Phase 39 W5-L3): the inverse of
-treating `PencilSeed`'s hub-normal and `fillHub` fields as one coordinate space `α × Fin 4 × Fin 4`
-— role `0` is the hub-normal, role `j.succ` (`j : Fin 3`) is fill slot `j`. Sets `fillNbr` to mirror
-`fillHub` from the same coordinates — a harmless coupling, since no consumer in this section reads
-`fillNbr` (the L3 rows-polynomial machinery is entirely about `pencilChartPoint`, never
-`pencilChartNormal`'s non-hub branch). -/
+/-- **The parameters of the chart at a coordinate point** (a step of `lem:pencil-generic-steer`):
+`hubNormal v` is `q (v, 0, ·)`, and the padding vector `j` of both `fillHub v` and `fillNbr v` is
+`q (v, j.succ, ·)`. So only parameters whose two triples of padding vectors agree have coordinates;
+`PencilSeed.toCoord` (`Steer.lean`) gives back the `hubNormal` and `fillHub` of any parameters. -/
 def PencilSeed.ofCoord (q : α × Fin 4 × Fin 4 → K) : PencilSeed K α where
   hubNormal v i := q (v, 0, i)
   fillHub v j i := q (v, j.succ, i)
   fillNbr v j i := q (v, j.succ, i)
 
-/-- **The raw seed-coordinate polynomial** (Phase 39 W5-L3): the `X`-variable at body `v`, role
-`role`, coordinate `i` — the degree-1 building block every chart polynomial is composed from. -/
+/-- **A variable of the coordinate space** (a step of `lem:pencil-generic-steer`): `X (v, role, i)`,
+the coordinate `i` of the vector `role` at body `v` (`pencilXPoly_eval`). -/
 noncomputable def pencilXPoly (role : Fin 4) (v : α) (i : Fin 4) :
     MvPolynomial (α × Fin 4 × Fin 4) K :=
   MvPolynomial.X (v, role, i)
@@ -102,26 +106,23 @@ theorem pencilXPoly_eval (role : Fin 4) (v : α) (q : α × Fin 4 × Fin 4 → K
     MvPolynomial.eval q (pencilXPoly role v i) = q (v, role, i) := by
   rw [pencilXPoly, MvPolynomial.eval_X]
 
-/-- **`cross₃`'s `i`-th coordinate is a `4×4` cofactor determinant against the `i`-th standard basis
-vector** (Phase 39 W5-L3, a new companion to the W5-L1 `cross₃` machinery): `cross₃ x y z i =
-det[x, y, z, e_i]`. Immediate from the defining dot-product identity `dotProduct_cross₃` evaluated
-at `w := Pi.single i 1` (`dotProduct_single_one` reads off the `i`-th coordinate). This is the
-coordinate-level shape `cross₃Poly` lifts to `MvPolynomial`. -/
+/-- **The coordinates of `cross₃` are determinants** (a step of `lem:pencil-generic-steer`):
+`cross₃ x y z i = det[x, y, z, e_i]`, the value of `dotProduct_cross₃` at the standard basis vector
+`e_i = Pi.single i 1` (`dotProduct_single_one`). So they are polynomials in the coordinates of `x`,
+`y` and `z` (`cross₃Poly`). -/
 theorem cross₃_apply (x y z : Fin 4 → K) (i : Fin 4) :
     cross₃ x y z i = Matrix.det (Matrix.of ![x, y, z, Pi.single i 1]) := by
   rw [← dotProduct_single_one (cross₃ x y z) i, dotProduct_cross₃]
 
-/-- **`cross₃` lifted to `MvPolynomial`-valued rows** (Phase 39 W5-L3): the `4×4` cofactor
-determinant `cross₃_apply` expresses `cross₃`'s coordinates with, evaluated against polynomial-
-valued rows `X Y Z : Fin 4 → MvPolynomial σ K` in place of concrete vectors. -/
+/-- **`cross₃` of vectors of polynomials** (a step of `lem:pencil-generic-steer`): for
+`X Y Z : Fin 4 → MvPolynomial σ K`, the coordinate `i` is `det[X, Y, Z, e_i]`, as in `cross₃_apply`
+(`cross₃Poly_eval`). -/
 noncomputable def cross₃Poly {σ : Type*} (X Y Z : Fin 4 → MvPolynomial σ K) (i : Fin 4) :
     MvPolynomial σ K :=
   Matrix.det (Matrix.of ![X, Y, Z, Pi.single i (1 : MvPolynomial σ K)])
 
-/-- **`cross₃Poly` evaluates to the actual `cross₃` coordinate** (Phase 39 W5-L3, the eval
-identity): `MvPolynomial.eval`'s naturality under `Matrix.det` (`RingHom.map_det`) pushes the
-determinant through evaluation, and `Pi.single`'s two cases (`i = j`/`i ≠ j`) evaluate to the same
-`Pi.single` value in `K` since `MvPolynomial.eval` is a ring hom (`map_one`/`map_zero`). -/
+/-- **The value of `cross₃Poly`**: at `q`, it is `cross₃` of the values of `X`, `Y` and `Z`, as
+evaluation commutes with `Matrix.det` (`RingHom.map_det`) and takes the row `e_i` to `e_i`. -/
 theorem cross₃Poly_eval {σ : Type*} (X Y Z : Fin 4 → MvPolynomial σ K) (q : σ → K) (i : Fin 4) :
     MvPolynomial.eval q (cross₃Poly X Y Z i) =
       cross₃ (fun j => MvPolynomial.eval q (X j)) (fun j => MvPolynomial.eval q (Y j))
@@ -131,15 +132,17 @@ theorem cross₃Poly_eval {σ : Type*} (X Y Z : Fin 4 → MvPolynomial σ K) (q 
   ext a b
   fin_cases a <;> simp [RingHom.mapMatrix_apply, Pi.single_apply]
 
-/-- **Slot `i` of `v`'s hub-selector, lifted to `MvPolynomial`** (Phase 39 W5-L3): the polynomial
-mirror of `hubSlotNormal`. -/
+/-- **Slot `slot` of `v`'s hub selector as a vector of polynomials** (a step of
+`lem:pencil-generic-steer`): the variables of the `hubNormal` of the body in it, or of the padding
+vector `slot` of `v` if it is empty; the form of `hubSlotNormal` (`hubSlotNormalPoly_eval`). -/
 noncomputable def hubSlotNormalPoly (hubSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3) :
     Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
   match hubSel v slot with
   | some w => pencilXPoly 0 w
   | none => pencilXPoly slot.succ v
 
-/-- **`hubSlotNormalPoly` evaluates to the actual `hubSlotNormal` value** (Phase 39 W5-L3). -/
+/-- **The value of `hubSlotNormalPoly`**: at `q`, the coordinate `i` of slot `slot` of `v`'s hub
+selector at `PencilSeed.ofCoord q` (`hubSlotNormal`). -/
 theorem hubSlotNormalPoly_eval (hubSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
     (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
     MvPolynomial.eval q (hubSlotNormalPoly hubSel v slot i)
@@ -147,25 +150,25 @@ theorem hubSlotNormalPoly_eval (hubSel : α → Fin 3 → Option α) (v : α) (s
   simp only [hubSlotNormalPoly, hubSlotNormal, PencilSeed.ofCoord]
   cases hubSel v slot <;> simp
 
-/-- **The function-level form of `hubSlotNormalPoly_eval`**: funext'd over the slot coordinate `j`,
-for direct use as a `rw`/`simp` argument against a bare `fun j => …` occurrence (the pencil
-`annihRowPoly` mirror's evaluation lemmas need this shape three times each). -/
+/-- **`hubSlotNormalPoly_eval` for the whole vector**: the values at `q` of the coordinates of
+`hubSlotNormalPoly hubSel v slot` form `hubSlotNormal (PencilSeed.ofCoord q) hubSel v slot`, the
+form in which `pencilChartPointPoly_eval` rewrites each of its three slots. -/
 theorem hubSlotNormalPoly_eval_funext (hubSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
     (q : α × Fin 4 × Fin 4 → K) :
     (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v slot j))
       = hubSlotNormal (PencilSeed.ofCoord q) hubSel v slot :=
   funext fun j => hubSlotNormalPoly_eval hubSel v slot q j
 
-/-- **The chart's constructed point, lifted to `MvPolynomial`** (Phase 39 W5-L3, the pencil
-`annihRowPoly` mirror's first stage): `cross₃Poly` of the three (padded) hub-slot polynomials — a
-literal `4×4` determinant of degree-≤1 rows, hence `totalDegree ≤ 3` (the design doc's "constructed
-points are degree-≤3 polynomial in the seeds"). -/
+/-- **The point of the chart as a vector of polynomials** (a step of `lem:pencil-generic-steer`):
+`cross₃Poly` of the three slots of `v`'s hub selector (`hubSlotNormalPoly`); the form of
+`pencilChartPoint` (`pencilChartPointPoly_eval`). -/
 noncomputable def pencilChartPointPoly (hubSel : α → Fin 3 → Option α) (v : α) :
     Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
   cross₃Poly (hubSlotNormalPoly hubSel v 0) (hubSlotNormalPoly hubSel v 1)
     (hubSlotNormalPoly hubSel v 2)
 
-/-- **`pencilChartPointPoly` evaluates to the actual `pencilChartPoint` value** (Phase 39 W5-L3). -/
+/-- **The value of `pencilChartPointPoly`**: at `q`, the coordinate `i` of the point of the chart at
+`PencilSeed.ofCoord q` (`pencilChartPoint`). -/
 theorem pencilChartPointPoly_eval (hubSel : α → Fin 3 → Option α) (v : α)
     (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
     MvPolynomial.eval q (pencilChartPointPoly hubSel v i)
@@ -175,21 +178,21 @@ theorem pencilChartPointPoly_eval (hubSel : α → Fin 3 → Option α) (v : α)
     hubSlotNormalPoly_eval_funext hubSel v 1 q,
     hubSlotNormalPoly_eval_funext hubSel v 2 q]
 
-/-- **Slot `i` of `v`'s neighbour-selector, read as a point vector and lifted to `MvPolynomial`**
-(Phase 39 W5-L5 L5-cut-v-d): the polynomial mirror of `nbrSlotPoint`, feeding
-`pencilChartNormalPoly`'s non-hub branch. At a `some w` slot it is the selected neighbour's
-constructed-point polynomial (`pencilChartPointPoly`); at a `none` slot it reads the seed's
-`fillNbr` slot directly, which `PencilSeed.ofCoord` couples to role `slot.succ`
-(`pencilXPoly slot.succ v`). -/
+/-- **Slot `slot` of `v`'s neighbour selector as a vector of polynomials** (a step of
+`lem:pencil-generic-steer`): the point of the body in it (`pencilChartPointPoly`), or the variables
+of the padding vector `slot` of `v` if it is empty; the form of `nbrSlotPoint`
+(`nbrSlotPointPoly_eval`). These are the variables of `hubSlotNormalPoly`'s padding, as
+`PencilSeed.ofCoord` gives `fillNbr` the coordinates of `fillHub`. -/
 noncomputable def nbrSlotPointPoly (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3) :
     Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
   match nbrSel v slot with
   | some w => pencilChartPointPoly hubSel w
   | none => pencilXPoly slot.succ v
 
-/-- **`nbrSlotPointPoly` evaluates to the actual `nbrSlotPoint` value** (Phase 39 W5-L5
-L5-cut-v-d): the `some` branch is `pencilChartPointPoly_eval`, the `none` branch reads off
-`PencilSeed.ofCoord`'s `fillNbr := q (·, slot.succ, ·)` coupling via `pencilXPoly_eval`. -/
+/-- **The value of `nbrSlotPointPoly`**: at `q`, the coordinate `i` of slot `slot` of `v`'s
+neighbour selector at `PencilSeed.ofCoord q` (`nbrSlotPoint`): `pencilChartPointPoly_eval` at a
+body, and at an empty slot the coordinate `q (v, slot.succ, i)`, which `PencilSeed.ofCoord` gives
+`fillNbr v slot`. -/
 theorem nbrSlotPointPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
     (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
     MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v slot i)
@@ -199,8 +202,8 @@ theorem nbrSlotPointPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (v : 
   | some w => exact pencilChartPointPoly_eval hubSel w q i
   | none => exact pencilXPoly_eval slot.succ v q i
 
-/-- **The function-level form of `nbrSlotPointPoly_eval`**, `hubSlotNormalPoly_eval_funext`'s
-sibling for the neighbour-slot polynomial. -/
+/-- **`nbrSlotPointPoly_eval` for the whole vector**, the form in which `pencilChartNormalPoly_eval`
+rewrites each of its three slots. -/
 theorem nbrSlotPointPoly_eval_funext (hubSel nbrSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
     (q : α × Fin 4 × Fin 4 → K) :
     (fun j => MvPolynomial.eval q (nbrSlotPointPoly hubSel nbrSel v slot j))
@@ -208,24 +211,21 @@ theorem nbrSlotPointPoly_eval_funext (hubSel nbrSel : α → Fin 3 → Option α
   funext fun j => nbrSlotPointPoly_eval hubSel nbrSel v slot q j
 
 open Classical in
-/-- **The chart's constructed normal, lifted to `MvPolynomial`** (Phase 39 W5-L5 L5-cut-v-d, the
-"`cross₃Poly` cases" mirror): the polynomial companion of `pencilChartNormal`. At a pencil hub `v`
-it is the seed's free hub-normal, which `PencilSeed.ofCoord` couples to role `0`
-(`pencilXPoly 0 v`); otherwise it is the `cross₃Poly` of the three (padded) closed-neighbourhood
-slot-point polynomials — a literal `4×4` determinant of degree-≤3 rows (each `nbrSlotPointPoly` is a
-constructed point), hence degree ≤ 9. The hub test `G.PencilHub v` is seed-independent, so it lifts
-verbatim into an `if`. -/
+/-- **The normal of the chart as a vector of polynomials** (a step of `lem:pencil-generic-steer`):
+the variables of `hubNormal v` at a pencil hub `v`, and at any other body `cross₃Poly` of the three
+slots of `v`'s neighbour selector (`nbrSlotPointPoly`); the form of `pencilChartNormal`
+(`pencilChartNormalPoly_eval`). Whether `v` is a hub depends on `G` alone, so the test is the `if`
+of `pencilChartNormal`. -/
 noncomputable def pencilChartNormalPoly (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β)
     (v : α) : Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
   if G.PencilHub v then pencilXPoly 0 v
   else cross₃Poly (nbrSlotPointPoly hubSel nbrSel v 0) (nbrSlotPointPoly hubSel nbrSel v 1)
     (nbrSlotPointPoly hubSel nbrSel v 2)
 
-/-- **`pencilChartNormalPoly` evaluates to the actual `pencilChartNormal` value** (Phase 39 W5-L5
-L5-cut-v-d): the seed-independent hub test splits both `if`s together; the hub branch is
-`pencilXPoly_eval` against `PencilSeed.ofCoord`'s `hubNormal := q (·, 0, ·)`, the non-hub branch
-pushes `MvPolynomial.eval` through `cross₃Poly` (`cross₃Poly_eval`) and rewrites each slot via
-`nbrSlotPointPoly_eval`. -/
+/-- **The value of `pencilChartNormalPoly`**: at `q`, the coordinate `i` of the normal of the chart
+at `PencilSeed.ofCoord q` (`pencilChartNormal`). Both sides test whether `v` is a hub. At a hub the
+value is `q (v, 0, i)`, which `PencilSeed.ofCoord q` gives `hubNormal v`, and elsewhere
+`cross₃Poly_eval` and `nbrSlotPointPoly_eval` give it. -/
 theorem pencilChartNormalPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (v : α)
     (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
     MvPolynomial.eval q (pencilChartNormalPoly hubSel nbrSel G v i)
@@ -238,26 +238,25 @@ theorem pencilChartNormalPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) 
       nbrSlotPointPoly_eval_funext hubSel nbrSel v 1 q,
       nbrSlotPointPoly_eval_funext hubSel nbrSel v 2 q]
 
-/-- **The point-join's screw-basis coordinate, lifted to `MvPolynomial`** (Phase 39 W5-L3, the
-pencil `annihRowPoly` mirror's second stage — the grade-`2` analogue of the panel layer's
-`panelSupportPoly`/`normalsJoinPoly` and the body-and-hinge layer's `hingeExtensorPoly`, *without*
-any `complementIso` staging since the pencil hinge is already grade-2): the `2×2` minor, at the two
-`t`-selected coordinates, of the two bodies' constructed-point polynomials — degree ≤ 3 + 3 = 6 (the
-design doc's "hinge rows degree ≤ 6"). -/
+/-- **The join of the points of two bodies, in coordinates** (a step of `lem:pencil-generic-steer`):
+for bodies `u`, `v` and a `2`-subset `t` of `Fin 4`, the `2 × 2` minor, at the columns of `t`, of
+the matrix whose rows are the points of `u` and `v` (`pencilChartPointPoly`). Its value at `q` is
+the coordinate at `t`, in `screwBasis 2`, of the join `extensor ![p_u, p_v]` of the points of the
+chart (`pencilPointJoinPoly_eval`). The join lies in `⋀² K⁴`, so no `complementIso` enters, unlike
+the panel layer's `panelSupportPoly` (`PanelLayer.lean`). -/
 noncomputable def pencilPointJoinPoly (hubSel : α → Fin 3 → Option α) (u v : α)
     (t : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=
   (Matrix.of fun i j : Fin 2 =>
       (![pencilChartPointPoly hubSel u, pencilChartPointPoly hubSel v] i)
         ((t : Finset (Fin 4)).orderEmbOfFin t.2 j)).det
 
-/-- **`pencilPointJoinPoly` evaluates to the point-join's actual screw-basis coordinate**
-(Phase 39 W5-L3, the eval identity). Mirrors `hingeExtensorPoly_eval`'s proof exactly: `screwBasis
-2`'s repr is, by `rfl` (`screwBasis_repr_apply`), the direct exterior-power basis's repr, and the
-point-join `ScrewSpace.mk (extensor ![pt u, pt v]) _` is, by `rfl`, `exteriorPower.ιMulti K 2
-![pt u, pt v]` (the same defeq the body-and-hinge layer's `affineSubspaceExtensor` rides); from
-there the duality pairing (`exteriorPower.basis_repr_apply` + `ιMultiDual_apply_ιMulti`) reduces to
-a `2×2` minor, matching `pencilPointJoinPoly`'s determinant entrywise via
-`pencilChartPointPoly_eval`. -/
+/-- **The value of `pencilPointJoinPoly`**: at `q`, the coordinate at `t`, in `screwBasis 2`, of the
+join of the points of `u` and `v` at `PencilSeed.ofCoord q`. The coordinates in `screwBasis 2` are
+those in the basis of `⋀² K⁴` (`screwBasis_repr_apply`), where the coordinate at `t` of `ιMulti` of
+two vectors is their minor at the columns of `t` (`exteriorPower.basis_repr_apply`,
+`exteriorPower.ιMultiDual_apply_ιMulti`); evaluation commutes with the determinant, and
+`pencilChartPointPoly_eval` gives each entry. The proof is that of `hingeExtensorPoly_eval`
+(`GenericLift/HingeGeneric.lean`). -/
 theorem pencilPointJoinPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
     (q : α × Fin 4 × Fin 4 → K) (t : Set.powersetCard (Fin 4) 2) :
     MvPolynomial.eval q (pencilPointJoinPoly hubSel u v t)
@@ -280,18 +279,19 @@ theorem pencilPointJoinPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α
   · exact pencilChartPointPoly_eval hubSel u q _
   · exact pencilChartPointPoly_eval hubSel v q _
 
-/-- **The per-pair annihilator functional as a polynomial in the seed** (Phase 39 W5-L3, the pencil
-`annihRowPoly` mirror's final stage — verbatim the panel layer's `annihRowPoly` assembly, on top of
-`pencilPointJoinPoly` in place of `panelSupportPoly`; `annihRow` is linear in its screw vector, so
-the degree bound survives unchanged). -/
+/-- **The coordinates of the forms that vanish at a join** (a step of `lem:pencil-generic-steer`):
+`[t₂ = s] C_{t₁} − [t₁ = s] C_{t₂}`, with `C_t = pencilPointJoinPoly hubSel u v t`. Its value at `q`
+is that of `annihRow C t₁ t₂` at the basis vector `screwBasis 2 s`, for `C` the join of the points
+of `u` and `v` (`pencilAnnihRowPoly_eval`). It is `annihRowPoly` (`PanelLayer.lean`) with
+`pencilPointJoinPoly` in place of `panelSupportPoly`. -/
 noncomputable def pencilAnnihRowPoly (hubSel : α → Fin 3 → Option α) (u v : α)
     (t₁ t₂ s : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=
   (if t₂ = s then pencilPointJoinPoly hubSel u v t₁ else 0)
     - (if t₁ = s then pencilPointJoinPoly hubSel u v t₂ else 0)
 
-/-- **`pencilAnnihRowPoly` evaluates to the actual annihilator-row coordinate** (Phase 39 W5-L3).
-Verbatim `annihRowPoly_eval`'s proof, substituting `pencilPointJoinPoly_eval` for
-`panelSupportPoly_eval`. -/
+/-- **The value of `pencilAnnihRowPoly`**: at `q`, the value of `annihRow C t₁ t₂` at
+`screwBasis 2 s`, for `C` the join of the points of `u` and `v` at `PencilSeed.ofCoord q`; the proof
+of `annihRowPoly_eval`, with `pencilPointJoinPoly_eval`. -/
 theorem pencilAnnihRowPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
     (q : α × Fin 4 × Fin 4 → K) (t₁ t₂ s : Set.powersetCard (Fin 4) 2) :
     MvPolynomial.eval q (pencilAnnihRowPoly hubSel u v t₁ t₂ s) =
@@ -312,14 +312,12 @@ theorem pencilAnnihRowPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
     · rw [ite_eq_left h, ite_eq_left h.symm]
     · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
 
-/-- **The graph-free annihilator-row family of a seed-coordinate point** (Phase 39 W5-L3, the
-pencil analogue of `PanelHingeFramework.normalRow`): for an endpoint selector `ends : β → α × α`
-and a seed-coordinate point `q`, the row at index `(e, t₁, t₂)` is the per-pair annihilator
-functional of the point-join `ScrewSpace.mk (extensor ![point u, point v]) _` of the two points
-`ends e` selects, transported to the screw-assignment space by `hingeRow`. It reads only `ends` and
-`q` — not a carrier graph — so genericity is a property of the coordinate point alone; a consumer
-transports it to a specific multigraph via an `hends`-style link hypothesis, exactly as `normalRow`
-does. -/
+/-- **The rows of the chart, read through an endpoint selector** (a step of
+`lem:pencil-generic-steer`): for `ends : β → α × α` and a coordinate point `q`, the row at
+`(e, t₁, t₂)` is `hingeRow u v (annihRow C t₁ t₂)`, where `(u, v) = ends e` and `C` is the join of
+the points of `u` and `v` at `PencilSeed.ofCoord q`. It reads `ends` and `q` and no graph, as
+`PanelHingeFramework.normalRow` does. At `G.endsOf` and an edge of `G`, it is the row `panelRow` of
+the chart's framework on `G` (`pencilRow_eq_panelRow_pencilChartFramework`, `Steer.lean`). -/
 noncomputable def pencilRow (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
     (q : α × Fin 4 × Fin 4 → K)
     (i : β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2) :
@@ -331,15 +329,14 @@ noncomputable def pencilRow (hubSel : α → Fin 3 → Option α) (ends : β →
         (extensor_mem_exteriorPower _))
       i.2.1 i.2.2)
 
-/-- **The engine hookup** (Phase 39 W5-L3, verdict 2's device consuming the landed maximal-minor
-engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`): for any subfamily of
-`pencilRow` linearly independent at some seed `q₀`, there is a nonzero polynomial in the seed
-coordinates whose non-roots preserve that independence. A direct application of the engine at
-`W := Module.Dual K (α → ScrewSpace K 2)` with the standard basis `Pi.basis (fun _ => screwBasis 2)`
-and the coordinate family `pencilAnnihRowPoly` (scaled by the body-incidence sign, exactly as the
-panel layer's `exists_isGenericNormals_abundance` does for `annihRowPoly`), via the evaluation
-identity assembled from `pencilRow`'s definition, `BodyHingeFramework.hingeRow_apply`, and
-`pencilAnnihRowPoly_eval`. -/
+/-- **Rows independent at `q₀` stay so off the zero set of a polynomial** (a step of
+`lem:pencil-generic-steer`): if a subfamily of `pencilRow hubSel ends` is linearly independent at
+`q₀`, there is a polynomial, nonzero at `q₀`, at whose every non-root it is independent. It is
+`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` for the forms on `α → ScrewSpace K 2`,
+in the basis dual to `Pi.basis (fun _ => screwBasis 2)`: the coordinate at `(a, s)` of the row at
+`(e, t₁, t₂)` is `pencilAnnihRowPoly` times `[u = a] − [v = a]`, for `(u, v) = ends e`
+(`BodyHingeFramework.hingeRow_apply`, `pencilAnnihRowPoly_eval`), as in
+`PanelHingeFramework.exists_isGenericNormals_abundance` for the rows of normals. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Finite β]
     (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
     {q₀ : α × Fin 4 × Fin 4 → K}
@@ -383,31 +380,23 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Fi
     exists_polynomial_ne_zero_of_linearIndependent_at_reindex e g c φ hg (p₀ := q₀) (s := s) h
   exact ⟨Q, hQ0, hQ⟩
 
-/-! ### L5-cut-v-d: the chart-family steering extraction gadget (Phase 39 W5-L5,
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v, the v-d leaf)
+/-! ## Independent points and normals, and a common non-root
 
-The steering half of the L5-cut-v discharge: a somewhere-witness (an explicit seed, or the
-flattening of a re-seeded realization) certifies the chart's constructed points / normals linearly
-independent at *one* seed; these two
-specializations of the maximal-minor engine
-(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`) turn each such witness into a single
-seed-polynomial, nonzero at the witness seed, whose every non-root keeps the family independent —
-exactly the "nonvanishing somewhere" input `exists_common_seed_pencilRow_and_polynomials` needs (so
-one common steered seed serves the rows minor *and* all the demoted/promoted independence
-witnesses). The engine needs no infiniteness hypothesis (it exposes the witnessing minor rather
-than picking a point); `[Infinite K]` enters only when the product-route workhorse above extracts
-the common seed. The coordinate identification is the identity `(Fin 4 → K) ≃ₗ (Fin 4 → K)`
-reindexed by `finCongr (Module.finrank_fin_fun K) : Fin (finrank K (Fin 4 → K)) ≃ Fin 4`, and the
-`hg` coordinate identity is `pencilChartPointPoly_eval` / `pencilChartNormalPoly_eval`. -/
+The forms of `exists_polynomial_ne_zero_of_linearIndependent_pencilRow` for the points and the
+normals of the chart: a family independent at some `q₀` is independent at every non-root of a
+polynomial nonzero at `q₀`, by `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` in the
+coordinates of `K⁴` (`pencilChartPointPoly_eval`, `pencilChartNormalPoly_eval`). These need no
+infinite field. Over an infinite field, finitely many polynomials, each nonzero at some point, have
+a common non-root (`exists_common_eval_ne_zero_of_forall_exists`), at which rows independent at one
+point remain independent (`exists_common_seed_pencilRow_and_polynomials`). As in the proof of
+`lem:pencil-generic-steer`, each condition then holds at one point. -/
 
-/-- **Chart-point steering gadget** (Phase 39 W5-L5 L5-cut-v-d): for any endpoint selector
-`ends : ι → α` (finite `ι`) and any subfamily of the chart's constructed points linearly
-independent at a seed `q₀`, a single seed-polynomial nonzero at `q₀` whose non-roots keep that
-subfamily independent. The common-seed lemma `exists_common_seed_linearIndepOn_pencilChartPoint`
-(`Steer.lean`) and `lem:pencil-generic-steer`'s T3 (`MainComponent/GenericSteer.lean`) consume it at
-`ends := id`. A direct instance of `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
-with `W := Fin 4 → K`, coordinate polynomials `pencilChartPointPoly`, and identification
-`hg := pencilChartPointPoly_eval`. -/
+/-- **Points of the chart independent at `q₀` stay so off the zero set of a polynomial** (a step of
+`lem:pencil-generic-steer`): for `ends : ι → α`, with `ι` finite, if the points of the chart at
+`ends i`, for `i` in a set `s`, are linearly independent at `q₀`, there is a polynomial, nonzero at
+`q₀`, at whose every non-root they are independent. `exists_isNondegPencilRealization_steer`
+(`MainComponent/GenericSteer.lean`) and `exists_common_seed_linearIndepOn_pencilChartPoint`
+(`Steer.lean`) use it at `ends := id`. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint
     {ι : Type*} [Finite ι] (hubSel : α → Fin 3 → Option α) (ends : ι → α)
     {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
@@ -424,13 +413,11 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint
     (fun q i j => (pencilChartPointPoly_eval hubSel (ends i) q j).symm)
     h
 
-/-- **Chart-normal steering gadget** (Phase 39 W5-L5 L5-cut-v-d): the `pencilChartNormal`
-companion of the point gadget. For any endpoint selector `ends : ι → α` and any subfamily of the
-chart's constructed normals on `G` linearly independent at a seed `q₀`, a single seed-polynomial
-nonzero at `q₀` whose non-roots keep it independent. `lem:pencil-generic-steer`'s T3
-(`exists_isNondegPencilRealization_steer`) consumes it at `ι := α`, `ends := id`, for each of its
-`LinearIndepOn K (pencilChartNormal …)` conditions. A direct instance of the reindexed engine with
-coordinate polynomials `pencilChartNormalPoly` and `hg := pencilChartNormalPoly_eval`. -/
+/-- **Normals of the chart independent at `q₀` stay so off the zero set of a polynomial** (a step of
+`lem:pencil-generic-steer`): the form of
+`exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint` for the normals of the chart on
+`G` (`pencilChartNormalPoly_eval`). `exists_isNondegPencilRealization_steer` uses it at
+`ends := id`, for the independence of the normals on each of its sets. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal
     {ι : Type*} [Finite ι] (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (ends : ι → α)
     {q₀ : α × Fin 4 × Fin 4 → K} {s : Set ι}
@@ -447,12 +434,11 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal
     (fun q i j => (pencilChartNormalPoly_eval hubSel nbrSel G (ends i) q j).symm)
     h
 
-/-- **Finitely many polynomials each nonvanishing somewhere have a common non-root**
-(Phase 39 W5-L3, the product-route workhorse's generic half): over an infinite field, if every
-member of a finite family of polynomials has *some* point where it is nonzero, then some single
-point makes every member nonzero simultaneously. The project mirror
-`MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero` is this fact already — a `P i ≠ 0` witness
-from each `h i` is all it needs. -/
+/-- **Finitely many polynomials, each nonzero at some point, have a common non-root** (a step of
+`lem:pencil-generic-steer`): over an infinite field, if each of finitely many polynomials is nonzero
+at some point, then at some point they are all nonzero. Each is then a nonzero polynomial, and
+`MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero` (`Mathlib/Algebra/MvPolynomial/Funext.lean`)
+takes a non-root of their product. -/
 theorem exists_common_eval_ne_zero_of_forall_exists [Infinite K] {σ ι : Type*} [Finite ι]
     (P : ι → MvPolynomial σ K) (h : ∀ i, ∃ q : σ → K, MvPolynomial.eval q (P i) ≠ 0) :
     ∃ q : σ → K, ∀ i, MvPolynomial.eval q (P i) ≠ 0 :=
@@ -460,17 +446,14 @@ theorem exists_common_eval_ne_zero_of_forall_exists [Infinite K] {σ ι : Type*}
     obtain ⟨q, hq⟩ := h i
     simp [h0] at hq
 
-/-- **The product-route workhorse** (Phase 39 W5-L3, the design doc's L3 bullet (3)): a seed
-`q₀` where a `pencilRow` subfamily is linearly independent, together with finitely many polynomials
-each nonvanishing *somewhere* on the chart, combine into a single common seed where the subfamily is
-independent *and* every polynomial is nonzero. The engine hookup
-(`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`) turns the LI witness into one more
-"nonvanishing somewhere" polynomial (nonzero at `q₀`), and
-`exists_common_eval_ne_zero_of_forall_exists` finds the common non-root of the combined finite
-family (the LI-witnessing polynomial packaged alongside `P` via `Unit ⊕ ι`). This is exactly what a
-consumer needing several separately-satisfiable chart conditions at once (e.g. W5-L7's rank target
-*and* its candidate-`M₁` escape polynomial) reduces to: a `≢ 0`-somewhere certificate for each
-condition. -/
+/-- **Independent rows and finitely many polynomials at one point** (a step of
+`lem:pencil-generic-steer`): over an infinite field, if a subfamily of `pencilRow hubSel ends` is
+linearly independent at `q₀`, and each of finitely many polynomials `P i` is nonzero at some point,
+then at some point the subfamily is independent and every `P i` is nonzero. The polynomial of
+`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`, nonzero at `q₀`, joins the `P i`
+(indexed by `Unit ⊕ ι`), and `exists_common_eval_ne_zero_of_forall_exists` gives the point.
+`exists_isNondegPencilRealization_steer` uses it for rows of the deficiency rank and the polynomials
+of its other conditions. -/
 theorem exists_common_seed_pencilRow_and_polynomials [Finite α] [Finite β] [Infinite K]
     (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
     {q₀ : α × Fin 4 × Fin 4 → K}
@@ -489,52 +472,24 @@ theorem exists_common_seed_pencilRow_and_polynomials [Finite α] [Finite β] [In
       | Sum.inr i => hP i)
   exact ⟨q, hQ0 q (hq (Sum.inl ())), fun i => hq (Sum.inr i)⟩
 
-/-! ## W5-L4: the re-seeding lemma's per-arity sweep helpers (Phase 39 PENCIL, D6,
-`notes/Phase39-design.md` §"W5 design pass", verdict 2)
+/-! ## `cross₃` of three independent vectors orthogonal to a point
 
-The design doc's D6 discussion: the re-seeding lemma `exists_pencilSeed_of_nondeg` needs, at each
-body's closed hub-neighbourhood *arity* (the number of real prescribed normals feeding a `cross₃`
-call — `0`, `1`, `2`, or `3`; capped at `3` since a `4`-member LI closed-hub-neighbourhood would
-force its concurrency point to be `0`, contradicting nondegeneracy), a way to *hit* the given
-realization's point via a suitable choice of the chart's free fill vectors. The already-landed
-arity-`2` fact (`range_cross₃L_eq_perp`, W5-L1) supplies this **exactly**: the image of
-`cross₃ n₁ n₂ ·` is the *full* `2`-dim perp of an LI pair, so any prescribed target in that perp is
-hit on the nose. This section supplies the other two non-trivial arities, and records a genuine
-asymmetry the design doc's "reproduces" phrasing does not spell out:
+To write a nondegenerate realization in the chart (the converse in the proof of
+`lem:pencil-generic-steer`), the point of each body is written as `cross₃` of the normals of its
+closed hub-neighbourhood, which are independent, orthogonal to the point and at most three,
+completed by padding vectors. With three normals no padding is left: `cross₃` of three independent
+vectors and a nonzero vector orthogonal to them lie in the space of the vectors orthogonal to the
+three, of dimension `1`, so each is a nonzero multiple of the other
+(`exists_smul_cross₃_eq_of_linearIndependent`). So the chart reproduces a realization up to a
+nonzero scalar at each point, which, as that proof notes, changes neither its nondegeneracy nor the
+line of any hinge. With fewer normals the point is reached exactly (the section after next). -/
 
-* **Arity `1`** (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`): with *two* fill slots free,
-  the target is still hit **exactly** — extend the single prescribed normal to a basis of the
-  target's perp hyperplane (`finrank_toDualPerp_single_eq`), then rescale the *unconstrained* third
-  slot to correct the one remaining scalar (`cross₃`'s homogeneity, `cross₃_smul_thd`).
-* **Arity `3`** (`exists_smul_cross₃_eq_of_linearIndependent`): with **no** fill slots free — all
-  three `cross₃` arguments are prescribed real normals — there is no freedom left to correct a
-  scalar mismatch. `cross₃` of the triple and the target are both nonzero elements of the
-  `1`-dimensional common perp (`finrank_toDualPerp_triple_eq`, the arity-`3` companion of
-  `finrank_toDualPerp_single_eq`/`Meet.lean`'s `finrank_toDualPerp_pair_eq` — **moved 2026-07-25 to
-  `Motive.lean`**, the same L5-cut-v-a import-cone reason as the cardinality bound moved there at
-  L5-cut-i), hence *proportional* by a nonzero scalar — not necessarily equal on the nose.
-
-**Consequence for `exists_pencilSeed_of_nondeg`'s eventual statement:** the re-seeding lemma's
-reproduction contract cannot be literal equality of the chart's constructed point against the given
-realization's own point at a body with a *full* (`3`-member) closed hub-neighbourhood — only
-projective agreement (a nonzero per-body scalar) is achievable there. This is not a gap: every
-conjunct of `IsNondegPencilRealization` (nonzero-ness, the own-panel/cross incidences, the two
-`ExtensorInPanel`/`ExtensorThroughPoint` span-membership conjuncts, and the two `LinearIndependent`
-conjuncts) is invariant under rescaling `point`/`normal` independently per body by a nonzero
-scalar, so "point/normal reproduced up to a nonzero per-body scalar" is exactly the right invariant
-to state, not a weakening forced by an incomplete construction. Recorded here as a discovered
-correction to the design doc's phrasing before the full assembly is attempted.
-
-The remaining assembly for `exists_pencilSeed_of_nondeg` itself — the `≤ 3`-member closed-hub-
-neighbourhood cardinality bound (from nondegeneracy: a `4`-member LI family forces the point to
-`0`), the explicit `IsFin3SelectorOf` witnesses built from that bound, and the global choice
-assembling a single `PencilSeed` over all of `V(G)` — is deferred; `notes/Phase39.md` *Hand-off*. -/
-
-/-- **The arity-`3` perp-sweep, proportional form** (Phase 39 W5-L4, D6 infrastructure): with all
-three `cross₃` slots pinned to an independent triple `n₁, n₂, n₃`, `cross₃ n₁ n₂ n₃` and any nonzero
-`q` orthogonal to all three are both nonzero elements of their `1`-dimensional common perp
-(`finrank_toDualPerp_triple_eq`), hence related by a nonzero scalar — no fill slot survives to fix
-the scalar to `1` exactly, unlike the arity-`1`/`2` cases. -/
+/-- **`cross₃` of three independent vectors is a multiple of any nonzero vector orthogonal to them**
+(a step of `lem:pencil-generic-steer`): for independent `n₁, n₂, n₃` and `q ≠ 0` orthogonal to the
+three, `cross₃ n₁ n₂ n₃ = c • q` for some `c ≠ 0`. Both lie in the space of the vectors orthogonal
+to the three (`cross₃_dotProduct_fst` and its siblings), of dimension `1`
+(`finrank_toDualPerp_triple_eq`), which `q` spans; and `cross₃ n₁ n₂ n₃ ≠ 0`
+(`cross₃_ne_zero_iff_linearIndependent`). -/
 theorem exists_smul_cross₃_eq_of_linearIndependent {n₁ n₂ n₃ q : Fin 4 → K}
     (hLI : LinearIndependent K ![n₁, n₂, n₃]) (hq : q ≠ 0)
     (hq1 : q ⬝ᵥ n₁ = 0) (hq2 : q ⬝ᵥ n₂ = 0) (hq3 : q ⬝ᵥ n₃ = 0) :
@@ -563,21 +518,20 @@ theorem exists_smul_cross₃_eq_of_linearIndependent {n₁ n₂ n₃ q : Fin 4 �
   have hcne : c ≠ 0 := fun h0 => hcross_ne (by rw [← hc, h0, zero_smul])
   exact ⟨c, hcne, hc.symm⟩
 
-/-! ## L5-cut-v-b construction infra: `cross₃` of pairwise-distinct standard basis vectors
-(Phase 39 W5-L5, `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-b construction
-recipe")
+/-! ## `cross₃` of standard basis vectors
 
-The recipe's computational core: three pairwise-distinct standard basis vectors of `K⁴` are
-linearly independent (`linearIndependent_pi_single_triple`, via `Pi.basisFun`'s own independence
-restricted along an injective `Fin 3 → Fin 4`), and `cross₃` of them is a nonzero multiple of the
-fourth (`exists_smul_cross₃_pi_single`, a direct instance of the arity-`3` sweep above at
-`q := Pi.single d 1`, orthogonal to the other three by `dotProduct_single_one` since distinct
-standard basis vectors are `⬝ᵥ`-orthogonal). No sign/order bookkeeping is needed: the explicit
-witnesses ask only for `LinearIndependent`, invariant under the per-body nonzero rescaling this
-lemma already produces. -/
+Three distinct standard basis vectors of `K⁴` are independent
+(`linearIndependent_pi_single_triple`), and their `cross₃` is a nonzero multiple of the fourth
+(`exists_smul_cross₃_pi_single`), which is nonzero and orthogonal to the three. So a point of the
+chart whose hub slots are three distinct standard basis vectors is a nonzero multiple of the fourth
+(`exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single`), as part (a) of
+`lem:pencil-generic-steer` uses (`exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`,
+`MainComponent/GenericSteer.lean`). Only the independence of such points matters there, which a
+nonzero scalar at each point does not change. -/
 
-/-- **Three pairwise-distinct standard basis vectors of `K⁴` are linearly independent**
-(Phase 39 W5-L5, L5-cut-v-b infra). -/
+/-- **Three distinct standard basis vectors of `K⁴` are linearly independent** (a step of
+`lem:pencil-generic-steer`): they are the vectors of `Pi.basisFun K (Fin 4)` at the injective
+`![a, b, c]`. -/
 theorem linearIndependent_pi_single_triple {a b c : Fin 4} (hab : a ≠ b) (hac : a ≠ c)
     (hbc : b ≠ c) :
     LinearIndependent K ![(Pi.single a (1 : K) : Fin 4 → K), Pi.single b 1, Pi.single c 1] := by
@@ -590,13 +544,10 @@ theorem linearIndependent_pi_single_triple {a b c : Fin 4} (hab : a ≠ b) (hac 
     funext j; fin_cases j <;> simp [Pi.basisFun_apply]
   rwa [heq] at h
 
-/-- **`cross₃` of three pairwise-distinct standard basis vectors is a nonzero multiple of the
-fourth** (Phase 39 W5-L5, L5-cut-v-b infra): for `a, b, c, d : Fin 4` pairwise distinct (so, `Fin
-4` having exactly four elements, `{a,b,c,d} = {0,1,2,3}`), `cross₃ e_a e_b e_c` is proportional to
-`e_d` by a nonzero scalar. An instance of `exists_smul_cross₃_eq_of_linearIndependent` at
-`q := Pi.single d 1`: the `a,b,c` triple is LI (`linearIndependent_pi_single_triple`), `e_d ≠ 0`
-(its `d`-th coordinate is `1 ≠ 0`), and `e_d ⬝ᵥ e_a = e_d ⬝ᵥ e_b = e_d ⬝ᵥ e_c = 0`
-(`dotProduct_single_one` reads off `e_d`'s coordinate at each of `a, b, c`, all `≠ d`). -/
+/-- **`cross₃` of three distinct standard basis vectors is a nonzero multiple of the fourth** (a
+step of `lem:pencil-generic-steer`): for distinct `a, b, c, d : Fin 4`, `cross₃ e_a e_b e_c` is a
+nonzero multiple of `e_d`, by `exists_smul_cross₃_eq_of_linearIndependent` at `q := e_d`, which is
+nonzero and orthogonal to `e_a`, `e_b` and `e_c` (`dotProduct_single_one`). -/
 theorem exists_smul_cross₃_pi_single {a b c d : Fin 4} (had : a ≠ d) (hbd : b ≠ d) (hcd : c ≠ d)
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
     ∃ e : K, e ≠ 0 ∧ cross₃ (Pi.single a (1 : K)) (Pi.single b 1) (Pi.single c 1)
@@ -614,11 +565,10 @@ theorem exists_smul_cross₃_pi_single {a b c d : Fin 4} (had : a ≠ d) (hbd : 
     rw [dotProduct_single_one, Pi.single_apply, ite_eq_right hcd]
   exact exists_smul_cross₃_eq_of_linearIndependent hLI hd_ne hq1 hq2 hq3
 
-/-- **A body's chart point is a nonzero multiple of `e_d` once its slot triple reads back an
-injective, `d`-avoiding basis assignment** (Phase 40-cleanup C2 extraction, `Witness.lean`'s
-`hPu`/`hP1`/`hP2` triple, written out nine times across `Witness.lean` and `GenericSteer.lean`
-before this lemma): a direct corollary of `exists_smul_cross₃_pi_single` that reads the three
-`cross₃` slots off `hslot` and unfolds `pencilChartPoint`. -/
+/-- **A point of the chart whose hub slots are distinct standard basis vectors** (a step of
+`lem:pencil-generic-steer`): if slot `i` of `v`'s hub selector is `e_{σ i}`, for an injective
+`σ : Fin 3 → Fin 4` that misses `d`, the point of `v` is a nonzero multiple of `e_d`
+(`exists_smul_cross₃_pi_single`). -/
 theorem exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single
     {seed : PencilSeed K α} {hubSel : α → Fin 3 → Option α} {v : α} {σ : Fin 3 → Fin 4} {d : Fin 4}
     (hσinj : Function.Injective σ) (hσd : ∀ i, σ i ≠ d)
@@ -631,23 +581,21 @@ theorem exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single
     exists_smul_cross₃_pi_single (K := K) (hσd 0) (hσd 1) (hσd 2) h01 h02 h12
   exact ⟨cc, hcc, by rw [pencilChartPoint, hslot 0, hslot 1, hslot 2, hcross]⟩
 
-/-! ## W5-L4: the exact perp-sweeps at arity `2`/`1`/`0` (Phase 39 PENCIL, D6,
-`notes/Phase39-design.md` §"W5 design pass", verdict 2)
+/-! ## A point as `cross₃` exactly, when a padding vector is free
 
-The arity-`2`/`1`/`0` companions of the arity-`3` proportional sweep above: with one or more
-`cross₃` fill slots free, a target vector orthogonal to the prescribed normals is hit **exactly**
-(no residual scalar to correct), by extending those normals to a basis of the target's perp and,
-where a slot survives, rescaling it (`cross₃`'s homogeneity). Arity `2` repackages the W5-L1 range
-identity
-`range_cross₃L_eq_perp` as an `∃ z`; arity `1`/`0` add successive "pick a vector outside the current
-span" choices. These feed the re-seeding lemma at bodies with `≤ 1` real prescribed normal. -/
+With at most two normals at a body, a padding vector is free, and the point is reached exactly. For
+independent `n₁, n₂`, the vectors `cross₃ n₁ n₂ z` are those orthogonal to both
+(`range_cross₃L_eq_perp`), so each of these is reached
+(`exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`). For a nonzero `n` orthogonal
+to a nonzero `q`, two vectors, each outside the span of those before it, complete `n` to an
+independent triple orthogonal to `q`, whose `cross₃` is a nonzero multiple of `q`, and rescaling the
+last vector gives `q` (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`). With no normal, any
+nonzero vector orthogonal to `q` serves as `n` (`exists_cross₃_eq_of_ne_zero`). -/
 
-/-- **The arity-`2` perp-sweep, exact form** (Phase 39 W5-L4, piece-3 assembly infrastructure): the
-concrete `∃ z` packaging the design doc's L1 bullet left as an abstract range equality
-(`range_cross₃L_eq_perp`) — for an independent pair `n₁, n₂` and any `q` orthogonal to both, some
-fill vector `z` hits `q` **exactly** (no scalar needed, unlike the arity-`3` case above): `q`'s
-membership in the pair's common perp is immediate from the two dot-product hypotheses, and
-`range_cross₃L_eq_perp` identifies that perp with `cross₃ n₁ n₂ ·`'s literal range. -/
+/-- **A vector orthogonal to two independent vectors is their `cross₃` with a third** (a step of
+`lem:pencil-generic-steer`): for independent `n₁, n₂` and `q` orthogonal to both,
+`cross₃ n₁ n₂ z = q` for some `z`, as `q` lies in the space of the vectors orthogonal to both, the
+range of `cross₃ n₁ n₂ ·` (`range_cross₃L_eq_perp`). -/
 theorem exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero
     {n₁ n₂ q : Fin 4 → K} (hLI : LinearIndependent K ![n₁, n₂])
     (hq1 : q ⬝ᵥ n₁ = 0) (hq2 : q ⬝ᵥ n₂ = 0) :
@@ -664,14 +612,14 @@ theorem exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero
   obtain ⟨z, hz⟩ := hmem
   exact ⟨z, hz⟩
 
-/-- **The arity-`1` perp-sweep, exact form** (Phase 39 W5-L4, D6 infrastructure): with the first
-`cross₃` slot pinned to a nonzero normal `n` and the other two free, any nonzero `q` orthogonal to
-`n` is hit **exactly**. Extend `n` (a nonzero vector in the `3`-dimensional perp `q^⊥`,
-`finrank_toDualPerp_single_eq`) to an independent triple spanning `q^⊥` (two successive
-"pick outside the span" choices); the arity-`3` fact above puts `cross₃` of that triple proportional
-to `q` by some nonzero `c`, and rescaling the unconstrained third slot by `c⁻¹`
-(`cross₃_smul_thd`) fixes the scalar to `1` exactly, since that slot carries no prescribed value to
-protect. -/
+/-- **A nonzero vector orthogonal to a nonzero `n` is `cross₃` of `n` and two more** (a step of
+`lem:pencil-generic-steer` and `lem:pencil-generic-pendant-triangle`): for `n ≠ 0` and `q ≠ 0`
+orthogonal to it, there are `y`, `z` with `![n, y, z]` linearly independent and `cross₃ n y z = q`.
+The vectors orthogonal to `q` form a space of dimension `3` (`finrank_toDualPerp_single_eq`) that
+holds `n`; two vectors of it, each outside the span of those before it, complete `n` to an
+independent triple there, whose `cross₃` is `c • q` with `c ≠ 0`
+(`exists_smul_cross₃_eq_of_linearIndependent`); and multiplying the last vector by `c⁻¹` gives `q`
+(`cross₃_smul_thd`) and keeps the triple independent. -/
 theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
     (hn : n ≠ 0) (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
     ∃ y z : Fin 4 → K, LinearIndependent K ![n, y, z] ∧ cross₃ n y z = q := by
@@ -716,11 +664,11 @@ theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
     rwa [heq] at hw
   · rw [cross₃_smul_thd, hc, inv_smul_smul₀ hcne]
 
-/-- **The arity-`0` perp-sweep** (Phase 39 W5-L4, D6 infrastructure, the isolated-body corollary):
-with all three `cross₃` slots free and no prescribed normal at all, any nonzero `q` is still hit
-**exactly** — pick any nonzero vector in the `3`-dimensional (hence nonempty) perp `q^⊥` as the
-first slot and delegate to the arity-`1` fact above. Feeds the re-seeding lemma at a non-hub body
-with no hub-neighbours (`closedHubNbhd v = ∅`). -/
+/-- **A nonzero vector is `cross₃` of an independent triple** (a step of
+`lem:pencil-generic-steer`): for `q ≠ 0`, `cross₃ x y z = q` for some independent `x, y, z`. Take
+for `x` a nonzero vector orthogonal to `q`, which exists as these form a space of dimension `3`
+(`finrank_toDualPerp_single_eq`), and apply `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`.
+Writing a realization in the chart uses it at a body whose closed hub-neighbourhood is empty. -/
 theorem exists_cross₃_eq_of_ne_zero {q : Fin 4 → K} (hq : q ≠ 0) :
     ∃ x y z : Fin 4 → K, LinearIndependent K ![x, y, z] ∧ cross₃ x y z = q := by
   set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
@@ -735,63 +683,43 @@ theorem exists_cross₃_eq_of_ne_zero {q : Fin 4 → K} (hq : q ≠ 0) :
     exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero hxne' hq hxq
   exact ⟨(x : Fin 4 → K), y, z, hLI, hxyz⟩
 
-/-! ## W5-L4 piece 3 (point side): the global re-seeding assembly's hub-selector/point half
-(Phase 39 PENCIL, `notes/Phase39-design.md` §"W5 leaf decomposition" L4)
+/-! ## A realization in the chart: the hub selector and the points
 
-The first honest slice of piece 3's global assembly (`notes/Phase39.md` *Hand-off*, both known
-piece-3 gaps — the WF-conjunct restatement and the shared-`fill` split — now resolved): the
-**point side** only — `hubSel`/`fillHub` and the corresponding two `PencilChartWF` conjuncts
-(selector correctness, hub-slot independence) plus the point-reproduction fact. The symmetric
-**non-hub-normal side** (`nbrSel`/`fillNbr`, `PencilChartWF`'s remaining three conjuncts, and
-normal-reproduction) is deferred to a follow-up dispatch — nothing here constructs or constrains
-`fillNbr` at all (the two facts below are proved for *every* `fillNbr`, so a later commit's own
-`fillNbr` construction slots in without touching this one).
+The points of a nondegenerate realization in the chart. At each body `v`
+(`exists_hubSlotOf_isNondegPencilRealization`), a selector `sel` of the closed hub-neighbourhood and
+padding vectors `fill` make the three slots `hubSlotOf normal sel fill i` independent and, when
+`v ∈ V(G)`, their `cross₃` a nonzero multiple of the point of `v`. There the closed
+hub-neighbourhood has at most three members
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, `Motive.lean`), and each number of
+members has its lemma: `exists_cross₃_eq_of_ne_zero`,
+`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero` and
+`exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`, with the scalar `1`, and
+`exists_smul_cross₃_eq_of_linearIndependent`. At a body outside `V(G)` the closed hub-neighbourhood
+is empty, and an independent triple fills the three slots.
 
-**The per-vertex step** (`exists_hubSlotOf_isNondegPencilRealization`): at each body `v`, dispatch
-on `(closedHubNbhd v).ncard ∈ {0,1,2,3}` (bounded by `ncard_closedHubNbhd_le_three_of_
-isNondegPencilRealization` above) and route to the matching arity sweep — `exists_cross₃_eq_of_
-ne_zero` (0), `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero` (1),
-`exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero` (2), or
-`exists_smul_cross₃_eq_of_linearIndependent` (3) — each wrapped as a `∃ c ≠ 0` projective statement
-(`c = 1` at arities `0`–`2`, where the sweep already lands on the nose; a genuine scalar only at
-arity `3`) so the *headline shape* stays uniform across arities, matching the design doc's
-"avoid a three-way dispatch" recipe at the level callers see, even though the four cases still route
-to their own sweep lemma internally. A `v ∉ V(G)` body (no realization data at all) gets the
-trivial `closedHubNbhd v = ∅` selector and a fixed dummy LI fill triple, satisfying
-`PencilChartWF`'s unconditional (not `V(G)`-relativized) selector/independence conjuncts
-vacuously.
+Choosing these at every body (`exists_hubSel_fillHub_of_isNondegPencilRealization`) gives the
+selector `hubSel` and the padding `fillHub` of the chart, whatever its `fillNbr`: the slots of
+`hubSel` at the parameters `⟨normal, fillHub, fillNbr⟩` are those of `hubSlotOf` by definition.
+`exists_pencilSeed_of_nondeg_of_selectors` (`Reseed.lean`) does the same at any given selectors. -/
 
-**The global step** (`exists_hubSel_fillHub_of_isNondegPencilRealization`): `choose` (the
-`Classical.skolem`-style choice the design doc's remaining work calls for) turns the per-vertex
-existence into total functions `hubSel`/`fillHub`, and the two `PencilChartWF` conjuncts plus the
-point-reproduction fact drop out immediately — `hubSlotNormal ⟨normal, fillHub, fillNbr⟩ hubSel v i`
-and `hubSlotOf normal (hubSel v) (fillHub v) i` agree by `rfl` (`fillNbr` never enters either side),
-so no further bridging is needed.
-
-The arity-`3` case's `LinearIndepOn`-on-a-`3`-element-set transfer lemma
-(`linearIndependent_triple_of_linearIndepOn`) **moved 2026-07-25 to `Motive.lean`** — the L5-cut-v-a
-triangle-hub finding needs it without this file's chart stack in the import cone, the same reason
-the cardinality bound and its cross-incidence feeders moved there at L5-cut-i. -/
-
-/-- **The raw per-vertex hub-slot combinator** (Phase 39 W5-L4 piece 3): `hubSlotNormal` restricted
-to a single body's selector/fill data, without needing a full `PencilSeed`/global `hubSel` — the
-shape the per-vertex re-seeding existence lemma below produces, before the `Classical.skolem`-style
-global assembly packages it into an actual seed
-(`hubSlotNormal ⟨normal, fillHub, fillNbr⟩ hubSel v i = hubSlotOf normal (hubSel v) (fillHub v) i`
-by `rfl`, for any `fillNbr`). -/
+/-- **Slot `i` of a selector at one body** (a step of `lem:pencil-generic-steer`): `normal w` if
+`sel` puts `w` in slot `i`, and `fill i` if it leaves the slot empty. At the parameters
+`⟨normal, fillHub, fillNbr⟩`, slot `i` of `hubSel v` (`hubSlotNormal`) is
+`hubSlotOf normal (hubSel v) (fillHub v) i` by definition, for any `fillNbr`; the neighbour side
+uses it with the points of the chart in place of `normal`
+(`exists_nbrSlotOf_isNondegPencilRealization`). -/
 def hubSlotOf (normal : α → Fin 4 → K) (sel : Fin 3 → Option α)
     (fill : Fin 3 → Fin 4 → K) (i : Fin 3) : Fin 4 → K :=
   match sel i with
   | some w => normal w
   | none => fill i
 
-/-- **Piece 3 (point side), per vertex** (Phase 39 W5-L4): given an arbitrary nondegenerate
-realization, every body `v` admits a hub-selector `sel` and fill triple `fill` whose `hubSlotOf`
-triple is linearly independent and whose `cross₃` reproduces `point v` up to a nonzero scalar —
-uniformly across `v`'s closed-hub-neighbourhood arity `0`–`3` (dispatched internally, per the
-section docstring). This is the per-vertex existence statement the `Classical.skolem`-style choice
-below (`exists_hubSel_fillHub_of_isNondegPencilRealization`) turns into global `hubSel`/`fillHub`
-functions. -/
+/-- **The points of a realization in the chart, at one body** (a step of
+`lem:pencil-generic-steer`): for a nondegenerate realization of `G` and a body `v`, there are a
+selector `sel` of `G.closedHubNbhd v` and padding vectors `fill` such that the three vectors
+`hubSlotOf normal sel fill i` are linearly independent and, if `v ∈ V(G)`, their `cross₃` is a
+nonzero multiple of `point v`. The proof takes the number of members of `G.closedHubNbhd v`, at most
+three, case by case, as the section header says. -/
 theorem exists_hubSlotOf_isNondegPencilRealization [Finite α]
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) (v : α) :
@@ -923,19 +851,15 @@ theorem exists_hubSlotOf_isNondegPencilRealization [Finite α]
           (![x,y,z] : Fin 3 → Fin 4 → K) 2]
       simpa using hLI3
 
-/-- **Piece 3 (point side), the global assembly** (Phase 39 W5-L4, `notes/Phase39.md` *Hand-off*):
-the first honest slice of `exists_pencilSeed_of_nondeg` — a global hub-selector `hubSel` and fill
-`fillHub`, correct against `closedHubNbhd` at every body (`PencilChartWF`'s first conjunct), whose
-hub-slot triple is linearly independent everywhere (`PencilChartWF`'s third conjunct, for *any*
-`fillNbr` — the non-hub-normal side is not constructed here), and whose `pencilChartPoint`
-reproduces the given realization's own `point` up to a nonzero per-body scalar on `V(G)` — the
-projective reproduction contract the W5-L4 correction pinned. Assembled by `choose`
-(`Classical.skolem`-style) from the per-vertex lemma above; the two conjuncts and the reproduction
-fact are immediate, since `hubSlotNormal`/`pencilChartPoint` unfold to exactly the per-vertex
-`hubSlotOf`/`cross₃` shapes by `rfl`. **Deferred** (`notes/Phase39.md` *Hand-off*): the symmetric
-non-hub-normal side (`nbrSel`/`fillNbr`, `PencilChartWF`'s second/fourth/fifth conjuncts, and
-normal-reproduction) and the final assembly of `exists_pencilSeed_of_nondeg` itself, which combines
-both sides into one `PencilSeed`. -/
+/-- **The points of a realization in the chart** (a step of `lem:pencil-generic-steer`): for a
+nondegenerate realization of `G`, there are a hub selector `hubSel` and padding `fillHub` such that
+`hubSel v` lists `G.closedHubNbhd v` at every body, and, for every `fillNbr`, at the parameters
+`⟨normal, fillHub, fillNbr⟩`, the three slots of `hubSel v` are independent at every body and the
+point of each `v ∈ V(G)` is a nonzero multiple of `point v`: the first and third conditions of
+`PencilChartWF`, and the points reproduced up to scalars. `choose` turns
+`exists_hubSlotOf_isNondegPencilRealization` into the two functions. `exists_pencilSeed_of_nondeg`
+(`Reseed.lean`) uses it with the neighbour side,
+`exists_nbrSel_fillNbr_of_isNondegPencilRealization`. -/
 theorem exists_hubSel_fillHub_of_isNondegPencilRealization [Finite α]
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) :
@@ -951,49 +875,30 @@ theorem exists_hubSel_fillHub_of_isNondegPencilRealization [Finite α]
   choose hubSel fillHub hsel hLI hpt using fun v => exists_hubSlotOf_isNondegPencilRealization h v
   exact ⟨hubSel, fillHub, hsel, fun fillNbr => ⟨fun v => hLI v, fun v hv => hpt v hv⟩⟩
 
-/-! ## W5-L4 piece 3 (normal side): the global re-seeding assembly's non-hub-normal half
-(Phase 39 PENCIL, `notes/Phase39-design.md` §"W5 leaf decomposition" L4)
+/-! ## A realization in the chart: the neighbour selector and the normals
 
-The symmetric second slice of piece 3's global assembly, mirroring the point side above exactly:
-`nbrSel`/`fillNbr` and the corresponding two `PencilChartWF` conjuncts (selector correctness,
-`nbrSlotPoint` independence) plus the normal-reproduction fact, both relativized to
-`¬ G.PencilHub v` (a hub's `pencilChartNormal` reads `seed.hubNormal v = normal v` directly —
-`pencilChartNormal_of_pencilHub` — so it needs neither `nbrSel` nor a reproduction argument at all).
-**Deferred**
-(`notes/Phase39.md` *Hand-off*): `PencilChartWF`'s fifth conjunct (adjacent-`pencilChartPoint`
-independence) and the final `exists_pencilSeed_of_nondeg` assembly combining both sides into one
-`PencilSeed`.
+The normals of a nondegenerate realization in the chart, at the bodies that are not hubs; at a hub
+the normal of the chart is `hubNormal` (`pencilChartNormal_of_pencilHub`), which
+`exists_pencilSeed_of_nondeg` sets to the normal of the realization. They come from the points of
+the chart already chosen, not from those of the realization, as the slots `nbrSlotPoint` of
+`pencilChartNormal` hold points of the chart. So the step at one body
+(`exists_nbrSlotOf_isNondegPencilRealization`) takes any family `pt` of nonzero vectors with `pt w`
+a nonzero multiple of `point w` at each `w ∈ V(G)`. At `v ∈ V(G)` that is not a hub, the points of
+the closed neighbourhood are independent, by nondegeneracy, and so are their multiples
+(`LinearIndependent.units_smul`); they are orthogonal to the normal of `v`
+(`dotProduct_normal_eq_zero_of_mem_closedNbhd`, `Motive.lean`), and there are one to three of them
+(`ncard_closedNbhd_le_three_of_not_pencilHub`; `v` is one), so a lemma above gives a nonzero
+multiple of `normal v`. At `v ∉ V(G)` the closed neighbourhood is `{v}`, and an independent triple
+that starts with `pt v` fills the slots (`exists_linearIndependent_triple_of_ne_zero`).
 
-**One asymmetry from the point side**: the "real" family the non-hub construction completes is not
-the realization's raw `point`, but the *already-built* chart's own `pencilChartPoint seed hubSel`
-(since `PencilChartWF`'s fourth conjunct and `pencilChartNormal`'s non-hub branch read
-`nbrSlotPoint`, which is built from `pencilChartPoint`, not `point`) — so the per-vertex lemma below
-takes an abstract `pt` (instantiated at the point side's own construction by the global assembly)
-together with (i) `pt`'s **unconditional** nonzero-ness (`∀ v, pt v ≠ 0`, feeding a body with no
-genuine neighbours where the reproduction target doesn't even apply, see below) and (ii) its
-**`V(G)`-relative projective reproduction** of `point` (`∀ v ∈ V(G), ∃ c ≠ 0, pt v = c • point v`,
-exactly the point side's own headline fact) — transporting the realization's own `closedNbhd`
-point-LI conjunct (`IsNondegPencilRealization`'s fourth) along `pt`'s per-member nonzero scalars via
-`LinearIndependent.units_smul`, then dispatching on arity `1`–`3` exactly as the point side does
-(`closedNbhd v` is never empty — `v ∈ closedNbhd v` always — so arity `0` cannot occur for a genuine
-`v ∈ V(G)`, unlike the point side's `closedHubNbhd`).
+Choosing these at every body (`exists_nbrSel_fillNbr_of_isNondegPencilRealization`), with `pt` the
+points of the hub side, gives the neighbour selector `nbrSel` and the padding `fillNbr`. -/
 
-**A second asymmetry, at `v ∉ V(G)`**: `closedNbhd v = {v}` there (never `∅`, unlike
-`closedHubNbhd`, since `v ∈ closedNbhd v` needs no hub/membership side-condition) — so
-`PencilChartWF`'s unconditional-in-`v` second/fourth conjuncts (only the *hypothesis*
-`¬ PencilHub v` gates them, not `v ∈ V(G)`) genuinely need a selector/LI witness there too, but
-with **no reproduction target** (the third conjunct's own hypothesis `v ∈ V(G)` rules this case
-out). `pt v ≠ 0` unconditionally (from (i) above) is exactly what lets
-`exists_linearIndependent_triple_of_ne_zero` supply *some* LI triple with no orthogonality
-constraint at all. -/
-
-/-- **Extend a nonzero vector to a linearly independent triple in `K⁴`, no target** (Phase 39
-W5-L4 piece 3, normal side): unlike the `cross₃`-reproducing sweep helpers above, this needs no
-orthogonality condition at all — pick `y` outside `span{n}` (finrank `1 < 4`), then `z` outside
-`span{n, y}` (finrank `2 < 4`), exactly the "pick outside span" idiom
-`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero` uses, but against the whole ambient space
-(`⊤`, finrank `4`) rather than a `q`'s `3`-dimensional perp. Feeds the `v ∉ V(G)` case of the
-per-vertex normal-side lemma below, where no reproduction target applies. -/
+/-- **A nonzero vector of `K⁴` starts an independent triple** (a step of
+`lem:pencil-generic-steer`): for `n ≠ 0`, there are `y`, `z` with `![n, y, z]` linearly independent:
+`y` outside the span of `n`, of dimension `1`, and `z` outside that of `n` and `y`, of dimension
+`2`, both less than `4`. `exists_nbrSlotOf_isNondegPencilRealization` uses it at a body outside
+`V(G)`. -/
 theorem exists_linearIndependent_triple_of_ne_zero {n : Fin 4 → K} (hn : n ≠ 0) :
     ∃ y z : Fin 4 → K, LinearIndependent K ![n, y, z] := by
   have hnLI : LinearIndependent K (![n] : Fin 1 → Fin 4 → K) := by
@@ -1029,18 +934,13 @@ theorem exists_linearIndependent_triple_of_ne_zero {n : Fin 4 → K} (hn : n ≠
   rwa [show Fin.snoc (![n, y] : Fin 2 → Fin 4 → K) z = ![n, y, z] from by
     funext i; fin_cases i <;> simp] at hsnoc
 
-/-- **Piece 3 (normal side), per vertex** (Phase 39 W5-L4): given an arbitrary nondegenerate
-realization and a point family `pt` that is unconditionally nonzero and `V(G)`-relatively
-reproduces `point` up to a nonzero scalar (the point side's own headline fact, abstracted), every
-body `v` admits a neighbour-selector `sel` and fill triple `fill` whose `hubSlotOf pt sel fill`
-triple is linearly independent whenever `¬ G.PencilHub v` (`PencilChartWF`'s relativized second/
-fourth conjuncts), and whose `cross₃` reproduces `normal v` up to a nonzero scalar when
-additionally `v ∈ V(G)`. Dispatches on `v`'s hub status, then (for a non-hub `v ∈ V(G)`) on
-`(closedNbhd v).ncard ∈ {1,2,3}` (never `0`, since `v ∈ closedNbhd v` always), then (for a non-hub
-`v ∉ V(G)`) supplies the selector-less `{v}` case via `exists_linearIndependent_triple_of_ne_zero`.
-This is the per-vertex existence statement the `Classical.skolem`-style choice below
-(`exists_nbrSel_fillNbr_of_isNondegPencilRealization`) turns into global `nbrSel`/`fillNbr`
-functions. -/
+/-- **The normals of a realization in the chart, at one body** (a step of
+`lem:pencil-generic-steer`): for a nondegenerate realization of `G`, a family `pt` of nonzero
+vectors with `pt w` a nonzero multiple of `point w` at each `w ∈ V(G)`, and a body `v` that is not a
+pencil hub, there are a selector `sel` of `G.closedNbhd v` and padding vectors `fill` such that the
+three vectors `hubSlotOf pt sel fill i` are linearly independent and, if `v ∈ V(G)`, their `cross₃`
+is a nonzero multiple of `normal v`. At a hub nothing is asked. The proof takes the cases of the
+section header. -/
 theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point pt : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point)
@@ -1244,24 +1144,17 @@ theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
             = ![pt v, y, z] := by funext i; fin_cases i <;> rfl
         rw [heqf]; exact hLIyz
 
-/-- **Piece 3 (normal side), the global assembly** (Phase 39 W5-L4, `notes/Phase39.md` *Hand-off*):
-the second honest slice of `exists_pencilSeed_of_nondeg` — given the point side's own landed
-`hubSel`/`fillHub` (its hub-slot independence `hHubLI` and its projective point-reproduction
-`hPtRepro`, both instantiated at the placeholder `fillNbr := fun _ _ => 0` since neither reads it),
-a global neighbour-selector `nbrSel` and fill `fillNbr`, correct against `closedNbhd` at every
-non-hub body (`PencilChartWF`'s second conjunct), whose `nbrSlotPoint` triple is linearly
-independent at every non-hub body (`PencilChartWF`'s fourth conjunct), and whose
-`pencilChartNormal` reproduces the given realization's own `normal` up to a nonzero per-body scalar
-on `V(G)` at every non-hub body — the projective reproduction contract, symmetric to the point
-side's. Assembled by `choose` (`Classical.skolem`-style) from the per-vertex lemma above,
-instantiated at `pt := pencilChartPoint ⟨normal, fillHub, 0⟩ hubSel` (nonzero everywhere via
-`pencilChartPoint_ne_zero` + `hHubLI`, and `V(G)`-relatively reproducing `point` via `hPtRepro`
-directly); the three conclusions bridge to the real `nbrSlotPoint`/`pencilChartNormal` shapes by
-`rfl`/`pencilChartNormal_of_not_pencilHub` (`pencilChartPoint` never reads `seed.fillNbr`, so
-swapping the placeholder for the freshly-built `fillNbr` changes nothing about the point side's own
-values). **Deferred** (`notes/Phase39.md` *Hand-off*): `PencilChartWF`'s fifth conjunct and the
-final assembly of `exists_pencilSeed_of_nondeg` itself, which combines both sides into one
-`PencilSeed`. -/
+/-- **The normals of a realization in the chart** (a step of `lem:pencil-generic-steer`): given a
+nondegenerate realization of `G`, and `hubSel` and `fillHub` whose slots are independent at every
+body and whose points are nonzero multiples of `point` on `V(G)`, both at the parameters with
+`fillNbr := 0`, there are a neighbour selector `nbrSel` and padding `fillNbr` such that, at every
+body `v` that is not a hub, `nbrSel v` lists `G.closedNbhd v`, and, at the parameters
+`⟨normal, fillHub, fillNbr⟩`, the three slots `nbrSlotPoint` of `v` are independent and, if
+`v ∈ V(G)`, the normal of the chart is a nonzero multiple of `normal v`: the second and fourth
+conditions of `PencilChartWF`, and the normals reproduced up to scalars. `choose` applies
+`exists_nbrSlotOf_isNondegPencilRealization` at every body, with `pt` the points of the chart, which
+do not read `fillNbr` and are nonzero (`pencilChartPoint_ne_zero`); at a body that is not a hub, the
+normal of the chart is `cross₃` of the slots (`pencilChartNormal_of_not_pencilHub`). -/
 theorem exists_nbrSel_fillNbr_of_isNondegPencilRealization [Finite α] [Finite β]
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point)
