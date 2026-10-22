@@ -8,38 +8,44 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
 
 /-!
-# The pendant triangle (Phase 40o EARS, Z2), and the triangle on three bodies
+# The generic realization across a pendant triangle, and the triangle on three bodies
 
-(MC-127)(b), (MC-192): a pendant triangle `c − x 0 − x 1 − c` at a body `c` of degree at least four
-carries a generic pencil realization up from the smaller graph, with no deficiency hypothesis. The
-extension half puts `x 0` and `x 1` in `c`'s plane, the three points independent, and glues ranks
-and deficiencies at the cut vertex `c`; the assembly half steers `G` and `G[V₁]`'s realizations
-(T2 + T3, `GenericSteer.lean`) to the conditions the extension needs. The last section is the
-triangle on three bodies, the base of the generic step, by a direct witness whose hinge
-independence is the first statement's.
+The step of the generic main-component statement at a pendant triangle
+(`lem:pencil-generic-pendant-triangle`, `sec:main-component-statements`), and its case on three
+bodies (`thm:pencil-generic-step`). Let `K` be infinite and `G` simple and nondegeneracy-feasible,
+with a closed ear `c − x 0 − x 1 − c` on `V₁` with two interior bodies (defined after
+`def:open-ear`, and given by the hypotheses of `Graph.X0Attains.of_closedEar` at `k = 2`), whose end
+`c` has degree at least four: `x 0` and `x 1` are adjacent bodies of degree two, both joined to `c`.
+If `G[V₁] = G − {x 0, x 1}` has a generic pencil realization whenever it is nondegeneracy-feasible,
+then `G` has one, with no hypothesis on the deficiency (unlike the one-body ear of
+`lem:pencil-generic-one-ear`).
 
-## Main statements
+The bodies `x 0` and `x 1` are not pencil hubs, and they are the only neighbours that a body of `V₁`
+loses in `G[V₁]`. So a nondegenerate realization of `G` restricts to one of `G[V₁]`
+(`lem:pencil-generic-steer`(a)), and `G[V₁]` has a generic realization. Steering it
+(`lem:pencil-generic-steer`(b)) gives one whose normals are independent on the closed
+hub-neighbourhood in `G` of every body of `V₁`. The extension puts the points of `x 0` and `x 1` in
+the panel of `c`, the three points independent, and gives the three edges of the triangle the joins
+of the points of their ends. These hinges are independent (`linearIndependent_pointJoin_triangle`),
+so the triangle is rigid (`lem:cycle-realization-rigid`). The ranks of `G[V₁]` and of the triangle
+add at the cut vertex `c` (`lem:block-rank-cut-vertex`), and so do the deficiencies
+(`lem:deficiency-cut-vertex`), so the rank reaches the deficiency rank of `G`.
 
-* `linearIndependent_pointJoin_triangle` — the three sides of a triangle of independent points are
-  independent: extend to a basis of `K⁴`, the sides are three of its six tetrahedron joins.
-* `isLink_cases_of_closedEar_two` — the links of `G` at a closed two-ear are the triangle's three
-  edges, in either orientation, or lie in `G[V₁]` (shared by the next two statements).
-* `not_pencilHub_of_closedEar_two` — the pendant triangle's two bodies are not hubs: each lies on
-  exactly two edges, the triangle's.
-* `hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization` — (MC-127)(b), the
-  extension half: a nondegenerate realization of `G[V₁]` at the deficiency rank, with the closed
-  hub-neighbourhoods of `V₁` promoted and `c` a hub, extends across the pendant triangle to a
-  generic pencil realization of `G`.
-* `hasGenericPencilRealization_of_closedEar_two` — (MC-127)(b) on the chart, Z2: a pendant triangle
-  at a body of degree at least four carries `G[V₁]`'s generic pencil realization (whenever
-  feasible) up to one of `G`.
-* `pencilPair_of_simple_ncard_eq_three` — a simple two-edge-connected multigraph on three bodies,
-  the triangle, satisfies the conditioned pair outright (Phase 39 W5-L7c-3; the three-body case
-  of `thm:pencil-generic-step`).
+The last section gives a simple two-edge-connected graph on three bodies, a triangle, the
+conditioned pair by a direct construction, whose three hinges are independent by
+`linearIndependent_pointJoin_triangle` too.
 
-See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-127)(b),
-(MC-190)–(MC-192)), and `blueprint/src/chapter/main-component.tex`
-(`lem:pencil-generic-pendant-triangle`, `thm:pencil-generic-step`).
+## Main results
+
+* `hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization`:
+  `lem:pencil-generic-pendant-triangle`, its extension: a nondegenerate realization of `G[V₁]` at
+  the deficiency rank, with the normals independent on the closed hub-neighbourhood in `G` of every
+  body of `V₁`, extends across the pendant triangle at a pencil hub `c` to a generic pencil
+  realization of `G`.
+* `hasGenericPencilRealization_of_closedEar_two`: `lem:pencil-generic-pendant-triangle`, the generic
+  realization across a pendant triangle.
+* `pencilPair_of_simple_ncard_eq_three`: the case of `thm:pencil-generic-step` on three bodies, the
+  conditioned pair at a simple two-edge-connected graph on three bodies, over every field.
 -/
 
 open scoped Matrix Graph
@@ -48,10 +54,14 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## Z2 (part 1): the pendant-triangle extension ((MC-127)(b)'s placement and rank) -/
+/-! ## The extension across a pendant triangle -/
 
-/-- **The three sides of a triangle of independent points are independent**: extend the points
-to a basis of `K⁴`; the sides are three of its six tetrahedron joins. -/
+/-- **The joins of three independent points are independent** (a step of
+`lem:pencil-generic-pendant-triangle` and of `thm:pencil-generic-step`): for independent `p`, `u`
+and `r` in `K⁴`, the joins `p ∧ u`, `u ∧ r` and `p ∧ r`, the three sides of their triangle, are
+independent. Extend the points to a basis of `K⁴` (`exists_linearIndependent_snoc_of_lt_finrank`);
+the three joins are three of its six joins, which are independent
+(`linearIndependent_pointJoin_tetra`, `lem:pencil-tetrahedron`). -/
 theorem linearIndependent_pointJoin_triangle {p u r : Fin 4 → K}
     (h : LinearIndependent K ![p, u, r]) :
     LinearIndependent K ![pointJoin p u, pointJoin u r, pointJoin p r] := by
@@ -62,9 +72,12 @@ theorem linearIndependent_pointJoin_triangle {p u r : Fin 4 → K}
   funext i
   fin_cases i <;> rfl
 
-/-- **The links of `G` at a closed two-ear**: every edge is one of the triangle's three
-(`c − x 0`, `x 0 − x 1`, `x 1 − c`), in either orientation, or lies in `G[V₁]`. Shared by
-`not_pencilHub_of_closedEar_two` and the extension, which repeated this case analysis. -/
+/-- **The links at a closed ear with two interior bodies** (a step of
+`lem:pencil-generic-pendant-triangle`): let `e 0`, `e 1` and `e 2` link `c` and `x 0`, `x 0` and
+`x 1`, and `x 1` and `c`, and let every other link of `G` lie inside `V₁`. Then a link of `G` is
+`e 0` between `c` and `x 0`, `e 1` between `x 0` and `x 1` or `e 2` between `x 1` and `c`, its ends
+in either order, or a link of `G[V₁]` by a label other than the three. It serves
+`not_pencilHub_of_closedEar_two` and the extension. -/
 theorem isLink_cases_of_closedEar_two {G : Graph α β} {V₁ : Set α} {x : Fin 2 → α} {c : α}
     {e : Fin 3 → β}
     (hpath : ∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ))
@@ -98,8 +111,10 @@ theorem isLink_cases_of_closedEar_two {G : Graph α β} {V₁ : Set α} {x : Fin
   have hs := hsep f u v hl hne
   exact Or.inr (Or.inr (Or.inr ⟨hne, hl, hs.1, hs.2⟩))
 
-/-- **The bodies of a pendant triangle are not hubs**: each lies on exactly two edges, the
-triangle's. -/
+/-- **The interior bodies of a pendant triangle are not pencil hubs** (a step of
+`lem:pencil-generic-pendant-triangle`): at a closed ear `c − x 0 − x 1 − c` on `V₁`, each of `x 0`
+and `x 1` lies on exactly two edges, two of the triangle's three (`isLink_cases_of_closedEar_two`),
+so it has degree less than three. -/
 theorem not_pencilHub_of_closedEar_two {G : Graph α β} (hS : G.Simple)
     {V₁ : Set α} {x : Fin 2 → α} {c : α} {e : Fin 3 → β}
     (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (hc : c ∈ V₁)
@@ -150,11 +165,30 @@ theorem not_pencilHub_of_closedEar_two {G : Graph α β} (hS : G.Simple)
   fin_cases i
   exacts [hx0hub, hx1hub]
 
-/-- **The pendant triangle, the extension half** ((MC-127)(b), Z2): a nondegenerate realization
-of `G[V₁]` at its deficiency rank whose normals are independent on every closed
-hub-neighbourhood **of `G`** extends over a pendant triangle `c − x 0 − x 1 − c` at a hub `c` to
-a generic realization of `G`: put `x 0`, `x 1` in `c`'s plane, the three points independent.
-The triangle is rigid (`theorem_55_cycle`), ranks and deficiencies add at the cut vertex `c`. -/
+/-- **The generic realization across a pendant triangle, its extension**
+(`lem:pencil-generic-pendant-triangle`): let `G` be simple with a closed ear `c − x 0 − x 1 − c` on
+`V₁` with two interior bodies, whose end `c` is a pencil hub of `G`. A nondegenerate pencil
+realization of `G[V₁]` at the deficiency rank, whose normals are independent on the closed
+hub-neighbourhood in `G` of every body of `V₁`, extends to a generic pencil realization of `G`.
+
+Proof. Choose points `p_{x 0}` and `p_{x 1}` in the panel of `c`, with `p_c`, `p_{x 0}` and
+`p_{x 1}` independent (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`). Give `x 0` and `x 1`
+these points and the normal `n_c`, and `e 0`, `e 1` and `e 2` the joins `p_c ∧ p_{x 0}`,
+`p_{x 0} ∧ p_{x 1}` and `p_c ∧ p_{x 1}`; every other label keeps its hinge. This is a nondegenerate
+pencil realization of `G`. The bodies `x 0` and `x 1` are not hubs
+(`not_pencilHub_of_closedEar_two`), so the closed hub-neighbourhood in `G` of a body of `V₁`
+contains neither, and that of `x i` lies in `{c}`. The closed neighbourhood of `x i` lies in
+`{x 0, x 1, c}`, whose points are independent. A body of `V₁` that is not a hub of `G` is not `c`,
+so its closed neighbourhood in `G` lies in the one in `G[V₁]`, where it is not a hub either. The
+three hinges of the triangle are independent (`linearIndependent_pointJoin_triangle`), so the
+triangle `G[{c, x 0, x 1}]` is rigid (`BodyHingeFramework.theorem_55_cycle`,
+`lem:cycle-realization-rigid`), of rank twelve. The ranks of `G[V₁]` and of the triangle add at the
+cut vertex `c` (`BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq`,
+`lem:block-rank-cut-vertex`), and `def₃(G[V₁]) + def₃(G[{c, x 0, x 1}]) ≤ def₃(G)`
+(`Graph.deficiency_add_le_of_cutVertex`, `lem:deficiency-cut-vertex`), the second term nonnegative.
+So the rank reaches the deficiency rank of `G`, which bounds it
+(`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`,
+`lem:relative-deficiency-rank-bound`). -/
 theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization
     [Finite α] [Finite β] {G : Graph α β} (hS : G.Simple)
     {V₁ : Set α} {x : Fin 2 → α} {c : α} {e : Fin 3 → β}
@@ -523,7 +557,7 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
     rw [show (⟨G.induce V₂, ext⟩ : BodyHingeFramework K 2 α β).graph.vertexSet = V₂ from
       Graph.vertexSet_induce G V₂, hV₂card] at hbr
     exact hbr
-  -- the deficiencies glue at `c`
+  -- the deficiencies add at `c`
   have hcov₂ : V₁ ∪ V₂ = V(G) := by
     apply Set.Subset.antisymm (Set.union_subset (hcover ▸ Set.subset_union_left) hV₂G)
     intro w hw
@@ -557,10 +591,28 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
   rw [hcount] at hup ⊢
   linarith
 
-/-! ## Z2 (part 2): the pendant-triangle step -/
+/-! ## The generic realization across a pendant triangle -/
 
-/-- **(MC-127)(b) on the chart**: a pendant triangle `c − x 0 − x 1 − c` at a body of degree at
-least four carries the generic motive up from `G[V₁]`. -/
+/-- **The generic realization across a pendant triangle** (`lem:pencil-generic-pendant-triangle`):
+let `K` be infinite and `G` simple and nondegeneracy-feasible, with a closed ear `c − x 0 − x 1 − c`
+on `V₁` with two interior bodies, whose end `c` has degree at least four. If `G[V₁]` has a generic
+pencil realization whenever it is nondegeneracy-feasible, then `G` has a generic pencil realization.
+The node states it with `x 0` and `x 1` adjacent bodies of degree two, both joined to `c`, and
+`G[V₁] = G − {x 0, x 1}`.
+
+Proof. The bodies `x 0` and `x 1` are not hubs (`not_pencilHub_of_closedEar_two`), and a neighbour
+outside `V₁` of a body of `V₁` is one of them. So `G` has a nondegenerate realization whose
+restriction to `G[V₁]` is nondegenerate (`exists_isNondegPencilRealization_restrict_of_demoted`,
+`lem:pencil-generic-steer`(a)); `G[V₁]` is then nondegeneracy-feasible, and by hypothesis it has a
+generic realization. The closed hub-neighbourhood in `G` of a body of `V₁` lies in `V₁`, and a hub
+of `G` in `V₁` that is not a hub of `G[V₁]` has three members in its closed neighbourhood in `G[V₁]`
+(`ncard_closedNbhd_eq_three_of_demoted`): at `c`, of degree at least four, the neighbours lost are
+`x 0` and `x 1`, and at another body of `V₁` there are none. Steering the generic realization of
+`G[V₁]` (`exists_isNondegPencilRealization_steer`, `lem:pencil-generic-steer`(b)), with the sets the
+closed hub-neighbourhoods in `G` of the bodies of `V₁` and no pair, gives a generic realization of
+`G[V₁]` with the normals independent on each set, as they are at the realization of `G`. The
+extension `hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization` then gives `G`
+a generic pencil realization, `c` being a hub of `G` by its degree. -/
 theorem hasGenericPencilRealization_of_closedEar_two
     [Infinite K] [Finite α] [Finite β] {G : Graph α β} (hS : G.Simple)
     (hfeas : PencilNondegFeasible K G)
@@ -581,7 +633,7 @@ theorem hasGenericPencilRealization_of_closedEar_two
   have hVH : V(G.induce V₁) = V₁ := Graph.vertexSet_induce G V₁
   have hchub : G.PencilHub c := ⟨hV₁ hc, by omega⟩
   have hxhub : ∀ i, ¬ G.PencilHub (x i) := not_pencilHub_of_closedEar_two hS hinj hxV₁ hc hpath hsep
-  -- a `G`-neighbour of a body of `V₁` is an `H`-neighbour or a triangle body
+  -- a neighbour in `G` of a body of `V₁` is `x 0`, `x 1` or a neighbour in `G[V₁]`
   have hNsub : ∀ v ∈ V₁, N(G, v) ⊆ Set.range x ∪ N(G.induce V₁, v) := by
     intro v hv y ⟨f, hf⟩
     by_cases hy : y ∈ V₁
@@ -591,7 +643,8 @@ theorem hasGenericPencilRealization_of_closedEar_two
       rcases hyG with h | h
       · exact absurd h hy
       · exact Or.inl h
-  -- T2: the steered realization of `G` and its restriction
+  -- a nondegenerate realization of `G` whose restriction to `G[V₁]` is nondegenerate, so `G[V₁]` is
+  -- nondegeneracy-feasible and has a generic realization
   obtain ⟨F, normal, point, hndG, hndH⟩ :=
     exists_isNondegPencilRealization_restrict_of_demoted hS hfeas hle (fun v hv _ _ y hy hyH => by
       have hvV₁ : v ∈ V₁ := by rwa [hVH] at hv
@@ -599,7 +652,8 @@ theorem hasGenericPencilRealization_of_closedEar_two
       · exact hxhub i
       · exact absurd h hyH)
   obtain ⟨F₁, normal₁, point₁, hnd₁, hrank₁⟩ := hgen ⟨_, _, _, hndH⟩
-  -- T3: one realization of `G[V₁]` at the rank with the promoted families
+  -- the closed hub-neighbourhood in `G` of a body of `V₁` lies in `V₁`, and a hub of `G` in `V₁`,
+  -- not one of `G[V₁]`, has three members in its closed neighbourhood there
   have hCsub : ∀ v ∈ V₁, G.closedHubNbhd v ⊆ V₁ := by
     rintro v hv w ⟨hwhub, rfl | ⟨f, hf⟩⟩
     · exact hv
@@ -645,6 +699,8 @@ theorem hasGenericPencilRealization_of_closedEar_two
             · exact hwc h1
         · push Not at hfe
           exact hxV₁ i (hsep f w (x i) hf hfe).2
+  -- steer the generic realization of `G[V₁]`: the normals independent on the closed
+  -- hub-neighbourhood in `G` of every body of `V₁`
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   set S : α → Set α := fun v => if v ∈ V₁ then G.closedHubNbhd v else ∅ with hSdef
   have hSV : ∀ k, S k ⊆ V(G.induce V₁) := by
@@ -671,7 +727,7 @@ theorem hasGenericPencilRealization_of_closedEar_two
     hS₁.toLoopless ⟨c, by rw [hVH]; exact hc⟩ hnd₁ hrank₁ hndH S hSV hfreeS hSLI
     (Empty.elim : Empty → α) (Empty.elim : Empty → α) (fun j => j.elim) (fun j => j.elim)
     (fun j => j.elim) (fun j => j.elim)
-  -- the extension
+  -- the extension across the pendant triangle
   have hprom : ∀ v ∈ V₁, LinearIndepOn K n' (G.closedHubNbhd v) := by
     intro v hv
     have := hS' v
@@ -680,24 +736,27 @@ theorem hasGenericPencilRealization_of_closedEar_two
   exact hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization hS hcover hinj
     hxV₁ hc hpath hsep hchub hnd' hrank' hprom
 
-/-! ## The triangle on three bodies (Phase 39 W5-L7c-3) -/
+/-! ## The triangle on three bodies -/
 
-/-- **The triangle on three bodies** (the three-body case of `thm:pencil-generic-step`; Phase 39
-W5-L7c-3). A simple two-edge-connected multigraph on exactly three bodies is the triangle: each
-body has degree at least two and, by simplicity, at most one edge to each of the other two. It
-satisfies the conditioned pair outright, by a direct witness: three of the four standard basis
-vectors of `K⁴` as points, the fourth as the common panel normal, each hinge the join of its ends'
-points. No body is a hub, so the realization is nondegenerate on the three independent points; the
-hinges are independent (`linearIndependent_pointJoin_triangle`), so `theorem_55_cycle` makes the
-framework rigid, and the triangle's deficiency is `0` (`Graph.isKDof_zero_of_cycle`). -/
+/-- **The triangle on three bodies** (a step of `thm:pencil-generic-step`, its case on three
+bodies): over every field, a simple two-edge-connected multigraph on exactly three bodies satisfies
+the conditioned pair at `n = 3`. It is the triangle: each body has degree at least two
+(`Graph.two_le_degree_of_twoEdgeConnected`) and, by simplicity, at most one edge to each of the
+other two. A direct construction gives it a generic pencil realization: three of the four standard
+basis vectors of `K⁴` as the points, the fourth as the common normal, and each hinge the join of the
+points of its ends. No body is a hub, and the three points are independent, so the realization is
+nondegenerate. The hinges are independent (`linearIndependent_pointJoin_triangle`), so the framework
+is rigid (`BodyHingeFramework.theorem_55_cycle`, `lem:cycle-realization-rigid`), and the deficiency
+of the triangle is `0` (`Graph.isKDof_zero_of_cycle`, `lem:cycle-zero-dof`), so its rank is the
+deficiency rank. The adjacent-distinct and the bare conjuncts follow from the generic one. -/
 theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph α β}
     (hSimple : G.Simple) (hV : V(G).ncard = 3) (h2ec : G.TwoEdgeConnected) :
     PencilPair K 3 G := by
   classical
   have := hSimple
   obtain ⟨x, y, z, hxy, hxz, hyz, hVeq⟩ := Set.ncard_eq_three.mp hV
-  -- ── Identification: an edge exists between every named pair (2EC + Simple; no third
-  -- neighbour is available to absorb a second edge at any vertex). ────────────────────────────
+  -- ── an edge joins every two bodies: otherwise one of them has at most one edge, to the
+  -- third body, as `G` is simple, against its degree of at least two ──────────────────────────
   have hexists : ∀ a b c : α, a ≠ b → a ≠ c → V(G) = {a, b, c} → ∃ e, G.IsLink e a b := by
     intro a b c hab hac hVabc
     by_contra hne
@@ -736,8 +795,7 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
   have heyz_ne_ezx : eyz ≠ ezx := fun h => by
     rcases hyz_link.eq_and_eq_or_eq_and_eq (h ▸ hzx_link) with ⟨hh, _⟩ | ⟨hh, _⟩
     exacts [hyz hh, hxy hh.symm]
-  -- Edge classification: every `G`-link is one of the three named edges (in one of its two
-  -- endpoint orders).
+  -- every link of `G` is one of the three edges, its ends in either order
   have hclass : ∀ e u v, G.IsLink e u v →
       (e = exy ∧ ((u = x ∧ v = y) ∨ (u = y ∧ v = x))) ∨
       (e = eyz ∧ ((u = y ∧ v = z) ∨ (u = z ∧ v = y))) ∨
@@ -757,8 +815,8 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
     · exact Or.inr (Or.inr ⟨hSimple.eq_of_isLink hl hzx_link, Or.inl ⟨rfl, rfl⟩⟩)
     · exact Or.inr (Or.inl ⟨hSimple.eq_of_isLink hl hyz_link.symm, Or.inr ⟨rfl, rfl⟩⟩)
     · exact absurd rfl hl.ne
-  -- No vertex is a hub: a simple graph on three vertices has every degree at most `2 < 3`
-  -- (`Graph.degree_le_ncard`).
+  -- no body is a pencil hub: in a simple graph on three bodies every degree is at most `2 < 3`
+  -- (`Graph.degree_le_ncard`)
   have hGfin : G.Finite := Graph.finite_of_vertexSet_finite (Set.toFinite _)
   have hnohub : ∀ w ∈ V(G), ¬ G.PencilHub w := fun w hw ⟨_, hdeg⟩ => by
     have := Graph.degree_le_ncard hw
@@ -768,8 +826,8 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
     rw [Set.eq_empty_iff_forall_notMem]
     intro w hw
     exact hnohub w hw.1.1 hw.1
-  -- ── The witness: three of the four standard basis vectors of `K⁴` as points, the fourth as
-  -- the shared constant panel normal. ─────────────────────────────────────────────────────────
+  -- ── the realization: three of the four standard basis vectors of `K⁴` as the points, the
+  -- fourth as the common normal ───────────────────────────────────────────────────────────────
   set p0 : Fin 4 → K := Pi.single 0 1 with hp0
   set p1 : Fin 4 → K := Pi.single 1 1 with hp1
   set p2 : Fin 4 → K := Pi.single 2 1 with hp2
@@ -822,8 +880,9 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
     ⟨![p0, p2], hCzx_val, Submodule.subset_span ⟨1, rfl⟩⟩
   have hCzx_thru0 : ExtensorThroughPoint Czx p0 :=
     ⟨![p0, p2], hCzx_val, Submodule.subset_span ⟨0, rfl⟩⟩
-  -- The point / normal / support-extensor total assignments (`Function.update` off a constant
-  -- default; every `β`/`α` value lands in `{Cxy, Cyz, Czx}` / one of `p0, p1, p2` respectively).
+  -- the points, the normals and the hinges at every body and label (`Function.update` of a
+  -- constant): each point is `p0`, `p1` or `p2`, each normal `n0`, and each hinge `Cxy`, `Cyz` or
+  -- `Czx`
   set point : α → Fin 4 → K := Function.update (Function.update (fun _ => p0) y p1) z p2
     with hpoint
   set normal : α → Fin 4 → K := fun _ => n0 with hnormal
@@ -885,8 +944,8 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
       · rw [hsupp_eyz, hpoint_z, hpoint_y]; exact ⟨hCyz_thru2, hCyz_thru1⟩
       · rw [hsupp_ezx, hpoint_z, hpoint_x]; exact ⟨hCzx_thru2, hCzx_thru0⟩
       · rw [hsupp_ezx, hpoint_x, hpoint_z]; exact ⟨hCzx_thru0, hCzx_thru2⟩
-  -- ── The three points are independent; conjuncts 2 and 4 restrict this to an edge's endpoints
-  -- and to a closed neighbourhood, both inside `V(G) = {x, y, z}`. ─────────────────────────────
+  -- ── the three points are independent, and so are those at the ends of a link and those
+  -- on a closed neighbourhood, all inside `V(G) = {x, y, z}` ──────────────────────────────────
   have hvtx_inj : Function.Injective (![x, y, z] : Fin 3 → α) := by
     intro i j hij
     fin_cases i <;> fin_cases j <;>
@@ -903,7 +962,7 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
     rw [← hrange, linearIndepOn_range_iff hvtx_inj]
     convert hLI4.comp ![0, 1, 2] (by decide) using 1
     funext i; fin_cases i <;> simp [hpoint_x, hpoint_y, hpoint_z]
-  -- ── Nondegeneracy conjuncts 2–4. ───────────────────────────────────────────────────────────
+  -- ── the other three conditions of nondegeneracy ────────────────────────────────────────────
   have hadj : ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v] := by
     intro e u v hl
     have huv : u ≠ v := hl.ne

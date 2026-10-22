@@ -11,36 +11,42 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTria
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar
 
 /-!
-# The main-component statements and the pencil realization theorem (Phase 40n–40p MOTIVES)
+# The two main-component statements and the pencil realization theorem
 
-`X0Dist` needs only landed pieces, with no hypothesis on the number of edge labels `β`: the
-covering theorem (`Graph.X0Attains.of_twoEdgeConnected`, `MainComponent/CoverageTheoremS.lean`)
-gives that the general configuration of a simple two-edge-connected graph on at least three bodies
-attains, and one attaining configuration is already an adjacent-distinct pencil realization
-(`Graph.X0Attains.hasDistinctPencilRealization`, `MainComponent/Configuration.lean`). `X0Gen` is
-discharged separately (Phase 40p REDUCE+CLOSE), inside the pencil reduction's own induction: a
-minimal planar-rigid set gives a one-body ear at hub ends or a pendant triangle
-(`GoodEar.lean`), across which the smaller graph's generic realization extends
-(`MainComponent/GenericEar.lean`, `MainComponent/GenericTriangle.lean`); this closes the route-B
-induction and assembles the pencil realization theorem.
+The proofs of the two main-component statements (`def:pencil-main-component-statements`,
+`sec:main-component-statements`) and of the pencil realization theorem
+(`thm:pencil-realization-theorem`), over an infinite field. The distinct statement is immediate
+(`lem:pencil-x0-distinct-statement`): the general configuration of a simple two-edge-connected graph
+on at least three bodies attains (`Graph.X0Attains.of_twoEdgeConnected`, `thm:pencil-x0-coverage`,
+`MainComponent/CoverageTheoremS.lean`), and one attaining configuration is an adjacent-distinct
+pencil realization (`Graph.X0Attains.hasDistinctPencilRealization`,
+`lem:pencil-x0-attains-distinct`, `MainComponent/Configuration.lean`), with no hypothesis on the
+number of edge labels.
 
-## Main statements
+The generic statement is proved inside the induction of the pencil reduction, from the conditioned
+pair at every graph on fewer bodies, at least one (`thm:pencil-generic-step`). A graph with no
+planar-rigid set has a generic realization (`thm:pencil-x0-base-generic`,
+`MainComponent/GenericBase.lean`), and so has one on three bodies, a triangle, by a direct
+construction (`MainComponent/GenericTriangle.lean`). Otherwise a minimal planar-rigid set gives a
+body of degree two whose neighbours are pencil hubs, or a pendant triangle
+(`lem:pencil-rigid-good-ear`, `MainComponent/GoodEar.lean`), across which the generic realization of
+the smaller graph extends (`lem:pencil-generic-one-ear`, `lem:pencil-generic-pendant-triangle`;
+`MainComponent/GenericEar.lean`, `MainComponent/GenericTriangle.lean`). So every graph with at least
+one body satisfies the conditioned pair (`thm:pencil-conditioned-pair-nonempty`), the generic
+statement is its generic conjunct (`thm:pencil-x0-generic-attains`), and the pencil realization
+theorem follows from the two statements (`thm:pencil-conditional-realization-main-component`).
 
-* `x0Dist` — the distinct main-component statement.
-* `hasGenericPencilRealization_of_IH` — the generic conjunct from the induction hypothesis
-  (`thm:pencil-generic-step`).
-* `pencilPair_of_IH` — `pencilPair_of_X0`'s per-graph step with `X0Gen` replaced by the induction
-  hypothesis.
-* `pencilPair_of_nonempty` — the conditioned pair at every nonempty graph
-  (`thm:pencil-conditioned-pair-nonempty`).
-* `x0Gen` — the generic main-component statement (`thm:pencil-x0-generic-attains`), a corollary.
-* `pencil_realization_theorem` — the pencil realization theorem
-  (`thm:pencil-realization-theorem`), `pencil_realization_theorem_of_X0` verbatim with
-  `x0Dist`/`x0Gen`.
+## Main results
 
-See `notes/Phase40n.md`, `notes/Phase40p.md`, `notes/pencil/workbook/K-main-MC19.md` (route B,
-(MC-183)–(MC-192)), and `blueprint/src/chapter/main-component.tex`
-(`sec:main-component-statements`).
+* `x0Dist`: `lem:pencil-x0-distinct-statement`, the distinct main-component statement.
+* `hasGenericPencilRealization_of_IH`: `thm:pencil-generic-step`, the generic conjunct from the
+  induction hypothesis.
+* `pencilPair_of_IH` and `pencilPair_of_nonempty`: `thm:pencil-conditioned-pair-nonempty`, the
+  conditioned pair at one graph from the induction hypothesis, and at every graph with at least one
+  body.
+* `x0Gen`: `thm:pencil-x0-generic-attains`, the generic main-component statement.
+* `pencil_realization_theorem`: `thm:pencil-realization-theorem`, the conditioned pair at every
+  multigraph on the whole ambient body set.
 -/
 
 open scoped Graph
@@ -49,15 +55,36 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-- **The distinct main-component statement** (`lem:pencil-x0-distinct-statement`; Phase 40n
-MOTIVES M0). Every simple two-edge-connected multigraph on at least three bodies has a pencil
-realization at the deficiency rank with adjacent concurrency points distinct, over an infinite
-field: one attaining configuration of the covering theorem is such a realization, with no
-hypothesis on the number of edge labels. -/
+/-- **The distinct main-component statement** (`lem:pencil-x0-distinct-statement`, and the distinct
+statement of `thm:pencil-x0-generic-attains`): over an infinite field, for finite `α` and `β`, every
+simple two-edge-connected multigraph on at least three bodies has an adjacent-distinct pencil
+realization at the deficiency rank at `n = 3` (`X0Dist`). Its general configuration attains
+(`Graph.X0Attains.of_twoEdgeConnected`, `thm:pencil-x0-coverage`), and one attaining configuration
+is such a realization (`Graph.X0Attains.hasDistinctPencilRealization`,
+`lem:pencil-x0-attains-distinct`), with no hypothesis on the number of edge labels. -/
 theorem x0Dist [Finite α] [Finite β] [Infinite K] : X0Dist K α β :=
   fun _ hS hV htec => (Graph.X0Attains.of_twoEdgeConnected hS hV htec).hasDistinctPencilRealization
 
-/-- **The generic conjunct from the induction hypothesis** (route B). -/
+/-- **The generic conjunct from the induction hypothesis** (`thm:pencil-generic-step`): let `K` be
+infinite and `G` simple and two-edge-connected on at least three bodies, and nondegeneracy-feasible,
+and suppose that every graph on fewer bodies, at least one, satisfies the conditioned pair at
+`n = 3` (`hIH`). Then `G` has a generic pencil realization.
+
+Proof. As a simple two-edge-connected graph on at least three bodies, `G` satisfies the standing
+hypotheses: it is connected (`Graph.preconnected_of_twoEdgeConnected`), with every degree at least
+two (`Graph.two_le_degree_of_twoEdgeConnected`). If it has no planar-rigid set, it has a generic
+realization (`Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero`,
+`thm:pencil-x0-base-generic`). On three bodies it is a triangle, which has one by a direct
+construction (`pencilPair_of_simple_ncard_eq_three`). Otherwise it has at least four bodies, its
+closed hub-neighbourhoods have at most three members and no triangle contains two hubs
+(`PencilNondegFeasible.hub_conditions`, `lem:pencil-feasible-hub-conditions`), so it has a one-body
+ear whose ends are pencil hubs and whose removal does not raise the deficiency, or a pendant
+triangle (`Graph.IsX0Graph.exists_oneEar_or_pendantTriangle`, `lem:pencil-rigid-good-ear`). Removing
+the body of the ear, or the two bodies of degree two of the triangle, leaves a simple graph `G[V₁]`
+with fewer bodies, at least one. By `hIH` it has a generic realization whenever it is
+nondegeneracy-feasible, so `G` has one (`Graph.IsOpenEar.hasGenericPencilRealization_of_one`,
+`lem:pencil-generic-one-ear`; `hasGenericPencilRealization_of_closedEar_two`,
+`lem:pencil-generic-pendant-triangle`). -/
 theorem hasGenericPencilRealization_of_IH [Infinite K] [Finite α] [Finite β] {G : Graph α β}
     (hS : G.Simple) (hV : 3 ≤ V(G).ncard) (htec : G.TwoEdgeConnected)
     (hfeas : PencilNondegFeasible K G)
@@ -96,7 +123,17 @@ theorem hasGenericPencilRealization_of_IH [Infinite K] [Finite α] [Finite β] {
     exact hasGenericPencilRealization_of_closedEar_two hS hfeas hcover hinj hxV₁ hc hpath hsep
       hdeg ((hIH _ hne hlt).1 hS₁)
 
-/-- `pencilPair_of_X0`'s per-graph step with `X0Gen` replaced by the induction hypothesis. -/
+/-- **The conditioned pair at one graph from the induction hypothesis**
+(`thm:pencil-conditioned-pair-nonempty`, the step of its proof): over an infinite field, a loopless
+`G` on at least three bodies satisfies the conditioned pair at `n = 3` when every nonempty graph on
+fewer bodies does (`hIH`). The proof is `pencilPair_of_X0`'s, with the generic statement replaced by
+`hasGenericPencilRealization_of_IH`. If `G` is not two-edge-connected, this is
+`pencilPair_of_not_twoEdgeConnected`. If it is two-edge-connected and simple,
+`hasGenericPencilRealization_of_IH` and `x0Dist` give the generic and the adjacent-distinct
+conjuncts, and the bare conjunct follows from the adjacent-distinct one
+(`hasPencilRealization_of_distinct`). If it is two-edge-connected and not simple, the generic and
+the adjacent-distinct conjuncts hold vacuously, and `hasPencilRealization_of_not_simple` gives the
+bare one. -/
 theorem pencilPair_of_IH [Finite α] [Finite β] [Infinite K]
     (G : Graph α β) (hloop : G.Loopless) (hV : 3 ≤ V(G).ncard)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
@@ -113,20 +150,31 @@ theorem pencilPair_of_IH [Finite α] [Finite β] [Infinite K]
         hasPencilRealization_of_not_simple G hloop hV hs hIH⟩
   · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
 
-/-- **The conditioned pair at every nonempty graph** (`pencilPair_of_arms` with
-`pencilPair_of_IH` at both arms). -/
+/-- **The conditioned pair at every nonempty multigraph** (`thm:pencil-conditioned-pair-nonempty`,
+and the general claim of `thm:pencil-realization-theorem`): over an infinite field, for finite `α`
+and `β`, every graph with at least one body satisfies the conditioned pair at `n = 3`. The reduction
+`pencilPair_of_arms` (`thm:pencil-conditional-realization-pair`) asks for its contraction and split
+cases, and `pencilPair_of_IH` proves both, as it uses none of the hypotheses that distinguish them.
+-/
 theorem pencilPair_of_nonempty [Finite α] [Finite β] [Infinite K] (G : Graph α β)
     (hne : V(G).Nonempty) : PencilPair K 3 G :=
   pencilPair_of_arms (fun G hloop hV _ hIH => pencilPair_of_IH G hloop hV hIH)
     (fun G hloop hV _ _ _ hIH => pencilPair_of_IH G hloop hV hIH) G hne
 
-/-- **The generic statement**, a corollary. -/
+/-- **The generic main-component statement** (`thm:pencil-x0-generic-attains`, its generic
+statement): over an infinite field, for finite `α` and `β`, every simple two-edge-connected
+multigraph on at least three bodies that is nondegeneracy-feasible has a generic pencil realization
+at `n = 3` (`X0Gen`), the generic conjunct of the conditioned pair at it (`pencilPair_of_nonempty`).
+-/
 theorem x0Gen [Finite α] [Finite β] [Infinite K] : X0Gen K α β :=
   fun G hS hV _ hfeas =>
     (pencilPair_of_nonempty G (Set.nonempty_of_ncard_ne_zero (by omega))).1 hS hfeas
 
-/-- **The pencil realization theorem** (carrying neither statement):
-`pencil_realization_theorem_of_X0` verbatim. -/
+/-- **The pencil realization theorem** (`thm:pencil-realization-theorem`): over an infinite field,
+for finite `α` and `β` with `α` nonempty, every multigraph on the whole ambient body set satisfies
+the conditioned pair at `n = 3`. It is `pencil_realization_theorem_of_X0`
+(`thm:pencil-conditional-realization-main-component`) at the two main-component statements, now
+proved (`x0Dist`, `x0Gen`), so it assumes neither. -/
 theorem pencil_realization_theorem [Nonempty α] [Finite α] [Finite β] [Infinite K]
     (G : Graph α β) (hspan : V(G) = Set.univ) : PencilPair K 3 G :=
   pencil_realization_theorem_of_X0 x0Dist x0Gen G hspan

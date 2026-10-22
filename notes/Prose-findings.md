@@ -6080,6 +6080,44 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 3 task 37.20.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
+- **F-321** · L · repeated derivations, and unused or derivable hypotheses and `have`s, in
+  `Molecular/Molecule/Pencil/MainComponent/GenericTriangle.lean` and `Statements.lean`. Unused: the
+  `hS` of `not_pencilHub_of_closedEar_two`, which its proof reads only in a `have := hS` and a
+  `have hloop` that it does not need, and the `have := hS` of
+  `hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization` and of
+  `hasGenericPencilRealization_of_closedEar_two`. Derivable: the `hinj` of those two theorems, from
+  simplicity and `hpath 1` (`x 0 ≠ x 1`, as `e 1` is no loop), as `F-317`'s at `Fin 2`. Repeated
+  derivations: the facts of the closed ear (`x 0 ≠ c`, `x 1 ≠ c` and `x 0 ≠ x 1` from `hxV₁`, `hc`
+  and `hinj`, and the three links `l0`–`l2`) in `isLink_cases_of_closedEar_two`,
+  `not_pencilHub_of_closedEar_two`, the extension and the assembly; the statement of
+  `isLink_cases_of_closedEar_two` written out again as `hcls` in `not_pencilHub_of_closedEar_two`
+  and the extension, and its case analysis done again in the assembly's `hfree`; in the extension,
+  six pairs and two reorderings of the three independent points, each by `comp` and `convert`, and
+  the two orientations of each edge of the triangle by two identical lines in `hreal`; `hjoin_ne`,
+  `hinPanel` and `hthruPt` (a join of two independent points is nonzero, lies in a panel that
+  contains both, and passes through both), derived again in
+  `Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilRealization` (`GenericEar.lean`)
+  and, one hinge at a time, in `pencilPair_of_simple_ncard_eq_three`; the rank of a rigid triangle
+  from `BodyHingeFramework.theorem_55_cycle` and
+  `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`, in the
+  extension (`hrig`, `hside₂`) and in `pencilPair_of_simple_ncard_eq_three` (`hrig`, `hbridge`); in
+  `pencilPair_of_simple_ncard_eq_three`, the relabellings `hVeqyzx` and `hVeqzxy` of `V(G)`, the
+  three distinctness proofs of the labels, the independence of the three points twice (`hLI3`,
+  `hgen`) and one case split twice (`hsupp_ne`, `hsupp_panel`); in `Statements.lean`, the standing
+  hypotheses that `hasGenericPencilRealization_of_IH` builds field for field as
+  `Graph.X0Attains.of_twoEdgeConnected` does (`CoverageTheoremS.lean`), its `hS₁` twice, and at the
+  pendant triangle a seven-line `hlt` where the one-body ear has `Graph.IsOpenEar.ncard_lt`; and
+  `pencilPair_of_IH`, which is `pencilPair_of_X0`'s proof (`X0.lean`) line for line, with
+  `hasGenericPencilRealization_of_IH` for `X0Gen` and `x0Dist` for `X0Dist`. `lake lint` reports
+  none of them.
+  *Evidence:* read (the statements and bodies, and those of `GenericEar.lean`'s extension,
+  `pencilPair_of_X0` and `Graph.X0Attains.of_twoEdgeConnected`); a `lake lean` witness: the proofs
+  of the three theorems run without their `have`s (`not_pencilHub_of_closedEar_two`'s without
+  both), and `hinj` derived from `hS` and `hpath`, with the three theorems applied without it, all
+  on the standard axioms (`scratch/reconcile-lean/t3721/Hyps-t3721.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.21.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+
 ## M — mathematics and sources
 
 - **F-025** · M · the credit for "row-independent iff $(2,3)$-sparse" (`rigidity-matroid.tex`,

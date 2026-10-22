@@ -40,7 +40,7 @@ task 19 had `parsePair` split on any whitespace, so a tab-separated input reads,
 rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
 input, and tasks 21–24 landed the non-vacuity witnesses of the sixteen main results outside S1's
 and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last,
-and tasks 25–37.20 swept the docstrings of the thirteen planar files, of `Search/`, of `Mathlib/`,
+and tasks 25–37.21 swept the docstrings of the thirteen planar files, of `Search/`, of `Mathlib/`,
 of `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and generic-rigidity files
 (every top-level file but `Nonvacuity.lean`), of `Molecular/Deficiency.lean`, of
 `Molecular/Induction/`, of `RigidityMatrix/`, of `Molecular/Meet.lean` and `Extensor.lean`, of
@@ -53,11 +53,12 @@ of `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and generic-
 `Carrier.lean`, `Configuration.lean`, `Flat.lean`, `Bridge.lean`, `Cut.lean`, `Ear.lean`,
 `ContractCurve.lean`, `ContractAdditive.lean`, `Contract.lean`, `Chain.lean`, `Lines.lean`,
 `EarGen.lean`, `Short.lean`, `Orbit.lean`, `SplitOff.lean`, `Coverage.lean`, `CoverageChain.lean`,
-`CoverageCut.lean`, `CoverageTheoremS.lean`, `GoodEar.lean`, `GenericBase.lean` and
-`GenericEar.lean` (this round's parts; the footprint), after the bump to Lean v4.36.0-rc1 that the
-PI put ahead of task 34.1 lifted round 3's toolchain blocker of 2026-10-21.
-**Next concrete task:** round 3's task 37.21, the docstrings of
-`Molecule/Pencil/MainComponent/GenericTriangle.lean` and `Statements.lean`, the last of the sweep.
+`CoverageCut.lean`, `CoverageTheoremS.lean`, `GoodEar.lean`, `GenericBase.lean`,
+`GenericEar.lean`, `GenericTriangle.lean` and `Statements.lean` (this round's parts; the
+footprint), the sweep's last, after the bump to Lean v4.36.0-rc1 that the PI put ahead of task 34.1
+lifted round 3's toolchain blocker of 2026-10-21.
+**Next concrete task:** round 3's task 38, `CLEANUP.md` §B and §C screened over the round's `L`
+entries, docs only (each fix found becomes a task before the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
