@@ -6,81 +6,94 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 
 /-!
-# Cut vertices and bridges in the `X₀` induction (Phase 40e CUTBRIDGE)
+# Cut vertices and chains of bridges
 
-The first two steps of the `X₀` induction (`blueprint/src/chapter/main-component.tex`,
-`sec:main-component-cut`; informal (MC-52) and (MC-53), the "if" halves). Every step shares one
-contract: it concludes `Graph.X0Attains K` at `G` from `Graph.X0Attains K` at smaller graphs on
-the same `α`, `β`. It picks one picture generic for the pieces and main for `G`, finds heights
-inside the single lifting space `L_G(q)` where two nonempty Zariski-open conditions meet
-(`MvPolynomial.exists_mem_eval_ne_zero₂`), and ends at `Graph.x0Attains_of_exists`. At a cut vertex
-and at a bridge the graph is a fibre product of its two sides, so attaining passes from the sides
-to `G`.
+The lemmas of `sec:main-component-cut`: the first two steps of the induction on the general
+configuration, at a cut vertex (`thm:pencil-x0-cut`) and along a chain of bridges
+(`thm:pencil-x0-bridge`), a path of bridges whose interior bodies have degree two; the standing
+hypotheses of the steps (`def:pencil-x0-standing`); and the two facts that let a step read the rank
+of a subgraph at a height of `G` (`lem:pencil-lifting-restrict`, `lem:pencil-rank-congr`). Also
+`lem:pencil-three-points` (`sec:main-component-chain`), and the sequence of bodies of a path
+(`pathVertex`) with the lemmas on it that the ear and cycle steps and the structural coverage
+(`sec:main-component-coverage`) use.
 
-## Main statements
+Each step concludes that the general configuration of `G` attains (`Graph.X0Attains K`) from the
+same at smaller graphs on the same bodies `α` and labels `β`, in the three parts the section
+describes. It takes a picture `q` off the zero sets of the polynomials of the attainment at the
+smaller graphs and of the main-picture polynomial of `G` (`lem:pencil-x0-main-picture-open`); it
+finds heights in the lifting space `L_G(q)` where two nonempty Zariski-open conditions meet
+(`MvPolynomial.exists_mem_eval_ne_zero₂`, `lem:pencil-x0-fibre-intersection`); and it counts the
+rank and the deficiency, ending at `Graph.x0Attains_of_exists` (`lem:pencil-x0-one-witness`). At a
+cut vertex and along a chain of bridges each side meets the rest of `G` at one body, so restriction
+maps `L_G(q)` onto the lifting space of each side at every picture (`lem:pencil-cut-fibre`,
+`lem:pencil-bridge-fibre`).
 
-* `Graph.IsX0Graph` — the standing hypotheses (H): simple, connected, every degree at least two;
-  `Graph.IsX0Graph.three_le_ncard_closedNbhd` gives the closed-neighbourhood bound `h3` from it.
-* `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr` — the row rank reads the normals
-  only on `V(G)`, and the selector only up to the orientation of each link.
-* `span_supportExtensor_ofNormals_eq` — the hinge at a recorded link is the panel extensor of its
-  two ends, in either orientation (Phase 40j SPLITOFF).
-* `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three` — three points impose
-  nothing: at an admissible picture a closed neighbourhood with at most three members carries every
-  height affinely (`lem:pencil-three-points`, Phase 40g; the ear steps' free interior bodies).
-* `Graph.liftingRestrict`, `Graph.liftingRestrict_mem_liftingSpace`,
-  `pencilConfigPoint_liftingRestrict` — a height restricted to a subgraph's bodies is a height of
-  the subgraph, with the same configuration points there; `restrictPoly` / `eval_restrictPoly`
-  read a polynomial in the heights on the restriction.
-* `Graph.exists_liftingRestrict_eq_of_cutVertex` — at a cut vertex the restriction is onto, at
-  every picture ((MC-52)(iii)).
-* `Graph.X0Attains.of_cutVertex` — **CUT** ((MC-52)(iv), the "if" half), from the rank identity
-  `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq` (`RigidityMatrix/Bricks.lean`) and
-  the deficiency law `Graph.deficiency_add_le_of_cutVertex` (`Molecular/Deficiency.lean`).
-* `pathVertex` — the path's extended vertex sequence `a, x 0, …, x (k - 1), b`.
-* `Graph.exists_liftingRestrict_eq_of_bridgePath` — restriction is onto at a chain of bridges of
-  any length `k` ((MC-53)(iii), `lem:pencil-bridge-fibre`): a single affine extension by the
-  witness at `a`, needing no admissibility of the picture and no case split on `k`.
-* `pathVertex_cases`, `pathVertex_eq_of_val_eq_succ`, `pathVertex_rev`,
-  `pathVertex_mem_union_image_iff` — the path sequence read by index value, read backwards, and
-  against the prefixes `V₁ ∪ {x i | i < j}`; `pathVertex_last`, `pathVertex_injective`,
-  `pathVertex_val_succ`, `pathVertex_eq_x_iff`, `pathVertex_shift` and `image_val_lt_eq_range`
-  serve the ear steps (`MainComponent/Ear.lean`, `MainComponent/Chain.lean`, Phase 40g), and
-  `pathEdge_injective` (a path of distinct bodies has distinct edges) the shorter ears (Phase 40h).
-* `Graph.cutEdges_union_image_of_bridgePath`, `Graph.deficiency_induce_union_range_of_bridgePath`,
-  `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` — the
-  counts along the path: each body hangs from the prefix before it by one edge, so it adds `1` to
-  the deficiency and at least `D − 1` to the rank.
-* `Graph.X0Attains.of_bridgePath` — **BRIDGE** ((MC-53)(iv), the "if" half) at a chain of `k + 1`
-  bridges, any `k ≥ 0`: the cut-edge rank brick
-  `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` and KT Lemma 3.6
-  `Graph.deficiency_eq_of_cutEdges_ncard_le_one` at the last bridge, plus the counts along the
-  path. The rank step is the pendant-body brick
-  `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton`
-  (`RigidityMatrix/Bricks.lean`), the deficiency step `Graph.deficiency_induce_union_singleton`
-  (`Molecule/Pencil/Motive.lean`).
+The sides are induced subgraphs of `G`, in the same `Graph α β`, given by sets of bodies and an
+edge-separation hypothesis `hsep`; nothing of a side is used beyond its attainment. The sides' own
+selectors are carried to `G.endsOf` by the rank congruence (`lem:pencil-rank-congr`), and the
+restricted heights to the unrestricted ones by `pencilConfigPoint_liftingRestrict`, so the three
+ranks are read at one framework.
 
-## Design
+A chain of bridges is given by explicit hypotheses: its interior bodies `x : Fin k → α`, its edges
+`e : Fin (k + 1) → β`, and the sequence `pathVertex a x b` of its bodies, whose consecutive terms
+the edges link in order (`hpath`). Restriction is onto along the chain as soon as `a` is the only
+body of `V₁` with an edge leaving `V₁`: extending a height of `G[V₁]` by the single affine function
+that already witnesses its own condition at `a` matches every closed neighbourhood outside `V₁`,
+whether it lies entirely there or meets `V₁` only at `a`. So
+`Graph.exists_liftingRestrict_eq_of_bridgePath` asks for no `V₂`, no count of bodies and no
+injectivity of `x`, uses no admissibility, of the picture or of the interior bodies, and splits no
+case on `k`; `Graph.X0Attains.of_bridgePath` adds what its counts need. The theorem counts the rank
+and the deficiency directly along the path, rather than apply the step one bridge at a time, which
+would ask a graph whose only body is a path body to attain, and no picture of such a graph is
+admissible. It cuts once at the last bridge and adds up along the path; a single bridge is its case
+`k = 0`.
 
-* **The pieces are induced subgraphs of `G`**, in the same `Graph α β`, described by vertex sets
-  and an edge-separation hypothesis `hsep`; nothing of the pieces is used beyond `X0Attains`.
-* **One selector for every piece.** The pieces' own selectors are carried to `G.endsOf` by the
-  rank congruence, and the restricted heights to the unrestricted ones by
-  `pencilConfigPoint_liftingRestrict`, so the three ranks are read at one framework.
-* The "only if" halves of (MC-52)(iv) and (MC-53)(iv) are a tracked item, not formalized here
-  (`notes/Phase40e.md`).
-* **The chain-of-bridges fibre lemma needs only that `a` is `V₁`'s unique gateway.** Extending
-  `z₁` by the single affine function already witnessing its own condition at `a` matches every
-  closed neighbourhood outside `V₁`, whether it lies entirely there or meets `V₁` only at `a` —
-  the interior path bodies' own admissibility (three non-collinear points) and the picture's
-  admissibility are never used for this direction, and no case split on `k` is needed. The lemma
-  stays minimal (no `V₂`, no exact vertex count, no injectivity of `x`); the theorem adds those,
-  which its rank and deficiency counts need.
-* **BRIDGE counts in numbers, not by an induction on `X0Attains`.** A peeled path body has no
-  admissible picture (its closed neighbourhood is itself), so no intermediate graph attains. The
-  theorem cuts once at the last bridge and telescopes the rank inequality and the deficiency
-  equality along the path, then applies `Graph.x0Attains_of_exists` once. The single bridge is its
-  `k = 0` case.
+## Main definitions
+
+* `Graph.IsX0Graph`: the standing hypotheses (`def:pencil-x0-standing`): simple, connected, every
+  degree at least two.
+* `Graph.liftingRestrict` and `restrictPoly`: a height restricted to a set of bodies, zero off it,
+  and a polynomial in the heights read on the restriction (`lem:pencil-lifting-restrict`).
+* `pathVertex`: the sequence `a, x 0, …, x (k - 1), b` of the bodies of a path, by which the formal
+  statements of `lem:pencil-bridge-fibre`, `thm:pencil-x0-bridge` and `def:open-ear` give a path.
+
+## Main results
+
+* `Graph.IsX0Graph.three_le_ncard_closedNbhd`: `def:pencil-x0-standing`, every closed neighbourhood
+  of a graph satisfying the standing hypotheses has at least three members.
+* `Graph.liftingRestrict_mem_liftingSpace`, `pencilConfigPoint_liftingRestrict` and
+  `eval_restrictPoly`: `lem:pencil-lifting-restrict`.
+* `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr`: `lem:pencil-rank-congr`, the row
+  rank reads the normals only on `V(G)`, and the selector only up to the orientation of each link.
+  `span_supportExtensor_ofNormals_eq`, a step of it and of `lem:pencil-splitoff-special-rank`: the
+  hinge at a recorded link is the panel extensor of its two ends, in either orientation.
+* `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`:
+  `lem:pencil-three-points`, three points impose nothing: at an admissible picture every height
+  agrees with an affine function on a closed neighbourhood with at most three members.
+* `Graph.exists_liftingRestrict_eq_of_cutVertex`: `lem:pencil-cut-fibre`.
+* `Graph.X0Attains.of_cutVertex`: `thm:pencil-x0-cut`, from the rank identity
+  `BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq` (`lem:block-rank-cut-vertex`) and the
+  bound `Graph.deficiency_add_le_of_cutVertex` (`lem:deficiency-cut-vertex`).
+* `Graph.exists_liftingRestrict_eq_of_bridgePath`: `lem:pencil-bridge-fibre`.
+* `Graph.cutEdges_union_image_of_bridgePath`, `Graph.deficiency_induce_union_range_of_bridgePath` (a
+  pin of `thm:pencil-x0-bridge`) and
+  `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath` (also a
+  step of `lem:block-rank-path`): the counts along the path. Each path body hangs from the bodies
+  before it by one edge, so it adds `1` to the deficiency and at least `D − 1` to the rank.
+* `Graph.X0Attains.of_bridgePath`: `thm:pencil-x0-bridge`, at a chain of `k + 1` bridges, any
+  `k ≥ 0`: the cut-edge rank lemma `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
+  (`lem:block-rank-cut`) and KT Lemma 3.6 `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
+  (`lem:cut-edge-decomposition`) at the last bridge, and the counts along the path, whose steps are
+  the same two lemmas at a body joined by a single edge,
+  `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton` and
+  `Graph.deficiency_induce_union_singleton`.
+* `pathVertex_cases`, `pathVertex_eq_of_val_eq_succ`, `pathVertex_rev` and
+  `pathVertex_mem_union_image_iff`: the path sequence read by the value of the index, read
+  backwards, and against the prefixes `V₁ ∪ {x i | i < j}`. With `pathVertex_last`,
+  `pathVertex_injective`, `pathVertex_val_succ`, `pathVertex_eq_x_iff`, `pathVertex_shift`,
+  `pathEdge_injective` (a path of distinct bodies has distinct edges) and the other lemmas on
+  `pathVertex`, they serve the ear and cycle steps (`MainComponent/Ear.lean`, `Chain.lean`,
+  `Short.lean`, `Orbit.lean`) and the structural coverage.
 -/
 
 open scoped Graph
@@ -89,26 +102,28 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## The standing hypotheses (H) -/
+/-! ## The standing hypotheses (`def:pencil-x0-standing`) -/
 
-/-- **The standing hypotheses (H)** of the `X₀` induction (`def:pencil-x0-standing`; the header of
-informal §(K-main)): `G` is simple and connected, and every body has degree at least two. -/
+/-- **The standing hypotheses** (`def:pencil-x0-standing`) of the steps of the induction on the
+general configuration: `G` is simple and connected, and every body has degree at least two. -/
 structure _root_.Graph.IsX0Graph (G : Graph α β) : Prop where
   simple : G.Simple
   connected : G.Connected
   two_le_degree : ∀ v ∈ V(G), 2 ≤ G.degree v
 
-/-- **`h3` from (H)** (`def:pencil-x0-standing`): every closed neighbourhood of a graph satisfying
-the standing hypotheses has at least three members (`Graph.three_le_ncard_closedNbhd`). -/
+/-- **Every closed neighbourhood of a graph satisfying the standing hypotheses has at least three
+members** (`def:pencil-x0-standing`, its second sentence), by `Graph.three_le_ncard_closedNbhd`: in
+a simple graph a body has as many distinct neighbours as its degree. -/
 theorem _root_.Graph.IsX0Graph.three_le_ncard_closedNbhd [Finite α] {G : Graph α β}
     (hG : G.IsX0Graph) : ∀ v ∈ V(G), 3 ≤ (G.closedNbhd v).ncard :=
   fun _ hv => Graph.three_le_ncard_closedNbhd hG.simple (hG.two_le_degree _ hv)
 
-/-! ## The row rank reads the normals only on `V(G)` -/
+/-! ## The rank reads only the bodies of the graph (`lem:pencil-rank-congr`) -/
 
-/-- **The hinge of an `ofNormals` framework at a recorded link spans the panel extensor of its
-two ends**, in either orientation (Phase 40j SPLITOFF): swapping the ends only negates the panel
-extensor, which does not change its span. -/
+/-- **The hinge of an `ofNormals` framework at a recorded link spans the panel extensor of its two
+ends**, in either orientation (a step of `lem:pencil-rank-congr` and of
+`lem:pencil-splitoff-special-rank`): swapping the ends only negates the panel extensor, which does
+not change its span. -/
 theorem span_supportExtensor_ofNormals_eq {k : ℕ} {H : Graph α β} {ends : β → α × α}
     (hends : ∀ f u w, H.IsLink f u w → H.IsLink f (ends f).1 (ends f).2)
     (n : α × Fin (k + 2) → K) {f : β} {u w : α} (hf : H.IsLink f u w) :
@@ -121,10 +136,10 @@ theorem span_supportExtensor_ofNormals_eq {k : ℕ} {H : Graph α β} {ends : β
   · rw [h1, h2]
   · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
 
-/-- **Rank congruence** (`lem:pencil-rank-congr`). Two selectors recording every link of `G`, and
-two normal assignments agreeing on the bodies of `G`, give the same row rank: the hinge at a link
-is built from the normals at its two ends and swapping them negates it, so the motion spaces
-agree. -/
+/-- **The rank reads only the bodies of the graph** (`lem:pencil-rank-congr`). Two selectors
+recording every link of `G`, and two normal assignments agreeing on the bodies of `G`, give the same
+row rank: the hinge at a link is built from the normals at its two ends and swapping them negates
+it, so the motion spaces agree, and equal motion spaces give equal row spans. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr {k : ℕ} [Finite α]
     (G : Graph α β) {ends ends' : β → α × α}
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -145,11 +160,11 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr {k : ℕ} 
   rw [BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
     BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions, hmot]
 
-/-! ## Heights restrict to a subgraph -/
+/-! ## Heights restrict to a subgraph (`lem:pencil-lifting-restrict`) -/
 
 open Classical in
-/-- **The restriction of heights to a vertex set** (`lem:pencil-lifting-restrict`): `z` on `X`,
-zero off it. -/
+/-- **The restriction of heights to a set of bodies** (the height `z'` of
+`lem:pencil-lifting-restrict`, at `X = V(G')`): `z` on `X`, zero off it, as a linear map. -/
 noncomputable def _root_.Graph.liftingRestrict (X : Set α) : (α → K) →ₗ[K] (α → K) where
   toFun z w := if w ∈ X then z w else 0
   map_add' z₁ z₂ := by funext w; by_cases hw : w ∈ X <;> simp [hw]
@@ -159,9 +174,10 @@ open Classical in
 theorem _root_.Graph.liftingRestrict_apply (X : Set α) (z : α → K) (w : α) :
     Graph.liftingRestrict X z w = if w ∈ X then z w else 0 := rfl
 
-/-- **Restriction to a subgraph** (`lem:pencil-lifting-restrict`; (MC-52)(iii)'s restriction map):
-a closed neighbourhood of `G′ ≤ G` lies in the one of `G`, so restricting a height of `G` to
-`V(G′)` gives a height of `G′`. No hypothesis on the picture. -/
+/-- **A height of `G` restricts to a height of `G' ≤ G`** (`lem:pencil-lifting-restrict`, its first
+claim), at every picture: a closed neighbourhood of `G'` lies in the closed neighbourhood of the
+same body in `G`, where the height agrees with an affine function, so its restriction to `V(G')`
+agrees with that function there too. -/
 theorem _root_.Graph.liftingRestrict_mem_liftingSpace {G G' : Graph α β} (hle : G' ≤ G)
     {q : α × Fin 2 → K} {z : α → K} (hz : z ∈ G.liftingSpace q) :
     Graph.liftingRestrict V(G') z ∈ G'.liftingSpace q := by
@@ -177,19 +193,20 @@ theorem _root_.Graph.liftingRestrict_mem_liftingSpace {G G' : Graph α β} (hle 
   exact hh w hwG
 
 /-- **The configuration points of `z` and of its restriction agree on `X`**
-(`lem:pencil-lifting-restrict`). -/
+(`lem:pencil-lifting-restrict`, its second claim). -/
 theorem pencilConfigPoint_liftingRestrict (X : Set α) (q : α × Fin 2 → K) (z : α → K) {x : α}
     (hx : x ∈ X) (i : Fin 4) :
     pencilConfigPoint q (Graph.liftingRestrict X z) x i = pencilConfigPoint q z x i := by
   fin_cases i <;> simp [pencilConfigPoint, Graph.liftingRestrict_apply, hx]
 
 open Classical in
-/-- **A polynomial in the heights, read on the restriction to `X`**
-(`lem:pencil-lifting-restrict`): the variables off `X` are set to zero. -/
+/-- **A polynomial in the heights, read on the restriction to `X`** (the polynomial of
+`lem:pencil-lifting-restrict`, its third claim): the variables off `X` are set to zero. -/
 noncomputable def restrictPoly (X : Set α) (R : MvPolynomial α K) : MvPolynomial α K :=
   MvPolynomial.bind₁ (fun w => if w ∈ X then MvPolynomial.X w else 0) R
 
-/-- **`restrictPoly` evaluates on the restriction** (`lem:pencil-lifting-restrict`). -/
+/-- **`restrictPoly` evaluates on the restriction** (`lem:pencil-lifting-restrict`, its third
+claim): `restrictPoly X R` at `z` is `R` at the restriction of `z` to `X`. -/
 theorem eval_restrictPoly (X : Set α) (R : MvPolynomial α K) (z : α → K) :
     MvPolynomial.eval z (restrictPoly X R) = MvPolynomial.eval (Graph.liftingRestrict X z) R := by
   rw [restrictPoly, MvPolynomial.eval_bind₁]
@@ -197,13 +214,12 @@ theorem eval_restrictPoly (X : Set α) (R : MvPolynomial α K) (z : α → K) :
   funext w
   by_cases hw : w ∈ X <;> simp [hw, Graph.liftingRestrict_apply]
 
-/-! ## Three points impose nothing -/
+/-! ## Three points impose nothing (`lem:pencil-three-points`) -/
 
-/-- **Three points impose nothing** (Phase 40g CHAIN, `lem:pencil-three-points`; the no-hub half
-of (MC-21)(a)'s `L = K^V`): at an admissible picture, a closed neighbourhood with at most three
-members carries every height affinely. Admissibility gives three members with independent picture
-points, which are then all of it, and the heights there are matched by the inverse of the matrix
-of those points. -/
+/-- **Three points impose nothing** (`lem:pencil-three-points`): at an admissible picture, every
+height agrees with an affine function on a closed neighbourhood with at most three members.
+Admissibility gives three members with independent picture points, which are then all of it, and
+the heights there are matched by the inverse of the matrix of those points. -/
 theorem _root_.Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three
     [Finite α] {G : Graph α β} {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α}
     (hv : v ∈ V(G)) (h3 : (G.closedNbhd v).ncard ≤ 3) (z : α → K) :
@@ -226,12 +242,11 @@ theorem _root_.Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_l
   rw [← this, dotProduct_comm]
   rfl
 
-/-! ## A cut vertex -/
+/-! ## A cut vertex (`lem:pencil-cut-fibre`, `thm:pencil-x0-cut`) -/
 
-/-- **Restriction is onto at a cut vertex** (`lem:pencil-cut-fibre`; (MC-52)(iii)), at every
-picture. Extend `z₁ ∈ L_{G[V₁]}(q)` across `V₂` by the affine function of its closed neighbourhood
-at `v`; every closed neighbourhood of `G` lies on one side or, at `v`, meets both in that affine
-function. -/
+/-- **Restriction is onto at a cut vertex** (`lem:pencil-cut-fibre`), at every picture. Extend
+`z₁ ∈ L_{G[V₁]}(q)` across `V₂` by the affine function of its closed neighbourhood at `v`; every
+closed neighbourhood of `G` lies on one side or, at `v`, meets both in that affine function. -/
 theorem _root_.Graph.exists_liftingRestrict_eq_of_cutVertex {G : Graph α β} {V₁ V₂ : Set α}
     {v : α} (hcover : V₁ ∪ V₂ = V(G)) (hoverlap : V₁ ∩ V₂ = {v})
     (hsep : ∀ e x y, G.IsLink e x y → (x ∈ V₁ ∧ y ∈ V₁) ∨ (x ∈ V₂ ∧ y ∈ V₂))
@@ -315,12 +330,19 @@ theorem _root_.Graph.exists_liftingRestrict_eq_of_cutVertex {G : Graph α β} {V
     · simp only [Graph.liftingRestrict_apply, ite_eq_right hw₁]
       exact (hz₁.1 w hw₁).symm
 
-/-- **CUT** (`thm:pencil-x0-cut`; (MC-52)(iv), the half the induction uses): if `G` satisfies (H)
-and has a cut vertex `v` splitting it into `G[V₁]` and `G[V₂]`, and `X₀` attains at both sides,
-then `X₀(G)` attains. One picture `q` generic for both sides and main for `G`; heights
-`z ∈ L_G(q)` whose two restrictions attain (the restrictions are onto, so each condition is a
-nonzero polynomial on `L_G(q)`, and two such meet: `MvPolynomial.exists_mem_eval_ne_zero₂`); the
-ranks add and the deficiencies glue, so `(q, z)` is a witness for `Graph.x0Attains_of_exists`. -/
+/-- **A cut vertex** (`thm:pencil-x0-cut`): over an infinite field, if `G` satisfies the standing
+hypotheses, `V(G) = V₁ ∪ V₂` with `V₁ ∩ V₂ = {v}` and every link of `G` inside `V₁` or inside `V₂`,
+and the general configurations of `G[V₁]` and `G[V₂]` attain, then the general configuration of `G`
+attains.
+
+Proof. One picture `q` off the zero sets of the polynomials of the attainment at both sides and of
+the main-picture polynomial of `G`, and heights `z ∈ L_G(q)` at which both restrictions attain: the
+restrictions are onto (`Graph.exists_liftingRestrict_eq_of_cutVertex`), so each condition is a
+polynomial nonzero somewhere on `L_G(q)`, and two such meet
+(`MvPolynomial.exists_mem_eval_ne_zero₂`). The ranks of the sides add
+(`BodyHingeFramework.finrank_span_rigidityRows_cutVertex_eq`), the deficiency of `G` is at least the
+sum of theirs (`Graph.deficiency_add_le_of_cutVertex`) and `|V₁| + |V₂| = |V(G)| + 1`, so `(q, z)`
+is a witness for `Graph.x0Attains_of_exists`. -/
 theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β] {G : Graph α β}
     (hG : G.IsX0Graph) {V₁ V₂ : Set α} {v : α} (hcover : V₁ ∪ V₂ = V(G))
     (hoverlap : V₁ ∩ V₂ = {v})
@@ -406,23 +428,27 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
   push_cast
   linarith [hdef, hcount]
 
-/-! ## A chain of bridges
+/-! ## A chain of bridges (`lem:pencil-bridge-fibre`)
 
-Build 2, BRIDGE for every `k` (`notes/Phase40e.md`). Explicit path hypotheses, not a chain
-structure (the PI-endorsed plan, *Architectural choices*): the path's interior bodies are an
-injective `x : Fin k → α`, and `pathVertex a x b : Fin (k + 2) → α` is the extended sequence
-`a, x 0, …, x (k - 1), b` its `k + 1` edges link in order. -/
+A chain of bridges is given by explicit hypotheses, not by a structure: its interior bodies are
+`x : Fin k → α`, and `pathVertex a x b : Fin (k + 2) → α` is the sequence `a, x 0, …, x (k - 1), b`
+of its bodies, whose consecutive terms its `k + 1` edges link in order. -/
 
-/-- **The path's extended vertex sequence** (Phase 40e BRIDGE): `a`, the interior bodies
-`x 0, …, x (k - 1)`, then `b`, as one `Fin (k + 2) → α`. -/
+/-- **The sequence of bodies of a path** (the notation of the formal statement of
+`lem:pencil-bridge-fibre`, as the note after it says, and of those of `thm:pencil-x0-bridge` and
+`def:open-ear`): `a`, the interior bodies `x 0, …, x (k - 1)`, then `b`, as one
+`Fin (k + 2) → α`. -/
 def pathVertex {k : ℕ} (a : α) (x : Fin k → α) (b : α) : Fin (k + 2) → α :=
   Fin.snoc (Fin.cons a x) b
 
+/-- **The path sequence starts at `a`** (a step of `lem:pencil-bridge-fibre` and of the ear and
+cycle steps). -/
 @[simp] theorem pathVertex_zero {k : ℕ} (a : α) (x : Fin k → α) (b : α) :
     pathVertex a x b 0 = a := by
   simp [pathVertex]
 
-/-- **The path sequence ends at `b`** (Phase 40g CHAIN): the last index `k + 1` is sent to `b`. -/
+/-- **The path sequence ends at `b`** (a step of `lem:relative-screws-path` and of the ear and cycle
+steps): the last index `k + 1` is sent to `b`. -/
 theorem pathVertex_last {k : ℕ} (a : α) (x : Fin k → α) (b : α) :
     pathVertex a x b (Fin.last (k + 1)) = b := by
   simp [pathVertex]
@@ -449,9 +475,10 @@ theorem isLink_pathVertex_cons {G : Graph α β} {k : ℕ} {x : Fin k → α} {a
   · rw [Fin.cons_succ, ← Fin.succ_castSucc, Fin.cons_succ, Fin.cons_succ]
     exact hpath j
 
-/-- **Every non-initial member of the path sequence is `b` or an interior body** (Phase 40e
-BRIDGE): the only index `pathVertex` sends to `a` is `0` (`pathVertex_zero`), so a nonzero index
-lands on `b` (the last position) or on some `x i` (an interior position). -/
+/-- **Every member of the path sequence but the first is `b` or an interior body** (a step of
+`lem:pencil-bridge-fibre`, as the note after it says): index `0` is the position of `a`
+(`pathVertex_zero`), and a nonzero index is the last position, of `b`, or an interior one, of some
+`x i`. -/
 theorem pathVertex_eq_or_exists {k : ℕ} (a : α) (x : Fin k → α) (b : α)
     {j : Fin (k + 2)} (hj : j ≠ 0) :
     pathVertex a x b j = b ∨ ∃ i, pathVertex a x b j = x i := by
@@ -464,15 +491,15 @@ theorem pathVertex_eq_or_exists {k : ℕ} (a : α) (x : Fin k → α) (b : α)
     | zero => exact absurd rfl hj
     | succ i' => exact ⟨i', by simp⟩
 
-/-- **Restriction is onto at a chain of bridges** (`lem:pencil-bridge-fibre`; (MC-53)(iii)): the
-path `a - x 0 - ⋯ - x (k - 1) - b` (`hpath`, along `pathVertex`) joins `a ∈ V₁` to `b ∉ V₁`, and
-every other link of `G` stays on one side (`hsep`). Extend `z₁ ∈ L_{G[V₁]}(q)` across the rest of
+/-- **Restriction is onto at a chain of bridges** (`lem:pencil-bridge-fibre`): the path
+`a - x 0 - ⋯ - x (k - 1) - b` (`hpath`, along `pathVertex`) joins `a ∈ V₁` to `b ∉ V₁`, and every
+other link of `G` stays on one side of `V₁` (`hsep`). Extend `z₁ ∈ L_{G[V₁]}(q)` across the rest of
 `G` by the same affine function `h₁` that already witnesses `z₁`'s own closed-neighbourhood
-condition at `a`: `a` is the only body of `V₁` with an edge leaving `V₁` (`hgate`, read off
-`hpath`/`hsep` — the only path edge that can touch `V₁` is the first, and only at `a`, since every
-other member of the path sequence is `b` or an interior body, `pathVertex_eq_or_exists`), so every
-closed neighbourhood outside `V₁` either lies entirely there or meets `V₁` only at `a`, where `h₁`
-already agrees with `z₁`. No admissibility of `q` and no case split on `k` is needed. -/
+condition at `a`. The body `a` is the only body of `V₁` with an edge leaving `V₁`, read off `hpath`
+and `hsep`: the only path edge that can touch `V₁` is the first, and only at `a`, since every other
+member of the path sequence is `b` or an interior body (`pathVertex_eq_or_exists`). So every closed
+neighbourhood outside `V₁` either lies entirely there or meets `V₁` only at `a`, where `h₁` already
+agrees with `z₁`. No admissibility of `q` and no case split on `k` is needed. -/
 theorem _root_.Graph.exists_liftingRestrict_eq_of_bridgePath {G : Graph α β} {V₁ : Set α}
     (hsub : V₁ ⊆ V(G)) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
     {a b : α} (ha : a ∈ V₁) (hb : b ∉ V₁)
@@ -557,17 +584,17 @@ theorem _root_.Graph.exists_liftingRestrict_eq_of_bridgePath {G : Graph α β} {
     · simp only [Graph.liftingRestrict_apply, ite_eq_right hw1]
       exact (hz₁.1 w hw1).symm
 
-/-! ## A chain of bridges: the counts, and BRIDGE
+/-! ## A chain of bridges: the counts (`thm:pencil-x0-bridge`)
 
-The theorem computes the rank inequality and the deficiency equality as numbers along the path,
-never forming an intermediate `X0Attains` claim: a peeled path body has no admissible picture
-(its closed neighbourhood in the peeled graph is itself). It cuts once at the last bridge, whose
-far side is `V₂`, and telescopes over the prefixes `V₁ ∪ {x i | i < j}` of the path, each of which
-the next body `x j` hangs from by the single edge `e j`. -/
+`thm:pencil-x0-bridge` counts the rank and the deficiency directly along the path, rather than apply
+the step one bridge at a time, which would ask a graph whose only body is a path body to attain; no
+picture of such a graph is admissible. It cuts once at the last bridge, whose far side is `V₂`, and
+adds up along the prefixes `V₁ ∪ {x i | i < j}` of the path, from each of which the next body `x j`
+hangs by the single edge `e j`. -/
 
-/-- **The three kinds of position in the path sequence** (Phase 40e BRIDGE): index `0` is `a`, an
-index of value `i + 1` is the interior body `x i`, and index `k + 1` is `b`. Read off by value, so
-index arithmetic goes to `omega`. -/
+/-- **The three kinds of position in the path sequence** (a step of `thm:pencil-x0-bridge` and of
+the ear and cycle steps): index `0` is `a`, an index of value `i + 1` is the interior body `x i`,
+and index `k + 1` is `b`. Read off by value, so index arithmetic goes to `omega`. -/
 theorem pathVertex_cases {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin (k + 2)) :
     (m.val = 0 ∧ pathVertex a x b m = a) ∨
       (∃ i : Fin k, m.val = i.val + 1 ∧ pathVertex a x b m = x i) ∨
@@ -605,7 +632,7 @@ theorem pathVertex_eq_of_val_eq_last {k : ℕ} (a : α) (x : Fin k → α) (b : 
   · omega
   · exact h
 
-/-- Every body of the path sequence lies on the ear's closed path. -/
+/-- Every body of the path sequence is `a`, `b` or an interior body. -/
 theorem pathVertex_mem_insert_insert_range {k : ℕ} (a : α) (x : Fin k → α) (b : α)
     (m : Fin (k + 2)) : pathVertex a x b m ∈ insert b (insert a (Set.range x)) := by
   rcases pathVertex_cases a x b m with ⟨-, h⟩ | ⟨i, -, h⟩ | ⟨-, h⟩ <;> rw [h]
@@ -613,8 +640,8 @@ theorem pathVertex_mem_insert_insert_range {k : ℕ} (a : α) (x : Fin k → α)
   · exact Or.inr (Or.inr ⟨i, rfl⟩)
   · exact Or.inl rfl
 
-/-- **An interior position, by value** (Phase 40e BRIDGE): an index of value `i + 1` is sent to
-the interior body `x i`. -/
+/-- **An interior position, by value** (a step of `thm:pencil-x0-bridge` and of the ear and cycle
+steps): an index of value `i + 1` is sent to the interior body `x i`. -/
 theorem pathVertex_eq_of_val_eq_succ {k : ℕ} (a : α) (x : Fin k → α) (b : α) {m : Fin (k + 2)}
     {i : Fin k} (h : m.val = i.val + 1) : pathVertex a x b m = x i := by
   rcases pathVertex_cases a x b m with ⟨hm, -⟩ | ⟨i', hm, h'⟩ | ⟨hm, -⟩
@@ -622,15 +649,17 @@ theorem pathVertex_eq_of_val_eq_succ {k : ℕ} (a : α) (x : Fin k → α) (b : 
   · rw [h', show i' = i from Fin.ext (by omega)]
   · omega
 
-/-- **An interior position, by index** (Phase 40g CHAIN): the index `j + 1` is sent to the interior
+/-- **An interior position, by index** (a step of `thm:pencil-x0-open-ear`,
+`thm:pencil-x0-closed-ear` and `thm:pencil-x0-cycle`): the index `j + 1` is sent to the interior
 body `x j` (`pathVertex_eq_of_val_eq_succ` at a literal index). -/
 theorem pathVertex_val_succ {k : ℕ} (a : α) (x : Fin k → α) (b : α) (j : ℕ) (hj : j < k) :
     pathVertex a x b ⟨j + 1, by omega⟩ = x ⟨j, hj⟩ :=
   pathVertex_eq_of_val_eq_succ a x b rfl
 
-/-- **A path of distinct bodies has an injective sequence** (Phase 40g CHAIN): with the interior
-bodies distinct and different from both ends, and `a ≠ b`, no two positions carry the same body.
-Read off position by position (`pathVertex_cases`). -/
+/-- **A path of distinct bodies has an injective sequence** (a step of `lem:block-rank-ear` and of
+the ear and cycle steps): with the interior bodies distinct and different from both ends, and
+`a ≠ b`, no two positions carry the same body. Read off position by position
+(`pathVertex_cases`). -/
 theorem pathVertex_injective {k : ℕ} {x : Fin k → α} {a b : α} (hinj : Function.Injective x)
     (hax : ∀ i, x i ≠ a) (hbx : ∀ i, x i ≠ b) (hab : a ≠ b) :
     Function.Injective (pathVertex a x b) := by
@@ -648,9 +677,10 @@ theorem pathVertex_injective {k : ℕ} {x : Fin k → α} {a b : α} (hinj : Fun
   · exact absurd h.symm (hbx i')
   · exact Fin.ext (by omega)
 
-/-- **The edges of a path of distinct bodies are distinct** (Phase 40h SHORT): the labels `e i` of
-the path's `k + 1` edges are pairwise different, since their pairs of ends differ
-(`pathVertex_injective`). -/
+/-- **The edges of a path of distinct bodies are distinct** (a step of
+`thm:pencil-x0-open-ear-three`, `thm:pencil-x0-open-ear-four` and
+`thm:pencil-x0-open-ear-two-orbit`, and of the structural coverage): the labels `e i` of the path's
+`k + 1` edges are pairwise different, since their pairs of ends differ (`pathVertex_injective`). -/
 theorem pathEdge_injective {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α}
     {e : Fin (k + 1) → β} (hinj : Function.Injective x) (hax : ∀ i, x i ≠ a)
     (hbx : ∀ i, x i ≠ b) (hab : a ≠ b)
@@ -668,9 +698,10 @@ theorem pathEdge_injective {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b :
     simp only [Fin.val_castSucc, Fin.val_succ] at e1 e2
     omega
 
-/-- **Where an interior body sits in the path sequence** (Phase 40g CHAIN): with the interior
-bodies distinct and different from both ends, `x i` sits exactly at the index of value `i + 1`. No
-injectivity of the whole sequence is needed, so `a = b` (a closed ear) is allowed. -/
+/-- **Where an interior body sits in the path sequence** (a step of `lem:pencil-ear-fibre` and of
+the structural coverage): with the interior bodies distinct and different from both ends, `x i` sits
+exactly at the index of value `i + 1`. No injectivity of the whole sequence is needed, so `a = b` (a
+closed ear) is allowed. -/
 theorem pathVertex_eq_x_iff {k : ℕ} {x : Fin k → α} {a b : α} (hinj : Function.Injective x)
     (hax : ∀ i, x i ≠ a) (hbx : ∀ i, x i ≠ b) (m : Fin (k + 2)) (i : Fin k) :
     pathVertex a x b m = x i ↔ m.val = i.val + 1 := by
@@ -680,9 +711,10 @@ theorem pathVertex_eq_x_iff {k : ℕ} {x : Fin k → α} {a b : α} (hinj : Func
       fun h' => congrArg x (Fin.ext (by omega))⟩
   · rw [h]; exact ⟨fun h' => absurd h'.symm (hbx i), fun h' => by omega⟩
 
-/-- **The path read from its other end** (Phase 40e BRIDGE): `pathVertex b (x ∘ Fin.rev) a` is
-`pathVertex a x b` backwards. This is the path as seen from `b`'s side, where the fibre lemma
-`Graph.exists_liftingRestrict_eq_of_bridgePath` is applied a second time. -/
+/-- **The path read from its other end** (a step of `thm:pencil-x0-bridge` and of the structural
+coverage): `pathVertex b (x ∘ Fin.rev) a` is `pathVertex a x b` backwards. This is the path as seen
+from `b`'s side, where the proof of `thm:pencil-x0-bridge` applies
+`Graph.exists_liftingRestrict_eq_of_bridgePath` a second time. -/
 theorem pathVertex_rev {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin (k + 2)) :
     pathVertex b (x ∘ Fin.rev) a m = pathVertex a x b m.rev := by
   have hrev := Fin.val_rev m
@@ -718,9 +750,10 @@ theorem isLink_pathVertex_rev {G : Graph α β} {k : ℕ} {x : Fin k → α} {a 
   rw [pathVertex_rev, pathVertex_rev, Fin.rev_castSucc, Fin.rev_succ]
   exact (hpath i.rev).symm
 
-/-- **Dropping the first interior body shifts the path sequence** (Phase 40g CHAIN): the sequence
-from `x 0` through `x 1, …, x (k − 1)` to `d` is `pathVertex c x d` read from index `1` on. The
-closed ear reads its far side as a cycle through `x 0` with it. -/
+/-- **Dropping the first interior body shifts the path sequence** (a step of
+`thm:pencil-x0-closed-ear`): the sequence from `x 0` through `x 1, …, x (k − 1)` to `d` is
+`pathVertex c x d` read from index `1` on. The closed ear reads its far side as a cycle through
+`x 0` with it. -/
 theorem pathVertex_shift {k : ℕ} (hk : 1 ≤ k) (c d : α) (x : Fin k → α) (m : Fin ((k - 1) + 2)) :
     pathVertex (x ⟨0, (by omega)⟩) (fun j : Fin (k - 1) => x ⟨j.val + 1, (by omega)⟩) d m
       = pathVertex c x d ⟨m.val + 1, (by omega)⟩ := by
@@ -732,10 +765,10 @@ theorem pathVertex_shift {k : ℕ} (hk : 1 ≤ k) (c d : α) (x : Fin k → α) 
     have : (⟨m.val + 1, (by omega)⟩ : Fin (k + 2)) = Fin.last (k + 1) := Fin.ext (by simp; omega)
     rw [this, pathVertex_last]
 
-/-- **Which path positions lie in a prefix** (Phase 40e BRIDGE): for `j ≤ k`, the prefix
-`V₁ ∪ {x i | i < j}` contains exactly the path positions `0, …, j`, that is `a` and the first `j`
-interior bodies. This needs the interior bodies distinct and outside `V₁`, and `b` outside `V₁`
-and not an interior body. -/
+/-- **Which path positions lie in a prefix** (a step of `thm:pencil-x0-bridge` and of
+`lem:block-rank-path`): for `j ≤ k`, the prefix `V₁ ∪ {x i | i < j}` contains exactly the path
+positions `0, …, j`, that is `a` and the first `j` interior bodies. This needs `a` in `V₁`, the
+interior bodies distinct and outside `V₁`, and `b` outside `V₁` and not an interior body. -/
 theorem pathVertex_mem_union_image_iff {k : ℕ} {V₁ : Set α} {x : Fin k → α} {a b : α}
     (hxV₁ : ∀ i, x i ∉ V₁) (hinj : Function.Injective x) (ha : a ∈ V₁) (hb : b ∉ V₁)
     (hbx : ∀ i, x i ≠ b) {j : ℕ} (hj : j ≤ k) (m : Fin (k + 2)) :
@@ -759,11 +792,12 @@ theorem pathVertex_mem_union_image_iff {k : ℕ} {V₁ : Set α} {x : Fin k → 
     · intro hkj
       omega
 
-/-- **The only edge leaving a prefix of the path is the next path edge** (Phase 40e BRIDGE): for
-`j ≤ k`, the one edge of `G` with exactly one end in `V₁ ∪ {x i | i < j}` is `e j`, from position
-`j` to position `j + 1`. Every other edge lies inside `V₁` or inside `V₂` (`hsep`), and a path edge
-`e i` with `i ≠ j` has both ends on one side of the prefix (`pathVertex_mem_union_image_iff`). At
-`j = k` this is the last bridge, into `V₂`. -/
+/-- **The only edge leaving a prefix of the path is the next path edge** (a step of
+`thm:pencil-x0-bridge` and of `lem:block-rank-path`): for `j ≤ k`, the one edge of `G` with exactly
+one end in `V₁ ∪ {x i | i < j}` is `e j`, from position `j` to position `j + 1`. Every other edge
+lies inside `V₁` or inside `V₂` (`hsep`), and a path edge `e i` with `i ≠ j` has both ends on one
+side of the prefix (`pathVertex_mem_union_image_iff`). At `j = k` this is the last bridge, into
+`V₂`. -/
 theorem _root_.Graph.cutEdges_union_image_of_bridgePath {G : Graph α β} {V₁ V₂ : Set α}
     (hdisj : Disjoint V₁ V₂) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
     (hxV₂ : ∀ i, x i ∉ V₂) (hinj : Function.Injective x) {a b : α} (ha : a ∈ V₁) (hb : b ∈ V₂)
@@ -799,7 +833,8 @@ theorem _root_.Graph.cutEdges_union_image_of_bridgePath {G : Graph α β} {V₁ 
     · rw [hmem]; simp
     · rw [hmem]; simp
 
-/-- **The full prefix is every interior body**: `{x i | i < k} = range x` for `x : Fin k → α`. -/
+/-- **The full prefix is every interior body** (a step of `thm:pencil-x0-bridge` and of
+`lem:block-rank-path`): `{x i | i < k} = range x` for `x : Fin k → α`. -/
 theorem image_val_lt_eq_range {k : ℕ} (x : Fin k → α) :
     x '' {i | i.val < k} = Set.range x := by
   ext w; simp [Fin.is_lt]
@@ -820,11 +855,12 @@ private theorem union_image_val_lt_succ {k : ℕ} (V₁ : Set α) (x : Fin k →
     · exact Or.inr ⟨i, by omega, rfl⟩
     · exact Or.inr ⟨_, by simp, rfl⟩
 
-/-- **Each path body adds one to the deficiency** (`lem:cut-edge-decomposition` along the path;
-Phase 40e BRIDGE): `def(G[V₁ ∪ {x 0, …, x (k − 1)}]) = def(G[V₁]) + k`. Adding the bodies one at a
-time, `x j` hangs from the prefix before it by the single edge `e j`
+/-- **Each path body adds one to the deficiency** (`thm:pencil-x0-bridge`, its count of the
+deficiency along the path): `def(G[V₁ ∪ {x 0, …, x (k − 1)}]) = def(G[V₁]) + k`. Adding the bodies
+one at a time, `x j` hangs from the prefix before it by the single edge `e j`
 (`Graph.cutEdges_union_image_of_bridgePath`), so KT Lemma 3.6 in its pendant form
-`Graph.deficiency_induce_union_singleton` adds `1` at each step. -/
+`Graph.deficiency_induce_union_singleton` (`lem:cut-edge-decomposition`, its third claim) adds `1`
+at each step. -/
 theorem _root_.Graph.deficiency_induce_union_range_of_bridgePath [Finite α] [Finite β]
     {G : Graph α β} [G.Loopless] {n : ℕ} {V₁ V₂ : Set α}
     (hdisj : Disjoint V₁ V₂) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
@@ -860,11 +896,12 @@ theorem _root_.Graph.deficiency_induce_union_range_of_bridgePath [Finite α] [Fi
       ring
   simpa [image_val_lt_eq_range] using hstep k le_rfl
 
-/-- **Each path body adds at least `D − 1` to the rank** (`lem:block-rank-cut` along the path;
-Phase 40e BRIDGE): with every hinge nonzero,
-`finrank(G[V₁]) + (screwDim d − 1)·k ≤ finrank(G[V₁ ∪ {x 0, …, x (k − 1)}])`. As for the
-deficiency (`Graph.deficiency_induce_union_range_of_bridgePath`), with the pendant-body brick
-`BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton` at each step. -/
+/-- **Each path body adds at least `D − 1` to the rank** (a step of `thm:pencil-x0-bridge` and of
+`lem:block-rank-path`): with every hinge nonzero,
+`finrank(G[V₁]) + (screwDim d − 1)·k ≤ finrank(G[V₁ ∪ {x 0, …, x (k − 1)}])`. As for the deficiency
+(`Graph.deficiency_induce_union_range_of_bridgePath`), with the pendant-body form of
+`lem:block-rank-cut`, `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton`,
+at each step. -/
 theorem BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath
     {d : ℕ} [Finite α] [Finite β] {G : Graph α β} (ext : β → ScrewSpace K d)
     (hext : ∀ e u v, G.IsLink e u v → ext e ≠ 0) {V₁ V₂ : Set α}
@@ -914,19 +951,21 @@ theorem BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_o
   have := hstep k le_rfl
   rwa [image_val_lt_eq_range] at this
 
-/-- **BRIDGE** (`thm:pencil-x0-bridge`; (MC-53)(iv), the half the induction uses): if `G` satisfies
-(H), `V(G)` is the disjoint union of `V₁`, `V₂` and the distinct interior bodies
+/-- **A chain of bridges** (`thm:pencil-x0-bridge`): over an infinite field, if `G` satisfies the
+standing hypotheses, `V(G)` is the disjoint union of `V₁`, `V₂` and the distinct interior bodies
 `x 0, …, x (k − 1)` of a path `a − x 0 − ⋯ − x (k − 1) − b` from `a ∈ V₁` to `b ∈ V₂` (`hpath`,
-along `pathVertex`; `k ≥ 0`), every other edge lies inside `V₁` or inside `V₂`, and `X₀` attains at
-`G[V₁]` and at `G[V₂]`, then `X₀(G)` attains.
+along `pathVertex`; `k ≥ 0`), every other edge lies inside `V₁` or inside `V₂`, and the general
+configurations of `G[V₁]` and `G[V₂]` attain, then the general configuration of `G` attains.
 
-As for CUT: one picture generic for both sides and main for `G`, and heights on which both
-restrictions attain (`Graph.exists_liftingRestrict_eq_of_bridgePath`, applied from `V₂` along the
-reversed path, `pathVertex_rev`). The counts: the last bridge is the only edge leaving
-`V₁ ∪ range x`, whose complement is `V₂`, so the cut-edge brick
-`BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` and KT Lemma 3.6
-`Graph.deficiency_eq_of_cutEdges_ncard_le_one` add `5` to the rank and `1` to the deficiency; along
-the path each body adds at least `5` and exactly `1` again
+Proof. As for a cut vertex (`Graph.X0Attains.of_cutVertex`): one picture off the zero sets of the
+polynomials of the attainment at both sides and of the main-picture polynomial of `G`, and heights
+at which both restrictions attain (`Graph.exists_liftingRestrict_eq_of_bridgePath`, applied from
+`V₂` along the reversed path, `pathVertex_rev`). The counts: the last bridge is the only edge
+leaving `V₁ ∪ range x`, whose complement is `V₂`, so the cut-edge rank lemma
+`BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` (`lem:block-rank-cut`; every hinge is
+nonzero at an admissible picture) and KT Lemma 3.6 `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
+(`lem:cut-edge-decomposition`) add `5` to the rank and `1` to the deficiency; along the path each
+body adds at least `5` and exactly `1` again
 (`BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`,
 `Graph.deficiency_induce_union_range_of_bridgePath`), and `6` to the body term. So the rank is at
 least the two sides' targets plus `5(k + 1)`, which is the target of `G`. -/

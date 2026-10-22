@@ -2605,7 +2605,12 @@ declaration's name as its header writes it:
   case of KT Theorem 5.6 gives (it records every link) and the recorded hinges of the rank along a
   polynomial curve, kept as they stand but for their pointers and codes, and that the chart point
   needs no selector that records a link at every label (the "no total selector" of `Bridge.lean`'s
-  *Design* section, folded into its header), moved to the phase (task 37.10).
+  *Design* section, folded into its header), moved to the phase (task 37.10); and in
+  `Pencil/MainComponent/Cut.lean`, the hinge of an `ofNormals` framework at a recorded link (it
+  spans the panel extensor of its two ends, in either orientation), the two selectors recording every
+  link in the rank congruence (the row rank reads the selector only up to the orientation of each
+  link) and the sides' own selectors carried to `G.endsOf` (its *Design* section, folded into its
+  header), kept as they stand but for their pointers and codes, moved to the phase (task 37.11).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -4700,13 +4705,18 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` of `blueprint/src` and `CombinatorialRigidity/` for the
   labels of task 3.13's nodes).
   *Found:* round 5 task 3.13.
-  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: the lead of
-  `linearIndepOn_pencilChartNormal_closedHubNbhd` calls it a step of `lem:pencil-generic-steer` and
-  names `def:pencil-nondegenerate`, the condition it gives (task 37.2); round 3: the lead of
-  `Graph.closedNbhd_subset_vertexSet` (`Molecule/Pencil/Motive.lean`), one of the five, calls it a
-  step of `thm:pencil-jj-equality`, whose proof names it (task 37.4); round 3: the lead of
-  `Graph.exists_isAdmissiblePicture` (`MainComponent/Carrier.lean`), one of the five, calls it a
-  step of `lem:pencil-x0-main-picture-open`, whose proof names it (task 37.9).
+  *Disposition:* done (task 37.11): the lead of `linearIndepOn_pencilChartNormal_closedHubNbhd`
+  calls it a step of `lem:pencil-generic-steer` and names `def:pencil-nondegenerate`, the condition
+  it gives (task 37.2); of the five, the lead of `Graph.closedNbhd_subset_vertexSet`
+  (`Molecule/Pencil/Motive.lean`) calls it a step of `thm:pencil-jj-equality`, whose proof names it
+  (task 37.4), that of `Graph.exists_isAdmissiblePicture` (`MainComponent/Carrier.lean`) a step of
+  `lem:pencil-x0-main-picture-open`, whose proof names it (task 37.9), and in
+  `MainComponent/Cut.lean` (task 37.11) that of `pathVertex` names the nodes whose formal
+  statements give a path by it (`lem:pencil-bridge-fibre`, as the note after it says,
+  `thm:pencil-x0-bridge` and `def:open-ear`), `pathVertex_zero` has a docstring, which calls it a
+  step of `lem:pencil-bridge-fibre` and of the ear and cycle steps, and the lead of
+  `pathVertex_eq_or_exists` calls it a step of `lem:pencil-bridge-fibre`, as the note after it
+  says. Before: reported (`notes/Prose-report.md`, L11).
 - **F-246** · L · the declarations round 5's task 3.14 moved or unpinned
   (`Molecular/Molecule/Pencil/MainComponent/Bridge.lean`, `Carrier.lean`). The docstring of
   `Graph.embedEdges` names `lem:pencil-jj-embed-edges`, now `def:pencil-embed-edges`. The module
@@ -5790,6 +5800,25 @@ declaration's name as its header writes it:
   parents' proofs, on the three standard axioms (`scratch/reconcile-lean/t3710/Hyps-t3710.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 37.10.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-311** · L · repeated derivations in `Molecular/Molecule/Pencil/MainComponent/Cut.lean`.
+  `Graph.X0Attains.of_cutVertex` and `Graph.X0Attains.of_bridgePath` repeat the same steps: the
+  picture off the three polynomials and the two sides' data, `hendsI` (the selector `G.endsOf`
+  records every link of an induced subgraph, 7 lines, also in `ContractAdditive.lean`, and for one
+  side in `Short.lean`, `Orbit.lean` and `Ear.lean`) and `hcongr` (each side's rank read at
+  `G.endsOf` and the heights of `G`, 11 lines), which two lemmas would spare.
+  `Graph.X0Attains.of_bridgePath` derives the reversed path `hpath₂` (5 lines) that
+  `isLink_pathVertex_rev hpath` gives, a lemma of the same file. `pathVertex_eq_or_exists` repeats
+  the induction of `pathVertex_cases`, from which it follows in four lines. The instance `hmem` of
+  `pathVertex_mem_union_image_iff` is derived the same way in
+  `Graph.cutEdges_union_image_of_bridgePath`, `Graph.deficiency_induce_union_range_of_bridgePath` and
+  `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`, and the
+  step `hxj` in the last two. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies; the two theorems compared line by line); a `lake
+  lean` witness: `hpath₂`'s statement by `isLink_pathVertex_rev hpath`, and
+  `pathVertex_eq_or_exists` from `pathVertex_cases`, on the standard axioms
+  (`scratch/reconcile-lean/t3711/Hyps-t3711.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.11.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
