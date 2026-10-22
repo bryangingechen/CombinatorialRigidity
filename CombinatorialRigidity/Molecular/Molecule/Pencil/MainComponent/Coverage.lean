@@ -8,42 +8,45 @@ import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
 
 /-!
-# The one-step interface of the `X₀` induction (Phase 40l COVERAGE-REDUCE B1)
+# One step of the induction, and the induction on the number of bodies
 
-The interface for the strong induction on the number of bodies that closes the `X₀` induction
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-coverage`; (MC-89), (MC-56)). One
-step of the induction is packaged as a single non-recursive predicate `Graph.X0Reduces P G`: each
-constructor is the structural hypotheses of one of the thirteen landed step theorems
-(`MainComponent/{Bridge,Cut,Chain,Short,Orbit,SplitOff,Contract,ContractAdditive}.lean`), with
-the property `P` at every graph the step consumes. The dispatch
-(`Graph.X0Reduces.x0Attains`) reads off the matching step theorem in each case, so attainment at
-`G` follows from attainment at the graphs `P` names. The strong induction
-(`Graph.X0Attains.of_isX0Graph_of_x0Reduces`) then needs only the covering theorem as a hypothesis:
-every graph satisfying the standing hypotheses (H) reduces to smaller such graphs
-(`Graph.X0Below`) — the content COVERAGE's remaining sub-phases (CHAINS, THEOREM-S) supply.
+The induction on the number of bodies that gives the attainment of the general configuration
+(`thm:pencil-x0-reduction-attains`, `sec:main-component-coverage`), and open ears (`def:open-ear`).
+A graph `G` *reduces* to a property `P` of graphs (`Graph.X0Reduces`, `def:pencil-x0-reduces`) when
+it meets the further conditions of one step of the induction, with `P` at every graph whose
+attainment that step assumes. Each of the thirteen constructors is one step: the case of equal
+deficiencies (`MainComponent/Bridge.lean`), the cut vertex and the chain of bridges
+(`MainComponent/Cut.lean`), the cycle and the open ear with at least five interior bodies
+(`MainComponent/Chain.lean`), the open ears with two, three or four interior bodies
+(`MainComponent/Short.lean`) and with one or two at non-adjacent ends (`MainComponent/Orbit.lean`),
+the split-off (`MainComponent/SplitOff.lean`), and the two contractions
+(`MainComponent/Contract.lean`, `MainComponent/ContractAdditive.lean`). `Graph.X0Reduces.x0Attains`
+applies the step of the constructor. With `P` the property of being smaller than `G`
+(`Graph.X0Below`: satisfying the standing hypotheses, with fewer bodies), strong induction on the
+number of bodies gives the attainment at every graph satisfying the standing hypotheses once every
+such graph reduces (`Graph.X0Attains.of_isX0Graph_of_x0Reduces`), which the structural coverage
+proves (`thm:pencil-x0-coverage`, `MainComponent/CoverageTheoremS.lean`).
 
-## Main statements
+An open ear (`Graph.IsOpenEar`) bundles the hypotheses of the ear steps. The lemmas on it serve the
+chains and the cut cases (`MainComponent/CoverageChain.lean`, `MainComponent/CoverageCut.lean`): the
+ear read from its other end, the ear extended by one end into its interior, its path edges at the
+ends and at an interior body, and that a graph satisfying the standing hypotheses with `G − v`
+connected for every body `v` and some body of degree other than two has no open ear whose ends are
+adjacent, one of them of degree two.
 
-* `Graph.IsOpenEar` — an open ear `a − x₀ − ⋯ − x_{k-1} − b` on `V₁`: `V(G)` is `V₁` together with
-  the ear's interior bodies `x`, injectively indexed, none of them in `V₁`; `a` and `b` are
-  distinct members of `V₁`; the labelled edges `e` trace the path from `a` to `b` through `x`; and
-  every other link of `G` has both ends in `V₁`. The explicit-path format of the landed ear steps.
-* `Graph.X0Reduces` — **one step of the induction** (`def:pencil-x0-reduces`): `G.X0Reduces P`
-  holds when `G` matches one of the thirteen step theorems' hypotheses, with `P` at every graph
-  that step's conclusion draws attainment from (both sides of a cut vertex or a bridge chain, the
-  smaller ear/split-off/contraction graph, or both contraction pieces).
-* `Graph.X0Below` — `G.X0Below G'` holds when `G'` satisfies the standing hypotheses and has fewer
-  bodies than `G`: the property `P` the covering theorem (COVERAGE's remaining sub-phases) proves
-  every `X0Graph` reduces with.
-* `Graph.X0Reduces.x0Attains` — **the dispatch** (`thm:pencil-x0-reduction-attains`(1)): from
-  `G.X0Reduces P` and attainment at every graph satisfying `P`, `G` attains, by a case split on
-  which constructor of `Graph.X0Reduces` produced the reduction, into the matching one of the
-  twelve `Graph.X0Attains.of_…` step theorems (one per constructor other than `flat`) and
-  `Graph.x0Attains_of_deficiency_two_eq_three` (`flat`).
-* `Graph.X0Attains.of_isX0Graph_of_x0Reduces` — **the strong induction**
-  (`thm:pencil-x0-reduction-attains`(2)): given that every `X0Graph` reduces to smaller `X0Graph`s
-  (`Graph.X0Below`), every `X0Graph` attains, by strong induction on the number of bodies with the
-  dispatch as the inductive step.
+## Main results
+
+* `Graph.IsOpenEar`: `def:open-ear`, an open ear `a − x 0 − ⋯ − x (k − 1) − b` on `V₁`.
+* `Graph.X0Reduces`: `def:pencil-x0-reduces`, `G` reduces to `P`.
+* `Graph.X0Reduces.x0Attains`: `thm:pencil-x0-reduction-attains`(1), if `G` satisfies the standing
+  hypotheses and reduces to `P`, and the general configuration of every graph satisfying `P`
+  attains, so does that of `G`.
+* `Graph.X0Attains.of_isX0Graph_of_x0Reduces`: `thm:pencil-x0-reduction-attains`(2), if every graph
+  satisfying the standing hypotheses reduces to the graphs smaller than it, the general
+  configuration of every such graph attains.
+* `Graph.X0Below`: the graphs smaller than `G`.
+* `Graph.IsOpenEar.false_of_adj_of_degree_eq_two`: a step of `lem:pencil-x0-chain-exists`, no open
+  ear with adjacent ends has an end of degree two.
 -/
 
 open scoped Graph
@@ -52,8 +55,11 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-- An open ear `a − x 0 − ⋯ − x (k − 1) − b` on `V₁`, in the explicit-path format of the
-landed ear steps (`hcover`, `hinj`, `hxV₁`, `ha`, `hb`, `hab`, `hpath`, `hsep`). -/
+/-- **An open ear** `a − x 0 − ⋯ − x (k − 1) − b` on `V₁` (`def:open-ear`): `V(G)` is `V₁` with the
+interior bodies `x 0, …, x (k − 1)`, distinct and outside `V₁`; the ends `a ≠ b` lie in `V₁`; the
+label `e i` links the bodies at positions `i` and `i + 1` of the path `a, x 0, …, x (k − 1), b`; and
+every link whose label is none of the `e i` has both ends in `V₁`. The fields are the hypotheses
+`hcover`, `hinj`, `hxV₁`, `ha`, `hb`, `hab`, `hpath` and `hsep` of the ear steps. -/
 structure _root_.Graph.IsOpenEar (G : Graph α β) (V₁ : Set α) {k : ℕ} (x : Fin k → α)
     (a b : α) (e : Fin (k + 1) → β) : Prop where
   cover : V(G) = V₁ ∪ Set.range x
@@ -268,8 +274,12 @@ theorem _root_.Graph.IsOpenEar.adj_mem_of_adj_of_degree_eq_two [Finite β] {G : 
     · rcases hf.eq_and_eq_or_eq_and_eq (h.isLink i.succ) with ⟨-, rfl⟩ | ⟨-, rfl⟩ <;>
         exact pathVertex_mem_insert_insert_range _ _ _ _
 
-/-- **A closed ear at a cut vertex, or all of `G`**: in a 2-connected (H)-graph with a hub, no
-ear of `k ≥ 1` bodies has adjacent ends one of which has degree two. -/
+/-- **No open ear with adjacent ends has an end of degree two** (a step of
+`lem:pencil-x0-chain-exists`): let `G` satisfy the standing hypotheses, with `G − v` connected for
+every body `v` and some body of degree other than two. Then no open ear with `k ≥ 1` interior bodies
+has adjacent ends `a` and `b` with `a` of degree two. Otherwise the path and the edge `ab` form a
+cycle, which is either all of `G`, where every body has degree two, or meets the rest of `G` only at
+`b`, a cut vertex. -/
 theorem _root_.Graph.IsOpenEar.false_of_adj_of_degree_eq_two [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph)
     (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected)
@@ -323,8 +333,15 @@ theorem _root_.Graph.IsOpenEar.false_of_adj_of_degree_eq_two [Finite β]
     · exact hf.2.2.2 rfl
     · exact ht.2 ht'
 
-/-- **One landed step reduces `G` to graphs satisfying `P`** (COVERAGE's interface): each
-constructor is one step theorem's structural hypotheses, with `P` at every graph it consumes. -/
+/-! ## Reductions and the induction (`thm:pencil-x0-reduction-attains`) -/
+
+/-- **One step of the induction** (`def:pencil-x0-reduces`): `G` reduces to `P` when it meets the
+further conditions of one step: each constructor holds the hypotheses of one step theorem beyond the
+standing hypotheses, with `P` at every graph whose attainment that step assumes: the two sides at a
+cut vertex or at a chain of bridges; `G[V₁]` at an open ear, and also `G` with `x 1` suppressed at
+three or four interior bodies and at two with the bound on the merged planar deficiency; `G` with
+`x 0` suppressed at the split-off; and the contraction, with the core at an additive core. The case
+of equal deficiencies and the cycle assume none. -/
 inductive _root_.Graph.X0Reduces (P : Graph α β → Prop) (G : Graph α β) : Prop
   | flat (hdef : G.deficiency 2 = G.deficiency 3)
   | cutVertex {V₁ V₂ : Set α} {v : α} (hcover : V₁ ∪ V₂ = V(G)) (hoverlap : V₁ ∩ V₂ = {v})
@@ -379,8 +396,10 @@ inductive _root_.Graph.X0Reduces (P : Graph α β → Prop) (G : Graph α β) : 
       (hatt : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)
       (hH : P (G.induce W)) (hc : P (G.rigidContract (G.induce W) r))
 
-/-- **The dispatch**: a reduction by one landed step, with attainment at every consumed graph,
-gives attainment at `G`. -/
+/-- **A reduction gives attainment** (`thm:pencil-x0-reduction-attains`(1)): over an infinite field,
+let `G` satisfy the standing hypotheses and reduce to `P`. If the general configuration of every
+graph satisfying `P` attains, so does that of `G`, by the step of the constructor that gives the
+reduction. -/
 theorem _root_.Graph.X0Reduces.x0Attains [Infinite K] [Finite α] [Finite β]
     {P : Graph α β → Prop} {G : Graph α β} (hG : G.IsX0Graph)
     (hP : ∀ G' : Graph α β, P G' → G'.X0Attains K) (h : G.X0Reduces P) : G.X0Attains K := by
@@ -422,11 +441,14 @@ theorem _root_.Graph.X0Reduces.x0Attains [Infinite K] [Finite α] [Finite β]
     exact Graph.X0Attains.of_additiveContract hG htec hr hWss hW2 hdef3 hadd hatt
       (hP _ hH) (hP _ hc)
 
-/-- `G'` satisfies (H) and has fewer bodies than `G`: the graphs the induction may consume. -/
+/-- `G'` is smaller than `G`: it satisfies the standing hypotheses and has fewer bodies than `G`. -/
 abbrev _root_.Graph.X0Below (G : Graph α β) : Graph α β → Prop :=
   fun G' => G'.IsX0Graph ∧ V(G').ncard < V(G).ncard
 
-/-- **The strong induction** ((MC-89), (MC-56)), carried on the covering theorem `hcov`. -/
+/-- **The induction on the number of bodies** (`thm:pencil-x0-reduction-attains`(2)): over an
+infinite field, if every graph satisfying the standing hypotheses reduces to the graphs smaller than
+it (`hcov`), then the general configuration of every graph satisfying the standing hypotheses
+attains: strong induction on the number of bodies, with `Graph.X0Reduces.x0Attains` as the step. -/
 theorem _root_.Graph.X0Attains.of_isX0Graph_of_x0Reduces [Infinite K] [Finite α] [Finite β]
     (hcov : ∀ G : Graph α β, G.IsX0Graph →
       G.X0Reduces (fun G' => G'.IsX0Graph ∧ V(G').ncard < V(G).ncard))

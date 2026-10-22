@@ -6,28 +6,36 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Coverage
 
 /-!
-# Chains and the cycle in the `X₀` covering theorem (Phase 40m CHAINS B1)
+# Chains, and graphs of degree two everywhere
 
-The maximal ear through bodies of degree two, and the two consequences the covering theorem
-needs: every body of degree two lies on a chain, and a graph satisfying (H) all of whose bodies
-have degree two is a cycle (`blueprint/src/chapter/main-component.tex`,
-`sec:main-component-coverage`; (MC-79)ff). One core, the maximal ear
-`Graph.IsOpenEar.exists_maximal`, serves both: strong induction on `V₁.ncard`, by
-`Graph.IsOpenEar.symm` and `Graph.IsOpenEar.cons`, extending one more body at a time while an end
-has degree two and is not adjacent to the other end.
+Chains of bodies of degree two (`def:pencil-x0-chain`, `sec:main-component-coverage`), and the two
+lemmas on them that the structural coverage uses: if `G` satisfies the standing hypotheses, with
+`G − v` connected for every body `v` and some body of degree other than two, every body of degree
+two is an interior body of a chain (`lem:pencil-x0-chain-exists`); and a graph satisfying the
+standing hypotheses all of whose bodies have degree two is a cycle, and reduces by the cycle clause
+of `Graph.X0Reduces` (`lem:pencil-x0-cycle-reduces`). Both extend an open ear through a body of
+degree two as far as possible along bodies of degree two (`Graph.IsOpenEar.exists_maximal`), by
+strong induction on `|V₁|`: while an end has degree two and is not adjacent to the other end, it
+moves into the interior and its other neighbour becomes the end (`Graph.IsOpenEar.exists_cons`, by
+`Graph.IsOpenEar.cons`, and `Graph.IsOpenEar.symm` at `b`). Each end of the maximal ear has degree
+at least three or is adjacent to the other end. In the first lemma an end of degree two adjacent to
+the other end would close a cycle that is all of `G` or meets the rest of `G` at a cut vertex
+(`Graph.IsOpenEar.false_of_adj_of_degree_eq_two`, `MainComponent/Coverage.lean`); in the second the
+ear with the edge of its ends is closed under adjacency, so it is all of `G`, as `G` is connected.
 
-## Main statements
+The last section counts bodies, degrees and edges, for the core when no chain is usable
+(`thm:pencil-x0-theorem-s`, `MainComponent/CoverageTheoremS.lean`), the count of bodies of degree
+two (`lem:pencil-x0-sparse-count`) and the good ear of a rigid graph (`lem:pencil-rigid-good-ear`,
+`MainComponent/GoodEar.lean`).
 
-* `Graph.IsChain` — **a chain** (`def:pencil-x0-chain`): an open ear whose interior bodies have
-  degree two and whose ends have degree at least three.
-* `Graph.IsOpenEar.exists_maximal` — **the maximal ear**: every open ear of a graph satisfying (H)
-  extends, through bodies of degree two at its ends, to one each of whose ends is a hub or
-  adjacent to the other end.
-* `Graph.IsX0Graph.exists_isChain` — **chain extraction** (`lem:pencil-x0-chain-exists`): in a
-  2-connected (H)-graph with a hub, every body of degree two lies on a chain.
-* `Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two` — **the cycle**
-  (`lem:pencil-x0-cycle-reduces`): a graph satisfying (H) all of whose bodies have degree two is a
-  cycle, and reduces by BASE (`Graph.X0Reduces.cycle`'s format).
+## Main results
+
+* `Graph.IsChain`: `def:pencil-x0-chain`, a chain.
+* `Graph.IsX0Graph.exists_isChain`: `lem:pencil-x0-chain-exists`, every body of degree two lies on a
+  chain.
+* `Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two`: `lem:pencil-x0-cycle-reduces`, a graph of
+  degree two everywhere is a cycle, and reduces to the graphs smaller than it.
+* `Graph.IsOpenEar.exists_maximal`: a step of both, the maximal ear.
 -/
 
 open scoped Graph
@@ -81,8 +89,11 @@ theorem _root_.Graph.IsOpenEar.exists_cons [Finite β] {G : Graph α β} [G.Simp
   refine ⟨a', g, h.cons hg.symm (h.sep g a a' hg hge).2 ha'a (fun h' => hab ?_) honly⟩
   exact ⟨g, h' ▸ hg⟩
 
-/-- **The maximal ear**: every open ear of a graph satisfying (H) extends, through bodies of
-degree two at its ends, to one each of whose ends is a hub or adjacent to the other end. -/
+/-- **The maximal ear** (a step of `lem:pencil-x0-chain-exists` and `lem:pencil-x0-cycle-reduces`):
+every open ear of a graph satisfying the standing hypotheses extends, through bodies of degree two
+at its ends, to an open ear whose interior bodies include its own and each of whose ends has degree
+at least three or is adjacent to the other end. By strong induction on `|V₁|`, with
+`Graph.IsOpenEar.exists_cons` at an end of degree two not adjacent to the other end. -/
 theorem _root_.Graph.IsOpenEar.exists_maximal [Finite α] [Finite β] {G : Graph α β}
     (hG : G.IsX0Graph) {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
     (h : G.IsOpenEar V₁ x a b e) :
@@ -119,8 +130,8 @@ theorem _root_.Graph.IsOpenEar.exists_maximal [Finite α] [Finite β] {G : Graph
 
 /-! ## Chains -/
 
-/-- A **chain** of `G` (Step MC16's notation): an open ear whose interior bodies have degree two
-and whose ends have degree at least three. -/
+/-- **A chain** of `G` (`def:pencil-x0-chain`): an open ear with at least one interior body, whose
+interior bodies have degree two in `G` and whose ends have degree at least three. -/
 structure _root_.Graph.IsChain (G : Graph α β) (V₁ : Set α) {k : ℕ} (x : Fin k → α) (a b : α)
     (e : Fin (k + 1) → β) : Prop extends G.IsOpenEar V₁ x a b e where
   one_le : 1 ≤ k
@@ -186,7 +197,7 @@ theorem _root_.Graph.IsX0Graph.isOpenEar_one [Finite β] {G : Graph α β} (hG :
       · exact hf1 h
       · exact hf2 h
 
-/-- A body of degree two between two hubs is a one-body chain. -/
+/-- A body of degree two between two bodies of degree at least three is a one-body chain. -/
 theorem _root_.Graph.IsX0Graph.isChain_one [Finite β] {G : Graph α β} (hG : G.IsX0Graph)
     {x c₁ c₂ : α} {e₁ e₂ : β} (hx : G.degree x = 2) (h₁ : G.IsLink e₁ c₁ x)
     (h₂ : G.IsLink e₂ x c₂) (hne : c₁ ≠ c₂) (hc₁ : 3 ≤ G.degree c₁) (hc₂ : 3 ≤ G.degree c₂) :
@@ -195,8 +206,11 @@ theorem _root_.Graph.IsX0Graph.isChain_one [Finite β] {G : Graph α β} (hG : G
     obtain rfl : i = 0 := Subsingleton.elim _ _
     simpa using hx, hc₁, hc₂⟩
 
-/-- **Chain extraction**: in a 2-connected (H)-graph with a hub, every body of degree two lies on
-a chain. -/
+/-- **Every body of degree two lies on a chain** (`lem:pencil-x0-chain-exists`): let `G` satisfy the
+standing hypotheses, with `G − v` connected for every body `v` and some body of degree other than
+two. Then every body `v` of degree two is an interior body of a chain. The maximal ear through `v`
+(`Graph.IsOpenEar.exists_maximal`) has ends of degree at least three, since an end of degree two
+adjacent to the other end is excluded (`Graph.IsOpenEar.false_of_adj_of_degree_eq_two`). -/
 theorem _root_.Graph.IsX0Graph.exists_isChain [Finite α] [Finite β] {G : Graph α β}
     (hG : G.IsX0Graph) (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected)
     (hhub : ∃ w ∈ V(G), G.degree w ≠ 2) {v : α} (_hv : v ∈ V(G)) (hdeg : G.degree v = 2) :
@@ -223,8 +237,11 @@ theorem _root_.Graph.IsX0Graph.exists_isChain [Finite α] [Finite β] {G : Graph
       exact hy.symm.false_of_adj_of_degree_eq_two hG h2c hhub hm hd.symm
         (by have := hG.two_le_degree d (hV hy.right_mem); omega)
 
-/-- **The cycle**: a graph satisfying (H) all of whose bodies have degree two is a cycle, and
-reduces by BASE (`of_cycle`'s format). -/
+/-- **A graph of degree two everywhere is a cycle** (`lem:pencil-x0-cycle-reduces`): if `G`
+satisfies the standing hypotheses and every body has degree two, `G` reduces to the graphs smaller
+than it, by the cycle clause (`Graph.X0Reduces.cycle`). The maximal ear through one body
+(`Graph.IsOpenEar.exists_maximal`) has adjacent ends, as both have degree two, and the path with the
+edge of its ends is closed under adjacency, so it is all of `G`, as `G` is connected. -/
 theorem _root_.Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (h2 : ∀ v ∈ V(G), G.degree v = 2) :
     G.X0Reduces G.X0Below := by
@@ -299,9 +316,9 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two [Finite α] [Fi
       · exact h'
     · exact absurd hu (hy.notMem i)
 
-/-! ## Plumbing for Theorem S -/
+/-! ## Counting bodies, degrees and edges -/
 
-/-- (H) forces three bodies. -/
+/-- A graph satisfying the standing hypotheses has at least three bodies. -/
 theorem _root_.Graph.IsX0Graph.three_le_ncard_vertexSet [Finite α] {G : Graph α β}
     (hG : G.IsX0Graph) :
     3 ≤ V(G).ncard := by

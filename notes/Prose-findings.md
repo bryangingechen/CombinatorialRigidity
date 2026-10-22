@@ -2629,7 +2629,12 @@ declaration's name as its header writes it:
   `Pencil/MainComponent/Orbit.lean`, the comment that the frameworks of `G` read the hinges of `G₁`
   on `V₁` (`Graph.X0Attains.of_openEar_two_of_splitOff`, `hCG`: at a link of `G[V₁]` the framework
   of `G` at every ear datum and that of `G₁`, whose selector is that of `G` relinked at `e 1`, give
-  the same hinge), kept as it stands, moved to the phase (task 37.17).
+  the same hinge), kept as it stands, moved to the phase (task 37.17); and in
+  `Pencil/MainComponent/SplitOff.lean`, the hinges of an `ofNormals` framework at the special
+  position (those at `a − x 0` and `x 0 − b` nonzero multiples of the hinge of `G″` at `a − b`,
+  `Graph.finrank_span_rigidityRows_splitOff_special`) and the comment that the hinges of the special
+  configuration are nonzero (`Graph.X0Attains.of_splitOff`), kept as they stand, moved to the phase
+  (task 37.18).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -5981,6 +5986,40 @@ declaration's name as its header writes it:
   `Graph.X0Attains.of_openEar_two_of_splitOff` applied without them, on the standard axioms or fewer
   (`scratch/reconcile-lean/t3717/Hyps-t3717.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.17.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-318** · L · repeated derivations, and derivable or unused hypotheses and `have`s, in
+  `Molecular/Molecule/Pencil/MainComponent/SplitOff.lean`, `Coverage.lean` and `CoverageChain.lean`.
+  Derivable hypotheses: the `hinj` of `Graph.planeDiff_eq_zero_of_splitOff` and
+  `Graph.X0Attains.of_splitOff` (a map out of `Fin 1` is injective); the `hab` of
+  `Graph.X0Attains.of_splitOff`, from `hδ` (at `a = b` the merged deficiency is the deficiency); and
+  the `_hv` of `Graph.IsX0Graph.exists_isChain`, which its proof never reads and `hdeg` gives (a
+  body of degree two is an end of a link). Unused: in
+  `Graph.finrank_span_rigidityRows_splitOff_special`, the `obtain` of `Graph.splitOff_oneEar` (none
+  of its conjuncts is read) and `he01`, with `hab'`, which only `he01` reads. Repeated derivations:
+  the three theorems of `SplitOff.lean` open with the same facts about the ear (`hx0`, `hax`, `hbx`,
+  `hV₁G`, `l0`, `l1`; `l''` and `hVG''` in two of them); `hpd` (the incidence functional as a
+  difference of two dot products) is derived in `Graph.planeDiff_eq_zero_of_splitOff` and in
+  `Graph.X0Attains.of_splitOff`, and `hends2` (the selector relinked at `e 0`) in
+  `Graph.finrank_span_rigidityRows_splitOff_special` and in `Graph.X0Attains.of_splitOff`, whose
+  `hdeg2` (the ear body's links are `e 0` and `e 1`) is `Graph.IsOpenEar.isLink_interior`
+  (`Coverage.lean`, downstream) at one body. The first path edge (`Graph.IsOpenEar.isLink_first`) is
+  derived again as `h0` in `Graph.IsOpenEar.adj_mem_of_adj_of_degree_eq_two`,
+  `Graph.IsOpenEar.exists_isLink_of_degree_eq_two` and
+  `Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two`, and the last (`Graph.IsOpenEar.isLink_last`)
+  as the latter's `hlast` (`ear_isLink_first` and `ear_isLink_last`, `Ear.lean`, state them on
+  `hpath` with the interior body named); the latter's `hg0` repeats that of
+  `Graph.IsOpenEar.adj_mem_of_adj_of_degree_eq_two`; `1 ≤ m` (`hm`) is derived in
+  `Graph.IsX0Graph.exists_isChain` and `Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two`;
+  `x i ≠ a` and `x i ≠ b` (`hax`, `hbx`, `hxa`, `hxb`) are derived from `notMem` five times; and
+  `Graph.X0Attains.of_isX0Graph_of_x0Reduces` writes `Graph.X0Below` out in `hcov`. `lake lint`
+  reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: `hinj` and `hab` derived from
+  the others and the two theorems applied without them, `exists_isChain` applied with `v ∈ V(G)`
+  derived from `hdeg`, `Graph.finrank_span_rigidityRows_splitOff_special`'s proof without the
+  `obtain`, `hab'` and `he01`, and `of_isX0Graph_of_x0Reduces` applied to `hcov` stated with
+  `Graph.X0Below`, on the standard axioms or fewer (`scratch/reconcile-lean/t3718/Hyps-t3718.lean`,
+  gitignored).
+  *Found:* RECONCILE round 3 task 37.18.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
