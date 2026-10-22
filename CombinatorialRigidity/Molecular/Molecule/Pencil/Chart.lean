@@ -6,22 +6,38 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 
 /-!
-# The `K⁴` cross product and the grade-0 pencil chart (Phase 39 PENCIL, W5-L1/L2)
+# The cross product of `K⁴` and the pencil chart
 
-Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
-`notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
-the `K⁴` generalized cross product `cross₃` (W5-L1, the device the chart's constructed points use)
-and the grade-0 pencil chart itself (W5-L2): `PencilSeed`, `IsFin3SelectorOf`, `pencilChartPoint` /
-`pencilChartNormal`, `PencilChartWF`, the `pencilChartFramework` construction, and the
-by-construction headline theorem
-`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`. Builds on the nondegenerate
-motive in `Molecule/Pencil/Motive.lean`.
+The parametrization of pencil realizations in the proof of `lem:pencil-generic-steer`
+(`sec:main-component-statements`), and the cross product it is built from.
 
-This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
-namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
+For `x, y, z ∈ K⁴`, `cross₃ x y z` is the vector with `cross₃ x y z ⬝ᵥ w = det[x, y, z, w]` for
+every `w`: the product `y₁ × y₂ × y₃` of that proof, and the plane normal of
+`def:pencil-configuration`. It is orthogonal to `x`, `y` and `z`, linear in each, and nonzero
+exactly when the three are linearly independent.
 
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 design pass"), and
-`blueprint/src/chapter/pencil.tex`.
+The chart takes, at each body `v`, a vector `hubNormal v` and two triples of padding vectors
+(`PencilSeed`), and two selectors, which list the closed hub-neighbourhood and the closed
+neighbourhood of each body in three slots (`IsFin3SelectorOf`). The normal of a hub is its
+`hubNormal`; the point of a body is the `cross₃` of the `hubNormal`s its hub selector lists, padded
+to three vectors; and the normal of a body that is not a hub is the `cross₃` of the points its
+neighbour selector lists, padded likewise. The framework of the chart has at each edge the join of
+the points of its ends (`pencilChartFramework`). At well-formed parameters (`PencilChartWF`: the
+selectors list their sets, the padded triples are independent, and so are the points of the two ends
+of every link), the chart is a nondegenerate pencil realization (`def:pencil-nondegenerate`).
+
+## Main definitions
+
+* `cross₃`: the cross product of three vectors of `K⁴`.
+* `PencilSeed`, `IsFin3SelectorOf`, `pencilChartPoint`, `pencilChartNormal`, `PencilChartWF` and
+  `pencilChartFramework`: the chart.
+
+## Main results
+
+* `dotProduct_cross₃`, `cross₃_dotProduct_fst`, `cross₃_ne_zero_iff_linearIndependent` and
+  `range_cross₃L_eq_perp`: the cross product.
+* `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`: at well-formed parameters, the
+  chart is a nondegenerate pencil realization.
 -/
 
 open scoped Matrix
@@ -32,88 +48,67 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## W5-L1: the `K⁴` generalized cross product (Phase 39 PENCIL, W5 design pass)
+/-! ## The cross product of `K⁴`
 
-The device the W5 chart (this file, W5-L2 below) builds constructed points from: given three
-vectors `x, y, z : Fin 4 → K`, `cross₃ x y z` is the unique vector
-orthogonal to all three, the `K⁴` analogue of the `3`-dimensional cross product. **Route choice**
-(the design doc's L1 bullet left the implementation open between the grade-`3` `complementIso`
-specialization, `Meet.lean:479`, and a direct cofactor definition): landed via the **direct
-cofactor route**. The `complementIso` route would need a fresh bridge lemma identifying the
-grade-`1` exterior-power basis's `toDual` pairing (via `exteriorPower.oneEquiv : ⋀[K]^1 M ≃ₗ M`)
-with the concrete dot product — infrastructure with no precedent anywhere in the tree. The cofactor
-route instead stays entirely inside mature, general-purpose `Matrix.det` API
-(`Matrix.det_updateRow_add/_smul`, `Matrix.det_zero_of_row_eq`,
-`Matrix.linearIndependent_rows_iff_isUnit`) and the standard `LinearIndependent` extension fact
-`linearIndependent_finSnoc`, so it proved shorter — the design doc's tie-breaker.
+`cross₃ x y z` is the vector that represents, through the dot product, the linear functional
+`w ↦ det[x, y, z, w]` (`Pi.basisFun`'s `toDualEquiv`), so that `cross₃ x y z ⬝ᵥ w = det[x, y, z, w]`
+for every `w` (`dotProduct_cross₃`). From this:
 
-`cross₃ x y z` is defined as the vector representing, via the standard dot product
-(`Pi.basisFun`'s `toDualEquiv`), the linear functional `w ↦ det[x, y, z, w]` (the `4×4` matrix
-with rows `x, y, z, w`) — i.e. `cross₃ x y z ⬝ᵥ w = det[x, y, z, w]` for every `w`
-(`dotProduct_cross₃`), the defining property everything below is derived from:
+* it is orthogonal to `x`, `y` and `z`, as a determinant with two equal rows vanishes
+  (`cross₃_dotProduct_fst`, `cross₃_dotProduct_snd`, `cross₃_dotProduct_thd`);
+* it is additive and homogeneous in each of its three arguments, as the determinant is in each row
+  (`cross₃_add_fst`, `cross₃_smul_fst` and their siblings), so linear in the third (`cross₃L`);
+* it is nonzero exactly when `x`, `y` and `z` are linearly independent
+  (`cross₃_ne_zero_iff_linearIndependent`);
+* for independent `n₁, n₂`, the vectors `cross₃ n₁ n₂ z` are exactly those orthogonal to `n₁` and
+  `n₂` (`range_cross₃L_eq_perp`).
 
-* **Orthogonality** (`cross₃_dotProduct_fst/snd/thd`): `cross₃ x y z ⬝ᵥ x = 0` etc., since
-  `det[x, y, z, x]` has two equal rows.
-* **Multilinearity** (`cross₃_add_fst/snd/thd`, `cross₃_smul_fst/snd/thd`): additive and
-  homogeneous in each of the three slots, via `Matrix.det`'s row-linearity. This is the
-  "polynomial-in-entries" property the design doc flags as load-bearing for the W5-L2/L3 chart's
-  rows-polynomial argument: `cross₃` is multilinear (hence a bounded-degree polynomial) in the
-  twelve scalar entries of `x, y, z`.
-* **Vanishing iff dependent** (`cross₃_ne_zero_iff_linearIndependent`): `cross₃ x y z ≠ 0 ↔
-  LinearIndependent K ![x, y, z]`.
-* **The perp-sweep lemma** (`range_cross₃L_eq_perp`, feeding the D6 re-seeding lemma W5-L4): for
-  an independent pair `n₁, n₂`, the image of `cross₃ n₁ n₂ ·` (bundled as the linear map
-  `cross₃L n₁ n₂`) is exactly the `2`-dimensional `⬝ᵥ`-perp of `{n₁, n₂}` — the same `perp` shape
-  as `mem_span_of_dotProduct_perp_pair`'s, via the dimension count
-  `finrank_toDualPerp_pair_eq` and a kernel computation (`ker (cross₃L n₁ n₂) = span{n₁, n₂}`,
-  from vanishing-iff-dependent plus `linearIndependent_finSnoc`) feeding rank-nullity.
--/
+`cross₃_apply` (`Engine.lean`) writes its coordinates as determinants, polynomials in those of `x`,
+`y` and `z`. -/
 
-/-- The defining linear functional of `cross₃`: `w ↦ det[x, y, z, w]`, built via
-`Matrix.updateRow` at a fixed base matrix so its linearity in `w` is immediate from
-`Matrix.det_updateRow_add`/`_smul`. Private plumbing; `cross₃` is the public interface. -/
+/-- The linear functional `w ↦ det[x, y, z, w]` that defines `cross₃`, written with
+`Matrix.updateRow` at row `3`, so that its linearity in `w` is `Matrix.det_updateRow_add` and
+`Matrix.det_updateRow_smul`. -/
 private def cross₃Functional (x y z : Fin 4 → K) : (Fin 4 → K) →ₗ[K] K where
   toFun w := Matrix.det ((Matrix.of ![x, y, z, (0 : Fin 4 → K)]).updateRow 3 w)
   map_add' w1 w2 := Matrix.det_updateRow_add _ 3 w1 w2
   map_smul' c w := Matrix.det_updateRow_smul _ 3 c w
 
-/-- **The generalized cross product on `K⁴`** (Phase 39 W5-L1; no blueprint node — technical
-infra for the W5 chart, per the design doc's L1 bullet leaving it unnamed, the same status as the
-W3-L4 rank helpers). The unique vector representing, via the standard dot product, the linear
-functional `w ↦ det[x, y, z, w]` (`cross₃Functional`). -/
+/-- **The cross product of three vectors of `K⁴`** (the product `y₁ × y₂ × y₃` of
+`lem:pencil-generic-steer`'s proof, and the plane normal of `def:pencil-configuration`): the vector
+that represents, through the dot product, the linear functional `w ↦ det[x, y, z, w]`
+(`cross₃Functional`). -/
 noncomputable def cross₃ (x y z : Fin 4 → K) : Fin 4 → K :=
   (Pi.basisFun K (Fin 4)).toDualEquiv.symm (cross₃Functional x y z)
 
 omit [Field K] in
-/-- Replacing row `0` of a `4×4` matrix built from `![x0, y, z, w]` with `a` gives the matrix built
-from `![a, y, z, w]` — pure `Fin 4` case-bash plumbing for `cross₃`'s first-slot multilinearity. -/
+/-- Replacing row `0` of the matrix with rows `x0, y, z, w` by `a` gives the matrix with rows
+`a, y, z, w`, for `cross₃_add_fst` and `cross₃_smul_fst`. -/
 private theorem cons_updateRow_zero (x0 y z w a : Fin 4 → K) :
     (Matrix.of ![x0, y, z, w]).updateRow 0 a = Matrix.of ![a, y, z, w] := by
   funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
 
 omit [Field K] in
-/-- The row-`1` sibling of `cons_updateRow_zero`, for `cross₃`'s second-slot multilinearity. -/
+/-- The row-`1` form of `cons_updateRow_zero`, for `cross₃_add_snd` and `cross₃_smul_snd`. -/
 private theorem cons_updateRow_one (x y0 z w a : Fin 4 → K) :
     (Matrix.of ![x, y0, z, w]).updateRow 1 a = Matrix.of ![x, a, z, w] := by
   funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
 
 omit [Field K] in
-/-- The row-`2` sibling of `cons_updateRow_zero`, for `cross₃`'s third-slot multilinearity. -/
+/-- The row-`2` form of `cons_updateRow_zero`, for `cross₃_add_thd` and `cross₃_smul_thd`. -/
 private theorem cons_updateRow_two (x y z0 w a : Fin 4 → K) :
     (Matrix.of ![x, y, z0, w]).updateRow 2 a = Matrix.of ![x, y, a, w] := by
   funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
 
 omit [Field K] in
-/-- The row-`3` sibling of `cons_updateRow_zero`, connecting `cross₃Functional`'s internal
-`updateRow`-based matrix back to the natural `Matrix.of ![x, y, z, w]` form
-(`dotProduct_cross₃`). -/
+/-- The row-`3` form of `cons_updateRow_zero`, which turns the matrix of `cross₃Functional` into the
+one with rows `x, y, z, w` (`dotProduct_cross₃`). -/
 private theorem cons_updateRow_three (x y z w0 a : Fin 4 → K) :
     (Matrix.of ![x, y, z, w0]).updateRow 3 a = Matrix.of ![x, y, z, a] := by
   funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
 
-/-- **`cross₃`'s defining property** (Phase 39 W5-L1): its dot product with any `w` is the `4×4`
-cofactor determinant `det[x, y, z, w]`. Everything else about `cross₃` (orthogonality,
-multilinearity, vanishing-iff-dependent, the perp-sweep) is derived from this identity. -/
+/-- **The defining property of `cross₃`**: `cross₃ x y z ⬝ᵥ w = det[x, y, z, w]` for every `w`. The
+other lemmas on `cross₃` follow from it. -/
 theorem dotProduct_cross₃ (x y z w : Fin 4 → K) :
     cross₃ x y z ⬝ᵥ w = Matrix.det (Matrix.of ![x, y, z, w]) := by
   rw [← piBasisFun_toDual_eq_dotProduct, cross₃, ← Module.Basis.toDualEquiv_apply,
@@ -121,21 +116,20 @@ theorem dotProduct_cross₃ (x y z w : Fin 4 → K) :
   change Matrix.det ((Matrix.of ![x, y, z, (0 : Fin 4 → K)]).updateRow 3 w) = _
   rw [cons_updateRow_three]
 
-/-- **Orthogonality, first slot** (Phase 39 W5-L1): `cross₃ x y z` is `⬝ᵥ`-orthogonal to `x`,
-since `det[x, y, z, x]` has two equal rows (`0` and `3`). -/
+/-- **`cross₃ x y z` is orthogonal to `x`**: `det[x, y, z, x]` has two equal rows. -/
 theorem cross₃_dotProduct_fst (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ x = 0 := by
   rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 0) (j := 3) (by decide) rfl
 
-/-- **Orthogonality, second slot** (Phase 39 W5-L1): the `y`-sibling of `cross₃_dotProduct_fst`. -/
+/-- **`cross₃ x y z` is orthogonal to `y`**, as `cross₃_dotProduct_fst`. -/
 theorem cross₃_dotProduct_snd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ y = 0 := by
   rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 1) (j := 3) (by decide) rfl
 
-/-- **Orthogonality, third slot** (Phase 39 W5-L1): the `z`-sibling of `cross₃_dotProduct_fst`. -/
+/-- **`cross₃ x y z` is orthogonal to `z`**, as `cross₃_dotProduct_fst`. -/
 theorem cross₃_dotProduct_thd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ z = 0 := by
   rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 2) (j := 3) (by decide) rfl
 
-/-- **Multilinearity, additivity in the first slot** (Phase 39 W5-L1), via `dotProduct_eq_iff`
-(the dot-product pairing is nondegenerate) reducing to `Matrix.det`'s row-additivity. -/
+/-- **`cross₃` is additive in its first argument**: by `dotProduct_eq_iff`, from the additivity of
+`Matrix.det` in a row. -/
 theorem cross₃_add_fst (x1 x2 y z : Fin 4 → K) :
     cross₃ (x1 + x2) y z = cross₃ x1 y z + cross₃ x2 y z := by
   rw [← dotProduct_eq_iff]; intro w
@@ -143,7 +137,7 @@ theorem cross₃_add_fst (x1 x2 y z : Fin 4 → K) :
     ← cons_updateRow_zero x1 y z w (x1 + x2), Matrix.det_updateRow_add,
     cons_updateRow_zero, cons_updateRow_zero]
 
-/-- **Multilinearity, homogeneity in the first slot** (Phase 39 W5-L1). -/
+/-- **`cross₃` is homogeneous in its first argument**: `cross₃ (c • x) y z = c • cross₃ x y z`. -/
 theorem cross₃_smul_fst (c : K) (x y z : Fin 4 → K) :
     cross₃ (c • x) y z = c • cross₃ x y z := by
   rw [← dotProduct_eq_iff]; intro w
@@ -151,7 +145,7 @@ theorem cross₃_smul_fst (c : K) (x y z : Fin 4 → K) :
     ← cons_updateRow_zero x y z w (c • x), Matrix.det_updateRow_smul,
     cons_updateRow_zero, smul_eq_mul]
 
-/-- **Multilinearity, additivity in the second slot** (Phase 39 W5-L1). -/
+/-- **`cross₃` is additive in its second argument**, as `cross₃_add_fst`. -/
 theorem cross₃_add_snd (x y1 y2 z : Fin 4 → K) :
     cross₃ x (y1 + y2) z = cross₃ x y1 z + cross₃ x y2 z := by
   rw [← dotProduct_eq_iff]; intro w
@@ -159,7 +153,7 @@ theorem cross₃_add_snd (x y1 y2 z : Fin 4 → K) :
     ← cons_updateRow_one x y1 z w (y1 + y2), Matrix.det_updateRow_add,
     cons_updateRow_one, cons_updateRow_one]
 
-/-- **Multilinearity, homogeneity in the second slot** (Phase 39 W5-L1). -/
+/-- **`cross₃` is homogeneous in its second argument**, as `cross₃_smul_fst`. -/
 theorem cross₃_smul_snd (c : K) (x y z : Fin 4 → K) :
     cross₃ x (c • y) z = c • cross₃ x y z := by
   rw [← dotProduct_eq_iff]; intro w
@@ -167,7 +161,7 @@ theorem cross₃_smul_snd (c : K) (x y z : Fin 4 → K) :
     ← cons_updateRow_one x y z w (c • y), Matrix.det_updateRow_smul,
     cons_updateRow_one, smul_eq_mul]
 
-/-- **Multilinearity, additivity in the third slot** (Phase 39 W5-L1). -/
+/-- **`cross₃` is additive in its third argument**, as `cross₃_add_fst`. -/
 theorem cross₃_add_thd (x y z1 z2 : Fin 4 → K) :
     cross₃ x y (z1 + z2) = cross₃ x y z1 + cross₃ x y z2 := by
   rw [← dotProduct_eq_iff]; intro w
@@ -175,7 +169,7 @@ theorem cross₃_add_thd (x y z1 z2 : Fin 4 → K) :
     ← cons_updateRow_two x y z1 w (z1 + z2), Matrix.det_updateRow_add,
     cons_updateRow_two, cons_updateRow_two]
 
-/-- **Multilinearity, homogeneity in the third slot** (Phase 39 W5-L1). -/
+/-- **`cross₃` is homogeneous in its third argument**, as `cross₃_smul_fst`. -/
 theorem cross₃_smul_thd (c : K) (x y z : Fin 4 → K) :
     cross₃ x y (c • z) = c • cross₃ x y z := by
   rw [← dotProduct_eq_iff]; intro w
@@ -183,9 +177,8 @@ theorem cross₃_smul_thd (c : K) (x y z : Fin 4 → K) :
     ← cons_updateRow_two x y z w (c • z), Matrix.det_updateRow_smul,
     cons_updateRow_two, smul_eq_mul]
 
-/-- **`cross₃` bundled as a linear map in its third slot** (Phase 39 W5-L1), the shape the
-perp-sweep lemma (`range_cross₃L_eq_perp`) and its D6 consumer (W5-L4, the re-seeding lemma) need:
-"the image of `cross₃ n₁ n₂ ·`" is naturally a `LinearMap.range`. -/
+/-- **`cross₃` as a linear map in its third argument**: `z ↦ cross₃ x y z`, whose range
+`range_cross₃L_eq_perp` gives. -/
 noncomputable def cross₃L (x y : Fin 4 → K) : (Fin 4 → K) →ₗ[K] (Fin 4 → K) where
   toFun z := cross₃ x y z
   map_add' := cross₃_add_thd x y
@@ -194,12 +187,12 @@ noncomputable def cross₃L (x y : Fin 4 → K) : (Fin 4 → K) →ₗ[K] (Fin 4
 @[simp]
 theorem cross₃L_apply (x y z : Fin 4 → K) : cross₃L x y z = cross₃ x y z := rfl
 
-/-- **Vanishing iff dependent** (Phase 39 W5-L1): `cross₃ x y z ≠ 0` exactly when `x, y, z` are
-linearly independent. The `(→)` direction extends the (dependent) triple by any `w` and reads off
-`det[x, y, z, w] = 0` for every `w` from `Matrix.linearIndependent_rows_iff_isUnit`; the `(←)`
-direction picks a `w` outside `span{x, y, z}` (which exists since `finrank(span) = 3 < 4`) so that
-`![x, y, z, w]` is independent (`linearIndependent_finSnoc`), giving `det[x, y, z, w] ≠ 0` and hence
-`cross₃ x y z ≠ 0`. -/
+/-- **`cross₃` is nonzero exactly when its arguments are independent**:
+`cross₃ x y z ≠ 0 ↔ LinearIndependent K ![x, y, z]`. If `x, y, z` are dependent, so are `x, y, z, w`
+for every `w` (`linearIndependent_finSnoc`), so `det[x, y, z, w] = 0`
+(`Matrix.linearIndependent_row_iff_isUnit`) and `cross₃ x y z = 0`. If they are independent, some
+`w` lies outside their span, of dimension `3 < 4`; then `x, y, z, w` are independent and
+`det[x, y, z, w] ≠ 0`. -/
 theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
     cross₃ x y z ≠ 0 ↔ LinearIndependent K ![x, y, z] := by
   constructor
@@ -239,14 +232,13 @@ theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
     apply hdet
     rw [← dotProduct_cross₃, hzero, zero_dotProduct]
 
-/-- **The perp-sweep lemma** (`range_cross₃L_eq_perp`; Phase 39 W5-L1, feeding the D6 re-seeding
-lemma W5-L4): for an independent pair `n₁, n₂`, the image of `cross₃ n₁ n₂ ·` is exactly the
-`2`-dimensional `⬝ᵥ`-perp of `{n₁, n₂}` — the same `perp` shape
-`mem_span_of_dotProduct_perp_pair` uses. Proof: the range is contained in the perp
-(orthogonality), the kernel of `cross₃L n₁ n₂` is `span{n₁, n₂}` (vanishing-iff-dependent plus
-`linearIndependent_finSnoc`, so `2`-dimensional), rank-nullity gives the range dimension `4 − 2 =
-2`, matching the perp's dimension (`finrank_toDualPerp_pair_eq`) — equal-dimension containment is
-equality (`Submodule.eq_of_le_of_finrank_eq`). -/
+/-- **The values of `cross₃ n₁ n₂` are the vectors orthogonal to `n₁` and `n₂`** (a step of
+`lem:pencil-generic-steer`): for independent `n₁, n₂`, the range of `cross₃L n₁ n₂` is the space of
+vectors orthogonal to both. The range lies in that space (`cross₃_dotProduct_fst`,
+`cross₃_dotProduct_snd`). The kernel of `cross₃L n₁ n₂` is the span of `n₁, n₂`
+(`cross₃_ne_zero_iff_linearIndependent`, `linearIndependent_finSnoc`), of dimension `2`, so the
+range has dimension `4 - 2 = 2`, that of the space (`finrank_toDualPerp_pair_eq`), and the two are
+equal (`Submodule.eq_of_le_of_finrank_eq`). -/
 theorem range_cross₃L_eq_perp (n₁ n₂ : Fin 4 → K) (hLI : LinearIndependent K ![n₁, n₂]) :
     LinearMap.range (cross₃L n₁ n₂) =
       (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂] j)) :
@@ -294,109 +286,70 @@ theorem range_cross₃L_eq_perp (n₁ n₂ : Fin 4 → K) (hLI : LinearIndepende
     finrank_toDualPerp_pair_eq hLI
   exact Submodule.eq_of_le_of_finrank_eq hle (by rw [hdim_range, hdim_perp])
 
-/-! ## W5-L2: the grade-0 pencil chart — seed data, point/normal constructions, well-formedness
-(Phase 39 PENCIL, W5 design pass)
+/-! ## The pencil chart
 
-The W5 design pass (`notes/Phase39-design.md` §"W5 design pass", verdict 2) pins the device: a
-**grade-0 molecular-side chart** whose seeds are per-body free vectors and whose constructed points
-and normals are built from them by `cross₃` alone, so every chart quantity is *polynomial* in the
-seeds — the property the rows-polynomial identity (W5-L3) needs to feed the landed genericity engine
-`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`.
+The parameters of the chart (`PencilSeed`) are, at each body `v`, a vector `hubNormal v`, the normal
+of `v` when it is a hub, and two triples of padding vectors, `fillHub v` and `fillNbr v`. The
+selectors `hubSel` and `nbrSel` list the closed hub-neighbourhood and the closed neighbourhood of a
+body in three slots: `some w` puts `w` in a slot, and `none` leaves the slot to padding
+(`IsFin3SelectorOf`). The two neighbourhoods are sets, so a selector fixes the order in which their
+members enter `cross₃`.
 
-**Seeds** (`PencilSeed`): a free *hub-normal* vector per body (read as `normal v` at a pencil hub)
-and two independent triples of free *fill* vectors per body (`fillHub`/`fillNbr`, split 2026-07-24
-— see the structure's own docstring), padding `cross₃`'s three inputs at any slot a selector
-leaves unused.
+The point of `v` (`pencilChartPoint`) is the `cross₃` of the three vectors `hubSlotNormal`: the
+`hubNormal` of each body that `hubSel v` lists, and `fillHub v` at the empty slots. The normal of
+`v` (`pencilChartNormal`) is `hubNormal v` if `v` is a hub, and otherwise the `cross₃` of the three
+vectors `nbrSlotPoint`: the point of each body that `nbrSel v` lists, and `fillNbr v` at the empty
+slots. For fixed selectors, the coordinates of each are polynomials in the parameters.
 
-**The selectors** (`hubSel`, `nbrSel`): `closedHubNbhd`/`closedNbhd` are `Set`s, not functions, so
-turning "the (≤ 3) members of a body's closed hub-neighbourhood or closed neighbourhood" into three
-explicit `cross₃` arguments needs an explicit selector — the pencil analogue of the panel
-framework's endpoint selector `ends : β → α × α` (`PanelHinge.lean`, consumed throughout
-`Theorem55.lean` and `CaseIII`): a function into `Fin 3 → Option α` (`some w` records slot `i`
-reads off member `w`, `none` marks an unused, fill-padded slot), correct exactly when it is a
-bijection between its "some"-slots and the target set (`IsFin3SelectorOf`).
+`PencilChartWF` asks that the selectors list their sets, that the three vectors of each `cross₃` be
+independent, and that the points of the two ends of every link be independent. When the selectors
+list their sets, at any parameters, the point of `v` is orthogonal to the `hubNormal` of every body
+of its closed hub-neighbourhood, and the normal of a body that is not a hub to the point of every
+body of its closed neighbourhood (`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`,
+`dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd`), by the orthogonality of
+`cross₃`. These are the incidences of a pencil realization. -/
 
-**The constructions** (`pencilChartPoint`, `pencilChartNormal`): `v`'s point is `cross₃` of the (up
-to three) closed-hub-neighbourhood normals selected by `hubSel v`, padded by `fillHub`; `v`'s normal
-is its own seed hub-normal when `v` is a hub, and otherwise (`v` has degree `≤ 2`, automatically a
-pencil body — the pin only bites at hubs) the `cross₃` of the (up to three) closed-neighbourhood
-*points* selected by `nbrSel v`, padded by `fillNbr` (independent of `fillHub` — the `PencilSeed`
-docstring records the shared-fill conflict this avoids). Both are literally `cross₃`-compositions of
-fixed-selected seed components, hence polynomial in the seeds for any fixed pair of selectors.
-
-**Chart well-formedness** (`PencilChartWF`) bundles the hypotheses the constructions and the
-eventual nondegenerate-stratum membership need: both selectors are correct, both crossed triples are
-linearly independent at every body (giving nonzero points / well-defined non-hub normals via
-`cross₃_ne_zero_iff_linearIndependent`), and adjacent constructed points are projectively distinct
-along every link.
-
-**By construction** (`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`,
-`dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd`): every body's constructed point
-is automatically orthogonal to its own constructed normal (the own-panel incidence
-`point v ⬝ᵥ normal v = 0`) and, at a hub, to every hub-neighbour's normal (the cross-incidence a
-pencil link needs) — purely from selector correctness and `cross₃`'s orthogonality, no genericity
-assumed. **Deferred** (per the scope-to-fit hand-off, `notes/Phase39.md`): `pencilChartFramework`
-(bundling the chart into a `BodyHingeFramework`/`PanelHingeFramework`) and the full
-`IsNondegPencilRealization` derivation — the latter additionally needs identifying the framework's
-*specific* supporting extensor `panelSupportExtensor (normal u) (normal v)` with the point-join
-`extensor ![point u, point v]` up to the Plücker-proportionality scalar (W2's
-`exists_extensor_two_pencils` shows *some* such extensor exists, not that this one is it), and the
-closed-hub-neighbourhood normal-LI conjunct's derivation from `PencilChartWF`'s 3-slot condition via
-the selector's injectivity. -/
-
-/-- **Seed data for the grade-0 pencil chart** (Phase 39 W5-L2, verdict 2; **split into two
-independent fill fields 2026-07-24, the W5-L4 re-seeding assembly's shared-fill finding**,
-`notes/Phase39-design.md` §"W5 leaf decomposition" L4): a free hub-normal vector per body (read as
-`normal v` at pencil hubs) and **two independent** triples of free fill vectors per body, padding
-`cross₃`'s three inputs at any slot the *respective* selector leaves unassigned. Attempting the
-re-seeding assembly (`exists_pencilSeed_of_nondeg`) surfaced that a single shared `fill` field
-cannot serve both the hub-selector's `cross₃` call (feeding `pencilChartPoint`) and the
-neighbour-selector's `cross₃` call (feeding `pencilChartNormal`'s non-hub branch): both read the
-*same* `Fin 3` index at a body `v` left unassigned by their own selector, and at a non-hub `v` with
-no hub-neighbours (`closedHubNbhd v = ∅`, forcing all `3` hub-slots to fill) together with a
-`≤ 2`-member `closedNbhd v`, the two constructions' fill needs at the shared index space
-demonstrably clash (the fill vector solving the point-reproduction generically does not also solve
-the normal-reproduction). Splitting the field removes the coupling entirely, independent of the
-field `K`. -/
+/-- **The parameters of the pencil chart** (a step of `lem:pencil-generic-steer`): at each body, a
+vector `hubNormal`, the normal of a hub, and two triples of padding vectors, `fillHub` for the slots
+the hub selector leaves empty and `fillNbr` for those the neighbour selector leaves empty. The
+parametrization of `lem:pencil-generic-steer`'s proof pads only the point. Here the normal of a body
+that is not a hub is the `cross₃` of the points of its closed neighbourhood, padded by its own
+triple, so that the two paddings can be chosen independently. -/
 structure PencilSeed (K : Type*) [Field K] (α : Type*) where
-  /-- The free hub star-plane normal at each body, consumed at pencil hubs. -/
+  /-- At each body, its normal when it is a hub (`pencilChartNormal`). -/
   hubNormal : α → Fin 4 → K
-  /-- The free per-slot fill vector at each body padding the hub-selector's `cross₃` call
-  (`hubSlotNormal`, feeding `pencilChartPoint`), consumed wherever `hubSel` leaves a slot
-  unassigned. -/
+  /-- At each body `v`, the vectors at the slots that `hubSel v` leaves empty (`hubSlotNormal`), in
+  the `cross₃` of `pencilChartPoint`. -/
   fillHub : α → Fin 3 → Fin 4 → K
-  /-- The free per-slot fill vector at each body padding the neighbour-selector's `cross₃` call
-  (`nbrSlotPoint`, feeding `pencilChartNormal`'s non-hub branch), consumed wherever `nbrSel` leaves
-  a slot unassigned — **independent of `fillHub`**, see the structure's docstring. -/
+  /-- At each body `v`, the vectors at the slots that `nbrSel v` leaves empty (`nbrSlotPoint`), in
+  the `cross₃` of `pencilChartNormal` at a body that is not a hub. -/
   fillNbr : α → Fin 3 → Fin 4 → K
 
-/-- **A `Fin 3`-selector for a set `s`** (Phase 39 W5-L2): an explicit assignment of (up to) three
-slots to distinct members of `s` — `sel i = some w` records `w ∈ s` at slot `i`, `sel i = none`
-marks a padding slot — covering all of `s`. The pencil analogue of the panel framework's endpoint
-selector `ends : β → α × α` (`PanelHinge.lean`): `s` is a `Set`, not a function, and the chart's
-`cross₃` calls need three explicit inputs. -/
+/-- **A selector of a set in three slots** (a step of `lem:pencil-generic-steer`): `sel i = some w`
+puts `w` in slot `i`, and `sel i = none` leaves the slot empty. `IsFin3SelectorOf s sel` says that
+every member of a slot lies in `s`, that every member of `s` is in a slot, and that no member is in
+two slots; so `s` has at most three members. -/
 def IsFin3SelectorOf (s : Set α) (sel : Fin 3 → Option α) : Prop :=
   (∀ i w, sel i = some w → w ∈ s) ∧ (∀ w ∈ s, ∃ i, sel i = some w) ∧
     (∀ i j w, sel i = some w → sel j = some w → i = j)
 
-/-- Slot `i` of `v`'s hub-selector, read as a normal vector: the seed's hub-normal at the selected
-hub, or the seed's `fillHub` vector when the slot is unused. -/
+/-- Slot `i` of `v`'s hub selector as a vector (a step of `lem:pencil-generic-steer`): the
+`hubNormal` of the body in it, or `fillHub v i` if it is empty. -/
 def hubSlotNormal (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α) (v : α) (i : Fin 3) :
     Fin 4 → K :=
   match hubSel v i with
   | some w => seed.hubNormal w
   | none => seed.fillHub v i
 
-/-- **The chart's constructed concurrency point** (`pencilChartPoint`; Phase 39 W5-L2, verdict 2):
-`v`'s point is the `cross₃` of the (up to three) closed-hub-neighbourhood normals selected by
-`hubSel v`, padded by the seed's `fillHub` vectors at unused slots. -/
+/-- **The point of the chart** (the point of `lem:pencil-generic-steer`'s parametrization): the
+`cross₃` of the three slots of `v`'s hub selector (`hubSlotNormal`). -/
 noncomputable def pencilChartPoint (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α)
     (v : α) : Fin 4 → K :=
   cross₃ (hubSlotNormal seed hubSel v 0) (hubSlotNormal seed hubSel v 1)
     (hubSlotNormal seed hubSel v 2)
 
-/-- Slot `i` of `v`'s neighbour-selector, read as a point vector: the chart's constructed point at
-the selected neighbour, or the seed's `fillNbr` vector when the slot is unused. -/
+/-- Slot `i` of `v`'s neighbour selector as a vector (a step of `lem:pencil-generic-steer`): the
+point of the body in it (`pencilChartPoint`), or `fillNbr v i` if it is empty. -/
 noncomputable def nbrSlotPoint (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α)
     (v : α) (i : Fin 3) : Fin 4 → K :=
   match nbrSel v i with
@@ -404,11 +357,9 @@ noncomputable def nbrSlotPoint (seed : PencilSeed K α) (hubSel nbrSel : α → 
   | none => seed.fillNbr v i
 
 open Classical in
-/-- **The chart's constructed normal** (`pencilChartNormal`; Phase 39 W5-L2, verdict 2): at a
-pencil hub `v`, the seed's own free hub-normal; otherwise (`v` has degree `≤ 2`, automatically a
-pencil body — the pin only bites at hubs) the `cross₃` of the (up to three) closed-neighbourhood
-points — `v`'s own point together with its (`≤ 2`) neighbours' points — selected by `nbrSel v`,
-padded by the seed's `fillNbr` vectors. -/
+/-- **The normal of the chart** (the normal of `lem:pencil-generic-steer`'s parametrization):
+`hubNormal v` at a pencil hub `v`, and at any other body the `cross₃` of the three slots of `v`'s
+neighbour selector (`nbrSlotPoint`). -/
 noncomputable def pencilChartNormal (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α)
     (G : Graph α β) (v : α) : Fin 4 → K :=
   if G.PencilHub v then seed.hubNormal v
@@ -427,41 +378,18 @@ theorem pencilChartNormal_of_not_pencilHub (seed : PencilSeed K α)
         (nbrSlotPoint seed hubSel nbrSel v 2) :=
   ite_eq_right hv
 
-/-- **Chart well-formedness** (`PencilChartWF`; Phase 39 W5-L2, verdict 2, **corrected 2026-07-24
-per the W5-L4 re-seeding lemma's assembly, twice**): the pencil analogue of
-`PanelHingeFramework.IsGeneralPosition` — the hypotheses the chart's constructions and the eventual
-nondegenerate-stratum membership need. The hub selector is correct against its target set at every
-body; the neighbour selector is correct against its target set **at every non-hub body** — the
-`nbrSel`/`closedNbhd` conjunct is relativized to `¬ G.PencilHub v`, since `pencilChartNormal` only
-ever *reads* `nbrSel v` there (the hub branch reads `seed.hubNormal v` directly) — the hub-slot
-triple is linearly independent at every body (giving nonzero points via
-`cross₃_ne_zero_iff_linearIndependent`), the neighbour-slot triple is linearly independent **at
-every non-hub body** (giving well-defined non-hub normals; at a hub, no constraint on the
-`nbrSlotPoint` triple applies at all — neither selector correctness nor independence, since the
-only consumer reads it exclusively in the non-hub branch), and adjacent constructed points are
-projectively distinct along every link (the `IsNondegPencilRealization` conjunct no construction
-can supply automatically).
+/-- **Well-formed parameters of the chart** (a step of `lem:pencil-generic-steer`): the hub selector
+lists the closed hub-neighbourhood of every body; the neighbour selector lists the closed
+neighbourhood of every body that is not a hub; the three slots of the hub selector are linearly
+independent at every body, and those of the neighbour selector at every body that is not a hub, so
+that the points and those normals are nonzero (`cross₃_ne_zero_iff_linearIndependent`); and the
+points of the two ends of every link are linearly independent, the condition of
+`IsNondegPencilRealization` on links.
 
-**First correction, discovered assembling `exists_pencilSeed_of_nondeg` (W5-L4):** the original
-unconditional `∀ v, IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)` is unsatisfiable on any graph with
-a body of `≥ 4` distinct closed neighbours — e.g. every vertex of `K4` (three genuinely distinct
-simple neighbours, `closedNbhd` size `4`), a graph the design doc's own numerics (N4–N6) exercise —
-since `IsFin3SelectorOf`'s surjectivity conjunct needs the target set to have `≤ 3` members, and
-nothing bounds `closedNbhd v` at a high-degree hub. The relativized form matches every existing
-consumer exactly: `hNbrSel` is applied only inside a `¬ G.PencilHub` branch throughout the file
-(the hub branch never reads it), so this is a same-shape strengthening of the *hypothesis* each
-consumer already had available, not a weakening of any conclusion.
-
-**Second correction, per the W5-L4 blocker recon** (`notes/Phase39-design.md` §"W5 leaf
-decomposition" L4 "Blocker verdict"): the fourth conjunct (the `nbrSlotPoint` triple LI) is
-likewise relativized to `¬ G.PencilHub v`, mirroring the first correction exactly — its sole
-consumer (`hasCoplanarPanelRealization_pencilChartFramework`, via
-`pencilChartNormal_ne_zero_of_not_pencilHub`) reads it only inside the non-hub branch, so this is
-again a same-shape hypothesis strengthening, not a weakening. This unblocks the re-seeding
-assembly's piece 3: `IsNondegPencilRealization`'s newly
-added non-hub `closedNbhd`-point-LI conjunct now feeds this relativized WF conjunct directly at a
-non-hub body, instead of demanding the strictly stronger unconditional (including at hubs) form no
-realization-side fact could supply. -/
+The conditions on the neighbour selector are asked only where `pencilChartNormal` reads it, at a
+body that is not a hub. A selector lists at most three members, and the closed neighbourhood of a
+hub can have more (four at every body of `K₄`), while that of a body that is not a hub has at most
+three. -/
 def PencilChartWF (G : Graph α β) (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α) :
     Prop :=
   (∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) ∧
@@ -475,8 +403,8 @@ def PencilChartWF (G : Graph α β) (seed : PencilSeed K α) (hubSel nbrSel : α
   (∀ e u v, G.IsLink e u v →
     LinearIndependent K ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v])
 
-/-- **The chart's constructed point is nonzero** (Phase 39 W5-L2): immediate from the 3-slot
-independence `PencilChartWF` supplies, via `cross₃_ne_zero_iff_linearIndependent`. -/
+/-- **The point of the chart is nonzero** (a step of `lem:pencil-generic-steer`) when the three
+slots of its hub selector are independent (`cross₃_ne_zero_iff_linearIndependent`). -/
 theorem pencilChartPoint_ne_zero (seed : PencilSeed K α) {hubSel : α → Fin 3 → Option α} {v : α}
     (hLI : LinearIndependent K
       ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
@@ -485,8 +413,9 @@ theorem pencilChartPoint_ne_zero (seed : PencilSeed K α) {hubSel : α → Fin 3
   rw [pencilChartPoint]
   exact (cross₃_ne_zero_iff_linearIndependent _ _ _).mpr hLI
 
-/-- **The chart's constructed non-hub normal is nonzero** (Phase 39 W5-L2): immediate from the
-3-slot independence `PencilChartWF` supplies, via `cross₃_ne_zero_iff_linearIndependent`. -/
+/-- **The normal of the chart at a body that is not a hub is nonzero** (a step of
+`lem:pencil-generic-steer`) when the three slots of its neighbour selector are independent
+(`cross₃_ne_zero_iff_linearIndependent`). -/
 theorem pencilChartNormal_ne_zero_of_not_pencilHub (seed : PencilSeed K α)
     {hubSel nbrSel : α → Fin 3 → Option α} {G : Graph α β} {v : α} (hv : ¬ G.PencilHub v)
     (hLI : LinearIndependent K
@@ -496,10 +425,9 @@ theorem pencilChartNormal_ne_zero_of_not_pencilHub (seed : PencilSeed K α)
   rw [pencilChartNormal_of_not_pencilHub seed hubSel nbrSel hv]
   exact (cross₃_ne_zero_iff_linearIndependent _ _ _).mpr hLI
 
-/-- **`cross₃` of a `Fin 3`-indexed family is orthogonal to every member of the family**
-(Phase 39 W5-L2, technical infra for the chart's incidence theorems): for `f : Fin 3 → Fin 4 → K`,
-`cross₃ (f 0) (f 1) (f 2) ⬝ᵥ f i = 0` for every `i`. A case-split on `i`, dispatching to the
-appropriate `cross₃` orthogonality lemma (`cross₃_dotProduct_fst/snd/thd`). -/
+/-- **`cross₃` of a family `f : Fin 3 → Fin 4 → K` is orthogonal to each `f i`** (a step of
+`lem:pencil-generic-steer`): `cross₃_dotProduct_fst`, `cross₃_dotProduct_snd` or
+`cross₃_dotProduct_thd`, as `i` is `0`, `1` or `2`. -/
 theorem cross₃_dotProduct_apply_self (f : Fin 3 → Fin 4 → K) (i : Fin 3) :
     cross₃ (f 0) (f 1) (f 2) ⬝ᵥ f i = 0 := by
   fin_cases i
@@ -507,13 +435,12 @@ theorem cross₃_dotProduct_apply_self (f : Fin 3 → Fin 4 → K) (i : Fin 3) :
   · exact cross₃_dotProduct_snd _ _ _
   · exact cross₃_dotProduct_thd _ _ _
 
-/-- **By construction, the chart's point is orthogonal to every selected hub's normal**
-(Phase 39 W5-L2): for any `w` in `v`'s closed hub-neighbourhood, `pencilChartPoint`'s dot product
-with `w`'s seed hub-normal vanishes. Taking `w = v` (when `v` is itself a hub) gives the own-panel
-incidence `point v ⬝ᵥ normal v = 0`; taking a hub-neighbour `w` gives the cross-incidence a pencil
-link needs. Immediate from the selector's surjectivity onto `closedHubNbhd v` placing `w` at some
-slot, and `cross₃`'s orthogonality at that slot (`cross₃_dotProduct_apply_self`) — no genericity
-assumed, only selector correctness. -/
+/-- **The point of the chart is orthogonal to the hub normals of its closed hub-neighbourhood** (a
+step of `lem:pencil-generic-steer`): if `hubSel v` lists `G.closedHubNbhd v`, then
+`pencilChartPoint seed hubSel v ⬝ᵥ seed.hubNormal w = 0` for every `w` in it. At `w = v`, a hub,
+this is `point v ⬝ᵥ normal v = 0`; at a neighbour `w` it is a cross-incidence. The selector puts `w`
+in some slot, and `cross₃` is orthogonal to that slot (`cross₃_dotProduct_apply_self`), at any
+parameters. -/
 theorem dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd {G : Graph α β} {v w : α}
     (seed : PencilSeed K α) {hubSel : α → Fin 3 → Option α}
     (hSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) (hw : w ∈ G.closedHubNbhd v) :
@@ -524,16 +451,12 @@ theorem dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd {G : Graph α
   rw [pencilChartPoint, ← hslot]
   exact cross₃_dotProduct_apply_self (hubSlotNormal seed hubSel v) i
 
-/-- **By construction, the chart's non-hub normal is orthogonal to every selected closed-neighbour's
-point** (Phase 39 W5-L2): for a non-hub `v` and any `w` in `v`'s closed neighbourhood,
-`pencilChartPoint`'s value at `w` is orthogonal to `pencilChartNormal`'s value at `v`. Taking
-`w = v` gives the own-panel incidence `point v ⬝ᵥ normal v = 0` for non-hub bodies (the sibling of
-`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`'s hub case); taking a genuine neighbour
-gives the coplanarity every degree-`≤ 2` body needs (its hinges are automatically concurrent,
-`exists_concurrency_point_of_extensorInPanel_pair` — the pencil pin only bites at hubs).
-Immediate from the selector's surjectivity onto `closedNbhd v` and `cross₃`'s orthogonality
-(via `dotProduct_comm`, since here the selected point is `cross₃`'s *first* argument rather than
-its output). -/
+/-- **The normal of the chart at a body that is not a hub is orthogonal to the points of its closed
+neighbourhood** (a step of `lem:pencil-generic-steer`): if `v` is not a hub and `nbrSel v` lists
+`G.closedNbhd v`, then the point of every `w` in it is orthogonal to the normal of `v`. At `w = v`
+this is `point v ⬝ᵥ normal v = 0`; at a neighbour `w` it is a cross-incidence. The selector puts `w`
+in some slot, and `cross₃` is orthogonal to that slot (`cross₃_dotProduct_apply_self`, after
+`dotProduct_comm`). -/
 theorem dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd {G : Graph α β} {v w : α}
     (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α} (hv : ¬ G.PencilHub v)
     (hSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) (hw : w ∈ G.closedNbhd v) :
@@ -545,34 +468,19 @@ theorem dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd {G : Gra
   rw [← hslot]
   exact cross₃_dotProduct_apply_self (nbrSlotPoint seed hubSel nbrSel v) i
 
-/-! ## W5-L2 remainder: the framework and by-construction stratum membership (Phase 39 PENCIL,
-W5 design pass)
+/-! ## Independence and incidence at every body
 
-Completes W5-L2: `pencilChartFramework` (hinges = the point-join extensors `extensor ![point u,
-point v]`, exactly verdict 2's device — **not** the panel meet `panelSupportExtensor`, so no
-Plücker-proportionality bridge is needed after all: the framework's supporting extensor literally
-*is* the point-join, and the two `ExtensorInPanel`/`ExtensorThroughPoint` conjuncts read off the
-same `p := ![point u, point v]` witness the own-panel/cross-incidence theorems already supply) and
-the headline by-construction membership theorem
-`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`: at a `PencilChartWF` seed, the
-chart data satisfies `IsNondegPencilRealization`.
+When a selector lists its set, the map that sends each member to a slot holding it is injective, so
+the independence of the three slots passes to the members: the normals of the chart are independent
+on every closed hub-neighbourhood (`linearIndepOn_pencilChartNormal_closedHubNbhd`), and its points
+on every closed neighbourhood (`linearIndepOn_pencilChartPoint_closedNbhd`), as
+`IsNondegPencilRealization` asks. The point of every body is orthogonal to its own normal and to the
+normal of each neighbour (`dotProduct_pencilChartPoint_pencilChartNormal_self`,
+`dotProduct_pencilChartPoint_pencilChartNormal_of_isLink`). -/
 
-The one genuinely new piece is the **selector-injectivity LI transfer**
-(`linearIndepOn_pencilChartNormal_closedHubNbhd`): `IsNondegPencilRealization`'s closed-hub-
-neighbourhood normal-LI conjunct needs the *sub-family* of `PencilChartWF`'s `3`-slot independence
-at the slots the selector actually assigns to `closedHubNbhd v`, via `LinearIndependent.comp` along
-the (injective, from the selector's surjectivity alone — no need for its own injectivity conjunct)
-map sending each member to its witnessing slot. Its `nbrSlotPoint`/`closedNbhd`/`nbrSel` mirror
-(`linearIndepOn_pencilChartPoint_closedNbhd`; Phase 39 W5-L4 restatement, `notes/Phase39-design.md`
-§"W5 leaf decomposition" L4 "Blocker verdict") feeds the fourth conjunct the same restatement adds
-to `IsNondegPencilRealization` — same witnessing-slot-injectivity proof shape, one step shorter
-since `nbrSlotPoint`'s "some" branch reads off `pencilChartPoint` directly, with no hub-branch `if`
-to unfold. -/
-
-/-- **The `3`-slot literal triple and the `Fin 3`-indexed family carry the same `LinearIndependent`
-content** (Phase 39 W5-L2 remainder, technical glue): `![f 0, f 1, f 2] = f` for any
-`f : Fin 3 → Fin 4 → K` (`funext`/`fin_cases`). Feeds both the hub-normal-nonzero corollary and the
-selector-injectivity LI transfer. -/
+/-- **The three slots of the hub selector as a triple** (a step of `lem:pencil-generic-steer`): the
+triple `![f 0, f 1, f 2]` for `f = hubSlotNormal seed hubSel v` is `f`, so the two are independent
+together. -/
 theorem linearIndependent_hubSlotNormal_iff (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α)
     (v : α) :
     LinearIndependent K
@@ -583,11 +491,10 @@ theorem linearIndependent_hubSlotNormal_iff (seed : PencilSeed K α) (hubSel : �
       hubSlotNormal seed hubSel v 2] : Fin 3 → Fin 4 → K) = hubSlotNormal seed hubSel v from by
     funext j; fin_cases j <;> rfl]
 
-/-- **A pencil hub's own seed normal is nonzero** (Phase 39 W5-L2 remainder): under
-`PencilChartWF`'s `3`-slot independence at `v`, `seed.hubNormal v ≠ 0` — the hub always occupies
-some slot of its own selector (`v ∈ closedHubNbhd v`), and an independent family's members are
-individually nonzero (`LinearIndependent.ne_zero`). Feeds the `HasCoplanarPanelRealization`
-nonzero-normal conjunct at hub bodies. -/
+/-- **The normal of the chart at a hub is nonzero** (a step of `lem:pencil-generic-steer`): if
+`hubSel v` lists `G.closedHubNbhd v` and its three slots are independent, then
+`seed.hubNormal v ≠ 0` at a hub `v`. The hub `v` lies in its own closed hub-neighbourhood, so in
+some slot, and the members of an independent family are nonzero (`LinearIndependent.ne_zero`). -/
 theorem hubNormal_ne_zero_of_pencilHub {G : Graph α β} {v : α}
     (seed : PencilSeed K α) {hubSel : α → Fin 3 → Option α}
     (hSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
@@ -601,15 +508,13 @@ theorem hubNormal_ne_zero_of_pencilHub {G : Graph α β} {v : α}
   rw [← hslot]
   exact ((linearIndependent_hubSlotNormal_iff seed hubSel v).mp hLI).ne_zero i
 
-/-- **The selector-injectivity LI transfer** (`lem:pencil-nondegenerate` companion; Phase 39 W5-L2
-remainder, the piece `notes/Phase39.md` flagged as outstanding): under `PencilChartWF`'s `3`-slot
-independence at `v`, the chart's normal assignment is `LinearIndepOn` its closed hub-neighbourhood —
-`IsNondegPencilRealization`'s third conjunct. The witnessing-slot map `w ↦ (choice of i with
-hubSel v i = some w)` (from the selector's surjectivity alone) is injective — two members sharing a
-slot would force `hubSel v i` to equal `some w₁` and `some w₂` simultaneously — so the `3`-slot
-family's independence transfers along it (`LinearIndependent.comp`), and every `w` in the
-neighbourhood reads off exactly its own hub-normal (`pencilChartNormal_of_pencilHub`, since every
-member of `closedHubNbhd v` is itself a hub). -/
+/-- **The normals of the chart are independent on a closed hub-neighbourhood** (a step of
+`lem:pencil-generic-steer`; a condition of `def:pencil-nondegenerate`): if `hubSel v` lists
+`G.closedHubNbhd v` and its three slots are independent, then `pencilChartNormal` is linearly
+independent on `G.closedHubNbhd v`. Sending each member `w` to a slot that holds it (the selector's
+second condition) is injective, as a slot holds one member, so the independence of the slots passes
+to the members (`LinearIndependent.comp`); and each member is a hub, so its normal is its
+`hubNormal` (`pencilChartNormal_of_pencilHub`). -/
 theorem linearIndepOn_pencilChartNormal_closedHubNbhd {G : Graph α β} {v : α}
     (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
@@ -636,10 +541,9 @@ theorem linearIndepOn_pencilChartNormal_closedHubNbhd {G : Graph α β} {v : α}
       pencilChartNormal_of_pencilHub seed hubSel nbrSel hw_hub]
   rwa [heq2] at hcomp
 
-/-- **The `3`-slot literal triple and the `Fin 3`-indexed family carry the same `LinearIndependent`
-content, `nbrSlotPoint` form** (Phase 39 W5-L4 restatement, the `nbrSlotPoint` mirror of
-`linearIndependent_hubSlotNormal_iff`): `![f 0, f 1, f 2] = f` for `f = nbrSlotPoint seed hubSel
-nbrSel v`. Feeds the selector-injectivity LI transfer mirror below. -/
+/-- **The three slots of the neighbour selector as a triple** (a step of
+`lem:pencil-generic-steer`): the triple `![f 0, f 1, f 2]` for
+`f = nbrSlotPoint seed hubSel nbrSel v` is `f`, so the two are independent together. -/
 theorem linearIndependent_nbrSlotPoint_iff (seed : PencilSeed K α)
     (hubSel nbrSel : α → Fin 3 → Option α) (v : α) :
     LinearIndependent K
@@ -650,17 +554,12 @@ theorem linearIndependent_nbrSlotPoint_iff (seed : PencilSeed K α)
       nbrSlotPoint seed hubSel nbrSel v 2] : Fin 3 → Fin 4 → K)
       = nbrSlotPoint seed hubSel nbrSel v from by funext j; fin_cases j <;> rfl]
 
-/-- **The selector-injectivity LI transfer, `nbrSlotPoint`/`closedNbhd` mirror**
-(`linearIndepOn_pencilChartPoint_closedNbhd`; Phase 39 W5-L4 restatement,
-`notes/Phase39-design.md` §"W5 leaf decomposition" L4 "Blocker verdict"): at a non-hub body `v` with
-its neighbour-selector's `3`-slot independence, the chart's point assignment is `LinearIndepOn` its
-closed neighbourhood — the new fourth conjunct the restatement adds to `IsNondegPencilRealization`.
-Same proof shape as `linearIndepOn_pencilChartNormal_closedHubNbhd`: the witnessing-slot map
-`w ↦ (choice of i with nbrSel v i = some w)` (from the selector's surjectivity alone) is injective,
-so the `3`-slot family's independence transfers along it (`LinearIndependent.comp`); every `w` in
-the neighbourhood then reads off exactly its own chart point, directly from `nbrSlotPoint`'s "some"
-branch — one step shorter than the hub-normal mirror, since there is no hub-status case to
-unfold. -/
+/-- **The points of the chart are independent on a closed neighbourhood** (a step of
+`lem:pencil-generic-steer`; a condition of `def:pencil-nondegenerate`): if `nbrSel v` lists
+`G.closedNbhd v` and its three slots are independent, then `pencilChartPoint` is linearly
+independent on `G.closedNbhd v`. The proof is that of
+`linearIndepOn_pencilChartNormal_closedHubNbhd`, where the slot that holds `w` is the point of `w`
+(`nbrSlotPoint`). -/
 theorem linearIndepOn_pencilChartPoint_closedNbhd {G : Graph α β} {v : α}
     (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
@@ -685,12 +584,10 @@ theorem linearIndepOn_pencilChartPoint_closedNbhd {G : Graph α β} {v : α}
     simp only [Function.comp_apply, nbrSlotPoint, hFspec w]
   rwa [heq2] at hcomp
 
-/-- **Own-panel incidence, unified form** (Phase 39 W5-L2 remainder): `point v ⬝ᵥ normal v = 0` at
-every body `v`, hub or not — the `w = v` case of the two own-panel/cross-incidence theorems
-(`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`,
-`dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd`), dispatched on `v`'s hub
-status. Feeds both the `HasPencilPanelRealization` incidence conjunct and the framework's
-`ExtensorInPanel` assembly. -/
+/-- **The point of a body is orthogonal to its normal** (a step of `lem:pencil-generic-steer`):
+`point v ⬝ᵥ normal v = 0` at every body `v`, hub or not, when its selectors list their sets. It is
+the case `w = v` of `dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd` at a hub, and of
+`dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd` elsewhere. -/
 theorem dotProduct_pencilChartPoint_pencilChartNormal_self
     {G : Graph α β} {v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
@@ -702,11 +599,11 @@ theorem dotProduct_pencilChartPoint_pencilChartNormal_self
   · exact dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd seed hv (hNbrSel hv)
       (Or.inl rfl)
 
-/-- **Cross incidence, unified form** (Phase 39 W5-L2 remainder): for a link `e : u–v`,
-`point v ⬝ᵥ normal u = 0` — the linked-neighbour case of the two own-panel/cross-incidence
-theorems, dispatched on `u`'s hub status: if `u` is a hub, `v ∈ closedHubNbhd u` (`u`'s own link,
-symmetrized); if not, `v ∈ closedNbhd u` directly. The companion fact `point u ⬝ᵥ normal v = 0` is
-this theorem applied to `hlink.symm`. -/
+/-- **The point of a body is orthogonal to the normal of each neighbour** (a step of
+`lem:pencil-generic-steer`): for a link `e` from `u` to `v`, `point v ⬝ᵥ normal u = 0` when the
+selectors list their sets. If `u` is a hub, it lies in the closed hub-neighbourhood of `v`, whose
+point is orthogonal to `hubNormal u`; otherwise `v` lies in the closed neighbourhood of `u`, whose
+normal is orthogonal to `point v`. At the reversed link it gives `point u ⬝ᵥ normal v = 0`. -/
 theorem dotProduct_pencilChartPoint_pencilChartNormal_of_isLink
     {G : Graph α β} {e : β} {u v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : ∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w))
@@ -720,16 +617,14 @@ theorem dotProduct_pencilChartPoint_pencilChartNormal_of_isLink
   · exact dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd seed hu (hNbrSel u hu)
       (Or.inr ⟨e, hlink⟩)
 
-/-! ## The pencil chart framework: hinges as point-join extensors (Phase 39 W5-L2 remainder) -/
+/-! ## The framework of the chart -/
 
 open Classical in
-/-- **The pencil chart framework** (`pencilChartFramework`; Phase 39 W5-L2 remainder, verdict 2's
-device): the `BodyHingeFramework` whose supporting extensor at a genuine edge `e ∈ E(G)` is the
-point-join `extensor ![point (endsOf e).1, point (endsOf e).2]` — verdict 2's own choice of hinge,
-via the canonical endpoint selector `Graph.endsOf` (`Induction/Operations.lean`, the `ends`/`hends`
-idiom already in tree). Edges off `E(G)` (needed for the total-over-`β` nonzero conjunct of
-`HasCoplanarPanelRealization`) get a fixed graph-independent nonzero fallback, the join of two
-standard basis vectors. -/
+/-- **The framework of the chart** (the framework of `lem:pencil-generic-steer`'s parametrization):
+at an edge `e ∈ E(G)`, whose ends `Graph.endsOf` gives (`Induction/Operations.lean`), the hinge is
+the join `extensor ![point (G.endsOf e).1, point (G.endsOf e).2]` of their points
+(`pencilChartPoint`). Every other label gets the join of two standard basis vectors, a fixed nonzero
+extensor, as every supporting extensor of a hinge-coplanar realization must be nonzero. -/
 noncomputable def pencilChartFramework [Inhabited α] (seed : PencilSeed K α)
     (hubSel : α → Fin 3 → Option α) (G : Graph α β) : BodyHingeFramework K 2 α β where
   graph := G
@@ -746,8 +641,8 @@ theorem pencilChartFramework_graph [Inhabited α] (seed : PencilSeed K α)
     (hubSel : α → Fin 3 → Option α) (G : Graph α β) :
     (pencilChartFramework seed hubSel G).graph = G := rfl
 
-/-- **The pencil chart framework's supporting extensor at a genuine edge** (Phase 39 W5-L2
-remainder): unfolds the `dite` at `e ∈ E(G)`. -/
+/-- **The hinge of the chart framework at an edge of `G`** (a step of `lem:pencil-generic-steer`):
+the `if` of `pencilChartFramework` at `e ∈ E(G)`. -/
 theorem pencilChartFramework_supportExtensor_of_mem_edgeSet [Inhabited α] (seed : PencilSeed K α)
     (hubSel : α → Fin 3 → Option α) {G : Graph α β} {e : β} (he : e ∈ E(G)) :
     (pencilChartFramework seed hubSel G).supportExtensor e =
@@ -755,8 +650,8 @@ theorem pencilChartFramework_supportExtensor_of_mem_edgeSet [Inhabited α] (seed
         pencilChartPoint seed hubSel (G.endsOf e).2]) (extensor_mem_exteriorPower _) :=
   ite_eq_left he
 
-/-- **The pencil chart framework's supporting extensor off `E(G)`** (Phase 39 W5-L2 remainder):
-unfolds the `dite` at `e ∉ E(G)` to the fixed standard-basis fallback. -/
+/-- **The hinge of the chart framework at a label off `E(G)`** (a step of
+`lem:pencil-generic-steer`): the fixed join of two standard basis vectors. -/
 theorem pencilChartFramework_supportExtensor_of_not_mem_edgeSet [Inhabited α]
     (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α) {G : Graph α β} {e : β}
     (he : e ∉ E(G)) :
@@ -765,11 +660,9 @@ theorem pencilChartFramework_supportExtensor_of_not_mem_edgeSet [Inhabited α]
         (extensor_mem_exteriorPower _) :=
   ite_eq_right he
 
-/-- **The standard-basis fallback join is nonzero** (Phase 39 W5-L2 remainder): the two standard
-basis vectors `![1,0,0,0]` and `![0,1,0,0]` are linearly independent (a direct coordinate check,
-`momentCurve_pair_linearIndependent`'s style), so their join is a nonzero extensor
-(`extensor_ne_zero_iff_linearIndependent`) — the total-over-`β` nonzero conjunct at edges off
-`E(G)`. -/
+/-- **The join of two standard basis vectors is nonzero**: `![1, 0, 0, 0]` and `![0, 1, 0, 0]` are
+linearly independent, by their first two coordinates, so their extensor is nonzero
+(`extensor_ne_zero_iff_linearIndependent`). -/
 theorem extensor_stdBasis_pair_ne_zero :
     extensor (![(![1, 0, 0, 0] : Fin 4 → K), (![0, 1, 0, 0] : Fin 4 → K)]) ≠ 0 := by
   rw [extensor_ne_zero_iff_linearIndependent, LinearIndependent.pair_iff]
@@ -780,14 +673,14 @@ theorem extensor_stdBasis_pair_ne_zero :
     smul_eq_mul, mul_one, mul_zero, add_zero, zero_add, Pi.zero_apply] at h0 h1
   exact ⟨h0, h1⟩
 
-/-! ## The point-join incidence facts feeding the framework's realization conjuncts -/
+/-! ## The incidences of a point join -/
 
-/-- **The point-join is in both endpoints' panels** (Phase 39 W5-L2 remainder): for a link
-`e : u–v`, the point-join extensor `extensor ![point u, point v]` lies in both `normal u`'s and
-`normal v`'s panel (`ExtensorInPanel`). Immediate from the own-panel/cross-incidence theorems
-(`dotProduct_pencilChartPoint_pencilChartNormal_self`/`_of_isLink`): `p := ![point u, point v]`
-witnesses both, since `p 0 ⬝ᵥ normal u = 0` (own-panel) and `p 1 ⬝ᵥ normal u = 0` (cross), and
-symmetrically for `normal v`. -/
+/-- **A point join lies in the panels of both ends** (a step of `lem:pencil-generic-steer`): for a
+link `e` from `u` to `v`, the extensor of `![point u, point v]` lies in the panels of `normal u` and
+`normal v` (`ExtensorInPanel`) when the selectors list their sets. The family `![point u, point v]`
+witnesses both: each point is orthogonal to its own normal
+(`dotProduct_pencilChartPoint_pencilChartNormal_self`) and to that of the other end
+(`dotProduct_pencilChartPoint_pencilChartNormal_of_isLink`). -/
 theorem extensorInPanel_pointJoin_pencilChartNormal_of_isLink
     {G : Graph α β} {e : β} {u v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : ∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w))
@@ -811,11 +704,9 @@ theorem extensorInPanel_pointJoin_pencilChartNormal_of_isLink
     · exact dotProduct_pencilChartPoint_pencilChartNormal_of_isLink seed hHubSel hNbrSel hlink.symm
     · exact dotProduct_pencilChartPoint_pencilChartNormal_self seed (hHubSel v) (hNbrSel v)
 
-/-- **The point-join passes through both its own points** (Phase 39 W5-L2 remainder): the
-point-join extensor `extensor ![point u, point v]` passes through `point u` and through `point v`
-(`ExtensorThroughPoint`) — unconditionally, no hypotheses at all, since `p := ![point u, point v]`
-witnesses both by construction (`p 0 = point u ∈ span (range p)`, and dually). This is the
-`HasPencilPanelRealization` through-point conjunct read off the framework's own definition. -/
+/-- **A point join passes through both its points** (a step of `lem:pencil-generic-steer`): the
+extensor of `![point u, point v]` passes through `point u` and through `point v`
+(`ExtensorThroughPoint`), with no hypothesis, as both lie in the span of the family. -/
 theorem extensorThroughPoint_pointJoin_self {u v : α} (seed : PencilSeed K α)
     {hubSel : α → Fin 3 → Option α} :
     ExtensorThroughPoint
@@ -831,18 +722,16 @@ theorem extensorThroughPoint_pointJoin_self {u v : α} (seed : PencilSeed K α)
     ⟨![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v], ScrewSpace.val_mk _ _,
       Submodule.subset_span ⟨1, rfl⟩⟩⟩
 
-/-! ## The full assembly: `HasCoplanarPanelRealization`, `HasPencilPanelRealization`,
-`IsNondegPencilRealization` at a WF seed (Phase 39 W5-L2 remainder) -/
+/-! ## The chart is a nondegenerate pencil realization -/
 
-/-- **The pencil chart is a hinge-coplanar panel realization at a WF seed** (Phase 39 W5-L2
-remainder). Assembles `HasCoplanarPanelRealization` for `pencilChartFramework`/`pencilChartNormal`:
-the graph agreement is `rfl`; every body's normal is nonzero (`hubNormal_ne_zero_of_pencilHub`/
-`pencilChartNormal_ne_zero_of_not_pencilHub`); every edge label's supporting extensor is nonzero,
-total over `β` (the fallback `extensor_stdBasis_pair_ne_zero` off `E(G)`, adjacent-point
-distinctness — `PencilChartWF`'s own conjunct — on `E(G)`); and every link's supporting extensor
-lies in both endpoint panels (`extensorInPanel_pointJoin_pencilChartNormal_of_isLink`, transported
-along the canonical selector `Graph.endsOf` via the two-ends-agree-up-to-swap fact
-`IsLink.eq_and_eq_or_eq_and_eq`). -/
+/-- **At well-formed parameters the chart is a hinge-coplanar panel realization** (a step of
+`lem:pencil-generic-steer`): `HasCoplanarPanelRealization` of `pencilChartFramework` and
+`pencilChartNormal`. The graph is `G`; the normal is nonzero at a hub
+(`hubNormal_ne_zero_of_pencilHub`) and elsewhere (`pencilChartNormal_ne_zero_of_not_pencilHub`); the
+hinge is nonzero at an edge, as the points of its ends are independent, and off `E(G)`
+(`extensor_stdBasis_pair_ne_zero`); and at a link it lies in the panels of both ends
+(`extensorInPanel_pointJoin_pencilChartNormal_of_isLink`), at the ends `Graph.endsOf` gives, which
+are those of the link up to order (`IsLink.eq_and_eq_or_eq_and_eq`). -/
 theorem hasCoplanarPanelRealization_pencilChartFramework [Inhabited α]
     {G : Graph α β} {seed : PencilSeed K α} {hubSel nbrSel : α → Fin 3 → Option α}
     (hWF : PencilChartWF G seed hubSel nbrSel) :
@@ -877,12 +766,12 @@ theorem hasCoplanarPanelRealization_pencilChartFramework [Inhabited α]
     · exact ⟨(extensorInPanel_pointJoin_pencilChartNormal_of_isLink seed hHubSel hNbrSel hlink0).2,
         (extensorInPanel_pointJoin_pencilChartNormal_of_isLink seed hHubSel hNbrSel hlink0).1⟩
 
-/-- **The pencil chart is a pencil panel realization at a WF seed** (Phase 39 W5-L2 remainder).
-Assembles `HasPencilPanelRealization`: the coplanar realization above, points nonzero
-(`pencilChartPoint_ne_zero`), the own-panel incidence (`dotProduct_pencilChartPoint_
-pencilChartNormal_self`), and the through-point conjunct at every link, unconditionally
-(`extensorThroughPoint_pointJoin_self`) — the framework's supporting extensor *is* the point-join by
-construction, so this conjunct needs no genericity at all. -/
+/-- **At well-formed parameters the chart is a pencil realization** (a step of
+`lem:pencil-generic-steer`): `HasPencilPanelRealization` of the chart, from the hinge-coplanar
+realization above, the nonzero points (`pencilChartPoint_ne_zero`), the incidence
+`point v ⬝ᵥ normal v = 0` (`dotProduct_pencilChartPoint_pencilChartNormal_self`), and the pencil
+condition at every link, which holds with no hypothesis, as the hinge is the join of the points of
+its ends (`extensorThroughPoint_pointJoin_self`). -/
 theorem hasPencilPanelRealization_pencilChartFramework [Inhabited α]
     {G : Graph α β} {seed : PencilSeed K α} {hubSel nbrSel : α → Fin 3 → Option α}
     (hWF : PencilChartWF G seed hubSel nbrSel) :
@@ -905,18 +794,12 @@ theorem hasPencilPanelRealization_pencilChartFramework [Inhabited α]
         (extensorThroughPoint_pointJoin_self seed (u := (G.endsOf e).1)
         (v := (G.endsOf e).2)).1⟩
 
-/-- **By construction, a `PencilChartWF` seed's chart data is a nondegenerate pencil realization**
-(`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`; Phase 39 W5-L2, the headline
-by-construction membership theorem the design doc's L2 bullet asks for, **extended 2026-07-24 per
-the W5-L4 restatement**): the pencil chart framework `pencilChartFramework`, normal
-`pencilChartNormal`, and point `pencilChartPoint` built from any `PencilChartWF` seed satisfy
-`IsNondegPencilRealization` — the pencil panel realization
-(`hasPencilPanelRealization_pencilChartFramework`), adjacent-point distinctness (`PencilChartWF`'s
-own conjunct), closed-hub-neighbourhood normal independence
-(`linearIndepOn_pencilChartNormal_closedHubNbhd`), and, at every non-hub body, closed-neighbourhood
-point independence (`linearIndepOn_pencilChartPoint_closedNbhd`, the restatement's new fourth
-conjunct). This closes W5-L2 against the restated motive: the chart's shape does not fight any of
-`IsNondegPencilRealization`'s conjuncts anywhere the construction reaches. -/
+/-- **At well-formed parameters the chart is a nondegenerate pencil realization** (a step of
+`lem:pencil-generic-steer`): `IsNondegPencilRealization` of `pencilChartFramework`,
+`pencilChartNormal` and `pencilChartPoint`. Its four conditions are
+`hasPencilPanelRealization_pencilChartFramework`, the independence of the points of a link
+(`PencilChartWF`), `linearIndepOn_pencilChartNormal_closedHubNbhd` and
+`linearIndepOn_pencilChartPoint_closedNbhd`. -/
 theorem isNondegPencilRealization_pencilChartFramework_of_pencilChartWF [Inhabited α]
     {G : Graph α β} {seed : PencilSeed K α} {hubSel nbrSel : α → Fin 3 → Option α}
     (hWF : PencilChartWF G seed hubSel nbrSel) :

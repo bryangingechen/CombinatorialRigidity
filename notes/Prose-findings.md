@@ -3284,6 +3284,17 @@ declaration's name as its header writes it:
   `2 ≤ bodyBarDim n ↔ 3 ≤ bodyBarDim n` (`scratch/reconcile-lean/BodyBarDimTwo.lean`, gitignored).
   *Found:* RECONCILE round 3 task 15.
   *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
+- **F-301** · S · `def:extensor-through-point` (`pencil.tex`; `ExtensorThroughPoint`,
+  `Molecule/Pencil/Statement.lean`): the remark after the node says that the zero element passes
+  through every point ("take every $p_i = q$"). That holds for $k \ge 2$, where two equal vectors
+  have extensor $0$. At $k = 1$ the extensor of the one vector $q$ is $q$, and the zero element
+  passes through no nonzero point. The chapter uses the notion at $k = 2$ alone, so the remark
+  could say $k \ge 2$, a blueprint text outside round 3's surface; the docstring says it (task
+  37.2).
+  *Evidence:* read (the definition's body); a `lake lean` witness at $k = 1$ and at $k = 2$
+  (`scratch/reconcile-lean/t372/Zero.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.2.
+  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
 
 ## L — Lean
 
@@ -4649,7 +4660,8 @@ declaration's name as its header writes it:
   header maps each node to its pins, and `twoExtensorPoly_eval`'s docstring names
   `lem:two-extensor-polynomial` (task 27); the docstrings of `screwComplementIso` and
   `screwComplementIso_lineExtensor` name `lem:polarity-join`, and `equivExteriorPower_lineExtensor`'s
-  calls it a step of that node (task 37).
+  calls it a step of that node (task 37); `screwComplementIso_mk_extensor`'s lead names
+  `lem:polarity-join` (task 37.2).
 - **F-244** · L · the declarations round 5's task 3.12 pinned or moved (`Molecular/Deficiency.lean`,
   `JacobsCounting.lean`, `TwoCore.lean`). The docstrings of `IsTightPartition` and
   `crossingEdgesWithin` name `lem:exists-tight-partition` and `lem:partitionDef-merge`, now
@@ -4675,7 +4687,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings; a `grep` of `blueprint/src` and `CombinatorialRigidity/` for the
   labels of task 3.13's nodes).
   *Found:* round 5 task 3.13.
-  *Disposition:* reported (`notes/Prose-report.md`, L11).
+  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: the lead of
+  `linearIndepOn_pencilChartNormal_closedHubNbhd` calls it a step of `lem:pencil-generic-steer`
+  and names `def:pencil-nondegenerate`, the condition it gives (task 37.2).
 - **F-246** · L · the declarations round 5's task 3.14 moved or unpinned
   (`Molecular/Molecule/Pencil/MainComponent/Bridge.lean`, `Carrier.lean`). The docstring of
   `Graph.embedEdges` names `lem:pencil-jj-embed-edges`, now `def:pencil-embed-edges`. The module
@@ -5124,6 +5138,15 @@ declaration's name as its header writes it:
   calls use, as the cache shows): `BodyHingeFramework.isInfinitesimallyRigidOn_mapExtensor`, whose
   docstring gave `thm:projective-invariance` as its node. Removing it leaves no other declaration
   without a caller.
+  Task 37.2 adds ten in `Molecular/Molecule/Pencil/` (the same screen, over `Statement.lean` and
+  `Chart.lean` together, at `b8cf8acb`; the `rfl` lemma `cross₃L_apply` left out), none of them
+  pinned: in `Statement.lean`, `extensorInPanel_smul_iff`, `extensorInPanel_smul_normal_iff`,
+  `extensorThroughPoint_smul_point_iff` and `extensorThroughPoint_smul_iff`, whose section header
+  said that the cut case reasons with them; in `Chart.lean`, `cross₃_add_fst`, `cross₃_smul_fst`,
+  `cross₃_add_snd` and `cross₃_smul_snd`, whose section header called the multilinearity of
+  `cross₃` load-bearing for the chart's polynomial rows (`Engine.lean` takes the coordinates from
+  `cross₃_apply`), and the private `cons_updateRow_zero` and `cons_updateRow_one` (used only by
+  them). Removing them leaves no other declaration without a caller.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5515,6 +5538,23 @@ declaration's name as its header writes it:
   two lemmas, and each of the three theorems without `[Nonempty α]`, on the three standard axioms
   (`scratch/reconcile-lean/t371/Hyps-t371.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.1.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-302** · L · repeated derivations in `Molecular/Molecule/Pencil/Statement.lean` and
+  `Chart.lean`. The two transport lemmas
+  (`extensorInPanel_screwComplementIso_of_extensorThroughPoint` and
+  `extensorThroughPoint_screwComplementIso_of_extensorInPanel`) derive the same seven steps of
+  their nonzero case, from `C ≠ 0` and `C.val = extensor v` to the pair `p'` of
+  `exists_extensor_eq_panelSupportExtensor` and `screwComplementIso C = panelSupportExtensor
+  (v 0) (v 1)`, and four proofs of `Statement.lean` write out `C.val ≠ 0` from `C ≠ 0`.
+  `exists_linearIndependent_extensor_pair_through_point` and `_through_given_point` take the
+  independence of two extensors from `⋀²K⁴` to `ScrewSpace K 2` by the same steps
+  (`LinearMap.linearIndependent_iff` and `hfun`). `linearIndepOn_pencilChartNormal_closedHubNbhd`
+  and `linearIndepOn_pencilChartPoint_closedNbhd` prove the same injectivity of the map from a
+  set to the slots of its selector, which one lemma on `IsFin3SelectorOf` would state; and
+  `linearIndependent_hubSlotNormal_iff` and `linearIndependent_nbrSlotPoint_iff` are both
+  `![f 0, f 1, f 2] = f` at one `f`.
+  *Evidence:* read (the bodies).
+  *Found:* RECONCILE round 3 task 37.2.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

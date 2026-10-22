@@ -9,50 +9,53 @@ import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 
 /-!
-# The pencil stratum: statement layer and self-duality (`sec:pencil`, Phase 39 PENCIL, leaf W0)
+# Pencil realizations
 
-The **pencil** stratum sits inside the intersection of the panel (hinge-coplanar) and molecular
-(hinge-concurrent) strata: each body's hinges lie both in a common panel *and* through a common
-point — a *pencil* of lines through a point in a plane (Phase 39; `notes/Phase39-design.md`). This
-file lands the panel-side statement layer and the polarity self-duality of the stratum (leaf W0),
-riding the landed containment model (`HasCoplanarPanelRealization`, Phase 35) and the projective
-polarity `screwComplementIso` (Phase 25 duality).
+The definitions of `sec:pencil`, and the results of its subsections on the polarity, the base case,
+cycles and the extension step. A pencil realization is a hinge-coplanar panel realization with a
+point in the panel of each body, through which every hinge at the body passes, so that the hinges at
+a body form a pencil of lines through a point in a plane.
+
+The file defines a screw element through a point (`sec:pencil-through-point`), pencil realizations
+(`sec:pencil-realization`), those at the deficiency rank (`sec:pencil-reduction`) and those whose
+adjacent points are distinct (`sec:pencil-nondegenerate`). It proves that the polarity
+`screwComplementIso` exchanges lying in a panel with passing through a point, and so takes a pencil
+realization to one with the normals and the points exchanged (`sec:pencil-duality`); that a panel
+has two independent hinges through any point of it (`sec:pencil-base`); that two hinges in one panel
+pass through a common point of it, so that the cycles on three and four bodies have rigid pencil
+realizations (`sec:pencil-cycle`); and that two bodies have a common nonzero hinge in both panels
+and through both points exactly when the point of each lies in the panel of the other
+(`sec:pencil-extension`). The last section shows that the two predicates do not change when the
+extensor, the normal or the point is multiplied by a nonzero scalar, and that a nonzero hinge
+through two independent points is a multiple of their join, a step of `lem:pencil-generic-steer`.
 
 ## Main definitions
 
-* `ExtensorThroughPoint` — the projective dual of `ExtensorInPanel`: the screw element `C` is the
-  extensor of `k` points spanning a subspace *through* the homogeneous point `q` (`q` in their
-  span). Mirrors `ExtensorInPanel`'s witness shape (`RigidityMatrix/Basic.lean`), including its
-  built-in decomposability and its degenerate `C = 0` admissibility.
-* `HasPencilPanelRealization` — a hinge-coplanar panel realization (`HasCoplanarPanelRealization`)
-  refined by a per-body homogeneous concurrency point `point v` incident to the body's panel
-  (`point v ⬝ᵥ normal v = 0`), through which every link's supporting extensor passes. This is KT's
-  containment model strengthened to the pencil stratum.
+* `ExtensorThroughPoint`: a screw element passes through a point (`def:extensor-through-point`).
+* `HasPencilPanelRealization`: a pencil realization (`def:pencil-panel-realization`).
+* `HasPencilRealization` and `HasDistinctPencilRealization`: a pencil realization at the deficiency
+  rank, and one whose points at the two ends of every link are independent
+  (`def:pencil-rank-hypothesis`, `def:pencil-distinct-motive`).
 
 ## Main results
 
-* `screwComplementIso_mk_extensor` — the extensor-level polarity bridge, general form: for any two
-  points `v : Fin 2 → K⁴`, `screwComplementIso (mk (extensor v) _) = panelSupportExtensor (v 0)
-  (v 1)` (join of two poles ↦ meet of the two panels). The `v 0, v 1` arbitrary-point generalization
-  of `screwComplementIso_lineExtensor` (which is for homogenized affine points).
+* `screwComplementIso_mk_extensor`: the polarity sends the extensor of two vectors `v 0, v 1` of
+  `K⁴` to the panel support extensor `C(v 0, v 1)` (`lem:polarity-join`).
 * `extensorInPanel_screwComplementIso_of_extensorThroughPoint` and
-  `extensorThroughPoint_screwComplementIso_of_extensorInPanel` — the two **forward** predicate-
-  transport implications along the polarity: `q` through the join `C` becomes `q` in the meet
-  `screwComplementIso C`, and dually. Built from the join=meet duality
-  `extensor_join_proportional_complementIso_meet` (via `exists_extensor_eq_panelSupportExtensor`,
-  `PanelLayer.lean`) and the polarity bridge.
-* `hasPencilPanelRealization_mapExtensor_screwComplementIso` — the **stratum self-duality**:
-  transporting a pencil panel realization along the polarity `screwComplementIso` produces another
-  pencil panel realization, with the roles of `normal` and `point` swapped. The pencil stratum is
-  projectively self-dual on the nose (`thm:projective-invariance` at `Λ := screwComplementIso`).
-
-The two transport implications are exactly what the self-duality consumes; the full biconditional
-`ExtensorThroughPoint C q ↔ ExtensorInPanel (screwComplementIso C) q` would additionally need a
-`complementIso` involution (the polarity applied twice is a scalar), a separate result not yet in
-tree — see `notes/Phase39.md`.
-
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§R1, §Decomposition W0), and
-`blueprint/src/chapter/pencil.tex`.
+  `extensorThroughPoint_screwComplementIso_of_extensorInPanel`: the polarity sends a screw element
+  through `q` into the panel with normal `q`, and one in that panel through `q`
+  (`lem:pencil-transport-through-to-in`, `lem:pencil-transport-in-to-through`).
+* `hasPencilPanelRealization_mapExtensor_screwComplementIso`: the self-duality of pencil
+  realizations (`lem:pencil-self-dual`).
+* `exists_linearIndependent_extensor_pair_through_point` and
+  `exists_linearIndependent_extensor_pair_through_given_point`: two independent hinges in a panel,
+  through a point of it that is chosen or given.
+* `exists_concurrency_point_of_extensorInPanel_pair`: two nonzero hinges in one panel pass through a
+  common point of it (`lem:coplanar-hinges-concurrent`).
+* `exists_pencilPanelRealization_cycle`: the cycles on three and four bodies have pencil
+  realizations rigid on their bodies (`lem:cycle-pencil-realization`).
+* `exists_extensor_two_pencils_iff`: the two-pencil extension step and its converse
+  (`lem:two-pencil-extension-iff`).
 -/
 
 open scoped Matrix
@@ -63,28 +66,27 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## The pencil statement layer -/
+/-! ## Extensors through a point and pencil realizations -/
 
-/-- **A screw-space element `C` passes through the homogeneous point `q`**
-(`def:extensor-through-point`, the projective dual of `ExtensorInPanel`; Phase 39 W0). The
-`k`-extensor `C ∈ ScrewSpace K k` *passes through the point `q`* when it is the extensor of `k`
-points whose span contains `q`. This mirrors `ExtensorInPanel`'s witness shape
-(`RigidityMatrix/Basic.lean`): the same built-in decomposability, and the degenerate `C = 0` is
-admissible (take the constant family `fun _ => q`, whose extensor is `0` with `q` in its span).
-Nonzero-ness rides the realization's separate conjunct, as there. -/
+/-- **A screw element passes through a point** (`def:extensor-through-point`): a `k`-extensor
+`C ∈ ScrewSpace K k` passes through the homogeneous point `q` when it is the extensor of `k` vectors
+whose span contains `q`. This is the projective dual of `ExtensorInPanel`
+(`RigidityMatrix/Basic.lean`), with the same form of witness, so a screw element that passes through
+a point is decomposable. From grade `2` on, the zero element passes through every point (the
+constant family `fun _ => q` has extensor `0`), so a nonzero hinge is asked for separately, as for
+`ExtensorInPanel`; at grade `1` it passes through no nonzero point. -/
 def ExtensorThroughPoint {k : ℕ} (C : ScrewSpace K k) (q : Fin (k + 2) → K) : Prop :=
   ∃ p : Fin k → Fin (k + 2) → K,
     C.val = extensor p ∧ q ∈ Submodule.span K (Set.range p)
 
-/-- **A pencil panel realization** (`def:pencil-panel-realization`; Phase 39 PENCIL, leaf W0). A
-hinge-coplanar panel realization (`HasCoplanarPanelRealization`) of `G` together with, per body `v`,
-a homogeneous *concurrency point* `point v`: nonzero, incident to the body's panel
-(`point v ⬝ᵥ normal v = 0`), and such that every link's supporting extensor passes through both of
-its endpoints' points (`ExtensorThroughPoint`). This is KT's containment model of hinge-coplanarity
-strengthened to the pencil stratum — each body's hinges are not merely coplanar (in `normal v ^⊥`)
-but concurrent through `point v` inside that plane. The incidence `point v ⬝ᵥ normal v = 0` is
-forced at any body with a genuine hinge; including it as a conjunct makes isolated bodies honest and
-the stratum self-dual on the nose (`hasPencilPanelRealization_mapExtensor_screwComplementIso`). -/
+/-- **A pencil realization** (`def:pencil-panel-realization`): a hinge-coplanar panel realization
+(`HasCoplanarPanelRealization`) of `G`, with a point `point v` at each body `v` of `G`, nonzero and
+in the body's panel (`point v ⬝ᵥ normal v = 0`), such that the supporting extensor of every link
+passes through the points of both its ends (`ExtensorThroughPoint`). The hinges at a body then lie
+in its panel and pass through its point. At grade `2` the incidence `point v ⬝ᵥ normal v = 0`
+follows at a body with a link (`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`); it
+is asked at every body, so that the normals and the points play symmetric roles under the polarity
+(`hasPencilPanelRealization_mapExtensor_screwComplementIso`). -/
 def HasPencilPanelRealization {k : ℕ} (G : Graph α β) (F : BodyHingeFramework K k α β)
     (normal : α → Fin (k + 2) → K) (point : α → Fin (k + 2) → K) : Prop :=
   HasCoplanarPanelRealization G F normal ∧
@@ -94,38 +96,31 @@ def HasPencilPanelRealization {k : ℕ} (G : Graph α β) (F : BodyHingeFramewor
     ExtensorThroughPoint (F.supportExtensor e) (point u) ∧
     ExtensorThroughPoint (F.supportExtensor e) (point v))
 
-/-- **W3-L0: the `V(G)`-relative pencil motive** (`def:pencil-rank-hypothesis`, Phase 39; mirrors
-`HasPanelRealization` (M2, `PanelHinge.lean`) at grade `k = 2`). A multigraph `G` has a **pencil
-realization at the deficiency rank** when there is a grade-`2` pencil panel realization
-(`HasPencilPanelRealization`) whose rigidity-row span attains the target `ℤ`-rank
-`D(|V(G)| − 1) − def(\tilde G)`, `D = screwDim 2`. This is the `P` of the W3 reduction
-(`Graph.pencil_reduction`) the loop/base/cut/contract/split arms establish. -/
+/-- **A pencil realization at the deficiency rank** (`def:pencil-rank-hypothesis`): a pencil
+realization (`HasPencilPanelRealization`) of `G` at grade `2` whose rigidity rows span a space of
+dimension `screwDim 2 * (|V(G)| - 1) - G.deficiency n`, in `ℤ`. At `n = 3` this is
+`6(|V(G)| - 1) - def(G̃)`, the rank of `thm:theorem-55-6-multigraph`; the realization is at grade
+`2` for every `n` (`fmlnote:pencil-conditioned-pair`). It is the statement that the induction of
+`sec:pencil-reduction` (`Graph.pencil_reduction`) proves. -/
 def HasPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
   ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
     HasPencilPanelRealization G F normal point ∧
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
-/-- **The adjacent-distinct pencil motive** (`def:pencil-distinct-motive`; Phase 39 PENCIL,
-checklist item 5 decision (α), `notes/Phase39-design.md` §"Kernel restatement"). A pencil
-realization at the deficiency rank (`HasPencilRealization`) whose adjacent concurrency points are
-*projectively distinct* — the second conjunct of `IsNondegPencilRealization`
-(`Molecule/Pencil/Motive.lean`) lifted onto the bare motive, and nothing else from nondegeneracy.
-It sits strictly between the bare motive and the generic one: `HasGenericPencilRealization →
-HasDistinctPencilRealization → HasPencilRealization`, both forgetful
+/-- **An adjacent-distinct pencil realization** (`def:pencil-distinct-motive`): a pencil realization
+at the deficiency rank (`HasPencilRealization`) whose points at the two ends of every link are
+linearly independent, which is the condition of `IsNondegPencilRealization` (`Motive.lean`) on links
+and no other. So `HasGenericPencilRealization → HasDistinctPencilRealization → HasPencilRealization`
 (`hasDistinctPencilRealization_of_generic`, `hasPencilRealization_of_distinct`).
 
-**Why it is a separate motive rather than a conjunct on `HasPencilPanelRealization`** (item-4
-recon, 2026-09-16, kernel-checked): the bare motive attains the target rank at a `≥ 2`-fold
-parallel class *only* with both bodies at one point (`hasPencilRealization_of_ncard_le_two`'s own
-witness there; at projectively distinct points every hinge is forced onto one line and the rows
-span at most `screwDim 2 - 1`), and the stratum self-duality
-(`hasPencilPanelRealization_mapExtensor_screwComplementIso`, `lem:pencil-self-dual`) swaps
-`normal` and `point`, so the panel realization must stay coincident-capable. The distinctness the
-kernel (K-bare) route needs — its antecedent should certify a point of the *configuration variety*
-`Y`, not merely of the Lean bare space — is therefore carried here, conditioned on `G.Simple`
-inside `PencilPair` (`Molecule/Pencil/Motive.lean`), where the parallel class is excluded
-outright. -/
+The condition is not one of `HasPencilPanelRealization`, for the two reasons the chapter gives after
+`def:pencil-generic-motive`. The polarity exchanges the normals and the points
+(`lem:pencil-self-dual`). And two bodies joined by two edges have no pencil realization at the
+deficiency rank with independent points: both hinges are then the line through the two points, and
+the rows span at most `screwDim 2 - 1` dimensions (`hasPencilRealization_of_ncard_le_two` puts both
+bodies at one point). `PencilPair` (`Motive.lean`) asks for an adjacent-distinct realization only of
+a simple multigraph. -/
 def HasDistinctPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
   ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
     HasPencilPanelRealization G F normal point ∧
@@ -133,37 +128,38 @@ def HasDistinctPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α �
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
-/-- **The forgetful map, distinct ⟹ bare** (Phase 39 PENCIL, item 5 (α)): drop the
-adjacent-distinctness conjunct. -/
+/-- **An adjacent-distinct pencil realization is one at the deficiency rank** (the remark after
+`def:pencil-distinct-motive`): forget the independence of the points of a link. -/
 theorem hasPencilRealization_of_distinct {n : ℕ} {G : Graph α β}
     (h : HasDistinctPencilRealization K n G) : HasPencilRealization K n G := by
   obtain ⟨F, normal, point, hreal, -, hrank⟩ := h
   exact ⟨F, normal, point, hreal, hrank⟩
 
-/-! ## Dot-product / span plumbing for the transport -/
+/-! ## The dot product and spans -/
 
-/-- **A vector orthogonal to a spanning family is orthogonal to everything in the span**
-(`sec:pencil`, transport plumbing). If `w` is `⬝ᵥ`-orthogonal to each of the two vectors `p 0, p 1`,
-it is orthogonal to every `q` in their span, since the pairing `x ↦ w ⬝ᵥ x` is linear. -/
+/-- **A vector orthogonal to two vectors is orthogonal to their span** (a step of
+`lem:pencil-transport-through-to-in` and `lem:two-pencil-extension-iff`): if `w ⬝ᵥ p j = 0` for
+`j = 0, 1`, then `w ⬝ᵥ q = 0` for every `q` in the span of `p 0` and `p 1`, as `x ↦ w ⬝ᵥ x` is
+linear. -/
 theorem dotProduct_eq_zero_of_mem_span {w : Fin 4 → K} {p : Fin 2 → Fin 4 → K}
     (hp : ∀ j, w ⬝ᵥ p j = 0) {q : Fin 4 → K}
     (hq : q ∈ Submodule.span K (Set.range p)) : w ⬝ᵥ q = 0 := by
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).1 hq
   simp only [Fin.sum_univ_two, dotProduct_add, dotProduct_smul, hp, smul_zero, add_zero]
 
-/-- **`Pi.basisFun`'s `toDual` pairing is the dot product** (`sec:pencil`, transport plumbing):
+/-- **`Pi.basisFun`'s `toDual` pairing is the dot product**:
 `(Pi.basisFun K (Fin n)).toDual w v = w ⬝ᵥ v`. Both are `∑ i, w i * v i`
 (`piBasisFun_toDual_eq_sum`, `dotProduct`). -/
 theorem piBasisFun_toDual_eq_dotProduct {n : ℕ} (w v : Fin n → K) :
     (Pi.basisFun K (Fin n)).toDual w v = w ⬝ᵥ v := by
   rw [piBasisFun_toDual_eq_sum]; rfl
 
-/-- **A vector orthogonal to an independent pair lies in the span of any independent perp pair**
-(`sec:pencil`, the dimension-count core of the meet-side transport). In `K⁴`, if `p'` is an
-independent pair with each `p' i` orthogonal to both of an independent pair `v`, then `span p'`
-equals the `2`-dimensional `⬝ᵥ`-perp of `{v 0, v 1}` (`finrank_toDualPerp_pair_eq`), so any `q`
-orthogonal to both `v 0, v 1` lies in `span p'`. This is the geometric content of the polarity
-carrying "`q` in the panel meet" to "`q` on the pencil line". -/
+/-- **A vector orthogonal to an independent pair lies in the span of any independent pair orthogonal
+to it** (a step of `lem:pencil-transport-in-to-through`): in `K⁴`, let `v` and `p'` be independent
+pairs with each `p' i` orthogonal to `v 0` and `v 1`. The vectors orthogonal to `v 0` and `v 1` form
+a space of dimension `2` (`finrank_toDualPerp_pair_eq`), which contains the span of `p'`, also of
+dimension `2`; so the two are equal, and every `q` orthogonal to `v 0` and `v 1` lies in the span of
+`p'`. -/
 theorem mem_span_of_dotProduct_perp_pair {v p' : Fin 2 → Fin 4 → K}
     (hv : LinearIndependent K v) (hp' : LinearIndependent K p')
     (hp'v : ∀ i j, p' i ⬝ᵥ v j = 0) {q : Fin 4 → K} (hqv : ∀ j, q ⬝ᵥ v j = 0) :
@@ -186,16 +182,14 @@ theorem mem_span_of_dotProduct_perp_pair {v p' : Fin 2 → Fin 4 → K}
     Submodule.eq_of_le_of_finrank_eq hle (by rw [hdim_span, hdim_perp])
   rw [heq, hmem]; exact hqv
 
-/-! ## The extensor-level polarity bridge -/
+/-! ## The polarity at the extensor of two vectors -/
 
-/-- **The polarity carries the join of two poles to the meet of their two panels, general form**
-(`lem:panel-hinge-dual-molecular`, the arbitrary-point generalization of
-`screwComplementIso_lineExtensor`): for any two points `v : Fin 2 → K⁴`,
-`screwComplementIso (mk (extensor v) _) = panelSupportExtensor (v 0) (v 1)`. Same underlying
-Grassmann–Cayley duality as `screwComplementIso_lineExtensor`, but stated for arbitrary homogeneous
-points (not only the `homogenize`d affine points a `lineExtensor` supplies), which is what the
-predicate transport consumes: the screw element of a hinge is `extensor v` for the `v` witnessing
-`ExtensorThroughPoint` / `ExtensorInPanel`. -/
+/-- **The polarity sends the join of two vectors to the meet of their planes** (`lem:polarity-join`,
+at any two vectors of `K⁴`): for `v : Fin 2 → Fin 4 → K`,
+`screwComplementIso (mk (extensor v) _) = panelSupportExtensor (v 0) (v 1)`.
+`screwComplementIso_lineExtensor` is the case of two homogenized points of `ℝ³`; the transport
+lemmas below use this form, at the vectors whose extensor `ExtensorThroughPoint` or
+`ExtensorInPanel` gives. -/
 theorem screwComplementIso_mk_extensor (v : Fin 2 → Fin 4 → K) :
     screwComplementIso (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
       = panelSupportExtensor (v 0) (v 1) := by
@@ -205,15 +199,16 @@ theorem screwComplementIso_mk_extensor (v : Fin 2 → Fin 4 → K) :
     ScrewSpace.equivExteriorPower_symm_apply]
   rfl
 
-/-! ## The forward predicate-transport implications -/
+/-! ## Transport along the polarity -/
 
-/-- **The join-side pencil predicate transports to the meet side along the polarity**
-(`lem:pencil-transport-through-to-in`; Phase 39 W0). If the screw element `C` passes through the
-point `q` (`ExtensorThroughPoint`), then its polarity image `screwComplementIso C` lies in the panel
-with normal `q` (`ExtensorInPanel`). This is one of the two forward transport implications the
-stratum self-duality rests on; it follows the design doc's route via
-`exists_extensor_eq_panelSupportExtensor` and the polarity bridge, with the incidence coming from
-linearity (`dotProduct_eq_zero_of_mem_span`). -/
+/-- **Passing through a point transports to lying in a panel**
+(`lem:pencil-transport-through-to-in`): if the screw element `C` passes through the point `q`
+(`ExtensorThroughPoint`), its image under the polarity lies in the panel with normal `q`
+(`ExtensorInPanel`). If `C = 0` its image is `0`. Otherwise `C` is the extensor of an independent
+pair `v` with `q` in its span. The polarity sends it to `panelSupportExtensor (v 0) (v 1)`
+(`screwComplementIso_mk_extensor`), the extensor of a pair `p'` orthogonal to `v 0` and `v 1`
+(`exists_extensor_eq_panelSupportExtensor`), and each `p' i` is then orthogonal to `q`
+(`dotProduct_eq_zero_of_mem_span`). -/
 theorem extensorInPanel_screwComplementIso_of_extensorThroughPoint
     {C : ScrewSpace K 2} {q : Fin 4 → K} (h : ExtensorThroughPoint C q) :
     ExtensorInPanel (screwComplementIso C) q := by
@@ -238,13 +233,14 @@ theorem extensorInPanel_screwComplementIso_of_extensorThroughPoint
     exact dotProduct_eq_zero_of_mem_span
       (fun j => by fin_cases j; exacts [(hp'perp i).1, (hp'perp i).2]) hq
 
-/-- **The meet-side pencil predicate transports to the join side along the polarity**
-(`lem:pencil-transport-in-to-through`; Phase 39 W0). If the screw element `C` lies in the panel with
-normal `q` (`ExtensorInPanel`), then its polarity image `screwComplementIso C` passes through the
-point `q` (`ExtensorThroughPoint`). The dual of
-`extensorInPanel_screwComplementIso_of_extensorThroughPoint`; the incidence here is the
-dimension-count `mem_span_of_dotProduct_perp_pair` (the panel meet's spanning pair is the perp of
-`{v 0, v 1}`, which contains `q`). -/
+/-- **Lying in a panel transports to passing through a point**
+(`lem:pencil-transport-in-to-through`): if the screw element `C` lies in the panel with normal `q`
+(`ExtensorInPanel`), its image under the polarity passes through `q` (`ExtensorThroughPoint`). If
+`C = 0` its image is `0`, the extensor of the constant family at `q`. Otherwise `C` is the extensor
+of an independent pair `v` orthogonal to `q`, and its image is the extensor of an independent pair
+`p'` orthogonal to `v 0` and `v 1` (`screwComplementIso_mk_extensor`,
+`exists_extensor_eq_panelSupportExtensor`); so `q` lies in the span of `p'`
+(`mem_span_of_dotProduct_perp_pair`). -/
 theorem extensorThroughPoint_screwComplementIso_of_extensorInPanel
     {C : ScrewSpace K 2} {q : Fin 4 → K} (h : ExtensorInPanel C q) :
     ExtensorThroughPoint (screwComplementIso C) q := by
@@ -276,17 +272,16 @@ theorem extensorThroughPoint_screwComplementIso_of_extensorInPanel
       (fun i j => by fin_cases j; exacts [(hp'perp i).1, (hp'perp i).2])
       (fun j => by rw [dotProduct_comm]; exact hvperp j)
 
-/-! ## The stratum self-duality -/
+/-! ## Self-duality of pencil realizations -/
 
-/-- **The pencil stratum is projectively self-dual** (`lem:pencil-self-dual`; Phase 39 PENCIL, leaf
-W0; Crapo–Whiteley projective invariance at the polarity `screwComplementIso`). Transporting a
-pencil panel realization `(F, normal, point)` along the polarity `screwComplementIso`
-(`BodyHingeFramework.mapExtensor`) produces another pencil panel realization on the same multigraph,
-with the roles of `normal` and `point` swapped: `(F.mapExtensor screwComplementIso, point, normal)`.
-The polarity swaps "extensor in the panel of `normal v`" with "extensor through the point
-`point v`" edgewise (the two forward transport implications), carries genuine hinges to genuine
-hinges (`screwComplementIso` injective), and preserves the panel–point incidence
-(`dotProduct_comm`). -/
+/-- **Self-duality of pencil realizations** (`lem:pencil-self-dual`): transporting a pencil
+realization `(F, normal, point)` of `G` along the polarity `screwComplementIso`
+(`BodyHingeFramework.mapExtensor`) gives the pencil realization
+`(F.mapExtensor screwComplementIso, point, normal)` of `G`, with the normals and the points
+exchanged. At each link the polarity sends a hinge through `point v` into the panel with normal
+`point v`, and a hinge in the panel with normal `normal v` through `normal v` (the two transport
+lemmas). It keeps the hinges nonzero, as it is injective, and the incidence
+`point v ⬝ᵥ normal v = 0` reads the other way by `dotProduct_comm`. -/
 theorem hasPencilPanelRealization_mapExtensor_screwComplementIso
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : HasPencilPanelRealization G F normal point) :
@@ -306,24 +301,21 @@ theorem hasPencilPanelRealization_mapExtensor_screwComplementIso
     exact ⟨extensorThroughPoint_screwComplementIso_of_extensorInPanel (hlink e u w hlk).1,
            extensorThroughPoint_screwComplementIso_of_extensorInPanel (hlink e u w hlk).2⟩
 
-/-! ## W1 base case: the coincident-panel pencil pair (KT Lemma 5.3) -/
+/-! ## Two independent hinges through a point of a panel -/
 
-/-- **Two independent extensors through a common point of a shared panel** (`sec:pencil`, Phase 39
-PENCIL, leaf W1; the pencil analogue of `exists_linearIndependent_extensor_pair_perp`, KT Lemma 5.3,
-p. 670). For any normal `n : Fin 4 → K` there is a nonzero point `q₀ ∈ n^⊥` and two screw elements
-`Ce, Cf : ScrewSpace K 2`, each lying in the panel `n^⊥` (`ExtensorInPanel`) *and* passing through
-`q₀` (`ExtensorThroughPoint`), whose `2`-extensors are linearly independent.
+/-- **Two independent extensors through a common point of a panel**
+(`lem:extensor-pair-through-point`; for KT Lemma 5.3, KT p. 669, as
+`exists_linearIndependent_extensor_pair_perp` is): for every `n : Fin 4 → K` there are a nonzero
+`q₀` with `q₀ ⬝ᵥ n = 0` and two screw elements `Ce, Cf : ScrewSpace K 2`, each in the panel with
+normal `n` (`ExtensorInPanel`) and through `q₀` (`ExtensorThroughPoint`), with linearly independent
+extensors.
 
-This is the coincident-panel pencil pair of KT's two-vertex `def(G̃) = 0` base realization, with the
-concurrency pin satisfied *for free*: the panel `n^⊥ ⊆ K⁴` has dimension `≥ 3`, so it carries three
-linearly-independent vectors `q₀, a, b`; the two pencil lines `q₀ ∨ a` and `q₀ ∨ b` through `q₀`
-both lie in `n^⊥` and contain `q₀` in their span, and their extensors are linearly independent
-because `{q₀, a, b}` is (`linearIndependent_pair_extensor_of_li3`, the shared-vector wedge-LI
-brick). The two independent extensors are exactly the "two distinct pencil lines through a common
-point of the shared panel" whose stacked row spaces fill `K⁶ = ScrewSpace K 2` — the rank-`D`
-mechanism of the pencil base case (`notes/Phase39-design.md` §R1 item 2). The unpinned sibling
-`exists_linearIndependent_extensor_pair_perp` drops the common point `q₀` and the through-point
-conjuncts. -/
+The vectors orthogonal to `n` contain three linearly independent vectors `q₀, a, b`
+(`exists_three_perp`). The lines `q₀ ∨ a` and `q₀ ∨ b` lie in the panel and pass through `q₀`, and
+their extensors are independent because `q₀, a, b` are (`linearIndependent_pair_extensor_of_li3`).
+`exists_linearIndependent_extensor_pair_perp` (`lem:extensor-pair-in-panel`) gives two independent
+extensors in a panel without the common point; the base case of the pencil induction
+(`lem:pencil-base-case`) uses this form. -/
 theorem exists_linearIndependent_extensor_pair_through_point (n : Fin 4 → K) :
     ∃ (q₀ : Fin 4 → K) (Ce Cf : ScrewSpace K 2),
       q₀ ≠ 0 ∧ q₀ ⬝ᵥ n = 0 ∧
@@ -367,20 +359,18 @@ theorem exists_linearIndependent_extensor_pair_through_point (n : Fin 4 → K) :
       funext i; fin_cases i <;> rfl
     rw [hfun]; exact hLI_ext
 
-/-- **Two independent extensors through a *prescribed* point of a panel** (`lem:extensor-pair-
-through-given-point`; Phase 39 PENCIL, L0b; sibling of
-`exists_linearIndependent_extensor_pair_through_point` that fixes the concurrency point in advance
-instead of choosing it). For any normal `n : Fin 4 → K` and any nonzero point `q` of the panel
-`n^⊥` (`q ⬝ᵥ n = 0`), there are two screw elements `Ce, Cf : ScrewSpace K 2`, each lying in the
-panel `n^⊥` (`ExtensorInPanel`) *and* passing through `q` (`ExtensorThroughPoint`), whose
-`2`-extensors are linearly independent.
+/-- **Two independent extensors through a given point of a panel**
+(`lem:extensor-pair-through-given-point`): for `n : Fin 4 → K` and a nonzero `q` with `q ⬝ᵥ n = 0`,
+there are two screw elements `Ce, Cf : ScrewSpace K 2`, each in the panel with normal `n`
+(`ExtensorInPanel`) and through `q` (`ExtensorThroughPoint`), with linearly independent extensors.
+It is `exists_linearIndependent_extensor_pair_through_point` with the point given in advance, as the
+case of a multigraph that is not simple needs (`lem:pencil-nonsimple-case`,
+`hasPencilRealization_of_not_simple`), where the realization of the contraction fixes the point.
 
-Needed for W4-A (`hasPencilRealization_of_not_simple`), where the two re-realized hinges at a
-contracted body must pass through the point the contraction's induction hypothesis already fixed,
-not a freshly chosen one. The panel `W = n^⊥` has dimension `≥ 3` (the three independent perps of
-`exists_three_perp`), so `q` extends to a linearly independent triple `q, y, z` in `W`; the two
-pencil lines `q ∨ y` and `q ∨ z` through `q` both lie in `W` and their extensors are linearly
-independent by the shared-vector wedge-LI brick `linearIndependent_pair_extensor_of_li3`. -/
+The panel `W = n^⊥` has dimension at least `3` (the three independent vectors of
+`exists_three_perp`), so `q` extends to an independent triple `q, y, z` in `W`. The lines `q ∨ y`
+and `q ∨ z` lie in `W` and pass through `q`, and their extensors are independent
+(`linearIndependent_pair_extensor_of_li3`). -/
 theorem exists_linearIndependent_extensor_pair_through_given_point {n q : Fin 4 → K}
     (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
     ∃ Ce Cf : ScrewSpace K 2,
@@ -433,13 +423,11 @@ theorem exists_linearIndependent_extensor_pair_through_given_point {n q : Fin 4 
     funext i; fin_cases i <;> rfl
   rw [hfun]; exact hLI_ext
 
-/-! ## W1 base case: degree-2 concurrency is automatic (KT Lemma 5.4 cycles) -/
+/-! ## Two hinges in one panel pass through a common point -/
 
-/-- **The `⬝ᵥ`-perp of a single nonzero normal in `K⁴` has dimension `3`** (`sec:pencil`, cycle
-plumbing). The single-vector companion of `finrank_toDualPerp_pair_eq` (`Meet.lean`): the constant
-family `fun _ : Unit => n` in `Meet.lean`'s `finrank_toDualPerp_add_finrank_span` gives `4 −
-finrank (span {n}) = 4 − 1 = 3` when `n ≠ 0` (`finrank_span_singleton`). This is the ambient
-panel `n^⊥` in which a body's coplanar hinges live. -/
+/-- **The vectors of `K⁴` orthogonal to a nonzero `n` form a space of dimension `3`**: the case of
+one vector of `finrank_toDualPerp_add_finrank_span` (`Meet.lean`), as `finrank (span {n}) = 1`
+(`finrank_span_singleton`). It is the panel `n^⊥` in which the hinges of a body lie. -/
 theorem finrank_toDualPerp_single_eq {n : Fin 4 → K} (hn : n ≠ 0) :
     Module.finrank K
         (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n) : Submodule K (Fin 4 → K)) = 3 := by
@@ -447,20 +435,15 @@ theorem finrank_toDualPerp_single_eq {n : Fin 4 → K} (hn : n ≠ 0) :
   rw [iInf_const, Set.range_const, finrank_span_singleton hn] at this
   omega
 
-/-- **Two coplanar hinges automatically share a concurrency point**
-(`lem:coplanar-hinges-concurrent`; Phase 39 PENCIL, leaf W1; KT Lemma 5.4 cycles, the "concurrency
-of two coplanar lines is projectively automatic" fact). If two nonzero screw elements
-`C₁, C₂ : ScrewSpace K 2` both lie in the panel with normal `n ≠ 0` (`ExtensorInPanel`), then there
-is a nonzero point `q ∈ n^⊥` through which *both* pass (`ExtensorThroughPoint`). Hence at any body
-of degree `≤ 2` in a hinge-coplanar panel realization the pencil concurrency pin is met for free —
-the geometric content of "KT's cycle realization is already pencil" (`notes/Phase39-design.md` §R3
-base cases).
+/-- **Two coplanar hinges share a point** (`lem:coplanar-hinges-concurrent`): if two nonzero screw
+elements `C₁, C₂ : ScrewSpace K 2` lie in the panel with normal `n ≠ 0` (`ExtensorInPanel`), there
+is a nonzero `q` with `q ⬝ᵥ n = 0` through which both pass (`ExtensorThroughPoint`). So at a body of
+degree at most two the pencil condition adds nothing to hinge-coplanarity.
 
-Each hinge is the extensor of an independent pair spanning a `2`-dimensional subspace of the
-`3`-dimensional panel `n^⊥` (`finrank_toDualPerp_single_eq`); two `2`-planes in a `3`-space meet in
-dimension `≥ 2 + 2 − 3 = 1` (the modular law `finrank_sup_add_finrank_inf_eq`), so their
-intersection carries a nonzero common point `q`. Lying in either hinge's span, `q` passes through
-both and is `⬝ᵥ`-orthogonal to `n`. -/
+Each hinge is the extensor of an independent pair, which spans a subspace of dimension `2` of the
+panel `n^⊥`, of dimension `3` (`finrank_toDualPerp_single_eq`). Two such subspaces meet in dimension
+at least `2 + 2 - 3 = 1` (`Submodule.finrank_sup_add_finrank_inf_eq`), so they share a nonzero `q`,
+which lies in both spans and is orthogonal to `n`. -/
 theorem exists_concurrency_point_of_extensorInPanel_pair
     {n : Fin 4 → K} (hn : n ≠ 0) {C₁ C₂ : ScrewSpace K 2}
     (hC₁ : C₁ ≠ 0) (hC₂ : C₂ ≠ 0)
@@ -511,43 +494,34 @@ theorem exists_concurrency_point_of_extensorInPanel_pair
     ⟨p₁, hp₁val, hqU⟩, ⟨p₂, hp₂val, hqW⟩⟩
   exact (hmem_panel _).1 (hUpanel hqU)
 
-/-! ## W1 cycle realization: pencil and coplanar wraps (KT Lemma 5.4) -/
+/-! ## Pencil realizations of a cycle -/
 
-/-- **A cycle carries a pencil panel realization, rigid on its bodies**
-(`lem:cycle-pencil-realization`; Phase 39 PENCIL, leaf W1; KT's Lemma-5.4 cycle realization
-strengthened to the pencil stratum, Katoh–Tanigawa 2011 p. 669, whose geometric content is
-Crapo–Whiteley 1982 Prop. 3.4). A graph `G` presented as a cycle (`Graph.CycleData`) of `cy.m`
-bodies with `cy.m ≤ 4` carries a **pencil** panel realization (`HasPencilPanelRealization`) —
-hinge-coplanar *and* carrying a per-body concurrency point — that is infinitesimally rigid on all
-of its bodies `V(G)`. This closes leaf W1's cycle case.
+/-- **A pencil realization of a cycle** (`lem:cycle-pencil-realization`; KT Lemma 5.4's realization
+of a cycle, KT p. 670, with a point at each body): a graph `G` given as a cycle (`Graph.CycleData`)
+on `cy.m ≤ 4` bodies has a pencil realization (`HasPencilPanelRealization`) that is infinitesimally
+rigid on `V(G)`. Here `3 ≤ cy.m` is `CycleData.hm`, and `cy.m ≤ 4 = k + 2` is the hypothesis of
+`exists_cycle_normals` at `k = 2`, so the triangle and the quadrilateral are both realized.
 
-The valid cycle length at `d = 3` (`k = 2`) is `3 ≤ cy.m ≤ 4`, derived from the definition bodies,
-not the "only triangle" reading: the floor `3 ≤ cy.m` is `CycleData.hm` (a cycle is at least a
-triangle) and the ceiling `cy.m ≤ 4` is `exists_cycle_normals`' own hypothesis `m ≤ k + 2 = 4`, so
-the quadrilateral realizes here too. Each cyclic pair of shared panel normals `(nrm i, nrm (i+1))`
-from `exists_cycle_normals` is linearly independent (`normalsJoin_ne_zero_iff`), so their panel meet
-`panelSupportExtensor (nrm i) (nrm (i+1))` — the supporting extensor assigned to cycle edge
-`cy.edge i` — is nonzero and lies in both endpoint panels `nrm i ^⊥`, `nrm (i+1) ^⊥`
-(`extensorInPanel_panelSupportExtensor`); labels off the cycle carry a fixed nonzero fallback for
-the total-over-`β` conjunct. The `cy.m` cyclic support extensors are linearly independent
-(`exists_cycle_normals`), so `theorem_55_cycle` (KT Lemma 5.4) makes the framework rigid on
-`Set.range cy.vtx = V(G)` (`CycleData.range_vtx`).
+The normals `nrm i` of `exists_cycle_normals` have each consecutive pair independent
+(`normalsJoin_ne_zero_iff`), so the edge `cy.edge i` gets the nonzero meet
+`panelSupportExtensor (nrm i) (nrm (i+1))`, which lies in the panels of both its ends
+(`extensorInPanel_panelSupportExtensor`); every label off the cycle gets a fixed nonzero extensor,
+as every supporting extensor must be nonzero. The `cy.m` meets are linearly independent
+(`exists_cycle_normals`), so `theorem_55_cycle` (`lem:cycle-realization-rigid`) makes the framework
+rigid on `Set.range cy.vtx = V(G)` (`CycleData.range_vtx`).
 
-The pencil concurrency point of body `i` is the common point of its two incident hinges
-`cy.edge (i-1)` and `cy.edge i` — both lying in the panel `nrm i ^⊥` — supplied for free by
-`exists_concurrency_point_of_extensorInPanel_pair` (two coplanar lines meet inside their plane),
-`choose`n across `Fin cy.m` and extended off `cy.vtx`. Each link's meet then passes through both
-endpoints' points: `cy.edge j` is body `j`'s *second* hinge (through `q j`) and body `(j+1)`'s
-*first* hinge (through `q (j+1)`), matched by the cyclic identities `(i-1)+1 = i` and `(j+1)-1 = j`.
-Built directly (not via `PanelHingeFramework.ofNormals`), so no `Infinite K` / finiteness
-hypotheses are needed. -/
+The point of body `i` is a common point of its two hinges, at `cy.edge (i-1)` and `cy.edge i`, which
+lie in the panel of `nrm i` (`exists_concurrency_point_of_extensorInPanel_pair`); the points are
+chosen for every `i : Fin cy.m` and extended by `0` off the cycle. The edge `cy.edge j` is the
+second hinge of body `j` and the first of body `j+1`, as `(j+1) - 1 = j`. The framework is built
+directly, over any field. -/
 theorem exists_pencilPanelRealization_cycle
     {G : Graph α β} (cy : G.CycleData) (hm4 : cy.m ≤ 4) :
     ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
       HasPencilPanelRealization G F normal point ∧ F.IsInfinitesimallyRigidOn V(G) := by
   have hm3 : 3 ≤ cy.m := cy.hm
   have : NeZero cy.m := ⟨by omega⟩
-  -- E5a: the cyclic shared-normal family (`3 ≤ cy.m ≤ 4 = k + 2` at `k = 2`).
+  -- The cyclic family of normals (`3 ≤ cy.m ≤ 4 = k + 2` at `k = 2`).
   obtain ⟨nrm, hjoin, hLI⟩ := exists_cycle_normals (K := K) (k := 2) cy.hm hm4
   -- Each consecutive normal pair is independent (its grade-2 join is nonzero).
   have hpairLI : ∀ i : Fin cy.m, LinearIndependent K ![nrm i, nrm (i + 1)] :=
@@ -604,7 +578,7 @@ theorem exists_pencilPanelRealization_cycle
     intro v hv
     obtain ⟨i, rfl⟩ := cy.vtx_surj v hv
     rw [hnormal_vtx]; simpa using (hpairLI i).ne_zero 0
-  · -- Total-over-`β` nonzero: cycle edges carry the LI-nonzero meet, others the nonzero fallback.
+  · -- Every supporting extensor is nonzero: the meet at a cycle edge, the fallback elsewhere.
     intro e
     simp only []
     by_cases he : ∃ i, cy.edge i = e
@@ -641,19 +615,15 @@ theorem exists_pencilPanelRealization_cycle
     rcases he.eq_and_eq_or_eq_and_eq (hlink j) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
     · simp only [hpoint_vtx]; exact ⟨hq2 j, hj1⟩
     · simp only [hpoint_vtx]; exact ⟨hj1, hq2 j⟩
-  · -- Rigidity on `V(G)` via `theorem_55_cycle` (KT Lemma 5.4).
+  · -- Rigidity on `V(G)` by `theorem_55_cycle` (`lem:cycle-realization-rigid`).
     have hrig := BodyHingeFramework.theorem_55_cycle
       (F := { graph := G, supportExtensor := supp }) cy.vtx cy.edge hlink hgen
     rwa [cy.range_vtx] at hrig
 
-/-- **A cycle carries a hinge-coplanar panel realization, rigid on its bodies**
-(`lem:cycle-coplanar-realization`; Phase 39 PENCIL, leaf W1; the panel-side half of KT's Lemma-5.4
-cycle realization, Katoh–Tanigawa 2011 p. 669, whose geometric content is Crapo–Whiteley 1982
-Prop. 3.4). A graph `G` presented as a cycle (`Graph.CycleData`) with `cy.m ≤ 4` carries a
-hinge-coplanar panel realization (`HasCoplanarPanelRealization`) rigid on all of its bodies `V(G)`.
-Immediate corollary of the pencil realization `exists_pencilPanelRealization_cycle` by discarding
-the per-body concurrency point — a pencil realization is in particular hinge-coplanar. The valid
-cycle length `3 ≤ cy.m ≤ 4` at `d = 3` is that of the pencil version. -/
+/-- **A hinge-coplanar realization of a cycle** (`lem:cycle-coplanar-realization`): a graph `G`
+given as a cycle (`Graph.CycleData`) on `cy.m ≤ 4` bodies has a hinge-coplanar panel realization
+(`HasCoplanarPanelRealization`) that is infinitesimally rigid on `V(G)`: the pencil realization of
+`exists_pencilPanelRealization_cycle` without its points. -/
 theorem exists_coplanarPanelRealization_cycle
     {G : Graph α β} (cy : G.CycleData) (hm4 : cy.m ≤ 4) :
     ∃ (F : BodyHingeFramework K 2 α β) (normal : α → Fin 4 → K),
@@ -661,40 +631,26 @@ theorem exists_coplanarPanelRealization_cycle
   obtain ⟨F, normal, _point, hpencil, hrig⟩ := exists_pencilPanelRealization_cycle (K := K) cy hm4
   exact ⟨F, normal, hpencil.1, hrig⟩
 
-/-! ## W2: the two-pencil extension lemma (existence direction) -/
+/-! ## The two-pencil extension step -/
 
-/-- **The two-pencil extension hinge exists** (`lem:two-pencil-extension`; Phase 39 PENCIL, leaf W2;
-the pencil analogue of `exists_extensor_in_two_panels_grade`, the honest replacement for the
-coplanar-model strip-and-re-add cut-edge move, KT p. 670). Given two pencil bodies with normals
-`n_u, n_v` and concurrency points `pt_u, pt_v`, where `pt_u` is incident to its own panel
-(`pt_u ⬝ᵥ n_u = 0`) and `pt_v` to its own (`pt_v ⬝ᵥ n_v = 0`), a new hinge lying in *both* panels
-*and* passing through *both* points exists as soon as the two **cross-incidences** hold:
-`pt_u ⬝ᵥ n_v = 0` (i.e. `pt_u ∈ Π(v)`) and `pt_v ⬝ᵥ n_u = 0` (i.e. `pt_v ∈ Π(u)`). Concretely there
-is a nonzero `C : ScrewSpace K 2` with `ExtensorInPanel C n_u`, `ExtensorInPanel C n_v`,
-`ExtensorThroughPoint C pt_u`, and `ExtensorThroughPoint C pt_v`.
+/-- **The two-pencil extension hinge** (`lem:two-pencil-extension`; the pencil form of
+`exists_extensor_in_two_panels_grade`): let `n_u, n_v` be normals and `pt_u, pt_v` points with
+`pt_u ≠ 0`, `pt_u ⬝ᵥ n_u = 0` and `pt_v ⬝ᵥ n_v = 0`. If the two cross-incidences `pt_u ⬝ᵥ n_v = 0`
+and `pt_v ⬝ᵥ n_u = 0` hold, each point lying in the other panel, then some nonzero
+`C : ScrewSpace K 2` lies in both panels (`ExtensorInPanel`) and passes through both points
+(`ExtensorThroughPoint`). Katoh and Tanigawa give each edge they add to a realization of a minimal
+spanning subgraph a hinge in the panels of both its ends (KT p. 670); a pencil realization asks that
+the hinge also pass through the points of both ends.
 
-This is exactly what the coplanar-model extension step (`exists_extensor_in_two_panels_grade`) needs
-augmented by the two through-point obligations, and the two cross-incidences are precisely the
-side-conditions that make them satisfiable — the pencil-stratum content the coplanar strip-extend
-move hides. Under the four incidences (the two own-panel ones + the two cross ones) both points lie
-in the common perp `Π(u) ∩ Π(v) = n_u^⊥ ∩ n_v^⊥`, so a hinge through both, contained in both
-panels, is a `2`-dimensional subspace of that common perp containing `pt_u` and `pt_v`.
+Both points lie in `n_u^⊥ ∩ n_v^⊥`, of dimension at least `2` whether or not the normals are
+independent (`exists_linearIndependent_perp_of_normals`), and the extensor of an independent pair of
+that space whose span contains both points is such a `C`. If `pt_u` and `pt_v` are independent, take
+them. Otherwise `pt_v` is a multiple of `pt_u`, and the pair is `pt_u` with a vector of the space
+independent of it, which exists as the space has dimension at least `2`; so `pt_v = 0` is allowed.
 
-Degenerate cases handled honestly, from the definition bodies: the two panels may **coincide** or
-their normals be dependent — no transversality is assumed, since the common perp is furnished by
-`exists_linearIndependent_perp_of_normals` (which needs only `2 + 2 ≤ 4`, not `LinearIndependent
-![n_u, n_v]`); and the two points may **coincide projectively** (`pt_v ∈ span{pt_u}`), in which case
-the through-both-points hinge is completed by any second common-perp direction independent from
-`pt_u` — such a direction exists because the common perp is `≥ 2`-dimensional while `span{pt_u}` is
-a line. Only `pt_u ≠ 0` is required (`pt_v = 0` is admissible: `ExtensorThroughPoint C 0` holds for
-the constant witness); the nonzero-`pt_v` conjunct of a genuine pencil body is not consumed here.
-
-This is the existence (`←`) direction of the biconditional `exists_extensor_two_pencils_iff` below;
-the necessity (`→`) direction — for a nonzero `C`, `ExtensorInPanel C n_v` +
-`ExtensorThroughPoint C pt_u` force `pt_u ⬝ᵥ n_v = 0` — is
-`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, resting on the span-uniqueness of a
-nonzero decomposable grade-`2` extensor (`span_range_eq_of_extensor_eq`, `Meet.lean` — the Plücker-
-injectivity converse of `exists_smul_extensor_eq_of_mem_span_range`). -/
+This is the forward direction of `exists_extensor_two_pencils_iff`. The backward one,
+`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, rests on a nonzero `2`-extensor
+determining the span of its vectors (`span_range_eq_of_extensor_eq`, `Meet.lean`). -/
 theorem exists_extensor_two_pencils {n_u n_v pt_u pt_v : Fin 4 → K}
     (hu_ne : pt_u ≠ 0)
     (hu_inc : pt_u ⬝ᵥ n_u = 0) (hv_inc : pt_v ⬝ᵥ n_v = 0)
@@ -763,22 +719,15 @@ theorem exists_extensor_two_pencils {n_u n_v pt_u pt_v : Fin 4 → K}
     rw [← hc]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
 
-/-! ## W2: the two-pencil extension necessity and iff -/
+/-! ## The converse of the extension step -/
 
-/-- **A hinge in a panel and through a point forces the point into that panel**
-(`sec:pencil-extension`; Phase 39 PENCIL, leaf W2, the necessity engine). If a *nonzero* screw
-element `C : ScrewSpace K 2`
-lies in the panel with normal `n` (`ExtensorInPanel`) *and* passes through the point `q`
-(`ExtensorThroughPoint`), then `q ⬝ᵥ n = 0` — the point lies in the panel. This is the necessity
-direction of the two-pencil extension: a hinge cannot be both in a body's panel and through another
-body's point unless that point already lies in the panel.
-
-The two predicates furnish two witness families `p'` (panel: each `p' i ⬝ᵥ n = 0`) and `p''`
-(through-point: `q ∈ span (range p'')`) with the same nonzero `2`-extensor `extensor p' = C.val =
-extensor p''`. By the span-uniqueness of a nonzero decomposable `2`-extensor
-(`span_range_eq_of_extensor_eq`, Plücker injectivity) the two families span the same plane, so
-`q ∈ span (range p')`; being a span of vectors orthogonal to `n`, that plane is orthogonal to `n`
-(`dotProduct_eq_zero_of_mem_span`), whence `q ⬝ᵥ n = 0`. -/
+/-- **A nonzero hinge in a panel and through a point puts the point in the panel**
+(`lem:two-pencil-extension-iff`, its backward direction): if a nonzero `C : ScrewSpace K 2` lies in
+the panel with normal `n` (`ExtensorInPanel`) and passes through `q` (`ExtensorThroughPoint`), then
+`q ⬝ᵥ n = 0`. The two predicates give families `p'`, with each `p' i ⬝ᵥ n = 0`, and `p''`, with `q`
+in its span, whose extensors are both `C`. As `C ≠ 0` they span the same subspace
+(`span_range_eq_of_extensor_eq`), so `q` lies in the span of `p'` and is orthogonal to `n`
+(`dotProduct_eq_zero_of_mem_span`). -/
 theorem dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint
     {C : ScrewSpace K 2} {n q : Fin 4 → K} (hC : C ≠ 0)
     (h_in : ExtensorInPanel C n) (h_thru : ExtensorThroughPoint C q) :
@@ -793,19 +742,13 @@ theorem dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint
   rw [dotProduct_comm]
   exact dotProduct_eq_zero_of_mem_span (fun j => by rw [dotProduct_comm]; exact hp'perp j) hq'
 
-/-- **The two-pencil extension biconditional** (`lem:two-pencil-extension-iff`; Phase 39 PENCIL,
-leaf W2, the design-doc iff). Under the two own-panel incidences (`pt_u ⬝ᵥ n_u = 0`,
-`pt_v ⬝ᵥ n_v = 0`) and `pt_u ≠ 0`, the two **cross-incidences**
-`pt_u ⬝ᵥ n_v = 0 ∧ pt_v ⬝ᵥ n_u = 0` (each concurrency point in the *other* body's panel) hold
-**iff** there is a nonzero hinge `C : ScrewSpace K 2` lying in both panels and passing through both
-points.
-
-The forward (`→`) direction is the existence lemma `exists_extensor_two_pencils`; the backward
-(`←`) direction is `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint` applied to each
-cross pair (`C` in `n_v`'s panel through `pt_u` forces `pt_u ⬝ᵥ n_v = 0`, and symmetrically). This
-quantifies exactly the Case-I / outer-layer obligation the coplanar strip-and-re-add move leaves
-implicit: an edge is pencil-re-addable between two bodies precisely when the concurrency points are
-mutually panel-incident. -/
+/-- **The two-pencil extension step and its converse** (`lem:two-pencil-extension-iff`): let
+`pt_u ≠ 0`, `pt_u ⬝ᵥ n_u = 0` and `pt_v ⬝ᵥ n_v = 0`. The cross-incidences `pt_u ⬝ᵥ n_v = 0` and
+`pt_v ⬝ᵥ n_u = 0` hold iff some nonzero `C : ScrewSpace K 2` lies in both panels and passes through
+both points. The forward direction is `exists_extensor_two_pencils`, and the backward one is
+`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint` at each cross pair. So an edge
+between two bodies of a pencil realization can be given a hinge exactly when the point of each lies
+in the panel of the other. -/
 theorem exists_extensor_two_pencils_iff {n_u n_v pt_u pt_v : Fin 4 → K} (hu_ne : pt_u ≠ 0)
     (hu_inc : pt_u ⬝ᵥ n_u = 0) (hv_inc : pt_v ⬝ᵥ n_v = 0) :
     (pt_u ⬝ᵥ n_v = 0 ∧ pt_v ⬝ᵥ n_u = 0) ↔
@@ -819,21 +762,17 @@ theorem exists_extensor_two_pencils_iff {n_u n_v pt_u pt_v : Fin 4 → K} (hu_ne
     exact ⟨dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nv h_tu,
            dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nu h_tv⟩
 
-/-! ## W5-L5 cut-arm infra: scale invariance and the forced-hinge lemma (Phase 39, L5-cut-ii)
+/-! ## Rescaling, and a hinge through two points
 
-The cut arm's non-hub matching sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition" L5
-"Cut-arm route verdict" item 1b) reasons about `ExtensorInPanel`/`ExtensorThroughPoint` up to a
-nonzero rescaling in either argument: the extensor `C` (absorbing a scalar into one spanning slot,
-`extensor_update_smul`) or the normal/point (`n`/`q`, absorbing a scalar through the linearity of
-`⬝ᵥ`/`Submodule.span`). This section lands the four scale-invariance iffs and the forced-hinge
-lemma the L5 blocker verdict's item 1 derives: a nonzero hinge through two independent points is
-forced onto their join, up to scale. -/
+`ExtensorInPanel` and `ExtensorThroughPoint` do not change when the extensor, the normal or the
+point is multiplied by a nonzero scalar: a scalar on the extensor goes into the first vector of its
+family (`extensor_update_smul`), and one on the normal or the point into the dot product or the
+span. A nonzero hinge through two independent points is a nonzero multiple of their join
+(`exists_smul_eq_extensor_of_extensorThroughPoint_pair`). -/
 
-/-- **`ExtensorInPanel` is invariant under a nonzero rescaling of the extensor**
-(Phase 39 W5-L5 cut-arm infra). Absorb the scalar into the first slot of the witness family
-(`extensor_update_smul`); orthogonality of the rescaled slot is unaffected (`smul_dotProduct`).
-Stated at the grade `k = 2` this development uses throughout (indexing the witness family's first
-slot needs `Fin k` to carry a canonical `0`, which a generic `k : ℕ` does not supply). -/
+/-- **`ExtensorInPanel` is invariant under a nonzero rescaling of the extensor**: the scalar goes
+into the first vector of the family (`extensor_update_smul`), which stays orthogonal to the normal
+(`smul_dotProduct`). It is stated at grade `2`, where the family's first index is `0 : Fin 2`. -/
 theorem extensorInPanel_smul_iff {C : ScrewSpace K 2} {n : Fin 4 → K} {c : K}
     (hc : c ≠ 0) : ExtensorInPanel (c • C) n ↔ ExtensorInPanel C n := by
   constructor
@@ -851,9 +790,8 @@ theorem extensorInPanel_smul_iff {C : ScrewSpace K 2} {n : Fin 4 → K} {c : K}
       · rw [Function.update_self, smul_dotProduct, hperp 0, smul_zero]
       · rw [Function.update_of_ne hi]; exact hperp i
 
-/-- **`ExtensorInPanel` is invariant under a nonzero rescaling of the normal**
-(Phase 39 W5-L5 cut-arm infra). Immediate from the linearity of `⬝ᵥ` in its second argument
-(`dotProduct_smul`) and cancelling the nonzero `c` in the field `K`. -/
+/-- **`ExtensorInPanel` is invariant under a nonzero rescaling of the normal**: `⬝ᵥ` is linear in
+its second argument (`dotProduct_smul`), and `c ≠ 0` cancels in the field `K`. -/
 theorem extensorInPanel_smul_normal_iff {C : ScrewSpace K 2} {n : Fin 4 → K}
     {c : K} (hc : c ≠ 0) : ExtensorInPanel C (c • n) ↔ ExtensorInPanel C n := by
   constructor
@@ -865,9 +803,8 @@ theorem extensorInPanel_smul_normal_iff {C : ScrewSpace K 2} {n : Fin 4 → K}
   · rintro ⟨p, hpval, hperp⟩
     exact ⟨p, hpval, fun i => by rw [dotProduct_smul, hperp i, smul_zero]⟩
 
-/-- **`ExtensorThroughPoint` is invariant under a nonzero rescaling of the point**
-(Phase 39 W5-L5 cut-arm infra). Immediate from `Submodule.span`'s closure under `•` (both
-directions, using `c` and `c⁻¹`). -/
+/-- **`ExtensorThroughPoint` is invariant under a nonzero rescaling of the point**: a span is closed
+under multiplication by `c` and by `c⁻¹`. -/
 theorem extensorThroughPoint_smul_point_iff {C : ScrewSpace K 2} {q : Fin 4 → K}
     {c : K} (hc : c ≠ 0) : ExtensorThroughPoint C (c • q) ↔ ExtensorThroughPoint C q := by
   constructor
@@ -878,10 +815,9 @@ theorem extensorThroughPoint_smul_point_iff {C : ScrewSpace K 2} {q : Fin 4 → 
   · rintro ⟨p, hpval, hqmem⟩
     exact ⟨p, hpval, Submodule.smul_mem _ c hqmem⟩
 
-/-- **`ExtensorThroughPoint` is invariant under a nonzero rescaling of the extensor**
-(Phase 39 W5-L5 cut-arm infra). Absorb the scalar into the first slot of the witness family, as
-`extensorInPanel_smul_iff`; the span of the rescaled family is unchanged, since it differs from
-the original only by a nonzero scalar in one slot (`hspan` below). -/
+/-- **`ExtensorThroughPoint` is invariant under a nonzero rescaling of the extensor**: the scalar
+goes into the first vector of the family, as in `extensorInPanel_smul_iff`, which does not change
+its span (`hspan`). -/
 theorem extensorThroughPoint_smul_iff {C : ScrewSpace K 2} {q : Fin 4 → K} {c : K}
     (hc : c ≠ 0) : ExtensorThroughPoint (c • C) q ↔ ExtensorThroughPoint C q := by
   have hspan : ∀ (p : Fin 2 → Fin 4 → K) (c' : K), c' ≠ 0 →
@@ -922,21 +858,16 @@ theorem extensorThroughPoint_smul_iff {C : ScrewSpace K 2} {q : Fin 4 → K} {c 
     · rw [ScrewSpace.val_smul, hpval, extensor_update_smul]
     · rwa [hspan p c hc]
 
-/-- **A nonzero hinge through two independent points is forced onto their join**
-(Phase 39 W5-L5 cut-arm infra, L5-cut-ii; the join-side companion of
-`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`'s meet-side necessity;
-`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Blocker verdict" item 1). If a nonzero
-`C : ScrewSpace K 2` passes through two projectively-distinct points `p, q`
-(`LinearIndependent K ![p, q]`), then `C` is a nonzero scalar multiple of the extensor of the line
-through `p, q` itself: `∃ c ≠ 0, c • C.val = extensor ![p, q]`.
+/-- **A nonzero hinge through two independent points is a multiple of their join** (a step of
+`lem:pencil-generic-steer`): if a nonzero `C : ScrewSpace K 2` passes through `p` and through `q`,
+and `p, q` are linearly independent, then `c • C.val = extensor ![p, q]` for some `c ≠ 0`. So the
+hinge of a link of a nondegenerate realization is the line through the points of its ends, as the
+paragraph after `def:pencil-nondegenerate` says.
 
-Each `ExtensorThroughPoint` witness gives a spanning pair `p', p''` with `C.val = extensor p' =
-extensor p''` and `p ∈ span p'`, `q ∈ span p''`; nonzero-ness of `C` makes both spans the same
-plane (`span_range_eq_of_extensor_eq`), so that plane contains the independent pair `p, q`, and
-`exists_smul_extensor_eq_of_mem_span_range` then gives the scalar `c` with `c • C.val = extensor
-![p, q]`; `c ≠ 0` since `extensor ![p, q] ≠ 0` (the pair is independent). This is the "two
-through-points + pair-LI force a hinge onto their join" composition the cut arm's non-hub matching
-transport needs to identify both sides' cut-edge hinges with the projective line `p ∨ q`. -/
+The two predicates give families `p'` and `p''` with extensor `C.val`, `p` in the span of `p'` and
+`q` in that of `p''`. As `C ≠ 0` the two spans are equal (`span_range_eq_of_extensor_eq`), so the
+span of `p'` contains the independent pair `p, q`, and `exists_smul_extensor_eq_of_mem_span_range`
+gives `c` with `c • C.val = extensor ![p, q]`. As `extensor ![p, q] ≠ 0`, `c ≠ 0`. -/
 theorem exists_smul_eq_extensor_of_extensorThroughPoint_pair
     {C : ScrewSpace K 2} {p q : Fin 4 → K} (hC : C ≠ 0)
     (hp : ExtensorThroughPoint C p) (hq : ExtensorThroughPoint C q)
