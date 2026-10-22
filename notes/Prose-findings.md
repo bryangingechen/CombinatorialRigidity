@@ -2625,7 +2625,11 @@ declaration's name as its header writes it:
   `G` relinked at the freed label (`Graph.isLink_update_splitOff`: it orients every link of the
   split-off; and the header's bullet on it) and the ear datum of the base data at which `H`, with
   the selector relinked, has nonzero hinges and its target rank (`Graph.exists_earBase_splitOff`),
-  kept as they stand but for their leads, moved to the phase (task 37.16).
+  kept as they stand but for their leads, moved to the phase (task 37.16); and in
+  `Pencil/MainComponent/Orbit.lean`, the comment that the frameworks of `G` read the hinges of `G₁`
+  on `V₁` (`Graph.X0Attains.of_openEar_two_of_splitOff`, `hCG`: at a link of `G[V₁]` the framework
+  of `G` at every ear datum and that of `G₁`, whose selector is that of `G` relinked at `e 1`, give
+  the same hinge), kept as it stands, moved to the phase (task 37.17).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -5952,6 +5956,31 @@ declaration's name as its header writes it:
   derived from the others, on the standard axioms or fewer
   (`scratch/reconcile-lean/t3716/Hyps-t3716.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.16.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-317** · L · repeated derivations and derivable hypotheses in
+  `Molecular/Molecule/Pencil/MainComponent/Orbit.lean`. Derivable hypotheses: the `hinj` of
+  `Graph.exists_oneEar_base` and `Graph.X0Attains.of_openEar_one` (a map out of `Fin 1` is
+  injective); the `hinj` of `Graph.X0Attains.of_openEar_two_of_splitOff` and
+  `splitOff_ear_two_simple`, from simplicity and `hpath 1` (`x 0 ≠ x 1`, as `e 1` is no loop); and
+  the `hab` of `Graph.exists_oneEar_base`, `Graph.X0Attains.of_openEar_one` and
+  `Graph.X0Attains.of_openEar_two_of_splitOff`, from `hδ₂` (at `a = b` every partition puts `a` and
+  `b` in one part, so the merged deficiency is the deficiency). Repeated derivations:
+  `splitOff_ear_two` is the proof of `splitOff_ear_three` and `splitOff_ear_four` (`Short.lean`,
+  `F-316`) with the relinked edge ending at `b`, which one lemma at any number of interior bodies
+  from two would serve; `exists_dotProduct_eq_zero_ne_zero` proves its cases `c 0 ≠ 0` and
+  `c 1 ≠ 0` by one argument with the coordinates swapped (16 lines each); in
+  `Graph.X0Attains.of_openEar_two_of_splitOff`, `hlas` and `hlbs` are one argument at `a` and at `b`
+  (10 lines each), and so are `hpt0` and `hpt1` (at `x 0` and `x 1`, 9 lines each) and the last two
+  arguments of the call to `exists_insertion_two`; and the heights of an attainment are lifted to
+  the kernel of the lifting matrix (`map_ker_liftingMatrix`, then `MvPolynomial.eval_rename`) in
+  `Graph.exists_oneEar_base` (`hz₁'`, `h1`) and again in
+  `Graph.X0Attains.of_openEar_two_of_splitOff` (`hz₂'`, its second fibre intersection). `lake lint`
+  reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the `hinj` of `Fin 1` and of
+  `Fin 2` and `hab` derived from the others, and `Graph.X0Attains.of_openEar_one` and
+  `Graph.X0Attains.of_openEar_two_of_splitOff` applied without them, on the standard axioms or fewer
+  (`scratch/reconcile-lean/t3717/Hyps-t3717.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.17.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

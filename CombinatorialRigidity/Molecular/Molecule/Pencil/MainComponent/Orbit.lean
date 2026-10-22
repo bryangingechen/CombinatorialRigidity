@@ -6,66 +6,75 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
 
 /-!
-# The open ears with one or two interior bodies at non-adjacent ends (Phase 40i ORBIT)
+# Open ears with one or two interior bodies at non-adjacent ends
 
-The `k = 1` and `k = 2` cells of the open ears at non-adjacent ends
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-orbit`; informal (MC-174),
-(MC-176), (MC-54) at `k = 1`, `notes/Phase40i.md`).
+The steps of the induction on the general configuration at an open ear on `V₁` with one or two
+interior bodies, `a − x 0 − b` or `a − x 0 − x 1 − b`, whose ends `a` and `b` are not adjacent
+(`thm:pencil-x0-open-ear-one`, `thm:pencil-x0-open-ear-two-orbit`, `sec:main-component-orbit`). An
+ear is given as in `MainComponent/Ear.lean`. Both steps assume
+`def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`: every partition of `V₁` with `a` and `b` in one part falls at
+least two below the planar deficiency of `G[V₁]`. With one interior body the step also assumes
+`def₃(G[V₁]) ≤ def₃(G)`; with two, no bound on `def₃(G)`, but that the general configuration of
+`G₁ = G.splitOff (x 1) (x 0) b (e 1)`, `G` with `x 1` suppressed and the label `e 1` of `x 0 − x 1`
+relinked to `x 0 − b`, attains. The steps follow the scheme of `sec:main-component-cut`
+(`MainComponent/Cut.lean`), with the ear rank formula
+(`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, `lem:block-rank-ear`) for the count: they
+prove the inequality `(⋆)` of `sec:main-component-short` (`MainComponent/Short.lean`) at one and at
+two interior bodies, a lower bound on `dim(ρ + Λ)`, where `ρ` is the space of relative screws of `a`
+and `b` in `G[V₁]` and `Λ` the span of the joins of the ear.
 
-## `k = 1`
+The hypothesis on the merged deficiency places the planes of the two ends. Suppressing the body of a
+one-body ear `a − x 0 − b` on `V₁` leaves `G[V₁]` with the edge `ab` added
+(`Graph.splitOff_oneEar`), whose planar deficiency is at least two below that of `G[V₁]`
+(`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`, `lem:splitoff-deficiency-merged`). So at a
+general picture its lifting space is at least two smaller than that of `G[V₁]`, by Jackson and
+Jordán's equality at `G[V₁] + ab` (`thm:pencil-jj-equality`) and
+`lem:pencil-lifting-space-deficiency` at `G[V₁]`, and the two incidence functionals
+`(z, h) ↦ (h_a − h_b) · (q_a, 1)` and `(z, h) ↦ (h_a − h_b) · (q_b, 1)` are independent on the
+solutions of the lifting system of `G[V₁]` (`Graph.two_le_finrank_map_planeDiff`,
+`lem:pencil-flag-genericity`). At a general solution the point of each end lies off the plane of the
+other.
 
-Let `H` carry an open ear `a − x 0 − b` on `V₁` with `a ≁ b`, and suppose
-`X₀(G′)` attains at `G′ = H[V₁]` under a two-dimensional gap in the merged deficiency,
-`deficiencyMerged₂(G′; a, b) + 2 ≤ def₂(G′)`. Splitting off the ear body (`Graph.splitOff_oneEar`)
-gives `G′ + ab`, whose lifting space is two smaller than `G′`'s at a general picture
-(`lem:splitoff-deficiency-merged`, Jackson–Jordán). The two incidence functionals at `a` and `b`
-are then independent on the lifting system's kernel of `G′` (`lem:pencil-flag-genericity`), so
-(MC-174)'s parametrized incidence (`exists_incidence`) puts the ear body's picture, jointly with
-heights of `G′`, at a point where both planes are met transversally and `G′` attains
-(`Graph.exists_oneEar_base`). The ear rank law then adds the two independent ear joins to give
-`X₀(H)` attaining (`Graph.X0Attains.of_openEar_one`).
+With one interior body, `(⋆)` asks no more than `dim(ρ + Λ) ≥ 2`, as `def₃(G[V₁]) ≤ def₃(G)`, and
+the two joins of the ear give this at every admissible picture. A solution for `G` restricts to one
+for `G[V₁]` at which `h_a − h_b` vanishes at the picture point of `x 0`, so the picture of `x 0` is
+chosen together with the solution, as a point of their incidence off the zero sets of a polynomial
+in the solution and of one in the picture (`exists_incidence`, `lem:pencil-one-ear-incidence`). This
+gives the base configuration (`Graph.exists_oneEar_base`, `lem:pencil-one-ear-base`), stated for any
+simple graph with such an ear and any polynomial in the picture, so that the step with two interior
+bodies can apply it to `G₁`.
 
-## `k = 2`
+With two interior bodies the count is against `G₁`. It has the one-body ear `a − x 0 − b` on `V₁`
+and the same `G[V₁]`, it is simple with `a` and `b` not adjacent, and its deficiency is at most that
+of `G` (`Graph.splitOff_deficiency_le_of_eq_left`, `lem:splitoff-deficiency-reuse`). The base
+configuration of `G₁`, taken where `G₁` also has its target, puts the point `y` of `x 0` on both end
+planes, with the point of each end off the plane of the other, and the ear rank formula at `G₁`
+gives `dim W`, `W` the span of `ρ` and the two joins of its ear. Placing `x 0` on the plane of `a`
+and `x 1` on that of `b` then gains a dimension unless `W` is the whole screw space
+(`exists_insertion_two`, `lem:pencil-insertion-two`), and with
+`Graph.deficiency_induce_add_le_of_ear` (`lem:deficiency-ear`) this is `(⋆)` at two interior bodies.
+The heights follow the points through the ear data (`def:pencil-ear-data`,
+`MainComponent/EarGen.lean`), and a general ear datum gives the configuration of `G`, as in the
+second stage of `sec:main-component-short`.
 
-Let `G` carry an open ear `a − x 0 − x 1 − b` on `V₁`, `a ≁ b`, `δ₂(G[V₁]; a, b) ≥ 2`. Suppressing
-`x 1` (`splitOff_ear_two`) leaves a one-body ear `a − x 0 − b` on `V₁`, still simple with `a ≁ b`
-(`splitOff_ear_two_simple`), so `Graph.exists_oneEar_base` gives its base: a picture and heights of
-`G₁ = G.splitOff (x 1) (x 0) b (e 1)` at which `G[V₁]` attains and the flag pair at `a, b` is in
-orbit (i). A second fibre intersection in `G₁`'s lifting system makes `G₁` itself attain there.
-Putting `x 1` back (`exists_insertion_two`) raises the span of the ear's joins to at least
-`min(dim W + 1, 6)`; the deficiency count (`Graph.splitOff_deficiency_le_of_eq_left`,
-`Graph.deficiency_induce_add_le_of_ear`) turns this into `X₀(G)` attaining
-(`Graph.X0Attains.of_openEar_two_of_splitOff`).
+## Main results
 
-## Main statements
-
-* `exists_incidence` — (MC-174) in parametrized form (`lem:pencil-one-ear-incidence`): a linear
-  map of rank at least two on a subspace `L`, a polynomial nonzero somewhere on `L`, and a nonzero
-  polynomial on `K²` meet at a common point of `L × K²` (`exists_dotProduct_eq_zero_ne_zero` is the
-  affine-function lemma the parametrization needs).
-* `incidencePoly`, `eval_incidencePoly` — the incidence functional `z ↦ (h_a − h_b)(u)` as a
-  polynomial in the lifting system's coordinates.
-* `Graph.exists_oneEar_base` — the base configuration of a one-body ear (`lem:pencil-one-ear-base`,
-  (MC-176) Steps 1–2): the ear body's picture and `G′`'s heights, chosen together, at which `G′`
-  attains and the flag pair at `a, b` is transversal.
-* `Graph.X0Attains.of_openEar_one` — (MC-54) at `k = 1` (`thm:pencil-x0-open-ear-one`): `X₀(G′)`
-  attaining under the deficiency and merged-deficiency hypotheses gives `X₀(H)` attaining.
-* `splitOff_ear_two`, `splitOff_ear_two_simple` — the antecedent of a two-body ear is a one-body
-  ear: suppressing `x 1` and relinking `e 1` to `x 0 − b` leaves the ear `a − x 0 − b` on `V₁`, and
-  it stays simple with `a ≁ b` when `G` was.
-* `Graph.X0Attains.of_openEar_two_of_splitOff` — (MC-176), the two-body open ear at `a ≁ b`,
-  `δ₂ ≥ 2` (`thm:pencil-x0-open-ear-two-orbit`): `X₀(G[V₁])` and `X₀(G₁)` attaining gives `X₀(G)`
-  attaining.
-
-## Design
-
-* **`Graph.splitOff_oneEar`** records the combinatorics of suppressing the ear body: the split-off
-  `G′ + ab` keeps every link of `G′`, and only `a`'s and `b`'s closed neighbourhoods grow, by each
-  other. `Graph.exists_oneEar_base` reads it once, up front.
-* **`Short.lean` import.** The `k = 2` cell reuses two SHORT-group facts about a suppressed
-  interior body (`induce_splitOff_ear`, `Graph.isLink_update_splitOff`), so this file imports
-  `MainComponent/Short.lean`, which brings `EarGen.lean` with it; no cycle (`Short.lean` itself
-  only imports `EarGen.lean`).
+* `Graph.X0Attains.of_openEar_one`: `thm:pencil-x0-open-ear-one`, if `G` satisfies the standing
+  hypotheses, with an open ear `a − x 0 − b` on `V₁` whose ends are not adjacent,
+  `def₃(G[V₁]) ≤ def₃(G)` and `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`, the general configuration of
+  `G` attains when that of `G[V₁]` does.
+* `Graph.X0Attains.of_openEar_two_of_splitOff`: `thm:pencil-x0-open-ear-two-orbit`, the same with
+  two interior bodies, `a − x 0 − x 1 − b`, under the bound on the merged deficiency alone, when the
+  general configurations of `G[V₁]` and of `G₁` attain.
+* `Graph.exists_oneEar_base`: `lem:pencil-one-ear-base`, the base configuration of a one-body ear;
+  `incidencePoly` and `eval_incidencePoly`, steps of it.
+* `Graph.splitOff_oneEar`: a step of `lem:pencil-one-ear-base` and of the split-off step
+  (`MainComponent/SplitOff.lean`), suppressing the body of a one-body ear leaves `G[V₁]` with the
+  edge `ab` added.
+* `exists_incidence`: `lem:pencil-one-ear-incidence`, an incidence meets two open conditions;
+  `exists_dotProduct_eq_zero_ne_zero`, a step of it.
+* `splitOff_ear_two` and `splitOff_ear_two_simple`: steps of `thm:pencil-x0-open-ear-two-orbit`,
+  `G₁` has the open ear `a − x 0 − b` on `V₁`, and is simple with non-adjacent ends when `G` is.
 -/
 
 open scoped Graph
@@ -74,11 +83,13 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## The one-body ear splits off `G′ + ab` unchanged -/
+/-! ## Suppressing the body of a one-body ear -/
 
-/-- **The split-off of a one-body ear is `G[V₁]` plus the edge `ab`**: suppressing the ear body
-`x 0` and relinking its label `e 0` to `a − b` leaves the bodies `V₁`, keeps every link of
-`G[V₁]`, and grows the closed neighbourhoods of `a` and `b` by each other only. -/
+/-- **Suppressing the body of a one-body ear** (a step of `lem:pencil-one-ear-base`,
+`lem:pencil-splitoff-flexes`, `lem:pencil-splitoff-special-rank` and `thm:pencil-x0-splitoff`): if
+`H` has the open ear `a − x 0 − b` on `V₁`, then suppressing `x 0` and relinking its label `e 0` to
+`a − b` leaves the bodies `V₁`, keeps every link of `H[V₁]`, and grows the closed neighbourhoods of
+`a` and `b` by each other only; and every link of `H` with the label `e 0` has `x 0` as an end. -/
 theorem _root_.Graph.splitOff_oneEar {H : Graph α β} {V₁ : Set α} {x : Fin 1 → α} {a b : α}
     {e : Fin 2 → β} (hcover : V(H) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁)
     (hb : b ∈ V₁)
@@ -117,10 +128,13 @@ theorem _root_.Graph.splitOff_oneEar {H : Graph α β} {V₁ : Set α} {x : Fin 
     · exact Or.inr (Or.inl ⟨rfl, rfl⟩)
     · exact Or.inr (Or.inr ⟨rfl, rfl⟩)
 
-/-! ## (MC-174): the one-ear incidence, parametrized -/
+/-! ## An incidence meets two open conditions (`lem:pencil-one-ear-incidence`) -/
 
-/-- **An affine function vanishing on the zero line of a nonconstant one is a multiple of it.**
-Contrapositive form: if `c` is nonconstant and `d ∉ K c`, some `q` has `c(q) = 0 ≠ d(q)`. -/
+/-- **A point on the zero line of one affine function and off that of another** (a step of
+`lem:pencil-one-ear-incidence`): read `c, d ∈ K³` as the affine functions `q ↦ c · (q, 1)` and
+`q ↦ d · (q, 1)` on `K²`. If `c` is nonconstant and `d` is not a multiple of `c`, some `q` has
+`c(q) = 0 ≠ d(q)`: an affine function vanishing on the zero line of a nonconstant one is a multiple
+of it. -/
 theorem exists_dotProduct_eq_zero_ne_zero {c d : Fin 3 → K} (hc : c 0 ≠ 0 ∨ c 1 ≠ 0)
     (hd : d ∉ K ∙ c) : ∃ q : Fin 2 → K, c ⬝ᵥ ![q 0, q 1, 1] = 0 ∧ d ⬝ᵥ ![q 0, q 1, 1] ≠ 0 := by
   by_contra! H
@@ -159,12 +173,18 @@ theorem exists_dotProduct_eq_zero_ne_zero {c d : Fin 3 → K} (hc : c 0 ≠ 0 �
     · simp [hc]
     · simpa using e2
 
-/-- **(MC-174), the one-ear incidence parametrized** (informal Step MC13; `lem:pencil-one-ear-
-incidence`): let `D : L → Aff(K²)` (an affine function as its coefficient triple, read at `q` as
-`D z ⬝ (q, 1)`) have rank at least two on `L`, let `A` be a polynomial nonzero somewhere on `L`,
-and `B` a nonzero polynomial on `K²`. Then some `z ∈ L`, `q ∈ K²` have `D z (q) = 0`, `A z ≠ 0`,
-`B q ≠ 0`. The incidence is parametrized by `(q, s) ↦ s (D u (q) z₀ − D z₀ (q) u)`, along which
-`A` is nonzero at one point. -/
+/-- **An incidence meets two open conditions** (`lem:pencil-one-ear-incidence`). Let `K` be
+infinite, `L` a subspace of `K^σ` for a finite `σ`, and `D : K^σ → K³` linear with `dim D(L) ≥ 2`,
+`D z` read as the affine function `q ↦ D z · (q, 1)` on `K²`. Let `A` be a polynomial in the
+coordinates of `σ`, nonzero somewhere on `L`, and `B` a nonzero polynomial on `K²`. Then some
+`z ∈ L` and `q ∈ K²` have `D z · (q, 1) = 0`, `A(z) ≠ 0` and `B(q) ≠ 0`.
+
+Proof. Some `z₀ ∈ L` has `A(z₀) ≠ 0` and `D z₀` nonconstant
+(`MvPolynomial.exists_mem_eval_ne_zero₂`, `lem:pencil-x0-fibre-intersection`), and some `u ∈ L` has
+`D u` not a multiple of `D z₀`. For `q ∈ K²` and `s ∈ K`, the point `s (D u (q) z₀ − D z₀ (q) u)` of
+`L` and `q` lie on the incidence, and `A` at that point is a polynomial in `(q, s)`. It is nonzero
+at a `q` on the zero line of `D z₀` off that of `D u` (`exists_dotProduct_eq_zero_ne_zero`) and
+`s = D u (q)⁻¹`, where the point is `z₀`. A common non-root of it and of `B` gives `z` and `q`. -/
 theorem exists_incidence [Infinite K] {σ : Type*} [Finite σ] {L : Submodule K (σ → K)}
     (D : (σ → K) →ₗ[K] (Fin 3 → K)) (hD : 2 ≤ Module.finrank K (L.map D))
     {A : MvPolynomial σ K} (hA : ∃ z ∈ L, MvPolynomial.eval z A ≠ 0)
@@ -254,10 +274,12 @@ theorem exists_incidence [Infinite K] {σ : Type*} [Finite σ] {L : Submodule K 
   · rw [MvPolynomial.eval_rename] at hptB
     exact hptB
 
-/-! ## The base of a one-body ear: (MC-174) at `X₀(G′)`, dominance under `δ₂ ≥ 2` -/
+/-! ## The base configuration of a one-body ear (`lem:pencil-one-ear-base`) -/
 
-/-- The incidence functional `z ↦ (h_a − h_b)(u)` at a picture point `u`, as a linear polynomial
-in the coordinates of the lifting system's kernel. -/
+/-- **The incidence functional as a polynomial** (a step of `lem:pencil-one-ear-base`): for
+`u ∈ K³`, `(z, h) ↦ (h_a − h_b) · u`, a linear polynomial in the coordinates of the lifting system,
+the heights `z` and the coefficient vectors `h` (`eval_incidencePoly`). At `u = (q_a, 1)` and
+`u = (q_b, 1)` it gives the two functionals of `lem:pencil-flag-genericity`. -/
 noncomputable def incidencePoly (a b : α) (u : Fin 3 → K) : MvPolynomial (α ⊕ (α × Fin 3)) K :=
   ∑ i, MvPolynomial.C (u i) *
     (MvPolynomial.X (Sum.inr (a, i)) - MvPolynomial.X (Sum.inr (b, i)))
@@ -267,13 +289,33 @@ theorem eval_incidencePoly (a b : α) (u : Fin 3 → K) (x : α ⊕ (α × Fin 3
   simp [incidencePoly, dotProduct, planeDiff_apply, mul_comm]
 
 open Classical in
-/-- **The base of a one-body ear** (informal (MC-176) Steps 1–2, (MC-54) at `k = 1`;
-`lem:pencil-one-ear-base`): let `H` carry the ear `a − x 0 − b` on `V₁`, `a ≁ b`, with `X₀(G′)`
-attaining (`G′ = H[V₁]`) and `δ₂(G′; a, b) ≥ 2`. For any nonzero picture polynomial `B` whose
-non-roots are admissible for `H`, there are a picture `q` off `B`, and an open condition `A` on the
-lifting system's kernel of `H` at `q`, met at some kernel point, under which `G′` attains and the
-flag pair at `a, b` is in orbit (i). Jackson–Jordán at `G′ + ab` and (MC-4)(b) at `G′` give
-`dim U ≥ 2` (U2), and (MC-174) chooses the ear body's picture jointly with `G′`'s heights. -/
+/-- **The base configuration of a one-body ear** (`lem:pencil-one-ear-base`). Let `K` be infinite
+and `H` simple, with an open ear `a − x 0 − b` on `V₁` whose ends are not adjacent; let
+`G′ = H[V₁]`, let the general configuration of `G′` attain, with `def₂(G′; a, b) + 2 ≤ def₂(G′)`,
+and let `B` be a nonzero polynomial in the picture coordinates whose non-roots are admissible for
+`H`. Then there are a picture `q` with `B(q) ≠ 0` and a polynomial `A` in the coordinates of the
+lifting system of `H`, nonzero at one of its solutions at `q`, such that every solution `(z, h)` at
+`q` with `A(z, h) ≠ 0` has `(h_a − h_b) · (q_a, 1) ≠ 0` and `(h_a − h_b) · (q_b, 1) ≠ 0`, the point
+of each end off the plane of the other, and gives `G′` its target rank `6(|V₁| − 1) − def₃(G′)` at
+`(q, z)`.
+
+Proof. `H` with `x 0` suppressed is `G′ + ab`, `G′` with the edge `ab` added
+(`Graph.splitOff_oneEar`), simple as `a` and `b` are not adjacent, with
+`def₂(G′ + ab) + 2 ≤ def₂(G′)` (`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`,
+`lem:splitoff-deficiency-merged`). At a picture `q′` off `B`, off the polynomial of the attainment
+at `G′` and off that of Jackson and Jordán's equality at `G′ + ab`
+(`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`, `thm:pencil-jj-equality`), the lifting space
+of `G′ + ab` is at least two smaller than that of `G′`
+(`Graph.three_add_deficiency_le_finrank_liftingSpace`, `lem:pencil-lifting-space-deficiency`), so
+`(z, h) ↦ h_a − h_b` has rank at least two on the solutions for `G′`
+(`Graph.two_le_finrank_map_planeDiff`, `lem:pencil-flag-genericity`). `exists_incidence` then gives
+a solution for `G′` off `A`, the product of the polynomial in the heights of the attainment at `G′`
+and the two incidence functionals at `q′`, and a picture point of `x 0`, with `q′` elsewhere, off
+`B` and at which `h_a − h_b` vanishes. Moving `x 0` there gives `q`, and the solution extends to
+`x 0`, with the value of the plane of `a` there as its height and the coefficients of the plane
+through the three points of its closed neighbourhood
+(`Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`,
+`lem:pencil-three-points`). `A` reads only `V₁` and the planes at `a` and `b`. -/
 theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H : Graph α β}
     (hS : H.Simple) {V₁ : Set α} {x : Fin 1 → α} {a b : α} {e : Fin 2 → β}
     (hcover : V(H) = V₁ ∪ Set.range x) (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
@@ -329,7 +371,7 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
     hgood₁ q' (left_ne_zero_of_mul (left_ne_zero_of_mul hq'))
   obtain ⟨-, hJJ'⟩ := hJJ q' (right_ne_zero_of_mul (left_ne_zero_of_mul hq'))
   have hBq' := right_ne_zero_of_mul hq'
-  -- U2: the lifting space drops by two from `G′` to `G′ + ab`
+  -- the lifting space drops by at least two from `G′` to `G′ + ab`
   have hflat := Graph.three_add_deficiency_le_finrank_liftingSpace hadm' ⟨a, ha⟩
   have hdef2 := Graph.splitOff_deficiency_add_le_of_deficiencyMerged (n := 2) (by decide) hV₁
     hax hbx (hV₁H ha) (hV₁H hb) he0
@@ -423,7 +465,7 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
     have := hByev (fun i => q' (x 0, i))
     rw [h, map_zero, hq] at this
     exact hBq' this.symm
-  -- (MC-174)
+  -- the incidence (`exists_incidence`)
   obtain ⟨xg, hxgL, qy, hinc, hAxg, hBqy⟩ := exists_incidence (planeDiff a b) hD hA₀ hBy0
   set q := qf qy with hqdef
   rw [hByev] at hBqy
@@ -437,7 +479,7 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
   have hppx : pencilPicturePoint q (x 0) = ![qy 0, qy 1, 1] := by
     funext i; fin_cases i <;> simp [pencilPicturePoint, hqdef, hqf]
   obtain ⟨hxg1, hxg2, hxg3⟩ := Graph.liftingMatrix_mulVec_eq_zero_iff.mp (LinearMap.mem_ker.mp hxgL)
-  -- the heights: `G′`'s, and the plane at `a` at the ear body
+  -- the heights: those of `G′`, and at the ear body the value of the plane of `a`
   set la : Fin 3 → K := fun i => xg (Sum.inr (a, i)) with hla
   set lb : Fin 3 → K := fun i => xg (Sum.inr (b, i)) with hlb
   have hinc' : la ⬝ᵥ ![qy 0, qy 1, 1] = lb ⬝ᵥ ![qy 0, qy 1, 1] := by
@@ -518,15 +560,22 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
     rw [pencilConfigPoint_liftingRestrict V(G') q' _ hw t]
     fin_cases t <;> simp [pencilConfigPoint, hqV₁ w hw']
 
-/-! ## The one-body open ear ((MC-54) at `k = 1`) -/
+/-! ## An open ear with one interior body (`thm:pencil-x0-open-ear-one`) -/
 
 open Classical in
-/-- **(MC-54) at `k = 1`, the open ear with one interior body** (`thm:pencil-x0-open-ear-one`).
-Let `G` satisfy (H), with an open ear `a − x 0 − b` on `V₁`, `a ≁ b`, with
-`def₃(G[V₁]) ≤ def₃(G)` and `δ₂(G[V₁]; a, b) ≥ 2`. If `X₀(G[V₁])` attains, `X₀(G)` attains. The
-base (`Graph.exists_oneEar_base`, with `G`'s main-picture polynomial) supplies a main picture of
-`G` and heights of `G` at which `G[V₁]` attains; the ear body's two joins are independent at any
-admissible picture, so the ear rank law adds `5 · 2 + 2 − 6`. -/
+/-- **An open ear with one interior body** (`thm:pencil-x0-open-ear-one`). Let `G` satisfy the
+standing hypotheses, with an open ear `a − x 0 − b` on `V₁` whose ends are not adjacent, and let
+`def₃(G[V₁]) ≤ def₃(G)` and `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`. If the general configuration of
+`G[V₁]` attains, so does that of `G`.
+
+Proof. `Graph.exists_oneEar_base` at `G`, with the main-picture polynomial of `G`, gives a main
+picture `q` of `G` and heights `z ∈ L_G(q)` at which `G[V₁]` has its target. The closed
+neighbourhood of `x 0` is `{a, x 0, b}`, whose picture points are not collinear, so the two joins of
+the ear are independent (`linearIndependent_pointJoin_pair`) and `dim(ρ + Λ) ≥ 2`
+(`card_le_finrank_of_linearIndependent_pointJoin`, `lem:pencil-ear-hinge-span`). The ear rank
+formula then adds at least `5 · 2 + 2 − 6 = 6` to the rank, no less than the growth
+`6 − def₃(G) + def₃(G[V₁])` of the target, and `Graph.x0Attains_of_exists`
+(`lem:pencil-x0-one-witness`) concludes. -/
 theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 1 → α} {a b : α}
     {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
@@ -563,7 +612,7 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
     · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
     · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
   have hr₁ := (hgood xk hxk hA).2.2 ends hendsI
-  -- the ear rank law, with two independent ear joins
+  -- the ear rank formula, with two independent joins of the ear
   set F := (PanelHingeFramework.ofNormals (k := 2) G ends
     (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge
   have hC : ∀ i, F.supportExtensor (e i) ≠ 0 :=
@@ -615,10 +664,11 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
         ⊔ Submodule.span K (Set.range (F.supportExtensor ∘ e))) : ℤ) := by exact_mod_cast hdim
   linarith
 
-/-! ## The antecedent of a two-body ear is a one-body ear -/
+/-! ## Suppressing the second interior body of a two-body ear -/
 
-/-- **The antecedent of the two-body ear is a one-body ear**: suppressing `x 1` and relinking
-`e 1` to `x 0 − b` leaves the ear `a − x 0 − b` on `V₁`, with the labels `e 0, e 1`. -/
+/-- **Suppressing the second interior body of a two-body ear** (a step of
+`thm:pencil-x0-open-ear-two-orbit`): suppressing `x 1` and relinking `e 1` to `x 0 − b` leaves the
+ear `a − x 0 − b` on `V₁`, with the labels `e 0, e 1`. -/
 theorem splitOff_ear_two {G : Graph α β} {V₁ : Set α} {x : Fin 2 → α} {a b : α}
     {e : Fin 3 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
     (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
@@ -670,7 +720,9 @@ theorem splitOff_ear_two {G : Graph α β} {V₁ : Set α} {x : Fin 2 → α} {a
         · exact hw h
     · exact absurd rfl (hfe 1)
 
-/-- The antecedent of the two-body ear is simple, and its ends stay non-adjacent. -/
+/-- **Suppressing the second interior body of a two-body ear keeps the graph simple and the ends not
+adjacent** (a step of `thm:pencil-x0-open-ear-two-orbit`): if `G` is simple and `a` and `b` are not
+adjacent in it, the same holds of `G.splitOff (x 1) (x 0) b (e 1)`. -/
 theorem splitOff_ear_two_simple {G : Graph α β} (hS : G.Simple) {V₁ : Set α} {x : Fin 2 → α}
     {a b : α} {e : Fin 3 → β} (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
     (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
@@ -683,7 +735,7 @@ theorem splitOff_ear_two_simple {G : Graph α β} (hS : G.Simple) {V₁ : Set α
   have l0 : G.IsLink (e 0) a (x 0) := hpath 0
   have l2 : G.IsLink (e 2) (x 1) b := hpath 2
   have x01 : x 0 ≠ x 1 := fun h => absurd (hinj h) (by decide)
-  -- no edge of `G` other than the ear's joins `x 0` to `b`
+  -- no edge of `G` other than `e 1`, which the split-off relinks, joins `x 0` to `b`
   have hno : ∀ f, f ≠ e 1 → ¬ G.IsLink f (x 0) b := by
     intro f hf hl
     by_cases hfe : ∃ i, f = e i
@@ -715,17 +767,34 @@ theorem splitOff_ear_two_simple {G : Graph α β} (hS : G.Simple) {V₁ : Set α
     · exact hab h
 
 
-/-! ## The two-body open ear at `a ≁ b`, `δ₂ ≥ 2` ((MC-176)) -/
+/-! ## Two interior bodies at non-adjacent ends (`thm:pencil-x0-open-ear-two-orbit`) -/
 
 open Classical in
-/-- **(MC-176), the open ear with two interior bodies at `a ≁ b`, `δ₂ ≥ 2`**
-(`thm:pencil-x0-open-ear-two-orbit`). Let `G` satisfy (H), with an open ear
-`a − x 0 − x 1 − b` on `V₁`, `a ≁ b`, `δ₂(G[V₁]; a, b) ≥ 2`, and let
-`G₁ = G.splitOff (x 1) (x 0) b (e 1)` be `G` with `x 1` suppressed. If `X₀(G[V₁])` and `X₀(G₁)`
-attain, `X₀(G)` attains. The base of `G₁`'s one-body ear (`Graph.exists_oneEar_base`, with `G₁`'s
-and `G`'s picture polynomials) and a second fibre intersection give heights at which `G[V₁]` and
-`G₁` attain with the flag pair in orbit (i); `x 1` is put back by `exists_insertion_two`; the count
-is `Graph.splitOff_deficiency_le_of_eq_left` and `Graph.deficiency_induce_add_le_of_ear`. -/
+/-- **An open ear with two interior bodies at non-adjacent ends**
+(`thm:pencil-x0-open-ear-two-orbit`). Let `G` satisfy the standing hypotheses, with an open ear
+`a − x 0 − x 1 − b` on `V₁` whose ends are not adjacent, let `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`,
+and let `G₁ = G.splitOff (x 1) (x 0) b (e 1)` be `G` with `x 1` suppressed, the freed label `e 1`
+relinked to `x 0 − b`. If the general configurations of `G[V₁]` and of `G₁` attain, so does that of
+`G`.
+
+Proof. `G₁` has the open ear `a − x 0 − b` on `V₁` (`splitOff_ear_two`), is simple with `a` and `b`
+not adjacent (`splitOff_ear_two_simple`), and has the same `G[V₁]` (`induce_splitOff_ear`).
+`Graph.exists_oneEar_base` at `G₁`, with the product of the polynomial of the attainment at `G₁` and
+the main-picture polynomial of `G`, gives a picture `q`, and a second fibre intersection
+(`MvPolynomial.exists_mem_eval_ne_zero₂`) a solution of the lifting system of `G₁` at `q` at which
+`G[V₁]` and `G₁` have their targets, with the planes `la` at `a` and `lb` at `b`. There the point
+`y` of `x 0` lies on both planes and the point of each end off the plane of the other, and the ear
+rank formula at `G₁` gives `s = dim(ρ + span(p_a ∨ y, y ∨ p_b)) = 2 + def₃(G[V₁]) − def₃(G₁)`.
+`exists_insertion_two` gives affine points `x₁` on `la` and `x₂` on `lb` with
+`dim(ρ + Λ) ≥ min(s + 1, 6)`, `Λ` the span of `p_a ∨ x₁`, `x₁ ∨ x₂` and `x₂ ∨ p_b`, which is at
+least `3 + def₃(G[V₁]) − def₃(G)`, `(⋆)` at two interior bodies, by
+`Graph.splitOff_deficiency_le_of_eq_left` (`lem:splitoff-deficiency-reuse`) and
+`Graph.deficiency_induce_add_le_of_ear` (`lem:deficiency-ear`). Over the base data
+`(q, z|V₁, la, lb)` the points `x₁` and `x₂` of `x 0` and `x 1` are the configuration of one ear
+datum, so the span bound holds off the zero set of a polynomial in the ear data that is nonzero
+there (`exists_mvPolynomial_le_finrank_sup_span_pointJoin`). At a common non-root with the
+main-picture polynomial of `G`, where the rank of `G[V₁]` and `ρ` are those of the base data, the
+ear rank formula at `G` gives `G` its target. -/
 theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 2 → α} {a b : α}
     {e : Fin 3 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
@@ -748,7 +817,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   have l2 : G.IsLink (e 2) (x 1) b := hpath 2
   have x01 : x 0 ≠ x 1 := fun h => absurd (hinj h) (by decide)
   have hV₁G : V₁ ⊆ V(G) := hcover ▸ Set.subset_union_left
-  -- the antecedent `G₁ = G′ + (a − x 0 − b)`
+  -- `G₁`, `G` with `x 1` suppressed: `G[V₁]` with the ear `a − x 0 − b`
   set G₁ := G.splitOff (x 1) (x 0) b (e 1) with hG₁
   obtain ⟨hcover₁, hinj₁, hxV₁₁, hpath₁, hsep₁⟩ :=
     splitOff_ear_two hcover hinj hxV₁ ha hb hab hpath hsep
@@ -764,14 +833,14 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   obtain ⟨ends₂, P₂, hends₂, hP₂, hgood₂⟩ := h₂
-  -- Steps 1–2 at `G₁`: the base of its one-body ear
+  -- the base configuration of the one-body ear of `G₁`
   obtain ⟨q, A, hqB, ⟨xk₀, hxk₀, hA₀⟩, hgood⟩ := G₁.exists_oneEar_base hS₁ hcover₁ hinj₁ hxV₁₁
     ha hb hab hpath₁ hsep₁ hnadj₁ (hind ▸ h₁) (hind ▸ hδ₂) (mul_ne_zero hP₂ hPm)
     (fun q hq => (hgood₂ q (by rw [map_mul] at hq; exact left_ne_zero_of_mul hq)).1)
   rw [map_mul] at hqB
   obtain ⟨hadm₂, R₂, ⟨z₂, hz₂, hR₂⟩, hatt₂⟩ := hgood₂ q (left_ne_zero_of_mul hqB)
   have hPmq := right_ne_zero_of_mul hqB
-  -- a second fibre intersection, in `G₁`'s lifting system: `G₁` attains too
+  -- a second fibre intersection, in the lifting system of `G₁`: `G₁` has its target too
   set L₁ := LinearMap.ker ((G₁.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin with hL₁
   obtain ⟨xk, hxk, hxkR, hxkA⟩ : ∃ xk ∈ L₁,
       MvPolynomial.eval xk (MvPolynomial.rename Sum.inl R₂) ≠ 0 ∧ MvPolynomial.eval xk A ≠ 0 := by
@@ -820,7 +889,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
     intro f u w hf
     rw [hends₁def, Function.update_of_ne (hnot f u w hf)]
     exact hendsI f u w hf
-  -- Step 3 at `G₁`: the ear rank law, `rank G₁ = rank G′ + 4 + s`
+  -- the ear rank formula at `G₁`: `rank G₁ = rank G[V₁] + 4 + s`
   set c₁ : α × Fin 4 → K := fun p => pencilConfigPoint q z p.1 p.2 with hc₁
   set F₁ := (PanelHingeFramework.ofNormals (k := 2) G₁ ends₁ c₁).toBodyHinge with hF₁
   have hC₁ : ∀ i, F₁.supportExtensor (![e 0, e 1] i) ≠ 0 :=
@@ -884,7 +953,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
       hxV₁ ha hb hpath hsep
   have hs6 : (screwDim 2 : ℤ) = 6 := rfl
   have hb6 : (Graph.bodyBarDim 3 : ℤ) = 6 := rfl
-  -- `s = dim(ρ + Λ₁(y)) = 2 + def₃(G′) − def₃(G₁)`
+  -- `s = dim(ρ + span(p_a ∨ y, y ∨ p_b)) = 2 + def₃(G[V₁]) − def₃(G₁)`
   have hs : (Module.finrank K ↥(ρJ ⊔ Submodule.span K {pointJoin pa y, pointJoin y pb}) : ℤ) =
       2 + (G.induce V₁).deficiency 3 - G₁.deficiency 3 := by
     have h1 : (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ) =
@@ -895,7 +964,8 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
     rw [hear₁, hrk₁, hcount₁, hs6, ← hρJ] at h1
     push_cast at h1
     linarith
-  -- Step 4: put `x 1` back (orbit (i) at `y`)
+  -- put `x 1` back (`exists_insertion_two`): `y` on both planes, the point of each end off the
+  -- plane of the other
   have hxa : x 0 ∈ G₁.closedNbhd a := Or.inr ⟨e 0, hpath₁ 0⟩
   have hxb : x 0 ∈ G₁.closedNbhd b := Or.inr ⟨e 1, (hpath₁ 1).symm⟩
   have hza : z a = la ⬝ᵥ pencilPicturePoint q a := hzla a (Or.inl rfl)
@@ -935,7 +1005,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
     fun s w => funext fun j => congrFun (hPc s) (w, j)
   have hpta : ∀ s, pt s a = pa := fun s => funext fun j => hcV₁ s a ha j
   have hptb : ∀ s, pt s b = pb := fun s => funext fun j => hcV₁ s b hb j
-  -- the witness ear datum: `x 0` at `x₁`, `x 1` at `x₂`
+  -- the ear datum with `x 0` at `x₁` and `x 1` at `x₂`
   set sw : (α × Fin 2) ⊕ α → K := Sum.elim (fun p => if p.1 = x 0 then ![x₁ 0, x₁ 1] p.2
     else if p.1 = x 1 then ![x₂ 0, x₂ 1] p.2 else q p) (fun _ => 0) with hsw
   have hpt0 : pt sw (x 0) = x₁ := by
@@ -965,7 +1035,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   have hrange : ∀ u v w t : ScrewSpace K 2, u = v → Set.range ![u, w, t] = {v, w, t} := by
     rintro u v w t rfl
     simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union]
-  -- the span bound at the witness, `≥ 3 + def₃(G′) − def₃(G)`
+  -- the span bound at that ear datum, `≥ 3 + def₃(G[V₁]) − def₃(G)`
   set n₀ := (3 + (G.induce V₁).deficiency 3 - G.deficiency 3).toNat with hn₀
   have hNt : n₀ ≤ Module.finrank K ↥(ρJ ⊔ Submodule.span K (Set.range fun i : Fin 3 =>
       pointJoin (fun j => MvPolynomial.eval sw (P (pathVertex a x b i.castSucc, j)))
@@ -983,7 +1053,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
       linarith
   obtain ⟨Qs, hQs₀, hQs⟩ := exists_mvPolynomial_le_finrank_sup_span_pointJoin ρJ P
     (fun i : Fin 3 => pathVertex a x b i.castSucc) (fun i => pathVertex a x b i.succ) hNt
-  -- Round 2: a common non-root, main for `G`
+  -- the ear data of `G`: a common non-root `s₀`, main for `G`
   set sstar : (α × Fin 2) ⊕ α → K := Sum.elim q (fun _ => 0) with hsstar
   have hpicstar : earPicture V₁ q sstar = q := by
     funext p; by_cases hp : p.1 ∈ V₁ <;> simp [earPicture, hp, hsstar]
@@ -1056,7 +1126,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
     intro s
     rw [BodyHingeFramework.finrank_span_rigidityRows_congr (G.induce V₁) (hCG s), ← hF₁V]
     exact hrk₁
-  -- Step 5: the ear rank law at `G`
+  -- the ear rank formula at `G`
   have hC : ∀ i, (PanelHingeFramework.ofNormals (k := 2) G ends
       (cfg s₀)).toBodyHinge.supportExtensor (e i) ≠ 0 :=
     fun i => hqmain₀.1.supportExtensor_ne_zero hends _ (hpath i)
