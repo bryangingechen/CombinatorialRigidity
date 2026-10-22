@@ -2610,7 +2610,11 @@ declaration's name as its header writes it:
   spans the panel extensor of its two ends, in either orientation), the two selectors recording every
   link in the rank congruence (the row rank reads the selector only up to the orientation of each
   link) and the sides' own selectors carried to `G.endsOf` (its *Design* section, folded into its
-  header), kept as they stand but for their pointers and codes, moved to the phase (task 37.11).
+  header), kept as they stand but for their pointers and codes, moved to the phase (task 37.11); and
+  in `Pencil/MainComponent/Ear.lean`, the hinge of an `ofNormals` framework at a link (the meet at
+  the link lies on it, in either orientation) and along a family of links (each the meet at its
+  recorded ends, `±` the polar image of the join at the link's ends), kept as they stand but for
+  their pointers and codes, moved to the phase (task 37.12).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -5819,6 +5823,26 @@ declaration's name as its header writes it:
   `pathVertex_eq_or_exists` from `pathVertex_cases`, on the standard axioms
   (`scratch/reconcile-lean/t3711/Hyps-t3711.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.11.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-312** · L · repeated derivations and a derivable hypothesis in
+  `Molecular/Molecule/Pencil/MainComponent/Ear.lean`. `panelSupportExtensor_mem_span_ofNormals`
+  repeats the case split on the orientation of `Cut.lean`'s `span_supportExtensor_ofNormals_eq`,
+  from which it follows in two lines at `k = 2`, and `span_supportExtensor_comp_eq_map_pointJoin`
+  repeats it once more (`hbase`, `hmem`). `span_supportExtensor_eq_top_of_linearIndependent` and
+  `card_le_finrank_of_linearIndependent_pointJoin` derive the independence of the meets `hli'` the
+  same way (7 lines each), and the first follows from the second at the span of the hinges, of
+  dimension at most six. The hypothesis `hinj` of `Graph.mem_liftingSpace_oneEar` holds for every
+  `x : Fin 1 → α`. `x i ≠ a` and `x i ≠ b` are derived from `hxV₁` the same way in
+  `BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, `Graph.closedNbhd_ear_subset` and
+  `Graph.mem_closedNbhd_induce_of_ear`, and the four `linearIndependent_flat_*` lemmas repeat a
+  near-identical `simp only` of six or seven lines and restate their family in `e1` and `e2`. `lake
+  lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the first lemma from
+  `span_supportExtensor_ofNormals_eq`, the second from
+  `card_le_finrank_of_linearIndependent_pointJoin`, both on the standard axioms, and `hinj` at
+  `Fin 1` by `Function.injective_of_subsingleton`, on `propext`
+  (`scratch/reconcile-lean/t3712/Hyps-t3712.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.12.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
