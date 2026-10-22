@@ -5147,6 +5147,10 @@ declaration's name as its header writes it:
   `cross₃` load-bearing for the chart's polynomial rows (`Engine.lean` takes the coordinates from
   `cross₃_apply`), and the private `cons_updateRow_zero` and `cons_updateRow_one` (used only by
   them). Removing them leaves no other declaration without a caller.
+  Task 37.3 adds one in `Molecular/Molecule/Pencil/Arms.lean` (the same screen, over `Arms.lean` and
+  `ArmsAssembly.lean` together, at `69fb2212`), not pinned: `le_finrank_toDualPerp_single`, which
+  the docstring of `exists_reposition_cross_incidences_avoiding` said its choices use (they use
+  `finrank_toDualPerp_single_eq`). Removing it leaves no other declaration without a caller.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5555,6 +5559,28 @@ declaration's name as its header writes it:
   `![f 0, f 1, f 2] = f` at one `f`.
   *Evidence:* read (the bodies).
   *Found:* RECONCILE round 3 task 37.2.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-303** · L · hypotheses the others give, a missed mathlib lemma and repeated derivations in
+  `Molecular/Molecule/Pencil/Arms.lean` and `ArmsAssembly.lean`. The `hD : 2 ≤ bodyBarDim n` of
+  `exists_hasPencilPanelRealization_glue`, of `hasPencilRealization_of_not_twoEdgeConnected_core`
+  and of its two forms (`lem:pencil-cut-case`, whose statement has no such hypothesis) follows from
+  `hn : bodyBarDim n = screwDim 2` alone (`screwDim 2 = 6`), and each uses it only to pass it on to
+  `finrank_span_rigidityRows_cutEdge_eq`, which uses its own only for `1 ≤ screwDim k` (`F-297`).
+  `finrank_span_pair_le` and `finrank_span_triple_le` are mathlib's `finrank_span_le_card` with
+  `Finset.card_le_two` and `Finset.card_le_three`, as `le_finrank_toDualPerp_single` uses it for one
+  vector, and `finrank_span_insert_le` serves only them. `exists_perp_linearIndependent` derives,
+  by its own linear form and rank–nullity, that the vectors orthogonal to `m` form a space of
+  dimension at least `3`, which `le_finrank_toDualPerp_single` states (`F-279`). The proof of
+  `hasPencilRealization_of_not_twoEdgeConnected_core` sorts each link of `G` into `G[V₁]`, `G[V₂]`
+  or the cut, and counts `|V₁| + |V₂| = |V(G)|`, as `exists_hasPencilPanelRealization_glue` does
+  (some 30 lines); and the parallel case of `hasPencilRealization_of_ncard_le_two` derives the rank
+  `D` of two bodies made rigid by two independent hinges as
+  `theorem_55_base_producer_parallel_pair_gen` (`Theorem55.lean`) does (some 15 lines each).
+  `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the four declarations called
+  with `hD` derived from `hn`, and the two bounds from `finrank_span_le_card`, on the three standard
+  axioms (`scratch/reconcile-lean/t373/Hyps-t373.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.3.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

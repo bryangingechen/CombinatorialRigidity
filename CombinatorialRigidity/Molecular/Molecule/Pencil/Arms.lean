@@ -7,25 +7,37 @@ import CombinatorialRigidity.Mathlib.Algebra.Module.Submodule.Union
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 
 /-!
-# The pencil reduction — W3 induction arms (Phase 39 PENCIL)
+# The loop and cut-edge cases of the pencil reduction
 
-Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
-`notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
-two of the W3 leaf decomposition's induction arms (loop `L3`, cut-edge `L4` with its transport /
-nondegeneracy infrastructure; its rank-assembly step reuses `Theorem55.lean`'s generalized bricks
-since `40-simplify` task 10o). The base arm `L5` split further into
-`Molecule/Pencil/ArmsAssembly.lean` (`40-cleanup` task 28b, the `≤1500`-LoC tripwire); its original
-bare-motive wrapper `L7`, `pencil_conjecture_of_arms` (which assembled all four arms via
-`Graph.pencil_reduction`, `Induction/ForestSurgery/Reduction.lean`), retired at the
-`40-simplify` cleanup round's PI sanction (2026-10-04, `notes/pencil/adjudications.md`), superseded
-by `pencilPair_of_arms` and `pencil_realization_theorem_of_X0`. Builds on the statement layer,
-transport, and two-pencil machinery in `Molecule/Pencil/Statement.lean`.
+The loop case and the cut-edge case of the induction of `sec:pencil-reduction`
+(`lem:pencil-loop-case`, `lem:pencil-cut-case`), with the two lemmas on projective automorphisms
+that the cut-edge case uses (`lem:pencil-projective-transport`, `lem:pencil-cut-nondegeneracy`). The
+cut-edge case realizes the two sides of a cut separately and moves the second by a linear
+automorphism `g` of `K⁴`, acting on the hinges through the automorphism of the screw space that `g`
+induces, on the points by `g` and on the normals by a contragredient `h` of `g`, so that the
+crossing edge's two cross-incidences hold (`lem:two-pencil-extension-iff`);
+`exists_extensor_two_pencils` then gives that edge its hinge. A form of the automorphism that also
+keeps given vectors off given spans, and the gluing of the two sides, serve the cut-edge case of the
+conditioned pair too (`lem:pencil-pair-loop-base-cut`, in `Pair.lean` and `Pair2.lean`). The base
+case is `ArmsAssembly.lean`.
 
-This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
-namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
+## Main results
 
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§W3 leaf decomposition), and
-`blueprint/src/chapter/pencil.tex`.
+* `hasPencilRealization_of_isLoopAt`: the loop case (`lem:pencil-loop-case`).
+* `hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`: a linear automorphism of `K⁴` and
+  a contragredient of it move a pencil realization to a pencil realization
+  (`lem:pencil-projective-transport`).
+* `exists_reposition_cross_incidences`: an automorphism after which the two cross-incidences of a
+  crossing edge hold and its two points are independent (`lem:pencil-cut-nondegeneracy`); and
+  `exists_reposition_cross_incidences_avoiding`, its form that also keeps four vectors off four
+  spans of two vectors each.
+* `exists_hasPencilPanelRealization_glue`: pencil realizations of the two sides of a cut crossed by
+  at most one edge, and a hinge for the crossing edge, glue to one of the whole graph at the
+  deficiency rank.
+* `hasPencilRealization_of_not_twoEdgeConnected` and
+  `hasDistinctPencilRealization_of_not_twoEdgeConnected`: the cut-edge case, for pencil realizations
+  at the deficiency rank and for adjacent-distinct ones (`lem:pencil-cut-case`), both from
+  `hasPencilRealization_of_not_twoEdgeConnected_core`.
 -/
 
 open scoped Matrix
@@ -36,19 +48,17 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## W3-L3: the loop arm (`lem:pencil-loop-case`, Phase 39) -/
+/-! ## The loop case -/
 
-/-- **The loop arm of the pencil reduction** (`lem:pencil-loop-case`, W3-L3; Phase 39). Let `e` be
-a loop of `G` at `v`. If `G ＼ {e}` has a pencil realization at the deficiency rank, so does `G`:
-keep the smaller realization's framework unchanged off `e` and assign `e` its own self-pencil line
-— any nonzero `C` in `v`'s own panel through `v`'s own point, supplied by
-`exists_extensor_two_pencils` at `n_u = n_v = normal v`, `pt_u = pt_v = point v` (the four
-incidence hypotheses all degenerate to the single own-panel incidence `HasPencilPanelRealization`
-already carries). This costs no rank: `e`'s row is `hingeRow v v r = 0` for every `r`
-(`hingeRow_self`, since `e`'s only incidence is the coincident pair `(v,v)`,
-`IsLoopAt.eq_of_isLink`), so `Submodule.span K F.rigidityRows = Submodule.span K F'.rigidityRows`
-(every generator of one family is either a generator of the other or zero), and the deficiency
-target is unchanged by `deficiency_deleteEdges_singleton_eq_of_isLoopAt`. -/
+/-- **The loop case** (`lem:pencil-loop-case`): let `e` be a loop of `G` at `v`. If `G ＼ {e}` has a
+pencil realization at the deficiency rank (`HasPencilRealization`), so does `G`. Keep the
+realization of `G ＼ {e}`, with its normals and points, and give `e` a nonzero hinge in the panel of
+`v` through the point of `v`: `exists_extensor_two_pencils` with both ends at `v`, where its four
+incidences are the realization's incidence `point v ⬝ᵥ normal v = 0`. The rows of `e` are zero
+(`hingeRow v v r = 0`, `BodyHingeFramework.hingeRow_self`, as both ends of `e` are `v`,
+`Graph.IsLoopAt.eq_of_isLink`), so the rigidity rows of the two frameworks span the same space; and
+deleting a loop changes neither the bodies nor the deficiency
+(`Graph.deficiency_deleteEdges_singleton_eq_of_isLoopAt`). -/
 theorem hasPencilRealization_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
     (hloop : G.IsLoopAt e v)
     (hrec : HasPencilRealization K n (G ＼ ({e} : Set β))) :
@@ -58,7 +68,7 @@ theorem hasPencilRealization_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v
   obtain ⟨⟨hF'g, hnormal_nz, hF'nz, hF'panel⟩, hpoint_nz, hpoint_inc, hF'through⟩ := hreal'
   have hvG : v ∈ V(G) := hloop.left_mem
   have hvG' : v ∈ V(G ＼ ({e} : Set β)) := by rw [Graph.vertexSet_deleteEdges]; exact hvG
-  -- `v`'s own pencil line: `exists_extensor_two_pencils` at the self pair.
+  -- The hinge of `e`: `exists_extensor_two_pencils` with both ends at `v`.
   obtain ⟨C, hCne, hCpanel1, hCpanel2, hCthrough1, hCthrough2⟩ :=
     exists_extensor_two_pencils (K := K) (n_u := normal v) (n_v := normal v)
       (pt_u := point v) (pt_v := point v)
@@ -148,27 +158,23 @@ theorem hasPencilRealization_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v
   refine ⟨F, normal, point, hrealG, ?_⟩
   rw [hspan_eq, hrank', hVeq, hdeq]
 
-/-! ## W3-L4 infrastructure: projective repositioning of a pencil realization (Phase 39)
+/-! ## Projective transport of a pencil realization
 
-The cut arm of the pencil reduction (`lem:pencil-cut-case`) needs to *reposition* one side's
-realization by a projective automorphism of `K⁴` so that a surviving crossing edge's two
-cross-incidences (`exists_extensor_two_pencils_iff`) hold. The landed Crapo–Whiteley projective
-invariance (`thm:projective-invariance`, `Molecule/ProjectiveInvariance.lean`) transports only the
-supporting extensor along a screw-space automorphism (`BodyHingeFramework.mapExtensor`); the pencil
-arm must carry the `(normal, point)` data too. This section supplies that transport, built on the
-induced screw automorphism (`BodyHingeFramework.screwEquivOfLinearEquiv`,
-`GenericLift/HingeGeneric.lean`): a linear automorphism `g` of `K⁴` acts on points, its
-**contragredient** `h` (any companion automorphism with `⟨g x, h y⟩ = ⟨x, y⟩`) acts on normals,
-and the induced screw automorphism `screwEquivOfLinearEquiv g` acts on hinges. The rank is
-preserved by the landed `finrank_span_rigidityRows_mapExtensor`, so `HasPencilRealization`
-transports too. -/
+The cut-edge case (`lem:pencil-cut-case`) moves the realization of one side so that the crossing
+edge's two cross-incidences hold (`exists_extensor_two_pencils_iff`). A linear automorphism `g` of
+`K⁴` moves the hinges by the automorphism `BodyHingeFramework.screwEquivOfLinearEquiv g` of the
+screw space that it induces (`def:induced-screw-map`), as in Crapo and Whiteley's projective
+invariance (`thm:projective-invariance`), the points by `g`, and the normals by a contragredient `h`
+of `g`, a linear automorphism with `g x ⬝ᵥ h y = x ⬝ᵥ y`. The rank does not change
+(`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`, `lem:screw-map-rows`), so a pencil
+realization at the deficiency rank moves to one (`lem:pencil-projective-transport`). -/
 
-/-- **`ExtensorInPanel` transports along a change of screw coordinates** (`sec:pencil-reduction`;
-Phase 39 W3-L4 infra). If `C` lies in the panel with normal `n` and `h` is a contragredient of the
-automorphism `g` of `K⁴` (`g x ⬝ᵥ h y = x ⬝ᵥ y`), then the transported hinge
-`screwEquivOfLinearEquiv g C` lies in the panel with the transported normal `h n`. The hinge's
-spanning points `p` become `g ∘ p` (`screwEquivOfLinearEquiv_mk_extensor`), and the contragredient
-identity carries each incidence `p i ⬝ᵥ n = 0` to `g (p i) ⬝ᵥ h n = p i ⬝ᵥ n = 0`. -/
+/-- **Lying in a panel moves with an automorphism of `K⁴`** (`lem:pencil-projective-transport`): if
+`C` lies in the panel with normal `n` (`ExtensorInPanel`) and `h` is a contragredient of the linear
+automorphism `g` of `K⁴` (`g x ⬝ᵥ h y = x ⬝ᵥ y`), then `screwEquivOfLinearEquiv g C` lies in the
+panel with normal `h n`. The vectors `p` whose extensor is `C` become `g ∘ p`
+(`screwEquivOfLinearEquiv_mk_extensor`), and the contragredient identity turns each incidence
+`p i ⬝ᵥ n = 0` into `g (p i) ⬝ᵥ h n = 0`. -/
 theorem extensorInPanel_screwEquivOfLinearEquiv {C : ScrewSpace K 2} {n : Fin 4 → K}
     (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hgh : ∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y)
     (hC : ExtensorInPanel C n) :
@@ -181,11 +187,11 @@ theorem extensorInPanel_screwEquivOfLinearEquiv {C : ScrewSpace K 2} {n : Fin 4 
       Function.comp_def]
   · rw [hgh]; exact hperp i
 
-/-- **`ExtensorThroughPoint` transports along a change of screw coordinates**
-(`sec:pencil-reduction`; Phase 39 W3-L4 infra). If `C` passes through the point `q`, then the
-transported hinge `screwEquivOfLinearEquiv g C` passes through the transported point `g q`: the
-spanning points `p` become `g ∘ p` (`screwEquivOfLinearEquiv_mk_extensor`), and `g` carries the span
-containing `q` to the span containing `g q` (`Submodule.map_span`). -/
+/-- **Passing through a point moves with an automorphism of `K⁴`**
+(`lem:pencil-projective-transport`): if `C` passes through the point `q` (`ExtensorThroughPoint`),
+then `screwEquivOfLinearEquiv g C` passes through `g q`. The vectors `p` whose extensor is `C`
+become `g ∘ p` (`screwEquivOfLinearEquiv_mk_extensor`), and `g` sends a linear combination of the
+`p i` equal to `q` to the same combination of the `g (p i)`. -/
 theorem extensorThroughPoint_screwEquivOfLinearEquiv {C : ScrewSpace K 2} {q : Fin 4 → K}
     (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hC : ExtensorThroughPoint C q) :
     ExtensorThroughPoint (BodyHingeFramework.screwEquivOfLinearEquiv g C) (g q) := by
@@ -201,19 +207,18 @@ theorem extensorThroughPoint_screwEquivOfLinearEquiv {C : ScrewSpace K 2} {q : F
     rw [map_smul]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
-/-- **Projective invariance of the pencil stratum, general field**
-(`lem:pencil-projective-transport`; Phase 39 PENCIL, leaf W3-L4 infra; the `K`-level companion of
-`lem:pencil-self-dual`). Transporting a pencil panel realization `(F, normal, point)` along a linear
-automorphism `g` of `K⁴` — the induced
-screw automorphism `screwEquivOfLinearEquiv g` on hinges (`mapExtensor`), `g` on the concurrency
-points, and a contragredient `h` (`g x ⬝ᵥ h y = x ⬝ᵥ y`) on the panel normals — produces another
-pencil panel realization on the same multigraph. Panel containment transports by
-`extensorInPanel_screwEquivOfLinearEquiv`, through-point incidence by
-`extensorThroughPoint_screwEquivOfLinearEquiv`, the panel–point incidence `point v ⬝ᵥ normal v = 0`
-by the contragredient identity, and nonzeroness by injectivity of the automorphisms. Combined with
-the landed rank invariance `finrank_span_rigidityRows_mapExtensor`, this is the projective
-repositioning the cut arm (`lem:pencil-cut-case`) uses to meet a crossing edge's cross-incidences:
-picking `g` to satisfy the two linear conditions of `exists_extensor_two_pencils_iff`. -/
+/-- **Projective transport of a pencil realization** (`lem:pencil-projective-transport`, over any
+field): moving a pencil realization `(F, normal, point)` of `G` by a linear automorphism `g` of `K⁴`
+and a contragredient `h` of it (`g x ⬝ᵥ h y = x ⬝ᵥ y`) gives a pencil realization of `G`: the hinges
+move by the induced automorphism `screwEquivOfLinearEquiv g` of the screw space
+(`BodyHingeFramework.mapExtensor`), the points by `g` and the normals by `h`. The hinges stay in the
+panels and through the points (`extensorInPanel_screwEquivOfLinearEquiv`,
+`extensorThroughPoint_screwEquivOfLinearEquiv`), the incidence `point v ⬝ᵥ normal v = 0` holds by
+the contragredient identity, and the normals, the points and the hinges stay nonzero, as the three
+maps are injective. With `BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`, which keeps the
+rank, the cut-edge case uses it to move one side (`lem:pencil-cut-case`). It is the collineation
+companion of the polarity's self-duality (`lem:pencil-self-dual`), which exchanges the normals and
+the points. -/
 theorem hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hgh : ∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y)
@@ -239,25 +244,22 @@ theorem hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv
     exact ⟨extensorThroughPoint_screwEquivOfLinearEquiv g (hthrough e u w hlk).1,
            extensorThroughPoint_screwEquivOfLinearEquiv g (hthrough e u w hlk).2⟩
 
-/-! ## W3-L4 nondegeneracy: an automorphism meeting the two cross-incidences (Phase 39)
+/-! ## The automorphism of the cut-edge case
 
-With the transport (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`) in hand, the
-cut arm reduces to a positioning problem: find a linear automorphism `g` of `K⁴` (with
-contragredient `h`) so that repositioning one side's realization by it makes the surviving
-crossing edge's two cross-incidences (`exists_extensor_two_pencils_iff`) hold. The two incidences
-are `pt₁(u) ⬝ᵥ h(n₂(v)) = 0` and `g(pt₂(v)) ⬝ᵥ n₁(u) = 0` — two linear conditions against the
-`15`-dim projective group, satisfiable by an explicit construction (no genericity / `Infinite K`
-needed): send `pt₂(v)` to a vector `a ∈ n₁(u)^⊥` and send a vector `b ∈ n₂(v)^⊥` to `pt₁(u)`,
-which is possible because each hyperplane `⊥` is `≥ 3`-dimensional, so it meets the complement
-of any line. -/
+With the two sides of a cut realized independently, the crossing edge `uv` has a hinge once the
+second side is moved by a linear automorphism `g` of `K⁴`, with a contragredient `h`, such that
+`pt₁(u) ⬝ᵥ h(n₂(v)) = 0` and `g(pt₂(v)) ⬝ᵥ n₁(u) = 0` (`exists_extensor_two_pencils_iff`). An
+explicit `g` does it, over any field (`lem:pencil-cut-nondegeneracy`): it sends `pt₂(v)` to a vector
+`a` orthogonal to `n₁(u)`, and a vector `b` orthogonal to `n₂(v)` to `pt₁(u)`. The vectors
+orthogonal to one vector of `K⁴` form a space of dimension at least `3`, which no line contains, so
+`a` and `b` can be chosen off the lines through `pt₁(u)` and `pt₂(v)`. -/
 
-/-- **Every linear automorphism of `Kⁿ` has a contragredient** (`sec:pencil-reduction`; Phase 39
-W3-L4 infra). For `g : Kⁿ ≃ₗ Kⁿ` there is a companion automorphism `h` with `g x ⬝ᵥ h y = x ⬝ᵥ y`
-for all `x, y` — the inverse-transpose `(g⁻¹)ᵀ` w.r.t. the standard dot product, built from the
-matrix `A = toMatrix' g` as `toLinearEquiv' ((A⁻¹)ᵀ)`. This is the `≃ₗ`-packaged form of the
-`LinearMap`-level `contragredient` (`Meet.lean`); the `≃ₗ` form is what the transport
-(`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`) consumes for its normal-transport
-injectivity. -/
+/-- **Every linear automorphism of `Kⁿ` has a contragredient** (`lem:pencil-cut-nondegeneracy`): for
+`g : Kⁿ ≃ₗ Kⁿ` there is a linear automorphism `h` with `g x ⬝ᵥ h y = x ⬝ᵥ y` for all `x, y`, the
+inverse transpose of `g`: with `A = LinearMap.toMatrix' g`, `h` is `Matrix.toLinearEquiv'` of
+`(A⁻¹)ᵀ`. `contragredient` (`Meet.lean`) gives the same map as a linear map; the moves of a pencil
+realization (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`) take `h` as a linear
+equivalence, which keeps the normals nonzero. -/
 theorem exists_contragredient_linearEquiv {n : ℕ} (g : (Fin n → K) ≃ₗ[K] (Fin n → K)) :
     ∃ h : (Fin n → K) ≃ₗ[K] (Fin n → K), ∀ x y : Fin n → K, g x ⬝ᵥ h y = x ⬝ᵥ y := by
   set A : Matrix (Fin n) (Fin n) K :=
@@ -275,12 +277,11 @@ theorem exists_contragredient_linearEquiv {n : ℕ} (g : (Fin n → K) ≃ₗ[K]
   rw [hgx, hhy, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec,
     Matrix.nonsing_inv_mul _ hAu, Matrix.one_mulVec]
 
-/-- **A vector in a coordinate hyperplane, independent from a given vector**
-(`sec:pencil-reduction`; Phase 39 W3-L4 infra). For any `m` and any nonzero `p` in `K⁴` there is a
-`w` with `w ⬝ᵥ m = 0` and
-`![w, p]` linearly independent. The hyperplane `m^⊥ = ker ⟨·, m⟩` has dimension `≥ 3` (it is the
-kernel of a single functional on a `4`-dimensional space), so it is not contained in the line
-`span {p}`; any `w ∈ m^⊥ \ span {p}` works. -/
+/-- **A vector orthogonal to `m` and independent of a nonzero `p`**
+(`lem:pencil-cut-nondegeneracy`): for any `m` and any nonzero `p` in `K⁴` there is a `w` with
+`w ⬝ᵥ m = 0` and `![w, p]` linearly independent. The vectors orthogonal to `m` are the kernel of one
+linear form on `K⁴`, of dimension at least `3`, so they do not all lie on the line `span {p}`; any
+of them off that line will do. -/
 theorem exists_perp_linearIndependent (m p : Fin 4 → K) (hp : p ≠ 0) :
     ∃ w : Fin 4 → K, w ⬝ᵥ m = 0 ∧ LinearIndependent K ![w, p] := by
   set φ : (Fin 4 → K) →ₗ[K] K := ∑ j, m j • (LinearMap.proj j) with hφ
@@ -302,25 +303,24 @@ theorem exists_perp_linearIndependent (m p : Fin 4 → K) (hp : p ≠ 0) :
   · rw [linearIndependent_fin2]
     exact ⟨hp, fun c hc => hwnotin (by rw [Submodule.mem_span_singleton]; exact ⟨c, hc⟩)⟩
 
-/-- **The cut-arm repositioning automorphism exists** (`lem:pencil-cut-nondegeneracy`; Phase 39
-PENCIL, leaf W3-L4). Given the fixed panel/point data of the two sides at a crossing edge `uv`
-(`n₁(u), pt₁(u)` on side `V₁`, `n₂(v), pt₂(v)` on side `V₂`, both points nonzero), there is a linear
-automorphism `g` of `K⁴` with contragredient `h` (`g x ⬝ᵥ h y = x ⬝ᵥ y`) meeting the two
-cross-incidences of `exists_extensor_two_pencils_iff` after transporting the `V₂` side by `(g, h)`:
-`pt₁(u) ⬝ᵥ h(n₂(v)) = 0` and `g(pt₂(v)) ⬝ᵥ n₁(u) = 0` — and, **exposed 2026-09-16** (Phase 39
-checklist item 5 (α)), with the transported point `g(pt₂(v))` projectively distinct from
-`pt₁(u)`, which the construction already delivers for free. Feeds the cut arm
-(`lem:pencil-cut-case`) together with the transport
-`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`; the distinctness clause is what
-the cut arm's adjacent-distinct variant needs at the crossing edge.
+/-- **The automorphism of the cut-edge case** (`lem:pencil-cut-nondegeneracy`): given the normals
+and points at the two ends of a crossing edge `uv`, `n₁(u)` and `pt₁(u)` on the first side and
+`n₂(v)` and `pt₂(v)` on the second, with both points nonzero, there are a linear automorphism `g` of
+`K⁴` and a contragredient `h` of it (`g x ⬝ᵥ h y = x ⬝ᵥ y`) such that, once the second side is moved
+by `(g, h)`, the two cross-incidences of `exists_extensor_two_pencils_iff` hold,
+`pt₁(u) ⬝ᵥ h(n₂(v)) = 0` and `g(pt₂(v)) ⬝ᵥ n₁(u) = 0`, and the points `pt₁(u)` and `g(pt₂(v))` are
+linearly independent. The cut-edge case uses it with
+`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv` (`lem:pencil-cut-case`); the
+independence is what its adjacent-distinct form needs at the crossing edge.
 
-The construction is explicit and works over *any* field (no genericity): pick `a ∈ n₁(u)^⊥` with
-`![a, pt₁(u)]` independent and `b ∈ n₂(v)^⊥` with `![b, pt₂(v)]` independent
-(`exists_perp_linearIndependent`), then take `g` to be the composite frame map sending `pt₂(v) ↦ a`
-and `b ↦ pt₁(u)` (two applications of `exists_linearEquiv_basisFun_pair`). Then `g(pt₂(v)) = a`
-gives the second incidence, and `g b = pt₁(u)` with the contragredient identity turns the first into
-`b ⬝ᵥ n₂(v) = 0`; the distinctness clause is `![a, pt₁(u)]`'s own independence, read through
-`g(pt₂(v)) = a` and `LinearIndependent.pair_symm_iff`. -/
+The construction works over any field. Choose `a` orthogonal to `n₁(u)` with `![a, pt₁(u)]`
+independent and `b` orthogonal to `n₂(v)` with `![b, pt₂(v)]` independent
+(`exists_perp_linearIndependent`); let `g` send `pt₂(v)` to `a` and `b` to `pt₁(u)` (the composite
+of two automorphisms of `exists_linearEquiv_basisFun_pair`), and take `h` from
+`exists_contragredient_linearEquiv`. Then `g(pt₂(v)) = a` gives the second incidence, and
+`g b = pt₁(u)` with the contragredient identity turns the first into `b ⬝ᵥ n₂(v) = 0`. The
+independence is that of `![a, pt₁(u)]`, read through `g(pt₂(v)) = a`
+(`LinearIndependent.pair_symm_iff`). -/
 theorem exists_reposition_cross_incidences (n₁u pt₁u n₂v pt₂v : Fin 4 → K)
     (h1 : pt₁u ≠ 0) (h2 : pt₂v ≠ 0) :
     ∃ (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)),
@@ -344,32 +344,26 @@ theorem exists_reposition_cross_incidences (n₁u pt₁u n₂v pt₂v : Fin 4 �
   exact ⟨g, h, hgh, by rw [← hgb, hgh b n₂v]; exact hbnv, by rw [hgpt]; exact hanu,
     by rw [hgpt]; exact LinearIndependent.pair_symm_iff.mp hLIa⟩
 
-/-! ## W5-L5 cut-arm repositioning, strengthened: the avoidance form (Phase 39, L5-cut-iii)
+/-! ## An automorphism that also avoids given spans
 
-The conditioned cut arm (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route
-verdict" item 1b) needs more from the repositioning `(g, h)` than the two cross-incidences: the
-glued nondegeneracy conjuncts at the crossing endpoints demand, per endpoint hub status, that the
-transported side's data stay *off* the fixed side's spans (third conjunct: the transported normal
-off the fixed side's closed-hub-neighbourhood normals, and the fixed normal off the transported
-family; fourth conjunct: the transported point off the fixed side's closed-neighbourhood points,
-and the fixed point off the transported family). The route verdict pinned this as "point matches
-at non-hub ends, `∉ span` steering at hub ends, plausibly `[Infinite K]`"; **the spike for this
-leaf found a strictly more uniform shape**: the point *matches* are unnecessary — the conjunct-4
-transfer they were routed through is equally served by a span-avoidance insert, so ONE lemma with
-four avoidance conclusions (each against an arbitrary ≤-2-generator span, instantiated per
-sub-case and padded with `0` when idle) covers all four hub-status combinations, over **any**
-field (no `[Infinite K]`, no polynomial method). Construction: all four target conditions pull
-back through the contragredient identity to *prescribed values* of `g` on four independent
-vectors — `g` sends a perp-picked frame to a perp-picked frame — and each pick is an "in a
-subspace, off two subspaces" choice a dimension count plus the two-proper-subspaces exchange
-lemma (`Submodule.exists_mem_notMem_notMem`, the mirrored any-field form) supplies. The `≤ 3`
-closed-hub-neighbourhood bound (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`,
-fed by `G`'s feasibility witness) is what lets the consumer present each avoided family as a
-two-generator span — the cardinality logic lives in the arm assembly (L5-cut-iv), not here. -/
+The cut-edge case of the conditioned pair (`lem:pencil-pair-loop-base-cut`, case (3)) glues two
+nondegenerate realizations (`IsNondegPencilRealization`), and asks more of the automorphism that
+moves the second side. At the ends `u` of the first side and `v` of the second, the glued normals
+must stay independent on closed hub-neighbourhoods, and the glued points on the closed
+neighbourhoods of the bodies that are not hubs: the last two conditions of
+`IsNondegPencilRealization`. `exists_reposition_cross_incidences_avoiding` keeps the moved normal
+and point at `v` off spans of normals and points of the first side, and the normal and point at `u`
+off spans of moved ones of the second, each span of at most two vectors, over any field. Its user
+(`hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`, `Pair.lean`)
+bounds each family by two: a closed hub-neighbourhood has at most three bodies in a nondegenerate
+realization (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), as does the closed
+neighbourhood of a body that is not a hub (`ncard_closedNbhd_le_three_of_not_pencilHub`), and the
+other end of the crossing edge is one of them. -/
 
-/-- **Spans grow by at most one dimension per inserted vector** (Phase 39 W5-L5 cut-arm
-repositioning plumbing): `finrank (span (insert a s)) ≤ finrank (span s) + 1`, via
-`Submodule.span_insert` and the modular law, with `finrank (span {a}) ≤ 1` (zero or a line). -/
+/-- **Inserting a vector raises the dimension of a span by at most one** (a step of
+`lem:pencil-pair-loop-base-cut`): `finrank (span (insert a s)) ≤ finrank (span s) + 1`, by
+`Submodule.span_insert` and the dimension formula for the sum of two subspaces, as
+`finrank (span {a}) ≤ 1`. -/
 theorem finrank_span_insert_le (a : Fin 4 → K) (s : Set (Fin 4 → K)) :
     Module.finrank K (Submodule.span K (insert a s))
       ≤ Module.finrank K (Submodule.span K s) + 1 := by
@@ -383,9 +377,9 @@ theorem finrank_span_insert_le (a : Fin 4 → K) (s : Set (Fin 4 → K)) :
     · rw [finrank_span_singleton ha]
   omega
 
-/-- **A two-generator span has dimension `≤ 2`** (Phase 39 W5-L5 cut-arm repositioning
-plumbing). No nonzero-ness or distinctness asked — the avoidance slots of
-`exists_reposition_cross_incidences_avoiding` are padded with `0` when idle. -/
+/-- **A span of two vectors has dimension at most `2`** (a step of `lem:pencil-pair-loop-base-cut`):
+the vectors need not be nonzero or distinct, so a family of fewer than two vectors can be padded
+with `0` (`exists_reposition_cross_incidences_avoiding`). -/
 theorem finrank_span_pair_le (a b : Fin 4 → K) :
     Module.finrank K (Submodule.span K {a, b}) ≤ 2 := by
   have h := finrank_span_insert_le a {b}
@@ -396,17 +390,17 @@ theorem finrank_span_pair_le (a b : Fin 4 → K) :
     · rw [finrank_span_singleton hb]
   omega
 
-/-- **A three-generator span has dimension `≤ 3`** (Phase 39 W5-L5 cut-arm repositioning
-plumbing). -/
+/-- **A span of three vectors has dimension at most `3`** (a step of
+`lem:pencil-pair-loop-base-cut`). -/
 theorem finrank_span_triple_le (a b c : Fin 4 → K) :
     Module.finrank K (Submodule.span K {a, b, c}) ≤ 3 := by
   have h := finrank_span_insert_le a {b, c}
   have h1 := finrank_span_pair_le b c
   omega
 
-/-- **The `⬝ᵥ`-perp of ANY vector in `K⁴` has dimension `≥ 3`** (Phase 39 W5-L5 cut-arm
-repositioning plumbing; the inequality companion of `finrank_toDualPerp_single_eq`, absorbing the
-zero case where the kernel is everything). -/
+/-- **The vectors of `K⁴` orthogonal to any `t` form a space of dimension at least `3`**: the form
+of `finrank_toDualPerp_single_eq` that allows `t = 0`, from `finrank_toDualPerp_add_finrank_span`
+and `finrank (span {t}) ≤ 1`. -/
 theorem le_finrank_toDualPerp_single (t : Fin 4 → K) :
     3 ≤ Module.finrank K
       (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t) : Submodule K (Fin 4 → K)) := by
@@ -416,10 +410,11 @@ theorem le_finrank_toDualPerp_single (t : Fin 4 → K) :
   rw [Set.toFinset_singleton, Finset.card_singleton] at h1
   omega
 
-/-- **The joint `⬝ᵥ`-perp of any two vectors in `K⁴` has dimension `≥ 2`** (Phase 39 W5-L5
-cut-arm repositioning plumbing): two `≥ 3`-dimensional kernels in a `4`-dimensional space meet in
-dimension `≥ 3 + 3 − 4 = 2` (the modular law). This is the freedom the steering picks of
-`exists_reposition_cross_incidences_avoiding` live on. -/
+/-- **The vectors of `K⁴` orthogonal to two vectors form a space of dimension at least `2`** (a step
+of `lem:pencil-pair-loop-base-cut`): its dimension and that of the span of `t₁, t₂` add up to `4`
+(`finrank_toDualPerp_add_finrank_span`), and that span has dimension at most `2`. The vectors of
+`exists_reposition_cross_incidences_avoiding` that must be orthogonal to two given ones are chosen
+in this space. -/
 theorem le_finrank_toDualPerp_inf (t₁ t₂ : Fin 4 → K) :
     2 ≤ Module.finrank K
       ((LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁)
@@ -433,43 +428,38 @@ theorem le_finrank_toDualPerp_inf (t₁ t₂ : Fin 4 → K) :
   rw [Set.finrank, Fintype.card_fin] at h1
   omega
 
-/-- **The strengthened cut-arm repositioning automorphism exists** (Phase 39 PENCIL, leaf
-L5-cut-iii — the risk-carrying leaf of the cut-arm route verdict, `notes/Phase39-design.md`
-§"W5 leaf decomposition" L5 item 1b). The landed `exists_reposition_cross_incidences` extended by
-**four span-avoidance conclusions**, one per glued-conjunct obligation at the crossing endpoints
-`u` (fixed side `1`) and `v` (transported side `2`):
+/-- **The automorphism of the cut-edge case, avoiding given spans** (a step of
+`lem:pencil-pair-loop-base-cut`): for nonzero `n₁u`, `pt₁u`, `n₂v` and `pt₂v`, there are `g` and a
+contragredient `h` of it with the two cross-incidences of `exists_reposition_cross_incidences` and,
+for any given `s₁, s₂, q₁, q₂, t₁, t₂, w₁, w₂`, four avoidances:
 
-* `h n₂v ∉ span {s₁, s₂}` — the transported normal at `v` steers off the fixed side's
-  closed-hub-neighbourhood normals at `u` (the glued third conjunct at `u` when `v` is a `G`-hub);
-* `n₁u ∉ span {h t₁, h t₂}` — the fixed normal at `u` stays off the transported
-  closed-hub-neighbourhood normals at `v` (the glued third conjunct at `v` when `u` is a `G`-hub);
-* `g pt₂v ∉ span {q₁, q₂}` — the transported point at `v` steers off the fixed side's
-  closed-neighbourhood points at `u` (the glued fourth conjunct at `u` when `u` is a non-hub, and
-  the cut hinge's pair-LI via `q₁ := pt₁u`);
-* `pt₁u ∉ span {g w₁, g w₂}` — the fixed point at `u` stays off the transported
-  closed-neighbourhood points at `v` (the glued fourth conjunct at `v` when `v` is a non-hub).
+* `h n₂v ∉ span {s₁, s₂}`: the moved normal at `v` off normals of the first side, for the
+  independence of the normals on the closed hub-neighbourhood of `u` when `v` is a hub;
+* `n₁u ∉ span {h t₁, h t₂}`: the normal at `u` off moved normals of the second side, for that on the
+  closed hub-neighbourhood of `v` when `u` is a hub;
+* `g pt₂v ∉ span {q₁, q₂}`: the moved point at `v` off points of the first side, for the
+  independence of the points on the closed neighbourhood of `u` when `u` is not a hub, and, with
+  `pt₁u` among `q₁, q₂`, for that of the two points of the crossing edge;
+* `pt₁u ∉ span {g w₁, g w₂}`: the point at `u` off moved points of the second side, for that on the
+  closed neighbourhood of `v` when `v` is not a hub.
 
-Idle slots are padded with `0`. **Route note (recorded in the design doc's L5-cut-iii bullet):**
-the route verdict pinned projective *point matches* at non-hub endpoints; the spike for this leaf
-showed the matches are unnecessary — the conjunct-4 transfers they were routed through are equally
-served by the avoidance inserts above — and the resulting uniform statement needs no
-`[Infinite K]` and no per-hub-status case split: it is satisfiable over **any** field with only
-the four nonzero-ness hypotheses. The `≤ 2`-generator shape of each avoided span is where the
-`≤ 3` closed-hub-neighbourhood bound
-(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, applied to `G`'s feasibility
-witness) enters on the consumer side (L5-cut-iv).
+A family of fewer than two vectors is padded with `0`. The only hypotheses are that the four normals
+and points are nonzero, over any field; which ends are hubs decides only what its user passes as
+`s`, `q`, `t` and `w`.
 
-Construction: every conclusion pulls back through the contragredient identity
-`g x ⬝ᵥ h y = x ⬝ᵥ y` to a *prescribed value* of `g` on one of four independent vectors — `g`
-maps the frame `(c, b, c', pt₂v)` to the frame `(m, pt₁u, m', x)` (a `Basis.equiv` along the
-index involution `0 ↔ 2, 1 ↔ 3`), where `b ⊥ n₂v` off `span {w₁, w₂}` forces the first
-cross-incidence and the fourth conclusion, `x ⊥ n₁u` off `span {q₁, q₂}` the second and the
-third, `c ̸⊥ n₂v` with `m ⊥ s₁, s₂` the first avoidance (any member of `span {s₁, s₂}` is
-`⬝ᵥ`-killed by `m`, yet `m ⬝ᵥ h n₂v = c ⬝ᵥ n₂v ≠ 0`), and `c' ⊥ t₁, t₂` with `m' ̸⊥ n₁u` the
-second (symmetrically). Each pick is an "inside a `≥ d`-dimensional perp, off `< d`-dimensional
-spans" choice: dimension counts (`le_finrank_toDualPerp_single`/`_inf`,
-`finrank_span_pair_le`/`_triple_le`) plus the two-proper-subspaces exchange
-(`Submodule.exists_mem_notMem_notMem`) — no genericity anywhere. -/
+Each conclusion is a value of `g` on one of four independent vectors, read through the
+contragredient identity `g x ⬝ᵥ h y = x ⬝ᵥ y`: `g` sends `(c, b, c', pt₂v)` to `(m, pt₁u, m', x)`
+(`Module.Basis.equiv`, along the permutation `0 ↔ 2, 1 ↔ 3` of the indices). The choice of `b`
+orthogonal to `n₂v` and off `span {w₁, w₂}` gives the first cross-incidence and the fourth
+avoidance; `x` orthogonal to `n₁u` and off `span {q₁, q₂}`, the second cross-incidence and the third
+avoidance; `c` not orthogonal to `n₂v`, with `m` orthogonal to `s₁` and `s₂`, the first avoidance
+(`m` is orthogonal to every member of `span {s₁, s₂}`, but `m ⬝ᵥ h n₂v = c ⬝ᵥ n₂v ≠ 0`); and `c'`
+orthogonal to `t₁` and `t₂`, with `m'` not orthogonal to `n₁u`, the second. Each vector is chosen in
+a space of some dimension `d`, off at most two subspaces of dimension less than `d`
+(`le_finrank_toDualPerp_inf`, `finrank_toDualPerp_single_eq`, `finrank_span_pair_le`,
+`finrank_span_triple_le`), which is possible over any field, as a vector space is not the union of
+two proper subspaces (`Submodule.exists_mem_notMem_notMem`); each also avoids the span of the
+vectors of its frame chosen before it, so that the two frames are independent. -/
 theorem exists_reposition_cross_incidences_avoiding
     (n₁u pt₁u n₂v pt₂v s₁ s₂ q₁ q₂ t₁ t₂ w₁ w₂ : Fin 4 → K)
     (hn₁ : n₁u ≠ 0) (hp₁ : pt₁u ≠ 0) (hn₂ : n₂v ≠ 0) (hp₂ : pt₂v ≠ 0) :
@@ -604,7 +594,7 @@ theorem exists_reposition_cross_incidences_avoiding
   -- Cross-incidence 2: `g pt₂v = x ⊥ n₁u`.
   · rw [hgp]
     exact (hker_mem n₁u x).mp hxS
-  -- Steering 1: any member of `span {s₁, s₂}` is `⬝ᵥ`-killed by `m = g c`, but
+  -- Avoidance 1: `m = g c` is orthogonal to every member of `span {s₁, s₂}`, but
   -- `m ⬝ᵥ h n₂v = c ⬝ᵥ n₂v ≠ 0`.
   · intro hmem
     obtain ⟨a₁, a₂, hsum⟩ := Submodule.mem_span_pair.mp hmem
@@ -615,8 +605,8 @@ theorem exists_reposition_cross_incidences_avoiding
       simp [dotProduct_add, dotProduct_smul, h₁, h₂]
     rw [← hgc, hgh c n₂v] at hd
     exact ((hker_mem n₂v c).not.mp hck) hd
-  -- Steering 2: a `span {h t₁, h t₂}` membership of `n₁u` pulls back through `h` to a
-  -- `(t₁, t₂)`-combination `⬝ᵥ`-killed by `c'`, but `m' ⬝ᵥ n₁u ≠ 0`.
+  -- Avoidance 2: a member `h (a₁ • t₁ + a₂ • t₂)` of `span {h t₁, h t₂}` equal to `n₁u` gives
+  -- `m' ⬝ᵥ n₁u = c' ⬝ᵥ (a₁ • t₁ + a₂ • t₂) = 0`, but `m' ⬝ᵥ n₁u ≠ 0`.
   · intro hmem
     obtain ⟨a₁, a₂, hsum⟩ := Submodule.mem_span_pair.mp hmem
     have hsum' : h (a₁ • t₁ + a₂ • t₂) = n₁u := by
@@ -638,28 +628,26 @@ theorem exists_reposition_cross_incidences_avoiding
     have hb_eq : b = a₁ • w₁ + a₂ • w₂ := g.injective (by rw [hgb, hsum'])
     exact hbw (hb_eq ▸ Submodule.mem_span_pair.mpr ⟨a₁, a₂, rfl⟩)
 
-/-! ## W3-L4: the cut-edge arm of the pencil reduction (`lem:pencil-cut-case`, Phase 39)
+/-! ## The cut-edge case
 
-With the transport (`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`), the
-repositioning automorphism (`exists_reposition_cross_incidences`), and the minimality-free rank
-assembly (`Theorem55.lean`'s `finrank_span_rigidityRows_cutEdge_eq`,
-`span_rigidityRows_eq_of_supportExtensor_agree`, `mem_of_induce_isLink_left` and
-`mem_of_induce_isLink_right` — shared with the panel-only cut-edge producers
-`case_cut_edge_realization_gen`/`_gp_gen` since `40-simplify` task 10o, which deleted this file's
-own copies) in hand, the cut arm assembles a pencil realization of `G` from those of the two sides
-`G[V₁]`, `G[V₂]` of a cut with at most one crossing edge. The construction mirrors the panel-only
-sibling `case_cut_edge_realization_gen` (`Theorem55.lean`), minimality-free: `¬TwoEdgeConnected` is
-unfolded directly (its own opener needs `IsMinimalKDof`, which the motive-free
-`HasPencilRealization` lacks) and the deficiency splits by
-`deficiency_eq_of_cutEdges_ncard_le_one`. The one genuinely new step over the panel sibling is the
-crossing edge's hinge: it must lie in both panels *and* pass through both concurrency points, which
-`exists_extensor_two_pencils` supplies once the two cross-incidences hold — arranged by
-transporting the `V₂` side along the repositioning automorphism. -/
+The cut-edge case (`lem:pencil-cut-case`) builds a pencil realization of `G` from those of the two
+sides `G[V₁]` and `G[V₂]` of a cut crossed by at most one edge, as Katoh and Tanigawa's cut-edge
+case does for panel realizations (`case_cut_edge_realization_gen`, `Theorem55.lean`), and shares its
+count of the rank (`finrank_span_rigidityRows_cutEdge_eq`,
+`span_rigidityRows_eq_of_supportExtensor_agree`, `mem_of_induce_isLink_left`,
+`mem_of_induce_isLink_right`). That case finds the cut by
+`Graph.exists_cut_decomposition_of_not_twoEdgeConnected`, which asks for a minimal graph; here
+`¬ G.TwoEdgeConnected` is unfolded directly, and the deficiency splits by
+`Graph.deficiency_eq_of_cutEdges_ncard_le_one`. The step that the panel case does not have is the
+crossing edge's hinge, which must lie in both panels and pass through both points:
+`exists_extensor_two_pencils` gives it once the second side has been moved so that the two
+cross-incidences hold. -/
 
-/-- **A pencil panel realization restricts to a subgraph** (`sec:pencil-reduction`). For `H ≤ G`,
-the framework on `H` with the same supporting extensors, normals and points is a pencil panel
-realization of `H`: each condition is pointwise on `V(H) ⊆ V(G)` or on links of `H`, which are links
-of `G`. -/
+/-- **A pencil realization restricts to a subgraph** (a step of `lem:pencil-cut-case` and
+`lem:pencil-pair-loop-base-cut`): for `H ≤ G`, the framework on `H` with the same supporting
+extensors, with the same normals and points, is a pencil realization of `H`: each condition is on
+all edge labels, on the bodies of `H`, which are bodies of `G`, or on the links of `H`, which are
+links of `G`. -/
 theorem HasPencilPanelRealization.restrict {G H : Graph α β} {F : BodyHingeFramework K 2 α β}
     {normal point : α → Fin 4 → K} (h : HasPencilPanelRealization G F normal point)
     (hle : H ≤ G) : HasPencilPanelRealization H ⟨H, F.supportExtensor⟩ normal point := by
@@ -670,16 +658,16 @@ theorem HasPencilPanelRealization.restrict {G H : Graph α β} {F : BodyHingeFra
     fun e u v hl => hthrough e u v (hl.of_le hle)⟩
 
 open Classical in
-/-- **The glued pencil realization across a cut** (`sec:pencil-reduction`; the assembly shared by
-the cut arm `hasPencilRealization_of_not_twoEdgeConnected_core` and the conditioned pair's cut
-producers in `Pair.lean`/`Pair2.lean`). Let `V₁ ⊂ V(G)` be nonempty and crossed by at most one edge,
-`V₂ = V(G) \ V₁`. Given pencil panel realizations of the two induced sides `G[V₁]`, `G[V₂]` whose
-rigidity-row ranks meet their deficiency targets, and a nonzero hinge `C` lying in both panels and
-passing through both points of every crossing link, the glued data is a pencil panel realization of
-`G` at its deficiency rank: each side's extensor on its own links, `C` on a crossing link, and each
-body's normal and point from its own side. The rank closes by
+/-- **Gluing pencil realizations across a cut** (a step of `lem:pencil-cut-case` and
+`lem:pencil-pair-loop-base-cut`, in `hasPencilRealization_of_not_twoEdgeConnected_core` and in the
+cut-edge case of the conditioned pair, `Pair.lean` and `Pair2.lean`): let `V₁ ⊂ V(G)` be nonempty
+and crossed by at most one edge, and `V₂ = V(G) \ V₁`. Given pencil realizations of the two sides
+`G[V₁]` and `G[V₂]` whose rigidity rows span at least their deficiency ranks, and a nonzero hinge
+`C` in both panels and through both points of every link from `V₁` to `V₂`, the glued data is a
+pencil realization of `G` at the deficiency rank: each side's extensors on its own links, `C` on
+every other label, and each body's normal and point from its own side. The rank is
 `finrank_span_rigidityRows_cutEdge_eq`, with the deficiency split
-`deficiency_eq_of_cutEdges_ncard_le_one` and the side spans pinned by
+`Graph.deficiency_eq_of_cutEdges_ncard_le_one` and the span of each side's rows from
 `span_rigidityRows_eq_of_supportExtensor_agree`. -/
 theorem exists_hasPencilPanelRealization_glue [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
@@ -784,37 +772,32 @@ theorem exists_hasPencilPanelRealization_glue [Finite α] [Finite β] {n : ℕ}
           simp only [hu₁, hv₁, ↓reduceIte]
           first | exact ⟨h2, h1⟩ | exact ⟨h4, h3⟩
 
-/-- **The cut-edge arm of the pencil reduction** (`lem:pencil-cut-case`, W3-L4; Phase 39;
-Katoh–Tanigawa 2011 §6.1, the not-2-edge-connected branch, projective-repositioning refinement). Let
-`G` be a multigraph that is not `2`-edge-connected. Unfolding `¬TwoEdgeConnected` gives a nonempty
-proper vertex set `V₁ ⊂ V(G)` crossed by at most one edge; write `V₂ = V(G) \ V₁`. If both induced
-sides `G[V₁]`, `G[V₂]` have a pencil realization at the deficiency rank (the induction hypothesis,
-each side having fewer vertices), so does `G`.
+/-- **The cut-edge case, in both forms** (`lem:pencil-cut-case`; the pencil form of Katoh and
+Tanigawa's cut-edge case, KT 2011 §6.1, Lemma 6.1, p. 672): let `G` be a multigraph that is not
+`2`-edge-connected, so that a nonempty proper subset `V₁ ⊂ V(G)` is crossed by at most one edge, and
+let `V₂ = V(G) \ V₁`. If every nonempty `G' ≤ G` with fewer bodies than `G` has a pencil realization
+at the deficiency rank whose points at the two ends of every link are independent when `D` holds,
+then so does `G`.
 
-Assembly (mirroring the panel-only `case_cut_edge_realization_gen`, minimality-free): place each
-side's realization independently — the combined framework uses `F₁`'s supporting extensor on
-`V₁`-internal edges, `F₂`'s on `V₂`-internal edges — and, when a crossing edge `u_c v_c` survives
-(`|C| = 1`), reposition the `V₂` side along the projective automorphism
-(`exists_reposition_cross_incidences`, transported by
-`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`) so the crossing edge's two
-cross-incidences hold, then take its hinge from `exists_extensor_two_pencils` (lying in both panels,
-through both points). When no edge crosses (`|C| = 0`) the same assembly runs at the identity
-repositioning with a junk hinge, so the two branches share one tail. The two sides then glue by
-`exists_hasPencilPanelRealization_glue`, which also closes the rank (the transported `V₂`-side rank
-by `finrank_span_rigidityRows_mapExtensor`).
+Realize the two sides `G[V₁]` and `G[V₂]` by the hypothesis. If an edge `u_c v_c` crosses, move the
+second side by the automorphism of `exists_reposition_cross_incidences`
+(`hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv`), after which the edge's two
+cross-incidences hold, and give the edge the hinge of `exists_extensor_two_pencils`, in both panels
+and through both points. If no edge crosses, the same steps run with the identity and any nonzero
+hinge, so that the two cases share the rest. The sides then glue by
+`exists_hasPencilPanelRealization_glue`, which gives the rank, the moved side's by
+`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`.
 
-**Flag-parametrized core (2026-09-16, Phase 39 checklist item 5, decision (α)).** The construction
-is shared verbatim by the bare cut arm and by its adjacent-distinct variant, so it is stated once
-with a `Prop` flag `D` gating an extra *adjacent-distinctness* rider on the concurrency points: at
-`D := False` the rider is vacuous and `hasPencilRealization_of_not_twoEdgeConnected` below is the
-bare arm (`lem:pencil-cut-case`) verbatim; at `D := True` it is
-`hasDistinctPencilRealization_of_not_twoEdgeConnected`, the arm `PencilPair`'s third conjunct needs
-(`Molecule/Pencil/Motive.lean`). The induction hypothesis also takes `G' ≤ G` — satisfied by both
-induced sides, and what lets the distinct instantiation pull each side's `G'.Simple` from `G`'s at
-the call site. Distinctness threads through the assembly exactly as the panel data does: inside a
-side from that side's own rider, on the `V₂` side through the repositioning automorphism `g` (a
-linear equivalence, hence independence-preserving), and at the crossing edge from
-`exists_reposition_cross_incidences`'s own `![pt₁(u_c), g pt₂(v_c)]` clause. -/
+The two forms of `lem:pencil-cut-case` have one proof, so this statement takes a proposition `D`,
+under which the independence of the points of every link is asked and given. At `D := False` it is
+`hasPencilRealization_of_not_twoEdgeConnected`, and at `D := True`
+`hasDistinctPencilRealization_of_not_twoEdgeConnected`, the adjacent-distinct form that the second
+condition of `PencilPair` needs (`Motive.lean`). The hypothesis is asked only at subgraphs of `G`,
+which both sides are, so that the conditioned pair can supply it at a simple `G` from its own
+adjacent-distinct realizations of simple graphs (`pencilPair_of_not_twoEdgeConnected`,
+`Pair2.lean`). The independence holds on a link inside a side by that side's realization, moved by
+the automorphism `g` on the second side (`g` keeps independence), and at the crossing edge by the
+last conclusion of `exists_reposition_cross_incidences`. -/
 theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β] {n : ℕ}
     {D : Prop} (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
@@ -858,10 +841,9 @@ theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β
   rw [hVeq₁] at hrank₁
   rw [hVeq₂] at hrank₂
   obtain ⟨u₀, hu₀⟩ := hne
-  -- The `V₂` side's repositioning `(g, h)` and the hinge `C` of every crossing link: the identity
-  -- and any nonzero extensor when no edge crosses (`|C| = 0`); else (`|C| = 1`) the automorphism
-  -- meeting the two cross-incidences and the crossing edge's hinge, in both panels and through
-  -- both points.
+  -- The second side's automorphism `(g, h)` and the hinge `C` of every crossing link: the identity
+  -- and any nonzero extensor when no edge crosses; otherwise the automorphism meeting the two
+  -- cross-incidences, and the crossing edge's hinge, in both panels and through both points.
   obtain ⟨g, h, hgh, C, hCne, hcross⟩ : ∃ g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K),
       (∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y) ∧ ∃ C : ScrewSpace K 2, C ≠ 0 ∧
       ∀ e u v, G.IsLink e u v → u ∈ V₁ → v ∉ V₁ →
@@ -898,9 +880,9 @@ theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β
           BodyHingeFramework.finrank_span_rigidityRows_mapExtensor]
         exact hrank₂.ge)
     hCne (fun e u v hl hu hv => (hcross e u v hl hu hv).1)
-  -- Adjacent-distinctness rider: internal links read off their side's own rider (the `V₂` one
-  -- through the repositioning automorphism `g`), and the single crossing link is exactly the
-  -- pair `exists_reposition_cross_incidences` already separates.
+  -- The independence of the points of a link: on a link inside a side from that side's realization
+  -- (moved by `g` on the second side), and at the crossing link from
+  -- `exists_reposition_cross_incidences`.
   have hdistg : ∀ a b : Fin 4 → K, LinearIndependent K ![a, b] →
       LinearIndependent K ![g a, g b] := fun a b hab => by
     simpa using hab.pair_map (g : (Fin 4 → K) →ₗ[K] (Fin 4 → K)) g.injective
@@ -937,12 +919,11 @@ theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β
           exact LinearIndependent.pair_symm_iff.mp (hcross e v u hl.symm hv₁ hu₂.2).2
   exact ⟨F, normal, point, hreal, hdist, hrank_eq⟩
 
-/-- **The cut-edge arm of the pencil reduction, bare motive** (`lem:pencil-cut-case`, W3-L4;
-Phase 39; Katoh–Tanigawa 2011 §6.1). The flag-parametrized core above at `D := False`, where the
-adjacent-distinctness rider is vacuous on both sides and in the conclusion: a multigraph that is
-not `2`-edge-connected has a pencil realization at the deficiency rank as soon as both sides of a
-cut with at most one crossing edge do. Statement unchanged by the 2026-09-16 (α) restatement — the
-core carries the proof. -/
+/-- **The cut-edge case** (`lem:pencil-cut-case`; KT 2011 §6.1): if a multigraph `G` is not
+`2`-edge-connected, and every nonempty multigraph with fewer bodies than `G` has a pencil
+realization at the deficiency rank (`HasPencilRealization`), then so does `G`. It is
+`hasPencilRealization_of_not_twoEdgeConnected_core` at `D := False`, where the independence of the
+points is neither asked nor given. -/
 theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
@@ -956,14 +937,13 @@ theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n 
         exact ⟨F', normal', point', hreal', fun hfalse => hfalse.elim, hrank'⟩)
   exact ⟨F, normal, point, hreal, hrank⟩
 
-/-- **The cut-edge arm of the pencil reduction, adjacent-distinct motive** (Phase 39 PENCIL,
-checklist item 5 decision (α); the `HasDistinctPencilRealization` sibling of
-`hasPencilRealization_of_not_twoEdgeConnected`). The flag-parametrized core above at `D := True`:
-if both sides of a cut with at most one crossing edge have a pencil realization at the deficiency
-rank *with adjacent concurrency points projectively distinct*, so does `G`. The induction
-hypothesis is restricted to subgraphs `G' ≤ G`, which is what the conditioned pair's consumer
-(`pencilPair_of_not_twoEdgeConnected`, `Molecule/Pencil/Pair2.lean`) needs in order to pass `G`'s
-simplicity down to the two induced sides before invoking their distinct halves. -/
+/-- **The cut-edge case, adjacent-distinct form** (`lem:pencil-cut-case`): if a multigraph `G` is
+not `2`-edge-connected, and every nonempty `G' ≤ G` with fewer bodies than `G` has an
+adjacent-distinct pencil realization at the deficiency rank (`HasDistinctPencilRealization`), then
+so does `G`. It is `hasPencilRealization_of_not_twoEdgeConnected_core` at `D := True`. The
+hypothesis is asked only at subgraphs of `G` so that the conditioned pair
+(`pencilPair_of_not_twoEdgeConnected`, `Pair2.lean`), which gives adjacent-distinct realizations
+only of simple graphs, can supply it at a simple `G`: a subgraph of a simple graph is simple. -/
 theorem hasDistinctPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)

@@ -6,22 +6,17 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Arms
 
 /-!
-# The pencil reduction — the base arm (Phase 39 PENCIL)
+# The base case of the pencil reduction
 
-Split out of `Molecule/Pencil/Arms.lean` (`40-cleanup` task 28b, the `≤1500`-LoC tripwire): the
-**base arm** `L5` of the W3 leaf decomposition's four induction arms
-(`hasPencilRealization_of_ncard_le_two`), the last non-wrapper leaf, discharging every loopless
-multigraph on at most two bodies. The bare-motive wrapper `L7` this file also carried,
-`pencil_conjecture_of_arms`, retired at the `40-simplify` cleanup round's PI sanction (2026-10-04,
-`notes/pencil/adjudications.md`): its conclusion follows from the headline
-`pencil_realization_theorem` over an infinite field, with no caller left once `pencilPair_of_arms`
-and `pencil_realization_theorem_of_X0` superseded it.
+The base case of the induction of `sec:pencil-reduction` (`lem:pencil-base-case`): every loopless
+multigraph on one or two bodies has a pencil realization at the deficiency rank. Every body gets the
+same normal and the same point of its panel, and the edges get two independent hinges in that panel
+through that point (`lem:extensor-pair-through-point`). The loop and cut-edge cases are in
+`Arms.lean`.
 
-This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
-namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
+## Main results
 
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§W3 leaf decomposition), and
-`blueprint/src/chapter/pencil.tex`.
+* `hasPencilRealization_of_ncard_le_two`: the base case (`lem:pencil-base-case`).
 -/
 
 open scoped Matrix
@@ -32,34 +27,35 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## W3-L5: the base arm (`lem:pencil-base-case`, Phase 39)
+/-! ## The base case -/
 
-The last non-wrapper W3 leaf: every loopless multigraph on at most two bodies has a pencil
-realization at the deficiency rank. Three shapes, dispatched on `E(G)`, sharing one pencil pair
-`(q₀, Ce, Cf)` from `exists_linearIndependent_extensor_pair_through_point` at a fixed normal `n₀`:
-- **edgeless** (covers both `|V| = 1` and `|V| = 2` with no edges): rank `0` against
-  `def = D(|V|-1)` (`Graph.deficiency_of_edgeSet_empty`), realized by the all-`Ce` framework (no
-  per-link obligation to discharge).
-- **single edge**: rank `D - 1` against `def = 1` (`Graph.deficiency_of_single_edge`), realized by
-  one genuine hinge — the lower bound is the landed `D - 1`-independent-rows brick
-  (`exists_independent_rigidityRows_of_edge`), the upper bound the B2 deficiency cap
-  (`finrank_span_rigidityRows_add_deficiency_le`).
-- **parallel class of `m ≥ 2` edges** (no minimality assumed, so `m` is unbounded): rank `D`
-  against `def = 0`, via the landed two-hinge producer `theorem_55_base` (which needs only two
-  genuine parallel hinges `e ≠ f`, not `E(G) = {e, f}` exactly) — any further edges reuse the
-  second hinge `Cf` and cost nothing (mirrors the loop arm's extension pattern,
-  `hasPencilRealization_of_isLoopAt`). The deficiency-`0` fact is the restriction argument
-  `isKDof_zero_of_parallel_pair` on `H := G ↾ {e, f}` transported to `G` by
-  `deficiency_le_deficiency_of_le_vertexSet_eq` (mirrors
-  `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two`). -/
+/-- **The base case** (`lem:pencil-base-case`): every loopless multigraph `G` on one or two bodies
+has a pencil realization at the deficiency rank, at `n = 3`, where
+`Graph.bodyBarDim 3 = screwDim 2 = 6`. Every body gets the normal `n₀ = Pi.single 0 1` and the point
+`q₀` of `exists_linearIndependent_extensor_pair_through_point` (`lem:extensor-pair-through-point`),
+which also gives two independent hinges `Ce` and `Cf` in that panel through `q₀`. By the edges:
+
+* No edge (one body or two): the deficiency is `D(|V(G)| - 1)`
+  (`Graph.deficiency_of_edgeSet_empty`), so the deficiency rank is `0`; every label gets `Ce`.
+* One edge `e`: the deficiency is `1` (`Graph.deficiency_of_single_edge`), and `e` gets `Ce`. The
+  rank is at least `D - 1`, as the nonzero hinge of an edge gives `D - 1` independent rows
+  (`BodyHingeFramework.exists_independent_rigidityRows_of_edge`, `lem:edge-rows-independent`), and
+  at most the deficiency rank (`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`,
+  `lem:relative-deficiency-rank-bound`).
+* Two edges or more, all joining the two bodies, as `G` is loopless: the deficiency is `0`, as that
+  of two of the edges `e ≠ f` is (`Graph.isKDof_zero_of_parallel_pair`, on `G ↾ {e, f}`) and adding
+  edges on the same bodies does not raise it (`Graph.deficiency_le_deficiency_of_le_vertexSet_eq`).
+  The edge `e` gets `Ce` and every other label `Cf`. The independent hinges at `e` and `f` make the
+  two bodies rigid (`BodyHingeFramework.theorem_55_base`, `lem:theorem-55-base`), so the rank is `D`
+  (`BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`). -/
 theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
     (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
     HasPencilRealization K 3 G := by
   classical
   have := hloop
   have hb6 : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
-  -- A fixed nonzero panel normal, and the pencil pair (independent hinges through a common point)
-  -- reused across the single-edge and parallel-class cases.
+  -- One nonzero normal `n₀` for every body, and two independent hinges `Ce`, `Cf` in its panel
+  -- through one point `q₀` of it.
   set n₀ : Fin 4 → K := Pi.single 0 1 with hn₀
   have hn₀_ne : n₀ ≠ 0 := by
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
@@ -144,7 +140,7 @@ theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph 
       · intro e' u v hlink
         have he'e := hlink_eq_e e' u v hlink; subst he'e
         rw [hFe]; exact ⟨hCe_thru, hCe_thru⟩
-      · -- rank: sandwiched between the B2 upper bound and the `D-1`-independent-rows lower bound.
+      · -- The rank: at most the deficiency rank, and at least the `D - 1` independent rows of `e`.
         have hdef : G.deficiency 3 = 1 :=
           Graph.deficiency_of_single_edge (n := 3) (by decide) hxy hl_e hVG hEe
         have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne hC
@@ -192,7 +188,7 @@ theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph 
         · subst he'; rw [hFe]; exact ⟨hCe_thru, hCe_thru⟩
         · have hFe' : F.supportExtensor e' = Cf := by simp [hF, he']
           rw [hFe']; exact ⟨hCf_thru, hCf_thru⟩
-      · -- rank: full `D = 6` via `theorem_55_base` + bridge B1.
+      · -- The rank: `D = 6`, as the two bodies are rigid (`theorem_55_base`).
         have hdef0 : G.deficiency 3 = 0 := by
           set H := G ↾ ({e, f} : Set β) with hH_def
           have hHle : H ≤ G := Graph.restrict_le
