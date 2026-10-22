@@ -6,45 +6,46 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
 
 /-!
-# Cycles and ears in the `X₀` induction (Phase 40g CHAIN)
+# Cycles and ears
 
-The base of the `X₀` induction and its two unconditional ear steps
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-chain`; informal (MC-18)–(MC-21)
-and (MC-134), Steps MC10, MC13 and MC20 of §(K-main)). Every step keeps CUT's contract
-(`MainComponent/Cut.lean`): one picture off finitely many polynomials' zero sets, heights where two
-Zariski-open conditions meet inside `L_G(q)`, and `Graph.x0Attains_of_exists` at the end. The ears
-are described as in `MainComponent/Ear.lean`.
+The steps of the induction on the general configuration at a cycle (`thm:pencil-x0-cycle`) and at an
+open ear with at least five interior bodies (`thm:pencil-x0-open-ear`), and the result at a closed
+ear (`thm:pencil-x0-closed-ear`), which the induction does not use (`sec:main-component-chain`). The
+lemmas on ears that they use are in `MainComponent/Ear.lean`, and an ear is given as there: its
+interior bodies `x : Fin k → α`, the sequence `pathVertex a x b` of its bodies, and its `k + 1`
+edges `e i`, linking consecutive members (`hpath`); `hsep` says that every edge off the path lies
+inside `V₁`.
 
-## Main statements
+The steps follow the scheme of `sec:main-component-cut` (`MainComponent/Cut.lean`), with the ear
+rank formula (`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`, `lem:block-rank-ear`) for the
+count. At an open ear the height meets two open conditions in `L_G(q)`: `G[V₁]` has its target, and
+six joins of the ear are independent, so that the hinges of the ear span the screw space. The
+independence holds at one configuration, on the closed hexagon of
+`lem:pencil-chain-span-certificates` (`linearIndependent_pointJoin_certHexagon`), whose picture puts
+every body of `V₁` at one point and is not admissible. Its heights are `1` at `x 1` and `x 2` and
+`0` elsewhere; they lie in `L_G(q)` at every admissible `q` (`Graph.mem_liftingSpace_of_ear`), as
+`x 1` and `x 2` lie in no closed neighbourhood of a body of `V₁`. This needs `k ≥ 4`, and six
+distinct edges of the ear need `k ≥ 5`. `Graph.X0Attains.of_openEar_of_cert`
+(`MainComponent/Ear.lean`) does the rest.
 
-* `Graph.X0Attains.of_cycle` — **BASE** (the base of (MC-21)(a), `thm:pencil-x0-cycle`): a cycle
-  on `k + 2 ≥ 3` bodies attains, over every infinite field, with no further hypothesis.
-* `Graph.X0Attains.of_openEar` — **the open ear** ((MC-20), `thm:pencil-x0-open-ear`): under (H),
-  an open ear with `k ≥ 5` interior bodies, its ends possibly adjacent, carries attainment from
-  `G[V₁]` to `G`.
-* `Graph.X0Attains.of_closedEar` — **the closed ear** ((MC-20), `thm:pencil-x0-closed-ear`): under
-  (H), a closed ear with `k ≥ 2`, as CUT (`Graph.X0Attains.of_cutVertex`) plus BASE.
+A cycle is given as an edge `f` from `a` to `b` and the path `a − x 0 − ⋯ − x (k − 1) − b`, an open
+ear on `{a, b}`, so the ear rank formula gives its rank. Each closed neighbourhood of a cycle has
+three members, so at an admissible picture every height is a height of the cycle
+(`Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`): the step keeps the
+heights of a closed polygon of `lem:pencil-chain-span-certificates` and chooses only the picture,
+and no two open conditions need to meet. A closed ear `c − x 0 − ⋯ − x (k − 1) − c` makes `c` a cut
+vertex whose other side is a cycle, with the ear's first edge `e 0`, from `c` to `x 0`, as its edge
+`ab`.
 
-## Design
+## Main results
 
-* **Ears and cycles as explicit paths** (the PI's decision 3, `notes/Phase40g.md`): BASE takes its
-  cycle as an edge `ab` plus the path `a − x 0 − ⋯ − x (k − 1) − b`, the format of the ear steps,
-  because its proof is the ear rank law at `V₁ = {a, b}`.
-* **The chain span by one certificate, inside the fibre.** (MC-19)(b)'s "for any flag pair"
-  becomes a witness: the height `1` at `x 1`, `x 2` and `0` elsewhere lies in `L_G(q)` at every
-  admissible `q` (the interior heights of an ear are free, `Graph.mem_liftingSpace_of_ear`), and
-  the closed hexagon `linearIndependent_pointJoin_certHexagon`, reached at a picture putting `a`
-  and `b` at one point, makes six ear joins independent there. The span polynomial in the picture
-  (`exists_mvPolynomial_linearIndependent_pointJoin_picture`), then in the heights
-  (`exists_mvPolynomial_linearIndependent_pointJoin_heights`), carries the independence to the
-  attaining heights. It needs two free middle heights, so `k ≥ 4`.
-* **BASE needs no fibre intersection**: every closed neighbourhood of a cycle has three members, so
-  every height on `V(G)` is a lifting height
-  (`Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`).
-* **The closed ear reuses the ear's labels**: its far side is the cycle through `x 0` closed by
-  `e 0`, so no fresh edge label is needed, and no chain span of a closed ear ((MC-19)(c)) is used.
-* **The steps ask less of `G[V₁]` than the informal statement**: attainment there, and (H) at `G`
-  only.
+* `Graph.X0Attains.of_cycle`: `thm:pencil-x0-cycle`, a cycle on `k + 2 ≥ 3` bodies attains, over
+  every infinite field, with no further hypothesis.
+* `Graph.X0Attains.of_openEar`: `thm:pencil-x0-open-ear`, if `G` satisfies the standing hypotheses,
+  with an open ear on `V₁` with `k ≥ 5` interior bodies, its ends possibly adjacent, the general
+  configuration of `G` attains when that of `G[V₁]` does.
+* `Graph.X0Attains.of_closedEar`: `thm:pencil-x0-closed-ear`, the same for a closed ear with
+  `k ≥ 2`, by the steps at a cut vertex (`Graph.X0Attains.of_cutVertex`) and at a cycle.
 -/
 
 open scoped Graph
@@ -53,10 +54,11 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## BASE: a cycle attains -/
+/-! ## A cycle (`thm:pencil-x0-cycle`) -/
 
-/-- **The closed neighbourhoods of the ends of a cycle's closing edge**: `a` sees `b` and `x 0`,
-and `b` sees `a` and `x (k − 1)`. -/
+/-- **The closed neighbourhoods of the ends of the edge `ab` of a cycle** (a step of
+`thm:pencil-x0-cycle`): on the cycle `a − x 0 − ⋯ − x (k − 1) − b − a`, `k ≥ 1`, the closed
+neighbourhood of `a` lies in `{a, b, x 0}`, and that of `b` in `{b, a, x (k − 1)}`. -/
 theorem _root_.Graph.closedNbhd_cycle_subset {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α}
     {e : Fin (k + 1) → β} {f : β} (hk : 1 ≤ k) (hinj : Function.Injective x)
     (hxa : ∀ i, x i ≠ a) (hxb : ∀ i, x i ≠ b) (hab : a ≠ b) (hf : G.IsLink f a b)
@@ -106,13 +108,23 @@ theorem _root_.Graph.closedNbhd_cycle_subset {G : Graph α β} {k : ℕ} {x : Fi
       · exact absurd h1.symm hab
       · exact Or.inr (Or.inl h2)
 
-/-- **BASE, from a certificate** (Phase 40g CHAIN): the cycle `a − x 0 − ⋯ − x (k − 1) − b − a`
-(`k ≥ 1`, so `k + 2 ≥ 3` bodies) attains, given `min (k + 2) 6` of its links whose joins are
-independent at one configuration. Every height on `V(G)` is a lifting height (every closed
-neighbourhood has three members); the cycle is the edge `ab` (the path brick at `k = 0`: rank `5`,
-relative screws its hinge) plus an open ear on `{a, b}`, so the ear rank law gives the rank
-`5 (k + 2) − 6 + λ` with `λ ≥ min (k + 2) 6`, against `def ≥ max 0 (k − 4)` from the partition
-into single bodies. -/
+/-- **A cycle attains, given independent joins at one configuration** (a step of
+`thm:pencil-x0-cycle`): over an infinite field, the cycle `a − x 0 − ⋯ − x (k − 1) − b − a`
+(`k ≥ 1`, so `k + 2 ≥ 3` bodies) attains if `min (k + 2) 6` of its links have independent joins at
+one configuration `(q₀, zs)`.
+
+Proof. Every closed neighbourhood has exactly three members, so at an admissible picture every
+height on `V(G)` is a height of the cycle
+(`Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`). Take a picture `q` off
+the zero sets of the main-picture polynomial of `G` and of a polynomial that keeps the joins
+independent at the heights `zs` (`exists_mvPolynomial_linearIndependent_pointJoin_picture`), and the
+restriction of `zs` to `V(G)`. The cycle is the edge `ab`, a path with no interior body, of rank `5`
+and with its relative screws spanned by its hinge (`lem:block-rank-path`,
+`lem:relative-screws-path`), and an open ear on `{a, b}`. So the ear rank formula
+(`BodyHingeFramework.finrank_span_rigidityRows_ear_eq`) gives the rank `5 (k + 2) − 6 + λ`, where
+`λ ≥ min (k + 2) 6` is the dimension of the span of all the hinges
+(`card_le_finrank_of_linearIndependent_pointJoin`). The partition into single bodies gives
+`def ≥ max 0 (k − 4)`, so the rank is at least the target (`Graph.x0Attains_of_exists`). -/
 theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} {f : β}
     (hk : 1 ≤ k) (hcover : V(G) = {a, b} ∪ Set.range x) (hinj : Function.Injective x)
@@ -223,7 +235,7 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
       funext i
       rw [heq _ (hg i).left_mem, heq _ (hg i).right_mem]
     rw [hfun]; exact hliq
-  -- the ear rank law at `V₁ = {a, b}`
+  -- the ear rank formula at `V₁ = {a, b}`
   set F := (PanelHingeFramework.ofNormals (k := 2) G ends
     (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge with hFdef
   have hC : ∀ i, F.supportExtensor (e i) ≠ 0 :=
@@ -353,11 +365,16 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
     push_cast at this ⊢
     linarith
 
-/-- **BASE: a cycle attains** (Phase 40g CHAIN, `thm:pencil-x0-cycle`; the base of (MC-21)(a)):
-the cycle `a − x 0 − ⋯ − x (k − 1) − b − a` on `k + 2 ≥ 3` bodies attains on `X₀`, over every
-infinite field, with no further hypothesis. The certificate is the closed polygon on `k + 2`
-bodies for `k + 2 ≤ 5` (`linearIndependent_pointJoin_certTriangle`, `…Square`, `…Pentagon`), and
-for `k + 2 ≥ 6` the hexagon with `x 3, …, x (k − 1)` collapsed onto one point. -/
+/-- **A cycle** (`thm:pencil-x0-cycle`): over an infinite field, the cycle
+`a − x 0 − ⋯ − x (k − 1) − b − a` on `k + 2 ≥ 3` bodies attains, with no further hypothesis; its
+edges are the path edges `e i` and an edge `f` from `a` to `b`.
+
+Proof. By `Graph.X0Attains.of_cycle_of_certificate`, at a configuration putting the bodies at the
+points of `lem:pencil-chain-span-certificates` (`certPicture`, `certHeights`): for `k + 2 ≤ 5`, the
+closed polygon on `k + 2` points (`linearIndependent_pointJoin_certTriangle`,
+`linearIndependent_pointJoin_certSquare`, `linearIndependent_pointJoin_certPentagon`); for
+`k + 2 ≥ 6`, the closed hexagon (`linearIndependent_pointJoin_certHexagon`) at the edges `a x 0`,
+`x 0 x 1`, `x 1 x 2`, `x 2 x 3`, `x (k − 1) b` and `b a`, with `x 3, …, x (k − 1)` at one point. -/
 theorem _root_.Graph.X0Attains.of_cycle [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β} {f : β}
     (hk : 1 ≤ k) (hcover : V(G) = {a, b} ∪ Set.range x) (hinj : Function.Injective x)
@@ -518,15 +535,22 @@ theorem _root_.Graph.X0Attains.of_cycle [Infinite K] [Finite α] [Finite β]
         · change pointJoin (certPt (lab b)) (certPt (lab a)) = _; rw [lb, la]; rfl
       rw [heq]; exact linearIndependent_pointJoin_certTriangle
 
-/-! ## The open ear with at least five interior bodies -/
+/-! ## An open ear with at least five interior bodies (`thm:pencil-x0-open-ear`) -/
 
-/-- **The open ear with at least five interior bodies** (Phase 40g CHAIN, `thm:pencil-x0-open-ear`;
-(MC-20), open half): let `G` satisfy (H) with `V(G) = V₁ ∪ {x 0, …, x (k − 1)}`, the interior
-bodies distinct and outside `V₁`, and let the path `a − x 0 − ⋯ − x (k − 1) − b` (`a ≠ b` in
-`V₁`, possibly adjacent) carry `k + 1 ≥ 6` edges, every other edge lying inside `V₁`. If `X₀(G[V₁])`
-attains, `X₀(G)` attains. At heights where `G[V₁]` attains and six ear joins are independent, the
-ear hinges span the screw space, so the ear rank law adds `5 (k + 1)` to the rank, while the ear
-deficiency bound lets the target grow by at most that. -/
+/-- **An open ear with at least five interior bodies** (`thm:pencil-x0-open-ear`): over an infinite
+field, let `G` satisfy the standing hypotheses, with `V(G) = V₁ ∪ {x 0, …, x (k − 1)}`, the interior
+bodies distinct and outside `V₁`, and let the path `a − x 0 − ⋯ − x (k − 1) − b` (`a ≠ b` in `V₁`,
+possibly adjacent) have `k + 1 ≥ 6` edges, every other edge lying inside `V₁`. If the general
+configuration of `G[V₁]` attains, then the general configuration of `G` attains.
+
+Proof. By `Graph.X0Attains.of_openEar_of_cert`, with the closed hexagon
+(`linearIndependent_pointJoin_certHexagon`) at the six edges `a x 0`, `x 0 x 1`, `x 1 x 2`,
+`x 2 x 3`, `x (k − 2) x (k − 1)` and `x (k − 1) b`, at a picture putting every body of `V₁` at one
+point and `x 3, …, x (k − 2)` at another, and heights `1` at `x 1` and `x 2` and `0` elsewhere,
+which are heights of `G` at every admissible picture (`Graph.mem_liftingSpace_of_ear`). At heights
+where `G[V₁]` has its target and these six joins are independent, the hinges of the ear span the
+screw space, so the ear rank formula adds `5 (k + 1)` to the rank, while the target grows by at most
+that (`Graph.deficiency_induce_add_le_of_ear`). -/
 theorem _root_.Graph.X0Attains.of_openEar [Infinite K] [Finite α] [Finite β] {G : Graph α β}
     (hG : G.IsX0Graph) {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
     (hk : 5 ≤ k) (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
@@ -666,7 +690,7 @@ theorem _root_.Graph.X0Attains.of_openEar [Infinite K] [Finite α] [Finite β] {
         exact ite_eq_right h1
       · have h1 : ¬ (xl = x1 ∨ xl = x2) := by rintro (h | h); exacts [x1l h.symm, x2l h.symm]
         exact ite_eq_right h1
-  · -- the deficiency: the ear lowers the target by at most `5 (k + 1)`
+  · -- the deficiency: the ear raises the target by at most `5 (k + 1)`
     have hdef := Graph.deficiency_induce_add_le_of_ear (n := 3) (by decide) (by omega) hcover hinj
       hxV₁ ha hb hpath hsep
     have hb3 : (Graph.bodyBarDim 3 : ℤ) = 6 := rfl
@@ -674,13 +698,16 @@ theorem _root_.Graph.X0Attains.of_openEar [Infinite K] [Finite α] [Finite β] {
     push_cast
     linarith
 
-/-! ## The closed ear -/
+/-! ## A closed ear (`thm:pencil-x0-closed-ear`) -/
 
-/-- **The closed ear** (Phase 40g CHAIN, `thm:pencil-x0-closed-ear`; (MC-20), closed half): a
-closed ear `c − x 0 − ⋯ − x (k − 1) − c` (`k ≥ 2`) on `V₁` makes `c` a cut vertex whose far side
-`G[{c} ∪ range x]` is the cycle through `x 0` closed by `e 0`, so CUT
-(`Graph.X0Attains.of_cutVertex`) and BASE (`Graph.X0Attains.of_cycle`) give `X₀(G)` from
-`X₀(G[V₁])`. No chain span of a closed ear ((MC-19)(c)) is used. -/
+/-- **A closed ear** (`thm:pencil-x0-closed-ear`): over an infinite field, let `G` satisfy the
+standing hypotheses, with a closed ear `c − x 0 − ⋯ − x (k − 1) − c` on `V₁`, `k ≥ 2`. If the
+general configuration of `G[V₁]` attains, then the general configuration of `G` attains. The body
+`c` is a cut vertex whose other side `G[{c} ∪ range x]` is, as `G` has no loop, the cycle
+`x 0 − x 1 − ⋯ − x (k − 1) − c − x 0` closed by `e 0`; so the steps at a cut vertex
+(`Graph.X0Attains.of_cutVertex`) and at a cycle (`Graph.X0Attains.of_cycle`) give it. No declaration
+uses it: the structural coverage reduces a graph with a cut vertex at the cut vertex or along a
+chain of bridges (`lem:pencil-x0-cut-reduces`). -/
 theorem _root_.Graph.X0Attains.of_closedEar [Infinite K] [Finite α] [Finite β] {G : Graph α β}
     (hG : G.IsX0Graph) {V₁ : Set α} {k : ℕ} {x : Fin k → α} {c : α} {e : Fin (k + 1) → β}
     (hk : 2 ≤ k) (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)

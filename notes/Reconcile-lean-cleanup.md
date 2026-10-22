@@ -8,11 +8,11 @@ L6–L8's signatures and repeated derivations with S17, L1–L2 (the pebble game
 non-vacuity witness for each of the 16 main results outside S1's and S2's rows, and the docstring
 sweep by directory. No main result's statement changes. In the footprint (34 files: the 33 that
 construct `PanelHingeFramework`, and `GenericLift/HingeGeneric.lean`) the docstrings that describe
-the carrier or S1's and S2's theorems wait for the phase. Tasks 1–37.13 are done (*Current state*;
-gate 9: 422 at task 2, 18 now), the sweep through `AlgebraicInduction/`, `Molecular/Molecule/`'s top
-level, `Pencil/`'s top level and `MainComponent/`'s files to `ContractCurve.lean` in import order.
-**Next concrete task:** task 37.14, the docstrings of `MainComponent/ContractAdditive.lean`,
-`Contract.lean` and `Chain.lean` (*Hand-off*). Round manual: `CLEANUP.md`.
+the carrier or S1's and S2's theorems wait for the phase. Tasks 1–37.14 are done (*Current state*;
+gate 9: 422 at task 2, 17 now), the sweep through `AlgebraicInduction/`, `Molecular/Molecule/`'s top
+level, `Pencil/`'s top level and `MainComponent/`'s files to `Chain.lean` in import order. **Next
+concrete task:** task 37.15, the docstrings of `MainComponent/Lines.lean` and `EarGen.lean`
+(*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -41,46 +41,36 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 37.13 is done**; nothing is mid-stream. **Next:** task 37.14.
+**Task 37.14 is done**; nothing is mid-stream. **Next:** task 37.15.
 
-**Task 37.13** (new `F-313`; `F-279` one more; `F-122` in part): `MainComponent/ContractCurve.lean`,
-in the footprint, swept, with a new header that describes the file (its *Design* section folded
-in); every pin's lead names its node, every other bold lead the nodes its declaration is a step of
-(gate 9's five: `Graph.coreNbhd`, `Graph.contractWeightAt`,
-`Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix`,
-`Graph.rigidContract_induce_simple`, `Graph.three_le_ncard_closedNbhd_rigidContract`). Corrected:
-the *Design* note that a `panelRow` step times out unless `rigidContract` is rewritten first (the
-proof elaborates without that rewrite, a `lake lean` test; `F-313`); `hatt` called "`G/H` simple"
-(it is the adjacency condition, equivalent for a simple `G`); "`L_G(q(t))` is the image" (the proof
-gives an inclusion); the comparisons with a retired proof. Kept as they stand (*Moved to a later
-round*, `F-122`): the hinges of `G/H` and the rows at the collapsed placement. The label check:
-23 → 18. The ledger: 313 entries, 217 `done`, 9 `left`, 48 `reported`, 39 `open`. The build rebuilt
-13 modules (one during the witness's `lake lean`), within the Bash tool's limit; the axioms
-harness's output is unchanged.
+**Task 37.14** (new `F-314`): `MainComponent/ContractAdditive.lean` and `Chain.lean`, in the
+footprint, and `Contract.lean`, swept, each with a new header that describes the file
+(`Chain.lean`'s *Design* section folded in); every pin's lead names its node, every other bold lead
+the node its declaration is a step of (gate 9's one line:
+`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`, now a step of `cor:pencil-x0-contract-rigid`).
+Corrected: a comment of `Graph.X0Attains.of_openEar` said that the ear lowers the target by at most
+`5 (k + 1)` (it raises it by at most that); both contraction steps called `hatt` "`G/H` simple"; the
+comparisons with a retired proof. No sentence of the three files says what a selector records or
+what the carrier's constructors give, so `F-122` gains nothing. The label check: 18 → 17. The
+ledger: 314 entries, 217 `done`, 9 `left`, 48 `reported`, 40 `open`. The build rebuilt 13 modules,
+within the Bash tool's limit; the axioms harness's output is unchanged.
 
-**Done before** (tasks 3–37.12; the ledger's dispositions name the task of each part, and the
+**Done before** (tasks 3–37.13; the ledger's dispositions name the task of each part, and the
 messages carry the detail): L9's thirty-nine deletions (the pins they left without a caller stay
 with their nodes), `F-090`'s shim, `F-061`'s rename, L6–L8's hypotheses and repeated derivations
 (each node they reach restated in the same commit; gate 2 runs block (c) since task 5), the search
 and its texts (tasks 16–20), `Nonvacuity.lean`'s sixteen witnesses (tasks 21–24; FRICTION: tasks
-22–24's entries, task 21's waits for task 38), every directory before the footprint swept (tasks
-25–33), the footprint's files of `AlgebraicInduction/` (tasks 34–36.2), and `Molecule/`'s top level
-(task 37, `F-182`; task 37.1, `F-186`, `F-190`, `F-300`), and `Pencil/Statement.lean` and
-`Chart.lean` (task 37.2, `F-301`, `F-302`), `Arms.lean` and `ArmsAssembly.lean` (task 37.3,
-`F-303`), `Motive.lean` (task 37.4, `F-245` in part, `F-304`), `Engine.lean` (task 37.5,
-`F-305`), `Reseed.lean`, `Witness.lean` and `Steer.lean` (task 37.6, `F-306`), `Pair.lean` and
-`Pair2.lean` (task 37.7, `F-307`, `F-279` one more), `X0.lean` and
-`MainComponent/GenericSteer.lean` (task 37.8, `F-308`), `MainComponent/Carrier.lean` and
-`Configuration.lean` (task 37.9, `F-309`, `F-245` and `F-246` in part), `Flat.lean` and
-`Bridge.lean` (task 37.10, `F-246`, `F-310`), `Cut.lean` (task 37.11, `F-245`, `F-311`) and
-`Ear.lean` (task 37.12, `F-312`).
+22–24's entries, task 21's waits for task 38), and the docstring sweep, a task per one to five files
+in import order: every directory before the footprint (tasks 25–33), the footprint's files of
+`AlgebraicInduction/` (tasks 34–36.2), `Molecule/`'s top level (tasks 37–37.1), and `Pencil/`'s top
+level and `MainComponent/` to `ContractCurve.lean` (tasks 37.2–37.13; new `F-301` to `F-313`).
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
 *unpinned, own node*; `scratch/reconcile-lean/labels-t2.txt`, gitignored); its acceptance is
 `65a5c0ee`'s message. Of the stale or absent labels `F-230`–`F-264` list, all are reported but
 `runPebbleGame.aux`'s (past its lead; task 26 fixed it); a docstring naming no node is outside it.
-Of the 18 left, 14 are in `Molecule/Pencil/MainComponent/` (task 37.14 on) and 4 in `GenericLift/`
+Of the 17 left, 13 are in `Molecule/Pencil/MainComponent/` (task 37.15 on) and 4 in `GenericLift/`
 (S1's, the phase).
 
 **Verified at the open** (2026-10-15, at `347ba9c4`, round 2's close tree; its Lean is that of the
@@ -267,26 +257,23 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `Dictionary.lean`** (`F-182` `done`; `F-243` in part; new `F-299`).
 - [x] **37.1. `Molecule/Carrier.lean`, `Application.lean`, `GeneralPosition4.lean`,
   `Theorem56.lean`, `Modelling.lean`** (`F-186`, `F-190` `done`; `F-210` in part; new `F-300`).
-- [x] **37.2–37.8. `Molecule/Pencil/`'s top level and `MainComponent/GenericSteer.lean`**, a task
-  per one to three files (`F-243`'s part there; `F-245` in part; new `F-301` to `F-308`; `F-279` one
-  more; *Current state* names each task's files).
-- [x] **37.9–37.13. `MainComponent/`'s `Carrier.lean` to `ContractCurve.lean`**, a task per one or
-  two files in import order (`F-245`, `F-246` `done`; new `F-309` to `F-313`; `F-279` one more;
-  `F-122` in part).
-- [ ] **37.14–37.21. The rest of `Molecular/Molecule/Pencil/MainComponent/`.** 10 420 lines in 17
-  files, 14 of gate 9's lines: eight slices by import order (*Hand-off*), split by file as tasks
-  34–37.13 were.
+- [x] **37.2–37.14. `Molecule/Pencil/`'s top level and `MainComponent/` to `Chain.lean`**, a task
+  per one to three files in import order (`F-243`'s part there; `F-245`, `F-246` `done`; new `F-301`
+  to `F-314`; `F-279` two more; `F-122` in part; the messages name each task's files).
+- [ ] **37.15–37.21. The rest of `Molecular/Molecule/Pencil/MainComponent/`.** 9 176 lines in 14
+  files, 13 of gate 9's lines: seven slices by import order (*Hand-off*), split by file as tasks
+  34–37.14 were.
 - [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
   `F-269`'s eight declarations and `F-271`'s `case_I_realization` through block (b); `F-275`'s
   derivable vertex hypotheses, `F-278`'s and `F-280`'s two each, `F-281`'s five, `F-282`'s nine,
   `F-283`'s six, `F-284`'s four, `F-285`'s three, `F-286`'s to `F-295`'s, `F-297`'s, `F-298`'s,
   `F-300`'s three, `F-303`'s four, `F-304`'s three, `F-307`'s eight, `F-308`'s two, `F-309`'s
-  `[Finite α]`, `F-310`'s two over-strong hypotheses and repeated binder, `F-312`'s `hinj` and
-  `F-313`'s unused conjunct, `have` and rewrite, L6's, and `F-282`'s, `F-289`'s, `F-291`'s to
-  `F-300`'s, `F-302`'s to `F-313`'s repeated derivations, L8's (`F-305`'s re-seeding and
-  `F-306`'s `hubSlotNormal_ofCoord_toCoord` through block (b) and the trial deletion); `F-279`'s
-  unused declarations; `F-298`'s four needless `set_option`s; `F-299`'s, `F-303`'s, `F-304`'s and
-  `F-306`'s mathlib lemmas).
+  `[Finite α]`, `F-310`'s two over-strong hypotheses and repeated binder, `F-312`'s `hinj`,
+  `F-313`'s unused conjunct, `have` and rewrite and `F-314`'s `have`, L6's, and `F-282`'s,
+  `F-289`'s, `F-291`'s to `F-300`'s, `F-302`'s to `F-314`'s repeated derivations, L8's (`F-305`'s
+  re-seeding and `F-306`'s `hubSlotNormal_ofCoord_toCoord` through block (b) and the trial
+  deletion); `F-279`'s unused declarations; `F-298`'s four needless `set_option`s; `F-299`'s,
+  `F-303`'s, `F-304`'s and `F-306`'s mathlib lemmas).
   The smell counts again (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the
   open's; each `@[nolint …]` and `set_option linter` site checked for its one-line justification
   (task 8 found that one of the seven bridge "false positives" `notes/ToolchainBumps.md` counts was
@@ -340,49 +327,10 @@ Items outside this round's scope, one line each, mirrored in the same commit int
   (S13, within S1's refactor). The phase's (a).
 - `F-122` in part (S2's structure field): in each footprint file the sweep reaches, the sentences on
   what a selector records or asks and on what the carrier's constructors give, kept as they stand,
-  true: the transports' selector swap, `Q = ofNormals Q.graph Q.ends …`, the last conjunct of
-  `HasGenericFullRankRealization` (`CaseI.lean`, `CaseII.lean`, task 34); a selector over every edge
-  label, and what `ofParam` and `withGraph` give back (`GenericityDevice.lean`, `Coupling.lean`,
-  task 34.1); the hinge `ofNormals` gives at a label, from the normals of the two bodies its
-  selector gives it, which does not read the graph, so that a block of rows does not depend on it
-  and a renaming of the normals cancels that of the selector, and what `G.endsOf` gives at a link
-  (`CaseIII/`, tasks 35–35.3); what the structure's fields mean and what `toBodyHinge`,
-  `withNormal`, `ofNormals` and `IsHingeCoplanar` give (the hinges at a body lie in its panel;
-  `PanelHinge.lean`, task 36); the docstrings of `reaim`, `reaimSub`, `reaimSubLink` and their three
-  lemmas on motions, kept but for their leads (`reaim`'s claims a nonzero hinge at every label from
-  general position and `x₀ ≠ y₀`; at a link the selector must also give the link its ends), and the
-  meet model's hinges in the multigraph section's header and the docstrings of
-  `theorem_55_6_multigraph` and `molecular_conjecture_multigraph` (`Theorem55.lean`, tasks
-  36.1–36.2); the panel-hinge framework at the homogenized centres, edge by edge on the molecular
-  framework's selector, and what a nonzero hinge at a label means on each side (`Duality.lean`, task
-  37); the selector's conjunct of KT Theorem 5.6's realization with the poles in general position
-  and of the molecular realization (it records a `G`-link on every `G`-link, as the square-graph
-  dictionary needs of the same selector), that realization viewed as `ofNormals G Q₀.ends q₀` at its
-  own normals, and the panel-hinge framework on the homogenized poles, which differs from `Q` by a
-  nonzero rescaling of each supporting extensor (`Theorem56.lean`, `Modelling.lean`, task 37.1); the
-  selector of `X0Attains` (it records every link of `G`), what `ofNormals` gives at the
-  configuration points (the polar of the point-join framework, the meet of the two polar planes at
-  each label, a hinge nonzero exactly when the normals at its ends are independent, and a zero hinge
-  at the plane normals where adjacent planes coincide), what `HasCoplanarPanelRealization` asks (a
-  nonzero hinge at every label) and that `ends` names the two ends of a link
-  (`Pencil/MainComponent/Carrier.lean`, `Configuration.lean`, task 37.9); the hinge `ofNormals`
-  gives at a label from the normals of the two bodies its selector gives it, under a rescaling of
-  the normals and in the plane framework, the selector of the chart form of the planar case of KT
-  Theorem 5.6 (it records every link), the recorded hinges of the rank along a polynomial curve,
-  and that the chart point needs no selector that records a link at every label
-  (`Pencil/MainComponent/Flat.lean`, `Bridge.lean`, task 37.10); the hinge of an `ofNormals`
-  framework at a recorded link (it spans the panel extensor of its two ends, in either
-  orientation), the rank congruence's two selectors recording every link (the row rank reads the
-  selector only up to the orientation of each link) and the sides' own selectors carried to
-  `G.endsOf` (`Pencil/MainComponent/Cut.lean`, task 37.11); the hinge of an `ofNormals` framework
-  at a link (the meet at the link lies on it, in either orientation) and along a family of links
-  (each the meet at its recorded ends, `±` the polar image of the join at the link's ends)
-  (`Pencil/MainComponent/Ear.lean`, task 37.12); the hinges of `G/H` at the normals (every one
-  nonzero) and the rows of the `ofNormals` framework of `G − E(H)` at the collapsed placement, those
-  of `G/H` with the column of `r` deleted (`Pencil/MainComponent/ContractCurve.lean`, task 37.13);
-  and throughout, the selector of a generic full-rank realization, which gives each link its ends in
-  some order (two such agree up to order).
-  The phase's (a).
+  true (tasks 34–37.13; none in task 37.14's files), and throughout, the selector of a generic
+  full-rank realization, which gives each link its ends in some order (two such agree up to order).
+  The per-file list is `F-122`'s disposition in the ledger (`notes/Prose-findings.md`). The phase's
+  (a).
 
 ## Blockers / open questions
 
@@ -391,33 +339,30 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 37.14**, at Opus. The rest of `Molecular/Molecule/Pencil/` is `MainComponent/`'s other
-17 files (10 420 lines, 14 lines of gate 9), swept by file as tasks 34–37.13 were, in eight slices
-by import order (F: in the footprint, whose docstring parts that wait follow *Scope*; then the
-slice's lines and its lines of gate 9): 37.14 `ContractAdditive.lean` (F), `Contract.lean` and
-`Chain.lean` (F), 1 244 and 1; 37.15 `Lines.lean` and `EarGen.lean` (F), 1 303 and 6; 37.16
+**Next: task 37.15**, at Opus. The rest of `Molecular/Molecule/Pencil/` is `MainComponent/`'s other
+14 files (9 176 lines, 13 lines of gate 9), swept by file as tasks 34–37.14 were, in seven slices by
+import order (F: in the footprint, whose docstring parts that wait follow *Scope*; then the slice's
+lines and its lines of gate 9): 37.15 `Lines.lean` and `EarGen.lean` (F), 1 303 and 6; 37.16
 `Short.lean` (F), 1 061 and 4; 37.17 `Orbit.lean` (F), 1 097 and 1; 37.18 `SplitOff.lean` (F),
 `Coverage.lean` and `CoverageChain.lean`, 1 553 and 0; 37.19 `CoverageCut.lean`,
 `CoverageTheoremS.lean` and `GoodEar.lean`, 1 598 and 0; 37.20 `GenericBase.lean` (F) and
 `GenericEar.lean`, 1 451 and 2; 37.21 `GenericTriangle.lean` and `Statements.lean`, 1 113 and 0.
-**The smallest next commit:** task 37.14, the docstrings of `MainComponent/ContractAdditive.lean`
-(the step at an additive core, `thm:pencil-x0-contract-additive`), `Contract.lean` (its corollary at
-a core of planar deficiency zero, `cor:pencil-x0-contract-rigid`) and `Chain.lean` (the steps at a
-cycle and at an ear of `sec:main-component-chain`), whose headers still narrate phase codes and
-informal steps, with their one line of gate 9 (`Contract.lean`'s
-`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`, unpinned, gives `lem:pencil-contract-standing`
-as its own node; it is the case `n = 2` of `lem:pencil-contract-standing-rigid`'s pin, as
-`ContractCurve.lean`'s docstring now says), under the sweep's rules, *Decisions*' sweep form and
-*Scope*'s footprint rule, as tasks 34–36.2, 37.1 and 37.9–37.13 did in the footprint. If the three
-files do not fit one sitting, `Chain.lean` (785 lines) can go alone. *Expected:* the dump
-byte-identical; gate 9 falls from 18 by what the task fixes. Gates 1–3 (gate 3's witnesses: the
-sixteen of `scratch/reconcile-lean/Witnesses-t378.lean`, and
+**The smallest next commit:** task 37.15, the docstrings of `MainComponent/Lines.lean` (the geometry
+of lines that the steps at an open ear with two, three and four interior bodies use,
+`sec:main-component-short`) and `EarGen.lean` (an open ear over fixed base data,
+`def:pencil-ear-data`), whose headers still narrate phase codes and informal steps, with their six
+lines of gate 9 (all in `Lines.lean`: six unpinned lemmas whose leads give
+`thm:pencil-x0-open-ear-three` or `thm:pencil-x0-open-ear-four` as their own node), under the
+sweep's rules, *Decisions*' sweep form and *Scope*'s footprint rule, as tasks 34–36.2, 37.1 and
+37.9–37.14 did in the footprint. If the two files do not fit one sitting, `Lines.lean` (917 lines)
+can go alone. *Expected:* the dump byte-identical; gate 9 falls from 17 by what the task fixes.
+Gates 1–3 (gate 3's witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t378.lean`, and
 `scratch/reconcile-lean/t36/MolWitness.lean`), 5, 6, 9 and 10 (the parent dump
-`scratch/reconcile-lean/dump-t3713.txt`, gitignored; regenerate it if missing). The whole-project
+`scratch/reconcile-lean/dump-t3714.txt`, gitignored; regenerate it if missing). The whole-project
 build of a comment-only edit of a file the main results import can pass the Bash tool's 600 s (task
-37.9's did; tasks 37.5's to 37.8's and 37.10's, 24 modules, 37.11's, 21, 37.12's, 16, and 37.13's,
-13, did not) and go to the background, where it can be stopped at its own limit before it ends: wait
-for it in-turn (a foreground loop on its log's exit marker, as task 37.9 did:
+37.9's did; tasks 37.5's to 37.8's and 37.10's, 24 modules, 37.11's, 21, 37.12's, 16, and 37.13's
+and 37.14's, 13, did not) and go to the background, where it can be stopped at its own limit before
+it ends: wait for it in-turn (a foreground loop on its log's exit marker, as task 37.9 did:
 `for i in $(seq 1 110); do grep -q '^exit ' LOG && break; sleep 5; done`, with the build writing
 `exit $?` to its log), and if it is stopped, run it again in the foreground, which finishes the jobs
 left; one build at a time. The hook that blocks a commit adding a `sorry` also reads the prose words
@@ -442,15 +387,15 @@ their pins, liveness, callers and the nodes they serve), `t33/blocks.py` (a file
 with `lake lean <file> -- -DmaxErrors=10000`), `t341/ktpage.py` (KT 2011's printed page of a
 pattern), `t371/edit_*.py`, `t372/edit_*.py`, `t373/edit_*.py`, `t374/edit_mo.py`,
 `t375/edit_en.py`, `t376/edit_t376.py`, `t377/edit_t377.py`, `t378/edit_t378.py`,
-`t379/edit_t379.py`, `t3710/edit_t3710.py`, `t3711/edit_t3711.py`, `t3712/edit_t3712.py` and
-`t3713/edit_t3713.py` (tasks 37.1–37.13's edits, models of the sweep's form; `t378`'s `bcom` renders
-a comment after a focusing dot; `t372/edit_ch.py`'s `field` renders a structure field's docstring,
-and `t373/edit_aa.py` turns a section comment into a header and a docstring and keeps the `·` of a
-comment that follows one), `t371/refs/` (`pdftotext` of Jackson and Jordán 2008 and 2010) and
-`t379/refs/` (of Whiteley 1996). Carried in: `F-252`, `F-273`, `F-276`, `F-277` and `F-301` for the
-PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to `F-300`, `F-302` to `F-313` and FRICTION's
-`edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries for task 38. After the round the
-queue stops before `RECONCILE-FORMAL`, which is attended.
+`t379/edit_t379.py`, `t3710/edit_t3710.py`, `t3711/edit_t3711.py`, `t3712/edit_t3712.py`,
+`t3713/edit_t3713.py` and `t3714/edit_t3714.py` (tasks 37.1–37.14's edits, models of the sweep's
+form; `t378`'s `bcom` renders a comment after a focusing dot; `t372/edit_ch.py`'s `field` renders a
+structure field's docstring, and `t373/edit_aa.py` turns a section comment into a header and a
+docstring and keeps the `·` of a comment that follows one), `t371/refs/` (`pdftotext` of Jackson and
+Jordán 2008 and 2010) and `t379/refs/` (of Whiteley 1996). Carried in: `F-252`, `F-273`, `F-276`,
+`F-277` and `F-301` for the PI; `F-268`, `F-269`, `F-271`, `F-275`, `F-278` to `F-300`, `F-302` to
+`F-314` and FRICTION's `edgeFiber_nonempty` (task 15) and count-matroid (task 21) entries for task
+38. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 

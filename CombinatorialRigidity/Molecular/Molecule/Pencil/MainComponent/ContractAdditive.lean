@@ -6,35 +6,39 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCurve
 
 /-!
-# Contraction at an additive core in the `X₀` induction (Phase 40k CONTRACT-A)
+# Contraction at an additive core
 
-The contraction step of the `X₀` induction at a rigid core whose planar deficiency need not vanish
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-contract`; informal
-(MC-71), `notes/Phase40k.md`). Let `W ⊊ V(G)` with `|W| ≥ 2` induce a core `H = G[W]` with
-`def₃(H) = 0`, let `r ∈ W`, let `G/H = G.rigidContract (G.induce W) r` be simple (no body outside
-`W` adjacent to two core bodies), and suppose the planar deficiencies add,
-`def₂(H) + def₂(G/H) ≤ def₂(G)`. If `X₀(H)` and `X₀(G/H)` attain, so does `X₀(G)`.
+The step of the induction on the general configuration at an additive core
+(`thm:pencil-x0-contract-additive`, `sec:main-component-contract`): Katoh and Tanigawa's contraction
+case (KT 2011 §6.2, Lemma 6.3) read on configurations. Let `W ⊊ V(G)` with `|W| ≥ 2` induce a core
+`H = G[W]` with `def₃(H) = 0`, let `r ∈ W`, and let `G/H = G.rigidContract (G.induce W) r` be the
+contraction of `H` to `r`. Let no body outside `W` be adjacent to two bodies of `W` (`hatt`; for a
+simple `G`, the simplicity of `G/H`), and let the planar deficiencies of `H` and `G/H` add up to at
+most that of `G`, `def₂(H) + def₂(G/H) ≤ def₂(G)`. If the general configurations of `H` and of `G/H`
+attain, so does that of `G`. The step at a core of planar deficiency zero
+(`cor:pencil-x0-contract-rigid`, `MainComponent/Contract.lean`) is its corollary.
 
-The step reuses `ContractCurve.lean`'s rescaled lifting system `M(t)` and the curve `q(t)`
-unchanged. The core need not be flat: the kernel of `M(0)` is bounded above through the core
-heights of its solutions (`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`), and
-below by `3 + def₂(G)` from a semicontinuity argument at the zero vector. Additivity forces
-the two bounds to meet, so the core heights of the solutions of `M(0)` are all of `L_H(q)`; the
-attainment at `H`, read on the core heights, and the degenerate-rank condition of
-`ContractCurve.lean` then meet as two open conditions inside `ker M(0)`
-(`MvPolynomial.exists_mem_eval_ne_zero₂`). Along the curve the core's rank is read at `t ≠ 0` as
-the image of the configuration over the fixed picture `q` under an invertible linear map of `K⁴`
+The step follows the scheme of `sec:main-component-cut` (`MainComponent/Cut.lean`) in its picture
+and its count, and finds its height along the contraction curve `q(t)`, with the rescaled lifting
+system `M(t)` of `MainComponent/ContractCurve.lean`. The kernel of `M(0)` is bounded below by
+`3 + def₂(G)`, through the polynomial section of the kernel at the zero vector
+(`Matrix.exists_mvPolynomial_section_mulVec_eq_zero`), and above through the core heights of its
+solutions (`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`). Additivity makes the two
+bounds meet, so the core heights of the solutions of `M(0)` are all of `L_H(q)`. The attainment at
+`H`, read on the core heights, and the degenerate-rank condition
+(`PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`) then meet as two open
+conditions inside `ker M(0)` (`MvPolynomial.exists_mem_eval_ne_zero₂`). Along the polynomial section
+through a solution where both hold, the core's rank is read at `t ≠ 0` over the fixed picture `q`,
+by an invertible linear map of `K⁴`
 (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`,
 `Graph.finrank_span_rigidityRows_induce_contractHeight_eq`), where the general configuration of `H`
-attains — no collineation to a flat core is needed, unlike CONTRACT-R's retired curve proof
-(`Contract.lean`, Phase 40-simplify task 10q). The rest of the argument — the block coupling and
-`Graph.x0Attains_of_exists` — is shared with CONTRACT-R, now a one-line corollary of this theorem.
+attains. The block-triangular rank bound
+(`PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le`,
+`lem:block-rank-contract`) then gives `G` the rank `6(|W| − 1) + tgt(G/H) = tgt(G)`.
 
-## Main statements
+## Main results
 
-* `Graph.X0Attains.of_additiveContract` — **CONTRACT-A** (`thm:pencil-x0-contract-additive`).
-
-See `notes/Phase40k.md` and `notes/Phase40-design.md` §3 STEPS.
+* `Graph.X0Attains.of_additiveContract`: `thm:pencil-x0-contract-additive`.
 -/
 
 open scoped Matrix
@@ -44,23 +48,41 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-- **Contraction at an additive core** (`thm:pencil-x0-contract-additive`; (MC-71)). Let `K` be
-infinite, let `G` satisfy the standing hypotheses and be 2-edge-connected, and let `W ⊊ V(G)`,
-`|W| ≥ 2`, induce a core `H = G[W]` with `def₃(H) = 0` and no outside body adjacent to two core
-bodies (`G/H` simple), where the planar deficiencies add, `def₂(H) + def₂(G/H) ≤ def₂(G)`. If
-`X₀(H)` and `X₀(G/H)` both attain, `X₀(G)` attains.
+/-- **Contraction at an additive core** (`thm:pencil-x0-contract-additive`): over an infinite field,
+let `G` satisfy the standing hypotheses and be 2-edge-connected, let `W ⊊ V(G)` with `|W| ≥ 2` and
+`def₃(G[W]) = 0`, such that no body outside `W` is adjacent to two bodies of `W` (`hatt`), and let
+`G/H` be the contraction of `H = G[W]` to `r ∈ W`. If `def₂(H) + def₂(G/H) ≤ def₂(G)` and the
+general configurations of `H` and of `G/H` attain, then the general configuration of `G` attains.
 
-The two bounds on `ker M(0)` — above through the core heights of its solutions
-(`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`), below by `3 + def₂(G)` from
-semicontinuity at `t = 0` — meet under additivity, so the core heights of the solutions of `M(0)`
-are all of `L_H(q)`. The attainment at `H`, read on the core heights, and the
-degenerate-rank condition of `ContractCurve.lean` then meet as two open conditions inside
-`ker M(0)` (`MvPolynomial.exists_mem_eval_ne_zero₂`). Along the curve the core's rank is read at
-the fixed picture `q` through a collineation
-(`Graph.finrank_span_rigidityRows_induce_contractHeight_eq`), where `X₀(H)` attains; Cramer's
-section through a kernel vector solving both open conditions then solves `M(t)` off one
-polynomial, and the block coupling with `Graph.x0Attains_of_exists` closes the count
-`tgt(G) = 6(|W| − 1) + tgt(G/H)`. -/
+Proof. `H` satisfies the standing hypotheses (`Graph.isX0Graph_induce_of_deficiency_eq_zero` at
+`n = 3`), `G/H` is simple with at least three members in every closed neighbourhood
+(`Graph.rigidContract_induce_simple`, `Graph.three_le_ncard_closedNbhd_rigidContract`), and
+`def₃(G/H) = def₃(G)` (`Graph.rigidContract_deficiency_eq`). One picture `q` off the zero sets of
+the polynomials of the attainment and of Jackson and Jordán's equality
+(`Graph.exists_mvPolynomial_finrank_liftingSpace_eq`) at `H` and at `G/H`, and of the main-picture
+polynomial of `G`; an attaining height `z'` of `G/H` with `z'_r = 0`, by an affine shift
+(`Graph.finrank_span_rigidityRows_ofNormals_smul_add_affineLifts`). The polynomial section through
+the zero vector at `t = 0` gives `dim ker M(t) ≤ dim ker M(0)` off the zero set of a polynomial, so
+at a `t ≠ 0` off it where `q(t)` is a main picture of `G`,
+`3 + def₂(G) ≤ dim L_G(q(t)) ≤ dim ker M(0)` (`Graph.three_add_deficiency_le_finrank_liftingSpace`,
+`Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix`). With the kernel bound at `t = 0`
+(`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`), the equality at `H` and at `G/H`, and
+additivity, `dim ker M(0) = 3 + def₂(G)`, and the core heights of the solutions of `M(0)` are all of
+`L_H(q)`. So the polynomial of the attainment at `H`, read on the core heights, is nonzero somewhere
+on `ker M(0)`. So is the polynomial that
+`PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj` gives at `(q, z')`, read at
+the configuration `(q(0), z(0))` of a solution: it is nonzero at the solution that agrees with `z'`
+off `W` (`Graph.exists_mem_ker_contractLiftingMatrix_zero`), whose configuration is the collapsed
+placement of `(q, z')`. Both are nonzero at some `x₀ ∈ ker M(0)`
+(`MvPolynomial.exists_mem_eval_ne_zero₂`). The polynomial section through `x₀` solves `M(t)` at
+every `t ≠ 0` off the zero set of its polynomial where `q(t)` is a main picture, as the kernel does
+not jump there. At such a `t` where both conditions hold along the section, the heights `z(t)` lie
+in `L_G(q(t))` (`Graph.contractHeight_mem_liftingSpace`), `H` has rank `6(|W| − 1)`, read over `q`
+(`Graph.finrank_span_rigidityRows_induce_contractHeight_eq`), and the rows of the other edges, with
+the columns of `W` deleted, have rank at least `tgt(G/H)`. The block-triangular rank bound
+(`PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le`) gives `G` rank at least
+`6(|W| − 1) + tgt(G/H) = tgt(G)`, as `|V(G/H)| = |V(G)| − |W| + 1`
+(`Graph.rigidContract_vertexSet_ncard`), and `Graph.x0Attains_of_exists` concludes. -/
 theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {W : Set α} {r : α}
     (hr : r ∈ W) (hWss : W ⊂ V(G)) (hW2 : 2 ≤ W.ncard) (hdef3 : (G.induce W).deficiency 3 = 0)
@@ -84,7 +106,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
   have hc3 := Graph.three_le_ncard_closedNbhd_rigidContract hG htec hr hWss hatt
   have hrc : r ∈ V(G.rigidContract (G.induce W) r) :=
     (Graph.mem_vertexSet_rigidContract_iff hr hW).mpr (Or.inl rfl)
-  -- (MC-35): `def₃` is conserved
+  -- contracting the core keeps `def₃` (`lem:pencil-contraction-deficiency`)
   have hdefc3 : (G.rigidContract (G.induce W) r).deficiency 3 = G.deficiency 3 := by
     have : NeZero (Graph.bodyHingeMult 3) := ⟨by decide⟩
     exact Graph.rigidContract_deficiency_eq ⟨⟨Graph.induce_le hW, hdef3⟩, hW2, hWss⟩ hr
@@ -111,7 +133,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
     (right_ne_zero_of_mul (left_ne_zero_of_mul (left_ne_zero_of_mul hq)))
   obtain ⟨-, hqHdim⟩ := hJH q (right_ne_zero_of_mul (left_ne_zero_of_mul hq))
   have hPmq := right_ne_zero_of_mul hq
-  -- an attaining height of `G/H`, shifted to vanish at `r` (same rank, (MC-3))
+  -- an attaining height of `G/H`, shifted to vanish at `r` (`lem:pencil-rank-scale-shift`)
   set z' : α → K := (1 : K) • z₁ + (G.rigidContract (G.induce W) r).affineLiftMap q ![0, 0, -z₁ r]
     with hz'def
   have hz'L : z' ∈ (G.rigidContract (G.induce W) r).liftingSpace q := by
@@ -152,7 +174,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
     rw [Graph.rigidContract, Graph.map_isLink] at hlink ⊢
     obtain ⟨x, y, hxy, _, _⟩ := hlink
     exact ⟨_, _, hendsD e x y hxy, rfl, rfl⟩
-  -- the degenerate placement's projected surviving rank
+  -- the surviving rows near the collapsed placement (`lem:pencil-contract-degenerate-rank`)
   obtain ⟨Qc, hQc₀, hQc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj (k := 2) G hr hW ends
       hendsD (pencilConfigPoint q z')
@@ -170,7 +192,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
     rw [h, map_zero, contractPicture_one] at this
     exact hPmq this.symm
   have hX : (MvPolynomial.X () : MvPolynomial Unit K) ≠ 0 := MvPolynomial.X_ne_zero ()
-  -- (MC-69)(b), lower half: `ker M(0)` is at least `3 + def₂(G)` (semicontinuity along `t`)
+  -- the lower bound: `dim ker M(0) ≥ 3 + def₂(G)` (semicontinuity along `t`)
   set L := LinearMap.ker ((G.contractLiftingMatrix K W r q).map
     (MvPolynomial.eval (fun _ => (0 : K)))).mulVecLin with hL
   obtain ⟨D₀, -, hD₀₀, -, hD₀rank, -⟩ :=
@@ -194,7 +216,8 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
       h2.trans h1
     have := Nat.cast_le (α := ℤ).mpr this
     linarith
-  -- (MC-69)(a): the upper half, and the core heights of `ker M(0)` are all of `L_H(q)`
+  -- the upper bound (`lem:pencil-contract-kernel-bound`): the core heights of `ker M(0)` are
+  -- all of `L_H(q)`
   have hK3 := Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le hr hW hqHadm hqcadm
   have hmapLe : L.map (contractCoreRestrict W) ≤ (G.induce W).liftingSpace q := by
     rintro _ ⟨x, hx, rfl⟩
@@ -212,7 +235,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
     have h' : (Module.finrank K ((G.induce W).liftingSpace q) : ℤ) ≤
         Module.finrank K (L.map (contractCoreRestrict W)) := by linarith
     exact_mod_cast h'
-  -- two open conditions in `ker M(0)` ((MC-38) at an additive core)
+  -- two open conditions in `ker M(0)` (`lem:pencil-x0-fibre-intersection`)
   set PA : MvPolynomial (α ⊕ (α × Fin 3)) K :=
     MvPolynomial.rename Sum.inl (restrictPoly W RH) with hPAdef
   have hPA : ∀ x, MvPolynomial.eval x PA = MvPolynomial.eval (contractCoreRestrict W x) RH := by
@@ -255,7 +278,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
   obtain ⟨x₀, hx₀L, hPA₀, hPB₀⟩ := MvPolynomial.exists_mem_eval_ne_zero₂ hexA hexB
   have hx₀ : (G.contractLiftingMatrix K W r q).map (MvPolynomial.eval (fun _ => (0 : K))) *ᵥ x₀
       = 0 := hx₀L
-  -- Cramer's section through `x₀`
+  -- the polynomial section through `x₀` (`lem:pencil-polynomial-section`)
   obtain ⟨D, Z, hD₀, hZ₀, -, hZ⟩ :=
     Matrix.exists_mvPolynomial_section_mulVec_eq_zero (G.contractLiftingMatrix K W r q)
       (q₀ := fun _ => (0 : K)) hx₀
@@ -313,7 +336,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
   set n : α × Fin 4 → K := fun p =>
     pencilConfigPoint (contractPicture W r q t) (contractHeight W t xt) p.1 p.2
   have hzt := Graph.contractHeight_mem_liftingSpace hxt
-  -- the core's rank: `X₀(H)` at the magnified core picture `q`, moved along the curve
+  -- the core's rank: attained over `q`, read along the curve (`lem:pencil-contract-magnified-rank`)
   have hmemH := Graph.liftingRestrict_mem_liftingSpace_induce_of_contract hW hxt
   have hH0 := hattH (contractCoreRestrict W xt) (by rw [contractCoreRestrict_apply]; exact hmemH)
     hPAt

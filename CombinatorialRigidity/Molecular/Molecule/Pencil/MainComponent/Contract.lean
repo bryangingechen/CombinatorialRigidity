@@ -6,34 +6,31 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractAdditive
 
 /-!
-# Contraction at a `def₂`-rigid core in the `X₀` induction (Phase 40f CONTRACT-R)
+# Contraction at a core of planar deficiency zero
 
-**CONTRACT-R**, now a corollary of **CONTRACT-A** (`ContractAdditive.lean`; Phase 40-simplify
-task `7d`/10q, `notes/Phase40-simplify.md`). Let `W ⊊ V(G)` with `|W| ≥ 2` induce a core
-`H = G[W]` with `def₂(H) = 0`, let `r ∈ W`, and let `G/H = G.rigidContract (G.induce W) r` be
-simple (no body outside `W` adjacent to two core bodies). If `X₀(G/H)` attains, so does `X₀(G)`.
+The step of the induction on the general configuration at a core of planar deficiency zero
+(`cor:pencil-x0-contract-rigid`, `sec:main-component-contract`), a corollary of the step at an
+additive core (`thm:pencil-x0-contract-additive`, `MainComponent/ContractAdditive.lean`). Let
+`W ⊊ V(G)` with `|W| ≥ 2` induce a core `H = G[W]` with `def₂(H) = 0`, let `r ∈ W`, and let no body
+outside `W` be adjacent to two bodies of `W` (for a simple `G`, the simplicity of the contraction
+`G/H = G.rigidContract (G.induce W) r`). If the general configuration of `G/H` attains, so does that
+of `G`.
 
-A `def₂`-rigid core also has `def₃(H) = 0` (`def₃ ≤ def₂` by
-`Graph.Connected.deficiency_three_le_deficiency_two`, and `def₃ ≥ 0`), so `X₀(H)` attains by the
-flat case (`Graph.x0Attains_of_deficiency_two_eq_three`, FLAT, `cor:pencil-jj-flat`); contracting
-at a core conserves `def₂` (`Graph.rigidContract_deficiency_eq`), so
-`def₂(H) + def₂(G/H) = def₂(G)` is CONTRACT-A's additivity hypothesis for free, and
-`Graph.X0Attains.of_additiveContract` applies. Both steps are after Katoh–Tanigawa 2011 §6.2,
-Lemma 6.3, one lemma for any proper rigid subgraph, whose proof has CONTRACT-A's shape.
+`H` satisfies the standing hypotheses (`lem:pencil-contract-standing-rigid` at `n = 2`), so it is
+connected, and `0 ≤ def₃(H) ≤ def₂(H) = 0` (`Graph.Connected.deficiency_three_le_deficiency_two`,
+`lem:deficiency-antitone`): both deficiencies of `H` vanish, and the general configuration of `H`
+attains by the case of equal deficiencies (`Graph.x0Attains_of_deficiency_two_eq_three`,
+`cor:pencil-jj-flat`). Contracting `H` does not change the planar deficiency
+(`Graph.rigidContract_deficiency_eq`, `lem:pencil-contraction-deficiency`), so
+`def₂(H) + def₂(G/H) = def₂(G)`, and the step at an additive core applies. The two steps read Katoh
+and Tanigawa's contraction case (KT 2011 §6.2, Lemma 6.3), which contracts any proper rigid subgraph
+whose contraction is simple, on configurations.
 
-The rescaled lifting system, the curve, and CONTRACT-A's own argument through them (which this
-step's retired curve proof duplicated) are in `ContractAdditive.lean` and `ContractCurve.lean`.
-No blueprint `\lean{...}` pin moved: `cor:pencil-x0-contract-rigid`
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-contract`) already pinned this
-declaration before its proof changed.
+## Main results
 
-## Main statements
-
-* `Graph.isX0Graph_induce_of_deficiency_two_eq_zero` — a `def₂`-rigid core satisfies the standing
-  hypotheses (`lem:pencil-contract-standing`).
-* `Graph.X0Attains.of_rigidContract` — **CONTRACT-R** (`cor:pencil-x0-contract-rigid`).
-
-See `notes/Phase40f.md`, `notes/Phase40k.md` and `notes/Phase40-simplify.md` task 10q.
+* `Graph.isX0Graph_induce_of_deficiency_two_eq_zero`: a step of `cor:pencil-x0-contract-rigid`, the
+  case `n = 2` of `lem:pencil-contract-standing-rigid`.
+* `Graph.X0Attains.of_rigidContract`: `cor:pencil-x0-contract-rigid`.
 -/
 
 open scoped Matrix
@@ -43,33 +40,34 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## The standing hypotheses at the core -/
+/-! ## The standing hypotheses at the core, at `n = 2` (`lem:pencil-contract-standing-rigid`) -/
 
-/-- **A `def₂`-rigid core satisfies the standing hypotheses** (`lem:pencil-contract-standing`): a
-core `G[W]` of a simple `G` with `|W| ≥ 2` and `def₂(G[W]) = 0` is simple, connected, and of
-minimum degree at least two, a corollary of `Graph.isX0Graph_induce_of_deficiency_eq_zero`
-(`ContractCurve.lean`) at `n = 2`. -/
+/-- **A core of planar deficiency zero satisfies the standing hypotheses** (a step of
+`cor:pencil-x0-contract-rigid`): if `G` is simple, `W ⊆ V(G)` has at least two bodies and
+`def₂(G[W]) = 0`, then `G[W]` is simple, connected, and of minimum degree at least two. The case
+`n = 2` of `Graph.isX0Graph_induce_of_deficiency_eq_zero` (`lem:pencil-contract-standing-rigid`,
+`MainComponent/ContractCurve.lean`). -/
 theorem _root_.Graph.isX0Graph_induce_of_deficiency_two_eq_zero [Finite α] [Finite β]
     {G : Graph α β} (hS : G.Simple) {W : Set α} (hW : W ⊆ V(G)) (hW2 : 2 ≤ W.ncard)
     (hdef : (G.induce W).deficiency 2 = 0) : (G.induce W).IsX0Graph :=
   Graph.isX0Graph_induce_of_deficiency_eq_zero hS hW hW2 (n := 2)
     (by rw [Graph.bodyBarDim_two]; norm_num) hdef
 
-/-! ## The assembly: contraction at a `def₂`-rigid core -/
+/-! ## Contraction at a core of planar deficiency zero (`cor:pencil-x0-contract-rigid`) -/
 
-/-- **Contraction at a `def₂`-rigid core** (`cor:pencil-x0-contract-rigid`; (MC-59)(d) with
-(MC-39); after Katoh–Tanigawa 2011 §6.2, Lemma 6.3). Let `K` be infinite, let `G` satisfy
-the standing hypotheses and be 2-edge-connected, and let `W ⊊ V(G)`, `|W| ≥ 2`, induce a core
-`H = G[W]` with `def₂(H) = 0` and no outside body adjacent to two core bodies (`G/H` simple). If
-`X₀(G/H)` attains, `X₀(G)` attains.
+/-- **Contraction at a core of planar deficiency zero** (`cor:pencil-x0-contract-rigid`; after Katoh
+and Tanigawa's contraction case, KT 2011 §6.2, Lemma 6.3): over an infinite field, let `G` satisfy
+the standing hypotheses and be 2-edge-connected, let `W ⊊ V(G)` with `|W| ≥ 2` and `def₂(G[W]) = 0`,
+such that no body outside `W` is adjacent to two bodies of `W` (`hatt`), and let `G/H` be the
+contraction of `H = G[W]` to `r ∈ W`. If the general configuration of `G/H` attains, then the
+general configuration of `G` attains.
 
-`H` satisfies the standing hypotheses
-(`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`), and `def₃(H) ≤ def₂(H) = 0`
-(`Graph.Connected.deficiency_three_le_deficiency_two`, with `Graph.deficiency_nonneg`) forces
-`def₃(H) = 0` too, so `X₀(H)` attains by the flat case
-(`Graph.x0Attains_of_deficiency_two_eq_three`, `cor:pencil-jj-flat`). Contraction at a core
-conserves `def₂` (`Graph.rigidContract_deficiency_eq`), so `def₂(H) + def₂(G/H) = def₂(G)` for
-free, and `Graph.X0Attains.of_additiveContract` (**CONTRACT-A**) applies. -/
+Proof. `H` satisfies the standing hypotheses (`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`),
+and `def₃(H) ≤ def₂(H) = 0` (`Graph.Connected.deficiency_three_le_deficiency_two`), with
+`Graph.deficiency_nonneg`, forces `def₃(H) = 0`, so the general configuration of `H` attains
+(`Graph.x0Attains_of_deficiency_two_eq_three`, `cor:pencil-jj-flat`). Contracting `H` does not
+change the planar deficiency (`Graph.rigidContract_deficiency_eq`), so
+`def₂(H) + def₂(G/H) = def₂(G)`, and `Graph.X0Attains.of_additiveContract` applies. -/
 theorem _root_.Graph.X0Attains.of_rigidContract [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {W : Set α} {r : α}
     (hr : r ∈ W) (hWss : W ⊂ V(G)) (hW2 : 2 ≤ W.ncard) (hdef : (G.induce W).deficiency 2 = 0)

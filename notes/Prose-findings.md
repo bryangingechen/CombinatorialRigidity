@@ -5879,6 +5879,23 @@ declaration's name as its header writes it:
   time of the proof with it (`scratch/reconcile-lean/t3713/DefeqA.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.13.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-314** · L · repeated derivations and an unused step in
+  `Molecular/Molecule/Pencil/MainComponent/Chain.lean` and `ContractAdditive.lean`.
+  `Graph.X0Attains.of_cycle_of_certificate` states a `have hcover'` it does not use, and the two
+  branches of its `honlyP` (7 lines each) are one case analysis with the ends swapped.
+  `Graph.X0Attains.of_cycle` (four times, one per polygon) and `Graph.X0Attains.of_openEar` (once)
+  restate the joins of their configuration as those of a closed polygon of
+  `lem:pencil-chain-span-certificates` by the same `funext`, `fin_cases`, `change` and `rw` steps
+  (`heq`, a line per edge), which one lemma on a labelling of the bodies would spare, and the two
+  derive `hxne` from `hinj` the same way. `Graph.X0Attains.of_additiveContract` derives twice
+  (`hlow0`, `hdim`) the bound `3 + def₂(G) ≤ dim L_G(q(t)) ≤ dim ker M(t)` at a `t ≠ 0` where
+  `q(t)` is a main picture, and states `hevZ`, an instance of `MvPolynomial.eval_bind₁`. `lake lint`
+  reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness:
+  `Graph.X0Attains.of_cycle_of_certificate` without `hcover'`, on the three standard axioms
+  (`scratch/reconcile-lean/t3714/Hyps-t3714.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.14.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 
