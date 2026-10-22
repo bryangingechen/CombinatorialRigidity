@@ -2614,7 +2614,10 @@ declaration's name as its header writes it:
   in `Pencil/MainComponent/Ear.lean`, the hinge of an `ofNormals` framework at a link (the meet at
   the link lies on it, in either orientation) and along a family of links (each the meet at its
   recorded ends, `±` the polar image of the join at the link's ends), kept as they stand but for
-  their pointers and codes, moved to the phase (task 37.12).
+  their pointers and codes, moved to the phase (task 37.12); and in
+  `Pencil/MainComponent/ContractCurve.lean`, the hinges of `G/H` at the normals (every one nonzero)
+  and the rows of the `ofNormals` framework of `G − E(H)` at the collapsed placement (those of `G/H`
+  with the column of `r` deleted), kept as they stand, moved to the phase (task 37.13).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -5197,7 +5200,11 @@ declaration's name as its header writes it:
   `exists_isNondegPencilRealization_parallel_pair`, the witness that two bodies joined by two edges
   are nondegeneracy-feasible, which the docstring of `PencilNondegFeasible` (`Motive.lean`) names
   and whose claim the remark before `def:pencil-conditioned-pair` states. Removing it leaves no
-  other declaration without a caller.
+  other declaration without a caller. Task 37.13 adds one in
+  `Molecular/Molecule/Pencil/MainComponent/ContractCurve.lean` (the same screen and the cache, at
+  `30a83572`), not pinned: `Graph.IsAdmissiblePicture.eq_of_forall_closedNbhd`, two coefficient
+  vectors that agree on the picture points of a closed neighbourhood are equal, whose docstring now
+  says that no declaration uses it. Removing it leaves no other declaration without a caller.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5843,6 +5850,34 @@ declaration's name as its header writes it:
   `Fin 1` by `Function.injective_of_subsingleton`, on `propext`
   (`scratch/reconcile-lean/t3712/Hyps-t3712.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.12.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-313** · L · repeated derivations, an unused hypothesis and needless steps in
+  `Molecular/Molecule/Pencil/MainComponent/ContractCurve.lean`. `Graph.rigidContract_induce_simple`
+  re-derives the file's `collapseTo_of_mem`, `collapseTo_of_not_mem` and `mem_of_collapseTo_eq` as
+  `hcolW`, `hcolO` and `hin`, and the whole lemma follows in a few lines from
+  `Graph.exists_isLink_pair_of_rigidContract_not_simple` (`Induction/Contraction.lean`, a step of
+  the proof of KT Claim 6.6, p. 676) at `H = G[W]`. `Graph.closedNbhd_induce_subset` is
+  `Graph.closedNbhd_mono (G.induce_le hW)` (`Pencil/Motive.lean`) at both its callers, which have
+  `hW : W ⊆ V(G)`. The case analysis of a member of a closed neighbourhood of `G/H`
+  (`Graph.mem_closedNbhd_rigidContract`, the ends placed in or out of `W`, the collapse rewritten
+  away) is repeated, at `r` three times (`Graph.contractLimitMap_mem_liftingSpace`,
+  `Graph.eq_zero_of_contractLimitMap_eq_zero`,
+  `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`) and at a body outside `W` four times
+  (the first two, each at a neighbour of `W` and at another body, with a `hout` step each time); and
+  `r ∈ V(G/H)` is derived the same way in three lemmas and in `ContractAdditive.lean`. The first
+  conjunct of the hypothesis `hg` of `Graph.contractLimitMap_mem_liftingSpace` (the core heights on
+  the plane of `g`) is not used; `Graph.exists_contractHeight_eq` states a `have hwW` it does not
+  use; and the proof of `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`
+  elaborates without its `rw [hGcf] at hne hN`, which the file's header said a `panelRow` step needs
+  to avoid an `isDefEq` timeout. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the simplicity from
+  `Graph.exists_isLink_pair_of_rigidContract_not_simple`, the inclusion from
+  `Graph.closedNbhd_mono`, the limit map's lemma without the first conjunct of `hg` and
+  `Graph.exists_contractHeight_eq` without `hwW`, on the three standard axioms
+  (`scratch/reconcile-lean/t3713/Hyps-t3713.lean`, gitignored); and the degenerate-rank lemma's
+  proof without the rewrite, which elaborates with no error at the default heartbeats, in about the
+  time of the proof with it (`scratch/reconcile-lean/t3713/DefeqA.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.13.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

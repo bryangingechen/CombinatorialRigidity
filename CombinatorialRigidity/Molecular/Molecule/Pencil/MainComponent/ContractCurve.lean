@@ -6,87 +6,92 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
 
 /-!
-# The rescaled lifting system and the contraction curve (Phase 40f CONTRACT-R / 40k CONTRACT-A)
+# The contraction curve and the rescaled lifting system
 
-The rescaled lifting system `M(t)` of the contraction at a core, the curve `q(t)` it moves along,
-and the facts at the two ends of the curve that the contraction steps of the `X₀` induction share
-(`blueprint/src/chapter/main-component.tex`, `sec:main-component-contract`; Phase 40f
-CONTRACT-R and Phase 40k CONTRACT-A,
-`notes/Phase40f.md`, `notes/Phase40k.md`). Split out of `Contract.lean` at the Phase 40k
-`Contract.lean` split (`notes/Phase40k.md`, call 5): the standing hypotheses at the core
-(`Graph.isX0Graph_induce_of_deficiency_two_eq_zero`) and **CONTRACT-R**
-(`Graph.X0Attains.of_rigidContract`) stay in `Contract.lean`; every other declaration moved here
-unchanged, except `Graph.contractLimitMap_mem_liftingSpace` and
-`Graph.eq_zero_of_contractLimitMap_eq_zero`, generalized in place to take one plane on the core as
-a hypothesis (in place of `hqH`/`hLH`) so a later step can supply it from a magnified picture.
-`Contract.lean`'s own flat-core assembly (`Graph.exists_core_plane`,
-`Graph.finrank_ker_contractLiftingMatrix_zero_le`,
-`Graph.finrank_span_rigidityRows_induce_contractHeight`) was retired at Phase 40-simplify task
-10q, once CONTRACT-R became a one-line corollary of CONTRACT-A below; no declaration here is
-renamed or re-stated, so no blueprint `\lean{...}` pin moves.
+The lemmas of `sec:main-component-contract` that the step at an additive core
+(`thm:pencil-x0-contract-additive`, `MainComponent/ContractAdditive.lean`) uses, with the standing
+hypotheses at the core and at the contraction, which the structural coverage also uses
+(`sec:main-component-coverage`). The step reads Katoh and Tanigawa's contraction case (KT 2011 §6.2,
+Lemma 6.3) on configurations; the step at a core of planar deficiency zero
+(`cor:pencil-x0-contract-rigid`, `MainComponent/Contract.lean`) is its corollary.
 
-CONTRACT-A's own general pieces land here too (Phase 40k B2): the core's rank along the curve at
-any `t ≠ 0` (no flatness needed, by a collineation of `Configuration.lean`), the kernel of `M(0)`
-at any core, and the standing hypotheses at a rigid core, at any `n`.
+Let `r ∈ W`, let `H = G[W]` be the core, and let `G/H = G.rigidContract (G.induce W) r` be the
+contraction of `H` to `r` (`def:rigid-contraction`): it keeps every edge of `G` not inside `W`, with
+its ends in `W` moved to `r` by `Graph.collapseTo r W`. A body outside `W` adjacent to a body of `W`
+is a neighbour of `W`. The contraction curve `q(t)` moves each core body `c` from `q_c` at `t = 1`
+to `q_r` at `t = 0` and keeps the other bodies at `q`. The unknowns `(z, h)` of the rescaled lifting
+system `M(t)` are a height `z_w` and a coefficient vector `h_v ∈ K³` at each body, and the heights
+`z(t)` of a solution are its core heights scaled by `t`. At the core and its neighbours
+(`Graph.coreNbhd`), `M(t)` reads the bodies outside `W` in the frame magnified by `1/t` about
+`(q_r, 0)`, in which the core is drawn over `q`; so its rows between core bodies keep the weight
+`(x_w, y_w, 1)` at every `t` (`Graph.contractWeightAt_of_mem`), and they are the rows of the lifting
+system of `H` at `q`. The entries of `M(t)` are polynomials in `t` (`Graph.contractWeight`), and so
+are the curve and the configurations of a family of unknowns polynomial in `t`
+(`contractPicturePoly`, `contractConfigPoly`), along which the step reads its polynomials.
+
+The step needs the kernel of `M(t)` not to jump at `t = 0`. The heights of the solutions of `M(t)`
+lie in the lifting space `L_G(q(t))`, and at `t ≠ 0` fill it (`lem:pencil-contract-lifting-kernel`).
+At `t = 0` the kernel is bounded through the core heights of its solutions, which lie in `L_H(q)`,
+and through the limit map into `L_{G/H}(q)` (`lem:pencil-contract-kernel-bound`), and every height
+of `G/H` vanishing at `r` agrees off `W` with the heights of a solution of `M(0)`
+(`lem:pencil-contract-limit`). Along the curve the core has its rank over `q`, by a collineation of
+`K⁴` (`lem:pencil-contract-magnified-rank`), and near the collapsed placement, where every core body
+has the normal of `r`, the rows of the edges outside the core, with the columns of `W` deleted, keep
+the rank of `G/H` (`lem:pencil-contract-degenerate-rank`).
+
+The hypothesis `hatt` of the lemmas at the contraction says that no body outside `W` is adjacent to
+two bodies of `W`. For a simple `G` it is equivalent to the simplicity of `G/H`; one direction is
+`Graph.rigidContract_induce_simple`.
 
 ## Main definitions
 
-* `Graph.coreNbhd` — the bodies whose closed neighbourhood meets the core.
-* `Graph.contractWeightAt`, `Graph.contractWeight` — the weight point of the rescaled system at
-  `t`, and as polynomials in `t`.
-* `Graph.contractLiftingMatrix` — the rescaled lifting system `M(t)`, the lifting system with
-  weights `Graph.weightedLiftingMatrix` (`Carrier.lean`) at `Graph.contractWeight`.
-* `contractPicture` — the contraction curve `q(t)`; `contractHeight` — the heights `z(t)` of a
-  solution of `M(t)`, the core heights scaled by `t`.
-* `contractLimitMap` — the map from `ker M(0)` to heights of `G/H`.
-* `contractCoreRestrict` — the restriction of the unknowns of `M(t)` to the core heights.
-* `contractPicturePoly`, `contractConfigPoly` — the curve and its configuration as polynomials in
+* `Graph.coreNbhd`: the core and its neighbours, the bodies whose closed neighbourhood meets `W`.
+* `Graph.contractWeightAt` and `Graph.contractWeight`: the weight of `M(t)` at `t`, and as
+  polynomials in `t`.
+* `Graph.contractLiftingMatrix`: the rescaled lifting system `M(t)`, the lifting system with weights
+  `Graph.weightedLiftingMatrix` (`def:pencil-weighted-lifting-system`) at `Graph.contractWeight`.
+* `contractPicture`: the contraction curve `q(t)`; `contractHeight`: the heights `z(t)` of a
+  solution of `M(t)`.
+* `contractLimitMap`: the limit map from the unknowns of `M(0)` to heights of `G/H`.
+* `contractCoreRestrict`: the map `ρ` from the unknowns of `M(t)` to their core heights.
+* `contractPicturePoly` and `contractConfigPoly`: the curve and its configurations as polynomials in
   `t`.
 
-## Main statements
+## Main results
 
-* `Graph.contractHeight_mem_liftingSpace`, `Graph.exists_contractHeight_eq`,
-  `Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix` — along the curve the heights
-  of a solution of `M(t)` lie in `L_G(q(t))`, onto at `t ≠ 0`
-  (`lem:pencil-contract-lifting-kernel`).
-* `Graph.finrank_span_rigidityRows_induce_contractHeight_eq` — at `t ≠ 0` the core's rank at
-  `(q(t), z(t))` equals its rank at the fixed picture `(q, z)`, by a collineation
-  (`lem:pencil-contract-magnified-rank`).
-* `Graph.contractLimitMap_mem_liftingSpace`, `Graph.eq_zero_of_contractLimitMap_eq_zero` — given
-  one plane on the core, the limit map sends `ker M(0)` into `L_{G/H}(q)` and is injective there
-  (the embedding in the proof of `lem:pencil-contract-kernel-bound` (2)).
-* `Graph.exists_mem_ker_contractLiftingMatrix_zero` — at any core, a height of `G/H` vanishing at
-  `r` agrees off the core with the heights of a solution of `M(0)`, the core put on the height's
-  plane at `r` (`lem:pencil-contract-limit`; (MC-37) step 2).
-* `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract`,
-  `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le` — at any core, `ρ` maps `ker M(t)`
-  into `L_H(q)` at every `t`, and `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`
-  (`lem:pencil-contract-kernel-bound`'s two parts).
-* `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj` — a polynomial nonzero at
-  the collapsed placement bounds below the surviving rows with the core columns deleted
-  (`lem:pencil-contract-degenerate-rank`; KT eqs. (6.5)/(6.9)).
-* `Graph.isX0Graph_induce_of_deficiency_eq_zero` — a rigid core satisfies the standing hypotheses,
-  at any `n` with `bodyBarDim n ≥ 1` (`lem:pencil-contract-standing-rigid`).
-* `Graph.rigidContract_induce_simple`, `Graph.isX0Graph_rigidContract_induce`,
-  `Graph.three_le_ncard_closedNbhd_rigidContract`, `Graph.connected_rigidContract_induce` —
-  `G/H` satisfies the standing hypotheses (`lem:pencil-contract-standing`, (MC-39)'s side claims).
+* `Graph.contractHeight_mem_liftingSpace` and `Graph.exists_contractHeight_eq`:
+  `lem:pencil-contract-lifting-kernel`, the heights of a solution of `M(t)` lie in `L_G(q(t))`, and
+  at `t ≠ 0` every height of `L_G(q(t))` is the heights of a solution; so
+  `dim L_G(q(t)) ≤ dim ker M(t)` at `t ≠ 0`
+  (`Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix`).
+* `Graph.finrank_span_rigidityRows_induce_contractHeight_eq`: `lem:pencil-contract-magnified-rank`,
+  at `t ≠ 0` the rank of `H` at `(q(t), z(t))` is its rank at `(q, z)`.
+* `Graph.liftingRestrict_mem_liftingSpace_induce_of_contract` and
+  `Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`: `lem:pencil-contract-kernel-bound`,
+  `ρ` maps the solutions of `M(t)` into `L_H(q)` at every `t`, and
+  `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)` when `q` is admissible for `H` and for
+  `G/H`. Its proof embeds the solutions with zero core heights into `L_{G/H}(q)` by the limit map
+  (`Graph.contractLimitMap_mem_liftingSpace`, `Graph.eq_zero_of_contractLimitMap_eq_zero`).
+* `Graph.exists_mem_ker_contractLiftingMatrix_zero`: `lem:pencil-contract-limit`, given `hatt`,
+  every height of `L_{G/H}(q)` vanishing at `r` agrees off `W` with the heights of a solution of
+  `M(0)`.
+* `PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`:
+  `lem:pencil-contract-degenerate-rank`, if `G/H` has rank at least `N` at some normals with every
+  hinge nonzero, a polynomial in the normals of `G`, nonzero at the collapsed placement, off whose
+  zero set the rows of the edges outside the core, with the columns of `W` deleted, have rank at
+  least `N` (KT eqs. (6.5) and (6.9)).
+* `Graph.isX0Graph_induce_of_deficiency_eq_zero`: `lem:pencil-contract-standing-rigid`, an induced
+  subgraph of a simple `G` on at least two bodies, of deficiency zero at some `n` with
+  `bodyBarDim n ≥ 1`, satisfies the standing hypotheses.
+* `Graph.isX0Graph_rigidContract_induce`: `lem:pencil-contract-standing`, given `hatt`, `G/H` is
+  simple (`Graph.rigidContract_induce_simple`) and satisfies the standing hypotheses.
 
-The general pieces sit beside their definitions: `Graph.weightedLiftingMatrix` (`Carrier.lean`),
-`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval` (`CaseI.lean`) and the
-collineation lemma `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`
-(`Configuration.lean`, `lem:pencil-rank-collineation`).
-
-## Design
-
-* **`hatt` is the simplicity hypothesis as spiked**: no body outside `W` is adjacent to two core
-  bodies. Restating it as `(G/H).Simple` (the converse of `Graph.rigidContract_induce_simple`) is a
-  tracked readability item (`notes/Phase40-design.md` §3 STEPS; PI decision 2, 2026-09-26).
-* **A defeq trap.** A `panelRow` lemma against a framework over `G.rigidContract (G.induce W) r`
-  times out at `isDefEq` unless `rigidContract` is first rewritten to
-  `(G.deleteEdges E(G.induce W)).map (collapseTo r W)` and `V(G.induce W)` to `W`, both by `rfl`
-  (`PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj`).
-
-See `notes/Phase40f.md`, `notes/Phase40k.md` and `notes/Phase40-design.md` §3 STEPS.
+The file also uses the lifting system with weights `Graph.weightedLiftingMatrix`
+(`MainComponent/Carrier.lean`), the collineation lemma
+`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`
+(`lem:pencil-rank-collineation`, `MainComponent/Configuration.lean`) and the rank polynomial
+`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval`
+(`lem:rank-polynomial-proj-eval`, `AlgebraicInduction/CaseI.lean`).
 -/
 
 open scoped Matrix
@@ -96,19 +101,20 @@ namespace CombinatorialRigidity.Molecular
 
 variable {k : ℕ} {K : Type*} [Field K] {α β : Type*}
 
-/-! ## The rescaled lifting system -/
+/-! ## The rescaled lifting system (`def:pencil-contract-lifting-system`) -/
 
-/-- **The bodies meeting the core** (`def:pencil-contract-lifting-system`): the bodies `v` whose
-closed neighbourhood in `G` meets `W` — the core itself and its attachments. At these rows the
-rescaled lifting system reads the bodies outside the core in the magnified frame. -/
+/-- **The core and its neighbours** (the bodies at which `def:pencil-contract-lifting-system` uses
+the magnified frame): the bodies `v` whose closed neighbourhood in `G` meets `W`, that is, the
+bodies of `W` and the bodies outside `W` adjacent to a body of `W`. At their rows the rescaled
+lifting system reads the bodies outside `W` in the frame magnified by `1/t` about `(q_r, 0)`. -/
 def _root_.Graph.coreNbhd (G : Graph α β) (W : Set α) : Set α :=
   {v | ∃ c ∈ W, c ∈ G.closedNbhd v}
 
 open Classical in
-/-- **The weight point of the rescaled lifting system at `t`**
-(`def:pencil-contract-lifting-system`): at a row `(v, w)` with `v` meeting the core and `w`
-outside it, the outside point seen from the magnified frame,
-`(x_w − (1 − t) x_r, y_w − (1 − t) y_r, t)`; everywhere else the homogeneous picture point
+/-- **The weight of the rescaled lifting system at `t`** (the weight `ω(v, w)` of
+`def:pencil-contract-lifting-system`): at a row `(v, w)` with `v` in `G.coreNbhd W` and `w` outside
+`W`, the picture point of `w` in the frame magnified by `1/t` about `(q_r, 0)`, scaled by `t`,
+`(x_w − (1 − t) x_r, y_w − (1 − t) y_r, t)`; at every other row the homogeneous picture point
 `(x_w, y_w, 1)`. -/
 noncomputable def _root_.Graph.contractWeightAt (G : Graph α β) (W : Set α) (r : α)
     (q : α × Fin 2 → K) (t : K) (v w : α) : Fin 3 → K :=
@@ -117,8 +123,9 @@ noncomputable def _root_.Graph.contractWeightAt (G : Graph α β) (W : Set α) (
   else pencilPicturePoint q w
 
 open Classical in
-/-- **The weight point as polynomials in `t`**: `Graph.contractWeightAt` with `t` the variable
-(`Graph.eval_contractWeight`), the weights of `Graph.contractLiftingMatrix`. -/
+/-- **The weight as polynomials in `t`** (the entries of `def:pencil-contract-lifting-system`):
+`Graph.contractWeightAt` with `t` the variable (`Graph.eval_contractWeight`), the weights of
+`Graph.contractLiftingMatrix`. -/
 noncomputable def _root_.Graph.contractWeight (G : Graph α β) (W : Set α) (r : α)
     (q : α × Fin 2 → K) (v w : α) : Fin 3 → MvPolynomial Unit K :=
   if v ∈ G.coreNbhd W ∧ w ∉ W then
@@ -127,7 +134,7 @@ noncomputable def _root_.Graph.contractWeight (G : Graph α β) (W : Set α) (r 
       MvPolynomial.X ()]
   else ![MvPolynomial.C (q (w, 0)), MvPolynomial.C (q (w, 1)), 1]
 
-/-- Evaluating the polynomial weight point at `t` gives `Graph.contractWeightAt` at `t`. -/
+/-- Evaluating the polynomial weight at `t` gives `Graph.contractWeightAt` at `t`. -/
 theorem _root_.Graph.eval_contractWeight (G : Graph α β) (W : Set α) (r : α)
     (q : α × Fin 2 → K) (t : K) (v w : α) :
     (fun i => MvPolynomial.eval (fun _ => t) (G.contractWeight W r q v w i)) =
@@ -136,17 +143,19 @@ theorem _root_.Graph.eval_contractWeight (G : Graph α β) (W : Set α) (r : α)
   unfold Graph.contractWeight Graph.contractWeightAt
   split_ifs <;> fin_cases i <;> simp [pencilPicturePoint] <;> ring
 
-/-- **The rescaled lifting system** `M(t)` of the contraction at the core `W`, collapsing at `r`'s
-picture point (`def:pencil-contract-lifting-system`; Phase 40f CONTRACT-R): the lifting system with
-weights (`Graph.weightedLiftingMatrix`) at the polynomial weight point `Graph.contractWeight`, a
-matrix of polynomials in the curve's one parameter `t`. -/
+/-- **The rescaled lifting system** `M(t)` of the contraction of the core `W` to `r`
+(`def:pencil-contract-lifting-system`): the lifting system with weights
+(`Graph.weightedLiftingMatrix`) at the polynomial weight `Graph.contractWeight`, a matrix of
+polynomials in the one parameter `t` of the curve. -/
 noncomputable def _root_.Graph.contractLiftingMatrix (K : Type*) [Field K] (G : Graph α β)
     (W : Set α) (r : α) (q : α × Fin 2 → K) :
     Matrix (α ⊕ (α × α) ⊕ (α × Fin 3)) (α ⊕ (α × Fin 3)) (MvPolynomial Unit K) :=
   G.weightedLiftingMatrix K (G.contractWeight W r q)
 
-/-- **The kernel of `M(t)`**: `x = (z, h)` solves `M(t)` exactly when `z` and `h` vanish off `V(G)`
-and `z_w = h_v ⬝ Graph.contractWeightAt W r q t v w` on every closed neighbourhood of a body `v`. -/
+/-- **The solutions of `M(t)`** (a step of `lem:pencil-contract-lifting-kernel`,
+`lem:pencil-contract-kernel-bound` and `lem:pencil-contract-limit`): `x = (z, h)` solves `M(t)`
+exactly when `z` and `h` vanish off `V(G)` and `z_w = h_v ⬝ Graph.contractWeightAt W r q t v w` at
+every member `w` of the closed neighbourhood of each body `v` of `G`. -/
 theorem _root_.Graph.contractLiftingMatrix_mulVec_eq_zero_iff [Fintype α] {G : Graph α β}
     {W : Set α} {r : α} {q : α × Fin 2 → K} {t : K} {x : α ⊕ (α × Fin 3) → K} :
     (G.contractLiftingMatrix K W r q).map (MvPolynomial.eval (fun _ => t)) *ᵥ x = 0 ↔
@@ -163,13 +172,13 @@ theorem _root_.Graph.contractWeightAt_of_mem {G : Graph α β} {W : Set α} {r :
     G.contractWeightAt W r q t v w = pencilPicturePoint q w := by
   simp [Graph.contractWeightAt, hw]
 
-/-- At a row `(v, w)` with `v` not meeting the core the weight is the homogeneous picture point. -/
+/-- At a row `(v, w)` with `v ∉ G.coreNbhd W` the weight is the homogeneous picture point. -/
 theorem _root_.Graph.contractWeightAt_of_not_mem_coreNbhd {G : Graph α β} {W : Set α} {r : α}
     {q : α × Fin 2 → K} {t : K} {v w : α} (hv : v ∉ G.coreNbhd W) :
     G.contractWeightAt W r q t v w = pencilPicturePoint q w := by
   simp [Graph.contractWeightAt, hv]
 
-/-- At a row `(v, w)` with `v` meeting the core and `w ∉ W` the weight is the magnified-frame point
+/-- At a row `(v, w)` with `v ∈ G.coreNbhd W` and `w ∉ W` the weight is the magnified-frame point
 `(x_w − (1 − t) x_r, y_w − (1 − t) y_r, t)`. -/
 theorem _root_.Graph.contractWeightAt_of_mem_coreNbhd {G : Graph α β} {W : Set α} {r : α}
     {q : α × Fin 2 → K} {t : K} {v w : α} (hv : v ∈ G.coreNbhd W) (hw : w ∉ W) :
@@ -177,7 +186,7 @@ theorem _root_.Graph.contractWeightAt_of_mem_coreNbhd {G : Graph α β} {W : Set
       ![q (w, 0) - (1 - t) * q (r, 0), q (w, 1) - (1 - t) * q (r, 1), t] := by
   simp [Graph.contractWeightAt, hv, hw]
 
-/-! ## The contraction curve -/
+/-! ## The contraction curve (`def:pencil-contract-lifting-system`) -/
 
 open Classical in
 /-- **The contraction curve** `q(t)` (`def:pencil-contract-lifting-system`): each core body
@@ -215,11 +224,11 @@ theorem pencilPicturePoint_contractPicture_of_not_mem {W : Set α} {r : α} {q :
   funext i
   fin_cases i <;> simp [pencilPicturePoint, contractPicture, hw]
 
-/-! ## The rescaled system off the end of the curve -/
+/-! ## The rescaled system off the end of the curve (`lem:pencil-contract-lifting-kernel`) -/
 
 /-- **The heights of a solution lie in the lifting space along the curve**
-(`lem:pencil-contract-lifting-kernel`, first half; (K1)): at every `t`, the heights `z(t)` of a
-solution of `M(t)` lie in `L_G(q(t))`. At a body meeting the core the affine coefficients are
+(`lem:pencil-contract-lifting-kernel`, its first claim): at every `t`, the heights `z(t)` of a
+solution of `M(t)` lie in `L_G(q(t))`. At a body of `G.coreNbhd W` the affine coefficients are
 `(h₀, h₁, t h₂ − (1 − t)(h₀ x_r + h₁ y_r))`; at the other bodies they are `h_v`. -/
 theorem _root_.Graph.contractHeight_mem_liftingSpace [Fintype α] {G : Graph α β} {W : Set α}
     {r : α} {q : α × Fin 2 → K} {t : K} {x : α ⊕ (α × Fin 3) → K}
@@ -256,9 +265,9 @@ theorem _root_.Graph.contractHeight_mem_liftingSpace [Fintype α] {G : Graph α 
       fin_cases i <;> simp [contractPicture, hwW, pencilPicturePoint]
 
 /-- **At `t ≠ 0` every height along the curve comes from a solution**
-(`lem:pencil-contract-lifting-kernel`, second half; (K2)): every `z ∈ L_G(q(t))` is the heights of
-a solution of `M(t)`, obtained by dividing the core heights, and the corrected constant
-coefficients, by `t`. -/
+(`lem:pencil-contract-lifting-kernel`, its second claim): every `z ∈ L_G(q(t))` is the heights of a
+solution of `M(t)`, obtained by dividing the core heights, and the corrected constant coefficients
+at the bodies of `G.coreNbhd W`, by `t`. -/
 theorem _root_.Graph.exists_contractHeight_eq [Fintype α] {G : Graph α β} {W : Set α}
     {r : α} {q : α × Fin 2 → K} {t : K} (ht : t ≠ 0) {z : α → K}
     (hz : z ∈ G.liftingSpace (contractPicture W r q t)) :
@@ -298,9 +307,10 @@ theorem _root_.Graph.exists_contractHeight_eq [Fintype α] {G : Graph α β} {W 
   · funext w
     by_cases hwW : w ∈ W <;> simp [contractHeight_apply, hx, hwW, ht]
 
-/-- **At `t ≠ 0` the kernel of `M(t)` is at least `L_G(q(t))`**
-(`lem:pencil-contract-lifting-kernel`): `L_G(q(t))` is the image of `ker M(t)` under
-`contractHeight` (`Graph.exists_contractHeight_eq`). -/
+/-- **At `t ≠ 0` the kernel of `M(t)` is at least `L_G(q(t))`** (the dimension bound of
+`lem:pencil-contract-lifting-kernel`, a step of `thm:pencil-x0-contract-additive`): `L_G(q(t))` lies
+in the image of `ker M(t)` under `contractHeight` (`Graph.exists_contractHeight_eq`), so
+`dim L_G(q(t)) ≤ dim ker M(t)`. -/
 theorem _root_.Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix [Fintype α]
     {G : Graph α β} {W : Set α} {r : α} {q : α × Fin 2 → K} {t : K} (ht : t ≠ 0) :
     Module.finrank K (G.liftingSpace (contractPicture W r q t)) ≤
@@ -314,16 +324,15 @@ theorem _root_.Graph.finrank_liftingSpace_le_finrank_ker_contractLiftingMatrix [
     exact ⟨x, hx, rfl⟩
   exact (Submodule.finrank_mono hle).trans (Submodule.finrank_map_le _ _)
 
-/-! ## The core's rank along the curve, by a collineation -/
+/-! ## The core's rank along the curve, by a collineation (`lem:pencil-contract-magnified-rank`) -/
 
-/-- **The core's rank along the curve is its rank at the magnified core picture**
-(`lem:pencil-contract-magnified-rank`; Phase 40k CONTRACT-A). At `t ≠ 0`, the configuration of
-`H = G[W]` at `(q(t), z(t))` is the image of the configuration at `(q, z)` (the unscaled core
-heights of the unknowns) under the collineation
+/-- **The core's rank along the curve is its rank over the fixed picture**
+(`lem:pencil-contract-magnified-rank`): at `t ≠ 0`, the configuration of `H = G[W]` at
+`(q(t), z(t))` is the image of the configuration at `(q, z)`, with `z` the core heights of the
+unknowns before the scaling by `t`, under the collineation
 `(x, y, ζ, w) ↦ (t x + (1 − t) x_r w, t y + (1 − t) y_r w, t ζ, w)` of `K⁴`, so
-`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv` gives the same rank at both:
-no flatness of the core is needed, unlike CONTRACT-R's retired curve proof (`Contract.lean`,
-Phase 40-simplify task 10q), which read the core's rank off one plane instead. -/
+`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_linearEquiv`
+(`lem:pencil-rank-collineation`) gives the same rank at both. -/
 theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight_eq {G : Graph α β}
     {W : Set α} {r : α} (q : α × Fin 2 → K) {t : K} (ht : t ≠ 0) (x : α ⊕ (α × Fin 3) → K)
     {ends : β → α × α}
@@ -356,10 +365,11 @@ theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight_eq {G : Gra
   fin_cases i <;> simp [g, f, pencilConfigPoint, contractPicture, contractHeight_apply, hwW] <;>
     ring
 
-/-! ## Three independent picture points pin a plane -/
+/-! ## Three independent picture points determine a plane -/
 
-/-- A coefficient vector `h ∈ K³` orthogonal to three linearly independent homogeneous picture
-points is zero. -/
+/-- **Three independent picture points determine a plane** (a step of
+`lem:pencil-contract-kernel-bound`): a coefficient vector `h ∈ K³` orthogonal to three linearly
+independent homogeneous picture points is zero. -/
 theorem eq_zero_of_dotProduct_pencilPicturePoint {q : α × Fin 2 → K} {s : Fin 3 → α}
     (hli : LinearIndependent K (fun i => pencilPicturePoint q (s i))) {h : Fin 3 → K}
     (hh : ∀ i, h ⬝ᵥ pencilPicturePoint q (s i) = 0) : h = 0 := by
@@ -374,16 +384,19 @@ theorem eq_zero_of_dotProduct_pencilPicturePoint {q : α × Fin 2 → K} {s : Fi
     exact hh j
   exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hz
 
-/-- Over an admissible picture, a coefficient vector orthogonal to the homogeneous picture points of
-a whole closed neighbourhood is zero: the neighbourhood carries three independent points. -/
+/-- **An affine function vanishing on a closed neighbourhood is zero** (a step of
+`lem:pencil-contract-kernel-bound`): over an admissible picture, a coefficient vector orthogonal to
+the homogeneous picture points of a whole closed neighbourhood is zero, as three members of the
+neighbourhood have independent picture points. -/
 theorem _root_.Graph.IsAdmissiblePicture.eq_zero_of_forall_closedNbhd {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α} (hv : v ∈ V(G))
     {h : Fin 3 → K} (hh : ∀ w ∈ G.closedNbhd v, h ⬝ᵥ pencilPicturePoint q w = 0) : h = 0 := by
   obtain ⟨s, hs, hli⟩ := hq.2 v hv
   exact eq_zero_of_dotProduct_pencilPicturePoint hli fun i => hh _ (hs i)
 
-/-- Over an admissible picture, two coefficient vectors that agree on the homogeneous picture points
-of a closed neighbourhood are equal: a closed neighbourhood has one plane. -/
+/-- **A closed neighbourhood has one plane**: over an admissible picture, two coefficient vectors
+that agree on the homogeneous picture points of a closed neighbourhood are equal. No declaration
+uses it. -/
 theorem _root_.Graph.IsAdmissiblePicture.eq_of_forall_closedNbhd {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α} (hv : v ∈ V(G))
     {h h' : Fin 3 → K}
@@ -471,11 +484,12 @@ theorem _root_.Graph.closedNbhd_induce_subset {G : Graph α β} {W : Set α} {c 
   · exact Or.inl rfl
   · exact Or.inr ⟨e, he.1⟩
 
-/-! ## The rescaled system at the end of the curve -/
+/-! ## The rescaled system at the end of the curve (`lem:pencil-contract-limit`) -/
 
 open Classical in
-/-- **The limit map** from the unknowns of `M(0)` to heights of `G/H`: `r` gets the core height at
-`r`, each body of `G` outside the core its own height shifted by it, and every other body `0`. -/
+/-- **The limit map** (the map of the proof of `lem:pencil-contract-kernel-bound`, its second
+claim), from the unknowns of `M(0)` to heights of `G/H`: `r` gets the core height at `r`, each body
+of `G` outside the core its own height shifted by it, and every other body `0`. -/
 noncomputable def contractLimitMap (G : Graph α β) (W : Set α) (r : α) :
     (α ⊕ (α × Fin 3) → K) →ₗ[K] (α → K) where
   toFun x w := if w = r then x (Sum.inl r) else
@@ -496,12 +510,13 @@ theorem contractLimitMap_apply (G : Graph α β) (W : Set α) (r : α)
     contractLimitMap G W r x w = if w = r then x (Sum.inl r) else
       if w ∈ V(G) ∧ w ∉ W then x (Sum.inl w) + x (Sum.inl r) else 0 := rfl
 
-/-- **The limit map sends a solution of `M(0)` into `L_{G/H}(q)`, given one plane on the core**
-(the plane taken as a hypothesis, generalized in place from CONTRACT-R's retired `Contract.lean`
-curve proof, which supplied it from a flat core; the kernel bound below
-(`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`) supplies the all-zero plane at any
-core instead): after the shift by the height at `r` the plane passes through `r` and every
-attachment. -/
+/-- **The limit map sends a solution of `M(0)` into `L_{G/H}(q)`, given one plane on the core** (a
+step of `lem:pencil-contract-kernel-bound`): if one coefficient vector `g` gives the heights of the
+core and is the coefficient vector of every core body (`hg`), the limit map sends a solution of
+`M(0)` into `L_{G/H}(q)`. At `r` the affine function has the linear coefficients of `g` and the
+value `z_r` at `q_r`, and the rows at `t = 0` put the shifted heights of the neighbours of `W` on
+it. The kernel bound applies it with `g = 0`
+(`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`). -/
 theorem _root_.Graph.contractLimitMap_mem_liftingSpace [Fintype α] {G : Graph α β}
     {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
     {x : α ⊕ (α × Fin 3) → K}
@@ -580,10 +595,13 @@ theorem _root_.Graph.contractLimitMap_mem_liftingSpace [Fintype α] {G : Graph �
           rw [collapseTo_of_not_mem hbW]
           exact hout b (Or.inr ⟨e, hab⟩)
 
-/-- **The limit map is injective on `ker M(0)`, given one plane on the core**: the plane
-annihilates three independent picture points of `r`'s closed neighbourhood in `G/H` (`q` admissible
-there), so it vanishes, and then so does every plane outside the core — an attachment's constant
-coefficient by its row at a core neighbour. -/
+/-- **The limit map is injective on `ker M(0)`, given one plane on the core** (a step of
+`lem:pencil-contract-kernel-bound`): with `q` admissible for `G/H`, a solution of `M(0)` with one
+coefficient vector `g` on the core (`hg`, as above) and limit heights zero is zero. The plane of `g`
+is zero at the picture points of the closed neighbourhood of `r` in `G/H`, three of which are
+independent, so `g = 0`; then every height is zero, and so is every coefficient vector outside the
+core: at a neighbour of `W` its linear coefficients by its closed neighbourhood in `G/H`, and its
+constant coefficient by its row at a body of `W`. -/
 theorem _root_.Graph.eq_zero_of_contractLimitMap_eq_zero [Fintype α] {G : Graph α β}
     {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
     (hqc : (G.rigidContract (G.induce W) r).IsAdmissiblePicture q)
@@ -691,11 +709,13 @@ theorem _root_.Graph.eq_zero_of_contractLimitMap_eq_zero [Fintype α] {G : Graph
   · exact hx_inl w
   · exact hx_inr v i
 
-/-- **The flat-core extension** (`lem:pencil-contract-limit`; (MC-37) step 2): at `t = 0`, every
-height of `L_{G/H}(q)` vanishing at `r` agrees off the core with the heights of a solution of
-`M(0)`. The core is put on the plane of `z` at `r` (KT's panels of the core set to the contracted
-body's panel, Claim 6.4, p. 675); each attachment's constant coefficient is fixed by its one core
-neighbour, which is where `hatt` (`G/H` simple) is used. -/
+/-- **A height of `G/H` vanishing at `r` comes from a solution of `M(0)`**
+(`lem:pencil-contract-limit`): given `hatt`, every height `z` of `L_{G/H}(q)` with `z_r = 0` agrees
+off the core with the heights of a solution of `M(0)`. The core is put on the plane of the affine
+function of `z` at `r`, as Katoh and Tanigawa set the panels of the core to the panel of the
+contracted body in the proof of KT Claim 6.4 (p. 675). A neighbour of `W` takes the linear
+coefficients of its affine function in `G/H`, and its constant coefficient is fixed by its row at
+its one neighbour in `W`, which `hatt` makes unique. -/
 theorem _root_.Graph.exists_mem_ker_contractLiftingMatrix_zero [Fintype α] {G : Graph α β}
     {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G))
     (hatt : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂)
@@ -814,12 +834,13 @@ theorem _root_.Graph.exists_mem_ker_contractLiftingMatrix_zero [Fintype α] {G :
   · intro v hv i
     simp [hxdef, hv]
 
-/-! ## The kernel of `M(0)` at any core -/
+/-! ## The kernel of `M(0)`, through the core heights (`lem:pencil-contract-kernel-bound`) -/
 
 /-- **The core heights of a solution lie in `L_H(q)`, at every `t`**
-(`lem:pencil-contract-kernel-bound` (1); Phase 40k CONTRACT-A): `contractCoreRestrict` (`ρ` below)
-maps a solution of `M(t)` into `L_H(q)`. The core rows keep the weight `(x_w, y_w, 1)` along the
-curve, with no flatness of the core needed. -/
+(`lem:pencil-contract-kernel-bound`, its first claim): the heights of a solution of `M(t)`
+restricted to `W` (`contractCoreRestrict`, `ρ` below) lie in `L_H(q)`. The closed neighbourhood of a
+core body in `H` lies in `W` and in its closed neighbourhood in `G`, and the rows of `M(t)` there
+keep the weight `(x_w, y_w, 1)` at every `t`. -/
 theorem _root_.Graph.liftingRestrict_mem_liftingSpace_induce_of_contract [Fintype α]
     {G : Graph α β} {W : Set α} {r : α} (hW : W ⊆ V(G)) {q : α × Fin 2 → K} {t : K}
     {x : α ⊕ (α × Fin 3) → K}
@@ -832,8 +853,8 @@ theorem _root_.Graph.liftingRestrict_mem_liftingSpace_induce_of_contract [Fintyp
   rw [Graph.liftingRestrict_apply, ite_eq_left hwW,
     h2 c (hW hc) w (Graph.closedNbhd_induce_subset hw), Graph.contractWeightAt_of_mem hwW]
 
-/-- **`ρ`**: the restriction of the unknowns of `M(t)` to the core heights, `x ↦ (x_w)_{w ∈ W}`
-(`lem:pencil-contract-kernel-bound`). -/
+/-- **The core heights `ρ`** (the map `ρ` of `lem:pencil-contract-kernel-bound`): the restriction of
+the unknowns of `M(t)` to their core heights, `x ↦ (x_w)_{w ∈ W}`, zero off `W`. -/
 noncomputable def contractCoreRestrict (W : Set α) :
     (α ⊕ (α × Fin 3) → K) →ₗ[K] (α → K) :=
   Graph.liftingRestrict W ∘ₗ LinearMap.funLeft K K Sum.inl
@@ -842,15 +863,14 @@ noncomputable def contractCoreRestrict (W : Set α) :
 theorem contractCoreRestrict_apply (W : Set α) (x : α ⊕ (α × Fin 3) → K) :
     contractCoreRestrict W x = Graph.liftingRestrict W (fun w => x (Sum.inl w)) := rfl
 
-/-- **The kernel of `M(0)` at any core** (`lem:pencil-contract-kernel-bound` (2); (MC-69)(a)'s
-upper bound, which CONTRACT-A (`ContractAdditive.lean`) uses directly, no flat core needed). With
-`q` admissible for `H = G[W]` and for `G/H`,
+/-- **The kernel of `M(0)`, through the core heights** (`lem:pencil-contract-kernel-bound`, its
+second claim): with `q` admissible for `H = G[W]` and for `G/H`,
 `dim ker M(0) + 3 ≤ dim ρ(ker M(0)) + dim L_{G/H}(q)`. A solution with zero core heights has zero
 core planes (admissibility at `H`), so the limit map (`Graph.contractLimitMap_mem_liftingSpace`,
-`Graph.eq_zero_of_contractLimitMap_eq_zero`, given the zero plane) embeds those solutions
-injectively into `L_{G/H}(q)`, with image in the heights vanishing on the closed neighbourhood of
-`r`, which meet `Aff(q)` only in `0`; rank–nullity on `ρ` restricted to `ker M(0)` gives the
-bound. -/
+`Graph.eq_zero_of_contractLimitMap_eq_zero`, with the zero plane) embeds those solutions injectively
+into `L_{G/H}(q)`, with image in the heights vanishing on the closed neighbourhood of `r`, which
+meet `Aff(q)` only in `0`. As `Aff(q)` is three-dimensional and lies in `L_{G/H}(q)`, rank–nullity
+on `ρ` restricted to `ker M(0)` gives the bound. -/
 theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le [Fintype α]
     {G : Graph α β} {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
     (hqH : (G.induce W).IsAdmissiblePicture q)
@@ -943,16 +963,18 @@ theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le [Fintyp
   rw [hrange, hkerN] at hrn
   omega
 
-/-! ## The surviving rows near the collapsed placement -/
+/-! ## The surviving rows near the collapsed placement (`lem:pencil-contract-degenerate-rank`) -/
 
-/-- **The surviving rows near the collapsed placement** (`lem:pencil-contract-degenerate-rank`;
-(MC-36)'s limit in the projected form of Phase 22i; KT eqs. (6.5)/(6.9)). If the contraction
-`G/H` (`H = G[W]`, representative `r`) has rank `≥ N` at the normals `nrm`, with every hinge
-nonzero, then a polynomial `Qc` in the normals of `G` is nonzero at the collapsed placement
-`degeneratePlacement r W nrm` (every core body at `r`'s normal) and, off its zero set, the rows of
-`G − E(H)` with the core columns deleted have rank `≥ N`. At the collapsed placement those rows are
-the rows of `G/H` with `r`'s column deleted (`panelRow_collapseTo_comp_extProj_dualMap`), which
-loses no rank; `exists_rankPolynomial_of_rigidOn_linking_set_proj_eval` keeps the value there. -/
+/-- **The surviving rows near the collapsed placement** (`lem:pencil-contract-degenerate-rank`; KT
+eqs. (6.5) and (6.9), pp. 674–675): let the contraction `G/H` (`H = G[W]`, representative `r`) have
+rank at least `N` at the normals `nrm`, with every hinge nonzero. Then a polynomial `Qc` in the
+normals of `G` is nonzero at the collapsed placement `degeneratePlacement r W nrm` (every core body
+at the normal of `r`), and off its zero set the rows of `G − E(H)` with the columns of `W` deleted
+have rank at least `N`. At the collapsed placement those rows are the rows of `G/H` with the column
+of `r` deleted (`panelRow_collapseTo_comp_extProj_dualMap`), and deleting it loses no rank, so `N`
+of them are independent there;
+`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval` gives a polynomial
+nonzero there off whose zero set they stay independent. -/
 theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Finite α]
     [Finite β] (G : Graph α β) {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G))
     (ends : β → α × α)
@@ -1036,11 +1058,14 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
         rintro _ ⟨i, rfl⟩
         exact hmem i))
 
-/-! ## The standing hypotheses at a rigid core -/
+/-! ## The standing hypotheses at a rigid core (`lem:pencil-contract-standing-rigid`) -/
 
 /-- **A rigid core satisfies the standing hypotheses, at any `n`**
-(`lem:pencil-contract-standing-rigid`; Phase 40k CONTRACT-A, the `n`-general form of
-`Graph.isX0Graph_induce_of_deficiency_two_eq_zero` (`Contract.lean`), which needs `n = 2`). -/
+(`lem:pencil-contract-standing-rigid`): if `G` is simple, `W ⊆ V(G)` has at least two bodies and
+`G[W]` has deficiency zero at some `n` with `bodyBarDim n ≥ 1`, then `G[W]` is simple, connected,
+and of minimum degree at least two (`Graph.connected_of_isKDof_zero`,
+`Graph.two_le_degree_of_isKDof_zero`). Its case `n = 2` is
+`Graph.isX0Graph_induce_of_deficiency_two_eq_zero` (`MainComponent/Contract.lean`). -/
 theorem _root_.Graph.isX0Graph_induce_of_deficiency_eq_zero [Finite α] [Finite β]
     {G : Graph α β} (hS : G.Simple) {W : Set α} (hW : W ⊆ V(G)) (hW2 : 2 ≤ W.ncard) {n : ℕ}
     (hn : 1 ≤ Graph.bodyBarDim n) (hdef : (G.induce W).deficiency n = 0) :
@@ -1050,13 +1075,14 @@ theorem _root_.Graph.isX0Graph_induce_of_deficiency_eq_zero [Finite α] [Finite 
     (Set.nonempty_of_ncard_ne_zero (s := W) (by omega))
   two_le_degree := fun _ hv => Graph.two_le_degree_of_isKDof_zero hn hdef hv hW2
 
-/-! ## The standing hypotheses at the contraction -/
+/-! ## The standing hypotheses at the contraction (`lem:pencil-contract-standing`) -/
 
-/-- **`G/H` is simple** (`lem:pencil-contract-standing`; the STEPS recon's compiled lemma,
-`notes/Phase40-design.md` appendix): if `G` is simple and no body outside `W` is adjacent to two
-core bodies, `G.rigidContract (G.induce W) r` is simple. A surviving edge is not inside `W`, so it
-is not a loop; two surviving edges with the same collapsed ends give an attachment two core
-neighbours, or are parallel in `G`. -/
+/-- **`G/H` is simple** (a step of `lem:pencil-contract-standing` and of
+`thm:pencil-x0-contract-additive`): if `G` is simple and no body outside `W` is adjacent to two
+bodies of `W` (`hatt`), then `G.rigidContract (G.induce W) r` is simple. A surviving edge is not
+inside `W`, so its collapsed ends are distinct, as `G` has no loops. Two surviving edges with the
+same collapsed ends have the same ends in `G`, by `hatt` when an end lies in `W`, so they are one
+edge, as `G` has no parallel edges. -/
 theorem _root_.Graph.rigidContract_induce_simple {G : Graph α β} (hS : G.Simple) {W : Set α}
     {r : α} (hr : r ∈ W)
     (hatt : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂) :
@@ -1102,7 +1128,7 @@ theorem _root_.Graph.rigidContract_induce_simple {G : Graph α β} (hS : G.Simpl
   · obtain ⟨hl₁, hn₁⟩ := hsurv e₁ x₁ y₁ h₁
     obtain ⟨hl₂, hn₂⟩ := hsurv e₂ x₂ y₂ h₂
     rw [hV] at hx hy
-    -- one end outside `W` pins the other edge's end there too
+    -- two edges from bodies of `W` to one body outside `W` are one edge (`hatt`)
     have key : ∀ {a b c : α}, a ∈ W → b ∉ W → c ∈ W → G.IsLink e₁ a b → G.IsLink e₂ c b →
         e₁ = e₂ := by
       intro a b c ha hb hc h1 h2
@@ -1126,10 +1152,12 @@ theorem _root_.Graph.rigidContract_induce_simple {G : Graph α β} (hS : G.Simpl
         obtain ⟨-, rfl⟩ := hout hy₁ hy.symm
         exact hS.eq_of_isLink hl₁ hl₂
 
-/-- **Every closed neighbourhood of `G/H` has three members** (`lem:pencil-contract-standing`, `h3`
-at `G/H`). At `r`: `G` is 2-edge-connected, so two edges leave `W`, and their outside ends are
-distinct attachments. At a body outside `W`: the collapse is injective on its closed neighbourhood
-in `G` (`hatt`) and maps it into the closed neighbourhood in `G/H`. -/
+/-- **Every closed neighbourhood of `G/H` has at least three members** (a step of
+`lem:pencil-contract-standing` and of `thm:pencil-x0-contract-additive`). At `r`: `G` is
+2-edge-connected, so at least two edges leave `W`, and their ends outside `W` are distinct, by
+`hatt` and as `G` has no parallel edges; with `r` itself, three members. At a body outside `W`: the
+collapse is injective on its closed neighbourhood in `G` (`hatt`), which has at least three members,
+and maps it into its closed neighbourhood in `G/H`. -/
 theorem _root_.Graph.three_le_ncard_closedNbhd_rigidContract [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {W : Set α} {r : α}
     (hr : r ∈ W) (hWss : W ⊂ V(G))
@@ -1185,8 +1213,8 @@ theorem _root_.Graph.three_le_ncard_closedNbhd_rigidContract [Finite α] [Finite
       _ = (Graph.collapseTo r W '' G.closedNbhd v).ncard := hinj.ncard_image.symm
       _ ≤ _ := Set.ncard_le_ncard hsub (Set.toFinite _)
 
-/-- The contraction of a connected graph at an induced core is connected: a walk of `G` collapses to
-a walk of `G/H`. -/
+/-- **`G/H` is connected** (a step of `lem:pencil-contract-standing`): the contraction of a
+connected graph at an induced core is connected, as a walk of `G` collapses to a walk of `G/H`. -/
 theorem _root_.Graph.connected_rigidContract_induce {G : Graph α β} (hG : G.Connected)
     {W : Set α} {r : α} : (G.rigidContract (G.induce W) r).Connected := by
   obtain ⟨⟨v, hv⟩, hpre⟩ := Graph.connected_iff.mp hG
@@ -1206,9 +1234,12 @@ theorem _root_.Graph.connected_rigidContract_induce {G : Graph α β} (hG : G.Co
       exact ih
     · exact ih.tail ⟨e, Graph.isLink_rigidContract_of_isLink he hboth⟩
 
-/-- **`G/H` satisfies the standing hypotheses** (`lem:pencil-contract-standing`; (MC-39)'s side
-claim): simple (`Graph.rigidContract_induce_simple`), connected, and of minimum degree at least two,
-from three members in every closed neighbourhood. -/
+/-- **`G/H` satisfies the standing hypotheses** (`lem:pencil-contract-standing`): if `G` satisfies
+them and is 2-edge-connected, `r ∈ W ⊊ V(G)` and no body outside `W` is adjacent to two bodies of
+`W`, then `G/H` is simple (`Graph.rigidContract_induce_simple`), connected
+(`Graph.connected_rigidContract_induce`), and of minimum degree at least two, as every closed
+neighbourhood has at least three members (`Graph.three_le_ncard_closedNbhd_rigidContract`) and `G/H`
+has no loops. -/
 theorem _root_.Graph.isX0Graph_rigidContract_induce [Finite α] [Finite β] {G : Graph α β}
     (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {W : Set α} {r : α} (hr : r ∈ W)
     (hWss : W ⊂ V(G))
@@ -1231,7 +1262,8 @@ theorem _root_.Graph.isX0Graph_rigidContract_induce [Finite α] [Finite β] {G :
 /-! ## The curve as polynomials in `t` -/
 
 open Classical in
-/-- The contraction curve as polynomials in `t` (`eval_contractPicturePoly`). -/
+/-- **The contraction curve as polynomials in `t`** (a step of `thm:pencil-x0-contract-additive`):
+its value at `t` is `contractPicture` at `t` (`eval_contractPicturePoly`). -/
 noncomputable def contractPicturePoly (W : Set α) (r : α) (q : α × Fin 2 → K) :
     α × Fin 2 → MvPolynomial Unit K :=
   fun p => if p.1 ∈ W then
@@ -1247,8 +1279,10 @@ theorem eval_contractPicturePoly (W : Set α) (r : α) (q : α × Fin 2 → K) (
   ring
 
 open Classical in
-/-- The configuration along the curve as polynomials in `t`: the polynomial curve, and the heights
-`contractHeight` of a polynomial family `Z` of unknowns of `M(t)` (`eval_contractConfigPoly`). -/
+/-- **The configurations along the curve as polynomials in `t`** (a step of
+`thm:pencil-x0-contract-additive`): the polynomial curve, and the heights `contractHeight` of a
+family `Z` of unknowns of `M(t)` polynomial in `t`. Its value at `t` is the configuration at
+`(q(t), z(t))` (`eval_contractConfigPoly`). -/
 noncomputable def contractConfigPoly (W : Set α) (r : α) (q : α × Fin 2 → K)
     (Z : α ⊕ (α × Fin 3) → MvPolynomial Unit K) : α × Fin 4 → MvPolynomial Unit K :=
   fun p => ![contractPicturePoly W r q (p.1, 0), contractPicturePoly W r q (p.1, 1),
