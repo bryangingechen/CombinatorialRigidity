@@ -6,28 +6,25 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
 
 /-!
-# The collision-free slot assignment on the pencil chart (Phase 39 PENCIL, W5-L5 L5-cut-v-b)
+# Distinct standard basis vectors in the slots of a selector
 
-The padding mechanism for explicit chart seeds (`notes/Phase39-design.md` §"W5 leaf
-decomposition" L5-cut-v, the "v-b construction recipe", as corrected): assign bodies standard basis
-vectors of `K⁴` as hub normals through an index map `idx`, and fill each padding slot with a fresh
-basis vector, so that a body's slot triple consists of three *distinct* basis vectors avoiding a
-designated target index `d`. `cross₃` of such a triple is a nonzero multiple of `e_d`
-(`exists_smul_cross₃_pi_single`), so distinct targets give independent points
-(`linearIndependent_pi_single_triple` + `LinearIndependent.units_smul`).
+A step of the proof of part (a) of `lem:pencil-generic-steer` (`sec:main-component-statements`): for
+a hub `h` of `G` with two neighbours `w₁` and `w₂`, whose other neighbours are not hubs, parameters
+of the chart at which the points of `h`, `w₁` and `w₂` are linearly independent. Each body `w` has
+the standard basis vector `e_{idx w}` of `K⁴` as its `hubNormal`, for an index map
+`idx : α → Fin 4`, and the empty slots of the hub selectors at the three bodies are standard basis
+vectors too, so that at each of them the three slots are distinct basis vectors other than some
+`e_d`, with a different `d` at each body. The point of each is then a nonzero multiple of its `e_d`
+(`exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single`, `Engine.lean`), and the three points
+are independent.
 
-`exists_injective_extension_of_isFin3SelectorOf`: given any selector for a body's closed
-hub-neighbourhood whose selected members carry distinct non-target indices, the slot-indexed index
-map extends to an *injective* `Fin 3 → Fin 4` avoiding the target — an eight-way case split on the
-selector's `some`/`none` shape, each padding slot picked fresh by a `4 > 3` counting argument over
-`Fin 4`. The one case split lives here, abstractly, instead of being repeated per body and per
-hub-status combination. Its consumer is the hub witness (MC-188),
+This file gives the indices of the slots (`exists_injective_extension_of_isFin3SelectorOf`): for a
+selector of a set on which `idx` is injective and differs from `d`, an injective `σ : Fin 3 → Fin 4`
+that differs from `d` and is `idx w` at the slot of each member `w`. The empty slots take indices
+that the members leave, as `Fin 4` has four elements and at most three are taken. Which these are
+depends on the indices of the members, so the proof takes the eight cases of which slots are empty.
 `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`
-(`MainComponent/GenericSteer.lean`).
-
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 leaf decomposition" L5-cut-v), and
-`blueprint/src/chapter/main-component.tex` (`lem:pencil-generic-steer`; no blueprint node of its
-own — unnamed technical infra).
+(`MainComponent/GenericSteer.lean`) uses it.
 -/
 
 open scoped Matrix
@@ -38,15 +35,10 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## The collision-free slot assignment (Phase 39 W5-L5, L5-cut-v-b)
+/-! ## The indices of the slots of a selector -/
 
-The padding-slot extension lemma and its three `Fin 4` pick facts. The pick facts are `4 > 3`
-counting statements over `Fin 4`; the extension lemma does the one `some`/`none` shape split the
-whole construction needs. -/
-
-/-- **`Fin 4` has an element avoiding any three** (Phase 39 W5-L5, L5-cut-v-b pick fact, a
-counting argument — `4 > 3`): used to fill the single padding slot of an arity-`2` selector,
-and the base pick the other two pick facts iterate. -/
+/-- **An element of `Fin 4` other than three given ones**, as `Fin 4` has four elements. It is the
+index of the empty slot of a selector with two members, and gives the next two lemmas. -/
 private theorem exists_fin4_ne_ne_ne (a b c : Fin 4) : ∃ x : Fin 4, x ≠ a ∧ x ≠ b ∧ x ≠ c := by
   by_contra hcon
   push Not at hcon
@@ -66,16 +58,16 @@ private theorem exists_fin4_ne_ne_ne (a b c : Fin 4) : ∃ x : Fin 4, x ≠ a �
   rw [Finset.card_univ, Fintype.card_fin] at hle
   omega
 
-/-- **`Fin 4` has two distinct elements avoiding any two** (Phase 39 W5-L5, L5-cut-v-b pick fact,
-iterating the base pick): used to fill the two padding slots of an arity-`1` selector. -/
+/-- **Two distinct elements of `Fin 4` other than two given ones**: the indices of the empty slots
+of a selector with one member. -/
 private theorem exists_fin4_pair_ne_ne (a b : Fin 4) : ∃ x y : Fin 4,
     x ≠ y ∧ x ≠ a ∧ x ≠ b ∧ y ≠ a ∧ y ≠ b := by
   obtain ⟨x, hxa, hxb, -⟩ := exists_fin4_ne_ne_ne a b b
   obtain ⟨y, hya, hyb, hyx⟩ := exists_fin4_ne_ne_ne a b x
   exact ⟨x, y, hyx.symm, hxa, hxb, hya, hyb⟩
 
-/-- **`Fin 4` has three distinct elements avoiding any one** (Phase 39 W5-L5, L5-cut-v-b pick
-fact, iterating the base pick): used to fill all three padding slots of an arity-`0` selector. -/
+/-- **Three distinct elements of `Fin 4` other than a given one**: the indices of the slots of a
+selector with no member. -/
 private theorem exists_fin4_triple_ne (d : Fin 4) : ∃ x y z : Fin 4,
     x ≠ y ∧ x ≠ z ∧ y ≠ z ∧ x ≠ d ∧ y ≠ d ∧ z ≠ d := by
   obtain ⟨x, hxd, -, -⟩ := exists_fin4_ne_ne_ne d d d
@@ -83,8 +75,7 @@ private theorem exists_fin4_triple_ne (d : Fin 4) : ∃ x y z : Fin 4,
   obtain ⟨z, hzd, hzx, hzy⟩ := exists_fin4_ne_ne_ne d x y
   exact ⟨x, y, z, hyx.symm, hzx.symm, hzy.symm, hxd, hyd, hzd⟩
 
-/-- **A `Fin 3`-vector of pairwise-distinct values is injective** (Phase 39 W5-L5, L5-cut-v-b
-technical glue for the extension lemma below). -/
+/-- **`![x, y, z]` is injective when `x`, `y` and `z` are distinct.** -/
 private theorem injective_vec3 {x y z : Fin 4} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) :
     Function.Injective (![x, y, z] : Fin 3 → Fin 4) := by
   intro i j hij
@@ -99,8 +90,7 @@ private theorem injective_vec3 {x y z : Fin 4} (hxy : x ≠ y) (hxz : x ≠ z) (
   · exact absurd hij.symm hyz
   · rfl
 
-/-- **A `Fin 3`-vector of values avoiding `d` avoids `d` at every index** (Phase 39 W5-L5,
-L5-cut-v-b technical glue for the extension lemma below). -/
+/-- **`![x, y, z]` differs from `d` at every index when `x`, `y` and `z` do.** -/
 private theorem vec3_ne {x y z d : Fin 4} (hx : x ≠ d) (hy : y ≠ d) (hz : z ≠ d) :
     ∀ i, (![x, y, z] : Fin 3 → Fin 4) i ≠ d := by
   intro i
@@ -109,17 +99,15 @@ private theorem vec3_ne {x y z d : Fin 4} (hx : x ≠ d) (hy : y ≠ d) (hz : z 
   · exact hy
   · exact hz
 
-/-- **A selector-compatible basis-index assignment extends to an injective slot map**
-(Phase 39 W5-L5, L5-cut-v-b, the padding mechanism): given a `Fin 3`-selector for `S` and an
-index map `idx` that is injective on `S` and avoids a designated target index `d` there, there is
-an *injective* `σ : Fin 3 → Fin 4`, still avoiding `d`, that reads `idx w` at every slot the
-selector assigns to a member `w` — the padding slots are filled with fresh indices by the pick
-facts above, per the selector's eight `some`/`none` shapes. Consumed with
-`Pi.single (σ i) 1` as slot `i`'s normal: the slot triple is then three distinct standard basis
-vectors avoiding `e_d`, so its `cross₃` is a nonzero multiple of `e_d`
-(`exists_smul_cross₃_pi_single`). This is the corrected form of the design doc's padding plans:
-no fixed function of the slot index alone can avoid collisions (a pigeonhole fact), and the
-assignment here depends on the selector's actual shape. -/
+/-- **Distinct indices other than `d` for the slots of a selector** (a step of
+`lem:pencil-generic-steer`): for a selector `sel` of `S` and an index map `idx` injective on `S`
+with `idx w ≠ d` for `w ∈ S`, there is an injective `σ : Fin 3 → Fin 4` with `σ i ≠ d` for every `i`
+and `σ i = idx w` whenever `sel` puts `w` in slot `i`. With `e_{σ i}` in slot `i`, the three slots
+are distinct standard basis vectors other than `e_d`, and their `cross₃` is a nonzero multiple of
+`e_d` (`exists_smul_cross₃_pi_single`, `Engine.lean`). The indices of the empty slots depend on
+those of the members, as an index fixed for a slot alone can be that of a member in another slot.
+The proof takes the eight cases of which slots are empty, and the three lemmas above give the
+indices of the empty ones. -/
 theorem exists_injective_extension_of_isFin3SelectorOf {S : Set α} {sel : Fin 3 → Option α}
     (hsel : IsFin3SelectorOf S sel) {idx : α → Fin 4} {d : Fin 4}
     (hd : ∀ w ∈ S, idx w ≠ d) (hinj : Set.InjOn idx S) :

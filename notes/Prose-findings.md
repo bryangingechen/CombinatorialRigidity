@@ -5629,6 +5629,27 @@ declaration's name as its header writes it:
   (`scratch/reconcile-lean/t375/Hyps-t375.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.5.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-306** · L · a missed mathlib lemma and repeated derivations in
+  `Molecular/Molecule/Pencil/Reseed.lean` and `Steer.lean`.
+  `linearIndepOn_triple_of_linearIndependent` (`Steer.lean`) is mathlib's `linearIndepOn_range_iff`
+  at the injective `![x, y, z]`, read the other way, as `F-304` finds of its converse
+  `linearIndependent_triple_of_linearIndepOn`. `pencilChartPoint_ofCoord_toCoord` is
+  `pencilChartPoint_congr` at `PencilSeed.ofCoord_toCoord_hubNormal` and
+  `PencilSeed.ofCoord_toCoord_fillHub`, whose proof derives the equality of the slots that
+  `hubSlotNormal_ofCoord_toCoord` states; that lemma would then have no caller.
+  `exists_fill_linearIndependent_hubSlotOf` (`Reseed.lean`) derives the same equality of its slots
+  twice (some 7 lines each), and it and `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint`
+  (`Steer.lean`) each derive the injective map from the slots a selector fills to its set, as the
+  two lemmas of `F-302` do, which one lemma on `IsFin3SelectorOf` would state.
+  `exists_pencilSeed_of_nondeg` and `exists_pencilSeed_of_nondeg_of_selectors` give the condition of
+  `PencilChartWF` on links by the same steps (some 10 lines; `F-305` would remove the first).
+  `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the triple from
+  `linearIndepOn_range_iff`, `pencilChartPoint_ofCoord_toCoord` from `pencilChartPoint_congr`, and
+  the lemma on `IsFin3SelectorOf`, with `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` from
+  it, on the three standard axioms (`scratch/reconcile-lean/t376/Hyps-t376.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.6.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
 

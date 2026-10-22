@@ -6,27 +6,33 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
 
 /-!
-# The re-seeding lemma: closing W5-L4 (Phase 39 PENCIL)
+# A nondegenerate realization in the chart
 
-Carved out as a new leaf (rather than grown inside `Molecule/Pencil/Engine.lean`, which was
-already near the `≤1500`-LoC soft cap) for file size / navigability, per the hand-off in
-`notes/Phase39.md`. This file closes W5-L4's re-seeding lemma: given an *arbitrary* nondegenerate
-pencil realization, it is (up to a nonzero per-body projective scalar) a `PencilChartWF` chart
-point — the final assembly combining the two independently-landed halves (the point side,
-`Molecule/Pencil/Engine.lean` §"W5-L4 piece 3 (point side)", and the normal side, ibid.
-§"(normal side)") into one `PencilSeed`, plus the one remaining `PencilChartWF` conjunct
-(adjacent-`pencilChartPoint` distinctness) neither half needed to construct.
+A step of the proof of `lem:pencil-generic-steer` (`sec:main-component-statements`), the converse of
+the parametrization there: every nondegenerate realization of `G` comes from the chart of
+`Chart.lean`, up to a nonzero scalar at the point of each body of `G` and at the normal of each body
+of `G` that is not a hub.
 
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 design pass" and §"W5 leaf
-decomposition"), and `blueprint/src/chapter/pencil.tex`.
+`exists_pencilSeed_of_nondeg` puts together the two halves that `Engine.lean` builds at selectors it
+chooses: the hub selector and the padding `fillHub`, which give the points, and the neighbour
+selector and the padding `fillNbr`, which give the normals. It adds the one condition of
+`PencilChartWF` that neither half gives, the independence of the points of the two ends of every
+link: the realization has it, and a nonzero scalar at each point keeps it.
 
-**Phase 40o (MOTIVES-EARS, B1) adds two more pieces at the end of this file.** First,
-`exists_extend_linearIndependent` (moved here from `Pencil/Steer.lean`, which still consumes it via
-this file's import — `notes/FRICTION.md`'s `[mirror-candidate]` entry), the general
-`LinearIndepOn`-extension fact this file's own new T1 group needs. Second, **T1: the reseed at given
-selectors** ((MC-186)(c)): every nondegenerate realization is a `PencilChartWF` chart point for
-*every* correct pair of selectors, not only the one `exists_pencilSeed_of_nondeg` above picks
-(`exists_pencilSeed_of_nondeg_of_selectors`). See `notes/Phase40o.md`.
+`exists_pencilSeed_of_nondeg_of_selectors` does the same at any selectors that list the closed
+hub-neighbourhood of every body and the closed neighbourhood of every body that is not a hub, with
+the normals of the realization as `hubNormal`. At a body of `G`, the vectors that the selector lists
+are independent and orthogonal to the point of the body, or to its normal; completed to an
+independent triple orthogonal to it, their `cross₃` is a nonzero multiple of it
+(`exists_fill_cross₃_eq_smul_of_selector`). The completion is a fact of linear algebra
+(`exists_extend_linearIndependent`): a family `Fin n → V` independent on a set of indices, with
+`n ≤ finrank K V`, agrees on that set with an independent family.
+
+## Main results
+
+* `exists_pencilSeed_of_nondeg`: a nondegenerate realization in the chart, at selectors it chooses.
+* `exists_pencilSeed_of_nondeg_of_selectors`: the same at given selectors.
+* `exists_extend_linearIndependent`: the completion of a family independent on a set of indices.
 -/
 
 open scoped Matrix
@@ -37,39 +43,27 @@ namespace CombinatorialRigidity.Molecular
 variable {K : Type*} [Field K]
 variable {α β : Type*}
 
-/-! ## W5-L4, closing: the re-seeding lemma (Phase 39 PENCIL, D6,
-`notes/Phase39-design.md` §"W5 leaf decomposition")
+/-! ## A nondegenerate realization in the chart, at selectors it chooses
 
-`exists_pencilSeed_of_nondeg` assembles the point side's `hubSel`/`fillHub`
-(`exists_hubSel_fillHub_of_isNondegPencilRealization`) and the normal side's `nbrSel`/`fillNbr`
-(`exists_nbrSel_fillNbr_of_isNondegPencilRealization`, fed the point side's own hub-slot
-independence and point-reproduction facts, instantiated at the placeholder `fillNbr := 0` those two
-facts never actually depend on) into one concrete `PencilSeed`, giving the point side's *actual*
-`fillNbr`-instantiated facts a second reading — `PencilChartWF`'s first/third conjuncts and the
-point-reproduction fact, now stated against the same seed the normal side produced.
+`exists_hubSel_fillHub_of_isNondegPencilRealization` gives the hub selector `hubSel` and the padding
+`fillHub`, with conditions that hold for every `fillNbr`. At `fillNbr := 0` they give
+`exists_nbrSel_fillNbr_of_isNondegPencilRealization` the points it asks for, which do not read
+`fillNbr`, and it gives the neighbour selector `nbrSel` and the padding `fillNbr`. At the parameters
+`⟨normal, fillHub, fillNbr⟩` the first gives the first and third conditions of `PencilChartWF` and
+the points up to scalars, and the second gives the second and fourth conditions and the normals.
 
-The one conjunct neither side's per-vertex construction discharges is `PencilChartWF`'s fifth —
-adjacent-`pencilChartPoint` distinctness along every link — and it needs **no new per-vertex
-construction at all**: for a link `e : u–v` (so `u, v ∈ V(G)` by `IsLink.left_mem`/`.right_mem`),
-the realization's own adjacent-point-distinctness conjunct (`IsNondegPencilRealization`'s second)
-gives `LinearIndependent K ![point u, point v]`, and the point side's projective reproduction
-(`pencilChartPoint … w = c_w • point w`, `c_w ≠ 0`) transports this to
-`LinearIndependent K ![pencilChartPoint … u, pencilChartPoint … v]` via
-`LinearIndependent.units_smul` — the exact same per-body-nonzero-scalar transport idiom the point
-and normal sides' own arity-`2`/`3` cases already use repeatedly. -/
+The fifth condition, the independence of the points of the two ends of a link `e : u–v`, holds for
+the realization (the second condition of `IsNondegPencilRealization`), and
+`LinearIndependent.units_smul` gives it for the points of the chart, nonzero multiples of those of
+the realization at `u, v ∈ V(G)`. -/
 
-/-- **The re-seeding lemma** (`exists_pencilSeed_of_nondeg`; Phase 39 W5-L4, D6, closing the leaf):
-every nondegenerate pencil realization is, up to independent nonzero per-body projective scalars, a
-`PencilChartWF` chart seed's data — a genuine `PencilSeed` with hub-selector `hubSel` and
-neighbour-selector `nbrSel` satisfying full `PencilChartWF`, whose `pencilChartPoint` reproduces the
-given realization's own `point` on `V(G)` and whose `pencilChartNormal` reproduces `normal` at every
-non-hub body, both up to a nonzero scalar. This is exactly the "chart-independent, no standing
-transfer-form conjunct" statement the W5 design pass's D6 discussion asks for
-(`notes/Phase39-design.md` §"W5 design pass"): it lets a later leaf (L5 onward) start from *any*
-nondegenerate realization — not just a chart-constructed one — and still land inside the chart's
-own rows-polynomial genericity engine (W5-L3), since the reproduction is projective and every
-`IsNondegPencilRealization`/`PencilChartWF` conjunct is invariant under independent per-body
-nonzero rescaling. -/
+/-- **A nondegenerate realization in the chart** (a step of `lem:pencil-generic-steer`): for a
+nondegenerate realization of `G`, there are parameters and selectors `hubSel` and `nbrSel` of the
+chart, well formed (`PencilChartWF`), whose point at each `v ∈ V(G)` is a nonzero multiple of
+`point v`, and whose normal at each `v ∈ V(G)` that is not a hub is a nonzero multiple of
+`normal v`. The proof takes the steps of the section header.
+`exists_isNondegPencilRealization_restrict_of_demoted` and `exists_isNondegPencilRealization_steer`
+(`MainComponent/GenericSteer.lean`) use it. -/
 theorem exists_pencilSeed_of_nondeg [Finite α] [Finite β]
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) :
@@ -99,19 +93,14 @@ theorem exists_pencilSeed_of_nondeg [Finite α] [Finite β]
     funext i; fin_cases i <;> simp [Units.smul_def, hcu_eq, hcv_eq]
   rwa [heq2] at hw
 
-/-! ## Filling the free slots of a partial independent family (Phase 39 W5-L5 L5-cut-v-d) -/
+/-! ## Completing a family independent on a set of indices -/
 
-/-- **A linearly independent partial family extends to a full independent family by freely filling
-the unconstrained slots** (Phase 39 W5-L5 L5-cut-v-d, the linear-algebra core of the post-steering
-`fillNbr` re-choice): a family `g : Fin n → V` in a finite-dimensional space of dimension `≥ n`,
-linearly independent on a subset `s` of its slots, extends to a `g'` that agrees with `g` on `s` and
-is linearly independent on *all* of `Fin n`. Each free slot (outside `s`) is filled, one at a time,
-with a vector lying outside the span of the slots already committed — possible because that span has
-dimension `≤ |s| < n ≤ finrank K V`, so it is a proper submodule. Proved by induction on the number
-of free slots `(univ \ s).card`; `linearIndepOn_insert` certifies each single-slot extension.
-
-Upstream-eligible (a general `LinearIndepOn`-extension fact, no rigidity content); kept local to
-this file pending a mirror — see `notes/FRICTION.md`. -/
+/-- **Completing a family independent on a set of indices** (a step of `lem:pencil-generic-steer`):
+for `g₀ : Fin n → V` linearly independent on a set `s₀` of indices, with `n ≤ finrank K V`, some
+`g'` agrees with `g₀` on `s₀` and is linearly independent. By induction on the number of indices
+outside the set: one of them is given a vector outside the span of the vectors at the set, a span of
+dimension at most the size of the set (`finrank_span_finset_le_card`), less than `n`, and
+`linearIndepOn_insert` adds the index to the set. -/
 theorem exists_extend_linearIndependent {V : Type*} [AddCommGroup V] [Module K V]
     {n : ℕ} (hn : n ≤ Module.finrank K V)
     (g₀ : Fin n → V) (s₀ : Finset (Fin n)) (hs₀ : LinearIndepOn K g₀ (s₀ : Set (Fin n))) :
@@ -180,13 +169,24 @@ theorem exists_extend_linearIndependent {V : Type*} [AddCommGroup V] [Module K V
     have hji : j ≠ i := fun h => his (h ▸ hj)
     rw [hg'eq j (Finset.mem_insert_of_mem hj), Function.update_of_ne hji]
 
-/-! ## T1: the reseed at given selectors (Phase 40o MOTIVES-EARS, (MC-186)(c))
+/-! ## A nondegenerate realization in the chart, at given selectors
 
-Every nondegenerate realization is a chart point for every correct pair of selectors, not only the
-one `exists_pencilSeed_of_nondeg` picks: at each body, fill the free slots with a basis of the rest
-of the target's orthogonal complement. -/
+`exists_pencilSeed_of_nondeg_of_selectors` takes the normals of the realization as `hubNormal`, and
+builds the padding at any selectors that list the closed hub-neighbourhood of every body and the
+closed neighbourhood of every body that is not a hub. At a body `v ∈ V(G)`, the normals of the
+closed hub-neighbourhood are independent and orthogonal to `point v`; completed to an independent
+triple orthogonal to it, their `cross₃` is a nonzero multiple of it
+(`exists_fill_cross₃_eq_smul_of_selector`). The normal of a body of `V(G)` that is not a hub comes
+in the same way from the points of the chart on its closed neighbourhood, nonzero multiples of those
+of the realization (`LinearIndepOn.of_smul_eq`). At a body outside `V(G)`, any independent triple
+that contains the listed vectors serves (`exists_fill_linearIndependent_of_selector`). -/
 
-/-- **Fill the free slots of a selector inside a subspace of dimension at least three.** -/
+/-- **Completing the listed vectors to an independent triple in a subspace** (a step of
+`lem:pencil-generic-steer`): for a selector `sel` of `s`, a family `f` linearly independent on `s`
+with values in `P` there, and `3 ≤ finrank K P`, there are padding vectors `fill` such that the
+three vectors `hubSlotOf f sel fill i` lie in `P` and are linearly independent. The vectors at the
+slots that `sel` fills are independent, as `sel` puts each member of `s` in one slot, and
+`exists_extend_linearIndependent` completes them in `P`. -/
 theorem exists_fill_linearIndependent_hubSlotOf {P : Submodule K (Fin 4 → K)}
     (hP : 3 ≤ Module.finrank K P) {f : α → Fin 4 → K} {s : Set α} {sel : Fin 3 → Option α}
     (hsel : IsFin3SelectorOf s sel) (hLI : LinearIndepOn K f s) (hmem : ∀ w ∈ s, f w ∈ P) :
@@ -242,14 +242,19 @@ theorem exists_fill_linearIndependent_hubSlotOf {P : Submodule K (Fin 4 → K)}
     rw [hmat]
     exact hg'LI.map' P.subtype (Submodule.ker_subtype P)
 
-/-- **The orthogonal complement of a nonzero vector, as a subspace**: the kernel of `x ↦ x ⬝ᵥ t`,
-of dimension three. -/
+/-- **The vectors orthogonal to `t`, as a kernel** (a step of `lem:pencil-generic-steer`): `x` lies
+in the kernel of `(Pi.basisFun K (Fin 4)).toDual.flip t` iff `x ⬝ᵥ t = 0`. For `t ≠ 0` the kernel
+has dimension `3` (`finrank_toDualPerp_single_eq`, `Statement.lean`). -/
 theorem mem_ker_toDual_flip_iff (t x : Fin 4 → K) :
     x ∈ LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t) ↔ x ⬝ᵥ t = 0 := by
   rw [LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
 
-/-- **Fill the free slots to a triple whose `cross₃` is a nonzero multiple of a given target.**
-The selected vectors lie in `t`'s orthogonal complement; complete them to a basis of it. -/
+/-- **Completing the listed vectors to a triple whose `cross₃` is a multiple of `t`** (a step of
+`lem:pencil-generic-steer`): for `t ≠ 0`, a selector `sel` of `s` and a family `f` linearly
+independent on `s` and orthogonal to `t` there, there are padding vectors `fill` such that the three
+vectors `hubSlotOf f sel fill i` are linearly independent and their `cross₃` is a nonzero multiple
+of `t`. They are completed in the space of the vectors orthogonal to `t`, of dimension `3`, and
+`exists_smul_cross₃_eq_of_linearIndependent` (`Engine.lean`) gives the multiple. -/
 theorem exists_fill_cross₃_eq_smul_of_selector {f : α → Fin 4 → K} {t : Fin 4 → K} (ht : t ≠ 0)
     {s : Set α} {sel : Fin 3 → Option α} (hsel : IsFin3SelectorOf s sel)
     (hLI : LinearIndepOn K f s) (horth : ∀ w ∈ s, f w ⬝ᵥ t = 0) :
@@ -268,7 +273,8 @@ theorem exists_fill_cross₃_eq_smul_of_selector {f : α → Fin 4 → K} {t : F
     rw [dotProduct_comm]; exact (mem_ker_toDual_flip_iff t _).mp (hmem i)
   exact exists_smul_cross₃_eq_of_linearIndependent hLI3 ht (h 0) (h 1) (h 2)
 
-/-- **Fill the free slots to an independent triple, no target.** -/
+/-- **Completing the listed vectors to an independent triple** (a step of
+`lem:pencil-generic-steer`): `exists_fill_linearIndependent_hubSlotOf` in the whole of `K⁴`. -/
 theorem exists_fill_linearIndependent_of_selector {f : α → Fin 4 → K} {s : Set α}
     {sel : Fin 3 → Option α} (hsel : IsFin3SelectorOf s sel) (hLI : LinearIndepOn K f s) :
     ∃ fill : Fin 3 → Fin 4 → K,
@@ -278,7 +284,9 @@ theorem exists_fill_linearIndependent_of_selector {f : α → Fin 4 → K} {s : 
     (by rw [finrank_top, Module.finrank_fin_fun]; omega) hsel hLI (fun _ _ => Submodule.mem_top)
   exact ⟨fill, hLI3⟩
 
-/-- A per-body nonzero rescaling keeps a family independent on a set. -/
+/-- **A nonzero scalar at each member keeps a family independent on a set** (a step of
+`lem:pencil-generic-steer`): if `f` is linearly independent on `s` and `g w` is a nonzero multiple
+of `f w` at each `w ∈ s`, so is `g` (`LinearIndependent.units_smul`). -/
 theorem LinearIndepOn.of_smul_eq {f g : α → Fin 4 → K} {s : Set α} (hLI : LinearIndepOn K f s)
     (hsc : ∀ w ∈ s, ∃ c : K, c ≠ 0 ∧ g w = c • f w) : LinearIndepOn K g s := by
   choose! c hc0 hc using hsc
@@ -289,10 +297,17 @@ theorem LinearIndepOn.of_smul_eq {f g : α → Fin 4 → K} {s : Set α} (hLI : 
   funext w
   simp [Units.smul_def, hc ↑w w.2]
 
-/-- **The reseed at given selectors** (`exists_pencilSeed_of_nondeg` with the selectors as
-input; (MC-186)(c), EARS' T1): for **every** pair of selectors correct for `G`, a nondegenerate
-realization is a well-formed chart point up to per-body scalars, with the realization's normals
-as the seed's hub normals. -/
+/-- **A nondegenerate realization in the chart, at given selectors** (`lem:pencil-generic-steer`,
+the converse of the parametrization in its proof): for a nondegenerate realization of `G` and
+selectors `hubSel` and `nbrSel` that list the closed hub-neighbourhood of every body and the closed
+neighbourhood of every body that is not a hub, there are parameters with `hubNormal = normal`, well
+formed at these selectors (`PencilChartWF`), whose point at each `v ∈ V(G)` is a nonzero multiple of
+`point v`, and whose normal at each `v ∈ V(G)` that is not a hub is a nonzero multiple of
+`normal v`. The proof takes the steps of the section header, with the points of the chart at the
+parameters `⟨normal, fillHub, 0⟩`, which do not read `fillNbr`, and gives the fifth condition of
+`PencilChartWF` as `exists_pencilSeed_of_nondeg` does. `exists_isNondegPencilRealization_steer`
+(`MainComponent/GenericSteer.lean`) uses it to write a second realization in the chart at the
+selectors of a first. -/
 theorem exists_pencilSeed_of_nondeg_of_selectors
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) {hubSel nbrSel : α → Fin 3 → Option α}
@@ -302,7 +317,7 @@ theorem exists_pencilSeed_of_nondeg_of_selectors
       (∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧ pencilChartPoint seed hubSel v = c • point v) ∧
       (∀ v ∈ V(G), ¬ G.PencilHub v → ∃ d : K, d ≠ 0 ∧
         pencilChartNormal seed hubSel nbrSel G v = d • normal v) := by
-  -- the point side, body by body
+  -- the points, body by body
   have hub : ∀ v, ∃ fill : Fin 3 → Fin 4 → K,
       LinearIndependent K ![hubSlotOf normal (hubSel v) fill 0, hubSlotOf normal (hubSel v) fill 1,
         hubSlotOf normal (hubSel v) fill 2] ∧
@@ -329,7 +344,7 @@ theorem exists_pencilSeed_of_nondeg_of_selectors
   set pt : α → Fin 4 → K := pencilChartPoint seedH hubSel with hpt_def
   have hpt_ne : ∀ v, pt v ≠ 0 := fun v => pencilChartPoint_ne_zero seedH (hHubLI v)
   have hptR : ∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧ pt v = c • point v := fun v hv => hPt v hv
-  -- the normal side, body by body
+  -- the normals, body by body
   have nbr : ∀ v, ∃ fill : Fin 3 → Fin 4 → K, ¬ G.PencilHub v →
       LinearIndependent K ![hubSlotOf pt (nbrSel v) fill 0, hubSlotOf pt (nbrSel v) fill 1,
         hubSlotOf pt (nbrSel v) fill 2] ∧
