@@ -5690,6 +5690,38 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 3 task 37.7.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
+- **F-308** · L · an over-strong hypothesis, a hypothesis another gives and repeated derivations in
+  `Molecular/Molecule/Pencil/X0.lean` and `MainComponent/GenericSteer.lean`.
+  `pencil_realization_theorem_of_X0` uses its `hspan : V(G) = Set.univ` and its `[Nonempty α]` only
+  for `V(G).Nonempty`, at which `pencilPair_of_arms` gives the conditioned pair from the two
+  main-component statements at any graph, the form of `pencilPair_of_nonempty`
+  (`MainComponent/Statements.lean`); its node, `thm:pencil-conditional-realization-main-component`,
+  states the spanning form. The `hloop : H.Loopless` of `exists_isNondegPencilRealization_steer`
+  follows from its nondegenerate realization `hnd₁` (`not_pencilNondegFeasible_of_isLoopAt`); part
+  (b) of `lem:pencil-generic-steer` states it. Of the 226 code lines of
+  `hasPencilRealization_of_not_simple` (comments and blank lines aside), 136 are lines of the 228 of
+  `case_I_realization_nonsimple_gen` (`AlgebraicInduction/Theorem55.lean`), in the same order: the
+  parallel pair, the subgraph `H'` and its properness, the rank of the rows of `H'`, the hypotheses
+  of the splice and the rank arithmetic; the two differ in the induction hypothesis, the two new
+  hinges and the conditions on the realization.
+  `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` derives its facts at `w₁` and
+  again at `w₂` by the same steps with the two exchanged (some 70 lines a side: no link between them
+  when either is a hub, at most one other member of the closed hub-neighbourhood, and the indices of
+  the slots). `exists_isNondegPencilRealization_restrict_of_demoted` and
+  `exists_isNondegPencilRealization_steer` each derive the four conditions of `PencilChartWF` that
+  do not read `fillNbr` from the independence of the points on `{v}` or the closed neighbourhood and
+  on the two ends of each pair of adjacent bodies, by the same steps (some 30 lines each), and each
+  shows these independences at the coordinate point of the realization it writes in the chart by the
+  same steps (some 20 lines each), as `exists_coord_linearIndepOn_closedNbhd_of_demoted` does for
+  `{v}` and a link. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies; the shared lines counted by a sequence match of the
+  two bodies' code lines); a `lake lean` witness: the conditioned pair from the two statements at
+  every nonempty graph without `hspan` and `[Nonempty α]`, and
+  `exists_isNondegPencilRealization_steer` with `hloop` derived from `hnd₁`, on the three standard
+  axioms (`scratch/reconcile-lean/t378/Hyps-t378.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.8.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+
 ## M — mathematics and sources
 
 - **F-025** · M · the credit for "row-independent iff $(2,3)$-sparse" (`rigidity-matroid.tex`,

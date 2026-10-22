@@ -40,7 +40,7 @@ task 19 had `parsePair` split on any whitespace, so a tab-separated input reads,
 rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
 input, and tasks 21–24 landed the non-vacuity witnesses of the sixteen main results outside S1's
 and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last,
-and tasks 25–37.7 swept the docstrings of the thirteen planar files, of `Search/`, of `Mathlib/`, of
+and tasks 25–37.8 swept the docstrings of the thirteen planar files, of `Search/`, of `Mathlib/`, of
 `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and generic-rigidity files (every
 top-level file but `Nonvacuity.lean`), of `Molecular/Deficiency.lean`, of `Molecular/Induction/`, of
 `RigidityMatrix/`, of `Molecular/Meet.lean` and `Extensor.lean`, of
@@ -49,9 +49,11 @@ top-level file but `Nonvacuity.lean`), of `Molecular/Deficiency.lean`, of `Molec
 `AlgebraicInduction/Nonvacuity.lean` and `Theorem55.lean`, of `Molecular/Molecule/`'s top level
 (this round's parts; the footprint), and of `Molecule/Pencil/Statement.lean`, `Chart.lean`,
 `Arms.lean`, `ArmsAssembly.lean`, `Motive.lean`, `Engine.lean`, `Reseed.lean`, `Witness.lean`,
-`Steer.lean`, `Pair.lean` and `Pair2.lean`, after the bump to Lean v4.36.0-rc1 that the PI put
-ahead of task 34.1 lifted round 3's toolchain blocker of 2026-10-21.
-**Next concrete task:** round 3's task 37.8, the docstrings of `Molecule/Pencil/X0.lean`.
+`Steer.lean`, `Pair.lean`, `Pair2.lean`, `X0.lean` and `MainComponent/GenericSteer.lean`, after
+the bump to Lean v4.36.0-rc1 that the PI put ahead of task 34.1 lifted round 3's toolchain blocker
+of 2026-10-21.
+**Next concrete task:** round 3's task 37.9, the docstrings of
+`Molecule/Pencil/MainComponent/Carrier.lean` and `Configuration.lean`.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

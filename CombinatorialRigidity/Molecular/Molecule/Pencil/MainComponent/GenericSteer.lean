@@ -6,35 +6,48 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
 
 /-!
-# Steering a realization of a subgraph (Phase 40o EARS, T2 + T3)
+# Nondegenerate and generic realizations of a subgraph
 
-`lem:pencil-generic-steer`'s two claims: (a) a nondegenerate realization of a simple,
-nondegeneracy-feasible `G` steers to a chart point whose restriction to a subgraph `H` is
-nondegenerate too, whenever every hub of `G` demoted in `H` loses only non-hub neighbours
-((MC-190), (MC-188)); (b) a generic pencil realization of `H` steers, in the same way, to also
-carry finitely many normal-independence and point–normal non-orthogonality conditions read off a
-second nondegenerate realization ((MC-191)). Both route through the reseed at given selectors
-(`exists_pencilSeed_of_nondeg_of_selectors`, `Reseed.lean`) and the rows-polynomial steering engine
-(`Engine.lean`, `Steer.lean`).
+Parts (a) and (b) of `lem:pencil-generic-steer` (`sec:main-component-statements`), on the chart of
+`Chart.lean`; the lemma's third pin, a nondegenerate realization written in the chart at given
+selectors, is `exists_pencilSeed_of_nondeg_of_selectors` (`Reseed.lean`). Each part takes finitely
+many conditions, each holding at some coordinate point of the chart, to one coordinate point at
+which they all hold (`Steer.lean`, `Engine.lean`), and makes the parameters there well formed by a
+new `fillNbr` (`exists_fillNbr_pencilChartWF_of_standing`).
+
+Part (a): let `G` be simple and nondegeneracy-feasible, and `H ≤ G` such that whenever a hub of `G`
+is a body but not a hub of `H`, its neighbours in `G` that are not its neighbours in `H` are not
+hubs of `G`. Then `G` has a nondegenerate realization whose restriction to `H` is nondegenerate. A
+nondegenerate realization of `G`, written in the chart (`exists_pencilSeed_of_nondeg`), gives the
+conditions of nondegeneracy on `G` at one coordinate point. At each such hub, the points of its
+closed neighbourhood in `H` are independent at some coordinate point: when it has two neighbours in
+`H`, at one built from standard basis vectors (`Witness.lean`).
+
+Part (b): a generic realization of `H` and a second nondegenerate realization of `H` give a generic
+realization whose normals are independent on finitely many sets on which those of the second are,
+and whose dot products of a point and a normal are nonzero at finitely many pairs at which those of
+the second are, when each of these normals is that of a hub or of a body with three members in its
+closed neighbourhood. The first realization is written in the chart, and the second at its
+selectors.
+
+The cut-edge case with one body on a side (`hasGenericPencilRealization_pendant_of_IH`,
+`Pair2.lean`), `lem:pencil-generic-one-ear` and `lem:pencil-generic-pendant-triangle`
+(`MainComponent/GenericEar.lean`, `MainComponent/GenericTriangle.lean`) use both parts.
 
 ## Main definitions
 
-* `pencilDotPoly` — the dot product of a chart point and a chart normal, as a polynomial in the
-  seed.
+* `pencilDotPoly`: the dot product of a point and a normal of the chart, as a polynomial in the
+  coordinate point.
 
-## Main statements
+## Main results
 
-* `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` — (MC-188): a hub with two
-  non-hub-adjacent neighbours has a chart seed at which the hub and its two neighbours' points are
-  independent.
-* `exists_isNondegPencilRealization_restrict_of_demoted` — (MC-190), T2: `G` has a
-  nondegenerate realization whose restriction to a demoted-safe subgraph `H` is nondegenerate.
-* `exists_isNondegPencilRealization_steer` — (MC-191), T3: a generic pencil realization of `H`
-  steers to also satisfy a second realization's finitely many normal-independence and
-  point–normal non-orthogonality conditions.
-
-See `notes/Phase40o.md`, `notes/pencil/workbook/K-main-MC19.md` (route B, (MC-186)–(MC-191)), and
-`blueprint/src/chapter/main-component.tex` (`lem:pencil-generic-steer`).
+* `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`: a hub of `G` with two
+  neighbours `w₁` and `w₂`, whose other neighbours are not hubs, has a coordinate point at which the
+  points of the hub, `w₁` and `w₂` are independent.
+* `exists_isNondegPencilRealization_restrict_of_demoted`: part (a).
+* `exists_isNondegPencilRealization_steer`: part (b).
+* `ncard_closedNbhd_eq_three_of_demoted`: a body that is not a hub of `H` and keeps all but a few of
+  its neighbours in `G` has three members in its closed neighbourhood in `H`.
 -/
 
 open scoped Matrix Graph
@@ -43,8 +56,26 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-! ## T2 (part 1): (MC-188), the pendant witness with non-hub neighbours -/
+/-! ## Part (a): independent points at a hub and two of its neighbours -/
 
+/-- **Independent points at a hub and two of its neighbours** (a step of `lem:pencil-generic-steer`,
+part (a)): let `G` be simple and nondegeneracy-feasible, `h` a hub of `G` with neighbours `w₁ ≠ w₂`
+such that the other neighbours of `h` are not hubs (`hother`), and `hubSel` a selector of the closed
+hub-neighbourhood of every body. Then at some coordinate point the points of the chart at `h`, `w₁`
+and `w₂` are linearly independent.
+
+The closed hub-neighbourhood of `h` lies in `{h, w₁, w₂}`. As no triangle of `G` has two hubs
+(`not_pencilNondegFeasible_of_triangle_two_hubs`), that of `w₁` does not contain `w₂`, nor that of
+`w₂` `w₁`; and each of these two has at most one member besides `h` and its own body: at a hub, as a
+closed hub-neighbourhood has at most three members
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), and elsewhere, as the degree is at
+most two. So with the index `0`, `1` and `2` at `h`, `w₁` and `w₂`, and `3` at every other body, the
+slots of the hub selectors at the three bodies take distinct indices other than `3` at `h`, `2` at
+`w₁` and `1` at `w₂` (`exists_injective_extension_of_isFin3SelectorOf`, `Witness.lean`). At the
+coordinate point whose `hubNormal` at each body, and whose `fillHub` at these three, are the
+standard basis vectors of their indices, the three points are nonzero multiples of the standard
+basis vectors of index `3`, `2` and `1`
+(`exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single`, `Engine.lean`). -/
 theorem exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
     [Finite α] {G : Graph α β} {e₁ e₂ : β} {h w₁ w₂ : α}
     (hSimple : G.Simple) (hfeas : PencilNondegFeasible K G) (hub_u : G.PencilHub h)
@@ -73,7 +104,7 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
       by_cases h2 : x = w₂
       · exact Or.inr (Or.inr h2)
       exact absurd hxhub (hother x ⟨e, he⟩ h1 h2)
-  -- The triangle exclusions: `w₁ ~ w₂` is barred whenever either is a hub.
+  -- No link joins `w₁` and `w₂` when either is a hub, as no triangle of `G` has two hubs.
   have hw2_nadj1 : G.PencilHub w₂ → ¬ G.Adj w₁ w₂ := by
     rintro hh2 ⟨e₃, he₃⟩
     exact not_pencilNondegFeasible_of_triangle_two_hubs hw1u (Ne.symm hw2u) hw12
@@ -90,7 +121,8 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
     rintro ⟨hh1, h' | ⟨e, he⟩⟩
     · exact hw12 h'
     · exact hw1_nadj2 hh1 ⟨e, he⟩
-  -- At most one third-party member at `w₁` (hub: the `≤ 3` bound; non-hub: degree `≤ 2`).
+  -- At most one member of the closed hub-neighbourhood of `w₁` besides `h` and `w₁` (at a hub, by
+  -- the bound `≤ 3`; elsewhere, as the degree is at most `2`).
   have huniq_1 : ∀ x ∈ G.closedHubNbhd w₁, ∀ y ∈ G.closedHubNbhd w₁,
       x ≠ h → x ≠ w₁ → y ≠ h → y ≠ w₁ → x = y := by
     intro x hx y hy hxu hxw hyu hyw
@@ -163,7 +195,8 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
       have hle := Set.ncard_le_ncard hsub3 (Set.toFinite _)
       rw [h3card, ← Graph.degree_eq_ncard_adj] at hle
       omega
-  -- The global basis-index assignment (no fourth named body: the other neighbours are non-hubs).
+  -- The index of the standard basis vector at each body: `0`, `1` and `2` at `h`, `w₁` and `w₂`,
+  -- and `3` elsewhere.
   set idx : α → Fin 4 := fun x =>
     if x = h then 0 else if x = w₁ then 1 else if x = w₂ then 2 else 3 with hidx_def
   have hidx_u : idx h = 0 := by simp [hidx_def]
@@ -309,17 +342,23 @@ theorem exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub
     fin_cases i <;> simp [Units.smul_def, hcu, hc1, hc2]
   rwa [heq] at hbase
 
-/-! ## T2 (part 2): the steering in `G`'s chart and the restriction ((MC-190)) -/
+/-! ## Part (a): a realization of `G` nondegenerate on `H` -/
 
-/-- **The closed neighbourhood is the body and its neighbours.** -/
+/-- **The closed neighbourhood is the body and its neighbours** (a step of
+`lem:pencil-generic-steer`). -/
 theorem _root_.Graph.closedNbhd_eq_insert (G : Graph α β) (v : α) :
     G.closedNbhd v = insert v (N(G, v)) := rfl
 
-/-- **A demoted hub's closed neighbourhood is independent at some chart seed** (T2's witness at
-the demoted bodies): a hub `v` of `G` that is a body but not a hub of `H ≤ G`, whose neighbours
-lost in `H` are all non-hubs of `G`, has its `H`-closed neighbourhood independent at some chart
-seed, for every hub selector correct for `G`. With two `H`-neighbours this is (MC-188); with at most
-one, the closed neighbourhood is `{v}` or an edge, independent at the given chart point. -/
+/-- **Independent points on the closed neighbourhood in `H` of a hub of `G`** (a step of
+`lem:pencil-generic-steer`, part (a)): let `G` be simple and nondegeneracy-feasible, `H ≤ G`, and
+`seed₀` well-formed parameters of the chart of `G` at the selectors `hubSel` and `nbrSel`
+(`PencilChartWF`). A hub `v` of `G` that is a body but not a hub of `H`, whose neighbours in `G`
+that are not its neighbours in `H` are not hubs of `G` (`hdem`), has a coordinate point at which the
+points of the chart are linearly independent on its closed neighbourhood in `H`. As `v` is not a hub
+of `H`, it has at most two neighbours there. With at most one, the closed neighbourhood is `{v}` or
+the two ends of a link of `G`, independent at `seed₀.toCoord`. With two, the other neighbours of `v`
+in `G` are not hubs, and `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub` gives the
+point. -/
 theorem exists_coord_linearIndepOn_closedNbhd_of_demoted [Finite α]
     {G H : Graph α β} (hS : G.Simple) (hfeas : PencilNondegFeasible K G) (hle : H ≤ G)
     {seed₀ : PencilSeed K α} {hubSel nbrSel : α → Fin 3 → Option α}
@@ -337,7 +376,7 @@ theorem exists_coord_linearIndepOn_closedNbhd_of_demoted [Finite α]
   have hN : N(H, v).ncard ≤ 2 := by rw [← Graph.degree_eq_ncard_adj]; exact hdeg
   have hfin : N(H, v).Finite := Set.toFinite _
   rcases Nat.lt_or_ge (N(H, v).ncard) 2 with hlt | hge
-  · -- at most one `H`-neighbour: the given chart point already works
+  · -- at most one neighbour in `H`: the point `seed₀.toCoord`
     refine ⟨seed₀.toCoord, ?_⟩
     rw [hpt_eq, Graph.closedNbhd_eq_insert]
     rcases Nat.lt_or_ge (N(H, v).ncard) 1 with h0 | h1
@@ -352,7 +391,7 @@ theorem exists_coord_linearIndepOn_closedNbhd_of_demoted [Finite α]
       obtain ⟨e, he⟩ := hadj
       exact (LinearIndepOn.pair_iff (pencilChartPoint seed₀ hubSel) he.ne).mpr
         (LinearIndependent.pair_iff.mp (hWF₀.2.2.2.2 e v y (he.of_le hle)))
-  · -- two `H`-neighbours: (MC-188)
+  · -- two neighbours in `H`: `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`
     obtain ⟨u, w, huw, hNuw⟩ := Set.ncard_eq_two.mp (show N(H, v).ncard = 2 by omega)
     have hu : H.Adj v u := by
       have : u ∈ N(H, v) := by rw [hNuw]; exact Set.mem_insert _ _
@@ -377,11 +416,24 @@ theorem exists_coord_linearIndepOn_closedNbhd_of_demoted [Finite α]
     rw [Graph.closedNbhd_eq_insert, hNuw]
     exact linearIndepOn_triple_of_linearIndependent _ he₁.ne he₂.ne huw hq
 
-/-- **The formal hubs by steering, in `G`'s chart** ((MC-190), EARS' T2): at a simple
-feasible `G` and a subgraph `H ≤ G` whose demoted hubs lose only non-hub neighbours, `G` has a
-nondegenerate realization whose restriction to `H` is nondegenerate. Re-seed `G`'s feasibility
-witness, steer one seed carrying the standing chart conditions and the demoted closed
-neighbourhoods, re-choose `fillNbr`, and restrict (`IsNondegPencilRealization.mono`). -/
+/-- **A realization of `G` nondegenerate on a subgraph** (`lem:pencil-generic-steer`, part (a)):
+over an infinite field, let `G` be simple and nondegeneracy-feasible, and `H ≤ G` such that whenever
+a hub of `G` is a body but not a hub of `H`, its neighbours in `G` that are not its neighbours in
+`H` are not hubs of `G` (`hdem`). Then `G` has a nondegenerate realization whose restriction to `H`,
+with the same hinges, normals and points, is nondegenerate.
+
+Written in the chart (`exists_pencilSeed_of_nondeg`), a nondegenerate realization of `G` gives a
+coordinate point at which the points are independent on `{v}` at a hub `v` of `G`, on the closed
+neighbourhood of every other body, and on the two ends of every pair of adjacent bodies; and at each
+hub of `G` that is a body but not a hub of `H`, the points are independent on its closed
+neighbourhood in `H` at some coordinate point (`exists_coord_linearIndepOn_closedNbhd_of_demoted`).
+At one coordinate point they are independent on all these sets
+(`exists_common_seed_linearIndepOn_pencilChartPoint`), which gives the conditions of `PencilChartWF`
+that do not read `fillNbr`; a new `fillNbr` gives the rest
+(`exists_fillNbr_pencilChartWF_of_standing`) and changes no point. The chart there is a
+nondegenerate realization of `G`, and its restriction to `H` is nondegenerate
+(`IsNondegPencilRealization.mono`), as the points are independent on those closed neighbourhoods in
+`H`. -/
 theorem exists_isNondegPencilRealization_restrict_of_demoted [Finite α] [Finite β] [Infinite K]
     {G H : Graph α β} (hS : G.Simple) (hfeas : PencilNondegFeasible K G) (hle : H ≤ G)
     (hdem : ∀ v ∈ V(H), G.PencilHub v → ¬ H.PencilHub v →
@@ -482,9 +534,10 @@ theorem exists_isNondegPencilRealization_restrict_of_demoted [Finite α] [Finite
   rw [hpcp_eq]
   exact h
 
-/-! ## T3: the steering in `H`'s chart ((MC-191)) -/
+/-! ## Part (b): a generic realization with the conditions of a second -/
 
-/-- **A selector of a three-member set fills every slot.** -/
+/-- **A selector of a three-member set fills every slot** (a step of `lem:pencil-generic-steer`,
+part (b)). -/
 theorem IsFin3SelectorOf.isSome_of_ncard_eq_three {s : Set α} {sel : Fin 3 → Option α}
     (h : IsFin3SelectorOf s sel) (hs : s.ncard = 3) (i : Fin 3) : (sel i).isSome := by
   by_contra hnone
@@ -506,7 +559,10 @@ theorem IsFin3SelectorOf.isSome_of_ncard_eq_three {s : Set α} {sel : Fin 3 → 
     rw [← Set.compl_singleton_eq, Set.ncard_compl, Set.ncard_singleton, Nat.card_fin]
   omega
 
-/-- The dot product of a chart point and a chart normal, as a polynomial in the seed. -/
+/-- **The dot product of a point and a normal of the chart, as a polynomial** (a step of
+`lem:pencil-generic-steer`, part (b)): at a coordinate point `q`, it evaluates to the dot product of
+the point of `u` and the normal of `w` of the chart at `PencilSeed.ofCoord q`
+(`pencilDotPoly_eval`). -/
 noncomputable def pencilDotPoly (hubSel nbrSel : α → Fin 3 → Option α) (G : Graph α β) (u w : α) :
     MvPolynomial (α × Fin 4 × Fin 4) K :=
   ∑ i, pencilChartPointPoly hubSel u i * pencilChartNormalPoly hubSel nbrSel G w i
@@ -519,15 +575,29 @@ theorem pencilDotPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (G : Gra
   simp only [pencilDotPoly, map_sum, map_mul, pencilChartPointPoly_eval,
     pencilChartNormalPoly_eval, dotProduct]
 
-/-- **The steering in `H`'s chart** ((MC-191), EARS' T3; the general form of Phase 39's
-L5-cut-v-f-6 steering, whose pendant case now runs through it,
-`hasGenericPencilRealization_pendant_of_IH`). Two nondegenerate
-realizations of `H` — one at the deficiency rank, one carrying finitely many normal-independence
-and point–normal non-orthogonality conditions — give one realization with all of them. Both are
-chart points of one chart of `H` (T1 at the first one's selectors); every condition is the
-nonvanishing of a seed polynomial, so a common seed carries them all. The conditions read
-normals only at hubs of `H` and at non-hubs with three closed neighbours, where the normal does
-not read the re-chosen `fillNbr`. -/
+/-- **A generic realization with the conditions of a second realization**
+(`lem:pencil-generic-steer`, part (b)): over an infinite field, let `H` be loopless with at least
+one body, `F₁` a nondegenerate realization of `H` at the deficiency rank, and `F₂` a second
+nondegenerate realization of `H`, with normals `normal₂` and points `point₂`. Let `S k ⊆ V(H)` be
+finitely many sets on which `normal₂` is linearly independent, and `(u j, w j)` finitely many pairs
+of bodies of `H` with `point₂ (u j) ⬝ᵥ normal₂ (w j) ≠ 0`, such that each member of an `S k`, and
+each `w j`, is a hub of `H` or has three members in its closed neighbourhood in `H`. Then `H` has a
+nondegenerate realization at the deficiency rank whose normals are independent on every `S k`, with
+`point (u j) ⬝ᵥ normal (w j) ≠ 0` for every `j`.
+
+`F₁` is written in the chart (`exists_pencilSeed_of_nondeg`), and `F₂` at its selectors
+(`exists_pencilSeed_of_nondeg_of_selectors`), at the coordinate points `seed₁.toCoord` and
+`seed₂.toCoord`. Each condition of nondegeneracy on the points holds off the zero set of a
+polynomial nonzero at the first. Each independence on an `S k`, and each nonzero dot product
+(`pencilDotPoly`), holds off the zero set of a polynomial nonzero at the second, where the normals
+of the chart at a hub and at a body with three members in its closed neighbourhood are nonzero
+multiples of `normal₂`. As many rows `pencilRow` as the rank of `F₁` are independent at the first
+(`exists_independent_pencilRow_subfamily_at_toCoord_of_reseed`). At one coordinate point all of
+these hold (`exists_common_seed_pencilRow_and_polynomials`). A new `fillNbr` makes the parameters
+there well formed (`exists_fillNbr_pencilChartWF_of_standing`) and changes none of the normals that
+the conditions read, as at such a body the neighbour selector fills every slot. The independent rows
+give the framework of the chart the deficiency rank
+(`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`). -/
 theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite K] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim 2) {H : Graph α β} (hloop : H.Loopless)
     (hne : V(H).Nonempty)
@@ -552,7 +622,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
   have := hloop
   obtain ⟨v₀, hv₀⟩ := hne
   have : Inhabited α := ⟨v₀⟩
-  -- the chart of the attaining realization, and the second realization in it (T1)
+  -- the first realization in the chart, and the second at its selectors
   obtain ⟨seed₁, hubSel, nbrSel, hWF₁, hptrepro, -⟩ := exists_pencilSeed_of_nondeg hnd₁
   obtain ⟨seed₂, hseed₂, -, hpt₂, hnm₂⟩ :=
     exists_pencilSeed_of_nondeg_of_selectors hnd₂ hWF₁.1 hWF₁.2.1
@@ -562,7 +632,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
   have hassigned : ∀ x, ¬ H.PencilHub x → (H.closedNbhd x).ncard = 3 →
       ∀ i, (nbrSel x i).isSome := fun x hx h3 i =>
     (hWF₁.2.1 x hx).isSome_of_ncard_eq_three h3 i
-  -- the second realization's normals in the chart, at the flattening
+  -- the normals of the second realization in the chart, at `seed₂.toCoord`
   have hnm₂' : ∀ x ∈ V(H), (¬ H.PencilHub x → (H.closedNbhd x).ncard = 3) →
       ∃ d : K, d ≠ 0 ∧
         pencilChartNormal (PencilSeed.ofCoord seed₂.toCoord) hubSel nbrSel H x = d • normal₂ x := by
@@ -580,7 +650,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
     intro x hx
     rw [pencilChartPoint_ofCoord_toCoord]
     exact hpt₂ x hx
-  -- the standing point conditions, at the first flattening
+  -- the conditions on the points, at `seed₁.toCoord`
   have hpolyA : ∀ v : α, ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K,
       (∃ q, MvPolynomial.eval q Q ≠ 0) ∧
       (∀ q, MvPolynomial.eval q Q ≠ 0 →
@@ -618,7 +688,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
       exists_polynomial_ne_zero_of_linearIndependent_pencilChartPoint hubSel id hwit
     exact ⟨Q, ⟨seed₁.toCoord, hQ0⟩, fun q hq => hQ q hq⟩
   choose PB hPB0 hPB using hpolyB
-  -- the normal-independence conditions, at the second flattening
+  -- the independence of the normals on each `S k`, at `seed₂.toCoord`
   have hpolyC : ∀ k : ι, ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K,
       (∃ q, MvPolynomial.eval q Q ≠ 0) ∧
       (∀ q, MvPolynomial.eval q Q ≠ 0 →
@@ -631,7 +701,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
       exists_polynomial_ne_zero_of_linearIndependent_pencilChartNormal hubSel nbrSel H id hwit
     exact ⟨Q, ⟨seed₂.toCoord, hQ0⟩, fun q hq => hQ q hq⟩
   choose PC hPC0 hPC using hpolyC
-  -- the non-orthogonality conditions, at the second flattening
+  -- the nonzero dot products, at `seed₂.toCoord`
   have hPD0 : ∀ j, ∃ q,
       MvPolynomial.eval q (pencilDotPoly (K := K) hubSel nbrSel H (u j) (w j)) ≠ 0 := by
     intro j
@@ -641,10 +711,10 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
     obtain ⟨d, hd, hdeq⟩ := hnm₂' (w j) (hwV j) (hwfree j)
     rw [hceq, hdeq, smul_dotProduct, dotProduct_smul, smul_smul, smul_eq_mul]
     exact mul_ne_zero (mul_ne_zero hc hd) (hdot j)
-  -- the rank rows, at the first flattening
+  -- as many independent rows as the rank of `F₁`, at `seed₁.toCoord`
   obtain ⟨s, hslink, hscard, hsLI⟩ := exists_independent_pencilRow_subfamily_at_toCoord_of_reseed
     hnd₁ hptrepro (le_refl (Module.finrank K (Submodule.span K F₁.rigidityRows)))
-  -- one common seed
+  -- one coordinate point for all of them
   have hPsome : ∀ i : (α ⊕ (α × α)) ⊕ (ι ⊕ κ),
       ∃ q, MvPolynomial.eval q ((Sum.elim (Sum.elim PA PB)
         (Sum.elim PC (fun j => pencilDotPoly (K := K) hubSel nbrSel H (u j) (w j)))) i) ≠ 0 := by
@@ -669,7 +739,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
     have h := hqP (Sum.inr (Sum.inr j))
     simp only [Sum.elim_inr] at h
     rwa [pencilDotPoly_eval] at h
-  -- the standing chart conditions at the common seed
+  -- the conditions of `PencilChartWF` that do not read `fillNbr`, at that point
   have hptnz : ∀ v, pencilChartPoint (PencilSeed.ofCoord q) hubSel v ≠ 0 := by
     intro v
     by_cases hv : H.PencilHub v
@@ -699,7 +769,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
     have h := hcondA v; rw [ite_eq_right hv] at h
     exact linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint (PencilSeed.ofCoord q)
       (hWF₁.2.1 v hv) h
-  -- re-choose `fillNbr`, and read off the chart realization and its rank
+  -- a new `fillNbr`, and the realization of the chart with its rank
   obtain ⟨seed', hhub_eq, hfill_eq, hWF'⟩ :=
     exists_fillNbr_pencilChartWF_of_standing hWF₁.1 hWF₁.2.1 hhub_LI hpt_LI hnbr_some
   have hnd' := isNondegPencilRealization_pencilChartFramework_of_pencilChartWF hWF'
@@ -724,10 +794,12 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
       (fun hxh => hassigned (w j) hxh (hwfree j hxh))]
     exact hcondD j
 
-/-- **A demoted body that loses few neighbours keeps exactly two** (the `fillNbr`-free condition
-T3 reads): at a simple `G`, a body `v` of `H ≤ G` that is not a hub of `H`, whose
-`G`-neighbours outside `H` lie in a set `L` with `|L| + 2 ≤ deg_G v`, has three closed
-neighbours in `H`. -/
+/-- **Three members in the closed neighbourhood in a subgraph** (for the hypotheses of part (b) of
+`lem:pencil-generic-steer`, in `lem:pencil-generic-one-ear`, `lem:pencil-generic-pendant-triangle`
+and `lem:pencil-pair-loop-base-cut`): at a simple `G`, a body `v` of `H ≤ G` that is not a hub of
+`H`, whose neighbours in `G` that are not its neighbours in `H` lie in a set `L` with
+`|L| + 2 ≤ deg_G v`, has three members in its closed neighbourhood in `H`: as it is not a hub of
+`H`, it has at most two neighbours there, and at least `deg_G v - |L| ≥ 2` of them. -/
 theorem ncard_closedNbhd_eq_three_of_demoted [Finite α] {G H : Graph α β} (hS : G.Simple)
     (hle : H ≤ G) {v : α} (hvnot : ¬ H.PencilHub v) (hvH : v ∈ V(H))
     {L : Set α} (hL : N(G, v) ⊆ L ∪ N(H, v)) (hdeg : L.ncard + 2 ≤ G.degree v) :

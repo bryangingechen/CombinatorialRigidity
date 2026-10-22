@@ -6,21 +6,35 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 
 /-!
-# The `X₀` main-component statements and the conditioned-pair headline (Phase 39/40 PENCIL)
+# The main-component statements, and the conditioned pair from them
 
-`X0Dist`/`X0Gen` are the two hypotheses the adopted `X₀` route replaces `hK`/`hbareSplit` with
-(`notes/pencil/adjudications.md`, 2026-09-25): a separate strong induction on the pencil-realization
-configuration space's main component, bypassing both open kernels (retired at Phase 40's close).
-Phase 40 discharges them (`notes/Phase40-design.md` §1). `pencilPair_of_X0` and
-`pencil_realization_theorem_of_X0` are the carried headline built on top, spike-compiled against
-`22d0f8f8` (`notes/Phase39-design.md` § "X₀ architecture recon") and transcribed here verbatim.
-`hasPencilRealization_of_not_simple` (Phase 39 L0b, KT Lemma 6.2 mirror, minimality-free) is the
-non-simple bare case that used to be carried as the hypothesis `hW4A`; both carried headlines now
-call it directly, and Phase 39 closed once this landed.
+The definitions and steps of `sec:pencil-main-component-route`. The two main-component statements
+(`def:pencil-main-component-statements`) say that every simple two-edge-connected multigraph on at
+least three bodies has an adjacent-distinct pencil realization at the deficiency rank (`X0Dist`),
+and a generic one when it is nondegeneracy-feasible (`X0Gen`), at `n = 3`. Over an infinite field
+they give the conditioned pair at every multigraph on the whole ambient body set
+(`thm:pencil-conditional-realization-main-component`). The reduction `pencilPair_of_arms`
+(`Pair2.lean`) asks only for its contraction and split cases, and one argument proves both: a graph
+that is not two-edge-connected is the cut-edge case, a simple two-edge-connected one has the
+conjuncts that the two statements give, and one that is not simple has the bare conjunct, a pencil
+realization at the deficiency rank, by the contraction of two parallel edges
+(`lem:pencil-nonsimple-case`), as in the proof of KT Lemma 6.2 (p. 673), and the other two
+vacuously. `MainComponent/Statements.lean` proves the two statements (`x0Dist`, `x0Gen`), and with
+them the pencil realization theorem.
 
-See `notes/Phase39.md`, `notes/Phase39-design.md` (§ "X₀ architecture recon"), and
-`blueprint/src/chapter/pencil.tex` (`def:pencil-main-component-statements`,
-`thm:pencil-conditional-realization-main-component`).
+## Main definitions
+
+* `X0Dist` and `X0Gen`: the distinct and the generic main-component statements.
+
+## Main results
+
+* `hasPencilRealization_of_not_simple`: a pencil realization at the deficiency rank of a loopless
+  multigraph on at least three bodies that is not simple, given the conditioned pair at every
+  nonempty graph on fewer bodies.
+* `pencilPair_of_X0`: the conditioned pair at a loopless graph on at least three bodies, from the
+  two statements and the conditioned pair at every nonempty graph on fewer bodies.
+* `pencil_realization_theorem_of_X0`: the conditioned pair at every multigraph on the whole ambient
+  body set, from the two statements.
 -/
 
 open scoped Graph
@@ -29,43 +43,47 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K] {α β : Type*}
 
-/-- **The distinct main-component statement** (`def:pencil-main-component-statements`; Phase
-39/40 PENCIL, L0a). Every simple two-edge-connected multigraph on at least three bodies has an
-adjacent-distinct pencil realization at the deficiency rank at `n = 3`
-(`HasDistinctPencilRealization`). Phase 40 discharges this by the main-component induction
-(`notes/Phase40-design.md`). -/
+/-- **The distinct main-component statement** (`def:pencil-main-component-statements`): every simple
+two-edge-connected multigraph on at least three bodies has an adjacent-distinct pencil realization
+at the deficiency rank at `n = 3` (`HasDistinctPencilRealization`). `x0Dist`
+(`MainComponent/Statements.lean`) proves it over an infinite field, for finite `α` and `β`. -/
 def X0Dist (K : Type*) [Field K] (α β : Type*) : Prop :=
   ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
     HasDistinctPencilRealization K 3 G
 
-/-- **The generic main-component statement** (`def:pencil-main-component-statements`; Phase
-39/40 PENCIL, L0a). Every simple two-edge-connected multigraph on at least three bodies that is
-nondegeneracy-feasible (`PencilNondegFeasible`) has a generic pencil realization at `n = 3`
-(`HasGenericPencilRealization`). Phase 40 discharges this alongside `X0Dist`. -/
+/-- **The generic main-component statement** (`def:pencil-main-component-statements`): every simple
+two-edge-connected multigraph on at least three bodies that is nondegeneracy-feasible
+(`PencilNondegFeasible`) has a generic pencil realization at `n = 3`
+(`HasGenericPencilRealization`). `x0Gen` (`MainComponent/Statements.lean`) proves it over an
+infinite field, for finite `α` and `β`. -/
 def X0Gen (K : Type*) [Field K] (α β : Type*) : Prop :=
   ∀ G : Graph α β, G.Simple → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
     PencilNondegFeasible K G → HasGenericPencilRealization K 3 G
 
 -- `[NeZero (Graph.bodyHingeMult 3)]` does not synthesize; built from `hD` inside the proof.
-/-- **The non-simple bare case** (`lem:pencil-nonsimple-case`; Phase 39 PENCIL, L0b, W4-A; Katoh
-and Tanigawa's parallel-edge contraction, Lemma 6.2, in the form of
-`case_I_realization_nonsimple_gen` (`AlgebraicInduction/Theorem55.lean`), run at the pencil
-condition and without minimality). Let `G` be a loopless multigraph on at least three bodies that is
-not simple, with the **bare** induction hypothesis (`hIH`, no minimality). Then `G` has a pencil
-realization at the deficiency rank.
+/-- **A multigraph with parallel edges** (`lem:pencil-nonsimple-case`; KT Lemma 6.2, p. 673): let
+`G` be a loopless multigraph on at least three bodies that is not simple. If every nonempty graph on
+fewer bodies than `G` satisfies the conditioned pair at `n = 3` (`hIH`), then `G` has a pencil
+realization at the deficiency rank. It holds over every field and asks no minimality of `G`; the
+proof is that of `case_I_realization_nonsimple_gen` (`AlgebraicInduction/Theorem55.lean`), for
+pencil realizations.
 
-Let `e_edge`, `f_edge` be parallel edges joining bodies `a` and `b`; they span a proper rigid
-subgraph `H' = G[{a,b}] ↾ {e_edge, f_edge}` (`Graph.isKDof_zero_of_parallel_pair`). Contracting `H'`
-preserves the deficiency (`Graph.rigidContract_deficiency_eq`) and removes one body, so `hIH` gives
-a bare pencil realization of the contraction. Give `a` and `b` the panel and point of the contracted
-body (`normal`/`point` follow `Graph.collapseTo`), realize `e_edge`/`f_edge` by two independent
-lines *through that same point*, inside that panel
-(`exists_linearIndependent_extensor_pair_through_given_point`, `Pencil/Statement.lean`), and keep
-every other hinge. The splice bricks (`theorem_55_base` for the rigid `H'`,
-`BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`,
-`finrank_span_rigidityRows_add_deficiency_le`) give the rank arithmetic: `D + rank(G/H') ≤ rank(G)`
-from the splice, `≤` the deficiency target from the second brick, and equality follows since the
-contraction already meets its own target. -/
+As `G` has no loop, it has two edges `e_edge ≠ f_edge` that join the same bodies `a ≠ b`. The
+subgraph `H'` with the bodies `a` and `b` and these two edges is a proper rigid subgraph
+(`Graph.isKDof_zero_of_parallel_pair`), and its contraction `G.rigidContract H' a` has one body
+fewer and the deficiency of `G` (`Graph.rigidContract_deficiency_eq`), so the bare conjunct of `hIH`
+gives it a pencil realization at the deficiency rank. The framework gives `a` and `b` the normal and
+the point of the contracted body there (`Graph.collapseTo`), and every other body its own; `e_edge`
+and `f_edge` get two linearly independent lines through that point, inside that panel
+(`exists_linearIndependent_extensor_pair_through_given_point`, `Statement.lean`), and every other
+edge its hinge in the realization of the contraction. So every hinge lies in the panels of its ends
+and passes through their points. As in KT's proof (eqs. (6.3)–(6.5), pp. 673–674), the rows of
+`e_edge` and `f_edge` have rank `D = screwDim 2` (`BodyHingeFramework.theorem_55_base`), and with
+those of the realization of the contraction they give `D + rank(G/H') ≤ rank(G)`
+(`BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`). As every hinge is nonzero, the rank
+is at most the deficiency rank (`BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`),
+and `D + rank(G/H')` is the deficiency rank of `G`, as `G/H'` has one body fewer and the same
+deficiency. -/
 theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     (G : Graph α β) (hloop : G.Loopless) (hV : 3 ≤ V(G).ncard) (hs : ¬ G.Simple)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
@@ -75,7 +93,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     have := Graph.six_le_bodyBarDim (n := 3) (by norm_num); omega
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   have : NeZero (Graph.bodyHingeMult 3) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
-  -- ── Step 1: the parallel pair ──────────────────────────────────────────────────────────
+  -- ── Step 1: two parallel edges, as `G` has no loop ─────────────────────────────────────
   have hpairs : ∃ e_edge f_edge : β, ∃ a b : α,
       G.IsLink e_edge a b ∧ G.IsLink f_edge a b ∧ e_edge ≠ f_edge := by
     simp only [Graph.simple_iff, not_and_or] at hs
@@ -86,7 +104,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
       exact ⟨e, f, x, y, hlex, hlfy, hef⟩
   obtain ⟨e_edge, f_edge, a, b, hle, hlf, hef⟩ := hpairs
   have hab : a ≠ b := hle.ne
-  -- ── Step 2: H' = G[{a,b}] ↾ {e_edge, f_edge} ──────────────────────────────────────────
+  -- ── Step 2: the subgraph `H'` on `{a, b}` with the edges `e_edge` and `f_edge` ─────────
   set H' : Graph α β := G.induce {a, b} ↾ {e_edge, f_edge} with hH'_def
   have hVH' : V(H') = {a, b} := by
     simp only [hH'_def, Graph.vertexSet_restrict, Graph.vertexSet_induce]
@@ -121,7 +139,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     · intro e u v hlink
       have hrl := (Graph.restrict_isLink _ _ e u v).mp (hH'_def ▸ hlink)
       exact ((Graph.induce_isLink G {a, b} e u v).mp hrl.2).1
-  -- ── Step 3: H' is a proper rigid subgraph ─────────────────────────────────────────────
+  -- ── Step 3: `H'` is a proper rigid subgraph ────────────────────────────────────────────
   have hVH'ncard : V(H').ncard = 2 := by rw [hVH', Set.ncard_pair hab]
   have hH'rigid : H'.IsKDof 3 0 :=
     Graph.isKDof_zero_of_parallel_pair hD hab hH'le hH'lf hef hVH' hEH'
@@ -131,7 +149,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     refine ⟨hHsub, fun hrev => ?_⟩
     have : V(G).ncard ≤ V(H').ncard := Set.ncard_le_ncard hrev (Set.toFinite _)
     rw [hVH'ncard] at this; omega
-  -- ── Step 4 (change (i)): the bare IH at the contraction, deficiency by transfer ───────
+  -- ── Step 4: `hIH` at the contraction, which has the deficiency of `G` ──────────────────
   have hKlt : V(G.rigidContract H' a).ncard < V(G).ncard :=
     Graph.rigidContract_vertexSet_ncard_lt hHsub (by rw [hVH'ncard])
   have hKne : V(G.rigidContract H' a).Nonempty := by
@@ -144,7 +162,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     (hIH (G.rigidContract H' a) hKne hKlt).2.2
   have hKcard : V(G.rigidContract H' a).ncard = V(G).ncard - 1 := by
     rw [Graph.rigidContract_vertexSet_ncard hH'a hHsub, hVH'ncard]; omega
-  -- ── Step 5 (change (ii)): normals and points both follow the collapse ─────────────────
+  -- ── Step 5: the normals and points of the contraction's realization ────────────────────
   set normal : α → Fin 4 → K := fun v => Fc_normal (Graph.collapseTo a V(H') v)
   set point : α → Fin 4 → K := fun v => Fc_point (Graph.collapseTo a V(H') v)
   have hmemK : ∀ v ∈ V(G), Graph.collapseTo a V(H') v ∈ V(G.rigidContract H' a) := by
@@ -156,13 +174,13 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     simp only [normal, Graph.collapseTo, hH'b, hH'a, ↓reduceIte]
   have hp_b_eq : point b = point a := by
     simp only [point, Graph.collapseTo, hH'b, hH'a, ↓reduceIte]
-  -- ── Step 6 (change (iii)): LI pencil pair through the prescribed `point a` ────────────
+  -- ── Step 6: independent lines `Ce`, `Cf` through `point a`, in its panel ───────────────
   obtain ⟨Ce, Cf, hCe_in, hCf_in, hCe_thru, hCf_thru, hCEF_li⟩ :=
     exists_linearIndependent_extensor_pair_through_given_point
       (hpoint_ne a hle.left_mem) (hincid a hle.left_mem)
   have hCe_ne : Ce ≠ 0 := by simpa using hCEF_li.ne_zero 0
   have hCf_ne : Cf ≠ 0 := by simpa using hCEF_li.ne_zero 1
-  -- ── Step 7 (change (iv)): assemble F and FH ──────────────────────────────────────────
+  -- ── Step 7: the frameworks `F` on `G` and `FH` on `H'` ─────────────────────────────────
   set extF : β → ScrewSpace K 2 := fun e =>
     if e = e_edge then Ce else if e = f_edge then Cf else Fc.supportExtensor e
   set F : BodyHingeFramework K 2 α β := { graph := G, supportExtensor := extF }
@@ -178,7 +196,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     · exact hCe_ne
     · exact hCf_ne
     · exact hFcSnz e
-  -- the surviving-edge contracted link
+  -- a link of `G` other than `e_edge` and `f_edge` is a link of the contraction
   have hclink : ∀ e u v, G.IsLink e u v → e ≠ e_edge → e ≠ f_edge →
       (G.rigidContract H' a).IsLink e (Graph.collapseTo a V(H') u)
         (Graph.collapseTo a V(H') v) := by
@@ -188,7 +206,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     rw [Graph.deleteEdges_isLink]
     refine ⟨hl, ?_⟩
     rw [hEH']; simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or]; exact ⟨h1, h2⟩
-  -- ── Step 8: finrank FH = D via theorem_55_base + B1 ──────────────────────────────────
+  -- ── Step 8: the rows of `FH` have rank `D` (`theorem_55_base`) ─────────────────────────
   have hFH_li : LinearIndependent K ![FH.supportExtensor e_edge, FH.supportExtensor f_edge] := by
     simp only [FH]
     rw [hFe, hFf]; exact hCEF_li
@@ -204,7 +222,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
       (hFHg ▸ hFH_rigV)
   have hFH_finrank : (Module.finrank K (Submodule.span K FH.rigidityRows) : ℤ) = screwDim 2 := by
     rw [hFH_finrank_nat, hVH'ncard]; push_cast; ring
-  -- ── Step 9: splice-brick hypotheses ──────────────────────────────────────────────────
+  -- ── Step 9: the hypotheses of `le_finrank_span_rigidityRows_of_splice` ─────────────────
   set t := V(H') with ht_def
   set Dmap := (extProj (K := K) (k := 2) t).dualMap
   have hFH_le : Submodule.span K FH.rigidityRows ≤ Submodule.span K F.rigidityRows := by
@@ -256,16 +274,16 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
       simp only [BodyHingeFramework.rigidityRows, Set.mem_ofPred_eq]
       exact ⟨e', u, v, hFg ▸ hGlink, r', hr'F, rfl⟩
     exact ⟨BodyHingeFramework.hingeRow u v r', hrowF, hrow_eq.symm⟩
-  -- ── Step 10: splice brick ────────────────────────────────────────────────────────────
+  -- ── Step 10: the lower bound ───────────────────────────────────────────────────────────
   have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_splice F FH Fc Dmap
     hFH_le hFH_ker hFc_surv_le hInj
-  -- ── Step 11: B2 ──────────────────────────────────────────────────────────────────────
+  -- ── Step 11: the upper bound, as every hinge is nonzero ────────────────────────────────
   have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
     fun e _ _ _ => hextF_ne e
   have hFVne : V(F.graph).Nonempty := by
     rw [hFg]; exact (Set.ncard_pos (Set.toFinite _)).mp (by omega)
   have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
-  -- ── Step 12–13: arithmetic ───────────────────────────────────────────────────────────
+  -- ── Step 12: the rank is the deficiency rank ───────────────────────────────────────────
   have hFcfinrank : (Module.finrank K (Submodule.span K Fc.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G.rigidContract H' a).ncard : ℤ) - 1) - G.deficiency 3 := by
     rw [hFcrank, hKdef]
@@ -284,7 +302,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
       rw [hFH_finrank, hFcfinrank] at hbrickZ
       rw [hVcard]; linarith
     linarith
-  -- ── Step 14: the pencil conjuncts ────────────────────────────────────────────────────
+  -- ── Step 13: each hinge in the panels and through the points of its ends ───────────────
   refine ⟨F, normal, point, ⟨⟨rfl, hnorm_ne, hextF_ne, ?_⟩, hpoint_ne, hincid, ?_⟩, hrank_eq⟩
   · intro e u v hl
     simp only [F, extF]
@@ -311,16 +329,15 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
       · exact ⟨hp_b_eq ▸ hCf_thru, hCf_thru⟩
     · exact hFcthru e _ _ (hclink e u v hl h1 h2)
 
-/-- **The conditioned pair from the `X₀` statements, one loopless step** (Phase 39 PENCIL, L0a/L0b;
-the per-graph step `pencil_realization_theorem_of_X0` reuses at both of `pencilPair_of_arms`'s
-arms). Given `X0Dist` and `X0Gen`, a loopless `G` on at least three bodies satisfies
-`PencilPair K 3 G`, given the conditioned pair on every strictly smaller graph (`hIH`): if `G` is
-not two-edge-connected, `pencilPair_of_not_twoEdgeConnected`
-applies; if `G` is two-edge-connected and simple, `X0Dist`/`X0Gen` give the generic and
-adjacent-distinct conjuncts directly and the bare conjunct follows forgetfully
-(`hasPencilRealization_of_distinct`); if `G` is two-edge-connected and not simple, the generic and
-adjacent-distinct conjuncts are vacuous and `hasPencilRealization_of_not_simple` gives the bare
-one. -/
+/-- **The conditioned pair from the two main-component statements, at one graph**
+(`thm:pencil-conditional-realization-main-component`, the three cases of its proof): over an
+infinite field, given `X0Dist` and `X0Gen`, a loopless `G` on at least three bodies satisfies
+`PencilPair K 3 G` when every nonempty graph on fewer bodies does (`hIH`). If `G` is not
+two-edge-connected, this is `pencilPair_of_not_twoEdgeConnected`. If it is two-edge-connected and
+simple, `X0Gen` and `X0Dist` give the generic and the adjacent-distinct conjuncts, and the bare
+conjunct follows from the adjacent-distinct one (`hasPencilRealization_of_distinct`). If it is
+two-edge-connected and not simple, the generic and the adjacent-distinct conjuncts hold vacuously,
+and `hasPencilRealization_of_not_simple` gives the bare one. -/
 theorem pencilPair_of_X0 [Finite α] [Finite β] [Infinite K]
     (hdist : X0Dist K α β) (hgen : X0Gen K α β)
     (G : Graph α β) (hloop : G.Loopless) (hV : 3 ≤ V(G).ncard)
@@ -338,12 +355,11 @@ theorem pencilPair_of_X0 [Finite α] [Finite β] [Infinite K]
   · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
 
 /-- **The pencil realization theorem from the two main-component statements**
-(`thm:pencil-conditional-realization-main-component`; Phase 39 PENCIL, L0a/L0b). Over an infinite
-field, given `X0Dist` and `X0Gen`, every multigraph on the whole ambient body set satisfies the
-conditioned pair at `n = 3`. Assembles `pencilPair_of_X0` at both arms of `pencilPair_of_arms`'s
-reduction — the contraction and split arms feed it the same per-graph argument, since neither the
-two-edge-connectivity split nor `X0Dist`/`X0Gen` cares which arm supplied the induction hypothesis.
-No fresh edge label is used. -/
+(`thm:pencil-conditional-realization-main-component`): over an infinite field, given `X0Dist` and
+`X0Gen`, every multigraph on the whole ambient body set satisfies the conditioned pair at `n = 3`.
+`pencilPair_of_arms` reduces it to the contraction and split cases, and `pencilPair_of_X0` proves
+both, as it uses none of the hypotheses that distinguish them. Its hypotheses ask for no edge label
+outside the graph (compare `rem:fresh-edge-supply`). -/
 theorem pencil_realization_theorem_of_X0 [Nonempty α] [Finite α] [Finite β] [Infinite K]
     (hdist : X0Dist K α β) (hgen : X0Gen K α β)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
