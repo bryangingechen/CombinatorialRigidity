@@ -8,48 +8,42 @@ import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
 import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
 
 /-!
-# The panel-hinge ↔ molecular projective duality (`lem:panel-hinge-dual-molecular`)
+# The polarity, and the panel-hinge framework dual to a molecular framework
 
-Phase 25, leaf W7 (`notes/Phase25-design.md` §1.3, §2.2). In `ℝ³` the projective polarity sends
-points to planes and lines to lines; Crapo–Whiteley's projective invariance of infinitesimal
-rigidity (§2.2, `thm:projective-invariance`) then makes a hinge-concurrent body-hinge (molecular)
-framework and its dual panel-hinge framework transports of one another along the fixed screw
-automorphism the polarity induces.
+The polarity of projective `3`-space as a linear automorphism of the screw space, and the
+correspondence it gives between molecular and panel-hinge frameworks, as
+`sec:molecule-modelling-projective` presents them (`lem:polarity-join`,
+`lem:panel-hinge-dual-molecular`). A polarity sends points to planes and lines to lines. Crapo and
+Whiteley 1982 (§3.6) observe that it preserves the infinitesimal motions of a body-hinge framework,
+and Katoh and Tanigawa 2011 (pp. 650 and 671) that it sends a hinge-concurrent body-hinge framework
+to a panel-hinge framework.
 
-The whole duality is already in tree: the landed panel layer factors through the projective
-polarity as `panelSupportExtensor = complementIso ∘ normalsJoin`
-(`AlgebraicInduction/PanelLayer.lean`), and the molecular hinge extensor `lineExtensor a b` shares
-its underlying `⋀²`-element `extensor ![â, b̂]` with the grade-2 join `normalsJoin â b̂`. So the
-polarity is the meet-complement isomorphism `complementIso` (Phase 21a, `Molecular/Meet.lean`)
-conjugated by the boundary equivalence `ScrewSpace.equivExteriorPower` — a fixed linear automorphism
-`screwComplementIso` of `ScrewSpace ℝ 2 = ⋀²ℝ⁴` — and this file needs *no* new duality machinery
-beyond instantiating the extensor-transport family `BodyHingeFramework.mapExtensor` (leaf W2) at
-`Λ := screwComplementIso`.
+The polarity is `screwComplementIso`, the complement isomorphism `complementIso` of `Meet.lean`
+(`def:meet-complement-iso`) on `⋀² K⁴`, conjugated by the boundary equivalence
+`ScrewSpace.equivExteriorPower`. The panel support extensor is `C(n₁, n₂) = complementIso (n₁ ∨ n₂)`
+(`def:panel-support-extensor`), and the extensor `lineExtensor a b` of a molecular hinge is the join
+`â ∨ b̂`, so the polarity sends the hinge through `a` and `b` to `C(â, b̂)`
+(`screwComplementIso_lineExtensor`). Hence the panel-hinge framework with the normal
+`ĉ(v) = (c v, 1)` at each body `v` is the molecular framework on the centres `c`, on the same
+multigraph and selector, transported along the polarity (`BodyHingeFramework.mapExtensor`), and
+`thm:projective-invariance` transfers the dimension of the motion space, the rank hypothesis,
+rigidity and the nondegeneracy of each hinge.
 
 ## Main definitions
 
-* `screwComplementIso` — the projective polarity of `K³`, over any field `K`, as a linear
-  automorphism of the screw space `ScrewSpace K 2`, i.e. `complementIso` conjugated by
-  `ScrewSpace.equivExteriorPower`. Field-general: transports rank, rigidity and pencil
-  realizations over every field; the historical `ℝ³` scope survives only in the molecular
-  declarations below, which read the polarity against concrete real point placements.
+* `screwComplementIso`: the polarity, a linear automorphism of `ScrewSpace K 2` over any field `K`.
 
 ## Main results
 
-* `screwComplementIso_lineExtensor` — the extensor-level polarity identity `screwComplementIso
-  (lineExtensor a b) = panelSupportExtensor (â) (b̂)` (join of the poles ↔ meet of the panels).
-* `molecularOfCentres_mapExtensor_screwComplementIso` — the dual correspondence: the panel-hinge
-  framework on the homogenized centres is the transport of the molecular framework on the centres
-  along `screwComplementIso`.
-* `finrank_infinitesimalMotions_ofNormals_homogenize`,
-  `rankHypothesis_ofNormals_homogenize_iff`,
-  `isInfinitesimallyRigid_ofNormals_homogenize_iff`,
-  `supportExtensor_ofNormals_homogenize_ne_zero_iff` — the motion-space dimension, realized rank
-  (`RankHypothesis`), infinitesimal rigidity, and genuine-hinge condition all agree between the two
-  sides, since transport along a linear automorphism preserves each (leaf W2).
-
-See `notes/Phase25.md` and `notes/Phase25-design.md` §1.3, §2.2 (leaf W7), and
-`blueprint/src/chapter/molecule-modelling.tex` (`lem:panel-hinge-dual-molecular`).
+* `screwComplementIso_lineExtensor`: `screwComplementIso (lineExtensor a b)` is the panel support
+  extensor of `â` and `b̂`.
+* `molecularOfCentres_mapExtensor_screwComplementIso`: the panel-hinge framework with the normals
+  `ĉ(v)` is the molecular framework on the centres `c` transported along the polarity.
+* `finrank_infinitesimalMotions_ofNormals_homogenize`, `rankHypothesis_ofNormals_homogenize_iff`,
+  `isInfinitesimallyRigid_ofNormals_homogenize_iff` and
+  `supportExtensor_ofNormals_homogenize_ne_zero_iff`: the two frameworks have motion spaces of the
+  same dimension, satisfy the same rank hypotheses, are infinitesimally rigid together, and have
+  nonzero hinges at the same edge labels.
 -/
 
 open scoped Matrix
@@ -61,38 +55,34 @@ variable {V β : Type*}
 
 /-! ## The projective polarity as a screw-space automorphism -/
 
-/-- **The projective polarity of `K³` as a linear automorphism of the screw space, over any
-field `K`** (`lem:panel-hinge-dual-molecular`; Crapo–Whiteley 1982 §3.6, the correlation case): the
-meet-complement isomorphism `complementIso : ⋀²K⁴ ≃ₗ ⋀^(2+2−2)K⁴ = ⋀²K⁴` (Phase 21a,
-`Molecular/Meet.lean`), conjugated by the boundary equivalence `ScrewSpace.equivExteriorPower`
-so that it acts on the screw carrier `ScrewSpace K 2` directly. This is the fixed automorphism
-`Λ` of `thm:projective-invariance` that the panel-hinge ↔ molecular duality transports along;
-under the standard polarity (KT §5.1) it carries the line through two poles to the meet of the
-two panels. Field-general (DUAL-K, Phase 40b): the polarity never preserves adjacent-distinctness
-or nondegeneracy, so field dependence enters only at self-dual configurations, not here. -/
+/-- **The polarity** (`lem:polarity-join`): the complement isomorphism
+`complementIso : ⋀²K⁴ ≃ₗ ⋀^(2+2−2)K⁴ = ⋀²K⁴` of `Meet.lean` (`def:meet-complement-iso`), conjugated
+by the boundary equivalence `ScrewSpace.equivExteriorPower`, so that it acts on the screw space
+`ScrewSpace K 2` itself, over any field `K`. It is the automorphism `Λ` at which
+`lem:panel-hinge-dual-molecular` applies `thm:projective-invariance`: the map that a correlation
+induces on the lines of projective `3`-space (Crapo and Whiteley 1982, §3.6). Over `ℝ` it sends the
+extensor of the line through two points `a` and `b` to that of the meet of the planes with the
+normals `â` and `b̂` (`screwComplementIso_lineExtensor`), the panels that Katoh and Tanigawa attach
+to `a` and `b` (KT §5.1, p. 668). -/
 noncomputable def screwComplementIso {K : Type*} [Field K] : ScrewSpace K 2 ≃ₗ[K] ScrewSpace K 2 :=
   (ScrewSpace.equivExteriorPower K 2) ≪≫ₗ
     complementIso (k := 2) (j := 2) (by omega) ≪≫ₗ
     (ScrewSpace.equivExteriorPower K 2).symm
 
-/-- **The boundary equivalence carries the line extensor to the grade-2 join of the homogenized
-points** (`lem:panel-hinge-dual-molecular`): `ScrewSpace.equivExteriorPower ℝ 2 (lineExtensor a b) =
-normalsJoin (â) (b̂)`. Both are the same underlying `⋀²ℝ⁴`-element
-`exteriorPower.ιMulti ℝ 2 ![â, b̂] = extensor ![â, b̂]` (`equivExteriorPower_mk_extensor`,
-`normalsJoin`). -/
+/-- **The extensor of a line is the join of the homogenized points** (a step of
+`lem:polarity-join`): `ScrewSpace.equivExteriorPower ℝ 2 (lineExtensor a b) = normalsJoin (â) (b̂)`.
+Both are the element `exteriorPower.ιMulti ℝ 2 ![â, b̂] = extensor ![â, b̂]` of `⋀²ℝ⁴`
+(`equivExteriorPower_mk_extensor`, `normalsJoin`). -/
 theorem equivExteriorPower_lineExtensor (a b : Fin 3 → ℝ) :
     ScrewSpace.equivExteriorPower ℝ 2 (lineExtensor a b)
       = normalsJoin (homogenize a) (homogenize b) := by
   rw [lineExtensor, equivExteriorPower_mk_extensor, normalsJoin]
 
-/-- **The extensor-level polarity identity** (`lem:panel-hinge-dual-molecular`, the
-Grassmann–Cayley duality "join of poles = complement of the panel-normal join"):
-`screwComplementIso (lineExtensor a b) = panelSupportExtensor (â) (b̂)`. The line `2`-extensor
-`â ∨ b̂` (the molecular hinge through `a`, `b`) and the grade-2 join `normalsJoin â b̂` share the
-underlying element `extensor ![â, b̂]` (`equivExteriorPower_lineExtensor`), and
-`panelSupportExtensor = complementIso ∘ normalsJoin` by definition, so applying the conjugated
-complement iso `screwComplementIso` to the line extensor reproduces the panel support extensor of
-the two homogenized normals. -/
+/-- **The polarity on the extensor of a line** (`lem:polarity-join`):
+`screwComplementIso (lineExtensor a b) = panelSupportExtensor (â) (b̂)`. The extensor `â ∨ b̂` of
+the line through `a` and `b` and the join `normalsJoin â b̂` are the same element
+`extensor ![â, b̂]` (`equivExteriorPower_lineExtensor`), and `panelSupportExtensor` is
+`complementIso ∘ normalsJoin` by definition. -/
 theorem screwComplementIso_lineExtensor (a b : Fin 3 → ℝ) :
     screwComplementIso (lineExtensor a b)
       = panelSupportExtensor (homogenize a) (homogenize b) := by
@@ -138,9 +128,9 @@ theorem finrank_infinitesimalMotions_ofNormals_homogenize
   rw [← molecularOfCentres_mapExtensor_screwComplementIso,
     BodyHingeFramework.finrank_infinitesimalMotions_mapExtensor]
 
-/-- **The realized-rank hypothesis transfers across the duality** (`lem:panel-hinge-dual-molecular`,
-`def:rank-hypothesis`): the panel-hinge framework on the homogenized centres realizes the target
-rank `dim Z = D + k'` iff the molecular framework on the centres does, since the polarity transport
+/-- **The rank hypothesis transfers across the duality** (`lem:panel-hinge-dual-molecular`,
+`def:rank-hypothesis`): the panel-hinge framework on the homogenized centres satisfies
+`dim Z = D + k'` iff the molecular framework on the centres does, since the polarity transport
 preserves the motion-space dimension (`finrank_infinitesimalMotions_ofNormals_homogenize`). -/
 theorem rankHypothesis_ofNormals_homogenize_iff
     (G : Graph V β) (ends : β → V × V) (c : V → EuclideanSpace ℝ (Fin 3)) (k' : ℤ) :
@@ -162,10 +152,11 @@ theorem isInfinitesimallyRigid_ofNormals_homogenize_iff
   rw [← molecularOfCentres_mapExtensor_screwComplementIso,
     BodyHingeFramework.isInfinitesimallyRigid_mapExtensor]
 
-/-- **Genuine hinges correspond across the duality** (`lem:panel-hinge-dual-molecular`): the panel
-hinge at `e` is genuine (nonzero supporting extensor, i.e. its two panels are transversal) iff the
-molecular hinge at `e` is genuine (its two endpoint centres are distinct), since a linear
-automorphism sends nonzero to nonzero (`supportExtensor_mapExtensor_ne_zero`). -/
+/-- **Nondegenerate hinges correspond across the duality** (`lem:panel-hinge-dual-molecular`): the
+panel hinge at `e` is nondegenerate (nonzero supporting extensor, i.e. its two panels are
+transversal) iff the molecular hinge at `e` is nondegenerate (its two endpoint centres are
+distinct), since a linear automorphism sends nonzero to nonzero
+(`supportExtensor_mapExtensor_ne_zero`). -/
 theorem supportExtensor_ofNormals_homogenize_ne_zero_iff
     (G : Graph V β) (ends : β → V × V) (c : V → EuclideanSpace ℝ (Fin 3)) (e : β) :
     (PanelHingeFramework.ofNormals G ends

@@ -9,30 +9,31 @@ import CombinatorialRigidity.Framework
 import CombinatorialRigidity.GeneralPositionPlacement
 
 /-!
-# The square-graph dictionary (`thm:molecular-iff-square-bar-joint`)
+# The square-graph dictionary
 
-Phase 25, leaf W4 (`notes/Phase25-design.md` §2.3). Katoh–Tanigawa 2011 (p. 650, p. 671) model a
-molecule --- atoms as bodies, covalent bonds as hinges --- as a bar-joint framework on the square
-graph `G²` exactly when it is a body-hinge framework of `G` whose hinges at each atom meet at the
-atom's centre. This file builds the underlying **dictionary map** `Φ` between the two motion
-spaces, at a placement `c : V → ℝ³` of the atom centres.
+Whiteley's equivalence of two models of a molecule, as an isomorphism of motion spaces at one
+placement of the centres (`thm:molecular-iff-square-bar-joint`), as
+`sec:molecule-modelling-equivalences` presents it. Katoh and Tanigawa 2011 (pp. 650 and 671) model a
+molecule with graph `G`, its atoms as bodies and its bonds as hinges, either as a bar-joint
+framework on the square `G²` or as a hinge-concurrent body-hinge framework on `G`, in which the
+hinges at each atom pass through its centre; for the equivalence of the two they cite Whiteley's
+preprint of 2004.
 
-* The molecular framework `molecularOfCentres G' ends c` is the affine-hinge body-hinge framework
-  (`BodyHingeFramework.ofHinge`) whose hinge at each edge `e = uv` is the line through the two
-  endpoint centres --- its supporting `2`-extensor is `ĉ(u) ∨ ĉ(v)`, the join of the homogenized
-  centres (`def:hinge-concurrent`).
-* `Φ = molecularVel c` sends a screw assignment `S : V → ScrewSpace ℝ 2` to the joint velocity
-  assignment `v ↦ vel_{S v}(c v)`, an `ℝ`-linear map into the bar-joint framework space of `G²`.
+* The molecular framework `molecularOfCentres G' ends c` (`def:hinge-concurrent`) is the body-hinge
+  framework (`BodyHingeFramework.ofHinge`) whose hinge at an edge label `e` is the line through the
+  centres of the two bodies `ends e = (u, v)`; its supporting extensor is `ĉ(u) ∨ ĉ(v)`, the join of
+  the homogenized centres.
+* The map `Φ = molecularVel c` sends a screw assignment `S : V → ScrewSpace ℝ 2` to the velocity
+  assignment `v ↦ vel_{S v}(c v)` of the bar-joint framework at `c`.
 
-This slice delivers `Φ` and its **well-definedness**: `Φ` carries infinitesimal motions of the
-molecular framework into `ker R(G², c)` (`molecularVel_mem_ker`). Every edge of `G²` lies inside a
-closed neighbourhood `N[w]` (`lem:square-cliques`); on such an edge the two endpoint velocities
-agree with those of body `w`'s single screw (the hinge constraint plus the line characterization
-`lem:screw-velocity-line`, brick (2)), and body `w`'s screw is infinitesimally isometric
-(brick (1)), so the bar-length derivative vanishes. Injectivity, surjectivity, and the resulting
-`finrank` equality (the remainder of `thm:molecular-iff-square-bar-joint`) are follow-up slices.
-
-See `notes/Phase25.md` and `notes/Phase25-design.md` §2.3, §3 (leaf W4) for the phase plan.
+`Φ` sends the motions of the molecular framework into `ker R(G², c)` (`molecularVel_mem_ker`): every
+edge of `G²` lies in a closed neighbourhood `N[w]` (`lem:square-cliques`), on which the velocities
+are those of the single screw `S w` (the hinge constraint and `lem:screw-velocity-line`), and a
+velocity field is an infinitesimal isometry. For a graph of minimum degree at least two and centres
+in general position up to order four, `Φ` is injective on the motions
+(`eq_zero_of_molecularVel_eq_zero`) and onto `ker R(G², c)` (`exists_molecularVel_eq`), both by
+`lem:screw-determination`, so the two spaces have the same dimension
+(`molecular_finrank_motions_eq_square_ker`).
 -/
 
 open scoped Matrix InnerProductSpace
@@ -44,13 +45,14 @@ variable {V β : Type*}
 
 /-! ## The molecular framework from a placement of centres (`def:hinge-concurrent`) -/
 
-/-- **The molecular (hinge-concurrent) framework** on a multigraph `G` with endpoint selector
-`ends` and a placement `c : V → ℝ³` of body centres (`def:hinge-concurrent`): the affine-hinge
-body-hinge framework whose hinge at each edge `e` is the line through the two endpoint centres
-`c (ends e).1`, `c (ends e).2`. Its supporting `2`-extensor is the join of the homogenized
-endpoint centres, so every hinge incident to a body `v` passes through `c v` --- Katoh–Tanigawa's
-hinge-concurrency (p. 671). When two centres coincide the join degenerates to zero (a welded
-hinge). -/
+/-- **The molecular framework** (`def:hinge-concurrent`) on a multigraph `G` with endpoint selector
+`ends` and a placement `c : V → ℝ³` of the centres: the body-hinge framework
+(`BodyHingeFramework.ofHinge`) whose hinge at an edge label `e` is the line through the centres
+`c (ends e).1` and `c (ends e).2` of the two bodies that the selector gives it. Its supporting
+extensor is the join of the homogenized centres (`molecularOfCentres_supportExtensor`), which is
+zero when the two centres coincide (a welded hinge). When `ends` gives each link of `G` its ends and
+adjacent bodies have distinct centres, every hinge at a body `v` passes through `c v`: the framework
+is hinge-concurrent (Katoh and Tanigawa 2011, pp. 650 and 671). -/
 noncomputable def molecularOfCentres (G : Graph V β) (ends : β → V × V)
     (c : V → EuclideanSpace ℝ (Fin 3)) : BodyHingeFramework ℝ 2 V β :=
   BodyHingeFramework.ofHinge G (fun e => ![ofLp (c (ends e).1), ofLp (c (ends e).2)])
@@ -73,9 +75,8 @@ theorem molecularOfCentres_supportExtensor (G : Graph V β) (ends : β → V × 
 
 /-! ## The dictionary map `Φ = molecularVel` -/
 
-/-- The **screw velocity as a linear map in the screw** (fixing the base point `x`):
-`S ↦ vel_S(x) = ω_S ⨯₃ x + t_S`. Both graded coordinate maps are linear, so this is a genuine
-linear map `ScrewSpace ℝ 2 →ₗ[ℝ] ℝ³`. -/
+/-- The **screw velocity as a linear map in the screw** (at a fixed point `x`):
+`S ↦ vel_S(x) = ω_S ⨯₃ x + t_S`, linear as both coordinate maps are. -/
 noncomputable def screwVelL (x : Fin 3 → ℝ) : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ) :=
   crossProduct.flip x ∘ₗ screwOmega + screwTau
 
@@ -84,11 +85,11 @@ noncomputable def screwVelL (x : Fin 3 → ℝ) : ScrewSpace ℝ 2 →ₗ[ℝ] (
   simp only [screwVelL, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.flip_apply,
     screwVel_apply]
 
-/-- **The dictionary map `Φ`** (`thm:molecular-iff-square-bar-joint`): sends a screw assignment
-`S : V → ScrewSpace ℝ 2` (a molecular motion) to the joint-velocity assignment
-`v ↦ vel_{S v}(c v)`, a bar-joint framework motion of `G²`. Linear in `S`. The codomain uses the
-`EuclideanSpace ℝ (Fin 3)` view of `ℝ³`, so the velocity `vel_{S v}(c v) : Fin 3 → ℝ` is carried
-across the `WithLp` boundary by `toLp`. -/
+/-- **The map `Φ`** (a step of `thm:molecular-iff-square-bar-joint`): it sends a screw assignment
+`S : V → ScrewSpace ℝ 2` to the velocity assignment `v ↦ vel_{S v}(c v)` of the joints, linearly in
+`S`, and the motions of the molecular framework to motions of the bar-joint framework on `G²`
+(`molecularVel_mem_ker`). The codomain is `V → EuclideanSpace ℝ (Fin 3)`, the space of the bar-joint
+framework, so the velocity `vel_{S v}(c v) : Fin 3 → ℝ` crosses the `WithLp` boundary by `toLp`. -/
 noncomputable def molecularVel (c : V → EuclideanSpace ℝ (Fin 3)) :
     (V → ScrewSpace ℝ 2) →ₗ[ℝ] (V → EuclideanSpace ℝ (Fin 3)) :=
   LinearMap.pi fun v =>
@@ -105,11 +106,11 @@ theorem ofLp_molecularVel_apply (c : V → EuclideanSpace ℝ (Fin 3)) (S : V �
     (v : V) : ofLp (molecularVel c S v) = screwVel (S v) (ofLp (c v)) := by
   rw [molecularVel_apply, WithLp.ofLp_toLp]
 
-/-! ## `Φ` lands in the bar-joint motions of `G²` (`molecularVel_mem_ker`)
+/-! ## `Φ` sends motions to motions (`molecularVel_mem_ker`)
 
 The real inner product on `EuclideanSpace ℝ (Fin 3)` is the dot product of the underlying vectors,
-which lets a bar-length-derivative equation `⟪c u − c v, Φ u − Φ v⟫ = 0` be discharged by the
-cross-product identities of `ScrewVelocity.lean`. -/
+so the derivative `⟪c u − c v, Φ u − Φ v⟫` of the length of a bar is computed by the identities of
+the cross product of `ScrewVelocity.lean`. -/
 
 /-- The real inner product on `EuclideanSpace ℝ (Fin 3)` is the dot product of the underlying
 `Fin 3 → ℝ` vectors. -/
@@ -117,11 +118,12 @@ theorem euclidean_inner_eq_dotProduct (a b : EuclideanSpace ℝ (Fin 3)) :
     ⟪a, b⟫_ℝ = ofLp a ⬝ᵥ ofLp b := by
   rw [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm, star_trivial]
 
-/-- **Endpoint velocity agreement.** For a screw `D` in the span of a molecular hinge's supporting
-extensor `C(p(e))` and a link `e = uv`, the velocity field of `D` vanishes at both endpoint
-centres `c u`, `c v`. (The hinge is the line through the endpoint centres, and `lem:screw-velocity-
-line` says the rotation about it fixes both; the endpoint selector `ends` only orders that pair.)
--/
+/-- **A screw in the span of a hinge has a velocity field vanishing at the centres of its ends** (a
+step of `thm:molecular-iff-square-bar-joint`): for a screw `D` in the span of the supporting
+extensor of the molecular framework at a link `e` from `u` to `v`, whose selector gives `e` its ends
+(`hends`), the velocity field of `D` vanishes at `c u` and at `c v`. The hinge is the line through
+the two centres, in whichever order `ends` gives them (`screwVel_eq_zero_of_mem_span`,
+`lem:screw-velocity-line`). -/
 theorem screwVel_eq_zero_of_link {G : Graph V β} {ends : β → V × V}
     {c : V → EuclideanSpace ℝ (Fin 3)} {D : ScrewSpace ℝ 2} {e : β} {u v : V}
     (hcons : D ∈ Submodule.span ℝ {(molecularOfCentres G ends c).supportExtensor e})
@@ -133,19 +135,19 @@ theorem screwVel_eq_zero_of_link {G : Graph V β} {ends : β → V × V}
   · rw [hu, hv]; exact ⟨h1, h2⟩
   · rw [hu, hv]; exact ⟨h2, h1⟩
 
-/-- **The dictionary map is well-defined** (`thm:molecular-iff-square-bar-joint`, forward
-half): the joint-velocity assignment `Φ S` of any infinitesimal molecular motion `S` is a
-bar-joint motion of the square graph `G²`, i.e. lies in `ker R(G², c)`.
+/-- **`Φ` sends motions to motions** (a step of `thm:molecular-iff-square-bar-joint`): the velocity
+assignment `Φ S` of an infinitesimal motion `S` of the molecular framework is a motion of the
+bar-joint framework on the square graph `G²`, i.e. lies in `ker R(G², c)`.
 
-`G'` is the multigraph carrier of `G` (`hshadow`: an edge exists between distinct `u, v` iff
-`G.Adj u v`) with endpoint selector `ends` (`hends`). No minimum-degree or general-position
-hypothesis is needed for well-definedness --- those enter for injectivity/surjectivity.
+`G'` is a multigraph with an edge between distinct `u` and `v` iff `G.Adj u v` (`hshadow`), and
+`ends` gives each link of `G'` its ends (`hends`). Neither minimum degree nor general position is
+needed here; they enter for injectivity and surjectivity.
 
-Every edge `xy` of `G²` lies inside a closed neighbourhood `N[w]` (`lem:square-cliques`); the
-hinge constraints on the `G`-edges `wx`, `wy` make `vel_{S x}(c x) = vel_{S w}(c x)` and
-`vel_{S y}(c y) = vel_{S w}(c y)` (endpoint agreement), so the bar-length derivative on `xy`
-reduces to `⟪c x − c y, vel_{S w}(c x) − vel_{S w}(c y)⟫`, which vanishes because body `w`'s
-velocity field is infinitesimally isometric (brick (1)). -/
+Every edge `xy` of `G²` lies in a closed neighbourhood `N[w]` (`lem:square-cliques`). The hinge
+constraints at edges of `G'` that join `w` to `x` and to `y` give `vel_{S x}(c x) = vel_{S w}(c x)`
+and `vel_{S y}(c y) = vel_{S w}(c y)` (`screwVel_eq_zero_of_link`), so the derivative of the length
+of the bar `xy` is `⟪c x − c y, vel_{S w}(c x) − vel_{S w}(c y)⟫`, which vanishes as the velocity
+field of `S w` is an infinitesimal isometry (`dotProduct_screwVel_sub`). -/
 theorem molecularVel_mem_ker {G : SimpleGraph V} {G' : Graph V β} {ends : β → V × V}
     {c : V → EuclideanSpace ℝ (Fin 3)}
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
@@ -181,20 +183,20 @@ theorem molecularVel_mem_ker {G : SimpleGraph V} {G' : Graph V β} {ends : β �
 
 /-! ## The dictionary isomorphism `Φ` (`thm:molecular-iff-square-bar-joint`)
 
-With minimum degree at least two and a general-position placement, `Φ = molecularVel c` restricts to
-a linear isomorphism between the molecular motions of `G` and the bar-joint motions of `(G², c)`, so
-the two motion spaces have equal dimension. Injectivity is the screw-determination kill lemma
-(brick (3), `eq_zero_of_screwVel_eq_zero`) applied at each body's `≥ 3` non-collinear neighbours;
-surjectivity builds each body's screw from the pairwise-constrained velocity assignment on its
-closed-neighbourhood clique (brick (4), `existsUnique_screwVel_eq`) and verifies the hinge
-constraints through the line characterization (brick (2)). -/
+For a graph of minimum degree at least two and a placement in general position up to order four,
+`Φ = molecularVel c` restricts to a linear isomorphism from the motions of the molecular framework
+onto those of the bar-joint framework on `(G², c)`, so the two motion spaces have the same
+dimension. Injectivity is `eq_zero_of_screwVel_eq_zero` (`lem:screw-determination`) at the centres
+of a body and two of its neighbours. Surjectivity builds the screw of each body from the velocities
+on its closed neighbourhood, a clique of `G²` (`existsUnique_screwVel_eq`,
+`lem:screw-determination`), and checks the hinge constraints by `lem:screw-velocity-line`. -/
 
-/-- **`Φ` is injective on molecular motions** (`thm:molecular-iff-square-bar-joint`, injective
-half). A molecular motion `S` with `Φ S = 0` has each body's velocity field vanishing at that
-body's centre, and — via the hinge line characterization (`lem:screw-velocity-line`) plus that
-vanishing at each neighbour — at each neighbour's centre too; minimum degree two gives three such
-points, non-collinear by general position, so `lem:screw-determination` (kill half) forces every
-screw to zero. -/
+/-- **`Φ` is injective on the motions** (a step of `thm:molecular-iff-square-bar-joint`). Let `S` be
+a motion with `Φ S = 0`. The velocity field of the screw `S v` of a body vanishes at `c v`, and at
+the centre of each neighbour `u`: `S v − S u` is in the span of their hinge, so its velocity field
+vanishes at `c u` (`screwVel_eq_zero_of_link`), and that of `S u` does. Minimum degree two gives two
+neighbours, and general position makes the three centres non-collinear, so `S v = 0`
+(`lem:screw-determination`). -/
 theorem eq_zero_of_molecularVel_eq_zero {G : SimpleGraph V} {G' : Graph V β} {ends : β → V × V}
     {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
@@ -226,9 +228,9 @@ theorem eq_zero_of_molecularVel_eq_zero {G : SimpleGraph V} {G' : Graph V β} {e
     · exact hkill u₁ hu₁
     · exact hkill u₂ hu₂
 
-/-- **Reverse of `screwVel_eq_zero_of_link`.** A screw whose velocity field vanishes at both centres
-of a link `e = uv` (with distinct centres) lies in the span of the hinge's supporting extensor — the
-line characterization (`lem:screw-velocity-line`) read at whichever endpoint order `ends` picks. -/
+/-- **The converse of `screwVel_eq_zero_of_link`** (a step of `thm:molecular-iff-square-bar-joint`):
+a screw whose velocity field vanishes at the distinct centres of the ends of a link `e` lies in the
+span of the hinge at `e`, by `lem:screw-velocity-line` in whichever order `ends` gives the ends. -/
 theorem mem_span_supportExtensor_of_link {G' : Graph V β} {ends : β → V × V}
     {c : V → EuclideanSpace ℝ (Fin 3)} {D : ScrewSpace ℝ 2} {e : β} {u v : V} (huv : c u ≠ c v)
     (hends : G'.IsLink e (ends e).1 (ends e).2) (hlink : G'.IsLink e u v)
@@ -243,10 +245,11 @@ theorem mem_span_supportExtensor_of_link {G' : Graph V β} {ends : β → V × V
   · rw [← hu, ← hv]
     exact (screwVel_eq_zero_iff_mem_span hne.symm D).mp ⟨h2, h1⟩
 
-/-- **A bar-joint motion of `G²` determines a screw on each closed neighbourhood.** For a
-general-position placement and a vertex `v` of degree at least two, the velocity assignment `y`
-restricted to the `G²`-clique `N[v]` (`lem:square-cliques`) is pairwise bar-constrained, so
-`lem:screw-determination` (brick (4)) yields a screw realizing it on all of `N[v]`. -/
+/-- **A motion of the bar-joint framework on `G²` determines a screw on each closed neighbourhood**
+(a step of `thm:molecular-iff-square-bar-joint`): for a graph of minimum degree at least two, a
+placement in general position and a vertex `v`, the velocities `y` on the clique `N[v]` of `G²`
+(`lem:square-cliques`) satisfy the bar constraint on every pair, so some screw has the velocity
+`y u` at `c u` for every `u` in `N[v]` (`existsUnique_screwVel_eq`, `lem:screw-determination`). -/
 theorem exists_screwVel_eq_on_closedNeighborSet [Fintype V] {G : SimpleGraph V}
     [DecidableRel G.Adj] {c : V → EuclideanSpace ℝ (Fin 3)} (hgp : IsGeneralPositionPlacement c)
     (hmin : ∀ v, 2 ≤ G.degree v) {y : V → EuclideanSpace ℝ (Fin 3)}
@@ -281,12 +284,12 @@ theorem exists_screwVel_eq_on_closedNeighborSet [Fintype V] {G : SimpleGraph V}
     hbar
   exact ⟨Sv, fun u hu => hSv ⟨u, mem_closedNeighborSet.mpr hu⟩⟩
 
-/-- **`Φ` is surjective onto `ker R(G², c)`** (`thm:molecular-iff-square-bar-joint`, surjective
-half). Each closed neighbourhood `N[v]` is a `G²`-clique (`lem:square-cliques`), so a bar-joint
-motion `x` restricts to a pairwise-constrained velocity assignment there, determining a body screw
-`S v` (`lem:screw-determination`); adjacent bodies' screws agree at both shared endpoint centres, so
-their difference is a hinge multiple (`lem:screw-velocity-line`) and `S` is a molecular motion with
-`Φ S = x`. -/
+/-- **`Φ` is onto `ker R(G², c)`** (a step of `thm:molecular-iff-square-bar-joint`). Each closed
+neighbourhood `N[v]` is a clique of `G²` (`lem:square-cliques`), so a motion `x` of the bar-joint
+framework has on it velocities that satisfy the bar constraint on every pair, and these are those of
+a screw `S v` (`exists_screwVel_eq_on_closedNeighborSet`, `lem:screw-determination`). The screws of
+adjacent bodies agree at the centres of both, so their difference is in the span of the hinge
+(`lem:screw-velocity-line`), and `S` is a motion of the molecular framework with `Φ S = x`. -/
 theorem exists_molecularVel_eq {G : SimpleGraph V} {G' : Graph V β} {ends : β → V × V}
     {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
@@ -313,11 +316,14 @@ theorem exists_molecularVel_eq {G : SimpleGraph V} {G' : Graph V β} {ends : β 
   · funext v
     rw [molecularVel_apply, hS v v (Or.inl rfl), toLp_ofLp]
 
-/-- **Molecule ⇔ bar-joint of the square** (`thm:molecular-iff-square-bar-joint`). For a graph of
-minimum degree at least two and a placement in general position up to order four, the dictionary map
-`Φ = molecularVel c` is a linear isomorphism from the molecular motions of `(G, c)` onto the
-bar-joint motions of `(G², c)`, so the two motion spaces have equal dimension (whence
-`rank R(G², c) = 3|V| − dim Z_mol(G, c)` by rank–nullity). -/
+/-- **Molecular frameworks and bar-joint frameworks on the square**
+(`thm:molecular-iff-square-bar-joint`; Whiteley's equivalence, at one placement). For a graph `G` of
+minimum degree at least two and a placement `c` in general position up to order four,
+`Φ = molecularVel c` is a linear isomorphism from the motions `Z_mol` of the molecular framework on
+`G'` at `c` onto those of the bar-joint framework on `(G², c)`, so the two motion spaces have the
+same dimension (whence `rank R(G², c) = 3|V| − dim Z_mol`, by rank–nullity). `G'` is a multigraph
+with an edge between distinct `u` and `v` iff `G.Adj u v` (`hshadow`), and `ends` gives each link of
+`G'` its ends (`hends`). -/
 theorem molecular_finrank_motions_eq_square_ker {G : SimpleGraph V} {G' : Graph V β}
     {ends : β → V × V} {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))

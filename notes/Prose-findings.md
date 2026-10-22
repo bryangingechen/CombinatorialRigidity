@@ -4241,7 +4241,10 @@ declaration's name as its header writes it:
   §2.3(4), flag F2 route two", DUAL-K) and say "genuine" and "consumes".
   *Evidence:* read (the docstrings and bodies of the slice's 26 pins and of `omegaForm`, `tauForm`).
   *Found:* round 4 task 2.2.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* done (task 37): `ScrewVelocity.lean`'s header gives `ω_S` and `t_S` the pairings
+  that `omegaForm` and `tauForm` read, `screwComplementIso`'s docstring says nothing of what the
+  polarity preserves, `Dictionary.lean`'s header describes the whole file, and the four files narrate
+  no process; reported (`notes/Prose-report.md`, L4).
 - **F-186** · L · the docstrings of task 2.3's pins (`GeneralPositionPlacement.lean`,
   `Molecule/GeneralPosition4.lean`, `Theorem56.lean`, `Modelling.lean`). The docstring of
   `exists_molecular_rankHypothesis_generalPosition` credits the panel-hinge–molecular link to "the
@@ -4622,7 +4625,9 @@ declaration's name as its header writes it:
   *Found:* round 5 task 3.11.
   *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: `BodyBar/GenericLift.lean`'s
   header maps each node to its pins, and `twoExtensorPoly_eval`'s docstring names
-  `lem:two-extensor-polynomial` (task 27).
+  `lem:two-extensor-polynomial` (task 27); the docstrings of `screwComplementIso` and
+  `screwComplementIso_lineExtensor` name `lem:polarity-join`, and `equivExteriorPower_lineExtensor`'s
+  calls it a step of that node (task 37).
 - **F-244** · L · the declarations round 5's task 3.12 pinned or moved (`Molecular/Deficiency.lean`,
   `JacobsCounting.lean`, `TwoCore.lean`). The docstrings of `IsTightPartition` and
   `crossingEdgesWithin` name `lem:exists-tight-partition` and `lem:partitionDef-merge`, now
@@ -5091,6 +5096,12 @@ declaration's name as its header writes it:
   without a caller `Pinning.lean`'s `pinnedMotions_le_withGraph`, `pinnedMotions_withGraph_eq` and
   `hnew_of_isLink_incident` and `RigidityMatrix/Basic.lean`'s `hingeConstraint_comm`, all unpinned,
   and the pinned `toBodyHinge_withGraph`, which stays with its node.
+  Task 37 adds one in `Molecular/Molecule/ProjectiveInvariance.lean` (the same screen, over
+  `ScrewVelocity.lean`, `Duality.lean`, `ProjectiveInvariance.lean` and `Dictionary.lean` together,
+  and the Lean cache, at `b504aa52`; `rfl` lemmas left out, and the `@[simp]` lemmas that `simp`
+  calls use, as the cache shows): `BodyHingeFramework.isInfinitesimallyRigidOn_mapExtensor`, whose
+  docstring gave `thm:projective-invariance` as its node. Removing it leaves no other declaration
+  without a caller.
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5452,6 +5463,17 @@ declaration's name as its header writes it:
   `hfresh` (`theorem_55_6_multigraph_gen`'s) as the control, which warns; on the three standard
   axioms (`scratch/reconcile-lean/Hyps-t362.lean`, gitignored).
   *Found:* RECONCILE round 3 task 36.2.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-299** · L · a missed mathlib lemma and a repeated derivation in `Molecular/Molecule/`.
+  `screwCoord_injective` (`ScrewVelocity.lean`) proves by rank–nullity, from `screwCoord_surjective`
+  and the two dimensions, what `LinearMap.injective_iff_surjective_of_finrank_eq_finrank` gives; and
+  `eq_zero_of_molecularVel_eq_zero` and `exists_screwVel_eq_on_closedNeighborSet`
+  (`Dictionary.lean`) derive the same two distinct neighbours of `v` from `hmin` (three lines each).
+  `lake lint` reports neither.
+  *Evidence:* read (the bodies); a `lake lean` witness: `screwCoord_injective` from the mathlib
+  lemma and `screwCoord_surjective`, on the three standard axioms
+  (`scratch/reconcile-lean/t37/Hyps-t37.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

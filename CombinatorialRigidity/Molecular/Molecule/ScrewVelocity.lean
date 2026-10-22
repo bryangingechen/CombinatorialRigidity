@@ -10,52 +10,49 @@ public import Mathlib.Basic.Real.Basic
 public import Mathlib.LinearAlgebra.CrossProduct
 
 /-!
-# Screw velocity fields (`sec:molecule-modelling-velocity`)
+# Screw velocity fields
 
-Phase 25, leaf W1 (`notes/Phase25-design.md` §2.3, §3). The square-graph dictionary
-(`thm:molecular-iff-square-bar-joint`) compares screw assignments (one screw
-`S ∈ ScrewSpace ℝ 2 = ⋀² ℝ⁴` per body) with joint velocities (one vector `x ∈ ℝ³` per atom
-centre). The translation is the classical **velocity field** of a screw: writing `S` in graded
-Plücker coordinates `(ω_S, t_S) ∈ ℝ³ × ℝ³` (the rotation part `ω_S`, pairing two affine
-directions, and the translation part `t_S`, pairing a direction with the homogenizing
-coordinate),
-`vel_S(x) = ω_S ⨯₃ x + t_S`.
+The velocity field of a screw, and the facts about it that the square-graph dictionary
+(`thm:molecular-iff-square-bar-joint`) uses, as `sec:molecule-modelling-velocity` presents them. A
+motion of a molecular framework gives each body a screw `S ∈ ScrewSpace ℝ 2 = ⋀² ℝ⁴`, and a motion
+of a bar-joint framework gives each joint a velocity in `ℝ³`. The screw `S` moves a point `x ∈ ℝ³`
+with velocity `vel_S(x) = ω_S ⨯₃ x + t_S` (`def:screw-velocity`). Its rotation part `ω_S` pairs the
+homogenizing coordinate of one vector with the affine coordinates of the other, and its translation
+part `t_S` pairs the affine coordinates of the two.
 
-The two coordinate maps `screwOmega`, `screwTau : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ)` are the two
-graded pieces of the isomorphism `⋀² ℝ⁴ ≅ ⋀² ℝ³ ⊕ (ℝ³ ⊗ ℝ) ≅ ℝ³ × ℝ³`, built here as lifts of
-two explicit alternating `2`-forms along `exteriorPower.alternatingMapLinearEquiv` and the
-`ScrewSpace` boundary equivalence. On the line `2`-extensor `â ∨ b̂` of two homogenized points
-they read off `ω = b − a` and `t = a ⨯₃ b` (`screwOmega_lineExtensor`,
-`screwTau_lineExtensor`), so `vel_{â∨b̂}` is the rotation field about the line through `a` and
-`b` (`screwVel_lineExtensor`).
+The coordinate maps `screwOmega` and `screwTau : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ)` are the lifts of
+two alternating `2`-forms on `ℝ⁴`, `omegaForm` and `tauForm`, along
+`exteriorPower.alternatingMapLinearEquiv` and the boundary equivalence
+`ScrewSpace.equivExteriorPower`. Together they determine the screw (`screwCoord_injective`). On the
+extensor `â ∨ b̂` of the line through two points they read `ω = b − a` and `t = a ⨯₃ b`
+(`screwOmega_lineExtensor`, `screwTau_lineExtensor`), so `vel_{â∨b̂}` is the velocity field of the
+rotation about that line (`screwVel_lineExtensor`).
 
 ## Main definitions
 
-* `CombinatorialRigidity.Molecular.screwOmega`, `screwTau` — the rotation and translation
-  coordinate maps of a screw.
-* `CombinatorialRigidity.Molecular.screwVel` — the velocity field `vel_S(x) = ω_S ⨯₃ x + t_S`
+* `CombinatorialRigidity.Molecular.screwOmega`, `screwTau`: the rotation and translation parts of a
+  screw.
+* `CombinatorialRigidity.Molecular.screwVel`: the velocity field `vel_S(x) = ω_S ⨯₃ x + t_S`
   (`def:screw-velocity`).
-* `CombinatorialRigidity.Molecular.lineExtensor` — the line `2`-extensor `â ∨ b̂` of two points
-  (the supporting extensor of a molecular hinge, `def:hinge-concurrent`).
+* `CombinatorialRigidity.Molecular.lineExtensor`: the extensor `â ∨ b̂` of the line through two
+  points, the supporting extensor of a molecular hinge (`def:hinge-concurrent`).
 
 ## Main results
 
-* `screwVel_lineExtensor` — `vel_{â∨b̂}(x) = (b − a) ⨯₃ x + a ⨯₃ b`.
-* `dotProduct_screwVel_sub` — every velocity field is infinitesimally isometric:
-  `(x − y) ⬝ᵥ (vel_S x − vel_S y) = 0` (brick (1) of §2.3).
-* `screwVel_eq_zero_iff_mem_span` — for distinct `a, b`: `vel_S a = 0 ∧ vel_S b = 0` iff `S` is
-  a scalar multiple of `â ∨ b̂` (brick (2), `lem:screw-velocity-line`).
-* `eq_zero_of_screwVel_eq_zero` — a screw whose velocity field vanishes at three non-collinear
-  points is zero (brick (3), the kill half of `lem:screw-determination`).
-* `exists_crossProduct_eq` — the two-edge cross-product system `ω ⨯₃ e₁ = d₁`, `ω ⨯₃ e₂ = d₂` is
-  solvable under the triangle bar constraints (the linear-algebra core of brick (4)).
-* `existsUnique_screwVel_eq` — brick (4), body determination: a non-collinear triple plus
-  general-position side points pin a unique screw realizing a bar-constrained velocity assignment
-  (`lem:screw-determination`). The triangle special case is `existsUnique_screwVel_eq_of_triangle`.
+* `screwVel_lineExtensor`: `vel_{â∨b̂}(x) = (b − a) ⨯₃ x + a ⨯₃ b`.
+* `dotProduct_screwVel_sub`: every velocity field is an infinitesimal isometry,
+  `(x − y) ⬝ᵥ (vel_S x − vel_S y) = 0` (`lem:screw-velocity-line`).
+* `screwVel_eq_zero_iff_mem_span`: for distinct `a` and `b`, `vel_S` vanishes at `a` and at `b` iff
+  `S` is a multiple of `â ∨ b̂` (`lem:screw-velocity-line`).
+* `eq_zero_of_screwVel_eq_zero`: a screw whose velocity field vanishes at three non-collinear points
+  is zero (`lem:screw-determination`).
+* `existsUnique_screwVel_eq`: if a family of points contains three non-collinear ones, each other
+  point and those three are affinely independent, and velocities satisfy the bar constraint on every
+  pair, then a unique screw has these velocities at the points (`lem:screw-determination`);
+  `existsUnique_screwVel_eq_of_triangle` is the case of three points.
 
-Brick (4)'s existence is proved by an explicit cross-product construction of the angular velocity
-(design §2.3(4), flag F2 route two), not the bar-joint triangle-rank fact — everything stays inside
-the `ℝ³` cross-product algebra of this file.
+The existence half finds the angular velocity of the screw by cross products
+(`exists_crossProduct_eq`), so the proofs stay in the algebra of the cross product on `ℝ³`.
 -/
 
 @[expose] public section
@@ -82,9 +79,9 @@ theorem crossProduct_smul_left (c : ℝ) (u v : Fin 3 → ℝ) : (c • u) ⨯�
 /-! ## The coordinate maps and the velocity field
 
 `ScrewSpace ℝ 2` is definitionally `⋀² ℝ⁴`. A linear map out of `⋀² ℝ⁴` is, by
-`exteriorPower.alternatingMapLinearEquiv`, an alternating `2`-form on `ℝ⁴`. The two graded
-Plücker coordinate maps are the lifts of the two alternating forms `omegaForm` and `tauForm`
-below, precomposed with the boundary equivalence `ScrewSpace.equivExteriorPower`. -/
+`exteriorPower.alternatingMapLinearEquiv`, an alternating `2`-form on `ℝ⁴`. The rotation and
+translation parts are the lifts of the two alternating forms `omegaForm` and `tauForm` below,
+precomposed with the boundary equivalence `ScrewSpace.equivExteriorPower`. -/
 
 /-- **Spatial projection** `ℝ⁴ → ℝ³` onto the first three (affine) coordinates: `v ↦ v ∘ castSucc`.
 The last coordinate is the homogenizing one. -/
@@ -141,8 +138,9 @@ theorem screwVel_smul (c : ℝ) (S : ScrewSpace ℝ 2) (x : Fin 3 → ℝ) :
     screwVel (c • S) x = c • screwVel S x := by
   simp only [screwVel_apply, map_smul, smul_add, LinearMap.smul_apply]
 
-/-- The velocity field is additive in the screw, difference form: `vel_{S − S'}(x) = vel_S(x) −
-vel_{S'}(x)`. Used for the uniqueness half of `lem:screw-determination`. -/
+/-- The velocity field is additive in the screw, difference form:
+`vel_{S − S'}(x) = vel_S(x) − vel_{S'}(x)`. The uniqueness half of `lem:screw-determination` and the
+proof of `thm:molecular-iff-square-bar-joint` use it. -/
 theorem screwVel_sub_screw (S S' : ScrewSpace ℝ 2) (x : Fin 3 → ℝ) :
     screwVel (S - S') x = screwVel S x - screwVel S' x := by
   rw [screwVel_apply, screwVel_apply, screwVel_apply, map_sub, crossProduct_sub_left, map_sub]
@@ -156,11 +154,10 @@ points, i.e. the supporting `2`-extensor of the molecular hinge through `a` and 
 noncomputable def lineExtensor (a b : Fin 3 → ℝ) : ScrewSpace ℝ 2 :=
   ScrewSpace.mk (extensor ![homogenize a, homogenize b]) (extensor_mem_exteriorPower _)
 
-/-- The bridge lemma: `equivExteriorPower` carries a `mk`-extensor to the exterior-power `ιMulti`.
-Both are the same underlying element `ExteriorAlgebra.ιMulti K 2 v` of the graded piece.
-Field-general (DUAL-K, Phase 40b) — the underlying fact is `rfl`, the same argument
-`GenericLift/HingeGeneric.lean`'s private `screwSpace_equivExteriorPower_mk` makes for a general
-algebra element, specialized here to the extensor case. -/
+/-- **The boundary equivalence on an extensor**: `ScrewSpace.equivExteriorPower K 2` sends
+`ScrewSpace.mk (extensor v) _` to `ιMulti K 2 v`, over any field `K`. Both are the element
+`ExteriorAlgebra.ιMulti K 2 v` of the graded piece, so the proof is `rfl` once `ScrewSpace.mk` is
+unfolded. -/
 theorem equivExteriorPower_mk_extensor {K : Type*} [Field K] (v : Fin 2 → Fin 4 → K) :
     ScrewSpace.equivExteriorPower K 2 (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
       = ιMulti K 2 v := by
@@ -183,10 +180,11 @@ theorem equivExteriorPower_mk_extensor {K : Type*} [Field K] (v : Fin 2 → Fin 
   change crossProduct (spatialProj (homogenize a)) (spatialProj (homogenize b)) = a ⨯₃ b
   simp
 
-/-- **A line extensor of two distinct points is nonzero.** `screwOmega (â ∨ b̂) = b − a` is
-nonzero when `a ≠ b`, so the extensor itself cannot be zero — the never-linked padding labels of
-`lem:molecule-rank-upper-bound`'s endpoint selector need this to satisfy the genericity-free
-bound's `hC` hypothesis. -/
+/-- **The extensor of the line through two distinct points is nonzero** (a step of
+`lem:molecule-rank-upper-bound`): `screwOmega (â ∨ b̂) = b − a`, which is nonzero when `a ≠ b`. The
+proof of `lem:molecule-rank-upper-bound` uses it to show that every hinge of its molecular framework
+is nonzero: its selector gives each edge label two distinct bodies, whose centres are distinct by
+general position. -/
 theorem lineExtensor_ne_zero_of_ne {a b : Fin 3 → ℝ} (hab : a ≠ b) : lineExtensor a b ≠ 0 := by
   intro h
   apply hab.symm
@@ -200,8 +198,8 @@ theorem screwVel_lineExtensor (a b x : Fin 3 → ℝ) :
     screwVel (lineExtensor a b) x = (b - a) ⨯₃ x + a ⨯₃ b := by
   rw [screwVel_apply, screwOmega_lineExtensor, screwTau_lineExtensor]
 
-/-- The line extensor's velocity field vanishes at each defining point (`def:hinge-concurrent`:
-the hinge through `a` and `b` is fixed by the rotation about it). -/
+/-- The velocity field of `â ∨ b̂` vanishes at `a` and at `b`: the rotation about the line through
+`a` and `b` fixes the points of the line. -/
 @[simp] theorem screwVel_lineExtensor_left (a b : Fin 3 → ℝ) :
     screwVel (lineExtensor a b) a = 0 := by
   rw [screwVel_lineExtensor, crossProduct_sub_left, cross_self, sub_zero, ← cross_anticomm]
@@ -212,7 +210,7 @@ the hinge through `a` and `b` is fixed by the rotation about it). -/
   rw [screwVel_lineExtensor, crossProduct_sub_left, cross_self, zero_sub, ← cross_anticomm]
   abel
 
-/-! ## Brick (1): velocity fields are infinitesimally isometric -/
+/-! ## Velocity fields are infinitesimal isometries -/
 
 /-- The velocity **difference** is the rotation acting on the point difference:
 `vel_S x − vel_S y = ω_S ⨯₃ (x − y)`. -/
@@ -221,19 +219,20 @@ theorem screwVel_sub (S : ScrewSpace ℝ 2) (x y : Fin 3 → ℝ) :
   simp only [screwVel_apply, map_sub]
   abel
 
-/-- **Brick (1) (skew): every velocity field is infinitesimally isometric**
-(`lem:screw-velocity-line`): `(x − y) ⬝ᵥ (vel_S x − vel_S y) = 0`, because the velocity
-difference is a cross product with `x − y`. -/
+/-- **Every velocity field is an infinitesimal isometry** (`lem:screw-velocity-line`):
+`(x − y) ⬝ᵥ (vel_S x − vel_S y) = 0`, as the difference of the velocities is `ω_S ⨯₃ (x − y)`
+(`screwVel_sub`). -/
 theorem dotProduct_screwVel_sub (S : ScrewSpace ℝ 2) (x y : Fin 3 → ℝ) :
     (x - y) ⬝ᵥ (screwVel S x - screwVel S y) = 0 := by
   rw [screwVel_sub]; exact dot_cross_self (screwOmega S) (x - y)
 
 /-! ## Injectivity of the coordinate pair `(ω, t)`
 
-`ScrewSpace ℝ 2` and `ℝ³ × ℝ³` are both `6`-dimensional, and the coordinate pair
-`screwCoord = (screwOmega, screwTau)` is a linear isomorphism. We prove injectivity via an
-explicit right inverse `rebuild` (surjectivity) plus rank–nullity. This is the fact that lets a
-screw be recovered from its rotation and translation parts, on which bricks (2) and (3) rest. -/
+`ScrewSpace ℝ 2` and `ℝ³ × ℝ³` both have dimension `6`, and the coordinate pair
+`screwCoord = (screwOmega, screwTau)` is a linear isomorphism. We prove injectivity from an explicit
+right inverse `rebuild` (surjectivity) and rank–nullity. So a screw is determined by its rotation
+and translation parts, which the proofs of `lem:screw-velocity-line` and `lem:screw-determination`
+use. -/
 
 /-- The combined coordinate map `S ↦ (ω_S, t_S)`. -/
 noncomputable def screwCoord : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ) × (Fin 3 → ℝ) :=
@@ -341,22 +340,22 @@ theorem eq_zero_of_crossProduct_eq_zero_of_linearIndependent {ω u w : Fin 3 →
   have hu0 : u = 0 := by rw [← ha, neg_eq_zero.mp ha0, zero_smul]
   exact hind.ne_zero 0 hu0
 
-/-! ## Brick (2): the line characterization -/
+/-! ## Screws whose velocity field vanishes at two points (`lem:screw-velocity-line`) -/
 
-/-- The reverse direction of `screwVel_eq_zero_iff_mem_span`, **without** the distinctness
-hypothesis: any scalar multiple of the line extensor `â ∨ b̂` has velocity field vanishing at
-both `a` and `b` (the line through `a` and `b` is fixed by the rotation about it, even in the
-degenerate `a = b` case). The square-graph dictionary consumes this half at endpoint centres
-that are not assumed distinct. -/
+/-- **A multiple of `â ∨ b̂` has a velocity field vanishing at `a` and at `b`** (a step of
+`lem:screw-velocity-line`), with no hypothesis `a ≠ b`: the reverse direction of
+`screwVel_eq_zero_iff_mem_span` (when `a = b`, the extensor is zero). The proof of
+`thm:molecular-iff-square-bar-joint` uses it at the centres of the two ends of an edge, which need
+not be distinct (`screwVel_eq_zero_of_link`). -/
 theorem screwVel_eq_zero_of_mem_span {a b : Fin 3 → ℝ} {S : ScrewSpace ℝ 2}
     (hS : S ∈ Submodule.span ℝ {lineExtensor a b}) :
     screwVel S a = 0 ∧ screwVel S b = 0 := by
   obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp hS
   refine ⟨?_, ?_⟩ <;> simp [screwVel_smul]
 
-/-- **Brick (2): lines through two points, velocity form** (`lem:screw-velocity-line`): for
-distinct `a, b ∈ ℝ³` and any screw `S`, the velocity field vanishes at both `a` and `b` iff `S`
-is a scalar multiple of the line extensor `â ∨ b̂`. -/
+/-- **Screws whose velocity field vanishes at two points** (`lem:screw-velocity-line`): for distinct
+`a, b ∈ ℝ³` and any screw `S`, the velocity field vanishes at both `a` and `b` iff `S` is a scalar
+multiple of the line extensor `â ∨ b̂`. -/
 theorem screwVel_eq_zero_iff_mem_span {a b : Fin 3 → ℝ} (hab : a ≠ b) (S : ScrewSpace ℝ 2) :
     (screwVel S a = 0 ∧ screwVel S b = 0) ↔ S ∈ Submodule.span ℝ {lineExtensor a b} := by
   have hu : b - a ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
@@ -381,11 +380,11 @@ theorem screwVel_eq_zero_iff_mem_span {a b : Fin 3 → ℝ} (hab : a ≠ b) (S :
   · intro hmem
     exact screwVel_eq_zero_of_mem_span hmem
 
-/-! ## Brick (3): a screw is determined by point velocities (kill half) -/
+/-! ## A screw whose velocity field vanishes at three non-collinear points is zero -/
 
-/-- **Brick (3) (kill): a screw whose velocity field vanishes at three non-collinear points is
-zero** (`lem:screw-determination`, the vanishing half). Non-collinearity is phrased as linear
-independence of the two edge vectors `q₁ − q₀`, `q₂ − q₀`. -/
+/-- **A screw whose velocity field vanishes at three non-collinear points is zero**
+(`lem:screw-determination`, the first statement). Non-collinearity is the linear independence of the
+two edge vectors `q₁ − q₀` and `q₂ − q₀`. -/
 theorem eq_zero_of_screwVel_eq_zero {S : ScrewSpace ℝ 2} {q : Fin 3 → Fin 3 → ℝ}
     (hind : LinearIndependent ℝ ![q 1 - q 0, q 2 - q 0])
     (h : ∀ i, screwVel S (q i) = 0) : S = 0 := by
@@ -403,16 +402,16 @@ theorem eq_zero_of_screwVel_eq_zero {S : ScrewSpace ℝ 2} {q : Fin 3 → Fin 3 
     simpa using h0.symm
   exact eq_zero_of_screwOmega_eq_zero_of_screwTau_eq_zero hω hτ
 
-/-! ## Nondegeneracy in `ℝ³`
+/-! ## Two facts on bases of `ℝ³`
 
-Two linear-algebra facts underpinning brick (4). First, three vectors that are pairwise
-independent enough — the two edge vectors of a non-collinear triangle together with their
-cross product — form a basis of `ℝ³`; second, a vector orthogonal to a basis is zero. Both
-route through `Matrix.det ≠ 0` (via `triple_product_eq_det`) and the invertible-matrix kernel
-lemma `Matrix.eq_zero_of_mulVec_eq_zero`. -/
+Two facts of linear algebra that the existence half of `lem:screw-determination` uses. First, two
+linearly independent vectors of `ℝ³` and their cross product are linearly independent; second, a
+vector orthogonal to three linearly independent vectors is zero. Both go through `Matrix.det ≠ 0`,
+the first with `triple_product_eq_det`, the second with the kernel lemma of an invertible matrix,
+`Matrix.eq_zero_of_mulVec_eq_zero`. -/
 
-/-- For linearly independent `e₁, e₂ ∈ ℝ³`, the triple `![e₁, e₂, e₁ ⨯₃ e₂]` is a basis of `ℝ³`
-(the cross product completes two independent vectors to a frame). -/
+/-- For linearly independent `e₁, e₂ ∈ ℝ³`, the triple `![e₁, e₂, e₁ ⨯₃ e₂]` is linearly
+independent, so a basis of `ℝ³`: its determinant is `(e₁ ⨯₃ e₂) ⬝ᵥ (e₁ ⨯₃ e₂) ≠ 0`. -/
 theorem linearIndependent_e1_e2_cross {e₁ e₂ : Fin 3 → ℝ}
     (hind : LinearIndependent ℝ ![e₁, e₂]) :
     LinearIndependent ℝ ![e₁, e₂, e₁ ⨯₃ e₂] := by
@@ -438,16 +437,17 @@ theorem eq_zero_of_dotProduct_row_eq_zero {v : Fin 3 → Fin 3 → ℝ} {r : Fin
 
 /-! ## Solving the two-edge cross-product system
 
-The heart of brick (4): given the two edge vectors `e₁, e₂` of a non-collinear triangle and
-target velocity differences `d₁, d₂` obeying the three bar constraints (`e₁ ⟂ d₁`, `e₂ ⟂ d₂`,
-`e₁·d₂ + e₂·d₁ = 0`), there is an angular velocity `ω` with `ω ⨯₃ e₁ = d₁` and `ω ⨯₃ e₂ = d₂`.
-Solve `ω ⨯₃ e₁ = d₁` first — `ω₀ = (e₁·e₁)⁻¹ (e₁ ⨯₃ d₁)` works by the vector triple product — then
-correct along `e₁` (which the first equation ignores) by the multiple of `e₁` making the second
-equation hold; the third bar constraint is exactly what makes the correction a multiple of
-`e₁ ⨯₃ e₂`. -/
+The main step of the existence half of `lem:screw-determination`. Let `e₁` and `e₂` be the two edge
+vectors of a non-collinear triangle, and `d₁` and `d₂` target differences of velocities that satisfy
+the three bar constraints (`e₁ ⟂ d₁`, `e₂ ⟂ d₂`, `e₁·d₂ + e₂·d₁ = 0`). There is an angular velocity
+`ω` with `ω ⨯₃ e₁ = d₁` and `ω ⨯₃ e₂ = d₂`. By the vector triple product,
+`ω₀ = (e₁·e₁)⁻¹ (e₁ ⨯₃ d₁)` solves the first equation, and so does `ω₀ + s • e₁` for every `s`. The
+residual `d₂ − ω₀ ⨯₃ e₂` of the second is orthogonal to `e₂`, and the third bar constraint makes it
+orthogonal to `e₁`; so it is `s • (e₁ ⨯₃ e₂)` for some `s`, and `ω₀ + s • e₁` solves both. -/
 
-/-- **The two-edge cross-product system is solvable** under the triangle bar constraints. This is
-the linear-algebra core of the existence half of `lem:screw-determination`. -/
+/-- **The two-edge cross-product system is solvable** (a step of `lem:screw-determination`): for
+linearly independent `e₁, e₂` and `d₁, d₂` with `e₁ ⬝ᵥ d₁ = 0`, `e₂ ⬝ᵥ d₂ = 0` and
+`e₁ ⬝ᵥ d₂ + e₂ ⬝ᵥ d₁ = 0`, some `ω` has `ω ⨯₃ e₁ = d₁` and `ω ⨯₃ e₂ = d₂`. -/
 theorem exists_crossProduct_eq {e₁ e₂ d₁ d₂ : Fin 3 → ℝ}
     (hind : LinearIndependent ℝ ![e₁, e₂])
     (h1 : e₁ ⬝ᵥ d₁ = 0) (h2 : e₂ ⬝ᵥ d₂ = 0) (h3 : e₁ ⬝ᵥ d₂ + e₂ ⬝ᵥ d₁ = 0) :
@@ -501,16 +501,16 @@ theorem exists_crossProduct_eq {e₁ e₂ d₁ d₂ : Fin 3 → ℝ}
       add_zero]
   · rw [crossProduct_add_left, crossProduct_smul_left s e₁ e₂, ← husn, hu_def]; abel
 
-/-! ## Brick (4): a screw is determined by point velocities (existence half)
+/-! ## A screw is determined by the velocities of its points (`lem:screw-determination`)
 
-The `∃!`-body-determination half of `lem:screw-determination`. A non-collinear triple pins a
-unique screw realizing a bar-constrained velocity assignment on it
-(`existsUnique_screwVel_eq_of_triangle`); adding further points, each in general position with the
-triple (affine independence up to order four), forces those velocities too, giving the family form
+The second statement of `lem:screw-determination`. Velocities at three non-collinear points that
+satisfy the bar constraints between them are those of a unique screw
+(`existsUnique_screwVel_eq_of_triangle`). Each further point and the three are affinely independent,
+so the screw has the given velocity there too; this gives the form for a family of points,
 `existsUnique_screwVel_eq`. -/
 
-/-- **Existence on a non-collinear triangle**: a velocity assignment obeying the three bar
-constraints of a non-collinear triangle is realized by some screw. -/
+/-- **Existence on a non-collinear triangle** (a step of `lem:screw-determination`): velocities that
+satisfy the three bar constraints of a non-collinear triangle are those of some screw. -/
 theorem exists_screwVel_eq {q x : Fin 3 → Fin 3 → ℝ}
     (hind : LinearIndependent ℝ ![q 1 - q 0, q 2 - q 0])
     (hbar : ∀ i j, (q i - q j) ⬝ᵥ (x i - x j) = 0) :
@@ -533,9 +533,10 @@ theorem exists_screwVel_eq {q x : Fin 3 → Fin 3 → ℝ}
     have h : ω ⨯₃ q 2 - ω ⨯₃ q 0 = x 2 - x 0 := by rw [← crossProduct_sub_right]; exact hω2
     rw [show ω ⨯₃ q 2 + (x 0 - ω ⨯₃ q 0) = (ω ⨯₃ q 2 - ω ⨯₃ q 0) + x 0 by abel, h]; abel
 
-/-- **A unique screw realizes a bar-constrained velocity assignment on a non-collinear triangle**
-(`lem:screw-determination`, triangle form). Uniqueness is `eq_zero_of_screwVel_eq_zero`
-(via `screwCoord_injective`); existence is `exists_screwVel_eq`. -/
+/-- **On a non-collinear triangle, velocities that satisfy the bar constraints are those of a unique
+screw** (a step of `lem:screw-determination`, its second statement for three points). Uniqueness is
+`eq_zero_of_screwVel_eq_zero` applied to the difference of two such screws; existence is
+`exists_screwVel_eq`. -/
 theorem existsUnique_screwVel_eq_of_triangle {q x : Fin 3 → Fin 3 → ℝ}
     (hind : LinearIndependent ℝ ![q 1 - q 0, q 2 - q 0])
     (hbar : ∀ i j, (q i - q j) ⬝ᵥ (x i - x j) = 0) :
@@ -547,12 +548,13 @@ theorem existsUnique_screwVel_eq_of_triangle {q x : Fin 3 → Fin 3 → ℝ}
   have := eq_zero_of_screwVel_eq_zero hind hzero
   rwa [sub_eq_zero] at this
 
-/-- **Brick (4): a screw is determined by point velocities** (`lem:screw-determination`). If a
-point family `p` (indexed by any type) contains a non-collinear triple `p i₀, p i₁, p i₂`, every
-other point is affinely independent from that triple (general position up to order four), and a
-velocity assignment `x` satisfies the bar constraint on every pair, then a unique screw `S`
-realizes it: `vel_S(p i) = x i` for all `i`. Uniqueness reduces to the triangle; existence solves
-on the triangle and pins each further point by orthogonality to three independent directions. -/
+/-- **A screw is determined by the velocities of its points** (`lem:screw-determination`, the second
+statement). Let a family `p` of points (indexed by any type) contain a non-collinear triple
+`p i₀, p i₁, p i₂`, such that for every other index `j` the points `p j, p i₀, p i₁, p i₂` are
+affinely independent, and let the velocities `x` satisfy the bar constraint on every pair. Then a
+unique screw `S` has `vel_S(p i) = x i` for all `i`. Uniqueness reduces to the triangle. For
+existence, the screw of the triangle has at each further point a velocity whose difference from the
+given one is orthogonal to three linearly independent vectors, and so zero. -/
 theorem existsUnique_screwVel_eq {ι : Type*} {p x : ι → Fin 3 → ℝ} {i₀ i₁ i₂ : ι}
     (htri : LinearIndependent ℝ ![p i₁ - p i₀, p i₂ - p i₀])
     (hgp : ∀ j, j ≠ i₀ → j ≠ i₁ → j ≠ i₂ →

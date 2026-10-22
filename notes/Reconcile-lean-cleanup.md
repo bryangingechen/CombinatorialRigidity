@@ -8,9 +8,10 @@ L6–L8's signatures and repeated derivations with S17, L1–L2 (the pebble game
 non-vacuity witness for each of the 16 main results outside S1's and S2's rows, and the docstring
 sweep by directory. No main result's statement changes. In the footprint (34 files: the 33 that
 construct `PanelHingeFramework`, and `GenericLift/HingeGeneric.lean`) the docstrings that describe
-the carrier or S1's and S2's theorems wait for the phase. Tasks 1–36.2 are done (*Current state*;
-gate 9: 422 at task 2, 59 now), the sweep through `AlgebraicInduction/`. **Next concrete task:**
-task 37, the docstrings of `Molecular/Molecule/`, by file (*Hand-off*). Round manual: `CLEANUP.md`.
+the carrier or S1's and S2's theorems wait for the phase. Tasks 1–37 are done (*Current state*;
+gate 9: 422 at task 2, 44 now), the sweep through `AlgebraicInduction/` and four files of
+`Molecular/Molecule/`. **Next concrete task:** task 37.1, the docstrings of the rest of
+`Molecular/Molecule/`'s top level (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -39,33 +40,34 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 36.2 is done**; nothing is mid-stream. **Next:** task 37.
+**Task 37 is done**; nothing is mid-stream. **Next:** task 37.1.
 
-**Task 36.2** (`F-144`, `F-238`, `F-250` `done`; `F-126`, `F-130`, `F-133` in part; new `F-298`):
-`Theorem55.lean` swept from Case I to the end, with three new section headers (Case I, KT Theorem
-5.5, KT Theorem 5.6) and the multigraph one without its code. The docstrings of the KT Theorem 5.6
-forms, `molecular_conjecture`, `HasCoplanarPanelRealization` and
-`theorem_55_6_multigraph_of_two_le` are kept but for their leads (and one name that did not exist);
-the sentences on the meet model are left for the phase (`F-122`'s);
-`molecular_conjecture_multigraph`'s claim that its nonzero hinges are essential is corrected (both
-sides would hold exactly when `G` is connected). Gate 9 63 → 59. The ledger: 298 entries, 212
-`done`, 9 `left`, 52 `reported`, 25 `open`. Since the bump to Lean v4.36.0-rc1 the build runs 6151
-jobs (2996 at the open); the axioms harness's output is unchanged.
+**Task 37** (`F-182` `done`; `F-243` in part; new `F-299`): `Molecule/ScrewVelocity.lean`,
+`Duality.lean` (in the footprint), `ProjectiveInvariance.lean` and `Dictionary.lean` swept, with new
+headers that describe each file and section headers by content. In `Duality.lean` the sentences on
+the panel-hinge framework at the homogenized centres are left for the phase (`F-122`'s). Corrected:
+the pairings of the rotation and translation parts, the polarity's alleged failure to keep
+nondegeneracy, `Dictionary.lean`'s "follow-up slices", a span called one-dimensional at `C = 0`, `Φ`
+of any assignment called a motion, and hinge-concurrency claimed with no condition on the selector.
+Gate 9 59 → 44. The ledger: 299 entries,
+213 `done`, 9 `left`, 51 `reported`, 26 `open`. Since the bump to Lean v4.36.0-rc1 the build runs
+6151 jobs (2996 at the open); the axioms harness's output is unchanged.
 
-**Done before** (tasks 3–36.1; the ledger's dispositions name the task of each part, and the
+**Done before** (tasks 3–36.2; the ledger's dispositions name the task of each part, and the
 messages carry the detail): L9's thirty-nine deletions (the pins they left without a caller stay
 with their nodes), `F-090`'s shim, `F-061`'s rename, L6–L8's hypotheses and repeated derivations
 (each node they reach restated in the same commit; gate 2 runs block (c) since task 5), the search
 and its texts (tasks 16–20), `Nonvacuity.lean`'s sixteen witnesses (tasks 21–24; FRICTION: tasks
 22–24's entries, task 21's waits for task 38), every directory before the footprint swept (tasks
-25–33), and the footprint's files of `AlgebraicInduction/` (tasks 34–36.1).
+25–33), and the footprint's files of `AlgebraicInduction/` (tasks 34–36.2).
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (39 *missing*, 136 *pinned, another node*, 247
 *unpinned, own node*; `scratch/reconcile-lean/labels-t2.txt`, gitignored); its acceptance is
 `65a5c0ee`'s message. Of the stale or absent labels `F-230`–`F-264` list, all are reported but
 `runPebbleGame.aux`'s (past its lead; task 26 fixed it); a docstring naming no node is outside it.
-Of the 59 left, 55 are in `Molecular/Molecule/` (task 37) and 4 in `GenericLift/` (S1's, the phase).
+Of the 44 left, 40 are in `Molecular/Molecule/` (task 37's later slices: 3 at its top level, 3 in
+`Pencil/`, 34 in `Pencil/MainComponent/`) and 4 in `GenericLift/` (S1's, the phase).
 
 **Verified at the open** (2026-10-15, at `347ba9c4`, round 2's close tree; its Lean is that of the
 ledger's Lean baselines), the values the close compares against: the build green (2996 jobs, 0
@@ -247,15 +249,17 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **36.1. `Theorem55.lean` to the cut case** (`F-104`, `F-132` `done`; new `F-297`).
 - [x] **36.2. `Theorem55.lean` from Case I on** (`F-144`, `F-238`, `F-250` `done`; `F-126`, `F-130`,
   `F-133` in part; new `F-298`).
-- [ ] **37. `Molecular/Molecule/`** (`F-182`, `F-190`, `F-245`, `F-246`; the parts there of `F-186`
-  (`Modelling.lean`: the link is projective duality), `F-210`, `F-243`). Some 29 000 lines in 54
-  files, 55 of gate 9's lines: split by file as tasks 34–36 were.
+- [x] **37. `Molecule/ScrewVelocity.lean`, `Duality.lean`, `ProjectiveInvariance.lean`,
+  `Dictionary.lean`** (`F-182` `done`; `F-243` in part; new `F-299`).
+- [ ] **37.1–. The rest of `Molecular/Molecule/`** (`F-190`, `F-245`, `F-246`; the parts there of
+  `F-186` (`Modelling.lean`: the link is projective duality), `F-210`, `F-243`). Some 28 000 lines in
+  42 files, 40 of gate 9's lines: split by file as tasks 34–36 were.
 - [ ] **38. §B and §C, screened** (`CLEANUP.md` §B–§C; the ledger's baselines; `F-268`'s and
   `F-269`'s eight declarations and `F-271`'s `case_I_realization` through block (b); `F-275`'s
   derivable vertex hypotheses, `F-278`'s and `F-280`'s two each, `F-281`'s five, `F-282`'s nine,
   `F-283`'s six, `F-284`'s four, `F-285`'s three, `F-286`'s to `F-295`'s, `F-297`'s and `F-298`'s,
-  L6's, and `F-282`'s, `F-289`'s, `F-291`'s to `F-298`'s repeated derivations, L8's; `F-279`'s
-  unused declarations; `F-298`'s four needless `set_option`s).
+  L6's, and `F-282`'s, `F-289`'s, `F-291`'s to `F-299`'s repeated derivations, L8's; `F-279`'s
+  unused declarations; `F-298`'s four needless `set_option`s; `F-299`'s mathlib lemma).
   The smell counts again (`--base 347ba9c4 --rev HEAD --tree CombinatorialRigidity/`) beside the
   open's; each `@[nolint …]` and `set_option linter` site checked for its one-line justification
   (task 8 found that one of the seven bridge "false positives" `notes/ToolchainBumps.md` counts was
@@ -319,7 +323,9 @@ Items outside this round's scope, one line each, mirrored in the same commit int
   label from general position and `x₀ ≠ y₀`; at a link the selector must also give the link its
   ends), and the meet model's hinges in the multigraph section's header and the docstrings of
   `theorem_55_6_multigraph` and `molecular_conjecture_multigraph` (`Theorem55.lean`, tasks
-  36.1–36.2); and throughout, the selector of a generic full-rank realization, which gives each
+  36.1–36.2); the panel-hinge framework at the homogenized centres, edge by edge on the molecular
+  framework's selector, and what a nonzero hinge at a label means on each side (`Duality.lean`,
+  task 37); and throughout, the selector of a generic full-rank realization, which gives each
   link its ends in some order (two such agree up to order). The phase's (a).
 
 ## Blockers / open questions
@@ -329,26 +335,29 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 37**, at Opus, split by file as tasks 34–36 were (`Molecular/Molecule/` is some 29 000
-lines in 54 files). **The smallest next commit:** the docstrings of `Molecule/ScrewVelocity.lean`,
-`Duality.lean`, `ProjectiveInvariance.lean` and `Dictionary.lean` (`F-182`'s files, some 1 380
-lines, 15 of gate 9's lines), this round's parts only: `Duality.lean` is in the footprint (*Scope*:
-a part that says what `PanelHingeFramework`'s fields mean or what its constructors guarantee, or
-documents a declaration of S1's or S2's rows or a node the phase restates, waits), the other three
-are not; under the sweep's rules and *Decisions*' sweep form. Then the rest of the top level
-(`Carrier.lean`, `Application.lean`: `F-190`, `F-210`'s part; `GeneralPosition4.lean`,
-`Theorem56.lean`, `Modelling.lean`: `F-186`'s part), then `Pencil/` (`F-245`, `F-243`'s part) and
-`Pencil/MainComponent/` (`F-246`), whose footprint files are listed under *Current state*.
-*Expected:* the dump byte-identical; gate 9 falls from 59 by what the task fixes. Gates 1–3 (gate
-3's witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t362.lean`, and
+**Next: task 37.1**, at Opus; task 37's slices go by file as tasks 34–36's did (the rest of
+`Molecular/Molecule/` is some 28 000 lines in 42 files). **The smallest next commit:** the
+docstrings of the rest of the top level, `Molecule/Carrier.lean` and `Application.lean` (`F-190`,
+`F-210`'s part) and `GeneralPosition4.lean`, `Theorem56.lean` and `Modelling.lean` (`F-186`'s part),
+some 1 150 lines and 3 of gate 9's lines, this round's parts only: the last three are in the
+footprint (*Scope*: a part that says what `PanelHingeFramework`'s fields mean or what its
+constructors guarantee, or documents a declaration of S1's or S2's rows or a node the phase
+restates, waits), the first two are not; under the sweep's rules and *Decisions*' sweep form, as
+task 37 did `Duality.lean`. If it does not fit one sitting, split at the footprint boundary (37.1 the
+first two, 37.2 the last three). Then `Pencil/` (`F-245`, `F-243`'s part; 3 lines of gate 9) and
+`Pencil/MainComponent/` (`F-246`; 34 lines), whose footprint files are listed under *Current state*.
+*Expected:* the dump byte-identical; gate 9 falls from 44 by what the task fixes. Gates 1–3 (gate
+3's witnesses: the sixteen of `scratch/reconcile-lean/Witnesses-t37.lean`, and
 `scratch/reconcile-lean/t36/MolWitness.lean`), 5, 6, 9 and 10 (the parent dump
-`scratch/reconcile-lean/dump-t362.txt`, gitignored; regenerate it if missing). The whole-project
-build of a comment-only edit of a file the main results import passes the Bash tool's 600 s and goes
+`scratch/reconcile-lean/dump-t37.txt`, gitignored; regenerate it if missing). The whole-project
+build of a comment-only edit of a file the main results import can pass the Bash tool's 600 s and go
 to the background, where it can be stopped at its own limit before it ends: wait for it in-turn (a
 foreground loop on its log's exit marker), and if it is stopped, run it again in the foreground,
-which finishes the jobs left; one build at a time. A `lake lean` of a harness that imports
-`CombinatorialRigidity` rebuilds the edited modules, so check the names once the files are final and
-built. The screens may serve (gitignored): `t341/unused_joint.py` (unused declarations over several
+which finishes the jobs left; one build at a time. `check-docstring-labels.py --lean` on a stale
+Lean cache runs a fresh `lake lean` that rebuilds the edited modules: give it an explicit `timeout`
+(at task 37 it passed the default 120 s and went to the background; the build after it then ran in
+the foreground). A `lake lean` of a harness that imports `CombinatorialRigidity` rebuilds the
+edited modules too, so check the names once the files are final and built. The screens may serve (gitignored): `t341/unused_joint.py` (unused declarations over several
 files at once), `t32/rw2.py` (renders doc-comment blocks at 100 columns and replaces line ranges;
 `t362/edit_t55.py` uses it, with `lead` for a docstring that waits, whose first paragraph alone is
 re-wrapped, `com` for a line comment, `step` for a boxed step comment, and `sec(…, level='##')` for
@@ -358,7 +367,7 @@ module's declarations, their pins, liveness, callers and the nodes they serve), 
 file's doc blocks), `t35/names.py` with `unres.py` (the backticked names of a file's comments in one
 elaboration, run with `lake lean <file> -- -DmaxErrors=10000`) and `t341/ktpage.py` (KT 2011's
 printed page of a pattern). Carried in: `F-252`, `F-273`, `F-276` and `F-277` for the PI; `F-268`,
-`F-269`, `F-271`, `F-275`, `F-278` to `F-298` and FRICTION's `edgeFiber_nonempty` (task 15) and
+`F-269`, `F-271`, `F-275`, `F-278` to `F-299` and FRICTION's `edgeFiber_nonempty` (task 15) and
 count-matroid (task 21) entries for task 38. After the round the queue stops before
 `RECONCILE-FORMAL`, which is attended.
 
