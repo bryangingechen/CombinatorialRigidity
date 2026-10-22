@@ -2582,7 +2582,17 @@ declaration's name as its header writes it:
   `x₀ ≠ y₀`, where a link also needs the selector to give it its ends), and the sentences on what
   `ofNormals` gives at a label (the hinge from the selector and the normals, which does not read the
   graph) and on the selectors of generic full-rank realizations (each gives each link its ends in
-  some order), kept true, moved to the phase (task 36.1).
+  some order), kept true, moved to the phase (task 36.1); and in the rest of `Theorem55.lean`, the
+  meet model's hinges in the multigraph section's header and the docstrings of
+  `theorem_55_6_multigraph` and `molecular_conjecture_multigraph`, moved to the phase (task 36.2);
+  and in `Duality.lean`, the panel-hinge framework at the homogenized centres, edge by edge on the
+  molecular framework's selector, and what a nonzero hinge at a label means on each side, moved to
+  the phase (task 37); and in `Theorem56.lean` and `Modelling.lean`, the selector's conjunct (it
+  records a `G`-link on every `G`-link, as the square-graph dictionary needs of the same selector),
+  KT Theorem 5.6's realization viewed as `ofNormals G Q₀.ends q₀` at its own normals, and the
+  panel-hinge framework on the homogenized poles, which differs from `Q` by a nonzero rescaling of
+  each supporting extensor, kept as they stand but for the word "genuine", moved to the phase (task
+  37.1).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -4256,9 +4266,13 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the five pins, `IsGeneralPosition4` and
   `exists_generalPosition4_polynomial`).
   *Found:* round 4 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, L5); round 3: `GeneralPositionPlacement.lean`'s
-  header and docstrings without Phases 24–25, leaf W5 and "genuinely" (task 28); the other three
-  files are the footprint's or task 37's.
+  *Disposition:* done (task 37.1): `GeneralPositionPlacement.lean`'s header and docstrings without
+  Phases 24–25, leaf W5 and "genuinely" (task 28); the docstring of
+  `exists_molecular_rankHypothesis_generalPosition` credits Katoh and Tanigawa (p. 671) with the
+  molecular realization, by projective duality, and `GeneralPosition4.lean`, `Theorem56.lean` and
+  `Modelling.lean` narrate no process and say none of the listed words (task 37.1; their sentences
+  on the selector and on what `ofNormals` gives are `F-122`'s). Before: reported
+  (`notes/Prose-report.md`, L5).
 - **F-190** · L · the docstrings of task 2.4's pins (`Molecule/Carrier.lean`,
   `Molecule/Application.lean`). `Carrier.lean`'s header says that the labels `Sym2 V` alone are too
   few "e.g. for `Nat.card V ≤ 10`"; at $|V| = 10$ they number $55 > 54 = 6 \cdot 9$, and at
@@ -4273,7 +4287,12 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the eight pins in these files, and of
   `finrank_span_rigidityRow_le_genericRank`; JJ 2008 §§2 and 4, `.refs/`).
   *Found:* round 4 task 2.4.
-  *Disposition:* reported (`notes/Prose-report.md`, L4).
+  *Disposition:* done (task 37.1): `Carrier.lean`'s header says that on a nonempty `V` the labels
+  `Sym2 V` are too few exactly when `2 ≤ |V| ≤ 9` (a `lake lean` witness,
+  `scratch/reconcile-lean/t371/Sym2Count.lean`, gitignored); `molecule_rank_formula`'s docstring
+  gives Jackson and Jordán's Conjecture 2.2 and Theorems 4.1 and 4.3 and Katoh and Tanigawa's
+  Corollary 5.7, and names no `molecular_conjecture`; and the two files narrate no process and say
+  none of the listed words. Before: reported (`notes/Prose-report.md`, L4).
 - **F-194** · L · the docstrings of task 2.5's pins (`Jacobs.lean`, `EdgesIn.lean`,
   `Molecular/Deficiency.lean`). In `Deficiency.lean` the header of the tight-partition section and
   the docstring of `IsTightPartition` name `lem:tight-partition-cross-pair`, a label that no
@@ -4361,11 +4380,14 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins; `grep` for the year).
   *Found:* round 4 task 2.9.
   *Disposition:* reported (`notes/Prose-report.md`, L4); round 3: `GenericRigidityMatroid.lean`'s
-  abundance lemma without "Phase 34 PROSPECT G3" (its credit dropped, as the node gives none)
-  (task 28); `Molecular/Deficiency.lean`'s header without the year 2009 (task 29), and its
-  docstrings with Jackson and Jordán's Theorem 4.1(a) dated 2010 (task 29.1);
-  `AlgebraicInduction/PanelLayer.lean`'s two (the deficiency bound's section and its pin) dated 2010
-  (task 33).
+  abundance lemma without "Phase 34 PROSPECT G3" (its credit dropped, as the node gives none) (task
+  28); `Molecular/Deficiency.lean`'s header without the year 2009 (task 29), and its docstrings with
+  Jackson and Jordán's Theorem 4.1(a) dated 2010 (task 29.1); `AlgebraicInduction/PanelLayer.lean`'s
+  two (the deficiency bound's section and its pin) dated 2010 (task 33);
+  `Molecule/Application.lean`'s docstrings give `def(G̃)` as `G.shadowGraph.deficiency 3`, the
+  deficiency of `G̃ = 5·G'` for `G' = G.shadowGraph`, `molecule_generic_square_packing`'s names no
+  earlier machinery, and `molecule_generic_rank`'s gives no Jackson–Jordán 2010 credit, which its
+  node does not give (task 37.1).
 
 - **F-215** · L · the docstrings of task 2.10's pins (`BodyBar/GenericLift.lean`).
   `exists_isGenericEndpoints_abundance` calls its polynomial one "in the `2n|E(G)|` endpoint
@@ -5474,6 +5496,25 @@ declaration's name as its header writes it:
   lemma and `screwCoord_surjective`, on the three standard axioms
   (`scratch/reconcile-lean/t37/Hyps-t37.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-300** · L · a repeated derivation and three derivable instance arguments in
+  `Molecular/Molecule/`. The proof of `exists_molecular_rankHypothesis_generalPosition`
+  (`Modelling.lean`) derives, as its local `smul_right`, `hspaneq` and `hmotions`, that the panel
+  support extensor is homogeneous in its second normal and that rescaling each normal by a nonzero
+  scalar keeps the motions. `Pencil/MainComponent/Bridge.lean` states both, as
+  `panelSupportExtensor_smul_right` and `PanelHingeFramework.infinitesimalMotions_ofNormals_smul`
+  (`lem:pencil-jj-rescale`, with `supportExtensor_ofNormals_smul`), in a file that `Modelling.lean`
+  does not import; beside `panelSupportExtensor_smul_left` (`AlgebraicInduction/PanelLayer.lean`)
+  and `ofNormals` (`PanelHinge.lean`) they would serve both. And the `[Nonempty α]` of
+  `exists_molecular_rankHypothesis_generalPosition` (`thm:panel-hinge-iff-molecular`) and of
+  `PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4` (`Theorem56.lean`,
+  `lem:theorem-56-general-position`), which `hne : V(G).Nonempty` gives, and of
+  `exists_rankHypothesis_isGeneralPosition4_of_two_le`, which `hV : 2 ≤ V(G).ncard` gives; the
+  nodes state `V ≠ ∅`, so dropping them restates no node. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the rescaling step from the
+  two lemmas, and each of the three theorems without `[Nonempty α]`, on the three standard axioms
+  (`scratch/reconcile-lean/t371/Hyps-t371.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 37.1.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources

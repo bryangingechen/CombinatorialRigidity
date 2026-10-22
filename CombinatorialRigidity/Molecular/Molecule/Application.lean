@@ -10,50 +10,48 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
 import CombinatorialRigidity.GenericRigidityMatroid
 
 /-!
-# The molecule rank formula (`cor:molecule-rank-formula`)
+# The molecule rank formula
 
-Phase 26. Katoh–Tanigawa Corollary 5.7 (the rank formula is Jackson–Jordán 2008): for a simple
-graph `G` of minimum degree at least two on a finite vertex set `V`, `r(G²) = 3|V| - 6 - def(G̃)`,
-where `r` is the rank of the `3`-dimensional generic bar-joint rigidity matroid (Phase 24,
-`GenericRigidityMatroid.lean`) and `G̃ = G.shadowGraph` is the shadowing multigraph carrier
-(`lem:molecule-graph-carrier`, `Carrier.lean`). The formula is the conjunction of two
-inequalities, each composing the two Phase-25 modelling links with a Phase-24/molecular rank
-bound.
+KT Corollary 5.7, the molecule rank formula `r(G²) = 3|V| - 6 - def(G̃)` for a simple graph `G` of
+minimum degree at least two on a finite, nonempty set `V`, as `sec:molecule-application-formula`
+presents it, and its forms at generic placements, as `sec:generic-lift-molecule` presents them. Here
+`r` is the rank function of the generic rigidity matroid in `ℝ³` (`GenericRigidityMatroid.lean`),
+and `def(G̃)` is `G.shadowGraph.deficiency 3`, the deficiency of `G̃ = 5·G'` for the multigraph
+`G' = G.shadowGraph` of `lem:molecule-graph-carrier` (`Carrier.lean`). Jackson and Jordán 2008
+conjectured the formula (their Conjecture 2.2), proved `≤` (their Theorem 4.1), and proved the
+formula equivalent to the bar-joint form of the molecular conjecture (their Theorem 4.3). Katoh and
+Tanigawa deduce it from their Theorem 5.6 (KT p. 671).
 
-**The lower bound (attainment leg, `≥`).** Theorem 5.6's general-position molecular producer
-(`exists_molecular_rankHypothesis_generalPosition`), fed the shadowing carrier's label supply,
-produces centres `c` in general position up to order four with the molecular framework attaining
-motion-space dimension `D + def(G̃) = 6 + def(G̃)`. The square-graph dictionary
-(`molecular_finrank_motions_eq_square_ker`) transports this to `dim ker R(G², c) = 6 + def(G̃)`, so
-rank–nullity on `Framework V 3` gives `rank R(G², c) = 3|V| - 6 - def(G̃)`; the generic rank
-dominates the realized rank at any placement (`finrank_range_rigidityMap_le_genericRank`).
+**The lower bound** (`molecule_rank_lower_bound`). The molecular realization of
+`thm:panel-hinge-iff-molecular` (`exists_molecular_rankHypothesis_generalPosition`) on `G'` has
+centres `c` in general position up to order four and a motion space of dimension `6 + def(G̃)`. The
+square-graph dictionary (`molecular_finrank_motions_eq_square_ker`) gives
+`dim ker R(G², c) = 6 + def(G̃)`, so by rank–nullity on `Framework V 3`,
+`rank R(G², c) = 3|V| - 6 - def(G̃)`; and the generic rank is at least the rank at any placement
+(`finrank_range_rigidityMap_le_genericRank`).
 
-**The upper bound (`≤`).** At a placement `p` simultaneously generic for row independence and in
-general position (`exists_isGenericPlacement_isGeneralPositionPlacement`), the generic rank equals
-the realized rank (`finrank_range_rigidityMap_eq_genericRank`). Unlike the lower bound, no producer
-supplies an endpoint selector for the shadowing carrier here, so the proof builds one directly: a
-linked label gets its (classically chosen) link pair, and every never-linked label — in particular
-every padding label — gets a fixed default pair of distinct vertices (which exists since `hmin`
-forces `G` to have an edge). The square-graph dictionary identifies `dim ker R(G², p)` with the
-resulting molecular framework's motion-space dimension on `G.shadowGraph`, whose hinges are
-genuine because general position makes the centres distinct; the genericity-free lower bound
-`screwDim_add_deficiency_le_finrank_infinitesimalMotions` then caps the realized rank below by
-`3|V| - 6 - def(G̃)`.
-
-See `notes/Phase26.md` and `blueprint/src/chapter/molecule-application.tex`
-(`lem:molecule-rank-lower-bound`, `lem:molecule-rank-upper-bound`).
+**The upper bound** (`molecule_rank_upper_bound`). At a placement `p` generic for row independence
+and in general position up to order four (`exists_isGenericPlacement_isGeneralPositionPlacement`),
+the generic rank is the rank of `R(G², p)` (`finrank_range_rigidityMap_eq_genericRank`). The proof
+builds an endpoint selector for `G'`: a label that `G'` links gets the ends of a link (chosen
+classically), and every other label, each label of the second summand among them, one fixed pair of
+adjacent vertices of `G`, which exists as `hmin` gives `G` an edge. The square-graph dictionary
+identifies `dim ker R(G², p)` with the dimension of the motion space of the molecular framework on
+`G'` with this selector, whose hinges are nondegenerate since general position makes the centres
+distinct; that dimension is at least `6 + def(G̃)`
+(`screwDim_add_deficiency_le_finrank_infinitesimalMotions`, `lem:deficiency-rank-bound`).
 
 ## Main results
 
-* `SimpleGraph.molecule_rank_formula` — the molecule rank formula `r(G²) = 3|V| - 6 - def(G̃)`
-  (Katoh–Tanigawa Corollary 5.7; Jackson–Jordán 2008).
-* `SimpleGraph.molecule_rank_lower_bound` — the attainment leg of the molecule rank formula.
-* `SimpleGraph.molecule_rank_upper_bound` — the upper-bound leg of the molecule rank formula.
-* `SimpleGraph.molecule_generic_rank` (`thm:molecule-generic-rank`, Phase 34 Layer M) — the
-  molecule rank formula holds at the *realized* rank of every placement generic for row
-  independence, not just the generic matroid rank.
-* `SimpleGraph.molecule_generic_rigid` (`cor:molecule-generic-rigid`) — every generic realization
-  of a square with `def(G̃) = 0` is infinitesimally rigid.
+* `SimpleGraph.molecule_rank_formula`: the molecule rank formula (`cor:molecule-rank-formula`).
+* `SimpleGraph.molecule_rank_lower_bound` and `SimpleGraph.molecule_rank_upper_bound`: its two
+  inequalities.
+* `SimpleGraph.molecule_generic_rank`: the formula for the rank of `R(G², p)` at every placement `p`
+  generic for row independence (`thm:molecule-generic-rank`).
+* `SimpleGraph.molecule_generic_rigid`: when `def(G̃) = 0`, every such placement is infinitesimally
+  rigid for `G²` (`cor:molecule-generic-rigid`).
+* `SimpleGraph.molecule_generic_square_packing`: so is every such placement when `5·G'` contains six
+  edge-disjoint spanning trees (`cor:molecule-generic-square-packing`).
 -/
 
 open CombinatorialRigidity.Molecular
@@ -61,26 +59,26 @@ open scoped Graph
 
 namespace SimpleGraph
 
-/-- **The molecule rank formula, lower bound (attainment leg)** (`lem:molecule-rank-lower-bound`;
-Katoh–Tanigawa 2011 §5.2, Jackson–Jordán 2008). For a simple graph `G` of minimum degree at least
-two on a finite vertex set `V`, `3|V| - 6 - def(G̃) ≤ r(G²)`, where `r` is the rank of the
-`3`-dimensional generic bar-joint rigidity matroid and `G̃ = G.shadowGraph` is the shadowing
-multigraph carrier (`lem:molecule-graph-carrier`).
+/-- **The lower bound of the molecule rank formula** (`lem:molecule-rank-lower-bound`; from KT
+Theorem 5.6, Katoh and Tanigawa 2011, §5.2): for a simple graph `G` of minimum degree at least two
+on a finite, nonempty set `V`, `3|V| - 6 - def(G̃) ≤ r(G²)`, where `r` is the rank function of the
+generic rigidity matroid in `ℝ³` and `def(G̃)` is `G.shadowGraph.deficiency 3`, the deficiency of
+`G̃ = 5·G'` for the multigraph `G' = G.shadowGraph` (`lem:molecule-graph-carrier`).
 
-Fixes the shadowing carrier throughout: its label supply meets Theorem 5.6's general-position
-producer, whose molecular realization attains motion-space dimension `6 + def(G̃)`; the
-square-graph dictionary carries this to the bar-joint kernel dimension of `(G², c)`, so
-rank–nullity gives the realized rank `3|V| - 6 - def(G̃)`, dominated by the generic rank. -/
+The molecular realization of `thm:panel-hinge-iff-molecular` on `G'`, with centres `c`, has a motion
+space of dimension `6 + def(G̃)`. The square-graph dictionary makes this the dimension of
+`ker R(G², c)`, so by rank–nullity `rank R(G², c) = 3|V| - 6 - def(G̃)`, which the generic rank
+bounds. -/
 theorem molecule_rank_lower_bound {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) :
     3 * (Nat.card V : ℤ) - 6 - G.shadowGraph.deficiency 3 ≤ (G.square.genericRank 3 : ℤ) := by
   classical
-  -- Step 1: Theorem 5.6's general-position molecular producer, fed the shadowing carrier.
+  -- Step 1: the molecular realization of `thm:panel-hinge-iff-molecular` on `G.shadowGraph`.
   obtain ⟨ends, c, hrank, hgp, hends⟩ :=
     exists_molecular_rankHypothesis_generalPosition (card_shadowLabel_lt V) G.shadowGraph
       (by rw [shadowGraph_vertexSet]; exact Set.univ_nonempty)
       (shadowGraph_vertexSet G) (shadowGraph_simple G)
-  -- Step 2: the square-graph dictionary transports the motion-space dimension to `ker R(G², c)`.
+  -- Step 2: the square-graph dictionary gives the motion-space dimension as `dim ker R(G², c)`.
   have hshadow : ∀ u v, u ≠ v → ((∃ e, G.shadowGraph.IsLink e u v) ↔ G.Adj u v) :=
     fun u v _ => shadowGraph_isLink_iff G u v
   have hkey := molecular_finrank_motions_eq_square_ker hshadow hends hmin hgp
@@ -100,18 +98,19 @@ theorem molecule_rank_lower_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
   have hcard : Nat.card V = Fintype.card V := Nat.card_eq_fintype_card
   omega
 
-/-- **The molecule rank formula, upper bound** (`lem:molecule-rank-upper-bound`; Katoh–Tanigawa
-2011 §5.2, Jackson–Jordán 2008). For a simple graph `G` of minimum degree at least two on a finite,
-nonempty vertex set `V`, `r(G²) ≤ 3|V| - 6 - def(G̃)`, where `r` is the rank of the
-`3`-dimensional generic bar-joint rigidity matroid and `G̃ = G.shadowGraph` is the shadowing
-multigraph carrier (`lem:molecule-graph-carrier`).
+/-- **The upper bound of the molecule rank formula** (`lem:molecule-rank-upper-bound`; Jackson and
+Jordán 2008, Theorem 4.1): for a simple graph `G` of minimum degree at least two on a finite,
+nonempty set `V`, `r(G²) ≤ 3|V| - 6 - def(G̃)`, where `r` is the rank function of the generic
+rigidity matroid in `ℝ³` and `def(G̃)` is `G.shadowGraph.deficiency 3`, the deficiency of
+`G̃ = 5·G'` for the multigraph `G' = G.shadowGraph` (`lem:molecule-graph-carrier`).
 
-At a placement generic for row independence and in general position, the generic rank equals the
-realized rank; the square-graph dictionary identifies `dim ker R(G², p)` with the motion-space
-dimension of the molecular framework on a hand-built endpoint selector for `G.shadowGraph` (a
-linked label's link pair, or a fixed distinct default pair for every never-linked label), whose
-hinges are genuine because general position makes the centres distinct; the genericity-free lower
-bound on that motion space then caps the realized rank. -/
+Jackson and Jordán bound `r(G²)` by an independent cover of `G²`; the proof here goes through
+molecular frameworks. At a placement generic for row independence and in general position up to
+order four, the generic rank is the rank of `R(G², p)`. The square-graph dictionary identifies
+`dim ker R(G², p)` with the dimension of the motion space of the molecular framework on `G'` with an
+endpoint selector built here (a linked label gets the ends of a link, and every other label one
+fixed pair of adjacent vertices), whose hinges are nondegenerate since general position makes the
+centres distinct; and that dimension is at least `6 + def(G̃)` (`lem:deficiency-rank-bound`). -/
 theorem molecule_rank_upper_bound {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) :
     (G.square.genericRank 3 : ℤ) ≤ 3 * (Nat.card V : ℤ) - 6 - G.shadowGraph.deficiency 3 := by
@@ -171,36 +170,34 @@ theorem molecule_rank_upper_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
   have hcard' : Nat.card V = Fintype.card V := Nat.card_eq_fintype_card
   omega
 
-/-- **The molecule rank formula** (`cor:molecule-rank-formula`; Katoh–Tanigawa 2011
-Corollary 5.7). For a simple graph `G` of minimum degree at least two on a finite, nonempty
-vertex set `V`, `r(G²) = 3|V| - 6 - def(G̃)`, where `r` is the rank of the `3`-dimensional
-generic bar-joint rigidity matroid and `G̃ = G.shadowGraph` is the shadowing multigraph carrier
-(`lem:molecule-graph-carrier`). The two complementary bounds
-(`molecule_rank_lower_bound`/`molecule_rank_upper_bound`) meet.
+/-- **The molecule rank formula** (`cor:molecule-rank-formula`; Jackson and Jordán 2008, Conjecture
+2.2; Katoh and Tanigawa 2011, Corollary 5.7): for a simple graph `G` of minimum degree at least two
+on a finite, nonempty set `V`, `r(G²) = 3|V| - 6 - def(G̃)`, where `r` is the rank function of the
+generic rigidity matroid in `ℝ³` and `def(G̃)` is `G.shadowGraph.deficiency 3`, the deficiency of
+`G̃ = 5·G'` for the multigraph `G' = G.shadowGraph` (`lem:molecule-graph-carrier`). The two bounds
+`molecule_rank_lower_bound` and `molecule_rank_upper_bound` meet.
 
-The formula is due to Jackson–Jordán 2008, who proved it equivalent to the Molecular Conjecture;
-Katoh–Tanigawa's resolution of the conjecture (Theorem 5.6, here
-`PanelHingeFramework.molecular_conjecture` and its rank-carrying `d = 3` inputs) makes it
-unconditional. -/
+Jackson and Jordán conjectured the formula, proved `≤` (their Theorem 4.1), and proved the formula
+equivalent to the bar-joint form of the molecular conjecture (their Theorem 4.3). Katoh and Tanigawa
+deduce it from their Theorem 5.6 (KT p. 671). -/
 theorem molecule_rank_formula {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) :
     (G.square.genericRank 3 : ℤ) = 3 * (Nat.card V : ℤ) - 6 - G.shadowGraph.deficiency 3 :=
   le_antisymm (G.molecule_rank_upper_bound hmin) (G.molecule_rank_lower_bound hmin)
 
-/-! ## The generic form (`thm:molecule-generic-rank`, `cor:molecule-generic-rigid`)
+/-! ## The formula at generic placements
 
-Phase 34, Layer M. At a placement generic for row independence, the realized rank of `G²`
-equals its generic rank (`finrank_range_rigidityMap_eq_genericRank`), so the molecule rank
-formula above — a statement about the generic matroid — becomes a statement about *every*
-generic realization. See `notes/Phase34.md` and
-`blueprint/src/chapter/generic-lift.tex`. -/
+At a placement generic for row independence, the rank of `R(G², p)` is the generic rank
+(`finrank_range_rigidityMap_eq_genericRank`). So the molecule rank formula gives the rank at every
+such placement, and when `def(G̃) = 0` every such placement is infinitesimally rigid for `G²`, as
+`sec:generic-lift-molecule` presents them (`thm:molecule-generic-rank`,
+`cor:molecule-generic-rigid`, `cor:molecule-generic-square-packing`). -/
 
-/-- **The molecule rank formula at every generic placement** (`thm:molecule-generic-rank`;
-Jackson–Jordán 2010, coordinate route). For a simple graph `G` of minimum degree at least two on
-a finite, nonempty vertex set `V` and a placement `p : Framework V 3` generic for row
-independence, `rank R(G², p) = 3|V| - 6 - def(G̃)`, where `G̃ = G.shadowGraph` is the shadowing
-multigraph carrier. A thin composition of `finrank_range_rigidityMap_eq_genericRank` (realized
-rank = generic rank at a generic placement) with `molecule_rank_formula`. -/
+/-- **The molecule rank formula at every generic placement** (`thm:molecule-generic-rank`): for a
+simple graph `G` of minimum degree at least two on a finite, nonempty set `V` and a placement
+`p : Framework V 3` generic for row independence, `rank R(G², p) = 3|V| - 6 - def(G̃)`, where
+`def(G̃)` is `G.shadowGraph.deficiency 3`. At such a placement the rank is the generic rank
+(`finrank_range_rigidityMap_eq_genericRank`), which `molecule_rank_formula` gives. -/
 theorem molecule_generic_rank {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) {p : Framework V 3}
     (hp : IsGenericPlacement p) :
@@ -209,11 +206,12 @@ theorem molecule_generic_rank {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGr
   rw [finrank_range_rigidityMap_eq_genericRank G.square hp]
   exact G.molecule_rank_formula hmin
 
-/-- **Every generic realization of a rigid square** (`cor:molecule-generic-rigid`). For a simple
-graph `G` of minimum degree at least two on a finite, nonempty vertex set `V` with
-`def(G̃) = 0` (`G̃ = G.shadowGraph`), every placement `p : Framework V 3` generic for row
-independence is infinitesimally rigid for `G²`. Rank–nullity on `Framework V 3` turns the rank
-identity of `molecule_generic_rank` into the kernel-dimension bound of `IsInfinitesimallyRigid`. -/
+/-- **Every generic realization of a rigid square** (`cor:molecule-generic-rigid`): for a simple
+graph `G` of minimum degree at least two on a finite, nonempty set `V` with
+`G.shadowGraph.deficiency 3 = 0`, that is `def(G̃) = 0`, every placement `p : Framework V 3` generic
+for row independence is infinitesimally rigid for `G²`. Rank–nullity on `Framework V 3` turns the
+rank of `molecule_generic_rank` into the bound on `dim ker R(G², p)` that `IsInfinitesimallyRigid`
+states. -/
 theorem molecule_generic_rigid {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) (hdef : G.shadowGraph.deficiency 3 = 0)
     {p : Framework V 3} (hp : IsGenericPlacement p) :
@@ -227,26 +225,23 @@ theorem molecule_generic_rigid {V : Type*} [Fintype V] [Nonempty V] (G : SimpleG
   omega
 
 /-- **Generic rigidity of squares from six spanning trees; Jackson–Jordán**
-(`cor:molecule-generic-square-packing`, JJ 2010 p. 586). If `G̃ = G.shadowGraph.mulTilde 3`
-(the multiplied graph "`5·G`") contains six pairwise edge-disjoint spanning trees `Ts`, then
-every bar-joint realization of `G²` in `ℝ³` at a placement generic for row independence is
-infinitesimally rigid.
+(`cor:molecule-generic-square-packing`, JJ 2010 p. 586): if `G̃ = G.shadowGraph.mulTilde 3`, the
+multiplied graph `5·G'` of the multigraph `G' = G.shadowGraph`, contains six pairwise edge-disjoint
+spanning trees `Ts`, then every placement `p : Framework V 3` generic for row independence is
+infinitesimally rigid for `G²`. Jackson and Jordán note it as a consequence of the molecular
+conjecture and Tay and Whiteley's theorem on body-and-hinge frameworks.
 
-The `|V| = 1` case is the trivial kernel bound (`Submodule.finrank_le` against
-`Framework.finrank`, `3 ≤ 6`), independent of the packing hypothesis. For `|V| ≥ 2`: each
-spanning tree `Ts i`, being a tree with vertex set all of `V` (`Ts i ≤s G̃`), has exactly
-`|V| - 1` edges (`Graph.IsTree.ncard_vertexSet`); the six trees are pairwise disjoint, so their
-union has `6(|V|-1)` edges and (each tree acyclic in itself, hence in `G̃`) is independent in
-the `6`-fold cycle-matroid union of `G̃`, hence in `M(G̃) = G.shadowGraph.matroidMG 3`
-(`Matroid.union_indep_iff` / `Graph.cycleMatroid_indep`). Since `def(G̃) ≥ 0` bounds
-`rank M(G̃) ≤ 6(|V|-1)` (`Graph.rank_add_deficiency_eq`), this independent set of size
-`6(|V|-1)` is a base (`Matroid.Indep.isBase_of_ncard`), so `def(G̃) = 0`
-(`Graph.isBase_ncard_add_deficiency_eq`). A `0`-dof graph has minimum multigraph degree `≥ 2`
-(`Graph.two_le_degree_of_isKDof_zero`, KT Lemma 4.6's degree half) — this route to `hmin`
-substitutes for a direct "each tree touches every vertex" degree count, since it reuses
-existing Phase-19/22i machinery — which transfers to `G`'s own degree via the shadowing
-carrier's neighbor-set identity (`G.shadowGraph` is `Simple`); `molecule_generic_rigid`
-closes. -/
+If `|V| = 1`, then `dim ker R(G², p) ≤ 3 ≤ 6` (`Submodule.finrank_le`, `Framework.finrank`),
+whatever the trees. Let `|V| ≥ 2`. Each tree `Ts i` spans `G̃`, so it has `|V| - 1` edges
+(`Graph.IsTree.ncard_vertexSet`) and is acyclic in `G̃`. As the six are pairwise disjoint, their
+edges form a set of `6(|V| - 1)` edges independent in the union of six copies of the cycle matroid
+of `G̃` (`Matroid.union_indep_iff`, `Graph.cycleMatroid_indep`), hence in
+`M(G̃) = G.shadowGraph.matroidMG 3`. As `def(G̃) ≥ 0`, `rank M(G̃) ≤ 6(|V| - 1)`
+(`Graph.rank_add_deficiency_eq`), so the set is a base (`Matroid.Indep.isBase_of_ncard`) and
+`def(G̃) = 0` (`Graph.isBase_ncard_add_deficiency_eq`). So `G'` is a `0`-dof-graph on at least two
+vertices, and its vertices have degree at least two (`Graph.two_le_degree_of_isKDof_zero`,
+`lem:deficiency-zero-connected`). As `G'` is simple and links exactly the adjacent pairs of `G`,
+each vertex has the same degree in `G`, and `molecule_generic_rigid` applies. -/
 theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G : SimpleGraph V)
     {Ts : Fin 6 → Graph V ((Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) × Fin (Graph.bodyHingeMult 3))}
     (hspan : ∀ i, Ts i ≤s G.shadowGraph.mulTilde 3) (hTtree : ∀ i, (Ts i).IsTree)
@@ -321,8 +316,8 @@ theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G :
     have heqb := G.shadowGraph.isBase_ncard_add_deficiency_eq 3 hbD hne hBbase
     rw [hcast] at heqb
     linarith
-  -- Minimum degree `≥ 2`: a `0`-dof graph is `2`-edge-connected (KT Lemma 4.6's degree half),
-  -- transferred to `G` via the shadowing carrier's neighbor-set identity.
+  -- Minimum degree `≥ 2`: a `0`-dof-graph on two or more vertices has it
+  -- (`lem:deficiency-zero-connected`), and `G.shadowGraph` has the neighbours of `G`.
   have hmin : ∀ v, 2 ≤ G.degree v := by
     intro v
     have h2 : 2 ≤ G.shadowGraph.degree v :=

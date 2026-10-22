@@ -7,51 +7,49 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
 import Mathlib.LinearAlgebra.Vandermonde
 
 /-!
-# General position up to order four for panel normals (Theorem 5.6, general-position form)
+# Panel normals in general position up to order four
 
-Phase 25 (`sec:molecule-modelling`, `lem:theorem-56-general-position`, leaf W6). The square-graph
-dictionary (`thm:molecular-iff-square-bar-joint`) consumes a placement whose points are in general
-position *up to order four* — every subfamily of at most four points affinely independent. On the
-panel side of the projective duality (`lem:panel-hinge-dual-molecular`) the corresponding data is a
-free normal assignment `q : α × Fin 4 → ℝ` whose **poles** (the dehomogenized normals) are in
-general position up to order four; via homogenization this is exactly
+The condition that `lem:theorem-56-general-position` asks of the normals of a panel-hinge framework
+in `ℝ³`, and the polynomial of its proof that tests it, as `sec:molecule-modelling-general-position`
+presents them. The square-graph dictionary (`thm:molecular-iff-square-bar-joint`) needs the centres
+of a molecular framework in general position up to order four (`def:general-position-placement`),
+and through the polarity (`lem:panel-hinge-dual-molecular`) the centres are the poles of the normals
+of a panel-hinge framework. A normal with a nonzero last coordinate is a nonzero multiple of
+`(c, 1)` for a unique point `c`, its pole, and the poles of the normals `q : α × Fin 4 → ℝ` are in
+general position up to order four exactly when
 
-* each normal has nonvanishing last coordinate (the poles are affine, not at infinity), and
-* every subfamily of at most four normals is linearly independent (as homogeneous points).
+* each normal has a nonzero last coordinate (its pole is a point, not at infinity), and
+* any four or fewer normals are linearly independent.
 
-This file supplies the **avoidance polynomial** for that condition (Katoh–Tanigawa 2011 p. 671, the
-word "nonparallel"; §2.4 step 4 of `notes/Phase25-design.md`): a single nonzero
-`MvPolynomial (α × Fin 4) ℝ` whose non-roots `q` make `PanelHingeFramework.ofNormals G ends q`
-satisfy the order-four general-position predicate `IsGeneralPosition4`. It is the order-four
-strengthening of `PanelHingeFramework.exists_generalPosition_polynomial` (which supplies only the
-order-two, pairwise, condition `IsGeneralPosition`).
+`IsGeneralPosition4` is this condition. `exists_generalPosition4_polynomial` gives a polynomial `Q₂`
+in the coordinates of the normals that does not vanish at the moment curve and whose non-roots `q`
+make `PanelHingeFramework.ofNormals G ends q` satisfy `IsGeneralPosition4`: the order-four form of
+`PanelHingeFramework.exists_generalPosition_polynomial`, which tests only that any two normals are
+linearly independent (`IsGeneralPosition`). For a tuple `f : Fin j → α` with `j ≤ 4`, the minor
+`leadMinorPoly` of the `j × 4` matrix of the normals of `f` on its first `j` columns is a
+polynomial; where it does not vanish, the `j` normals are linearly independent (a family is linearly
+independent when its projection is), and at the moment curve `q(a, i) = (param a)^i` it is the
+Vandermonde determinant `∏_{r < r'} (param (f r') − param (f r))`, which is nonzero for distinct
+parameters (`Matrix.det_vandermonde`). `Q₂` is the product of the last coordinates `∏_a X (a, 3)`
+and of these minors over the injective tuples of sizes `2`, `3` and `4`. At a non-root a single
+normal is nonzero by its last coordinate, and two to four normals are linearly independent by the
+minor of a tuple that lists them.
 
-The construction mirrors the order-two one: for an injective tuple `f : Fin j → α` (`j ≤ 4`) the
-**leading `j × j` minor** of the `j × 4` normal matrix — the determinant on the first `j`
-coordinate columns — is a polynomial `leadMinorPoly`; its nonvanishing forces the `j` normals
-linearly independent (a projection of a linearly independent family is dependent only if the family
-is), and at the moment curve `q(a, i) = (param a)^i` it is the Vandermonde determinant
-`∏_{r < r'} (param (f r') − param (f r))`, nonzero for distinct parameters
-(`Matrix.det_vandermonde`). Multiplying the leading minors over injective tuples of sizes `2, 3, 4`
-by the last-coordinate factor `∏_a X (a, 3)` gives the avoidance polynomial; a non-root is in
-general position up to order four (singletons handled by the last-coordinate factor, larger
-subfamilies by the matching leading-minor factor, reindexed onto the subset).
-
-Scope is `ℝ³` (`k = 2`, `Fin 4`) throughout, matching the phase (`notes/Phase25.md`).
-
-See `notes/Phase25-design.md` §2.4 (leaf W6) and `blueprint/src/chapter/molecule-modelling.tex`
-(`lem:theorem-56-general-position`).
+Katoh and Tanigawa need only a nonparallel realization, whose panels meet pairwise in lines (KT
+pp. 670–671); the dictionary needs the poles in general position up to order four. The file works in
+`ℝ³` (`k = 2`, normals in `ℝ⁴`).
 
 ## Main definitions
 
-* `PanelHingeFramework.IsGeneralPosition4` — the panel normals are in general position up to order
-  four: nonvanishing last coordinate plus linear independence of every `≤ 4`-normal subfamily.
+* `PanelHingeFramework.IsGeneralPosition4`: the normals are in general position up to order four,
+  each with a nonzero last coordinate and any four or fewer linearly independent.
 
 ## Main results
 
-* `PanelHingeFramework.exists_generalPosition4_polynomial` — the avoidance polynomial: a nonzero
-  polynomial whose non-roots are the order-four general-position normal assignments.
-* `PanelHingeFramework.IsGeneralPosition4.isGeneralPosition` — order four implies order two.
+* `PanelHingeFramework.IsGeneralPosition4.isGeneralPosition`: general position up to order four
+  implies general position (`IsGeneralPosition`).
+* `PanelHingeFramework.exists_generalPosition4_polynomial`: the polynomial `Q₂`, whose non-roots are
+  in general position up to order four.
 -/
 
 namespace CombinatorialRigidity.Molecular
@@ -62,26 +60,25 @@ variable {α β : Type*}
 
 namespace PanelHingeFramework
 
-/-- **General position up to order four of the panel normals** (`def:general-position-placement`,
-panel side; `lem:theorem-56-general-position`). The panel framework `P` (in `ℝ³`, `k = 2`) is in
-general position up to order four when
+/-- **General position up to order four of the normals** (the condition of
+`lem:theorem-56-general-position` on the normals; `def:general-position-placement` for their poles):
+the panel-hinge framework `P` in `ℝ³` (`k = 2`) has
 
-* every normal has nonvanishing last coordinate (`P.normal a (Fin.last 3) ≠ 0`), so its pole — the
-  dehomogenization by the last coordinate — is an affine point; and
-* every subfamily of at most four normals is linearly independent.
+* every normal with a nonzero last coordinate (`P.normal a (Fin.last 3) ≠ 0`), so that its pole, its
+  first three coordinates divided by the last, is a point; and
+* any four or fewer normals linearly independent.
 
-Read through the homogenization convention (`Extensor.homogenize = Fin.snoc · 1`, the affine pole
-carries a `1` in the last coordinate), this is precisely: the poles are in general position up to
-order four, i.e. every `≤ 4`-subfamily of poles is affinely independent — the condition the
-square-graph dictionary consumes (`IsGeneralPositionPlacement`, `GeneralPositionPlacement.lean`).
-Strengthens the pairwise `IsGeneralPosition` (`IsGeneralPosition4.isGeneralPosition`). -/
+As `homogenize` (`Extensor.lean`) appends a last coordinate `1`, this says that the poles are in
+general position up to order four, that is, any four or fewer of them are affinely independent: the
+condition `IsGeneralPositionPlacement` (`GeneralPositionPlacement.lean`) that the square-graph
+dictionary needs. It implies `IsGeneralPosition` (`IsGeneralPosition4.isGeneralPosition`). -/
 def IsGeneralPosition4 (P : PanelHingeFramework ℝ 2 α β) : Prop :=
   (∀ a : α, P.normal a (Fin.last 3) ≠ 0) ∧
     (∀ s : Finset α, s.card ≤ 4 → LinearIndependent ℝ (fun a : s => P.normal a))
 
-/-- Order-four general position implies the order-two (pairwise) general position
-`IsGeneralPosition`: any two distinct normals form a `2`-element subfamily, hence are independent.
--/
+/-- **General position up to order four implies general position** (a step of
+`lem:theorem-56-general-position`): two distinct normals form a set of two, so they are linearly
+independent (`IsGeneralPosition`). -/
 theorem IsGeneralPosition4.isGeneralPosition {P : PanelHingeFramework ℝ 2 α β}
     (hP : P.IsGeneralPosition4) : P.IsGeneralPosition := by
   classical
@@ -106,16 +103,16 @@ of normal variables `X (f r, ·)` — the determinant on the first `j` coordinat
 polynomial whose nonvanishing forces the `j` normals linearly independent, and which at the moment
 curve is the Vandermonde determinant of the parameters. -/
 
-/-- The leading `j × j` minor polynomial of an injective tuple `f : Fin j → α` (`j ≤ 4`): the
-determinant of the `j × j` submatrix of normal variables on rows `f r` and the first `j` coordinate
-columns. -/
+/-- **The leading minor of a tuple of normals** (a step of `lem:theorem-56-general-position`): for
+`f : Fin j → α` with `j ≤ 4`, the determinant of the `j × j` matrix of the variables `X (f r, c)` at
+the first `j` coordinates `c`. -/
 private noncomputable def leadMinorPoly {j : ℕ} (hj : j ≤ 4) (f : Fin j → α) :
     MvPolynomial (α × Fin 4) ℝ :=
   (Matrix.of fun r c : Fin j =>
     (MvPolynomial.X (f r, Fin.castLE hj c) : MvPolynomial (α × Fin 4) ℝ)).det
 
-/-- Evaluating the leading-minor polynomial at `q` is the determinant of the numeric leading minor.
--/
+/-- **The leading minor at numeric normals** (a step of `lem:theorem-56-general-position`): at `q`
+it is the determinant of the leading `j × j` minor of the normals `q (f r, ·)`. -/
 private theorem eval_leadMinorPoly {j : ℕ} (hj : j ≤ 4) (f : Fin j → α) (q : α × Fin 4 → ℝ) :
     MvPolynomial.eval q (leadMinorPoly hj f)
       = (Matrix.of fun r c : Fin j => q (f r, Fin.castLE hj c)).det := by
@@ -124,10 +121,11 @@ private theorem eval_leadMinorPoly {j : ℕ} (hj : j ≤ 4) (f : Fin j → α) (
   ext r c
   simp [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X]
 
-/-- A nonzero leading minor forces the `j` normals linearly independent: the leading-minor rows are
-the images of the normals under the projection to the first `j` coordinates (`LinearMap.funLeft`),
-so if those rows are independent (`Matrix.linearIndependent_rows_of_det_ne_zero`) the normals are
-too (`LinearIndependent.of_comp`). -/
+/-- **A nonzero leading minor gives independent normals** (a step of
+`lem:theorem-56-general-position`): the rows of the leading minor are the images of the normals
+under the projection to the first `j` coordinates (`LinearMap.funLeft`), so if those rows are
+independent (`Matrix.linearIndependent_rows_of_det_ne_zero`), the normals are too
+(`LinearIndependent.of_comp`). -/
 private theorem linearIndependent_of_eval_leadMinorPoly_ne_zero {j : ℕ} (hj : j ≤ 4)
     (f : Fin j → α) {q : α × Fin 4 → ℝ}
     (h : MvPolynomial.eval q (leadMinorPoly hj f) ≠ 0) :
@@ -141,9 +139,10 @@ private theorem linearIndependent_of_eval_leadMinorPoly_ne_zero {j : ℕ} (hj : 
   rw [heq]
   exact Matrix.linearIndependent_rows_of_det_ne_zero h
 
-/-- At the moment curve `q(a, i) = (param a)^i`, the leading-minor polynomial of an injective tuple
-is the Vandermonde determinant `∏_{r < r'} (param (f r') − param (f r))`, nonzero for distinct
-parameters (`Matrix.det_vandermonde`). -/
+/-- **The leading minor at the moment curve** (a step of `lem:theorem-56-general-position`): at
+`q(a, i) = (param a)^i`, the leading minor of an injective tuple `f` is the Vandermonde determinant
+`∏_{r < r'} (param (f r') − param (f r))` (`Matrix.det_vandermonde`), nonzero when `param` is
+injective. -/
 private theorem eval_momentCurve_leadMinorPoly_ne_zero {j : ℕ} (hj : j ≤ 4)
     {f : Fin j → α} (hf : Function.Injective f) {param : α → ℝ}
     (hparam : Function.Injective param) :
@@ -165,29 +164,21 @@ private theorem eval_momentCurve_leadMinorPoly_ne_zero {j : ℕ} (hj : j ≤ 4)
 
 /-! ### The order-four avoidance polynomial -/
 
-/-- **The order-four general-position avoidance polynomial** (`lem:theorem-56-general-position`,
-§2.4 step 4 of `notes/Phase25-design.md`; Katoh–Tanigawa 2011 p. 671, "nonparallel"). A single
-nonzero `MvPolynomial (α × Fin 4) ℝ` whose non-roots `q` are exactly the normal
-assignments in general position up to order four: `ofNormals G ends q` satisfies
-`IsGeneralPosition4` (nonvanishing last coordinate — the poles are affine — plus linear
-independence of every `≤ 4`-normal subfamily). The order-four strengthening of
-`exists_generalPosition_polynomial` (which supplies only the pairwise `IsGeneralPosition`).
+/-- **The polynomial that tests general position up to order four** (a step of
+`lem:theorem-56-general-position`: the polynomial `Q₂` of its proof): a polynomial `Q` in the
+coordinates of the normals that does not vanish at the moment-curve normals `q(a, i) = (param a)^i`
+of an injective `param` with no zero value, and whose non-roots `q` make `ofNormals G ends q`
+satisfy `IsGeneralPosition4`. It is the order-four form of `exists_generalPosition_polynomial`,
+which gives only `IsGeneralPosition`.
 
-Concretely the product of the last-coordinate factor `∏_a X (a, 3)` with the leading `j × j` minors
-`leadMinorPoly` over injective tuples `f : Fin j → α` of sizes `j = 2, 3, 4`. It is genuinely
-nonzero (witnessed): at an injective parameter `param : α → ℝ` avoiding `0`, the moment-curve
-assignment `q(a, i) = (param a)^i` makes the last-coordinate factor `∏_a (param a)^3 ≠ 0` and each
-minor factor the Vandermonde determinant of distinct parameters, so the product is nonzero. A
-non-root is in general position up to order four: singletons come from the last-coordinate factor
-(a nonzero last coordinate makes the normal nonzero), and each `2 ≤ |s| ≤ 4` subfamily reindexes
-onto the matching leading-minor factor. Multiplying this factor into the deficiency-graded rank
-polynomial (`exists_rankPolynomial_of_le_finrank_linking`) and taking a non-root of the product
-(one `MvPolynomial.exists_eval_ne_zero` shot) yields the general-position form of Theorem 5.6 the
-square-graph dictionary consumes.
-
-(No rationality conjunct on `Q`: dropped, PROSPECT S2, `notes/Phase31.md` — every caller only ever
-destructured it into `_`, the same pattern the `exists_rankPolynomial_*` family dropped in RELAX
-slice (e), `notes/Phase30.md`.) -/
+`Q` is the product of the last coordinates `∏_a X (a, 3)` and of the leading minors `leadMinorPoly`
+of the injective tuples `f : Fin j → α` for `j = 2, 3, 4`. At the moment curve the last coordinates
+are `(param a)^3 ≠ 0` and each minor is a Vandermonde determinant of distinct parameters. At a
+non-root a single normal is nonzero by its last coordinate, and two to four normals are linearly
+independent by the minor of a tuple that lists them.
+`exists_rankHypothesis_isGeneralPosition4_of_two_le` takes a non-root of the product of `Q` and the
+rank polynomial of `exists_rankPolynomial_of_le_finrank_linking`
+(`MvPolynomial.exists_eval_ne_zero`). -/
 theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends : β → α × α) :
     ∃ Q : MvPolynomial (α × Fin 4) ℝ,
       (∀ param : α → ℝ, Function.Injective param → (∀ a, param a ≠ 0) →
@@ -203,7 +194,7 @@ theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends :
       * (∏ f ∈ I2, leadMinorPoly (by norm_num) f)
       * (∏ f ∈ I3, leadMinorPoly (by norm_num) f)
       * (∏ f ∈ I4, leadMinorPoly (by norm_num) f), ?_, ?_⟩
-  · -- (i) Nonzero at any injective, nonvanishing moment-curve seed.
+  · -- (i) Nonzero at the moment-curve normals of an injective `param` with no zero value.
     intro param hparam hpne
     simp only [map_mul, map_prod]
     refine mul_ne_zero (mul_ne_zero (mul_ne_zero ?_ ?_) ?_) ?_
