@@ -2598,7 +2598,14 @@ declaration's name as its header writes it:
   nonzero exactly when the normals at its ends are independent, and a zero hinge at the plane
   normals where adjacent planes coincide), what `HasCoplanarPanelRealization` asks (a nonzero hinge
   at every label) and that `ends` names the two ends of a link, kept as they stand but for their
-  pointers and codes, moved to the phase (task 37.9).
+  pointers and codes, moved to the phase (task 37.9); and in `Pencil/MainComponent/Flat.lean` and
+  `Bridge.lean`, the hinge `ofNormals` gives at a label from the normals of the two bodies its
+  selector gives it (`(u, v) = ends e`, under a rescaling of the normals; nonzero in the plane
+  framework as adjacent picture points differ), the selector that the chart form of the planar
+  case of KT Theorem 5.6 gives (it records every link) and the recorded hinges of the rank along a
+  polynomial curve, kept as they stand but for their pointers and codes, and that the chart point
+  needs no selector that records a link at every label (the "no total selector" of `Bridge.lean`'s
+  *Design* section, folded into its header), moved to the phase (task 37.10).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -4711,11 +4718,17 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and module headers; a `grep` of `CombinatorialRigidity/` for the
   labels of task 3.14's nodes).
   *Found:* round 5 task 3.14.
-  *Disposition:* reported (`notes/Prose-report.md`, L11); round 3: in `Carrier.lean`, the leads of
+  *Disposition:* done (task 37.10): in `Carrier.lean` (task 37.9), the leads of
   `IsAdmissiblePicture.exists_mvPolynomial` and `IsAdmissiblePicture.supportExtensor_ne_zero` call
   each a step of the nodes whose proofs name it (the first also names the openness noted after
   `def:pencil-admissible-picture`), and those of `liftingMatrix`, `map_ker_liftingMatrix` and
-  `finrank_ker_liftingMatrix` name their node, `def:pencil-lifting-system` (task 37.9).
+  `finrank_ker_liftingMatrix` name their node, `def:pencil-lifting-system`; in `Bridge.lean` (task
+  37.10), the lead of `Graph.embedEdges` names `def:pencil-embed-edges`, the module header no longer
+  lists `panelSupportExtensor_smul_right` among its main results, and its lead calls it a step of
+  `lem:pencil-jj-rescale`, whose proof names it, and of `lem:panel-hinge-dual-molecular`, before
+  the definition whose term it concerns; the leads of the other declarations of task 3.14 there
+  name their nodes (the five pins of `lem:pencil-jj-embed-edges` that node, each with its clause)
+  or the node they are a step of. Before: reported (`notes/Prose-report.md`, L11).
 - **F-250** · L · the declarations of the nodes round 5's task 5.3 moved across chapters
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `Molecular/Deficiency.lean`). The docstring of
   `PanelHingeFramework.theorem_55_minimalKDof_k` places `lem:case-cut-edge-realization{,-gp}` in
@@ -5756,6 +5769,27 @@ declaration's name as its header writes it:
   pair of picture points, and `Graph.finrank_affineLifts` without `[Finite α]`, on the three
   standard axioms (`scratch/reconcile-lean/t379/Hyps-t379.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.9.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
+- **F-310** · L · over-strong hypotheses, repeated derivations and a repeated binder in
+  `Molecular/Molecule/Pencil/MainComponent/Flat.lean` and `Bridge.lean`.
+  `Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint` and
+  `Graph.finrank_infinitesimalMotions_pointJoinFramework_flat` take `G.IsAdmissiblePicture q` and
+  use only its first conjunct, that the two ends of every link have distinct picture points; the
+  other pins of their nodes (`lem:pencil-lifting-planes-motions`, `lem:pencil-flat-split`) read no
+  picture or take the whole condition, so the statements of the nodes need not change.
+  `exists_mvPolynomial_linearIndependent_pointJoin_picture` and
+  `exists_mvPolynomial_linearIndependent_pointJoin_heights` have the same proof (13 lines each) but
+  for the variables and the polynomial family, each passing to `Set.univ` and back around
+  `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, which a form of that lemma for a
+  whole family would spare. `Graph.finrank_liftingPlanes` shows that a vector with dot product zero
+  against three independent picture points is zero through a unit matrix (9 lines), the steps that
+  `F-309` finds in three lemmas. `PanelHingeFramework.finite_setOf_finrank_lt_of_curve` binds
+  `{k : ℕ}`, which the file's `variable {k : ℕ}` already gives. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies; the two proofs compared line by line); a `lake lean`
+  witness: the two motion-space lemmas with the first conjunct of admissibility in its place and the
+  parents' proofs, on the three standard axioms (`scratch/reconcile-lean/t3710/Hyps-t3710.lean`,
+  gitignored).
+  *Found:* RECONCILE round 3 task 37.10.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38).
 
 ## M — mathematics and sources
