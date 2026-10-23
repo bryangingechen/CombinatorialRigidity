@@ -260,13 +260,24 @@ machine ran out of memory.)
   disables cache downloads, not the local write.
 - **One `lake build` at a time, in the foreground.** Never start a second
   build while one runs, never poll a slow build by re-running it, never
-  `&`-background one inside a Bash call (it gets orphaned), and never `pkill`
+  `&`-background one inside a Bash call (it gets orphaned, and no
+  notification reports it), and never `pkill`
   lake (it orphans the `lean` workers). Run a slow build once with a generous
   timeout and wait. **If you background a build with the harness's
   `run_in_background`, wait for its completion notification** instead of
   re-reading its output file (one dispatch spent half its tool budget on ~175
   such re-reads). A full mathlib rebuild is **never** expected: if
   `lake build` starts compiling thousands of mathlib files, stop and report.
+- **An empty process listing is not evidence.** An agent session may be
+  unable to list processes, and then `ps … 2>/dev/null | grep lean` prints
+  nothing whether or not a build runs. Know a build by its harness task ID
+  and notification. A harness stop kills the task's whole process tree, and
+  Lake keeps the modules it finished, so a re-run resumes.
+- **A build or dispatch denied for memory pressure is a stop.** When a
+  `lake build` or an agent dispatch is denied because the machine is under
+  critical memory pressure (a local hook can enforce this), don't retry or
+  wait: a builder returns `BLOCKED: memory pressure`, and the coordinator
+  stops (`/coordinate-phase` step 7; dispatch-log F49).
 - **`lean-toolchain` or `lake-manifest.json` modified in `git status`?**
   Something has gone wrong. Stop, report, and let the human decide; don't
   build on top of it or commit it.

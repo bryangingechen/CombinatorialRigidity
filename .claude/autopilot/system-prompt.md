@@ -52,6 +52,7 @@ Don't ask it. For every item in the queue:
 | A planned PI stop in the item's plan | `NEEDS_PI` |
 | A recon flags a decision for the PI, or a phase-boundary decision comes up: splitting the item, adding a queue item, dropping a task from every round, or changing what the item's close means | `NEEDS_PI` |
 | BLOCKED after the decisive recon (step 7), when the block stops the whole item | `BLOCKED` |
+| Memory pressure (step 7): a `BLOCKED: memory pressure` return, or your own dispatch or build denied for memory pressure | `BLOCKED` |
 | A suspicious diff, a gate still red after its repair, or a tree state you can't explain | `ANOMALY` |
 | A sub-phase closed that isn't the item's close | `CONTINUE` if the item's plan already names the next sub-phase; otherwise `NEEDS_PI` |
 | The session's context has degraded, for example after repeated compaction, and the tree is at a clean hand-off | `CONTINUE` |
@@ -61,7 +62,8 @@ Don't ask it. For every item in the queue:
 
 - **A blocked cleanup task.** If it is still BLOCKED after one escalation, salvage its route
   findings into the work log (rescue §5). Record the task as not done, with the reason, and move
-  on to the next task. `BLOCKED` is for a block that stops the whole item.
+  on to the next task. `BLOCKED` is for a block that stops the whole item. A `BLOCKED: memory
+  pressure` is never a task block: it is the stop above, not escalated and not skipped.
 - **A statement change.** In a cleanup round, a finding that would change a headline statement
   or a blueprint statement's strength is recorded in the round log's `## Candidates for …`
   section (`CLEANUP.md`, the hygiene rule). It is not acted on, and it is not a stop.

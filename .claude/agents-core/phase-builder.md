@@ -53,10 +53,19 @@ pre-commit checklists; this file pins the loop contract):
   and its completion notification will NOT wake you once your turn
   ends; if that message appears anyway, do not end your turn to
   "wait" — and do NOT immediately re-run the command either: **wait
-  in-turn for the backgrounded call to finish first** (poll its output
-  file with sleep-free foreground checks), then run the gate once more
-  with the explicit timeout and block on it. Starting a second `lake
-  build` while the stray one still runs violates one-build-at-a-time
+  in-turn for the backgrounded call to end first**, then run the gate
+  once more with the explicit timeout and block on it. It ends
+  `completed`, or `killed` when the harness stops it ten minutes after
+  backgrounding it; either notice reaches you only *between* tool calls,
+  so wait in short calls (one check, or a loop of at most two minutes),
+  never one long loop polling for an exit line a stopped build cannot
+  write (2026-10-22: a 550 s loop ran nine minutes past the `killed`
+  notice). After `killed`, the re-run resumes where the stopped build
+  left off. An empty `ps`/`pgrep` result never shows that no build runs
+  (`CombinatorialRigidity/CLAUDE.md`). **A `lake build` denied for
+  memory pressure is a `BLOCKED: memory pressure` return**, never a
+  wait or a retry (ibid.). Starting a
+  second `lake build` while the stray one still runs violates one-build-at-a-time
   and has caused a real olean write race (2026-07-24, W3-L1; the
   original stranded-uncommitted shape: four dispatches, 2026-07-11).
   **Never wrap a gate in shell-level `timeout` or pipe it into `tail`/

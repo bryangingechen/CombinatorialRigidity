@@ -84,6 +84,7 @@ keeps only what git cannot show.
 | 2026-10-17 | reconcile-lean task 8 (`c9053a23`) | opus | coordinator artifact refuted by the dispatch it primed (F19) | The task-8 prompt sent a finding from task 7's diff ("fewer than `D(|V|−1)`" needs `|V| ≥ 2`) to task 29, `Deficiency.lean`'s sweep. The sentence is in `GenericityDevice.lean`: `git show` lists files in path order, and the coordinator read the first hunk as the second file's. The builder checked, put it on task 34's line, and said so. Lesson: name a finding's file from `git show -- <file>`, not from its position in a multi-file diff.
 | 2026-10-17 | reconcile-lean task 14 (`9840dd2c`) | opus | hygiene-rule reading accepted by the coordinator | To have the descent call `exists_packing_move_of_not_inc` (L8), the builder strengthened its conclusion from `x ∈ Fs' j`, which an index swap satisfies (`F-272`), to the re-choice its proof built, and restated `lem:packing-move` to match, its old proof's construction. The task line expected no statement change. Accepted as L8's "repeated derivation replaced" (task 13's planned disjoint cover is the precedent), and recorded under *Decisions*. Lesson: an L8 line names whether the callee's conclusion is strong enough to call.
 | 2026-10-21 | reconcile-lean task 35.1 (`444dd385`; fixup next commit) | opus | killed dispatch resumed; gate-invisible defect caught in verification | A usage limit killed the coordinator mid-dispatch; a SendMessage resume landed the task over its uncommitted edit (rescue §3). To get the work log under the ~500-line tripwire, the builder paraphrased the `**PI, 2026-10-21:**` entry along with its own blocked entry; the PI's words then survived only in git. No gate reads a PI entry; the coordinator's read of *Autopilot: for the PI* caught it, and a fixup restored it verbatim. Lesson: a compression prompt should say that PI entries are never edited.
+| 2026-10-22 | reconcile-lean task 38.2 (`ca705c65`) | opus | gate mechanics under memory pressure; a PI reboot after the landing | The trial-deletion build passed its 600 s timeout, was backgrounded, and was stopped ten minutes later (`killed`); the notice waited behind a 550 s loop polling for an exit line the stopped build could not write. The leftover-build check, `ps … 2>/dev/null \| grep`, printed nothing because the session could not list processes. A re-run resumed and the task landed clean. The coordinator's step-5 build used a shell `&`. The memory pressure came from other processes, not the builds. F49.
 
 **Phase 39 (PENCIL) rows, 2026-07-24 → 09-17: 150 pruned at the phase close
 (2026-09-25); the full rows are in git history at `e316891f`.** Profile, by
@@ -587,3 +588,16 @@ PI, and F40.
   markers, Phase 34's `thm:bodyhinge-generic-rank` and
   `cor:bodyhinge-generic-rigid`, fixed in the same commit; (b) is
   `check-phase-note.py` *Which files* (a suffixed note titled "work log").
+- **F49 — the harness stops what it backgrounds, and a session may not see
+  processes (RECONCILE 3/3 task 38.2, 2026-10-22).** A Bash call past its
+  `timeout` is backgrounded and stopped ten minutes later (`killed`). The
+  stop kills the whole process tree (a heartbeat child of a stopped task
+  died with it) and Lake keeps the modules the run finished, so a re-run
+  resumes; the notice reaches an agent only between tool calls. A session
+  that cannot list processes reads an empty `ps | grep` as "no build", and
+  cannot see a shell-`&` build at all. The memory pressure that day came
+  from other processes, but two whole-project builds ran into it before the
+  PI rebooted. Promoted: `CombinatorialRigidity/CLAUDE.md` (an empty
+  process listing is not evidence; a memory-pressure denial is a stop), the
+  phase-builder core (waiting out a backgrounded gate), the command's steps
+  5 and 7, and the autopilot prompt's stop table.

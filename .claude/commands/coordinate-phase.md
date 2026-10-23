@@ -745,7 +745,10 @@ CLAUDE.md at phase close.
    **Warning-clean, not merely green** (a sorry'd skeleton once rode
    a green-but-warning build onto master). Red or warning-bearing →
    stop and surface. Skip for docs-only commits. (Run the gate in the
-   foreground, or — if backgrounded to read the diff in parallel —
+   foreground, or — if backgrounded to read the diff in parallel, with
+   the Bash tool's `run_in_background`, **never a shell `&`**, which no
+   notification reports and no task stop reaches (a step-5 build used
+   one, 2026-10-22) —
    **wait for its completion notification**; re-reading an unchanged
    background-output file is a wasted call.)
 6. One sentence to the user: clean handoff, or the specific concern.
@@ -784,6 +787,11 @@ CLAUDE.md at phase close.
      estimates; don't pick unilaterally.
    - Suspicious diff: unexpectedly large, unrelated files, or the
      step-5 gate red.
+   - **Memory pressure:** a `BLOCKED: memory pressure` return, or a
+     dispatch or step-5 build of your own denied for memory pressure.
+     It is not a task block: no escalation, no next task; the
+     machine needs the user (`CombinatorialRigidity/CLAUDE.md`,
+     dispatch-log F49).
    - The agreed run cap (default 10) reached since the user last
      checked in.
 
