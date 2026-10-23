@@ -363,8 +363,7 @@ two diagonal-block row counts:
 another (`e₂`); the combined `(m₁ ⊕ m₂)`-square minor of `fromBlocks A B 0 D` over those columns is
 itself block-triangular, so its determinant is the product of the two minor dets
 (`Matrix.det_fromBlocks_zero₂₁`), nonzero. Hence the minor has linearly independent rows, rank
-`#m₁ + #m₂`, and `rank ≤ (fromBlocks A B 0 D).rank` by `rank_submatrix_le`. The span form is
-`Submodule.finrank_add_card_le_of_linearIndependent_mkQ`. -/
+`#m₁ + #m₂`, and `rank ≤ (fromBlocks A B 0 D).rank` by `rank_submatrix_le`. -/
 theorem rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows
     {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
     [Fintype n₁] [Fintype n₂] {A : Matrix m₁ n₁ K} (B : Matrix m₁ n₂ K) {D : Matrix m₂ n₂ K}

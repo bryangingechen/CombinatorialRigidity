@@ -9,10 +9,10 @@ non-vacuity witness for each of the 16 main results outside S1's and S2's rows, 
 sweep by directory, and the §B–§C screen with the fixes it appends. No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–38.1 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
-sweep, and the §B–§C screen, whose fixes are tasks 38.2–38.27.
-**Next concrete task:** task 38.2, the deletions in `CaseIII/` (*Hand-off*). Round manual:
-`CLEANUP.md`.
+wait for the phase. Tasks 1–38.2 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
+sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first of them.
+**Next concrete task:** task 38.3, the deletions in `CaseI.lean`, `GenericityDevice.lean` and
+`Coupling.lean` (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -41,26 +41,23 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 38.1 is done**, docs only; with task 38 it ends the screen, and nothing is mid-stream.
-**Next:** task 38.2.
+**Task 38.2 is done**, the deletions in `CaseIII/`; nothing is mid-stream. **Next:** task 38.3.
 
-**Task 38.1** (new `F-324`; scratch `scratch/reconcile-lean/t381/`, gitignored). *§C*: the top ten
-by the ledger's command (*Lean baselines*) at `abcd9d72`, from `case_II_realization_all_k` (715
-lines) to `forest_surgery_count` (298; the commit's message lists them), walked with the four
-questions from their bodies and the sweep's entries: each a no-op, as §C's calibration expects, but
-for steps an entry names, which tasks 38.14–38.27 take; the ~120-line block
-`case_III_candidate_dispatch` shares with `chainData_split_w6b_gates` threads the split's locals and
-stays (`F-293`). *The verdicts*: each part of the entries the line listed has one, in its ledger
-disposition, by *Decisions*' rule (task 38.1): fixes merged into tasks 38.3–38.6 and 38.10 or
-appended as tasks 38.11–38.27; `F-324` (S) for the PI; FRICTION's two lemma proposals `wontfix` (one
-line at two or three sites); three re-proofs left, as each would add a forward `\uses` (`F-300` and
-`F-309` by `t381/reach.py`, `F-315` by the chapter's order). The ledger: 324 entries, 217 `done`, 9
-`left`, 50 `reported`, 48 `open`.
+**Task 38.2** (scratch `scratch/reconcile-lean/t382/`, gitignored). Block (b) at `af9ad25b` gives
+the line's 71 names unpinned, 69 dead, and two (`chainData_freshEdge_slot_perp`,
+`_perp_transport_base_to_candidate`) "live" only as `chainData_freshEdge_slot_perp_ends₀` reused
+their `by omega` auxiliaries: the build without them is green, and the five auxiliaries are now its
+own. Their 19 orphans went too (90 declarations in eleven files; the message lists them); the pinned
+`rigidityRows_ofNormals_relabel` and `candidateRow_ac_eq_neg` stay, uncalled. Emptied section
+headers and the headers' sentences on the deleted removed; every live reference repointed or marked
+"since deleted" (FRICTION's three mirror entries retired). `shiftBody_isLink_succ_edge` has no
+caller in the source now (the cache credits `shiftBody_ne_succ`'s shared auxiliary): task 38.6's
+orphan, as planned. The ledger: 324 entries, 218 `done`, 9 `left`, 50 `reported`, 47 `open`.
 
-**Task 38** (§B; new `F-322`, `F-323`): the smell counts beside the open's (its message), the 30
-suppression sites (`F-322`'s twelve go in task 38.10; the main results' three are `F-323`'s), and
-block (b) over the dead declarations in task order (tasks 38.2–38.9; the dispositions of `F-268`,
-`F-269`, `F-271`, `F-279`, `F-305` and `F-306` give each name).
+**Tasks 38–38.1** (docs only; new `F-322`–`F-324`): §B's screen (the smell counts beside the open's,
+the 30 suppression sites, block (b) over the dead declarations in task order: tasks 38.2–38.10) and
+§C's (the top ten, each a no-op), and a verdict on each part of the `L` entries, in their ledger
+dispositions: fixes merged into tasks 38.3–38.6 and 38.10 or appended as tasks 38.11–38.27.
 
 **Done before** (tasks 3–37.21; the ledger's dispositions name each part's task, the messages the
 detail): L9's thirty-nine deletions, `F-090`'s shim, `F-061`'s rename, L6–L8's hypotheses and
@@ -236,12 +233,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   one to five files in import order (new `F-290`–`F-321`; `F-104`, `F-132`,
   `F-144`, `F-182`, `F-186`, `F-190`, `F-238`, `F-245`, `F-246`, `F-250` `done`; `F-122`, `F-126`,
   `F-130`, `F-133`, `F-210`, `F-243` in part; the messages name each task's files).
-- [x] **38. §B, screened** (`CLEANUP.md` §B; docs only; new `F-322`, `F-323`): the smell counts
-  beside the open's, the 30 suppression sites, and block (b) over `F-268`, `F-269`, `F-271`,
-  `F-279`'s parts and L8's two, in task order; §C and the entries' verdicts are task 38.1.
-- [x] **38.1. §C and the entries' verdicts** (docs only; new `F-324`): §C's top ten, no-op; a
-  verdict on each part of the entries old task 38's line listed, in their ledger dispositions; the
-  fixes merged into tasks 38.3–38.6 and 38.10, or appended as tasks 38.11–38.27.
+- [x] **38–38.1. §B and §C, screened; the entries' verdicts** (docs only; new `F-322`–`F-324`):
+  the deletions, re-seeding and suppressions appended as tasks 38.2–38.10, the fixes as 38.11–38.27.
 - *Tasks 38.2–38.9, the deletions §B's block (b) found* (`F-279`'s task-38 paragraph and the
   dispositions of `F-268`, `F-269`, `F-271`, `F-305` and `F-306` give each name, its orphans and
   what stays). Each runs gate 4 first (block (b) on its names at its own tree; an orphan it reports
@@ -250,12 +243,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   (docstrings, file headers' lists, `TACTICS-QUIRKS.md` and `DESIGN.md`, where a precedent may say
   "since deleted"). *Expected* for each: the dump and `--summary` unchanged (no pin reaches a
   deleted name), gate 9 at 4 or below.
-- [ ] **38.2. `CaseIII/`** (`F-268`'s `case_III_old_new_blocks`, `F-269`'s four, `F-279`'s tasks
-  35–35.3; 71 names): `CaseIII/{Candidate,Arms,Realization}.lean`, `Relabel/{Basic,Arm,Chain,
-  ChainColumn}.lean`, and 19 orphans in `Candidate.lean`, `RigidityMatrix/Basic.lean`,
-  `Induction/Operations.lean` and `Mathlib/LinearAlgebra/{Dimension/Constructions,
-  LinearIndependent/Basic}.lean`. The cache's callers of `chainData_freshEdge_slot_perp` and
-  `_perp_transport_base_to_candidate` are a shared auxiliary proof (the trial deletion confirms).
+- [x] **38.2. `CaseIII/`** (`F-268`'s `case_III_old_new_blocks`, `F-269`, `F-279`'s tasks 35–35.3):
+  the 71 names and 19 orphans block (b) gave at `af9ad25b`, deleted; the two pins stay, uncalled.
 - [ ] **38.3. `CaseI.lean`, `GenericityDevice.lean`, `Coupling.lean`** (`F-268`'s other three,
   `F-271`'s two, `F-279`'s task 34.1; 26 names), and the orphan
   `isInfinitesimallyRigidOn_of_finrank_le_set` (`Pinning.lean`); five pins stay, uncalled. Then
@@ -427,26 +416,31 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 38.2**, at Opus: the deletions in `CaseIII/` (its line): gate 4 first (block (b) on
-its names at its tree), then §B's trial deletion with gates 1–3, gate 2's `grep` and block (c) over
-every deleted name; *Expected:* the dump and `--summary` unchanged, gate 9 at 4 or below (the
-parent dump `scratch/reconcile-lean/dump-t38.txt`, which task 38.1 leaves byte-identical). Then
-tasks 38.3–38.27 in order, one commit each, then the close. A fix task's gate 3 adds the sixteen
-witnesses of `scratch/reconcile-lean/Witnesses-t378.lean` and `t36/MolWitness.lean`.
+**Next: task 38.3**, at Opus (its line): the deletions in `CaseI.lean`, `GenericityDevice.lean` and
+`Coupling.lean` with their orphan, then `F-291`'s re-pointing and six deletions and `F-290`'s `hne`,
+`hnesH`. Gate 4 first (block (b) on its names at its tree), then §B's trial deletion with gates 1–3,
+gate 2's `grep` and block (c) over every deleted name (`t382/blockb.py`, `blockc.py` and
+`delete.py`, the last a dry run unless `--apply`, take the names); *Expected:* the dump's one
+change, `lem:claim-6-4`'s new `\uses` (gate 8), `--summary` OK, gate 9 at 4 or below (the parent
+dump `scratch/reconcile-lean/dump-t382.txt`, byte-identical to task 38.1's). If it does not fit one
+sitting, the deletions are 38.3 and the re-pointing 38.3.1. Then tasks 38.4–38.27 in order, one
+commit each, then the close. A fix task's gate 3 adds the sixteen witnesses of
+`scratch/reconcile-lean/Witnesses-t378.lean` and `t36/MolWitness.lean`.
 
-A whole-project build after an edit the main results import can pass the Bash tool's 600 s (task
-37.9's did) and go to the background: wait for it in-turn (a foreground loop on its log's exit
-marker, `for i in $(seq 1 110); do grep -q '^exit ' LOG && break; sleep 5; done`, the build writing
-`exit $?` to its log), and if it is stopped, run it again in the foreground; one build at a time.
-The hook that blocks a commit adding a `sorry` also reads the words "sorry" and "admit" in a
-`.lean` diff (task 37.4). `check-docstring-labels.py --lean` on a stale cache, and a `lake lean` of
-a harness importing an edited module, rebuild the edited modules: give each an explicit `timeout`,
-and run a harness once the files are built (tasks 37, 37.7). The screens (gitignored):
-`t341/unused_joint.py` (it misses a use written `Name.mp`), `t33/info.py`, `t321/codecmp.py`, the
-`Hyps-t*.lean` witnesses (each entry's *Evidence* names its own), `t38/blockb2.py`, `t38/seq.py`,
-and `t381/q.py` (a name's pins, liveness and callers) and `t381/reach.py` (the nodes a re-proof
-would make a pin reach). Carried in: `F-252`, `F-273`, `F-276`, `F-277`, `F-301`, `F-323` and
-`F-324` for the PI. After the round the queue stops before `RECONCILE-FORMAL`, which is attended.
+A whole-project build after an edit the main results import can pass the Bash tool's 600 s (tasks
+37.9's and 38.2's did) and go to the background: wait for it in-turn (a foreground loop on its log's
+exit marker, `for i in $(seq 1 110); do grep -q '^exit ' LOG && break; sleep 5; done`, the build
+writing `exit $?` to its log), and if it is stopped, run it again in the foreground (task 38.2's,
+stopped at the background limit, finished on the rerun); one build at a time. The hook that blocks a
+commit adding a `sorry` also reads the words "sorry" and "admit" in a `.lean` diff (task 37.4).
+`check-docstring-labels.py --lean` on a stale cache, and a `lake lean` of a harness importing an
+edited module, rebuild the edited modules: give each an explicit `timeout`, and run a harness once
+the files are built (tasks 37, 37.7). The screens (gitignored): `t341/unused_joint.py` (it misses a
+use written `Name.mp`), `t33/info.py`, `t321/codecmp.py`, the `Hyps-t*.lean` witnesses (each entry's
+*Evidence* names its own), `t38/blockb2.py`, `t38/seq.py`, and `t381/q.py` (a name's pins, liveness
+and callers) and `t381/reach.py` (the nodes a re-proof would make a pin reach). Carried in: `F-252`,
+`F-273`, `F-276`, `F-277`, `F-301`, `F-323` and `F-324` for the PI. After the round the queue stops
+before `RECONCILE-FORMAL`, which is attended.
 
 ## Decisions made during this round
 

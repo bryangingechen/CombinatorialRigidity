@@ -15,7 +15,7 @@ public import Mathlib.Algebra.Module.Torsion.Field
 /-!
 # Upstream candidates: independent-family facts
 
-Seven facts about linearly independent families, all upstream-eligible.
+Six facts about linearly independent families, all upstream-eligible.
 
 `LinearIndependent.disjoint_span_range_ker` is the converse companion of mathlib's
 `LinearIndependent.map`: if the composite `f ∘ v` is linearly independent, then the span of
@@ -42,16 +42,6 @@ The proof is `linearIndependent_sum` (the iff splitting an `ι ⊕ ι'` family i
 sub-families plus span-disjointness) specialised to `ι' = Unit`, where the second
 sub-family is the singleton `{x}` and span-disjointness `Disjoint (span (range v)) (K ∙ x)`
 collapses to `x ∉ span (range v)` by `Submodule.disjoint_span_singleton'`.
-
-`linearIndependent_sumElim_block_swap` is the block row-operation fact: for a base family
-`base` and a candidate block `cand` with `Sum.elim base cand` independent, replacing `cand` by
-any `cand'` whose entries differ from `cand`'s index-wise by members of `span (range base)`
-keeps the augmented family independent. It is the "adding to each candidate row a combination of
-the base rows preserves rank" fact; the proof passes to `M ⧸ span (range base)` (where `cand` and
-`cand'` have the same image) and rebuilds via `LinearIndependent.sumElim_of_quotient`. The
-rigidity project's general-`d` Case III consumes it (in the `Sum.elim (Sum.elim rn cand) ro`
-shape, `linearIndependent_sumElim_candidateBlock_swap` in `Molecular/RigidityMatrix/Basic.lean`)
-as the length-`d` chain row-correspondence.
 
 `linearIndependent_sum_smul_ne_zero` is the elementary fact that a finite linear
 combination `∑ j, c j • v j` of a linearly independent family with at least one
@@ -90,11 +80,8 @@ adjacent-point distinctness through the repositioning automorphism.
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
 (it imports `linearIndependent_sum` there, `disjoint_span_singleton'` from `Span.Basic`,
 `Fintype.linearIndependent_iff`, and `Fintype.mem_span_image_iff_exists_fun` from
-`Finsupp.LinearCombination`). `linearIndependent_sumElim_block_swap` additionally needs
-`Submodule.mkQ`/`ker_mkQ` from `Quotient.Basic` and `LinearIndependent.sumElim_of_quotient`
-from `Dimension.Constructions` (so it would land downstream of those, not in `Basic`).
-`LinearIndepOn.units_smul` needs only `LinearIndependent.units_smul` itself, already in the
-same file.
+`Finsupp.LinearCombination`). `LinearIndepOn.units_smul` needs only
+`LinearIndependent.units_smul` itself, already in the same file.
 
 See `DESIGN.md` *Mirror directory*.
 -/
@@ -192,66 +179,6 @@ theorem linearIndependent_sumElim_unit_iff {v : ι → M} (hv : LinearIndependen
       LinearIndependent.of_subsingleton (default : Unit) (by simpa using hx0), ?_⟩
     rw [hspan, hcomp]
     exact (Submodule.disjoint_span_singleton' hx0).2 hx
-
-/-- **A block row operation preserves independence: swapping a candidate block by members
-of the base block's span.** Over a division ring, for a base family
-`base : ι → M` and a candidate block `cand : ιc → M` with `Sum.elim base cand` linearly
-independent, if a second candidate block `cand'` differs from `cand` index-wise by members of
-`span (range base)` (each `cand' i - cand i ∈ span (range base)`), then `Sum.elim base cand'`
-is again linearly independent.
-
-This is the block form of "adding to each candidate row a combination of the base rows does
-not change the rank." The proof passes to the quotient `Q := M ⧸ span (range base)`: there
-`mkQ ∘ cand' = mkQ ∘ cand` (the differences vanish in `Q`), and `Sum.elim base cand`
-independence makes `mkQ ∘ cand` independent in `Q`, so `LinearIndependent.sumElim_of_quotient`
-rebuilds `Sum.elim base cand'` from the (submodule-valued) base block and the unchanged
-quotient block. -/
-theorem linearIndependent_sumElim_block_swap {ιc : Type*}
-    {base : ι → M} {cand cand' : ιc → M}
-    (hindep : LinearIndependent K (Sum.elim base cand))
-    (hdiff : ∀ i, cand' i - cand i ∈ Submodule.span K (Set.range base)) :
-    LinearIndependent K (Sum.elim base cand') := by
-  set P : Submodule K M := Submodule.span K (Set.range base) with hP
-  -- The base block lands in `P` and is independent there (a sub-block of the augmented family).
-  have hbase : LinearIndependent K base := by
-    have := hindep.comp Sum.inl Sum.inl_injective
-    simpa using this
-  have hbaseP : ∀ i, base i ∈ P := fun i => Submodule.subset_span ⟨i, rfl⟩
-  set f : ι → P := fun i => ⟨base i, hbaseP i⟩ with hf
-  have hfindep : LinearIndependent K f :=
-    LinearIndependent.of_comp P.subtype (by simpa [hf, Function.comp_def] using hbase)
-  -- The quotient map `π : M → M ⧸ P`.
-  set π := P.mkQ with hπ
-  -- In the quotient `Q = M ⧸ P`, the candidate block's image is independent.
-  have hcandQ : LinearIndependent K (π ∘ cand) := by
-    have hsplit := linearIndependent_sum.1 hindep
-    have hci : LinearIndependent K cand := by simpa using hsplit.2.1
-    have hdisj : Disjoint P (Submodule.span K (Set.range cand)) := by
-      simpa [hP] using hsplit.2.2
-    rw [linearIndependent_iff'] at hci ⊢
-    intro s g hg i hi
-    -- `π (∑ g_i cand_i) = 0`, so `∑ g_i cand_i ∈ P ∩ span (range cand) = 0`.
-    have hmem : (∑ l ∈ s, g l • cand l) ∈ P := by
-      rw [← Submodule.ker_mkQ P, LinearMap.mem_ker, map_sum]
-      simp only [map_smul]
-      simpa [hπ, Function.comp_def] using hg
-    have hspan : (∑ l ∈ s, g l • cand l) ∈ Submodule.span K (Set.range cand) :=
-      Submodule.sum_mem _ fun l _ =>
-        Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)
-    have hzero : (∑ l ∈ s, g l • cand l) = 0 :=
-      (Submodule.disjoint_def.1 hdisj) _ hmem hspan
-    exact hci s g hzero i hi
-  -- `cand'` has the same quotient image (the differences vanish), so it is independent in `Q`.
-  have heq : (π ∘ cand') = π ∘ cand := by
-    funext i
-    rw [Function.comp_apply, Function.comp_apply, ← sub_eq_zero, ← map_sub, hπ, P.mkQ_apply,
-      Submodule.Quotient.mk_eq_zero]
-    simpa [hP] using hdiff i
-  have hcand'Q : LinearIndependent K (π ∘ cand') := heq ▸ hcandQ
-  -- Rebuild `Sum.elim base cand'` from the base block (in `P`) and the quotient block.
-  have hrebuild := hfindep.sumElim_of_quotient cand'
-    (by simpa [hπ, Function.comp_def, P.mkQ_apply] using hcand'Q)
-  simpa [hf] using hrebuild
 
 /-- **An injective linear map preserves independence of a pair.** Over a ring, if
 `![x, y]` is linearly independent and `f` is an injective linear map, then `![f x, f y]` is

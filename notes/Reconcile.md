@@ -62,9 +62,10 @@ its fixes as tasks 38.2–38.10: seven deletions by directory, L8's re-seeding, 
 sites; `F-323`, three main results' unused `[DecidableEq β]`, is for the PI. Task 38.1 screened §C
 (its top ten need no restructuring) and gave each remaining `L` entry its verdict: fixes merged
 into tasks 38.3–38.6 and 38.10 or appended as tasks 38.11–38.27, by file; `F-324`, a main result's
-derivable `hD`, is for the PI.
-**Next concrete task:** round 3's task 38.2, the deletions in `CaseIII/` (then tasks 38.3–38.27 and
-the close).
+derivable `hD`, is for the PI. Task 38.2 deleted `CaseIII/`'s dead declarations, ninety with the
+orphans in `RigidityMatrix/Basic.lean`, `Induction/Operations.lean` and two `Mathlib/` mirrors.
+**Next concrete task:** round 3's task 38.3, the deletions in `CaseI.lean`, `GenericityDevice.lean`
+and `Coupling.lean` (then tasks 38.4–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

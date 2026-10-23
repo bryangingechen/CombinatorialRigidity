@@ -851,7 +851,7 @@ to be re-derived by re-reading entries later.
 ### [idiom] `omega` can't use `hid : (i : ℕ) < m` to close a side-goal over `↑(⟨(i : ℕ), _⟩ : Fin (m+1))` — it atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; restate with `show … from hid`
 - **Where it bit:** `Graph.ChainData.chainData_relabel_arm_hρGv` (`CaseIII/Relabel.lean`, the engine `hρGv`-slot wiring) — applying `chainData_freshEdge_slot_mem` at index `⟨(i : ℕ), _⟩ : Fin (cd.d + 1)` left side-goals `1 ≤ ↑(⟨(i:ℕ),_⟩)` / `↑(⟨(i:ℕ),_⟩) < cd.d`; `by omega` failed with a *self-contradictory* counterexample (atom `↑↑i`, constraints that actually satisfy the goal — the tell that omega sees the wrong variable).
 - **Resolution:** `show (i : ℕ) < cd.d from hid` (and `show 1 ≤ (i : ℕ) by omega`) restate the side-goal at the `Fin.val`-reduced form, accepted by defeq, so omega/`hid` sees the matching atom. `simp only [Fin.val_mk]; omega` also works but the `simpNF` linter then flags `Fin.val_mk` as unused (the reduction fires via `dsimp`), so it ships a warning — prefer `show`.
-- **Sibling — `Fin.ext (by omega)` on a `⟨a,_⟩ = ⟨b,_⟩ : Fin _` index-equality goal:** same atomization (omega sees `↑↑⟨a,_⟩`/`↑↑⟨b,_⟩` as distinct atoms `d`/`e`, not `a`/`b`). Resolution: prove the `Fin`-equality directly with `by simp only [Fin.mk.injEq]; omega` — `Fin.mk.injEq` reduces the `Fin = Fin` *Prop* to `a = b` (and is *used*, unlike `Fin.val_mk`, so it ships warning-clean). Bit at `Graph.ChainData.funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` (`CaseIII/Relabel.lean`, the (α) chain-arm `hrCol` bridge) reindexing `vtx ⟨(i-1)+1,_⟩ = vtx ⟨i,_⟩`.
+- **Sibling — `Fin.ext (by omega)` on a `⟨a,_⟩ = ⟨b,_⟩ : Fin _` index-equality goal:** same atomization (omega sees `↑↑⟨a,_⟩`/`↑↑⟨b,_⟩` as distinct atoms `d`/`e`, not `a`/`b`). Resolution: prove the `Fin`-equality directly with `by simp only [Fin.mk.injEq]; omega` — `Fin.mk.injEq` reduces the `Fin = Fin` *Prop* to `a = b` (and is *used*, unlike `Fin.val_mk`, so it ships warning-clean). Bit at `Graph.ChainData.funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` (since deleted; `CaseIII/Relabel.lean`, the (α) chain-arm `hrCol` bridge) reindexing `vtx ⟨(i-1)+1,_⟩ = vtx ⟨i,_⟩`.
 - **Lifted to:** TACTICS-QUIRKS § 63 (symptom-indexed; same atomization family as § 58).
 
 ### [idiom] A carried-hypothesis field / `∃`-bundle that indexes `cd.vtx ⟨2,_⟩` needs `2 ≤ cd.d` *in scope for the `by omega`* — use an explicit `hd2` binder (Pi) or nest the exists (`∃ (cd) (hd2 : 2 ≤ cd.d), …`), NOT a flat `∃ cd, 2 ≤ cd.d ∧ …`; and the OfNat literal `cd.vtx 1` is NOT defeq to `⟨1,_⟩`
@@ -896,35 +896,35 @@ to be re-derived by re-reading entries later.
 - **Resolution:** spell the *full* path `CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg` (confirm the inner namespace with `lean_hover_info` — the docstring "graph-free, abstract" prose hides that it sits under `BodyHingeFramework`). The same file already qualifies `BodyHingeFramework.hingeRow`/`.wstep` etc. inside its `_root_.Graph.ChainData` lemmas for the identical reason.
 
 ### [idiom] Composing two `(funLeft σ).dualMap` relabel transports — `dualMap_comp_dualMap` reverses the order, then `funLeft_comp` reverses it back
-- **Where it bit:** `BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-transport route B): composing two single-swap W9a transports into one across `σ₂ ∘ σ₁`, the nested `(funLeft σ₂).dualMap ((funLeft σ₁).dualMap φ)` must straighten to `(funLeft (σ₂ ∘ σ₁)).dualMap φ`.
+- **Where it bit:** `BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (since deleted; `CaseIII/Relabel.lean`, CHAIN-2c-ii-transport route B): composing two single-swap W9a transports into one across `σ₂ ∘ σ₁`, the nested `(funLeft σ₂).dualMap ((funLeft σ₁).dualMap φ)` must straighten to `(funLeft (σ₂ ∘ σ₁)).dualMap φ`.
 - **Friction:** `funLeft` is *contravariant* (`LinearMap.funLeft_comp R M (f₁ ∘ f₂) = funLeft f₂ ∘ₗ funLeft f₁`) and `dualMap` is too (`LinearMap.dualMap_comp_dualMap f g : f.dualMap ∘ₗ g.dualMap = (g ∘ₗ f).dualMap`, **not** a `dualMap_comp`) — so guessing the rewrite direction is error-prone, and `← dualMap_comp` (the name one reaches for) does not exist.
 - **Resolution:** chain `← LinearMap.comp_apply` (re-bundle the application as `(_ ∘ₗ _) φ`), then `LinearMap.dualMap_comp_dualMap` (turns `(funLeft σ₂).dualMap ∘ₗ (funLeft σ₁).dualMap` into `(funLeft σ₁ ∘ₗ funLeft σ₂).dualMap`), then `← LinearMap.funLeft_comp` (turns `funLeft σ₁ ∘ₗ funLeft σ₂` into `funLeft (σ₂ ∘ σ₁)`). The two contravariances cancel: `(funLeft (σ₂ ∘ σ₁)).dualMap` is "apply `σ₁` first" — the same order the composite swap acts, so no further bookkeeping. Group the two a-column corrections with `sub_sub` (`a - b - c = a - (b + c)`) on the *hypothesis only* (state the goal already in `a - (b + c)` form so its side needs no rewrite).
-- **Status:** idiom (recurred in `BodyHingeFramework.wstep_foldr_funLeft_eq` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-transport-W9a route B) — the relabel-only `List.foldr` of `(funLeft swapₛ).dualMap` over the moved-body list equals `(funLeft ⇑(∏ swapₛ)).dualMap`; the `cons` step is one `rw [List.prod_cons, Equiv.Perm.coe_mul, LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]` instance of this cancellation, and the base case needs the `funLeft id` note below).
-  - **`foldl` recurrence — the relabel-only `List.foldl` lands on the _inverse_ product** (`BodyHingeFramework.wstep_foldl_funLeft_eq`, the seed-advancing G1 bridge): `foldl` applies the *last* body **outermost**, the opposite order to the swap product `(∏ swapₛ)`, so the relabel-only `foldl` of `(funLeft swapₛ).dualMap` equals `(funLeft ⇑(∏ swapₛ)⁻¹).dualMap` — note the `⁻¹`, the one thing distinguishing it from the `foldr` sibling. Induct with `List.reverseRec` (peel the last body, matching the `foldl` base at index 0; cf. the [idiom] *A `List.foldl` whose induction base case lives at index `0`…* below / TACTICS-GOLF § 20). The `append_singleton` step is `rw [List.prod_append, List.prod_cons, List.prod_nil, mul_one, mul_inv_rev, Equiv.swap_inv, Equiv.Perm.coe_mul, LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]`: `mul_inv_rev` turns `(P * swap)⁻¹` into `swap⁻¹ * P⁻¹`, and `Equiv.swap_inv` drops the swap self-inverse — *then* the same contravariance cancellation closes it. The inverse is **desirable**, not an obstacle: composed with the perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` it lands on `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, exactly the base→candidate inverse-cycle relabel the arm's `hρGv`/`hwmem` slots use (`chainData_bottom_relabel`).
+- **Status:** idiom (recurred in `BodyHingeFramework.wstep_foldr_funLeft_eq` (since deleted; `CaseIII/Relabel.lean`, CHAIN-2c-ii-transport-W9a route B) — the relabel-only `List.foldr` of `(funLeft swapₛ).dualMap` over the moved-body list equals `(funLeft ⇑(∏ swapₛ)).dualMap`; the `cons` step is one `rw [List.prod_cons, Equiv.Perm.coe_mul, LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]` instance of this cancellation, and the base case needs the `funLeft id` note below).
+  - **`foldl` recurrence — the relabel-only `List.foldl` lands on the _inverse_ product** (`BodyHingeFramework.wstep_foldl_funLeft_eq`, since deleted, the seed-advancing G1 bridge): `foldl` applies the *last* body **outermost**, the opposite order to the swap product `(∏ swapₛ)`, so the relabel-only `foldl` of `(funLeft swapₛ).dualMap` equals `(funLeft ⇑(∏ swapₛ)⁻¹).dualMap` — note the `⁻¹`, the one thing distinguishing it from the `foldr` sibling. Induct with `List.reverseRec` (peel the last body, matching the `foldl` base at index 0; cf. the [idiom] *A `List.foldl` whose induction base case lives at index `0`…* below / TACTICS-GOLF § 20). The `append_singleton` step is `rw [List.prod_append, List.prod_cons, List.prod_nil, mul_one, mul_inv_rev, Equiv.swap_inv, Equiv.Perm.coe_mul, LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]`: `mul_inv_rev` turns `(P * swap)⁻¹` into `swap⁻¹ * P⁻¹`, and `Equiv.swap_inv` drops the swap self-inverse — *then* the same contravariance cancellation closes it. The inverse is **desirable**, not an obstacle: composed with the perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` it lands on `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, exactly the base→candidate inverse-cycle relabel the arm's `hρGv`/`hwmem` slots use (`chainData_bottom_relabel`).
 
 ### [idiom] `LinearMap.funLeft R M id = LinearMap.id` has no unapplied lemma — `show … from rfl`, not `funLeft_id`
-- **Where it bit:** the `nil` base case of `BodyHingeFramework.wstep_foldr_funLeft_eq` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-transport-W9a): after `List.prod_nil` + `Equiv.Perm.coe_one`, the goal is `LinearMap.id = (funLeft ℝ _ (_root_.id)).dualMap`.
+- **Where it bit:** the `nil` base case of `BodyHingeFramework.wstep_foldr_funLeft_eq` (since deleted; `CaseIII/Relabel.lean`, CHAIN-2c-ii-transport-W9a): after `List.prod_nil` + `Equiv.Perm.coe_one`, the goal is `LinearMap.id = (funLeft ℝ _ (_root_.id)).dualMap`.
 - **Friction:** mathlib's `LinearMap.funLeft_id` is the *applied* form (`funLeft R M id g = g`); there is no unapplied `funLeft R M id = LinearMap.id`, and `simp [funLeft_id]` cannot fire it on the unapplied occurrence inside `.dualMap`.
 - **Resolution:** `funLeft R M id` is defeq `LinearMap.id` (its `toFun` is `(· ∘ id) = (·)`), so `rw [show LinearMap.funLeft ℝ (ScrewSpace k) (_root_.id : α → α) = LinearMap.id from rfl, LinearMap.dualMap_id]`. The `rfl` discharges the unapplied equality; `dualMap_id` then closes the `.dualMap` wrapper.
 - **Status:** idiom (the identity-fold base case of any `funLeft`-relabel `List`-fold).
 
 ### [idiom] Dropping the involution from a `ρ = Equiv.swap`-relabel transport to a general `Equiv.Perm ρ` — the `ρ`/`ρ.symm`-placement is forced, not free
-- **Where it bit:** `PanelHingeFramework.ofNormals_relabel_perm` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-β), generalizing the swap-only `ofNormals_relabel` to KT eq. (6.54)'s `(i−1)`-cycle `ρᵢ`.
+- **Where it bit:** `PanelHingeFramework.ofNormals_relabel_perm` (since deleted; `CaseIII/Relabel.lean`, CHAIN-2c-ii-β), generalizing the swap-only `ofNormals_relabel` to KT eq. (6.54)'s `(i−1)`-cycle `ρᵢ`.
 - **Friction:** the swap body has `ρ` in *both* the seed reindex (`qρ p = q₀ (ρ p.1, ·)`) *and* the endpoint selector (`endsσρ e = (ρ (ends₀ (σ e)).1, …)`); with `ρ = ρ.symm` the two `ρ`s cancel each other (e.g. in the support-extensor equality `Q'.supportExtensor f = Q.supportExtensor (σ f)`), so the body never reveals which slot needs `.symm`.
 - **Resolution:** for a non-involutive `ρ` the cancellations dictate the placement uniquely — **`qρ` keeps forward `ρ`, but `endsσρ` flips to `ρ.symm`** (so `Q'.normal (ρ.symm x) = q₀ (ρ (ρ.symm x), ·) = q₀ (x, ·)` via `Equiv.apply_symm_apply`). Symmetrically the rigidity pullback motion is `S ∘ ρ.symm` (a target link at `(ρ.symm p, ρ.symm p')` matches a source link `f p p'` via `hiso` at `σ.symm f`), while the *vertex-region* transport stays **forward** `ρ : u ∈ st → ρ u ∈ sr` (`Equiv.symm_apply_apply` carries the source-constancy back to `st`). Link-recording is the `.mp` of `hiso` undone by `ρ.symm`. With the swaps reinstated (`ρ.symm = ρ`, `σ.symm = σ`) it is verbatim `ofNormals_relabel`. The proof is otherwise a mechanical transcription of the swap body — `Equiv.{apply_symm_apply, symm_apply_apply}` wherever the swap body wrote `hρρ`/`hσσ`.
 - **Status:** idiom.
 
 ### [idiom] `(funLeft σ).dualMap φ` read at a screw column moves the column index by `σ⁻¹` — `((funLeft σ).dualMap φ).comp (single w) = φ.comp (single (σ.symm w))`, and the `Pi.single_eq_of_ne` side-goal needs the `Equiv.apply_symm_apply` round-trip, not `assumption`
-- **Where it bit:** `BodyHingeFramework.funLeft_dualMap_comp_single` (`RigidityMatrix/Basic.lean`, the general-`d` Case-III chain arm's §I.8.24(4.5)(α) `±r` column-naturality bridge): the candidate `±r` row is the relabel image `(funLeft (shiftPerm)⁻¹).dualMap` of the base group, and the discriminator leaf `notMem_span_mkQ_pmR_row_of_gate` wants its column at the re-inserted body, but the LANDED `±r` identity `interior_group_acolumn_eq_neg_baseRedundancy` gives the *base*-side column.
+- **Where it bit:** `BodyHingeFramework.funLeft_dualMap_comp_single` (since deleted; `RigidityMatrix/Basic.lean`, the general-`d` Case-III chain arm's §I.8.24(4.5)(α) `±r` column-naturality bridge): the candidate `±r` row is the relabel image `(funLeft (shiftPerm)⁻¹).dualMap` of the base group, and the discriminator leaf `notMem_span_mkQ_pmR_row_of_gate` (since deleted) wants its column at the re-inserted body, but the LANDED `±r` identity `interior_group_acolumn_eq_neg_baseRedundancy` gives the *base*-side column.
 - **Friction:** unlike `hingeRow_funLeft_dualMap` (which moves a single hinge row's *endpoints* by forward `ρ`, no bijectivity needed), reading a *general* functional through a fixed screw column `single w` moves the column index by `σ⁻¹` (`(single w x)(σ a) = x ⟺ σ a = w ⟺ a = σ⁻¹ w`), so it needs `σ : Equiv.Perm`. In the `σ a ≠ w` branch the `single (σ.symm w)` side-goal is `a ≠ σ.symm w`, which `assumption`/`exact h` cannot close from `h : σ a ≠ w` — the indices live on opposite sides of `σ`.
 - **Resolution:** after `congr 1; funext a; rw [funLeft_apply, single_apply, single_apply]`, case on `eq_or_ne (σ a) w`; the off-branch closes `Pi.single_eq_of_ne` with `(fun he => h (by rw [he, Equiv.apply_symm_apply]))` (turn `a = σ.symm w` into `σ a = w`), not the bare `h`. Sibling of the `Equiv.swap → Equiv.Perm` `.symm`-placement entry above and the two `funLeft`/`dualMap` composition entries below — the column-read-off member of the relabel-transport family.
 - **Status:** idiom.
 
 ### [idiom] Equal `supportExtensor` ⟹ equal `hingeRowBlock` closes by unfolding the def, no fused lemma
-- **Where it bit:** the `hingeRowBlock`-agreement (second conjunct) of `Graph.ChainData.shiftBodyFramework_htrans` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-transport-W9a-chain): the two consecutive chain frameworks `F (s+1)`/`F s` share the selector `ends` and seed `q` (only the graph shrinks), so `(F (s+1)).hingeRowBlock f ≤ (F s).hingeRowBlock f` should be `le_refl`.
+- **Where it bit:** the `hingeRowBlock`-agreement (second conjunct) of `Graph.ChainData.shiftBodyFramework_htrans` (since deleted; `CaseIII/Relabel.lean`, CHAIN-2c-ii-transport-W9a-chain): the two consecutive chain frameworks `F (s+1)`/`F s` share the selector `ends` and seed `q` (only the graph shrinks), so `(F (s+1)).hingeRowBlock f ≤ (F s).hingeRowBlock f` should be `le_refl`.
 - **Friction:** there is no `hingeRowBlock_congr` / `hingeRowBlock_eq_of_supportExtensor_eq` fused lemma — `mem_hingeRowBlock_iff` is the only `hingeRowBlock` API and it is membership-shaped, not an equality.
-- **Resolution:** `hingeRowBlock F e` is *definitionally* `(span {F.supportExtensor e}).dualAnnihilator`, so `rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock, ‹supportExtensor-eq›, ‹supportExtensor-eq›]` collapses both sides to the same `(span {C}).dualAnnihilator` and `rfl`-closes the `≤`. Add a `_supportExtensor`-equality simp lemma for the framework family (here `shiftBodyFramework_supportExtensor : … = panelSupportExtensor (q ((ends f).1)) (q ((ends f).2))`, `rfl`, `s`-independent) so the two extensor rewrites are by-name. No congruence lemma needed for a one-off; reach for the fused lemma only if it recurs.
-- **Recurred → fused at the row level (Phase 23c).** The same `supportExtensor e₁ = supportExtensor e₂ ⟹ block agreement` idiom bit a second time in the chain-arm row routing (a *seed* `ofNormals` row must become a *candidate* `caseIIICandidate` row off the two override slots). Rather than re-unfold inline, the framework-general fused lemma `BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq` (`RigidityMatrix/Basic.lean`) now carries it at the `rigidityRows`-membership level: `F₂.graph.IsLink e u v` + `r ∈ F₁.hingeRowBlock e` + `F₁.supportExtensor e = F₂.supportExtensor e ⟹ hingeRow u v r ∈ F₂.rigidityRows`. Body is still the one-line `hingeRowBlock`-unfold (`rwa [hingeRowBlock, ← hsupp, ← hingeRowBlock]`) — the fused form just exports it as a reusable membership transfer. The `caseIIICandidate`-vs-`ofNormals` instantiation is `PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (`CaseIII/Candidate.lean`).
+- **Resolution:** `hingeRowBlock F e` is *definitionally* `(span {F.supportExtensor e}).dualAnnihilator`, so `rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock, ‹supportExtensor-eq›, ‹supportExtensor-eq›]` collapses both sides to the same `(span {C}).dualAnnihilator` and `rfl`-closes the `≤`. Add a `_supportExtensor`-equality simp lemma for the framework family (here `shiftBodyFramework_supportExtensor : … = panelSupportExtensor (q ((ends f).1)) (q ((ends f).2))`, `rfl`, `s`-independent; since deleted) so the two extensor rewrites are by-name. No congruence lemma needed for a one-off; reach for the fused lemma only if it recurs.
+- **Recurred → fused at the row level (Phase 23c).** The same `supportExtensor e₁ = supportExtensor e₂ ⟹ block agreement` idiom bit a second time in the chain-arm row routing (a *seed* `ofNormals` row must become a *candidate* `caseIIICandidate` row off the two override slots). Rather than re-unfold inline, the framework-general fused lemma `BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq` (`RigidityMatrix/Basic.lean`) now carries it at the `rigidityRows`-membership level: `F₂.graph.IsLink e u v` + `r ∈ F₁.hingeRowBlock e` + `F₁.supportExtensor e = F₂.supportExtensor e ⟹ hingeRow u v r ∈ F₂.rigidityRows`. Body is still the one-line `hingeRowBlock`-unfold (`rwa [hingeRowBlock, ← hsupp, ← hingeRowBlock]`) — the fused form just exports it as a reusable membership transfer. The `caseIIICandidate`-vs-`ofNormals` instantiation is `PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (`CaseIII/Candidate.lean`, since deleted).
 - **Status:** idiom; fused row-level lemma landed (Phase 23c).
 
 ### [idiom] Recovering the *other* endpoint of a `Graph.IsLink` from a same-edge, same-left-endpoint pair — use `IsLink.right_unique`, not `eq_and_eq_or_eq_and_eq`
@@ -939,7 +939,7 @@ to be re-derived by re-reading entries later.
 - **Status:** idiom.
 
 ### [idiom] `rcases … with rfl` on `f = e_c` (both sides free, but `e_c` is an implicit/section binder used in later hyps) substitutes the *binder* away → "Unknown identifier `e_c`"
-- **Where it bit:** the generator case of `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` (the two-edge G4d-i, `Relabel.lean`): `rcases hdeg2 f w hlink with rfl | rfl` on `f = e_c ∨ f = e_d` (`f` a local from the `span_induction` generator, `e_c`/`e_d` the theorem's implicit `{e_c e_d : β}` binders). The `rfl` pattern is free to substitute either side; it eliminated the *binder* `e_c`, so the later `hblock_c ▸ hρ` / `hlink_ec` referencing `e_c` fail with "Unknown identifier".
+- **Where it bit:** the generator case of `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` (since deleted; the two-edge G4d-i, `Relabel.lean`): `rcases hdeg2 f w hlink with rfl | rfl` on `f = e_c ∨ f = e_d` (`f` a local from the `span_induction` generator, `e_c`/`e_d` the theorem's implicit `{e_c e_d : β}` binders). The `rfl` pattern is free to substitute either side; it eliminated the *binder* `e_c`, so the later `hblock_c ▸ hρ` / `hlink_ec` referencing `e_c` fail with "Unknown identifier".
 - **Resolution:** name the disjunct (`with hfc | hfd`) and `rw [hfc] at hlink hρ` — rewriting the local `f` to the binder, never the reverse. Same root cause as the entry above (only `subst`/`rfl` when the side you want eliminated is the free local), but here *both* sides are free and the trap is picking the wrong one.
 - **Status:** idiom.
 
@@ -1091,7 +1091,7 @@ to be re-derived by re-reading entries later.
   TACTICS lift (a one-off of the pervasive "name the implicit the elaborator can't infer" idiom).
 
 ### [idiom] Annotating a `panelRow`-subtype element `(↑i : β × _ × _).2.1` re-opens the stuck `powersetCard` metavar — destructure the subtype membership instead (`⟨⟨i, hi⟩, rfl⟩`)
-- **Where it bit:** `BodyHingeFramework.notMem_span_mkQ_pmR_row_of_gate` (`Candidate.lean`, the chain
+- **Where it bit:** `BodyHingeFramework.notMem_span_mkQ_pmR_row_of_gate` (since deleted; `Candidate.lean`, the chain
   arm's `hLI` corner obligation (b)), after `rw [Submodule.map_span, Submodule.span_le]; rintro _ ⟨_, ⟨i, rfl⟩, rfl⟩`
   over a `i : ↑s` (with `s : Set (β × ↑(powersetCard …) × ↑(powersetCard …))`).
 - **Friction:** writing `(↑i : β × _ × _).2.1` to read off the `⋀ᵏ`-pair components left the two `_` as
@@ -1339,7 +1339,8 @@ to be re-derived by re-reading entries later.
 
 ### [idiom] Feeding a partial proof-bearing-index family into a `ℕ → _` total-function-consuming fold/recursion: package via `dite` + a `dif_pos` `_eq` lemma, then `simp only` (not `rw`) the per-step resolutions
 - **Where it bit:** `Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows`
-  (CHAIN-2c-ii-transport-W9a membership half, `CaseIII/Relabel.lean`). The fold core
+  (CHAIN-2c-ii-transport-W9a membership half, `CaseIII/Relabel.lean`; since deleted, with the fold core
+  and the chain named next). The fold core
   `wstep_foldr_mem_span_rigidityRows` consumes a *total* `F : ℕ → BodyHingeFramework`, but the
   intermediate-framework chain `shiftBodyFramework` is defined only at valid chain-vertex indices
   (`s + 1 < cd.d + 1`). Likewise the per-step edge selector `ec : ℕ → β` reads `cd.edge ⟨s, _⟩`,
@@ -1359,7 +1360,7 @@ to be re-derived by re-reading entries later.
 ### [idiom] A `List.foldl` whose induction base case lives at index `0` (an accumulating, ascending-chain fold) inducts with `List.reverseRec` and does *not* generalize the chain family
 - **Where it bit:** `BodyHingeFramework.wstep_foldl_mem_span_rigidityRows` (CHAIN-2c-ii-arm, the
   base→candidate seed-advancing fold, `CaseIII/Relabel.lean`). Its `foldr` sibling
-  `wstep_foldr_mem_span_rigidityRows` runs candidate→base (head body = the *final* drop `F 1 → F 0`),
+  `wstep_foldr_mem_span_rigidityRows` (since deleted) runs candidate→base (head body = the *final* drop `F 1 → F 0`),
   so its base case is the chain *bottom* `F 0` and the `cons` step recurses over the **shifted** chain
   `F (· + 1)` — that proof inducts with `cons` and `generalizing F ec`. The `foldl` version is the
   exact opposite: the head body is the *first* rise `F 0 → F 1`, the base case is `φ ∈ span (F 0)`
@@ -2454,7 +2455,7 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   23b CHAIN-2c-ii-graphiso) — the `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick, a cycle
   generalization of the d=3 single-swap `splitOff_isLink_relabel`. The on-cycle endpoint is `vtx ⟨m,_⟩`
   with `1 ≤ m ≤ i`; the predecessor chain edge is `edge ⟨m-1,_⟩`. **Recurs (same fix)** at
-  `ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, Phase
+  `ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (since deleted; `CaseIII/Relabel.lean`, Phase
   23b CHAIN-2c-ii-arm de-risk gate): `deg_two ⟨s+2,_⟩` returns the disjunction
   `f = edge ⟨↑⟨s+2,_⟩ - 1, _⟩ ∨ f = edge ⟨s+2,_⟩`, whose predecessor index `rw`-fails the §61 motive trap.
 - **Friction (two recurring snags):** (1) `edge ⟨m-1,_⟩` / `vtx ⟨m-1,_⟩` arithmetic forces repeated
@@ -3493,10 +3494,11 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Gotcha:** `linearIndependent_unique` is deprecated → `LinearIndependent.of_subsingleton (i)
   (hi : v i ≠ 0)` (same `[IsDomain]`/`[Module.IsTorsionFree]` instance need as the sibling's
   gotcha above; TACTICS-QUIRKS § 40).
-- **Status:** mirrored, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`). Pure LA, no
-  geometry.
-- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean` (alongside
-  `finrank_add_card_le_of_linearIndependent_mkQ`, which it feeds).
+- **Status:** ~~mirrored, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`). Pure LA, no
+  geometry.~~ **RETIRED 2026-10-22** (RECONCILE round 3, task 38.2): no declaration used the chain
+  arm's count modulo a base block, so the cleanup round deleted it with this lemma and
+  `finrank_add_card_le_of_linearIndependent_mkQ`. Resolution by removing the need, not by upstreaming.
+- **Mirror file (lemma deleted):** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`.
 
 ### [mirrored] `Submodule.linearIndependent_mkQ_of_comp` — mod-`W` LI from independence after a `W`-killing map (the other `hLI` corner ingredient)
 - **Where it bit:** Phase 23c option-(A) chain cert. The `hLI` corner-LI for the chain arm's
@@ -3515,10 +3517,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
   takes `T = (single v).dualMap` (so `hW` is the base block's off-`v` vanishing,
   `W ≤ ker (single v).dualMap`) and reuses `linearIndependent_panelRow_comp_single_of_edge` for
   `T ∘ f`. Pairs with the append-one mirror for the full `hLI`.
-- **Status:** mirrored, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`). Pure LA, no
-  geometry.
-- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean` (beside the append-one
-  criterion); carrier instantiation in `CaseIII/Candidate.lean`.
+- **Status:** ~~mirrored, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`). Pure LA, no
+  geometry.~~ **RETIRED 2026-10-22** (RECONCILE round 3, task 38.2): deleted with its carrier
+  instantiation and the append-one criterion, as no declaration used the count they served.
+- **Mirror file (lemma deleted):** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`.
 
 ### [mirrored] `List.formPerm_eq_prod_zipWith_swap_tail` — `formPerm` is the product of adjacent-element transpositions
 - **Where it bit:** Phase 23b CHAIN-2c-ii-transport-W9a (identifying the cycle-W9a `List.foldr`
@@ -3560,10 +3562,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
   import Mathlib.LinearAlgebra.Quotient.Basic` — `Submodule.mkQ`/`Quotient.mk_eq_zero` resolve
   transitively but the *notation* token does not (it failed with "expected token"). **Lifted to:**
   TACTICS-QUIRKS § 60.
-- **Status:** mirrored, axiom-clean. Pure LA, no geometry.
-- **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
-  `linearIndependent_sumElim_unit_iff`; lands downstream of `Quotient.Basic` +
-  `Dimension.Constructions` if promoted, not in upstream `Basic`).
+- **Status:** ~~mirrored, axiom-clean. Pure LA, no geometry.~~ **RETIRED 2026-10-22** (RECONCILE
+  round 3, task 38.2): no declaration used its project-side form
+  `linearIndependent_sumElim_candidateBlock_swap`, and the cleanup round deleted both.
+- **Mirror file (lemma deleted):** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`.
 
 ### [mirrored] `linearIndependent_sum_smul_ne_zero` — a combination of an independent family with a nonzero coefficient is nonzero
 - **Where it bit:** Phase 22e N5 (`lem:case-III-claim612-r-nonzero`, KT eq. (6.42)). The

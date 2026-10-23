@@ -282,7 +282,7 @@ A row depends only on the selector's pair at its edge label and on the normals t
 (`toBodyHinge_supportExtensor`), not on the graph. So `hrow` holds, with `f` the identity, at labels
 where `ends₁` and `ends₂` agree and `q₁` and `q₂` agree at both ends; for instance at the edges that
 `G` and the graph `G_v^{ab}` obtained by splitting off `v` share (`lem:splitoff-edge-substitution`).
-`case_II_placement_eq612` and `case_III_old_new_blocks` use it, and no main result uses them. -/
+`case_II_placement_eq612` uses it, and no main result uses that. -/
 theorem PanelHingeFramework.exists_independent_panelRow_transport {α β : Type*}
     (G₁ G₂ : Graph α β) (ends₁ ends₂ : β → α × α) (q₁ q₂ : α × Fin (k + 2) → K)
     {s₁ s₂ : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}

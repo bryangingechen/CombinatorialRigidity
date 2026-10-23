@@ -1792,7 +1792,7 @@ built in Phase 22k L8c-2 as the `d = 3` `case_I_realization_h65`, later its `k =
 RECONCILE round 3 task 3 deleted).
 
 **Relabel-brick implicit-seed/endpoint variant (Phase 23b).** When `refine`-ing a panel-hinge
-relabel brick (`rigidityRow_relabel_to_block`, `…_to_genuine`, …) into a *disjunction* goal whose
+relabel brick (`rigidityRow_relabel_to_block`, since deleted, `…_to_genuine`, …) into a *disjunction* goal whose
 target framework is a heavy `ofNormals (G.removeVertex …) endsσρ qρ` with `qρ := fun p => q (ρ p.1,
 p.2)`, leaving the brick's **seed `{qρ}` and panel-endpoint `{a b}` implicit** makes the elaborator
 solve them by higher-order unification of the brick conclusion's `panelSupportExtensor (qρ a) (qρ b)`
@@ -1801,7 +1801,7 @@ the `refine`'s lemma-name position (200k). Fix: **pass `(qρ := fun p => q (ρ p
 (b := …)` explicitly** so the match is syntactic; the timeout vanishes. Same medicine as the
 call-site / row-family variants above (pin the heavy implicit), now for the seed-function + endpoint
 slots. **Second lesson, brick rigidity:** the two-orientation block bricks (`…_to_block` `ρ':=r` /
-`…_to_block_swap` `ρ':=−r`) demand a *literal* `hsupp : C(qρ a)(qρ b) = base.supportExtensor f`, which
+`…_to_block_swap` `ρ':=−r`, both since deleted) demand a *literal* `hsupp : C(qρ a)(qρ b) = base.supportExtensor f`, which
 cannot absorb a sign — and the recorded `ends₀ f` orientation is *independent* of the endpoint
 classification order, so 2 of the 4 combinations have a `C(q x)(q y)` vs `C(q y)(q x) = −C(q x)(q y)`
 mismatch the literal `hsupp` can't express. When the orientation axes are independent, **inline the
@@ -2576,7 +2576,8 @@ quarantine (a) / (b) above is still the fix when a metric route is genuinely nee
 with `error: ... expected token` at the `⧸` glyph, in a file that nonetheless resolves
 `Submodule.mkQ`, `Submodule.ker_mkQ`, `Submodule.Quotient.mk_eq_zero` etc. by name. (Hit in the
 `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` mirror when adding
-`linearIndependent_sumElim_block_swap`, which quotients by `span (range base)`.)
+`linearIndependent_sumElim_block_swap`, which quotients by `span (range base)`; RECONCILE round 3
+task 38.2 deleted it, unused.)
 
 **Cause.** The `M ⧸ P` notation (`HasQuotient.Quotient`) is declared in
 `Mathlib.LinearAlgebra.Quotient.Defs`/`.Basic`, which is **not** transitively re-exported through
@@ -2588,7 +2589,7 @@ parse.
 `LinearIndependent.sumElim_of_quotient`, add `Mathlib.LinearAlgebra.Dimension.Constructions` too.)
 Alternatively, sidestep the notation entirely: let the quotient type be *inferred* — `set π :=
 P.mkQ` (no `: M →ₗ[K] (M ⧸ P)` ascription) elaborates `π`'s codomain without writing the glyph.
-Phase 23b CHAIN-1; see FRICTION [mirrored] *`linearIndependent_sumElim_block_swap`…*.
+Phase 23b CHAIN-1; see FRICTION [mirrored] *`linearIndependent_sumElim_block_swap`…* (retired).
 
 ## 61. `rw [hidx]` on a `getElem` *index* (`l[k]` / `l[k]'h`) trips "motive is not type correct" — re-apply the indexing lemma at the new index, don't rewrite the index in place
 

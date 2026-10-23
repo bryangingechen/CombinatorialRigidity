@@ -24,8 +24,7 @@ of `ofNormals (G − v₁) ends₀ q`. The file proves:
   (`chainData_freshEdge_slot_mem`) and the vanishing of `ρ₀` on the hinges of the edges of the chain
   in `G − v_i` (`chainData_freshEdge_slot_perp_ends₀`).
 
-It also has other forms of these lemmas, which no declaration uses. `CaseIII/Relabel/ForkedArm.lean`
-proves the first claim of `lem:case-III-chain-eq666`.
+`CaseIII/Relabel/ForkedArm.lean` proves the first claim of `lem:case-III-chain-eq666`.
 -/
 
 namespace CombinatorialRigidity.Molecular
@@ -46,22 +45,6 @@ that of its terms at `a`, as a term restricts to `0` at a body it does not meet 
 `edgeIndexedCombination_comp_single_eq_incident`). When each `rv j` lies in the block of rows at
 `ev j`, the restriction of the terms at one label `e` to any body lies in the block at `e`
 (`edgeGroup_acolumn_mem_block`). -/
-
-/-- **The restriction to a body that no term meets**: if no term of
-`∑ c_j hingeRow (uv j) (vv j) (rv j)` meets `a` (`hoff`), its restriction to `a` is `0`
-(`hingeRow_comp_single_off`). No declaration uses it. -/
-theorem BodyHingeFramework.edgeIndexedCombination_comp_single_off [DecidableEq α]
-    (a : α) {n : ℕ} (c : Fin n → K) (uv vv : Fin n → α)
-    (rv : Fin n → Module.Dual K (ScrewSpace K k))
-    (hoff : ∀ j, a ≠ uv j ∧ a ≠ vv j) :
-    (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = 0 := by
-  refine LinearMap.ext fun x => ?_
-  simp only [LinearMap.comp_apply, LinearMap.coe_sum, Finset.sum_apply, LinearMap.zero_apply]
-  refine Finset.sum_eq_zero fun j _ => ?_
-  rw [LinearMap.smul_apply, ← LinearMap.comp_apply,
-    BodyHingeFramework.hingeRow_comp_single_off (hoff j).1 (hoff j).2, LinearMap.zero_apply,
-    smul_zero]
 
 /-- **The restriction to a body is that of the terms at it** (a step of `lem:case-III-chain-eq666`):
 the restriction of `∑ c_j hingeRow (uv j) (vv j) (rv j)` to `a` equals that of the sum of its terms
@@ -227,148 +210,6 @@ theorem _root_.Graph.ChainData.interiorGroup_acolumn_adjacency [DecidableEq α] 
       exact ⟨hinc_ep j hj, fun h => hep_ne_ei (hj ▸ h)⟩
   rw [he_ei, he_ep] at hcol
   exact eq_neg_of_add_eq_zero_left hcol
-
-/-- **The restriction to an interior vertex, by edges**: for `1 ≤ i ≤ d − 1` and each `ev j` joining
-`uv j` and `vv j` in `G` (`hlink`), the restriction of `∑ c_j hingeRow (uv j) (vv j) (rv j)` to
-`v_i` is the sum of the restrictions of its terms at `v_i v_{i+1}` and at `v_{i−1} v_i`, the two
-edges at `v_i`. It is `interiorGroup_acolumn_adjacency` without the vanishing. No declaration uses
-it. -/
-theorem _root_.Graph.ChainData.interiorGroup_acolumn_two_group_decomp [DecidableEq α]
-    [DecidableEq β]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
-    {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual K (ScrewSpace K k))
-    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j)) :
-    (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx i.castSucc))
-    = (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
-        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx i.castSucc))
-      + (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨(i : ℕ) - 1, by omega⟩),
-        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx i.castSucc)) := by
-  classical
-  set a := cd.vtx i.castSucc with ha
-  set ei := cd.edge i with hei
-  set ep := cd.edge ⟨(i : ℕ) - 1, by omega⟩ with hep
-  -- The two chain edges are distinct (`edge_inj`); each is a `G`-link incident to `a`.
-  have hep_ne_ei : ep ≠ ei := (cd.pred_edge_ne hi)
-  have hlink_ei : G.IsLink ei a (cd.vtx i.succ) := cd.isLink_succ_edge i
-  have hlink_ep : G.IsLink ep a (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) :=
-    cd.isLink_pred_edge hi
-  -- A term at `edge i` (resp. `edge (i−1)`) meets `a` (the ends of the edge).
-  have hinc_ei : ∀ j, ev j = ei → a = uv j ∨ a = vv j := fun j hj =>
-    (((hlink j).symm.eq_and_eq_or_eq_and_eq (hj ▸ hlink_ei)).imp (·.1.symm) (·.2.symm)).symm
-  have hinc_ep : ∀ j, ev j = ep → a = uv j ∨ a = vv j := fun j hj =>
-    (((hlink j).symm.eq_and_eq_or_eq_and_eq (hj ▸ hlink_ep)).imp (·.1.symm) (·.2.symm)).symm
-  -- Every term at `a` is at `edge i` or `edge (i−1)` (the two edges at the interior vertex).
-  have hdeg : ∀ j, (a = uv j ∨ a = vv j) → ev j = ei ∨ ev j = ep := by
-    intro j hj
-    rcases hj with h | h
-    · refine cd.deg_two_split hi (ev j) (vv j) ?_
-      rw [← ha, h]; exact hlink j
-    · refine cd.deg_two_split hi (ev j) (uv j) ?_
-      rw [← ha, h]; exact (hlink j).symm
-  -- The `a`-column of `g` is that of its `a`-incident sub-combination (`_eq_incident`).
-  rw [BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident a c uv vv rv]
-  -- Each label's terms restrict at `a` as their terms at `a` do: the others at the label have both
-  -- ends `≠ a`, so they restrict to `0` (`hingeRow_comp_single_off`). Stated for every label.
-  have hgroup : ∀ e : β, (∀ j, ev j = e → a = uv j ∨ a = vv j) →
-      (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
-          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) a)
-      = (∑ j ∈ (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = e),
-          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) a) := by
-    intro e hinc
-    have hset : Finset.univ.filter (fun j => ev j = e)
-        = (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = e) := by
-      rw [Finset.filter_filter]
-      refine Finset.filter_congr fun j _ => ?_
-      exact ⟨fun h => ⟨hinc j h, h⟩, fun h => h.2⟩
-    rw [hset]
-  -- Rewrite both filtered groups to their incident-restricted versions, then split the incident sum
-  -- by `ev = ei` (the complement-within-incident being `ev = ep`, by `hdeg` + disjointness).
-  rw [hgroup ei hinc_ei, hgroup ep hinc_ep,
-    ← Finset.sum_filter_add_sum_filter_not
-      (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)) (fun j => ev j = ei), LinearMap.add_comp]
-  -- The `¬ ev = ei` incident part is exactly the `ev = ep` incident part (deg2 closure + edge_inj).
-  congr 1
-  have hset : (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ¬ ev j = ei)
-      = (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = ep) := by
-    refine Finset.filter_congr fun j hj => ?_
-    have hinc_j : a = uv j ∨ a = vv j := (Finset.mem_filter.mp hj).2
-    constructor
-    · intro hni; exact ((hdeg j hinc_j).resolve_left hni)
-    · intro hj_ep h; exact hep_ne_ei (hj_ep ▸ h)
-  rw [hset]
-
-/-- **The terms at `v_i v_{i+1}`, restricted to `v_i`, lie in the blocks of both edges at `v_i`**:
-for `1 ≤ i ≤ d − 1`, let `∑ c_j hingeRow (uv j) (vv j) (rv j) = hingeRow ab₁ ab₂ ρ₀` (`hcomb`), with
-each `ev j` joining `uv j` and `vv j` in `G` and each `rv j` in the block of rows of `Fva` at
-`ev j`, and let `v_i` be neither `ab₁` nor `ab₂`. Then the restriction to `v_i` of the terms at
-`v_i v_{i+1}` lies in the blocks of rows of `Fva` at `v_i v_{i+1}` and at `v_{i−1} v_i`: the
-restriction of `hingeRow ab₁ ab₂ ρ₀` to `v_i` vanishes (`hingeRow_comp_single_off`), so
-`interiorGroup_acolumn_adjacency` and `edgeGroup_acolumn_mem_block` apply. Only the next lemma uses
-it, and no declaration uses that. -/
-theorem _root_.Graph.ChainData.baseRedundancy_group_acolumn_mem_inf [DecidableEq α] [DecidableEq β]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
-    (Fva : BodyHingeFramework K k α β)
-    {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual K (ScrewSpace K k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual K (ScrewSpace K k)}
-    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
-    (hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j))
-    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
-      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
-    (hne₁ : cd.vtx i.castSucc ≠ ab₁) (hne₂ : cd.vtx i.castSucc ≠ ab₂) :
-    (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
-        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx i.castSucc))
-    ∈ Fva.hingeRowBlock (cd.edge i) ⊓ Fva.hingeRowBlock (cd.edge ⟨(i : ℕ) - 1, by omega⟩) := by
-  classical
-  set a := cd.vtx i.castSucc with ha
-  -- The global `a`-column of `g = hingeRow ab₁ ab₂ ρ₀` vanishes: `a` is off both endpoints.
-  have hcol : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = 0 := by
-    rw [hcomb, BodyHingeFramework.hingeRow_comp_single_off hne₁ hne₂]
-  -- `interiorGroup_acolumn_adjacency`: the terms at the two edges restrict to opposite forms at
-  -- `a`.
-  have hadj := cd.interiorGroup_acolumn_adjacency hi c ev uv vv rv hlink hcol
-  -- Each restriction lies in the block of its edge (`edgeGroup_acolumn_mem_block`).
-  have hmem_ei := Fva.edgeGroup_acolumn_mem_block (e := cd.edge i) (p := a) c ev uv vv rv hrv
-  have hmem_ep := Fva.edgeGroup_acolumn_mem_block (e := cd.edge ⟨(i : ℕ) - 1, by omega⟩) (p := a)
-    c ev uv vv rv hrv
-  refine Submodule.mem_inf.mpr ⟨hmem_ei, ?_⟩
-  -- The `edge i`-group's `a`-column equals `−`(the predecessor group's `a`-column) ∈ block (i−1).
-  rw [hadj]
-  exact (Fva.hingeRowBlock (cd.edge ⟨(i : ℕ) - 1, by omega⟩)).neg_mem hmem_ep
-
-/-- **The same, on the hinges**: under the hypotheses of `baseRedundancy_group_acolumn_mem_inf`, the
-restriction to `v_i` of the terms at `v_i v_{i+1}` vanishes on the hinges of `Fva` at `v_i v_{i+1}`
-and at `v_{i−1} v_i`. No declaration uses it. -/
-theorem _root_.Graph.ChainData.baseRedundancy_group_acolumn_perp [DecidableEq α] [DecidableEq β]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
-    (Fva : BodyHingeFramework K k α β)
-    {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual K (ScrewSpace K k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual K (ScrewSpace K k)}
-    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
-    (hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j))
-    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
-      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
-    (hne₁ : cd.vtx i.castSucc ≠ ab₁) (hne₂ : cd.vtx i.castSucc ≠ ab₂) :
-    ((∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
-        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx i.castSucc)))
-        (Fva.supportExtensor (cd.edge i)) = 0
-    ∧ ((∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
-        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx i.castSucc)))
-        (Fva.supportExtensor (cd.edge ⟨(i : ℕ) - 1, by omega⟩)) = 0 := by
-  obtain ⟨hei, hep⟩ := Submodule.mem_inf.mp
-    (cd.baseRedundancy_group_acolumn_mem_inf hi Fva c ev uv vv rv hlink hrv hcomb hne₁ hne₂)
-  exact ⟨(Fva.mem_hingeRowBlock_iff _ _).1 hei, (Fva.mem_hingeRowBlock_iff _ _).1 hep⟩
 
 /-! ## The relation at `v₂`
 
@@ -599,46 +440,6 @@ theorem _root_.Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy [Dec
   rw [← hab₂, BodyHingeFramework.hingeRow_swap ab₁ ab₂ ρ₀,
     BodyHingeFramework.hingeRow_comp_single_tail hne]
 
-/-- **The renamed terms at `v_i v_{i+1}`, restricted to `v_{i−1}`**: under the hypotheses of
-`interior_group_acolumn_eq_neg_baseRedundancy`, for `2 ≤ i ≤ d − 1` and `σ_i = shiftPerm i`, the
-renamed sum of the terms at `v_i v_{i+1}` (the form `S ↦ φ (S ∘ σ_i⁻¹)`) restricts at `v_{i−1}` to
-`−ρ₀`: by `funLeft_dualMap_comp_single`, this is the restriction of the sum at
-`σ_i (v_{i−1}) = v_i`. No declaration uses it. -/
-theorem _root_.Graph.ChainData.funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy
-    [DecidableEq α] [DecidableEq β]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
-    {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual K (ScrewSpace K k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual K (ScrewSpace K k)}
-    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
-    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
-      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
-    (hab₁ : ab₁ = cd.vtx ⟨0, by omega⟩) (hab₂ : ab₂ = cd.vtx ⟨2, by omega⟩)
-    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
-      ev j = cd.edge ⟨2, by omega⟩)
-    (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
-    ((LinearMap.funLeft K (ScrewSpace K k)
-          (cd.shiftPerm (⟨i, by omega⟩ : Fin (cd.d + 1))).symm).dualMap
-        (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨i, by omega⟩),
-          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))).comp
-      (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx ⟨i - 1, by omega⟩))
-    = -ρ₀ := by
-  -- The cycle `shiftPerm ⟨i,_⟩` of `[vtx 1, …, vtx i]`. By `funLeft_dualMap_comp_single` at
-  -- `σ = (shiftPerm ⟨i,_⟩).symm` and `w = vtx (i−1)`, the renamed form restricts at `vtx (i−1)` as
-  -- the sum does at `σ.symm (vtx (i−1)) = shiftPerm ⟨i,_⟩ (vtx (i−1)) = vtx i`.
-  rw [BodyHingeFramework.funLeft_dualMap_comp_single, Equiv.symm_symm]
-  -- `shiftPerm ⟨i,_⟩` sends the interior `vtx (i−1)` to `vtx i` (`shiftPerm_apply_interior`,
-  -- `1 ≤ i−1 < i`); rewrite the column index `vtx (i−1) ↦ vtx i`.
-  have hkey := cd.shiftPerm_apply_interior (⟨i, by omega⟩ : Fin (cd.d + 1))
-    (j := i - 1) (by omega) (by simp only; omega)
-  have hidx : (⟨(i - 1) + 1, by omega⟩ : Fin (cd.d + 1)) = (⟨i, by omega⟩ : Fin (cd.d + 1)) := by
-    simp only [Fin.mk.injEq]; omega
-  rw [hidx] at hkey
-  rw [hkey]
-  -- The sum restricts at `vtx i` to `−ρ₀` (KT eq. (6.66)).
-  exact cd.interior_group_acolumn_eq_neg_baseRedundancy h3 c ev uv vv rv hlink hcomb hab₁ hab₂
-    hdeg1 i h2i hid
-
 /-! ## The normals of the moves
 
 Steps of `lem:case-III-chain-eq666`. After `i − 1` steps, the moves along the chain have the normals
@@ -806,54 +607,6 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
   convert hslot using 4
   omega
 
-/-- **`ρ₀` vanishes on the hinge of `v_s v_{s+1}`, from a relation at `v_{s+1}`**: for `s + 1 < d`,
-let `∑ λ_j rab j = ρ₀` (`hρ₀`), let the forms `rab j` and `rac j` vanish on the hinges of
-`ofNormals (G − v_i) ends qρ` at `v_s v_{s+1}` and `v_{s+1} v_{s+2}` (`hperp_ab`, `hperp_ac`), and
-let the restrictions to `v_{s+1}` of `g` and of
-`∑ λ_j hingeRow v_{s+1} v_s (rab j) + ∑ μ_j hingeRow v_{s+1} v_{s+2} (rac j) + g` vanish (`hcol`,
-`hrest`). Then `ρ₀` vanishes on the hinge at `v_s v_{s+1}`
-(`candidate_perp_two_incident_supportExtensors`). No declaration uses it. -/
-theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_witness [DecidableEq α]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
-    (hsd : s + 1 < cd.d)
-    {ends : β → α × α} {qρ : α × Fin (k + 2) → K}
-    {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
-    (lamAB : ιab → K) (rab : ιab → Module.Dual K (ScrewSpace K k))
-    (lamAC : ιac → K) (rac : ιac → Module.Dual K (ScrewSpace K k))
-    (grest : Module.Dual K (α → ScrewSpace K k))
-    {ρ₀ : Module.Dual K (ScrewSpace K k)}
-    -- `∑ λ_j rab j = ρ₀`:
-    (hρ₀ : (∑ j, lamAB j • rab j) = ρ₀)
-    -- the forms vanish on the hinges of `ofNormals (G − vᵢ) ends qρ` at the two edges at `v_{s+1}`:
-    (hperp_ab : ∀ j, rab j ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
-      |>.toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0)
-    (hperp_ac : ∀ j, rac j ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
-      |>.toBodyHinge.supportExtensor (cd.edge ⟨s + 1, by omega⟩)) = 0)
-    -- the relation vanishes on the screw assignments that vanish off `v_{s+1}`:
-    (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α)
-          (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) (rab j))
-        + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α)
-          (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) (rac j)) + grest).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx ⟨s + 1, by omega⟩)) = 0)
-    (hrest : grest.comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx ⟨s + 1, by omega⟩)) = 0) :
-    ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
-      |>.toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0 := by
-  classical
-  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
-    with hFva
-  -- The interior vertex `a = vtx (s+1)` differs from its two chain neighbours `b = vtx s`,
-  -- `c = vtx (s+2)` (distinct chain indices, `vtx_inj`).
-  have hab : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s, by omega⟩ :=
-    fun he => by have : s + 1 = s := congrArg Fin.val (cd.vtx_inj he); omega
-  have hac : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
-    fun he => by have : s + 1 = s + 2 := congrArg Fin.val (cd.vtx_inj he); omega
-  -- KT eq. (6.44) (`candidate_perp_two_incident_supportExtensors`): `∑ λ_j rab j` vanishes on the
-  -- hinge at `edge s`, and it is `ρ₀` (`hρ₀`).
-  have hperp := (Fva.candidate_perp_two_incident_supportExtensors hab hac lamAB rab lamAC rac grest
-    hperp_ab hperp_ac hcol hrest).1
-  rwa [hρ₀] at hperp
-
 /-- **`ρ₀` vanishes on the hinge of `v_s v_{s+1}`** (a step of `lem:case-III-chain-eq666`; KT
 eq. (6.66), p. 698): for `d ≥ 3` and `2 ≤ s ≤ d − 1`, let `∑ c_j hingeRow (uv j) (vv j) (rv j)` be
 `hingeRow v₀ v₂ ρ₀` (`hcomb`), where each `ev j` joins `uv j` and `vv j` in `G` (`hlink`), each
@@ -898,173 +651,6 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_baseRedundancy
     rwa [neg_neg] at this
   exact (Fva.mem_hingeRowBlock_iff (cd.edge ⟨s, by omega⟩) ρ₀).1 hρ₀mem
 
-/-! ## The hinges of `G − v_i` with the renamed selector
-
-For `i ≤ d − 1`, the framework on `G − v_i` with the selector renamed along `σ_i` and
-`shiftEdgePerm i` and the normals `q ∘ σ_i` has at each label `f` the hinge of the framework with
-`ends₀` and `q` at `shiftEdgePerm i f` (`ofNormals_supportExtensor_relabel_perm`), whatever the
-graphs. Five lemmas that no declaration uses read blocks of rows, combinations and hinges through
-this. The proof of `lem:case-III-chain-eq666` keeps the selector `ends₀` instead
-(`chainData_freshEdge_slot_perp_ends₀`). -/
-
-/-- **A block of rows under the renaming**: for `i ≤ d − 1` and any label `f`, a form in the block
-of rows of `ofNormals (G − v_i) ends₀ q` at `f` lies in the block of rows at `(shiftEdgePerm i)⁻¹ f`
-of `ofNormals (G − v_i) endsσρ (q ∘ σ_i)`, for the selector `endsσρ` renamed along `σ_i` and
-`shiftEdgePerm i`, as the two frameworks have the same hinge there
-(`ofNormals_supportExtensor_relabel_perm`). The statement holds for every `i`, despite the name.
-Only the next lemma uses it, and no declaration uses that. -/
-theorem _root_.Graph.ChainData.i3_candidateBlock_transport_deRisk
-    [DecidableEq α] [DecidableEq β]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
-    {ends₀ : β → α × α} {q : α × Fin (k + 2) → K}
-    (f : β) {r : Module.Dual K (ScrewSpace K k)}
-    -- a form in the block of rows at a label `f`:
-    (hbase : r ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        ends₀ q).toBodyHinge.hingeRowBlock f) :
-    -- lies in the block of the renamed framework at `(shiftEdgePerm i)⁻¹ f`:
-    r ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
-        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.hingeRowBlock
-          ((cd.shiftEdgePerm i).symm f) := by
-  classical
-  -- The renamed block at `σ⁻¹ f` is the block at `σ (σ⁻¹ f) = f`, as the hinges agree at every
-  -- label.
-  rw [BodyHingeFramework.hingeRowBlock,
-    PanelHingeFramework.ofNormals_supportExtensor_relabel_perm (cd.shiftPerm i.castSucc)
-      (cd.shiftEdgePerm i) ((cd.shiftEdgePerm i).symm f),
-    Equiv.apply_symm_apply]
-  -- That is the block of `ofNormals (G − vᵢ) ends₀ q` at `f` (`supportExtensor` reads only `ends₀`
-  -- and `q`).
-  simpa only [BodyHingeFramework.hingeRowBlock, PanelHingeFramework.toBodyHinge_supportExtensor,
-    PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
-
-/-- **Blocks of rows under the renaming, for a family**: `i3_candidateBlock_transport_deRisk` at
-each label `evGv j`. No declaration uses it. -/
-theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_blocks
-    [DecidableEq α] [DecidableEq β]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
-    {ends₀ : β → α × α} {q : α × Fin (k + 2) → K}
-    {m : ℕ} (evGv : Fin m → β) (rvGv : Fin m → Module.Dual K (ScrewSpace K k))
-    -- forms in the blocks of rows of `ofNormals (G − vᵢ) ends₀ q` at the labels `evGv j`:
-    (hrv : ∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        ends₀ q).toBodyHinge.hingeRowBlock (evGv j)) :
-    -- lie in the blocks of the renamed framework at the labels `(shiftEdgePerm i)⁻¹ (evGv j)`:
-    ∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
-        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.hingeRowBlock
-          ((cd.shiftEdgePerm i).symm (evGv j)) :=
-  fun j => cd.i3_candidateBlock_transport_deRisk i (evGv j) (hrv j)
-
-/-- **A combination under the renaming**: if `hingeRow x y ρ = ∑ c_j hingeRow (uv j) (vv j) (rv j)`,
-then the same holds with `σ_i⁻¹` applied to every body, by the linear map `(funLeft σ_i⁻¹).dualMap`
-and `hingeRow_funLeft_dualMap`. No declaration uses it. -/
-theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_comb
-    [DecidableEq α]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
-    {m : ℕ} (c : Fin m → K) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual K (ScrewSpace K k))
-    {x y : α} {ρ : Module.Dual K (ScrewSpace K k)}
-    -- a combination:
-    (hcomb : BodyHingeFramework.hingeRow x y ρ
-      = ∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)) :
-    -- renamed along `σ.symm`:
-    BodyHingeFramework.hingeRow ((cd.shiftPerm i.castSucc).symm x)
-        ((cd.shiftPerm i.castSucc).symm y) ρ
-      = ∑ j, c j • BodyHingeFramework.hingeRow ((cd.shiftPerm i.castSucc).symm (uv j))
-          ((cd.shiftPerm i.castSucc).symm (vv j)) (rv j) := by
-  -- Apply the linear map `(funLeft σ.symm).dualMap` to both sides of `hcomb`, then read each term
-  -- by `hingeRow_funLeft_dualMap`.
-  have hmap := congrArg
-    (LinearMap.funLeft K (ScrewSpace K k) (cd.shiftPerm i.castSucc).symm).dualMap hcomb
-  rw [BodyHingeFramework.hingeRow_funLeft_dualMap, map_sum] at hmap
-  simp only [map_smul, BodyHingeFramework.hingeRow_funLeft_dualMap] at hmap
-  exact hmap
-
-/-- **A hinge of `G − v_i` with the renamed selector**: for `1 ≤ i ≤ d − 1` and `s + 1 < i`, if `ρ₀`
-vanishes on the hinge of `ofNormals Gb ends₀ q` at `e₀` when `s = 0`, and at `v_{s+1} v_{s+2}` when
-`s ≥ 1` (`hbase`), then it vanishes on the hinge of `ofNormals (G − v_i) endsσρ (q ∘ σ_i)` at
-`v_s v_{s+1}`, for the selector `endsσρ` renamed along `σ_i` and `shiftEdgePerm i`. That hinge is
-the hinge of the first framework at `shiftEdgePerm i (v_s v_{s+1})`, which is `e₀` or
-`v_{s+1} v_{s+2}` (`shiftEdgePerm_apply_edge_zero`, `shiftEdgePerm_apply_edge_interior`), as in KT
-eq. (6.59) (p. 694). Only the next lemma uses it, and no declaration uses that. -/
-theorem _root_.Graph.ChainData.chainData_freshEdge_perp_transport_base_to_candidate
-    [DecidableEq α] [DecidableEq β]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 ≤ (i : ℕ))
-    (s : ℕ) (hs1i : s + 1 < (i : ℕ))
-    {Gb : Graph α β} {ends₀ : β → α × α} {q : α × Fin (k + 2) → K}
-    {ρ₀ : Module.Dual K (ScrewSpace K k)}
-    -- `ρ₀` vanishes on the hinge of `ofNormals Gb ends₀ q` at `shiftEdgePerm i (edge s)`:
-    (hbase : ρ₀ ((PanelHingeFramework.ofNormals Gb ends₀ q).toBodyHinge.supportExtensor
-        (if s = 0 then cd.e₀ else cd.edge ⟨s + 1, by have := i.isLt; omega⟩)) = 0) :
-    -- then on the hinge of the renamed framework at `edge s`:
-    ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
-        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.supportExtensor
-          (cd.edge ⟨s, by have := i.isLt; omega⟩)) = 0 := by
-  classical
-  -- The renamed hinge at `edge s` is the hinge at `σ (edge s) = shiftEdgePerm i (edge s)`
-  -- (`ofNormals_supportExtensor_relabel_perm`).
-  rw [PanelHingeFramework.ofNormals_supportExtensor_relabel_perm (cd.shiftPerm i.castSucc)
-    (cd.shiftEdgePerm i) (cd.edge ⟨s, by have := i.isLt; omega⟩)]
-  -- Resolve `σ (edge s)`: `e₀` at the head (`s = 0`), `edge (s+1)` interior (`1 ≤ s`, `s+1 < i`).
-  rcases Nat.eq_zero_or_pos s with hs0 | hs0
-  · subst hs0
-    rw [cd.shiftEdgePerm_apply_edge_zero i hi]
-    -- Bridge the base graph `G − vᵢ` to `Gb`: `supportExtensor` reads only `ends₀`/`q`.
-    -- `if_pos rfl` no longer applies: simp normalizes the `0 = 0` condition to `True` first.
-    simpa only [ite_true, PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
-  · rw [cd.shiftEdgePerm_apply_edge_interior i hs0 hs1i]
-    simpa only [ite_eq_right (by omega : ¬ s = 0), PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
-
-/-- **`ρ₀` vanishes on the hinges of the edges of the chain in `G − v_i`, with the renamed
-selector**: for `d ≥ 3`, `1 ≤ i ≤ d − 1` and `s + 1 < i`, under the hypotheses of
-`chainData_freshEdge_perp_of_baseRedundancy` at `ofNormals (G − v₁) ends₀ q`, and with `ρ₀`
-vanishing on its hinge at `e₀` (`hρe₀`), `ρ₀` vanishes on the hinge at `v_s v_{s+1}` of
-`ofNormals (G − v_i) endsσρ (q ∘ σ_i)`: `chainData_freshEdge_perp_transport_base_to_candidate`, with
-`chainData_freshEdge_perp_of_baseRedundancy` for `s ≥ 1`. No declaration uses it: the proof of
-`lem:case-III-chain-eq666` keeps the selector `ends₀` (`chainData_freshEdge_slot_perp_ends₀`). -/
-theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp
-    [DecidableEq α] [DecidableEq β]
-    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
-    (i : Fin cd.d) (hi : 1 ≤ (i : ℕ)) (s : ℕ) (hs1i : s + 1 < (i : ℕ))
-    {ends₀ : β → α × α} {q : α × Fin (k + 2) → K}
-    {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual K (ScrewSpace K k))
-    {ρ₀ : Module.Dual K (ScrewSpace K k)}
-    -- `hingeRow v₀ v₂ ρ₀` as a combination at `ofNormals (G − v₁) ends₀ q`:
-    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
-    (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
-      ends₀ q).toBodyHinge.hingeRowBlock (ev j))
-    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
-      = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
-    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
-      ev j = cd.edge ⟨2, by omega⟩)
-    -- `ρ₀` vanishes on the hinge of `e₀` there:
-    (hρe₀ : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
-      ends₀ q).toBodyHinge.supportExtensor cd.e₀) = 0) :
-    ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
-        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.supportExtensor
-          (cd.edge ⟨s, by have := i.isLt; omega⟩)) = 0 := by
-  -- `chainData_freshEdge_perp_transport_base_to_candidate`, from the hinge at
-  -- `if s = 0 then e₀ else edge (s+1)`.
-  refine cd.chainData_freshEdge_perp_transport_base_to_candidate i hi s hs1i
-    (Gb := G.removeVertex (cd.vtx ⟨1, by omega⟩)) (ends₀ := ends₀) (q := q) ?_
-  -- `hρe₀` for `s = 0`, and `chainData_freshEdge_perp_of_baseRedundancy` at `edge (s+1)` for
-  -- `s ≥ 1`.
-  rcases Nat.eq_zero_or_pos s with hs0 | hs0
-  · subst hs0; rw [ite_eq_left rfl]; exact hρe₀
-  · rw [ite_eq_right (by omega : ¬ s = 0)]
-    -- `chainData_freshEdge_perp_of_baseRedundancy` at `i = 1` and the edge index `s+1`.
-    exact cd.chainData_freshEdge_perp_of_baseRedundancy h3 ⟨1, by omega⟩ (s + 1) (by omega)
-      (by have := i.isLt; omega) c ev uv vv rv hlink hrv hcomb hdeg1
-
 /-! ## The form at the new edge of `G_i` in the row space of `R(G − v_i, q_i)`
 
 The second claim of `lem:case-III-chain-eq666`. With the selector `ends₀`, the hinge of `G − v_i` at
@@ -1092,8 +678,7 @@ That hinge is `±C(q_i(v_s), q_i(v_{s+1}))`, by `hrec`. For `s ≥ 1`, `σ_i` ma
 to `v_{s+1}` and `v_{s+2}` (`shiftPerm_apply_interior`), so it is `±` the hinge of `G − v₁` at
 `v_{s+1} v_{s+2}`, on which `ρ₀` vanishes (`chainData_freshEdge_perp_of_baseRedundancy`). For
 `s = 0`, `σ_i` fixes `v₀` and maps `v₁` to `v₂`, so it is `±` the hinge at `e₀` (`hrece₀`), on which
-`ρ₀` vanishes (`hρe₀`). `chainData_freshEdge_slot_perp` is the form with the renamed selector, which
-no declaration uses. -/
+`ρ₀` vanishes (`hρe₀`). -/
 theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)

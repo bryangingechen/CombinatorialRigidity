@@ -1454,8 +1454,7 @@ lemma isLink_edge (cd : G.ChainData n) (i : Fin cd.d) :
 For an interior index `i` (`0 < i`), Case III splits off at `v = vtx i` along its neighbours
 `a = vtx (i + 1)` and `b = vtx (i − 1)`, whose edges to `v` are `e_a = edge i` and
 `e_b = edge (i − 1)`. These lemmas give the tuple `(v, a, b, e_a, e_b)` in the form that
-`PanelHingeFramework.chainData_split_realization` and
-`PanelHingeFramework.chainData_dispatch_interior` read it, with both edges leaving `v`. -/
+`PanelHingeFramework.chainData_dispatch_interior` reads it, with both edges leaving `v`. -/
 
 /-- For `0 < i`, the successor of the index `i − 1` of the edges is the index `i` of the
 vertices: `(⟨i − 1, _⟩ : Fin cd.d).succ = i.castSucc`. -/
@@ -1475,15 +1474,6 @@ lemma isLink_pred_edge (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) 
 /-- `edge i` joins `vtx i` to `vtx (i + 1)` (the field `link`, as `isLink_edge`). -/
 lemma isLink_succ_edge (cd : G.ChainData n) (i : Fin cd.d) :
     G.IsLink (cd.edge i) (cd.vtx i.castSucc) (cd.vtx i.succ) := cd.isLink_edge i
-
-/-- For `0 < i`, the two neighbours of `vtx i` on the chain are distinct:
-`vtx (i + 1) ≠ vtx (i − 1)` (`vtx_inj`). -/
-lemma succ_ne_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
-    cd.vtx i.succ ≠ cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc := by
-  intro h
-  have := congrArg Fin.val (cd.vtx_inj h)
-  simp only [Fin.val_succ, Fin.val_castSucc] at this
-  omega
 
 /-- For `0 < i`, every edge of `G` at `vtx i` is `edge i` or `edge (i − 1)` (the field
 `deg_two`, its two cases exchanged). -/
@@ -1792,8 +1782,8 @@ end ShiftPerm
 The Case III proofs at general `d` in `CaseIII/Relabel/` rename the rows of a framework along
 `σᵢ = shiftPerm i` one transposition of consecutive vertices of the chain at a time. A step
 `(v, a, c)` exchanges a vertex `a` of degree two with `v`, where `c` is the other neighbour of `a`
-(`BodyHingeFramework.wstep`, iterated by `BodyHingeFramework.wstep_foldr_mem_span_rigidityRows` and
-`BodyHingeFramework.wstep_foldl_mem_span_rigidityRows`, `CaseIII/Relabel/Basic.lean`). This section
+(`BodyHingeFramework.wstep`, iterated by `BodyHingeFramework.wstep_foldl_mem_span_rigidityRows`,
+`CaseIII/Relabel/Basic.lean`). This section
 lists the steps in two orders, gives the facts about the chain that each step needs, and shows that
 the transpositions multiply to `shiftPerm i`. -/
 
@@ -1863,8 +1853,8 @@ lemma getElem_shiftBodyListAsc (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ)
 /-! ### The chain at a step
 
 For a step `s` with `s + 1 < i ≤ d`, the moved vertex `vₛ₊₁` is an interior vertex of the chain.
-These lemmas give its two edges `edge (s + 1)` (to `vₛ₊₂`) and `edge s` (to `vₛ`), its degree two,
-and the distinctness of `vₛ`, `vₛ₊₁` and `vₛ₊₂`, as the steps of the descending fold ask them. -/
+These lemmas give its edge `edge (s + 1)` to `vₛ₊₂`, and `vₛ₊₁ ≠ vₛ₊₂`. No declaration uses them.
+-/
 
 /-- `edge (s + 1)` joins `vₛ₊₁` and `vₛ₊₂`, for `s + 1 < i ≤ d`. -/
 lemma shiftBody_isLink_succ_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
@@ -1873,33 +1863,6 @@ lemma shiftBody_isLink_succ_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < 
   have h := cd.isLink_edge ⟨s + 1, by omega⟩
   simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
 
-/-- `edge s` joins `vₛ₊₁` and `vₛ`, for `s + 1 < i ≤ d`. -/
-lemma shiftBody_isLink_pred_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
-    (hi : i < cd.d + 1) :
-    G.IsLink (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) := by
-  have h := cd.isLink_edge ⟨s, by omega⟩
-  simpa only [Fin.castSucc_mk, Fin.succ_mk] using h.symm
-
-/-- For `s + 1 < i ≤ d`, every edge of `G` at `vₛ₊₁` is `edge (s + 1)` or `edge s` (`deg_two`). -/
-lemma shiftBody_deg_two (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
-    ∀ e x, G.IsLink e (cd.vtx ⟨s + 1, by omega⟩) x →
-      e = cd.edge ⟨s + 1, by omega⟩ ∨ e = cd.edge ⟨s, by omega⟩ := by
-  intro e x hlink
-  have hd := cd.deg_two ⟨s + 1, by omega⟩ (by simp) e x
-    (by simpa only [Fin.castSucc_mk] using hlink)
-  simpa only [show ((⟨s + 1, by omega⟩ : Fin cd.d) : ℕ) - 1 = s from rfl] using hd.symm
-
-/-- `vₛ ≠ vₛ₊₁` (`vtx_ne`). -/
-lemma shiftBody_pred_ne (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
-    cd.vtx ⟨s, by omega⟩ ≠ cd.vtx ⟨s + 1, by omega⟩ :=
-  cd.vtx_ne (by omega) (by omega) (by omega)
-
-/-- `vₛ ≠ vₛ₊₂` (`vtx_ne`). -/
-lemma shiftBody_pred_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
-    (hi : i < cd.d + 1) :
-    cd.vtx ⟨s, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
-  cd.vtx_ne (by omega) (by omega) (by omega)
-
 /-- `vₛ₊₁ ≠ vₛ₊₂` (`vtx_ne`). -/
 lemma shiftBody_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
     cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
@@ -1907,72 +1870,19 @@ lemma shiftBody_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : 
 
 /-! ### The graphs `G − vₛ₊₁` of the steps
 
-The descending fold renames rows through frameworks on the graphs `shiftBodyGraph s = G − vₛ₊₁`,
-from `G − vᵢ` down to `G − v₁`. The step `s`, `(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)`, goes from
-`G − vₛ₊₂ = G − v` to `G − vₛ₊₁ = G − a`. In `G − v` the vertex `a` keeps only its edge `edge s`
-to `c`, as `edge (s + 1)` goes to `v`, and every edge of `G − v` that does not meet `a` is an edge
-of `G − a`. The frameworks on these graphs are built in `CaseIII/Relabel/Basic.lean` and
-`CaseIII/Relabel/Chain.lean`. -/
+The moves along the chain rename rows through frameworks on the graphs
+`shiftBodyGraph s = G − vₛ₊₁`, from `G − v₁` up to `G − vᵢ`. The frameworks on these graphs are
+built in `CaseIII/Relabel/Chain.lean` (`shiftBodyFrameworkAsc`). -/
 
 /-- The graph `G − vₛ₊₁` of the step `s`, for `s + 1 ≤ d`. -/
 def shiftBodyGraph (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) : Graph α β :=
   G.removeVertex (cd.vtx ⟨s + 1, hs⟩)
 
-/-- `edge s` joins `vₛ₊₁` and `vₛ` in `G − vₛ₊₂`, for `s + 1 < i ≤ d`. -/
-lemma shiftBodyGraph_isLink_pred_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
-    (hi : i < cd.d + 1) :
-    (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink (cd.edge ⟨s, by omega⟩)
-      (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) := by
-  rw [shiftBodyGraph, removeVertex_isLink]
-  exact ⟨cd.shiftBody_isLink_pred_edge hs hi,
-    cd.vtx_ne (by omega) (by omega) (by omega), cd.vtx_ne (by omega) (by omega) (by omega)⟩
-
-/-- **`vₛ₊₁` has the one edge `edge s` in `G − vₛ₊₂`**, for `s + 1 < i ≤ d`: every link of
-`G − vₛ₊₂` at `vₛ₊₁` is `edge s`, as `edge (s + 1)` has the end `vₛ₊₂`. -/
-lemma shiftBodyGraph_deg_two (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
-    ∀ f x, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f
-        (cd.vtx ⟨s + 1, by omega⟩) x →
-      f = cd.edge ⟨s, by omega⟩ := by
-  intro f x hlink
-  rw [shiftBodyGraph, removeVertex_isLink] at hlink
-  obtain ⟨hGlink, _, hxv⟩ := hlink
-  rcases cd.shiftBody_deg_two hs hi f x hGlink with rfl | rfl
-  · -- the successor edge `edge (s+1)` would link the body to `vₛ₊₂ = v`, which is deleted.
-    exact absurd ((cd.shiftBody_isLink_succ_edge hs hi).right_unique hGlink).symm hxv
-  · rfl
-
-/-- `shiftBodyGraph_deg_two`, with `vₛ₊₁` as the second end of the link. -/
-lemma shiftBodyGraph_deg_two_right (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
-    (hi : i < cd.d + 1) :
-    ∀ f x, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x
-        (cd.vtx ⟨s + 1, by omega⟩) → f = cd.edge ⟨s, by omega⟩ :=
-  fun f x hlink => cd.shiftBodyGraph_deg_two hs hi f x hlink.symm
-
-/-- The links of `G − vₛ₊₂` have no end `vₛ₊₂`, for `s + 1 < i ≤ d`. -/
-lemma shiftBodyGraph_off_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
-    ∀ f x y, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x y →
-      x ≠ cd.vtx ⟨s + 2, by omega⟩ ∧ y ≠ cd.vtx ⟨s + 2, by omega⟩ := by
-  intro f x y hlink
-  rw [shiftBodyGraph, removeVertex_isLink] at hlink
-  exact ⟨hlink.2.1, hlink.2.2⟩
-
-/-- **A link of `G − vₛ₊₂` that does not meet `vₛ₊₁` is a link of `G − vₛ₊₁`**, for
-`s + 1 < i ≤ d`: it is a link of `G` with ends other than `vₛ₊₁`. -/
-lemma shiftBodyGraph_isLink_of_off_body (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
-    (hi : i < cd.d + 1) :
-    ∀ f x y, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x y →
-      x ≠ cd.vtx ⟨s + 1, by omega⟩ → y ≠ cd.vtx ⟨s + 1, by omega⟩ →
-      (cd.shiftBodyGraph (s := s) (by omega)).IsLink f x y := by
-  intro f x y hlink hxa hya
-  rw [shiftBodyGraph, removeVertex_isLink] at hlink
-  rw [shiftBodyGraph, removeVertex_isLink]
-  exact ⟨hlink.1, hxa, hya⟩
-
 /-- **`shiftPerm i` is the product of the transpositions of its steps**:
 `shiftPerm i = swap v₁ v₂ * swap v₂ v₃ * ⋯ * swap vᵢ₋₁ vᵢ`, the transposition `swap a v` of each
 step `(v, a, c)` of `shiftBodyList i` in order. It is `List.formPerm_eq_prod_zipWith_swap_tail`
 for `shiftCycle i`, whose consecutive pairs are those of the steps. So the composite of the
-renamings of the descending fold is the renaming along `shiftPerm i`. -/
+renamings of the steps is the renaming along `shiftPerm i`. -/
 lemma shiftPerm_eq_prod_map_swap_shiftBodyList [DecidableEq α] (cd : G.ChainData n)
     (i : Fin (cd.d + 1)) :
     cd.shiftPerm i
@@ -2626,8 +2536,9 @@ lemma splitOff_isLink_shiftRelabel_backward (cd : G.ChainData n) (i : Fin cd.d) 
 
 /-- **`ρᵢ` is an isomorphism from `Gᵢ` to `G₁`** (KT eq. (6.54), p. 694): for `1 < i`, `e` joins
 `x` and `y` in `Gᵢ` if and only if `shiftEdgePerm i e` joins `shiftPerm i x` and `shiftPerm i y`
-in `G₁`, by `splitOff_isLink_shiftRelabel_forward` and `splitOff_isLink_shiftRelabel_backward`. It
-has the form of the hypothesis `hiso` of `PanelHingeFramework.ofNormals_relabel_perm`. -/
+in `G₁`, by `splitOff_isLink_shiftRelabel_forward` and `splitOff_isLink_shiftRelabel_backward`.
+`removeVertex_genuine_shiftRelabel` and `candidateEnds_records_splitOff_isLink`
+(`CaseIII/Relabel/Chain.lean`) use it. -/
 lemma splitOff_isLink_shiftRelabel_iff (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
     {e : β} {x y : α} :
     (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)

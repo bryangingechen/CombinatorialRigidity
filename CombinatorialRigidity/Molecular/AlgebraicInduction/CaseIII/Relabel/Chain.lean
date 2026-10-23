@@ -26,8 +26,6 @@ conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
   lies in the block of rows of the edge `ac` (`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, the
   span form of KT eq. (6.44)): steps of `lem:case-III-candidate-dispatch-d3`.
 
-It also has lemmas on renamed rows in the frameworks `F_t` and on KT eq. (6.44) at a body with two
-edges, which no declaration uses or which only lemmas that no declaration uses use.
 `CaseIII/Relabel/Arm.lean` and `ChainColumn.lean` use the file.
 -/
 
@@ -48,8 +46,7 @@ Steps of `lem:case-III-chain-eq666`. For `s = 0, …, i − 1`, the frameworks
 step by the transposition of `v_{s+2}` and `v_{s+1}`, so that after `i − 1` steps they are `q ∘ σ_i`
 (`shiftSeedAdv_eq_funLeft_shiftPerm`, `CaseIII/Relabel/ChainColumn.lean`). The moves
 `wstep v_{s+1} v_{s+2} v_{s+3}` along them take the row space of `G − v₁` into that of `G − v_i`
-(`shiftBodyListAsc_foldl_mem_span_rigidityRows`). `CaseIII/Relabel/Basic.lean` has the frameworks
-with fixed normals, which no declaration uses. -/
+(`shiftBodyListAsc_foldl_mem_span_rigidityRows`). -/
 
 /-- **The transposition of step `s`** (a step of `lem:case-III-chain-eq666`): for `s + 2 ≤ d`, the
 transposition of `v_{s+2}` and `v_{s+1}`, the `(a v)` of the move at the step
@@ -86,25 +83,6 @@ theorem _root_.Graph.ChainData.shiftSeedAdv_succ [DecidableEq α] {G : Graph α 
     cd.shiftSeedAdv q (s + 1)
       = fun p => cd.shiftSeedAdv q s (cd.shiftSeedSwap s p.1, p.2) := rfl
 
-/-- **The selector after `s` steps**: `shiftEndsAdv ends₀ 0 = ends₀`, and
-`shiftEndsAdv ends₀ (s + 1)` applies `shiftSeedSwap s` to both ends that `shiftEndsAdv ends₀ s`
-gives each label. No declaration uses it but its two equations, and no declaration uses those: the
-moves along the chain keep the selector. -/
-noncomputable def _root_.Graph.ChainData.shiftEndsAdv [DecidableEq α] {G : Graph α β} {n : ℕ}
-    (cd : G.ChainData n) (ends₀ : β → α × α) : ℕ → β → α × α
-  | 0 => ends₀
-  | s + 1 => fun e => let p := cd.shiftEndsAdv ends₀ s e
-                      ((cd.shiftSeedSwap s) p.1, (cd.shiftSeedSwap s) p.2)
-
-@[simp] theorem _root_.Graph.ChainData.shiftEndsAdv_zero [DecidableEq α] {G : Graph α β} {n : ℕ}
-    (cd : G.ChainData n) (ends₀ : β → α × α) : cd.shiftEndsAdv ends₀ 0 = ends₀ := rfl
-
-theorem _root_.Graph.ChainData.shiftEndsAdv_succ [DecidableEq α] {G : Graph α β} {n : ℕ}
-    (cd : G.ChainData n) (ends₀ : β → α × α) (s : ℕ) :
-    cd.shiftEndsAdv ends₀ (s + 1)
-      = fun e => ((cd.shiftSeedSwap s) (cd.shiftEndsAdv ends₀ s e).1,
-                  (cd.shiftSeedSwap s) (cd.shiftEndsAdv ends₀ s e).2) := rfl
-
 /-- **The framework of step `s`, with the normals renamed** (a step of `lem:case-III-chain-eq666`):
 for `s + 1 ≤ d`, the body-hinge framework of `ofNormals (shiftBodyGraph s) ends (shiftSeedAdv q s)`,
 where `shiftBodyGraph s` is `G − v_{s+1}`. The selector does not depend on `s`; the normals do. -/
@@ -113,14 +91,6 @@ noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAsc [DecidableEq α] 
     (q : α × Fin (k + 2) → K) :
     BodyHingeFramework K k α β :=
   (PanelHingeFramework.ofNormals (cd.shiftBodyGraph hs) ends (cd.shiftSeedAdv q s)).toBodyHinge
-
-/-- The graph of `shiftBodyFrameworkAsc s` is `shiftBodyGraph s = G − v_{s+1}`. No declaration uses
-it. -/
-@[simp]
-theorem _root_.Graph.ChainData.shiftBodyFrameworkAsc_graph [DecidableEq α] {G : Graph α β}
-    {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
-    (q : α × Fin (k + 2) → K) :
-    (cd.shiftBodyFrameworkAsc hs ends q).graph = cd.shiftBodyGraph hs := rfl
 
 /-- **The frameworks of the steps, as a sequence** (a step of `lem:case-III-chain-eq666`):
 `shiftBodyFrameworkAsc s` for `s + 1 ≤ d`, and `shiftBodyFrameworkAsc 0` for larger `s`, so that
@@ -514,88 +484,6 @@ theorem PanelHingeFramework.chainData_bottom_relabel
         PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
         PanelHingeFramework.ofNormals_ends, he₀rec]
 
-/-! ## Renamed rows in the frameworks `F_t`
-
-Two lemmas that no declaration uses: a renamed row, and the renamed terms of a combination at one
-label, in the row space of the frameworks `F_t` (`caseIIICandidate`, `CaseIII/Candidate.lean`). -/
-
-/-- **A renamed row is a row of `F_t`**: let `r` lie in the block of rows of `ofNormals Gs ends₀ q₀`
-at `f`, let `ρ⁻¹` map `u` and `w` to `u'` and `w'`, and let `f'`, neither `e_c` nor `e_r`, join `u'`
-and `w'` in `G − vᵢ`, with the hinge of `ofNormals (G − vᵢ) endsσρ qρ` at `f'` equal to that of
-`ofNormals Gs ends₀ q₀` at `f` (`hsupp`). Then the form `S ↦ hingeRow u w r (S ∘ ρ⁻¹)` lies in the
-span of the rows of `F_t = caseIIICandidate (G − vᵢ) endsσρ qρ e_c e_r n_u n' n_r t`: it is
-`hingeRow u' w' r`, a row of `ofNormals (G − vᵢ) endsσρ qρ` at `f'`, and so of `F_t`
-(`hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`). Only the next lemma uses it, and
-no declaration uses that. -/
-theorem PanelHingeFramework.funLeft_dualMap_genuineRow_mem_span_caseIIICandidate
-    [DecidableEq β] {G : Graph α β} (ρ : Equiv.Perm α)
-    {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K} {vᵢ : α}
-    {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
-    {e_c e_r : β} {n_u n' n_r : Fin (k + 2) → K} {t : K}
-    {f f' : β} {u w u' w' : α} {r : Module.Dual K (ScrewSpace K k)}
-    (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
-    (hu : ρ.symm u = u') (hw : ρ.symm w = w')
-    (h1 : f' ≠ e_c) (h2 : f' ≠ e_r)
-    (hlinkGt : (G.removeVertex vᵢ).IsLink f' u' w')
-    (hsupp : (PanelHingeFramework.ofNormals (G.removeVertex vᵢ) endsσρ
-          qρ).toBodyHinge.supportExtensor f'
-        = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
-    (LinearMap.funLeft K (ScrewSpace K k) ρ.symm).dualMap (BodyHingeFramework.hingeRow u w r) ∈
-      Submodule.span K (PanelHingeFramework.caseIIICandidate (G.removeVertex vᵢ) endsσρ qρ
-        e_c e_r n_u n' n_r t).rigidityRows := by
-  -- The renamed form is `hingeRow u' w' r` (`hu`, `hw`).
-  rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw]
-  -- `r` lies in the block of rows of `ofNormals (G − vᵢ) endsσρ qρ` at `f'`, whose hinge `hsupp`
-  -- identifies with that at `f` (`hr`).
-  have hr' : r ∈ (PanelHingeFramework.ofNormals (G.removeVertex vᵢ) endsσρ
-      qρ).toBodyHinge.hingeRowBlock f' := by
-    rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]
-    exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
-  -- So `hingeRow u' w' r` is a row of `F_t` (`f'` is neither `e_c` nor `e_r`).
-  exact Submodule.subset_span
-    (PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link
-      (G.removeVertex vᵢ) endsσρ qρ e_c e_r n_u n' n_r t h1 h2 hlinkGt hr')
-
-/-- **The renamed terms at one label lie in the row space of `F_t`**: for a combination
-`∑ c_j hingeRow (uv j) (vv j) (rv j)`, with each `rv j` in the block of rows of
-`ofNormals Gs ends₀ q₀` at `ev j` (`hrv`), if each term at the label `e_i` satisfies the hypotheses
-of `funLeft_dualMap_genuineRow_mem_span_caseIIICandidate` (`htransport`), then the renamed sum of
-those terms lies in the span of the rows of `F_t`, by that lemma for each term. No declaration uses
-it. The proof of `lem:case-III-chain-eq666` has the form at the new edge of `G_i` in the row space
-of `R(G − v_i, q_i)` from `chainData_relabel_arm_hρGv` (`CaseIII/Relabel/ChainColumn.lean`), which
-`chainData_dispatch_interior` (`CaseIII/Realization.lean`) uses. -/
-theorem PanelHingeFramework.funLeft_dualMap_pmR_group_mem_span_caseIIICandidate
-    [DecidableEq β] {G : Graph α β} (ρ : Equiv.Perm α)
-    {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K} {vᵢ : α}
-    {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
-    {e_c e_r : β} {n_u n' n_r : Fin (k + 2) → K} {t : K}
-    {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual K (ScrewSpace K k)) (e_i : β)
-    -- each `rv j` in the block of rows at `ev j`:
-    (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock (ev j))
-    -- each renamed term at `e_i` is at a link `f'` of `G − vᵢ`, neither `e_c` nor `e_r`, with the
-    -- same hinge:
-    (htransport : ∀ j ∈ Finset.univ.filter (fun j => ev j = e_i),
-      ∃ f' u' w', ρ.symm (uv j) = u' ∧ ρ.symm (vv j) = w' ∧ f' ≠ e_c ∧ f' ≠ e_r ∧
-        (G.removeVertex vᵢ).IsLink f' u' w' ∧
-        (PanelHingeFramework.ofNormals (G.removeVertex vᵢ) endsσρ qρ).toBodyHinge.supportExtensor f'
-          = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor (ev j)) :
-    (LinearMap.funLeft K (ScrewSpace K k) ρ.symm).dualMap
-        (∑ j ∈ Finset.univ.filter (fun j => ev j = e_i),
-          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)) ∈
-      Submodule.span K (PanelHingeFramework.caseIIICandidate (G.removeVertex vᵢ) endsσρ qρ
-        e_c e_r n_u n' n_r t).rigidityRows := by
-  classical
-  -- Push the relabel-image map through the `cⱼ`-combination (`map_sum`/`map_smul`).
-  rw [map_sum]
-  refine Submodule.sum_mem _ fun j hj => ?_
-  rw [map_smul]
-  refine Submodule.smul_mem _ _ ?_
-  -- Each renamed term, by `funLeft_dualMap_genuineRow_mem_span_caseIIICandidate`.
-  obtain ⟨f', u', w', hu, hw, h1, h2, hlinkGt, hsupp⟩ := htransport j hj
-  exact PanelHingeFramework.funLeft_dualMap_genuineRow_mem_span_caseIIICandidate ρ
-    (hrv j) hu hw h1 h2 hlinkGt hsupp
-
 /-! ## The case `d = 3`
 
 Steps of `lem:case-III-candidate-dispatch-d3`, for the third framework that
@@ -831,152 +719,5 @@ theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows
     intro r x _ hx
     rw [LinearMap.smul_comp]
     exact (Fab.hingeRowBlock e_c).smul_mem r hx
-
-/-- **The form at `ac` given by the restriction to `a`**: under the hypotheses of
-`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, the form `hingeRow a c (wGv ∘ single a)` is a row
-of `Fv` at `e_c`, so it lies in the span of the rows of `Fv`. No declaration uses it. -/
-theorem BodyHingeFramework.hingeRow_acolumn_mem_span_rigidityRows
-    [DecidableEq α] {Fab Fv : BodyHingeFramework K k α β}
-    {a c : α} {e_c : β}
-    (hac : a ≠ c)
-    (hlink_ec : Fv.graph.IsLink e_c a c)
-    (hblock : Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c)
-    (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
-    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
-    {wGv : Module.Dual K (α → ScrewSpace K k)}
-    (hwGv : wGv ∈ Submodule.span K Fv.rigidityRows) :
-    BodyHingeFramework.hingeRow (k := k) (α := α) a c
-        (wGv.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a))
-      ∈ Submodule.span K Fv.rigidityRows := by
-  apply Submodule.subset_span
-  apply hingeRow_mem_rigidityRows Fv hlink_ec
-  rw [hblock]
-  exact acolumn_mem_hingeRowBlock_of_span_rigidityRows hac hlink_ec hblock hdeg2 hdeg2r hwGv
-
-/-! ## A body with two edges
-
-For a body `a` whose only links are `e_c` to `c` and `e_d` to `d`, the restriction to `a` of a form
-in the row space lies in the sum of the blocks of rows of the two edges
-(`acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`), and KT eq. (6.44) (p. 691) at `a` gives a
-form that vanishes on both hinges (`candidate_perp_two_incident_panels`). Only lemmas that no
-declaration uses use them: the proof of `lem:case-III-chain-eq666` reads the relation along the
-whole chain instead (`CaseIII/Relabel/ChainColumn.lean`). -/
-
-/-- **The restriction to a body with two edges of a form in the row space**: let `e_c` and `e_d`
-join `a` to `c ≠ a` and to `d ≠ a` in `Fv` and be its only links at `a` (`hdeg2`, `hdeg2r`), and let
-`Fv` and `Fab` have the same blocks of rows at `e_c` and at `e_d`. Then for `wGv` in the span of the
-rows of `Fv`, the restriction `wGv ∘ single a` lies in the sum of the blocks of rows of `Fab` at
-`e_c` and at `e_d`, by the induction of `acolumn_mem_hingeRowBlock_of_span_rigidityRows`. Only
-`freshEdge_interior_acolumn_sup` and `i3_freshEdge_interior_acolumn_sup_deRisk`
-(`CaseIII/Relabel/Arm.lean`) use it, and no declaration uses those. -/
-theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows
-    [DecidableEq α] {Fab Fv : BodyHingeFramework K k α β}
-    {a c d : α} {e_c e_d : β}
-    (hac : a ≠ c) (had : a ≠ d)
-    (hlink_ec : Fv.graph.IsLink e_c a c)
-    (hlink_ed : Fv.graph.IsLink e_d a d)
-    (hblock_c : Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c)
-    (hblock_d : Fv.hingeRowBlock e_d = Fab.hingeRowBlock e_d)
-    -- `a` is degree-2 in `Fv`: its only links are `e_c = ac` and `e_d = ad`.
-    (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c ∨ f = e_d)
-    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c ∨ f = e_d)
-    {wGv : Module.Dual K (α → ScrewSpace K k)}
-    (hwGv : wGv ∈ Submodule.span K Fv.rigidityRows) :
-    wGv.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a)
-      ∈ Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d := by
-  apply Submodule.span_induction (p := fun ψ _ =>
-    ψ.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a)
-      ∈ Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d) _ _ _ _ hwGv
-  · -- generator case: `hingeRow u w ρ ∈ Fv.rigidityRows`, so `ρ ∈ Fv.hingeRowBlock f`.
-    rintro ψ ⟨f, u, w, hlink, ρ, hρ, rfl⟩
-    by_cases hau : u = a
-    · -- `u = a`: `hdeg2` forces `f ∈ {e_c, e_d}`; `IsLink.right_unique` pins `w` accordingly.
-      rw [hau] at hlink
-      rcases hdeg2 f w hlink with hfc | hfd
-      · rw [hfc] at hlink hρ
-        have hwc : w = c := hlink.right_unique hlink_ec
-        rw [hau, hwc, hingeRow_comp_single_tail hac]
-        exact Submodule.mem_sup_left (hblock_c ▸ hρ)
-      · rw [hfd] at hlink hρ
-        have hwd : w = d := hlink.right_unique hlink_ed
-        rw [hau, hwd, hingeRow_comp_single_tail had]
-        exact Submodule.mem_sup_right (hblock_d ▸ hρ)
-    · by_cases hwa : w = a
-      · -- `w = a`, `u ≠ a`: `hdeg2r` forces `f ∈ {e_c, e_d}`; pin `u` via `IsLink.right_unique`.
-        rw [hwa] at hlink
-        rcases hdeg2r f u hlink with hfc | hfd
-        · rw [hfc] at hlink hρ
-          have huc : u = c := hlink.symm.right_unique hlink_ec
-          rw [hwa, hingeRow_swap u a ρ, huc, hingeRow_comp_single_tail hac]
-          exact Submodule.mem_sup_left ((Fab.hingeRowBlock e_c).neg_mem (hblock_c ▸ hρ))
-        · rw [hfd] at hlink hρ
-          have hud : u = d := hlink.symm.right_unique hlink_ed
-          rw [hwa, hingeRow_swap u a ρ, hud, hingeRow_comp_single_tail had]
-          exact Submodule.mem_sup_right ((Fab.hingeRowBlock e_d).neg_mem (hblock_d ▸ hρ))
-      · -- `u ≠ a`, `w ≠ a`: off-column, restricts to `0`.
-        rw [hingeRow_comp_single_off (Ne.symm hau) (Ne.symm hwa)]
-        exact (Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).zero_mem
-  · simp [(Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).zero_mem]
-  · intro x y _ _ hx hy
-    rw [LinearMap.add_comp]
-    exact (Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).add_mem hx hy
-  · intro r x _ hx
-    rw [LinearMap.smul_comp]
-    exact (Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).smul_mem r hx
-
-/-- **KT eq. (6.44) at a body with two edges**: let `a` be neither `b` nor `c`, let the forms
-`rab j` lie in the block of rows of `F` at `e_c` and the forms `rac j` in that at `e_d`, and let the
-restrictions to `a` of `∑ λ_j hingeRow a b (rab j) + ∑ μ_j hingeRow a c (rac j) + g` and of `g`
-vanish (`hcol`, `hrest`). Then `r = ∑ λ_j rab j` lies in the blocks at `e_c` and at `e_d`: in the
-first as each `rab j` does, and in the second as `r = −∑ μ_j rac j` (`candidateRow_ac_eq_neg`, KT
-eq. (6.44), p. 691). Only the next lemma uses it. -/
-theorem BodyHingeFramework.candidate_perp_two_incident_panels [DecidableEq α]
-    (F : BodyHingeFramework K k α β) {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
-    {a b c : α} {e_c e_d : β} (hab : a ≠ b) (hac : a ≠ c)
-    (lamAB : ιab → K) (rab : ιab → Module.Dual K (ScrewSpace K k))
-    (lamAC : ιac → K) (rac : ιac → Module.Dual K (ScrewSpace K k))
-    (grest : Module.Dual K (α → ScrewSpace K k))
-    (hrab : ∀ j, rab j ∈ F.hingeRowBlock e_c)
-    (hrac : ∀ j, rac j ∈ F.hingeRowBlock e_d)
-    (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α) a b (rab j))
-        + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α) a c (rac j)) + grest).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = 0)
-    (hrest : grest.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = 0) :
-    (∑ j, lamAB j • rab j) ∈ F.hingeRowBlock e_c ∧
-      (∑ j, lamAB j • rab j) ∈ F.hingeRowBlock e_d := by
-  -- KT eq. (6.44): `∑ μ_j rac j = −∑ λ_j rab j`, from the vanishing restriction to `a`.
-  have heq : ∑ j, lamAC j • rac j = -∑ j, lamAB j • rab j :=
-    candidateRow_ac_eq_neg hab hac lamAB rab lamAC rac grest hcol hrest
-  refine ⟨Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hrab j), ?_⟩
-  -- `∑ λ_j rab j = −∑ μ_j rac j`, which lies in the block at `e_d`.
-  rw [← neg_neg (∑ j, lamAB j • rab j), ← heq]
-  exact (F.hingeRowBlock e_d).neg_mem
-    (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hrac j))
-
-/-- **KT eq. (6.44) at a body with two edges, on the hinges**: the form of
-`candidate_perp_two_incident_panels` in which the forms `rab j` and `rac j` vanish on the hinges of
-`F` at `e_c` and at `e_d` (`hperp_ab`, `hperp_ac`), and then so does `∑ λ_j rab j`. Only
-`chainData_freshEdge_perp_of_witness` (`CaseIII/Relabel/ChainColumn.lean`) and
-`freshEdge_surviving_row_mem_of_witness` (`CaseIII/Relabel/Arm.lean`) use it, and no declaration
-uses those. -/
-theorem BodyHingeFramework.candidate_perp_two_incident_supportExtensors [DecidableEq α]
-    (F : BodyHingeFramework K k α β) {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
-    {a b c : α} {e_c e_d : β} (hab : a ≠ b) (hac : a ≠ c)
-    (lamAB : ιab → K) (rab : ιab → Module.Dual K (ScrewSpace K k))
-    (lamAC : ιac → K) (rac : ιac → Module.Dual K (ScrewSpace K k))
-    (grest : Module.Dual K (α → ScrewSpace K k))
-    (hperp_ab : ∀ j, rab j (F.supportExtensor e_c) = 0)
-    (hperp_ac : ∀ j, rac j (F.supportExtensor e_d) = 0)
-    (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α) a b (rab j))
-        + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α) a c (rac j)) + grest).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = 0)
-    (hrest : grest.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = 0) :
-    (∑ j, lamAB j • rab j) (F.supportExtensor e_c) = 0 ∧
-      (∑ j, lamAB j • rab j) (F.supportExtensor e_d) = 0 := by
-  obtain ⟨hc, hd⟩ := F.candidate_perp_two_incident_panels hab hac lamAB rab lamAC rac grest
-    (fun j => (F.mem_hingeRowBlock_iff _ _).2 (hperp_ab j))
-    (fun j => (F.mem_hingeRowBlock_iff _ _).2 (hperp_ac j)) hcol hrest
-  exact ⟨(F.mem_hingeRowBlock_iff _ _).1 hc, (F.mem_hingeRowBlock_iff _ _).1 hd⟩
-
 
 end CombinatorialRigidity.Molecular

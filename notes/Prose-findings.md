@@ -4923,7 +4923,7 @@ declaration's name as its header writes it:
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.2 and 38.3): task 38's
   block (b) at `1b1d9d87` finds the four unpinned, dead and with no caller outside them;
   `case_III_old_new_blocks` goes with task 38.2's deletion in `CaseIII/`, the other three with
-  task 38.3's.
+  task 38.3's; round 3: `case_III_old_new_blocks` deleted (task 38.2).
 - **F-269** · L · `PanelHingeFramework.candidateCompletion_index_injective` and
   `candidateCompletion_panelRow_packaging` (`CaseIII/Arms.lean`),
   `BodyHingeFramework.linearIndependent_sumElim_candidateRow_swap` and
@@ -4933,10 +4933,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache after task 5).
   *Found:* RECONCILE round 3 task 5.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.2): task 38's block (b) at
-  `1b1d9d87` finds the four unpinned, dead and uncalled; deleting them leaves
-  `linearIndependent_sumElim_block_swap` (`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`,
-  unpinned) without a caller, and it goes with them.
+  *Disposition:* done (task 38.2): task 38's block (b) at `1b1d9d87` finds the four unpinned, dead
+  and uncalled; deleting them leaves `linearIndependent_sumElim_block_swap`
+  (`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`, unpinned) without a caller, and it goes
+  with them. Task 38.2's block (b) at `af9ad25b` agrees, and the five are deleted.
 - **F-271** · L · `PanelHingeFramework.case_I_realization` (`AlgebraicInduction/CaseI.lean`): an
   unpinned declaration that no main result's proof reaches and nothing calls; it is the only caller
   of `lem:claim-6-4`'s pin, `rigidContract_exterior_rank_transport_htransport`, which stays with
@@ -5327,7 +5327,10 @@ declaration's name as its header writes it:
   38.1: task 38.20 re-proves `cross₃_ne_zero_iff_linearIndependent` by the mirror
   `Matrix.linearIndependent_rows_iff_det_ne_zero`
   (`Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`, imported into `Chart.lean`), in place of
-  its two `linearIndependent_row_iff_isUnit` chains.
+  its two `linearIndependent_row_iff_isUnit` chains. Round 3: the `CaseIII/` parts (tasks 35 to
+  35.3) deleted with their nineteen orphans; block (b) at `af9ad25b` gives the same names, and the
+  build confirms that the two `ChainColumn.lean` callers were a shared `by omega` auxiliary (task
+  38.2).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and

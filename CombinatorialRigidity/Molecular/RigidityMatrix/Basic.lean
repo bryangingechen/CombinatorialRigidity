@@ -476,26 +476,6 @@ theorem hingeRow_funLeft_dualMap (u v : α) (r : Module.Dual K (ScrewSpace K k))
     rw [LinearMap.dualMap_apply, hingeRow_apply, hingeRow_apply, LinearMap.funLeft_apply,
       LinearMap.funLeft_apply]
 
-/-- **Reading a relabelled form at the screws of one body**: for a permutation `σ` of the bodies and
-a form `φ` on screw assignments, `((funLeft σ).dualMap φ) ∘ₗ single w = φ ∘ₗ single (σ⁻¹ w)`.
-Pointwise, `(single w x) ∘ σ = single (σ⁻¹ w) x`, as `σ a = w` exactly when `a = σ⁻¹ w`. So the
-columns of `w` in the relabelled form are those of `σ⁻¹ w` in `φ`. Unlike `hingeRow_funLeft_dualMap`
-it holds for every form `φ`, and needs `σ` invertible. -/
-theorem funLeft_dualMap_comp_single [DecidableEq α]
-    (φ : Module.Dual K (α → ScrewSpace K k)) (σ : Equiv.Perm α) (w : α) :
-    ((LinearMap.funLeft K (ScrewSpace K k) σ).dualMap φ).comp
-        (LinearMap.single K (fun _ : α => ScrewSpace K k) w)
-      = φ.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) (σ.symm w)) := by
-  refine LinearMap.ext fun x => ?_
-  rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.dualMap_apply]
-  congr 1
-  funext a
-  rw [LinearMap.funLeft_apply, LinearMap.single_apply, LinearMap.single_apply]
-  rcases eq_or_ne (σ a) w with h | h
-  · rw [h, Pi.single_eq_same, ← h, Equiv.symm_apply_apply, Pi.single_eq_same]
-  · rw [Pi.single_eq_of_ne h,
-      Pi.single_eq_of_ne (fun he => h (by rw [he, Equiv.apply_symm_apply]))]
-
 /-- **Two rows with a common end and form subtract to a row** (`lem:case-III-transport-collapse`; KT
 eqs. (6.26)–(6.27), p. 685): `hingeRow u w r − hingeRow v w r = hingeRow u v r`, as
 `(S u − S w) − (S v − S w) = S u − S v`. In Case III the row of `vb` in `R(G, q₀)` minus the row of
@@ -937,34 +917,6 @@ theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework K k α �
   refine ⟨fun i => hingeRow u v (c i), linearIndependent_hingeRow huv hc, fun i => ?_⟩
   exact ⟨e, u, v, hlink, c i, hmem i, rfl⟩
 
-/-- **Independent rows other than a given form that span the same space** (`def:rigidity-matrix`):
-for finitely many bodies and a form `rhat`, there are linearly independent rows `f i` of `F`, none
-equal to `rhat`, indexed by `Fin N` with `N` the dimension of `span (F.rigidityRows \ {rhat})`,
-whose span is that space: mathlib's `Submodule.exists_fun_fin_finrank_span_eq` for the set
-`F.rigidityRows \ {rhat}`. -/
-theorem exists_genuine_linearIndependent_basis_of_rigidityRows_diff [Finite α]
-    (F : BodyHingeFramework K k α β) (rhat : Module.Dual K (α → ScrewSpace K k)) :
-    ∃ (f : Fin (Module.finrank K (Submodule.span K (F.rigidityRows \ {rhat}))) →
-        Module.Dual K (α → ScrewSpace K k)),
-      LinearIndependent K f ∧ (∀ i, f i ∈ F.rigidityRows) ∧ (∀ i, f i ≠ rhat) ∧
-        Submodule.span K (Set.range f) = Submodule.span K (F.rigidityRows \ {rhat}) := by
-  have : Fintype α := Fintype.ofFinite α
-  obtain ⟨f, hmem, hspan, hLI⟩ :=
-    Submodule.exists_fun_fin_finrank_span_eq K (F.rigidityRows \ {rhat})
-  exact ⟨f, hLI, fun i => (hmem i).1, fun i => (hmem i).2, hspan⟩
-
-/-- **Removing a redundant row keeps the row space** (`def:rigidity-matrix`): if `rhat` lies in the
-span of the other rows, `span (F.rigidityRows \ {rhat}) = span F.rigidityRows`. Katoh and Tanigawa
-remove a redundant row of `R(G_v^{ab}, q)` in this way (KT eq. (6.23), p. 685). -/
-theorem span_rigidityRows_diff_singleton_eq_of_mem_span
-    (F : BodyHingeFramework K k α β) {rhat : Module.Dual K (α → ScrewSpace K k)}
-    (hrhat : rhat ∈ Submodule.span K (F.rigidityRows \ {rhat})) :
-    Submodule.span K (F.rigidityRows \ {rhat}) = Submodule.span K F.rigidityRows := by
-  refine le_antisymm (Submodule.span_mono Set.sdiff_subset) (Submodule.span_le.mpr fun x hx => ?_)
-  by_cases hxr : x = rhat
-  · exact hxr ▸ hrhat
-  · exact Submodule.subset_span ⟨hx, hxr⟩
-
 /-! ## The column operation and blocks of independent forms (KT eqs. (6.14)–(6.29))
 
 The column operation of KT eqs. (6.14)–(6.15) (`columnOp`), the forms that depend only on the screw
@@ -1344,66 +1296,6 @@ theorem linearIndependent_sum_pinned_block_augment {ιn ιo : Type*} [Finite ιn
   -- The case `ιc = Unit` of `linearIndependent_sum_pinned_block_augment_block`.
   linearIndependent_sum_pinned_block_augment_block (wc := fun _ : Unit => w) hold hnewpinaug
     holdindep
-
-/-- **Changing one form by a combination of the others keeps independence** (a row operation): if
-the forms `rn`, `w` and `ro` are jointly linearly independent and `w' − w` lies in the span of `rn`
-and `ro`, then `rn`, `w'` and `ro` are. Reordered with `w` last, independence says
-`w ∉ span (rn, ro)` (`linearIndependent_sumElim_unit_iff`), and `w'` differs from `w` by a member of
-that span. -/
-theorem linearIndependent_sumElim_candidateRow_swap {ιn ιo : Type*}
-    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
-    {w w' : Module.Dual K (α → ScrewSpace K k)}
-    (hindep : LinearIndependent K (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro))
-    (hdiff : w' - w ∈ Submodule.span K (Set.range (Sum.elim rn ro))) :
-    LinearIndependent K (Sum.elim (Sum.elim rn (fun _ : Unit => w')) ro) := by
-  -- Reassociate the `(ιn ⊕ Unit) ⊕ ιo` index to `(ιn ⊕ ιo) ⊕ Unit`, putting the candidate
-  -- summand last so the row-space criterion `linearIndependent_sumElim_unit_iff` applies.
-  set e : (ιn ⊕ Unit) ⊕ ιo ≃ (ιn ⊕ ιo) ⊕ Unit :=
-    ((Equiv.sumAssoc ιn Unit ιo).trans
-      ((Equiv.refl ιn).sumCongr (Equiv.sumComm Unit ιo))).trans
-      (Equiv.sumAssoc ιn ιo Unit).symm with he
-  -- The reassociated family with candidate row `x` is `Sum.elim (Sum.elim rn ro) (Unit → x) ∘ e`.
-  have hreassoc : ∀ x : Module.Dual K (α → ScrewSpace K k),
-      Sum.elim (Sum.elim rn (fun _ : Unit => x)) ro
-        = Sum.elim (Sum.elim rn ro) (fun _ : Unit => x) ∘ e := by
-    intro x; funext i; rcases i with (i | u) | j <;> rfl
-  -- Move `hindep` to the reassociated `Sum.elim base (Unit → w)` form.
-  rw [hreassoc w, linearIndependent_equiv] at hindep
-  -- The base block `Sum.elim rn ro` is independent (a sub-family of the augmented one).
-  have hbase : LinearIndependent K (Sum.elim rn ro) := by
-    have := hindep.comp Sum.inl Sum.inl_injective
-    simpa using this
-  -- The row-space criterion: `w ∉ span (range base)`; `hdiff` transfers it to `w'`.
-  have hw : w ∉ Submodule.span K (Set.range (Sum.elim rn ro)) :=
-    (linearIndependent_sumElim_unit_iff hbase w).1 hindep
-  have hw' : w' ∉ Submodule.span K (Set.range (Sum.elim rn ro)) := fun h =>
-    hw (by simpa using sub_mem h hdiff)
-  rw [hreassoc w', linearIndependent_equiv]
-  exact (linearIndependent_sumElim_unit_iff hbase w').2 hw'
-
-/-- **Changing a family of forms by combinations of the others keeps independence**: the form of
-`linearIndependent_sumElim_candidateRow_swap` for a family `cand` in place of one form `w`. If `rn`,
-`cand` and `ro` are jointly linearly independent and each `cand' i − cand i` lies in the span of
-`rn` and `ro`, then `rn`, `cand'` and `ro` are. Reordered with `cand` last, it is
-`linearIndependent_sumElim_block_swap`. -/
-theorem linearIndependent_sumElim_candidateBlock_swap {ιn ιo ιc : Type*}
-    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
-    {cand cand' : ιc → Module.Dual K (α → ScrewSpace K k)}
-    (hindep : LinearIndependent K (Sum.elim (Sum.elim rn cand) ro))
-    (hdiff : ∀ i, cand' i - cand i ∈ Submodule.span K (Set.range (Sum.elim rn ro))) :
-    LinearIndependent K (Sum.elim (Sum.elim rn cand') ro) := by
-  -- Reassociate `(ιn ⊕ ιc) ⊕ ιo` to `(ιn ⊕ ιo) ⊕ ιc`, putting the candidate block last so the
-  -- block row operation `linearIndependent_sumElim_block_swap` (base first) applies.
-  set e : (ιn ⊕ ιc) ⊕ ιo ≃ (ιn ⊕ ιo) ⊕ ιc :=
-    ((Equiv.sumAssoc ιn ιc ιo).trans
-      ((Equiv.refl ιn).sumCongr (Equiv.sumComm ιc ιo))).trans
-      (Equiv.sumAssoc ιn ιo ιc).symm with he
-  have hreassoc : ∀ c : ιc → Module.Dual K (α → ScrewSpace K k),
-      Sum.elim (Sum.elim rn c) ro = Sum.elim (Sum.elim rn ro) c ∘ e := by
-    intro c; funext i; rcases i with (i | u) | j <;> rfl
-  rw [hreassoc cand', linearIndependent_equiv]
-  rw [hreassoc cand, linearIndependent_equiv] at hindep
-  exact linearIndependent_sumElim_block_swap hindep hdiff
 
 /-- **The rows of `va`, the form `hingeRow v a ρ` and forms independent off `v`, through the column
 operation** (a step of `lem:case-III-candidate-row`; KT eqs. (6.14)–(6.16) and (6.29), pp. 679 and

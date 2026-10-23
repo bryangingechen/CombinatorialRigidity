@@ -23,7 +23,6 @@ conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
   `sec:molecular-algebraic-induction-caseI`);
 * `lem:case-III` from its case of a chain (`case_III_hsplit_producer_all_k`).
 
-It also has two lemmas on a family of rows indexed by a sum type, which no declaration uses.
 `CaseIII/Relabel/` renames the bodies for the third framework and for the general case, and
 `CaseIII/Realization.lean` proves the case `d = 3`, the case of a chain and `lem:case-III`.
 -/
@@ -412,90 +411,6 @@ theorem PanelHingeFramework.case_III_arm_realization_M2 [Infinite K]
     · exact Or.inl hgen
     · exact Or.inr ⟨-ρ', by rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρ'e₀,
         neg_zero, neg_zero], by rw [hwj, ← BodyHingeFramework.hingeRow_swap]⟩
-
-/-! ## Rows indexed by a sum type
-
-Two lemmas on the family `(rows at sn ⊕ one row) ⊕ rows at so` of a framework: its index map and its
-count. No declaration uses them. -/
-
-/-- **The index map of a family of rows at `e_b`, at `e_a` and at the links of `Gv` is injective**:
-let every index in `sn` have the edge label `e_b`, and no index in `so` have `e_b` or `e_a`, where
-`e_a ≠ e_b`. Then the map `(sn ⊕ Unit) ⊕ so → β × _ × _` that sends `()` to `(e_a, ta, tb)` and
-every other index to itself is injective: within `sn` and within `so` as `Subtype.val` is, and
-across the blocks as their edge labels differ. No declaration uses it. -/
-theorem PanelHingeFramework.candidateCompletion_index_injective
-    {sn so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
-    {e_a e_b : β} {ta tb : Set.powersetCard (Fin (k + 2)) k} (heab : e_a ≠ e_b)
-    (hsn_e : ∀ i ∈ sn, (i : β × _ × _).1 = e_b)
-    (hso_ne_eb : ∀ i ∈ so, (i : β × _ × _).1 ≠ e_b)
-    (hso_ne_ea : ∀ i ∈ so, (i : β × _ × _).1 ≠ e_a) :
-    Function.Injective
-      (Sum.elim (Sum.elim (fun i : sn => (i : β × _ × _)) (fun _ : Unit => (e_a, ta, tb)))
-        (fun i : so => (i : β × _ × _)) :
-        (sn ⊕ Unit) ⊕ so → β × Set.powersetCard (Fin (k + 2)) k
-          × Set.powersetCard (Fin (k + 2)) k) := by
-  rintro ((⟨in₁, hin₁⟩ | u₁) | ⟨io₁, hio₁⟩) ((⟨in₂, hin₂⟩ | u₂) | ⟨io₂, hio₂⟩) hab <;>
-    simp only [Sum.elim_inl, Sum.elim_inr] at hab
-  -- `sn` vs `sn`: `Subtype.val` injective.
-  · exact congrArg (Sum.inl ∘ Sum.inl) (Subtype.ext hab)
-  -- `sn` vs `Unit`: the `sn`-edge `e_b` would equal `e_a`, against `heab`.
-  · exact absurd ((hsn_e _ hin₁).symm.trans (congrArg Prod.fst hab)) heab.symm
-  -- `sn` vs `so`: the `so`-edge would equal `e_b`, against `hso_ne_eb`.
-  · exact absurd ((congrArg Prod.fst hab).symm.trans (hsn_e _ hin₁)) (hso_ne_eb _ hio₂)
-  -- `Unit` vs `sn`: symmetric to the `sn` vs `Unit` case.
-  · exact absurd ((hsn_e _ hin₂).symm.trans (congrArg Prod.fst hab).symm) heab.symm
-  -- `Unit` vs `Unit`: both indices are `()`.
-  · rw [Subsingleton.elim u₁ u₂]
-  -- `Unit` vs `so`: the `so`-edge would equal `e_a`, against `hso_ne_ea`.
-  · exact absurd (congrArg Prod.fst hab).symm (hso_ne_ea _ hio₂)
-  -- `so` vs `sn`: symmetric to the `sn` vs `so` case.
-  · exact absurd ((congrArg Prod.fst hab).trans (hsn_e _ hin₂)) (hso_ne_eb _ hio₁)
-  -- `so` vs `Unit`: symmetric to the `Unit` vs `so` case.
-  · exact absurd (congrArg Prod.fst hab) (hso_ne_ea _ hio₁)
-  -- `so` vs `so`: `Subtype.val` injective.
-  · exact congrArg Sum.inr (Subtype.ext hab)
-
-/-- **The family as panel rows along that index map, and its number of rows**: let
-`ρ = annihRow (C(e_a)) ta tb` with `ends e_a = (u, w)`. Then the family of the panel rows of `F` at
-`sn`, the row `hingeRow u w ρ` and the panel rows at `so` is the family of the panel rows along the
-index map of `candidateCompletion_index_injective`, as `hingeRow u w ρ` is the panel row at
-`(e_a, ta, tb)` (`panelRow_eq_hingeRow_annihRow_of_ends`). If `|sn| = D − 1`, `|so| = D(mVv − 1)`
-and `mVv = mV − 1` with `mV ≥ 1`, the family has at least `D(mV − 1)` members, the count of KT
-eq. (6.29). No declaration uses it. -/
-theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
-    (F : BodyHingeFramework K k α β) (ends : β → α × α)
-    {sn so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
-    {e_a : β} {ta tb : Set.powersetCard (Fin (k + 2)) k} {u w : α}
-    {ρ : Module.Dual K (ScrewSpace K k)}
-    (hends : ends e_a = (u, w)) (hρ : ρ = annihRow (F.supportExtensor e_a) ta tb)
-    {mV mVv : ℕ} (hsn_card : Nat.card sn = screwDim k - 1)
-    (hso_card : Nat.card so = screwDim k * (mVv - 1)) (hVcard : mVv = mV - 1) (hm : 1 ≤ mV) :
-    -- the family is the family of panel rows along the index map
-    (Sum.elim (Sum.elim (fun i : sn => F.panelRow ends (i : β × _ × _))
-        (fun _ : Unit => BodyHingeFramework.hingeRow (k := k) (α := α) u w ρ))
-      (fun i : so => F.panelRow ends (i : β × _ × _)) =
-      fun i => F.panelRow ends
-        (Sum.elim (Sum.elim (fun i : sn => (i : β × _ × _)) (fun _ : Unit => (e_a, ta, tb)))
-          (fun i : so => (i : β × _ × _)) i)) ∧
-    -- the eq. (6.29) full count `D(|V|−1) ≤ |(sn ⊕ Unit) ⊕ so|`
-    screwDim k * (mV - 1) ≤ Nat.card ((sn ⊕ Unit) ⊕ so) := by
-  refine ⟨?_, ?_⟩
-  · -- The row at `()` is the panel row at `e_a`; the others match by `rfl`.
-    have hcand : BodyHingeFramework.hingeRow (k := k) (α := α) u w ρ
-        = F.panelRow ends (e_a, ta, tb) := by
-      rw [F.panelRow_eq_hingeRow_annihRow_of_ends ends hends ta tb, hρ]
-    funext i; rcases i with (i | i) | i
-    · rfl
-    · simp only [Sum.elim_inl, Sum.elim_inr]; exact hcand
-    · rfl
-  · -- `((D−1)+1) + D(m−2) = D(m−1)` for `m ≥ 1`.
-    rw [Nat.card_sum, Nat.card_sum, Nat.card_unique (α := Unit), hsn_card, hso_card, hVcard]
-    have hD : 1 ≤ screwDim k := Nat.choose_pos (by omega)
-    obtain ⟨m, rfl⟩ : ∃ m, mV = m + 1 := ⟨mV - 1, by omega⟩
-    simp only [Nat.add_sub_cancel]
-    cases m with
-    | zero => simp
-    | succ m' => rw [Nat.add_sub_cancel, Nat.mul_succ]; omega
 
 /-! ## The triangle and the cycle
 
