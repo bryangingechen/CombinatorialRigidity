@@ -18,8 +18,8 @@ form satisfies the standing hypotheses when `g` has degree at least two in `G[W]
 body of `W` keeps all its neighbours (`Graph.IsX0Graph.induce_of_gate`). For a chain
 `a − x 0 − ⋯ − x (k − 1) − b` on `V₁` of a graph with `G − v` connected for every body `v`, the set
 `V₁` has that form in `G − x 0`, with `b` as `g`, and the ends keep degree at least two in `G[V₁]`,
-as they have degree at least three in `G` and lose one neighbour each. Splitting off a body with
-exactly two links, to distinct bodies that are not adjacent, keeps the standing hypotheses
+as they have degree at least three in `G` and lose one neighbour each. Splitting off a body whose
+links are one to each of two distinct bodies that are not adjacent keeps the standing hypotheses
 (`Graph.IsX0Graph.splitOff`). At an open ear with one to four interior bodies this gives them at the
 graph with an interior body suppressed, which the ear and split-off steps at a usable chain assume
 (`lem:pencil-x0-chain-reduces`).
@@ -39,8 +39,8 @@ than `G` (the clause `Graph.X0Reduces.cutVertex`).
 * `Graph.IsChain.isX0Graph_induce`: `lem:pencil-x0-chain-standing`(1), if `G` satisfies the standing
   hypotheses and `G − v` is connected for every body `v`, then `G[V₁]` satisfies them for every
   chain on `V₁`.
-* `Graph.IsX0Graph.splitOff`: `lem:pencil-x0-chain-standing`(2), splitting off a body with exactly
-  two links, to distinct bodies that are not adjacent, keeps the standing hypotheses.
+* `Graph.IsX0Graph.splitOff`: `lem:pencil-x0-chain-standing`(2), splitting off a body whose links
+  are one to each of two distinct bodies that are not adjacent keeps the standing hypotheses.
 * `Graph.IsX0Graph.x0Reduces_of_not_twoEdgeConnected`: `lem:pencil-x0-cut-reduces`(1), a graph
   satisfying the standing hypotheses that is not 2-edge-connected reduces to the graphs smaller than
   it.
@@ -189,15 +189,15 @@ theorem _root_.Graph.IsChain.isX0Graph_induce [Finite α] {G : Graph α β}
       · exact hyb h'
 
 /-- **The standing hypotheses after splitting off** (`lem:pencil-x0-chain-standing`(2)): let `G`
-satisfy the standing hypotheses, and let a body `v` have exactly two links, `e₁` to `u` and `e₂` to
-`w`, where `u ≠ w` are not adjacent. Then the splitting-off `G.splitOff v u w e₁`, whose new link
+satisfy the standing hypotheses, and let the links at a body `v` be `e₁`, to `u`, and `e₂`, to `w`,
+where `u ≠ w` are not adjacent. Then the splitting-off `G.splitOff v u w e₁`, whose new link
 `u − w` takes the label `e₁`, satisfies the standing hypotheses. The new link is not parallel to an
 old one, as `u` and `w` are not adjacent; `u` and `w` each exchange the link to `v` for the new
 link, and every other body keeps its neighbours. A set of bodies left by no link of the
 splitting-off contains both or neither of `u` and `w`, and then, with `v` added in the first case,
 it is left by no link of `G`. -/
 theorem _root_.Graph.IsX0Graph.splitOff [Finite α] {G : Graph α β} (hG : G.IsX0Graph) {v u w : α}
-    {e₁ e₂ : β} (h₁ : G.IsLink e₁ v u) (h₂ : G.IsLink e₂ v w) (hne : e₁ ≠ e₂)
+    {e₁ e₂ : β} (h₁ : G.IsLink e₁ v u) (h₂ : G.IsLink e₂ v w)
     (honly : ∀ f y, G.IsLink f v y → f = e₁ ∨ f = e₂) (huw : u ≠ w) (hnadj : ¬ G.Adj u w) :
     (G.splitOff v u w e₁).IsX0Graph := by
   have hloop := hG.simple.toLoopless
@@ -349,12 +349,7 @@ theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_four [Finite α] {G : Graph α
   have l0 : G.IsLink (e 0) a (x 0) := hear.isLink 0
   have l1 : G.IsLink (e 1) (x 0) (x 1) := hear.isLink 1
   have l2 : G.IsLink (e 2) (x 1) (x 2) := hear.isLink 2
-  have hne : e 1 ≠ e 2 := by
-    intro h; rw [h] at l1
-    rcases l1.left_eq_or_eq l2 with h' | h'
-    · exact absurd (hear.inj h') (by decide)
-    · exact absurd (hear.inj h') (by decide)
-  refine hG.splitOff l1.symm l2 hne (fun f y hf => hear.isLink_interior 1 hf)
+  refine hG.splitOff l1.symm l2 (fun f y hf => hear.isLink_interior 1 hf)
     (fun h => absurd (hear.inj h) (by decide)) ?_
   rintro ⟨f, hf⟩
   rcases hear.isLink_interior 0 hf with rfl | rfl
@@ -371,12 +366,7 @@ theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_three [Finite α] {G : Graph �
   have l0 : G.IsLink (e 0) a (x 0) := hear.isLink 0
   have l1 : G.IsLink (e 1) (x 0) (x 1) := hear.isLink 1
   have l2 : G.IsLink (e 2) (x 1) (x 2) := hear.isLink 2
-  have hne : e 1 ≠ e 2 := by
-    intro h; rw [h] at l1
-    rcases l1.left_eq_or_eq l2 with h' | h'
-    · exact absurd (hear.inj h') (by decide)
-    · exact absurd (hear.inj h') (by decide)
-  refine hG.splitOff l1.symm l2 hne (fun f y hf => hear.isLink_interior 1 hf)
+  refine hG.splitOff l1.symm l2 (fun f y hf => hear.isLink_interior 1 hf)
     (fun h => absurd (hear.inj h) (by decide)) ?_
   rintro ⟨f, hf⟩
   rcases hear.isLink_interior 0 hf with rfl | rfl
@@ -393,12 +383,7 @@ theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_orbit [Finite α] {G : Graph �
   have l0 : G.IsLink (e 0) a (x 0) := hear.isLink 0
   have l1 : G.IsLink (e 1) (x 0) (x 1) := hear.isLink 1
   have l2 : G.IsLink (e 2) (x 1) b := hear.isLink 2
-  have hne : e 1 ≠ e 2 := by
-    intro h; rw [h] at l1
-    rcases l1.left_eq_or_eq l2 with h' | h'
-    · exact absurd (hear.inj h') (by decide)
-    · exact hear.notMem 0 (h' ▸ hear.right_mem)
-  refine hG.splitOff l1.symm l2 hne (fun f y hf => hear.isLink_interior 1 hf)
+  refine hG.splitOff l1.symm l2 (fun f y hf => hear.isLink_interior 1 hf)
     (fun h => hear.notMem 0 (h ▸ hear.right_mem)) ?_
   rintro ⟨f, hf⟩
   rcases hear.isLink_interior 0 hf with rfl | rfl
@@ -414,12 +399,7 @@ theorem _root_.Graph.IsOpenEar.isX0Graph_splitOff_one [Finite α] {G : Graph α 
     (G.splitOff (x 0) a b (e 0)).IsX0Graph := by
   have l0 : G.IsLink (e 0) a (x 0) := hear.isLink 0
   have l1 : G.IsLink (e 1) (x 0) b := hear.isLink 1
-  have hne : e 0 ≠ e 1 := by
-    intro h; rw [h] at l0
-    rcases l0.left_eq_or_eq l1 with h' | h'
-    · exact hear.notMem 0 (h' ▸ hear.left_mem)
-    · exact hear.ne h'
-  exact hG.splitOff l0.symm l1 hne (fun f y hf => hear.isLink_interior 0 hf) hear.ne hnadj
+  exact hG.splitOff l0.symm l1 (fun f y hf => hear.isLink_interior 0 hf) hear.ne hnadj
 
 /-! ## A graph that is not 2-edge-connected (`lem:pencil-x0-cut-reduces`(1)) -/
 
@@ -613,9 +593,14 @@ as `G` is 2-edge-connected, and every other body keeps all its neighbours. Each 
 as `v` is its only body with a neighbour outside it (`Graph.IsX0Graph.induce_of_gate`), and has
 fewer bodies than `G`. -/
 theorem _root_.Graph.IsX0Graph.x0Reduces_of_not_connected [Finite α] [Finite β] {G : Graph α β}
-    (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {v : α} (hv : v ∈ V(G))
+    (hG : G.IsX0Graph) (htec : G.TwoEdgeConnected) {v : α}
     (hdisc : ¬ (G.induce (V(G) \ {v})).Connected) : G.X0Reduces G.X0Below := by
   have := hG.simple
+  -- off `V(G)`, `G − v` is `G`, which is connected
+  have hv : v ∈ V(G) := by
+    by_contra hv
+    rw [Set.sdiff_singleton_eq_self hv, Graph.induce_vertexSet] at hdisc
+    exact hdisc hG.connected
   obtain ⟨c₀, e₀, hc₀⟩ : ∃ c e, G.IsLink e v c := by
     have h2 := hG.two_le_degree v hv
     rw [Graph.degree_eq_ncard_adj] at h2

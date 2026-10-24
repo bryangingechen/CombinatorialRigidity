@@ -127,9 +127,12 @@ others give from `MainComponent/Short` to `CoverageChain.lean`, with the new
 `injective_of_isLink_pathVertex_two` and `Graph.ne_of_deficiencyMerged_lt` that give them, three
 unused steps, and proved `horth` by the mirror lemma and four ear edges by `Graph.IsOpenEar`'s
 (`F-316`–`F-318`, `F-328`'s second), no node restated, as each states them only through
-`def:open-ear` or by saying "body".
-**Next concrete task:** round 3's task 38.27, `MainComponent/CoverageCut` to
-`GenericTriangle.lean` (then the close).
+`def:open-ear` or by saying "body"; task 38.27 dropped eight hypotheses and six unused `have`s from
+`MainComponent/CoverageCut` to `GenericTriangle.lean`, moved
+`not_linearIndependent_of_dotProduct_eq_zero_pair` to `Motive.lean` and gave the joins three lemmas
+in `Flat.lean` (`F-319`–`F-321`, `F-328`'s last), restating `lem:pencil-x0-chain-standing` (2) and
+removing `lem:pencil-splitoff-special-rank`'s stale edge to `def:pencil-nondegenerate`.
+**Next concrete task:** round 3's task 39, the close.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

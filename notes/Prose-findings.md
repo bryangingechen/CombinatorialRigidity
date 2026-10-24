@@ -6629,7 +6629,9 @@ declaration's name as its header writes it:
   `finrank_span_rigidityRows_splitOff_special` no longer reaches `Graph.closedNbhd`, so
   `lem:pencil-splitoff-special-rank`'s proof `\uses{def:pencil-nondegenerate}` is unbacked, and
   `Graph.splitOff_oneEar`'s docstring no longer names that node. The three nodes state an open
-  ear (`def:open-ear`) and a body of degree two, so none is restated (task 38.26).
+  ear (`def:open-ear`) and a body of degree two, so none is restated (task 38.26). That edge was
+  added for the pin's reach alone (PROSE round 5 task 4.9, `60c88e44`), and the proof's prose
+  never uses nondegeneracy, so it is removed (task 38.27).
 
 - **F-319** · L · repeated derivations, and derivable or unused hypotheses, in
   `Molecular/Molecule/Pencil/MainComponent/CoverageCut.lean`, `CoverageTheoremS.lean` and
@@ -6659,7 +6661,7 @@ declaration's name as its header writes it:
   `deficiency_three_induce_cycle`'s proof without `_hG`, on the standard axioms or fewer
   (`scratch/reconcile-lean/t3719/Hyps-t3719.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.19.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.27). Task 38.1: drop
+  *Disposition:* done (task 38.27). Task 38.1: drop
   `IsX0Graph.splitOff`'s `hne` (from `h₁`, `h₂`, `huw`; `lem:pencil-x0-chain-standing` restated
   where it states it; its four callers' 4–5-line derivations go),
   `IsX0Graph.x0Reduces_of_not_connected`'s `hv` (`lem:pencil-x0-cut-reduces`; caller
@@ -6669,7 +6671,10 @@ declaration's name as its header writes it:
   `isX0Graph_splitOff_four`, `_three` (one proof at `Fin 4` and `Fin 3`; a lemma at any `k` needs a
   new proof); the two ends in `IsChain.isX0Graph_induce`, the maximality step, the two non-loop
   links, `k < 3`, `x i ≠ a`, and `exists_oneEar_or_pendantTriangle`'s steps (two sites each, or one
-  proof).
+  proof). Round 3: done so; `hv` from `hdisc` (off `V(G)`, `G − v` is `G`), the three distinctness
+  facts by `Graph.Adj.ne`, the caller's `hv`, `hwy`, `hwu` now `-`. Restated:
+  `lem:pencil-x0-chain-standing` (2), whose "exactly two edges" stated `hne`; the other three nodes
+  state the dropped hypotheses only by "body" or not at all (task 10's rule) (task 38.27).
 
 - **F-320** · L · repeated derivations, and unused steps, in
   `Molecular/Molecule/Pencil/MainComponent/GenericBase.lean` and `GenericEar.lean`. Unused: the
@@ -6697,7 +6702,7 @@ declaration's name as its header writes it:
   found the `have : G.Simple` of `hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'`
   needed (`hl.ne` asks `G.Loopless`) (`scratch/reconcile-lean/t3720/Hyps-t3720.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.20.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.27). Task 38.1: remove the unused
+  *Disposition:* done (task 38.27). Task 38.1: remove the unused
   `have hloopless` and `have hloop` of `GenericEar.lean`'s two theorems; move
   `not_linearIndependent_of_dotProduct_eq_zero_pair` to `Pencil/Motive.lean` and call it in
   `not_pencilNondegFeasible_of_triangle_two_hubs` and
@@ -6706,6 +6711,8 @@ declaration's name as its header writes it:
   bound), the ear facts and reorderings of the two theorems, the case analyses written twice in one
   proof, and `GenericBase.lean`'s per-branch steps and three polynomial families. Round 3: the
   primed theorem deleted, its proof now the pin of `thm:pencil-x0-base-generic`'s (task 38.10).
+  Round 3: done so, the moved lemma in `Motive.lean`'s *Two obstructions* section, whose comment
+  names its user in `GenericEar.lean`, and the two theorems' docstrings citing it (task 38.27).
 
 - **F-321** · L · repeated derivations, and unused or derivable hypotheses and `have`s, in
   `Molecular/Molecule/Pencil/MainComponent/GenericTriangle.lean` and `Statements.lean`. Unused: the
@@ -6743,7 +6750,7 @@ declaration's name as its header writes it:
   both), and `hinj` derived from `hS` and `hpath`, with the three theorems applied without it, all
   on the standard axioms (`scratch/reconcile-lean/t3721/Hyps-t3721.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.21.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.27). Task 38.1: drop
+  *Disposition:* done (task 38.27). Task 38.1: drop
   `not_pencilHub_of_closedEar_two`'s `hS` with its `have := hS` and `have hloop` (unpinned; callers
   the two theorems), the two theorems' `have := hS`, and their `hinj` (`F-317`'s lemma at `Fin 2`;
   `lem:pencil-generic-pendant-triangle` restated where it states it; caller
@@ -6754,7 +6761,16 @@ declaration's name as its header writes it:
   orientations (per site, each proof's locals), the rigid triangle's rank (two sites),
   `pencilPair_of_simple_ncard_eq_three`'s relabellings and splits (one proof), `Statements.lean`'s
   standing hypotheses and `hlt`, and `pencilPair_of_IH` (16 lines, `pencilPair_of_X0`'s with other
-  inputs).
+  inputs). Round 3: done so but for `hS`, which cannot go: `Graph.degree_eq_ncard_inc` asks
+  `G.Loopless`, which the binder gives as a local instance (the witness had kept it), so only the
+  two `have`s go. The extension's `have hloop` stays, used. The new lemmas
+  (`pointJoin_ne_zero`, `extensorInPanel_pointJoin`, `extensorThroughPoint_pointJoin`) name the
+  steps they serve, and `Flat.lean`'s header names them. `hinj` is
+  `injective_of_isLink_pathVertex_two` (`F-317`'s), and the caller's binder is now `-`; the
+  `Function.Injective x` that `exists_closedEar_two_of_triangle` and
+  `exists_oneEar_or_pendantTriangle` give, in `X0Attains.of_closedEar`'s form, now has no reader, a
+  conclusion kept. `lem:pencil-generic-pendant-triangle` names two adjacent bodies, distinct by
+  adjacency in a simple graph, so it is not restated (task 38.27).
 - **F-322** · L · the `@[nolint …]` and `set_option linter.* false` sites that `CLEANUP.md` §B's
   suppression screen finds unneeded, unjustified or curable by `TACTICS-QUIRKS.md` §115's rule 1.
   The `@[nolint unusedArguments]` of `Graph.BodyBarFramework.finrank_realBlockPiSpanOn`
@@ -6853,12 +6869,13 @@ declaration's name as its header writes it:
   second's, each from the mirror lemma in a line, on the three standard axioms
   (`scratch/reconcile-lean/t3823/Hyps-t3823.lean`, gitignored).
   *Found:* RECONCILE round 3 task 38.23.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.27), each by
+  *Disposition:* done (task 38.27), each by
   its file's task: `eq_zero_of_dotProduct_pencilPicturePoint` deleted, its caller calling the
   mirror lemma (task 38.25; gate 4); `horth` proved by the mirror lemma, the three facts by
   `fin_cases` (task 38.26); `eq_zero_of_dotProduct_triple` likewise, kept for its two calls, which
   pass three separate facts (task 38.27). Round 3: the first done so, the mirror's header naming
-  its new user (task 38.25); `horth` done so, the header naming its user (task 38.26).
+  its new user (task 38.25); `horth` done so, the header naming its user (task 38.26);
+  `eq_zero_of_dotProduct_triple` done so, the header naming it (task 38.27).
 
 ## M — mathematics and sources
 

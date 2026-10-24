@@ -3746,8 +3746,7 @@ where $D - 1 = 5$.
 \begin{proof}
   \leanok
   \uses{def:panel-support-extensor, def:hinge-constraint,
-        lem:span-rigidityRows-eq-of-motions-eq,
-        def:pencil-nondegenerate}
+        lem:span-rigidityRows-eq-of-motions-eq}
   The panel support extensor is bilinear and alternating
   (\cref{def:panel-support-extensor}), so up to sign the hinges at $ax$
   and $xb$ are $s\,C$ and $(1 - s)\,C$, where $C \neq 0$ is the hinge at
@@ -4574,8 +4573,8 @@ smaller graphs that a chain gives.
   \begin{enumerate}
     \item If $G - v$ is connected for every body $v$, then $G[V_1]$
       satisfies the standing hypotheses for every chain on $V_1$.
-    \item Let a body $v$ have exactly two edges, to distinct bodies $u$
-      and $w$ that are not adjacent. Then the splitting-off $G_v^{uw}$,
+    \item Let the edges at a body $v$ be one to $u$ and one to $w$, where
+      $u$ and $w$ are distinct and not adjacent. Then the splitting-off $G_v^{uw}$,
       whose new edge carries the label of the edge $vu$, satisfies the
       standing hypotheses.
   \end{enumerate}

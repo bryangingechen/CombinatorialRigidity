@@ -127,13 +127,17 @@ at least four: at least two links leave the triangle, as `G` is 2-edge-connected
 bodies, and all of them are at `w`. -/
 theorem _root_.Graph.exists_closedEar_two_of_triangle [Finite β]
     {G : Graph α β} (hS : G.Simple) (htec : G.TwoEdgeConnected) (h4 : 4 ≤ V(G).ncard)
-    {y u w : α} (hy2 : G.degree y = 2) (hu2 : G.degree u = 2) (hyu : y ≠ u) (hwy : w ≠ y)
-    (hwu : w ≠ u) (hyw : G.Adj y w) (huw : G.Adj u w) (huy : G.Adj u y) :
+    {y u w : α} (hy2 : G.degree y = 2) (hu2 : G.degree u = 2) (hyw : G.Adj y w) (huw : G.Adj u w)
+    (huy : G.Adj u y) :
     ∃ (V₁ : Set α) (x : Fin 2 → α) (c : α) (e : Fin 3 → β),
       V(G) = V₁ ∪ Set.range x ∧ Function.Injective x ∧ (∀ i, x i ∉ V₁) ∧ c ∈ V₁ ∧
       (∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ)) ∧
       (∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) ∧ 4 ≤ G.degree c := by
   have := hS
+  -- adjacent bodies of a simple graph are distinct
+  have hyu : y ≠ u := huy.ne.symm
+  have hwy : w ≠ y := hyw.ne.symm
+  have hwu : w ≠ u := huw.ne.symm
   obtain ⟨g₁, hg₁⟩ := hyw
   obtain ⟨g₂, hg₂⟩ := huw
   obtain ⟨g₃, hg₃⟩ := huy
@@ -381,10 +385,9 @@ theorem _root_.Graph.IsX0Graph.exists_oneEar_or_pendantTriangle [Finite α] [Fin
       have htu := Graph.ncard_setOf_isLink_le_one hG.simple (x := u) (W := W₀ \ {y, u})
         (fun c₁ hc₁ c₂ hc₂ h₁ h₂ => hnbr2 u hu2 y c₁ c₂ ⟨f, hf.symm⟩ h₁ h₂
           (fun h => hc₁.2 (Or.inl h.symm)) (fun h => hc₂.2 (Or.inl h.symm)))
-      obtain ⟨w, -, hwy, hwu, hyw, huw, huy⟩ :=
+      obtain ⟨w, -, -, -, hyw, huw, huy⟩ :=
         Graph.exists_eq_triple_of_minimal hG.simple hS hW₀v hW₀3 hy hu.1 hyu hty htu
-      exact Graph.exists_closedEar_two_of_triangle hG.simple htec h4 hy2 hu2 hyu hwy hwu hyw huw
-        huy
+      exact Graph.exists_closedEar_two_of_triangle hG.simple htec h4 hy2 hu2 hyw huw huy
   · -- every body of `W₀` a hub: a triangle of hubs, which `hF2` excludes
     push Not at hnh
     exfalso

@@ -177,7 +177,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 5/5: graph repairs and the findings report) | every chapter's dependency edges, pins and node shapes; the findings report | ✓ Complete — no missing edge left, the Lean unchanged; each finding done, left or reported in `notes/Prose-report.md` (see `notes/Prose-graph-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 1/3: the texts) | the status surfaces' scopes and credits, blueprint prose and two agent manuals (docs and prose only) | ✓ Complete — the scopes and credits fixed on the status surfaces, the Lean unchanged (see `notes/Reconcile-texts-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep and the code-smell and long-proof screens done; the fixes they found under way, the dead declarations the screens found deleted, task 38.27 next (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep, the code-smell and long-proof screens and the fixes they found done, the dead declarations the screens found deleted, the round's close next (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; not yet pushed (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -1416,9 +1416,12 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   needless steps, no blueprint statement changing; task 38.26 dropped fourteen hypotheses that
   others give from the main component's short-ear, orbit, split-off and coverage files, with two
   new lemmas that give them, and three unused steps, and proved five steps by existing lemmas, no
-  blueprint statement changing. **Next:** task 38.27, the main component's remaining coverage and
-  generic files: nine hypotheses that others give, six unused steps, a lemma moved and three new
-  ones for repeated steps, and four blueprint statements restated where they state them.
+  blueprint statement changing; task 38.27 dropped eight hypotheses that others give or no step uses
+  from the main component's remaining coverage and generic files, and six unused steps, moved a
+  lemma beside the two obstructions that repeated it, gave three new lemmas for facts about a join
+  of two points written out in three proofs, and proved one more step by an existing lemma,
+  restating one blueprint statement and removing a blueprint dependency that no longer had a basis
+  in the Lean. **Next:** task 39, the round's close.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

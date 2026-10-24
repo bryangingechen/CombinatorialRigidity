@@ -591,20 +591,12 @@ theorem linearIndepOn_of_forall_smul {f g : α → Fin 4 → K} {S : Set α}
   intro x hx
   simp [hx, hc x hx, Units.smul_def]
 
-/-- A vector orthogonal to three independent vectors of the same dimension is zero. -/
+/-- A vector orthogonal to three independent vectors of the same dimension is zero
+(`LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero`, with the three facts apart). -/
 theorem eq_zero_of_dotProduct_triple {a b c d : Fin 3 → K}
     (hLI : LinearIndependent K ![a, b, c]) (ha : d ⬝ᵥ a = 0) (hb : d ⬝ᵥ b = 0)
-    (hc : d ⬝ᵥ c = 0) : d = 0 := by
-  have hunit : IsUnit (Matrix.of ![a, b, c]) :=
-    Matrix.linearIndependent_row_iff_isUnit.mp hLI
-  have hzero : (Matrix.of ![a, b, c]) *ᵥ d = (Matrix.of ![a, b, c]) *ᵥ 0 := by
-    rw [Matrix.mulVec_zero]
-    funext i
-    fin_cases i
-    · change a ⬝ᵥ d = 0; rw [dotProduct_comm]; exact ha
-    · change b ⬝ᵥ d = 0; rw [dotProduct_comm]; exact hb
-    · change c ⬝ᵥ d = 0; rw [dotProduct_comm]; exact hc
-  exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
+    (hc : d ⬝ᵥ c = 0) : d = 0 :=
+  hLI.eq_zero_of_forall_dotProduct_eq_zero fun i => by fin_cases i <;> assumption
 
 /-- **The hub normals of a configuration** (`lem:pencil-x0-conjunct-three`): let every closed
 hub-neighbourhood of `G` have at most three members, let `q` be an admissible picture at which no

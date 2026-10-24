@@ -14,9 +14,10 @@ The step of the generic main-component statement at a pendant triangle
 (`lem:pencil-generic-pendant-triangle`, `sec:main-component-statements`), and its case on three
 bodies (`thm:pencil-generic-step`). Let `K` be infinite and `G` simple and nondegeneracy-feasible,
 with a closed ear `c − x 0 − x 1 − c` on `V₁` with two interior bodies (defined after
-`def:open-ear`, and given by the hypotheses of `Graph.X0Attains.of_closedEar` at `k = 2`), whose end
-`c` has degree at least four: `x 0` and `x 1` are adjacent bodies of degree two, both joined to `c`.
-If `G[V₁] = G − {x 0, x 1}` has a generic pencil realization whenever it is nondegeneracy-feasible,
+`def:open-ear`, and given by the hypotheses of `Graph.X0Attains.of_closedEar` at `k = 2` but the
+injectivity of `x`, which the link `e 1` gives as `G` is simple), whose end `c` has degree at least
+four: `x 0` and `x 1` are adjacent bodies of degree two, both joined to `c`. If
+`G[V₁] = G − {x 0, x 1}` has a generic pencil realization whenever it is nondegeneracy-feasible,
 then `G` has one, with no hypothesis on the deficiency (unlike the one-body ear of
 `lem:pencil-generic-one-ear`).
 
@@ -121,8 +122,6 @@ theorem not_pencilHub_of_closedEar_two {G : Graph α β} (hS : G.Simple)
     (hpath : ∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) (i : Fin 2) :
     ¬ G.PencilHub (x i) := by
-  have := hS
-  have hloop : G.Loopless := hS.toLoopless
   have hx0 : x 0 ∉ V₁ := hxV₁ 0
   have hx1 : x 1 ∉ V₁ := hxV₁ 1
   have hx0c : x 0 ≠ c := fun h => hx0 (h ▸ hc)
@@ -192,8 +191,7 @@ So the rank reaches the deficiency rank of `G`, which bounds it
 theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization
     [Finite α] [Finite β] {G : Graph α β} (hS : G.Simple)
     {V₁ : Set α} {x : Fin 2 → α} {c : α} {e : Fin 3 → β}
-    (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
-    (hc : c ∈ V₁)
+    (hcover : V(G) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁) (hc : c ∈ V₁)
     (hpath : ∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
     (hchub : G.PencilHub c)
@@ -204,8 +202,8 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
     (hprom : ∀ v ∈ V₁, LinearIndepOn K normal (G.closedHubNbhd v)) :
     HasGenericPencilRealization K 3 G := by
   classical
-  have := hS
   have hloop : G.Loopless := hS.toLoopless
+  have hinj : Function.Injective x := injective_of_isLink_pathVertex_two hloop hpath
   -- the named bodies and edges
   have l0 : G.IsLink (e 0) c (x 0) := hpath 0
   have l1 : G.IsLink (e 1) (x 0) (x 1) := hpath 1
@@ -294,19 +292,14 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
   have hextf : ∀ f, (∀ i, f ≠ e i) → ext f = F₁.supportExtensor f := by
     intro f hf; simp [hext, hf 0, hf 1, hf 2]
   set F : BodyHingeFramework K 2 α β := ⟨G, ext⟩ with hF
-  have hjoin_ne : ∀ {p q : Fin 4 → K}, LinearIndependent K ![p, q] → pointJoin p q ≠ 0 := by
-    intro p q hpq h0
-    have hval := congrArg ScrewSpace.val h0
-    rw [pointJoin, ScrewSpace.val_mk, ScrewSpace.val_zero] at hval
-    exact (extensor_ne_zero_iff_linearIndependent _).mpr hpq hval
   have hext_ne : ∀ f, ext f ≠ 0 := by
     intro f
     by_cases h0 : f = e 0
-    · rw [h0, hext0]; exact hjoin_ne L0
+    · rw [h0, hext0]; exact pointJoin_ne_zero L0
     by_cases h1 : f = e 1
-    · rw [h1, hext1]; exact hjoin_ne L1
+    · rw [h1, hext1]; exact pointJoin_ne_zero L1
     by_cases h2 : f = e 2
-    · rw [h2, hext2]; exact hjoin_ne L2
+    · rw [h2, hext2]; exact pointJoin_ne_zero L2
     have hf : ∀ i, f ≠ e i := by intro i; fin_cases i; exacts [h0, h1, h2]
     rw [hextf f hf]; exact hSnz f
   have hmemV : ∀ v ∈ V(G), v ∈ V₁ ∨ v = x 0 ∨ v = x 1 := by
@@ -317,15 +310,6 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
     · fin_cases i
       · exact Or.inr (Or.inl rfl)
       · exact Or.inr (Or.inr rfl)
-  have hinPanel : ∀ {p q n : Fin 4 → K}, p ⬝ᵥ n = 0 → q ⬝ᵥ n = 0 →
-      ExtensorInPanel (pointJoin p q) n := by
-    intro p q n hp hq
-    exact ⟨![p, q], ScrewSpace.val_mk _ _, Fin.forall_fin_two.mpr ⟨hp, hq⟩⟩
-  have hthruPt : ∀ {p q : Fin 4 → K},
-      ExtensorThroughPoint (pointJoin p q) p ∧ ExtensorThroughPoint (pointJoin p q) q := by
-    intro p q
-    exact ⟨⟨![p, q], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩,
-      ⟨![p, q], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨1, rfl⟩⟩⟩
   have hreal : HasPencilPanelRealization G F normal' point' := by
     refine ⟨⟨rfl, fun v hv => ?_, hext_ne, fun f u v hl => ?_⟩, fun v hv => ?_, fun v hv => ?_,
       fun f u v hl => ?_⟩
@@ -336,12 +320,18 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
     · change ExtensorInPanel (ext f) (normal' u) ∧ ExtensorInPanel (ext f) (normal' v)
       rcases hcls f u v hl with ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ | ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ |
         ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ | ⟨hf, hl'⟩
-      · rw [hext0, hnmc, hnm0]; exact ⟨hinPanel hpcnc hp₀nc, hinPanel hpcnc hp₀nc⟩
-      · rw [hext0, hnmc, hnm0]; exact ⟨hinPanel hpcnc hp₀nc, hinPanel hpcnc hp₀nc⟩
-      · rw [hext1, hnm0, hnm1]; exact ⟨hinPanel hp₀nc hp₁nc, hinPanel hp₀nc hp₁nc⟩
-      · rw [hext1, hnm0, hnm1]; exact ⟨hinPanel hp₀nc hp₁nc, hinPanel hp₀nc hp₁nc⟩
-      · rw [hext2, hnmc, hnm1]; exact ⟨hinPanel hpcnc hp₁nc, hinPanel hpcnc hp₁nc⟩
-      · rw [hext2, hnmc, hnm1]; exact ⟨hinPanel hpcnc hp₁nc, hinPanel hpcnc hp₁nc⟩
+      · rw [hext0, hnmc, hnm0]
+        exact ⟨extensorInPanel_pointJoin hpcnc hp₀nc, extensorInPanel_pointJoin hpcnc hp₀nc⟩
+      · rw [hext0, hnmc, hnm0]
+        exact ⟨extensorInPanel_pointJoin hpcnc hp₀nc, extensorInPanel_pointJoin hpcnc hp₀nc⟩
+      · rw [hext1, hnm0, hnm1]
+        exact ⟨extensorInPanel_pointJoin hp₀nc hp₁nc, extensorInPanel_pointJoin hp₀nc hp₁nc⟩
+      · rw [hext1, hnm0, hnm1]
+        exact ⟨extensorInPanel_pointJoin hp₀nc hp₁nc, extensorInPanel_pointJoin hp₀nc hp₁nc⟩
+      · rw [hext2, hnmc, hnm1]
+        exact ⟨extensorInPanel_pointJoin hpcnc hp₁nc, extensorInPanel_pointJoin hpcnc hp₁nc⟩
+      · rw [hext2, hnmc, hnm1]
+        exact ⟨extensorInPanel_pointJoin hpcnc hp₁nc, extensorInPanel_pointJoin hpcnc hp₁nc⟩
       · rw [hextf f hf, hnmV u (hV₁ne u hl'.2.1).1 (hV₁ne u hl'.2.1).2,
           hnmV v (hV₁ne v hl'.2.2).1 (hV₁ne v hl'.2.2).2]
         exact hpanel f u v hl'
@@ -357,12 +347,12 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
     · change ExtensorThroughPoint (ext f) (point' u) ∧ ExtensorThroughPoint (ext f) (point' v)
       rcases hcls f u v hl with ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ | ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ |
         ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ | ⟨hf, hl'⟩
-      · rw [hext0, hptc, hpt0]; exact hthruPt
-      · rw [hext0, hptc, hpt0]; exact hthruPt.symm
-      · rw [hext1, hpt0, hpt1]; exact hthruPt
-      · rw [hext1, hpt0, hpt1]; exact hthruPt.symm
-      · rw [hext2, hptc, hpt1]; exact hthruPt.symm
-      · rw [hext2, hptc, hpt1]; exact hthruPt
+      · rw [hext0, hptc, hpt0]; exact extensorThroughPoint_pointJoin _ _
+      · rw [hext0, hptc, hpt0]; exact (extensorThroughPoint_pointJoin _ _).symm
+      · rw [hext1, hpt0, hpt1]; exact extensorThroughPoint_pointJoin _ _
+      · rw [hext1, hpt0, hpt1]; exact (extensorThroughPoint_pointJoin _ _).symm
+      · rw [hext2, hptc, hpt1]; exact (extensorThroughPoint_pointJoin _ _).symm
+      · rw [hext2, hptc, hpt1]; exact extensorThroughPoint_pointJoin _ _
       · rw [hextf f hf, hptV u (hV₁ne u hl'.2.1).1 (hV₁ne u hl'.2.1).2,
           hptV v (hV₁ne v hl'.2.2).1 (hV₁ne v hl'.2.2).2]
         exact hthru f u v hl'
@@ -617,8 +607,7 @@ theorem hasGenericPencilRealization_of_closedEar_two
     [Infinite K] [Finite α] [Finite β] {G : Graph α β} (hS : G.Simple)
     (hfeas : PencilNondegFeasible K G)
     {V₁ : Set α} {x : Fin 2 → α} {c : α} {e : Fin 3 → β}
-    (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
-    (hc : c ∈ V₁)
+    (hcover : V(G) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁) (hc : c ∈ V₁)
     (hpath : ∀ i : Fin 3, G.IsLink (e i) (pathVertex c x c i.castSucc) (pathVertex c x c i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
     (hdeg : 4 ≤ G.degree c)
@@ -626,7 +615,7 @@ theorem hasGenericPencilRealization_of_closedEar_two
       HasGenericPencilRealization K 3 (G.induce V₁)) :
     HasGenericPencilRealization K 3 G := by
   classical
-  have := hS
+  have hinj : Function.Injective x := injective_of_isLink_pathVertex_two hS.toLoopless hpath
   have hV₁ : V₁ ⊆ V(G) := hcover ▸ Set.subset_union_left
   have hle : G.induce V₁ ≤ G := Graph.induce_le hV₁
   have hVH : V(G.induce V₁) = V₁ := Graph.vertexSet_induce G V₁
@@ -732,8 +721,8 @@ theorem hasGenericPencilRealization_of_closedEar_two
     have := hS' v
     simp only [S] at this
     rwa [ite_eq_left hv] at this
-  exact hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization hS hcover hinj
-    hxV₁ hc hpath hsep hchub hnd' hrank' hprom
+  exact hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealization hS hcover hxV₁ hc
+    hpath hsep hchub hnd' hrank' hprom
 
 /-! ## The triangle on three bodies -/
 
@@ -846,39 +835,18 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
   set Cxy : ScrewSpace K 2 := pointJoin p0 p1 with hCxy
   set Cyz : ScrewSpace K 2 := pointJoin p1 p2 with hCyz
   set Czx : ScrewSpace K 2 := pointJoin p0 p2 with hCzx
-  have hCxy_val : Cxy.val = extensor ![p0, p1] := by rw [hCxy, pointJoin, ScrewSpace.val_mk]
-  have hCyz_val : Cyz.val = extensor ![p1, p2] := by rw [hCyz, pointJoin, ScrewSpace.val_mk]
-  have hCzx_val : Czx.val = extensor ![p0, p2] := by rw [hCzx, pointJoin, ScrewSpace.val_mk]
   have hLI01 : LinearIndependent K ![p0, p1] := by
     convert hLI4.comp ![0, 1] (by decide) using 1; funext i; fin_cases i <;> rfl
   have hLI12 : LinearIndependent K ![p1, p2] := by
     convert hLI4.comp ![1, 2] (by decide) using 1; funext i; fin_cases i <;> rfl
   have hLI20 : LinearIndependent K ![p0, p2] := by
     convert hLI4.comp ![0, 2] (by decide) using 1; funext i; fin_cases i <;> rfl
-  have hCxy_ne : Cxy ≠ 0 := fun h => (extensor_ne_zero_iff_linearIndependent _).mpr hLI01
-    (hCxy_val.symm.trans ((congrArg ScrewSpace.val h).trans ScrewSpace.val_zero))
-  have hCyz_ne : Cyz ≠ 0 := fun h => (extensor_ne_zero_iff_linearIndependent _).mpr hLI12
-    (hCyz_val.symm.trans ((congrArg ScrewSpace.val h).trans ScrewSpace.val_zero))
-  have hCzx_ne : Czx ≠ 0 := fun h => (extensor_ne_zero_iff_linearIndependent _).mpr hLI20
-    (hCzx_val.symm.trans ((congrArg ScrewSpace.val h).trans ScrewSpace.val_zero))
-  have hCxy_panel : ExtensorInPanel Cxy n0 :=
-    ⟨![p0, p1], hCxy_val, Fin.forall_fin_two.mpr ⟨hp0n0, hp1n0⟩⟩
-  have hCyz_panel : ExtensorInPanel Cyz n0 :=
-    ⟨![p1, p2], hCyz_val, Fin.forall_fin_two.mpr ⟨hp1n0, hp2n0⟩⟩
-  have hCzx_panel : ExtensorInPanel Czx n0 :=
-    ⟨![p0, p2], hCzx_val, Fin.forall_fin_two.mpr ⟨hp0n0, hp2n0⟩⟩
-  have hCxy_thru0 : ExtensorThroughPoint Cxy p0 :=
-    ⟨![p0, p1], hCxy_val, Submodule.subset_span ⟨0, rfl⟩⟩
-  have hCxy_thru1 : ExtensorThroughPoint Cxy p1 :=
-    ⟨![p0, p1], hCxy_val, Submodule.subset_span ⟨1, rfl⟩⟩
-  have hCyz_thru1 : ExtensorThroughPoint Cyz p1 :=
-    ⟨![p1, p2], hCyz_val, Submodule.subset_span ⟨0, rfl⟩⟩
-  have hCyz_thru2 : ExtensorThroughPoint Cyz p2 :=
-    ⟨![p1, p2], hCyz_val, Submodule.subset_span ⟨1, rfl⟩⟩
-  have hCzx_thru2 : ExtensorThroughPoint Czx p2 :=
-    ⟨![p0, p2], hCzx_val, Submodule.subset_span ⟨1, rfl⟩⟩
-  have hCzx_thru0 : ExtensorThroughPoint Czx p0 :=
-    ⟨![p0, p2], hCzx_val, Submodule.subset_span ⟨0, rfl⟩⟩
+  have hCxy_ne : Cxy ≠ 0 := pointJoin_ne_zero hLI01
+  have hCyz_ne : Cyz ≠ 0 := pointJoin_ne_zero hLI12
+  have hCzx_ne : Czx ≠ 0 := pointJoin_ne_zero hLI20
+  have hCxy_panel : ExtensorInPanel Cxy n0 := extensorInPanel_pointJoin hp0n0 hp1n0
+  have hCyz_panel : ExtensorInPanel Cyz n0 := extensorInPanel_pointJoin hp1n0 hp2n0
+  have hCzx_panel : ExtensorInPanel Czx n0 := extensorInPanel_pointJoin hp0n0 hp2n0
   -- the points, the normals and the hinges at every body and label (`Function.update` of a
   -- constant): each point is `p0`, `p1` or `p2`, each normal `n0`, and each hinge `Cxy`, `Cyz` or
   -- `Czx`
@@ -937,12 +905,12 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
       simp only [hF]
       rcases hclass e u v hl with ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ |
         ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩ | ⟨rfl, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩
-      · rw [hsupp_exy, hpoint_x, hpoint_y]; exact ⟨hCxy_thru0, hCxy_thru1⟩
-      · rw [hsupp_exy, hpoint_y, hpoint_x]; exact ⟨hCxy_thru1, hCxy_thru0⟩
-      · rw [hsupp_eyz, hpoint_y, hpoint_z]; exact ⟨hCyz_thru1, hCyz_thru2⟩
-      · rw [hsupp_eyz, hpoint_z, hpoint_y]; exact ⟨hCyz_thru2, hCyz_thru1⟩
-      · rw [hsupp_ezx, hpoint_z, hpoint_x]; exact ⟨hCzx_thru2, hCzx_thru0⟩
-      · rw [hsupp_ezx, hpoint_x, hpoint_z]; exact ⟨hCzx_thru0, hCzx_thru2⟩
+      · rw [hsupp_exy, hpoint_x, hpoint_y]; exact extensorThroughPoint_pointJoin _ _
+      · rw [hsupp_exy, hpoint_y, hpoint_x]; exact (extensorThroughPoint_pointJoin _ _).symm
+      · rw [hsupp_eyz, hpoint_y, hpoint_z]; exact extensorThroughPoint_pointJoin _ _
+      · rw [hsupp_eyz, hpoint_z, hpoint_y]; exact (extensorThroughPoint_pointJoin _ _).symm
+      · rw [hsupp_ezx, hpoint_z, hpoint_x]; exact (extensorThroughPoint_pointJoin _ _).symm
+      · rw [hsupp_ezx, hpoint_x, hpoint_z]; exact extensorThroughPoint_pointJoin _ _
   -- ── the three points are independent, and so are those at the ends of a link and those
   -- on a closed neighbourhood, all inside `V(G) = {x, y, z}` ──────────────────────────────────
   have hvtx_inj : Function.Injective (![x, y, z] : Fin 3 → α) := by

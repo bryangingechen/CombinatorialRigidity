@@ -96,7 +96,8 @@ admissible. It cuts once at the last bridge and adds up along the path; a single
   `pathEdge_injective` (a path of distinct bodies has distinct edges),
   `injective_of_isLink_pathVertex_two` (the two interior bodies of a path in a loopless graph are
   distinct) and the other lemmas on `pathVertex`, they serve the ear and cycle steps
-  (`MainComponent/Ear.lean`, `Chain.lean`, `Short.lean`, `Orbit.lean`) and the structural coverage.
+  (`MainComponent/Ear.lean`, `Chain.lean`, `Short.lean`, `Orbit.lean`) and the structural coverage,
+  and the last also the pendant triangle (`GenericTriangle.lean`).
 -/
 
 open scoped Graph
@@ -706,8 +707,9 @@ theorem pathEdge_injective {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b :
     omega
 
 /-- **The two interior bodies of a path in a loopless graph are distinct** (a step of
-`thm:pencil-x0-open-ear-two-orbit`): the middle edge of the path `a, x 0, x 1, b` links `x 0` to
-`x 1`, which are therefore distinct, so `x` is injective. -/
+`thm:pencil-x0-open-ear-two-orbit` and `lem:pencil-generic-pendant-triangle`): the middle edge of
+the path `a, x 0, x 1, b` links `x 0` to `x 1`, which are therefore distinct, so `x` is
+injective. -/
 theorem injective_of_isLink_pathVertex_two {G : Graph α β} (hG : G.Loopless) {x : Fin 2 → α}
     {a b : α} {e : Fin 3 → β}
     (hpath : ∀ i : Fin 3,

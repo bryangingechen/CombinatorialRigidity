@@ -494,19 +494,44 @@ A triangle with two pencil hubs is not nondegeneracy-feasible, and two hubs with
 neighbours whose points are independent have no nondegenerate realization with those points
 (`lem:pencil-feasible-hub-conditions`, `lem:pencil-x0-two-hubs-obstruction`). In each, the normals
 of the two hubs are independent, and the vectors orthogonal to both form a space of dimension `2`
-(`finrank_toDualPerp_pair_eq`). The first also serves `lem:pencil-generic-steer`
+(`finrank_toDualPerp_pair_eq`), which holds no three independent vectors
+(`not_linearIndependent_of_dotProduct_eq_zero_pair`, which the one-body ear of
+`MainComponent/GenericEar.lean` also uses). The first also serves `lem:pencil-generic-steer`
 (`MainComponent/GenericSteer.lean`). -/
+
+/-- **Three vectors orthogonal to two independent vectors are dependent** (a step of
+`lem:pencil-feasible-hub-conditions`, `lem:pencil-x0-two-hubs-obstruction` and
+`lem:pencil-generic-one-ear`): they lie in `n_a^⊥ ∩ n_b^⊥`, of dimension two
+(`finrank_toDualPerp_pair_eq`). -/
+theorem not_linearIndependent_of_dotProduct_eq_zero_pair {na nb : Fin 4 → K}
+    (hab : LinearIndependent K ![na, nb]) (p : Fin 3 → Fin 4 → K)
+    (h : ∀ i, p i ⬝ᵥ na = 0 ∧ p i ⬝ᵥ nb = 0) : ¬ LinearIndependent K p := by
+  intro hp
+  set m : Submodule K (Fin 4 → K) :=
+    ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![na, nb] j)) with hm
+  have hmdim : Module.finrank K m = 2 := finrank_toDualPerp_pair_eq hab
+  have hmem : ∀ i, p i ∈ m := by
+    intro i
+    simp only [hm, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct, Fin.forall_fin_two, Matrix.cons_val_zero,
+      Matrix.cons_val_one]
+    exact h i
+  set p' : Fin 3 → m := fun i => ⟨p i, hmem i⟩
+  have hp' : LinearIndependent K p' := LinearIndependent.of_comp m.subtype (by exact hp)
+  have := hp'.fintype_card_le_finrank
+  rw [Fintype.card_fin, hmdim] at this
+  omega
 
 /-- **A triangle with two pencil hubs is not nondegeneracy-feasible** (a step of
 `lem:pencil-feasible-hub-conditions`, its second part): let `x, y, z` be the triangle, with `y` and
 `z` hubs. At a nondegenerate realization the normals of `y` and `z` are independent, both lying in
-the closed hub-neighbourhood of `y`, so the vectors orthogonal to both form a space of dimension `2`
-(`finrank_toDualPerp_pair_eq`), which holds the three points of the triangle
+the closed hub-neighbourhood of `y`, and the three points of the triangle are orthogonal to both
 (`dotProduct_point_eq_zero_of_mem_closedNbhd`, along its edges). If `x` is not a hub, the points of
-its closed neighbourhood, which contains `x, y, z`, are independent: three independent vectors in
-dimension `2`. If `x` is a hub, the normals of `x, y, z` are independent, so the points of `x` and
-`y` lie in a space of dimension `1` (`finrank_toDualPerp_triple_eq`), while the points at the two
-ends of the link `xy` are independent. -/
+its closed neighbourhood, which contains `x, y, z`, are independent: three independent vectors
+orthogonal to two independent ones (`not_linearIndependent_of_dotProduct_eq_zero_pair`). If `x` is
+a hub, the normals of `x, y, z` are independent, so the points of `x` and `y` lie in a space of
+dimension `1` (`finrank_toDualPerp_triple_eq`), while the points at the two ends of the link `xy`
+are independent. -/
 theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
     {e₁ e₂ e₃ : β} {x y z : α} (hxy : x ≠ y) (hyz : y ≠ z) (hxz : x ≠ z)
     (h₁ : G.IsLink e₁ x y) (h₂ : G.IsLink e₂ y z) (h₃ : G.IsLink e₃ z x)
@@ -521,30 +546,17 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
   have hLIyz : LinearIndependent K ![normal y, normal z] :=
     LinearIndependent.pair_iff.2
       ((LinearIndepOn.pair_iff normal hyz).1 ((hnd.2.2.1 y hy.1).mono hsubyz))
-  set Vyz : Submodule K (Fin 4 → K) :=
-    ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![normal y, normal z] j))
-    with hVyz
-  have hVyzdim : Module.finrank K Vyz = 2 := finrank_toDualPerp_pair_eq hLIyz
-  have hmemyz : ∀ w : Fin 4 → K, w ∈ Vyz ↔ ∀ j, w ⬝ᵥ (![normal y, normal z] j) = 0 := by
-    intro w
-    simp only [hVyz, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
-      piBasisFun_toDual_eq_dotProduct]
   -- Every point of the triangle is orthogonal to `normal y` and `normal z` (the incidences along
-  -- its three edges), so it lies in `Vyz`, of dimension `2`.
-  have hxV : point x ∈ Vyz := by
-    rw [hmemyz]; intro j; fin_cases j
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inr ⟨e₁, h₁⟩)
-    · simpa using
-        dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inr ⟨e₃, h₃.symm⟩)
-  have hyV : point y ∈ Vyz := by
-    rw [hmemyz]; intro j; fin_cases j
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inl rfl)
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inr ⟨e₂, h₂⟩)
-  have hzV : point z ∈ Vyz := by
-    rw [hmemyz]; intro j; fin_cases j
-    · simpa using
-        dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₂.right_mem (Or.inr ⟨e₂, h₂.symm⟩)
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₂.right_mem (Or.inl rfl)
+  -- its three edges).
+  have hxV : point x ⬝ᵥ normal y = 0 ∧ point x ⬝ᵥ normal z = 0 :=
+    ⟨dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inr ⟨e₁, h₁⟩),
+      dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inr ⟨e₃, h₃.symm⟩)⟩
+  have hyV : point y ⬝ᵥ normal y = 0 ∧ point y ⬝ᵥ normal z = 0 :=
+    ⟨dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inl rfl),
+      dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inr ⟨e₂, h₂⟩)⟩
+  have hzV : point z ⬝ᵥ normal y = 0 ∧ point z ⬝ᵥ normal z = 0 :=
+    ⟨dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₂.right_mem (Or.inr ⟨e₂, h₂.symm⟩),
+      dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₂.right_mem (Or.inl rfl)⟩
   by_cases hx : G.PencilHub x
   · -- `x` is a hub too: `normal x, normal y, normal z` are independent (the closed
     -- hub-neighbourhood of `x`), so `point x, point y` lie in `Vxyz`, of dimension `1`, while the
@@ -592,28 +604,17 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
     rw [hdim2, hVxyzdim] at hmono
     omega
   · -- `x` is not a hub: `point x, point y, point z` are independent (the closed neighbourhood of
-    -- `x`), three vectors in `Vyz`, of dimension `2`.
+    -- `x`), three vectors orthogonal to `normal y` and `normal z`.
     have hsubpts : ({x, y, z} : Set α) ⊆ G.closedNbhd x := by
       rintro w (rfl | rfl | rfl)
       · exact Or.inl rfl
       · exact Or.inr ⟨e₁, h₁⟩
       · exact Or.inr ⟨e₃, h₃.symm⟩
     have hLI3p : LinearIndepOn K point {x, y, z} := (hnd.2.2.2 x h₁.left_mem hx).mono hsubpts
-    have hLItriple : LinearIndependent K ![point x, point y, point z] :=
-      linearIndependent_triple_of_linearIndepOn point hxy hxz hyz hLI3p
-    have hsub3 : Submodule.span K (Set.range ![point x, point y, point z]) ≤ Vyz := by
-      rw [Submodule.span_le]
-      rintro _ ⟨j, rfl⟩
-      fin_cases j
-      · exact hxV
-      · exact hyV
-      · exact hzV
-    have hdim3 :
-        Module.finrank K (Submodule.span K (Set.range ![point x, point y, point z])) = 3 := by
-      rw [finrank_span_eq_card hLItriple]; simp
-    have hmono := Submodule.finrank_mono hsub3
-    rw [hdim3, hVyzdim] at hmono
-    omega
+    refine not_linearIndependent_of_dotProduct_eq_zero_pair hLIyz _ (fun i => ?_)
+      (linearIndependent_triple_of_linearIndepOn point hxy hxz hyz hLI3p)
+    fin_cases i
+    exacts [hxV, hyV, hzV]
 
 /-- **Feasibility bounds the hub neighbourhoods** (`lem:pencil-feasible-hub-conditions`): if `G` is
 nondegeneracy-feasible, every closed hub-neighbourhood has at most three members
@@ -639,10 +640,10 @@ theorem PencilNondegFeasible.hub_conditions [Finite α] {G : Graph α β}
 /-- **Two hubs with three common neighbours** (`lem:pencil-x0-two-hubs-obstruction`, its first
 part): if `a ≠ b` are pencil hubs of `G` with common neighbours `x, y, z` whose points are linearly
 independent, the realization is not nondegenerate. Its normals at `a` and `b` would be independent,
-both lying in the closed hub-neighbourhood of `x`, and the vectors orthogonal to both form a space
-of dimension `2` (`finrank_toDualPerp_pair_eq`), which would hold the three independent points, each
-orthogonal to both normals along its links to `a` and `b`
-(`dotProduct_point_eq_zero_of_mem_closedNbhd`). -/
+both lying in the closed hub-neighbourhood of `x`, and the three independent points would each be
+orthogonal to both normals, along its links to `a` and `b`
+(`dotProduct_point_eq_zero_of_mem_closedNbhd`), which three independent vectors cannot be
+(`not_linearIndependent_of_dotProduct_eq_zero_pair`). -/
 theorem not_isNondegPencilRealization_of_two_hubs_three_common
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     {a b x y z : α} {ea eb fa fb ga gb : β} (hab : a ≠ b)
@@ -659,32 +660,13 @@ theorem not_isNondegPencilRealization_of_two_hubs_three_common
   have hLIab : LinearIndependent K ![normal a, normal b] :=
     LinearIndependent.pair_iff.2
       ((LinearIndepOn.pair_iff normal hab).1 ((hnd.2.2.1 x hxa.left_mem).mono hsub))
-  set V : Submodule K (Fin 4 → K) :=
-    ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![normal a, normal b] j))
-    with hV
-  have hVdim : Module.finrank K V = 2 := finrank_toDualPerp_pair_eq hLIab
-  have hmem : ∀ w : Fin 4 → K, w ∈ V ↔ ∀ j, w ⬝ᵥ (![normal a, normal b] j) = 0 := by
-    intro w
-    simp only [hV, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
-      piBasisFun_toDual_eq_dotProduct]
-  have hin : ∀ {w : α} {e f : β}, G.IsLink e w a → G.IsLink f w b → point w ∈ V := by
-    intro w e f he hf
-    rw [hmem]; intro j; fin_cases j
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 he.left_mem (Or.inr ⟨e, he⟩)
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 hf.left_mem (Or.inr ⟨f, hf⟩)
-  have hsub3 : Submodule.span K (Set.range ![point x, point y, point z]) ≤ V := by
-    rw [Submodule.span_le]
-    rintro _ ⟨j, rfl⟩
-    fin_cases j
-    · exact hin hxa hxb
-    · exact hin hya hyb
-    · exact hin hza hzb
-  have hdim3 :
-      Module.finrank K (Submodule.span K (Set.range ![point x, point y, point z])) = 3 := by
-    rw [finrank_span_eq_card hLI]; simp
-  have hmono := Submodule.finrank_mono hsub3
-  rw [hdim3, hVdim] at hmono
-  omega
+  have hin : ∀ {w : α} {e f : β}, G.IsLink e w a → G.IsLink f w b →
+      point w ⬝ᵥ normal a = 0 ∧ point w ⬝ᵥ normal b = 0 := fun he hf =>
+    ⟨dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 he.left_mem (Or.inr ⟨_, he⟩),
+      dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 hf.left_mem (Or.inr ⟨_, hf⟩)⟩
+  refine not_linearIndependent_of_dotProduct_eq_zero_pair hLIab _ (fun i => ?_) hLI
+  fin_cases i
+  exacts [hin hxa hxb, hin hya hyb, hin hza hzb]
 
 /-! ## Degrees in an induced graph
 

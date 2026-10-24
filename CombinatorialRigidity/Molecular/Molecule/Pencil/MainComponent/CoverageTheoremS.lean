@@ -325,8 +325,8 @@ theorem _root_.Graph.IsX0Graph.partitionDef_three_induce_diff_nonpos {G : Graph 
 graph (a step of `thm:pencil-x0-theorem-s`): the set `{a, x 0, x 1, b}` of four bodies spans the
 links `e 0`, `e 1`, `e 2` and `a − b`, so its singleton value is at most `1`, and it is tight, hence
 rigid (`Graph.deficiency_three_induce_eq_zero_of_tight`, `lem:deficiency-tight-rigid`). -/
-theorem _root_.Graph.IsOpenEar.deficiency_three_induce_cycle {G : Graph α β} (_hG : G.IsX0Graph)
-    {V₁ : Set α} {x : Fin 2 → α} {a b : α} {e : Fin 3 → β} (hear : G.IsOpenEar V₁ x a b e)
+theorem _root_.Graph.IsOpenEar.deficiency_three_induce_cycle {G : Graph α β} {V₁ : Set α}
+    {x : Fin 2 → α} {a b : α} {e : Fin 3 → β} (hear : G.IsOpenEar V₁ x a b e)
     (hadj : G.Adj a b) (hSv : ∀ X ⊆ V(G), 2 ≤ X.ncard → 1 ≤ (G.induce X).partitionDef 2 id) :
     ({a, x 0, x 1, b} : Set α) ⊆ V(G) ∧ 2 ≤ ({a, x 0, x 1, b} : Set α).ncard ∧
       (G.induce {a, x 0, x 1, b}).deficiency 3 = 0 := by
@@ -510,7 +510,7 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX
         obtain rfl : k' = 2 := by omega
         have hab' := hk2 _ _ _ _ _ hC'
         obtain ⟨hcycV, hcyc2, hcycd⟩ :=
-          hC'.toIsOpenEar.deficiency_three_induce_cycle hG hab' hSv
+          hC'.toIsOpenEar.deficiency_three_induce_cycle hab' hSv
         obtain ⟨x₀, hx₀V, hx₀2, hx₀s⟩ :=
           hG.exists_degree_eq_two_notMem hSv (s := {x' 0, x' 1})
             ((Set.ncard_pair_le _ _).trans (by norm_num))
@@ -574,7 +574,7 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX
           (show G.IsLink (e 0) a (x 0) from hC.isLink 0).symm (hC.isLink 1)
           (fun Y hY _ hY2 => hno Y hY hY2)
       · obtain ⟨hcycV, hcyc2, hcycd⟩ :=
-          hC.toIsOpenEar.deficiency_three_induce_cycle hG (hk2 _ _ _ _ _ hC) hSv
+          hC.toIsOpenEar.deficiency_three_induce_cycle (hk2 _ _ _ _ _ hC) hSv
         exact ⟨_, hcycV, hcyc2, hcycd⟩
     exact hG.exists_additiveCore_of_rigid hSv (X₀ := ∅) Set.subsingleton_empty
       (Set.empty_subset _) (by simpa using hYV) hY2 hYd (fun _ => hrig) (by simp) (by simp)
@@ -614,8 +614,8 @@ theorem _root_.Graph.IsX0Graph.x0Reduces {G : Graph α β} (hG : G.IsX0Graph) :
   by_cases h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected
   swap
   · push Not at h2c
-    obtain ⟨v, hv, hdisc⟩ := h2c
-    exact hG.x0Reduces_of_not_connected htec hv hdisc
+    obtain ⟨v, -, hdisc⟩ := h2c
+    exact hG.x0Reduces_of_not_connected htec hdisc
   by_cases hcyc : ∀ v ∈ V(G), G.degree v = 2
   · exact hG.x0Reduces_of_forall_degree_eq_two hcyc
   push Not at hcyc

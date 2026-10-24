@@ -288,6 +288,19 @@ to be re-derived by re-reading entries later.
   the docstrings settle.
 - **Status:** idiom.
 
+### [idiom] An explicit binder of class type is a local instance — a copy that keeps it cannot show it unused
+- **Where it bit:** RECONCILE round 3, task 38.27 (`F-321`): `not_pencilHub_of_closedEar_two`'s
+  `hS : G.Simple` (`MainComponent/GenericTriangle.lean`) was found unused, its proof reading it
+  only in a `have := hS` and a `have hloop`. The witness dropped the two `have`s and kept the
+  binder; dropping the binder fails, as `Graph.degree_eq_ncard_inc` asks `G.Loopless`, which the
+  explicit binder supplies as a local instance (`failed to synthesize instance G.Loopless`).
+- **Friction:** one LSP round trip; the disposition's direction could not hold, and the binder
+  stays.
+- **Proposed fix:** a copy that confirms a hypothesis unused drops the binder itself, never only
+  the `have`s that read it.
+- **Lifted to:** TACTICS-QUIRKS § 118.
+- **Status:** idiom.
+
 ### [idiom] `toFinite_tac` cannot see `Finite (range z)` below `Mathlib.Data.Set.Finite.Range`
 - **Where it bit:** RECONCILE round 3, task 38.24, the mirror `Set.ncard_union_range_of_injective`
   (`Mathlib/Data/Set/Card.lean`, which imports only `Mathlib.Data.Set.Card`). (1) `ncard_union_eq h
@@ -3462,9 +3475,9 @@ limitations. Worth a once-over so future agents don't re-litigate.
   (`lean_loogle` finds none naming both).
 - **Resolution:** mirrored over a field, for a family `v : m → m → K` of any finite index type, the
   four sites calling it. Three more copies (`F-328`): `eq_zero_of_dotProduct_pencilPicturePoint`
-  (`ContractCurve.lean`), since deleted, its caller calling the mirror (task 38.25);
-  `eq_zero_of_dotProduct_triple` and the `horth` of `Graph.planeDiff_eq_zero_of_splitOff` wait for
-  their files' tasks.
+  (`ContractCurve.lean`), since deleted, its caller calling the mirror (task 38.25); the `horth` of
+  `Graph.planeDiff_eq_zero_of_splitOff` and `eq_zero_of_dotProduct_triple` (`GenericBase.lean`,
+  kept for its two calls with three separate facts) now call it (tasks 38.26, 38.27).
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`.
 

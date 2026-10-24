@@ -104,7 +104,7 @@ theorem hasGenericPencilRealization_of_IH [Infinite K] [Finite α] [Finite β] {
   obtain ⟨hF1, hF2⟩ := hfeas.hub_conditions
   rcases hG.exists_oneEar_or_pendantTriangle htec (by omega) hF1 hF2 hrig with
     ⟨V₁, x, a, b, e, hear, ha, hb, hdef⟩ |
-    ⟨V₁, x, c, e, hcover, hinj, hxV₁, hc, hpath, hsep, hdeg⟩
+    ⟨V₁, x, c, e, hcover, -, hxV₁, hc, hpath, hsep, hdeg⟩
   · have hS₁ : (G.induce V₁).Simple :=
       hS.mono (Graph.induce_le (hear.cover ▸ Set.subset_union_left))
     have hlt : V(G.induce V₁).ncard < V(G).ncard := hear.ncard_lt le_rfl
@@ -120,8 +120,8 @@ theorem hasGenericPencilRealization_of_IH [Infinite K] [Finite α] [Finite β] {
       rw [hcover]
       exact Set.mem_union_right _ ⟨_, rfl⟩
     have hne : V(G.induce V₁).Nonempty := ⟨c, hc⟩
-    exact hasGenericPencilRealization_of_closedEar_two hS hfeas hcover hinj hxV₁ hc hpath hsep
-      hdeg ((hIH _ hne hlt).1 hS₁)
+    exact hasGenericPencilRealization_of_closedEar_two hS hfeas hcover hxV₁ hc hpath hsep hdeg
+      ((hIH _ hne hlt).1 hS₁)
 
 /-- **The conditioned pair at one graph from the induction hypothesis**
 (`thm:pencil-conditioned-pair-nonempty`, the step of its proof): over an infinite field, a loopless

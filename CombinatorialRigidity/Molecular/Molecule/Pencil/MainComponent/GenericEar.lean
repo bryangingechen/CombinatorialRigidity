@@ -142,7 +142,6 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
     (hflag : ¬ (point a ⬝ᵥ normal b = 0 ∧ point b ⬝ᵥ normal a = 0)) :
     HasGenericPencilRealization K 3 G := by
   classical
-  have hloopless : G.Loopless := inferInstance
   have haV : a ∈ V₁ := hear.left_mem
   have hbV : b ∈ V₁ := hear.right_mem
   have hx₀V : x 0 ∉ V₁ := hear.notMem 0
@@ -196,17 +195,12 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
   have hext1 : ext (e 1) = pointJoin px pb := by simp [hext, Ne.symm e01]
   have hextf : ∀ f, f ≠ e 0 → f ≠ e 1 → ext f = F₁.supportExtensor f := by
     intro f h0 h1; simp [hext, h0, h1]
-  have hjoin_ne : ∀ {p q : Fin 4 → K}, LinearIndependent K ![p, q] → pointJoin p q ≠ 0 := by
-    intro p q hpq h0
-    have hval := congrArg ScrewSpace.val h0
-    rw [pointJoin, ScrewSpace.val_mk, ScrewSpace.val_zero] at hval
-    exact (extensor_ne_zero_iff_linearIndependent _).mpr hpq hval
   have hext_ne : ∀ f, ext f ≠ 0 := by
     intro f
     by_cases h0 : f = e 0
-    · rw [h0, hext0]; exact hjoin_ne hLIax
+    · rw [h0, hext0]; exact pointJoin_ne_zero hLIax
     by_cases h1 : f = e 1
-    · rw [h1, hext1]; exact hjoin_ne hLIxb
+    · rw [h1, hext1]; exact pointJoin_ne_zero hLIxb
     rw [hextf f h0 h1]; exact hSnz f
   -- the links of `G`
   have hcls : ∀ f u v, G.IsLink f u v →
@@ -253,15 +247,6 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
   have hdot_nx_b : pb ⬝ᵥ nx = 0 := by rw [dotProduct_comm, hnx]; exact cross₃_dotProduct_thd _ _ _
   have hdot_a_a : pa ⬝ᵥ na = 0 := hpinc a haV
   have hdot_b_b : pb ⬝ᵥ nb = 0 := hpinc b hbV
-  have hinPanel : ∀ {p q n : Fin 4 → K}, p ⬝ᵥ n = 0 → q ⬝ᵥ n = 0 →
-      ExtensorInPanel (pointJoin p q) n := by
-    intro p q n hp hq
-    exact ⟨![p, q], ScrewSpace.val_mk _ _, Fin.forall_fin_two.mpr ⟨hp, hq⟩⟩
-  have hthruPt : ∀ {p q : Fin 4 → K},
-      ExtensorThroughPoint (pointJoin p q) p ∧ ExtensorThroughPoint (pointJoin p q) q := by
-    intro p q
-    exact ⟨⟨![p, q], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩,
-      ⟨![p, q], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨1, rfl⟩⟩⟩
   have hpa' : point' a = pa := hpt_ne a hxa.symm
   have hpb' : point' b = pb := hpt_ne b hxb.symm
   have hna' : normal' a = na := hnm_ne a hxa.symm
@@ -276,10 +261,18 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
     · change ExtensorInPanel (ext f) (normal' u) ∧ ExtensorInPanel (ext f) (normal' v)
       rcases hcls f u v hl with ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ | ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ |
         ⟨h0, h1, hl'⟩
-      · rw [hext0, hna', hnm_x]; exact ⟨hinPanel hdot_a_a hpxa, hinPanel hdot_nx_a hdot_nx_x⟩
-      · rw [hext0, hna', hnm_x]; exact ⟨hinPanel hdot_nx_a hdot_nx_x, hinPanel hdot_a_a hpxa⟩
-      · rw [hext1, hnb', hnm_x]; exact ⟨hinPanel hdot_nx_x hdot_nx_b, hinPanel hpxb hdot_b_b⟩
-      · rw [hext1, hnb', hnm_x]; exact ⟨hinPanel hpxb hdot_b_b, hinPanel hdot_nx_x hdot_nx_b⟩
+      · rw [hext0, hna', hnm_x]
+        exact ⟨extensorInPanel_pointJoin hdot_a_a hpxa,
+          extensorInPanel_pointJoin hdot_nx_a hdot_nx_x⟩
+      · rw [hext0, hna', hnm_x]
+        exact ⟨extensorInPanel_pointJoin hdot_nx_a hdot_nx_x,
+          extensorInPanel_pointJoin hdot_a_a hpxa⟩
+      · rw [hext1, hnb', hnm_x]
+        exact ⟨extensorInPanel_pointJoin hdot_nx_x hdot_nx_b,
+          extensorInPanel_pointJoin hpxb hdot_b_b⟩
+      · rw [hext1, hnb', hnm_x]
+        exact ⟨extensorInPanel_pointJoin hpxb hdot_b_b,
+          extensorInPanel_pointJoin hdot_nx_x hdot_nx_b⟩
       · rw [hextf f h0 h1, hnm_ne u (hV₁ne u hl'.2.1), hnm_ne v (hV₁ne v hl'.2.2)]
         exact hpanel f u v hl'
     · rcases hmemV v hv with h | rfl
@@ -291,10 +284,10 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
     · change ExtensorThroughPoint (ext f) (point' u) ∧ ExtensorThroughPoint (ext f) (point' v)
       rcases hcls f u v hl with ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ | ⟨rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ |
         ⟨h0, h1, hl'⟩
-      · rw [hext0, hpa', hpt_x]; exact hthruPt
-      · rw [hext0, hpa', hpt_x]; exact hthruPt.symm
-      · rw [hext1, hpb', hpt_x]; exact hthruPt
-      · rw [hext1, hpb', hpt_x]; exact hthruPt.symm
+      · rw [hext0, hpa', hpt_x]; exact extensorThroughPoint_pointJoin _ _
+      · rw [hext0, hpa', hpt_x]; exact (extensorThroughPoint_pointJoin _ _).symm
+      · rw [hext1, hpb', hpt_x]; exact extensorThroughPoint_pointJoin _ _
+      · rw [hext1, hpb', hpt_x]; exact (extensorThroughPoint_pointJoin _ _).symm
       · rw [hextf f h0 h1, hpt_ne u (hV₁ne u hl'.2.1), hpt_ne v (hV₁ne v hl'.2.2)]
         exact hthru f u v hl'
   -- the points at the two ends of every link are independent
@@ -415,28 +408,6 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
 
 /-! ## The generic realization across a one-body ear -/
 
-/-- **Three vectors orthogonal to two independent vectors are dependent** (a step of
-`lem:pencil-generic-one-ear`): they lie in `n_a^⊥ ∩ n_b^⊥`, of dimension two
-(`finrank_toDualPerp_pair_eq`). -/
-theorem not_linearIndependent_of_dotProduct_eq_zero_pair {na nb : Fin 4 → K}
-    (hab : LinearIndependent K ![na, nb]) (p : Fin 3 → Fin 4 → K)
-    (h : ∀ i, p i ⬝ᵥ na = 0 ∧ p i ⬝ᵥ nb = 0) : ¬ LinearIndependent K p := by
-  intro hp
-  set m : Submodule K (Fin 4 → K) :=
-    ⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![na, nb] j)) with hm
-  have hmdim : Module.finrank K m = 2 := finrank_toDualPerp_pair_eq hab
-  have hmem : ∀ i, p i ∈ m := by
-    intro i
-    simp only [hm, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
-      piBasisFun_toDual_eq_dotProduct, Fin.forall_fin_two, Matrix.cons_val_zero,
-      Matrix.cons_val_one]
-    exact h i
-  set p' : Fin 3 → m := fun i => ⟨p i, hmem i⟩
-  have hp' : LinearIndependent K p' := LinearIndependent.of_comp m.subtype (by exact hp)
-  have := hp'.fintype_card_le_finrank
-  rw [Fintype.card_fin, hmdim] at this
-  omega
-
 /-- **The generic realization across a one-body ear** (`lem:pencil-generic-one-ear`): let `K` be
 infinite and `G` simple and nondegeneracy-feasible, with an open ear `a − x 0 − b` on `V₁` with one
 interior body, whose ends are pencil hubs, and with `def₃(G[V₁]) ≤ def₃(G)`. If `G[V₁]` has a
@@ -470,7 +441,6 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
     HasGenericPencilRealization K 3 G := by
   classical
   have := hS
-  have hloop : G.Loopless := hS.toLoopless
   have hV₁ : V₁ ⊆ V(G) := hear.cover ▸ Set.subset_union_left
   have hle : G.induce V₁ ≤ G := Graph.induce_le hV₁
   have hVH : V(G.induce V₁) = V₁ := Graph.vertexSet_induce G V₁

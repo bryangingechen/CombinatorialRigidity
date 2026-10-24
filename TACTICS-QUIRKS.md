@@ -4548,7 +4548,10 @@ and confirm a candidate by a `lake lean` copy without it. After dropping one, re
 binder that fed only the dropped argument rather than trusting `lake lint`'s silence, and inside
 its proof a local `have`'s premise that fed only that argument, which neither linter reads: drop
 it, and then each `have` that fed only the premise (task 38.14's `hinciff`, FRICTION [idiom] *A
-dropped hypothesis can leave a local `have`'s premise dead…*).
+dropped hypothesis can leave a local `have`'s premise dead…*). The confirming copy drops the binder
+itself: an explicit binder of class type (`hS : G.Simple`) is a local instance, so a copy that keeps
+it and drops only the `have`s that read it shows nothing (task 38.27, FRICTION [idiom] *An explicit
+binder of class type is a local instance…*).
 
 **Calibration.** RECONCILE round 3, task 38.11 (`F-278`, found by task 25.1's reading):
 `isoOfOptionSubtypeNe`'s `hnone`, in scope of the `subst`s of its `(none, none)` case, and
