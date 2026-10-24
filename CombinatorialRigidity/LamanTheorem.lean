@@ -95,7 +95,7 @@ private theorem IsLaman.isGenericallyRigidInj_two_of_card :
             (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
               fromEdgeSet ({s(x, y)} : Set _)) x y c :=
           Henneberg.isoTypeIIOfThreeNeighbors x.property.symm y.property.symm c.property.symm
-            (fun heq => hxy (Subtype.ext heq)) hN_iff hnxy
+            hN_iff hnxy
         exact (Henneberg.typeII_isGenericallyRigidInj_two ih_G' hxy hcx.symm hcy.symm).iso φ.symm
     · -- Base case: `Fintype.card V ≤ 2`. The `≤ 1` sub-cases contradict Laman
       -- tightness (a Laman graph has `#E + 3 = 2 * #V`, infeasible for #V ≤ 1

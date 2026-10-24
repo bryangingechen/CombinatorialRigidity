@@ -51,13 +51,12 @@ induction, and the row-independence lifts of `MatroidIdentification.lean`'s. The
 operation / reverse = flat split is documented in `DESIGN.md` *Statement-form conventions*. -/
 
 /-- Build a graph iso `G ≃g H` along the canonical `V ≃ Option {w : V // w ≠ v}` equivalence,
-given the adjacency-equivalence at the `(u, w)` cases w.r.t. `v`. For `(none, none)`, `hnone`
-says that `H` has no loop at `none`; the `(none, some)` and `(some, none)` cases are related by
+given the adjacency-equivalence at the `(u, w)` cases w.r.t. `v`. The `(none, none)` case needs
+nothing, as neither graph has a loop; the `(none, some)` and `(some, none)` cases are related by
 adjacency-symmetry, so only one of them is asked for. The `(some, some)` case carries any
 move-specific bridging-edge logic. -/
 private def isoOfOptionSubtypeNe [DecidableEq V] {G : SimpleGraph V} (v : V)
     {H : SimpleGraph (Option {w : V // w ≠ v})}
-    (hnone : ¬ H.Adj none none)
     (hns : ∀ w (hw : w ≠ v), H.Adj none (some ⟨w, hw⟩) ↔ G.Adj v w)
     (hss : ∀ {u w} (hu : u ≠ v) (hw : w ≠ v),
         H.Adj (some ⟨u, hu⟩) (some ⟨w, hw⟩) ↔ G.Adj u w) :
@@ -86,20 +85,21 @@ def isoTypeIOfTwoNeighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
     (hva : v ≠ a) (hvb : v ≠ b) (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b) :
     G ≃g typeI (G.comap (Subtype.val : {w : V // w ≠ v} → V))
       ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ :=
-  isoOfOptionSubtypeNe v (by simp)
+  isoOfOptionSubtypeNe v
     (fun w _ => by simp [hN])
     (fun _ _ => Iff.rfl)
 
 /-- Iso from `G` to a Type II move applied to (induced subgraph + bridging edge `s(a, b)`), when
 the neighbors of `v` are exactly `a`, `b` and `c` (`hN`) and `a, b` are non-adjacent in `G`. The
-statement does not ask that `c` differ from `a` and `b`; `v` has degree 3 when it does. -/
+statement asks neither `a ≠ b` nor that `c` differ from `a` and `b`; `v` has degree 3 when the
+three are distinct. -/
 def isoTypeIIOfThreeNeighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
-    (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c) (hab : a ≠ b)
+    (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c)
     (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c) (hnab : ¬ G.Adj a b) :
     G ≃g typeII (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
         fromEdgeSet ({s(⟨a, hva.symm⟩, ⟨b, hvb.symm⟩)} : Set (Sym2 _)))
       ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ ⟨c, hvc.symm⟩ :=
-  isoOfOptionSubtypeNe v (by simp)
+  isoOfOptionSubtypeNe v
     (fun w _ => by simp [hN])
     (fun {u w} _ _ => by
       rw [typeII_adj_some_some, sup_adj, comap_adj, fromEdgeSet_adj, Set.mem_singleton_iff]
@@ -184,8 +184,7 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
       G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
         fromEdgeSet ({s(x, y)} : Set _) with hG'_def
     have h_iso : G ≃g typeII G' x y c :=
-      isoTypeIIOfThreeNeighbors x.property.symm y.property.symm c.property.symm
-        (fun heq => hxy (Subtype.ext heq)) hN hnxy
+      isoTypeIIOfThreeNeighbors x.property.symm y.property.symm c.property.symm hN hnxy
     have h_typeII_laman : (typeII G' x y c).IsLaman := IsLaman.iso h_iso h
     have h_count := h_typeII_laman.edgeSet_ncard
     rw [typeII_edgeSet_ncard G' hxy hcx hcy, Finite.card_option] at h_count

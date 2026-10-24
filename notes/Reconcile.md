@@ -79,8 +79,9 @@ selectors (L8, `F-305`) and `pencilChartPoint_ofCoord_toCoord` from `pencilChart
 deleting twelve declarations; task 38.10 removed the suppression sites by `TACTICS-QUIRKS.md`
 §115 (nine unused `[DecidableEq β]` and three `[Nonempty α]`, four needless `set_option`s, three
 `nolint`s, a long header, and a theorem at `[Fintype α]` whose proof moved into its pin),
-`theorem_55_6_multigraph_gen`'s binder going with `F-323`'s. **Next concrete task:** round 3's task
-38.11, `HennebergReverse.lean`'s two hypotheses (then tasks 38.12–38.27 and the close).
+`theorem_55_6_multigraph_gen`'s binder going with `F-323`'s; task 38.11 dropped `F-278`'s two
+hypotheses of `HennebergReverse.lean`. **Next concrete task:** round 3's task 38.12,
+`Molecular/Deficiency.lean`'s three hypotheses (then tasks 38.13–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

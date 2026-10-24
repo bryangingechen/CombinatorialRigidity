@@ -830,7 +830,7 @@ theorem IsSparse.exists_rowIndependent_placement :
           Henneberg.typeII_edgeSetRowIndependent_lift hp' h_bridge hcx.symm hcy.symm
         have φ : H ≃g Henneberg.typeII H' x y c :=
           Henneberg.isoTypeIIOfThreeNeighbors x.property.symm y.property.symm c.property.symm
-            (fun heq => hxy (Subtype.ext heq)) hN_iff hnxy
+            hN_iff hnxy
         exact ⟨p_lift ∘ φ, EdgeSetRowIndependent.iso φ hp_lift_LI⟩
     · -- Base case: `H.edgeSet = ∅`, the empty family of rows is LI.
       rw [Set.not_nonempty_iff_eq_empty] at hE

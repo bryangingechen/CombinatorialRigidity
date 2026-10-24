@@ -213,6 +213,17 @@ to be re-derived by re-reading entries later.
   caller that does not ascribe the result's type.
 - **Status:** idiom.
 
+### [idiom] A hypothesis that a `subst` or an `rfl` pattern reverts passes both unused linters — screen it by reading
+- **Where it bit:** RECONCILE round 3, task 38.11 (`F-278`): `isoOfOptionSubtypeNe`'s `hnone` and
+  `isoTypeIIOfThreeNeighbors`'s `hab` (`HennebergReverse.lean`), unused, and reported by neither
+  `linter.unusedVariables` nor `lake lint`'s `unusedArguments`; task 25.1 found them by reading.
+- **Friction:** none in the drop (it built first time); the cost is in the screen, as "`lake lint`
+  to a fixed point" cannot see such a binder, at a declaration or at a caller.
+- **Proposed fix:** for a hypothesis in scope of a `subst` or an `rfl` pattern over a variable its
+  type mentions, ask which step uses it, and confirm by a copy without it.
+- **Lifted to:** TACTICS-QUIRKS § 118.
+- **Status:** idiom.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

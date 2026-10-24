@@ -148,6 +148,7 @@ failing pattern and the working fix.
 - `linter.unusedDecidableInType` flags a `[DecidableEq β]` (or any `Decidable*` binder) the theorem's *type* never mentions, even though the *proof* threads it to a callee that takes the same instance — and deleting the binder bare breaks every such callee with *"failed to synthesize instance of type class DecidableEq β"* → § 115 (the linter checks only the statement, never the proof; drop the binder and open the proof with `classical`, don't read the callee breakage as proof the binder was needed)
 - A `<;>`-chained flexible `simp`'s `linter.flexible` "Try this: simp only [...]" suggestion, substituted verbatim, leaves some branches of the chain unsolved or makes `norm_num`/a later tactic report *"no goals to be solved"* on others → § 116 (the suggestion is captured against one branch, not their union; run `simp?`/`lean_multi_attempt` at the chain's own position for the full per-goal set across every branch, then union them into one `simp only […]`)
 - `fun x hx => hx.1` (or `hx.2`, `hx.left`, `fun h => hnadj h.1`) given as a subset or non-membership argument fails with *"Invalid projection: Projection operates on types of the form `C ...`"* (or *"Invalid field notation"*), *"`hx` has type `?m.N.1 x`"*, where it compiled before the v4.36.0-rc1 bump → § 117 (`Set` is a structure now, so `x ∈ ?s` is a projection of a still-unassigned set, which the anonymous projection does not wait for; name the set: the named subset lemma, the set argument, or an ascribed binder)
+- A hypothesis that nothing in the proof needs (a copy without it elaborates with the same proof) is reported by neither `linter.unusedVariables` nor `lake lint`'s `unusedArguments`, so a cleanup's "`lake lint` to a fixed point" misses it, and the proof runs a `subst`, or an `rfl` pattern of `rcases`/`obtain`/`rintro`, on a variable its type mentions → § 118 (the substitution reverts the hypothesis and reintroduces it, so the proof term mentions it; both linters read it as used; screen such a binder by reading, and confirm by a copy without it)
 
 ## Sections
 
@@ -4521,5 +4522,38 @@ the `Deficiency.lean` one). With G2's one set passed where a predicate is expect
 (`Function.Embedding.subtype S` → `(· ∈ S)`, `Jacobs.lean`), they are the whole tree's cost of the
 `Set` refactor: 7 sites in 6 files, two shapes, no mirror lemma. The record:
 `notes/ToolchainBumps.md` *Bump record: v4.34.0-rc2 → v4.36.0-rc1*.
+
+---
+
+## 118. An unused hypothesis passes both unused linters when a `subst` or an `rfl` pattern reverts it — screen by reading, confirm by a copy without it
+
+**Symptom.** A hypothesis that no step of the proof needs (a copy of the declaration without it
+elaborates with the same proof) is reported by neither `linter.unusedVariables` at build time nor
+`lake lint`'s `unusedArguments`. The proof runs a `subst`, or an `rfl` pattern of
+`rcases`/`obtain`/`rintro`, on a variable the hypothesis's type mentions. The same blind spot
+reaches a cleanup that drops a hypothesis and runs `lake lint` to a fixed point for the callers'
+binders it leaves unused: a caller whose proof substitutes over such a binder is not reported.
+
+**Cause.** Substituting a variable reverts every hypothesis whose type depends on it and
+introduces it again after the rewrite, so the elaborated proof term mentions the hypothesis though
+nothing uses it, and both linters read that mention as a use. In a `def`, the nested proof becomes
+a `_proof_N` auxiliary that takes the hypothesis as an argument (`set_option pp.proofs true in
+#print` shows it). With no substitution, `grind` or `omega` leaves the same hypothesis reported.
+
+**Fix.** Screen by reading: for each hypothesis in scope of a substitution, ask which step uses it,
+and confirm a candidate by a `lake lean` copy without it. After dropping one, read each caller's
+binder that fed only the dropped argument rather than trusting `lake lint`'s silence.
+
+**Calibration.** RECONCILE round 3, task 38.11 (`F-278`, found by task 25.1's reading):
+`isoOfOptionSubtypeNe`'s `hnone`, in scope of the `subst`s of its `(none, none)` case, and
+`isoTypeIIOfThreeNeighbors`'s `hab`, in scope of the `⟨rfl, rfl⟩` of its `(some, some)` arm
+(`HennebergReverse.lean`). The witnesses (`scratch/reconcile-lean/t3811/LintBlind.lean` and
+`LintBlind2.lean`, gitignored): the parent's two definitions lint clean, their `_proof_N`
+auxiliaries taking `hnone` and `hab`; an unused `hab` goes unreported after `subst`, `obtain
+⟨rfl, rfl⟩` or `rcases … with rfl; grind`, and is reported by both linters after `grind` or
+`omega` alone.
+
+FRICTION [idiom] *A hypothesis that a `subst` or an `rfl` pattern reverts passes both unused
+linters…*.
 
 ---

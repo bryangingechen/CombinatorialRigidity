@@ -5025,11 +5025,14 @@ declaration's name as its header writes it:
   that elaborate with the same proofs (`scratch/reconcile-lean/Docstrings-t25-1.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 25.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.11). Task 38.1: drop both, the
+  *Disposition:* done (task 38.11). Task 38.1: drop both, the
   private lemma's `hnone` by `SimpleGraph.irrefl` where its body needs it (its two callers in the
   file pass `by simp`), and `hab` (callers `IsLaman.exists_typeI_or_typeII_reverse`,
   `IsLaman.isGenericallyRigidInj_two_of_card` in `LamanTheorem.lean`,
   `IsSparse.exists_rowIndependent_placement` in `MatroidIdentification.lean`); no node pins either.
+  Round 3: done so, the body unchanged (its `simp` closes the loop case without `hnone`). Neither
+  linter reported the two, as a `subst` or an `rfl` pattern puts each in the proof term
+  (`TACTICS-QUIRKS.md` §118) (task 38.11).
 - **F-279** · L · unpinned declarations of `Search/DFS.lean`, of `Mathlib/`, of `PebbleGame/`, of
   `Matroid/` and of `BodyBar/` that no declaration of the project uses: twenty-six in the first
   three and sixty-five in the last two. Outside `Matrix/Rank.lean`,
