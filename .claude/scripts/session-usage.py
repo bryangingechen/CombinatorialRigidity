@@ -125,7 +125,7 @@ def iter_transcripts(projects_dir: Path):
             yield proj.name, "subagent", f
 
 
-def collect(cfg: Path, since: datetime):
+def collect(cfg: Path, since: datetime, until: datetime | None = None):
     projects_dir = cfg / "projects"
     if not projects_dir.is_dir():
         sys.exit(f"no projects dir under {cfg}")
@@ -152,7 +152,8 @@ def collect(cfg: Path, since: datetime):
                     ts = d.get("timestamp")
                     if not ts:
                         continue
-                    if datetime.fromisoformat(ts.replace("Z", "+00:00")) < since:
+                    t = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+                    if t < since or (until is not None and t > until):
                         continue
                     m = d.get("message", {})
                     u = m.get("usage")
@@ -175,7 +176,11 @@ def collect(cfg: Path, since: datetime):
 def cmd_tokens(args):
     window = timedelta(days=args.days) if args.days else timedelta(hours=args.hours)
     since = datetime.now(timezone.utc) - window
-    rows = collect(config_dir(args), since)
+    if args.since:
+        since = datetime.fromisoformat(args.since).astimezone(timezone.utc)
+        window = datetime.now(timezone.utc) - since
+    until = datetime.fromisoformat(args.until).astimezone(timezone.utc) if args.until else None
+    rows = collect(config_dir(args), since, until)
 
     per_model, per_file = {}, {}
     for proj, kind, fname, model, u in rows:
@@ -219,6 +224,12 @@ def main():
     tp.add_argument("--hours", type=float, default=5.0, help="trailing window in hours (default 5)")
     tp.add_argument("--days", type=float, default=None, help="trailing window in days (overrides --hours)")
     tp.add_argument("--by-session", action="store_true", help="also break down by session file")
+    tp.add_argument("--since", default=None,
+                    help="window start as an ISO time, e.g. a commit's `git log --format=%%cI` "
+                         "(overrides --hours/--days)")
+    tp.add_argument("--until", default=None,
+                    help="window end as an ISO time (default now); with --since, splits a "
+                         "multi-commit dispatch at its commits")
     args = ap.parse_args()
     (cmd_limits if args.cmd == "limits" else cmd_tokens)(args)
 

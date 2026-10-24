@@ -291,10 +291,12 @@ land*).
 - **Cut-off.** Once its context passes ~300k tokens, the builder finishes
   the commit in progress, then returns what landed and names the next item.
 - **Verification.** Step 4's tier on every commit of the arc, in order,
-  before the next dispatch; a defect is fixed before anything builds on it.
+  before the next dispatch, and step 5 once over the arc's modules; a
+  defect is fixed before anything builds on it.
 - **Measure, per arc.** `python3 .claude/scripts/session-usage.py tokens
   --by-session` gives the builder's messages, cache writes, cache reads and
-  output; per landed commit, they compare with the same phase's
+  output, and `--since`/`--until` at the commits' `git log --format=%cI`
+  times split them by commit; per landed commit, they compare with the same phase's
   single-commit dispatches (Phase 41a item 1: 37 messages, 146k written,
   3.96M read, 31k output). Log one `notes/dispatch-log.md` row per arc (a
   playbook deviation while the trial runs), with the verification catches
@@ -471,6 +473,9 @@ CLAUDE.md at phase close.
    remain only for off-map dispatches (e.g. a haiku probe), and those
    resume at the SESSION model. Honor any standing rung override from
    the session-start check-in.
+   **Arcs (trial):** when the next 2–4 checklist items meet *Multi-commit
+   arcs*' eligibility, dispatch them as one arc, rated and rung-picked by
+   its hardest item.
    **Pre-dispatch derivation guard:** when the next leaf builds on a
    prior phase's mirror definition with no upstream precedent, spend
    the few minutes deriving the leaf's statement against the
@@ -603,7 +608,11 @@ CLAUDE.md at phase close.
    the recon's verdict and the PI's decisions in a scratch file: seven
    Phase-40 arcs ran this way with zero Lean rework, at 240–440k per
    build (dispatch-log F46).
-4. Verify the return (`CronDelete` the keepalive job first):
+4. Verify the return (`CronDelete` the keepalive job first). For an
+   arc, run every check below on each commit it landed, oldest first
+   (`git log --oneline <noted-sha>..HEAD`, then `git show --stat` per
+   commit), and match the returned shas against the log: a builder can
+   amend after returning.
    - **Mechanics:** `git log --oneline -3`, `git show --stat HEAD`,
      `git branch --show-current`. HEAD advanced past the noted sha;
      still on `master`; author `bryangingechen@gmail.com`; diff
@@ -776,7 +785,10 @@ CLAUDE.md at phase close.
    is rightmost, not "leftmost"), so warnings re-emit.
    **Warning-clean, not merely green** (a sorry'd skeleton once rode
    a green-but-warning build onto master). Red or warning-bearing →
-   stop and surface. Skip for docs-only commits. (Run the gate in the
+   stop and surface. Skip for docs-only commits. For an arc, build the
+   union of the modules its commits touched, once, at its last commit;
+   an earlier commit's warning-cleanliness is then the builder's
+   attestation in that commit's message. (Run the gate in the
    foreground, or — if backgrounded to read the diff in parallel, with
    the Bash tool's `run_in_background`, **never a shell `&`**, which no
    notification reports and no task stop reaches (a step-5 build used

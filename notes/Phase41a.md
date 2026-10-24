@@ -1,8 +1,8 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 3 have landed. Next concrete task: item 4
-below, the spike (a throwaway worktree: add the field, build, list what breaks).
+recon are in `notes/Phase41-design.md`. Items 1 to 3 have landed. Next concrete task: item 3a
+below, dropping item 3's duplicate conjuncts; then item 4, the spike.
 
 ## Current state
 
@@ -51,6 +51,12 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
   fifth, :1751, is not one: its selector hypothesis `hrecGab` is already on the splitting-off.
   Landed: the conjunct of :823, :1330 and :1430 and the hypothesis `hends'` of :1943 are
   `RecordsLinks (G.splitOff …) ends`. The node never states the selector, so it is unchanged.
+- [ ] **3a. Item 3's duplicate conjuncts** (coordinator verification, 2026-10-24). The three
+  strengthened conclusions in `CaseIII/Realization.lean` (now :854, :1349, :1444) state
+  `RecordsLinks (G.splitOff …) ends` beside the equivalent up-to-order conjunct
+  `∀ e u w, (G.splitOff …).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)`
+  (`recordsLinks_iff_eq_or_swap`). Keep `RecordsLinks`, drop the up-to-order conjunct, and
+  repair the callers' destructuring. No blueprint node states either conjunct.
 - [ ] **4. The spike** (a throwaway worktree, nothing landed): add the field, build, and list what
   breaks. Record the figure here and slice the switch by it.
 - [ ] **5. The switch**: the field; the constructors with the filled-in proof; the H binders (at
@@ -76,7 +82,8 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Hand-off / next phase
 
-Item 4, the spike, in a throwaway worktree with nothing landed: add the field `isLink_ends :
+Item 3a first (one commit, `CaseIII/Realization.lean` and its callers). Then item 4, the spike, in
+a throwaway worktree with nothing landed: add the field `isLink_ends :
 RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`), build,
 and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
 binder-order note. Then slice item 5, the switch, by that count.
