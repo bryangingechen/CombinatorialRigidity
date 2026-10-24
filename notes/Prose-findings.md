@@ -5828,7 +5828,7 @@ declaration's name as its header writes it:
   `fun f x h => hdeg2 f x h.symm` for `hdeg2r`, and `3 ≤ V(G).ncard` from the three distinct ends,
   on the three standard axioms (`scratch/reconcile-lean/Hyps-t352.lean`, gitignored).
   *Found:* RECONCILE round 3 task 35.2.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.18). Task 38.1: drop
+  *Disposition:* done (task 38.18). Task 38.1: drop
   `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`'s `hdeg2r` (`fun f x h => hdeg2 f x h.symm`;
   callers `wstep_foldl_mem_span_rigidityRows`, `case_III_arm_realization_M3` and those task 38.2
   leaves), the fourth conjunct of `wstep_foldl_mem_span_rigidityRows`'s step (caller
@@ -5836,7 +5836,12 @@ declaration's name as its header writes it:
   the distinct ends of `hG_ea`, `hG_eb`; caller `case_III_candidate_dispatch`); all unpinned. Moot:
   `wstep_foldr_mem_span_rigidityRows` and `ofNormals_relabel_perm` (task 38.2). Left: the pins'
   written-out derivations, which the deleted perm form would have served, and `htrans`'s two forms
-  (one argument, two statements).
+  (one argument, two statements). Round 3: `hdeg2r` dropped, `hdeg2 f x hlink.symm` at its one use,
+  with the local copies of `case_III_arm_realization_M3` and `seedAdvance_wstep_hstep`; the fourth
+  conjunct dropped from the step and from the conclusion of `seedAdvance_wstep_hstep`, which gives
+  that step to the one caller whole; `hV3` dropped, `Set.two_lt_ncard_iff` at the three ends in the
+  proof, and the caller's local `hV3` with it (`case_III_candidate_dispatch`'s `hV4`, from which
+  `omega` gave it, still feeds its other bounds). No node restated (task 38.18).
 - **F-295** · L · derivable hypotheses and repeated derivations in
   `Molecular/AlgebraicInduction/CaseIII/Relabel/Chain.lean`, `ChainColumn.lean` and
   `ForkedArm.lean`. `BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows`,
@@ -5864,7 +5869,7 @@ declaration's name as its header writes it:
   called with `3 ≤ cd.d` from `i.isLt` and `h2i`, on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t353.lean`, gitignored).
   *Found:* RECONCILE round 3 task 35.3.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.18). Task 38.1: drop
+  *Disposition:* done (task 38.18). Task 38.1: drop
   `acolumn_mem_hingeRowBlock_of_span_rigidityRows`'s `hdeg2r` (the other two go in task 38.2), and
   the variables `ab₁`, `ab₂` with `hab₁`, `hab₂` of `interior_group_eq_baseRedundancy` and
   `interior_group_acolumn_eq_neg_baseRedundancy` (`vtx 0`, `vtx 2` in their place; callers
@@ -5874,7 +5879,13 @@ declaration's name as its header writes it:
   the case split on a selector's order, one per site; the step from `−ρ₀` (two statements). Moot:
   `interiorGroup_acolumn_two_group_decomp` (task 38.2). Task 38.17 adds: task 38.17's
   `Graph.ChainData.splitOff_data_one` (`F-293`) at `ForkedArm.lean`'s `hlink_one` and
-  `Chain.lean`'s `hl0`, `hl1` (at the indices of `Fin cd.d`), which write parts of it out.
+  `Chain.lean`'s `hl0`, `hl1` (at the indices of `Fin cd.d`), which write parts of it out. Round 3:
+  `hdeg2r` dropped, `hdeg2 f u hlink.symm` at its one use (the caller's copy with it, `F-294`);
+  `ab₁`, `ab₂`, `hab₁`, `hab₂` dropped, `vtx 0` and `vtx 2` in their place and `vtx_ne` for their
+  distinctness, the two callers' `rfl rfl` gone; `perp_panelSupportExtensor_swap` deleted (block
+  (b): no orphan), its four uses `panelSupportExtensor_swap` with `map_neg`; `splitOff_data_one` for
+  `hlink_one`, and for `hl0`, `hl1` with its last conjunct, the edges at `v₁`, in place of a
+  `deg_two` and four `simpa`s. No node restated (task 38.18).
 - **F-296** · L · repeated derivations in `Molecular/AlgebraicInduction/PanelHinge.lean`.
   `momentCurve_pair_linearIndependent` proves again, for two points of the moment curve, the
   argument of `pair_linearIndependent_of_leading_minor_ne_zero`, whose minor there is `t − s`; and

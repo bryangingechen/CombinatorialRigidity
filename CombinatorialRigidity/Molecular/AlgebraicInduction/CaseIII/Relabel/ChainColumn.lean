@@ -325,34 +325,32 @@ theorem BodyHingeFramework.edgeGroup_comp_single_endpoint_flip [DecidableEq α] 
     hflip, LinearMap.neg_apply, smul_neg]
 
 /-- **The induction along the chain** (a step of `lem:case-III-chain-eq666`; KT eq. (6.66), p. 698):
-for `d ≥ 3`, let `∑ c_j hingeRow (uv j) (vv j) (rv j)` be `hingeRow ab₁ ab₂ ρ₀` (`hcomb`) with
-`ab₁ = v₀` and `ab₂ = v₂` (`hab₁`, `hab₂`), each `ev j` joining `uv j` and `vv j` in `G` (`hlink`),
-and let every term at `v₂` be at `v₂v₃` (`hdeg1`). Then for `2 ≤ i ≤ d − 1`, the restriction to
-`v_i` of the sum of the terms at `v_i v_{i+1}` equals the restriction of `hingeRow ab₁ ab₂ ρ₀` to
-`v₂`.
+for `d ≥ 3`, let `∑ c_j hingeRow (uv j) (vv j) (rv j)` be `hingeRow v₀ v₂ ρ₀` (`hcomb`), with each
+`ev j` joining `uv j` and `vv j` in `G` (`hlink`), and let every term at `v₂` be at `v₂v₃`
+(`hdeg1`). Then for `2 ≤ i ≤ d − 1`, the restriction to `v_i` of the sum of the terms at
+`v_i v_{i+1}` equals the restriction of `hingeRow v₀ v₂ ρ₀` to `v₂`.
 
 By induction on `i` from `anchor_group_acolumn_eq_baseRedundancy`. The vertex `v_{i+1}` is neither
-`v₀` nor `v₂`, so the restriction of `hingeRow ab₁ ab₂ ρ₀` to it vanishes
+`v₀` nor `v₂`, so the restriction of `hingeRow v₀ v₂ ρ₀` to it vanishes
 (`hingeRow_comp_single_off`); the terms at `v_{i+1} v_{i+2}` then restrict there to minus those at
 `v_i v_{i+1}` (`interiorGroup_acolumn_adjacency`), which restrict at `v_{i+1}` to minus their
 restriction at `v_i` (`edgeGroup_comp_single_endpoint_flip`). The vanishing holds only off `v₀` and
-`v₂`: at `v₂` the restriction of `hingeRow ab₁ ab₂ ρ₀` is `−ρ₀`. -/
+`v₂`: at `v₂` the restriction of `hingeRow v₀ v₂ ρ₀` is `−ρ₀`. -/
 theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
     (rv : Fin m → Module.Dual K (ScrewSpace K k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual K (ScrewSpace K k)}
+    {ρ₀ : Module.Dual K (ScrewSpace K k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
-      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
-    (hab₁ : ab₁ = cd.vtx ⟨0, by omega⟩) (hab₂ : ab₂ = cd.vtx ⟨2, by omega⟩)
+      = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
     (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
       ev j = cd.edge ⟨2, by omega⟩)
     (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
     (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨i, by omega⟩),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
       (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx ⟨i, by omega⟩))
-    = (BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀).comp
+    = (BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀).comp
       (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx ⟨2, by omega⟩)) := by
   classical
   induction i, h2i using Nat.le_induction with
@@ -361,15 +359,13 @@ theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α]
   | succ i h2i ih =>
     -- `i + 1 < cd.d` (the current bound); `i` is in range for the induction hypothesis.
     have hid' : i < cd.d := by omega
-    -- The vertex `vtx (i+1)` (`i+1 ≥ 3`) is neither `ab₁ = vtx 0` nor `ab₂ = vtx 2` (`vtx_ne`).
-    have hne₁ : cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc ≠ ab₁ := by
-      rw [hab₁, Fin.castSucc_mk]
-      exact cd.vtx_ne (m := i + 1) (m' := 0) (by omega) (by omega) (by omega)
-    have hne₂ : cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc ≠ ab₂ := by
-      rw [hab₂, Fin.castSucc_mk]
-      exact cd.vtx_ne (m := i + 1) (m' := 2) (by omega) (by omega) (by omega)
+    -- The vertex `vtx (i+1)` (`i+1 ≥ 3`) is neither `vtx 0` nor `vtx 2` (`vtx_ne`).
+    have hne₁ : cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc ≠ cd.vtx ⟨0, by omega⟩ :=
+      cd.vtx_ne (m := i + 1) _ _ (by omega)
+    have hne₂ : cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc ≠ cd.vtx ⟨2, by omega⟩ :=
+      cd.vtx_ne (m := i + 1) _ _ (by omega)
     -- The restriction of the combination to `vtx (i+1)` vanishes: it is that of
-    -- `hingeRow ab₁ ab₂ ρ₀`, and `vtx (i+1)` is neither end (`hingeRow_comp_single_off`).
+    -- `hingeRow (vtx 0) (vtx 2) ρ₀`, and `vtx (i+1)` is neither end (`hingeRow_comp_single_off`).
     have hcol_loc : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
         (LinearMap.single K (fun _ : α => ScrewSpace K k)
           (cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc)) = 0 := by
@@ -415,11 +411,10 @@ theorem _root_.Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy [Dec
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
     (rv : Fin m → Module.Dual K (ScrewSpace K k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual K (ScrewSpace K k)}
+    {ρ₀ : Module.Dual K (ScrewSpace K k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
-      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
-    (hab₁ : ab₁ = cd.vtx ⟨0, by omega⟩) (hab₂ : ab₂ = cd.vtx ⟨2, by omega⟩)
+      = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
     (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
       ev j = cd.edge ⟨2, by omega⟩)
     (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
@@ -428,17 +423,12 @@ theorem _root_.Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy [Dec
       (LinearMap.single K (fun _ : α => ScrewSpace K k) (cd.vtx ⟨i, by omega⟩))
     = -ρ₀ := by
   classical
-  -- `interior_group_eq_baseRedundancy`: the restriction is that of `hingeRow ab₁ ab₂ ρ₀` to
-  -- `vtx 2`.
-  rw [cd.interior_group_eq_baseRedundancy h3 c ev uv vv rv hlink hcomb hab₁ hab₂ hdeg1 i h2i hid]
-  -- The form `hingeRow ab₁ ab₂ ρ₀` at `ab₂ = vtx 2`: it is `hingeRow ab₂ ab₁ (−ρ₀)`
-  -- (`hingeRow_swap`), whose restriction to `ab₂` is `−ρ₀` (`hingeRow_comp_single_tail`), as
-  -- `ab₁ ≠ ab₂` (`vtx 0` and `vtx 2`).
-  have hne : ab₂ ≠ ab₁ := by
-    rw [hab₁, hab₂]
-    exact fun he => by have : (2 : ℕ) = 0 := congrArg Fin.val (cd.vtx_inj he); omega
-  rw [← hab₂, BodyHingeFramework.hingeRow_swap ab₁ ab₂ ρ₀,
-    BodyHingeFramework.hingeRow_comp_single_tail hne]
+  -- `interior_group_eq_baseRedundancy`: the restriction is that of `hingeRow (vtx 0) (vtx 2) ρ₀`
+  -- to `vtx 2`. That form is `hingeRow (vtx 2) (vtx 0) (−ρ₀)` (`hingeRow_swap`), whose restriction
+  -- to `vtx 2` is `−ρ₀` (`hingeRow_comp_single_tail`), as `vtx 2 ≠ vtx 0` (`vtx_ne`).
+  rw [cd.interior_group_eq_baseRedundancy h3 c ev uv vv rv hlink hcomb hdeg1 i h2i hid,
+    BodyHingeFramework.hingeRow_swap,
+    BodyHingeFramework.hingeRow_comp_single_tail (cd.vtx_ne _ _ (by omega))]
 
 /-! ## The normals of the moves
 
@@ -641,7 +631,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_baseRedundancy
   -- The terms at `edge s`, restricted to `vtx s`, sum to `−ρ₀`, which so lies in
   -- `Fva.hingeRowBlock (edge s)` (`edgeGroup_acolumn_mem_block`).
   have hcolval := cd.interior_group_acolumn_eq_neg_baseRedundancy h3 c ev uv vv rv hlink hcomb
-    rfl rfl hdeg1 s h2s hsd
+    hdeg1 s h2s hsd
   have hmem := Fva.edgeGroup_acolumn_mem_block (e := cd.edge ⟨s, by omega⟩)
     (p := cd.vtx ⟨s, by omega⟩) c ev uv vv rv hrv
   rw [hcolval] at hmem
@@ -658,13 +648,6 @@ The second claim of `lem:case-III-chain-eq666`. With the selector `ends₀`, the
 `s ≥ 1`, and at `v₀v₂` when `s = 0` (KT eq. (6.59), p. 694), so `ρ₀` vanishes on it
 (`chainData_freshEdge_slot_perp_ends₀`), and the moves along the chain put the form at the new edge
 of `G_i` in the row space (`chainData_relabel_arm_hρGv`). -/
-
-/-- **A form that vanishes on `C(a, b)` vanishes on `C(b, a)`** (a step of
-`lem:case-III-chain-eq666`), as `C(b, a) = −C(a, b)` (`panelSupportExtensor_swap`). -/
-private theorem perp_panelSupportExtensor_swap {ρ₀ : Module.Dual K (ScrewSpace K k)}
-    {a b : Fin (k + 2) → K} (h : ρ₀ (panelSupportExtensor a b) = 0) :
-    ρ₀ (panelSupportExtensor b a) = 0 := by
-  rw [panelSupportExtensor_swap, map_neg, h, neg_zero]
 
 /-- **`ρ₀` vanishes on the hinges of the edges of the chain in `G − v_i`** (a step of
 `lem:case-III-chain-eq666`; KT eq. (6.59), p. 694): for `d ≥ 3` and `s + 1 < i ≤ d − 1`, let `ends₀`
@@ -735,10 +718,10 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
         PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal] at hρe₀
       rcases hrece₀ with he | he
       · rw [he] at hρe₀; exact hρe₀
-      · rw [he] at hρe₀; exact perp_panelSupportExtensor_swap hρe₀
+      · rwa [he, panelSupportExtensor_swap, map_neg, neg_eq_zero] at hρe₀
     rcases hrecS with he | he
     · rw [he]; dsimp only; rw [hq0, hqsp1]; exact hρe₀'
-    · rw [he]; dsimp only; rw [hq0, hqsp1]; exact perp_panelSupportExtensor_swap hρe₀'
+    · rw [he]; dsimp only; rw [hq0, hqsp1, panelSupportExtensor_swap, map_neg, hρe₀', neg_zero]
   · -- INTERIOR `s ≥ 1`: `qρ (vtx s, ·) = q (vtx (s+1), ·)` (`shiftPerm_apply_interior`, `1 ≤ s`).
     have hqs : (fun j => qρ (cd.vtx ⟨s, by omega⟩, j))
         = (fun j => q (cd.vtx ⟨s + 1, by omega⟩, j)) := by
@@ -760,10 +743,10 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
         (fun j => q (cd.vtx ⟨s + 2, by omega⟩, j))) = 0 := by
       rcases hrecS1 with he | he
       · rw [he] at hbase; exact hbase
-      · rw [he] at hbase; exact perp_panelSupportExtensor_swap hbase
+      · rwa [he, panelSupportExtensor_swap, map_neg, neg_eq_zero] at hbase
     rcases hrecS with he | he
     · rw [he]; dsimp only; rw [hqs, hqsp1]; exact hbase'
-    · rw [he]; dsimp only; rw [hqs, hqsp1]; exact perp_panelSupportExtensor_swap hbase'
+    · rw [he]; dsimp only; rw [hqs, hqsp1, panelSupportExtensor_swap, map_neg, hbase', neg_zero]
 
 /-- **The form at the new edge of `G_i` lies in the row space of `R(G − v_i, q_i)`**
 (`lem:case-III-chain-eq666`, the second claim; KT eq. (6.66), p. 698): for `d ≥ 3`, `2 ≤ i ≤ d − 1`,

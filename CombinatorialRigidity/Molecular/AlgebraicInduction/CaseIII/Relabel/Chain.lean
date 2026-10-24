@@ -173,7 +173,7 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
       = fun p => cd.shiftSeedAdv q s
           (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1, p.2) := by
     rw [cd.shiftSeedAdv_succ, cd.shiftSeedSwap_eq (by omega)]
-  -- The six hypotheses of the move at step `s` (`seedAdvance_wstep_hstep`), at the normals `Q s`
+  -- The five hypotheses of the move at step `s` (`seedAdvance_wstep_hstep`), at the normals `Q s`
   -- and the selector `ends` on both sides (so `hends'_off` is `rfl`), with `hrec` on the links of
   -- `G − vₛ₊₁`. Unfold the frameworks to the `ofNormals (G − vₛ₊₁)` and `ofNormals (G − vₛ₊₂)` that
   -- it states, with `Q (s+1)` rewritten (`hQ`).
@@ -295,35 +295,19 @@ lemma _root_.Graph.ChainData.fullLink_recording_of_splitOff_recording
     ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x) := by
   classical
   intro f x y hG
-  -- `edge 0` links `vtx 0`–`vtx 1`, `edge 1` links `vtx 1`–`vtx 2` (the `link` field, indices
-  -- read out of `Fin (cd.d + 1)`).
-  have hl0 : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc)
-      (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc) := by
-    have h := cd.link ⟨0, by omega⟩
-    rwa [show (⟨0, by omega⟩ : Fin cd.d).succ = (⟨1, by omega⟩ : Fin cd.d).castSucc from
-      Fin.ext rfl] at h
-  have hl1 : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)
-      (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc) := by
-    have h := cd.link ⟨1, by omega⟩
-    rwa [show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin cd.d).castSucc from
-      Fin.ext rfl] at h
+  -- `edge 0` links `vtx 1`–`vtx 0`, `edge 1` links `vtx 1`–`vtx 2`, and they are the edges at
+  -- `vtx 1` (`splitOff_data_one`, at the indices of `Fin (cd.d + 1)`).
+  obtain ⟨-, -, -, -, hl0, hl1, hdt⟩ := cd.splitOff_data_one (by omega)
   by_cases hxy1 : x = cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc ∨
       y = cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc
   · -- `f` is a `G`-edge at the interior base body `vtx 1`: degree-2 closure ⇒ `edge 0` or `edge 1`.
-    have hdt := cd.deg_two ⟨1, by omega⟩ (show 0 < (1 : ℕ) by omega)
     have hcl : f = cd.edge ⟨0, by omega⟩ ∨ f = cd.edge ⟨1, by omega⟩ := by
-      rcases hxy1 with hx | hy
-      · subst hx
-        rcases hdt f y hG with h | h
-        · exact Or.inl (by simpa using h)
-        · exact Or.inr (by simpa using h)
-      · subst hy
-        rcases hdt f x hG.symm with h | h
-        · exact Or.inl (by simpa using h)
-        · exact Or.inr (by simpa using h)
+      rcases hxy1 with rfl | rfl
+      · exact hdt f y hG
+      · exact hdt f x hG.symm
     rcases hcl with rfl | rfl
     · -- `f = edge 0`: `{x, y} = {vtx 0, vtx 1}`; match the recorded `he0` orientation up to swap.
-      rcases hl0.eq_and_eq_or_eq_and_eq hG with ⟨hx, hy⟩ | ⟨hx, hy⟩
+      rcases hl0.symm.eq_and_eq_or_eq_and_eq hG with ⟨hx, hy⟩ | ⟨hx, hy⟩
       · subst hx; subst hy; rcases he0 with h | h
         · exact Or.inl h
         · exact Or.inr h
@@ -654,7 +638,7 @@ theorem PanelHingeFramework.case_III_bottom_relabel
 
 /-- **The restriction to a body with one edge of a form in the row space** (a step of
 `lem:case-III-candidate-dispatch-d3`; the span form of KT eq. (6.44), p. 691): let `e_c` join `a`
-and `c ≠ a` in `Fv` and be the only link of `Fv` at `a` (`hdeg2`, `hdeg2r`), and let `Fv` and `Fab`
+and `c ≠ a` in `Fv` and be the only link of `Fv` at `a` (`hdeg2`), and let `Fv` and `Fab`
 have the same block of rows at `e_c` (`hblock`). Then for `wGv` in the span of the rows of `Fv`, the
 restriction `wGv ∘ single a` lies in the block of rows of `Fab` at `e_c`.
 
@@ -670,7 +654,6 @@ theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows
     (hlink_ec : Fv.graph.IsLink e_c a c)
     (hblock : Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c)
     (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
-    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
     {wGv : Module.Dual K (α → ScrewSpace K k)}
     (hwGv : wGv ∈ Submodule.span K Fv.rigidityRows) :
     wGv.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) a) ∈ Fab.hingeRowBlock e_c := by
@@ -693,8 +676,8 @@ theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows
       rw [hau, hwc, hingeRow_comp_single_tail hac]
       exact hblock ▸ hfe ▸ hρ
     · by_cases haw : w = a
-      · -- w = a, u ≠ a: hdeg2r forces f = e_c; use links to get u = c
-        have hfe : f = e_c := by rw [haw] at hlink; exact hdeg2r f u hlink
+      · -- w = a, u ≠ a: hdeg2 forces f = e_c; use links to get u = c
+        have hfe : f = e_c := by rw [haw] at hlink; exact hdeg2 f u hlink.symm
         have huc : u = c := by
           rw [haw, hfe] at hlink
           -- hlink : IsLink e_c u a; hlink_ec : IsLink e_c a c → u = a ∧ a = c ∨ u = c ∧ a = a

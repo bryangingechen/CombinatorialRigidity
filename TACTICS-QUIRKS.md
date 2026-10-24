@@ -4242,7 +4242,8 @@ hcon`. The bare dotted form is fine once the constant already carries at least o
 application (e.g. a hypothesis `h := Set.two_lt_ncard_iff hs` and then `h.mp`) — the trap is
 specific to leaning on the `autoParam` default with no application in sight at all.
 
-**Worked case:** Phase 39 (PENCIL) leaf G4, same lemma as § 109.
+**Worked case:** Phase 39 (PENCIL) leaf G4, same lemma as § 109. Recurred with `.mpr` (RECONCILE
+round 3, task 38.18, `case_III_arm_realization_M3`'s `hV3`).
 
 ---
 

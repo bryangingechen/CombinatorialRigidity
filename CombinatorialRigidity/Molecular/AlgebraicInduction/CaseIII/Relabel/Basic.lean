@@ -464,7 +464,7 @@ one vertex after another. -/
 
 /-- **Moving the body `a` to `v` in a combination of rows** (a step of
 `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-eq666`): let `e_c` join `a` to `c` in
-`Fv`, where `c ≠ a` and `c ≠ v`, let `e_c` be the only link of `Fv` at `a` (`hdeg2`, `hdeg2r`), let
+`Fv`, where `c ≠ a` and `c ≠ v`, let `e_c` be the only link of `Fv` at `a` (`hdeg2`), let
 no link of `Fv` meet `v` (`hnov`), and let every link of `Fv` that does not meet `a` be a link of
 `Fva` whose block of rows in `Fva` contains that in `Fv` (`htrans`). Then for every `φ` in the span
 of the rows of `Fv`, the form `(funLeft τ).dualMap φ − hingeRow v c (φ ∘ single a)`, that is,
@@ -486,7 +486,6 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     (hca : c ≠ a) (hcv : c ≠ v)
     (hlink_ec : Fv.graph.IsLink e_c a c)
     (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
-    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
     (hnov : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v ∧ y ≠ v)
     (htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
       Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f)
@@ -540,8 +539,8 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
         hingeRow_comp_single_tail hca.symm, ← hingeRow_eq_dualMap, sub_self]
       exact Submodule.zero_mem _
     · by_cases hya : y = a
-      · -- y = a, x ≠ a: hdeg2r forces f = e_c, hence x = c.
-        have hfe : f = e_c := by rw [hya] at hlink; exact hdeg2r f x hlink
+      · -- y = a, x ≠ a: hdeg2 forces f = e_c, hence x = c.
+        have hfe : f = e_c := by rw [hya] at hlink; exact hdeg2 f x hlink.symm
         have hxc : x = c := by
           rw [hya, hfe] at hlink
           rcases hlink.eq_and_eq_or_eq_and_eq hlink_ec with ⟨h, -⟩ | ⟨h, -⟩
@@ -576,7 +575,7 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
 off the edges `v_{s+1} v_{s+2}` and `v_{s+2} v_{s+3}` (`hends'_off`), and let `ends` give each link
 of `G − v_{s+1}` its ends in some order (`hrec`). Then `Fv = ofNormals (G − v_{s+1}) ends q` and
 `Fva = ofNormals (G − v_{s+2}) ends' (q ∘ τ)`, for the transposition `τ` of `v_{s+2}` and `v_{s+1}`,
-satisfy the six hypotheses of `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` at
+satisfy the five hypotheses of `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` at
 `(v, a, c) = (v_{s+1}, v_{s+2}, v_{s+3})` and the edge `e_c = v_{s+2} v_{s+3}`. These are the
 hypotheses that `wstep_foldl_mem_span_rigidityRows` asks for at each step, and
 `shiftBodyListAsc_foldl_mem_span_rigidityRows` (`CaseIII/Relabel/Chain.lean`) takes them from here.
@@ -602,9 +601,6 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
         (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 3, by omega⟩) ∧
       (∀ f x, (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
           q).toBodyHinge.graph.IsLink f (cd.vtx ⟨s + 2, by omega⟩) x →
-          f = cd.edge ⟨s + 2, by omega⟩) ∧
-      (∀ f x, (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
-          q).toBodyHinge.graph.IsLink f x (cd.vtx ⟨s + 2, by omega⟩) →
           f = cd.edge ⟨s + 2, by omega⟩) ∧
       (∀ f x y, (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
           q).toBodyHinge.graph.IsLink f x y →
@@ -663,8 +659,6 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
       rw [hpred] at hGlink
       exact absurd (hG_pred.right_unique hGlink) (Ne.symm hxv)
     · exact hsucc
-  have hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c :=
-    fun f x hlink => hdeg2 f x hlink.symm
   -- No `(G − v)`-link touches `v` at either endpoint.
   have hnov : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v ∧ y ≠ v := by
     intro f x y hlink
@@ -710,7 +704,7 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
       rcases hrec f x y hlink with he | he <;> rw [he] at hr ⊢ <;>
         simp only [hqρ, Equiv.swap_apply_of_ne_of_ne hxa hxv,
           Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr
-  exact ⟨⟨hca, hcv⟩, hFv_link_ec, hdeg2, hdeg2r, hnov, htrans⟩
+  exact ⟨⟨hca, hcv⟩, hFv_link_ec, hdeg2, hnov, htrans⟩
 
 /-! ## The move along a chain
 
@@ -754,7 +748,6 @@ theorem BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
       (bodies[s].2.2 ≠ bodies[s].2.1 ∧ bodies[s].2.2 ≠ bodies[s].1) ∧
       (F s).graph.IsLink (ec s) bodies[s].2.1 bodies[s].2.2 ∧
       (∀ f x, (F s).graph.IsLink f bodies[s].2.1 x → f = ec s) ∧
-      (∀ f x, (F s).graph.IsLink f x bodies[s].2.1 → f = ec s) ∧
       (∀ f x y, (F s).graph.IsLink f x y → x ≠ bodies[s].1 ∧ y ≠ bodies[s].1) ∧
       (∀ f x y, (F s).graph.IsLink f x y → x ≠ bodies[s].2.1 → y ≠ bodies[s].2.1 →
         (F (s + 1)).graph.IsLink f x y ∧ (F s).hingeRowBlock f ≤ (F (s + 1)).hingeRowBlock f))
@@ -782,12 +775,12 @@ theorem BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
       have := hstep s hs'
       rwa [hidx] at this
     -- the last triple's move from `F rest.length` to `F (rest.length + 1)`.
-    obtain ⟨⟨hca, hcv⟩, hlink_ec, hdeg2, hdeg2r, hnov, htrans⟩ := hstep rest.length (by simp)
-    rw [hb] at hca hcv hlink_ec hdeg2 hdeg2r hnov htrans
+    obtain ⟨⟨hca, hcv⟩, hlink_ec, hdeg2, hnov, htrans⟩ := hstep rest.length (by simp)
+    rw [hb] at hca hcv hlink_ec hdeg2 hnov htrans
     have hlast := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
       (Fv := F rest.length) (Fva := F (rest.length + 1))
       (v := b.1) (a := b.2.1) (c := b.2.2) (e_c := ec rest.length)
-      hca hcv hlink_ec hdeg2 hdeg2r hnov htrans hinner
+      hca hcv hlink_ec hdeg2 hnov htrans hinner
     rw [show (rest ++ [b]).length = rest.length + 1 by simp]
     simpa [BodyHingeFramework.wstep_apply] using hlast
 

@@ -94,8 +94,11 @@ derivations called where they were repeated (`F-291`), no node restated; task 38
 `F-275`'s, `F-292`'s and `F-293`'s seven hypotheses in `CaseIII/`, and `F-326`'s `hends_eb`, which
 a `subst` had hidden, with `Graph.IsLink.ne_of_notMem` and `Graph.ChainData.splitOff_data_one`
 for steps written out there and `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` at two (`F-289`), no
-node restated.
-**Next concrete task:** round 3's task 38.18, `CaseIII/Relabel/` (then tasks 38.19–38.27 and the
+node restated; task 38.18 dropped `F-294`'s and `F-295`'s hypotheses and variables in
+`CaseIII/Relabel/` and a step's derivable conjunct, replaced the private
+`perp_panelSupportExtensor_swap` by `panelSupportExtensor_swap`, and called `splitOff_data_one` at
+three links, no node restated.
+**Next concrete task:** round 3's task 38.19, `Theorem55.lean` (then tasks 38.20–38.27 and the
 close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 

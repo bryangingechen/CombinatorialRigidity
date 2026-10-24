@@ -125,7 +125,7 @@ theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
   set Fbase := (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge with hFbase
   -- The terms at `edge i`, restricted to `vtx i`, sum to `−ρ₀`.
   have hcolval := cd.interior_group_acolumn_eq_neg_baseRedundancy h3 c ev uv vv rv hlink hcomb
-    rfl rfl hdeg1 (i : ℕ) h2i i.isLt
+    hdeg1 (i : ℕ) h2i i.isLt
   -- The `edge i`-group's `vtx i`-column lands in `Fbase.hingeRowBlock (edge i)`.
   have hmem := Fbase.edgeGroup_acolumn_mem_block (e := cd.edge ⟨(i : ℕ), by have := i.isLt; omega⟩)
     (p := cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩) c ev uv vv rv hrv
@@ -240,13 +240,8 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_baseWidening
           (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
             (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 := by
   obtain ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, hcombGv⟩ := hedgeGv
-  -- `edge 1` links `vtx 1` to `vtx 2` (the `link` field at index 1), so it is incident to `vtx 1`.
-  have hlink_one : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩)
-      (cd.vtx ⟨2, by omega⟩) := by
-    have h := cd.link ⟨1, by omega⟩
-    rwa [show (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) from
-        Fin.ext rfl,
-      show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl] at h
+  -- `edge 1` links `vtx 1` to `vtx 2` (`splitOff_data_one`), so it is incident to `vtx 1`.
+  obtain ⟨-, -, -, -, -, hlink_one, -⟩ := cd.splitOff_data_one (by omega)
   refine cd.interior_hρe₀_of_widening h3 i h2i cGv evGv uvGv vvGv rvGv
     (fun j => ((Graph.removeVertex_isLink.mp (hlinkGv j)).1)) ends hrvGv hends_i hcombGv.symm
     (fun j hj => ?_)

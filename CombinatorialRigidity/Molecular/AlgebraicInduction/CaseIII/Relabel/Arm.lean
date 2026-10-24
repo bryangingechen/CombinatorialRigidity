@@ -37,7 +37,7 @@ variable {K : Type*} [Field K]
 /-- **The third framework, then the rotation** (a step of `lem:case-III-candidate-dispatch-d3`; KT
 pp. 686–691): let `v`, `a`, `b` be distinct vertices of `G` and `c` a vertex other than `a` and `v`,
 with edges `e_a : va`, `e_b : vb` and `e_c : ac`, where the edges at `a` are `e_a` and `e_c`
-(`hcla`), and `|V(G)| ≥ 3`. Let `ends₀` give each link of `G − v` its ends in some order (`hrecGv`),
+(`hcla`). Let `ends₀` give each link of `G − v` its ends in some order (`hrecGv`),
 and let `ends₃` give `e_c`, `e_a` and `e_b` the ends `(a, c)`, `(a, v)` and `(v, b)` and agree with
 `ends₀` elsewhere. For the transposition `τ` of `a` and `v`, let `ends₃` give the links of `G − a`
 their ends (`hends_Gva`), with nonzero hinges in `ofNormals (G − a) ends₃ (q ∘ τ)` (`hne_Gva`). Let
@@ -78,7 +78,6 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
     (hne_Gva : ∀ e, (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2 →
       (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
         (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.supportExtensor e ≠ 0)
-    (hV3 : 3 ≤ V(G).ncard)
     {n''' : Fin (k + 2) → K}
     (hLn : LinearIndependent K ![(fun i => q (c, i)), n'''])
     (hgca : LinearIndependent K ![(fun i => q (c, i)), (fun i => q (a, i))])
@@ -123,14 +122,13 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
       · exact absurd h hva
       · exact absurd h.symm hxv
     · rfl
-  have hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c := fun f x hlink => hdeg2 f x hlink.symm
   -- `ρ` vanishes on `C(q(a), q(c))` by `acolumn_mem_hingeRowBlock_of_span_rigidityRows`: the
   -- restriction of `hingeRow a b ρ` to `a` is `ρ`, which lies in `Fv.hingeRowBlock e_c`, so `ρ`
   -- vanishes on `Fv.supportExtensor e_c = ±C(q(a), q(c))`.
   have hρ_ac : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (c, i))) = 0 := by
     have hcol :=
       BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows (Fab := Fv) (Fv := Fv)
-        (a := a) (c := c) (e_c := e_c) (Ne.symm hca) hFv_link_ec rfl hdeg2 hdeg2r hρGv
+        (a := a) (c := c) (e_c := e_c) (Ne.symm hca) hFv_link_ec rfl hdeg2 hρGv
     rw [BodyHingeFramework.hingeRow_comp_single_tail hab] at hcol
     have hperp := (Fv.mem_hingeRowBlock_iff e_c ρ).1 hcol
     rw [hFv, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
@@ -147,6 +145,9 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
   have hv_mem : v ∈ V(G) := hG_ea.left_mem
   have hcard_Gva : V(G.removeVertex a).ncard = V(G).ncard - 1 := by
     rw [Graph.vertexSet_removeVertex, Set.ncard_sdiff_singleton_of_mem ha_mem]
+  -- `|V(G)| ≥ 3`, as `v`, `a` and `b` are distinct vertices of `G`.
+  have hV3 : 3 ≤ V(G).ncard := (Set.two_lt_ncard_iff).mpr
+    ⟨v, a, b, hv_mem, ha_mem, hG_eb.right_mem, hva, hvb, hab⟩
   refine PanelHingeFramework.case_III_arm_realization (k := k) G (G.removeVertex a) ends₃
     (q := qρ) (v := a) (a := c) (b := v) (e_a := e_c) (e_b := e_a) (n' := n''')
     ?hvVc ?haVc ?hbVc hG_ec hG_ea.symm hends₃_ec hends₃_ea heac.symm
@@ -224,7 +225,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
             Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr
     have hw9a := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
       (Fv := Fv) (Fva := Fva) (v := v) (a := a) (c := c) (e_c := e_c)
-      hca hcv hFv_link_ec hdeg2 hdeg2r
+      hca hcv hFv_link_ec hdeg2
       (fun f x y hlink => by
         rw [hFv, PanelHingeFramework.toBodyHinge_graph,
           PanelHingeFramework.ofNormals_graph] at hlink

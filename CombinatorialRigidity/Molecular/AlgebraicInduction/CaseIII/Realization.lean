@@ -666,11 +666,10 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
       intro e hlink
       refine PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hGPva ?_
       rw [PanelHingeFramework.ofNormals_ends]; exact hlink.ne
-    have hV3 : 3 ≤ V(G).ncard := by omega
     refine PanelHingeFramework.case_III_arm_realization_M3 (k := 2) G Q.ends ends₃ (q := q)
       (v := v) (a := a) (b := b) (c := c) (e_a := e_a) (e_b := e_b) (e_c := e_c) (n''' := n')
       hav.symm hba.symm hbv.symm hca hcv hlea hleb hlec heac hcla hrecGv
-      hends₃_ec hends₃_ea hends₃_eb hends₃_off hends_Gva hne_Gva hV3 hpair (hgp_seed c a hca)
+      hends₃_ec hends₃_ea hends₃_eb hends₃_off hends_Gva hne_Gva hpair (hgp_seed c a hca)
       hgate hρ0e₀ hρ0Gv (ιb := _) (w := w) ?_ hw ?_ hdef
     · have hGabcard : V(Gab).ncard = V(G).ncard - 1 := by
         rw [hGab, Graph.vertexSet_splitOff, Set.ncard_sdiff_singleton_of_mem hvG]
