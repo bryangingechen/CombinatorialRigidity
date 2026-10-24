@@ -903,15 +903,13 @@ theorem _root_.Graph.deficiency_induce_union_range_of_bridgePath [Finite α] [Fi
 `lem:block-rank-cut`, `BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton`,
 at each step. -/
 theorem BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath
-    {d : ℕ} [Finite α] [Finite β] {G : Graph α β} (ext : β → ScrewSpace K d)
+    {d : ℕ} [Finite α] {G : Graph α β} (ext : β → ScrewSpace K d)
     (hext : ∀ e u v, G.IsLink e u v → ext e ≠ 0) {V₁ V₂ : Set α}
     (hdisj : Disjoint V₁ V₂) {k : ℕ} {x : Fin k → α} (hxV₁ : ∀ i, x i ∉ V₁)
     (hxV₂ : ∀ i, x i ∉ V₂) (hinj : Function.Injective x) {a b : α} (ha : a ∈ V₁) (hb : b ∈ V₂)
     {e : Fin (k + 1) → β}
     (hpath : ∀ i : Fin (k + 1),
-      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
-    (hsep : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ e i) →
-      (u ∈ V₁ ∧ v ∈ V₁) ∨ (u ∈ V₂ ∧ v ∈ V₂)) :
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) :
     Module.finrank K (Submodule.span K
         (⟨G.induce V₁, ext⟩ : BodyHingeFramework K d α β).rigidityRows) + (screwDim d - 1) * k
       ≤ Module.finrank K (Submodule.span K
@@ -939,11 +937,8 @@ theorem BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_o
       have hw₀ : x ⟨j, hjk⟩ ∉ V₁ ∪ x '' {i | i.val < j} := by
         rw [← hxj, hmem _ hjk.le]
         simp
-      have hcut := Graph.cutEdges_union_image_of_bridgePath hdisj hxV₁ hxV₂ hinj ha hb hpath hsep
-        hjk.le
       have h1 := BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_singleton ext hl
-        hu₀ hw₀ (fun f u hf hu => Graph.eq_cutEdge_of_isLink_crossing hl hu₀ hw₀
-          (by rw [hcut, Set.ncard_singleton]) hf hu hw₀) hext
+        hu₀ hw₀ hext
       rw [union_image_val_lt_succ V₁ x hjk]
       have := ih hjk.le
       rw [Nat.mul_succ]
@@ -1075,19 +1070,10 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
     fun f u w hf => hqmain.1.supportExtensor_ne_zero hends z hf
   -- the ranks: at least `5` for the last bridge, and for each path body
   have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F (V₁ := S)
-    (C := {e (Fin.last k)}) (by simp) hext
-    (fun f u w hf hfC => by
-      by_cases hu : u ∈ S <;> by_cases hw : w ∈ S
-      · exact Or.inl ⟨hu, hw⟩
-      · have hfS : f ∈ G.cutEdges S := ⟨hf.edge_mem, u, w, hf, hu, hw⟩
-        exact absurd (hcut ▸ hfS) hfC
-      · have hfS : f ∈ G.cutEdges S := ⟨hf.edge_mem, w, u, hf.symm, hw, hu⟩
-        exact absurd (hcut ▸ hfS) hfC
-      · exact Or.inr ⟨hu, hw⟩)
-    (fun f hf => by rw [← hcut] at hf; exact hf.2)
+    (C := {e (Fin.last k)}) (by simp) hext (fun f hf => by rw [← hcut] at hf; exact hf.2)
   have hpathrank :=
     BodyHingeFramework.add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath
-      F.supportExtensor hext hdisj hxV₁ hxV₂ hinj ha hb hpath hsep
+      F.supportExtensor hext hdisj hxV₁ hxV₂ hinj ha hb hpath
   -- the deficiencies: `1` for the last bridge, and for each path body
   have hdefS := Graph.deficiency_induce_union_range_of_bridgePath (n := 3) hdisj
     hxV₁ hxV₂ hinj ha hb hpath hsep

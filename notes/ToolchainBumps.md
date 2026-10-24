@@ -203,11 +203,12 @@ the first run):
   `@[nolint unusedArguments]` with a comment naming the bridge. On v4.36.0-rc1
   the linter counts a bridge `have` as a use of `Finite X` even when nothing
   after it uses the `have` (RECONCILE round 3: copies of the bridge sites
-  without the attribute lint clean), so the bridge `nolint`s go. Four
+  without the attribute lint clean), so the bridge `nolint`s go. Two
   `@[nolint unusedArguments]` sites are left (`grep -rn "nolint
-  unusedArguments"`): the two `IsInfinitesimallyRigid` contract guards
-  (`Framework.lean`, `BodyBar/Framework.lean`) and two bridge sites in
-  `RigidityMatrix/Bricks.lean`, whose `[Finite β]` is unused. Conversely, a
+  unusedArguments"`), the two `IsInfinitesimallyRigid` contract guards
+  (`Framework.lean`, `BodyBar/Framework.lean`); the two bridge sites of
+  `RigidityMatrix/Bricks.lean` went with their unused `[Finite β]` (RECONCILE
+  round 3, task 38.15). Conversely, a
   binder used only by a bridge whose `Fintype` nothing uses is now invisible
   to the linter; find one by dropping it and rebuilding.
 - **Work from the build log's warning *taxonomy*, not from a queue.** rc1's

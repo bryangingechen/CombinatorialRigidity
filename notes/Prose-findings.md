@@ -5567,7 +5567,7 @@ declaration's name as its header writes it:
   of the third without `[Finite α]` as well fails (`scratch/reconcile-lean/Hyps-t32.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 32.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.15). Task 38's suppression screen
+  *Disposition:* done (task 38.15). Task 38's suppression screen
   agrees: a copy of the file without the two `@[nolint unusedArguments]` lints clean, and one
   without the two `[Finite β]` and their `have : Fintype β` elaborates, the linter then reporting
   the `[Finite β]` of `add_le_finrank_span_rigidityRows_induce_union_singleton`
@@ -5582,7 +5582,12 @@ declaration's name as its header writes it:
   `case_I_realization_nonsimple_gen`, `hasPencilRealization_of_not_simple`); `lem:block-rank-cut`
   restated (the crossing edges, "exactly one edge"); `notes/ToolchainBumps.md`'s count of `nolint`
   sites. Left: `hC_ext`, `hext` at every edge of `C`, and `hoverlap`'s equality, which the nodes
-  state and every caller holds (a change of form only).
+  state and every caller holds (a change of form only). Round 3: done so (task 38.15); with `honly`
+  gone, `add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`'s `hsep` fed only the
+  local `hcut` of its discharge, and went with it and its `[Finite β]`, as did the `[Finite β]` of
+  `le_finrank_span_rigidityRows_path` and `finrank_span_rigidityRows_ear_eq`, which only passed it
+  on; `lem:block-rank-path`'s proof edge to `def:cut-edges-2ec` (`F-261`'s) is now unbacked, its pin
+  no longer reaching `Graph.cutEdges`, and stays, the proof reading the cut.
 - **F-287** · L · hypotheses of `Molecular/Meet.lean` that the statements need not take, and a
   lemma's place. `meet`'s `ha : a ≤ k + 2` and `hb : b ≤ k + 2`, which `hab : a + b ≤ k + 2` gives
   (`def:meet` states `a + b ≤ d + 1` alone). `extensor_join_proportional_complementIso_meet`'s

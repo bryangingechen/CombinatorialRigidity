@@ -245,6 +245,17 @@ to be re-derived by re-reading entries later.
 - **Lifted to:** TACTICS-QUIRKS § 118.
 - **Status:** idiom.
 
+### [idiom] Dropping a `[Finite β]` lets an infinite set meet a `Set.ncard` bound
+- **Where it bit:** RECONCILE round 3, task 38.15 (`F-286`): `le_finrank_span_rigidityRows_of_cut`
+  (`RigidityMatrix/Bricks.lean`), whose `hC_ncard : C.ncard ≤ 1` meant "at most one edge" under
+  `[Finite β]`; without it an infinite `C` has `C.ncard = 0`, and the docstring's "a set of at most
+  one edge" overstated the hypothesis. The theorem stays true (its conclusion counts `C.ncard`), so
+  neither the build nor `lake lint` sees it.
+- **Friction:** none in the build; a docstring read.
+- **Proposed fix:** after dropping a finiteness instance, re-read each `ncard` bound on that type
+  and its docstring: say `C.ncard ≤ 1`, or keep a `C.Finite` where the count must be the size.
+- **Status:** idiom.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

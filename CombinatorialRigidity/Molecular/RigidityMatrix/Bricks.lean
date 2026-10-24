@@ -256,26 +256,21 @@ private lemma flowSum_mem_span_induce_V₂_eq_zero [Fintype α]
     rw [map_smul, hx, smul_zero]
 
 /-- **Rank addition at a cut edge** (`lem:block-rank-cut`; from the proof of KT Lemma 6.1, p. 672):
-let `V₁` be a set of bodies, `V₂ = V(G) ∖ V₁`, and `C` a set of at most one edge, each edge of `C`
-linking a body of `V₁` to one outside `V₁` (`hcut_mem`), and let the supporting extensor be nonzero
-at every link (`hC_ext`). Then, at the hinges of `F`,
+let `V₁` be a set of bodies, `V₂ = V(G) ∖ V₁`, and `C` a set of edges with `C.ncard ≤ 1`, each edge
+of `C` linking a body of `V₁` to one outside `V₁` (`hcut_mem`), and let the supporting extensor be
+nonzero at every link (`hC_ext`). Then, at the hinges of `F`,
 
   `rank R(G[V₁]) + (D − 1)·|C| + rank R(G[V₂]) ≤ rank R(G)`,
 
 the ranks being the dimensions of the row spaces. The row spaces of `G[V₁]` and of `G[V₂]` meet in
 `0` (`span_rigidityRows_induce_inf_eq_bot`); the rows of the edge of `C` span a space of dimension
 `D − 1` (`finrank_hingeRowBlock`, and `hingeRow u v` is injective), which meets their sum in `0`
-(`flowSum`); and the dimensions add (`Submodule.finrank_sup_of_inf_eq_bot`). The proof does not use
-`_hE₁`, that every other link lies inside `V₁` or outside it: further links only add rows. -/
--- `[Finite β]` is used only by the proof's `have : Fintype β`, which nothing after it uses; the
--- theorem holds without it.
-@[nolint unusedArguments]
-theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
+(`flowSum`); and the dimensions add (`Submodule.finrank_sup_of_inf_eq_bot`). `C` need not hold every
+link from `V₁` to the rest: further links only add rows. -/
+theorem le_finrank_span_rigidityRows_of_cut [Finite α]
     (F : BodyHingeFramework K k α β) {V₁ : Set α} {C : Set β}
     (hC_ncard : C.ncard ≤ 1)
     (hC_ext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
-    (_hE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ C →
-      u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁)
     (hcut_mem : ∀ e ∈ C, ∃ u v, F.graph.IsLink e u v ∧ u ∈ V₁ ∧ v ∉ V₁) :
     Module.finrank K (Submodule.span K
         (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows) +
@@ -286,7 +281,6 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
     Module.finrank K (Submodule.span K F.rigidityRows) := by
   classical
   have : Fintype α := Fintype.ofFinite α
-  have : Fintype β := Fintype.ofFinite β
   set F₁ : BodyHingeFramework K k α β := ⟨F.graph.induce V₁, F.supportExtensor⟩
   set F₂ : BodyHingeFramework K k α β := ⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩
   set S₁ := Submodule.span K F₁.rigidityRows
@@ -478,17 +472,16 @@ theorem finrank_span_rigidityRows_le_add_of_links_subset {k : ℕ} [Finite α]
     _ ≤ Module.finrank K ↥Ss + (screwDim k - 1) := Nat.add_le_add_left hSc _
 
 /-- **A body joined by one edge adds at least `D − 1` to the rank** (`lem:block-rank-cut`, its
-second claim): if `e₀` links `u₀ ∈ V₁` to `w₀ ∉ V₁`, it is the only link from a body of `V₁` to
-`w₀`, and every supporting extensor at a link of `G` is nonzero, then at the same hinges
-`rank R(G[V₁]) + (D − 1) ≤ rank R(G[V₁ ∪ {w₀}])`. It is `le_finrank_span_rigidityRows_of_cut` in
-`G[V₁ ∪ {w₀}]` at `V₁`, whose only crossing edge is `e₀`: the side `V₁` induces `G[V₁]`, and the
-rank of the side `{w₀}` is dropped. `finrank_span_rigidityRows_le_add_of_links_subset` bounds the
-rank the other way, and `Graph.deficiency_induce_union_singleton`,
-`def(G[V₁ ∪ {w₀}]) = def(G[V₁]) + 1`, is the counterpart for the deficiency. -/
-theorem add_le_finrank_span_rigidityRows_induce_union_singleton [Finite α] [Finite β]
+second claim): if `e₀` links `u₀ ∈ V₁` to `w₀ ∉ V₁` and every supporting extensor at a link of
+`G` is nonzero, then at the same hinges `rank R(G[V₁]) + (D − 1) ≤ rank R(G[V₁ ∪ {w₀}])`. It is
+`le_finrank_span_rigidityRows_of_cut` in `G[V₁ ∪ {w₀}]` at `V₁` with `C = {e₀}`: the side `V₁`
+induces `G[V₁]`, and the rank of the side `{w₀}` is dropped.
+`finrank_span_rigidityRows_le_add_of_links_subset` bounds the rank the other way, and
+`Graph.deficiency_induce_union_singleton`, `def(G[V₁ ∪ {w₀}]) = def(G[V₁]) + 1`, is the counterpart
+for the deficiency. -/
+theorem add_le_finrank_span_rigidityRows_induce_union_singleton [Finite α]
     {G : Graph α β} (ext : β → ScrewSpace K k) {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
-    (honly : ∀ e u, G.IsLink e u w₀ → u ∈ V₁ → e = e₀)
     (hext : ∀ e u v, G.IsLink e u v → ext e ≠ 0) :
     Module.finrank K (Submodule.span K
         (⟨G.induce V₁, ext⟩ : BodyHingeFramework K k α β).rigidityRows) + (screwDim k - 1)
@@ -496,7 +489,7 @@ theorem add_le_finrank_span_rigidityRows_induce_union_singleton [Finite α] [Fin
         (⟨G.induce (V₁ ∪ {w₀}), ext⟩ : BodyHingeFramework K k α β).rigidityRows) := by
   have hbrick := le_finrank_span_rigidityRows_of_cut
     (⟨G.induce (V₁ ∪ {w₀}), ext⟩ : BodyHingeFramework K k α β) (V₁ := V₁) (C := {e₀})
-    (by simp) (fun e u v hl => hext e u v hl.1) ?_ ?_
+    (by simp) (fun e u v hl => hext e u v hl.1) ?_
   · have hind : (G.induce (V₁ ∪ {w₀})).induce V₁ = G.induce V₁ :=
       Graph.ext rfl fun e x y => by
         simp only [Graph.induce_isLink]
@@ -505,15 +498,6 @@ theorem add_le_finrank_span_rigidityRows_induce_union_singleton [Finite α] [Fin
     dsimp only at hbrick
     rw [hind, Set.ncard_singleton, Nat.mul_one] at hbrick
     omega
-  · rintro e u v ⟨hl, hu, hv⟩ he
-    have hne : e ≠ e₀ := he
-    by_cases hu₁ : u ∈ V₁ <;> by_cases hv₁ : v ∈ V₁
-    · exact Or.inl ⟨hu₁, hv₁⟩
-    · obtain rfl : v = w₀ := hv.resolve_left hv₁
-      exact absurd (honly e u hl hu₁) hne
-    · obtain rfl : u = w₀ := hu.resolve_left hu₁
-      exact absurd (honly e v hl.symm hv₁) hne
-    · exact Or.inr ⟨hu₁, hv₁⟩
   · rintro e rfl
     exact ⟨u₀, w₀, ⟨hl₀, Or.inl hu₀, Or.inr rfl⟩, hu₀, hw₀⟩
 
@@ -535,10 +519,7 @@ By rank-nullity for `D` on `R`, `dim R = dim D(R) + dim (R ⊓ ker D)`; the firs
 the second term below by `dim R_H`, and the other two bound the first below by `dim R_c`. In Case I,
 `F` realizes `G`, `FH` is its restriction to a rigid subgraph `H`, `Fc` realizes the contraction
 `G/E(H)`, and `D` deletes the columns of `V(H)` (`lem:extProj-preserves-rank-of-inter`). -/
--- `[Finite β]` is used only by the proof's `have : Fintype β`, which nothing after it uses; the
--- theorem holds without it.
-@[nolint unusedArguments]
-theorem le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
+theorem le_finrank_span_rigidityRows_of_splice [Finite α]
     (F FH Fc : BodyHingeFramework K k α β)
     (D : Module.Dual K (α → ScrewSpace K k) →ₗ[K] Module.Dual K (α → ScrewSpace K k))
     (hFH_le : Submodule.span K FH.rigidityRows ≤ Submodule.span K F.rigidityRows)
@@ -551,7 +532,6 @@ theorem le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
     Module.finrank K ↥(Submodule.span K Fc.rigidityRows) ≤
     Module.finrank K ↥(Submodule.span K F.rigidityRows) := by
   have : Fintype α := Fintype.ofFinite α
-  have : Fintype β := Fintype.ofFinite β
   have : FiniteDimensional K (Module.Dual K (α → ScrewSpace K k)) := inferInstance
   set SH := Submodule.span K FH.rigidityRows with hSH_def
   set Sc := Submodule.span K Fc.rigidityRows with hSc_def

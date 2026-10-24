@@ -1067,22 +1067,8 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
     (hlb₂ : screwDim k * ((V₂.ncard : ℤ) - 1) - c₂ ≤ (Module.finrank K S₂ : ℤ)) :
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
-  -- An edge of `G` that does not cross the cut has both ends on one side.
-  have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
-      u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
-    intro e u v hl hnotcut
-    simp only [Graph.cutEdges, not_and, Set.mem_ofPred_eq] at hnotcut
-    rw [hFgraph] at hl
-    by_cases hu₁ : u ∈ V₁
-    · left; refine ⟨hu₁, ?_⟩
-      by_contra hv₁
-      exact (hnotcut hl.edge_mem) ⟨u, v, hl, hu₁, hv₁⟩
-    · right; refine ⟨hu₁, ?_⟩
-      by_contra hv₁
-      exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
   -- Lower bound: `le_finrank_span_rigidityRows_of_cut`, the side spans rewritten to `S₁`, `S₂`.
-  have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext
-    (fun e u v hl he => hFE₁ e u v hl he) hFcut
+  have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext hFcut
   rw [hFgraph, ← hV₂, hF₁span, hF₂span] at hbrick
   -- Upper bound: `finrank_span_rigidityRows_add_deficiency_le`.
   have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext

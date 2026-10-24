@@ -197,7 +197,7 @@ theorem relScrews_path_le_span_range (P : Graph α β) (C : β → ScrewSpace K 
 `{a} ∪ range x` hang from `a` one at a time
 (`add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath`), each adding `D − 1`, and `b`
 hangs from them by the last edge (`le_finrank_span_rigidityRows_of_cut`), adding `D − 1` more. -/
-theorem le_finrank_span_rigidityRows_path [Finite α] [Finite β] (P : Graph α β)
+theorem le_finrank_span_rigidityRows_path [Finite α] (P : Graph α β)
     (C : β → ScrewSpace K d) {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
     (hinj : Function.Injective x) (hax : ∀ i, x i ≠ a) (hbx : ∀ i, x i ≠ b) (hab : a ≠ b)
     (hpath : ∀ i : Fin (k + 1),
@@ -213,7 +213,6 @@ theorem le_finrank_span_rigidityRows_path [Finite α] [Finite β] (P : Graph α 
   have hdisj : Disjoint ({a} : Set α) {b} := Set.disjoint_singleton.mpr hab
   have htele := add_le_finrank_span_rigidityRows_induce_union_range_of_bridgePath (G := P) C hext
     hdisj (fun i h => hax i h) (fun i h => hbx i h) hinj rfl rfl hpath
-    (fun f u w hf hfe => absurd (honly f u w hf) (fun ⟨i, hi⟩ => hfe i hi))
   set S : Set α := {a} ∪ Set.range x with hSdef
   have hmem : ∀ m : Fin (k + 2), pathVertex a x b m ∈ S ↔ m.val ≤ k := by
     intro m
@@ -222,16 +221,6 @@ theorem le_finrank_span_rigidityRows_path [Finite α] [Finite β] (P : Graph α 
     rwa [image_val_lt_eq_range] at this
   have hbrick := le_finrank_span_rigidityRows_of_cut (⟨P, C⟩ : BodyHingeFramework K d α β)
     (V₁ := S) (C := {e (Fin.last k)}) (by simp) (fun f u w hf => hext f u w hf)
-    (by
-      intro f u w hf hfC
-      obtain ⟨j, rfl⟩ := honly f u w hf
-      have hj : j ≠ Fin.last k := fun h => hfC (by rw [h]; rfl)
-      have hjk : j.val < k := by
-        have := Fin.val_lt_last hj
-        simpa using this
-      rcases hf.eq_and_eq_or_eq_and_eq (hpath j) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-      · left; rw [hmem, hmem]; simp only [Fin.val_castSucc, Fin.val_succ]; omega
-      · left; rw [hmem, hmem]; simp only [Fin.val_castSucc, Fin.val_succ]; omega)
     (by
       rintro f rfl
       refine ⟨_, _, hpath (Fin.last k), ?_, ?_⟩
@@ -299,7 +288,7 @@ whether or not `a` and `b` are adjacent. The 2-cut identity for link-partitionin
 (`finrank_span_rigidityRows_twoCut_eq_of_isLink`, `lem:block-rank-two-cut`) glues `G[V₁]` to the
 path itself, whose rank and relative screws are the path lemmas above; the path is not the subgraph
 induced on its bodies when `a` and `b` are adjacent, and the identity needs no non-adjacency. -/
-theorem finrank_span_rigidityRows_ear_eq [Finite α] [Finite β] (F : BodyHingeFramework K d α β)
+theorem finrank_span_rigidityRows_ear_eq [Finite α] (F : BodyHingeFramework K d α β)
     {V₁ : Set α} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
     (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
     (hab : a ≠ b)

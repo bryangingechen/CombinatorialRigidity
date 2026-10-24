@@ -528,16 +528,16 @@ subgraph of $G$ induced on $V_1$.
   \uses{def:rigidity-matrix, def:hinge-row-block}
   Let $(G,p)$ be a body-hinge framework with $C(p(e)) \neq 0$ at every
   edge $e$. Let $V_1$ be a nonempty proper subset of $V(G)$, let
-  $V_2 = V(G) \setminus V_1$, and let $C$ be the set of edges of $G$ with
-  one end in $V_1$ and the other in $V_2$. If $|C| \le 1$, then
+  $V_2 = V(G) \setminus V_1$, and let $C$ be a set of at most one edge
+  of $G$, each with one end in $V_1$ and the other in $V_2$. Then
   \[
     \operatorname{rank} R(G[V_1],p) + (D-1)\,|C|
     + \operatorname{rank} R(G[V_2],p)
     \;\le\;
     \operatorname{rank} R(G,p).
   \]
-  In particular, if exactly one edge of $G$ joins $V_1$ to a body
-  $w \in V_2$, then
+  In particular, if an edge of $G$ joins $V_1$ to a body $w \in V_2$,
+  then
   \[
     \operatorname{rank} R(G[V_1],p) + D - 1 \;\le\;
     \operatorname{rank} R(G[V_1 \cup \{w\}],p).
@@ -574,10 +574,9 @@ subgraph of $G$ induced on $V_1$.
   $\operatorname{rank} R(G[V_1],p) + (D - 1) + \operatorname{rank}
   R(G[V_2],p)$.
 
-  For the particular case, apply the bound to $G[V_1 \cup \{w\}]$ and
-  $V_1$. The given edge is the only edge between the two sides, the first
-  side is $G[V_1]$, and the rank of the second side, the single body $w$,
-  is at least $0$.
+  For the particular case, apply the bound to $G[V_1 \cup \{w\}]$,
+  $V_1$ and the given edge. The first side is $G[V_1]$, and the rank of
+  the second side, the single body $w$, is at least $0$.
 \end{proof}
 
 Katoh and Tanigawa prove this bound for a cut edge $uv$ in the proof of
