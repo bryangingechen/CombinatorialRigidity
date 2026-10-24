@@ -1238,7 +1238,10 @@ stable code: **CARRIER** (41a, open: the field, its API first and the switch las
 22l; the carrier is referenced 648 times by 167 declarations in 32 files), **RESTATE** (S1's and
 S2's main results, G6's own row for the generic panel theorem, non-vacuity witnesses at minimal
 graphs, S18), **MULTIGRAPH** (M1, Jackson–Jordán 2010's Theorem 6.1 for multigraphs) and
-**UNSTATED** (the claims no declaration states). Detail → `notes/Phase41a.md` +
+**UNSTATED** (the claims no declaration states). Before 41a's spike, the PI scheduled a build-time
+detour (2026-10-24): each commit's full build is ~5 min and limited by one long import chain
+(`notes/PERFORMANCE.md` *Build critical path*), so 41a first trims the molecular chain's imports
+and recons its conversion to Lean's module system. Detail → `notes/Phase41a.md` +
 `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)

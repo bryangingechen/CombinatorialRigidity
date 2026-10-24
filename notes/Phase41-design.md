@@ -2,7 +2,8 @@
 
 **Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) is open, work log
 `notes/Phase41a.md`; RESTATE, MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
-they open. Next concrete task: 41a's second commit, the link predicate (`notes/Phase41a.md`).
+they open. Next concrete task: the build-time detour the PI scheduled before 41a's spike, item P1
+(`notes/Phase41a.md`).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report

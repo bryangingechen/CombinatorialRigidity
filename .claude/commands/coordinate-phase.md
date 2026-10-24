@@ -299,11 +299,13 @@ land*).
   and `--since`/`--until` at the commits' `git log --format=%cI` times split
   both by commit; per landed commit, they compare with the same phase's
   single-commit dispatches (Phase 41a item 1: 37 messages, 146k written,
-  3.96M read, 31k output). Log one `notes/dispatch-log.md` row per arc (a
+  3.96M read, 31k output, 9.5 min; item 3a: 41 messages, 256k written,
+  4.45M read, 24k output, 10.3 min). Log one `notes/dispatch-log.md` row per arc (a
   playbook deviation while the trial runs), with the verification catches,
   whether the cut-off fired, and the time: the builder's minutes per
-  commit, and the coordinator's gap from a return to the next dispatch. After about three arcs the PI decides:
-  promote, adjust or drop.
+  commit, and the coordinator's gap from a return to the next dispatch.
+  After about three arcs the PI decides: promote, adjust or drop. (After
+  arc 1, the PI kept these rules unchanged for arcs 2 and 3, 2026-10-24.)
 
 ### Verification tiers (what the coordinator re-runs itself)
 
