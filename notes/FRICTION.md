@@ -862,7 +862,7 @@ to be re-derived by re-reading entries later.
 - **Friction (two distinct traps):**
   1. **Index-proof scope.** In a *field type* `(hcand : ∀ (cd : G.ChainData n), …)`, the `⟨2, by omega⟩` in the body needs `cd.d ≥ 2`, but a plain `cd.hd : 1 ≤ cd.d` only covers index 1, and there is no `hd2` in scope. In a flat `∃ cd : G.ChainData n, 2 ≤ cd.d ∧ (…splitOff (cd.vtx ⟨2, by omega⟩)…)`, the `by omega` in the *second* conjunct **cannot see** the first conjunct's `2 ≤ cd.d` — they are sibling `∧` args, so `omega` fails.
   2. **OfNat ≠ `Fin.mk`.** The design's literal `cd.vtx 1` (OfNat, elaborates via `Nat.mod`) is **not** defeq to the router's `cd.vtx ⟨1, by omega⟩` for a *general* `cd.d`; feeding the literal-typed `hdef` to a lemma expecting the `⟨1,_⟩`-typed one is a hard `Application type mismatch` (kernel-confirmed in the 23g spike). `(1 : Fin (cd.d+1))` only reduces to `⟨1,_⟩` once `cd.d ≥ 1` is known.
-- **Resolution:** put the index-validity witness *before* the split-off references. For a Pi field, add an explicit `(hd2 : 2 ≤ cd.d)` binder ahead of the `→`-chain (matches the landed router `chainData_dispatch`'s own signature); then `⟨2, by omega⟩` sees `hd2`. For an `∃`-bundle, nest it: `∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d), P` — inside `P` the `by omega` sees `hd2`. Either way state the index as `⟨i, by omega⟩` (proof-irrelevant `Fin.mk`), never the OfNat literal, so it matches the router. **This remains the primary convention** — but when a mixed form DOES meet (e.g. a mathlib-side API that hands back an `OfNat` literal, or a `simp` normal form that rewrites `⟨1,_⟩`/`⟨2,_⟩` back to the literal), the mechanical escape is the bridge lemmas `Fin.ofNat_eq_mk`/`Fin.two_eq_mk_of_lt` (§ [Mirrored], `CombinatorialRigidity/Mathlib/Data/Fin/Basic.lean`) — a one-`rw` reconciliation instead of a fresh defeq investigation.
+- **Resolution:** put the index-validity witness *before* the split-off references. For a Pi field, add an explicit `(hd2 : 2 ≤ cd.d)` binder ahead of the `→`-chain (matches the landed router `chainData_dispatch`'s own signature); then `⟨2, by omega⟩` sees `hd2`. For an `∃`-bundle, nest it: `∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d), P` — inside `P` the `by omega` sees `hd2`. Either way state the index as `⟨i, by omega⟩` (proof-irrelevant `Fin.mk`), never the OfNat literal, so it matches the router. **This remains the primary convention** — but when a mixed form DOES meet (e.g. a mathlib-side API that hands back an `OfNat` literal, or a `simp` normal form that rewrites `⟨1,_⟩`/`⟨2,_⟩` back to the literal), the mechanical escape was the bridge lemmas `Fin.ofNat_eq_mk`/`Fin.two_eq_mk_of_lt` (§ [Mirrored]; since deleted with their mirror file, unused: their proof, `Fin.ext` + `Fin.val_ofNat` + `Nat.mod_eq_of_lt`, is in that entry) — a one-`rw` reconciliation instead of a fresh defeq investigation.
 - **Sibling — `set cd := … with hcd` blocks the `cd.vtx ⟨1,_⟩ → v` defeq while the goal is still `∃ cd, …`:** provide the existential witness *first* (`refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩`), THEN `rw`/`show` the split-off swap per goal; a pre-`refine` `rw [hsplit_eq]` fails "did not find pattern" because it targets the bound `∃ cd`, not your local `cd`. With `cd` a concrete adapter value, `splitOff (cd.vtx ⟨1,_⟩) … = splitOff v b a e₀` holds by defeq (`vtx := ![b,v,a,c]`), so `splitOff_swap_ab G v b a e₀` (since deleted) closed the bridge directly.
 - **Recurrence (avoided proactively, zero iterations):** the E1 `CycleData.link` field (`Operations.lean`, Phase 23g) — the cyclic successor is `vtx (i + ⟨1, by omega⟩)` (mod-`m` `Fin` add; the earlier `hm : 3 ≤ m` field is in scope for the `by omega`), NOT `vtx (i + 1)`: the OfNat `(1 : Fin m)` needs `NeZero m`, unavailable in a structure-field type.
 - **Status:** idiom (a `ChainData`-indexing / defeq-fragile-zone member of the § 58/61/63 family).
@@ -2210,8 +2210,8 @@ to be re-derived by re-reading entries later.
 ### ~~[open] No `LinearIndepOn` "row-restriction transports LI through dual" helper~~
 
 Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
-`LinearIndepOn.dualMap_of_surjective` — see the corresponding entry in
-[Mirrored](#mirrored) below.
+`LinearIndepOn.dualMap_of_surjective` (the second since deleted, unused) — see the
+corresponding entry in [Mirrored](#mirrored) below.
 
 ### [open] "Open + generic via continuous perturbation" pattern recurs across non-collinear / affinely-spanning placements
 
@@ -3434,7 +3434,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
   the `Dual/Basis.lean` mirror); the consumer in Meet.lean closes `⬝ᵥ`-form incidence by `exact`
   (definitional `⬝ᵥ = ∑ i, x i * y i`).
 - **Mirror file:** `Mathlib/LinearAlgebra/Dual/Basis.lean` (alongside the sibling
-  `Pi.basisFun_dualBasis`).
+  `LinearMap.range_dualMap_eq_span_image_dualBasis`; `Pi.basisFun_dualBasis`, since deleted).
 
 ### [mirrored] `EuclideanSpace.inner_eq_basisFun_toDual` + `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` — the L²-inner-product-is-the-`toDual`-pairing bridge and its isometry-transport corollary
 - **Where it bit:** Phase 23b CHAIN-3 OD-8 sub-leaf (h-2) infrastructure (the frame-alignment leaf
@@ -3835,9 +3835,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `rw`/`congr!` the `Nat`-equality in place — package a helper lemma taking the
   cardinality equality as a `subst`-able hypothesis `m = n` plus a data-equality side
   goal. **Lifted to:** TACTICS-QUIRKS § 36.
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Sits alongside
-  `topEquiv` and the exterior-power basis API.
+- **Status:** ~~mirrored.~~ **RETIRED 2026-10-24** (RECONCILE round 3, task 38.8): its caller went in Phase 30, and
+  the cleanup round deleted the lemma, which nothing used. Resolution by removing the need, not by
+  upstreaming; the idiom lives on in TACTICS-QUIRKS § 36.
+- **Mirror file (lemma deleted):** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`.
 
 ### [mirrored] `exteriorPower.pairingDualEquiv` — the `pairingDual` iso `⋀ⁿ (M*) ≃ₗ (⋀ⁿ M)*` for finite free `M`
 - **Where it bit:** Phase 21a deliverable 2 (`Molecular/Meet.lean`,
@@ -3901,7 +3902,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
     via `(evalRingHom t).map_det` + `Matrix.map_mul` + `Matrix.transpose_map`;
     `Q ≠ 0` by hypothesis at `t₀`; bad-`t` set ⊆ root set, finite by
     `Polynomial.finite_setOf_isRoot`.
-- **Status:** mirrored.
+- **Status:** mirrored; `Matrix.linearIndependent_rows_iff_rank_eq_card` and
+  `Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero` **RETIRED 2026-10-24** (RECONCILE round 3, task 38.8),
+  deleted, unused: the along-path lemma works over any field through a maximal minor, not the
+  Gram determinant (`Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows`).
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Sits naturally
   alongside `Matrix.rank_self_mul_transpose` and `LinearIndependent.rank_matrix`.
 
@@ -4009,11 +4013,11 @@ limitations. Worth a once-over so future agents don't re-litigate.
   carried as membership in `(MvPolynomial.map (algebraMap R₀ S)).range` (a `Subring`, closed under
   `+`/`*`/`det`), converting to `coeffs ⊆ range` only at the boundary via
   `mem_range_map_iff_coeffs_subset`. **Lifted to:** TACTICS-GOLF § 14.
-- **Status:** mirrored (`det_mem_range_of_entries` survives as a general-purpose fact with no live
-  consumer in this project; the refinement sibling is gone).
-- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Sits with
-  `exists_polynomial_ne_zero_of_linearIndependent_at`; `det_mem_range_of_entries` is a general
-  `Matrix`-namespaced fact alongside it.
+- **Status:** ~~mirrored (`det_mem_range_of_entries` survives as a general-purpose fact with no live
+  consumer in this project; the refinement sibling is gone).~~ **RETIRED 2026-10-24** (RECONCILE round 3, task 38.8):
+  with no consumer since Phase 30, the cleanup round deleted it. Resolution by removing the need,
+  not by upstreaming; the idiom lives on in TACTICS-GOLF § 14.
+- **Mirror file (lemma deleted):** `Mathlib/LinearAlgebra/Matrix/Rank.lean`.
 
 ### [mirrored] `Finset.mul_card_union_add_mul_card_inter` (`k`-scaled `card_union_add_card_inter`)
 - **Where it bit:** the union-half of `IsTightOn.union_inter`
@@ -4250,7 +4254,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
   `span_range_rigidityRow` now consumes the second lemma directly;
   its proof body is ~4 lines.
-- **Status:** mirrored.
+- **Status:** mirrored; `Pi.basisFun_dualBasis` **RETIRED 2026-10-24** (RECONCILE round 3, task 38.8), deleted, unused
+  (`span_range_rigidityRow` needs only the second lemma).
 - **Mirror file:** `Mathlib/LinearAlgebra/Dual/Basis.lean` (with an
   added `import Mathlib.LinearAlgebra.StdBasis` line; upstream PR
   would either add that import to `Dual/Basis.lean` or split
@@ -4498,7 +4503,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   The Phase 7 caller collapsed the four-step chain to one
   `h_li_G'.dualMap_of_surjective h_restrict_surj` application; the
   intermediate `h_dualMap_inj` and `with hRest_def` bindings dropped.
-- **Status:** mirrored.
+- **Status:** mirrored; `LinearIndepOn.dualMap_of_surjective` **RETIRED 2026-10-24** (RECONCILE round 3, task 38.8),
+  deleted, unused.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dual/Lemmas.lean` (with an
   added `import Mathlib.LinearAlgebra.LinearIndependent.Basic` line;
   upstream would slot under existing surjective-dual API in that file).
@@ -4513,7 +4519,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
   to peel the subtype, case-split on `Sym2.eq_iff`, kill the
   contradictory `none = some _` branch, and apply `Option.some.inj`
   to the survivor. The four sites repeated the pattern verbatim. The
-  near-neighbour `Sym2.mk_mem_image_map_some_iff` already in the
+  near-neighbour `Sym2.mk_mem_image_map_some_iff` (since deleted, unused) then in the
   mirror file handles image-membership but not the bare `s(none,
   some u) = s(none, some v) ↔ u = v` equality.
 - **Resolution:** mirrored as
@@ -4708,12 +4714,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
   The L-rank consumer reindexes the full matrix's columns to `(v-cols) ⊕ (off-v-cols)` via
   `(columnSplit v).symm`, applies the rank lemma to the `Sum.inl = v-cols` zero block, then
   `Matrix.rank_reindex` for the surviving reindex.
-- **Status:** mirrored; `Matrix.rank_submatrix_inr_of_zero_left_cols` **RETIRED 2026-10-24**
-  (RECONCILE round 3, task 38.5), deleted with its caller in `Concrete.lean`, which nothing used.
-  `Matrix.linearIndependent_row_of_zero_left_cols` has no caller either (`notes/Prose-findings.md`
-  F-279; RECONCILE round 3, task 38.8).
-- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean` (beside the Phase-23d block-additivity
-  bridges, since deleted).
+- **Status:** ~~mirrored.~~ **RETIRED 2026-10-24**: `Matrix.rank_submatrix_inr_of_zero_left_cols`
+  (RECONCILE round 3, task 38.5), deleted with its caller in `Concrete.lean`, which nothing used;
+  `Matrix.linearIndependent_row_of_zero_left_cols` (RECONCILE round 3, task 38.8), deleted, unused.
+- **Mirror file (lemmas deleted):** `Mathlib/LinearAlgebra/Matrix/Rank.lean`.
 
 ### [idiom] `(screwDim k - 1)` in a `ℤ`-equation breaks unification with a `{D : ℕ}` cast-bridge helper — write `((screwDim k : ℤ) - 1)`
 - **Where it bit:** the eq.-(6.12) rank equation `hNpD : (N : ℤ) + (screwDim k - 1) = …` in the
@@ -4874,9 +4878,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `(OfNat.ofNat i : Fin n) = Fin.ofNat n i` (unfolding the core `Fin.instOfNat` projection) is the
   one non-obvious link. `Fin.two_eq_mk_of_lt` is the literal-`2` specialization, the sibling of
   mathlib's own `one_eq_mk_of_lt` at the next index.
-- **Status:** mirrored, upstream-eligible (generalizes two already-upstream lemmas by the same
-  pattern).
-- **Mirror file:** `Mathlib/Data/Fin/Basic.lean` (new mirror file).
+- **Status:** ~~mirrored, upstream-eligible (generalizes two already-upstream lemmas by the same
+  pattern).~~ **RETIRED 2026-10-24** (RECONCILE round 3, task 38.8): the entry was preemptive and nothing used the
+  lemmas, so the cleanup round deleted them with their file. The primary convention (`⟨i, by omega⟩`) stands.
+- **Mirror file (deleted):** `Mathlib/Data/Fin/Basic.lean`.
 
 ### [idiom] `push_neg` is deprecated (mathlib bump) — `omega` extracts the negated-inequality bound directly, no `push_neg` needed
 - **Where it bit:** Phase 23g E2e (`kt_lemma_46_linking`, `ChainExtraction.lean`) — the `n ≥ 2`

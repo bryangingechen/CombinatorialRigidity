@@ -1262,8 +1262,9 @@ operations in any usable API. Instead carry **membership in the subring**
 a genuine `Subring`, so `Subring.add_mem` / `sub_mem` / `mul_mem` / `sum_mem` /
 `zero_mem` chain through every constructor, `C r ∈ range` reduces to `r ∈ range`
 (via `map_C`), `X a` is a fixed point (`map_X`), and the determinant is closed
-(`Matrix.det_mem_range_of_entries`, mirrored). Convert to the `coeffs ⊆ range`
-form *only at the boundary* — when feeding a consumer that wants it — via
+(`Matrix.det_mem_range_of_entries`, mirrored, since deleted: `choose` a preimage
+matrix and apply `RingHom.map_det`). Convert to the `coeffs ⊆ range` form *only
+at the boundary* — when feeding a consumer that wants it — via
 `MvPolynomial.mem_range_map_iff_coeffs_subset`.
 
 Former concrete instance (`normalsJoinPoly`/`panelSupportPoly`/`annihRowPoly`
@@ -1273,7 +1274,8 @@ polynomial's coefficient-rationality bridge to KT's footnote-6 seed transfer, wa
 the pattern propagated `… ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range` up the
 `normalsJoinPoly → panelSupportPoly → annihRowPoly` chain, bottoming on the `complementIso` matrix
 entry's rationality and `X`'s integer coefficients, with the `det`-and-convert step
-in the (still-live) `Matrix.det_mem_range_of_entries` (FRICTION *[mirrored]*).
+in `Matrix.det_mem_range_of_entries` (FRICTION *[mirrored]*), which a cleanup round deleted once
+nothing used it (RECONCILE round 3).
 
 ## 15. LI family of `finrank`-many vectors spans `⊤`
 

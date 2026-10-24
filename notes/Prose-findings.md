@@ -5349,6 +5349,16 @@ declaration's name as its header writes it:
   block (b) at `0f2d588e` gives the same names, unpinned, dead and with no caller outside
   the set, and no orphan, and the build and the caches confirm that no other declaration is left
   without a caller (task 38.7).
+  Round 3: tasks 25.2's, 25.3's, 26's and 28's parts and task 27's three in `BodyBar/` deleted but
+  `exteriorPower.coe_pairingDualEquiv`, thirty, with the orphans `out_reverse_tail`,
+  `spanArcs_empty` and `Matrix.linearIndependent_rows_iff_rank_eq_card`, and the emptied
+  `Mathlib/Data/Fin/Basic.lean` with them; block (b) at `6885f075` gives the same names, unpinned,
+  dead and with no caller outside the set, the pinned `Union_rank_eq` left uncalled stays, and the
+  build and the caches confirm that no other declaration is left without a caller.
+  `coe_pairingDualEquiv` stays by task 38's rule for a declaration that witnesses a chapter's
+  claim: `def:meet-pairing-dual` pins `exteriorPower.pairingDualEquiv`, a `Basis.equiv`, and states
+  that the determinant map is an isomorphism, and it alone proves that the equivalence is that map
+  (task 38.8).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and

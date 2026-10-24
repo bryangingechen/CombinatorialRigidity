@@ -11,24 +11,16 @@ public import Mathlib.LinearAlgebra.StdBasis
 /-!
 # Upstream candidates: standard-basis-dual lemmas and the row space as a span
 
-Three facts adjacent to `Module.Basis.dualBasis` and `LinearMap.dualMap` that
+Two facts adjacent to `Module.Basis.dualBasis` and `LinearMap.dualMap` that
 mathlib does not ship:
 
-1. **`Pi.basisFun_dualBasis`** identifies the dual-basis-of-the-standard-basis
-   on `η → R` with the coordinate projection: the chain
-   `Basis.coe_dualBasis ∘ Basis.coord_apply ∘ Pi.basisFun_repr` discharges the
-   pointwise equality, but mathlib does not package the equation between linear
-   maps directly. (Neither `Mathlib.LinearAlgebra.StdBasis` nor
-   `Mathlib.LinearAlgebra.Dual.Basis` carries this lemma; `Dual/Basis.lean` does
-   not even import `StdBasis.lean`.)
-
-2. **`Pi.basisFun_toDual_apply`** evaluates the self-pairing
+1. **`Pi.basisFun_toDual_apply`** evaluates the self-pairing
    `(Pi.basisFun R η).toDual x y` as the coordinate sum `∑ i, x i * y i` (the
    dot product). `Module.Basis.toDual_apply_left` handles a single basis
    argument; the bilinear evaluation against two arbitrary vectors of `η → R` is
    not packaged.
 
-3. **`LinearMap.range_dualMap_eq_span_image_dualBasis`** says that the row
+2. **`LinearMap.range_dualMap_eq_span_image_dualBasis`** says that the row
    space is spanned by the rows: for any basis `b` on the codomain, the range
    of `f.dualMap` is the `R`-linear span of `f.dualMap '' (range b.dualBasis)`.
    Mathlib's `LinearMap.finrank_range_dualMap_eq_finrank_range` (row rank
@@ -47,14 +39,6 @@ See `DESIGN.md` *Mirror directory*.
 namespace Pi
 
 variable {R η : Type*} [CommSemiring R] [Finite η] [DecidableEq η]
-
-/-- The `i`th dual-basis element of the standard basis on `η → R` is the
-`i`th coordinate projection. -/
-@[simp]
-theorem basisFun_dualBasis (i : η) :
-    (Pi.basisFun R η).dualBasis i = (LinearMap.proj i : (η → R) →ₗ[R] R) := by
-  refine LinearMap.ext fun x => ?_
-  simp [Pi.basisFun_repr]
 
 variable [Fintype η]
 

@@ -180,12 +180,6 @@ def mapRel {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b) :
   | _, _, .nil u => .nil u
   | _, _, .cons hr q => .cons (h hr) (q.mapRel h)
 
-@[simp] lemma mapRel_length {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b)
-    {u w : V} (p : DirectedWalk R u w) : (p.mapRel h).length = p.length := by
-  induction p with
-  | nil _ => rfl
-  | cons _ _ ih => simp only [mapRel, length, ih]
-
 @[simp] lemma mapRel_vertices {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b)
     {u w : V} (p : DirectedWalk R u w) : (p.mapRel h).vertices = p.vertices := by
   induction p with
@@ -277,12 +271,6 @@ lemma reversedArcsFinset_eq_image_swap {u w : V} (p : DirectedWalk R u w) :
   | cons _ q ih =>
     simp only [arcsFinset_cons, Finset.image_insert, ← ih, reversedArcsFinset_cons]
     rfl
-
-/-- The reversed-arc finset has the same cardinality as the arc finset. -/
-lemma card_reversedArcsFinset {u w : V} (p : DirectedWalk R u w) :
-    p.reversedArcsFinset.card = p.arcsFinset.card := by
-  rw [reversedArcsFinset_eq_image_swap]
-  exact Finset.card_image_of_injective _ Prod.swap_injective
 
 /-- The first coordinate of any arc lies in `p.vertices`. -/
 lemma fst_mem_vertices_of_mem_arcsFinset {u w : V} {p : DirectedWalk R u w}
@@ -426,14 +414,6 @@ lemma IsPath.card_arcsFinset_filter_fst {u w : V} {p : DirectedWalk R u w}
       have h_mem_iff : (v = u_out ∨ v ∈ q.vertices) ↔ v ∈ q.vertices :=
         ⟨fun h => h.resolve_left hvu, Or.inr⟩
       simp [h_mem_iff]
-
-/-- The first coordinate of any reversed arc lies in `p.vertices`. Mirror of
-`fst_mem_vertices_of_mem_arcsFinset` for `reversedArcsFinset`; routed through
-the swap-symmetry `mem_reversedArcsFinset_iff` and `snd_mem_vertices`. -/
-lemma fst_mem_vertices_of_mem_reversedArcsFinset {u w : V} {p : DirectedWalk R u w}
-    {a b : V} (h : (a, b) ∈ p.reversedArcsFinset) : a ∈ p.vertices := by
-  rw [mem_reversedArcsFinset_iff] at h
-  exact snd_mem_vertices_of_mem_arcsFinset h
 
 /-- A simple walk's initial vertex `u` is never the target of one of its arcs:
 the head of `vertices` doesn't reappear by `IsPath`. Mirror of "the terminal
@@ -876,18 +856,5 @@ reflexive-transitive closure of `fun a b => b ∈ succ a`. -/
     w ∈ reachClosureComputable succ v ↔
       Relation.ReflTransGen (fun a b => b ∈ succ a) v w :=
   ⟨reachClosureComputable_sound, reachClosureComputable_complete⟩
-
-/-- The start vertex sits in its own reach closure. -/
-lemma self_mem_reachClosureComputable (succ : V → List V) (v : V) :
-    v ∈ reachClosureComputable succ v :=
-  mem_reachClosureComputable.mpr Relation.ReflTransGen.refl
-
-/-- The reach closure is closed under the `succ`-relation: if `a` is
-in the closure of `v` and `b ∈ succ a`, then `b` is too. -/
-lemma reachClosureComputable_closed {succ : V → List V} {v a b : V}
-    (ha : a ∈ reachClosureComputable succ v) (hab : b ∈ succ a) :
-    b ∈ reachClosureComputable succ v := by
-  rw [mem_reachClosureComputable] at ha ⊢
-  exact ha.tail hab
 
 end CombinatorialRigidity.Search

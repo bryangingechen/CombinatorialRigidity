@@ -20,7 +20,7 @@ dual is injective and keeps linearly independent rows independent
 
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/Dual/Lemmas.lean`
 (or any file that imports both `Dual.Defs` and `LinearIndependent.Basic`); the
-namespaces (`LinearIndependent`, `LinearIndepOn`) match upstream conventions.
+namespace (`LinearIndependent`) matches upstream conventions.
 
 See `DESIGN.md` *Mirror directory*.
 -/
@@ -41,16 +41,3 @@ theorem dualMap_of_surjective {f : M →ₗ[R] N} (hf : Function.Surjective f)
   hv.map' _ (LinearMap.ker_eq_bot.mpr (LinearMap.dualMap_injective_of_surjective hf))
 
 end LinearIndependent
-
-namespace LinearIndepOn
-
-variable {R M N ι : Type*} [CommRing R]
-  [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
-
-/-- `LinearIndepOn` version of `LinearIndependent.dualMap_of_surjective`. -/
-theorem dualMap_of_surjective {f : M →ₗ[R] N} (hf : Function.Surjective f)
-    {v : ι → Module.Dual R N} {s : Set ι} (hv : LinearIndepOn R v s) :
-    LinearIndepOn R (f.dualMap ∘ v) s :=
-  LinearIndependent.dualMap_of_surjective hf hv
-
-end LinearIndepOn

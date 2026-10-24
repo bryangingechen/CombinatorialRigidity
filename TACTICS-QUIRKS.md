@@ -1638,8 +1638,9 @@ its own sole consumer — KT's footnote-6 rationality bridge — was retired): t
 `wedgePairing_ιMulti_family_mem_range_intCast` (Phase 22d, `Molecular/Meet.lean`) matched the
 diagonal pairing value `screwAlgebraTopEquiv (e_S ∨ₑ e_Sᶜ)` this way; the helper it used, the
 mirrored `ExteriorAlgebra.ιMulti_family_congr` (FRICTION *[mirrored]*,
-`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`), survives as a general-purpose upstream
-candidate.
+`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`), outlived it as a general-purpose upstream
+candidate until a cleanup round deleted it, unused (RECONCILE round 3); its proof was the fix
+above, `subst hmn` and then `Subtype.ext`.
 
 ## 37. `Nonempty (α ↪ β)` from a cardinality bound across *different universes* — use `Cardinal.lift_mk_le'`, not `le_def`
 

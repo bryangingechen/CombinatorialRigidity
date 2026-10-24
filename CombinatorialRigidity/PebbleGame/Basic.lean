@@ -191,14 +191,6 @@ by which `thm:pebble-game-soundness` is proved. -/
     (empty : PartialOrientation V).peb k v = k := by
   simp [peb]
 
-@[simp] lemma spanArcs_empty (V' : Finset V) :
-    (empty : PartialOrientation V).spanArcs V' = ∅ := by
-  simp [spanArcs]
-
-@[simp] lemma span_empty (V' : Finset V) :
-    (empty : PartialOrientation V).span V' = 0 := by
-  simp [span]
-
 @[simp] lemma boundaryArcs_empty (V' : Finset V) :
     (empty : PartialOrientation V).boundaryArcs V' = ∅ := by
   simp [boundaryArcs]
@@ -341,8 +333,8 @@ indicator (out-degree drops by `1` at `u`), and the terminal sits only in the
 reversed-arc indicator (out-degree rises by `1` at `w`). Off-path vertices
 satisfy neither, again leaving the out-degree fixed.
 
-Three convenience corollaries (`out_reverse_of_not_endpoint`,
-`out_reverse_head`, `out_reverse_tail`) extract the head/tail/middle cases. -/
+Two convenience corollaries (`out_reverse_of_not_endpoint`,
+`out_reverse_head`) extract the middle and head cases. -/
 lemma out_reverse_add
     (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath) (v : V) :
     (D.reverse p hp).out v + (if v ∈ p.vertices ∧ v ≠ w then 1 else 0)
@@ -423,19 +415,6 @@ lemma out_reverse_head
   rw [ite_eq_left ⟨h_mem, h_ne⟩, ite_eq_right (fun ⟨_, h⟩ => h rfl)] at h
   omega
 
-/-- Tail endpoint: the terminal vertex of a non-nil reversed path gains one
-out-arc. The reversed arc `(u_m, u_{m-1})` is added; no path arc was sourced
-at `u_m` (the terminal has no outgoing path arc). -/
-lemma out_reverse_tail
-    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
-    (hpos : 0 < p.length) :
-    (D.reverse p hp).out w = D.out w + 1 := by
-  have h := D.out_reverse_add p hp w
-  have h_mem : w ∈ p.vertices := p.tail_mem_vertices
-  have h_ne : w ≠ u := (hp.head_ne_tail_of_pos hpos).symm
-  rw [ite_eq_right (fun ⟨_, h⟩ => h rfl), ite_eq_left ⟨h_mem, h_ne⟩] at h
-  omega
-
 /-- The pebble count is unchanged at vertices distinct from both endpoints of
 the reversed path. Direct corollary of `out_reverse_of_not_endpoint`: pebble
 count is `k - out`, and the underlying out-count is preserved. -/
@@ -455,20 +434,6 @@ lemma peb_reverse_head
     (D.reverse p hp).peb k u = D.peb k u + 1 := by
   have h_out : (D.reverse p hp).out u + 1 = D.out u :=
     D.out_reverse_head p hp hpos
-  rw [peb, peb]
-  omega
-
-/-- Tail endpoint, under the algorithmic precondition `D.out w < k`: the
-terminal vertex of a non-nil reversed path loses one pebble (mirror of the
-out-count rising by one). `out w < k` is the condition that `Reachable.reverse`
-puts on the move (the vertex that the pebble search reaches must hold a free
-pebble). -/
-lemma peb_reverse_tail
-    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
-    (hpos : 0 < p.length) (k : ℕ) (hbd : D.out w < k) :
-    (D.reverse p hp).peb k w + 1 = D.peb k w := by
-  have h_out : (D.reverse p hp).out w = D.out w + 1 :=
-    D.out_reverse_tail p hp hpos
   rw [peb, peb]
   omega
 
@@ -511,10 +476,10 @@ lemma span_reverse_eq
 path reversal: span is invariant by `span_reverse_eq`, so the L-S Invariant (2)
 algebraic identity `pebOn + span + outOn = k|V'|` applied to both `D` and
 `D.reverse p hp` forces `pebOn + outOn` to match. While `outOn V'` itself
-shifts by `[w ∈ V'] - [u ∈ V']` per the head/tail accounting in
-`out_reverse_head` / `out_reverse_tail`, the corresponding shift in `pebOn k V'`
-cancels it. Gives Invariant (3) of `lem:pebble-game-invariants` at a path
-reversal (`Reachable.pebOn_add_outOn_ge`). -/
+shifts by `[w ∈ V'] - [u ∈ V']` per the head/tail accounting of
+`out_reverse_add`, the corresponding shift in `pebOn k V'` cancels it. Gives
+Invariant (3) of `lem:pebble-game-invariants` at a path reversal
+(`Reachable.pebOn_add_outOn_ge`). -/
 lemma pebOn_add_outOn_reverse_eq
     (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
     {k : ℕ} {V' : Finset V}
@@ -564,30 +529,6 @@ lemma notMem_arcs_reverse_of_notMem
   · exact h h_in
   · rw [p.mem_reversedArcsFinset_iff] at h_rev'
     exact h_rev (p.mem_arcsFinset_imp h_rev')
-
-/-- Path reversal preserves the per-vertex out-degree bound `D.out x ≤ k`,
-provided the tail's out-degree was strictly below `k` (the algorithmic
-precondition that makes the new tail-source arc fit within budget). The only
-vertex whose out-count can rise is the path's tail `w`, and the hypothesis
-`D.out w < k` absorbs the `+1`. The algorithm does not use it: `tryAddEdgeWith`
-takes `Reachable k ℓ D`, and `Reachable.out_le` gives the bound. -/
-lemma out_reverse_le_of_outle
-    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
-    {k : ℕ} (h_outle : ∀ x, D.out x ≤ k) (hw : D.out w < k) (x : V) :
-    (D.reverse p hp).out x ≤ k := by
-  have h_add := D.out_reverse_add p hp x
-  have h_x := h_outle x
-  -- The unified equation `(reverse).out x + L = D.out x + R` with `L, R ∈ {0, 1}`
-  -- means `(reverse).out x ≤ D.out x + 1`, with the `+1` only when `x = w`.
-  split_ifs at h_add with hL hR hR
-  all_goals try omega
-  -- The remaining case is `hL = false, hR = true`: `x ∈ vertices ∧ x ≠ u` (so on
-  -- path but ≠ u), and `¬(x ∈ vertices ∧ x ≠ w)` (so x = w, since x ∈ vertices).
-  have hxw : x = w := by
-    by_contra hne
-    exact hL ⟨hR.1, hne⟩
-  rw [hxw] at h_add ⊢
-  omega
 
 end Reverse
 
@@ -663,16 +604,6 @@ lemma out_addArc_of_ne_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉
   simp only [out_eq_card_filter_fst, arcs_addArc]
   rw [Finset.filter_insert, ite_eq_right (fun h => hxu h.symm)]
 
-/-- Adding the arc `(u, v)` to `D` drops the pebble count at `u` by `1`,
-under the precondition `D.out u < k` (a free pebble at `u`; cf.
-`lem:pebble-game-invariants` (1)). The non-source pebble counts are
-unaffected (`peb_addArc_of_ne_source`). -/
-lemma peb_addArc_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
-    (hnotin : (u, v) ∉ D.arcs) {k : ℕ} (hk : D.out u < k) :
-    (D.addArc u v huv hnotin_rev).peb k u + 1 = D.peb k u := by
-  rw [peb, peb, D.out_addArc_source u v huv hnotin_rev hnotin]
-  omega
-
 /-- Adding the arc `(u, v)` to `D` leaves the pebble count at every
 non-source vertex unchanged. Direct corollary of
 `out_addArc_of_ne_source` and `peb := k - out`. -/
@@ -683,26 +614,11 @@ lemma peb_addArc_of_ne_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉
 
 /-! #### Subset-level accounting for arc insertion
 
-The next four lemmas trace how `span`, `outOn` and `pebOn` change on a subset
-`V'` when a new arc `(u, v)` is inserted, each as an additive identity keyed on
-where `u` and `v` lie relative to `V'`. The fourth,
-`pebOn_add_outOn_addArc_add`, combines the second and the third, and gives
-Invariant (3) of `lem:pebble-game-invariants` at an arc insertion. -/
-
-/-- Span of `V'` rises by `1` exactly when both endpoints of the inserted arc
-lie in `V'`, and is unchanged otherwise. Unified additive identity, like
-`out_reverse_add` for the path-reversal case. -/
-lemma span_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
-    (hnotin : (u, v) ∉ D.arcs) (V' : Finset V) :
-    (D.addArc u v huv hnotin_rev).span V'
-      = D.span V' + (if u ∈ V' ∧ v ∈ V' then 1 else 0) := by
-  simp only [span, spanArcs, arcs_addArc, Finset.filter_insert]
-  by_cases h : u ∈ V' ∧ v ∈ V'
-  · rw [ite_eq_left h, ite_eq_left h]
-    refine Finset.card_insert_of_notMem ?_
-    rw [Finset.mem_filter]
-    exact fun ⟨h_in, _⟩ => hnotin h_in
-  · rw [ite_eq_right h, ite_eq_right h, Nat.add_zero]
+The next three lemmas trace how `outOn` and `pebOn` change on a subset `V'`
+when a new arc `(u, v)` is inserted, each as an additive identity keyed on
+where `u` and `v` lie relative to `V'`. The third,
+`pebOn_add_outOn_addArc_add`, combines the first two, and gives Invariant (3)
+of `lem:pebble-game-invariants` at an arc insertion. -/
 
 /-- Out-boundary of `V'` rises by `1` exactly when the inserted arc has its
 source in `V'` and its head outside `V'`, and is unchanged otherwise. -/
@@ -721,8 +637,8 @@ lemma outOn_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
 /-- Total pebble count on `V'` drops by `1` exactly when the source vertex `u`
 lies in `V'`, and is unchanged otherwise. Stated additively (so that ℕ-
 subtraction never appears) as `pebOn(new) + [u ∈ V'] = pebOn(old)`. The
-precondition `D.out u < k` keeps `peb k u` honest under truncated subtraction;
-see `peb_addArc_source`. -/
+precondition `D.out u < k` keeps `peb k u` honest under truncated subtraction:
+with it, `out_addArc_source` drops `peb k u` by exactly `1`. -/
 lemma pebOn_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
     (hnotin : (u, v) ∉ D.arcs) {k : ℕ} (hk : D.out u < k) (V' : Finset V) :
     (D.addArc u v huv hnotin_rev).pebOn k V' + (if u ∈ V' then 1 else 0)
@@ -730,8 +646,8 @@ lemma pebOn_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
   by_cases hu : u ∈ V'
   · -- Split off the `u`-term from both sides via `Finset.add_sum_erase`. The
     -- residual sum over `V'.erase u` agrees between `D` and `D.addArc …` by
-    -- `peb_addArc_of_ne_source`; the `u`-term shifts by `1` by
-    -- `peb_addArc_source` (under `D.out u < k`).
+    -- `peb_addArc_of_ne_source`; the `u`-term shifts by `1` (`h_peb_u`, by
+    -- `out_addArc_source` under `D.out u < k`).
     rw [ite_eq_left hu]
     simp only [pebOn]
     rw [← Finset.add_sum_erase _ _ hu, ← Finset.add_sum_erase _ _ hu]

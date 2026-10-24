@@ -227,7 +227,7 @@ The coordinate family is read against the standard basis `Pi.basis (fun _ : α =
 (EuclideanSpace.basisFun (Fin (bodyBarDim n)) ℝ).toBasis)` of body motions `Motion n α`: the row
 coordinates are, up to a per-bar incidence sign, the two-extensor polynomials `twoExtensorPoly`,
 of degree at most two (the evaluation identity `hg` below, with the sign convention of
-`stdPlacement_rigidityMap_apply` and `rigidityRow_eq`, computed directly through
+`rigidityRow_eq`, computed directly through
 `rigidityMap_apply` and `Pi.single` rather than through `blockPairing`). For each bar subset `s`
 linearly independent at some assignment, the maximal-minor engine
 `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` supplies a nonzero witnessing minor

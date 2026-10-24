@@ -45,9 +45,6 @@ copy-paste alongside `Sym2.mem_map` / `Sym2.coe_map`. See
   ∃ p q, f p = x ∧ f q = y ∧ P s(p, q)`. Tagged `@[simp]`.
 * `Sym2.mk_mem_image_map_iff` — image-membership form:
   `s(x, y) ∈ Sym2.map f '' S ↔ ∃ p q, f p = x ∧ f q = y ∧ s(p, q) ∈ S`.
-* `Sym2.mk_mem_image_map_some_iff` — `f = some` specialization, recasting the
-  `f p = x` / `f q = y` clauses with `some` on the right (the orientation that
-  matches `rcases x with _ | u` case splits).
 * `Sym2.map_some_injective` — `Sym2.map (some : α → Option α)` is injective.
   A common specialization that otherwise reads as
   `Sym2.map.injective (Option.some_injective _)`.
@@ -100,17 +97,6 @@ lemma mk_mem_image_map_iff {f : α → β} {S : Set (Sym2 α)} {x y : β} :
     s(x, y) ∈ Sym2.map f '' S ↔ ∃ p q, f p = x ∧ f q = y ∧ s(p, q) ∈ S := by
   rw [Set.mem_image]
   exact exists_and_map_eq_mk_iff
-
-/-- `Option`-edge specialization of `Sym2.mk_mem_image_map_iff`: the membership
-question for `Sym2.map (some : α → Option α) '' S` factors cleanly through
-"both endpoints are `some _`" plus membership of the corresponding honest edge.
-The `x = some p` orientation (rather than `some p = x`) matches what `rcases x
-with _ | u` produces. -/
-lemma mk_mem_image_map_some_iff {S : Set (Sym2 α)} {x y : Option α} :
-    s(x, y) ∈ Sym2.map (some : α → Option α) '' S ↔
-      ∃ p q, x = some p ∧ y = some q ∧ s(p, q) ∈ S := by
-  rw [mk_mem_image_map_iff]
-  exact exists₂_congr fun _ _ => and_congr eq_comm (and_congr eq_comm Iff.rfl)
 
 /-- `Sym2.map (some : α → Option α)` is injective. The named specialization of
 `Sym2.map.injective` that arises whenever an `Option`-vertex extension counts edges

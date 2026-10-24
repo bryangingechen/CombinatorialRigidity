@@ -9,10 +9,10 @@ non-vacuity witness for each of the 16 main results outside S1's and S2's rows, 
 sweep by directory, and the §B–§C screen with the fixes it appends. No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–38.7 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
-sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first six of them.
-**Next concrete task:** task 38.8, the deletions in `Search/`, `PebbleGame/`, `Mathlib/`,
-`SquareGraph.lean` and `BodyBar/` (*Hand-off*). Round manual: `CLEANUP.md`.
+wait for the phase. Tasks 1–38.8 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
+sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first seven of them.
+**Next concrete task:** task 38.9, L8's re-seeding of the pencil chart (*Hand-off*). Round manual:
+`CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -43,22 +43,23 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 38.7 is done**, the dead declarations of `Molecule/` deleted (`ProjectiveInvariance.lean`,
-`Pencil/Statement.lean`, `Chart.lean`, `Arms.lean`, `MainComponent/ContractCurve.lean`,
-`Lines.lean`, `EarGen.lean`); nothing is mid-stream. **Next:** task 38.8.
+**Task 38.8 is done**, the dead declarations of `Search/`, `PebbleGame/`, `Mathlib/`,
+`SquareGraph.lean` and `BodyBar/` deleted, thirty and their three orphans, and the emptied
+`Mathlib/Data/Fin/Basic.lean`; nothing is mid-stream. **Next:** task 38.9.
 
-**Task 38.7** (scratch `scratch/reconcile-lean/t387/`, gitignored: task 38.6's scripts, copied).
-Block (b) at `0f2d588e` gives the line's 15 names unpinned, dead and uncalled from outside, and no
-orphan; the caches before and after differ by exactly the 15 (and one generated auxiliary), and
-`neworphans.py` finds no declaration newly uncalled. Three `omit [Field K] in` lines went by hand.
-Gates: the dump identical to task 38.6's, `--summary` OK with only the constant count moving
-(6709 → 6693), the label check identical (4). The ledger: 325 entries, 223 `done`, 9 `left`, 50
-`reported`, 43 `open`.
+**Task 38.8** (scratch `scratch/reconcile-lean/t388/`, gitignored: task 38.7's scripts, copied).
+Block (b) at `6885f075` gives the line's names unpinned, dead and uncalled from outside, the three
+orphans it names, and the pinned `Union_rank_eq`, which stays uncalled. One name stays,
+`exteriorPower.coe_pairingDualEquiv` (*Decisions*, task 38). The caches before and after differ by
+exactly the 33 (and 13 generated auxiliaries), and `neworphans.py` finds only `Union_rank_eq` newly
+uncalled. Gates: the dump identical to task 38.7's, `--summary` OK with only the constant count
+moving (6693 → 6647), the label check identical (4). The ledger: 325 entries, 223 `done`, 9 `left`,
+50 `reported`, 43 `open`.
 
-**Done before** (tasks 3–38.6; the ledger's dispositions name each part's task, the messages the
-detail): task 38.6's thirty-two deletions in `Induction/`, with `F-282`'s repeated derivation; task
-38.5's 105 deletions, `Concrete.lean` whole and the rigidity-matrix, meet and extensor files, with
-`F-287`'s `ha`, `hb`; task 38.4's twenty deletions in the pinning and panel files, with `F-289`'s
+**Done before** (tasks 3–38.7; the ledger's dispositions name each part's task, the messages the
+detail): task 38.7's fifteen deletions in `Molecule/`; task 38.6's thirty-two in `Induction/`, with
+`F-282`'s repeated derivation; task 38.5's 105, `Concrete.lean` whole and the rigidity-matrix, meet
+and extensor files, with `F-287`'s `ha`, `hb`; task 38.4's twenty deletions in the pinning and panel files, with `F-289`'s
 hypotheses and `F-296`'s re-proofs; task 38.3's thirty-three deletions in the Case I,
 genericity-device and coupling files, with `F-291`'s re-pointing and `F-290`'s `hne`, `hnesH` (new
 `F-325`); task 38.2's ninety in `CaseIII/`; tasks 38–38.1, the §B–§C screen and the `L` entries'
@@ -231,16 +232,14 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   (docstrings, file headers' lists, `TACTICS-QUIRKS.md` and `DESIGN.md`, where a precedent may say
   "since deleted"). *Expected* for each: the dump and `--summary` unchanged (no pin reaches a
   deleted name), gate 9 at 4 or below.
-- [x] **38.2–38.7. `CaseIII/`; `CaseI.lean`, `GenericityDevice.lean`, `Coupling.lean`;
+- [x] **38.2–38.8. `CaseIII/`; `CaseI.lean`, `GenericityDevice.lean`, `Coupling.lean`;
   `Pinning.lean`, `PanelLayer.lean`, `PanelHinge.lean`; `RigidityMatrix/Concrete.lean` whole and
-  the rigidity-matrix, meet and extensor files; `Induction/`; `Molecule/`** (`F-268`, `F-269`,
-  `F-271`, `F-279`'s tasks 30–37.15 but `Pair.lean`'s; with `F-291`'s six and `F-290`'s two,
-  `F-289`'s, `F-296`'s and `F-287`'s fixes, `F-282`'s repeated derivation, `F-288` moot; new
-  `F-325`): 90, 33, 20, 105, 32 and 15 deletions with their orphans; the pins they leave uncalled
-  stay.
-- [ ] **38.8. `Search/`, `PebbleGame/`, `Mathlib/`, `SquareGraph.lean`, `BodyBar/`** (`F-279`'s
-  tasks 25.2–28 but the vendored port's and `spanningVerts_edgeMultiply`; 31 names), and three
-  orphans in `PebbleGame/Basic.lean` and `Matrix/Rank.lean`.
+  the rigidity-matrix, meet and extensor files; `Induction/`; `Molecule/`; `Search/`,
+  `PebbleGame/`, `Mathlib/`, `SquareGraph.lean`, `BodyBar/`** (`F-268`, `F-269`, `F-271`,
+  `F-279`'s tasks 25.2–37.15 but what task 38 keeps and `coe_pairingDualEquiv`; with `F-291`'s six
+  and `F-290`'s two, `F-289`'s, `F-296`'s and `F-287`'s fixes, `F-282`'s repeated derivation,
+  `F-288` moot; new `F-325`): 90, 33, 20, 105, 32, 15 and 33 deletions with their orphans; the pins
+  they leave uncalled stay.
 - [ ] **38.9. L8's re-seeding** (`F-305`; `F-306`'s first part). Add the selector of a set of at
   most three members (`IsFin3SelectorOf`, `Pencil/Chart.lean`: by `Finset.toList`, injective by
   `List.Nodup.getElem?_inj`; the witness `t375/Hyps-t375.lean`) and re-prove
@@ -388,41 +387,35 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 38.8**, at Opus (its line): the dead declarations of `F-279`'s first paragraph (tasks
-25.2–28) but the vendored port's and `spanningVerts_edgeMultiply`, thirty-one: in `Mathlib/`,
-`Fin.ofNat_eq_mk`, `Fin.two_eq_mk_of_lt` (`Data/Fin/Basic.lean`), `Sym2.mk_mem_image_map_some_iff`,
-`Pi.basisFun_dualBasis`, `LinearIndepOn.dualMap_of_surjective`,
-`ExteriorAlgebra.ιMulti_family_congr`, `exteriorPower.coe_pairingDualEquiv` and
-`LinearAlgebra/Matrix/Rank.lean`'s nine; `Search/DFS.lean`'s five (`reachClosureComputable_closed`,
-`self_mem_reachClosureComputable`, three of `DirectedWalk`); `PebbleGame/Basic.lean`'s five
-(`out_reverse_le_of_outle`, `peb_reverse_tail`, `peb_addArc_source`, `span_addArc`, `span_empty`);
-`SquareGraph.lean`'s `square_mono` and `three_le_ncard_closedNeighborSet_of_two_le_degree`; and in
-`BodyBar/`, `Union_pow_rank_eq`, `cycleMatroid_eRk_add_numberOfComponents_restrict`
-(`TreePacking.lean`) and `stdPlacement_rigidityMap_apply` (`TayTheorem.lean`); with the orphans
-`out_reverse_tail`, `spanArcs_empty` and `Matrix.linearIndependent_rows_iff_rank_eq_card`. Gate 4
-first (block (b) on its names at its tree), then §B's trial deletion with gates 1–3, gate 2's
-`grep` and block (c) over every deleted name (`t387/blockb.py`, `blockc.py`, `delete.py`, the last
-a dry run unless `--apply`, `rmhdr.py` for an emptied `##` or `###` section header, `grepall.py`
-for whole-name mentions, and `neworphans.py` and `reachdiff.py`, which compare the parent's Lean
-cache, copied first, with the new one). Build a name list with `LC_ALL=C sort -u`: in a UTF-8
-locale `sort -u` merges names that differ only in subscripts. `delete.py` leaves a declaration's
-preceding `omit … in` line (tasks 38.6 and 38.7 removed them by hand). A live doc's mention of a
-deleted name says "since deleted"; a `[mirrored]` FRICTION entry whose lemma goes is retired
-(`notes/FRICTION.md` names several of the mirrors); a closed attack's brief, a closed
-phase's scripts and corpus are history. *Expected* (made exact before editing): the dump
-unchanged (the parent dump `scratch/reconcile-lean/dump-t387.txt`) and `--summary` but for its
-count of Lean constants, gate 9 at 4 or below. Then tasks 38.9–38.27 in order, one commit each,
-then the close. A fix task's gate 3 adds the sixteen witnesses of
-`scratch/reconcile-lean/Witnesses-t378.lean` and `t36/MolWitness.lean` (their harness:
-`t387/Axioms-wit.lean`).
+**Next: task 38.9**, at Opus (its line is its specification): L8's re-seeding (`F-305`, `F-306`'s
+first part). Add `IsFin3SelectorOf` (`Pencil/Chart.lean`; the witness `t375/Hyps-t375.lean`) and
+re-prove from it `exists_pencilSeed_of_nondeg` (`Reseed.lean`), the pinned
+`exists_pencilSeed_of_nondeg_of_selectors` and `Motive.lean`'s two bounds; re-prove
+`pencilChartPoint_ofCoord_toCoord` (`Steer.lean`) as `pencilChartPoint_congr` at the two
+`PencilSeed.ofCoord_toCoord_*` lemmas (the witness `t376/Hyps-t376.lean`). Then gate 4 (block (b) at
+its tree) on the names the line deletes (`Engine.lean`'s four re-seeding lemmas, `F-305`'s three
+helpers, `hubSlotNormal_ofCoord_toCoord`, and `range_cross₃L_eq_perp` if block (b) then orphans
+it), §B's trial deletion with gates 1–3 (gate 3 with the sixteen witnesses, harness
+`t388/Axioms-wit.lean`), gate 2's `grep` and block (c). No statement changes. *Expected* (made
+exact before editing): the dump unchanged (the parent `scratch/reconcile-lean/dump-t388.txt`),
+`--summary` OK but its count of Lean constants, `t381/reach.py` finding no pin that reaches a new
+node, gate 9 at 4 or below. Tooling, in `t388/`: `blockb.py`, `blockc.py`, `delete.py` (a dry run
+unless `--apply`; it cuts every declaration whose short name is listed, so a name two namespaces
+share is cut by hand, as task 38.8 did `LinearIndepOn.dualMap_of_surjective`, and it leaves a
+preceding `omit … in`), `rmhdr.py`, `grepall.py`, `neworphans.py` and `reachdiff.py` (the last two
+compare the parent's Lean cache, copied first, with the new one). Build name lists with `LC_ALL=C
+sort -u` (a UTF-8 `sort -u` merges names that differ only in subscripts). A live doc's mention of a
+deleted name says "since deleted"; a `[mirrored]` FRICTION entry whose lemma goes is retired; closed
+notes and the ledger are history. Then tasks 38.10–38.27 in order, one commit each, then the close.
 
 A whole-project build after an edit the main results import can pass the Bash tool's 600 s (tasks
-37.9's and 38.2's did; 38.4's to 38.7's, from `RigidityMatrix/Basic.lean`, `Induction/` or
+37.9's, 38.2's and 38.8's did; 38.4's to 38.7's, from `RigidityMatrix/Basic.lean`, `Induction/` or
 `Molecule/` up, did not) and go to the background: wait for it in-turn (a foreground loop on its
 log's exit marker, `for i in $(seq 1 110); do grep -q '^exit ' LOG && break; sleep 5; done`, the
 build writing `exit $?` to its log), and if it is stopped, run it again in the foreground; one build
-at a time. The hook that blocks a commit adding a `sorry` also reads the words "sorry" and "admit"
-in a `.lean` diff (task 37.4). `check-docstring-labels.py --lean` on a stale cache, and a `lake
+at a time; check the 100-column limit (Python `len`, `TACTICS-QUIRKS.md` § 55) after the last
+docstring edit, before it (task 38.8). The hook that blocks a commit adding a `sorry` also reads the
+words "sorry" and "admit" in a `.lean` diff (task 37.4). `check-docstring-labels.py --lean` on a stale cache, and a `lake
 lean` of a harness importing an edited module, rebuild the edited modules: give each an explicit
 `timeout`, and run a harness once the files are built (tasks 37, 37.7). The screens (gitignored):
 `t341/unused_joint.py` (it misses a use written `Name.mp`), `t33/info.py`, `t321/codecmp.py`, the
@@ -462,7 +455,9 @@ would make a pin reach). Carried in: `F-252`, `F-273`, `F-276`, `F-277`, `F-301`
   its declaration's body loses its codes (task 36.2).
 - **What the deletions leave** (task 38): a declaration that a chapter names as the Lean form of its
   prose, or that witnesses a chapter's claim, stays though nothing calls it; so does the vendored
-  port's code (`DESIGN.md`: the rebased port stays whole for an upstream offer). Suppressions follow
+  port's code (`DESIGN.md`: the rebased port stays whole for an upstream offer). Such a witness is
+  `coe_pairingDualEquiv` (task 38.8): `def:meet-pairing-dual` pins a `Basis.equiv` and states that
+  the determinant map is an isomorphism, and only it proves the two are one map. Suppressions follow
   `TACTICS-QUIRKS.md` §115, a main result's binder going to the phase (`F-323`).
 - **A file nothing uses** (task 32.2): swept like any other, its header saying so (task 38.5).
 - **The entries' verdicts** (task 38.1): an unused hypothesis, `have` or step goes; a derivable one

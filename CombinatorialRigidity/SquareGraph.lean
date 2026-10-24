@@ -38,9 +38,6 @@ clique at a singleton part in `sec:jacobs-counting` and the rest in `sec:jacobs-
   (`lem:singleton-part-neighborhood`).
 * `SimpleGraph.exists_mem_closedNeighborSet_of_square_adj` — every edge of `G.square` lies
   inside the closed neighborhood of some vertex of `G`.
-* `SimpleGraph.three_le_ncard_closedNeighborSet_of_two_le_degree` — a vertex of degree at
-  least two has a closed neighborhood of size at least three.
-* `SimpleGraph.square_mono` — squaring is monotone under `≤`.
 * `SimpleGraph.square_deleteIncidenceSet_of_degree_le_one`,
   `SimpleGraph.neighborSet_square_of_degree_eq_one`,
   `SimpleGraph.ncard_neighborSet_square_of_degree_eq_one`,
@@ -78,15 +75,6 @@ theorem square_adj {u v : V} :
 
 /-- `G` is a subgraph of its own square: every original edge survives. -/
 theorem le_square (G : SimpleGraph V) : G ≤ G.square := fun _ _ h => ⟨h.ne, Or.inl h⟩
-
-/-- **Monotonicity of squaring.** If `G ≤ G'` then `G.square ≤ G'.square`: an edge or common
-neighbor in `G` is one in `G'`. -/
-theorem square_mono {G G' : SimpleGraph V} (h : G ≤ G') : G.square ≤ G'.square := by
-  rintro x y ⟨hne, hadj | hcn⟩
-  · exact ⟨hne, Or.inl (h hadj)⟩
-  · obtain ⟨w, hw⟩ := hcn
-    rw [mem_commonNeighbors] at hw
-    exact ⟨hne, Or.inr ⟨w, ⟨h hw.1, h hw.2⟩⟩⟩
 
 /-! ## Closed neighborhoods -/
 
@@ -136,14 +124,6 @@ theorem ncard_closedNeighborSet (G : SimpleGraph V) (v : V) [Fintype (G.neighbor
     (G.closedNeighborSet v).ncard = G.degree v + 1 := by
   rw [closedNeighborSet, Set.ncard_insert_of_notMem G.notMem_neighborSet_self,
     ncard_neighborSet_eq_degree]
-
-/-- **A closed neighborhood of at least three vertices.** A vertex of degree at least two has a
-closed neighborhood of size at least three: itself and at least two distinct neighbors. -/
-theorem three_le_ncard_closedNeighborSet_of_two_le_degree
-    (G : SimpleGraph V) {v : V} [Fintype (G.neighborSet v)] (hv : 2 ≤ G.degree v) :
-    3 ≤ (G.closedNeighborSet v).ncard := by
-  rw [ncard_closedNeighborSet]
-  omega
 
 /-! ## Degree-one vertices
 

@@ -27,8 +27,9 @@ relations, so it is the Plücker vector of a line (Whiteley 1988, proof of Theor
 the witness is also a framework whose bars are lines.
 
 With this placement the rigidity-map row for a bar `e` collapses to the single
-coordinate `j(e)` of the relative body velocity (`stdPlacement_rigidityMap_apply`):
-`⟪e_{j(e)}, m u − m v⟫ = (m u − m v)(j e)`. The rigidity matrix is therefore
+coordinate `j(e)` of the relative body velocity,
+`⟪e_{j(e)}, m u − m v⟫ = (m u − m v)(j e)`: up to sign, the row is the signed incidence vector of
+`e` placed in coordinate `j(e)` (`stdFramework_rigidityRow_eq`). The rigidity matrix is therefore
 **block-diagonal** across the `d` coordinates, the block at index `j` being the
 signed incidence matrix of the forest `Fs j` (over `ℝ`). Each block has full row
 rank (a forest's incidence rows are linearly independent —
@@ -89,26 +90,6 @@ theorem stdFramework_graph (G : Graph α β) (n : ℕ)
 theorem stdFramework_placement (G : Graph α β) (n : ℕ)
     (j : E(G) → Fin (bodyBarDim n)) :
     (stdFramework G n j).placement = stdPlacement G n j := rfl
-
-/-- **Bar-row reduction at a standard-basis placement**, in evaluation form (the witness
-argument uses the row form `stdFramework_rigidityRow_eq`). With each bar `e` placed at the
-standard basis vector `e_{j(e)}`, the rigidity-map row at `e` evaluated at a motion `m`
-collapses to the single coordinate `j(e)` of the relative body velocity at `e`'s oriented
-endpoints `(u, v) = D.dInc e`:
-`(stdFramework G n j).rigidityMap D m e = (m u − m v) (j e)`.
-
-This is what makes the rigidity matrix block-diagonal across the `d = bodyBarDim n`
-coordinates: the row for `e` is supported entirely in coordinate `j(e)`, where it is
-the signed incidence row of `e`. Over `ℝ`, `EuclideanSpace.inner_single_left` gives
-`⟪e_{j(e)}, w⟫ = conj 1 · w (j e) = w (j e)`. -/
-theorem stdPlacement_rigidityMap_apply (G : Graph α β) (n : ℕ)
-    (j : E(G) → Fin (bodyBarDim n)) (D : Graph.orientation G)
-    (m : Motion n α) (e : E(G)) :
-    (stdFramework G n j).rigidityMap D m e
-      = (m (D.dInc e).1 - m (D.dInc e).2) (j e) := by
-  rw [rigidityMap_apply, stdFramework_placement, stdPlacement,
-    EuclideanSpace.inner_single_left]
-  simp
 
 /-! ### Block-diagonal rank count
 

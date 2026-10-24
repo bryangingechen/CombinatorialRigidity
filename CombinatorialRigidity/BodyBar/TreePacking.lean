@@ -16,13 +16,8 @@ Corollary 3, that the project uses); the decomposition into forests of Tutte and
 and its spanning-tree form for connected tight multigraphs. The blueprint presents the file in
 `sec:body-bar-matroid-union` and `sec:body-bar-tree-packing`.
 
-`Matroid.Union_pow_rank_eq` restates the rank formula `Matroid.Union_rank_eq` for the
-*constant* family `fun _ : Fin k ↦ M` in `Set`-`Y` / `ℕ` / `Set.ncard` / `[Finite]` form: the
-constant-family sum collapse `∑ᵢ r(Y) = k · r(Y)`, the `Finset.univ \ Y` ↦ `univ \ ↑Y`
-cardinality bridge (`.card` ↦ `Set.ncard`), and the `[Fintype α]` ↦ `[Finite α]` weakening.
-See `DESIGN.md` *Set/Finset and rank-flavor boundary at the matroid layer* for the convention.
-The tree-packing theorems below go through Edmonds' matroid-partition theorem
-(`Matroid.Union_pow_indep_iff_count`) with `M := G.cycleMatroid` instead.
+The tree-packing theorems below go through Edmonds' matroid-partition theorem for the union of
+`k` copies of one matroid (`Matroid.Union_pow_indep_iff_count`) with `M := G.cycleMatroid`.
 
 ## `Graph`-native `(k, ℓ)`-sparsity (`def:graph-sparse`)
 
@@ -36,33 +31,6 @@ those bars span (`Graph.spanningVerts`). That is the shape the union-independenc
 throughout (`Set.ncard`, `ℕ`, `[Finite]`). The count is written additively
 (`E'.ncard + ℓ ≤ k * V'.ncard`) to avoid `ℕ`-subtraction.
 -/
-
-namespace Matroid
-
-open Set Function
-
-variable {α : Type*}
-
-/-- **The rank of the union of `k` copies of one matroid** (a case of
-`thm:matroid-partition-rank`), in `Set`-`Y` / `ℕ` / `Set.ncard` / `[Finite]` form: the rank of
-`Matroid.Union (fun _ : Fin k ↦ M)` attains `min_Y (k · r_M(Y) + |Yᶜ|)`. The constant-family
-`Set`-side specialization of `Matroid.Union_rank_eq`. -/
-theorem Union_pow_rank_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) :
-    (∃ Y : Set α, k * M.rk Y + (univ \ Y).ncard ≤ (Matroid.Union (fun _ : Fin k ↦ M)).rank) ∧
-    (∀ Y : Set α, (Matroid.Union (fun _ : Fin k ↦ M)).rank ≤ k * M.rk Y + (univ \ Y).ncard) := by
-  have : Fintype α := Fintype.ofFinite α
-  classical
-  obtain ⟨⟨Y, hY⟩, hle⟩ := Union_rank_eq (fun _ : Fin k ↦ M)
-  have hsum : ∀ Y : Finset α, (∑ _i : Fin k, M.rk (Y : Set α)) = k * M.rk (Y : Set α) := by
-    intro Y; simp [Finset.sum_const]
-  have hcard : ∀ Y : Finset α, (Finset.univ \ Y).card = (univ \ (Y : Set α)).ncard := by
-    intro Y; simp only [← Finset.coe_univ, ← Finset.coe_sdiff, ncard_coe_finset]
-  refine ⟨⟨Y, ?_⟩, fun Y ↦ ?_⟩
-  · rw [hsum, hcard] at hY; exact hY
-  · obtain ⟨Yf, rfl⟩ := (Y.toFinite).exists_finset_coe
-    have := hle Yf; rw [hsum, hcard] at this; exact this
-
-end Matroid
 
 namespace Graph
 
@@ -99,23 +67,6 @@ lemma IsTight.isSparse {G : Graph α β} {k ℓ : ℕ} (h : G.IsTight k ℓ) : G
 
 open Set
 
-/-- **Cycle-matroid rank formula** (`eRk` form): for a bar set `E' ⊆ E(G)`, the rank of
-`E'` in `G.cycleMatroid` is `|V| - c(G ↾ E')`, additively `r(E') + c(G ↾ E') = |V|`. Here
-`c(G ↾ E')` is the number of connected components of the subgraph on the bars of `E'` (counting
-every vertex of `G`, including the isolated ones, as the matroid restriction keeps the full
-vertex set; Oxley 2011, (1.3.8), counts only the vertices the bars meet, as
-`cycleMatroid_eRk_add_numberOfComponents_spanningVerts` does). It specializes
-`Graph.eRank_cycleMatroid_add_numberOfComponents` (applied to `G ↾ E'`) to the rank of a subset,
-through the matroid-restriction bridge `(G ↾ E').cycleMatroid = G.cycleMatroid ↾ E'` and
-`Matroid.eRank_restrict`. -/
-lemma cycleMatroid_eRk_add_numberOfComponents_restrict {G : Graph α β} {E' : Set β}
-    (hE' : E' ⊆ E(G)) :
-    G.cycleMatroid.eRk E' + c(G ↾ E') = V(G).encard := by
-  have hbridge : G.cycleMatroid.eRk E' = (G ↾ E').cycleMatroid.eRank := by
-    simp only [cycleMatroid_restrict, inter_eq_right.mpr hE', Matroid.eRank_restrict]
-  rw [hbridge, eRank_cycleMatroid_add_numberOfComponents (G ↾ E')]
-  simp
-
 /-- The vertices `G.spanningVerts E'` spanned by a bar set `E' ⊆ E(G)` are exactly the
 non-isolated vertices of the edge-restricted subgraph `G ↾ E'`: deleting the isolated set
 `Isol(G ↾ E')` from the full vertex set `V(G ↾ E') = V(G)` leaves `spanningVerts E'`. This is
@@ -143,7 +94,7 @@ set `E' ⊆ E(G)`, `r(E') + c'(E') = |spanningVerts E'|`, where
 `c'(E') := c((G ↾ E') - Isol(G ↾ E'))` counts only the *non-trivial* components of the bars of
 `E'` (the isolated vertices of `V(G)` are deleted). This is the form the `(k, ℓ)`-sparsity count
 uses: both sides live on `spanningVerts E'`, without the singleton components of the isolated
-vertices that `cycleMatroid_eRk_add_numberOfComponents_restrict` counts on both sides. Proof:
+vertices, which the formula over all of `V(G)` counts on both sides. Proof:
 apply the full-vertex-set formula `Graph.eRank_cycleMatroid_add_numberOfComponents` to
 `(G ↾ E') - Isol(G ↾ E')`, whose cycle matroid agrees with `(G ↾ E')`'s
 (`cycleMatroid_deleteVerts_isolatedSet`) and whose vertex set is `spanningVerts E'`

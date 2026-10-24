@@ -1471,8 +1471,8 @@ sorry-grep + axiom-check all passed, and the abstract §(4.54) satisfiability sp
 bijection *vacuously* (abstract `m₁`/`m₂`/`p`); only reading the consumer cert's **actual**
 `re : m₁⊕m₂ → p` (a general function, with `card(m₁⊕m₂) = D(|V|−1) ≤ (D−1)|E| = card p`) exposed
 that no bijection exists generically — the leaves serve only the measure-zero isostatic-tight case.
-The fix (B1/B2: `exists_rowOp_of_strictInjection` + `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`)
-carries the row op as a *block op on `range re` + identity on the complement* via the EXTENDED equiv
+The fix (B1/B2: `exists_rowOp_of_strictInjection` + `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`,
+both since deleted) carries the row op as a *block op on `range re` + identity on the complement* via the EXTENDED equiv
 `(m₁⊕m₂) ⊕ (range re)ᶜ ≃ p`, and splits the product *entrywise* (`Fintype.sum_of_injective`), never
 needing an `Equiv` middle index. **The rule:** when a kernel is reshaped to tolerate a *weaker*
 structure (injection not bijection, `≤` not `=`, subset not partition), check that the *leaves built

@@ -65,9 +65,8 @@ volume-form change-of-variables fact `topEquiv_map_eq_det_smul` (`topEquiv (map 
 into `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` (which already supplies
 `Module.Basis.exteriorPower`, `finrank_eq`, and the `pairingDual` / `ιMultiDual` API);
 the Lean namespaces (`Set.powersetCard`, `exteriorPower`) match upstream conventions. The
-two companions on the exterior algebra go with them: `map_coe_eq_exteriorAlgebra_map`
-(`exteriorPower.map` is `ExteriorAlgebra.map` on the underlying element) and
-`ExteriorAlgebra.ιMulti_family_congr`.
+companion on the exterior algebra goes with them: `map_coe_eq_exteriorAlgebra_map`
+(`exteriorPower.map` is `ExteriorAlgebra.map` on the underlying element).
 
 See `DESIGN.md` *Mirror directory*.
 -/
@@ -200,20 +199,6 @@ theorem map_coe_eq_exteriorAlgebra_map {R : Type*} [CommRing R] {n : ℕ}
       exteriorPower.map_apply_ιMulti, exteriorPower.ιMulti_apply_coe, AlgHom.toLinearMap_apply,
       ExteriorAlgebra.map_apply_ιMulti]
   exact LinearMap.congr_fun hL X
-
-/-- Two `ExteriorAlgebra.ιMulti_family` wedges over the same family `v` agree whenever
-their cardinalities and their underlying finsets agree. The `m = n` cardinality cast
-(absent from the bare `ιMulti_family` API, whose index `s` lives in
-`Set.powersetCard I m`) packaged so a wedge of a `Set.powersetCard`-glued index — e.g.
-the `disjUnion` of two complementary subsets at cardinality `j + (n - j)` — can be
-identified with one at the literal cardinality `n`. -/
-theorem _root_.ExteriorAlgebra.ιMulti_family_congr {R M : Type*} [CommRing R]
-    [AddCommGroup M] [Module R M] {I : Type*} [LinearOrder I] {m n : ℕ} (hmn : m = n)
-    (v : I → M) (s : Set.powersetCard I m) (t : Set.powersetCard I n)
-    (hst : (s : Finset I) = (t : Finset I)) :
-    ExteriorAlgebra.ιMulti_family R m v s = ExteriorAlgebra.ιMulti_family R n v t := by
-  subst hmn
-  exact congrArg _ (Subtype.ext hst)
 
 section PairingDual
 

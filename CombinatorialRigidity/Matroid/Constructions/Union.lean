@@ -551,8 +551,7 @@ theorem adjMap_rk_eq [DecidableEq β] [Finite α] [Finite β] (M : Matroid α)
 
 /-- **The rank of a set in the union of `k` copies of one matroid** (`thm:matroid-partition-rank`,
 the case `M₁ = ⋯ = M_k`), in `Set`/`ℕ`/`Set.ncard`/`[Finite]` form: for any `X`, the rank of `X`
-in `Matroid.Union (fun _ : Fin k ↦ M)` attains `min_{Y ⊆ X} (k · r_M(Y) + |X \ Y|)`. Its
-`X := univ` case is `Union_pow_rank_eq` (`BodyBar/TreePacking.lean`), and
+in `Matroid.Union (fun _ : Fin k ↦ M)` attains `min_{Y ⊆ X} (k · r_M(Y) + |X \ Y|)`.
 `Union_pow_indep_iff_count` reads the independence criterion off it. -/
 theorem Union_pow_rk_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) (X : Set α) :
     (∃ Y ⊆ X, k * M.rk Y + (X \ Y).ncard ≤ (Matroid.Union (fun _ : Fin k ↦ M)).rk X) ∧
