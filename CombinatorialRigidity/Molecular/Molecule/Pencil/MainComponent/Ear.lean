@@ -1333,13 +1333,6 @@ theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Fini
   set ends := G.endsOf
   have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsI : ∀ f u w, (G.induce V₁).IsLink f u w →
-      (G.induce V₁).IsLink f (ends f).1 (ends f).2 := by
-    intro f u w hf
-    have hl := hends f u w hf.1
-    rcases hl.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
-    · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
   -- the picture: generic for `G[V₁]`, main for `G`, the joins independent at `zs`
   obtain ⟨Plam, hPlam₀, hPlam⟩ :=
     exists_mvPolynomial_linearIndependent_pointJoin_picture zs u v hcert
@@ -1362,8 +1355,8 @@ theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Fini
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
   have hli := hRlam z hzlam
   rw [Graph.vertexSet_induce G V₁] at hr₁
-  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hends₁ hendsI
-    (q' := fun p => pencilConfigPoint q z p.1 p.2)
+  rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hends₁
+    (G.isLink_ends_induce hends V₁) (q' := fun p => pencilConfigPoint q z p.1 p.2)
     (fun w hw t => pencilConfigPoint_liftingRestrict V₁ q z hw t)] at hr₁
   -- the ear rank formula at `ofNormals G ends`, with `n` independent ear hinges
   set F := (PanelHingeFramework.ofNormals (k := 2) G ends
@@ -1379,12 +1372,7 @@ theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Fini
   rw [Fintype.card_fin] at hdim
   -- the body count
   have hcard : (V(G).ncard : ℤ) = V₁.ncard + k := by
-    rw [hcover, Set.ncard_union_eq _ (Set.toFinite _) (Set.toFinite _),
-      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
-    · push_cast; ring
-    · refine Set.disjoint_left.mpr ?_
-      rintro _ h ⟨i, rfl⟩
-      exact hxV₁ i h
+    rw [hcover]; exact_mod_cast Set.ncard_union_range_of_injective hinj hxV₁
   refine Graph.x0Attains_of_exists hV ends hends hqmain hz ?_
   have e1 : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce V₁)

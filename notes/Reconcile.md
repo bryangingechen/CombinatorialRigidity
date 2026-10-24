@@ -115,9 +115,12 @@ the others give, and stated `Pair2.lean`'s step `v = v_c` once for seven copies 
 `F-327`), restating `lem:pencil-generic-steer` (b); task 38.23 gave four `MainComponent/` proofs
 the mirror lemma `LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero` for the step they wrote
 out, re-proved four lemmas by existing ones and dropped `[Finite α]`, a repeated binder and a `hinj`
-(`F-309`–`F-312`, the new `F-328` for three more copies), no node restated.
-**Next concrete task:** round 3's task 38.24, `MainComponent/`'s shared steps (then tasks
-38.25–38.27 and the close).
+(`F-309`–`F-312`, the new `F-328` for three more copies), no node restated; task 38.24 stated
+`MainComponent/`'s two shared steps once, `Graph.isLink_ends_induce` at seven `hendsI` and the
+mirror `Set.ncard_union_range_of_injective` at seven body counts (`F-311`'s last, `F-316`'s
+`hcard`), no node restated.
+**Next concrete task:** round 3's task 38.25, `MainComponent/ContractCurve`, `Chain`,
+`ContractAdditive` and `Lines.lean` (then tasks 38.26–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

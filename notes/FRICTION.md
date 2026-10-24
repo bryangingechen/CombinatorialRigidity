@@ -273,6 +273,22 @@ to be re-derived by re-reading entries later.
   `?_`s are elaborated (the 2-cut layer entry's (1) above is the same order).
 - **Status:** idiom.
 
+### [idiom] `toFinite_tac` cannot see `Finite (range z)` below `Mathlib.Data.Set.Finite.Range`
+- **Where it bit:** RECONCILE round 3, task 38.24, the mirror `Set.ncard_union_range_of_injective`
+  (`Mathlib/Data/Set/Card.lean`, which imports only `Mathlib.Data.Set.Card`). (1) `ncard_union_eq h
+  hs` left its autoparam `ht : (range z).Finite` unsolved (*"could not synthesize default value for
+  parameter 'ht'"*): the instance `Set.finite_range` is in `Mathlib.Data.Set.Finite.Range`, outside
+  the file's imports, and `Set.finite_range` is an unknown constant there. (2) `ncard_union_eq
+  (disjoint_left.mpr fun _ h ⟨i, hi⟩ => …)` failed with *"Invalid `⟨...⟩` notation"*, the second
+  set still a metavariable (as task 38.23's entry above). (3) At a numeral, `push_cast` turned
+  `((s.ncard + 2 : ℕ) : ℤ) = s.ncard + 2` into `↑s.ncard + 2 = ↑s.ncard + 2` and stopped short of
+  closing it.
+- **Friction:** one MCP iteration each.
+- **Proposed fix:** (1) pass `image_univ (f := z) ▸ finite_univ.image z` (both in the import
+  closure); (2) `disjoint_right.mpr (forall_mem_range.mpr hzs)`, which needs no pattern; (3)
+  `exact_mod_cast` the `ℕ` lemma rather than `rw` it and `push_cast`.
+- **Status:** idiom.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while
@@ -3389,6 +3405,21 @@ limitations. Worth a once-over so future agents don't re-litigate.
   sites, so a named lemma saves no line; the sites keep it.
 
 ## Mirrored
+
+### [mirrored] `Set.ncard_union_range_of_injective` — adding `k` new elements listed by `Fin k` adds `k` to the cardinality
+- **Where it bit:** RECONCILE round 3, task 38.24 (`F-316`): the bodies of an ear or of a chain of
+  bridges, `|V₁ ∪ range x| = |V₁| + k` for an injective `x : Fin k → α` off `V₁`, written out (5 to
+  7 lines) in `Graph.X0Attains.of_openEar_splitOff` (`MainComponent/Short.lean`),
+  `Graph.X0Attains.of_openEar_of_cert` (`Ear.lean`), `Graph.X0Attains.of_openEar_one` and twice in
+  `Graph.X0Attains.of_openEar_two_of_splitOff` (`Orbit.lean`), `Graph.X0Attains.of_splitOff`
+  (`SplitOff.lean`) and `Graph.X0Attains.of_bridgePath` (`Cut.lean`).
+- **Friction:** four rewrites (`Set.ncard_union_eq`, `Set.ncard_range_of_injective`,
+  `Nat.card_eq_fintype_card`, `Fintype.card_fin`) and a three-line disjointness goal per site; no
+  mathlib lemma has the union with a range (`lean_loogle` `Set.ncard (_ ∪ Set.range _)`: none).
+- **Resolution:** mirrored at `Fin k`, the finiteness of `s` an autoparam as in
+  `Set.ncard_union_eq`; each site is now `rw [hcover]; exact_mod_cast …` (a term at the `ℕ` site).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Set/Card.lean`.
 
 ### [mirrored] `LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero` — a vector orthogonal to `n` independent vectors of `Kⁿ` is zero
 - **Where it bit:** RECONCILE round 3, task 38.23 (`F-309`, `F-310`): `Graph.finrank_affineLifts`,

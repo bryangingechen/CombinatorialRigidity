@@ -30,6 +30,12 @@ copy-paste. See `DESIGN.md` "Mirror directory".
   (which returns the subset); collapses the `exists_subset_card_eq` →
   `Set.Finite.fintype` → `Set.ncard_eq_toFinset_card'` /
   `Set.toFinset_card` → `Fintype.equivFinOfCardEq` chain.
+* `Set.ncard_union_range_of_injective` — adding `k` new elements, listed injectively by
+  `Fin k`, adds `k` to the cardinality: `(s ∪ range z).ncard = s.ncard + k`. Fuses
+  `Set.ncard_union_eq`, the disjointness of `s` and `range z`, `Set.ncard_range_of_injective`
+  and `Nat.card_fin`. The combinatorial-rigidity project uses it to count the bodies of an ear
+  or of a chain of bridges in `Molecular/Molecule/Pencil/MainComponent/` (`Cut.lean`,
+  `Ear.lean`, `Short.lean`, `Orbit.lean`, `SplitOff.lean`).
 -/
 
 @[expose] public section
@@ -71,5 +77,13 @@ theorem exists_injective_fin_of_le_ncard {s : Set α} {n : ℕ} (hns : n ≤ s.n
     let e : Fin n ≃ t := (Fintype.equivFinOfCardEq h_card_eq).symm
     exact ⟨fun i => (e i).val, fun _ _ hij => e.injective (Subtype.ext hij),
       fun i => hts (e i).property⟩
+
+/-- Adding `k` new elements, listed injectively by `Fin k`, to a finite set adds `k` to its
+cardinality: `s` and `range z` are disjoint, and `range z` has `k` elements. -/
+theorem ncard_union_range_of_injective {s : Set α} {k : ℕ} {z : Fin k → α}
+    (hz : Function.Injective z) (hzs : ∀ i, z i ∉ s) (hs : s.Finite := by toFinite_tac) :
+    (s ∪ range z).ncard = s.ncard + k := by
+  rw [ncard_union_eq (disjoint_right.mpr (forall_mem_range.mpr hzs)) hs
+    (image_univ (f := z) ▸ finite_univ.image z), ncard_range_of_injective hz, Nat.card_fin]
 
 end Set

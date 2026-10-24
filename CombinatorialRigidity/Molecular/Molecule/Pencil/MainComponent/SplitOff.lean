@@ -739,12 +739,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   refine Graph.x0Attains_of_exists hV ends hends hmt hzt' ?_
   rw [hc t] at hrk
   have hcount : (V(G).ncard : ℤ) = V₁.ncard + 1 := by
-    rw [hcover, Set.ncard_union_eq _ (Set.toFinite _) (Set.toFinite _),
-      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
-    · push_cast; ring
-    · refine Set.disjoint_left.mpr ?_
-      rintro _ h ⟨i, rfl⟩
-      exact hxV₁ i h
+    rw [hcover]; exact_mod_cast Set.ncard_union_range_of_injective hinj hxV₁
   rw [hVG''] at hr₁
   have hs6 : (screwDim 2 : ℤ) = 6 := rfl
   have hs6' : screwDim 2 = 6 := rfl

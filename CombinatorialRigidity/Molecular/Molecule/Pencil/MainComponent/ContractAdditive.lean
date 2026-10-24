@@ -155,13 +155,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
   set ends := G.endsOf with hendsdef
   have hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 :=
     fun e _ _ he => G.isLink_endsOf he.edge_mem
-  have hendsI : ∀ X : Set α, ∀ e u w, (G.induce X).IsLink e u w →
-      (G.induce X).IsLink e (ends e).1 (ends e).2 := by
-    intro X e u w he
-    have hl := hends e u w he.1
-    rcases hl.eq_and_eq_or_eq_and_eq he.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl, h1 ▸ he.2.1, h2 ▸ he.2.2⟩
-    · exact ⟨hl, h1 ▸ he.2.2, h2 ▸ he.2.1⟩
+  have hendsI := G.isLink_ends_induce hends
   have hendsD : ∀ e u w, (G.deleteEdges E(G.induce W)).IsLink e u w →
       (G.deleteEdges E(G.induce W)).IsLink e (ends e).1 (ends e).2 := by
     intro e u w he

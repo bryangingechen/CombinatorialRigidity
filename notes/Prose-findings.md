@@ -6369,13 +6369,16 @@ declaration's name as its header writes it:
   `pathVertex_eq_or_exists` from `pathVertex_cases`, on the standard axioms
   (`scratch/reconcile-lean/t3711/Hyps-t3711.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.11.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.23 and 38.24). Task 38.1: task
+  *Disposition:* done (task 38.24). Task 38.1: task
   38.23 replaces `X0Attains.of_bridgePath`'s `hpath₂` by `isLink_pathVertex_rev hpath` and re-proves
   `pathVertex_eq_or_exists` from `pathVertex_cases` (moved above it); task 38.24 states `hendsI`
   once (the selector of `G` gives every link of `G.induce X` its ends; 7 lines at each of the eight
   `have hendsI`, in `Cut.lean`, `Ear.lean`, `ContractAdditive.lean`, `Short.lean` and `Orbit.lean`).
   Left: `hcongr` (two sites, one file), `hmem` and `hxj` (a few lines each); round 3: `hpath₂` and
-  `pathVertex_eq_or_exists` done so (task 38.23).
+  `pathVertex_eq_or_exists` done so (task 38.23); `hendsI` stated once as `Graph.isLink_ends_induce`
+  (`Cut.lean`), at the seven copies of the 7-line step; the eighth `have`, `hendsI₁` of
+  `Graph.X0Attains.of_openEar_two_of_splitOff` (`Orbit.lean`), restricts the relinked selector of
+  `G₁` through `hendsI` and copies no step, so it stays (task 38.24).
 - **F-312** · L · repeated derivations and a derivable hypothesis in
   `Molecular/Molecule/Pencil/MainComponent/Ear.lean`. `panelSupportExtensor_mem_span_ofNormals`
   repeats the case split on the orientation of `Cut.lean`'s `span_supportExtensor_ofNormals_eq`,
@@ -6509,7 +6512,7 @@ declaration's name as its header writes it:
   derived from the others, on the standard axioms or fewer
   (`scratch/reconcile-lean/t3716/Hyps-t3716.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.16.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.24 and 38.26). Task 38.1: task
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.26). Task 38.1: task
   38.24 states `hcard` once (`|V₁ ∪ range z| = |V₁| + k` for an injective `z : Fin k → α` off `V₁`;
   a `Mathlib/` mirror on `Set.ncard` unless mathlib has it) at its six sites (`Short.lean`,
   `Ear.lean`, `Orbit.lean` three, `SplitOff.lean`); task 38.26 drops `exists_earBase_splitOff`'s
@@ -6518,7 +6521,10 @@ declaration's name as its header writes it:
   `of_openEar_three`). Left: `splitOff_ear_four`, `_three` and `F-317`'s `_two`, as a lemma at any
   number of interior bodies needs a new proof over `Fin k`; `hdeg2` (its lemma,
   `IsOpenEar.isLink_interior`, is downstream); the reindexing of the two ears' joins and the two
-  conjuncts at `a` and `b` (per side).
+  conjuncts at `a` and `b` (per side); round 3: `hcard` done so, the mirror
+  `Set.ncard_union_range_of_injective` in `Mathlib/Data/Set/Card.lean` (no `lean_loogle` hit), at
+  its six sites and at a seventh copy, `hcountS` of `Graph.X0Attains.of_bridgePath` (`Cut.lean`,
+  found here) (task 38.24).
 - **F-317** · L · repeated derivations and derivable hypotheses in
   `Molecular/Molecule/Pencil/MainComponent/Orbit.lean`. Derivable hypotheses: the `hinj` of
   `Graph.exists_oneEar_base` and `Graph.X0Attains.of_openEar_one` (a map out of `Fin 1` is

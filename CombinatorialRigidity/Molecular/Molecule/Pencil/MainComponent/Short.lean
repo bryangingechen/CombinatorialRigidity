@@ -457,13 +457,7 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
   set ends'' := Function.update ends e₀ (u, w) with hends''def
   have hends'' : ∀ f p p', H.IsLink f p p' → H.IsLink f (ends'' f).1 (ends'' f).2 :=
     fun f _ _ hf => G.isLink_update_splitOff hends hl₀ f hf
-  have hendsI : ∀ f p p', (G.induce V₁).IsLink f p p' →
-      (G.induce V₁).IsLink f (ends f).1 (ends f).2 := by
-    intro f p p' hf
-    have hl := hends f p p' hf.1
-    rcases hl.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
-    · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
+  have hendsI := G.isLink_ends_induce hends V₁
   have hnot : ∀ f p p', (G.induce V₁).IsLink f p p' → f ≠ e₀ := by
     rintro f p p' ⟨hf, hp, hp'⟩ rfl
     rcases he₀ p p' hf with h | h
@@ -709,13 +703,8 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
   have hadmy := hPa _ hsya
   -- the counts
   have hcard : ∀ {k : ℕ} {z : Fin k → α} {H : Graph α β}, V(H) = V₁ ∪ Set.range z →
-      Function.Injective z → (∀ i, z i ∉ V₁) → (V(H).ncard : ℤ) = V₁.ncard + k := by
-    intro k z H hc hi hz
-    have hd : Disjoint V₁ (Set.range z) :=
-      Set.disjoint_left.mpr fun _ h ⟨i, hi'⟩ => hz i (hi' ▸ h)
-    rw [hc, Set.ncard_union_eq hd (Set.toFinite _) (Set.toFinite _),
-      Set.ncard_range_of_injective hi, Nat.card_eq_fintype_card, Fintype.card_fin]
-    push_cast; ring
+      Function.Injective z → (∀ i, z i ∉ V₁) → (V(H).ncard : ℤ) = V₁.ncard + k :=
+    fun hc hi hz => by rw [hc]; exact_mod_cast Set.ncard_union_range_of_injective hi hz
   set f₁ := (G.induce V₁).deficiency 3
   have hdefG := Graph.deficiency_induce_add_le_of_ear (n := 3) (by decide) (by omega) hcover hinj
     hxV₁ ha hb hpath hsep

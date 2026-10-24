@@ -604,14 +604,7 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
   set ends := G.endsOf
   have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsI : ∀ f u w, (G.induce V₁).IsLink f u w →
-      (G.induce V₁).IsLink f (ends f).1 (ends f).2 := by
-    intro f u w hf
-    have hl := hends f u w hf.1
-    rcases hl.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
-    · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
-  have hr₁ := (hgood xk hxk hA).2.2 ends hendsI
+  have hr₁ := (hgood xk hxk hA).2.2 ends (G.isLink_ends_induce hends V₁)
   -- the ear rank formula, with two independent joins of the ear
   set F := (PanelHingeFramework.ofNormals (k := 2) G ends
     (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge
@@ -641,12 +634,7 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
   rw [Fintype.card_fin] at hdim
   -- the body count
   have hcount : (V(G).ncard : ℤ) = V₁.ncard + 1 := by
-    rw [hcover, Set.ncard_union_eq _ (Set.toFinite _) (Set.toFinite _),
-      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
-    · push_cast; ring
-    · refine Set.disjoint_left.mpr ?_
-      rintro _ h ⟨i, rfl⟩
-      exact hxV₁ i h
+    rw [hcover]; exact_mod_cast Set.ncard_union_range_of_injective hinj hxV₁
   refine Graph.x0Attains_of_exists hV ends hends hqmain hz ?_
   have e1 : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce V₁)
@@ -872,13 +860,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   set ends₁ := Function.update ends (e 1) (x 0, b) with hends₁def
   have hends₁ : ∀ f u w, G₁.IsLink f u w → G₁.IsLink f (ends₁ f).1 (ends₁ f).2 :=
     fun f _ _ hf => G.isLink_update_splitOff hends (hpath₁ 1) f hf
-  have hendsI : ∀ f u w, (G.induce V₁).IsLink f u w →
-      (G.induce V₁).IsLink f (ends f).1 (ends f).2 := by
-    intro f u w hf
-    have hl := hends f u w hf.1
-    rcases hl.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
-    · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
+  have hendsI := G.isLink_ends_induce hends V₁
   have hnot : ∀ f u w, (G.induce V₁).IsLink f u w → f ≠ e 1 := by
     rintro f u w ⟨hf, hu, hw⟩ rfl
     rcases he₁ u w hf with h | h
@@ -920,22 +902,10 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
     simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union]
   rw [hjoins₁] at hear₁
   -- the counts
-  have hdisj : Disjoint V₁ (Set.range x) := by
-    refine Set.disjoint_left.mpr ?_
-    rintro _ h ⟨i, rfl⟩
-    exact hxV₁ i h
   have hcount : (V(G).ncard : ℤ) = V₁.ncard + 2 := by
-    rw [hcover, Set.ncard_union_eq hdisj (Set.toFinite _) (Set.toFinite _),
-      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
-    push_cast; ring
+    rw [hcover]; exact_mod_cast Set.ncard_union_range_of_injective hinj hxV₁
   have hcount₁ : (V(G₁).ncard : ℤ) = V₁.ncard + 1 := by
-    have hdisj₁ : Disjoint V₁ (Set.range ![x 0]) := by
-      refine Set.disjoint_left.mpr ?_
-      rintro _ h ⟨i, rfl⟩
-      exact hxV₁₁ i h
-    rw [hcover₁, Set.ncard_union_eq hdisj₁ (Set.toFinite _) (Set.toFinite _),
-      Set.ncard_range_of_injective hinj₁, Nat.card_eq_fintype_card, Fintype.card_fin]
-    push_cast; ring
+    rw [hcover₁]; exact_mod_cast Set.ncard_union_range_of_injective hinj₁ hxV₁₁
   have hdeg2 : ∀ e' y', G.IsLink e' (x 1) y' → e' = e 1 ∨ e' = e 2 := by
     intro e' y' hl
     by_cases h : ∃ i, e' = e i

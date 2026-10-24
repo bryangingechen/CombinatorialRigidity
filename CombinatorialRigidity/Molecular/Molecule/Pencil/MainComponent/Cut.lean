@@ -67,6 +67,8 @@ admissible. It cuts once at the last bridge and adds up along the path; a single
   rank reads the normals only on `V(G)`, and the selector only up to the orientation of each link.
   `span_supportExtensor_ofNormals_eq`, a step of it and of `lem:pencil-splitoff-special-rank`: the
   hinge at a recorded link is the panel extensor of its two ends, in either orientation.
+  `Graph.isLink_ends_induce`: a selector recording every link of `G` records every link of an
+  induced subgraph, so the steps read the rank of a side at the selector of `G`.
 * `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`:
   `lem:pencil-three-points`, three points impose nothing: at an admissible picture every height
   agrees with an affine function on a closed neighbourhood with at most three members.
@@ -159,6 +161,19 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr {k : ℕ} 
       span_supportExtensor_ofNormals_eq hends q he, hnorm _ he.left_mem, hnorm _ he.right_mem]
   rw [BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
     BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions, hmot]
+
+/-- **A selector of `G` is a selector of each induced subgraph** (a step of `thm:pencil-x0-cut`,
+`thm:pencil-x0-bridge`, `thm:pencil-x0-contract-additive` and the open-ear steps, from
+`thm:pencil-x0-open-ear` to the steps at one to four interior bodies): if `ends` records every link
+of `G`, it records every link of `G.induce X`. A link of `G.induce X` is one of `G` with both ends
+in `X`, and `ends` gives it the same two ends in some order. -/
+theorem _root_.Graph.isLink_ends_induce {G : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2) (X : Set α) (f : β)
+    (u w : α) (hf : (G.induce X).IsLink f u w) : (G.induce X).IsLink f (ends f).1 (ends f).2 := by
+  have hl := hends f u w hf.1
+  rcases hl.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact ⟨hl, h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
+  · exact ⟨hl, h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
 
 /-! ## Heights restrict to a subgraph (`lem:pencil-lifting-restrict`) -/
 
@@ -362,13 +377,6 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
   set ends := G.endsOf with hendsdef
   have hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 :=
     fun e _ _ he => G.isLink_endsOf he.edge_mem
-  have hendsI : ∀ X : Set α, ∀ e u w, (G.induce X).IsLink e u w →
-      (G.induce X).IsLink e (ends e).1 (ends e).2 := by
-    intro X e u w he
-    have hl := hends e u w he.1
-    rcases hl.eq_and_eq_or_eq_and_eq he.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl, h1 ▸ he.2.1, h2 ▸ he.2.2⟩
-    · exact ⟨hl, h1 ▸ he.2.2, h2 ▸ he.2.1⟩
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -398,7 +406,8 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
         = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
     intro X endsX hendsX
-    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX (hendsI X) ?_
+    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX
+      (G.isLink_ends_induce hends X) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
   rw [Graph.vertexSet_induce G V₁] at hr₁
@@ -976,7 +985,7 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
   have hV : V(G).Nonempty := hG.connected.nonempty
   have : Inhabited α := ⟨hV.some⟩
   have : G.Loopless := hG.simple.toLoopless
-  set S := V₁ ∪ Set.range x with hSdef
+  set S := V₁ ∪ Set.range x
   have hSV : S ⊆ V(G) := hcover ▸ Set.subset_union_left
   have hV₁ : V₁ ⊆ V(G) := Set.subset_union_left.trans hSV
   have hV₂ : V₂ ⊆ V(G) := hcover ▸ Set.subset_union_right
@@ -995,13 +1004,6 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
   set ends := G.endsOf with hendsdef
   have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hendsI : ∀ X : Set α, ∀ f u w, (G.induce X).IsLink f u w →
-      (G.induce X).IsLink f (ends f).1 (ends f).2 := by
-    intro X f u w hf
-    have hl' := hends f u w hf.1
-    rcases hl'.eq_and_eq_or_eq_and_eq hf.1 with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · exact ⟨hl', h1 ▸ hf.2.1, h2 ▸ hf.2.2⟩
-    · exact ⟨hl', h1 ▸ hf.2.2, h2 ▸ hf.2.1⟩
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hP₁ hP₂) hPm)
   rw [map_mul, map_mul] at hq
   obtain ⟨-, R₁, ⟨z₁, hz₁, hR₁⟩, hatt₁⟩ := hgood₁ q (left_ne_zero_of_mul (left_ne_zero_of_mul hq))
@@ -1042,7 +1044,8 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
         = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           ends (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by
     intro X endsX hendsX
-    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX (hendsI X) ?_
+    refine PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hendsX
+      (G.isLink_ends_induce hends X) ?_
     intro x hx i
     exact pencilConfigPoint_liftingRestrict X q z hx i
   rw [Graph.vertexSet_induce G V₁] at hr₁
@@ -1075,12 +1078,7 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
     (by rw [hcut, Set.ncard_singleton])
   rw [hcut, Set.ncard_singleton, hVS] at hdef
   -- the body counts
-  have hcountS : S.ncard = V₁.ncard + k := by
-    rw [hSdef, Set.ncard_union_eq _ (Set.toFinite _) (Set.toFinite _),
-      Set.ncard_range_of_injective hinj, Nat.card_eq_fintype_card, Fintype.card_fin]
-    refine Set.disjoint_left.mpr ?_
-    rintro _ h ⟨i, rfl⟩
-    exact hxV₁ i h
+  have hcountS : S.ncard = V₁.ncard + k := Set.ncard_union_range_of_injective hinj hxV₁
   have hcount : V(G).ncard = S.ncard + V₂.ncard := by
     rw [hcover, Set.ncard_union_eq hSV₂ (Set.toFinite _) (Set.toFinite _)]
   refine Graph.x0Attains_of_exists hV ends hends hqmain hz ?_
