@@ -73,8 +73,11 @@ task 38.5 `RigidityMatrix/Concrete.lean` whole and the dead declarations of `Bas
 and `mem_hingeRowBlock_iff`'s move; task 38.6 the dead declarations of `Induction/`, thirty-two
 with an orphan and `F-282`'s repeated derivation; task 38.7 those of `Molecule/`, fifteen; task 38.8
 those of `Search/`, `PebbleGame/`, `Mathlib/`, `SquareGraph.lean` and `BodyBar/`, thirty-three with
-the orphans, `coe_pairingDualEquiv` kept as the witness of `def:meet-pairing-dual`. **Next concrete
-task:** round 3's task 38.9, L8's re-seeding (then tasks 38.10–38.27 and the close).
+the orphans, `coe_pairingDualEquiv` kept as the witness of `def:meet-pairing-dual`; task 38.9
+re-proved `exists_pencilSeed_of_nondeg` from a selector of each set and the re-seeding at given
+selectors (L8, `F-305`) and `pencilChartPoint_ofCoord_toCoord` from `pencilChartPoint_congr`,
+deleting twelve declarations. **Next concrete task:** round 3's task 38.10, the suppression sites
+(then tasks 38.11–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

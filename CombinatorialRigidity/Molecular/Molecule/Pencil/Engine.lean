@@ -6,7 +6,7 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
 
 /-!
-# The pencil chart in coordinates, and a realization in the chart
+# The pencil chart in coordinates, and `cross₃` of independent vectors
 
 Two parts of the proof of `lem:pencil-generic-steer` (`sec:main-component-statements`), on the chart
 of `Chart.lean`.
@@ -23,14 +23,12 @@ of the matrix of its coordinates (`exists_polynomial_ne_zero_of_linearIndependen
 over an infinite field, finitely many polynomials, each nonzero at some point, have a common
 non-root.
 
-The second writes a given nondegenerate realization in the chart, up to a nonzero scalar at each
-point, and at the normal of each body that is not a hub. At a body `v`, the normals of the closed
-hub-neighbourhood are independent, orthogonal to the point of `v` and at most three; completed by
-padding vectors to an independent triple orthogonal to the point, their `cross₃` is a nonzero
-multiple of it. The normal of a body that is not a hub comes in the same way from the points of the
-chart on its closed neighbourhood. `exists_pencilSeed_of_nondeg` (`Reseed.lean`) puts the two sides
-together. The file also computes the `cross₃` of three standard basis vectors, for part (a) of
-`lem:pencil-generic-steer` (`MainComponent/GenericSteer.lean`).
+The second gives three facts on `cross₃`. `cross₃` of three independent vectors is a nonzero
+multiple of any nonzero vector orthogonal to them, which writing a given nondegenerate realization
+in the chart uses (`exists_pencilSeed_of_nondeg_of_selectors`, `Reseed.lean`). The `cross₃` of three
+distinct standard basis vectors is a nonzero multiple of the fourth, for part (a) of
+`lem:pencil-generic-steer` (`MainComponent/GenericSteer.lean`). And a nonzero vector orthogonal to a
+nonzero `n` is `cross₃` of `n` and two more, for `lem:pencil-generic-pendant-triangle`.
 
 ## Main definitions
 
@@ -49,8 +47,8 @@ together. The file also computes the `cross₃` of three standard basis vectors,
 * `exists_common_seed_pencilRow_and_polynomials`: over an infinite field, rows independent at some
   `q₀` and finitely many polynomials, each nonzero at some point, are at one point independent and
   nonzero.
-* `exists_hubSel_fillHub_of_isNondegPencilRealization` and
-  `exists_nbrSel_fillNbr_of_isNondegPencilRealization`: the two sides of a realization in the chart.
+* `exists_smul_cross₃_eq_of_linearIndependent`: `cross₃` of three independent vectors is a multiple
+  of any nonzero vector orthogonal to them.
 -/
 
 open scoped Matrix
@@ -477,12 +475,13 @@ theorem exists_common_seed_pencilRow_and_polynomials [Finite α] [Finite β] [In
 To write a nondegenerate realization in the chart (the converse in the proof of
 `lem:pencil-generic-steer`), the point of each body is written as `cross₃` of the normals of its
 closed hub-neighbourhood, which are independent, orthogonal to the point and at most three,
-completed by padding vectors. With three normals no padding is left: `cross₃` of three independent
-vectors and a nonzero vector orthogonal to them lie in the space of the vectors orthogonal to the
-three, of dimension `1`, so each is a nonzero multiple of the other
+completed by padding vectors to an independent triple orthogonal to the point
+(`exists_fill_cross₃_eq_smul_of_selector`, `Reseed.lean`). `cross₃` of three independent vectors
+and a nonzero vector orthogonal to them lie in the space of the vectors orthogonal to the three, of
+dimension `1`, so each is a nonzero multiple of the other
 (`exists_smul_cross₃_eq_of_linearIndependent`). So the chart reproduces a realization up to a
 nonzero scalar at each point, which, as that proof notes, changes neither its nondegeneracy nor the
-line of any hinge. With fewer normals the point is reached exactly (the section after next). -/
+line of any hinge. -/
 
 /-- **`cross₃` of three independent vectors is a multiple of any nonzero vector orthogonal to them**
 (a step of `lem:pencil-generic-steer`): for independent `n₁, n₂, n₃` and `q ≠ 0` orthogonal to the
@@ -581,45 +580,21 @@ theorem exists_smul_pencilChartPoint_of_hubSlotNormal_eq_pi_single
     exists_smul_cross₃_pi_single (K := K) (hσd 0) (hσd 1) (hσd 2) h01 h02 h12
   exact ⟨cc, hcc, by rw [pencilChartPoint, hslot 0, hslot 1, hslot 2, hcross]⟩
 
-/-! ## A point as `cross₃` exactly, when a padding vector is free
+/-! ## A nonzero vector orthogonal to a nonzero `n` as `cross₃` of `n` and two more
 
-With at most two normals at a body, a padding vector is free, and the point is reached exactly. For
-independent `n₁, n₂`, the vectors `cross₃ n₁ n₂ z` are those orthogonal to both
-(`range_cross₃L_eq_perp`), so each of these is reached
-(`exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`). For a nonzero `n` orthogonal
-to a nonzero `q`, two vectors, each outside the span of those before it, complete `n` to an
-independent triple orthogonal to `q`, whose `cross₃` is a nonzero multiple of `q`, and rescaling the
-last vector gives `q` (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`). With no normal, any
-nonzero vector orthogonal to `q` serves as `n` (`exists_cross₃_eq_of_ne_zero`). -/
-
-/-- **A vector orthogonal to two independent vectors is their `cross₃` with a third** (a step of
-`lem:pencil-generic-steer`): for independent `n₁, n₂` and `q` orthogonal to both,
-`cross₃ n₁ n₂ z = q` for some `z`, as `q` lies in the space of the vectors orthogonal to both, the
-range of `cross₃ n₁ n₂ ·` (`range_cross₃L_eq_perp`). -/
-theorem exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero
-    {n₁ n₂ q : Fin 4 → K} (hLI : LinearIndependent K ![n₁, n₂])
-    (hq1 : q ⬝ᵥ n₁ = 0) (hq2 : q ⬝ᵥ n₂ = 0) :
-    ∃ z : Fin 4 → K, cross₃ n₁ n₂ z = q := by
-  have hmem : q ∈ (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂] j))
-      : Submodule K (Fin 4 → K)) := by
-    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
-      piBasisFun_toDual_eq_dotProduct]
-    intro j
-    fin_cases j
-    · simpa using hq1
-    · simpa using hq2
-  rw [← range_cross₃L_eq_perp n₁ n₂ hLI] at hmem
-  obtain ⟨z, hz⟩ := hmem
-  exact ⟨z, hz⟩
+For a nonzero `n` orthogonal to a nonzero `q`, two vectors, each outside the span of those before
+it, complete `n` to an independent triple orthogonal to `q`, whose `cross₃` is a nonzero multiple of
+`q`, and rescaling the last vector gives `q` (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`).
+The pendant triangle of `lem:pencil-generic-pendant-triangle` uses it
+(`MainComponent/GenericTriangle.lean`). -/
 
 /-- **A nonzero vector orthogonal to a nonzero `n` is `cross₃` of `n` and two more** (a step of
-`lem:pencil-generic-steer` and `lem:pencil-generic-pendant-triangle`): for `n ≠ 0` and `q ≠ 0`
-orthogonal to it, there are `y`, `z` with `![n, y, z]` linearly independent and `cross₃ n y z = q`.
-The vectors orthogonal to `q` form a space of dimension `3` (`finrank_toDualPerp_single_eq`) that
-holds `n`; two vectors of it, each outside the span of those before it, complete `n` to an
-independent triple there, whose `cross₃` is `c • q` with `c ≠ 0`
-(`exists_smul_cross₃_eq_of_linearIndependent`); and multiplying the last vector by `c⁻¹` gives `q`
-(`cross₃_smul_thd`) and keeps the triple independent. -/
+`lem:pencil-generic-pendant-triangle`): for `n ≠ 0` and `q ≠ 0` orthogonal to it, there are `y`,
+`z` with `![n, y, z]` linearly independent and `cross₃ n y z = q`. The vectors orthogonal to `q`
+form a space of dimension `3` (`finrank_toDualPerp_single_eq`) that holds `n`; two vectors of it,
+each outside the span of those before it, complete `n` to an independent triple there, whose
+`cross₃` is `c • q` with `c ≠ 0` (`exists_smul_cross₃_eq_of_linearIndependent`); and multiplying
+the last vector by `c⁻¹` gives `q` (`cross₃_smul_thd`) and keeps the triple independent. -/
 theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
     (hn : n ≠ 0) (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
     ∃ y z : Fin 4 → K, LinearIndependent K ![n, y, z] ∧ cross₃ n y z = q := by
@@ -663,525 +638,5 @@ theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
       funext i; fin_cases i <;> simp [Units.smul_def]
     rwa [heq] at hw
   · rw [cross₃_smul_thd, hc, inv_smul_smul₀ hcne]
-
-/-- **A nonzero vector is `cross₃` of an independent triple** (a step of
-`lem:pencil-generic-steer`): for `q ≠ 0`, `cross₃ x y z = q` for some independent `x, y, z`. Take
-for `x` a nonzero vector orthogonal to `q`, which exists as these form a space of dimension `3`
-(`finrank_toDualPerp_single_eq`), and apply `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`.
-Writing a realization in the chart uses it at a body whose closed hub-neighbourhood is empty. -/
-theorem exists_cross₃_eq_of_ne_zero {q : Fin 4 → K} (hq : q ≠ 0) :
-    ∃ x y z : Fin 4 → K, LinearIndependent K ![x, y, z] ∧ cross₃ x y z = q := by
-  set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
-  have hVdim : Module.finrank K V = 3 := finrank_toDualPerp_single_eq hq
-  obtain ⟨x, hxne⟩ := Module.finrank_pos_iff_exists_ne_zero.1 (show 0 < Module.finrank K V by omega)
-  have hxne' : (x : Fin 4 → K) ≠ 0 := fun h => hxne (Submodule.coe_eq_zero.1 h)
-  have hxq : q ⬝ᵥ (x : Fin 4 → K) = 0 := by
-    rw [dotProduct_comm]
-    simpa only [hV, LinearMap.mem_ker, LinearMap.flip_apply,
-      piBasisFun_toDual_eq_dotProduct] using x.2
-  obtain ⟨y, z, hLI, hxyz⟩ :=
-    exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero hxne' hq hxq
-  exact ⟨(x : Fin 4 → K), y, z, hLI, hxyz⟩
-
-/-! ## A realization in the chart: the hub selector and the points
-
-The points of a nondegenerate realization in the chart. At each body `v`
-(`exists_hubSlotOf_isNondegPencilRealization`), a selector `sel` of the closed hub-neighbourhood and
-padding vectors `fill` make the three slots `hubSlotOf normal sel fill i` independent and, when
-`v ∈ V(G)`, their `cross₃` a nonzero multiple of the point of `v`. There the closed
-hub-neighbourhood has at most three members
-(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, `Motive.lean`), and each number of
-members has its lemma: `exists_cross₃_eq_of_ne_zero`,
-`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero` and
-`exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`, with the scalar `1`, and
-`exists_smul_cross₃_eq_of_linearIndependent`. At a body outside `V(G)` the closed hub-neighbourhood
-is empty, and an independent triple fills the three slots.
-
-Choosing these at every body (`exists_hubSel_fillHub_of_isNondegPencilRealization`) gives the
-selector `hubSel` and the padding `fillHub` of the chart, whatever its `fillNbr`: the slots of
-`hubSel` at the parameters `⟨normal, fillHub, fillNbr⟩` are those of `hubSlotOf` by definition.
-`exists_pencilSeed_of_nondeg_of_selectors` (`Reseed.lean`) does the same at any given selectors. -/
-
-/-- **Slot `i` of a selector at one body** (a step of `lem:pencil-generic-steer`): `normal w` if
-`sel` puts `w` in slot `i`, and `fill i` if it leaves the slot empty. At the parameters
-`⟨normal, fillHub, fillNbr⟩`, slot `i` of `hubSel v` (`hubSlotNormal`) is
-`hubSlotOf normal (hubSel v) (fillHub v) i` by definition, for any `fillNbr`; the neighbour side
-uses it with the points of the chart in place of `normal`
-(`exists_nbrSlotOf_isNondegPencilRealization`). -/
-def hubSlotOf (normal : α → Fin 4 → K) (sel : Fin 3 → Option α)
-    (fill : Fin 3 → Fin 4 → K) (i : Fin 3) : Fin 4 → K :=
-  match sel i with
-  | some w => normal w
-  | none => fill i
-
-/-- **The points of a realization in the chart, at one body** (a step of
-`lem:pencil-generic-steer`): for a nondegenerate realization of `G` and a body `v`, there are a
-selector `sel` of `G.closedHubNbhd v` and padding vectors `fill` such that the three vectors
-`hubSlotOf normal sel fill i` are linearly independent and, if `v ∈ V(G)`, their `cross₃` is a
-nonzero multiple of `point v`. The proof takes the number of members of `G.closedHubNbhd v`, at most
-three, case by case, as the section header says. -/
-theorem exists_hubSlotOf_isNondegPencilRealization [Finite α]
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
-    (h : IsNondegPencilRealization G F normal point) (v : α) :
-    ∃ (sel : Fin 3 → Option α) (fill : Fin 3 → Fin 4 → K),
-      IsFin3SelectorOf (G.closedHubNbhd v) sel ∧
-      LinearIndependent K ![hubSlotOf normal sel fill 0, hubSlotOf normal sel fill 1,
-        hubSlotOf normal sel fill 2] ∧
-      (v ∈ V(G) → ∃ c : K, c ≠ 0 ∧
-        cross₃ (hubSlotOf normal sel fill 0) (hubSlotOf normal sel fill 1)
-          (hubSlotOf normal sel fill 2) = c • point v) := by
-  by_cases hv : v ∈ V(G)
-  · have hpt_ne : point v ≠ 0 := h.1.2.1 v hv
-    have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2.1 v hv
-    have hcard : (G.closedHubNbhd v).ncard ≤ 3 :=
-      ncard_closedHubNbhd_le_three_of_isNondegPencilRealization h hv
-    have hfin : (G.closedHubNbhd v).Finite := Set.toFinite _
-    have hcases : (G.closedHubNbhd v).ncard = 0 ∨ (G.closedHubNbhd v).ncard = 1 ∨
-        (G.closedHubNbhd v).ncard = 2 ∨ (G.closedHubNbhd v).ncard = 3 := by omega
-    rcases hcases with h0 | h1 | h2 | h3
-    · obtain ⟨x, y, z, hLI3, hxyz⟩ := exists_cross₃_eq_of_ne_zero hpt_ne
-      refine ⟨fun _ => none, ![x, y, z], ⟨?_, ?_, ?_⟩, ?_, fun _ => ⟨1, one_ne_zero, ?_⟩⟩
-      · intro i w hi; simp at hi
-      · intro w hw; rw [Set.ncard_eq_zero hfin] at h0; rw [h0] at hw; exact absurd hw (by simp)
-      · intro i j w hi; simp at hi
-      · change LinearIndependent K
-          ![(![x,y,z] : Fin 3 → Fin 4 → K) 0, (![x,y,z] : Fin 3 → Fin 4 → K) 1,
-            (![x,y,z] : Fin 3 → Fin 4 → K) 2]
-        simpa using hLI3
-      · change cross₃ ((![x,y,z] : Fin 3 → Fin 4 → K) 0) ((![x,y,z] : Fin 3 → Fin 4 → K) 1)
-          ((![x,y,z] : Fin 3 → Fin 4 → K) 2) = (1:K) • point v
-        simpa using hxyz
-    · obtain ⟨a, heq⟩ := Set.ncard_eq_one.mp h1
-      have hna : normal a ≠ 0 := by rw [heq] at hLI; exact (linearIndepOn_singleton_iff K).mp hLI
-      have hqn : point v ⬝ᵥ normal a = 0 :=
-        dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv (heq ▸ rfl)
-      obtain ⟨y, z, hLIyz, hxyz⟩ := exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero hna hpt_ne hqn
-      refine ⟨![some a, none, none], ![0, y, z], ⟨?_, ?_, ?_⟩, ?_, fun _ => ⟨1, one_ne_zero, ?_⟩⟩
-      · intro i w hi; fin_cases i <;> simp_all
-      · intro w hw; rw [heq] at hw
-        simp only [Set.mem_singleton_iff] at hw; exact ⟨0, by simp [hw]⟩
-      · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-      · have heqf : (![hubSlotOf normal ![some a, none, none] ![0,y,z] 0,
-            hubSlotOf normal ![some a, none, none] ![0,y,z] 1,
-            hubSlotOf normal ![some a, none, none] ![0,y,z] 2] : Fin 3 → Fin 4 → K)
-            = ![normal a, y, z] := by funext i; fin_cases i <;> rfl
-        rw [heqf]; exact hLIyz
-      · have hh0 : hubSlotOf normal ![some a, none, none] ![0,y,z] 0 = normal a := rfl
-        have hh1 : hubSlotOf normal ![some a, none, none] ![0,y,z] 1 = y := rfl
-        have hh2 : hubSlotOf normal ![some a, none, none] ![0,y,z] 2 = z := rfl
-        rw [hh0, hh1, hh2, one_smul]
-        exact hxyz
-    · obtain ⟨x, y, hxy, heq⟩ := Set.ncard_eq_two.mp h2
-      have hLIxy : LinearIndependent K ![normal x, normal y] := by
-        rw [LinearIndependent.pair_iff]
-        exact (LinearIndepOn.pair_iff normal hxy).mp (heq ▸ hLI)
-      have hqx : point v ⬝ᵥ normal x = 0 :=
-        dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv (heq ▸ Set.mem_insert x {y})
-      have hqy : point v ⬝ᵥ normal y = 0 :=
-        dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv (heq ▸ Set.mem_insert_of_mem x rfl)
-      obtain ⟨z, hxyz⟩ :=
-        exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero hLIxy hqx hqy
-      have hz_ne : cross₃ (normal x) (normal y) z ≠ 0 := hxyz ▸ hpt_ne
-      have hLI3 : LinearIndependent K ![normal x, normal y, z] :=
-        (cross₃_ne_zero_iff_linearIndependent _ _ _).mp hz_ne
-      refine ⟨![some x, some y, none], ![0, 0, z], ⟨?_, ?_, ?_⟩, ?_, fun _ => ⟨1, one_ne_zero, ?_⟩⟩
-      · intro i w hi; fin_cases i <;> simp_all
-      · intro w hw; rw [heq] at hw
-        rcases hw with rfl | rfl
-        · exact ⟨0, rfl⟩
-        · exact ⟨1, rfl⟩
-      · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-      · have heqf : (![hubSlotOf normal ![some x, some y, none] ![0,0,z] 0,
-            hubSlotOf normal ![some x, some y, none] ![0,0,z] 1,
-            hubSlotOf normal ![some x, some y, none] ![0,0,z] 2] : Fin 3 → Fin 4 → K)
-            = ![normal x, normal y, z] := by funext i; fin_cases i <;> rfl
-        rw [heqf]; exact hLI3
-      · have hh0 : hubSlotOf normal ![some x, some y, none] ![0,0,z] 0 = normal x := rfl
-        have hh1 : hubSlotOf normal ![some x, some y, none] ![0,0,z] 1 = normal y := rfl
-        have hh2 : hubSlotOf normal ![some x, some y, none] ![0,0,z] 2 = z := rfl
-        rw [hh0, hh1, hh2, one_smul]
-        exact hxyz
-    · obtain ⟨x, y, z, hxy, hxz, hyz, heq⟩ := Set.ncard_eq_three.mp h3
-      have hLI3 : LinearIndependent K ![normal x, normal y, normal z] :=
-        linearIndependent_triple_of_linearIndepOn normal hxy hxz hyz (heq ▸ hLI)
-      have hqx : point v ⬝ᵥ normal x = 0 :=
-        dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv
-          (heq ▸ (by simp : x ∈ ({x,y,z}:Set α)))
-      have hqy : point v ⬝ᵥ normal y = 0 :=
-        dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv
-          (heq ▸ (by simp : y ∈ ({x,y,z}:Set α)))
-      have hqz : point v ⬝ᵥ normal z = 0 :=
-        dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv
-          (heq ▸ (by simp : z ∈ ({x,y,z}:Set α)))
-      obtain ⟨c, hc, hcxyz⟩ := exists_smul_cross₃_eq_of_linearIndependent hLI3 hpt_ne hqx hqy hqz
-      refine ⟨![some x, some y, some z], ![0, 0, 0], ⟨?_, ?_, ?_⟩, ?_, fun _ => ⟨c, hc, ?_⟩⟩
-      · intro i w hi; fin_cases i <;> simp_all
-      · intro w hw; rw [heq] at hw
-        rcases hw with rfl | rfl | rfl
-        · exact ⟨0, rfl⟩
-        · exact ⟨1, rfl⟩
-        · exact ⟨2, rfl⟩
-      · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-      · have heqf : (![hubSlotOf normal ![some x, some y, some z] ![0,0,0] 0,
-            hubSlotOf normal ![some x, some y, some z] ![0,0,0] 1,
-            hubSlotOf normal ![some x, some y, some z] ![0,0,0] 2] : Fin 3 → Fin 4 → K)
-            = ![normal x, normal y, normal z] := by funext i; fin_cases i <;> rfl
-        rw [heqf]; exact hLI3
-      · have hh0 : hubSlotOf normal ![some x, some y, some z] ![0,0,0] 0 = normal x := rfl
-        have hh1 : hubSlotOf normal ![some x, some y, some z] ![0,0,0] 1 = normal y := rfl
-        have hh2 : hubSlotOf normal ![some x, some y, some z] ![0,0,0] 2 = normal z := rfl
-        rw [hh0, hh1, hh2]
-        exact hcxyz
-  · have hxne : (![1,0,0,0] : Fin 4 → K) ≠ 0 := by
-      intro heq0; have := congr_fun heq0 0; simp at this
-    obtain ⟨x, y, z, hLI3, _⟩ := exists_cross₃_eq_of_ne_zero hxne
-    refine ⟨fun _ => none, ![x, y, z], ⟨?_, ?_, ?_⟩, ?_, fun hcon => absurd hcon hv⟩
-    · intro i w hi; simp at hi
-    · intro w hw
-      have hempty : G.closedHubNbhd v = ∅ := by
-        ext w
-        simp only [Graph.closedHubNbhd, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
-        rintro ⟨hPencilHub, rfl | ⟨e, hlink⟩⟩
-        · exact hv hPencilHub.1
-        · exact hv hlink.left_mem
-      rw [hempty] at hw; exact absurd hw (by simp)
-    · intro i j w hi; simp at hi
-    · change LinearIndependent K
-        ![(![x,y,z] : Fin 3 → Fin 4 → K) 0, (![x,y,z] : Fin 3 → Fin 4 → K) 1,
-          (![x,y,z] : Fin 3 → Fin 4 → K) 2]
-      simpa using hLI3
-
-/-- **The points of a realization in the chart** (a step of `lem:pencil-generic-steer`): for a
-nondegenerate realization of `G`, there are a hub selector `hubSel` and padding `fillHub` such that
-`hubSel v` lists `G.closedHubNbhd v` at every body, and, for every `fillNbr`, at the parameters
-`⟨normal, fillHub, fillNbr⟩`, the three slots of `hubSel v` are independent at every body and the
-point of each `v ∈ V(G)` is a nonzero multiple of `point v`: the first and third conditions of
-`PencilChartWF`, and the points reproduced up to scalars. `choose` turns
-`exists_hubSlotOf_isNondegPencilRealization` into the two functions. `exists_pencilSeed_of_nondeg`
-(`Reseed.lean`) uses it with the neighbour side,
-`exists_nbrSel_fillNbr_of_isNondegPencilRealization`. -/
-theorem exists_hubSel_fillHub_of_isNondegPencilRealization [Finite α]
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
-    (h : IsNondegPencilRealization G F normal point) :
-    ∃ (hubSel : α → Fin 3 → Option α) (fillHub : α → Fin 3 → Fin 4 → K),
-      (∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) ∧
-      ∀ fillNbr : α → Fin 3 → Fin 4 → K,
-        (∀ v, LinearIndependent K
-          ![hubSlotNormal ⟨normal, fillHub, fillNbr⟩ hubSel v 0,
-            hubSlotNormal ⟨normal, fillHub, fillNbr⟩ hubSel v 1,
-            hubSlotNormal ⟨normal, fillHub, fillNbr⟩ hubSel v 2]) ∧
-        (∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧
-          pencilChartPoint ⟨normal, fillHub, fillNbr⟩ hubSel v = c • point v) := by
-  choose hubSel fillHub hsel hLI hpt using fun v => exists_hubSlotOf_isNondegPencilRealization h v
-  exact ⟨hubSel, fillHub, hsel, fun fillNbr => ⟨fun v => hLI v, fun v hv => hpt v hv⟩⟩
-
-/-! ## A realization in the chart: the neighbour selector and the normals
-
-The normals of a nondegenerate realization in the chart, at the bodies that are not hubs; at a hub
-the normal of the chart is `hubNormal` (`pencilChartNormal_of_pencilHub`), which
-`exists_pencilSeed_of_nondeg` sets to the normal of the realization. They come from the points of
-the chart already chosen, not from those of the realization, as the slots `nbrSlotPoint` of
-`pencilChartNormal` hold points of the chart. So the step at one body
-(`exists_nbrSlotOf_isNondegPencilRealization`) takes any family `pt` of nonzero vectors with `pt w`
-a nonzero multiple of `point w` at each `w ∈ V(G)`. At `v ∈ V(G)` that is not a hub, the points of
-the closed neighbourhood are independent, by nondegeneracy, and so are their multiples
-(`LinearIndependent.units_smul`); they are orthogonal to the normal of `v`
-(`dotProduct_normal_eq_zero_of_mem_closedNbhd`, `Motive.lean`), and there are one to three of them
-(`ncard_closedNbhd_le_three_of_not_pencilHub`; `v` is one), so a lemma above gives a nonzero
-multiple of `normal v`. At `v ∉ V(G)` the closed neighbourhood is `{v}`, and an independent triple
-that starts with `pt v` fills the slots (`exists_linearIndependent_triple_of_ne_zero`).
-
-Choosing these at every body (`exists_nbrSel_fillNbr_of_isNondegPencilRealization`), with `pt` the
-points of the hub side, gives the neighbour selector `nbrSel` and the padding `fillNbr`. -/
-
-/-- **A nonzero vector of `K⁴` starts an independent triple** (a step of
-`lem:pencil-generic-steer`): for `n ≠ 0`, there are `y`, `z` with `![n, y, z]` linearly independent:
-`y` outside the span of `n`, of dimension `1`, and `z` outside that of `n` and `y`, of dimension
-`2`, both less than `4`. `exists_nbrSlotOf_isNondegPencilRealization` uses it at a body outside
-`V(G)`. -/
-theorem exists_linearIndependent_triple_of_ne_zero {n : Fin 4 → K} (hn : n ≠ 0) :
-    ∃ y z : Fin 4 → K, LinearIndependent K ![n, y, z] := by
-  have hnLI : LinearIndependent K (![n] : Fin 1 → Fin 4 → K) := by
-    rw [linearIndependent_unique_iff]; simpa using hn
-  obtain ⟨y, hy⟩ :
-      ∃ y : Fin 4 → K, y ∉ Submodule.span K (Set.range (![n] : Fin 1 → Fin 4 → K)) := by
-    by_contra hcon
-    push Not at hcon
-    have htop : Submodule.span K (Set.range (![n] : Fin 1 → Fin 4 → K)) = ⊤ :=
-      Submodule.eq_top_iff'.mpr hcon
-    have h1 : Module.finrank K
-        (Submodule.span K (Set.range (![n] : Fin 1 → Fin 4 → K))) = 1 := by
-      rw [finrank_span_eq_card hnLI]; simp
-    rw [htop, finrank_top, Module.finrank_fin_fun] at h1
-    omega
-  have hnyLI : LinearIndependent K (![n, y] : Fin 2 → Fin 4 → K) := by
-    have hsnoc := linearIndependent_finSnoc.mpr ⟨hnLI, hy⟩
-    rwa [show Fin.snoc (![n] : Fin 1 → Fin 4 → K) y = ![n, y] from by
-      funext i; fin_cases i <;> simp] at hsnoc
-  obtain ⟨z, hz⟩ :
-      ∃ z : Fin 4 → K, z ∉ Submodule.span K (Set.range (![n, y] : Fin 2 → Fin 4 → K)) := by
-    by_contra hcon
-    push Not at hcon
-    have htop : Submodule.span K (Set.range (![n, y] : Fin 2 → Fin 4 → K)) = ⊤ :=
-      Submodule.eq_top_iff'.mpr hcon
-    have h2 : Module.finrank K
-        (Submodule.span K (Set.range (![n, y] : Fin 2 → Fin 4 → K))) = 2 := by
-      rw [finrank_span_eq_card hnyLI]; simp
-    rw [htop, finrank_top, Module.finrank_fin_fun] at h2
-    omega
-  refine ⟨y, z, ?_⟩
-  have hsnoc := linearIndependent_finSnoc.mpr ⟨hnyLI, hz⟩
-  rwa [show Fin.snoc (![n, y] : Fin 2 → Fin 4 → K) z = ![n, y, z] from by
-    funext i; fin_cases i <;> simp] at hsnoc
-
-/-- **The normals of a realization in the chart, at one body** (a step of
-`lem:pencil-generic-steer`): for a nondegenerate realization of `G`, a family `pt` of nonzero
-vectors with `pt w` a nonzero multiple of `point w` at each `w ∈ V(G)`, and a body `v` that is not a
-pencil hub, there are a selector `sel` of `G.closedNbhd v` and padding vectors `fill` such that the
-three vectors `hubSlotOf pt sel fill i` are linearly independent and, if `v ∈ V(G)`, their `cross₃`
-is a nonzero multiple of `normal v`. At a hub nothing is asked. The proof takes the cases of the
-section header. -/
-theorem exists_nbrSlotOf_isNondegPencilRealization [Finite α] [Finite β]
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point pt : α → Fin 4 → K}
-    (h : IsNondegPencilRealization G F normal point)
-    (hpt_ne : ∀ v, pt v ≠ 0) (hpt : ∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧ pt v = c • point v) (v : α) :
-    ∃ (sel : Fin 3 → Option α) (fill : Fin 3 → Fin 4 → K),
-      (¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) sel) ∧
-      (¬ G.PencilHub v → LinearIndependent K
-        ![hubSlotOf pt sel fill 0, hubSlotOf pt sel fill 1, hubSlotOf pt sel fill 2]) ∧
-      (v ∈ V(G) → ¬ G.PencilHub v → ∃ d : K, d ≠ 0 ∧
-        cross₃ (hubSlotOf pt sel fill 0) (hubSlotOf pt sel fill 1) (hubSlotOf pt sel fill 2)
-          = d • normal v) := by
-  by_cases hhub : G.PencilHub v
-  · exact ⟨fun _ => none, fun _ => 0, fun hcon => absurd hhub hcon, fun hcon => absurd hhub hcon,
-      fun _ hcon => absurd hhub hcon⟩
-  · by_cases hv : v ∈ V(G)
-    · have hcard : (G.closedNbhd v).ncard ≤ 3 := ncard_closedNbhd_le_three_of_not_pencilHub hhub
-      have hfin : (G.closedNbhd v).Finite := Set.toFinite _
-      have hcases : (G.closedNbhd v).ncard = 0 ∨ (G.closedNbhd v).ncard = 1 ∨
-          (G.closedNbhd v).ncard = 2 ∨ (G.closedNbhd v).ncard = 3 := by omega
-      rcases hcases with h0 | h1 | h2 | h3
-      · exfalso
-        rw [Set.ncard_eq_zero hfin] at h0
-        have hvmem : v ∈ G.closedNbhd v := Or.inl rfl
-        rw [h0] at hvmem
-        simp at hvmem
-      · obtain ⟨a, heq⟩ := Set.ncard_eq_one.mp h1
-        have hSel : IsFin3SelectorOf (G.closedNbhd v) (![some a, none, none]) := by
-          clear h hpt hpt_ne
-          refine ⟨?_, ?_, ?_⟩
-          · intro i w hi; fin_cases i <;> simp_all
-          · intro w hw; rw [heq] at hw
-            simp only [Set.mem_singleton_iff] at hw; exact ⟨0, by simp [hw]⟩
-          · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-        have hLI_point : LinearIndepOn K point (G.closedNbhd v) := h.2.2.2 v hv hhub
-        have hpa_ne : point a ≠ 0 := by
-          rw [heq] at hLI_point; exact (linearIndepOn_singleton_iff K).mp hLI_point
-        have haV : a ∈ V(G) := Graph.closedNbhd_subset_vertexSet hv (heq ▸ rfl)
-        obtain ⟨ca, hca_ne, hca_eq⟩ := hpt a haV
-        have hpta_ne : pt a ≠ 0 := by rw [hca_eq]; exact smul_ne_zero hca_ne hpa_ne
-        have hqa : normal v ⬝ᵥ pt a = 0 := by
-          rw [hca_eq, dotProduct_smul]
-          have hh : point a ⬝ᵥ normal v = 0 :=
-            dotProduct_normal_eq_zero_of_mem_closedNbhd h hv (heq ▸ rfl)
-          rw [dotProduct_comm] at hh
-          rw [hh, smul_zero]
-        obtain ⟨y, z, hLIyz, hxyz⟩ :=
-          exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero hpta_ne (h.1.1.2.1 v hv) hqa
-        refine ⟨![some a, none, none], ![0, y, z], fun _ => hSel, fun _ => ?_,
-          fun _ _ => ⟨1, one_ne_zero, ?_⟩⟩
-        · have heqf : (![hubSlotOf pt ![some a, none, none] ![0,y,z] 0,
-              hubSlotOf pt ![some a, none, none] ![0,y,z] 1,
-              hubSlotOf pt ![some a, none, none] ![0,y,z] 2] : Fin 3 → Fin 4 → K)
-              = ![pt a, y, z] := by funext i; fin_cases i <;> rfl
-          rw [heqf]; exact hLIyz
-        · have hh0 : hubSlotOf pt ![some a, none, none] ![0,y,z] 0 = pt a := rfl
-          have hh1 : hubSlotOf pt ![some a, none, none] ![0,y,z] 1 = y := rfl
-          have hh2 : hubSlotOf pt ![some a, none, none] ![0,y,z] 2 = z := rfl
-          rw [hh0, hh1, hh2, one_smul]
-          exact hxyz
-      · obtain ⟨x, y, hxy, heq⟩ := Set.ncard_eq_two.mp h2
-        have hSel : IsFin3SelectorOf (G.closedNbhd v) (![some x, some y, none]) := by
-          clear h hpt hpt_ne
-          refine ⟨?_, ?_, ?_⟩
-          · intro i w hi; fin_cases i <;> simp_all
-          · intro w hw; rw [heq] at hw
-            rcases hw with rfl | rfl
-            · exact ⟨0, rfl⟩
-            · exact ⟨1, rfl⟩
-          · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-        have hLI_point : LinearIndepOn K point (G.closedNbhd v) := h.2.2.2 v hv hhub
-        have hLI2 : LinearIndependent K ![point x, point y] := by
-          rw [LinearIndependent.pair_iff]
-          exact (LinearIndepOn.pair_iff point hxy).mp (heq ▸ hLI_point)
-        have hxV : x ∈ V(G) := Graph.closedNbhd_subset_vertexSet hv (heq ▸ Set.mem_insert x {y})
-        have hyV : y ∈ V(G) :=
-          Graph.closedNbhd_subset_vertexSet hv (heq ▸ Set.mem_insert_of_mem x rfl)
-        obtain ⟨cx, hcx_ne, hcx_eq⟩ := hpt x hxV
-        obtain ⟨cy, hcy_ne, hcy_eq⟩ := hpt y hyV
-        have hLI2' : LinearIndependent K ![pt x, pt y] := by
-          have hw : LinearIndependent K
-              ((![Units.mk0 cx hcx_ne, Units.mk0 cy hcy_ne] : Fin 2 → Kˣ) •
-                (![point x, point y] : Fin 2 → Fin 4 → K)) := hLI2.units_smul _
-          have heq2 : ((![Units.mk0 cx hcx_ne, Units.mk0 cy hcy_ne] : Fin 2 → Kˣ) •
-              (![point x, point y] : Fin 2 → Fin 4 → K)) = ![pt x, pt y] := by
-            funext i; fin_cases i <;> simp [Units.smul_def, hcx_eq, hcy_eq]
-          rwa [heq2] at hw
-        have hqx : normal v ⬝ᵥ pt x = 0 := by
-          rw [hcx_eq, dotProduct_smul]
-          have hh : point x ⬝ᵥ normal v = 0 := dotProduct_normal_eq_zero_of_mem_closedNbhd h hv
-            (heq ▸ Set.mem_insert x {y})
-          rw [dotProduct_comm] at hh
-          rw [hh, smul_zero]
-        have hqy : normal v ⬝ᵥ pt y = 0 := by
-          rw [hcy_eq, dotProduct_smul]
-          have hh : point y ⬝ᵥ normal v = 0 := dotProduct_normal_eq_zero_of_mem_closedNbhd h hv
-            (heq ▸ Set.mem_insert_of_mem x rfl)
-          rw [dotProduct_comm] at hh
-          rw [hh, smul_zero]
-        obtain ⟨z, hxyz⟩ :=
-          exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero hLI2' hqx hqy
-        have hz_ne : cross₃ (pt x) (pt y) z ≠ 0 := hxyz ▸ h.1.1.2.1 v hv
-        have hLI3 : LinearIndependent K ![pt x, pt y, z] :=
-          (cross₃_ne_zero_iff_linearIndependent _ _ _).mp hz_ne
-        refine ⟨![some x, some y, none], ![0, 0, z], fun _ => hSel, fun _ => ?_,
-          fun _ _ => ⟨1, one_ne_zero, ?_⟩⟩
-        · have heqf : (![hubSlotOf pt ![some x, some y, none] ![0,0,z] 0,
-              hubSlotOf pt ![some x, some y, none] ![0,0,z] 1,
-              hubSlotOf pt ![some x, some y, none] ![0,0,z] 2] : Fin 3 → Fin 4 → K)
-              = ![pt x, pt y, z] := by funext i; fin_cases i <;> rfl
-          rw [heqf]; exact hLI3
-        · have hh0 : hubSlotOf pt ![some x, some y, none] ![0,0,z] 0 = pt x := rfl
-          have hh1 : hubSlotOf pt ![some x, some y, none] ![0,0,z] 1 = pt y := rfl
-          have hh2 : hubSlotOf pt ![some x, some y, none] ![0,0,z] 2 = z := rfl
-          rw [hh0, hh1, hh2, one_smul]
-          exact hxyz
-      · obtain ⟨x, y, z, hxy, hxz, hyz, heq⟩ := Set.ncard_eq_three.mp h3
-        have hSel : IsFin3SelectorOf (G.closedNbhd v) (![some x, some y, some z]) := by
-          clear h hpt hpt_ne
-          refine ⟨?_, ?_, ?_⟩
-          · intro i w hi; fin_cases i <;> simp_all
-          · intro w hw; rw [heq] at hw
-            rcases hw with rfl | rfl | rfl
-            · exact ⟨0, rfl⟩
-            · exact ⟨1, rfl⟩
-            · exact ⟨2, rfl⟩
-          · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-        have hLI_point : LinearIndepOn K point (G.closedNbhd v) := h.2.2.2 v hv hhub
-        have hLI3 : LinearIndependent K ![point x, point y, point z] :=
-          linearIndependent_triple_of_linearIndepOn point hxy hxz hyz (heq ▸ hLI_point)
-        have hxV : x ∈ V(G) :=
-          Graph.closedNbhd_subset_vertexSet hv (heq ▸ (by simp : x ∈ ({x,y,z}:Set α)))
-        have hyV : y ∈ V(G) :=
-          Graph.closedNbhd_subset_vertexSet hv (heq ▸ (by simp : y ∈ ({x,y,z}:Set α)))
-        have hzV : z ∈ V(G) :=
-          Graph.closedNbhd_subset_vertexSet hv (heq ▸ (by simp : z ∈ ({x,y,z}:Set α)))
-        obtain ⟨cx, hcx_ne, hcx_eq⟩ := hpt x hxV
-        obtain ⟨cy, hcy_ne, hcy_eq⟩ := hpt y hyV
-        obtain ⟨cz, hcz_ne, hcz_eq⟩ := hpt z hzV
-        have hLI3' : LinearIndependent K ![pt x, pt y, pt z] := by
-          have hw : LinearIndependent K
-              ((![Units.mk0 cx hcx_ne, Units.mk0 cy hcy_ne, Units.mk0 cz hcz_ne] : Fin 3 → Kˣ) •
-                (![point x, point y, point z] : Fin 3 → Fin 4 → K)) := hLI3.units_smul _
-          have heq2 : ((![Units.mk0 cx hcx_ne, Units.mk0 cy hcy_ne, Units.mk0 cz hcz_ne]
-              : Fin 3 → Kˣ) •
-              (![point x, point y, point z] : Fin 3 → Fin 4 → K)) = ![pt x, pt y, pt z] := by
-            funext i; fin_cases i <;> simp [Units.smul_def, hcx_eq, hcy_eq, hcz_eq]
-          rwa [heq2] at hw
-        have hqx : normal v ⬝ᵥ pt x = 0 := by
-          rw [hcx_eq, dotProduct_smul]
-          have hh : point x ⬝ᵥ normal v = 0 := dotProduct_normal_eq_zero_of_mem_closedNbhd h hv
-            (heq ▸ (by simp : x ∈ ({x,y,z}:Set α)))
-          rw [dotProduct_comm] at hh
-          rw [hh, smul_zero]
-        have hqy : normal v ⬝ᵥ pt y = 0 := by
-          rw [hcy_eq, dotProduct_smul]
-          have hh : point y ⬝ᵥ normal v = 0 := dotProduct_normal_eq_zero_of_mem_closedNbhd h hv
-            (heq ▸ (by simp : y ∈ ({x,y,z}:Set α)))
-          rw [dotProduct_comm] at hh
-          rw [hh, smul_zero]
-        have hqz : normal v ⬝ᵥ pt z = 0 := by
-          rw [hcz_eq, dotProduct_smul]
-          have hh : point z ⬝ᵥ normal v = 0 := dotProduct_normal_eq_zero_of_mem_closedNbhd h hv
-            (heq ▸ (by simp : z ∈ ({x,y,z}:Set α)))
-          rw [dotProduct_comm] at hh
-          rw [hh, smul_zero]
-        obtain ⟨d, hd, hcxyz⟩ :=
-          exists_smul_cross₃_eq_of_linearIndependent hLI3' (h.1.1.2.1 v hv) hqx hqy hqz
-        refine ⟨![some x, some y, some z], ![0, 0, 0], fun _ => hSel, fun _ => ?_,
-          fun _ _ => ⟨d, hd, ?_⟩⟩
-        · have heqf : (![hubSlotOf pt ![some x, some y, some z] ![0,0,0] 0,
-              hubSlotOf pt ![some x, some y, some z] ![0,0,0] 1,
-              hubSlotOf pt ![some x, some y, some z] ![0,0,0] 2] : Fin 3 → Fin 4 → K)
-              = ![pt x, pt y, pt z] := by funext i; fin_cases i <;> rfl
-          rw [heqf]; exact hLI3'
-        · have hh0 : hubSlotOf pt ![some x, some y, some z] ![0,0,0] 0 = pt x := rfl
-          have hh1 : hubSlotOf pt ![some x, some y, some z] ![0,0,0] 1 = pt y := rfl
-          have hh2 : hubSlotOf pt ![some x, some y, some z] ![0,0,0] 2 = pt z := rfl
-          rw [hh0, hh1, hh2]
-          exact hcxyz
-    · have heq : G.closedNbhd v = {v} := by
-        ext w
-        simp only [Graph.closedNbhd, Set.mem_ofPred_eq, Set.mem_singleton_iff]
-        constructor
-        · rintro (rfl | ⟨e, hlink⟩)
-          · rfl
-          · exact absurd hlink.left_mem hv
-        · rintro rfl; exact Or.inl rfl
-      have hSel : IsFin3SelectorOf (G.closedNbhd v) (![some v, none, none]) := by
-        clear h hpt hpt_ne
-        refine ⟨?_, ?_, ?_⟩
-        · intro i w hi; fin_cases i <;> simp_all
-        · intro w hw; rw [heq] at hw
-          simp only [Set.mem_singleton_iff] at hw; exact ⟨0, by simp [hw]⟩
-        · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
-      obtain ⟨y, z, hLIyz⟩ := exists_linearIndependent_triple_of_ne_zero (hpt_ne v)
-      refine ⟨![some v, none, none], ![0, y, z], fun _ => hSel, fun _ => ?_,
-        fun hcon => absurd hcon hv⟩
-      · have heqf : (![hubSlotOf pt ![some v, none, none] ![0,y,z] 0,
-            hubSlotOf pt ![some v, none, none] ![0,y,z] 1,
-            hubSlotOf pt ![some v, none, none] ![0,y,z] 2] : Fin 3 → Fin 4 → K)
-            = ![pt v, y, z] := by funext i; fin_cases i <;> rfl
-        rw [heqf]; exact hLIyz
-
-/-- **The normals of a realization in the chart** (a step of `lem:pencil-generic-steer`): given a
-nondegenerate realization of `G`, and `hubSel` and `fillHub` whose slots are independent at every
-body and whose points are nonzero multiples of `point` on `V(G)`, both at the parameters with
-`fillNbr := 0`, there are a neighbour selector `nbrSel` and padding `fillNbr` such that, at every
-body `v` that is not a hub, `nbrSel v` lists `G.closedNbhd v`, and, at the parameters
-`⟨normal, fillHub, fillNbr⟩`, the three slots `nbrSlotPoint` of `v` are independent and, if
-`v ∈ V(G)`, the normal of the chart is a nonzero multiple of `normal v`: the second and fourth
-conditions of `PencilChartWF`, and the normals reproduced up to scalars. `choose` applies
-`exists_nbrSlotOf_isNondegPencilRealization` at every body, with `pt` the points of the chart, which
-do not read `fillNbr` and are nonzero (`pencilChartPoint_ne_zero`); at a body that is not a hub, the
-normal of the chart is `cross₃` of the slots (`pencilChartNormal_of_not_pencilHub`). -/
-theorem exists_nbrSel_fillNbr_of_isNondegPencilRealization [Finite α] [Finite β]
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
-    (h : IsNondegPencilRealization G F normal point)
-    {hubSel : α → Fin 3 → Option α} {fillHub : α → Fin 3 → Fin 4 → K}
-    (hHubLI : ∀ v, LinearIndependent K
-      ![hubSlotNormal ⟨normal, fillHub, fun _ _ => (0 : Fin 4 → K)⟩ hubSel v 0,
-        hubSlotNormal ⟨normal, fillHub, fun _ _ => (0 : Fin 4 → K)⟩ hubSel v 1,
-        hubSlotNormal ⟨normal, fillHub, fun _ _ => (0 : Fin 4 → K)⟩ hubSel v 2])
-    (hPtRepro : ∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧
-      pencilChartPoint ⟨normal, fillHub, fun _ _ => (0 : Fin 4 → K)⟩ hubSel v = c • point v) :
-    ∃ (nbrSel : α → Fin 3 → Option α) (fillNbr : α → Fin 3 → Fin 4 → K),
-      (∀ v, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) ∧
-      (∀ v, ¬ G.PencilHub v → LinearIndependent K
-        ![nbrSlotPoint ⟨normal, fillHub, fillNbr⟩ hubSel nbrSel v 0,
-          nbrSlotPoint ⟨normal, fillHub, fillNbr⟩ hubSel nbrSel v 1,
-          nbrSlotPoint ⟨normal, fillHub, fillNbr⟩ hubSel nbrSel v 2]) ∧
-      (∀ v ∈ V(G), ¬ G.PencilHub v → ∃ d : K, d ≠ 0 ∧
-        pencilChartNormal ⟨normal, fillHub, fillNbr⟩ hubSel nbrSel G v = d • normal v) := by
-  set seed0 : PencilSeed K α := ⟨normal, fillHub, fun _ _ => (0 : Fin 4 → K)⟩ with hseed0
-  have hpt_ne : ∀ v, pencilChartPoint seed0 hubSel v ≠ 0 :=
-    fun v => pencilChartPoint_ne_zero seed0 (hHubLI v)
-  choose nbrSel fillNbr hsel hLI hd using
-    fun v => exists_nbrSlotOf_isNondegPencilRealization h hpt_ne hPtRepro v
-  refine ⟨nbrSel, fillNbr, hsel, fun v hv => hLI v hv, fun v hv hnothub => ?_⟩
-  obtain ⟨d, hdne, hdeq⟩ := hd v hv hnothub
-  refine ⟨d, hdne, ?_⟩
-  rw [pencilChartNormal_of_not_pencilHub _ _ _ hnothub]
-  exact hdeq
 
 end CombinatorialRigidity.Molecular

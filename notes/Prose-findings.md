@@ -6037,10 +6037,14 @@ declaration's name as its header writes it:
   `exists_pencilSeed_of_nondeg_of_selectors`, on the three standard axioms
   (`scratch/reconcile-lean/t375/Hyps-t375.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.5.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.9): task 38's block (b) at
-  `1b1d9d87` finds the four unpinned and live only through `exists_pencilSeed_of_nondeg`, which
-  calls the two `fill` lemmas and which the fix re-proves; the four and the three helpers above
-  then have no caller, and none is pinned.
+  *Disposition:* done (task 38.9): task 38's block (b) at `1b1d9d87` finds the four unpinned and
+  live only through `exists_pencilSeed_of_nondeg`, which calls the two `fill` lemmas and which the
+  fix re-proves; the four and the three helpers above then have no caller, and none is pinned. Task
+  38.9 adds `exists_isFin3SelectorOf_of_ncard_le_three` (`Chart.lean`), re-proves
+  `exists_pencilSeed_of_nondeg` from it, `exists_pencilSeed_of_nondeg_of_selectors` and the two
+  bounds, and deletes the seven with the orphans block (b) then reports, all unpinned and dead:
+  `range_cross₃L_eq_perp`, and `cross₃L` with its `rfl` lemma and `cross₃_add_thd`, which served
+  only it; `hubSlotOf` moves to `Reseed.lean`, its only user.
 - **F-306** · L · a missed mathlib lemma and repeated derivations in
   `Molecular/Molecule/Pencil/Reseed.lean` and `Steer.lean`.
   `linearIndepOn_triple_of_linearIndependent` (`Steer.lean`) is mathlib's `linearIndepOn_range_iff`
@@ -6068,7 +6072,10 @@ declaration's name as its header writes it:
   `linearIndepOn_triple_of_linearIndependent` by `linearIndepOn_range_iff` (`F-304`'s converse) and
   puts `F-302`'s lemma at `exists_fill_linearIndependent_hubSlotOf` and
   `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint`. Left: the two slot equalities of
-  `exists_fill_linearIndependent_hubSlotOf` (one proof).
+  `exists_fill_linearIndependent_hubSlotOf` (one proof); round 3: `pencilChartPoint_ofCoord_toCoord`
+  re-proved by `pencilChartPoint_congr` (moved above it), `hubSlotNormal_ofCoord_toCoord` deleted,
+  and the repeated `PencilChartWF` steps ended by `exists_pencilSeed_of_nondeg`'s re-proof (task
+  38.9).
 - **F-307** · L · hypotheses the others give, over-strong hypotheses and repeated derivations in
   `Molecular/Molecule/Pencil/Pair.lean` and `Pair2.lean`. The `hD : 2 ≤ bodyBarDim n` of
   `hasGenericPencilRealization_of_cutEdges_eq_empty`,

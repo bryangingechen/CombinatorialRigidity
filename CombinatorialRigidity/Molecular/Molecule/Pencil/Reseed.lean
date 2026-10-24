@@ -13,20 +13,21 @@ the parametrization there: every nondegenerate realization of `G` comes from the
 `Chart.lean`, up to a nonzero scalar at the point of each body of `G` and at the normal of each body
 of `G` that is not a hub.
 
-`exists_pencilSeed_of_nondeg` puts together the two halves that `Engine.lean` builds at selectors it
-chooses: the hub selector and the padding `fillHub`, which give the points, and the neighbour
-selector and the padding `fillNbr`, which give the normals. It adds the one condition of
-`PencilChartWF` that neither half gives, the independence of the points of the two ends of every
-link: the realization has it, and a nonzero scalar at each point keeps it.
-
-`exists_pencilSeed_of_nondeg_of_selectors` does the same at any selectors that list the closed
-hub-neighbourhood of every body and the closed neighbourhood of every body that is not a hub, with
-the normals of the realization as `hubNormal`. At a body of `G`, the vectors that the selector lists
-are independent and orthogonal to the point of the body, or to its normal; completed to an
-independent triple orthogonal to it, their `cross₃` is a nonzero multiple of it
+`exists_pencilSeed_of_nondeg_of_selectors` writes the realization in the chart at any selectors
+that list the closed hub-neighbourhood of every body and the closed neighbourhood of every body that
+is not a hub, with the normals of the realization as `hubNormal`. At a body of `G`, the vectors that
+the selector lists are independent and orthogonal to the point of the body, or to its normal;
+completed to an independent triple orthogonal to it, their `cross₃` is a nonzero multiple of it
 (`exists_fill_cross₃_eq_smul_of_selector`). The completion is a fact of linear algebra
 (`exists_extend_linearIndependent`): a family `Fin n → V` independent on a set of indices, with
-`n ≤ finrank K V`, agrees on that set with an independent family.
+`n ≤ finrank K V`, agrees on that set with an independent family. The one condition of
+`PencilChartWF` that the padding does not give, the independence of the points of the two ends of
+every link, the realization has, and a nonzero scalar at each point keeps it.
+
+`exists_pencilSeed_of_nondeg` chooses the selectors: each set they list has at most three members
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` and
+`ncard_closedNbhd_le_three_of_not_pencilHub`, `Motive.lean`), so it has a selector
+(`exists_isFin3SelectorOf_of_ncard_le_three`, `Chart.lean`).
 
 ## Main results
 
@@ -42,56 +43,6 @@ namespace CombinatorialRigidity.Molecular
 
 variable {K : Type*} [Field K]
 variable {α β : Type*}
-
-/-! ## A nondegenerate realization in the chart, at selectors it chooses
-
-`exists_hubSel_fillHub_of_isNondegPencilRealization` gives the hub selector `hubSel` and the padding
-`fillHub`, with conditions that hold for every `fillNbr`. At `fillNbr := 0` they give
-`exists_nbrSel_fillNbr_of_isNondegPencilRealization` the points it asks for, which do not read
-`fillNbr`, and it gives the neighbour selector `nbrSel` and the padding `fillNbr`. At the parameters
-`⟨normal, fillHub, fillNbr⟩` the first gives the first and third conditions of `PencilChartWF` and
-the points up to scalars, and the second gives the second and fourth conditions and the normals.
-
-The fifth condition, the independence of the points of the two ends of a link `e : u–v`, holds for
-the realization (the second condition of `IsNondegPencilRealization`), and
-`LinearIndependent.units_smul` gives it for the points of the chart, nonzero multiples of those of
-the realization at `u, v ∈ V(G)`. -/
-
-/-- **A nondegenerate realization in the chart** (a step of `lem:pencil-generic-steer`): for a
-nondegenerate realization of `G`, there are parameters and selectors `hubSel` and `nbrSel` of the
-chart, well formed (`PencilChartWF`), whose point at each `v ∈ V(G)` is a nonzero multiple of
-`point v`, and whose normal at each `v ∈ V(G)` that is not a hub is a nonzero multiple of
-`normal v`. The proof takes the steps of the section header.
-`exists_isNondegPencilRealization_restrict_of_demoted` and `exists_isNondegPencilRealization_steer`
-(`MainComponent/GenericSteer.lean`) use it. -/
-theorem exists_pencilSeed_of_nondeg [Finite α] [Finite β]
-    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
-    (h : IsNondegPencilRealization G F normal point) :
-    ∃ (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α),
-      PencilChartWF G seed hubSel nbrSel ∧
-      (∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧ pencilChartPoint seed hubSel v = c • point v) ∧
-      (∀ v ∈ V(G), ¬ G.PencilHub v → ∃ d : K, d ≠ 0 ∧
-        pencilChartNormal seed hubSel nbrSel G v = d • normal v) := by
-  obtain ⟨hubSel, fillHub, hSelHub, hRest⟩ := exists_hubSel_fillHub_of_isNondegPencilRealization h
-  obtain ⟨hHubLI0, hPtRepro0⟩ := hRest (fun _ _ => (0 : Fin 4 → K))
-  obtain ⟨nbrSel, fillNbr, hSelNbr, hNbrLI, hNormalRepro⟩ :=
-    exists_nbrSel_fillNbr_of_isNondegPencilRealization h hHubLI0 hPtRepro0
-  obtain ⟨hHubLI, hPtRepro⟩ := hRest fillNbr
-  refine ⟨⟨normal, fillHub, fillNbr⟩, hubSel, nbrSel, ⟨hSelHub, hSelNbr, hHubLI, hNbrLI, ?_⟩,
-    hPtRepro, hNormalRepro⟩
-  intro e u v hlink
-  obtain ⟨cu, hcu_ne, hcu_eq⟩ := hPtRepro u hlink.left_mem
-  obtain ⟨cv, hcv_ne, hcv_eq⟩ := hPtRepro v hlink.right_mem
-  have hLI2 : LinearIndependent K ![point u, point v] := h.2.1 e u v hlink
-  have hw : LinearIndependent K
-      ((![Units.mk0 cu hcu_ne, Units.mk0 cv hcv_ne] : Fin 2 → Kˣ) •
-        (![point u, point v] : Fin 2 → Fin 4 → K)) := hLI2.units_smul _
-  have heq2 : ((![Units.mk0 cu hcu_ne, Units.mk0 cv hcv_ne] : Fin 2 → Kˣ) •
-      (![point u, point v] : Fin 2 → Fin 4 → K))
-      = ![pencilChartPoint ⟨normal, fillHub, fillNbr⟩ hubSel u,
-          pencilChartPoint ⟨normal, fillHub, fillNbr⟩ hubSel v] := by
-    funext i; fin_cases i <;> simp [Units.smul_def, hcu_eq, hcv_eq]
-  rwa [heq2] at hw
 
 /-! ## Completing a family independent on a set of indices -/
 
@@ -179,7 +130,25 @@ triple orthogonal to it, their `cross₃` is a nonzero multiple of it
 (`exists_fill_cross₃_eq_smul_of_selector`). The normal of a body of `V(G)` that is not a hub comes
 in the same way from the points of the chart on its closed neighbourhood, nonzero multiples of those
 of the realization (`LinearIndepOn.of_smul_eq`). At a body outside `V(G)`, any independent triple
-that contains the listed vectors serves (`exists_fill_linearIndependent_of_selector`). -/
+that contains the listed vectors serves (`exists_fill_linearIndependent_of_selector`). The slots
+of a selector at one body, padded, are `hubSlotOf`.
+
+The fifth condition of `PencilChartWF`, the independence of the points of the two ends of a link
+`e : u–v`, holds for the realization (the second condition of `IsNondegPencilRealization`), and
+`LinearIndependent.units_smul` gives it for the points of the chart, nonzero multiples of those of
+the realization at `u, v ∈ V(G)`. -/
+
+/-- **Slot `i` of a selector at one body** (a step of `lem:pencil-generic-steer`): `normal w` if
+`sel` puts `w` in slot `i`, and `fill i` if it leaves the slot empty. At the parameters
+`⟨normal, fillHub, fillNbr⟩`, slot `i` of `hubSel v` (`hubSlotNormal`) is
+`hubSlotOf normal (hubSel v) (fillHub v) i` by definition, for any `fillNbr`; the neighbour side
+uses it with the points of the chart in place of `normal`
+(`exists_pencilSeed_of_nondeg_of_selectors`). -/
+def hubSlotOf (normal : α → Fin 4 → K) (sel : Fin 3 → Option α)
+    (fill : Fin 3 → Fin 4 → K) (i : Fin 3) : Fin 4 → K :=
+  match sel i with
+  | some w => normal w
+  | none => fill i
 
 /-- **Completing the listed vectors to an independent triple in a subspace** (a step of
 `lem:pencil-generic-steer`): for a selector `sel` of `s`, a family `f` linearly independent on `s`
@@ -304,10 +273,10 @@ neighbourhood of every body that is not a hub, there are parameters with `hubNor
 formed at these selectors (`PencilChartWF`), whose point at each `v ∈ V(G)` is a nonzero multiple of
 `point v`, and whose normal at each `v ∈ V(G)` that is not a hub is a nonzero multiple of
 `normal v`. The proof takes the steps of the section header, with the points of the chart at the
-parameters `⟨normal, fillHub, 0⟩`, which do not read `fillNbr`, and gives the fifth condition of
-`PencilChartWF` as `exists_pencilSeed_of_nondeg` does. `exists_isNondegPencilRealization_steer`
-(`MainComponent/GenericSteer.lean`) uses it to write a second realization in the chart at the
-selectors of a first. -/
+parameters `⟨normal, fillHub, 0⟩`, which do not read `fillNbr`. `exists_pencilSeed_of_nondeg` uses
+it at selectors it chooses, and `exists_isNondegPencilRealization_steer`
+(`MainComponent/GenericSteer.lean`) to write a second realization in the chart at the selectors of a
+first. -/
 theorem exists_pencilSeed_of_nondeg_of_selectors
     {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
     (h : IsNondegPencilRealization G F normal point) {hubSel nbrSel : α → Fin 3 → Option α}
@@ -390,5 +359,47 @@ theorem exists_pencilSeed_of_nondeg_of_selectors
     exact hw
   · obtain ⟨d, hd, hdeq⟩ := (hNbr v hhub).2 hv
     exact ⟨d, hd, by rw [pencilChartNormal_of_not_pencilHub _ _ _ hhub]; exact hdeq⟩
+
+/-! ## A nondegenerate realization in the chart, at selectors it chooses
+
+A body of `G` has at most three members in its closed hub-neighbourhood
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), and a body that is not a hub at most
+three in its closed neighbourhood (`ncard_closedNbhd_le_three_of_not_pencilHub`). A body outside
+`V(G)` is not a hub, and its closed hub-neighbourhood lies in its closed neighbourhood. So each of
+these sets has a selector (`exists_isFin3SelectorOf_of_ncard_le_three`), and
+`exists_pencilSeed_of_nondeg_of_selectors` writes the realization in the chart at the selectors
+chosen. -/
+
+/-- **A nondegenerate realization in the chart** (a step of `lem:pencil-generic-steer`): for a
+nondegenerate realization of `G`, there are parameters and selectors `hubSel` and `nbrSel` of the
+chart, well formed (`PencilChartWF`), whose point at each `v ∈ V(G)` is a nonzero multiple of
+`point v`, and whose normal at each `v ∈ V(G)` that is not a hub is a nonzero multiple of
+`normal v`. The proof takes the steps of the section header.
+`exists_isNondegPencilRealization_restrict_of_demoted` and `exists_isNondegPencilRealization_steer`
+(`MainComponent/GenericSteer.lean`) use it. -/
+theorem exists_pencilSeed_of_nondeg [Finite α] [Finite β]
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (h : IsNondegPencilRealization G F normal point) :
+    ∃ (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α),
+      PencilChartWF G seed hubSel nbrSel ∧
+      (∀ v ∈ V(G), ∃ c : K, c ≠ 0 ∧ pencilChartPoint seed hubSel v = c • point v) ∧
+      (∀ v ∈ V(G), ¬ G.PencilHub v → ∃ d : K, d ≠ 0 ∧
+        pencilChartNormal seed hubSel nbrSel G v = d • normal v) := by
+  have hhub : ∀ v, ∃ sel, IsFin3SelectorOf (G.closedHubNbhd v) sel := fun v => by
+    refine exists_isFin3SelectorOf_of_ncard_le_three ?_
+    by_cases hv : v ∈ V(G)
+    · exact ncard_closedHubNbhd_le_three_of_isNondegPencilRealization h hv
+    · have hsub : G.closedHubNbhd v ⊆ G.closedNbhd v := fun _ hw => hw.2
+      exact (Set.ncard_le_ncard hsub).trans
+        (ncard_closedNbhd_le_three_of_not_pencilHub fun hv' => hv hv'.1)
+  have hnbr : ∀ v, ∃ sel, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) sel := fun v => by
+    by_cases hv : G.PencilHub v
+    · exact ⟨fun _ => none, (absurd hv ·)⟩
+    · exact (exists_isFin3SelectorOf_of_ncard_le_three
+        (ncard_closedNbhd_le_three_of_not_pencilHub hv)).imp fun _ hsel _ => hsel
+  choose hubSel hHubSel using hhub
+  choose nbrSel hNbrSel using hnbr
+  obtain ⟨seed, -, hWF, hpt, hnm⟩ := exists_pencilSeed_of_nondeg_of_selectors h hHubSel hNbrSel
+  exact ⟨seed, hubSel, nbrSel, hWF, hpt, hnm⟩
 
 end CombinatorialRigidity.Molecular

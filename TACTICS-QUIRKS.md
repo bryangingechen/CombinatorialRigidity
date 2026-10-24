@@ -3847,11 +3847,11 @@ move 2 catches what's left over, e.g. hypotheses introduced before the branch th
 case-bash still doesn't need).
 
 **Worked case:** Phase 39 (PENCIL) W5-L4 piece 3, `Molecular/Molecule/Pencil/Engine.lean`,
-`exists_nbrSlotOf_isNondegPencilRealization` — the exact `IsFin3SelectorOf` proof shape already
-landed (warning-clean) in the point-side sibling `exists_hubSlotOf_isNondegPencilRealization`
-timed out verbatim once copied into this lemma, whose ambient context additionally carries the
-abstracted `pt`/`hpt_ne`/`hpt` parameters (needed for the scalar-transport machinery the point
-side didn't have). Fixed by both moves above.
+`exists_nbrSlotOf_isNondegPencilRealization` (since deleted) — the exact `IsFin3SelectorOf` proof
+shape already landed (warning-clean) in the point-side sibling
+`exists_hubSlotOf_isNondegPencilRealization` (since deleted) timed out verbatim once copied into
+this lemma, whose ambient context additionally carries the abstracted `pt`/`hpt_ne`/`hpt` parameters
+(needed for the scalar-transport machinery the point side didn't have). Fixed by both moves above.
 
 ## 100. A multi-name explicit binder (`(a b : T)`) needs *two* placeholders, not one — passing one fewer silently reassigns a later positional argument into the missing slot
 
@@ -3874,8 +3874,8 @@ hypothesis). General rule: when a lemma statement writes `(a b : T)`, that is tw
 positional slots for underscore-counting purposes, even though it reads as one clause.
 
 **Worked case:** Phase 39 (PENCIL) W5-L4 piece 3,
-`exists_nbrSel_fillNbr_of_isNondegPencilRealization` (`Molecular/Molecule/Pencil/Engine.lean`),
-closing the normal-reproduction conjunct via `pencilChartNormal_of_not_pencilHub`.
+`exists_nbrSel_fillNbr_of_isNondegPencilRealization` (`Molecular/Molecule/Pencil/Engine.lean`;
+since deleted), closing the normal-reproduction conjunct via `pencilChartNormal_of_not_pencilHub`.
 
 ## 101. `decide` on a *quantified* statement over a small `Fin` type — `(deterministic) timeout at whnf` — replace the quantifier prefix with a counting argument (or split to literal instances first)
 

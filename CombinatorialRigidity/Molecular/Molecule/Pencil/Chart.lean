@@ -34,8 +34,8 @@ of every link), the chart is a nondegenerate pencil realization (`def:pencil-non
 
 ## Main results
 
-* `dotProduct_cross₃`, `cross₃_dotProduct_fst`, `cross₃_ne_zero_iff_linearIndependent` and
-  `range_cross₃L_eq_perp`: the cross product.
+* `dotProduct_cross₃`, `cross₃_dotProduct_fst` and `cross₃_ne_zero_iff_linearIndependent`: the cross
+  product.
 * `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`: at well-formed parameters, the
   chart is a nondegenerate pencil realization.
 -/
@@ -56,12 +56,9 @@ for every `w` (`dotProduct_cross₃`). From this:
 
 * it is orthogonal to `x`, `y` and `z`, as a determinant with two equal rows vanishes
   (`cross₃_dotProduct_fst`, `cross₃_dotProduct_snd`, `cross₃_dotProduct_thd`);
-* it is additive and homogeneous in its third argument, as the determinant is in a row
-  (`cross₃_add_thd`, `cross₃_smul_thd`), so linear in it (`cross₃L`);
+* it is homogeneous in its third argument, as the determinant is in a row (`cross₃_smul_thd`);
 * it is nonzero exactly when `x`, `y` and `z` are linearly independent
-  (`cross₃_ne_zero_iff_linearIndependent`);
-* for independent `n₁, n₂`, the vectors `cross₃ n₁ n₂ z` are exactly those orthogonal to `n₁` and
-  `n₂` (`range_cross₃L_eq_perp`).
+  (`cross₃_ne_zero_iff_linearIndependent`).
 
 `cross₃_apply` (`Engine.lean`) writes its coordinates as determinants, polynomials in those of `x`,
 `y` and `z`. -/
@@ -83,7 +80,7 @@ noncomputable def cross₃ (x y z : Fin 4 → K) : Fin 4 → K :=
 
 omit [Field K] in
 /-- Replacing row `2` of the matrix with rows `x, y, z0, w` by `a` gives the matrix with rows
-`x, y, a, w`, for `cross₃_add_thd` and `cross₃_smul_thd`. -/
+`x, y, a, w`, for `cross₃_smul_thd`. -/
 private theorem cons_updateRow_two (x y z0 w a : Fin 4 → K) :
     (Matrix.of ![x, y, z0, w]).updateRow 2 a = Matrix.of ![x, y, a, w] := by
   funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
@@ -116,33 +113,14 @@ theorem cross₃_dotProduct_snd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ y 
 theorem cross₃_dotProduct_thd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ z = 0 := by
   rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 2) (j := 3) (by decide) rfl
 
-/-- **`cross₃` is additive in its third argument**: by `dotProduct_eq_iff`, from the additivity of
-`Matrix.det` in a row. -/
-theorem cross₃_add_thd (x y z1 z2 : Fin 4 → K) :
-    cross₃ x y (z1 + z2) = cross₃ x y z1 + cross₃ x y z2 := by
-  rw [← dotProduct_eq_iff]; intro w
-  rw [add_dotProduct, dotProduct_cross₃, dotProduct_cross₃, dotProduct_cross₃,
-    ← cons_updateRow_two x y z1 w (z1 + z2), Matrix.det_updateRow_add,
-    cons_updateRow_two, cons_updateRow_two]
-
 /-- **`cross₃` is homogeneous in its third argument**: `cross₃ x y (c • z) = c • cross₃ x y z`, as
-`cross₃_add_thd`. -/
+the determinant is homogeneous in a row (`Matrix.det_updateRow_smul`). -/
 theorem cross₃_smul_thd (c : K) (x y z : Fin 4 → K) :
     cross₃ x y (c • z) = c • cross₃ x y z := by
   rw [← dotProduct_eq_iff]; intro w
   rw [smul_dotProduct, dotProduct_cross₃, dotProduct_cross₃,
     ← cons_updateRow_two x y z w (c • z), Matrix.det_updateRow_smul,
     cons_updateRow_two, smul_eq_mul]
-
-/-- **`cross₃` as a linear map in its third argument**: `z ↦ cross₃ x y z`, whose range
-`range_cross₃L_eq_perp` gives. -/
-noncomputable def cross₃L (x y : Fin 4 → K) : (Fin 4 → K) →ₗ[K] (Fin 4 → K) where
-  toFun z := cross₃ x y z
-  map_add' := cross₃_add_thd x y
-  map_smul' c z := cross₃_smul_thd c x y z
-
-@[simp]
-theorem cross₃L_apply (x y z : Fin 4 → K) : cross₃L x y z = cross₃ x y z := rfl
 
 /-- **`cross₃` is nonzero exactly when its arguments are independent**:
 `cross₃ x y z ≠ 0 ↔ LinearIndependent K ![x, y, z]`. If `x, y, z` are dependent, so are `x, y, z, w`
@@ -189,60 +167,6 @@ theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
     apply hdet
     rw [← dotProduct_cross₃, hzero, zero_dotProduct]
 
-/-- **The values of `cross₃ n₁ n₂` are the vectors orthogonal to `n₁` and `n₂`** (a step of
-`lem:pencil-generic-steer`): for independent `n₁, n₂`, the range of `cross₃L n₁ n₂` is the space of
-vectors orthogonal to both. The range lies in that space (`cross₃_dotProduct_fst`,
-`cross₃_dotProduct_snd`). The kernel of `cross₃L n₁ n₂` is the span of `n₁, n₂`
-(`cross₃_ne_zero_iff_linearIndependent`, `linearIndependent_finSnoc`), of dimension `2`, so the
-range has dimension `4 - 2 = 2`, that of the space (`finrank_toDualPerp_pair_eq`), and the two are
-equal (`Submodule.eq_of_le_of_finrank_eq`). -/
-theorem range_cross₃L_eq_perp (n₁ n₂ : Fin 4 → K) (hLI : LinearIndependent K ![n₁, n₂]) :
-    LinearMap.range (cross₃L n₁ n₂) =
-      (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂] j)) :
-        Submodule K (Fin 4 → K)) := by
-  have hker : LinearMap.ker (cross₃L n₁ n₂) = Submodule.span K (Set.range ![n₁, n₂]) := by
-    ext z
-    simp only [LinearMap.mem_ker, cross₃L, LinearMap.coe_mk, AddHom.coe_mk]
-    constructor
-    · intro hz
-      by_contra hzmem
-      have hsnoc : LinearIndependent K (Fin.snoc ![n₁, n₂] z) :=
-        linearIndependent_finSnoc.mpr ⟨hLI, hzmem⟩
-      rw [show Fin.snoc (![n₁, n₂] : Fin 2 → Fin 4 → K) z = ![n₁, n₂, z] from by
-        funext i; fin_cases i <;> simp] at hsnoc
-      exact (cross₃_ne_zero_iff_linearIndependent n₁ n₂ z).mpr hsnoc hz
-    · intro hzmem
-      by_contra hz
-      have hLI3 : LinearIndependent K ![n₁, n₂, z] :=
-        (cross₃_ne_zero_iff_linearIndependent n₁ n₂ z).mp hz
-      rw [← show Fin.snoc (![n₁, n₂] : Fin 2 → Fin 4 → K) z = ![n₁, n₂, z] from by
-        funext i; fin_cases i <;> simp, linearIndependent_finSnoc] at hLI3
-      exact hLI3.2 hzmem
-  have hle : LinearMap.range (cross₃L n₁ n₂) ≤
-      (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂] j)) :
-        Submodule K (Fin 4 → K)) := by
-    rintro _ ⟨z, rfl⟩
-    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
-    intro j
-    fin_cases j
-    · change (Pi.basisFun K (Fin 4)).toDual (cross₃L n₁ n₂ z) n₁ = 0
-      rw [piBasisFun_toDual_eq_dotProduct]
-      exact cross₃_dotProduct_fst n₁ n₂ z
-    · change (Pi.basisFun K (Fin 4)).toDual (cross₃L n₁ n₂ z) n₂ = 0
-      rw [piBasisFun_toDual_eq_dotProduct]
-      exact cross₃_dotProduct_snd n₁ n₂ z
-  have hdim_ker : Module.finrank K (LinearMap.ker (cross₃L n₁ n₂)) = 2 := by
-    rw [hker, finrank_span_eq_card hLI]; simp
-  have hdim_range : Module.finrank K (LinearMap.range (cross₃L n₁ n₂)) = 2 := by
-    have hrn := LinearMap.finrank_range_add_finrank_ker (cross₃L n₁ n₂)
-    rw [hdim_ker, Module.finrank_fin_fun] at hrn
-    omega
-  have hdim_perp : Module.finrank K
-      (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂] j)) :
-        Submodule K (Fin 4 → K)) = 2 :=
-    finrank_toDualPerp_pair_eq hLI
-  exact Submodule.eq_of_le_of_finrank_eq hle (by rw [hdim_range, hdim_perp])
-
 /-! ## The pencil chart
 
 The parameters of the chart (`PencilSeed`) are, at each body `v`, a vector `hubNormal v`, the normal
@@ -250,7 +174,8 @@ of `v` when it is a hub, and two triples of padding vectors, `fillHub v` and `fi
 selectors `hubSel` and `nbrSel` list the closed hub-neighbourhood and the closed neighbourhood of a
 body in three slots: `some w` puts `w` in a slot, and `none` leaves the slot to padding
 (`IsFin3SelectorOf`). The two neighbourhoods are sets, so a selector fixes the order in which their
-members enter `cross₃`.
+members enter `cross₃`; a set of at most three members has one
+(`exists_isFin3SelectorOf_of_ncard_le_three`).
 
 The point of `v` (`pencilChartPoint`) is the `cross₃` of the three vectors `hubSlotNormal`: the
 `hubNormal` of each body that `hubSel v` lists, and `fillHub v` at the empty slots. The normal of
@@ -289,6 +214,29 @@ two slots; so `s` has at most three members. -/
 def IsFin3SelectorOf (s : Set α) (sel : Fin 3 → Option α) : Prop :=
   (∀ i w, sel i = some w → w ∈ s) ∧ (∀ w ∈ s, ∃ i, sel i = some w) ∧
     (∀ i j w, sel i = some w → sel j = some w → i = j)
+
+/-- **A set of at most three members has a selector** (a step of `lem:pencil-generic-steer`): the
+members of `s`, listed by `Finset.toList`, fill the first slots, and the others stay empty. No
+member is in two slots, as the list has no repeated entry (`List.Nodup.getElem?_inj`). -/
+theorem exists_isFin3SelectorOf_of_ncard_le_three [Finite α] {s : Set α} (hs : s.ncard ≤ 3) :
+    ∃ sel : Fin 3 → Option α, IsFin3SelectorOf s sel := by
+  classical
+  have := Fintype.ofFinite α
+  set l := s.toFinset.toList with hl
+  have hlen : l.length ≤ 3 := by
+    rw [hl, Finset.length_toList, ← Set.ncard_eq_toFinset_card']; exact hs
+  have hnd : l.Nodup := Finset.nodup_toList _
+  refine ⟨fun i => l[(i : ℕ)]?, ?_, ?_, ?_⟩
+  · intro i w h
+    have := List.mem_of_getElem? h
+    simpa [hl] using this
+  · intro w hw
+    have hmem : w ∈ l := by simpa [hl] using hw
+    obtain ⟨n, hn, rfl⟩ := List.getElem_of_mem hmem
+    exact ⟨⟨n, by omega⟩, by simp [hn]⟩
+  · intro i j w hi hj
+    exact Fin.ext ((List.Nodup.getElem?_inj (List.getElem?_eq_some_iff.mp hi).1 hnd).mp
+      (hi.trans hj.symm))
 
 /-- Slot `i` of `v`'s hub selector as a vector (a step of `lem:pencil-generic-steer`): the
 `hubNormal` of the body in it, or `fillHub v i` if it is empty. -/

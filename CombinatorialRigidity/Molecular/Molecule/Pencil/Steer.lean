@@ -91,29 +91,36 @@ theorem PencilSeed.ofCoord_toCoord_fillHub (seed : PencilSeed K α) :
   funext v j i
   simp only [PencilSeed.ofCoord, PencilSeed.toCoord, Fin.cons_succ]
 
-/-! ## The points of the chart at `PencilSeed.ofCoord seed.toCoord` -/
+/-! ## The same points -/
 
-/-- **The slots of the hub selector at `PencilSeed.ofCoord seed.toCoord` are those at `seed`**: a
-slot holds a vector of `hubNormal` or of `fillHub` (`hubSlotNormal`), and both fields are read back.
-No slot reads `fillNbr`. -/
-theorem hubSlotNormal_ofCoord_toCoord (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α)
-    (v : α) (slot : Fin 3) :
-    hubSlotNormal (PencilSeed.ofCoord seed.toCoord) hubSel v slot
-      = hubSlotNormal seed hubSel v slot := by
-  unfold hubSlotNormal
-  cases hubSel v slot with
-  | none => rw [PencilSeed.ofCoord_toCoord_fillHub]
-  | some w => rw [PencilSeed.ofCoord_toCoord_hubNormal]
+/-- **Parameters with the same `hubNormal` and `fillHub` have the same points** (a step of
+`lem:pencil-generic-steer`): the slots of the hub selector read only these two fields
+(`hubSlotNormal`). So a new `fillNbr` (`exists_fillNbr_pencilChartWF_of_standing`) keeps every
+condition on the points, and so does the read-back of a coordinate point
+(`pencilChartPoint_ofCoord_toCoord`). -/
+theorem pencilChartPoint_congr {seed seed' : PencilSeed K α} (hubSel : α → Fin 3 → Option α)
+    (hhub : seed'.hubNormal = seed.hubNormal) (hfill : seed'.fillHub = seed.fillHub) :
+    pencilChartPoint seed' hubSel = pencilChartPoint seed hubSel := by
+  funext v
+  have hslot : ∀ i, hubSlotNormal seed' hubSel v i = hubSlotNormal seed hubSel v i := by
+    intro i
+    unfold hubSlotNormal
+    cases hubSel v i with
+    | none => rw [hfill]
+    | some w => rw [hhub]
+  simp only [pencilChartPoint, hslot]
 
 /-- **The points of the chart at `PencilSeed.ofCoord seed.toCoord` are those at `seed`** (a step of
-`lem:pencil-generic-steer`): each is the `cross₃` of the three slots of the hub selector
-(`hubSlotNormal_ofCoord_toCoord`). So a condition on the points that holds at `seed` holds at the
-coordinate point `seed.toCoord`, where the polynomials of `Engine.lean` evaluate. -/
+`lem:pencil-generic-steer`): `PencilSeed.ofCoord` reads back `hubNormal` and `fillHub`
+(`PencilSeed.ofCoord_toCoord_hubNormal`, `PencilSeed.ofCoord_toCoord_fillHub`), and the points
+read no other field (`pencilChartPoint_congr`). So a condition on the points that holds at `seed`
+holds at the coordinate point `seed.toCoord`, where the polynomials of `Engine.lean` evaluate. -/
 theorem pencilChartPoint_ofCoord_toCoord (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α)
     (v : α) :
     pencilChartPoint (PencilSeed.ofCoord seed.toCoord) hubSel v
-      = pencilChartPoint seed hubSel v := by
-  simp only [pencilChartPoint, hubSlotNormal_ofCoord_toCoord]
+      = pencilChartPoint seed hubSel v :=
+  congrFun (pencilChartPoint_congr hubSel (PencilSeed.ofCoord_toCoord_hubNormal seed)
+    (PencilSeed.ofCoord_toCoord_fillHub seed)) v
 
 /-! ## A new `fillNbr` -/
 
@@ -205,23 +212,7 @@ theorem exists_common_seed_linearIndepOn_pencilChartPoint [Finite α] [Infinite 
   obtain ⟨q, hq⟩ := exists_common_eval_ne_zero_of_forall_exists P (fun i => ⟨q₀ i, hP0 i⟩)
   exact ⟨q, fun i => hP i q (hq i)⟩
 
-/-! ## The same points, and independence on a set -/
-
-/-- **Parameters with the same `hubNormal` and `fillHub` have the same points** (a step of
-`lem:pencil-generic-steer`): the slots of the hub selector read only these two fields
-(`hubSlotNormal`). So a new `fillNbr` (`exists_fillNbr_pencilChartWF_of_standing`) keeps every
-condition on the points. -/
-theorem pencilChartPoint_congr {seed seed' : PencilSeed K α} (hubSel : α → Fin 3 → Option α)
-    (hhub : seed'.hubNormal = seed.hubNormal) (hfill : seed'.fillHub = seed.fillHub) :
-    pencilChartPoint seed' hubSel = pencilChartPoint seed hubSel := by
-  funext v
-  have hslot : ∀ i, hubSlotNormal seed' hubSel v i = hubSlotNormal seed hubSel v i := by
-    intro i
-    unfold hubSlotNormal
-    cases hubSel v i with
-    | none => rw [hfill]
-    | some w => rw [hhub]
-  simp only [pencilChartPoint, hslot]
+/-! ## Independence on a set -/
 
 /-- **Independence of `![f x, f y, f z]` gives independence on `{x, y, z}`**: for distinct
 `x, y, z`, `LinearIndependent K ![f x, f y, f z]` gives `LinearIndepOn K f {x, y, z}`, along the

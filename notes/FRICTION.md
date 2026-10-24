@@ -579,7 +579,7 @@ to be re-derived by re-reading entries later.
 
 ### [idiom] `Submodule.eq_of_le_of_finrank_eq (hle : S₁ ≤ S₂) (h : finrank S₁ = finrank S₂) : S₁ = S₂` — the `≤` direction must match which side is `S₁`, easy to get backwards when the goal reads "known span = derived perp"
 - **Where it bit:** Phase 39 (PENCIL) W5-L4 (`Molecular/Molecule/Pencil.lean`, `exists_smul_cross₃_eq_of_linearIndependent`), proving a `1`-dimensional common perp equals `Submodule.span K {q}` from `q ∈ perp` (giving `span {q} ≤ perp`, the *only* containment directly available) plus equal `finrank`.
-- **Friction:** stated the goal as `perp = Submodule.span K {q}` (the "natural" reading order, perp-first) and passed the available containment `span {q} ≤ perp` as `hle` — type mismatch (`Submodule.eq_of_le_of_finrank_eq` unifies `S₁ := perp`, `S₂ := span {q}` from the goal's shape, so it wants `perp ≤ span {q}`, the direction *without* a direct proof). The already-landed sibling `range_cross₃L_eq_perp` (W5-L1) has the same lemma call but happened to state its goal `range = perp` with `range ≤ perp` as the directly-available containment, so the pattern looked identical at a glance while the roles were swapped.
+- **Friction:** stated the goal as `perp = Submodule.span K {q}` (the "natural" reading order, perp-first) and passed the available containment `span {q} ≤ perp` as `hle` — type mismatch (`Submodule.eq_of_le_of_finrank_eq` unifies `S₁ := perp`, `S₂ := span {q}` from the goal's shape, so it wants `perp ≤ span {q}`, the direction *without* a direct proof). The already-landed sibling `range_cross₃L_eq_perp` (W5-L1; since deleted) has the same lemma call but happened to state its goal `range = perp` with `range ≤ perp` as the directly-available containment, so the pattern looked identical at a glance while the roles were swapped.
 - **Fix:** state the equality with the *provable* containment's LHS first (`Submodule.span K {q} = perp`), then `.symm`/rewrite with `←` at use sites if the other orientation reads better downstream. General: before calling `Submodule.eq_of_le_of_finrank_eq`, name which submodule the *available* `≤` proof points *into*, and put that submodule first in the goal — don't default to whichever variable name looks "more like the answer".
 - **Status:** resolved in-proof (usage note).
 
@@ -2832,11 +2832,11 @@ corresponding entry in [Mirrored](#mirrored) below.
 
 ### [idiom] `simp_all` case-bash timed out once copied into a deeper proof, despite compiling instantly standalone
 - **Where it bit:** Phase 39 W5-L4 piece 3 (normal side),
-  `exists_nbrSlotOf_isNondegPencilRealization` (`Pencil/Engine.lean`) — the `IsFin3SelectorOf`
-  case-bash (`fin_cases i <;> fin_cases j <;> simp_all`) already landed warning-clean in the
-  point-side sibling timed out verbatim once copied into this lemma's heavier ambient context (an
-  abstracted point family plus its own reproduction/nonzero hypotheses on top of the realization
-  hypothesis).
+  `exists_nbrSlotOf_isNondegPencilRealization` (`Pencil/Engine.lean`; since deleted) — the
+  `IsFin3SelectorOf` case-bash (`fin_cases i <;> fin_cases j <;> simp_all`) already landed
+  warning-clean in the point-side sibling timed out verbatim once copied into this lemma's heavier
+  ambient context (an abstracted point family plus its own reproduction/nonzero hypotheses on top
+  of the realization hypothesis).
 - **Fix:** hoist the light selector-correctness `have` to run right after the fresh witnesses are
   obtained (before the LI-transport/`cross₃` derivations accumulate), plus `clear` the
   goal-irrelevant heavy hypotheses inside that `have`'s own `by` block.
@@ -2844,8 +2844,8 @@ corresponding entry in [Mirrored](#mirrored) below.
 
 ### [idiom] A grouped explicit binder `(a b : T)` is two argument slots, not one, when filling `_ _`
 - **Where it bit:** Phase 39 W5-L4 piece 3, `pencilChartNormal_of_not_pencilHub`'s call site in
-  `exists_nbrSel_fillNbr_of_isNondegPencilRealization` — `_ _ hnothub` (meant: seed, hubSel
-  placeholders, then the hypothesis) silently slid `hnothub` into the unfilled `nbrSel` slot,
+  `exists_nbrSel_fillNbr_of_isNondegPencilRealization` (since deleted) — `_ _ hnothub` (meant: seed,
+  hubSel placeholders, then the hypothesis) silently slid `hnothub` into the unfilled `nbrSel` slot,
   reporting a confusing type mismatch instead of an arity error.
 - **Fix:** `_ _ _ hnothub` — count binders, not binder groups.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 100.
@@ -5478,6 +5478,21 @@ limitations. Worth a once-over so future agents don't re-litigate.
   c * (v ⬝ᵥ pa) + d * (v ⬝ᵥ pb)`, each a one-line `rw`.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Data/Matrix/Mul.lean` (new mirror file).
+
+### [idiom] `(Set.ncard_le_ncard fun _ hw => hw.2).trans h` can't pin the two sets — state the inclusion as a typed `have`
+- **Where it bit:** RECONCILE round 3 task 38.9 (`Molecular/Molecule/Pencil/Reseed.lean`,
+  `exists_pencilSeed_of_nondeg`), bounding `(G.closedHubNbhd v).ncard ≤ 3` at `v ∉ V(G)` through
+  `G.closedHubNbhd v ⊆ G.closedNbhd v` (a definitional `hw.2`) and
+  `ncard_closedNbhd_le_three_of_not_pencilHub`.
+- **Friction:** as the head of `.trans`, `Set.ncard_le_ncard`'s implicit `s` and `t` are not yet
+  known when the anonymous subset proof elaborates, so `hw.2` fails with *"Invalid projection …
+  `?m.104.1 x✝`"*; the same family as `LinearIndepOn.singleton`'s index above.
+- **Fix:** `have hsub : G.closedHubNbhd v ⊆ G.closedNbhd v := fun _ hw => hw.2`, then
+  `(Set.ncard_le_ncard hsub).trans …`.
+- **Also (same task, `exists_isFin3SelectorOf_of_ncard_le_three`, `Pencil/Chart.lean`):** the
+  length of `s.toFinset.toList` as `s.ncard` takes two bridging `rw`s (`Finset.length_toList`,
+  `← Set.ncard_eq_toFinset_card'`); one use, so no mirror.
+- **Status:** resolved in-proof (one `lake lean` cycle).
 
 ## Archived: Resolved (project-internal)
 
