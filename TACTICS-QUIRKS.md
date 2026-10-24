@@ -4420,16 +4420,19 @@ must supply for nothing, and the linter's own message already names the fix.
 **Fix, in order:**
 1. Drop the binder and open the proof with `classical` (a term proof becomes `by classical exact
    …`; `open scoped Classical in` for a bare term). Rebuild every callee too — they simply stop
-   passing the instance. In-tree precedent: `pencilPair_of_arms` (`Pencil/Pair2.lean`,
-   since Phase 40-simplify 10g) calls `Graph.pencil_reduction`, itself `[DecidableEq β]`-taking,
-   with `classical` and no binder.
+   passing the instance. In-tree precedent: `PanelHingeFramework.rankHypothesis_of_theorem_55_d3`
+   (`Theorem55.lean`, since RECONCILE round 3) calls `rankHypothesis_of_theorem_55_gen`, itself
+   `[DecidableEq β]`-taking, with `classical` and no binder.
 2. Only if that fails for a **stated** reason (a step computes with the specific instance —
    `decide`, a computational `rfl` — or a callee froze an instance in a `def` body that a later
    `rw` must match, § 66): keep the binder, suppress with `set_option linter.unusedDecidableInType
    false in` (before the docstring, § 51), and write the precise reason in the comment.
 3. When the signature is pinned or a headline and the round may not change it: suppress as in 2,
    naming which callee the binder threads to and that the fix is a deferred candidate — never call
-   it a false positive.
+   it a false positive. This reaches one step down: a callee to which such a headline passes its
+   binder and nothing else keeps its own, as dropping it leaves the headline's unused for `lake
+   lint`'s `unusedArguments`, which reads the proof term (`theorem_55_6_multigraph_gen`, below
+   `molecular_conjecture_multigraph`).
 
 **Calibration.** Phase 39 W3-L6a first read a threaded, non-`classical` binder as a false
 positive distinct from the ordinary `classical`-shadowing shape (a binder threaded only to

@@ -1226,8 +1226,7 @@ p. 654); it is the image of the screw space under `s ↦ (fun _ => s)`
 (`trivialMotions_eq_range_const`), of dimension `D` when there is a body (`finrank_trivialMotions`).
 
 The framework `_F` is an argument only so that `F.trivialMotions` reads as `F.infinitesimalMotions`
-does; the space does not depend on it, hence `@[nolint unusedArguments]`. -/
-@[nolint unusedArguments]
+does; the space does not depend on it. -/
 def trivialMotions (_F : BodyHingeFramework K k α β) : Submodule K (α → ScrewSpace K k) where
   carrier := {S | IsTrivialMotion S}
   add_mem' {S T} hS hT u v := by simp only [Pi.add_apply, hS u v, hT u v]

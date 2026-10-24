@@ -319,9 +319,6 @@ theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finit
 The lemma is here, not beside `IsProperRigidSubgraph` in `Molecular/Deficiency.lean`, because its
 proof uses `circuit_induces_isRigidSubgraph`. -/
 
--- `linter.unusedDecidableInType` reports `[DecidableEq β]`, which the statement does not use. The
--- proof opens with `classical`, so the lemma also holds without the instance.
-set_option linter.unusedDecidableInType false in
 /-- **A proper rigid subgraph when every degree is at least three**
 (`lem:pencil-min-degree-rigid`): for `D ≥ 4`, a loopless multigraph `G` with at least three
 vertices, each of degree at least three, has a proper rigid subgraph. No minimality is assumed:
@@ -334,7 +331,7 @@ vertices other than `v`. So the copies are dependent in `M(G̃)` (`matroidMG_ind
 contain a circuit `X`. Then `G[V(X)]` is a rigid subgraph (`circuit_induces_isRigidSubgraph`)
 with at least two vertices, as `G` has no loops, and without `v`, so it is proper. -/
 theorem exists_isProperRigidSubgraph_of_three_le_degree
-    [DecidableEq β] [Finite α] [Finite β] {n : ℕ} {G : Graph α β}
+    [Finite α] [Finite β] {n : ℕ} {G : Graph α β}
     (hD : 4 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hloop : G.Loopless)
     (hdeg : ∀ v ∈ V(G), 3 ≤ G.degree v) :
     ∃ H : Graph α β, H.IsProperRigidSubgraph G n := by

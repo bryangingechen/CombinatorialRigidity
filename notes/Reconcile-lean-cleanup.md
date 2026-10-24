@@ -9,9 +9,9 @@ non-vacuity witness for each of the 16 main results outside S1's and S2's rows, 
 sweep by directory, and the §B–§C screen with the fixes it appends. No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–38.9 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
-sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first eight of them.
-**Next concrete task:** task 38.10, the suppression sites (*Hand-off*). Round manual: `CLEANUP.md`.
+wait for the phase. Tasks 1–38.10 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
+sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first nine of them.
+**Next concrete task:** task 38.11, `HennebergReverse.lean` (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -42,25 +42,32 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 38.9 is done**, L8's re-seeding: `exists_pencilSeed_of_nondeg` from a selector of each set
-(the new `exists_isFin3SelectorOf_of_ncard_le_three`), `pencilChartPoint_ofCoord_toCoord` from
-`pencilChartPoint_congr`, and twelve declarations deleted; nothing is mid-stream. **Next:** 38.10.
+**Task 38.10 is done**, the suppression sites: §115 rule 1 at nine of part (a)'s ten declarations
+and `F-300`'s three `[Nonempty α]`, `F-298`'s four `set_option`s, three `nolint`s, `CaseI.lean`'s
+header, and `GenericBase.lean`'s primed theorem, its proof now the pin's. `theorem_55_6_multigraph_gen`
+keeps its binder by rule 3 (*Decisions*); nothing is mid-stream. **Next:** 38.11.
 
-**Task 38.9** (scratch `scratch/reconcile-lean/t389/`, gitignored: task 38.8's scripts, copied).
-Block (b) at the re-proof's tree (its cache built first) gives the line's seven names unpinned, dead
-and uncalled from outside, and the orphan `range_cross₃L_eq_perp`; with `cross₃L_apply`, the `rfl`
-lemma the screens leave out, it adds `cross₃L` and `cross₃_add_thd` (*Decisions*), all unpinned and
-dead. `hubSlotNormal_ofCoord_toCoord` was cut with the re-proof (block (b) at `ad96f373`: its one
-caller the re-proved lemma). `hubSlotOf` moves to `Reseed.lean`, its only user, and
-`pencilChartPoint_congr` above its new caller. The caches differ by the twelve (and generated
-auxiliaries) and the new lemma; `neworphans.py` finds nothing newly uncalled, and `reachdiff.py` one
-pin gaining a pin of its own node. Gates: the dump identical to task 38.8's, `--summary` OK with
-only the constant count moving (6647 → 6623), the label check identical (4). The ledger: 325
-entries, 224 `done`, 9 `left`, 50 `reported`, 42 `open`.
+**Task 38.10** (scratch `scratch/reconcile-lean/t3810/`, gitignored: task 38.9's scripts, copied).
+Rule 1 (the binder and its `set_option` gone, the proof under `classical`) at
+`deficiency_eq_zero_iff_exists_spanningTrees`, `rigidContract_deficiency_eq`,
+`exists_isProperRigidSubgraph_of_three_le_degree`, `pencil_reduction` (§115's precedent moved to
+`rankHypothesis_of_theorem_55_d3`), `rankHypothesis_of_theorem_55_d3`, `theorem_55_6_multigraph_d3`,
+`Modelling.lean`'s and `Theorem56.lean`'s two, the last two deriving `Nonempty α` from `hV` and
+`hne`. `theorem_55_6_multigraph_gen` keeps its `[DecidableEq β]`: the main result
+`molecular_conjecture_multigraph` passes its own only there, and a copy over a copy of the callee
+without it is reported by `#lint only unusedArguments` (`t3810/Cascade.lean`). The main result
+`rankHypothesis_of_theorem_55_gen`'s docstring loses only its clause "as in the `d = 3` feed".
+Block (b) on the primed theorem at the parent cache: its one caller the pin, which takes its proof.
+Gates: the build green (6147 jobs, 0 `warning:`, `error:` and `failed to cache artifact` lines),
+`lake lint` green on its first run; the axioms harness net of the path identical to the open's, the
+witnesses' to task 38.9's; the dump identical to task 38.9's; `--summary` OK, 6623 constants (the
+primed theorem gone, a `_proof_1_3` auxiliary new), no pin's reach moved (`reachdiff.py`),
+`neworphans.py` empty; the label check identical (4). The ledger: 325 entries, 226 `done`, 9
+`left`, 50 `reported`, 40 `open`.
 
-**Done before** (tasks 3–38.8; the ledger's dispositions name each part's task, the messages the
-detail): tasks 38.2–38.8's deletions (90, 33, 20, 105, 32, 15 and 33, from `CaseIII/` to
-`BodyBar/`), with `F-282`'s repeated derivation and the fixes of `F-287`, `F-289`, `F-290`, `F-291`
+**Done before** (tasks 3–38.9; the ledger's dispositions name each part's task, the messages the
+detail): task 38.9's re-seeding (`F-305`, `F-306`'s first part; twelve deleted); tasks 38.2–38.8's
+deletions (90, 33, 20, 105, 32, 15 and 33, from `CaseIII/` to `BodyBar/`), with `F-282`'s repeated derivation and the fixes of `F-287`, `F-289`, `F-290`, `F-291`
 and `F-296` (new `F-325`); tasks 38–38.1, the §B–§C screen and the `L` entries' verdicts (new
 `F-322`–`F-324`); L9's thirty-nine deletions, `F-090`'s shim, `F-061`'s rename, L6–L8's hypotheses
 and repeated derivations (each node they reach restated in the same commit), the search and its
@@ -248,7 +255,7 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `pencilChartPoint_congr` at `PencilSeed.ofCoord_toCoord_hubNormal` and `_fillHub` (the witness
   `t376/Hyps-t376.lean`) and delete `hubSlotNormal_ofCoord_toCoord`. No statement changes. (Block
   (b) also orphaned `cross₃L`, its `rfl` lemma and `cross₃_add_thd`, which went: twelve in all.)
-- [ ] **38.10. The suppression sites** (`F-322`; `F-298`'s four `set_option`s; the `[DecidableEq β]`
+- [x] **38.10. The suppression sites** (`F-322`; `F-298`'s four `set_option`s; the `[DecidableEq β]`
   of `F-281`–`F-283` and `F-285`), by `TACTICS-QUIRKS.md` §115 and `CombinatorialRigidity/CLAUDE.md`
   *Fix warnings at the source*. (a) Drop the `[DecidableEq β]`, its `set_option` and the sentence
   justifying it, and open the proof with `classical`, at
@@ -269,7 +276,8 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `[Finite ι]` with the bridge; the primed theorem's proof moved into its pin after `have :=
   Fintype.ofFinite α`, and the primed theorem deleted (gate 4) with both `set_option`s. Gates 1–3;
   the nodes state no instance (gate 2's `grep` confirms). And (task 38.1) drop `F-300`'s
-  `[Nonempty α]` at the same three theorems.
+  `[Nonempty α]` at the same three theorems. (Done so but at `theorem_55_6_multigraph_gen`, kept by
+  §115 rule 3 with `F-323`: dropped, it leaves the main result above it an unused binder.)
 - *Tasks 38.11–38.27, the entries' fixes* (task 38.1), by file in import order; the dispositions of
   the entries a line names are its specification (the declarations, the hypothesis or step, what
   replaces it, the callers, the node to restate). One Lean commit each: gates 1–3 (gate 3 with the
@@ -344,6 +352,7 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - `F-323` (task 38): the `[DecidableEq β]` of three main results (`rankHypothesis_of_theorem_55_gen`,
   `molecular_conjecture`, `molecular_conjecture_multigraph`), which their types do not use and
   `classical` supplies; dropping it changes their statements, which the phase restates (S1, S2).
+  `theorem_55_6_multigraph_gen`'s goes with `molecular_conjecture_multigraph`'s (task 38.10).
 - `F-324` (task 38.1): `theorem_55_minimalKDof_gen`'s `hD : 3 ≤ D`, which `hk1` and `hn` give;
   dropping it changes a main result's statement (the phase, with `F-323`), and until then the
   derivable `hD`s of the chain it passes them down stay (`F-293`, `F-297`, `F-298`).
@@ -386,28 +395,30 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 38.10**, at Opus (its line is its specification): the suppression sites by
-`TACTICS-QUIRKS.md` §115, (a) the `[DecidableEq β]` of `F-281`–`F-283` and `F-285` with their
-`set_option`s, (b) `F-298`'s four `set_option`s, (c) three `nolint`s and `notes/ToolchainBumps.md`'s
-count, (d) `CaseI.lean`'s header, (e) `GenericBase.lean`'s primed theorem, and `F-300`'s three
-`[Nonempty α]`. Gates 1–3 (gate 3 with the sixteen witnesses, harness `t389/Axioms-wit.lean`),
-`lake lint` to a fixed point, gate 2's `grep` (the nodes state no instance), gate 4 and block (c)
-for the primed theorem; gates 5, 6, 9 and 10. *Expected* (made exact before editing): the dump
-unchanged (the parent `scratch/reconcile-lean/dump-t389.txt`), `--summary` OK but its count of Lean
-constants, gate 9 at 4 or below. Tooling, in `t389/`: `blockb.py`, `blockc.py`, `delete.py` (a dry
-run unless `--apply`; it cuts every declaration whose short name is listed, so a name two namespaces
-share is cut by hand, and it leaves a preceding `omit … in`), `rmhdr.py`, `grepall.py`,
-`neworphans.py` and `reachdiff.py` (the last two compare the parent's Lean cache, copied first, with
-the new one; `t389/cache-new.jsonl` is this task's). Build name lists with `LC_ALL=C sort -u` (a
-UTF-8 `sort -u` merges names that differ only in subscripts). A live doc's mention of a deleted name
-says "since deleted"; a `[mirrored]` FRICTION entry whose lemma goes is retired; closed notes, the
-frozen design docs and the ledger are history. A re-proof that a deletion needs is built, and its
-Lean cache regenerated, before block (b) runs on the names it frees (task 38.9: two builds); a
-definition moved off a file whose declarations still use it moves with their deletion, not before.
-Then tasks 38.11–38.27 in order, one commit each, then the close.
+**Next: task 38.11**, at Opus (its line and `F-278`'s disposition are its specification):
+`HennebergReverse.lean`'s private `isoOfOptionSubtypeNe` without `hnone` (`SimpleGraph.irrefl`
+where its body needs it; its two callers in the file pass `by simp`) and
+`isoTypeIIOfThreeNeighbors` without `hab` (callers in `LamanTheorem.lean` and
+`MatroidIdentification.lean`); no node pins either. Gates 1–3 (gate 3 with the sixteen witnesses,
+harness `t3810/Axioms-wit.lean`), `lake lint` to a fixed point, gate 2's checks; gates 5, 6, 9 and
+10. *Expected* (made exact before editing): the dump unchanged (the parent
+`scratch/reconcile-lean/dump-t3810.txt`), `--summary` OK, gate 9 at 4. Tooling, in `t3810/` (task
+38.9's, copied): `blockb.py`, `blockc.py`, `delete.py` (a dry run unless `--apply`; it cuts every
+declaration whose short name is listed, so a name two namespaces share is cut by hand, and it
+leaves a preceding `omit … in`), `rmhdr.py`, `grepall.py`, `neworphans.py` and `reachdiff.py` (the
+last two compare the parent's Lean cache, copied first, with the new one; `t3810/cache-new.jsonl`
+is this task's). Build name lists with `LC_ALL=C sort -u` (a UTF-8 `sort -u` merges names that
+differ only in subscripts). A live doc's mention of a deleted name says "since deleted"; a
+`[mirrored]` FRICTION entry whose lemma goes is retired; closed notes, the frozen design docs and
+the ledger are history. A re-proof that a deletion needs is built, and its Lean cache regenerated,
+before block (b) runs on the names it frees (task 38.9: two builds; a proof moved whole into its
+one caller needs no second, task 38.10); a definition moved off a file whose declarations still
+use it moves with their deletion, not before. A binder dropped from a callee can leave a main
+result's unused for `lake lint` (task 38.10): check each caller that is a main result before
+dropping. Then tasks 38.12–38.27 in order, one commit each, then the close.
 
 A whole-project build after an edit the main results import can pass the Bash tool's 600 s (tasks
-37.9's, 38.2's, 38.8's and 38.9's did; 38.4's to 38.7's, from `RigidityMatrix/Basic.lean`,
+37.9's, 38.2's, 38.8's, 38.9's and 38.10's did; 38.4's to 38.7's, from `RigidityMatrix/Basic.lean`,
 `Induction/` or `Molecule/` up, did not) and go to the background: wait for it in-turn (a foreground
 loop on its log's exit marker, `for i in $(seq 1 110); do grep -q '^exit ' LOG && break; sleep 5;
 done`, the build writing `exit $?` to its log), and if it is stopped, run it again in the
@@ -459,7 +470,8 @@ own), `t38/blockb2.py`, `t38/seq.py`, and `t381/q.py` (a name's pins, liveness a
   port's code (`DESIGN.md`: the rebased port stays whole for an upstream offer). Such a witness is
   `coe_pairingDualEquiv` (task 38.8): `def:meet-pairing-dual` pins a `Basis.equiv` and states that
   the determinant map is an isomorphism, and only it proves the two are one map. Suppressions follow
-  `TACTICS-QUIRKS.md` §115, a main result's binder going to the phase (`F-323`).
+  `TACTICS-QUIRKS.md` §115, a main result's binder going to the phase (`F-323`), and with it a
+  callee's to which it passes that binder alone (task 38.10).
 - **A file nothing uses** (task 32.2): swept like any other, its header saying so (task 38.5).
 - **The entries' verdicts** (task 38.1): an unused hypothesis, `have` or step goes; a derivable one
   goes, derived where it was used, unless a later hypothesis's type reads it or a main result passes

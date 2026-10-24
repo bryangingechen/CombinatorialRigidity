@@ -196,17 +196,20 @@ the first run):
   newly unused. rc1 took **three rounds: 64 → 9 → 2 → 0**. Do not read the
   first report as the size of the job; each round costs a full build plus a
   lint (~10 and ~15 min here), so the cost is in the iteration, not the edits.
-- **Expect `unusedArguments` false positives on the `Fintype.ofFinite` bridge.**
-  The linter reads the *proof term*; the project's standard
-  `haveI : Fintype X := Fintype.ofFinite X` idiom needs `Finite X` to
-  **elaborate** but leaves it out of the term. rc1 had **7 of 59**, each now
-  carrying `@[nolint unusedArguments]` with a comment naming the bridge (11
-  such sites in the tree today — `grep -rn "nolint unusedArguments"`).
-  Screening heuristic and its limit: grepping each flagged declaration's body
-  for `Fintype.ofFinite` caught all 7 but flagged 15 of 59, and cannot tell you
-  which 8 are spurious (`Fintype.ofFinite _` hides which variable it converts).
-  Cheapest reliable loop: drop everything, then `lake env lean <file>` on the
-  at-risk files.
+- **The `Fintype.ofFinite` bridge is no longer an `unusedArguments` false
+  positive.** The linter reads the *proof term*. At rc1 the project's standard
+  `haveI : Fintype X := Fintype.ofFinite X` idiom needed `Finite X` to
+  **elaborate** but left it out of the term: **7 of 59** reports, each given
+  `@[nolint unusedArguments]` with a comment naming the bridge. On v4.36.0-rc1
+  the linter counts a bridge `have` as a use of `Finite X` even when nothing
+  after it uses the `have` (RECONCILE round 3: copies of the bridge sites
+  without the attribute lint clean), so the bridge `nolint`s go. Four
+  `@[nolint unusedArguments]` sites are left (`grep -rn "nolint
+  unusedArguments"`): the two `IsInfinitesimallyRigid` contract guards
+  (`Framework.lean`, `BodyBar/Framework.lean`) and two bridge sites in
+  `RigidityMatrix/Bricks.lean`, whose `[Finite β]` is unused. Conversely, a
+  binder used only by a bridge whose `Fintype` nothing uses is now invisible
+  to the linter; find one by dropping it and rebuilding.
 - **Work from the build log's warning *taxonomy*, not from a queue.** rc1's
   item 4a found 22 sites in classes this note had never enumerated, none of
   them from the deprecation drift. A taxonomy pass is how you find them.

@@ -770,18 +770,17 @@ theorem isNondeg_pencilConfig_of_planeDiff [Fintype α] [Finite β] {G : Graph �
     rw [← hrange, linearIndepOn_range_iff htinj]
     exact linearIndependent_pencilConfigPoint_of_linearIndependent_pencilPicturePoint z hli
 
--- `[Fintype ι]` gives `Finset.univ`; the type never re-mentions it (`unusedFintypeInType`).
-set_option linter.unusedFintypeInType false in
 /-- **Finitely many open conditions on a fibre meet** (a step of `thm:pencil-x0-base-generic`, from
 `lem:pencil-x0-fibre-intersection` by induction on their number): over an infinite field, if each of
 finitely many polynomials `p i` is nonzero at some point of the subspace `L`, then one point of `L`
 makes all of them nonzero. The induction step applies `MvPolynomial.exists_mem_eval_ne_zero₂` to the
 product of the polynomials so far and the next one. -/
-theorem exists_mem_forall_eval_ne_zero [Infinite K] {σ ι : Type*} [Fintype ι]
+theorem exists_mem_forall_eval_ne_zero [Infinite K] {σ ι : Type*} [Finite ι]
     {L : Submodule K (σ → K)} (p : ι → MvPolynomial σ K)
     (h : ∀ i, ∃ x ∈ L, MvPolynomial.eval x (p i) ≠ 0) :
     ∃ x ∈ L, ∀ i, MvPolynomial.eval x (p i) ≠ 0 := by
   classical
+  have := Fintype.ofFinite ι
   suffices key : ∀ s : Finset ι, ∃ x ∈ L, ∀ i ∈ s, MvPolynomial.eval x (p i) ≠ 0 by
     obtain ⟨x, hx, hall⟩ := key Finset.univ
     exact ⟨x, hx, fun i => hall i (Finset.mem_univ i)⟩
@@ -831,14 +830,10 @@ theorem exists_det_poly (x y w : α) (hxy : x ≠ y) (hxw : x ≠ w) (hyw : y �
     simp [pencilPicturePoint, hq₀, hxy, hxw, Ne.symm hyw]
   exact ⟨D, fun h0 => hD0 (by rw [h0, map_zero]), hli⟩
 
--- `[Fintype α]` is for `exists_planes_separate`'s `mulVecLin`; the type never re-mentions it
--- (`unusedFintypeInType`).
-set_option linter.unusedFintypeInType false in
-/-- **The general configuration is nondegenerate without a planar-rigid set, at `[Fintype α]`** (a
-step of `thm:pencil-x0-base-generic`, whose pin below is this theorem at `[Finite α]`): let `K` be
-infinite and let `G` satisfy the standing hypotheses, be nondegeneracy-feasible and have no
-planar-rigid set. Then `G` has a generic pencil realization, a configuration over a picture off the
-zero sets of the attaining, separating and general-position polynomials.
+/-- **The general configuration is nondegenerate without a planar-rigid set**
+(`thm:pencil-x0-base-generic`): let `K` be infinite and let `G` satisfy the standing hypotheses, be
+nondegeneracy-feasible and have `def₂(G[Y]) ≠ 0` for every set `Y` of at least two bodies. Then `G`
+has a generic pencil realization, a configuration over a general picture.
 
 Proof. Every closed hub-neighbourhood has at most three members
 (`PencilNondegFeasible.hub_conditions`, `lem:pencil-feasible-hub-conditions`). Take a picture `q`
@@ -854,11 +849,12 @@ distinct bodies differ, so the configuration is a nondegenerate pencil realizati
 (`isNondeg_pencilConfig_of_planeDiff`), and its height is attaining, so the realization has the
 deficiency rank (`finrank_span_rigidityRows_pencilConfigFramework`,
 `lem:pencil-config-point-join-rank`). -/
-theorem hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'
-    [Infinite K] [Fintype α] [Finite β] {G : Graph α β} (hG : G.IsX0Graph)
+theorem _root_.Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero
+    [Infinite K] [Finite α] [Finite β] {G : Graph α β} (hG : G.IsX0Graph)
     (hfeas : PencilNondegFeasible K G)
     (hS : ∀ Y ⊆ V(G), 2 ≤ Y.ncard → (G.induce Y).deficiency 2 ≠ 0) :
     HasGenericPencilRealization K 3 G := by
+  have := Fintype.ofFinite α
   classical
   have : G.Simple := hG.simple
   obtain ⟨hF1, -⟩ := hfeas.hub_conditions
@@ -953,19 +949,5 @@ theorem hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'
     hnd, ?_⟩
   rw [finrank_span_rigidityRows_pencilConfigFramework]
   exact hrank z hz hxR
-
-/-- **The general configuration is nondegenerate without a planar-rigid set**
-(`thm:pencil-x0-base-generic`): let `K` be infinite and let `G` satisfy the standing hypotheses, be
-nondegeneracy-feasible and have `def₂(G[Y]) ≠ 0` for every set `Y` of at least two bodies. Then `G`
-has a generic pencil realization, a configuration over a general picture. The proof is
-`hasGenericPencilRealization_of_forall_deficiency_two_ne_zero'`, at the `Fintype` structure that
-`Finite α` gives. -/
-theorem _root_.Graph.IsX0Graph.hasGenericPencilRealization_of_forall_deficiency_two_ne_zero
-    [Infinite K] [Finite α] [Finite β] {G : Graph α β} (hG : G.IsX0Graph)
-    (hfeas : PencilNondegFeasible K G)
-    (hS : ∀ Y ⊆ V(G), 2 ≤ Y.ncard → (G.induce Y).deficiency 2 ≠ 0) :
-    HasGenericPencilRealization K 3 G := by
-  have := Fintype.ofFinite α
-  exact hasGenericPencilRealization_of_forall_deficiency_two_ne_zero' hG hfeas hS
 
 end CombinatorialRigidity.Molecular

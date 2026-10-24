@@ -570,17 +570,15 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
 The deficiency half of `rigidContract_isMinimalKDof` does not use the minimality of `G`, as
 `contract_matroidMG_deficiency_eq` (`Operations.lean`) does not. -/
 
--- `linter.unusedDecidableInType` reports `[DecidableEq β]`, which the statement does not use. The
--- proof uses it through `matroidMG`; with `classical`, the lemma also holds without the instance.
-set_option linter.unusedDecidableInType false in
 /-- **The contraction keeps the deficiency** (`lem:pencil-contraction-deficiency`): for a proper
 rigid subgraph `H` of `G`, `r ∈ V(H)` and `D ≥ 2`, `def((G / E(H))̃) = def(G̃)`, without minimality.
 The proof is the deficiency half of `rigidContract_isMinimalKDof`, with
 `contract_matroidMG_deficiency_eq` in place of `contraction_isMinimalKDof`. -/
-theorem rigidContract_deficiency_eq [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+theorem rigidContract_deficiency_eq [Finite α] [Finite β] {H G : Graph α β}
     {n : ℕ} [NeZero (bodyHingeMult n)]
     (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H)) :
     (G.rigidContract H r).deficiency n = G.deficiency n := by
+  classical
   have hVHne : V(H).Nonempty := hH.vertexSet_nonempty
   obtain ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩ := hH
   have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono

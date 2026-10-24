@@ -58,7 +58,6 @@ variable {α β : Type*}
 
 namespace PanelHingeFramework
 
-set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 in `ℝ³` with the poles in general position, on two or more bodies** (a step of
 `lem:theorem-56-general-position`: its case `2 ≤ |V|`; KT Theorem 5.6, Katoh and Tanigawa 2011,
 §5.2, p. 670): for a simple graph `G` that spans two or more bodies in `ℝ³`, with more than
@@ -74,13 +73,8 @@ The poles of its normals are then in general position up to order four, as the s
 dictionary (`thm:molecular-iff-square-bar-joint`) needs. The proof takes a non-root of the product
 of the rank polynomial of `exists_rankPolynomial_of_le_finrank_linking`, at the normals of the
 realization of `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, and the polynomial of
-`exists_generalPosition4_polynomial` (`MvPolynomial.exists_eval_ne_zero`); see the file header.
-
-`[DecidableEq β]` is an instance argument of
-`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, which the proof calls, and does not appear
-in the conclusion; hence the `unusedDecidableInType` suppression. -/
-theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+`exists_generalPosition4_polynomial` (`MvPolynomial.exists_eval_ne_zero`); see the file header. -/
+theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
@@ -89,6 +83,8 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) ∧
       Q.IsGeneralPosition4 := by
   classical
+  obtain ⟨a₀, -⟩ := Set.nonempty_of_ncard_ne_zero (s := V(G)) (by omega)
+  have : Nonempty α := ⟨a₀⟩
   have hloop : G.Loopless := hSimple.toLoopless
   -- Numerics for `n = 3`, `k = 2`.
   have hD : (3 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.three_le_bodyBarDim_of_two_le (by norm_num)
@@ -174,7 +170,6 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
     rw [mul_sub, mul_one] at hrankeq
     linarith [hcompl, hrankeq]
 
-set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 in `ℝ³` with the poles in general position**
 (`lem:theorem-56-general-position`; KT Theorem 5.6, Katoh and Tanigawa 2011, §5.2, p. 670): for a
 simple graph `G` that spans a nonempty set of bodies in `ℝ³`, with more than `6(|V| - 1)` labels,
@@ -195,13 +190,8 @@ refutes every link), so `def(G̃) = 0` (`Graph.deficiency_of_edgeSet_empty`), th
 infinitesimally rigid (`rankHypothesis_zero_iff` and subsingleton constancy), and the conjuncts on
 `hends` and on the hinges hold vacuously. The moment-curve normals at the constant parameter `1` are
 in general position up to order four by `exists_generalPosition4_polynomial` at the moment curve
-(nonvanishing last coordinate, and every `≤ 4`-subfamily, here at most a singleton, independent).
-
-`[DecidableEq β]` is an instance argument of `exists_rankHypothesis_isGeneralPosition4_of_two_le`,
-which the proof calls, and does not appear in the conclusion; hence the `unusedDecidableInType`
-suppression. -/
-theorem exists_rankHypothesis_isGeneralPosition4
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+(nonvanishing last coordinate, and every `≤ 4`-subfamily, here at most a singleton, independent). -/
+theorem exists_rankHypothesis_isGeneralPosition4 [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
@@ -209,6 +199,7 @@ theorem exists_rankHypothesis_isGeneralPosition4
       (∀ e u v, G.IsLink e u v → Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) ∧
       Q.IsGeneralPosition4 := by
+  have : Nonempty α := ⟨hne.some⟩
   by_cases hV2 : 2 ≤ V(G).ncard
   · exact exists_rankHypothesis_isGeneralPosition4_of_two_le hcard G hV2 hspan hSimple
   · -- Single-body branch: `|V| = 1`, so `α` is a subsingleton and `G` is edgeless.

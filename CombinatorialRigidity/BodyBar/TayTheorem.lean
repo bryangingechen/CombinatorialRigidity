@@ -448,9 +448,6 @@ bar set `E'` is `d` times the cycle-matroid rank `r(E')`. The real analogue of
 `ℝ`); the chosen orientation is replaced by `G.orientation_nonempty.some` via
 `span_signedIncMatrix_image_eq_of_orientation`. This caps the row span in the converse rank bound
 `finrank_rigidityRow_span_le`. -/
--- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
--- needs this instance to elaborate; it does not survive into the proof term.
-@[nolint unusedArguments]
 theorem finrank_realBlockPiSpanOn [Finite α] [Finite β] {G : Graph α β}
     (D : Graph.orientation G) (E' : Set β) :
     letI : DecidableEq α := Classical.decEq α

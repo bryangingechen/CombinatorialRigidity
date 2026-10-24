@@ -2928,19 +2928,17 @@ maximal forests are spanning trees (`isSpanningTreePacking_of_isTight`). Convers
 `D` edge-disjoint spanning trees is independent in `M(G̃)` with `D(|V(G)| - 1)` elements, so it is a
 base, and KT eq. (2.4) gives `def(G̃) = 0`. -/
 
--- `linter.unusedDecidableInType` reports `[DecidableEq β]`, which the statement does not use; the
--- proof uses it, through `matroidMG` and `IsKDof.exists_isBase_isForestPacking`.
-set_option linter.unusedDecidableInType false in
 /-- **`def(G̃) = 0` iff `G̃` contains `D` edge-disjoint spanning trees**
 (`lem:deficiency-zero-iff-tree-packing`; KT Proposition 2.2 at `G̃`, Katoh–Tanigawa 2011, p. 655),
 for `D ≥ 2` (`[NeZero (bodyHingeMult n)]`) and `V(G)` nonempty. The trees are spanning subgraphs
 `Ts i ≤s G̃` with pairwise disjoint edge sets; the section docstring gives the proof. -/
-theorem deficiency_eq_zero_iff_exists_spanningTrees [DecidableEq β] [Finite α] [Finite β]
+theorem deficiency_eq_zero_iff_exists_spanningTrees [Finite α] [Finite β]
     (G : Graph α β) (n : ℕ) [NeZero (bodyHingeMult n)] (hne : V(G).Nonempty) :
     G.deficiency n = 0 ↔
       ∃ Ts : Fin (bodyBarDim n) → Graph α (β × Fin (bodyHingeMult n)),
         (∀ i, Ts i ≤s G.mulTilde n) ∧ (∀ i, (Ts i).IsTree) ∧
           Pairwise (Function.onFun Disjoint fun i => E(Ts i)) := by
+  classical
   have hmult : 1 ≤ bodyHingeMult n := Nat.one_le_iff_ne_zero.mpr (NeZero.ne _)
   have hD : 1 ≤ bodyBarDim n := by rw [bodyHingeMult] at hmult; omega
   constructor

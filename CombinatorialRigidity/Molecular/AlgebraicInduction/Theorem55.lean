@@ -2183,7 +2183,6 @@ theorem PanelHingeFramework.theorem_55_d3 [Infinite K] [DecidableEq β] [Finite 
 
 /-! ## KT Theorem 5.6 and the molecular conjecture for simple graphs (`thm:theorem-55-6`) -/
 
-set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6, genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the `≥ 2`-body
 stratum; Katoh–Tanigawa 2011 §5.2, p. 670). The `|V| ≥ 2` case of `rankHypothesis_of_theorem_55_gen`
 extracted as a reusable lemma that *also* exposes the genuine-hinge witness
@@ -2272,7 +2271,6 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
     rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen
   exact ⟨Q, hQg, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
 
-set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6, link-recording genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the
 link-recording strengthening; Katoh–Tanigawa 2011 §5.2, p. 670). Identical to
 `rankHypothesis_genuine_of_theorem_55_gen` except the endpoint selector *records a genuine `G`-link
@@ -2288,8 +2286,7 @@ rows), which `reaimSub`'s off-edge fallback
 `(x₀, y₀)` fails on the re-added edges `E(G) ∖ E(G')` (those are genuine `G`-links, but `(x₀, y₀)`
 need not be their endpoints). `reaimSubLink` records the actual `G`-link endpoints there instead,
 while keeping `Q'.ends` on `G'`-links (so the `withGraph G'` motion argument — hence the entire
-`RankHypothesis` derivation — is unchanged) and a genuine hinge on every edge (`hC`). The
-`unusedDecidableInType` suppression is correct exactly as in the base form. -/
+`RankHypothesis` derivation — is unchanged) and a genuine hinge on every edge (`hC`). -/
 theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
@@ -2554,7 +2551,7 @@ The single-body case (`V(G).ncard = 1`) routes separately: `G` is then trivially
 
 `[DecidableEq β]` is genuinely used in the proof (`IsMinimalKDof` / the spanning strip carry it as
 an instance argument) but does not appear in the conclusion's type; the `unusedDecidableInType`
-suppression (above the docstring) is correct here, exactly as in the `d = 3` feed. -/
+suppression (above the docstring) is correct here. -/
 theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hd : 2 ≤ n)
@@ -2618,7 +2615,6 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
     rw [hdef0]
     exact ⟨Q, hQg, hrh⟩
 
-set_option linter.unusedDecidableInType false in
 /-- **Theorem 5.5 → Proposition 1.1, the `def > 0` feed, `d = 3` instance** (`thm:theorem-55-6-d3`;
 Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; the `n := 3` specialization of
 `rankHypothesis_of_theorem_55_gen`). For a simple spanning graph on `≥ 1` body in `d = 3`, a
@@ -2633,20 +2629,17 @@ the strip-realize-re-add assembly (KT p. 670) lives there, along with the single
 `PanelHingeFramework K (3 - 1) α β` is defeq to `PanelHingeFramework K 2 α β` (kernel `Nat.sub`
 reduction on literals), so the corollary needs no cast at the return type.
 
-`[DecidableEq β]` is genuinely used in the proof (through the general-`n` feed's spanning strip)
-but does not appear in the conclusion's type; the `unusedDecidableInType` suppression is correct
-here, exactly as in the general form.
-
 This decl has no in-tree caller: it is the `d = 3` worked instance of the `def > 0` feed,
 kept deliberately as an accessible entry point (PROSPECT S1 adjudication, 2026-07-10;
 `notes/Prospect.md`), not dead code awaiting a liveness sweep. -/
 theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3 [Infinite K]
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    [Nonempty α] [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework K 2 α β, Q.graph = G ∧
-      Q.toBodyHinge.RankHypothesis (G.deficiency 3) :=
-  PanelHingeFramework.rankHypothesis_of_theorem_55_gen (n := 3) (by norm_num)
+      Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
+  classical
+  exact PanelHingeFramework.rankHypothesis_of_theorem_55_gen (n := 3) (by norm_num)
     (by simpa [Graph.bodyBarDim] using hcard) G hne hspan hSimple
 
 set_option linter.unusedDecidableInType false in
@@ -2775,7 +2768,6 @@ def HasCoplanarPanelRealization (G : Graph α β) (F : BodyHingeFramework K k α
     ExtensorInPanel (F.supportExtensor e) (normal u) ∧
     ExtensorInPanel (F.supportExtensor e) (normal v))
 
-set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6, multigraph form — the `2 ≤ |V|` strip-and-re-add core** (a step of
 `thm:theorem-55-6-multigraph`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670). Every spanning
 multigraph `G` on `≥ 2` bodies — parallel edges and loops admitted — at any grade `1 ≤ k` with
@@ -2807,11 +2799,7 @@ model:
    `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`.
 5. **Conclude** `RankHypothesis (def(G̃))` via `rigidityMatrix_prop11` (KT Prop 1.1), whose
    `n = k + 1` premise is `Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn`; every hinge is genuine
-   (`hC`), the input that node's genericity-free lower bound needs.
-
-`[DecidableEq β]` is used in the proof (the strip and `IsMinimalKDof` carry it) but not in the
-conclusion's type; the `unusedDecidableInType` suppression is correct, as in
-`rankHypothesis_of_theorem_55_gen`. -/
+   (`hC`), the input that node's genericity-free lower bound needs. -/
 theorem theorem_55_6_multigraph_of_two_le [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
@@ -2913,7 +2901,6 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
   rw [hFg] at hprop11
   exact ⟨F, normal', hW1, hprop11⟩
 
-set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 for multigraphs** (`thm:theorem-55-6-multigraph`; KT Theorem 5.6, p. 670): let
 `K` be infinite, `1 ≤ k` and `3 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let every minimal
 `c`-dof-graph miss some edge label (`hfresh`). Then every multigraph `G` on all of `α` (`hspan`),
@@ -2927,11 +2914,7 @@ realization gives the body a constant nonzero normal `n₀` and every label one 
 its panel (`exists_extensor_in_two_panels_grade n₀ n₀`). The containment model admits this
 single-body realization; the meet model cannot (`rem:coplanar-single-body`), which is why the
 single-body case is a genuine strengthening here and not in the meet-model `molecular_conjecture`.
-`rankHypothesis_of_theorem_55_gen` derives `def(G̃) = 0` on one body the same way.
-
-`[DecidableEq β]` is used in the proof (through `theorem_55_6_multigraph_of_two_le`) but not in the
-conclusion's type; the `unusedDecidableInType` suppression is correct, as in
-`rankHypothesis_of_theorem_55_gen`. -/
+`rankHypothesis_of_theorem_55_gen` derives `def(G̃) = 0` on one body the same way. -/
 theorem theorem_55_6_multigraph [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
@@ -2994,6 +2977,9 @@ theorem theorem_55_6_multigraph [Infinite K]
     rw [hdef0]
     exact (BodyHingeFramework.rankHypothesis_zero_iff F).mpr hrig
 
+-- `[DecidableEq β]` is not in the statement, and `classical` would supply it to
+-- `theorem_55_6_multigraph`. It stays while the main result `molecular_conjecture_multigraph` keeps
+-- its own, which it passes only here (`lake lint` would report that one unused); both go together.
 set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 for multigraphs, at dimension `n`** (`thm:theorem-55-6-multigraph`; KT
 Theorem 5.6, p. 670): let `K` be infinite, `2 ≤ n`, and `D(|α| − 1) < |β|` with `D = bodyBarDim n`
@@ -3004,10 +2990,7 @@ the target rank, `F.RankHypothesis (def(G̃))`.
 It is `theorem_55_6_multigraph` at `k = n − 1`, as `rankHypothesis_of_theorem_55_gen` is
 `rankHypothesis_genuine_of_theorem_55_gen` there: `3 ≤ D` (`Graph.three_le_bodyBarDim_of_two_le`),
 `D = screwDim (n − 1)` (`Graph.bodyBarDim_eq_screwDim_sub_one`), and `hfresh` from `hcard`
-(`Graph.freshEdgeSupply_of_card_lt`, `rem:fresh-edge-supply`).
-
-`[DecidableEq β]` is used in the proof, through `theorem_55_6_multigraph`, but not in the statement;
-the `unusedDecidableInType` suppression is correct, as in `rankHypothesis_of_theorem_55_gen`. -/
+(`Graph.freshEdgeSupply_of_card_lt`, `rem:fresh-edge-supply`). -/
 theorem theorem_55_6_multigraph_gen [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hd : 2 ≤ n)
@@ -3022,7 +3005,6 @@ theorem theorem_55_6_multigraph_gen [Infinite K]
     Graph.freshEdgeSupply_of_card_lt (by omega) hcard
   exact theorem_55_6_multigraph (K := K) (by omega) hD hn hfresh G hspan
 
-set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 for multigraphs at `d = 3`** (`cor:theorem-55-6-multigraph-d3`; KT Theorem 5.6,
 p. 670): `theorem_55_6_multigraph_gen` at `n = 3`, where `k = 2` and `D = 6`. If `K` is infinite and
 `6(|α| − 1) < |β|` (`hcard`), every multigraph `G` on all of `α` (`hspan`) has a hinge-coplanar
@@ -3033,12 +3015,13 @@ panel realization at the target rank `6(|V(G)| − 1) − def(G̃)`.
 `2`), so the statement needs no cast, as in `rankHypothesis_of_theorem_55_d3`. No declaration uses
 it. -/
 theorem theorem_55_6_multigraph_d3 [Infinite K]
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    [Nonempty α] [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     ∃ (F : BodyHingeFramework K 2 α β) (normal : α → Fin (2 + 2) → K),
-      HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency 3) :=
-  theorem_55_6_multigraph_gen (n := 3) (by norm_num)
+      HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency 3) := by
+  classical
+  exact theorem_55_6_multigraph_gen (n := 3) (by norm_num)
     (by simpa [Graph.bodyBarDim] using hcard) G hspan
 
 set_option linter.unusedDecidableInType false in

@@ -48,7 +48,6 @@ namespace CombinatorialRigidity.Molecular
 
 variable {α β : Type*}
 
-set_option linter.unusedDecidableInType false in
 /-- **Molecular realizations at the target rank** (`thm:panel-hinge-iff-molecular`; Katoh and
 Tanigawa 2011, p. 671): for a simple graph `G` that spans a nonempty set of bodies in `ℝ³`, with
 more than `6(|V| - 1)` labels, there is an endpoint selector `ends` and a placement `c : α → ℝ³` of
@@ -73,13 +72,8 @@ nonzero scalars, so the panel framework on them has the same motion space as `Q`
 (`infinitesimalMotions_mono_of_span_le`, since only the hinge spans enter the constraint); the
 polarity (`rankHypothesis_ofNormals_homogenize_iff`) transfers the rank to the molecular framework;
 and order-four linear independence of the normals is order-four affine independence of the poles
-(`affineIndependent_iff_linearIndependent_homogenize`).
-
-`[DecidableEq β]` is an instance argument of
-`PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4`, which the proof calls, and does not
-appear in the conclusion; hence the `unusedDecidableInType` suppression. -/
-theorem exists_molecular_rankHypothesis_generalPosition
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+(`affineIndependent_iff_linearIndependent_homogenize`). -/
+theorem exists_molecular_rankHypothesis_generalPosition [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ (ends : β → α × α) (c : α → EuclideanSpace ℝ (Fin 3)),

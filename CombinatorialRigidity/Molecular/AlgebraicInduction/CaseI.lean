@@ -850,7 +850,6 @@ theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rig
   F.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows hLI
     (Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ Submodule.subset_span (hmem i))) hne hcard
 
-set_option linter.style.longLine false in
 /-- **The rows of `H` and of the other edges combined** (a step of `lem:case-I-realization`; KT
 eq. (6.3), p. 673): let `G` have deficiency `k'` (`hdef`), with `bodyBarDim n = screwDim k` (`hn`),
 let `GH, Gc ≤ G`, and let sets of bodies `sH` and `sc` both contain `c` and together cover `V(G)`,
@@ -871,7 +870,8 @@ together, the block-triangular form of KT eq. (6.3). As `sH` and `sc` share `c` 
 they number at least `D(|V(G)| − 1) − k'`, which bounds the rank at `q₀` below. The hinges at `q₀`
 are nonzero, by general position and `hne_G`, so the rank is at most that
 (`finrank_span_rigidityRows_add_deficiency_le`, `lem:relative-deficiency-rank-bound`). -/
-theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof
+theorem
+    PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof
     [Infinite K]
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)

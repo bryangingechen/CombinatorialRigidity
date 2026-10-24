@@ -500,9 +500,6 @@ every link of `G` its ends (`hends`), the hinge at every link is nondegenerate (
 The rows at links span the row space (`span_panelRow_linking_eq_rigidityRows`);
 `Submodule.exists_fun_fin_finrank_span_eq` picks a basis among them, and its first `N` members
 (`Fin.castLE`) are the rows, indexed by their edge and pair of coordinates. -/
--- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
--- needs this instance to elaborate; it does not survive into the proof term.
-@[nolint unusedArguments]
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank
     [Finite α] [Finite β] (F : BodyHingeFramework K k α β) {ends : β → α × α}
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)

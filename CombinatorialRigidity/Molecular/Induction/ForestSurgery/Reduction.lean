@@ -716,9 +716,6 @@ at least three vertices, each of degree at least three, has a proper rigid subgr
 none, some vertex has degree less than three, and exactly two when the multigraph is
 `2`-edge-connected (`two_le_degree_of_twoEdgeConnected`). -/
 
--- `linter.unusedDecidableInType` reports `[DecidableEq β]`, which the statement does not use. The
--- proof opens with `classical`, so the theorem also holds without the instance.
-set_option linter.unusedDecidableInType false in
 /-- **Reduction on all multigraphs** (`thm:pencil-reduction`; cf. KT Theorem 4.9, without
 minimality): let `D ≥ 6`, and let a property `P` of multigraphs hold of a nonempty multigraph `G` in
 each of five cases:
@@ -738,7 +735,7 @@ and, for a fixed number of vertices, on `|E(G)|`. In the last case the vertex of
 `exists_isProperRigidSubgraph_of_three_le_degree`, whose bound `4 ≤ D` the proof takes from `hD`,
 gives a vertex of degree less than three, and `two_le_degree_of_twoEdgeConnected` gives every vertex
 degree at least two. -/
-theorem pencil_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+theorem pencil_reduction [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ bodyBarDim n) {P : Graph α β → Prop}
     (hloop : ∀ G : Graph α β, (∃ e x, G.IsLoopAt e x) →
       (∀ G' : Graph α β, V(G').Nonempty →
