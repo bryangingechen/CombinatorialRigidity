@@ -5,8 +5,6 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 import CombinatorialRigidity.Molecular.Molecule.Duality
-import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 
 /-!
 # Pencil realizations

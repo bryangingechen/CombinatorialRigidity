@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
 
 /-!
 # The contraction curve and the rescaled lifting system

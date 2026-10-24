@@ -5,8 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Monad
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.MvPolynomial
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
 
 /-!
 # Planar pictures, the lifting space and the main pictures

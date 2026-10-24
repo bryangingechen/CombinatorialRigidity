@@ -3,7 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
 
 /-!
 # Distinct standard basis vectors in the slots of a selector

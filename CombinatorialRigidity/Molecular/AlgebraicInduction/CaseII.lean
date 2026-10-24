@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
 import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
+import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
+import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
 
 /-!
 # Case II: putting back a vertex of degree two

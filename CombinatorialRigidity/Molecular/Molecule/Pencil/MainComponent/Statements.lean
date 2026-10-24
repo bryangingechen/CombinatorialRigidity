@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericEar
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTriangle

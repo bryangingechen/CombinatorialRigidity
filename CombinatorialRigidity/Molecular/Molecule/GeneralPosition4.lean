@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
-import Mathlib.LinearAlgebra.Vandermonde
 
 /-!
 # Panel normals in general position up to order four

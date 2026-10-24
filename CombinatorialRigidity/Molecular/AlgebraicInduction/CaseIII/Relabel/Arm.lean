@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.Chain
+import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Arms
 
 /-!
 # Case III: the third framework, and the form at the new edge of `G_i`

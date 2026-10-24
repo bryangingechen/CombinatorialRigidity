@@ -4,12 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
-import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
-import Mathlib.Basic.Real.Basic
-import CombinatorialRigidity.Molecular.Meet
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
-import Mathlib.Combinatorics.Graph.Subgraph
 import Mathlib.LinearAlgebra.Quotient.Pi
+import CombinatorialRigidity.Molecular.Deficiency
 
 /-!
 # Panel support extensors, their coordinates, and the deficiency bound

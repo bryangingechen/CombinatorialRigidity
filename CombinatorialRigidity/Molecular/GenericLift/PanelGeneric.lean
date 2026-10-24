@@ -3,7 +3,6 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 
 /-!
@@ -49,7 +48,7 @@ graph enters only in the consumers, through an `hends` link hypothesis.
   rank–nullity corollary of the rank formula, every generic realization is infinitesimally rigid
   on `V(G)` iff `def(G̃) = 0`.
 
-Non-`module`: imports `GenericityDevice.lean` and `Theorem55.lean`, both non-`module`.
+Non-`module`: imports `Theorem55.lean` (and through it `GenericityDevice.lean`), both non-`module`.
 -/
 
 namespace CombinatorialRigidity.Molecular.PanelHingeFramework

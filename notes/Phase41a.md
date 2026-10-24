@@ -1,9 +1,9 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 3a have landed. Next concrete task: the
-build-time detour the PI scheduled for the next session, item P1 (trim the molecular chain's
-imports) then P2 (a recon of its `module` conversion); then item 4, the spike.
+recon are in `notes/Phase41-design.md`. Items 1 to 3a and P1 have landed. Next concrete task:
+item P2, a read-only recon of the `module` conversion, whose verdict goes to the PI; then item 4,
+the spike.
 
 ## Current state
 
@@ -18,7 +18,8 @@ that then restated it. The sub-phase builds S2's field `isLink_ends` into the ca
 `notes/Phase41-design.md` §1.1) and leaves every main result's statement as it is: the
 restatements are RESTATE's. Before the spike, the PI scheduled a build-time detour (items P1–P2):
 each commit's full build is ~5 min and chain-bound (`notes/PERFORMANCE.md` *Build critical
-path*), and the switch will need several. Mode: structural edit. There are no red target nodes, so the
+path*), and the switch will need several. P1 trimmed the chain's imports, which shortens the
+critical path by 15–20% at fixed module times (*Decisions made*). Mode: structural edit. There are no red target nodes, so the
 red-node consistency gate has nothing to read; the nodes a slice reaches are restated in that
 slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
@@ -64,22 +65,19 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
   Landed: the conjunct is gone from all three; `chainData_dispatch` gives :1751's `hrecGab` from
   `RecordsLinks.eq_or_swap`. The two pinned nodes (:1430's and `chainData_dispatch`'s) state
   neither form.
-- [ ] **P1. Trim the molecular chain's imports** (the build-time detour, PI 2026-10-24). Run
-  `lake shake CombinatorialRigidity` (it lists unused imports from the built oleans; `--fix`
-  rewrites them) and apply its removals in `Molecular/`, `Nonvacuity.lean` and the root file. Repair
-  any downstream file that used a name only through a removed import by importing it directly
-  (`TACTICS-QUIRKS.md`, the transitive-`ℝ` entry, is the shape). Then measure: nudge
-  `CaseIII/Realization.lean` (a trailing comment, removed after), rebuild, and run
-  `scripts/build-critical-path.py` on the log. The baseline is 282–300 s over 26 modules, 48
-  rebuilt (`notes/PERFORMANCE.md` *Build critical path*), where the result goes. One or two
-  commits; no statement changes; the gates as for any Lean commit.
+- [x] **P1. Trim the molecular chain's imports** (the build-time detour, PI 2026-10-24).
+  Landed: `lake shake` refuses non-`module` files, so `scripts/ImportShake.lean` ran its analysis
+  on `Molecular/` and `Nonvacuity.lean`: 36 files, 42 imports removed, 33 added, no repair
+  needed. Measured in `notes/PERFORMANCE.md` *Build critical path*, *The import trim*.
 - [ ] **P2. Recon: the molecular chain's `module` conversion** (read-only, after P1). Settle:
   (a) by a one-file experiment, whether a proof-only edit of a `module` file spares its importers
-  a rebuild under this toolchain's Lake (`lake build --no-build` after the edit lists what would
-  rebuild); (b) the conversion's size and order (73 of `Molecular/`'s 79 files and 16 others are
-  not `module`; a `module` file cannot import a non-`module` one; the `@[expose]` audit; `rfl`
-  proofs through definitions that stop unfolding); (c) how a builder can run the linters on an
-  edited file before the full build (*Build critical path*, lever 3); (d) whether to convert
+  a rebuild under this toolchain's Lake, a `module` importer and a non-`module` one each. Lake
+  rebuilds an importer only when the `.olean` it imports changes, which `lake build --no-build`
+  cannot predict: edit, `lake build`, and count the `Built` lines. (b) The conversion's size and
+  order: 90 of the 152 files are not `module` (73 of `Molecular/`'s 79); a `module` file cannot
+  import a non-`module` one; the `@[expose]` audit; `rfl` proofs through definitions that stop
+  unfolding. (c) How a builder can run the linters on an edited file before the full build
+  (*Build critical path*, lever 3). (d) Whether to convert the whole project or the chain, and
   before item 4 or after 41a. The PI decides (d).
 - [ ] **4. The spike** (a throwaway worktree, nothing landed): add the field, build, and list what
   breaks. Record the figure here and slice the switch by it.
@@ -103,12 +101,15 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 - The switch's size is unknown until the spike (commit 4).
 - The H count (at most 56) is an upper bound from a regex scan.
-- **When to convert the molecular chain to `module`**: the PI's, after P2's recon.
+- **Whether and when to convert to `module`**: the PI's, after P2's recon. The PI asked,
+  2026-10-24, verbatim: "Should we modulize the rest of this project?" The agent answered
+  yes, the whole project, after the switch, if P2's experiment (a) confirms that a proof-only
+  edit spares the importers.
 
 ## Hand-off / next phase
 
-P1 first: one Opus builder trims the chain's imports and measures the critical path (checklist
-item P1). Then P2, a read-only `recon-opus`, whose verdict goes to the PI. Then item 4, the spike,
+P2 first: a read-only `recon-opus` (checklist item P2), whose verdict goes to the PI with the
+question under *Blockers*. Then item 4, the spike,
 in a throwaway worktree with nothing landed: add the field `isLink_ends :
 RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`), build,
 and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
@@ -123,6 +124,11 @@ The decisions of the open are `notes/Phase41-design.md` §1.
 - **A build-time detour before the spike** (PI, 2026-10-24, verbatim: "Let's schedule the
   build-time detour for the next session"). Items P1 (the import trim) and P2 (the `module`
   recon) run first in the next session, before item 4; the conversion's timing follows P2.
+- **The import trim** (item P1). `lake shake` refuses any closure with a non-`module` file, so
+  `scripts/ImportShake.lean` does its analysis for them. The trim drops four links from the
+  chain an edit at `CaseIII/Realization.lean` rebuilds (26 to 22), 15–20% of the critical path
+  at fixed module times; the wall clock was swamped by swap. The 22 links left use each other,
+  so imports cannot shorten the chain further.
 
 - **The link predicate's API** (item 2). `RecordsLinks G ends` is `∀ e ∈ E(G), G.IsLink e (ends
   e).1 (ends e).2`, so the field of item 5 is it by `Iff.rfl`. Its two forms at links are

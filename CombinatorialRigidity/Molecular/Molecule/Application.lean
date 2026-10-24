@@ -3,11 +3,8 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
 import CombinatorialRigidity.Molecular.Molecule.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Modelling
-import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
-import CombinatorialRigidity.GenericRigidityMatroid
 
 /-!
 # The molecule rank formula

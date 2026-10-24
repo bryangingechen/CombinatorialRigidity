@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
 
 /-!
 # Nondegenerate and generic realizations of a subgraph

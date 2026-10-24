@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Mathlib.Algebra.Module.Submodule.Union
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
+import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 
 /-!
 # The loop and cut-edge cases of the pencil reduction

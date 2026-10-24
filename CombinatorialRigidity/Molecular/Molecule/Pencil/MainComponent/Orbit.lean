@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 
 /-!
 # Open ears with one or two interior bodies at non-adjacent ends

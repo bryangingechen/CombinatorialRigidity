@@ -4,8 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
-import CombinatorialRigidity.SquareGraph
-import CombinatorialRigidity.Framework
 import CombinatorialRigidity.GeneralPositionPlacement
 
 /-!

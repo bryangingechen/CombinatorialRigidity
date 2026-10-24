@@ -5,7 +5,6 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Mathlib.GroupTheory.Perm.List
-import Matroid.Graph.Minor.Defs
 
 /-!
 # The combinatorial induction: circuits, contraction and the graph operations

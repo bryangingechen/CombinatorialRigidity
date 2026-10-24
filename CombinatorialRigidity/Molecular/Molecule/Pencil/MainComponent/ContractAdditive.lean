@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCurve
+import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 
 /-!
 # Contraction at an additive core

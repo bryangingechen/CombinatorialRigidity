@@ -69,11 +69,12 @@ Follow it. Three more:
 
 ## Module-system conversion → `LEAN-OPS.md`
 
-Every project file uses Lean's module system (`module`, `public import`,
-`@[expose] public section`). Converting a file, its constraints, and the
-rule of zero `backward.privateInPublic` opt-ins (don't add one) are in
-`LEAN-OPS.md` *Module-system conversion*; per-file dispositions are in
-`../notes/PERFORMANCE.md`.
+62 of the project's 152 files use Lean's module system (`module`, `public
+import`, `@[expose] public section`); the other 90 (`Molecular/`, `BodyBar/`,
+the Jacobs files, the root and a few more) do not yet. Converting a file, its
+constraints, and the rule of zero `backward.privateInPublic` opt-ins (don't add
+one) are in `LEAN-OPS.md` *Module-system conversion*; per-file dispositions are
+in `../notes/PERFORMANCE.md`.
 
 ## Patching the `Matroid` dependency → `LEAN-OPS.md`
 

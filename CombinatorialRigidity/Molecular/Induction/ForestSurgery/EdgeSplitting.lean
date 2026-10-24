@@ -3,8 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
-import CombinatorialRigidity.Molecular.Induction.Contraction
+import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
 
 /-!
 # The combinatorial induction: forest surgery at a vertex (KT Lemmas 4.1 and 4.2)

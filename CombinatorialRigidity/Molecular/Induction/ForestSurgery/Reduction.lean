@@ -3,7 +3,6 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.EdgeSplitting
 
 /-!

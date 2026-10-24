@@ -119,6 +119,10 @@ the wall-clock proportionally** — they're different sums.
   uses content hashes. Append a unique nudge comment (e.g.
   `echo "-- nudge $RANDOM" >> file.lean`) to force a real rebuild, then
   remove the nudge afterward.
+- **A nudge comment rebuilds the file, not its importers.** Lake rebuilds an importer only when
+  the `.olean` it imports changes, and a trailing comment leaves it byte-identical (the
+  downstream `Replayed` of `notes/Phase8-perf.md`). To time a chain, nudge with a throwaway
+  declaration (*Build critical path*, *The import trim*).
 - **Content-addressed replay.** If the *exact* file content has been built
   before, lake reports `Replayed` in milliseconds rather than rebuilding.
   Even adding+removing a trailing newline can flip between cached
@@ -1118,9 +1122,9 @@ import loading weighs heavily. The gates were 50–60% of a single-commit builde
 (item 1: 4.8 of 9.5 min; item 3a: 6.3 of 10.3 min), the full build most of it. The builders made
 almost no Lean MCP calls (0, 3, 0).
 
-Candidate levers, unmeasured (the PI's call, 2026-10-24, is pending):
-1. **Trim the chain's imports** to what each file uses, so the `Pencil/` files stop forming a line;
-   the script measures the effect directly.
+Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–P2, 2026-10-24):
+1. **Trim the chain's imports** to what each file uses, so the `Pencil/` files stop forming a line.
+   Done; measured below (*The import trim*).
 2. **Convert the molecular chain to `module`** (*Module system* above: 73 of `Molecular/`'s 79
    files are not). Its blocker, `apnelson1/Matroid` being non-`module`, is gone: 362 of its 365
    files are converted, and the project imports none of the other three. Whether a proof-only
@@ -1128,6 +1132,40 @@ Candidate levers, unmeasured (the PI's call, 2026-10-24, is pending):
    experiment before it is relied on.
 3. **Catch `lake lint` failures before the full build.** Item 2's builder paid a second ~5 min
    build for a lint failure that a check of the edited file could have shown.
+
+### The import trim (Phase 41a, item P1)
+
+- **`lake shake` cannot run here.** On v4.36.0-rc1 it refuses any import closure with a
+  non-`module` file in it ("`lake shake` only works with `module`s currently"), and 90 of the 152
+  files are not `module`s. `scripts/ImportShake.lean` runs the same analysis on them (its
+  docstring: what counts as a need, the reach, the environment variables). P1 ran it as
+  `IMPORT_SHAKE_ONLY=CombinatorialRigidity.Molecular,CombinatorialRigidity.Nonvacuity
+  IMPORT_SHAKE_FIX=1 lake lean scripts/ImportShake.lean`. The root was left alone, since its
+  imports are the library's contents.
+- **The trim**: 36 files, 42 imports removed and 33 added. The tree built warning-clean at the
+  first try and `lake lint` passed, so no file needed a repair.
+- **The critical path is 15–20% shorter at fixed module times.** An edit at
+  `CaseIII/Realization.lean` still rebuilds the same 48 modules, but the chain loses four links:
+  `Pencil/Statement`, `Pencil/Engine`, `MainComponent/Bridge` and `MainComponent/Cut`. Each row
+  runs `scripts/build-critical-path.py` on one log twice, from a `git archive` of the parent
+  commit (old imports) and from the tree (new imports):
+
+  | Module times from | Old imports | New imports |
+  |---|---|---|
+  | the baseline run (761 s of work) | 351 s over 26 modules | 300 s over 22 modules |
+  | the trimmed run (1207 s of work) | 629 s over 26 modules | 502 s over 22 modules |
+
+- **Wall clock did not measure it.** The trimmed run took 517 s against the baseline's 362 s,
+  with swap at 12.9 of 14.3 GB. Its modules ran a median 2.1× slower, the untouched ones
+  included, hence the fixed-times comparison; a wall-clock pair needs a machine with free memory.
+  The baseline's 351 s is the table's 26-module chain on a slower day.
+- **What is left is genuine.** Each of the 22 links uses a constant, or a recorded extra use, of
+  the one before it, so imports cannot shorten the chain further. Moving declarations or merging
+  the small `MainComponent/` files could, and lever 2 might cut each link's import loading.
+- **A comment nudge does not rebuild importers** (*Timing reproducibility*). Lake rebuilds an
+  importer only when the `.olean` it imports changes, so the first baseline attempt, a trailing
+  comment, rebuilt `Realization.lean` alone (27 s). P1 nudged with a throwaway
+  `theorem timingNudge : True := trivial`, removed after.
 
 ## Recommendations for future perf work
 

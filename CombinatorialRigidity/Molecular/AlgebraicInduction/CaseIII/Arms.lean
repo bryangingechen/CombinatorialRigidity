@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Candidate
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
+import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
 
 /-!
 # Case III: the rotation about `L`, the triangle and the cycle

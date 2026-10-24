@@ -4,7 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Realization
-import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
+import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseII
+import CombinatorialRigidity.Molecular.Induction.Contraction
 
 /-!
 # KT Theorem 5.5, KT Theorem 5.6 and the molecular conjecture

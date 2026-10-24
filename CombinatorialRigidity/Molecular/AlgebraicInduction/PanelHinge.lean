@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Pinning
+import CombinatorialRigidity.Molecular.Induction.Operations
 
 /-!
 # Panel-hinge frameworks and the realization hypotheses
