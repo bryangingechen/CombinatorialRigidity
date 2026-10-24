@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 
 /-!
 # Open ears with one or two interior bodies at non-adjacent ends
@@ -78,6 +80,8 @@ second stage of `sec:main-component-short`.
 * `splitOff_ear_two` and `splitOff_ear_two_simple`: steps of `thm:pencil-x0-open-ear-two-orbit`,
   `G₁` has the open ear `a − x 0 − b` on `V₁`, and is simple with non-adjacent ends when `G` is.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

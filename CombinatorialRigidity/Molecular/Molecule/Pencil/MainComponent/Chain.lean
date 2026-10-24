@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
 
 /-!
 # Cycles and ears
@@ -47,6 +49,8 @@ vertex whose other side is a cycle, with the ear's first edge `e 0`, from `c` to
 * `Graph.X0Attains.of_closedEar`: `thm:pencil-x0-closed-ear`, the same for a closed ear with
   `k ≥ 2`, by the steps at a cut vertex (`Graph.X0Attains.of_cutVertex`) and at a cycle.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractAdditive
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractAdditive
 
 /-!
 # Contraction at a core of planar deficiency zero
@@ -32,6 +34,8 @@ whose contraction is simple, on configurations.
   case `n = 2` of `lem:pencil-contract-standing-rigid`.
 * `Graph.X0Attains.of_rigidContract`: `cor:pencil-x0-contract-rigid`.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

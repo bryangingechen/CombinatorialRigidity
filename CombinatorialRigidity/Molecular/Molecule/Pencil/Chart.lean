@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
+module
+
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 
 /-!
 # The cross product of `K⁴` and the pencil chart
@@ -41,6 +43,8 @@ of every link), the chart is a nondegenerate pencil realization (`def:pencil-non
   chart is a nondegenerate pencil realization.
 -/
 
+@[expose] public section
+
 open scoped Matrix
 open scoped Graph
 
@@ -67,7 +71,7 @@ for every `w` (`dotProduct_cross₃`). From this:
 /-- The linear functional `w ↦ det[x, y, z, w]` that defines `cross₃`, written with
 `Matrix.updateRow` at row `3`, so that its linearity in `w` is `Matrix.det_updateRow_add` and
 `Matrix.det_updateRow_smul`. -/
-private def cross₃Functional (x y z : Fin 4 → K) : (Fin 4 → K) →ₗ[K] K where
+def cross₃Functional (x y z : Fin 4 → K) : (Fin 4 → K) →ₗ[K] K where
   toFun w := Matrix.det ((Matrix.of ![x, y, z, (0 : Fin 4 → K)]).updateRow 3 w)
   map_add' w1 w2 := Matrix.det_updateRow_add _ 3 w1 w2
   map_smul' c w := Matrix.det_updateRow_smul _ 3 c w

@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
 
 /-!
 # The contraction curve and the rescaled lifting system
@@ -94,6 +96,8 @@ The file also uses the lifting system with weights `Graph.weightedLiftingMatrix`
 `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_eval`
 (`lem:rank-polynomial-proj-eval`, `AlgebraicInduction/CaseI.lean`).
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

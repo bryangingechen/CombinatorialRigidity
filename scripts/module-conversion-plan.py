@@ -44,7 +44,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = "CombinatorialRigidity"
-MODULE = re.compile(r"^module\s*$", re.M)
+MODULE = re.compile(r"^module\s*(?:--.*)?$", re.M)
 IMPORT = re.compile(rf"^(?:public )?(?:meta )?import (?:all )?({PROJECT}[\w.]*)", re.M)
 HAZARDS = {
     "private": re.compile(r"^\s*(?:@\[[^\]]*\]\s*)?private\s", re.M),

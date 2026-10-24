@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 
 /-!
 # A non-vacuity witness for the molecular conjecture
@@ -17,6 +19,8 @@ the bodies, and the bound on the number of labels holds: `D(|α| − 1) = 6 · (
 (`rem:fresh-edge-supply`). `CombinatorialRigidity/Nonvacuity.lean` has the witnesses of other main
 results.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

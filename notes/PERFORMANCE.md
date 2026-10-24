@@ -26,6 +26,9 @@ file is to save the next agent from re-litigating the same dead ends.
   comparing a single optimization candidate usually returns ambiguous
   results unless you run 4+ trials per side, and even then the noise
   often swallows the signal.
+- **Since Phase 41a's conversion (items P3–P5) every file is a `module`**: a proof-only edit at
+  `CaseIII/Realization` rebuilds that file alone (10–14 s), and a statement edit rebuilds the
+  same 48 modules in 72–77 s instead of ~5 min (*The conversion, layers 19–38*).
 - **Module-system conversion is the project's largest measured win**
   (Phase 8-perf F3.2–F3.6): HR −36.5 s, RM −31.0 s, LRM −45.5 s,
   project-total −12.0 s vs F1.1 baseline, each 2–9× the ±5 s noise
@@ -188,6 +191,10 @@ recipes depending on the *scope* of the change:
    it is the gate any future reconsideration of tagging must pass.)
 
 ## Module system
+
+**Every project file is a `module` since Phase 41a's items P3–P5 (2026-10-24)**: the last 90
+files, the molecular chain and the root among them (*The conversion, layers 0–8* and the two
+subsections after it). The rest of this section is the history up to that point.
 
 Mathlib (as of v4.30.0-rc2) is mid-conversion to Lean's new module
 system: files start with `module`, declare `public import X` for re-exported
@@ -1126,11 +1133,14 @@ Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–
 1. **Trim the chain's imports** to what each file uses, so the `Pencil/` files stop forming a line.
    Done; measured below (*The import trim*).
 2. **Convert the molecular chain to `module`** (*Module system* above: 73 of `Molecular/`'s 79
-   files are not). Its blocker, `apnelson1/Matroid` being non-`module`, is gone: 362 of its 365
-   files are converted, and the project imports none of the other three. Recon done, and the
-   conversion scheduled (*The `module` conversion recon*).
+   files were not). Its blocker, `apnelson1/Matroid` being non-`module`, is gone: 362 of its 365
+   files are converted, and the project imports none of the other three. Done, with the whole
+   project (*The `module` conversion recon* and the three conversion subsections after it).
 3. **Catch `lake lint` failures before the full build.** Item 2's builder paid a second ~5 min
    build for a lint failure that a check of the edited file could have shown. Adopted (ibid.).
+4. **Apply `lake shake --fix`**, which runs since the conversion: narrower public imports would
+   shrink every importer's import load further. Unmeasured, and a 151-file edit; the PI's call
+   (*The conversion, layers 19–38*).
 
 ### The import trim (Phase 41a, item P1)
 
@@ -1248,6 +1258,44 @@ Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–
   warnings; `lake lint` passed. The per-file `lake lint --` on the four P4 modules no other P4
   module imports took 64 s.
 - **What is left** (`--layers`, renumbered): 46 files, 29,202 lines, in 20 layers: P5.
+
+### The conversion, layers 19–38 (Phase 41a, item P5)
+
+- **46 files, 29,202 lines** (`GenericLift/`, `Molecule/` with `Pencil/`, `JacobsTheorem`, both
+  `Nonvacuity` files, the root), built a few layers at a time; every project file is now a
+  `module`. 43 built at once. The fixes:
+  - `Pencil/Chart`: the private `cross₃Functional` is named in `cross₃`'s exposed body.
+  - `Pencil/MainComponent/Flat`: `flatScrewEquiv`'s surjectivity `have` names four private
+    helpers (`flatStdBiv`, `flatRebuild` and their two lemmas). The witness
+    `scripts/ModulePrivateScope.lean` shows the rule: a proof inside a `def`'s body is public
+    scope, a `have` in its tactic block included, unless it is a `by` block given as a term,
+    which is why P3's `ofSubmodular` could keep its private helpers. Both files' helpers are
+    public now.
+  - `Pencil/MainComponent/Ear`: `rintro ⟨S, hS, rfl⟩` destructures membership in
+    `relScrews`, which `RigidityMatrix/Bricks` (plain `public section`) did not expose. It is
+    `@[expose]` now, before four more files that destructure it the same way were built.
+  - The root has no module docstring for `--convert`, so it was converted by hand, with mathlib's
+    `module  -- shake: keep-all`; the plan script's `module` pattern accepts the comment.
+- **The full build after the last layer** left 0 warnings, and `lake lint` passed.
+- **What it buys, at `CaseIII/Realization.lean`** (`scripts/edit-rebuild-timing.sh`, whose nudges
+  are unique so the cache cannot serve them; 10 cores, 16 GB, memory pressure at *warning*):
+
+  | Edit | Runs | Modules rebuilt | Sum of module times | Critical path | Wall |
+  |---|---|---|---|---|---|
+  | proof only (a `have` in a proof) | 3 | 1 | 6–8 s | 6–8 s | 10–14 s |
+  | statement (a new theorem) | 2 | 48 | 148–165 s | 68–72 s over 22 modules | 72–77 s |
+  | before: items 3 and 3a (*Build critical path*) | 2 | 48 | 508–610 s | 282–300 s over 26 | ~5 min |
+
+  The proof-only edit rebuilds the file alone, as the recon predicted. The statement edit
+  rebuilds the same 48 modules, but each link is faster, from the smaller import loads
+  (*Experiments that did pay*): `Realization` 4–8 s, `Nonvacuity` 6–8 s (was 15 s), the root
+  1.4 s (was 22 s). The critical path is P1's 22 links, about 4× shorter. Two and three runs,
+  under the protocol's four, but the effect is far outside its ±5 s band.
+- **`lake shake` runs now** (26 s, read-only). It proposes edits to 151 of the 152 files: mostly
+  public imports narrowed to private ones, and the tactic imports the files reach transitively
+  (`Mathlib.Tactic.TypeStar`, `Mathlib.Tactic.Lemma`) named directly. Not applied: lever 4 of
+  *Build critical path*. `scripts/ImportShake.lean`, which has no file left to analyze, stays as
+  the reproducer of P1's trim.
 
 ## Recommendations for future perf work
 

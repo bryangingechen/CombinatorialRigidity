@@ -7,9 +7,11 @@ Authors: Bryan Gin-ge Chen
 -- `module` file (it is downstream of `GenericRigidityMatroid.lean`, itself downstream of
 -- `LinearRigidityMatroid.lean`'s `Matroid.Representation.Map` dependency), and a `module` file
 -- cannot import a non-`module` one.
-import CombinatorialRigidity.JacobsCounting
-import CombinatorialRigidity.JacobsZeroExtension
-import CombinatorialRigidity.Molecular.Molecule.Application
+module
+
+public import CombinatorialRigidity.JacobsCounting
+public import CombinatorialRigidity.JacobsZeroExtension
+public import CombinatorialRigidity.Molecular.Molecule.Application
 
 /-!
 # Jacobs' conjecture (`sec:jacobs-theorem`)
@@ -31,6 +33,8 @@ minimum degree is two. The blueprint presents the file in `sec:jacobs-theorem`.
 * `SimpleGraph.jacobs` — `thm:jacobs`, the equivalence for every simple graph on a finite vertex
   set.
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

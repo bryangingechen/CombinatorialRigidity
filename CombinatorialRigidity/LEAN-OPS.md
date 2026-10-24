@@ -2,21 +2,25 @@
 
 **Read-on-demand reference, not session-start orientation.** Two
 infrastructure procedures needed only occasionally — the module-system
-conversion how-to (the conversion is already done across all 28 files)
-and the `apnelson1/Matroid` fork-editing protocol — were extracted here
+conversion how-to (every project file is a `module` since Phase 41a's item
+P5) and the `apnelson1/Matroid` fork-editing protocol — were extracted here
 from `CLAUDE.md` to keep the per-`.lean`-session manual lean (the same
 discipline behind `../PHASE-BOUNDARIES.md` / `../REFS.md`).
 `CombinatorialRigidity/CLAUDE.md` keeps a one-line pointer + the critical
-nub of each; this file is the full procedure. Read it when converting a
-file to the module system or when patching the fork.
+nub of each; this file is the full procedure. Read it when a `module`
+file fails in a way the module system explains, when converting a script
+or scratch file, or when patching the fork.
 
 ## Module-system conversion
 
 Project files use Lean's module system (`module` + `public import` +
 `@[expose] public section`) so downstream files see only an imported
 module's public interface, not its full elaboration state (as mathlib
-does). Landed in the Phase 8-perf pass across all 28 files; reference
-shape: `Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
+does), and a proof-only edit rebuilds no importer. The first files
+converted in the Phase 8-perf pass, the last 90 in Phase 41a's items
+P3–P5 (2026-10-24), so every file of the library is one; a new file is
+authored as one. Reference shape:
+`Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
 
 **Converting a file:** (1) blank line then bare `module` after the
 copyright block (the keyword *is* the marker — no `import`); (2) every
@@ -24,12 +28,13 @@ copyright block (the keyword *is* the marker — no `import`); (2) every
 between the `/-! … -/` doc block and the first declaration (closes
 implicitly at EOF; existing `namespace/end` pairs unchanged).
 From the repository root, `python3 scripts/module-conversion-plan.py --convert
-<file>…` applies the three steps; with no flag it lists the files left, in an
-order that keeps each commit building (`--layers`), and what to check in each
-(`--hazards`).
+<file>…` applies the three steps (to a file with a module docstring; the root,
+which has none, was converted by hand); with no flag it lists the files left
+(none since P5), in an order that keeps each commit building (`--layers`), and
+what to check in each (`--hazards`).
 
-**What a conversion breaks** (Phase 41a's items P3 and P4, 44 files: 38 built at once, and six
-needed fixes; `../notes/PERFORMANCE.md` *The conversion, layers 0–8* and *…, layers 9–18*):
+**What a conversion breaks** (Phase 41a's items P3–P5, the last 90 files: nine failed their
+first build; `../notes/PERFORMANCE.md` *The conversion, layers 0–8* and the two after it):
 - **The import closure narrows.** A `module` file sees only what its imports
   re-export, so a tactic or lemma reached through an upstream file's private
   `import` is gone: `unknown tactic` (`ring`, via `Mathlib.Tactic.Linarith`) or
@@ -41,19 +46,27 @@ needed fixes; `../notes/PERFORMANCE.md` *The conversion, layers 0–8* and *…,
   so does a bare `exact h` that held by unfolding: *"Type mismatch"*, with a
   note naming the definition *"not unfolded because [its] definition is not
   exposed"* (P4: mathlib's `Graph.deleteVerts`, under `removeVertex`, at
-  three sites the `--hazards` scan cannot see). Add `@[expose]` to the
+  three sites the `--hazards` scan cannot see). Destructuring a membership
+  that holds by unfolding fails the same way: *"Invalid `⟨...⟩` notation:
+  The expected type … is not an inductive type"*, or `rcases` *"is not an
+  inductive datatype"* (P5: `rintro ⟨S, hS, rfl⟩` on `relScrews`, in the
+  `public section` file `RigidityMatrix/Bricks`). Add `@[expose]` to the
   project definition, or use a lemma about it.
 - **A private name is unknown in public scope.** A `private` declaration
   named in a public statement or an exposed body (under the file-wide
   `@[expose]`, any `def`'s body) is `Unknown identifier`, with a note that it
-  would need to be public. Drop `private`, also from its `@[simp]` lemmas,
-  which importers' `simp` would otherwise lose. A theorem's proof is private
-  scope and needs nothing.
+  would need to be public. A proof inside the body counts, a `have` in its
+  tactic block included; only a `by` block given as a term, such as a proof
+  argument, is private scope (`../scripts/ModulePrivateScope.lean`; P5:
+  `flatScrewEquiv`'s surjectivity `have`). Drop `private`, also from its
+  `@[simp]` lemmas, which importers' `simp` would otherwise lose. A
+  theorem's proof is private scope and needs nothing.
 - **A name can resolve elsewhere.** When a public declaration has the
-  private one's name in an enclosing namespace (the root included), the exposed body resolves to
-  it instead, silently or with a deprecation warning (`Submodular`'s private
-  `Matroid.setOf_minimal_antichain` became mathlib's deprecated root alias).
-  Use the public declaration, or rename the private one.
+  private one's name in an enclosing namespace (the root included), the
+  exposed body resolves to it instead, silently or with a deprecation
+  warning (`Submodular`'s private `Matroid.setOf_minimal_antichain` became
+  mathlib's deprecated root alias). Use the public declaration, or rename the
+  private one.
 
 **Constraints:**
 - A `module` file can only `import` (or `public import`) other `module`
@@ -62,8 +75,8 @@ needed fixes; `../notes/PERFORMANCE.md` *The conversion, layers 0–8* and *…,
   `LinearRigidityMatroid.lean` non-`module`, `Matroid.Representation.Map`
   (`apnelson1/Matroid`), is itself a `module` since the `Matroid` pin `8ece630`,
   so that reason lapsed, and the file converted in Phase 41a's item P3 (see
-  `../notes/Bump-v4.36.0-rc1.md`). Non-`module` files import
-  `module` files freely, so the rest of the project is unaffected.
+  `../notes/Bump-v4.36.0-rc1.md`). Non-`module` files import `module` files
+  freely, so a script or scratch file need not convert.
 - `public section` hides `def` bodies for defeq *intra*-module too
   (≈ `@[irreducible]`). Symptom: *"Not a definitional equality"* on a
   `:= rfl` projection, or *"definitions were not unfolded … not

@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
-import CombinatorialRigidity.Molecular.Molecule.Duality
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+public import CombinatorialRigidity.Molecular.Molecule.Duality
 
 /-!
 # Pencil realizations
@@ -54,6 +56,8 @@ is a multiple of their join, a step of `lem:pencil-generic-steer`.
 * `exists_extensor_two_pencils_iff`: the two-pencil extension step and its converse
   (`lem:two-pencil-extension-iff`).
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

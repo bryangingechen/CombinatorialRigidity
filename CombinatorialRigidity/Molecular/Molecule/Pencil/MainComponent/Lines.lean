@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 
 /-!
 # The geometry of lines for the open-ear steps
@@ -91,6 +93,8 @@ of `b`, along one of four curves (`exists_insertion_two_aux`), chosen by which j
   dimension at least `min(dim(ρ + span(p_a ∧ y, y ∧ p_b)) + 1, 6)`; `exists_insertion_two_aux`, a
   step of it, is the curve that moves one body.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 

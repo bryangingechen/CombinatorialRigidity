@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
 
 /-!
 # The conditioned pair at a cut edge
@@ -38,6 +40,8 @@ and the two sides glue
 * `pencilPair_of_arms`: the conditioned pair from the contraction and split cases
   (`thm:pencil-conditional-realization-pair`).
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

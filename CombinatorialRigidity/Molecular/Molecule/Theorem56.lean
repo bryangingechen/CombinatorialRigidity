@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
-import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+public import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 
 /-!
 # KT Theorem 5.6 in `ℝ³`, with the poles in general position
@@ -47,6 +49,8 @@ Theorem 5.6 into general position without lowering the rank:
 * `PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4_of_two_le`: its case of two or more
   bodies.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

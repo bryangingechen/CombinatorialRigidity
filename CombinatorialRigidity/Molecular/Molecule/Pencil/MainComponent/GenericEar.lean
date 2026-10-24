@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Coverage
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Coverage
 
 /-!
 # The generic realization across a one-body ear
@@ -37,6 +39,8 @@ hinges are independent, so the rank rises by at least six (`lem:block-rank-ear`)
 * `Graph.IsOpenEar.hasGenericPencilRealization_of_one`: `lem:pencil-generic-one-ear`, the generic
   realization across a one-body ear.
 -/
+
+@[expose] public section
 
 open scoped Matrix Graph
 

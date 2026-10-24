@@ -69,15 +69,16 @@ Follow it. Three more:
 
 ## Module-system conversion → `LEAN-OPS.md`
 
-The project is converting its last non-`module` files (`Molecular/Molecule/`,
-`Molecular/GenericLift/`, the two `Nonvacuity` files, `JacobsTheorem` and the
-root) to Lean's module system (`module`, `public import`, `@[expose] public
-section`): Phase 41a's items P3–P5, of which P3 and P4 have landed.
-`python3 scripts/module-conversion-plan.py` lists the files left, in
-conversion order. Converting a file, its constraints, the failures to expect,
-and the rule of zero `backward.privateInPublic` opt-ins (don't add one) are in
-`LEAN-OPS.md` *Module-system conversion*; per-file dispositions are in
-`../notes/PERFORMANCE.md`.
+Every project file is a `module` (`module`, `public import`, `@[expose]
+public section`), since Phase 41a's items P3–P5, and a new file is authored
+as one. A proof-only edit then rebuilds no importer, unless it changes the
+theorem's axioms (`../notes/PERFORMANCE.md` *The conversion, layers 19–38*:
+10–14 s at `CaseIII/Realization` against ~5 min). When a file fails in a
+way the module system explains (a `private` name unknown in public scope, a
+body hidden upstream, a tactic its imports no longer re-export), the cases
+and fixes are `LEAN-OPS.md` *What a conversion breaks*; its constraints, and
+the rule of zero `backward.privateInPublic` opt-ins (don't add one), are in
+the same section; per-file dispositions are in `../notes/PERFORMANCE.md`.
 
 ## Patching the `Matroid` dependency → `LEAN-OPS.md`
 

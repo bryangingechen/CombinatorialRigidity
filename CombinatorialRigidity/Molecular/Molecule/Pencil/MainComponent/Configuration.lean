@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
 
 /-!
 # The configuration as a pencil realization, and coplanarity
@@ -72,6 +74,8 @@ welds its bodies (its hinge-row block is every functional).
 * `Graph.IsAdmissiblePicture.mem_liftingSpace_iff_coplanar` and
   `Graph.IsAdmissiblePicture.exists_smul_eq_interpolant`: `lem:pencil-condition-linear`.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

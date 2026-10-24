@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 
 /-!
 # The generic lift, Layer P — generic panel-and-hinge normal assignments
@@ -50,6 +52,8 @@ graph enters only in the consumers, through an `hends` link hypothesis.
 
 Non-`module`: imports `Theorem55.lean` (and through it `GenericityDevice.lean`), both non-`module`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular.PanelHingeFramework
 

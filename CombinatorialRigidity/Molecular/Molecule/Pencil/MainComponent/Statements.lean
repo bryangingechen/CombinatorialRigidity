@@ -3,11 +3,13 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericEar
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTriangle
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericEar
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTriangle
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar
 
 /-!
 # The two main-component statements and the pencil realization theorem
@@ -47,6 +49,8 @@ theorem follows from the two statements (`thm:pencil-conditional-realization-mai
 * `pencil_realization_theorem`: `thm:pencil-realization-theorem`, the conditioned pair at every
   multigraph on the whole ambient body set.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

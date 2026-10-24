@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCurve
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCurve
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
 
 /-!
 # Contraction at an additive core
@@ -41,6 +43,8 @@ attains. The block-triangular rank bound
 
 * `Graph.X0Attains.of_additiveContract`: `thm:pencil-x0-contract-additive`.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
 
 /-!
 # The pencil chart in coordinates, and `cross₃` of independent vectors
@@ -50,6 +52,8 @@ nonzero `n` is `cross₃` of `n` and two more, for `lem:pencil-generic-pendant-t
 * `exists_smul_cross₃_eq_of_linearIndependent`: `cross₃` of three independent vectors is a multiple
   of any nonzero vector orthogonal to them.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

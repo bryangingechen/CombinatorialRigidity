@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut
-import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut
+public import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
 
 /-!
 # Usable chains, a core when no chain is usable, and the structural coverage
@@ -44,6 +46,8 @@ among the rigid sets that avoid one body of degree two; the count of the bodies 
   `Graph.X0Attains.of_twoEdgeConnected`: `thm:pencil-x0-coverage`, the structural coverage and the
   attainment it gives.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

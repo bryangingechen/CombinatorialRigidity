@@ -569,9 +569,9 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** upstream-eligible; mirror to `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
   (or `.../Lemmas.lean`) as a general `LinearIndepOn`-extension lemma over an arbitrary
   finite-dimensional `V` and `Fintype ι`, then have `Reseed.lean` (now the lemma's home; `Steer.lean`
-  reaches it through that import) consume the mirror. Kept local for now (the Pencil files are
-  non-module; a mirror pulls a module-system import into the cone) — lift in a cleanup round or the
-  next toucher.
+  reaches it through that import) consume the mirror. Kept local because the Pencil files were
+  non-module and a mirror pulls a module-system import into the cone; that reason lapsed with Phase
+  41a's item P5, which made every file a `module`. Lift in a cleanup round or the next toucher.
 - **Status:** open.
 
 ### [mirror-candidate] No packaged "inject a finite set into a no-smaller finite set" lemma (`Set.ncard` → `Set.InjOn` + `MapsTo`)
@@ -584,8 +584,8 @@ to be re-derived by re-reading entries later.
   ambient junk value). Proved locally as `exists_injOn_mapsTo_of_ncard_le` (`Fintype` cards from
   `Nat.card_coe_set_eq` + `Nat.card_eq_fintype_card`, then the embedding, extended by `default`).
 - **Proposed fix:** upstream-eligible; mirror to `Mathlib/Data/Set/Card.lean` as a general
-  `Set.ncard`-flavoured injection lemma. Kept local for now (same non-module import-cone reason as
-  the sibling entries) — lift in a cleanup round.
+  `Set.ncard`-flavoured injection lemma. Kept local for the non-module import-cone reason of the
+  sibling entry, which lapsed with Phase 41a's item P5. Lift in a cleanup round.
 - **Status:** open.
 
 ### [mirror-candidate] No packaged "scale two slots of a `2`-extensor" lemma — `extensor ![a • x, b • y] = (a*b) • extensor ![x, y]`

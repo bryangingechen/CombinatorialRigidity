@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageChain
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageChain
 
 /-!
 # The standing hypotheses at the smaller graphs of a chain, and graphs that are not 2-connected
@@ -47,6 +49,8 @@ than `G` (the clause `Graph.X0Reduces.cutVertex`).
 * `Graph.IsX0Graph.x0Reduces_of_not_connected`: `lem:pencil-x0-cut-reduces`(2), so does a
   2-edge-connected one with `G − v` disconnected for some body `v`.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

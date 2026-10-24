@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
 
 /-!
 # Nondegenerate and generic realizations of a subgraph
@@ -50,6 +52,8 @@ The cut-edge case with one body on a side (`hasGenericPencilRealization_pendant_
 * `ncard_closedNbhd_eq_three_of_demoted`: a body that is not a hub of `H` and keeps all but a few of
   its neighbours in `G` has three members in its closed neighbourhood in `H`.
 -/
+
+@[expose] public section
 
 open scoped Matrix Graph
 

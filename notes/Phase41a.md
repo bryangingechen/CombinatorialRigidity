@@ -1,9 +1,9 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 3a and P1 to P4 have landed.
-Next concrete task: item P5, the last slice of the project's `module` conversion (46 files, the
-root included) and its measurement; then item 4, the spike.
+recon are in `notes/Phase41-design.md`. Items 1 to 3a and the build-time detour, P1 to P5, have
+landed. Next concrete task: item 4, the spike, in a throwaway worktree; it slices item 5, the
+switch.
 
 ## Current state
 
@@ -16,12 +16,11 @@ gathered the four scattered link lemmas onto it (*Decisions made*). Item 3 moved
 link conjunct from `G − v` to the splitting-off, and item 3a dropped the up-to-order conjunct
 that then restated it. The sub-phase builds S2's field `isLink_ends` into the carrier (design A,
 `notes/Phase41-design.md` §1.1) and leaves every main result's statement as it is: the
-restatements are RESTATE's. Before the spike, the PI scheduled a build-time detour (items P1–P5):
-each commit's full build is ~5 min and chain-bound (`notes/PERFORMANCE.md` *Build critical
-path*), and the switch will need several. P1 trimmed the chain's imports, which shortens the
-critical path by 15–20% at fixed module times. P2's recon found that a proof-only edit spares
-`module` importers only, so the PI scheduled the whole project's conversion, P3–P5 (*Decisions
-made*). P3 and P4 converted 44 files, up to `Theorem55`; 46 are left. Mode: structural edit.
+restatements are RESTATE's. Before the spike, the PI scheduled a build-time detour (items P1–P5),
+since each commit's full build took ~5 min: P1 trimmed the chain's imports, and P3–P5 converted
+the whole project to `module`. A proof-only edit at `CaseIII/Realization` now rebuilds that file
+alone (10–14 s), and a statement edit rebuilds 48 modules in 72–77 s (*Decisions made*). Mode:
+structural edit.
 There are no red target nodes, so the red-node consistency gate has nothing to read; the nodes a
 slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
@@ -58,19 +57,9 @@ slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md` *For
   public body among them (`notes/PERFORMANCE.md` *The conversion, layers 0–8*).
 - [x] **P4. Layers 9–18 to `module`** (23 files): two files unfolded mathlib's
   `Graph.deleteVerts` by a bare `exact` (`notes/PERFORMANCE.md` *The conversion, layers 9–18*).
-- [ ] **P5. Layers 19–38**, the script's 0–19 now, since it renumbers from the files left (46
-  files, 29,202 lines: `GenericLift/`, `Molecule/` with `Pencil/`, `JacobsTheorem`, the two
-  `Nonvacuity` files, the root; `python3 scripts/module-conversion-plan.py --layers`). `--convert` the files, build
-  them a few layers at a time, and fix what breaks (`CombinatorialRigidity/LEAN-OPS.md` *What a
-  conversion breaks*). Keep the file-wide `@[expose] public section` (narrowing was perf-neutral,
-  Phase 9-perf F1); no `backward.privateInPublic`. `--hazards` lists 32 `private` declarations,
-  9 in `Nonvacuity`. Then `lake lint -- X` on the top modules and the full gates; if the fixes
-  outrun one builder run, land a prefix of the layers. Then measure a proof-only and a statement
-  edit at `CaseIII/Realization` against *Build critical path*'s figures, in
-  `notes/PERFORMANCE.md`; `lake shake` then runs, and can retire `scripts/ImportShake.lean`;
-  `CombinatorialRigidity/CLAUDE.md`, `LEAN-OPS.md` and *Module system* stop calling the
-  conversion in progress; the FRICTION `[mirror-candidate]` entries kept local for the
-  non-`module` import cone lose that reason.
+- [x] **P5. Layers 19–38 to `module`** (46 files, the root included), and the measurement:
+  every file is a `module`; three files needed fixes (`notes/PERFORMANCE.md` *The conversion,
+  layers 19–38*).
 - [ ] **4. The spike** (a throwaway worktree, nothing landed): add the field, build, and list what
   breaks. Record the figure here and slice the switch by it.
 - [ ] **5. The switch**: the field; the constructors with the filled-in proof; the H binders (at
@@ -93,17 +82,15 @@ slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md` *For
 
 - The switch's size is unknown until the spike (commit 4).
 - The H count (at most 56) is an upper bound from a regex scan.
-- The conversion's fix rate so far: six of 44 files needed fixes, each a few lines. P5's
-  `Pencil/` files are the largest unconverted block.
 
 ## Hand-off / next phase
 
-P5 first: convert the last 46 files, the script's layers 0–19 (checklist item P5), in one
-commit or a prefix of the layers if the fixes outrun one builder run, then measure. Then item 4,
-the spike, in a throwaway worktree with nothing landed: add the field `isLink_ends :
-RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`), build,
-and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
-binder-order note. Then slice item 5, the switch, by that count. Items 6 and 7, after the switch,
+Item 4 first, the spike, in a throwaway worktree with nothing landed: add the field `isLink_ends
+: RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`),
+build, and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
+binder-order note. Every file is a `module` now, so the spike's and the switch's builds rebuild
+only past a changed statement, with faster links (`notes/PERFORMANCE.md` *The conversion, layers
+19–38*). Then slice item 5, the switch, by that count. Items 6 and 7, after the switch,
 are the multi-commit trial's next arc (`.claude/commands/coordinate-phase.md` *Multi-commit arcs*;
 the PI kept its rules unchanged for two more arcs, 2026-10-24).
 
@@ -111,21 +98,16 @@ the PI kept its rules unchanged for two more arcs, 2026-10-24).
 
 The decisions of the open are `notes/Phase41-design.md` §1.
 
-- **A build-time detour before the spike** (PI, 2026-10-24, verbatim: "Let's schedule the
-  build-time detour for the next session"). Items P1 (the import trim) and P2 (the `module`
-  recon) run before item 4, and so do P3–P5, the conversion P2 led to.
-- **The whole project converts to `module`, before the spike** (P2; PI, 2026-10-24, choosing
-  "Now, before the spike" over the agent's recommendation, after 41a). A proof-only edit spares
-  only `module` importers, the chain's closure is 89 of the 90 files, and the root must convert,
-  so the chain's conversion is the project's. The switch's edits change public statements, so
-  its builds gain only the smaller import loads. File-wide `@[expose]`, sliced by layer.
+- **The build-time detour, done** (items P1–P5; PI, 2026-10-24, verbatim: "Let's schedule the
+  build-time detour for the next session"). P1 trimmed the chain's imports (26 links to 22,
+  `scripts/ImportShake.lean`); P2's recon led the PI to convert the whole project before the
+  spike ("Now, before the spike", over the agent's after-41a); P3–P5 did it, with the file-wide
+  `@[expose]`. Measured at `CaseIII/Realization`: a proof-only edit 10–14 s, a statement edit
+  72–77 s, against ~5 min (`notes/PERFORMANCE.md` *The conversion, layers 19–38*).
 - **A per-file lint check before the full build** (P2; PI, 2026-10-24): `lake lint -- X`, in
   `CombinatorialRigidity/CLAUDE.md` *Before each commit — build and lint gates*.
-- **The import trim** (item P1). `lake shake` refuses any closure with a non-`module` file, so
-  `scripts/ImportShake.lean` does its analysis for them. The trim drops four links from the
-  chain an edit at `CaseIII/Realization.lean` rebuilds (26 to 22), 15–20% of the critical path
-  at fixed module times; the wall clock was swamped by swap. The 22 links left use each other,
-  so imports cannot shorten the chain further.
+- **`lake shake --fix` not applied** (P5): it proposes edits to 151 files; the PI's call, lever 4
+  of `notes/PERFORMANCE.md` *Build critical path*.
 
 - **The link predicate's API** (item 2). `RecordsLinks G ends` is `∀ e ∈ E(G), G.IsLink e (ends
   e).1 (ends e).2`, so the field of item 5 is it by `Iff.rfl`. Its two forms at links are

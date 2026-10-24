@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Arms
+module
+
+public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Arms
 
 /-!
 # Nondegenerate pencil realizations and the conditioned pair
@@ -50,6 +52,8 @@ opposite a single body.
 * `Graph.deficiency_induce_union_singleton`: the deficiency of a side of a cut crossed by one edge,
   with the far end of that edge, is that of the side plus one (`lem:cut-edge-decomposition`, (3)).
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Algebra.Module.Submodule.Union
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
-import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
+module
+
+public import CombinatorialRigidity.Mathlib.Algebra.Module.Submodule.Union
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
+public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 
 /-!
 # The loop and cut-edge cases of the pencil reduction
@@ -40,6 +42,8 @@ case is `ArmsAssembly.lean`.
   at the deficiency rank and for adjacent-distinct ones (`lem:pencil-cut-case`), both from
   `hasPencilRealization_of_not_twoEdgeConnected_core`.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 
 /-!
 # Ears: rank, deficiency, heights and hinge spans
@@ -90,6 +92,8 @@ the target.
   configuration, with heights that are heights of `G` at every admissible picture, and the count
   `(⋆)` at `n` give the general configuration of `G` from that of `G[V₁]`.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

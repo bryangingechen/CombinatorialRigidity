@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
 
 /-!
 # Open ears with two, three or four interior bodies
@@ -87,6 +89,8 @@ holds, unlike the rank bound (`exists_mvPolynomial_le_finrank_sup_span_pointJoin
   points at the ear datum where the six joins of the points of `x 0`, `x 2`, `x 3` and `b` span
   `Λ²K⁴`.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

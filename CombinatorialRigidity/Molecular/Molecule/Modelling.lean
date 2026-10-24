@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Duality
-import CombinatorialRigidity.Molecular.Molecule.Theorem56
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Duality
+public import CombinatorialRigidity.Molecular.Molecule.Theorem56
 
 /-!
 # Molecular realizations at the target rank
@@ -40,6 +42,8 @@ divided by its last. Then
   realization on centres in general position up to order four with `dim Z = D + def(G̃)`, whose
   endpoint selector records every `G`-link.
 -/
+
+@[expose] public section
 
 open scoped Matrix Graph
 open WithLp

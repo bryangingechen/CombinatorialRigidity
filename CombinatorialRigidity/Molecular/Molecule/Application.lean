@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Carrier
-import CombinatorialRigidity.Molecular.Molecule.Modelling
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Carrier
+public import CombinatorialRigidity.Molecular.Molecule.Modelling
 
 /-!
 # The molecule rank formula
@@ -50,6 +52,8 @@ distinct; that dimension is at least `6 + def(G̃)`
 * `SimpleGraph.molecule_generic_square_packing`: so is every such placement when `5·G'` contains six
   edge-disjoint spanning trees (`cor:molecule-generic-square-packing`).
 -/
+
+@[expose] public section
 
 open CombinatorialRigidity.Molecular
 open scoped Graph

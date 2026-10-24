@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
-import Matroid.Graph.Constructions.Sum
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
+public import Matroid.Graph.Constructions.Sum
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
 
 /-!
 # A new body joined to two bodies, and the generic realization without a planar-rigid set
@@ -50,6 +52,8 @@ lifting system off the zero sets of finitely many more (`exists_mem_forall_eval_
   `thm:pencil-x0-base-generic`, a graph that satisfies the standing hypotheses, is
   nondegeneracy-feasible and has no planar-rigid set has a generic pencil realization.
 -/
+
+@[expose] public section
 
 open scoped Graph Matrix
 

@@ -686,7 +686,7 @@ motions `Z(G,p)` under `screwDiff v u : S ↦ S v − S u`, the screws of `v` re
 infinitesimal motion realizes. Two sides glued at `u` and `v` interact through them
 (`lem:block-rank-two-cut`). `relScrews = ⊥` says that every motion moves `u` and `v` alike, and
 `relScrews = ⊤` that every relative screw is realized by a motion. -/
-noncomputable def relScrews (F : BodyHingeFramework K k α β) (u v : α) :
+@[expose] noncomputable def relScrews (F : BodyHingeFramework K k α β) (u v : α) :
     Submodule K (ScrewSpace K k) :=
   Submodule.map (screwDiff v u) F.infinitesimalMotions
 

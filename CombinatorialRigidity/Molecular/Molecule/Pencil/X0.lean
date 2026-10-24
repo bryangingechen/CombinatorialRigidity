@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
 
 /-!
 # The main-component statements, and the conditioned pair from them
@@ -36,6 +38,8 @@ them the pencil realization theorem.
 * `pencil_realization_theorem_of_X0`: the conditioned pair at every multigraph on the whole ambient
   body set, from the two statements.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

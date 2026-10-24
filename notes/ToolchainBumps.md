@@ -34,7 +34,8 @@ CI-validated at `91fcd24a` (checked 2026-09-29, [run
   Both revs are behind the new mathlib pin, and `Matroid` at `8ece630` has absorbed `ab64d1c`.
 - Delete or keep the local `bump/lean-4.34.0-rc1` and `bump/lean-4.34.0-rc2` branches: never
   pushed, fully merged into `master`.
-- Optional: the module conversion of the 90 non-`module` files (the record's last lesson).
+- Optional: the module conversion of the 90 non-`module` files (the record's last lesson): done
+  in Phase 41a's items P3–P5.
 
 **Next concrete task: none here.** Once the push lands, hopscotch's daily run tracks mathlib
 against the new pins; the next bump starts from the *Playbook*.

@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
 
 /-!
 # An open ear over fixed base data
@@ -54,6 +56,8 @@ two closed neighbourhoods serve, uniqueness unused; `Graph.earExtend_mem_lifting
   with nonzero hinges) and a lower bound on `dim(ρ + span of joins)` hold off the zero set of a
   polynomial that is nonzero at the witness.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

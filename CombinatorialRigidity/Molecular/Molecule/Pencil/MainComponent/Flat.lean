@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
 
 /-!
 # The flat rank
@@ -96,6 +98,8 @@ nonzero, it lies in every panel that holds both points, and it passes through bo
 * `exists_mvPolynomial_linearIndependent_pointJoin_picture` and
   `exists_mvPolynomial_linearIndependent_pointJoin_heights`: `lem:pencil-join-independence-open`.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph
@@ -436,22 +440,22 @@ theorem flatPi_mk_extensor (a b : Fin 4 → K) :
   rfl
 
 /-- The standard basis bivector `e_i ∧ e_j`. -/
-private noncomputable def flatStdBiv (i j : Fin 4) : ScrewSpace K 2 :=
+noncomputable def flatStdBiv (i j : Fin 4) : ScrewSpace K 2 :=
   ScrewSpace.mk (extensor ![(Pi.single i 1 : Fin 4 → K), Pi.single j 1])
     (extensor_mem_exteriorPower _)
 
 /-- A preimage of `p` under `(σ, π)`, a combination of the standard basis bivectors. -/
-private noncomputable def flatRebuild (p : (Fin 3 → K) × (Fin 3 → K)) : ScrewSpace K 2 :=
+noncomputable def flatRebuild (p : (Fin 3 → K) × (Fin 3 → K)) : ScrewSpace K 2 :=
   p.1 0 • flatStdBiv 2 0 + p.1 1 • flatStdBiv 2 1 + p.1 2 • flatStdBiv 2 3
     + p.2 0 • flatStdBiv 1 3 - p.2 1 • flatStdBiv 0 3 + p.2 2 • flatStdBiv 0 1
 
-private theorem flatSigma_flatRebuild (p : (Fin 3 → K) × (Fin 3 → K)) :
+theorem flatSigma_flatRebuild (p : (Fin 3 → K) × (Fin 3 → K)) :
     flatSigma (flatRebuild p) = p.1 := by
   simp only [flatRebuild, flatStdBiv, map_add, map_sub, map_smul, flatSigma_mk_extensor,
     planarProj_apply]
   funext k; fin_cases k <;> simp
 
-private theorem flatPi_flatRebuild (p : (Fin 3 → K) × (Fin 3 → K)) :
+theorem flatPi_flatRebuild (p : (Fin 3 → K) × (Fin 3 → K)) :
     flatPi (flatRebuild p) = p.2 := by
   simp only [flatRebuild, flatStdBiv, map_add, map_sub, map_smul, flatPi_mk_extensor,
     planarProj_apply]

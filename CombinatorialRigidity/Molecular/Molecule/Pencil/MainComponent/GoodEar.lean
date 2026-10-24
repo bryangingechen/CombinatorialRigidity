@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
 
 /-!
 # A body of degree two with hub neighbours, or a pendant triangle
@@ -37,6 +39,8 @@ does not raise the deficiency.
 * `Graph.exists_closedEar_two_of_triangle`: `lem:pencil-rigid-good-ear`, a pendant triangle of a
   2-edge-connected graph on at least four bodies is a closed ear whose end has degree at least four.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

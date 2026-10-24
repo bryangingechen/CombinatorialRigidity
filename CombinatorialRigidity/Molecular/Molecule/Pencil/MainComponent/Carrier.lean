@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Monad
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.MvPolynomial
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
+module
+
+public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Monad
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.MvPolynomial
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
 
 /-!
 # Planar pictures, the lifting space and the main pictures
@@ -84,6 +86,8 @@ a step can meet them with the non-roots of another polynomial on the same fibre 
   `Graph.exists_mvPolynomial_isMainPicture`: the main pictures exist and contain the non-roots of a
   nonzero polynomial.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

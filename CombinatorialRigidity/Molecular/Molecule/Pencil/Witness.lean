@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
 
 /-!
 # Distinct standard basis vectors in the slots of a selector
@@ -26,6 +28,8 @@ depends on the indices of the members, so the proof takes the eight cases of whi
 `exists_coord_linearIndependent_pencilChartPoint_of_other_nonhub`
 (`MainComponent/GenericSteer.lean`) uses it.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

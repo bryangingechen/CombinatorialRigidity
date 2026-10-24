@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
 
 /-!
 # The generic realization across a pendant triangle, and the triangle on three bodies
@@ -48,6 +50,8 @@ conditioned pair by a direct construction, whose three hinges are independent by
 * `pencilPair_of_simple_ncard_eq_three`: the case of `thm:pencil-generic-step` on three bodies, the
   conditioned pair at a simple two-edge-connected graph on three bodies, over every field.
 -/
+
+@[expose] public section
 
 open scoped Matrix Graph
 

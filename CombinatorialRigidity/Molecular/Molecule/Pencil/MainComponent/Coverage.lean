@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SplitOff
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SplitOff
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
 
 /-!
 # One step of the induction, and the induction on the number of bodies
@@ -48,6 +50,8 @@ adjacent, one of them of degree two.
 * `Graph.IsOpenEar.false_of_adj_of_degree_eq_two`: a step of `lem:pencil-x0-chain-exists`, no open
   ear with adjacent ends has an end of degree two.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

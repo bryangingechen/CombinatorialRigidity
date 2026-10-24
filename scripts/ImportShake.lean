@@ -10,9 +10,12 @@ import CombinatorialRigidity
 
 `lake shake` minimizes imports from the built `.olean`s, but on this toolchain (Lean v4.36.0-rc1)
 it refuses any import closure with a non-`module` file in it ("`lake shake` only works with
-`module`s currently"), and 90 of the project's 152 files are not `module`s. This file runs the same
-analysis on them. It follows `Lake.CLI.Shake` (Mario Carneiro and Sebastian Ullrich, in the Lean
-toolchain), cut down to the one import kind a non-`module` file has.
+`module`s currently"), and 90 of the project's 152 files were not `module`s when this file was
+written, for Phase 41a's item P1. This file runs the same analysis on them. It follows
+`Lake.CLI.Shake` (Mario Carneiro and Sebastian Ullrich, in the Lean toolchain), cut down to the
+one import kind a non-`module` file has. Since item P5 every project file is a `module` and
+`lake shake` runs, so this file has nothing left to analyze; it stays as the reproducer of P1's
+trim (`notes/PERFORMANCE.md` *The import trim*).
 
 A module **needs** module `j` when one of its constants mentions a constant of `j` in its type or
 value (a reserved name, such as an equation lemma, does not count; an `_simp_…` auxiliary counts as

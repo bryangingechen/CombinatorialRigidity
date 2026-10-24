@@ -3,13 +3,15 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.BodyBar.GenericLift
-import CombinatorialRigidity.JacobsDegreeOne
-import CombinatorialRigidity.JacobsTheorem
-import CombinatorialRigidity.LamanTheorem
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
-import CombinatorialRigidity.PebbleGame.Correctness
-import Mathlib.Combinatorics.SimpleGraph.Star
+module
+
+public import CombinatorialRigidity.BodyBar.GenericLift
+public import CombinatorialRigidity.JacobsDegreeOne
+public import CombinatorialRigidity.JacobsTheorem
+public import CombinatorialRigidity.LamanTheorem
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
+public import CombinatorialRigidity.PebbleGame.Correctness
+public import Mathlib.Combinatorics.SimpleGraph.Star
 
 /-!
 # Non-vacuity witnesses for the main results
@@ -87,6 +89,8 @@ Theorem 5.5 and the molecular conjecture for multigraphs, whose least dimension 
 is a line and a hinge a point); the pencil rows are stated at `n = 3`, and the molecule and Jacobs
 rows, about the square of a graph, in 3-space.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

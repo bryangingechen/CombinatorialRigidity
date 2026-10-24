@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Data.Matrix.Mul
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
+module
+
+public import CombinatorialRigidity.Mathlib.Data.Matrix.Mul
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
 
 /-!
 # Splitting off a body of degree two
@@ -62,6 +64,8 @@ infinite field.
 * `exists_mem_forall_add_smul_eq_zero`: `lem:pencil-splitoff-curve`, a line of solutions of a pencil
   of linear conditions, by an explicit construction.
 -/
+
+@[expose] public section
 
 open scoped Graph Matrix
 

@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.ArmsAssembly
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.ArmsAssembly
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 
 /-!
 # The conditioned pair at a loop, on at most two bodies and at a cut edge
@@ -39,6 +41,8 @@ before `def:pencil-conditioned-pair`).
 * `exists_isNondegPencilRealization_parallel_pair`: two bodies joined by two edges are
   nondegeneracy-feasible.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

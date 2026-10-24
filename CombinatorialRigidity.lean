@@ -1,82 +1,84 @@
-import CombinatorialRigidity.BodyBar.BodyHinge
-import CombinatorialRigidity.BodyBar.Framework
-import CombinatorialRigidity.BodyBar.GenericLift
-import CombinatorialRigidity.BodyBar.KFrame
-import CombinatorialRigidity.BodyBar.TayTheorem
-import CombinatorialRigidity.BodyBar.TreePacking
-import CombinatorialRigidity.CountMatroid
-import CombinatorialRigidity.GeneralPositionPlacement
-import CombinatorialRigidity.GenericRigidityMatroid
-import CombinatorialRigidity.Jacobs
-import CombinatorialRigidity.JacobsCounting
-import CombinatorialRigidity.JacobsDegreeOne
-import CombinatorialRigidity.JacobsTheorem
-import CombinatorialRigidity.JacobsZeroExtension
-import CombinatorialRigidity.LamanTheorem
-import CombinatorialRigidity.LinearRigidityMatroid
-import CombinatorialRigidity.Matroid.Constructions.Submodular
-import CombinatorialRigidity.Matroid.Constructions.Union
-import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
-import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
-import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
-import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges
-import CombinatorialRigidity.MatroidIdentification
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Nonvacuity
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
-import CombinatorialRigidity.Molecular.Deficiency
-import CombinatorialRigidity.Molecular.Extensor
-import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
-import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
-import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
-import CombinatorialRigidity.Molecular.Meet
-import CombinatorialRigidity.Molecular.Molecule.Application
-import CombinatorialRigidity.Molecular.Molecule.Carrier
-import CombinatorialRigidity.Molecular.Molecule.Dictionary
-import CombinatorialRigidity.Molecular.Molecule.Duality
-import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
-import CombinatorialRigidity.Molecular.Molecule.Modelling
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCurve
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractAdditive
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Coverage
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageChain
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericEar
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTriangle
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SplitOff
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
-import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
-import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
-import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
-import CombinatorialRigidity.Molecular.Molecule.Theorem56
-import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
-import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
-import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
-import CombinatorialRigidity.Nonvacuity
-import CombinatorialRigidity.PebbleGame.Correctness
-import CombinatorialRigidity.PebbleGame.Examples
-import CombinatorialRigidity.PebbleGame.Exec
-import CombinatorialRigidity.Search.DFS
-import CombinatorialRigidity.SquareGraph
-import CombinatorialRigidity.TwoCore
+module  -- shake: keep-all
+
+public import CombinatorialRigidity.BodyBar.BodyHinge
+public import CombinatorialRigidity.BodyBar.Framework
+public import CombinatorialRigidity.BodyBar.GenericLift
+public import CombinatorialRigidity.BodyBar.KFrame
+public import CombinatorialRigidity.BodyBar.TayTheorem
+public import CombinatorialRigidity.BodyBar.TreePacking
+public import CombinatorialRigidity.CountMatroid
+public import CombinatorialRigidity.GeneralPositionPlacement
+public import CombinatorialRigidity.GenericRigidityMatroid
+public import CombinatorialRigidity.Jacobs
+public import CombinatorialRigidity.JacobsCounting
+public import CombinatorialRigidity.JacobsDegreeOne
+public import CombinatorialRigidity.JacobsTheorem
+public import CombinatorialRigidity.JacobsZeroExtension
+public import CombinatorialRigidity.LamanTheorem
+public import CombinatorialRigidity.LinearRigidityMatroid
+public import CombinatorialRigidity.Matroid.Constructions.Submodular
+public import CombinatorialRigidity.Matroid.Constructions.Union
+public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges
+public import CombinatorialRigidity.MatroidIdentification
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Nonvacuity
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
+public import CombinatorialRigidity.Molecular.Deficiency
+public import CombinatorialRigidity.Molecular.Extensor
+public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
+public import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
+public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
+public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
+public import CombinatorialRigidity.Molecular.Induction.SparseDeficiency
+public import CombinatorialRigidity.Molecular.Meet
+public import CombinatorialRigidity.Molecular.Molecule.Application
+public import CombinatorialRigidity.Molecular.Molecule.Carrier
+public import CombinatorialRigidity.Molecular.Molecule.Dictionary
+public import CombinatorialRigidity.Molecular.Molecule.Duality
+public import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
+public import CombinatorialRigidity.Molecular.Molecule.Modelling
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Bridge
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Carrier
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Configuration
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Cut
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Ear
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.EarGen
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Chain
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractCurve
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Contract
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.ContractAdditive
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Coverage
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageChain
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageCut
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.CoverageTheoremS
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericBase
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericEar
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericSteer
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GenericTriangle
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.GoodEar
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Lines
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Orbit
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Short
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.SplitOff
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Pair2
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Steer
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Witness
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.X0
+public import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
+public import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
+public import CombinatorialRigidity.Molecular.Molecule.Theorem56
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
+public import CombinatorialRigidity.Nonvacuity
+public import CombinatorialRigidity.PebbleGame.Correctness
+public import CombinatorialRigidity.PebbleGame.Examples
+public import CombinatorialRigidity.PebbleGame.Exec
+public import CombinatorialRigidity.Search.DFS
+public import CombinatorialRigidity.SquareGraph
+public import CombinatorialRigidity.TwoCore

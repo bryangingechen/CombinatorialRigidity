@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 
 /-!
 # The base case of the pencil reduction
@@ -18,6 +20,8 @@ through that point (`lem:extensor-pair-through-point`). The loop and cut-edge ca
 
 * `hasPencilRealization_of_ncard_le_two`: the base case (`lem:pencil-base-case`).
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Polynomial
-import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
+module
+
+public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Polynomial
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Flat
 
 /-!
 # Jackson and Jordán's equality
@@ -66,6 +68,8 @@ equality at a smaller graph multiplies its polynomial with its other conditions 
   picture, at every main picture (`ℓ₀ = 3 + def₂(G)`) and at one picture.
 * `Graph.x0Attains_of_deficiency_two_eq_three`: `cor:pencil-jj-flat`.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

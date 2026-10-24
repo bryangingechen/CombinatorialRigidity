@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Reseed
 
 /-!
 # Parameters as coordinates, and the rank of a realization in the chart
@@ -55,6 +57,8 @@ at a coordinate point where the hinges are nonzero, give the chart that rank the
 * `linearIndepOn_pencilChartNormal_congr`: the independence of normals that do not read `fillNbr`
   survives a new `fillNbr`.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph

@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Pencil.Engine
 
 /-!
 # A nondegenerate realization in the chart
@@ -35,6 +37,8 @@ every link, the realization has, and a nonzero scalar at each point keeps it.
 * `exists_pencilSeed_of_nondeg_of_selectors`: the same at given selectors.
 * `exists_extend_linearIndependent`: the completion of a family independent on a set of indices.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open scoped Graph
