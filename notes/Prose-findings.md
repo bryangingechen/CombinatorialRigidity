@@ -6434,7 +6434,7 @@ declaration's name as its header writes it:
   proof without the rewrite, which elaborates with no error at the default heartbeats, in about the
   time of the proof with it (`scratch/reconcile-lean/t3713/DefeqA.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.13.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.25). Task 38.1:
+  *Disposition:* done (task 38.25). Task 38.1:
   `rigidContract_induce_simple` from `exists_isLink_pair_of_rigidContract_not_simple` at `H = G[W]`
   (69 lines to a few); `closedNbhd_induce_subset` deleted (gate 4), its two callers calling
   `closedNbhd_mono (G.induce_le hW)`; the unused first conjunct of
@@ -6442,7 +6442,13 @@ declaration's name as its header writes it:
   `finrank_ker_contractLiftingMatrix_zero_add_three_le`), `exists_contractHeight_eq`'s `have hwW`
   removed, and `exists_rankPolynomial_rigidContract_induce_proj`'s `rw [hGcf] at hne hN` with the
   header's sentence on it. Left: the case analyses of a member of a closed neighbourhood of `G/H`,
-  and `r ∈ V(G/H)`, which thread each proof's locals.
+  and `r ∈ V(G/H)`, which thread each proof's locals. Round 3: done so, the header's sentence
+  already gone (task 37.13), and with the rewrite its `have hGcf`; the caller of the limit map's
+  lemma passes the second conjunct of its `hplane` alone. The re-proof left
+  `Graph.rigidContract_simple` (`Induction/Contraction.lean`) without a caller, unpinned and dead
+  (block (b): no blocker, no orphan), so it went too (gate 4), its section header and
+  `Graph.splitOff_simple`'s docstring (`Operations.lean`) naming `Graph.map_simple` instead
+  (task 38.25).
 - **F-314** · L · repeated derivations and an unused step in
   `Molecular/Molecule/Pencil/MainComponent/Chain.lean` and `ContractAdditive.lean`.
   `Graph.X0Attains.of_cycle_of_certificate` states a `have hcover'` it does not use, and the two
@@ -6459,11 +6465,12 @@ declaration's name as its header writes it:
   `Graph.X0Attains.of_cycle_of_certificate` without `hcover'`, on the three standard axioms
   (`scratch/reconcile-lean/t3714/Hyps-t3714.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.14.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.25). Task 38.1: remove
+  *Disposition:* done (task 38.25). Task 38.1: remove
   `X0Attains.of_cycle_of_certificate`'s unused `have hcover'`; `of_additiveContract`'s `hevZ` by
   `MvPolynomial.eval_bind₁`. Left: `honlyP`'s two branches (one case analysis, ends swapped), `heq`
   (a lemma on a labelling of the bodies would be new, for a few lines at five sites), `hxne`, and
-  `hlow0`, `hdim` (one proof).
+  `hlow0`, `hdim` (one proof). Round 3: done so, `hevZ`'s two uses calling
+  `MvPolynomial.eval_bind₁` (task 38.25).
 - **F-315** · L · repeated derivations in `Molecular/Molecule/Pencil/MainComponent/Lines.lean` and
   `EarGen.lean`. `Graph.earHeight_mem_liftingSpace` (`EarGen.lean`) repeats the proof of
   `Graph.earExtend_mem_liftingSpace` (`Ear.lean`) step for step (about 40 lines, through
@@ -6481,13 +6488,15 @@ declaration's name as its header writes it:
   `lake lint` reports none of them.
   *Evidence:* read (the statements and bodies).
   *Found:* RECONCILE round 3 task 37.15.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.25). Task 38.1:
+  *Disposition:* done (task 38.25). Task 38.1:
   `exists_insertion_two`'s `hL`, `hR` (36 lines) by the rewrite of
   `exists_insertion_of_star_sup_star` (`pointJoin_swap`, `Set.neg_insert`, `Submodule.span_neg`).
   Left: `earExtend_mem_liftingSpace` from `earHeight_mem_liftingSpace`, which would make
   `lem:pencil-ear-fibre` reach the later `lem:pencil-ear-data` (a forward edge, gate 7); the common
   close of `exists_insertion_gain` and `exists_insertion_two_aux` (a new lemma for two sites);
-  `klein_liftPlane`'s `ht0` (one argument, indices permuted); `hW` (two rewrites).
+  `klein_liftPlane`'s `ht0` (one argument, indices permuted); `hW` (two rewrites). Round 3: done
+  so, one `rwa` at the reversed curve's bound; its new join taken as `x₁ ∧ u₀` (was `u₀ ∧ x₁`), so
+  that every join of both spans is reversed, which also shortens `hc` (task 38.25).
 - **F-316** · L · repeated derivations and derivable hypotheses in
   `Molecular/Molecule/Pencil/MainComponent/Short.lean`. `splitOff_ear_four` and `splitOff_ear_three`
   are one proof (68 and 61 lines), the second with one interior body fewer, which one lemma at any
@@ -6825,11 +6834,12 @@ declaration's name as its header writes it:
   second's, each from the mirror lemma in a line, on the three standard axioms
   (`scratch/reconcile-lean/t3823/Hyps-t3823.lean`, gitignored).
   *Found:* RECONCILE round 3 task 38.23.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.25, 38.26 and 38.27), each by
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.26 and 38.27), each by
   its file's task: `eq_zero_of_dotProduct_pencilPicturePoint` deleted, its caller calling the
   mirror lemma (task 38.25; gate 4); `horth` proved by the mirror lemma, the three facts by
   `fin_cases` (task 38.26); `eq_zero_of_dotProduct_triple` likewise, kept for its two calls, which
-  pass three separate facts (task 38.27).
+  pass three separate facts (task 38.27). Round 3: the first done so, the mirror's header naming
+  its new user (task 38.25).
 
 ## M — mathematics and sources
 

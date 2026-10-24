@@ -874,58 +874,19 @@ theorem exists_insertion_two [Infinite K] (ρ : Submodule K (ScrewSpace K 2)) (l
         refine ⟨x₁, x₂, by simp [hx₁, hy3, hpa3],
           hplane la y (pa - y) σ₀ hya (hline la pa hya hpa), by simp [hx₂, hy3, hu₀3],
           hplane lb y u₀ t hyb hu₀b, (min_le_left _ _).trans ?_⟩
-        set c := pointJoin u₀ x₁ with hcdef
-        have hc : c ∉ W := by
+        have hc : pointJoin x₁ u₀ ∉ W := by
           intro hc
           apply h3
-          have heq : c = -(pointJoin y u₀) + σ₀ • (-(pointJoin pa u₀) + pointJoin y u₀) := by
-            simp only [hcdef, hx₁, pointJoin_add_right, pointJoin_smul_right,
-              pointJoin_sub_right]
-            rw [pointJoin_swap y u₀, pointJoin_swap pa u₀]
-            module
-          rw [heq] at hc
-          have h' := (Submodule.smul_mem_iff _ hσ0).mp
-            ((Submodule.add_mem_iff_right _ (W.neg_mem h1)).mp hc)
-          have := W.neg_mem (W.sub_mem h' h1)
-          rwa [add_sub_cancel_right, neg_neg] at this
-        have hL : ρ ⊔ Submodule.span K {pointJoin pb y, pointJoin y pa, c} = W ⊔ K ∙ c := by
-          refine le_antisymm (sup_le (le_sup_left.trans le_sup_left) (Submodule.span_le.mpr ?_))
-            (sup_le (sup_le le_sup_left (Submodule.span_le.mpr ?_)) ?_)
-          · intro v hv
-            simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
-            rcases hv with rfl | rfl | rfl
-            · rw [SetLike.mem_coe, pointJoin_swap]
-              exact Submodule.mem_sup_left (W.neg_mem hypbW)
-            · rw [SetLike.mem_coe, pointJoin_swap]
-              exact Submodule.mem_sup_left (W.neg_mem hpaW)
-            · exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
-          · intro v hv
-            simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
-            have hmem : ∀ w ∈ ({pointJoin pb y, pointJoin y pa, c} : Set (ScrewSpace K 2)),
-                w ∈ ρ ⊔ Submodule.span K {pointJoin pb y, pointJoin y pa, c} :=
-              fun w hw => Submodule.mem_sup_right (Submodule.subset_span hw)
-            rcases hv with rfl | rfl
-            · rw [SetLike.mem_coe, pointJoin_swap y pa]
-              exact Submodule.neg_mem _ (hmem (pointJoin y pa) (by simp))
-            · rw [SetLike.mem_coe, pointJoin_swap pb y]
-              exact Submodule.neg_mem _ (hmem (pointJoin pb y) (by simp))
-          · rw [Submodule.span_singleton_le_iff_mem]
-            exact Submodule.mem_sup_right (Submodule.subset_span (by simp))
-        have hR : Submodule.span K {pointJoin pb x₂, pointJoin x₂ x₁, pointJoin x₁ pa} ≤
-            Submodule.span K {pointJoin pa x₁, pointJoin x₁ x₂, pointJoin x₂ pb} := by
-          refine Submodule.span_le.mpr ?_
-          intro v hv
-          simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
-          have hsub : ∀ w ∈ ({pointJoin pa x₁, pointJoin x₁ x₂, pointJoin x₂ pb} :
-              Set (ScrewSpace K 2)), -w ∈ Submodule.span K
-                {pointJoin pa x₁, pointJoin x₁ x₂, pointJoin x₂ pb} :=
-            fun w hw => Submodule.neg_mem _ (Submodule.subset_span hw)
-          rcases hv with rfl | rfl | rfl
-          · rw [SetLike.mem_coe, pointJoin_swap x₂ pb]; exact hsub (pointJoin x₂ pb) (by simp)
-          · rw [SetLike.mem_coe, pointJoin_swap x₁ x₂]; exact hsub (pointJoin x₁ x₂) (by simp)
-          · rw [SetLike.mem_coe, pointJoin_swap pa x₁]; exact hsub (pointJoin pa x₁) (by simp)
-        rw [← Submodule.finrank_sup_span_singleton hc, ← hL]
-        exact hle.trans (Submodule.finrank_mono (sup_le_sup_left hR _))
+          rw [hx₁, pointJoin_add_left, pointJoin_smul_left, pointJoin_sub_left] at hc
+          have h' := (Submodule.smul_mem_iff _ hσ0).mp ((Submodule.add_mem_iff_right _ h1).mp hc)
+          simpa using W.add_mem h' h1
+        rw [← Submodule.finrank_sup_span_singleton hc, ← hWc]
+        rwa [pointJoin_swap y pb, pointJoin_swap pa y, pointJoin_swap x₁ u₀, pointJoin_swap x₂ pb,
+          pointJoin_swap x₁ x₂, pointJoin_swap pa x₁, ← Set.neg_singleton, ← Set.neg_insert,
+          ← Set.neg_insert, Submodule.span_neg, ← Set.neg_singleton, ← Set.neg_insert,
+          ← Set.neg_insert, Submodule.span_neg, Set.insert_comm (pointJoin y pb),
+          Set.insert_comm (pointJoin x₂ pb), Set.pair_comm (pointJoin x₂ pb),
+          Set.insert_comm (pointJoin x₁ x₂)] at hle
     · -- `u = u₀`, `σ = σ₀`: the limit direction is `≡ σ₀ (u₀ ∧ p_b)` modulo `W`
       refine hfinish u₀ σ₀ hσ1 hu₀3 hu₀a (fun hc => h2 ?_)
       have heq : pointJoin u₀ (y + σ₀ • (pb - y)) = -(pointJoin y u₀) +

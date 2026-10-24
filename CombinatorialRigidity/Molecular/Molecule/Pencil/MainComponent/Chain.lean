@@ -153,7 +153,6 @@ theorem _root_.Graph.X0Attains.of_cycle_of_certificate [Infinite K] [Finite α] 
     rcases hg'.eq_and_eq_or_eq_and_eq hf with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
     · exact ⟨Or.inl rfl, Or.inr rfl⟩
     · exact ⟨Or.inr rfl, Or.inl rfl⟩
-  have hcover' : V(G) = V₁ ∪ Set.range x := hcover
   -- every closed neighbourhood has at most three members
   have hN3 : ∀ v ∈ V(G), (G.closedNbhd v).ncard ≤ 3 := by
     intro v hv

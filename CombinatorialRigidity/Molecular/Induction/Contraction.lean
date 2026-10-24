@@ -81,8 +81,8 @@ Contracting a subgraph of a simple graph can create loops and parallel edges. Ka
 divide Case I of the proof of their Theorem 5.5 by whether some proper rigid subgraph has a simple
 contraction (p. 673): Lemma 6.3 takes one (p. 674), and Lemma 6.5 the rest (p. 676). Relabelling the
 vertices gives a simple graph when it creates neither loops nor parallel edges (`map_simple`), and
-the contraction is such a relabelling (`rigidContract_simple`). The converse forms
-(`map_not_simple`, `rigidContract_not_simple`) give the vertex of KT Claim 6.6. -/
+the contraction is such a relabelling. The converse forms (`map_not_simple`, and
+`rigidContract_not_simple` for the contraction) give the vertex of KT Claim 6.6. -/
 
 /-- **When relabelling the vertices gives a simple graph** (a step of `lem:claim-6-6`): `f ''ᴳ G` is
 simple if `f` sends the two ends of no edge of `G` to one vertex (`hloop`), and any two edges whose
@@ -102,21 +102,6 @@ lemma map_simple {α' : Type*} {f : α → α'} {G : Graph α β}
     obtain ⟨u₁, v₁, h₁, rfl, rfl⟩ := he₁
     obtain ⟨u₂, v₂, h₂, hu₂, hv₂⟩ := he₂
     exact hpar e₁ e₂ u₁ v₁ u₂ v₂ h₁ h₂ hu₂ hv₂
-
-/-- **When the contraction is simple** (`def:rigid-contraction`): `G / E(H)` is simple if
-`collapseTo r V(H)` sends the two ends of no edge of `G.deleteEdges E(H)` to one vertex (`hloop`),
-and any two of its edges whose ends it sends to the same pair are equal (`hpar`): `map_simple` for
-`G / E(H) = (G.deleteEdges E(H)).map (collapseTo r V(H))`. -/
-lemma rigidContract_simple {G H : Graph α β} {r : α}
-    (hloop : ∀ e x y, (G.deleteEdges E(H)).IsLink e x y →
-      collapseTo r V(H) x ≠ collapseTo r V(H) y)
-    (hpar : ∀ e₁ e₂ x₁ y₁ x₂ y₂, (G.deleteEdges E(H)).IsLink e₁ x₁ y₁ →
-      (G.deleteEdges E(H)).IsLink e₂ x₂ y₂ →
-      collapseTo r V(H) x₁ = collapseTo r V(H) x₂ →
-      collapseTo r V(H) y₁ = collapseTo r V(H) y₂ → e₁ = e₂) :
-    (G.rigidContract H r).Simple := by
-  rw [rigidContract]
-  exact map_simple hloop hpar
 
 /-- **When relabelling the vertices gives a graph that is not simple** (a step of `lem:claim-6-6`):
 if `f ''ᴳ G` is not simple, then `f` sends the two ends of some edge of `G` to one vertex, or two

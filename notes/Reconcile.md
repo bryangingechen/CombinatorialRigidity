@@ -118,9 +118,13 @@ out, re-proved four lemmas by existing ones and dropped `[Finite α]`, a repeate
 (`F-309`–`F-312`, the new `F-328` for three more copies), no node restated; task 38.24 stated
 `MainComponent/`'s two shared steps once, `Graph.isLink_ends_induce` at seven `hendsI` and the
 mirror `Set.ncard_union_range_of_injective` at seven body counts (`F-311`'s last, `F-316`'s
-`hcard`), no node restated.
-**Next concrete task:** round 3's task 38.25, `MainComponent/ContractCurve`, `Chain`,
-`ContractAdditive` and `Lines.lean` (then tasks 38.26–38.27 and the close).
+`hcard`), no node restated; task 38.25 re-proved `MainComponent/ContractCurve.lean`'s simplicity
+lemma from KT Claim 6.6's, gave five steps existing lemmas (`Lines.lean`'s 36-line span comparison
+among them) and removed an unused conjunct, two unused `have`s and a needless rewrite, deleting two
+lemmas the re-proofs replaced and `Graph.rigidContract_simple`, which they left without a caller
+(`F-313`–`F-315`, `F-328`'s first), no node restated.
+**Next concrete task:** round 3's task 38.26, `MainComponent/Short`, `Orbit`, `SplitOff`,
+`Coverage` and `CoverageChain.lean` (then task 38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

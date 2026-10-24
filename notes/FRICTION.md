@@ -3052,6 +3052,21 @@ corresponding entry in [Mirrored](#mirrored) below.
   MCP iteration each.
 - **Status:** idiom.
 
+### [idiom] A span with every join reversed: negate the set literal element by element, then `Submodule.span_neg`
+- **Where it bit:** RECONCILE round 3 task 38.25 (`F-315`), `MainComponent/Lines.lean`'s
+  `exists_insertion_two`: the reversed curve's bound spans `{p_b ∧ x₂, x₂ ∧ x₁, x₁ ∧ p_a}` where
+  the goal has `{p_a ∧ x₁, x₁ ∧ x₂, x₂ ∧ p_b}`, and 36 lines (`hL`, `hR`) showed the two spans equal
+  member by member.
+- **Friction:** mathlib has `Submodule.span_neg` (`span R (-s) = span R s`) but no form for a set
+  literal, nor `span (insert (-x) s) = span (insert x s)` (`lean_loogle` finds none). So every
+  member must be negated (`pointJoin_swap`), which fixed the orientation of the one join `hc` is
+  about (`x₁ ∧ u₀`, not `u₀ ∧ x₁`); then `← Set.neg_singleton` and one `← Set.neg_insert` per
+  further member fold the literal into `-{…}`, and a three-member literal's order reverses by
+  three `Set.insert_comm`/`Set.pair_comm` rewrites, given their first argument so that each lands.
+- **Resolution:** one `rwa […] at hle` of 18 rewrites, as `exists_insertion_of_star_sup_star`
+  does for two members.
+- **Status:** idiom.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
@@ -3431,9 +3446,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `Matrix.mulVec_injective_iff_isUnit`, but no lemma in terms of `LinearIndependent` and `⬝ᵥ`
   (`lean_loogle` finds none naming both).
 - **Resolution:** mirrored over a field, for a family `v : m → m → K` of any finite index type, the
-  four sites calling it. Three more copies wait for their files' tasks (`F-328`:
-  `eq_zero_of_dotProduct_pencilPicturePoint`, `eq_zero_of_dotProduct_triple`, and the `horth` of
-  `Graph.planeDiff_eq_zero_of_splitOff`).
+  four sites calling it. Three more copies (`F-328`): `eq_zero_of_dotProduct_pencilPicturePoint`
+  (`ContractCurve.lean`), since deleted, its caller calling the mirror (task 38.25);
+  `eq_zero_of_dotProduct_triple` and the `horth` of `Graph.planeDiff_eq_zero_of_splitOff` wait for
+  their files' tasks.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`.
 

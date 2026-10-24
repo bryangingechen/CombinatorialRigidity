@@ -713,8 +713,8 @@ of its links joins a vertex to itself (`hloop`) and any two of its links between
 vertices are the same edge (`hpar`). Splitting off need not keep a graph simple: the new edge is
 a loop when `a = b`, and it is parallel to every edge of `G` that joins `a` and `b`. When `G` is
 simple and has no proper rigid subgraph, KT Lemma 6.7(ii) (p. 677) excludes both
-(`splitOff_simple_of_noRigid`). `rigidContract_simple` (`Contraction.lean`) is the same criterion
-for the contraction. -/
+(`splitOff_simple_of_noRigid`). `map_simple` (`Contraction.lean`) is the same criterion for a
+relabelling of the vertices, such as the contraction. -/
 lemma splitOff_simple {G : Graph α β} {v a b : α} {e₀ : β}
     (hloop : ∀ e x y, (G.splitOff v a b e₀).IsLink e x y → x ≠ y)
     (hpar : ∀ e₁ e₂ x y, (G.splitOff v a b e₀).IsLink e₁ x y →

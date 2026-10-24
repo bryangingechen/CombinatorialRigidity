@@ -277,13 +277,8 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
     Matrix.exists_mvPolynomial_section_mulVec_eq_zero (G.contractLiftingMatrix K W r q)
       (q₀ := fun _ => (0 : K)) hx₀
   have hDne : D ≠ 0 := fun h => hD₀ (by rw [h, map_zero])
-  have hevZ : ∀ (P : MvPolynomial (α ⊕ (α × Fin 3)) K) (t : K),
-      MvPolynomial.eval (fun _ => t) (MvPolynomial.bind₁ Z P) =
-        MvPolynomial.eval (fun c => MvPolynomial.eval (fun _ => t) (Z c)) P := by
-    intro P t
-    rw [MvPolynomial.eval_bind₁]
   have hPAC : MvPolynomial.bind₁ Z PA ≠ 0 := fun h => by
-    have := hevZ PA 0
+    have := MvPolynomial.eval_bind₁ (fun _ => (0 : K)) Z PA
     rw [h, map_zero, hZ₀] at this
     exact hPA₀ this.symm
   have hevQ : ∀ t : K, MvPolynomial.eval (fun _ => t)
@@ -312,7 +307,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
     (left_ne_zero_of_mul (left_ne_zero_of_mul hs)))
   rw [hevP] at hPmt
   rw [hevQ] at hQt
-  rw [hevZ, hPA] at hPAt
+  rw [MvPolynomial.eval_bind₁, hPA] at hPAt
   have hqtmain := hmain _ hPmt
   -- no jump: the section lies in `ker M(t)`
   have hdim : Module.finrank K L ≤ Module.finrank K (LinearMap.ker

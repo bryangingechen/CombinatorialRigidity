@@ -23,8 +23,8 @@ here. The combinatorial-rigidity project uses it in `Molecular/Molecule/Pencil/`
 `Matrix.mulVec_injective_iff_isUnit`: a vector with dot product zero against the `n` independent
 rows of a square matrix is zero. The project uses it in `MainComponent/` for a vector of `K³`
 orthogonal to three independent picture points (`Graph.finrank_affineLifts`,
-`Graph.finrank_ker_liftingMatrix`, `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar` and
-`Graph.finrank_liftingPlanes`).
+`Graph.finrank_ker_liftingMatrix`, `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar`,
+`Graph.finrank_liftingPlanes` and `Graph.IsAdmissiblePicture.eq_zero_of_forall_closedNbhd`).
 
 Mirror path: `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`. Promotion to mathlib is a
 copy-paste into the upstream file, next to `Matrix.linearIndependent_rows_iff_isUnit`.

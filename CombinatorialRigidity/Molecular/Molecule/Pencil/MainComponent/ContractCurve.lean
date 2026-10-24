@@ -283,8 +283,7 @@ theorem _root_.Graph.exists_contractHeight_eq [Fintype α] {G : Graph α β} {W 
       else g p.1 p.2) with hx
   refine ⟨x, Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mpr
     ⟨fun w hw => ?_, fun v hv w hw => ?_, fun v hv i => ?_⟩, ?_⟩
-  · have hwW : w ∈ W → z w = 0 := fun _ => hs w hw
-    by_cases hW : w ∈ W <;> simp [hx, hW, hs w hw]
+  · by_cases hW : w ∈ W <;> simp [hx, hW, hs w hw]
   · have hgw := hg v hv w hw
     by_cases hc : v ∈ G.coreNbhd W
     · by_cases hwW : w ∈ W
@@ -367,23 +366,6 @@ theorem _root_.Graph.finrank_span_rigidityRows_induce_contractHeight_eq {G : Gra
 
 /-! ## Three independent picture points determine a plane -/
 
-/-- **Three independent picture points determine a plane** (a step of
-`lem:pencil-contract-kernel-bound`): a coefficient vector `h ∈ K³` orthogonal to three linearly
-independent homogeneous picture points is zero. -/
-theorem eq_zero_of_dotProduct_pencilPicturePoint {q : α × Fin 2 → K} {s : Fin 3 → α}
-    (hli : LinearIndependent K (fun i => pencilPicturePoint q (s i))) {h : Fin 3 → K}
-    (hh : ∀ i, h ⬝ᵥ pencilPicturePoint q (s i) = 0) : h = 0 := by
-  have hunit : IsUnit (Matrix.of fun j => pencilPicturePoint q (s j)) :=
-    Matrix.linearIndependent_row_iff_isUnit.mp hli
-  have hz : (Matrix.of fun j => pencilPicturePoint q (s j)) *ᵥ h =
-      (Matrix.of fun j => pencilPicturePoint q (s j)) *ᵥ 0 := by
-    rw [Matrix.mulVec_zero]
-    funext j
-    simp only [Matrix.mulVec, Matrix.of_apply, Pi.zero_apply]
-    rw [dotProduct_comm]
-    exact hh j
-  exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hz
-
 /-- **An affine function vanishing on a closed neighbourhood is zero** (a step of
 `lem:pencil-contract-kernel-bound`): over an admissible picture, a coefficient vector orthogonal to
 the homogeneous picture points of a whole closed neighbourhood is zero, as three members of the
@@ -392,7 +374,7 @@ theorem _root_.Graph.IsAdmissiblePicture.eq_zero_of_forall_closedNbhd {G : Graph
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α} (hv : v ∈ V(G))
     {h : Fin 3 → K} (hh : ∀ w ∈ G.closedNbhd v, h ⬝ᵥ pencilPicturePoint q w = 0) : h = 0 := by
   obtain ⟨s, hs, hli⟩ := hq.2 v hv
-  exact eq_zero_of_dotProduct_pencilPicturePoint hli fun i => hh _ (hs i)
+  exact hli.eq_zero_of_forall_dotProduct_eq_zero fun i => hh _ (hs i)
 
 /-! ## The bodies and closed neighbourhoods of the contraction -/
 
@@ -463,15 +445,6 @@ theorem _root_.Graph.mem_vertexSet_rigidContract_iff {G : Graph α β} {W : Set 
     · exact ⟨v, hW hr, collapseTo_of_mem hr⟩
     · exact ⟨v, hv, collapseTo_of_not_mem hvW⟩
 
-/-! ## Closed neighbourhoods of an induced subgraph -/
-
-/-- A closed neighbourhood in an induced subgraph lies in the closed neighbourhood in `G`. -/
-theorem _root_.Graph.closedNbhd_induce_subset {G : Graph α β} {W : Set α} {c : α} :
-    (G.induce W).closedNbhd c ⊆ G.closedNbhd c := by
-  rintro w (rfl | ⟨e, he⟩)
-  · exact Or.inl rfl
-  · exact Or.inr ⟨e, he.1⟩
-
 /-! ## The rescaled system at the end of the curve (`lem:pencil-contract-limit`) -/
 
 open Classical in
@@ -499,20 +472,18 @@ theorem contractLimitMap_apply (G : Graph α β) (W : Set α) (r : α)
       if w ∈ V(G) ∧ w ∉ W then x (Sum.inl w) + x (Sum.inl r) else 0 := rfl
 
 /-- **The limit map sends a solution of `M(0)` into `L_{G/H}(q)`, given one plane on the core** (a
-step of `lem:pencil-contract-kernel-bound`): if one coefficient vector `g` gives the heights of the
-core and is the coefficient vector of every core body (`hg`), the limit map sends a solution of
-`M(0)` into `L_{G/H}(q)`. At `r` the affine function has the linear coefficients of `g` and the
-value `z_r` at `q_r`, and the rows at `t = 0` put the shifted heights of the neighbours of `W` on
-it. The kernel bound applies it with `g = 0`
-(`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`). -/
+step of `lem:pencil-contract-kernel-bound`): if one coefficient vector `g` is the coefficient vector
+of every core body (`hg`), the limit map sends a solution of `M(0)` into `L_{G/H}(q)`. At `r` the
+affine function has the linear coefficients of `g` and the value `z_r` at `q_r`, and the rows at
+`t = 0` put the shifted heights of the neighbours of `W` on it. The kernel bound applies it with
+`g = 0` (`Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le`). -/
 theorem _root_.Graph.contractLimitMap_mem_liftingSpace [Fintype α] {G : Graph α β}
     {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
     {x : α ⊕ (α × Fin 3) → K}
     (hx : (G.contractLiftingMatrix K W r q).map (MvPolynomial.eval (fun _ => (0 : K))) *ᵥ x = 0)
-    (hg : ∃ g : Fin 3 → K, (∀ w ∈ W, x (Sum.inl w) = g ⬝ᵥ pencilPicturePoint q w) ∧
-      ∀ c ∈ W, (fun i => x (Sum.inr (c, i))) = g) :
+    (hg : ∃ g : Fin 3 → K, ∀ c ∈ W, (fun i => x (Sum.inr (c, i))) = g) :
     contractLimitMap G W r x ∈ (G.rigidContract (G.induce W) r).liftingSpace q := by
-  obtain ⟨g, hgW, hgc⟩ := hg
+  obtain ⟨g, hgc⟩ := hg
   obtain ⟨-, h2, -⟩ := Graph.contractLiftingMatrix_mulVec_eq_zero_iff.mp hx
   refine ⟨fun w hw => ?_, fun v' hv' => ?_⟩
   · rw [Graph.mem_vertexSet_rigidContract_iff hr hW] at hw
@@ -585,11 +556,11 @@ theorem _root_.Graph.contractLimitMap_mem_liftingSpace [Fintype α] {G : Graph �
 
 /-- **The limit map is injective on `ker M(0)`, given one plane on the core** (a step of
 `lem:pencil-contract-kernel-bound`): with `q` admissible for `G/H`, a solution of `M(0)` with one
-coefficient vector `g` on the core (`hg`, as above) and limit heights zero is zero. The plane of `g`
-is zero at the picture points of the closed neighbourhood of `r` in `G/H`, three of which are
-independent, so `g = 0`; then every height is zero, and so is every coefficient vector outside the
-core: at a neighbour of `W` its linear coefficients by its closed neighbourhood in `G/H`, and its
-constant coefficient by its row at a body of `W`. -/
+coefficient vector `g` on the core that also gives the core heights (`hg`) and limit heights zero
+is zero. The plane of `g` is zero at the picture points of the closed neighbourhood of `r` in `G/H`,
+three of which are independent, so `g = 0`; then every height is zero, and so is every coefficient
+vector outside the core: at a neighbour of `W` its linear coefficients by its closed neighbourhood
+in `G/H`, and its constant coefficient by its row at a body of `W`. -/
 theorem _root_.Graph.eq_zero_of_contractLimitMap_eq_zero [Fintype α] {G : Graph α β}
     {W : Set α} {r : α} (hr : r ∈ W) (hW : W ⊆ V(G)) {q : α × Fin 2 → K}
     (hqc : (G.rigidContract (G.induce W) r).IsAdmissiblePicture q)
@@ -839,7 +810,8 @@ theorem _root_.Graph.liftingRestrict_mem_liftingSpace_induce_of_contract [Fintyp
   refine ⟨fun i => x (Sum.inr (c, i)), fun w hw => ?_⟩
   have hwW : w ∈ W := Graph.closedNbhd_subset_vertexSet (G := G.induce W) hc hw
   rw [Graph.liftingRestrict_apply, ite_eq_left hwW,
-    h2 c (hW hc) w (Graph.closedNbhd_induce_subset hw), Graph.contractWeightAt_of_mem hwW]
+    h2 c (hW hc) w (Graph.closedNbhd_mono (G.induce_le hW) c hw),
+    Graph.contractWeightAt_of_mem hwW]
 
 /-- **The core heights `ρ`** (the map `ρ` of `lem:pencil-contract-kernel-bound`): the restriction of
 the unknowns of `M(t)` to their core heights, `x ↦ (x_w)_{w ∈ W}`, zero off `W`. -/
@@ -884,7 +856,7 @@ theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le [Fintyp
     refine ⟨fun w hw => by rw [hxW w hw, zero_dotProduct], fun c hc => ?_⟩
     refine hqH.eq_zero_of_forall_closedNbhd hc fun w hw => ?_
     have hwW : w ∈ W := Graph.closedNbhd_subset_vertexSet (G := G.induce W) hc hw
-    have := h2 c (hW hc) w (Graph.closedNbhd_induce_subset hw)
+    have := h2 c (hW hc) w (Graph.closedNbhd_mono (G.induce_le hW) c hw)
     rw [Graph.contractWeightAt_of_mem hwW, hxW w hwW] at this
     exact this.symm
   -- and its limit heights vanish on the closed neighbourhood of `r` in `G/H`
@@ -928,8 +900,7 @@ theorem _root_.Graph.finrank_ker_contractLiftingMatrix_zero_add_three_le [Fintyp
   have hΨL : LinearMap.range Ψ ≤ Gc.liftingSpace q := by
     rintro _ ⟨y, rfl⟩
     obtain ⟨hyL, hy0⟩ := hNmem y
-    obtain ⟨hxW, hxc⟩ := hplane _ hyL hy0
-    exact Graph.contractLimitMap_mem_liftingSpace hr hW hyL ⟨0, hxW, hxc⟩
+    exact Graph.contractLimitMap_mem_liftingSpace hr hW hyL ⟨0, (hplane _ hyL hy0).2⟩
   have hΨA : LinearMap.range Ψ ⊓ Gc.affineLifts q = ⊥ := by
     rw [eq_bot_iff]
     rintro z ⟨⟨y, rfl⟩, ⟨g', hg'⟩⟩
@@ -988,8 +959,6 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
   set Gc := G.deleteEdges E(G.induce W) with hGc
   set f := Graph.collapseTo r W with hf
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
-  have hGcf : G.rigidContract (G.induce W) r = Gc.map f := rfl
-  rw [hGcf] at hne hN
   set F' := (PanelHingeFramework.ofNormals (Gc.map f) endsM
     (fun p => nrm p.1 p.2)).toBodyHinge with hF'
   have hendsF' : ∀ e u v, F'.graph.IsLink e u v → F'.graph.IsLink e (endsM e).1 (endsM e).2 := by
@@ -1067,78 +1036,19 @@ theorem _root_.Graph.isX0Graph_induce_of_deficiency_eq_zero [Finite α] [Finite 
 
 /-- **`G/H` is simple** (a step of `lem:pencil-contract-standing` and of
 `thm:pencil-x0-contract-additive`): if `G` is simple and no body outside `W` is adjacent to two
-bodies of `W` (`hatt`), then `G.rigidContract (G.induce W) r` is simple. A surviving edge is not
-inside `W`, so its collapsed ends are distinct, as `G` has no loops. Two surviving edges with the
-same collapsed ends have the same ends in `G`, by `hatt` when an end lies in `W`, so they are one
-edge, as `G` has no parallel edges. -/
+bodies of `W` (`hatt`), then `G.rigidContract (G.induce W) r` is simple. Otherwise some body outside
+`W` has edges to two distinct bodies of `W` (`Graph.exists_isLink_pair_of_rigidContract_not_simple`,
+from the proof of KT Claim 6.6, at `H = G[W]`), which `hatt` excludes. -/
 theorem _root_.Graph.rigidContract_induce_simple {G : Graph α β} (hS : G.Simple) {W : Set α}
     {r : α} (hr : r ∈ W)
     (hatt : ∀ u ∉ W, ∀ c₁ ∈ W, ∀ c₂ ∈ W, G.Adj u c₁ → G.Adj u c₂ → c₁ = c₂) :
     (G.rigidContract (G.induce W) r).Simple := by
-  classical
-  have hV : V(G.induce W) = W := rfl
-  -- a surviving edge never has both ends in `W`
-  have hsurv : ∀ e x y, (G.deleteEdges E(G.induce W)).IsLink e x y →
-      G.IsLink e x y ∧ ¬ (x ∈ W ∧ y ∈ W) := by
-    intro e x y h
-    rw [Graph.deleteEdges_isLink] at h
-    refine ⟨h.1, fun ⟨hx, hy⟩ => h.2 ?_⟩
-    exact (show (G.induce W).IsLink e x y from ⟨h.1, hx, hy⟩).edge_mem
-  have hcol : ∀ x, Graph.collapseTo r W x = if x ∈ W then r else x := fun _ => rfl
-  -- the collapse is the identity off `W` and sends `W` to `r ∈ W`
-  have hout : ∀ {a b : α}, b ∉ W → Graph.collapseTo r W a = b → a ∉ W ∧ a = b := by
-    intro a b hb h
-    rw [hcol] at h
-    by_cases ha : a ∈ W
-    · rw [ite_eq_left ha] at h; exact absurd (h ▸ hr) hb
-    · rw [ite_eq_right ha] at h; exact ⟨ha, h⟩
-  have hin : ∀ {a : α}, Graph.collapseTo r W a = r → a ∈ W := by
-    intro a h
-    rw [hcol] at h
-    by_cases ha : a ∈ W
-    · exact ha
-    · rw [ite_eq_right ha] at h; exact h ▸ hr
-  have hcolW : ∀ {a : α}, a ∈ W → Graph.collapseTo r W a = r := by
-    intro a ha; rw [hcol, ite_eq_left ha]
-  have hcolO : ∀ {a : α}, a ∉ W → Graph.collapseTo r W a = a := by
-    intro a ha; rw [hcol, ite_eq_right ha]
-  refine Graph.rigidContract_simple (fun e x y h hxy => ?_)
-    (fun e₁ e₂ x₁ y₁ x₂ y₂ h₁ h₂ hx hy => ?_)
-  · obtain ⟨hl, hnW⟩ := hsurv e x y h
-    rw [hV] at hxy
-    by_cases hx : x ∈ W <;> by_cases hy : y ∈ W
-    · exact hnW ⟨hx, hy⟩
-    · rw [hcolW hx, hcolO hy] at hxy; exact hy (hxy ▸ hr)
-    · rw [hcolO hx, hcolW hy] at hxy; exact hx (hxy ▸ hr)
-    · rw [hcolO hx, hcolO hy] at hxy
-      subst hxy
-      exact hS.toLoopless.not_isLoopAt e x hl
-  · obtain ⟨hl₁, hn₁⟩ := hsurv e₁ x₁ y₁ h₁
-    obtain ⟨hl₂, hn₂⟩ := hsurv e₂ x₂ y₂ h₂
-    rw [hV] at hx hy
-    -- two edges from bodies of `W` to one body outside `W` are one edge (`hatt`)
-    have key : ∀ {a b c : α}, a ∈ W → b ∉ W → c ∈ W → G.IsLink e₁ a b → G.IsLink e₂ c b →
-        e₁ = e₂ := by
-      intro a b c ha hb hc h1 h2
-      have := hatt b hb a ha c hc ⟨e₁, h1.symm⟩ ⟨e₂, h2.symm⟩
-      subst this
-      exact hS.eq_of_isLink h1 h2
-    by_cases hx₁ : x₁ ∈ W
-    · have hy₁ : y₁ ∉ W := fun h => hn₁ ⟨hx₁, h⟩
-      rw [hcolW hx₁] at hx
-      rw [hcolO hy₁] at hy
-      have hx₂ := hin hx.symm
-      obtain ⟨-, rfl⟩ := hout hy₁ hy.symm
-      exact key hx₁ hy₁ hx₂ hl₁ hl₂
-    · rw [hcolO hx₁] at hx
-      obtain ⟨hx₂, rfl⟩ := hout hx₁ hx.symm
-      by_cases hy₁ : y₁ ∈ W
-      · rw [hcolW hy₁] at hy
-        have hy₂ := hin hy.symm
-        exact key hy₁ hx₁ hy₂ hl₁.symm hl₂.symm
-      · rw [hcolO hy₁] at hy
-        obtain ⟨-, rfl⟩ := hout hy₁ hy.symm
-        exact hS.eq_of_isLink hl₁ hl₂
+  have := hS
+  by_contra hns
+  obtain ⟨v, a, b, ea, eb, -, -, hab, -, ha, hb, haW, hbW, hvW⟩ :=
+    Graph.exists_isLink_pair_of_rigidContract_not_simple (H := G.induce W) hr
+      (fun e x y h hx hy => ((Graph.induce_isLink G W e x y).mpr ⟨h, hx, hy⟩).edge_mem) hns
+  exact hab (hatt v hvW a haW b hbW ⟨ea, ha⟩ ⟨eb, hb⟩)
 
 /-- **Every closed neighbourhood of `G/H` has at least three members** (a step of
 `lem:pencil-contract-standing` and of `thm:pencil-x0-contract-additive`). At `r`: `G` is
