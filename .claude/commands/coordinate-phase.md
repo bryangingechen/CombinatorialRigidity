@@ -269,6 +269,38 @@ presumptively a correction to the body prose it summarizes. Shaping
 never changes the LANDED/BLOCKED contract and never delegates the
 coordinator's own verification to the subagent.
 
+### Multi-commit arcs (trial, 2026-10-24)
+
+The PI's call (2026-10-24, Phase 41): the one-commit dispatch dates from
+less capable builders, so try one dispatch for several commits. It trades
+a longer builder context for fewer launches, fewer orientation re-reads
+and fewer coordinator re-transcriptions. The evidence on each side:
+continuations ran clean (F4), and fresh builders cost 240–440k per build
+(F46), while one resumed 400–624k context cost $37 (step 3 *Resume and
+land*).
+
+- **Shape.** The prompt names an *arc*: 2–4 consecutive checklist items,
+  in order. The builder lands one commit per item, each with that item's
+  full gates and phase-note update. It returns `LANDED <sha1>, <sha2>, …:
+  <one clause per commit>`, or, when an item blocks, stops with the earlier
+  items landed and the tree clean: `LANDED <shas>; BLOCKED: <reason>`.
+- **Eligible.** Every item's spec is in the committed hand-off (S ≤ 2),
+  the items share an area, and no PI decision, recon or spike lies between
+  them. Never a spike, nor a commit the phase note calls a single large
+  switch.
+- **Cut-off.** Once its context passes ~300k tokens, the builder finishes
+  the commit in progress, then returns what landed and names the next item.
+- **Verification.** Step 4's tier on every commit of the arc, in order,
+  before the next dispatch; a defect is fixed before anything builds on it.
+- **Measure, per arc.** `python3 .claude/scripts/session-usage.py tokens
+  --by-session` gives the builder's messages, cache writes, cache reads and
+  output; per landed commit, they compare with the same phase's
+  single-commit dispatches (Phase 41a item 1: 37 messages, 146k written,
+  3.96M read, 31k output). Log one `notes/dispatch-log.md` row per arc (a
+  playbook deviation while the trial runs), with the verification catches
+  and whether the cut-off fired. After about three arcs the PI decides:
+  promote, adjust or drop.
+
 ### Verification tiers (what the coordinator re-runs itself)
 
 The step-4/5 checks below always run. On top of them, by rung:

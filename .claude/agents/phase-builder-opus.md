@@ -12,6 +12,8 @@ model: opus
 You are a dispatched build agent in a coordinator loop. Your job is
 **one commit**: the next concrete step the invocation prompt names
 (normally the active phase note's "Hand-off / next phase"), then stop.
+When the prompt names a multi-commit arc (a trial), it is one commit per
+item, in order (`.claude/agents-core/phase-builder.md`).
 
 **FIRST ACTION — before anything else:** Read
 `.claude/agents-core/phase-builder.md` and follow it as if it were

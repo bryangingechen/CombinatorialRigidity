@@ -197,14 +197,15 @@ def cmd_tokens(args):
 
     if args.by_session:
         print()
-        hdr2 = f"{'session (project / kind / file)':<76}{'msgs':>6}{'output':>12}"
+        hdr2 = (f"{'session (project / kind / file)':<76}{'msgs':>6}{'cache-wr':>12}"
+                f"{'cache-rd':>14}{'output':>12}")
         print(hdr2)
         print("-" * len(hdr2))
         for key in sorted(per_file, key=lambda k: -per_file[k][4]):
             proj, kind, name = key
             label = f"{proj[-38:]} / {kind} / {name[:26]}"
-            n, _, _, _, out = per_file[key]
-            print(f"{label:<76}{n:>6}{out:>12,}")
+            n, _, cw, cr, out = per_file[key]
+            print(f"{label:<76}{n:>6}{cw:>12,}{cr:>14,}{out:>12,}")
 
 
 def main():

@@ -322,6 +322,8 @@ proposal.
   `--self-test` holds its planted cases. This round ran it at every task from task 2, 422 → 4; the
   4 are S1's (`GenericLift/HingeGeneric.lean`), which the phase's (a) rewrites, so a gate with
   "0 findings" waits for it. The manual is not edited here: the gate is the PI's to adopt.
+  **Adopted by the PI on 2026-10-24**, as `blueprint/lint.sh` check 9 (a ratchet at the baseline
+  4) and the fourth per-slice gate of `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*.
 
 ## Moved to a later round
 

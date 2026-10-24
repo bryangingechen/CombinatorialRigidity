@@ -124,9 +124,10 @@ same check, and a missing declaration blocks the merge. The usual cause is a
 missing enclosing namespace (`SimpleGraph.Henneberg.IsLaman.foo`, not
 `SimpleGraph.IsLaman.foo`). Don't substitute grep.
 
-**The other scriptable gates are `blueprint/lint.sh`** (any cwd, sub-second,
-no venv, TeX or lake). Run it on any commit touching a `\label`, `\uses`,
-`\cref`, `\cite`, `\leanok` or a supersession marker. Green is
+**The other scriptable gates are `blueprint/lint.sh`** (any cwd, about a second,
+no venv, TeX or lake). Run it on any commit touching a `\label`, `\lean`,
+`\uses`, `\cref`, `\cite`, `\leanok` or a supersession marker, or a Lean
+docstring's blueprint label. Green is
 `blueprint/lint.sh: all static reference checks passed.`; a failure prints
 the offenders and exits non-zero. Its header comment documents each check and
 its carve-outs:
@@ -145,7 +146,10 @@ its carve-outs:
   render "??" under plastex);
 - (8) the **proof-level `\leanok` gate**: a node's statement and its proof
   agree on `\leanok` (the tree has no `sorry`, so a formalized statement has a
-  formalized proof).
+  formalized proof);
+- (9) the **docstring-label ratchet**: the Lean docstrings naming a missing
+  label, or a node their pin has left, stay at a baseline that only falls
+  (`../CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*, a moved pin).
 
 **No live-route node references a superseded one (the supersession
 gate).** A commit that supersedes a route (replaces a chain of `\uses`'d nodes

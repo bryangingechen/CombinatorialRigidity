@@ -136,9 +136,10 @@ nodes are restated against the new shape in step with the Lean, per Layer,
 spending a few commits red, and the to-do list is `notes/PhaseN.md`'s *Layer
 plan*.
 
-Three per-slice gates that `checkdecls` cannot see, each a precedent from the
-sibling enharmonic repo (they are the author's side of the coordinator's
-step-4 checks in `.claude/commands/coordinate-phase.md`):
+Four per-slice gates that `checkdecls` cannot see, the first three precedents
+from the sibling enharmonic repo and the fourth from RECONCILE round 3 (they
+are the author's side of the coordinator's step-4 checks in
+`.claude/commands/coordinate-phase.md`):
 
 - **A changed statement** (missed twice in its Phase 17). Before committing a
   slice that changes a declaration's statement, grep `blueprint/src/` for it:
@@ -160,6 +161,12 @@ step-4 checks in `.claude/commands/coordinate-phase.md`):
   `checkdecls` covers only pins). The one intentional survivor is a
   retirement note that names the declaration because it documents the
   deletion.
+- **A moved pin** (the ledger's `F-230` to `F-264`, which pin moves left). A
+  slice that adds, moves, renames or removes a `\lean{...}` pin, or edits a
+  docstring's blueprint label, runs `python3 scripts/check-docstring-labels.py`
+  and diffs its report against the parent commit's, so that a fixed finding
+  cannot hide a new one. `blueprint/lint.sh` check 9 enforces the total
+  against a baseline that only falls; a commit that fixes findings lowers it.
 
 ## Before each commit — friction review (mandatory)
 

@@ -1,8 +1,9 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Item 1 has landed. Next concrete task: item 2 below, the
-link predicate with its lemmas and the fill-in tactic, with no statement or pin changed.
+recon are in `notes/Phase41-design.md`. Item 1 has landed. Next concrete task: items 2 and 3 below
+(the link predicate with its lemmas and the fill-in tactic; the five R statements), as one
+multi-commit arc, the trial's first (`.claude/commands/coordinate-phase.md` *Multi-commit arcs*).
 
 ## Current state
 
@@ -63,9 +64,11 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Hand-off / next phase
 
-Commit 2: the link predicate (checklist item 2), API only: no field and no statement change. If it
-outgrows one commit, land the predicate with `recordsLinks_mono` and the fill-in tactic first, and
-gather the four scattered link lemmas onto it next (`notes/Phase41-design.md` §2).
+Items 2 and 3 as one dispatch, two commits (the multi-commit trial's first arc; item 1's
+single-commit dispatch is its baseline). Commit 2: the link predicate (checklist item 2), API only:
+no field and no statement change. If it outgrows one commit, land the predicate with
+`recordsLinks_mono` and the fill-in tactic first, and gather the four scattered link lemmas onto it
+next (`notes/Phase41-design.md` §2). Commit 3: the five R statements (item 3).
 
 ## Decisions made during this phase
 

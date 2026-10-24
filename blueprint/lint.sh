@@ -40,9 +40,13 @@
 #      formalized statement has a formalized proof, and a proof marked
 #      formalized under an unmarked statement means nothing; either split
 #      is a missed marker (Phase 40i B2 and 40l B3 caught two by hand).
+#   9. Docstring-label ratchet (RECONCILE round 3's proposal, adopted
+#      2026-10-24): scripts/check-docstring-labels.py's total of Lean
+#      docstrings naming a missing label, or a node their pin left, equals
+#      the baseline in the check, which only falls.
 #
-# Needs no venv / TeX / lake — pure text checks, runs in well under a
-# second. It does NOT replace verify.sh (inv bp + inv web +
+# Needs no venv / TeX / lake — text checks (check 9 by python3 over the
+# TeX and the Lean sources), runs in about a second. It does NOT replace verify.sh (inv bp + inv web +
 # checkdecls), nor the by-eye honesty gate on \leanok additions.
 #
 # Run from anywhere; exits non-zero with the offending names on the
@@ -370,6 +374,32 @@ awk '
 if [ -s "$TMP/proof-leanok.txt" ]; then
     echo "lint.sh: a node's statement and proof disagree on \\leanok:" >&2
     sed 's/^/  /' "$TMP/proof-leanok.txt" >&2
+    FAIL=1
+fi
+
+# --- 9. Docstring-label ratchet -----------------------------------------
+# scripts/check-docstring-labels.py (its docstring has the rules) reports
+# Lean docstrings that name a blueprint label the blueprint lacks, or a
+# node their pin has left or never had: what a moved pin leaves behind,
+# and checkdecls cannot see (RECONCILE round 3, F-230 to F-264). Its
+# total may not differ from the baseline below: a rise is a new finding,
+# and a fall means the commit that fixed findings lowers the baseline
+# with them. The baseline only falls. The 4 at 2026-10-24 are in
+# Molecular/GenericLift/, owned by Phase 41's RESTATE.
+DOCSTRING_LABEL_BASELINE=4
+LABELS_TOTAL="$(python3 "$SCRIPT_DIR/../scripts/check-docstring-labels.py" --counts \
+    | sed -n 's/^total \([0-9][0-9]*\):.*/\1/p')"
+if [ -z "$LABELS_TOTAL" ]; then
+    echo "lint.sh: scripts/check-docstring-labels.py gave no total." >&2
+    FAIL=1
+elif [ "$LABELS_TOTAL" -gt "$DOCSTRING_LABEL_BASELINE" ]; then
+    echo "lint.sh: docstring-label findings rose to $LABELS_TOTAL" \
+        "(baseline $DOCSTRING_LABEL_BASELINE):" >&2
+    python3 "$SCRIPT_DIR/../scripts/check-docstring-labels.py" | sed 's/^/  /' >&2
+    FAIL=1
+elif [ "$LABELS_TOTAL" -lt "$DOCSTRING_LABEL_BASELINE" ]; then
+    echo "lint.sh: docstring-label findings fell to $LABELS_TOTAL: lower" \
+        "DOCSTRING_LABEL_BASELINE in blueprint/lint.sh to $LABELS_TOTAL in this commit." >&2
     FAIL=1
 fi
 

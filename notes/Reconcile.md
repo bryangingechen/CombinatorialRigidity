@@ -28,8 +28,9 @@ sweep by directory, outside the footprint's parts. Twenty-two blueprint statemen
 where these changes reached them. No main result's statement changed: `F-323` (three main results'
 unused `[DecidableEq β]`) and `F-324` (`theorem_55_minimalKDof_gen`'s derivable `hD`), with the
 binders below them kept for them, are for the PI with the phase's restatements, and the footprint's
-docstrings wait for the phase (§3). The round's log also proposes, for the PI, that the label check
-join the project's gates for a commit that moves a pin. Phase 41's plan, its
+docstrings wait for the phase (§3). The round's log also proposed that the label check
+join the project's gates for a commit that moves a pin; the PI adopted it on 2026-10-24
+(`blueprint/lint.sh` check 9). Phase 41's plan, its
 open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
 Phase 41a's first commit (`notes/Phase41a.md`).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
