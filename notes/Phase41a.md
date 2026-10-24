@@ -1,9 +1,8 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 3a and the build-time detour, P1 to P5, have
-landed. Next concrete task: item 4, the spike, in a throwaway worktree; it slices item 5, the
-switch.
+recon are in `notes/Phase41-design.md`. Items 1 to 4 and the build-time detour, P1 to P5, have
+landed. Next concrete task: item 5, the switch, as one commit from the spike's patch.
 
 ## Current state
 
@@ -19,8 +18,10 @@ that then restated it. The sub-phase builds S2's field `isLink_ends` into the ca
 restatements are RESTATE's. Before the spike, the PI scheduled a build-time detour (items P1–P5),
 since each commit's full build took ~5 min: P1 trimmed the chain's imports, and P3–P5 converted
 the whole project to `module`. A proof-only edit at `CaseIII/Realization` now rebuilds that file
-alone (10–14 s), and a statement edit rebuilds 48 modules in 72–77 s (*Decisions made*). Mode:
-structural edit.
+alone (10–14 s), and a statement edit rebuilds 48 modules in 72–77 s (*Decisions made*). Item 4,
+the spike, built the whole switch in a throwaway worktree: sorry-free, 0 warnings, `lake lint`
+clean, 123 declarations in 27 files. Its patch is kept locally (`scratch/41a/spike.patch`,
+gitignored) and item 5 lands it. Mode: structural edit.
 There are no red target nodes, so the red-node consistency gate has nothing to read; the nodes a
 slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
@@ -60,17 +61,47 @@ slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md` *For
 - [x] **P5. Layers 19–38 to `module`** (46 files, the root included), and the measurement:
   every file is a `module`; three files needed fixes (`notes/PERFORMANCE.md` *The conversion,
   layers 19–38*).
-- [ ] **4. The spike** (a throwaway worktree, nothing landed): add the field, build, and list what
-  breaks. Record the figure here and slice the switch by it.
-- [ ] **5. The switch**: the field; the constructors with the filled-in proof; the H binders (at
-  most 56 declarations); `rw [hG]` on graph arguments to `subst`/`simp only`; the footprint's
-  docstrings, file by file; `def:panel-hinge-framework` restated (the definition-faithfulness
-  gate). May take 2–3 builder runs. Binder order: `chainData_dispatch_interior_of_discriminator`
-  (:1751) states `hgp`, on `ofNormals (G.splitOff …) ends q`, before its link hypothesis
-  `hrecGab`, and `chainData_dispatch_floor_of_discriminator` (:1943) before `hends'`, so a
-  filled-in proof cannot reach them there. The frameworks on `G − v₁` in item 3's statements get
-  their record from the splitting-off only through `e₀ ∉ E(G)` (`Graph.removeVertex_le_splitOff`),
-  which `link_tac` does not try.
+- [x] **4. The spike** (worktree under `scratch/41a/`, removed; nothing landed): with the field, the
+  whole project builds, 0 warnings, `lake lint` clean, no `sorry`; the 39 results of
+  `formalization.yaml` use the three standard axioms only. 27 of the 32 carrier files, +418/−139
+  lines, 123 declarations (100 statements). By class (they overlap): core 20 in `PanelHinge.lean`
+  (the field, `link_tac`, 3 constructors, 10 simp lemmas, 5 new lemmas); **H 65** (the scan's bound
+  of 56 was low): an implicit record binder in 58 (an autoParam in 4, an explicit argument in the 3
+  chain-step defs), which callers fill by unification but for 7 cascades (a named argument at one
+  caller, two for the chain-step defs); 6 are `G − v` frameworks no hypothesis records; **P** 13;
+  **T** 6 (a named arrow antecedent); `rw`/`▸` on a graph argument 10 (of ~71 such lines); **R** 6;
+  binder order 2 (:1751, :1943, confirmed); literals 3. By file: `PanelHinge` 28, `Candidate` 16,
+  `Realization` 11, `Theorem55` 9, `Relabel/Basic` 8, `Relabel/Chain` 6, `Duality` 5, `CaseI` 5,
+  `Coupling` 4, `Bridge` 4, `ForkedArm` 3, sixteen files 2 or 1 (`scratch/41a/sites.tsv`, local).
+- [ ] **5. The switch**: its Lean side is one commit, since every H binder needs the field (unused,
+  it fails `unusedArguments`) and the H binders are most of the diff. Two commits, one builder run
+  each:
+  - **5a, the switch** (Lean and blueprint): `git apply scratch/41a/spike.patch` (or redo it from
+    item 4 and the fix list below); replace its ten `SPIKE:` docstrings (the field, `link_tac` and
+    its two helpers, the six new lemmas: `RecordsLinks.of_forall`, `.of_pair`, `.of_split`,
+    `.congr`, `ofNormals_eq_self_of_graph_eq`, `recordsLinks_splitOff_relabel`); give the new
+    binders one name; restate `def:panel-hinge-framework` (definition-faithfulness gate) and
+    re-check the ~28 nodes pinned to a changed statement; FRICTION entries for the classes below.
+  - **5b, the footprint's docstrings** (docs only), file by file, with their ledger dispositions,
+    and the docstrings the switch made false (e.g.
+    `finrank_span_rigidityRows_pencilConfigFramework`, "asks nothing of ends").
+  - A field-independent commit before 5a (the new lemmas, `link_tac`'s branches, the R reorders,
+    the binder-order swaps) is possible, about a fifth of the diff; not recommended, as its named
+    but unused binders would need the linters checked before the field exists.
+  - **The fixes, by class** (the spike's, for a builder who redoes it): the field itself defaults to
+    `by link_tac`, so the constructor bodies and `where` literals need no edit; `link_tac` becomes
+    `syntax` plus `macro_rules` after the structure (hygiene), tries the hypothesis forms before
+    `P.isLink_ends` in its `mono` branch (one alternative per form), and gains the total and pair
+    forms, `update_splitOff`, `induce`, `map`, and `removeVertex_le_splitOff` (from `he₀` or
+    `ChainData.e₀_fresh`), which reach the `G − v₁` frameworks; it must return a term typed
+    `RecordsLinks …`, or a later `rw` fails at instance transparency. New classes: an anonymous
+    arrow antecedent is out of scope (name it); a conjunct cannot serve an earlier one (R: the
+    record becomes an `∃` binder first, pattern-compatible when it was already first); an autoParam
+    on a function-valued def swallows the applied argument (`shiftBodyFrameworkAscTotal`: an
+    explicit record argument); an implicit record binder is not inferred by `have := lemma …`, by
+    `rw [← lemma]` or `simp [lemma]` when it sits on one side only, or behind `?_` holes (pass it by
+    name); `rw [← hQg]; rfl` becomes `ofNormals_eq_self_of_graph_eq`, and `rw`/`▸` under a framework
+    becomes `rw` on the whole term or `simp only`.
 - [ ] **6. `withGraph` restricted** to `G' ≤ P.graph` (`def:framework-with-graph`), and **`reaim`
   deleted**, with `rigidityMatrix_prop11`'s `hC` asked only at links.
 - [ ] **7. The two genuine forms merged**: under the field,
@@ -80,19 +111,17 @@ slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md` *For
 
 ## Blockers / open questions
 
-- The switch's size is unknown until the spike (commit 4).
-- The H count (at most 56) is an upper bound from a regex scan.
+- None. The spike's patch is local and gitignored; if it is lost, item 4 and item 5's fix list
+  redo it.
 
 ## Hand-off / next phase
 
-Item 4 first, the spike, in a throwaway worktree with nothing landed: add the field `isLink_ends
-: RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`),
-build, and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
-binder-order note. Every file is a `module` now, so the spike's and the switch's builds rebuild
-only past a changed statement, with faster links (`notes/PERFORMANCE.md` *The conversion, layers
-19–38*). Then slice item 5, the switch, by that count. Items 6 and 7, after the switch,
-are the multi-commit trial's next arc (`.claude/commands/coordinate-phase.md` *Multi-commit arcs*;
-the PI kept its rules unchanged for two more arcs, 2026-10-24).
+Item 5a next, one builder run: apply `scratch/41a/spike.patch`, write the docstrings its `SPIKE:`
+markers hold, restate `def:panel-hinge-framework`, re-check the nodes pinned to changed statements,
+and land the switch after `lake build` (0 warnings) and `lake lint`; the spike took 15 build-and-fix
+rounds. Then 5b, the footprint's docstrings. Items 6 and 7, after the switch, are the multi-commit
+trial's next arc (`.claude/commands/coordinate-phase.md` *Multi-commit arcs*; the PI kept its rules
+unchanged for two more arcs, 2026-10-24).
 
 ## Decisions made during this phase
 

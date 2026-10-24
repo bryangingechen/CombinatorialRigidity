@@ -2,8 +2,8 @@
 
 **Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) is open, work log
 `notes/Phase41a.md`; RESTATE, MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
-they open. The build-time detour the PI scheduled before 41a's spike is done (items P1–P5). Next
-concrete task: 41a's item 4, the spike (`notes/Phase41a.md`).
+they open. The build-time detour the PI scheduled before 41a's spike is done (items P1–P5), and so
+is the spike. Next concrete task: 41a's item 5, the switch (`notes/Phase41a.md`).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -109,8 +109,9 @@ nondegenerate hinges, so for it the field alone closes S2.
   `hD`; genericity `IsGenericHingePoints G q` over rows indexed by `E(G)`.
 
 **Construction sites by class** (measured by a regex scan plus a hand review of R and X; the
-classifier was not retained, and CARRIER's spike supersedes it): **T** trivial, 29 declarations
-(`G.endsOf`, the framework's own `Q.ends`, `withNormal`/`withMomentNormals`); **P** provable from a
+classifier was not retained; CARRIER's spike superseded it, `notes/Phase41a.md` item 4): **T**
+trivial, 29 declarations (`G.endsOf`, the framework's own `Q.ends`,
+`withNormal`/`withMomentNormals`); **P** provable from a
 hypothesis in scope, 75; **H** needs a new hypothesis, at most 56 (graph-generic lemmas, e.g.
 `ofNormals_supportExtensor_eq_panel_of_ends`, `exists_generalPosition_polynomial`, five in
 `Duality.lean`; an upper bound, since the scan misses some shapes); **R** internal statement too
@@ -168,23 +169,26 @@ ten signatures) and seven call sites; the spanning-trees theorem's `hD` goes wit
 
 | Code | Letter | Contents | Commits |
 |---|---|---|---|
-| **CARRIER** | 41a (open) | retire `reaimSub`; the link predicate, its lemmas and the fill-in tactic; the four R statements; a throwaway spike to list what the switch breaks; the switch (the field, the constructors, the H binders, the graph rewrites, the footprint's docstrings file by file, `def:panel-hinge-framework` restated); `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged | 5–7; the switch may take 2–3 builder runs |
+| **CARRIER** | 41a (open) | retire `reaimSub`; the link predicate, its lemmas and the fill-in tactic; the four R statements; a throwaway spike to list what the switch breaks; the switch (the field, the constructors, the H binders, the graph rewrites, the footprint's docstrings file by file, `def:panel-hinge-framework` restated); `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged | 9 besides the build-time detour: the switch is one commit and a docstring commit (the spike) |
 | **RESTATE** | — | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP); non-vacuity witnesses at minimal graphs for these rows; S18; the remaining footprint docstrings | 9–13 |
 | **MULTIGRAPH** | — | M1: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1) | 3–5 |
 | **UNSTATED** | — | the claims no declaration states, the report's estimates: S22 1–2, S23 1, S24 2–3, S25 1, S31 2–3, S3 0–2, S16 1, S19 0–3, G5 3–5, `F-061` 1–2; after CARRIER, since S3 and S19 touch carrier code (`case_II_placement_eq612`) | 13–23 |
 
 **Why the switch is one commit**: under the lint gate a field cannot be staged file by file without
 a temporary twin structure (an unused proof argument fails `unusedArguments`). This is Phase 22l's
-lesson: the API first, the switch last (`notes/Phase22l.md` *Architectural choices*).
+lesson: the API first, the switch last (`notes/Phase22l.md` *Architectural choices*). The spike
+confirmed it: 65 declarations take a record binder, unused without the field, and the whole Lean
+side is one patch, build-green and lint-clean.
 
 The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and the ledger's last
 `reported` entries given dispositions (`notes/Reconcile.md` §3).
 
 ## 4. Open questions
 
-- **The switch's size**: measured by CARRIER's spike before the switch is sliced.
-- **The H count is an upper bound** (the scan misses some hypothesis shapes, e.g.
-  `Graph.exists_earBase_splitOff` is really P).
+- **The switch's size**, resolved by CARRIER's spike (2026-10-24): 123 declarations in 27 of the 32
+  carrier files, +418/−139 lines, with H at 65 (the scan's bound of 56 was low;
+  `Graph.exists_earBase_splitOff` needs no edit once `link_tac` tries `update_splitOff`). One commit
+  for the Lean side and one for the docstrings (`notes/Phase41a.md` items 4 and 5).
 - **M1 and loops**: assume `G.Loopless`, or relax the upper bound's `hC` to non-loop links (a loop's
   constraint is vacuous, and a loop never crosses a partition). MULTIGRAPH's open decides. JJ 2010
   Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for 2-edge-coloured multigraphs; the
