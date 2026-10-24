@@ -9,10 +9,10 @@ non-vacuity witness for each of the 16 main results outside S1's and S2's rows, 
 sweep by directory, and the §B–§C screen with the fixes it appends. No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–38.20 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
-sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first nineteen of them.
-**Next concrete task:** task 38.21, `Pencil/Chart`, `Reseed` and `Steer.lean` (*Hand-off*). Round
-manual: `CLEANUP.md`.
+wait for the phase. Tasks 1–38.21 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
+sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first twenty of them.
+**Next concrete task:** task 38.22, `Pencil/Pair`, `Pair2`, `X0` and `GenericSteer.lean`
+(*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -43,31 +43,32 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 38.20 is done**, `F-279`'s last part, `F-299`, `F-303`, `F-304` and `F-307`'s `hD`,
-`Molecule/ScrewVelocity.lean` and `Pencil/`; no node restated. Nothing is mid-stream. **Next:**
-38.21.
+**Task 38.21 is done**, `F-302` and `F-306`, `Pencil/Chart`, `Reseed` and `Steer.lean`; no node
+restated; new `F-327`, task 38.22's. Nothing is mid-stream. **Next:** 38.22.
 
-**Task 38.20** (scratch `scratch/reconcile-lean/t3820/`, gitignored: task 38.19's scripts, copied).
-Re-proved by existing lemmas: `screwCoord_injective`, `cross₃_ne_zero_iff_linearIndependent` (the
-mirror, now imported by `Chart.lean`), `finrank_span_pair_le` and `finrank_span_triple_le`
-(`finrank_span_le_card`; `finrank_span_insert_le` deleted, block (b) giving it no other caller),
-`linearIndependent_triple_of_linearIndepOn` (`linearIndepOn_range_iff`) and
-`hasPencilRealization_of_generic` (the composition). Dropped: the `hD` of the glue and of the
-cut-edge case's core and two forms (`2 ≤ D` by `rw [hn]; decide` at the glue's call), and, left
-passing nothing on, `F-307`'s five and three callers' local `2 ≤ D` steps. Weakened: the three
-`dotProduct_…_eq_zero_of_mem_closed…` to `HasPencilPanelRealization` (callers pass `.1`). New:
-`Graph.degree_induce_eq_of_isLink_mem`, at the three degree lemmas. Gates: the build green on its
-first run (6147 jobs, 0 `warning:`, `error:`, `failed to cache artifact`), `lake lint` green on its
-first run; the axioms harness and the witnesses' identical to task 38.19's net of the path; the dump
-identical; `--summary` OK, 6609 constants, no pin's reach moved, `neworphans.py` empty; the label
-check identical (4); `lint.sh`, `verify.sh` green (9 `WARNING:`). The ledger: 326 entries, 250
-`done`, 9 `left`, 50 `reported`, 17 `open`.
+**Task 38.21** (scratch `scratch/reconcile-lean/t3821/`, gitignored: task 38.20's scripts, copied).
+New: `IsFin3SelectorOf.exists_equiv_isSome` (`Chart.lean`), the slots a selector fills as the
+members of its set, one each: a bijection, as the two `Chart.lean` lemmas send the set to the slots,
+the inverse of the injection the disposition names (`F-302`'s entry says so); all four sites pass
+the independence through it by `linearIndependent_equiv'`. Re-proved:
+`linearIndepOn_triple_of_linearIndependent` by `linearIndepOn_range_iff` (`F-306`; FRICTION's
+`n`-ary entry now has mathlib's form both ways). No signature changed. New: `F-327`, that lemma's
+three distinctness hypotheses, which its `hLI` gives (a `lake lean` witness), for task 38.22, as its
+five calls are in files outside this task's line. Gates: the build green on its third run (6147
+jobs, 0 `warning:`, `error:`, `failed to cache artifact`; the second's one `warning:` a section
+header's line past 100 columns, from a reflow after the first), `lake lint` green; the axioms
+harness and the witnesses' identical to task 38.20's net of the path; the dump
+identical; `--summary` OK, 6608 constants (the lemma in, two `_simp` auxiliaries of the old triple
+proof out), no pin's reach moved, `neworphans.py` empty; the label check identical (4); `lint.sh`,
+`verify.sh` green (9 `WARNING:`). The ledger: 327 entries, 252 `done`, 9 `left`, 50 `reported`, 16
+`open`.
 
-**Done before** (tasks 3–38.19; the ledger's dispositions name each part's task, the messages the
-detail): tasks 38.11–38.19, the entries' fixes from `HennebergReverse.lean` to `Theorem55.lean`
-(`F-275`, `F-278`, `F-280`–`F-286`, `F-289`–`F-295`, `F-297`, `F-298`, in whole or part; new
-`F-325`, `F-326` and `TACTICS-QUIRKS.md` §118; `lem:cut-edge-decomposition` (1), `lem:claim-6-6`,
-`lem:block-rank-cut` and three Case I nodes restated); tasks 38.2–38.10's deletions, re-seeding and
+**Done before** (tasks 3–38.20; the ledger's dispositions name each part's task, the messages the
+detail): tasks 38.11–38.20, the entries' fixes from `HennebergReverse.lean` to `Pencil/Motive.lean`
+(`F-275`, `F-278`–`F-286`, `F-289`–`F-295`, `F-297`–`F-299`, `F-303`, `F-304` and `F-307`'s `hD`,
+in whole or part; new `F-325`, `F-326` and `TACTICS-QUIRKS.md` §118;
+`lem:cut-edge-decomposition` (1), `lem:claim-6-6`, `lem:block-rank-cut` and three Case I nodes
+restated); tasks 38.2–38.10's deletions, re-seeding and
 suppression sites; tasks 38–38.1, the §B–§C screen and the `L` entries' verdicts (new
 `F-322`–`F-324`); L9's thirty-nine deletions, `F-090`'s shim, `F-061`'s rename, L6–L8's hypotheses
 and repeated derivations (each node they reach restated in the same commit), the search and its
@@ -276,10 +277,12 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   lemmas, four `hD`, three weakenings, a degree lemma; `finrank_span_insert_le` deleted (gate 4).
   (Done so, with `F-307`'s five `hD`, which the drop left passing nothing on; none in
   `ArmsAssembly.lean`, whose parts are left.)
-- [ ] **38.21. `Pencil/Chart`, `Reseed`, `Steer.lean`** (`F-302`, `F-306`): the `IsFin3SelectorOf`
-  injectivity lemma at four sites; one re-proof by mathlib.
+- [x] **38.21. `Pencil/Chart`, `Reseed`, `Steer.lean`** (`F-302`, `F-306`): the `IsFin3SelectorOf`
+  injectivity lemma at four sites; one re-proof by mathlib. (Done so, the lemma a bijection,
+  `IsFin3SelectorOf.exists_equiv_isSome`, as the two `Chart.lean` sites need it onto; new `F-327`.)
 - [ ] **38.22. `Pencil/Pair`, `Pair2`, `X0`, `MainComponent/GenericSteer.lean`** (`F-307`, `F-308`):
-  seven hypotheses, one `have` for seven copies; `lem:pencil-generic-steer` (b) restated.
+  seven hypotheses, one `have` for seven copies; `lem:pencil-generic-steer` (b) restated. And
+  `F-327` (`Steer.lean`): three hypotheses its `hLI` gives, and the arguments of its five calls.
 - [ ] **38.23. `MainComponent/`'s `Carrier` to `Ear.lean`** (`F-309`–`F-312`): a `K³` lemma at four
   sites, four re-proofs by existing lemmas, `[Finite α]`, a binder, `hinj`.
 - [ ] **38.24. `MainComponent/`'s shared steps** (`F-311`'s `hendsI`, `F-316`'s `hcard`): a lemma
@@ -361,21 +364,25 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 38.21**, at Opus (its line and the dispositions of `F-302` and `F-306` are its
-specification): one lemma on `IsFin3SelectorOf`, that the slots a selector fills map injectively to
-its set (`scratch/reconcile-lean/t376/Hyps-t376.lean`'s `exists_injective_of_isSome`), at
-`linearIndepOn_pencilChartNormal_closedHubNbhd`, `linearIndepOn_pencilChartPoint_closedNbhd`
-(`Chart.lean`), `exists_fill_linearIndependent_hubSlotOf` (`Reseed.lean`) and
-`linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` (`Steer.lean`); and
-`linearIndepOn_triple_of_linearIndependent` by `linearIndepOn_range_iff`, as task 38.20 re-proved
-its converse (`Motive.lean`; `notes/FRICTION.md`'s entry on the `n`-ary form then has mathlib's
-form both ways). Grep
-`blueprint/src/` for each changed name; no node is expected to change. Left: the dispositions' own.
-Gates 1–3 (gate 3 with the sixteen witnesses, harness `t3820/Axioms-wit.lean`), `lake lint` to a
-fixed point, gate 2's checks; gates 5, 6, 7 if a re-proof adds a `\uses`, 8 for a restated node, 9
-and 10. *Expected* (made exact before editing): the dump unchanged (the parent
-`scratch/reconcile-lean/dump-t3820.txt`), `--summary` OK (`t381/reach.py` finds no pin reaching a
-new node; a re-proof that would add a forward `\uses` is left, noted in its entry), gate 9 at 4; a
+**Next: task 38.22**, at Opus (its line and the dispositions of `F-307` and `F-308` are its
+specification; `F-307`'s five `hD` went with task 38.20, so two hypotheses are left):
+`hasGenericPencilRealization_of_ncard_le_two`'s `hloop` (`hSimple.toLoopless`; caller
+`pencilPair_of_ncard_le_two`); the `v = v_c` of
+`hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI`, stated once for
+its seven copies (as `hoff` in `hasGenericPencilRealization_pendant_of_IH`); and
+`exists_isNondegPencilRealization_steer`'s `hloop` (`not_pencilNondegFeasible_of_isLoopAt` from
+`hnd₁`; callers `hasGenericPencilRealization_pendant_of_IH`,
+`IsOpenEar.hasGenericPencilRealization_of_one`, `hasGenericPencilRealization_of_closedEar_two`),
+with `lem:pencil-generic-steer` (b) restated (the honesty gate). And `F-327`: the `hxy`, `hxz`,
+`hyz` of `linearIndepOn_triple_of_linearIndependent` (`Steer.lean`), the injectivity of
+`![x, y, z]` from `hLI.injective` (`t3821/Hyps-t3821.lean`), and the arguments of its five calls
+(`GenericEar`, `GenericSteer`, `GenericBase`, `GenericTriangle.lean` twice), whose facts stay, used.
+Grep `blueprint/src/` for each changed name. Left: the dispositions' own. Gates 1–3 (gate 3 with
+the sixteen witnesses, harness `t3821/Axioms-wit.lean`), `lake lint` to a fixed point, gate 2's
+checks; gates 5, 6, 7 if a re-proof adds a `\uses`, 8 for the restated node, 9 and 10. *Expected*
+(made exact before editing): the dump unchanged (the parent `scratch/reconcile-lean/dump-t3821.txt`;
+task 38.19's restated nodes left it so), `--summary` OK (`t381/reach.py` finds no pin reaching a new
+node; a re-proof that would add a forward `\uses` is left, noted in its entry), gate 9 at 4; a
 new lemma's docstring names its node (`a step of <label>`). A disposition whose direction cannot
 hold is applied the way that does, and its entry says so (task 38.16). A weakened hypothesis's
 callers pass the weak form (`by omega` from what they hold, or a projection, task 38.20).
@@ -389,11 +396,12 @@ each caller's proof a local `have`'s premise that fed only it (§118's *Fix*; ta
 `hinciff`). A drop that turns `by … exact e` into the term `e` can expose an unused lambda binder
 (FRICTION's idiom; task 38.13). A dropped `[Finite β]` can leave an `ncard` bound loose (FRICTION's
 idiom; task 38.15).
-Tooling, in `t3820/` (task 38.10's, copied): `blockb.py`, `blockc.py`, `delete.py` (a dry run unless
+Tooling, in `t3821/` (task 38.10's, copied): `blockb.py`, `blockc.py`, `delete.py` (a dry run unless
 `--apply`; it cuts every declaration whose short name is listed, so a name two namespaces share is
 cut by hand, and it leaves a preceding `omit … in`), `rmhdr.py`, `grepall.py`, `neworphans.py` and
 `reachdiff.py` (the last two compare the parent's Lean cache, copied first, with the new one;
-`t3820/cache-new.jsonl` is task 38.20's). Build name lists with `LC_ALL=C sort -u` (a UTF-8 `sort
+`t3821/cache-new.jsonl` is task 38.21's; `reachdiff.py` takes the pins to compare as arguments,
+`$(sort -u blueprint/lean_decls)` for all). Build name lists with `LC_ALL=C sort -u` (a UTF-8 `sort
 -u` merges names that differ only in subscripts). A live doc's mention of a deleted name says "since
 deleted"; a `[mirrored]` FRICTION entry whose lemma goes is retired; closed notes, the frozen design
 docs and the ledger are history. A re-proof that a deletion needs is built, and its Lean cache

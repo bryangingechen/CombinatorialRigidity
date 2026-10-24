@@ -2853,11 +2853,10 @@ corresponding entry in [Mirrored](#mirrored) below.
 - **Mathlib has the general form** (RECONCILE round 3, `F-304`): `linearIndepOn_range_iff` at an
   injective `![x, y, z]`, whose range `{x, y, z}` is `simp only [Matrix.range_cons,
   Matrix.range_empty, Set.union_empty, Set.singleton_union]` (`simp` with `Set.insert_eq` loops).
-  The forward direction is that now (task 38.20); the converse is task 38.21's (`F-306`).
-- **Status:** open (upstream-eligible, not yet mirrored — both `Fin 3` directions kept
-  project-internal, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`, per the
-  chart stack's precedent of bespoke `Fin 3`-literal ↔ subtype-indexed-family bridge lemmas, e.g.
-  `linearIndepOn_pencilChartNormal_closedHubNbhd`).
+  Both directions are that now: the forward one since task 38.20 (`F-304`), the converse since task
+  38.21 (`F-306`), so the `Equiv.ofBijective` route of the bullet above is gone.
+- **Status:** open for `n = 2` only (below); the `Fin 3` forms are two short lemmas on mathlib's
+  general one, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`.
 - **`n = 2` is not fused either** (40-cleanup task 24). The title's gloss is loose: mathlib's
   `LinearIndepOn.pair_iff` is the coefficient form (`∀ c d, c • f i + d • f j = 0 → c = 0 ∧ d = 0`),
   not the `![f i, f j]` form. About 25 sites in 9 pencil files bridge the two through it and
@@ -3008,6 +3007,18 @@ corresponding entry in [Mirrored](#mirrored) below.
   Before landing a step lemma, ask what its caller's invariant needs from the witness, and whether
   a trivial witness already satisfies the `∃`. (`if_neg` is deprecated for `ite_eq_right`,
   `notes/ToolchainBumps.md`: one MCP diagnostic.)
+- **Status:** idiom.
+
+### [idiom] An inline ascription does not retype a `▸` equation; and `∀ i, sel ↑i = …` takes `i` at the coercion's target
+- **Where it bit:** RECONCILE round 3 task 38.21 (`F-302`, `F-306`), `Pencil/Chart.lean`'s
+  `IsFin3SelectorOf.exists_equiv_isSome`. `(congrArg Subtype.val hij : w i = w j) ▸ hw i` failed
+  *"invalid `▸` notation … does not contain the expected result type"*: `▸` reads the equation's
+  inferred type, `↑((fun i ↦ ⟨w i, ⋯⟩) i) = ↑(… j)`, unreduced, whatever the ascription says. And
+  the statement's `∀ i, sel ↑i = some ↑(e i)` elaborated `i : Fin 3` (the `↑` an identity), so
+  `e i` mismatched.
+- **Resolution:** `have h : w i = w j := congrArg Subtype.val hij` first, then `h ▸ hw i` (the
+  sites this lemma replaced did so); and type the binder, `∀ i : ↥{i | (sel i).isSome}, …`. One
+  MCP iteration each.
 - **Status:** idiom.
 
 ## Anti-patterns / known dead ends

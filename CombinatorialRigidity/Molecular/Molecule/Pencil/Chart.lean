@@ -233,6 +233,25 @@ theorem exists_isFin3SelectorOf_of_ncard_le_three [Finite α] {s : Set α} (hs :
     exact Fin.ext ((List.Nodup.getElem?_inj (List.getElem?_eq_some_iff.mp hi).1 hnd).mp
       (hi.trans hj.symm))
 
+/-- **The slots a selector fills are the members of its set, one each** (a step of
+`lem:pencil-generic-steer`): if `sel` lists `s`, sending each slot that `sel` fills to its member is
+a bijection onto `s`. The member of a slot lies in `s`, every member of `s` is in a slot, and no
+member is in two, by the selector's three conditions. Through it a family is independent on the
+filled slots exactly when the family of their members is independent on `s`
+(`linearIndependent_equiv'`). -/
+theorem IsFin3SelectorOf.exists_equiv_isSome {s : Set α} {sel : Fin 3 → Option α}
+    (hsel : IsFin3SelectorOf s sel) :
+    ∃ e : ↥{i | (sel i).isSome} ≃ ↥s, ∀ i : ↥{i | (sel i).isSome}, sel ↑i = some ↑(e i) := by
+  have hex : ∀ i : ↥{i | (sel i).isSome}, ∃ w, sel ↑i = some w :=
+    fun i => Option.isSome_iff_exists.mp i.2
+  choose w hw using hex
+  refine ⟨Equiv.ofBijective (fun i => ⟨w i, hsel.1 i (w i) (hw i)⟩) ⟨fun i j hij => ?_, ?_⟩, hw⟩
+  · have h : w i = w j := congrArg Subtype.val hij
+    exact Subtype.ext (hsel.2.2 i j (w j) (h ▸ hw i) (hw j))
+  · rintro ⟨x, hx⟩
+    obtain ⟨i, hi⟩ := hsel.2.1 x hx
+    exact ⟨⟨i, by simp [hi]⟩, Subtype.ext (Option.some_injective _ ((hw _).symm.trans hi))⟩
+
 /-- Slot `i` of `v`'s hub selector as a vector (a step of `lem:pencil-generic-steer`): the
 `hubNormal` of the body in it, or `fillHub v i` if it is empty. -/
 def hubSlotNormal (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α) (v : α) (i : Fin 3) :
@@ -370,12 +389,13 @@ theorem dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd {G : Gra
 
 /-! ## Independence and incidence at every body
 
-When a selector lists its set, the map that sends each member to a slot holding it is injective, so
-the independence of the three slots passes to the members: the normals of the chart are independent
-on every closed hub-neighbourhood (`linearIndepOn_pencilChartNormal_closedHubNbhd`), and its points
-on every closed neighbourhood (`linearIndepOn_pencilChartPoint_closedNbhd`), as
-`IsNondegPencilRealization` asks. The point of every body is orthogonal to its own normal and to the
-normal of each neighbour (`dotProduct_pencilChartPoint_pencilChartNormal_self`,
+When a selector lists its set, its filled slots are the members, one each
+(`IsFin3SelectorOf.exists_equiv_isSome`), so the independence of the three slots passes to the
+members: the normals of the chart are independent on every closed hub-neighbourhood
+(`linearIndepOn_pencilChartNormal_closedHubNbhd`), and its points on every closed neighbourhood
+(`linearIndepOn_pencilChartPoint_closedNbhd`), as `IsNondegPencilRealization` asks. The point of
+every body is orthogonal to its own normal and to the normal of each neighbour
+(`dotProduct_pencilChartPoint_pencilChartNormal_self`,
 `dotProduct_pencilChartPoint_pencilChartNormal_of_isLink`). -/
 
 /-- **The three slots of the hub selector as a triple** (a step of `lem:pencil-generic-steer`): the
@@ -411,10 +431,10 @@ theorem hubNormal_ne_zero_of_pencilHub {G : Graph α β} {v : α}
 /-- **The normals of the chart are independent on a closed hub-neighbourhood** (a step of
 `lem:pencil-generic-steer`; a condition of `def:pencil-nondegenerate`): if `hubSel v` lists
 `G.closedHubNbhd v` and its three slots are independent, then `pencilChartNormal` is linearly
-independent on `G.closedHubNbhd v`. Sending each member `w` to a slot that holds it (the selector's
-second condition) is injective, as a slot holds one member, so the independence of the slots passes
-to the members (`LinearIndependent.comp`); and each member is a hub, so its normal is its
-`hubNormal` (`pencilChartNormal_of_pencilHub`). -/
+independent on `G.closedHubNbhd v`. The slots that `hubSel v` fills are its members, one each
+(`IsFin3SelectorOf.exists_equiv_isSome`), so the independence of the slots passes to the members
+(`linearIndependent_equiv'`); and each member is a hub, so its normal is its `hubNormal`
+(`pencilChartNormal_of_pencilHub`). -/
 theorem linearIndepOn_pencilChartNormal_closedHubNbhd {G : Graph α β} {v : α}
     (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
@@ -422,24 +442,12 @@ theorem linearIndepOn_pencilChartNormal_closedHubNbhd {G : Graph α β} {v : α}
       ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
         hubSlotNormal seed hubSel v 2]) :
     LinearIndepOn K (pencilChartNormal seed hubSel nbrSel G) (G.closedHubNbhd v) := by
-  have hf : LinearIndependent K (hubSlotNormal seed hubSel v) :=
-    (linearIndependent_hubSlotNormal_iff seed hubSel v).mp hLI
-  set F : (G.closedHubNbhd v) → Fin 3 := fun w => (hSel.2.1 w.1 w.2).choose with hF_def
-  have hFspec : ∀ w : (G.closedHubNbhd v), hubSel v (F w) = some w.1 := fun w =>
-    (hSel.2.1 w.1 w.2).choose_spec
-  have hFinj : Function.Injective F := by
-    intro w1 w2 hEq
-    have h1 := hFspec w1
-    rw [hEq, hFspec w2] at h1
-    exact Subtype.ext (Option.some_injective _ h1.symm)
-  have hcomp : LinearIndependent K (hubSlotNormal seed hubSel v ∘ F) := hf.comp F hFinj
-  have heq2 : hubSlotNormal seed hubSel v ∘ F
-      = fun w : (G.closedHubNbhd v) => pencilChartNormal seed hubSel nbrSel G w.1 := by
-    funext w
-    have hw_hub : G.PencilHub w.1 := w.2.1
-    simp only [Function.comp_apply, hubSlotNormal, hFspec w,
-      pencilChartNormal_of_pencilHub seed hubSel nbrSel hw_hub]
-  rwa [heq2] at hcomp
+  obtain ⟨e, he⟩ := hSel.exists_equiv_isSome
+  refine (linearIndependent_equiv' e ?_).mp
+    (((linearIndependent_hubSlotNormal_iff seed hubSel v).mp hLI).comp _ Subtype.val_injective)
+  funext i
+  simp only [Function.comp_apply, hubSlotNormal, he i,
+    pencilChartNormal_of_pencilHub seed hubSel nbrSel (e i).2.1]
 
 /-- **The three slots of the neighbour selector as a triple** (a step of
 `lem:pencil-generic-steer`): the triple `![f 0, f 1, f 2]` for
@@ -467,22 +475,12 @@ theorem linearIndepOn_pencilChartPoint_closedNbhd {G : Graph α β} {v : α}
       ![nbrSlotPoint seed hubSel nbrSel v 0, nbrSlotPoint seed hubSel nbrSel v 1,
         nbrSlotPoint seed hubSel nbrSel v 2]) :
     LinearIndepOn K (pencilChartPoint seed hubSel) (G.closedNbhd v) := by
-  have hf : LinearIndependent K (nbrSlotPoint seed hubSel nbrSel v) :=
-    (linearIndependent_nbrSlotPoint_iff seed hubSel nbrSel v).mp hLI
-  set F : (G.closedNbhd v) → Fin 3 := fun w => (hSel.2.1 w.1 w.2).choose with hF_def
-  have hFspec : ∀ w : (G.closedNbhd v), nbrSel v (F w) = some w.1 := fun w =>
-    (hSel.2.1 w.1 w.2).choose_spec
-  have hFinj : Function.Injective F := by
-    intro w1 w2 hEq
-    have h1 := hFspec w1
-    rw [hEq, hFspec w2] at h1
-    exact Subtype.ext (Option.some_injective _ h1.symm)
-  have hcomp : LinearIndependent K (nbrSlotPoint seed hubSel nbrSel v ∘ F) := hf.comp F hFinj
-  have heq2 : nbrSlotPoint seed hubSel nbrSel v ∘ F
-      = fun w : (G.closedNbhd v) => pencilChartPoint seed hubSel w.1 := by
-    funext w
-    simp only [Function.comp_apply, nbrSlotPoint, hFspec w]
-  rwa [heq2] at hcomp
+  obtain ⟨e, he⟩ := hSel.exists_equiv_isSome
+  refine (linearIndependent_equiv' e ?_).mp
+    (((linearIndependent_nbrSlotPoint_iff seed hubSel nbrSel v).mp hLI).comp _
+      Subtype.val_injective)
+  funext i
+  simp only [Function.comp_apply, nbrSlotPoint, he i]
 
 /-- **The point of a body is orthogonal to its normal** (a step of `lem:pencil-generic-steer`):
 `point v ⬝ᵥ normal v = 0` at every body `v`, hub or not, when its selectors list their sets. It is

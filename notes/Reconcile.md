@@ -106,9 +106,13 @@ and `hasPencilRealization_of_generic` by existing lemmas, deleting `finrank_span
 dropped the `hD` of the pencil cut-edge case's four declarations and of `F-307`'s five
 pass-throughs, weakened three orthogonality lemmas to `HasPencilPanelRealization`, and gave the
 degree lemmas `Graph.degree_induce_eq_of_isLink_mem` (`F-279`, `F-299`, `F-303`, `F-304`), no node
-restated.
-**Next concrete task:** round 3's task 38.21, `Pencil/Chart`, `Reseed` and `Steer.lean` (then
-tasks 38.22–38.27 and the close).
+restated; task 38.21 replaced the selector step written out at four sites of `Pencil/Chart`,
+`Reseed` and `Steer.lean` by `IsFin3SelectorOf.exists_equiv_isSome` (the filled slots are the
+set's members, one each), and re-proved
+`linearIndepOn_triple_of_linearIndependent` by `linearIndepOn_range_iff` (`F-302`, `F-306`), no
+node restated.
+**Next concrete task:** round 3's task 38.22, `Pencil/Pair`, `Pair2`, `X0` and
+`MainComponent/GenericSteer.lean` (then tasks 38.23–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

@@ -6059,11 +6059,15 @@ declaration's name as its header writes it:
   `![f 0, f 1, f 2] = f` at one `f`.
   *Evidence:* read (the bodies).
   *Found:* RECONCILE round 3 task 37.2.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.21). Task 38.1: one lemma on
+  *Disposition:* done (task 38.21). Task 38.1: one lemma on
   `IsFin3SelectorOf` (the map from the slots a selector fills to its set is injective) at
   `linearIndepOn_pencilChartNormal_closedHubNbhd`, `linearIndepOn_pencilChartPoint_closedNbhd` and
   `F-306`'s two sites. Left: the two transport lemmas' nonzero case (opposite directions), `C.val ≠
-  0` (a line each), the transfer from `⋀²K⁴` (two sites) and `![f 0, f 1, f 2] = f`.
+  0` (a line each), the transfer from `⋀²K⁴` (two sites) and `![f 0, f 1, f 2] = f`. Round 3: done
+  so, the lemma stating the map a bijection, `IsFin3SelectorOf.exists_equiv_isSome` (`Chart.lean`):
+  the two lemmas here send the set to the slots, the injection's inverse, so they need it onto as
+  well, and the four sites pass the independence through it by `linearIndependent_equiv'` (task
+  38.21).
 - **F-303** · L · hypotheses the others give, a missed mathlib lemma and repeated derivations in
   `Molecular/Molecule/Pencil/Arms.lean` and `ArmsAssembly.lean`. The `hD : 2 ≤ bodyBarDim n` of
   `exists_hasPencilPanelRealization_glue`, of `hasPencilRealization_of_not_twoEdgeConnected_core`
@@ -6184,7 +6188,7 @@ declaration's name as its header writes it:
   the lemma on `IsFin3SelectorOf`, with `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` from
   it, on the three standard axioms (`scratch/reconcile-lean/t376/Hyps-t376.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.6.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.9 for
+  *Disposition:* done (task 38.21): task 38.9 for
   `pencilChartPoint_ofCoord_toCoord` and `hubSlotNormal_ofCoord_toCoord` (unpinned; its one caller
   is the first, task 38's block (b) at `1b1d9d87`), whose re-proof of `exists_pencilSeed_of_nondeg`
   also ends the repeated `PencilChartWF` steps. Task 38.1: task 38.21 re-proves
@@ -6194,7 +6198,8 @@ declaration's name as its header writes it:
   `exists_fill_linearIndependent_hubSlotOf` (one proof); round 3: `pencilChartPoint_ofCoord_toCoord`
   re-proved by `pencilChartPoint_congr` (moved above it), `hubSlotNormal_ofCoord_toCoord` deleted,
   and the repeated `PencilChartWF` steps ended by `exists_pencilSeed_of_nondeg`'s re-proof (task
-  38.9).
+  38.9). Round 3: done so, the triple as `F-304`'s converse is, and `F-302`'s lemma, a bijection,
+  at the two sites (task 38.21).
 - **F-307** · L · hypotheses the others give, over-strong hypotheses and repeated derivations in
   `Molecular/Molecule/Pencil/Pair.lean` and `Pair2.lean`. The `hD : 2 ≤ bodyBarDim n` of
   `hasGenericPencilRealization_of_cutEdges_eq_empty`,
@@ -6777,6 +6782,20 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 3 task 38.17.
   *Disposition:* done (task 38.17): `hends_eb` dropped; the caller's binder stays, used. The four
   nodes it pins state no selector, unchanged.
+- **F-327** · L · `linearIndepOn_triple_of_linearIndependent`
+  (`Molecular/Molecule/Pencil/Steer.lean`): `hxy`, `hxz` and `hyz`, which its `hLI` gives, as an independent family over a field is injective
+  (`LinearIndependent.injective`), so `![f x, f y, f z]` takes three values and `x`, `y`, `z` are
+  distinct. Its five calls (`MainComponent/GenericEar.lean`, `GenericSteer.lean`,
+  `GenericBase.lean`, and `GenericTriangle.lean` twice) each pass three facts that the caller also
+  uses elsewhere. `lake lint` reports none of them: the proof uses them, for the injectivity of
+  `![x, y, z]`.
+  *Evidence:* read (the statement, the body and the five calls); a `lake lean` witness: the lemma
+  from `hLI` alone, on the three standard axioms (`scratch/reconcile-lean/t3821/Hyps-t3821.lean`,
+  gitignored).
+  *Found:* RECONCILE round 3 task 38.21.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.22): drop the three, the
+  injectivity of `![x, y, z]` from `hLI.injective` (unpinned, and no node states it), and the five
+  calls' arguments; the callers' facts stay, used.
 
 ## M — mathematics and sources
 

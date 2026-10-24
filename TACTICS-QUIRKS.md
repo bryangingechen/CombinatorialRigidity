@@ -3934,7 +3934,9 @@ projections through an unreduced `casesOn`.)
 
 **Worked case:** Phase 39 (PENCIL) W5-L5 L5-cut-v-e,
 `linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint` (`Molecular/Molecule/Pencil/Steer.lean`) —
-the `nbrSel`-slot-to-selected-vertex reindexing for the `hnbr_some` marshalling.
+the `nbrSel`-slot-to-selected-vertex reindexing for the `hnbr_some` marshalling. Its `choose` now
+lives in `IsFin3SelectorOf.exists_equiv_isSome` (`Pencil/Chart.lean`, RECONCILE round 3 task
+38.21), whose callers reduce the match at the plain `e i`.
 
 ## 103. `rcases h with h | h | h` on a `∪`-of-three membership fails — `∪` is left-associative, the flat pattern assumes right-nesting
 

@@ -154,8 +154,9 @@ def hubSlotOf (normal : α → Fin 4 → K) (sel : Fin 3 → Option α)
 `lem:pencil-generic-steer`): for a selector `sel` of `s`, a family `f` linearly independent on `s`
 with values in `P` there, and `3 ≤ finrank K P`, there are padding vectors `fill` such that the
 three vectors `hubSlotOf f sel fill i` lie in `P` and are linearly independent. The vectors at the
-slots that `sel` fills are independent, as `sel` puts each member of `s` in one slot, and
-`exists_extend_linearIndependent` completes them in `P`. -/
+slots that `sel` fills are independent, as these slots are the members of `s`, one each
+(`IsFin3SelectorOf.exists_equiv_isSome`), and `exists_extend_linearIndependent` completes them in
+`P`. -/
 theorem exists_fill_linearIndependent_hubSlotOf {P : Submodule K (Fin 4 → K)}
     (hP : 3 ≤ Module.finrank K P) {f : α → Fin 4 → K} {s : Set α} {sel : Fin 3 → Option α}
     (hsel : IsFin3SelectorOf s sel) (hLI : LinearIndepOn K f s) (hmem : ∀ w ∈ s, f w ∈ P) :
@@ -171,21 +172,11 @@ theorem exists_fill_linearIndependent_hubSlotOf {P : Submodule K (Fin 4 → K)}
   set g₀ : Fin 3 → P := fun i => ⟨hubSlotOf f sel 0 i, h₀ i⟩ with hg₀
   set S : Finset (Fin 3) := Finset.univ.filter (fun i => (sel i).isSome) with hS
   have hLI₀ : LinearIndepOn K g₀ (S : Set (Fin 3)) := by
-    have hex : ∀ i : ↥(S : Set (Fin 3)), ∃ w, sel ↑i = some w := fun i =>
-      Option.isSome_iff_exists.mp (by simpa [hS] using i.2)
-    choose wsel hwsel using hex
-    set m : ↥(S : Set (Fin 3)) → ↥s := fun i => ⟨wsel i, hsel.1 ↑i (wsel i) (hwsel i)⟩ with hm
-    have hminj : Function.Injective m := by
-      intro i j hij
-      have hval : wsel i = wsel j := congrArg Subtype.val hij
-      exact Subtype.ext (hsel.2.2 ↑i ↑j (wsel j) (hval ▸ hwsel i) (hwsel j))
-    have hLIs : LinearIndependent K (fun w : ↥s => f ↑w) := hLI
-    have hcomp := hLIs.comp m hminj
-    have heq : (fun w : ↥s => f ↑w) ∘ m = fun i : ↥(S : Set (Fin 3)) => (g₀ ↑i : Fin 4 → K) := by
-      funext i
-      simp only [Function.comp_apply, hm, hg₀, hubSlotOf, hwsel i]
-    rw [heq] at hcomp
-    exact LinearIndependent.of_comp P.subtype hcomp
+    obtain ⟨e, he⟩ := hsel.exists_equiv_isSome
+    rw [hS, Finset.coe_filter_univ]
+    refine LinearIndependent.of_comp P.subtype ((linearIndependent_equiv' e ?_).mpr hLI)
+    funext i
+    simp only [Function.comp_apply, hg₀, hubSlotOf, he i, Submodule.subtype_apply]
   have hdim : 3 ≤ Module.finrank K P := hP
   obtain ⟨g', hg'eq, hg'LI⟩ := exists_extend_linearIndependent (V := P) (n := 3) hdim g₀ S hLI₀
   refine ⟨fun i => (g' i : Fin 4 → K), ?_, ?_⟩

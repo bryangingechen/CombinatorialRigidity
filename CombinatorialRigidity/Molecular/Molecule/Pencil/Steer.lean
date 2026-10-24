@@ -215,62 +215,37 @@ theorem exists_common_seed_linearIndepOn_pencilChartPoint [Finite α] [Infinite 
 /-! ## Independence on a set -/
 
 /-- **Independence of `![f x, f y, f z]` gives independence on `{x, y, z}`**: for distinct
-`x, y, z`, `LinearIndependent K ![f x, f y, f z]` gives `LinearIndepOn K f {x, y, z}`, along the
-bijection from `Fin 3` onto `{x, y, z}` that `x`, `y` and `z` define (`linearIndependent_equiv`).
-The converse of `linearIndependent_triple_of_linearIndepOn` (`Motive.lean`). Mathlib's
-`linearIndepOn_range_iff`, at the injective `![x, y, z]`, gives the same. -/
+`x, y, z`, `LinearIndependent K ![f x, f y, f z]` gives `LinearIndepOn K f {x, y, z}`, by
+mathlib's `linearIndepOn_range_iff` at the injective `![x, y, z]`, whose range is `{x, y, z}`. The
+converse of `linearIndependent_triple_of_linearIndepOn` (`Motive.lean`). -/
 theorem linearIndepOn_triple_of_linearIndependent {V : Type*} [AddCommGroup V] [Module K V]
     (f : α → V) {x y z : α} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
     (hLI : LinearIndependent K ![f x, f y, f z]) :
     LinearIndepOn K f {x, y, z} := by
-  have hx : x ∈ ({x, y, z} : Set α) := by simp
-  have hy : y ∈ ({x, y, z} : Set α) := by simp
-  have hz : z ∈ ({x, y, z} : Set α) := by simp
-  set e : Fin 3 → ↥({x, y, z} : Set α) := ![⟨x, hx⟩, ⟨y, hy⟩, ⟨z, hz⟩] with he_def
-  have heinj : Function.Injective e := by
-    intro i j hij; fin_cases i <;> fin_cases j <;> simp_all [e, Subtype.ext_iff]
-  have hesurj : Function.Surjective e := by
-    rintro ⟨w, hw⟩
-    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hw
-    rcases hw with rfl | rfl | rfl
-    · exact ⟨0, rfl⟩
-    · exact ⟨1, rfl⟩
-    · exact ⟨2, rfl⟩
-  set eqv : Fin 3 ≃ ↥({x, y, z} : Set α) := Equiv.ofBijective e ⟨heinj, hesurj⟩ with heqv_def
-  rw [← linearIndependent_set_coe_iff]
-  have hcomp : (fun w : ↥({x, y, z} : Set α) => f ↑w) ∘ ⇑eqv = ![f x, f y, f z] := by
-    funext i; fin_cases i <;> rfl
-  exact (linearIndependent_equiv eqv).mp (by rw [hcomp]; exact hLI)
+  have hinj : Function.Injective ![x, y, z] := by
+    intro i j hij; fin_cases i <;> fin_cases j <;> simp_all [eq_comm]
+  have hr : Set.range ![x, y, z] = {x, y, z} := by
+    simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union]
+  rw [← hr, linearIndepOn_range_iff hinj]
+  convert hLI using 1
+  funext i; fin_cases i <;> rfl
 
 /-- **The filled slots of a neighbour selector are independent when the points of the closed
 neighbourhood are** (a step of `lem:pencil-generic-steer`): if `nbrSel v` lists `G.closedNbhd v` and
 the points of the chart are linearly independent on `G.closedNbhd v`, then
 `nbrSlotPoint seed hubSel nbrSel v` is linearly independent on the slots that `nbrSel v` fills. Such
-a slot holds the point of its member (`nbrSlotPoint`), and the map from these slots to their members
-is injective, as the selector puts each member in one slot (`LinearIndependent.comp`). A partial
-converse of `linearIndepOn_pencilChartPoint_closedNbhd` (`Chart.lean`). -/
+a slot holds the point of its member (`nbrSlotPoint`), and these slots are the members, one each
+(`IsFin3SelectorOf.exists_equiv_isSome`, `Chart.lean`). A partial converse of
+`linearIndepOn_pencilChartPoint_closedNbhd` (`Chart.lean`). -/
 theorem linearIndepOn_nbrSlotPoint_isSome_of_pencilChartPoint {G : Graph α β} {v : α}
     (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
     (hLI : LinearIndepOn K (pencilChartPoint seed hubSel) (G.closedNbhd v)) :
     LinearIndepOn K (nbrSlotPoint seed hubSel nbrSel v) {i | (nbrSel v i).isSome} := by
-  have hex : ∀ i : ↥{i | (nbrSel v i).isSome}, ∃ w, nbrSel v ↑i = some w :=
-    fun i => Option.isSome_iff_exists.mp i.2
-  choose wsel hwsel using hex
-  set g : ↥{i | (nbrSel v i).isSome} → ↥(G.closedNbhd v) :=
-    fun i => ⟨wsel i, hSel.1 ↑i (wsel i) (hwsel i)⟩ with hg_def
-  have hginj : Function.Injective g := by
-    intro i j hij
-    have hval : wsel i = wsel j := congrArg Subtype.val hij
-    exact Subtype.ext (hSel.2.2 ↑i ↑j (wsel j) (hval ▸ hwsel i) (hwsel j))
-  have hLI' : LinearIndependent K (fun w : ↥(G.closedNbhd v) => pencilChartPoint seed hubSel ↑w) :=
-    hLI
-  have hcomp := hLI'.comp g hginj
-  have heq : (fun w : ↥(G.closedNbhd v) => pencilChartPoint seed hubSel ↑w) ∘ g
-      = fun i : ↥{i | (nbrSel v i).isSome} => nbrSlotPoint seed hubSel nbrSel v ↑i := by
-    funext i
-    simp only [Function.comp_apply, hg_def, nbrSlotPoint, hwsel i]
-  rw [← linearIndependent_set_coe_iff, ← heq]; exact hcomp
+  obtain ⟨e, he⟩ := hSel.exists_equiv_isSome
+  refine (linearIndependent_equiv' e ?_).mpr hLI
+  funext i
+  simp only [Function.comp_apply, nbrSlotPoint, he i]
 
 /-! ## The rows of the chart, and the rank of a realization -/
 
