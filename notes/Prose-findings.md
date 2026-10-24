@@ -6232,7 +6232,7 @@ declaration's name as its header writes it:
   from the graph of `F` and its nonzero hinge at `e₀` alone, on the three standard axioms
   (`scratch/reconcile-lean/t377/Hyps-t377.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.7.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.22). Task 38.1: drop the `hD` of
+  *Disposition:* done (task 38.22). Task 38.1: drop the `hD` of
   the five (`2 ≤ D` from `hn` where `F-303`'s glue needed it) and
   `hasGenericPencilRealization_of_ncard_le_two`'s `hloop` (`hSimple.toLoopless`; caller
   `pencilPair_of_ncard_le_two`), all unpinned; state `v = v_c` once in `…_pendant_of_hubLI` for its
@@ -6243,7 +6243,8 @@ declaration's name as its header writes it:
   per-side steps (one proof each); `degree_induce_union_singleton_far`'s two uses. Round 3: the
   five `hD` dropped with `F-303`'s, which left them passing nothing on, and with them the local
   `2 ≤ D` steps of `pencilPair_of_X0`, `pencilPair_of_IH` and `pencilPair_loop_base_cut` (task
-  38.20).
+  38.20); `hloop`, which the proof never needed (its `have := hloop` gone too; the caller's kept
+  for the base case), and `hoff` at the seven (task 38.22).
 
 - **F-308** · L · an over-strong hypothesis, a hypothesis another gives and repeated derivations in
   `Molecular/Molecule/Pencil/X0.lean` and `MainComponent/GenericSteer.lean`.
@@ -6275,7 +6276,7 @@ declaration's name as its header writes it:
   `exists_isNondegPencilRealization_steer` with `hloop` derived from `hnd₁`, on the three standard
   axioms (`scratch/reconcile-lean/t378/Hyps-t378.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.8.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.22). Task 38.1: drop
+  *Disposition:* done (task 38.22). Task 38.1: drop
   `exists_isNondegPencilRealization_steer`'s `hloop` (`not_pencilNondegFeasible_of_isLoopAt` from
   `hnd₁`; `lem:pencil-generic-steer` (b) restated; callers
   `hasGenericPencilRealization_pendant_of_IH`, `IsOpenEar.hasGenericPencilRealization_of_one`,
@@ -6284,7 +6285,9 @@ declaration's name as its header writes it:
   result `pencilPair_of_nonempty`'s; the 136 lines `hasPencilRealization_of_not_simple` shares with
   `case_I_realization_nonsimple_gen`, which differ in the induction hypothesis, the hinges and the
   realization's conditions, so a shared lemma would thread the parallel pair, `H'` and the splice's
-  hypotheses (§C's calibration); `GenericSteer.lean`'s per-side and per-theorem steps.
+  hypotheses (§C's calibration); `GenericSteer.lean`'s per-side and per-theorem steps. Round 3:
+  done so, the three calls' arguments with it and the local `hS₁` of the last two, which fed only
+  it; (b)'s proof now says why $H$ is loopless (task 38.22).
 - **F-309** · L · repeated derivations and an unneeded instance in
   `Molecular/Molecule/Pencil/MainComponent/Carrier.lean` and `Configuration.lean`.
   `Graph.liftingMatrix K G` is, by definition, `Graph.weightedLiftingMatrix K G` at the weights
@@ -6793,9 +6796,10 @@ declaration's name as its header writes it:
   from `hLI` alone, on the three standard axioms (`scratch/reconcile-lean/t3821/Hyps-t3821.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 38.21.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.22): drop the three, the
+  *Disposition:* done (task 38.22): drop the three, the
   injectivity of `![x, y, z]` from `hLI.injective` (unpinned, and no node states it), and the five
-  calls' arguments; the callers' facts stay, used.
+  calls' arguments; the callers' facts stay, used. Round 3: done so, by `Function.Injective.of_comp`
+  (task 38.22).
 
 ## M — mathematics and sources
 

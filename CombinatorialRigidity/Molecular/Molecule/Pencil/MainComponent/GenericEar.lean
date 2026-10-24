@@ -364,7 +364,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
           · exact absurd h hxb
           · exact absurd hl'.2.1 hx₀V
       have hLI3 : LinearIndepOn K point' {x 0, a, b} := by
-        refine linearIndepOn_triple_of_linearIndependent point' hxa hxb hab' ?_
+        refine linearIndepOn_triple_of_linearIndependent point' ?_
         rw [hpt_x, hpa', hpb']; exact hLIxab
       exact hLI3.mono hsub
   -- the rank
@@ -473,7 +473,6 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
   have hloop : G.Loopless := hS.toLoopless
   have hV₁ : V₁ ⊆ V(G) := hear.cover ▸ Set.subset_union_left
   have hle : G.induce V₁ ≤ G := Graph.induce_le hV₁
-  have hS₁ : (G.induce V₁).Simple := hS.mono hle
   have hVH : V(G.induce V₁) = V₁ := Graph.vertexSet_induce G V₁
   have haV : a ∈ V₁ := hear.left_mem
   have hbV : b ∈ V₁ := hear.right_mem
@@ -590,7 +589,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
         (∀ k, LinearIndepOn K normal' (S k)) ∧ point' u ⬝ᵥ normal' w ≠ 0 := by
     intro u w hu hw hwG hd
     obtain ⟨F', n', p', h1, h2, h3, h4⟩ := exists_isNondegPencilRealization_steer hn
-      hS₁.toLoopless ⟨a, by rw [hVH]; exact haV⟩ hnd₁ hrank₁ hndH S hSV hfreeS hSLI
+      ⟨a, by rw [hVH]; exact haV⟩ hnd₁ hrank₁ hndH S hSV hfreeS hSLI
       (fun _ : Unit => u) (fun _ : Unit => w) (fun _ => by rw [hVH]; exact hu)
       (fun _ => by rw [hVH]; exact hw) (fun _ hwH => hfree w hw hwG hwH) (fun _ => hd)
     exact ⟨F', n', p', h1, h2, h3, h4 ()⟩

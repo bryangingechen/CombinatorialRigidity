@@ -2854,7 +2854,8 @@ corresponding entry in [Mirrored](#mirrored) below.
   injective `![x, y, z]`, whose range `{x, y, z}` is `simp only [Matrix.range_cons,
   Matrix.range_empty, Set.union_empty, Set.singleton_union]` (`simp` with `Set.insert_eq` loops).
   Both directions are that now: the forward one since task 38.20 (`F-304`), the converse since task
-  38.21 (`F-306`), so the `Equiv.ofBijective` route of the bullet above is gone.
+  38.21 (`F-306`), so the `Equiv.ofBijective` route of the bullet above is gone. Since task 38.22
+  (`F-327`) the converse takes no distinctness hypotheses: `hLI.injective` gives them.
 - **Status:** open for `n = 2` only (below); the `Fin 3` forms are two short lemmas on mathlib's
   general one, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`.
 - **`n = 2` is not fused either** (40-cleanup task 24). The title's gloss is loose: mathlib's

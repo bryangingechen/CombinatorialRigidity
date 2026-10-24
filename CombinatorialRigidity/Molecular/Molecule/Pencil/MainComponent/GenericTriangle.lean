@@ -450,7 +450,7 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
           · exact absurd h' hx0c
           · exact absurd hl'.2.1 hx0
       refine LinearIndepOn.mono ?_ hsub
-      refine linearIndepOn_triple_of_linearIndependent point' hx0c hx01 hx1c.symm ?_
+      refine linearIndepOn_triple_of_linearIndependent point' ?_
       rw [hpt0, hptc, hpt1]
       have h' : LinearIndependent K ![p₀, pc, p₁] := by
         have := hLI3.comp ![1, 0, 2] (by decide)
@@ -469,7 +469,7 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
           · exact absurd h' hx1c
           · exact absurd hl'.2.1 hx1
       refine LinearIndepOn.mono ?_ hsub
-      refine linearIndepOn_triple_of_linearIndependent point' hx01.symm hx1c hx0c ?_
+      refine linearIndepOn_triple_of_linearIndependent point' ?_
       rw [hpt0, hptc, hpt1]
       have h' : LinearIndependent K ![p₁, p₀, pc] := by
         have := hLI3.comp ![2, 1, 0] (by decide)
@@ -629,7 +629,6 @@ theorem hasGenericPencilRealization_of_closedEar_two
   have := hS
   have hV₁ : V₁ ⊆ V(G) := hcover ▸ Set.subset_union_left
   have hle : G.induce V₁ ≤ G := Graph.induce_le hV₁
-  have hS₁ : (G.induce V₁).Simple := hS.mono hle
   have hVH : V(G.induce V₁) = V₁ := Graph.vertexSet_induce G V₁
   have hchub : G.PencilHub c := ⟨hV₁ hc, by omega⟩
   have hxhub : ∀ i, ¬ G.PencilHub (x i) := not_pencilHub_of_closedEar_two hS hinj hxV₁ hc hpath hsep
@@ -724,7 +723,7 @@ theorem hasGenericPencilRealization_of_closedEar_two
     · exact hndG.2.2.1 v (hV₁ hv)
     · exact linearIndepOn_empty K _
   obtain ⟨F', n', p', hnd', hrank', hS', -⟩ := exists_isNondegPencilRealization_steer hn
-    hS₁.toLoopless ⟨c, by rw [hVH]; exact hc⟩ hnd₁ hrank₁ hndH S hSV hfreeS hSLI
+    ⟨c, by rw [hVH]; exact hc⟩ hnd₁ hrank₁ hndH S hSV hfreeS hSLI
     (Empty.elim : Empty → α) (Empty.elim : Empty → α) (fun j => j.elim) (fun j => j.elim)
     (fun j => j.elim) (fun j => j.elim)
   -- the extension across the pendant triangle

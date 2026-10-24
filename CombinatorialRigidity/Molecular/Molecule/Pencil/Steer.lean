@@ -214,16 +214,18 @@ theorem exists_common_seed_linearIndepOn_pencilChartPoint [Finite α] [Infinite 
 
 /-! ## Independence on a set -/
 
-/-- **Independence of `![f x, f y, f z]` gives independence on `{x, y, z}`**: for distinct
-`x, y, z`, `LinearIndependent K ![f x, f y, f z]` gives `LinearIndepOn K f {x, y, z}`, by
-mathlib's `linearIndepOn_range_iff` at the injective `![x, y, z]`, whose range is `{x, y, z}`. The
-converse of `linearIndependent_triple_of_linearIndepOn` (`Motive.lean`). -/
+/-- **Independence of `![f x, f y, f z]` gives independence on `{x, y, z}`**:
+`LinearIndependent K ![f x, f y, f z]` gives `LinearIndepOn K f {x, y, z}`, by mathlib's
+`linearIndepOn_range_iff` at `![x, y, z]`, whose range is `{x, y, z}`. It is injective, as
+`![f x, f y, f z]` is (`LinearIndependent.injective`), so `x`, `y`, `z` are distinct. The converse
+of `linearIndependent_triple_of_linearIndepOn` (`Motive.lean`). -/
 theorem linearIndepOn_triple_of_linearIndependent {V : Type*} [AddCommGroup V] [Module K V]
-    (f : α → V) {x y z : α} (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
-    (hLI : LinearIndependent K ![f x, f y, f z]) :
+    (f : α → V) {x y z : α} (hLI : LinearIndependent K ![f x, f y, f z]) :
     LinearIndepOn K f {x, y, z} := by
   have hinj : Function.Injective ![x, y, z] := by
-    intro i j hij; fin_cases i <;> fin_cases j <;> simp_all [eq_comm]
+    refine Function.Injective.of_comp (f := f) ?_
+    convert hLI.injective using 1
+    funext i; fin_cases i <;> rfl
   have hr : Set.range ![x, y, z] = {x, y, z} := by
     simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union]
   rw [← hr, linearIndepOn_range_iff hinj]

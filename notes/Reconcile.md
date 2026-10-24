@@ -110,9 +110,11 @@ restated; task 38.21 replaced the selector step written out at four sites of `Pe
 `Reseed` and `Steer.lean` by `IsFin3SelectorOf.exists_equiv_isSome` (the filled slots are the
 set's members, one each), and re-proved
 `linearIndepOn_triple_of_linearIndependent` by `linearIndepOn_range_iff` (`F-302`, `F-306`), no
-node restated.
-**Next concrete task:** round 3's task 38.22, `Pencil/Pair`, `Pair2`, `X0` and
-`MainComponent/GenericSteer.lean` (then tasks 38.23–38.27 and the close).
+node restated; task 38.22 dropped two `hloop`s and that lemma's three distinctness hypotheses, which
+the others give, and stated `Pair2.lean`'s step `v = v_c` once for seven copies (`F-307`, `F-308`,
+`F-327`), restating `lem:pencil-generic-steer` (b).
+**Next concrete task:** round 3's task 38.23, `MainComponent/`'s `Carrier` to `Ear.lean` (then
+tasks 38.24–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

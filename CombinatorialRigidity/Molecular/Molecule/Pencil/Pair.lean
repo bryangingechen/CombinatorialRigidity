@@ -181,15 +181,13 @@ conditioned pair follows (`pencilPair_of_ncard_le_two`), its adjacent-distinct c
 generic one (`hasDistinctPencilRealization_of_generic`). -/
 
 /-- **A simple graph on at most two bodies has a generic pencil realization** (a step of
-`lem:pencil-pair-loop-base-cut`, case (2)): every simple loopless multigraph `G` on one or two
-bodies has a generic pencil realization at `n = 3`, case by case on its edges, as the section header
-says. It does not ask that `G` be nondegeneracy-feasible, as the generic conjunct of `PencilPair`
-may. -/
+`lem:pencil-pair-loop-base-cut`, case (2)): every simple multigraph `G` on one or two bodies has a
+generic pencil realization at `n = 3`, case by case on its edges, as the section header says. It
+does not ask that `G` be nondegeneracy-feasible, as the generic conjunct of `PencilPair` may. -/
 theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
-    (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) (hSimple : G.Simple) :
+    (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) (hSimple : G.Simple) :
     HasGenericPencilRealization K 3 G := by
   classical
-  have := hloop
   have hb6 : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   by_cases hE : E(G) = ∅
   · -- no edge: the same normal and point at every body; each closed neighbourhood lies in `{v}`
@@ -371,9 +369,9 @@ adjacent-distinct conjunct follows (`hasDistinctPencilRealization_of_generic`). 
 theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
     (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
     PencilPair K 3 G :=
-  ⟨fun hSimple _ => hasGenericPencilRealization_of_ncard_le_two hloop hne hV2 hSimple,
+  ⟨fun hSimple _ => hasGenericPencilRealization_of_ncard_le_two hne hV2 hSimple,
     fun hSimple => hasDistinctPencilRealization_of_generic
-      (hasGenericPencilRealization_of_ncard_le_two hloop hne hV2 hSimple),
+      (hasGenericPencilRealization_of_ncard_le_two hne hV2 hSimple),
     hasPencilRealization_of_ncard_le_two hloop hne hV2⟩
 
 /-! ## At a cut that no edge crosses

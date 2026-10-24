@@ -414,7 +414,7 @@ theorem exists_coord_linearIndepOn_closedNbhd_of_demoted [Finite α]
       hubSel hWF₀.1
     refine ⟨q, ?_⟩
     rw [Graph.closedNbhd_eq_insert, hNuw]
-    exact linearIndepOn_triple_of_linearIndependent _ he₁.ne he₂.ne huw hq
+    exact linearIndepOn_triple_of_linearIndependent _ hq
 
 /-- **A realization of `G` nondegenerate on a subgraph** (`lem:pencil-generic-steer`, part (a)):
 over an infinite field, let `G` be simple and nondegeneracy-feasible, and `H ≤ G` such that whenever
@@ -576,9 +576,9 @@ theorem pencilDotPoly_eval (hubSel nbrSel : α → Fin 3 → Option α) (G : Gra
     pencilChartNormalPoly_eval, dotProduct]
 
 /-- **A generic realization with the conditions of a second realization**
-(`lem:pencil-generic-steer`, part (b)): over an infinite field, let `H` be loopless with at least
-one body, `F₁` a nondegenerate realization of `H` at the deficiency rank, and `F₂` a second
-nondegenerate realization of `H`, with normals `normal₂` and points `point₂`. Let `S k ⊆ V(H)` be
+(`lem:pencil-generic-steer`, part (b)): over an infinite field, let `H` have at least one body,
+`F₁` be a nondegenerate realization of `H` at the deficiency rank, and `F₂` a second nondegenerate
+realization of `H`, with normals `normal₂` and points `point₂`. Let `S k ⊆ V(H)` be
 finitely many sets on which `normal₂` is linearly independent, and `(u j, w j)` finitely many pairs
 of bodies of `H` with `point₂ (u j) ⬝ᵥ normal₂ (w j) ≠ 0`, such that each member of an `S k`, and
 each `w j`, is a hub of `H` or has three members in its closed neighbourhood in `H`. Then `H` has a
@@ -599,8 +599,7 @@ the conditions read, as at such a body the neighbour selector fills every slot. 
 give the framework of the chart the deficiency rank
 (`finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow`). -/
 theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite K] {n : ℕ}
-    (hn : Graph.bodyBarDim n = screwDim 2) {H : Graph α β} (hloop : H.Loopless)
-    (hne : V(H).Nonempty)
+    (hn : Graph.bodyBarDim n = screwDim 2) {H : Graph α β} (hne : V(H).Nonempty)
     {F₁ : BodyHingeFramework K 2 α β} {normal₁ point₁ : α → Fin 4 → K}
     (hnd₁ : IsNondegPencilRealization H F₁ normal₁ point₁)
     (hrank₁ : (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ)
@@ -619,7 +618,7 @@ theorem exists_isNondegPencilRealization_steer [Finite α] [Finite β] [Infinite
         = screwDim 2 * ((V(H).ncard : ℤ) - 1) - H.deficiency n ∧
       (∀ k, LinearIndepOn K normal (S k)) ∧ ∀ j, point (u j) ⬝ᵥ normal (w j) ≠ 0 := by
   classical
-  have := hloop
+  have : H.Loopless := ⟨fun _ _ he => not_pencilNondegFeasible_of_isLoopAt he ⟨_, _, _, hnd₁⟩⟩
   obtain ⟨v₀, hv₀⟩ := hne
   have : Inhabited α := ⟨v₀⟩
   -- the first realization in the chart, and the second at its selectors

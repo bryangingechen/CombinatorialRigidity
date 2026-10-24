@@ -85,6 +85,8 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
   classical
   -- ── `G.induce (V₁ ∪ {v_c}) = G`, `v_c` has degree `1`, and `e_c` is the crossing link. ───
   have hGeq : G.induce (V₁ ∪ {v_c}) = G := by rw [← hVG]; exact Graph.induce_vertexSet G
+  have hoff : ∀ y ∈ V(G), y ∉ V₁ → y = v_c := fun y hy hyV => by
+    rw [hVG] at hy; exact hy.resolve_left hyV
   have hvc_deg : G.degree v_c = 1 := by
     have h := Graph.degree_induce_union_singleton_far hl_c hu_c hv_c hcut
     rwa [hGeq] at h
@@ -206,9 +208,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
         have hpv : point v = point₁ v := by simp only [point, hv₁, ↓reduceIte]
         rw [hpu, hpv]
         exact hadj₁ e u v hl'
-      · have hveq : v = v_c :=
-          Set.mem_singleton_iff.mp
-            ((show v ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hl.right_mem).resolve_left hv₁)
+      · have hveq : v = v_c := hoff v hl.right_mem hv₁
         have hl' : G.IsLink e u v_c := by rw [hveq] at hl; exact hl
         obtain ⟨-, hueq2, -⟩ := hcross_eq e u v_c hl' hu₁ hv_c
         have hpu : point u = point₁ u_c := by rw [hueq2]; simp only [point, hu_c, ↓reduceIte]
@@ -216,9 +216,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
         rw [hpu, hpv, LinearIndependent.pair_iff' hp1_ne]
         intro a ha
         exact hpvc_notmem (ha ▸ Submodule.smul_mem _ a (Submodule.subset_span hmem₀))
-    · have hueq : u = v_c :=
-        Set.mem_singleton_iff.mp
-          ((show u ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hl.left_mem).resolve_left hu₁)
+    · have hueq : u = v_c := hoff u hl.left_mem hu₁
       by_cases hv₁ : v ∈ V₁
       · have hu_notin : u ∉ V₁ := by rw [hueq]; exact hv_c
         obtain ⟨-, hveq2, -⟩ := hcross_eq e v u hl.symm hv₁ hu_notin
@@ -230,9 +228,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
         intro a ha
         exact hpvc_notmem (ha ▸ Submodule.smul_mem _ a (Submodule.subset_span hmem₀))
       · exfalso
-        have hveq : v = v_c :=
-          Set.mem_singleton_iff.mp
-            ((show v ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hl.right_mem).resolve_left hv₁)
+        have hveq : v = v_c := hoff v hl.right_mem hv₁
         rw [hueq, hveq] at hl
         exact G.not_isLoopAt e v_c hl
   -- ── The normals on each closed hub-neighbourhood. ────────────────────────────────────────
@@ -242,9 +238,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
     · exact absurd hwhub hvc_not_hub
     · have hwV1 : w ∈ V₁ := by
         by_contra hwV1
-        have hweq : w = v_c :=
-          Set.mem_singleton_iff.mp
-            ((show w ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hwhub.1).resolve_left hwV1)
+        have hweq : w = v_c := hoff w hwhub.1 hwV1
         rw [hweq] at hl
         exact G.not_isLoopAt e v_c hl
       obtain ⟨-, hweq2, -⟩ := hcross_eq e w v_c hl.symm hwV1 hv_c
@@ -257,9 +251,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
       have hxV₁ : x ∈ V₁ := (show x ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hx.1.1)
         |>.resolve_right fun h => hvc_not_hub (Set.mem_singleton_iff.mp h ▸ hx.1)
       simp only [normal, hxV₁, ↓reduceIte]
-    · have hveq : v = v_c :=
-        Set.mem_singleton_iff.mp
-          ((show v ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hv).resolve_left hv₁)
+    · have hveq : v = v_c := hoff v hv hv₁
       rw [hveq]
       exact (LinearIndepOn.singleton (i := u_c) hnu_ne).mono hclosedHubNbhd_vc
   -- ── The points on the closed neighbourhood of each body not a hub. ───────────────────────
@@ -331,9 +323,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
           · exact hv₁
           · exact ((Graph.induce_isLink G V₁ e v x).mp hl).2.2
         simp only [point, hxV₁, ↓reduceIte]
-    · have hveq : v = v_c :=
-        Set.mem_singleton_iff.mp
-          ((show v ∈ V₁ ∪ ({v_c} : Set α) by rw [← hVG]; exact hv).resolve_left hv₁)
+    · have hveq : v = v_c := hoff v hv hv₁
       have hset : G.closedNbhd v = ({v_c, u_c} : Set α) := by
         rw [hveq]
         ext w
@@ -342,10 +332,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
           · exact Set.mem_insert _ _
           · have hwV1 : w ∈ V₁ := by
               by_contra hwV1
-              have hweq2 : w = v_c :=
-                Set.mem_singleton_iff.mp
-                  ((show w ∈ V₁ ∪ ({v_c} : Set α) by
-                    rw [← hVG]; exact hl.right_mem).resolve_left hwV1)
+              have hweq2 : w = v_c := hoff w hl.right_mem hwV1
               rw [hweq2] at hl
               exact G.not_isLoopAt e v_c hl
             obtain ⟨-, hweq3, -⟩ := hcross_eq e w v_c hl.symm hwV1 hv_c
@@ -457,7 +444,7 @@ theorem hasGenericPencilRealization_pendant_of_IH [Finite α] [Finite β] [Infin
     · by_contra hwV
       exact hvc_hub (hoff w hf.right_mem hwV ▸ hwhub)
   obtain ⟨F', n', p', hnd', hrank', hS', -⟩ := exists_isNondegPencilRealization_steer hn
-    hS₁.toLoopless ⟨u_c, hu_c⟩ hnd₁ hrank₁ hndH (fun v : V₁ => G.closedHubNbhd v)
+    ⟨u_c, hu_c⟩ hnd₁ hrank₁ hndH (fun v : V₁ => G.closedHubNbhd v)
     (fun v => hCsub v v.2)
     (fun v w hw hwH => ncard_closedNbhd_eq_three_of_demoted hSimple hle hwH (hCsub v v.2 hw)
       (hNsub w (hCsub v v.2 hw)) (by rw [Set.ncard_singleton]; have := hw.1.2; omega))

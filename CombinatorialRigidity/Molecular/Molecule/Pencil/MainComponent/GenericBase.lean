@@ -733,8 +733,7 @@ theorem isNondeg_pencilConfig_of_planeDiff [Fintype α] [Finite β] {G : Graph �
           simp only [add_dotProduct, smul_dotProduct, d1w, d2w, smul_eq_mul, mul_zero,
             zero_add, add_zero, zero_dotProduct] at e1 e2
           exact ⟨(mul_eq_zero.mp e2).resolve_right d1w2, (mul_eq_zero.mp e1).resolve_right d2w1⟩
-        exact linearIndepOn_triple_of_linearIndependent _ hv1.symm hv2.symm h12
-          (planeNormal_triple hLId)
+        exact linearIndepOn_triple_of_linearIndependent _ (planeNormal_triple hLId)
     · -- a non-hub: at most its two hub neighbours
       have hvS : v ∉ G.closedHubNbhd v := fun h' => hvh h'.1
       have hsub : G.closedHubNbhd v ⊆ G.closedNbhd v \ {v} := by
