@@ -97,9 +97,12 @@ for steps written out there and `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` at 
 node restated; task 38.18 dropped `F-294`'s and `F-295`'s hypotheses and variables in
 `CaseIII/Relabel/` and a step's derivable conjunct, replaced the private
 `perp_panelSupportExtensor_swap` by `panelSupportExtensor_swap`, and called `splitOff_data_one` at
-three links, no node restated.
-**Next concrete task:** round 3's task 38.19, `Theorem55.lean` (then tasks 38.20–38.27 and the
-close).
+three links, no node restated; task 38.19 dropped `F-297`'s and `F-298`'s hypotheses in
+`Theorem55.lean` (three `hV3`, `hFcut`, the `hD` of seven callers of the main result) and five
+`GenericLift/` pass-throughs' `hD`, restating `lem:case-I-realization-h65`, `lem:case-I-dispatch`
+and `lem:case-I-all-k`.
+**Next concrete task:** round 3's task 38.20, `Molecule/ScrewVelocity.lean` and four `Pencil/`
+files (then tasks 38.21–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

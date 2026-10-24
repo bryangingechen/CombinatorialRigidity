@@ -750,7 +750,7 @@ transport (`LinearIndependent.units_smul_iff`) carries that independence to the 
 unit, not merely a swap sign (unlike Layer P). -/
 theorem exists_hingePoints_independent_hingePointRow [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
@@ -763,7 +763,7 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K]
   -- The genuine link-recording Theorem-5.6 producer, over OUR carrier `G`.
   obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
     PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k)
-      hk1 hD hn hfresh G hV hspan hSimple
+      hk1 hn hfresh G hV hspan hSimple
   -- `|V| ≥ 1` facts and the body-count reconciliation `Nat.card α = |V(G)|`.
   have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   have h1V : 1 ≤ V(G).ncard := by omega
@@ -892,7 +892,7 @@ The two bounds pinch the row count to the exact value — the Layer-P `le_antisy
 separate row-count computation for the witness since the assembly already reports it. -/
 theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
@@ -905,7 +905,7 @@ theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
   -- The witness assembly: `q₀` and an independent subfamily `s` of exactly the target rank.
   obtain ⟨q₀, s, hscard, hsli⟩ :=
     exists_hingePoints_independent_hingePointRow (K := K) (k := k) (n := n)
-      hk1 hD hn hfresh G hV hspan hSimple ends hends
+      hk1 hn hfresh G hV hspan hSimple ends hends
   -- Genericity of `q` transfers that subfamily's independence from `q₀` to `q`.
   have hLIq : LinearIndependent K fun i : s => hingePointRow ends q i :=
     hq s ⟨q₀, hsli⟩
@@ -961,7 +961,7 @@ get `def = 0`; backward, the rank formula at `def = 0` gives the exact row count
 `q`, hence rigidity there. -/
 theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
@@ -974,7 +974,7 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
   · intro hrigid
     obtain ⟨q, hq, -⟩ := exists_isGenericHingePoints (K := K) (k := k) ends
     have hrank := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
-      hk1 hD hn hfresh G hV hspan hSimple ends hends hq
+      hk1 hn hfresh G hV hspan hSimple ends hends hq
     have hB1 := (ofHinge G fun e a b => q (e, a, b))
       |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hVGne
     simp only [ofHinge_graph] at hB1
@@ -983,7 +983,7 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
     linarith [hrank, hcount]
   · intro hdef q hq
     have hrank := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
-      hk1 hD hn hfresh G hV hspan hSimple ends hends hq
+      hk1 hn hfresh G hV hspan hSimple ends hends hq
     rw [hdef, sub_zero] at hrank
     have hB1 := (ofHinge G fun e a b => q (e, a, b))
       |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hVGne
@@ -1015,7 +1015,7 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees 
             Pairwise (Function.onFun Disjoint fun i => E(Ts i)) := by
   have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
-  rw [isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff hk1 hD hn hfresh G hV hspan
+  rw [isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff hk1 hn hfresh G hV hspan
     hSimple ends hends]
   exact G.deficiency_eq_zero_iff_exists_spanningTrees n hne
 

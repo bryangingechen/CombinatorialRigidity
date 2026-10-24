@@ -5924,7 +5924,7 @@ declaration's name as its header writes it:
   `one_le_screwDim`, and `hFcut` from `hFgraph`, on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t361.lean`, gitignored).
   *Found:* RECONCILE round 3 task 36.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.19). Task 38.1: drop
+  *Disposition:* done (task 38.19). Task 38.1: drop
   `case_I_realization_h65_gen`'s `hV3` (`IsProperRigidSubgraph.three_le_ncard`, task 38.13;
   `lem:case-I-realization-h65` restated where it states it; caller `case_I_dispatch_gen`), the
   private `case_I_h65_extensor_pair_LI`'s `hLI_va`, `hLI_ab` (`triLI_subpairs`), and
@@ -5935,7 +5935,12 @@ declaration's name as its header writes it:
   the two sides of `case_cut_edge_realization_gp_gen` (one proof). Round 3:
   `case_I_h65_extensor_pair_LI`'s `hLI_va` and `hLI_ab` dropped, which `F-289`'s change left
   unused, and with them the steps `hne_a` and `hne_b` of `case_I_realization_h65_gen`'s proof
-  (task 38.4).
+  (task 38.4); `case_I_realization_h65_gen`'s `hV3` dropped, derived from `hrig` by
+  `IsProperRigidSubgraph.three_le_ncard`, and `finrank_span_rigidityRows_cutEdge_eq`'s `hFcut`,
+  derived from `hFgraph` (`hFgraph ▸ he.2`), the proofs of it gone from its three callers
+  (`case_cut_edge_realization_gen`, `case_cut_edge_realization_gp_gen` and `Pencil/Arms.lean`'s
+  cut case); `lem:case-I-realization-h65` stated without $|V(G)| \ge 3$, its proof saying why
+  (task 38.19).
 - **F-298** · L · hypotheses the others give, repeated derivations and four needless `set_option`s,
   in the second half of `Molecular/AlgebraicInduction/Theorem55.lean`.
   `case_I_realization_nonsimple_gen`'s `hD : 2 ≤ bodyBarDim n` (`lem:case-I-realization-nonsimple`)
@@ -5965,9 +5970,9 @@ declaration's name as its header writes it:
   `hfresh` (`theorem_55_6_multigraph_gen`'s) as the control, which warns; on the three standard
   axioms (`scratch/reconcile-lean/Hyps-t362.lean`, gitignored).
   *Found:* RECONCILE round 3 task 36.2.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the four `set_option`s and
-  their sentences. Task 38.1: task 38.19 drops the `hD` of `theorem_55_minimalKDof_k` (from `hn`;
-  caller `theorem_55_d3`), of `rankHypothesis_genuine_of_theorem_55_gen`,
+  *Disposition:* done (task 38.19). Task 38.1: task 38.19 drops the `hD` of
+  `theorem_55_minimalKDof_k` (from `hn`; caller `theorem_55_d3`), of
+  `rankHypothesis_genuine_of_theorem_55_gen`,
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`,
   `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`,
   `hasGenericFullRankRealization_of_theorem_55_gen`, `theorem_55_6_multigraph_of_two_le` and
@@ -5980,7 +5985,24 @@ declaration's name as its header writes it:
   statement fixes (`F-324`); the repeated steps of S2's rows and their forms (the strip, the
   re-aimed selector, `def(G̃) = 0` on one body), which the phase's carrier refactor rewrites; and
   `case_I_hcontract_gen`'s case split, a sibling dispatch (§C). Round 3: the four `set_option`s and
-  their sentences dropped (task 38.10).
+  their sentences dropped (task 38.10); the seven `hD`s dropped, each proof that still uses `3 ≤ D`
+  deriving it (`hn ▸ three_le_screwDim hk1`; at `screwDim 2` for `theorem_55_minimalKDof_k`), the
+  callers passing one argument fewer (`theorem_55_d3` and `Bridge.lean` a `by decide`) and the
+  main results keeping their local `hD`, which their `freshEdgeSupply_of_card_lt` steps use. The
+  drop left five `GenericLift/` binders that only passed `hD` on to
+  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` unused, which went too:
+  `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`,
+  `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`,
+  `exists_hingePoints_independent_hingePointRow`,
+  `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints` and
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff` (their nodes state $d \ge 2$ only).
+  The main result above them,
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees` (S1's row), keeps its
+  `hD`, which its `NeZero` step uses and `hk1` with `hn` gives: a statement change, for the phase,
+  as `F-324`. The `hV3` of `case_I_dispatch_gen` and `case_I_hcontract_gen`
+  dropped, derived from `hrig`, the main result binding `_hV3`; `lem:case-I-dispatch` and
+  `lem:case-I-all-k` stated without $|V(G)| \ge 3$. `thm:theorem-55-6-multigraph` and the other
+  nodes these pins serve state $d \ge 2$ only, unchanged (task 38.19).
 - **F-299** · L · a missed mathlib lemma and a repeated derivation in `Molecular/Molecule/`.
   `screwCoord_injective` (`ScrewVelocity.lean`) proves by rank–nullity, from `screwCoord_surjective`
   and the two dimensions, what `LinearMap.injective_iff_surjective_of_finrank_eq_finrank` gives; and

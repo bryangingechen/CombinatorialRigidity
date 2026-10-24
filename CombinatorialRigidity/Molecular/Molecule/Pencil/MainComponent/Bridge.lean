@@ -191,7 +191,7 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
   -- The planar case of KT Theorem 5.6, at `(n, k) = (2, 1)`.
   obtain ⟨Q₀, hQ₀g, -, hQ₀ends, hQ₀C, hQ₀rank⟩ :=
     PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen
-      (K := K) (k := 1) (n := 2) le_rfl (by decide) rfl hfresh G hV hSimple
+      (K := K) (k := 1) (n := 2) le_rfl rfl hfresh G hV hSimple
   have hself : PanelHingeFramework.ofNormals (k := 1) G Q₀.ends (fun p => Q₀.normal p.1 p.2)
       = Q₀ := by
     rw [← hQ₀g]; rfl

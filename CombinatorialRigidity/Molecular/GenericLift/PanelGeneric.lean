@@ -399,7 +399,7 @@ general-position realization, run here against a *given* generic `q` rather than
 simultaneous non-root. -/
 theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
@@ -412,7 +412,7 @@ theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
   -- The genuine link-recording Theorem-5.6 producer, over OUR carrier `G`.
   obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
     rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k) (n := n)
-      hk1 hD hn hfresh G hV hspan hSimple
+      hk1 hn hfresh G hV hspan hSimple
   -- `|V| ≥ 1` facts and the body-count reconciliation `Nat.card α = |V(G)|`.
   have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   have h1V : 1 ≤ V(G).ncard := by omega
@@ -483,7 +483,7 @@ the assumed rigidity at any one generic assignment (`exists_isGenericNormals`,
 `q`, hence rigidity there. -/
 theorem isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
@@ -496,7 +496,7 @@ theorem isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff [Infinite K]
   · intro hrigid
     obtain ⟨q, hq⟩ := exists_isGenericNormals (K := K) (k := k) ends
     have hrank := finrank_span_rigidityRows_ofNormals_of_isGenericNormals
-      hk1 hD hn hfresh G hV hspan hSimple ends hends hq
+      hk1 hn hfresh G hV hspan hSimple ends hends hq
     have hB1 := (ofNormals G ends q).toBodyHinge
       |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hVGne
     simp only [toBodyHinge_graph, ofNormals_graph] at hB1
@@ -505,7 +505,7 @@ theorem isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff [Infinite K]
     linarith [hrank, hcount]
   · intro hdef q hq
     have hrank := finrank_span_rigidityRows_ofNormals_of_isGenericNormals
-      hk1 hD hn hfresh G hV hspan hSimple ends hends hq
+      hk1 hn hfresh G hV hspan hSimple ends hends hq
     rw [hdef, sub_zero] at hrank
     have hB1 := (ofNormals G ends q).toBodyHinge
       |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hVGne
