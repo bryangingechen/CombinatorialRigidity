@@ -88,9 +88,11 @@ five in four files of `Molecular/Induction/`, with three relabel theorems' `heac
 last two in `ForestSurgery/ChainExtraction` and `Reduction.lean`, no node restated; task 38.15
 dropped `F-286`'s `_hE₁`, `honly` and three `[Finite β]` of `RigidityMatrix/Bricks.lean` with its
 two `nolint`s, and a bridge-path lemma's `hsep` and three path and ear lemmas' `[Finite β]` that
-only passed them on, restating `lem:block-rank-cut`.
-**Next concrete task:** round 3's task 38.16, `CaseII.lean`, `GenericityDevice.lean` and
-`Coupling.lean` (then tasks 38.17–38.27 and the close).
+only passed them on, restating `lem:block-rank-cut`; task 38.16 dropped `F-290`'s `_hG_ea` and
+`F-325`'s `hr`, and gave `GenericityDevice.lean` one lemma for the rows' coordinatization and two
+derivations called where they were repeated (`F-291`), no node restated.
+**Next concrete task:** round 3's task 38.17, `CaseIII/Arms`, `Candidate` and `Realization.lean`
+(then tasks 38.18–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

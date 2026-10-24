@@ -593,7 +593,6 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
   -- `F'.graph = Gc.map f = G.rigidContract H r`; its vertex set is the surviving body set `sc`.
   have hF'g : F'.graph = G.rigidContract H r := by
     rw [hF', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; rfl
-  have hr' : r ∈ F'.graph.vertexSet := by rw [hF'g]; exact hrC
   have hinter : F'.graph.vertexSet ∩ V(H) = {r} := by rw [hF'g]; exact hinterC
   -- The selector `endsM` records the links of `F'.graph = Gc.map f`; the hinges there are nonzero,
   -- as the normals of `F'` are in general position.
@@ -621,7 +620,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
   -- rigid on its vertex set (`exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`).
   obtain ⟨t, hsuppM, hcountM, hindepM⟩ :=
     F'.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj
-      (ends := endsM) (proj := V(H)) (r := r) hendsF' hne hrig hr' hinter
+      (ends := endsM) (proj := V(H)) (r := r) hendsF' hne hrig hinter
   -- The surviving body set: `V(F'.graph) = V(G.rigidContract H r) = (V(G)∖V(H)) ∪ {r} = sc`.
   have hF'sc : F'.graph.vertexSet = (V(G) \ V(H)) ∪ {r} := by
     rw [hF'g, Graph.vertexSet_rigidContract]

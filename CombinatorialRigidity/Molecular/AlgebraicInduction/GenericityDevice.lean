@@ -272,65 +272,58 @@ theorem PanelHingeFramework.exists_independent_panelRow_transport {α β : Type*
 
 /-! ## The motions and the rank of a framework rigid on a set of bodies -/
 
-/-- **The motions of a framework rigid on `V(G)`** (`lem:case-II-placement-old-rows-extract`, its
-first claim): if `V(G)` is nonempty and every motion is constant on `V(G)` (`hrig`), then
-`dim Z(G,p) = D(|V(G)ᶜ| + 1)`. For a body `v₀ ∈ V(G)`, a motion that vanishes at `v₀` vanishes on
-`V(G)`, so the single-body pin `pinnedMotions v₀` is the block pin `pinnedMotionsOn V(G)`
-(`pinnedMotionsOn_mono` for the other inclusion), of dimension `D·|V(G)ᶜ|`
-(`finrank_pinnedMotionsOn_vertexSet`, `lem:relative-screw-split`); KT Lemma 5.1 (p. 667) adds `D`
-(`finrank_pinnedMotions_add_screwDim`). The converse bound is
-`isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (`lem:isInfRigidOn-of-relative-count`). -/
-theorem BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet
-    [Finite α] (F : BodyHingeFramework K k α β) (hne : F.graph.vertexSet.Nonempty)
-    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
-    Module.finrank K F.infinitesimalMotions = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) := by
+/-- **The motions of a framework rigid on a set `s`** (a step of `lem:case-I-realization` and of
+`lem:case-II-placement-old-rows-extract`): if `s` is nonempty and every motion is constant on `s`,
+then `dim Z(G,p) ≤ D(|sᶜ| + 1)`. For a body `v₀ ∈ s`, a motion that vanishes at `v₀` vanishes on
+`s`, so the single-body pin `pinnedMotions v₀` is the block pin `pinnedMotionsOn s`
+(`pinnedMotionsOn_mono` for the other inclusion), of dimension at most `D·|sᶜ|`
+(`finrank_pinnedMotionsOn_le`); KT Lemma 5.1 (p. 667) adds `D`
+(`finrank_pinnedMotions_add_screwDim`). The bound can be strict, as a body of `V(G) ∖ s` can lie on
+an edge; at `s = V(G)` it is an equality
+(`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`). -/
+theorem BodyHingeFramework.finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn
+    [Finite α] (F : BodyHingeFramework K k α β) {s : Set α} (hne : s.Nonempty)
+    (hrig : F.IsInfinitesimallyRigidOn s) :
+    Module.finrank K F.infinitesimalMotions ≤ screwDim k * (sᶜ.ncard + 1) := by
   have : Fintype α := Fintype.ofFinite α
   obtain ⟨v₀, hv₀⟩ := hne
   have : Nonempty α := ⟨v₀⟩
-  -- Rigidity equates the single-body pin at `v₀` with the block pin on `V(G)`.
-  have hpin : F.pinnedMotions v₀ = F.pinnedMotionsOn F.graph.vertexSet := by
+  -- Rigidity on `s` equates the single-body pin at `v₀ ∈ s` with the block pin on `s`.
+  have hpin : F.pinnedMotions v₀ = F.pinnedMotionsOn s := by
     rw [← F.pinnedMotionsOn_singleton]
     refine le_antisymm (fun S hS => ?_)
       (F.pinnedMotionsOn_mono (Set.singleton_subset_iff.2 hv₀))
     rw [F.mem_pinnedMotionsOn] at hS ⊢
     refine ⟨hS.1, fun w hw => ?_⟩
     rw [hrig S hS.1 w hw v₀ hv₀, hS.2 v₀ rfl]
-  -- `dim Z = finrank (pinnedMotions v₀) + D = D·|V(G)ᶜ| + D`.
+  -- `dim Z = finrank (pinnedMotions v₀) + D = finrank (pinnedMotionsOn s) + D ≤ D·|sᶜ| + D`.
   have hadd := F.finrank_pinnedMotions_add_screwDim v₀
-  rw [hpin, F.finrank_pinnedMotionsOn_vertexSet] at hadd
-  rw [Nat.mul_succ, ← hadd]
+  have hle := F.finrank_pinnedMotionsOn_le s
+  rw [hpin] at hadd
+  rw [Nat.mul_succ]
+  omega
 
-/-- **The rank of a framework rigid on `V(G)`** (a step of `lem:case-II-placement-old-rows-extract`
-and of the lemmas that use it): if `V(G)` is nonempty and every motion is constant on `V(G)`, then
-`rank R(G,p) = D(|V(G)| − 1)`. The rank is `D|α| − dim Z(G,p)`
-(`infinitesimalMotions_eq_dualCoannihilator`, `Subspace.finrank_dualCoannihilator_eq`,
-`finrank_screwAssignment`), and `dim Z(G,p) = D(|V(G)ᶜ| + 1)`
-(`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`). No condition on the hinges
-is needed; the rows `panelRow` span the row space only at nondegenerate hinges
-(`span_panelRow_eq_rigidityRows`). -/
-theorem BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn
-    [Finite α] (F : BodyHingeFramework K k α β) (hnev : F.graph.vertexSet.Nonempty)
+/-- **The motions of a framework rigid on `V(G)`** (`lem:case-II-placement-old-rows-extract`, its
+first claim): if `V(G)` is nonempty and every motion is constant on `V(G)` (`hrig`), then
+`dim Z(G,p) = D(|V(G)ᶜ| + 1)`. The bound `≤` is
+`finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn` at `s = V(G)`. Conversely, for a body
+`v₀ ∈ V(G)`, the block pin `pinnedMotionsOn V(G)`, of dimension `D·|V(G)ᶜ|`
+(`finrank_pinnedMotionsOn_vertexSet`, `lem:relative-screw-split`), lies in the single-body pin
+`pinnedMotions v₀` (`pinnedMotionsOn_le_pinnedMotions`), of dimension `dim Z(G,p) − D` (KT Lemma
+5.1, p. 667; `finrank_pinnedMotions_add_screwDim`). The converse is
+`isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (`lem:isInfRigidOn-of-relative-count`). -/
+theorem BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet
+    [Finite α] (F : BodyHingeFramework K k α β) (hne : F.graph.vertexSet.Nonempty)
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
-    Module.finrank K (Submodule.span K F.rigidityRows)
-      = screwDim k * (F.graph.vertexSet.ncard - 1) := by
-  have : Fintype α := Fintype.ofFinite α
-  -- `dim Z = D·(|V(G)ᶜ| + 1)` (rigid block).
-  have hZ : Module.finrank K F.infinitesimalMotions
-      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
-    F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hnev hrig
-  have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnev
-  have hsplit : screwDim k * Fintype.card α
-      = screwDim k * F.graph.vertexSet.ncard + screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
-    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
-  -- `finrank Φ + finrank Φ.dualCoannihilator = D|V|`, and `Φ.dualCoannihilator = Z`.
-  set Φ : Subspace K (Module.Dual K (α → ScrewSpace K k)) := Submodule.span K F.rigidityRows with hΦ
-  have hcompl : Module.finrank K Φ + Module.finrank K Φ.dualCoannihilator
-      = Module.finrank K (α → ScrewSpace K k) := by
-    rw [Subspace.finrank_dualCoannihilator_eq, Subspace.finrank_add_finrank_dualAnnihilator_eq,
-      Subspace.dual_finrank_eq]
-  rw [← F.infinitesimalMotions_eq_dualCoannihilator, hZ,
-    BodyHingeFramework.finrank_screwAssignment, Nat.mul_succ] at hcompl
-  rw [Nat.mul_sub, Nat.mul_one]
+    Module.finrank K F.infinitesimalMotions = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) := by
+  refine le_antisymm (F.finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn hne hrig) ?_
+  obtain ⟨v₀, hv₀⟩ := hne
+  have : Nonempty α := ⟨v₀⟩
+  -- `D·|V(G)ᶜ| = finrank (pinnedMotionsOn V(G)) ≤ finrank (pinnedMotions v₀) = dim Z − D`.
+  have hle := Submodule.finrank_mono (F.pinnedMotionsOn_le_pinnedMotions hv₀)
+  rw [F.finrank_pinnedMotionsOn_vertexSet] at hle
+  have hadd := F.finrank_pinnedMotions_add_screwDim v₀
+  rw [Nat.mul_succ]
   omega
 
 /-- **Rank–nullity for the rigidity matrix** (the identity `dim Z(G,p) = D|W| − rank R(G,p)` of
@@ -352,6 +345,28 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_add_finrank_infinitesimalMo
   rw [← F.infinitesimalMotions_eq_dualCoannihilator, BodyHingeFramework.finrank_screwAssignment]
     at hcompl
   linarith
+
+/-- **The rank of a framework rigid on `V(G)`** (a step of `lem:case-II-placement-old-rows-extract`
+and of the lemmas that use it): if `V(G)` is nonempty and every motion is constant on `V(G)`, then
+`rank R(G,p) = D(|V(G)| − 1)`. The rank is `D|α| − dim Z(G,p)`
+(`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`), and `dim Z(G,p) = D(|V(G)ᶜ| + 1)`
+(`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`). No condition on the hinges
+is needed; the rows `panelRow` span the row space only at nondegenerate hinges
+(`span_panelRow_eq_rigidityRows`). -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn
+    [Finite α] (F : BodyHingeFramework K k α β) (hnev : F.graph.vertexSet.Nonempty)
+    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
+    Module.finrank K (Submodule.span K F.rigidityRows)
+      = screwDim k * (F.graph.vertexSet.ncard - 1) := by
+  have hZ := F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hnev hrig
+  have hcompl := F.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+  have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnev
+  have hsplit : screwDim k * Nat.card α
+      = screwDim k * F.graph.vertexSet.ncard + screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
+    rw [← Nat.mul_add, Set.ncard_add_ncard_compl]
+  rw [Nat.mul_succ] at hZ
+  rw [Nat.mul_sub, Nat.mul_one]
+  omega
 
 /-- **Rigidity on `V(G)` is the rank `D(|V(G)| − 1)`** (`rem:rank-hypothesis-relative` at deficiency
 zero): if `V(G)` is nonempty, every motion is constant on `V(G)` if and only if
@@ -404,33 +419,6 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
   rw [Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card] at hcompl
   zify [h1] at hcompl hhub hsplit ⊢
   linarith
-
-/-- **The motions of a framework rigid on a set `s`** (a step of `lem:case-I-realization`): if `s`
-is nonempty and every motion is constant on `s`, then `dim Z(G,p) ≤ D(|sᶜ| + 1)`. This is the proof
-of `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` with the bound
-`dim Z_s(G,p) ≤ D·|sᶜ|` (`finrank_pinnedMotionsOn_le`) in place of the equality at `s = V(G)`; the
-bound can be strict, as a body of `V(G) ∖ s` can lie on an edge. -/
-theorem BodyHingeFramework.finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn
-    [Finite α] (F : BodyHingeFramework K k α β) {s : Set α} (hne : s.Nonempty)
-    (hrig : F.IsInfinitesimallyRigidOn s) :
-    Module.finrank K F.infinitesimalMotions ≤ screwDim k * (sᶜ.ncard + 1) := by
-  have : Fintype α := Fintype.ofFinite α
-  obtain ⟨v₀, hv₀⟩ := hne
-  have : Nonempty α := ⟨v₀⟩
-  -- Rigidity on `s` equates the single-body pin at `v₀ ∈ s` with the block pin on `s`.
-  have hpin : F.pinnedMotions v₀ = F.pinnedMotionsOn s := by
-    rw [← F.pinnedMotionsOn_singleton]
-    refine le_antisymm (fun S hS => ?_)
-      (F.pinnedMotionsOn_mono (Set.singleton_subset_iff.2 hv₀))
-    rw [F.mem_pinnedMotionsOn] at hS ⊢
-    refine ⟨hS.1, fun w hw => ?_⟩
-    rw [hrig S hS.1 w hw v₀ hv₀, hS.2 v₀ rfl]
-  -- `dim Z = finrank (pinnedMotions v₀) + D = finrank (pinnedMotionsOn s) + D ≤ D·|sᶜ| + D`.
-  have hadd := F.finrank_pinnedMotions_add_screwDim v₀
-  have hle := F.finrank_pinnedMotionsOn_le s
-  rw [hpin] at hadd
-  rw [Nat.mul_succ]
-  omega
 
 /-! ## Independent rows from rigidity or from a bound on the rank -/
 
@@ -576,7 +564,8 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
 /-- **Independent rows at links of a framework rigid on a set `s`** (a step of
 `lem:case-I-realization`): if `ends` gives every link of `G` its ends, the hinge at every link is
 nondegenerate, `s` is nonempty and every motion is constant on `s`, then some `t` of at least
-`D(|s| − 1)` rows at links of `G` are linearly independent. Rank–nullity and
+`D(|s| − 1)` rows at links of `G` are linearly independent. Rank–nullity
+(`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`) and
 `finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn` bound the rank below by `D(|s| − 1)`,
 and the rows at links span the row space (`span_panelRow_linking_eq_rigidityRows`). Only
 `exists_rankPolynomial_of_rigidOn_linking_set` uses it. -/
@@ -603,22 +592,15 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
   have hZ : Module.finrank K F.infinitesimalMotions ≤ screwDim k * (sᶜ.ncard + 1) :=
     F.finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn hnes hrig
   have h1 : 1 ≤ s.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnes
-  have hsplit : screwDim k * Fintype.card α
-      = screwDim k * s.ncard + screwDim k * sᶜ.ncard := by
-    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
-  -- The linking-edge panel-row span has dimension `≥ D|V| − dim Z ≥ D(|s| − 1)` (rigid on `s`).
+  have hsplit : screwDim k * Nat.card α = screwDim k * s.ncard + screwDim k * sᶜ.ncard := by
+    rw [← Nat.mul_add, Set.ncard_add_ncard_compl]
+  -- The linking-edge panel-row span has dimension `≥ D|α| − dim Z ≥ D(|s| − 1)` (rigid on `s`).
   have hfin : screwDim k * (s.ncard - 1) ≤ Module.finrank K (Submodule.span K T) := by
     -- At nondegenerate hinges the panel rows at links span the rigidity rows
-    -- (`span_panelRow_linking_eq_rigidityRows`).
+    -- (`span_panelRow_linking_eq_rigidityRows`); rank–nullity
+    -- (`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`).
     rw [hT, F.span_panelRow_linking_eq_rigidityRows hends hne]
-    set Φ : Subspace K (Module.Dual K (α → ScrewSpace K k)) :=
-      Submodule.span K F.rigidityRows with hΦ
-    have hcompl : Module.finrank K Φ + Module.finrank K Φ.dualCoannihilator
-        = Module.finrank K (α → ScrewSpace K k) := by
-      rw [Subspace.finrank_dualCoannihilator_eq, Subspace.finrank_add_finrank_dualAnnihilator_eq,
-        Subspace.dual_finrank_eq]
-    rw [← F.infinitesimalMotions_eq_dualCoannihilator,
-      BodyHingeFramework.finrank_screwAssignment] at hcompl
+    have hcompl := F.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
     rw [Nat.mul_sub, Nat.mul_one]
     rw [Nat.mul_succ] at hZ
     omega
@@ -654,12 +636,76 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
 
 /-! ## The rank off the zeros of a polynomial (`lem:rank-polynomial-of-le-finrank`)
 
-In each lemma the coordinates of the rows `panelRow ends i` in the standard basis
+The first lemma gives, for rows independent at the normals `q₀`, a polynomial in the normals that
+does not vanish at `q₀` and off whose zeros the rows stay independent; the others apply it to rows
+that rigidity or a bound on the rank gives. -/
+
+/-- **Independent rows stay independent off the zeros of a polynomial** (a step of
+`lem:rank-polynomial-of-le-finrank`, `lem:generic-realization-of-rigid` and
+`lem:case-I-realization`): if the rows `panelRow ends i` of `ofNormals G ends q₀` indexed by `s` are
+linearly independent, there is a polynomial `Q` with `Q(q₀) ≠ 0` such that they are linearly
+independent at every `q` with `Q(q) ≠ 0`. The coordinates of the rows in the standard basis
 `Pi.basis (fun _ => screwBasis k)` are the polynomials `annihRowPoly` in the normals, scaled by
 `[u = a] − [v = a]` at the body `a` for an edge with selected ends `u` and `v` (`annihRowPoly_eval`,
-`lem:rows-polynomial-in-normals`). A maximal minor of rows independent at `q₀` is the polynomial
-(`exists_polynomial_ne_zero_of_linearIndependent_at`): it does not vanish at `q₀`, and the rows are
-independent wherever it does not vanish. -/
+`lem:rows-polynomial-in-normals`), and `Q` is a maximal minor of them that does not vanish at `q₀`
+(`exists_polynomial_ne_zero_of_linearIndependent_at`). -/
+theorem PanelHingeFramework.exists_rankPolynomial_of_linearIndependent [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α) {q₀ : α × Fin (k + 2) → K}
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hindep : LinearIndependent K
+      (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i)) :
+    ∃ Q : MvPolynomial (α × Fin (k + 2)) K, MvPolynomial.eval q₀ Q ≠ 0 ∧
+      ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndependent K
+          (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
+  classical
+  have : Fintype α := Fintype.ofFinite α
+  -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the bridge
+  -- to the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.
+  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) K (α → ScrewSpace K k) :=
+    Pi.basis (fun _ : α => screwBasis k) with hB
+  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin (k + 2)) k)
+      = Module.finrank K (Module.Dual K (α → ScrewSpace K k)) := by
+    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
+  let e : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
+      ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
+    (Fintype.equivFinOfCardEq hcard).symm
+  set φ : Module.Dual K (α → ScrewSpace K k)
+      ≃ₗ[K] (Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k))) → K) :=
+    B.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft K K e) with hφ
+  -- The row family and its degree-2 panel-polynomial coordinates, pulled back along `e`.
+  set g : (α × Fin (k + 2) → K)
+      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Module.Dual K (α → ScrewSpace K k) :=
+    fun q i => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i with hg_def
+  set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
+      → MvPolynomial (α × Fin (k + 2)) K :=
+    fun i j => ((if (ends i.1).1 = (e j).1 then (1 : K) else 0)
+        - (if (ends i.1).2 = (e j).1 then 1 else 0))
+      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 (e j).2 with hc_def
+  -- The evaluation identity: each row coordinate is the panel polynomial `c`.
+  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
+    intro q i j
+    rw [hφ, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+      Module.Basis.dualBasis_equivFun, hg_def, hc_def]
+    rcases hej : e j with ⟨a, t⟩
+    simp only [hej]
+    simp only [hB, Pi.basis_apply]
+    change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t)) = _
+    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+      PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
+    rw [Pi.single_apply, Pi.single_apply]
+    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
+      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
+        map_neg, one_mul, neg_mul, zero_mul]
+  -- A maximal minor (`exists_polynomial_ne_zero_of_linearIndependent_at`).
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg
+      (p₀ := q₀) (s := s) (by simpa only [hg_def] using hindep)
+  exact ⟨Q, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
 
 /-- **A framework rigid on `V(G)` gives a rank polynomial** (a step of
 `lem:generic-realization-of-rigid`): if `ends` gives every link of `G` its ends, the hinge of
@@ -667,7 +713,8 @@ independent wherever it does not vanish. -/
 is rigid on `V(G)`, then there are rows `s` at links of `G`, at least `D(|V(G)| − 1)` of them, and a
 polynomial `Q` with `Q(q₀) ≠ 0`, such that the rows indexed by `s` are linearly independent at
 every `q` with `Q(q) ≠ 0`. The rows are those of
-`exists_independent_panelRow_subfamily_of_rigidOn_linking`. -/
+`exists_independent_panelRow_subfamily_of_rigidOn_linking`, and `Q` is that of
+`exists_rankPolynomial_of_linearIndependent`. -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -684,8 +731,6 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α]
       ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent K
           (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
   -- Some `D(|V(G)|−1)` panel rows at links of `G` are independent at `q₀`.
   obtain ⟨s, hsupp, hscard, hsindep⟩ :=
@@ -693,62 +738,20 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α]
       (ends := ends) (by simpa [hF] using hends) (by simpa [hF] using hne)
       (by simpa [hF] using hnev)
       (by simpa [hF] using hrig)
-  -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the bridge
-  -- to the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.
-  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) K (α → ScrewSpace K k) :=
-    Pi.basis (fun _ : α => screwBasis k) with hB
-  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin (k + 2)) k)
-      = Module.finrank K (Module.Dual K (α → ScrewSpace K k)) := by
-    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
-  let e : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
-      ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
-    (Fintype.equivFinOfCardEq hcard).symm
-  set φ : Module.Dual K (α → ScrewSpace K k)
-      ≃ₗ[K] (Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k))) → K) :=
-    B.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft K K e) with hφ
-  -- The row family and its degree-2 panel-polynomial coordinates, pulled back along `e`.
-  set g : (α × Fin (k + 2) → K)
-      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Module.Dual K (α → ScrewSpace K k) :=
-    fun q i => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i with hg_def
-  set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
-      → MvPolynomial (α × Fin (k + 2)) K :=
-    fun i j => ((if (ends i.1).1 = (e j).1 then (1 : K) else 0)
-        - (if (ends i.1).2 = (e j).1 then 1 else 0))
-      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 (e j).2 with hc_def
-  -- The evaluation identity: each row coordinate is the panel polynomial `c`.
-  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
-    intro q i j
-    rw [hφ, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
-      Module.Basis.dualBasis_equivFun, hg_def, hc_def]
-    rcases hej : e j with ⟨a, t⟩
-    simp only [hej]
-    simp only [hB, Pi.basis_apply]
-    change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t)) = _
-    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
-      PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-      PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
-    rw [Pi.single_apply, Pi.single_apply]
-    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
-        map_neg, one_mul, neg_mul, zero_mul]
-  -- Extract the witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
   obtain ⟨Q, hQ₀, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg
-      (p₀ := q₀) (s := s) (by simpa only [hg_def] using hsindep)
-  exact ⟨s, Q, hsupp, hscard.ge, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+    PanelHingeFramework.exists_rankPolynomial_of_linearIndependent G ends hsindep
+  exact ⟨s, Q, hsupp, hscard.ge, hQ₀, hQ⟩
 
 /-- **A rank bound off the zeros of a polynomial** (`lem:rank-polynomial-of-le-finrank`, and
 `lem:genericity-device` in the terms of KT §5.1): if `ends` gives every link of `G` its ends, the
 hinge of `ofNormals G ends q₀` at every link is nondegenerate, and `N ≤ rank R(G,q₀)`, then there is
 a polynomial `Q` with `Q(q₀) ≠ 0` such that `N ≤ rank R(G,q)` at every `q` with `Q(q) ≠ 0`. Some `N`
 rows at links are independent at `q₀` (`exists_independent_panelRow_subfamily_of_le_finrank`), and
-`Q` is a maximal minor of them. Where `Q(q) ≠ 0` they are independent and lie in the row space, as
-they are at links, so the rank is at least `N` (`finrank_span_eq_card`). It assumes no rigidity: the
-proofs of Case II (`case_II_realization_all_k`) and of KT Lemma 6.1 (p. 672;
-`case_cut_edge_realization_gp_gen`) apply it at deficient realizations. -/
+`Q` is a maximal minor of them (`exists_rankPolynomial_of_linearIndependent`). Where `Q(q) ≠ 0`
+they are independent and lie in the row space, as they are at links, so the rank is at least `N`
+(`finrank_span_eq_card`). It assumes no rigidity: the proofs of Case II
+(`case_II_realization_all_k`) and of KT Lemma 6.1 (p. 672; `case_cut_edge_realization_gp_gen`) apply
+it at deficient realizations. -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -762,64 +765,18 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite 
       ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
         N ≤ Module.finrank K
           (Submodule.span K (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows) := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
   -- Some `N` panel rows at links are independent at `q₀`
   -- (`exists_independent_panelRow_subfamily_of_le_finrank`).
   obtain ⟨s, hsupp, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_le_finrank
       (ends := ends) (by simpa [hF] using hends) (by simpa [hF] using hne) (by simpa [hF] using hN)
-  -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the bridge
-  -- to the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.
-  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) K (α → ScrewSpace K k) :=
-    Pi.basis (fun _ : α => screwBasis k) with hB
-  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin (k + 2)) k)
-      = Module.finrank K (Module.Dual K (α → ScrewSpace K k)) := by
-    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
-  let e : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
-      ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
-    (Fintype.equivFinOfCardEq hcard).symm
-  set φ : Module.Dual K (α → ScrewSpace K k)
-      ≃ₗ[K] (Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k))) → K) :=
-    B.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft K K e) with hφ
-  -- The row family and its degree-2 panel-polynomial coordinates, pulled back along `e`.
-  set g : (α × Fin (k + 2) → K)
-      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Module.Dual K (α → ScrewSpace K k) :=
-    fun q i => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i with hg_def
-  set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
-      → MvPolynomial (α × Fin (k + 2)) K :=
-    fun i j => ((if (ends i.1).1 = (e j).1 then (1 : K) else 0)
-        - (if (ends i.1).2 = (e j).1 then 1 else 0))
-      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 (e j).2 with hc_def
-  -- The evaluation identity: each row coordinate is the panel polynomial `c`.
-  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
-    intro q i j
-    rw [hφ, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
-      Module.Basis.dualBasis_equivFun, hg_def, hc_def]
-    rcases hej : e j with ⟨a, t⟩
-    simp only [hej]
-    simp only [hB, Pi.basis_apply]
-    change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t)) = _
-    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
-      PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-      PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
-    rw [Pi.single_apply, Pi.single_apply]
-    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
-        map_neg, one_mul, neg_mul, zero_mul]
-  -- Extract the witnessing rank polynomial via the mirror lemma.
   obtain ⟨Q, hQ₀, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg
-      (p₀ := q₀) (s := s) (by simpa only [hg_def] using hsindep)
-  -- Re-phrase: at any non-root `q`, the `s`-subfamily is LI; transfer to `rank ≥ N`.
+    PanelHingeFramework.exists_rankPolynomial_of_linearIndependent G ends hsindep
+  -- At any non-root `q`, the `s`-subfamily is independent; transfer to `rank ≥ N`.
   refine ⟨Q, hQ₀, fun q hq => ?_⟩
   set F' := (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF'
-  have hLI : LinearIndependent K (fun i : s => F'.panelRow ends (i : β × _ × _)) :=
-    by simpa only [hg_def] using hQ q hq
+  have hLI : LinearIndependent K (fun i : s => F'.panelRow ends (i : β × _ × _)) := hQ q hq
   have : Fintype s := Fintype.ofFinite s
   -- The `s`-subfamily range is contained in the rigidity rows of `F'`.
   have hsub : Submodule.span K (Set.range (fun i : s => F'.panelRow ends (i : β × _ × _)))
@@ -864,60 +821,15 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite
       ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent K
           (fun i : t => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
   -- At least `D(|s|−1)` panel rows at links of `G` are independent at `q₀`.
   obtain ⟨t, hsupp, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn_linking_set
       (ends := ends) (s := s) (by simpa [hF] using hends) (by simpa [hF] using hne)
       hnes (by simpa [hF] using hrig)
-  -- The standard basis of `α → ScrewSpace K k`, its dual-basis identification `φ`, and the bridge
-  -- to the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.
-  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) K (α → ScrewSpace K k) :=
-    Pi.basis (fun _ : α => screwBasis k) with hB
-  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin (k + 2)) k)
-      = Module.finrank K (Module.Dual K (α → ScrewSpace K k)) := by
-    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
-  let e : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
-      ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
-    (Fintype.equivFinOfCardEq hcard).symm
-  set φ : Module.Dual K (α → ScrewSpace K k)
-      ≃ₗ[K] (Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k))) → K) :=
-    B.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft K K e) with hφ
-  -- The row family and its degree-2 panel-polynomial coordinates, pulled back along `e`.
-  set g : (α × Fin (k + 2) → K)
-      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Module.Dual K (α → ScrewSpace K k) :=
-    fun q i => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i with hg_def
-  set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K k)))
-      → MvPolynomial (α × Fin (k + 2)) K :=
-    fun i j => ((if (ends i.1).1 = (e j).1 then (1 : K) else 0)
-        - (if (ends i.1).2 = (e j).1 then 1 else 0))
-      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 (e j).2 with hc_def
-  -- The evaluation identity: each row coordinate is the panel polynomial `c`.
-  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
-    intro q i j
-    rw [hφ, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
-      Module.Basis.dualBasis_equivFun, hg_def, hc_def]
-    rcases hej : e j with ⟨a, t'⟩
-    simp only [hej]
-    simp only [hB, Pi.basis_apply]
-    change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t')) = _
-    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
-      PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-      PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
-    rw [Pi.single_apply, Pi.single_apply]
-    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
-      simp only [hu, hv, ite_true, ite_false, sub_zero, zero_sub, sub_self, map_zero,
-        map_neg, one_mul, neg_mul, zero_mul]
-  -- Extract the witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
   obtain ⟨Q, hQ₀, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg
-      (p₀ := q₀) (s := t) (by simpa only [hg_def] using hsindep)
-  exact ⟨t, Q, hsupp, hscard, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+    PanelHingeFramework.exists_rankPolynomial_of_linearIndependent G ends hsindep
+  exact ⟨t, Q, hsupp, hscard, hQ₀, hQ⟩
 
 /-! ## Nondegenerate hinges from a generic realization (`lem:generic-yields-genuine-hinge`) -/
 

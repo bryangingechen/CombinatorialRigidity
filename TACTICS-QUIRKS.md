@@ -402,8 +402,8 @@ simp only [hej]   -- now every `e j` is `⟨a, t⟩`; `.fst`/`.snd` reduce
 ```
 
 (Phase 22 `exists_rankPolynomial_of_rigidOn`, since deleted;
-`exists_rankPolynomial_of_rigidOn_linking` keeps the step: the `annihRowPoly` coordinatization at a
-reindexed basis vector `e j : Σ _, ⋀ᵏ`.)
+`exists_rankPolynomial_of_linearIndependent` keeps the step: the `annihRowPoly` coordinatization at
+a reindexed basis vector `e j : Σ _, ⋀ᵏ`.)
 
 ---
 

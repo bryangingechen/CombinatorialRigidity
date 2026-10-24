@@ -5681,15 +5681,16 @@ declaration's name as its header writes it:
   `Graph.vertexSet_rigidContract`, `⟨c, hcH⟩`, `hH.2.1`) (`scratch/reconcile-lean/Hyps-t34.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 34.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.3 and 38.16). Task 38.1: task
-  38.3 drops `rigidContract_exterior_rank_transport_htransport`'s `hne` (from `hr`, `hHsub`:
+  *Disposition:* done (tasks 38.3 and 38.16). Task 38.1: task 38.3 drops
+  `rigidContract_exterior_rank_transport_htransport`'s `hne` (from `hr`, `hHsub`:
   `vertexSet_rigidContract`; `lem:claim-6-4` does not state it; a dead pin once task 38.3 deletes
   `case_I_realization`) and
   `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`'s `hnesH` (`⟨c,
   hcH⟩`; caller `case_I_realization_all_k_gen`); task 38.16 drops `case_II_placement_eq612`'s
   `_hG_ea` (a dead pin with no caller; `lem:case-II-realization-placement` does not state it). Moot:
   the other `hnesH` and `case_I_realization`'s `hVH2` (task 38.3 deletes both). Round 3: `hne`
-  and `hnesH` dropped, derived where they were used (task 38.3).
+  and `hnesH` dropped, derived where they were used (task 38.3); `_hG_ea` dropped, the pin without
+  a caller and its node unchanged (task 38.16).
 - **F-291** · L · repeated derivations and a derivable hypothesis in
   `Molecular/AlgebraicInduction/Coupling.lean` and `GenericityDevice.lean`. The rigid forms
   `infinitesimalMotions_sup_range_extProj_eq_top` and
@@ -5712,8 +5713,8 @@ declaration's name as its header writes it:
   pinned ones, and a copy of the projected extraction without `hnev`, through the pinned `injOn`
   form, on the three standard axioms (`scratch/reconcile-lean/Hyps-t341.lean`, gitignored).
   *Found:* RECONCILE round 3 task 34.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.3 and 38.16). Task 38.1: task
-  38.3 has `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` call the pinned
+  *Disposition:* done (tasks 38.3 and 38.16). Task 38.1: task 38.3 has
+  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` call the pinned
   `injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`, without `hnev` (`⟨r, hr⟩`), adds that
   node to `lem:claim-6-4`'s proof `\uses` (the pin's new reach, backward), and deletes (gate 4)
   `injOn_extProj_dualMap_rigidityRows`, `infinitesimalMotions_sup_range_extProj_eq_top`,
@@ -5735,7 +5736,15 @@ declaration's name as its header writes it:
   Round 3: the projected extraction calls the pinned `injOn` form, without `hnev`;
   `lem:claim-6-4`'s proof `\uses` `lem:extProj-preserves-rank-of-inter`; the six deleted, block
   (b) at `a1c4fe3a` finding them blocked only through that extraction (task 38.3). Its `hr` is
-  now derivable (`F-325`).
+  now derivable (`F-325`). Task 38.16: the lemma is
+  `PanelHingeFramework.exists_rankPolynomial_of_linearIndependent`, called by the three.
+  `exists_good_realization_ofParam` keeps its copy: it needs the coordinates themselves, indexed by
+  the basis (`exists_good_realization_reindex`), not a minor, so the lemma does not serve it.
+  Rank–nullity moved above and called in the two. The single-body pin the other way round: the
+  `V(G)` form through the form on `s` (`le_antisymm`, the lower bound by
+  `pinnedMotionsOn_le_pinnedMotions`), as the `V(G)` form cannot bound the motions of a framework
+  rigid on another set; its pin now reaches `screwSpace_finrank` (`def:screw-space`, an ancestor of
+  its node). No statement changes.
 - **F-292** · L · unused hypotheses and repeated derivations in
   `Molecular/AlgebraicInduction/CaseIII/Arms.lean` and `Candidate.lean`.
   `case_III_hsplit_producer_all_k` takes `_hk1 : 1 ≤ k`, which its proof does not use (its one
@@ -6686,7 +6695,8 @@ declaration's name as its header writes it:
   `(hinter.ge (Set.mem_singleton r)).1` for `hr`, on the three standard axioms
   (`scratch/reconcile-lean/t383/Hyps-t383.lean`, gitignored).
   *Found:* RECONCILE round 3 task 38.3.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.16).
+  *Disposition:* done (task 38.16): `hr` dropped, `⟨r, (hinter.ge (Set.mem_singleton r)).1⟩` in
+  its place, and with it the caller's local `hr'`, whose other premises are used elsewhere.
 
 ## M — mathematics and sources
 

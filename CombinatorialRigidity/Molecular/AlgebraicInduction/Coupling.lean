@@ -431,7 +431,7 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inte
 
 /-- **Independent rows that survive the deletion, for a rigid framework** (a step of
 `lem:claim-6-4`): if `ends` gives every link its ends, the hinges at links are nondegenerate, every
-motion is constant on `V(G)`, and `V(G) ∩ proj = {r}` with `r ∈ V(G)`, then some `t` of at least
+motion is constant on `V(G)`, and `V(G) ∩ proj = {r}` (so `r ∈ V(G)`), then some `t` of at least
 `D(|V(G)| − 1)` rows at links stay linearly independent once the columns of `proj` are deleted. The
 rows are those of `exists_independent_panelRow_subfamily_of_rigidOn_linking`; they lie in the row
 space, on which the deletion is injective
@@ -443,7 +443,7 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
-    (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ proj = {r}) :
+    (hinter : F.graph.vertexSet ∩ proj = {r}) :
     ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
       (∀ i ∈ t, F.graph.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
         (ends (i : β × _ × _).1).2) ∧
@@ -453,7 +453,8 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
   classical
   -- Independent rows at links (`exists_independent_panelRow_subfamily_of_rigidOn_linking`).
   obtain ⟨t, hsupp, hcard, hindep⟩ :=
-    F.exists_independent_panelRow_subfamily_of_rigidOn_linking hends hne ⟨r, hr⟩ hrig
+    F.exists_independent_panelRow_subfamily_of_rigidOn_linking hends hne
+      ⟨r, (hinter.ge (Set.mem_singleton r)).1⟩ hrig
   refine ⟨t, hsupp, hcard.ge, ?_⟩
   -- A panel row of `F` whose edge links in `F.graph` is one of `F`'s rigidity rows, so the
   -- subfamily's span lies in `Φ = span rigidityRows`, where `D` is injective

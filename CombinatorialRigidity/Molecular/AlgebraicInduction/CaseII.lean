@@ -60,11 +60,9 @@ the rows of `Gv` vanish. So the two families are independent together
 p. 679), and they number `(D − 1) + D(|V(G)| − 2) = D(|V(G)| − 1) − 1`. -/
 theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α] [Finite β]
     (G Gv : Graph α β) (hGv : Gv ≤ G) (ends : β → α × α)
-    -- the body `v` and its edges `e_a = va` and `e_b = vb`; the proof uses the selector of `e_a`,
-    -- not its link `_hG_ea`
+    -- the body `v`, its edge `e_b = vb`, and the label `e_a` whose selected ends are `v` and `a`
     {v a b : α} {e_a e_b : β} (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
-    (hG_eb : G.IsLink e_b v b) (hends_eb : ends e_b = (v, b))
-    (_hG_ea : G.IsLink e_a v a) (hends_ea : ends e_a = (v, a))
+    (hG_eb : G.IsLink e_b v b) (hends_eb : ends e_b = (v, b)) (hends_ea : ends e_a = (v, a))
     -- `|V(Gv)| = |V(G)| − 1`
     (hVcard : V(Gv).ncard = V(G).ncard - 1)
     -- a realization of `Gv` at the normals `q`: links recorded, nonzero hinges, rigid on `V(Gv)`
