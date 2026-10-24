@@ -1241,8 +1241,9 @@ graphs, S18), **MULTIGRAPH** (M1, Jackson–Jordán 2010's Theorem 6.1 for multi
 **UNSTATED** (the claims no declaration states). Before 41a's spike, the PI scheduled a build-time
 detour (2026-10-24): each commit's full build is ~5 min and limited by one long import chain
 (`notes/PERFORMANCE.md` *Build critical path*), so 41a first trimmed the molecular chain's
-imports (its critical path is 15–20% shorter) and next recons its conversion to Lean's module
-system. Detail → `notes/Phase41a.md` + `notes/Phase41-design.md`.
+imports (its critical path is 15–20% shorter) and, after a recon, converts the whole project to
+Lean's module system, so that an edit inside a proof stops rebuilding the files after it. Detail →
+`notes/Phase41a.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

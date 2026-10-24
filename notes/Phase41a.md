@@ -1,9 +1,9 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 3a and P1 have landed. Next concrete task:
-item P2, a read-only recon of the `module` conversion, whose verdict goes to the PI; then item 4,
-the spike.
+recon are in `notes/Phase41-design.md`. Items 1 to 3a, P1 and P2 have landed.
+Next concrete task: item P3, the first slice of the project's `module` conversion (layers
+0–8); then P4 and P5, then item 4, the spike.
 
 ## Current state
 
@@ -16,10 +16,12 @@ gathered the four scattered link lemmas onto it (*Decisions made*). Item 3 moved
 link conjunct from `G − v` to the splitting-off, and item 3a dropped the up-to-order conjunct
 that then restated it. The sub-phase builds S2's field `isLink_ends` into the carrier (design A,
 `notes/Phase41-design.md` §1.1) and leaves every main result's statement as it is: the
-restatements are RESTATE's. Before the spike, the PI scheduled a build-time detour (items P1–P2):
+restatements are RESTATE's. Before the spike, the PI scheduled a build-time detour (items P1–P5):
 each commit's full build is ~5 min and chain-bound (`notes/PERFORMANCE.md` *Build critical
 path*), and the switch will need several. P1 trimmed the chain's imports, which shortens the
-critical path by 15–20% at fixed module times (*Decisions made*). Mode: structural edit. There are no red target nodes, so the
+critical path by 15–20% at fixed module times. P2's recon found that a proof-only edit spares
+`module` importers only, so the PI scheduled the whole project's conversion, P3–P5 (*Decisions
+made*). Mode: structural edit. There are no red target nodes, so the
 red-node consistency gate has nothing to read; the nodes a slice reaches are restated in that
 slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
@@ -38,47 +40,37 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Lemma checklist
 
-- [x] **1. Retire `reaimSub`** (`Theorem55.lean` only). Move
-  `rankHypothesis_genuine_of_theorem_55_gen` (:2179) below
-  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (:2272) and prove it from that form by
-  dropping its link conjunct. Delete the private `reaimSub` (:846) and
-  `reaimSub_withGraph_infinitesimalMotions` (:860). Repoint the docstrings that name it (:873–878,
-  :2259, :2267, :2520). No statement or pin changes.
-- [x] **2. The link predicate** with its graph-operation lemmas: one name for "the selector records
-  every link of `G`", gathering `Graph.isLink_update_splitOff` (`Short.lean:341`),
-  `Graph.isLink_ends_induce` (`Cut.lean:172`), `recordsLinks_map_of_records` (`CaseI.lean:52`) and
-  `recordsLinks_swap_endsOf` (`Coupling.lean:66`), plus `recordsLinks_mono` and the fill-in tactic.
-  Landed as `RecordsLinks.update_splitOff`, `.induce`, `.map`, `.swap_endsOf`, `.mono` and
-  `link_tac`; all four moved, none left in place.
-- [x] **3. The four R statements** in `CaseIII/Realization.lean` (:823, :1330, :1430, :1943):
-  the link conjunct on the splitting-off, not `G − v`. :1430 is pinned to
-  `lem:case-III-chain-discriminator`, whose statement is restated if it reaches it. The recon's
-  fifth, :1751, is not one: its selector hypothesis `hrecGab` is already on the splitting-off.
-  Landed: the conjunct of :823, :1330 and :1430 and the hypothesis `hends'` of :1943 are
-  `RecordsLinks (G.splitOff …) ends`. The node never states the selector, so it is unchanged.
-- [x] **3a. Item 3's duplicate conjuncts** (coordinator verification, 2026-10-24). The three
-  strengthened conclusions in `CaseIII/Realization.lean` (now :854, :1349, :1444) state
-  `RecordsLinks (G.splitOff …) ends` beside the equivalent up-to-order conjunct
-  `∀ e u w, (G.splitOff …).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)`
-  (`recordsLinks_iff_eq_or_swap`). Keep `RecordsLinks`, drop the up-to-order conjunct, and
-  repair the callers' destructuring. No blueprint node states either conjunct.
-  Landed: the conjunct is gone from all three; `chainData_dispatch` gives :1751's `hrecGab` from
-  `RecordsLinks.eq_or_swap`. The two pinned nodes (:1430's and `chainData_dispatch`'s) state
-  neither form.
-- [x] **P1. Trim the molecular chain's imports** (the build-time detour, PI 2026-10-24).
-  Landed: `lake shake` refuses non-`module` files, so `scripts/ImportShake.lean` ran its analysis
-  on `Molecular/` and `Nonvacuity.lean`: 36 files, 42 imports removed, 33 added, no repair
-  needed. Measured in `notes/PERFORMANCE.md` *Build critical path*, *The import trim*.
-- [ ] **P2. Recon: the molecular chain's `module` conversion** (read-only, after P1). Settle:
-  (a) by a one-file experiment, whether a proof-only edit of a `module` file spares its importers
-  a rebuild under this toolchain's Lake, a `module` importer and a non-`module` one each. Lake
-  rebuilds an importer only when the `.olean` it imports changes, which `lake build --no-build`
-  cannot predict: edit, `lake build`, and count the `Built` lines. (b) The conversion's size and
-  order: 90 of the 152 files are not `module` (73 of `Molecular/`'s 79); a `module` file cannot
-  import a non-`module` one; the `@[expose]` audit; `rfl` proofs through definitions that stop
-  unfolding. (c) How a builder can run the linters on an edited file before the full build
-  (*Build critical path*, lever 3). (d) Whether to convert the whole project or the chain, and
-  before item 4 or after 41a. The PI decides (d).
+- [x] **1. Retire `reaimSub`**: `rankHypothesis_genuine_of_theorem_55_gen` is proved from its
+  link-recording form; `reaimSub` and its lemma are deleted.
+- [x] **2. The link predicate** `RecordsLinks`, with `.update_splitOff`, `.induce`, `.map`,
+  `.swap_endsOf`, `.mono` and `link_tac`; the four scattered link lemmas moved onto it.
+- [x] **3. The four R statements** in `CaseIII/Realization.lean`: the link conjuncts of :823,
+  :1330 and :1430, and :1943's hypothesis `hends'`, are `RecordsLinks (G.splitOff …) ends`; no
+  node restated.
+- [x] **3a. Item 3's duplicate conjuncts**: the up-to-order conjunct is gone from all three;
+  `chainData_dispatch` gets `hrecGab` from `RecordsLinks.eq_or_swap`.
+- [x] **P1. The import trim**: 36 files, 42 imports removed and 33 added, by
+  `scripts/ImportShake.lean` (`notes/PERFORMANCE.md` *The import trim*).
+- [x] **P2. The `module` recon** (`notes/PERFORMANCE.md` *The `module` conversion recon*): a
+  proof-only edit spares only `module` importers; 90 files in 39 layers; `lake lint -- X`
+  adopted; the PI chose to convert now (*Decisions made*).
+- [ ] **P3. Convert layers 0–8 to `module`** (21 files, 18,964 lines; `python3
+  scripts/module-conversion-plan.py --layers`). `--convert` the files, build them alone, and
+  fix what breaks (`CombinatorialRigidity/LEAN-OPS.md` *What a conversion breaks*), the trial's
+  four fixes first: `import Mathlib.Tactic.Ring` in `Matroid/Constructions/Submodular`, `import
+  Mathlib.Algebra.BigOperators.Ring.Finset` in `Union`, `@[expose]` on
+  `SimpleGraph.rigidityMatroid`, `setOfPred_minimal_antichain`. Keep the file-wide `@[expose]
+  public section` (narrowing was perf-neutral, Phase 9-perf F1); no `backward.privateInPublic`,
+  so a `private` declaration that a public statement or exposed body names stops being private.
+  Then the full gates; layer 0 is under nearly every file, so the build rebuilds most of the
+  tree. If the fixes outrun one builder run, land a prefix of the layers.
+- [ ] **P4. Layers 9–18** (23 files, 22,587 lines, up to `Theorem55`), as P3. `link_tac`, a
+  `macro`, is in `PanelHinge`.
+- [ ] **P5. Layers 19–38** (46 files, 29,202 lines, the root included), as P3. Then measure a
+  proof-only and a statement edit at `CaseIII/Realization` against *Build critical path*'s
+  figures, in `notes/PERFORMANCE.md`; `lake shake` then runs, and can retire
+  `scripts/ImportShake.lean`; `CombinatorialRigidity/CLAUDE.md`, `LEAN-OPS.md` and
+  *Module system* stop calling the conversion in progress.
 - [ ] **4. The spike** (a throwaway worktree, nothing landed): add the field, build, and list what
   breaks. Record the figure here and slice the switch by it.
 - [ ] **5. The switch**: the field; the constructors with the filled-in proof; the H binders (at
@@ -101,15 +93,12 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 - The switch's size is unknown until the spike (commit 4).
 - The H count (at most 56) is an upper bound from a regex scan.
-- **Whether and when to convert to `module`**: the PI's, after P2's recon. The PI asked,
-  2026-10-24, verbatim: "Should we modulize the rest of this project?" The agent answered
-  yes, the whole project, after the switch, if P2's experiment (a) confirms that a proof-only
-  edit spares the importers.
+- The conversion's fix count is a trial's: four fixes in six files of the simplest layers.
 
 ## Hand-off / next phase
 
-P2 first: a read-only `recon-opus` (checklist item P2), whose verdict goes to the PI with the
-question under *Blockers*. Then item 4, the spike,
+P3 first: convert layers 0–8 (checklist item P3), one commit, or a prefix of the layers if the
+fixes outrun one builder run. Then P4 and P5 the same way. Then item 4, the spike,
 in a throwaway worktree with nothing landed: add the field `isLink_ends :
 RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`), build,
 and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
@@ -123,7 +112,14 @@ The decisions of the open are `notes/Phase41-design.md` §1.
 
 - **A build-time detour before the spike** (PI, 2026-10-24, verbatim: "Let's schedule the
   build-time detour for the next session"). Items P1 (the import trim) and P2 (the `module`
-  recon) run first in the next session, before item 4; the conversion's timing follows P2.
+  recon) run before item 4, and so do P3–P5, the conversion P2 led to.
+- **The whole project converts to `module`, before the spike** (P2; PI, 2026-10-24, choosing
+  "Now, before the spike" over the agent's recommendation, after 41a). A proof-only edit spares
+  only `module` importers, the chain's closure is 89 of the 90 files, and the root must convert,
+  so the chain's conversion is the project's. The switch's edits change public statements, so
+  its builds gain only the smaller import loads. File-wide `@[expose]`, sliced by layer.
+- **A per-file lint check before the full build** (P2; PI, 2026-10-24): `lake lint -- X`, in
+  `CombinatorialRigidity/CLAUDE.md` *Before each commit — build and lint gates*.
 - **The import trim** (item P1). `lake shake` refuses any closure with a non-`module` file, so
   `scripts/ImportShake.lean` does its analysis for them. The trim drops four links from the
   chain an edit at `CaseIII/Realization.lean` rebuilds (26 to 22), 15–20% of the critical path

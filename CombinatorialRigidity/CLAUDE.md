@@ -69,12 +69,14 @@ Follow it. Three more:
 
 ## Module-system conversion → `LEAN-OPS.md`
 
-62 of the project's 152 files use Lean's module system (`module`, `public
-import`, `@[expose] public section`); the other 90 (`Molecular/`, `BodyBar/`,
-the Jacobs files, the root and a few more) do not yet. Converting a file, its
-constraints, and the rule of zero `backward.privateInPublic` opt-ins (don't add
-one) are in `LEAN-OPS.md` *Module-system conversion*; per-file dispositions are
-in `../notes/PERFORMANCE.md`.
+The project is converting its last non-`module` files (`Molecular/`,
+`BodyBar/`, the Jacobs files, the root and a few more) to Lean's module system
+(`module`, `public import`, `@[expose] public section`): Phase 41a's items
+P3–P5. `python3 scripts/module-conversion-plan.py` lists the files left, in
+conversion order. Converting a file, its constraints, the failures to expect,
+and the rule of zero `backward.privateInPublic` opt-ins (don't add one) are in
+`LEAN-OPS.md` *Module-system conversion*; per-file dispositions are in
+`../notes/PERFORMANCE.md`.
 
 ## Patching the `Matroid` dependency → `LEAN-OPS.md`
 
@@ -227,12 +229,22 @@ keeps the project's API gaps from accumulating silently.
 **Run both `lake build` and `lake lint`.** Both are CI gates
 (`../.github/workflows/push_pr.yml`), and the full-project linter
 (`runLinter`) catches `simpNF` and `unusedArguments` issues the compile-time
-`mathlibStandardSet` linter misses. Both commands are exactly as written:
-`lake lint` takes **no arguments** (`lake lint CombinatorialRigidity` fails
-with `unexpected arguments`). If a lake invocation errors on syntax, re-read
-this section or `lake help`; do **not** guess flags.
+`mathlibStandardSet` linter misses. The gate is bare `lake lint`, with no
+arguments. A module named before `--` (`lake lint CombinatorialRigidity.X`)
+narrows only Lake's builtin lints (`lake help lint`), not `runLinter`, so it is
+not a narrower gate. If a lake invocation errors on syntax, re-read this
+section or `lake help`; do **not** guess flags.
 
-> **`lake lint` needs the full default-target closure built.** `runLinter`
+**Check each edited file before the full build.** For each module `X` the
+commit edits, `lake build X` (its compile-time warnings) and then
+`lake lint -- X`, which passes `X` to `runLinter`. It lints the project
+declarations in `X`'s import closure, so it needs only that closure built,
+and it takes ~15 s even at `CaseIII/Realization` (`../notes/PERFORMANCE.md`
+*The `module` conversion recon*). It does not replace the two gates: it misses
+what the edit breaks downstream. It saves a second whole-project build for a
+lint failure in the edited file (Phase 41a's item 2 paid one, ~5 min).
+
+> **Bare `lake lint` needs the full default-target closure built.** `runLinter`
 > loads every olean in the `CombinatorialRigidity` target, so after building
 > only a touched deep-upstream module (e.g. `Mathlib/.../Rank.lean`) it dies
 > with `object file '…/Foo.olean' … does not exist`, which is not a lint

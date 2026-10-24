@@ -1127,11 +1127,10 @@ Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–
    Done; measured below (*The import trim*).
 2. **Convert the molecular chain to `module`** (*Module system* above: 73 of `Molecular/`'s 79
    files are not). Its blocker, `apnelson1/Matroid` being non-`module`, is gone: 362 of its 365
-   files are converted, and the project imports none of the other three. Whether a proof-only
-   edit of a `module` file then spares its importers a rebuild is to be checked by a one-file
-   experiment before it is relied on.
+   files are converted, and the project imports none of the other three. Recon done, and the
+   conversion scheduled (*The `module` conversion recon*).
 3. **Catch `lake lint` failures before the full build.** Item 2's builder paid a second ~5 min
-   build for a lint failure that a check of the edited file could have shown.
+   build for a lint failure that a check of the edited file could have shown. Adopted (ibid.).
 
 ### The import trim (Phase 41a, item P1)
 
@@ -1166,6 +1165,48 @@ Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–
   importer only when the `.olean` it imports changes, so the first baseline attempt, a trailing
   comment, rebuilt `Realization.lean` alone (27 s). P1 nudged with a throwaway
   `theorem timingNudge : True := trivial`, removed after.
+
+### The `module` conversion recon (Phase 41a, item P2)
+
+- **A proof-only edit spares `module` importers, not non-`module` ones.** Lake keys a `module`
+  importer's rebuild on the imported file's public `.olean` alone, and a non-`module` importer's
+  on all of its artifacts, the private `.olean` with the proofs included (the toolchain's
+  `Lake/Build/Module.lean`: `ModuleImportInfo.addImport`, `computeMetaExportInfo`).
+  `scripts/module-rebuild-probe.sh` checks it on four throwaway files in ~15 s: a proof-only
+  edit rebuilds the file and its non-`module` importer only, also when it shifts the lines of
+  later declarations. On a real file, a proof-only edit of `Jacobs.lean` rebuilt
+  `JacobsCounting` (non-`module`, 12 s) and not `RigidityMatroid` (`module`).
+- **The exception is the axioms.** The public `.olean` records each theorem's axioms, so a
+  proof edit that changes them rebuilds every importer (the probe's step 3: `exact` to `omega`
+  adds `propext` and `Quot.sound`). Nearly every project theorem uses all three standard
+  axioms, so this is rare.
+- **What it buys.** With every file a `module`, a proof-only edit rebuilds the edited file
+  alone: at `CaseIII/Realization.lean`, one module (27 s) against 48 and ~5 min. An edit to a
+  statement, a definition's body or an attribute changes the public `.olean`, and the importers
+  rebuild as now; there the gain is each link's smaller import load (*Experiments that did
+  pay*), unmeasured on this chain. The root must convert too: a non-`module` root rebuilds
+  (22 s) after every edit.
+- **The size.** `scripts/module-conversion-plan.py`: 90 files, 70,753 lines, 39 layers. The
+  chain's import closure is 89 of them, so converting the chain converts the project. Layers
+  0–8 are 21 files and 18,964 lines (`BodyBar/`, the vendored `Matroid/Constructions/`, three
+  Jacobs files, `Deficiency`, `Induction/Operations`); 9–18 are 23 files and 22,587 lines, up to
+  `Theorem55`; 19–38 are 46 files and 29,202 lines (`GenericLift/`, `Molecule/`, `Pencil/`,
+  `Nonvacuity`, the root).
+- **The trial.** Layers 0–2 (6 files, 2,789 lines), converted by `--convert` and built on their
+  own: four built at once, and two needed four one-line fixes (`CombinatorialRigidity/LEAN-OPS.md`
+  *What a conversion breaks*): two direct imports, one `@[expose]` (`SimpleGraph.rigidityMatroid`,
+  under an `rfl` in `LinearRigidityMatroid`), and one deprecated alias,
+  `setOf_minimal_antichain`, that warned only once converted, for a reason not isolated (a
+  two-line non-`module` file warns on it). Reverted; nothing landed. The 99 `private`
+  declarations (14 of them definitions) and `link_tac`'s `macro` were not reached by it;
+  `--hazards` lists them by file.
+- **The lint check (lever 3).** `lake lint -- X` hands `X` to `runLinter`, which lints the
+  project declarations in `X`'s import closure: 11 s at `Jacobs`, 16 s at `CaseIII/Realization`
+  (14.6 s with `--only-modules`, which narrows only the 4 local linters of 15). Adopted as a
+  per-file check before the full build (`CombinatorialRigidity/CLAUDE.md` *Before each commit —
+  build and lint gates*).
+- **The PI's call** (2026-10-24): convert the whole project now, before the spike, as Phase
+  41a's items P3–P5.
 
 ## Recommendations for future perf work
 

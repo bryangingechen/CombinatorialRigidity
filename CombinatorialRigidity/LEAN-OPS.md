@@ -23,6 +23,25 @@ copyright block (the keyword *is* the marker — no `import`); (2) every
 `import X` → `public import X`; (3) an unnamed `@[expose] public section`
 between the `/-! … -/` doc block and the first declaration (closes
 implicitly at EOF; existing `namespace/end` pairs unchanged).
+From the repository root, `python3 scripts/module-conversion-plan.py --convert
+<file>…` applies the three steps; with no flag it lists the files left, in an
+order that keeps each commit building (`--layers`), and what to check in each
+(`--hazards`).
+
+**What a conversion breaks** (the Phase 41a trial of six files: four built
+at once, two needed four one-line fixes; `../notes/PERFORMANCE.md` *The
+`module` conversion recon*):
+- **The import closure narrows.** A `module` file sees only what its imports
+  re-export, so a tactic or lemma reached through an upstream file's private
+  `import` is gone: `unknown tactic` (`ring`, via `Mathlib.Tactic.Linarith`) or
+  `Unknown constant` (`Nat.cast_sum`). Import it directly, with a plain
+  `import` when only proofs use it.
+- **Bodies hidden upstream stop unfolding.** An `rfl`, `rw [f]` or `unfold f`
+  through a definition that an already-`module` file does not expose (19
+  project files use `public section`, and mathlib exposes little) fails. Add
+  `@[expose]` to the project definition, or use a lemma about it.
+- **A name can warn where it did not.** A deprecated alias that the
+  non-`module` file used silently warned once converted. Use the replacement.
 
 **Constraints:**
 - A `module` file can only `import` (or `public import`) other `module`
@@ -30,7 +49,7 @@ implicitly at EOF; existing `namespace/end` pairs unchanged).
   ~98.6% converted. The holdout that kept
   `LinearRigidityMatroid.lean` non-`module`, `Matroid.Representation.Map`
   (`apnelson1/Matroid`), is itself a `module` since the `Matroid` pin `8ece630`,
-  so that reason has lapsed (the file stays non-`module` for now; see
+  so that reason has lapsed (the file converts in Phase 41a's first slice; see
   `../notes/Bump-v4.36.0-rc1.md`). Non-`module` files import
   `module` files freely, so the rest of the project is unaffected.
 - `public section` hides `def` bodies for defeq *intra*-module too
