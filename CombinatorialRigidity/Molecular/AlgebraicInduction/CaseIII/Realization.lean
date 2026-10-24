@@ -878,9 +878,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
         BodyHingeFramework.hingeRow a b ρ
           = ∑ j, cGv j • BodyHingeFramework.hingeRow (uvGv j) (vvGv j) (rvGv j)) ∧
       -- the normals are off the zeros of `Pu`
-      MvPolynomial.eval q Pu ≠ 0 ∧
-      -- `ends` gives each link of `Gab`, `e₀` included, its ends in some order
-      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
+      MvPolynomial.eval q Pu ≠ 0 := by
   classical
   have : Fintype α := Fintype.ofFinite α
   set Gab := G.splitOff v a b e₀ with hGab
@@ -1007,8 +1005,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
   refine ⟨q, Q.ends, ?_⟩
   rcases hrec' e₀ a b he₀ab with he | he
   · -- recorded `(a, b)`: take `ρ` as is.
-    refine ⟨ρ, w, lamAB, rab, hgp', hrecGab, hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hq_u,
-      hrec'⟩
+    refine ⟨ρ, w, lamAB, rab, hgp', hrecGab, hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hq_u⟩
     · rw [hsupp_e₀, he] at hρe₀'; exact hρe₀'
     · rw [he] at hρGv'; exact hρGv'
     · intro j
@@ -1024,7 +1021,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
     -- a subspace, and `-ρ = Σ_j λ_j (-rab j)`).
     refine ⟨-ρ, w, lamAB, fun j => -rab j, hgp', hrecGab, neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_,
       fun j => (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.hingeRowBlock e₀ |>.neg_mem
-        (hrab_blk j), ?_, ?_, hq_u, hrec'⟩
+        (hrab_blk j), ?_, ?_, hq_u⟩
     · rw [hsupp_e₀, he] at hρe₀'
       rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρe₀', neg_zero, neg_zero]
     · rw [he] at hρGv'
@@ -1375,16 +1372,14 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate [Infi
       ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0 ∧
       -- `hingeRow a b ρ₀` lies in the row space of `R(G − v, q)` with the selector `ends`
       BodyHingeFramework.hingeRow a b ρ₀ ∈ Submodule.span K
-        (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows ∧
-      -- `ends` gives each link of `Gab`, `e₀` included, its ends in some order
-      (∀ e u w, (G.splitOff v a b cd.e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
+        (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows := by
   -- The polynomial that makes `q(u_0), …, q(u_{d−1})` linearly independent, for the injective
   -- `candidatePanel hn`: the `Pu` of `chainData_split_w6b_gates`.
   obtain ⟨Ptup, hPtup_ne, hPtup_trans⟩ :=
     exists_tupleLI_polynomial (K := K) (cd.candidatePanel_injective hn)
   -- The normals, off the zeros of `Ptup`, the form `ρ₀`, the bottom rows and the forms `rab`.
   obtain ⟨q, ends, ρ₀, w, lamAB, rab, hgp, hends', hρ₀ne, hρ₀e₀, hρ₀Gv, hw,
-      hwmem, hrab_blk, hρ₀_lam, hedgeGv, hPtup_eval, hrecGab⟩ :=
+      hwmem, hrab_blk, hρ₀_lam, hedgeGv, hPtup_eval⟩ :=
     PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG
       he₀ hGloop Ptup hPtup_ne h622lb hn hdef_Gab hsplitGP
   -- The choice of a panel, at `ρ₀` and at the normals `q`, whose panels are linearly independent by
@@ -1395,7 +1390,7 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate [Infi
   -- The index `i := Fin.cast d_eq_kAdd.symm u`; `candidatePanel hn u` is `candidateVtx i` by
   -- definition (`candidatePanel_apply`).
   refine ⟨q, ends, ρ₀, w, lamAB, rab, Fin.cast (cd.d_eq_kAdd hn).symm u, n', hgp, hends',
-    hρ₀ne, hρ₀e₀, hw, hwmem, hrab_blk, hρ₀_lam, hedgeGv, ?_, ?_, hρ₀Gv, hrecGab⟩
+    hρ₀ne, hρ₀e₀, hw, hwmem, hrab_blk, hρ₀_lam, hedgeGv, ?_, ?_, hρ₀Gv⟩
   · rw [← cd.candidatePanel_apply hn u]; exact hLI
   · rw [← cd.candidatePanel_apply hn u]; exact hgate
 
@@ -1468,9 +1463,7 @@ theorem PanelHingeFramework.chainData_fire_discriminator [Infinite K]
       ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0 ∧
       BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀ ∈
         Submodule.span K (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
-          ends q).toBodyHinge.rigidityRows ∧
-      (∀ e u w, (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
+          ends q).toBodyHinge.rigidityRows := by
   -- The split `(v, a, b) = (vtx 1, vtx 0, vtx 2)`, with the edges `edge 0 : v₀v₁` and
   -- `edge 1 : v₁v₂` from `v₁`, and the edges of `G` at `v₁` (`Graph.ChainData.splitOff_data_one`).
   obtain ⟨hav, hbv, hba, heab, hlea, hleb, hclv⟩ := cd.splitOff_data_one hd2
@@ -2119,13 +2112,16 @@ theorem PanelHingeFramework.chainData_dispatch [Infinite K]
       (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀)) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   obtain ⟨q, ends, ρ₀, w, lamAB, rab, i, n', hgp, hends', -, hρ₀e₀, hw, hwmem',
-      hrab, hρ₀sum, hedgeGv, hLI, hgate, hρ₀Gv, hrecGab⟩ :=
+      hrab, hρ₀sum, hedgeGv, hLI, hgate, hρ₀Gv⟩ :=
     PanelHingeFramework.chainData_fire_discriminator cd hd2 hk1 hn hG hV3 hSimple hIH hdef_Gab
       hsplitGP
   by_cases hint : 2 ≤ (i : ℕ)
   · have h3 : 3 ≤ cd.d := by have := i.isLt; omega
+    -- `hends'` up to order, as `chainData_dispatch_interior_of_discriminator` takes it.
     exact PanelHingeFramework.chainData_dispatch_interior_of_discriminator cd h3 hSimple i hint
-      hgp hρ₀e₀ hw hwmem' hedgeGv hLI hgate hρ₀Gv hrecGab hG.1
+      hgp hρ₀e₀ hw hwmem' hedgeGv hLI hgate hρ₀Gv
+      (fun _ _ _ hl => (hends'.eq_or_swap hl).imp (fun h => Prod.ext h.1 h.2)
+        (fun h => Prod.ext h.1 h.2)) hG.1
   · have h1i : (i : ℕ) ≤ 1 := by omega
     exact PanelHingeFramework.chainData_dispatch_floor_of_discriminator cd hd2 hSimple i h1i
       hgp hends' hρ₀e₀ hw hwmem' hLI hgate hρ₀Gv hG.1

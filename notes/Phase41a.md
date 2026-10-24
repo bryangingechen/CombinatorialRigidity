@@ -1,8 +1,8 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 3 have landed. Next concrete task: item 3a
-below, dropping item 3's duplicate conjuncts; then item 4, the spike.
+recon are in `notes/Phase41-design.md`. Items 1 to 3a have landed. Next concrete task: item 4,
+the spike, in a throwaway worktree with nothing landed.
 
 ## Current state
 
@@ -12,7 +12,8 @@ its link conjunct dropped, so both Theorem-5.6 assemblies (the genuine and the r
 re-add through `reaimSubLink`. Item 2 added the link predicate `PanelHingeFramework.RecordsLinks`
 (`PanelHinge.lean`, above the structure) with its lemmas and the fill-in tactic `link_tac`, and
 gathered the four scattered link lemmas onto it (*Decisions made*). Item 3 moved the R statements'
-link conjunct from `G − v` to the splitting-off. The sub-phase builds S2's field `isLink_ends` into the carrier (design A,
+link conjunct from `G − v` to the splitting-off, and item 3a dropped the up-to-order conjunct
+that then restated it. The sub-phase builds S2's field `isLink_ends` into the carrier (design A,
 `notes/Phase41-design.md` §1.1) and leaves every main result's statement as it is: the
 restatements are RESTATE's. Mode: structural edit. There are no red target nodes, so the
 red-node consistency gate has nothing to read; the nodes a slice reaches are restated in that
@@ -51,12 +52,15 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
   fifth, :1751, is not one: its selector hypothesis `hrecGab` is already on the splitting-off.
   Landed: the conjunct of :823, :1330 and :1430 and the hypothesis `hends'` of :1943 are
   `RecordsLinks (G.splitOff …) ends`. The node never states the selector, so it is unchanged.
-- [ ] **3a. Item 3's duplicate conjuncts** (coordinator verification, 2026-10-24). The three
+- [x] **3a. Item 3's duplicate conjuncts** (coordinator verification, 2026-10-24). The three
   strengthened conclusions in `CaseIII/Realization.lean` (now :854, :1349, :1444) state
   `RecordsLinks (G.splitOff …) ends` beside the equivalent up-to-order conjunct
   `∀ e u w, (G.splitOff …).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)`
   (`recordsLinks_iff_eq_or_swap`). Keep `RecordsLinks`, drop the up-to-order conjunct, and
   repair the callers' destructuring. No blueprint node states either conjunct.
+  Landed: the conjunct is gone from all three; `chainData_dispatch` gives :1751's `hrecGab` from
+  `RecordsLinks.eq_or_swap`. The two pinned nodes (:1430's and `chainData_dispatch`'s) state
+  neither form.
 - [ ] **4. The spike** (a throwaway worktree, nothing landed): add the field, build, and list what
   breaks. Record the figure here and slice the switch by it.
 - [ ] **5. The switch**: the field; the constructors with the filled-in proof; the H binders (at
@@ -82,8 +86,7 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Hand-off / next phase
 
-Item 3a first (one commit, `CaseIII/Realization.lean` and its callers). Then item 4, the spike, in
-a throwaway worktree with nothing landed: add the field `isLink_ends :
+Item 4, the spike, in a throwaway worktree with nothing landed: add the field `isLink_ends :
 RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`), build,
 and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
 binder-order note. Then slice item 5, the switch, by that count.
@@ -101,8 +104,8 @@ The decisions of the open are `notes/Phase41-design.md` §1.
   field. The callers convert their link-form `hends` (FRICTION [open] *The tree's link
   hypotheses are in the form at links…*), which the H binders of item 5 can avoid.
 - **The R statements** (item 3). The strengthened conjunct takes the predicate form,
-  `RecordsLinks (G.splitOff …) ends`. In :823, :1330 and :1430 it now restates the last conjunct
-  (the same record, up to order, `recordsLinks_iff_eq_or_swap`), which item 5 or 7 can drop. R is
+  `RecordsLinks (G.splitOff …) ends`. In :823, :1330 and :1430 it restated the last conjunct
+  (the same record, up to order, `recordsLinks_iff_eq_or_swap`), which item 3a dropped. R is
   4, not the recon's 5: :1751's only selector hypothesis, `hrecGab`, was already on the
   splitting-off (the `G − v` links in its `hedgeGv` are of the edges `evGv`, not of `ends`), so
   it is unchanged. :1943 derives the record on `G − v₁` by `.mono` and

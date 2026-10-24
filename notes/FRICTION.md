@@ -120,12 +120,15 @@ to be re-derived by re-reading entries later.
 ### [open] The tree's link hypotheses are in the form at links; `RecordsLinks` is the form on `E(G)`
 - **Where it bit:** Phase 41a, item 2: the callers of the four link lemmas gathered onto
   `PanelHingeFramework.RecordsLinks` (`Short`, `SplitOff`, `Orbit`, `Cut`, `Ear` and
-  `ContractAdditive.lean` under `Pencil/MainComponent/`, `CaseI.lean`, `Theorem55.lean`).
+  `ContractAdditive.lean` under `Pencil/MainComponent/`, `CaseI.lean`, `Theorem55.lean`); item 3a,
+  `chainData_dispatch` (`CaseIII/Realization.lean`).
 - **Friction:** their `hends` are `∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`, and
   so are the hypotheses they feed, so each call converts twice:
   `recordsLinks_iff_forall_isLink.mp ((recordsLinks_iff_forall_isLink.mpr hends).induce X)`, with a
   local `hendsG` where a proof converts more than once. The up-to-order form of
-  `HasGenericFullRankRealization` goes through `recordsLinks_iff_eq_or_swap`.
+  `HasGenericFullRankRealization` goes through `recordsLinks_iff_eq_or_swap`. A third form, up to
+  order on the pair (`ends e = (u, v) ∨ ends e = (v, u)`: `hrecGab`, `hrecEnds`, `h622lb` in
+  `CaseIII/`), has no lemma: `(h.eq_or_swap hl).imp (fun h => Prod.ext h.1 h.2) (fun h => …)`.
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go.
 - **Status:** open.
