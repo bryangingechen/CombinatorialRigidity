@@ -596,7 +596,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
   have hFgraph : F.graph = G := by
     simp only [hFdef, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
   have hrigVAB : F.IsInfinitesimallyRigidOn {v, a, b} :=
-    BodyHingeFramework.theorem_55_triangle F hav.symm hab hbv.symm hgen
+    BodyHingeFramework.theorem_55_triangle F hgen
       (hFgraph ▸ hG_ea) (hFgraph ▸ hf) (hFgraph ▸ hG_eb.symm)
   -- `V(G) = {v, a, b}`, and a generic full-rank realization.
   have hrig : F.IsInfinitesimallyRigidOn V(G) := by rwa [hVeq]

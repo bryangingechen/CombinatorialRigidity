@@ -1006,7 +1006,7 @@ to be re-derived by re-reading entries later.
   pj]` framing would avoid the matrix detour but `mulVecLin` keeps the kernel a single `ker` for
   rank–nullity.
 - **Status:** resolved. The pattern recurred (three more copies in
-  `PanelLayer.lean`: `exists_two_perp_of_linearIndependent_normals`,
+  `PanelLayer.lean`: `exists_two_perp_of_linearIndependent_normals` (since deleted),
   `exists_three_perp`, `exists_extensor_in_two_panels`), so Phase 23a Leaf 1
   factored it into the general brick `exists_linearIndependent_perp_of_normals
   {r m} (N : Fin r → Fin (k+2) → ℝ) (hmr : m + r ≤ k + 2)` (PanelLayer) — `m` LI
@@ -1485,8 +1485,8 @@ to be re-derived by re-reading entries later.
   heartbeats). The sibling entry's "application unifies up to defeq" holds, but the
   framework defeq wrapped in `IsInfinitesimallyRigidOn` (a `dualCoannihilator`-of-span
   predicate over the screw-assignment space) is *too expensive* to discharge lazily —
-  and `rw [ofParam_eq_ofNormals_momentCurve] at hblock hcontract` whnf-times-out the
-  same way (the motive re-check is just as heavy). The cheap-defeq lesson ≠ the
+  and `rw [ofParam_eq_ofNormals_momentCurve] at hblock hcontract` (that lemma since deleted)
+  whnf-times-out the same way (the motive re-check is just as heavy). The cheap-defeq lesson ≠ the
   cost-of-defeq one.
 - **Fix:** state the leg hypotheses *already* in the target `ofNormals`-at-moment-curve
   form (so the heavy term matches syntactically — no defeq needed on it), and isolate

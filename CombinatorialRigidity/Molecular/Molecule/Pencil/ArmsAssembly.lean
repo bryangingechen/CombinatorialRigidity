@@ -211,7 +211,7 @@ theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph 
           omega
         have hgen : LinearIndependent K ![F.supportExtensor e, F.supportExtensor f] := by
           rw [hFe, hFf]; exact hCEF_li
-        have hrig : F.IsInfinitesimallyRigidOn {x, y} := F.theorem_55_base hxy hgen hl_e hl_f
+        have hrig : F.IsInfinitesimallyRigidOn {x, y} := F.theorem_55_base hgen hl_e hl_f
         have hrigV : F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
           rw [hFg, hVG]; exact hrig
         have hB1 :=

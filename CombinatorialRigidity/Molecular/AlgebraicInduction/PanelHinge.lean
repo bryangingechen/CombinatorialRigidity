@@ -134,27 +134,54 @@ def momentCurve (t : K) : Fin (k + 2) → K := fun i => t ^ (i : ℕ)
 @[simp]
 theorem momentCurve_apply (t : K) (i : Fin (k + 2)) : momentCurve t i = t ^ (i : ℕ) := rfl
 
-/-- **Two moment-curve points at distinct parameters are linearly independent** (a step of
-`lem:moment-curve-general-position` and `lem:generic-normals-nondegenerate`): for `s ≠ t`, a
-vanishing combination `c₁ • momentCurve s + c₂ • momentCurve t = 0` gives `c₁ + c₂ = 0` and
-`c₁ s + c₂ t = 0` at the coordinates `0` and `1` (the second exists as `k + 2 ≥ 2`), so
-`c₁ (s − t) = 0`, and `c₁ = c₂ = 0`. -/
-theorem momentCurve_pair_linearIndependent {s t : K} (hst : s ≠ t) :
-    LinearIndependent K ![momentCurve (k := k) s, momentCurve t] := by
+/-- **A nonzero leading minor makes two vectors independent** (a step of
+`momentCurve_pair_linearIndependent` and `exists_generalPosition_polynomial`): if
+`v 0 · w 1 − v 1 · w 0 ≠ 0`, then `v` and `w` are linearly independent. A vanishing combination
+`c₁ • v + c₂ • w = 0`, read at the coordinates `0` and `1`, gives `c₁ (v 0 · w 1 − v 1 · w 0) = 0`,
+so `c₁ = 0`, and then `c₂ = 0`, as `w 0` or `w 1` is nonzero. At two moment-curve points the minor
+is `t − s` (`momentCurve_pair_linearIndependent`). -/
+theorem pair_linearIndependent_of_leading_minor_ne_zero {v w : Fin (k + 2) → K}
+    (h : v 0 * w ⟨1, by omega⟩ - v ⟨1, by omega⟩ * w 0 ≠ 0) :
+    LinearIndependent K ![v, w] := by
   rw [LinearIndependent.pair_iff]
-  intro c₁ c₂ h
-  have h0 := congr_fun h 0
-  have h1 := congr_fun h ⟨1, by omega⟩
-  simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, momentCurve_apply, Fin.val_zero,
-    pow_zero, pow_one, smul_eq_mul, mul_one] at h0 h1
+  intro c₁ c₂ hc
+  have h0 := congr_fun hc 0
+  have h1 := congr_fun hc ⟨1, by omega⟩
+  simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul] at h0 h1
   have hc₁ : c₁ = 0 := by
-    have : c₁ * (s - t) = 0 := by linear_combination h1 - t * h0
+    have hmul : c₁ * (v 0 * w ⟨1, by omega⟩ - v ⟨1, by omega⟩ * w 0) = 0 := by
+      linear_combination w ⟨1, by omega⟩ * h0 - w 0 * h1
+    rcases mul_eq_zero.mp hmul with h' | h'
+    · exact h'
+    · exact absurd h' h
+  refine ⟨hc₁, ?_⟩
+  -- With `c₁ = 0` the first coordinate equation reads `c₂ • w 0 = 0`; but the minor is nonzero, so
+  -- `(w 0, w 1) ≠ (0, 0)`, and `c₂` annihilates both, forcing `c₂ = 0`.
+  have hw : w 0 ≠ 0 ∨ w ⟨1, by omega⟩ ≠ 0 := by
+    by_contra hcon
+    rw [not_or, not_not, not_not] at hcon
+    apply h
+    rw [hcon.1, hcon.2]; ring
+  rcases hw with hw | hw
+  · have : c₂ * w 0 = 0 := by rw [hc₁, zero_mul, zero_add] at h0; exact h0
     rcases mul_eq_zero.mp this with h' | h'
     · exact h'
-    · exact absurd (sub_eq_zero.mp h') hst
-  refine ⟨hc₁, ?_⟩
-  rw [hc₁, zero_add] at h0
-  exact h0
+    · exact absurd h' hw
+  · have : c₂ * w ⟨1, by omega⟩ = 0 := by
+      rw [hc₁, zero_mul, zero_add] at h1; exact h1
+    rcases mul_eq_zero.mp this with h' | h'
+    · exact h'
+    · exact absurd h' hw
+
+/-- **Two moment-curve points at distinct parameters are linearly independent** (a step of
+`lem:moment-curve-general-position` and `lem:generic-normals-nondegenerate`): for `s ≠ t`, the
+leading minor of `momentCurve s` and `momentCurve t` is `t − s ≠ 0`
+(`pair_linearIndependent_of_leading_minor_ne_zero`). -/
+theorem momentCurve_pair_linearIndependent {s t : K} (hst : s ≠ t) :
+    LinearIndependent K ![momentCurve (k := k) s, momentCurve t] :=
+  pair_linearIndependent_of_leading_minor_ne_zero (by
+    simp only [momentCurve_apply, Fin.val_zero, pow_zero, pow_one, one_mul, mul_one]
+    exact sub_ne_zero.mpr (Ne.symm hst))
 
 /-- **The moment-curve general-position assignment** (the normals of
 `lem:moment-curve-general-position`): given an injective parameter map `param : α → K` assigning a
@@ -181,16 +208,6 @@ theorem withMomentNormals_ends (P : PanelHingeFramework K k α β) (param : α �
 @[simp]
 theorem withMomentNormals_normal (P : PanelHingeFramework K k α β) (param : α → K) (a : α) :
     (P.withMomentNormals param).normal a = momentCurve (param a) := rfl
-
-/-- **Moment-curve normals are in general position** (`lem:moment-curve-general-position`): if
-`param` is injective, the normals of `P.withMomentNormals param` are in general position, as
-distinct bodies get distinct parameters and moment-curve points at distinct parameters are linearly
-independent (`momentCurve_pair_linearIndependent`). No declaration uses it. -/
-theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework K k α β) {param : α → K}
-    (hparam : Function.Injective param) : (P.withMomentNormals param).IsGeneralPosition := by
-  intro a b hab
-  simp only [withMomentNormals_normal]
-  exact momentCurve_pair_linearIndependent (fun h => hab (hparam h))
 
 /-- **The moment-curve panel framework on a graph** (the normals of
 `lem:moment-curve-general-position`): the from-scratch panel-hinge framework built directly from a
@@ -228,7 +245,7 @@ Unlike `ofParam`, whose normals lie on the moment curve, it takes any normals: t
 Theorem 5.5 chooses its normals as a point `q` off the zeros of finitely many polynomials
 (`fmlnote:generic-full-rank`), and the coordinates of the rows of `ofNormals G ends q` are
 polynomials in `q` (`lem:rows-polynomial-in-normals`). `ofParam` is the case
-`q (a, i) = (param a)^i` (`ofParam_eq_ofNormals_momentCurve`). -/
+`q (a, i) = (param a)^i`, by definition. -/
 def ofNormals (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K) :
     PanelHingeFramework K k α β where
   graph := G
@@ -279,59 +296,24 @@ theorem ofNormals_panelRow_eq_hingeRow_of_ends_or_swap
       ofNormals_supportExtensor_eq_panel_of_ends _ e h, panelSupportExtensor_swap,
       annihRow_neg, ← BodyHingeFramework.hingeRow_swap]
 
-/-- **`ofParam` is `ofNormals` at the moment curve**: `ofParam G ends param` is `ofNormals G ends q`
-with `q (a, i) = momentCurve (param a) i = (param a)^i`, by definition. No declaration uses it. -/
-theorem ofParam_eq_ofNormals_momentCurve (G : Graph α β) (ends : β → α × α) (param : α → K) :
-    ofParam (k := k) G ends param
-      = ofNormals (k := k) G ends (fun p => momentCurve (param p.1) p.2) := rfl
-
 /-- **Moment-curve normals are in general position** (`lem:moment-curve-general-position`): if
 `param` is injective, the normals of `ofParam G ends param` are in general position, as distinct
 bodies get distinct parameters and moment-curve points at distinct parameters are linearly
-independent (`momentCurve_pair_linearIndependent`). No declaration uses it. -/
+independent (`momentCurve_pair_linearIndependent`). Only `isGeneralPosition_withMomentNormals`
+uses it. -/
 theorem isGeneralPosition_ofParam (G : Graph α β) (ends : β → α × α) {param : α → K}
     (hparam : Function.Injective param) : (ofParam (k := k) G ends param).IsGeneralPosition := by
   intro a b hab
   simp only [ofParam_normal]
   exact momentCurve_pair_linearIndependent (fun h => hab (hparam h))
 
-/-- **A nonzero leading minor makes two vectors independent** (a step of
-`exists_generalPosition_polynomial`): if `v 0 · w 1 − v 1 · w 0 ≠ 0`, then `v` and `w` are linearly
-independent. A vanishing combination `c₁ • v + c₂ • w = 0`, read at the coordinates `0` and `1`,
-gives `c₁ (v 0 · w 1 − v 1 · w 0) = 0`, so `c₁ = 0`, and then `c₂ = 0`, as `w 0` or `w 1` is
-nonzero. At two moment-curve points the minor is `t − s` (`momentCurve_pair_linearIndependent`). -/
-theorem pair_linearIndependent_of_leading_minor_ne_zero {v w : Fin (k + 2) → K}
-    (h : v 0 * w ⟨1, by omega⟩ - v ⟨1, by omega⟩ * w 0 ≠ 0) :
-    LinearIndependent K ![v, w] := by
-  rw [LinearIndependent.pair_iff]
-  intro c₁ c₂ hc
-  have h0 := congr_fun hc 0
-  have h1 := congr_fun hc ⟨1, by omega⟩
-  simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul] at h0 h1
-  have hc₁ : c₁ = 0 := by
-    have hmul : c₁ * (v 0 * w ⟨1, by omega⟩ - v ⟨1, by omega⟩ * w 0) = 0 := by
-      linear_combination w ⟨1, by omega⟩ * h0 - w 0 * h1
-    rcases mul_eq_zero.mp hmul with h' | h'
-    · exact h'
-    · exact absurd h' h
-  refine ⟨hc₁, ?_⟩
-  -- With `c₁ = 0` the first coordinate equation reads `c₂ • w 0 = 0`; but the minor is nonzero, so
-  -- `(w 0, w 1) ≠ (0, 0)`, and `c₂` annihilates both, forcing `c₂ = 0`.
-  have hw : w 0 ≠ 0 ∨ w ⟨1, by omega⟩ ≠ 0 := by
-    by_contra hcon
-    rw [not_or, not_not, not_not] at hcon
-    apply h
-    rw [hcon.1, hcon.2]; ring
-  rcases hw with hw | hw
-  · have : c₂ * w 0 = 0 := by rw [hc₁, zero_mul, zero_add] at h0; exact h0
-    rcases mul_eq_zero.mp this with h' | h'
-    · exact h'
-    · exact absurd h' hw
-  · have : c₂ * w ⟨1, by omega⟩ = 0 := by
-      rw [hc₁, zero_mul, zero_add] at h1; exact h1
-    rcases mul_eq_zero.mp this with h' | h'
-    · exact h'
-    · exact absurd h' hw
+/-- **Moment-curve normals are in general position** (`lem:moment-curve-general-position`): if
+`param` is injective, the normals of `P.withMomentNormals param` are in general position, as they
+are those of `ofParam P.graph P.ends param` (`isGeneralPosition_ofParam`). No declaration uses it.
+-/
+theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework K k α β) {param : α → K}
+    (hparam : Function.Injective param) : (P.withMomentNormals param).IsGeneralPosition :=
+  isGeneralPosition_ofParam P.graph P.ends hparam
 
 /-- **The leading minor of two normals, as a polynomial** (a factor of the polynomial of
 `exists_generalPosition_polynomial`): `X (a, 0) · X (b, 1) − X (a, 1) · X (b, 0)` in
@@ -434,11 +416,6 @@ throughout. -/
 theorem toBodyHinge_withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β) :
     (P.withGraph G').toBodyHinge = P.toBodyHinge.withGraph G' := rfl
 
-/-- **`ofNormals` on a new graph**: `(ofNormals G ends q).withGraph G' = ofNormals G' ends q`, by
-definition, as both have the normals `q` and the selector `ends`. No declaration uses it. -/
-theorem ofNormals_withGraph (G G' : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K) :
-    (ofNormals (k := k) G ends q).withGraph G' = ofNormals (k := k) G' ends q := rfl
-
 /-- **The rows at an edge whose ends keep their normals** (`lem:case-III-seam`; KT eq. (6.13),
 p. 679): if `q₀` and `q` agree at the two bodies that `ends` gives the edge label `e` (`h₁`, `h₂`),
 then `ofNormals G ends q₀` and `ofNormals Gv ends q` have the same row at `(e, t₁, t₂)`, for any two
@@ -468,17 +445,17 @@ normals of `lem:cycle-normals` (`cycle_realization`, `lem:cycle-realization`;
 `rem:case-I-kt-steps`). -/
 
 /-- **Two bodies joined by two independent hinges** (`lem:cycle-realization-base`; the double edge
-of KT Lemma 5.3, p. 669): if `e₁` and `e₂` both link the bodies `u ≠ v` in `P.graph` (`h₁`, `h₂`)
-and their hinges are linearly independent (`hgen`), every infinitesimal motion of `P.toBodyHinge` is
-constant on `{u, v}`: `theorem_55_base` (`lem:theorem-55-base`) for the body-hinge interpretation.
-No declaration uses it. -/
+of KT Lemma 5.3, p. 669): if `e₁` and `e₂` both link the bodies `u` and `v` in `P.graph`
+(`h₁`, `h₂`) and their hinges are linearly independent (`hgen`), every infinitesimal motion of
+`P.toBodyHinge` is constant on `{u, v}`: `theorem_55_base` (`lem:theorem-55-base`) for the
+body-hinge interpretation. No declaration uses it. -/
 theorem toBodyHinge_rankHypothesis_zero (P : PanelHingeFramework K k α β)
-    {e₁ e₂ : β} {u v : α} (huv : u ≠ v)
+    {e₁ e₂ : β} {u v : α}
     (hgen : LinearIndependent K
       ![P.toBodyHinge.supportExtensor e₁, P.toBodyHinge.supportExtensor e₂])
     (h₁ : P.graph.IsLink e₁ u v) (h₂ : P.graph.IsLink e₂ u v) :
     P.toBodyHinge.IsInfinitesimallyRigidOn {u, v} :=
-  P.toBodyHinge.theorem_55_base huv hgen h₁ h₂
+  P.toBodyHinge.theorem_55_base hgen h₁ h₂
 
 /-- **At most `D` independent hinges** (`lem:cycle-realization-dim-bound`; the bound of KT
 Lemma 5.4, p. 670): if the hinges of `P` at `m` edge labels `e i` are linearly independent, then
@@ -527,11 +504,6 @@ theorem withNormal_ends (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k
 @[simp]
 theorem withNormal_normal (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) :
     (P.withNormal v n).normal = Function.update P.normal v n := rfl
-
-@[simp]
-theorem withNormal_normal_self (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) :
-    (P.withNormal v n).normal v = n := by
-  rw [withNormal_normal, Function.update_self]
 
 theorem withNormal_normal_of_ne (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K)
     {w : α} (hw : w ≠ v) : (P.withNormal v n).normal w = P.normal w := by
@@ -608,73 +580,6 @@ theorem rankHypothesis_withNormal_iff_finrank_pinnedMotions [Nonempty α] [Finit
   rw [(P.withNormal v n).toBodyHinge.rankHypothesis_iff_finrank_pinnedMotions v k',
     P.toBodyHinge_withNormal_pinnedMotions_eq v n v hv]
 
-/-! ## Deleting edges, for panel-hinge frameworks
-
-`Pinning.lean`'s lemmas on the motions with `S v = 0` when edges are deleted
-(`pinnedMotions_le_withGraph`, `pinnedMotions_withGraph_eq`, `hnew_of_isLink_incident`), for the
-body-hinge interpretation of a panel-hinge framework, through `toBodyHinge_withGraph`. No
-declaration outside this section uses them. -/
-
-omit [DecidableEq α] in
-/-- **Deleting edges enlarges the pinned motions of a body**: for `G' ≤ P.graph`, the motions of `P`
-with `S v = 0` are motions of `P.withGraph G'` (`pinnedMotions_le_withGraph`, through
-`toBodyHinge_withGraph`). Only `finrank_toBodyHinge_pinnedMotions_le_withGraph` uses it. -/
-theorem toBodyHinge_pinnedMotions_le_withGraph (P : PanelHingeFramework K k α β) (v : α)
-    {G' : Graph α β} (hle : G' ≤ P.graph) :
-    P.toBodyHinge.pinnedMotions v ≤ (P.withGraph G').toBodyHinge.pinnedMotions v := by
-  rw [P.toBodyHinge_withGraph G']
-  exact P.toBodyHinge.pinnedMotions_le_withGraph v hle
-
-omit [DecidableEq α] in
-/-- **The same, for the dimension**: for `G' ≤ P.graph`, `dim pinned(v)` in `P` is at most that in
-`P.withGraph G'` (`toBodyHinge_pinnedMotions_le_withGraph`, `Submodule.finrank_mono`). No
-declaration uses it. -/
-theorem finrank_toBodyHinge_pinnedMotions_le_withGraph [Finite α]
-    (P : PanelHingeFramework K k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph) :
-    Module.finrank K (P.toBodyHinge.pinnedMotions v) ≤
-      Module.finrank K ((P.withGraph G').toBodyHinge.pinnedMotions v) :=
-  Submodule.finrank_mono (P.toBodyHinge_pinnedMotions_le_withGraph v hle)
-
-omit [DecidableEq α] in
-/-- **The pinned motions of a body when the deleted edges add no condition**: for `G' ≤ P.graph`, if
-every motion of `P.withGraph G'` with `S v = 0` meets the hinge constraint of every edge of
-`P.graph` not in `G'` (`hnew`), then `P` and `P.withGraph G'` have the same motions with `S v = 0`
-(`pinnedMotions_withGraph_eq`, through `toBodyHinge_withGraph`). Only
-`finrank_toBodyHinge_pinnedMotions_withGraph_eq` uses it. -/
-theorem toBodyHinge_pinnedMotions_withGraph_eq (P : PanelHingeFramework K k α β) (v : α)
-    {G' : Graph α β} (hle : G' ≤ P.graph)
-    (hnew : ∀ S ∈ (P.withGraph G').toBodyHinge.pinnedMotions v, ∀ e u w,
-      P.graph.IsLink e u w → ¬G'.IsLink e u w → P.toBodyHinge.hingeConstraint S e u w) :
-    P.toBodyHinge.pinnedMotions v = (P.withGraph G').toBodyHinge.pinnedMotions v := by
-  rw [P.toBodyHinge_withGraph G']
-  exact P.toBodyHinge.pinnedMotions_withGraph_eq v hle hnew
-
-omit [DecidableEq α] in
-/-- **The same, for the dimension**: under `hnew`, `dim pinned(v)` is the same in `P` and in
-`P.withGraph G'` (`toBodyHinge_pinnedMotions_withGraph_eq`). No declaration uses it. -/
-theorem finrank_toBodyHinge_pinnedMotions_withGraph_eq
-    (P : PanelHingeFramework K k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph)
-    (hnew : ∀ S ∈ (P.withGraph G').toBodyHinge.pinnedMotions v, ∀ e u w,
-      P.graph.IsLink e u w → ¬G'.IsLink e u w → P.toBodyHinge.hingeConstraint S e u w) :
-    Module.finrank K (P.toBodyHinge.pinnedMotions v) =
-      Module.finrank K ((P.withGraph G').toBodyHinge.pinnedMotions v) := by
-  rw [P.toBodyHinge_pinnedMotions_withGraph_eq v hle hnew]
-
-omit [DecidableEq α] in
-/-- **The hypothesis `hnew` at the edges of one body**: `hnew_of_isLink_incident` for
-`P.toBodyHinge`. If every edge of `P.graph` not in `G'` has `v` as an end (`hinc`), `S v = 0`
-(`hSv`), and `S w` lies in the line of the hinge of each such edge from `v` to `w` (`hspan`), then
-`S` meets the hinge constraints of these edges. No declaration uses it. -/
-theorem toBodyHinge_hnew_of_isLink_incident (P : PanelHingeFramework K k α β) (v : α)
-    {G' : Graph α β}
-    (hinc : ∀ e u w, P.graph.IsLink e u w → ¬G'.IsLink e u w → u = v ∨ w = v)
-    {S : α → ScrewSpace K k} (hSv : S v = 0)
-    (hspan : ∀ e w, P.graph.IsLink e v w → ¬G'.IsLink e v w →
-      S w ∈ Submodule.span K {P.toBodyHinge.supportExtensor e}) :
-    ∀ e u w, P.graph.IsLink e u w → ¬G'.IsLink e u w →
-      P.toBodyHinge.hingeConstraint S e u w :=
-  P.toBodyHinge.hnew_of_isLink_incident v hinc hSv hspan
-
 /-! ## Case I's rank count with the block pin (`lem:case-I`) -/
 
 omit [DecidableEq α] in
@@ -685,7 +590,7 @@ for a nonempty set `s` of bodies, if `dim Z(G,p) ≤ D + dim Z_s(G,p)` (`hglue`)
 subgraph, `hglue` holds when the rows of `H` have rank `D(|V(H)| − 1)`: it is the lower bound of KT
 eq. (6.3), in terms of motions (the proof of `lem:case-I`). No declaration uses it, and the formal
 proof of KT Theorem 5.5 does not take this step (`rem:case-I-kt-steps`). -/
-theorem toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn [Nonempty α] [Finite α]
+theorem toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn [Finite α]
     (P : PanelHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
     (hglue : (Module.finrank K P.toBodyHinge.infinitesimalMotions : ℤ) ≤
       screwDim k + Module.finrank K (P.toBodyHinge.pinnedMotionsOn s)) :

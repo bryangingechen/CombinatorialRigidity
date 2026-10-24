@@ -318,18 +318,6 @@ theorem exists_linearIndependent_perp_of_normals {r m : ℕ} (N : Fin r → Fin 
   -- LI of `f` in the subtype lifts to LI of `p = f.val` in the ambient space.
   exact hfli.map' L.ker.subtype (Submodule.ker_subtype _)
 
-/-- **Two independent vectors orthogonal to two normals of `K⁴`**: for `n₁ n₂ : K⁴`, there are
-linearly independent `p 0` and `p 1` orthogonal to both, the case `r = m = 2`, `k = 2` of
-`exists_linearIndependent_perp_of_normals`. The hypothesis that `n₁` and `n₂` are linearly
-independent is not used. No declaration uses the lemma. -/
-theorem exists_two_perp_of_linearIndependent_normals {n₁ n₂ : Fin 4 → K}
-    (_ : LinearIndependent K ![n₁, n₂]) :
-    ∃ p : Fin 2 → Fin 4 → K, LinearIndependent K p ∧
-      ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 := by
-  obtain ⟨p, hpli, hperp⟩ :=
-    exists_linearIndependent_perp_of_normals (k := 2) ![n₁, n₂] (m := 2) (le_refl 4)
-  exact ⟨p, hpli, fun i => ⟨by simpa using hperp i 0, by simpa using hperp i 1⟩⟩
-
 /-- **Three independent vectors orthogonal to a normal of `K⁴`**: for `n : K⁴`, there are three
 linearly independent vectors orthogonal to `n` (all of `K⁴` when `n = 0`), the case `r = 1`,
 `m = 3`, `k = 2` of `exists_linearIndependent_perp_of_normals`. It serves
@@ -660,6 +648,26 @@ theorem exists_independent_panelSupportExtensor {m : ℕ} (hm : m ≤ screwDim k
   obtain ⟨n₁, n₂, h⟩ := exists_independent_normalsJoin (K := K) (k := k) hm
   exact ⟨n₁, n₂, (panelSupportExtensor_linearIndependent_iff n₁ n₂).mpr h⟩
 
+/-- **The pairs of an independent triple are independent** (a step of `lem:case-I-realization-h65`):
+from `LinearIndependent K ![n₀, n₁, n₂]`, the pairs `![n₀, n₁]`, `![n₀, n₂]` and `![n₁, n₂]` are
+linearly independent (`LinearIndependent.comp` along the three embeddings of `Fin 2`). -/
+theorem triLI_subpairs (n₀ n₁ n₂ : Fin (k + 2) → K)
+    (htriLI : LinearIndependent K (![n₀, n₁, n₂] : Fin 3 → Fin (k + 2) → K)) :
+    LinearIndependent K (![n₀, n₁] : Fin 2 → Fin (k + 2) → K) ∧
+      LinearIndependent K (![n₀, n₂] : Fin 2 → Fin (k + 2) → K) ∧
+      LinearIndependent K (![n₁, n₂] : Fin 2 → Fin (k + 2) → K) := by
+  set T : Fin 3 → Fin (k + 2) → K := ![n₀, n₁, n₂] with hT
+  refine ⟨?_, ?_, ?_⟩
+  · have h := htriLI.comp (![0, 1] : Fin 2 → Fin 3) (by decide)
+    have he : T ∘ (![0, 1] : Fin 2 → Fin 3) = ![n₀, n₁] := by funext i; fin_cases i <;> rfl
+    rwa [he] at h
+  · have h := htriLI.comp (![0, 2] : Fin 2 → Fin 3) (by decide)
+    have he : T ∘ (![0, 2] : Fin 2 → Fin 3) = ![n₀, n₂] := by funext i; fin_cases i <;> rfl
+    rwa [he] at h
+  · have h := htriLI.comp (![1, 2] : Fin 2 → Fin 3) (by decide)
+    have he : T ∘ (![1, 2] : Fin 2 → Fin 3) = ![n₁, n₂] := by funext i; fin_cases i <;> rfl
+    rwa [he] at h
+
 /-- **Two joins with a common normal are independent if the three normals are** (a step of
 `lem:case-I-realization-h65`): if `n_v`, `n_a` and `n_b` are linearly independent, so are
 `n_v ∨ n_a` and `n_v ∨ n_b`. In the proof of KT Lemma 6.5 the hinges of `va` and `vb` are then
@@ -672,11 +680,10 @@ of the join and `normalsJoin_swap`. If `c₁ n_a + c₂ n_b ≠ 0`, it and `n_v`
 `n_a` and `n_b` are independent. -/
 theorem normalsJoin_pair_linearIndependent_of_triLI
     (n_v n_a n_b : Fin (k + 2) → K)
-    (htriLI : LinearIndependent K (![n_v, n_a, n_b] : Fin 3 → Fin (k + 2) → K))
-    (hLI_va : LinearIndependent K (![n_v, n_a] : Fin 2 → Fin (k + 2) → K))
-    (hLI_ab : LinearIndependent K (![n_a, n_b] : Fin 2 → Fin (k + 2) → K)) :
+    (htriLI : LinearIndependent K (![n_v, n_a, n_b] : Fin 3 → Fin (k + 2) → K)) :
     LinearIndependent K
       (![normalsJoin (k := k) n_v n_a, normalsJoin (k := k) n_v n_b] : Fin 2 → _) := by
+  obtain ⟨hLI_va, -, hLI_ab⟩ := triLI_subpairs n_v n_a n_b htriLI
   rw [LinearIndependent.pair_iff]
   intro c₁ c₂ hcomb
   -- `hcomb : c₁ • normalsJoin n_v n_a + c₂ • normalsJoin n_v n_b = 0`; rewrite to a single join.
@@ -716,57 +723,6 @@ theorem normalsJoin_pair_linearIndependent_of_triLI
     have hc₂ : c₂ = 0 :=
       (mul_eq_zero.mp (by have := hcoeffs_zero 2; simpa using this)).resolve_left hsc₂
     exact hcomb0 (by rw [hc₁, hc₂]; simp)
-
-/-- **The pairs of an independent triple are independent** (a step of `lem:case-I-realization-h65`):
-from `LinearIndependent K ![n₀, n₁, n₂]`, the pairs `![n₀, n₁]`, `![n₀, n₂]` and `![n₁, n₂]` are
-linearly independent (`LinearIndependent.comp` along the three embeddings of `Fin 2`). -/
-theorem triLI_subpairs (n₀ n₁ n₂ : Fin (k + 2) → K)
-    (htriLI : LinearIndependent K (![n₀, n₁, n₂] : Fin 3 → Fin (k + 2) → K)) :
-    LinearIndependent K (![n₀, n₁] : Fin 2 → Fin (k + 2) → K) ∧
-      LinearIndependent K (![n₀, n₂] : Fin 2 → Fin (k + 2) → K) ∧
-      LinearIndependent K (![n₁, n₂] : Fin 2 → Fin (k + 2) → K) := by
-  set T : Fin 3 → Fin (k + 2) → K := ![n₀, n₁, n₂] with hT
-  refine ⟨?_, ?_, ?_⟩
-  · have h := htriLI.comp (![0, 1] : Fin 2 → Fin 3) (by decide)
-    have he : T ∘ (![0, 1] : Fin 2 → Fin 3) = ![n₀, n₁] := by funext i; fin_cases i <;> rfl
-    rwa [he] at h
-  · have h := htriLI.comp (![0, 2] : Fin 2 → Fin 3) (by decide)
-    have he : T ∘ (![0, 2] : Fin 2 → Fin 3) = ![n₀, n₂] := by funext i; fin_cases i <;> rfl
-    rwa [he] at h
-  · have h := htriLI.comp (![1, 2] : Fin 2 → Fin 3) (by decide)
-    have he : T ∘ (![1, 2] : Fin 2 → Fin 3) = ![n₁, n₂] := by funext i; fin_cases i <;> rfl
-    rwa [he] at h
-
-/-- **Two panel support extensors with a common normal are not parallel if the three normals are
-independent**: if `n_v`, `n'` and `n_b` are linearly independent, then
-`C(n_v, n') ∉ span {C(n_v, n_b)}`. The two joins are independent
-(`normalsJoin_pair_linearIndependent_of_triLI`), so are the two extensors
-(`panelSupportExtensor_linearIndependent_iff`), and neither of two independent vectors is a multiple
-of the other. It gives the hypothesis of `hingeRowBlock_not_le_of_supportExtensor_not_mem_span`
-(`RigidityMatrix/Concrete.lean`) at panel support extensors; no declaration uses either. -/
-theorem panelSupportExtensor_not_mem_span_of_triLI
-    (n_v n' n_b : Fin (k + 2) → K)
-    (htriLI : LinearIndependent K (![n_v, n', n_b] : Fin 3 → Fin (k + 2) → K)) :
-    panelSupportExtensor n_v n' ∉
-      Submodule.span K {panelSupportExtensor n_v n_b} := by
-  obtain ⟨hva, _, hab⟩ := triLI_subpairs n_v n' n_b htriLI
-  -- The two panel support extensors are linearly independent.
-  have hpairLI : LinearIndependent K
-      (![panelSupportExtensor (k := k) n_v n',
-         panelSupportExtensor (k := k) n_v n_b] : Fin 2 → _) := by
-    rw [show (![panelSupportExtensor (k := k) n_v n', panelSupportExtensor (k := k) n_v n_b])
-        = (fun i => panelSupportExtensor ((![n_v, n_v] : Fin 2 → _) i)
-            ((![n', n_b] : Fin 2 → _) i)) from by funext i; fin_cases i <;> rfl,
-      panelSupportExtensor_linearIndependent_iff,
-      show (fun i => normalsJoin ((![n_v, n_v] : Fin 2 → _) i) ((![n', n_b] : Fin 2 → _) i))
-        = (![normalsJoin (k := k) n_v n', normalsJoin (k := k) n_v n_b] : Fin 2 → _) from by
-          funext i; fin_cases i <;> rfl]
-    exact normalsJoin_pair_linearIndependent_of_triLI n_v n' n_b htriLI hva hab
-  -- Independent pair ⟹ first ∉ span {second}: a membership `c • C_b = C_a` is a vanishing relation.
-  rw [LinearIndependent.pair_iff] at hpairLI
-  intro hmem
-  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 hmem
-  exact absurd (hpairLI (-1) c (by rw [hc]; module)).1 (by norm_num)
 
 -- Private helpers for `exists_triangle_normals` below.
 -- Extracted as standalone lemmas to avoid context-explosion timeouts in the main proof.
@@ -1391,11 +1347,6 @@ noncomputable def partitionMotions (F : BodyHingeFramework K k α β) (f : α �
     Submodule K (α → ScrewSpace K k) :=
   F.infinitesimalMotions ⊓ partitionConstant f
 
-@[simp]
-theorem mem_partitionMotions (F : BodyHingeFramework K k α β) (f : α → α) (S : α → ScrewSpace K k) :
-    S ∈ F.partitionMotions f ↔ F.IsInfinitesimalMotion S ∧ IsPartitionConstant f S :=
-  Submodule.mem_inf
-
 theorem partitionMotions_eq (F : BodyHingeFramework K k α β) (f : α → α) :
     F.partitionMotions f = F.infinitesimalMotions ⊓ partitionConstant f :=
   rfl
@@ -1405,14 +1356,6 @@ theorem partitionMotions_eq (F : BodyHingeFramework K k α β) (f : α → α) :
 theorem partitionMotions_le_infinitesimalMotions (F : BodyHingeFramework K k α β) (f : α → α) :
     F.partitionMotions f ≤ F.infinitesimalMotions :=
   inf_le_left
-
-/-- **The trivial motions are constant on each part**: a constant assignment is a motion
-(`isInfinitesimalMotion_of_isTrivialMotion`) and constant on each part, so
-`trivialMotions ≤ partitionMotions f`. No declaration uses it. -/
-theorem trivialMotions_le_partitionMotions (F : BodyHingeFramework K k α β) (f : α → α) :
-    F.trivialMotions ≤ F.partitionMotions f :=
-  fun _ hS => Submodule.mem_inf.mpr
-    ⟨F.isInfinitesimalMotion_of_isTrivialMotion hS, fun u v _ => hS u v⟩
 
 /-! ### The bound by rank–nullity
 
@@ -1660,17 +1603,6 @@ theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [F
   rw [Graph.partitionDef, hDcast]
   zify at hmono
   linarith [hlb, hmono]
-
-/-- **`D ≤ dim Z(G,p)`**: for a nonempty finite set of bodies, the `D` trivial motions are motions
-(`finrank_trivialMotions`, `trivialMotions_le_infinitesimalMotions`). It is the case of the one-part
-partition in `screwDim_add_deficiency_le_finrank_infinitesimalMotions`, with no condition on the
-hinges. No declaration uses it. -/
-theorem screwDim_le_finrank_infinitesimalMotions [Nonempty α] [Finite α]
-    (F : BodyHingeFramework K k α β) :
-    screwDim k ≤ Module.finrank K F.infinitesimalMotions := by
-  have : Fintype α := Fintype.ofFinite α
-  rw [← F.finrank_trivialMotions]
-  exact Submodule.finrank_mono F.trivialMotions_le_infinitesimalMotions
 
 /-! ### The bound with bodies outside `V(G)` (`lem:relative-deficiency-rank-bound`)
 

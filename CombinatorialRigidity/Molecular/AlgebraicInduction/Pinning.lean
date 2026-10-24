@@ -479,7 +479,7 @@ theorem span_panelRow_comp_single_of_edge [DecidableEq α]
 /-- **Two hinges at a body with independent extensors give `D` independent rows at its screws** (a
 step of `lem:case-I-realization-h65`): let `eₐ` and `e_b` join `v` to `a ≠ v` and to `b ≠ v`
 (`hlink_a`, `hlink_b`), with `ends eₐ = (v, a)` and `ends e_b = (v, b)`, and let `C(p(eₐ))` and
-`C(p(e_b))` be nonzero and linearly independent (`hne_a`, `hne_b`, `hgen`). Then there are `D` forms
+`C(p(e_b))` be linearly independent (`hgen`). Then there are `D` forms
 `rn i` in the span of `F.rigidityRows` whose forms at the screws of `v`, `x ↦ rn i (single v x)`,
 are linearly independent. In the proof of KT Lemma 6.5 this is the block `R(G, p; {va, vb}, v)` of
 KT eq. (6.10), of rank `D` by KT Lemma 5.3 (pp. 676–677).
@@ -497,7 +497,6 @@ theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
     (hva : ends eₐ = (v, a)) (hvb : ends e_b = (v, b))
     (haₐ : a ≠ v) (hbb : b ≠ v)
     (hlink_a : F.graph.IsLink eₐ v a) (hlink_b : F.graph.IsLink e_b v b)
-    (hne_a : F.supportExtensor eₐ ≠ 0) (hne_b : F.supportExtensor e_b ≠ 0)
     (hgen : LinearIndependent K ![F.supportExtensor eₐ, F.supportExtensor e_b]) :
     ∃ (ιn : Type) (_ : Fintype ιn) (rn : ιn → Module.Dual K (α → ScrewSpace K k)),
       Nat.card ιn = screwDim k ∧
@@ -506,6 +505,8 @@ theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
       (∀ i : ιn, rn i ∈ Submodule.span K F.rigidityRows) := by
   classical
   have : FiniteDimensional K (ScrewSpace K k) := inferInstance
+  have hne_a : F.supportExtensor eₐ ≠ 0 := by simpa using hgen.ne_zero 0
+  have hne_b : F.supportExtensor e_b ≠ 0 := by simpa using hgen.ne_zero 1
   -- Endpoint orientation facts: both edges have first endpoint `v`, distinct from the other end.
   have hea1 : (ends eₐ).1 = v := by rw [hva]
   have hea2 : (ends eₐ).2 = a := by rw [hva]
@@ -640,7 +641,7 @@ hinge constraints put `S u − S v` in the line of a hinge, and two independent 
 (`eq_of_hingeConstraint_two_parallel`, `lem:rank-parallel-full`). The bodies outside `{u, v}` may
 move freely. -/
 theorem theorem_55_base (F : BodyHingeFramework K k α β)
-    {e₁ e₂ : β} {u v : α} (huv : u ≠ v)
+    {e₁ e₂ : β} {u v : α}
     (hgen : LinearIndependent K ![F.supportExtensor e₁, F.supportExtensor e₂])
     (h₁ : F.graph.IsLink e₁ u v) (h₂ : F.graph.IsLink e₂ u v) :
     F.IsInfinitesimallyRigidOn {u, v} := by
@@ -832,10 +833,11 @@ subspace of `Z(G,p)` (`finrank_trivialMotions`) that meets the block pin only in
 (`trivialMotions_inf_pinnedMotionsOn_eq_bot`). For one body this is an equality
 (`finrank_pinnedMotions_add_screwDim`, KT Lemma 5.1); for a larger set only the inequality holds.
 The proof of `lem:case-I` takes from it the reverse of the inequality of KT eq. (6.3). -/
-theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
+theorem screwDim_add_finrank_pinnedMotionsOn_le [Finite α]
     (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) :
     screwDim k + Module.finrank K (F.pinnedMotionsOn s) ≤
       Module.finrank K F.infinitesimalMotions := by
+  have : Nonempty α := ⟨hs.some⟩
   have : Fintype α := Fintype.ofFinite α
   have hdisj : F.trivialMotions ⊓ F.pinnedMotionsOn s = ⊥ :=
     F.trivialMotions_inf_pinnedMotionsOn_eq_bot hs
@@ -1104,7 +1106,7 @@ rank `D(|V(H)| − 1)`: it is the lower bound of KT eq. (6.3), in terms of motio
 `lem:case-I`), and `dim Z_s(G,p) = k` then says that the second block of KT eq. (6.3) has the rank
 of the contraction `G/E(H)`. The formal proof of KT Theorem 5.5 does not use the theorem
 (`rem:case-I-kt-steps`). -/
-theorem rankHypothesis_iff_finrank_pinnedMotionsOn [Nonempty α] [Finite α]
+theorem rankHypothesis_iff_finrank_pinnedMotionsOn [Finite α]
     (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
     (hglue : (Module.finrank K F.infinitesimalMotions : ℤ) ≤
       screwDim k + Module.finrank K (F.pinnedMotionsOn s)) :
@@ -1123,26 +1125,6 @@ theorem pinnedMotionsOn_le_withGraph_of_le (F : BodyHingeFramework K k α β) (s
     F.pinnedMotionsOn s ≤ (F.withGraph G').pinnedMotionsOn s :=
   fun _ hS => ⟨F.infinitesimalMotions_le_withGraph_of_le hle hS.1, hS.2⟩
 
-/-- **Deleting edges inside a set does not change its block pin** (`def:pinned-motions-on`): if
-`G' ≤ F.graph` and every edge of `F.graph` that `G'` lacks has both ends in `s` (`hblk`), then
-`Z_s(G',p) = Z_s(G,p)`. A motion of `(G',p)` that vanishes on `s` meets the hinge constraint of such
-an edge, as `S u − S v = 0`, so it is a motion of `F`; the reverse inclusion is
-`pinnedMotionsOn_le_withGraph_of_le`. No declaration uses it. -/
-theorem pinnedMotionsOn_withGraph_eq_of_block_internal (F : BodyHingeFramework K k α β) (s : Set α)
-    {G' : Graph α β} (hle : G' ≤ F.graph)
-    (hblk : ∀ e u v, F.graph.IsLink e u v → ¬ G'.IsLink e u v → u ∈ s ∧ v ∈ s) :
-    (F.withGraph G').pinnedMotionsOn s = F.pinnedMotionsOn s := by
-  refine le_antisymm (fun S hS => ⟨fun e u v hlink => ?_, hS.2⟩)
-    (F.pinnedMotionsOn_le_withGraph_of_le s hle)
-  -- `S` is a `G'`-motion pinned on `s`; show it meets the parent hinge constraint at `e = uv`.
-  by_cases hG' : G'.IsLink e u v
-  · -- `e` survives in `G'`: reuse the `G'`-motion constraint (same support extensor).
-    exact hS.1 e u v hG'
-  · -- `e` is block-internal: both endpoints are pinned to `0`, so the constraint is vacuous.
-    obtain ⟨hu, hv⟩ := hblk e u v hlink hG'
-    rw [hingeConstraint, hS.2 u hu, hS.2 v hv, sub_zero]
-    exact Submodule.zero_mem _
-
 /-- **Deleting edges does not lower the dimension of the block pin** (`lem:pinned-motions-on-mono`):
 for `G' ≤ F.graph`, `dim Z_s(G,p) ≤ dim Z_s(G',p)`, from `pinnedMotionsOn_le_withGraph_of_le` and
 `Submodule.finrank_mono`. -/
@@ -1151,70 +1133,6 @@ theorem finrank_pinnedMotionsOn_le_of_graph_le [Finite α] (F : BodyHingeFramewo
     Module.finrank K (F.pinnedMotionsOn s) ≤
       Module.finrank K ((F.withGraph G').pinnedMotionsOn s) :=
   Submodule.finrank_mono (F.pinnedMotionsOn_le_withGraph_of_le s hle)
-
-/-- **Deleting edges enlarges the pinned motions of a body**: for `G' ≤ F.graph`,
-`F.pinnedMotions v ≤ (F.withGraph G').pinnedMotions v`, the case `s = {v}` of
-`pinnedMotionsOn_le_withGraph_of_le` (`pinnedMotionsOn_singleton`). No main result uses it. -/
-theorem pinnedMotions_le_withGraph (F : BodyHingeFramework K k α β) (v : α)
-    {G' : Graph α β} (hle : G' ≤ F.graph) :
-    F.pinnedMotions v ≤ (F.withGraph G').pinnedMotions v := by
-  rw [← F.pinnedMotionsOn_singleton, ← (F.withGraph G').pinnedMotionsOn_singleton]
-  exact F.pinnedMotionsOn_le_withGraph_of_le {v} hle
-
-/-- **Deleting edges does not lower the dimension of the pinned motions of a body**: for
-`G' ≤ F.graph`, `dim pinned(v)` in `F` is at most that in `F.withGraph G'`
-(`pinnedMotions_le_withGraph`). No declaration uses it. -/
-theorem finrank_pinnedMotions_le_withGraph [Finite α] (F : BodyHingeFramework K k α β) (v : α)
-    {G' : Graph α β} (hle : G' ≤ F.graph) :
-    Module.finrank K (F.pinnedMotions v) ≤
-      Module.finrank K ((F.withGraph G').pinnedMotions v) :=
-  Submodule.finrank_mono (F.pinnedMotions_le_withGraph v hle)
-
-/-- **The pinned motions of a body when the deleted edges add no condition**: for `G' ≤ F.graph`, if
-every motion of `F.withGraph G'` with `S v = 0` meets the hinge constraint of every edge of
-`F.graph` not in `G'` (`hnew`), then `F.pinnedMotions v = (F.withGraph G').pinnedMotions v`. The
-inclusion `≤` is `pinnedMotions_le_withGraph`; for `≥`, the constraints of the edges of `G'` hold,
-as `withGraph` keeps the hinges, and those of the other edges are `hnew`. No main result uses it. -/
-theorem pinnedMotions_withGraph_eq (F : BodyHingeFramework K k α β) (v : α)
-    {G' : Graph α β} (hle : G' ≤ F.graph)
-    (hnew : ∀ S ∈ (F.withGraph G').pinnedMotions v, ∀ e u w, F.graph.IsLink e u w →
-      ¬G'.IsLink e u w → F.hingeConstraint S e u w) :
-    F.pinnedMotions v = (F.withGraph G').pinnedMotions v := by
-  refine le_antisymm (F.pinnedMotions_le_withGraph v hle) (fun S hS => ?_)
-  refine ⟨fun e u w he => ?_, hS.2⟩
-  by_cases hg : G'.IsLink e u w
-  · exact hS.1 e u w hg
-  · exact hnew S hS e u w he hg
-
-/-- **The same, for the dimension**: under `hnew`, `dim pinned(v)` is the same in `F` and in
-`F.withGraph G'` (`pinnedMotions_withGraph_eq`). No declaration uses it. -/
-theorem finrank_pinnedMotions_withGraph_eq (F : BodyHingeFramework K k α β) (v : α)
-    {G' : Graph α β} (hle : G' ≤ F.graph)
-    (hnew : ∀ S ∈ (F.withGraph G').pinnedMotions v, ∀ e u w, F.graph.IsLink e u w →
-      ¬G'.IsLink e u w → F.hingeConstraint S e u w) :
-    Module.finrank K (F.pinnedMotions v) =
-      Module.finrank K ((F.withGraph G').pinnedMotions v) := by
-  rw [F.pinnedMotions_withGraph_eq v hle hnew]
-
-/-- **The hypothesis `hnew` of `pinnedMotions_withGraph_eq` at the edges of one body**: let every
-edge of `F.graph` not in `G'` have `v` as an end (`hinc`), and let `S v = 0` (`hSv`). If, at each
-such edge `e` from `v` to `w`, `S w ∈ span {C(p(e))}` (`hspan`), then `S` meets the hinge constraint
-of every such edge, as `S v − S w = −S w` (`hingeConstraint_comm` puts `v` first). No main result
-uses it. -/
-theorem hnew_of_isLink_incident (F : BodyHingeFramework K k α β) (v : α) {G' : Graph α β}
-    (hinc : ∀ e u w, F.graph.IsLink e u w → ¬G'.IsLink e u w → u = v ∨ w = v)
-    {S : α → ScrewSpace K k} (hSv : S v = 0)
-    (hspan : ∀ e w, F.graph.IsLink e v w → ¬G'.IsLink e v w →
-      S w ∈ Submodule.span K {F.supportExtensor e}) :
-    ∀ e u w, F.graph.IsLink e u w → ¬G'.IsLink e u w → F.hingeConstraint S e u w := by
-  intro e u w he hg
-  rcases hinc e u w he hg with rfl | rfl
-  · -- `u = v`: `hingeConstraint S e v w` is `S v − S w = −S w ∈ span`
-    rw [hingeConstraint, hSv, zero_sub, Submodule.neg_mem_iff]
-    exact hspan e w he hg
-  · -- `w = v`: orient via `hingeConstraint_comm` to put `v` on the left
-    rw [F.hingeConstraint_comm, hingeConstraint, hSv, zero_sub, Submodule.neg_mem_iff]
-    exact hspan e u he.symm (fun h => hg h.symm)
 
 /-- **A triangle with independent hinges is rigid** (`lem:theorem-55-triangle`): if `e₁`, `e₂` and
 `e₃` link `u` to `v`, `v` to `w` and `w` to `u` in `F.graph`, and `C(p(e₁))`, `C(p(e₂))` and
@@ -1225,7 +1143,7 @@ and sum to `0`, so by the independence each is `0` (`eq_zero_of_mem_span_singlet
 `PanelHingeFramework.hasGenericFullRankRealization_of_triangle` (`lem:triangle-realization`), lies
 outside every main result's closure. -/
 theorem theorem_55_triangle (F : BodyHingeFramework K k α β)
-    {e₁ e₂ e₃ : β} {u v w : α} (huv : u ≠ v) (hvw : v ≠ w) (huw : u ≠ w)
+    {e₁ e₂ e₃ : β} {u v w : α}
     (hgen : LinearIndependent K ![F.supportExtensor e₁, F.supportExtensor e₂,
       F.supportExtensor e₃])
     (h₁ : F.graph.IsLink e₁ u v) (h₂ : F.graph.IsLink e₂ v w)

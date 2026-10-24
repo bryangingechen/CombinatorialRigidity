@@ -766,14 +766,6 @@ theorem isInfinitesimalMotion_iff (F : BodyHingeFramework K k α β) (S : α →
         S u - S v ∈ Submodule.span K {F.supportExtensor e} :=
   Iff.rfl
 
-/-- **The hinge constraint does not depend on the orientation of the edge**: it holds for `(u, v)`
-exactly when it holds for `(v, u)`, as `S v − S u = −(S u − S v)` and a span is closed under
-negation. So `IsInfinitesimalMotion` is a condition on the undirected multigraph `G`. -/
-theorem hingeConstraint_comm (F : BodyHingeFramework K k α β) (S : α → ScrewSpace K k)
-    (e : β) (u v : α) :
-    F.hingeConstraint S e u v ↔ F.hingeConstraint S e v u := by
-  rw [hingeConstraint, hingeConstraint, ← neg_sub (S v) (S u), Submodule.neg_mem_iff]
-
 /-- **The space `Z(G,p)` of infinitesimal motions** (`def:rigidity-matrix`): the submodule of the
 screw assignments `α → ScrewSpace K k` that are infinitesimal motions (`IsInfinitesimalMotion`), the
 null space `ker R(G,p)` of Katoh and Tanigawa (KT p. 654). Each hinge constraint asks for membership

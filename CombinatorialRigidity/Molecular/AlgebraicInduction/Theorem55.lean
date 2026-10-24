@@ -110,7 +110,7 @@ theorem theorem_55_base_producer_parallel_pair_gen [Finite α] {n : ℕ} (hk : 1
     have hgen : LinearIndependent K ![F.supportExtensor e, F.supportExtensor f] := by
       rw [hFe, hFf]; exact hpq_li
     have hrig : F.IsInfinitesimallyRigidOn {x, y} :=
-      F.theorem_55_base hxy hgen hl_e hl_f
+      F.theorem_55_base hgen hl_e hl_f
     have hrigV : F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
       rw [hFg, hVG]; exact hrig
     -- Rigidity on `V(G)` gives the rank `D(|V(G)| − 1)`.
@@ -469,11 +469,7 @@ private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFrame
     (hFGea : FG.supportExtensor eₐ = panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)))
     (hFGeb : FG.supportExtensor e_b = panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i)))
     (htriLI : LinearIndependent K
-      (![fun i => q (v, i), fun i => q (a, i), fun i => q (b, i)] : Fin 3 → Fin (k + 2) → K))
-    (hLI_va : LinearIndependent K
-      (![fun i => q (v, i), fun i => q (a, i)] : Fin 2 → Fin (k + 2) → K))
-    (hLI_ab : LinearIndependent K
-      (![fun i => q (a, i), fun i => q (b, i)] : Fin 2 → Fin (k + 2) → K)) :
+      (![fun i => q (v, i), fun i => q (a, i), fun i => q (b, i)] : Fin 3 → Fin (k + 2) → K)) :
     LinearIndependent K ![FG.supportExtensor eₐ, FG.supportExtensor e_b] := by
   rw [hFGea, hFGeb,
     show (![panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)),
@@ -486,7 +482,7 @@ private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFrame
          ![normalsJoin (k := k) (fun i => q (v, i)) (fun i => q (a, i)),
            normalsJoin (k := k) (fun i => q (v, i)) (fun i => q (b, i))] from by
          funext i; fin_cases i <;> simp]
-  exact normalsJoin_pair_linearIndependent_of_triLI _ _ _ htriLI hLI_va hLI_ab
+  exact normalsJoin_pair_linearIndependent_of_triLI _ _ _ htriLI
 
 /-- **The rows of `G_v` vanish in the columns of `v`** (a step of `lem:case-I-realization-h65`): if
 `v` is not a vertex of `Fv.graph`, and the edge of each index of `so` joins in `Fv.graph` the two
@@ -725,17 +721,12 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have hFGeb : FG.supportExtensor e_b =
       panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i)) := by
     simp only [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor, hends_eb]
-  obtain ⟨hLI_va, hLI_vb, hLI_ab⟩ := triLI_subpairs _ _ _ htriLI
-  have hne_a : FG.supportExtensor eₐ ≠ 0 := by
-    rw [hFGea, panelSupportExtensor_ne_zero_iff]; exact hLI_va
-  have hne_b : FG.supportExtensor e_b ≠ 0 := by
-    rw [hFGeb, panelSupportExtensor_ne_zero_iff]; exact hLI_vb
   have hgen : LinearIndependent K ![FG.supportExtensor eₐ, FG.supportExtensor e_b] :=
-    case_I_h65_extensor_pair_LI FG hFGea hFGeb htriLI hLI_va hLI_ab
+    case_I_h65_extensor_pair_LI FG hFGea hFGeb htriLI
   -- Step 6: the rows of `eₐ` and `e_b` give `D` forms, independent in the columns of `v`.
   obtain ⟨ιn, _, rn, hιn_card, hnewpin, hnew_span⟩ :=
     FG.exists_independent_pinned_two_edge_span_full (ends := ends) (v := v) (a := a) (b := b)
-      hends_ea hends_eb hav hbv (hFG_graph ▸ hlea) (hFG_graph ▸ hleb) hne_a hne_b hgen
+      hends_ea hends_eb hav hbv (hFG_graph ▸ hlea) (hFG_graph ▸ hleb) hgen
   -- Step 7: `D(|V(Gv)| − 1)` independent rows of `ofNormals Gv Q_v.ends q`, rigid by Step 3'', as
   -- rows of `FG`.
   have hneFv : ∀ e,
@@ -1696,7 +1687,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   have hFHne : FH.graph.vertexSet.Nonempty := by
     rw [hFHg, hVH']; exact ⟨a, Set.mem_insert a _⟩
   have hFH_rig : FH.IsInfinitesimallyRigidOn {a, b} :=
-    FH.theorem_55_base hab hFH_li (hFHg ▸ hH'le) (hFHg ▸ hH'lf)
+    FH.theorem_55_base hFH_li (hFHg ▸ hH'le) (hFHg ▸ hH'lf)
   have hFH_rigV : FH.IsInfinitesimallyRigidOn FH.graph.vertexSet := by
     rw [hFHg, hVH']; exact hFH_rig
   have hFH_finrank_nat : Module.finrank K (Submodule.span K FH.rigidityRows)

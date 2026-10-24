@@ -213,7 +213,7 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
   have hFHne : FH.graph.vertexSet.Nonempty := by
     rw [hFHg, hVH']; exact ⟨a, Set.mem_insert a _⟩
   have hFH_rig : FH.IsInfinitesimallyRigidOn {a, b} :=
-    FH.theorem_55_base hab hFH_li (hFHg ▸ hH'le) (hFHg ▸ hH'lf)
+    FH.theorem_55_base hFH_li (hFHg ▸ hH'le) (hFHg ▸ hH'lf)
   have hFH_rigV : FH.IsInfinitesimallyRigidOn FH.graph.vertexSet := by
     rw [hFHg, hVH']; exact hFH_rig
   have hFH_finrank_nat : Module.finrank K (Submodule.span K FH.rigidityRows)

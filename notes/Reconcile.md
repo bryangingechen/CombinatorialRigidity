@@ -65,9 +65,12 @@ into tasks 38.3–38.6 and 38.10 or appended as tasks 38.11–38.27, by file; `F
 derivable `hD`, is for the PI. Task 38.2 deleted `CaseIII/`'s dead declarations, ninety with the
 orphans in `RigidityMatrix/Basic.lean`, `Induction/Operations.lean` and two `Mathlib/` mirrors; task
 38.3 those of `CaseI.lean`, `GenericityDevice.lean` and `Coupling.lean` and `F-291`'s six,
-thirty-three with their orphans in `Pinning.lean`, and dropped `F-290`'s `hne` and `hnesH`.
-**Next concrete task:** round 3's task 38.4, the deletions in `Pinning.lean`, `PanelLayer.lean` and
-`PanelHinge.lean` (then tasks 38.5–38.27 and the close).
+thirty-three with their orphans in `Pinning.lean`, and dropped `F-290`'s `hne` and `hnesH`; task
+38.4 those of `Pinning.lean`, `PanelLayer.lean` and `PanelHinge.lean`, twenty with their orphans,
+`F-289`'s eight hypotheses and two instances (three nodes restated) and `F-296`'s two re-proofs.
+**Next concrete task:** round 3's task 38.5, the deletion of `RigidityMatrix/Concrete.lean` and the
+dead declarations of `Basic.lean`, `Claim612.lean`, `Meet.lean` and `Extensor.lean` (then tasks
+38.6–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

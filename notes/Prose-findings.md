@@ -5332,7 +5332,10 @@ declaration's name as its header writes it:
   build confirms that the two `ChainColumn.lean` callers were a shared `by omega` auxiliary (task
   38.2). Round 3: task 34.1's twenty-two deleted, with `F-268`'s three and `F-271`'s two, and the
   orphan `isInfinitesimallyRigidOn_of_finrank_le_set`; block (b) at `a1c4fe3a` gives the same
-  names, and the five pins stay, uncalled (task 38.3).
+  names, and the five pins stay, uncalled (task 38.3). Round 3: tasks 33's and 36's sixteen
+  deleted, with the four orphans `pinnedMotions_le_withGraph`, `pinnedMotions_withGraph_eq`,
+  `hnew_of_isLink_incident` and `hingeConstraint_comm`; block (b) at `f3677e99` gives the same
+  names, and the pinned `toBodyHinge_withGraph` stays, uncalled (task 38.4).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5590,7 +5593,11 @@ declaration's name as its header writes it:
   `screwDim_add_finrank_pinnedMotionsOn_le` and `rankHypothesis_iff_finrank_pinnedMotionsOn`
   (`⟨hs.some⟩`; no node states an instance). Moot: `hr`, as task 38.3 deletes its lemma (`F-291`).
   Task 38.17: `ChainData.d_eq_kAdd` and `cycle_realization`'s `hnk` by
-  `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`.
+  `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`. Round 3: task 38.4's part done, with the binders
+  it left unused, `toBodyHinge_rankHypothesis_zero`'s `huv` and
+  `toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`'s `[Nonempty α]`;
+  `lem:theorem-55-base`, `lem:theorem-55-triangle` and `lem:cycle-realization-base` restated without
+  the distinctness (task 38.4).
 - **F-290** · L · hypotheses of `Molecular/AlgebraicInduction/CaseI.lean` and `CaseII.lean` that the
   proofs do not use or the others give. `case_II_placement_eq612`'s `_hG_ea : G.IsLink e_a v a`,
   which its proof does not use (the dead pin of `lem:case-II-realization-placement`, S3's node,
@@ -5781,10 +5788,11 @@ declaration's name as its header writes it:
   `isGeneralPosition_ofParam`, on the three standard axioms (`scratch/reconcile-lean/Hyps-t36.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 36.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.4). Task 38.1:
-  `momentCurve_pair_linearIndependent` by `pair_linearIndependent_of_leading_minor_ne_zero` (its
-  minor `t − s`) and `isGeneralPosition_withMomentNormals` by `isGeneralPosition_ofParam`, each tool
-  moved above its user; no statement changes (`lem:moment-curve-general-position` pins both forms).
+  *Disposition:* done (task 38.4). Task 38.1: `momentCurve_pair_linearIndependent` by
+  `pair_linearIndependent_of_leading_minor_ne_zero` (its minor `t − s`) and
+  `isGeneralPosition_withMomentNormals` by `isGeneralPosition_ofParam`, each tool moved above its
+  user; no statement changes (`lem:moment-curve-general-position` pins both forms). Done so, the
+  leading-minor lemma moved up and `isGeneralPosition_withMomentNormals` down.
 - **F-297** · L · hypotheses the others give, and repeated derivations, in the first half of
   `Molecular/AlgebraicInduction/Theorem55.lean`. `theorem_55_base_producer_gen`'s
   `hD : 2 ≤ bodyBarDim n` (`lem:theorem-55-base-producer`) follows from `hk` and `hn`
@@ -5815,7 +5823,10 @@ declaration's name as its header writes it:
   go). Left: the `hD` of `theorem_55_base_producer_gen`, `case_I_realization_h65_gen`,
   `finrank_span_rigidityRows_cutEdge_eq` and the two cut lemmas, on the main result's chain
   (`F-324`); the one-edge rank in the two single-edge producers (~30 lines in two statements), and
-  the two sides of `case_cut_edge_realization_gp_gen` (one proof).
+  the two sides of `case_cut_edge_realization_gp_gen` (one proof). Round 3:
+  `case_I_h65_extensor_pair_LI`'s `hLI_va` and `hLI_ab` dropped, which `F-289`'s change left
+  unused, and with them the steps `hne_a` and `hne_b` of `case_I_realization_h65_gen`'s proof
+  (task 38.4).
 - **F-298** · L · hypotheses the others give, repeated derivations and four needless `set_option`s,
   in the second half of `Molecular/AlgebraicInduction/Theorem55.lean`.
   `case_I_realization_nonsimple_gen`'s `hD : 2 ≤ bodyBarDim n` (`lem:case-I-realization-nonsimple`)

@@ -633,8 +633,7 @@ lemma removeVertex_le (G : Graph α β) (v : α) : G.removeVertex v ≤ G := by
 
 /-- **An edge of `G` not in `G − v` has `v` as an end** (`lem:splitoff-edge-substitution`): if
 `G.IsLink e u w` and `e` does not join `u` and `w` in `G − v`, then `u = v` or `w = v`, as a link
-of `G` avoiding `v` is a link of `G − v` (`removeVertex_isLink`). It gives the hypothesis `hinc`
-of `BodyHingeFramework.hnew_of_isLink_incident` for a framework on `G` and `G' = G − v`. -/
+of `G` avoiding `v` is a link of `G − v` (`removeVertex_isLink`). -/
 lemma isLink_incident_of_not_removeVertex {G : Graph α β} {v : α} {e : β} {u w : α}
     (h : G.IsLink e u w) (hg : ¬(G.removeVertex v).IsLink e u w) : u = v ∨ w = v := by
   by_contra hc

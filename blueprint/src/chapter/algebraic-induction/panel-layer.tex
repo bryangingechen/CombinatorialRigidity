@@ -790,7 +790,7 @@ hinges with linearly independent extensors make the two bodies rigid.
   \leanok
   \uses{lem:rank-parallel-full}
   Let $(G,p)$ be a body-hinge framework, and let $e_1$ and $e_2$ be edges
-  of $G$ that both join the bodies $u \neq v$, with $C(p(e_1))$ and
+  of $G$ that both join the bodies $u$ and $v$, with $C(p(e_1))$ and
   $C(p(e_2))$ linearly independent. Then every infinitesimal motion $S$
   of $(G,p)$ has $S(u) = S(v)$. In particular, if $u$ and $v$ are the
   only bodies, then $(G,p)$ is infinitesimally rigid.
@@ -1523,8 +1523,8 @@ $m = 3$. The three-vertex realization of Case~III
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_triangle}
   \leanok
   \uses{def:rigidity-matrix}
-  Let $(G,p)$ be a body-hinge framework, let $u$, $v$ and $w$ be distinct
-  bodies, and let $e_1$, $e_2$ and $e_3$ be edges of $G$ that join $u$ to
+  Let $(G,p)$ be a body-hinge framework, let $u$, $v$ and $w$ be bodies,
+  and let $e_1$, $e_2$ and $e_3$ be edges of $G$ that join $u$ to
   $v$, $v$ to $w$, and $w$ to $u$. Suppose that $C(p(e_1))$, $C(p(e_2))$
   and $C(p(e_3))$ are linearly independent. Then every infinitesimal
   motion $S$ of $(G,p)$ has $S(u) = S(v) = S(w)$.
