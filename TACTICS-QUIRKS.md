@@ -87,7 +87,7 @@ failing pattern and the working fix.
 - `linter.style.longLine` flags far more / fewer lines than `awk 'length>100'` reports on a UTF-8-heavy file → § 55 (the linter counts Unicode codepoints, not bytes; count with Python `len(s)`)
 - A transcribed spike's `#print axioms <name>` lines build warning-free (and sorry-free) inside a library file, with no sign anything is wrong → § 55 (`#print axioms` emits `info:`, which the warning-only gate never reads; strip every `#print`/`#check`/`#eval` line before transcribing a spike, and `grep -rn '^#print' CombinatorialRigidity/` after any spike-sourced build catches a leftover)
 - downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
-- *"elaboration function for `Mathlib.Tactic.subscriptTerm` has not been implemented"* at `M *ᵥ v`, with an `ambiguousOpen` warning on `open scoped Matrix`, inside `namespace CombinatorialRigidity.Molecular` → § 56 (same capture: `RigidityMatrix/Concrete.lean`'s bare `Matrix.`-prefixed theorems made a `Molecular.Matrix` sub-namespace; spell `Matrix.mulVec`, or open before the `namespace`)
+- *"elaboration function for `Mathlib.Tactic.subscriptTerm` has not been implemented"* at `M *ᵥ v`, with an `ambiguousOpen` warning on `open scoped Matrix`, inside `namespace CombinatorialRigidity.Molecular` → § 56 (same capture: `RigidityMatrix/Concrete.lean`'s bare `Matrix.`-prefixed theorems, since deleted, made a `Molecular.Matrix` sub-namespace; spell `Matrix.mulVec`, or open before the `namespace`)
 - *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
 - `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
 - *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late); the same shape with `Inhabited α` (e.g. a hypothesis whose *type* invokes `Graph.endsOf`) → § 64 (worked case)
@@ -1823,11 +1823,11 @@ codomain* `V` (not a `let`-value the `clear_value` could hide, and not a single 
 existence form `Submodule.exists_linearIndependent_fin_of_finrank_eq` is unusable when the consumer
 needs the LI of the *named* family, not an arbitrary one. Fix: **factor the `.map'` into a
 generic-over-`V` mirror lemma** — `Module.Basis.linearIndependent_coe_subtype` (in
-`Mathlib/LinearAlgebra/Dimension/Constructions.lean`): the `.map'` step elaborates once against the
+`Mathlib/LinearAlgebra/Dimension/Constructions.lean`; since deleted with its caller): the `.map'` step elaborates once against the
 abstract `V`, and the call site applies it at the heavy carrier with the unification already
 discharged. The named-family complement of `exists_linearIndependent_fin_of_finrank_eq`. Worked case:
 `BodyHingeFramework.linearIndependent_blockBasisOn_screwDual` (dispatch leaf 3 within-block half,
-`Molecular/RigidityMatrix/Concrete.lean`). No `maxHeartbeats` bump.
+`Molecular/RigidityMatrix/Concrete.lean`; since deleted). No `maxHeartbeats` bump.
 
 **Generic-mathlib-composite variant (Phase 34).** Composing two *fully generic* mathlib lemmas
 (`Submodule.map_span` then `LinearEquiv.finrank_map_eq`) to show `finrank (span (f '' s)) = finrank
@@ -2478,14 +2478,15 @@ _root_.Graph` (forcing the root) fixes the downstream parse. Phase 22j-perf
 (`CaseI.lean`, `Graph.rigidContract_vertexSet_inter_eq_singleton` → `_root_.Graph.…`); the
 `CaseI.lean`-split blocker. See FRICTION [resolved] *Bare `Graph.`-prefix in `Molecular` namespace*.
 
-**Second instance: `Matrix`** (Phase 40g build 2). `RigidityMatrix/Concrete.lean` declares three bare
+**Second instance: `Matrix`** (Phase 40g build 2). `RigidityMatrix/Concrete.lean` declared three bare
 `Matrix.`-prefixed theorems inside `namespace CombinatorialRigidity.Molecular`, so an `open scoped
-Matrix` (or `open scoped Matrix in`) inside that namespace downstream opens
-`CombinatorialRigidity.Molecular.Matrix`: the `ambiguousOpen` linter says so, and `M *ᵥ v` then
-parses `ᵥ` as a subscript (*"elaboration function for `Mathlib.Tactic.subscriptTerm` has not been
+Matrix` (or `open scoped Matrix in`) inside that namespace downstream opened
+`CombinatorialRigidity.Molecular.Matrix`: the `ambiguousOpen` linter said so, and `M *ᵥ v` then
+parsed `ᵥ` as a subscript (*"elaboration function for `Mathlib.Tactic.subscriptTerm` has not been
 implemented"*). An `open scoped Matrix` placed before the `namespace` line still opens the root
-(`Flat.lean`, `Carrier.lean`). The § 56 fix, pinning the three to `_root_.Matrix.`, is FRICTION
-*`open scoped Matrix` inside `namespace CombinatorialRigidity.Molecular`* (open).
+(`Flat.lean`, `Carrier.lean`). The capture ended when RECONCILE round 3 deleted the file, which
+nothing used (task 38.5); FRICTION *`open scoped Matrix` inside `namespace
+CombinatorialRigidity.Molecular`* (resolved).
 
 
 ## 57. A `-/` *inside a word* in a docstring (e.g. `grade-/ambient`) terminates the doc comment early — *"unexpected identifier; expected 'lemma'"*
@@ -2694,7 +2695,7 @@ fires via `dsimp`, not the lemma — so prefer `show`.) **Lifted to:** this entr
 **Symptom.** *"failed to synthesize instance of type class `Fintype (n₁ ⊕ n₂)`"* reported at the
 **goal-statement** position (the `theorem … : … ≤ (Matrix.fromBlocks A B 0 D).rank` line), not inside
 the proof — even though the proof opens with `haveI : Fintype n₁ := Fintype.ofFinite n₁` etc. Hit
-authoring Phase 23d's A3 `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` with the column
+authoring Phase 23d's A3 `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` (since deleted) with the column
 blocks typed `[Finite n₁] [Finite n₂]`.
 
 **Cause.** `Matrix.rank A := finrank R (LinearMap.range A.mulVecLin)`, and `mulVecLin`/`mulVec` sum
@@ -2731,7 +2732,7 @@ every *other* declaration in the file.
 
 **Symptom.** `lake build <your module>` succeeds, but `lake lint` (`runLinter`, the CI gate) aborts
 with *"uncaught exception: import <YourModule> failed, environment already contains 'Ns.foo' from
-<OtherModule>"*. Hit landing Phase 23d's A4.5: a new `screwBasis` in `RigidityMatrix/Concrete.lean`
+<OtherModule>"*. Hit landing Phase 23d's A4.5: a new `screwBasis` in `RigidityMatrix/Concrete.lean` (since deleted)
 collided with an existing `Molecular.screwBasis` in `AlgebraicInduction/PanelLayer.lean` (a *different*
 type — powerset-indexed vs `Fin`-indexed basis — but the *same* fully-qualified name).
 
@@ -2744,7 +2745,7 @@ highest there.)
 
 **Fix.** Before naming a new top-level decl in a shared namespace, check the name is free:
 `grep -rn "def <name>\b" <subtree>` or `lean_local_search "<name>"`. If taken, pick a distinct name
-(here: `finScrewBasis` for the `Fin`-indexed variant). And **run `lake lint` before commit**, not just
+(here: `finScrewBasis` for the `Fin`-indexed variant, since deleted). And **run `lake lint` before commit**, not just
 `lake build <module>` — this class of failure is lint-only. (The build/lint-gate section in
 `CombinatorialRigidity/CLAUDE.md` already mandates both; this is *why* build-alone is insufficient.)
 
@@ -2754,7 +2755,7 @@ highest there.)
 API lemma (here `Basis.dualBasis_equivFun` / `Pi.basis_apply`) errors:
 *"synthesized type class instance is not definitionally equal to expression inferred by typing rules,
 synthesized `fun a b ↦ a.instDecidableEqSigma b` / inferred `Classical.decEq (…)`"*. Hit landing
-Phase 23d's A5c proving `dualProductCoordEquiv_apply`: `dualProductCoordEquiv`'s body supplies its
+Phase 23d's A5c proving `dualProductCoordEquiv_apply` (both since deleted): `dualProductCoordEquiv`'s body supplies its
 `Σ`-index `DecidableEq` *classically* (`haveI : DecidableEq ((_:α) × Fin …) := Classical.decEq _`),
 but the lemma's ambient `[DecidableEq α]` makes `rw` re-synthesize the *derived* `instDecidableEqSigma`
 for the same `Σ`-type, and the two `Decidable` terms are not syntactically/defeq-equal (both are
@@ -2783,13 +2784,13 @@ in a `CombinatorialRigidity/Molecular/RigidityMatrix/*.lean` file with `unexpect
 expected ','` (the `∀ e ∈` binder case) or `… expected '}'` (the subtype case), at the column of
 `E`/`V`. The same syntax is accepted by `lean_multi_attempt` (its REPL insertion context has the
 `Graph` scope active), which makes the failure look spurious. Hit landing Phase 23d's A4.5e
-(`rigidityMatrixEdge`) — the edge-restricted matrix's `∀ e ∈ E(F.graph), …` hypotheses.
+(`rigidityMatrixEdge`, since deleted) — the edge-restricted matrix's `∀ e ∈ E(F.graph), …` hypotheses.
 
 **Cause.** `E(`/`V(`/`↾`/`G - S` are **`scoped notation` on `namespace Graph`** (mathlib +
 the `apnelson1/Matroid` package). They are active only where `Graph` is open — either via
 `namespace Graph` (e.g. `Molecular/Deficiency.lean`, `Molecular/Induction/Operations.lean`) or an
-explicit `open scoped Graph`. The `Molecular/RigidityMatrix/` files (`Basic.lean`, `Concrete.lean`,
-…) sit in `namespace CombinatorialRigidity.Molecular` with `open Module Matrix` and **no**
+explicit `open scoped Graph`. The `Molecular/RigidityMatrix/` files (`Basic.lean`, `Bricks.lean`,
+`Claim612.lean`) sit in `namespace CombinatorialRigidity.Molecular` with `open Module Matrix` and **no**
 `open Graph`; they refer to graphs through `F.graph.IsLink` / `F.graph.edgeSet` *dot notation*
 throughout and never use the bracket notation. So the notation simply isn't declared here — this is
 **not** § 48 / § 56 (where the notation is present but *poisons* `-` chains or loses a notation war).
@@ -2810,7 +2811,7 @@ a one-off signature the dot form is lighter and consistent with the surrounding 
 goal partly reduced), and the obvious read — "drop `L`" — is **wrong**: dropping `L` then leaves a
 sub-term unreduced and the goal unsolved. The arg is genuinely needed; `simp` just never reached the
 point where it fires because a *different*, sibling lemma was missing from the set. Hit landing Phase
-23d's leaf-1 corner-entry generalization (`Concrete.lean`,
+23d's leaf-1 corner-entry generalization (`Concrete.lean`, since deleted,
 `rigidityMatrixEdge_mul_columnOp_apply_corner` at `(ends p.1.1).2 ≠ v`): reducing
 `columnOp hva (Pi.single v s)` at body `v` (`(Pi.single v s) v + (Pi.single v s) a`, needing
 `Pi.single_eq_of_ne hva.symm` for the `a`-coordinate) **and** at the second endpoint
@@ -2855,7 +2856,7 @@ in the *signature*), but the failure mode here is `*`-index syntactic match + `s
 instance, not folding/late-instance.
 
 **Fix.** Type the LEFT factor at the **same syntactic index** as the matrix it multiplies — i.e. at
-`{e // e ∈ (caseIIICandidate G …).graph.edgeSet} × …`, the literal form `rigidityMatrixEdge` carries —
+`{e // e ∈ (caseIIICandidate G …).graph.edgeSet} × …`, the literal form `rigidityMatrixEdge` (since deleted) carried —
 and supply the subtype `Fintype` as an explicit signature binder (`[Fintype {e // e ∈
 (caseIIICandidate G …).graph.edgeSet}]`; subtype `Fintype` is never auto-synthesized, § 64). Then in
 the body do **not** `set F₀`; call the core on the literal candidate expression
@@ -3418,7 +3419,7 @@ which surface `K` — fixed with `(K := ℝ)` (Bricks, Pinning, GenericityDevice
 Concrete's ~60 such call sites all resolved `K` from a neighbouring `Module.Dual ℝ (ScrewSpace ℝ k)`,
 so only the type-ascription-free spots stuck. **Slice-6 recurrence (the matrix-product `HMul`-deferral
 shape — 36 `columnOp` sites, sharper than the Slice-4 prediction above):** sweeping `Concrete.lean`
-itself ℝ → `K`, every `columnOp (k := k) hva` factor of a matrix product `rigidityMatrix{Prod,Edge} *
+(since deleted) itself ℝ → `K`, every `columnOp (k := k) hva` factor of a matrix product `rigidityMatrix{Prod,Edge} *
 (toMatrix' (prodColumnOpEquiv … (columnOp (k := k) hva).symm))ᵀ` stuck, because `columnOp`'s header
 (`{v a : α} (hva : v ≠ a)`) never names `K`. The distinctive symptom is *not* the stuck-`Field ?m`
 form but **`Function expected at <the product>, but this term has type ?m.NN`** — matrix `HMul`

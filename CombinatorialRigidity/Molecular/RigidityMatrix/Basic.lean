@@ -300,8 +300,9 @@ variable {k : ℕ} {α β : Type*}
 /-! ## The hinge constraint and the hinge-row block (`def:hinge-constraint`, `def:hinge-row-block`)
 
 The framework of a hinge assignment (`ofHinge`), the transport along an automorphism of the screw
-space (`mapExtensor`), and the hinge constraint `S u − S v ∈ span C(p(e))` with its form as the
-`D − 1` equations of the hinge-row block (`hingeConstraint_iff_hingeRowBlock`). -/
+space (`mapExtensor`), the hinge-row block with its membership test (`mem_hingeRowBlock_iff`), and
+the hinge constraint `S u − S v ∈ span C(p(e))` with its form as the `D − 1` equations of the
+hinge-row block (`hingeConstraint_iff_hingeRowBlock`). -/
 
 /-- **The framework of a hinge assignment** (the affine hinges of `def:hinge-constraint`): each edge
 label `e` gets `k` points `hinge e` of `K^(k+1)`, and its supporting extensor is
@@ -376,6 +377,18 @@ theorem hingeRowBlock_apply (F : BodyHingeFramework K k α β) (e : β) :
     F.hingeRowBlock e =
       (Submodule.span K {F.supportExtensor e}).dualAnnihilator :=
   rfl
+
+/-- **A form lies in the hinge-row block if and only if it vanishes at the extensor**
+(`def:hinge-row-block`): `r ∈ F.hingeRowBlock e ↔ r (C(e)) = 0`. The block is the space of the forms
+that vanish on `span {C(e)}` (`hingeRowBlock`), and a form vanishes on the multiples of `C(e)` if
+and only if it vanishes at `C(e)` (the remark after `def:hinge-row-block`). -/
+theorem mem_hingeRowBlock_iff (F : BodyHingeFramework K k α β) (e : β)
+    (r : Module.Dual K (ScrewSpace K k)) :
+    r ∈ F.hingeRowBlock e ↔ r (F.supportExtensor e) = 0 := by
+  rw [hingeRowBlock, Submodule.mem_dualAnnihilator]
+  refine ⟨fun h => h _ (Submodule.mem_span_singleton_self _), fun h x hx => ?_⟩
+  obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hx
+  rw [map_smul, h, smul_zero]
 
 /-- **The hinge constraint as `D − 1` linear equations** (`def:hinge-row-block`): a screw assignment
 `S` satisfies the hinge constraint at `e` with ends `u` and `v` (`def:hinge-constraint`) if and only
@@ -531,215 +544,6 @@ theorem exists_edgeIndexed_combination_of_mem_span_rigidityRows
   refine ⟨n, f, ev, uv, vv, rv, hlink, hrv, ?_⟩
   rw [← hsum]
   exact Finset.sum_congr rfl fun j _ => by rw [hgrow j]
-
-/-- **A form of one hinge's block gives a row of every framework with that hinge**
-(`def:hinge-row-block`): if `F₁.supportExtensor e₁ = F₂.supportExtensor e₂`, `r` lies in the
-hinge-row block of `F₁` at `e₁`, and `e₂` links `u` to `v` in `F₂`, then
-`hingeRow u v r ∈ F₂.rigidityRows`. The block depends only on the supporting extensor, so `r` is in
-the block of `F₂` at `e₂`; the labels `e₁` and `e₂` may differ. -/
-theorem hingeRow_mem_rigidityRows_of_supportExtensor_eq
-    (F₁ F₂ : BodyHingeFramework K k α β) {e₁ e₂ : β} {u v : α}
-    (hlink : F₂.graph.IsLink e₂ u v) {r : Module.Dual K (ScrewSpace K k)}
-    (hr : r ∈ F₁.hingeRowBlock e₁) (hsupp : F₁.supportExtensor e₁ = F₂.supportExtensor e₂) :
-    hingeRow u v r ∈ F₂.rigidityRows :=
-  ⟨e₂, u, v, hlink, r, by rwa [hingeRowBlock, ← hsupp, ← hingeRowBlock], rfl⟩
-
-/-- **Rows from spanning families of the blocks span the row space** (`def:rigidity-matrix`): let
-`ends e` be the ends of each edge `e` of `G` (`hends`), and let the forms `B e i` lie in the
-hinge-row block at `e` and span it (`hmem`, `hspan`). Then the forms
-`hingeRow (ends e).1 (ends e).2 (B e i)`, over the edges `e` of `G` and the indices `i`, span the
-row space of `R(G,p)`.
-
-`≤`: each is a row. `≥`: a row `hingeRow u v r` of a link `e` has `r` in the span of the `B e i`,
-and `hingeRow u v` is linear; `(u, v)` is `ends e` or its swap, and a swap negates the form
-(`hingeRow_swap`). -/
-theorem span_range_hingeRow_blockSpanning_eq_rigidityRows
-    (F : BodyHingeFramework K k α β) {ι : Type*} (ends : β → α × α)
-    (B : β → ι → Module.Dual K (ScrewSpace K k))
-    (hmem : ∀ e ∈ F.graph.edgeSet, ∀ i, B e i ∈ F.hingeRowBlock e)
-    (hspan : ∀ e ∈ F.graph.edgeSet,
-      Submodule.span K (Set.range (B e)) = F.hingeRowBlock e)
-    (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2) :
-    Submodule.span K (Set.range fun p : {e // e ∈ F.graph.edgeSet} × ι =>
-        hingeRow (ends p.1.1).1 (ends p.1.1).2 (B p.1.1 p.2))
-      = Submodule.span K F.rigidityRows := by
-  classical
-  apply le_antisymm
-  · -- `≤`: each bottom-row functional is a rigidity row.
-    rw [Submodule.span_le]
-    rintro _ ⟨p, rfl⟩
-    apply Submodule.subset_span
-    exact ⟨p.1.1, (ends p.1.1).1, (ends p.1.1).2, hends p.1.1 p.1.2,
-      B p.1.1 p.2, hmem p.1.1 p.1.2 p.2, rfl⟩
-  · -- `≥`: each rigidity-row generator is in the span of the bottom-row functionals.
-    rw [Submodule.span_le]
-    rintro _ ⟨e, u, v, hlink, r, hr, rfl⟩
-    have he : e ∈ F.graph.edgeSet := hlink.edge_mem
-    -- `r ∈ F.hingeRowBlock e = span {B e i}`, so `hingeRow u v r ∈ span {hingeRow u v (B e i)}`.
-    have hrspan : r ∈ Submodule.span K (Set.range (B e)) := by rw [hspan e he]; exact hr
-    rw [hingeRow_eq_dualMap]
-    refine Submodule.span_induction (p := fun x _ =>
-      (screwDiff (k := k) (α := α) u v).dualMap x ∈ Submodule.span K
-        (Set.range fun p : {e // e ∈ F.graph.edgeSet} × ι =>
-          hingeRow (ends p.1.1).1 (ends p.1.1).2 (B p.1.1 p.2)))
-      ?_ ?_ ?_ ?_ hrspan
-    · -- A generator `B e i`: `hingeRow u v (B e i) = ± (bottom-row at (⟨e, he⟩, i))`.
-      rintro _ ⟨i, rfl⟩
-      rw [← hingeRow_eq_dualMap]
-      have hmatch := (hends e he).eq_and_eq_or_eq_and_eq hlink
-      rcases hmatch with ⟨h1, h2⟩ | ⟨h1, h2⟩
-      · -- `(ends e) = (u, v)`: directly the bottom-row functional.
-        have : hingeRow u v (B e i)
-            = (fun p : {e // e ∈ F.graph.edgeSet} × ι =>
-                hingeRow (ends p.1.1).1 (ends p.1.1).2 (B p.1.1 p.2)) (⟨e, he⟩, i) := by
-          simp only [h1, h2]
-        rw [this]; exact Submodule.subset_span ⟨(⟨e, he⟩, i), rfl⟩
-      · -- `(ends e) = (v, u)`: the swapped bottom-row functional, `hingeRow_swap`.
-        have : hingeRow u v (B e i)
-            = - (fun p : {e // e ∈ F.graph.edgeSet} × ι =>
-                hingeRow (ends p.1.1).1 (ends p.1.1).2 (B p.1.1 p.2)) (⟨e, he⟩, i) := by
-          simp only [h1, h2]
-          rw [hingeRow_swap u v, hingeRow_eq_dualMap, map_neg, ← hingeRow_eq_dualMap]
-        rw [this]
-        exact Submodule.neg_mem _ (Submodule.subset_span ⟨(⟨e, he⟩, i), rfl⟩)
-    · simp only [map_zero]; exact Submodule.zero_mem _
-    · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
-    · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx
-
-/-- **Rows of one framework's spanning families span another framework's row space**
-(`def:rigidity-matrix`): the form of `span_range_hingeRow_blockSpanning_eq_rigidityRows` for two
-frameworks `F₁` and `F₂`. Let `remap` map the edges of `F₁` onto those of `F₂` (`hremap_surj`), and
-for each edge `e` of `F₁` let the forms `B e i` span the hinge-row block of `F₂` at `remap e`
-(`hspan`) and `ends₁ e` be the ends of `remap e` in `F₂` (`hlink₁`). Then the forms
-`hingeRow (ends₁ e).1 (ends₁ e).2 (B e i)`, over the edges `e` of `F₁` and the indices `i`, span the
-row space of `F₂`. The proof is that of the one-framework form, through a section of `remap`. -/
-theorem span_range_hingeRow_crossFramework_eq_rigidityRows
-    (F₁ F₂ : BodyHingeFramework K k α β) {ι : Type*}
-    (ends₁ : β → α × α)
-    (remap : {e // e ∈ F₁.graph.edgeSet} → {e // e ∈ F₂.graph.edgeSet})
-    (hremap_surj : Function.Surjective remap)
-    (B : (e : {e // e ∈ F₁.graph.edgeSet}) → ι → Module.Dual K (ScrewSpace K k))
-    (hspan : ∀ e, Submodule.span K (Set.range (B e)) = F₂.hingeRowBlock (remap e))
-    (hlink₁ : ∀ e : {e // e ∈ F₁.graph.edgeSet},
-      F₂.graph.IsLink (remap e).1 (ends₁ e.1).1 (ends₁ e.1).2) :
-    Submodule.span K (Set.range fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
-        hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2))
-      = Submodule.span K F₂.rigidityRows := by
-  classical
-  have hmem : ∀ e i, B e i ∈ F₂.hingeRowBlock (remap e) := fun e i => by
-    rw [← hspan e]; exact Submodule.subset_span ⟨i, rfl⟩
-  apply le_antisymm
-  · -- `≤`: each candidate `a`-shifted row is an `F₂`-rigidity row at the remapped edge.
-    rw [Submodule.span_le]
-    rintro _ ⟨⟨e, i⟩, rfl⟩
-    exact Submodule.subset_span
-      ⟨(remap e).1, (ends₁ e.1).1, (ends₁ e.1).2, hlink₁ e, B e i, hmem e i, rfl⟩
-  · -- `≥`: every `F₂`-rigidity-row generator is in the span of the candidate family.
-    -- Pick a section of the surjection `remap` to transfer `B` to F₂-edges.
-    obtain ⟨s, hs⟩ := hremap_surj.hasRightInverse
-    rw [Submodule.span_le]
-    rintro _ ⟨e, u, v, hlink, r, hr, rfl⟩
-    have he : e ∈ F₂.graph.edgeSet := hlink.edge_mem
-    -- `r ∈ F₂.hingeRowBlock e = span {B (s ⟨e,he⟩) i}ᵢ` (via `hspan` + the section).
-    have hrspan : r ∈ Submodule.span K (Set.range (B (s ⟨e, he⟩))) := by
-      rw [hspan (s ⟨e, he⟩), hs ⟨e, he⟩]; exact hr
-    -- `(u, v)` is `ends₁ (s ⟨e, he⟩)` up to swap (both pairs are ends of `e` in `F₂`).
-    have hcand : F₂.graph.IsLink e (ends₁ (s ⟨e, he⟩).1).1 (ends₁ (s ⟨e, he⟩).1).2 := by
-      have := hlink₁ (s ⟨e, he⟩); rwa [hs ⟨e, he⟩] at this
-    have hmatch := hcand.eq_and_eq_or_eq_and_eq hlink
-    rw [hingeRow_eq_dualMap]
-    refine Submodule.span_induction (p := fun x _ =>
-      (screwDiff (k := k) (α := α) u v).dualMap x ∈ Submodule.span K
-        (Set.range fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
-          hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)))
-      ?_ ?_ ?_ ?_ hrspan
-    · -- A generator `B (s ⟨e,he⟩) i`.
-      rintro _ ⟨i, rfl⟩
-      rw [← hingeRow_eq_dualMap]
-      rcases hmatch with ⟨h1, h2⟩ | ⟨h1, h2⟩
-      · have : hingeRow u v (B (s ⟨e, he⟩) i)
-            = (fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
-                hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)) (s ⟨e, he⟩, i) := by
-          simp only; rw [← h1, ← h2]
-        rw [this]; exact Submodule.subset_span ⟨(s ⟨e, he⟩, i), rfl⟩
-      · have : hingeRow u v (B (s ⟨e, he⟩) i)
-            = - (fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
-                hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)) (s ⟨e, he⟩, i) := by
-          simp only; rw [← h1, ← h2, hingeRow_swap, hingeRow_eq_dualMap, map_neg,
-            ← hingeRow_eq_dualMap]
-        rw [this]
-        exact Submodule.neg_mem _ (Submodule.subset_span ⟨(s ⟨e, he⟩, i), rfl⟩)
-    · simp only [map_zero]; exact Submodule.zero_mem _
-    · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
-    · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx
-
-/-- **The same when the forms at some edges are zero** (`def:rigidity-matrix`): the matching of
-`span_range_hingeRow_crossFramework_eq_rigidityRows` (`remap` onto, `hspan`, `hlink₁`) is asked only
-at the edges of `F₁` that satisfy `P`, and the forms at the other edges are zero (`hoff`). The whole
-family still spans the row space of `F₂`: the zero forms add nothing. An edge whose two ends are
-taken equal has zero forms (`hingeRow_self`). -/
-theorem span_range_hingeRow_crossFramework_eq_rigidityRows_of_off
-    (F₁ F₂ : BodyHingeFramework K k α β) {ι : Type*}
-    (ends₁ : β → α × α)
-    (P : {e // e ∈ F₁.graph.edgeSet} → Prop)
-    (remap : {e // P e} → {e // e ∈ F₂.graph.edgeSet})
-    (hremap_surj : Function.Surjective remap)
-    (B : (e : {e // e ∈ F₁.graph.edgeSet}) → ι → Module.Dual K (ScrewSpace K k))
-    (hspan : ∀ e : {e // P e},
-      Submodule.span K (Set.range (B e.1)) = F₂.hingeRowBlock (remap e))
-    (hlink₁ : ∀ e : {e // P e},
-      F₂.graph.IsLink (remap e).1 (ends₁ e.1.1).1 (ends₁ e.1.1).2)
-    (hoff : ∀ e : {e // e ∈ F₁.graph.edgeSet}, ¬ P e →
-      ∀ i, hingeRow (ends₁ e.1).1 (ends₁ e.1).2 (B e i) = 0) :
-    Submodule.span K (Set.range fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
-        hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2))
-      = Submodule.span K F₂.rigidityRows := by
-  classical
-  have hmem : ∀ e : {e // P e}, ∀ i, B e.1 i ∈ F₂.hingeRowBlock (remap e) := fun e i => by
-    rw [← hspan e]; exact Submodule.subset_span ⟨i, rfl⟩
-  apply le_antisymm
-  · -- `≤`: a `P`-row is an `F₂`-rigidity row at the remapped edge; an off-`P` row is `0`.
-    rw [Submodule.span_le]
-    rintro _ ⟨⟨e, i⟩, rfl⟩
-    by_cases hP : P e
-    · exact Submodule.subset_span
-        ⟨(remap ⟨e, hP⟩).1, (ends₁ e.1).1, (ends₁ e.1).2, hlink₁ ⟨e, hP⟩,
-          B e i, hmem ⟨e, hP⟩ i, rfl⟩
-    · simp only; rw [hoff e hP i]; exact Submodule.zero_mem _
-  · -- `≥`: every `F₂`-rigidity-row generator is in the span of the `P`-rows of the full family.
-    obtain ⟨s, hs⟩ := hremap_surj.hasRightInverse
-    rw [Submodule.span_le]
-    rintro _ ⟨e, u, v, hlink, r, hr, rfl⟩
-    have he : e ∈ F₂.graph.edgeSet := hlink.edge_mem
-    have hrspan : r ∈ Submodule.span K (Set.range (B (s ⟨e, he⟩).1)) := by
-      rw [hspan (s ⟨e, he⟩), hs ⟨e, he⟩]; exact hr
-    have hcand : F₂.graph.IsLink e (ends₁ (s ⟨e, he⟩).1.1).1 (ends₁ (s ⟨e, he⟩).1.1).2 := by
-      have := hlink₁ (s ⟨e, he⟩); rwa [hs ⟨e, he⟩] at this
-    have hmatch := hcand.eq_and_eq_or_eq_and_eq hlink
-    rw [hingeRow_eq_dualMap]
-    refine Submodule.span_induction (p := fun x _ =>
-      (screwDiff (k := k) (α := α) u v).dualMap x ∈ Submodule.span K
-        (Set.range fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
-          hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)))
-      ?_ ?_ ?_ ?_ hrspan
-    · rintro _ ⟨i, rfl⟩
-      rw [← hingeRow_eq_dualMap]
-      rcases hmatch with ⟨h1, h2⟩ | ⟨h1, h2⟩
-      · have : hingeRow u v (B (s ⟨e, he⟩).1 i)
-            = (fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
-                hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)) ((s ⟨e, he⟩).1, i) := by
-          simp only; rw [← h1, ← h2]
-        rw [this]; exact Submodule.subset_span ⟨((s ⟨e, he⟩).1, i), rfl⟩
-      · have : hingeRow u v (B (s ⟨e, he⟩).1 i)
-            = - (fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
-                hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)) ((s ⟨e, he⟩).1, i) := by
-          simp only; rw [← h1, ← h2, hingeRow_swap, hingeRow_eq_dualMap, map_neg,
-            ← hingeRow_eq_dualMap]
-        rw [this]
-        exact Submodule.neg_mem _ (Submodule.subset_span ⟨((s ⟨e, he⟩).1, i), rfl⟩)
-    · simp only [map_zero]; exact Submodule.zero_mem _
-    · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
-    · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /-! ## The infinitesimal motions `Z(G,p)` (`def:rigidity-matrix`)
 
@@ -1115,55 +919,6 @@ theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finit
   · exact hgn i
   · exact hgo j
 
-/-- **Forms independent at `v`, composed with `Φ⁻¹`, and forms that ignore `S v`**: let
-`Φ = columnOp hva`, let the restrictions of the forms `corner i` to the screw assignments that
-vanish off `v` be linearly independent (`hcornerpin`), and let `bottom` be linearly independent
-forms (`hbotindep`) that do not depend on `S v` (`hbotblind`). Then the forms `corner i ∘ₗ Φ⁻¹` and
-`bottom j` are jointly linearly independent.
-
-The forms `bottom j` vanish at the assignments that vanish off `v`, so `Sum.elim corner bottom` is
-independent (`linearIndependent_sum_pinned_block`). `Φ⁻¹` changes only `S v`, so it fixes each
-`bottom j`, and composing with `Φ⁻¹` is an injective linear map of the forms. -/
-theorem linearIndependent_sumElim_corner_bottom_of_disjoint_pin {m₁ m₂ : Type*}
-    [Finite m₁] [Finite m₂] [DecidableEq α] {v a : α} (hva : v ≠ a)
-    {corner : m₁ → Module.Dual K (α → ScrewSpace K k)}
-    {bottom : m₂ → Module.Dual K (α → ScrewSpace K k)}
-    (hcornerpin : LinearIndependent K
-      (fun i : m₁ => (corner i).comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v)))
-    (hbotblind : ∀ (j : m₂) (S : α → ScrewSpace K k) (x : ScrewSpace K k),
-      bottom j (Function.update S v x) = bottom j S)
-    (hbotindep : LinearIndependent K bottom) :
-    LinearIndependent K (Sum.elim
-      (fun i : m₁ => (corner i).comp (columnOp (k := k) hva).symm.toLinearMap) bottom) := by
-  classical
-  -- The bottom rows vanish at every assignment `update 0 v x` (`hbotblind` at `S = 0`, then
-  -- `bottom j 0 = 0`).
-  have hold : ∀ (j : m₂) (x : ScrewSpace K k),
-      bottom j (Function.update (0 : α → ScrewSpace K k) v x) = 0 := fun j x => by
-    rw [hbotblind j 0 x]; exact map_zero _
-  -- `Sum.elim corner bottom` is independent (`linearIndependent_sum_pinned_block`).
-  have hpinned : LinearIndependent K (Sum.elim corner bottom) :=
-    linearIndependent_sum_pinned_block hold hcornerpin hbotindep
-  -- `Φ⁻¹` fixes each blind bottom row: `Φ⁻¹ S = update S v (S v − S a)` only changes the
-  -- `v`-coordinate, invisible to `bottom j` (`hbotblind`).
-  have hbotfix : ∀ j : m₂, (bottom j).comp (columnOp (k := k) hva).symm.toLinearMap = bottom j :=
-    fun j => LinearMap.ext fun S => by
-      rw [LinearMap.comp_apply, LinearEquiv.coe_coe]
-      change bottom j (Function.update S v (S v - S a)) = bottom j S
-      rw [hbotblind]
-  -- The family with `Φ⁻¹` is `Φ⁻¹.dualMap` applied to `Sum.elim corner bottom`, and `Φ⁻¹.dualMap`
-  -- is injective.
-  have heq : Sum.elim (fun i : m₁ =>
-        (corner i).comp (columnOp (k := k) hva).symm.toLinearMap) bottom
-      = ⇑(columnOp (k := k) hva).symm.dualMap ∘ Sum.elim corner bottom := by
-    funext s
-    cases s with
-    | inl i => rfl
-    | inr j => exact (hbotfix j).symm
-  rw [heq]
-  exact hpinned.map' (columnOp (k := k) hva).symm.dualMap.toLinearMap
-    (LinearMap.ker_eq_bot.2 (columnOp (k := k) hva).symm.dualMap.injective)
-
 /-- **Forms that depend only on `S v`, and forms independent off `v`** (a step of
 `lem:case-III-candidate-row`; the shape of KT eq. (6.29), p. 686): let the forms `top` vanish where
 `S v = 0` (`htopvanish`), with restrictions to the assignments that vanish off `v` linearly
@@ -1529,12 +1284,6 @@ theorem isInfinitesimallyRigidOn_univ_iff (F : BodyHingeFramework K k α β) :
   rw [isInfinitesimallyRigidOn_iff, isInfinitesimallyRigid_iff]
   exact ⟨fun h S hS u v => h S hS u (Set.mem_univ u) v (Set.mem_univ v),
     fun h S hS u _ v _ => h S hS u v⟩
-
-/-- **Infinitesimal rigidity gives rigidity on every set of bodies** (`def:rank-hypothesis`): a
-motion constant on `α` is constant on `s`. -/
-theorem isInfinitesimallyRigidOn_of_isInfinitesimallyRigid (F : BodyHingeFramework K k α β)
-    (h : F.IsInfinitesimallyRigid) (s : Set α) : F.IsInfinitesimallyRigidOn s :=
-  fun S hS u _ v _ => (F.isInfinitesimallyRigid_iff.mp h S hS) u v
 
 /-- **Rigidity on two sets with a common body gives rigidity on their union** (a step of
 `lem:case-I-splice-seed`): if every motion is constant on `s` and on `t`, and `c ∈ s ∩ t`, then

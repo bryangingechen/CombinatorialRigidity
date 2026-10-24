@@ -67,10 +67,11 @@ orphans in `RigidityMatrix/Basic.lean`, `Induction/Operations.lean` and two `Mat
 38.3 those of `CaseI.lean`, `GenericityDevice.lean` and `Coupling.lean` and `F-291`'s six,
 thirty-three with their orphans in `Pinning.lean`, and dropped `F-290`'s `hne` and `hnesH`; task
 38.4 those of `Pinning.lean`, `PanelLayer.lean` and `PanelHinge.lean`, twenty with their orphans,
-`F-289`'s eight hypotheses and two instances (three nodes restated) and `F-296`'s two re-proofs.
-**Next concrete task:** round 3's task 38.5, the deletion of `RigidityMatrix/Concrete.lean` and the
-dead declarations of `Basic.lean`, `Claim612.lean`, `Meet.lean` and `Extensor.lean` (then tasks
-38.6–38.27 and the close).
+`F-289`'s eight hypotheses and two instances (three nodes restated) and `F-296`'s two re-proofs;
+task 38.5 `RigidityMatrix/Concrete.lean` whole and the dead declarations of `Basic.lean`,
+`Claim612.lean`, `Meet.lean` and `Extensor.lean`, 105 with their orphans, and `F-287`'s `ha`, `hb`
+and `mem_hingeRowBlock_iff`'s move. **Next concrete task:** round 3's task 38.6, the deletions in
+`Induction/` (then tasks 38.7–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

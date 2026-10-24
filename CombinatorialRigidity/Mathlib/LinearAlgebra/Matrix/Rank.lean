@@ -18,7 +18,7 @@ public import Mathlib.Basic.Real.Basic
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 
 /-!
-# Rectangular linear independence via rank, polynomial-entry matrices, and block-triangular rank
+# Rectangular linear independence via rank, polynomial-entry matrices, and block row operations
 
 `Mathlib.LinearAlgebra.Matrix.NonsingularInverse` has `Matrix.linearIndependent_rows_iff_isUnit`
 for **square** matrices over a field. The **rectangular** characterizations — the rows of
@@ -52,10 +52,9 @@ this needs no linear order on `K`.
   the panel-hinge rigidity matrix are polynomials in the panel coordinates, so a rank attained at
   one realization is attained at a generic one, and no single line need reach the realizations
   the device is applied to.
-* **Block-triangular matrices**: the rank is at least the row counts of two diagonal blocks with
-  independent rows, also through unit-determinant row and column operations. The project applies
-  these lemmas to the rigidity matrix in the block forms of Katoh–Tanigawa 2011, (6.60)–(6.64), in
-  `Molecular/RigidityMatrix/Concrete.lean`.
+* **Block matrices**: the elementary row operation `[1, -L₀; 0, 1]`, its unit determinant and its
+  extension along a row injection, and the rows of a matrix whose left columns vanish. No
+  declaration of the project uses them.
 
 Mirror path: `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Promotion to mathlib is a copy-paste
 into the upstream file, alongside `Matrix.rank_self_mul_transpose` and
@@ -63,62 +62,6 @@ into the upstream file, alongside `Matrix.rank_self_mul_transpose` and
 -/
 
 @[expose] public section
-
-/-- **A finite family spanning a `finrank`-`N` subspace has a linearly independent `Fin N`-indexed
-selection** (the indexed-family / fixed-cardinality companion of
-`exists_linearIndependent'`). For a family `χ : ι → V` over a finite index `ι` whose span has
-`Module.finrank` exactly `N`, there is an injective selection `sel : Fin N → ι` such that the
-selected subfamily `χ ∘ sel` is linearly independent (and, being of size `N = finrank (span χ)`,
-necessarily spans the same subspace, so `finrank (span (χ ∘ sel)) = N` follows immediately by
-`finrank_span_eq_card`).
-
-Unlike `exists_submatrix_det_ne_zero_of_linearIndependent_rows`, whose family spans the whole
-coordinate space `m → K`, here the span is any finite-dimensional subspace, so the selection is
-built as a basis of that submodule (`Module.Basis.mk` on the co-restricted family). The
-combinatorial-rigidity project uses it to choose rows of a bottom block with independent rows
-(`bottom_selection_of_crossFramework_span` in `Molecular/RigidityMatrix/Concrete.lean`). -/
-theorem exists_finCard_linearIndependent_selection
-    {K ι V : Type*} [Field K] [Finite ι] [AddCommGroup V] [Module K V]
-    (χ : ι → V) {N : ℕ}
-    (hrank : Module.finrank K (Submodule.span K (Set.range χ)) = N) :
-    ∃ sel : Fin N → ι, Function.Injective sel ∧ LinearIndependent K (χ ∘ sel) := by
-  classical
-  have : Fintype ι := Fintype.ofFinite ι
-  have : FiniteDimensional K (Submodule.span K (Set.range χ)) :=
-    FiniteDimensional.span_of_finite K (Set.finite_range χ)
-  -- A linearly independent subfamily `χ ∘ a` spanning `span (range χ)` (mathlib's
-  -- `exists_linearIndependent'`), corestricted into that finite-dimensional submodule.
-  obtain ⟨κ, a, ha_inj, hsp, hli⟩ := exists_linearIndependent' K χ
-  have hsub : ∀ i, (χ ∘ a) i ∈ Submodule.span K (Set.range χ) := by
-    intro i; rw [← hsp]; exact Submodule.subset_span ⟨i, rfl⟩
-  let χ' : κ → Submodule.span K (Set.range χ) := fun i => ⟨(χ ∘ a) i, hsub i⟩
-  have hli' : LinearIndependent K χ' := by
-    rw [linearIndependent_iff'] at hli ⊢
-    intro s g hg i hi
-    refine hli s g ?_ i hi
-    have := congrArg (Submodule.subtype _) hg
-    simpa [χ'] using this
-  -- `χ'` spans the submodule (it spans the same set `χ ∘ a` does, lifted into the submodule).
-  have hsp' : Submodule.span K (Set.range χ') = ⊤ := by
-    rw [eq_top_iff]
-    rintro ⟨x, hx⟩ -
-    rw [← hsp] at hx
-    have hmem : x ∈ Submodule.span K (Set.range (χ ∘ a)) := hx
-    refine Submodule.span_induction
-      (p := fun y hy => (⟨y, by rw [← hsp]; exact Submodule.span_mono (by rfl) hy⟩ :
-        Submodule.span K (Set.range χ)) ∈ Submodule.span K (Set.range χ')) ?_ ?_ ?_ ?_ hmem
-    · rintro _ ⟨i, rfl⟩; exact Submodule.subset_span ⟨i, rfl⟩
-    · exact Submodule.zero_mem _
-    · intro y z _ _ hy hz; exact Submodule.add_mem _ hy hz
-    · intro c y _ hy; exact Submodule.smul_mem _ c hy
-  -- It is a basis of the submodule, so `κ` has exactly `N` elements: `Fin N ≃ κ`.
-  let b : Module.Basis κ K (Submodule.span K (Set.range χ)) := Module.Basis.mk hli' (by rw [hsp'])
-  have : Fintype κ := FiniteDimensional.fintypeBasisIndex b
-  have hcardκ : Fintype.card κ = N := by rw [← hrank, ← Module.finrank_eq_card_basis b]
-  let e : Fin N ≃ κ := (Fintype.equivFinOfCardEq hcardκ).symm
-  refine ⟨a ∘ e, ha_inj.comp e.injective, ?_⟩
-  have hcomp : χ ∘ (a ∘ e) = (χ ∘ a) ∘ e := by ext; simp
-  rw [hcomp]; exact hli.comp e e.injective
 
 namespace Matrix
 
@@ -353,220 +296,6 @@ theorem exists_linearIndependent_rows_specialize {K σ : Type*} [Field K] [Infin
   exact ⟨p, linearIndependent_rows_of_specialized_submatrix_det_ne_zero
     (P.map (MvPolynomial.eval p)).row (RingHom.id K) e (by rwa [RingHom.id_apply])⟩
 
-/-- **Block-triangular rank additivity, as an inequality.** For a block-triangular matrix
-`fromBlocks A B 0 D` over a field (lower-left block zero), if the rows of the diagonal blocks `A`
-and `D` are each linearly independent, then the rank of the whole matrix is at least the sum of the
-two diagonal-block row counts:
-`#m₁ + #m₂ ≤ (fromBlocks A B 0 D).rank`.
-
-`A`'s LI rows give a full-rank square minor (column selection `e₁`, nonzero det), `D`'s give
-another (`e₂`); the combined `(m₁ ⊕ m₂)`-square minor of `fromBlocks A B 0 D` over those columns is
-itself block-triangular, so its determinant is the product of the two minor dets
-(`Matrix.det_fromBlocks_zero₂₁`), nonzero. Hence the minor has linearly independent rows, rank
-`#m₁ + #m₂`, and `rank ≤ (fromBlocks A B 0 D).rank` by `rank_submatrix_le`. -/
-theorem rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows
-    {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
-    [Fintype n₁] [Fintype n₂] {A : Matrix m₁ n₁ K} (B : Matrix m₁ n₂ K) {D : Matrix m₂ n₂ K}
-    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
-    Fintype.card m₁ + Fintype.card m₂ ≤ (Matrix.fromBlocks A B 0 D).rank := by
-  classical
-  -- Full-rank square minors of the diagonal blocks.
-  obtain ⟨e₁, he₁⟩ := Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows hA
-  obtain ⟨e₂, he₂⟩ := Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows hD
-  -- The combined column selection of `fromBlocks A B 0 D` over rows `m₁ ⊕ m₂`.
-  set c : m₁ ⊕ m₂ → n₁ ⊕ n₂ := Sum.elim (fun i => Sum.inl (e₁ i)) (fun j => Sum.inr (e₂ j)) with hc
-  set M : Matrix (m₁ ⊕ m₂) (n₁ ⊕ n₂) K := Matrix.fromBlocks A B 0 D with hM
-  -- The combined `(m₁ ⊕ m₂)`-square minor is block-triangular.
-  set N : Matrix (m₁ ⊕ m₂) (m₁ ⊕ m₂) K := Matrix.of (fun i j => M i (c j)) with hN
-  have hNblock : N = Matrix.fromBlocks (Matrix.of fun (i j : m₁) => A i (e₁ j))
-      (Matrix.of fun (i : m₁) (j : m₂) => B i (e₂ j)) 0
-      (Matrix.of fun (i j : m₂) => D i (e₂ j)) := by
-    ext i j
-    rcases i with i | i <;> rcases j with j | j <;>
-      simp [hN, hM, hc, Matrix.fromBlocks]
-  -- Its determinant is the product of the two minor dets (`det_fromBlocks_zero₂₁`), nonzero.
-  have hNdet : N.det ≠ 0 := by
-    rw [hNblock, Matrix.det_fromBlocks_zero₂₁]
-    exact mul_ne_zero he₁ he₂
-  -- LI rows of `N`, so `N.rank = #(m₁ ⊕ m₂)`.
-  have hNli : LinearIndependent K N.row := Matrix.linearIndependent_rows_of_det_ne_zero hNdet
-  have hNrank : N.rank = Fintype.card m₁ + Fintype.card m₂ := by
-    rw [hNli.rank_matrix, Fintype.card_sum]
-  -- `N` is the column-submatrix of `M`, so `N.rank ≤ M.rank`.
-  have hNsub : N = M.submatrix id c := rfl
-  calc Fintype.card m₁ + Fintype.card m₂ = N.rank := hNrank.symm
-    _ ≤ M.rank := by
-        rw [hNsub]
-        exact Matrix.rank_submatrix_le (n₀ := m₁ ⊕ m₂) M id c
-
-/-- **Block-triangular rank lower bound through a unit-det column operation.** For a matrix `M`
-over a field, a *unit-determinant* square matrix `U` (an invertible column operation), and
-reindexing equivalences `em`, `en` exhibiting `M * U` in the block-triangular shape
-`fromBlocks A B 0 D` with the rows of both diagonal blocks `A`, `D` linearly independent, the rank
-of the *original* `M` is at least the sum of the two diagonal-block row counts:
-`#m₁ + #m₂ ≤ M.rank`.
-
-The proof is a single `calc`: `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` bounds
-`rank (fromBlocks A B 0 D)` below by `#m₁ + #m₂`, then `rank_reindex` and
-`rank_mul_eq_left_of_isUnit_det` (the reindexing and the column operation preserve rank) transfer
-that bound to `M.rank`.
-
-The combinatorial-rigidity project applies it to the rigidity matrix with `U` the column
-operation of Katoh–Tanigawa 2011 that takes (6.60) to (6.61), adding the columns of `vᵢ` to those
-of `vᵢ₊₁` (`finrank_span_rigidityRows_ge_of_edge_fromBlocks` in
-`Molecular/RigidityMatrix/Concrete.lean`). -/
--- `unusedArguments` FALSE POSITIVE: the `Fintype.ofFinite` bridge in the proof body
--- needs this instance to elaborate; it does not survive into the proof term.
-@[nolint unusedArguments]
-theorem rank_ge_of_isUnit_mul_reindex_fromBlocks
-    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Finite p] [Fintype q] [DecidableEq q]
-    [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
-    (M : Matrix p q K) (U : Matrix q q K) (hU : IsUnit U.det)
-    (em : p ≃ m₁ ⊕ m₂) (en : q ≃ n₁ ⊕ n₂)
-    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {D : Matrix m₂ n₂ K}
-    (hblock : (M * U).reindex em en = fromBlocks A B 0 D)
-    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
-    Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
-  classical
-  have : Fintype p := Fintype.ofFinite p
-  have : Fintype n₁ := Fintype.ofFinite n₁
-  have : Fintype n₂ := Fintype.ofFinite n₂
-  calc Fintype.card m₁ + Fintype.card m₂
-      ≤ (fromBlocks A B 0 D).rank :=
-        rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows B hA hD
-    _ = ((M * U).reindex em en).rank := by rw [hblock]
-    _ = (M * U).rank := rank_reindex em en (M * U)
-    _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
-
-/-- **Block-triangular rank lower bound through a unit-det column operation, row-submatrix
-form.** The generalization of `rank_ge_of_isUnit_mul_reindex_fromBlocks` from a row *equivalence*
-`em : p ≃ m₁ ⊕ m₂`, which places *every* row of the column-operated matrix `M * U` in one of the
-blocks, to an arbitrary row map `re : m₁ ⊕ m₂ → p`: given a column equivalence
-`en : (n₁ ⊕ n₂) ≃ q` exhibiting the *row submatrix* `(M * U).submatrix re en` in the
-block-triangular shape `fromBlocks A B 0 D`, with the rows of both diagonal blocks `A`, `D`
-linearly independent, the same lower bound `#m₁ + #m₂ ≤ M.rank` holds.
-
-Rows outside the range of `re` are ignored, so `M` may have more rows than the two blocks hold, and
-rows that would break the zero block can be left out. This is
-`rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`'s *column*-submatrix step
-(`N = M.submatrix id c`) on the rows: both keep only the rows and columns the block-triangular minor
-needs.
-
-The proof is the same `calc` as the `reindex` form, with `Matrix.rank_submatrix_le` (a row submatrix
-can only drop the rank) in place of the rank-preserving `rank_reindex`. The combinatorial-rigidity
-project applies it in `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks`
-(`Molecular/RigidityMatrix/Concrete.lean`). -/
-theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks
-    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype q] [DecidableEq q]
-    [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
-    (M : Matrix p q K) (U : Matrix q q K) (hU : IsUnit U.det)
-    (re : m₁ ⊕ m₂ → p) (en : (n₁ ⊕ n₂) ≃ q)
-    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {D : Matrix m₂ n₂ K}
-    (hblock : (M * U).submatrix re en = fromBlocks A B 0 D)
-    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
-    Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
-  classical
-  have : Fintype n₁ := Fintype.ofFinite n₁
-  have : Fintype n₂ := Fintype.ofFinite n₂
-  calc Fintype.card m₁ + Fintype.card m₂
-      ≤ (fromBlocks A B 0 D).rank :=
-        rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows B hA hD
-    _ = ((M * U).submatrix re en).rank := by rw [hblock]
-    _ ≤ (M * U).rank := rank_submatrix_le (M * U) re en
-    _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
-
-/-- **Block-triangular rank additivity, upper-right-zero form.** For a block-triangular matrix
-`fromBlocks A 0 C D` over a field (*upper-right* block zero, the transpose of
-`rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`'s lower-left-zero shape), if the rows of the
-diagonal blocks `A` and `D` are each linearly independent, then the rank of the whole matrix is at
-least the sum of the two diagonal-block row counts:
-`#m₁ + #m₂ ≤ (fromBlocks A 0 C D).rank`.
-
-The proof is that of `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` with
-`Matrix.det_fromBlocks_zero₁₂` for the combined minor's determinant: `A`'s LI rows give a full-rank
-square minor (columns `e₁`), `D`'s give another (`e₂`), the combined `(m₁ ⊕ m₂)`-square minor of
-`fromBlocks A 0 C D` over those columns is block-triangular, so its determinant is the product of
-the two minor dets (nonzero) and the minor has rank `#m₁ + #m₂ ≤ (fromBlocks A 0 C D).rank` by
-`rank_submatrix_le`.
-
-This is the shape of Katoh–Tanigawa 2011, (6.64), where the rows of the corner block `Mᵢ` vanish off
-the columns of `vᵢ`, and the bound they draw after (6.65),
-`rank R(G, pᵢ) ≥ rank Mᵢ + rank R(G₁ ∖ {(v₀v₂)ᵢ*}, q₁)`. -/
-theorem rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows
-    {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
-    [Fintype n₁] [Fintype n₂] {A : Matrix m₁ n₁ K} {D : Matrix m₂ n₂ K} (C : Matrix m₂ n₁ K)
-    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
-    Fintype.card m₁ + Fintype.card m₂ ≤ (Matrix.fromBlocks A 0 C D).rank := by
-  classical
-  -- Full-rank square minors of the diagonal blocks.
-  obtain ⟨e₁, he₁⟩ := Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows hA
-  obtain ⟨e₂, he₂⟩ := Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows hD
-  -- The combined column selection of `fromBlocks A 0 C D` over rows `m₁ ⊕ m₂`.
-  set c : m₁ ⊕ m₂ → n₁ ⊕ n₂ := Sum.elim (fun i => Sum.inl (e₁ i)) (fun j => Sum.inr (e₂ j)) with hc
-  set M : Matrix (m₁ ⊕ m₂) (n₁ ⊕ n₂) K := Matrix.fromBlocks A 0 C D with hM
-  -- The combined `(m₁ ⊕ m₂)`-square minor is upper-triangular.
-  set N : Matrix (m₁ ⊕ m₂) (m₁ ⊕ m₂) K := Matrix.of (fun i j => M i (c j)) with hN
-  have hNblock : N = Matrix.fromBlocks (Matrix.of fun (i j : m₁) => A i (e₁ j)) 0
-      (Matrix.of fun (i : m₂) (j : m₁) => C i (e₁ j))
-      (Matrix.of fun (i j : m₂) => D i (e₂ j)) := by
-    ext i j
-    rcases i with i | i <;> rcases j with j | j <;>
-      simp [hN, hM, hc, Matrix.fromBlocks]
-  -- Its determinant is the product of the two minor dets (`det_fromBlocks_zero₁₂`), nonzero.
-  have hNdet : N.det ≠ 0 := by
-    rw [hNblock, Matrix.det_fromBlocks_zero₁₂]
-    exact mul_ne_zero he₁ he₂
-  -- LI rows of `N`, so `N.rank = #(m₁ ⊕ m₂)`.
-  have hNli : LinearIndependent K N.row := Matrix.linearIndependent_rows_of_det_ne_zero hNdet
-  have hNrank : N.rank = Fintype.card m₁ + Fintype.card m₂ := by
-    rw [hNli.rank_matrix, Fintype.card_sum]
-  -- `N` is the column-submatrix of `M`, so `N.rank ≤ M.rank`.
-  have hNsub : N = M.submatrix id c := rfl
-  calc Fintype.card m₁ + Fintype.card m₂ = N.rank := hNrank.symm
-    _ ≤ M.rank := by
-        rw [hNsub]
-        exact Matrix.rank_submatrix_le (n₀ := m₁ ⊕ m₂) M id c
-
-/-- **Block-triangular rank lower bound through unit-det row and column operations,
-upper-right-zero row-submatrix form.** The `fromBlocks A 0 C D` (upper-right zero) analogue of
-`rank_ge_of_isUnit_mul_submatrix_fromBlocks`, with a *unit-determinant* left factor as well: for a
-matrix `M` over a field, a unit-det square row operation `Lrow : Matrix p p K`, a unit-det square
-column operation `U : Matrix q q K`, a row map `re : m₁ ⊕ m₂ → p` and a column equivalence
-`en : (n₁ ⊕ n₂) ≃ q` exhibiting the row submatrix `(Lrow * M * U).submatrix re en` in the
-block-triangular shape `fromBlocks A 0 C D` with the rows of both diagonal blocks `A`, `D` linearly
-independent, the rank of the original `M` is at least the sum of the two diagonal-block row counts:
-`#m₁ + #m₂ ≤ M.rank`.
-
-The proof extends the `calc` of the column-operation version by two rank-invariance rewrites:
-`rank_mul_eq_left_of_isUnit_det` removes the column operation `U`, then
-`rank_mul_eq_right_of_isUnit_det` the row operation `Lrow`. In Katoh–Tanigawa 2011 the column
-operation takes (6.60) to (6.61), whose corner rows need not vanish off the columns of `vᵢ`, and
-the row operation (6.63) then gives the upper-right zero of (6.64);
-`exists_rowOp_of_strictInjection` builds such an `Lrow` from the block operation of
-`rowOp_zeroes_upperRight`. The combinatorial-rigidity project applies
-it in `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂`
-(`Molecular/RigidityMatrix/Concrete.lean`). -/
-theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
-    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype p] [DecidableEq p] [Fintype q] [DecidableEq q]
-    [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
-    (M : Matrix p q K) (Lrow : Matrix p p K) (hLrow : IsUnit Lrow.det)
-    (U : Matrix q q K) (hU : IsUnit U.det)
-    (re : m₁ ⊕ m₂ → p) (en : (n₁ ⊕ n₂) ≃ q)
-    {A : Matrix m₁ n₁ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
-    (hblock : (Lrow * M * U).submatrix re en = fromBlocks A 0 C D)
-    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
-    Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
-  classical
-  have : Fintype n₁ := Fintype.ofFinite n₁
-  have : Fintype n₂ := Fintype.ofFinite n₂
-  calc Fintype.card m₁ + Fintype.card m₂
-      ≤ (fromBlocks A 0 C D).rank :=
-        rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows C hA hD
-    _ = ((Lrow * M * U).submatrix re en).rank := by rw [hblock]
-    _ ≤ (Lrow * M * U).rank := rank_submatrix_le (Lrow * M * U) re en
-    _ = (Lrow * M).rank := rank_mul_eq_left_of_isUnit_det U (Lrow * M) hU
-    _ = M.rank := rank_mul_eq_right_of_isUnit_det Lrow M hLrow
-
 /-- **The block elementary row operation `[1, -L₀; 0, 1]` has unit determinant.** The
 block-upper-triangular matrix subtracting `L₀ ·` (the lower `m₂`-row block) from the upper `m₁`-row
 block is unimodular: its determinant is `det 1 · det 1 = 1` (via `Matrix.det_fromBlocks_zero₂₁`),
@@ -593,28 +322,12 @@ theorem rowOp_zeroes_upperRight {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Finty
   rw [Matrix.fromBlocks_multiply, hB]
   simp [sub_eq_add_neg]
 
-/-- **A matrix whose every row is a fixed-weight linear combination of another matrix's rows
-factors as `L₀ * D`.** Given `D : Matrix m₂ n K` and a weight family `w : m₁ → m₂ → K` such that
-each row `B i` is the `w i`-weighted combination of `D`'s rows
-(`hcomb : ∀ i j, B i j = ∑ i', w i i' * D i' j`), then `B = Matrix.of w * D`. Immediate from
-`Matrix.mul_apply` and `Matrix.ext`. It turns a per-row linear-combination hypothesis into the
-product `B = L₀ * D` that `rowOp_zeroes_upperRight` needs, with `L₀ := Matrix.of w`; the
-combinatorial-rigidity project applies it to rigidity-matrix rows in `matrix_eq_mul_of_span_mem`
-and `matrix_eq_mul_of_dual_row_comb` (`Molecular/RigidityMatrix/Concrete.lean`). -/
-theorem of_eq_mul_of_row_comb {K m₁ m₂ n : Type*} [Fintype m₂] [CommRing K]
-    (B : Matrix m₁ n K) (D : Matrix m₂ n K) (w : m₁ → m₂ → K)
-    (hcomb : ∀ i j, B i j = ∑ i', w i i' * D i' j) :
-    B = Matrix.of w * D := by
-  ext i j
-  rw [Matrix.mul_apply, hcomb]
-  rfl
-
 /-- **The block elementary row operation `[1, -L₀; 0, 1]` extends along a row injection to a
 unit-det row operation on the full index, fixing the rows outside the image.**
-`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` takes a unit-det left factor
-`Lrow : Matrix p p K` on the *full* row index `p`, while the block matrix `[1, -L₀; 0, 1]` acts
-only on the rows the injection `re : m₁ ⊕ m₂ → p` selects. When `re` is not surjective there is no
-bijection `(m₁ ⊕ m₂) ≃ p` to reindex along; this lemma uses instead the equivalence
+A unit-det left factor `Lrow : Matrix p p K` acts on the *full* row index `p`, while the block
+matrix `[1, -L₀; 0, 1]` acts only on the rows the injection `re : m₁ ⊕ m₂ → p` selects. When `re`
+is not surjective there is no bijection `(m₁ ⊕ m₂) ≃ p` to reindex along; this lemma uses instead
+the equivalence
 `e' : (m₁ ⊕ m₂) ⊕ ↥(Set.range re)ᶜ ≃ p` (`Equiv.ofInjective re` onto `range re`, then
 `Equiv.Set.sumCompl`), and takes `Lrow := reindex e' e' (fromBlocks [1, -L₀; 0, 1] 0 0 1)`, the
 operation on the image of `re` and the identity on its complement.
@@ -718,8 +431,7 @@ column `j`), the rows of `N` are linearly independent iff the rows of the right-
 `N.submatrix id Sum.inr` are. The all-zero left columns contribute nothing: each `N.row i` is the
 zero-extension `Sum.elim 0 (right row)` of the corresponding submatrix row, and the zero-extension
 linear map `Sum.elimZeroLeft : (n₂ → R) →ₗ[R] (n₁ ⊕ n₂ → R)` is injective (its kernel is `⊥`), so it
-preserves and reflects linear independence (`LinearMap.linearIndependent_iff`). The
-independence companion of `rank_submatrix_inr_of_zero_left_cols`. -/
+preserves and reflects linear independence (`LinearMap.linearIndependent_iff`). -/
 theorem linearIndependent_row_of_zero_left_cols
     {R m n₁ n₂ : Type*} [CommRing R]
     (N : Matrix m (n₁ ⊕ n₂) R)
@@ -738,40 +450,6 @@ theorem linearIndependent_row_of_zero_left_cols
     | inl j => simp [Matrix.row, Function.comp, Sum.elimZeroLeft_apply, hz i j]
     | inr j => simp [Matrix.row, Function.comp, Sum.elimZeroLeft_apply, Matrix.submatrix]
   rw [hrow]
-
-/-- **Dropping all-zero left columns preserves rank.** For `N : Matrix m (n₁ ⊕ n₂) R` (with
-`n₁`, `n₂` finite) whose left-block columns all vanish (`N i (Sum.inl j) = 0`), the right-column
-submatrix `N.submatrix id Sum.inr` has the same `Matrix.rank` as `N`. The column span of `N` is
-generated by `N`'s columns; the left-block columns are the zero vector (and so lie in any
-submodule), and the right-block columns are exactly the columns of the submatrix, so the two column
-spans coincide and `Matrix.rank_eq_finrank_span_cols` gives equal ranks.
-
-The combinatorial-rigidity project uses it to drop the columns of a body on which the rows of a
-bottom block vanish (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` and
-`rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab` in `Molecular/RigidityMatrix/Concrete.lean`). -/
-theorem rank_submatrix_inr_of_zero_left_cols
-    {R m n₁ n₂ : Type*} [CommRing R] [Fintype n₁] [Fintype n₂]
-    (N : Matrix m (n₁ ⊕ n₂) R)
-    (hz : ∀ i j, N i (Sum.inl j) = 0) :
-    (N.submatrix id Sum.inr).rank = N.rank := by
-  rw [Matrix.rank_eq_finrank_span_cols, Matrix.rank_eq_finrank_span_cols]
-  have hspan : Submodule.span R (Set.range (N.submatrix id Sum.inr).col)
-      = Submodule.span R (Set.range N.col) := by
-    apply le_antisymm
-    · apply Submodule.span_le.mpr
-      rintro _ ⟨j, rfl⟩
-      apply Submodule.subset_span
-      exact ⟨Sum.inr j, by funext i; simp [Matrix.col, Matrix.submatrix]⟩
-    · apply Submodule.span_le.mpr
-      rintro _ ⟨c, rfl⟩
-      cases c with
-      | inl j =>
-        have hc : N.col (Sum.inl j) = 0 := by funext i; simp [Matrix.col, hz i j]
-        rw [hc]; exact Submodule.zero_mem _
-      | inr j =>
-        apply Submodule.subset_span
-        exact ⟨j, by funext i; simp [Matrix.col, Matrix.submatrix]⟩
-  rw [hspan]
 
 end Matrix
 

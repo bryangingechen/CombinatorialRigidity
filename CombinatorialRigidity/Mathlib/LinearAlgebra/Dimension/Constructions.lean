@@ -30,8 +30,7 @@ Upstream-eligible mirrors:
   obtain `n` independent ambient vectors inside `W` without unfolding the definition of the
   ambient space, which matters when that space is an `abbrev` whose `whnf` is expensive (e.g. a
   `Module.Dual` of an exterior power). When promoted upstream this lives beside the
-  `FiniteDimensional` basis API; the namespace stays `Submodule`. Its companions for a named
-  basis are `Module.Basis.linearIndependent_coe_subtype` and `Module.Basis.span_coe_eq`.
+  `FiniteDimensional` basis API; the namespace stays `Submodule`.
 
 * `Submodule.finrank_map_mkQ` — the finrank of the image `S.map W.mkQ` of a submodule under the
   quotient projection `W.mkQ : V → V ⧸ W` is `finrank (W ⊔ S) − finrank W`. (Rank–nullity on
@@ -84,35 +83,6 @@ theorem exists_linearIndependent_fin_of_finrank_eq {K V : Type*} [Field K] [AddC
   let b : Module.Basis (Fin n) K W := Module.finBasisOfFinrankEq K W hn
   exact ⟨fun i => (b i : V), b.linearIndependent.map' W.subtype (Submodule.ker_subtype _),
     fun i => (b i).2⟩
-
-/-- The vectors of a basis of a submodule `W ≤ V`, coerced into the ambient space `V`, form a
-linearly independent family in `V`. This is `Basis.linearIndependent` pushed along the injective
-inclusion `W.subtype` (`Submodule.ker_subtype`). Stated over the abstract `V` so the caller can
-instantiate it at a type whose `whnf` is expensive (e.g. a `Module.Dual` of an exterior power)
-without ever forcing that `whnf`: the `Basis.linearIndependent.map'` step is elaborated *here*,
-against the abstract `V`, not at the call site. The named-family complement of
-`exists_linearIndependent_fin_of_finrank_eq` (which gives only an *existence* form): a caller that
-needs the LI of a *specific* submodule basis applies this lemma directly. When promoted upstream
-this lives beside the `Module.Basis` ambient-coercion API; the namespace stays `Module.Basis`. -/
-theorem _root_.Module.Basis.linearIndependent_coe_subtype {K V ι : Type*} [Field K]
-    [AddCommGroup V] [Module K V] {W : Submodule K V} (b : Module.Basis ι K W) :
-    LinearIndependent K (fun i => (b i : V)) := by
-  have h := b.linearIndependent.map' W.subtype (Submodule.ker_subtype _)
-  rwa [Submodule.coe_subtype] at h
-
-/-- The vectors of a basis of a submodule `W ≤ V`, coerced into the ambient space `V`, span exactly
-`W`. This is `Basis.span_eq` (which spans `⊤` *inside* `W`) pushed along the inclusion `W.subtype`
-via `Submodule.span_image` and `Submodule.map_subtype_top`. The span companion of
-`Module.Basis.linearIndependent_coe_subtype`: the two together say a coerced submodule basis is a
-basis of `W` *as a subset of the ambient `V`*, in the form `span (range (coerced basis)) = W`,
-without unfolding the ambient type (e.g. a `Module.Dual` of an exterior power). When promoted
-upstream this lives beside the `Module.Basis` ambient-coercion API; the namespace stays
-`Module.Basis`. -/
-theorem _root_.Module.Basis.span_coe_eq {K V ι : Type*} [Field K]
-    [AddCommGroup V] [Module K V] {W : Submodule K V} (b : Module.Basis ι K W) :
-    Submodule.span K (Set.range (fun i => (b i : V))) = W := by
-  rw [show (fun i => (b i : V)) = W.subtype ∘ b from rfl, Set.range_comp, Submodule.span_image,
-    b.span_eq, Submodule.map_subtype_top]
 
 /-- The finrank of the image `S.map W.mkQ` of a submodule under the quotient projection
 `W.mkQ : V → V ⧸ W` is `finrank (W ⊔ S) − finrank W`. Rank–nullity on `W.mkQ ∘ S.subtype`,

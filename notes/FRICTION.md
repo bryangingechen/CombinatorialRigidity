@@ -242,22 +242,25 @@ to be re-derived by re-reading entries later.
   (`MainComponent/Chain.lean`), `(Set.range e).ncard ≤ k + 1`.
 - **Status:** open (mirror candidate).
 
-### [open] `open scoped Matrix` inside `namespace CombinatorialRigidity.Molecular` opens the project's `Molecular.Matrix`, not `_root_.Matrix` — § 56's capture, second instance
+### ~~[open] `open scoped Matrix` inside `namespace CombinatorialRigidity.Molecular` opens the project's `Molecular.Matrix`, not `_root_.Matrix` — § 56's capture, second instance~~
 - **Where it bit:** Phase 40g build 2, `Graph.IsAdmissiblePicture.exists_dotProduct_of_ncard_closedNbhd_le_three`
   (`MainComponent/Cut.lean`), spiked under a file-head `open scoped Graph Matrix`. Transcribed as
   `open scoped Matrix in` before the theorem, `M⁻¹ *ᵥ v` failed with *"elaboration function for
   `Mathlib.Tactic.subscriptTerm` has not been implemented"*, with an `ambiguousOpen` warning on the
-  `open`. `RigidityMatrix/Concrete.lean` declares `theorem Matrix.rank_of_coordEquiv`,
+  `open`. `RigidityMatrix/Concrete.lean` declared `theorem Matrix.rank_of_coordEquiv`,
   `Matrix.rank_of_dualCoord` and `Matrix.linearIndependent_row_of_coordEquiv` inside `namespace
-  CombinatorialRigidity.Molecular`, which creates the sub-namespace that captures the `open`.
+  CombinatorialRigidity.Molecular`, which created the sub-namespace that captured the `open`.
 - **Friction:** one failed build and a wrong first diagnosis (that `open … in` never activates a
   scoped notation; a `lean_run_code` witness showed it does outside the namespace).
 - **Workaround:** spell `Matrix.mulVec`. An `open scoped Matrix` *before* the `namespace` line also
   works (`Flat.lean`, `Carrier.lean` do this).
-- **Proposed fix:** pin the three `Concrete.lean` theorems to `_root_.Matrix.` (§ 56's fix); they
-  are called by name from several files, so it is a small refactor round, not a side errand.
+- **Proposed fix:** ~~pin the three `Concrete.lean` theorems to `_root_.Matrix.` (§ 56's fix); they
+  are called by name from several files, so it is a small refactor round, not a side errand.~~
   **Lifted to:** TACTICS-QUIRKS § 56 (symptom-index line and a *Second instance* paragraph).
-- **Status:** open.
+- **Status:** ~~open.~~ **Resolved 2026-10-24** (RECONCILE round 3, task 38.5): the cleanup round
+  deleted `Concrete.lean`, which nothing used, and with it the three theorems; no other declaration
+  is `Matrix.`-prefixed inside `namespace CombinatorialRigidity.Molecular`, so the sub-namespace is
+  gone.
 
 ### [mirror-candidate] No lemma that a ring hom commutes with `crossProduct`
 - **Where it bit:** Phase 40g build 2, `eval_joinPicturePoly` (`MainComponent/Flat.lean`): the
@@ -773,65 +776,65 @@ to be re-derived by re-reading entries later.
 - **Status:** idiom (resolved in-proof). **Lifted to:** none new — covered by TACTICS-QUIRKS § 38 (heavy-carrier `whnf` / `hrow_mem` link-witness) + § 53 (`set F` does not fold `F.graph` in applied-theorem conclusions).
 
 ### [idiom] Feeding `matrix_eq_mul_of_dual_row_comb`'s `cols : n → α × Fin D` argument as a `fun x => (↑x.1, x.2)` projection fails to infer `n` — annotate the lambda's binder type
-- **Where it bit:** `BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`Molecular/RigidityMatrix/Concrete.lean`, Phase 23f the `hB`/`L₀` factoring): the `cols` argument is `fun x => (↑x.1, x.2)` over the off-`v` column type `{body // body ≠ v} × Fin (finrank ℝ (ScrewSpace k))`.
+- **Where it bit:** `BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`Molecular/RigidityMatrix/Concrete.lean`, since deleted, Phase 23f the `hB`/`L₀` factoring): the `cols` argument is `fun x => (↑x.1, x.2)` over the off-`v` column type `{body // body ≠ v} × Fin (finrank ℝ (ScrewSpace k))`.
 - **Friction:** `Invalid projection: Type of x is not known; cannot resolve projection 1` — elaboration reaches the `cols` lambda before `n` is pinned (the engine's `n` is otherwise constrained only by the conclusion's already-rewritten `Matrix.of` shapes, too late for the `.1`/`.2` projections). Fix: annotate the binder `fun x : {body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k)) => (↑x.1, x.2)`.
 - **Proposed fix:** idiom — when an argument lambda projects its binder (`x.1`/`x.2`) and the binder's type is an implicit the call hasn't yet solved, type-ascribe the binder; don't rely on later unification.
 - **Status:** idiom (resolved in-proof)
 
 ### [idiom] To get a fixed-cardinality *index selection* from `exists_linearIndependent'`, build a basis of the spanned (proper) submodule for the `Fintype.card κ = N` count — `finrank_span_eq_card` needs `[Fintype κ]`, which the bare existential does not give
-- **Where it bit:** `exists_finCard_linearIndependent_selection` (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, Phase 23f BOT-2 engine): turning `finrank (span (range χ)) = N` into an injective `sel : Fin N → ι` with `χ ∘ sel` LI. `exists_linearIndependent'` hands back `κ`/`a`/`hsp`/`hli` but **no finiteness of `κ`**, and `finrank_span_eq_card hli` (which would give `card κ = N`) wants `[Fintype κ]`.
+- **Where it bit:** `exists_finCard_linearIndependent_selection` (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, since deleted; Phase 23f BOT-2 engine): turning `finrank (span (range χ)) = N` into an injective `sel : Fin N → ι` with `χ ∘ sel` LI. `exists_linearIndependent'` hands back `κ`/`a`/`hsp`/`hli` but **no finiteness of `κ`**, and `finrank_span_eq_card hli` (which would give `card κ = N`) wants `[Fintype κ]`.
 - **Friction:** the `κ`-finiteness is the chicken-and-egg. `LinearIndependent.finite` needs `Module.Finite ℝ V` on the *whole* space, but here the family lands in a proper finite-dim submodule `span (range χ)`. The route that works: corestrict `χ ∘ a` into that submodule (`χ' i := ⟨(χ∘a) i, _⟩`), prove `χ'` LI (`linearIndependent_iff'` + `congrArg (Submodule.subtype _)`) and spanning `⊤` (a `span_induction` lifting the ambient span into the submodule), build `Module.Basis.mk` → `FiniteDimensional.fintypeBasisIndex` gives `[Fintype κ]` and `finrank_eq_card_basis` gives `card κ = N`. Distinct from the existing mirror `Submodule.exists_linearIndependent_fin_of_finrank_eq` (which yields an *arbitrary* `Fin N → V` basis, not a *selection from the original index `ι`* — the latter is what indexes a row-selection map `re`).
-- **Proposed fix:** idiom — when you need an *index* sub-selection (not abstract vectors) of fixed size `= finrank (span)`, reach for `exists_finCard_linearIndependent_selection`; do not expect `exists_linearIndependent'` alone to give the cardinality (its `κ` carries no `Fintype`).
-- **Status:** idiom (engine landed in `Rank.lean`)
+- **Proposed fix:** idiom — when you need an *index* sub-selection (not abstract vectors) of fixed size `= finrank (span)`, follow the route of `exists_finCard_linearIndependent_selection` (since deleted) above; do not expect `exists_linearIndependent'` alone to give the cardinality (its `κ` carries no `Fintype`).
+- **Status:** idiom (the engine landed in `Rank.lean`, since deleted)
 
 ### [idiom] An ∃-bound selector loses the *definitional* facts of its construction — surface injectivity / the construction-equation as explicit existential conjuncts when a downstream wrapper needs them
-- **Where it bit:** the (5e) wire-up `BodyHingeFramework.exists_aug_bottom_blockData_of_Gab` (`Molecular/RigidityMatrix/Concrete.lean`, Phase 23f route (D-substitution)). It calls `bottom_selection_of_crossFramework_span_Gab` to get the bottom selector `reInr`, then feeds `reAug_injective` — which needs both `Function.Injective reInr` *and* the corner-disjointness `∀ i, (reInr i).1 ≠ ea`. The selector's `reInr` is `fun i => (lift (re₂ i).1, (re₂ i).2)` *in its own proof*, but as an `∃`-witness it is opaque to the caller, so neither `(reInr i).1 = lift (re₂ i).1` nor injectivity is recoverable.
+- **Where it bit:** the (5e) wire-up `BodyHingeFramework.exists_aug_bottom_blockData_of_Gab` (`Molecular/RigidityMatrix/Concrete.lean`, since deleted, Phase 23f route (D-substitution)). It calls `bottom_selection_of_crossFramework_span_Gab` to get the bottom selector `reInr`, then feeds `reAug_injective` — which needs both `Function.Injective reInr` *and* the corner-disjointness `∀ i, (reInr i).1 ≠ ea`. The selector's `reInr` is `fun i => (lift (re₂ i).1, (re₂ i).2)` *in its own proof*, but as an `∃`-witness it is opaque to the caller, so neither `(reInr i).1 = lift (re₂ i).1` nor injectivity is recoverable.
 - **Friction:** both facts hold trivially in the producing proof (injectivity from `lift`-inj + the now-surfaced `re₂`-inj; the edge-equation by `rfl`) but are *lost* once `reInr` is existentially packed. Threading them as new `obtain`-fields is free at the source and unblocks the caller; re-deriving them caller-side is impossible.
 - **Proposed fix:** idiom — when an `∃`-producer's witness will feed an injectivity/disjointness wrapper downstream, add the witness's injectivity (and any `witness i = <explicit construction>` equation the wrapper's side-conditions read) as explicit conjuncts of the existential. Here: strengthened both `bottom_selection_of_crossFramework_span{,_Gab}` to return `_hre_inj`/`_hreInr_inj` (free from `exists_finCard_linearIndependent_selection`'s discarded `sel`-injectivity) + `_hreInr_eq`.
 - **Status:** idiom
 
 ### [idiom] A `Module.Basis`-vector's submodule-membership proof is `(basis j).property`, not `.coe_mem` — `Subtype.coe_mem` is not in this environment
-- **Where it bit:** `BodyHingeFramework.hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` (`Molecular/RigidityMatrix/Concrete.lean`, Phase 23d step-2 extensor-identity half): feeding `(F₁.blockBasisOn hgp he j : ↥(F₁.hingeRowBlock e))`'s membership to `hingeRow_mem_rigidityRows_of_supportExtensor_eq` (which wants `_ ∈ F₁.hingeRowBlock e`).
+- **Where it bit:** `BodyHingeFramework.hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` (`Molecular/RigidityMatrix/Concrete.lean`, since deleted, Phase 23d step-2 extensor-identity half): feeding `(F₁.blockBasisOn hgp he j : ↥(F₁.hingeRowBlock e))`'s membership to `hingeRow_mem_rigidityRows_of_supportExtensor_eq` (since deleted; which wants `_ ∈ F₁.hingeRowBlock e`).
 - **Friction:** `(F₁.blockBasisOn hgp he j).coe_mem` errored *"environment does not contain `Subtype.coe_mem`"* — a basis evaluated at `j` is a *subtype element*, and the membership projection is the structure field `.property` (or `.2`), not the (absent-here) `Subtype.coe_mem` lemma.
 - **Proposed fix:** idiom — for a subtype/submodule element `x`, use `x.property` (or `x.2`) for the membership proof.
 - **Status:** idiom
 
 ### [idiom] `Module.Free ℝ ↥submodule` is not auto-synthesized even with `FiniteDimensional` in scope (instance diamond on `Real.semiring` vs `DivisionRing.toSemiring`); supply it via a *fully type-ascribed* `letI`
-- **Where it bit:** `BodyHingeFramework.blockBasis` (`Molecular/RigidityMatrix/Concrete.lean`, the A1 per-edge hinge-row-block basis): `Module.finBasisOfFinrankEq ℝ (F.hingeRowBlock e) …` (and `Module.finBasis`) need `[Module.Free ℝ ↥(F.hingeRowBlock e)]`, which `inferInstance` fails to find for a submodule of `Module.Dual ℝ (ScrewSpace k)` despite a `haveI : FiniteDimensional ℝ …` in scope.
+- **Where it bit:** `BodyHingeFramework.blockBasis` (`Molecular/RigidityMatrix/Concrete.lean`, since deleted, the A1 per-edge hinge-row-block basis): `Module.finBasisOfFinrankEq ℝ (F.hingeRowBlock e) …` (and `Module.finBasis`) need `[Module.Free ℝ ↥(F.hingeRowBlock e)]`, which `inferInstance` fails to find for a submodule of `Module.Dual ℝ (ScrewSpace k)` despite a `haveI : FiniteDimensional ℝ …` in scope.
 - **Friction:** `Module.Free.of_divisionRing _ _` (metavariable args) produces `@Free _ _ DivisionRing.toDivisionSemiring.toSemiring …`, a *different semiring head* than the expected `Real.semiring` — a type mismatch, not a synthesis success. The fix is `letI : Module.Free ℝ (F.hingeRowBlock e) := Module.Free.of_divisionRing ℝ (F.hingeRowBlock e)` with **explicit** `ℝ` + the submodule (the target-type ascription unifies the semiring instances).
 - **Proposed fix:** idiom — `letI : Module.Free K M := Module.Free.of_divisionRing K M` with both args explicit, before any `finBasis`/`finBasisOfFinrankEq` over a vector-space submodule.
 - **Status:** idiom
 
 ### [process] A duplicate top-level decl name in the same namespace builds fine per-file but fails the WHOLE-PROJECT import-merge (`lake lint`/`runLinter`) with *"environment already contains 'Ns.foo' from <other module>"* — `lake build <single module>` never imports the sibling, so the clash is invisible until the linter loads all modules together
-- **Where it bit:** Phase 23d A4.5 added `screwBasis (k) : Basis (Fin (finrank …)) ℝ (ScrewSpace k)` to `Molecular/RigidityMatrix/Concrete.lean`; `lake build Concrete` passed, but `lake lint` aborted — `Molecular.screwBasis` already exists in `AlgebraicInduction/PanelLayer.lean` (the powerset-indexed exterior-power basis, a *different* type but the *same* fully-qualified name).
+- **Where it bit:** Phase 23d A4.5 added `screwBasis (k) : Basis (Fin (finrank …)) ℝ (ScrewSpace k)` to `Molecular/RigidityMatrix/Concrete.lean`, since deleted; `lake build Concrete` passed, but `lake lint` aborted — `Molecular.screwBasis` already exists in `AlgebraicInduction/PanelLayer.lean` (the powerset-indexed exterior-power basis, a *different* type but the *same* fully-qualified name).
 - **Friction:** the two modules are not in an import line with each other, so single-file build elaborates each happily; only the project-wide import-merge sees both. Renamed mine to `finScrewBasis` (the `Fin`-indexed variant). **General lesson → TACTICS-QUIRKS § 65: before naming a new top-level decl in a busy shared namespace (`Molecular`), `grep -rn "def <name>"` the subtree (or `lean_local_search`) first; `lake build` of your file alone is NOT proof the name is free.**
 - **Proposed fix:** process — name-check the namespace before adding; run `lake lint` (not just `lake build <module>`) before commit, since the clash is a lint-only failure.
 - **Status:** idiom · **Lifted to:** TACTICS-QUIRKS § 65
 
 ### [idiom] `Submodule.span_image` / `LinearEquiv.finrank_map_eq` won't `rw` against a `LinearEquiv` `''`-image — the goal's `⇑e '' s` (fun-coe) ≠ the lemma's `⇑(↑e : LinearMap) '' s`; bridge with `rw [← LinearEquiv.coe_coe e, Submodule.span_image, LinearEquiv.finrank_map_eq]`
-- **Where it bit:** `Matrix.rank_of_dualCoord` (`Molecular/RigidityMatrix/Concrete.lean`, the A2 carrier-agnostic rank bridge): after rewriting the matrix row-range to `e '' Set.range w` (for `e : Dual ℝ M ≃ₗ[ℝ] _`), `rw [Submodule.span_image]` fails (*"did not find pattern `Submodule.span K (⇑?f '' _)`"*) because `span_image` is stated for a `LinearMap` `f` and the image uses the `LinearEquiv` fun-coe.
+- **Where it bit:** `Matrix.rank_of_dualCoord` (`Molecular/RigidityMatrix/Concrete.lean`, since deleted, the A2 carrier-agnostic rank bridge): after rewriting the matrix row-range to `e '' Set.range w` (for `e : Dual ℝ M ≃ₗ[ℝ] _`), `rw [Submodule.span_image]` fails (*"did not find pattern `Submodule.span K (⇑?f '' _)`"*) because `span_image` is stated for a `LinearMap` `f` and the image uses the `LinearEquiv` fun-coe.
 - **Friction:** `Submodule.span_image (e : M →ₗ[ℝ] _)` also fails to match (the elaborated coe differs). The clean fix is to first rewrite `← LinearEquiv.coe_coe e` (turning `⇑e` into `⇑(↑e : LinearMap)`), after which `Submodule.span_image` fires to `Submodule.map ↑e (span …)` and `LinearEquiv.finrank_map_eq e` closes the finrank.
 - **Also seen** (Phase 39 item-6 Layer B1/B2, `span_jointRows_eq_map_dualAnnihilator` / `finrank_span_jointRows` in `Molecular/RigidityMatrix/Bricks.lean`): the image's function is a **bare lambda over an unbundled definition** — `jointRows U u v = (fun r => hingeRow u v r) '' ↑U.dualAnnihilator` — and `Submodule.span_image` again does not fire, for the same reason: its LHS is keyed on `span K (⇑?f '' _)` and `rw` will not unify `?f` with a lambda, even though `hingeRow_eq_dualMap` (`hingeRow u v r = (screwDiff u v).dualMap r`) holds by `rfl`. Bridge with `Set.image_congr' (fun r => hingeRow_eq_dualMap u v r)` *first*, after which `rw [Submodule.span_image, Submodule.span_eq]` lands `(U.dualAnnihilator).map (screwDiff u v).dualMap`. `Set.image_congr'` replaces the hand-rolled `ext` + `Set.mem_image` bridge the same file already writes inline for the cut brick's `Sc` (`Bricks.lean`, `heq`/`hset`) whenever the generating set is *already* an image. The finrank half is then the third instance of one idiom — span-of-a-hinge-row-image, then `Submodule.equivMapOfInjective` along `LinearMap.dualMap_injective_of_surjective (screwDiff_surjective huv)` — after the cut brick's inline copy and the named `finrank_span_panelRow_edge` (`Pinning.lean`, FRICTION-archive); `finrank_span_jointRows` is its `dualAnnihilator`-block instance.
 - **Proposed fix:** idiom — `rw [← LinearEquiv.coe_coe e, Submodule.span_image, LinearEquiv.finrank_map_eq]` for "finrank of the span of a `LinearEquiv`-image = finrank of the span"; `Set.image_congr'` to the bundled coe for the unbundled-function variant.
 - **Status:** idiom · **Lifted to:** TACTICS-GOLF § 22 (the set-image variant)
 
 ### [idiom] A lemma whose *goal* exposes `Matrix.rank`/`mulVec` on a constructed column type (`m⊕n`, Pi, …) needs `[Fintype]` on that type in the signature — `[Finite]` + in-proof `Fintype.ofFinite` is too late
-- **Where it bit:** `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, the Phase-23d A3 block-additivity kernel): stating it with `[Finite n₁] [Finite n₂]` on the column blocks reported *"failed to synthesize `Fintype (n₁ ⊕ n₂)`"* at the **goal-statement** line (`… ≤ (fromBlocks A B 0 D).rank`), despite the proof opening with `haveI : Fintype n₁ := Fintype.ofFinite n₁`.
+- **Where it bit:** `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, since deleted; the Phase-23d A3 block-additivity kernel): stating it with `[Finite n₁] [Finite n₂]` on the column blocks reported *"failed to synthesize `Fintype (n₁ ⊕ n₂)`"* at the **goal-statement** line (`… ≤ (fromBlocks A B 0 D).rank`), despite the proof opening with `haveI : Fintype n₁ := Fintype.ofFinite n₁`.
 - **Friction:** `Matrix.rank` unfolds through `mulVecLin`, which carries a `[Fintype <columns>]` arg; the goal type elaborates *before* the proof body, so the in-proof instance can't satisfy it. Switching the signature to `[Fintype n₁] [Fintype n₂]` (the summands) made `Fintype (n₁⊕n₂)` synthesize at the goal type. Contrast the `Finite`-hypothesis lemmas in the same file whose *statements* don't expose `.rank` on a built type.
 - **Proposed fix:** idiom — put `[Fintype]` on the constructed column type's summands in the signature whenever the goal text contains `.rank`/`mulVec` on anything but a bare hypothesis variable. **Lifted to:** TACTICS-QUIRKS § 64.
 - **Status:** idiom
 
 ### [idiom] `(M * Uᵀ).row p c` does not `rw` via `Matrix.mul_apply'` but IS defeq to `Matrix.vecMul (M.row p) Uᵀ c` — open with `change … = _`, then `Matrix.vecMul_transpose` + `LinearMap.toMatrix'_mulVec`
-- **Where it bit:** `BodyHingeFramework.rigidityMatrixProd_mul_columnOp_row` (`Molecular/RigidityMatrix/Concrete.lean`, the Phase-23d A5a column-op-as-right-multiply): after `funext c`, the goal `(rigidityMatrixProd … * (toMatrix' g)ᵀ).row p c = …` would not advance under `rw [Matrix.mul_apply']` (the `.row p c` projection doesn't expose `mul_apply'`'s LHS pattern — `Matrix.row M p c` is just `M p c`, no `mul`-headed redex to match).
+- **Where it bit:** `BodyHingeFramework.rigidityMatrixProd_mul_columnOp_row` (`Molecular/RigidityMatrix/Concrete.lean`, since deleted, the Phase-23d A5a column-op-as-right-multiply): after `funext c`, the goal `(rigidityMatrixProd … * (toMatrix' g)ᵀ).row p c = …` would not advance under `rw [Matrix.mul_apply']` (the `.row p c` projection doesn't expose `mul_apply'`'s LHS pattern — `Matrix.row M p c` is just `M p c`, no `mul`-headed redex to match).
 - **Friction:** the entrywise value IS definitionally `Matrix.vecMul (M.row p) Uᵀ c` (both are the same `dotProduct` sum), so a single `change Matrix.vecMul ((rigidityMatrixProd …).row p) _ c = _` surfaces it, after which `rw [Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]` rewrites to `g (M.row p) c` (`g` the coordinatized column-op equiv). A second `change` unfolds the `.trans`/`symm` of `g` so `simp only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]` closes. The two `change` steps trip the `linter.style.show` warning if written as `show` — use `change`.
 - **Proposed fix:** idiom — for "row of `M * (toMatrix' g)ᵀ`", `change` to `Matrix.vecMul (M.row p) … c` (defeq) rather than hunting a `mul_apply` rewrite, then `Matrix.vecMul_transpose` + `LinearMap.toMatrix'_mulVec` realize the right-multiply as `g (M.row p)`.
-- **Also seen** (sibling, Phase-23d A5c `rigidityMatrixProd_mul_columnOp_apply`): consuming the above `…_row` identity per-entry, `congrFun (…_row …) (body, c)` yields `h : (M * U).row p (body, c) = …`, but `rw [h]` won't fire against a goal stating `(M * U) p (body, c)` (the `.row` projection vs the bare application). One `rw [Matrix.row] at h` normalizes `M.row p (body,c)` → `M p (body,c)` (defeq, `Matrix.row M i = M i`), after which `rw [h, dualProductCoordEquiv_apply, LinearEquiv.dualMap_apply]` lands the entry formula.
-- **Also seen** (Phase-23f route (D) `rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`): to reuse an *un-augmented* product-entry lemma (`rigidityMatrixEdge_mul_columnOp_apply_pin_zero`, stated on `rigidityMatrixEdge * U`) for the *augmented* matrix's `Sum.inl p` row inside `rigidityMatrixEdgeAug … * U`, the entrywise equality `(augM * U) (inl p) y = (edgeM * U) p y` is **not** syntactically `rfl` (the products differ in their row index type) but reduces to it after `simp only [Matrix.mul_apply]; rfl` — `mul_apply` exposes both sides as the same `∑ⱼ (augM/edgeM) row j * Uᵀ j y` dot-product, and `augM (inl p) = edgeM p` is the `Sum.elim`/`Matrix.of` defeq the bare `rfl` then discharges. The same `hentry` bridge serves any augmented-`inl`-sub-block reuse of an un-augmented `_apply` lemma (D2 here; D3/D4's corner reuse next).
-- **Also seen** (Phase-23f (D-substitution) (5e) `linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`): to reuse the *un-augmented* `hD` producer `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` for the *augmented* `toBlocks₂₂`, both blocks rewrite (via the `_aug`/un-`_aug` `submatrix_columnOp_toBlocks₂₂…_eq_mixedBottom` reads) to the **same** `Matrix.of` of the `a`-shifted edge reads — but keyed on different selectors (`rebot i` for the aug read, `reUn (Sum.inr i)` for the un-aug read, where `reUn := Sum.elim Empty.elim rebot`). `reUn (Sum.inr i) = rebot i` is *defeq* but not syntactic, so `rw [← (un-aug read)]` after the aug `rw` fails ("did not find an occurrence"). Fix: `rw [show (Matrix.of fun i x => … rebot i …) = (un-aug toBlocks₂₂) from (un-aug read).symm]` — an explicit `Matrix.of`-typed `show` lets the `rw`'s motive unify the two defeq lambdas where the bare `rw [← h]` cannot. (Instantiating the un-aug producer's spare `m₁` at `Empty` avoids a corner-placeholder when `Fin (screwDim k − 1)` might be empty.)
+- **Also seen** (sibling, Phase-23d A5c `rigidityMatrixProd_mul_columnOp_apply`, since deleted): consuming the above `…_row` identity per-entry, `congrFun (…_row …) (body, c)` yields `h : (M * U).row p (body, c) = …`, but `rw [h]` won't fire against a goal stating `(M * U) p (body, c)` (the `.row` projection vs the bare application). One `rw [Matrix.row] at h` normalizes `M.row p (body,c)` → `M p (body,c)` (defeq, `Matrix.row M i = M i`), after which `rw [h, dualProductCoordEquiv_apply, LinearEquiv.dualMap_apply]` lands the entry formula.
+- **Also seen** (Phase-23f route (D) `rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`, since deleted): to reuse an *un-augmented* product-entry lemma (`rigidityMatrixEdge_mul_columnOp_apply_pin_zero`, stated on `rigidityMatrixEdge * U`) for the *augmented* matrix's `Sum.inl p` row inside `rigidityMatrixEdgeAug … * U`, the entrywise equality `(augM * U) (inl p) y = (edgeM * U) p y` is **not** syntactically `rfl` (the products differ in their row index type) but reduces to it after `simp only [Matrix.mul_apply]; rfl` — `mul_apply` exposes both sides as the same `∑ⱼ (augM/edgeM) row j * Uᵀ j y` dot-product, and `augM (inl p) = edgeM p` is the `Sum.elim`/`Matrix.of` defeq the bare `rfl` then discharges. The same `hentry` bridge serves any augmented-`inl`-sub-block reuse of an un-augmented `_apply` lemma (D2 here; D3/D4's corner reuse next).
+- **Also seen** (Phase-23f (D-substitution) (5e) `linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`, since deleted): to reuse the *un-augmented* `hD` producer `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` for the *augmented* `toBlocks₂₂`, both blocks rewrite (via the `_aug`/un-`_aug` `submatrix_columnOp_toBlocks₂₂…_eq_mixedBottom` reads) to the **same** `Matrix.of` of the `a`-shifted edge reads — but keyed on different selectors (`rebot i` for the aug read, `reUn (Sum.inr i)` for the un-aug read, where `reUn := Sum.elim Empty.elim rebot`). `reUn (Sum.inr i) = rebot i` is *defeq* but not syntactic, so `rw [← (un-aug read)]` after the aug `rw` fails ("did not find an occurrence"). Fix: `rw [show (Matrix.of fun i x => … rebot i …) = (un-aug toBlocks₂₂) from (un-aug read).symm]` — an explicit `Matrix.of`-typed `show` lets the `rw`'s motive unify the two defeq lambdas where the bare `rw [← h]` cannot. (Instantiating the un-aug producer's spare `m₁` at `Empty` avoids a corner-placeholder when `Fin (screwDim k − 1)` might be empty.)
 - **Status:** idiom
 
 ### [idiom] `rw [defName, …apiLemma]` fails with *"synthesized type class instance is not definitionally equal"* when the def froze a `Classical.decEq` in its body — use `simp only` (lenient on instances) **Lifted to: TACTICS-QUIRKS § 66**
-- **Where it bit:** `dualProductCoordEquiv_apply` (`Molecular/RigidityMatrix/Concrete.lean`, the Phase-23d A5c keystone entrywise identity): `rw [dualProductCoordEquiv, …, Basis.dualBasis_equivFun, Pi.basis_apply]` errored *"synthesized `fun a b ↦ a.instDecidableEqSigma b` / inferred `Classical.decEq (…)`"*. `dualProductCoordEquiv`'s body supplies its `Σ`-index `DecidableEq` *classically* (`haveI := Classical.decEq _`), but the lemma's ambient `[DecidableEq α]` makes `rw` resynthesize the *derived* `instDecidableEqSigma` — and `rw` matches instance args strictly even though `Decidable` is a `Subsingleton`.
+- **Where it bit:** `dualProductCoordEquiv_apply` (`Molecular/RigidityMatrix/Concrete.lean`, since deleted, the Phase-23d A5c keystone entrywise identity): `rw [dualProductCoordEquiv, …, Basis.dualBasis_equivFun, Pi.basis_apply]` errored *"synthesized `fun a b ↦ a.instDecidableEqSigma b` / inferred `Classical.decEq (…)`"*. `dualProductCoordEquiv`'s body supplies its `Σ`-index `DecidableEq` *classically* (`haveI := Classical.decEq _`), but the lemma's ambient `[DecidableEq α]` makes `rw` resynthesize the *derived* `instDecidableEqSigma` — and `rw` matches instance args strictly even though `Decidable` is a `Subsingleton`.
 - **Fix:** `simp only [dualProductCoordEquiv, …, Basis.dualBasis_equivFun, Pi.basis_apply]` for the whole unfold-and-rewrite chain — `simp` closes instance-arg goals up to defeq, so the discrepancy dissolves. (`congr 1` then `rw` on the peeled sub-equality also works; the cross-cutting rule is in § 66.)
 - **Status:** idiom (lifted to TACTICS-QUIRKS § 66)
 
@@ -924,8 +927,8 @@ to be re-derived by re-reading entries later.
 - **Where it bit:** the `hingeRowBlock`-agreement (second conjunct) of `Graph.ChainData.shiftBodyFramework_htrans` (since deleted; `CaseIII/Relabel.lean`, CHAIN-2c-ii-transport-W9a-chain): the two consecutive chain frameworks `F (s+1)`/`F s` share the selector `ends` and seed `q` (only the graph shrinks), so `(F (s+1)).hingeRowBlock f ≤ (F s).hingeRowBlock f` should be `le_refl`.
 - **Friction:** there is no `hingeRowBlock_congr` / `hingeRowBlock_eq_of_supportExtensor_eq` fused lemma — `mem_hingeRowBlock_iff` is the only `hingeRowBlock` API and it is membership-shaped, not an equality.
 - **Resolution:** `hingeRowBlock F e` is *definitionally* `(span {F.supportExtensor e}).dualAnnihilator`, so `rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock, ‹supportExtensor-eq›, ‹supportExtensor-eq›]` collapses both sides to the same `(span {C}).dualAnnihilator` and `rfl`-closes the `≤`. Add a `_supportExtensor`-equality simp lemma for the framework family (here `shiftBodyFramework_supportExtensor : … = panelSupportExtensor (q ((ends f).1)) (q ((ends f).2))`, `rfl`, `s`-independent; since deleted) so the two extensor rewrites are by-name. No congruence lemma needed for a one-off; reach for the fused lemma only if it recurs.
-- **Recurred → fused at the row level (Phase 23c).** The same `supportExtensor e₁ = supportExtensor e₂ ⟹ block agreement` idiom bit a second time in the chain-arm row routing (a *seed* `ofNormals` row must become a *candidate* `caseIIICandidate` row off the two override slots). Rather than re-unfold inline, the framework-general fused lemma `BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq` (`RigidityMatrix/Basic.lean`) now carries it at the `rigidityRows`-membership level: `F₂.graph.IsLink e u v` + `r ∈ F₁.hingeRowBlock e` + `F₁.supportExtensor e = F₂.supportExtensor e ⟹ hingeRow u v r ∈ F₂.rigidityRows`. Body is still the one-line `hingeRowBlock`-unfold (`rwa [hingeRowBlock, ← hsupp, ← hingeRowBlock]`) — the fused form just exports it as a reusable membership transfer. The `caseIIICandidate`-vs-`ofNormals` instantiation is `PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (`CaseIII/Candidate.lean`, since deleted).
-- **Status:** idiom; fused row-level lemma landed (Phase 23c).
+- **Recurred → fused at the row level (Phase 23c).** The same `supportExtensor e₁ = supportExtensor e₂ ⟹ block agreement` idiom bit a second time in the chain-arm row routing (a *seed* `ofNormals` row must become a *candidate* `caseIIICandidate` row off the two override slots). Rather than re-unfold inline, the framework-general fused lemma `BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq` (`RigidityMatrix/Basic.lean`; since deleted) carried it at the `rigidityRows`-membership level: `F₂.graph.IsLink e u v` + `r ∈ F₁.hingeRowBlock e` + `F₁.supportExtensor e = F₂.supportExtensor e ⟹ hingeRow u v r ∈ F₂.rigidityRows`. Body is still the one-line `hingeRowBlock`-unfold (`rwa [hingeRowBlock, ← hsupp, ← hingeRowBlock]`) — the fused form just exports it as a reusable membership transfer. The `caseIIICandidate`-vs-`ofNormals` instantiation is `PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (`CaseIII/Candidate.lean`, since deleted).
+- **Status:** idiom; fused row-level lemma landed (Phase 23c), since deleted.
 
 ### [idiom] Recovering the *other* endpoint of a `Graph.IsLink` from a same-edge, same-left-endpoint pair — use `IsLink.right_unique`, not `eq_and_eq_or_eq_and_eq`
 - **Where it bit:** the `key` of `Graph.ChainData.splitOff_isLink_shiftRelabel_backward` (`Induction/Operations.lean`, CHAIN-2c-ii-graphiso backward): from `hσy' : G.IsLink e P Q` and `hl : G.IsLink e P R` (a chain edge and the hypothesis link, both at the shifted body `P`), recover `R = Q`.
@@ -1036,7 +1039,7 @@ to be re-derived by re-reading entries later.
   `ext _ _; fin_cases · <;> rfl` rather than fighting defeq.
 
 ### [idiom] "`{i,j}ᶜ.orderEmbOfFin` lands outside `{i,j}`" is a 4-`rw` unfold (`mem_compl`/`mem_insert`/`mem_singleton`/`not_or`) every time
-- **Where it bit:** Phase 22g `omitTwoExtensor_homogenize_eq_extensor_kept` (`RigidityMatrix.lean`),
+- **Where it bit:** Phase 22g `omitTwoExtensor_homogenize_eq_extensor_kept` (`RigidityMatrix.lean`; since deleted),
   proving the kept indices `emb 0, emb 1` of `{i,j}ᶜ.orderEmbOfFin` differ from `i, j`. The identical
   chain already sits in `pairAppend_injective` (`Extensor.lean`).
 - **Friction:** `Finset.orderEmbOfFin_mem` gives `emb k ∈ {i,j}ᶜ`; turning that into `emb k ≠ i ∧
@@ -2616,9 +2619,9 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Status:** resolved.
 
 ### [idiom] No `columnOp_symm_apply` simp lemma — `(columnOp hva).symm S` reduces only by `change` to `Function.update S v (S v − S a)`
-- **Where it bit:** the `hbotfix` step of `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`RigidityMatrix/Basic.lean`, Phase 23d LEAF-DBL), proving `(bottom j).comp (columnOp hva).symm.toLinearMap = bottom j` for a `v`-blind `bottom j`.
+- **Where it bit:** the `hbotfix` step of `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`RigidityMatrix/Basic.lean`, since deleted; Phase 23d LEAF-DBL), proving `(bottom j).comp (columnOp hva).symm.toLinearMap = bottom j` for a `v`-blind `bottom j`.
 - **Friction:** `columnOp` carries `@[simps! apply]` (so `columnOp_apply` exists) but **not** `symm_apply`, so there is no rewrite/simp lemma for `(columnOp hva).symm S`; `rw [columnOp_symm_apply …]` errors "unknown identifier". The symm `invFun` is `S ↦ Function.update S v (S v − S a)` and is reachable only definitionally.
-- **Fix:** open with `rw [LinearMap.comp_apply, LinearEquiv.coe_coe]`, then `change bottom j (Function.update S v (S v − S a)) = bottom j S` (the `.symm`-apply unfolds definitionally), then `rw [hbotblind]`. A `@[simps! apply symm_apply]` on `columnOp` would supply the lemma, but `columnOp` is widely consumed via dedicated entry-formula lemmas (`rigidityMatrixEdge_mul_columnOp_apply` etc.) that never touch the raw `.symm`-apply, so the one-line `change` is cheaper than re-deriving the simp-set effect of the extra generated lemma.
+- **Fix:** open with `rw [LinearMap.comp_apply, LinearEquiv.coe_coe]`, then `change bottom j (Function.update S v (S v − S a)) = bottom j S` (the `.symm`-apply unfolds definitionally), then `rw [hbotblind]`. A `@[simps! apply symm_apply]` on `columnOp` would supply the lemma, but `columnOp` was consumed via dedicated entry-formula lemmas (`rigidityMatrixEdge_mul_columnOp_apply` etc., since deleted) that never touched the raw `.symm`-apply, so the one-line `change` is cheaper than re-deriving the simp-set effect of the extra generated lemma.
 - **Status:** open (cheap-`change`-for-now; `columnOp_symm_apply` mirror if a second caller needs the raw symm-apply).
 
 ### [idiom] An inline `(by omega)` `Fin`-arith proof inside an `exact <heavy-type-lemma> … (by omega) …` whnf-times-out — pull it out as a named `have`
@@ -4597,7 +4600,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ### [mirrored] `Module.Basis.linearIndependent_coe_subtype` (named submodule-basis coercion is LI)
 - **Where it bit:** `BodyHingeFramework.linearIndependent_blockBasisOn_screwDual` in
-  `Molecular/RigidityMatrix/Concrete.lean` (Phase 23d dispatch leaf 3, the within-block half of
+  `Molecular/RigidityMatrix/Concrete.lean`, since deleted (Phase 23d dispatch leaf 3, the within-block half of
   the corner `hLI` producer): the `blockBasisOn hgp he` basis of the hinge-row block, coerced into
   the ambient screw dual, is LI.
 - **Friction:** same `whnf`/`isDefEq` heartbeat blow-up as the sibling above — the inline
@@ -4619,13 +4622,14 @@ limitations. Worth a once-over so future agents don't re-litigate.
   blows the heartbeat budget and the *named* basis-family LI is required (existence form won't do),
   factor the `.map'` into a generic-over-`V` lemma; the call site then never `whnf`s the carrier.
   **Lifted to:** TACTICS-QUIRKS § 38 area (the abstract-`f`-via-`set`/generic-lemma carrier guard).
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
-  (beside the `Module.Basis` ambient-coercion API).
+- **Status:** ~~mirrored.~~ **RETIRED 2026-10-24** (RECONCILE round 3, task 38.5): no declaration
+  used its caller `linearIndependent_blockBasisOn_screwDual` or the file `Concrete.lean`, and the
+  cleanup round deleted them with this lemma. Resolution by removing the need, not by upstreaming.
+- **Mirror file (lemma deleted):** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`.
 
 ### [mirrored] `Module.Basis.span_coe_eq` (coerced submodule basis spans the submodule)
 - **Where it bit:** `BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent` in
-  `Molecular/RigidityMatrix/Concrete.lean` (Phase 23d dispatch leaf 3b, the cross-hinge corner
+  `Molecular/RigidityMatrix/Concrete.lean`, since deleted (Phase 23d dispatch leaf 3b, the cross-hinge corner
   `hLI` producer): the consumer `linearIndependent_sumElim_candidateRow_iff` needs
   `span (range (coerced blockBasisOn hgp ha)) = F.hingeRowBlock e_a` (the `e_a` block basis spans
   its block, in the ambient screw dual).
@@ -4643,9 +4647,9 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **General lesson:** the LI and span coercions of a submodule basis are a *pair*; when you mirror
   one (`linearIndependent_coe_subtype`), the consumer that wants a basis-of-`W`-in-`V` will usually
   also want the other — mirror both together.
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
-  (beside `Module.Basis.linearIndependent_coe_subtype`).
+- **Status:** ~~mirrored.~~ **RETIRED 2026-10-24** (RECONCILE round 3, task 38.5): deleted with its
+  caller `exists_corner_blockBasisOn_linearIndependent` (`Concrete.lean`), which nothing used.
+- **Mirror file (lemma deleted):** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`.
 
 ### [mirrored] `Finset.disjoint_iff_eq_compl` (complementary-card disjointness ⟺ complement)
 - **Where it bit:** `wedgePairing_ιMulti_family_eq_zero_of_ne_compl` in
@@ -4680,7 +4684,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 ### [mirrored] `Matrix.linearIndependent_row_of_zero_left_cols` + `Matrix.rank_submatrix_inr_of_zero_left_cols` (dropping all-zero left columns preserves row-LI / rank)
 - **Where it bit:** the Phase-23d `R(Gab)`-bottom reshape **L-rank** / **L-hD** leaves
   (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` /
-  `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, `RigidityMatrix/Concrete.lean`). The
+  `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, `RigidityMatrix/Concrete.lean`, since deleted). The
   (6.64) bottom block `toBlocks₂₂` lives on the **off-`v`** columns `{body // body ≠ v} × Fin D` — the
   re-inserted body `v`'s `D` columns are dropped by `columnSplit v` — but every bottom-row functional
   reads `S (≠v) − S (≠v)`, so it is blind to body `v`'s coordinate. To run the `Matrix.rank_of_coordEquiv`
@@ -4701,10 +4705,12 @@ limitations. Worth a once-over so future agents don't re-litigate.
   The L-rank consumer reindexes the full matrix's columns to `(v-cols) ⊕ (off-v-cols)` via
   `(columnSplit v).symm`, applies the rank lemma to the `Sum.inl = v-cols` zero block, then
   `Matrix.rank_reindex` for the surviving reindex.
-- **Status:** mirrored.
+- **Status:** mirrored; `Matrix.rank_submatrix_inr_of_zero_left_cols` **RETIRED 2026-10-24**
+  (RECONCILE round 3, task 38.5), deleted with its caller in `Concrete.lean`, which nothing used.
+  `Matrix.linearIndependent_row_of_zero_left_cols` has no caller either (`notes/Prose-findings.md`
+  F-279; RECONCILE round 3, task 38.8).
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean` (beside the Phase-23d block-additivity
-  bridges `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` /
-  `rank_ge_of_isUnit_mul_submatrix_fromBlocks`).
+  bridges, since deleted).
 
 ### [idiom] `(screwDim k - 1)` in a `ℤ`-equation breaks unification with a `{D : ℕ}` cast-bridge helper — write `((screwDim k : ℤ) - 1)`
 - **Where it bit:** the eq.-(6.12) rank equation `hNpD : (N : ℤ) + (screwDim k - 1) = …` in the
@@ -4772,7 +4778,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** idiom (project-internal).
 
 ### [idiom] `E(G)`/`V(G)` scoped Graph notation not in scope in `Molecular/RigidityMatrix/` — use the `G.edgeSet` dot form in signatures
-- **Where it bit:** Phase 23d A4.5e (`rigidityMatrixEdge` in `RigidityMatrix/Concrete.lean`) — the
+- **Where it bit:** Phase 23d A4.5e (`rigidityMatrixEdge` in `RigidityMatrix/Concrete.lean`, since deleted) — the
   edge-restricted matrix's `(hgp : ∀ e ∈ E(F.graph), …)` / `{e // e ∈ E(F.graph)}` binders failed to
   parse (`unexpected token '('; expected ','`) despite `lean_multi_attempt` accepting them.
 - **Friction:** these files are in `namespace CombinatorialRigidity.Molecular` with `open Module Matrix`
@@ -4784,7 +4790,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** idiom (project-internal).
 
 ### [idiom] A computable `Equiv` built from `Equiv.sumCompl (· = a)` needs a `[DecidableEq α]` *hypothesis*, not an in-body `Classical` — else `noncomputable`
-- **Where it bit:** Phase 23d A5c (`columnSplit` in `RigidityMatrix/Concrete.lean`) — the body-`a`
+- **Where it bit:** Phase 23d A5c (`columnSplit` in `RigidityMatrix/Concrete.lean`, since deleted) — the body-`a`
   column split `α × Fin D ≃ ({body // body = a} × Fin D) ⊕ …` built from `Equiv.sumCompl (· = a)`.
 - **Friction:** `Equiv.sumCompl (· = a)` needs `DecidablePred (· = a)`. Supplying it with an in-body
   `haveI : DecidablePred (· = a) := fun _ => Classical.propDecidable _` makes the `def` *fail to
@@ -4797,7 +4803,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ### [idiom] `rw [lemma h]` with an explicitly-applied rewrite hits only the *first* matched occurrence — for a goal with two structurally-identical sub-terms (e.g. `f (S u₁) - f (S u₂)`), use `simp only [lemma, …]` to rewrite both
 - **Where it bit:** Phase 23d A6 (`rigidityMatrixEdge_mul_columnOp_apply_off_pin`,
-  `RigidityMatrix/Concrete.lean`) — the off-pin entry equality `r ((columnOp hva S) u₁ − (columnOp hva
+  `RigidityMatrix/Concrete.lean`, since deleted) — the off-pin entry equality `r ((columnOp hva S) u₁ − (columnOp hva
   S) u₂) = r (S u₁ − S u₂)`, with `columnOp hva S` appearing at both endpoints `u₁ = (ends e).1`,
   `u₂ = (ends e).2`.
 - **Friction:** `rw [columnOp_apply hva, Function.update_of_ne hv1.symm, Function.update_of_ne hv2.symm]`
@@ -4812,7 +4818,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ### [idiom] dual-space→matrix-row LI bridge: rewrite the block to `Matrix.of (coordEquiv ∘ family)`, then `(Matrix.linearIndependent_row_of_coordEquiv coordEquiv _).2` — do NOT `simp`/`whnf` the carrier
 - **Where it bit:** Phase 23d A6 leaf 2 (`linearIndependent_toBlocks₁₁_row_of_corner_gate`,
-  `RigidityMatrix/Concrete.lean`) — the `hA` corner-block row-LI, where the block entries read a panel
+  `RigidityMatrix/Concrete.lean`, since deleted) — the `hA` corner-block row-LI, where the block entries read a panel
   functional on body `v`'s `D` screw columns. The naive `linearIndependent_row_of_coordEquiv` apply on
   the raw `caseIIICandidate` block hit a 200000-heartbeat `whnf` timeout (the recon's §38 guard).
 - **Friction:** the residual goals of a `submatrix.toBlocks.row` LI are *matrix-row* LI (vectors in
@@ -4834,7 +4840,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
   from dual-space gate content).
 
 ### [idiom] case-splitting an *applied* `Equiv`/function value (`f x`) that the goal still mentions: use `cases h : f x`, not `rcases f x`
-- **Where it bit:** Phase 23f route (D) sub-commit 4 (`reAug_injective`, `RigidityMatrix/Concrete.lean`)
+- **Where it bit:** Phase 23f route (D) sub-commit 4 (`reAug_injective`, `RigidityMatrix/Concrete.lean`, since deleted)
   — the cross-disjointness leg `Sum.elim (cornerRowInjectionAug ea ∘ finScrewDimSplitCorner) … i ≠ …`,
   where the goal mentions `finScrewDimSplitCorner x` (an applied `Equiv`).
 - **Friction:** `rcases (finScrewDimSplitCorner k) x with j | u` case-split the *value* but left the

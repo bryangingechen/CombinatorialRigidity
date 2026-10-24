@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseII
-import CombinatorialRigidity.Molecular.RigidityMatrix.Concrete
 
 /-!
 # Case III: KT Claim 6.11, the frameworks `F_t`, and the count at `(G, p_1)`

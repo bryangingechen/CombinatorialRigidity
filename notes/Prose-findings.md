@@ -5335,7 +5335,10 @@ declaration's name as its header writes it:
   names, and the five pins stay, uncalled (task 38.3). Round 3: tasks 33's and 36's sixteen
   deleted, with the four orphans `pinnedMotions_le_withGraph`, `pinnedMotions_withGraph_eq`,
   `hnew_of_isLink_incident` and `hingeConstraint_comm`; block (b) at `f3677e99` gives the same
-  names, and the pinned `toBodyHinge_withGraph` stays, uncalled (task 38.4).
+  names, and the pinned `toBodyHinge_withGraph` stays, uncalled (task 38.4). Round 3: the whole of
+  `Concrete.lean` (81 declarations) deleted, with its imports, tasks 32's four, 32.1's seven and
+  `join_assoc`, and the twelve orphans; block (b) at `faa83b72` gives the same names, and the build
+  and the caches confirm that no other declaration is left without a caller (task 38.5).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5539,11 +5542,12 @@ declaration's name as its header writes it:
   lemmas when the family is independent and take `c = 0` otherwise; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t321.lean`, gitignored).
   *Found:* RECONCILE round 3 task 32.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.5). Task 38.1: drop `meet`'s `ha`,
+  *Disposition:* done (task 38.5). Task 38.1: drop `meet`'s `ha`,
   `hb` (`def:meet` states $a + b \le d + 1$ alone; no caller), and move `mem_hingeRowBlock_iff` to
   `RigidityMatrix/Basic.lean` beside `hingeRowBlock` (its pin and callers unchanged). Left: `hp` and
   `hv`, each true without but only by a new degenerate case ($c = 0$) in a proof whose callers all
-  hold the independence; `lem:meet-two-hyperplanes` states `hp`.
+  hold the independence; `lem:meet-two-hyperplanes` states `hp`. Round 3: done so, `meet` now taking
+  `hab` alone (task 38.5).
 - **F-288** · L · hypotheses of `Molecular/RigidityMatrix/Concrete.lean` that the statements need
   not take, moot if task 38 removes the file (`F-279`). `hbot1 : ∀ i, v ≠ x ∨ x = v`, which is
   excluded middle, is a hypothesis of seven declarations
@@ -5558,8 +5562,8 @@ declaration's name as its header writes it:
   without `[Finite β]` and without the proof's two `have`s, by `simp` alone, and `hbot1`'s statement
   by `eq_or_ne`, on the three standard axioms (`scratch/reconcile-lean/Hyps-t322.lean`, gitignored).
   *Found:* RECONCILE round 3 task 32.2.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.5): moot, as task 38.5 deletes
-  `Concrete.lean` whole (`F-279`), these declarations with it.
+  *Disposition:* done (task 38.5): moot, `Concrete.lean` deleted whole (`F-279`), these declarations
+  with it.
 - **F-289** · L · hypotheses of `Molecular/AlgebraicInduction/Pinning.lean` and `PanelLayer.lean`
   that the proofs do not use or the others give, and a repeated derivation. `theorem_55_base`'s
   `huv : u ≠ v` (`lem:theorem-55-base`) and `theorem_55_triangle`'s `huv`, `hvw` and `huw`

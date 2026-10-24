@@ -1437,8 +1437,8 @@ model-exp *Findings* 2026-06-22.
 **Corollary — the satisfiability trace must hit the cert's SHAPE/architecture, not
 only a leaf's hypothesis; a *sound* kernel lemma can be unsatisfiable for the real
 object and hide for many leaves (Phase 23d, 2026-06-25).** Route A's general-`d` rank
-cert was architected on A3 — `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`,
-a *true* lemma (`#m₁+#m₂ ≤ rank` for a block-triangular `fromBlocks A B 0 D` with both
+cert was architected on A3 — `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` (since
+deleted), a *true* lemma (`#m₁+#m₂ ≤ rank` for a block-triangular `fromBlocks A B 0 D` with both
 diagonal blocks full-row-LI). It was accepted as the kernel and **~13 leaves were built
 on it** (the column op, the product/edge matrices, the rank bridges, the cert), each
 gate-clean. Only at the `hblock` assembly did a spike find the cert's `fromBlocks` SHAPE

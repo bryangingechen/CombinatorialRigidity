@@ -214,7 +214,7 @@ theorem extensor_shear {d j : ℕ} (v : Fin j → Fin (d + 1) → K) (i₀ : Fin
       exact ih
 
 /-- **Join** (`def:join`): the join `A ∨ B` of two elements of the exterior algebra of `K^(d+1)` is
-their product `A * B`. It is associative (`join_assoc`), and on extensors it concatenates the
+their product `A * B`. It is associative (`mul_assoc`), and on extensors it concatenates the
 families (`join_extensor`). For nonzero extensors of subspaces `X` and `Y` with `X ∩ Y = 0`, it is
 an extensor of `X + Y` (Barnabei, Brini and Rota 1985, Proposition 3.5). -/
 def join {d : ℕ} (A B : ExteriorAlgebra K (Fin (d + 1) → K)) :
@@ -233,11 +233,6 @@ theorem join_extensor {d m n : ℕ} (a : Fin m → Fin (d + 1) → K)
     (b : Fin n → Fin (d + 1) → K) :
     extensor a ∨ₑ extensor b = extensor (Fin.append a b) :=
   ExteriorAlgebra.ιMulti_mul_ιMulti a b
-
-/-- **The join is associative** (`def:join`), as the product of the exterior algebra is. -/
-theorem join_assoc {d : ℕ} (A B C : ExteriorAlgebra K (Fin (d + 1) → K)) :
-    (A ∨ₑ B) ∨ₑ C = A ∨ₑ (B ∨ₑ C) :=
-  mul_assoc A B C
 
 /-! ## Extensors of independent families, and of points (`def:affine-subspace-extensor`)
 

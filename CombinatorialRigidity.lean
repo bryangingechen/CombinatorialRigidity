@@ -74,7 +74,6 @@ import CombinatorialRigidity.Molecular.Molecule.Theorem56
 import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
 import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
-import CombinatorialRigidity.Molecular.RigidityMatrix.Concrete
 import CombinatorialRigidity.Nonvacuity
 import CombinatorialRigidity.PebbleGame.Correctness
 import CombinatorialRigidity.PebbleGame.Examples

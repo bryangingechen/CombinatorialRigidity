@@ -150,12 +150,6 @@ noncomputable def wedgeProdBilin {j : ℕ} (hj : j ≤ k + 2) :
   LinearMap.mk₂ K (wedgeProd hj) (wedgeProd_add_left hj) (wedgeProd_smul_left hj)
     (wedgeProd_add_right hj) (wedgeProd_smul_right hj)
 
-@[simp]
-theorem wedgeProdBilin_apply {j : ℕ} (hj : j ≤ k + 2)
-    (A : ⋀[K]^j (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - j) (Fin (k + 2) → K)) :
-    wedgeProdBilin hj A B = wedgeProd hj A B :=
-  rfl
-
 /-- **The wedge pairing** (for `def:meet-complement-iso`): `X ↦ (Y ↦ vol (X ∨ Y))`, a linear map
 from `⋀^j V` to the linear forms on `⋀^(N−j) V`, `N = k + 2`: `wedgeProd` followed by the volume
 form `screwAlgebraTopEquiv`. It is injective (`wedgePairing_injective`), and `complementIso` is
@@ -410,21 +404,11 @@ noncomputable def gradedMul {p q : ℕ}
   ⟨(A : ExteriorAlgebra K (Fin (k + 2) → K)) * (B : ExteriorAlgebra K (Fin (k + 2) → K)),
     SetLike.mul_mem_graded A.2 B.2⟩
 
-/-- **`gradedMul` is the join** (`def:join`): its value in the exterior algebra is `A ∨ₑ B`, by
-`rfl`. -/
-@[simp]
-theorem coe_gradedMul {p q : ℕ}
-    (A : ⋀[K]^p (Fin (k + 2) → K)) (B : ⋀[K]^q (Fin (k + 2) → K)) :
-    (gradedMul A B : ExteriorAlgebra K (Fin (k + 2) → K)) =
-      (A : ExteriorAlgebra K (Fin (k + 2) → K)) ∨ₑ
-        (B : ExteriorAlgebra K (Fin (k + 2) → K)) :=
-  rfl
-
 /-- **The meet** (`def:meet`): for `a + b ≤ N`, `A : ⋀^(N−a) V` and `B : ⋀^(N−b) V`,
 `A ∧ₑ B = *(*A ∨ *B) : ⋀^(N−(a+b)) V`, where `*A : ⋀^a V` and `*B : ⋀^b V` (the degrees cast by
 `N − (N − a) = a`) and their join is `gradedMul`. Nothing in the project uses `meet`: the formal
 proof forms `*(n_A ∨ n_B)` directly (`rem:meet-kt-steps`). -/
-noncomputable def meet {a b : ℕ} (ha : a ≤ k + 2) (hb : b ≤ k + 2) (hab : a + b ≤ k + 2)
+noncomputable def meet {a b : ℕ} (hab : a + b ≤ k + 2)
     (A : ⋀[K]^(k + 2 - a) (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - b) (Fin (k + 2) → K)) :
     ⋀[K]^(k + 2 - (a + b)) (Fin (k + 2) → K) := by
   -- `complementIso A : ⋀^a`, `complementIso B : ⋀^b`, product in `⋀^(a+b)`.
@@ -577,14 +561,6 @@ theorem extensor_mem_range_map_subtype_of_mem_grade {d : ℕ}
       ∈ LinearMap.range (exteriorPower.map (d - 1) W.subtype) :=
   extensor_mem_range_map_subtype_of_mem_jgrade W v hv
 
-/-- **A `2`-extensor of vectors of a subspace `W` of `K⁴` lies in the image of `⋀² W`**: the case
-`d = 3` of `extensor_mem_range_map_subtype_of_mem_grade`. -/
-theorem extensor_mem_range_map_subtype_of_mem
-    (W : Submodule K (Fin 4 → K)) (v : Fin 2 → Fin 4 → K) (hv : ∀ i, v i ∈ W) :
-    (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin 4 → K))
-      ∈ LinearMap.range (exteriorPower.map 2 W.subtype) :=
-  extensor_mem_range_map_subtype_of_mem_grade (d := 3) W v hv
-
 /-- **Two elements of the image of `⋀^(d−1) W` are proportional** (a step of
 `lem:meet-two-hyperplanes`): if `dim W = d − 1`, the image of the injective map
 `⋀^(d−1) W → ⋀^(d−1) K^(d+1)` (`exteriorPower_map_subtype_injective_grade`) has dimension `1`
@@ -605,16 +581,6 @@ theorem exists_smul_eq_of_mem_range_map_subtype_grade {d : ℕ}
       (by rw [finrank_span_singleton hxne, hR])
   rw [← Submodule.mem_span_singleton, hspan]
   exact hy
-
-/-- **Two elements of the image of `⋀² W` in `⋀² K⁴` are proportional**, for `dim W = 2`: the case
-`d = 3` of `exists_smul_eq_of_mem_range_map_subtype_grade`. -/
-theorem exists_smul_eq_of_mem_range_map_subtype
-    (W : Submodule K (Fin 4 → K)) (hW : Module.finrank K W = 2)
-    {x y : ⋀[K]^2 (Fin 4 → K)}
-    (hx : x ∈ LinearMap.range (exteriorPower.map 2 W.subtype)) (hxne : x ≠ 0)
-    (hy : y ∈ LinearMap.range (exteriorPower.map 2 W.subtype)) :
-    ∃ c : K, c • x = y :=
-  exists_smul_eq_of_mem_range_map_subtype_grade (d := 3) W hW hx hxne hy
 
 /-- **Two `2`-extensors of pairs in the same plane are proportional** (a step of
 `lem:pencil-generic-steer`): for a linearly independent pair `v` and a pair `u` whose vectors lie in
@@ -1155,12 +1121,6 @@ theorem piBasisFun_toDual_eq_sum {m : ℕ} (w v : Fin m → K) :
   rw [map_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [map_smul, Module.Basis.toDual_eq_repr, smul_eq_mul, Pi.basisFun_repr, mul_comm]
-
-/-- **The coordinate pairing of `K^m` is symmetric**, by `piBasisFun_toDual_eq_sum`. -/
-theorem piBasisFun_toDual_symm {m : ℕ} (w v : Fin m → K) :
-    (Pi.basisFun K (Fin m)).toDual w v = (Pi.basisFun K (Fin m)).toDual v w := by
-  rw [piBasisFun_toDual_eq_sum, piBasisFun_toDual_eq_sum]
-  exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /-- **The vectors orthogonal to a family and the span of the family have complementary dimensions**:
 for `n : ι → K^N`, the dimension of the common kernel of the forms `⟨·, n j⟩` plus that of

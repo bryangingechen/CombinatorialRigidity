@@ -27,9 +27,8 @@ proves:
   independent vectors with their incidences, for given normals
   (`lem:case-III-claim612-points-affineIndep-real-normals`);
 * for each join of these vectors, a panel that contains it and a second hyperplane through it;
-* the membership test of a hinge-row block (`mem_hingeRowBlock_iff`, a pin of `def:hinge-row-block`
-  in `rigidity-matrix.tex`) and the nonsingularity test of KT's blocks
-  (`lem:case-III-claim612-block-iff-perp`, KT eq. (6.42), p. 690);
+* the nonsingularity test of KT's blocks (`lem:case-III-claim612-block-iff-perp`, KT eq. (6.42),
+  p. 690);
 * rows after the column operation and the projection that zeroes the screw of `v` (steps of
   `lem:case-III-rank-certification`); the restriction of a row to the screws of one body, and KT
   eq. (6.44) (`lem:case-III-claim612-eq644`, p. 691); and `r ≠ 0`
@@ -38,7 +37,8 @@ proves:
   not vanish to a hinge in a panel on whose extensor `r` does not vanish, for `d = 3`
   (`lem:case-III-candidate-dispatch-d3`) and for every `d` (`lem:case-III-chain-discriminator`).
 
-`Basic.lean` defines the hinge-row block `hingeRowBlock` and the column operation `columnOp`.
+`Basic.lean` defines the hinge-row block `hingeRowBlock`, with its membership test
+`mem_hingeRowBlock_iff`, and the column operation `columnOp`.
 -/
 
 @[expose] public section
@@ -245,25 +245,6 @@ theorem omitTwoExtensor_eq_extensor_kept_gen {e : ℕ} (pbar : Fin (e + 2) → F
   rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at h
   exact h
 
-/-- **The omit-two extensor of four points as the join of the two kept points**: for points
-`p : Fin 4 → K³` and a pair `q = (i, j)` with `i < j`, the omit-two extensor of the homogeneous
-coordinates of `p` is `homogenize (p c) ∨ homogenize (p d)` for the two indices `c < d` other than
-`i` and `j`: the case `e = 2` of `omitTwoExtensor_eq_extensor_kept_gen`, at
-`fun i => homogenize (p i)`. The pairs: `(0,1) ↦ (2,3)`, `(0,2) ↦ (1,3)`, `(0,3) ↦ (1,2)`,
-`(1,2) ↦ (0,3)`, `(1,3) ↦ (0,2)` and `(2,3) ↦ (0,1)`. -/
-theorem omitTwoExtensor_homogenize_eq_extensor_kept (p : Fin 4 → Fin 3 → K)
-    (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) :
-    ∃ c d : Fin 4, c < d ∧ c ≠ q.1.1 ∧ c ≠ q.1.2 ∧ d ≠ q.1.1 ∧ d ≠ q.1.2 ∧
-      omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)
-        = extensor ![homogenize (p c), homogenize (p d)] := by
-  -- The homogeneous coordinates `fun i => homogenize (p i) : Fin 4 → K⁴` as the family of the
-  -- general form; at `e = 2` the two kept indices `emb 0 < emb 1` form the pair.
-  obtain ⟨emb, hmem, heq⟩ := omitTwoExtensor_eq_extensor_kept_gen (e := 2)
-    (fun i => homogenize (p i)) q
-  refine ⟨emb 0, emb 1, emb.strictMono (by decide), (hmem 0).1, (hmem 0).2, (hmem 1).1,
-    (hmem 1).2, heq.trans ?_⟩
-  congr 1; ext k; fin_cases k <;> rfl
-
 /-- **A second hyperplane through two vectors** (a step of `lem:case-III-candidate-dispatch-d3`):
 let `2 ≤ k`, and let `pi`, `pj` and `n_u ≠ 0` be vectors of `K^(k+2)` with
 `pi ⬝ᵥ n_u = pj ⬝ᵥ n_u = 0`. Then some `n'`, linearly independent of `n_u`, has
@@ -362,73 +343,6 @@ theorem exists_independent_perp_family {k m : ℕ} (hm : m ≤ k)
   refine ⟨n', (LinearIndependent.pair_iff' hn_u).2 ?_, (hmemW n').1 hn'W⟩
   intro a heq
   exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
-
-/-- **A second hyperplane through the span of `m ≤ k` vectors, outside a given plane**: as
-`exists_independent_perp_family`, and moreover `n'` lies outside `span {n_u, w}` for a vector `w`
-that is not orthogonal to all the `p i` (`hw`). The vectors orthogonal to the `p i` form a space
-`W₀` of dimension at least `2`, which contains `n_u` and not `w`. If `a • n_u + b • w ∈ W₀`, then
-`b • w ∈ W₀`, so `b = 0`; hence `span {n_u, w} ⊓ W₀ = span {n_u}`, a line, and `W₀` has a vector
-outside it. -/
-theorem exists_independent_perp_family_escape {k m : ℕ} (hm : m ≤ k)
-    (p : Fin m → Fin (k + 2) → K) (n_u w : Fin (k + 2) → K)
-    (hp : ∀ i, p i ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) (hw : ∃ i, p i ⬝ᵥ w ≠ 0) :
-    ∃ n' : Fin (k + 2) → K, LinearIndependent K ![n_u, n'] ∧
-      (∀ i, p i ⬝ᵥ n' = 0) ∧ n' ∉ Submodule.span K ({n_u, w} : Set (Fin (k + 2) → K)) := by
-  -- The common-perp space as the kernel of the family map `L x = (fun i => p i ⬝ᵥ x)`.
-  set L : (Fin (k + 2) → K) →ₗ[K] (Fin m → K) := Matrix.mulVecLin (Matrix.of p) with hL
-  have hmemW : ∀ x : Fin (k + 2) → K, x ∈ LinearMap.ker L ↔ ∀ i, p i ⬝ᵥ x = 0 := by
-    intro x
-    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply, funext_iff]
-    refine ⟨fun h i => ?_, fun h i => ?_⟩
-    · have := h i; simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using this
-    · simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using h i
-  -- Rank–nullity: `finrank (ker L) ≥ (k+2) − m ≥ 2`.
-  have hker : 2 ≤ Module.finrank K (LinearMap.ker L) := by
-    have hrn := L.finrank_range_add_finrank_ker
-    have hdom : Module.finrank K (Fin (k + 2) → K) = k + 2 := by rw [Module.finrank_pi]; simp
-    have hcod : Module.finrank K (LinearMap.range L) ≤ m := by
-      calc Module.finrank K (LinearMap.range L)
-          ≤ Module.finrank K (Fin m → K) := Submodule.finrank_le _
-        _ = m := by rw [Module.finrank_pi]; simp
-    omega
-  have hn_uW : n_u ∈ LinearMap.ker L := (hmemW n_u).2 hp
-  -- `w ∉ ker L` from the side hypothesis.
-  have hwnotker : w ∉ LinearMap.ker L := by
-    rw [hmemW]; rintro h; obtain ⟨i, hi⟩ := hw; exact hi (h i)
-  set W := Submodule.span K ({n_u, w} : Set (Fin (k + 2) → K)) with hW
-  -- `W ⊓ ker L = span {n_u}`: any `a • n_u + b • w ∈ ker L` has `b = 0` (else `w ∈ ker L`).
-  have hinf_eq : W ⊓ LinearMap.ker L = Submodule.span K {n_u} := by
-    apply le_antisymm
-    · rintro x ⟨hxW, hxker⟩
-      rw [SetLike.mem_coe, hW, Submodule.mem_span_pair] at hxW
-      obtain ⟨a, b, rfl⟩ := hxW
-      have hbw : b • w ∈ LinearMap.ker L := by
-        have : b • w = (a • n_u + b • w) - a • n_u := by abel
-        rw [this]; exact Submodule.sub_mem _ hxker (Submodule.smul_mem _ a hn_uW)
-      have hb0 : b = 0 := by
-        by_contra hbne
-        exact hwnotker (by
-          have := Submodule.smul_mem (LinearMap.ker L) b⁻¹ hbw
-          rwa [smul_smul, inv_mul_cancel₀ hbne, one_smul] at this)
-      rw [hb0, zero_smul, add_zero]
-      exact Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _)
-    · rw [Submodule.span_singleton_le_iff_mem]
-      exact Submodule.mem_inf.mpr ⟨Submodule.subset_span (by left; rfl), hn_uW⟩
-  -- `W ⊓ ker L` is a *proper* subspace of `ker L` (`finrank 1 < 2 ≤ finrank (ker L)`).
-  have hlt : (W ⊓ LinearMap.ker L) < LinearMap.ker L := by
-    refine lt_of_le_of_ne inf_le_right ?_
-    intro heq
-    have h1 : Module.finrank K (LinearMap.ker L) = 1 := by
-      rw [← heq, hinf_eq]; exact finrank_span_singleton hn_u
-    omega
-  obtain ⟨n', hn'ker, hn'notinf⟩ := IsConcreteLE.exists_of_lt hlt
-  -- `n' ∈ ker L` and `n' ∉ W ⊓ ker L`, hence `n' ∉ W`.
-  have hn'notW : n' ∉ W := fun hWmem => hn'notinf (Submodule.mem_inf.mpr ⟨hWmem, hn'ker⟩)
-  have hLI : LinearIndependent K ![n_u, n'] := by
-    refine (LinearIndependent.pair_iff' hn_u).2 ?_
-    intro a heq
-    exact hn'notW (heq ▸ Submodule.smul_mem _ a (Submodule.subset_span (by left; rfl)))
-  exact ⟨n', hLI, fun i => (hmemW n').1 hn'ker i, hn'notW⟩
 
 /-- **Linearly independent vectors with the incidences of KT's points, for given normals**
 (`lem:case-III-claim612-points-affineIndep-real-normals`; the points of KT pp. 691 and 698): for
@@ -723,23 +637,11 @@ variable {k : ℕ} {α β : Type*}
 
 /-! ## The blocks of KT eq. (6.42) and KT Claim 6.12 (KT pp. 685–691)
 
-The membership test of a hinge-row block (`def:hinge-row-block`) and the nonsingularity test of KT's
-blocks (`lem:case-III-claim612-block-iff-perp`); rows after the column operation and the projection
-that zeroes the screw of `v`; the restriction of a row to the screws of one body, and KT eq. (6.44)
-(`lem:case-III-claim612-eq644`); `r ≠ 0` (`lem:case-III-claim612-r-nonzero`); and KT Claim 6.12
-(`lem:case-III-claim612`), with the step from a join to a hinge in a panel. -/
-
-/-- **A form lies in the hinge-row block if and only if it vanishes at the extensor**
-(`def:hinge-row-block`): `r ∈ F.hingeRowBlock e ↔ r (C(e)) = 0`. The block is the space of the forms
-that vanish on `span {C(e)}` (`hingeRowBlock`), and a form vanishes on the multiples of `C(e)` if
-and only if it vanishes at `C(e)` (the remark after `def:hinge-row-block`). -/
-theorem mem_hingeRowBlock_iff (F : BodyHingeFramework K k α β) (e : β)
-    (r : Module.Dual K (ScrewSpace K k)) :
-    r ∈ F.hingeRowBlock e ↔ r (F.supportExtensor e) = 0 := by
-  rw [hingeRowBlock, Submodule.mem_dualAnnihilator]
-  refine ⟨fun h => h _ (Submodule.mem_span_singleton_self _), fun h x hx => ?_⟩
-  obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hx
-  rw [map_smul, h, smul_zero]
+The nonsingularity test of KT's blocks (`lem:case-III-claim612-block-iff-perp`); rows after the
+column operation and the projection that zeroes the screw of `v`; the restriction of a row to the
+screws of one body, and KT eq. (6.44) (`lem:case-III-claim612-eq644`); `r ≠ 0`
+(`lem:case-III-claim612-r-nonzero`); and KT Claim 6.12 (`lem:case-III-claim612`), with the step from
+a join to a hinge in a panel. -/
 
 /-- **When the blocks of KT eq. (6.42) are nonsingular** (`lem:case-III-claim612-block-iff-perp`; KT
 p. 690): let `rn` be linearly independent forms that span the hinge-row block of `e`. Then `rn`
