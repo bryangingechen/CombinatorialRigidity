@@ -177,7 +177,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 5/5: graph repairs and the findings report) | every chapter's dependency edges, pins and node shapes; the findings report | ✓ Complete — no missing edge left, the Lean unchanged; each finding done, left or reported in `notes/Prose-report.md` (see `notes/Prose-graph-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 1/3: the texts) | the status surfaces' scopes and credits, blueprint prose and two agent manuals (docs and prose only) | ✓ Complete — the scopes and credits fixed on the status surfaces, the Lean unchanged (see `notes/Reconcile-texts-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep, the code-smell and long-proof screens and the fixes they found done, the dead declarations the screens found deleted, the round's close next (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; not yet pushed (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -1305,7 +1305,8 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   task 19 restated S28 and framed `meet.tex`'s lemmas through $\bigwedge^2 W$
   (`rem:meet-kt-steps`), and task 20 framed the forest surgery (`rem:forest-surgery-kt-steps`),
   and task 21 closed it, listing the eight declarations it unpinned for round 3. Round 3,
-  `reconcile-lean`, opened 2026-10-15 with 39 one-commit tasks (`notes/Reconcile-lean-cleanup.md`);
+  `reconcile-lean`, opened 2026-10-15 with 39 one-commit tasks (`notes/Reconcile-lean-cleanup.md`)
+  and closed 2026-10-24;
   task 2 committed the docstring-label check (`scripts/check-docstring-labels.py`, baseline 422),
   task 3 deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms (fourteen declarations,
   none pinned), task 4 Case III's line route, the candidate rows, `case_III_realization` and
@@ -1421,7 +1422,15 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   lemma beside the two obstructions that repeated it, gave three new lemmas for facts about a join
   of two points written out in three proofs, and proved one more step by an existing lemma,
   restating one blueprint statement and removing a blueprint dependency that no longer had a basis
-  in the Lean. **Next:** task 39, the round's close.
+  in the Lean; and task 39 closed the round on 2026-10-24, in 103 one-commit tasks. Twenty-two
+  blueprint statements were restated where the round's changes reached them and two pins changed;
+  no main result's statement changed. Two hypotheses that main results take but do not need, an
+  unused decidability assumption of three of them and a derivable dimension bound of two, stay with
+  the same hypotheses of the lemmas below them, for the PI to drop when the next phase restates
+  those results; the docstrings of the files that build the panel-hinge carrier also wait for that
+  phase. Lemmas a chapter pins or names as its Lean form stay though no main result uses them.
+  **Next:** `RECONCILE-FORMAL`, attended: the autopilot queue stops before it, and it opens with
+  the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

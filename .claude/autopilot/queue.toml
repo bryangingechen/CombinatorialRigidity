@@ -108,7 +108,7 @@ id = "reconcile-lean"
 title = "RECONCILE 3/3: the Lean outside the phase's footprint"
 note = "notes/Reconcile-lean-cleanup.md"
 attended = false
-done = false
+done = true
 
 # Attended: new formalization (the carriers, M1's multigraph form, the claims no declaration
 # states). It opens with the PI and takes its phase number then; its plan is notes/Reconcile.md §3.

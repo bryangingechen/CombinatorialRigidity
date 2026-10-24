@@ -1,17 +1,20 @@
 # RECONCILE round 3/3 — `reconcile-lean`, the Lean outside the phase's footprint (work log)
 
-**Status:** in progress (opened 2026-10-15). Round 3 of **RECONCILE**'s three autopilot rounds; the
-plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot/queue.toml` is the
-authority for which rounds are done. The round acts on the Lean: a script that checks the blueprint
-labels the docstrings name, L9's deletions after `CLEANUP.md` §B's trial deletion, `F-061`'s rename,
-L6–L8's signatures and repeated derivations with S17, L1–L2 (the pebble game's search), a
-non-vacuity witness for each of the 16 main results outside S1's and S2's rows, the docstring
-sweep by directory, and the §B–§C screen with the fixes it appends. No main result's statement
-changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
-`GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–38.27 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
-sweep, the §B–§C screen, and all its fixes, tasks 38.2–38.27.
-**Next concrete task:** task 39, the close (*Hand-off*). Round manual: `CLEANUP.md`.
+**Status:** closed 2026-10-24 (opened 2026-10-15). Round 3 of **RECONCILE**'s three autopilot
+rounds; the plan and the PI's decisions are `notes/Reconcile.md`, and `.claude/autopilot/queue.toml`
+(this row now `done = true`) is the authority for which rounds are done. In 103 one-commit tasks
+(the open's 39, with the sub-tasks the sweep and the screens added) the round committed a check of
+the blueprint labels the docstrings name (422 findings at task 2, 4 at the close, in S1's files),
+deleted L9's declarations and the dead ones the screens found, changed the signatures L6–L8, S17
+and the entries' verdicts named, re-proved the pebble game's search with one marked set, gave the
+16 main results outside S1's and S2's rows a non-vacuity witness, and swept the docstrings by
+directory; 22 blueprint statements were restated where these changes reached them, and two pins
+changed. No main result's statement changed: `F-323`'s `[DecidableEq β]` (three main results) and
+`F-324`'s `hD` (one), whose removal would change them, wait for the phase with the binders kept
+for them, and so do the footprint's docstrings. Pins whose nodes stay, the vendored port, and
+declarations a chapter names as its Lean form or witness stay though no main result's proof
+reaches them (*Current state*). **Next concrete task:** none in this round: the queue stops before
+`RECONCILE-FORMAL`, which is attended (*Hand-off*). Round manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -42,43 +45,58 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 38.27 is done**, `F-319` to `F-321` and `F-328`'s last part: every entry the round acts on is
-done (the ledger: 328 entries, 269 `done`, 9 `left`, 50 `reported`, 0 `open`). Nothing is
-mid-stream. **Next:** 39, the close.
+**The round is closed** (task 39): every task landed, nothing is mid-stream, and every ledger entry
+the round acted on has its disposition (328 entries, 269 `done`, 9 `left`, 50 `reported`, 0
+`open`), each round-3 task that made a disposition's change named by its commit.
 
-**Task 38.27** (scratch `scratch/reconcile-lean/t3827/`, gitignored: task 38.26's scripts, copied).
-`CoverageCut.lean`, `CoverageTheoremS.lean`, `GoodEar.lean` (`F-319`): `IsX0Graph.splitOff`'s `hne`
-with its four callers' derivations; `x0Reduces_of_not_connected`'s `hv`, derived from `hdisc`;
-`exists_closedEar_two_of_triangle`'s `hyu`, `hwy`, `hwu`, by `Graph.Adj.ne`;
-`deficiency_three_induce_cycle`'s `_hG`; the callers' `hv`, `hwy`, `hwu` now `-` (§118).
-`GenericEar.lean`, `Motive.lean`, `GenericBase.lean` (`F-320`, `F-328`): the two unused `have`s;
-`not_linearIndependent_of_dotProduct_eq_zero_pair` moved to `Motive.lean`, which its two
-obstructions now call; `eq_zero_of_dotProduct_triple` by the mirror lemma, whose header names it.
-`GenericTriangle.lean`, `Flat.lean`, `Statements.lean` (`F-321`): `not_pencilHub_of_closedEar_two`'s
-two `have`s but not its `hS`, a local instance its degree count needs (a FRICTION idiom, lifted to
-`TACTICS-QUIRKS.md` §118); the two theorems' `have := hS` and `hinj` (by
-`injective_of_isLink_pathVertex_two`; the caller's binder now `-`); `pointJoin_ne_zero`,
-`extensorInPanel_pointJoin` and `extensorThroughPoint_pointJoin` (`Flat.lean`) at the three proofs.
-Restated: `lem:pencil-x0-chain-standing` (2), whose "exactly two edges" stated `hne`; the other
-three nodes stay (task 10's rule). Removed: `lem:pencil-splitoff-special-rank`'s proof edge to
-`def:pencil-nondegenerate`, added for the pin's reach alone (`60c88e44`), unbacked since task 38.26.
-Gates: the build green (6147 jobs, 0 `warning:`, `error:`, `failed to cache artifact`; one run,
-inside the 600 s), `lake lint` green; the axioms harness and the witnesses' identical to task
-38.26's net of the path; the dump as expected (`t3827/expected.md`) but for one statement edge that
-the transitive reduction now draws (`def:panel-hinge-framework`'s, implied before through
-`def:pencil-nondegenerate`), 1527 edges; `--summary` OK, 6612 constants, unb-none 136 → 135, no
-pin's reach moved (993); `neworphans.py` empty; the label check identical (4), `--lean` resolving
-2465 names; `lint.sh`, `verify.sh` green (9 `WARNING:`), `print.log` 0 `LaTeX Warning`.
+**The close's checks**, each in the foreground at `0d563943`'s tree (task 39 edits no Lean, TeX or
+script; scratch `scratch/reconcile-lean/t39/`, gitignored):
+- the build green (6147 jobs, 0 `warning:`, `error:` and `failed to cache artifact` lines), `lake
+  lint` green;
+- the axioms harness, regenerated by gate 3's command, `cmp`-identical to the open's, its `lake
+  lean` output the open's net of the path: all 19 main results `[propext, Classical.choice,
+  Quot.sound]`; the witnesses' harness (task 38.27's) the same three for all 17 witnesses;
+- `lint.sh` green; `verify.sh` green, `checkdecls` silent, 9 `WARNING:` lines (the open's, line for
+  line); `print.log` 0 `LaTeX Warning` lines;
+- the dump byte-identical to task 38.27's: `1527 edges e05a37a257942172`, `5d8c0cfb7a2d68a1` (the
+  open's 1525 edges); `--summary` both checks OK, 691 nodes, 689 pinned, 1008 pins, 992 distinct
+  (the open's 993), 0 missing edges, implied 2431, unbacked-transitive 84 and unbacked-none 135 (the
+  open's 2424, 85 and 133), dead pins 172 (169), 6612 constants;
+- the forward screen identical to the open's: 33 edges at 17 nodes to a later file, 4 at 4 within
+  a file;
+- the label check 4, its report identical to task 38.27's (task 2: 422), `--lean` resolving 2465
+  names, `--self-test` green;
+- the smell counts at `0d563943` beside the ledger's baselines (a column added to its table):
+  `classical` 430 → 367, `nolint/linter` 34 → 9, `noncomputable-def` 191 → 172, `change/show` 169 →
+  143, `rw4+` 282 → 243, `show-from-rfl` 39 → 27, `maxHeartbeats` 5 → 1, `toFinset` 253 → 260,
+  `Fintype.card` 322 → 247, `haveI-Fintype` 1; 151 files, 110 881 → 91 800 lines, the toolchain
+  bump's Lean among them;
+- `notes/check-phase-note.py` green.
 
-**Done before** (tasks 3–38.26; the ledger's dispositions name each part's task, the messages the
-detail): tasks 38.11–38.26, the entries' fixes from `HennebergReverse.lean` to
-`MainComponent/CoverageChain.lean` and `MainComponent/`'s shared steps (new `F-325`–`F-328`,
-`TACTICS-QUIRKS.md` §118; seven nodes restated; the orphan `Graph.rigidContract_simple` deleted;
-two new lemmas, task 38.26); tasks 38.2–38.10's deletions, re-seeding and
-suppression sites; tasks 38–38.1, the §B–§C screen and the verdicts (new
-`F-322`–`F-324`); tasks 3–24, L9's deletions, `F-090`'s shim, `F-061`'s rename, L6–L8, the search
-and `Nonvacuity.lean`'s sixteen witnesses; tasks 25–37.21, the docstring sweep (new `F-278` to
-`F-321`).
+**What the round changed in the blueprint.** Restated where a change of the Lean reached them, 22
+nodes: `lem:trivialMotionFamily-linearIndependent`; `lem:cut-edge-decomposition`,
+`lem:deficiency-ear-merge` and `lem:cycle-zero-dof` (moved to `deficiency.tex`, task 11.1);
+`lem:chain-data-extract`, `lem:packing-move`, `lem:removal-deficiency-strict` and
+`lem:reduction-step-pos`; `lem:k-frame-forest-packing-of-sparse`; `def:reachable-finding`;
+`lem:block-rank-cut`; `lem:case-cut-edge-realization`, its `-gp` form, `lem:theorem-55-base` and
+`lem:theorem-55-triangle`; `lem:cycle-realization-base`, `lem:claim-6-6`,
+`lem:case-I-realization-h65`, `lem:case-I-dispatch` and `lem:case-I-all-k`;
+`lem:pencil-generic-steer` and `lem:pencil-x0-chain-standing`. Two pins changed:
+`lem:own-end-rows-independent`'s two renamed `_starForest` (task 7) and
+`cor:forest-surgery-deficiency` repinned on `forest_surgery_split` (task 6). No node was added or
+removed; the drawn graph has 1527 edges (the open's 1525).
+
+**What the round kept.** For the phase, the PI's to sanction: `F-323`, the `[DecidableEq β]` of
+`rankHypothesis_of_theorem_55_gen`, `molecular_conjecture` and `molecular_conjecture_multigraph`,
+with `theorem_55_6_multigraph_gen`'s, to which the last passes its own; `F-324`,
+`theorem_55_minimalKDof_gen`'s derivable `hD`, with the derivable `hD`s of the chain below it
+(`F-293`, `F-297`, `F-298`) and that of the spanning-trees main result, which its `NeZero` step
+uses. Kept though no main result's proof reaches them (task 38's rule): nine pins whose nodes stay
+(`rigidityRows_ofNormals_relabel` and `candidateRow_ac_eq_neg`, task 38.2; task 38.3's five;
+`toBodyHinge_withGraph`, task 38.4; `Union_rank_eq`, task 38.8); `coe_pairingDualEquiv`,
+`spanningVerts_edgeMultiply`, `pluckerCoord_univ` and
+`exists_isNondegPencilRealization_parallel_pair`, a chapter's Lean form or witness (`F-279`); the
+vendored port's part; and the 17 non-vacuity witnesses.
 
 **The docstring-label check** (`scripts/check-docstring-labels.py`, gate 9; its rule is its
 docstring and *Decisions*): **422** at task 2 (`scratch/reconcile-lean/labels-t2.txt`, gitignored;
@@ -260,21 +278,27 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   `eq_zero_of_dotProduct_triple` by task 38.23's lemma; four nodes restated where they state them.
   Done but for `hS`, a local instance (`F-321`); one node restated, as three state the dropped
   hypotheses only by "body" or not at all; with the stale edge the coordinator found at 38.26.
-- [ ] **39. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check with the
+- [x] **39. Close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). The axioms check with the
   witnesses; the build, `lake lint` and gates 5–10 at the last task's values; the script's report
   and the forward screen beside the open's; the smell counts; the ledger's dispositions, task
   numbers as shas, and its header's counts; the queue row `done = true`; ROADMAP's row ✓ and its
   RECONCILE bullet, and `notes/Reconcile.md`'s **Status**, pointing at `RECONCILE-FORMAL`
   (attended: the queue stops); and a proposal, for the PI, of whether task 2's check joins the
-  project's gates for a commit that moves a pin (`CombinatorialRigidity/CLAUDE.md`).
+  project's gates for a commit that moves a pin (`CombinatorialRigidity/CLAUDE.md`). Done, no
+  Lean, TeX or script edit: the checks and the counts are *Current state*'s, the proposal is
+  below.
 
 ## Candidates for the PI
 
-`S` and `M` findings this round makes, one line each naming the ledger ID.
+`S` and `M` findings this round makes, one line each naming the ledger ID, then the close's
+proposal.
 
 - `F-273` (task 15): `lem:reduction-step-pos`'s $D \ge 3$, which its pin now uses only as $D \ge 2$;
   the two are one condition on $D = n(n+1)/2$ (a `lake lean` witness), so a change would alter
   only the form. `hD` stays.
+- `F-276` (task 16): a kernel-checked `decide` of the pebble game's `Decidable` instances needs a
+  sort with an exposed body in its two list builders and `@[expose]` across the pebble game and the
+  search; not cheap, so the round does not queue it, and the texts name `native_decide`.
 - `F-277` (task 16): `reachClosureComputable` by one search with `P` false, whose marked set is the
   region; it would restate `def:reachClosureComputable`, so the per-vertex body stays.
 - `F-301` (task 37.2): `def:extensor-through-point`'s remark that the zero element passes through
@@ -289,6 +313,15 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
   derivable `hD`s of the chain it passes them down stay (`F-293`, `F-297`, `F-298`). So does that
   of the main result `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`
   (S1's row), which its `NeZero` step uses (task 38.19, `F-298`).
+- **Proposal, not a ledger entry** (task 39): that `scripts/check-docstring-labels.py` join
+  `CombinatorialRigidity/CLAUDE.md` *Forward-mode slices* as a fourth per-slice gate, for a commit
+  that adds, moves, renames or removes a pin: its report diffed against the parent's, its `total`
+  not rising. It catches what `checkdecls` cannot, a docstring naming a node its pin has left or a
+  label the blueprint lacks (`F-230` to `F-264`, which pin moves left), and it is cheap: under a
+  second with a fresh cache, no build; `--lean` refreshes a stale cache by `lake lean`, and
+  `--self-test` holds its planted cases. This round ran it at every task from task 2, 422 → 4; the
+  4 are S1's (`GenericLift/HingeGeneric.lean`), which the phase's (a) rewrites, so a gate with
+  "0 findings" waits for it. The manual is not edited here: the gate is the PI's to adopt.
 
 ## Moved to a later round
 
@@ -328,32 +361,19 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 39, the close** (`CLEANUP.md` *Workflow* 5; Sonnet may take it). Its checklist line is
-its specification. The values to compare against are task 38.27's (*Current state*) and the open's
-(*Verified at the open*): the axioms harness, regenerated by gate 3's command, and the witnesses'
-(`scratch/reconcile-lean/t3827/Axioms-wit.lean`), all 19 main results and the 17 witnesses
-`[propext, Classical.choice, Quot.sound]`; the build, `lake lint` and gates 5–10; the label check's
-report (`scratch/reconcile-lean/labels-t3827.txt`, 4) beside task 2's 422, and the forward screen
-(`scratch/reconcile-lean/forward-screen.py`) beside the open's 33/17 and 4/4; the smell counts
-(`scripts/cleanup-smell-sweep.py`, beside `notes/Prose-findings.md` *Lean baselines*); the ledger's
-task numbers as shas (each task's commit subject names it: `git log --oneline --grep 'task N:'`)
-and its header's counts (328 entries, 269 `done`, 9 `left`, 50 `reported`); the queue row
-`done = true` (`.claude/autopilot/queue.toml`); ROADMAP's row ✓ and its RECONCILE bullet, and
-`notes/Reconcile.md`'s **Status**, pointing at `RECONCILE-FORMAL` (attended: the queue stops);
-and the proposal, for the PI, of whether task 2's check joins the project's gates for a commit
-that moves a pin (`CombinatorialRigidity/CLAUDE.md`). Carried in for the PI: `F-252`, `F-273`,
-`F-276`, `F-277`, `F-301`, `F-323` and `F-324` (*Candidates for the PI*), and the footprint's
-docstrings (*Moved to a later round*).
-
-A whole-project build after an edit the main results import can pass the Bash tool's 600 s (tasks
-37.9 to 38.26 met it often; 38.27's did not) and go to the background: wait for it in-turn
-(foreground loops of at most two minutes on its log's exit marker, as
-`.claude/agents-core/phase-builder.md` says, the build writing `exit $?` to its log), and if it is
-stopped, run it again in the foreground; one build at a time. A close with no Lean edit replays
-the cache. `check-docstring-labels.py --lean` on a stale cache, and a `lake lean` of a harness,
-rebuild what is stale: give each an explicit `timeout`. The hook that blocks a commit adding a
-`sorry` also reads the words "sorry" and "admit" in a `.lean` diff. After the round the queue stops
-before `RECONCILE-FORMAL`, which is attended.
+**Next: none in this round; the queue stops.** The round closed at task 39 (`CLEANUP.md` *Workflow*
+5), and its queue row is `done = true`. The queue's next row, `RECONCILE-FORMAL`, is attended: it
+opens with the PI, who mints its phase number, and its plan is `notes/Reconcile.md` §3 *The phase*
+(a design recon first, on S1 and S2 together). Carried over:
+- **For the PI** (*Candidates for the PI*): `F-273`, `F-276`, `F-277`, `F-301`, `F-323` and
+  `F-324`, this round's, with round 1's `F-252`; and the proposal that the docstring-label check
+  join the project's gates for a commit that moves a pin.
+- **For the phase's (a)** (*Moved to a later round*, mirrored in `notes/Reconcile.md` §3): the
+  footprint's docstrings, `GenericLift/HingeGeneric.lean`'s among them, where the label check's
+  last four findings are.
+  `F-323`'s and `F-324`'s binders change main results' statements, so they wait for the phase's
+  restatement of those results, with the binders kept for them (*Current state*).
+- No Lean or blueprint work of this round is left open.
 
 ## Decisions made during this round
 

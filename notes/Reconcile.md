@@ -1,138 +1,36 @@
 # RECONCILE: acting on the PROSE findings (planning note)
 
-**Status:** rounds 1 and 2 closed, round 3 open (all 2026-10-15). The PI queued RECONCILE next,
-ahead of ORIGAMI, as three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`).
-Its input is PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6
-and §2.6), with each finding's home the ledger `notes/Prose-findings.md`. Round 1, `reconcile-texts`
-(`notes/Reconcile-texts-cleanup.md`), is done in nine tasks: S1's and S2's scopes, M1's text, M2's
-and M5's credits (Pollaczek-Geiringer 1927 states the characterization and is credited beside
-Laman), §2.6's example and the non-vacuity rule; the Lean is unchanged. Round 2,
-`reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), is done in 21 one-commit tasks: the
-false statements (S6–S10) made true, S4 and S5 restated, S7 and Case III's three counts (S20)
-repinned, G1's three pin changes made, S14, S15, S21, S26–S29, S35, S36 and S38–S42 fixed, G2's two true duplicates
-merged, the genericity device's citations made to say which argument they borrow, and the nodes of
-Cases I, II and III, `meet.tex` and the forest surgery that the formal proof leaves each framed by a
-remark; the Lean is unchanged, and the declarations the round unpinned are in round 3's list
-(§3, L9). Round 3, `reconcile-lean` (`notes/Reconcile-lean-cleanup.md`), opened with 39 one-commit
-tasks; task 2 committed the docstring-label check (`scripts/check-docstring-labels.py`), task 3
-deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms, task 4 Case III's line route,
-the candidate rows, `case_III_realization` and `blockPiSpan`, task 5
-`exists_good_realization_const` and `exists_finite_spanning_rigidityRows` with their dead callers,
-task 6 L9's shim `splitOff_deficiency_le_of_forest_surgery`, with
-`cor:forest-surgery-deficiency` repinned on `forest_surgery_split`, task 7 renamed `F-061`'s two
-`_forest` pins `_starForest`, the shape their hypothesis forces, task 8 dropped the planar
-layer's unused or derivable hypotheses, task 9 the pebble game's `hloops`, which `himg` implies,
-task 10 the unused hypotheses of the deficiency and the induction, task 11 the chain
-extraction's, its triangle lemma now the case $m = 3$ of the cycle lemma, which left one missing
-forward edge (`F-270`), task 11.1 moved the cycle lemma to `deficiency.tex` so that the edge
-points back, task 12 dropped the algebraic induction's unused or derivable hypotheses (the
-cut-edge lemmas' among them), task 13 made the forest-packing lemma give a disjoint cover,
-which Tutte–Nash-Williams and its two other callers use as it is, task 14 had the balanced
-packing's descent call the packing move, whose statement now says what the move does, task 15
-shortened Katoh–Tanigawa Lemma 4.8(ii)'s minimality to their Lemma 4.3's argument, which needs
-no Lemma 4.7, task 15.1 dropped three vertex hypotheses of that lemma which its edge
-hypotheses imply (`F-274`), task 16, a recon, settled the fix of the pebble game's search
-(one marked set threaded through the sibling calls, completeness from the set it returns) and
-found a kernel-reducible `decide` not cheap, so the texts name `native_decide`; task 17
-landed that search, re-proved, with `dfs.tex` restated, task 18 committed
-`scripts/DFSTiming.lean`, which times it beside the old search and holds the `decide` facts,
-task 19 had `parsePair` split on any whitespace, so a tab-separated input reads, task 20
-rewrote the texts on the search, its running time (measured, no bound claimed), `decide` and the
-input, and tasks 21–24 landed the non-vacuity witnesses of the sixteen main results outside S1's
-and S2's rows in `CombinatorialRigidity/Nonvacuity.lean`, the molecule and Jacobs rows last,
-and tasks 25–37.21 swept the docstrings of the thirteen planar files, of `Search/`, of `Mathlib/`,
-of `PebbleGame/`, of `Matroid/`, of `BodyBar/`, of the square-graph and generic-rigidity files
-(every top-level file but `Nonvacuity.lean`), of `Molecular/Deficiency.lean`, of
-`Molecular/Induction/`, of `RigidityMatrix/`, of `Molecular/Meet.lean` and `Extensor.lean`, of
-`AlgebraicInduction/Pinning.lean` and `PanelLayer.lean`, and of `CaseI.lean`, `CaseII.lean`,
-`GenericityDevice.lean`, `Coupling.lean`, `CaseIII/`, `PanelHinge.lean`,
-`AlgebraicInduction/Nonvacuity.lean` and `Theorem55.lean`, of `Molecular/Molecule/`'s top level
-(this round's parts; the footprint), and of `Molecule/Pencil/Statement.lean`, `Chart.lean`,
-`Arms.lean`, `ArmsAssembly.lean`, `Motive.lean`, `Engine.lean`, `Reseed.lean`, `Witness.lean`,
-`Steer.lean`, `Pair.lean`, `Pair2.lean`, `X0.lean`, and `MainComponent/GenericSteer.lean`,
-`Carrier.lean`, `Configuration.lean`, `Flat.lean`, `Bridge.lean`, `Cut.lean`, `Ear.lean`,
-`ContractCurve.lean`, `ContractAdditive.lean`, `Contract.lean`, `Chain.lean`, `Lines.lean`,
-`EarGen.lean`, `Short.lean`, `Orbit.lean`, `SplitOff.lean`, `Coverage.lean`, `CoverageChain.lean`,
-`CoverageCut.lean`, `CoverageTheoremS.lean`, `GoodEar.lean`, `GenericBase.lean`,
-`GenericEar.lean`, `GenericTriangle.lean` and `Statements.lean` (this round's parts; the
-footprint), the sweep's last, after the bump to Lean v4.36.0-rc1 that the PI put ahead of task 34.1
-lifted round 3's toolchain blocker of 2026-10-21. Task 38 screened `CLEANUP.md` §B (the smell
-counts, the 30 suppression sites, and the liveness screen of the dead declarations), and appended
-its fixes as tasks 38.2–38.10: seven deletions by directory, L8's re-seeding, and the suppression
-sites; `F-323`, three main results' unused `[DecidableEq β]`, is for the PI. Task 38.1 screened §C
-(its top ten need no restructuring) and gave each remaining `L` entry its verdict: fixes merged
-into tasks 38.3–38.6 and 38.10 or appended as tasks 38.11–38.27, by file; `F-324`, a main result's
-derivable `hD`, is for the PI. Task 38.2 deleted `CaseIII/`'s dead declarations, ninety with the
-orphans in `RigidityMatrix/Basic.lean`, `Induction/Operations.lean` and two `Mathlib/` mirrors; task
-38.3 those of `CaseI.lean`, `GenericityDevice.lean` and `Coupling.lean` and `F-291`'s six,
-thirty-three with their orphans in `Pinning.lean`, and dropped `F-290`'s `hne` and `hnesH`; task
-38.4 those of `Pinning.lean`, `PanelLayer.lean` and `PanelHinge.lean`, twenty with their orphans,
-`F-289`'s eight hypotheses and two instances (three nodes restated) and `F-296`'s two re-proofs;
-task 38.5 `RigidityMatrix/Concrete.lean` whole and the dead declarations of `Basic.lean`,
-`Claim612.lean`, `Meet.lean` and `Extensor.lean`, 105 with their orphans, and `F-287`'s `ha`, `hb`
-and `mem_hingeRowBlock_iff`'s move; task 38.6 the dead declarations of `Induction/`, thirty-two
-with an orphan and `F-282`'s repeated derivation; task 38.7 those of `Molecule/`, fifteen; task 38.8
-those of `Search/`, `PebbleGame/`, `Mathlib/`, `SquareGraph.lean` and `BodyBar/`, thirty-three with
-the orphans, `coe_pairingDualEquiv` kept as the witness of `def:meet-pairing-dual`; task 38.9
-re-proved `exists_pencilSeed_of_nondeg` from a selector of each set and the re-seeding at given
-selectors (L8, `F-305`) and `pencilChartPoint_ofCoord_toCoord` from `pencilChartPoint_congr`,
-deleting twelve declarations; task 38.10 removed the suppression sites by `TACTICS-QUIRKS.md`
-§115 (nine unused `[DecidableEq β]` and three `[Nonempty α]`, four needless `set_option`s, three
-`nolint`s, a long header, and a theorem at `[Fintype α]` whose proof moved into its pin),
-`theorem_55_6_multigraph_gen`'s binder going with `F-323`'s; task 38.11 dropped `F-278`'s two
-hypotheses of `HennebergReverse.lean`; task 38.12 dropped `F-280`'s and `F-281`'s three of
-`Molecular/Deficiency.lean`, with `cycle_isProperRigidSubgraph`'s `hD`, restating
-`lem:cut-edge-decomposition` (1); task 38.13 dropped or weakened `F-282`'s seven and `F-283`'s
-five in four files of `Molecular/Induction/`, with three relabel theorems' `heac`, restating
-`lem:claim-6-6`; task 38.14 dropped or weakened `F-275`'s first two, `F-284`'s three and `F-285`'s
-last two in `ForestSurgery/ChainExtraction` and `Reduction.lean`, no node restated; task 38.15
-dropped `F-286`'s `_hE₁`, `honly` and three `[Finite β]` of `RigidityMatrix/Bricks.lean` with its
-two `nolint`s, and a bridge-path lemma's `hsep` and three path and ear lemmas' `[Finite β]` that
-only passed them on, restating `lem:block-rank-cut`; task 38.16 dropped `F-290`'s `_hG_ea` and
-`F-325`'s `hr`, and gave `GenericityDevice.lean` one lemma for the rows' coordinatization and two
-derivations called where they were repeated (`F-291`), no node restated; task 38.17 dropped
-`F-275`'s, `F-292`'s and `F-293`'s seven hypotheses in `CaseIII/`, and `F-326`'s `hends_eb`, which
-a `subst` had hidden, with `Graph.IsLink.ne_of_notMem` and `Graph.ChainData.splitOff_data_one`
-for steps written out there and `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` at two (`F-289`), no
-node restated; task 38.18 dropped `F-294`'s and `F-295`'s hypotheses and variables in
-`CaseIII/Relabel/` and a step's derivable conjunct, replaced the private
-`perp_panelSupportExtensor_swap` by `panelSupportExtensor_swap`, and called `splitOff_data_one` at
-three links, no node restated; task 38.19 dropped `F-297`'s and `F-298`'s hypotheses in
-`Theorem55.lean` (three `hV3`, `hFcut`, the `hD` of seven callers of the main result) and five
-`GenericLift/` pass-throughs' `hD`, restating `lem:case-I-realization-h65`, `lem:case-I-dispatch`
-and `lem:case-I-all-k`; task 38.20 re-proved `screwCoord_injective`,
-`cross₃_ne_zero_iff_linearIndependent`, two span bounds, `linearIndependent_triple_of_linearIndepOn`
-and `hasPencilRealization_of_generic` by existing lemmas, deleting `finrank_span_insert_le`,
-dropped the `hD` of the pencil cut-edge case's four declarations and of `F-307`'s five
-pass-throughs, weakened three orthogonality lemmas to `HasPencilPanelRealization`, and gave the
-degree lemmas `Graph.degree_induce_eq_of_isLink_mem` (`F-279`, `F-299`, `F-303`, `F-304`), no node
-restated; task 38.21 replaced the selector step written out at four sites of `Pencil/Chart`,
-`Reseed` and `Steer.lean` by `IsFin3SelectorOf.exists_equiv_isSome` (the filled slots are the
-set's members, one each), and re-proved
-`linearIndepOn_triple_of_linearIndependent` by `linearIndepOn_range_iff` (`F-302`, `F-306`), no
-node restated; task 38.22 dropped two `hloop`s and that lemma's three distinctness hypotheses, which
-the others give, and stated `Pair2.lean`'s step `v = v_c` once for seven copies (`F-307`, `F-308`,
-`F-327`), restating `lem:pencil-generic-steer` (b); task 38.23 gave four `MainComponent/` proofs
-the mirror lemma `LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero` for the step they wrote
-out, re-proved four lemmas by existing ones and dropped `[Finite α]`, a repeated binder and a `hinj`
-(`F-309`–`F-312`, the new `F-328` for three more copies), no node restated; task 38.24 stated
-`MainComponent/`'s two shared steps once, `Graph.isLink_ends_induce` at seven `hendsI` and the
-mirror `Set.ncard_union_range_of_injective` at seven body counts (`F-311`'s last, `F-316`'s
-`hcard`), no node restated; task 38.25 re-proved `MainComponent/ContractCurve.lean`'s simplicity
-lemma from KT Claim 6.6's, gave five steps existing lemmas (`Lines.lean`'s 36-line span comparison
-among them) and removed an unused conjunct, two unused `have`s and a needless rewrite, deleting two
-lemmas the re-proofs replaced and `Graph.rigidContract_simple`, which they left without a caller
-(`F-313`–`F-315`, `F-328`'s first), no node restated; task 38.26 dropped fourteen hypotheses that
-others give from `MainComponent/Short` to `CoverageChain.lean`, with the new
-`injective_of_isLink_pathVertex_two` and `Graph.ne_of_deficiencyMerged_lt` that give them, three
-unused steps, and proved `horth` by the mirror lemma and four ear edges by `Graph.IsOpenEar`'s
-(`F-316`–`F-318`, `F-328`'s second), no node restated, as each states them only through
-`def:open-ear` or by saying "body"; task 38.27 dropped eight hypotheses and six unused `have`s from
-`MainComponent/CoverageCut` to `GenericTriangle.lean`, moved
-`not_linearIndependent_of_dotProduct_eq_zero_pair` to `Motive.lean` and gave the joins three lemmas
-in `Flat.lean` (`F-319`–`F-321`, `F-328`'s last), restating `lem:pencil-x0-chain-standing` (2) and
-removing `lem:pencil-splitoff-special-rank`'s stale edge to `def:pencil-nondegenerate`.
-**Next concrete task:** round 3's task 39, the close.
+**Status:** rounds 1, 2 and 3 closed (rounds 1 and 2 on 2026-10-15, round 3 on 2026-10-24); the
+phase, `RECONCILE-FORMAL`, is next, and attended, so the autopilot queue stops before it. The PI
+queued RECONCILE next, ahead of ORIGAMI, as three autopilot rounds and one attended phase
+(`.claude/autopilot/queue.toml`). Its input is PROSE's findings report `notes/Prose-report.md`
+(items S1–S42, L1–L12, M1–M5, G1–G6 and §2.6), with each finding's home the ledger
+`notes/Prose-findings.md`. Round 1, `reconcile-texts` (`notes/Reconcile-texts-cleanup.md`), is done
+in nine tasks: S1's and S2's scopes, M1's text, M2's and M5's credits (Pollaczek-Geiringer 1927
+states the characterization and is credited beside Laman), §2.6's example and the non-vacuity rule;
+the Lean is unchanged. Round 2, `reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), is
+done in 21 one-commit tasks: the false statements (S6–S10) made true, S4 and S5 restated, S7 and
+Case III's three counts (S20) repinned, G1's three pin changes made, S14, S15, S21, S26–S29, S35,
+S36 and S38–S42 fixed, G2's two true duplicates merged, the genericity device's citations made to
+say which argument they borrow, and the nodes of Cases I, II and III, `meet.tex` and the forest
+surgery that the formal proof leaves each framed by a remark; the Lean is unchanged, and the
+declarations the round unpinned are in round 3's list (§3, L9). Round 3, `reconcile-lean`
+(`notes/Reconcile-lean-cleanup.md`), is done in 103 one-commit tasks (the open's 39, with the
+sub-tasks the sweep and the screens added): a committed check of the blueprint labels the docstrings
+name (`scripts/check-docstring-labels.py`; 422 findings at its first run, 4 at the close, in S1's
+files); L9's deletions and the dead declarations `CLEANUP.md` §B's screen found, keeping the pins
+whose nodes stay, the vendored port and four declarations a chapter names as its Lean form or
+witness; `F-061`'s rename and `cor:forest-surgery-deficiency` repinned; the signatures that L6–L8,
+S17 and the entries' verdicts named; the pebble game's search re-proved with one marked set, its
+texts rewritten and its input split on any whitespace; the non-vacuity witnesses of the 16 main
+results outside S1's and S2's rows (`CombinatorialRigidity/Nonvacuity.lean`); and the docstring
+sweep by directory, outside the footprint's parts. Twenty-two blueprint statements were restated
+where these changes reached them. No main result's statement changed: `F-323` (three main results'
+unused `[DecidableEq β]`) and `F-324` (`theorem_55_minimalKDof_gen`'s derivable `hD`), with the
+binders below them kept for them, are for the PI with the phase's restatements, and the footprint's
+docstrings wait for the phase (§3). The round's log also proposes, for the PI, that the label check
+join the project's gates for a commit that moves a pin. **Next concrete task:** `RECONCILE-FORMAL`'s
+open, with the PI: its design recon on S1 and S2 (§3 *The phase*).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
@@ -354,7 +252,10 @@ both concern how a carrier relates edge labels to $E(G)$. It sizes the ~70 const
   `F-126`, `F-133`, `F-210`, `F-215`, `F-225`, `F-237` and `F-243` that round 3 moved here (its
   open, and tasks 34, 34.1, 35, 35.1, 35.2, 35.3, 36, 36.1, 36.2, 37, 37.1, 37.9, 37.10, 37.11,
   37.12, 37.13, 37.15, 37.16, 37.17 and 37.18 for `F-122`'s; `notes/Reconcile-lean-cleanup.md`
-  *Moved to a later round*).
+  *Moved to a later round*); and, if the PI sanctions them with these restatements, round 3's
+  `F-323` and `F-324` (the unused `[DecidableEq β]` of three main results and
+  `theorem_55_minimalKDof_gen`'s derivable `hD`), with the binders round 3 kept for them (its
+  *Candidates for the PI* and *Current state*).
 - **(b) M1**: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1).
 - **(c) the claims no declaration states**: S22–S25, S31, S3, S16 and S19, G5 (`def:blockingWitness`,
   `def:dof-generic`, the Plücker expansion; the packing move was round 3's task 14, L8's `F-088`),
