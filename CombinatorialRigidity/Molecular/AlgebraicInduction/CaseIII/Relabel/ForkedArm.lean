@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.ChainColumn
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.ChainColumn
 
 /-!
 # Case III: the form `r` on the hinge of the new edge of `G_i`
@@ -19,6 +21,8 @@ the new edge `v_{i−1} v_{i+1}` of `(G_i, q_i)` (`interior_hρe₀_of_baseWiden
 `CaseIII/Relabel/ChainColumn.lean` proves the second claim, and `CaseIII/Realization.lean`, which
 imports this file, applies both in the proof of `lem:case-III-chain-dispatch`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

@@ -3,10 +3,12 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
-import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
-import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
+module
+
+public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
 
 /-!
 # Case II: putting back a vertex of degree two
@@ -21,6 +23,8 @@ conjecture*, Discrete Comput. Geom. **45**, §6.3), presented in
 * KT Lemma 6.8 (`lem:case-II-realization`): a 2-edge-connected minimal `k`-dof-graph with `k > 0`,
   at least three vertices and no proper rigid subgraph has a generic full-rank realization.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

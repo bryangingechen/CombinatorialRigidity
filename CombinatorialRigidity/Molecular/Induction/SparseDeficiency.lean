@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
-import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
+module
+
+public import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
+public import CombinatorialRigidity.Mathlib.Combinatorics.Graph.Delete
 
 /-!
 # The deficiency of a sparse graph
@@ -49,6 +51,8 @@ if `def₃(G[W]) = 0`, and `G` is *sparse* if `s(X) ≥ 1` for every `X ⊆ V(G)
 `lem:deficiency-merge-rigid` and `lem:deficiency-additive-core` also pin, are in
 `Molecular/Deficiency.lean`.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.ForkedArm
-import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.ForkedArm
+public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 
 /-!
 # Case III: the case `d = 3`, the case of a chain and `lem:case-III`
@@ -28,6 +30,8 @@ The lemmas before them compare the rows of two endpoint selectors and give the p
 three, or `k + 1`, normals linearly independent. `CaseIII/Arms.lean` builds the framework `(G, p_1)`
 and rotates the panel of `v`, and `CaseIII/Relabel/` renames the bodies.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

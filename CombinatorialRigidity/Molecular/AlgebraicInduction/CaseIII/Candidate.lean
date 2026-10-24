@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
-import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
 
 /-!
 # Case III: KT Claim 6.11, the frameworks `F_t`, and the count at `(G, p_1)`
@@ -26,6 +28,8 @@ conjecture*, Discrete Comput. Geom. **45**, §6.4.1), presented in
   their rows, affine in `t`, and a `t ≠ 0` at which chosen rows stay linearly independent;
 * the count of KT eq. (6.29) at `(G, p_1)` (`lem:case-III-rank-certification`).
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

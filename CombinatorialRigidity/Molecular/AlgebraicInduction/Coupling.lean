@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
-import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+public import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
 
 /-!
 # Case I: selectors, the two subgraphs, and deleting columns
@@ -24,6 +26,8 @@ for the deletion of columns of `sec:molecular-rigidity-matrix-blocks`. The file 
 * that deleting the columns of a set that meets `V(G)` in one body keeps the rank
   (`lem:extProj-preserves-rank-of-inter`), and the independent rows that survive the deletion.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

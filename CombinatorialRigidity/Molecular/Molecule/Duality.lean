@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.Dictionary
-import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
-import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.Dictionary
+public import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
 
 /-!
 # The polarity, and the panel-hinge framework dual to a molecular framework
@@ -45,6 +47,8 @@ rigidity and the nondegeneracy of each hinge.
   same dimension, satisfy the same rank hypotheses, are infinitesimally rigid together, and have
   nonzero hinges at the same edge labels.
 -/
+
+@[expose] public section
 
 open scoped Matrix
 open WithLp

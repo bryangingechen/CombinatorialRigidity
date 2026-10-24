@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
 
 /-!
 # Panel normals in general position up to order four
@@ -50,6 +52,8 @@ pp. 670–671); the dictionary needs the poles in general position up to order f
 * `PanelHingeFramework.exists_generalPosition4_polynomial`: the polynomial `Q₂`, whose non-roots are
   in general position up to order four.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

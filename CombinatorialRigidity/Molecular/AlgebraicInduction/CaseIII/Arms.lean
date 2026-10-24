@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Candidate
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Candidate
+public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
 
 /-!
 # Case III: the rotation about `L`, the triangle and the cycle
@@ -27,6 +29,8 @@ conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
 `CaseIII/Relabel/` renames the bodies for the third framework and for the general case, and
 `CaseIII/Realization.lean` proves the case `d = 3`, the case of a chain and `lem:case-III`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

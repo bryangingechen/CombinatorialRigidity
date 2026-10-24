@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Pinning
-import CombinatorialRigidity.Molecular.Induction.Operations
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Pinning
+public import CombinatorialRigidity.Molecular.Induction.Operations
 
 /-!
 # Panel-hinge frameworks and the realization hypotheses
@@ -34,6 +36,8 @@ for panel-hinge frameworks of `lem:cycle-realization-base`, `lem:cycle-realizati
 `lem:case-I`, and `rigidityMatrix_prop11` (`prop:rigidity-matrix-prop11`). `Theorem55.lean` proves
 KT Theorem 5.5 (`thm:theorem-55`).
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

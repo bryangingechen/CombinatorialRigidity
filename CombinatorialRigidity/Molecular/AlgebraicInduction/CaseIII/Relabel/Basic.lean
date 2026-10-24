@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
-import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
 
 /-!
 # Case III: renaming the bodies
@@ -31,6 +33,8 @@ conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
 `CaseIII/Relabel/Chain.lean` applies the renaming and the move to a chain, and
 `CaseIII/Relabel/Arm.lean` applies the move to the third framework of the case `d = 3`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

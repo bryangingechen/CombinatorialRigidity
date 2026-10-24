@@ -1233,6 +1233,22 @@ Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–
 - **The script renumbers.** It counts layers from the files left, so P4's old layers 9–18 are
   now its layers 0–9 (23 files, 22,587 lines, up to `Theorem55`) and P5's are 10–29.
 
+### The conversion, layers 9–18 (Phase 41a, item P4)
+
+- **23 files, 22,587 lines** (`Molecular/Induction/`, `Molecular/AlgebraicInduction/` up to
+  `Theorem55`, four `Molecule/` files), built a few layers at a time. 21 built at once, and the
+  17 `private` declarations and `link_tac`'s `macro` needed nothing.
+- **Two files unfolded mathlib's `Graph.deleteVerts`**, which the module system does not expose,
+  by a bare `exact hx` that `--hazards` cannot see: `V(G.removeVertex v)` and
+  `V(G.splitOff v a b e₀)` are both `V(G) \ {v}`, but only by unfolding. In
+  `ForestSurgery/Reduction` the two sites re-proved `Graph.removeVertex_le_splitOff` inline, and
+  now use it. In `ForestSurgery/EdgeSplitting` the step is `simpa [mulTilde] using hx` (FRICTION
+  [open] *`mulTilde` has no vertex-set lemma*).
+- **The full build after it rebuilt the 46 files left in 225 s** (189 s of user time), 0
+  warnings; `lake lint` passed. The per-file `lake lint --` on the four P4 modules no other P4
+  module imports took 64 s.
+- **What is left** (`--layers`, renumbered): 46 files, 29,202 lines, in 20 layers: P5.
+
 ## Recommendations for future perf work
 
 1. **Don't trust a single A/B run.** Run ≥ 4 trials per side and compare

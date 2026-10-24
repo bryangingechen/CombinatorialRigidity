@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.EdgeSplitting
+module
+
+public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.EdgeSplitting
 
 /-!
 # The combinatorial induction: splitting off, KT Theorem 4.9 and the surgery of KT Lemma 4.1
@@ -37,6 +39,8 @@ Results of the combinatorial induction (`sec:molecular-induction`) after Katoh a
 `EdgeSplitting.lean` proves KT Lemma 4.2 and the changes that the surgery makes to one forest;
 `ChainExtraction.lean` proves KT Lemma 4.6 at `k = 0`.
 -/
+
+@[expose] public section
 
 namespace Graph
 
@@ -76,12 +80,7 @@ theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G
     rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
     exact Set.subset_sdiff.mpr ⟨hXground, hXdisj⟩
   -- `G_v ≤ G_v^{ab}`: every link of `G` that avoids `v` survives, as `e₀ ∉ E(G)`.
-  have hleGvSplit : G.removeVertex v ≤ G.splitOff v a b e₀ := by
-    refine ⟨fun x hx => hx, fun p x y hp => ?_⟩
-    rw [removeVertex_isLink] at hp
-    obtain ⟨hlink, hxv, hyv⟩ := hp
-    rw [splitOff_isLink]
-    exact Or.inl ⟨fun h => he₀ (h ▸ hlink.edge_mem), hlink, hxv, hyv⟩
+  have hleGvSplit : G.removeVertex v ≤ G.splitOff v a b e₀ := removeVertex_le_splitOff he₀
   have hleSplitMul : (G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n :=
     edgeMultiply_mono hleGvSplit _
   -- `M(G̃_v^{ab}) ↾ E(G̃_v) = M(G̃_v)`, so `X` is a circuit of `M(G̃_v)`.
@@ -213,11 +212,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
     · rw [matroidMG, Matroid.restrict_ground_eq, ← hsplit_ground]; exact Set.sdiff_subset
   have hleGvG' : Gv ≤ G' := by
     rw [hGvdef, hG'def]
-    refine ⟨fun x hx => hx, fun p x y hp => ?_⟩
-    rw [removeVertex_isLink] at hp
-    obtain ⟨hlink, hxv, hyv⟩ := hp
-    rw [splitOff_isLink]
-    exact Or.inl ⟨fun h => he₀ (h ▸ hlink.edge_mem), hlink, hxv, hyv⟩
+    exact removeVertex_le_splitOff he₀
   have hGv_base : (Gv.matroidMG n).IsBase (E(Gv.mulTilde n)) := by
     have hg : (Gv.matroidMG n).E = E(Gv.mulTilde n) := by
       rw [matroidMG, Matroid.restrict_ground_eq]

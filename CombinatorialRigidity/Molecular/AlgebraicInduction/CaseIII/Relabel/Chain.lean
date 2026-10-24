@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.Basic
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.Basic
 
 /-!
 # Case III: renaming the bodies along a chain
@@ -28,6 +30,8 @@ conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
 
 `CaseIII/Relabel/Arm.lean` and `ChainColumn.lean` use the file.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

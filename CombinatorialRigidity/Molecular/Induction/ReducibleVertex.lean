@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Induction.SplitOffDeficiency
+module
+
+public import CombinatorialRigidity.Molecular.Induction.SplitOffDeficiency
 
 /-!
 # The combinatorial induction: KT Lemmas 4.5 and 4.6, and the contraction of a subgraph
@@ -29,6 +31,8 @@ Results of the combinatorial induction (`sec:molecular-induction`) after Katoh a
 `Contraction.lean` proves that the contraction of a proper rigid subgraph of a minimal `k`-dof-graph
 is again one.
 -/
+
+@[expose] public section
 
 namespace Graph
 

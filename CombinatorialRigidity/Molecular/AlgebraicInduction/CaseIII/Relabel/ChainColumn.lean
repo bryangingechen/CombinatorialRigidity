@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.Arm
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.Arm
 
 /-!
 # Case III: the form `r` along a chain (KT eq. (6.66))
@@ -26,6 +28,8 @@ of `ofNormals (G − v₁) ends₀ q`. The file proves:
 
 `CaseIII/Relabel/ForkedArm.lean` proves the first claim of `lem:case-III-chain-eq666`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

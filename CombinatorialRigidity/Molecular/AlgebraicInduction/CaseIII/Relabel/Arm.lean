@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.Chain
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Arms
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel.Chain
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Arms
 
 /-!
 # Case III: the third framework, and the form at the new edge of `G_i`
@@ -24,6 +26,8 @@ conjecture*, Discrete Comput. Geom. **45**, §6.4), presented in
 `CaseIII/Relabel/ChainColumn.lean` and `ForkedArm.lean` prove the rest of
 `lem:case-III-chain-eq666`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

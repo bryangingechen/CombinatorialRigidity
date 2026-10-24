@@ -28,8 +28,8 @@ From the repository root, `python3 scripts/module-conversion-plan.py --convert
 order that keeps each commit building (`--layers`), and what to check in each
 (`--hazards`).
 
-**What a conversion breaks** (Phase 41a's item P3, 21 files: 17 built at once, and four needed
-fixes; `../notes/PERFORMANCE.md` *The conversion, layers 0–8*):
+**What a conversion breaks** (Phase 41a's items P3 and P4, 44 files: 38 built at once, and six
+needed fixes; `../notes/PERFORMANCE.md` *The conversion, layers 0–8* and *…, layers 9–18*):
 - **The import closure narrows.** A `module` file sees only what its imports
   re-export, so a tactic or lemma reached through an upstream file's private
   `import` is gone: `unknown tactic` (`ring`, via `Mathlib.Tactic.Linarith`) or
@@ -37,8 +37,12 @@ fixes; `../notes/PERFORMANCE.md` *The conversion, layers 0–8*):
   `import` when only proofs use it.
 - **Bodies hidden upstream stop unfolding.** An `rfl`, `rw [f]` or `unfold f`
   through a definition that an already-`module` file does not expose (19
-  project files use `public section`, and mathlib exposes little) fails. Add
-  `@[expose]` to the project definition, or use a lemma about it.
+  project files use `public section`, and mathlib exposes little) fails, and
+  so does a bare `exact h` that held by unfolding: *"Type mismatch"*, with a
+  note naming the definition *"not unfolded because [its] definition is not
+  exposed"* (P4: mathlib's `Graph.deleteVerts`, under `removeVertex`, at
+  three sites the `--hazards` scan cannot see). Add `@[expose]` to the
+  project definition, or use a lemma about it.
 - **A private name is unknown in public scope.** A `private` declaration
   named in a public statement or an exposed body (under the file-wide
   `@[expose]`, any `def`'s body) is `Unknown identifier`, with a note that it

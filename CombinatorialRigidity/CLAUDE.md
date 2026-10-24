@@ -69,10 +69,11 @@ Follow it. Three more:
 
 ## Module-system conversion → `LEAN-OPS.md`
 
-The project is converting its last non-`module` files (`Molecular/`,
-`JacobsTheorem`, `Nonvacuity` and the root) to Lean's module system (`module`,
-`public import`, `@[expose] public section`): Phase 41a's items P3–P5, of which
-P3 has landed. `python3 scripts/module-conversion-plan.py` lists the files left, in
+The project is converting its last non-`module` files (`Molecular/Molecule/`,
+`Molecular/GenericLift/`, the two `Nonvacuity` files, `JacobsTheorem` and the
+root) to Lean's module system (`module`, `public import`, `@[expose] public
+section`): Phase 41a's items P3–P5, of which P3 and P4 have landed.
+`python3 scripts/module-conversion-plan.py` lists the files left, in
 conversion order. Converting a file, its constraints, the failures to expect,
 and the rule of zero `backward.privateInPublic` opt-ins (don't add one) are in
 `LEAN-OPS.md` *Module-system conversion*; per-file dispositions are in

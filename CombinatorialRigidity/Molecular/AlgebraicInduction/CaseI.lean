@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Coupling
-import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Coupling
+public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 
 /-!
 # Case I: the rows outside a rigid subgraph, and two realizations combined
@@ -30,6 +32,8 @@ file proves:
 `Coupling.lean` defines the projection `extProj`, whose dual map deletes the columns of a set of
 bodies, and the normals `degeneratePlacement`, which give every body of `V(H)` the normal of `r`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

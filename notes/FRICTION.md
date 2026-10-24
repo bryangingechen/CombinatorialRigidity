@@ -110,6 +110,18 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [open] `mulTilde` has no vertex-set lemma
+- **Where it bit:** Phase 41a, item P4: `mulTilde_removeVertex_le_splitOff`
+  (`Molecular/Induction/ForestSurgery/EdgeSplitting.lean`) proved its vertex half by `exact hx`,
+  a defeq through mathlib's `Graph.deleteVerts`, which a `module` does not see through.
+  `Contraction.lean`'s `simp [mulTilde]` is a second site.
+- **Friction:** the fix unfolds the definition, `simpa [mulTilde] using hx`, so that the
+  `@[simps!]` lemma `Graph.vertexSet_edgeMultiply` fires.
+- **Proposed fix:** `@[simp] lemma vertexSet_mulTilde : V(G.mulTilde n) = V(G) := rfl` beside
+  `mem_edgeSet_mulTilde` (`Molecular/Deficiency.lean`). It changes a public `.olean`, so it rides
+  a commit that rebuilds the tree anyway.
+- **Status:** open.
+
 ### [resolved] A tactic macro's generated syntax kind trips `lake lint`'s `defsWithUnderscore`
 - **Where it bit:** Phase 41a, item 2: `macro "link_tac" : tactic` in
   `Molecular/AlgebraicInduction/PanelHinge.lean`, whose kind `tacticLink_tac` the linter reported.

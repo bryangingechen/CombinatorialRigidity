@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
+module
+
+public import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
 
 /-!
 # The combinatorial induction: forest surgery at a vertex (KT Lemmas 4.1 and 4.2)
@@ -27,6 +29,8 @@ the splitting off `G_v^{ab}`, `D = bodyBarDim n`, `G̃ = (D - 1)·G` and `G_v = 
 `Reduction.lean` performs the surgery of KT Lemma 4.1 on a base (`lem:forest-surgery-count`,
 `lem:forest-surgery-split`).
 -/
+
+@[expose] public section
 
 namespace Graph
 
@@ -73,9 +77,9 @@ lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : �
     (he₀ : e₀ ∉ E(G)) :
     (G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n := by
   refine ⟨?_, ?_⟩
-  · -- Vertex sets: both are `V(G) \ {v}` definitionally.
+  · -- Vertex sets: both are `V(G) \ {v}`.
     intro x hx
-    exact hx
+    simpa [mulTilde] using hx
   · -- Links: a link of `(G_v)̃` (a `v`-avoiding `G`-link) is a `splitOff` link (first disjunct).
     intro p x y hp
     simp only [mulTilde_isLink, removeVertex_isLink] at hp ⊢

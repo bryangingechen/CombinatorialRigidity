@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.Pinning
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.Pinning
 
 /-!
 # Projective invariance of infinitesimal rigidity
@@ -46,6 +48,8 @@ The motion space is also unchanged when each supporting extensor is multiplied b
 * `BodyHingeFramework.infinitesimalMotions_scaleExtensor`: multiplying each supporting extensor by a
   nonzero scalar leaves the motion space unchanged.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

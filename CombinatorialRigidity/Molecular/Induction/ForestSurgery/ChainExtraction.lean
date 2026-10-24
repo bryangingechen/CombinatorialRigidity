@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
-import Mathlib.Data.List.GetD
+module
+
+public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
+public import Mathlib.Data.List.GetD
 
 /-!
 # The combinatorial induction: a chain or a short cycle (KT Lemma 4.6)
@@ -24,6 +26,8 @@ vertices, no proper rigid subgraph and a label outside `E(G)`, it proves:
 
 Chains and cycle graphs (`def:chain-data`, `def:cycle-data`) are defined in `Operations.lean`.
 -/
+
+@[expose] public section
 
 namespace Graph
 

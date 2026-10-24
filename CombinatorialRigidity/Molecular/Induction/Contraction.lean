@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
+module
+
+public import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
 
 /-!
 # The combinatorial induction: the contraction of a proper rigid subgraph
@@ -23,6 +25,8 @@ contraction `G / E(H)` of a subgraph `H` (`rigidContract`, `ReducibleVertex.lean
 * when the contraction is simple, and KT Claim 6.6: a vertex of degree two when no proper rigid
   subgraph has a simple contraction (`lem:claim-6-6`, `sec:molecular-algebraic-induction-caseI`).
 -/
+
+@[expose] public section
 
 namespace Graph
 

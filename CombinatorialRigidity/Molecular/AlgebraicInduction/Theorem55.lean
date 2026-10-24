@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Realization
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseII
-import CombinatorialRigidity.Molecular.Induction.Contraction
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Realization
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseII
+public import CombinatorialRigidity.Molecular.Induction.Contraction
 
 /-!
 # KT Theorem 5.5, KT Theorem 5.6 and the molecular conjecture
@@ -36,6 +38,8 @@ Discrete Comput. Geom. **45**, §6) and what follows from it, presented in
 
 Cases II and III of the induction are proved in `CaseII.lean` and `CaseIII/`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 
