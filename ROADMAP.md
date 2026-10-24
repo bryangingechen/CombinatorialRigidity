@@ -179,6 +179,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; not yet pushed (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
+| 41a. The link condition as a field of the panel-hinge framework (RECONCILE-FORMAL, CARRIER) | `Molecular/` (structural edit) | In progress (see `notes/Phase41a.md`; plan `notes/Phase41-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1219,6 +1220,27 @@ carried past the close are indexed in the design doc's §7. Headline axioms (the
 `formalization.yaml` main results) re-verified at the close. Detail → `notes/Phase40p.md` +
 `notes/Phase40-design.md`.
 
+### Phase 41 — The panel-hinge carrier and its graph (RECONCILE-FORMAL, post-program; sub-lettered) — in progress
+
+**In progress** (opened 2026-10-24 with the PI; plan and recon `notes/Phase41-design.md`). The
+attended phase of the RECONCILE program (`notes/Reconcile.md` §3), acting on PROSE's findings S1
+and S2. **S2**: `PanelHingeFramework`'s endpoint selector `ends` is free, so KT Theorem 5.6's main
+result is met at deficiency zero by the framework whose normals are all zero. The PI chose a field
+of the structure, `isLink_ends : ∀ e ∈ E(graph), graph.IsLink e (ends e).1 (ends e).2`, so a
+mis-linked framework cannot be built; the restated conclusions also ask nondegenerate hinges on
+`E(G)`, which the open's Lean witness shows the field alone does not give. **S1**: the generic
+panel and body-hinge theorems are vacuous at every minimal `k`-dof-graph, since their `hends` and
+fresh-label supply contradict each other there; with the field, `hends` goes, and the theorems
+take a bound on the label type instead. The PI's decisions at the open (design A; KT's conclusions
+as the floor, stronger forms considered; `IsHingeCoplanar` and the multigraph rows on `E(G)` only;
+`F-323` and `F-324` dropped with the restatements) are in the design doc's §1. Four sub-phases by
+stable code: **CARRIER** (41a, open: the field, its API first and the switch last, as in Phase
+22l; the carrier is referenced 648 times by 167 declarations in 32 files), **RESTATE** (S1's and
+S2's main results, G6's own row for the generic panel theorem, non-vacuity witnesses at minimal
+graphs, S18), **MULTIGRAPH** (M1, Jackson–Jordán 2010's Theorem 6.1 for multigraphs) and
+**UNSTATED** (the claims no declaration states). Detail → `notes/Phase41a.md` +
+`notes/Phase41-design.md`.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
 Beyond Phase 35 the remaining deferred work is queued under stable codenames;
@@ -1429,8 +1451,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   the same hypotheses of the lemmas below them, for the PI to drop when the next phase restates
   those results; the docstrings of the files that build the panel-hinge carrier also wait for that
   phase. Lemmas a chapter pins or names as its Lean form stay though no main result uses them.
-  **Next:** `RECONCILE-FORMAL`, attended: the autopilot queue stops before it, and it opens with
-  the PI.
+  `RECONCILE-FORMAL` opened with the PI on 2026-10-24 as **Phase 41** (§41 above).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

@@ -1,7 +1,7 @@
 # RECONCILE: acting on the PROSE findings (planning note)
 
 **Status:** rounds 1, 2 and 3 closed (rounds 1 and 2 on 2026-10-15, round 3 on 2026-10-24); the
-phase, `RECONCILE-FORMAL`, is next, and attended, so the autopilot queue stops before it. The PI
+phase, `RECONCILE-FORMAL`, opened with the PI on 2026-10-24 as Phase 41. The PI
 queued RECONCILE next, ahead of ORIGAMI, as three autopilot rounds and one attended phase
 (`.claude/autopilot/queue.toml`). Its input is PROSE's findings report `notes/Prose-report.md`
 (items S1–S42, L1–L12, M1–M5, G1–G6 and §2.6), with each finding's home the ledger
@@ -29,8 +29,9 @@ where these changes reached them. No main result's statement changed: `F-323` (t
 unused `[DecidableEq β]`) and `F-324` (`theorem_55_minimalKDof_gen`'s derivable `hD`), with the
 binders below them kept for them, are for the PI with the phase's restatements, and the footprint's
 docstrings wait for the phase (§3). The round's log also proposes, for the PI, that the label check
-join the project's gates for a commit that moves a pin. **Next concrete task:** `RECONCILE-FORMAL`'s
-open, with the PI: its design recon on S1 and S2 (§3 *The phase*).
+join the project's gates for a commit that moves a pin. Phase 41's plan, its
+open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
+Phase 41a's first commit (`notes/Phase41a.md`).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
@@ -240,6 +241,10 @@ the footprint's docstrings to the phase's list.
   two Lean baselines feed §B and §C.
 
 ### The phase — `RECONCILE-FORMAL` (attended; a number minted on open)
+
+Opened with the PI on 2026-10-24 as Phase 41. Its recon and the PI's decisions are in
+`notes/Phase41-design.md`, whose §3 replaces the split below with four sub-phases ((a) becomes
+CARRIER and RESTATE). The plan as written at the program's open:
 
 New formalization, so it opens with the PI. A design recon comes first, on S2 and S1 together:
 both concern how a carrier relates edge labels to $E(G)$. It sizes the ~70 constructions (round

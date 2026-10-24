@@ -104,8 +104,8 @@ Theorem 5.6's statement allows degenerate hinges, so for a graph of
 deficiency zero a framework whose panel normals are all zero meets its
 conclusion. The form with nondegenerate hinges at each edge's own ends
 is proved for simple graphs on at least two bodies and gives the
-molecular conjecture in that form by the same argument; a planned
-refactor builds the condition into the framework, and the multigraph
+molecular conjecture in that form by the same argument; phase 41, in
+progress, builds the condition into the framework, and the multigraph
 forms (phase 35, below) place each hinge in the panels of its edge's
 own ends. On top of these results sits the molecule application: the
 generic bar-joint rigidity matroid in dimension three, in
@@ -148,8 +148,8 @@ body-hinge theorem and its panel-hinge companion cover only part of
 the simple graphs: their assumptions fail at every graph that is
 itself a minimal `k`-dof-graph (a single edge, a tree, every minimal
 `0`-dof-graph), hold at every graph with more than `D(|V|−1)` edges,
-where `D = d(d+1)/2`, and are not settled in between; a planned
-refactor removes the restriction. Phase 35 (closed 2026-07-18)
+where `D = d(d+1)/2`, and are not settled in between; phase 41, in
+progress, removes the restriction. Phase 35 (closed 2026-07-18)
 recovered the **full multigraph strength** of Theorem 5.6 and of the
 molecular conjecture itself, which the development above proves for
 simple graphs: stating the panel side in Katoh–Tanigawa's own
@@ -218,6 +218,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    26 | the molecule application (Corollary 5.7) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean` | ✓ |
 |    39 | the pencil realization theorem: reduction to two main-component statements | `Molecular/Molecule/Pencil/` | ✓ |
 |    40 | the pencil realization theorem: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
+|    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph | `Molecular/` | in progress |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

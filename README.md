@@ -118,7 +118,7 @@ nondegenerate and the meet of the panels of its edge's ends — is
 proved for simple graphs on at least two bodies
 (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`), and by the
 same argument gives the molecular conjecture's panel side in that form,
-though no declaration states it; a planned refactor builds the
+though no declaration states it; phase 41, in progress, builds the
 condition into the framework. The multigraph forms (phase 35, below)
 place each hinge in the panels of its edge's ends. On top of these
 results sits the molecule application: the generic bar-joint rigidity
@@ -174,7 +174,7 @@ minimal `k`-dof-graph — a single edge, a tree, every minimal
 `0`-dof-graph — so the theorems say nothing about such a graph. Both
 assumptions hold when `G` has more than `D(|V|−1)` edges (for
 instance `K₇` in the plane); which graphs in between they cover is
-not settled, and a planned refactor removes the restriction.
+not settled, and phase 41, in progress, removes the restriction.
 Phase 35 (closed 2026-07-18)
 recovered the **full multigraph strength** of Theorem 5.6 and of the
 molecular conjecture itself, which the development above proves for

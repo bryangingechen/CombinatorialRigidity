@@ -783,8 +783,11 @@ discharging both statements and **proving the pencil realization theorem outrigh
 field** (`pencil_realization_theorem`, `pencilPair_of_nonempty`); its first sub-phase extended Theorems
 5.5/5.6 and the conjecture to the plane, `n ≥ 2`, and its recons found three new proofs, each
 second-read, among them route B for the generic statement. At the close the PI retired the held
-kernels and the rest of the fallback (§6 of the design doc). Summary: ROADMAP §40. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md` — the next phase to open), **PIN** (a second,
+kernels and the rest of the fallback (§6 of the design doc). Summary: ROADMAP §40. **Phase 41**
+(RECONCILE-FORMAL, `notes/Phase41-design.md`) opened 2026-10-24: it builds into `PanelHingeFramework`
+the condition that each edge's selector pair is its ends, and restates Theorems 5.5/5.6, the molecular
+conjecture and the generic-lift theorems on it. Summary: ROADMAP §41. Still queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+conjecture, `notes/Origami.md` — the next phase to open after Phase 41), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).

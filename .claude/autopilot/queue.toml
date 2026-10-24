@@ -111,11 +111,11 @@ attended = false
 done = true
 
 # Attended: new formalization (the carriers, M1's multigraph form, the claims no declaration
-# states). It opens with the PI and takes its phase number then; its plan is notes/Reconcile.md §3.
+# states). Opened with the PI on 2026-10-24 as Phase 41; its plan is notes/Phase41-design.md.
 [[item]]
 id = "RECONCILE-FORMAL"
 title = "RECONCILE: the carriers and new formalization (phase)"
-note = "notes/Reconcile.md"
+note = "notes/Phase41-design.md"
 attended = true
 done = false
 

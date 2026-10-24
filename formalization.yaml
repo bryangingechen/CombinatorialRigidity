@@ -399,7 +399,7 @@ status:
       nondegenerate. With the upper bound at nondegenerate hinges
       (CombinatorialRigidity.Molecular.rigidityMatrix_prop11), that form gives Jackson-Jordán's
       rank formula, Katoh-Tanigawa Proposition 2.3, and with the def = corank bridge
-      (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~). A planned refactor makes the
+      (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~). Phase 41 (in progress) makes the
       link between the selector and the edges part of the framework.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
@@ -511,8 +511,9 @@ status:
       k-dof-graph for some k (a single edge, a tree, every minimal 0-dof-graph), so the
       theorems say nothing about such a graph. Both hold whenever G has more than
       D(|V| - 1) edges, for instance K_7 at n = 2 (21 > 3 * 6 edges); which graphs in
-      between the theorems cover is not settled. A planned refactor indexes the hinges by
-      the edges of G, so that the labels may outnumber them, and removes the restriction.
+      between the theorems cover is not settled. Phase 41 (in progress) removes the
+      restriction: the theorems will no longer assume that every label is an edge of G, and
+      will take a bound on the number of labels in place of the supply of unused ones.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
