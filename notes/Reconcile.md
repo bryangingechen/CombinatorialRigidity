@@ -112,9 +112,12 @@ set's members, one each), and re-proved
 `linearIndepOn_triple_of_linearIndependent` by `linearIndepOn_range_iff` (`F-302`, `F-306`), no
 node restated; task 38.22 dropped two `hloop`s and that lemma's three distinctness hypotheses, which
 the others give, and stated `Pair2.lean`'s step `v = v_c` once for seven copies (`F-307`, `F-308`,
-`F-327`), restating `lem:pencil-generic-steer` (b).
-**Next concrete task:** round 3's task 38.23, `MainComponent/`'s `Carrier` to `Ear.lean` (then
-tasks 38.24–38.27 and the close).
+`F-327`), restating `lem:pencil-generic-steer` (b); task 38.23 gave four `MainComponent/` proofs
+the mirror lemma `LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero` for the step they wrote
+out, re-proved four lemmas by existing ones and dropped `[Finite α]`, a repeated binder and a `hinj`
+(`F-309`–`F-312`, the new `F-328` for three more copies), no node restated.
+**Next concrete task:** round 3's task 38.24, `MainComponent/`'s shared steps (then tasks
+38.25–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

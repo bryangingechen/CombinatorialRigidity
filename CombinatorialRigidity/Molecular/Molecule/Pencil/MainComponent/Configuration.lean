@@ -535,8 +535,8 @@ neighbourhood of `v`, then `z ∈ L(q)`.
 
 Write `n ⬝ᵥ p_w` as `(n₀, n₁, n₃) ⬝ᵥ (x_w, y_w, 1) + n₂ z_w`. Admissibility gives, at `v`, three
 members of the closed neighbourhood with independent picture points. If `n₂ = 0`, the relation at
-each of them puts `(n₀, n₁, n₃)` in the kernel of the unit matrix of their picture points
-(`Matrix.linearIndependent_row_iff_isUnit`), so it vanishes, and so does `n`, a contradiction. So
+each of them makes `(n₀, n₁, n₃)` orthogonal to its picture point, so it vanishes
+(`LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero`), and so does `n`, a contradiction. So
 `n₂ ≠ 0`, and solving the relation for `z_w` gives the affine coefficients
 `h = -(n₂)⁻¹ • (n₀, n₁, n₃)` of `L(q)` at `v`. -/
 theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar {G : Graph α β}
@@ -556,17 +556,9 @@ theorem _root_.Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar {G : Graph
     ring
   have hn2 : n 2 ≠ 0 := by
     intro h2
-    have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
-      Matrix.linearIndependent_row_iff_isUnit.mp hli
-    have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ ![n 0, n 1, n 3] =
-        (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ 0 := by
-      rw [Matrix.mulVec_zero]
-      funext i
+    have h3 : ![n 0, n 1, n 3] = 0 := hli.eq_zero_of_forall_dotProduct_eq_zero fun i => by
       have := hnw (t i) (ht i)
-      rw [hexp, h2, zero_mul, add_zero] at this
-      simp only [Matrix.mulVec, Matrix.of_apply, Pi.zero_apply]
-      rwa [dotProduct_comm]
-    have h3 := Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
+      rwa [hexp, h2, zero_mul, add_zero] at this
     apply hn
     funext i
     fin_cases i

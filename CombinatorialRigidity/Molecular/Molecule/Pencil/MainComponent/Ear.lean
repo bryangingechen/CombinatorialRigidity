@@ -741,10 +741,11 @@ solution of the lifting system of `G[V₁]` at `q` (a member of the kernel of it
 heights `y (Sum.inl w)` and affine functions `h_v = y (Sum.inr (v, ·))`. If `h_a` and `h_b` agree at
 the picture point of `x 0` (`hinc`), then the height that is `y (Sum.inl w)` at every `w ≠ x 0` and
 the value of `h_a` at the picture point of `x 0` at `x 0` lies in `L_G(q)`. By
-`Graph.mem_liftingSpace_of_ear`, with `Graph.mem_closedNbhd_induce_of_ear` at `k = 1`. -/
+`Graph.mem_liftingSpace_of_ear`, whose interior bodies are distinct as there is one, with
+`Graph.mem_closedNbhd_induce_of_ear` at `k = 1`. -/
 theorem _root_.Graph.mem_liftingSpace_oneEar [Fintype α] {G : Graph α β} {V₁ : Set α}
     {x : Fin 1 → α} {a b : α} {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x)
-    (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
     (hpath : ∀ i : Fin 2,
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
@@ -757,8 +758,8 @@ theorem _root_.Graph.mem_liftingSpace_oneEar [Fintype α] {G : Graph α β} {V�
   have hx0G : x 0 ∈ V(G) := hcover ▸ Or.inr ⟨0, rfl⟩
   rw [LinearMap.mem_ker, Matrix.mulVecLin_apply, Graph.liftingMatrix_mulVec_eq_zero_iff] at hy
   obtain ⟨g1, g2, -⟩ := hy
-  refine Graph.mem_liftingSpace_of_ear hcover hinj hxV₁ ha hb hpath hsep hq (fun w hw => ?_)
-    (fun v hv => ⟨fun i => y (Sum.inr (v, i)), fun w hw => ?_⟩)
+  refine Graph.mem_liftingSpace_of_ear hcover (Function.injective_of_subsingleton x) hxV₁ ha hb
+    hpath hsep hq (fun w hw => ?_) (fun v hv => ⟨fun i => y (Sum.inr (v, i)), fun w hw => ?_⟩)
   · have hw0 : w ≠ x 0 := fun h => hw (h ▸ hx0G)
     simp only [hw0, ↓reduceIte]
     exact g1 w (fun h => hw (hcover ▸ Or.inl h))
@@ -1170,21 +1171,16 @@ of `thm:pencil-x0-open-ear-three`, `thm:pencil-x0-open-ear-four` and
 `thm:pencil-x0-open-ear-two-orbit`. -/
 
 /-- **The meet at a link lies on the `ofNormals` hinge there**, in either orientation (a step of
-`lem:pencil-ear-hinge-span` and of `span_supportExtensor_comp_eq_map_pointJoin`). -/
+`lem:pencil-ear-hinge-span` and of `span_supportExtensor_comp_eq_map_pointJoin`): the hinge spans
+the meet's line (`span_supportExtensor_ofNormals_eq`). -/
 theorem panelSupportExtensor_mem_span_ofNormals {G : Graph α β} {ends : β → α × α}
     (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
     (p : α → Fin 4 → K) {f : β} {u w : α} (hf : G.IsLink f u w) :
     panelSupportExtensor (p u) (p w) ∈ Submodule.span K
       {(PanelHingeFramework.ofNormals (k := 2) G ends
         (fun x => p x.1 x.2)).toBodyHinge.supportExtensor f} := by
-  have h1 := hends f u w hf
-  simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
-    PanelHingeFramework.ofNormals_ends]
-  rcases hf.eq_and_eq_or_eq_and_eq h1 with ⟨h, h'⟩ | ⟨h, h'⟩
-  · rw [h, h']
-    exact Submodule.mem_span_singleton_self _
-  · rw [h, h', panelSupportExtensor_swap (p (ends f).1) (p (ends f).2)]
-    exact (Submodule.span K _).neg_mem (Submodule.mem_span_singleton_self _)
+  rw [span_supportExtensor_ofNormals_eq hends _ hf]
+  exact Submodule.mem_span_singleton_self _
 
 /-- **The polarity sends a join to the meet** of the planes with those normals (a step of
 `lem:pencil-ear-hinge-span`: `lem:polarity-join` at `pointJoin`, from
@@ -1247,34 +1243,6 @@ theorem finrank_sup_map_screwComplementIso (ρ Λ : Submodule K (ScrewSpace K 2)
     simp
   rw [← LinearEquiv.finrank_map_eq (screwComplementIso (K := K)).symm, Submodule.map_sup, hΛ]
 
-/-- **Six independent joins at links span the whole screw space** (`lem:pencil-ear-hinge-span`, its
-second claim): the hinges at any set of labels containing those links span `ScrewSpace K 2`. -/
-theorem span_supportExtensor_eq_top_of_linearIndependent {G : Graph α β} {ends : β → α × α}
-    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
-    (p : α → Fin 4 → K) (u w : Fin 6 → α) (f : Fin 6 → β) (hf : ∀ i, G.IsLink (f i) (u i) (w i))
-    (hli : LinearIndependent K (fun i => pointJoin (p (u i)) (p (w i))))
-    {ι : Type*} (E : ι → β) (hE : ∀ i, ∃ j, f i = E j) :
-    Submodule.span K (Set.range ((PanelHingeFramework.ofNormals (k := 2) G ends
-        (fun x => p x.1 x.2)).toBodyHinge.supportExtensor ∘ E)) = ⊤ := by
-  set C := (PanelHingeFramework.ofNormals (k := 2) G ends
-    (fun x => p x.1 x.2)).toBodyHinge.supportExtensor
-    with hCdef
-  have hli' : LinearIndependent K (fun i => panelSupportExtensor (p (u i)) (p (w i))) := by
-    have h := hli.map' (screwComplementIso (K := K)).toLinearMap (LinearEquiv.ker _)
-    have hfun : ((screwComplementIso (K := K)).toLinearMap ∘ fun i => pointJoin (p (u i)) (p (w i)))
-        = fun i => panelSupportExtensor (p (u i)) (p (w i)) := by
-      funext i
-      simp only [Function.comp_apply, LinearEquiv.coe_coe, screwComplementIso_pointJoin]
-    rwa [hfun] at h
-  have htop := hli'.span_eq_top_of_card_eq_finrank'
-    (by rw [Fintype.card_fin, screwSpace_finrank]; rfl)
-  rw [eq_top_iff, ← htop, Submodule.span_le]
-  rintro _ ⟨i, rfl⟩
-  obtain ⟨j, hj⟩ := hE i
-  have hmem := panelSupportExtensor_mem_span_ofNormals hends p (hf i)
-  rw [hj] at hmem
-  exact Submodule.span_mono (by rintro _ rfl; exact ⟨j, rfl⟩) hmem
-
 /-- **Independent joins bound a span of hinges from below** (`lem:pencil-ear-hinge-span`, its first
 claim): a submodule containing the hinges at `m` links with independent joins has dimension at least
 `m`. -/
@@ -1299,6 +1267,24 @@ theorem card_le_finrank_of_linearIndependent_pointJoin {G : Graph α β} {ends :
   rintro _ ⟨i, rfl⟩
   have hmem := panelSupportExtensor_mem_span_ofNormals hends p (hg i)
   exact (Submodule.span_le.mpr (by rintro _ rfl; exact hT i)) hmem
+
+/-- **Six independent joins at links span the whole screw space** (`lem:pencil-ear-hinge-span`, its
+second claim): the hinges at any set of labels containing those links span `ScrewSpace K 2`, as
+their span has dimension at least six (`card_le_finrank_of_linearIndependent_pointJoin`), that of
+the screw space. -/
+theorem span_supportExtensor_eq_top_of_linearIndependent {G : Graph α β} {ends : β → α × α}
+    (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
+    (p : α → Fin 4 → K) (u w : Fin 6 → α) (f : Fin 6 → β) (hf : ∀ i, G.IsLink (f i) (u i) (w i))
+    (hli : LinearIndependent K (fun i => pointJoin (p (u i)) (p (w i))))
+    {ι : Type*} (E : ι → β) (hE : ∀ i, ∃ j, f i = E j) :
+    Submodule.span K (Set.range ((PanelHingeFramework.ofNormals (k := 2) G ends
+        (fun x => p x.1 x.2)).toBodyHinge.supportExtensor ∘ E)) = ⊤ := by
+  refine Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) (Eq.trans_le ?_
+    (card_le_finrank_of_linearIndependent_pointJoin hends p u w f hf hli _ fun i => ?_)))
+  · rw [Fintype.card_fin, screwSpace_finrank]; rfl
+  · obtain ⟨j, hj⟩ := hE i
+    rw [hj]
+    exact Submodule.subset_span ⟨j, rfl⟩
 
 /-! ## An open ear from independent joins at one configuration -/
 

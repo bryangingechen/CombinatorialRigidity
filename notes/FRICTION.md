@@ -259,6 +259,20 @@ to be re-derived by re-reading entries later.
   and its docstring: say `C.ncard ≤ 1`, or keep a `C.Finite` where the count must be the size.
 - **Status:** idiom.
 
+### [idiom] Two elaboration traps applying a lemma whose conclusion only the goal fixes
+- **Where it bit:** RECONCILE round 3, task 38.23 (`MainComponent/Carrier.lean`, `Ear.lean`).
+  (1) `exact congr_fun (hli.eq_zero_of_forall_dotProduct_eq_zero fun j => ?_) i` against
+  `↑⟨x, hx⟩ (Sum.inr (v, i)) = ↑0 (Sum.inr (v, i))` unified `?f i` with the whole left side, not
+  `?f` with `fun i => x (Sum.inr (v, i))`. (2) `have h :=
+  card_le_finrank_of_linearIndependent_pointJoin … _ fun i => by …` left the explicit `_` (the
+  submodule `T`) a metavariable while the tactic block ran (*"Invalid `⟨...⟩` notation: The
+  expected type ?m.1 … is not an inductive type"*).
+- **Friction:** one MCP iteration each.
+- **Proposed fix:** (1) state the function equality as a typed `have`, then `congr_fun` it;
+  (2) `refine … (Eq.trans_le ?_ (lemma … _ fun i => ?_))`, so the goal assigns `T` before the
+  `?_`s are elaborated (the 2-cut layer entry's (1) above is the same order).
+- **Status:** idiom.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while
@@ -3375,6 +3389,22 @@ limitations. Worth a once-over so future agents don't re-litigate.
   sites, so a named lemma saves no line; the sites keep it.
 
 ## Mirrored
+
+### [mirrored] `LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero` — a vector orthogonal to `n` independent vectors of `Kⁿ` is zero
+- **Where it bit:** RECONCILE round 3, task 38.23 (`F-309`, `F-310`): `Graph.finrank_affineLifts`,
+  `Graph.finrank_ker_liftingMatrix` (`MainComponent/Carrier.lean`),
+  `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar` (`Configuration.lean`) and
+  `Graph.finrank_liftingPlanes` (`Flat.lean`) each wrote it out through the unit matrix of three
+  independent picture points (~10 lines each).
+- **Friction:** mathlib has `Matrix.linearIndependent_row_iff_isUnit` and
+  `Matrix.mulVec_injective_iff_isUnit`, but no lemma in terms of `LinearIndependent` and `⬝ᵥ`
+  (`lean_loogle` finds none naming both).
+- **Resolution:** mirrored over a field, for a family `v : m → m → K` of any finite index type, the
+  four sites calling it. Three more copies wait for their files' tasks (`F-328`:
+  `eq_zero_of_dotProduct_pencilPicturePoint`, `eq_zero_of_dotProduct_triple`, and the `horth` of
+  `Graph.planeDiff_eq_zero_of_splitOff`).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`.
 
 ### [mirrored] `Submodule.finrank_add_finrank_map_le_of_le_ker` — a kernel block and an image block bound the ambient dimension
 - **Where it bit:** Phase 40f CONTRACT-R, the block coupling

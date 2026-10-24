@@ -135,7 +135,7 @@ polynomial at `t = 0` (`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_
 `lem:rank-polynomial-of-le-finrank`), composed with the curve, is a univariate polynomial
 (`MvPolynomial.polynomial_eval_aeval`), nonzero at `t = 0`, so its finitely many roots are the only
 `t` where the rank can drop. -/
-theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve {k : ℕ} [Finite α] [Finite β]
+theorem PanelHingeFramework.finite_setOf_finrank_lt_of_curve [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     (c : α × Fin (k + 2) → Polynomial K)

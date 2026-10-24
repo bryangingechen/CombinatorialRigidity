@@ -269,28 +269,19 @@ theorem _root_.Graph.affineLifts_le_liftingSpace (G : Graph α β) (q : α × Fi
 if `G` has a body, the affine lift map is injective. Admissibility gives, at a body `v₀` of `G`,
 three members of its closed neighbourhood, which are bodies of `G`, with linearly independent
 homogeneous picture points; a triple `h` in the kernel has dot product zero with all three, so
-`h = 0`, as the `3 × 3` matrix of these points is a unit. -/
-theorem _root_.Graph.finrank_affineLifts [Finite α] {G : Graph α β} {q : α × Fin 2 → K}
+`h = 0` (`LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero`). -/
+theorem _root_.Graph.finrank_affineLifts {G : Graph α β} {q : α × Fin 2 → K}
     (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
     Module.finrank K (G.affineLifts q) = 3 := by
-  have : Fintype α := Fintype.ofFinite α
   obtain ⟨v₀, hv₀⟩ := hV
   obtain ⟨t, ht, hli⟩ := hq.2 v₀ hv₀
   have hinj : Function.Injective (G.affineLiftMap q) := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-    intro h hh
-    have htV : ∀ i, t i ∈ V(G) := fun i => Graph.closedNbhd_subset_vertexSet hv₀ (ht i)
-    have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
-      Matrix.linearIndependent_row_iff_isUnit.mp hli
-    have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ h =
-        (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ 0 := by
-      rw [Matrix.mulVec_zero]
-      funext i
-      have hhi := congr_fun hh (t i)
-      simp only [Graph.affineLiftMap_apply, htV i, Pi.zero_apply] at hhi
-      simp only [Matrix.mulVec, Matrix.of_apply, Pi.zero_apply]
-      rwa [dotProduct_comm]
-    exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
+    refine fun h hh => hli.eq_zero_of_forall_dotProduct_eq_zero fun i => ?_
+    have hhi := congr_fun hh (t i)
+    simp only [Graph.affineLiftMap_apply, Graph.closedNbhd_subset_vertexSet hv₀ (ht i),
+      Pi.zero_apply] at hhi
+    exact hhi
   rw [Graph.affineLifts, LinearMap.finrank_range_of_inj hinj, Module.finrank_fin_fun]
 
 /-- **`3 ≤ dim L(q)` at an admissible picture** (`lem:pencil-lifting-space-affine`): if `G` has a
@@ -299,7 +290,6 @@ body, by `Aff(q) ⊆ L(q)` (`Graph.affineLifts_le_liftingSpace`) and `dim Aff(q)
 theorem _root_.Graph.three_le_finrank_liftingSpace [Finite α] {G : Graph α β}
     {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) (hV : V(G).Nonempty) :
     3 ≤ Module.finrank K (G.liftingSpace q) := by
-  have : Fintype α := Fintype.ofFinite α
   rw [← G.finrank_affineLifts hq hV]
   exact Submodule.finrank_mono (G.affineLifts_le_liftingSpace q)
 
@@ -644,15 +634,9 @@ theorem _root_.Graph.finrank_ker_liftingMatrix [Fintype α] {G : Graph α β} {q
   · by_cases hv : v ∈ V(G)
     · obtain ⟨t, ht, hli⟩ := hq.2 v hv
       -- the coefficient vector is orthogonal to three independent vectors of `K³`
-      have hunit : IsUnit (Matrix.of fun j => pencilPicturePoint q (t j)) :=
-        Matrix.linearIndependent_row_iff_isUnit.mp hli
-      have hzero : (Matrix.of fun j => pencilPicturePoint q (t j)) *ᵥ
-          (fun i => x (Sum.inr (v, i))) = (Matrix.of fun j => pencilPicturePoint q (t j)) *ᵥ 0 := by
-        rw [Matrix.mulVec_zero]
-        funext j
-        simp only [Matrix.mulVec, Matrix.of_apply, Pi.zero_apply]
-        rw [dotProduct_comm, ← h2 v hv (t j) (ht j), hz]
-      exact congr_fun (Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero) i
+      have h0 : (fun i => x (Sum.inr (v, i))) = 0 :=
+        hli.eq_zero_of_forall_dotProduct_eq_zero fun j => by rw [← h2 v hv (t j) (ht j), hz]
+      exact congr_fun h0 i
     · exact h3 v hv i
 
 /-! ## The kernel of the lifting system: locality and monotonicity -/

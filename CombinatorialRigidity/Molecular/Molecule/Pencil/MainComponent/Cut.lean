@@ -475,21 +475,33 @@ theorem isLink_pathVertex_cons {G : Graph α β} {k : ℕ} {x : Fin k → α} {a
   · rw [Fin.cons_succ, ← Fin.succ_castSucc, Fin.cons_succ, Fin.cons_succ]
     exact hpath j
 
+/-- **The three kinds of position in the path sequence** (a step of `lem:pencil-bridge-fibre`,
+`thm:pencil-x0-bridge` and the ear and cycle steps): index `0` is `a`, an index of value `i + 1` is
+the interior body `x i`, and index `k + 1` is `b`. Read off by value, so index arithmetic goes to
+`omega`. -/
+theorem pathVertex_cases {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin (k + 2)) :
+    (m.val = 0 ∧ pathVertex a x b m = a) ∨
+      (∃ i : Fin k, m.val = i.val + 1 ∧ pathVertex a x b m = x i) ∨
+      (m.val = k + 1 ∧ pathVertex a x b m = b) := by
+  induction m using Fin.lastCases with
+  | last => exact Or.inr (Or.inr ⟨by simp, by simp [pathVertex]⟩)
+  | cast i =>
+    rw [pathVertex, Fin.snoc_castSucc]
+    induction i using Fin.cases with
+    | zero => exact Or.inl ⟨by simp, by simp⟩
+    | succ i' => exact Or.inr (Or.inl ⟨i', by simp, by simp⟩)
+
 /-- **Every member of the path sequence but the first is `b` or an interior body** (a step of
-`lem:pencil-bridge-fibre`, as the note after it says): index `0` is the position of `a`
-(`pathVertex_zero`), and a nonzero index is the last position, of `b`, or an interior one, of some
-`x i`. -/
+`lem:pencil-bridge-fibre`, as the note after it says): index `0` is the position of `a`, and a
+nonzero index is the last position, of `b`, or an interior one, of some `x i`, as
+`pathVertex_cases` reads off. -/
 theorem pathVertex_eq_or_exists {k : ℕ} (a : α) (x : Fin k → α) (b : α)
     {j : Fin (k + 2)} (hj : j ≠ 0) :
     pathVertex a x b j = b ∨ ∃ i, pathVertex a x b j = x i := by
-  induction j using Fin.lastCases with
-  | last => exact Or.inl (by simp [pathVertex])
-  | cast i =>
-    refine Or.inr ?_
-    rw [pathVertex, Fin.snoc_castSucc]
-    induction i using Fin.cases with
-    | zero => exact absurd rfl hj
-    | succ i' => exact ⟨i', by simp⟩
+  rcases pathVertex_cases a x b j with ⟨h0, -⟩ | ⟨i, -, h⟩ | ⟨-, h⟩
+  · exact absurd (Fin.ext h0) hj
+  · exact Or.inr ⟨i, h⟩
+  · exact Or.inl h
 
 /-- **Restriction is onto at a chain of bridges** (`lem:pencil-bridge-fibre`): the path
 `a - x 0 - ⋯ - x (k - 1) - b` (`hpath`, along `pathVertex`) joins `a ∈ V₁` to `b ∉ V₁`, and every
@@ -591,21 +603,6 @@ the step one bridge at a time, which would ask a graph whose only body is a path
 picture of such a graph is admissible. It cuts once at the last bridge, whose far side is `V₂`, and
 adds up along the prefixes `V₁ ∪ {x i | i < j}` of the path, from each of which the next body `x j`
 hangs by the single edge `e j`. -/
-
-/-- **The three kinds of position in the path sequence** (a step of `thm:pencil-x0-bridge` and of
-the ear and cycle steps): index `0` is `a`, an index of value `i + 1` is the interior body `x i`,
-and index `k + 1` is `b`. Read off by value, so index arithmetic goes to `omega`. -/
-theorem pathVertex_cases {k : ℕ} (a : α) (x : Fin k → α) (b : α) (m : Fin (k + 2)) :
-    (m.val = 0 ∧ pathVertex a x b m = a) ∨
-      (∃ i : Fin k, m.val = i.val + 1 ∧ pathVertex a x b m = x i) ∨
-      (m.val = k + 1 ∧ pathVertex a x b m = b) := by
-  induction m using Fin.lastCases with
-  | last => exact Or.inr (Or.inr ⟨by simp, by simp [pathVertex]⟩)
-  | cast i =>
-    rw [pathVertex, Fin.snoc_castSucc]
-    induction i using Fin.cases with
-    | zero => exact Or.inl ⟨by simp, by simp⟩
-    | succ i' => exact Or.inr (Or.inl ⟨i', by simp, by simp⟩)
 
 /-- A position of the path sequence lying in a set that avoids the interior is an end. -/
 theorem val_eq_zero_or_of_pathVertex_mem {k : ℕ} {x : Fin k → α} {a b : α} {V : Set α}
@@ -1023,11 +1020,6 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
       Graph.exists_liftingRestrict_eq_of_bridgePath hV₁ hxV₁ ha hbV₁ hpath hsep₁ hz₁
     exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
   have hex₂ : ∃ z ∈ G.liftingSpace q, MvPolynomial.eval z (restrictPoly V₂ R₂) ≠ 0 := by
-    have hpath₂ : ∀ i : Fin (k + 1), G.IsLink ((e ∘ Fin.rev) i)
-        (pathVertex b (x ∘ Fin.rev) a i.castSucc) (pathVertex b (x ∘ Fin.rev) a i.succ) := by
-      intro i
-      rw [pathVertex_rev, pathVertex_rev, Fin.rev_castSucc, Fin.rev_succ, Function.comp_apply]
-      exact (hpath i.rev).symm
     have hsep₂ : ∀ f u v, G.IsLink f u v → (∀ i, f ≠ (e ∘ Fin.rev) i) →
         (u ∈ V₂ ∧ v ∈ V₂) ∨ (u ∉ V₂ ∧ v ∉ V₂) := by
       intro f u v hf hfe
@@ -1036,7 +1028,7 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
           fun h => Set.disjoint_left.mp hdisj hv h⟩
       · exact Or.inl h
     obtain ⟨z, hz, hzr⟩ := Graph.exists_liftingRestrict_eq_of_bridgePath hV₂
-      (fun i => hxV₂ _) hb haV₂ hpath₂ hsep₂ hz₂
+      (fun i => hxV₂ _) hb haV₂ (isLink_pathVertex_rev hpath) hsep₂ hz₂
     exact ⟨z, hz, by rwa [eval_restrictPoly, hzr]⟩
   obtain ⟨z, hz, hz₁', hz₂'⟩ := MvPolynomial.exists_mem_eval_ne_zero₂ hex₁ hex₂
   rw [eval_restrictPoly] at hz₁' hz₂'

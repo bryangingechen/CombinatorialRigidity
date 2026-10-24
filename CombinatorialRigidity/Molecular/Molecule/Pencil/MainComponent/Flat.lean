@@ -208,27 +208,17 @@ theorem _root_.Graph.finrank_liftingPlanes [Finite α] {G : Graph α β} {q : α
       funext ⟨v, hv⟩
       obtain ⟨t, ht, hli⟩ := hq.2 v hv
       -- `h_v` vanishes at the three picture points of the admissible triple at `v`
-      have hperp : ∀ i, h v ⬝ᵥ pencilPicturePoint q (t i) = 0 := by
-        intro i
-        have htV : t i ∈ V(G) := by
-          rcases ht i with h' | ⟨e, he⟩
-          · exact h' ▸ hv
-          · exact he.right_mem
-        have h0 : h (t i) ⬝ᵥ pencilPicturePoint q (t i) = 0 := by
-          simpa [hT, Graph.liftingPlanesEval, htV] using congr_fun hT0 (t i)
+      refine hli.eq_zero_of_forall_dotProduct_eq_zero fun i => ?_
+      have htV : t i ∈ V(G) := by
         rcases ht i with h' | ⟨e, he⟩
-        · rw [h'] at h0 ⊢; assumption
-        · have := (hh e v (t i) he).2
-          rwa [sub_dotProduct, h0, sub_zero] at this
-      have hunit : IsUnit (Matrix.of fun i => pencilPicturePoint q (t i)) :=
-        Matrix.linearIndependent_row_iff_isUnit.mp hli
-      have hzero : (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ h v =
-          (Matrix.of fun i => pencilPicturePoint q (t i)) *ᵥ 0 := by
-        rw [Matrix.mulVec_zero]
-        funext i
-        simp only [Matrix.mulVec, Matrix.of_apply, Pi.zero_apply]
-        rw [dotProduct_comm]; exact hperp i
-      exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hzero
+        · exact h' ▸ hv
+        · exact he.right_mem
+      have h0 : h (t i) ⬝ᵥ pencilPicturePoint q (t i) = 0 := by
+        simpa [hT, Graph.liftingPlanesEval, htV] using congr_fun hT0 (t i)
+      rcases ht i with h' | ⟨e, he⟩
+      · rw [h'] at h0 ⊢; assumption
+      · have := (hh e v (t i) he).2
+        rwa [sub_dotProduct, h0, sub_zero] at this
     · intro h0
       have hvan : ∀ v ∈ V(G), h v = 0 := fun v hv => congr_fun h0 ⟨v, hv⟩
       refine ⟨⟨h, fun e u v he => ?_⟩, ?_, rfl⟩

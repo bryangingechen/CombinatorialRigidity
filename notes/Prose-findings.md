@@ -6311,7 +6311,7 @@ declaration's name as its header writes it:
   pair of picture points, and `Graph.finrank_affineLifts` without `[Finite α]`, on the three
   standard axioms (`scratch/reconcile-lean/t379/Hyps-t379.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.9.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.23). Task 38.1: one lemma that a
+  *Disposition:* done (task 38.23). Task 38.1: one lemma that a
   vector of `K³` with dot product zero against three independent vectors is zero (mathlib's if
   `lean_loogle` finds it), at `finrank_affineLifts`, `finrank_ker_liftingMatrix`,
   `IsAdmissiblePicture.mem_liftingSpace_of_coplanar` and `F-310`'s `finrank_liftingPlanes` (~10
@@ -6321,7 +6321,11 @@ declaration's name as its header writes it:
   forward edge, gate 7; `t381/reach.py`); `linearIndependent_pencilConfigPoint_pair`, whose tool is
   in `Configuration.lean`, which imports `Carrier.lean`; the rank–nullity between
   `finrank_ker_liftingMatrix` and `injective_liftingMatrix_ker_proj` (a few lines); the `_congr`
-  lemmas' two lines.
+  lemmas' two lines. Round 3: done so, the lemma
+  `LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero`, for a family of `Kⁿ` indexed by any
+  finite type, in the mirror `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean` (no
+  `lean_loogle` hit); with the instance, the `Fintype` `have` of its caller
+  `three_le_finrank_liftingSpace`, which fed nothing (task 38.23). Three more copies: `F-328`.
 - **F-310** · L · over-strong hypotheses, repeated derivations and a repeated binder in
   `Molecular/Molecule/Pencil/MainComponent/Flat.lean` and `Bridge.lean`.
   `Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint` and
@@ -6342,11 +6346,11 @@ declaration's name as its header writes it:
   parents' proofs, on the three standard axioms (`scratch/reconcile-lean/t3710/Hyps-t3710.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 37.10.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.23). Task 38.1:
+  *Disposition:* done (task 38.23). Task 38.1:
   `finrank_liftingPlanes` by `F-309`'s lemma; `finite_setOf_finrank_lt_of_curve` without its
   repeated `{k : ℕ}`. Left: the two motion-space lemmas' `IsAdmissiblePicture`, which their callers
   hold (a change of form only); the two `exists_mvPolynomial_…` (13 lines each: a whole-family form
-  of the reindex lemma would be new, for two sites).
+  of the reindex lemma would be new, for two sites). Round 3: done so (task 38.23).
 - **F-311** · L · repeated derivations in `Molecular/Molecule/Pencil/MainComponent/Cut.lean`.
   `Graph.X0Attains.of_cutVertex` and `Graph.X0Attains.of_bridgePath` repeat the same steps: the
   picture off the three polynomials and the two sides' data, `hendsI` (the selector `G.endsOf`
@@ -6370,7 +6374,8 @@ declaration's name as its header writes it:
   `pathVertex_eq_or_exists` from `pathVertex_cases` (moved above it); task 38.24 states `hendsI`
   once (the selector of `G` gives every link of `G.induce X` its ends; 7 lines at each of the eight
   `have hendsI`, in `Cut.lean`, `Ear.lean`, `ContractAdditive.lean`, `Short.lean` and `Orbit.lean`).
-  Left: `hcongr` (two sites, one file), `hmem` and `hxj` (a few lines each).
+  Left: `hcongr` (two sites, one file), `hmem` and `hxj` (a few lines each); round 3: `hpath₂` and
+  `pathVertex_eq_or_exists` done so (task 38.23).
 - **F-312** · L · repeated derivations and a derivable hypothesis in
   `Molecular/Molecule/Pencil/MainComponent/Ear.lean`. `panelSupportExtensor_mem_span_ofNormals`
   repeats the case split on the orientation of `Cut.lean`'s `span_supportExtensor_ofNormals_eq`,
@@ -6390,14 +6395,15 @@ declaration's name as its header writes it:
   `Fin 1` by `Function.injective_of_subsingleton`, on `propext`
   (`scratch/reconcile-lean/t3712/Hyps-t3712.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.12.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.23). Task 38.1:
+  *Disposition:* done (task 38.23). Task 38.1:
   `panelSupportExtensor_mem_span_ofNormals` from `span_supportExtensor_ofNormals_eq` (`Cut.lean`) at
   `k = 2`; `span_supportExtensor_eq_top_of_linearIndependent` from
   `card_le_finrank_of_linearIndependent_pointJoin` (moved above it; the hinges span at most six
   dimensions); `mem_liftingSpace_oneEar`'s `hinj` dropped (`Function.injective_of_subsingleton`;
   `lem:pencil-splitoff-ear-extension` restated where it states it; caller `X0Attains.of_splitOff`).
   Left: `span_supportExtensor_comp_eq_map_pointJoin`'s orientation split (one proof), `x i ≠ a` and
-  `x i ≠ b` (a line or two each) and the four `simp only`s.
+  `x i ≠ b` (a line or two each) and the four `simp only`s. Round 3: done so; the node states no
+  injectivity (its ear has one interior body), so it stands (task 38.23).
 - **F-313** · L · repeated derivations, an unused hypothesis and needless steps in
   `Molecular/Molecule/Pencil/MainComponent/ContractCurve.lean`. `Graph.rigidContract_induce_simple`
   re-derives the file's `collapseTo_of_mem`, `collapseTo_of_not_mem` and `mem_of_collapseTo_eq` as
@@ -6800,6 +6806,24 @@ declaration's name as its header writes it:
   injectivity of `![x, y, z]` from `hLI.injective` (unpinned, and no node states it), and the five
   calls' arguments; the callers' facts stay, used. Round 3: done so, by `Function.Injective.of_comp`
   (task 38.22).
+- **F-328** · L · `eq_zero_of_dotProduct_pencilPicturePoint`
+  (`Molecular/Molecule/Pencil/MainComponent/ContractCurve.lean`), `eq_zero_of_dotProduct_triple`
+  (`GenericBase.lean`) and the `horth` of `Graph.planeDiff_eq_zero_of_splitOff` (`SplitOff.lean`):
+  the step that `LinearIndependent.eq_zero_of_forall_dotProduct_eq_zero` now states (`F-309`), a
+  vector of `K³` with dot product zero against three independent vectors is zero, written out
+  through the unit matrix of the three (10 to 12 lines each). The first is that lemma at the picture
+  points of `s`, with one caller, `Graph.IsAdmissiblePicture.eq_zero_of_forall_closedNbhd`; the
+  second is it at `![a, b, c]`, called twice in `isNondeg_pencilConfig_of_planeDiff`; the third
+  states the second inside a proof. All three unpinned. `lake lint` reports none of them.
+  *Evidence:* read (the statements and bodies); a `lake lean` witness: the first's statement and the
+  second's, each from the mirror lemma in a line, on the three standard axioms
+  (`scratch/reconcile-lean/t3823/Hyps-t3823.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 38.23.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.25, 38.26 and 38.27), each by
+  its file's task: `eq_zero_of_dotProduct_pencilPicturePoint` deleted, its caller calling the
+  mirror lemma (task 38.25; gate 4); `horth` proved by the mirror lemma, the three facts by
+  `fin_cases` (task 38.26); `eq_zero_of_dotProduct_triple` likewise, kept for its two calls, which
+  pass three separate facts (task 38.27).
 
 ## M — mathematics and sources
 

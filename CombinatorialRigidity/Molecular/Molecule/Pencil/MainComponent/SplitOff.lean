@@ -735,7 +735,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   obtain ⟨hrk, hPmt⟩ := ht
   have hmt : G.IsMainPicture (qt t) := hmain (qt t) hPmt
   have hzt' : zt t ∈ G.liftingSpace (qt t) :=
-    Graph.mem_liftingSpace_oneEar hcover hinj hxV₁ ha hb hpath hsep hmt.1 (hytL t) (hinc t)
+    Graph.mem_liftingSpace_oneEar hcover hxV₁ ha hb hpath hsep hmt.1 (hytL t) (hinc t)
   refine Graph.x0Attains_of_exists hV ends hends hmt hzt' ?_
   rw [hc t] at hrk
   have hcount : (V(G).ncard : ℤ) = V₁.ncard + 1 := by
