@@ -542,8 +542,8 @@ proper subset of the vertices, so as a set of indices of `Fin m` it is not close
 successor, and some index `i` in it has `vtx (i + 1)` in another part, so that `edge i` crosses
 `P`; distinct parts give distinct edges. With `|P| ≤ m ≤ D`,
 `(D−1)·d(P) ≥ (D−1)|P| ≥ D(|P|−1)`. With `def(H̃) ≥ 0` (`deficiency_nonneg`), `def(H̃) = 0`. -/
-theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n : ℕ}
-    (hD : 3 ≤ bodyBarDim n) {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
+theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n m : ℕ}
+    (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
     {vtx : Fin m → α} {edge : Fin m → β}
     (hedge : Function.Injective edge)
     (hlink : ∀ i : Fin m, H.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩)))
@@ -597,7 +597,7 @@ theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n : ℕ}
           Set.ncard_image_le (Set.toFinite _)
       _ = m := by rw [Set.ncard_univ, Nat.card_fin]
   rw [partitionDef]
-  have hDz : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  have hDz : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hm.trans hmD
   rcases Nat.lt_or_ge (H.numParts f) 2 with hp1 | hp2
   · -- `|P| ≤ 1`: `D(|P| − 1) ≤ 0 ≤ (D − 1)·d`.
     have hp1z : (H.numParts f : ℤ) ≤ 1 := by exact_mod_cast Nat.lt_succ_iff.mp hp1
@@ -672,7 +672,7 @@ theorem isKDof_zero_of_triangle [Finite α] {H : Graph α β} {n : ℕ}
   have hac_ne : exy ≠ exz := fun h ↦ by
     obtain ⟨_, h2⟩ | ⟨h1, _⟩ := hxy.eq_and_eq_or_eq_and_eq (h ▸ hxz)
     exacts [hynez h2, hxnez h1]
-  refine isKDof_zero_of_cycle hD le_rfl hD (vtx := ![x, y, z]) (edge := ![exy, eyz, exz])
+  refine isKDof_zero_of_cycle le_rfl hD (vtx := ![x, y, z]) (edge := ![exy, eyz, exz])
     ?_ ?_ ?_ ?_
   · intro i j hij
     fin_cases i <;> fin_cases j <;> simp_all [eq_comm]
@@ -1589,25 +1589,25 @@ lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph 
               mul_comm (bodyBarDim n : ℤ) ((G.numParts g : ℤ) - 1)]
 
 /-- **The deficiency at a cut of at most one edge** (`lem:cut-edge-decomposition` (1);
-Katoh–Tanigawa 2011 Lemma 3.6, p. 659): for `∅ ≠ V₁ ⊊ V(G)` with at most one edge joining `V₁` to
+Katoh–Tanigawa 2011 Lemma 3.6, p. 659): for `V₁ ⊊ V(G)` with at most one edge joining `V₁` to
 `V₂ = V(G) ∖ V₁`, the deficiency of `G` splits over the sides `G₁ = G[V₁]` and `G₂ = G[V₂]`:
 `def(G̃) = def(G̃₁) + def(G̃₂) + D - (D-1)·d_G(V₁)`. So the cut adds `D - (D-1) = 1` when
-`d_G(V₁) = 1` and `D` when `d_G(V₁) = 0`, KT's two cases.
+`d_G(V₁) = 1` and `D` when `d_G(V₁) = 0`, KT's two cases. KT's `{V₁, V₂}` is a partition, so
+`V₁ ≠ ∅`; at `V₁ = ∅` the identity is trivial, as `G̃₁` has no vertex and deficiency `-D`.
 
 `≤`: separate the sides of a labeling (`exists_sides_separated_partitionDef_le`) and split it
 (`partitionDef_split_of_sides`). `≥`: rename the labels of attaining labelings of the two sides
 into `V₁` and `V₂` (`partitionDef_comp_of_injOn`, `partitionDef_congr`), so that they combine into
 one separated labeling of `G`. -/
 theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Graph α β}
-    {n : ℕ} {V₁ : Set α} (hne : V₁.Nonempty)
-    (hssub : V₁ ⊂ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) :
+    {n : ℕ} {V₁ : Set α} (hssub : V₁ ⊂ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) :
     G.deficiency n
       = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n
         + (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
   have : Fintype α := Fintype.ofFinite α
   have : Fintype β := Fintype.ofFinite β
-  -- α is nonempty (needed for ciSup_le and exists_eq_ciSup_of_finite on α → α).
-  have : Nonempty α := ⟨hne.choose⟩
+  -- α is nonempty, as `V(G) \ V₁` is (needed for ciSup_le and exists_eq_ciSup_of_finite on α → α).
+  have : Nonempty α := ⟨(Set.nonempty_of_ssubset hssub).some⟩
   have : Nonempty (α → α) := ⟨id⟩
   apply le_antisymm
   · -- Direction `≤`: for any labeling f, partitionDef G f ≤ RHS.
@@ -1721,7 +1721,7 @@ theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finit
   obtain ⟨V₁, hne, hssub, hcut_lt2⟩ := hntec
   have hcut : (G.cutEdges V₁).ncard ≤ 1 := Nat.lt_succ_iff.mp hcut_lt2
   -- Compute deficiency equality for this cut.
-  have hdef_eq := deficiency_eq_of_cutEdges_ncard_le_one (n := n) hne hssub hcut
+  have hdef_eq := deficiency_eq_of_cutEdges_ncard_le_one (n := n) hssub hcut
   -- Sides-minimal via subgraph_minimality.
   have hle₁ : G.induce V₁ ≤ G := G.induce_le hssub.subset
   have hle₂ : G.induce (V(G) \ V₁) ≤ G := G.induce_le (Set.sdiff_subset)
@@ -3050,18 +3050,17 @@ theorem deficiency_of_edgeSet_empty [Finite α] {G : Graph α β} {n : ℕ}
         numParts, Set.image_id]
     linarith [G.partitionDef_le_deficiency n id, hid.symm.le]
 
-/-- **The deficiency of a single edge** (a step of `lem:two-vertex-trichotomy`): for `D ≥ 1`, if
-`V(G) = {x, y}` with `x ≠ y`, `E(G) = {e}` and `e` joins `x` and `y`, then `def(G̃) = 1`. A
-labeling with `f x ≠ f y` has two parts and one crossing edge, so its value is `D − (D−1) = 1`, and
-one with `f x = f y` has value `0`. -/
+/-- **The deficiency of a single edge** (a step of `lem:two-vertex-trichotomy`): if
+`V(G) = {x, y}` with `x ≠ y`, `E(G) = {e}` and `e` joins `x` and `y`, then `def(G̃) = 1`, for every
+`D`. A labeling with `f x ≠ f y` has two parts and one crossing edge, so its value is
+`D − (D−1) = 1`, and one with `f x = f y` has value `0`. -/
 theorem deficiency_of_single_edge [Finite α] {G : Graph α β} {n : ℕ}
-    (hD : 1 ≤ bodyBarDim n) {x y : α} (hxy : x ≠ y) {e : β}
+    {x y : α} (hxy : x ≠ y) {e : β}
     (hl : G.IsLink e x y) (hV : V(G) = {x, y}) (hE : E(G) = {e}) :
     G.deficiency n = 1 := by
   classical
   have : Nonempty (α → α) := ⟨id⟩
   have hne : V(G).Nonempty := ⟨x, by rw [hV]; exact Set.mem_insert x _⟩
-  have hD1 : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
   refine le_antisymm ?_ ?_
   · -- `def ≤ 1`: each partition gives `def_P ≤ 1`.
     rw [deficiency]
@@ -3241,7 +3240,6 @@ theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Fini
     (∃ x y e f, x ≠ y ∧ e ≠ f ∧ V(G) = {x, y} ∧ E(G) = {e, f} ∧
       G.IsLink e x y ∧ G.IsLink f x y ∧ k = 0) := by
   classical
-  have hD1 : 1 ≤ bodyBarDim n := by omega
   have hLl := loopless_of_isMinimalKDof hG
   -- Dispatch on |V| = 1 vs. |V| = 2.
   have hVpos : 0 < V(G).ncard := hne.ncard_pos
@@ -3274,7 +3272,7 @@ theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Fini
       · obtain ⟨e, hE⟩ := Set.ncard_eq_one.mp hE1
         have hlinkxy : G.IsLink e x y := hlinks e (hE ▸ Set.mem_singleton e)
         exact Or.inr (Or.inl ⟨x, y, e, hxy, hVG, hE, hlinkxy,
-          hG.deficiency_eq.symm.trans (deficiency_of_single_edge hD1 hxy hlinkxy hVG hE)⟩)
+          hG.deficiency_eq.symm.trans (deficiency_of_single_edge hxy hlinkxy hVG hE)⟩)
       · obtain ⟨e₁, e₂, hne₁₂, hE⟩ := Set.ncard_eq_two.mp hE2
         have hl₁ : G.IsLink e₁ x y := hlinks e₁ (hE ▸ Set.mem_insert e₁ _)
         have hl₂ : G.IsLink e₂ x y := hlinks e₂ (hE ▸ Set.mem_insert_of_mem _ rfl)

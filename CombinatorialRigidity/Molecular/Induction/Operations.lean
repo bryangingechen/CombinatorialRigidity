@@ -856,8 +856,8 @@ its other end off the cycle, by `hcl` there, so `H` misses a vertex of `G`. This
 KT's proof in which a walk closes up at a vertex of degree at least three.
 `triangle_isProperRigidSubgraph` is not a case of it: it asks neither `hcl` nor a degree, but
 `|V(G)| ≥ 4`. -/
-lemma cycle_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β} [G.Simple] {n : ℕ}
-    (hD : 3 ≤ bodyBarDim n) {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
+lemma cycle_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β} [G.Simple] {n m : ℕ}
+    (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
     {vtx : Fin m → α} {edge : Fin m → β} {i₀ : Fin m}
     (hvtx : Function.Injective vtx) (hedge : Function.Injective edge)
     (hlink : ∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩)))
@@ -873,7 +873,7 @@ lemma cycle_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β} [G.S
     exact (hlink i).left_mem
   refine ⟨G.induce (Set.range vtx), ⟨G.induce_le hsub, ?_⟩, ?_, ?_⟩
   · -- `0`-dof via `isKDof_zero_of_cycle`.
-    refine isKDof_zero_of_cycle hD hm hmD hedge
+    refine isKDof_zero_of_cycle hm hmD hedge
       (fun i ↦ by rw [induce_isLink]; exact ⟨hlink i, ⟨i, rfl⟩, ⟨i + ⟨1, by omega⟩, rfl⟩⟩)
       (vertexSet_induce G (Set.range vtx)) ?_
     -- `E(H) = range edge`: `⊇` from `hlink`; `⊆` picks the non-anchor end and applies `hcl`.

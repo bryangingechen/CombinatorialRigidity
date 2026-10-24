@@ -1014,7 +1014,7 @@ theorem pencilPair_of_simple_ncard_eq_three [Finite α] [Finite β] {G : Graph �
   have hrank_eq : Module.finrank K (Submodule.span K F.rigidityRows)
       = screwDim 2 * (V(G).ncard - 1) := hbridge hrig
   have hisKDof : G.IsKDof 3 0 := by
-    refine Graph.isKDof_zero_of_cycle (H := G) (n := 3) (by decide) (m := 3) (by omega) (by decide)
+    refine Graph.isKDof_zero_of_cycle (H := G) (n := 3) (m := 3) (by omega) (by decide)
       hedge_inj hlink3 ?_ ?_
     · rw [hrange]; exact hVeq
     · apply Set.Subset.antisymm

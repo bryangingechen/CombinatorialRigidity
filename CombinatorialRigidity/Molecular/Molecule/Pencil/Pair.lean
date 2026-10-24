@@ -337,7 +337,7 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
         · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 3
       · -- the rank: at most the deficiency rank, `5`, and at least the `5` independent rows of `e`
         have hdef : G.deficiency 3 = 1 :=
-          Graph.deficiency_of_single_edge (n := 3) (by decide) hxy hl_e hVG hEe
+          Graph.deficiency_of_single_edge hxy hl_e hVG hEe
         have hC : ∀ e' u v', G.IsLink e' u v' → F.supportExtensor e' ≠ 0 :=
           fun e' _ _ _ => hCne
         have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne hC

@@ -9,10 +9,10 @@ non-vacuity witness for each of the 16 main results outside S1's and S2's rows, 
 sweep by directory, and the §B–§C screen with the fixes it appends. No main result's statement
 changes. In the footprint (34 files: the 33 that construct `PanelHingeFramework`, and
 `GenericLift/HingeGeneric.lean`) the docstrings that describe the carrier or S1's and S2's theorems
-wait for the phase. Tasks 1–38.11 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
-sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first ten of them.
-**Next concrete task:** task 38.12, `Molecular/Deficiency.lean` (*Hand-off*). Round manual:
-`CLEANUP.md`.
+wait for the phase. Tasks 1–38.12 are done (*Current state*; gate 9: 422 at task 2, 4 now): the
+sweep, the §B–§C screen, whose fixes are tasks 38.2–38.27, and the first eleven of them.
+**Next concrete task:** task 38.13, four files of `Molecular/Induction/` (*Hand-off*). Round
+manual: `CLEANUP.md`.
 
 ## Autopilot: for the PI
 
@@ -43,26 +43,27 @@ absorbed it, and our Lean meets the rest.
 
 ## Current state
 
-**Task 38.11 is done**, `F-278`: `HennebergReverse.lean`'s private `isoOfOptionSubtypeNe` without
-`hnone` and `isoTypeIIOfThreeNeighbors` without `hab`, with their three callers; no statement of a
-node or a main result changes. Nothing is mid-stream. **Next:** 38.12.
+**Task 38.12 is done**, `F-280` and `F-281`'s last part: `Molecular/Deficiency.lean`'s three
+hypotheses dropped, with `cycle_isProperRigidSubgraph`'s `hD` (`F-282`'s, which fed only the
+first), and `lem:cut-edge-decomposition` (1) restated. Nothing is mid-stream. **Next:** 38.13.
 
-**Task 38.11** (scratch `scratch/reconcile-lean/t3811/`, gitignored: task 38.10's scripts,
-copied). The private lemma's body is unchanged: its `simp` closes the loop case without `hnone`;
-its two callers stop passing `by simp`, and the three callers of `isoTypeIIOfThreeNeighbors`
-(`IsLaman.exists_typeI_or_typeII_reverse`, `IsLaman.isGenericallyRigidInj_two_of_card`,
-`IsSparse.exists_rowIndependent_placement`) stop passing `hab`, each still using its `hxy`
-elsewhere. Both docstrings say what the statements no longer ask. Neither linter had reported the
-two: a `subst` or an `rfl` pattern put each in the proof term (`t3811/LintBlind{,2}.lean`; new
-`TACTICS-QUIRKS.md` §118, FRICTION [idiom]). Gates: the build green (6147 jobs, 0 `warning:`,
-`error:` and `failed to cache artifact` lines), `lake lint` green on its first run; the axioms
-harness and the witnesses' identical to task 38.10's net of the path; the dump identical to task
-38.10's; `--summary` OK, 6621 constants (the two `by simp` auxiliaries gone), no pin's reach moved
-(`reachdiff.py`), `neworphans.py` empty; the label check identical (4). The ledger: 325 entries,
-227 `done`, 9 `left`, 50 `reported`, 39 `open`.
+**Task 38.12** (scratch `scratch/reconcile-lean/t3812/`, gitignored: task 38.11's scripts, copied).
+`isKDof_zero_of_cycle` takes `3 ≤ D` from `hm`, `hmD`; `deficiency_eq_of_cutEdges_ncard_le_one`
+takes `Nonempty α` from `V(G) \ V₁`; `deficiency_of_single_edge` loses `hD` and the trichotomy's
+`have` that fed it. Every caller's binder that fed a dropped argument, read (§118), is used
+elsewhere, but `cycle_isProperRigidSubgraph`'s `hD` (dropped; `chainWalk_trichotomy` uses its own)
+and two local `Nonempty` facts (removed). The node: (1) without $\emptyset \neq V'$, its proof
+adding the empty case, whose side has deficiency $-D$ (`t3812/EmptySide.lean`); (2) says $V'$
+nonempty. Gates: the build green (6147 jobs, 0 `warning:`, `error:` and `failed to cache artifact`
+lines), `lake lint` green on its first run; the axioms harness and the witnesses' identical to task
+38.11's net of the path; the dump identical to task 38.11's; `--summary` OK, 6620 constants (the
+trichotomy's `by omega` auxiliary gone), no pin's reach moved, `neworphans.py` empty; the label
+check identical (4); `verify.sh` green (9 `WARNING:`), `print.log` 0 `LaTeX Warning` lines. The
+ledger: 325 entries, 229 `done`, 9 `left`, 50 `reported`, 37 `open`.
 
-**Done before** (tasks 3–38.10; the ledger's dispositions name each part's task, the messages the
-detail): task 38.10's suppression sites (§115 rule 1 at nine declarations, `F-300`'s three
+**Done before** (tasks 3–38.11; the ledger's dispositions name each part's task, the messages the
+detail): task 38.11's `F-278` (`HennebergReverse.lean`'s `hnone`, `hab`; new `TACTICS-QUIRKS.md`
+§118); task 38.10's suppression sites (§115 rule 1 at nine declarations, `F-300`'s three
 `[Nonempty α]`, `F-298`'s four `set_option`s, three `nolint`s, `CaseI.lean`'s header,
 `GenericBase.lean`'s primed theorem; `theorem_55_6_multigraph_gen`'s binder kept by rule 3); task
 38.9's re-seeding (`F-305`, `F-306`'s first part; twelve deleted); tasks 38.2–38.8's
@@ -287,11 +288,12 @@ gate 6, which the task makes exact before editing. Every task is at Opus but the
 - [x] **38.11. `HennebergReverse.lean`** (`F-278`): `hnone`, `hab`; callers in `LamanTheorem.lean`
   and `MatroidIdentification.lean`. (Done so, the private lemma's body unchanged;
   `TACTICS-QUIRKS.md` §118 says why neither linter saw the two.)
-- [ ] **38.12. `Molecular/Deficiency.lean`** (`F-280`, `F-281`'s `deficiency_of_single_edge`): three
-  hypotheses; `lem:cut-edge-decomposition` (1) restated.
+- [x] **38.12. `Molecular/Deficiency.lean`** (`F-280`, `F-281`'s `deficiency_of_single_edge`): three
+  hypotheses; `lem:cut-edge-decomposition` (1) restated. (Done so, with `F-282`'s
+  `cycle_isProperRigidSubgraph` `hD`, which fed only the first; (1)'s proof adds $V' = \emptyset$.)
 - [ ] **38.13. `Induction/Operations`, `SplitOffDeficiency`, `Contraction`, `ReducibleVertex.lean`**
-  (`F-282`'s eight, `F-283`'s five; `IsProperRigidSubgraph.three_le_ncard` added): nodes restated
-  where they state a dropped hypothesis (`lem:claim-6-6` does).
+  (`F-282`'s seven left, `F-283`'s five; `IsProperRigidSubgraph.three_le_ncard` added): nodes
+  restated where they state a dropped hypothesis (`lem:claim-6-6` does).
 - [ ] **38.14. `Induction/ForestSurgery/ChainExtraction`, `Reduction.lean`** (`F-275`'s first two,
   `F-284`, `F-285`): `lem:reduction-step`, `lem:forest-surgery-count` restated where they state
   them.
@@ -395,47 +397,54 @@ PI*).
 
 ## Hand-off / next phase
 
-**Next: task 38.12**, at Opus (its line and the dispositions of `F-280` and `F-281` are its
-specification), in `Molecular/Deficiency.lean`: `isKDof_zero_of_cycle` without `hD` (`by omega`
-from `hm`, `hmD` where the body needs it; callers `isKDof_zero_of_triangle`,
-`cycle_isProperRigidSubgraph`, `pencilPair_of_simple_ncard_eq_three`; its node
-`lem:cycle-zero-dof` already states $3 \le m \le D$ alone), `deficiency_eq_of_cutEdges_ncard_le_one`
-without `hne` (`Nonempty α` from `hssub`; four callers, an untyped one pinning `(n := n)` by
-FRICTION's entry on dropped hypotheses), and `deficiency_of_single_edge` without its unused `hD`
-(three callers, unpinned); `lem:cut-edge-decomposition` (1) restated without $\emptyset \neq V'$
-(the honesty gate). Gates 1–3 (gate 3 with the sixteen witnesses, harness
-`t3811/Axioms-wit.lean`), `lake lint` to a fixed point, gate 2's checks; gates 5, 6, 8, 9 and 10.
-*Expected* (made exact before editing): the dump unchanged (the parent
-`scratch/reconcile-lean/dump-t3811.txt`; it holds no statement text), `--summary` OK, gate 9 at 4.
-`lake lint` misses a binder that a `subst` or an `rfl` pattern reverts (`TACTICS-QUIRKS.md` §118,
-task 38.11): read each caller's binder that fed only a dropped argument. Tooling, in `t3811/` (task
-38.10's, copied): `blockb.py`, `blockc.py`, `delete.py` (a dry run unless `--apply`; it cuts every
-declaration whose short name is listed, so a name two namespaces share is cut by hand, and it
-leaves a preceding `omit … in`), `rmhdr.py`, `grepall.py`, `neworphans.py` and `reachdiff.py` (the
-last two compare the parent's Lean cache, copied first, with the new one; `t3811/cache-new.jsonl`
-is this task's). Build name lists with `LC_ALL=C sort -u` (a UTF-8 `sort -u` merges names that
-differ only in subscripts). A live doc's mention of a deleted name says "since deleted"; a
-`[mirrored]` FRICTION entry whose lemma goes is retired; closed notes, the frozen design docs and
-the ledger are history. A re-proof that a deletion needs is built, and its Lean cache regenerated,
-before block (b) runs on the names it frees (task 38.9: two builds; a proof moved whole into its
-one caller needs no second, task 38.10); a definition moved off a file whose declarations still
-use it moves with their deletion, not before. A binder dropped from a callee can leave a main
-result's unused for `lake lint` (task 38.10): check each caller that is a main result before
-dropping. Then tasks 38.13–38.27 in order, one commit each, then the close.
+**Next: task 38.13**, at Opus (its line and the dispositions of `F-282` and `F-283` are its
+specification, naming each declaration's callers and node), in `Molecular/Induction/`'s
+`Operations`, `SplitOffDeficiency`, `Contraction` and `ReducibleVertex.lean`: `F-282`'s seven left
+(`triangle_isProperRigidSubgraph`'s `hab`; the `hav`, `hbv` of
+`exists_isLink_of_isMinimalKDof_card_three` and of `CycleData.ofCardThree`;
+`induce_insert_splitOff`'s `he₀`; `splitOff_isLink_relabel`'s `heac`) and `F-283`'s five
+(`splitOff_deficiency_ge`'s `hdeg2`; the two `3 ≤ V(G).ncard`, from `hrig` by a new
+`IsProperRigidSubgraph.three_le_ncard` beside `IsProperRigidSubgraph.vertexSet_nonempty`;
+`contraction_isMinimalKDof`'s `hVGne`; `not_simple_of_isMinimalKDof_of_ncard_two`'s `hG` weakened to
+`G.IsKDof n 0`, its `[DecidableEq β]` going with it). Each node that states a dropped hypothesis is
+restated (gate 2's grep; `lem:claim-6-6` does), with the honesty gate. Gates 1–3 (gate 3 with the
+sixteen witnesses, harness `t3812/Axioms-wit.lean`), `lake lint` to a fixed point, gate 2's checks;
+gates 5, 6, 8 (for a restated node), 9 and 10. *Expected* (made exact before editing): the dump
+unchanged (the parent `scratch/reconcile-lean/dump-t3812.txt`; it holds no statement text),
+`--summary` OK, gate 9 at 4. `lake lint` misses a binder that a `subst` or an `rfl` pattern reverts
+(`TACTICS-QUIRKS.md` §118; `F-283`'s `hdeg2` is one it never reported): read each caller's binder
+that fed only a dropped argument, and drop it if nothing else uses it (task 38.12 so dropped
+`cycle_isProperRigidSubgraph`'s `hD`). Tooling, in `t3812/` (task 38.10's, copied): `blockb.py`,
+`blockc.py`, `delete.py` (a dry run unless `--apply`; it cuts every declaration whose short name is
+listed, so a name two namespaces share is cut by hand, and it leaves a preceding `omit … in`),
+`rmhdr.py`, `grepall.py`, `neworphans.py` and `reachdiff.py` (the last two compare the parent's Lean
+cache, copied first, with the new one; `t3812/cache-new.jsonl` is task 38.12's). Build name lists
+with `LC_ALL=C sort -u` (a UTF-8 `sort -u` merges names that differ only in subscripts). A live
+doc's mention of a deleted name says "since deleted"; a `[mirrored]` FRICTION entry whose lemma goes
+is retired; closed notes, the frozen design docs and the ledger are history. A re-proof that a
+deletion needs is built, and its Lean cache regenerated, before block (b) runs on the names it frees
+(task 38.9: two builds; a proof moved whole into its one caller needs no second, task 38.10); a
+definition moved off a file whose declarations still use it moves with their deletion, not before. A
+binder dropped from a callee can leave a main result's unused for `lake lint` (task 38.10): check
+each caller that is a main result before dropping. Then tasks 38.14–38.27 in order, one commit each,
+then the close.
 
 A whole-project build after an edit the main results import can pass the Bash tool's 600 s (tasks
-37.9's, 38.2's, 38.8's, 38.9's and 38.10's did; 38.4's to 38.7's, from `RigidityMatrix/Basic.lean`,
-`Induction/` or `Molecule/` up, did not) and go to the background: wait for it in-turn (a foreground
-loop on its log's exit marker, `for i in $(seq 1 110); do grep -q '^exit ' LOG && break; sleep 5;
-done`, the build writing `exit $?` to its log), and if it is stopped, run it again in the
-foreground; one build at a time; check the 100-column limit (Python `len`, `TACTICS-QUIRKS.md` § 55)
-after the last docstring edit, before it (task 38.8). The hook that blocks a commit adding a `sorry`
-also reads the words "sorry" and "admit" in a `.lean` diff (task 37.4). `check-docstring-labels.py
---lean` on a stale cache, and a `lake lean` of a harness importing an edited module, rebuild the
-edited modules: give each an explicit `timeout`, and run a harness once the files are built (tasks
-37, 37.7). The screens (gitignored): `t341/unused_joint.py` (it misses a use written `Name.mp`),
-`t33/info.py`, `t321/codecmp.py`, the `Hyps-t*.lean` witnesses (each entry's *Evidence* names its
-own), `t38/blockb2.py`, `t38/seq.py`, and `t381/q.py` (a name's pins, liveness and callers) and
+37.9's, 38.2's, 38.8's, 38.9's, 38.10's and 38.12's did; 38.4's to 38.7's, from
+`RigidityMatrix/Basic.lean`, `Induction/` or `Molecule/` up, did not) and go to the background: wait
+for it in-turn (foreground loops of at most two minutes on its log's exit marker, as
+`.claude/agents-core/phase-builder.md` says,
+`for i in $(seq 1 22); do grep -q '^exit ' LOG && break; sleep 5; done`, the build writing `exit $?`
+to its log), and if it is stopped, run it again in the foreground; one build at a time, so finish
+every Lean edit, docstrings included, before the gates' build (task 38.12 built twice); check the
+100-column limit (Python `len`, `TACTICS-QUIRKS.md` § 55) after the last docstring edit, before it
+(task 38.8). The hook that blocks a commit adding a `sorry` also reads the words "sorry" and "admit"
+in a `.lean` diff (task 37.4). `check-docstring-labels.py --lean` on a stale cache, and a
+`lake lean` of a harness importing an edited module, rebuild the edited modules: give each an
+explicit `timeout`, and run a harness once the files are built (tasks 37, 37.7). The screens
+(gitignored): `t341/unused_joint.py` (it misses a use written `Name.mp`), `t33/info.py`,
+`t321/codecmp.py`, the `Hyps-t*.lean` witnesses (each entry's *Evidence* names its own),
+`t38/blockb2.py`, `t38/seq.py`, and `t381/q.py` (a name's pins, liveness and callers) and
 `t381/reach.py` (the nodes a re-proof would make a pin reach). Carried in: `F-252`, `F-273`,
 `F-276`, `F-277`, `F-301`, `F-323` and `F-324` for the PI. After the round the queue stops before
 `RECONCILE-FORMAL`, which is attended.

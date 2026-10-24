@@ -822,7 +822,6 @@ theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {
     (hcut : (G.cutEdges V₁).ncard ≤ 1) :
     (G.induce (V₁ ∪ {w₀})).deficiency n = (G.induce V₁).deficiency n + 1 := by
   set Gp := G.induce (V₁ ∪ {w₀}) with hGpdef
-  have hne : ({w₀} : Set α).Nonempty := ⟨w₀, rfl⟩
   have hssub : ({w₀} : Set α) ⊂ V(Gp) :=
     (Set.ssubset_iff_of_subset (fun x hx => Set.mem_union_right _ hx)).mpr
       ⟨u₀, Set.mem_union_left _ hu₀, fun h => hw₀ (h ▸ hu₀)⟩
@@ -840,7 +839,7 @@ theorem _root_.Graph.deficiency_induce_union_singleton [Finite α] [Finite β] {
       have hl' : Gp.IsLink e₀ w₀ u₀ := (Graph.induce_isLink G (V₁ ∪ {w₀}) e₀ w₀ u₀).mpr
         ⟨hl₀.symm, Set.mem_union_right _ rfl, Set.mem_union_left _ hu₀⟩
       exact ⟨hl'.edge_mem, w₀, u₀, hl', rfl, fun h => hw₀ (h ▸ hu₀)⟩
-  have hsplit := Graph.deficiency_eq_of_cutEdges_ncard_le_one (G := Gp) (n := n) hne hssub
+  have hsplit := Graph.deficiency_eq_of_cutEdges_ncard_le_one (G := Gp) (n := n) hssub
     (by rw [hcut', Set.ncard_singleton])
   have hdiff : V(Gp) \ {w₀} = V₁ := by
     ext x

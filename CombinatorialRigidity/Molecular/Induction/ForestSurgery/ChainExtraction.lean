@@ -652,7 +652,7 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
               have hm3 : 3 ≤ P.length + 1 := by omega
               have hmD : P.length + 1 ≤ bodyBarDim n := by omega
               obtain ⟨H, hH⟩ :=
-                cycle_isProperRigidSubgraph hD hm3 hmD hvtx_inj hedge_inj hlink hcl hdeg_start3
+                cycle_isProperRigidSubgraph hm3 hmD hvtx_inj hedge_inj hlink hcl hdeg_start3
               exact (hnp H hH).elim
         · -- `x ≠ P.first`.
           by_cases hxmem : x ∈ P

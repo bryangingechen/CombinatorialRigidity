@@ -5381,7 +5381,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   it), here via the ascribed goal rather than a later explicit argument.
 - **Fix 2:** pin the implicit by name — `Graph.deficiency_of_single_edge (n := 3) (by decide) …`
   (same fix needed identically for `Graph.isKDof_zero_of_parallel_pair` and
-  `Graph.deficiency_le_deficiency_of_le_vertexSet_eq`).
+  `Graph.deficiency_le_deficiency_of_le_vertexSet_eq`). `deficiency_of_single_edge` has since
+  lost `hD`, and its calls the pin (RECONCILE round 3, task 38.12).
 - **Status:** resolved in-proof (one build cycle each). **Lifted to:** TACTICS-QUIRKS § 94
   (cross-referenced; Friction 2 is a variant, not a new pattern).
 

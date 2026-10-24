@@ -1091,10 +1091,9 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
   -- the deficiencies: `1` for the last bridge, and for each path body
   have hdefS := Graph.deficiency_induce_union_range_of_bridgePath (n := 3) hdisj
     hxV₁ hxV₂ hinj ha hb hpath hsep
-  have hSne : S.Nonempty := ⟨a, Or.inl ha⟩
   have hSssub : S ⊂ V(G) := (Set.ssubset_iff_of_subset hSV).mpr
     ⟨b, hV₂ hb, fun h => Set.disjoint_left.mp hSV₂ h hb⟩
-  have hdef := Graph.deficiency_eq_of_cutEdges_ncard_le_one (n := 3) hSne hSssub
+  have hdef := Graph.deficiency_eq_of_cutEdges_ncard_le_one (n := 3) hSssub
     (by rw [hcut, Set.ncard_singleton])
   rw [hcut, Set.ncard_singleton, hVS] at hdef
   -- the body counts

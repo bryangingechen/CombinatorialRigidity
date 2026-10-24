@@ -5372,14 +5372,18 @@ declaration's name as its header writes it:
   `by omega` for `hD` and a copy of the second without `hne` that elaborates with the same proof
   (`scratch/reconcile-lean/Hyps-t29.lean`, gitignored).
   *Found:* RECONCILE round 3 task 29.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.12). Task 38.1: drop both: `hD`
+  *Disposition:* done (task 38.12). Task 38.1: drop both: `hD`
   (`by omega` from `hm`, `hmD` where the body needs it; `lem:cycle-zero-dof` already states $3 \le m
   \le D$ alone; callers `isKDof_zero_of_triangle`, `cycle_isProperRigidSubgraph`,
   `pencilPair_of_simple_ncard_eq_three`) and `hne` (`Nonempty α` from `hssub`; callers
   `exists_cut_decomposition_of_not_twoEdgeConnected`, `deficiency_induce_union_singleton`,
   `exists_hasPencilPanelRealization_glue`, `X0Attains.of_bridgePath`, an untyped one pinning `(n :=
   n)` as FRICTION's entry on dropped hypotheses says), with `lem:cut-edge-decomposition` (1)
-  restated without $\emptyset \neq V'$.
+  restated without $\emptyset \neq V'$. Round 3: done so, and `cycle_isProperRigidSubgraph`'s `hD`
+  (`F-282`), which it passed only to `isKDof_zero_of_cycle`; `Nonempty α` from `V(G) \ V₁`, two
+  callers' local `Nonempty` facts removed, no caller needing `(n := n)` (the untyped ones already
+  pin it); (1)'s proof adds the case $V' = \emptyset$, whose side has deficiency $-D$ (a `lake lean`
+  witness, `scratch/reconcile-lean/t3812/EmptySide.lean`), and (2) says $V'$ nonempty (task 38.12).
 - **F-281** · L · five declarations of `Molecular/Deficiency.lean` whose proofs use less than a
   hypothesis gives: `Graph.IsTightPartition.subfamily_le`'s `hS2 : 2 ≤ S.ncard` only as
   `S.ncard ≠ 0`; `Graph.IsTightPartition.parts`'s `hD : 2 ≤ bodyBarDim n` only as
@@ -5396,13 +5400,14 @@ declaration's name as its header writes it:
   `classical`), each on the three standard axioms (`scratch/reconcile-lean/Hyps-t29-1.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 29.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the `[DecidableEq β]` and
+  *Disposition:* done (task 38.12): task 38.10 for the `[DecidableEq β]` and
   its `set_option`; task 38.12 drops `deficiency_of_single_edge`'s `hD` (unused; unpinned; callers
   `isMinimalKDof_ncard_le_two_trichotomy`, `hasPencilRealization_of_ncard_le_two`,
   `hasGenericPencilRealization_of_ncard_le_two`). Left (task 38.1): the over-strong `hS2`, `hD` and
   `hG` of the three pins, whose nodes state Jackson and Jordán's setting and whose callers all hold
   the strong form, a change of form only (as `F-273`). Round 3: the `[DecidableEq β]` and its
-  `set_option` dropped, the proof opening with `classical` (task 38.10).
+  `set_option` dropped, the proof opening with `classical` (task 38.10); `hD` dropped, with the
+  trichotomy's `have` that fed it and the pencil callers' `(n := 3) (by decide)` (task 38.12).
 - **F-282** · L · nine hypotheses of seven declarations of `Molecular/Induction/Operations.lean`
   that the others give or the proof does not use, and a repeated derivation:
   `Graph.exists_isProperRigidSubgraph_of_three_le_degree`'s `[DecidableEq β]`, which its statement
@@ -5440,7 +5445,8 @@ declaration's name as its header writes it:
   argument (KT's rank count), and re-proving it by the other's fundamental circuit would leave the
   node's proof describing another argument. Round 3: the repeated derivation's part done,
   `indep_matroidMG_of_noRigid_of_deficiency_pos` deleted with its caller (task 38.6); the
-  `[DecidableEq β]` and its `set_option` dropped (task 38.10).
+  `[DecidableEq β]` and its `set_option` dropped (task 38.10); `cycle_isProperRigidSubgraph`'s `hD`
+  dropped with `F-280`'s `isKDof_zero_of_cycle`'s, the only use it had (task 38.12).
 - **F-283** · L · six hypotheses of six declarations of `Molecular/Induction/` that the proofs do
   not use or the others give: `Graph.splitOff_deficiency_ge`'s `hdeg2`, which its proof does not use
   (`SplitOffDeficiency.lean`; `lake lint` does not report it);

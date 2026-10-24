@@ -177,7 +177,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 5/5: graph repairs and the findings report) | every chapter's dependency edges, pins and node shapes; the findings report | ✓ Complete — no missing edge left, the Lean unchanged; each finding done, left or reported in `notes/Prose-report.md` (see `notes/Prose-graph-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 1/3: the texts) | the status surfaces' scopes and credits, blueprint prose and two agent manuals (docs and prose only) | ✓ Complete — the scopes and credits fixed on the status surfaces, the Lean unchanged (see `notes/Reconcile-texts-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep and the code-smell and long-proof screens done; the fixes they found under way, the dead declarations the screens found deleted, tasks 38.12–38.27 next (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep and the code-smell and long-proof screens done; the fixes they found under way, the dead declarations the screens found deleted, tasks 38.13–38.27 next (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; not yet pushed (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -1378,8 +1378,10 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   put one selector in place of the pencil chart's re-seeding lemmas, deleting twelve declarations;
   task 38.10 removed the lint suppressions over unused hypotheses, keeping those of three main
   results, and of one lemma below one of them, whose statements wait for the next phase; task
-  38.11 dropped two unneeded hypotheses of the Henneberg reverse moves' isomorphisms. **Next:**
-  task 38.12, three unneeded hypotheses of the deficiency file.
+  38.11 dropped two unneeded hypotheses of the Henneberg reverse moves' isomorphisms; task 38.12
+  dropped three of the deficiency file, and one more that only fed one of them, stating the cut
+  lemma without its nonempty side. **Next:** task 38.13, the unneeded hypotheses of four files of
+  the molecular induction.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

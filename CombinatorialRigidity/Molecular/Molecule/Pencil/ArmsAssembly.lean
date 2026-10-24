@@ -142,7 +142,7 @@ theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph 
         rw [hFe]; exact ⟨hCe_thru, hCe_thru⟩
       · -- The rank: at most the deficiency rank, and at least the `D - 1` independent rows of `e`.
         have hdef : G.deficiency 3 = 1 :=
-          Graph.deficiency_of_single_edge (n := 3) (by decide) hxy hl_e hVG hEe
+          Graph.deficiency_of_single_edge hxy hl_e hVG hEe
         have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne hC
         rw [hFg] at hub
         obtain ⟨r, hr_li, hr_mem⟩ :=

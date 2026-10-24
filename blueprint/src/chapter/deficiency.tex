@@ -730,9 +730,8 @@ partition none of whose parts meets both sides of a cut.
   \uses{def:k-dof, def:cut-edges-2ec}
   Let $G$ be a multigraph.
   \begin{enumerate}
-    \item Let $V'$ be a set of vertices of $G$ with
-      $\emptyset \neq V' \neq V(G)$ and $d_G(V') \le 1$, and let
-      $V'' = V(G) \setminus V'$. Then
+    \item Let $V'$ be a set of vertices of $G$ with $V' \neq V(G)$
+      and $d_G(V') \le 1$, and let $V'' = V(G) \setminus V'$. Then
       \[
         \operatorname{def}(\tilde G) \;=\;
         \operatorname{def}(\tilde G[V']) + \operatorname{def}(\tilde G[V''])
@@ -741,8 +740,8 @@ partition none of whose parts meets both sides of a cut.
       So the cut adds $1$ to the sum if $d_G(V') = 1$, and $D$ if
       $d_G(V') = 0$.
     \item If $G$ is a minimal $k$-dof-graph that is not
-      $2$-edge-connected, then for some set $V'$ as in (1), $G[V']$ and
-      $G[V'']$ are minimal $k'$- and $k''$-dof-graphs, where
+      $2$-edge-connected, then for some nonempty set $V'$ as in (1),
+      $G[V']$ and $G[V'']$ are minimal $k'$- and $k''$-dof-graphs, where
       $k' = \operatorname{def}(\tilde G[V'])$,
       $k'' = \operatorname{def}(\tilde G[V''])$, and
       $k = k' + k'' + D - (D-1)\,d_G(V')$.
@@ -756,9 +755,12 @@ partition none of whose parts meets both sides of a cut.
   \leanok
   \uses{def:D-deficiency, def:cut-edges-2ec, lem:separated-partition-value,
     lem:subgraph-minimality}
-  (1) The union of a partition $P'$ of $V'$ and a partition $P''$ of
-  $V''$ is a separated partition of $V(G)$, whose value is given by
-  \cref{lem:separated-partition-value}. Taking $P'$ and $P''$ of
+  (1) If $V' = \emptyset$, then $V'' = V(G)$ and $d_G(V') = 0$, and
+  the only partition of $\emptyset$ has no part, so
+  $\operatorname{def}(\tilde G[V']) = -D$ and (1) holds. Let
+  $V' \neq \emptyset$. The union of a partition $P'$ of $V'$ and a
+  partition $P''$ of $V''$ is a separated partition of $V(G)$, whose
+  value is given by \cref{lem:separated-partition-value}. Taking $P'$ and $P''$ of
   largest value gives the inequality $\ge$ in (1).
 
   For $\le$, let $P$ be any partition of $V(G)$, and split each part $Q$
