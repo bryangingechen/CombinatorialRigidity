@@ -872,8 +872,8 @@ theorem PanelHingeFramework.case_III_full_family_restriction [DecidableEq α]
 `lem:case-III-candidate-row`, `lem:case-III-claim612-p2-placement` and
 `lem:case-III-claim612-p3-placement`; KT pp. 684–686): let `Gv` be a graph without `v` whose links
 are links of `G` (`hleG`), with `a, b ∈ V(Gv)` and `|V(G)| = |V(Gv)| + 1 ≥ 2`; let `e_a ≠ e_b` link
-`v` to `a` and `b` in `G`, with `ends e_a = (v, a)` and `ends e_b = (v, b)`, and let `q(a), n'` be
-linearly independent (`hLn`). Let `ρ` vanish on `C(q(a), q(b))` (`hρe₀`), with `hingeRow a b ρ` in
+`v` to `a` and `b` in `G`, with `ends e_a = (v, a)`, and let `q(a), n'` be linearly independent
+(`hLn`). Let `ρ` vanish on `C(q(a), q(b))` (`hρe₀`), with `hingeRow a b ρ` in
 the row space of `R(Gv, q)` (`hρGv`) and `ρ(C(q(a), n')) ≠ 0` (`hρgate`), and let `w` be
 `D(|V(Gv)| − 1)` linearly independent forms, each a row of `ofNormals Gv ends q` or a form
 `hingeRow a b ρ'` with `ρ'(C(q(a), q(b))) = 0` (`hwmem`). Then the framework
@@ -898,7 +898,7 @@ theorem PanelHingeFramework.case_III_rank_certification
     {v a b : α} {e_a e_b : β}
     (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
     (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
-    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hends_ea : ends e_a = (v, a)) (heab : e_a ≠ e_b)
     (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
     (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
     {n' : Fin (k + 2) → K}
@@ -949,25 +949,11 @@ theorem PanelHingeFramework.case_III_rank_certification
   have hseed_eq : ∀ e, (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e
       = Fv.supportExtensor e := fun _ => rfl
   -- An edge of `G_v` has the same hinge in `F₀` and `Fv`: its endpoints are in `V(Gv)`, so neither
-  -- is `v`, hence `e ≠ e_a` and `e ≠ e_b` (both link `v`), and
+  -- is `v`, hence `e ≠ e_a` and `e ≠ e_b` (both link `v`; `Graph.IsLink.ne_of_notMem`), and
   -- `caseIIICandidate_supportExtensor_of_ne` collapses `F₀.supportExtensor e` to
   -- `Fv.supportExtensor e`.
-  have hGv_ne : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
-    intro e u w hlink
-    have hu : u ∈ V(Gv) := hlink.left_mem
-    have hw : w ∈ V(Gv) := hlink.right_mem
-    have hune : u ≠ v := fun h => hvVc (h ▸ hu)
-    have hwne : w ≠ v := fun h => hvVc (h ▸ hw)
-    have hGlink := hleG e u w hlink
-    refine ⟨fun he => ?_, fun he => ?_⟩
-    · subst he
-      rcases (hG_ea).eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hune hh.symm
-      · exact hwne hh.symm
-    · subst he
-      rcases (hG_eb).eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hune hh.symm
-      · exact hwne hh.symm
+  have hGv_ne : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := fun hlink =>
+    ⟨hG_ea.ne_of_notMem hvVc hleG hlink, hG_eb.ne_of_notMem hvVc hleG hlink⟩
   have hF₀_ext_Gv : ∀ {e u w}, Gv.IsLink e u w → F₀.supportExtensor e = Fv.supportExtensor e := by
     intro e u w hlink
     obtain ⟨hne_a, hne_b⟩ := hGv_ne hlink

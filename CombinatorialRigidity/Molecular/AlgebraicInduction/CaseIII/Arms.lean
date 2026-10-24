@@ -117,21 +117,9 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
   have hends_G : ∀ e u w, F₀.graph.IsLink e u w → F₀.graph.IsLink e (ends e).1 (ends e).2 :=
     hF₀graph ▸ hends_q₀
   -- `hne` on linking edges: `e_a ↦ C(L) ≠ 0` (`hLn`), `e_b ↦ C(e₀) ≠ 0` (`hgab`), `Gᵥ` via `hne_Gv`
-  -- + extensor agreement off `{e_a, e_b}`.
-  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
-    intro e u w hlink
-    have hune : u ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
-    have hwne : w ≠ v := fun h => hvVc (h ▸ hlink.right_mem)
-    have hGlink := hleG e u w hlink
-    refine ⟨fun he => ?_, fun he => ?_⟩
-    · subst he
-      rcases (hG_ea).eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hune hh.symm
-      · exact hwne hh.symm
-    · subst he
-      rcases (hG_eb).eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hune hh.symm
-      · exact hwne hh.symm
+  -- + extensor agreement off `{e_a, e_b}`, which meet `v ∉ V(Gv)` (`Graph.IsLink.ne_of_notMem`).
+  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := fun hlink =>
+    ⟨hG_ea.ne_of_notMem hvVc hleG hlink, hG_eb.ne_of_notMem hvVc hleG hlink⟩
   have hne_F₀ : ∀ e, F₀.graph.IsLink e (ends e).1 (ends e).2 → F₀.supportExtensor e ≠ 0 := by
     intro e hlink
     rcases hsplitG e (ends e).1 (ends e).2 hlink with he | he | hGv
@@ -336,7 +324,7 @@ theorem PanelHingeFramework.case_III_arm_realization [Infinite K]
         (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
           (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows) :=
     PanelHingeFramework.case_III_rank_certification G Gv ends hvVc haVc hbVc hG_ea hG_eb
-      hends_ea hends_eb heab hleG hVone hVcard hLn hρgate hρe₀ hρGv hwcard hw hwmem
+      hends_ea heab hleG hVone hVcard hLn hρgate hρe₀ hρGv hwcard hw hwmem
   exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
     hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
 
@@ -613,7 +601,8 @@ proof of KT Lemma 6.13 (p. 692), and the proof of `lem:case-III` applies it to t
 note after the node). For the computation in dimension `3` Katoh and Tanigawa refer to Crapo and
 Whiteley 1982 (Proposition 3.4) and to Whiteley 1999 (Proposition 3).
 
-The proof. As `bodyBarDim n = screwDim k`, `n = k + 1`, so `m ≤ k + 2`, and `exists_cycle_normals`
+The proof. As `bodyBarDim n = screwDim k`, `n = k + 1`
+(`Graph.eq_add_one_of_bodyBarDim_eq_screwDim`), so `m ≤ k + 2`, and `exists_cycle_normals`
 (`lem:cycle-normals`) gives `m` normals with nonzero consecutive joins whose consecutive extensors
 are linearly independent. Let `q₀` give the `i`-th vertex the `i`-th normal and every other body `0`
 (`Function.extend`). Each cycle edge's support extensor is
@@ -640,17 +629,8 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
     have h := cy.link i
     rwa [show (⟨1, by omega⟩ : Fin cy.m) = 1 from
       Fin.ext (by rw [Fin.val_one']; exact (Nat.mod_eq_of_lt (by omega)).symm)] at h
-  -- `n = k + 1` from `hn` (as in `Graph.ChainData.d_eq_kAdd`), so `cy.m ≤ k + 2`.
-  have hnk : n = k + 1 := by
-    have key : ∀ m : ℕ, 2 * Nat.choose m 2 = m * (m - 1) := fun m => by
-      rw [Nat.choose_two_right, Nat.mul_div_cancel' (Nat.even_mul_pred_self m).two_dvd]
-    have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
-      rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
-    have hsd : 2 * screwDim k = (k + 2) * (k + 1) := by
-      rw [show screwDim k = Nat.choose (k + 2) 2 from rfl, key (k + 2),
-        show k + 2 - 1 = k + 1 from rfl]
-    have hprod : n * (n + 1) = (k + 2) * (k + 1) := by omega
-    nlinarith [hprod]
+  -- `n = k + 1` from `hn`, so `cy.m ≤ k + 2`.
+  have hnk : n = k + 1 := Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn
   -- The normals of `lem:cycle-normals`.
   obtain ⟨nrm, hjoin, hLI⟩ := exists_cycle_normals (K := K) (k := k) hm3 (by omega : cy.m ≤ k + 2)
   -- The normals `q₀`: `cy.vtx i ↦ nrm i`, and `0` elsewhere (`Function.extend`, by
@@ -729,7 +709,7 @@ vertices, to which `hIH` gives the realization `hcand` takes, or shows that `G` 
 most `n` vertices, which `cycle_realization` realizes. -/
 theorem PanelHingeFramework.case_III_hsplit_producer_all_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (_hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n)
+    {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n)
     (hn : Graph.bodyBarDim n = screwDim k) (G : Graph α β)
     -- `G`: a minimal `0`-dof-graph with at least three vertices and no proper rigid subgraph
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)

@@ -308,7 +308,6 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
     [Finite α] [Finite β]
     (G : Graph α β) (v a b c : α) (e_a e_b e_c e₀ : β)
     (hsimple : G.Simple)
-    (hvG : v ∈ V(G)) (haG : a ∈ V(G)) (hbG : b ∈ V(G)) (hcG : c ∈ V(G))
     (hav : a ≠ v) (hbv : b ≠ v) (hba : b ≠ a) (hcv : c ≠ v) (hca : c ≠ a) (hbc : b ≠ c)
     (heab : e_a ≠ e_b) (heac : e_a ≠ e_c)
     (hlea : G.IsLink e_a v a) (hleb : G.IsLink e_b v b) (hlec : G.IsLink e_c a c)
@@ -333,6 +332,10 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
   classical
   have : Fintype α := Fintype.ofFinite α
   have hGloop : G.Loopless := hsimple.toLoopless
+  have hvG : v ∈ V(G) := hlea.left_mem
+  have haG : a ∈ V(G) := hlea.right_mem
+  have hbG : b ∈ V(G) := hleb.right_mem
+  have hcG : c ∈ V(G) := hlec.right_mem
   set Gab := G.splitOff v a b e₀ with hGab
   set Gv := G.removeVertex v with hGv
   have : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
@@ -427,19 +430,12 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
     rcases hlink with ⟨hee₀, hGlink, hunev, hwnev⟩ | ⟨he, _⟩
     · exact Or.inl (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hGlink, hunev, hwnev⟩)
     · exact Or.inr he
-  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
-    intro e u w hlink
-    rw [hGv, Graph.removeVertex_isLink] at hlink
-    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
-    refine ⟨fun he => ?_, fun he => ?_⟩
-    · subst he
-      rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
-    · subst he
-      rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
+  have hvVc : v ∉ V(Gv) := by rw [hGv, Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
+  have hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w := by
+    intro e u w hlink; rw [hGv, Graph.removeVertex_isLink] at hlink; exact hlink.1
+  -- The links of `Gv` are not `e_a` or `e_b`, which meet `v ∉ V(Gv)`.
+  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := fun hlink =>
+    ⟨hlea.ne_of_notMem hvVc hleG hlink, hleb.ne_of_notMem hvVc hleG hlink⟩
   have hV4 : 4 ≤ V(G).ncard := by
     have h1 : ({v, a, b, c} : Set α) ⊆ V(G) := by
       intro x hx; simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
@@ -539,11 +535,8 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
     PanelHingeFramework.rigidityRows_ofNormals_congr_ends q
       (fun e u w hlink => (hends₁_off (hGv_off hlink).1 (hGv_off hlink).2).symm)
   -- Facts on `Gv` and `G` for `u = 0` and `u = 1`.
-  have hvVc : v ∉ V(Gv) := by rw [hGv, Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
   have haVc : a ∈ V(Gv) := by rw [hGv, Graph.vertexSet_removeVertex]; exact ⟨haG, hav⟩
   have hbVc : b ∈ V(Gv) := by rw [hGv, Graph.vertexSet_removeVertex]; exact ⟨hbG, hbv⟩
-  have hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w := by
-    intro e u w hlink; rw [hGv, Graph.removeVertex_isLink] at hlink; exact hlink.1
   have hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w := by
     intro e u w hlink
     by_cases hu : u = v
@@ -1066,21 +1059,10 @@ panels of KT eq. (6.67) (p. 698), one for each of the `d` frameworks, are `k + 1
 space `K^{k+2}` of the normals; `Graph.ChainData.candidatePanel` indexes them by `Fin (k + 1)`, as
 `exists_chainData_discriminator_pick_of_LI` takes them.
 
-The proof. `cd.d = n` (`d_eq`), and `2 · bodyBarDim n = n(n + 1)` and
-`2 · screwDim k = (k + 2)(k + 1)` give `n(n + 1) = (k + 2)(k + 1)`, whose only solution in `ℕ` is
-`n = k + 1` (`nlinarith`). -/
+The proof. `cd.d = n` (`d_eq`), and `n = k + 1` (`Graph.eq_add_one_of_bodyBarDim_eq_screwDim`). -/
 theorem _root_.Graph.ChainData.d_eq_kAdd {G : Graph α β} {n : ℕ} (cd : G.ChainData n)
-    (hn : Graph.bodyBarDim n = screwDim k) : cd.d = k + 1 := by
-  have key : ∀ m : ℕ, 2 * Nat.choose m 2 = m * (m - 1) := fun m => by
-    rw [Nat.choose_two_right, Nat.mul_div_cancel' (Nat.even_mul_pred_self m).two_dvd]
-  have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
-    rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
-  have hsd : 2 * screwDim k = (k + 2) * (k + 1) := by
-    rw [show screwDim k = Nat.choose (k + 2) 2 from rfl, key (k + 2),
-      show k + 2 - 1 = k + 1 from rfl]
-  have hprod : n * (n + 1) = (k + 2) * (k + 1) := by omega
-  have hnk : n = k + 1 := by nlinarith [hprod]
-  rw [cd.d_eq, hnk]
+    (hn : Graph.bodyBarDim n = screwDim k) : cd.d = k + 1 :=
+  cd.d_eq.trans (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn)
 
 /-- **The vertices `u_0, …, u_{d−1}` of the panels, indexed by `Fin (k + 1)`** (a step of
 `lem:case-III-chain-discriminator`): `Graph.ChainData.candidateVtx`, the map `i ↦ u_i` with
@@ -1237,19 +1219,8 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv [Infinite K]
   have hVcard : V(G).ncard = V(Gv).ncard + 1 := by rw [hcard_Gv]; omega
   -- The two edges at `v` are not links of `Gv` (`v ∉ V(Gv)`), so on the links of `Gv` `endsσρ₁`
   -- agrees with `ends₀`.
-  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
-    intro e u w hlink
-    rw [hGv, Graph.removeVertex_isLink] at hlink
-    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
-    refine ⟨fun he => ?_, fun he => ?_⟩
-    · subst he
-      rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
-    · subst he
-      rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
+  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := fun hlink =>
+    ⟨hlea.ne_of_notMem hvVc hleG hlink, hleb.ne_of_notMem hvVc hleG hlink⟩
   -- The rows of `R(Gv, qρ)` with `ends₀`, at which `hρGv` is stated, and with `endsσρ₁` are the
   -- same, as the two selectors agree on the links of `Gv` (`rigidityRows_ofNormals_congr_ends`).
   have hcongr : (PanelHingeFramework.ofNormals Gv ends₀ qρ).toBodyHinge.rigidityRows
@@ -1453,7 +1424,7 @@ block of `e₀`, and `hingeRow v₀ v₂ ρ₀` is a combination of rows of `R(G
 `chainData_dispatch` (`lem:case-III-chain-dispatch`) uses all of this but the forms `rab`.
 
 The proof, as in the proof of `lem:case-III-chain-discriminator`. As `d ≥ 2`, `v₁` is interior: its
-edges are `edge 0` to `v₀` and `edge 1` to `v₂` (`Graph.ChainData.deg_two_split`).
+edges are `edge 0` to `v₀` and `edge 1` to `v₂` (`Graph.ChainData.splitOff_data_one`).
 `exists_nested_rankPolynomial_lower_all_k` (`lem:case-III-nested-rank-lower`) gives the bound of KT
 eq. (6.22) at `G − v₁`, and `exists_shared_redundancy_and_matched_candidate`, at the split
 `(v₁, v₀, v₂)`, the rest. -/
@@ -1510,40 +1481,8 @@ theorem PanelHingeFramework.chainData_fire_discriminator [Infinite K]
       (∀ e u w, (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
         (cd.vtx ⟨2, by omega⟩) cd.e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
   -- The split `(v, a, b) = (vtx 1, vtx 0, vtx 2)`, with the edges `edge 0 : v₀v₁` and
-  -- `edge 1 : v₁v₂`, from `v₁`.
-  have hlea : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) := by
-    have h := cd.link ⟨0, by omega⟩
-    rw [show (⟨0, by omega⟩ : Fin cd.d).succ = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
-      show (⟨0, by omega⟩ : Fin cd.d).castSucc = (⟨0, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
-      at h
-    exact h.symm
-  have hleb : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) := by
-    have h := cd.link ⟨1, by omega⟩
-    rwa [show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
-      show (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
-      at h
-  -- Distinctness from `vtx_inj`/`edge_inj`.
-  have hav : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨1, by omega⟩ :=
-    cd.vtx_ne (by omega) (by omega) (by omega)
-  have hbv : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨1, by omega⟩ :=
-    cd.vtx_ne (by omega) (by omega) (by omega)
-  have hba : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨0, by omega⟩ :=
-    cd.vtx_ne (by omega) (by omega) (by omega)
-  have heab : cd.edge (⟨0, by omega⟩ : Fin cd.d) ≠ cd.edge ⟨1, by omega⟩ := fun h => by
-    have := congrArg Fin.val (cd.edge_inj h); simp only at this; omega
-  -- Every edge of `G` at `vtx 1` is `edge 0` or `edge 1`:
-  -- `vtx 1 = vtx (⟨1, _⟩ : Fin cd.d).castSucc`, so `deg_two_split` at the index `1` gives `edge 1`
-  -- or `edge (1 − 1) = edge 0`.
-  have hclv : ∀ e x, G.IsLink e (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) x →
-      e = cd.edge ⟨0, by omega⟩ ∨ e = cd.edge ⟨1, by omega⟩ := by
-    intro e x hlink
-    have hcast : (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) :=
-      Fin.ext rfl
-    have h := cd.deg_two_split (i := ⟨1, by omega⟩) (by simp) e x (by rwa [hcast])
-    rcases h with h | h
-    · exact Or.inr h
-    · refine Or.inl ?_
-      rwa [show (⟨(1 : ℕ) - 1, by omega⟩ : Fin cd.d) = ⟨0, by omega⟩ from rfl] at h
+  -- `edge 1 : v₁v₂` from `v₁`, and the edges of `G` at `v₁` (`Graph.ChainData.splitOff_data_one`).
+  obtain ⟨hav, hbv, hba, heab, hlea, hleb, hclv⟩ := cd.splitOff_data_one hd2
   -- The bound of KT eq. (6.22) at `G − v₁` off the zeros of a polynomial.
   have h622lb := PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k hk1 hn G
     (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩)
@@ -1662,13 +1601,7 @@ theorem PanelHingeFramework.chainData_dispatch_interior [Infinite K]
     -- is interior and `edge 1` meets `vtx 1`.
     intro j hj
     obtain ⟨hGlink, hu1, hv1⟩ := Graph.removeVertex_isLink.mp (hlinkGv j)
-    have hlink_one : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) := by
-      have h := cd.link ⟨1, by omega⟩
-      rwa [show (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) from
-          Fin.ext rfl,
-        show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
-        at h
+    obtain ⟨-, -, -, -, -, hlink_one, -⟩ := cd.splitOff_data_one (by omega)
     have hanchor : G.IsLink (evGv j) (cd.vtx ⟨2, by omega⟩) (vvGv j) ∨
         G.IsLink (evGv j) (uvGv j) (cd.vtx ⟨2, by omega⟩) := by
       rcases hj with h | h
@@ -1719,20 +1652,12 @@ theorem PanelHingeFramework.chainData_dispatch_interior [Infinite K]
   have hends_ea : endsσρ₁ e_a = (v, a) := by
     rw [hendsσρ₁, Function.update_of_ne heab, Function.update_self]
   have hends_eb : endsσρ₁ e_b = (v, b) := by rw [hendsσρ₁, Function.update_self]
-  -- The links of `Gv` are not `e_a` or `e_b`, and `endsσρ₁` gives them their ends.
-  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
-    intro e u w hlink
-    rw [hGv, Graph.removeVertex_isLink] at hlink
-    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
-    refine ⟨fun he => ?_, fun he => ?_⟩
-    · subst he
-      rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
-    · subst he
-      rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
+  -- The links of `Gv` are not `e_a` or `e_b`, which meet `v ∉ V(Gv)`, and `endsσρ₁` gives them
+  -- their ends.
+  have hvVc : v ∉ V(Gv) := cd.notMem_vertexSet_removeVertex_castSucc i
+  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := fun hlink =>
+    ⟨hlea.ne_of_notMem hvVc (fun _ _ _ h => hleG h) hlink,
+      hleb.ne_of_notMem hvVc (fun _ _ _ h => hleG h) hlink⟩
   have hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (endsσρ₁ e).1 (endsσρ₁ e).2 := by
     intro e u w hlink
     obtain ⟨hne_a, hne_b⟩ := hGv_off hlink
@@ -1873,22 +1798,11 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
   set Gv := G.removeVertex (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) with hGv
   -- The two edges at `v₁` (`edge 0 : v₀v₁`, `edge 1 : v₁v₂`) and `e₀`, the three edges at which
   -- `ends₀` changes `ends`. None is a link of `Gv`: the first two meet `v₁`, and `e₀ ∉ E(G)`.
-  have hl0 : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) := by
-    have h := cd.link ⟨0, by omega⟩
-    rwa [show (⟨0, by omega⟩ : Fin cd.d).succ = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
-      show (⟨0, by omega⟩ : Fin cd.d).castSucc = (⟨0, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
-      at h
-  have hl1 : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) := by
-    have h := cd.link ⟨1, by omega⟩
-    rwa [show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
-      show (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
-      at h
+  obtain ⟨-, -, -, he01, hl0, hl1, -⟩ := cd.splitOff_data_one (by omega)
   have he₀ne0 : cd.e₀ ≠ cd.edge ⟨0, by omega⟩ := fun h =>
     cd.e₀_fresh (h ▸ hl0.edge_mem)
   have he₀ne1 : cd.e₀ ≠ cd.edge ⟨1, by omega⟩ := fun h =>
     cd.e₀_fresh (h ▸ hl1.edge_mem)
-  have he01 : cd.edge ⟨0, by omega⟩ ≠ cd.edge ⟨1, by omega⟩ := fun h => by
-    have := congrArg Fin.val (cd.edge_inj h); simp only at this; omega
   -- The selector `ends₀`: `ends` with `e₀ ↦ (v₂, v₀)`, `edge 0 ↦ (v₀, v₁)` and `edge 1 ↦ (v₁, v₂)`.
   set ends₀ : β → α × α :=
     Function.update (Function.update (Function.update ends cd.e₀
@@ -1911,20 +1825,14 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
       Function.update_of_ne he₀]
   -- No link of `Gv = G − v₁` is one of the three edges: `edge 0` and `edge 1` meet `v₁ ∉ V(Gv)`,
   -- and `e₀ ∉ E(G)`.
+  have hvVc : cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) ∉ V(Gv) :=
+    cd.notMem_vertexSet_removeVertex_castSucc ⟨1, by omega⟩
+  have hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w :=
+    fun _ _ _ hlink => (Graph.removeVertex_isLink.mp hlink).1
   have hGv_off : ∀ {e u w}, Gv.IsLink e u w →
-      e ≠ cd.e₀ ∧ e ≠ cd.edge ⟨0, by omega⟩ ∧ e ≠ cd.edge ⟨1, by omega⟩ := by
-    intro e u w hlink
-    rw [hGv, Graph.removeVertex_isLink] at hlink
-    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
-    refine ⟨fun he => cd.e₀_fresh (he ▸ hGlink.edge_mem), fun he => ?_, fun he => ?_⟩
-    · subst he
-      rcases hl0.eq_and_eq_or_eq_and_eq hGlink with ⟨_, hh⟩ | ⟨_, hh⟩
-      · exact hwnev hh.symm
-      · exact hunev hh.symm
-    · subst he
-      rcases hl1.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
+      e ≠ cd.e₀ ∧ e ≠ cd.edge ⟨0, by omega⟩ ∧ e ≠ cd.edge ⟨1, by omega⟩ := fun hlink =>
+    ⟨fun he => cd.e₀_fresh (he ▸ (hleG _ _ _ hlink).edge_mem), hl0.ne_of_notMem hvVc hleG hlink,
+      hl1.ne_of_notMem hvVc hleG hlink⟩
   -- `ends₀ = ends` on every link of `Gv`, so the two frameworks have the same rows and hinge-row
   -- blocks there.
   have hagreeGv : ∀ e u w, Gv.IsLink e u w → ends₀ e = ends e := by
@@ -1959,9 +1867,9 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
       -- `ends₀ f = ends f`, given by `hrecGab`.
       have hfa : f ≠ cd.edge ⟨0, by omega⟩ := by
         rintro rfl
-        rcases hl0.eq_and_eq_or_eq_and_eq hGlink with ⟨_, h⟩ | ⟨_, h⟩
-        · exact hyne h.symm
+        rcases hl0.eq_and_eq_or_eq_and_eq hGlink with ⟨h, _⟩ | ⟨h, _⟩
         · exact hxne h.symm
+        · exact hyne h.symm
       have hfb : f ≠ cd.edge ⟨1, by omega⟩ := by
         rintro rfl
         rcases hl1.eq_and_eq_or_eq_and_eq hGlink with ⟨h, _⟩ | ⟨h, _⟩
@@ -2048,7 +1956,6 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
       (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).IsGeneralPosition)
     (hends' : ∀ e u w, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e u w →
       (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e (ends e).1 (ends e).2)
-    (_hρ₀ne : ρ₀ ≠ 0)
     (hρ₀e₀ : ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
       (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0)
     (hw : LinearIndependent K w)
@@ -2074,40 +1981,12 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
   -- in `w`'s type, is abbreviated.
   set Gv := G.removeVertex (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) with hGv
   have : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G (cd.vtx ⟨1, by omega⟩))
-  -- The two edges at `v = vtx 1`, from `v`, their distinctness, and the edges of `G` at `v`, as in
-  -- `chainData_fire_discriminator`.
-  have hlea : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) := by
-    have h := cd.link ⟨0, by omega⟩
-    rw [show (⟨0, by omega⟩ : Fin cd.d).succ = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
-      show (⟨0, by omega⟩ : Fin cd.d).castSucc = (⟨0, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
-      at h
-    exact h.symm
-  have hleb : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) := by
-    have h := cd.link ⟨1, by omega⟩
-    rwa [show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
-      show (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
-      at h
-  have hav : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨1, by omega⟩ :=
-    cd.vtx_ne (by omega) (by omega) (by omega)
-  have hbv : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨1, by omega⟩ :=
-    cd.vtx_ne (by omega) (by omega) (by omega)
-  have hba : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨0, by omega⟩ :=
-    cd.vtx_ne (by omega) (by omega) (by omega)
-  have heab : cd.edge (⟨0, by omega⟩ : Fin cd.d) ≠ cd.edge ⟨1, by omega⟩ := fun h => by
-    have := congrArg Fin.val (cd.edge_inj h); simp only at this; omega
+  -- The two edges at `v = vtx 1`, from `v`, their distinctness, and the edges of `G` at `v`
+  -- (`Graph.ChainData.splitOff_data_one`), as in `chainData_fire_discriminator`.
+  obtain ⟨hav, hbv, hba, heab, hlea, hleb, hclv⟩ := cd.splitOff_data_one hd2
   have hvG : cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
   have haG : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
   have hbG : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
-  have hclv : ∀ e x, G.IsLink e (cd.vtx ⟨1, by omega⟩) x →
-      e = cd.edge ⟨0, by omega⟩ ∨ e = cd.edge ⟨1, by omega⟩ := by
-    intro e x hlink
-    have hcast : (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) :=
-      Fin.ext rfl
-    have h := cd.deg_two_split (i := ⟨1, by omega⟩) (by simp) e x (by rwa [hcast])
-    rcases h with h | h
-    · exact Or.inr h
-    · refine Or.inl ?_
-      rwa [show (⟨(1 : ℕ) - 1, by omega⟩ : Fin cd.d) = ⟨0, by omega⟩ from rfl] at h
   -- Facts on `Gv` and `G`, as in `case_III_candidate_dispatch`.
   have hvVc : cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) ∉ V(Gv) := by
     rw [hGv, Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
@@ -2118,19 +1997,8 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
   have hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w := by
     intro e u w hlink; rw [hGv, Graph.removeVertex_isLink] at hlink; exact hlink.1
   have hGv_off : ∀ {e u w}, Gv.IsLink e u w →
-      e ≠ cd.edge ⟨0, by omega⟩ ∧ e ≠ cd.edge ⟨1, by omega⟩ := by
-    intro e u w hlink
-    rw [hGv, Graph.removeVertex_isLink] at hlink
-    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
-    refine ⟨fun he => ?_, fun he => ?_⟩
-    · subst he
-      rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
-    · subst he
-      rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
-      · exact hunev hh.symm
-      · exact hwnev hh.symm
+      e ≠ cd.edge ⟨0, by omega⟩ ∧ e ≠ cd.edge ⟨1, by omega⟩ := fun hlink =>
+    ⟨hlea.ne_of_notMem hvVc hleG hlink, hleb.ne_of_notMem hvVc hleG hlink⟩
   have hsplitG : ∀ e u w, G.IsLink e u w →
       e = cd.edge ⟨0, by omega⟩ ∨ e = cd.edge ⟨1, by omega⟩ ∨ Gv.IsLink e u w := by
     intro e u w hlink
@@ -2235,15 +2103,15 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
 
 /-- **Case III for a chain** (`lem:case-III-chain-dispatch`; from the proof of KT Lemma 6.13,
 pp. 692–698): under the hypotheses of `chainData_fire_discriminator`
-(`lem:case-III-chain-discriminator`), with `G` of deficiency `0` (`hdef`), `G` has a generic
-full-rank realization.
+(`lem:case-III-chain-discriminator`), `G` has a generic full-rank realization.
 
 The proof, as in the proof of `lem:case-III-chain-dispatch`. `chainData_fire_discriminator` gives
 the normals, the form `ρ₀`, the bottom rows, the combination and the index `i` of the chosen panel.
 For `2 ≤ i`, so that `d ≥ 3`, `chainData_dispatch_interior_of_discriminator` builds `(G, p_i)` from
 `(G_i, q_i)`; for `i ≤ 1`, `chainData_dispatch_floor_of_discriminator` builds `(G, p_0)` or
-`(G, p_1)`. The proof of `lem:case-III` (`case_III_realization_all_k`) applies it with
-`hdef = hG.1`, and with `hdef_Gab` and `hsplitGP` from `case_III_hsplit_producer_all_k`. -/
+`(G, p_1)`, both for `G` of deficiency `0` (`hG.1`). The proof of `lem:case-III`
+(`case_III_realization_all_k`) applies it with `hdef_Gab` and `hsplitGP` from
+`case_III_hsplit_producer_all_k`. -/
 theorem PanelHingeFramework.chainData_dispatch [Infinite K]
     [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (hd2 : 2 ≤ cd.d) (hk1 : 1 ≤ k)
@@ -2253,23 +2121,22 @@ theorem PanelHingeFramework.chainData_dispatch [Infinite K]
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G') ∧
         HasPanelRealization K k n G')
-    (hdef : G.deficiency n = 0)
     (hdef_Gab : (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
       (cd.vtx ⟨2, by omega⟩) cd.e₀).deficiency n = 0)
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization K k n
       (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀)) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
-  obtain ⟨q, ends, ρ₀, w, lamAB, rab, i, n', hgp, hends', hρ₀ne, hρ₀e₀, hw, hwmem',
+  obtain ⟨q, ends, ρ₀, w, lamAB, rab, i, n', hgp, hends', -, hρ₀e₀, hw, hwmem',
       hrab, hρ₀sum, hedgeGv, hLI, hgate, hρ₀Gv, hrecGab⟩ :=
     PanelHingeFramework.chainData_fire_discriminator cd hd2 hk1 hn hG hV3 hSimple hIH hdef_Gab
       hsplitGP
   by_cases hint : 2 ≤ (i : ℕ)
   · have h3 : 3 ≤ cd.d := by have := i.isLt; omega
     exact PanelHingeFramework.chainData_dispatch_interior_of_discriminator cd h3 hSimple i hint
-      hgp hρ₀e₀ hw hwmem' hedgeGv hLI hgate hρ₀Gv hrecGab hdef
+      hgp hρ₀e₀ hw hwmem' hedgeGv hLI hgate hρ₀Gv hrecGab hG.1
   · have h1i : (i : ℕ) ≤ 1 := by omega
     exact PanelHingeFramework.chainData_dispatch_floor_of_discriminator cd hd2 hSimple i h1i
-      hgp hends' hρ₀ne hρ₀e₀ hw hwmem' hLI hgate hρ₀Gv hdef
+      hgp hends' hρ₀e₀ hw hwmem' hLI hgate hρ₀Gv hG.1
 
 /-! ## Case III (`lem:case-III`) -/
 
@@ -2300,14 +2167,13 @@ theorem PanelHingeFramework.case_III_realization_all_k
         HasPanelRealization K k n G') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G :=
   -- `hIH` at `k' = 0`, as `case_III_hsplit_producer_all_k` takes it, and its `hcand` from
-  -- `chainData_dispatch`: `cd` and `hd2` from the chain, `hn`, `hG`, `hV3`, `hSimple` and `hIH`
-  -- from here, and `hdef = hG.1`.
-  PanelHingeFramework.case_III_hsplit_producer_all_k hk1 hD hn G hG hV3 hnoRigid hSimple
+  -- `chainData_dispatch`: `cd`, `hd2`, `hdef_Gab` and `hsplitGP` from the chain, `hk1`, `hn`, `hG`,
+  -- `hV3`, `hSimple` and `hIH` from here.
+  PanelHingeFramework.case_III_hsplit_producer_all_k hD hn G hG hV3 hnoRigid hSimple
     (fun G' hG' hV2 hlt =>
       hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
     hfresh
     (fun cd hd2 hdef_Gab hsplitGP =>
-      PanelHingeFramework.chainData_dispatch cd hd2 hk1 hn hG hV3 hSimple hIH hG.1
-        hdef_Gab hsplitGP)
+      PanelHingeFramework.chainData_dispatch cd hd2 hk1 hn hG hV3 hSimple hIH hdef_Gab hsplitGP)
 
 end CombinatorialRigidity.Molecular

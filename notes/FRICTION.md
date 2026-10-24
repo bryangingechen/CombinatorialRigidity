@@ -217,6 +217,9 @@ to be re-derived by re-reading entries later.
 - **Where it bit:** RECONCILE round 3, task 38.11 (`F-278`): `isoOfOptionSubtypeNe`'s `hnone` and
   `isoTypeIIOfThreeNeighbors`'s `hab` (`HennebergReverse.lean`), unused, and reported by neither
   `linter.unusedVariables` nor `lake lint`'s `unusedArguments`; task 25.1 found them by reading.
+  Task 38.17 met the converse: a written-out `subst` proof replaced by one lemma
+  (`Graph.IsLink.ne_of_notMem`) made the build report `case_III_rank_certification`'s `hends_eb`
+  unused, a binder the `subst` had hidden since it was written (`F-326`).
 - **Friction:** none in the drop (it built first time); the cost is in the screen, as "`lake lint`
   to a fixed point" cannot see such a binder, at a declaration or at a caller.
 - **Proposed fix:** for a hypothesis in scope of a `subst` or an `rfl` pattern over a variable its

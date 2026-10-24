@@ -90,9 +90,13 @@ dropped `F-286`'s `_hE₁`, `honly` and three `[Finite β]` of `RigidityMatrix/B
 two `nolint`s, and a bridge-path lemma's `hsep` and three path and ear lemmas' `[Finite β]` that
 only passed them on, restating `lem:block-rank-cut`; task 38.16 dropped `F-290`'s `_hG_ea` and
 `F-325`'s `hr`, and gave `GenericityDevice.lean` one lemma for the rows' coordinatization and two
-derivations called where they were repeated (`F-291`), no node restated.
-**Next concrete task:** round 3's task 38.17, `CaseIII/Arms`, `Candidate` and `Realization.lean`
-(then tasks 38.18–38.27 and the close).
+derivations called where they were repeated (`F-291`), no node restated; task 38.17 dropped
+`F-275`'s, `F-292`'s and `F-293`'s seven hypotheses in `CaseIII/`, and `F-326`'s `hends_eb`, which
+a `subst` had hidden, with `Graph.IsLink.ne_of_notMem` and `Graph.ChainData.splitOff_data_one`
+for steps written out there and `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` at two (`F-289`), no
+node restated.
+**Next concrete task:** round 3's task 38.18, `CaseIII/Relabel/` (then tasks 38.19–38.27 and the
+close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

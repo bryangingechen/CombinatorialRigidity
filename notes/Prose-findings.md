@@ -4979,7 +4979,7 @@ declaration's name as its header writes it:
   states `a ∈ V(G)` and `b ∈ V(G)` beside the two links that give them.
   *Evidence:* read (the statements; a signature scan of the Lean, not retained).
   *Found:* RECONCILE round 3 task 15.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.14 and 38.17). Task 38.1: task
+  *Disposition:* done (tasks 38.14 and 38.17). Task 38.1: task
   38.14 drops `splitOff_isMinimalKDof`'s `haV`, `hbV`, `hvG` (from `hla`, `hlb`; callers
   `chainData_extract`, `minimal_kdof_reduction`) and `forest_surgery_count`'s `haV`, `hbV` (callers
   `forest_surgery_split`, `splitOff_exists_base_inter_fiber_lt`), restating `lem:reduction-step` and
@@ -4991,7 +4991,9 @@ declaration's name as its header writes it:
   `IsLink.right_mem`; `chainData_extract`'s local `haG`, `hbG` and the local `hbV` of
   `forest_surgery_split` and `splitOff_exists_base_inter_fiber_lt` removed (those of
   `minimal_kdof_reduction` are used elsewhere); `lem:reduction-step` and `lem:forest-surgery-count`,
-  which state none of them, unchanged (task 38.14).
+  which state none of them, unchanged (task 38.14). `case_III_candidate_dispatch`'s four dropped,
+  derived in its proof from `hlea`, `hleb` and `hlec`; it has no caller, and
+  `lem:case-III-candidate-dispatch-d3` is unchanged (task 38.17).
 - **F-276** · L · `SimpleGraph.instDecidableIsLaman` and the definitions under it
   (`PebbleGame/Exec.lean`, `PebbleGame/Algorithm.lean`, `Search/DFS.lean`): `decide +kernel` does
   not evaluate the pebble game's `Decidable` instances. The kernel unfolds the well-founded
@@ -5649,7 +5651,7 @@ declaration's name as its header writes it:
   arithmetic by `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`, on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t33.lean`, gitignored).
   *Found:* RECONCILE round 3 task 33.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.4 and 38.17). Task 38.1: task
+  *Disposition:* done (tasks 38.4 and 38.17). Task 38.1: task
   38.4 drops `theorem_55_base`'s `huv` and `theorem_55_triangle`'s `huv`, `hvw`, `huw` (unused;
   `lem:theorem-55-base` and `lem:theorem-55-triangle` restated without the distinctness; callers:
   the first's five, `toBodyHinge_rankHypothesis_zero`, `theorem_55_base_producer_parallel_pair_gen`,
@@ -5665,7 +5667,8 @@ declaration's name as its header writes it:
   it left unused, `toBodyHinge_rankHypothesis_zero`'s `huv` and
   `toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`'s `[Nonempty α]`;
   `lem:theorem-55-base`, `lem:theorem-55-triangle` and `lem:cycle-realization-base` restated without
-  the distinctness (task 38.4).
+  the distinctness (task 38.4). `d_eq_kAdd` is `cd.d_eq` and the lemma, and `hnk` the lemma at `hn`;
+  no statement changes (task 38.17).
 - **F-290** · L · hypotheses of `Molecular/AlgebraicInduction/CaseI.lean` and `CaseII.lean` that the
   proofs do not use or the others give. `case_II_placement_eq612`'s `_hG_ea : G.IsLink e_a v a`,
   which its proof does not use (the dead pin of `lem:case-II-realization-placement`, S3's node,
@@ -5756,12 +5759,18 @@ declaration's name as its header writes it:
   import) does for a chain's length; a lemma on `n` alone would serve both.
   *Evidence:* read (the statements and bodies).
   *Found:* RECONCILE round 3 task 35.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.17). Task 38.1: drop
+  *Disposition:* done (task 38.17). Task 38.1: drop
   `case_III_hsplit_producer_all_k`'s `_hk1` (caller `case_III_realization_all_k`); `hnk` by
   `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` (`F-289`); one lemma for `hGv_off` (no link of `G −
   v` is a link at `v`, so neither `e_a` nor `e_b`; ~12 lines at each of eight sites, `Arms.lean`,
   `Candidate.lean`'s `hGv_ne` and six in `Realization.lean`, less those task 38.2 deletes), with the
-  project's `removeVertex` lemmas. Moot: `case_III_old_new_blocks`'s two (task 38.2).
+  project's `removeVertex` lemmas. Moot: `case_III_old_new_blocks`'s two (task 38.2). Round 3:
+  `_hk1` dropped (the caller's `hk1` feeds `chainData_dispatch`) and `hnk` the lemma at `hn`; the
+  lemma is `Graph.IsLink.ne_of_notMem` (`Induction/Operations.lean`, beside `removeVertex`), stated
+  for any `H` without `v` whose links are links of `G`, as `Arms.lean` and `Candidate.lean` take
+  such an `H`, at the seven sites left (those two and five in `Realization.lean`). Dropping
+  `Candidate.lean`'s `subst` exposed an unused hypothesis there (`F-326`). No node restated (task
+  38.17).
 - **F-293** · L · an unused hypothesis, derivable ones and repeated derivations in
   `Molecular/AlgebraicInduction/CaseIII/Realization.lean`. `chainData_dispatch_floor_of_discriminator`
   takes `_hρ₀ne : ρ₀ ≠ 0`, which its proof does not use. `case_III_realization_all_k`'s
@@ -5780,7 +5789,7 @@ declaration's name as its header writes it:
   called with `hn ▸ three_le_screwDim hk1` for `hD`, and `2 ≤ cd.d` from `cd.d_eq_kAdd hn` and `hk1`
   by `omega`, on the three standard axioms (`scratch/reconcile-lean/Hyps-t351.lean`, gitignored).
   *Found:* RECONCILE round 3 task 35.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.17). Task 38.1: drop
+  *Disposition:* done (task 38.17). Task 38.1: drop
   `chainData_dispatch_floor_of_discriminator`'s `_hρ₀ne` (caller `chainData_dispatch`) and
   `chainData_dispatch`'s `hdef` (`hG.1`; `lem:case-III-chain-dispatch`; caller
   `case_III_realization_all_k`); one lemma on `Graph.ChainData` at `2 ≤ cd.d` for the split at `vtx
@@ -5791,6 +5800,16 @@ declaration's name as its header writes it:
   chain (`F-324`); `hd2`, which the `by omega` index proofs in the types of later hypotheses read;
   and the ~120-line rigidity block of `case_III_candidate_dispatch` and `chainData_split_w6b_gates`,
   which threads the split's normals, selector, form and rows (§C's calibration, the S4b trap).
+  Round 3: `_hρ₀ne` and `hdef` dropped, the caller passing `hG.1`; `lem:case-III-chain-dispatch`,
+  which states the discriminator's hypotheses and no deficiency beside them, unchanged. The lemma
+  is `Graph.ChainData.splitOff_data_one` (`Induction/Operations.lean`, with the chain's other split
+  lemmas), for all seven in `chainData_fire_discriminator` and
+  `chainData_dispatch_floor_of_discriminator`, and for the parts written out in
+  `chainData_dispatch_interior_of_discriminator` (`hl0`, `hl1`, `he01`) and
+  `chainData_dispatch_interior` (`hlink_one`); `hGv_off` by `F-292`'s lemma at the five.
+  `chainData_dispatch`'s pin now reaches `def:matroid-MG` through `hG.1`, an ancestor
+  (`--summary`'s implied edges 2430 → 2431). The `Relabel/` files write parts of the split out
+  too: `F-295`, task 38.18 (task 38.17).
 - **F-294** · L · derivable hypotheses and repeated derivations in
   `Molecular/AlgebraicInduction/CaseIII/Relabel/Basic.lean` and `Arm.lean`.
   `BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` takes `hdeg2r`, which
@@ -5853,7 +5872,9 @@ declaration's name as its header writes it:
   the private `perp_panelSupportExtensor_swap` replaced by `panelSupportExtensor_swap` with
   `map_neg`. Left: `h3`, which the `by omega` index proofs in the types of later hypotheses read;
   the case split on a selector's order, one per site; the step from `−ρ₀` (two statements). Moot:
-  `interiorGroup_acolumn_two_group_decomp` (task 38.2).
+  `interiorGroup_acolumn_two_group_decomp` (task 38.2). Task 38.17 adds: task 38.17's
+  `Graph.ChainData.splitOff_data_one` (`F-293`) at `ForkedArm.lean`'s `hlink_one` and
+  `Chain.lean`'s `hl0`, `hl1` (at the indices of `Fin cd.d`), which write parts of it out.
 - **F-296** · L · repeated derivations in `Molecular/AlgebraicInduction/PanelHinge.lean`.
   `momentCurve_pair_linearIndependent` proves again, for two points of the moment curve, the
   argument of `pair_linearIndependent_of_leading_minor_ne_zero`, whose minor there is `t − s`; and
@@ -6697,6 +6718,18 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 3 task 38.3.
   *Disposition:* done (task 38.16): `hr` dropped, `⟨r, (hinter.ge (Set.mem_singleton r)).1⟩` in
   its place, and with it the caller's local `hr'`, whose other premises are used elsewhere.
+- **F-326** · L · `PanelHingeFramework.case_III_rank_certification`
+  (`lem:case-III-rank-certification` and three more nodes; `CaseIII/Candidate.lean`):
+  `hends_eb : ends e_b = (v, b)`, which its proof does not use. The `subst` of its local `hGv_ne`
+  reverted it, so neither unused linter reported it (`TACTICS-QUIRKS.md` §118), until task 38.17
+  replaced that proof by `Graph.IsLink.ne_of_notMem` (`F-292`) and the build's
+  `linter.unusedVariables` did. Its one caller, `case_III_arm_realization`, passes its own
+  `hends_eb`, which `case_III_realization_of_rank` uses.
+  *Evidence:* read (the statement and body); the build at task 38.17
+  (`scratch/reconcile-lean/t3817/build1.log`, gitignored).
+  *Found:* RECONCILE round 3 task 38.17.
+  *Disposition:* done (task 38.17): `hends_eb` dropped; the caller's binder stays, used. The four
+  nodes it pins state no selector, unchanged.
 
 ## M — mathematics and sources
 

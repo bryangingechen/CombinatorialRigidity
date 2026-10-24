@@ -4554,7 +4554,9 @@ dropped hypothesis can leave a local `have`'s premise dead…*).
 `LintBlind2.lean`, gitignored): the parent's two definitions lint clean, their `_proof_N`
 auxiliaries taking `hnone` and `hab`; an unused `hab` goes unreported after `subst`, `obtain
 ⟨rfl, rfl⟩` or `rcases … with rfl; grind`, and is reported by both linters after `grind` or
-`omega` alone.
+`omega` alone. The converse, task 38.17 (`F-326`): replacing a written-out `subst` proof by one
+lemma made the build report, for the first time, the `hends_eb` of `case_III_rank_certification`
+that its `subst he` had hidden; a re-proof that removes a substitution is the moment to expect one.
 
 FRICTION [idiom] *A hypothesis that a `subst` or an `rfl` pattern reverts passes both unused
 linters…*.

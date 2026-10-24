@@ -596,6 +596,19 @@ lemma isLink_incident_of_not_removeVertex {G : Graph α β} {v : α} {e : β} {u
   rw [not_or] at hc
   exact hg (removeVertex_isLink.mpr ⟨h, hc.1, hc.2⟩)
 
+/-- **A link at `v` is not a link of a graph without `v`** (a step of
+`lem:case-III-rank-certification`): if `f` joins `v` to `x` in `G`, `v ∉ V(H)` and every link of
+`H` is a link of `G` (`hle`), then no link of `H` is `f`. As a link of `G`, it would have the ends
+`v` and `x` (`IsLink.eq_and_eq_or_eq_and_eq`), and a link of `H` has its ends in `V(H)`. Case III
+applies it at `H = G − v` to the two edges at `v`. -/
+lemma IsLink.ne_of_notMem {G H : Graph α β} {f e : β} {v x u w : α} (hf : G.IsLink f v x)
+    (hv : v ∉ V(H)) (hle : ∀ e u w, H.IsLink e u w → G.IsLink e u w) (he : H.IsLink e u w) :
+    e ≠ f := by
+  rintro rfl
+  rcases hf.eq_and_eq_or_eq_and_eq (hle _ _ _ he) with ⟨rfl, -⟩ | ⟨rfl, -⟩
+  · exact hv he.left_mem
+  · exact hv he.right_mem
+
 /-- **Splitting off** `G_v^{ab}` (`def:graph-operations`): delete `v` and its edges, and add an
 edge with the label `e₀` joining `a` and `b` when `a, b ∈ V(G)` differ from `v`. An edge of `G`
 with the label `e₀` is deleted too, so this is `G_v^{ab}` when no edge of `G − v` has the label
@@ -1440,6 +1453,24 @@ lemma castSucc_ne_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i
     show (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc
         = (⟨(i : ℕ) - 1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp)]
   exact cd.vtx_ne _ _ (by omega)
+
+/-- **The split at `vtx 1`** (a step of `lem:case-III-chain-discriminator`): for `d ≥ 2`, the
+vertices `v₀`, `v₁` and `v₂` are distinct, and so are `edge 0` and `edge 1`; `edge 0` joins `v₁` to
+`v₀`, `edge 1` joins `v₁` to `v₂`, and every edge of `G` at `v₁` is one of the two (`vtx_ne`,
+`edge_inj`, `link`, `deg_two`). This is the split `(v, a, b, e_a, e_b) = (v₁, v₀, v₂, edge 0,
+edge 1)` at which Case III splits off once; at `i = 1` the lemmas above give its neighbours the
+other way round. -/
+lemma splitOff_data_one (cd : G.ChainData n) (hd2 : 2 ≤ cd.d) :
+    cd.vtx ⟨0, by omega⟩ ≠ cd.vtx ⟨1, by omega⟩ ∧ cd.vtx ⟨2, by omega⟩ ≠ cd.vtx ⟨1, by omega⟩ ∧
+      cd.vtx ⟨2, by omega⟩ ≠ cd.vtx ⟨0, by omega⟩ ∧
+      cd.edge ⟨0, by omega⟩ ≠ cd.edge ⟨1, by omega⟩ ∧
+      G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) ∧
+      G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) ∧
+      ∀ e x, G.IsLink e (cd.vtx ⟨1, by omega⟩) x →
+        e = cd.edge ⟨0, by omega⟩ ∨ e = cd.edge ⟨1, by omega⟩ :=
+  ⟨cd.vtx_ne _ _ (by omega), cd.vtx_ne _ _ (by omega), cd.vtx_ne _ _ (by omega),
+    fun h => absurd (congrArg Fin.val (cd.edge_inj h)) (by simp), (cd.link _).symm, cd.link _,
+    fun e x hlink => cd.deg_two ⟨1, by omega⟩ (by simp) e x hlink⟩
 
 /-! ### Removing an interior vertex
 
