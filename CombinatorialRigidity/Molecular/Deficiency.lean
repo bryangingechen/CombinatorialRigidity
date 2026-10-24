@@ -456,6 +456,14 @@ lemma IsProperRigidSubgraph.vertexSet_nonempty {H G : Graph α β} {n : ℕ}
     (h : H.IsProperRigidSubgraph G n) : V(H).Nonempty :=
   Set.nonempty_of_ncard_ne_zero (by have := h.2.1; omega)
 
+/-- A graph with a proper rigid subgraph has at least three vertices, as the subgraph has at least
+two and not all of them. -/
+lemma IsProperRigidSubgraph.three_le_ncard [Finite α] {H G : Graph α β} {n : ℕ}
+    (h : H.IsProperRigidSubgraph G n) : 3 ≤ V(G).ncard := by
+  have := Set.ncard_lt_ncard h.2.2 (Set.toFinite _)
+  have := h.2.1
+  omega
+
 /-! ## The two-vertex double edge is a `0`-dof-graph (`lem:two-vertex-zero-dof`) -/
 
 /-- **The two-vertex double edge is a `0`-dof-graph** (`lem:two-vertex-zero-dof`), for

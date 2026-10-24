@@ -351,7 +351,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
     intro f hf
     by_cases hV4 : 4 ≤ V(G).ncard
     · -- |V(G)| ≥ 4: use triangle_isProperRigidSubgraph + hnoRigid.
-      obtain ⟨H, hH⟩ := Graph.triangle_isProperRigidSubgraph hD3 hG_ea hG_eb hf hab hV4
+      obtain ⟨H, hH⟩ := Graph.triangle_isProperRigidSubgraph hD3 hG_ea hG_eb hf hV4
       exact hnoRigid H hH
     · -- |V(G)| = 3: G is K₃, hence 0-dof, contradicting k > 0.
       -- Derive V(G) = {v, a, b}.

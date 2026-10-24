@@ -447,7 +447,7 @@ theorem theorem_55_base_producer_gen [Infinite K] [DecidableEq β] [Finite α] [
     -- vacuous.
     have hVcard : V(G).ncard = 2 := by rw [hVG, Set.ncard_pair hxy]
     have hnotSimple : ¬ G.Simple :=
-      Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) (hc ▸ hG) hVcard
+      Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) (hc ▸ hG.1) hVcard
     -- `G.deficiency n = 0` from `IsMinimalKDof n c` and `c = 0`.
     have hdef : G.deficiency n = 0 := by exact_mod_cast hG.deficiency_eq.trans hc
     have hprod := theorem_55_base_producer_parallel_pair_gen (K := K) hk G hxy hef hVG hEG hle hlf
@@ -581,7 +581,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have : Fintype α := Fintype.ofFinite α
   -- Step 1 (KT Claim 6.6): a vertex `v` of degree two with `G − v` simple and minimal `0`-dof.
   obtain ⟨v, a, b, eₐ, e_b, hav, hbv, hab, heab, hlea, hleb, hclv, hGvmin, hGvSimple⟩ :=
-    Graph.exists_degree_two_removeVertex_of_no_simple_contraction (by omega) hV3 hG hSimple hrig
+    Graph.exists_degree_two_removeVertex_of_no_simple_contraction (by omega) hG hSimple hrig
       hnoSimpleContr
   set Gv := G.removeVertex v with hGv_def
   have hvG : v ∈ V(G) := hlea.left_mem
@@ -2023,7 +2023,7 @@ theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite �
             hSimple hH hr hcSimple hIH
         · -- No: KT Claim 6.6 gives `c = 0`, a contradiction.
           have hc0 : c = 0 := Graph.deficiency_eq_zero_of_simple_rigid_no_simpleContraction
-            (by omega) hV3 hG hSimple hrig
+            (by omega) hG hSimple hrig
             (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩)
           exact absurd hc0 hc
       exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩

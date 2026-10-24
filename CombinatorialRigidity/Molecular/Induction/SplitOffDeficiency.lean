@@ -275,15 +275,14 @@ part fewer, and both `eₐ` and `e_b` cross while `ab` replaces at most one of t
 drops by at most `D - (D - 1) = 1`. -/
 
 /-- **Splitting off lowers the deficiency by at most one** (`lem:splitoff-deficiency`; KT
-Lemma 4.3(i)): under the hypotheses of `splitOff_deficiency_le`, with `eₐ ≠ e_b`,
-`def(G̃) - 1 ≤ def(G̃_v^{ab})`. With `splitOff_deficiency_le`, `G_v^{ab}` is a `k`-dof-graph or a
-`(k - 1)`-dof-graph when `G` is a `k`-dof-graph. The proof compares partitions as above. -/
+Lemma 4.3(i)): let `D ≥ 1`, let edges `eₐ ≠ e_b` of `G` join `v` to `a, b ≠ v`, and let the label
+`e₀` of the new edge not be an edge of `G`. Then `def(G̃) - 1 ≤ def(G̃_v^{ab})`. With
+`splitOff_deficiency_le`, `G_v^{ab}` is a `k`-dof-graph or a `(k - 1)`-dof-graph when `G` is a
+`k`-dof-graph. The proof compares partitions as above. -/
 theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
-    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
-    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
-    (he₀ : e₀ ∉ E(G)) :
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b) (he₀ : e₀ ∉ E(G)) :
     G.deficiency n - 1 ≤ (G.splitOff v a b e₀).deficiency n := by
   classical
   set H := G.splitOff v a b e₀ with hH
@@ -583,7 +582,7 @@ theorem dof_tracking [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
       (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n ∧
       G.deficiency n ≤ (G.removeVertex v).deficiency n :=
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
-  ⟨splitOff_deficiency_ge hD1 hav hbv heab hla hlb hdeg2 he₀,
+  ⟨splitOff_deficiency_ge hD1 hav hbv heab hla hlb he₀,
     splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 he₀,
     removeVertex_deficiency_ge hD hav hbv heab hla hlb hdeg2⟩
 

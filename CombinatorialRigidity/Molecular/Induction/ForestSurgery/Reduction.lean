@@ -458,7 +458,7 @@ theorem exists_chain_data_of_noRigid [DecidableEq β] [Finite α] [Finite β]
       have hbc₀ : b ≠ c₀ := by
         intro hbeqc
         have hlg₂' : G.IsLink g₂ a b := hbeqc ▸ hlg₂
-        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₂ hlg₂' (Ne.symm hba) hV4)
+        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₂ hlg₂' hV4)
           (fun ⟨H, hH⟩ ↦ hnp H hH)
       exact ⟨v, a, b, c₀, eₐ, f₂, g₂, hvG, haG, hbG, hc₀G, hav, hbv, hba,
         hc₀v, hc₀a, hbc₀,
@@ -483,8 +483,7 @@ theorem exists_chain_data_of_noRigid [DecidableEq β] [Finite α] [Finite β]
       have ha₁c₀ : a₁ ≠ c₀ := by
         intro ha₁c₀
         have hlg₂' : G.IsLink g₂ a a₁ := ha₁c₀ ▸ hlg₂
-        have hab₁ : a ≠ a₁ := Ne.symm ha₁a
-        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₁ hlg₂' hab₁ hV4)
+        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₁ hlg₂' hV4)
           (fun ⟨H, hH⟩ ↦ hnp H hH)
       exact ⟨v, a, a₁, c₀, eₐ, f₁, g₂, hvG, haG, ha₁G, hc₀G, hav, ha₁v, ha₁a,
         hc₀v, hc₀a, ha₁c₀,
@@ -518,7 +517,7 @@ theorem exists_chain_data_of_noRigid [DecidableEq β] [Finite α] [Finite β]
       have hbv₁ : b ≠ v₁ := by
         intro hbv₁
         have hlg₁' : G.IsLink g₁ a b := hbv₁ ▸ hlg₁
-        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₂ hlg₁' (Ne.symm hba) hV4)
+        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₂ hlg₁' hV4)
           (fun ⟨H, hH⟩ ↦ hnp H hH)
       exact ⟨v, a, b, v₁, eₐ, f₂, g₁, hvG, haG, hbG, hv₁G, hav, hbv, hba,
         hv₁v, hv₁a, hbv₁,
@@ -543,7 +542,7 @@ theorem exists_chain_data_of_noRigid [DecidableEq β] [Finite α] [Finite β]
       have ha₁v₁ : a₁ ≠ v₁ := by
         intro ha₁v₁
         have hlg₁' : G.IsLink g₁ a a₁ := ha₁v₁ ▸ hlg₁
-        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₁ hlg₁' (Ne.symm ha₁a) hV4)
+        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₁ hlg₁' hV4)
           (fun ⟨H, hH⟩ ↦ hnp H hH)
       exact ⟨v, a, a₁, v₁, eₐ, f₁, g₁, hvG, haG, ha₁G, hv₁G, hav, ha₁v, ha₁a,
         hv₁v, hv₁a, ha₁v₁,
@@ -1822,7 +1821,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
     have hKspl : K.splitOff v a b e₀ = G' := by
       have hstep : (G.splitOff v a b e₀).induce V(G') = G' := by
         rw [hG'def, vertexSet_inducedSpan, ← inducedSpan, ← hG'def]
-      rw [hKdef, induce_insert_splitOff hvG' haG' hbG' haV hbV he₀, ← hHdef, hstep]
+      rw [hKdef, induce_insert_splitOff hvG' haG' hbG' haV hbV, ← hHdef, hstep]
     -- `I = X ∖ {p}` independent in `M(G'̃)` via restriction.
     have hXsub : X ⊆ E(G'.mulTilde n) :=
       subset_edgeSet_mulTilde_inducedSpan (by

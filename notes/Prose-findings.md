@@ -5429,7 +5429,7 @@ declaration's name as its header writes it:
   of `lem:edge-set-indep-pos` from the other lemma; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t30.lean` and `Hyps-t30-2.lean`, gitignored).
   *Found:* RECONCILE round 3 task 30.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the `[DecidableEq β]` and
+  *Disposition:* done (task 38.13): task 38.10 for the `[DecidableEq β]` and
   its `set_option`. Task 38.1: task 38.13 drops `cycle_isProperRigidSubgraph`'s `hD`
   (`lem:chain-cycle-dichotomy`), `triangle_isProperRigidSubgraph`'s `hab` (`hf.ne`;
   `lem:splitoff-simple`; callers `splitOff_simple_of_noRigid_of_card`,
@@ -5446,7 +5446,12 @@ declaration's name as its header writes it:
   node's proof describing another argument. Round 3: the repeated derivation's part done,
   `indep_matroidMG_of_noRigid_of_deficiency_pos` deleted with its caller (task 38.6); the
   `[DecidableEq β]` and its `set_option` dropped (task 38.10); `cycle_isProperRigidSubgraph`'s `hD`
-  dropped with `F-280`'s `isKDof_zero_of_cycle`'s, the only use it had (task 38.12).
+  dropped with `F-280`'s `isKDof_zero_of_cycle`'s, the only use it had (task 38.12); the seven left
+  dropped (task 38.13): `hab` (`hf.ne`), the `hav`, `hbv` (`ofCardThree` derives them for its body,
+  `ofCardThree_m` loses its two binders), `he₀` and `heac`, with the `heac` of `ofNormals_relabel`,
+  `rigidityRows_ofNormals_relabel` and `hasGenericFullRankRealization_of_splitOff_relabel`, which
+  only passed it on; two callers' local facts and two pattern names removed; no node states one but
+  `lem:splitoff-simple`'s note, which no longer says that the pin assumes $a \neq b$.
 - **F-283** · L · six hypotheses of six declarations of `Molecular/Induction/` that the proofs do
   not use or the others give: `Graph.splitOff_deficiency_ge`'s `hdeg2`, which its proof does not use
   (`SplitOffDeficiency.lean`; `lake lint` does not report it);
@@ -5465,7 +5470,7 @@ declaration's name as its header writes it:
   or `hH`; the fifth with `classical`; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t301.lean`, gitignored).
   *Found:* RECONCILE round 3 task 30.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for
+  *Disposition:* done (task 38.13): task 38.10 for
   `rigidContract_deficiency_eq`'s `[DecidableEq β]` and its `set_option`. Task 38.1: task 38.13
   drops `splitOff_deficiency_ge`'s `hdeg2` (`lem:splitoff-deficiency`; caller `dof_tracking`),
   `exists_degree_two_removeVertex_of_no_simple_contraction`'s `_hV3` and
@@ -5478,7 +5483,13 @@ declaration's name as its header writes it:
   `not_simple_of_isMinimalKDof_of_ncard_two`'s `hG` to `G.IsKDof n 0`, its `[DecidableEq β]` going
   with it (caller `theorem_55_base_producer_gen` passes `hG.1`). Round 3:
   `rigidContract_deficiency_eq`'s `[DecidableEq β]` and its `set_option` dropped, the proof opening
-  with `classical` (task 38.10).
+  with `classical` (task 38.10); the other five done so (task 38.13): the third's proof derives
+  `3 ≤ V(G).ncard` by `three_le_ncard` where its `omega` needs `V(G)` nonempty, and
+  `lem:claim-6-6`'s proof says why $\operatorname{def}(\tilde G) \ge 0$; `hVGne` is derived in the
+  proof, and
+  `rigidContract_isMinimalKDof`'s local fact for it removed; `lem:theorem-55-base-producer`'s note
+  restated; `lem:splitoff-deficiency` keeps its vertex of degree two, which `splitOff_deficiency_le`
+  needs.
 - **F-284** · L · three hypotheses of `Molecular/Induction/ForestSurgery/ChainExtraction.lean` that
   the proofs use less of than they give, or that the others give: `Graph.chainWalk_charging`'s
   `[G.Simple]`, used only through `G.Loopless`, with which

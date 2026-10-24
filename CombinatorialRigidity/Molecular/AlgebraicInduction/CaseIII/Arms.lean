@@ -447,7 +447,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
   classical
   -- `V(G) = {v, a, b}` and the third edge (`lem:triangle-third-edge`).
   obtain ⟨hab, hVeq, f, hf⟩ :=
-    Graph.exists_isLink_of_isMinimalKDof_card_three hD hG hcard hG_ea hG_eb hav hbv heab
+    Graph.exists_isLink_of_isMinimalKDof_card_three hD hG hcard hG_ea hG_eb heab
   -- The normals of `lem:triangle-normals`: linearly independent cyclic extensors, nonzero joins.
   obtain ⟨n₀, n₁, n₂, ⟨hn₀₁, hn₁₂, hn₂₀⟩, hLI⟩ := exists_triangle_normals (K := K) (k := k) hk
   -- Convert that fun-form LI to the `![C₀,C₁,C₂]` matrix form.
@@ -774,7 +774,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
       have hle := Set.ncard_le_ncard hsub (Set.finite_singleton v)
       rw [Set.ncard_singleton] at hle
       omega
-    obtain ⟨a', b, eₐ', e_b, ha'v, hbv, ha'G, hbG, heab', hlea', hleb, _⟩ :=
+    obtain ⟨a', b, eₐ', e_b, -, -, ha'G, hbG, heab', hlea', hleb, _⟩ :=
       Graph.exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG haG hav hdegv
     -- `cy.m = 3 ≤ n + 1` since `n ≥ 2` (from `3 ≤ bodyBarDim n = D`).
     have hn2 : 3 ≤ n + 1 := by
@@ -784,7 +784,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
       simp only [Graph.bodyBarDim] at hb
       interval_cases n <;> omega
     exact PanelHingeFramework.cycle_realization hn hG
-      (Graph.CycleData.ofCardThree hD3 hG hcard3 hlea' hleb ha'v hbv heab') hn2
+      (Graph.CycleData.ofCardThree hD3 hG hcard3 hlea' hleb heab') hn2
   · -- **`|V(G)| ≥ 4`.** `Graph.chainData_extract` (`lem:chain-data-extract`) gives a chain of
     -- length `n`, whose graph split off at `v₁` is minimal, simple and smaller, or shows that
     -- `G` is a cycle on at most `n` vertices.

@@ -22,7 +22,7 @@ Results of the combinatorial induction (`sec:molecular-induction`) after Katoh a
 * that a minimal `k`-dof-graph with no proper rigid subgraph is simple
   (`lem:simple-minimal-noRigid`), and two adjacent vertices of degree two when `d ≥ 3`
   (`lem:adjacent-degree-two-pair`); `sec:simplicity-and-adjacent-pair`;
-* that a minimal `0`-dof-graph with two vertices is not simple (`lem:theorem-55-base-producer`);
+* that a `0`-dof-graph with two vertices is not simple (`lem:theorem-55-base-producer`);
 * edge-splitting (`def:graph-operations`), the contraction `G / E(H)` of a subgraph
   (`def:rigid-contraction`), and its number of vertices (`lem:reduction-measure`).
 
@@ -634,17 +634,16 @@ theorem simple_of_isMinimalKDof_of_noRigid [Finite α] [Finite β] [DecidableEq 
       have h2 : ({x, y} : Set α).ncard = 2 := Set.ncard_pair hxy
       rw [heq] at h2; omega
 
-/-! ### A minimal `0`-dof-graph with two vertices is not simple (`lem:theorem-55-base-producer`) -/
+/-! ### A `0`-dof-graph with two vertices is not simple (`lem:theorem-55-base-producer`) -/
 
-/-- **A minimal `0`-dof-graph with two vertices is not simple** (`lem:theorem-55-base-producer`; KT
-p. 671): let `D ≥ 1`, and let `G` be a minimal `0`-dof-graph with two vertices `u` and `v`. Then `G`
-is not simple: at least two edges join `u` to the other vertex
-(`two_le_crossingEdges_of_isKDof_zero`), and each of them joins `u` and `v`. This is the case of two
-parallel edges of the base case of Katoh and Tanigawa's induction for their Theorem 5.5
-(`lem:two-vertex-trichotomy`). -/
+/-- **A `0`-dof-graph with two vertices is not simple** (`lem:theorem-55-base-producer`; KT p. 671):
+let `D ≥ 1`, and let `G` be a `0`-dof-graph with two vertices `u` and `v`. Then `G` is not simple:
+at least two edges join `u` to the other vertex (`two_le_crossingEdges_of_isKDof_zero`), and each of
+them joins `u` and `v`. This is the case of two parallel edges of the base case of Katoh and
+Tanigawa's induction for their Theorem 5.5 (`lem:two-vertex-trichotomy`). -/
 theorem not_simple_of_isMinimalKDof_of_ncard_two
-    [Finite α] [Finite β] [DecidableEq β] {G : Graph α β} {n : ℕ}
-    (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hV : V(G).ncard = 2) :
+    [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hG : G.IsKDof n 0) (hV : V(G).ncard = 2) :
     ¬ G.Simple := by
   classical
   intro hSimple
@@ -654,7 +653,7 @@ theorem not_simple_of_isMinimalKDof_of_ncard_two
   have hvV : v ∈ V(G) := hVuv ▸ Set.mem_insert_of_mem u rfl
   -- Two-edge-connectivity: ≥ 2 edges cross the {u} | V(G) cut.
   have hcross : 2 ≤ (G.crossingEdges (cutLabeling {u} u v)).ncard :=
-    two_le_crossingEdges_of_isKDof_zero hD hG.1 (Set.mem_singleton u) huV hvV
+    two_le_crossingEdges_of_isKDof_zero hD hG (Set.mem_singleton u) huV hvV
       (by simpa using fun h : v = u => huv h.symm)
   -- Extract two distinct crossing edges e₁ ≠ e₂.
   rw [show 2 ≤ _ ↔ 1 < _ from Iff.rfl,

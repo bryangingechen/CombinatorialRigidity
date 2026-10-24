@@ -774,18 +774,18 @@ lemma splitOff_simple_of_noRigid {G : Graph α β} {v a b : α} {eₐ e_b e₀ :
 
 /-- **The triangle `vab` is a proper rigid subgraph** (`lem:splitoff-simple`; KT Lemma 6.7(ii),
 p. 677): let `D ≥ 3`, let `G` be simple with `|V(G)| ≥ 4`, and let edges `eₐ`, `e_b` and `f` join
-`v` to `a`, `v` to `b` and `a` to `b`, with `a ≠ b`. Then `H = G.induce {v, a, b}` is a proper
-rigid subgraph of `G`. As `G` is simple, the edges of `H` are `eₐ`, `e_b` and `f`, so `H` is a
-triangle and a `0`-dof-graph (`isKDof_zero_of_triangle`); its three vertices are fewer than
-those of `G`. It is the triangle of KT's proof, and `splitOff_simple_of_noRigid_of_card` applies
-it as `htri`. -/
+`v` to `a`, `v` to `b` and `a` to `b`. Then `H = G.induce {v, a, b}` is a proper rigid subgraph of
+`G`. As `G` is simple, `v`, `a` and `b` are distinct and the edges of `H` are `eₐ`, `e_b` and `f`,
+so `H` is a triangle and a `0`-dof-graph (`isKDof_zero_of_triangle`); its three vertices are fewer
+than those of `G`. It is the triangle of KT's proof, and `splitOff_simple_of_noRigid_of_card`
+applies it as `htri`. -/
 lemma triangle_isProperRigidSubgraph [Finite α] {G : Graph α β} [G.Simple] {v a b : α}
     {eₐ e_b f : β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hG_ea : G.IsLink eₐ v a)
-    (hG_eb : G.IsLink e_b v b) (hf : G.IsLink f a b) (hab : a ≠ b)
-    (hcard : 4 ≤ V(G).ncard) :
+    (hG_eb : G.IsLink e_b v b) (hf : G.IsLink f a b) (hcard : 4 ≤ V(G).ncard) :
     ∃ H : Graph α β, H.IsProperRigidSubgraph G n := by
   have hva : v ≠ a := hG_ea.ne
   have hvb : v ≠ b := hG_eb.ne
+  have hab : a ≠ b := hf.ne
   -- `{v, a, b} ⊆ V(G)` (each vertex is the end of one of the three edges).
   have hsub : ({v, a, b} : Set α) ⊆ V(G) := by
     rintro w (rfl | rfl | rfl)
@@ -928,30 +928,28 @@ lemma splitOff_simple_of_noRigid_of_card [Finite α] {G : Graph α β} {v a b : 
     {eₐ e_b e₀ : β} {n : ℕ} [G.Simple] (hD : 3 ≤ bodyBarDim n) (heab : eₐ ≠ e_b)
     (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hcard : 4 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
-    (G.splitOff v a b e₀).Simple := by
-  have hab : a ≠ b := fun h ↦ heab (Simple.eq_of_isLink hG_ea (h ▸ hG_eb))
-  exact splitOff_simple_of_noRigid heab hG_ea hG_eb hnoRigid
-    fun f hf ↦ triangle_isProperRigidSubgraph hD hG_ea hG_eb hf hab hcard
+    (G.splitOff v a b e₀).Simple :=
+  splitOff_simple_of_noRigid heab hG_ea hG_eb hnoRigid
+    fun _ hf ↦ triangle_isProperRigidSubgraph hD hG_ea hG_eb hf hcard
 
 /-- **A minimal `0`-dof-graph on three vertices is a triangle** (`lem:triangle-third-edge`; from
 the proof of KT Lemma 6.7(i), p. 677): let `D ≥ 3`, let `G` be a simple minimal `0`-dof-graph with
-three vertices, and let edges `eₐ ≠ e_b` join `v` to `a ≠ v` and to `b ≠ v`. Then `a ≠ b`,
+three vertices, and let edges `eₐ ≠ e_b` join `v` to `a` and to `b`. Then `a ≠ b`,
 `V(G) = {v, a, b}`, and an edge of `G` joins `a` and `b`.
 
-As `G` is simple, `a ≠ b`, so `v`, `a` and `b` are the three vertices of `G`. By KT eq. (2.4),
-`rank M(G̃) = 2D` (`rank_matroidMG_of_isKDof_zero`), and `M(G̃)` has the `(D − 1)|E(G)|` elements
-of `E(G̃)`, so `G` has an edge other than `eₐ` and `e_b`. Its ends are two of `v`, `a`, `b`, and as
-`G` is simple, they are `a` and `b`. -/
+As `G` is simple, `a` and `b` differ from `v` and from each other, so `v`, `a` and `b` are the three
+vertices of `G`. By KT eq. (2.4), `rank M(G̃) = 2D` (`rank_matroidMG_of_isKDof_zero`), and `M(G̃)`
+has the `(D − 1)|E(G)|` elements of `E(G̃)`, so `G` has an edge other than `eₐ` and `e_b`. Its ends
+are two of `v`, `a`, `b`, and as `G` is simple, they are `a` and `b`. -/
 theorem exists_isLink_of_isMinimalKDof_card_three [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} [G.Simple]
     (hD : 3 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0)
     (hcard : V(G).ncard = 3)
     {v a b : α} {eₐ e_b : β}
-    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b)
-    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) :
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (heab : eₐ ≠ e_b) :
     a ≠ b ∧ V(G) = {v, a, b} ∧ ∃ f, G.IsLink f a b := by
-  have hva : v ≠ a := hav.symm
-  have hvb : v ≠ b := hbv.symm
+  have hva : v ≠ a := hG_ea.ne
+  have hvb : v ≠ b := hG_eb.ne
   have hab : a ≠ b := fun h ↦ heab (Simple.eq_of_isLink hG_ea (h ▸ hG_eb))
   have hsub : ({v, a, b} : Set α) ⊆ V(G) := by
     rintro w (rfl | rfl | rfl)
@@ -1004,7 +1002,7 @@ theorem exists_isLink_of_isMinimalKDof_card_three [DecidableEq β] [Finite α] [
 
 /-- **The isomorphism from `G_a^{vc}` to `G_v^{ab}`** (`lem:splitOff-isLink-relabel`; KT p. 686):
 let edges `eₐ`, `e_b`, `e_c` join `v` to `a`, `v` to `b` and `a` to `c`, with `a`, `b`, `c`
-different from `v`, `c ≠ a`, `eₐ ≠ e_b` and `eₐ ≠ e_c`, and let `eₐ`, `e_b` be the only edges at
+different from `v`, `c ≠ a` and `eₐ ≠ e_b`, and let `eₐ`, `e_b` be the only edges at
 `v` and `eₐ`, `e_c` the only edges at `a`. Let `e₀ ≠ e₁` be labels outside `E(G)` for the new
 edges `ab` of `G_v^{ab}` and `vc` of `G_a^{vc}`. With `ρ = Equiv.swap a v` and
 `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`,
@@ -1019,8 +1017,7 @@ other edges. -/
 lemma splitOff_isLink_relabel [DecidableEq α] [DecidableEq β] {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
     (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
-    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a)
-    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a) (heab : eₐ ≠ e_b)
     (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
@@ -1288,8 +1285,7 @@ Both graphs have the vertices `S`. An edge `e ≠ e₀` joins `x` and `y` in eit
 joins them in `G` and `x, y ∈ S`; the new edge joins `a` and `b` in both, which needs
 `a, b ∈ V(G)` on the right. -/
 lemma induce_insert_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {S : Set α}
-    (hvS : v ∉ S) (haS : a ∈ S) (hbS : b ∈ S)
-    (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (he₀ : e₀ ∉ E(G)) :
+    (hvS : v ∉ S) (haS : a ∈ S) (hbS : b ∈ S) (haV : a ∈ V(G)) (hbV : b ∈ V(G)) :
     (G.induce (insert v S)).splitOff v a b e₀ = (G.splitOff v a b e₀).induce S := by
   have hav : a ≠ v := fun h => hvS (h ▸ haS)
   have hbv : b ≠ v := fun h => hvS (h ▸ hbS)
@@ -2441,7 +2437,7 @@ theorem range_vtx (cy : G.CycleData) : Set.range cy.vtx = V(G) := by
 
 /-- **A minimal `0`-dof-graph on three vertices as a cycle** (from the proof of KT Lemma 6.7(i),
 p. 677): let `D ≥ 3`, let `G` be a simple minimal `0`-dof-graph with three vertices, and let edges
-`eₐ ≠ e_b` join `v` to `a ≠ v` and `b ≠ v`. Then `G` is the cycle with `m = 3`, `vtx = ![v, a, b]`
+`eₐ ≠ e_b` join `v` to `a` and `b`. Then `G` is the cycle with `m = 3`, `vtx = ![v, a, b]`
 and `edge = ![eₐ, f, e_b]`, where `f` joins `a` and `b`
 (`exists_isLink_of_isMinimalKDof_card_three`, `lem:triangle-third-edge`). Katoh and Tanigawa realize
 the triangle by their Lemma 5.4 (p. 670), for cycle graphs with `3 ≤ |V| ≤ D`, and so does
@@ -2450,11 +2446,12 @@ the triangle by their Lemma 5.4 (p. 670), for cycle graphs with `3 ≤ |V| ≤ D
 noncomputable def ofCardThree [DecidableEq β] [Finite α] [Finite β] {n : ℕ} [G.Simple]
     (hD : 3 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hcard : V(G).ncard = 3)
     {v a b : α} {eₐ e_b : β}
-    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b)
-    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) : G.CycleData := by
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (heab : eₐ ≠ e_b) : G.CycleData := by
   haveI : G.Loopless := ‹G.Simple›.toLoopless
+  have hav : a ≠ v := hG_ea.ne.symm
+  have hbv : b ≠ v := hG_eb.ne.symm
   -- Projections (not `obtain`/`casesOn`) so that `.m` of the returned record still reduces to `3`.
-  have hdata := exists_isLink_of_isMinimalKDof_card_three hD hG hcard hG_ea hG_eb hav hbv heab
+  have hdata := exists_isLink_of_isMinimalKDof_card_three hD hG hcard hG_ea hG_eb heab
   have hab : a ≠ b := hdata.1
   have hVeq : V(G) = {v, a, b} := hdata.2.1
   set f := hdata.2.2.choose with hfdef
@@ -2518,8 +2515,8 @@ noncomputable def ofCardThree [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
 @[simp] theorem ofCardThree_m [DecidableEq β] [Finite α] [Finite β] {n : ℕ} [G.Simple]
     {hD : 3 ≤ bodyBarDim n} {hG : G.IsMinimalKDof n 0} {hcard : V(G).ncard = 3}
     {v a b : α} {eₐ e_b : β} {hG_ea : G.IsLink eₐ v a} {hG_eb : G.IsLink e_b v b}
-    {hav : a ≠ v} {hbv : b ≠ v} {heab : eₐ ≠ e_b} :
-    (ofCardThree hD hG hcard hG_ea hG_eb hav hbv heab).m = 3 := rfl
+    {heab : eₐ ≠ e_b} :
+    (ofCardThree hD hG hcard hG_ea hG_eb heab).m = 3 := rfl
 
 end CycleData
 

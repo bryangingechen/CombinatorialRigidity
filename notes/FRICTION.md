@@ -224,6 +224,16 @@ to be re-derived by re-reading entries later.
 - **Lifted to:** TACTICS-QUIRKS § 118.
 - **Status:** idiom.
 
+### [idiom] A tactic proof made a term can expose an unused lambda binder to `linter.unusedVariables`
+- **Where it bit:** RECONCILE round 3, task 38.13: `Graph.splitOff_simple_of_noRigid_of_card`
+  (`Induction/Operations.lean`), whose `by have hab := …; exact … fun f hf ↦ …` became a term once
+  `hab` went. The binder `f`, which the body names only through `hf`'s type, was then flagged ("not
+  explicitly referenced"); the tactic form had built silent.
+- **Friction:** one build → fix iteration.
+- **Proposed fix:** when a drop turns a `by … exact e` proof into the term `e`, write a binder that
+  only an implicit argument consumes as `_` (`fun _ hf ↦ …`).
+- **Status:** idiom.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

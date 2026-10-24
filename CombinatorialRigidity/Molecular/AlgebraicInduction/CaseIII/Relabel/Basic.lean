@@ -174,8 +174,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
     (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
-    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a)
-    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a) (heab : eₐ ≠ e_b)
     (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
@@ -255,7 +254,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
         PanelHingeFramework.ofNormals_graph] at hf
       have hfQ' : (G.splitOff a v c e₁).IsLink (σ f) (ρ x) (ρ y) :=
         (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
-          heab heac hclv hcla he₀ he₁ he₁₀).mpr (by rw [hσσ f, hρρ, hρρ]; exact hf)
+          heab hclv hcla he₀ he₁ he₁₀).mpr (by rw [hσσ f, hρρ, hρρ]; exact hf)
       have harg : Q'.toBodyHinge.graph.IsLink (σ f) (ρ x) (ρ y) := by
         simp only [hQ'_def, PanelHingeFramework.toBodyHinge_graph,
           PanelHingeFramework.ofNormals_graph]; exact hfQ'
@@ -277,7 +276,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
   · intro e' u w he'
     have hfQ : (G.splitOff v a b e₀).IsLink (σ e') (ρ u) (ρ w) :=
       (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
-        heab heac hclv hcla he₀ he₁ he₁₀).mp he'
+        heab hclv hcla he₀ he₁ he₁₀).mp he'
     rcases hQrec (σ e') (ρ u) (ρ w) hfQ with h1 | h1
     · refine Or.inl ?_
       rw [h1]; exact Prod.ext (hρρ u) (hρρ w)
@@ -298,8 +297,7 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [Dec
     {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
     (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
-    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a)
-    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a) (heab : eₐ ≠ e_b)
     (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
@@ -353,7 +351,7 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [Dec
     refine ⟨BodyHingeFramework.hingeRow (ρ u) (ρ w) r,
       ⟨σ e', ρ u, ρ w, ?_, r, ?_, rfl⟩, hdual u w r⟩
     · have hmp := (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
-        heab heac hclv hcla he₀ he₁ he₁₀ (e := e') (x := u) (y := w)).mp
+        heab hclv hcla he₀ he₁ he₁₀ (e := e') (x := u) (y := w)).mp
       simp only [hQ'_def, PanelHingeFramework.toBodyHinge_graph,
         PanelHingeFramework.ofNormals_graph] at hlink'
       simpa only [hQ_def, PanelHingeFramework.toBodyHinge_graph,
@@ -363,7 +361,7 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [Dec
   · rintro φ ⟨ψ, ⟨e', u, w, hlink, r, hr, rfl⟩, rfl⟩
     refine ⟨σ e', ρ u, ρ w, ?_, r, ?_, ?_⟩
     · have hmpr := (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
-        heab heac hclv hcla he₀ he₁ he₁₀ (e := σ e') (x := ρ u) (y := ρ w)).mpr
+        heab hclv hcla he₀ he₁ he₁₀ (e := σ e') (x := ρ u) (y := ρ w)).mpr
       simp only [hQ_def, PanelHingeFramework.toBodyHinge_graph,
         PanelHingeFramework.ofNormals_graph] at hlink
       simp only [hQ'_def, PanelHingeFramework.toBodyHinge_graph,
@@ -385,8 +383,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
     (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
-    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a)
-    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a) (heab : eₐ ≠ e_b)
     (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
@@ -424,7 +421,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     · exact Or.inl (Prod.ext h1 h2)
     · exact Or.inr (Prod.ext h1 h2)
   obtain ⟨hgp, hrig_out, hrec⟩ := PanelHingeFramework.ofNormals_relabel hG_ea hG_eb hG_ec
-    hav hbv hcv hca heab heac hclv hcla he₀ he₁ he₁₀ hgp' hrig' hrec'
+    hav hbv hcv hca heab hclv hcla he₀ he₁ he₁₀ hgp' hrig' hrec'
   -- Derive rank from the rigidity of the output framework.
   set F_out := PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
       (fun e => (Equiv.swap a v (Q.ends ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,

@@ -1247,9 +1247,9 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
   \leanok
   \uses{def:k-dof, def:rigid-subgraph, def:rigid-contraction,
         def:graph-operations}
-  Let $D \ge 2$, and let $G$ be a simple minimal $k$-dof-graph with
-  $|V(G)| \ge 3$ that has a proper rigid subgraph, and in which no proper
-  rigid subgraph $H$ has a simple contraction $G/E(H)$
+  Let $D \ge 2$, and let $G$ be a simple minimal $k$-dof-graph that has
+  a proper rigid subgraph, and in which no proper rigid subgraph $H$ has
+  a simple contraction $G/E(H)$
   (\cref{def:rigid-contraction}). Then $k = 0$, and $G$ has a vertex $v$
   of degree two, joined to two distinct vertices, such that $G_v$
   (\cref{def:graph-operations}) is a simple minimal $0$-dof-graph.
@@ -1281,7 +1281,9 @@ state under the hypotheses of KT Lemma~6.5, for every $k$.
   is not proper, so $V(G'') = V(G)$. As $G$ contains $G''$ and has the
   same vertices,
   $k = \operatorname{def}(\tilde G) \le \operatorname{def}(\tilde G'') = 0$
-  (\cref{def:D-deficiency}), so $k = 0$. Let $e'$ be an edge of $G$ not in
+  (\cref{def:D-deficiency}). As $G$ has vertices, the partition
+  $\{V(G)\}$ has value $0$, so $\operatorname{def}(\tilde G) \ge 0$ and
+  $k = 0$. Let $e'$ be an edge of $G$ not in
   $G''$. Then $G - e'$ contains $G''$ and has the same vertices, so its
   deficiency is zero, as is that of $G$. This contradicts the minimality
   of $G$ (the remark after \cref{def:k-dof}), so $G = G''$. Hence $v$

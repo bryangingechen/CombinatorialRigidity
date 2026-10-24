@@ -82,8 +82,11 @@ deleting twelve declarations; task 38.10 removed the suppression sites by `TACTI
 `theorem_55_6_multigraph_gen`'s binder going with `F-323`'s; task 38.11 dropped `F-278`'s two
 hypotheses of `HennebergReverse.lean`; task 38.12 dropped `F-280`'s and `F-281`'s three of
 `Molecular/Deficiency.lean`, with `cycle_isProperRigidSubgraph`'s `hD`, restating
-`lem:cut-edge-decomposition` (1). **Next concrete task:** round 3's task 38.13, four files of
-`Molecular/Induction/` (then tasks 38.14–38.27 and the close).
+`lem:cut-edge-decomposition` (1); task 38.13 dropped or weakened `F-282`'s seven and `F-283`'s
+five in four files of `Molecular/Induction/`, with three relabel theorems' `heac`, restating
+`lem:claim-6-6`.
+**Next concrete task:** round 3's task 38.14, `ForestSurgery/ChainExtraction` and `Reduction.lean`
+(then tasks 38.15–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

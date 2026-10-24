@@ -497,21 +497,22 @@ theorem contract_minimality_transport [DecidableEq β] {H G : Graph α β}
 /-! ## The contraction of a proper rigid subgraph (`lem:contraction-minimality`) -/
 
 /-- **The contraction of a proper rigid subgraph** (`lem:contraction-minimality`,
-`lem:reduction-step`; KT Lemma 3.5, pp. 658–659): let `D ≥ 1`, let `G` be a minimal `k`-dof-graph
-with a vertex, and let `H` be a proper rigid subgraph of `G`. Then
+`lem:reduction-step`; KT Lemma 3.5, pp. 658–659): let `D ≥ 1`, let `G` be a minimal `k`-dof-graph,
+and let `H` be a proper rigid subgraph of `G`. Then
 `D(|V(G)| - |V(H)|) - rank(M(G̃) ／ E(H̃)) = k`, and every base of `M(G̃) ／ E(H̃)` meets `ẽ` for
 every edge `e ∈ E(G) \ E(H)`: the first is `contract_matroidMG_deficiency_eq` with `def(G̃) = k`,
 and the second `contract_minimality_transport`. `rigidContract_isMinimalKDof` gives the same for the
 graph `G / E(H)`. -/
 theorem contraction_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
     {n : ℕ} {k : ℤ} (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n k)
-    (hH : H.IsProperRigidSubgraph G n) (hVGne : V(G).Nonempty) :
+    (hH : H.IsProperRigidSubgraph G n) :
     bodyBarDim n * ((V(G).ncard : ℤ) - (V(H).ncard : ℤ))
         - ((G.matroidMG n ／ E(H.mulTilde n)).rank : ℤ) = k ∧
       ∀ B', ((G.matroidMG n) ／ E(H.mulTilde n)).IsBase B' →
         ∀ e ∈ E(G), e ∉ E(H) → (B' ∩ edgeFiber e n).Nonempty := by
   have hVHne : V(H).Nonempty := hH.vertexSet_nonempty
   obtain ⟨⟨hle, hrigid⟩, -, -⟩ := hH
+  have hVGne : V(G).Nonempty := hVHne.mono hle.vertexSet_mono
   refine ⟨?_, fun B' hB' e heG heH ↦ contract_minimality_transport hG hB' heG heH⟩
   -- Deficiency conservation, with `def(G̃) = k` from `G`'s `k`-dof hypothesis.
   have hdef := contract_matroidMG_deficiency_eq hle n hD hVHne hVGne hrigid
@@ -535,7 +536,6 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
   have hVHne : V(H).Nonempty := hH.vertexSet_nonempty
   obtain ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩ := hH
   have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
-  have hVGne : V(G).Nonempty := hVHne.mono hHsub
   -- `D = bodyBarDim n ≥ 2` from `bodyHingeMult n = D - 1 ≥ 1`.
   have hD : 1 ≤ bodyBarDim n := by
     have hmult := NeZero.ne (bodyHingeMult n); rw [bodyHingeMult] at hmult; omega
@@ -544,7 +544,7 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
     matroidMG_rigidContract_eq_contract hle hr hrigid hVHne
   -- The matroid-side minimal-`k`-dof packaging of `M(G̃)/E(H̃)`.
   obtain ⟨hcons, hmin⟩ :=
-    contraction_isMinimalKDof hD hG ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩ hVGne
+    contraction_isMinimalKDof hD hG ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩
   refine ⟨?_, fun B hB e heK ↦ ?_⟩
   · -- Deficiency half: `def((G/E(H))̃) = k` via the def=corank bridge.
     have hVKne : V(G.rigidContract H r).Nonempty := by
@@ -740,8 +740,8 @@ lemma exists_isLink_pair_of_rigidContract_not_simple {G H : Graph α β} [G.Simp
       exact hee (hl₁'.unique_edge hl₂')
 
 /-- **KT Claim 6.6: a vertex of degree two whose removal is minimal** (`lem:claim-6-6`; KT p. 676):
-let `D ≥ 2`, and let `G` be a simple minimal `0`-dof-graph with at least three vertices that has a
-proper rigid subgraph, none of which has a simple contraction `G / E(H)` at any `r ∈ V(H)`. Then
+let `D ≥ 2`, and let `G` be a simple minimal `0`-dof-graph that has a proper rigid subgraph, none of
+which has a simple contraction `G / E(H)` at any `r ∈ V(H)`. Then
 some vertex `v` has exactly two edges `eₐ ≠ e_b`, joining it to vertices `a ≠ b` other than `v`, and
 `G - v` is a simple minimal `0`-dof-graph. Let `G'` be a proper rigid subgraph with the most
 vertices, every edge of `G` with both ends in `V(G')` being an edge of `G'`
@@ -754,8 +754,7 @@ choice of `G'` it is not proper, so `V(G'') = V(G)`, and `G = G''` as `G` is min
 is minimal (`subgraph_minimality`, KT Lemma 3.3) and simple. -/
 theorem exists_degree_two_removeVertex_of_no_simple_contraction [DecidableEq β] [Finite α]
     [Finite β] {G : Graph α β} {n : ℕ}
-    (hD : 2 ≤ bodyBarDim n) (_hV3 : 3 ≤ V(G).ncard)
-    (hG : G.IsMinimalKDof n 0) (hSimple : G.Simple)
+    (hD : 2 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hSimple : G.Simple)
     (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n)
     (hnoSimpleContr : ∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
       ¬ (G.rigidContract H r).Simple) :
@@ -913,11 +912,10 @@ theorem exists_degree_two_removeVertex_of_no_simple_contraction [DecidableEq β]
 `exists_degree_two_removeVertex_of_no_simple_contraction`, but for a minimal `k`-dof-graph `G`,
 `k = 0`. The first four steps of that proof do not use `k = 0`. They give `G'' ≤ G` with
 `V(G'') = V(G)` and `def(G̃'') = 0`, and then `def(G̃) ≤ def(G̃'') = 0`
-(`deficiency_le_deficiency_of_le_vertexSet_eq`). -/
+(`deficiency_le_deficiency_of_le_vertexSet_eq`), while `def(G̃) ≥ 0` as `G` has vertices. -/
 theorem deficiency_eq_zero_of_simple_rigid_no_simpleContraction [DecidableEq β] [Finite α]
     [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ}
-    (hD : 2 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
-    (hG : G.IsMinimalKDof n k) (hSimple : G.Simple)
+    (hD : 2 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n k) (hSimple : G.Simple)
     (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n)
     (hnoSimpleContr : ∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
       ¬ (G.rigidContract H r).Simple) :
@@ -1037,8 +1035,9 @@ theorem deficiency_eq_zero_of_simple_rigid_no_simpleContraction [DecidableEq β]
   have hkle : G.deficiency n ≤ 0 :=
     (deficiency_le_deficiency_of_le_vertexSet_eq hD' hG''le hVG''G).trans_eq hG''0
   -- Conclude `k = 0`.
-  have hkge : 0 ≤ G.deficiency n :=
-    G.deficiency_nonneg n ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
+  have hkge : 0 ≤ G.deficiency n := by
+    have := hG'rig.three_le_ncard
+    exact G.deficiency_nonneg n ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
   exact_mod_cast hG.deficiency_eq.symm.trans (le_antisymm hkle hkge)
 
 end Graph
