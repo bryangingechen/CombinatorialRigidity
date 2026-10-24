@@ -217,10 +217,6 @@ noncomputable def star (y : Fin 4 → K) : Submodule K (ScrewSpace K 2) :=
 theorem pointJoin_mem_star (y u : Fin 4 → K) : pointJoin y u ∈ star y :=
   Submodule.subset_span ⟨u, rfl⟩
 
-/-- A line `u ∧ y` lies in the star of `y`. No declaration uses it. -/
-theorem pointJoin_mem_star_right (y u : Fin 4 → K) : pointJoin u y ∈ star y := by
-  rw [pointJoin_swap]; exact (star y).neg_mem (pointJoin_mem_star y u)
-
 /-- **Every line through an affine point is a join with a point at infinity** (a step of
 `thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`): if the star of `y` (`y 3 = 1`) is
 not in `W`, some `u` with `u 3 = 0` has `y ∧ u ∉ W`, since `y ∧ v = y ∧ (v − v₃ y)`. -/

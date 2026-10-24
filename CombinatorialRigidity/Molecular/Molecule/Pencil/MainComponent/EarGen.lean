@@ -156,12 +156,6 @@ theorem earPicture_of_mem (s : (α × Fin 2) ⊕ α → K) {w : α} (hw : w ∈ 
     earPicture V₁ q₁ s (w, i) = q₁ (w, i) := by
   simp [earPicture, hw]
 
-omit [Field K] in
-/-- Off `V₁` the picture of ear data is its own coordinate. No declaration uses it. -/
-theorem earPicture_of_notMem (s : (α × Fin 2) ⊕ α → K) {w : α} (hw : w ∉ V₁) (i : Fin 2) :
-    earPicture V₁ q₁ s (w, i) = s (Sum.inl (w, i)) := by
-  simp [earPicture, hw]
-
 /-- **On `V₁` the configuration of ear data is the base configuration**
 (`lem:pencil-ear-data`). -/
 theorem earConfig_of_mem (s : (α × Fin 2) ⊕ α → K) {w : α} (hw : w ∈ V₁) (i : Fin 4) :

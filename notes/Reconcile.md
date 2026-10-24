@@ -71,8 +71,9 @@ thirty-three with their orphans in `Pinning.lean`, and dropped `F-290`'s `hne` a
 task 38.5 `RigidityMatrix/Concrete.lean` whole and the dead declarations of `Basic.lean`,
 `Claim612.lean`, `Meet.lean` and `Extensor.lean`, 105 with their orphans, and `F-287`'s `ha`, `hb`
 and `mem_hingeRowBlock_iff`'s move; task 38.6 the dead declarations of `Induction/`, thirty-two
-with an orphan and `F-282`'s repeated derivation. **Next concrete task:** round 3's task 38.7, the
-deletions in `Molecule/` (then tasks 38.8–38.27 and the close).
+with an orphan and `F-282`'s repeated derivation; task 38.7 those of `Molecule/`, fifteen. **Next
+concrete task:** round 3's task 38.8, the deletions in `Search/`, `PebbleGame/`, `Mathlib/`,
+`SquareGraph.lean` and `BodyBar/` (then tasks 38.9–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

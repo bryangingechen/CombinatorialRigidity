@@ -177,7 +177,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (PROSE 5/5: graph repairs and the findings report) | every chapter's dependency edges, pins and node shapes; the findings report | ✓ Complete — no missing edge left, the Lean unchanged; each finding done, left or reported in `notes/Prose-report.md` (see `notes/Prose-graph-cleanup.md`; plan `notes/Prose.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 1/3: the texts) | the status surfaces' scopes and credits, blueprint prose and two agent manuals (docs and prose only) | ✓ Complete — the scopes and credits fixed on the status surfaces, the Lean unchanged (see `notes/Reconcile-texts-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
-| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep and the code-smell and long-proof screens done; the fixes they found under way, the dead code of the Case III, Case I, pinning, panel, rigidity-matrix and combinatorial-induction files deleted, tasks 38.7–38.27 next (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ◐ In progress — the docstring sweep and the code-smell and long-proof screens done; the fixes they found under way, the dead code of the Case III, Case I, pinning, panel, rigidity-matrix, combinatorial-induction and molecule files deleted, tasks 38.8–38.27 next (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; not yet pushed (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -1371,8 +1371,9 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   38.5 deleted the unused concrete rigidity-matrix file and the dead declarations of the
   rigidity-matrix, meet and extensor files, 105 with the lemmas only they used, dropped two
   hypotheses of the meet and moved a lemma to its definition's file; task 38.6 deleted the dead
-  declarations of the combinatorial induction's files, thirty-two with the lemmas only they used.
-  **Next:** task 38.7, the deletions in the molecule files.
+  declarations of the combinatorial induction's files, thirty-two with the lemmas only they used;
+  task 38.7 those of the molecule files, fifteen. **Next:** task 38.8, the deletions in the search,
+  pebble-game, mirror, square-graph and body-bar files.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

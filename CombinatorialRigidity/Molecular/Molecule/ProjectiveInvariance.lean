@@ -40,8 +40,7 @@ The motion space is also unchanged when each supporting extensor is multiplied b
 * `BodyHingeFramework.finrank_infinitesimalMotions_mapExtensor`,
   `BodyHingeFramework.rankHypothesis_mapExtensor`: the dimension of the motion space, and hence the
   rank hypothesis (`RankHypothesis`), are preserved.
-* `BodyHingeFramework.isInfinitesimallyRigid_mapExtensor`,
-  `BodyHingeFramework.isInfinitesimallyRigidOn_mapExtensor`: infinitesimal rigidity transfers.
+* `BodyHingeFramework.isInfinitesimallyRigid_mapExtensor`: infinitesimal rigidity transfers.
 * `BodyHingeFramework.supportExtensor_mapExtensor_ne_zero`: a hinge is nondegenerate on one side iff
   on the other.
 * `BodyHingeFramework.infinitesimalMotions_scaleExtensor`: multiplying each supporting extensor by a
@@ -165,24 +164,6 @@ theorem isInfinitesimallyRigid_mapExtensor (F : BodyHingeFramework K k α β)
       (F.isInfinitesimalMotion_mapExtensor' Λ T).mp hT
     intro u v
     exact Λ.symm.injective (h _ h1 u v)
-
-/-- **Infinitesimal rigidity on a set of bodies transfers along `Λ`** (the form of
-`isInfinitesimallyRigid_mapExtensor` on a set `s`): `F.mapExtensor Λ` is infinitesimally rigid on
-`s` iff `F` is, by the same argument restricted to the pairs of bodies in `s`. No declaration uses
-it. -/
-theorem isInfinitesimallyRigidOn_mapExtensor (F : BodyHingeFramework K k α β)
-    (Λ : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) (s : Set α) :
-    (F.mapExtensor Λ).IsInfinitesimallyRigidOn s ↔ F.IsInfinitesimallyRigidOn s := by
-  rw [isInfinitesimallyRigidOn_iff, isInfinitesimallyRigidOn_iff]
-  constructor
-  · intro h S hS u hu v hv
-    have h1 : (F.mapExtensor Λ).IsInfinitesimalMotion (fun w => Λ (S w)) :=
-      (F.isInfinitesimalMotion_mapExtensor Λ S).mpr hS
-    exact Λ.injective (h _ h1 u hu v hv)
-  · intro h T hT u hu v hv
-    have h1 : F.IsInfinitesimalMotion (fun w => Λ.symm (T w)) :=
-      (F.isInfinitesimalMotion_mapExtensor' Λ T).mp hT
-    exact Λ.symm.injective (h _ h1 u hu v hv)
 
 /-- **Nondegenerate hinges transfer along `Λ`** (`thm:projective-invariance`, the second statement):
 the supporting extensor at `e` is nonzero after the transport iff it was before, since a linear

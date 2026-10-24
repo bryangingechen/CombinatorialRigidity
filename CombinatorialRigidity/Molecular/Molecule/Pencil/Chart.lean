@@ -13,7 +13,7 @@ The parametrization of pencil realizations in the proof of `lem:pencil-generic-s
 
 For `x, y, z ∈ K⁴`, `cross₃ x y z` is the vector with `cross₃ x y z ⬝ᵥ w = det[x, y, z, w]` for
 every `w`: the product `y₁ × y₂ × y₃` of that proof, and the plane normal of
-`def:pencil-configuration`. It is orthogonal to `x`, `y` and `z`, linear in each, and nonzero
+`def:pencil-configuration`. It is orthogonal to `x`, `y` and `z`, linear in `z`, and nonzero
 exactly when the three are linearly independent.
 
 The chart takes, at each body `v`, a vector `hubNormal v` and two triples of padding vectors
@@ -56,8 +56,8 @@ for every `w` (`dotProduct_cross₃`). From this:
 
 * it is orthogonal to `x`, `y` and `z`, as a determinant with two equal rows vanishes
   (`cross₃_dotProduct_fst`, `cross₃_dotProduct_snd`, `cross₃_dotProduct_thd`);
-* it is additive and homogeneous in each of its three arguments, as the determinant is in each row
-  (`cross₃_add_fst`, `cross₃_smul_fst` and their siblings), so linear in the third (`cross₃L`);
+* it is additive and homogeneous in its third argument, as the determinant is in a row
+  (`cross₃_add_thd`, `cross₃_smul_thd`), so linear in it (`cross₃L`);
 * it is nonzero exactly when `x`, `y` and `z` are linearly independent
   (`cross₃_ne_zero_iff_linearIndependent`);
 * for independent `n₁, n₂`, the vectors `cross₃ n₁ n₂ z` are exactly those orthogonal to `n₁` and
@@ -82,26 +82,14 @@ noncomputable def cross₃ (x y z : Fin 4 → K) : Fin 4 → K :=
   (Pi.basisFun K (Fin 4)).toDualEquiv.symm (cross₃Functional x y z)
 
 omit [Field K] in
-/-- Replacing row `0` of the matrix with rows `x0, y, z, w` by `a` gives the matrix with rows
-`a, y, z, w`, for `cross₃_add_fst` and `cross₃_smul_fst`. -/
-private theorem cons_updateRow_zero (x0 y z w a : Fin 4 → K) :
-    (Matrix.of ![x0, y, z, w]).updateRow 0 a = Matrix.of ![a, y, z, w] := by
-  funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
-
-omit [Field K] in
-/-- The row-`1` form of `cons_updateRow_zero`, for `cross₃_add_snd` and `cross₃_smul_snd`. -/
-private theorem cons_updateRow_one (x y0 z w a : Fin 4 → K) :
-    (Matrix.of ![x, y0, z, w]).updateRow 1 a = Matrix.of ![x, a, z, w] := by
-  funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
-
-omit [Field K] in
-/-- The row-`2` form of `cons_updateRow_zero`, for `cross₃_add_thd` and `cross₃_smul_thd`. -/
+/-- Replacing row `2` of the matrix with rows `x, y, z0, w` by `a` gives the matrix with rows
+`x, y, a, w`, for `cross₃_add_thd` and `cross₃_smul_thd`. -/
 private theorem cons_updateRow_two (x y z0 w a : Fin 4 → K) :
     (Matrix.of ![x, y, z0, w]).updateRow 2 a = Matrix.of ![x, y, a, w] := by
   funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
 
 omit [Field K] in
-/-- The row-`3` form of `cons_updateRow_zero`, which turns the matrix of `cross₃Functional` into the
+/-- The row-`3` form of `cons_updateRow_two`, which turns the matrix of `cross₃Functional` into the
 one with rows `x, y, z, w` (`dotProduct_cross₃`). -/
 private theorem cons_updateRow_three (x y z w0 a : Fin 4 → K) :
     (Matrix.of ![x, y, z, w0]).updateRow 3 a = Matrix.of ![x, y, z, a] := by
@@ -128,40 +116,8 @@ theorem cross₃_dotProduct_snd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ y 
 theorem cross₃_dotProduct_thd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ z = 0 := by
   rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 2) (j := 3) (by decide) rfl
 
-/-- **`cross₃` is additive in its first argument**: by `dotProduct_eq_iff`, from the additivity of
+/-- **`cross₃` is additive in its third argument**: by `dotProduct_eq_iff`, from the additivity of
 `Matrix.det` in a row. -/
-theorem cross₃_add_fst (x1 x2 y z : Fin 4 → K) :
-    cross₃ (x1 + x2) y z = cross₃ x1 y z + cross₃ x2 y z := by
-  rw [← dotProduct_eq_iff]; intro w
-  rw [add_dotProduct, dotProduct_cross₃, dotProduct_cross₃, dotProduct_cross₃,
-    ← cons_updateRow_zero x1 y z w (x1 + x2), Matrix.det_updateRow_add,
-    cons_updateRow_zero, cons_updateRow_zero]
-
-/-- **`cross₃` is homogeneous in its first argument**: `cross₃ (c • x) y z = c • cross₃ x y z`. -/
-theorem cross₃_smul_fst (c : K) (x y z : Fin 4 → K) :
-    cross₃ (c • x) y z = c • cross₃ x y z := by
-  rw [← dotProduct_eq_iff]; intro w
-  rw [smul_dotProduct, dotProduct_cross₃, dotProduct_cross₃,
-    ← cons_updateRow_zero x y z w (c • x), Matrix.det_updateRow_smul,
-    cons_updateRow_zero, smul_eq_mul]
-
-/-- **`cross₃` is additive in its second argument**, as `cross₃_add_fst`. -/
-theorem cross₃_add_snd (x y1 y2 z : Fin 4 → K) :
-    cross₃ x (y1 + y2) z = cross₃ x y1 z + cross₃ x y2 z := by
-  rw [← dotProduct_eq_iff]; intro w
-  rw [add_dotProduct, dotProduct_cross₃, dotProduct_cross₃, dotProduct_cross₃,
-    ← cons_updateRow_one x y1 z w (y1 + y2), Matrix.det_updateRow_add,
-    cons_updateRow_one, cons_updateRow_one]
-
-/-- **`cross₃` is homogeneous in its second argument**, as `cross₃_smul_fst`. -/
-theorem cross₃_smul_snd (c : K) (x y z : Fin 4 → K) :
-    cross₃ x (c • y) z = c • cross₃ x y z := by
-  rw [← dotProduct_eq_iff]; intro w
-  rw [smul_dotProduct, dotProduct_cross₃, dotProduct_cross₃,
-    ← cons_updateRow_one x y z w (c • y), Matrix.det_updateRow_smul,
-    cons_updateRow_one, smul_eq_mul]
-
-/-- **`cross₃` is additive in its third argument**, as `cross₃_add_fst`. -/
 theorem cross₃_add_thd (x y z1 z2 : Fin 4 → K) :
     cross₃ x y (z1 + z2) = cross₃ x y z1 + cross₃ x y z2 := by
   rw [← dotProduct_eq_iff]; intro w
@@ -169,7 +125,8 @@ theorem cross₃_add_thd (x y z1 z2 : Fin 4 → K) :
     ← cons_updateRow_two x y z1 w (z1 + z2), Matrix.det_updateRow_add,
     cons_updateRow_two, cons_updateRow_two]
 
-/-- **`cross₃` is homogeneous in its third argument**, as `cross₃_smul_fst`. -/
+/-- **`cross₃` is homogeneous in its third argument**: `cross₃ x y (c • z) = c • cross₃ x y z`, as
+`cross₃_add_thd`. -/
 theorem cross₃_smul_thd (c : K) (x y z : Fin 4 → K) :
     cross₃ x y (c • z) = c • cross₃ x y z := by
   rw [← dotProduct_eq_iff]; intro w

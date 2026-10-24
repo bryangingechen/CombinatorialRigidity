@@ -394,18 +394,6 @@ theorem _root_.Graph.IsAdmissiblePicture.eq_zero_of_forall_closedNbhd {G : Graph
   obtain ⟨s, hs, hli⟩ := hq.2 v hv
   exact eq_zero_of_dotProduct_pencilPicturePoint hli fun i => hh _ (hs i)
 
-/-- **A closed neighbourhood has one plane**: over an admissible picture, two coefficient vectors
-that agree on the homogeneous picture points of a closed neighbourhood are equal. No declaration
-uses it. -/
-theorem _root_.Graph.IsAdmissiblePicture.eq_of_forall_closedNbhd {G : Graph α β}
-    {q : α × Fin 2 → K} (hq : G.IsAdmissiblePicture q) {v : α} (hv : v ∈ V(G))
-    {h h' : Fin 3 → K}
-    (hh : ∀ w ∈ G.closedNbhd v, h ⬝ᵥ pencilPicturePoint q w = h' ⬝ᵥ pencilPicturePoint q w) :
-    h = h' := by
-  have := hq.eq_zero_of_forall_closedNbhd hv (h := h - h') fun w hw => by
-    rw [sub_dotProduct, hh w hw, sub_self]
-  exact sub_eq_zero.mp this
-
 /-! ## The bodies and closed neighbourhoods of the contraction -/
 
 /-- The collapse sends a core body to the representative `r`. -/

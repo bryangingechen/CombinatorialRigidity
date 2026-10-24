@@ -5345,6 +5345,10 @@ declaration's name as its header writes it:
   block (b) at `b630905b` gives the same names, `shiftCycle_eq_cons` live only through the shared
   `by omega` auxiliary of `shiftPerm_vtx_top`, and the build and the caches confirm that no other
   declaration is left without a caller (task 38.6).
+  Round 3: tasks 37's to 37.15's fifteen in `Molecule/` deleted, `Pair.lean`'s witness staying;
+  block (b) at `0f2d588e` gives the same names, unpinned, dead and with no caller outside
+  the set, and no orphan, and the build and the caches confirm that no other declaration is left
+  without a caller (task 38.7).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and

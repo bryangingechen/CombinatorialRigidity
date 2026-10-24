@@ -25,9 +25,8 @@ has two independent hinges through any point of it (`sec:pencil-base`); that two
 pass through a common point of it, so that the cycles on three and four bodies have rigid pencil
 realizations (`sec:pencil-cycle`); and that two bodies have a common nonzero hinge in both panels
 and through both points exactly when the point of each lies in the panel of the other
-(`sec:pencil-extension`). The last section shows that the two predicates do not change when the
-extensor, the normal or the point is multiplied by a nonzero scalar, and that a nonzero hinge
-through two independent points is a multiple of their join, a step of `lem:pencil-generic-steer`.
+(`sec:pencil-extension`). The last section shows that a nonzero hinge through two independent points
+is a multiple of their join, a step of `lem:pencil-generic-steer`.
 
 ## Main definitions
 
@@ -762,101 +761,10 @@ theorem exists_extensor_two_pencils_iff {n_u n_v pt_u pt_v : Fin 4 → K} (hu_ne
     exact ⟨dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nv h_tu,
            dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nu h_tv⟩
 
-/-! ## Rescaling, and a hinge through two points
+/-! ## A hinge through two points
 
-`ExtensorInPanel` and `ExtensorThroughPoint` do not change when the extensor, the normal or the
-point is multiplied by a nonzero scalar: a scalar on the extensor goes into the first vector of its
-family (`extensor_update_smul`), and one on the normal or the point into the dot product or the
-span. A nonzero hinge through two independent points is a nonzero multiple of their join
+A nonzero hinge through two independent points is a nonzero multiple of their join
 (`exists_smul_eq_extensor_of_extensorThroughPoint_pair`). -/
-
-/-- **`ExtensorInPanel` is invariant under a nonzero rescaling of the extensor**: the scalar goes
-into the first vector of the family (`extensor_update_smul`), which stays orthogonal to the normal
-(`smul_dotProduct`). It is stated at grade `2`, where the family's first index is `0 : Fin 2`. -/
-theorem extensorInPanel_smul_iff {C : ScrewSpace K 2} {n : Fin 4 → K} {c : K}
-    (hc : c ≠ 0) : ExtensorInPanel (c • C) n ↔ ExtensorInPanel C n := by
-  constructor
-  · rintro ⟨p, hpval, hperp⟩
-    refine ⟨Function.update p 0 (c⁻¹ • p 0), ?_, fun i => ?_⟩
-    · rw [extensor_update_smul p 0 c⁻¹, ← hpval, ScrewSpace.val_smul, smul_smul,
-        inv_mul_cancel₀ hc, one_smul]
-    · rcases eq_or_ne i 0 with rfl | hi
-      · rw [Function.update_self, smul_dotProduct, hperp 0, smul_zero]
-      · rw [Function.update_of_ne hi]; exact hperp i
-  · rintro ⟨p, hpval, hperp⟩
-    refine ⟨Function.update p 0 (c • p 0), ?_, fun i => ?_⟩
-    · rw [ScrewSpace.val_smul, hpval, extensor_update_smul]
-    · rcases eq_or_ne i 0 with rfl | hi
-      · rw [Function.update_self, smul_dotProduct, hperp 0, smul_zero]
-      · rw [Function.update_of_ne hi]; exact hperp i
-
-/-- **`ExtensorInPanel` is invariant under a nonzero rescaling of the normal**: `⬝ᵥ` is linear in
-its second argument (`dotProduct_smul`), and `c ≠ 0` cancels in the field `K`. -/
-theorem extensorInPanel_smul_normal_iff {C : ScrewSpace K 2} {n : Fin 4 → K}
-    {c : K} (hc : c ≠ 0) : ExtensorInPanel C (c • n) ↔ ExtensorInPanel C n := by
-  constructor
-  · rintro ⟨p, hpval, hperp⟩
-    refine ⟨p, hpval, fun i => ?_⟩
-    have h := hperp i
-    rw [dotProduct_smul, smul_eq_mul] at h
-    exact (mul_eq_zero.mp h).resolve_left hc
-  · rintro ⟨p, hpval, hperp⟩
-    exact ⟨p, hpval, fun i => by rw [dotProduct_smul, hperp i, smul_zero]⟩
-
-/-- **`ExtensorThroughPoint` is invariant under a nonzero rescaling of the point**: a span is closed
-under multiplication by `c` and by `c⁻¹`. -/
-theorem extensorThroughPoint_smul_point_iff {C : ScrewSpace K 2} {q : Fin 4 → K}
-    {c : K} (hc : c ≠ 0) : ExtensorThroughPoint C (c • q) ↔ ExtensorThroughPoint C q := by
-  constructor
-  · rintro ⟨p, hpval, hqmem⟩
-    refine ⟨p, hpval, ?_⟩
-    have := Submodule.smul_mem (Submodule.span K (Set.range p)) c⁻¹ hqmem
-    rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at this
-  · rintro ⟨p, hpval, hqmem⟩
-    exact ⟨p, hpval, Submodule.smul_mem _ c hqmem⟩
-
-/-- **`ExtensorThroughPoint` is invariant under a nonzero rescaling of the extensor**: the scalar
-goes into the first vector of the family, as in `extensorInPanel_smul_iff`, which does not change
-its span (`hspan`). -/
-theorem extensorThroughPoint_smul_iff {C : ScrewSpace K 2} {q : Fin 4 → K} {c : K}
-    (hc : c ≠ 0) : ExtensorThroughPoint (c • C) q ↔ ExtensorThroughPoint C q := by
-  have hspan : ∀ (p : Fin 2 → Fin 4 → K) (c' : K), c' ≠ 0 →
-      Submodule.span K (Set.range (Function.update p 0 (c' • p 0)))
-        = Submodule.span K (Set.range p) := by
-    intro p c' hc'
-    apply le_antisymm
-    · rw [Submodule.span_le]
-      rintro _ ⟨j, rfl⟩
-      rw [SetLike.mem_coe]
-      rcases eq_or_ne j 0 with rfl | hj
-      · rw [Function.update_self]
-        exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
-      · rw [Function.update_of_ne hj]
-        exact Submodule.subset_span ⟨j, rfl⟩
-    · rw [Submodule.span_le]
-      rintro _ ⟨j, rfl⟩
-      rw [SetLike.mem_coe]
-      rcases eq_or_ne j 0 with rfl | hj
-      · have hmem0 : Function.update p 0 (c' • p 0) 0 ∈
-            Submodule.span K (Set.range (Function.update p 0 (c' • p 0))) :=
-          Submodule.subset_span ⟨0, rfl⟩
-        have hmem0' : c'⁻¹ • Function.update p 0 (c' • p 0) 0 ∈
-            Submodule.span K (Set.range (Function.update p 0 (c' • p 0))) :=
-          Submodule.smul_mem _ _ hmem0
-        rwa [Function.update_self, smul_smul, inv_mul_cancel₀ hc', one_smul] at hmem0'
-      · have hjeq : p j = Function.update p 0 (c' • p 0) j := by rw [Function.update_of_ne hj]
-        rw [hjeq]
-        exact Submodule.subset_span ⟨j, rfl⟩
-  constructor
-  · rintro ⟨p, hpval, hqmem⟩
-    refine ⟨Function.update p 0 (c⁻¹ • p 0), ?_, ?_⟩
-    · rw [extensor_update_smul p 0 c⁻¹, ← hpval, ScrewSpace.val_smul, smul_smul,
-        inv_mul_cancel₀ hc, one_smul]
-    · rwa [hspan p c⁻¹ (inv_ne_zero hc)]
-  · rintro ⟨p, hpval, hqmem⟩
-    refine ⟨Function.update p 0 (c • p 0), ?_, ?_⟩
-    · rw [ScrewSpace.val_smul, hpval, extensor_update_smul]
-    · rwa [hspan p c hc]
 
 /-- **A nonzero hinge through two independent points is a multiple of their join** (a step of
 `lem:pencil-generic-steer`): if a nonzero `C : ScrewSpace K 2` passes through `p` and through `q`,

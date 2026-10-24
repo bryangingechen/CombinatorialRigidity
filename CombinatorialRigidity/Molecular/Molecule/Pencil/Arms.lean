@@ -398,18 +398,6 @@ theorem finrank_span_triple_le (a b c : Fin 4 → K) :
   have h1 := finrank_span_pair_le b c
   omega
 
-/-- **The vectors of `K⁴` orthogonal to any `t` form a space of dimension at least `3`**: the form
-of `finrank_toDualPerp_single_eq` that allows `t = 0`, from `finrank_toDualPerp_add_finrank_span`
-and `finrank (span {t}) ≤ 1`. -/
-theorem le_finrank_toDualPerp_single (t : Fin 4 → K) :
-    3 ≤ Module.finrank K
-      (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t) : Submodule K (Fin 4 → K)) := by
-  have := finrank_toDualPerp_add_finrank_span (fun _ : Unit => t)
-  have h1 := finrank_span_le_card (R := K) ({t} : Set (Fin 4 → K))
-  rw [iInf_const, Set.range_const] at this
-  rw [Set.toFinset_singleton, Finset.card_singleton] at h1
-  omega
-
 /-- **The vectors of `K⁴` orthogonal to two vectors form a space of dimension at least `2`** (a step
 of `lem:pencil-pair-loop-base-cut`): its dimension and that of the span of `t₁, t₂` add up to `4`
 (`finrank_toDualPerp_add_finrank_span`), and that span has dimension at most `2`. The vectors of
