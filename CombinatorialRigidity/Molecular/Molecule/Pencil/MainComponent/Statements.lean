@@ -138,8 +138,6 @@ theorem pencilPair_of_IH [Finite α] [Finite β] [Infinite K]
     (G : Graph α β) (hloop : G.Loopless) (hV : 3 ≤ V(G).ncard)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') :
     PencilPair K 3 G := by
-  have hD2 : (2 : ℕ) ≤ Graph.bodyBarDim 3 := by
-    have := Graph.six_le_bodyBarDim (n := 3) (by norm_num); omega
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   by_cases h2ec : G.TwoEdgeConnected
   · by_cases hs : G.Simple
@@ -148,7 +146,7 @@ theorem pencilPair_of_IH [Finite α] [Finite β] [Infinite K]
         hasPencilRealization_of_distinct hd⟩
     · exact ⟨fun h => absurd h hs, fun h => absurd h hs,
         hasPencilRealization_of_not_simple G hloop hV hs hIH⟩
-  · exact pencilPair_of_not_twoEdgeConnected hD2 hn h2ec hIH
+  · exact pencilPair_of_not_twoEdgeConnected hn h2ec hIH
 
 /-- **The conditioned pair at every nonempty multigraph** (`thm:pencil-conditioned-pair-nonempty`,
 and the general claim of `thm:pencil-realization-theorem`): over an infinite field, for finite `α`

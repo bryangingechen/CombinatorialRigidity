@@ -288,19 +288,10 @@ theorem screwCoord_rebuild (p : (Fin 3 → ℝ) × (Fin 3 → ℝ)) : screwCoord
 theorem screwCoord_surjective : Function.Surjective screwCoord :=
   Function.RightInverse.surjective screwCoord_rebuild
 
-theorem screwCoord_injective : Function.Injective screwCoord := by
-  rw [← LinearMap.ker_eq_bot]
-  have hrn := LinearMap.finrank_range_add_finrank_ker screwCoord
-  have hrange : Module.finrank ℝ (LinearMap.range screwCoord)
-      = Module.finrank ℝ ((Fin 3 → ℝ) × (Fin 3 → ℝ)) := by
-    rw [LinearMap.range_eq_top.mpr screwCoord_surjective, finrank_top]
-  have hdom : Module.finrank ℝ (ScrewSpace ℝ 2) = 6 := by
-    rw [screwSpace_finrank]; rfl
-  have hcod : Module.finrank ℝ ((Fin 3 → ℝ) × (Fin 3 → ℝ)) = 6 := by
-    rw [Module.finrank_prod, Module.finrank_pi]; rfl
-  have hker : Module.finrank ℝ (LinearMap.ker screwCoord) = 0 := by
-    rw [hrange, hcod, hdom] at hrn; omega
-  exact Submodule.finrank_eq_zero.mp hker
+theorem screwCoord_injective : Function.Injective screwCoord :=
+  (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by
+    rw [screwSpace_finrank, Module.finrank_prod, Module.finrank_pi]; rfl)).mpr
+    screwCoord_surjective
 
 /-- The kernel form of injectivity: a screw with vanishing rotation and translation parts is zero.
 -/

@@ -14,7 +14,8 @@ public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 and `Matrix.isUnit_iff_isUnit_det`; over a field the fused determinant form
 `LinearIndependent K A.row ↔ A.det ≠ 0` is the three-lemma chain
 `linearIndependent_rows_iff_isUnit` + `isUnit_iff_isUnit_det` + `isUnit_iff_ne_zero`, packaged
-here. The combinatorial-rigidity project uses it in `Molecular/Molecule/Pencil/MainComponent/`
+here. The combinatorial-rigidity project uses it in `Molecular/Molecule/Pencil/`
+(`cross₃_ne_zero_iff_linearIndependent` in `Chart.lean`) and in its `MainComponent/`
 (`Graph.IsAdmissiblePicture.exists_mvPolynomial` and `Graph.exists_isAdmissiblePicture` in
 `Carrier.lean`, `exists_det_poly` in `GenericBase.lean`, and `Configuration.lean`).
 

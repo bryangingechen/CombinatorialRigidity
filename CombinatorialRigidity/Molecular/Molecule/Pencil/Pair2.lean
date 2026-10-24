@@ -72,7 +72,7 @@ space of dimension at least `2` (`le_finrank_toDualPerp_inf`). The hinge of `e_c
 `exists_extensor_two_pencils`, and the two sides glue by `exists_hasPencilPanelRealization_glue`. -/
 theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI
     [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} [G.Loopless] {V₁ : Set α} {e_c : β} {u_c v_c : α}
     (hl_c : G.IsLink e_c u_c v_c) (hu_c : u_c ∈ V₁) (hv_c : v_c ∉ V₁)
     (hVG : V(G) = V₁ ∪ {v_c}) (hcut : (G.cutEdges V₁).ncard ≤ 1)
@@ -386,7 +386,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_
     rw [hrows_empty, Submodule.span_empty, finrank_bot, hVeq₂,
       Graph.deficiency_of_edgeSet_empty hV₂edgeless, hVeq₂']
     norm_num
-  obtain ⟨F, hreal, hrank_eq⟩ := exists_hasPencilPanelRealization_glue hD hn hssub hne hcut
+  obtain ⟨F, hreal, hrank_eq⟩ := exists_hasPencilPanelRealization_glue hn hssub hne hcut
     (hreal₁.restrict le_rfl) hreal₂
     (by rw [span_rigidityRows_eq_of_supportExtensor_agree _ F₁ hF₁g (fun _ _ _ _ => rfl)]
         exact hrank₁.ge)
@@ -415,7 +415,7 @@ makes `H` nondegeneracy-feasible, `hIH` gives `H` a generic realization,
 `G.closedHubNbhd v` for every `v ∈ V₁`, and
 `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI` glues. -/
 theorem hasGenericPencilRealization_pendant_of_IH [Finite α] [Finite β] [Infinite K]
-    {n : ℕ} (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {n : ℕ} (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} {V₁ : Set α} {e_c : β} {u_c v_c : α}
     (hSimple : G.Simple) (hfeas : PencilNondegFeasible K G)
     (hl_c : G.IsLink e_c u_c v_c) (hu_c : u_c ∈ V₁) (hv_c : v_c ∉ V₁)
@@ -464,7 +464,7 @@ theorem hasGenericPencilRealization_pendant_of_IH [Finite α] [Finite β] [Infin
     (fun v => hndG.2.2.1 v (hV₁sub v.2))
     (Empty.elim : Empty → α) (Empty.elim : Empty → α) (fun j => j.elim) (fun j => j.elim)
     (fun j => j.elim) (fun j => j.elim)
-  exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI hD hn
+  exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant_of_hubLI hn
     hl_c hu_c hv_c hVG hcut hnd' hrank' fun v hv => hS' ⟨v, hv⟩
 
 /-! ## At a cut edge
@@ -494,14 +494,14 @@ The hypothesis of `hasDistinctPencilRealization_of_not_twoEdgeConnected` (`Arms.
 `G' ≤ G` on fewer bodies is the adjacent-distinct conjunct of `hIH`, as `G'` is simple when `G` is
 (`Graph.Simple.mono`). -/
 theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
     PencilPair K n G := by
   refine ⟨fun hSimple hfeas => ?_,
-    fun hSimple => hasDistinctPencilRealization_of_not_twoEdgeConnected hD hn hntec
+    fun hSimple => hasDistinctPencilRealization_of_not_twoEdgeConnected hn hntec
       (fun G' hle' hne' hlt' => (hIH G' hne' hlt').2.1 (hSimple.mono hle')),
-    hasPencilRealization_of_not_twoEdgeConnected hD hn hntec
+    hasPencilRealization_of_not_twoEdgeConnected hn hntec
       (fun G' hne' hlt' => (hIH G' hne' hlt').2.2)⟩
   have := hSimple.toLoopless
   simp only [Graph.TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
@@ -510,7 +510,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
   set V₂ := V(G) \ V₁
   rcases Set.eq_empty_or_nonempty (G.cutEdges V₁) with hC0 | ⟨e_c, he_c⟩
   · -- no edge crosses `V₁`
-    exact hasGenericPencilRealization_of_cutEdges_eq_empty hD hn hne hssub hC0 hSimple hfeas hIH
+    exact hasGenericPencilRealization_of_cutEdges_eq_empty hn hne hssub hC0 hSimple hfeas hIH
   · -- one edge crosses `V₁`: by the sizes of the sides
     have hne₂ : V₂.Nonempty := Set.nonempty_of_ssubset hssub
     simp only [Graph.cutEdges, Set.mem_ofPred_eq] at he_c
@@ -524,13 +524,13 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
     · -- the side `V₂` is the single body `v_c`
       have hV₂eq : V₂ = {v_c} :=
         (Set.ncard_le_one_iff_subsingleton.mp hV₂one.le).eq_singleton_of_mem hv_c₂
-      exact hasGenericPencilRealization_pendant_of_IH hD hn hSimple hfeas hl_c hu_c hv_c
+      exact hasGenericPencilRealization_pendant_of_IH hn hSimple hfeas hl_c hu_c hv_c
         (by rw [← hV₂eq]; exact (Set.union_sdiff_cancel hssub.subset).symm) hcut_le hIH
     · by_cases hV₁one : V₁.ncard = 1
       · -- the side `V₁` is the single body `u_c`: the roles of the sides exchanged
         have hV₁eq : V₁ = {u_c} :=
           (Set.ncard_le_one_iff_subsingleton.mp hV₁one.le).eq_singleton_of_mem hu_c
-        exact hasGenericPencilRealization_pendant_of_IH hD hn hSimple hfeas hl_c.symm hv_c₂
+        exact hasGenericPencilRealization_pendant_of_IH hn hSimple hfeas hl_c.symm hv_c₂
           hu_notin₂ (by rw [← hV₁eq]; exact (Set.sdiff_union_of_subset hssub.subset).symm)
           hcut₂ hIH
       · -- both sides have at least two bodies: each side with the far end of `e_c`, and the glue
@@ -569,7 +569,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] [Infinite K] 
         obtain ⟨F₂, normal₂, point₂, hnd₂, hrank₂⟩ :=
           (hIH (G.induce (V₂ ∪ {u_c})) hne2p hlt2p).1 hSimple2p hfeas2p
         exact hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton
-          hD hn hl_c hu_c hv_c hssub.subset hcut_le hfeas hnd₁ hrank₁ hnd₂ hrank₂
+          hn hl_c hu_c hv_c hssub.subset hcut_le hfeas hnd₁ hrank₁ hnd₂ hrank₂
 
 /-! ## The reduction for the conditioned pair
 
@@ -594,10 +594,9 @@ theorem pencilPair_loop_base_cut [Finite α] [Finite β] [Infinite K] :
     (∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → ¬ G.TwoEdgeConnected →
       (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K 3 G') →
       PencilPair K 3 G) := by
-  have hD6 : (6 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.six_le_bodyBarDim (by norm_num)
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   refine ⟨?_, fun G hloop hne hV2 => pencilPair_of_ncard_le_two hloop hne hV2,
-    fun G _ _ hntec hIH => pencilPair_of_not_twoEdgeConnected (by omega) hn hntec hIH⟩
+    fun G _ _ hntec hIH => pencilPair_of_not_twoEdgeConnected hn hntec hIH⟩
   rintro G ⟨e, x, hloopAt⟩ IH
   refine pencilPair_of_isLoopAt hloopAt (IH (G ＼ ({e} : Set β)) ?_ (Or.inr ⟨?_, ?_⟩))
   · rw [Graph.vertexSet_deleteEdges]; exact ⟨x, hloopAt.left_mem⟩

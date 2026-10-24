@@ -5079,7 +5079,7 @@ declaration's name as its header writes it:
   task 25.3, at `05b0dae4` for task 26 and at `7e5c1cb2` for task 27; `rfl` lemmas left out);
   read (`Chart.lean`'s proof and import closure; `pebOn_addArc`'s proof).
   *Found:* RECONCILE round 3 tasks 25.2, 25.3, 26 and 27.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.2 to 38.8 and 38.20; task 38's
+  *Disposition:* done (tasks 38.2 to 38.8 and 38.20; task 38's
   screen ends this entry). Task 28 adds two in
   `SquareGraph.lean`, `square_mono` and `three_le_ncard_closedNeighborSet_of_two_le_degree`, whose
   docstrings said the proof of `thm:jacobs` and the square-graph dictionary use them (no
@@ -5370,7 +5370,8 @@ declaration's name as its header writes it:
   `coe_pairingDualEquiv` stays by task 38's rule for a declaration that witnesses a chapter's
   claim: `def:meet-pairing-dual` pins `exteriorPower.pairingDualEquiv`, a `Basis.equiv`, and states
   that the determinant map is an isomorphism, and it alone proves that the equivalence is that map
-  (task 38.8).
+  (task 38.8). Round 3: `cross₃_ne_zero_iff_linearIndependent` re-proved by the mirror, which
+  `Chart.lean` now imports, in place of its two chains (task 38.20).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -6013,9 +6014,10 @@ declaration's name as its header writes it:
   lemma and `screwCoord_surjective`, on the three standard axioms
   (`scratch/reconcile-lean/t37/Hyps-t37.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.20). Task 38.1:
+  *Disposition:* done (task 38.20). Task 38.1:
   `screwCoord_injective` by `LinearMap.injective_iff_surjective_of_finrank_eq_finrank` with
   `screwCoord_surjective`. Left: the two neighbours of `v` (three lines in each of two proofs).
+  Round 3: done so, the two dimensions by `screwSpace_finrank` (task 38.20).
 - **F-300** · L · a repeated derivation and three derivable instance arguments in
   `Molecular/Molecule/`. The proof of `exists_molecular_rankHypothesis_generalPosition`
   (`Modelling.lean`) derives, as its local `smul_right`, `hspaneq` and `hmotions`, that the panel
@@ -6083,7 +6085,7 @@ declaration's name as its header writes it:
   with `hD` derived from `hn`, and the two bounds from `finrank_span_le_card`, on the three standard
   axioms (`scratch/reconcile-lean/t373/Hyps-t373.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.3.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.20). Task 38.1: drop the `hD` of
+  *Disposition:* done (task 38.20). Task 38.1: drop the `hD` of
   `exists_hasPencilPanelRealization_glue`, `hasPencilRealization_of_not_twoEdgeConnected_core` and
   its two forms (`lem:pencil-cut-case` states none), giving `2 ≤ D` from `hn` at the call of
   `finrank_span_rigidityRows_cutEdge_eq` (callers of the four: `F-307`'s and
@@ -6091,7 +6093,11 @@ declaration's name as its header writes it:
   `finrank_span_le_card` with `Finset.card_le_two` and `Finset.card_le_three`, and
   `finrank_span_insert_le`, which serves only them, deleted (gate 4). Left:
   `exists_perp_linearIndependent` (`le_finrank_toDualPerp_single` goes in task 38.7), the cut's
-  sorting (two proofs) and the parallel case's rank (two statements, ~15 lines).
+  sorting (two proofs) and the parallel case's rank (two statements, ~15 lines). Round 3: done so,
+  `2 ≤ D` by `rw [hn]; decide` at the glue's one call; the drop left `F-307`'s five `hD` and three
+  local `2 ≤ D` steps of `pencilPair_of_not_twoEdgeConnected`'s callers passing nothing on, so they
+  went too (`F-307`); block (b) gave `finrank_span_insert_le` no caller but the two re-proved, no
+  orphan, and the build its trial deletion (task 38.20).
 - **F-304** · L · an over-strong hypothesis, a missed mathlib lemma and repeated derivations in
   `Molecular/Molecule/Pencil/Motive.lean`. `dotProduct_point_eq_zero_of_mem_closedNbhd` takes
   `IsNondegPencilRealization` and uses only its first conjunct, the pencil realization
@@ -6113,7 +6119,7 @@ declaration's name as its header writes it:
   and the three degree lemmas from one local form, on the three standard axioms
   (`scratch/reconcile-lean/t374/Hyps-t374.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.4.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.20). Task 38.1: weaken the
+  *Disposition:* done (task 38.20). Task 38.1: weaken the
   `IsNondegPencilRealization` of `dotProduct_point_eq_zero_of_mem_closedNbhd`,
   `dotProduct_point_eq_zero_of_mem_closedHubNbhd` and `dotProduct_normal_eq_zero_of_mem_closedNbhd`
   to `HasPencilPanelRealization`, as the chapter's remark derives it (unpinned; callers pass
@@ -6122,7 +6128,12 @@ declaration's name as its header writes it:
   `hasPencilRealization_of_generic` as the composition; one lemma for the loops and non-loops at `v`
   of `G.induce S` (~15 lines in each of `degree_induce_union_singleton_of_mem`,
   `degree_induce_of_forall_isLink_mem`, `degree_induce_eq_of_ne`; the witness's local form). Left:
-  the second's `hS` at every vertex (its callers hold it; a change of form only).
+  the second's `hS` at every vertex (its callers hold it; a change of form only). Round 3: done so,
+  callers passing `.1` (`Motive.lean`, `Reseed.lean`, `GenericEar.lean`); the lemma
+  `Graph.degree_induce_eq_of_isLink_mem`, and `Graph.closedNbhd_subset_of_mem` moved before
+  `degree_induce_union_singleton_of_mem` to give it the links' ends;
+  `hasPencilRealization_of_generic` moved after `hasDistinctPencilRealization_of_generic` (task
+  38.20).
 - **F-305** · L · a repeated derivation in `Molecular/Molecule/Pencil/Engine.lean`: the re-seeding
   at selectors it chooses. `exists_hubSlotOf_isNondegPencilRealization`,
   `exists_hubSel_fillHub_of_isNondegPencilRealization`,
@@ -6224,7 +6235,10 @@ declaration's name as its header writes it:
   `pencilPair_of_isLoopAt`'s and `hlb_induce_…`'s over-strong hypotheses, which their callers hold
   (a change of form only); the two-body realization (~70 lines), whose shared form would generalize
   `exists_isNondegPencilRealization_parallel_pair`, the chapter's witness; the four pairs and the
-  per-side steps (one proof each); `degree_induce_union_singleton_far`'s two uses.
+  per-side steps (one proof each); `degree_induce_union_singleton_far`'s two uses. Round 3: the
+  five `hD` dropped with `F-303`'s, which left them passing nothing on, and with them the local
+  `2 ≤ D` steps of `pencilPair_of_X0`, `pencilPair_of_IH` and `pencilPair_loop_base_cut` (task
+  38.20).
 
 - **F-308** · L · an over-strong hypothesis, a hypothesis another gives and repeated derivations in
   `Molecular/Molecule/Pencil/X0.lean` and `MainComponent/GenericSteer.lean`.

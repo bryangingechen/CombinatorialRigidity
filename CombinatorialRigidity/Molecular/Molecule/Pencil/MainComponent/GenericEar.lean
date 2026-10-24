@@ -529,8 +529,8 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_one
     refine not_linearIndependent_of_dotProduct_eq_zero_pair hnab _ ?_ h3
     intro i
     fin_cases i
-    · exact ⟨dotProduct_point_eq_zero_of_mem_closedNbhd hndG hx₀G (Or.inr ⟨e 0, l0.symm⟩),
-        dotProduct_point_eq_zero_of_mem_closedNbhd hndG hx₀G (Or.inr ⟨e 1, l1⟩)⟩
+    · exact ⟨dotProduct_point_eq_zero_of_mem_closedNbhd hndG.1 hx₀G (Or.inr ⟨e 0, l0.symm⟩),
+        dotProduct_point_eq_zero_of_mem_closedNbhd hndG.1 hx₀G (Or.inr ⟨e 1, l1⟩)⟩
     · exact ⟨hndG.1.2.2.1 a (hV₁ haV), hab'⟩
     · exact ⟨hba', hndG.1.2.2.1 b (hV₁ hbV)⟩
   -- a hub of `G` in `V₁`, not one of `G[V₁]`, has three members in its closed neighbourhood there

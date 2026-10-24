@@ -360,43 +360,24 @@ realization (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`), as do
 neighbourhood of a body that is not a hub (`ncard_closedNbhd_le_three_of_not_pencilHub`), and the
 other end of the crossing edge is one of them. -/
 
-/-- **Inserting a vector raises the dimension of a span by at most one** (a step of
-`lem:pencil-pair-loop-base-cut`): `finrank (span (insert a s)) ≤ finrank (span s) + 1`, by
-`Submodule.span_insert` and the dimension formula for the sum of two subspaces, as
-`finrank (span {a}) ≤ 1`. -/
-theorem finrank_span_insert_le (a : Fin 4 → K) (s : Set (Fin 4 → K)) :
-    Module.finrank K (Submodule.span K (insert a s))
-      ≤ Module.finrank K (Submodule.span K s) + 1 := by
-  rw [Submodule.span_insert]
-  have h := Submodule.finrank_sup_add_finrank_inf_eq
-    (Submodule.span K ({a} : Set (Fin 4 → K))) (Submodule.span K s)
-  have h1 : Module.finrank K (Submodule.span K ({a} : Set (Fin 4 → K))) ≤ 1 := by
-    rcases eq_or_ne a 0 with rfl | ha
-    · rw [Submodule.span_zero_singleton, finrank_bot]
-      omega
-    · rw [finrank_span_singleton ha]
-  omega
-
 /-- **A span of two vectors has dimension at most `2`** (a step of `lem:pencil-pair-loop-base-cut`):
-the vectors need not be nonzero or distinct, so a family of fewer than two vectors can be padded
-with `0` (`exists_reposition_cross_incidences_avoiding`). -/
+the set `{a, b}` has at most two members (`finrank_span_le_card`). The vectors need not be nonzero
+or distinct, so a family of fewer than two vectors can be padded with `0`
+(`exists_reposition_cross_incidences_avoiding`). -/
 theorem finrank_span_pair_le (a b : Fin 4 → K) :
     Module.finrank K (Submodule.span K {a, b}) ≤ 2 := by
-  have h := finrank_span_insert_le a {b}
-  have h1 : Module.finrank K (Submodule.span K ({b} : Set (Fin 4 → K))) ≤ 1 := by
-    rcases eq_or_ne b 0 with rfl | hb
-    · rw [Submodule.span_zero_singleton, finrank_bot]
-      omega
-    · rw [finrank_span_singleton hb]
-  omega
+  classical
+  exact (finrank_span_le_card ({a, b} : Set (Fin 4 → K))).trans (by
+    simpa using Finset.card_le_two (a := a) (b := b))
 
 /-- **A span of three vectors has dimension at most `3`** (a step of
-`lem:pencil-pair-loop-base-cut`). -/
+`lem:pencil-pair-loop-base-cut`): the set `{a, b, c}` has at most three members
+(`finrank_span_le_card`). -/
 theorem finrank_span_triple_le (a b c : Fin 4 → K) :
     Module.finrank K (Submodule.span K {a, b, c}) ≤ 3 := by
-  have h := finrank_span_insert_le a {b, c}
-  have h1 := finrank_span_pair_le b c
-  omega
+  classical
+  exact (finrank_span_le_card ({a, b, c} : Set (Fin 4 → K))).trans (by
+    simpa using Finset.card_le_three (a := a) (b := b) (c := c))
 
 /-- **The vectors of `K⁴` orthogonal to two vectors form a space of dimension at least `2`** (a step
 of `lem:pencil-pair-loop-base-cut`): its dimension and that of the span of `t₁, t₂` add up to `4`
@@ -658,7 +639,7 @@ every other label, and each body's normal and point from its own side. The rank 
 `Graph.deficiency_eq_of_cutEdges_ncard_le_one` and the span of each side's rows from
 `span_rigidityRows_eq_of_supportExtensor_agree`. -/
 theorem exists_hasPencilPanelRealization_glue [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} {V₁ : Set α} (hssub : V₁ ⊂ V(G)) (hne : V₁.Nonempty)
     (hcut : (G.cutEdges V₁).ncard ≤ 1)
     {ext₁ ext₂ : β → ScrewSpace K 2} {normal₁ point₁ normal₂ point₂ : α → Fin 4 → K}
@@ -718,7 +699,7 @@ theorem exists_hasPencilPanelRealization_glue [Finite α] [Finite β] {n : ℕ}
         have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
           fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
         simp only [extF, hnotE₁, ↓reduceIte, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
-    exact finrank_span_rigidityRows_cutEdge_eq hD hn rfl ⟨G, extF⟩ rfl hV₂def hcut
+    exact finrank_span_rigidityRows_cutEdge_eq (by rw [hn]; decide) hn rfl ⟨G, extF⟩ rfl hV₂def hcut
       (fun e _ _ _ => by simp only [extF]; split_ifs; exacts [hS₁nz e, hS₂nz e, hC])
       ⟨hne.some, hssub.subset hne.some_mem⟩ hVcard hdef
       (span_rigidityRows_eq_of_supportExtensor_agree extF ⟨G.induce V₁, ext₁⟩ rfl hagree₁)
@@ -783,7 +764,7 @@ adjacent-distinct realizations of simple graphs (`pencilPair_of_not_twoEdgeConne
 the automorphism `g` on the second side (`g` keeps independence), and at the crossing edge by the
 last conclusion of `exists_reposition_cross_incidences`. -/
 theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β] {n : ℕ}
-    {D : Prop} (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {D : Prop} (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
     (hIH : ∀ G' : Graph α β, G' ≤ G → V(G').Nonempty → V(G').ncard < V(G).ncard →
       ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
@@ -856,7 +837,7 @@ theorem hasPencilRealization_of_not_twoEdgeConnected_core [Finite α] [Finite β
   have hreal₂' := hasPencilPanelRealization_mapExtensor_screwEquivOfLinearEquiv g h hgh hreal₂
   set normal : α → Fin 4 → K := fun v => if v ∈ V₁ then normal₁ v else h (normal₂ v)
   set point : α → Fin 4 → K := fun v => if v ∈ V₁ then point₁ v else g (point₂ v)
-  obtain ⟨F, hreal, hrank_eq⟩ := exists_hasPencilPanelRealization_glue hD hn hssub ⟨u₀, hu₀⟩
+  obtain ⟨F, hreal, hrank_eq⟩ := exists_hasPencilPanelRealization_glue hn hssub ⟨u₀, hu₀⟩
     hcut_le (hreal₁.restrict le_rfl) (hreal₂'.restrict le_rfl)
     (by rw [span_rigidityRows_eq_of_supportExtensor_agree _ F₁ hF₁g (fun _ _ _ _ => rfl)]
         exact hrank₁.ge)
@@ -909,13 +890,13 @@ realization at the deficiency rank (`HasPencilRealization`), then so does `G`. I
 `hasPencilRealization_of_not_twoEdgeConnected_core` at `D := False`, where the independence of the
 points is neither asked nor given. -/
 theorem hasPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
       HasPencilRealization K n G') :
     HasPencilRealization K n G := by
   obtain ⟨F, normal, point, hreal, -, hrank⟩ :=
-    hasPencilRealization_of_not_twoEdgeConnected_core (D := False) hD hn hntec
+    hasPencilRealization_of_not_twoEdgeConnected_core (D := False) hn hntec
       (fun G' _ hne' hlt' => by
         obtain ⟨F', normal', point', hreal', hrank'⟩ := hIH G' hne' hlt'
         exact ⟨F', normal', point', hreal', fun hfalse => hfalse.elim, hrank'⟩)
@@ -929,13 +910,13 @@ hypothesis is asked only at subgraphs of `G` so that the conditioned pair
 (`pencilPair_of_not_twoEdgeConnected`, `Pair2.lean`), which gives adjacent-distinct realizations
 only of simple graphs, can supply it at a simple `G`: a subgraph of a simple graph is simple. -/
 theorem hasDistinctPencilRealization_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
     (hIH : ∀ G' : Graph α β, G' ≤ G → V(G').Nonempty → V(G').ncard < V(G).ncard →
       HasDistinctPencilRealization K n G') :
     HasDistinctPencilRealization K n G := by
   obtain ⟨F, normal, point, hreal, hdist, hrank⟩ :=
-    hasPencilRealization_of_not_twoEdgeConnected_core (D := True) hD hn hntec
+    hasPencilRealization_of_not_twoEdgeConnected_core (D := True) hn hntec
       (fun G' hle hne' hlt' => by
         obtain ⟨F', normal', point', hreal', hdist', hrank'⟩ := hIH G' hle hne' hlt'
         exact ⟨F', normal', point', hreal', fun _ => hdist', hrank'⟩)

@@ -100,9 +100,15 @@ node restated; task 38.18 dropped `F-294`'s and `F-295`'s hypotheses and variabl
 three links, no node restated; task 38.19 dropped `F-297`'s and `F-298`'s hypotheses in
 `Theorem55.lean` (three `hV3`, `hFcut`, the `hD` of seven callers of the main result) and five
 `GenericLift/` pass-throughs' `hD`, restating `lem:case-I-realization-h65`, `lem:case-I-dispatch`
-and `lem:case-I-all-k`.
-**Next concrete task:** round 3's task 38.20, `Molecule/ScrewVelocity.lean` and four `Pencil/`
-files (then tasks 38.21–38.27 and the close).
+and `lem:case-I-all-k`; task 38.20 re-proved `screwCoord_injective`,
+`cross₃_ne_zero_iff_linearIndependent`, two span bounds, `linearIndependent_triple_of_linearIndepOn`
+and `hasPencilRealization_of_generic` by existing lemmas, deleting `finrank_span_insert_le`,
+dropped the `hD` of the pencil cut-edge case's four declarations and of `F-307`'s five
+pass-throughs, weakened three orthogonality lemmas to `HasPencilPanelRealization`, and gave the
+degree lemmas `Graph.degree_induce_eq_of_isLink_mem` (`F-279`, `F-299`, `F-303`, `F-304`), no node
+restated.
+**Next concrete task:** round 3's task 38.21, `Pencil/Chart`, `Reseed` and `Steer.lean` (then
+tasks 38.22–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

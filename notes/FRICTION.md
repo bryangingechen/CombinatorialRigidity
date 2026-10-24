@@ -2850,6 +2850,10 @@ corresponding entry in [Mirrored](#mirrored) below.
   precompose-with-equiv invariance) rather than `LinearIndependent.comp`. So the `n = 3` iff is now
   complete project-side (both directions), still bespoke rather than the general
   `linearIndepOn_iff_linearIndependent_comp_equiv` below.
+- **Mathlib has the general form** (RECONCILE round 3, `F-304`): `linearIndepOn_range_iff` at an
+  injective `![x, y, z]`, whose range `{x, y, z}` is `simp only [Matrix.range_cons,
+  Matrix.range_empty, Set.union_empty, Set.singleton_union]` (`simp` with `Set.insert_eq` loops).
+  The forward direction is that now (task 38.20); the converse is task 38.21's (`F-306`).
 - **Status:** open (upstream-eligible, not yet mirrored — both `Fin 3` directions kept
   project-internal, forward in `Pencil/Motive.lean`, reverse in `Pencil/Steer.lean`, per the
   chart stack's precedent of bespoke `Fin 3`-literal ↔ subtype-indexed-family bridge lemmas, e.g.
@@ -3424,8 +3428,11 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored (2026-09-26, Phase 40b C1b) at the third consumer,
   `Graph.IsAdmissiblePicture.exists_mvPolynomial` (`Pencil/MainComponent/Carrier.lean`), as
   `Matrix.linearIndependent_rows_iff_det_ne_zero`. The two original sites in
-  `cross₃_ne_zero_iff_linearIndependent` (`Pencil/Chart.lean`) are not refactored — touching
-  `Chart.lean` rebuilds every Pencil module; a cleanup pass may switch them.
+  `cross₃_ne_zero_iff_linearIndependent` (`Pencil/Chart.lean`) were switched in RECONCILE round 3
+  (task 38.20), `Chart.lean` importing the mirror. There, `….mp h` with `h : LinearIndependent K
+  ![x, y, z, w]` and no expected type unifies `A` with the bare `![x, y, z, w]` (`A.row` unfolds to
+  `A`), leaving `Matrix.det (Fin.cons x ![y, z, w])`, which no `Matrix.of` lemma rewrites: pass
+  `(A := Matrix.of ![x, y, z, w])`.
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean` (new mirror file).
 
 ### [mirrored] `Submodule.finrank_sup_of_inf_eq_bot` — fused finrank equality for disjoint submodules

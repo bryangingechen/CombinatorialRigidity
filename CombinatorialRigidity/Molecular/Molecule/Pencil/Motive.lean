@@ -73,10 +73,11 @@ def _root_.Graph.PencilHub (G : Graph α β) (v : α) : Prop :=
   v ∈ V(G) ∧ 3 ≤ G.degree v
 
 /-- **The closed hub-neighbourhood of `v`** (`def:pencil-nondegenerate`): the pencil hubs among `v`
-and the bodies linked to it. At a nondegenerate realization the point of a body `v` is orthogonal to
-the normal of each of them, as to that of every member of the closed neighbourhood `G.closedNbhd v`
-(`dotProduct_point_eq_zero_of_mem_closedNbhd`), so that each closed hub-neighbourhood has at most
-three members (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`). -/
+and the bodies linked to it. At a pencil realization the point of a body `v` is orthogonal to the
+normal of each of them, as to that of every member of the closed neighbourhood `G.closedNbhd v`
+(`dotProduct_point_eq_zero_of_mem_closedNbhd`), so that at a nondegenerate one each closed
+hub-neighbourhood has at most three members
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`). -/
 def _root_.Graph.closedHubNbhd (G : Graph α β) (v : α) : Set α :=
   {w | G.PencilHub w ∧ (w = v ∨ ∃ e, G.IsLink e v w)}
 
@@ -180,14 +181,6 @@ theorem not_simple_of_parallel {G : Graph α β} {e f : β} {x y : α}
     (hef : e ≠ f) (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) : ¬ G.Simple :=
   fun hSimple => hef (hSimple.eq_of_isLink hl_e hl_f)
 
-/-- **A generic pencil realization is one at the deficiency rank** (the remark after
-`def:pencil-distinct-motive`): forget the three conditions of nondegeneracy
-(`IsNondegPencilRealization`). The pencil form of `hasPanelRealization_of_generic`. -/
-theorem hasPencilRealization_of_generic {n : ℕ} {G : Graph α β}
-    (h : HasGenericPencilRealization K n G) : HasPencilRealization K n G := by
-  obtain ⟨F, normal, point, ⟨hreal, _, _, _⟩, hrank⟩ := h
-  exact ⟨F, normal, point, hreal, hrank⟩
-
 /-- **A generic pencil realization is adjacent-distinct** (the remark after
 `def:pencil-distinct-motive`): keep the realization, the independence of the points at the two ends
 of every link and the rank, and forget the other two conditions of nondegeneracy. -/
@@ -195,6 +188,15 @@ theorem hasDistinctPencilRealization_of_generic {n : ℕ} {G : Graph α β}
     (h : HasGenericPencilRealization K n G) : HasDistinctPencilRealization K n G := by
   obtain ⟨F, normal, point, ⟨hreal, hadj, _, _⟩, hrank⟩ := h
   exact ⟨F, normal, point, hreal, hadj, hrank⟩
+
+/-- **A generic pencil realization is one at the deficiency rank** (the remark after
+`def:pencil-distinct-motive`): forget the three conditions of nondegeneracy
+(`IsNondegPencilRealization`), through the adjacent-distinct realization
+(`hasDistinctPencilRealization_of_generic`, `hasPencilRealization_of_distinct`). The pencil form of
+`hasPanelRealization_of_generic`. -/
+theorem hasPencilRealization_of_generic {n : ℕ} {G : Graph α β}
+    (h : HasGenericPencilRealization K n G) : HasPencilRealization K n G :=
+  hasPencilRealization_of_distinct (hasDistinctPencilRealization_of_generic h)
 
 /-- **A graph with a loop is not nondegeneracy-feasible** (a step of
 `lem:pencil-pair-loop-base-cut`, case (1)): a loop `e` at `v` is a link `G.IsLink e v v`, at which
@@ -349,18 +351,18 @@ notes after `def:pencil-nondegenerate`. A body that is not a hub has at most thr
 closed neighbourhood. -/
 
 /-- **The point of a body is orthogonal to the normals of its closed neighbourhood** (a step of
-`lem:pencil-feasible-hub-conditions` and `lem:pencil-x0-two-hubs-obstruction`): at a nondegenerate
-realization, for `v ∈ V(G)` and `w ∈ G.closedNbhd v`, `point v ⬝ᵥ normal w = 0`. At `w = v` it is
-the incidence of the point of `v` in its panel. For a link `e` from `v` to `w`, the nonzero hinge of
-`e` lies in the panel of `w` and passes through the point of `v`
-(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`). The proof uses only that the
-realization is a pencil realization. -/
+`lem:pencil-feasible-hub-conditions` and `lem:pencil-x0-two-hubs-obstruction`): at a pencil
+realization (`HasPencilPanelRealization`), as the remark after `def:pencil-nondegenerate` derives
+it, for `v ∈ V(G)` and `w ∈ G.closedNbhd v`, `point v ⬝ᵥ normal w = 0`. At `w = v` it is the
+incidence of the point of `v` in its panel. For a link `e` from `v` to `w`, the nonzero hinge of `e`
+lies in the panel of `w` and passes through the point of `v`
+(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`). -/
 theorem dotProduct_point_eq_zero_of_mem_closedNbhd
     {G : Graph α β} {F : BodyHingeFramework K 2 α β}
-    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {normal point : α → Fin 4 → K} (h : HasPencilPanelRealization G F normal point)
     {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) :
     point v ⬝ᵥ normal w = 0 := by
-  obtain ⟨hcop, _, hself, hthru⟩ := h.1
+  obtain ⟨hcop, _, hself, hthru⟩ := h
   obtain ⟨_, _, hCne, hpanel⟩ := hcop
   rcases hw with rfl | ⟨e, hlink⟩
   · exact hself w hv
@@ -372,7 +374,7 @@ theorem dotProduct_point_eq_zero_of_mem_closedNbhd
 neighbourhood. -/
 theorem dotProduct_point_eq_zero_of_mem_closedHubNbhd
     {G : Graph α β} {F : BodyHingeFramework K 2 α β}
-    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {normal point : α → Fin 4 → K} (h : HasPencilPanelRealization G F normal point)
     {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedHubNbhd v) :
     point v ⬝ᵥ normal w = 0 :=
   dotProduct_point_eq_zero_of_mem_closedNbhd h hv hw.2
@@ -382,7 +384,7 @@ and `w ∈ G.closedNbhd v`, `point w ⬝ᵥ normal v = 0`, by `dotProduct_point_
 at `w = v`, or at `(w, v)` along the reversed link, as `w ∈ V(G)` and `v ∈ G.closedNbhd w`. -/
 theorem dotProduct_normal_eq_zero_of_mem_closedNbhd
     {G : Graph α β} {F : BodyHingeFramework K 2 α β}
-    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {normal point : α → Fin 4 → K} (h : HasPencilPanelRealization G F normal point)
     {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) :
     point w ⬝ᵥ normal v = 0 := by
   rcases hw with rfl | ⟨e, hlink⟩
@@ -411,7 +413,7 @@ theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
     simp only [SetLike.mem_coe, hVperp, LinearMap.mem_ker, LinearMap.flip_apply,
       piBasisFun_toDual_eq_dotProduct]
     rw [dotProduct_comm]
-    exact dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv hw
+    exact dotProduct_point_eq_zero_of_mem_closedHubNbhd h.1 hv hw
   have hspan_le : Module.finrank K (Submodule.span K (normal '' G.closedHubNbhd v)) ≤ 3 := by
     have hmono := Submodule.finrank_mono hsub
     rwa [hVdim] at hmono
@@ -461,24 +463,18 @@ Independence on a set `{x, y, z}` of three distinct bodies, read as that of the 
 The triangle's obstruction below uses both. -/
 
 /-- **Independence on three distinct bodies is that of their family**: for distinct `x, y, z`,
-`LinearIndepOn K f {x, y, z}` gives `LinearIndependent K ![f x, f y, f z]`, by
-`LinearIndependent.comp` along the injective map from `Fin 3` to `{x, y, z}`. Mathlib's
-`linearIndepOn_range_iff`, at the injective `![x, y, z]`, gives the same. -/
+`LinearIndepOn K f {x, y, z}` gives `LinearIndependent K ![f x, f y, f z]`, by mathlib's
+`linearIndepOn_range_iff` at the injective `![x, y, z]`, whose range is `{x, y, z}`. -/
 theorem linearIndependent_triple_of_linearIndepOn (f : α → Fin 4 → K) {x y z : α}
     (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) (hLI : LinearIndepOn K f {x, y, z}) :
     LinearIndependent K ![f x, f y, f z] := by
-  have hx : x ∈ ({x, y, z} : Set α) := by simp
-  have hy : y ∈ ({x, y, z} : Set α) := by simp
-  have hz : z ∈ ({x, y, z} : Set α) := by simp
-  set e : Fin 3 → ↥({x, y, z} : Set α) := ![⟨x, hx⟩, ⟨y, hy⟩, ⟨z, hz⟩]
-  have heinj : Function.Injective e := by
-    intro i j hij
-    fin_cases i <;> fin_cases j <;> simp_all [e, Subtype.ext_iff]
-  have hcomp : LinearIndependent K ((fun w : ↥({x,y,z} : Set α) => f w) ∘ e) :=
-    (hLI : LinearIndependent K (fun w : ↥({x,y,z} : Set α) => f w)).comp e heinj
-  have heq : (fun w : ↥({x,y,z} : Set α) => f w) ∘ e = ![f x, f y, f z] := by
-    funext i; fin_cases i <;> rfl
-  rwa [heq] at hcomp
+  have hinj : Function.Injective ![x, y, z] := by
+    intro i j hij; fin_cases i <;> fin_cases j <;> simp_all [eq_comm]
+  have hr : Set.range ![x, y, z] = {x, y, z} := by
+    simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union]
+  rw [← hr, linearIndepOn_range_iff hinj] at hLI
+  convert hLI using 1
+  funext i; fin_cases i <;> rfl
 
 /-- **The vectors of `K⁴` orthogonal to three independent vectors form a space of dimension `1`**:
 its dimension and that of the span of the three, which is `3` (`finrank_span_eq_card`), add up to
@@ -537,17 +533,18 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
   -- its three edges), so it lies in `Vyz`, of dimension `2`.
   have hxV : point x ∈ Vyz := by
     rw [hmemyz]; intro j; fin_cases j
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₁, h₁⟩)
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₃, h₃.symm⟩)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inr ⟨e₁, h₁⟩)
+    · simpa using
+        dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inr ⟨e₃, h₃.symm⟩)
   have hyV : point y ∈ Vyz := by
     rw [hmemyz]; intro j; fin_cases j
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inl rfl)
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inr ⟨e₂, h₂⟩)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inl rfl)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inr ⟨e₂, h₂⟩)
   have hzV : point z ∈ Vyz := by
     rw [hmemyz]; intro j; fin_cases j
     · simpa using
-        dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₂.right_mem (Or.inr ⟨e₂, h₂.symm⟩)
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₂.right_mem (Or.inl rfl)
+        dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₂.right_mem (Or.inr ⟨e₂, h₂.symm⟩)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₂.right_mem (Or.inl rfl)
   by_cases hx : G.PencilHub x
   · -- `x` is a hub too: `normal x, normal y, normal z` are independent (the closed
     -- hub-neighbourhood of `x`), so `point x, point y` lie in `Vxyz`, of dimension `1`, while the
@@ -572,16 +569,16 @@ theorem not_pencilNondegFeasible_of_triangle_two_hubs {G : Graph α β}
         piBasisFun_toDual_eq_dotProduct]
     have hxV3 : point x ∈ Vxyz := by
       rw [hmemxyz]; intro j; fin_cases j
-      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inl rfl)
-      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₁, h₁⟩)
+      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inl rfl)
+      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inr ⟨e₁, h₁⟩)
       · simpa using
-          dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.left_mem (Or.inr ⟨e₃, h₃.symm⟩)
+          dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.left_mem (Or.inr ⟨e₃, h₃.symm⟩)
     have hyV3 : point y ∈ Vxyz := by
       rw [hmemxyz]; intro j; fin_cases j
       · simpa using
-          dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inr ⟨e₁, h₁.symm⟩)
-      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inl rfl)
-      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd h₁.right_mem (Or.inr ⟨e₂, h₂⟩)
+          dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inr ⟨e₁, h₁.symm⟩)
+      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inl rfl)
+      · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 h₁.right_mem (Or.inr ⟨e₂, h₂⟩)
     have hLIxy : LinearIndependent K ![point x, point y] := hnd.2.1 e₁ x y h₁
     have hsub2 : Submodule.span K (Set.range ![point x, point y]) ≤ Vxyz := by
       rw [Submodule.span_le]
@@ -673,8 +670,8 @@ theorem not_isNondegPencilRealization_of_two_hubs_three_common
   have hin : ∀ {w : α} {e f : β}, G.IsLink e w a → G.IsLink f w b → point w ∈ V := by
     intro w e f he hf
     rw [hmem]; intro j; fin_cases j
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd he.left_mem (Or.inr ⟨e, he⟩)
-    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd hf.left_mem (Or.inr ⟨f, hf⟩)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 he.left_mem (Or.inr ⟨e, he⟩)
+    · simpa using dotProduct_point_eq_zero_of_mem_closedNbhd hnd.1 hf.left_mem (Or.inr ⟨f, hf⟩)
   have hsub3 : Submodule.span K (Set.range ![point x, point y, point z]) ≤ V := by
     rw [Submodule.span_le]
     rintro _ ⟨j, rfl⟩
@@ -689,6 +686,33 @@ theorem not_isNondegPencilRealization_of_two_hubs_three_common
   rw [hdim3, hVdim] at hmono
   omega
 
+/-! ## Degrees in an induced graph
+
+The cut-edge case of the conditioned pair (`lem:pencil-pair-loop-base-cut`, case (3)) compares the
+degree of a body in a side, an induced graph `G[S]`, with its degree in `G`. A body of `S` keeps its
+degree when every link of `G` from it ends in `S`; the sections below apply this to each kind of
+side. -/
+
+/-- **A body whose links all end in `S` keeps its degree in `G[S]`** (a step of
+`lem:pencil-pair-loop-base-cut`): for `v ∈ S` such that every link of `G` from `v` ends in `S`, `v`
+has the same degree in `G.induce S` as in `G`, as its loops and its other edges are those of `G`
+(`Graph.degree_eq_ncard_add_ncard`). -/
+theorem _root_.Graph.degree_induce_eq_of_isLink_mem [Finite β] {G : Graph α β} {S : Set α} {v : α}
+    (hv : v ∈ S) (hS : ∀ e y, G.IsLink e v y → y ∈ S) :
+    (G.induce S).degree v = G.degree v := by
+  have hloops : {e | (G.induce S).IsLoopAt e v} = {e | G.IsLoopAt e v} := by
+    ext e
+    exact ⟨fun h => ((Graph.induce_isLink G S e v v).mp h).1,
+      fun h => (Graph.induce_isLink G S e v v).mpr ⟨h, hv, hv⟩⟩
+  have hnonloops : {e | (G.induce S).IsNonloopAt e v} = {e | G.IsNonloopAt e v} := by
+    ext e
+    constructor
+    · rintro ⟨y, hyv, hl⟩
+      exact ⟨y, hyv, ((Graph.induce_isLink G S e v y).mp hl).1⟩
+    · rintro ⟨y, hyv, hl⟩
+      exact ⟨y, hyv, (Graph.induce_isLink G S e v y).mpr ⟨hl, hv, hS e y hl⟩⟩
+  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
+
 /-! ## The side of a cut with the far end of the crossing edge
 
 In the cut-edge case of the conditioned pair (`lem:pencil-pair-loop-base-cut`, case (3)), let one
@@ -702,36 +726,34 @@ its rank by at most `D - 1` (`BodyHingeFramework.finrank_span_rigidityRows_le_ad
 (`Graph.deficiency_induce_union_singleton`). A link of `G` crossing `V₁` is `e₀` by
 `Graph.eq_cutEdge_of_isLink_crossing` (`Molecular/Deficiency.lean`). -/
 
-/-- **A body of `V₁` keeps its degree in `G[V₁ ∪ {w₀}]`**: if `e₀` joins `u₀ ∈ V₁` to `w₀ ∉ V₁` and
-no other edge crosses `V₁`, each `v ∈ V₁` has the same degree in `G.induce (V₁ ∪ {w₀})` as in `G`.
-An edge at `v` ends in `V₁` or is `e₀`, which ends at `w₀`, so it is an edge of the induced graph.
-So no pencil hub of `G` in `V₁` stops being one there. -/
+/-- **The closed neighbourhood of a body of `V₁` lies in `V₁ ∪ {w₀}`**: if `e₀` joins `u₀ ∈ V₁` to
+`w₀ ∉ V₁` and no other edge crosses `V₁`, a link from `v ∈ V₁` that leaves `V₁` crosses it, so it is
+`e₀` (`Graph.eq_cutEdge_of_isLink_crossing`), whose other end is `w₀`. -/
+theorem _root_.Graph.closedNbhd_subset_of_mem [Finite β] {G : Graph α β}
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
+    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) :
+    G.closedNbhd v ⊆ V₁ ∪ {w₀} := by
+  rintro w (rfl | ⟨e, hl⟩)
+  · exact Set.mem_union_left _ hv
+  · by_cases hw : w ∈ V₁
+    · exact Set.mem_union_left _ hw
+    · obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hw
+      rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨-, rfl⟩ | ⟨rfl, -⟩
+      · exact Set.mem_union_right _ rfl
+      · exact absurd hv hw₀
+
+/-- **A body of `V₁` keeps its degree in `G[V₁ ∪ {w₀}]`**: with `e₀`, `u₀`, `w₀` and `V₁` as in
+`Graph.closedNbhd_subset_of_mem`, each `v ∈ V₁` has the same degree in `G.induce (V₁ ∪ {w₀})` as in
+`G`, as every link of `G` from `v` ends in `V₁ ∪ {w₀}` (`Graph.closedNbhd_subset_of_mem`,
+`Graph.degree_induce_eq_of_isLink_mem`). So no pencil hub of `G` in `V₁` stops being one there. -/
 theorem _root_.Graph.degree_induce_union_singleton_of_mem [Finite β] {G : Graph α β}
     {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
     (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) :
-    (G.induce (V₁ ∪ {w₀})).degree v = G.degree v := by
-  have hloops : {e | (G.induce (V₁ ∪ {w₀})).IsLoopAt e v} = {e | G.IsLoopAt e v} := by
-    ext e
-    exact ⟨fun h => ((Graph.induce_isLink G (V₁ ∪ {w₀}) e v v).mp h).1,
-      fun h => (Graph.induce_isLink G (V₁ ∪ {w₀}) e v v).mpr
-        ⟨h, Set.mem_union_left _ hv, Set.mem_union_left _ hv⟩⟩
-  have hnonloops : {e | (G.induce (V₁ ∪ {w₀})).IsNonloopAt e v}
-      = {e | G.IsNonloopAt e v} := by
-    ext e
-    constructor
-    · rintro ⟨y, hyv, hl⟩
-      exact ⟨y, hyv, ((Graph.induce_isLink G (V₁ ∪ {w₀}) e v y).mp hl).1⟩
-    · rintro ⟨y, hyv, hl⟩
-      refine ⟨y, hyv, (Graph.induce_isLink G (V₁ ∪ {w₀}) e v y).mpr
-        ⟨hl, Set.mem_union_left _ hv, ?_⟩⟩
-      by_cases hy : y ∈ V₁
-      · exact Set.mem_union_left _ hy
-      · obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hy
-        rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-        · exact Set.mem_union_right _ rfl
-        · exact absurd hv hw₀
-  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
+    (G.induce (V₁ ∪ {w₀})).degree v = G.degree v :=
+  Graph.degree_induce_eq_of_isLink_mem (Set.mem_union_left _ hv) fun _ _ hl =>
+    Graph.closedNbhd_subset_of_mem hl₀ hu₀ hw₀ hcut hv (Or.inr ⟨_, hl⟩)
 
 /-- **The far end `w₀` has degree `1` in `G[V₁ ∪ {w₀}]`**: with `e₀`, `u₀`, `w₀` and `V₁` as in
 `Graph.degree_induce_union_singleton_of_mem`, and `G` loopless, `e₀` is the only edge of the induced
@@ -871,23 +893,6 @@ in `G[V₁ ∪ {w₀}]`. The first is that in `G`: every neighbour in `G` of a b
 `w₀`, which is not a hub of `G[V₁ ∪ {w₀}]`; as `u₀` is the only body of `V₁` linked to `w₀`,
 removing it changes only the closed hub-neighbourhood of `u₀`. -/
 
-/-- **The closed neighbourhood of a body of `V₁` lies in `V₁ ∪ {w₀}`**: with `e₀`, `u₀`, `w₀` and
-`V₁` as in `Graph.degree_induce_union_singleton_of_mem`, a link from `v ∈ V₁` that leaves `V₁`
-crosses it, so it is `e₀` (`Graph.eq_cutEdge_of_isLink_crossing`), whose other end is `w₀`. -/
-theorem _root_.Graph.closedNbhd_subset_of_mem [Finite β] {G : Graph α β}
-    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α}
-    (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
-    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) :
-    G.closedNbhd v ⊆ V₁ ∪ {w₀} := by
-  rintro w (rfl | ⟨e, hl⟩)
-  · exact Set.mem_union_left _ hv
-  · by_cases hw : w ∈ V₁
-    · exact Set.mem_union_left _ hw
-    · obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hw
-      rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨-, rfl⟩ | ⟨rfl, -⟩
-      · exact Set.mem_union_right _ rfl
-      · exact absurd hv hw₀
-
 /-- **A body of `V₁` has the same closed neighbourhood in `G[V₁ ∪ {w₀}]` as in `G`**: a link of the
 induced graph is one of `G`, and a link of `G` at `v ∈ V₁` has its other end in `V₁ ∪ {w₀}`
 (`Graph.closedNbhd_subset_of_mem`), so it is a link of the induced graph. -/
@@ -958,23 +963,12 @@ neighbourhood of a body of `S` are the same in `G[S]` as in `G`; the case applie
 sides. -/
 
 /-- **A body of a set closed under links keeps its degree in the induced graph**: if every link of
-`G` from a body of `S` ends in `S`, each `v ∈ S` has the same degree in `G.induce S` as in `G`, as
-every edge at `v`, a loop or not, is an edge of `G.induce S`. -/
+`G` from a body of `S` ends in `S`, each `v ∈ S` has the same degree in `G.induce S` as in `G`
+(`Graph.degree_induce_eq_of_isLink_mem`). -/
 theorem _root_.Graph.degree_induce_of_forall_isLink_mem [Finite β] {G : Graph α β} {S : Set α}
     (hS : ∀ e x y, G.IsLink e x y → x ∈ S → y ∈ S) {v : α} (hv : v ∈ S) :
-    (G.induce S).degree v = G.degree v := by
-  have hloops : {e | (G.induce S).IsLoopAt e v} = {e | G.IsLoopAt e v} := by
-    ext e
-    exact ⟨fun h => ((Graph.induce_isLink G S e v v).mp h).1,
-      fun h => (Graph.induce_isLink G S e v v).mpr ⟨h, hv, hv⟩⟩
-  have hnonloops : {e | (G.induce S).IsNonloopAt e v} = {e | G.IsNonloopAt e v} := by
-    ext e
-    constructor
-    · rintro ⟨y, hyv, hl⟩
-      exact ⟨y, hyv, ((Graph.induce_isLink G S e v y).mp hl).1⟩
-    · rintro ⟨y, hyv, hl⟩
-      exact ⟨y, hyv, (Graph.induce_isLink G S e v y).mpr ⟨hl, hv, hS e v y hl hv⟩⟩
-  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
+    (G.induce S).degree v = G.degree v :=
+  Graph.degree_induce_eq_of_isLink_mem hv fun e y hl => hS e v y hl hv
 
 /-- **A body of a set closed under links keeps its closed hub-neighbourhood in the induced graph**:
 with `S` as in `Graph.degree_induce_of_forall_isLink_mem` and `S ⊆ V(G)`, every member of either
@@ -1026,31 +1020,18 @@ one. -/
 
 /-- **A body of `V₁` other than `u₀` keeps its degree in `G[V₁]`**: with `e₀` joining `u₀ ∈ V₁` to
 `w₀ ∉ V₁`, the only edge crossing `V₁`, an edge of `G` at `v ∈ V₁` with an end outside `V₁` would be
-`e₀`, whose ends are `u₀ ≠ v` and `w₀ ∉ V₁`. The form of
+`e₀`, whose ends are `u₀ ≠ v` and `w₀ ∉ V₁` (`Graph.degree_induce_eq_of_isLink_mem`). The form of
 `Graph.degree_induce_union_singleton_of_mem` for `G[V₁]`. -/
 theorem _root_.Graph.degree_induce_eq_of_ne [Finite β] {G : Graph α β} {V₁ : Set α}
     {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
     (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) (hvne : v ≠ u₀) :
     (G.induce V₁).degree v = G.degree v := by
-  have hloops : {e | (G.induce V₁).IsLoopAt e v} = {e | G.IsLoopAt e v} := by
-    ext e
-    exact ⟨fun h => ((Graph.induce_isLink G V₁ e v v).mp h).1,
-      fun h => (Graph.induce_isLink G V₁ e v v).mpr ⟨h, hv, hv⟩⟩
-  have hnonloops : {e | (G.induce V₁).IsNonloopAt e v} = {e | G.IsNonloopAt e v} := by
-    ext e
-    constructor
-    · rintro ⟨y, hyv, hl⟩
-      exact ⟨y, hyv, ((Graph.induce_isLink G V₁ e v y).mp hl).1⟩
-    · rintro ⟨y, hyv, hl⟩
-      refine ⟨y, hyv, (Graph.induce_isLink G V₁ e v y).mpr ⟨hl, hv, ?_⟩⟩
-      by_cases hy₁ : y ∈ V₁
-      · exact hy₁
-      · exfalso
-        obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hy₁
-        rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨hveq, -⟩ | ⟨hveq, -⟩
-        · exact hvne hveq
-        · rw [hveq] at hv; exact hw₀ hv
-  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
+  refine Graph.degree_induce_eq_of_isLink_mem hv fun e y hl => ?_
+  by_contra hy₁
+  obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl hv hy₁
+  rcases hl.eq_and_eq_or_eq_and_eq hl₀ with ⟨hveq, -⟩ | ⟨hveq, -⟩
+  · exact hvne hveq
+  · exact hw₀ (hveq ▸ hv)
 
 /-- **The end `u₀` loses one edge in `G[V₁]`**: for a loopless `G`, and `e₀`, `u₀`, `w₀` and `V₁` as
 in `Graph.degree_induce_eq_of_ne`, `G.degree u₀ = (G.induce V₁).degree u₀ + 1`. The edges of `G` at

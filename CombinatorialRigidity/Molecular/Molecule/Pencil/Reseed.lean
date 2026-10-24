@@ -297,7 +297,7 @@ theorem exists_pencilSeed_of_nondeg_of_selectors
     by_cases hv : v ∈ V(G)
     · obtain ⟨fill, hLI, hc⟩ := exists_fill_cross₃_eq_smul_of_selector (h.1.2.1 v hv) (hHubSel v)
         (h.2.2.1 v hv) (fun w hw => by
-          rw [dotProduct_comm]; exact dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv hw)
+          rw [dotProduct_comm]; exact dotProduct_point_eq_zero_of_mem_closedHubNbhd h.1 hv hw)
       exact ⟨fill, hLI, fun _ => hc⟩
     · have hempty : G.closedHubNbhd v = ∅ := by
         ext w
@@ -330,7 +330,7 @@ theorem exists_pencilSeed_of_nondeg_of_selectors
           (fun w hw => hptR w (hsub hw)))
         (fun w hw => by
           obtain ⟨c, -, hc⟩ := hptR w (hsub hw)
-          rw [hc, smul_dotProduct, dotProduct_normal_eq_zero_of_mem_closedNbhd h hv hw,
+          rw [hc, smul_dotProduct, dotProduct_normal_eq_zero_of_mem_closedNbhd h.1 hv hw,
             smul_zero])
       exact ⟨fill, fun _ => ⟨hLI, fun _ => hd⟩⟩
     · have hsingle : G.closedNbhd v = {v} := by

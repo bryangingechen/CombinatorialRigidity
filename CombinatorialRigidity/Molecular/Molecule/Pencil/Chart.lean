@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Motive
 
 /-!
@@ -125,8 +126,8 @@ theorem cross₃_smul_thd (c : K) (x y z : Fin 4 → K) :
 /-- **`cross₃` is nonzero exactly when its arguments are independent**:
 `cross₃ x y z ≠ 0 ↔ LinearIndependent K ![x, y, z]`. If `x, y, z` are dependent, so are `x, y, z, w`
 for every `w` (`linearIndependent_finSnoc`), so `det[x, y, z, w] = 0`
-(`Matrix.linearIndependent_row_iff_isUnit`) and `cross₃ x y z = 0`. If they are independent, some
-`w` lies outside their span, of dimension `3 < 4`; then `x, y, z, w` are independent and
+(`Matrix.linearIndependent_rows_iff_det_ne_zero`) and `cross₃ x y z = 0`. If they are independent,
+some `w` lies outside their span, of dimension `3 < 4`; then `x, y, z, w` are independent and
 `det[x, y, z, w] ≠ 0`. -/
 theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
     cross₃ x y z ≠ 0 ↔ LinearIndependent K ![x, y, z] := by
@@ -142,9 +143,7 @@ theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
       exact fun h => hLI h.1
     rw [show Fin.snoc (![x, y, z] : Fin 3 → Fin 4 → K) w = ![x, y, z, w] from by
       funext i; fin_cases i <;> simp] at hsnoc
-    have := (Matrix.linearIndependent_row_iff_isUnit
-      (A := Matrix.of ![x, y, z, w])).not.mp hsnoc
-    rwa [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, not_not] at this
+    exact not_not.mp (Matrix.linearIndependent_rows_iff_det_ne_zero.not.mp hsnoc)
   · intro hLI hzero
     obtain ⟨w, hw⟩ : ∃ w : Fin 4 → K, w ∉ Submodule.span K (Set.range ![x, y, z]) := by
       by_contra hcon
@@ -160,12 +159,8 @@ theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
       linearIndependent_finSnoc.mpr ⟨hLI, hw⟩
     rw [show Fin.snoc (![x, y, z] : Fin 3 → Fin 4 → K) w = ![x, y, z, w] from by
       funext i; fin_cases i <;> simp] at hsnoc
-    have hdet : Matrix.det (Matrix.of ![x, y, z, w]) ≠ 0 := by
-      have hu := (Matrix.linearIndependent_row_iff_isUnit
-        (A := Matrix.of ![x, y, z, w])).mp hsnoc
-      rwa [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero] at hu
-    apply hdet
-    rw [← dotProduct_cross₃, hzero, zero_dotProduct]
+    exact (Matrix.linearIndependent_rows_iff_det_ne_zero (A := Matrix.of ![x, y, z, w])).mp hsnoc
+      (by rw [← dotProduct_cross₃, hzero, zero_dotProduct])
 
 /-! ## The pencil chart
 

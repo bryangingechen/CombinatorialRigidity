@@ -401,7 +401,7 @@ conditions of a nondegenerate realization hold side by side (`LinearIndepOn.cong
 has the links, the closed hub-neighbourhoods and the closed neighbourhoods that `G` has at its
 bodies. -/
 theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} {V₁ : Set α} (hne : V₁.Nonempty) (hssub : V₁ ⊂ V(G))
     (hC0 : G.cutEdges V₁ = ∅) (hSimple : G.Simple) (hfeas : PencilNondegFeasible K G)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
@@ -446,7 +446,7 @@ theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β]
   obtain ⟨C, hC, -, -⟩ := exists_extensor_in_two_panels_grade (normal₁ hne.some) (normal₁ hne.some)
   set normal : α → Fin 4 → K := fun v => if v ∈ V₁ then normal₁ v else normal₂ v
   set point : α → Fin 4 → K := fun v => if v ∈ V₁ then point₁ v else point₂ v
-  obtain ⟨F, hreal, hrank⟩ := exists_hasPencilPanelRealization_glue hD hn hssub hne
+  obtain ⟨F, hreal, hrank⟩ := exists_hasPencilPanelRealization_glue hn hssub hne
     (by rw [hC0]; simp) (hreal₁.restrict le_rfl) (hreal₂.restrict le_rfl)
     (by rw [span_rigidityRows_eq_of_supportExtensor_agree _ F₁ hreal₁.1.1 (fun _ _ _ _ => rfl)]
         exact hrank₁.ge)
@@ -644,7 +644,7 @@ avoidances of the section header. The feasibility of `G` serves only to bound it
 hub-neighbourhoods (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`). -/
 theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton
     [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} [G.Loopless] {V₁ : Set α} {e_c : β} {u_c v_c : α}
     (hl_c : G.IsLink e_c u_c v_c) (hu_c : u_c ∈ V₁) (hv_c : v_c ∉ V₁)
     (hV₁ : V₁ ⊆ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1)
@@ -776,7 +776,7 @@ theorem hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_si
       (pt_u := point₁ u_c) (pt_v := g (point₂ v_c)) hp₁ne
       (hp₁inc u_c (Set.mem_union_left _ hu_c)) (hp₂'inc v_c (Set.mem_union_left _ hv_c₂))
       hcross1 hcross2
-  obtain ⟨F, hreal, hrank_eq⟩ := exists_hasPencilPanelRealization_glue hD hn hssub hne hcut
+  obtain ⟨F, hreal, hrank_eq⟩ := exists_hasPencilPanelRealization_glue hn hssub hne hcut
     (hnd₁.1.restrict ⟨Set.subset_union_left, fun _ _ _ hl => ⟨hl.1, Or.inl hl.2.1, Or.inl hl.2.2⟩⟩)
     (hnd₂'.1.restrict ⟨Set.subset_union_left, fun _ _ _ hl => ⟨hl.1, Or.inl hl.2.1, Or.inl hl.2.2⟩⟩)
     (hlb_induce_of_isNondegPencilRealization_induce_union_singleton
