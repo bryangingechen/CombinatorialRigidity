@@ -1336,6 +1336,7 @@ theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Fini
   set ends := G.endsOf
   have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
   -- the picture: generic for `G[V₁]`, main for `G`, the joins independent at `zs`
   obtain ⟨Plam, hPlam₀, hPlam⟩ :=
     exists_mvPolynomial_linearIndependent_pointJoin_picture zs u v hcert
@@ -1359,7 +1360,8 @@ theorem _root_.Graph.X0Attains.of_openEar_of_cert [Infinite K] [Finite α] [Fini
   have hli := hRlam z hzlam
   rw [Graph.vertexSet_induce G V₁] at hr₁
   rw [PanelHingeFramework.finrank_span_rigidityRows_ofNormals_congr _ hends₁
-    (G.isLink_ends_induce hends V₁) (q' := fun p => pencilConfigPoint q z p.1 p.2)
+    (PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁))
+    (q' := fun p => pencilConfigPoint q z p.1 p.2)
     (fun w hw t => pencilConfigPoint_liftingRestrict V₁ q z hw t)] at hr₁
   -- the ear rank formula at `ofNormals G ends`, with `n` independent ear hinges
   set F := (PanelHingeFramework.ofNormals (k := 2) G ends

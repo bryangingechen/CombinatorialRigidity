@@ -149,6 +149,7 @@ failing pattern and the working fix.
 - A `<;>`-chained flexible `simp`'s `linter.flexible` "Try this: simp only [...]" suggestion, substituted verbatim, leaves some branches of the chain unsolved or makes `norm_num`/a later tactic report *"no goals to be solved"* on others → § 116 (the suggestion is captured against one branch, not their union; run `simp?`/`lean_multi_attempt` at the chain's own position for the full per-goal set across every branch, then union them into one `simp only […]`)
 - `fun x hx => hx.1` (or `hx.2`, `hx.left`, `fun h => hnadj h.1`) given as a subset or non-membership argument fails with *"Invalid projection: Projection operates on types of the form `C ...`"* (or *"Invalid field notation"*), *"`hx` has type `?m.N.1 x`"*, where it compiled before the v4.36.0-rc1 bump → § 117 (`Set` is a structure now, so `x ∈ ?s` is a projection of a still-unassigned set, which the anonymous projection does not wait for; name the set: the named subset lemma, the set argument, or an ascribed binder)
 - A hypothesis that nothing in the proof needs (a copy without it elaborates with the same proof) is reported by neither `linter.unusedVariables` nor `lake lint`'s `unusedArguments`, so a cleanup's "`lake lint` to a fixed point" misses it, and the proof runs a `subst`, or an `rfl` pattern of `rcases`/`obtain`/`rintro`, on a variable its type mentions → § 118 (the substitution reverts the hypothesis and reintroduces it, so the proof term mentions it; both linters read it as used; screen such a binder by reading, and confirm by a copy without it)
+- `lake lint`'s `defsWithUnderscore` reports *"`…tacticFoo_bar` contains an underscore"* on a `macro "foo_bar" : tactic` (or a `syntax`) the build accepted → § 119 (the syntax kind's generated name keeps the underscore; name it `macro (name := fooBar) "foo_bar"`)
 
 ## Sections
 
@@ -4566,5 +4567,22 @@ that its `subst he` had hidden; a re-proof that removes a substitution is the mo
 
 FRICTION [idiom] *A hypothesis that a `subst` or an `rfl` pattern reverts passes both unused
 linters…*.
+
+---
+
+## 119. `lake lint` reports a tactic macro's syntax kind under `defsWithUnderscore` — name it with `(name := …)`
+
+**Symptom.** `lake build` accepts a new `macro "foo_bar" : tactic => …` (or a `syntax "foo_bar" :
+tactic`), but `lake lint` fails: *"The definition `Ns.tacticFoo_bar` contains an underscore"*,
+from the `defsWithUnderscore` linter.
+
+**Cause.** Without a `name`, the macro's syntax kind is a generated declaration, `tactic` followed
+by the capitalized token, which keeps the token's underscore.
+
+**Fix.** Name the kind in lowerCamelCase, as mathlib does: `macro (name := fooBar) "foo_bar" :
+tactic => …`. The token, and so the tactic's spelling, is unchanged.
+
+**Calibration.** Phase 41a, item 2: `link_tac` (`Molecular/AlgebraicInduction/PanelHinge.lean`),
+first as `CombinatorialRigidity.Molecular.tacticLink_tac`, then `macro (name := linkTac)`.
 
 ---

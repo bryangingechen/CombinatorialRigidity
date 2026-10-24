@@ -42,31 +42,12 @@ variable {α β : Type*}
 
 /-! ## Reorienting a realization (`lem:rank-transport-relabel-of-le-finrank`) -/
 
-/-- **The image of a selector gives the links of the image graph** (a step of
-`lem:rank-transport-relabel-of-le-finrank`, `lem:rank-polynomial-IH-relabel` and `lem:claim-6-4`):
-if `ends` gives every link of `Gc` its ends (`hends`), then `e ↦ (f (ends e).1, f (ends e).2)` gives
-every link of `Gc.map f` its ends, in one order or the other. A link of `Gc.map f` at `e` is the
-image under `f` of a link of `Gc` at `e` (`Graph.map_isLink`), whose ends are those of `ends e` in
-some order (`IsLink.eq_and_eq_or_eq_and_eq`). With `Gc = G ＼ E(H)` and
-`f = Graph.collapseTo r V(H)`, `Gc.map f` is the contraction `G.rigidContract H r`. -/
-theorem PanelHingeFramework.recordsLinks_map_of_records
-    {Gc : Graph α β} (f : α → α) (ends : β → α × α)
-    (hends : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2) :
-    ∀ e u v, (Gc.map f).IsLink e u v →
-      ((f (ends e).1) = u ∧ (f (ends e).2) = v) ∨
-      ((f (ends e).1) = v ∧ (f (ends e).2) = u) := by
-  intro e u v he
-  rw [Graph.map_isLink] at he
-  obtain ⟨x, y, hxy, hfx, hfy⟩ := he
-  rcases (hends e x y hxy).eq_and_eq_or_eq_and_eq hxy with ⟨h1, h2⟩ | ⟨h1, h2⟩
-  · exact Or.inl ⟨by rw [h1, hfx], by rw [h2, hfy]⟩
-  · exact Or.inr ⟨by rw [h1, hfy], by rw [h2, hfx]⟩
-
 /-- **Two selectors that give the links of `G` agree up to order** (a step of
 `lem:rank-transport-relabel-of-le-finrank` and `lem:claim-6-4`): if `ends₁` and `ends₂` each give
 every link of `G` its ends, in one order or the other (`hrec₁`, `hrec₂`), then at every link `e` of
 `G` the pair `ends₁ e` is `ends₂ e` or its reverse, as both are the ends of `e`.
-`recordsLinks_swap_endsOf` is the form for `G.endsOf` at the links of a subgraph. -/
+`RecordsLinks.swap_endsOf` (`PanelHinge.lean`) is the form for `G.endsOf` at the links of a
+subgraph. -/
 theorem PanelHingeFramework.recordsLinks_agree_swap
     {G : Graph α β} (ends₁ ends₂ : β → α × α)
     (hrec₁ : ∀ e u v, G.IsLink e u v →
@@ -94,7 +75,7 @@ with rigidity for the rank.
 The normals are those of the realization `Q` of `Qcf`, and general position is a condition on the
 normals alone. `Q` is `ofNormals Q.graph Q.ends nrm`, and `Q.ends` gives every link of `Gc.map f`
 its ends (the last conjunct of `HasGenericFullRankRealization`), as `ends'` does
-(`recordsLinks_map_of_records`). So the two selectors agree up to order on the links
+(`RecordsLinks.map`). So the two selectors agree up to order on the links
 (`recordsLinks_agree_swap`), the two frameworks have the same motions
 (`infinitesimalMotions_ofNormals_eq_of_ends_swap`), and the reoriented framework is rigid, as `Q` is
 by its rank. -/
@@ -130,7 +111,7 @@ theorem PanelHingeFramework.hasGenericRealization_transport_relabel
     simpa only [hnrm, PanelHingeFramework.ofNormals_normal] using hQgp a b hab
   refine ⟨nrm, hgp', ?_⟩
   -- The two selectors `Q.ends` and `endsM := f ∘ (parent ends)` both record `Q.graph = Gc.map f`'s
-  -- links (`hQrec` and `recordsLinks_map_of_records`), so they agree up to swap, and
+  -- links (`hQrec` and `RecordsLinks.map`), so they agree up to swap, and
   -- `infinitesimalMotions_ofNormals_eq_of_ends_swap` equates the motion spaces of
   -- `Q = ofNormals Q.graph Q.ends nrm` and `ofNormals Q.graph endsM nrm`.
   have hswap : ∀ e u v, Q.graph.IsLink e u v →
@@ -138,7 +119,8 @@ theorem PanelHingeFramework.hasGenericRealization_transport_relabel
       ((Q.ends e).1 = (endsM e).2 ∧ (Q.ends e).2 = (endsM e).1) := by
     rw [hQg]
     exact PanelHingeFramework.recordsLinks_agree_swap Q.ends endsM hQrec
-      (PanelHingeFramework.recordsLinks_map_of_records f ends hends)
+      (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mp
+        ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).map f))
   have hmot : (PanelHingeFramework.ofNormals Q.graph endsM nrm).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals Q.graph Q.ends nrm).toBodyHinge.infinitesimalMotions :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
@@ -193,7 +175,8 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq
       ((Q.ends e).1 = (endsM e).2 ∧ (Q.ends e).2 = (endsM e).1) := by
     rw [hQg]
     exact PanelHingeFramework.recordsLinks_agree_swap Q.ends endsM hQrec
-      (PanelHingeFramework.recordsLinks_map_of_records f ends hends)
+      (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mp
+        ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).map f))
   have hmot : (PanelHingeFramework.ofNormals Q.graph endsM nrm).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals Q.graph Q.ends nrm).toBodyHinge.infinitesimalMotions :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
@@ -242,15 +225,11 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking
   refine ⟨N, ?_, ?_⟩
   · -- `(N : ℤ) = ...` from `hrank_eq`, which already has this form.
     exact_mod_cast hrank_eq
-  -- Step 2: derive `hendsM_link` — `endsM` records `Gc.map f`'s links.
-  -- `recordsLinks_map_of_records` gives a disjunction; we peel to the single-link form.
+  -- Step 2: derive `hendsM_link` — `endsM` records `Gc.map f`'s links (`RecordsLinks.map`).
   have hendsM_link : ∀ e u v, (Gc.map f).IsLink e u v →
-      (Gc.map f).IsLink e (endsM e).1 (endsM e).2 := by
-    intro e u v he
-    rcases PanelHingeFramework.recordsLinks_map_of_records f ends hends e u v he with
-      ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · simp only [endsM, h1, h2]; exact he
-    · simp only [endsM, h1, h2]; exact he.symm
+      (Gc.map f).IsLink e (endsM e).1 (endsM e).2 :=
+    PanelHingeFramework.recordsLinks_iff_forall_isLink.mp
+      ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).map f)
   -- Step 3: `hne` — support extensor nonzero at `nrm` for every `Gc.map f`-link at `endsM`.
   have hne : ∀ e, (Gc.map f).IsLink e (endsM e).1 (endsM e).2 →
       (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.supportExtensor e ≠ 0 := by

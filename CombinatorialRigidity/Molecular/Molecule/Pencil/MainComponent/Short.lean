@@ -78,8 +78,8 @@ holds, unlike the rank bound (`exists_mvPolynomial_le_finrank_sup_span_pointJoin
   of `G″` attain.
 * `splitOff_ear_four` and `splitOff_ear_three`: steps of the two, `G″` has the open ear
   `a − x 0 − x 2 − x 3 − b`, resp. `a − x 0 − x 2 − b`, on `V₁`; `induce_splitOff_ear`, with the
-  same `G[V₁]`; `Graph.isLink_update_splitOff` — a selector of `G`, relinked at the freed label,
-  orients the split-off.
+  same `G[V₁]`. A selector of `G`, relinked at the freed label, records the links of the split-off
+  (`PanelHingeFramework.RecordsLinks.update_splitOff`).
 * `Graph.exists_earBase_splitOff` and `Graph.X0Attains.of_openEar_splitOff`: steps of the two, the
   base data, and the two choices of ear data and the count, given that `x 1` can be put back off a
   polynomial in the ear data.
@@ -333,29 +333,6 @@ theorem induce_splitOff_ear {G : Graph α β} {V₁ : Set α} {k : ℕ} {x : Fin
       rcases he₀ y y' hf with h | h
       exacts [h hy, h hy']
 
-open Classical in
-/-- **A selector of `G`, relinked at the new edge, is a selector of the split-off** (a step of
-`thm:pencil-x0-splitoff`, `lem:pencil-splitoff-special-rank`, `thm:pencil-x0-open-ear-two-orbit`,
-`thm:pencil-x0-open-ear-three` and `thm:pencil-x0-open-ear-four`): if `ends` orients every link of
-`G`, then `ends` with `e₀` sent to `(u, w)` orients every link of `G.splitOff v u w e₀`. -/
-theorem _root_.Graph.isLink_update_splitOff {G : Graph α β} {v u w : α} {e₀ : β}
-    {ends : β → α × α} (hends : ∀ f p p', G.IsLink f p p' → G.IsLink f (ends f).1 (ends f).2)
-    (hl₀ : (G.splitOff v u w e₀).IsLink e₀ u w) (f : β) {p p' : α}
-    (hf : (G.splitOff v u w e₀).IsLink f p p') :
-    (G.splitOff v u w e₀).IsLink f (Function.update ends e₀ (u, w) f).1
-      (Function.update ends e₀ (u, w) f).2 := by
-  by_cases hf1 : f = e₀
-  · subst hf1
-    rw [Function.update_self]
-    exact hl₀
-  · rw [Function.update_of_ne hf1]
-    rcases hf with ⟨-, hf, hp, hp'⟩ | ⟨h, -⟩
-    · have hl := hends f p p' hf
-      refine Or.inl ⟨hf1, hl, ?_, ?_⟩ <;>
-        rcases hl.eq_and_eq_or_eq_and_eq hf with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
-        simp only [h1, h2] <;> assumption
-    · exact absurd h hf1
-
 end Antecedent
 
 /-! ## Four independent points (`thm:pencil-x0-open-ear-four`) -/
@@ -455,9 +432,10 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
   set H := G.splitOff v u w e₀ with hH
   have hle : G.induce V₁ ≤ H := hind ▸ Graph.induce_le (hcover ▸ Set.subset_union_left)
   set ends'' := Function.update ends e₀ (u, w) with hends''def
+  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
   have hends'' : ∀ f p p', H.IsLink f p p' → H.IsLink f (ends'' f).1 (ends'' f).2 :=
-    fun f _ _ hf => G.isLink_update_splitOff hends hl₀ f hf
-  have hendsI := G.isLink_ends_induce hends V₁
+    fun _ _ _ => (hendsG.update_splitOff hl₀).isLink
+  have hendsI := PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
   have hnot : ∀ f p p', (G.induce V₁).IsLink f p p' → f ≠ e₀ := by
     rintro f p p' ⟨hf, hp, hp'⟩ rfl
     rcases he₀ p p' hf with h | h
@@ -661,7 +639,8 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
   set ends'' := Function.update ends e₀ (u, w)
   have hends'' : ∀ f p p', G''.IsLink f p p' → G''.IsLink f (ends'' f).1 (ends'' f).2 :=
-    fun f _ _ hf => G.isLink_update_splitOff hends hl₀'' f hf
+    fun _ _ _ =>
+      ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff hl₀'').isLink
   obtain ⟨q', z₁, la, lb, sstar, ρM, hqm', hadm₂, hpicstar, hrk₂, hne₂, hz₁s, hlas, hlbs, hρG,
       hρ2, hrk₁, hrk₁''⟩ :=
     Graph.exists_earBase_splitOff hm hcover'' hinj'' hyV₁ ha hb hab hpath'' hsep'' hl₀'' he₀ hind

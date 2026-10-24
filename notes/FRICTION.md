@@ -110,6 +110,26 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [resolved] A tactic macro's generated syntax kind trips `lake lint`'s `defsWithUnderscore`
+- **Where it bit:** Phase 41a, item 2: `macro "link_tac" : tactic` in
+  `Molecular/AlgebraicInduction/PanelHinge.lean`, whose kind `tacticLink_tac` the linter reported.
+- **Friction:** one lint iteration, and a second whole-tree rebuild below `PanelHinge.lean`.
+- **Proposed fix:** `macro (name := linkTac) "link_tac" : tactic`.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 119.
+
+### [open] The tree's link hypotheses are in the form at links; `RecordsLinks` is the form on `E(G)`
+- **Where it bit:** Phase 41a, item 2: the callers of the four link lemmas gathered onto
+  `PanelHingeFramework.RecordsLinks` (`Short`, `SplitOff`, `Orbit`, `Cut`, `Ear` and
+  `ContractAdditive.lean` under `Pencil/MainComponent/`, `CaseI.lean`, `Theorem55.lean`).
+- **Friction:** their `hends` are `∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`, and
+  so are the hypotheses they feed, so each call converts twice:
+  `recordsLinks_iff_forall_isLink.mp ((recordsLinks_iff_forall_isLink.mpr hends).induce X)`, with a
+  local `hendsG` where a proof converts more than once. The up-to-order form of
+  `HasGenericFullRankRealization` goes through `recordsLinks_iff_eq_or_swap`.
+- **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
+  5) or RESTATE touches their declarations; the conversions then go.
+- **Status:** open.
+
 
 ### [idiom] `simp` makes no progress on `0 = s.card ↔ s = ∅`
 - **Where it bit:** RECONCILE round 3, task 25.1: a scratch witness that `HasBlock ∅` can hold

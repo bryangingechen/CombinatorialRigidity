@@ -1298,8 +1298,8 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   have hswap₁ : ∀ e u v, (G.induce V₁).IsLink e u v →
       ((QF₁.ends e).1 = (G.endsOf e).1 ∧ (QF₁.ends e).2 = (G.endsOf e).2) ∨
       ((QF₁.ends e).1 = (G.endsOf e).2 ∧ (QF₁.ends e).2 = (G.endsOf e).1) :=
-    PanelHingeFramework.recordsLinks_swap_endsOf
-      (G.induce_le hV₁sub.subset) QF₁.ends hQF₁rec
+    (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mpr hQF₁rec).swap_endsOf
+      (G.induce_le hV₁sub.subset)
   have hmot₁ :
       (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals (G.induce V₁) QF₁.ends q₀₁).toBodyHinge.infinitesimalMotions
@@ -1332,8 +1332,8 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   have hswap₂ : ∀ e u v, (G.induce V₂).IsLink e u v →
       ((QF₂.ends e).1 = (G.endsOf e).1 ∧ (QF₂.ends e).2 = (G.endsOf e).2) ∨
       ((QF₂.ends e).1 = (G.endsOf e).2 ∧ (QF₂.ends e).2 = (G.endsOf e).1) :=
-    PanelHingeFramework.recordsLinks_swap_endsOf
-      (G.induce_le Set.sdiff_subset) QF₂.ends hQF₂rec
+    (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mpr hQF₂rec).swap_endsOf
+      (G.induce_le Set.sdiff_subset)
   have hmot₂ :
       (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals (G.induce V₂) QF₂.ends q₀₂).toBodyHinge.infinitesimalMotions
@@ -1858,7 +1858,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
   -- `hswap`: `QH` records the links of `H` up to swap.
   obtain ⟨qH, hneH, hrigH⟩ :=
     PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
-      (PanelHingeFramework.recordsLinks_swap_endsOf hle QH.ends hQHrec)
+      ((PanelHingeFramework.recordsLinks_iff_eq_or_swap.mpr hQHrec).swap_endsOf hle)
       (fun e he => hne_ends e (he.of_le hle))
   -- (2) The contraction, a simple minimal `c`-dof-graph with fewer vertices than `G`: `hIH` gives
   -- `hQcf`.

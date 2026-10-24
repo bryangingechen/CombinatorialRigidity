@@ -14,10 +14,9 @@ Lemmas for Case I of KT Theorem 5.5 (Katoh and Tanigawa 2011, *A proof of the mo
 Discrete Comput. Geom. **45**, §6.2), presented in `sec:molecular-algebraic-induction-caseI`, and
 for the deletion of columns of `sec:molecular-rigidity-matrix-blocks`. The file proves:
 
-* that the selector `G.endsOf` gives every link of `G` its ends and agrees up to order with any
-  selector that gives the links of a subgraph theirs, that reordering the ends of edges changes no
-  motion, that a generic realization of a subgraph is rigid at the selector of `G`, and that `H` and
-  `G ＼ E(H)` cover `G` and share a body (steps of `lem:case-I-realization` and
+* that the selector `G.endsOf` gives every link of `G` its ends, that reordering the ends of edges
+  changes no motion, that a generic realization of a subgraph is rigid at the selector of `G`, and
+  that `H` and `G ＼ E(H)` cover `G` and share a body (steps of `lem:case-I-realization` and
   `lem:case-cut-edge-realization-gp`);
 * the projection `extProj`, whose dual map deletes the columns of a set of bodies, the
   block-triangular rank bound (`lem:block-rank-contract`), and the rows of `G ＼ E(H)` against those
@@ -55,27 +54,6 @@ theorem PanelHingeFramework.ofNormals_endsOf_recordsLinks [Inhabited α]
   rcases G.endsOf_eq_or_swap he with h | h
   · exact Or.inl ⟨by rw [h], by rw [h]⟩
   · exact Or.inr ⟨by rw [h], by rw [h]⟩
-
-/-- **A selector that gives the links of a subgraph their ends agrees with `G.endsOf`** (a step of
-`lem:case-I-realization` and `lem:case-cut-edge-realization-gp`): if `ends'` gives every link of
-`H ≤ G` its ends, in one order or the other (`hrec`, the last conjunct of
-`HasGenericFullRankRealization` for a realization of `H`), then at every link of `H` the pair
-`ends' e` is `G.endsOf e` or its reverse, as a link of `H` is one of `G` (`IsLink.of_le`,
-`Graph.endsOf_eq_or_swap`). `recordsLinks_agree_swap` (`CaseI.lean`) is the form for two selectors
-of one graph. -/
-theorem PanelHingeFramework.recordsLinks_swap_endsOf [Inhabited α]
-    {G H : Graph α β} (hle : H ≤ G) (ends' : β → α × α)
-    (hrec : ∀ e u v, H.IsLink e u v →
-      ((ends' e).1 = u ∧ (ends' e).2 = v) ∨ ((ends' e).1 = v ∧ (ends' e).2 = u)) :
-    ∀ e u v, H.IsLink e u v →
-      ((ends' e).1 = (G.endsOf e).1 ∧ (ends' e).2 = (G.endsOf e).2) ∨
-      ((ends' e).1 = (G.endsOf e).2 ∧ (ends' e).2 = (G.endsOf e).1) := by
-  intro e u v he
-  rcases G.endsOf_eq_or_swap (he.of_le hle) with hG | hG <;>
-    rcases hrec e u v he with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
-    simp only [hG] <;>
-    [exact Or.inl ⟨h1, h2⟩; exact Or.inr ⟨h1, h2⟩;
-     exact Or.inr ⟨h1, h2⟩; exact Or.inl ⟨h1, h2⟩]
 
 /-- **Reordering the ends of edges changes no motion** (a step of
 `lem:rank-transport-relabel-of-le-finrank`, `lem:case-I-realization` and

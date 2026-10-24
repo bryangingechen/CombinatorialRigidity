@@ -608,7 +608,9 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
   set ends := G.endsOf
   have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
-  have hr₁ := (hgood xk hxk hA).2.2 ends (G.isLink_ends_induce hends V₁)
+  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
+  have hr₁ := (hgood xk hxk hA).2.2 ends
+    (PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁))
   -- the ear rank formula, with two independent joins of the ear
   set F := (PanelHingeFramework.ofNormals (k := 2) G ends
     (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge
@@ -862,10 +864,11 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   set ends := G.endsOf with hendsdef
   have hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2 :=
     fun f _ _ hf => G.isLink_endsOf hf.edge_mem
+  have hendsG := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends
   set ends₁ := Function.update ends (e 1) (x 0, b) with hends₁def
   have hends₁ : ∀ f u w, G₁.IsLink f u w → G₁.IsLink f (ends₁ f).1 (ends₁ f).2 :=
-    fun f _ _ hf => G.isLink_update_splitOff hends (hpath₁ 1) f hf
-  have hendsI := G.isLink_ends_induce hends V₁
+    fun _ _ _ => (hendsG.update_splitOff (hpath₁ 1)).isLink
+  have hendsI := PanelHingeFramework.recordsLinks_iff_forall_isLink.mp (hendsG.induce V₁)
   have hnot : ∀ f u w, (G.induce V₁).IsLink f u w → f ≠ e 1 := by
     rintro f u w ⟨hf, hu, hw⟩ rfl
     rcases he₁ u w hf with h | h
