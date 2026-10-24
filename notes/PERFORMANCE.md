@@ -1097,6 +1097,38 @@ count 3→1 (two former caps to default, `case_cut_edge_realization_gp` 600000�
 The general-`d` "part 2" is deferred to the Phase-23 design boundary. Dispatch records:
 `notes/model-experiment.md` rows 167–170.
 
+## Build critical path (2026-10-24, Phase 41a)
+
+**The per-commit whole-project build is chain-bound.** Measured on Phase 41a's first four
+builder commits (Lean v4.36.0-rc1, 10 cores, 16 GB), with `scripts/build-critical-path.py <log>`
+on the builders' logs and `python3 .claude/scripts/session-usage.py gates` on their transcripts:
+
+| Edit at | Modules rebuilt | Sum of module times | Critical path | Wall |
+|---|---|---|---|---|
+| `AlgebraicInduction/PanelHinge.lean` (item 2) | 62 | 524 s | 295 s over 38 modules | ~5 min |
+| `AlgebraicInduction/CaseIII/Realization.lean` (item 3) | 48 | 508 s | 282 s over 26 modules | 295 s |
+| the same file (item 3a) | 48 | 610 s | 300 s over 26 modules | ~5.2 min |
+
+The critical path is nearly the whole wall time, and the work is about twice it, so the cores
+idle: more parallelism does not help, and fewer or shorter links in the chain do. The chain runs
+Case III → `Theorem55` → `GenericLift/HingeGeneric` → twenty-odd `Pencil/` and
+`Pencil/MainComponent/` files, nearly each importing the last, → `Nonvacuity` (15 s) → the root
+`CombinatorialRigidity` (22 s, imports only), and many of its links are 2–12 s files where
+import loading weighs heavily. The gates were 50–60% of a single-commit builder's wall time
+(item 1: 4.8 of 9.5 min; item 3a: 6.3 of 10.3 min), the full build most of it. The builders made
+almost no Lean MCP calls (0, 3, 0).
+
+Candidate levers, unmeasured (the PI's call, 2026-10-24, is pending):
+1. **Trim the chain's imports** to what each file uses, so the `Pencil/` files stop forming a line;
+   the script measures the effect directly.
+2. **Convert the molecular chain to `module`** (*Module system* above: 73 of `Molecular/`'s 79
+   files are not). Its blocker, `apnelson1/Matroid` being non-`module`, is gone: 362 of its 365
+   files are converted, and the project imports none of the other three. Whether a proof-only
+   edit of a `module` file then spares its importers a rebuild is to be checked by a one-file
+   experiment before it is relied on.
+3. **Catch `lake lint` failures before the full build.** Item 2's builder paid a second ~5 min
+   build for a lint failure that a check of the edited file could have shown.
+
 ## Recommendations for future perf work
 
 1. **Don't trust a single A/B run.** Run ≥ 4 trials per side and compare

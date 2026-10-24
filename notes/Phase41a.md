@@ -2,7 +2,8 @@
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
 recon are in `notes/Phase41-design.md`. Items 1 to 3a have landed. Next concrete task: item 4,
-the spike, in a throwaway worktree with nothing landed.
+the spike, in a throwaway worktree with nothing landed, once the PI has answered the build-time
+question under *Blockers*.
 
 ## Current state
 
@@ -83,6 +84,11 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 - The switch's size is unknown until the spike (commit 4).
 - The H count (at most 56) is an upper bound from a regex scan.
+- **For the PI (2026-10-24): a build-time detour before the spike?** Each commit's full build is
+  ~5 min and chain-bound (`notes/PERFORMANCE.md` *Build critical path*); the switch will need
+  several. Proposed: trim the molecular chain's imports, measured by
+  `scripts/build-critical-path.py`, and a read-only recon sizing the molecular chain's `module`
+  conversion. Item 4 waits on the PI's answer.
 
 ## Hand-off / next phase
 

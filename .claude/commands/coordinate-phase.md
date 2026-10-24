@@ -295,12 +295,14 @@ land*).
   defect is fixed before anything builds on it.
 - **Measure, per arc.** `python3 .claude/scripts/session-usage.py tokens
   --by-session` gives the builder's messages, cache writes, cache reads and
-  output, and `--since`/`--until` at the commits' `git log --format=%cI`
-  times split them by commit; per landed commit, they compare with the same phase's
+  output, `gates --match <agent>` its wall time and its time in `lake` gates,
+  and `--since`/`--until` at the commits' `git log --format=%cI` times split
+  both by commit; per landed commit, they compare with the same phase's
   single-commit dispatches (Phase 41a item 1: 37 messages, 146k written,
   3.96M read, 31k output). Log one `notes/dispatch-log.md` row per arc (a
-  playbook deviation while the trial runs), with the verification catches
-  and whether the cut-off fired. After about three arcs the PI decides:
+  playbook deviation while the trial runs), with the verification catches,
+  whether the cut-off fired, and the time: the builder's minutes per
+  commit, and the coordinator's gap from a return to the next dispatch. After about three arcs the PI decides:
   promote, adjust or drop.
 
 ### Verification tiers (what the coordinator re-runs itself)
