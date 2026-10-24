@@ -409,7 +409,6 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
       p ∈ V₁ ∧ p' ∈ V₁)
     (hl₀ : (G.splitOff v u w e₀).IsLink e₀ u w)
     (he₀ : ∀ p p', G.IsLink e₀ p p' → p ∉ V₁ ∨ p' ∉ V₁)
-    (hle : G.induce V₁ ≤ G.splitOff v u w e₀)
     (hind : (G.splitOff v u w e₀).induce V₁ = G.induce V₁)
     {ends : β → α × α} (hends : ∀ f p p', G.IsLink f p p' → G.IsLink f (ends f).1 (ends f).2)
     {xf xl : α} {X : Set α} (hxf : xf ∈ (G.splitOff v u w e₀).closedNbhd a)
@@ -454,6 +453,7 @@ theorem _root_.Graph.exists_earBase_splitOff [Infinite K] [Finite α] {G : Graph
               BodyHingeFramework K 2 α β).rigidityRows) : ℤ) =
         screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency 3) := by
   set H := G.splitOff v u w e₀ with hH
+  have hle : G.induce V₁ ≤ H := hind ▸ Graph.induce_le (hcover ▸ Set.subset_union_left)
   set ends'' := Function.update ends e₀ (u, w) with hends''def
   have hends'' : ∀ f p p', H.IsLink f p p' → H.IsLink f (ends'' f).1 (ends'' f).2 :=
     fun f _ _ hf => G.isLink_update_splitOff hends hl₀ f hf
@@ -622,8 +622,6 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
     (hl₀ : G.IsLink e₀ u v) (hl₀'' : (G.splitOff v u w e₀).IsLink e₀ u w)
     (hdef : (G.splitOff v u w e₀).deficiency 3 ≤ G.deficiency 3) {xf xl : α}
     (hxf : x ⟨0, by omega⟩ = xf) (hxl : x ⟨m, by omega⟩ = xl) (hvf : v ≠ xf) (hvl : v ≠ xl)
-    (hxfa : xf ∈ (G.splitOff v u w e₀).closedNbhd a)
-    (hxlb : xl ∈ (G.splitOff v u w e₀).closedNbhd b)
     (hins : ∀ (q : α × Fin 2 → K) (z : α → K) (la lb : Fin 3 → K)
       (ρ : Submodule K (ScrewSpace K 2)), z a = la ⬝ᵥ pencilPicturePoint q a →
       z b = lb ⬝ᵥ pencilPicturePoint q b →
@@ -647,7 +645,14 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
   have he₀ : ∀ p p', G.IsLink e₀ p p' → p ∉ V₁ ∨ p' ∉ V₁ := fun p p' h => by
     rcases h.eq_and_eq_or_eq_and_eq hl₀ with ⟨-, rfl⟩ | ⟨rfl, -⟩
     exacts [Or.inr hvV₁, Or.inl hvV₁]
-  obtain ⟨hle₁'', hind⟩ := induce_splitOff_ear hcover hxV₁ hv hu he₀
+  obtain ⟨-, hind⟩ := induce_splitOff_ear hcover hxV₁ hv hu he₀
+  -- the first and the last edge of the ear avoid `v`, so they stay links of `G″`
+  have hkeep : ∀ f p y, G.IsLink f p y → p ∈ V₁ → v ≠ y → y ∈ G''.closedNbhd p := by
+    intro f p y hf hp hvy
+    refine Or.inr ⟨f, Or.inl ⟨fun h => ?_, hf, fun h => hvV₁ (h ▸ hp), fun h => hvy h.symm⟩⟩
+    rw [h] at hf
+    rcases hf.eq_and_eq_or_eq_and_eq hl₀ with ⟨-, h'⟩ | ⟨h', -⟩
+    exacts [hvy h'.symm, hvV₁ (h' ▸ hp)]
   -- the main polynomial of `G`, the selectors, and the base data
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
@@ -659,8 +664,9 @@ theorem _root_.Graph.X0Attains.of_openEar_splitOff [Infinite K] [Finite α] [Fin
     fun f _ _ hf => G.isLink_update_splitOff hends hl₀'' f hf
   obtain ⟨q', z₁, la, lb, sstar, ρM, hqm', hadm₂, hpicstar, hrk₂, hne₂, hz₁s, hlas, hlbs, hρG,
       hρ2, hrk₁, hrk₁''⟩ :=
-    Graph.exists_earBase_splitOff hm hcover'' hinj'' hyV₁ ha hb hab hpath'' hsep'' hl₀'' he₀ hle₁''
-      hind hends hxfa hxlb hyx h₁ h₂ hPm
+    Graph.exists_earBase_splitOff hm hcover'' hinj'' hyV₁ ha hb hab hpath'' hsep'' hl₀'' he₀ hind
+      hends (hkeep _ _ _ (hxf ▸ ear_isLink_first hpath (by omega)) ha hvf)
+      (hkeep _ _ _ (hxl ▸ (ear_isLink_last hpath (by omega)).symm) hb hvl) hyx h₁ h₂ hPm
   set ρJ := ρM.map (screwComplementIso (K := K)).symm.toLinearMap with hρJ
   -- the insertion hypothesis, a polynomial condition on the ear data
   obtain ⟨Qx, hQx₀, hQx⟩ := hins q' z₁ la lb ρJ
@@ -833,8 +839,7 @@ theorem _root_.Graph.X0Attains.of_openEar_four [Infinite K] [Finite α] [Finite 
     hsep hcover'' hinj'' hxV₁'' hpath'' hsep''
     (by rintro _ ⟨i, rfl⟩; fin_cases i <;> exact ⟨_, rfl⟩) ⟨1, rfl⟩ (hxV₁ 0) l1 (hpath'' 1)
     (Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 x12.symm l1.symm l2 hdeg2)
-    (xf := x 0) (xl := x 3) rfl rfl x01.symm x13 (Or.inr ⟨e 0, hpath'' 0⟩)
-    (Or.inr ⟨e 4, (hpath'' 3).symm⟩) (fun q z la lb ρ _ _ => ?_) h₁ h₂
+    (xf := x 0) (xl := x 3) rfl rfl x01.symm x13 (fun q z la lb ρ _ _ => ?_) h₁ h₂
   -- the six joins of `x 0, x 2, x 3, b` span `Λ²K⁴` at one ear datum, so off a polynomial
   set cfg := earConfig V₁ q z (x 0) (x 3) (Set.range x) la lb
   set P := earPointPoly (K := K) V₁ q z (x 0) (x 3) (Set.range x) la lb
@@ -975,8 +980,7 @@ theorem _root_.Graph.X0Attains.of_openEar_three [Infinite K] [Finite α] [Finite
     hsep hcover'' hinj'' hxV₁'' hpath'' hsep''
     (by rintro _ ⟨i, rfl⟩; fin_cases i <;> exact ⟨_, rfl⟩) ⟨1, rfl⟩ (hxV₁ 0) l1 (hpath'' 1)
     (Graph.splitOff_deficiency_le_of_eq_left (n := 3) (by decide) x01 x12.symm l1.symm l2 hdeg2)
-    (xf := x 0) (xl := x 2) rfl rfl x01.symm x12 (Or.inr ⟨e 0, hpath'' 0⟩)
-    (Or.inr ⟨e 3, (hpath'' 2).symm⟩) (fun q z la lb ρ hza hzb => ?_) h₁ h₂
+    (xf := x 0) (xl := x 2) rfl rfl x01.symm x12 (fun q z la lb ρ hza hzb => ?_) h₁ h₂
   set cfg := earConfig V₁ q z (x 0) (x 2) (Set.range x) la lb
   set P := earPointPoly (K := K) V₁ q z (x 0) (x 2) (Set.range x) la lb
   -- the points of the ear data, on the planes `la` and `lb` at the ends

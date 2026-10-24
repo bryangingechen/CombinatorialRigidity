@@ -62,9 +62,7 @@ theorem _root_.Graph.IsOpenEar.exists_isLink_of_degree_eq_two [Finite β]
     {e : Fin (k + 1) → β} (h : G.IsOpenEar V₁ x a b e) (ha : G.degree a = 2) :
     ∃ a' g, G.IsLink g a a' ∧ a' ≠ a ∧ (∀ i, g ≠ e i) ∧
       ∀ f y, G.IsLink f a y → f = e 0 ∨ f = g := by
-  have h0 : G.IsLink (e 0) a (pathVertex a x b 1) := by
-    have := h.isLink 0
-    rwa [Fin.castSucc_zero, pathVertex_zero, Fin.succ_zero_eq_one] at this
+  have h0 := h.isLink_first
   have hN : N(G, a).ncard = 2 := by rw [← Graph.degree_eq_ncard_adj]; exact ha
   obtain ⟨a', ha'N, ha'p⟩ :=
     Set.exists_ne_of_one_lt_ncard (s := N(G, a)) (by omega) (pathVertex a x b 1)
@@ -213,7 +211,7 @@ two. Then every body `v` of degree two is an interior body of a chain. The maxim
 adjacent to the other end is excluded (`Graph.IsOpenEar.false_of_adj_of_degree_eq_two`). -/
 theorem _root_.Graph.IsX0Graph.exists_isChain [Finite α] [Finite β] {G : Graph α β}
     (hG : G.IsX0Graph) (h2c : ∀ v ∈ V(G), (G.induce (V(G) \ {v})).Connected)
-    (hhub : ∃ w ∈ V(G), G.degree w ≠ 2) {v : α} (_hv : v ∈ V(G)) (hdeg : G.degree v = 2) :
+    (hhub : ∃ w ∈ V(G), G.degree w ≠ 2) {v : α} (hdeg : G.degree v = 2) :
     ∃ (V₁ : Set α) (k : ℕ) (x : Fin k → α) (a b : α) (e : Fin (k + 1) → β),
       G.IsChain V₁ x a b e ∧ v ∈ Set.range x := by
   have := hG.simple
@@ -287,9 +285,7 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two [Finite α] [Fi
       · exact hV hy.right_mem
       · exact hy.cover ▸ Or.inr ⟨i, rfl⟩
   · -- the one non-path edge
-    have h0 : G.IsLink (f 0) c (pathVertex c y d 1) := by
-      have := hy.isLink 0
-      rwa [Fin.castSucc_zero, pathVertex_zero, Fin.succ_zero_eq_one] at this
+    have h0 := hy.isLink_first
     have hg0 : f 0 ≠ g := by
       intro h'
       rw [h'] at h0
@@ -299,10 +295,7 @@ theorem _root_.Graph.IsX0Graph.x0Reduces_of_forall_degree_eq_two [Finite α] [Fi
     have hu := (hy.sep g' u w hl hne').1
     rcases hT hl.left_mem with rfl | rfl | ⟨i, rfl⟩
     · -- at `d`
-      have hlast : G.IsLink (f (Fin.last m)) u (pathVertex c y u (Fin.last m).castSucc) := by
-        have := hy.isLink (Fin.last m)
-        rw [Fin.succ_last, pathVertex_last] at this
-        exact this.symm
+      have hlast := hy.isLink_last
       have hgl : f (Fin.last m) ≠ g := by
         intro h'
         have := congrArg Fin.val (hy.eq_zero_of_isLink_left (i := Fin.last m) (y := u) (h' ▸ hg))

@@ -254,9 +254,7 @@ theorem _root_.Graph.IsOpenEar.adj_mem_of_adj_of_degree_eq_two [Finite β] {G : 
     (h : G.IsOpenEar V₁ x a b e) (hk : 1 ≤ k) {g : β} (hg : G.IsLink g a b)
     (ha : G.degree a = 2) :
     ∀ u ∈ insert a (Set.range x), ∀ z, G.Adj u z → z ∈ insert b (insert a (Set.range x)) := by
-  have h0 : G.IsLink (e 0) a (pathVertex a x b 1) := by
-    have := h.isLink 0
-    rwa [Fin.castSucc_zero, pathVertex_zero, Fin.succ_zero_eq_one] at this
+  have h0 := h.isLink_first
   have hg0 : e 0 ≠ g := by
     intro h'
     rw [h'] at h0
@@ -427,14 +425,14 @@ theorem _root_.Graph.X0Reduces.x0Attains [Infinite K] [Finite α] [Finite β]
     exact Graph.X0Attains.of_openEar_two hG hear.cover hear.inj hear.notMem hear.left_mem
       hear.right_mem hear.ne hear.isLink hear.sep (hP _ h₁) hdef
   | openEarTwoSplitOff hear hnadj h₁ h₂ hδ₂ =>
-    exact Graph.X0Attains.of_openEar_two_of_splitOff hG hear.cover hear.inj hear.notMem
-      hear.left_mem hear.right_mem hear.ne hear.isLink hear.sep hnadj (hP _ h₁) (hP _ h₂) hδ₂
+    exact Graph.X0Attains.of_openEar_two_of_splitOff hG hear.cover hear.notMem hear.left_mem
+      hear.right_mem hear.isLink hear.sep hnadj (hP _ h₁) (hP _ h₂) hδ₂
   | openEarOne hear hnadj h₁ hdef hδ₂ =>
-    exact Graph.X0Attains.of_openEar_one hG hear.cover hear.inj hear.notMem hear.left_mem
-      hear.right_mem hear.ne hear.isLink hear.sep hnadj (hP _ h₁) hdef hδ₂
+    exact Graph.X0Attains.of_openEar_one hG hear.cover hear.notMem hear.left_mem hear.right_mem
+      hear.isLink hear.sep hnadj (hP _ h₁) hdef hδ₂
   | splitOff hear hnadj h₁ hδ =>
-    exact Graph.X0Attains.of_splitOff hG hear.cover hear.inj hear.notMem hear.left_mem
-      hear.right_mem hear.ne hear.isLink hear.sep hnadj (hP _ h₁) hδ
+    exact Graph.X0Attains.of_splitOff hG hear.cover hear.notMem hear.left_mem hear.right_mem
+      hear.isLink hear.sep hnadj (hP _ h₁) hδ
   | rigidContract htec hr hWss hW2 hdef hatt hc =>
     exact Graph.X0Attains.of_rigidContract hG htec hr hWss hW2 hdef hatt (hP _ hc)
   | additiveContract htec hr hWss hW2 hdef3 hadd hatt hH hc =>

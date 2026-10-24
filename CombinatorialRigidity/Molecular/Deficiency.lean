@@ -15,8 +15,9 @@ Geom. **45**, §2.5 and §3) on the multigraph `G̃ = (D-1)·G` of a multigraph 
 of `G` is repeated `D - 1` times (`mulTilde`), with `D = bodyBarDim n`. The blueprint presents the
 file in `sec:molecular-deficiency`, except the structure of tight partitions
 (`sec:jacobs-tight-partitions`), the triangle (`isKDof_zero_of_triangle`,
-`sec:simplicity-and-adjacent-pair`), and `partitionDef_map` and `deficiencyMerged_le_deficiency`
-(`sec:main-component-sparse`).
+`sec:simplicity-and-adjacent-pair`), `partitionDef_map` and `deficiencyMerged_le_deficiency`
+(`sec:main-component-sparse`), and `ne_of_deficiencyMerged_lt`, a step of the open-ear and
+split-off steps (`sec:main-component-orbit`, `sec:main-component-splitoff`).
 
 ## Main definitions
 
@@ -3372,7 +3373,8 @@ theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n :
 
 `deficiencyMerged G n u v` is the largest value of a partition with `u` and `v` in one part
 (`def:deficiency-merged`), at most the deficiency (`deficiencyMerged_le_deficiency`,
-`lem:deficiency-merge-rigid`). `partitionDef_map` gives the value of a partition of the image of
+`lem:deficiency-merge-rigid`), and below it only at two distinct vertices
+(`ne_of_deficiencyMerged_lt`). `partitionDef_map` gives the value of a partition of the image of
 `G` under a map of its vertices (`lem:deficiency-additive-core`).
 `partitionDef_split_of_vertexTwoCut` splits the value of a partition at two sets of vertices that
 meet in two nonadjacent vertices and share no edge; the next section takes its case of a cut vertex
@@ -3502,6 +3504,16 @@ theorem deficiencyMerged_le_deficiency [Finite α] (G : Graph α β) (n : ℕ) (
     G.deficiencyMerged n u v ≤ G.deficiency n := by
   have : Nonempty {f : α → α // f u = f v} := ⟨⟨fun _ => u, rfl⟩⟩
   exact ciSup_le fun w => G.partitionDef_le_deficiency n w.1
+
+/-- **A merged deficiency below the deficiency merges two distinct vertices** (a step of
+`lem:pencil-one-ear-base`, `thm:pencil-x0-open-ear-one`, `thm:pencil-x0-open-ear-two-orbit` and
+`thm:pencil-x0-splitoff`): if `def(G̃; u, v) < def(G̃)` then `u ≠ v`, as at `u = v` every labeling
+puts `u` and `v` in one part, so `def(G̃; u, u)` bounds the value of each. -/
+theorem ne_of_deficiencyMerged_lt [Finite α] {G : Graph α β} {n : ℕ} {u v : α}
+    (h : G.deficiencyMerged n u v < G.deficiency n) : u ≠ v := by
+  rintro rfl
+  have : Nonempty (α → α) := ⟨id⟩
+  exact h.not_ge (ciSup_le fun f => G.partitionDef_le_deficiencyMerged n rfl)
 
 /-! ## The deficiency at a cut vertex (`lem:deficiency-cut-vertex`)
 

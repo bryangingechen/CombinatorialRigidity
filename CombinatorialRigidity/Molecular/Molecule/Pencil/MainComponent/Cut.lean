@@ -93,9 +93,10 @@ admissible. It cuts once at the last bridge and adds up along the path; a single
   `pathVertex_mem_union_image_iff`: the path sequence read by the value of the index, read
   backwards, and against the prefixes `V₁ ∪ {x i | i < j}`. With `pathVertex_last`,
   `pathVertex_injective`, `pathVertex_val_succ`, `pathVertex_eq_x_iff`, `pathVertex_shift`,
-  `pathEdge_injective` (a path of distinct bodies has distinct edges) and the other lemmas on
-  `pathVertex`, they serve the ear and cycle steps (`MainComponent/Ear.lean`, `Chain.lean`,
-  `Short.lean`, `Orbit.lean`) and the structural coverage.
+  `pathEdge_injective` (a path of distinct bodies has distinct edges),
+  `injective_of_isLink_pathVertex_two` (the two interior bodies of a path in a loopless graph are
+  distinct) and the other lemmas on `pathVertex`, they serve the ear and cycle steps
+  (`MainComponent/Ear.lean`, `Chain.lean`, `Short.lean`, `Orbit.lean`) and the structural coverage.
 -/
 
 open scoped Graph
@@ -703,6 +704,18 @@ theorem pathEdge_injective {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b :
     have e2 := congrArg Fin.val (hpv h')
     simp only [Fin.val_castSucc, Fin.val_succ] at e1 e2
     omega
+
+/-- **The two interior bodies of a path in a loopless graph are distinct** (a step of
+`thm:pencil-x0-open-ear-two-orbit`): the middle edge of the path `a, x 0, x 1, b` links `x 0` to
+`x 1`, which are therefore distinct, so `x` is injective. -/
+theorem injective_of_isLink_pathVertex_two {G : Graph α β} (hG : G.Loopless) {x : Fin 2 → α}
+    {a b : α} {e : Fin 3 → β}
+    (hpath : ∀ i : Fin 3,
+      G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) :
+    Function.Injective x := by
+  have h01 : x 0 ≠ x 1 := (hpath 1).ne
+  intro i j hij
+  fin_cases i <;> fin_cases j <;> first | rfl | exact absurd hij h01 | exact absurd hij.symm h01
 
 /-- **Where an interior body sits in the path sequence** (a step of `lem:pencil-ear-fibre` and of
 the structural coverage): with the interior bodies distinct and different from both ends, `x i` sits

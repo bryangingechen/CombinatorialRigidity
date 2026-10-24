@@ -865,10 +865,12 @@ theorem _root_.Graph.earExtend_mem_liftingSpace [Finite α] {G : Graph α β} {V
 /-! ## The edges of an ear
 
 The edges `e i` of an ear in terms of its bodies, read off `hpath`, which the proofs of
-`thm:pencil-x0-cycle`, `thm:pencil-x0-open-ear` and `thm:pencil-x0-closed-ear` use. -/
+`thm:pencil-x0-cycle`, `thm:pencil-x0-open-ear`, `thm:pencil-x0-closed-ear`,
+`thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three` use. -/
 
-/-- **The first ear edge** (a step of `thm:pencil-x0-cycle`, `thm:pencil-x0-open-ear` and
-`thm:pencil-x0-closed-ear`): `e 0` joins `a` and `x 0`. -/
+/-- **The first ear edge** (a step of `thm:pencil-x0-cycle`, `thm:pencil-x0-open-ear`,
+`thm:pencil-x0-closed-ear`, `thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`): `e 0`
+joins `a` and `x 0`. -/
 theorem ear_isLink_first {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
     (hpath : ∀ i : Fin (k + 1),
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) (hk : 1 ≤ k) :
@@ -892,8 +894,9 @@ theorem ear_isLink_mid {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α}
   have h2 : (Fin.succ (⟨j, (by omega)⟩ : Fin (k + 1))) = (⟨j + 1, (by omega)⟩ : Fin (k + 2)) := rfl
   rwa [h1, h2, pathVertex_val_succ, pathVertex_val_succ] at h
 
-/-- **The last ear edge** (a step of `thm:pencil-x0-cycle` and `thm:pencil-x0-open-ear`): `e k`
-joins `x (k − 1)` and `b`. -/
+/-- **The last ear edge** (a step of `thm:pencil-x0-cycle`, `thm:pencil-x0-open-ear`,
+`thm:pencil-x0-open-ear-four` and `thm:pencil-x0-open-ear-three`): `e k` joins `x (k − 1)` and
+`b`. -/
 theorem ear_isLink_last {G : Graph α β} {k : ℕ} {x : Fin k → α} {a b : α} {e : Fin (k + 1) → β}
     (hpath : ∀ i : Fin (k + 1),
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ)) (hk : 1 ≤ k) :

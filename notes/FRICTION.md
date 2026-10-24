@@ -273,6 +273,21 @@ to be re-derived by re-reading entries later.
   `?_`s are elaborated (the 2-cut layer entry's (1) above is the same order).
 - **Status:** idiom.
 
+### [idiom] A hypothesis that alone fixes a lemma's implicits cannot be `(by omega)`; and a new helper's proof can reach nodes its callers' nodes do not use
+- **Where it bit:** RECONCILE round 3, task 38.26 (`Graph.ne_of_deficiencyMerged_lt`,
+  `Deficiency.lean`, at four callers in `MainComponent/Orbit.lean` and `SplitOff.lean`).
+  (1) `Graph.ne_of_deficiencyMerged_lt (by omega)` against `a ≠ b`: `G` and `n` occur only in the
+  hypothesis `G.deficiencyMerged n a b < G.deficiency n`, so `omega` ran on metavariable atoms and
+  failed. (2) The first proof, through a tight partition (`Graph.exists_isTightPartition`), made
+  four pins reach `def:tight-partition` and `lem:exists-tight-partition`, which their nodes do not
+  `\uses` (`--summary`: four missing edges).
+- **Friction:** one `lake lean` iteration for (1); one `--summary` and a rebuild for (2).
+- **Proposed fix:** (1) derive it from the caller's hypothesis, `hδ₂.trans_lt' (by omega)`, so
+  unification fixes the implicits before the tactic block runs; (2) prove such a helper from the
+  definition (`ciSup_le` over the labelings) and run `--summary` after the first build, before
+  the docstrings settle.
+- **Status:** idiom.
+
 ### [idiom] `toFinite_tac` cannot see `Finite (range z)` below `Mathlib.Data.Set.Finite.Range`
 - **Where it bit:** RECONCILE round 3, task 38.24, the mirror `Set.ncard_union_range_of_injective`
   (`Mathlib/Data/Set/Card.lean`, which imports only `Mathlib.Data.Set.Card`). (1) `ncard_union_eq h

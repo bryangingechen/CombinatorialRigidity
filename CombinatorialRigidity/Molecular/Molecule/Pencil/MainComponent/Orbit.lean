@@ -13,7 +13,8 @@ interior bodies, `a − x 0 − b` or `a − x 0 − x 1 − b`, whose ends `a` 
 (`thm:pencil-x0-open-ear-one`, `thm:pencil-x0-open-ear-two-orbit`, `sec:main-component-orbit`). An
 ear is given as in `MainComponent/Ear.lean`. Both steps assume
 `def₂(G[V₁]; a, b) + 2 ≤ def₂(G[V₁])`: every partition of `V₁` with `a` and `b` in one part falls at
-least two below the planar deficiency of `G[V₁]`. With one interior body the step also assumes
+least two below the planar deficiency of `G[V₁]`, so `a ≠ b` (`Graph.ne_of_deficiencyMerged_lt`),
+which the steps therefore do not assume. With one interior body the step also assumes
 `def₃(G[V₁]) ≤ def₃(G)`; with two, no bound on `def₃(G)`, but that the general configuration of
 `G₁ = G.splitOff (x 1) (x 0) b (e 1)`, `G` with `x 1` suppressed and the label `e 1` of `x 0 − x 1`
 relinked to `x 0 − b`, attains. The steps follow the scheme of `sec:main-component-cut`
@@ -86,7 +87,7 @@ variable {K : Type*} [Field K] {α β : Type*}
 /-! ## Suppressing the body of a one-body ear -/
 
 /-- **Suppressing the body of a one-body ear** (a step of `lem:pencil-one-ear-base`,
-`lem:pencil-splitoff-flexes`, `lem:pencil-splitoff-special-rank` and `thm:pencil-x0-splitoff`): if
+`lem:pencil-splitoff-flexes` and `thm:pencil-x0-splitoff`): if
 `H` has the open ear `a − x 0 − b` on `V₁`, then suppressing `x 0` and relinking its label `e 0` to
 `a − b` leaves the bodies `V₁`, keeps every link of `H[V₁]`, and grows the closed neighbourhoods of
 `a` and `b` by each other only; and every link of `H` with the label `e 0` has `x 0` as an end. -/
@@ -318,8 +319,7 @@ through the three points of its closed neighbourhood
 `lem:pencil-three-points`). `A` reads only `V₁` and the planes at `a` and `b`. -/
 theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H : Graph α β}
     (hS : H.Simple) {V₁ : Set α} {x : Fin 1 → α} {a b : α} {e : Fin 2 → β}
-    (hcover : V(H) = V₁ ∪ Set.range x) (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
-    (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    (hcover : V(H) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
     (hpath : ∀ i : Fin 2,
       H.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
     (hsep : ∀ f u w, H.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
@@ -361,7 +361,8 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
     rintro w (rfl | ⟨f, hf⟩)
     · exact Or.inl rfl
     · exact Or.inr ⟨f, hle' f _ _ hf⟩
-  have hS' : H'.Simple := Graph.splitOff_simple_of_not_adj hS hab hnadj
+  have hS' : H'.Simple := Graph.splitOff_simple_of_not_adj hS
+    (Graph.ne_of_deficiencyMerged_lt (hδ₂.trans_lt' (by omega))) hnadj
   obtain ⟨PJ, hPJ, hJJ⟩ := Graph.exists_mvPolynomial_finrank_liftingSpace_eq (K := K) hS'
     ⟨a, hVH' ▸ ha⟩ h3'
   -- the base picture `q'`
@@ -488,7 +489,8 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
     exact hinc
   set zf : α → K := fun w => if w = x 0 then la ⬝ᵥ ![qy 0, qy 1, 1] else xg (Sum.inl w) with hzf
   obtain ⟨hy, hhy⟩ := hadmH.exists_dotProduct_of_ncard_closedNbhd_le_three hx0H
-    (H.ncard_closedNbhd_ear_le_three hinj hxV₁ ha hb hpath hsep 0) zf
+    (H.ncard_closedNbhd_ear_le_three (Function.injective_of_subsingleton x) hxV₁ ha hb hpath hsep 0)
+    zf
   set xk : α ⊕ (α × Fin 3) → K := Sum.elim zf
     (fun p => if p.1 = x 0 then hy p.2 else xg (Sum.inr p)) with hxkdef
   have hxk : xk ∈ LinearMap.ker ((H.liftingMatrix K).map (MvPolynomial.eval q)).mulVecLin := by
@@ -578,8 +580,8 @@ formula then adds at least `5 · 2 + 2 − 6 = 6` to the rank, no less than the 
 (`lem:pencil-x0-one-witness`) concludes. -/
 theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 1 → α} {a b : α}
-    {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
-    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁)
+    (hb : b ∈ V₁)
     (hpath : ∀ i : Fin 2,
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
@@ -591,12 +593,14 @@ theorem _root_.Graph.X0Attains.of_openEar_one [Infinite K] [Finite α] [Finite �
   have : Fintype α := Fintype.ofFinite α
   have hV : V(G).Nonempty := hG.connected.nonempty
   have : Inhabited α := ⟨a⟩
+  have hinj := Function.injective_of_subsingleton x
+  have hab : a ≠ b := Graph.ne_of_deficiencyMerged_lt (hδ₂.trans_lt' (by omega))
   have hax : x 0 ≠ a := fun h => hxV₁ 0 (h ▸ ha)
   have hbx : x 0 ≠ b := fun h => hxV₁ 0 (h ▸ hb)
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
-  obtain ⟨q, A, hq, ⟨xk, hxk, hA⟩, hgood⟩ := G.exists_oneEar_base hG.simple hcover hinj hxV₁ ha
-    hb hab hpath hsep hnadj h₁ hδ₂ hPm (fun q hq => (hmain q hq).1)
+  obtain ⟨q, A, hq, ⟨xk, hxk, hA⟩, hgood⟩ := G.exists_oneEar_base hG.simple hcover hxV₁ ha hb
+    hpath hsep hnadj h₁ hδ₂ hPm (fun q hq => (hmain q hq).1)
   have hqmain := hmain q hq
   set z : α → K := fun w => xk (Sum.inl w) with hzdef
   have hz : z ∈ G.liftingSpace q := by
@@ -712,8 +716,7 @@ theorem splitOff_ear_two {G : Graph α β} {V₁ : Set α} {x : Fin 2 → α} {a
 adjacent** (a step of `thm:pencil-x0-open-ear-two-orbit`): if `G` is simple and `a` and `b` are not
 adjacent in it, the same holds of `G.splitOff (x 1) (x 0) b (e 1)`. -/
 theorem splitOff_ear_two_simple {G : Graph α β} (hS : G.Simple) {V₁ : Set α} {x : Fin 2 → α}
-    {a b : α} {e : Fin 3 → β} (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁)
-    (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    {a b : α} {e : Fin 3 → β} (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
     (hpath : ∀ i : Fin 3,
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁) (hnadj : ¬ G.Adj a b) :
@@ -722,7 +725,7 @@ theorem splitOff_ear_two_simple {G : Graph α β} (hS : G.Simple) {V₁ : Set α
   have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
   have l0 : G.IsLink (e 0) a (x 0) := hpath 0
   have l2 : G.IsLink (e 2) (x 1) b := hpath 2
-  have x01 : x 0 ≠ x 1 := fun h => absurd (hinj h) (by decide)
+  have x01 : x 0 ≠ x 1 := (injective_of_isLink_pathVertex_two hS.toLoopless hpath).ne (by decide)
   -- no edge of `G` other than `e 1`, which the split-off relinks, joins `x 0` to `b`
   have hno : ∀ f, f ≠ e 1 → ¬ G.IsLink f (x 0) b := by
     intro f hf hl
@@ -785,8 +788,8 @@ main-picture polynomial of `G`, where the rank of `G[V₁]` and `ρ` are those o
 ear rank formula at `G` gives `G` its target. -/
 theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 2 → α} {a b : α}
-    {e : Fin 3 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
-    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    {e : Fin 3 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁)
+    (hb : b ∈ V₁)
     (hpath : ∀ i : Fin 3,
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
@@ -798,6 +801,8 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   have : Fintype α := Fintype.ofFinite α
   have hV : V(G).Nonempty := hG.connected.nonempty
   have : Inhabited α := ⟨a⟩
+  have hinj := injective_of_isLink_pathVertex_two hG.simple.toLoopless hpath
+  have hab : a ≠ b := Graph.ne_of_deficiencyMerged_lt (hδ₂.trans_lt' (by omega))
   have hax : ∀ i, x i ≠ a := fun i h => hxV₁ i (h ▸ ha)
   have hbx : ∀ i, x i ≠ b := fun i h => hxV₁ i (h ▸ hb)
   have l0 : G.IsLink (e 0) a (x 0) := hpath 0
@@ -809,7 +814,7 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
   set G₁ := G.splitOff (x 1) (x 0) b (e 1) with hG₁
   obtain ⟨hcover₁, hinj₁, hxV₁₁, hpath₁, hsep₁⟩ :=
     splitOff_ear_two hcover hinj hxV₁ ha hb hab hpath hsep
-  obtain ⟨hS₁, hnadj₁⟩ := splitOff_ear_two_simple hG.simple hinj hxV₁ ha hb hab hpath hsep hnadj
+  obtain ⟨hS₁, hnadj₁⟩ := splitOff_ear_two_simple hG.simple hxV₁ ha hb hab hpath hsep hnadj
   have he₁ : ∀ y y', G.IsLink (e 1) y y' → y ∉ V₁ ∨ y' ∉ V₁ := by
     intro y y' h
     rcases h.eq_and_eq_or_eq_and_eq l1 with ⟨rfl, -⟩ | ⟨rfl, -⟩
@@ -822,8 +827,8 @@ theorem _root_.Graph.X0Attains.of_openEar_two_of_splitOff [Infinite K] [Finite �
     hG.simple.toLoopless hG.three_le_ncard_closedNbhd
   obtain ⟨ends₂, P₂, hends₂, hP₂, hgood₂⟩ := h₂
   -- the base configuration of the one-body ear of `G₁`
-  obtain ⟨q, A, hqB, ⟨xk₀, hxk₀, hA₀⟩, hgood⟩ := G₁.exists_oneEar_base hS₁ hcover₁ hinj₁ hxV₁₁
-    ha hb hab hpath₁ hsep₁ hnadj₁ (hind ▸ h₁) (hind ▸ hδ₂) (mul_ne_zero hP₂ hPm)
+  obtain ⟨q, A, hqB, ⟨xk₀, hxk₀, hA₀⟩, hgood⟩ := G₁.exists_oneEar_base hS₁ hcover₁ hxV₁₁ ha hb
+    hpath₁ hsep₁ hnadj₁ (hind ▸ h₁) (hind ▸ hδ₂) (mul_ne_zero hP₂ hPm)
     (fun q hq => (hgood₂ q (by rw [map_mul] at hq; exact left_ne_zero_of_mul hq)).1)
   rw [map_mul] at hqB
   obtain ⟨hadm₂, R₂, ⟨z₂, hz₂, hR₂⟩, hatt₂⟩ := hgood₂ q (left_ne_zero_of_mul hqB)

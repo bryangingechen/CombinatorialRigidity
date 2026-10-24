@@ -15,11 +15,11 @@ interior body (`thm:pencil-x0-splitoff`, `sec:main-component-splitoff`); an ear 
 `MainComponent/Ear.lean`. Suppressing `x 0` gives `G″ = G.splitOff (x 0) a b (e 0)`, `G[V₁]` with
 the edge `ab` added, which takes the label `e 0` of `a − x 0`: its bodies are `V₁`, and it keeps
 every link of `G[V₁]` (`Graph.splitOff_oneEar`). If `def₃(G[V₁]; a, b) + 5 ≤ def₃(G[V₁])` and the
-general configuration of `G″` attains, so does that of `G`. The hypothesis gives
-`def₃(G″) + 5 ≤ def₃(G[V₁])` (`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`,
-`lem:splitoff-deficiency-merged`), and with `def₃(G[V₁]) ≤ def₃(G) + 4`
-(`Graph.deficiency_induce_add_le_of_ear`, `lem:deficiency-ear`) `def₃(G″) + 1 ≤ def₃(G)`: the target
-of `G` is at most that of `G″` plus five.
+general configuration of `G″` attains, so does that of `G`. The hypothesis makes `a ≠ b`
+(`Graph.ne_of_deficiencyMerged_lt`) and gives `def₃(G″) + 5 ≤ def₃(G[V₁])`
+(`Graph.splitOff_deficiency_add_le_of_deficiencyMerged`, `lem:splitoff-deficiency-merged`), and
+with `def₃(G[V₁]) ≤ def₃(G) + 4` (`Graph.deficiency_induce_add_le_of_ear`, `lem:deficiency-ear`)
+`def₃(G″) + 1 ≤ def₃(G)`: the target of `G` is at most that of `G″` plus five.
 
 The step puts `x 0` back on the line through `a` and `b`. At a configuration of `G″` at its target
 rank, place the point of `x 0` on the line through the points of `a` and `b`, distinct from both: at
@@ -102,22 +102,12 @@ theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finit
   set ends'' := Function.update ends (e 0) (a, b) with hends''
   set F := (PanelHingeFramework.ofNormals G ends n).toBodyHinge with hF
   set F'' := (PanelHingeFramework.ofNormals G'' ends'' n).toBodyHinge with hF''
-  obtain ⟨hV₁, he0, hle', -⟩ := Graph.splitOff_oneEar hcover hxV₁ ha hb hpath
   have hx0 : x 0 ∉ V₁ := hxV₁ 0
   have hax : a ≠ x 0 := fun h => hx0 (h ▸ ha)
   have hbx : b ≠ x 0 := fun h => hx0 (h ▸ hb)
   have hV₁G : V₁ ⊆ V(G) := hcover ▸ Set.subset_union_left
   have l0 : G.IsLink (e 0) a (x 0) := hpath 0
   have l1 : G.IsLink (e 1) (x 0) b := hpath 1
-  have hab' : a ≠ b := fun h => by
-    have := hab.injective.ne (show (0 : Fin 2) ≠ 1 by decide)
-    simp [h] at this
-  have he01 : e 0 ≠ e 1 := by
-    intro h
-    rw [h] at l0
-    rcases l0.eq_and_eq_or_eq_and_eq l1 with ⟨h1, -⟩ | ⟨h1, -⟩
-    · exact hax h1
-    · exact hab' h1
   have l'' : G''.IsLink (e 0) a b :=
     Or.inr ⟨rfl, hax, hbx, hV₁G ha, hV₁G hb, Or.inl ⟨rfl, rfl⟩⟩
   have hends2 : ∀ f u w, G''.IsLink f u w → G''.IsLink f (ends'' f).1 (ends'' f).2 :=
@@ -211,7 +201,7 @@ the solutions for `G` in those for `G[V₁]` at which `(h_a − h_b) · (q_{x 0}
 subspace, so `dim L_G(q) < dim L_{G″}(q)`. -/
 theorem _root_.Graph.planeDiff_eq_zero_of_splitOff [Fintype α] {G : Graph α β} {V₁ : Set α}
     {x : Fin 1 → α} {a b : α} {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x)
-    (hinj : Function.Injective x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
+    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁)
     (hpath : ∀ i : Fin 2,
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
@@ -250,23 +240,16 @@ theorem _root_.Graph.planeDiff_eq_zero_of_splitOff [Fintype α] {G : Graph α β
   -- the three picture points of `N[x 0]` are independent
   have hN0 : G.closedNbhd (x 0) ⊆ {a, x 0, b} := by
     intro w hw
-    rcases G.closedNbhd_ear_subset hinj hxV₁ ha hb hpath hsep 0 hw with h | h | h
+    rcases G.closedNbhd_ear_subset (Function.injective_of_subsingleton x) hxV₁ ha hb hpath hsep 0
+      hw with h | h | h
     · exact Or.inr (Or.inl h)
     · exact Or.inl h
     · exact Or.inr (Or.inr h)
   have hli := hq.linearIndependent_of_closedNbhd_subset hx0G hN0
   have horth : ∀ u : Fin 3 → K, u ⬝ᵥ pencilPicturePoint q a = 0 →
-      u ⬝ᵥ pencilPicturePoint q (x 0) = 0 → u ⬝ᵥ pencilPicturePoint q b = 0 → u = 0 := by
-    intro u h1 h2 h3
-    have hunit : IsUnit (Matrix.of ![pencilPicturePoint q a, pencilPicturePoint q (x 0),
-        pencilPicturePoint q b]) := Matrix.linearIndependent_row_iff_isUnit.mp hli
-    have hz : (Matrix.of ![pencilPicturePoint q a, pencilPicturePoint q (x 0),
-        pencilPicturePoint q b]) *ᵥ u = (Matrix.of ![pencilPicturePoint q a,
-          pencilPicturePoint q (x 0), pencilPicturePoint q b]) *ᵥ 0 := by
-      rw [Matrix.mulVec_zero]
-      funext i
-      fin_cases i <;> simp [Matrix.mulVec, dotProduct_comm, h1, h2, h3]
-    exact Matrix.mulVec_injective_iff_isUnit.mpr hunit hz
+      u ⬝ᵥ pencilPicturePoint q (x 0) = 0 → u ⬝ᵥ pencilPicturePoint q b = 0 → u = 0 :=
+    fun u h1 h2 h3 => hli.eq_zero_of_forall_dotProduct_eq_zero fun i => by
+      fin_cases i <;> assumption
   -- the incidence functional at `x 0`
   set φ₁ : (α ⊕ (α × Fin 3) → K) →ₗ[K] K :=
     { toFun := fun y => planeDiff a b y ⬝ᵥ pencilPicturePoint q (x 0)
@@ -442,8 +425,8 @@ main picture of `G`. There the heights lie in `L_G(q(t))` (`Graph.mem_liftingSpa
 (`lem:pencil-x0-one-witness`) concludes. -/
 theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
     {G : Graph α β} (hG : G.IsX0Graph) {V₁ : Set α} {x : Fin 1 → α} {a b : α}
-    {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hinj : Function.Injective x)
-    (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁) (hb : b ∈ V₁) (hab : a ≠ b)
+    {e : Fin 2 → β} (hcover : V(G) = V₁ ∪ Set.range x) (hxV₁ : ∀ i, x i ∉ V₁) (ha : a ∈ V₁)
+    (hb : b ∈ V₁)
     (hpath : ∀ i : Fin 2,
       G.IsLink (e i) (pathVertex a x b i.castSucc) (pathVertex a x b i.succ))
     (hsep : ∀ f u w, G.IsLink f u w → (∀ i, f ≠ e i) → u ∈ V₁ ∧ w ∈ V₁)
@@ -454,6 +437,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   have : Fintype α := Fintype.ofFinite α
   have : Inhabited α := ⟨a⟩
   have hV : V(G).Nonempty := hG.connected.nonempty
+  have hinj := Function.injective_of_subsingleton x
   set G'' := G.splitOff (x 0) a b (e 0) with hG''
   set G' := G.induce V₁ with hG'
   obtain ⟨hV₁, he0, hle', -⟩ := Graph.splitOff_oneEar hcover hxV₁ ha hb hpath
@@ -492,7 +476,8 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero hP₁
   have h3'' : ∀ v ∈ V(G''), 3 ≤ (G''.closedNbhd v).ncard :=
     fun v hv => (hgood₁ q₀ hq₀).1.three_le_ncard_closedNbhd hv
-  have hS'' : G''.Simple := Graph.splitOff_simple_of_not_adj hG.simple hab hnadj
+  have hS'' : G''.Simple := Graph.splitOff_simple_of_not_adj hG.simple
+    (Graph.ne_of_deficiencyMerged_lt (hδ.trans_lt' (by omega))) hnadj
   obtain ⟨PJ, hPJ, hJJ⟩ := Graph.exists_mvPolynomial_finrank_liftingSpace_eq (K := K) hS''
     ⟨a, hVG''.symm ▸ ha⟩ h3''
   obtain ⟨Pm, hPm, hmain⟩ := G.exists_mvPolynomial_isMainPicture (K := K)
@@ -560,8 +545,8 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
     · push Not at hA
       obtain ⟨s, hs⟩ := Infinite.exists_notMem_finset ({0, 1} : Finset K)
       simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hs
-      exact ⟨s, hs.1, hs.2, Or.inr (Graph.planeDiff_eq_zero_of_splitOff hcover hinj hxV₁ ha hb
-        hpath hsep hqmain.1 hadm'' hdimle hA)⟩
+      exact ⟨s, hs.1, hs.2, Or.inr (Graph.planeDiff_eq_zero_of_splitOff hcover hxV₁ ha hb hpath
+        hsep hqmain.1 hadm'' hdimle hA)⟩
   -- a line of solutions for `G′` through `xg₀`, `h_a − h_b` vanishing at the moving point of `x 0`
   set p0 : Fin 3 → K := (1 - s) • pa + s • pb with hp0
   set dL : (Fin 3 → K) → (Fin 3 → K) →ₗ[K] K := fun u =>

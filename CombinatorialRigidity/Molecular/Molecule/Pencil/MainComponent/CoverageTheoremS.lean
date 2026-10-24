@@ -495,16 +495,16 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX
     exact hnot hnadj (Graph.deficiencyMerged_two_add_two_le hSv' hC.left_mem hC.right_mem hC.ne
       hnadj' hδ)
   obtain ⟨v, hv, hv2, -⟩ := hG.exists_degree_eq_two_notMem hSv (s := ∅) (by simp)
-  obtain ⟨V₁, k, x, a, b, e, hC, hvx⟩ := hG.exists_isChain h2c hhub hv hv2
+  obtain ⟨V₁, k, x, a, b, e, hC, hvx⟩ := hG.exists_isChain h2c hhub hv2
   have hbC := hblk _ _ _ _ _ _ hC
   have hk3 : k < 3 := Nat.lt_of_not_le fun h => hbC (Or.inl h)
   by_cases hrig : G.deficiency 3 = 0
   · -- the rigid case: a body `x₀` of degree two and a rigid set avoiding it
     obtain ⟨x₀, hx₀V, hx₀2, Y, hYx₀, hY2, hYd⟩ : ∃ x₀ ∈ V(G), G.degree x₀ = 2 ∧
         ∃ Y ⊆ V(G) \ {x₀}, 2 ≤ Y.ncard ∧ (G.induce Y).deficiency 3 = 0 := by
-      by_cases hadj : ∃ v w, G.degree v = 2 ∧ G.degree w = 2 ∧ v ∈ V(G) ∧ G.Adj v w
-      · obtain ⟨v', w', hv'2, hw'2, hv'V, hv'w'⟩ := hadj
-        obtain ⟨V₁', k', x', a', b', e', hC', hv'x'⟩ := hG.exists_isChain h2c hhub hv'V hv'2
+      by_cases hadj : ∃ v w, G.degree v = 2 ∧ G.degree w = 2 ∧ G.Adj v w
+      · obtain ⟨v', w', hv'2, hw'2, hv'w'⟩ := hadj
+        obtain ⟨V₁', k', x', a', b', e', hC', hv'x'⟩ := hG.exists_isChain h2c hhub hv'2
         have h2 := hC'.two_le_of_adj hv'x' hv'w' hw'2
         have h3 : k' < 3 := Nat.lt_of_not_le fun h => hblk _ _ _ _ _ _ hC' (Or.inl h)
         obtain rfl : k' = 2 := by omega
@@ -526,7 +526,7 @@ theorem _root_.Graph.IsX0Graph.exists_additiveCore {G : Graph α β} (hG : G.IsX
           intro v w hv2' hvw
           have := hG.two_le_degree w hvw.right_mem
           by_contra h3
-          exact hadj v w hv2' (by omega) hvw.left_mem hvw
+          exact hadj v w hv2' (by omega) hvw
         have hval := hG.partitionDef_three_induce_diff_nonpos hhubs hv hv2
         have hcard : 2 ≤ (V(G) \ {v}).ncard := by
           have h3 : 3 ≤ V(G).ncard := hG.three_le_ncard_vertexSet

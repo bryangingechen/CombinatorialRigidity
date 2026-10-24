@@ -122,9 +122,14 @@ mirror `Set.ncard_union_range_of_injective` at seven body counts (`F-311`'s last
 lemma from KT Claim 6.6's, gave five steps existing lemmas (`Lines.lean`'s 36-line span comparison
 among them) and removed an unused conjunct, two unused `have`s and a needless rewrite, deleting two
 lemmas the re-proofs replaced and `Graph.rigidContract_simple`, which they left without a caller
-(`F-313`–`F-315`, `F-328`'s first), no node restated.
-**Next concrete task:** round 3's task 38.26, `MainComponent/Short`, `Orbit`, `SplitOff`,
-`Coverage` and `CoverageChain.lean` (then task 38.27 and the close).
+(`F-313`–`F-315`, `F-328`'s first), no node restated; task 38.26 dropped fourteen hypotheses that
+others give from `MainComponent/Short` to `CoverageChain.lean`, with the new
+`injective_of_isLink_pathVertex_two` and `Graph.ne_of_deficiencyMerged_lt` that give them, three
+unused steps, and proved `horth` by the mirror lemma and four ear edges by `Graph.IsOpenEar`'s
+(`F-316`–`F-318`, `F-328`'s second), no node restated, as each states them only through
+`def:open-ear` or by saying "body".
+**Next concrete task:** round 3's task 38.27, `MainComponent/CoverageCut` to
+`GenericTriangle.lean` (then the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

@@ -24,7 +24,8 @@ here. The combinatorial-rigidity project uses it in `Molecular/Molecule/Pencil/`
 rows of a square matrix is zero. The project uses it in `MainComponent/` for a vector of `K³`
 orthogonal to three independent picture points (`Graph.finrank_affineLifts`,
 `Graph.finrank_ker_liftingMatrix`, `Graph.IsAdmissiblePicture.mem_liftingSpace_of_coplanar`,
-`Graph.finrank_liftingPlanes` and `Graph.IsAdmissiblePicture.eq_zero_of_forall_closedNbhd`).
+`Graph.finrank_liftingPlanes`, `Graph.IsAdmissiblePicture.eq_zero_of_forall_closedNbhd` and
+`Graph.planeDiff_eq_zero_of_splitOff`).
 
 Mirror path: `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`. Promotion to mathlib is a
 copy-paste into the upstream file, next to `Matrix.linearIndependent_rows_iff_isUnit`.

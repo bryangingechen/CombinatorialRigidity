@@ -6521,7 +6521,7 @@ declaration's name as its header writes it:
   derived from the others, on the standard axioms or fewer
   (`scratch/reconcile-lean/t3716/Hyps-t3716.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.16.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.26). Task 38.1: task
+  *Disposition:* done (task 38.26). Task 38.1: task
   38.24 states `hcard` once (`|V₁ ∪ range z| = |V₁| + k` for an injective `z : Fin k → α` off `V₁`;
   a `Mathlib/` mirror on `Set.ncard` unless mathlib has it) at its six sites (`Short.lean`,
   `Ear.lean`, `Orbit.lean` three, `SplitOff.lean`); task 38.26 drops `exists_earBase_splitOff`'s
@@ -6533,7 +6533,10 @@ declaration's name as its header writes it:
   conjuncts at `a` and `b` (per side); round 3: `hcard` done so, the mirror
   `Set.ncard_union_range_of_injective` in `Mathlib/Data/Set/Card.lean` (no `lean_loogle` hit), at
   its six sites and at a seventh copy, `hcountS` of `Graph.X0Attains.of_bridgePath` (`Cut.lean`,
-  found here) (task 38.24).
+  found here) (task 38.24); `hle` derived in the proof, from `hind` and `hcover`, and `hxfa`,
+  `hxlb` by one local `hkeep` (a link of `G` from `V₁` avoiding `v` stays one of `G″`) at
+  `ear_isLink_first` and `ear_isLink_last`, whose docstrings now name the steps at three and four
+  interior bodies; the callers follow, `of_openEar_splitOff`'s `hle₁''` becoming `-` (task 38.26).
 - **F-317** · L · repeated derivations and derivable hypotheses in
   `Molecular/Molecule/Pencil/MainComponent/Orbit.lean`. Derivable hypotheses: the `hinj` of
   `Graph.exists_oneEar_base` and `Graph.X0Attains.of_openEar_one` (a map out of `Fin 1` is
@@ -6558,7 +6561,7 @@ declaration's name as its header writes it:
   `Graph.X0Attains.of_openEar_two_of_splitOff` applied without them, on the standard axioms or fewer
   (`scratch/reconcile-lean/t3717/Hyps-t3717.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.17.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.26). Task 38.1: drop the `hinj` of
+  *Disposition:* done (task 38.26). Task 38.1: drop the `hinj` of
   `exists_oneEar_base` and `X0Attains.of_openEar_one` (`Function.injective_of_subsingleton`), of
   `X0Attains.of_openEar_two_of_splitOff` and `splitOff_ear_two_simple` (a new lemma beside
   `pathVertex`: a path `a, x 0, x 1, b` of a simple graph has `x` injective, from `hpath 1`;
@@ -6568,7 +6571,16 @@ declaration's name as its header writes it:
   `thm:pencil-x0-open-ear-one`, `thm:pencil-x0-open-ear-two-orbit` restated where they state them
   (callers `X0Reduces.x0Attains` and each other). Left: `splitOff_ear_two` (`F-316`'s),
   `exists_dotProduct_eq_zero_ne_zero`'s two cases and the per-end `hlas`, `hlbs`, `hpt0`, `hpt1`
-  (one proof each), the heights' lift (two sites, two rewrites).
+  (one proof each), the heights' lift (two sites, two rewrites). Round 3: done so. The new
+  `injective_of_isLink_pathVertex_two` (`Cut.lean`, beside `pathEdge_injective`) asks the graph
+  loopless, not simple: the middle link alone gives `x 0 ≠ x 1`. The new
+  `Graph.ne_of_deficiencyMerged_lt` (`Deficiency.lean`, beside `deficiencyMerged_le_deficiency`)
+  takes `def(G̃; u, v) < def(G̃)` at any `n`, so that `F-318`'s `of_splitOff` uses it at `n = 3`,
+  each caller passing `hδ₂.trans_lt' (by omega)`; it is proved from the definition (`ciSup_le`),
+  as a first proof through a tight partition made the four pins reach `def:tight-partition` and
+  `lem:exists-tight-partition`, which their nodes do not use. Each of the three nodes states an
+  open ear, whose ends and interior bodies `def:open-ear` makes distinct, so none is restated
+  (task 10's rule); the caller `X0Reduces.x0Attains` passes neither field of the ear (task 38.26).
 - **F-318** · L · repeated derivations, and derivable or unused hypotheses and `have`s, in
   `Molecular/Molecule/Pencil/MainComponent/SplitOff.lean`, `Coverage.lean` and `CoverageChain.lean`.
   Derivable hypotheses: the `hinj` of `Graph.planeDiff_eq_zero_of_splitOff` and
@@ -6602,7 +6614,7 @@ declaration's name as its header writes it:
   `Graph.X0Below`, on the standard axioms or fewer (`scratch/reconcile-lean/t3718/Hyps-t3718.lean`,
   gitignored).
   *Found:* RECONCILE round 3 task 37.18.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.26). Task 38.1: drop the `hinj` of
+  *Disposition:* done (task 38.26). Task 38.1: drop the `hinj` of
   `planeDiff_eq_zero_of_splitOff` and `X0Attains.of_splitOff` (`Fin 1`), `of_splitOff`'s `hab`
   (`F-317`'s lemma), `IsX0Graph.exists_isChain`'s `_hv` (from `hdeg`; caller `exists_additiveCore`),
   and in `finrank_span_rigidityRows_splitOff_special` the unused `obtain` of `splitOff_oneEar`,
@@ -6611,6 +6623,13 @@ declaration's name as its header writes it:
   `lem:pencil-x0-chain-exists` restated where they state them. Left: the ear facts the three
   theorems of `SplitOff.lean` open with, `hpd` and `hends2` (two sites each), `hdeg2` (its lemma is
   downstream), `hg0`, `hm`, the five `x i ≠ a`, and `hcov`'s unfolded `X0Below` (a change of form).
+  Round 3: done so. `exists_isChain`'s caller `exists_additiveCore` (`CoverageTheoremS.lean`)
+  drops the argument at both calls, and at the second the conjunct `v ∈ V(G)` of its `by_cases
+  hadj`, which fed only it (`TACTICS-QUIRKS.md` §118). Without the `obtain`,
+  `finrank_span_rigidityRows_splitOff_special` no longer reaches `Graph.closedNbhd`, so
+  `lem:pencil-splitoff-special-rank`'s proof `\uses{def:pencil-nondegenerate}` is unbacked, and
+  `Graph.splitOff_oneEar`'s docstring no longer names that node. The three nodes state an open
+  ear (`def:open-ear`) and a body of degree two, so none is restated (task 38.26).
 
 - **F-319** · L · repeated derivations, and derivable or unused hypotheses, in
   `Molecular/Molecule/Pencil/MainComponent/CoverageCut.lean`, `CoverageTheoremS.lean` and
@@ -6834,12 +6853,12 @@ declaration's name as its header writes it:
   second's, each from the mirror lemma in a line, on the three standard axioms
   (`scratch/reconcile-lean/t3823/Hyps-t3823.lean`, gitignored).
   *Found:* RECONCILE round 3 task 38.23.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.26 and 38.27), each by
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.27), each by
   its file's task: `eq_zero_of_dotProduct_pencilPicturePoint` deleted, its caller calling the
   mirror lemma (task 38.25; gate 4); `horth` proved by the mirror lemma, the three facts by
   `fin_cases` (task 38.26); `eq_zero_of_dotProduct_triple` likewise, kept for its two calls, which
   pass three separate facts (task 38.27). Round 3: the first done so, the mirror's header naming
-  its new user (task 38.25).
+  its new user (task 38.25); `horth` done so, the header naming its user (task 38.26).
 
 ## M — mathematics and sources
 
