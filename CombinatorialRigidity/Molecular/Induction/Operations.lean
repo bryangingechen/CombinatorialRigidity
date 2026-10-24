@@ -17,8 +17,8 @@ from `Molecular/Deficiency.lean`, it proves:
 
 * the subgraph `G[V(X)]` induced by the ends of a set `X` of edges of `G̃` (`inducedSpan`,
   `def:induced-span`), KT Lemma 3.4 (a circuit induces a rigid subgraph,
-  `lem:circuit-induces-rigid`), and two consequences for a loopless `G` with no proper rigid
-  subgraph, from the proofs of KT Lemma 4.5 (i) and (ii); `sec:molecular-induction-inherited`;
+  `lem:circuit-induces-rigid`), and a consequence for a loopless `G` with no proper rigid
+  subgraph, from the proof of KT Lemma 4.5(i); `sec:molecular-induction-inherited`;
 * a proper rigid subgraph when every degree is at least three (`lem:pencil-min-degree-rigid`,
   `sec:pencil-reduction`);
 * the independent sets of `M(G̃)` as unions of `D` forests (`lem:forest-packing-decomp`), and
@@ -313,47 +313,6 @@ theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finit
   by_contra hnotle
   exact hnp (G.inducedSpan n X)
     ⟨hrigid, hV2, hsub.ssubset_of_ne (fun heq ↦ hnotle heq.ge)⟩
-
-/-- **With no proper rigid subgraph and positive deficiency, `E(G̃)` is independent** (KT
-Lemma 4.5(ii), eq. (4.4), pp. 663–664, in Katoh and Tanigawa's form): for a loopless `G` with no
-proper rigid subgraph and `def(G̃) > 0`, `E(G̃)` is independent in `M(G̃)`, so it is the only
-base. `lem:edge-set-indep-pos` states it for a minimal `k`-dof-graph
-(`indep_edgeSet_mulTilde_of_noRigid_of_pos`).
-
-If `E(G̃)` were dependent, a base `B` of `M(G̃)` would miss some `p ∈ E(G̃)`. The fundamental
-circuit `X` of `p` has `V(X) = V(G)` (`fundCircuit_inducedSpan_vertexSet_eq`), and `G[V(X)]` is a
-rigid subgraph (`circuit_induces_isRigidSubgraph`). The deficiency does not increase from a
-subgraph with the same vertices to `G` (`deficiency_le_deficiency_of_le_vertexSet_eq`), so
-`def(G̃) ≤ 0`. -/
-theorem indep_matroidMG_of_noRigid_of_deficiency_pos [DecidableEq β] [Finite α] [Finite β]
-    {G : Graph α β} [G.Loopless] {n : ℕ} (hD : 1 ≤ bodyBarDim n)
-    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) (hk : 0 < G.deficiency n) :
-    (G.matroidMG n).Indep E(G.mulTilde n) := by
-  classical
-  by_contra hnindep
-  -- Pick a base `B` of `M(G̃)`; its ground set is `E(G̃)`.
-  obtain ⟨B, hB⟩ := (G.matroidMG n).exists_isBase
-  have hground : (G.matroidMG n).E = E(G.mulTilde n) := by
-    simp [matroidMG, Matroid.restrict_ground_eq]
-  -- If `E(G̃)` were dependent, some fiber `p` lies outside `B` (else `E(G̃) ⊆ B` is independent).
-  obtain ⟨p, hpE, hpB⟩ : ∃ p ∈ E(G.mulTilde n), p ∉ B := by
-    by_contra h
-    push Not at h
-    exact hnindep (hB.indep.subset fun p hp => h p hp)
-  -- Its fundamental circuit spans `V(G)` and induces a rigid (`0`-dof) subgraph.
-  have hpground : p ∈ (G.matroidMG n).E := by rw [hground]; exact hpE
-  have hXcirc : (G.matroidMG n).IsCircuit ((G.matroidMG n).fundCircuit p B) :=
-    hB.fundCircuit_isCircuit hpground hpB
-  have hrigid : (G.inducedSpan n ((G.matroidMG n).fundCircuit p B)).IsRigidSubgraph G n :=
-    circuit_induces_isRigidSubgraph hD hXcirc
-  have hspan : V(G.inducedSpan n ((G.matroidMG n).fundCircuit p B)) = V(G) :=
-    fundCircuit_inducedSpan_vertexSet_eq hD hnp hB hpE hpB
-  -- A spanning rigid subgraph forces `def(G̃) ≤ def((G[V(X)])̃) = 0`, contradicting `hk`.
-  have hdef_le : G.deficiency n
-      ≤ (G.inducedSpan n ((G.matroidMG n).fundCircuit p B)).deficiency n :=
-    deficiency_le_deficiency_of_le_vertexSet_eq hD hrigid.1 hspan
-  have hzero : (G.inducedSpan n ((G.matroidMG n).fundCircuit p B)).deficiency n = 0 := hrigid.2
-  omega
 
 /-! ## A proper rigid subgraph when every degree is at least three (`lem:pencil-min-degree-rigid`)
 
@@ -690,19 +649,6 @@ lemma splitOff_isLink {G : Graph α β} {v a b : α} {e₀ : β} {e : β} {x y :
       (e ≠ e₀ ∧ G.IsLink e x y ∧ x ≠ v ∧ y ≠ v) ∨
         (e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧
           ((x = a ∧ y = b) ∨ (x = b ∧ y = a))) := Iff.rfl
-
-/-- **Splitting off along `ab` and along `ba` agree** (`def:graph-operations`):
-`G.splitOff v a b e₀ = G.splitOff v b a e₀`, as the condition on the new edge is symmetric in `a`
-and `b`. -/
-lemma splitOff_swap_ab (G : Graph α β) (v a b : α) (e₀ : β) :
-    G.splitOff v a b e₀ = G.splitOff v b a e₀ := by
-  refine Graph.ext rfl fun e x y => ?_
-  simp only [splitOff_isLink]
-  constructor <;> rintro (⟨hne, hG, hx, hy⟩ | ⟨he, ha, hb, haV, hbV, hxy⟩)
-  · exact Or.inl ⟨hne, hG, hx, hy⟩
-  · exact Or.inr ⟨he, hb, ha, hbV, haV, hxy.symm⟩
-  · exact Or.inl ⟨hne, hG, hx, hy⟩
-  · exact Or.inr ⟨he, hb, ha, hbV, haV, hxy.symm⟩
 
 /-- **The edges of `G_v^{ab}`** (`def:graph-operations`): `e` is an edge of `G_v^{ab}` if and only
 if `e = e₀` with `a, b ∈ V(G)` different from `v` (the new edge), or `e ≠ e₀` is an edge of `G`
@@ -1547,24 +1493,6 @@ lemma isLink_eq_succ_or_pred_or_removeVertex (cd : G.ChainData n) {i : Fin cd.d}
       · exact Or.inr (Or.inl h)
     · exact Or.inr (Or.inr (Graph.removeVertex_isLink.mpr ⟨hlink, hu, hw⟩))
 
-/-- **The two edges at an interior vertex are not edges of `G − vtx i`** (`0 < i`): an edge `e`
-joining two vertices in `G − vtx i` is neither `edge i` nor `edge (i − 1)`, as both have the end
-`vtx i` (`isLink_succ_edge`, `isLink_pred_edge`) and the ends of `e` differ from `vtx i`
-(`removeVertex_isLink`). -/
-lemma removeVertex_isLink_edge_succ_pred_off (cd : G.ChainData n) {i : Fin cd.d}
-    (hi : 0 < (i : ℕ)) :
-    ∀ e x y, (G.removeVertex (cd.vtx i.castSucc)).IsLink e x y →
-      e ≠ cd.edge i ∧ e ≠ cd.edge ⟨(i : ℕ) - 1, by omega⟩ := by
-  intro e x y hlink
-  obtain ⟨hGlink, hxv, hyv⟩ := Graph.removeVertex_isLink.mp hlink
-  refine ⟨fun he => ?_, fun he => ?_⟩
-  · rcases (cd.isLink_succ_edge i).eq_and_eq_or_eq_and_eq (he ▸ hGlink) with ⟨hx, _⟩ | ⟨hy, _⟩
-    · exact hxv hx.symm
-    · exact hyv hy.symm
-  · rcases (cd.isLink_pred_edge hi).eq_and_eq_or_eq_and_eq (he ▸ hGlink) with ⟨hx, _⟩ | ⟨hy, _⟩
-    · exact hxv hx.symm
-    · exact hyv hy.symm
-
 /-! ### The cycle `shiftPerm` of KT eq. (6.54)
 
 For `2 ≤ i ≤ d − 1`, Case III builds its `i`-th framework on `Gᵢ = G_{vᵢ}^{vᵢ₋₁vᵢ₊₁}`. Katoh and
@@ -1615,17 +1543,6 @@ lemma mem_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α} :
     exact ⟨(j : ℕ) + 1, by omega, by omega, by omega, rfl⟩
   · rintro ⟨m, hm, hm1, hmi, rfl⟩
     exact ⟨⟨m - 1, by omega⟩, by congr 1; simp only [Fin.mk.injEq]; omega⟩
-
-/-- For `1 ≤ i`, `shiftCycle i = vtx 1 :: [vtx 2, …, vtx i]`, the tail as a `List.ofFn`. -/
-lemma shiftCycle_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 1 ≤ (i : ℕ)) :
-    cd.shiftCycle i
-      = cd.vtx ⟨1, by omega⟩
-        :: List.ofFn fun j : Fin ((i : ℕ) - 1) => cd.vtx ⟨(j : ℕ) + 2, by omega⟩ := by
-  refine List.ext_getElem (by simp [shiftCycle]; omega) fun m h₁ h₂ => ?_
-  rw [getElem_shiftCycle]
-  match m with
-  | 0 => simp
-  | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
 
 -- The vertex-side `DecidableEq α` is needed only by the `shiftPerm` block (`List.formPerm`); it is
 -- `section`-scoped rather than turned off by a bare `omit` below, because a bare `omit [C]` does
@@ -1684,22 +1601,6 @@ lemma shiftPerm_vtx_top (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i
   congr 1
   simp only [hmod]
 
-/-- For `2 ≤ i`, `shiftPerm i` is the transposition of `vtx 1` and `vtx 2` times the
-`List.formPerm` of `[vtx 2, …, vtx i]` (`List.formPerm_cons_cons`). -/
-lemma shiftPerm_eq_swap_mul (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ)) :
-    cd.shiftPerm i
-      = Equiv.swap (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩)
-          * (List.ofFn fun j : Fin ((i : ℕ) - 1) => cd.vtx ⟨(j : ℕ) + 2, by omega⟩).formPerm := by
-  have htail : (List.ofFn fun j : Fin ((i : ℕ) - 1) => cd.vtx ⟨(j : ℕ) + 2, by omega⟩)
-      = cd.vtx ⟨2, by omega⟩
-        :: List.ofFn fun j : Fin ((i : ℕ) - 2) => cd.vtx ⟨(j : ℕ) + 3, by omega⟩ := by
-    refine List.ext_getElem (by simp; omega) fun m h₁ h₂ => ?_
-    rw [List.getElem_ofFn]
-    match m with
-    | 0 => simp
-    | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
-  rw [shiftPerm, cd.shiftCycle_eq_cons i (by omega), htail, List.formPerm_cons_cons, ← htail]
-
 /-! ### The inverse of `shiftPerm`
 
 `lem:case-III-chain-relabel-rows` renames the rows of `R(G₁, q)` along `σᵢ⁻¹ = (shiftPerm i)⁻¹`,
@@ -1713,16 +1614,6 @@ lemma shiftPerm_inv_apply_interior (cd : G.ChainData n) (i : Fin (cd.d + 1)) {j 
     (cd.shiftPerm i)⁻¹ (cd.vtx ⟨j + 1, by omega⟩) = cd.vtx ⟨j, by omega⟩ := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_interior i hj1 hji]
 
-/-- For `1 ≤ i`, `(shiftPerm i)⁻¹` maps `vtx 1` to `vtx i` (`shiftPerm_vtx_top`). -/
-lemma shiftPerm_inv_vtx_one (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i : ℕ)) :
-    (cd.shiftPerm i)⁻¹ (cd.vtx ⟨1, by omega⟩) = cd.vtx ⟨(i : ℕ), by omega⟩ := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_vtx_top hi]
-
-/-- `(shiftPerm i)⁻¹` fixes every vertex not on `shiftCycle i` (`shiftPerm_apply_off`). -/
-lemma shiftPerm_inv_apply_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α}
-    (hx : x ∉ cd.shiftCycle i) : (cd.shiftPerm i)⁻¹ x = x := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_off i hx]
-
 /-- `(shiftPerm i)⁻¹` fixes `vtx m` when `m = 0` or `i < m` (`shiftPerm_apply_vtx_off`). -/
 lemma shiftPerm_inv_apply_vtx_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ}
     (hm : m < cd.d + 1) (hoff : m = 0 ∨ (i : ℕ) < m) :
@@ -1735,18 +1626,6 @@ The `i`-th framework of Case III has the normals `qᵢ = q ∘ σᵢ`, where `σ
 (`case-iii.tex`; KT eq. (6.55), p. 694). For `q : α × γ → K`, which gives each vertex the
 coordinates of its normal, these lemmas give `qᵢ` at the vertices that the split at `vtx i`
 names. At `i = 2`, `σ₂` is the transposition of `v₁` and `v₂`. -/
-
-/-- `qᵢ = q ∘ σᵢ` at `σᵢ⁻¹ x` is `q` at `x`. -/
-theorem seedShift_inv_cancel (cd : G.ChainData n) (i : Fin (cd.d + 1))
-    {γ : Type*} {K : Type*} (q : α × γ → K) (x : α) :
-    (fun j => q (cd.shiftPerm i ((cd.shiftPerm i)⁻¹ x), j)) = (fun j => q (x, j)) := by
-  funext j; rw [← Equiv.Perm.mul_apply, mul_inv_cancel, Equiv.Perm.one_apply]
-
-/-- `qᵢ` is `q` at a vertex not on `shiftCycle i`. -/
-theorem seedShift_off_cycle (cd : G.ChainData n) (i : Fin (cd.d + 1))
-    {γ : Type*} {K : Type*} (q : α × γ → K) {x : α} (hx : x ∉ cd.shiftCycle i) :
-    (fun j => q (cd.shiftPerm i x, j)) = (fun j => q (x, j)) := by
-  rw [cd.shiftPerm_apply_off i hx]
 
 /-- **`qᵢ` at `vtx (i + 1)`**: for `i : Fin cd.d`, `σᵢ` fixes `vtx (i + 1)`, so `qᵢ` is `q` there.
 `PanelHingeFramework.chainData_interior_realization_hρGv` reads it. -/
@@ -1782,9 +1661,8 @@ The Case III proofs at general `d` in `CaseIII/Relabel/` rename the rows of a fr
 `σᵢ = shiftPerm i` one transposition of consecutive vertices of the chain at a time. A step
 `(v, a, c)` exchanges a vertex `a` of degree two with `v`, where `c` is the other neighbour of `a`
 (`BodyHingeFramework.wstep`, iterated by `BodyHingeFramework.wstep_foldl_mem_span_rigidityRows`,
-`CaseIII/Relabel/Basic.lean`). This section
-lists the steps in two orders, gives the facts about the chain that each step needs, and shows that
-the transpositions multiply to `shiftPerm i`. -/
+`CaseIII/Relabel/Basic.lean`). This section lists the steps in two orders, names the graph of
+each step, and shows that the transpositions multiply to `shiftPerm i`. -/
 
 /-- The steps `[(v₂, v₁, v₀), (v₃, v₂, v₁), …, (vᵢ, vᵢ₋₁, vᵢ₋₂)]` of `shiftPerm i`, for
 `i : Fin (cd.d + 1)`: for `s < i − 1`, the step `(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)` moves `vₛ₊₁` to
@@ -1803,27 +1681,6 @@ lemma getElem_shiftBodyList (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
         cd.vtx ⟨s + 1, by simp only [length_shiftBodyList] at hs; omega⟩,
         cd.vtx ⟨s, by simp only [length_shiftBodyList] at hs; omega⟩) := by
   simp only [shiftBodyList, List.getElem_ofFn]
-
-/-- For `2 ≤ i`, the first step of `shiftBodyList i` is `(vtx 2, vtx 1, vtx 0)`. -/
-lemma getElem_shiftBodyList_zero (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ))
-    (h0 : 0 < (cd.shiftBodyList i).length) :
-    (cd.shiftBodyList i)[0] =
-      (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨1, by omega⟩, cd.vtx ⟨0, by omega⟩) := by
-  rw [cd.getElem_shiftBodyList i 0 h0]
-
-/-- For `2 ≤ i`, `shiftBodyList i` is `(vtx 2, vtx 1, vtx 0)` followed by the steps
-`(vtx (s + 3), vtx (s + 2), vtx (s + 1))`. -/
-lemma shiftBodyList_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ)) :
-    cd.shiftBodyList i
-      = (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨1, by omega⟩, cd.vtx ⟨0, by omega⟩)
-        :: List.ofFn fun s : Fin ((i : ℕ) - 2) =>
-            (cd.vtx ⟨(s : ℕ) + 3, by omega⟩, cd.vtx ⟨(s : ℕ) + 2, by omega⟩,
-              cd.vtx ⟨(s : ℕ) + 1, by omega⟩) := by
-  refine List.ext_getElem (by simp [shiftBodyList]; omega) fun m h₁ h₂ => ?_
-  rw [getElem_shiftBodyList]
-  match m with
-  | 0 => simp
-  | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
 
 /-! ### The steps of `shiftPerm` in ascending order
 
@@ -1848,24 +1705,6 @@ lemma getElem_shiftBodyListAsc (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ)
         cd.vtx ⟨s + 2, by have := i.2; simp only [length_shiftBodyListAsc] at hs; omega⟩,
         cd.vtx ⟨s + 3, by have := i.2; simp only [length_shiftBodyListAsc] at hs; omega⟩) := by
   simp only [shiftBodyListAsc, List.getElem_ofFn]
-
-/-! ### The chain at a step
-
-For a step `s` with `s + 1 < i ≤ d`, the moved vertex `vₛ₊₁` is an interior vertex of the chain.
-These lemmas give its edge `edge (s + 1)` to `vₛ₊₂`, and `vₛ₊₁ ≠ vₛ₊₂`. No declaration uses them.
--/
-
-/-- `edge (s + 1)` joins `vₛ₊₁` and `vₛ₊₂`, for `s + 1 < i ≤ d`. -/
-lemma shiftBody_isLink_succ_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
-    (hi : i < cd.d + 1) :
-    G.IsLink (cd.edge ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) := by
-  have h := cd.isLink_edge ⟨s + 1, by omega⟩
-  simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
-
-/-- `vₛ₊₁ ≠ vₛ₊₂` (`vtx_ne`). -/
-lemma shiftBody_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
-    cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
-  cd.vtx_ne (by omega) (by omega) (by omega)
 
 /-! ### The graphs `G − vₛ₊₁` of the steps
 
@@ -1998,19 +1837,6 @@ lemma shiftEdgePerm_apply_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
     (he : e ∉ cd.shiftEdgeCycle i) : cd.shiftEdgePerm i e = e :=
   List.formPerm_apply_of_notMem he
 
-/-- `shiftEdgePerm i` fixes a label that is neither `e₀` nor any of `edge 0, …, edge i`. -/
-lemma shiftEdgePerm_apply_edge_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
-    (he₀ : e ≠ cd.e₀) (hedge : ∀ m : ℕ, m ≤ (i : ℕ) → ∀ h : m < cd.d, e ≠ cd.edge ⟨m, h⟩) :
-    cd.shiftEdgePerm i e = e := by
-  have hid : (i : ℕ) < cd.d := i.isLt
-  refine cd.shiftEdgePerm_apply_off i fun hmem => ?_
-  rw [shiftEdgeCycle, List.mem_cons, List.mem_cons, List.mem_cons, List.mem_ofFn] at hmem
-  rcases hmem with h | h | h | ⟨j, h⟩
-  · exact hedge 0 (by omega) (by omega) h
-  · exact he₀ h
-  · exact hedge (i : ℕ) le_rfl i.isLt h
-  · exact hedge ((j : ℕ) + 1) (by omega) (by omega) h.symm
-
 /-- For `0 < i`, `shiftEdgePerm i` maps `edge 0` to `e₀`. -/
 lemma shiftEdgePerm_apply_edge_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
     cd.shiftEdgePerm i (cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩) = cd.e₀ := by
@@ -2082,50 +1908,6 @@ lemma shiftEdgePerm_apply_edge_pred (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 
     List.formPerm_apply_getElem _ (cd.nodup_shiftEdgeCycle i hi0) (((i : ℕ) - 2) + 3) hpos]
   simp only [hmod]
   exact cd.getElem_shiftEdgeCycle_zero i (by rw [hlen]; omega)
-
-/-! ### The inverse of `shiftEdgePerm`
-
-The values of `(shiftEdgePerm i)⁻¹`, each from the matching value of `shiftEdgePerm i`
-(`Equiv.Perm.inv_eq_iff_eq`). -/
-
-/-- `(shiftEdgePerm i)⁻¹` fixes every label not on `shiftEdgeCycle i`. -/
-lemma shiftEdgePerm_inv_apply_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
-    (he : e ∉ cd.shiftEdgeCycle i) : (cd.shiftEdgePerm i)⁻¹ e = e := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_off i he]
-
-/-- `(shiftEdgePerm i)⁻¹` fixes a label that is neither `e₀` nor any of `edge 0, …, edge i`. -/
-lemma shiftEdgePerm_inv_apply_edge_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
-    (he₀ : e ≠ cd.e₀) (hedge : ∀ m : ℕ, m ≤ (i : ℕ) → ∀ h : m < cd.d, e ≠ cd.edge ⟨m, h⟩) :
-    (cd.shiftEdgePerm i)⁻¹ e = e := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_off i he₀ hedge]
-
-/-- For `0 < i`, `(shiftEdgePerm i)⁻¹` maps `e₀` to `edge 0`. -/
-lemma shiftEdgePerm_inv_apply_e₀ (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
-    (cd.shiftEdgePerm i)⁻¹ cd.e₀ = cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_zero i hi]
-
-/-- For `0 < i`, `(shiftEdgePerm i)⁻¹` maps `edge i` to `e₀`. -/
-lemma shiftEdgePerm_inv_apply_edge_top (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
-    (cd.shiftEdgePerm i)⁻¹ (cd.edge i) = cd.e₀ := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_e₀ i hi]
-
-/-- `(shiftEdgePerm i)⁻¹` maps `edge (j + 1)` to `edge j` for `1 ≤ j ≤ i − 2`. -/
-lemma shiftEdgePerm_inv_apply_edge_interior (cd : G.ChainData n) (i : Fin cd.d) {j : ℕ}
-    (hj1 : 1 ≤ j) (hji : j + 1 < (i : ℕ)) :
-    (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨j + 1, by have := i.isLt; omega⟩)
-      = cd.edge ⟨j, by have := i.isLt; omega⟩ := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_interior i hj1 hji]
-
-/-- For `1 < i`, `(shiftEdgePerm i)⁻¹` maps `edge 1` to `edge i`. -/
-lemma shiftEdgePerm_inv_apply_edge_one (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
-    (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨1, by have := i.isLt; omega⟩) = cd.edge i := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_top i hi]
-
-/-- For `1 < i`, `(shiftEdgePerm i)⁻¹` maps `edge 0` to `edge (i − 1)`. -/
-lemma shiftEdgePerm_inv_apply_edge_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
-    (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩)
-      = cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ := by
-  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_pred i hi]
 
 variable [DecidableEq α]
 
@@ -2550,7 +2332,7 @@ lemma splitOff_isLink_shiftRelabel_iff (cd : G.ChainData n) (i : Fin cd.d) (hi :
   ⟨cd.splitOff_isLink_shiftRelabel_forward i hi,
     cd.splitOff_isLink_shiftRelabel_backward i hi⟩
 
-/-! ### The endpoint selector and the normals of the `i`-th framework
+/-! ### The endpoint selector of the `i`-th framework
 
 For `1 < i`, `PanelHingeFramework.chainData_bottom_relabel` (`lem:case-III-chain-relabel-rows`)
 renames the rows of a framework on `G − v₁` with an endpoint selector `ends₀` and normals `q` into
@@ -2570,17 +2352,6 @@ def candidateEnds (cd : G.ChainData n) (i : Fin cd.d) (ends₀ : β → α × α
     cd.candidateEnds i ends₀ e =
       ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
         (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2) :=
-  rfl
-
-/-- **The normals `q ∘ σᵢ` of the `i`-th framework**: `p ↦ q (σᵢ p.1, p.2)` for
-`q : α × γ → K`, where `σᵢ = shiftPerm i`. -/
-def candidateSeed {γ : Type*} {K : Type*} (cd : G.ChainData n) (i : Fin cd.d) (q : α × γ → K) :
-    α × γ → K :=
-  fun p => q (cd.shiftPerm i.castSucc p.1, p.2)
-
-omit [DecidableEq β] in
-@[simp] lemma candidateSeed_apply {γ : Type*} {K : Type*} (cd : G.ChainData n) (i : Fin cd.d)
-    (q : α × γ → K) (p : α × γ) : cd.candidateSeed i q p = q (cd.shiftPerm i.castSucc p.1, p.2) :=
   rfl
 
 /-! ### The vertices `uᵢ` of the panels (KT eq. (6.67))

@@ -863,7 +863,7 @@ to be re-derived by re-reading entries later.
   1. **Index-proof scope.** In a *field type* `(hcand : ∀ (cd : G.ChainData n), …)`, the `⟨2, by omega⟩` in the body needs `cd.d ≥ 2`, but a plain `cd.hd : 1 ≤ cd.d` only covers index 1, and there is no `hd2` in scope. In a flat `∃ cd : G.ChainData n, 2 ≤ cd.d ∧ (…splitOff (cd.vtx ⟨2, by omega⟩)…)`, the `by omega` in the *second* conjunct **cannot see** the first conjunct's `2 ≤ cd.d` — they are sibling `∧` args, so `omega` fails.
   2. **OfNat ≠ `Fin.mk`.** The design's literal `cd.vtx 1` (OfNat, elaborates via `Nat.mod`) is **not** defeq to the router's `cd.vtx ⟨1, by omega⟩` for a *general* `cd.d`; feeding the literal-typed `hdef` to a lemma expecting the `⟨1,_⟩`-typed one is a hard `Application type mismatch` (kernel-confirmed in the 23g spike). `(1 : Fin (cd.d+1))` only reduces to `⟨1,_⟩` once `cd.d ≥ 1` is known.
 - **Resolution:** put the index-validity witness *before* the split-off references. For a Pi field, add an explicit `(hd2 : 2 ≤ cd.d)` binder ahead of the `→`-chain (matches the landed router `chainData_dispatch`'s own signature); then `⟨2, by omega⟩` sees `hd2`. For an `∃`-bundle, nest it: `∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d), P` — inside `P` the `by omega` sees `hd2`. Either way state the index as `⟨i, by omega⟩` (proof-irrelevant `Fin.mk`), never the OfNat literal, so it matches the router. **This remains the primary convention** — but when a mixed form DOES meet (e.g. a mathlib-side API that hands back an `OfNat` literal, or a `simp` normal form that rewrites `⟨1,_⟩`/`⟨2,_⟩` back to the literal), the mechanical escape is the bridge lemmas `Fin.ofNat_eq_mk`/`Fin.two_eq_mk_of_lt` (§ [Mirrored], `CombinatorialRigidity/Mathlib/Data/Fin/Basic.lean`) — a one-`rw` reconciliation instead of a fresh defeq investigation.
-- **Sibling — `set cd := … with hcd` blocks the `cd.vtx ⟨1,_⟩ → v` defeq while the goal is still `∃ cd, …`:** provide the existential witness *first* (`refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩`), THEN `rw`/`show` the split-off swap per goal; a pre-`refine` `rw [hsplit_eq]` fails "did not find pattern" because it targets the bound `∃ cd`, not your local `cd`. With `cd` a concrete adapter value, `splitOff (cd.vtx ⟨1,_⟩) … = splitOff v b a e₀` holds by defeq (`vtx := ![b,v,a,c]`), so `splitOff_swap_ab G v b a e₀` closes the bridge directly.
+- **Sibling — `set cd := … with hcd` blocks the `cd.vtx ⟨1,_⟩ → v` defeq while the goal is still `∃ cd, …`:** provide the existential witness *first* (`refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩`), THEN `rw`/`show` the split-off swap per goal; a pre-`refine` `rw [hsplit_eq]` fails "did not find pattern" because it targets the bound `∃ cd`, not your local `cd`. With `cd` a concrete adapter value, `splitOff (cd.vtx ⟨1,_⟩) … = splitOff v b a e₀` holds by defeq (`vtx := ![b,v,a,c]`), so `splitOff_swap_ab G v b a e₀` (since deleted) closed the bridge directly.
 - **Recurrence (avoided proactively, zero iterations):** the E1 `CycleData.link` field (`Operations.lean`, Phase 23g) — the cyclic successor is `vtx (i + ⟨1, by omega⟩)` (mod-`m` `Fin` add; the earlier `hm : 3 ≤ m` field is in scope for the `by omega`), NOT `vtx (i + 1)`: the OfNat `(1 : Fin m)` needs `NeZero m`, unavailable in a structure-field type.
 - **Status:** idiom (a `ChainData`-indexing / defeq-fragile-zone member of the § 58/61/63 family).
 
@@ -2530,22 +2530,25 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `formPerm_apply_lt_getElem` returns `xs[n+1]`, and re-applying the tail accessor at the shifted
   index works **by defeq** (`(m+1)+3 ≡ (m+3)+1 ≡ succ⁴ m` as `Nat`), avoiding the QUIRKS § 61
   index-`rw` motive trap entirely.
-- **Reuse (CHAIN-2c-ii-transport prep, `ChainData.shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`, same
-  file):** the head-peel factorization `shiftPerm i = swap (vtx 1) (vtx 2) * (tail formPerm)` (the
+- **Reuse (CHAIN-2c-ii-transport prep, `ChainData.shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`, both
+  since deleted, same file):** the head-peel factorization
+  `shiftPerm i = swap (vtx 1) (vtx 2) * (tail formPerm)` (the
   recursion handle for the cycle-W9a induction) is `List.formPerm_cons_cons` after rewriting
   `shiftCycle i` into `vtx 1 :: List.ofFn tail`. That `ofFn = cons` step is a *whole-list* equality
   whose RHS re-indexes the `ofFn` body, so `rw [show (i:ℕ) = …, List.ofFn_succ]` trips the **same**
   § 61 motive trap as an index-`rw` — sidestep with `List.ext_getElem` + `match` on the index (the
   `m+1` arm closes by defeq, no `congr 1; omega` tail). **Lifted to:** TACTICS-QUIRKS § 61 (the
   `List.ofFn = cons` variant).
-- **Reuse (CHAIN-2c-ii-inv, the `(shiftPerm i)⁻¹` / `(shiftEdgePerm i)⁻¹` action block, same file):**
+- **Reuse (CHAIN-2c-ii-inv, the `(shiftPerm i)⁻¹` / `(shiftEdgePerm i)⁻¹` action block, the latter
+  since deleted, same file):**
   the *inverse*-cycle action (each step run backwards, for the base→candidate row transport, KT eq.
   6.62) needs no fresh `formPerm` reasoning — every inverse-action lemma is a one-liner
   `rw [Equiv.Perm.inv_eq_iff_eq, <forward action lemma>]`. `Equiv.Perm.inv_eq_iff_eq` turns the goal
   `p⁻¹ x = y` into `p y = x`, which the matching forward lemma closes by `rfl`. So once the forward
   cycle action is landed, its inverse is free — do not re-derive the wrap/interior/off-support cases
   from `formPerm`.
-- **Reuse (CHAIN-2c-ii-arm, `ChainData.seedShift_inv_cancel`, same file):** the candidate-seed read
+- **Reuse (CHAIN-2c-ii-arm, `ChainData.seedShift_inv_cancel`, since deleted, same file):**
+  the candidate-seed read
   `qᵢ ((shiftPerm i)⁻¹ x) = q x` (`qᵢ = q ∘ shiftPerm i`, the genuine-row arm's annihilation
   transport) is just `σ (σ⁻¹ x) = x` — but **there is no `Equiv.Perm.apply_inv_self` constant** (it
   exists for `MulAut`/`≃ᵢ`/`≃r`, not bare `Equiv.Perm`), and `(σ).apply_symm_apply`'s `.symm` will

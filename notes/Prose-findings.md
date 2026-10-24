@@ -5339,6 +5339,12 @@ declaration's name as its header writes it:
   `Concrete.lean` (81 declarations) deleted, with its imports, tasks 32's four, 32.1's seven and
   `join_assoc`, and the twelve orphans; block (b) at `faa83b72` gives the same names, and the build
   and the caches confirm that no other declaration is left without a caller (task 38.5).
+  Round 3: tasks 30's twenty in `Operations.lean` (but `shiftEdgePerm_apply_edge_top` and
+  `_edge_pred`, live) with `candidateSeed_apply`, 30.1's four and 31's five deleted, with the orphan
+  `shiftBody_isLink_succ_edge` and `F-282`'s `indep_matroidMG_of_noRigid_of_deficiency_pos`;
+  block (b) at `b630905b` gives the same names, `shiftCycle_eq_cons` live only through the shared
+  `by omega` auxiliary of `shiftPerm_vtx_top`, and the build and the caches confirm that no other
+  declaration is left without a caller (task 38.6).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5412,7 +5418,8 @@ declaration's name as its header writes it:
   derivation: task 38.6 deletes `indep_matroidMG_of_noRigid_of_deficiency_pos` with its caller
   (block (b) at `abcd9d72`: no orphan), as the pin of `lem:edge-set-indep-pos` gives the node's
   argument (KT's rank count), and re-proving it by the other's fundamental circuit would leave the
-  node's proof describing another argument.
+  node's proof describing another argument. Round 3: the repeated derivation's part done,
+  `indep_matroidMG_of_noRigid_of_deficiency_pos` deleted with its caller (task 38.6).
 - **F-283** · L · six hypotheses of six declarations of `Molecular/Induction/` that the proofs do
   not use or the others give: `Graph.splitOff_deficiency_ge`'s `hdeg2`, which its proof does not use
   (`SplitOffDeficiency.lean`; `lake lint` does not report it);

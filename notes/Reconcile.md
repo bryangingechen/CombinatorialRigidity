@@ -70,8 +70,9 @@ thirty-three with their orphans in `Pinning.lean`, and dropped `F-290`'s `hne` a
 `F-289`'s eight hypotheses and two instances (three nodes restated) and `F-296`'s two re-proofs;
 task 38.5 `RigidityMatrix/Concrete.lean` whole and the dead declarations of `Basic.lean`,
 `Claim612.lean`, `Meet.lean` and `Extensor.lean`, 105 with their orphans, and `F-287`'s `ha`, `hb`
-and `mem_hingeRowBlock_iff`'s move. **Next concrete task:** round 3's task 38.6, the deletions in
-`Induction/` (then tasks 38.7–38.27 and the close).
+and `mem_hingeRowBlock_iff`'s move; task 38.6 the dead declarations of `Induction/`, thirty-two
+with an orphan and `F-282`'s repeated derivation. **Next concrete task:** round 3's task 38.7, the
+deletions in `Molecule/` (then tasks 38.8–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

@@ -2663,7 +2663,7 @@ index, never rewriting the bound: `refine List.ext_getElem (by simp [defn]; omeg
 ?_; rw [getElem_X]; match m with | 0 => simp | m + 1 => rw [List.getElem_cons_succ,
 List.getElem_ofFn]`. The `m+1` arm closes by **defeq** (`vtx ⟨m+1+1,_⟩ ≡ vtx ⟨(m)+2,_⟩` as the
 `Nat` index reduces), so no `congr 1; omega` tail is needed. Hit in Phase 23b
-`ChainData.shiftCycle_eq_cons` (the `shiftPerm` head-peel factorization brick).
+`ChainData.shiftCycle_eq_cons` (the `shiftPerm` head-peel factorization brick, since deleted).
 
 ## 63. `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` even with `hid : (i : ℕ) < …` in scope — it atomizes `Fin.val (Fin.mk …)` *distinctly* from `(i : ℕ)`; force the defeq with `show … from hid`
 

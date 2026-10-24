@@ -222,50 +222,6 @@ open Set
 
 variable {α : Type*}
 
-/-- **A basis of `c` in the union, split into bases**: if `N = Matroid.Union (fun _ : Fin k ↦ M)`
-has `N.rk c = k · M.rk c`, then some `J : Fin k → Set α` has `⋃ i, J i` a basis of `c` in `N` and
-each `J i` a basis of `c` in `M`. A basis `B` of `c` in `N` is a union of sets `J i ⊆ c` independent
-in `M` (`union_indep_iff`), and `k · M.rk c = |B| ≤ ∑ |J i| ≤ k · M.rk c`, so `|J i| = M.rk c` for
-each `i`. -/
-lemma Union_pow_isBasis'_split_of_rk_saturated [DecidableEq α] [Finite α]
-    (M : Matroid α) (k : ℕ) (c : Set α)
-    (hsat : (Matroid.Union (fun _ : Fin k ↦ M)).rk c = k * M.rk c) :
-    ∃ J : Fin k → Set α, (Matroid.Union (fun _ : Fin k ↦ M)).IsBasis' (⋃ i, J i) c ∧
-      ∀ i, M.IsBasis' (J i) c := by
-  classical
-  set N := Matroid.Union (fun _ : Fin k ↦ M) with hN
-  -- An `N`-basis `B` of `c`, with `|B| = N.rk c = k · M.rk c`.
-  obtain ⟨B, hB⟩ := N.exists_isBasis' c
-  have hBcard : B.ncard = k * M.rk c := by rw [hB.card, hsat]
-  -- Decompose `B` into per-factor `M`-independent sets `J i ⊆ c`.
-  obtain ⟨J, hJunion, hJindep⟩ := Matroid.union_indep_iff.mp hB.indep
-  have hJsub : ∀ i, J i ⊆ c :=
-    fun i ↦ (Set.subset_iUnion J i).trans (hJunion.trans_subset hB.subset)
-  -- Each factor is an `M`-independent subset of `c`, so `|J i| ≤ M.rk c`.
-  have hJle : ∀ i, (J i).ncard ≤ M.rk c := fun i ↦ (hJindep i).ncard_le_rk_of_subset (hJsub i)
-  -- `|B| ≤ ∑ |J i| ≤ k · M.rk c = |B|`, forcing each `|J i| = M.rk c`.
-  have hsum_le : B.ncard ≤ ∑ i, (J i).ncard :=
-    hJunion ▸ Set.ncard_iUnion_le_of_fintype J
-  have hcard_eq : ∀ i, (J i).ncard = M.rk c := by
-    have hsumle' : k * M.rk c ≤ ∑ i, (J i).ncard := hBcard ▸ hsum_le
-    intro i
-    refine le_antisymm (hJle i) ?_
-    by_contra hlt
-    push Not at hlt
-    have hlt' : ∑ j, (J j).ncard < ∑ _j : Fin k, M.rk c :=
-      Finset.sum_lt_sum (fun j _ ↦ hJle j) ⟨i, Finset.mem_univ i, hlt⟩
-    simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hlt'
-    omega
-  -- Each `J i`: `M`-independent, `⊆ c`, `|J i| = M.rk c` ⟹ an `M`-basis of `c`.
-  have hJbasis : ∀ i, M.IsBasis' (J i) c := by
-    intro i
-    obtain ⟨K, hK, hJK⟩ := (hJindep i).subset_isBasis'_of_subset (hJsub i)
-    have hKfin : K.Finite := (M.isRkFinite_set c).finite_of_isBasis' hK
-    have hKc : K.ncard = M.rk c := hK.card
-    rwa [show K = J i from
-      (Set.eq_of_subset_of_ncard_le hJK (by rw [hKc, hcard_eq i]) hKfin).symm] at hK
-  exact ⟨J, hJunion ▸ hB, hJbasis⟩
-
 /-- **The union commutes with contraction by a set where its rank is the sum** (a step of
 `lem:rigidContract-isMinimalKDof`): let `M` have finite rank, let
 `N = Matroid.Union (fun _ : Fin k ↦ M)` have `N.rk C = k · M.rk C`, and let `I` be disjoint from

@@ -148,8 +148,8 @@ lemma isAcyclicSet_mulTilde_of_splitOff_of_disjoint {G : Graph α β} {v a b : �
 
 The edges of `G̃` incident with `v` (`fiberAtVertex`) are the copies of the edges of `G` at `v`.
 Katoh and Tanigawa's proof of KT Lemma 4.1 (p. 660) changes each forest `F_i` of a partition at
-these edges, according to their number `d_{F_i}(v)` (`fiberDegree`); `forest_surgery_count`
-(`Reduction.lean`) uses `fiberAtVertex`. -/
+these edges, according to their number `d_{F_i}(v)`; `forest_surgery_count` (`Reduction.lean`)
+uses `fiberAtVertex`. -/
 
 /-- **The edges of `G̃` at `v`**: the elements of `β × Fin (D - 1)` incident with `v` in
 `G̃ = (D - 1)·G`, the copies of the edges of `G` at `v` (`mem_fiberAtVertex`). -/
@@ -166,50 +166,6 @@ lemma mulTilde_inc {G : Graph α β} {n : ℕ} {p : β × Fin (bodyHingeMult n)}
 lemma mem_fiberAtVertex {G : Graph α β} {n : ℕ} {v : α} {p : β × Fin (bodyHingeMult n)} :
     p ∈ G.fiberAtVertex n v ↔ G.Inc p.1 v := by
   rw [fiberAtVertex, Set.mem_ofPred_eq, mulTilde_inc]
-
-/-- **The edges of `G̃` at `v` are the copies of the edges of `G` at `v`**: within `E(G̃)`,
-`fiberAtVertex` is the set of the copies of the edges of `G` incident with `v`. -/
-lemma fiberAtVertex_inter_edgeSet {G : Graph α β} {n : ℕ} {v : α} :
-    G.fiberAtVertex n v ∩ E(G.mulTilde n) =
-      {p : β × Fin (bodyHingeMult n) | p.1 ∈ {e | G.Inc e v}} := by
-  ext p
-  simp only [Set.mem_inter_iff, mem_fiberAtVertex, mem_edgeSet_mulTilde,
-    Set.mem_ofPred_eq]
-  exact ⟨fun ⟨hinc, _⟩ ↦ hinc, fun hinc ↦ ⟨hinc, hinc.edge_mem⟩⟩
-
-/-- **The number of edges of `G̃` at `v`**: `D - 1` times the number of edges of `G` at `v`, so
-`2(D - 1)` when two edges of `G` are incident with `v`. -/
-lemma fiberAtVertex_inter_edgeSet_ncard {G : Graph α β} {n : ℕ} {v : α} :
-    (G.fiberAtVertex n v ∩ E(G.mulTilde n)).ncard
-      = bodyHingeMult n * {e | G.Inc e v}.ncard := by
-  rw [fiberAtVertex_inter_edgeSet]
-  have hprod : {p : β × Fin (bodyHingeMult n) | p.1 ∈ {e | G.Inc e v}}
-      = {e | G.Inc e v} ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
-    ext ⟨e, i⟩; simp
-  rw [hprod, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin,
-    mul_comm]
-
-/-- **The number of edges at `v` of a set `F`**: the number of elements of `F` incident with `v` in
-`G̃`, Katoh and Tanigawa's `d_{F_i}(v)` for a forest `F_i` (KT p. 660). -/
-noncomputable def fiberDegree (G : Graph α β) (n : ℕ) (v : α)
-    (F : Set (β × Fin (bodyHingeMult n))) : ℕ :=
-  (F ∩ G.fiberAtVertex n v).ncard
-
-/-- **The number of edges at `v` is monotone**: for `F' ⊆ F`, `F'` has at most as many edges at `v`
-as `F`. -/
-lemma fiberDegree_mono [Finite β] {G : Graph α β} {n : ℕ} {v : α}
-    {F' F : Set (β × Fin (bodyHingeMult n))} (h : F' ⊆ F) :
-    G.fiberDegree n v F' ≤ G.fiberDegree n v F :=
-  Set.ncard_le_ncard (Set.inter_subset_inter_left _ h) (Set.toFinite _)
-
-/-- **A bound on the number of edges at `v` of a set**: for `F ⊆ E(G̃)`, the number of edges of `F`
-at `v` is at most `D - 1` times the number of edges of `G` at `v`
-(`fiberAtVertex_inter_edgeSet_ncard`). -/
-lemma fiberDegree_le [Finite β] {G : Graph α β} {n : ℕ} {v : α}
-    {F : Set (β × Fin (bodyHingeMult n))} (hF : F ⊆ E(G.mulTilde n)) :
-    G.fiberDegree n v F ≤ bodyHingeMult n * {e | G.Inc e v}.ncard := by
-  rw [fiberDegree, ← fiberAtVertex_inter_edgeSet_ncard]
-  refine Set.ncard_le_ncard (fun p hp ↦ ⟨hp.2, hF hp.1⟩) (Set.toFinite _)
 
 /-- **Removing the edges at `v` from a forest** (`lem:reroute-vfree-transport`; KT Lemma 4.1,
 p. 660): when `e₀ ∉ E(G)`, the edges of a forest `F` of `G̃` that are not incident with `v`,
