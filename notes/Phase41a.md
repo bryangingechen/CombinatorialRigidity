@@ -1,13 +1,15 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Next concrete task: commit 1 below, retiring `reaimSub`
-in `Theorem55.lean` with no statement or pin changed.
+recon are in `notes/Phase41-design.md`. Item 1 has landed. Next concrete task: item 2 below, the
+link predicate with its lemmas and the fill-in tactic, with no statement or pin changed.
 
 ## Current state
 
-Opened with the PI on 2026-10-24, after the design recon (`notes/Phase41-design.md` §2). No Lean has
-changed yet. The sub-phase builds S2's field `isLink_ends` into the carrier (design A,
+Opened with the PI on 2026-10-24, after the design recon (`notes/Phase41-design.md` §2). Item 1
+retired `reaimSub`: `rankHypothesis_genuine_of_theorem_55_gen` is now the link-recording form with
+its link conjunct dropped, so both Theorem-5.6 assemblies (the genuine and the row-rank forms)
+re-add through `reaimSubLink`. The sub-phase builds S2's field `isLink_ends` into the carrier (design A,
 `notes/Phase41-design.md` §1.1) and leaves every main result's statement as it is: the
 restatements are RESTATE's. Mode: structural edit. There are no red target nodes, so the
 red-node consistency gate has nothing to read; the nodes a slice reaches are restated in that
@@ -28,7 +30,7 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Lemma checklist
 
-- [ ] **1. Retire `reaimSub`** (`Theorem55.lean` only). Move
+- [x] **1. Retire `reaimSub`** (`Theorem55.lean` only). Move
   `rankHypothesis_genuine_of_theorem_55_gen` (:2179) below
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (:2272) and prove it from that form by
   dropping its link conjunct. Delete the private `reaimSub` (:846) and
@@ -61,8 +63,9 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Hand-off / next phase
 
-Commit 1: retire `reaimSub` in `Theorem55.lean` (checklist item 1). It is needed under every
-design and changes no statement, pin or blueprint node.
+Commit 2: the link predicate (checklist item 2), API only: no field and no statement change. If it
+outgrows one commit, land the predicate with `recordsLinks_mono` and the fill-in tactic first, and
+gather the four scattered link lemmas onto it next (`notes/Phase41-design.md` §2).
 
 ## Decisions made during this phase
 
