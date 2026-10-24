@@ -849,11 +849,9 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
         Module.Dual K (α → ScrewSpace K k))
       (lamAB : Fin (screwDim k - 1) → K)
       (rab : Fin (screwDim k - 1) → Module.Dual K (ScrewSpace K k)),
-      -- `ofNormals Gab ends q` is in general position, and `ends` gives the links of `G − v` their
-      -- ends
+      -- `ofNormals Gab ends q` is in general position, and `ends` records the links of `Gab`
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends q).IsGeneralPosition ∧
-      (∀ e u w, (G.removeVertex v).IsLink e u w →
-        (G.removeVertex v).IsLink e (ends e).1 (ends e).2) ∧
+      PanelHingeFramework.RecordsLinks (G.splitOff v a b e₀) ends ∧
       -- the form `ρ` and the bottom rows `w`, at the orientation `(a, b)`
       ρ ≠ 0 ∧
       ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
@@ -975,12 +973,8 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
     rcases hlink with ⟨hee₀, hGlink, hunev, hwnev⟩ | ⟨he, _⟩
     · exact Or.inl (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hGlink, hunev, hwnev⟩)
     · exact Or.inr he
-  -- `hends'`: `Q.ends` gives the links of `Gv` their ends (they are links of `Gab`, by `hle`).
-  have hends' : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (Q.ends e).1 (Q.ends e).2 := by
-    intro e u w hlink
-    rcases hrec' e u w (hle e u w hlink) with he | he
-    · rw [he]; exact hlink
-    · rw [he]; exact hlink.symm
+  -- `hrecGab`: `Q.ends` records the links of `Gab`.
+  have hrecGab := PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends_Gab
   -- 3. The form `ρ`, the bottom rows `w`, the forms `rab` and the combination
   -- (`exists_candidateRow_bottomRows_of_rigidOn`).
   have hD : (2 : ℕ) ≤ screwDim k := two_le_screwDim hk1
@@ -1013,7 +1007,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
   refine ⟨q, Q.ends, ?_⟩
   rcases hrec' e₀ a b he₀ab with he | he
   · -- recorded `(a, b)`: take `ρ` as is.
-    refine ⟨ρ, w, lamAB, rab, hgp', hends', hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hq_u,
+    refine ⟨ρ, w, lamAB, rab, hgp', hrecGab, hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hq_u,
       hrec'⟩
     · rw [hsupp_e₀, he] at hρe₀'; exact hρe₀'
     · rw [he] at hρGv'; exact hρGv'
@@ -1028,7 +1022,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
       exact ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, by rw [he] at hcombGv; exact hcombGv⟩
   · -- recorded `(b, a)`: take `-ρ` (`hingeRow b a (-ρ) = hingeRow a b ρ`) and `-rab` (the block is
     -- a subspace, and `-ρ = Σ_j λ_j (-rab j)`).
-    refine ⟨-ρ, w, lamAB, fun j => -rab j, hgp', hends', neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_,
+    refine ⟨-ρ, w, lamAB, fun j => -rab j, hgp', hrecGab, neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_,
       fun j => (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.hingeRowBlock e₀ |>.neg_mem
         (hrab_blk j), ?_, ?_, hq_u, hrec'⟩
     · rw [hsupp_e₀, he] at hρe₀'
@@ -1350,11 +1344,9 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate [Infi
       (lamAB : Fin (screwDim k - 1) → K)
       (rab : Fin (screwDim k - 1) → Module.Dual K (ScrewSpace K k))
       (i : Fin cd.d) (n' : Fin (k + 2) → K),
-      -- `ofNormals Gab ends q` is in general position, and `ends` gives the links of `G − v` their
-      -- ends
+      -- `ofNormals Gab ends q` is in general position, and `ends` records the links of `Gab`
       (PanelHingeFramework.ofNormals (G.splitOff v a b cd.e₀) ends q).IsGeneralPosition ∧
-      (∀ e u w, (G.removeVertex v).IsLink e u w →
-        (G.removeVertex v).IsLink e (ends e).1 (ends e).2) ∧
+      PanelHingeFramework.RecordsLinks (G.splitOff v a b cd.e₀) ends ∧
       -- the form `ρ₀`, nonzero, vanishing on `C(q(a), q(b))`
       ρ₀ ≠ 0 ∧
       ρ₀ (panelSupportExtensor (fun j => q (a, j)) (fun j => q (b, j))) = 0 ∧
@@ -1449,8 +1441,8 @@ theorem PanelHingeFramework.chainData_fire_discriminator [Infinite K]
       (i : Fin cd.d) (n' : Fin (k + 2) → K),
       (PanelHingeFramework.ofNormals (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
         (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).IsGeneralPosition ∧
-      (∀ e u w, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e u w →
-        (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e (ends e).1 (ends e).2) ∧
+      PanelHingeFramework.RecordsLinks (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀) ends ∧
       ρ₀ ≠ 0 ∧
       ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
         (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
@@ -1928,7 +1920,7 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
 /-- **The framework `(G, p_i)` for `i ≤ 1`** (a step of `lem:case-III-chain-dispatch`): let `cd` be
 a chain of length `d ≥ 2` in a simple `G` of deficiency `0`, and `i ≤ 1`. Given what
 `chainData_fire_discriminator` gives at its selector `ends` (general position on `G_1`, `ends` on
-the links of `G − v₁`, the form `ρ₀`, the bottom rows, and the normal `n'` at the panel of `u_i`),
+the links of `G_1`, the form `ρ₀`, the bottom rows, and the normal `n'` at the panel of `u_i`),
 `G` has a generic full-rank realization. Katoh and Tanigawa's `(G, p_0)` and `(G, p_1)` (KT
 eqs. (6.47) and (6.48), p. 692) put `v₁` back, with the hinge `L_0` in the panel of `u_0 = v₀`, and
 `L_1` in that of `u_1 = v₂`.
@@ -1939,7 +1931,8 @@ with `(e_a, e_b) = (edge 0, edge 1)` and the selector `ends₁`, `ends` with `ed
 `edge 1 ↦ (v₁, v₂)`, `case_III_arm_realization` for `i = 0` and `case_III_arm_realization_M2` for
 `i = 1` give the realization from `ρ₀` and the bottom rows. The two edges meet `v₁`, so they are not
 links of `G − v₁`, and the rows at `ends` and at `ends₁` are the same
-(`rigidityRows_ofNormals_congr_ends`). -/
+(`rigidityRows_ofNormals_congr_ends`). `ends`, and so `ends₁`, records the links of `G − v₁`, a
+subgraph of `G_1` as `e₀ ∉ E(G)` (`Graph.removeVertex_le_splitOff`). -/
 theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite K]
     [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (hd2 : 2 ≤ cd.d) (hSimple : G.Simple)
@@ -1953,8 +1946,8 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
     -- and the selector `ends`:
     (hgp : (PanelHingeFramework.ofNormals (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
       (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).IsGeneralPosition)
-    (hends' : ∀ e u w, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e u w →
-      (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e (ends e).1 (ends e).2)
+    (hends' : PanelHingeFramework.RecordsLinks (G.splitOff (cd.vtx ⟨1, by omega⟩)
+      (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀) ends)
     (hρ₀e₀ : ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
       (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0)
     (hw : LinearIndependent K w)
@@ -2054,7 +2047,7 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator [Infinite 
     intro e u w hlink
     obtain ⟨hne_a, hne_b⟩ := hGv_off hlink
     rw [hends₁_off hne_a hne_b]
-    exact hends' e u w hlink
+    exact (hends'.mono (G.removeVertex_le_splitOff cd.e₀_fresh)).isLink hlink
   have hne_Gv₁ : ∀ e, Gv.IsLink e (ends₁ e).1 (ends₁ e).2 →
       (PanelHingeFramework.ofNormals Gv ends₁ q).toBodyHinge.supportExtensor e ≠ 0 := by
     intro e hlink

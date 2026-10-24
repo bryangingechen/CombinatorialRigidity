@@ -113,9 +113,11 @@ classifier was not retained, and CARRIER's spike supersedes it): **T** trivial, 
 hypothesis in scope, 75; **H** needs a new hypothesis, at most 56 (graph-generic lemmas, e.g.
 `ofNormals_supportExtensor_eq_panel_of_ends`, `exists_generalPosition_polynomial`, five in
 `Duality.lean`; an upper bound, since the scan misses some shapes); **R** internal statement too
-weak, 5 (`CaseIII/Realization.lean` :823, :1330, :1430 pinned to
-`lem:case-III-chain-discriminator`, :1751, :1943: the link conjunct names `G − v` while the
-framework is on the splitting-off, whose links `Q.ends` already records, :900–911); **X** broken by
+weak, 4 (`CaseIII/Realization.lean` :823, :1330, :1430 pinned to
+`lem:case-III-chain-discriminator`, :1943: the link conjunct names `G − v` while the framework is
+on the splitting-off, whose links `Q.ends` already records, :900–911; :1751, first counted here, is
+not one, as its selector hypothesis `hrecGab` is already on the splitting-off, a correction made at
+41a's item 3); **X** broken by
 design, 2 (`reaimSub` and its motion lemma). By area: `PanelHinge` 40 references; the genericity
 device, coupling, Case I and II 145; `CaseIII/` 225; `Theorem55` 78; `GenericLift/PanelGeneric` 15
 (`HingeGeneric` builds none); `Molecule/` top level 22; `Pencil/MainComponent/` 123.
@@ -165,7 +167,7 @@ ten signatures) and seven call sites; the spanning-trees theorem's `hD` goes wit
 
 | Code | Letter | Contents | Commits |
 |---|---|---|---|
-| **CARRIER** | 41a (open) | retire `reaimSub`; the link predicate, its lemmas and the fill-in tactic; the five R statements; a throwaway spike to list what the switch breaks; the switch (the field, the constructors, the H binders, the graph rewrites, the footprint's docstrings file by file, `def:panel-hinge-framework` restated); `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged | 5–7; the switch may take 2–3 builder runs |
+| **CARRIER** | 41a (open) | retire `reaimSub`; the link predicate, its lemmas and the fill-in tactic; the four R statements; a throwaway spike to list what the switch breaks; the switch (the field, the constructors, the H binders, the graph rewrites, the footprint's docstrings file by file, `def:panel-hinge-framework` restated); `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged | 5–7; the switch may take 2–3 builder runs |
 | **RESTATE** | — | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP); non-vacuity witnesses at minimal graphs for these rows; S18; the remaining footprint docstrings | 9–13 |
 | **MULTIGRAPH** | — | M1: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1) | 3–5 |
 | **UNSTATED** | — | the claims no declaration states, the report's estimates: S22 1–2, S23 1, S24 2–3, S25 1, S31 2–3, S3 0–2, S16 1, S19 0–3, G5 3–5, `F-061` 1–2; after CARRIER, since S3 and S19 touch carrier code (`case_II_placement_eq612`) | 13–23 |

@@ -1,9 +1,8 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 and 2 have landed. Next concrete task: item 3 below
-(the five R statements), the second commit of the multi-commit arc that landed item 2
-(`.claude/commands/coordinate-phase.md` *Multi-commit arcs*).
+recon are in `notes/Phase41-design.md`. Items 1 to 3 have landed. Next concrete task: item 4
+below, the spike (a throwaway worktree: add the field, build, list what breaks).
 
 ## Current state
 
@@ -12,7 +11,8 @@ retired `reaimSub`: `rankHypothesis_genuine_of_theorem_55_gen` is now the link-r
 its link conjunct dropped, so both Theorem-5.6 assemblies (the genuine and the row-rank forms)
 re-add through `reaimSubLink`. Item 2 added the link predicate `PanelHingeFramework.RecordsLinks`
 (`PanelHinge.lean`, above the structure) with its lemmas and the fill-in tactic `link_tac`, and
-gathered the four scattered link lemmas onto it (*Decisions made*). The sub-phase builds S2's field `isLink_ends` into the carrier (design A,
+gathered the four scattered link lemmas onto it (*Decisions made*). Item 3 moved the R statements'
+link conjunct from `G − v` to the splitting-off. The sub-phase builds S2's field `isLink_ends` into the carrier (design A,
 `notes/Phase41-design.md` §1.1) and leaves every main result's statement as it is: the
 restatements are RESTATE's. Mode: structural edit. There are no red target nodes, so the
 red-node consistency gate has nothing to read; the nodes a slice reaches are restated in that
@@ -45,15 +45,23 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
   `recordsLinks_swap_endsOf` (`Coupling.lean:66`), plus `recordsLinks_mono` and the fill-in tactic.
   Landed as `RecordsLinks.update_splitOff`, `.induce`, `.map`, `.swap_endsOf`, `.mono` and
   `link_tac`; all four moved, none left in place.
-- [ ] **3. The five R statements** in `CaseIII/Realization.lean` (:823, :1330, :1430, :1751,
-  :1943): the link conjunct on the splitting-off, not `G − v`. :1430 is pinned to
-  `lem:case-III-chain-discriminator`, whose statement is restated if it reaches it.
+- [x] **3. The four R statements** in `CaseIII/Realization.lean` (:823, :1330, :1430, :1943):
+  the link conjunct on the splitting-off, not `G − v`. :1430 is pinned to
+  `lem:case-III-chain-discriminator`, whose statement is restated if it reaches it. The recon's
+  fifth, :1751, is not one: its selector hypothesis `hrecGab` is already on the splitting-off.
+  Landed: the conjunct of :823, :1330 and :1430 and the hypothesis `hends'` of :1943 are
+  `RecordsLinks (G.splitOff …) ends`. The node never states the selector, so it is unchanged.
 - [ ] **4. The spike** (a throwaway worktree, nothing landed): add the field, build, and list what
   breaks. Record the figure here and slice the switch by it.
 - [ ] **5. The switch**: the field; the constructors with the filled-in proof; the H binders (at
   most 56 declarations); `rw [hG]` on graph arguments to `subst`/`simp only`; the footprint's
   docstrings, file by file; `def:panel-hinge-framework` restated (the definition-faithfulness
-  gate). May take 2–3 builder runs.
+  gate). May take 2–3 builder runs. Binder order: `chainData_dispatch_interior_of_discriminator`
+  (:1751) states `hgp`, on `ofNormals (G.splitOff …) ends q`, before its link hypothesis
+  `hrecGab`, and `chainData_dispatch_floor_of_discriminator` (:1943) before `hends'`, so a
+  filled-in proof cannot reach them there. The frameworks on `G − v₁` in item 3's statements get
+  their record from the splitting-off only through `e₀ ∉ E(G)` (`Graph.removeVertex_le_splitOff`),
+  which `link_tac` does not try.
 - [ ] **6. `withGraph` restricted** to `G' ≤ P.graph` (`def:framework-with-graph`), and **`reaim`
   deleted**, with `rigidityMatrix_prop11`'s `hC` asked only at links.
 - [ ] **7. The two genuine forms merged**: under the field,
@@ -68,10 +76,10 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Hand-off / next phase
 
-Item 3, the five R statements in `CaseIII/Realization.lean`: strengthen each link conjunct from
-`G − v` to the splitting-off, whose links the proof's `Q.ends` already records, and repair the
-callers; the conjunct pinned to `lem:case-III-chain-discriminator` restates that node if its text
-states the old form. Then item 4, the spike.
+Item 4, the spike, in a throwaway worktree with nothing landed: add the field `isLink_ends :
+RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`), build,
+and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
+binder-order note. Then slice item 5, the switch, by that count.
 
 ## Decisions made during this phase
 
@@ -85,3 +93,10 @@ The decisions of the open are `notes/Phase41-design.md` §1.
   form, `recordsLinks_endsOf`, and `.mono` with `G' ≤ G` in scope; item 5 adds a branch for the
   field. The callers convert their link-form `hends` (FRICTION [open] *The tree's link
   hypotheses are in the form at links…*), which the H binders of item 5 can avoid.
+- **The R statements** (item 3). The strengthened conjunct takes the predicate form,
+  `RecordsLinks (G.splitOff …) ends`. In :823, :1330 and :1430 it now restates the last conjunct
+  (the same record, up to order, `recordsLinks_iff_eq_or_swap`), which item 5 or 7 can drop. R is
+  4, not the recon's 5: :1751's only selector hypothesis, `hrecGab`, was already on the
+  splitting-off (the `G − v` links in its `hedgeGv` are of the edges `evGv`, not of `ends`), so
+  it is unchanged. :1943 derives the record on `G − v₁` by `.mono` and
+  `Graph.removeVertex_le_splitOff`.
