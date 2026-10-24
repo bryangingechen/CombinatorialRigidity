@@ -3,10 +3,12 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.BodyBar.TreePacking
-import CombinatorialRigidity.BodyBar.Framework
-import CombinatorialRigidity.BodyBar.TayTheorem
-import Mathlib.Combinatorics.Graph.Basic
+module
+
+public import CombinatorialRigidity.BodyBar.TreePacking
+public import CombinatorialRigidity.BodyBar.Framework
+public import CombinatorialRigidity.BodyBar.TayTheorem
+public import Mathlib.Combinatorics.Graph.Basic
 
 /-!
 # Body-hinge Tay–Whiteley theorem — edge multiplication and body-hinge frameworks
@@ -48,6 +50,8 @@ Phrased `Set`-side throughout (`Set.ncard`, `[Finite]`) to line up with the
 `Graph.IsSparse` predicate (`def:graph-sparse`). The blueprint presents the file in
 `sec:body-hinge`.
 -/
+
+@[expose] public section
 
 namespace Graph
 

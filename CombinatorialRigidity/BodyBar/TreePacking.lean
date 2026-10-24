@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Matroid.Constructions.Union
-import Mathlib.Combinatorics.Graph.Basic
-import Matroid.Graphic
+module
+
+public import CombinatorialRigidity.Matroid.Constructions.Union
+public import Mathlib.Combinatorics.Graph.Basic
+public import Matroid.Graphic
 
 /-!
 # Tutte–Nash-Williams tree-packing — the union of cycle matroids and `Graph`-native sparsity
@@ -31,6 +33,8 @@ those bars span (`Graph.spanningVerts`). That is the shape the union-independenc
 throughout (`Set.ncard`, `ℕ`, `[Finite]`). The count is written additively
 (`E'.ncard + ℓ ≤ k * V'.ncard`) to avoid `ℕ`-subtraction.
 -/
+
+@[expose] public section
 
 namespace Graph
 

@@ -26,10 +26,14 @@ Modifications made in the port:
   per-set forms (`adjMap_rk_eq`, `Union_pow_rk_eq`), and Edmonds' matroid-partition
   theorem (`Union_pow_indep_iff_count`).
 -/
-import Matroid.Constructions.Matching
-import Matroid.Rank.Nat
-import Mathlib.Combinatorics.Matroid.Sum
-import CombinatorialRigidity.Matroid.Constructions.Submodular
+module
+
+public import Matroid.Constructions.Matching
+public import Matroid.Rank.Nat
+public import Mathlib.Combinatorics.Matroid.Sum
+public import CombinatorialRigidity.Matroid.Constructions.Submodular
+
+import Mathlib.Algebra.BigOperators.Ring.Finset
 
 /-!
 # Matroid union
@@ -63,6 +67,8 @@ matroid-union theorem of Nash-Williams and Edmonds), and Edmonds' matroid-partit
   union `Matroid.Union (fun _ : Fin k ↦ M)` iff every subset `Y` satisfies
   `|Y| ≤ k · r_M(Y)`: Edmonds' matroid-partition theorem (`thm:matroid-partition`).
 -/
+
+@[expose] public section
 
 namespace Matroid
 

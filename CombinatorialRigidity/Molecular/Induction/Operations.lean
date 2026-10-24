@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Deficiency
-import CombinatorialRigidity.Mathlib.GroupTheory.Perm.List
+module
+
+public import CombinatorialRigidity.Molecular.Deficiency
+public import CombinatorialRigidity.Mathlib.GroupTheory.Perm.List
 
 /-!
 # The combinatorial induction: circuits, contraction and the graph operations
@@ -43,6 +45,8 @@ The deficiency bounds, the reducible vertex, the contraction of a graph and the 
 are in the sibling files `SplitOffDeficiency.lean`, `ReducibleVertex.lean`, `Contraction.lean`
 and `ForestSurgery/`.
 -/
+
+@[expose] public section
 
 namespace Graph
 

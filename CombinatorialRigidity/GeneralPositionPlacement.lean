@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.GenericRigidityMatroid
+module
+
+public import CombinatorialRigidity.GenericRigidityMatroid
 
 /-!
 # General-position placements in `ℝ³`
@@ -44,6 +46,8 @@ section, in `sec:jacobs-easy`.
 * `SimpleGraph.isLaman3_of_genericRigidityMatroid_indep` — an edge set independent in
   `genericRigidityMatroid V 3` is Laman (the easy direction of Jacobs' conjecture).
 -/
+
+@[expose] public section
 
 open WithLp
 

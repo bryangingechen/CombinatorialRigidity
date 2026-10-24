@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
+module
+
+public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
 
 /-!
 # Panel rows, block pins and small rigid frameworks
@@ -35,6 +37,8 @@ presented in `sec:molecular-algebraic-induction`. The file proves:
 `PanelLayer.lean` defines the panel support extensor and the forms `annihRow` that the rows
 `panelRow` use.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

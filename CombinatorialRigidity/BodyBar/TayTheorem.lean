@@ -3,10 +3,12 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.BodyBar.Framework
-import CombinatorialRigidity.BodyBar.KFrame
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
-import Mathlib.LinearAlgebra.Dual.Lemmas
+module
+
+public import CombinatorialRigidity.BodyBar.Framework
+public import CombinatorialRigidity.BodyBar.KFrame
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
 # Tay's theorem, existence form (`thm:tay-witness`)
@@ -49,6 +51,8 @@ witness on a forest packing), the **converse (⟹) direction** (`isSparse_of_isI
 the file in `sec:body-bar-tay`, and the row identity `rigidityRow_eq` in
 `sec:body-bar-framework`.
 -/
+
+@[expose] public section
 
 open scoped InnerProductSpace
 

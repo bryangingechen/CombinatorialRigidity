@@ -7,7 +7,9 @@ Authors: Bryan Gin-ge Chen
 -- `module` file (it is downstream of `GenericRigidityMatroid.lean` / `LinearRigidityMatroid.lean`,
 -- themselves non-`module`; see those files' docstrings), and a `module` file cannot import a
 -- non-`module` one.
-import CombinatorialRigidity.GeneralPositionPlacement
+module
+
+public import CombinatorialRigidity.GeneralPositionPlacement
 
 /-!
 # Zero-extensions in dimension three (`sec:jacobs-zero-extension`)
@@ -48,6 +50,8 @@ Together they are `cor:zero-extension-degree-le-three`.
   matching upper bound (the case `d_H(v) ≥ 4`) closes each further edge at `v` on a `K₅`, via
   `mem_closure_k5_sub_edge` and closure monotonicity.
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

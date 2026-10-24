@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.BodyBar.TayTheorem
-import Mathlib.Analysis.InnerProductSpace.Adjoint
-import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+module
+
+public import CombinatorialRigidity.BodyBar.TayTheorem
+public import Mathlib.Analysis.InnerProductSpace.Adjoint
+public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
 /-!
 # The generic body-and-bar realizations: endpoint assignments
@@ -61,6 +63,8 @@ specializes it to `E' = E(G)` against the `IsIndependent`/`IsInfinitesimallyRigi
 as `tay_witness` does for its isostatic count.
 -/
 
+@[expose] public section
+
 namespace Graph
 
 namespace BodyBarFramework
@@ -108,11 +112,11 @@ noncomputable def pairIdxEquiv (n : ℕ) :
 top-level `def` (rather than inlining `Fin.cons 1 p` at a compound index) keeps `Fin.cons`'s motive
 non-dependent at every call site, avoiding a higher-order-unification failure when the index is a
 compound expression like `((pairIdxEquiv n).symm m).1.1`. -/
-private def homLift (p : Fin n → ℝ) : Fin (n + 1) → ℝ := Fin.cons 1 p
+def homLift (p : Fin n → ℝ) : Fin (n + 1) → ℝ := Fin.cons 1 p
 
-@[simp] private theorem homLift_zero (p : Fin n → ℝ) : homLift p 0 = 1 := Fin.cons_zero _ _
+@[simp] theorem homLift_zero (p : Fin n → ℝ) : homLift p 0 = 1 := Fin.cons_zero _ _
 
-@[simp] private theorem homLift_succ (p : Fin n → ℝ) (i : Fin n) :
+@[simp] theorem homLift_succ (p : Fin n → ℝ) (i : Fin n) :
     homLift p i.succ = p i := Fin.cons_succ _ _ _
 
 /-- **The two-extensor of a segment** (`def:two-extensor`; Jackson–Jordán 2010, §2.1, p. 576,
@@ -138,7 +142,7 @@ theorem twoExtensor_apply (p p' : Fin n → ℝ) (m : Fin (bodyBarDim n)) :
 
 /-- The symbolic homogeneous lift used by `twoExtensorPoly`: `homLiftPoly e b` is `Fin.cons 1` of
 the coordinate variables `X (e, b, ·)`, the polynomial-ring analogue of `homLift`. -/
-private noncomputable def homLiftPoly (e : β) (b : Bool) :
+noncomputable def homLiftPoly (e : β) (b : Bool) :
     Fin (n + 1) → MvPolynomial (β × Bool × Fin n) ℝ :=
   Fin.cons 1 (fun i => MvPolynomial.X (e, b, i))
 

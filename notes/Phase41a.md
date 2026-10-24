@@ -1,9 +1,9 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 3a, P1 and P2 have landed.
-Next concrete task: item P3, the first slice of the project's `module` conversion (layers
-0–8); then P4 and P5, then item 4, the spike.
+recon are in `notes/Phase41-design.md`. Items 1 to 3a and P1 to P3 have landed.
+Next concrete task: item P4, the second slice of the project's `module` conversion (23 files, up
+to `Theorem55`); then P5, then item 4, the spike.
 
 ## Current state
 
@@ -21,9 +21,9 @@ each commit's full build is ~5 min and chain-bound (`notes/PERFORMANCE.md` *Buil
 path*), and the switch will need several. P1 trimmed the chain's imports, which shortens the
 critical path by 15–20% at fixed module times. P2's recon found that a proof-only edit spares
 `module` importers only, so the PI scheduled the whole project's conversion, P3–P5 (*Decisions
-made*). Mode: structural edit. There are no red target nodes, so the
-red-node consistency gate has nothing to read; the nodes a slice reaches are restated in that
-slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
+made*). P3 converted the bottom 21 files; 69 are left. Mode: structural edit. There are no red
+target nodes, so the red-node consistency gate has nothing to read; the nodes a slice reaches are
+restated in that slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Architectural choices made up front
 
@@ -54,23 +54,22 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 - [x] **P2. The `module` recon** (`notes/PERFORMANCE.md` *The `module` conversion recon*): a
   proof-only edit spares only `module` importers; 90 files in 39 layers; `lake lint -- X`
   adopted; the PI chose to convert now (*Decisions made*).
-- [ ] **P3. Convert layers 0–8 to `module`** (21 files, 18,964 lines; `python3
-  scripts/module-conversion-plan.py --layers`). `--convert` the files, build them alone, and
-  fix what breaks (`CombinatorialRigidity/LEAN-OPS.md` *What a conversion breaks*), the trial's
-  four fixes first: `import Mathlib.Tactic.Ring` in `Matroid/Constructions/Submodular`, `import
-  Mathlib.Algebra.BigOperators.Ring.Finset` in `Union`, `@[expose]` on
-  `SimpleGraph.rigidityMatroid`, `setOfPred_minimal_antichain`. Keep the file-wide `@[expose]
-  public section` (narrowing was perf-neutral, Phase 9-perf F1); no `backward.privateInPublic`,
-  so a `private` declaration that a public statement or exposed body names stops being private.
-  Then the full gates; layer 0 is under nearly every file, so the build rebuilds most of the
-  tree. If the fixes outrun one builder run, land a prefix of the layers.
-- [ ] **P4. Layers 9–18** (23 files, 22,587 lines, up to `Theorem55`), as P3. `link_tac`, a
-  `macro`, is in `PanelHinge`.
-- [ ] **P5. Layers 19–38** (46 files, 29,202 lines, the root included), as P3. Then measure a
-  proof-only and a statement edit at `CaseIII/Realization` against *Build critical path*'s
-  figures, in `notes/PERFORMANCE.md`; `lake shake` then runs, and can retire
-  `scripts/ImportShake.lean`; `CombinatorialRigidity/CLAUDE.md`, `LEAN-OPS.md` and
-  *Module system* stop calling the conversion in progress.
+- [x] **P3. Layers 0–8 to `module`** (21 files): four files needed fixes, a private name in a
+  public body among them (`notes/PERFORMANCE.md` *The conversion, layers 0–8*).
+- [ ] **P4. Layers 9–18**, now the script's layers 0–9, since it renumbers from the files left
+  (23 files, 22,587 lines, up to `Theorem55`; `python3 scripts/module-conversion-plan.py
+  --layers`). `--convert` the files, build them a few layers at a time, and fix what breaks
+  (`CombinatorialRigidity/LEAN-OPS.md` *What a conversion breaks*). Keep the file-wide
+  `@[expose] public section` (narrowing was perf-neutral, Phase 9-perf F1); no
+  `backward.privateInPublic`. `--hazards` lists 17 `private` declarations here; `link_tac`, a
+  `macro`, is in `PanelHinge`. Then `lake lint -- X` on the top modules and the full gates; if
+  the fixes outrun one builder run, land a prefix of the layers.
+- [ ] **P5. Layers 19–38** (the script's 10–29 now; 46 files, 29,202 lines, the root
+  included), as P4. Then measure a proof-only and a statement edit at `CaseIII/Realization`
+  against *Build critical path*'s figures, in `notes/PERFORMANCE.md`; `lake shake` then runs,
+  and can retire `scripts/ImportShake.lean`; `CombinatorialRigidity/CLAUDE.md`, `LEAN-OPS.md`
+  and *Module system* stop calling the conversion in progress; the FRICTION
+  `[mirror-candidate]` entries kept local for the non-`module` import cone lose that reason.
 - [ ] **4. The spike** (a throwaway worktree, nothing landed): add the field, build, and list what
   breaks. Record the figure here and slice the switch by it.
 - [ ] **5. The switch**: the field; the constructors with the filled-in proof; the H binders (at
@@ -93,13 +92,14 @@ slice (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 - The switch's size is unknown until the spike (commit 4).
 - The H count (at most 56) is an upper bound from a regex scan.
-- The conversion's fix count is a trial's: four fixes in six files of the simplest layers.
+- The conversion's fix rate is P3's: four of 21 files needed fixes, all one-line or a
+  `private` dropped. P4 and P5 have 49 `private` declarations between them.
 
 ## Hand-off / next phase
 
-P3 first: convert layers 0–8 (checklist item P3), one commit, or a prefix of the layers if the
-fixes outrun one builder run. Then P4 and P5 the same way. Then item 4, the spike,
-in a throwaway worktree with nothing landed: add the field `isLink_ends :
+P4 first: convert the script's layers 0–9 (checklist item P4), one commit, or a prefix of the
+layers if the fixes outrun one builder run. Then P5 the same way, with its measurement. Then
+item 4, the spike, in a throwaway worktree with nothing landed: add the field `isLink_ends :
 RecordsLinks graph ends` (with `link_tac`'s branch for it and the constructors' `autoParam`), build,
 and record here the count of what breaks, by file and by class (T, P, H, R), with item 5's
 binder-order note. Then slice item 5, the switch, by that count. Items 6 and 7, after the switch,

@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.MatroidIdentification
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Rank
-import Matroid.Representation.Map
+module
+
+public import CombinatorialRigidity.MatroidIdentification
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Rank
+public import Matroid.Representation.Map
 
 /-!
 # Linear-matroid framing of the planar rigidity matroid
@@ -25,6 +27,8 @@ ground set) and extend `(⊤).rigidityRow p` by zero off the edge set via `linea
 
 The blueprint's `sec:rigidity-matroid-linear-framing` presents this file.
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

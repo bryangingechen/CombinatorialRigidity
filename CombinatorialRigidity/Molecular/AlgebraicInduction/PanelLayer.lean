@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
-import Mathlib.LinearAlgebra.Quotient.Pi
-import CombinatorialRigidity.Molecular.Deficiency
+module
+
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import Mathlib.LinearAlgebra.Quotient.Pi
+public import CombinatorialRigidity.Molecular.Deficiency
 
 /-!
 # Panel support extensors, their coordinates, and the deficiency bound
@@ -38,6 +40,8 @@ normals `n₁` and `n₂` by its extensor `C(n₁, n₂) = *(n₁ ∨ n₂)`, th
   the parts of a partition;
 * that the two forms of `D` agree, `bodyBarDim n = screwDim k`, only at `n = k + 1`.
 -/
+
+@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 

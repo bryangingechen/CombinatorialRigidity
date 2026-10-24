@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
-import CombinatorialRigidity.GeneralPositionPlacement
+module
+
+public import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
+public import CombinatorialRigidity.GeneralPositionPlacement
 
 /-!
 # The square-graph dictionary
@@ -33,6 +35,8 @@ in general position up to order four, `Φ` is injective on the motions
 `lem:screw-determination`, so the two spaces have the same dimension
 (`molecular_finrank_motions_eq_square_ker`).
 -/
+
+@[expose] public section
 
 open scoped Matrix InnerProductSpace
 open WithLp SimpleGraph

@@ -7,12 +7,14 @@ Authors: Bryan Gin-ge Chen
 -- file (it is downstream of `GeneralPositionPlacement.lean`, itself downstream of
 -- `LinearRigidityMatroid.lean`'s `Matroid.Representation.Map` dependency), and a `module` file
 -- cannot import a non-`module` one.
-import CombinatorialRigidity.JacobsZeroExtension
-import CombinatorialRigidity.SquareGraph
-import CombinatorialRigidity.TwoCore
-import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges
-import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
-import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
+module
+
+public import CombinatorialRigidity.JacobsZeroExtension
+public import CombinatorialRigidity.SquareGraph
+public import CombinatorialRigidity.TwoCore
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 
 /-!
 # The degree-one rank formulas (`sec:jacobs-degree-one`)
@@ -48,6 +50,8 @@ blueprint presents the file in `sec:jacobs-degree-one`.
   maximal subgraph of minimum degree at least two, `SimpleGraph.twoCore`):
   `r(G²) = r((G^core)²) + 2|V \ V(G^core)| + |V₁(G)|`.
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

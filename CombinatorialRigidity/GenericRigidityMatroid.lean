@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.LinearRigidityMatroid
-import CombinatorialRigidity.BodyBar.KFrame
+module
+
+public import CombinatorialRigidity.LinearRigidityMatroid
+public import CombinatorialRigidity.BodyBar.KFrame
 
 /-!
 # The generic bar-joint rigidity matroid
@@ -34,6 +36,8 @@ Not a `module` file: it imports `LinearRigidityMatroid.lean`, which imports `apn
 `Matroid.Representation.Map` and is not a `module` file, and a `module` file cannot import a
 non-`module` one.
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.Induction.Operations
+module
+
+public import CombinatorialRigidity.Molecular.Induction.Operations
 
 /-!
 # The combinatorial induction: the deficiency after splitting off and after removal
@@ -23,6 +25,8 @@ it proves by comparing the values of partitions (`def:D-deficiency`):
 
 Katoh and Tanigawa prove these bounds with forests (`rem:kt-lemma-41`, `rem:kt-lemma-44`).
 -/
+
+@[expose] public section
 
 namespace Graph
 

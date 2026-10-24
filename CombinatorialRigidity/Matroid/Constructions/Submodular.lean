@@ -15,20 +15,25 @@ Modifications made in the port:
   the Set-valued lift `IsCircuitS C := ∃ C₀ : Finset α, ↑C₀ = C ∧ Minimal P C₀`
   of the Finset-valued circuit predicate, matching the `Graph.cycleMatroid`
   precedent.
-* Reconstructed three helper lemmas as `private` lemmas: the two that lived in the
-  never-committed `IsCircuitAxioms` (`setOf_minimal_antichain`,
-  `intro_elimination_nontrivial`) and the commented-out `ForMathlib/Finset.lean` lemma
-  (`exists_minimal_satisfying_subset`).
+* Reconstructed two helper lemmas as `private` lemmas: `intro_elimination_nontrivial`, which
+  lived in the never-committed `IsCircuitAxioms`, and the commented-out
+  `ForMathlib/Finset.lean` lemma (`exists_minimal_satisfying_subset`). The third
+  `IsCircuitAxioms` helper, `setOf_minimal_antichain`, is mathlib's
+  `setOfPred_minimal_antichain`.
 * Added in this project: `PolymatroidFn.zero_at_empty`, the `Finset` form of `zero_at_bot`.
 -/
-import Matroid.Axioms.Circuit
-import Matroid.Rank.Nat
-import Mathlib.Order.Lattice
-import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.Cases
-import Mathlib.Data.Finset.CastCard
-import Mathlib.Data.Fintype.Inv
+module
+
+public import Matroid.Axioms.Circuit
+public import Matroid.Rank.Nat
+public import Mathlib.Order.Lattice
+public import Mathlib.Algebra.Order.BigOperators.Group.Finset
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.Cases
+public import Mathlib.Data.Finset.CastCard
+public import Mathlib.Data.Fintype.Inv
+
+import Mathlib.Tactic.Ring
 
 /-!
 # Matroids from submodular functions
@@ -57,6 +62,8 @@ theorem, `sec:matroid-union-union`.
   (Oxley 2011, Theorem 11.2.3), and `Matroid.rado` — Rado's theorem (`lem:rado`).
 -/
 
+@[expose] public section
+
 open Finset
 
 namespace Matroid
@@ -69,14 +76,6 @@ monoid with a linear order is *submodular* if `f (X ⊓ Y) + f (X ⊔ Y) ≤ f X
 between them is required in the signature.) -/
 def Submodular [Lattice α] [AddCommMonoid β] [LinearOrder β] (f : α → β) :=
   ∀ X Y, f (X ⊓ Y) + f (X ⊔ Y) ≤ f X + f Y
-
-/-- The minimal elements of a predicate `P` on `Finset α` form an antichain
-under `⊆`. -/
-private lemma setOf_minimal_antichain (P : Finset α → Prop) :
-    IsAntichain (· ⊆ ·) {C | Minimal P C} := by
-  intro C₁ hC₁ C₂ hC₂ hne hle
-  have hle' : C₁ ≤ C₂ := hle
-  exact hne <| le_antisymm hle' (hC₂.2 hC₁.1 hle')
 
 /-- If some subset `e` of `s` satisfies a predicate `P`, then some subset of `s` satisfying `P`
 is minimal under `⊆` among the sets satisfying `P`. (The package's commented-out
@@ -124,7 +123,7 @@ on all of `α` whose circuits are the minimal nonempty finite sets `C` with `f C
     (h_mono : Monotone f) : Matroid α := by
   set P := fun X ↦ X.Nonempty ∧ f X < X.card with hP
   set IsCircuit := Minimal P
-  have circuit_antichain := setOf_minimal_antichain P
+  have circuit_antichain := setOfPred_minimal_antichain P
   have circuit_f_lt_card : ∀ ⦃C⦄, IsCircuit C → f C < C.card := fun C hC ↦ hC.1.2
   have indep_f_ge_card : ∀ ⦃I C⦄, IsCircuit C → I ⊂ C → I.Nonempty → I.card ≤ f I := by
     intro I C hC hI hI_nonempty

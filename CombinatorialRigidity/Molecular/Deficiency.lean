@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.BodyBar.BodyHinge
-import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
-import Matroid.Graph.Tree
+module
+
+public import CombinatorialRigidity.BodyBar.BodyHinge
+public import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
+public import Matroid.Graph.Tree
 
 /-!
 # The matroid `M(G̃)`, deficiency, and `k`-dof graphs (`sec:molecular-deficiency`)
@@ -60,6 +62,8 @@ split-off steps (`sec:main-component-orbit`, `sec:main-component-splitoff`).
 * `Graph.isMinimalKDof_ncard_le_two_trichotomy` — the minimal `k`-dof-graphs with at most two
   vertices (`lem:two-vertex-trichotomy`).
 -/
+
+@[expose] public section
 
 namespace Graph
 

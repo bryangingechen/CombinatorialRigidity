@@ -3,10 +3,12 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.BodyBar.TreePacking
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Rank
-import Matroid.Representation.Map
-import Mathlib.RingTheory.MvPolynomial.Basic
+module
+
+public import CombinatorialRigidity.BodyBar.TreePacking
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Rank
+public import Matroid.Representation.Map
+public import Mathlib.RingTheory.MvPolynomial.Basic
 
 /-!
 # The generic `k`-frame matroid (`def:k-frame-matroid`)
@@ -47,6 +49,8 @@ forest packing, setting `X (e, j)` to `1` when `e` lies in the `j`-th forest and
 otherwise gives a block-diagonal matrix of forest incidence rows
 (`linearIndepOn_kFrameRow_of_isSparse_restrict`).
 -/
+
+@[expose] public section
 
 namespace Graph
 

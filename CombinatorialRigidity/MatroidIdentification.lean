@@ -916,7 +916,7 @@ By `countMatroid_indep_iff` its independent sets are exactly the `(2, 3)`-sparse
 of `K_V`; by `rigidityMatroid_indep_iff_edgeSetRowIndependent` (the characterization of
 Pollaczek-Geiringer and Laman, matroid form) these are equivalently the edge subsets that are
 row-independent at some placement `p : V → ℝ²`. -/
-def _root_.SimpleGraph.rigidityMatroid (V : Type*) [Finite V] : Matroid (Sym2 V) :=
+@[expose] def _root_.SimpleGraph.rigidityMatroid (V : Type*) [Finite V] : Matroid (Sym2 V) :=
   SimpleGraph.countMatroid V 2 3 (by omega)
 
 /-- **Independent sets of the planar rigidity matroid.** An edge subset

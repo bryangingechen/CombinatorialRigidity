@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Combinatorics.Graph.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Matroid.Graph.Matrix
+module
+
+public import Mathlib.Combinatorics.Graph.Basic
+public import Mathlib.Analysis.InnerProductSpace.PiL2
+public import Matroid.Graph.Matrix
 
 /-!
 # Body-bar frameworks (`def:body-bar-framework`)
@@ -40,6 +42,8 @@ for bars given by their endpoints is `BodyBar/GenericLift.lean`'s.
 
 The blueprint presents the file in `sec:body-bar-framework`.
 -/
+
+@[expose] public section
 
 open scoped InnerProductSpace
 

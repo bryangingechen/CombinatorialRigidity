@@ -49,6 +49,7 @@ failing pattern and the working fix.
 - `ring` *"unsolved goals"* on `Σ + B = B + Σ'` with alpha-renamed `Finset.sum`s → § 21
 - *"failed to synthesize Decidable (a ≤ b)"* / *"DecidableRel"* / `fast_instance%` defeq, on a `LinearOrder.lift'` over a `SetLike` type → § 22
 - *"Invalid `meta` definition … consider `public meta import`"* on `#eval (decide P)` from a sibling `module` file → § 23
+- *"Unknown identifier `f`"* for a `private` declaration of the same file (often with the note *"A private declaration `f` … would need to be public"*), or a new deprecation warning on a name the file declares `private`, right after converting it to `module` → `CombinatorialRigidity/LEAN-OPS.md` *What a conversion breaks* (a public statement or exposed body cannot name a private declaration; drop `private`)
 - *"Type mismatch … `A ↔ ?` vs `A' ↔ …`"* on `refine h.trans ?_` / `Iff.trans` with `A'` only defeq to `A` → § 25
 - *"motive is not type correct"* / *"Did not find … `(?G ↾ ?E₀).IsLink`"* after `rw [deleteEdges]` (or any `.copy`-defined `Graph` op) → § 27
 - *"Did not find … pattern"* on `rw [if_pos rfl]` over a `(fun i ↦ if i = j then …) j` goal → § 28

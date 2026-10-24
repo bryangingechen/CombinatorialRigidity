@@ -1196,8 +1196,8 @@ Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–
   own: four built at once, and two needed four one-line fixes (`CombinatorialRigidity/LEAN-OPS.md`
   *What a conversion breaks*): two direct imports, one `@[expose]` (`SimpleGraph.rigidityMatroid`,
   under an `rfl` in `LinearRigidityMatroid`), and one deprecated alias,
-  `setOf_minimal_antichain`, that warned only once converted, for a reason not isolated (a
-  two-line non-`module` file warns on it). Reverted; nothing landed. The 99 `private`
+  `setOf_minimal_antichain`, that warned only once converted (P3 found why: *The conversion,
+  layers 0–8*). Reverted; nothing landed. The 99 `private`
   declarations (14 of them definitions) and `link_tac`'s `macro` were not reached by it;
   `--hazards` lists them by file.
 - **The lint check (lever 3).** `lake lint -- X` hands `X` to `runLinter`, which lints the
@@ -1207,6 +1207,31 @@ Candidate levers (the PI scheduled 1 and a recon of 2 as Phase 41a's items P1–
   build and lint gates*).
 - **The PI's call** (2026-10-24): convert the whole project now, before the spike, as Phase
   41a's items P3–P5.
+
+### The conversion, layers 0–8 (Phase 41a, item P3)
+
+- **21 files, 18,964 lines**, converted by `--convert` and built layer by layer. 17 built at
+  once; four needed fixes: the trial's two imports (`Submodular`, `Union`) and `@[expose]` on
+  `SimpleGraph.rigidityMatroid`, which `countMatroid`'s precedent matches, plus two the trial
+  had not reached or explained, below. The other 45 `private` declarations of these layers are
+  named only in proofs and needed nothing.
+- **A private definition in public scope** (`BodyBar/GenericLift`): `homLift` and `homLiftPoly`
+  are named in `twoExtensor`'s and `twoExtensorPoly`'s exposed bodies and in
+  `twoExtensor_apply`'s statement, where a private name is `Unknown identifier`. They and
+  `homLift`'s two `@[simp]` lemmas are now public (`CombinatorialRigidity/LEAN-OPS.md` *What a
+  conversion breaks*).
+- **The trial's deprecation warning, isolated.** `Submodular`'s private
+  `Matroid.setOf_minimal_antichain` is named in `ofSubmodular`'s body, which the file-wide
+  `@[expose]` makes public scope, so the name resolved past it to mathlib's deprecated root alias
+  of the same name. The witness `scripts/ModulePrivateHomonym.lean` shows it: the name warns in an
+  exposed `def` body and resolves to the private lemma in a theorem's proof, and a non-`module`
+  copy does not warn. P3 deleted the private copy for mathlib's `setOfPred_minimal_antichain`.
+- **The full build after it rebuilt 69 modules in 140 s**, 0 warnings: the converted files'
+  importers are the 69 files still non-`module`. `lake lint` passed. The per-file
+  `lake lint -- X` on eight top modules covering the 21 took 146 s of wall clock for 28 s of user
+  time, against the recon's 11–16 s for one module; unexplained.
+- **The script renumbers.** It counts layers from the files left, so P4's old layers 9–18 are
+  now its layers 0–9 (23 files, 22,587 lines, up to `Theorem55`) and P5's are 10–29.
 
 ## Recommendations for future perf work
 

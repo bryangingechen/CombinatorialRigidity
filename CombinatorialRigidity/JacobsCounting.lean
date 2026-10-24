@@ -6,9 +6,11 @@ Authors: Bryan Gin-ge Chen
 -- Plain (legacy) `import`, not the module system: `Molecular/{Deficiency,Molecule/Carrier}.lean`
 -- are not `module` files, and a `module` file cannot import a non-`module` one. Do not convert
 -- this file to `module`/`public import` until those dependencies are converted first.
-import CombinatorialRigidity.Jacobs
-import CombinatorialRigidity.Molecular.Deficiency
-import CombinatorialRigidity.Molecular.Molecule.Carrier
+module
+
+public import CombinatorialRigidity.Jacobs
+public import CombinatorialRigidity.Molecular.Deficiency
+public import CombinatorialRigidity.Molecular.Molecule.Carrier
 
 /-!
 # The counting bound for Laman squares (`sec:jacobs-counting`)
@@ -92,6 +94,8 @@ The classification's count (`square_ncard_eq_sum_classes`) and the number of par
 (`partLabels_card_eq_numParts`) close the arithmetic in `SimpleGraph.laman_square_count`. These
 are steps of the proof of `thm:laman-square-count`; no other node states them.
 -/
+
+@[expose] public section
 
 open scoped Graph
 

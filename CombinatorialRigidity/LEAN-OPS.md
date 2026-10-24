@@ -28,9 +28,8 @@ From the repository root, `python3 scripts/module-conversion-plan.py --convert
 order that keeps each commit building (`--layers`), and what to check in each
 (`--hazards`).
 
-**What a conversion breaks** (the Phase 41a trial of six files: four built
-at once, two needed four one-line fixes; `../notes/PERFORMANCE.md` *The
-`module` conversion recon*):
+**What a conversion breaks** (Phase 41a's item P3, 21 files: 17 built at once, and four needed
+fixes; `../notes/PERFORMANCE.md` *The conversion, layers 0–8*):
 - **The import closure narrows.** A `module` file sees only what its imports
   re-export, so a tactic or lemma reached through an upstream file's private
   `import` is gone: `unknown tactic` (`ring`, via `Mathlib.Tactic.Linarith`) or
@@ -40,8 +39,17 @@ at once, two needed four one-line fixes; `../notes/PERFORMANCE.md` *The
   through a definition that an already-`module` file does not expose (19
   project files use `public section`, and mathlib exposes little) fails. Add
   `@[expose]` to the project definition, or use a lemma about it.
-- **A name can warn where it did not.** A deprecated alias that the
-  non-`module` file used silently warned once converted. Use the replacement.
+- **A private name is unknown in public scope.** A `private` declaration
+  named in a public statement or an exposed body (under the file-wide
+  `@[expose]`, any `def`'s body) is `Unknown identifier`, with a note that it
+  would need to be public. Drop `private`, also from its `@[simp]` lemmas,
+  which importers' `simp` would otherwise lose. A theorem's proof is private
+  scope and needs nothing.
+- **A name can resolve elsewhere.** When a public declaration has the
+  private one's name in an enclosing namespace (the root included), the exposed body resolves to
+  it instead, silently or with a deprecation warning (`Submodular`'s private
+  `Matroid.setOf_minimal_antichain` became mathlib's deprecated root alias).
+  Use the public declaration, or rename the private one.
 
 **Constraints:**
 - A `module` file can only `import` (or `public import`) other `module`
@@ -49,7 +57,7 @@ at once, two needed four one-line fixes; `../notes/PERFORMANCE.md` *The
   ~98.6% converted. The holdout that kept
   `LinearRigidityMatroid.lean` non-`module`, `Matroid.Representation.Map`
   (`apnelson1/Matroid`), is itself a `module` since the `Matroid` pin `8ece630`,
-  so that reason has lapsed (the file converts in Phase 41a's first slice; see
+  so that reason lapsed, and the file converted in Phase 41a's item P3 (see
   `../notes/Bump-v4.36.0-rc1.md`). Non-`module` files import
   `module` files freely, so the rest of the project is unaffected.
 - `public section` hides `def` bodies for defeq *intra*-module too
