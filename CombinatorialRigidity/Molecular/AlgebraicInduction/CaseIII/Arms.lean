@@ -766,7 +766,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k
     have hcard3 : V(G).ncard = 3 := hV3eq.symm
     -- A vertex `v` of degree two (`D ≥ 3`), and any other vertex `a`, which
     -- `exists_splitOff_data_of_degree_eq_two` needs.
-    obtain ⟨v, hvG, hdegv⟩ := Graph.exists_degree_eq_two_of_noRigid hD hV3 hG hnoRigid
+    obtain ⟨v, hvG, hdegv⟩ := Graph.exists_degree_eq_two_of_noRigid hD (by omega) hG hnoRigid
     obtain ⟨a, haG, hav⟩ : ∃ a ∈ V(G), a ≠ v := by
       by_contra hcon
       push Not at hcon

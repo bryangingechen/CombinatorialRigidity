@@ -4986,7 +4986,12 @@ declaration's name as its header writes it:
   `lem:forest-surgery-count` where they state them; task 38.17 drops `case_III_candidate_dispatch`'s
   `hvG`, `haG`, `hbG`, `hcG` (a dead pin with no caller; `lem:case-III-candidate-dispatch-d3` states
   the links only). Left: the memberships in `exists_splitOff_data_of_degree_eq_two`'s conclusion, a
-  conclusion that its four callers destructure.
+  conclusion that its four callers destructure. Round 3: `splitOff_isMinimalKDof`'s three and
+  `forest_surgery_count`'s two dropped, derived in their proofs by `IsLink.left_mem` and
+  `IsLink.right_mem`; `chainData_extract`'s local `haG`, `hbG` and the local `hbV` of
+  `forest_surgery_split` and `splitOff_exists_base_inter_fiber_lt` removed (those of
+  `minimal_kdof_reduction` are used elsewhere); `lem:reduction-step` and `lem:forest-surgery-count`,
+  which state none of them, unchanged (task 38.14).
 - **F-276** · L · `SimpleGraph.instDecidableIsLaman` and the definitions under it
   (`PebbleGame/Exec.lean`, `PebbleGame/Algorithm.lean`, `Search/DFS.lean`): `decide +kernel` does
   not evaluate the pebble game's `Decidable` instances. The kernel unfolds the well-founded
@@ -5506,13 +5511,15 @@ declaration's name as its header writes it:
   `hneT.length_pos` from `hfe`; all on the three standard axioms
   (`scratch/reconcile-lean/Hyps-t31.lean`, gitignored).
   *Found:* RECONCILE round 3 task 31.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.14). Task 38.1: weaken
+  *Disposition:* done (task 38.14). Task 38.1: weaken
   `chainWalk_charging`'s `[G.Simple]` to `[G.Loopless]` and `chainWalk_terminated_contradiction`'s
   `hV3` to `2 ≤ V(G).ncard`, the line deriving `G.Simple` removed (caller
   `chainData_or_cycleData_of_noRigid`), and drop `chainWalk_isPrefix_of_terminated`'s `hTlen1`
   (`hneT.length_pos` from `hfe`; caller `chainWalk_charging`); all unpinned. Left:
   `exists_cyclic_data_of_closed_path`'s `h2`, as its callers hold `2 ≤ P.length` and no step goes (a
-  change of form only).
+  change of form only). Round 3: the three done so (task 38.14), `hTlen1` derived in its proof from
+  `hfe`; the caller passes `2 ≤ V(G).ncard` by `omega` from its `hV3`, which `chainWalk_trichotomy`
+  uses; the two docstrings say loopless and two vertices.
 - **F-285** · L · three hypotheses of `Molecular/Induction/ForestSurgery/Reduction.lean` that the
   statements or the proofs do not use, or use less of than they give: `Graph.pencil_reduction`'s
   `[DecidableEq β]`, which its statement does not use (hence its
@@ -5527,12 +5534,15 @@ declaration's name as its header writes it:
   elaborate with the same proofs, on at most the three standard axioms
   (`scratch/reconcile-lean/Hyps-t311.lean`, gitignored).
   *Found:* RECONCILE round 3 task 31.1.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`): task 38.10 for the `[DecidableEq β]` and
+  *Disposition:* done (task 38.14): task 38.10 for the `[DecidableEq β]` and
   its `set_option`. Task 38.1: task 38.14 weakens `exists_degree_eq_two_of_noRigid`'s `hV3` to `2 ≤
   V(G).ncard`, its line deriving that removed (caller `case_III_hsplit_producer_all_k`), and drops
   the private `vfiber_inc_iff`'s `_hpE` (caller `exists_balanced_forest_packing`). Round 3: the
   `[DecidableEq β]` and its `set_option` dropped, and `TACTICS-QUIRKS.md` §115's precedent moved to
-  `rankHypothesis_of_theorem_55_d3` (task 38.10).
+  `rankHypothesis_of_theorem_55_d3` (task 38.10); the two others done so (task 38.14): Case III's
+  caller passes `2 ≤ V(G).ncard` by `omega` from its `hV3`, used elsewhere, and in
+  `exists_balanced_forest_packing` the local premise `p ∈ E(G̃)` that fed `_hpE` went, with the
+  `hBE` and the premise `F ⊆ B` of `hmeet_iff` that only fed it.
 - **F-286** · L · hypotheses of `Molecular/RigidityMatrix/Bricks.lean` that the proofs do not use,
   or use less of than the statements give. `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
   (`lem:block-rank-cut`): its `_hE₁` (every other link inside `V₁` or outside it), which the proof

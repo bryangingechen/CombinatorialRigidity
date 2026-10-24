@@ -234,6 +234,17 @@ to be re-derived by re-reading entries later.
   only an implicit argument consumes as `_` (`fun _ hf ↦ …`).
 - **Status:** idiom.
 
+### [idiom] A dropped hypothesis can leave a local `have`'s premise dead, which no linter reports
+- **Where it bit:** RECONCILE round 3, task 38.14 (`F-285`): the private `Graph.vfiber_inc_iff`'s
+  `_hpE : p ∈ E(G̃)` dropped, `exists_balanced_forest_packing`'s `hinciff : ∀ p ∈ E(G̃), …` would
+  build silent as `fun p _ ↦ …`, still carrying `hBE : B ⊆ E(G̃)` and the premise `F ⊆ B` of
+  `hmeet_iff`, which only fed it.
+- **Friction:** none in the build; neither unused linter reads a local `have`'s statement.
+- **Proposed fix:** follow the pass-through inside the caller's proof as across callers: drop the
+  local premise, then each `have` and premise that only fed it.
+- **Lifted to:** TACTICS-QUIRKS § 118.
+- **Status:** idiom.
+
 ### [open] The Lean MCP's `lean_local_search` misses every declaration whose name ends its line
 - **Where it bit:** Phase 40n (2026-09-28): `not_isNondegPencilRealization_of_two_hubs_three_common`
   (`Pencil/Motive.lean`, signature on the next line) returned no hit, while

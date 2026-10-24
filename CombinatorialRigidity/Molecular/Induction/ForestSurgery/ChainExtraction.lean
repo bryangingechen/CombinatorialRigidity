@@ -828,10 +828,10 @@ theorem chainWalk_isPrefix_of_terminated [Finite β] {G : Graph α β} [G.Loople
     (hfe : ∃ (hneP : P.Nonempty) (hneT : T.Nonempty), hneP.firstEdge = hneT.firstEdge)
     (hPdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
     (hTdeg : ∀ x ∈ T, x ≠ T.first → x ≠ T.last → G.degree x = 2)
-    (hTlen1 : 1 ≤ T.length) (hTdeg3 : 3 ≤ G.degree T.last)
-    (hPdeg2 : G.degree P.last = 2) :
+    (hTdeg3 : 3 ≤ G.degree T.last) (hPdeg2 : G.degree P.last = 2) :
     P.IsPrefix T ∧ P.length < T.length := by
   classical
+  have hTlen1 : 1 ≤ T.length := by obtain ⟨-, hneT, -⟩ := hfe; exact hneT.length_pos
   have hne : P ≠ T := by rintro rfl; omega
   -- `P.get` is injective on `[0, P.length]`, as `P` is a path (as in `chainWalk_trichotomy`).
   have hget_inj : ∀ {i j : ℕ}, i ≤ P.length → j ≤ P.length → P.get i = P.get j → i = j := by
@@ -870,7 +870,7 @@ theorem chainWalk_isPrefix_of_terminated [Finite β] {G : Graph α β} [G.Loople
 
 /-! ## The charging bound -/
 
-/-- **The charging bound** (a step of `lem:chain-cycle-dichotomy`): let `G` be simple, and let every
+/-- **The charging bound** (a step of `lem:chain-cycle-dichotomy`): for a loopless `G`, let every
 edge `f` at a vertex `v₀` begin a path from `v₀` of length between `1` and `n − 1` whose vertices
 other than its ends have degree two and whose last vertex has degree at least three (`hterm`). Then
 `2|X₂| ≤ (n − 2) Σ_{u ∈ V₊} deg u`, where `X₂` and `V₊` are the vertices of degree two and of degree
@@ -883,7 +883,7 @@ as a prefix of a path is determined by its length, and the path from `v` along `
 and `e`. So `Set.ncard_le_ncard_of_injOn` bounds the `2|X₂|` pairs `(v, e)` by the
 `Σ_{u ∈ V₊} deg u` pairs `(g, u)` times the `n − 2` positions. The proof uses no deficiency. -/
 theorem chainWalk_charging [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ} [G.Simple]
+    {G : Graph α β} {n : ℕ} [G.Loopless]
     (hterm : ∀ (v₀ x₀ : α) (f : β), G.IsLink f v₀ x₀ →
       ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
         (∃ hne : P.Nonempty, hne.firstEdge = f) ∧ 1 ≤ P.length ∧ P.length ≤ n - 1 ∧
@@ -1007,8 +1007,6 @@ theorem chainWalk_charging [Finite α] [Finite β]
       hRevDeg
       (hTdeg (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
         (hlinkR v x e hlink))
-      (hTlen1 (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
-        (hlinkR v x e hlink))
       (hTdeg3 (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
         (hlinkR v x e hlink))
       (by rw [hRevLast]; exact hvX₂.2)
@@ -1082,12 +1080,12 @@ theorem chainWalk_charging [Finite α] [Finite β]
 /-! ## KT eqs. (4.8) and (4.9) -/
 
 /-- **The count of KT eqs. (4.8) and (4.9)** (a step of `lem:chain-cycle-dichotomy`; Katoh–Tanigawa
-2011, pp. 664–665): let `D ≥ 3`, let `G` be a minimal `0`-dof-graph with at least three vertices and
+2011, pp. 664–665): let `D ≥ 3`, let `G` be a minimal `0`-dof-graph with at least two vertices and
 no proper rigid subgraph, and let every edge begin a path that stops at a vertex of degree at least
 three (`hterm`, as in `chainWalk_charging`). Then `False`. Summed over `V₊`, the inequality before
 KT eq. (4.9) (`kt_lemma_46_linking`), with `2(D − 1)` added to both sides, gives
 `(n − 2) Σ_{V₊} deg + 2D|V₊| ≤ (D − 1) Σ_{V₊} deg`, and with the charging bound
-(`chainWalk_charging`, as `G` is simple by `simple_of_isMinimalKDof_of_noRigid`)
+(`chainWalk_charging`, as `G` is loopless by `loopless_of_isMinimalKDof`)
 `2|X₂| + 2D|V₊| ≤ (D − 1) Σ_{V₊} deg`. Every vertex has degree at least two
 (`two_le_degree_of_isKDof_zero`), so `V(G)` is the disjoint union of `X₂` and `V₊`, and the degrees
 sum to `2|E(G)|` (`Graph.handshake_degree_subtype`, of the `Matroid` package), so
@@ -1096,7 +1094,7 @@ Lemma 4.5(i) at `k = 0` (`no_rigid_edge_count`): `(D − 1)|E(G)| < D(|V(G)| −
 holds as well when `V₊` is empty. -/
 theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ}
-    (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
+    (hD : 3 ≤ bodyBarDim n) (hV2 : 2 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hterm : ∀ (v₀ x₀ : α) (f : β), G.IsLink f v₀ x₀ →
       ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
@@ -1107,8 +1105,6 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
   have hD2 : 2 ≤ bodyBarDim n := by omega
   have hD1 : 1 ≤ bodyBarDim n := by omega
   have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
-  have hV2 : 2 ≤ V(G).ncard := by omega
-  have hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
   have hloop : G.Loopless := loopless_of_isMinimalKDof hG
   have hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
   -- The charging bound; once `X₂` and `V₊` are named, `set` folds the set-builders of `hcharge`.
@@ -1217,7 +1213,7 @@ theorem chainData_or_cycleData_of_noRigid [DecidableEq β] [Finite α] [Finite �
     rcases chainWalk_trichotomy hD hV3 hG hnp hfresh hf with h | h
     · exact absurd h hcon
     · exact h
-  exact chainWalk_terminated_contradiction hD hV3 hG hnp hterm
+  exact chainWalk_terminated_contradiction hD (by omega) hG hnp hterm
 
 /-! ## The chain and its splitting off (`lem:chain-data-extract`) -/
 
@@ -1268,8 +1264,6 @@ theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
     have hbv : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) :=
       (cd.castSucc_ne_succ (⟨1, by omega⟩ : Fin cd.d)).symm
     have hvG : cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
-    have haG : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
-    have hbG : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
     have heab : cd.edge (⟨0, by omega⟩ : Fin cd.d) ≠ cd.edge (⟨1, by omega⟩ : Fin cd.d) :=
       cd.pred_edge_ne (i := ⟨1, by omega⟩) hi
     have hlea : G.IsLink (cd.edge (⟨0, by omega⟩ : Fin cd.d))
@@ -1283,7 +1277,7 @@ theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
       cd.deg_two (⟨1, by omega⟩ : Fin cd.d) hi
     have he₀' : cd.e₀ ∉ E(G) := cd.e₀_fresh
     refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩
-    · exact splitOff_isMinimalKDof hD2 hV3 hav hbv haG hbG hvG heab hlea hleb hclv he₀' hG hnoRigid
+    · exact splitOff_isMinimalKDof hD2 hV3 hav hbv heab hlea hleb hclv he₀' hG hnoRigid
     · exact splitOff_simple_of_noRigid_of_card hD3 heab hlea hleb hV4 hnoRigid
     · rw [vertexSet_splitOff, Set.ncard_sdiff (by simpa using hvG) (Set.toFinite _),
         Set.ncard_singleton]

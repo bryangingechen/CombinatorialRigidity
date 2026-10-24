@@ -152,12 +152,14 @@ the count replaces the exchange. The three vertices are needed: splitting off a 
 two-vertex double edge leaves a loop at one vertex, a `0`-dof-graph that is not minimal. -/
 theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) {v a b : α} {e₀ eₐ e_b : β}
-    (hav : a ≠ v) (hbv : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (hvG : v ∈ V(G))
-    (heab : eₐ ≠ e_b) (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
-    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) (hla : G.IsLink eₐ v a)
+    (hlb : G.IsLink e_b v b) (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
     (hG : G.IsMinimalKDof n 0) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (G.splitOff v a b e₀).IsMinimalKDof n 0 := by
   classical
+  have haV : a ∈ V(G) := hla.right_mem
+  have hbV : b ∈ V(G) := hlb.right_mem
+  have hvG : v ∈ V(G) := hla.left_mem
   have : G.Loopless := loopless_of_isMinimalKDof hG
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   set G' := G.splitOff v a b e₀ with hG'def
@@ -347,7 +349,7 @@ theorem exists_splitOff_data_of_degree_eq_two [Finite α] [Finite β]
 Case III of the algebraic induction (`lem:case-III`) takes one when the graph has three vertices. -/
 
 /-- **A vertex of degree two in a minimal `0`-dof-graph** (a step of `lem:case-III`; from the proof
-of KT Lemma 4.6, p. 664): let `D ≥ 3`, and let `G` be a minimal `0`-dof-graph with at least three
+of KT Lemma 4.6, p. 664): let `D ≥ 3`, and let `G` be a minimal `0`-dof-graph with at least two
 vertices and no proper rigid subgraph. Then some `v ∈ V(G)` has degree two. `exists_degree_le_two`
 (`lem:low-degree-vertex`) gives a vertex of degree at most two, and every vertex of a `0`-dof-graph
 with at least two vertices has degree at least two (`two_le_degree_of_isKDof_zero`,
@@ -355,12 +357,11 @@ with at least two vertices has degree at least two (`two_le_degree_of_isKDof_zer
 (`lem:reducible-vertex`), without that lemma's hypothesis of `2`-edge-connectivity, which a
 `0`-dof-graph has (KT Lemma 3.1). -/
 theorem exists_degree_eq_two_of_noRigid [DecidableEq β] [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    {G : Graph α β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hV2 : 2 ≤ V(G).ncard)
     (hG : G.IsMinimalKDof n 0)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     ∃ v ∈ V(G), G.degree v = 2 := by
   have hD1 : 1 ≤ bodyBarDim n := by linarith
-  have hV2 : 2 ≤ V(G).ncard := by omega
   have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
   obtain ⟨v, hvG, hvle⟩ := exists_degree_le_two hD hVne hG hnp
   exact ⟨v, hvG, le_antisymm hvle (two_le_degree_of_isKDof_zero hD1 hG.1 hvG hV2)⟩
@@ -628,7 +629,7 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
       -- A label `e₀ ∉ E(G)`, which `hfresh` gives as `G` is a minimal `0`-dof-graph.
       obtain ⟨e₀, he₀⟩ := hfresh G hG
       have hsplitMin : (G.splitOff v a b e₀).IsMinimalKDof n 0 :=
-        splitOff_isMinimalKDof hD2 hV3 hav hbv haV hbV hvG heab hla hlb hdeg2 he₀ hG hrig
+        splitOff_isMinimalKDof hD2 hV3 hav hbv heab hla hlb hdeg2 he₀ hG hrig
       have hsmaller : V(G.splitOff v a b e₀).ncard < N :=
         hN ▸ splitOff_vertexSet_ncard_lt hvG
       have hsplit2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
@@ -811,11 +812,11 @@ drops. `forest_surgery_split` and `splitOff_exists_base_inter_fiber_lt` use the 
 
 /-- **The edges of `G̃` at `v` are the copies of `eₐ` and `e_b`** (a step of
 `lem:balanced-forest-packing`): if `eₐ` and `e_b` join `v` to `a` and `b` and are its only edges
-(`hdeg2`), then an edge `p` of `G̃` is incident with `v` if and only if `p ∈ ẽₐ ∪ ẽ_b`. -/
+(`hdeg2`), then `p` is an edge of `G̃` at `v` if and only if `p ∈ ẽₐ ∪ ẽ_b`. -/
 private lemma vfiber_inc_iff {G : Graph α β} {n : ℕ} {v a b : α} {eₐ e_b : β}
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
-    {p : β × Fin (bodyHingeMult n)} (_hpE : p ∈ E(G.mulTilde n)) :
+    {p : β × Fin (bodyHingeMult n)} :
     (G.mulTilde n).Inc p v ↔ p ∈ edgeFiber eₐ n ∪ edgeFiber e_b n := by
   rw [mulTilde_inc]
   constructor
@@ -853,20 +854,17 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
   classical
   have : Nonempty (Fin (bodyBarDim n)) := ⟨⟨0, lt_of_lt_of_le (by norm_num) hD⟩⟩
   set vfib := edgeFiber eₐ n ∪ edgeFiber e_b n with hvfib
-  have hBE : B ⊆ E(G.mulTilde n) := by
-    have := hB.subset_ground; rwa [matroidMG] at this
-  have hinciff : ∀ p ∈ E(G.mulTilde n),
-      ((G.mulTilde n).Inc p v ↔ p ∈ vfib) := fun p hp ↦ vfiber_inc_iff hla hlb hdeg2 hp
+  have hinciff : ∀ p, ((G.mulTilde n).Inc p v ↔ p ∈ vfib) := fun _ ↦ vfiber_inc_iff hla hlb hdeg2
   have hcount : bodyBarDim n ≤ (B ∩ vfib).ncard :=
     isBase_vfiber_ncard_ge hD hav hbv heab hla hlb hdeg2 hB
-  have hmeet_iff : ∀ F : Set (β × Fin (bodyHingeMult n)), F ⊆ B →
+  have hmeet_iff : ∀ F : Set (β × Fin (bodyHingeMult n)),
       ((∃ p ∈ F, (G.mulTilde n).Inc p v) ↔ (F ∩ vfib).Nonempty) := by
-    intro F hF
+    intro F
     constructor
     · rintro ⟨p, hpF, hpinc⟩
-      exact ⟨p, hpF, (hinciff p (hBE (hF hpF))).mp hpinc⟩
+      exact ⟨p, hpF, (hinciff p).mp hpinc⟩
     · rintro ⟨p, hpF, hpv⟩
-      exact ⟨p, hpF, (hinciff p (hBE (hF hpF))).mpr hpv⟩
+      exact ⟨p, hpF, (hinciff p).mpr hpv⟩
   -- Make the forests of `B` pairwise disjoint (`disjointed` over `Fin D`).
   obtain ⟨Fs₀, hcover₀, hindep₀⟩ :=
     ((matroidMG_indep_iff_exists_forest_packing G n).mp hB.indep).2
@@ -887,7 +885,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
     obtain ⟨Fs', hc, hi, hd, hmeet⟩ :=
       H {i | (Ds i ∩ vfib) = ∅}.ncard Ds hDscover hDsindep hDsdisj le_rfl
     refine ⟨Fs', hc, hi, hd, fun i ↦ ?_⟩
-    exact (hmeet_iff (Fs' i) (hc ▸ Set.subset_iUnion Fs' i)).mpr (hmeet i)
+    exact (hmeet_iff (Fs' i)).mpr (hmeet i)
   intro m
   induction m with
   | zero =>
@@ -945,7 +943,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
     -- `Fs j` avoids `v`: any `v`-incident fiber would be in `vfib`, but `Fs j ∩ vfib = ∅`.
     have hFjv : ∀ p ∈ Fs j, ¬ (G.mulTilde n).Inc p v := by
       intro p hpFj hpinc
-      have : p ∈ Fs j ∩ vfib := ⟨hpFj, (hinciff p (hBE (hssubB j hpFj))).mp hpinc⟩
+      have : p ∈ Fs j ∩ vfib := ⟨hpFj, (hinciff p).mp hpinc⟩
       rw [hj] at this; exact this
     -- The move (`exists_packing_move_of_not_inc`): `x` into `Fs j`, out of every other forest.
     obtain ⟨Fs', hcover', hindep', hFs'j, hFs'k⟩ :=
@@ -1026,8 +1024,7 @@ there are pairwise disjoint forests `Fs'` of `G̃_v^{ab}` whose union `I'` is in
 `splitOff_exists_base_inter_fiber_lt` apply it. -/
 theorem forest_surgery_count [DecidableEq β] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
-    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
-    (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (he₀ : e₀ ∉ E(G))
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) (he₀ : e₀ ∉ E(G))
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     {I : Set (β × Fin (bodyHingeMult n))}
@@ -1193,8 +1190,8 @@ theorem forest_surgery_count [DecidableEq β] [Finite β] {G : Graph α β} {n :
         · rintro ⟨hqF, hq2⟩
           exact ⟨hqF, fun hqv ↦ hq2 (hall q hqF (mulTilde_inc.mpr hqv))⟩
       rw [hdiff]
-      exact isAcyclicSet_splitOff_reroute hav hbv haV hbV (hindep i) hpaℓ hpbℓ hpaF hpbF hpab
-        hall (hr1 i) he₀
+      exact isAcyclicSet_splitOff_reroute hav hbv hla.right_mem hlb.right_mem (hindep i) hpaℓ hpbℓ
+        hpaF hpbF hpab hall (hr1 i) he₀
     · rw [ite_eq_right hi]
       exact isAcyclicSet_splitOff_of_diff_fiberAtVertex he₀ (hindep i)
   -- `r i` lies in `Fs' i` only when `Fs i` has `v`-degree `2` (else `Fs' i ⊆ Fs i`, `r i ∉ Fs i`).
@@ -1346,7 +1343,6 @@ theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
   have : Nonempty α := ⟨a⟩
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have haV : a ∈ V(G) := hla.right_mem
-  have hbV : b ∈ V(G) := hlb.right_mem
   have hvG : v ∈ V(G) := hla.left_mem
   have hVne : V(G).Nonempty := ⟨v, hvG⟩
   set H := G.splitOff v a b e₀ with hH
@@ -1356,8 +1352,7 @@ theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
   obtain ⟨Fs, hcover, hindep, hpdisj, hmeetv⟩ :=
     exists_balanced_forest_packing hD hav hbv heab hla hlb hdeg2 hB
   obtain ⟨Fs', _, _, hMindep, hcount, _⟩ :=
-    forest_surgery_count hD hab hav hbv heab haV hbV he₀ hla hlb hdeg2 Fs hcover hindep
-      hpdisj hmeetv
+    forest_surgery_count hD hab hav hbv heab he₀ hla hlb hdeg2 Fs hcover hindep hpdisj hmeetv
   -- `|⋃ Fs' i| ≤ rank M(G̃_v^{ab})`, and `|⋃ Fs' i| + D = |B|`.
   have hrkZ : (((⋃ i, Fs' i).ncard : ℤ)) ≤ ((H.matroidMG n).rank : ℤ) := by
     exact_mod_cast hMindep.ncard_le_rank
@@ -1400,7 +1395,6 @@ theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite
   have : Nonempty α := ⟨a⟩
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have haV : a ∈ V(G) := hla.right_mem
-  have hbV : b ∈ V(G) := hlb.right_mem
   have hvG : v ∈ V(G) := hla.left_mem
   have hVne : V(G).Nonempty := ⟨v, hvG⟩
   set H := G.splitOff v a b e₀ with hHdef
@@ -1410,8 +1404,7 @@ theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite
   obtain ⟨Fs, hcover, hindep, hpdisj, hmeetv⟩ :=
     exists_balanced_forest_packing hD hav hbv heab hla hlb hdeg2 hB
   obtain ⟨Fs', _, _, hMindep, hcount, hfiblt⟩ :=
-    forest_surgery_count hD hab hav hbv heab haV hbV he₀ hla hlb hdeg2 Fs hcover hindep
-      hpdisj hmeetv
+    forest_surgery_count hD hab hav hbv heab he₀ hla hlb hdeg2 Fs hcover hindep hpdisj hmeetv
   refine ⟨⋃ i, Fs' i, ?_, hfiblt⟩
   -- `rank M(H̃) = D(|V \ {v}| − 1) − k` and `|base| + k = D(|V|−1)` (def=corank).
   have hHrank := H.rank_add_deficiency_eq n hD1 hVHne

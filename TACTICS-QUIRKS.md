@@ -4542,7 +4542,10 @@ a `_proof_N` auxiliary that takes the hypothesis as an argument (`set_option pp.
 
 **Fix.** Screen by reading: for each hypothesis in scope of a substitution, ask which step uses it,
 and confirm a candidate by a `lake lean` copy without it. After dropping one, read each caller's
-binder that fed only the dropped argument rather than trusting `lake lint`'s silence.
+binder that fed only the dropped argument rather than trusting `lake lint`'s silence, and inside
+its proof a local `have`'s premise that fed only that argument, which neither linter reads: drop
+it, and then each `have` that fed only the premise (task 38.14's `hinciff`, FRICTION [idiom] *A
+dropped hypothesis can leave a local `have`'s premise dead…*).
 
 **Calibration.** RECONCILE round 3, task 38.11 (`F-278`, found by task 25.1's reading):
 `isoOfOptionSubtypeNe`'s `hnone`, in scope of the `subst`s of its `(none, none)` case, and

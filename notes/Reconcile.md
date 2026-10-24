@@ -84,9 +84,10 @@ hypotheses of `HennebergReverse.lean`; task 38.12 dropped `F-280`'s and `F-281`'
 `Molecular/Deficiency.lean`, with `cycle_isProperRigidSubgraph`'s `hD`, restating
 `lem:cut-edge-decomposition` (1); task 38.13 dropped or weakened `F-282`'s seven and `F-283`'s
 five in four files of `Molecular/Induction/`, with three relabel theorems' `heac`, restating
-`lem:claim-6-6`.
-**Next concrete task:** round 3's task 38.14, `ForestSurgery/ChainExtraction` and `Reduction.lean`
-(then tasks 38.15–38.27 and the close).
+`lem:claim-6-6`; task 38.14 dropped or weakened `F-275`'s first two, `F-284`'s three and `F-285`'s
+last two in `ForestSurgery/ChainExtraction` and `Reduction.lean`, no node restated.
+**Next concrete task:** round 3's task 38.15, `RigidityMatrix/Bricks.lean` (then tasks
+38.16–38.27 and the close).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions
