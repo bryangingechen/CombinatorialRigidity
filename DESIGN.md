@@ -1334,7 +1334,7 @@ coordinator verification); `notes/Phase22b.md` *Discharge plan*.
 **Sharpening: recon the *quantifier domain* of a brick's hypotheses, not just its
 conclusion shape (Phase 22, 2026-06-04).** The N6b coupling was projected as a clean
 assembly of green bricks because the bricks' *conclusion types* lined up. But the
-per-leg producer `exists_rankPolynomial_of_rigidOn` carries a hypothesis
+per-leg producer `exists_rankPolynomial_of_rigidOn` (since deleted) carried a hypothesis
 `hends : ∀ e : β, G.IsLink e …` quantified over **all** of `β` (every edge label of
 the realized graph must link — the panel rows must span all rigidity rows), which a
 *proper-subgraph* leg `GH ≤ G` does not satisfy, and the `IsLink` subgraph direction

@@ -1214,12 +1214,14 @@ to be re-derived by re-reading entries later.
 
 ### [idiom] A leading `|>.proj` on a continuation line after `… → (expr).field` fails to parse ("type expected") — spell the projection as a prefix application instead
 - **Where it bit:** the Case-I composer fix `case_I_realization` + the new asymmetric coupling
+  (both since deleted)
   (`Molecular/AlgebraicInduction/`, Phase 22a G3c-iii-b). A hypothesis clause
   `… → (ofNormals … ends q).toBodyHinge \n |>.IsInfinitesimallyRigidOn (…)` (the `|>.` leading the
   next line) errored with `type expected, got ((…).toBodyHinge : BodyHingeFramework …)` — the parser
   closed the term at `.toBodyHinge` (the preceding line ended in `→`, shifting the indentation column),
   so the dangling `|>.` saw a bare type. The *same* `(expr).toBodyHinge \n |>.IsInfinitesimallyRigidOn`
-  shape parses fine elsewhere in the file when nested one level deeper (`rigidContract_rigidity_transport`),
+  shape parses fine elsewhere in the file when nested one level deeper
+  (`rigidContract_rigidity_transport`, since deleted),
   so it is column-sensitive, not unconditional.
 - **Fix:** spell the projection as a prefix application — `BodyHingeFramework.IsInfinitesimallyRigidOn
   (ofNormals … ends q).toBodyHinge (…)` — which is indentation-robust (and shorter under the 100-col
@@ -1262,7 +1264,8 @@ to be re-derived by re-reading entries later.
 - **Status:** resolved (membership round-trip; no mirror needed).
 
 ### [idiom] An injective `α → ℝ` from a finite (or merely countable) `α` — `Countable.exists_injective_nat` then `Nat.cast_injective`, not a one-shot `exists_injective_toReal`
-- **Where it bit:** `hasFullRankRealization_of_couple_ofNormals` (Phase 22, Case-I shared-seed
+- **Where it bit:** `hasFullRankRealization_of_couple_ofNormals` (since deleted; Phase 22, Case-I
+  shared-seed
   coupling), proving the general-position factor `Qgp ≠ 0`. `exists_generalPosition_polynomial`'s
   non-vanishing clause is witnessed only at a *moment-curve* seed `fun p ↦ momentCurve (param p.1) p.2`
   for an **injective** `param : α → ℝ`; to conclude `Qgp ≠ 0` from "nonzero somewhere" one must
@@ -1305,7 +1308,8 @@ to be re-derived by re-reading entries later.
 - **Status:** resolved (instantiation choice; no lemma needed).
 
 ### [idiom] Repackaging a `HasFullRankRealization` witness as an `ofNormals` — `subst` the `Q.graph = G` conjunct, don't `rw` both sides
-- **Where it bit:** `exists_rigidOn_ofNormals_of_hasFullRankRealization` (Phase 22, Case-I
+- **Where it bit:** `exists_rigidOn_ofNormals_of_hasFullRankRealization` (since deleted; Phase 22,
+  Case-I
   witness-transfer prerequisite): from `HasFullRankRealization k G = ∃ Q, Q.graph = G ∧
   Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)`, produce `∃ ends q, (ofNormals G ends q).toBodyHinge
   rigid on V(G)`. The witness is *literally* an `ofNormals`: `ofNormals Q.graph Q.ends
@@ -1471,7 +1475,7 @@ to be re-derived by re-reading entries later.
   the lesson).
 
 ### [idiom] But: `ofParam`↔`ofNormals` defeq across a heavy `IsInfinitesimallyRigidOn` term times out — state the hypothesis pre-converted, don't lean on lazy application-defeq
-- **Where it bit:** `hasFullRankRealization_of_splice_ofParam` in
+- **Where it bit:** `hasFullRankRealization_of_splice_ofParam` (since deleted) in
   `Molecular/AlgebraicInduction/` (Phase 22 N5, the moment-curve seed
   specialization of the `_ofNormals` splice). `ofParam G ends param` is `rfl`-equal to
   `ofNormals G ends (fun p ↦ momentCurve (param p.1) p.2)`, so by the entry above the
@@ -1504,7 +1508,8 @@ to be re-derived by re-reading entries later.
   *syntactically* equal, so the U2 lemma `exact`s with no defeq on the heavy term.
 
 ### [idiom] A `panelRow ends i` membership `rfl` whnf-times-out when `i` is left as the coerced subtype — `rintro ⟨⟨e', t₁, t₂⟩, hi⟩` to expose a bare triple
-- **Where it bit:** `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` in
+- **Where it bit:** `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (since deleted)
+  in
   `Molecular/AlgebraicInduction/` (Phase 22), the `hsub : span (range (subfamily of
   panelRow)) ≤ span rigidityRows` step. The membership witness ends in a `rfl` proving
   `F.panelRow ends i = hingeRow (ends i.1).1 (ends i.1).2 (annihRow (F.supportExtensor i.1) …)`.
@@ -3951,7 +3956,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ### [mirrored] `exists_polynomial_ne_zero_of_linearIndependent_at` (constructive rank-witnessing polynomial)
 - **Where it bit:** Phase 22 Case-I per-leg rank polynomial
-  (`PanelHingeFramework.exists_rankPolynomial_of_rigidOn`): the seed witness-transfer
+  (`PanelHingeFramework.exists_rankPolynomial_of_rigidOn`, since deleted; its forms at links
+  remain): the seed witness-transfer
   must couple *two* legs' rigid loci onto one shared seed, so each leg needs not just
   *a* good point (`exists_le_finrank_span_polynomial` discards the polynomial) but the
   **witnessing polynomial itself**, to take the product of the two and apply

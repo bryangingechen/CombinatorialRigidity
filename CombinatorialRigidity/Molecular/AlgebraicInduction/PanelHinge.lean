@@ -288,8 +288,7 @@ theorem ofParam_eq_ofNormals_momentCurve (G : Graph α β) (ends : β → α × 
 /-- **Moment-curve normals are in general position** (`lem:moment-curve-general-position`): if
 `param` is injective, the normals of `ofParam G ends param` are in general position, as distinct
 bodies get distinct parameters and moment-curve points at distinct parameters are linearly
-independent (`momentCurve_pair_linearIndependent`). No main result uses it: its one user,
-`hasFullRankRealization_of_splice_ofParam` (`GenericityDevice.lean`), has none. -/
+independent (`momentCurve_pair_linearIndependent`). No declaration uses it. -/
 theorem isGeneralPosition_ofParam (G : Graph α β) (ends : β → α × α) {param : α → K}
     (hparam : Function.Injective param) : (ofParam (k := k) G ends param).IsGeneralPosition := by
   intro a b hab

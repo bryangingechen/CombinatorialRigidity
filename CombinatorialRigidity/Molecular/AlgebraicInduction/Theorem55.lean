@@ -1947,7 +1947,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
   exact
     PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof
       G ends hends hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl)
-      hcover ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne c
+      hcover ⟨r, hHsub hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne c
       hsc_proj_indep n hn hne_ends hG.1
 
 /-- **The three cases of Case I** (`lem:case-I-dispatch`; KT Lemmas 6.2, 6.3 and 6.5, KT §6.2,

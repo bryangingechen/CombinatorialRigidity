@@ -4920,10 +4920,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache after task 4).
   *Found:* RECONCILE round 3 task 4.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, tasks 38.2 and 38.3): task 38's
-  block (b) at `1b1d9d87` finds the four unpinned, dead and with no caller outside them;
-  `case_III_old_new_blocks` goes with task 38.2's deletion in `CaseIII/`, the other three with
-  task 38.3's; round 3: `case_III_old_new_blocks` deleted (task 38.2).
+  *Disposition:* done (tasks 38.2 and 38.3): task 38's block (b) at `1b1d9d87` finds the four
+  unpinned, dead and with no caller outside them; `case_III_old_new_blocks` deleted with task
+  38.2's deletion in `CaseIII/`, the other three with task 38.3's (block (b) at `a1c4fe3a`
+  agrees).
 - **F-269** · L · `PanelHingeFramework.candidateCompletion_index_injective` and
   `candidateCompletion_panelRow_packaging` (`CaseIII/Arms.lean`),
   `BodyHingeFramework.linearIndependent_sumElim_candidateRow_swap` and
@@ -4944,10 +4944,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (the liveness screen, block (b) of `notes/Reconcile-lean-cleanup.md`
   *Scope*, over `scripts/blueprint-deps.py`'s Lean cache at task 11.1's tree).
   *Found:* RECONCILE round 3 task 12.
-  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.3): task 38's block (b) at
-  `1b1d9d87` finds it unpinned, dead and uncalled; with it goes
-  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`, which only it calls,
-  and `rigidContract_exterior_rank_transport_htransport` stays with `lem:claim-6-4`.
+  *Disposition:* done (task 38.3): task 38's block (b) at `1b1d9d87` finds it unpinned, dead and
+  uncalled; with it goes `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`,
+  which only it calls, and `rigidContract_exterior_rank_transport_htransport` stays with
+  `lem:claim-6-4`. Task 38.3's block (b) at `a1c4fe3a` agrees, and the two are deleted.
 - **F-272** · L · `exists_packing_move_of_not_inc` (`Induction/ReducibleVertex.lean`) and
   `lem:packing-move` (`molecular-induction.tex`): the conclusion, forests $F'_1, \dots, F'_D$ with
   union $I$ and $x \in F'_j$, holds without the move's hypotheses: swap the index of a forest that
@@ -5330,7 +5330,9 @@ declaration's name as its header writes it:
   its two `linearIndependent_row_iff_isUnit` chains. Round 3: the `CaseIII/` parts (tasks 35 to
   35.3) deleted with their nineteen orphans; block (b) at `af9ad25b` gives the same names, and the
   build confirms that the two `ChainColumn.lean` callers were a shared `by omega` auxiliary (task
-  38.2).
+  38.2). Round 3: task 34.1's twenty-two deleted, with `F-268`'s three and `F-271`'s two, and the
+  orphan `isInfinitesimallyRigidOn_of_finrank_le_set`; block (b) at `a1c4fe3a` gives the same
+  names, and the five pins stay, uncalled (task 38.3).
 - **F-280** · L · `Graph.isKDof_zero_of_cycle` and `Graph.deficiency_eq_of_cutEdges_ncard_le_one`
   (`Molecular/Deficiency.lean`): the first's `hD : 3 ≤ bodyBarDim n` follows from
   `hm : 3 ≤ m` and `hmD : m ≤ bodyBarDim n` (`lem:cycle-zero-dof` states `3 ≤ m ≤ D` alone), and
@@ -5611,7 +5613,8 @@ declaration's name as its header writes it:
   `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`'s `hnesH` (`⟨c,
   hcH⟩`; caller `case_I_realization_all_k_gen`); task 38.16 drops `case_II_placement_eq612`'s
   `_hG_ea` (a dead pin with no caller; `lem:case-II-realization-placement` does not state it). Moot:
-  the other `hnesH` and `case_I_realization`'s `hVH2` (task 38.3 deletes both).
+  the other `hnesH` and `case_I_realization`'s `hVH2` (task 38.3 deletes both). Round 3: `hne`
+  and `hnesH` dropped, derived where they were used (task 38.3).
 - **F-291** · L · repeated derivations and a derivable hypothesis in
   `Molecular/AlgebraicInduction/Coupling.lean` and `GenericityDevice.lean`. The rigid forms
   `infinitesimalMotions_sup_range_extProj_eq_top` and
@@ -5654,6 +5657,10 @@ declaration's name as its header writes it:
   `exists_independent_panelRow_subfamily_of_rigidOn_linking_set`;
   `finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn` through
   `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`. No statement changes.
+  Round 3: the projected extraction calls the pinned `injOn` form, without `hnev`;
+  `lem:claim-6-4`'s proof `\uses` `lem:extProj-preserves-rank-of-inter`; the six deleted, block
+  (b) at `a1c4fe3a` finding them blocked only through that extraction (task 38.3). Its `hr` is
+  now derivable (`F-325`).
 - **F-292** · L · unused hypotheses and repeated derivations in
   `Molecular/AlgebraicInduction/CaseIII/Arms.lean` and `Candidate.lean`.
   `case_III_hsplit_producer_all_k` takes `_hk1 : 1 ≤ k`, which its proof does not use (its one
@@ -6572,6 +6579,18 @@ declaration's name as its header writes it:
   follow from the theorems under `classical`, as `F-323`'s witness shows for three of them.
   *Found:* RECONCILE round 3 task 38.
   *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.10).
+- **F-325** · L · a derivable hypothesis of
+  `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`
+  (`AlgebraicInduction/Coupling.lean`, unpinned): `hr : r ∈ V(G)` follows from
+  `hinter : V(G) ∩ proj = {r}`, now that the proof calls the pinned
+  `injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`, which takes `hinter` alone; the
+  proof uses `hr` only for `⟨r, hr⟩`. Its one caller,
+  `rigidContract_exterior_rank_transport_htransport`, passes `hr'`, which it would no longer need.
+  *Evidence:* read (the statement and body); a `lake lean` witness: the lemma called with
+  `(hinter.ge (Set.mem_singleton r)).1` for `hr`, on the three standard axioms
+  (`scratch/reconcile-lean/t383/Hyps-t383.lean`, gitignored).
+  *Found:* RECONCILE round 3 task 38.3.
+  *Disposition:* open (`notes/Reconcile-lean-cleanup.md`, task 38.16).
 
 ## M — mathematics and sources
 

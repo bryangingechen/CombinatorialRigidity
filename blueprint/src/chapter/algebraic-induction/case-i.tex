@@ -941,7 +941,8 @@ it assumes $G/E(H)$ simple where that lemma assumes it minimal.
   \leanok
   \uses{lem:rank-delete-vertex, lem:general-position-support-nonzero,
     lem:case-II-placement-old-rows-extract,
-    lem:independent-rows-of-rank, lem:isInfRigidOn-of-relative-count}
+    lem:independent-rows-of-rank, lem:isInfRigidOn-of-relative-count,
+    lem:extProj-preserves-rank-of-inter}
   Let $N = D(|s_c| - 1)$, and let $f$ map every body of $V(H)$ to $r$ and
   fix the other bodies. As $G/E(H)$ is a $0$-dof-graph, its target rank
   is $N$. Its generic full-rank realization has normals $n$ in general
@@ -949,7 +950,8 @@ it assumes $G/E(H)$ simple where that lemma assumes it minimal.
   rigid on $s_c$ (\cref{lem:isInfRigidOn-of-relative-count}). The bodies
   of $G/E(H)$ meet $V(H)$ only in $r$. So deleting the columns of $V(H)$
   from $R(G/E(H), n)$ deletes those of the one body $r$, and by KT
-  Lemma~5.1 (\cref{lem:rank-delete-vertex}) the rank stays $N$.
+  Lemma~5.1 (\cref{lem:rank-delete-vertex}) the rank stays $N$
+  (\cref{lem:extProj-preserves-rank-of-inter}).
 
   Now give each body $v$ the normal $q_0(v) = n_{f(v)}$, so that the
   bodies of $V(H)$ get the normal of $r$. This is the choice in Katoh and

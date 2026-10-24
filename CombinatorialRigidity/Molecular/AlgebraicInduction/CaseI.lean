@@ -542,13 +542,12 @@ theorem _root_.Graph.rigidContract_vertexSet_inter_eq_singleton {α β : Type*}
   · rw [ite_eq_right hyH] at hxH; exact absurd hxH hyH
 
 /-- **The rows outside `H` at one point** (`lem:claim-6-4`; KT Claim 6.4 and eq. (6.9), p. 675): let
-`r ∈ V(H) ⊆ V(G)`, and let the contraction `G/E(H)` to `r` be simple, with a nonempty vertex set,
-deficiency zero and a generic full-rank realization `hQcf`. If `ends` gives every link of `G ＼ E(H)`
-its ends, there are normals `q₀` and a set `t` of at least `D(|s_c| − 1)` panel rows of
-`ofNormals (G ＼ E(H)) ends q₀` at links of `G ＼ E(H)`, with `s_c = (V(G) ∖ V(H)) ∪ {r}`, that are
-linearly independent after the columns of `V(H)` are deleted (`(extProj V(H)).dualMap`). Only
-`case_I_realization`, which no declaration uses, calls it: the proof of Case I
-(`case_I_realization_all_k_gen`) uses `exists_rankPolynomial_of_IH_relabel_linking_set_proj`
+`r ∈ V(H) ⊆ V(G)`, and let the contraction `G/E(H)` to `r` be simple, with deficiency zero and a
+generic full-rank realization `hQcf`. If `ends` gives every link of `G ＼ E(H)` its ends, there are
+normals `q₀` and a set `t` of at least `D(|s_c| − 1)` panel rows of `ofNormals (G ＼ E(H)) ends q₀`
+at links of `G ＼ E(H)`, with `s_c = (V(G) ∖ V(H)) ∪ {r}`, that are linearly independent after the
+columns of `V(H)` are deleted (`(extProj V(H)).dualMap`). No declaration uses it: the proof of
+Case I (`case_I_realization_all_k_gen`) uses `exists_rankPolynomial_of_IH_relabel_linking_set_proj`
 (`lem:rank-polynomial-IH-relabel-proj`), whose proof takes the same steps at every deficiency.
 
 The proof. Let `f = Graph.collapseTo r V(H)`, so that `G/E(H)` is `(G ＼ E(H)).map f`.
@@ -565,7 +564,7 @@ row of `F'` (`panelRow_collapseTo_comp_extProj_dualMap`). -/
 theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
     [Finite α] [Finite β] (G H : Graph α β) (ends : β → α × α) {r : α}
     (hr : r ∈ V(H)) (hHsub : V(H) ⊆ V(G)) (hcSimple : (G.rigidContract H r).Simple)
-    {n : ℕ} (hne : V(G.rigidContract H r).Nonempty) (hdef : (G.rigidContract H r).deficiency n = 0)
+    {n : ℕ} (hdef : (G.rigidContract H r).deficiency n = 0)
     (hQcf : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r))
     (hends : ∀ e u v, (G.deleteEdges E(H)).IsLink e u v →
       (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2) :
@@ -581,21 +580,21 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
   -- Abbreviations: `Gc := G ＼ E(H)`, `f := collapseTo r V(H)`. `Gc.map f = G.rigidContract H r`.
   set Gc := G.deleteEdges E(H) with hGc
   set f := Graph.collapseTo r V(H) with hf
+  -- `r` is a vertex of the contraction, which meets `V(H)` in `r` alone.
+  have hinterC : V(G.rigidContract H r) ∩ V(H) = {r} :=
+    Graph.rigidContract_vertexSet_inter_eq_singleton G H hr hHsub
+  have hrC : r ∈ V(G.rigidContract H r) := (hinterC.ge (Set.mem_singleton r)).1
   -- Reorient the realization of `G.rigidContract H r` by `endsM = f ∘ ends`
   -- (`hasGenericRealization_transport_relabel`).
   obtain ⟨nrm, hgp, hrig⟩ :=
-    PanelHingeFramework.hasGenericRealization_transport_relabel Gc f ends hne hdef hQcf hends
+    PanelHingeFramework.hasGenericRealization_transport_relabel Gc f ends ⟨r, hrC⟩ hdef hQcf hends
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
   set F' := (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge with hF'
   -- `F'.graph = Gc.map f = G.rigidContract H r`; its vertex set is the surviving body set `sc`.
   have hF'g : F'.graph = G.rigidContract H r := by
     rw [hF', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; rfl
-  have hr' : r ∈ F'.graph.vertexSet := by
-    rw [hF'g, Graph.vertexSet_rigidContract]
-    exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [ite_eq_left hr]⟩
-  have hinter : F'.graph.vertexSet ∩ V(H) = {r} := by
-    rw [hF'g]; exact Graph.rigidContract_vertexSet_inter_eq_singleton G H hr hHsub
-  have hnev : F'.graph.vertexSet.Nonempty := ⟨r, hr'⟩
+  have hr' : r ∈ F'.graph.vertexSet := by rw [hF'g]; exact hrC
+  have hinter : F'.graph.vertexSet ∩ V(H) = {r} := by rw [hF'g]; exact hinterC
   -- The selector `endsM` records the links of `F'.graph = Gc.map f`; the hinges there are nonzero,
   -- as the normals of `F'` are in general position.
   have hendsF' : ∀ e u v, F'.graph.IsLink e u v →
@@ -622,7 +621,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
   -- rigid on its vertex set (`exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`).
   obtain ⟨t, hsuppM, hcountM, hindepM⟩ :=
     F'.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj
-      (ends := endsM) (proj := V(H)) (r := r) hendsF' hne hnev hrig hr' hinter
+      (ends := endsM) (proj := V(H)) (r := r) hendsF' hne hrig hr' hinter
   -- The surviving body set: `V(F'.graph) = V(G.rigidContract H r) = (V(G)∖V(H)) ∪ {r} = sc`.
   have hF'sc : F'.graph.vertexSet = (V(G) \ V(H)) ∪ {r} := by
     rw [hF'g, Graph.vertexSet_rigidContract]
@@ -851,16 +850,16 @@ theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rig
   F.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows hLI
     (Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ Submodule.subset_span (hmem i))) hne hcard
 
-/-- **The rows of `H` and of the other edges combined, at deficiency zero** (KT eq. (6.3), p. 673):
-let `G` have deficiency zero, with `GH, Gc ≤ G`, sets of bodies `sH` and `sc` that both contain `c`
-and together cover `V(G)`, and `V(GH) ⊆ sH`. Suppose that `ofNormals GH ends qH` has nonzero hinges
-at the links of `GH` (`hneH`) and is infinitesimally rigid on `sH` (`hrigH`), and that `Qc ≠ 0` is a
-polynomial in the normals such that at every `q` with `Qc(q) ≠ 0`, some set of at least
-`D(|sc| − 1)` panel rows of `ofNormals G ends q` at links of `Gc` is linearly independent after the
-columns of `sH` are deleted (`hsc_proj_indep`). If `ends` gives every link of `G` its ends, `G` has
-a generic full-rank realization. Only `case_I_realization` uses it;
-`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof` is its form at every
-deficiency.
+set_option linter.style.longLine false in
+/-- **The rows of `H` and of the other edges combined** (a step of `lem:case-I-realization`; KT
+eq. (6.3), p. 673): let `G` have deficiency `k'` (`hdef`), with `bodyBarDim n = screwDim k` (`hn`),
+let `GH, Gc ≤ G`, and let sets of bodies `sH` and `sc` both contain `c` and together cover `V(G)`,
+with `V(GH) ⊆ sH`. Suppose that `ofNormals GH ends qH` has nonzero hinges at the links of `GH`
+(`hneH`) and is infinitesimally rigid on `sH` (`hrigH`), and that `Qc ≠ 0` is a polynomial in the
+normals such that at every `q` with `Qc(q) ≠ 0`, some set of at least `D(|sc| − 1) − k'` panel rows
+of `ofNormals G ends q` at links of `Gc` is linearly independent after the columns of `sH` are
+deleted (`hsc_proj_indep`). If `ends` gives every link of `G` its ends, two distinct ones
+(`hne_G`), `G` has a generic full-rank realization.
 
 The rows of `GH` come with a polynomial `QH`, nonzero at `qH`, off whose zeros they stay independent
 (`exists_rankPolynomial_of_rigidOn_linking_set`), and general position with another
@@ -869,148 +868,8 @@ common non-root `q₀`. At `q₀`, some `D(|sH| − 1)` rows of `GH` are indepen
 the columns of `sH` are deleted (`hingeRow_comp_extProj_eq_zero`, as `V(GH) ⊆ sH`), while the rows
 of `hsc_proj_indep` are independent after the deletion. So the two families are independent
 together, the block-triangular form of KT eq. (6.3). As `sH` and `sc` share `c` and cover `V(G)`,
-they number at least `D(|V(G)| − 1)`, so `ofNormals G ends q₀` is rigid on `V(G)`
-(`isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows`), at the target rank, with normals
-in general position. -/
-theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set
-    [Infinite K]
-    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
-    {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
-    (hneG : V(G).Nonempty) (hnesH : sH.Nonempty) (hsHV : V(GH) ⊆ sH)
-    {qH : α × Fin (k + 2) → K}
-    (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
-      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
-    (hrigH :
-      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn sH)
-    -- Off the zeros of `Qc`, some `D(|sc| − 1)` rows of `G` at links of `Gc` are linearly
-    -- independent after the columns of `sH` are deleted (`extProj sH`): the second diagonal block
-    -- of KT eq. (6.3).
-    (Qc : MvPolynomial (α × Fin (k + 2)) K) (hQc_ne : Qc ≠ 0)
-    (hsc_proj_indep : ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Qc ≠ 0 →
-      ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
-        (∀ i ∈ rsc, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
-          (ends (i : β × _ × _).1).2) ∧
-        screwDim k * (sc.ncard - 1) ≤ Nat.card rsc ∧
-        LinearIndependent K (fun i : rsc => (extProj (k := k) sH).dualMap
-          ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends (i : β × _ × _))))
-    (n : ℕ) (hdef : G.deficiency n = 0) :
-    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
-  -- `ends` records the links of `GH ≤ G` too.
-  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
-    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
-      (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
-  -- (i) Rows of `GH` and their polynomial `QH`, nonzero at `qH`. Each of the rows is at a link of
-  -- `GH` (`hsuppH`), so both its ends lie in `V(GH) ⊆ sH`.
-  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  -- (ii) The polynomial of general position.
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (K := K) (k := k) G ends
-  -- (iii) A common non-root `q₀` of `QH`, `Qc` and `Qgp` (`MvPolynomial.exists_eval_ne_zero₃`).
-  have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
-  have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
-    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQc_ne hQgpne
-  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
-    hQgp_pos q₀ hq₀gp
-  -- Abbreviations: the parent framework at `q₀`, the exterior-column projection's dual map `D`.
-  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
-  set D := (extProj (K := K) (k := k) sH).dualMap with hD
-  -- (iv-H) The `H`-block rows of `F` indexed by `rsH`, independent at `q₀`.
-  have hLIH₀ : LinearIndependent K (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
-  -- (iv-c) Rows of `Gc`, independent at `q₀` after the columns of `sH` are deleted.
-  obtain ⟨rsc, hsuppc, hcardc, hprojc⟩ := hsc_proj_indep q₀ hq₀c
-  -- A panel row of `F` whose edge links in `G` is one of `F`'s rigidity rows.
-  have hrow_mem : ∀ (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
-      G.IsLink i.1 (ends i.1).1 (ends i.1).2 → F.panelRow ends i ∈ F.rigidityRows := by
-    rintro ⟨e', t₁, t₂⟩ hlink
-    exact ⟨e', (ends e').1, (ends e').2, hlink,
-      annihRow (F.supportExtensor e') t₁ t₂, by
-        rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
-        intro x hx
-        rw [Submodule.mem_span_singleton] at hx
-        obtain ⟨ρ, rfl⟩ := hx
-        rw [map_smul, annihRow_apply_self, smul_zero], rfl⟩
-  -- Each `H`-block row vanishes under `D = (extProj sH).dualMap` (both endpoints in `V(GH) ⊆ sH`,
-  -- so `hingeRow_comp_extProj_eq_zero`): the row-side of KT's top-right `0`.
-  have hH_ker : ∀ i : rsH, D (F.panelRow ends (i : β × _ × _)) = 0 := by
-    rintro ⟨⟨e', t₁, t₂⟩, hi⟩
-    have hlink := hsuppH _ hi
-    simp only [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
-      hingeRow_comp_extProj_eq_zero (hsHV hlink.left_mem) (hsHV hlink.right_mem)]
-  -- The two families are independent together (`LinearIndependent.sum_type`).
-  have hcindep : LinearIndependent K (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
-    LinearIndependent.of_comp D hprojc
-  have hcdisj : Disjoint (Submodule.span K (Set.range
-      (fun i : rsc => F.panelRow ends (i : β × _ × _)))) (LinearMap.ker D) :=
-    Submodule.range_ker_disjoint hprojc
-  have hHspan : Submodule.span K (Set.range (fun i : rsH => F.panelRow ends (i : β × _ × _)))
-      ≤ LinearMap.ker D :=
-    Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ LinearMap.mem_ker.2 (hH_ker i))
-  have hdisj : Disjoint (Submodule.span K (Set.range
-      (fun i : rsH => F.panelRow ends (i : β × _ × _))))
-      (Submodule.span K (Set.range (fun i : rsc => F.panelRow ends (i : β × _ × _)))) :=
-    Disjoint.mono_left hHspan hcdisj.symm
-  have hunion : LinearIndependent K
-      (Sum.elim (fun i : rsH => F.panelRow ends (i : β × _ × _))
-        (fun i : rsc => F.panelRow ends (i : β × _ × _))) :=
-    hLIH₀.sum_type hcindep hdisj
-  -- Every row of the union is a rigidity row of `F` (its edge links in `G`, by the two subgraphs).
-  have hmem : ∀ i : rsH ⊕ rsc, Sum.elim (fun i : rsH => F.panelRow ends (i : β × _ × _))
-      (fun i : rsc => F.panelRow ends (i : β × _ × _)) i ∈ F.rigidityRows := by
-    rintro (⟨i, hi⟩ | ⟨i, hi⟩)
-    · exact hrow_mem _ ((Graph.IsSubgraph.isLink_iff hGH (hsuppH _ hi).edge_mem).mp (hsuppH _ hi))
-    · exact hrow_mem _ ((Graph.IsSubgraph.isLink_iff hGc (hsuppc _ hi).edge_mem).mp (hsuppc _ hi))
-  -- The two blocks sum to `≥ D(|V(G)|−1)` rows (cover + shared body `c`).
-  have hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card (rsH ⊕ rsc) := by
-    rw [Nat.card_sum]
-    -- `|sH ∪ sc| + |sH ∩ sc| = |sH| + |sc|`, `1 ≤ |sH ∩ sc|` (shared `c`), `|V(G)| ≤ |sH ∪ sc|`.
-    have hunion_card := Set.ncard_union_add_ncard_inter sH sc
-    have hinter : 1 ≤ (sH ∩ sc).ncard :=
-      (Set.ncard_pos (Set.toFinite _)).2 ⟨c, hcH, hcc⟩
-    have hcov : V(G).ncard ≤ (sH ∪ sc).ncard := Set.ncard_le_ncard hcover (Set.toFinite _)
-    have h1H : 1 ≤ sH.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnesH
-    -- `D(|sH|−1) + D(|sc|−1) ≥ D(|V(G)|−1)`.
-    have hkey : screwDim k * (V(G).ncard - 1)
-        ≤ screwDim k * (sH.ncard - 1) + screwDim k * (sc.ncard - 1) := by
-      rw [← Nat.mul_add]
-      apply Nat.mul_le_mul_left
-      omega
-    omega
-  -- (v) The witness is `F = ofNormals G ends q₀`, with normals in general position, and its last
-  -- conjunct is that `ends` records the links of `G` (`hends`). The rows make `F` rigid on `V(G)`
-  -- (`isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows`).
-  refine ⟨PanelHingeFramework.ofNormals G ends q₀,
-    PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_,
-    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends⟩
-  have hFG : F.graph.vertexSet = V(G) := by
-    rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
-  have hrig := F.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows hunion hmem
-    (by rw [hFG]; exact hneG) (by rw [hFG]; exact hcard)
-  rw [hFG] at hrig
-  -- From rigidity to the rank (`finrank_span_rigidityRows_of_rigidOn`), with `hdef`.
-  have hne' : F.graph.vertexSet.Nonempty := by rw [hFG]; exact hneG
-  have hW2 := F.finrank_span_rigidityRows_of_rigidOn hne' (by rw [hFG]; exact hrig)
-  have hVncard : F.graph.vertexSet.ncard = V(G).ncard := by rw [hFG]
-  have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hneG
-  rw [hVncard] at hW2
-  rw [← hF, hdef, sub_zero]
-  zify [h1] at hW2 ⊢
-  exact_mod_cast hW2
-
-set_option linter.style.longLine false in
-/-- **The rows of `H` and of the other edges combined** (a step of `lem:case-I-realization`; KT
-eq. (6.3), p. 673): `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` at
-deficiency `k'`. The rows of `hsc_proj_indep` number at least `D(|sc| − 1) − k'`, and
-`G.deficiency n = k'` (`hdef`); with `bodyBarDim n = screwDim k` (`hn`) and distinct ends at `ends`
-for every link of `G` (`hne_G`), `G` has a generic full-rank realization. The two families are
-independent together as there, so the rank at `q₀` is at least `D(|V(G)| − 1) − k'`. The hinges at
-`q₀` are nonzero, by general position and `hne_G`, so the rank is at most that
+they number at least `D(|V(G)| − 1) − k'`, which bounds the rank at `q₀` below. The hinges at `q₀`
+are nonzero, by general position and `hne_G`, so the rank is at most that
 (`finrank_span_rigidityRows_add_deficiency_le`, `lem:relative-deficiency-rank-bound`). -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof
     [Infinite K]
@@ -1018,7 +877,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
-    (hneG : V(G).Nonempty) (hnesH : sH.Nonempty) (hsHV : V(GH) ⊆ sH)
+    (hneG : V(G).Nonempty) (hsHV : V(GH) ⊆ sH)
     {qH : α × Fin (k + 2) → K}
     (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
@@ -1040,6 +899,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   have : Fintype α := Fintype.ofFinite α
+  have hnesH : sH.Nonempty := ⟨c, hcH⟩
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
@@ -1225,164 +1085,5 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals [
   rw [← hF, hdef, sub_zero]
   zify [h1] at hW2 ⊢
   exact_mod_cast hW2
-
-/-! ## Forms that no declaration uses -/
-
-/-- **Case I with a simple contraction, at deficiency zero** (KT Lemma 6.3 at `k = 0`, p. 674): let
-`3 ≤ D` (`hD`), let `G` be a simple minimal `0`-dof-graph with a proper rigid subgraph `H`, let
-`r ∈ V(H)`, and let the contraction `G/E(H)` to `r` be simple. Suppose the induction hypothesis
-`hIH` for the minimal `0`-dof-graphs with at least two and fewer than `|V(G)|` vertices. Then `G`
-has a generic full-rank realization. No declaration uses it: the proof of KT Theorem 5.5 uses
-`case_I_realization_all_k_gen` (`lem:case-I-realization`), its form for every deficiency.
-
-`H` and `G/E(H)` are smaller simple minimal `0`-dof-graphs (`subgraph_minimality`,
-`rigidContract_isMinimalKDof`), so `hIH` gives both generic full-rank realizations. That of `H`,
-reselected by `ends = G.endsOf` (`hasGenericRealization_transport_ends`), is rigid on `V(H)` with
-nonzero hinges. KT Claim 6.4 (`rigidContract_exterior_rank_transport_htransport`) and
-`exists_rankPolynomial_of_rigidOn_linking_set_proj` give a nonzero polynomial `Qc` off whose zeros
-some `D(|s_c| − 1)` rows of `G ＼ E(H)`, with `s_c = (V(G) ∖ V(H)) ∪ {r}`, are independent after the
-columns of `V(H)` are deleted.
-`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` combines the two (KT
-eq. (6.3)). -/
-theorem PanelHingeFramework.case_I_realization
-    [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
-    (hD : 3 ≤ Graph.bodyBarDim n)
-    (G : Graph α β) (hG : G.IsMinimalKDof n 0)
-    {H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H))
-    (hVH2 : 2 ≤ V(H).ncard) (hSimple : G.Simple)
-    (hcSimple : (G.rigidContract H r).Simple)
-    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-      V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G') ∧
-        HasPanelRealization K k n G') :
-    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
-  classical
-  have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
-  obtain ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩ := hH
-  have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
-  have hVHlt : V(H).ncard < V(G).ncard := Set.ncard_lt_ncard hVHss (Set.toFinite _)
-  -- The selector `ends = G.endsOf` records every link of `G` (`isLink_endsOf`).
-  have : Inhabited α := ⟨r⟩
-  set ends := G.endsOf with hendsDef
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
-    rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
-  have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩
-  -- The links of the loopless `G` have distinct ends at `ends` (`endsOf_fst_ne_snd`).
-  have : G.Loopless := hSimple.toLoopless
-  have hne_ends : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2 :=
-    fun e hlink => G.endsOf_fst_ne_snd hlink.edge_mem
-  -- `H ≤ G` and `G ＼ E(H) ≤ G` (`couple_geometry_of_isProperRigidSubgraph`); `V(H)` and
-  -- `sc := (V(G)∖V(H)) ∪ {r}` cover `V(G)` and share `r`.
-  obtain ⟨hGH, hGc, _, _, _, _, _⟩ :=
-    PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph hHprop hr
-  -- `ends` records the links of `G ＼ E(H) ≤ G` too (`IsSubgraph.isLink_iff`).
-  have hendsGc : ∀ e u v, (G.deleteEdges E(H)).IsLink e u v →
-      (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2 := fun e u v hlink =>
-    (Graph.IsSubgraph.isLink_iff hGc hlink.edge_mem).mpr
-      (hends e u v ((Graph.IsSubgraph.isLink_iff hGc hlink.edge_mem).mp hlink))
-  have hcover : V(G) ⊆ V(H) ∪ ((V(G) \ V(H)) ∪ {r}) := by
-    intro x hx
-    by_cases hxH : x ∈ V(H)
-    · exact Or.inl hxH
-    · exact Or.inr (Or.inl ⟨hx, hxH⟩)
-  -- (1) `H` is a smaller simple minimal `0`-dof-graph (`subgraph_minimality`), so `hIH` gives it a
-  -- generic full-rank realization `QH`.
-  have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
-  obtain ⟨QH, hQHg, hQHgp, hQHrank, hQHrec⟩ :=
-    (hIH H hHmin hVH2 hVHlt).1 (hSimple.mono hle)
-  -- Rigidity from the rank (`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`).
-  have hHne : V(H).Nonempty := ⟨r, hr⟩
-  have hne_QH : QH.toBodyHinge.graph.vertexSet.Nonempty := by
-    rw [PanelHingeFramework.toBodyHinge_graph, hQHg]; exact hHne
-  rw [hKDof, sub_zero] at hQHrank
-  have hVH_eq : QH.toBodyHinge.graph.vertexSet = V(H) := by
-    rw [PanelHingeFramework.toBodyHinge_graph, hQHg]
-  have h1H : 1 ≤ V(H).ncard := (Set.ncard_pos (Set.toFinite _)).2 hHne
-  have hQHrig : QH.toBodyHinge.IsInfinitesimallyRigidOn V(H) := by
-    rw [← hVH_eq,
-      BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
-        QH.toBodyHinge hne_QH, hVH_eq]
-    zify [h1H] at hQHrank ⊢; exact_mod_cast hQHrank
-  -- `QH.ends` records the links of `H` (`hQHrec`), and so agrees with `ends = G.endsOf` up to swap
-  -- on them (`recordsLinks_swap_endsOf`); `hasGenericRealization_transport_ends` then gives
-  -- normals at which `ofNormals H ends` is rigid on `V(H)`, with nonzero hinges, as a link of `H`
-  -- is one of `G`, where `hne_ends` applies.
-  obtain ⟨qH, hneH, hrigH⟩ :=
-    PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
-      (PanelHingeFramework.recordsLinks_swap_endsOf hle QH.ends hQHrec)
-      (fun e he => hne_ends e (he.of_le hle))
-  -- (2) `G.rigidContract H r` is a smaller simple minimal `0`-dof-graph
-  -- (`rigidContract_isMinimalKDof`, `hcSimple`), so `hIH` gives it a generic full-rank realization
-  -- `hQcf`. KT Claim 6.4 (`rigidContract_exterior_rank_transport_htransport`) gives normals `q₀`
-  -- and rows `t` of `G ＼ E(H)`, independent at `q₀` after the columns of `V(H)` are deleted.
-  have hKmin : (G.rigidContract H r).IsMinimalKDof n 0 :=
-    Graph.rigidContract_isMinimalKDof hG hHprop hr
-  have hKlt : V(G.rigidContract H r).ncard < V(G).ncard :=
-    Graph.rigidContract_vertexSet_ncard_lt hHsub hVH2
-  have hK2 : 2 ≤ V(G.rigidContract H r).ncard := by
-    rw [Graph.rigidContract_vertexSet_ncard hr hHsub]
-    have hVHle : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
-    omega
-  have hQcf : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r) :=
-    (hIH (G.rigidContract H r) hKmin hK2 hKlt).1 hcSimple
-  have hKne : V(G.rigidContract H r).Nonempty :=
-    (Set.ncard_pos (Set.toFinite _)).mp (by omega)
-  obtain ⟨q₀, t, hsupp, hcount, hindep⟩ :=
-    PanelHingeFramework.rigidContract_exterior_rank_transport_htransport G H ends hr hHsub
-      hcSimple hKne hKmin.1 hQcf hendsGc
-  -- A nonzero polynomial `Qc` off whose zeros such rows stay independent
-  -- (`exists_rankPolynomial_of_rigidOn_linking_set_proj`).
-  obtain ⟨Qc, hQc_ne, hsc_proj_indep⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj (k := k)
-      (G.deleteEdges E(H)) ends V(H) hsupp hcount hindep
-  -- (3) The rows of `H` and those of `G ＼ E(H)` combined
-  -- (`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`, `sH := V(H)`).
-  exact PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set
-    G ends hends hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl) hcover
-    ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne hsc_proj_indep n hG.1
-
-/-- **A realization from enough independent forms in its row space**: if linearly independent forms
-`f i`, at least `D(|V(G)| − 1)` of them (`hcard`), lie in the row space of `ofNormals G ends q₀`
-(`hsub`), with `V(G)` nonempty, then `ofNormals G ends q₀` is infinitesimally rigid on `V(G)`
-(`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`), and so witnesses
-`HasFullRankRealization K k G`. Only `hasFullRankRealization_of_candidateSelector` uses it, and no
-declaration uses that. -/
-theorem PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow
-    [Finite α] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
-    {q₀ : α × Fin (k + 2) → K} {ι : Type*} [Finite ι]
-    {f : ι → Module.Dual K (α → ScrewSpace K k)} (hLI : LinearIndependent K f)
-    (hsub : Submodule.span K (Set.range f)
-      ≤ Submodule.span K (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
-    (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card ι) :
-    PanelHingeFramework.HasFullRankRealization K k G := by
-  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
-  have hG : F.graph.vertexSet = V(G) := rfl
-  refine ⟨PanelHingeFramework.ofNormals G ends q₀,
-    PanelHingeFramework.ofNormals_graph G ends q₀, ?_⟩
-  have hrig := F.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows hLI hsub
-    (by rw [hG]; exact hne) (by rw [hG]; exact hcard)
-  rw [hG] at hrig
-  exact hrig
-
-/-- **A realization from forms in its row space, under a condition**: if `r C ≠ 0` makes the family
-`fam` linearly independent (`hsel`), every member of `fam` lies in the row space of
-`ofNormals G ends q₀` (`hmem`), `Nat.card κ ≥ D(|V(G)| − 1)` and `V(G)` is nonempty, then `r C ≠ 0`
-gives `HasFullRankRealization K k G` (`hasFullRankRealization_of_independent_rigidityRow`). No
-declaration uses it. -/
-theorem PanelHingeFramework.hasFullRankRealization_of_candidateSelector
-    [Finite α] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
-    {q₀ : α × Fin (k + 2) → K} {κ : Type*} [Finite κ]
-    {fam : κ → Module.Dual K (α → ScrewSpace K k)}
-    {r : Module.Dual K (ScrewSpace K k)} {C : ScrewSpace K k}
-    (hsel : r C ≠ 0 → LinearIndependent K fam)
-    (hmem : ∀ i, fam i ∈ Submodule.span K
-      (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
-    (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card κ) :
-    r C ≠ 0 → PanelHingeFramework.HasFullRankRealization K k G := by
-  intro hr
-  refine PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow G ends hne
-    (q₀ := q₀) (hsel hr) ?_ hcard
-  rw [Submodule.span_le, Set.range_subset_iff]
-  exact fun i => hmem i
 
 end CombinatorialRigidity.Molecular

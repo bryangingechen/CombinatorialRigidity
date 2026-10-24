@@ -400,8 +400,9 @@ rcases hej : e j with ⟨a, t⟩
 simp only [hej]   -- now every `e j` is `⟨a, t⟩`; `.fst`/`.snd` reduce
 ```
 
-(Phase 22 `exists_rankPolynomial_of_rigidOn`, the `annihRowPoly`
-coordinatization at a reindexed basis vector `e j : Σ _, ⋀ᵏ`.)
+(Phase 22 `exists_rankPolynomial_of_rigidOn`, since deleted;
+`exists_rankPolynomial_of_rigidOn_linking` keeps the step: the `annihRowPoly` coordinatization at a
+reindexed basis vector `e j : Σ _, ⋀ᵏ`.)
 
 ---
 
@@ -1581,7 +1582,8 @@ hit this — the lemma is re-namespaced. General axis: *dot notation keys off th
 namespace; a `T.foo` lemma authored outside a `namespace T` block is reachable by name but not by
 projection.*
 
-Worked case: `case_I_realization` in `Molecular/AlgebraicInduction/` (Phase 22a, N6-G3-G3c-iii-b)
+Worked case: `case_I_realization` (since deleted) in `Molecular/AlgebraicInduction/` (Phase 22a,
+N6-G3-G3c-iii-b)
 — first hit while drafting a `Graph.exists_ends_of_graph` helper (later dropped in favour of the
 pre-existing `Graph.endsOf`, which *is* in a `namespace Graph` block).
 
@@ -1706,8 +1708,9 @@ _ _` the `whnf` to reconcile `F.graph` with `G` blows up. Fix: don't call the me
 — **inline the `rigidityRows` membership witness** as the anonymous constructor `⟨e, u, v, hlink, …,
 rfl⟩` in a helper `have hrow_mem : ∀ i, G.IsLink i.1 … → F.panelRow ends i ∈ F.rigidityRows`, taking
 the `G.IsLink` as an *explicit argument* (the witness is *supplied*, not an inferred goal, so the
-defeq is checked cheaply). This is the form `hasGenericFullRankRealization_of_rigidOn_ofNormals` and
-the green `case_I_realization` block (`Molecular/AlgebraicInduction/CaseI.lean`) both use.
+defeq is checked cheaply). This is the form `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+(`Molecular/AlgebraicInduction/CaseI.lean`) uses, as did the `case_I_realization` block, since
+deleted.
 
 **Row-family-argument variant (Phase 22h).** A span/rigidity lemma
 (`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`) applied with its **row-family argument

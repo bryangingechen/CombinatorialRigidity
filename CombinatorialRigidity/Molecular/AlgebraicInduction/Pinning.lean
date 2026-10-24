@@ -903,9 +903,10 @@ theorem finrank_iInf_ker_proj_eq [Finite α] (s : Set α) :
   rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
 
 /-- **The block pin of `s` lies in the space of the assignments that vanish on `s`**:
-`pinnedMotionsOn s ≤ ⨅ i ∈ s, ker (proj i)`. For `s ⊇ V(G)` the two are equal
-(`pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset`); otherwise a body of `V(G) ∖ s` can lie on
-an edge, and the inclusion can be strict. -/
+`pinnedMotionsOn s ≤ ⨅ i ∈ s, ker (proj i)`. For `s ⊇ V(G)` the two are equal, as an assignment
+that vanishes on `s` vanishes at both ends of every edge
+(`pinnedMotionsOn_vertexSet_eq_iInf_ker_proj` for `s = V(G)`); otherwise a body of `V(G) ∖ s` can
+lie on an edge, and the inclusion can be strict. -/
 theorem pinnedMotionsOn_le_iInf_ker_proj (F : BodyHingeFramework K k α β) (s : Set α) :
     F.pinnedMotionsOn s ≤
       (⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) :
@@ -920,7 +921,7 @@ theorem pinnedMotionsOn_le_iInf_ker_proj (F : BodyHingeFramework K k α β) (s :
 
 /-- **The block pin of `s` has dimension at most `D·|sᶜ|`**: by `pinnedMotionsOn_le_iInf_ker_proj`
 and `finrank_iInf_ker_proj_eq`. For `s ⊇ V(G)` it is an equality
-(`finrank_pinnedMotionsOn_of_vertexSet_subset`).
+(`finrank_pinnedMotionsOn_vertexSet` for `s = V(G)`).
 `finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn` uses it: a framework rigid on a
 nonempty `s` has `dim Z(G,p) ≤ D·(|sᶜ| + 1)`. -/
 theorem finrank_pinnedMotionsOn_le [Finite α] (F : BodyHingeFramework K k α β) (s : Set α) :
@@ -933,73 +934,6 @@ theorem finrank_pinnedMotionsOn_le [Finite α] (F : BodyHingeFramework K k α β
             Submodule K (α → ScrewSpace K k))) :=
         Submodule.finrank_mono (F.pinnedMotionsOn_le_iInf_ker_proj s)
     _ = screwDim k * sᶜ.ncard := finrank_iInf_ker_proj_eq (k := k) s
-
-/-- **The block pin of a set that contains `V(G)` consists of the assignments that vanish on it**
-(`def:pinned-motions-on`): for `V(G) ⊆ s`, `pinnedMotionsOn s = ⨅ i ∈ s, ker (proj i)`, as an
-assignment that vanishes on `s` vanishes at both ends of every edge.
-`pinnedMotionsOn_vertexSet_eq_iInf_ker_proj` is the case `s = V(G)`. -/
-theorem pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset (F : BodyHingeFramework K k α β)
-    {s : Set α} (hs : F.graph.vertexSet ⊆ s) :
-    F.pinnedMotionsOn s =
-      ⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) := by
-  ext S
-  simp only [mem_pinnedMotionsOn, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]
-  constructor
-  · exact fun ⟨_, hvan⟩ => hvan
-  · intro hvan
-    refine ⟨fun e u v he => ?_, hvan⟩
-    rw [hingeConstraint, hvan u (hs he.left_mem), hvan v (hs he.right_mem), sub_self]
-    exact Submodule.zero_mem _
-
-/-- **The block pin of a set that contains `V(G)` has dimension `D·|sᶜ|`**
-(`def:pinned-motions-on`): from `pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset` and
-`finrank_iInf_ker_proj_eq`. `finrank_pinnedMotionsOn_vertexSet` is the case `s = V(G)`; for other
-sets `s` only the bound `finrank_pinnedMotionsOn_le` holds. -/
-theorem finrank_pinnedMotionsOn_of_vertexSet_subset [Finite α] (F : BodyHingeFramework K k α β)
-    {s : Set α} (hs : F.graph.vertexSet ⊆ s) :
-    Module.finrank K (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard := by
-  rw [F.pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset hs, finrank_iInf_ker_proj_eq]
-
-/-- **The block pin of a set that meets `V(G)` in one body, for a framework rigid on `V(G)`** (a
-step of `lem:claim-6-4`): if every motion is constant on `V(G)`, `r ∈ V(G)` and `V(G) ∩ t = {r}`,
-then `dim Z_t(G,p) = D·(|V(G)ᶜ| + 1 − |t|)`. A motion that vanishes on `t` vanishes at `r`, and so
-on `V(G)`; so the block pin of `t` is that of `V(G) ∪ t`, of dimension `D·|(V(G) ∪ t)ᶜ|`
-(`finrank_pinnedMotionsOn_of_vertexSet_subset`), and `|(V(G) ∪ t)ᶜ| = |V(G)ᶜ| + 1 − |t|` as
-`|V(G) ∩ t| = 1`. In `ℕ` the order matters: for `t = {r} ∪ V(G)ᶜ`, `|V(G)ᶜ| − |t| + 1` would be `1`.
-Its one user, `infinitesimalMotions_sup_range_extProj_eq_top`, is a step of the pin of
-`lem:claim-6-4`, which no main result uses. -/
-theorem finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton
-    [Finite α] (F : BodyHingeFramework K k α β) {t : Set α} {r : α}
-    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
-    (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ t = {r}) :
-    Module.finrank K (F.pinnedMotionsOn t)
-      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1 - t.ncard) := by
-  classical
-  have : Fintype α := Fintype.ofFinite α
-  have hrt : r ∈ t := ((Set.ext_iff.1 hinter r).2 rfl).2
-  -- Pinning `t` equals pinning `V(G) ∪ t`: rigidity propagates `S r = 0` to all of `V(G)`.
-  have hpin : F.pinnedMotionsOn t = F.pinnedMotionsOn (F.graph.vertexSet ∪ t) := by
-    refine le_antisymm (fun S hS => ?_) (F.pinnedMotionsOn_mono Set.subset_union_right)
-    rw [F.mem_pinnedMotionsOn] at hS ⊢
-    refine ⟨hS.1, fun w hw => ?_⟩
-    rcases hw with hwV | hwt
-    · rw [hrig S hS.1 w hwV r hr, hS.2 r hrt]
-    · exact hS.2 w hwt
-  rw [hpin, F.finrank_pinnedMotionsOn_of_vertexSet_subset Set.subset_union_left]
-  -- Inclusion–exclusion: `|(V(G) ∪ t)ᶜ| = |V(G)ᶜ| − |t| + 1` since `|V(G) ∩ t| = 1`.
-  congr 1
-  have hcard_inter : (F.graph.vertexSet ∩ t).ncard = 1 := by rw [hinter, Set.ncard_singleton]
-  have hunion : (F.graph.vertexSet ∪ t).ncard + 1
-      = F.graph.vertexSet.ncard + t.ncard := by
-    have := Set.ncard_union_add_ncard_inter F.graph.vertexSet t
-    rw [hcard_inter] at this
-    omega
-  -- The two complement-counts as `|α| − |·|`, with the underlying `|·| + |·ᶜ| = |α|` partitions
-  -- giving `omega` the bounds it needs (no separate `≤` derivations).
-  have hpartU := Set.ncard_add_ncard_compl (F.graph.vertexSet ∪ t)
-  have hpartV := Set.ncard_add_ncard_compl F.graph.vertexSet
-  rw [Nat.card_eq_fintype_card] at hpartU hpartV
-  omega
 
 /-- **A rigid framework has no motion that vanishes on a nonempty set**
 (`lem:pinned-motions-on-rigid-iff`, the first assertion): if `F` is infinitesimally rigid and `s` is
@@ -1061,9 +995,8 @@ note after it): let `s` be nonempty with `s ⊆ t`, and let every motion be cons
 If every motion is constant on `t`, a motion that vanishes on `s` is constant on `t` and vanishes at
 a body of `s`, so it vanishes on `t`. Conversely, for a motion `S` and `v ∈ s`, let `T` be the
 constant assignment with the value `S v`; then `S − T` vanishes on `s` (`hblock`), so on `t`, and
-`S` is constant on `t`. With `s` a single body, the relative counts use it
-(`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`, `lem:isInfRigidOn-of-relative-count`, and
-`isInfinitesimallyRigidOn_of_finrank_le_set`). -/
+`S` is constant on `t`. With `s` a single body, the relative count uses it
+(`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`, `lem:isInfRigidOn-of-relative-count`). -/
 theorem isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le
     (F : BodyHingeFramework K k α β) {s t : Set α} (hs : s.Nonempty) (hst : s ⊆ t)
     (hblock : ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ w ∈ s, S u = S w) :
@@ -1115,34 +1048,6 @@ theorem isInfinitesimallyRigidOn_vertexSet_of_finrank_le [Finite α] (F : BodyHi
   -- `finrank (pinnedMotions v₀) = dim Z − D ≤ D·|V(G)ᶜ| = finrank (pinnedMotionsOn V(G))`.
   rw [F.pinnedMotionsOn_singleton, F.finrank_pinnedMotionsOn_vertexSet]
   have hpin := F.finrank_pinnedMotions_add_screwDim v₀
-  rw [Nat.mul_succ] at hcount
-  omega
-
-/-- **Rigidity on a set `s` from a bound on the motions, given the dimension of its block pin**: if
-`s` is nonempty, `dim Z_s(G,p) = D·|sᶜ|` (`hpin`) and `dim Z(G,p) ≤ D·(|sᶜ| + 1)` (`hcount`), every
-motion is constant on `s`, by the proof of `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` with
-`hpin` in place of `finrank_pinnedMotionsOn_vertexSet`. For `s ⊉ V(G)` the bound
-`dim Z_s(G,p) ≤ D·|sᶜ|` (`finrank_pinnedMotionsOn_le`) can be strict, as a body of `V(G) ∖ s` can
-lie on an edge, so the equality is a hypothesis. No main result uses the lemma. -/
-theorem isInfinitesimallyRigidOn_of_finrank_le_set [Finite α] (F : BodyHingeFramework K k α β)
-    {s : Set α} (hne : s.Nonempty)
-    (hpin : Module.finrank K (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard)
-    (hcount : Module.finrank K F.infinitesimalMotions ≤ screwDim k * (sᶜ.ncard + 1)) :
-    F.IsInfinitesimallyRigidOn s := by
-  have : Fintype α := Fintype.ofFinite α
-  obtain ⟨v₀, hv₀⟩ := hne
-  have : Nonempty α := ⟨v₀⟩
-  -- Read rigidity off `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` at the block `{v₀}`.
-  rw [F.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le (s := {v₀})
-    (Set.singleton_nonempty v₀) (Set.singleton_subset_iff.2 hv₀)
-    (fun S _ u hu w hw => by rw [hu, hw])]
-  -- The reverse containment is automatic; equate dimensions to upgrade it to the needed one.
-  have hsub : F.pinnedMotionsOn s ≤ F.pinnedMotionsOn {v₀} :=
-    F.pinnedMotionsOn_mono (Set.singleton_subset_iff.2 hv₀)
-  refine (Submodule.eq_of_le_of_finrank_le hsub ?_).ge
-  -- `finrank (pinnedMotions v₀) = dim Z − D ≤ D·|sᶜ| = finrank (pinnedMotionsOn s)`.
-  rw [F.pinnedMotionsOn_singleton, hpin]
-  have hadd := F.finrank_pinnedMotions_add_screwDim v₀
   rw [Nat.mul_succ] at hcount
   omega
 

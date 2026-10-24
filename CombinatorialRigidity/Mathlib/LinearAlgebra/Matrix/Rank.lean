@@ -994,7 +994,7 @@ minor at `p₀` is nonsingular; `eval p Q` is then the specialized minor's deter
 `linearIndependent_rows_of_specialized_submatrix_det_ne_zero` upgrades any other non-root `p` back
 to row independence. The LI of vectors ↔ LI of `φ`-coordinate rows is the same `φ`-pullback used in
 `exists_le_finrank_span_polynomial`. The combinatorial-rigidity project applies it through
-`exists_rankPolynomial_of_rigidOn` and its variants
+`exists_rankPolynomial_of_rigidOn_linking` and its variants
 (`Molecular/AlgebraicInduction/GenericityDevice.lean`), and Case I of its algebraic induction
 (`CaseI.lean`) multiplies such minors, so that one point serves the two realizations that
 Katoh–Tanigawa 2011 combine in (6.6), in the proof of their Lemma 6.3. -/

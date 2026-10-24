@@ -1242,7 +1242,7 @@ it with the **subtraction last**: `a + c − b`. The two are equal in ℝ /
 prove it, because it's genuinely false in ℕ as written.
 
 Concrete instance (`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`,
-`Molecular/AlgebraicInduction/Pinning.lean`): the free-isolated-body count
+`Molecular/AlgebraicInduction/Pinning.lean`, since deleted): the free-isolated-body count
 `|Vᶜ| − |t| + 1` is correct in ℝ, but at the extreme `t = {r} ∪ Vᶜ` the ℕ
 form `(|Vᶜ| − |t|) + 1` reads `1` while the true value `|(V ∪ t)ᶜ|` is `0`
 (since `|t| = |Vᶜ| + 1 > |Vᶜ|`). Restating as `|Vᶜ| + 1 − |t|` (the `+1`
