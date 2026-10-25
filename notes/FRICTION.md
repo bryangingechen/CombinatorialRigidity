@@ -179,6 +179,16 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** `rw [eq_comm, Finset.card_eq_zero]`, or `Finset.card_eq_zero.mp h.symm`.
 - **Status:** idiom.
 
+### [idiom] `simp [← h]` does not fire when a simp lemma first rewrites `h`'s right side in the goal
+- **Where it bit:** Phase 41a, item 6: `rankHypothesis_deficiency_of_theorem_55_d3`, with
+  `hVeq : V(G) = V(Q.toBodyHinge.graph)`; `simp [← hVeq, hspan, Set.compl_univ]` on
+  `V(Q.toBodyHinge.graph)ᶜ.ncard = 0` left `V(Q.graph)ᶜ.ncard = 0`.
+- **Friction:** the `@[simp]` lemma `toBodyHinge_graph` rewrote the goal's `Q.toBodyHinge.graph`
+  to `Q.graph` before `← hVeq` matched. One iteration.
+- **Proposed fix:** `rw [← hVeq, hspan, Set.compl_univ, Set.ncard_empty]`, or state the
+  hypothesis in simp-normal form (`V(G) = V(Q.graph)`).
+- **Status:** idiom.
+
 ### [open] `SimpleGraph.shadowGraph` has no `IsLink` or edge-set lemma in the plain form
 - **Where it bit:** RECONCILE round 3, task 24: `molecule_rank_formula_witness` and
   `molecule_generic_square_packing_witness` (`Nonvacuity.lean`) need the links and the edge set of

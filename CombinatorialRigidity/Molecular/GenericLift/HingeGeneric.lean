@@ -54,12 +54,11 @@ specific carrier graph via an `ofHinge`-framework's `panelRow`, exactly as the p
   rank–nullity corollary of the rank formula, every generic realization is infinitesimally rigid
   on `V(G)` iff `def(G̃) = 0`.
 * `cor:bodyhinge-generic-tree-packing` —
-  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`: the generic form of
-  the Tay–Whiteley body-and-hinge theorem (Jackson–Jordán 2010, Cor 6.3, for every generic
-  realization), composing the
-  rigidity iff with the packing bridge `Graph.deficiency_eq_zero_iff_exists_spanningTrees`
-  (`Deficiency.lean`): every generic realization is rigid iff `G̃ = (D-1)·G` packs `D`
-  edge-disjoint spanning trees.
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`: the generic form of the
+  Tay–Whiteley body-and-hinge theorem (Jackson–Jordán 2010, Cor 6.3, for every generic realization),
+  composing the rigidity iff with the packing bridge
+  `Graph.deficiency_eq_zero_iff_exists_spanningTrees` (`Deficiency.lean`): every generic realization
+  is rigid iff `G̃ = (D-1)·G` packs `D` edge-disjoint spanning trees.
 
 Non-`module`: imports `Theorem55.lean` (and through it `GenericityDevice.lean`), both non-`module`.
 -/
@@ -75,14 +74,13 @@ variable {K : Type*} [Field K]
 variable {α β : Type*}
 
 /-- **The screw-basis coordinate of a hinge's supporting extensor as a polynomial in the hinge
-points** (`lem:hinge-rows-polynomial-in-points`). For an edge
-label `e` and a grade-`k` exterior basis index `t` (a `k`-element subset of `Fin (k+2)`), the
-polynomial `hingeExtensorPoly e t` in the `k(k+1)` hinge-point coordinates of `e` is the `k × k`
-minor, at the columns picked out by `t`, of the homogenized coordinate matrix whose `i`-th row is
-the (symbolic) homogenization `(X (e,i,0), …, X (e,i,k-1), 1)` of the `i`-th hinge point. Its value
-at an assignment `q` is the `t`-th screw-basis coordinate of the
-`ofHinge`-supporting extensor of `e`'s hinge (`hingeExtensorPoly_eval`), the polynomiality the
-abundance argument needs. -/
+points** (`lem:hinge-rows-polynomial-in-points`). For an edge label `e` and a grade-`k` exterior
+basis index `t` (a `k`-element subset of `Fin (k+2)`), the polynomial `hingeExtensorPoly e t` in the
+`k(k+1)` hinge-point coordinates of `e` is the `k × k` minor, at the columns picked out by `t`, of
+the homogenized coordinate matrix whose `i`-th row is the (symbolic) homogenization
+`(X (e,i,0), …, X (e,i,k-1), 1)` of the `i`-th hinge point. Its value at an assignment `q` is the
+`t`-th screw-basis coordinate of the `ofHinge`-supporting extensor of `e`'s hinge
+(`hingeExtensorPoly_eval`), the polynomiality the abundance argument needs. -/
 noncomputable def hingeExtensorPoly (e : β) (t : Set.powersetCard (Fin (k + 2)) k) :
     MvPolynomial (β × Fin k × Fin (k + 1)) K :=
   (Matrix.of fun i j : Fin k =>
@@ -130,16 +128,15 @@ theorem hingeExtensorPoly_eval (e : β) (q : β × Fin k × Fin (k + 1) → K)
   exact hcomm i _
 
 /-- **The graph-free annihilator-row family of a hinge-point assignment**
-(`def:generic-hinge-points`). For an endpoint selector
-`ends : β → α × α` and a free hinge-point assignment `q : β × Fin k × Fin (k+1) → K`, the row
-at index `(e, t₁, t₂)` is the per-pair annihilator functional `annihRow` of the affine hinge
-extensor `affineSubspaceExtensor (fun i b => q (e,i,b))`
-that `q` assigns to `e`, transported to the screw-assignment space by `hingeRow`. It reads only
-`ends` and `q` — the `ofHinge`-framework's supporting extensor at `e` IS this extensor by
-`ofHinge`'s own definition — so this graph-free form agrees on the nose (`rfl`) with the
-framework's `panelRow` (`hingePointRow_eq_panelRow`), exactly as the panel layer's `normalRow`
-agrees with `panelRow` via `normalRow_eq_panelRow`. This is the family the genericity condition
-below (`IsGenericHingePoints`) varies over. -/
+(`def:generic-hinge-points`). For an endpoint selector `ends : β → α × α` and a free hinge-point
+assignment `q : β × Fin k × Fin (k+1) → K`, the row at index `(e, t₁, t₂)` is the per-pair
+annihilator functional `annihRow` of the affine hinge extensor
+`affineSubspaceExtensor (fun i b => q (e,i,b))` that `q` assigns to `e`, transported to the
+screw-assignment space by `hingeRow`. It reads only `ends` and `q` — the `ofHinge`-framework's
+supporting extensor at `e` IS this extensor by `ofHinge`'s own definition — so this graph-free form
+agrees on the nose (`rfl`) with the framework's `panelRow` (`hingePointRow_eq_panelRow`), exactly as
+the panel layer's `normalRow` agrees with `panelRow` via `normalRow_eq_panelRow`. This is the family
+the genericity condition below (`IsGenericHingePoints`) varies over. -/
 noncomputable def hingePointRow (ends : β → α × α) (q : β × Fin k × Fin (k + 1) → K)
     (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
     Module.Dual K (α → ScrewSpace K k) :=
@@ -162,12 +159,11 @@ theorem hingePointRow_eq_panelRow (G : Graph α β) (ends : β → α × α)
 
 /-- **The per-edge annihilator functional as a polynomial in the hinge points** (internal plumbing
 for `lem:generic-hinge-points-abundance`, mirroring the panel layer's `annihRowPoly`). For an edge
-label `e`, a pair `(t₁, t₂)` of grade-`k` exterior basis indices, and a further index `s`,
-the polynomial `hingeAnnihRowPoly e t₁ t₂ s` is the combination of
-`hingeExtensorPoly` values that evaluates to the `s`-coordinate of the annihilator functional of
-`e`'s hinge extensor (`hingeAnnihRowPoly_eval`) — the linear-in-the-extensor assembly
-`annihRowPoly` performs on top of `panelSupportPoly`, here directly on top of
-`hingeExtensorPoly`. -/
+label `e`, a pair `(t₁, t₂)` of grade-`k` exterior basis indices, and a further index `s`, the
+polynomial `hingeAnnihRowPoly e t₁ t₂ s` is the combination of `hingeExtensorPoly` values that
+evaluates to the `s`-coordinate of the annihilator functional of `e`'s hinge extensor
+(`hingeAnnihRowPoly_eval`) — the linear-in-the-extensor assembly `annihRowPoly` performs on top of
+`panelSupportPoly`, here directly on top of `hingeExtensorPoly`. -/
 noncomputable def hingeAnnihRowPoly (e : β) (t₁ t₂ s : Set.powersetCard (Fin (k + 2)) k) :
     MvPolynomial (β × Fin k × Fin (k + 1)) K :=
   (if t₂ = s then hingeExtensorPoly e t₁ else 0)
@@ -193,24 +189,23 @@ theorem hingeAnnihRowPoly_eval (e : β) (q : β × Fin k × Fin (k + 1) → K)
     · rw [ite_eq_right h, ite_eq_right fun h' => h h'.symm]
 
 /-- **A hinge-point assignment generic for row independence** (`def:generic-hinge-points`). The
-assignment `q` is *generic* when
-every subfamily of the annihilator-row family that is linearly independent at *some* hinge-point
-assignment is linearly independent at `q` — exactly the panel layer's `IsGenericNormals` shape,
-transported to hinge points. Independence witnessed by a framework outside the hinge-point
-parameter space (in particular one with a hinge at infinity) does not transfer, which is why the
-witness assembly (`lem:hinge-point-witness`) re-places the panel witness inside this space. -/
+assignment `q` is *generic* when every subfamily of the annihilator-row family that is linearly
+independent at *some* hinge-point assignment is linearly independent at `q` — exactly the panel
+layer's `IsGenericNormals` shape, transported to hinge points. Independence witnessed by a framework
+outside the hinge-point parameter space (in particular one with a hinge at infinity) does not
+transfer, which is why the witness assembly (`lem:hinge-point-witness`) re-places the panel witness
+inside this space. -/
 def IsGenericHingePoints (ends : β → α × α) (q : β × Fin k × Fin (k + 1) → K) : Prop :=
   ∀ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
     (∃ q' : β × Fin k × Fin (k + 1) → K,
         LinearIndependent K fun i : s => hingePointRow ends q' i) →
       LinearIndependent K fun i : s => hingePointRow ends q i
 
-/-- **Abundance of generic hinge-point assignments** (`lem:generic-hinge-points-abundance`).
-There is a nonzero polynomial `P` in the `k(k+1)|E|` hinge-point
-coordinates such that every hinge-point assignment `q` with `P(q) ≠ 0` is generic for row
-independence *and* assigns each edge `k` affinely independent points, a nondegenerate hinge; in
-particular the non-generic or degenerate assignments are confined to the zero set of one nonzero
-polynomial.
+/-- **Abundance of generic hinge-point assignments** (`lem:generic-hinge-points-abundance`). There
+is a nonzero polynomial `P` in the `k(k+1)|E|` hinge-point coordinates such that every hinge-point
+assignment `q` with `P(q) ≠ 0` is generic for row independence *and* assigns each edge `k` affinely
+independent points, a nondegenerate hinge; in particular the non-generic or degenerate assignments
+are confined to the zero set of one nonzero polynomial.
 
 The genericity conjunct is assembled exactly as the panel layer's
 `exists_isGenericNormals_abundance`: the row coordinates against the standard basis of
@@ -218,14 +213,13 @@ The genericity conjunct is assembled exactly as the panel layer's
 body-incidence sign, and the maximal-minor engine
 `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` supplies, per subfamily independent at
 some assignment, a nonzero witnessing minor. The nondegenerate-hinge conjunct contributes one
-further
-factor per edge: at a fixed reference assignment placing every hinge at a fixed affinely independent
-`k`-point family (the standard basis vectors `e₀, …, e_{k-1}` of `K^(k+1)`, affinely independent
-since linearly independent), the supporting extensor is nonzero, so some `hingeExtensorPoly`
-coordinate is nonzero there — a nonzero reference-minor polynomial per edge whose non-vanishing
-makes that edge's assigned points affinely independent. `P` is the product of the genericity
-witnessing minors and the per-edge reference minors; a finite product of nonzero polynomials is
-nonzero. -/
+further factor per edge: at a fixed reference assignment placing every hinge at a fixed affinely
+independent `k`-point family (the standard basis vectors `e₀, …, e_{k-1}` of `K^(k+1)`, affinely
+independent since linearly independent), the supporting extensor is nonzero, so some
+`hingeExtensorPoly` coordinate is nonzero there — a nonzero reference-minor polynomial per edge
+whose non-vanishing makes that edge's assigned points affinely independent. `P` is the product of
+the genericity witnessing minors and the per-edge reference minors; a finite product of nonzero
+polynomials is nonzero. -/
 theorem exists_isGenericHingePoints_abundance [Finite α] [Finite β] (ends : β → α × α) :
     ∃ P : MvPolynomial (β × Fin k × Fin (k + 1)) K, P ≠ 0 ∧
       ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericHingePoints ends q ∧
@@ -348,10 +342,10 @@ theorem exists_isGenericHingePoints_abundance [Finite α] [Finite β] (ends : β
     exact hR e' q ((Finset.prod_ne_zero_iff.mp hq2) e' (Finset.mem_univ e'))
 
 /-- **Existence of generic hinge-point assignments** (`lem:exists-generic-hinge-points`). Over an
-infinite field, there is a hinge-point assignment that
-is generic for row independence and assigns each edge `k` affinely independent points. The
-abundance polynomial of `exists_isGenericHingePoints_abundance` is nonzero, so over an infinite
-field it has a non-root (`MvPolynomial.exists_eval_ne_zero`), which is such an assignment. -/
+infinite field, there is a hinge-point assignment that is generic for row independence and assigns
+each edge `k` affinely independent points. The abundance polynomial of
+`exists_isGenericHingePoints_abundance` is nonzero, so over an infinite field it has a non-root
+(`MvPolynomial.exists_eval_ne_zero`), which is such an assignment. -/
 theorem exists_isGenericHingePoints [Infinite K] [Finite α] [Finite β] (ends : β → α × α) :
     ∃ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints ends q ∧
       ∀ e, AffineIndependent K fun i : Fin k => (fun b => q (e, i, b)) := by
@@ -360,23 +354,21 @@ theorem exists_isGenericHingePoints [Infinite K] [Finite α] [Finite β] (ends :
   exact ⟨q, hP q hq⟩
 
 /-- **Generic hinge-point assignments have nondegenerate hinges**
-(`lem:generic-hinge-points-nondegenerate`). For `k ≥ 1` (so
-`D = screwDim k ≥ 2`) and a loopless multigraph `G` each of whose edge labels links its selector
-pair, every hinge-point assignment `q` generic for row independence gives the induced `ofHinge`
-framework on `G` every supporting extensor nonzero.
+(`lem:generic-hinge-points-nondegenerate`). For `k ≥ 1` (so `D = screwDim k ≥ 2`) and a loopless
+multigraph `G` each of whose edge labels links its selector pair, every hinge-point assignment `q`
+generic for row independence gives the induced `ofHinge` framework on `G` every supporting extensor
+nonzero.
 
 Mirror of the panel layer's `supportExtensor_ofNormals_ne_zero_of_isGenericNormals`, but started at
 the fixed affinely-independent reference point family `pRef` (the same family as the
 nondegenerate-hinge conjunct of `exists_isGenericHingePoints_abundance`) rather than a moment-curve
-pair:
-no moment curve is needed here, since the reference points are already free parameters. Fixing an
-edge `e`, the reference assignment placing `pRef` on every label makes `e`'s hinge
-extensor `refExt`, nonzero since `pRef` is affinely independent
-(`affineSubspaceExtensor_ne_zero_iff`); a nonzero `screwBasis` coordinate `tref` of `refExt` pairs
-with a second index `t1` (available since `D ≥ 2`) to give a nonzero annihilator row, nonzero
-after `hingeRow`-transport since the loopless link forces `(ends e).1 ≠ (ends e).2`
-(`screwDiff_surjective`). A single-index subfamily nonzero at the reference is linearly
-independent there, hence — by genericity — at `q`; a nonzero row at `q`
+pair: no moment curve is needed here, since the reference points are already free parameters. Fixing
+an edge `e`, the reference assignment placing `pRef` on every label makes `e`'s hinge extensor
+`refExt`, nonzero since `pRef` is affinely independent (`affineSubspaceExtensor_ne_zero_iff`); a
+nonzero `screwBasis` coordinate `tref` of `refExt` pairs with a second index `t1` (available since
+`D ≥ 2`) to give a nonzero annihilator row, nonzero after `hingeRow`-transport since the loopless
+link forces `(ends e).1 ≠ (ends e).2` (`screwDiff_surjective`). A single-index subfamily nonzero at
+the reference is linearly independent there, hence — by genericity — at `q`; a nonzero row at `q`
 forces the hinge extensor at `q` nonzero, since `annihRow` (and so the framework's support extensor,
 read through `hingeRow`) vanishes identically at a zero extensor. -/
 theorem supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1 : 1 ≤ k)
@@ -459,11 +451,10 @@ theorem supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1 : 1 ≤ k)
 /-! ## `lem:screw-map-rows`: rigidity-row rank under a change of screw coordinates
 
 A change of screw coordinates — replacing every edge's supporting extensor by its image under a
-fixed invertible linear map of the screw space — leaves the rank of the rigidity-row span
-unchanged. `lem:hinge-point-witness` uses it to move a
-witness's hinges into affine position without disturbing the rank it has already attained. The
-change of coordinates is the transport `mapExtensor` (`RigidityMatrix/Basic.lean`), which
-`thm:projective-invariance` shares. -/
+fixed invertible linear map of the screw space — leaves the rank of the rigidity-row span unchanged.
+`lem:hinge-point-witness` uses it to move a witness's hinges into affine position without disturbing
+the rank it has already attained. The change of coordinates is the transport `mapExtensor`
+(`RigidityMatrix/Basic.lean`), which `thm:projective-invariance` shares. -/
 
 /-- **The body-wise application of a screw-space equivalence** (internal plumbing for
 `lem:screw-map-rows`): applying a fixed invertible linear map `M` of the screw space to every body's
@@ -525,11 +516,11 @@ private theorem finrank_span_image_eq_of_linearEquiv {V W : Type*} [AddCommGroup
 
 /-- **Rank under a change of screw coordinates** (`lem:screw-map-rows`). Replacing every edge's
 supporting extensor by its image under an invertible linear map `M` of the screw space leaves the
-dimension of the span of the rigidity rows unchanged: the row
-block of an edge is the annihilator of the line spanned by its supporting extensor, so each
-rigidity row of the transformed framework is a rigidity row of the original precomposed with the
-body-wise application of `M⁻¹` (`mapExtensor_rigidityRows`), an invertible linear map of the dual of
-the motion space, and precomposition with an invertible map preserves the finrank of a span
+dimension of the span of the rigidity rows unchanged: the row block of an edge is the annihilator of
+the line spanned by its supporting extensor, so each rigidity row of the transformed framework is a
+rigidity row of the original precomposed with the body-wise application of `M⁻¹`
+(`mapExtensor_rigidityRows`), an invertible linear map of the dual of the motion space, and
+precomposition with an invertible map preserves the finrank of a span
 (`finrank_span_image_eq_of_linearEquiv`). Unlike the body-and-bar case (`lem:extensor-map-rows`),
 the indexed row family is not carried member to member — its members are pinned to exterior-basis
 coordinate pairs — but the edge row blocks, and hence the row span, are. -/
@@ -572,8 +563,7 @@ theorem linForm_ne_zero {v : Fin (k + 2) → K} (hv : v ≠ 0) : linForm v ≠ 0
   simpa [Pi.single_apply] using heval
 
 /-- **A simultaneous move off the hyperplane at infinity** (`lem:simultaneous-affine-position`).
-Given
-finitely many nonzero vectors `w e : K^(k+2)`, there is a single invertible linear map `g` of
+Given finitely many nonzero vectors `w e : K^(k+2)`, there is a single invertible linear map `g` of
 `K^(k+2)` under which every `g (w e)` has nonzero last coordinate.
 
 The abundance argument: the product of the linear forms `x ↦ ⟨w e, x⟩` is a nonzero polynomial
@@ -654,10 +644,9 @@ private theorem screwSpace_equivExteriorPower_mk {k : ℕ} (v : ExteriorAlgebra 
   rfl
 
 /-- **The screw-space linear equivalence induced by an ambient linear equivalence**
-(`def:induced-screw-map`): the
-`exteriorPower.map`-functorial lift of `g : K^(k+2) ≃ₗ[K] K^(k+2)` to the degree-`k` graded piece
-`ScrewSpace K k`, built through the `ScrewSpace ≃ₗ ⋀[K]^k K^(k+2)` cast bridge
-(`ScrewSpace.equivExteriorPower`). It is an equiv because `map g ∘ map g⁻¹ = id`. -/
+(`def:induced-screw-map`): the `exteriorPower.map`-functorial lift of `g : K^(k+2) ≃ₗ[K] K^(k+2)` to
+the degree-`k` graded piece `ScrewSpace K k`, built through the `ScrewSpace ≃ₗ ⋀[K]^k K^(k+2)` cast
+bridge (`ScrewSpace.equivExteriorPower`). It is an equiv because `map g ∘ map g⁻¹ = id`. -/
 noncomputable def screwEquivOfLinearEquiv (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K)) :
     ScrewSpace K k ≃ₗ[K] ScrewSpace K k :=
   LinearEquiv.ofLinearMap
@@ -694,11 +683,10 @@ noncomputable def screwEquivOfLinearEquiv (g : (Fin (k + 2) → K) ≃ₗ[K] (Fi
       rfl)
 
 /-- **The induced screw-space equivalence carries an extensor to the extensor of its image**
-(`def:induced-screw-map`):
-`screwEquivOfLinearEquiv g` sends the `ScrewSpace` element of the extensor of
-`v : Fin k → Fin (k+2) → K` to the `ScrewSpace` element of the extensor of `g ∘ v`. Bridges through
-mathlib's `exteriorPower.ιMulti`/`exteriorPower.map_apply_ιMulti` (the typed exterior-power form of
-`extensor`/`ExteriorAlgebra.map_apply_ιMulti`). -/
+(`def:induced-screw-map`): `screwEquivOfLinearEquiv g` sends the `ScrewSpace` element of the
+extensor of `v : Fin k → Fin (k+2) → K` to the `ScrewSpace` element of the extensor of `g ∘ v`.
+Bridges through mathlib's `exteriorPower.ιMulti`/`exteriorPower.map_apply_ιMulti` (the typed
+exterior-power form of `extensor`/`ExteriorAlgebra.map_apply_ιMulti`). -/
 theorem screwEquivOfLinearEquiv_mk_extensor (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K))
     (v : Fin k → Fin (k + 2) → K) :
     screwEquivOfLinearEquiv g (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
@@ -728,10 +716,9 @@ private theorem hingeRow_smul (u v : α) (t : K) (r : Module.Dual K (ScrewSpace 
   ext S
   simp [hingeRow_apply]
 
-/-- **The witness assembly** (`lem:hinge-point-witness`). The
-link-recording KT Theorem-5.6 panel witness realizes, over a selector `ends` that records a link at
-every edge label, an assignment `q₀` whose `hingePointRow` family attains the exact target rank
-`D(|V(G)|−1) − def(G̃)`.
+/-- **The witness assembly** (`lem:hinge-point-witness`). The link-recording KT Theorem-5.6 panel
+witness realizes, over a selector `ends` that records a link at every edge label, an assignment `q₀`
+whose `hingePointRow` family attains the exact target rank `D(|V(G)|−1) − def(G̃)`.
 
 Proof. The witness `Q0 := rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is a panel-hinge
 realization with every supporting extensor nonzero and exact row count `D(|V|−1) − def`
@@ -881,8 +868,7 @@ an endpoint selector `ends` that records a link at every edge label, every hinge
 `lem:hinge-point-witness`) realizes a hinge-point assignment `q₀` whose `hingePointRow` family is
 linearly independent AND whose cardinality is exactly the target rank. Genericity of `q`
 (`IsGenericHingePoints`) transfers that independence from `q₀` to `q`; since `ends` records a link
-at
-every edge label, each such row is a rigidity row of `ofHinge G q`
+at every edge label, each such row is a rigidity row of `ofHinge G q`
 (`panelRow_mem_rigidityRows_of_link` via the `rfl` `hingePointRow_eq_panelRow` bridge), giving the
 lower bound via `finrank_span_eq_card` + `Submodule.finrank_mono`.
 
@@ -959,8 +945,7 @@ assignment generic for row independence is infinitesimally rigid on `V(G)` iff `
 rank–nullity corollary via the row-count-iff-rigidity bridge
 (`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`,
 `lem:isInfRigidOn-of-relative-count` + `lem:case-II-placement-old-rows-extract`), the mirror of the
-panel layer's
-`isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`: forward, apply the assumed
+panel layer's `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`: forward, apply the assumed
 rigidity at any one generic assignment (`exists_isGenericHingePoints`,
 `lem:exists-generic-hinge-points`) to force the exact rank, then compare with the rank formula to
 get `def = 0`; backward, the rank formula at `def = 0` gives the exact row count at *every* generic
@@ -998,15 +983,14 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
     zify [h1V]
     exact hrank
 
-/-- **Generic body-and-hinge rigidity from spanning trees**
-(`cor:bodyhinge-generic-tree-packing`; Tay 1989, Whiteley 1988, Jackson–Jordán 2010 Cor 6.3).
-In the setting of `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`, the
-framework at every hinge-point assignment generic for row independence is infinitesimally rigid
-on `V(G)` iff the multiplied graph `G̃ = (D-1)·G` contains `D = bodyBarDim n` pairwise
-edge-disjoint spanning trees — the generic form of the Tay–Whiteley body-and-hinge realization
-theorem, obtained by composing the rigidity characterization
-(`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`, `cor:bodyhinge-generic-rigid`) with
-the tree-packing reformulation of the deficiency-zero condition
+/-- **Generic body-and-hinge rigidity from spanning trees** (`cor:bodyhinge-generic-tree-packing`;
+Tay 1989, Whiteley 1988, Jackson–Jordán 2010 Cor 6.3). In the setting of
+`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`, the framework at every hinge-point
+assignment generic for row independence is infinitesimally rigid on `V(G)` iff the multiplied graph
+`G̃ = (D-1)·G` contains `D = bodyBarDim n` pairwise edge-disjoint spanning trees — the generic form
+of the Tay–Whiteley body-and-hinge realization theorem, obtained by composing the rigidity
+characterization (`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`,
+`cor:bodyhinge-generic-rigid`) with the tree-packing reformulation of the deficiency-zero condition
 (`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `lem:deficiency-zero-iff-tree-packing`). -/
 theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}

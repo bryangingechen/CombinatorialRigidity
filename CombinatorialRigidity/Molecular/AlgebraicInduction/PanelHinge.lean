@@ -249,10 +249,9 @@ in any of the condition's forms, the field `isLink_ends` of a framework on `G`, 
 choice `G.endsOf`); then a base form for a larger graph, with the inclusion from `link_le_tac`
 (`RecordsLinks.mono`); then, from a base form for a graph `G'`, the record of a splitting-off of
 `G'` with the new edge's link in scope (`RecordsLinks.update_splitOff`), of an induced subgraph of
-`G'` (`RecordsLinks.induce`) or of the image of `G'` under a map of the bodies
-(`RecordsLinks.map`). It fills in the field `isLink_ends` of a structure literal and the record
-arguments of `ofParam`, `ofNormals` and `withGraph`. Its rules come after the structure
-`PanelHingeFramework`. -/
+`G'` (`RecordsLinks.induce`) or of the image of `G'` under a map of the bodies (`RecordsLinks.map`).
+It fills in the field `isLink_ends` of a structure literal and the record arguments of `ofParam` and
+`ofNormals`. Its rules come after the structure `PanelHingeFramework`. -/
 syntax (name := linkTac) "link_tac" : tactic
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)
@@ -475,8 +474,8 @@ theorem momentCurve_pair_linearIndependent {s t : K} (hst : s ≠ t) :
 distinct real to each body, the panel framework `P.withMomentNormals param` keeps `P`'s multigraph,
 endpoint selector and link record, and sets every body's panel normal to the moment-curve point
 `momentCurve (param a)`. Its normals are in general position (`isGeneralPosition_withMomentNormals`)
-for *any* number of bodies, where the standard-basis normals cover only `|α| ≤ k + 2`. No
-declaration uses it, and no main result. -/
+for *any* number of bodies, where the standard-basis normals cover only `|α| ≤ k + 2`. No main
+result uses it. -/
 def withMomentNormals (P : PanelHingeFramework K k α β) (param : α → K) :
     PanelHingeFramework K k α β where
   graph := P.graph
@@ -501,8 +500,7 @@ multigraph `G`, an endpoint selector `ends`, and a parameter map `param : α →
 panel normal the moment-curve point `momentCurve (param a)`. Unlike `withMomentNormals` /
 `withGraph` / `withNormal` (which re-decorate an existing framework), `ofParam` needs no prior
 framework: the graph `G` and the selector are the inputs, and the genericity is a single injective
-real assignment `param`. No declaration but `isGeneralPosition_ofParam` uses it. When `param` is
-injective the normals are
+real assignment `param`. No main result uses it. When `param` is injective the normals are
 automatically in general position (`isGeneralPosition_ofParam`), so every hinge joining two distinct
 bodies is transversal. The selector must record the links of `G` (`hlinks`, filled in by
 `link_tac`). -/
@@ -684,50 +682,49 @@ theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : 
     simp only [PanelHingeFramework.ofNormals_normal]
     exact pair_linearIndependent_of_leading_minor_ne_zero hfac
 
-/-- **The panel framework on a new graph** (`def:framework-with-graph`, panel layer): replace the
-underlying multigraph of `P` by `G'`, keeping the per-body panel normals `normal` and the endpoint
-selector `ends` — hence every panel support extensor. The panel analogue of
-`BodyHingeFramework.withGraph`. Because the normals and the selector are untouched, every hinge of
-`P.withGraph G'` at a link of `G'` still lies in the panels of its ends, and is their meet. No main
-result uses it. The selector must record the links of `G'` (`hlinks`,
-filled in by `link_tac`, for instance from `G' ≤ P.graph`). -/
-def withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β)
-    (hlinks : RecordsLinks G' P.ends := by link_tac) : PanelHingeFramework K k α β where
+/-- **The panel framework on a subgraph** (`def:framework-with-graph`, panel layer): replace the
+underlying multigraph of `P` by a subgraph `G' ≤ P.graph` (`hle`), keeping the per-body panel
+normals `normal` and the endpoint selector `ends`, hence every panel support extensor. The panel
+analogue of `BodyHingeFramework.withGraph`, restricted to subgraphs: a link of `G'` is one of
+`P.graph`, so the selector records it (`RecordsLinks.mono`), and the hinge of `P.withGraph G' hle`
+at a link of `G'` is the meet of the panels of its ends. No main result uses it. -/
+def withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β) (hle : G' ≤ P.graph) :
+    PanelHingeFramework K k α β where
   graph := G'
   normal := P.normal
   ends := P.ends
+  isLink_ends := P.isLink_ends.mono hle
 
 @[simp]
 theorem withGraph_graph (P : PanelHingeFramework K k α β) (G' : Graph α β)
-    {hlinks : RecordsLinks G' P.ends} :
-    (P.withGraph G').graph = G' := rfl
+    (hle : G' ≤ P.graph) :
+    (P.withGraph G' hle).graph = G' := rfl
 
 @[simp]
 theorem withGraph_normal (P : PanelHingeFramework K k α β) (G' : Graph α β)
-    {hlinks : RecordsLinks G' P.ends} :
-    (P.withGraph G').normal = P.normal := rfl
+    (hle : G' ≤ P.graph) :
+    (P.withGraph G' hle).normal = P.normal := rfl
 
 @[simp]
 theorem withGraph_ends (P : PanelHingeFramework K k α β) (G' : Graph α β)
-    {hlinks : RecordsLinks G' P.ends} :
-    (P.withGraph G').ends = P.ends := rfl
+    (hle : G' ≤ P.graph) :
+    (P.withGraph G' hle).ends = P.ends := rfl
 
 @[simp]
-theorem withGraph_graph_self (P : PanelHingeFramework K k α β) : P.withGraph P.graph = P := rfl
+theorem withGraph_graph_self (P : PanelHingeFramework K k α β) :
+    P.withGraph P.graph le_rfl = P := rfl
 
 /-- **The panel `withGraph` commutes with the body-hinge interpretation**
-(`def:framework-with-graph`, panel layer): `(P.withGraph G').toBodyHinge =
-P.toBodyHinge.withGraph G'`. The body-hinge interpretation of the panel framework on a new graph is
-the body-hinge `withGraph` of the original's interpretation — both carry the same multigraph `G'`
-and the same panel support extensors (the normals and endpoint selector are unchanged by either
-`withGraph`). It lets the body-hinge results on `withGraph`
-(`infinitesimalMotions_le_withGraph_of_le`,
+(`def:framework-with-graph`, panel layer):
+`(P.withGraph G' hle).toBodyHinge = P.toBodyHinge.withGraph G'`. Both carry the multigraph `G'`
+and the panel support extensors of `P`, as the panel `withGraph` keeps the normals and the endpoint
+selector. It lets the body-hinge results on `withGraph` (`infinitesimalMotions_le_withGraph_of_le`,
 `pinnedMotionsOn_le_withGraph_of_le`, `screwDim_add_finrank_pinnedMotionsOn_le`) apply to a panel
 framework restricted to a subgraph. -/
 @[simp]
 theorem toBodyHinge_withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β)
-    {hlinks : RecordsLinks G' P.ends} :
-    (P.withGraph G').toBodyHinge = P.toBodyHinge.withGraph G' := rfl
+    (hle : G' ≤ P.graph) :
+    (P.withGraph G' hle).toBodyHinge = P.toBodyHinge.withGraph G' := rfl
 
 /-- **The rows at an edge whose ends keep their normals** (`lem:case-III-seam`; KT eq. (6.13),
 p. 679): if `q₀` and `q` agree at the two bodies that `ends` gives the edge label `e` (`h₁`, `h₂`),
@@ -1045,12 +1042,12 @@ def HasPanelRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Pr
 /-! ## Proposition 1.1, analytic half (`prop:rigidity-matrix-prop11`) -/
 
 /-- **The rank hypothesis from the generic bound** (`prop:rigidity-matrix-prop11`; the analytic half
-of Katoh–Tanigawa's Proposition 1.1). For a body-hinge framework `F` with every supporting extensor
-nonzero (`hC`), at `n = k + 1`, the generic bound `hgen : dim Z(F) ≤ D + def(G̃)` gives
-`F.RankHypothesis (def(G̃))` (`def:rank-hypothesis`): `dim Z(F) = D + def(G̃)`, equivalently
-`rank R(F) = D(|V|−1) − def(G̃)` (Jackson–Jordán 2010 Thm 6.1, geometric side), since
-`rank R = D|V| − dim Z` (`finrank_screwAssignment`). The matroidal half, `def(G̃) = corank M(G̃)`,
-is
+of Katoh–Tanigawa's Proposition 1.1). For a body-hinge framework `F` whose supporting extensor is
+nonzero at every link of its multigraph (`hC`; a label outside `E(G)` is unconstrained), at
+`n = k + 1`, the generic bound `hgen : dim Z(F) ≤ D + def(G̃)` gives `F.RankHypothesis (def(G̃))`
+(`def:rank-hypothesis`): `dim Z(F) = D + def(G̃)`, equivalently `rank R(F) = D(|V|−1) − def(G̃)`
+(Jackson–Jordán 2010 Thm 6.1, geometric side), since `rank R = D|V| − dim Z`
+(`finrank_screwAssignment`). The matroidal half, `def(G̃) = corank M(G̃)`, is
 `Graph.rank_add_deficiency_eq` and `Graph.isBase_ncard_add_deficiency_eq`.
 
 The proof joins two inequalities.
@@ -1066,11 +1063,11 @@ The proof joins two inequalities.
   space (`lem:motions-mono-of-graph-le`). -/
 theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]
     (F : BodyHingeFramework K k α β) (n : ℕ) (hn : n = k + 1)
-    (hC : ∀ e, F.supportExtensor e ≠ 0)
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
     (hgen : (Module.finrank K F.infinitesimalMotions : ℤ) ≤ screwDim k + F.graph.deficiency n) :
     F.RankHypothesis (F.graph.deficiency n) := by
   subst hn
-  have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions fun e _ _ _ => hC e
+  have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hC
   rw [BodyHingeFramework.RankHypothesis]
   omega
 

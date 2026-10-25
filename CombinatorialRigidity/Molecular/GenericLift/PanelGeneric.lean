@@ -89,17 +89,16 @@ theorem normalRow_eq_panelRow (G : Graph α β) (ends : β → α × α)
     (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
     normalRow ends q i = (ofNormals G ends q).toBodyHinge.panelRow ends i := rfl
 
-/-- **A normal assignment generic for row independence** (`def:generic-normals`; Jackson–Jordán
-2010 §7). The assignment `q` is *generic* when every
-subfamily of the annihilator-row family that is linearly independent at *some* normal assignment is
-linearly independent at `q` — the `SimpleGraph.IsGenericPlacement` shape, transported to the panel
-normals. For a loopless graph, the rows of every edge set at a generic `q` have the largest rank
-over
-the assignments with nondegenerate hinges at those edges, which is Jackson and Jordán's
-edge-induced-submatrix maximum-rank condition (over all assignments it is not, since a degenerate
-hinge welds two bodies and raises the rank). The definition reads only `ends` and `q` (the row
-family is graph-free, `normalRow`), so it is a property of the assignment alone; consumers
-instantiate it over a multigraph via an `hends` link hypothesis. -/
+/-- **A normal assignment generic for row independence** (`def:generic-normals`; Jackson–Jordán 2010
+§7). The assignment `q` is *generic* when every subfamily of the annihilator-row family that is
+linearly independent at *some* normal assignment is linearly independent at `q` — the
+`SimpleGraph.IsGenericPlacement` shape, transported to the panel normals. For a loopless graph, the
+rows of every edge set at a generic `q` have the largest rank over the assignments with
+nondegenerate hinges at those edges, which is Jackson and Jordán's edge-induced-submatrix
+maximum-rank condition (over all assignments it is not, since a degenerate hinge welds two bodies
+and raises the rank). The definition reads only `ends` and `q` (the row family is graph-free,
+`normalRow`), so it is a property of the assignment alone; consumers instantiate it over a
+multigraph via an `hends` link hypothesis. -/
 def IsGenericNormals (ends : β → α × α) (q : α × Fin (k + 2) → K) : Prop :=
   ∀ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
     (∃ q' : α × Fin (k + 2) → K, LinearIndependent K fun i : s => normalRow ends q' i) →
@@ -291,18 +290,16 @@ fixed endpoint selector `ends` for `G` that records a link at every edge label (
 Q.toBodyHinge.rigidityRows)` extracts `N` independent `normalRow ends q`-rows at `q :=` `Q`'s own
 normal assignment.
 
-The extraction is `exists_independent_panelRow_subfamily_of_le_finrank`
-(`GenericityDevice.lean`), applied to `Q.toBodyHinge` at `ends` (valid since `ends` records a link
-at
-*every* edge label, stronger than that lemma's linking-edge hypothesis): it hands back `N`
-literal `Q.toBodyHinge.panelRow ends`-rows, linearly independent. Each such row and the
-corresponding `normalRow ends q` row read the *same* endpoints `ends e` for the hinge, differing
-only in whose supporting extensor feeds the annihilator — `Q`'s own (via `Q.ends e`) versus the
-one computed directly at `ends e`. Since both `ends e` and `Q.ends e` witness the same `G`-link at
-`e` (`hends e` and `hQends e _ _ (hends e)`), edge-uniqueness
-(`Graph.IsLink.eq_and_eq_or_eq_and_eq`) puts them equal or swapped; in the swapped case
-`panelSupportExtensor_swap` negates the extensor, so the two row families agree up to a per-edge
-`±1`. A per-index `Kˣ`-scaling transports linear independence
+The extraction is `exists_independent_panelRow_subfamily_of_le_finrank` (`GenericityDevice.lean`),
+applied to `Q.toBodyHinge` at `ends` (valid since `ends` records a link at *every* edge label,
+stronger than that lemma's linking-edge hypothesis): it hands back `N` literal
+`Q.toBodyHinge.panelRow ends`-rows, linearly independent. Each such row and the corresponding
+`normalRow ends q` row read the *same* endpoints `ends e` for the hinge, differing only in whose
+supporting extensor feeds the annihilator — `Q`'s own (via `Q.ends e`) versus the one computed
+directly at `ends e`. Since both `ends e` and `Q.ends e` witness the same `G`-link at `e` (`hends e`
+and `hQends e _ _ (hends e)`), edge-uniqueness (`Graph.IsLink.eq_and_eq_or_eq_and_eq`) puts them
+equal or swapped; in the swapped case `panelSupportExtensor_swap` negates the extensor, so the two
+row families agree up to a per-edge `±1`. A per-index `Kˣ`-scaling transports linear independence
 (`LinearIndependent.units_smul_iff`), giving back the `normalRow` family's independence. -/
 theorem exists_independent_normalRow_of_le_finrank [Finite α] [Finite β]
     (ends : β → α × α) {G : Graph α β}

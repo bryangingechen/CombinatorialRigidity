@@ -1,9 +1,9 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 4, the build-time detour P1 to P5, and item 5a,
-the switch, and item 5b, the footprint's docstrings, have landed. Next concrete task: item 6,
-`withGraph` restricted and `reaim` deleted.
+recon are in `notes/Phase41-design.md`. Items 1 to 4, the build-time detour P1 to P5, item 5a (the
+switch), item 5b (the footprint's docstrings) and item 6 (`withGraph` restricted, `reaim` deleted)
+have landed. Next concrete task: item 7, the two genuine forms merged.
 
 ## Current state
 
@@ -14,7 +14,9 @@ laid the API (`RecordsLinks`, `link_tac`, the R statements); the build-time deto
 whole project `module`s (a proof-only edit at `CaseIII/Realization` rebuilds that file alone,
 10–14 s); item 4's spike and item 5a landed the switch: the field is on the structure, 123
 declarations in 27 files follow it, the record binders are `hlinks`, and
-`def:panel-hinge-framework`'s formal note and `panel-layer.tex`'s selector notes are restated. Mode:
+`def:panel-hinge-framework`'s formal note and `panel-layer.tex`'s selector notes are restated. Item
+6 asked `rigidityMatrix_prop11`'s `hC` only at links, so `reaim` went, and restricted the panel
+`withGraph` to subgraphs. Mode:
 structural edit. There are no red target nodes, so the red-node consistency gate has nothing to
 read; the nodes a slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md`
 *Forward-mode slices*).
@@ -44,10 +46,12 @@ read; the nodes a slice reaches are restated in that slice (`CombinatorialRigidi
   - [x] **5a, the switch** (`afcff8fd`): the spike's patch, the record binders named `hlinks`, the
     docstrings and blueprint notes it made false (fix classes: TACTICS-QUIRKS § 120).
     `case_III_candidate_dispatch`'s `hGvGab` stays: `hrecGv₁` uses it by name.
-  - [x] **5b, the footprint's docstrings** (docs only; ledger dispositions "(item 5b)", whose sha
-    item 6 writes), and the selector half of the status surfaces' scope sentences.
-- [ ] **6. `withGraph` restricted** to `G' ≤ P.graph` (`def:framework-with-graph`), and **`reaim`
-  deleted**, with `rigidityMatrix_prop11`'s `hC` asked only at links.
+  - [x] **5b, the footprint's docstrings** (`8460b351`; docs only), and the selector half of the
+    status surfaces' scope sentences.
+- [x] **6. `withGraph` restricted** to `G' ≤ P.graph` (`def:framework-with-graph`), and **`reaim`
+  deleted**, with `rigidityMatrix_prop11`'s `hC` asked only at links; 5b's docstring wraps
+  reflowed. S18 is not discharged: the conditional statement, or a repin on the generic forms, is
+  RESTATE's, after S1 (`notes/Phase41-design.md` §3).
 - [ ] **7. The two genuine forms merged**: under the field,
   `rankHypothesis_genuine_of_theorem_55_gen` and its link-recording form coincide.
 - [ ] **Close**: whole-project build with 0 warnings, `lake lint`, the blueprint gates, the 19
@@ -62,13 +66,13 @@ read; the nodes a slice reaches are restated in that slice (`CombinatorialRigidi
 
 ## Hand-off / next phase
 
-Item 6 next: `withGraph` restricted to `G' ≤ P.graph` (`def:framework-with-graph`) and `reaim`
-deleted, with `rigidityMatrix_prop11`'s `hC` asked only at links. Its commit also writes 5b's sha
-into the ledger entries that read "(item 5b)" (`F-122`, `F-123`, `F-125`, `F-126`, `F-128`,
-`F-130`, `F-133`, `F-210`, `F-215`, `F-220`, `F-225`, `F-237`, `F-243`), and lowers
-`DOCSTRING_LABEL_BASELINE` further if it fixes the two `HingeGeneric.lean` findings left. Items 6
-and 7 are the multi-commit trial's next arc (`.claude/commands/coordinate-phase.md` *Multi-commit arcs*;
-the PI kept its rules unchanged for two more arcs, 2026-10-24).
+Item 7 next: the two genuine forms merged. Under the field,
+`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is `rankHypothesis_genuine_of_theorem_55_gen`
+with a conjunct every framework meets; one statement stays, and every reference to the other goes.
+Its commit also writes item 6's sha into the ledger dispositions that read "(item 6)" (`F-121`,
+`F-122`, `F-126`). Items 6 and 7 are the multi-commit trial's next arc
+(`.claude/commands/coordinate-phase.md` *Multi-commit arcs*; the PI kept its rules unchanged for
+two more arcs, 2026-10-24).
 
 ## Decisions made during this phase
 
@@ -86,3 +90,7 @@ The decisions of the open are `notes/Phase41-design.md` §1.
   surfaces and docstrings no longer say that it is free; they keep the degenerate hinges (the
   all-zero-normals framework at selector `G.endsOf` meets Theorem 5.6 at deficiency zero) and
   `molecular_conjecture`'s nonzero hinge at every label, which RESTATE changes.
+- **`withGraph` and `hC`** (item 6): the panel `withGraph` takes `hle : G' ≤ P.graph`, its field
+  by `RecordsLinks.mono`; `rigidityMatrix_prop11`'s `hC` is the link form of its lower bound's.
+  `rankHypothesis_deficiency_of_theorem_55_d3` no longer uses `2 ≤ |V(G)|`: the binder is `_hV`
+  until RESTATE restates `cor:theorem-55-d3-spanning`.

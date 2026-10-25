@@ -3,8 +3,9 @@
 **Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) is open, work log
 `notes/Phase41a.md`; RESTATE, MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
 they open. The build-time detour the PI scheduled before 41a's spike is done (items P1–P5), and so
-are the spike, the switch (item 5a) and the footprint's docstrings (item 5b). Next concrete task:
-41a's item 6, `withGraph` restricted and `reaim` deleted (`notes/Phase41a.md`).
+are the spike, the switch (item 5a), the footprint's docstrings (item 5b), and `withGraph`
+restricted with `reaim` deleted (item 6). Next concrete task: 41a's item 7, the two genuine forms
+merged (`notes/Phase41a.md`).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -143,6 +144,8 @@ link-recording form (:2272, through `reaimSubLink`). So the first form follows f
 `hC` (`PanelHinge.lean:768`) is asked at every label while its proof needs links, so it goes when
 `hC` moves to links. `PanelHingeFramework.withGraph` (:385) has no caller outside its own lemmas;
 it becomes `P.withGraph G' (hle : G' ≤ P.graph)`, which keeps the field (`isLink_ends_of_le`).
+Done in 41a: `reaimSub` went at item 1; at item 6 `hC` moved to links, `reaim` was deleted and
+`withGraph` takes `hle` (the field from `RecordsLinks.mono`).
 
 **S1 after S2.** The field is `hends` restricted to `E(G)`, so the panel theorems need neither
 `ends` nor `hends`, and S1 reduces to `hfresh` → `hcard`, genericity over rows indexed by `E(G)`, and
@@ -151,7 +154,7 @@ conditions only on `E(G)` (the body-bar precedent, `BodyBar/GenericLift.lean:190
 index would need transport for `ofHinge`, `MvPolynomial (β × …)`, `induce` and `mulTilde`. The
 extraction lemma (`GenericityDevice.lean:491–498`) already returns linking indices with
 nondegeneracy only at links. Folded in: S13 (genericity reads only the `E(G)` coordinates), S18
-(`prop:rigidity-matrix-prop11` restated conditionally, `hC` on links) and
+(`prop:rigidity-matrix-prop11` restated conditionally; its `hC` moved to links at 41a's item 6) and
 `cor:theorem-55-d3-spanning` (derived from `theorem_55_d3` under `hcard`, with general position
 and nondegenerate hinges on `E(G)`, `_hSimple` dropped, `F-126`).
 
@@ -171,7 +174,7 @@ ten signatures) and seven call sites; the spanning-trees theorem's `hD` goes wit
 | Code | Letter | Contents | Commits |
 |---|---|---|---|
 | **CARRIER** | 41a (open) | retire `reaimSub`; the link predicate, its lemmas and the fill-in tactic; the four R statements; a throwaway spike to list what the switch breaks; the switch (the field, the constructors, the H binders, the graph rewrites, the footprint's docstrings file by file, `def:panel-hinge-framework` restated); `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged | 9 besides the build-time detour: the switch is one commit and a docstring commit (the spike) |
-| **RESTATE** | — | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences on the degenerate hinges removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP; their selector half went in 41a's item 5b); non-vacuity witnesses at minimal graphs for these rows; S18; the remaining footprint docstrings | 9–13 |
+| **RESTATE** | — | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences on the degenerate hinges removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP; their selector half went in 41a's item 5b); non-vacuity witnesses at minimal graphs for these rows; S18 (the conditional statement or a repin on the generic forms, after S1; its `hC` moved to links in 41a's item 6); the remaining footprint docstrings | 9–13 |
 | **MULTIGRAPH** | — | M1: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1) | 3–5 |
 | **UNSTATED** | — | the claims no declaration states, the report's estimates: S22 1–2, S23 1, S24 2–3, S25 1, S31 2–3, S3 0–2, S16 1, S19 0–3, G5 3–5, `F-061` 1–2; after CARRIER, since S3 and S19 touch carrier code (`case_II_placement_eq612`) | 13–23 |
 

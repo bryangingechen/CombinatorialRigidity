@@ -2532,7 +2532,9 @@ declaration's name as its header writes it:
   prop:rigidity-matrix-prop11` at `efa7ed2b`: `thm:theorem-55`, `lem:motions-mono-of-graph-le`,
   `def:dof-generic` and `lem:genericity-device` unbacked).
   *Found:* round 3 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, S18).
+  *Disposition:* reported (`notes/Prose-report.md`, S18); phase 41a: the pin's `hC` asked only at
+  the links of $G$, and the note after the proof says so (item 6); the conditional statement, or a
+  repin on the generic forms, stays RESTATE's, after S1.
 - **F-122** · S · `def:panel-hinge-framework`, `def:hinge-coplanar`, `thm:molecular-conjecture`
   (`algebraic-induction/panel-layer.tex`): the structure `PanelHingeFramework` records, for every
   edge label, an ordered pair of bodies (`ends`), and computes the hinge from their normals;
@@ -2649,12 +2651,17 @@ declaration's name as its header writes it:
   multigraph, so `IsHingeCoplanar` constrains the hinges on `E(G)` and the panel side of
   `molecular_conjecture` gives each hinge at its edge's ends, and `fmlnote:panel-hinge-nondegenerate`,
   the note after `def:hinge-coplanar` and `panel-layer.tex`'s notes on the selector are restated
-  (`afcff8fd`, item 5a); item 5b: the status surfaces' sentences on the selector corrected
+  (`afcff8fd`, item 5a); item 5b (`8460b351`): the status surfaces' sentences on the selector corrected
   (`formalization.yaml`'s two rows and three alignment notes, README, the home page, `intro.tex`,
   ROADMAP §23: each framework's selector gives each edge of $G$ its ends), the footprint's
   docstrings read against the field (`molecular_conjecture`'s says that its panel side gives each
   hinge at its edge's own ends, and that without the nonzero-hinge conjunct each side holds exactly
-  for connected $G$); the degenerate hinges stay RESTATE's.
+  for connected $G$); the degenerate hinges stay RESTATE's; item 6: `reaim` deleted, as
+  `rigidityMatrix_prop11` asks a nonzero hinge only at links, which general position gives the
+  realization of `cor:theorem-55-d3-spanning` itself, and `PanelHingeFramework.withGraph` takes a
+  subgraph, `G' ≤ P.graph`; `def:framework-with-graph`, the notes after
+  `prop:rigidity-matrix-prop11` and `cor:theorem-55-d3-spanning`, and
+  `rem:molecular-conjecture-essential` restated (item 6).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2711,7 +2718,7 @@ declaration's name as its header writes it:
   rank-formula sentence now takes that form, as the upper bound needs nondegenerate hinges
   (b0eb63eb); phase 41a: with the field `isLink_ends`, the three pins' frameworks give each edge
   of $G$ its ends, and their notes say so (`afcff8fd`, item 5a); the degenerate hinges, with the all-zero-normals
-  framework at deficiency zero, stay RESTATE's; item 5b: the `main_results` row, the `alignment`
+  framework at deficiency zero, stay RESTATE's; item 5b (`8460b351`): the `main_results` row, the `alignment`
   note, README, the home page, `intro.tex` and ROADMAP §23 drop the free selector and keep the
   degenerate hinges, and the docstrings of `rankHypothesis_of_theorem_55_gen` (its scope) and of
   `rankHypothesis_of_theorem_55_d3` say so.
@@ -3960,7 +3967,7 @@ declaration's name as its header writes it:
   `withMomentNormals` and `ofParam` say that no main result uses them and not that Case I needs
   them, and `rigidityMatrix_prop11`'s header and docstring give it as the rank hypothesis from the
   generic bound `hgen`, which the proofs of KT Theorem 5.6 supply, without "GREEN-modulo",
-  "honest" or "Phase 21b"; done (item 5b).
+  "honest" or "Phase 21b"; done (`8460b351`).
 - **F-126** · L · the docstrings and comments of `panel-layer.tex`'s KT Theorem 5.5 pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `Pinning.lean`, `Theorem55.lean`):
   `HasFullRankRealization`'s docstring calls it "the motive Theorem 5.5's induction is run
@@ -3974,7 +3981,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings, signatures and bodies; KT 2011 p. 670); measured
   (`scripts/blueprint-deps.py --label def:rank-hypothesis` at `db237dfd`, dead pin).
   *Found:* round 3 task 2.2.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L12); round 3: `Pinning.lean`'s part
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L12); round 3: `Pinning.lean`'s part
   (`b03f8530`): `RankHypothesis`'s docstring gives it as the form `dim Z(G,p) = D + k'` of the
   target rank in which KT Theorem 5.6, the molecular conjecture and the rank formula are stated, and
   says that the induction of KT Theorem 5.5 states its realizations with
@@ -3987,7 +3994,9 @@ declaration's name as its header writes it:
   `rankHypothesis_deficiency_of_theorem_55_d3`'s part is the phase's;
   Phase 41a, item 5b: `rankHypothesis_deficiency_of_theorem_55_d3`'s docstring names the `def = 0`
   stratum of KT Theorem 5.5, says that no declaration uses it and that its simplicity hypothesis
-  is unused (the binder stays, as `cor:theorem-55-d3-spanning` states it).
+  is unused (the binder stays, as `cor:theorem-55-d3-spanning` states it); item 6: with `reaim`
+  gone its two-body hypothesis is unused too, and the docstring says so (the binder `_hV` stays,
+  as the node states it).
 - **F-130** · L · the docstrings of `panel-layer.tex`'s KT Theorem 5.6 and molecular-conjecture
   pins (`Molecular/AlgebraicInduction/Theorem55.lean`): `molecular_conjecture`'s says that dropping
   the nonzero-hinge conjunct "makes the statement false"; dropped from both sides, each side holds
@@ -4000,7 +4009,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies; `IsInfinitesimalMotion`,
   `Molecular/RigidityMatrix/Basic.lean`).
   *Found:* round 3 task 2.3.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L4); round 3: the leads' labels and codes
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L4); round 3: the leads' labels and codes
   (`b504aa52`): `rankHypothesis_genuine_of_theorem_55_gen`'s names `thm:theorem-55-6-genuine`, and
   the leads name no phase; the docstrings otherwise moved to the phase (the open);
   Phase 41a, item 5b: `molecular_conjecture`'s says that dropped from both sides each side holds
@@ -4052,7 +4061,7 @@ declaration's name as its header writes it:
   results over the `scripts/blueprint-deps.py` cache, and `--label` for the slice's nodes, at
   `708f4443`).
   *Found:* round 3 task 2.5.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L3); round 3: `Pinning.lean`'s part
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L3); round 3: `Pinning.lean`'s part
   (`b03f8530`): `BodyHingeFramework.withGraph`'s docstring without "the carrier for the inductive
   constructions of Cases I and II", and `finrank_infinitesimalMotions_le_of_graph_le`'s names its
   users, the proofs of KT Theorem 5.6 (`thm:theorem-55-6-genuine`, `thm:theorem-55-6-multigraph`),
@@ -4514,7 +4523,7 @@ declaration's name as its header writes it:
   eight; it is 2010 (task 2.9 corrected the bibliography).
   *Evidence:* read (the docstrings and bodies of the twelve pins; `grep` for the year).
   *Found:* round 4 task 2.9.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L4); round 3: `GenericRigidityMatroid.lean`'s
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L4); round 3: `GenericRigidityMatroid.lean`'s
   abundance lemma without "Phase 34 PROSPECT G3" (its credit dropped, as the node gives none)
   (`ac4b1753`); `Molecular/Deficiency.lean`'s header without the year 2009 (`1fbcf91d`), and its
   docstrings with Jackson and Jordán's Theorem 4.1(a) dated 2010 (`722c88ef`);
@@ -4543,7 +4552,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the twelve pins and the private lemmas; JJ 2010
   §5, pp. 581–582).
   *Found:* round 4 task 2.10.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L3); round 3: all but S13's part (`0819b42e`):
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L3); round 3: all but S13's part (`0819b42e`):
   `coordPoint`'s origin is the chapter's `c₀` and JJ's `p₀` (2010, p. 581), the two private
   lemmas say JJ's table has the opposite signs on the direction coordinates, and the process
   narration is gone; S13's part, `exists_isGenericEndpoints_abundance`'s "`2n|E(G)|` endpoint
@@ -4564,7 +4573,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the seven pins; JJ 2010 §§3.3 and 6, pp. 578 and
   583).
   *Found:* round 4 task 2.11.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L5);
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L5);
   Phase 41a, item 5b: `GenericLift/HingeGeneric.lean`: no credit to Jackson–Jordán 2010 §6 for the
   hinge-point model (the header cites their §3.3 and p. 583), no degree bound, `pRef` placed on every
   label, and the process words gone ("Layer BH", "Phase 34", "PROSPECT", "consumers",
@@ -4586,7 +4595,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies of the seven pins and of `screwEquivOfLinearEquiv`;
   JJ 2010 §§6–7, pp. 582–584).
   *Found:* round 4 task 2.12.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L5); round 3: `Extensor.lean`'s part
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L5); round 3: `Extensor.lean`'s part
   (`a7e40ff4`): `exists_affineSubspaceExtensor_eq_smul_extensor` credits no one, as
   `lem:extensor-affine-representation` does not, its "Phase 34" is gone, and its lead names the
   node; `GenericLift/HingeGeneric.lean`'s part moved to the phase;
@@ -4700,7 +4709,7 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_of_theorem_55_gen` (`F-011`).
   *Evidence:* read (the docstrings and bodies; a `grep` for the callers).
   *Found:* round 5 task 3.6.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L9); round 3: the five wrappers deleted, and the
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L9); round 3: the five wrappers deleted, and the
   `_gen` forms' docstrings no longer name them as their lifts (`d85b9bea`); in `PanelLayer.lean`
   (`b03f8530`), `exists_extensor_eq_panelSupportExtensor_gen`'s lead names
   `lem:panel-support-extensor-join`, and `exists_extensor_eq_panelSupportExtensor`'s names its
@@ -4797,7 +4806,7 @@ declaration's name as its header writes it:
   `lem:hinge-rows-polynomial-in-points` to pins those nodes no longer have.
   *Evidence:* read (the docstrings and module headers; a `grep` for the callers).
   *Found:* round 5 task 3.11.
-  *Disposition:* done (item 5b); reported (`notes/Prose-report.md`, L11); round 3: `BodyBar/GenericLift.lean`'s
+  *Disposition:* done (`8460b351`); reported (`notes/Prose-report.md`, L11); round 3: `BodyBar/GenericLift.lean`'s
   header maps each node to its pins, and `twoExtensorPoly_eval`'s docstring names
   `lem:two-extensor-polynomial` (`0819b42e`); the docstrings of `screwComplementIso` and
   `screwComplementIso_lineExtensor` name `lem:polarity-join`, and `equivExteriorPower_lineExtensor`'s
