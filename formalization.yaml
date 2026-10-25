@@ -501,7 +501,8 @@ status:
       assignment is generic when every set of rigidity rows at the edges of G that is
       linearly independent at some hinge-point assignment is independent at it; the
       assignments that are not generic lie in the zero set of one nonzero polynomial. The
-      single edge, every tree and every minimal 0-dof-graph are covered, given enough labels.
+      single edge, every tree and every simple minimal 0-dof-graph are covered, given enough
+      labels.
       Its rank formula
       CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
       is Jackson-Jordán 2010 Thm 6.1 for simple graphs. The panel-normal analogue, JJ Thm 7.2
@@ -812,9 +813,9 @@ alignment:
         Over any infinite field, with the existential quantifier upgraded to every generic
         hinge-point realization. Since phase 41b both theorems hold at every hinge-point
         assignment generic for the rows at the edges of a simple spanning G (one body or
-        more), under the bound of Katoh-Tanigawa Theorem 5.6 on the number of edge labels
-        (more than D(|V| - 1)); a single edge, a tree or a minimal 0-dof-graph is covered once
-        there are enough labels.
+        more), under the bound that the formal Katoh-Tanigawa Theorem 5.6 takes on the number of
+        edge labels (more than D(|V| - 1)); a single edge, a tree or a simple minimal
+        0-dof-graph is covered once there are enough labels.
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff"
@@ -824,9 +825,9 @@ alignment:
         Sharpened to an iff against def(G~) = 0; their sufficient tree-packing condition
         implies it. Since phase 41b both theorems hold at every panel-hinge framework on a
         simple spanning G (one body or more) whose normals are generic, read at the edges of
-        G only, under the bound of Katoh-Tanigawa Theorem 5.6 on the number of edge labels
-        (more than D(|V| - 1)); a single edge or a tree is covered once there are enough
-        labels.
+        G only, under the bound that the formal Katoh-Tanigawa Theorem 5.6 takes on the number
+        of edge labels (more than D(|V| - 1)); a single edge or a tree is covered once there
+        are enough labels.
 
     - source: "Jackson-Jordán 2010 p. 586 (every generic realization of G^2 rigid under six spanning trees in 5G; conditional there on the molecular conjecture)"
       lean: "SimpleGraph.molecule_generic_rank, SimpleGraph.molecule_generic_rigid, SimpleGraph.molecule_generic_square_packing"

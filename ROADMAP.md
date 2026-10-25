@@ -762,12 +762,12 @@ chain `v₀…v_d`, eqs. 6.46–6.67), completed Theorems 5.5 and 5.6 at general
 bodies has an infinitesimally rigid genuine **body-hinge** realization iff it
 has one as a **panel-hinge** framework; green + axiom-clean for
 `6 ≤ bodyBarDim n`, i.e. `n ≥ 3`; weakened to `n ≥ 2` in place by Phase 40a, and to
-≥ 1 body, with nondegenerate hinges asked at the edges only, by Phase 41b).
-As stated, Theorem 5.6's conclusion
-(`rankHypothesis_of_theorem_55_gen`) allows degenerate hinges, so at deficiency
-zero all-zero normals meet it; the form with nondegenerate hinges is
-`rankHypothesis_genuine_of_theorem_55_gen` (`F-122`, `F-128`; since
-phase 41a every panel-hinge framework's selector gives each edge its ends). The work split along the recon's
+≥ 1 body, with nondegenerate hinges asked at the edges only and nonparallel panels on its panel
+side, by Phase 41b). Since Phase 41b, Theorem 5.6's conclusion
+(`rankHypothesis_of_theorem_55_gen`, on ≥ 1 body) is a framework on `G` with KT's nonparallel
+panels, so every hinge at an edge of `G` is nondegenerate (`F-122`, `F-128`; since phase 41a every
+panel-hinge framework's selector gives each edge its ends); the form with a nondegenerate hinge at
+every label, on ≥ 2 bodies, is `rankHypothesis_genuine_of_theorem_55_gen`. The work split along the recon's
 carrier-grade fault line: **`CARRIER`** (23a, the mechanical `screwDim k`
 spine lift), **`CHAIN`** (23b–23f — the general-`d` chain dispatch; after the
 `±r`-block rank cert hit the *member-mapping wall* (source-verified intrinsic
@@ -1039,11 +1039,11 @@ the capstone: every generic hinge-point realization is rigid iff
 `(D-1)·G` packs `D` edge-disjoint spanning trees, over any infinite
 field (JJ Thm 6.1 / Cor 6.3 in every-generic form,
 `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`).
-As stated, BH's theorems say nothing about a graph that is itself a
-minimal `k`-dof-graph, and apply to every graph with more than
-`D(|V|-1)` edges (`F-207`; the refactor is `RECONCILE-FORMAL`'s). P's
-theorems lost the restriction in Phase 41b, which gave them KT Theorem
-5.6's bound on the edge labels instead and made P's rank formula a main
+As first stated, P's and BH's theorems said nothing about a graph that is
+itself a minimal `k`-dof-graph (`F-207`). Phase 41b restated both over
+`G`, on ≥ 1 body, with the formal KT Theorem 5.6's bound on the edge
+labels instead, so they cover every simple graph, given enough labels,
+the simple minimal ones included, and made P's rank formula a main
 result.
 Headline axioms verified at close. This closed the PROSPECT queue.
 
@@ -1228,13 +1228,13 @@ carried past the close are indexed in the design doc's §7. Headline axioms (the
 **In progress** (opened 2026-10-24 with the PI; plan and recon `notes/Phase41-design.md`). The
 attended phase of the RECONCILE program (`notes/Reconcile.md` §3), acting on PROSE's findings S1
 and S2. **S2**: `PanelHingeFramework`'s endpoint selector `ends` was free, so KT Theorem 5.6's main
-result is met at deficiency zero by the framework whose normals are all zero. The PI chose a field
+result was met at deficiency zero by the framework whose normals are all zero. The PI chose a field
 of the structure, `isLink_ends : ∀ e ∈ E(graph), graph.IsLink e (ends e).1 (ends e).2`, so a
 mis-linked framework cannot be built; the restated conclusions also ask nondegenerate hinges on
 `E(G)`, which the open's Lean witness shows the field alone does not give. **S1**: the generic
-panel and body-hinge theorems are vacuous at every minimal `k`-dof-graph, since their `hends` and
-fresh-label supply contradict each other there; with the field, `hends` goes, and the theorems
-take a bound on the label type instead. The PI's decisions at the open (design A; KT's conclusions
+panel and body-hinge theorems were vacuous at every minimal `k`-dof-graph, since their `hends` and
+fresh-label supply contradicted each other there; with the field, `hends` went, and the theorems
+took a bound on the label type instead (41b). The PI's decisions at the open (design A; KT's conclusions
 as the floor, stronger forms considered; `IsHingeCoplanar` and the multigraph rows on `E(G)` only;
 `F-323` and `F-324` dropped with the restatements) are in the design doc's §1. Four sub-phases by
 stable code: **CARRIER** (41a, ✓ closed 2026-10-24), **RESTATE** (41b, opened 2026-10-24: S1's and

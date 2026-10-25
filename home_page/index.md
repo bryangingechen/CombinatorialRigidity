@@ -98,12 +98,13 @@ conjecture is Jackson–Jordán's 2008 theorem on pin-collinear body-and-pin
 frameworks; the development proves it over every infinite field, by
 Katoh–Tanigawa's argument (phase 40). The formal framework records a pair of bodies per edge, and since
 phase 41a the pair is the edge's own ends, so each hinge is the meet of
-the panels of its edge's own ends. As stated, Theorem 5.6 allows
-degenerate hinges, so for a graph of deficiency zero a framework whose
-panel normals are all zero meets its conclusion. The form with
-nondegenerate hinges is proved for simple graphs on at least two bodies.
-The multigraph forms (phase 35, below) place each hinge in the panels of
-its edge's own ends. On top of these results sits the molecule application: the
+the panels of its edge's own ends. Since phase 41b, Theorems 5.5 and
+5.6 give each simple graph they cover a realization with nonparallel
+panels, as in Katoh–Tanigawa's Theorem 5.5, so the hinge of every edge
+is nondegenerate; Theorem 5.6 and the molecular conjecture hold for
+simple graphs on one body or more, and both sides of the conjecture ask
+for a nondegenerate hinge at every edge. The multigraph forms (phase 35,
+below) place each hinge in the panels of its edge's own ends. On top of these results sits the molecule application: the
 generic bar-joint rigidity matroid in dimension three, in
 linear-matroid form (phase 24); projective invariance plus the
 molecule modelling equivalence — the chain identifying bar-joint motions
@@ -139,16 +140,13 @@ whenever `5G` packs six edge-disjoint spanning trees; Tay's body-bar
 theorem holds at every generic choice of bar endpoints; and the
 body-hinge theorem holds at every generic choice of hinge positions,
 with the non-generic parameter choices confined to the zero set of a
-single nonzero polynomial in each case. As stated, the generic
-body-hinge theorem covers only part of the simple graphs: its
-assumptions fail at every graph that is itself a minimal
-`k`-dof-graph (a single edge, a tree, every minimal `0`-dof-graph),
-hold at every graph with more than `D(|V|−1)` edges, where
-`D = d(d+1)/2`, and are not settled in between; phase 41, in
-progress, removes the restriction. It has already removed it for the
-theorem's panel-hinge companion: on every simple graph with more edge labels
-than `D(|V|−1)`, each panel-hinge framework whose panel normals are
-generic attains the deficiency rank. Phase 35 (closed 2026-07-18)
+single nonzero polynomial in each case. Since phase 41b, the generic
+body-hinge theorem and its panel-hinge companion hold for every simple
+graph on one body or more, given more edge labels than `D(|V|−1)`,
+where `D = d(d+1)/2`, the simple minimal `k`-dof-graphs included (a
+single edge, a tree, a triangle): on such a graph each panel-hinge
+framework whose panel normals are generic attains the deficiency rank.
+Phase 35 (closed 2026-07-18)
 recovered the **full multigraph strength** of Theorem 5.6 and of the
 molecular conjecture itself, which the development above proves for
 simple graphs: stating the panel side in Katoh–Tanigawa's own

@@ -11,8 +11,8 @@ design pass, on the generic panel theorems, is in §2; the PI's decision on thei
 §1e, item 9a restated them, and item 9b made their rank formula a main result. The PI's answers in
 advance (2026-10-25: S18, RESTATE's close, free strengthenings, M1's loops) are §1f. Item 10's
 design pass, on the generic body-hinge theorems, is §2's last arc, with one adoption under §1f.3
-(one body); item 10a restated them as it plans. Next concrete task: 41b's item 10b, the S1 scope
-sentences.
+(one body); item 10a restated them as it plans, and items 10b and 12, in one commit, the status
+surfaces' scope and degenerate-hinge sentences. Next concrete task: 41b's item 11, S18.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report

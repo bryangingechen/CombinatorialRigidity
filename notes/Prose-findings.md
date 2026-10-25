@@ -2685,6 +2685,13 @@ declaration's name as its header writes it:
   Item 7 (`6d261725`): `IsHingeCoplanar` constrains the hinges at `E(F.graph)` only, as a hinge at
   a label outside the edge set constrains no motion (the design doc's §1.4); its docstring says so,
   and `molecular_conjecture_multigraph`'s body-hinge side asks nonzero hinges on `E(G)`.
+  Item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge sentences
+  restated"): done for the degenerate hinges. README, the home page, `intro.tex` and ROADMAP §23
+  say that Theorems 5.5 and 5.6 give each simple graph they cover a realization with nonparallel
+  panels, so every hinge at an edge is nondegenerate, and that both sides of
+  `molecular_conjecture`, on one body or more, ask a nondegenerate hinge at every edge, its panel
+  side nonparallel panels too. `molecular_conjecture`'s docstring no longer says that without the
+  conjunct each side holds exactly for connected $G$ (`F-130`).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2759,6 +2766,10 @@ declaration's name as its header writes it:
   or more bodies. Item 6 (`68d5ea84`):
   `molecular_conjecture` calls `rankHypothesis_of_theorem_55_gen`, not the genuine form, its panel
   side's nondegenerate hinges at the edges of $G$ coming from the nonparallel panels.
+  Item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge sentences
+  restated"): done. README, the home page, `intro.tex` and ROADMAP §23 no longer say that Theorem
+  5.6 allows degenerate hinges or that all-zero normals meet it: its realization of a simple graph,
+  on one body or more, has nonparallel panels, so every hinge at an edge is nondegenerate.
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
@@ -3257,7 +3268,7 @@ declaration's name as its header writes it:
   `fidelity.divergences`, README, the home page, `intro.tex` and ROADMAP §34); the row and the
   last four also say that the panel form has lost the restriction. Item 10 removes them.
   Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
-  witnessed at the triangle"): done for the body-hinge half. The witness lemma,
+  witnessed at the triangle", `96683b73`): done for the body-hinge half. The witness lemma,
   the rank formula and its two corollaries take neither `hends` nor `hfresh` but KT Theorem 5.6's
   `hcard`, and the last three range over every hinge-point assignment generic over $G$
   (`IsGenericHingePoints G q`: the rows at the edges of $G$, at every selector that records its
@@ -3269,6 +3280,13 @@ declaration's name as its header writes it:
   note after `cor:bodyhinge-generic-tree-packing`, and `formalization.yaml`'s row and `alignment`
   note are restated; the scope sentences of README, the home page, `intro.tex` and ROADMAP §34 are
   item 10b's.
+  Phase 41b, items 10b and 12 (the commit "Phase 41b items 10b and 12: the scope and
+  degenerate-hinge sentences restated"): done. The scope sentences of README, the home page,
+  `intro.tex` and ROADMAP §34 say, as the body-hinge row does, that both generic theorems hold for
+  every simple graph on one body or more, given more than $D(|V| - 1)$ labels, the simple minimal
+  graphs (a single edge, a tree, a triangle) covered. The row's and its `alignment` note's "minimal
+  0-dof-graph" now read "simple minimal 0-dof-graph", as the double edge, a minimal 0-dof-graph, is
+  not simple; both `alignment` notes call the label bound the formal KT Theorem 5.6's.
 
 - **F-211** · S · `def:two-extensor`, `def:generic-endpoints` (`generic-lift.tex`): principle B's
   moves out of two definitions, task 2.10's hygiene-rule reading. At the open `def:two-extensor`
@@ -3305,7 +3323,7 @@ declaration's name as its header writes it:
   $G$, and its abundance polynomial has variables for the bodies only. The body-bar endpoint
   assignments, this entry's subject, are unchanged, with the note after `def:generic-endpoints`.
   Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
-  witnessed at the triangle"): S13 on the body-hinge side: genericity over $G$
+  witnessed at the triangle", `96683b73`): S13 on the body-hinge side: genericity over $G$
   reads only the rows at the edges of $G$, so only the points there (`isGenericHingePoints_congr`,
   a fifth pin of `def:generic-hinge-points`, with the remark after it); the abundance polynomial
   keeps the points of every label as variables (the note after the definition).
@@ -3333,7 +3351,7 @@ declaration's name as its header writes it:
   *Found:* round 4 task 2.11.
   *Disposition:* reported (`notes/Prose-report.md`, S34).
   Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
-  witnessed at the triangle"): done. The pins state what the nodes state:
+  witnessed at the triangle", `96683b73`): done. The pins state what the nodes state:
   genericity is over $G$ (`IsGenericHingePoints G q`), for the rows indexed by its edges, at every
   selector that gives each edge its two ends, which is the condition at any one of them
   (`isGenericHingePoints_iff_of_recordsLinks`, a fourth pin of `def:generic-hinge-points`: the
@@ -3374,7 +3392,7 @@ declaration's name as its header writes it:
   *Found:* round 4 task 2.12.
   *Disposition:* reported (`notes/Prose-report.md`, S34).
   Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
-  witnessed at the triangle"): done. The four pins take no selector but the
+  witnessed at the triangle", `96683b73`): done. The four pins take no selector but the
   witness lemma's, which records the links of $G$ (the condition on $E(G)$), no "every label is an
   edge", `hcard` for `hfresh`, and $V(G) \neq \emptyset$ for $|V| \ge 2$, which the statements now
   say ("$V$ finite and nonempty"). The spanning, the separate dimension parameter, rigidity on
@@ -3438,7 +3456,7 @@ declaration's name as its header writes it:
   on `G` with generic normals", `24d9d0cc`): done for the two panel
   pins, which no longer take `hfresh` (`F-207`); the four body-hinge pins are item 10's.
   Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
-  witnessed at the triangle"): done for the four body-hinge pins, which no
+  witnessed at the triangle", `96683b73`): done for the four body-hinge pins, which no
   longer take `hfresh` (`F-207`).
 - **F-260** · S · `lem:panel-hinge-dual-molecular` (`molecule-modelling.tex`): its unpinned (2), the
   rescaling of the normals $\bar c(v)$ by nonzero $\lambda_v$, is the case $q = \bar c$ of
@@ -4137,6 +4155,10 @@ declaration's name as its header writes it:
   them, and `rigidityMatrix_prop11`'s header and docstring give it as the rank hypothesis from the
   generic bound `hgen`, which the proofs of KT Theorem 5.6 supply, without "GREEN-modulo",
   "honest" or "Phase 21b"; done (`8460b351`).
+  Phase 41b, item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge
+  sentences restated"): re-read against 41b's restated statements; no part is left false.
+  `rigidityMatrix_prop11`'s header and docstring name its node, which item 11 restates (`F-121`,
+  `F-331`), and are item 11's to re-read.
 - **F-126** · L · the docstrings and comments of `panel-layer.tex`'s KT Theorem 5.5 pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `Pinning.lean`, `Theorem55.lean`):
   `HasFullRankRealization`'s docstring calls it "the motive Theorem 5.5's induction is run
@@ -4190,6 +4212,13 @@ declaration's name as its header writes it:
   `rankHypothesis_of_theorem_55_gen` and `_d3` name `thm:theorem-55-6` and `thm:theorem-55-6-d3`,
   without "the `def > 0` feed of `rigidityMatrix_prop11`", "Theorem 5.5 → Proposition 1.1" or
   "PROSPECT".
+  Phase 41b, item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge
+  sentences restated"): since item 6b (`9f7f73ee`) the panel side asks `Q.IsNonparallel`, which
+  gives nondegenerate hinges at the edges of the simple $G$, so item 5b's sentence was false of
+  the panel side. `molecular_conjecture`'s docstring and the prose before `thm:molecular-conjecture`
+  now say that, dropped from the body-hinge side, that side holds exactly for connected $G$ and the
+  equivalence fails at the single edge ($\operatorname{def}(\tilde G) = 1$), and that on the panel
+  side the nonparallel panels give the conjunct; done.
 - **F-132** · L · the docstrings of `panel-layer.tex`'s base pins
   (`Molecular/AlgebraicInduction/Theorem55.lean`, `PanelLayer.lean`, `Pinning.lean`): those of
   `theorem_55_base_producer_empty`, `_single_edge` and their `_gen` forms name
@@ -4751,6 +4780,9 @@ declaration's name as its header writes it:
   hinge-point model (the header cites their §3.3 and p. 583), no degree bound, `pRef` placed on every
   label, and the process words gone ("Layer BH", "Phase 34", "PROSPECT", "consumers",
   "packaging", "seeded", "genuine").
+  Phase 41b, item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge
+  sentences restated"): re-read against `HingeGeneric.lean` as item 10a restated it; no part is
+  left false.
 
 - **F-225** · L · the docstrings of task 2.12's pins (`GenericLift/HingeGeneric.lean`,
   `Extensor.lean`). Six credit "Jackson–Jordán 2010 §6": right for the rank theorem and its

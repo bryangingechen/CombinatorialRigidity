@@ -2420,8 +2420,10 @@ on `G` whose hinge at every edge of `G` is nondegenerate (a `(d−2)`-flat, `sup
 matching KT's `p(e)` being an affine subspace) and all of whose infinitesimal motions are trivial.
 The nondegenerate-hinge conjunct carries the content: a degenerate hinge `C(p(e)) = 0` welds two
 bodies (`S u = S v`), *over*-constraining, so a welded framework can be infinitesimally rigid on a
-combinatorially deficient graph (`def(G̃) > 0`). Dropped from both sides, each side holds exactly
-when `G` is connected, so the equivalence would still hold but would say nothing about `def(G̃)`.
+combinatorially deficient graph (`def(G̃) > 0`). Dropped from the body-hinge side, that side holds
+exactly when `G` is connected, and the equivalence fails at the single edge on two bodies, which is
+connected with `def(G̃) = 1`. On the panel side the conjunct follows from `Q.IsNonparallel`, as the
+edges of the simple `G` have distinct ends (`supportExtensor_ne_zero_of_isGeneralPosition`).
 The selector of the panel-hinge framework `Q` gives each edge of `G` its two ends (the field
 `isLink_ends`), so the hinge of each edge is the meet of the panels of its own ends. The panel
 side also asks `Q.IsNonparallel`, the panels' directions pairwise independent.

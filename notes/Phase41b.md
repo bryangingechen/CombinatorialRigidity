@@ -3,12 +3,12 @@
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c; on
 `F-330`, §1d; on the generic panel theorems' body bound, §1e; in advance, §1f) and the recons are in
-`notes/Phase41-design.md`. Items 1–9 and 10a done: Theorems 5.5 and 5.6, and their `d = 3`
+`notes/Phase41-design.md`. Items 1–10 and 12 done: Theorems 5.5 and 5.6, and their `d = 3`
 instances, conclude KT's nonparallel panels for simple `G`, `molecular_conjecture` holds on one
 body with nonparallel panels on its panel side, the multigraph rows ask nondegeneracy on `E(G)`,
-the `d = 3` spanning corollary derives from `theorem_55_d3`, and the generic panel and body-hinge
+the `d = 3` spanning corollary derives from `theorem_55_d3`, the generic panel and body-hinge
 theorems hold at every generic realization on `G`, one body or more (rows witnessed at the single
-edge and the triangle). Next concrete task: item 10b, the S1 scope sentences (docs only).
+edge and the triangle), and the status surfaces say so. Next concrete task: item 11, S18.
 
 ## Current state
 
@@ -39,9 +39,14 @@ theorems in `notes/reconcile-formal/HingeGenericWitness.lean` and split the item
 Item 10a restated `HingeGeneric.lean` from it: genericity is over `G`, for the rows at its edges at
 every selector that records its links; the rank formula and its two corollaries hold at every
 generic assignment, on one body or more (§1f.3), under `hcard`, from Theorem 5.6's main form; the
-row is witnessed at the triangle. The README, home-page, `intro.tex` and ROADMAP §34 sentences
-that call the theorem vacuous at minimal graphs are false since 10a. Next: item 10b, then items 11
-and 12. Mode: structural edit. There
+row is witnessed at the triangle. Items 10b and 12, merged into one commit (*Decisions made*),
+restated the status surfaces: the scope sentences (README, home page, `intro.tex`, ROADMAP §34)
+say that both generic theorems cover every simple graph on one body or more, given enough labels,
+the simple minimal graphs included; the degenerate-hinge sentences (the same and ROADMAP §23) say
+that Theorems 5.5 and 5.6 give nonparallel panels. `molecular_conjecture`'s docstring and the
+prose before its node no longer say that, without the hinge conjunct, each side holds exactly for
+connected `G`, false since 6b (`F-130`); of the footprint's docstrings (`F-123`, `F-130`, `F-220`)
+none other is left false. Next: item 11, then the close. Mode: structural edit. There
 are no red target nodes; each slice restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
 *Forward-mode slices*).
 
@@ -97,18 +102,16 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
     witness assembly from Theorem 5.6's main form; the rank formula and its iffs under `hk1`, `hn`,
     `hcard`, `hne`; the triangle witness; the nodes, notes, yaml row; check 9 at 0 (`F-207`,
     `F-216`, `F-221`, `F-252`; S13's body-hinge side).
-  - [ ] **10b. The S1 scope sentences removed** (docs only): README `:162`, `home_page/index.md:142`,
-    `intro.tex:266`, ROADMAP §34 `:1042`; `F-207`'s last disposition.
+  - [x] **10b. The S1 scope sentences restated** (docs only, with item 12): README, the home page,
+    `intro.tex`, ROADMAP §34; `F-207`'s last disposition; 10a's sha in the ledger.
 - [ ] **11. S18** (`prop:rigidity-matrix-prop11`; `F-121`, `F-331`; the PI's §1f.1): restated as
   KT state Proposition 2.3, a generic body-hinge framework on a multigraph (KT p. 655, credited to
   Jackson–Jordán), not a panel-hinge realization; proved in the conditional form (the bound gives
   the formula), citing item 10's generic body-hinge theorem for simple graphs. The unconditional
   repin waits for MULTIGRAPH's M1 (design doc §3).
-- [ ] **12. The status surfaces**: the degenerate-hinge sentences (Theorem 5.6's `main_results` row
-  and `alignment` note, README, the home page, `intro.tex`, ROADMAP §23) and the footprint's
-  remaining docstrings. The row and the note were restated at item 5; the other surfaces' "Theorem
-  5.6 allows degenerate hinges" is false of `rankHypothesis_of_theorem_55_gen` since item 5 (true
-  of the d = 3 instance until item 5b).
+- [x] **12. The status surfaces** (with 10b): the degenerate-hinge sentences of README, the home
+  page, `intro.tex` and ROADMAP §23 (the row and note were item 5's); `molecular_conjecture`'s
+  docstring (`F-130`); `F-122`, `F-128` done, `F-123`, `F-220` re-read, nothing left.
 - [ ] **Close**: whole-project build with 0 warnings, `lake lint`, the blueprint gates, the main
   results' axioms; MULTIGRAPH or UNSTATED named next. Then the loop **stops for the PI's push**
   (§1f.2), CI's first run of 41a's `module` conversion: no next phase opens.
@@ -121,13 +124,17 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Hand-off / next phase
 
-**Item 10b** (checklist 10b, docs only): the S1 scope sentences, false since item 10a, at README
-`:162`, `home_page/index.md:142`, `intro.tex:266` and ROADMAP §34 `:1042` say the generic
-body-hinge theorem says nothing at a minimal `k`-dof-graph; restate each as `formalization.yaml`'s
-row now reads (one body or more, more than `D(|V| - 1)` labels, minimal graphs covered), give
-`F-207` its last disposition, and put item 10a's sha into the ledger dispositions that name it by
-its subject. Gates: `blueprint/verify.sh`, `blueprint/lint.sh` (check 9 at 0), `check-phase-note.py`.
-Then item 11 (S18).
+**Item 11** (checklist 11; S18, `F-121`, `F-331`; the PI's §1f.1): restate
+`prop:rigidity-matrix-prop11` as KT state Proposition 2.3 (p. 655, credited to Jackson–Jordán), a
+generic body-hinge framework on a multigraph, proved in the conditional form, as its pin
+`rigidityMatrix_prop11` (the bound `hgen` gives the formula) already is; cite item 10's generic
+body-hinge theorem for simple graphs; re-read the pin's header and docstring (`F-123`). First
+settle whether it is blueprint-only or wants a Lean bridge to `hgen` (design doc §2, *Item 10's
+recon*, "Item 11 in view"); if a bridge, that may be a commit of its own. Also give the commit
+"Phase 41b items 10b and 12: …" its sha in the six ledger dispositions that name it by subject
+(`F-122`, `F-123`, `F-128`, `F-130`, `F-207`, `F-220`). Gates: `blueprint/verify.sh`,
+`blueprint/lint.sh`, `check-phase-note.py`, and `lake build`/`lake lint` if Lean changes. Then
+the close.
 
 ## Decisions made during this phase
 
@@ -157,6 +164,8 @@ Then item 11 (S18).
   The row's witness is the triangle with the shadow labels; `Nonvacuity.lean`'s private
   `top_fin_three_shadowGraph_isKDof_zero` generalizes to `3 ≤ bodyBarDim n` and serves it and the
   molecule row (the recon's uncompiled claim, checked at 10a).
+- **Items 10b and 12 in one commit** (the coordinator's call, 2026-10-25): both rewrite README,
+  the home page, `intro.tex`, ROADMAP and `formalization.yaml`'s notes. Item 11 stays separate.
 - **One body, the coordinator's call under §1f.3** (item 10a): the witness assembly, the rank
   formula and both iffs take `hne : V(G).Nonempty` for `hV : 2 ≤ V(G).ncard`. The proof does not
   need the bound (Theorem 5.6's main form covers one body), only these theorems change, and it is

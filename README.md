@@ -109,12 +109,14 @@ conjecture is Jackson–Jordán's 2008 theorem on pin-collinear body-and-pin
 frameworks; the development proves it over every infinite field, by
 Katoh–Tanigawa's argument (phase 40). The formal panel-hinge framework records,
 for each edge, a pair of bodies whose panels meet in its hinge, and
-since phase 41a the pair is the edge's own ends. As stated,
-Theorem 5.6 allows degenerate hinges, so for a graph
-of deficiency zero a framework whose panel normals are all zero meets
-its conclusion. The form with nondegenerate hinges is
-proved for simple graphs on at least two bodies
-(`rankHypothesis_genuine_of_theorem_55_gen`). The multigraph forms (phase 35, below)
+since phase 41a the pair is the edge's own ends. Since phase 41b,
+Theorems 5.5 and 5.6 give each simple graph they cover a realization
+with nonparallel panels, as in Katoh–Tanigawa's Theorem 5.5 (no two
+panels are parallel), so the hinge of every edge is nondegenerate. Theorem 5.6
+(`rankHypothesis_of_theorem_55_gen`) and the molecular conjecture hold
+for simple graphs on one body or more, and both sides of the conjecture
+ask for a nondegenerate hinge at every edge, its panel side also for
+nonparallel panels. The multigraph forms (phase 35, below)
 place each hinge in the panels of its edge's ends. On top of these
 results sits the molecule application: the generic bar-joint rigidity
 matroid in dimension three in linear-matroid form (phase 24), projective
@@ -159,21 +161,15 @@ a framework at generic hinges is infinitesimally rigid iff `(D−1)·G`
 packs `D` edge-disjoint spanning trees
 (`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`),
 with the non-generic parameter choices confined to the zero set of a
-single nonzero polynomial in each case. As stated, the generic
-body-hinge theorem covers only part of the simple graphs: it assumes
-that every edge label is an edge of `G` and that every minimal
-`k`-dof-graph on the bodies and the labels leaves a label unused, and
-the two assumptions contradict each other whenever `G` is itself a
-minimal `k`-dof-graph — a single edge, a tree, every minimal
-`0`-dof-graph — so the theorem says nothing about such a graph. Both
-assumptions hold when `G` has more than `D(|V|−1)` edges (for
-instance `K₇` in the plane); which graphs in between it covers is
-not settled. Phase 41, in progress, removes the restriction. It has
-already done so for the theorem's panel-hinge companion: every
-panel-hinge framework on a simple graph whose panel normals are
-generic attains the deficiency rank, given more edge labels than
-`D(|V|−1)`, and so is infinitesimally rigid iff the graph has
-deficiency zero (Jackson–Jordán's Theorem 7.2, sharpened to an iff;
+single nonzero polynomial in each case. Since phase 41b, the generic
+body-hinge theorem and its panel-hinge companion hold for every simple
+graph on one body or more, given more edge labels than `D(|V|−1)` (a
+bound the formal Theorem 5.6 also assumes), so they cover the simple
+minimal `k`-dof-graphs too, such as a single edge, a tree or a
+triangle. The companion says that every panel-hinge framework on such a
+graph whose panel normals are generic attains the deficiency rank, and
+so is infinitesimally rigid iff the graph has deficiency zero
+(Jackson–Jordán's Theorem 7.2, sharpened to an iff;
 `PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals`).
 Phase 35 (closed 2026-07-18)
 recovered the **full multigraph strength** of Theorem 5.6 and of the
