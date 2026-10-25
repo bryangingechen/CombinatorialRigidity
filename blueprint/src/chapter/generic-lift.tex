@@ -9,9 +9,9 @@ have an independent, or an independent and infinitesimally rigid,
 body-bar or body-hinge framework. In the formalization the body-hinge
 frameworks of the second theorem are bundles of bars, which need not
 come from hinges (the note after \cref{def:body-hinge-framework}). KT
-Theorem~5.6 with nondegenerate hinges (\cref{thm:theorem-55-6-genuine})
-gives a panel-hinge realization of a simple graph at the target rank
-of \cref{def:rank-hypothesis}. The molecule rank formula
+Theorem~5.6 (\cref{thm:theorem-55-6}) gives a panel-hinge realization
+of a simple graph, with nonparallel panels, at the target rank of
+\cref{def:rank-hypothesis}. The molecule rank formula
 (\cref{cor:molecule-rank-formula}) gives the rank of a square $G^2$ in
 the generic rigidity matroid $\mathcal{R}_3(V)$. This chapter proves
 generic forms of these results: they hold at every generic
@@ -1019,9 +1019,9 @@ theorem of Tay and Whiteley at every generic hinge-point assignment
 
 For one hinge-point assignment at the target rank
 $D(|V| - 1) - \operatorname{def}(\tilde G)$ we start, as for normals,
-from KT Theorem~5.6 with nondegenerate hinges
-(\cref{thm:theorem-55-6-genuine}). It gives a panel-hinge realization
-at the target rank. The hinge of an edge with
+from KT Theorem~5.6 (\cref{thm:theorem-55-6}). It gives a panel-hinge
+realization at the target rank whose panels are nonparallel, so that
+its hinges are nondegenerate. The hinge of an edge with
 ends $u$ and $v$ is the meet of their panels, an extensor of the
 $(d-1)$-dimensional subspace $n_u^\perp \cap n_v^\perp$ of $K^{d+1}$,
 where $n_u$ and $n_v$ are the normals. If this subspace lies in the
@@ -1051,7 +1051,9 @@ prove.
   \label{def:generic-hinge-points}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.hingePointRow,
     CombinatorialRigidity.Molecular.BodyHingeFramework.hingePointRow_eq_panelRow,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.IsGenericHingePoints}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.IsGenericHingePoints,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.isGenericHingePoints_iff_of_recordsLinks,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.isGenericHingePoints_congr}
   \leanok
   \uses{def:hinge-constraint, def:rigidity-matrix,
     def:affine-subspace-extensor}
@@ -1082,7 +1084,9 @@ of $q_e$ are affinely independent (the remark after
 \cref{def:affine-subspace-extensor}). The forms are those of
 \cref{def:generic-normals}, with $C(q_e)$ in place of the panel support
 extensor. Exchanging the ends of $e$ changes the signs of the forms at
-$e$, so genericity does not depend on the order of the ends. When the
+$e$, so genericity does not depend on the order of the ends. As a form
+at $e$ reads only the points of $q_e$, genericity depends only on the
+points that $q$ gives the edges of $G$. When the
 hinge of $e$ is nondegenerate, the forms at $e$ span the same space as
 the rows of $R(G, q)$ at $e$, by the argument in the proof of
 \cref{lem:rows-polynomial-in-normals}. Genericity transfers linear
@@ -1094,18 +1098,23 @@ subsection explains.
   The formalization writes $d = k + 1$, as in the note after
   \cref{def:hinge-constraint}. As in
   \cref{fmlnote:generic-normals-selector}, it indexes the family by all
-  the edge labels, and reads the ends of each label from an
-  endpoint selector, not from $G$. A hinge-point assignment gives
-  points to every label, not only to the edges of $G$. So genericity
-  is a property of the assignment and the selector alone. The pinned
-  lemmas on abundance and existence take only the selector and finite
-  sets of bodies and labels, so their polynomial has $d(d-1)$
-  variables for each label. The pinned lemma on nondegeneracy takes a
-  multigraph $G$ whose edges are all the labels, and a selector that
-  gives each edge its two ends. The first pin is the family, and the
-  third is genericity. The second identifies the family with the
-  annihilator rows of the framework $(G, q)$, read with the same
-  selector, for every multigraph $G$; it holds by definition.
+  the edge labels, and reads the ends of each label from an endpoint
+  selector, not from $G$. A hinge-point assignment gives points to
+  every label, not only to the edges of $G$. A body-hinge framework has
+  no selector of its own, so genericity over $G$ asks about the
+  subfamilies indexed by edges of $G$ at every selector that gives each
+  edge of $G$ its two ends. The first pin is the family, and the third
+  is genericity. The second identifies the family with the annihilator
+  rows of the framework $(G, q)$, read with the same selector, for
+  every multigraph $G$; it holds by definition. The fourth shows that
+  genericity is the condition at any one such selector, as exchanging
+  the ends of an edge changes signs only, and the fifth that it reads
+  only the points at the edges of $G$. The pinned lemmas on abundance
+  and existence take $G$ and finite sets of bodies and labels. Their
+  polynomial has $d(d-1)$ variables for each label, and is a product
+  over all the selectors, finitely many. The pinned lemma on
+  nondegeneracy takes a multigraph $G$ without loops and concludes at
+  its edges.
 \end{fmlnote}
 
 \begin{lemma}[The hinge extensors are polynomial in the hinge points]
@@ -1375,22 +1384,21 @@ in every dimension, by comparing the rows.
   \leanok
   \uses{def:generic-hinge-points, def:D-deficiency}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and $|V| \ge 2$. Then there is a
+  a simple graph with $V$ finite and nonempty. Then there is a
   hinge-point assignment $q$ of $G$ at which some
   $D(|V|-1) - \operatorname{def}(\tilde G)$ members of the
   annihilator-row family of $q$ are linearly independent.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55-6-genuine, def:panel-support-extensor,
-    lem:panel-support-extensor-join,
-    def:genuine-hinge-realization, lem:simultaneous-affine-position,
+  \uses{thm:theorem-55-6, def:panel-support-extensor,
+    lem:panel-support-extensor-join, lem:simultaneous-affine-position,
     lem:extensor-affine-representation, lem:screw-map-rows,
     lem:independent-rows-of-rank, def:induced-screw-map}
   Let $N = D(|V|-1) - \operatorname{def}(\tilde G)$. By KT
-  Theorem~5.6 with nondegenerate hinges
-  (\cref{thm:theorem-55-6-genuine}), $G$ has a panel-hinge realization
-  $(G, p)$ at the target rank $N$ whose hinges are all nondegenerate.
+  Theorem~5.6 (\cref{thm:theorem-55-6}), $G$ has a panel-hinge
+  realization $(G, p)$ at the target rank $N$ whose panels are
+  nonparallel, so that its hinges are all nondegenerate.
   Let $n_v$ be its normals, and let $e$ be an edge with ends $u$ and
   $v$. The hinge of $e$ is $C(n_u, n_v) \neq 0$, so it is
   $w_{e,1} \vee \cdots \vee w_{e,d-1}$ for a basis
@@ -1436,7 +1444,7 @@ in every dimension, by comparing the rows.
   \uses{def:generic-hinge-points, def:hinge-constraint,
     def:D-deficiency}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and $|V| \ge 2$. Let $q$ be a
+  a simple graph with $V$ finite and nonempty. Let $q$ be a
   hinge-point assignment of $G$ that is generic for row independence.
   Then
   \[
@@ -1474,7 +1482,7 @@ in every dimension, by comparing the rows.
   \uses{def:generic-hinge-points, def:hinge-constraint,
     def:D-deficiency}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and $|V| \ge 2$. Then $(G, q)$ is
+  a simple graph with $V$ finite and nonempty. Then $(G, q)$ is
   infinitesimally rigid at every hinge-point assignment $q$ of $G$ that
   is generic for row independence if and only if
   $\operatorname{def}(\tilde G) = 0$.
@@ -1509,7 +1517,7 @@ in every dimension, by comparing the rows.
   \leanok
   \uses{def:generic-hinge-points, def:matroid-MG}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and $|V| \ge 2$. Then $(G, q)$ is
+  a simple graph with $V$ finite and nonempty. Then $(G, q)$ is
   infinitesimally rigid at every hinge-point assignment $q$ of $G$ that
   is generic for row independence if and only if
   $\tilde G = (D-1) \cdot G$ contains $D$ edge-disjoint spanning trees.
@@ -1532,19 +1540,17 @@ in every dimension, by comparing the rows.
   from \cref{lem:hinge-point-witness} on take the dimension in
   $\operatorname{def}(\tilde G)$ as a separate parameter, as in the
   note after \cref{def:panel-support-extensor}. They assume that every
-  body is a vertex of $G$ and every edge label an edge of $G$, with a
-  selector that gives each edge its two ends (the note after
-  \cref{def:generic-hinge-points}). They state rigidity on $V(G)$,
-  which is then the set of all bodies. They also assume the supply of
-  fresh labels of \cref{rem:fresh-edge-supply}, which the pinned
-  theorem of \cref{thm:theorem-55-6-genuine} asks. As every
-  label is an edge of $G$, the supply fails when $G$ is itself a
-  minimal $k$-dof-graph for some $k$ (\cref{def:k-dof}), such as a
-  single edge or a tree. So these pinned results say nothing about such
-  a graph, as for \cref{thm:panel-generic-rank} (the note after
-  \cref{cor:panel-generic-rigid}). They apply when $G$ has more than
-  $D(|V| - 1)$ edges (\cref{rem:fresh-edge-supply}), for instance to
-  $K_7$ at $d = 2$.
+  body is a vertex of $G$, and state rigidity on $V(G)$, which is then
+  the set of all bodies. As the pinned theorem of
+  \cref{thm:theorem-55-6} does, they assume that the set $L$ of edge
+  labels has more than $D(|V| - 1)$ elements, which gives the supply of
+  fresh labels (\cref{rem:fresh-edge-supply}). The bound is on $L$, not
+  on $G$, whose edges need not be all the labels: with enough labels the
+  results apply to every simple graph on the bodies, a single edge or a
+  tree among them. The pinned witness lemma takes a selector that gives
+  each edge of $G$ its two ends. The rank formula and its corollaries
+  take none, as genericity over $G$ asks about every such selector (the
+  note after \cref{def:generic-hinge-points}).
 \end{fmlnote}
 
 Tay~\cite[\S7]{tay1989} and Whiteley~\cite[Theorem~10]{whiteley1988}

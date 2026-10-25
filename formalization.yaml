@@ -493,21 +493,19 @@ status:
     description: >-
       Generic body-and-hinge rigidity from spanning trees (Tay 1989, Whiteley 1988;
       Jackson-Jordán 2010 Thm 6.1 / Cor 6.3, with the existential quantifier upgraded to
-      every generic realization; phase 34): for a simple spanning multigraph on >= 2
-      bodies, at any dimension n >= 2 and over any infinite field, the affine-hinge
-      framework at every hinge-point assignment generic for row independence is
-      infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees.
-      The panel-normal analogue, JJ Thm 7.2 sharpened to an iff, is the corollary of the next
-      row's rank formula. As stated, this theorem covers only part of this class. It assumes
-      that every edge label is an edge of G, and that every minimal k-dof-graph on the bodies
-      and the labels leaves some label unused (the supply of fresh labels that the Theorem 5.5
-      induction needs). The two assumptions contradict each other whenever G is itself a
-      minimal k-dof-graph for some k (a single edge, a tree, every minimal 0-dof-graph), so the
-      theorem says nothing about such a graph. Both hold whenever G has more than D(|V| - 1)
-      edges, for instance K_7 at n = 2 (21 > 3 * 6 edges); which graphs in between the theorem
-      covers is not settled. Phase 41 (in progress) removes the restriction, as it has for the
-      panel-normal analogue: the theorem will no longer assume that every label is an edge of
-      G, and will take a bound on the number of labels in place of the supply of unused ones.
+      every generic realization; phase 34, restated in phase 41b): for a simple spanning graph
+      G on >= 1 body with more than D(|V|-1) edge labels (the bound the Theorem 5.6 row's
+      declaration takes), at any dimension n >= 2 and over any infinite field, the
+      affine-hinge framework at every hinge-point assignment generic for row independence is
+      infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees. The
+      assignment is generic when every set of rigidity rows at the edges of G that is
+      linearly independent at some hinge-point assignment is independent at it; the
+      assignments that are not generic lie in the zero set of one nonzero polynomial. The
+      single edge, every tree and every minimal 0-dof-graph are covered, given enough labels.
+      Its rank formula
+      CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
+      is Jackson-Jordán 2010 Thm 6.1 for simple graphs. The panel-normal analogue, JJ Thm 7.2
+      sharpened to an iff, is the corollary of the next row's rank formula.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -812,12 +810,11 @@ alignment:
       status: "proved"
       note: >-
         Over any infinite field, with the existential quantifier upgraded to every generic
-        hinge-point realization. As stated, both hinge-point theorems assume that every edge
-        label is an edge of G and that every minimal k-dof-graph on the bodies and the labels
-        leaves a label unused, which together exclude every G that is itself a minimal
-        k-dof-graph (a single edge, a tree, every minimal 0-dof-graph); the assumptions hold
-        when G has more than D(|V| - 1) edges, and the graphs in between are not settled (the
-        main_results row).
+        hinge-point realization. Since phase 41b both theorems hold at every hinge-point
+        assignment generic for the rows at the edges of a simple spanning G (one body or
+        more), under the bound of Katoh-Tanigawa Theorem 5.6 on the number of edge labels
+        (more than D(|V| - 1)); a single edge, a tree or a minimal 0-dof-graph is covered once
+        there are enough labels.
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff"

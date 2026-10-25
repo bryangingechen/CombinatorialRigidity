@@ -2088,8 +2088,8 @@ the strip's, gives each re-added edge of `E(G) ∖ E(G')` its own two ends, and 
 outside `E(G)` a fixed pair `(x₀, y₀)` of distinct bodies. Like that of every panel-hinge framework
 (the field `isLink_ends`), its selector gives each edge of `G` its two ends
 (`recordsLinks_iff_forall_isLink`). The general-position form of Theorem 5.6
-(`lem:theorem-56-general-position`) and the generic hinge-point theorems read the witness's rows
-through it (`exists_rankPolynomial_of_le_finrank_linking`). -/
+(`lem:theorem-56-general-position`) reads the witness's rows through it
+(`exists_rankPolynomial_of_le_finrank_linking`). -/
 theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)

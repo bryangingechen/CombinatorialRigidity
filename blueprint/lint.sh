@@ -384,9 +384,9 @@ fi
 # and checkdecls cannot see (RECONCILE round 3, F-230 to F-264). Its
 # total may not differ from the baseline below: a rise is a new finding,
 # and a fall means the commit that fixed findings lowers the baseline
-# with them. The baseline only falls. The 2 at 2026-10-24 are in
-# Molecular/GenericLift/, owned by Phase 41's RESTATE (4 until item 5b).
-DOCSTRING_LABEL_BASELINE=2
+# with them. The baseline only falls; it reached 0 on 2026-10-25, when
+# Phase 41's RESTATE cleared the last two, in Molecular/GenericLift/.
+DOCSTRING_LABEL_BASELINE=0
 LABELS_TOTAL="$(python3 "$SCRIPT_DIR/../scripts/check-docstring-labels.py" --counts \
     | sed -n 's/^total \([0-9][0-9]*\):.*/\1/p')"
 if [ -z "$LABELS_TOTAL" ]; then

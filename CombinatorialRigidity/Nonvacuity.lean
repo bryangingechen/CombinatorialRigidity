@@ -9,6 +9,7 @@ public import CombinatorialRigidity.BodyBar.GenericLift
 public import CombinatorialRigidity.JacobsDegreeOne
 public import CombinatorialRigidity.JacobsTheorem
 public import CombinatorialRigidity.LamanTheorem
+public import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 public import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
 public import CombinatorialRigidity.PebbleGame.Correctness
@@ -55,6 +56,11 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   endpoint assignment, at the triple edge: an orientation and an endpoint assignment generic for
   row independence (a non-root of the abundance polynomial), at which the realization placing each
   bar between its endpoints is isostatic.
+* `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_witness`: Tay and
+  Whiteley's body-hinge theorem at every generic hinge-point assignment (Jackson and Jordán 2010
+  Cor 6.3) at the triangle `K₃`, a minimal `0`-dof-graph. Some hinge-point assignment is generic,
+  and at every generic one the framework is infinitesimally rigid, as `2·K₃` packs three spanning
+  trees.
 * `theorem_55_minimalKDof_gen_witness`: Katoh and Tanigawa's Theorem 5.5 at the single edge, a
   minimal `1`-dof-graph, its fresh-edge supply from a label headroom. The single edge is simple, so
   it has a panel realization with nonparallel panels and one with a nondegenerate hinge, at rank
@@ -261,6 +267,89 @@ theorem isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff_witness :
   exact ⟨D, q, hq,
     (isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff hq).mpr banana_isTight_three_three⟩
 
+/-- The edges of the multigraph `K̃₃ = K₃.shadowGraph` of the triangle: its three edges, each with
+its `Sym2` label. -/
+private theorem top_fin_three_shadowGraph_edgeSet :
+    E((⊤ : SimpleGraph (Fin 3)).shadowGraph)
+      = {Sum.inl s(0, 1), Sum.inl s(1, 2), Sum.inl s(0, 2)} := by
+  ext e
+  rw [Graph.edgeSet_eq_setOfPred_exists_isLink]
+  constructor
+  · rintro ⟨x, y, hxy, rfl⟩
+    fin_cases x <;> fin_cases y <;> simp_all [Sym2.eq_swap]
+  · rintro (rfl | rfl | rfl) <;> exact ⟨_, _, by decide, rfl⟩
+
+/-- The multigraph `K̃₃ = K₃.shadowGraph` of the triangle is a triangle, so it is `0`-dof whenever
+`bodyBarDim n ≥ 3` (`Graph.isKDof_zero_of_triangle`): in the plane (`bodyBarDim 2 = 3`) and in
+3-space (`bodyBarDim 3 = 6`). -/
+private theorem top_fin_three_shadowGraph_isKDof_zero {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n) :
+    (⊤ : SimpleGraph (Fin 3)).shadowGraph.IsKDof n 0 := by
+  refine Graph.isKDof_zero_of_triangle hD (x := 0) (y := 1) (z := 2)
+    (exy := Sum.inl s(0, 1)) (eyz := Sum.inl s(1, 2)) (exz := Sum.inl s(0, 2))
+    (by decide) (by decide) (by decide) ⟨by decide, rfl⟩ ⟨by decide, rfl⟩ ⟨by decide, rfl⟩ ?_
+    top_fin_three_shadowGraph_edgeSet
+  rw [shadowGraph_vertexSet]
+  ext x
+  fin_cases x <;> simp
+
+/-- The triangle is a *minimal* `0`-dof-graph in the plane. A base of `M(2·K₃)` has
+`3 · (3 - 1) - 0 = 6` elements (`Graph.isBase_ncard_add_deficiency_eq`), and the copies of two
+edges are only four, so every base meets the copies of each edge. -/
+private theorem top_fin_three_shadowGraph_isMinimalKDof_zero_two :
+    (⊤ : SimpleGraph (Fin 3)).shadowGraph.IsMinimalKDof 2 0 := by
+  classical
+  have hK := top_fin_three_shadowGraph_isKDof_zero (n := 2) (by decide)
+  refine ⟨hK, fun B hB e he ↦ ?_⟩
+  have hcard := Graph.isBase_ncard_add_deficiency_eq _ 2 (by decide) ⟨0, by simp⟩ hB
+  rw [hK.deficiency_eq, shadowGraph_vertexSet, Set.ncard_univ,
+    show Graph.bodyBarDim 2 = 3 from rfl] at hcard
+  have h3 : Nat.card (Fin 3) = 3 := Nat.card_fin 3
+  by_contra hempty
+  rw [Set.not_nonempty_iff_eq_empty] at hempty
+  -- Otherwise the base lies in the copies of the two other edges.
+  have hsub : B ⊆ (E((⊤ : SimpleGraph (Fin 3)).shadowGraph) \ {e}) ×ˢ Set.univ := by
+    intro p hp
+    have hpE : p.1 ∈ E((⊤ : SimpleGraph (Fin 3)).shadowGraph) := hB.subset_ground hp
+    refine ⟨⟨hpE, fun hpe ↦ ?_⟩, Set.mem_univ _⟩
+    have : p ∈ B ∩ Graph.edgeFiber e 2 := ⟨hp, hpe⟩
+    rw [hempty] at this
+    exact this
+  have hE3 : (E((⊤ : SimpleGraph (Fin 3)).shadowGraph)).ncard = 3 := by
+    rw [top_fin_three_shadowGraph_edgeSet, Set.ncard_insert_of_notMem (by simp),
+      Set.ncard_pair (by simp)]
+  have hle := Set.ncard_le_ncard hsub (Set.toFinite _)
+  rw [Set.ncard_prod, Set.ncard_sdiff_singleton_of_mem he, hE3, Set.ncard_univ] at hle
+  have h2 : Nat.card (Fin (Graph.bodyHingeMult 2)) = 2 := by rw [Nat.card_fin]; decide
+  rw [h2] at hle
+  omega
+
+open Molecular.BodyHingeFramework in
+/-- **Tay and Whiteley's body-hinge theorem at every generic hinge-point assignment, at the
+triangle**: `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`
+(`Molecular.BodyHingeFramework`; Jackson and Jordán 2010 Cor 6.3) in the plane (`n = 2`, grade
+`k = 1`, so a hinge is one point of the plane) at `K₃`, with the nineteen labels of
+`SimpleGraph.shadowGraph`, which meet the label bound `3 · (3 - 1) < 19`. `K₃` is simple, has its
+three bodies as vertices, and is a minimal `0`-dof-graph. Some hinge-point assignment is generic
+over it (`exists_isGenericHingePoints`), and, as `2·K₃` packs three edge-disjoint spanning trees,
+the framework at every generic one is infinitesimally rigid. -/
+theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_witness :
+    (∃ q, IsGenericHingePoints (K := ℝ) (k := 1) (⊤ : SimpleGraph (Fin 3)).shadowGraph q) ∧
+      ∀ q, IsGenericHingePoints (K := ℝ) (k := 1) (⊤ : SimpleGraph (Fin 3)).shadowGraph q →
+        (ofHinge (⊤ : SimpleGraph (Fin 3)).shadowGraph
+          fun e a b ↦ q (e, a, b)).IsInfinitesimallyRigidOn Set.univ := by
+  have hne : V((⊤ : SimpleGraph (Fin 3)).shadowGraph).Nonempty := ⟨0, by simp⟩
+  have hcard : Graph.bodyBarDim 2 * (Nat.card (Fin 3) - 1)
+      < Nat.card (Sym2 (Fin 3) ⊕ Fin (6 * (Nat.card (Fin 3) - 1) + 1)) := by
+    rw [Nat.card_sum, Nat.card_fin]; simp only [Nat.card_fin]; decide
+  have : NeZero (Graph.bodyHingeMult 2) := ⟨by decide⟩
+  refine ⟨(exists_isGenericHingePoints _).imp fun _ h ↦ h.1, ?_⟩
+  have h := (isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees (K := ℝ)
+    (k := 1) (n := 2) le_rfl rfl hcard _ hne (shadowGraph_vertexSet _)
+    (shadowGraph_simple _)).mpr
+    ((Graph.deficiency_eq_zero_iff_exists_spanningTrees _ 2 hne).mp
+      top_fin_three_shadowGraph_isMinimalKDof_zero_two.1.deficiency_eq)
+  simpa using h
+
 
 /-! ### The molecular rows -/
 
@@ -439,23 +528,6 @@ end
 
 /-! ### The molecule and Jacobs rows, in 3-space -/
 
-/-- The multigraph `K̃₃ = K₃.shadowGraph` of the triangle is a triangle, so it is `0`-dof in
-3-space (`Graph.isKDof_zero_of_triangle`, as `bodyBarDim 3 = 6 ≥ 3`). -/
-private theorem top_fin_three_shadowGraph_isKDof_zero :
-    (⊤ : SimpleGraph (Fin 3)).shadowGraph.IsKDof 3 0 := by
-  refine Graph.isKDof_zero_of_triangle (by decide) (x := 0) (y := 1) (z := 2)
-    (exy := Sum.inl s(0, 1)) (eyz := Sum.inl s(1, 2)) (exz := Sum.inl s(0, 2))
-    (by decide) (by decide) (by decide) ⟨by decide, rfl⟩ ⟨by decide, rfl⟩ ⟨by decide, rfl⟩ ?_ ?_
-  · rw [shadowGraph_vertexSet]
-    ext x
-    fin_cases x <;> simp
-  · ext e
-    rw [Graph.edgeSet_eq_setOfPred_exists_isLink]
-    constructor
-    · rintro ⟨x, y, hxy, rfl⟩
-      fin_cases x <;> fin_cases y <;> simp_all [Sym2.eq_swap]
-    · rintro (rfl | rfl | rfl) <;> exact ⟨_, _, by decide, rfl⟩
-
 /-- **Jackson and Jordán's molecule rank formula (Katoh and Tanigawa's Corollary 5.7) at the
 triangle**: `SimpleGraph.molecule_rank_formula` at `K₃`, the least simple graph of minimum degree
 two, its hypothesis met with equality. `K₃` is its own square, and its multigraph `K̃₃` is a
@@ -464,7 +536,7 @@ generically rigid in 3-space. -/
 theorem molecule_rank_formula_witness :
     (⊤ : SimpleGraph (Fin 3)).square.genericRank 3 = 3 := by
   have h := molecule_rank_formula (⊤ : SimpleGraph (Fin 3)) fun v ↦ by simp
-  rw [top_fin_three_shadowGraph_isKDof_zero.deficiency_eq, Nat.card_fin] at h
+  rw [(top_fin_three_shadowGraph_isKDof_zero (n := 3) (by decide)).deficiency_eq, Nat.card_fin] at h
   omega
 
 /-- The square of the path on three vertices satisfies the three-dimensional Laman condition: a

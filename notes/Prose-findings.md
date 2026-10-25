@@ -1108,11 +1108,12 @@ declaration's name as its header writes it:
   of 109; deadness alone is no reason to unpin or retire (*Scope*), so the rest takes `CLEANUP.md`
   §B's three-way diagnosis in `notes/Prose-report.md`, G6).
   Phase 41b, item 9b (the commit "Phase 41b item 9b: the generic panel rank formula is a main
-  result, witnessed at the single edge"): done for G6's PI item (`notes/Reconcile.md` §1, "Own
-  row"): the panel form's rank formula, `finrank_span_rigidityRows_of_isGenericNormals`, is a
-  `formalization.yaml` main result, with its non-vacuity witness, so `thm:panel-generic-rank`'s pin
-  and every pin it reaches are inside a main result's closure; `cor:panel-generic-rigid`'s pin,
-  which it does not reach, is named in the row. The rest stays left.
+  result, witnessed at the single edge", `ce98d5ec`): done for G6's PI item
+  (`notes/Reconcile.md` §1, "Own row"): the panel form's rank formula,
+  `finrank_span_rigidityRows_of_isGenericNormals`, is a `formalization.yaml` main result, with its
+  non-vacuity witness, so `thm:panel-generic-rank`'s pin and every pin it reaches are inside a main
+  result's closure; `cor:panel-generic-rigid`'s pin, which it does not reach, is named in the row.
+  The rest stays left.
 - **F-014** · N · `lem:isSparse-exists-degree-le-three` (`sparsity.tex`): the low-degree step of
   the sparse reverse decomposition, `IsSparse.exists_one_le_degree_le_three` (a vertex of degree
   1, 2 or 3 in a $(2,3)$-sparse graph with an edge), has no node; the proof of
@@ -3248,13 +3249,26 @@ declaration's name as its header writes it:
   non-vacuity witness at the single edge and the scope sentences are item 9b's, the body-hinge half
   item 10's.
   Phase 41b, item 9b (the commit "Phase 41b item 9b: the generic panel rank formula is a main
-  result, witnessed at the single edge"): the panel half's witness,
+  result, witnessed at the single edge", `ce98d5ec`): the panel half's witness,
   `finrank_span_rigidityRows_of_isGenericNormals_witness` (`Nonvacuity.lean`): at the single edge
   on two bodies in the plane, a minimal $1$-dof-graph, some framework has generic normals and each
   such has rank $3 \cdot (2 - 1) - 1 = 2$. The scope sentences now name the
   body-hinge theorem only (`formalization.yaml`'s body-hinge row, its `alignment` note and
   `fidelity.divergences`, README, the home page, `intro.tex` and ROADMAP §34); the row and the
   last four also say that the panel form has lost the restriction. Item 10 removes them.
+  Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
+  witnessed at the triangle"): done for the body-hinge half. The witness lemma,
+  the rank formula and its two corollaries take neither `hends` nor `hfresh` but KT Theorem 5.6's
+  `hcard`, and the last three range over every hinge-point assignment generic over $G$
+  (`IsGenericHingePoints G q`: the rows at the edges of $G$, at every selector that records its
+  links), on one body or more (`notes/Phase41-design.md` §2, *Item 10's recon*, adopted under
+  §1f.3). So a minimal graph is no longer excluded. The row's witness,
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_witness`
+  (`Nonvacuity.lean`), is at the triangle in the plane, a minimal $0$-dof-graph: some assignment is
+  generic, and at each generic one the framework is infinitesimally rigid. The four nodes, the
+  note after `cor:bodyhinge-generic-tree-packing`, and `formalization.yaml`'s row and `alignment`
+  note are restated; the scope sentences of README, the home page, `intro.tex` and ROADMAP §34 are
+  item 10b's.
 
 - **F-211** · S · `def:two-extensor`, `def:generic-endpoints` (`generic-lift.tex`): principle B's
   moves out of two definitions, task 2.10's hygiene-rule reading. At the open `def:two-extensor`
@@ -3290,6 +3304,11 @@ declaration's name as its header writes it:
   on the panel side: the genericity of `def:generic-normals` reads only the rows at the edges of
   $G$, and its abundance polynomial has variables for the bodies only. The body-bar endpoint
   assignments, this entry's subject, are unchanged, with the note after `def:generic-endpoints`.
+  Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
+  witnessed at the triangle"): S13 on the body-hinge side: genericity over $G$
+  reads only the rows at the edges of $G$, so only the points there (`isGenericHingePoints_congr`,
+  a fifth pin of `def:generic-hinge-points`, with the remark after it); the abundance polynomial
+  keeps the points of every label as variables (the note after the definition).
 
 - **F-216** · S · `def:generic-hinge-points`, `lem:hinge-rows-polynomial-in-points`,
   `lem:generic-hinge-points-abundance`, `lem:exists-generic-hinge-points`,
@@ -3313,6 +3332,14 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the seven pins, `GenericLift/HingeGeneric.lean`).
   *Found:* round 4 task 2.11.
   *Disposition:* reported (`notes/Prose-report.md`, S34).
+  Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
+  witnessed at the triangle"): done. The pins state what the nodes state:
+  genericity is over $G$ (`IsGenericHingePoints G q`), for the rows indexed by its edges, at every
+  selector that gives each edge its two ends, which is the condition at any one of them
+  (`isGenericHingePoints_iff_of_recordsLinks`, a fourth pin of `def:generic-hinge-points`: the
+  definition's "fixed order"); the abundance and existence lemmas take $G$; the nondegeneracy lemma
+  takes no selector and no `hends`, and concludes at the edges of $G$. The label set (points at
+  every label, the polynomial's variables) stays in the note after the definition, restated.
 - **F-217** · S · `lem:hinge-rows-polynomial-in-points` (`generic-lift.tex`): the statement claims a
   polynomial "of degree at most $d - 1$" ("at most $k$" at the open), and no pin states a degree
   bound. `hingeExtensorPoly` is the $k \times k$ minor of a matrix whose entries are indeterminates
@@ -3346,6 +3373,12 @@ declaration's name as its header writes it:
   `Extensor.lean`).
   *Found:* round 4 task 2.12.
   *Disposition:* reported (`notes/Prose-report.md`, S34).
+  Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
+  witnessed at the triangle"): done. The four pins take no selector but the
+  witness lemma's, which records the links of $G$ (the condition on $E(G)$), no "every label is an
+  edge", `hcard` for `hfresh`, and $V(G) \neq \emptyset$ for $|V| \ge 2$, which the statements now
+  say ("$V$ finite and nonempty"). The spanning, the separate dimension parameter, rigidity on
+  $V(G)$ and the label bound are in the note after `cor:bodyhinge-generic-tree-packing`, restated.
 - **F-234** · S · `lem:forest-surgery-unsplit` (`molecular-induction.tex`; unfilled): no declaration
   proves its statement. `splitOff_indep_extend_of_fiber_lt`, the pin `F-091` names, proves the form
   of independent sets: for $D \ge 2$, a vertex $v$ of $G$ of degree two whose edges join it to
@@ -3404,6 +3437,9 @@ declaration's name as its header writes it:
   Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
   on `G` with generic normals", `24d9d0cc`): done for the two panel
   pins, which no longer take `hfresh` (`F-207`); the four body-hinge pins are item 10's.
+  Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
+  witnessed at the triangle"): done for the four body-hinge pins, which no
+  longer take `hfresh` (`F-207`).
 - **F-260** · S · `lem:panel-hinge-dual-molecular` (`molecule-modelling.tex`): its unpinned (2), the
   rescaling of the normals $\bar c(v)$ by nonzero $\lambda_v$, is the case $q = \bar c$ of
   `lem:pencil-jj-rescale` (`main-component.tex`), whose pins

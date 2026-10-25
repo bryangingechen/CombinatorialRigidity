@@ -211,6 +211,18 @@ to be re-derived by re-reading entries later.
   RecordsLinks G Q.ends` and a `link_base_tac` branch that applies it with `hQg` in scope.
 - **Status:** open.
 
+### [open] `RecordsLinks` lives in `PanelHingeFramework`, and a body-hinge predicate reads it
+- **Where it bit:** Phase 41b, item 10a: `BodyHingeFramework.IsGenericHingePoints`
+  (`GenericLift/HingeGeneric.lean`) quantifies over the selectors `ends` with `RecordsLinks G ends`,
+  a condition on a graph and a selector that names no panel. The file opens
+  `PanelHingeFramework (RecordsLinks)`, and calls `PanelHingeFramework.recordsLinks_endsOf`.
+- **Friction:** a body-hinge file reaches into the panel carrier's namespace for a graph predicate,
+  and a reader looks for it there.
+- **Proposed fix:** move `RecordsLinks` and its lemmas to the namespace `Molecular` (or `Graph`),
+  with deprecated aliases, in a cleanup round (`notes/Phase41-design.md` §2, *Item 10's recon*,
+  "Not planned").
+- **Status:** open.
+
 
 ### [idiom] `simp` makes no progress on `0 = s.card ↔ s = ∅`
 - **Where it bit:** RECONCILE round 3, task 25.1: a scratch witness that `HasBlock ∅` can hold
