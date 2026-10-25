@@ -387,20 +387,19 @@ status:
       Katoh-Tanigawa 2011 Theorem 5.6: every simple spanning multigraph has a panel-hinge
       realization attaining the deficiency rank, rank R(G,p) = D(|V|-1) - def(G~), at every
       dimension n >= 2 and over any infinite field of any characteristic (phase 33). As
-      stated, the theorem asks neither for nondegenerate hinges nor for the hinge of an edge
-      to be the meet of the panels of the edge's own ends: the formal panel-hinge framework
-      records, for each edge label, a pair of bodies (its endpoint selector), and the
-      statement places no condition on that pair. So for every spanning graph of deficiency
-      zero, the framework whose panel normals are all zero meets its conclusion: each hinge
-      is zero and welds its two bodies, and a graph of deficiency zero is connected. The form with both
-      conditions is proved, for simple graphs on >= 2 bodies, as
-      CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen:
-      its selector records the two ends of every edge of G, and every hinge is
-      nondegenerate. With the upper bound at nondegenerate hinges
+      stated, the theorem does not ask for nondegenerate hinges: the formal panel-hinge
+      framework records, for each edge label, a pair of bodies (its endpoint selector), and
+      since phase 41a the selector gives each edge of G its two ends, in either order (a
+      label outside the edges of G is unconstrained). So for every spanning graph of
+      deficiency zero, the framework whose panel normals are all zero meets its conclusion:
+      each hinge is zero and welds its two bodies, and a graph of deficiency zero is
+      connected. The form with nondegenerate hinges is proved, for simple graphs on >= 2
+      bodies, as
+      CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen.
+      With the upper bound at nondegenerate hinges
       (CombinatorialRigidity.Molecular.rigidityMatrix_prop11), that form gives Jackson-Jordán's
       rank formula, Katoh-Tanigawa Proposition 2.3, and with the def = corank bridge
-      (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~). Phase 41 (in progress) makes the
-      link between the selector and the edges part of the framework.
+      (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -414,14 +413,10 @@ status:
       with nondegenerate hinges iff it has an infinitesimally rigid panel-hinge realization
       with nondegenerate hinges, at every dimension n >= 2 and
       over any infinite field of any characteristic (phase 33). At n = 2 (phase 40) this is
-      Jackson-Jordán 2008's pin-collinear theorem, here over any infinite field. As stated,
-      at n = 2 as at every n, the panel side places no condition on the endpoint selector
-      (the row above): the hinge of an edge is the meet of the panels of some two bodies, not
-      necessarily the edge's own ends. So the direction from body-hinge to panel-hinge,
-      Katoh-Tanigawa's content, concludes less than a panel-hinge realization of G. The
-      link-recording form of Theorem 5.6 named in the row above gives, by the same argument,
-      a panel side whose hinges are the meets of the panels of their edges' own ends; no
-      declaration states the conjecture in that form. The multigraph form (the
+      Jackson-Jordán 2008's pin-collinear theorem, here over any infinite field. At n = 2 as
+      at every n, the panel side asks for a nonzero hinge at every edge label, and the
+      panel-hinge framework's selector gives each edge of G its own ends (the row above), so
+      each hinge is the meet of the panels of its edge's own ends. The multigraph form (the
       molecular_conjecture_multigraph row below) places each hinge in the panels of its
       edge's own ends.
     sorry_count: 0
@@ -738,11 +733,10 @@ alignment:
       module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean, CombinatorialRigidity/Molecular/AlgebraicInduction/PanelHinge.lean"
       status: "proved"
       note: >-
-        As stated, rankHypothesis_of_theorem_55_gen allows degenerate hinges and places no
-        condition on the endpoint selector, so at deficiency zero the framework with every
-        panel normal zero meets its conclusion (the main_results row). The upper bound holds
-        at nondegenerate hinges, so the rank formula takes the proved form with nondegenerate
-        hinges whose selector records the ends of each edge,
+        As stated, rankHypothesis_of_theorem_55_gen allows degenerate hinges, so at deficiency
+        zero the framework with every panel normal zero meets its conclusion (the main_results
+        row). The upper bound holds at nondegenerate hinges, so the rank formula takes the
+        proved form with nondegenerate hinges,
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen.
 
     - source: "Katoh-Tanigawa 2011, Conjecture 1.2 (the Molecular Conjecture; Tay-Whiteley 1984)"
@@ -751,10 +745,9 @@ alignment:
       status: "proved"
       note: >-
         At every dimension n >= 2 (D = (n+1 choose 2) >= 3; phase 40) and over any infinite
-        field, any characteristic (phase 33). As stated, the panel side places no condition on
-        the endpoint selector, so a hinge need not be the meet of the panels of its edge's own
-        ends (the main_results row); the link-recording form of Theorem 5.6 gives it in that
-        form by the same argument, though no declaration states it.
+        field, any characteristic (phase 33). The panel side asks for a nonzero hinge at every edge
+        label, and the panel-hinge framework's selector gives each edge its own ends, so each
+        hinge is the meet of the panels of its edge's own ends (the main_results row).
 
     - source: "Jackson-Jordán 2008 (Discrete Comput. Geom. 40), the molecular conjecture in the plane for pin-collinear body-and-pin frameworks"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture, CombinatorialRigidity.Molecular.molecular_conjecture_multigraph"
@@ -764,9 +757,10 @@ alignment:
         The n = 2 instances, over any infinite field (phase 40), proved by Katoh-Tanigawa's
         argument rather than Jackson-Jordán's; the multigraph form is stated in KT's
         hinge-coplanar model, which at n = 2 is exactly the pin-collinear condition. The
-        simple-graph instance's panel side places no condition on the endpoint selector, so a
-        pin need not be the meet of the lines of its edge's own ends (the Conjecture 1.2 entry
-        above); the multigraph form puts each pin on the lines of both ends of its edge.
+        simple-graph instance's panel side gives each edge its own ends through the framework's
+        selector, so each pin is the meet of the lines of its edge's own ends (the Conjecture
+        1.2 entry above); the multigraph form puts each pin on the lines of both ends of its
+        edge.
 
     - source: "Jackson-Jordán 2008 / Katoh-Tanigawa 2011 Corollary 5.7 (molecule rank formula r(G^2) = 3|V| - 6 - def(G~))"
       lean: "SimpleGraph.molecule_rank_formula"

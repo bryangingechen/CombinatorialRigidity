@@ -8,12 +8,11 @@ module
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 
 /-!
-# The generic lift, Layer P — generic panel-and-hinge normal assignments
+# The generic lift — generic panel-and-hinge normal assignments
 
-Phase 34 (PROSPECT G3, the Jackson–Jordán 2010 coordinate route; see `notes/Phase34.md` and
-`blueprint/src/chapter/generic-lift.tex`, `sec:generic-lift-panel`). This file opens the panel
-layer of the generic lift: the transfer-form genericity of a *normal assignment*
-`q : α × Fin (k+2) → K` for the panel-and-hinge model, and its abundance/existence.
+The panel layer of the generic lift (`blueprint/src/chapter/generic-lift.tex`,
+`sec:generic-lift-panel`; Jackson–Jordán 2010 §7): the genericity of a *normal assignment*
+`q : α × Fin (k+2) → K` for the panel-and-hinge model, and its abundance and existence.
 
 The annihilator-row family `panelRow` of the panel-hinge framework `ofNormals G ends q` reads only
 the endpoint selector `ends` and the normal assignment `q` — not the carrier graph `G` (the support
@@ -23,8 +22,7 @@ here as `normalRow ends q`, with the `rfl` bridge `normalRow_eq_panelRow` to the
 graph enters only in the consumers, through an `hends` link hypothesis.
 
 * `def:generic-normals` — `normalRow` (the graph-free annihilator-row family) and `IsGenericNormals`
-  (the Phase-24 transfer form: every subfamily linearly independent at *some* assignment is
-  linearly independent at `q`).
+  (every subfamily linearly independent at *some* assignment is linearly independent at `q`).
 * `lem:generic-normals-abundance` — `exists_isGenericNormals_abundance`: one nonzero
   `MvPolynomial` whose non-vanishing forces genericity. The `annihRowPoly` coordinate family and
   the evaluation identity are exactly those the genericity device
@@ -38,10 +36,10 @@ graph enters only in the consumers, through an `hends` link hypothesis.
 * `lem:generic-normals-nondegenerate` — `supportExtensor_ofNormals_ne_zero_of_isGenericNormals`:
   every hinge is nondegenerate at a generic assignment, via a per-edge moment-curve seed.
 * `lem:panel-witness-transplant` — `exists_independent_normalRow_of_le_finrank`: a rank bound on
-  a realization's own rigidity rows extracts that many independent `normalRow`s of OUR fixed
+  a realization's own rigidity rows extracts that many independent `normalRow`s of a fixed
   selector, at that realization's own normals.
 * `thm:panel-generic-rank` — `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`: the
-  deficiency-graded rank formula holds at every normal assignment generic for row independence,
+  rank formula `D(|V|−1) − def(G̃)` holds at every normal assignment generic for row independence,
   assembled from the link-recording Theorem-5.6 witness (`Theorem55.lean`), the witness
   transplant, and the nondegeneracy lemma — the same `le_antisymm` pinch
   `Theorem56.lean`'s `exists_rankHypothesis_isGeneralPosition4_of_two_le` uses for its sibling
@@ -64,7 +62,7 @@ variable {K : Type*} [Field K]
 variable {α β : Type*}
 
 /-- **The graph-free annihilator-row family of a normal assignment** (`def:generic-normals`;
-Jackson–Jordán 2010 §7, Phase 34). For an endpoint selector `ends : β → α × α` and a free normal
+Jackson–Jordán 2010 §7). For an endpoint selector `ends : β → α × α` and a free normal
 assignment `q : α × Fin (k+2) → K`, the row at index `(e, t₁, t₂)` is the per-pair annihilator
 functional `annihRow` of the panel support extensor `panelSupportExtensor n_u n_v` at the two
 normals `q` puts on `ends e`, transported to the screw-assignment space by `hingeRow`. It reads only
@@ -91,20 +89,24 @@ theorem normalRow_eq_panelRow (G : Graph α β) (ends : β → α × α)
     (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
     normalRow ends q i = (ofNormals G ends q).toBodyHinge.panelRow ends i := rfl
 
-/-- **A normal assignment generic for row independence** (`def:generic-normals`; the Phase-24
-transfer form, Jackson–Jordán 2010 §7, Phase 34). The assignment `q` is *generic* when every
+/-- **A normal assignment generic for row independence** (`def:generic-normals`; Jackson–Jordán
+2010 §7). The assignment `q` is *generic* when every
 subfamily of the annihilator-row family that is linearly independent at *some* normal assignment is
 linearly independent at `q` — the `SimpleGraph.IsGenericPlacement` shape, transported to the panel
-normals. It subsumes Jackson and Jordán's edge-induced-submatrix maximum-rank condition, and reads
-only `ends` and `q` (the row family is graph-free, `normalRow`), so it is a property of the
-assignment alone; consumers instantiate it over a multigraph via an `hends` link hypothesis. -/
+normals. For a loopless graph, the rows of every edge set at a generic `q` have the largest rank
+over
+the assignments with nondegenerate hinges at those edges, which is Jackson and Jordán's
+edge-induced-submatrix maximum-rank condition (over all assignments it is not, since a degenerate
+hinge welds two bodies and raises the rank). The definition reads only `ends` and `q` (the row
+family is graph-free, `normalRow`), so it is a property of the assignment alone; consumers
+instantiate it over a multigraph via an `hends` link hypothesis. -/
 def IsGenericNormals (ends : β → α × α) (q : α × Fin (k + 2) → K) : Prop :=
   ∀ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
     (∃ q' : α × Fin (k + 2) → K, LinearIndependent K fun i : s => normalRow ends q' i) →
       LinearIndependent K fun i : s => normalRow ends q i
 
 /-- **Abundance of generic normal assignments** (`lem:generic-normals-abundance`; Jackson–Jordán
-2010 §7, Phase 34). There is a nonzero polynomial `P` in the `(k+2)|V|` normal coordinates such that
+2010 §7). There is a nonzero polynomial `P` in the `(k+2)|V|` normal coordinates such that
 every assignment `q` with `P(q) ≠ 0` is generic for row independence; the non-generic assignments
 are confined to the zero set of one nonzero polynomial.
 
@@ -180,7 +182,7 @@ theorem exists_isGenericNormals_abundance [Finite α] [Finite β] (ends : β →
   exact hQ s q ((Finset.prod_ne_zero_iff.mp hq) s (Finset.mem_univ s)) hs
 
 /-- **Existence of generic normal assignments** (`lem:exists-generic-normals`; Jackson–Jordán 2010
-§7, Phase 34). Over an infinite field, a generic normal assignment exists. The abundance polynomial
+§7). Over an infinite field, a generic normal assignment exists. The abundance polynomial
 of `exists_isGenericNormals_abundance` is nonzero, so over an infinite field it has a non-root
 (`MvPolynomial.exists_eval_ne_zero`), which is a generic assignment — no interpolation along lines,
 in contrast to the bar-joint `SimpleGraph.exists_isGenericPlacement`. -/
@@ -191,9 +193,8 @@ theorem exists_isGenericNormals [Infinite K] [Finite α] [Finite β] (ends : β 
   exact ⟨q, hP q hq⟩
 
 /-- **Generic normal assignments have nondegenerate hinges** (`lem:generic-normals-nondegenerate`;
-Jackson–Jordán 2010 §7, Phase 34). For `k ≥ 1` (so `D = screwDim k ≥ 2` — the blueprint's "dimension
-at least two, so `D ≥ 3`" coincides with `D ≥ 2` here, since `screwDim` only takes the values
-`1, 3, 6, 10, …`) and a loopless multigraph `G` each of whose edge labels links its selector pair,
+Jackson–Jordán 2010 §7). For `k ≥ 1` (so `D = screwDim k ≥ 3`; the proof uses only `D ≥ 2`,
+`two_le_screwDim`) and a loopless multigraph `G` each of whose edge labels links its selector pair,
 every normal assignment `q` generic for row independence gives the induced framework on `G` every
 supporting extensor nonzero.
 
@@ -281,18 +282,19 @@ theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
   simp [BodyHingeFramework.hingeRow_apply]
 
 /-- **The witness transplant: a rank bound on `Q`'s own rigidity rows extracts that many
-independent `normalRow`s of OUR fixed selector `ends`, evaluated at `Q`'s own normal assignment**
-(`lem:panel-witness-transplant`; Jackson–Jordán 2010 §7, Phase 34). Given `Q`, a panel-hinge
+independent `normalRow`s of a fixed selector `ends`, evaluated at `Q`'s own normal assignment**
+(`lem:panel-witness-transplant`; Jackson–Jordán 2010 §7). Given `Q`, a panel-hinge
 realization of `G` whose supporting extensor is nonzero on *every* edge label (`hC`, the shape the
 link-recording witness `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` supplies), and a
-fixed *genuine* endpoint selector `ends` for `G` (`hends`: every edge label a real `G`-link) that
+fixed endpoint selector `ends` for `G` that records a link at every edge label (`hends`) and that
 `Q.ends` agrees with (up to swap) on every actual link (`hQends`), a rank bound `N ≤ finrank (span
 Q.toBodyHinge.rigidityRows)` extracts `N` independent `normalRow ends q`-rows at `q :=` `Q`'s own
 normal assignment.
 
-The extraction is `exists_independent_panelRow_subfamily_of_le_finrank` (W6e,
-`GenericityDevice.lean`), applied to `Q.toBodyHinge` at OUR `ends` (valid since `ends` is a genuine
-selector of *every* edge, stronger than that lemma's linking-edge hypothesis): it hands back `N`
+The extraction is `exists_independent_panelRow_subfamily_of_le_finrank`
+(`GenericityDevice.lean`), applied to `Q.toBodyHinge` at `ends` (valid since `ends` records a link
+at
+*every* edge label, stronger than that lemma's linking-edge hypothesis): it hands back `N`
 literal `Q.toBodyHinge.panelRow ends`-rows, linearly independent. Each such row and the
 corresponding `normalRow ends q` row read the *same* endpoints `ends e` for the hinge, differing
 only in whose supporting extensor feeds the annihilator — `Q`'s own (via `Q.ends e`) versus the
@@ -316,12 +318,13 @@ theorem exists_independent_normalRow_of_le_finrank [Finite α] [Finite β]
   set q : α × Fin (k + 2) → K := fun p => Q.normal p.1 p.2 with hqdef
   have hFg : Q.toBodyHinge.graph = G := by
     rw [PanelHingeFramework.toBodyHinge_graph, hQg]
-  -- Extract `N` independent literal `panelRow`s of `Q.toBodyHinge`, at OUR fixed `ends`.
+  -- Extract `N` independent literal `panelRow`s of `Q.toBodyHinge`, at the fixed `ends`.
   obtain ⟨s, -, hscard, hsli⟩ :=
     Q.toBodyHinge.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends)
       (fun e u v _ => by rw [hFg]; exact hends e) (fun e _ => hC e) hN
   refine ⟨s, hscard, ?_⟩
-  -- Each index's panel row of `Q.toBodyHinge` at OUR `ends` is `±` the graph-free `normalRow`.
+  -- Each index's panel row of `Q.toBodyHinge` at the fixed `ends` is `±` the graph-free
+  -- `normalRow`.
   have hAnegP : ∀ (D : ScrewSpace K k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k),
       annihRow (k := k) (-D) t₁ t₂ = -(annihRow D t₁ t₂) := by
     intro D t₁ t₂
@@ -375,26 +378,26 @@ theorem exists_independent_normalRow_of_le_finrank [Finite α] [Finite β]
   exact (LinearIndependent.units_smul_iff v w).mp hsli
 
 /-- **The generic rank formula for the panel-and-hinge normal model** (`thm:panel-generic-rank`;
-Jackson–Jordán 2010 §7, Phase 34). For a simple spanning multigraph `G` on at least two bodies with
-a genuine (link-recording) endpoint selector `ends`, every normal assignment `q` generic for row
+Jackson–Jordán 2010 §7). For a simple spanning multigraph `G` on at least two bodies with
+a link-recording endpoint selector `ends`, every normal assignment `q` generic for row
 independence attains the deficiency-graded rank:
 
 `finrank (span (ofNormals G ends q).toBodyHinge.rigidityRows) = D(|V(G)|-1) - def(G̃)`.
 
-*Lower bound.* The genuine link-recording Theorem-5.6 producer
+*Lower bound.* The link-recording Theorem-5.6 witness
 (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`) realizes a witness `Q0` at the exact
 target rank, via the rigidity-row/motion complement identity
 (`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`). The witness transplant
 (`exists_independent_normalRow_of_le_finrank`, `lem:panel-witness-transplant`) extracts that many
 independent `normalRow ends`-rows at `Q0`'s own normal assignment; genericity of `q`
-(`IsGenericNormals`) transfers that independence to `q`, and since `ends` is a genuine selector on
-every edge, each such row is a rigidity row of `(ofNormals G ends q).toBodyHinge`
+(`IsGenericNormals`) transfers that independence to `q`, and since `ends` records a link at
+every edge label, each such row is a rigidity row of `(ofNormals G ends q).toBodyHinge`
 (`panelRow_mem_rigidityRows_of_link`), giving the lower bound via `finrank_span_eq_card` +
 `Submodule.finrank_mono`.
 
 *Upper bound.* The genericity-free deterministic bound
-(`finrank_span_rigidityRows_add_deficiency_le`, the dual form of `prop:rigidity-matrix-prop11`'s
-bound) applies at `q`, since every hinge is nondegenerate there
+(`finrank_span_rigidityRows_add_deficiency_le`, the second pin of
+`lem:relative-deficiency-rank-bound`) applies at `q`, since every hinge is nondegenerate there
 (`supportExtensor_ofNormals_ne_zero_of_isGenericNormals`, `lem:generic-normals-nondegenerate`).
 
 The two bounds pinch the row count to the exact value — the same `le_antisymm` assembly
@@ -413,7 +416,7 @@ theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
       = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n := by
   classical
   have hloop : G.Loopless := hSimple.toLoopless
-  -- The genuine link-recording Theorem-5.6 producer, over OUR carrier `G`.
+  -- The link-recording Theorem-5.6 witness, over the carrier `G`.
   obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
     rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k) (n := n)
       hk1 hn hfresh G hV hspan hSimple
@@ -439,7 +442,7 @@ theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
   have hLIq : LinearIndependent K fun i : s => normalRow ends q i :=
     hq s ⟨fun p => Q0.normal p.1 p.2, hsli⟩
   -- Each row of the graph-free family is a rigidity row of `(ofNormals G ends q).toBodyHinge`
-  -- (`ends` is a genuine selector on every edge, `hends`), so the independent subfamily's span
+  -- (`ends` records a link at every edge label, `hends`), so the independent subfamily's span
   -- lower-bounds the rigidity-row span's rank.
   have hsub : Submodule.span K (Set.range (fun i : s => normalRow ends q (i : β × _ × _)))
       ≤ Submodule.span K (ofNormals G ends q).toBodyHinge.rigidityRows := by
@@ -475,7 +478,7 @@ theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
   exact le_antisymm hub (by rw [← hrank0]; exact hlb)
 
 /-- **Every generic panel-and-hinge realization of a rigid graph is rigid**
-(`cor:panel-generic-rigid`; Jackson–Jordán 2010 §7, Phase 34). In the setting of
+(`cor:panel-generic-rigid`; Jackson–Jordán 2010 §7). In the setting of
 `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`, the framework at every normal assignment
 generic for row independence is infinitesimally rigid on `V(G)` iff `def(G̃) = 0` — a
 rank–nullity corollary via the row-count-iff-rigidity bridge

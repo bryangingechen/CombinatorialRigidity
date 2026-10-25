@@ -223,8 +223,9 @@ def IsGenericEndpoints (G : Graph α β) (D : Graph.orientation G)
 /-! ### Abundance and existence of generic endpoint assignments -/
 
 /-- **Abundance of generic endpoint assignments** (`lem:generic-endpoints-abundance`). There is a
-nonzero polynomial `P` in the `2n|E(G)|` endpoint coordinates such that every assignment `q` with
-`P(q) ≠ 0` is generic for row independence; the non-generic assignments are confined to the zero
+nonzero polynomial `P` in the `2n` endpoint coordinates of each edge label `e : β` (the variables
+are indexed by `β × Bool × Fin n`) such that every assignment `q` with `P(q) ≠ 0` is generic for row
+independence; the non-generic assignments are confined to the zero
 set of one nonzero polynomial.
 
 The coordinate family is read against the standard basis `Pi.basis (fun _ : α =>

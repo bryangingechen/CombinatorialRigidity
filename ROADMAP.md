@@ -762,12 +762,11 @@ chain `v₀…v_d`, eqs. 6.46–6.67), completed Theorems 5.5 and 5.6 at general
 bodies has an infinitesimally rigid genuine **body-hinge** realization iff it
 has one as a **panel-hinge** framework; green + axiom-clean for
 `6 ≤ bodyBarDim n`, i.e. `n ≥ 3`; weakened to `n ≥ 2` in place by Phase 40a).
-As stated, its panel side and Theorem 5.6's conclusion
-(`rankHypothesis_of_theorem_55_gen`) leave the endpoint selector free, and
-Theorem 5.6's also allows degenerate hinges, so at deficiency zero all-zero
-normals meet it; the link-recording form with nondegenerate hinges is
-`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (`F-122`, `F-128`;
-the refactor is `RECONCILE-FORMAL`'s). The work split along the recon's
+As stated, Theorem 5.6's conclusion
+(`rankHypothesis_of_theorem_55_gen`) allows degenerate hinges, so at deficiency
+zero all-zero normals meet it; the form with nondegenerate hinges is
+`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (`F-122`, `F-128`; since
+phase 41a every panel-hinge framework's selector gives each edge its ends). The work split along the recon's
 carrier-grade fault line: **`CARRIER`** (23a, the mechanical `screwDim k`
 spine lift), **`CHAIN`** (23b–23f — the general-`d` chain dispatch; after the
 `±r`-block rank cert hit the *member-mapping wall* (source-verified intrinsic
@@ -1224,7 +1223,7 @@ carried past the close are indexed in the design doc's §7. Headline axioms (the
 
 **In progress** (opened 2026-10-24 with the PI; plan and recon `notes/Phase41-design.md`). The
 attended phase of the RECONCILE program (`notes/Reconcile.md` §3), acting on PROSE's findings S1
-and S2. **S2**: `PanelHingeFramework`'s endpoint selector `ends` is free, so KT Theorem 5.6's main
+and S2. **S2**: `PanelHingeFramework`'s endpoint selector `ends` was free, so KT Theorem 5.6's main
 result is met at deficiency zero by the framework whose normals are all zero. The PI chose a field
 of the structure, `isLink_ends : ∀ e ∈ E(graph), graph.IsLink e (ends e).1 (ends e).2`, so a
 mis-linked framework cannot be built; the restated conclusions also ask nondegenerate hinges on

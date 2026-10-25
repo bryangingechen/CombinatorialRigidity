@@ -107,19 +107,14 @@ panel-hinge framework — is a theorem of the development
 is a pin joining two bodies and each panel is a line, the molecular
 conjecture is Jackson–Jordán's 2008 theorem on pin-collinear body-and-pin
 frameworks; the development proves it over every infinite field, by
-Katoh–Tanigawa's argument (phase 40). As stated, these two simple-graph
-theorems leave out conditions: the formal panel-hinge framework records,
+Katoh–Tanigawa's argument (phase 40). The formal panel-hinge framework records,
 for each edge, a pair of bodies whose panels meet in its hinge, and
-neither statement requires that pair to be the edge's own ends.
-Theorem 5.6's statement also allows degenerate hinges, so for a graph
+since phase 41a the pair is the edge's own ends. As stated,
+Theorem 5.6 allows degenerate hinges, so for a graph
 of deficiency zero a framework whose panel normals are all zero meets
-its conclusion. The form with both conditions — every hinge
-nondegenerate and the meet of the panels of its edge's ends — is
+its conclusion. The form with nondegenerate hinges is
 proved for simple graphs on at least two bodies
-(`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`), and by the
-same argument gives the molecular conjecture's panel side in that form,
-though no declaration states it; phase 41, in progress, builds the
-condition into the framework. The multigraph forms (phase 35, below)
+(`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`). The multigraph forms (phase 35, below)
 place each hinge in the panels of its edge's ends. On top of these
 results sits the molecule application: the generic bar-joint rigidity
 matroid in dimension three in linear-matroid form (phase 24), projective

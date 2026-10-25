@@ -472,12 +472,11 @@ theorem momentCurve_pair_linearIndependent {s t : K} (hst : s ≠ t) :
 
 /-- **The moment-curve general-position assignment** (the normals of
 `lem:moment-curve-general-position`): given an injective parameter map `param : α → K` assigning a
-distinct real to each body, the panel framework `P.withMomentNormals param` re-uses `P`'s multigraph
-and endpoint selector but sets every body's panel normal to the moment-curve point
+distinct real to each body, the panel framework `P.withMomentNormals param` keeps `P`'s multigraph,
+endpoint selector and link record, and sets every body's panel normal to the moment-curve point
 `momentCurve (param a)`. Its normals are in general position (`isGeneralPosition_withMomentNormals`)
-for *any* number of bodies — the explicit construction of a rigid block's transversal hinges
-(standard-basis normals cover only `|α| ≤ k + 2`). The endpoint selector and graph are untouched, so
-the framework is glued onto the inductive realization exactly as `withGraph` / `withNormal` are. -/
+for *any* number of bodies, where the standard-basis normals cover only `|α| ≤ k + 2`. No
+declaration uses it, and no main result. -/
 def withMomentNormals (P : PanelHingeFramework K k α β) (param : α → K) :
     PanelHingeFramework K k α β where
   graph := P.graph
@@ -501,9 +500,9 @@ theorem withMomentNormals_normal (P : PanelHingeFramework K k α β) (param : α
 multigraph `G`, an endpoint selector `ends`, and a parameter map `param : α → K`, with every body's
 panel normal the moment-curve point `momentCurve (param a)`. Unlike `withMomentNormals` /
 `withGraph` / `withNormal` (which re-decorate an existing framework), `ofParam` needs no prior
-framework — it is the realization-side entry point for the genuinely-geometric Case-I assembly,
-where the parent graph `G` and its hinge-endpoint data are the combinatorial inputs and the
-genericity is a single injective real assignment `param`. When `param` is injective the normals are
+framework: the graph `G` and the selector are the inputs, and the genericity is a single injective
+real assignment `param`. No declaration but `isGeneralPosition_ofParam` uses it. When `param` is
+injective the normals are
 automatically in general position (`isGeneralPosition_ofParam`), so every hinge joining two distinct
 bodies is transversal. The selector must record the links of `G` (`hlinks`, filled in by
 `link_tac`). -/
@@ -688,11 +687,9 @@ theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : 
 /-- **The panel framework on a new graph** (`def:framework-with-graph`, panel layer): replace the
 underlying multigraph of `P` by `G'`, keeping the per-body panel normals `normal` and the endpoint
 selector `ends` — hence every panel support extensor. The panel analogue of
-`BodyHingeFramework.withGraph`, and the shared carrier both inductive cases of Theorem 5.5 need on
-the panel layer: Case I realizes the contraction `G/E(H)` and Case II the splitting-off `G_v^{ab}`
-on the *same* panel data of the parent framework. Because the normals are untouched, the
-hinge-coplanarity is preserved: every hinge of `P.withGraph G'` incident to a body `v` still lies in
-the single panel `panel(v) = {normal v}^⊥`. The selector must record the links of `G'` (`hlinks`,
+`BodyHingeFramework.withGraph`. Because the normals and the selector are untouched, every hinge of
+`P.withGraph G'` at a link of `G'` still lies in the panels of its ends, and is their meet. No main
+result uses it. The selector must record the links of `G'` (`hlinks`,
 filled in by `link_tac`, for instance from `G' ≤ P.graph`). -/
 def withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β)
     (hlinks : RecordsLinks G' P.ends := by link_tac) : PanelHingeFramework K k α β where
@@ -723,11 +720,10 @@ theorem withGraph_graph_self (P : PanelHingeFramework K k α β) : P.withGraph P
 P.toBodyHinge.withGraph G'`. The body-hinge interpretation of the panel framework on a new graph is
 the body-hinge `withGraph` of the original's interpretation — both carry the same multigraph `G'`
 and the same panel support extensors (the normals and endpoint selector are unchanged by either
-`withGraph`). This is the bridge that lets the green body-hinge graph-monotonicity and block-pin
-rank machinery (`infinitesimalMotions_le_withGraph_of_le`, `pinnedMotionsOn_le_withGraph_of_le`,
-`screwDim_add_finrank_pinnedMotionsOn_le`) apply verbatim to a panel realization placed on the
-smaller inductive graph (`G/E(H)`, `G_v^{ab}`) and re-glued onto `G`, with coplanarity preserved
-throughout. -/
+`withGraph`). It lets the body-hinge results on `withGraph`
+(`infinitesimalMotions_le_withGraph_of_le`,
+`pinnedMotionsOn_le_withGraph_of_le`, `screwDim_add_finrank_pinnedMotionsOn_le`) apply to a panel
+framework restricted to a subgraph. -/
 @[simp]
 theorem toBodyHinge_withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β)
     {hlinks : RecordsLinks G' P.ends} :
@@ -873,9 +869,8 @@ hypothesis on `v`, overriding `v`'s panel normal by `n` leaves every body's pinn
 unchanged — `(P.withNormal v n).toBodyHinge.pinnedMotions w = P.toBodyHinge.pinnedMotions w`. The
 pin `pinnedMotions w` is the null space cut by the graph-independent vanishing condition `S w = 0`,
 and the null space itself is untouched (`toBodyHinge_withNormal_infinitesimalMotions_eq`), so the
-pin is too. This is what carries the inductive realization of the splitting-off `G_v^{ab}` —
-measured by its pinned-motion dimension via the rank-lift `rankHypothesis_iff_finrank_pinnedMotions`
-— through the choice of `v`'s panel normal untouched. -/
+pin is too. No main result uses it: `case_II_realization_all_k` uses the motion-space form
+`toBodyHinge_withNormal_infinitesimalMotions_eq`. -/
 theorem toBodyHinge_withNormal_pinnedMotions_eq (P : PanelHingeFramework K k α β) (v : α)
     (n : Fin (k + 2) → K) (w : α)
     (hv : ∀ e u w', P.graph.IsLink e u w' → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v) :
@@ -1047,42 +1042,28 @@ def HasPanelRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Pr
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
-/-! ## Proposition 1.1, analytic half: generic rank `= D(|V|−1) − def(G̃)`
-(`prop:rigidity-matrix-prop11`)
+/-! ## Proposition 1.1, analytic half (`prop:rigidity-matrix-prop11`) -/
 
-The last red node of Phase 21. Katoh–Tanigawa's Proposition 1.1 reconciles the *honest*
-panel-hinge rigidity-matrix rank `R(G,p)` of `Molecular/RigidityMatrix.lean` (Phase 18) with the
-combinatorial deficiency `def(G̃)` of `Molecular/Deficiency.lean` (Phase 19): for a generic
-panel-hinge realization `(G,p)`,
-`rank R(G,p) = D(|V|−1) − def(G̃)` (Jackson–Jordán 2009 Thm 6.1, geometric side).
+/-- **The rank hypothesis from the generic bound** (`prop:rigidity-matrix-prop11`; the analytic half
+of Katoh–Tanigawa's Proposition 1.1). For a body-hinge framework `F` with every supporting extensor
+nonzero (`hC`), at `n = k + 1`, the generic bound `hgen : dim Z(F) ≤ D + def(G̃)` gives
+`F.RankHypothesis (def(G̃))` (`def:rank-hypothesis`): `dim Z(F) = D + def(G̃)`, equivalently
+`rank R(F) = D(|V|−1) − def(G̃)` (Jackson–Jordán 2010 Thm 6.1, geometric side), since
+`rank R = D|V| − dim Z` (`finrank_screwAssignment`). The matroidal half, `def(G̃) = corank M(G̃)`,
+is
+`Graph.rank_add_deficiency_eq` and `Graph.isBase_ncard_add_deficiency_eq`.
 
-The **matroidal half** — `def(G̃) = corank M(G̃)`, equivalently `|B| + def(G̃) = D(|V|−1)` for
-any base `B` of `M(G̃)` — landed green in Phase 19 (`Graph.rank_add_deficiency_eq`,
-`Graph.isBase_ncard_add_deficiency_eq`). This file lands the **analytic half**, the bridge from
-the rank `R(G,p)` to the deficiency, in the basis-free codimension convention of Phase 18: `rank
-R(G,p) = D|V| − dim Z(G,p)` (`finrank_screwAssignment`), so the target equality `rank R(G,p) =
-D(|V|−1) − def(G̃)` is precisely `dim Z(G,p) = D + def(G̃)`, i.e. `F.RankHypothesis (def(G̃))`
-(`def:rank-hypothesis`, at `k' = def`).
+The proof joins two inequalities.
 
-It is **GREEN-modulo the Phase-21b genericity device**, assembled from the two inequalities that
-pin the equality, in the established idiom of Cases I/II (`hglue`, `hspan`):
-
-* *Genericity-free upper bound* `hub` (`rank R(G,p) ≤ D(|V|−1) − def(G̃)`, equivalently `D +
-  def(G̃) ≤ dim Z(G,p)`): the codimension form `lem:trivial-motions-rank-bound` together with the
-  deficiency count. A vertex partition `P` attaining `def(G̃)` contracts each part to one effective
-  body, leaving `D(|P|−1) − (D−1)·d_G(P) = partitionDef` independent screw freedoms in the null
-  space beyond the `D` trivial motions; maximizing over `P` gives `def(G̃)` extra motions. This is
-  genuine genericity-free content (no max-rank assumption — *every* realization has at least this
-  many motions); it is now **discharged** in-proof by
-  `screwDim_add_deficiency_le_finrank_infinitesimalMotions` (the `hub` lower bound, green from the
-  Phase-19 partition machinery), so the only inputs are the dimension fixing `n = k + 1` and the
-  genuine-hinge condition `C(e) ≠ 0` the partition cut needs.
-* *From Phase 21b (cited)* `hgen` (`rank R(G,p) ≥ D(|V|−1) − def(G̃)`, equivalently `dim Z(G,p) ≤ D
-  + def(G̃)`): the generic max-rank lower bound — Theorem 5.5 (`theorem_55_minimalKDof_gen`) pushed
-  from minimal `k`-dof-graphs to all multigraphs by deleting down to a minimal `k`-dof spanning
-  subgraph and observing that re-adding edges only grows the rank (`lem:motions-mono-of-graph-le`).
-  The generic-rank argument (Claim 6.4) selects the point attaining this max; that is the Phase-21b
-  device. -/
+* The lower bound `D + def(G̃) ≤ dim Z(F)` needs no genericity: a vertex partition attaining
+  `def(G̃)` contracts each part to one effective body, leaving `D(|P|−1) − (D−1)·d_G(P)` independent
+  screw freedoms beyond the `D` trivial motions. It is
+  `screwDim_add_deficiency_le_finrank_infinitesimalMotions`, which needs the nonzero hinges `hC`.
+* The upper bound is the hypothesis `hgen`. Its callers, the proofs of KT Theorem 5.6
+  (`thm:theorem-55-6-genuine`, `thm:theorem-55-6-multigraph`), supply it from Theorem 5.5
+  (`theorem_55_minimalKDof_gen`) pushed from minimal `k`-dof-graphs to all multigraphs, by deleting
+  down to a minimal `k`-dof spanning subgraph and re-adding the edges, which only shrinks the null
+  space (`lem:motions-mono-of-graph-le`). -/
 theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]
     (F : BodyHingeFramework K k α β) (n : ℕ) (hn : n = k + 1)
     (hC : ∀ e, F.supportExtensor e ≠ 0)
