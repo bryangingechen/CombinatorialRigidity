@@ -2543,10 +2543,10 @@ declaration's name as its header writes it:
   the links of $G$, and the note after the proof says so (`a22d989c`); the conditional statement, or a
   repin on the generic forms, stays RESTATE's, after S1.
   Phase 41b, item 11 (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
-  Proposition 2.3, in conditional form"): done. The node states what its pin states, KT Proposition
-  2.3's rank formula for a body-hinge framework on a multigraph in conditional form: with a nonzero
-  hinge at every edge, the bound $\dim Z(G,p) \le D + \operatorname{def}(\tilde G)$ gives the
-  formula. Its proof is `lem:deficiency-rank-bound` and the hypothesis; the edges to
+  Proposition 2.3, in conditional form", `c26edc57`): done. The node states what its pin states, KT
+  Proposition 2.3's rank formula for a body-hinge framework on a multigraph in conditional form:
+  with a nonzero hinge at every edge, the bound $\dim Z(G,p) \le D + \operatorname{def}(\tilde G)$
+  gives the formula. Its proof is `lem:deficiency-rank-bound` and the hypothesis; the edges to
   `thm:theorem-55`, `lem:motions-mono-of-graph-le`, `lem:minimal-kdof-spanning-subgraph` and
   `def:dof-generic` are gone, and none of its edges is unbacked (`blueprint-deps.py --label`). The
   subsection's opening says where the bound holds: at the realizations of KT Theorem 5.6 that the
@@ -3602,11 +3602,11 @@ declaration's name as its header writes it:
   generic one.
   *Found:* Phase 41b, the coordinator's check of KT for the PI (`notes/Phase41-design.md` §1f.1).
   *Disposition:* done (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
-  Proposition 2.3, in conditional form"; before: open, `notes/Phase41b.md`, item 11): the PI chose
-  KT's body-hinge form, proved conditionally, repinned unconditionally on MULTIGRAPH's M1
-  (`notes/Phase41-design.md` §1f.1). The node is about a body-hinge framework on a multigraph, as KT
-  state Proposition 2.3 (p. 655), not a panel-hinge realization. The prose before it, the opening of
-  `algebraic-induction.tex`, the openings of `rigidity-matrix.tex` and `deficiency.tex`,
+  Proposition 2.3, in conditional form", `c26edc57`; before: open, `notes/Phase41b.md`, item 11):
+  the PI chose KT's body-hinge form, proved conditionally, repinned unconditionally on MULTIGRAPH's
+  M1 (`notes/Phase41-design.md` §1f.1). The node is about a body-hinge framework on a multigraph, as
+  KT state Proposition 2.3 (p. 655), not a panel-hinge realization. The prose before it, the opening
+  of `algebraic-induction.tex`, the openings of `rigidity-matrix.tex` and `deficiency.tex`,
   `intro.tex`'s Case III item, the sentence after `fmlnote:endpoint-selector-totality` and
   `formalization.yaml`'s Theorem 5.6 row and alignment row no longer describe it as the formula at
   generic panel-hinge realizations.
@@ -4178,8 +4178,8 @@ declaration's name as its header writes it:
   `rigidityMatrix_prop11`'s header and docstring name its node, which item 11 restates (`F-121`,
   `F-331`), and are item 11's to re-read.
   Phase 41b, item 11 (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
-  Proposition 2.3, in conditional form"): re-read against the restated node. The header and
-  docstring called the pin the analytic half of KT Proposition 1.1, which is Tay and Whiteley's
+  Proposition 2.3, in conditional form", `c26edc57`): re-read against the restated node. The header
+  and docstring called the pin the analytic half of KT Proposition 1.1, which is Tay and Whiteley's
   theorem (KT p. 648; `F-067`); both now name KT Proposition 2.3 (p. 655) in conditional form, as
   the node does. Done.
 - **F-126** · L · the docstrings and comments of `panel-layer.tex`'s KT Theorem 5.5 pins
@@ -4303,9 +4303,14 @@ declaration's name as its header writes it:
   `toBodyHinge_withNormal_pinnedMotions_eq`'s without "carries the inductive realization" (it names
   the motion-space form that `case_II_realization_all_k` uses).
   Phase 41b, item 11 (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
-  Proposition 2.3, in conditional form"): `theorem_55_6_multigraph_of_two_le`'s docstring names
-  `rigidityMatrix_prop11` KT Proposition 2.3 in conditional form, not KT Prop 1.1 (`F-067`), as the
-  restated node does.
+  Proposition 2.3, in conditional form", `c26edc57`): `theorem_55_6_multigraph_of_two_le`'s
+  docstring names `rigidityMatrix_prop11` KT Proposition 2.3 in conditional form, not KT Prop 1.1
+  (`F-067`), as the restated node does.
+  Phase 41b, the close's re-read (the commit "Phase 41b, the close's re-read: two false sentences
+  of `panel-layer.tex`, and `HasCoplanarPanelRealization`'s docstring"): the last of the codes.
+  `HasCoplanarPanelRealization`'s docstring called `HasPanelRealization` "the honest bare motive"
+  and "M2", which now reads as the findings report's M2, a credit; it names it the
+  nondegenerate-hinge realization hypothesis, as its own docstring does. Done.
 - **F-135** · L · the docstrings of `case-i.tex`'s first pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `PanelLayer.lean`, `Pinning.lean`,
   `CaseIII/Arms.lean`). `toBodyHinge_rankHypothesis_zero`'s calls

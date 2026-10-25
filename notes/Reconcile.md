@@ -33,7 +33,7 @@ docstrings wait for the phase (§3). The round's log also proposed that the labe
 join the project's gates for a commit that moves a pin; the PI adopted it on 2026-10-24
 (`blueprint/lint.sh` check 9). Phase 41's plan, its
 open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
-41b's item 5, Theorem 5.6 (`notes/Phase41b.md` *Hand-off*).
+41b's close (`notes/Phase41b.md` *Hand-off*).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

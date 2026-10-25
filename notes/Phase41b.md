@@ -9,7 +9,8 @@ body with nonparallel panels on its panel side, the multigraph rows ask nondegen
 the `d = 3` spanning corollary derives from `theorem_55_d3`, the generic panel and body-hinge
 theorems hold at every generic realization on `G`, one body or more (rows witnessed at the single
 edge and the triangle), the status surfaces say so, and KT Proposition 2.3 is stated as KT state
-it, in conditional form. Next concrete task: the close.
+it, in conditional form. The close's re-read is done, its two false sentences fixed in a commit of
+their own. Next concrete task: the close.
 
 ## Current state
 
@@ -50,9 +51,16 @@ connected `G`, false since 6b (`F-130`); of the footprint's docstrings (`F-123`,
 none other is left false. Item 11 restated `prop:rigidity-matrix-prop11` as KT state Proposition
 2.3, for a body-hinge framework on a multigraph, in conditional form (the bound on the motions
 gives the formula), as its pin already proved; the subsection's opening says where the bound holds,
-and the pin's docstrings name KT Proposition 2.3, not 1.1. Next: the close. Mode: structural
-edit. There are no red target nodes; each slice restates the nodes it reaches
-(`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
+and the pin's docstrings name KT Proposition 2.3, not 1.1. The close's end-to-end re-read of the
+restated nodes, in the nine chapter files 41b touched, found no per-commit narration and two false
+sentences in `panel-layer.tex`, each left by an earlier item. The prose before `thm:theorem-55`
+said that it states a generic full-rank realization of a simple graph, which it states as
+nonparallel since item 4c; the prose before `thm:molecular-conjecture-multigraph` said that the
+simple case follows from `thm:theorem-55-6-genuine`, which it has followed from `thm:theorem-55-6`
+since item 6. Both were fixed in a commit of their own, with `HasCoplanarPanelRealization`'s
+docstring (`F-133`'s last process code) and `c26edc57` in the ledger's item-11 dispositions. Next:
+the close. Mode: structural edit. There are no red target nodes; each slice restates the nodes it
+reaches (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Architectural choices made up front
 
@@ -117,6 +125,8 @@ whole-project `lake build` with 0 warnings and `lake lint`, `blueprint/verify.sh
 close checklist for 41b (ROADMAP's row and §41, the status surfaces, the end-to-end re-read of the
 restated nodes, the working-doc tails, MULTIGRAPH or UNSTATED named next in the design doc's §3).
 One commit, unless the re-read finds a false sentence, which is then a commit of its own first.
+That re-read is done (*Current state*): its two false sentences landed in their own commit, so the
+close needs only a check of the two fixed sentences, then the rest of its checklist in one commit.
 After it the loop **stops for the PI's push** (§1f.2): no next phase opens.
 
 ## Decisions made during this phase

@@ -2511,14 +2511,15 @@ every body of `V(G)` has a nonzero normal, the supporting extensor of every edge
 (`ExtensorInPanel`: the extensor of `k` points of the hyperplane `nᵥ^⊥`).
 
 This is KT's *containment* model of hinge-coplanarity: all hinges at a body `v` lie in the single
-hyperplane `nᵥ^⊥`, so each body may be replaced by a rigid panel (KT p. 648). It is the honest bare
-motive `HasPanelRealization` (M2, `def:genuine-hinge-realization`) with its per-link nonzero
-conjunct strengthened to the total-over-`β` form, and the rank target dropped — the rank is
-*attained* by `theorem_55_6_multigraph`, not part of the realization notion. Unlike the meet-model
-`BodyHingeFramework.IsHingeCoplanar` (a `P` whose hinge on each edge of `F.graph` is `F`'s), at
-coincident panels this admits any `(d-2)`-flat of the shared panel, exactly the freedom of KT Lemma
-5.3 the meet model cannot express. Placed in the root `Molecular` namespace (it quantifies a free
-`BodyHingeFramework` and a normal assignment), matching `HasPanelRealization`. -/
+hyperplane `nᵥ^⊥`, so each body may be replaced by a rigid panel (KT p. 648). It is the
+nondegenerate-hinge realization hypothesis `HasPanelRealization` (`def:genuine-hinge-realization`)
+with its per-link nonzero conjunct strengthened to the total-over-`β` form, and the rank target
+dropped — the rank is *attained* by `theorem_55_6_multigraph`, not part of the realization notion.
+Unlike the meet-model `BodyHingeFramework.IsHingeCoplanar` (a `P` whose hinge on each edge of
+`F.graph` is `F`'s), at coincident panels this admits any `(d-2)`-flat of the shared panel, exactly
+the freedom of KT Lemma 5.3 the meet model cannot express. Placed in the root `Molecular` namespace
+(it quantifies a free `BodyHingeFramework` and a normal assignment), matching
+`HasPanelRealization`. -/
 def HasCoplanarPanelRealization (G : Graph α β) (F : BodyHingeFramework K k α β)
     (normal : α → Fin (k + 2) → K) : Prop :=
   F.graph = G ∧
