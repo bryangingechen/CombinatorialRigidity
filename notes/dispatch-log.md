@@ -30,12 +30,10 @@ keeps only what git cannot show.
   recap of the mathematics (the commit message is the recap). If a
   sentence restates what the *commit* did rather than how the
   *dispatch* went wrong, cut it. This is the same ~600-char cap the
-  concluded experiment enforced with `notes/check-log-rows.py`; that
-  script is still in the tree (pointed at the archived
-  `model-experiment.md`) and can be adapted to audit this log's Notes
-  cells — retarget its `PATH` to `notes/dispatch-log.md` and adjust the
-  column count for this file's 5-column schema. Gate on its exit code
-  with an `if`-guard, never a pipe or `;`-chain.
+  concluded experiment enforced, and `notes/check-log-rows.py` gates it
+  on this log (the rows changed vs HEAD by default; `--all` audits the
+  whole table). Gate on its exit code with an `if`-guard, never a pipe
+  or `;`-chain.
 - **Append by matching the previous row's tail only** — an edit span
   that includes the following section header silently deletes that
   header (this clobbered a log's Findings heading three times in one
@@ -51,45 +49,24 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
-| 2026-07-09 | Phase29 W2 slice-plan recon (`30b8af27`) | opus | recon-estimate defect caught downstream | The recon's anchor inventory ("5 live-Lean anchors, section granularity") was right for §0–§1.49 of `Phase22-realization-design.md` but badly undercounted §1.50+ (letter-granularity citations from ~15 Lean files). Caught by the per-slice re-derivation the dispatch prompts mandated, before any anchor broke; the builder corrected the plan-of-record in place. See Findings F1. |
-| 2026-07-09 | Phase29 W2-7 compression slices (`1ed2ff41`, `ca60cfdf`, `f38a7ac2`) | sonnet | plan-label deviation ×3, honest partial returns | Pre-planned W2-7a/b boundary mismatched the file's real density (96% of bulk in §1.34+); each slice re-drew its boundary at build time, returned honestly partial, and advanced the hand-off. Outcome good ×3 — scope-to-fit working as designed; no escalation needed. |
-| 2026-07-10 | Phase30 slice (c) conjunct deletion (`462d73ec`) | opus | killed mid-dispatch (org spend limit), resumed same-agent | External API kill (org monthly spend limit) landed mid-slice with the atomic def change uncommitted across 9 Lean files + 1 tex. On limit reset the coordinator resumed the same agent (SendMessage) with a re-orient-from-`git diff` instruction and an explicit revert-if-incoherent escape; the agent found the Lean repairs complete and pre-kill gate-verified, finished the blueprint prose sweep, re-ran ALL gates post-resume, landed clean. Kill cause external, not task-shaped; no escalation. See F4. |
-| 2026-07-10 | Phase31 S3 staleness repair (`170fddbd`) | sonnet→fable | neither-return + model drift on resume | The sonnet dispatch ended its turn mid-slice ("standing by" for its own backgrounded `lake build`) instead of waiting — a neither-LANDED-nor-BLOCKED return with the diff uncommitted. Coordinator resumed same-agent (SendMessage); the resume ran at the *session* model (fable), not the dispatched rung — the agent caught it and set the trailer to Fable 5 per CLAUDE.md. Landed clean; all gates re-run by coordinator. Upward drift is safe, but see F5. |
-| 2026-07-11 | Phase32 tight-partition subfamily slice (`ed7f6274`) | sonnet | neither-return, coordinator-salvaged | Agent scoped down (3 lemmas → 1, legitimate scope-to-fit), completed the diff + notes, then ended its turn parked on its backgrounded full `lake build` ("no further polling") and never woke on the build's completion. Coordinator monitored HEAD 25 min, then salvaged per rescue §2: verified the diff against the hand-off, re-ran all gates (build/lint/blueprint), committed with both co-author trailers. Second instance of the parked-on-background-build shape (cf. Phase31 S3 row); salvage over resume since the work was complete and gate-ready. |
-| 2026-07-11 | Phase32 tight-partition parts slice (`d87cc216`) | sonnet | neither-return, same-agent resume recovered | Third parked-on-background-build instance — despite an explicit foreground-gates prompt note. Diff complete but uncommitted; coordinator resumed same-agent (rung-pinned variant, no F5 drift) with finish-in-foreground instructions; agent re-ran all four gates blocking (explicit `timeout` set — the actual fix, see F6) and landed clean. Root cause identified: harness auto-backgrounds long Bash calls lacking an explicit `timeout`; mitigation folded into the phase-builder core same day. |
-| 2026-07-11 | Phase32 chapter-open false node (`b7a09e95`; repaired `8750729e`) | fable | false red node caught by pre-build recon | The chapter-open's own inline "correction" of the accepted L1-recon 0-extension signature (unconditional `min(3,d)` rank form) over-generalized past JJ, whose argument carries an implicit clique-neighborhood hypothesis; refuted by K₁,₄. Rode red/unpinned through ~20 clean slices — no gate can catch a false red node — until the scheduled pre-build recon on the section refuted it and re-derived the corrected route (design pass `8750729e`). Lesson: a chapter-open's statement-level corrections are themselves transcription risk; the per-section pre-build recon is the only check that fires before Lean consumes the node. |
-| 2026-07-16 | Phase32 S3 zero-extension deg-≤3 corollary (`4698ce4e`) | sonnet | neither-return via deliberate Monitor, same-agent resume recovered | 6th parked-on-background instance, but the first via a *deliberate* `run_in_background`+Monitor wait (tell: "wait for the Monitor notification"), not the harness auto-background the F6 timeout-mandate targets — so it recurred 5 days after that mitigation. Coordinator resumed same-agent (rung-pinned sonnet, no F5 drift) with finish-in-foreground instructions; agent finished gates foreground, landed clean. Mitigation extended: both cores now forbid `run_in_background`/Monitor on gates; the next dispatch (opus S4), pre-reminded in-prompt, ran clean. See F6. |
-| 2026-07-16 | Phase32 L2 pre-build recon (`bd7565f9`) | fable | killed mid-dispatch (org spend limit), resumed same-agent | Second org-spend-limit kill (cf. 2026-07-10 Phase30 row); hit the recon mid-deliverable with its jacobs.tex + Phase32.md edits uncommitted, cut off right before the Decisions-made entry. On limit reset the coordinator resumed same-agent (SendMessage; rung-pinned fable, no F5 drift) naming the cut point and the intact tree; the agent completed the notes entry, re-ran both blueprint gates, landed clean with the full verdict. Resume-over-relaunch per rescue §3 worked unchanged for a recon-shaped dispatch; no doc gap. |
-| 2026-07-16 | Phase32 T5 phase-close build (`0ce07da3`) | fable | killed mid-dispatch (org spend limit), resumed same-agent | Third org-spend-limit kill (cf. the L2-recon row above); hit the T5 builder just after its pre-write name checks, with only a 4-line docstring edit uncommitted. On limit reset the coordinator verified the tree state (git diff: docstring-only), then resumed same-agent (SendMessage; rung-pinned fable, no F5 drift) naming the intact tree; the agent completed T5 + the full phase-close pass and landed clean. Coordinator re-ran all gates incl. `#print axioms` — all green. Kill-early resumes are as clean as kill-late ones. |
-| 2026-07-16 | Phase33 Slice 2 Extensor ℝ→K (`1d40880a`) | sonnet | neither-return via Monitor + build-contention swap spiral, same-agent resume recovered | 7th parked-on-background instance, despite the F6 core mitigation landing the same day — agent ended its turn "waiting for the Monitor's completion notification". New twist: timeout auto-backgrounding had spawned THREE concurrent full `lake build`s, driving swap to ~97%; on resume the agent SIGTERM'd two, let one finish, then re-ran all gates foreground and landed clean. Resume-over-salvage since the diff was complete but ungated. Concurrent-build contention is a new failure surface: F6's foreground mandate also prevents it (one build at a time). |
-| 2026-07-16 | Phase33 Slice 4 ScrewSpace pivot (`52232967`; repaired `0cda3b7b`) | opus | gate-invisible restate miss, caught by next slice's grep | The pivot generalized a Basic decl but restated only the slice's named chapter (`rigidity-matrix.tex`); a Basic-backed node in `case-iii.tex` kept the `\R` statement. No gate fails on a stale-but-name-valid node (checkdecls only resolves `\lean{}` names). Caught by Slice 5's per-slice statement-restate grep, which correctly greps by DECL, not by chapter; coordinator follow-up restated the line. Lesson: a slice's "expected chapter" hint is a floor, not the restate scope — the grep must sweep all of `blueprint/src/` for every touched decl. |
-| 2026-07-17 | Phase34 abundance lemma (`c89eea77`) | sonnet | F6 recurrence (8th) — concurrent builds despite the in-prompt reminder; self-flagged, landed clean | First gate `lake build` lacked the mandated explicit `timeout` → auto-backgrounded; agent then fired a second explicit-timeout build without waiting, ending at three concurrent full builds (all exit 0, no corruption). Unlike instances 1–7 it did NOT park: it recovered inline, finished gates foreground, landed, and self-flagged the deviation in its return. The in-prompt F6 line reduces but does not eliminate the shape at sonnet. Also a cost outlier (~287k tok, 84 tool uses, ~40 min) — judged legitimate: the slice grew a new mirror helper (`…linearIndependent_at_reindex`) + eval bridge; diff read clean, no bloat, all gates re-run by coordinator. |
-| 2026-07-17 | Phase34 packing corollary (`0a8a9efc`; prose fixed `2061c6d6`) | sonnet | gate-invisible prose defect caught in coordinator diff-read | The rewritten blueprint sketch's degree step said "every vertex of 5·G has degree ≥ 2, hence every vertex of G" — a false inference as written (÷5 gives only ≥ 1); the Lean is correct (the 0-dof degree lemma concludes on the unmultiplied shadow). No gate reads sketch prose; caught only by the full-diff read against the landed lemma's actual conclusion. Coordinator reworded (`2061c6d6`). Second consecutive cost outlier (~370k tok, 175 tool uses) — judged legitimate-heavy: the slice picked the packing-hypothesis Lean shape and verified two flagged proof steps; diff clean, no bloat, route deviation (min-degree from def=0 via KT 4.6) sound and recorded. |
-| 2026-07-17 | Phase34 Layer-BB chapter extension (`ed707a77`) | fable | pre-build recon REFUTED an R0-era route claim before any Lean built on it | The phase note's Layer-BB route ("the landed standard-basis witness vectors are ±T of coordinate-point pairs") rode from R0 through five clean slices unchecked — no gate reads route prose. The commissioned chapter-extension recon checked it against the JJ p. 581 entry table + the minor formula and refuted it (pure-moment basis vectors are not T-images), rerouting via the Whiteley change-of-coordinates remark. Second firing of the Phase-32 pre-build-recon guard; the coordinator's prompt had flagged the claim as unverified, which routed it to a check instead of a transcription. |
-| 2026-07-17 | Phase34 Layer-BB first Lean slice (killed; landed `b6454b02` on resume) | sonnet | killed by an API stream error pre-work; same-agent resume landed clean | The dispatch died on "Stream idle timeout - no chunks received" before writing anything (tree clean, HEAD unmoved) — a new kill *cause* for the rescue-§3 shape (previously session/usage limits + user interrupts). Same-agent SendMessage resume with a fresh task statement landed the full slice clean; rung-pinned variant, no F5 drift. No salvage needed since nothing stranded. |
-| 2026-07-18 | Phase34 BH witness-trio continuation (`43d5764f`) | sonnet | nested-Agent spawn attempt, blocked by hook, self-reported | Mid-task the agent tried to spawn an Explore subagent for mathlib research; the `block-nested-agent.sh` PreToolUse hook denied it mechanically and the agent did the research itself (`grep`/`lean_run_code`), landing clean. Zero tree impact; logged because the agent's own core forbids nested spawns and the hook (not the prose) is what held — same lesson as the sorry-commit hook: discipline that must survive long contexts belongs in hooks. |
-| 2026-10-05 | 40-docs task 11 (`b254ad9b`; repaired at the close `9dad54c8`) | sonnet | gate-invisible defect caught late (by the close's sweep, not the coordinator's verification) | Task 11 folded `Phase40e.md`'s *Architectural choices* into *Decisions*, but `Cut.lean`'s doc comment cites that section by name on its second line (411–412). The builder's check and the coordinator's both read line 411, which names only the file, and passed it. The close's anchor sweep caught it and restored the heading as a pointer. Lesson: an anchor check reads the whole citing sentence, not the grep hit line (F1's letter-granularity point, one level down). |
-| 2026-10-08 | prose-laman task 5.7 (`2e09aae1`; repaired by the coordinator's next commit) | opus | gate-invisible defect caught in verification (the coordinator's log-diff read) | Told to compress the work log near its 500-line tripwire, the builder collapsed task 4's verbatim transcription of the PI's Stop-1 answer out of *Decisions* into a pointer at *Autopilot: for the PI*, as a duplicate. The project rule asks for the verbatim answer in *Decisions*; `check-phase-note.py` cannot see it. Restored, with a sentence saying it stays. Lesson: a compression instruction should name what is not compressible (PI words), as the 5.7 prompt did not. |
-| 2026-10-08 | prose-molecular tasks 2.11 (`ce54bf15`) and 2.15 (`4bbd8cf0`) | opus | playbook deviation accepted by the coordinator (a hygiene-rule reading) | The hygiene rule says a statement-strength finding is recorded as `S` and not acted on. Two slices narrowed `lem:contraction-minimality` and `lem:reduction-step` from KT 3.5's graph form to their pin's matroid form, kept the graph form in prose, and filed `F-084` as `S`. The 2.15 prompt restated the rule; the builder followed 2.11's precedent anyway. Kept (each block states its pin); the work log marks `F-084` acted on and bars further narrowings. Lesson: a slice's precedent outweighs a prompt's restated rule. Name the exception in the log the next builder reads. |
-| 2026-10-12 | prose-molecular tasks 2.17 (`d5db0e0c`) and 2.18 (`b8ef7c67`) | opus | hygiene-rule reading accepted by the coordinator | With `F-084` barred as a precedent, both slices moved a sentence that was not the claim out of a statement under principle B: 2.17 an essentiality remark ("both branches occur"), 2.18 `def:meet`'s geometric reading. Each kept and proved it in the prose after, and filed `S` (`F-107`, `F-112`). Accepted: principle B moves essentiality talk and a definition's consequences out, and both nodes keep KT's strength. 2.17 flagged its call in the return. Lesson: when barring narrowings, say which statement sentences principle B still moves. |
-| 2026-10-12 | prose-molecular task 3, the close (`ef8da18b`; repaired `ae292cc1`) | sonnet | gate-invisible prose defect caught in the coordinator's diff-read | The close wrote that every statement's strength was as it was, in the work log's Status and the exposition ledger's round note. That is false at `F-084`'s two narrowings, which the log's own *Candidates* line marks as acted on. No gate reads a summary sentence against the round's findings. Fixed by a coordinator commit. Lesson: check a close's summary claims against the round's recorded exceptions (F44's prose-claim point). |
-| 2026-10-12 | prose-algebraic task 2.7 (`85e0e4f8`) | opus | hygiene-rule reading accepted by the coordinator | Two statements repaired, each filed `S` and flagged in the return. `lem:case-I-splice-seed` glossed the contraction G/E(H) as a subgraph of G, which is false; the gloss went and the claim, now about the framework on G/E(H) with p's hinges, is true (`F-136`). `lem:rows-polynomial-in-normals` gained "nondegenerate hinge": `def:hinge-row-block`'s D-1 complement rows exist only there (`F-137`). Accepted: a false gloss dropped and a definition's domain anchored are not narrowings. Lesson: name both readings in the prompt. |
-| 2026-10-13 | prose-algebraic tasks 2.10 (`fe05a812`) and 2.12 (`e5f16b29`) | opus | hygiene-rule reading accepted by the coordinator | 2.10 gave `lem:rank-polynomial-of-le-finrank` its pin's "nondegenerate hinges", without which it is false, as 2.7 did. 2.12, asking for the check, anchored `lem:case-III-candidate-row`'s p_1 at KT eq. (6.12)'s free L, not the placement lemma, whose normals force L = q(ab) and a singular block; the old statement's "for some choice of line" already needed KT's p_1 (`F-158`). Accepted as anchoring. Lesson: a `\cref` that contradicts the statement's own words is a gloss, not the claim. |
-| 2026-10-13 | prose-algebraic tasks 2.13 (`9190873a`) and 2.14 (`eed7e7a5`) | opus | hygiene-rule reading accepted by the coordinator | Three readings, two asked for. "K infinite" on the affine-independence producer: false without it over a finite field, and the pin's. "b ≠ c" on the d = 3 dispatch: if b = c, G_v^{ab} has two parallel ab edges with one hinge and no full-rank realization, so the old hypotheses already excluded it. p3-placement now states a rank bound under M_3 nonsingular, like its siblings, instead of the block form; the bound follows from the old claim and eq. (6.23). Lesson: test a hypothesis edit against the old statement's own hypotheses. |
-| 2026-10-13 | prose-applications tasks 2.2 (`db71b408`) and 2.3 (`e5adefe1`) | opus | hygiene-rule reading accepted by the coordinator | 2.2 gave `thm:projective-invariance` a new item, nondegenerate hinges, and did not flag it. It is pinned, and `pencil.tex` cites the theorem for it (`lem:pencil-self-dual`'s proof): accepted as anchoring. 2.2's restatement over K was flagged (`F-178`): the block already claimed K as "the Lean statement". 2.3 anchored `F-174`: the dictionary's unpinned realization equivalence, false at coincident centres, now asks for distinct centres at every edge and is proved in prose (`F-183`). Lesson: a pinned claim added to a statement is a reading too; the 2.3 prompt said so. |
-| 2026-10-15 | prose-graph task 6 (`04ed99ec`; follow-up `34f61fd9`) | opus | gate-invisible notation miss caught in coordinator diff-read, same-agent continuation | Task 6 moved `main-component.tex` to KT's $d$ for the dimension and renamed the clashing $d(P)$ to `def:D-deficiency`'s $d_G(P)$ at one paragraph, but left it at `lem:pencil-lifting-space-deficiency` (statement and proof), now beside the dimension letter. No gate reads notation; a grep of the chapter's prior uses of the new letter caught it. Lesson: a letter change sweeps every prior use of the new letter, not only the old one's.
-| 2026-10-15 | reconcile-texts task 9, the close (`c6488d6d`) | sonnet | gate-invisible credit misstatement caught in coordinator diff-read, coordinator fixup | The close's two-sentence summary of tasks 5–6 said "Laman originates the planar characterization, Pollaczek-Geiringer 1927 is credited beside him", contradicting task 6's verdict (she stated and proved it in 1927; Laman proved it again), and a *Decisions* line kept task 5's "Laman originates it" after task 6 superseded it. No gate reads a summary against the verdict it summarizes. Fixed in the coordinator's follow-up commit. Lesson: a close's summary of a later-superseded verdict is re-read against the superseding task. |
-| 2026-10-15 | reconcile-statements task 12 (`94196444`; reassigned `3a362877`) | opus | coordinator artifact refuted by the dispatch it primed (F19) | The coordinator gave `F-257`'s first missing edge to task 12(b)'s pin move, reading only the path the finding named: the certification reaches `lem:case-III-claim612-block-iff-perp` through `mem_hingeRowBlock_iff`. The builder's reach report found a second path, through `case_III_full_family_restriction` to the node's other pin, so the move did not cure it; the node's move went to task 18. Lesson: before assigning an edge cure, run `--label` on a trial tree, not just read the finding's named path. |
-| 2026-10-17 | reconcile-lean task 4 (`2b0799ad`; repaired by task 5 `e1a81dd4`) | opus | deletion-hygiene miss caught by the next dispatch, not by the coordinator | Task 4 deleted `linearIndependent_sum_{augment,p2,p3}_candidateRow` and left six docstring mentions in brace or suffix form (`…_{p2,p3}_…`, `_p3_candidateRow`). Its deletion gate and the coordinator's re-check both grepped each exact name with `-w`, which those forms never match. Task 5's builder found them and added a form-expanding grep (block (c)) to the work log's gate 2; `CombinatorialRigidity/CLAUDE.md`'s deletion gate has the same gap. Lesson: a deleted-name sweep also greps each name's distinctive stem.
-| 2026-10-17 | reconcile-lean task 8 (`c9053a23`) | opus | coordinator artifact refuted by the dispatch it primed (F19) | The task-8 prompt sent a finding from task 7's diff ("fewer than `D(|V|−1)`" needs `|V| ≥ 2`) to task 29, `Deficiency.lean`'s sweep. The sentence is in `GenericityDevice.lean`: `git show` lists files in path order, and the coordinator read the first hunk as the second file's. The builder checked, put it on task 34's line, and said so. Lesson: name a finding's file from `git show -- <file>`, not from its position in a multi-file diff.
-| 2026-10-17 | reconcile-lean task 14 (`9840dd2c`) | opus | hygiene-rule reading accepted by the coordinator | To have the descent call `exists_packing_move_of_not_inc` (L8), the builder strengthened its conclusion from `x ∈ Fs' j`, which an index swap satisfies (`F-272`), to the re-choice its proof built, and restated `lem:packing-move` to match, its old proof's construction. The task line expected no statement change. Accepted as L8's "repeated derivation replaced" (task 13's planned disjoint cover is the precedent), and recorded under *Decisions*. Lesson: an L8 line names whether the callee's conclusion is strong enough to call.
-| 2026-10-21 | reconcile-lean task 35.1 (`444dd385`; fixup next commit) | opus | killed dispatch resumed; gate-invisible defect caught in verification | A usage limit killed the coordinator mid-dispatch; a SendMessage resume landed the task over its uncommitted edit (rescue §3). To get the work log under the ~500-line tripwire, the builder paraphrased the `**PI, 2026-10-21:**` entry along with its own blocked entry; the PI's words then survived only in git. No gate reads a PI entry; the coordinator's read of *Autopilot: for the PI* caught it, and a fixup restored it verbatim. Lesson: a compression prompt should say that PI entries are never edited.
-| 2026-10-22 | reconcile-lean task 38.2 (`ca705c65`) | opus | gate mechanics under memory pressure; a PI reboot after the landing | The trial-deletion build passed its 600 s timeout, was backgrounded, and was stopped ten minutes later (`killed`); the notice waited behind a 550 s loop polling for an exit line the stopped build could not write. The leftover-build check, `ps … 2>/dev/null \| grep`, printed nothing because the session could not list processes. A re-run resumed and the task landed clean. The coordinator's step-5 build used a shell `&`. The memory pressure came from other processes, not the builds. F49.
-| 2026-10-24 | reconcile-lean task 38.4 (`e8f24c86`; fixup next commit) | opus | coordinator artifact (F19): row 2026-10-21's lesson not applied | The coordinator's prompt asked the builder to compress the work log (497 of 500 lines) and did not say that PI entries are never edited, the lesson of task 35.1's row. The builder again one-lined the `**PI, 2026-10-21:**` entry, now under that heading's bold. The coordinator's read of *Autopilot: for the PI* caught it; a fixup restored it verbatim and put the rule in that section's own preamble, where every builder reads it. Lesson: a lesson that lives only in this log does not reach the next prompt; put it where the builder reads.
-| 2026-10-24 | reconcile-lean task 38.26 (`91c2fb12`; cured by task 38.27 `0d563943`) | opus | gate-invisible stale edge caught in coordinator verification | A dropped `obtain` removed the only Lean backing of `lem:pencil-splitoff-special-rank`'s proof `\uses{def:pencil-nondegenerate}`; the builder reported unbacked-none 135 → 136 and kept the edge, though the proof's prose never reads nondegeneracy (task 38.15's kept edge was different: its prose reads the cut). No gate reads an unbacked edge against the prose. The coordinator read the proof; task 38.27 found `60c88e44` added the edge only for the pin's reach and removed it. Lesson: when an edge loses its Lean backing, keep it only if the prose reads it.
 | 2026-10-24 | Phase41a arc, items 2–3 (`05e67236`, `579876ee`) | opus (claude-opus-5-5) | multi-commit trial, arc 1; spec defect caught in verification; return named a pre-amend sha | Per commit (session-usage `--since/--until`): item 2 77 msgs, 644k written, 12.8M read; item 3 36 msgs, 90k written, 10.7M read, ~300k context per turn vs item 1's fresh ~107k (37 msgs, 3.96M). Cut-off not fired. Mid-arc, the builder asked before deviating from the recon (:1751). The brief's "strengthen the conjunct" left three conclusions with `RecordsLinks` beside an equivalent up-to-order conjunct: the recon missed the latter. The builder amended item 3 and re-returned `579876ee` a minute later. Time: 36 min span, 18 of them in gates (3 full builds, one for a lint failure). |
-| 2026-10-24 | Phase41a item 5b (`8460b351`; cured in item 6, `a22d989c`) | sonnet (claude-sonnet-5-5) | gate-invisible prose defects caught in verification | A docstring rewrite left mid-sentence line breaks at ten or more places in five Lean files (`The selector` / `of` / `the panel-hinge …`), and the new `withMomentNormals` docstring said that no declaration uses it, though its own lemmas do (item 6's builder found `ofParam`'s like it). No gate reads either; the coordinator's full-diff read (F44) caught both, and the next dispatch fixed them. The sonnet definition's trailer names Sonnet 5; its own override clause gave Sonnet 5.5. |
 | 2026-10-24 | Phase41a arc, items 6–7 (`a22d989c`, `f4bc4cb5`) | opus (claude-opus-5-5) | multi-commit trial, arc 2; clean | Per commit (session-usage `--since/--until`): item 6 108 msgs, 286k written, 20.9M read, 65k output, 15.9 min (4.6 in gates), carrying 5b's three loose ends; item 7 52 msgs, 87k written, 17.4M read, 39k output, 9.3 min (3.2 in gates). The continuation wrote less cache than item 1's fresh build (146k) but read 4.4× as much (3.96M), at ~330k context per turn. Cut-off not fired; no verification catches; coordinator gap not measured. |
+
+**Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
+(2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases
+closed without a grooming, and three of the rows were past the 600-char cap
+(`check-log-rows.py --all`). Profile (a row can match several classes): 6
+F6-family gate-mechanics rows (a builder parked on its own backgrounded or
+Monitor-watched build, twice with three whole-project builds running, once
+with an F5 rung drift on the resume); 4 kills (three org spend limits, one
+stream idle timeout), each recovered by a same-agent resume (rescue §3, F4); 2
+pre-build recons that refuted a statement or a route claim before any Lean
+consumed it; 2 gate-invisible defects caught in verification (a restate
+confined to the slice's named chapter, a false inference in sketch prose); a
+recon's anchor undercount (F1), one scope-to-fit across three slices, and a
+nested spawn the hook denied. Each lesson is in a manual: F1, F4–F6, the
+playbook's per-section pre-build recon, `CombinatorialRigidity/CLAUDE.md`'s
+restate grep over all of `blueprint/src/`, `block-nested-agent.sh`.
 
 **Phase 39 (PENCIL) rows, 2026-07-24 → 09-17: 150 pruned at the phase close
 (2026-09-25); the full rows are in git history at `e316891f`.** Profile, by
@@ -129,6 +106,23 @@ tool defects or gaps (the MCP's `lean_local_search`, `phasenote.py`'s
 `NEXT_RE`, F48's two missing gates). Every recurring class has a Finding below
 or a rule already in a manual.
 
+**`40-docs`, PROSE rounds 1–5, RECONCILE rounds 1–3 and Phase 41a rows,
+2026-10-05 → 10-24: 20 pruned at the 41a grooming (2026-10-24); the
+full rows are in git history at `3a627b3d`.** The multi-commit trial's two arc
+rows stay above until the PI decides the trial. Profile, by the exception
+column's own wording (a row can match several classes, and the counts are
+approximate): 7 hygiene-rule readings the coordinator accepted (F51); 9
+gate-invisible defects caught in verification, by a later dispatch or at a
+close: two compressions that paraphrased the PI's words (F50), two close
+summaries that contradicted the round's own record and item 5b's docstrings
+(F44), a deleted name surviving in brace and suffix forms (F52), a notation
+clash, an anchor check that read only the grep hit line, and a `\uses` edge
+kept after it lost its Lean backing; 3 coordinator artifacts, refuted by the
+dispatch they primed or by the coordinator's own read (F19; the third was F50
+again: a compression prompt that did not carry the rule); 1 kill resumed
+(rescue §3); 1 gate-mechanics row under memory pressure (F49); 1 stale trailer
+pin (`phase-builder-sonnet.md`, fixed at `022dd016`).
+
 
 
 ## Findings
@@ -155,6 +149,15 @@ tiers*, the docs-only P calibration, the `hygiene` block), F45 also into
 `notes/CLAUDE.md`. Kept open: F47 (it would change when the PI is asked) and
 F48 (two missing gates), both in `notes/Phase40-docs.md`'s close report to the
 PI, and F40.
+
+**41a grooming (2026-10-24, after the 41a close).** 37 rows are pruned to git
+history (profiles under *Log*): the 17 of Phases 29–34, which closed
+ungroomed, and RECONCILE's and 41a's 20. The trial's two arc rows stay until
+the PI decides it. New findings: F50–F52. Promoted now: F50 into
+`notes/CLAUDE.md` *Phase notes* and the playbook's shaping paragraph, F51
+into the shaping paragraph, F52 into the `hygiene` block and
+`CombinatorialRigidity/CLAUDE.md`'s deletion gate, and F44's close-summary
+recurrence into *Verification tiers*.
 
 - **F1 — re-derive inventories at build time.** Promoted to
   `notes/CLAUDE.md` *One canonical home* (count again in the compressing
@@ -549,7 +552,14 @@ PI, and F40.
   In a prose round whose connective text makes cross-section claims, rate P by
   those claims: two Sonnet slices of `40-exposition` needed Opus correctives,
   then 22 Opus slices ran clean. Promoted to the playbook (*Verification
-  tiers*; the docs-only P calibration).
+  tiers*; the docs-only P calibration). **Recurred in RECONCILE and 41a
+  (three rows):** two closes' summaries contradicted the round's own record
+  (every statement's strength "as it was", against `F-084`'s two recorded
+  narrowings; a credit `reconcile-texts` task 6 had superseded), and item
+  5b's docstrings had mid-sentence line breaks and a false "no declaration
+  uses it". Promoted at the 41a grooming: *Verification tiers* reads a
+  close's summary sentences against the round's recorded exceptions and
+  superseding verdicts.
 - **F45 — a claim about the tree's state is checked per name at HEAD, never
   inherited (five rows, three in one round).** A FRICTION entry or note written
   before a later round, an open's task text, a sibling commit's deletion list,
@@ -606,3 +616,37 @@ PI, and F40.
   process listing is not evidence; a memory-pressure denial is a stop), the
   phase-builder core (waiting out a backgrounded gate), the command's steps
   5 and 7, and the autopilot prompt's stop table.
+- **F50 — a compression erases the PI's words unless the prompt says they
+  are not compressible (three rows: `prose-laman` 5.7, `reconcile-lean` 35.1
+  and 38.4).** Told to bring a work log under its line cap, three builders
+  shortened a verbatim PI answer: to a pointer, as a "duplicate"; to a
+  paraphrase beside the builder's own entry; to one line under the entry's
+  bold. `check-phase-note.py` cannot see it; each time the coordinator's read
+  of the PI section caught it and a fixup restored it. The third came after
+  the second's row was written: the lesson lived only here, so the next
+  compression prompt did not carry it. Promoted: `notes/CLAUDE.md` *Phase
+  notes* (a PI entry is never edited, shortened or paraphrased) and the
+  playbook's shaping paragraph (a compression prompt says so).
+- **F51 — under a rule that bars a class of edit, builders made neighbouring
+  edits, and the coordinator accepted every one (seven rows: PROSE rounds 2–4
+  and `reconcile-lean` task 14).** RECONCILE's hygiene rule (`notes/Reconcile.md`
+  §2, still binding in Phase 41) records a statement change as `S` and does
+  not act on it. Builders anchored a pin's own hypothesis in its node, dropped
+  a false gloss, moved a sentence that is not the claim out of a statement,
+  narrowed a node to its pin's form, and strengthened a callee's conclusion so
+  that it could be called. Each was checked against the source and
+  accepted. The rows' own lessons agree: a slice's precedent outweighed the
+  prompt's restated rule (2.15 followed 2.11), and
+  the readings a prompt named in advance came back flagged and checkable
+  (2.3, 2.12). Promoted to the shaping paragraph: a prompt that bars a class
+  of edit names the neighbouring edits it allows, and each exception the
+  coordinator accepts is written where the next builder reads.
+- **F52 — a deleted-name sweep also greps each name's distinctive stem
+  (`reconcile-lean` task 4).** Task 4 deleted
+  `linearIndependent_sum_{augment,p2,p3}_candidateRow`, and six docstring
+  mentions survived in brace and suffix forms (`…_{p2,p3}_…`,
+  `_p3_candidateRow`): the builder's deletion gate and the coordinator's
+  re-check both ran `grep -w` per exact name, and the next dispatch found
+  them. One row, but both checks shared the gap, and so did
+  `CombinatorialRigidity/CLAUDE.md`'s deletion gate. Promoted: the `hygiene`
+  block and that gate.

@@ -165,6 +165,11 @@ only while it stays scannable. Its template is `PHASE-BOUNDARIES.md`
   a mostly one-line verdict record. **All four checks are mechanical now**
   (`check-phase-note.py`, above); three prose-only statements of them failed
   first.
+- **A PI entry is never compressed.** A PI answer kept verbatim (an entry
+  starting `**PI, <date>:**`, or the PI's words quoted under *Decisions*) is
+  never edited, shortened or paraphrased, not even to bring a note under its
+  line cap: compress around it. No script sees it, and three compressions
+  did it in one month (dispatch-log F50).
 - **Never paste a large `old` string back through a heredoc** when editing a
   note: append, edit an anchored line range, or write only the new text. A
   `s.replace(old, new)` in a `python3 - <<PY` block puts the old text back

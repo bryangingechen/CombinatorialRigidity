@@ -158,9 +158,11 @@ are the author's side of the coordinator's step-4 checks in
 - **A deletion** (the deletion/retirement variant; missed three times in one
   sub-phase). A slice is complete
   only when no deleted name survives as a live cross-reference anywhere: grep
-  the whole repo for each, and in the same commit repoint or remove every
-  docstring and comment reference. "It retires later with its file's legacy"
-  holds only for a reference inside a declaration itself scheduled for
+  the whole repo for each, and for its distinctive stem (a brace or suffix
+  form, `…_{p2,p3}_…`, escapes `grep -w`; dispatch-log F52), and in the
+  same commit repoint or remove every docstring and comment reference. "It
+  retires later with its file's legacy" holds only for a reference inside a
+  declaration itself scheduled for
   deletion; one in a surviving docstring or a live mirror dangles
   permanently. The build stays green either way (docstrings don't gate;
   `checkdecls` covers only pins). The one intentional survivor is a

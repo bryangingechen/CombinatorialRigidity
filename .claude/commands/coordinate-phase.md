@@ -244,29 +244,35 @@ vs non-`module` importer) — run **both** cases and name the kind in the
 finding. Hand the builder the verified proof *and* ask it to look for a
 shorter route.
 
-The coordinator MAY append short, named shaping blocks to the
-invocation prompt when they carry **coordinator-verified information
-only**: `route` (a verified proof route / named lemmas — P2 at
-sonnet and all escalation retries), `scope-pin` (exact file list +
-target signatures), `shape-anchor` (the primary-source page/wording
-to anchor a recon against, plus a required compiler witness in the
-deliverable), `hygiene` (tree-wide deleted-name checklist for
-deletion/retirement slices, with the keep list beside the delete
-list, F45), `adjudication` (a user decision from
-this session passed VERBATIM — it overrides stale phase-note text
-where they conflict, and the dispatch transcribes it into the phase
-docs in the same commit; Phase 29's S1-revision and D1-deviation
-records are the model). Two calibrations from Phase 39 (dispatch-log
-F14, F12): **mark a coordinator hypothesis as a hypothesis** inside the
-block — the verified register is for what was opened in source or
-re-run, and a truncated search (`| head`, `-m N`) established *"at least
-N"*, never an enumeration; and the `hygiene` sweep is **tree-wide over
-every file kind** — Lean docstrings and `notes/` prose included, not
-only the `.tex`/`.md` where the name was defined (a deleted blueprint
-label survived in a live Lean docstring through a lint-green chapter
-pass, 2026-09-25) — and a correction to a summary row / cell is
-presumptively a correction to the body prose it summarizes. Shaping
-never changes the LANDED/BLOCKED contract and never delegates the
+The coordinator MAY append short, named shaping blocks to the invocation
+prompt when they carry **coordinator-verified information only**:
+`route` (a verified proof route / named lemmas — P2 at sonnet and all
+escalation retries), `scope-pin` (exact file list + target signatures),
+`shape-anchor` (the primary-source page/wording to anchor a recon
+against, plus a required compiler witness in the deliverable), `hygiene`
+(tree-wide deleted-name checklist for deletion/retirement slices, with
+the keep list beside the delete list, F45, and each name's distinctive
+stem grepped beside the name, since brace and suffix forms escape `grep
+-w`, F52), `adjudication` (a user decision from this session passed
+VERBATIM — it overrides stale phase-note text where they conflict, and
+the dispatch transcribes it into the phase docs in the same commit;
+Phase 29's S1-revision and D1-deviation records are the model). Two
+calibrations from Phase 39 (dispatch-log F14, F12): **mark a coordinator
+hypothesis as a hypothesis** inside the block — the verified register is
+for what was opened in source or re-run, and a truncated search (`|
+head`, `-m N`) established *"at least N"*, never an enumeration; and the
+`hygiene` sweep is **tree-wide over every file kind** — Lean docstrings
+and `notes/` prose included, not only the `.tex`/`.md` where the name
+was defined (a deleted blueprint label survived in a live Lean docstring
+through a lint-green chapter pass, 2026-09-25) — and a correction to a
+summary row / cell is presumptively a correction to the body prose it
+summarizes. Two from RECONCILE (F50, F51): a prompt that asks for a
+compression says that a PI entry is never edited, shortened or
+paraphrased; and a prompt that bars a class of edit (a hygiene rule)
+names the neighbouring edits it allows, and each exception the
+coordinator accepts is written where the next builder reads, since a
+slice's precedent outweighs a prompt's restated rule. Shaping never
+changes the LANDED/BLOCKED contract and never delegates the
 coordinator's own verification to the subagent.
 
 ### Multi-commit arcs (trial, 2026-10-24)
@@ -322,7 +328,8 @@ The step-4/5 checks below always run. On top of them, by rung:
   Check each claim the diff makes about the tree's state ("deleted by
   X", "unpinned", "stays", "all N in commit Y") per name at HEAD, with
   `git log -S'<name>'` and `git show --stat --diff-filter=D <sha>`
-  (F45).
+  (F45). Read a close's summary sentences against the round's recorded
+  exceptions and any verdict a later task superseded (F44).
 - **probe (haiku):** re-run every gate the return names; treat all
   attestations as unverified.
 - **the coordinator's own artifacts** — specs, shaping blocks,
