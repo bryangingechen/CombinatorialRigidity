@@ -114,6 +114,7 @@ theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
     -- each `rv j` in the block of rows of `ofNormals Gw ends q` at `ev j` (a block reads only
     -- `ends` and `q`, not the graph; the caller takes `Gw = G − v₁`):
     {Gw : Graph α β} (ends : β → α × α)
+    {hlinks : PanelHingeFramework.RecordsLinks Gw ends}
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge.hingeRowBlock (ev j))
     -- `ends` gives the edge `v_i v_{i+1}` its ends in some order. Swapping the two normals changes
     -- the sign of the extensor, which does not change whether `ρ₀` vanishes on it.
@@ -194,6 +195,7 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_widening
     {ρ₀ : Module.Dual K (ScrewSpace K k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     {Gw : Graph α β} (ends : β → α × α)
+    {hlinks : PanelHingeFramework.RecordsLinks Gw ends}
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge.hingeRowBlock (ev j))
     (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc) ∨
       ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
@@ -231,6 +233,7 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_baseWidening
     (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc) ∨
       ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
     -- `hingeRow v₀ v₂ ρ₀` as a combination of rows of `ofNormals (G − v₁) ends q`:
+    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex (cd.vtx ⟨1, by omega⟩)) ends}
     (hedgeGv :
       ∃ (nGv : ℕ) (cGv : Fin nGv → K) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
           (rvGv : Fin nGv → Module.Dual K (ScrewSpace K k)),

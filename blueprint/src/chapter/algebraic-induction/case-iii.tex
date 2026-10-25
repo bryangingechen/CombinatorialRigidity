@@ -1000,7 +1000,8 @@ $r = \sum_j \lambda_j r_j$.
   $ab$ in place of their combination with the coefficients $\lambda_j$.
   It finds the form $r$ with $g(S) = r(S(a) - S(b))$ as in the proof of
   \cref{lem:case-III-redundant-decomposition}. It holds for any two
-  multigraphs, with $vb$ and $ab$ oriented by the endpoint selector
+  multigraphs whose edges the endpoint selector assigns their ends, with
+  $vb$ and $ab$ oriented by it
   (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
 
@@ -1960,8 +1961,9 @@ At the three frameworks of KT Lemma~6.10 it gives
 \begin{fmlnote}
   The pinned theorem holds for any multigraph $G_v$ without $v$ whose
   edges are edges of $G$, which has $a$ and $b$ among its vertices and
-  one vertex fewer than $G$. It needs neither that $v$ has degree two nor
-  that $a \neq b$. It assumes that the endpoint selector
+  one vertex fewer than $G$, with an endpoint selector that assigns the
+  edges of $G$ and of $G_v$ their ends. It needs neither that $v$ has
+  degree two nor that $a \neq b$. It assumes that the endpoint selector
   (\cref{fmlnote:panel-hinge-nondegenerate}) orients $va$ and $vb$ away
   from $v$. In the formal proof of Case~III, $r$ comes from
   \cref{lem:case-III-redundant-combination}, and the forms are chosen
@@ -2392,10 +2394,11 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
   along $\sigma_i$ and along a permutation of the edge labels that
   extends $\rho_i$. It assumes that the selector of $(G - v_1, q)$
   assigns each of its edges its ends, and the new edge $v_0 v_2$ the
-  ends $v_2$ and $v_0$, in this order. That the renamed selector assigns
-  each edge of $G_i$ its ends is a separate step of the formal proof of
-  \cref{lem:case-III-chain-dispatch}, which applies the lemma to the
-  bottom rows of KT eq.~(6.64).
+  ends $v_2$ and $v_0$, in this order, and that the renamed selector
+  assigns each edge of $G - v_i$ its ends. That the renamed selector
+  assigns each edge of $G_i$ its ends, which gives the latter, is a
+  separate step of the formal proof of \cref{lem:case-III-chain-dispatch},
+  which applies the lemma to the bottom rows of KT eq.~(6.64).
 \end{fmlnote}
 
 \begin{lemma}[The form $r$ at the edge $v_i v_{i+1}$; KT eq.~(6.66)]
@@ -2469,11 +2472,12 @@ $r$ of \cref{lem:case-III-chain-discriminator} to the new edge of $G_i$.
   and the second at edges of $G$ of which only $v_2 v_3$ meets $v_2$,
   with the membership in the row space of $R(G - v_1, q)$. The first
   assumes that the endpoint selector
-  (\cref{fmlnote:panel-hinge-nondegenerate}) assigns the edge
-  $v_i v_{i+1}$ its ends, and the second that it assigns every edge of
-  $G$ its ends and the new edge $v_0 v_2$ the ends $v_0$ and $v_2$. The
-  second takes $R(G - v_i, q_i)$ with this selector. In the formal proof of
-  \cref{lem:case-III-chain-dispatch}, the combination is the one that
+  (\cref{fmlnote:panel-hinge-nondegenerate}) assigns each edge of
+  $G - v_1$ and the edge $v_i v_{i+1}$ its ends, and the second that it
+  assigns every edge of $G$ its ends and the new edge $v_0 v_2$ the ends
+  $v_0$ and $v_2$. The second takes $R(G - v_i, q_i)$ with this selector.
+  In the formal proof of \cref{lem:case-III-chain-dispatch}, the
+  combination is the one that
   \cref{lem:case-III-chain-discriminator} gives (the note after it).
 \end{fmlnote}
 

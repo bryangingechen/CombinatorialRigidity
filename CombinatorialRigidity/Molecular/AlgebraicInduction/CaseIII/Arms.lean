@@ -91,10 +91,14 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     (hrank : screwDim k * (V(G).ncard - 1)
       ≤ Module.finrank K (Submodule.span K
         (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
-          (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows))
+          (fun i => q (a, i)) n' (fun i => q (b, i)) 0
+          (.of_split (recordsLinks_iff_forall_isLink.mpr hends_Gv) hleG hG_ea hends_ea hG_eb
+            hends_eb hsplitG)).rigidityRows))
     {n : ℕ} (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
+  have hGrec := RecordsLinks.of_split (recordsLinks_iff_forall_isLink.mpr hends_Gv) hleG hG_ea
+    hends_ea hG_eb hends_eb hsplitG
   have : Fintype α := Fintype.ofFinite α
   set na := (fun i => q (a, i)) with hna
   set nb := (fun i => q (b, i)) with hnb
@@ -321,6 +325,8 @@ theorem PanelHingeFramework.case_III_arm_realization [Infinite K]
     {n : ℕ} (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
+  have hGrec := RecordsLinks.of_split (recordsLinks_iff_forall_isLink.mpr hends_Gv) hleG hG_ea
+    hends_ea hG_eb hends_eb hsplitG
   -- (i) The rank bound of KT eq. (6.29) at `F₀`, by `case_III_rank_certification`; then
   -- `case_III_realization_of_rank`, which does not depend on how the rank was found, rotates the
   -- panel of `v`.

@@ -2645,7 +2645,12 @@ declaration's name as its header writes it:
   position (those at `a − x 0` and `x 0 − b` nonzero multiples of the hinge of `G″` at `a − b`,
   `Graph.finrank_span_rigidityRows_splitOff_special`) and the comment that the hinges of the special
   configuration are nonzero (`Graph.X0Attains.of_splitOff`), kept as they stand, moved to the phase
-  (`8a4c75d8`).
+  (`8a4c75d8`); phase 41a: the field `isLink_ends` makes the selector record the links of the
+  multigraph, so `IsHingeCoplanar` constrains the hinges on `E(G)` and the panel side of
+  `molecular_conjecture` gives each hinge at its edge's ends, and `fmlnote:panel-hinge-nondegenerate`,
+  the note after `def:hinge-coplanar` and `panel-layer.tex`'s notes on the selector are restated
+  (item 5a); the footprint's docstrings are item 5b's, and the status surfaces' scope sentences
+  RESTATE's.
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2671,7 +2676,9 @@ declaration's name as its header writes it:
   `RankHypothesis`, `Pinning.lean`); measured (`scripts/blueprint-deps.py --label
   cor:theorem-55-d3-spanning` at `db237dfd`, dead pin).
   *Found:* round 3 task 2.2.
-  *Disposition:* reported (`notes/Prose-report.md`, S2).
+  *Disposition:* reported (`notes/Prose-report.md`, S2); phase 41a: with the field `isLink_ends`,
+  the conclusion's selector gives each edge of $G$ its ends, and the note after the proof says so
+  (item 5a); the degenerate hinges and general position stay RESTATE's.
 - **F-128** · S · `thm:theorem-55-6`, `thm:theorem-55-6-d3`, `thm:theorem-55-6-genuine`
   (`algebraic-induction/panel-layer.tex`): the statements give a simple graph a panel-hinge
   realization at the target rank (with nondegenerate hinges in the third), whose hinge at each edge
@@ -2698,7 +2705,9 @@ declaration's name as its header writes it:
   README, the home page, `intro.tex` and ROADMAP §23, beside the proved form
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, named in the text only; the row's
   rank-formula sentence now takes that form, as the upper bound needs nondegenerate hinges
-  (b0eb63eb).
+  (b0eb63eb); phase 41a: with the field `isLink_ends`, the three pins' frameworks give each edge
+  of $G$ its ends, and their notes say so (item 5a); the degenerate hinges, with the all-zero-normals
+  framework at deficiency zero, stay RESTATE's.
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
@@ -3939,7 +3948,8 @@ declaration's name as its header writes it:
   `lem:moment-curve-general-position`, call neither a construction that Case I needs, and say that
   no declaration, or no main result, uses them; the leads of `withMomentNormals` and `ofParam` name
   that node; the rest of the docstrings of `withMomentNormals` and `ofParam`, the field `ends`, and
-  `rigidityMatrix_prop11`'s header and docstring moved to the phase (the open).
+  `rigidityMatrix_prop11`'s header and docstring moved to the phase (the open); phase 41a: the field
+  `ends`'s docstring holds, as the field `isLink_ends` enforces it (item 5a).
 - **F-126** · L · the docstrings and comments of `panel-layer.tex`'s KT Theorem 5.5 pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `Pinning.lean`, `Theorem55.lean`):
   `HasFullRankRealization`'s docstring calls it "the motive Theorem 5.5's induction is run

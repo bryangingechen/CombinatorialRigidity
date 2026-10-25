@@ -66,6 +66,7 @@ the rows of `Gv` vanish. So the two families are independent together
 p. 679), and they number `(D − 1) + D(|V(G)| − 2) = D(|V(G)| − 1) − 1`. -/
 theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α] [Finite β]
     (G Gv : Graph α β) (hGv : Gv ≤ G) (ends : β → α × α)
+    {hlinks : RecordsLinks G ends}
     -- the body `v`, its edge `e_b = vb`, and the label `e_a` whose selected ends are `v` and `a`
     {v a b : α} {e_a e_b : β} (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
     (hG_eb : G.IsLink e_b v b) (hends_eb : ends e_b = (v, b)) (hends_ea : ends e_a = (v, a))
@@ -455,7 +456,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
   have h1Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hGab_ne
   -- Extract the IH realization as ofNormals at q.
   have hQeq : PanelHingeFramework.ofNormals Gab Q.ends q = Q := by
-    rw [hq_def, ← hQg]; rfl
+    rw [hq_def]; exact PanelHingeFramework.ofNormals_eq_self_of_graph_eq Q hQg
   -- The ends for Gab are recorded up to swap: hrec' (Gab isLink → ends record).
   have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
     intro e u w he
@@ -539,7 +540,8 @@ theorem PanelHingeFramework.case_II_realization_all_k
   have hne_q : ∀ e, Gab.IsLink e (Q.ends e).1 (Q.ends e).2 →
       (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e ≠ 0 := by
     intro e he
-    apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ (hQeq ▸ hQgp)
+    apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _
+      (by rw [hQeq]; exact hQgp)
     rw [PanelHingeFramework.ofNormals_ends]
     -- (Q.ends e).1 ≠ (Q.ends e).2: Gab is loopless (from hGab_simple) and Gab.IsLink e at Q.ends.
     have : Gab.Loopless := hGab_simple.toLoopless

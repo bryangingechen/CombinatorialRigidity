@@ -529,6 +529,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
         (G.removeVertex (cd.vtx ⟨(i : ℕ), by omega⟩)) ends
           (cd.shiftSeedAdv q ((i : ℕ) - 1))).toBodyHinge.rigidityRows := by
   classical
+  have hG := PanelHingeFramework.RecordsLinks.of_pair hrec
   -- `i` as an element of `Fin cd.d`, for `shiftBodyListAsc_foldl_mem_span_rigidityRows`.
   let i' : Fin cd.d := ⟨(i : ℕ), hid⟩
   have hi'v : (i' : ℕ) = (i : ℕ) := rfl
@@ -550,17 +551,17 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
   -- `G − v_{(i−1)+1} = G − vᵢ`).
   have hidx : (⟨((i' : ℕ) - 1) + 1, by have := i'.2; omega⟩ : Fin (cd.d + 1))
       = ⟨(i : ℕ), by omega⟩ := Fin.ext (by simp only [hi'v]; omega)
-  have hFvaEq : cd.shiftBodyFrameworkAsc (s := (i' : ℕ) - 1) (by have := i'.2; omega) ends q
+  have hFvaEq : cd.shiftBodyFrameworkAsc (s := (i' : ℕ) - 1) (by have := i'.2; omega) ends hG q
       = Fva := by
     rw [Graph.ChainData.shiftBodyFrameworkAsc, hFva]
     congr 2
     rw [Graph.ChainData.shiftBodyGraph]
     exact congrArg (fun x => G.removeVertex (cd.vtx x)) hidx
   -- fold start framework `shiftBodyFrameworkAsc 0 = ofNormals (G − v₁) ends (shiftSeedAdv q 0)`.
-  have hFvaStart : cd.shiftBodyFrameworkAsc (s := 0) (by have := i'.2; omega) ends q
+  have hFvaStart : cd.shiftBodyFrameworkAsc (s := 0) (by have := i'.2; omega) ends hG q
       = (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩)) ends
           (cd.shiftSeedAdv q 0)).toBodyHinge := by
-    rw [Graph.ChainData.shiftBodyFrameworkAsc, Graph.ChainData.shiftBodyGraph]
+    rfl
   -- The moves take `hingeRow (vtx 0) (vtx 2) ρ₀` into the row space of
   -- `shiftBodyFrameworkAsc (i−1) = Fva`.
   have hfold := cd.shiftBodyListAsc_foldl_mem_span_rigidityRows i' ends q hrec
@@ -620,6 +621,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_baseRedundancy
     -- `hingeRow v₀ v₂ ρ₀` as a combination of forms in the blocks of rows of
     -- `ofNormals (G − vᵢ) ends qρ`:
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex (cd.vtx i)) ends}
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends
       qρ).toBodyHinge.hingeRowBlock (ev j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))

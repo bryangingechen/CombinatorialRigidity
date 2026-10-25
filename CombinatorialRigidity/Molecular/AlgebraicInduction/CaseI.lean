@@ -125,13 +125,16 @@ theorem PanelHingeFramework.hasGenericRealization_transport_relabel
     exact PanelHingeFramework.recordsLinks_agree_swap Q.ends endsM hQrec
       (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mp
         ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).map f))
-  have hmot : (PanelHingeFramework.ofNormals Q.graph endsM nrm).toBodyHinge.infinitesimalMotions
-      = (PanelHingeFramework.ofNormals Q.graph Q.ends nrm).toBodyHinge.infinitesimalMotions :=
+  rw [hQg] at hswap
+  have hmot : (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals (Gc.map f) Q.ends nrm).toBodyHinge.infinitesimalMotions :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
-      Q.graph endsM Q.ends nrm hswap
+      (Gc.map f) endsM Q.ends nrm hswap
+  have hQeq : PanelHingeFramework.ofNormals (Gc.map f) Q.ends nrm = Q :=
+    PanelHingeFramework.ofNormals_eq_self_of_graph_eq Q hQg
   -- Rigidity at `endsM`: rewrite the graph to `Q.graph` (in both the goal and the IH rigidity),
   -- then move rigidity off `Q` via `hmot`.
-  rw [← hQg] at hQrig ⊢
+  rw [← hQeq] at hQrig
   intro S hS u hu v hv
   refine hQrig S ?_ u hu v hv
   rw [← BodyHingeFramework.mem_infinitesimalMotions] at hS ⊢
@@ -181,16 +184,19 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq
     exact PanelHingeFramework.recordsLinks_agree_swap Q.ends endsM hQrec
       (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mp
         ((PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).map f))
-  have hmot : (PanelHingeFramework.ofNormals Q.graph endsM nrm).toBodyHinge.infinitesimalMotions
-      = (PanelHingeFramework.ofNormals Q.graph Q.ends nrm).toBodyHinge.infinitesimalMotions :=
+  rw [hQg] at hswap
+  have hmot : (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals (Gc.map f) Q.ends nrm).toBodyHinge.infinitesimalMotions :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
-      Q.graph endsM Q.ends nrm hswap
+      (Gc.map f) endsM Q.ends nrm hswap
+  have hQeq : PanelHingeFramework.ofNormals (Gc.map f) Q.ends nrm = Q :=
+    PanelHingeFramework.ofNormals_eq_self_of_graph_eq Q hQg
   -- Equal motion spaces ⟹ equal rigidity-row spans ⟹ equal finrank. `Q = ofNormals Q.graph Q.ends
   -- nrm` definitionally (structure eta + `nrm = Q.normal`-pullback), and `Q.graph = Gc.map f`.
   have hspan : Submodule.span K
       (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.rigidityRows
       = Submodule.span K Q.toBodyHinge.rigidityRows := by
-    rw [← hQg]
+    rw [← hQeq]
     exact BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _ hmot
   rw [hspan, hQrank]
 
@@ -283,16 +289,19 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_eq
     refine PanelHingeFramework.recordsLinks_agree_swap Q.ends ends hQrec ?_
     intro e u v he
     exact (hends e u v he).eq_and_eq_or_eq_and_eq he
-  have hmot : (PanelHingeFramework.ofNormals Q.graph ends nrm).toBodyHinge.infinitesimalMotions
-      = (PanelHingeFramework.ofNormals Q.graph Q.ends nrm).toBodyHinge.infinitesimalMotions :=
+  rw [hQg] at hswap
+  have hmot : (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals Gv Q.ends nrm).toBodyHinge.infinitesimalMotions :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
-      Q.graph ends Q.ends nrm hswap
+      Gv ends Q.ends nrm hswap
+  have hQeq : PanelHingeFramework.ofNormals Gv Q.ends nrm = Q :=
+    PanelHingeFramework.ofNormals_eq_self_of_graph_eq Q hQg
   -- Equal motion spaces ⟹ equal rigidity-row spans ⟹ equal finrank. `Q = ofNormals Q.graph Q.ends
   -- nrm` definitionally (structure eta + `nrm = Q.normal`-pullback), and `Q.graph = Gv`.
   have hspan : Submodule.span K
       (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.rigidityRows
       = Submodule.span K Q.toBodyHinge.rigidityRows := by
-    rw [← hQg]
+    rw [← hQeq]
     exact BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _ hmot
   rw [hspan, hQrank]
 
@@ -389,6 +398,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj_ev
     (hsupp : ∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
       (ends (i : β × _ × _).1).2)
     (hcount : m ≤ Nat.card t)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends}
     (hindep : LinearIndependent K (fun i : t => (extProj (k := k) proj).dualMap
       ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (i : β × _ × _)))) :
     ∃ Qc : MvPolynomial (α × Fin (k + 2)) K, MvPolynomial.eval q₀ Qc ≠ 0 ∧
@@ -484,6 +494,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
     (hsupp : ∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
       (ends (i : β × _ × _).1).2)
     (hcount : m ≤ Nat.card t)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends}
     (hindep : LinearIndependent K (fun i : t => (extProj (k := k) proj).dualMap
       ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (i : β × _ × _)))) :
     ∃ Qc : MvPolynomial (α × Fin (k + 2)) K, Qc ≠ 0 ∧

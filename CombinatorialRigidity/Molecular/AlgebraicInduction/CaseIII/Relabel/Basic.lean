@@ -82,7 +82,10 @@ moved back by `ρ⁻¹`, so the `ρ` of the normals cancels the `ρ⁻¹` of the
 -/
 theorem PanelHingeFramework.ofNormals_supportExtensor_relabel_perm {Gt : Graph α β}
     (ρ : Equiv.Perm α) (σ : Equiv.Perm β)
-    {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K} (f : β) :
+    {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K} (f : β)
+    {hlinks : PanelHingeFramework.RecordsLinks Gt
+      (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))}
+    {hlinks' : PanelHingeFramework.RecordsLinks Gt ends₀} :
     (PanelHingeFramework.ofNormals Gt
         (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))
         (fun p => q₀ (ρ p.1, p.2))).toBodyHinge.supportExtensor f =
@@ -102,6 +105,7 @@ theorem PanelHingeFramework.blockRow_relabel_perm {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
     {a b : α} {q₀ : α × Fin (k + 2) → K} {e_t : β}
     (hlink : Gt.IsLink e_t (ρ.symm a) (ρ.symm b))
+    {hlinks : PanelHingeFramework.RecordsLinks Gt endsσρ}
     (hsupp : (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.supportExtensor e_t
       = panelSupportExtensor (fun i => q₀ (a, i)) (fun i => q₀ (b, i)))
     {ρ' : Module.Dual K (ScrewSpace K k)}
@@ -129,6 +133,8 @@ theorem PanelHingeFramework.rigidityRow_relabel_to_genuine {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
     {f f' : β} {u w u' w' : α} {r : Module.Dual K (ScrewSpace K k)}
+    {hlinks : PanelHingeFramework.RecordsLinks Gs ends₀}
+    {hlinks' : PanelHingeFramework.RecordsLinks Gt endsσρ}
     (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
     (hu : ρ.symm u = u') (hw : ρ.symm w = w')
     (hlinkGt : Gt.IsLink f' u' w')
@@ -154,6 +160,43 @@ lemmas: the proof of `lem:case-III` renames the bodies by the permutations of
 `lem:case-III-chain-relabel-rows`, and the proof of the case `d = 3` (`case_III_candidate_dispatch`)
 does not use them either (the note after `lem:case-III-chain-dispatch`). -/
 
+/-- **The relabelled selector records the links of `G_a^{vc}`** (a step of
+`lem:splitOff-ofNormals-relabel`; KT eq. (6.31), p. 687): with `G`, `v`, `a`, `b`, `c`, the labels,
+`ρ = Equiv.swap a v` and `σ` as in `ofNormals_relabel`, if `ends₀` records the links of `G_v^{ab}`
+(`hQrec`), then the selector `e ↦ (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)` records those of
+`G_a^{vc}`. A link of `G_a^{vc}` at `f` from `x` to `y` gives the link of `G_v^{ab}` at `σ f` from
+`ρ x` to `ρ y` (`Graph.splitOff_isLink_relabel`), whose ends `ends₀` gives, and `ρ` is an
+involution. `ofNormals_relabel` passes it to `ofNormals` by default, and its third conjunct states
+the same up to order. -/
+theorem PanelHingeFramework.recordsLinks_splitOff_relabel [DecidableEq α] [DecidableEq β]
+    {G : Graph α β}
+    {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
+    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a) (heab : eₐ ≠ e_b)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
+    (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
+    {ends₀ : β → α × α} (hQrec : RecordsLinks (G.splitOff v a b e₀) ends₀) :
+    RecordsLinks (G.splitOff a v c e₁)
+      (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2)) := by
+  refine recordsLinks_iff_forall_isLink.mpr fun e' u w he' => ?_
+  have hρρ : ∀ x : α, Equiv.swap a v (Equiv.swap a v x) = x := fun x => Equiv.swap_apply_self a v x
+  have hbe₁ : e_b ≠ e₁ := fun h => he₁ (h ▸ hG_eb.edge_mem)
+  have h₀ec : e₀ ≠ e_c := fun h => he₀ (h ▸ hG_ec.edge_mem)
+  have hbec : e_b ≠ e_c := by
+    intro h
+    rcases hG_eb.left_eq_or_eq (h ▸ hG_ec) with h1 | h1
+    · exact hav h1.symm
+    · exact hcv h1.symm
+  have hσσ := fun f => hσσ_relabel hbe₁ hbec he₁₀.symm h₀ec f
+  have hfQ := (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
+      heab hclv hcla he₀ he₁ he₁₀).mp he'
+  have hl := hQrec.isLink hfQ
+  refine (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
+      heab hclv hcla he₀ he₁ he₁₀).mpr ?_
+  simpa only [hρρ] using hl
+
 /-- **A realization of `G_a^{vc}`** (`lem:splitOff-ofNormals-relabel`; KT eq. (6.31), p. 687): let
 `v`, `a`, `b` and `c` be vertices of `G`, with `a`, `b` and `c` other than `v` and `c ≠ a`, such
 that the edges of `G` at `v` are `eₐ : va` and `e_b : vb` (`hclv`) and those at `a` are `eₐ` and
@@ -165,7 +208,8 @@ infinitesimally rigid on `V(G_v^{ab})`, and `ends₀` gives each link of `G_v^{a
 order, then `ofNormals G_a^{vc}` with the selector `e ↦ (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)` and
 the normals `q₀ ∘ ρ` is in general position and infinitesimally rigid on `V(G_a^{vc})`, and its
 selector gives each link of `G_a^{vc}` its ends in some order. These are the three conjuncts of the
-statement.
+statement. The record of the new selector that `ofNormals` takes is, by default,
+`recordsLinks_splitOff_relabel`'s.
 
 The normals `q₀ ∘ ρ` are those of `q₀`, permuted. As `ρ` and `σ` are involutions (`hσσ_relabel`),
 the hinge of the new framework at `f` is that of `ofNormals G_v^{ab} ends₀ q₀` at `σ f`, and `σ f`
@@ -184,12 +228,17 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
     {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → K}
+    (hQrec : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w →
+        ends₀ e = (u, w) ∨ ends₀ e = (w, u))
     (hQgp : (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀ q₀).IsGeneralPosition)
     (hQrig :
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀
         q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G.splitOff v a b e₀))
-    (hQrec : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w →
-        ends₀ e = (u, w) ∨ ends₀ e = (w, u)) :
+    (hlinks : RecordsLinks (G.splitOff a v c e₁)
+      (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2)) :=
+      recordsLinks_splitOff_relabel hG_ea hG_eb hG_ec hav hbv hcv hca heab hclv hcla he₀ he₁ he₁₀
+        (RecordsLinks.of_pair hQrec)) :
     (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
         (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
@@ -290,9 +339,11 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
 
 /-- **The rows of the realization of `G_a^{vc}`** (`lem:splitOff-rigidityRows-relabel`; KT
 eq. (6.31), p. 687): with `G`, `v`, `a`, `b`, `c`, the labels, `ρ = Equiv.swap a v` and `σ` as in
-`ofNormals_relabel`, and for every selector `ends₀` and normals `q₀`, the rows of
-`ofNormals G_a^{vc}` with the selector `e ↦ (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)` and the normals
-`q₀ ∘ ρ` are the forms `S ↦ φ (S ∘ ρ)` for the rows `φ` of `ofNormals G_v^{ab} ends₀ q₀`.
+`ofNormals_relabel`, for every selector `ends₀` that records the links of `G_v^{ab}`, with the
+relabelled selector recording those of `G_a^{vc}` (`recordsLinks_splitOff_relabel`), and normals
+`q₀`, the rows of `ofNormals G_a^{vc}` with the selector
+`e ↦ (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)` and the normals `q₀ ∘ ρ` are the forms
+`S ↦ φ (S ∘ ρ)` for the rows `φ` of `ofNormals G_v^{ab} ends₀ q₀`.
 
 A row `hingeRow u w r` of the new framework at a link `f` is the image of the row
 `hingeRow (ρ u) (ρ w) r` at the link `σ f` of `G_v^{ab}` (`Graph.splitOff_isLink_relabel`), as `ρ`
@@ -306,7 +357,11 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [Dec
     (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
-    (ends₀ : β → α × α) (q₀ : α × Fin (k + 2) → K) :
+    (ends₀ : β → α × α) (q₀ : α × Fin (k + 2) → K)
+    {hlinks : PanelHingeFramework.RecordsLinks (G.splitOff a v c e₁)
+      (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))}
+    {hlinks' : PanelHingeFramework.RecordsLinks (G.splitOff v a b e₀) ends₀} :
     (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
         (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
@@ -413,7 +468,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     zify [h1_in] at hQrank ⊢; exact_mod_cast hQrank
   -- Re-express Q as the canonical `ofNormals` of its own normals/ends; feed `ofNormals_relabel`.
   have hQeq : PanelHingeFramework.ofNormals (G.splitOff v a b e₀) Q.ends
-      (fun p => Q.normal p.1 p.2) = Q := by rw [← hQg]; rfl
+      (fun p => Q.normal p.1 p.2) = Q := by cases Q; subst hQg; rfl
   have hgp' : (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) Q.ends
       (fun p => Q.normal p.1 p.2)).IsGeneralPosition := by rw [hQeq]; exact hQgp
   have hrig' : (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) Q.ends
@@ -426,7 +481,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     · exact Or.inl (Prod.ext h1 h2)
     · exact Or.inr (Prod.ext h1 h2)
   obtain ⟨hgp, hrig_out, hrec⟩ := PanelHingeFramework.ofNormals_relabel hG_ea hG_eb hG_ec
-    hav hbv hcv hca heab hclv hcla he₀ he₁ he₁₀ hgp' hrig' hrec'
+    hav hbv hcv hca heab hclv hcla he₀ he₁ he₁₀ hrec' hgp' hrig'
   -- Derive rank from the rigidity of the output framework.
   set F_out := PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
       (fun e => (Equiv.swap a v (Q.ends ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
@@ -598,7 +653,8 @@ theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
     (hends'_off : ∀ f, f ≠ cd.edge ⟨s + 1, by omega⟩ → f ≠ cd.edge ⟨s + 2, by omega⟩ →
       ends' f = ends f)
     (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
-      ends f = (x, y) ∨ ends f = (y, x)) :
+      ends f = (x, y) ∨ ends f = (y, x))
+    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'} :
     (cd.vtx ⟨s + 3, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ ∧
         cd.vtx ⟨s + 3, by omega⟩ ≠ cd.vtx ⟨s + 1, by omega⟩) ∧
       (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends

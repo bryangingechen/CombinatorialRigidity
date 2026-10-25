@@ -113,7 +113,8 @@ theorem exists_molecular_rankHypothesis_generalPosition [Finite α] [Finite β]
       panelSupportExtensor_swap n₁ n₂, smul_neg, neg_neg]
   refine ⟨Q.ends, c, ?_, ?_, hQends⟩
   · -- `RankHypothesis`: `Q`'s rank, across the rescaling and the polarity.
-    rw [← rankHypothesis_ofNormals_homogenize_iff G Q.ends c (G.deficiency 3)]
+    rw [← rankHypothesis_ofNormals_homogenize_iff G Q.ends (hlinks := by link_tac) c
+      (G.deficiency 3)]
     set P := PanelHingeFramework.ofNormals (k := 2) G Q.ends
       (fun p => homogenize (ofLp (c p.1)) p.2) with hP
     -- `P` (on the homogenized poles) has `Q`'s motion space (its extensors are `Q`'s, rescaled).

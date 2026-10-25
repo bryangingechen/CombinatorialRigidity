@@ -96,7 +96,9 @@ theorem _root_.Graph.finrank_span_rigidityRows_splitOff_special {k : ℕ} [Finit
     {ends : β → α × α} (hends : ∀ f u w, G.IsLink f u w → G.IsLink f (ends f).1 (ends f).2)
     (n : α × Fin (k + 2) → K) {s : K} (hs₀ : s ≠ 0) (hs₁ : s ≠ 1)
     (hn : ∀ i, n (x 0, i) = (1 - s) * n (a, i) + s * n (b, i))
-    (hab : LinearIndependent K ![fun i => n (a, i), fun i => n (b, i)]) :
+    (hab : LinearIndependent K ![fun i => n (a, i), fun i => n (b, i)])
+    {hlinks : PanelHingeFramework.RecordsLinks (G.splitOff (x 0) a b (e 0))
+      (Function.update ends (e 0) (a, b))} :
     Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals G ends n).toBodyHinge.rigidityRows) =
       Module.finrank K (Submodule.span K
@@ -691,6 +693,7 @@ theorem _root_.Graph.X0Attains.of_splitOff [Infinite K] [Finite α] [Finite β]
     exact linearIndependent_pencilConfigPoint_pair (zt 0) (by rw [hpp0a, hpp0b]; exact hpab)
   have h28 := Graph.finrank_span_rigidityRows_splitOff_special hcover hxV₁ ha hb hpath hsep hends
     n0 hs0 hs1 hnx hLIab
+    (hlinks := (PanelHingeFramework.recordsLinks_iff_forall_isLink.mpr hends).update_splitOff l'')
   have hends2 : ∀ f u v, G''.IsLink f u v →
       G''.IsLink f (Function.update ends (e 0) (a, b) f).1
         (Function.update ends (e 0) (a, b) f).2 :=

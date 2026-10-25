@@ -152,6 +152,7 @@ failing pattern and the working fix.
 - `fun x hx => hx.1` (or `hx.2`, `hx.left`, `fun h => hnadj h.1`) given as a subset or non-membership argument fails with *"Invalid projection: Projection operates on types of the form `C ...`"* (or *"Invalid field notation"*), *"`hx` has type `?m.N.1 x`"*, where it compiled before the v4.36.0-rc1 bump → § 117 (`Set` is a structure now, so `x ∈ ?s` is a projection of a still-unassigned set, which the anonymous projection does not wait for; name the set: the named subset lemma, the set argument, or an ascribed binder)
 - A hypothesis that nothing in the proof needs (a copy without it elaborates with the same proof) is reported by neither `linter.unusedVariables` nor `lake lint`'s `unusedArguments`, so a cleanup's "`lake lint` to a fixed point" misses it, and the proof runs a `subst`, or an `rfl` pattern of `rcases`/`obtain`/`rintro`, on a variable its type mentions → § 118 (the substitution reverts the hypothesis and reintroduces it, so the proof term mentions it; both linters read it as used; screen such a binder by reading, and confirm by a copy without it)
 - `lake lint`'s `defsWithUnderscore` reports *"`…tacticFoo_bar` contains an underscore"* on a `macro "foo_bar" : tactic` (or a `syntax`) the build accepted → § 119 (the syntax kind's generated name keeps the underscore; name it `macro (name := fooBar) "foo_bar"`)
+- *"could not synthesize default value for parameter `h` using tactics"* on a term whose proof argument a tactic fills in (a structure field's `:= by tac`, a constructor's autoParam), or a later *"motive is not type correct"*, *"don't know how to synthesize implicit argument"* or *"not type-correct under the `implicit` transparency level"* around such a term → § 120 (name the antecedent the tactic needs, put a conjunct it needs before it, pass an implicit proof binder by name, substitute rather than rewrite under the term)
 
 ## Sections
 
@@ -4586,5 +4587,50 @@ tactic => …`. The token, and so the tactic's spelling, is unchanged.
 
 **Calibration.** Phase 41a, item 2: `link_tac` (`Molecular/AlgebraicInduction/PanelHinge.lean`),
 first as `CombinatorialRigidity.Molecular.tacticLink_tac`, then `macro (name := linkTac)`.
+
+---
+
+## 120. A proof argument filled in by a tactic: what the tactic cannot see, and what it blocks
+
+**Symptom.** A structure gains a `Prop` field with a tactic default (`isLink_ends : RecordsLinks
+graph ends := by link_tac`), its constructors an argument `(h : RecordsLinks G ends := by
+link_tac)`, and the lemmas about them an implicit binder `{h : RecordsLinks G ends}`. Then:
+*"could not synthesize default value for parameter `h` using tactics"*; *"don't know how to
+synthesize implicit argument `h`"*; *"motive is not type correct"* on a `rw` or `▸`; or a `rw`
+whose target *"is not type-correct under the `implicit` transparency level"*.
+
+**Cause and fix, by case.**
+- *An anonymous antecedent is not in scope.* In `(∀ e u w, P e u w) → B`, the antecedent is no
+  local while `B` elaborates, so the tactic filling a proof in `B` cannot `assumption` it. Name it:
+  `(h : ∀ e u w, P e u w) → B`.
+- *A conjunct cannot serve an earlier one.* In `∃ x, B x ∧ A x`, `A x` is not in scope in `B x`.
+  Make it a binder first, `∃ x (hA : A x), B x`; anonymous-constructor patterns keep their shape
+  when the conjunct was already first.
+- *A tactic default on a function-valued definition.* For `def F … (h : P := by tac) : ℕ → X`,
+  `F a s` passes `s` where `h` goes. Take `h` explicitly.
+- *An implicit proof binder is solved only by unification.* `have := lemma a b` (no expected
+  type), `rw [← lemma]` or `simp [lemma]` when the binder's term occurs on one side only, and
+  arguments behind `?_` holes leave it unsolved. Pass it by name, `(h := by tac)`; `lemma` in
+  `simp` can then often be replaced by the lemma it was used to reach.
+- *Rewriting under the term.* `rw [← hG]` (or `hG ▸ x`) at a term `ofNormals G …` whose proof
+  argument mentions `G` gives an ill-typed motive. Substitute instead: a lemma that `subst`s
+  (`ofNormals_eq_self_of_graph_eq`), `rw` at the whole term, or `simp only`. `rw [hG]; exact x`
+  replaces `hG ▸ x`.
+- *The tactic's term must have the predicate's type.* A branch that proves the unfolded body (e.g.
+  by `solve_by_elim`) leaves `∀ e ∈ E(G), …` in the term, and a later `rw` fails at instance
+  transparency. Close every branch with `exact <lemma>`, whose type is `RecordsLinks …`.
+- *A macro that names the field.* A `macro` declared before the structure cannot name the field,
+  and one after it cannot be the field's default. Declare `syntax (name := …) "tac" : tactic`
+  before the structure, and the `macro_rules` after it.
+- *A nested `by` commits to its first success.* In `exact mono (by base_tac) (by le_tac)`, where
+  `base_tac` is a `first` over several forms, `base_tac` keeps the first form that succeeds (here a
+  framework's own field, on the wrong graph), and a failing `le_tac` then fails the whole
+  alternative rather than trying `base_tac`'s next form. Give each base form its own `mono`
+  alternative.
+
+**Calibration.** Phase 41a, items 4–5a: the field `PanelHingeFramework.isLink_ends`, 123
+declarations in 27 files (`notes/Phase41a.md`, item 4; the spike's per-site record was local).
+The first case's witness, `h622lb` of `case_III_candidate_dispatch` cut down: anonymous, the
+default fails with *"could not synthesize default value"*; named, it elaborates.
 
 ---

@@ -110,6 +110,27 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [resolved] The link field: what `link_tac` cannot see, and what its proofs block
+- **Where it bit:** Phase 41a, items 4–5a, the field `PanelHingeFramework.isLink_ends` and its
+  autoParam and implicit record binders (`hlinks`), 123 declarations in 27 files; the spike took
+  15 build-and-fix rounds.
+- **Friction:** eight classes. An anonymous arrow antecedent is out of `link_tac`'s scope (three
+  `h622lb`s in `CaseIII/Realization.lean`, two `hcongr`s in `Cut.lean`, `Graph.exists_oneEar_base`);
+  a conjunct cannot serve an earlier one (the three R statements of `CaseIII/Realization.lean`,
+  `Graph.X0Attains`); an autoParam on a function-valued def swallows the applied argument
+  (`shiftBodyFrameworkAscTotal`); an implicit record binder is not inferred by `have := …`
+  (`ContractCurve.lean`, `ContractAdditive.lean`), by `rw [← lemma]` (`Modelling.lean`) or behind
+  `?_` holes (`chainData_dispatch_interior`), and `simp [ofNormals_supportExtensor_relabel_perm]`
+  stopped firing (`chainData_bottom_relabel`); `rw [← hQg]; rfl` and `▸` under an `ofNormals` term
+  give an ill-typed motive (ten sites); a `solve_by_elim` branch returned the unfolded predicate and
+  broke a later `rw`; the macro named the field before the structure existed; `mono`'s nested
+  `by link_base_tac` kept a framework's own field on the wrong graph, with no backtracking.
+- **Proposed fix:** as done: name the antecedent; make the record an `∃` binder first; take the
+  record explicitly; pass it by name (`(hlinks := by link_tac)`); `ofNormals_eq_self_of_graph_eq`
+  or `simp only`; `exact` in every branch; `syntax` before the structure and `macro_rules` after;
+  one `mono` alternative per base form.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 120.
+
 ### [open] `mulTilde` has no vertex-set lemma
 - **Where it bit:** Phase 41a, item P4: `mulTilde_removeVertex_le_splitOff`
   (`Molecular/Induction/ForestSurgery/EdgeSplitting.lean`) proved its vertex half by `exact hx`,
@@ -141,6 +162,9 @@ to be re-derived by re-reading entries later.
   `HasGenericFullRankRealization` goes through `recordsLinks_iff_eq_or_swap`. A third form, up to
   order on the pair (`ends e = (u, v) ∨ ends e = (v, u)`: `hrecGab`, `hrecEnds`, `h622lb` in
   `CaseIII/`), has no lemma: `(h.eq_or_swap hl).imp (fun h => Prod.ext h.1 h.2) (fun h => …)`.
+  Item 5a: `RecordsLinks.of_forall` and `.of_pair` now give the condition from the total and pair
+  forms, and `link_tac` tries every form, so the switch's record binders needed no conversion; the
+  hypotheses keep their forms (RESTATE drops `hends`).
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go.
 - **Status:** open.

@@ -3,7 +3,8 @@
 **Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) is open, work log
 `notes/Phase41a.md`; RESTATE, MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
 they open. The build-time detour the PI scheduled before 41a's spike is done (items P1–P5), and so
-is the spike. Next concrete task: 41a's item 5, the switch (`notes/Phase41a.md`).
+are the spike and the switch (item 5a). Next concrete task: 41a's item 5b, the footprint's
+docstrings (`notes/Phase41a.md`).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report

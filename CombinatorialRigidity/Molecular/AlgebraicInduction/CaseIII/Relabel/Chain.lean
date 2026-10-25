@@ -89,28 +89,33 @@ theorem _root_.Graph.ChainData.shiftSeedAdv_succ [DecidableEq α] {G : Graph α 
 
 /-- **The framework of step `s`, with the normals renamed** (a step of `lem:case-III-chain-eq666`):
 for `s + 1 ≤ d`, the body-hinge framework of `ofNormals (shiftBodyGraph s) ends (shiftSeedAdv q s)`,
-where `shiftBodyGraph s` is `G − v_{s+1}`. The selector does not depend on `s`; the normals do. -/
+where `shiftBodyGraph s` is `G − v_{s+1}`. The selector does not depend on `s`; the normals do. It
+takes the record of the links of `G` (`hlinks`) explicitly, as `shiftBodyFrameworkAscTotal` does,
+and `ofNormals` reaches the subgraph `G − v_{s+1}` from it by `link_tac`. -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAsc [DecidableEq α] {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
-    (q : α × Fin (k + 2) → K) :
+    (hlinks : PanelHingeFramework.RecordsLinks G ends) (q : α × Fin (k + 2) → K) :
     BodyHingeFramework K k α β :=
   (PanelHingeFramework.ofNormals (cd.shiftBodyGraph hs) ends (cd.shiftSeedAdv q s)).toBodyHinge
 
 /-- **The frameworks of the steps, as a sequence** (a step of `lem:case-III-chain-eq666`):
 `shiftBodyFrameworkAsc s` for `s + 1 ≤ d`, and `shiftBodyFrameworkAsc 0` for larger `s`, so that
 `wstep_foldl_mem_span_rigidityRows` applies. At every `s` the moves reach, it is the first
-(`shiftBodyFrameworkAscTotal_eq`). -/
+(`shiftBodyFrameworkAscTotal_eq`). Its record argument `hlinks` is explicit: as the definition is a
+function of `s`, an argument filled in by `link_tac` would take the applied `s` in its place. -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAscTotal [DecidableEq α] {G : Graph α β}
-    {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → K) :
+    {n : ℕ} (cd : G.ChainData n) (ends : β → α × α)
+    (hlinks : PanelHingeFramework.RecordsLinks G ends) (q : α × Fin (k + 2) → K) :
     ℕ → BodyHingeFramework K k α β :=
-  fun s => if h : s + 1 < cd.d + 1 then cd.shiftBodyFrameworkAsc h ends q
-    else cd.shiftBodyFrameworkAsc (s := 0) (by have := cd.hd; omega) ends q
+  fun s => if h : s + 1 < cd.d + 1 then cd.shiftBodyFrameworkAsc h ends hlinks q
+    else cd.shiftBodyFrameworkAsc (s := 0) (by have := cd.hd; omega) ends hlinks q
 
 /-- For `s + 1 ≤ d`, `shiftBodyFrameworkAscTotal s` is `shiftBodyFrameworkAsc s`. -/
 theorem _root_.Graph.ChainData.shiftBodyFrameworkAscTotal_eq [DecidableEq α] {G : Graph α β}
-    {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → K) {s : ℕ}
+    {n : ℕ} (cd : G.ChainData n) (ends : β → α × α)
+    (hlinks : PanelHingeFramework.RecordsLinks G ends) (q : α × Fin (k + 2) → K) {s : ℕ}
     (hs : s + 1 < cd.d + 1) :
-    cd.shiftBodyFrameworkAscTotal ends q s = cd.shiftBodyFrameworkAsc hs ends q := by
+    cd.shiftBodyFrameworkAscTotal ends hlinks q s = cd.shiftBodyFrameworkAsc hs ends hlinks q := by
   rw [Graph.ChainData.shiftBodyFrameworkAscTotal, dite_eq_left hs]
 
 /-- **The moves along the chain, from `G − v₁` to `G − v_i`** (a step of
@@ -131,24 +136,27 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
     (hrec : ∀ f x y, G.IsLink f x y → ends f = (x, y) ∨ ends f = (y, x))
     {φ : Module.Dual K (α → ScrewSpace K k)}
     (hφ : φ ∈ Submodule.span K
-      (cd.shiftBodyFrameworkAsc (s := 0) (by have := i.2; omega) ends q).rigidityRows) :
+      (cd.shiftBodyFrameworkAsc (s := 0) (by have := i.2; omega) ends
+      (PanelHingeFramework.RecordsLinks.of_pair hrec) q).rigidityRows) :
     ((cd.shiftBodyListAsc i).foldl
         (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id) φ
       ∈ Submodule.span K
-          (cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by have := i.2; omega) ends q).rigidityRows
+          (cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by have := i.2; omega) ends
+      (PanelHingeFramework.RecordsLinks.of_pair hrec) q).rigidityRows
             := by
+  have hG := PanelHingeFramework.RecordsLinks.of_pair hrec
   have hiv : (i : ℕ) < cd.d := i.2
   -- The frameworks `shiftBodyFrameworkAscTotal`, and the label `edge (s + 2)` at step `s` (any
   -- label past the range: the moves reach only `s ≤ i − 2 < d`).
-  have hF0 : cd.shiftBodyFrameworkAscTotal ends q 0
-      = cd.shiftBodyFrameworkAsc (s := 0) (by omega) ends q :=
-    cd.shiftBodyFrameworkAscTotal_eq ends q (by omega)
-  have hFlen : cd.shiftBodyFrameworkAscTotal ends q (cd.shiftBodyListAsc i).length
-      = cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by omega) ends q := by
-    rw [cd.length_shiftBodyListAsc, cd.shiftBodyFrameworkAscTotal_eq ends q (by omega)]
+  have hF0 : cd.shiftBodyFrameworkAscTotal ends hG q 0
+      = cd.shiftBodyFrameworkAsc (s := 0) (by omega) ends hG q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends hG q (by omega)
+  have hFlen : cd.shiftBodyFrameworkAscTotal ends hG q (cd.shiftBodyListAsc i).length
+      = cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by omega) ends hG q := by
+    rw [cd.length_shiftBodyListAsc, cd.shiftBodyFrameworkAscTotal_eq ends hG q (by omega)]
   rw [← hFlen]
   refine BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
-    (F := cd.shiftBodyFrameworkAscTotal ends q)
+    (F := cd.shiftBodyFrameworkAscTotal ends hG q)
     (ec := fun s => if h : s + 2 < cd.d then cd.edge ⟨s + 2, h⟩
       else cd.edge ⟨0, by have := cd.hd; omega⟩)
     (bodies := cd.shiftBodyListAsc i) (hstep := fun s hs => ?_) (hφ := hF0 ▸ hφ)
@@ -156,12 +164,12 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
   -- label and the step at `s`, and apply `seedAdvance_wstep_hstep`.
   rw [cd.length_shiftBodyListAsc] at hs
   have hsd : s + 2 < cd.d := by omega
-  have hFs : cd.shiftBodyFrameworkAscTotal ends q s
-      = cd.shiftBodyFrameworkAsc (s := s) (by omega) ends q :=
-    cd.shiftBodyFrameworkAscTotal_eq ends q (by omega)
-  have hFs1 : cd.shiftBodyFrameworkAscTotal ends q (s + 1)
-      = cd.shiftBodyFrameworkAsc (s := s + 1) (by omega) ends q :=
-    cd.shiftBodyFrameworkAscTotal_eq ends q (by omega)
+  have hFs : cd.shiftBodyFrameworkAscTotal ends hG q s
+      = cd.shiftBodyFrameworkAsc (s := s) (by omega) ends hG q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends hG q (by omega)
+  have hFs1 : cd.shiftBodyFrameworkAscTotal ends hG q (s + 1)
+      = cd.shiftBodyFrameworkAsc (s := s + 1) (by omega) ends hG q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends hG q (by omega)
   have hbody : (cd.shiftBodyListAsc i)[s]'(by rw [cd.length_shiftBodyListAsc]; omega)
       = (cd.vtx ⟨s + 1, by omega⟩, cd.vtx ⟨s + 2, by omega⟩, cd.vtx ⟨s + 3, by omega⟩) :=
     cd.getElem_shiftBodyListAsc i s (by rw [cd.length_shiftBodyListAsc]; omega)
@@ -369,7 +377,10 @@ theorem PanelHingeFramework.chainData_bottom_relabel
             (fun j => q (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 ∧
         φ = BodyHingeFramework.hingeRow
             (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
-            (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ') :
+            (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ')
+    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex (cd.vtx i.castSucc))
+      (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))} :
     (LinearMap.funLeft K (ScrewSpace K k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
       (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
         (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
@@ -466,11 +477,9 @@ theorem PanelHingeFramework.chainData_bottom_relabel
       · exact cd.vtx_ne (m := 0) (m' := (i : ℕ)) (by omega) (by omega) (by omega)
     · -- `hsupp`: the renamed hinge at `edge 0` is the hinge at `σ (edge 0) = e₀`, whose ends
       -- `he₀rec` gives as `(vtx 2, vtx 0)`.
-      simp only [PanelHingeFramework.ofNormals_supportExtensor_relabel_perm
-        (cd.shiftPerm i.castSucc) (cd.shiftEdgePerm i),
-        cd.shiftEdgePerm_apply_edge_zero i (by omega),
+      simp only [cd.shiftEdgePerm_apply_edge_zero i (by omega),
         PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
-        PanelHingeFramework.ofNormals_ends, he₀rec]
+        PanelHingeFramework.ofNormals_ends, he₀rec, Equiv.apply_symm_apply]
 
 /-! ## The case `d = 3`
 
@@ -513,7 +522,8 @@ theorem PanelHingeFramework.case_III_bottom_relabel
     (hφ : φ ∈ (PanelHingeFramework.ofNormals Gv ends₀ q).toBodyHinge.rigidityRows ∨
       ∃ ρ' : Module.Dual K (ScrewSpace K k),
         ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
-        φ = BodyHingeFramework.hingeRow a b ρ') :
+        φ = BodyHingeFramework.hingeRow a b ρ')
+    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex a) ends₃} :
     (LinearMap.funLeft K (ScrewSpace K k) (Equiv.swap a v)).dualMap φ ∈
       (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
         (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.rigidityRows ∨

@@ -95,7 +95,8 @@ theorem panelSupportExtensor_smul_right (c : K) (n₁ n₂ : Fin (k + 2) → K) 
 `lem:panel-hinge-dual-molecular`, its part (2)): at the normals `c_a · n_a`, the support extensor at
 `e` is `c_u c_v` times the one at the normals `n_a`, where `(u, v) = ends e`. -/
 theorem PanelHingeFramework.supportExtensor_ofNormals_smul (G : Graph α β) (ends : β → α × α)
-    (q : α × Fin (k + 2) → K) (c : α → K) (e : β) :
+    (q : α × Fin (k + 2) → K) (c : α → K) (e : β)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends} :
     (PanelHingeFramework.ofNormals G ends (fun p => c p.1 * q p)).toBodyHinge.supportExtensor e
       = (c (ends e).1 * c (ends e).2) •
         (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e := by
@@ -110,7 +111,8 @@ theorem PanelHingeFramework.supportExtensor_ofNormals_smul (G : Graph α β) (en
 normals `c_a · n_a` has the motions of the framework at the normals `n_a`, since each hinge spans
 the same line (`PanelHingeFramework.supportExtensor_ofNormals_smul`). -/
 theorem PanelHingeFramework.infinitesimalMotions_ofNormals_smul (G : Graph α β)
-    (ends : β → α × α) (q : α × Fin (k + 2) → K) {c : α → K} (hc : ∀ a, c a ≠ 0) :
+    (ends : β → α × α) (q : α × Fin (k + 2) → K) {c : α → K} (hc : ∀ a, c a ≠ 0)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends} :
     (PanelHingeFramework.ofNormals G ends (fun p => c p.1 * q p)).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions := by
   refine BodyHingeFramework.infinitesimalMotions_eq_of_isLink_span_supportExtensor _ _ rfl ?_
@@ -122,7 +124,8 @@ theorem PanelHingeFramework.infinitesimalMotions_ofNormals_smul (G : Graph α β
 of `PanelHingeFramework.infinitesimalMotions_ofNormals_smul`, through
 `BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq`. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul [Finite α] (G : Graph α β)
-    (ends : β → α × α) (q : α × Fin (k + 2) → K) {c : α → K} (hc : ∀ a, c a ≠ 0) :
+    (ends : β → α × α) (q : α × Fin (k + 2) → K) {c : α → K} (hc : ∀ a, c a ≠ 0)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends} :
     Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals G ends (fun p => c p.1 * q p)).toBodyHinge.rigidityRows)
       = Module.finrank K (Submodule.span K
@@ -185,8 +188,8 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
     [Infinite K] [Finite α] [Finite β] [DecidableEq β]
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 2 c → ∃ e₀ : β, e₀ ∉ E(G'))
     {G : Graph α β} (hSimple : G.Simple) (hV : 2 ≤ V(G).ncard) :
-    ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K),
-      (∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) ∧ P ≠ 0 ∧
+    ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K)
+      (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2), P ≠ 0 ∧
       ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 →
         screwDim 1 * ((V(G).ncard : ℤ) - 1) - G.deficiency 2 ≤
           (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 1) G ends
@@ -197,8 +200,7 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
     PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen
       (K := K) (k := 1) (n := 2) le_rfl rfl hfresh G hV hSimple
   have hself : PanelHingeFramework.ofNormals (k := 1) G Q₀.ends (fun p => Q₀.normal p.1 p.2)
-      = Q₀ := by
-    rw [← hQ₀g]; rfl
+      = Q₀ := PanelHingeFramework.ofNormals_eq_self_of_graph_eq Q₀ hQ₀g
   set N := Module.finrank K (Submodule.span K Q₀.toBodyHinge.rigidityRows) with hN
   -- Its rank polynomial, the general-position polynomial, and the chart polynomial.
   obtain ⟨Rk, hRk₀, hRk⟩ := PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G

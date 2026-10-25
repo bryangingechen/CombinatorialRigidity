@@ -340,7 +340,7 @@ theorem _root_.Graph.exists_oneEar_base [Infinite K] [Fintype α] [Finite β] {H
         MvPolynomial.eval xk A ≠ 0 →
         planeDiff a b xk ⬝ᵥ pencilPicturePoint q a ≠ 0 ∧
         planeDiff a b xk ⬝ᵥ pencilPicturePoint q b ≠ 0 ∧
-        ∀ ends : β → α × α, (∀ f u w, (H.induce V₁).IsLink f u w →
+        ∀ ends : β → α × α, (hlinks : ∀ f u w, (H.induce V₁).IsLink f u w →
             (H.induce V₁).IsLink f (ends f).1 (ends f).2) →
           (Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)
             (H.induce V₁) ends (fun p => pencilConfigPoint q (fun w => xk (Sum.inl w))

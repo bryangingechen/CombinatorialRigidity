@@ -394,7 +394,8 @@ theorem _root_.Graph.X0Attains.of_cutVertex [Infinite K] [Finite α] [Finite β]
   have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpace hle₂ hz) hz₂'
   -- carry each side's rank to the selector `ends` and the unrestricted heights
   have hcongr : ∀ (X : Set α) (endsX : β → α × α),
-      (∀ e u w, (G.induce X).IsLink e u w → (G.induce X).IsLink e (endsX e).1 (endsX e).2) →
+      (hlinks : ∀ e u w, (G.induce X).IsLink e u w →
+        (G.induce X).IsLink e (endsX e).1 (endsX e).2) →
       Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           endsX (fun p => pencilConfigPoint q (Graph.liftingRestrict X z) p.1 p.2)
             ).toBodyHinge.rigidityRows)
@@ -1046,7 +1047,8 @@ theorem _root_.Graph.X0Attains.of_bridgePath [Infinite K] [Finite α] [Finite β
   have hr₁ := hatt₁ _ (Graph.liftingRestrict_mem_liftingSpace hle₁ hz) hz₁'
   have hr₂ := hatt₂ _ (Graph.liftingRestrict_mem_liftingSpace hle₂ hz) hz₂'
   have hcongr : ∀ (X : Set α) (endsX : β → α × α),
-      (∀ f u w, (G.induce X).IsLink f u w → (G.induce X).IsLink f (endsX f).1 (endsX f).2) →
+      (hlinks : ∀ f u w, (G.induce X).IsLink f u w →
+        (G.induce X).IsLink f (endsX f).1 (endsX f).2) →
       Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) (G.induce X)
           endsX (fun p => pencilConfigPoint q (Graph.liftingRestrict X z) p.1 p.2)
             ).toBodyHinge.rigidityRows)

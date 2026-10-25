@@ -340,8 +340,8 @@ finite field a nonzero polynomial can vanish at every point (`X ^ |K| − X`), a
 holds vacuously. The lemmas that obtain a realization from it assume an infinite field
 (`[Infinite K]`), so the definition needs no such hypothesis of its own. -/
 def _root_.Graph.X0Attains (K : Type*) [Field K] (G : Graph α β) : Prop :=
-  ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K),
-    (∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) ∧ P ≠ 0 ∧
+  ∃ (ends : β → α × α) (P : MvPolynomial (α × Fin 2) K)
+    (hlinks : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2), P ≠ 0 ∧
     ∀ q : α × Fin 2 → K, MvPolynomial.eval q P ≠ 0 →
       G.IsAdmissiblePicture q ∧
       ∃ R : MvPolynomial α K, (∃ z ∈ G.liftingSpace q, MvPolynomial.eval z R ≠ 0) ∧

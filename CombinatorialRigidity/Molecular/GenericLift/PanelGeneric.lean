@@ -86,7 +86,8 @@ framework only through its support extensor, and `(ofNormals G ends q).toBodyHin
 is `panelSupportExtensor` of the two normals `q`/`ends` supply (`toBodyHinge_supportExtensor`,
 `ofNormals_normal`, `ofNormals_ends`), independent of `G`. The bridge lets the consumers instantiate
 the graph-free genericity over a specific multigraph via an `hends` link hypothesis. -/
-theorem normalRow_eq_panelRow (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
+theorem normalRow_eq_panelRow (G : Graph α β) (ends : β → α × α)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends} (q : α × Fin (k + 2) → K)
     (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
     normalRow ends q i = (ofNormals G ends q).toBodyHinge.panelRow ends i := rfl
 

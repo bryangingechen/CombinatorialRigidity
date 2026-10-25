@@ -162,17 +162,16 @@ the two bodies together.
   a relation. A panel-hinge framework therefore also records, for every
   edge label $e$, an ordered pair of bodies, and the hinge at $e$ is the
   panel support extensor of their normals. We call this record the
-  \emph{endpoint selector}. The definition does not tie it to $G$: the
-  pair at an edge of $G$ need not be the ends of the edge, and a label
-  outside $E(G)$ also gets a pair, which does not affect $R(G,p)$. The
-  frameworks of \cref{def:panel-hinge-framework} are those whose selector
-  assigns each edge of $G$ its two ends, in either order. In the
-  formalization this is a separate condition on the selector, which a
-  result states as a hypothesis or as part of its conclusion. The
-  endpoint choice of $G$ (\cref{fmlnote:graph-operations}) satisfies it.
-  Likewise, a result that needs nondegenerate hinges assumes them. The
-  molecular conjecture (\cref{thm:molecular-conjecture}) assumes them at
-  every edge label, on both of its sides.
+  \emph{endpoint selector}. The definition asks that it assign each edge
+  of $G$ its two ends, in either order, so the hinge at an edge with ends
+  $u$ and $v$ is $C(n_u, n_v)$ or $C(n_v, n_u)$, as in
+  \cref{def:panel-hinge-framework}. A label outside $E(G)$ also gets a
+  pair, on which the definition places no condition and which does not
+  affect $R(G,p)$. The endpoint choice of $G$
+  (\cref{fmlnote:graph-operations}) is such a selector. The definition
+  does not ask for nondegenerate hinges: a result that needs them assumes
+  them. The molecular conjecture (\cref{thm:molecular-conjecture})
+  assumes them at every edge label, on both of its sides.
 \end{fmlnote}
 
 A nondegenerate hinge at a body $v$ lies in the panel of $v$, since its
@@ -195,8 +194,9 @@ name for the body-hinge frameworks that arise in this way.
 \begin{fmlnote}
   The formal predicate inherits the endpoint selector of
   \cref{fmlnote:panel-hinge-nondegenerate}. It holds for a body-hinge
-  framework each of whose hinges is the panel support extensor of the
-  normals of some two bodies, not necessarily the ends of its edge.
+  framework whose hinge at each edge is the panel support extensor of the
+  normals of its two ends, and whose hinge at each label outside $E(G)$
+  is that of the normals of some two bodies.
 \end{fmlnote}
 
 Katoh and Tanigawa's condition asks only that the hinges at each body lie
@@ -305,8 +305,10 @@ realization of $G$ with one of a spanning subgraph.
   for every multigraph $G'$ on its bodies. On a panel-hinge framework the
   operation keeps the endpoint selector
   (\cref{fmlnote:panel-hinge-nondegenerate}), and with it the hinge at
-  every label. The third pinned theorem states that the operation
-  commutes with the body-hinge interpretation.
+  every label. So it applies to a multigraph $G'$ each of whose edges
+  the selector assigns its two ends, as it does those of a subgraph of
+  $G$. The third pinned theorem states that the operation commutes with
+  the body-hinge interpretation.
 \end{fmlnote}
 
 If $G'$ is a subgraph of $G$, each edge of $G'$ has the same ends in
@@ -538,8 +540,9 @@ which Case~III uses.
   stated for the rank (\cref{rem:rank-hypothesis-relative}). The first
   pinned predicate is the rank form at deficiency zero: a panel-hinge
   framework on $G$ whose infinitesimal motions are all constant on
-  $V(G)$, that is, of rank $D(|V(G)| - 1)$. Its endpoint selector is
-  unconstrained (\cref{fmlnote:panel-hinge-nondegenerate}), and no main
+  $V(G)$, that is, of rank $D(|V(G)| - 1)$. It asks nothing of the
+  normals, and of the endpoint selector only what every panel-hinge
+  framework meets (\cref{fmlnote:panel-hinge-nondegenerate}). No main
   result uses this predicate. The second pinned predicate is the generic
   full-rank realization, whose selector assigns each edge of $G$ its two
   ends.
@@ -1180,10 +1183,12 @@ the proof of KT Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}).
   the endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}) at
   each label outside $E(G)$ to a fixed pair of distinct bodies, which
   changes no hinge at an edge of $G$. Its conclusion is a panel-hinge
-  framework on $G$ with $\dim Z = D$. It does not record that the normals
-  are in general position, or that the selector assigns each edge of $G$
-  its two ends. A framework whose hinges are all degenerate also meets
-  this conclusion, since a $0$-dof-graph is connected.
+  framework on $G$ with $\dim Z = D$, whose selector assigns each edge of
+  $G$ its two ends, as every panel-hinge framework's does
+  (\cref{fmlnote:panel-hinge-nondegenerate}). It does not record that the
+  normals are in general position. A framework whose hinges are all
+  degenerate also meets this conclusion, since a $0$-dof-graph is
+  connected.
 \end{fmlnote}
 
 Katoh and Tanigawa's Theorem~5.6 removes the minimality from KT
@@ -1264,15 +1269,14 @@ least one vertex, in which the hinges may be degenerate
   Both pinned theorems assume that $G$ spans the set $W$ of bodies, state
   the target rank as $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
   (\cref{rem:rank-hypothesis-relative}), and assume the supply of fresh
-  labels (\cref{rem:fresh-edge-supply}). The first places no condition on
-  the endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}). The
-  framework that it constructs gives each edge of $G$ outside $G'$ the
-  hinge of one fixed pair of distinct bodies, which need not be the ends
-  of the edge. The second states that the selector assigns each edge of
-  $G$ its two ends. Both ask for a nonzero hinge at every edge label, not
-  only at the edges of $G$ (\cref{rem:molecular-conjecture-essential}). A
-  label outside $E(G)$ gets the hinge of two distinct bodies, which is why
-  they assume $|V| \ge 2$.
+  labels (\cref{rem:fresh-edge-supply}). The selector of the framework
+  that they construct assigns each edge of $G$ its two ends, as every
+  panel-hinge framework's does (\cref{fmlnote:panel-hinge-nondegenerate}),
+  and the second also states this. Both ask for a nonzero hinge at every
+  edge label, not only at the edges of $G$
+  (\cref{rem:molecular-conjecture-essential}). A label outside $E(G)$
+  gets the hinge of two distinct bodies, which is why they assume
+  $|V| \ge 2$.
 \end{fmlnote}
 
 Without the nondegeneracy, the theorem holds for every simple graph with
@@ -1304,9 +1308,10 @@ at least one vertex.
   The pinned theorem assumes that $G$ spans the set $W$ of bodies, and it
   states the target rank as
   $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
-  (\cref{rem:rank-hypothesis-relative}). It places no condition on the
-  endpoint selector (\cref{fmlnote:panel-hinge-nondegenerate}). For
-  $|V| \ge 2$, its framework is that of the first pinned theorem of
+  (\cref{rem:rank-hypothesis-relative}). Its selector assigns each edge of
+  $G$ its two ends, as every panel-hinge framework's does
+  (\cref{fmlnote:panel-hinge-nondegenerate}). For $|V| \ge 2$, its
+  framework is that of the first pinned theorem of
   \cref{thm:theorem-55-6-genuine}. It assumes $D(|W| - 1) < |L|$, which
   gives the supply of fresh labels that \cref{thm:theorem-55-6-genuine}
   assumes (\cref{rem:fresh-edge-supply}).
@@ -1332,8 +1337,8 @@ We record the case $d = 3$.
 
 \begin{fmlnote}
   As for \cref{thm:theorem-55-6}, the pinned theorem assumes that $G$ spans
-  the set of bodies, and it places no condition on the endpoint selector.
-  It assumes $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}).
+  the set of bodies, and its selector assigns each edge of $G$ its two
+  ends. It assumes $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}).
 \end{fmlnote}
 
 The realization in the proof of \cref{thm:theorem-55-6-genuine} is a
@@ -1462,10 +1467,10 @@ condition, both sides would hold exactly when $G$ is connected.
   need only lie in the panels (\cref{thm:molecular-conjecture-multigraph}).
 
   The pinned theorem assumes that $G$ spans the set $W$ of bodies and that
-  $D(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). Its panel side places
-  no condition on the endpoint selector
-  (\cref{fmlnote:panel-hinge-nondegenerate}), so it asserts less than a
-  panel-hinge realization of $G$. Both of its sides ask for a nonzero
+  $D(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). On its panel side
+  the endpoint selector assigns each edge of $G$ its two ends, as every
+  panel-hinge framework's does (\cref{fmlnote:panel-hinge-nondegenerate}).
+  Both of its sides ask for a nonzero
   hinge at every edge label (\cref{rem:molecular-conjecture-essential}).
 \end{fmlnote}
 

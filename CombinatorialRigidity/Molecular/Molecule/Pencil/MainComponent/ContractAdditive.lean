@@ -350,6 +350,7 @@ theorem _root_.Graph.X0Attains.of_additiveContract [Infinite K] [Finite α] [Fin
   have hproj := hQc n hQt
   have hcouple :=
     PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le G W ends n
+      (hlinks := by link_tac)
   refine Graph.x0Attains_of_exists hV ends hends hqtmain hzt ?_
   -- the count: `tgt(G) = 6(|W| − 1) + tgt(G/H)`
   have hrankM : Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2)

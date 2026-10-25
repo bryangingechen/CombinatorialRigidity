@@ -112,6 +112,8 @@ The formal proof of Case III applies it, through `exists_redundant_panelRow_ab_d
 -/
 theorem BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq
     [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → K} {e₀ : β}
+    {hlinks : PanelHingeFramework.RecordsLinks Gab ends}
+    {hlinks' : PanelHingeFramework.RecordsLinks Gv ends}
     (hD : 2 ≤ screwDim k)
     (huv : (ends e₀).1 ≠ (ends e₀).2)
     (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
@@ -165,6 +167,8 @@ eq. (6.24) with the coefficient `1` of KT eq. (6.25) (the note after the node). 
 the membership of `exists_redundant_panelRow_ab_of_finrank_eq` (`Submodule.mem_sup`). -/
 theorem BodyHingeFramework.exists_redundant_panelRow_ab_decomposition
     [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → K} {e₀ : β}
+    {hlinks : PanelHingeFramework.RecordsLinks Gab ends}
+    {hlinks' : PanelHingeFramework.RecordsLinks Gv ends}
     (hD : 2 ≤ screwDim k)
     (huv : (ends e₀).1 ≠ (ends e₀).2)
     (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
@@ -205,6 +209,8 @@ not zero, as the `r j` are linearly independent and `lam i = 1`. Only
 `exists_redundant_panelRow_ab_lam_of_rigidOn` uses it. -/
 theorem BodyHingeFramework.exists_redundant_panelRow_ab_lam
     [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → K} {e₀ : β}
+    {hlinks : PanelHingeFramework.RecordsLinks Gab ends}
+    {hlinks' : PanelHingeFramework.RecordsLinks Gv ends}
     (hD : 2 ≤ screwDim k)
     (huv : (ends e₀).1 ≠ (ends e₀).2)
     (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
@@ -256,6 +262,8 @@ Then `exists_redundant_panelRow_ab_lam` applies. Only `exists_candidateRow_botto
 uses it. -/
 theorem BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn
     [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → K} {e₀ : β}
+    {hlinks : PanelHingeFramework.RecordsLinks Gab ends}
+    {hlinks' : PanelHingeFramework.RecordsLinks Gv ends}
     (hD : 2 ≤ screwDim k)
     (huv : (ends e₀).1 ≠ (ends e₀).2)
     (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
@@ -334,6 +342,8 @@ and `ρ = ∑_j lam j • rab j`, as `hingeRow a b` is injective for `a ≠ b`. 
 `Gv`. Its users are `case_III_candidate_dispatch` and `chainData_split_w6b_gates`. -/
 theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
     [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → K} {e₀ : β}
+    {hlinks : PanelHingeFramework.RecordsLinks Gab ends}
+    {hlinks' : PanelHingeFramework.RecordsLinks Gv ends}
     (hD : 2 ≤ screwDim k)
     (huv : (ends e₀).1 ≠ (ends e₀).2)
     (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
@@ -499,6 +509,8 @@ does not use it (`rem:case-III-kt-steps`), and no declaration uses it. -/
 theorem BodyHingeFramework.exists_redundant_panelRow_ab_decomposition_acolumn_zero
     [Finite α] [DecidableEq α] {Gab Gv : Graph α β} {ends : β → α × α}
     {q : α × Fin (k + 2) → K} {e₀ : β}
+    {hlinks : PanelHingeFramework.RecordsLinks Gab ends}
+    {hlinks' : PanelHingeFramework.RecordsLinks Gv ends}
     (hD : 2 ≤ screwDim k)
     (huv : (ends e₀).1 ≠ (ends e₀).2)
     (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
@@ -553,6 +565,7 @@ third pin, `comp_columnOp_eq_comp_single_proj`, gives that the difference, compo
 operation, depends only on `S(v)`. No declaration uses it. -/
 theorem PanelHingeFramework.panelRow_vb_sub_panelRow_ab_eq_hingeRow_va
     (G Gab : Graph α β) (ends : β → α × α) {q₀ q : α × Fin (k + 2) → K}
+    {hlinks : RecordsLinks G ends} {hlinks' : RecordsLinks Gab ends}
     {e_b e₀ : β} {v a b : α} {t : K}
     (hends_eb : ends e_b = (v, b)) (hends_e0 : ends e₀ = (a, b))
     (hq₀v : (fun i => q₀ (v, i)) = (fun i => q (a, i)) + t • (fun i => q (b, i)))
@@ -588,6 +601,7 @@ at `e_b`, and `hingeRow_sub_hingeRow_eq` gives the identity. At these normals, i
 KT eq. (6.29) is singular (the note after `lem:case-III-candidate-row`). No declaration uses it. -/
 theorem PanelHingeFramework.exists_candidate_row_eq612
     (G Gab : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → K}
+    {hlinks : RecordsLinks G ends} {hlinks' : RecordsLinks Gab ends}
     {e₀ e_b : β} {v a b : α} {t : K}
     (hends_e0 : ends e₀ = (a, b)) (hends_eb : ends e_b = (v, b))
     (hG_eb : G.IsLink e_b v b)
@@ -644,7 +658,8 @@ framework. Only the hinge at `e_r` depends on `t`, linearly
 (`caseIIICandidate_panelRow_eq_add_smul`). -/
 noncomputable def PanelHingeFramework.caseIIICandidate [DecidableEq β]
     (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
-    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → K) (t : K) :
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → K) (t : K)
+    (hlinks : RecordsLinks G ends := by link_tac) :
     BodyHingeFramework K k α β where
   graph := G
   supportExtensor := Function.update (Function.update
@@ -655,6 +670,7 @@ noncomputable def PanelHingeFramework.caseIIICandidate [DecidableEq β]
 @[simp]
 theorem PanelHingeFramework.caseIIICandidate_graph [DecidableEq β]
     (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
+    {hlinks : RecordsLinks G ends}
     (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → K) (t : K) :
     (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).graph = G := rfl
 
@@ -663,6 +679,7 @@ in the proofs of `lem:case-III-candidate-dispatch-d3` and `lem:case-III-chain-di
 `e_c ≠ e_r`, the supporting extensor of `F_t` at `e_c` is `C(n_u, n')`, for every `t`. -/
 theorem PanelHingeFramework.caseIIICandidate_supportExtensor_candidate [DecidableEq β]
     (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
+    {hlinks : RecordsLinks G ends}
     {e_c e_r : β} (n_u n' n_r : Fin (k + 2) → K) (t : K) (hcr : e_c ≠ e_r) :
     (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e_c
       = panelSupportExtensor n_u n' := by
@@ -675,6 +692,7 @@ supporting extensor of `F_t` at `e_r` is `C(n_u + t n', n_r)`. At `t = 0` it is 
 for `(G, p_1)` is the hinge `C(q(a), q(b))` of `ab`. -/
 theorem PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced [DecidableEq β]
     (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
+    {hlinks : RecordsLinks G ends}
     (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → K) (t : K) :
     (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e_r
       = panelSupportExtensor (n_u + t • n') n_r := by
@@ -687,6 +705,7 @@ the rotation in the proofs of `lem:case-III-candidate-dispatch-d3` and
 of `ofNormals G ends q`, for every `t`. -/
 theorem PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne [DecidableEq β]
     (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
+    {hlinks : RecordsLinks G ends}
     (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → K) (t : K) {e : β} (h1 : e ≠ e_c) (h2 : e ≠ e_r) :
     (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e
       = (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e := by
@@ -703,6 +722,7 @@ otherwise. Only the hinge at `e_r` depends on `t`, as
 `caseIIICandidate_exists_good_shear` uses it. -/
 theorem PanelHingeFramework.caseIIICandidate_panelRow_eq_add_smul [DecidableEq β]
     (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
+    {hlinks : RecordsLinks G ends}
     {e_c e_r : β} (n_u n' n_r : Fin (k + 2) → K) (hcr : e_c ≠ e_r) (t : K)
     (p : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
     (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).panelRow ends p
@@ -737,6 +757,7 @@ p. 669), for one variable. Only `case_III_realization_of_rank` uses it. -/
 theorem PanelHingeFramework.caseIIICandidate_exists_good_shear [DecidableEq β] [Finite α]
     [Infinite K]
     (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
+    {hlinks : RecordsLinks G ends}
     {e_c e_r : β} (hcr : e_c ≠ e_r) (n_u n' n_r : Fin (k + 2) → K)
     {ι : Type*} [Finite ι]
     (idx : ι → β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
@@ -900,6 +921,7 @@ row `hingeRow v b ρ` at `e_b` minus `hingeRow a b ρ` (`hingeRow_sub_hingeRow_e
 theorem PanelHingeFramework.case_III_rank_certification
     [DecidableEq β] [Finite α]
     (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → K}
+    {hlinks : RecordsLinks G ends} {hlinks' : RecordsLinks Gv ends}
     {v a b : α} {e_a e_b : β}
     (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
     (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)

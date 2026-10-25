@@ -71,7 +71,9 @@ theorem PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
     (G : Graph α β) (ends ends' : β → α × α) (q : α × Fin (k + 2) → K)
     (hswap : ∀ e u v, G.IsLink e u v →
       ((ends' e).1 = (ends e).1 ∧ (ends' e).2 = (ends e).2) ∨
-      ((ends' e).1 = (ends e).2 ∧ (ends' e).2 = (ends e).1)) :
+      ((ends' e).1 = (ends e).2 ∧ (ends' e).2 = (ends e).1))
+    {hlinks : PanelHingeFramework.RecordsLinks G ends}
+    {hlinks' : PanelHingeFramework.RecordsLinks G ends'} :
     (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions =
       (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.infinitesimalMotions := by
   refine BodyHingeFramework.infinitesimalMotions_eq_of_isLink_span_supportExtensor _ _ rfl ?_
@@ -103,7 +105,8 @@ theorem PanelHingeFramework.hasGenericRealization_transport_ends
     (hswap : ∀ e u v, GH.IsLink e u v →
       ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
       ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1))
-    (hne_ends : ∀ e, GH.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2) :
+    (hne_ends : ∀ e, GH.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2)
+    (hlinks : PanelHingeFramework.RecordsLinks GH ends := by link_tac) :
     ∃ qH : α × Fin (k + 2) → K,
       (∀ e, GH.IsLink e (ends e).1 (ends e).2 →
         (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0) ∧
@@ -204,7 +207,8 @@ deleted is at most the rank of `G`. The rows of `G[W]` lie in the kernel of the 
 deletion on the row space of `G` (`Submodule.finrank_add_finrank_map_le_of_le_ker`) gives the bound.
 Its one user is `Graph.X0Attains.of_additiveContract`, in the pencil's main component. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_induce_add_map_extProj_le [Finite α]
-    (G : Graph α β) (W : Set α) (ends : β → α × α) (n : α × Fin (k + 2) → K) :
+    (G : Graph α β) (W : Set α) (ends : β → α × α) (n : α × Fin (k + 2) → K)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends} :
     Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (G.induce W) ends n).toBodyHinge.rigidityRows) +
       Module.finrank K ((Submodule.span K (PanelHingeFramework.ofNormals
@@ -262,7 +266,8 @@ in the ends of the hinge row, which `hingeRow_collapseTo_comp_extProj_eq` reconc
 which the rows of `G ＼ E(H)` at `q_0` are those of `G/E(H)` at `n` after the deletion. -/
 theorem panelRow_collapseTo_comp_extProj_dualMap (Gc H : Graph α β) {r : α} (hr : r ∈ V(H))
     (nrm : α → Fin (k + 2) → K) (ends : β → α × α)
-    (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
+    (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+    {hlinks : PanelHingeFramework.RecordsLinks Gc ends} :
     (extProj (K := K) (k := k) V(H)).dualMap
         ((PanelHingeFramework.ofNormals Gc ends
           (degeneratePlacement r V(H) nrm)).toBodyHinge.panelRow ends i)

@@ -106,7 +106,8 @@ on the centres `c` transported along the fixed screw automorphism `screwCompleme
 multigraph `G`, and edgewise their supporting extensors agree by the extensor-level polarity
 identity `screwComplementIso_lineExtensor`. -/
 theorem molecularOfCentres_mapExtensor_screwComplementIso
-    (G : Graph V β) (ends : β → V × V) (c : V → EuclideanSpace ℝ (Fin 3)) :
+    (G : Graph V β) (ends : β → V × V) {hlinks : PanelHingeFramework.RecordsLinks G ends}
+    (c : V → EuclideanSpace ℝ (Fin 3)) :
     (molecularOfCentres G ends c).mapExtensor screwComplementIso
       = (PanelHingeFramework.ofNormals G ends
           (fun p => homogenize (ofLp (c p.1)) p.2)).toBodyHinge := by
@@ -125,7 +126,8 @@ molecular framework on the centres have the same dimension, since one is the ima
 under a linear automorphism (`molecularOfCentres_mapExtensor_screwComplementIso`,
 `finrank_infinitesimalMotions_mapExtensor`). Equivalently the realized ranks agree. -/
 theorem finrank_infinitesimalMotions_ofNormals_homogenize
-    (G : Graph V β) (ends : β → V × V) (c : V → EuclideanSpace ℝ (Fin 3)) :
+    (G : Graph V β) (ends : β → V × V) {hlinks : PanelHingeFramework.RecordsLinks G ends}
+    (c : V → EuclideanSpace ℝ (Fin 3)) :
     Module.finrank ℝ (PanelHingeFramework.ofNormals G ends
         (fun p => homogenize (ofLp (c p.1)) p.2)).toBodyHinge.infinitesimalMotions
       = Module.finrank ℝ (molecularOfCentres G ends c).infinitesimalMotions := by
@@ -137,7 +139,8 @@ theorem finrank_infinitesimalMotions_ofNormals_homogenize
 `dim Z = D + k'` iff the molecular framework on the centres does, since the polarity transport
 preserves the motion-space dimension (`finrank_infinitesimalMotions_ofNormals_homogenize`). -/
 theorem rankHypothesis_ofNormals_homogenize_iff
-    (G : Graph V β) (ends : β → V × V) (c : V → EuclideanSpace ℝ (Fin 3)) (k' : ℤ) :
+    (G : Graph V β) (ends : β → V × V) {hlinks : PanelHingeFramework.RecordsLinks G ends}
+    (c : V → EuclideanSpace ℝ (Fin 3)) (k' : ℤ) :
     (PanelHingeFramework.ofNormals G ends
         (fun p => homogenize (ofLp (c p.1)) p.2)).toBodyHinge.RankHypothesis k'
       ↔ (molecularOfCentres G ends c).RankHypothesis k' := by
@@ -149,7 +152,8 @@ panel-hinge framework on the homogenized centres is infinitesimally rigid iff th
 framework on the centres is, since transport along the polarity carries motions to motions and
 trivial to trivial (`isInfinitesimallyRigid_mapExtensor`). -/
 theorem isInfinitesimallyRigid_ofNormals_homogenize_iff
-    (G : Graph V β) (ends : β → V × V) (c : V → EuclideanSpace ℝ (Fin 3)) :
+    (G : Graph V β) (ends : β → V × V) {hlinks : PanelHingeFramework.RecordsLinks G ends}
+    (c : V → EuclideanSpace ℝ (Fin 3)) :
     (PanelHingeFramework.ofNormals G ends
         (fun p => homogenize (ofLp (c p.1)) p.2)).toBodyHinge.IsInfinitesimallyRigid
       ↔ (molecularOfCentres G ends c).IsInfinitesimallyRigid := by
@@ -162,7 +166,8 @@ transversal) iff the molecular hinge at `e` is nondegenerate (its two endpoint c
 distinct), since a linear automorphism sends nonzero to nonzero
 (`supportExtensor_mapExtensor_ne_zero`). -/
 theorem supportExtensor_ofNormals_homogenize_ne_zero_iff
-    (G : Graph V β) (ends : β → V × V) (c : V → EuclideanSpace ℝ (Fin 3)) (e : β) :
+    (G : Graph V β) (ends : β → V × V) {hlinks : PanelHingeFramework.RecordsLinks G ends}
+    (c : V → EuclideanSpace ℝ (Fin 3)) (e : β) :
     (PanelHingeFramework.ofNormals G ends
         (fun p => homogenize (ofLp (c p.1)) p.2)).toBodyHinge.supportExtensor e ≠ 0
       ↔ (molecularOfCentres G ends c).supportExtensor e ≠ 0 := by

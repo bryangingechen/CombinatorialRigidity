@@ -206,7 +206,8 @@ panel-hinge framework whose panel normal at each body is its point `p_v` has, at
 meet `panelSupportExtensor p_u p_v` of the two polar planes, which the polarity `screwComplementIso`
 takes the join `p_u ∧ p_v` to (`screwComplementIso_mk_extensor`, over every field). -/
 theorem ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework (G : Graph α β)
-    (ends : β → α × α) (p : α → Fin 4 → K) :
+    (ends : β → α × α) (p : α → Fin 4 → K)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends} :
     (PanelHingeFramework.ofNormals (k := 2) G ends (fun x => p x.1 x.2)).toBodyHinge
       = (pointJoinFramework G ends p).mapExtensor screwComplementIso := by
   have hsupp : (PanelHingeFramework.ofNormals (k := 2) G ends
@@ -263,11 +264,13 @@ theorem pencilConfigFramework_supportExtensor_of_not_mem_edgeSet {G : Graph α �
 so the two have the same span of rigidity rows (`span_rigidityRows_eq_of_supportExtensor_agree`);
 the polarity, an invertible map of the screw space, takes the point-join framework to `ofNormals`
 (`ofNormals_toBodyHinge_eq_mapExtensor_pointJoinFramework`) and keeps the rank
-(`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). It asks nothing of `ends`: the label
+(`BodyHingeFramework.finrank_span_rigidityRows_mapExtensor`). Of `ends` it asks only that it record
+the links of `G` (`hlinks`), as `ofNormals` does, and the rank comparison does not use it: the label
 of a link lies in `E(G)`, where the patch is the join at whatever `ends` names, as in the point-join
 framework. -/
 theorem finrank_span_rigidityRows_pencilConfigFramework (G : Graph α β) (ends : β → α × α)
-    (q : α × Fin 2 → K) (z : α → K) :
+    (q : α × Fin 2 → K) (z : α → K)
+    {hlinks : PanelHingeFramework.RecordsLinks G ends} :
     Module.finrank K (Submodule.span K (pencilConfigFramework G ends q z).rigidityRows)
       = Module.finrank K (Submodule.span K (PanelHingeFramework.ofNormals (k := 2) G ends
           (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge.rigidityRows) := by

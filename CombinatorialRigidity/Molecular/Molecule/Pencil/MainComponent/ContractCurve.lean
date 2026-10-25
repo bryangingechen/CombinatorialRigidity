@@ -995,8 +995,8 @@ theorem PanelHingeFramework.exists_rankPolynomial_rigidContract_induce_proj [Fin
         = (fun i : t => (extProj (k := k) W).dualMap (F'.panelRow endsM (i : β × _ × _))) := by
       funext i
       have h := panelRow_collapseTo_comp_extProj_dualMap Gc (G.induce W) hr nrm ends
-        (i : β × _ × _)
-      rw [hVH] at h
+        (hlinks := by link_tac) (i : β × _ × _)
+      simp only [hVH] at h
       rw [h]
     rw [hrow]
     exact hindepM

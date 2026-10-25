@@ -256,6 +256,7 @@ where `ends₁` and `ends₂` agree and `q₁` and `q₂` agree at both ends; fo
 `case_II_placement_eq612` uses it, and no main result uses that. -/
 theorem PanelHingeFramework.exists_independent_panelRow_transport {α β : Type*}
     (G₁ G₂ : Graph α β) (ends₁ ends₂ : β → α × α) (q₁ q₂ : α × Fin (k + 2) → K)
+    {hlinks₁ : RecordsLinks G₁ ends₁} {hlinks₂ : RecordsLinks G₂ ends₂}
     {s₁ s₂ : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     (f : s₂ → s₁) (hf : Function.Injective f)
     (hrow : ∀ i : s₂, (PanelHingeFramework.ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂
@@ -655,6 +656,7 @@ independent at every `q` with `Q(q) ≠ 0`. The coordinates of the rows in the s
 (`exists_polynomial_ne_zero_of_linearIndependent_at`). -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_linearIndependent [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α) {q₀ : α × Fin (k + 2) → K}
+    {hlinks : RecordsLinks G ends}
     {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     (hindep : LinearIndependent K
       (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i)) :

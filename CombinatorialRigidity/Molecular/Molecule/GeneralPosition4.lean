@@ -182,7 +182,8 @@ independent by the minor of a tuple that lists them.
 `exists_rankHypothesis_isGeneralPosition4_of_two_le` takes a non-root of the product of `Q` and the
 rank polynomial of `exists_rankPolynomial_of_le_finrank_linking`
 (`MvPolynomial.exists_eval_ne_zero`). -/
-theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends : β → α × α) :
+theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends : β → α × α)
+    (hlinks : PanelHingeFramework.RecordsLinks G ends := by link_tac) :
     ∃ Q : MvPolynomial (α × Fin 4) ℝ,
       (∀ param : α → ℝ, Function.Injective param → (∀ a, param a ≠ 0) →
         MvPolynomial.eval (fun p => PanelHingeFramework.momentCurve (param p.1) p.2) Q ≠ 0) ∧

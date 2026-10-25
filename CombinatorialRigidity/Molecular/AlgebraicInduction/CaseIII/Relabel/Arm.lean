@@ -287,6 +287,7 @@ theorem _root_.Graph.ChainData.freshEdge_surviving_row_mem
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
     (hs : s + 1 < (i : ℕ))
     {ends : β → α × α} {qρ : α × Fin (k + 2) → K} (ρ₀ : Module.Dual K (ScrewSpace K k))
+    {hlinks : PanelHingeFramework.RecordsLinks (G.removeVertex (cd.vtx i)) ends}
     -- `ρ₀` vanishes on the hinge of the edge `v_s v_{s+1}`:
     (hperp : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex
         (cd.vtx i)) ends qρ).toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0) :

@@ -1243,7 +1243,9 @@ detour (2026-10-24): each commit's full build took ~5 min, limited by one long i
 (`notes/PERFORMANCE.md` *Build critical path*), so 41a first trimmed the molecular chain's
 imports and, after a recon, converted the whole project to Lean's module system. An edit inside
 a proof now rebuilds only its own file (10–14 s at the chain's head), and an edit to a statement
-there rebuilds the chain in 72–77 s. Detail →
+there rebuilds the chain in 72–77 s. The field is now on the structure (41a's item 5a): no main
+result's text changed, but the panel-hinge frameworks they conclude now give each edge its ends.
+Detail →
 `notes/Phase41a.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
