@@ -4,7 +4,8 @@
 `notes/Phase41a.md`: the field `isLink_ends` is on `PanelHingeFramework`, and no main result's
 statement changed. Sub-phase **41b** (RESTATE) opened 2026-10-24 with the PI's decisions in §1b,
 work log `notes/Phase41b.md`. MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
-they open. Next concrete task: 41b's item 1, the recon on KT's nonparallel panels.
+they open. Item 1's recon on KT's nonparallel panels is §2's last arc. Next concrete task: 41b's
+item 2, `HasGenericFullRankRealization`'s last conjunct (§2, *RESTATE's open recon*, Q3).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -212,6 +213,65 @@ ten signatures) and seven call sites; the spanning-trees theorem's `hD` goes wit
   `Gab`). §3's list missed the d = 3 wrapper `exists_rankHypothesis_isGeneralPosition4`, pinned at
   `molecule-modelling.tex:663`.
 
+**KT's nonparallel recon** (41b's item 1; 2026-10-24; Claude Opus 5.5, design pass, at
+`c45211e2`). Evidence: `notes/reconcile-formal/NonparallelWitness.lean` (`lake lean`; no errors or
+warnings, its six `#print axioms` the three standard axioms). The names below are the witness's.
+- **The affine coordinate is the last.** `homogenize` appends `1` last (`Extensor.lean:55`,
+  `def:homogeneous-coords`), so the panel of a normal `n` is `{x | Fin.init n ⬝ᵥ x + n last = 0}`
+  (`homogenize_dotProduct`): its first `k + 1` coordinates, `Fin.init n`, are its direction, KT's
+  `c(v)` in `Π(v) = {x | x · c(v) + 1 = 0}` (§5.1, p. 668). The d = 3 dictionary and the
+  affine-position lemma of `HingeGeneric.lean` read the last coordinate so too. The coordinator's
+  hypothesis that coordinate 0 is the affine one is refuted.
+- **The predicate.** KT (p. 668): two panels are nonparallel if they meet in a
+  `(d − 2)`-dimensional affine subspace, and a framework on a simple graph is nonparallel if any
+  two distinct bodies' panels are (Jackson and Jordán's "nondegenerate", JJ 2010 §7; KT footnote
+  3). On the carrier, KT's independence of `c(u)` and `c(v)`, `IsNonparallel P` is
+  `∀ a b, a ≠ b → LinearIndependent K ![Fin.init (P.normal a), Fin.init (P.normal b)]`.
+  Equivalently `e_last`, `n_a`, `n_b` are independent: the meet is not at infinity
+  (`dir_pair_iff_triple`). It implies `IsGeneralPosition` (`IsNonparallel.isGeneralPosition`); its
+  two panels meet (`exists_common_point`), in the solutions of a rank-2 system; and it is strictly
+  stronger: at d = 2 the normals `(1, 0, 0)`, `(1, 0, 1)` are independent and their lines
+  `x₀ = 0`, `x₀ = −1` never meet (`generalPosition_not_nonparallel`). No such predicate exists
+  (bare-name search of `CombinatorialRigidity/` and `.lake/packages/`; mathlib's
+  `AffineSubspace.Parallel` is on affine subspaces). **Range: all of `α`**, as `IsGeneralPosition`:
+  KT ask it on `V`, the device below gives `α` free, and it is vacuous on one body (Theorem 5.6's
+  single-body branch).
+- **`1 ≤ k` is needed and already there.** At `k = 0` directions lie in `K¹`, so no two bodies are
+  nonparallel (`not_isNonparallel_k0`). Theorem 5.5 has `hk1`; no main result gains a hypothesis.
+- **The device already avoids parallel pairs.** For `1 ≤ k` coordinates 0 and 1 are direction
+  coordinates, so the polynomial of `exists_generalPosition_polynomial` (the product of the
+  leading minors on them) is nonparallel at every non-root (`isNonparallel_of_eval_ne_zero`), and
+  the moment curve is nonparallel at distinct parameters (`momentCurve_nonparallel`: its direction
+  is the moment curve one degree down). No parameter condition beyond injectivity.
+- **Route B, the plan: upgrade at the end.** A generic full-rank realization of a loopless graph
+  gives a nonparallel one of the same rank (`exists_nonparallel_of_generic`, sorry-free): the rank
+  polynomial at its normals (`exists_rankPolynomial_of_le_finrank_linking`) times that product, a
+  common non-root, and the deficiency bound (`finrank_span_rigidityRows_add_deficiency_le`). It is
+  the device's form of KT Lemma 5.2 (p. 669), KT's rotation to a nonparallel realization of no
+  smaller rank. The induction (`theorem_55_minimalKDof_k_all_k`, the base producers, Cases I–III,
+  `HasGenericFullRankRealization`) is untouched; only `theorem_55_minimalKDof_gen` applies it.
+- **Route A, rejected: nonparallel in the motive.** It survives every step (each producer takes
+  its normals at a non-root of a product with that polynomial, or relabels them), but as the
+  predicate fails at `k = 0`, about a dozen producers with no bound on `k` gain `1 ≤ k` (the two
+  `_gp_gen` base producers, `hasGenericFullRankRealization_of_rigidOn_ofNormals`,
+  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`,
+  `case_III_realization_of_rank`, the three arm realizations, `cycle_realization`,
+  `chainData_interior_realization_hρGv`, `chainData_dispatch_floor_of_discriminator`), each a
+  restated node, in one switch commit (an unused `hk` fails `unusedArguments`). It buys KT's
+  eq. (6.1) at full strength, which the formal proof never uses.
+- **Statements and proofs (route B).** Statements: `theorem_55_minimalKDof_gen`'s simple conjunct,
+  passed through `theorem_55_minimalKDof_k`, `theorem_55_d3` and
+  `theorem_55_minimalKDof_gen_witness`. Proofs only: `rankHypothesis_genuine_of_theorem_55_gen`
+  and the rows form, which read general position off the strip realization.
+  `exists_rankHypothesis_isGeneralPosition4` is untouched: it reads
+  `rankHypothesis_genuine_of_theorem_55_gen`, which states nothing of the normals, and re-chooses
+  them; a third polynomial factor would add nonparallel to it, a change §1b does not sanction
+  (§4).
+- **Order.** Item 4 after items 2 and 3 (the new predicate is born without the link conjunct, and
+  both 3 and 4c edit `theorem_55_minimalKDof_gen`) and before item 5, whose Theorem 5.6 then states
+  `IsNonparallel` off the strip realization, whose normals `reaimSubLink` keeps; else
+  `thm:theorem-55-6` is restated twice. The commits are 41b's items 4a–4c.
+
 ## 3. Sub-phases, by code
 
 | Code | Letter | Contents | Commits |
@@ -230,8 +290,10 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
 
 ## 4. Open questions
 
-- **KT's nonparallel on the carrier** (§1b.4): its definition on the homogeneous normals, the route
-  by which Theorem 5.5's induction reaches it, and the cost. 41b's item 1 settles them.
+- **KT's nonparallel** (§1b.4): settled by §2's *KT's nonparallel recon* (route B, 41b's items
+  4a–4c). Two options stay with the PI, neither in the plan: KT's eq. (6.1) motive at full strength
+  (route A, about a dozen internal producers gain `1 ≤ k`), and nonparallel in the conclusion of the
+  d = 3 wrapper `exists_rankHypothesis_isGeneralPosition4` (one more polynomial factor).
 - **M1 and loops**: assume `G.Loopless`, or relax the upper bound's `hC` to non-loop links (a loop's
   constraint is vacuous, and a loop never crosses a partition). MULTIGRAPH's open decides. JJ 2010
   Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for 2-edge-coloured multigraphs; the
