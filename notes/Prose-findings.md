@@ -3474,7 +3474,10 @@ declaration's name as its header writes it:
   from Theorem 5.6 and the restated theorem, on the three standard axioms
   (`scratch/41b/MolNP.lean`, gitignored).
   *Found:* Phase 41b item 6.
-  *Disposition:* reported (`notes/Phase41b.md`, *Blockers / open questions*).
+  *Disposition:* done (the commit "Phase 41b item 6b: `molecular_conjecture`'s panel side gains
+  `Q.IsNonparallel`"): the PI chose to add `Q.IsNonparallel` beside the nondegenerate hinges
+  (`notes/Phase41-design.md` §1d); statement, docstring, `thm:molecular-conjecture`, the witness's
+  statement and the two `formalization.yaml` rows restated.
 
 ## L — Lean
 

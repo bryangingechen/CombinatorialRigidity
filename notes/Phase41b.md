@@ -1,10 +1,10 @@
 # Phase 41b — RESTATE: the main results restated on the linked carrier (work log)
 
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
-decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c) and the
-recons are in `notes/Phase41-design.md`. Items 1–6 done: Theorems 5.5 and 5.6, and their
+decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c; on `F-330`, §1d) and the
+recons are in `notes/Phase41-design.md`. Items 1–6b done: Theorems 5.5 and 5.6, and their
 `d = 3` instances, conclude KT's nonparallel panels for simple `G`, and `molecular_conjecture`
-holds on one body. Next concrete task: item 7, the multigraph rows.
+holds on one body, with nonparallel panels on its panel side (item 6b). Next concrete task: item 7, the multigraph rows.
 
 ## Current state
 
@@ -24,7 +24,7 @@ are no red target nodes; each slice restates the nodes it reaches (`Combinatoria
 
 ## Architectural choices made up front
 
-- **Statements change only as the design doc's §1, §1b and §1c say** (`notes/Reconcile.md` §2,
+- **Statements change only as the design doc's §1, §1b, §1c and §1d say** (`notes/Reconcile.md` §2,
   *Hygiene*): any other statement change is recorded as an `S` entry and not acted on. A prompt
   that bars an edit names the neighbouring edits it allows (dispatch-log F51).
 - **Each restated main result lands with its non-vacuity witness** in
@@ -56,34 +56,20 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   `HasNonparallelFullRankRealization`; `thm:theorem-55`, `thm:theorem-55-d3-instance` and the
   `formalization.yaml` row restated.
 - [x] **5. Theorem 5.6** (S2; §1b.1): `rankHypothesis_of_theorem_55_gen` concludes `Q.graph = G`,
-  `Q.IsNonparallel` (the strip realization's normals, which `reaimSubLink` keeps; vacuous at one
-  body) and the rank, keeps `hSimple`, drops `[DecidableEq β]` (`F-323`); `thm:theorem-55-6`
-  restated; the link conjunct of the rows form
-  `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, of
-  `exists_rankHypothesis_isGeneralPosition4_of_two_le` and of its wrapper
-  `exists_rankHypothesis_isGeneralPosition4` dropped; the wrapper also concludes `IsNonparallel`
-  (design doc §1c.2: one more polynomial factor at its normals, after 4a gives the predicate;
-  the `_of_two_le` form gains it where the wrapper's proof needs it), its blueprint node and
-  `formalization.yaml` row restated; the witness.
-  Done: as listed, and the genuine form concludes `IsNonparallel` too (*Decisions made*); the
-  wrapper takes a third factor, `exists_nonparallel_polynomial`, at the same moment curve;
-  `thm:theorem-55-6`, `thm:theorem-55-6-genuine`, `thm:theorem-55-6-rows`'s note and
-  `lem:theorem-56-general-position` restated; the `main_results` row and the `alignment` note
-  (whose degenerate-hinge sentence the restatement made false); the witness
-  `rankHypothesis_of_theorem_55_gen_witness` at the single edge in the plane.
-- [x] **5b. `rankHypothesis_of_theorem_55_d3`** (`F-329`; found at item 5): the nonparallel
-  conjunct passed through the d = 3 instance, as item 4c passed Theorem 5.5's through
-  `theorem_55_d3`; `thm:theorem-55-6-d3` and its note restated, the docstring rewritten. No
-  `formalization.yaml` row, so no witness; no caller in the library.
+  `Q.IsNonparallel` and the rank, keeps `hSimple`, drops `[DecidableEq β]` (`F-323`); the rows
+  form, `exists_rankHypothesis_isGeneralPosition4_of_two_le` and the wrapper lose their link
+  conjuncts, the wrapper also concluding `IsNonparallel` (§1c.2); the nodes, rows and witness
+  restated. The genuine form concludes `IsNonparallel` too (*Decisions made*).
+- [x] **5b. `rankHypothesis_of_theorem_55_d3`** (`F-329`): the nonparallel conjunct passed through
+  the d = 3 instance; `thm:theorem-55-6-d3` restated. No row, so no witness.
 - [x] **6. `molecular_conjecture`** (S2; §1.2): `V(G).Nonempty` for `2 ≤ |V(G)|`, nondegenerate
-  hinges on `E(G)` on both sides, `[DecidableEq β]` dropped (`F-323`); the witness.
-  Done: (⇒) reads `rankHypothesis_of_theorem_55_gen`, whose nonparallel panels give the hinges on
-  `E(G)`; `thm:molecular-conjecture`, its note, `rem:molecular-conjecture-essential`,
-  `rem:coplanar-single-body`, the two `formalization.yaml` rows and the multigraph docstrings'
-  sentences on it restated. The witness `molecular_conjecture_witness` stays in its home
-  (`Molecular/AlgebraicInduction/Nonvacuity.lean`, `PHASE-BOUNDARIES.md`), now at one body in the
-  plane, the least input; `rem:molecular-conjecture-nonvacuous` with it. Nonparallel panels on the
-  panel side come free (`F-330`, for the PI).
+  hinges on `E(G)` on both sides, `[DecidableEq β]` dropped (`F-323`); (⇒) reads
+  `rankHypothesis_of_theorem_55_gen`; the node, remarks, rows and the witness
+  `molecular_conjecture_witness` (one body in the plane, in its home
+  `Molecular/AlgebraicInduction/Nonvacuity.lean`) restated.
+- [x] **6b. `molecular_conjecture`'s nonparallel panels** (`F-330`; §1d): the panel side gains
+  `Q.IsNonparallel`, the body-hinge side unchanged; (⇐) discards it, the witness's proof is
+  unchanged; the node, its `\uses`, the nonvacuity remark, the two rows and the docstring restated.
 - [ ] **7. The multigraph rows** (§1.2, §1.4): `molecular_conjecture_multigraph` and
   `theorem_55_6_multigraph_gen` ask nondegeneracy on `E(G)`; `IsHingeCoplanar` constrains `E(G)`
   only; `F-323`'s binders.
@@ -115,9 +101,7 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 - **CI has not run since 2026-10-15**: the PI pushes after RESTATE closes (§1b), so that push is
   CI's first run of 41a's `module` conversion (doc-gen, the upstreaming dashboard). The close
   should expect to watch it.
-- **For the PI, `F-330`** (item 6): `molecular_conjecture`'s iff also holds with `Q.IsNonparallel`
-  on its panel side, at no cost (a `lake lean` witness); §1.2 does not name it, so the statement
-  kept the panel side as it was.
+- `F-330` resolved by the PI (§1d, item 6b).
 
 ## Hand-off / next phase
 
@@ -137,6 +121,7 @@ conjunct narrows with the two theorems, and so whether item 7 is one commit, is 
   Route A, nonparallel in the motive, was rejected by the PI (design doc §1c).
 - **The PI's decisions after item 1's recon** (2026-10-24): `notes/Phase41-design.md` §1c,
   verbatim.
+- **The PI's decision on `F-330`** (2026-10-25): `notes/Phase41-design.md` §1d, verbatim.
 - **Item 3** (`F-324`): four lemmas without `1 ≤ k` take `hk` for `hD : 2 ≤ D`, a swap the
   ledger's "drop" needed (`D = 1` at `k = 0`); the `F-324` entry says which.
 - **The genuine form concludes nonparallel too** (item 5; the coordinator's adjudication, not the

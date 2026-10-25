@@ -131,6 +131,21 @@ What each answer settles:
    gives the predicate. `exists_rankHypothesis_isGeneralPosition4_of_two_le` gains it where the
    wrapper's proof needs it.
 
+## 1d. The PI's decision on F-330 (2026-10-25)
+
+The coordinator asked: "`molecular_conjecture` is restated: G is body-hinge rigid (nondegenerate
+hinges on its edges) iff it has a rigid panel-hinge realization (nondegenerate hinges on its
+edges). Its (⇒) proof now goes through Theorem 5.6, whose panels are nonparallel, so the panel side
+could also state that the panels are nonparallel at no proof cost (finding F-330; a scratch Lean
+witness compiles). That is stronger than KT's conjecture, which asks only for genuine hinges.
+Should the panel side state it?" The options were "Add nonparallel (Recommended)" (beside the
+nondegenerate hinges), "Replace with nonparallel" (instead of them) and "Leave as is". The PI chose
+the option labelled "Add nonparallel (Recommended)".
+
+What the answer settles: the panel side of `molecular_conjecture` states
+`Q.graph = G ∧ Q.IsNonparallel ∧ (∀ e ∈ E(G), Q.toBodyHinge.supportExtensor e ≠ 0) ∧
+Q.toBodyHinge.IsInfinitesimallyRigid`; the body-hinge side is unchanged.
+
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
 **Evidence**, committed in `notes/reconcile-formal/`:

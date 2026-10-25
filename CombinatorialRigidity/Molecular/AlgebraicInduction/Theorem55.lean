@@ -2417,7 +2417,8 @@ bodies (`S u = S v`), *over*-constraining, so a welded framework can be infinite
 combinatorially deficient graph (`def(G̃) > 0`). Dropped from both sides, each side holds exactly
 when `G` is connected, so the equivalence would still hold but would say nothing about `def(G̃)`.
 The selector of the panel-hinge framework `Q` gives each edge of `G` its two ends (the field
-`isLink_ends`), so the hinge of each edge is the meet of the panels of its own ends.
+`isLink_ends`), so the hinge of each edge is the meet of the panels of its own ends. The panel
+side also asks `Q.IsNonparallel`, the panels' directions pairwise independent.
 
 Proof (KT §5.2). (⇐, the elementary direction) A panel-hinge framework *is* a body-hinge framework
 (`toBodyHinge`) with the same supporting extensors, so a rigid panel-hinge realization is a rigid
@@ -2441,8 +2442,9 @@ hold: one body is infinitesimally rigid whatever its hinges. A form asking for a
 at every label would fail there, as `β` is nonempty (`hcard`) and every hinge of a panel-hinge
 framework on one body is the meet of a panel with itself,
 `panelSupportExtensor (normal a) (normal a) = 0` (`panelSupportExtensor_ne_zero_iff`). The panel
-side does not state that the panels are nonparallel, though the framework that the proof of (⇒)
-builds has them. -/
+side also states that the panels are nonparallel (`IsNonparallel`), as the framework that the proof
+of (⇒) builds has them; that is more than KT's conjecture asks, which asks only genuine hinges, and
+on one body it holds vacuously. The proof of (⇐) discards it. -/
 theorem PanelHingeFramework.molecular_conjecture [Infinite K]
     [Nonempty α] [Finite α] [Finite β] {n : ℕ}
     (hd : 2 ≤ n)
@@ -2450,7 +2452,7 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     (∃ F : BodyHingeFramework K (n - 1) α β, F.graph = G ∧
         (∀ e ∈ E(G), F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
-      ↔ (∃ Q : PanelHingeFramework K (n - 1) α β, Q.graph = G ∧
+      ↔ (∃ Q : PanelHingeFramework K (n - 1) α β, Q.graph = G ∧ Q.IsNonparallel ∧
         (∀ e ∈ E(G), Q.toBodyHinge.supportExtensor e ≠ 0) ∧
           Q.toBodyHinge.IsInfinitesimallyRigid) := by
   constructor
@@ -2476,11 +2478,11 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
     rw [hdef0] at hQrank
     -- Its hinge at every edge is nondegenerate: general position, and distinct ends (`G` simple).
     have : Q.graph.Loopless := hSimple.toLoopless
-    exact ⟨Q, rfl, fun e he => Q.supportExtensor_ne_zero_of_isGeneralPosition
+    exact ⟨Q, rfl, hQnp, fun e he => Q.supportExtensor_ne_zero_of_isGeneralPosition
         hQnp.isGeneralPosition (Q.isLink_ends e he).ne,
       (BodyHingeFramework.rankHypothesis_zero_iff Q.toBodyHinge).mp hQrank⟩
   · -- (⇐) panel-hinge ⇒ body-hinge: the `toBodyHinge` coercion (same extensors, same motions).
-    rintro ⟨Q, hQg, hQC, hQrig⟩
+    rintro ⟨Q, hQg, -, hQC, hQrig⟩
     exact ⟨Q.toBodyHinge, Q.toBodyHinge_graph.trans hQg, hQC, hQrig⟩
 
 /-! ## The multigraph molecular conjecture in the hinge-coplanar model

@@ -33,12 +33,12 @@ open scoped Graph
 `V(G).Nonempty`, `V(G) = univ` and the simplicity of `G` discharged. One body is infinitesimally
 rigid whatever its hinges, so the body-hinge framework whose hinge at the label is zero is a rigid
 realization of `G` with a nondegenerate hinge at every edge, of which there is none. The
-equivalence then gives a rigid panel-hinge realization of `G`. Its hinge at the label is the meet
-of the panel of the body with itself, which is zero; the statement does not ask about it, as the
-label is not an edge of `G`. -/
+equivalence then gives a rigid panel-hinge realization of `G` with nonparallel panels, which holds
+vacuously on one body. Its hinge at the label is the meet of the panel of the body with itself,
+which is zero; the statement does not ask about it, as the label is not an edge of `G`. -/
 theorem molecular_conjecture_witness :
     ∃ Q : PanelHingeFramework ℝ 1 (Fin 1) (Fin 1),
-      Q.graph = Graph.noEdge Set.univ (Fin 1) ∧
+      Q.graph = Graph.noEdge Set.univ (Fin 1) ∧ Q.IsNonparallel ∧
         (∀ e ∈ E(Graph.noEdge (Set.univ : Set (Fin 1)) (Fin 1)),
           Q.toBodyHinge.supportExtensor e ≠ 0) ∧
         Q.toBodyHinge.IsInfinitesimallyRigid := by

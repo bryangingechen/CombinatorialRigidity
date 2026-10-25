@@ -411,7 +411,7 @@ status:
       The Molecular Conjecture (Tay-Whiteley 1984; Katoh-Tanigawa 2011 Conjecture 1.2): a
       simple spanning graph on >= 1 body has an infinitesimally rigid body-hinge realization
       with nondegenerate hinges iff it has an infinitesimally rigid panel-hinge realization
-      with nondegenerate hinges, at every dimension n >= 2 and
+      with nondegenerate hinges and nonparallel panels, at every dimension n >= 2 and
       over any infinite field of any characteristic (phase 33). At n = 2 (phase 40) this is
       Jackson-Jordán 2008's pin-collinear theorem, here over any infinite field. At n = 2 as
       at every n, both sides ask for a nonzero hinge at every edge of G (since phase 41b; a
@@ -747,9 +747,9 @@ alignment:
       note: >-
         At every dimension n >= 2 (D = (n+1 choose 2) >= 3; phase 40) and over any infinite
         field, any characteristic (phase 33), for a simple graph on >= 1 body. Both sides ask for
-        a nonzero hinge at every edge of G (phase 41b), and the panel-hinge framework's selector
-        gives each edge its own ends, so each hinge is the meet of the panels of its edge's own
-        ends (the main_results row).
+        a nonzero hinge at every edge of G (phase 41b), the panel side also asks nonparallel
+        panels, and the panel-hinge framework's selector gives each edge its own ends, so each
+        hinge is the meet of the panels of its edge's own ends (the main_results row).
 
     - source: "Jackson-Jordán 2008 (Discrete Comput. Geom. 40), the molecular conjecture in the plane for pin-collinear body-and-pin frameworks"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture, CombinatorialRigidity.Molecular.molecular_conjecture_multigraph"

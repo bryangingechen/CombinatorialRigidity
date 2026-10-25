@@ -1550,13 +1550,15 @@ condition, both sides would hold exactly when $G$ is connected.
   \label{thm:molecular-conjecture}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture}
   \leanok
-  \uses{def:trivial-motions-rigid, def:panel-hinge-framework}
+  \uses{def:trivial-motions-rigid, def:panel-hinge-framework,
+        def:panel-nonparallel}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
   simple graph with $V \neq \emptyset$. Then $G$ has an infinitesimally
   rigid body-hinge realization (\cref{def:trivial-motions-rigid}) with
   nondegenerate hinges if and only if $G$ has an infinitesimally rigid
   panel-hinge realization (\cref{def:panel-hinge-framework}) with
-  nondegenerate hinges.
+  nondegenerate hinges and nonparallel panels
+  (\cref{def:panel-nonparallel}).
 \end{theorem}
 \begin{proof}
   \leanok
@@ -1564,7 +1566,8 @@ condition, both sides would hold exactly when $G$ is connected.
         lem:deficiency-rank-bound, def:rank-hypothesis, def:D-deficiency,
         def:panel-nonparallel, lem:general-position-support-nonzero}
   We follow Katoh and Tanigawa (KT p.~670). Suppose first that $G$ has an
-  infinitesimally rigid panel-hinge realization with nondegenerate hinges.
+  infinitesimally rigid panel-hinge realization with nondegenerate hinges
+  (and nonparallel panels, which this direction does not use).
   Its body-hinge interpretation (\cref{def:panel-hinge-framework}) is an
   infinitesimally rigid body-hinge realization of $G$ with the same
   hinges.
@@ -1648,7 +1651,8 @@ their result in this form~\cite[p.~647]{katohTanigawa2011}.
   (\texttt{molecular\_\allowbreak{}conjecture\_\allowbreak{}witness}):
   a single body is infinitesimally rigid, so $G$ has an infinitesimally
   rigid body-hinge realization, and by the theorem an infinitesimally
-  rigid panel-hinge realization.
+  rigid panel-hinge realization, whose panels are nonparallel, as there is
+  one body.
 \end{remark}
 
 Case~III uses KT Lemma~5.4: a cycle on $m$ bodies, for
