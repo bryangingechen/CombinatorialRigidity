@@ -409,14 +409,15 @@ status:
     file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
     description: >-
       The Molecular Conjecture (Tay-Whiteley 1984; Katoh-Tanigawa 2011 Conjecture 1.2): a
-      simple spanning graph on >= 2 bodies has an infinitesimally rigid body-hinge realization
+      simple spanning graph on >= 1 body has an infinitesimally rigid body-hinge realization
       with nondegenerate hinges iff it has an infinitesimally rigid panel-hinge realization
       with nondegenerate hinges, at every dimension n >= 2 and
       over any infinite field of any characteristic (phase 33). At n = 2 (phase 40) this is
       Jackson-Jordán 2008's pin-collinear theorem, here over any infinite field. At n = 2 as
-      at every n, the panel side asks for a nonzero hinge at every edge label, and the
-      panel-hinge framework's selector gives each edge of G its own ends (the row above), so
-      each hinge is the meet of the panels of its edge's own ends. The multigraph form (the
+      at every n, both sides ask for a nonzero hinge at every edge of G (since phase 41b; a
+      label outside E(G) constrains no motion), and the panel-hinge framework's selector
+      gives each edge of G its own ends (the row above), so each hinge is the meet of the
+      panels of its edge's own ends. The multigraph form (the
       molecular_conjecture_multigraph row below) places each hinge in the panels of its
       edge's own ends.
     sorry_count: 0
@@ -745,9 +746,10 @@ alignment:
       status: "proved"
       note: >-
         At every dimension n >= 2 (D = (n+1 choose 2) >= 3; phase 40) and over any infinite
-        field, any characteristic (phase 33). The panel side asks for a nonzero hinge at every edge
-        label, and the panel-hinge framework's selector gives each edge its own ends, so each
-        hinge is the meet of the panels of its edge's own ends (the main_results row).
+        field, any characteristic (phase 33), for a simple graph on >= 1 body. Both sides ask for
+        a nonzero hinge at every edge of G (phase 41b), and the panel-hinge framework's selector
+        gives each edge its own ends, so each hinge is the meet of the panels of its edge's own
+        ends (the main_results row).
 
     - source: "Jackson-Jordán 2008 (Discrete Comput. Geom. 40), the molecular conjecture in the plane for pin-collinear body-and-pin frameworks"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture, CombinatorialRigidity.Molecular.molecular_conjecture_multigraph"

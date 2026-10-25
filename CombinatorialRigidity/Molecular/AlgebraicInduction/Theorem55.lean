@@ -2071,9 +2071,8 @@ establishes: for a simple spanning graph on `≥ 2` bodies at any grade `1 ≤ k
 panel-hinge realization with nonparallel panels (`IsNonparallel`, `def:panel-nonparallel`) and a
 *genuine* hinge at every label (each supporting extensor the meet of two transversal panels),
 realizing the rank hypothesis at `def(G̃)`. The genuine-hinge conjunct is exactly the `≥ 2`-body
-content — a genuine hinge needs two distinct bodies, so the single-body branch of
-`rankHypothesis_of_theorem_55_gen` cannot supply it — and it is what the Conjecture 1.2 assembly
-(`molecular_conjecture`) consumes on the panel side.
+content: a genuine hinge needs two distinct bodies, so the single-body branch of
+`rankHypothesis_of_theorem_55_gen` cannot supply it.
 
 The strip realization is Theorem 5.5's nonparallel one (`theorem_55_minimalKDof_gen`, as the
 spanning subgraph `G'` is simple), and the re-add (`reaimSubLink`) keeps its normals, so the panels
@@ -2400,10 +2399,9 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3 [Infinite K]
     (n := 3) (by norm_num) (by simpa [Graph.bodyBarDim] using hcard) G hne hspan hSimple
   exact ⟨Q, hQg, hnp, hrank⟩
 
-set_option linter.unusedDecidableInType false in
 /-- **The Molecular Conjecture (the consumer-facing form)** (`thm:molecular-conjecture`;
 Katoh–Tanigawa 2011 Conjecture 1.2, p. 648, posed by Tay–Whiteley 1984). A simple spanning graph `G`
-on `≥ 2` bodies can be realized as an infinitesimally rigid **body-hinge** framework in `Kⁿ` iff it
+on `≥ 1` body can be realized as an infinitesimally rigid **body-hinge** framework in `Kⁿ` iff it
 can be realized as an infinitesimally rigid **panel-hinge** framework, at grade `n − 1` — the
 statement at general dimension `d` (`n ≥ 2`, equivalently `3 ≤ bodyBarDim n`). The single `2 ≤ n`
 hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|` repackage the internal
@@ -2411,64 +2409,56 @@ grade/dimension plumbing and the higher-order fresh-edge-supply binder that the 
 `theorem_55_minimalKDof_gen` takes directly, exactly as in `rankHypothesis_of_theorem_55_gen` above.
 
 "Realized as an infinitesimally rigid `⋯` framework" is
-`∃ F, F.graph = G ∧ (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid`: a framework on `G`
-whose every hinge is *genuine* (a nondegenerate `(d−2)`-flat, `supportExtensor e ≠ 0`, matching KT's
-`p(e)` being a genuine affine subspace) and all of whose infinitesimal motions are trivial. The
-genuine-hinge conjunct carries the content: a degenerate hinge `C(p(e)) = 0` welds two bodies
-(`S u = S v`), *over*-constraining, so a welded framework can be infinitesimally rigid on a
+`∃ F, F.graph = G ∧ (∀ e ∈ E(G), F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid`: a framework
+on `G` whose hinge at every edge of `G` is nondegenerate (a `(d−2)`-flat, `supportExtensor e ≠ 0`,
+matching KT's `p(e)` being an affine subspace) and all of whose infinitesimal motions are trivial.
+The nondegenerate-hinge conjunct carries the content: a degenerate hinge `C(p(e)) = 0` welds two
+bodies (`S u = S v`), *over*-constraining, so a welded framework can be infinitesimally rigid on a
 combinatorially deficient graph (`def(G̃) > 0`). Dropped from both sides, each side holds exactly
 when `G` is connected, so the equivalence would still hold but would say nothing about `def(G̃)`.
 The selector of the panel-hinge framework `Q` gives each edge of `G` its two ends (the field
 `isLink_ends`), so the hinge of each edge is the meet of the panels of its own ends.
 
 Proof (KT §5.2). (⇐, the elementary direction) A panel-hinge framework *is* a body-hinge framework
-(`toBodyHinge`) with the same supporting extensors, so a rigid genuine panel realization is a rigid
-genuine body-hinge realization. (⇒, KT's content) A genuine body-hinge realization pins
-`def(G̃) = 0`: the genericity-free lower bound `D + def(G̃) ≤ dim Z(G,p)`
-(`screwDim_add_deficiency_le_finrank_infinitesimalMotions`, which needs the genuine hinges) meets
-`dim Z = D` from rigidity (`rankHypothesis_zero_iff` at `k' = 0`), forcing `def(G̃) ≤ 0`, hence
-`= 0` (`deficiency_nonneg`). Then Theorem 5.6 in its genuine-hinge witness form
-(`rankHypothesis_genuine_of_theorem_55_gen`) produces a genuine panel-hinge realization at
-`def(G̃) = 0`, i.e. infinitesimally rigid.
+(`toBodyHinge`) with the same supporting extensors, so a rigid panel-hinge realization is a rigid
+body-hinge realization with the same hinges. (⇒, KT's content) A body-hinge realization with
+nondegenerate hinges at the edges of `G` pins `def(G̃) = 0`: the genericity-free lower bound
+`D + def(G̃) ≤ dim Z(G,p)` (`screwDim_add_deficiency_le_finrank_infinitesimalMotions`, which asks a
+nondegenerate hinge at each link) meets `dim Z = D` from rigidity (`rankHypothesis_zero_iff` at
+`k' = 0`), forcing `def(G̃) ≤ 0`, hence `= 0` (`deficiency_nonneg`). Then Theorem 5.6
+(`rankHypothesis_of_theorem_55_gen`) gives a panel-hinge realization with nonparallel panels at
+`def(G̃) = 0`, i.e. infinitesimally rigid. Its normals are in general position
+(`IsNonparallel.isGeneralPosition`) and the edges of the simple `G` have distinct ends, so its hinge
+at every edge of `G` is nondegenerate (`supportExtensor_ne_zero_of_isGeneralPosition`).
 
 Combined with the Tay–Whiteley body-hinge theorem (Proposition 1.1: a graph is body-hinge rigid iff
 `G̃ = (D−1)·G` contains `D` edge-disjoint spanning trees, i.e. `def(G̃) = 0`), this is the full
-molecular characterization. The `≥ 2`-body hypothesis is essential, but not for a vacuous reason: on
-a single body `E(G) = ∅`, yet the genuine-hinge conjunct `∀ e, supportExtensor e ≠ 0` quantifies
-over the *whole* edge-label type `β`, not just `E(G)` (the same "total over `β`" convention `hgp`
-uses elsewhere) — so pick any `e₀ : β` (which is then automatically outside the empty `E(G)`). At
-that spare label the body-hinge side is still trivially realizable (`supportExtensor` is a free
-field, and — as in `rankHypothesis_of_theorem_55_gen`'s single-body branch — rigidity is automatic
-with one unconstrained body), but the panel-hinge side is not: a `PanelHingeFramework`'s hinge at
-*any* label is the meet of the panels of the two bodies its selector gives that label, and with one
-body those two coincide, forcing `panelSupportExtensor (normal a) (normal a) = 0` (a repeated
-argument in an alternating join, `panelSupportExtensor_ne_zero_iff`) regardless of the normals
-chosen. So dropping the hypothesis would make the iff *false* — the body-hinge side realizable, the
-panel-hinge side not — rather than vacuously true. `[DecidableEq β]` is used in the proof (via the
-genuine-hinge witness form's spanning strip) but not in the type, so the `unusedDecidableInType`
-suppression is correct. -/
+molecular characterization.
+
+Scope. Both sides ask for nondegenerate hinges at the edges of `G` only, as a hinge at a label
+outside `E(G)` constrains no motion. On one body `G` has no edge, as it is simple, and both sides
+hold: one body is infinitesimally rigid whatever its hinges. A form asking for a nondegenerate hinge
+at every label would fail there, as `β` is nonempty (`hcard`) and every hinge of a panel-hinge
+framework on one body is the meet of a panel with itself,
+`panelSupportExtensor (normal a) (normal a) = 0` (`panelSupportExtensor_ne_zero_iff`). The panel
+side does not state that the panels are nonparallel, though the framework that the proof of (⇒)
+builds has them. -/
 theorem PanelHingeFramework.molecular_conjecture [Infinite K]
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    [Nonempty α] [Finite α] [Finite β] {n : ℕ}
     (hd : 2 ≤ n)
     (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
-    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     (∃ F : BodyHingeFramework K (n - 1) α β, F.graph = G ∧
-        (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
+        (∀ e ∈ E(G), F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
       ↔ (∃ Q : PanelHingeFramework K (n - 1) α β, Q.graph = G ∧
-        (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
+        (∀ e ∈ E(G), Q.toBodyHinge.supportExtensor e ≠ 0) ∧
           Q.toBodyHinge.IsInfinitesimallyRigid) := by
-  have : Fintype α := Fintype.ofFinite α
-  have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
-  have hD : 3 ≤ Graph.bodyBarDim n := Graph.three_le_bodyBarDim_of_two_le hd
-  have hn : Graph.bodyBarDim n = screwDim (n - 1) :=
-    Graph.bodyBarDim_eq_screwDim_sub_one (by omega)
-  have hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G') :=
-    Graph.freshEdgeSupply_of_card_lt (by omega) hcard
   constructor
   · -- (⇒) body-hinge ⇒ panel-hinge, via `def(G̃) = 0` and Theorem 5.6.
     rintro ⟨F, hFg, hFC, hFrig⟩
-    -- The genericity-free lower bound `D + def(G̃) ≤ dim Z(F)` (genuine hinges).
-    have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions fun e _ _ _ => hFC e
+    -- The genericity-free lower bound `D + def(G̃) ≤ dim Z(F)` (nondegenerate hinges at links).
+    have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions
+      fun e _ _ he => hFC e (hFg ▸ he.edge_mem)
     rw [hFg] at hub
     -- Rigidity fixes `dim Z(F) = D`.
     have hZF : (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim (n - 1) := by
@@ -2477,15 +2467,18 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
       omega
     -- So `def(G̃) ≤ 0`, hence `= 0` (`deficiency_nonneg`).
     have hdef0 : G.deficiency n = 0 := by
-      have hn1 : n = (n - 1) + 1 := Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn
+      have hn1 : n = (n - 1) + 1 := by omega
       have hge := G.deficiency_nonneg ((n - 1) + 1) hne
       rw [hn1]; omega
-    -- Theorem 5.6 (genuine-hinge witness form) at `def(G̃) = 0` gives a rigid genuine panel.
-    obtain ⟨Q, hQg, -, hQC, hQrank⟩ :=
-      PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen (K := K)
-        (by omega) hn hfresh G hV hspan hSimple
+    -- Theorem 5.6 at `def(G̃) = 0` gives a rigid panel-hinge framework with nonparallel panels.
+    obtain ⟨Q, rfl, hQnp, hQrank⟩ :=
+      PanelHingeFramework.rankHypothesis_of_theorem_55_gen (K := K) hd hcard G hne hspan hSimple
     rw [hdef0] at hQrank
-    exact ⟨Q, hQg, hQC, (BodyHingeFramework.rankHypothesis_zero_iff Q.toBodyHinge).mp hQrank⟩
+    -- Its hinge at every edge is nondegenerate: general position, and distinct ends (`G` simple).
+    have : Q.graph.Loopless := hSimple.toLoopless
+    exact ⟨Q, rfl, fun e he => Q.supportExtensor_ne_zero_of_isGeneralPosition
+        hQnp.isGeneralPosition (Q.isLink_ends e he).ne,
+      (BodyHingeFramework.rankHypothesis_zero_iff Q.toBodyHinge).mp hQrank⟩
   · -- (⇐) panel-hinge ⇒ body-hinge: the `toBodyHinge` coercion (same extensors, same motions).
     rintro ⟨Q, hQg, hQC, hQrig⟩
     exact ⟨Q.toBodyHinge, Q.toBodyHinge_graph.trans hQg, hQC, hQrig⟩
@@ -2504,9 +2497,8 @@ recover Theorem 5.6 and Conjecture 1.2 at full multigraph strength. -/
 §5.1, p. 668). A body-hinge framework `F` on `G` together with a panel-normal assignment
 `normal : α → Fin (k + 2) → K` *is a hinge-coplanar panel realization of `G`* when `F.graph = G`,
 every body of `V(G)` has a nonzero normal, the supporting extensor of every edge label is nonzero
-(total over `β`, the same convention `molecular_conjecture` uses), and every link's supporting
-extensor lies in both endpoint panels (`ExtensorInPanel`: the extensor of `k` points of the
-hyperplane `nᵥ^⊥`).
+(total over `β`), and every link's supporting extensor lies in both endpoint panels
+(`ExtensorInPanel`: the extensor of `k` points of the hyperplane `nᵥ^⊥`).
 
 This is KT's *containment* model of hinge-coplanarity: all hinges at a body `v` lie in the single
 hyperplane `nᵥ^⊥`, so each body may be replaced by a rigid panel (KT p. 648). It is the honest bare
@@ -2672,9 +2664,9 @@ For `|V(G)| ≥ 2` this is `theorem_55_6_multigraph_of_two_le`. For one vertex, 
 so `def(G̃) = 0` (every partition has one part) and every framework is infinitesimally rigid; the
 realization gives the body a constant nonzero normal `n₀` and every label one nonzero extensor in
 its panel (`exists_extensor_in_two_panels_grade n₀ n₀`). The containment model admits this
-single-body realization; the meet model cannot (`rem:coplanar-single-body`), which is why the
-single-body case is a genuine strengthening here and not in the meet-model `molecular_conjecture`.
-`rankHypothesis_of_theorem_55_gen` derives `def(G̃) = 0` on one body the same way. -/
+single-body realization, with a nonzero hinge at every label; the meet model does not, as its hinges
+on one body are zero (`rem:coplanar-single-body`). `rankHypothesis_of_theorem_55_gen` derives
+`def(G̃) = 0` on one body the same way. -/
 theorem theorem_55_6_multigraph [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
@@ -2800,14 +2792,13 @@ and coincident panels where the meet-model equivalence fails (`rem:coplanar-conv
 
 The body-hinge side is
 `∃ F, F.graph = G ∧ (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid` (every hinge nonzero,
-every motion trivial: the left side of `molecular_conjecture`); the panel side asks for a rigid
-`HasCoplanarPanelRealization` witness. Both ask for nonzero hinges, as Katoh and Tanigawa's are: a
-zero hinge welds the two bodies of its edge, and a welded framework can be infinitesimally rigid at
-a graph of positive deficiency. The `≥ 2`-body hypothesis, by contrast, is *not* needed here —
-unlike the meet-model simple case. At one body the meet-model panel side is unrealizable
-(`panelSupportExtensor (normal a) (normal a) = 0`, a repeated argument in an alternating join),
-which is why `molecular_conjecture` retains `≥ 2`; but the *containment* panel side is realizable at
-one body by a constant nonzero normal paired with a nonzero in-panel extensor
+every motion trivial; `molecular_conjecture` asks it only at the edges of `G`); the panel side
+asks for a rigid `HasCoplanarPanelRealization` witness. Both ask for nonzero hinges, as Katoh and
+Tanigawa's are: a zero hinge welds the two bodies of its edge, and a welded framework can be
+infinitesimally rigid at a graph of positive deficiency. No `≥ 2`-body hypothesis is needed. At one
+body every meet-model hinge is zero (`panelSupportExtensor (normal a) (normal a) = 0`, a repeated
+argument in an alternating join), but the *containment* panel side is realizable there, with a
+nonzero hinge at every label, by a constant nonzero normal paired with a nonzero in-panel extensor
 (`exists_extensor_in_two_panels_grade`), so the equivalence holds on a single body too
 (`rem:coplanar-single-body`). Loops cost nothing (`rem:coplanar-conventions`).
 
@@ -2823,7 +2814,7 @@ with nonzero hinges has `def(G̃) = 0`: the lower bound `D + def(G̃) ≤ dim Z(
 infinitesimally rigid.
 
 `[DecidableEq β]` is used in the proof (through Theorem 5.6's spanning strip) but not in the
-statement; the `unusedDecidableInType` suppression is correct, as in `molecular_conjecture`. -/
+statement; the `unusedDecidableInType` suppression is correct. -/
 theorem molecular_conjecture_multigraph [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hd : 2 ≤ n)

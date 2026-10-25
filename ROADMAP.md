@@ -761,7 +761,8 @@ chain `v₀…v_d`, eqs. 6.46–6.67), completed Theorems 5.5 and 5.6 at general
 (`PanelHingeFramework.molecular_conjecture`: a simple spanning graph on ≥ 2
 bodies has an infinitesimally rigid genuine **body-hinge** realization iff it
 has one as a **panel-hinge** framework; green + axiom-clean for
-`6 ≤ bodyBarDim n`, i.e. `n ≥ 3`; weakened to `n ≥ 2` in place by Phase 40a).
+`6 ≤ bodyBarDim n`, i.e. `n ≥ 3`; weakened to `n ≥ 2` in place by Phase 40a, and to
+≥ 1 body, with nondegenerate hinges asked at the edges only, by Phase 41b).
 As stated, Theorem 5.6's conclusion
 (`rankHypothesis_of_theorem_55_gen`) allows degenerate hinges, so at deficiency
 zero all-zero normals meet it; the form with nondegenerate hinges is

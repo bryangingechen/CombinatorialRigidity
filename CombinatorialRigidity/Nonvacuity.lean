@@ -306,7 +306,8 @@ private theorem singleEdge_isMinimalKDof_one {β : Type*} [Finite β] [Decidable
 `Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen` at `n = 2` and grade `k = 1`
 (`bodyBarDim 2 = screwDim 1 = 3`), at the single edge on two bodies, a minimal `1`-dof-graph. Its
 fresh-edge supply `hfresh` comes from the label headroom `3 · (2 - 1) < 4`
-(`Graph.freshEdgeSupply_of_card_lt`), the bound `molecular_conjecture_witness` meets at `n = 3`.
+(`Graph.freshEdgeSupply_of_card_lt`), the bound that Theorem 5.6 and the molecular conjecture
+assume.
 The single edge is simple, so both sides of the conditioned pair hold: a panel-hinge realization
 whose two panels are nonparallel, and a panel realization whose hinge is nondegenerate and lies in
 both panels, each with rigidity matrix of rank `3 · (2 - 1) - 1 = 2`. -/
