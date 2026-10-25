@@ -481,7 +481,11 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   then `G` also has a generic full-rank realization"), and the following
   `fmlnote` states the parallel-`K₂` base admits no generic realization
   explicitly; since PROSE round 3 task 2.2 the paragraph before the theorem
-  does, with the rank $D - 1$ that general position forces there. Pointer:
+  does, with the rank $D - 1$ that general position forces there. Since
+  Phase 41b's item 4c the statement's conjunct is KT's own, "a nonparallel
+  full-rank realization", which the conditioned generic motive of the
+  induction gives at its end (`lem:nonparallel-of-generic`); the motive and
+  the base's obstruction are unchanged. Pointer:
   `notes/Phase22-realization-design.md` §1.6.
 - **contraction simplicity `rigidContract_simple` / `map_simple` (folds into
   `lem:case-I-realization` prose)** — [done (`case-i.tex`, Phase-27 C1 exposition)]
@@ -1029,7 +1033,9 @@ flipped `done` in the same pass.
   (`lem:relative-deficiency-rank-bound`). Since PROSE round 4 task 2.3 the
   proof's last paragraph puts it this way: KT need only a nonparallel
   realization, which a projective transformation gives (pp. 670–671), and the
-  square-graph dictionary needs the order-four grade. Pointer:
+  square-graph dictionary needs the order-four grade. Since Phase 41b's item
+  5 a third factor, the leading minors of the panels' directions, makes the
+  panels nonparallel too, so the argument provides both. Pointer:
   `notes/Phase25-design.md` §2.4; KT p. 671.
 
 ### `molecule-application.tex` — Phase 26 (Corollary 5.7, the rank formula)
@@ -1687,6 +1693,20 @@ the entries naming those nodes: the `prop:rigidity-matrix-prop11` entry describe
 KT Proposition 2.3, not the selector, and the `lem:claim-6-4` entry's "free endpoint selector" is
 dated to 22b's motive (2026-06-05), which 22b strengthened; neither contradicts the restated nodes.
 Theorem 5.6's restated conclusion is RESTATE's.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
+### Phase 41b (RESTATE: the main results restated on the linked carrier, structural edit — no new chapter)
+
+**No new entries — judged at the sub-phase close (2026-10-25).** The sub-phase restated statements
+whose formal forms fell short of Katoh and Tanigawa's, a project-side gap: Theorems 5.5 and 5.6 now
+conclude KT's nonparallel panels, and the generic theorems and the molecular conjecture ask what
+KT's frameworks meet by definition. The one new argument, `lem:nonparallel-of-generic`, is the
+genericity device's form of KT Lemma 5.2's rotation (p. 669), which the eq. (6.12) entry already
+names, and its proof is in the node. No crux proof rerouted. The close checked the
+entries naming a restated node: the conditioned-motive entry quoted `thm:theorem-55`'s former
+generic conjunct and the `lem:theorem-56-general-position` entry named two of its three
+polynomials; both now say what the nodes state. The `prop:rigidity-matrix-prop11` entry already
+records item 11's conditional form.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
 ## Retroactive coverage

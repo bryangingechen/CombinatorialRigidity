@@ -2731,6 +2731,11 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, S2); phase 41a: with the field `isLink_ends`,
   the conclusion's selector gives each edge of $G$ its ends, and the note after the proof says so
   (`afcff8fd`, item 5a); the degenerate hinges and general position stay RESTATE's.
+  Phase 41b, item 8 (`8c2d4475`; this disposition written at 41b's close): done. The pin derives
+  from `theorem_55_d3` and concludes nonparallel panels, a nonzero hinge at every edge of $G$ and
+  $\dim Z(G,p) = D$, so a framework whose normals are all equal no longer meets it; it keeps
+  `hSimple`, without which the nonparallel conjunct fails at the double edge on two bodies.
+  `cor:theorem-55-d3-spanning` and `fmlnote:endpoint-selector-totality` are restated.
 - **F-128** · S · `thm:theorem-55-6`, `thm:theorem-55-6-d3`, `thm:theorem-55-6-genuine`
   (`algebraic-induction/panel-layer.tex`): the statements give a simple graph a panel-hinge
   realization at the target rank (with nondegenerate hinges in the third), whose hinge at each edge
@@ -4306,10 +4311,10 @@ declaration's name as its header writes it:
   Proposition 2.3, in conditional form", `c26edc57`): `theorem_55_6_multigraph_of_two_le`'s
   docstring names `rigidityMatrix_prop11` KT Proposition 2.3 in conditional form, not KT Prop 1.1
   (`F-067`), as the restated node does.
-  Phase 41b, the close's re-read (the commit "Phase 41b, the close's re-read: two false sentences
-  of `panel-layer.tex`, and `HasCoplanarPanelRealization`'s docstring"): the last of the codes.
-  `HasCoplanarPanelRealization`'s docstring called `HasPanelRealization` "the honest bare motive"
-  and "M2", which now reads as the findings report's M2, a credit; it names it the
+  Phase 41b, the close's re-read (the commit "Phase 41b, the close's re-read: two false sentences of
+  `panel-layer.tex`, and `HasCoplanarPanelRealization`'s docstring", `810cb2d6`): the last of the
+  codes. `HasCoplanarPanelRealization`'s docstring called `HasPanelRealization` "the honest bare
+  motive" and "M2", which now reads as the findings report's M2, a credit; it names it the
   nondegenerate-hinge realization hypothesis, as its own docstring does. Done.
 - **F-135** · L · the docstrings of `case-i.tex`'s first pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `PanelLayer.lean`, `Pinning.lean`,
