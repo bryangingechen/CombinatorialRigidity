@@ -4,8 +4,7 @@
 progress. The phase's design, the PI's decisions and the open's recon are in
 `notes/Phase41-design.md`. Every checklist item landed: the API (1–3a), the build-time detour
 (P1–P5), the spike (4), the switch (5a, 5b), `withGraph` restricted with `reaim` deleted (6) and
-the two genuine forms merged (7). Next concrete task: RESTATE's open as 41b, with the PI (see
-*Hand-off*).
+the two genuine forms merged (7). RESTATE opened as 41b the same day (`notes/Phase41b.md`).
 
 ## Current state
 
@@ -74,11 +73,8 @@ Both carried to RESTATE (`notes/Phase41-design.md` §3):
 
 ## Hand-off / next phase
 
-**RESTATE opens next, as 41b, with the PI** (the coordinator confirms with the PI first; nothing is
-opened here). Its contents and estimate are `notes/Phase41-design.md` §3's RESTATE row; its open
-settles §1.3's stronger forms and §4's open questions, and its first commit creates
-`notes/Phase41b.md` (`PHASE-BOUNDARIES.md` *When this commit opens a phase*). MULTIGRAPH and
-UNSTATED follow by code.
+**RESTATE opened as 41b on 2026-10-24** (`notes/Phase41b.md`), with the PI's decisions at its
+open in `notes/Phase41-design.md` §1b. MULTIGRAPH and UNSTATED follow by code.
 
 ## Decisions made during this phase
 

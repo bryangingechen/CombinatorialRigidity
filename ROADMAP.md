@@ -179,7 +179,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; not yet pushed (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
-| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, codes-until-open) | ◐ In progress — 41a ✓ (CARRIER); next RESTATE, not yet opened (see `notes/Phase41a.md`; plan `notes/Phase41-design.md`) |
+| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, codes-until-open) | ◐ In progress — 41a ✓ (CARRIER); 41b (RESTATE) in progress (see `notes/Phase41b.md`; plan `notes/Phase41-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1233,7 +1233,7 @@ fresh-label supply contradict each other there; with the field, `hends` goes, an
 take a bound on the label type instead. The PI's decisions at the open (design A; KT's conclusions
 as the floor, stronger forms considered; `IsHingeCoplanar` and the multigraph rows on `E(G)` only;
 `F-323` and `F-324` dropped with the restatements) are in the design doc's §1. Four sub-phases by
-stable code: **CARRIER** (41a, ✓ closed 2026-10-24), **RESTATE** (next, not yet opened: S1's and
+stable code: **CARRIER** (41a, ✓ closed 2026-10-24), **RESTATE** (41b, opened 2026-10-24: S1's and
 S2's main results, G6's own row for the generic panel theorem, non-vacuity witnesses at minimal
 graphs, S18, and the link conjuncts the field makes redundant), **MULTIGRAPH** (M1, Jackson–Jordán
 2010's Theorem 6.1 for multigraphs) and **UNSTATED** (the claims no declaration states). **41a**
@@ -1245,8 +1245,13 @@ text changed, but the panel-hinge frameworks they conclude now give each edge it
 main results' axioms are unchanged. Before the switch, a build-time detour the PI scheduled
 (2026-10-24) trimmed the molecular chain's imports and converted the whole project to Lean's module
 system: an edit inside a proof at the chain's head now rebuilds only its own file (10–14 s),
-and an edit to a statement there rebuilds the chain in 72–77 s (`notes/PERFORMANCE.md`). Detail →
-`notes/Phase41a.md` + `notes/Phase41-design.md`.
+and an edit to a statement there rebuilds the chain in 72–77 s (`notes/PERFORMANCE.md`). At
+RESTATE's open the PI decided (the design doc's §1b) that Theorem 5.6 concludes panels in general
+position for simple graphs (in this model a double edge's two hinges coincide, so multigraphs keep
+Phase 35's model), that the generic panel theorem's row is its rank formula, and that Theorem 5.5's
+conclusion is to reach Katoh–Tanigawa's nonparallel panels, of which the formal general position is
+the weaker, projective form; the multi-commit dispatch trial was dropped. Detail →
+`notes/Phase41a.md`, `notes/Phase41b.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

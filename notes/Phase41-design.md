@@ -2,14 +2,15 @@
 
 **Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) closed 2026-10-24, work log
 `notes/Phase41a.md`: the field `isLink_ends` is on `PanelHingeFramework`, and no main result's
-statement changed. RESTATE, MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
-they open. Next concrete task: RESTATE's open as 41b, with the PI.
+statement changed. Sub-phase **41b** (RESTATE) opened 2026-10-24 with the PI's decisions in §1b,
+work log `notes/Phase41b.md`. MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
+they open. Next concrete task: 41b's item 1, the recon on KT's nonparallel panels.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
 `notes/Prose-report.md`, and every finding's home stays the ledger `notes/Prose-findings.md`. This
-file is the single entry point for the phase: the PI's decisions at the open (§1), the open's recon
-(§2), the sub-phases (§3) and the open questions (§4).
+file is the single entry point for the phase: the PI's decisions at the open (§1) and at RESTATE's
+open (§1b), the recons (§2), the sub-phases (§3) and the open questions (§4).
 
 ## 0. Target
 
@@ -49,19 +50,59 @@ What each answer settles:
 3. **KT's conclusion is the floor, and stronger forms are considered.** Checked against KT 2011
    (`.refs/`): a hinge is by definition a `(d − 2)`-dimensional affine subspace (KT §1), so every
    hinge of a KT panel-hinge framework is nondegenerate; Theorem 5.5 gives a realization that is
-   *nonparallel* when `G` is simple, i.e. the panels of any two distinct bodies are not parallel
-   (KT §5.1), which is `IsGeneralPosition`; Theorem 5.6 states only the rank. So the floor is
-   nondegenerate hinges on `E(G)` in Theorem 5.6's restated conclusion, and general position for
-   simple `G` in Theorem 5.5's (which `theorem_55_minimalKDof_gen` already gives, through
-   `HasGenericFullRankRealization`). The stronger candidates, for RESTATE's open to settle: general
-   position in Theorem 5.6's conclusion for every `G`, and the generic form, every generic
-   realization attaining the rank (G6's row).
+   *nonparallel* when `G` is simple: for distinct bodies `u`, `v`, `Π(u) ∩ Π(v)` is
+   `(d − 2)`-dimensional (KT §5.1, p. 668). That is stronger than `IsGeneralPosition`, which asks
+   only that two distinct bodies' homogeneous normals be independent, so two parallel panels
+   qualify (corrected at RESTATE's open; the open read the two as equal). Theorem 5.6 states only
+   the rank. So the floor is nondegenerate hinges on `E(G)` in Theorem 5.6's restated conclusion,
+   and KT's nonparallel for simple `G` in Theorem 5.5's, of which `theorem_55_minimalKDof_gen`
+   gives only general position (§1b.4). RESTATE's open settled the stronger candidates (§1b.1–2).
 4. **`IsHingeCoplanar` constrains only the hinges on `E(G)`**, not those at unused labels.
 5. **`F-323` and `F-324` are in**: the three main results' unused `[DecidableEq β]` and
    `theorem_55_minimalKDof_gen`'s derivable `hD` are dropped with RESTATE's restatements, with the
    binders round 3 kept for them.
 6. **Four sub-phases** (§3), the plan's (a) split into CARRIER and RESTATE. Letters are minted as
    each opens; only 41a now.
+
+## 1b. The PI's decisions at RESTATE's open (2026-10-24)
+
+The coordinator put five questions, from the RESTATE open's recon (§2, *RESTATE's open recon*):
+(1) general position in Theorem 5.6's conclusion, for every `G` or for simple `G`; (2) the generic
+form as G6's row; (3) dropping `HasGenericFullRankRealization`'s last conjunct; (4) KT's nonparallel
+against `IsGeneralPosition`: close the gap, or record a divergence; (5) the multi-commit trial. The
+PI's words, verbatim (the first before the questions, the last after the coordinator explained 1 and
+3 again):
+
+> I will push after we've completed the RESTATE phase.
+
+> 1. Can you explain this in more detail? I've forgotten the context around this.
+> 2. OK, sounds good.
+> 3. Hmm, I don't understand this either, and the G.graph = G sounds like this is related to 1?
+> 4. We should close the gap here as KT is one of our key results.
+> 5. OK, I guess that sounds like we should drop the multi-commit trial.
+
+> Thanks; yes, let's go with your recommendations on 1 and 3 then.
+
+What each answer settles:
+
+1. **Theorem 5.6 concludes general position, for simple `G`.** `rankHypothesis_of_theorem_55_gen`
+   keeps `hSimple` and concludes `∃ Q, Q.graph = G ∧ Q.IsGeneralPosition ∧` the rank (KT's
+   nonparallel once item 4 builds it). It is stronger than the floor at no cost: the proof's normals
+   are in general position already, and with the field general position gives nondegenerate hinges
+   on `E(G)` of a simple `G`. "For every `G`" is false in the meet model, at the floor too: at a
+   double edge both hinges are the meet of the same two panels (§2). Multigraphs keep the
+   containment model (`theorem_55_6_multigraph_gen`).
+2. **G6's row is the rank formula**, for every realization with generic normals, the iff its
+   corollary: `PanelGeneric.lean`'s rank formula restated with `hcard` for `hfresh`, without `ends`
+   or `hends`, over every framework on `G`; its non-vacuity witness at the single edge.
+3. **`HasGenericFullRankRealization`'s last conjunct goes**, in its own commit, with the two `hswap`
+   hypotheses of `Coupling.lean` and the hand-built link sites the field gives (§2).
+4. **KT's nonparallel is closed in RESTATE**: Theorem 5.5's conclusion states KT §5.1's nonparallel
+   for simple `G`, not only general position. The route and the cost are 41b's item 1.
+5. **The multi-commit trial is dropped** (dispatch-log F53; `e0aa1a73`).
+
+And **the push waits for RESTATE's close**: CI has not run since 2026-10-15, so its first run of
+41a's `module` conversion (P2–P5) follows RESTATE's close.
 
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
@@ -142,12 +183,41 @@ multigraph rows unless they are restated anyway (§1.2 restates them). `F-324` i
 `theorem_55_minimalKDof_gen` (:2107), the `hD` chain below it (`F-293`, `F-297`, `F-298`, about
 ten signatures) and seven call sites; the spanning-trees theorem's `hD` goes with S1.
 
+**RESTATE's open recon** (2026-10-24; Claude Opus 5.5, read-only, at `3a627b3d`). Evidence:
+`notes/reconcile-formal/RestateWitness.lean` (`lake lean`; no errors, three standard axioms).
+- **KT** (`.refs/`): nonparallel is defined for simple graphs (§5.1, p. 668); Theorem 5.5 reads
+  "(nonparallel, if G is simple)" (p. 670); Theorem 5.6 states only the rank. `IsGeneralPosition`
+  (`PanelHinge.lean:402`) is the weaker, projective condition (§1.3, corrected).
+- **Q1.** In the meet model parallel edges get one hinge: at the double edge on two bodies
+  (`n = 2`), deficiency 0, no framework with nonzero hinges on `E(G)` reaches the rank
+  (`restated_theorem56_false_at_banana`). `hSimple` enters at `rankHypothesis_of_theorem_55_gen`
+  (`Theorem55.lean:2343`); for simple `G` general position is kept by the re-aimed strip (as the rows
+  form's `:2241` does), vacuous at one body, and gives nondegenerate hinges
+  (`supportExtensor_ne_zero_of_isGeneralPosition`). Precedent at d = 3:
+  `exists_rankHypothesis_isGeneralPosition4` (`Theorem56.lean:201`).
+- **Q2.** The generic form is G6's "rank formula likewise", strictly stronger than the iff, which
+  follows from it with `exists_isGenericNormals`. Existing: `PanelGeneric.lean:403` (rank formula),
+  `:490` (iff), `HingeGeneric.lean:885`, `:954`, `:996`; all carry `hfresh`, `hspan`, `hSimple`, a
+  bare `ends` and a total `hends`. Witness: `Graph.singleEdge 0 1 0` on `Fin 2`/`Fin 4`, minimal
+  1-dof (`Nonvacuity.lean:267`).
+- **Q3.** The last conjunct is the field once `Q.graph = G` (`lastConjunct_of_field`,
+  `hasGenericFullRankRealization_iff`). Eight producers, thirteen destructurers and one discard
+  (Cases I–III, `Theorem55.lean`, `GenericityDevice.lean:863`); two helpers die
+  (`ofNormals_recordsLinks_of_hends`, `ofNormals_endsOf_recordsLinks`); one node,
+  `def:rank-hypothesis` (`panel-layer.tex:522`, prose at `:549` and `:773`).
+- **Others.** `hswap` of `Coupling.lean:72` and `:105` follow from the field
+  (`hswap_of_recordsLinks`). The field gives the hand-built link conditions at `CaseII.lean:461`,
+  `:508`, `CaseIII/Realization.lean:365`–`370`, `:913`–`918`, `Theorem55.lean:620`, `:2133`–`2150`,
+  `:2240`–`2269`, not those at `CaseII.lean:685`, `:924` (a link of `G`, not of the framework's
+  `Gab`). §3's list missed the d = 3 wrapper `exists_rankHypothesis_isGeneralPosition4`, pinned at
+  `molecule-modelling.tex:663`.
+
 ## 3. Sub-phases, by code
 
 | Code | Letter | Contents | Commits |
 |---|---|---|---|
 | **CARRIER** | 41a (closed 2026-10-24) | done: `reaimSub` retired; the link predicate, its lemmas and the fill-in tactic; the four R statements; the spike; the switch (the field, 123 declarations in 27 files) and the footprint's docstrings; `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged (`notes/Phase41a.md`) | 9, besides the build-time detour P1–P5 |
-| **RESTATE** | — | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences on the degenerate hinges removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP; their selector half went in 41a's item 5b); non-vacuity witnesses at minimal graphs for these rows; S18 (the conditional statement or a repin on the generic forms, after S1; its `hC` moved to links in 41a's item 6); the remaining footprint docstrings; the link conjuncts the field makes redundant (the coordinator's call at 41a's close): the rows form `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` and `exists_rankHypothesis_isGeneralPosition4_of_two_le` (`Theorem56.lean`), and `exists_independent_normalRow_of_le_finrank`'s `hQends` (`PanelGeneric.lean`) | 9–13 |
+| **RESTATE** | 41b (opened 2026-10-24) | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences on the degenerate hinges removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP; their selector half went in 41a's item 5b); non-vacuity witnesses at minimal graphs for these rows; S18 (the conditional statement or a repin on the generic forms, after S1; its `hC` moved to links in 41a's item 6); the remaining footprint docstrings; the link conjuncts the field makes redundant (the coordinator's call at 41a's close): the rows form `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` and `exists_rankHypothesis_isGeneralPosition4_of_two_le` (`Theorem56.lean`), and `exists_independent_normalRow_of_le_finrank`'s `hQends` (`PanelGeneric.lean`), with the d = 3 wrapper `exists_rankHypothesis_isGeneralPosition4`; from the PI's decisions at its open (§1b): Theorem 5.6 with general position, G6's row as the rank formula, `HasGenericFullRankRealization`'s last conjunct, and KT's nonparallel in Theorem 5.5's conclusion | 13–16 (`notes/Phase41b.md`) |
 | **MULTIGRAPH** | — | M1: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1) | 3–5 |
 | **UNSTATED** | — | the claims no declaration states, the report's estimates: S22 1–2, S23 1, S24 2–3, S25 1, S31 2–3, S3 0–2, S16 1, S19 0–3, G5 3–5, `F-061` 1–2; after CARRIER, since S3 and S19 touch carrier code (`case_II_placement_eq612`) | 13–23 |
 
@@ -160,13 +230,9 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
 
 ## 4. Open questions
 
-- **`HasGenericFullRankRealization`'s last conjunct** (the selector gives each link of `G` its
-  ends, in either order; `PanelHinge.lean`) is implied by the field once `Q.graph = G`. Seen at
-  41a's close, and not among the three redundant link conjuncts in RESTATE's row (§3): RESTATE's
-  open decides whether it goes with them.
+- **KT's nonparallel on the carrier** (§1b.4): its definition on the homogeneous normals, the route
+  by which Theorem 5.5's induction reaches it, and the cost. 41b's item 1 settles them.
 - **M1 and loops**: assume `G.Loopless`, or relax the upper bound's `hC` to non-loop links (a loop's
   constraint is vacuous, and a loop never crosses a partition). MULTIGRAPH's open decides. JJ 2010
   Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for 2-edge-coloured multigraphs; the
   row's "every generic realization" is the project's strengthening.
-- **The stronger forms of §1.3**: general position in Theorem 5.6's conclusion for every `G`, and
-  the generic form; RESTATE's open decides, each with a witness that it holds.
