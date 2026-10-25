@@ -3,8 +3,8 @@
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1, and at this sub-phase's, §1b) and the recons are in
 `notes/Phase41-design.md`. Items 1 (KT's nonparallel by route B, items 4a–4c; the PI settled its two
-open options, design doc §1c), 2, 3 and 4a done. Next concrete task: item 4b, nonparallel from
-generic.
+open options, design doc §1c), 2, 3, 4a and 4b done. Next concrete task: item 4c, Theorem 5.5's
+conclusion.
 
 ## Current state
 
@@ -14,7 +14,8 @@ Opened with the PI on 2026-10-24, after the RESTATE open's recon (`notes/Phase41
 links off the field `isLink_ends`. Item 1's design pass (design doc §2, *KT's nonparallel recon*)
 defined KT's nonparallel on the normals' direction parts (the affine coordinate
 is the last) and reaches it at Theorem 5.5's end by the genericity device, the induction untouched
-(route B), in three commits, items 4a–4c; 4a gave the predicate and `def:panel-nonparallel`. The
+(route B), in three commits, items 4a–4c; 4a gave the predicate and `def:panel-nonparallel`, 4b
+the third realization predicate and the upgrade to it (`lem:nonparallel-of-generic`). The
 sub-phase restates S2's and S1's main results
 on the carrier that 41a gave the link field, and acts on the PI's four decisions at its open
 (§1b): Theorem 5.6 concludes general position for simple `G`, G6's row is the generic rank formula,
@@ -67,13 +68,19 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   `Fin.castSucc` (the same product; nonparallel is general position of the direction parts), and
   `isNonparallel_ofParam` holds by definition one dimension lower; `def:panel-nonparallel` pins the
   predicate and the implication, and cites JJ 2010 §7 (p. 584, "non-degenerate").
-- [ ] **4b. Nonparallel from generic** (`PanelHinge.lean`, `GenericityDevice.lean`):
+- [x] **4b. Nonparallel from generic** (`PanelHinge.lean`, `GenericityDevice.lean`):
   `HasNonparallelFullRankRealization` beside `HasGenericFullRankRealization` (`∃ Q, Q.graph = G ∧
   Q.IsNonparallel ∧` the rank) and `hasNonparallelFullRankRealization_of_generic` (`1 ≤ k`, `hn`,
   `G.Loopless`, `V(G).Nonempty`), whose proof is the witness's `exists_nonparallel_of_generic`.
   Blueprint: `def:rank-hypothesis` pins the third predicate; a new `lem:nonparallel-of-generic`
   (KT Lemma 5.2's role, p. 669), using `lem:rank-polynomial-of-le-finrank`,
-  `lem:relative-deficiency-rank-bound` and `def:panel-nonparallel`.
+  `lem:relative-deficiency-rank-bound` and `def:panel-nonparallel`. Done, as
+  `PanelHingeFramework.hasNonparallelFullRankRealization_of_generic`, the witness's proof shorter
+  (no `classical`, no `Fintype`; `ne_zero_of_map`, TACTICS-GOLF § 29; the injective map by
+  `Countable.exists_injective_of_infinite`, whose mirror `GenericityDevice.lean` now imports).
+  Blueprint: `def:rank-hypothesis`'s statement and `fmlnote:generic-full-rank` name the third
+  predicate (asked of all of `α`, so at `d = 1` only for at most one body); the new node follows
+  `lem:generic-yields-genuine-hinge`'s note.
 - [ ] **4c. Theorem 5.5's conclusion** (`Theorem55.lean`, `Nonvacuity.lean`):
   `theorem_55_minimalKDof_gen`'s simple conjunct becomes `HasNonparallelFullRankRealization`, by
   4b from the induction's, passed through `theorem_55_minimalKDof_k`, `theorem_55_d3` and
@@ -121,13 +128,13 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Hand-off / next phase
 
-**Item 4b**: `HasNonparallelFullRankRealization` and `hasNonparallelFullRankRealization_of_generic`
-(item 4a landed). Then item 4c, then item 5. 4b's proof is the witness's
-`exists_nonparallel_of_generic`, but its `obtain` of `HasGenericFullRankRealization` takes four
-components since item 2 (the witnesses of `notes/reconcile-formal/` check at their own commits),
-and its leading-minor product comes from `exists_nonparallel_polynomial hk G Q.ends` (nonzero at
-the moment curve of an injective `α → K`), replacing the witness's `isNonparallel_of_eval_ne_zero`
-and its hand-made `Q_np`.
+**Item 4c**: Theorem 5.5's conclusion (items 4a and 4b landed). Then item 5. In
+`theorem_55_minimalKDof_gen` (`Theorem55.lean`, a term proof today), the simple conjunct is
+`hasNonparallelFullRankRealization_of_generic hk1 hn hne` applied to the induction's generic
+realization: every hypothesis is already there (`[Infinite K]`, `[Finite α]`, `[Finite β]`, `hk1`,
+`hn`), `G.Loopless` from `hSimple.toLoopless` and `V(G).Nonempty` from `hV`. The consumers that read
+general position off it take `IsNonparallel.isGeneralPosition`; the checklist's item 4c names them
+and the restated nodes.
 
 ## Decisions made during this phase
 

@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge
 
 /-!
@@ -28,7 +29,8 @@ file proves:
 * a polynomial in the normals off whose zeros a bound on the rank holds (`lem:genericity-device`,
   `lem:rank-polynomial-of-le-finrank`), and its forms for frameworks rigid on a set of bodies;
 * that a generic full-rank realization has nondegenerate hinges (`lem:generic-yields-genuine-hinge`,
-  in `sec:molecular-algebraic-induction-base`).
+  in `sec:molecular-algebraic-induction-base`), and gives a nonparallel one
+  (`lem:nonparallel-of-generic`).
 -/
 
 @[expose] public section
@@ -902,5 +904,52 @@ theorem hasPanelRealization_of_generic [NeZero k] {n : ℕ} {G : Graph α β} [G
       exact ⟨⟨p, hval, fun i => (hperp i).2⟩, ⟨p, hval, fun i => (hperp i).1⟩⟩
   · -- Rank: direct from hQrank.
     exact hQrank
+
+/-! ## Nonparallel panels from a generic realization (`lem:nonparallel-of-generic`) -/
+
+/-- **A generic full-rank realization gives a nonparallel one** (`lem:nonparallel-of-generic`; the
+role of KT Lemma 5.2, p. 669): over an infinite field and for `1 ≤ k` (`d ≥ 2`), a loopless
+multigraph `G` with a vertex that has a generic full-rank realization `Q` has a nonparallel one
+(`HasNonparallelFullRankRealization`), with the endpoint selector of `Q`:
+
+* `G` has no loops, so the selector gives each link two distinct ends, and general position makes
+  every hinge of `Q` nondegenerate (`supportExtensor_ne_zero_of_isGeneralPosition`);
+* the rank polynomial at the normals of `Q` (`exists_rankPolynomial_of_le_finrank_linking`) and the
+  polynomial of `exists_nonparallel_polynomial`, nonzero at the moment curve of an injective map
+  from the bodies to `K`, have a common non-root `q` (`MvPolynomial.exists_eval_ne_zero`);
+* at `q` the panels are nonparallel, so the hinges are nondegenerate, and the rank is at least that
+  of `Q`, the target rank, and at most the target rank
+  (`finrank_span_rigidityRows_add_deficiency_le`).
+
+Katoh and Tanigawa rotate one of two equal panels by continuity over `ℝ`; the polynomials take the
+place of the rotation. -/
+theorem PanelHingeFramework.hasNonparallelFullRankRealization_of_generic [Infinite K] [Finite α]
+    [Finite β] {n : ℕ} (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k) {G : Graph α β}
+    [G.Loopless] (hne : V(G).Nonempty) (h : HasGenericFullRankRealization K k n G) :
+    HasNonparallelFullRankRealization K k n G := by
+  obtain ⟨Q, hQg, hQgp, hQrank⟩ := h
+  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 :=
+    recordsLinks_iff_forall_isLink.mp (hQg ▸ Q.isLink_ends)
+  have hself : ofNormals G Q.ends (fun p => Q.normal p.1 p.2) = Q :=
+    ofNormals_eq_self_of_graph_eq Q hQg
+  -- The rank polynomial at the normals of `Q`, whose hinges are nondegenerate.
+  obtain ⟨Q_rk, hQrk0, hQrk⟩ := exists_rankPolynomial_of_le_finrank_linking G Q.ends hends
+    (fun e he => hself ▸ Q.supportExtensor_ne_zero_of_isGeneralPosition hQgp he.ne)
+    (N := Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows)) (by rw [hself])
+  -- The polynomial for nonparallel panels, nonzero at the moment curve of an injective `f`.
+  obtain ⟨Q_np, hQnp_mc, hQnp⟩ := exists_nonparallel_polynomial (K := K) hk G Q.ends
+  obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
+    (mul_ne_zero (ne_zero_of_map hQrk0) (ne_zero_of_map (hQnp_mc f hf)))
+  rw [map_mul] at hq
+  have hnp := hQnp q (right_ne_zero_of_mul hq)
+  refine ⟨ofNormals G Q.ends q, rfl, hnp, le_antisymm ?_ ?_⟩
+  · -- At most the target rank: the hinges at `q` are nondegenerate.
+    exact BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le _ hn hne
+      fun e u v he => supportExtensor_ne_zero_of_isGeneralPosition _ hnp.isGeneralPosition
+        (hends e u v he).ne
+  · -- At least the rank of `Q`, the target rank.
+    rw [← hQrank]
+    exact_mod_cast hQrk q (left_ne_zero_of_mul hq)
 
 end CombinatorialRigidity.Molecular

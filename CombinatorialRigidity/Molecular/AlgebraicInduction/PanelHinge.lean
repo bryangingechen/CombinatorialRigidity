@@ -1030,6 +1030,22 @@ def HasGenericFullRankRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph �
     ((Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n)
 
+/-- **A nonparallel full-rank realization** (`def:rank-hypothesis`, its third predicate): some
+panel-hinge framework `Q` on `G` (`Q.graph = G`) has nonparallel panels (`Q.IsNonparallel`,
+`def:panel-nonparallel`) and rows of rank `D(|V(G)| − 1) − def(G̃)`, with the deficiency read at
+`n` (`G.deficiency n`). It is `HasGenericFullRankRealization` with nonparallel panels in place of
+normals in general position, which they give (`IsNonparallel.isGeneralPosition`): the realization
+of a simple graph in KT Theorem 5.5 (KT p. 670). As for general position, the panels of any two
+distinct bodies of `α` are asked to be nonparallel. At `k = 0` (`d = 1`) no two panels are
+nonparallel, so there it holds only if `α` has at most one body. For `1 ≤ k`, over an infinite
+field, a generic full-rank realization of a loopless graph with a vertex gives one
+(`hasNonparallelFullRankRealization_of_generic`, `lem:nonparallel-of-generic`). -/
+def HasNonparallelFullRankRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ Q : PanelHingeFramework K k α β,
+    Q.graph = G ∧ Q.IsNonparallel ∧
+    ((Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n)
+
 end PanelHingeFramework
 
 variable {α β : Type*}

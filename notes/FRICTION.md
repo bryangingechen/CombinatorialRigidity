@@ -110,6 +110,14 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] `fun h => hP (by rw [h, map_zero])` as an untyped argument fails — `ne_zero_of_map hP`
+- **Where it bit:** Phase 41b, item 4b (`hasNonparallelFullRankRealization_of_generic`,
+  `GenericityDevice.lean`): the witness's two typed `have`s inlined into `mul_ne_zero` failed with
+  *"The pattern to be substituted is a metavariable"*.
+- **Friction:** one MCP iteration.
+- **Proposed fix:** `ne_zero_of_map hP`, which needs no stated type.
+- **Status:** idiom. **Lifted to:** TACTICS-GOLF § 29.
+
 ### [idiom] `exact h _ hq` against a goal `h` meets only by unfolding times out at `isDefEq` — pass the argument
 - **Where it bit:** Phase 41b, item 4a (`exists_nonparallel_polynomial`, `PanelHinge.lean`).
   `exact hgp _ hq`, with `hgp : ∀ q, eval q Q ≠ 0 → (ofNormals G ends q).IsGeneralPosition` at `k`

@@ -561,9 +561,11 @@ which Case~III uses.
 \begin{definition}[Realization hypothesis, rank form; KT eq.\ (6.1)]
   \label{def:rank-hypothesis}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.HasFullRankRealization,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.HasGenericFullRankRealization}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.HasGenericFullRankRealization,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.HasNonparallelFullRankRealization}
   \leanok
-  \uses{def:rigidity-matrix, def:k-dof, def:panel-general-position}
+  \uses{def:rigidity-matrix, def:k-dof, def:panel-general-position,
+    def:panel-nonparallel}
   Let $G = (V, E)$ be a multigraph with $V \neq \emptyset$. A panel-hinge
   realization $(G,p)$ of $G$ (\cref{def:panel-hinge-framework}) is
   \emph{at the target rank} if
@@ -572,9 +574,12 @@ which Case~III uses.
   \]
   A \emph{generic full-rank realization} of $G$ is a panel-hinge
   realization at the target rank whose normals are in general position
-  (\cref{def:panel-general-position}). For a minimal $k$-dof-graph,
-  $\operatorname{def}(\tilde G) = k$ (\cref{def:k-dof}), and the target
-  rank is the rank $D(|V| - 1) - k$ of KT eq.~(6.1).
+  (\cref{def:panel-general-position}). A \emph{nonparallel full-rank
+  realization} of $G$ is a panel-hinge realization at the target rank
+  whose panels are nonparallel (\cref{def:panel-nonparallel}). For a
+  minimal $k$-dof-graph, $\operatorname{def}(\tilde G) = k$
+  (\cref{def:k-dof}), and the target rank is the rank $D(|V| - 1) - k$ of
+  KT eq.~(6.1).
 \end{definition}
 
 \begin{fmlnote}
@@ -591,7 +596,17 @@ which Case~III uses.
   full-rank realization: a panel-hinge framework on $G$ at the target
   rank whose normals are in general position. Of the endpoint selector
   it too asks only what every panel-hinge framework meets, that it
-  assign each edge of $G$ its two ends.
+  assign each edge of $G$ its two ends. The third pinned predicate is
+  the nonparallel full-rank realization, with the same condition on the
+  endpoint selector. Like general position, it asks the panels of any
+  two distinct bodies to be nonparallel, bodies that are not vertices of
+  $G$ included, so for $d = 1$ it holds only when there is at most one
+  body. It is the realization that KT Theorem~5.5 gives for a simple
+  graph, and it is a generic full-rank realization, as nonparallel
+  panels have normals in general position. For $d \ge 2$ and over an
+  infinite field,
+  \cref{lem:nonparallel-of-generic} obtains one from a generic full-rank
+  realization of a multigraph without loops.
 
   Katoh and Tanigawa call a nonparallel realization generic if the
   coordinates of the vectors $c(v)$ that define its panels are
@@ -696,6 +711,54 @@ realization gives a nondegenerate-hinge one.
   hinge of the generic realization. The theorems that apply it do so for
   simple graphs.
 \end{fmlnote}
+
+A generic full-rank realization also gives a nonparallel one of the same
+rank. Katoh and Tanigawa make a realization nonparallel by KT
+Lemma~5.2~\cite[p.~669]{katohTanigawa2011}, rotating one of two equal
+panels slightly and arguing by continuity over $\R$ (the passage before
+\cref{lem:generic-realization-of-rigid}). For a realization whose
+normals are in general position, the next lemma chooses new normals
+off the zeros of two polynomials instead.
+
+\begin{lemma}[A generic full-rank realization gives a nonparallel one]
+  \label{lem:nonparallel-of-generic}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.hasNonparallelFullRankRealization_of_generic}
+  \leanok
+  \uses{def:rank-hypothesis, def:panel-nonparallel}
+  Let $K$ be an infinite field, let $d \ge 2$, and let $G = (V, E)$ be a
+  multigraph without loops, with $V \neq \emptyset$. If $G$ has a
+  generic full-rank realization, then $G$ has a nonparallel full-rank
+  realization (\cref{def:rank-hypothesis}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:general-position-support-nonzero,
+    lem:rank-polynomial-of-le-finrank, lem:moment-curve-general-position,
+    lem:relative-deficiency-rank-bound}
+  Let $(G, q_0)$ be a generic full-rank realization. As $G$ has no
+  loops, every edge has two distinct ends, so every hinge of $(G, q_0)$
+  is nondegenerate (\cref{lem:general-position-support-nonzero}). By
+  \cref{lem:rank-polynomial-of-le-finrank} there is a polynomial $Q_1$ in
+  the normals with $Q_1(q_0) \neq 0$ such that
+  $\operatorname{rank} R(G,q) \ge \operatorname{rank} R(G,q_0)$ at every
+  $q$ with $Q_1(q) \neq 0$. Let $Q_2$ be the product, over the ordered
+  pairs $(u, v)$ of distinct bodies, of the $2 \times 2$ minor of the
+  first two coordinates of the normals $n_u$ and $n_v$. As $d \ge 2$,
+  these are coordinates of $\hat n_u$ and $\hat n_v$, so the panels of
+  $(G, q)$ are nonparallel wherever $Q_2(q) \neq 0$. At moment-curve
+  normals with distinct parameters $t_v$, each factor is
+  $t_v - t_u \neq 0$ (\cref{lem:moment-curve-general-position}), and an
+  infinite field has distinct parameters for the finitely many bodies, so
+  $Q_2 \neq 0$. As $K$ is infinite, the nonzero polynomial $Q_1 Q_2$ does
+  not vanish at some $q$.
+
+  The panels of $(G, q)$ are nonparallel, so its normals are in general
+  position (\cref{def:panel-nonparallel}) and its hinges are
+  nondegenerate (\cref{lem:general-position-support-nonzero}). Its rank
+  is at least that of $(G, q_0)$, the target rank, and at most the
+  target rank (\cref{lem:relative-deficiency-rank-bound}). So $(G, q)$ is
+  a nonparallel full-rank realization.
+\end{proof}
 
 Katoh and Tanigawa's Lemma~6.1~\cite[p.~672]{katohTanigawa2011} gives
 the realization in case~(i) of their induction

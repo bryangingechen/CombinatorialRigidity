@@ -108,6 +108,9 @@ symptom-indexed and lighter.
 28. **A set equality consumed only by `.mono` — prove the one inclusion.** When `s = t` only
     transports a fact antitone in the set (`LinearIndepOn`, finiteness), prove `s ⊆ t` and close
     with `.mono`; the reverse inclusion is dead weight.
+29. **A nonzero polynomial from a nonzero value — `ne_zero_of_map`.** From `hP : eval q P ≠ 0`,
+    `ne_zero_of_map hP : P ≠ 0`; the lambda `fun h => hP (by rw [h, map_zero])` does not elaborate
+    as an argument whose type is not yet fixed (`mul_ne_zero`'s).
 
 ---
 
@@ -1691,3 +1694,16 @@ hv).mono ?_` with the forward inclusion alone takes about 12, and the `deg u_c =
 an `H`-degree computation only the reverse direction used. The shape is the one in FRICTION *A
 small witness's per-vertex facts, hand-rolled where one global fact restricts* (computing a closed
 neighbourhood exactly, only to restrict an independence to it). (Phase 40-simplify 10l.)
+
+## 29. A nonzero polynomial from a nonzero value — `ne_zero_of_map`
+
+To get `P ≠ 0` from `hP : MvPolynomial.eval q P ≠ 0` (any `ZeroHomClass` map in place of `eval q`),
+write `ne_zero_of_map hP`. The project's older form, `fun h => hP (by rw [h, map_zero])`, works as a
+`have` with a stated type, but not as an argument whose type is not yet known: in
+`MvPolynomial.exists_eval_ne_zero (mul_ne_zero (fun h => …) (fun h => …))` the `rw` runs before
+`mul_ne_zero`'s factors are fixed, and fails with *"Invalid rewrite argument: The pattern to be
+substituted is a metavariable"*. `ne_zero_of_map` needs no stated type, so the common non-root of a
+product takes one line:
+`MvPolynomial.exists_eval_ne_zero (mul_ne_zero (ne_zero_of_map h₁) (ne_zero_of_map (h₂ f hf)))`
+(`hasNonparallelFullRankRealization_of_generic`, `GenericityDevice.lean`; Phase 41b, item 4b).
+About thirty sites keep the lambda form inside a typed `have`, which is fine.
