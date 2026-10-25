@@ -1671,6 +1671,21 @@ ledger is now **0 pending / 50 done / 1 closed as superseded** (of 51).
   minimality entering only through the singleton values of proper subsets (N4). Pointer:
   `notes/Phase40p.md`; `notes/Phase40-design.md` §3 MOTIVES.
 
+### Phase 41a (CARRIER: the link condition as a field of the panel-hinge framework, structural edit — no new chapter)
+
+**No new entries — judged at the sub-phase close (2026-10-24).** The sub-phase moved a condition
+into the formal carrier: the endpoint selector of every panel-hinge framework now gives each edge
+its two ends, which Katoh and Tanigawa's frameworks meet by definition (a hinge joins the bodies of
+its edge). No proof rerouted through KT's mathematics, and the restated nodes
+(`def:panel-hinge-framework`, `def:framework-with-graph`, the notes after
+`prop:rigidity-matrix-prop11`, `thm:theorem-55-6-genuine` and `cor:theorem-55-d3-spanning`, three
+of `case-iii.tex`'s notes) state the formal objects, not a source-side difficulty. The close checked
+the entries naming those nodes: the `prop:rigidity-matrix-prop11` entry describes the two halves of
+KT Proposition 2.3, not the selector, and the `lem:claim-6-4` entry's "free endpoint selector" is
+dated to 22b's motive (2026-06-05), which 22b strengthened; neither contradicts the restated nodes.
+Theorem 5.6's restated conclusion is RESTATE's.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

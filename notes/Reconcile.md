@@ -1,7 +1,8 @@
 # RECONCILE: acting on the PROSE findings (planning note)
 
 **Status:** rounds 1, 2 and 3 closed (rounds 1 and 2 on 2026-10-15, round 3 on 2026-10-24); the
-phase, `RECONCILE-FORMAL`, opened with the PI on 2026-10-24 as Phase 41. The PI
+phase, `RECONCILE-FORMAL`, opened with the PI on 2026-10-24 as Phase 41, and its first sub-phase,
+41a (CARRIER), closed the same day. The PI
 queued RECONCILE next, ahead of ORIGAMI, as three autopilot rounds and one attended phase
 (`.claude/autopilot/queue.toml`). Its input is PROSE's findings report `notes/Prose-report.md`
 (items S1–S42, L1–L12, M1–M5, G1–G6 and §2.6), with each finding's home the ledger
@@ -32,7 +33,7 @@ docstrings wait for the phase (§3). The round's log also proposed that the labe
 join the project's gates for a commit that moves a pin; the PI adopted it on 2026-10-24
 (`blueprint/lint.sh` check 9). Phase 41's plan, its
 open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
-the one `notes/Phase41a.md`'s hand-off names.
+RESTATE's open as 41b, with the PI (`notes/Phase41a.md` *Hand-off*).
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

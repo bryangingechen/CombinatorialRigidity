@@ -1,25 +1,25 @@
 # Phase 41a — CARRIER: the link condition as a field of `PanelHingeFramework` (work log)
 
-**Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
-recon are in `notes/Phase41-design.md`. Items 1 to 4, the build-time detour P1 to P5, item 5a (the
-switch), item 5b (the footprint's docstrings), item 6 (`withGraph` restricted, `reaim` deleted)
-and item 7 (the two genuine forms merged) have landed. Next concrete task: the close.
+**Status:** ✓ closed 2026-10-24 (opened the same day), a sub-phase of Phase 41, which stays in
+progress. The phase's design, the PI's decisions and the open's recon are in
+`notes/Phase41-design.md`. Every checklist item landed: the API (1–3a), the build-time detour
+(P1–P5), the spike (4), the switch (5a, 5b), `withGraph` restricted with `reaim` deleted (6) and
+the two genuine forms merged (7). Next concrete task: RESTATE's open as 41b, with the PI (see
+*Hand-off*).
 
 ## Current state
 
-Opened with the PI on 2026-10-24, after the design recon (`notes/Phase41-design.md` §2). The
-sub-phase builds S2's field `isLink_ends` into the carrier (design A, `notes/Phase41-design.md`
-§1.1) and leaves every main result's statement as it is: the restatements are RESTATE's. Items 1–3a
-laid the API (`RecordsLinks`, `link_tac`, the R statements); the build-time detour P1–P5 made the
-whole project `module`s (a proof-only edit at `CaseIII/Realization` rebuilds that file alone,
-10–14 s); item 4's spike and item 5a landed the switch: the field is on the structure, 123
-declarations in 27 files follow it, the record binders are `hlinks`, and
-`def:panel-hinge-framework`'s formal note and `panel-layer.tex`'s selector notes are restated. Item
-6 asked `rigidityMatrix_prop11`'s `hC` only at links, so `reaim` went, and restricted the panel
-`withGraph` to subgraphs; item 7 merged KT Theorem 5.6's two genuine forms into one. Mode:
-structural edit. There are no red target nodes, so the red-node consistency gate has nothing to
-read; the nodes a slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md`
-*Forward-mode slices*).
+**Closed.** The field `isLink_ends` is on `PanelHingeFramework` (design A,
+`notes/Phase41-design.md` §1.1): a framework whose selector does not give each edge of its graph
+its two ends cannot be built. No main result's statement changed, and the 19 main results' axioms
+are unchanged (`[propext, Classical.choice, Quot.sound]`, identical to RECONCILE round 3's last
+run). The commits: item 1 `reaimSub` retired; items 2–3a the API (`RecordsLinks`, `link_tac`, the
+R statements); P1–P5 the whole project to `module`s (a proof-only edit at `CaseIII/Realization`
+rebuilds that file alone, 10–14 s); item 4 the spike (`c2bad1ed`); 5a the switch (`afcff8fd`, 123
+declarations in 27 files, `def:panel-hinge-framework` and `panel-layer.tex`'s selector notes
+restated); 5b the footprint's docstrings (`8460b351`); 6 `withGraph` restricted and `reaim`
+deleted (`a22d989c`); 7 the genuine forms merged (`f4bc4cb5`). Mode: structural edit, no red
+target nodes; each slice restated the nodes it reached.
 
 ## Architectural choices made up front
 
@@ -55,28 +55,30 @@ read; the nodes a slice reaches are restated in that slice (`CombinatorialRigidi
 - [x] **7. The two genuine forms merged**: under the field,
   `rankHypothesis_genuine_of_theorem_55_gen` and its link-recording form coincide; the first keeps
   the proof, and `thm:theorem-55-6-genuine` pins it alone.
-- [ ] **Close**: whole-project build with 0 warnings, `lake lint`, the blueprint gates, the 19
-  main results' axioms unchanged; RESTATE opens as 41b.
+- [x] **Close**: whole-project build with 0 warnings, `lake lint`, the blueprint gates, the 19
+  main results' axioms unchanged; RESTATE named as 41b, to open with the PI.
 
 ## Blockers / open questions
 
+Both carried to RESTATE (`notes/Phase41-design.md` §3):
 - **The status surfaces' degenerate-hinge sentences** stay true until RESTATE: Theorem 5.6's
   `main_results` row and `alignment` note, README, the home page, `intro.tex` and ROADMAP §23 say
   that `rankHypothesis_of_theorem_55_gen` allows degenerate hinges, so at deficiency zero the
-  all-zero-normals framework meets it. RESTATE's table removes them (`notes/Phase41-design.md` §3).
-- **Link conjuncts the field makes redundant**, left after item 7 (no main result): the rows form
+  all-zero-normals framework meets it.
+- **Link conjuncts the field makes redundant** (no main result): the rows form
   `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`,
   `exists_rankHypothesis_isGeneralPosition4_of_two_le` (`Theorem56.lean`), and
-  `exists_independent_normalRow_of_le_finrank`'s `hQends` (`PanelGeneric.lean`). Not on 41a's
-  checklist: the close or RESTATE (the coordinator's call).
+  `exists_independent_normalRow_of_le_finrank`'s `hQends` (`PanelGeneric.lean`), in RESTATE's row;
+  `HasGenericFullRankRealization`'s last conjunct, seen at the close, is the design doc's §4
+  question.
 
 ## Hand-off / next phase
 
-The close next (`PHASE-BOUNDARIES.md` *When this commit closes a phase*): the whole-project build
-with 0 warnings, bare `lake lint`, `blueprint/lint.sh` and `verify.sh`, the 19 main results' axioms
-unchanged, and RESTATE opened as 41b. Its commit also writes item 7's sha into the ledger
-dispositions that read "(item 7)" (`F-122`, `F-128`, `F-298`), and settles the blocker on the
-redundant link conjuncts (above).
+**RESTATE opens next, as 41b, with the PI** (the coordinator confirms with the PI first; nothing is
+opened here). Its contents and estimate are `notes/Phase41-design.md` §3's RESTATE row; its open
+settles §1.3's stronger forms and §4's open questions, and its first commit creates
+`notes/Phase41b.md` (`PHASE-BOUNDARIES.md` *When this commit opens a phase*). MULTIGRAPH and
+UNSTATED follow by code.
 
 ## Decisions made during this phase
 
@@ -92,3 +94,6 @@ The decisions of the open are `notes/Phase41-design.md` §1.
 - **`withGraph` and `hC`** (item 6): `withGraph` takes `hle : G' ≤ P.graph`; `hC` at links; the
   d = 3 corollary's unused `2 ≤ |V(G)|` binds `_hV` until RESTATE restates its node.
 - **One genuine form** (item 7; coordinator): `rankHypothesis_genuine_of_theorem_55_gen` survives.
+- **The redundant link conjuncts go to RESTATE** (close; coordinator): it restates their
+  declarations anyway, S1's panel theorems in `PanelGeneric` and §1.3's general-position form in
+  Theorem 5.6's.

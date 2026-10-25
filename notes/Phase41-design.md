@@ -1,11 +1,9 @@
 # Phase 41 — RECONCILE-FORMAL: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) is open, work log
-`notes/Phase41a.md`; RESTATE, MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
-they open. The build-time detour the PI scheduled before 41a's spike is done (items P1–P5), and so
-are the spike, the switch (item 5a), the footprint's docstrings (item 5b), `withGraph` restricted
-with `reaim` deleted (item 6) and the two genuine forms merged (item 7). Next concrete task: 41a's
-close (`notes/Phase41a.md`).
+**Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) closed 2026-10-24, work log
+`notes/Phase41a.md`: the field `isLink_ends` is on `PanelHingeFramework`, and no main result's
+statement changed. RESTATE, MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
+they open. Next concrete task: RESTATE's open as 41b, with the PI.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -110,43 +108,17 @@ nondegenerate hinges, so for it the field alone closes S2.
 - The body-hinge theorem (`HingeGeneric.lean:1005`): `hcard` for `hfresh`; no `ends`, `hends` or
   `hD`; genericity `IsGenericHingePoints G q` over rows indexed by `E(G)`.
 
-**Construction sites by class** (measured by a regex scan plus a hand review of R and X; the
-classifier was not retained; CARRIER's spike superseded it, `notes/Phase41a.md` item 4): **T**
-trivial, 29 declarations (`G.endsOf`, the framework's own `Q.ends`,
-`withNormal`/`withMomentNormals`); **P** provable from a
-hypothesis in scope, 75; **H** needs a new hypothesis, at most 56 (graph-generic lemmas, e.g.
-`ofNormals_supportExtensor_eq_panel_of_ends`, `exists_generalPosition_polynomial`, five in
-`Duality.lean`; an upper bound, since the scan misses some shapes); **R** internal statement too
-weak, 4 (`CaseIII/Realization.lean` :823, :1330, :1430 pinned to
-`lem:case-III-chain-discriminator`, :1943: the link conjunct names `G − v` while the framework is
-on the splitting-off, whose links `Q.ends` already records, :900–911; :1751, first counted here, is
-not one, as its selector hypothesis `hrecGab` is already on the splitting-off, a correction made at
-41a's item 3); **X** broken by
-design, 2 (`reaimSub` and its motion lemma). By area: `PanelHinge` 40 references; the genericity
-device, coupling, Case I and II 145; `CaseIII/` 225; `Theorem55` 78; `GenericLift/PanelGeneric` 15
-(`HingeGeneric` builds none); `Molecule/` top level 22; `Pencil/MainComponent/` 123.
-
-**Friction, witnessed.** With the link proof as a last argument of `ofNormals` filled in by a small
-tactic (`link_tac` in the witness), the common sites need no edit: `G.endsOf`, an edge-restricted
-`hends`, `Q.ends`, a subgraph (through `recordsLinks_mono`) and structure eta. `rw [hG]` on the
-graph argument fails ("motive is not type correct"); `subst` and `simp only` work, and about 71
-`rw [h…]` lines on graph arguments sit in the footprint. `ofNormals_ends` and
-`toBodyHinge_supportExtensor` stay `rfl`. Four scattered link lemmas can become one predicate with
-its graph-operation lemmas: `Graph.isLink_update_splitOff` (`Short.lean:341`),
-`Graph.isLink_ends_induce` (`Cut.lean:172`), `recordsLinks_map_of_records` (`CaseI.lean:52`) and
-`recordsLinks_swap_endsOf` (`Coupling.lean:66`).
-
-**`reaimSub`, `reaim`, `withGraph`.** `reaimSub` (`Theorem55.lean:846`) gives the edges of
-`E(G) ∖ E(G')` the pair `(x₀, y₀)`; its only callers are its motion lemma (:860) and
-`rankHypothesis_genuine_of_theorem_55_gen` (:2179), whose hypotheses are those of the
-link-recording form (:2272, through `reaimSubLink`). So the first form follows from the second and
-`reaimSub` goes. `reaim` (:816) meets the field; it exists only because `rigidityMatrix_prop11`'s
-`hC` (`PanelHinge.lean:768`) is asked at every label while its proof needs links, so it goes when
-`hC` moves to links. `PanelHingeFramework.withGraph` (:385) has no caller outside its own lemmas;
-it becomes `P.withGraph G' (hle : G' ≤ P.graph)`, which keeps the field (`isLink_ends_of_le`).
-Done in 41a: `reaimSub` went at item 1; at item 6 `hC` moved to links, `reaim` was deleted and
-`withGraph` takes `hle` (the field from `RecordsLinks.mono`); at item 7 the link-recording form's
-proof became `rankHypothesis_genuine_of_theorem_55_gen`'s, and the form was deleted.
+**Construction sites, the friction, `reaimSub`, `reaim`, `withGraph`** (CARRIER's; closed at 41a).
+The open's class scan (T 29, P 75, H at most 56, R 4, X 2 declarations) was superseded by CARRIER's
+spike: 123 declarations in 27 of the 32 files, H at 65 (`notes/Phase41a.md` item 4; FRICTION *The
+link field…*); the four R statements on the splitting-off were fixed at item 3. The link proof is a
+last argument of the constructors, filled in by `link_tac`, so the common sites need no edit
+(TACTICS-QUIRKS § 120: `rw [hG]` on a graph argument fails, while `subst` and `simp only` work);
+the four scattered link lemmas became the predicate `RecordsLinks` and its graph-operation lemmas
+(item 2). `reaimSub` was retired at item 1; at item 6 `rigidityMatrix_prop11`'s `hC` moved to
+links, `reaim` was deleted and `withGraph` takes `hle : G' ≤ P.graph` (the field from
+`RecordsLinks.mono`); at item 7 the link-recording Theorem 5.6 form's proof became
+`rankHypothesis_genuine_of_theorem_55_gen`'s, and the form was deleted.
 
 **S1 after S2.** The field is `hends` restricted to `E(G)`, so the panel theorems need neither
 `ends` nor `hends`, and S1 reduces to `hfresh` → `hcard`, genericity over rows indexed by `E(G)`, and
@@ -174,26 +146,24 @@ ten signatures) and seven call sites; the spanning-trees theorem's `hD` goes wit
 
 | Code | Letter | Contents | Commits |
 |---|---|---|---|
-| **CARRIER** | 41a (open) | retire `reaimSub`; the link predicate, its lemmas and the fill-in tactic; the four R statements; a throwaway spike to list what the switch breaks; the switch (the field, the constructors, the H binders, the graph rewrites, the footprint's docstrings file by file, `def:panel-hinge-framework` restated); `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged | 9 besides the build-time detour: the switch is one commit and a docstring commit (the spike) |
-| **RESTATE** | — | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences on the degenerate hinges removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP; their selector half went in 41a's item 5b); non-vacuity witnesses at minimal graphs for these rows; S18 (the conditional statement or a repin on the generic forms, after S1; its `hC` moved to links in 41a's item 6); the remaining footprint docstrings | 9–13 |
+| **CARRIER** | 41a (closed 2026-10-24) | done: `reaimSub` retired; the link predicate, its lemmas and the fill-in tactic; the four R statements; the spike; the switch (the field, 123 declarations in 27 files) and the footprint's docstrings; `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged (`notes/Phase41a.md`) | 9, besides the build-time detour P1–P5 |
+| **RESTATE** | — | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences on the degenerate hinges removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP; their selector half went in 41a's item 5b); non-vacuity witnesses at minimal graphs for these rows; S18 (the conditional statement or a repin on the generic forms, after S1; its `hC` moved to links in 41a's item 6); the remaining footprint docstrings; the link conjuncts the field makes redundant (the coordinator's call at 41a's close): the rows form `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` and `exists_rankHypothesis_isGeneralPosition4_of_two_le` (`Theorem56.lean`), and `exists_independent_normalRow_of_le_finrank`'s `hQends` (`PanelGeneric.lean`) | 9–13 |
 | **MULTIGRAPH** | — | M1: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1) | 3–5 |
 | **UNSTATED** | — | the claims no declaration states, the report's estimates: S22 1–2, S23 1, S24 2–3, S25 1, S31 2–3, S3 0–2, S16 1, S19 0–3, G5 3–5, `F-061` 1–2; after CARRIER, since S3 and S19 touch carrier code (`case_II_placement_eq612`) | 13–23 |
 
-**Why the switch is one commit**: under the lint gate a field cannot be staged file by file without
-a temporary twin structure (an unused proof argument fails `unusedArguments`). This is Phase 22l's
-lesson: the API first, the switch last (`notes/Phase22l.md` *Architectural choices*). The spike
-confirmed it: 65 declarations take a record binder, unused without the field, and the whole Lean
-side is one patch, build-green and lint-clean.
+**Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
+file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
+Phase 22l's lesson, API first and switch last (`notes/Phase22l.md` *Architectural choices*).
 
 The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and the ledger's last
 `reported` entries given dispositions (`notes/Reconcile.md` §3).
 
 ## 4. Open questions
 
-- **The switch's size**, resolved by CARRIER's spike (2026-10-24): 123 declarations in 27 of the 32
-  carrier files, +418/−139 lines, with H at 65 (the scan's bound of 56 was low;
-  `Graph.exists_earBase_splitOff` needs no edit once `link_tac` tries `update_splitOff`). One commit
-  for the Lean side and one for the docstrings (`notes/Phase41a.md` items 4 and 5).
+- **`HasGenericFullRankRealization`'s last conjunct** (the selector gives each link of `G` its
+  ends, in either order; `PanelHinge.lean`) is implied by the field once `Q.graph = G`. Seen at
+  41a's close, and not among the three redundant link conjuncts in RESTATE's row (§3): RESTATE's
+  open decides whether it goes with them.
 - **M1 and loops**: assume `G.Loopless`, or relax the upper bound's `hC` to non-loop links (a loop's
   constraint is vacuous, and a loop never crosses a partition). MULTIGRAPH's open decides. JJ 2010
   Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for 2-edge-coloured multigraphs; the

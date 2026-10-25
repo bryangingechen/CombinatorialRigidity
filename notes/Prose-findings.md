@@ -2663,7 +2663,7 @@ declaration's name as its header writes it:
   `prop:rigidity-matrix-prop11` and `cor:theorem-55-d3-spanning`, and
   `rem:molecular-conjecture-essential` restated (`a22d989c`); item 7: the link-recording form merged
   into `rankHypothesis_genuine_of_theorem_55_gen`, whose statement it adds a conjunct to that the
-  field makes redundant, and deleted with its pin on `thm:theorem-55-6-genuine` (item 7).
+  field makes redundant, and deleted with its pin on `thm:theorem-55-6-genuine` (`f4bc4cb5`).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2725,7 +2725,7 @@ declaration's name as its header writes it:
   degenerate hinges, and the docstrings of `rankHypothesis_of_theorem_55_gen` (its scope) and of
   `rankHypothesis_of_theorem_55_d3` say so; item 7: the link-recording form deleted, its proof now
   `rankHypothesis_genuine_of_theorem_55_gen`'s, so the `main_results` row, the `alignment` note,
-  README and ROADMAP §23 name that form (item 7).
+  README and ROADMAP §23 name that form (`f4bc4cb5`).
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
@@ -6086,7 +6086,7 @@ declaration's name as its header writes it:
   `lem:case-I-all-k` stated without $|V(G)| \ge 3$. `thm:theorem-55-6-multigraph` and the other
   nodes these pins serve state $d \ge 2$ only, unchanged (`e3ec5572`); phase 41a, item 7: the
   genuine form and its link-recording form merged into one declaration; the strip and the
-  re-aimed selector stay in two, the genuine form and the rows form (item 7).
+  re-aimed selector stay in two, the genuine form and the rows form (`f4bc4cb5`).
 - **F-299** · L · a missed mathlib lemma and a repeated derivation in `Molecular/Molecule/`.
   `screwCoord_injective` (`ScrewVelocity.lean`) proves by rank–nullity, from `screwCoord_surjective`
   and the two dimensions, what `LinearMap.injective_iff_surjective_of_finrank_eq_finrank` gives; and

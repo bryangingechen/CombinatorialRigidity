@@ -179,7 +179,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; not yet pushed (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
-| 41a. The link condition as a field of the panel-hinge framework (RECONCILE-FORMAL, CARRIER) | `Molecular/` (structural edit) | In progress (see `notes/Phase41a.md`; plan `notes/Phase41-design.md`) |
+| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, codes-until-open) | ◐ In progress — 41a ✓ (CARRIER); next RESTATE, not yet opened (see `notes/Phase41a.md`; plan `notes/Phase41-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1233,18 +1233,19 @@ fresh-label supply contradict each other there; with the field, `hends` goes, an
 take a bound on the label type instead. The PI's decisions at the open (design A; KT's conclusions
 as the floor, stronger forms considered; `IsHingeCoplanar` and the multigraph rows on `E(G)` only;
 `F-323` and `F-324` dropped with the restatements) are in the design doc's §1. Four sub-phases by
-stable code: **CARRIER** (41a, open: the field, its API first and the switch last, as in Phase
-22l; the carrier is referenced 648 times by 167 declarations in 32 files), **RESTATE** (S1's and
+stable code: **CARRIER** (41a, ✓ closed 2026-10-24), **RESTATE** (next, not yet opened: S1's and
 S2's main results, G6's own row for the generic panel theorem, non-vacuity witnesses at minimal
-graphs, S18), **MULTIGRAPH** (M1, Jackson–Jordán 2010's Theorem 6.1 for multigraphs) and
-**UNSTATED** (the claims no declaration states). Before 41a's spike, the PI scheduled a build-time
-detour (2026-10-24): each commit's full build took ~5 min, limited by one long import chain
-(`notes/PERFORMANCE.md` *Build critical path*), so 41a first trimmed the molecular chain's
-imports and, after a recon, converted the whole project to Lean's module system. An edit inside
-a proof now rebuilds only its own file (10–14 s at the chain's head), and an edit to a statement
-there rebuilds the chain in 72–77 s. The field is now on the structure (41a's item 5a): no main
-result's text changed, but the panel-hinge frameworks they conclude now give each edge its ends.
-Detail →
+graphs, S18, and the link conjuncts the field makes redundant), **MULTIGRAPH** (M1, Jackson–Jordán
+2010's Theorem 6.1 for multigraphs) and **UNSTATED** (the claims no declaration states). **41a**
+put the field on the structure, its API first and the switch last, as in Phase 22l: the link
+predicate and a tactic that fills in the link proof at the constructors, then the switch itself,
+123 declarations in 27 files in one build-green commit; then `withGraph` restricted to subgraphs,
+`reaim` and `reaimSub` deleted, and KT Theorem 5.6's two genuine forms merged. No main result's
+text changed, but the panel-hinge frameworks they conclude now give each edge its ends, and the 19
+main results' axioms are unchanged. Before the switch, a build-time detour the PI scheduled
+(2026-10-24) trimmed the molecular chain's imports and converted the whole project to Lean's module
+system: an edit inside a proof at the chain's head now rebuilds only its own file (10–14 s),
+and an edit to a statement there rebuilds the chain in 72–77 s (`notes/PERFORMANCE.md`). Detail →
 `notes/Phase41a.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
