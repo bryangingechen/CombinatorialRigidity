@@ -7,10 +7,11 @@ work log `notes/Phase41b.md`. MULTIGRAPH and UNSTATED are tracked by code (§3) 
 they open. The PI's decisions on item 1's recon (KT's nonparallel panels) are §1c. Items 2–8 have
 landed: Theorems 5.5 and 5.6 conclude KT's nonparallel panels for simple `G`, and
 `molecular_conjecture` and the multigraph rows ask nondegenerate hinges on `E(G)` only. Item 9's
-design pass, on the generic panel theorems, is §2's last arc; the PI's decision on their body
-bound is §1e, item 9a restated them, and item 9b made their rank formula a main result. The PI's
-answers in advance (2026-10-25: S18, RESTATE's close, free strengthenings, M1's loops) are §1f.
-Next concrete task: 41b's item 10, a design pass on the body-hinge theorems.
+design pass, on the generic panel theorems, is in §2; the PI's decision on their body bound is
+§1e, item 9a restated them, and item 9b made their rank formula a main result. The PI's answers in
+advance (2026-10-25: S18, RESTATE's close, free strengthenings, M1's loops) are §1f. Item 10's
+design pass, on the generic body-hinge theorems, is §2's last arc, with one adoption under §1f.3
+(one body). Next concrete task: 41b's item 10a, the body-hinge restatement.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -467,6 +468,122 @@ states the planned declarations under their planned names, in its own namespace.
   no selector for a framework-level predicate, and `hingePointRow`'s sign does follow the
   selector. What carries over (hypotheses, not compiled): Theorem 5.6's binders, and its main form
   as the witness if item 10's transplant (`HingeGeneric.lean:751`) takes nondegeneracy on `E(G)`.
+
+**Item 10's recon** (41b's item 10; 2026-10-25; Claude Opus 5.5, design pass, at `ce98d5ec`).
+Evidence: `notes/reconcile-formal/HingeGenericWitness.lean` (`lake lean`: no errors or warnings,
+its nine `#print axioms` the three standard axioms; `#lint` on a copy: no errors in 18
+declarations). It states the planned declarations under their planned names, in its own namespace,
+and proves the abundance, the nondegeneracy, the witness assembly and the rank formula in place,
+from the library's proofs with the changes below. Claims marked *hypothesis* were not compiled.
+- **No Lean consumer outside the file.** `HingeGeneric.lean` is imported by the root module and by
+  `Pencil/Arms.lean`, which (with `Pair.lean`, `Motive.lean`, `MainComponent/Configuration.lean`
+  and `Flat.lean`) uses only the screw-map declarations (`screwEquivOfLinearEquiv`, its
+  `_mk_extensor`, `finrank_span_rigidityRows_mapExtensor`), unchanged. No restated name occurs in
+  Lean code outside the file (a word grep of `CombinatorialRigidity/`, by bare name). Docstrings
+  outside it that become false: `RecordsLinks.of_forall`'s (`PanelHinge.lean:125`, "and of the
+  generic body-hinge theorems") and the genuine form's (`Theorem55.lean:2091`, "and the generic
+  hinge-point theorems read the witness's rows"). Those at `ProjectiveInvariance.lean:27`,
+  `Engine.lean:261` and `PanelHinge.lean:374` name declarations or a step that stay. So no twin,
+  and no pencil statement or proof moves.
+- **The predicate: `IsGenericHingePoints G q`, at every selector that records the links of `G`.**
+  `BodyHingeFramework` has no selector, and exchanging a label's ends negates its `hingePointRow`
+  (`hingePointRow_eq_neg_of_swap`: the extensor is the points', the hinge row is antisymmetric). So
+  the predicate quantifies the selector: for every `ends` with `RecordsLinks G ends`, every
+  subfamily of rows at the edges of `G` that is independent at some assignment is independent at
+  `q`. At one such selector it is the same condition (`isGenericHingePoints_iff_of_recordsLinks`,
+  by a sign per index, `linearIndependent_hingePointRow_iff_of_recordsLinks`): the blueprint's
+  "ends in a fixed order", whose remark that the order does not matter becomes that lemma. It reads
+  only the points at the edges (`isGenericHingePoints_congr`, S13's body-hinge side). Rejected:
+  `G.endsOf` in the definition (`[Inhabited α]` in every statement naming the predicate); an
+  existential selector (equivalent by the same lemma, which a consumer with its own selector would
+  need anyway); rows indexed by links `(e, u, v)` (selector-free, but the abundance engine and the
+  extraction `exists_independent_panelRow_subfamily_of_le_finrank` are indexed by `β × t × t`).
+- **Signatures** (compiled; namespace `BodyHingeFramework`, the restated names unchanged):
+  - `IsGenericHingePoints (G : Graph α β) (q : β × Fin k × Fin (k + 1) → K) : Prop`.
+  - New: `hingePointRow_eq_neg_of_swap`, `linearIndependent_hingePointRow_iff_of_recordsLinks`,
+    `isGenericHingePoints_iff_of_recordsLinks (h : RecordsLinks G ends) : IsGenericHingePoints G q
+    ↔ ∀ s, (∀ i ∈ s, i.1 ∈ E(G)) → (∃ q', LinearIndependent K (hingePointRow ends q' ·)) →
+    LinearIndependent K (hingePointRow ends q ·)` (on `s`), and `isGenericHingePoints_congr (h : ∀
+    e ∈ E(G), ∀ i b, q (e, i, b) = q' (e, i, b)) : IsGenericHingePoints G q ↔ IsGenericHingePoints
+    G q'`. Bare names searched in `CombinatorialRigidity/`, mathlib and `Matroid`: free.
+  - `exists_isGenericHingePoints_abundance [Finite α] [Finite β] (G)` and
+    `exists_isGenericHingePoints [Infinite K] [Finite α] [Finite β] (G)`: `G` for `ends`, the
+    conclusions otherwise unchanged (affine independence at every label kept). The proof builds the
+    coordinate family per selector inside `key` and takes the product over the (finitely many)
+    selectors and the subfamilies, so neither asks `[Nonempty α]`.
+  - `supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1) {G} (hloop) {q} (hq :
+    IsGenericHingePoints G q) : ∀ e ∈ E(G), (ofHinge G …).supportExtensor e ≠ 0`: no `ends`,
+    `hends`; the proof reads `G.endsOf`, with an end of the edge as the default body.
+  - `exists_hingePoints_independent_hingePointRow [Infinite K] [Finite α] [Finite β] {n} (hk1) (hn)
+    (hcard : bodyBarDim n * (Nat.card α - 1) < Nat.card β) (G) (hne : V(G).Nonempty) (hspan)
+    (hSimple) {ends} (hends : RecordsLinks G ends) : ∃ q₀ s, (∀ i ∈ s, i.1 ∈ E(G)) ∧ (Nat.card s :
+    ℤ) = … ∧ LinearIndependent …`: `hfresh`, `hV`, the total `hends`, `[DecidableEq β]` and
+    `[Nonempty α]` gone, the indices at edges added.
+  - `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`,
+    `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff` and `…_iff_spanningTrees`: binders
+    `[Infinite K] [Finite α] [Finite β] {n} (hk1) (hn) (hcard) (G) (hne) (hspan) (hSimple)`, the
+    rank formula then `{q} (hq : IsGenericHingePoints G q)`, the two iffs `∀ q, IsGenericHingePoints
+    G q → …`. Gone: `hfresh`, `ends`, `hends`, `hV`, `[DecidableEq β]`, `[Nonempty α]`, and the
+    last's `hD` (`hn ▸ three_le_screwDim hk1`; the open recon's "goes with S1").
+  - `hk1` and `hn` stay, not Theorem 5.6's `hd`: the hinge points are then `Fin k × Fin (k + 1)`,
+    while the `hd` form has `Fin (n - 1) × Fin ((n - 1) + 1)`, its parentheses forced by `open
+    scoped Graph`'s `G - S` notation (TACTICS-QUIRKS § 48: `n - 1 + 1` does not parse), and item
+    11's target `rigidityMatrix_prop11` is in the `k`-form. The `hd` form is a one-line instance
+    (`…_of_two_le`, compiled, not planned).
+- **The transplant takes nondegeneracy on `E(G)`, so Theorem 5.6's main form is the witness**, as
+  at 9a. The proof substitutes `k = n - 1` (`Graph.eq_add_one_of_bodyBarDim_eq_screwDim`) and takes
+  `Q0` from `rankHypothesis_of_theorem_55_gen` (`hd` from `hk1` and `hn`), whose nonparallel panels
+  give nondegenerate hinges at the edges (`IsNonparallel.isGeneralPosition`,
+  `supportExtensor_ne_zero_of_isGeneralPosition`). Spanning points come from the panel meet at the
+  edges only; a label outside `E(G)` gets a fixed family with a nonzero first vector, so the
+  simultaneous move and the affine read-back still run over every label, and the unit-scalar
+  transport is used at edges. The extraction already asks nondegeneracy at links only and returns
+  linking indices. The rank formula reads the witness and the genericity at `G.endsOf`.
+- **One body, adopted under §1f.3** (the coordinator's call under the PI's standing authorization,
+  recorded here): `hV : 2 ≤ V(G).ncard` becomes `hne : V(G).Nonempty` in the witness assembly, the
+  rank formula and both iffs. The proof does not need the bound (Theorem 5.6's main form covers one
+  body), it changes only these theorems, the spanning-trees row being the theorem at hand, and it
+  follows §1e's pattern.
+- **The row's witness at a minimal graph** (compiled): the triangle in the plane (`n = 2`, `k = 1`)
+  with the labels of `SimpleGraph.shadowGraph` (`Sym2 (Fin 3) ⊕ Fin 13`: 19 labels, `3 · 2 < 19`),
+  simple and spanning, `0`-dof (`Graph.isKDof_zero_of_triangle`) and minimal (a base of `M(2·K₃)`
+  has 6 elements and the copies of two edges are 4;
+  `top_fin_three_shadowGraph_isMinimalKDof_zero_two`). Some hinge-point assignment is generic, and
+  the framework at every generic one is infinitesimally rigid: the row's reverse direction, with
+  the trees from `deficiency_eq_zero_iff_exists_spanningTrees`. `Nonvacuity.lean` needs a `public
+  import` of `HingeGeneric`, and its private `top_fin_three_shadowGraph_isKDof_zero` (at `n = 3`)
+  generalizes to `3 ≤ bodyBarDim n` for both rows (hypothesis).
+- **The docstring-label check's two findings** (`HingeGeneric.lean:476`, `:485`): the leads of
+  `dualBodyMap_hingeRow` and `mapExtensor_rigidityRows` open with the bare label
+  `lem:screw-map-rows`, which pins `finrank_span_rigidityRows_mapExtensor` only. "(a step of
+  `lem:screw-map-rows`)" clears both (the check run on a scratch copy of the tree: total 0), as for
+  `equivExteriorPower_lineExtensor` (`F-243`); `blueprint/lint.sh` check 9's baseline goes 2 → 0.
+- **Cascade.** Blueprint, `generic-lift.tex`: the chapter opening's genuine-form sentence (`:11`),
+  the section opening (`:1020`–`1046`: the main form, hinges at the edges), `def:generic-hinge-points`
+  (fourth and fifth pins, the orientation iff and the congruence), the remark after it and its
+  fmlnote (`:1076`–`1105`), `lem:hinge-point-witness` (`V` nonempty; proof `\uses`
+  `thm:theorem-55-6` for `thm:theorem-55-6-genuine` and `def:genuine-hinge-realization`, the latter
+  if its prose no longer needs it), `thm:bodyhinge-generic-rank` and the two corollaries (`V`
+  nonempty), the fmlnote after the tree-packing corollary (`:1527`–`1547`, as 9a's after
+  `cor:panel-generic-rigid`); `body-hinge.tex:79`–`83`, `:156`–`158` ("at least two vertices", the
+  fresh-label supply). Lean docstrings: `HingeGeneric.lean`'s header (`:29`–`61`),
+  `hingePointRow_eq_panelRow`'s, the eight restated declarations', and the two outside. The yaml row
+  (`formalization.yaml:491`) and its `alignment` note (`:808`–`818`). The S1 scope sentences:
+  README `:162`–`177`, `home_page/index.md:142`–`151`, `intro.tex:266`–`278`, ROADMAP §34
+  `:1042`–`1047`. `fidelity.divergences` (`:658`) stays true: the theorem is for simple graphs, M1
+  pending. Ledger: `F-207`'s and `F-252`'s body-hinge halves, `F-216` and `F-221` (the pins no
+  longer carry the selector or "every label is an edge"), `F-212`'s body-hinge side (S13).
+- **Not planned:** an abundance polynomial in the edge coordinates only (its product runs over
+  every subfamily and every label's reference minor; stating it needs a `vars` conjunct); moving
+  `RecordsLinks` out of the `PanelHingeFramework` namespace, now that a body-hinge predicate reads
+  it (a FRICTION candidate).
+- **Split.** 10a the statement layer in one commit: no twin, as nothing outside reads the
+  declarations, and the restated row lands with its witness and its yaml row (41b's *Architectural
+  choices*). 10b the scope sentences, docs only (`notes/Phase41b.md`).
+- **Item 11 in view** (§1f.1): the predicate serves a consumer with its own recording selector
+  (`isGenericHingePoints_iff_of_recordsLinks`), and the rank formula shares `rigidityMatrix_prop11`'s
+  `k`-form; a Lean bridge from it to that lemma's `hgen` (rank–nullity) is item 11's if it wants
+  one (hypothesis). **No PI item.**
 
 ## 3. Sub-phases, by code
 

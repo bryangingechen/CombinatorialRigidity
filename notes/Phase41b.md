@@ -7,8 +7,9 @@ decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's r
 conclude KT's nonparallel panels for simple `G`, `molecular_conjecture` holds on one body with
 nonparallel panels on its panel side, the multigraph rows ask nondegeneracy on `E(G)`, the `d = 3`
 spanning corollary derives from `theorem_55_d3`, and the generic panel theorems hold at every
-framework on `G` with generic normals, their rank formula a main result (item 9b).
-Next concrete task: item 10's design pass, on the body-hinge theorems.
+framework on `G` with generic normals, their rank formula a main result (item 9b). Item 10's
+design pass split the body-hinge theorems into 10a and 10b.
+Next concrete task: item 10a, the body-hinge restatement with its row's witness.
 
 ## Current state
 
@@ -34,7 +35,10 @@ normals, under Theorem 5.6's `hd`, `hcard` and, by the PI's §1e, `V(G).Nonempty
 Theorem 5.6's main form. Item 9b made the rank formula a `main_results` row, witnessed at the
 single edge, and narrowed the S1 scope sentences to the body-hinge theorem. The PI answered four
 questions in advance (§1f): item 11's form, the stop at RESTATE's close, free strengthenings, M1's
-loops. Next: item 10's design pass, then the remaining restatements. Mode: structural edit. There
+loops. Item 10's design pass (design doc §2, *Item 10's recon*) compiled the restated body-hinge
+theorems in `notes/reconcile-formal/HingeGenericWitness.lean`, adopted one body under §1f.3, and
+split the item into 10a (the restatement, with the row's witness) and 10b (the scope sentences).
+Next: item 10a, then the remaining restatements. Mode: structural edit. There
 are no red target nodes; each slice restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
 *Forward-mode slices*).
 
@@ -82,11 +86,28 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   - [x] **9b. G6's row**: `finrank_span_rigidityRows_of_isGenericNormals` a `main_results` row,
     its witness at the single edge in `Nonvacuity.lean`; the S1 scope sentences name the
     body-hinge theorem only (`F-012`'s PI item; `F-207`).
-- [ ] **10. S1, the body-hinge theorems** (`HingeGeneric.lean`): `hcard` for `hfresh`,
-  `IsGenericHingePoints` oriented by the links, no `ends`, `hends` or `hD`; the spanning-trees row
-  restated; the docstring-label check's two findings (`HingeGeneric.lean:476`, `:485`) cleared and
-  its baseline lowered; the S1 scope sentences removed. Item 9's recon does not reach its predicate
-  (`BodyHingeFramework` has no selector): a design pass with a spike first, as item 9's.
+- **10. S1, the body-hinge theorems** (`HingeGeneric.lean`; S13; §1b.2's form; `F-207`, `F-252`,
+  `F-216`, `F-221`, `F-212`), in two commits; design doc §2, *Item 10's recon*, whose spike
+  `notes/reconcile-formal/HingeGenericWitness.lean` is the Lean (names as there).
+  - [ ] **10a. The restatement, with the row's witness** (Lean, blueprint, yaml).
+    `HingeGeneric.lean`: `IsGenericHingePoints G q` (every selector with `RecordsLinks G`, rows at
+    `E(G)`); new
+    `hingePointRow_eq_neg_of_swap`, `linearIndependent_hingePointRow_iff_of_recordsLinks`,
+    `isGenericHingePoints_iff_of_recordsLinks`, `isGenericHingePoints_congr`; the abundance and the
+    existence over `G` (product over the selectors); the nondegeneracy at `E(G)`; the witness
+    assembly from `rankHypothesis_of_theorem_55_gen` at a recording selector, indices at edges; the
+    rank formula, the iff and the spanning-trees row under `hk1`, `hn`, `hcard`, `hne` (§1f.3),
+    `hspan`, `hSimple` (gone: `hfresh`, `ends`, `hends`, `hD`, `hV`, `[DecidableEq β]`,
+    `[Nonempty α]`). The header and docstrings; `dualBodyMap_hingeRow`'s and
+    `mapExtensor_rigidityRows`'s leads ("a step of"), `blueprint/lint.sh` check 9 baseline 2 → 0.
+    `Nonvacuity.lean`: `…_iff_spanningTrees_witness` at the triangle (with its minimality), the
+    `public import`, the header. Docstrings of `RecordsLinks.of_forall` (`PanelHinge.lean:125`) and
+    the genuine form (`Theorem55.lean:2091`). `generic-lift.tex`: `def:generic-hinge-points` (pins
+    4–5), its remark and fmlnote, `lem:hinge-point-witness`, `thm:bodyhinge-generic-rank`,
+    `cor:bodyhinge-generic-rigid`, `cor:bodyhinge-generic-tree-packing`, the fmlnote after it, the
+    chapter and section openings; `body-hinge.tex:79`, `:156`. `formalization.yaml:491`, `:808`.
+  - [ ] **10b. The S1 scope sentences removed** (docs only): README `:162`, `home_page/index.md:142`,
+    `intro.tex:266`, ROADMAP §34 `:1042`; `F-207`'s last disposition.
 - [ ] **11. S18** (`prop:rigidity-matrix-prop11`; `F-121`, `F-331`; the PI's §1f.1): restated as
   KT state Proposition 2.3, a generic body-hinge framework on a multigraph (KT p. 655, credited to
   Jackson–Jordán), not a panel-hinge realization; proved in the conditional form (the bound gives
@@ -109,12 +130,13 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Hand-off / next phase
 
-**Item 10's design pass** (checklist 10): a recon with a Lean spike, as item 9's, on the
-body-hinge theorems of `HingeGeneric.lean`. It settles the predicate (`BodyHingeFramework` has no
-selector, and `hingePointRow`'s sign follows it), whether the transplant (`HingeGeneric.lean:751`)
-takes nondegeneracy on `E(G)` so that Theorem 5.6's main form is the witness, the cascade, the
-spanning-trees row's witness at a minimal graph, and the split into commits. One dispatch; then
-the commits it plans.
+**Item 10a** (checklist 10a): restate `HingeGeneric.lean` from the spike
+`notes/reconcile-formal/HingeGenericWitness.lean`, whose proofs are written in place (the
+abundance, the nondegeneracy, the witness assembly, the rank formula); add the row's witness to
+`Nonvacuity.lean`; restate the nodes, the yaml row and its note; clear the two docstring-label
+findings. A statement edit to `HingeGeneric.lean` rebuilds the pencil chain through
+`Pencil/Arms.lean`. Gates: the whole-project build with 0 warnings, `lake lint`,
+`blueprint/verify.sh`, `blueprint/lint.sh` at baseline 0, `check-docstring-labels.py`. Then 10b.
 
 ## Decisions made during this phase
 
@@ -148,6 +170,12 @@ the commits it plans.
   rank formula's witness is Theorem 5.6's main form, whose nonparallel panels give nondegeneracy on
   `E(G)`. No file outside `PanelGeneric.lean` reads its declarations (docstrings only), so no pencil
   statement moves and 9a needs no twin.
+- **Item 10's design** (2026-10-25; design doc §2, *Item 10's recon*): genericity at every
+  selector that records the links of `G` (no framework selector; a swap negates a row), equal to
+  one selector's by a lemma; Theorem 5.6's main form is the witness, as the transplant needs nondegeneracy at edges
+  only; `hk1` and `hn` stay (`Fin k` points; § 48 poisons `n - 1 + 1`); one body adopted under
+  §1f.3. The row's witness is the triangle with the shadow labels. Nothing outside the file reads
+  the declarations, so 10a is one commit with no twin.
 - **Item 9a's pins**: `def:generic-normals` gains a third pin, `isGenericNormals_iff_of_graph_eq`, for
   its note's claim that genericity reads only the graph and the normals; the other two orientation
   lemmas and the spike's selector-free abundance are not pinned (the latter not landed).
