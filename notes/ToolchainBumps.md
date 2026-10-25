@@ -18,8 +18,8 @@ bump (`930ae145`, *Bump record: v4.34.0-rc2 → v4.36.0-rc1*) or a later merged 
 `lake-manifest.json` is the source of truth, since hopscotch moves mathlib without touching this
 note. The hand bump was pushed 2026-10-25 and CI passed at `4c892cb6` ([run
 40199573250](https://github.com/bryangingechen/CombinatorialRigidity/actions/runs/40199573250)).
-Hopscotch's PR #1 and issue #2 were written against the old pins (first-bad `ab64d1c`, which
-`Matroid` `8ece630` absorbed), so the first hopscotch run on the new pins rewrites both.
+The first hopscotch run on these pins (2026-10-25) moved mathlib to `ba5499e` (PR #1, merged with
+every gate of *The gate set* green) and pointed issue #2 at a `Matroid` break (*The limit* below).
 
 **The automation (2026-10-25), in `.github/workflows/`:**
 - **`hopscotch.yml`** (daily) moves **mathlib only**, to its tip or the last good commit, on the
@@ -28,9 +28,13 @@ Hopscotch's PR #1 and issue #2 were written against the old pins (first-bad `ab6
   no longer moves mathlib: edit that `rev`, or run `scripts/bump-mathlib.sh`, which moves the
   lakefile `rev` and the manifest together.
 - **The action is pinned to a `main` commit of `hopscotch-action`**, not `@v1`: the `v1` tag
-  (v1.0.0) pushed the branch with the checkout's `GITHUB_TOKEN`, so no bump PR ever got a normal
-  CI run (each sat at "action_required"). From `main` the push uses the `CI` secret. If that
-  token expires or loses *Contents: write*, the run fails at its push step: renew the secret.
+  (v1.0.0) always pushed with the checkout's `GITHUB_TOKEN`; from `main` the push uses
+  `github-token`, the `CI` secret. **That secret holds no personal token yet**: the 2026-10-25
+  push still came from `github-actions[bot]` (probably an empty secret, falling back to
+  `GITHUB_TOKEN`), so the PR check waits at "action_required" until someone presses *Approve and
+  run workflows* on the PR (or `gh api -X POST repos/<owner>/<repo>/actions/runs/<id>/approve`).
+  With a fine-grained PAT for this repo in `CI` (*Contents*, *Pull requests*, *Issues*: read and
+  write) the check starts by itself; once that token expires, the run fails at its push step.
 - **`push_pr.yml`** (every PR) builds, runs `lake lint`, and compiles the blueprint (with
   `checkdecls`), the docs and the homepage. That is what a bump PR's check adds over hopscotch's
   own `lake build`. It runs the upstreaming-dashboard step too, because
@@ -39,20 +43,25 @@ Hopscotch's PR #1 and issue #2 were written against the old pins (first-bad `ab6
 - **Dependabot** (monthly) bumps the actions.
 
 **Merging a hopscotch PR**: a green check, then read its build log for new warnings (CI does not
-fail on them; the project's gate does). A fix-up commit goes on `hopscotch/bump`; the action sees a
-committer other than itself and stops force-pushing that branch until the PR is merged or closed.
+fail on them; the project's gate does), and the gates CI skips (the axioms harness, the
+`pebble-game` examples). A fix-up commit goes on `hopscotch/bump`; the action sees a committer other
+than itself at the head and stops force-pushing. **So the branch must be deleted on merge**, or no
+later run can push it: the repo deletes merged head branches automatically since 2026-10-25.
 
 **The limit: hopscotch cannot move `Matroid`.** Once a mathlib commit breaks `Matroid`'s pin,
 the tracking issue's first bad commit fails in `Matroid.*` rather than our files, and every later
 run bisects to it. The fix is a hand bump of both: `Matroid` to its new tip, and mathlib to the
 rev that tip pins (*Playbook*). A bisect also costs ~50 min per passing build against GitHub's
 6-hour job limit (2026-10-24's 1554-commit window took 4 h), so merge bump PRs promptly.
+**Live (2026-10-25):** issue #2's first bad commit `cedbee5` (mathlib #44379, reworking
+`specialize_all`) breaks `Matroid/ForMathlib/Tactic/TautoSet.lean` ("unknown tactic" in its
+`tauto_set!` macro), and `Matroid`'s `main` is still `8ece630`, so mathlib waits at `ba5499e`.
 
 **Left to the PI:** delete or keep the local `bump/lean-4.34.0-rc1` and `bump/lean-4.34.0-rc2`
 branches (never pushed, fully merged into `master`).
 
-**Next concrete task: none here.** Hopscotch tracks mathlib from here; the next hand bump (a
-`Matroid` break, or a toolchain move) starts from the *Playbook*.
+**Next concrete task:** once `Matroid`'s `main` moves past mathlib `cedbee5`, a hand bump of both
+(*Playbook*); hopscotch cannot. Until then it keeps the PR at the last good commit.
 
 ---
 
