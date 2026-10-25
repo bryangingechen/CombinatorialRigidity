@@ -9,6 +9,7 @@ public import CombinatorialRigidity.BodyBar.GenericLift
 public import CombinatorialRigidity.JacobsDegreeOne
 public import CombinatorialRigidity.JacobsTheorem
 public import CombinatorialRigidity.LamanTheorem
+public import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
 public import CombinatorialRigidity.Molecular.Molecule.Pencil.MainComponent.Statements
 public import CombinatorialRigidity.PebbleGame.Correctness
 public import Mathlib.Combinatorics.SimpleGraph.Star
@@ -62,6 +63,9 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   edge, a simple graph of deficiency `1`. It has a panel-hinge realization whose two panels are
   nonparallel, so that its hinge is nondegenerate, with infinitesimal motions of dimension
   `3 + 1 = 4`.
+* `finrank_span_rigidityRows_of_isGenericNormals_witness`: the rank formula at generic panel
+  normals (Jackson and Jordán 2010 §7) at the same single edge. Some panel-hinge framework on it has
+  generic normals, and every such framework has rigidity matrix of rank `3 · (2 - 1) - 1 = 2`.
 * `molecular_conjecture_multigraph_witness`: Tay and Whiteley's molecular conjecture, proved by
   Katoh and Tanigawa, for multigraphs, at the double edge, which is `0`-dof. The multigraph
   Theorem 5.6 gives it a rigid hinge-coplanar panel realization, so by the equivalence it has a
@@ -89,9 +93,10 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
 The body-bar and body-hinge rows are taken in the plane, `n = 2`, where `d = bodyBarDim 2 = 3` and
 each hinge is two bars (`bodyHingeMult 2 = 2`): at `n = 1` a hinge carries no bar
 (`bodyHingeMult 1 = 0`) and a body's one motion is a translation (`bodyBarDim 1 = 1`). So are
-Theorems 5.5 and 5.6 and the molecular conjecture for multigraphs, whose least dimension is `n = 2`
-(a panel is a line and a hinge a point); the pencil rows are stated at `n = 3`, and the molecule
-and Jacobs rows, about the square of a graph, in 3-space.
+Theorems 5.5 and 5.6, the rank formula at generic panel normals and the molecular conjecture for
+multigraphs, whose least dimension is `n = 2` (a panel is a line and a hinge a point); the pencil
+rows are stated at `n = 3`, and the molecule and Jacobs rows, about the square of a graph, in
+3-space.
 -/
 
 @[expose] public section
@@ -351,6 +356,29 @@ theorem rankHypothesis_of_theorem_55_gen_witness :
   · -- `dim Z = screwDim 1 + def(G̃) = 3 + 1`.
     rw [hdef] at hrank
     exact Int.ofNat_inj.mp hrank
+
+/-- **The rank formula at generic panel normals (Jackson and Jordán 2010 §7) at the single edge, in
+the plane**: `Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals` at
+`n = 2` (grade `k = 1`, so a panel is a line and a hinge a point), at the single edge on two bodies,
+a minimal `1`-dof-graph, which is simple and has both bodies as vertices; the label headroom is
+`3 · (2 - 1) < 4`. Some panel-hinge framework on it has generic normals
+(`exists_isGenericNormals`), and every such framework has rigidity matrix of rank
+`3 · (2 - 1) - 1 = 2`: the hinge's two independent constraints. -/
+theorem finrank_span_rigidityRows_of_isGenericNormals_witness :
+    (∃ Q : PanelHingeFramework ℝ 1 (Fin 2) (Fin 4),
+        Q.graph = Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4) ∧ Q.IsGenericNormals) ∧
+      ∀ Q : PanelHingeFramework ℝ 1 (Fin 2) (Fin 4),
+        Q.graph = Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4) → Q.IsGenericNormals →
+          Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) = 2 := by
+  refine ⟨PanelHingeFramework.exists_isGenericNormals _, fun Q hQ hq ↦ ?_⟩
+  have h := PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals (K := ℝ) (n := 2)
+    le_rfl (by simp only [Nat.card_fin]; decide) (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4))
+    ⟨0, by simp⟩ (Set.eq_univ_of_forall fun x ↦ by fin_cases x <;> simp)
+    (Graph.singleEdge_simple (by decide) 0) Q hQ hq
+  rw [(singleEdge_isMinimalKDof_one (n := 2) (by decide) 0).1.deficiency_eq,
+    Graph.vertexSet_singleEdge, Set.ncard_pair (by decide)] at h
+  norm_num [screwDim] at h
+  exact_mod_cast h
 
 /-- **The molecular conjecture for multigraphs at the double edge, in the plane**:
 `Molecular.molecular_conjecture_multigraph` at `n = 2` (a panel is a line and a hinge a point) at

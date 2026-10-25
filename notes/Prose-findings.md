@@ -1107,6 +1107,12 @@ declaration's name as its header writes it:
   live pins now carry, so 177 pins at 145 nodes lie outside every main result's closure, every pin
   of 109; deadness alone is no reason to unpin or retire (*Scope*), so the rest takes `CLEANUP.md`
   §B's three-way diagnosis in `notes/Prose-report.md`, G6).
+  Phase 41b, item 9b (the commit "Phase 41b item 9b: the generic panel rank formula is a main
+  result, witnessed at the single edge"): done for G6's PI item (`notes/Reconcile.md` §1, "Own
+  row"): the panel form's rank formula, `finrank_span_rigidityRows_of_isGenericNormals`, is a
+  `formalization.yaml` main result, with its non-vacuity witness, so `thm:panel-generic-rank`'s pin
+  and every pin it reaches are inside a main result's closure; `cor:panel-generic-rigid`'s pin,
+  which it does not reach, is named in the row. The rest stays left.
 - **F-014** · N · `lem:isSparse-exists-degree-le-three` (`sparsity.tex`): the low-degree step of
   the sparse reverse decomposition, `IsSparse.exists_one_le_degree_le_three` (a vertex of degree
   1, 2 or 3 in a $(2,3)$-sparse graph with an edge), has no node; the proof of
@@ -3202,7 +3208,7 @@ declaration's name as its header writes it:
   *Found:* round 4 task 2.9.
   *Disposition:* reported (`notes/Prose-report.md`, S34).
   Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
-  on `G` with generic normals"; the sha goes in at the next ledger sweep): done. The pins state what
+  on `G` with generic normals", `24d9d0cc`): done. The pins state what
   the nodes state: genericity is a framework's (`IsGenericNormals P`), over the rows at the edges of
   its graph, read with its own selector, which gives each edge its two ends, and it reads only the
   graph and the normals (`isGenericNormals_iff_of_graph_eq`, a third pin of `def:generic-normals`);
@@ -3232,7 +3238,7 @@ declaration's name as its header writes it:
   `intro.tex` and ROADMAP §34, with `rem:fresh-edge-supply`'s reading checked by a `lake lean`
   witness; its sharper reading is `F-252` (8ee0f8a8).
   Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
-  on `G` with generic normals"; the sha goes in at the next ledger sweep): done for the panel half.
+  on `G` with generic normals", `24d9d0cc`): done for the panel half.
   `finrank_span_rigidityRows_of_isGenericNormals` and
   `isInfinitesimallyRigidOn_of_isGenericNormals_iff` take neither `hends` nor `hfresh` but KT
   Theorem 5.6's `hcard` (more than $D(|\alpha| - 1)$ labels), a bound on the label set, not on $G$,
@@ -3241,6 +3247,14 @@ declaration's name as its header writes it:
   `thm:panel-generic-rank`, `cor:panel-generic-rigid` and the note after it are restated. G6's
   non-vacuity witness at the single edge and the scope sentences are item 9b's, the body-hinge half
   item 10's.
+  Phase 41b, item 9b (the commit "Phase 41b item 9b: the generic panel rank formula is a main
+  result, witnessed at the single edge"): the panel half's witness,
+  `finrank_span_rigidityRows_of_isGenericNormals_witness` (`Nonvacuity.lean`): at the single edge
+  on two bodies in the plane, a minimal $1$-dof-graph, some framework has generic normals and each
+  such has rank $3 \cdot (2 - 1) - 1 = 2$. The scope sentences now name the
+  body-hinge theorem only (`formalization.yaml`'s body-hinge row, its `alignment` note and
+  `fidelity.divergences`, README, the home page, `intro.tex` and ROADMAP §34); the row and the
+  last four also say that the panel form has lost the restriction. Item 10 removes them.
 
 - **F-211** · S · `def:two-extensor`, `def:generic-endpoints` (`generic-lift.tex`): principle B's
   moves out of two definitions, task 2.10's hygiene-rule reading. At the open `def:two-extensor`
@@ -3272,7 +3286,7 @@ declaration's name as its header writes it:
   *Found:* round 4 task 2.10.
   *Disposition:* reported (`notes/Prose-report.md`, S13).
   Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
-  on `G` with generic normals"; the sha goes in at the next ledger sweep): S13 within S1's refactor,
+  on `G` with generic normals", `24d9d0cc`): S13 within S1's refactor,
   on the panel side: the genericity of `def:generic-normals` reads only the rows at the edges of
   $G$, and its abundance polynomial has variables for the bodies only. The body-bar endpoint
   assignments, this entry's subject, are unchanged, with the note after `def:generic-endpoints`.
@@ -3388,7 +3402,7 @@ declaration's name as its header writes it:
   *Found:* RECONCILE round 1 task 2.
   *Disposition:* reported (`notes/Reconcile-texts-cleanup.md`, *Candidates for the PI*).
   Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
-  on `G` with generic normals"; the sha goes in at the next ledger sweep): done for the two panel
+  on `G` with generic normals", `24d9d0cc`): done for the two panel
   pins, which no longer take `hfresh` (`F-207`); the four body-hinge pins are item 10's.
 - **F-260** · S · `lem:panel-hinge-dual-molecular` (`molecule-modelling.tex`): its unpinned (2), the
   rescaling of the normals $\bar c(v)$ by nonzero $\lambda_v$, is the case $q = \bar c$ of
@@ -3508,6 +3522,22 @@ declaration's name as its header writes it:
   *Disposition:* done (`9f7f73ee`): the PI chose to add `Q.IsNonparallel` beside the nondegenerate hinges
   (`notes/Phase41-design.md` §1d); statement, docstring, `thm:molecular-conjecture`, the witness's
   statement and the two `formalization.yaml` rows restated.
+- **F-331** · S · `prop:rigidity-matrix-prop11` (`algebraic-induction/panel-layer.tex`; its pin
+  `rigidityMatrix_prop11`, `AlgebraicInduction/PanelHinge.lean`): the node states KT Proposition
+  2.3's rank formula for a generic panel-hinge realization of a multigraph, which is false in the
+  project's meet model at the double edge on two bodies: its two hinges are the meet of the same
+  two panels, so no panel-hinge framework on it with nondegenerate hinges attains the deficiency
+  rank. KT state the proposition for generic body-hinge frameworks on multigraphs (p. 655,
+  crediting Jackson and Jordán), and the pin is a body-hinge statement, conditional on the generic
+  bound (`F-121`).
+  *Evidence:* read (KT 2011 p. 655, Proposition 2.3; the node's statement); a `lake lean` witness,
+  `restated_theorem56_false_at_banana` (`notes/reconcile-formal/RestateWitness.lean`, at
+  `3a627b3d`): the double edge in the plane has deficiency zero, and no panel-hinge framework on it
+  with nonzero hinges at its edges meets the rank hypothesis there, which the formula would give a
+  generic one.
+  *Found:* Phase 41b, the coordinator's check of KT for the PI (`notes/Phase41-design.md` §1f.1).
+  *Disposition:* open (`notes/Phase41b.md`, item 11): the PI chose KT's body-hinge form, proved
+  conditionally, repinned unconditionally on MULTIGRAPH's M1.
 
 ## L — Lean
 
@@ -4100,7 +4130,7 @@ declaration's name as its header writes it:
   is unused (the binder stays, as `cor:theorem-55-d3-spanning` states it); item 6 (`a22d989c`): with `reaim`
   gone its two-body hypothesis is unused too, and the docstring says so (the binder `_hV` stays,
   as the node states it). Phase 41b, item 8 (the commit "Phase 41b item 8: `cor:theorem-55-d3-spanning`
-  derives from `theorem_55_d3`"; the sha goes in at the next ledger sweep): done for the pin.
+  derives from `theorem_55_d3`", `8c2d4475`): done for the pin.
   Its `_hV` and `_hSimple` are used, as the realization now comes from `theorem_55_d3`, whose
   nonparallel conjunct needs a simple graph (false at the double edge on two bodies); the docstring
   no longer says they are unused, and `cor:theorem-55-d3-spanning` and its note are restated.

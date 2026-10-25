@@ -8,7 +8,9 @@ they open. The PI's decisions on item 1's recon (KT's nonparallel panels) are §
 landed: Theorems 5.5 and 5.6 conclude KT's nonparallel panels for simple `G`, and
 `molecular_conjecture` and the multigraph rows ask nondegenerate hinges on `E(G)` only. Item 9's
 design pass, on the generic panel theorems, is §2's last arc; the PI's decision on their body
-bound is §1e, and item 9a restated them. Next concrete task: 41b's item 9b.
+bound is §1e, item 9a restated them, and item 9b made their rank formula a main result. The PI's
+answers in advance (2026-10-25: S18, RESTATE's close, free strengthenings, M1's loops) are §1f.
+Next concrete task: 41b's item 10, a design pass on the body-hinge theorems.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -160,6 +162,63 @@ What the answer settles: the rank formula and the iff take `hne : V(G).Nonempty`
 `hV : 2 ≤ V(G).ncard`, which the spike's `_of_nonempty` forms compile, and their names are the
 planned unsuffixed ones (`finrank_span_rigidityRows_of_isGenericNormals`,
 `isInfinitesimallyRigidOn_of_isGenericNormals_iff`).
+
+## 1f. The PI's answers in advance (2026-10-25)
+
+Given while item 9a built. The PI asked: "Are there any other questions that might come up? I
+should answer them now in case I'm away later." The coordinator put four questions:
+
+1. **Item 11 (S18).** "Item 11 (finding S18): the blueprint's `prop:rigidity-matrix-prop11` states
+   the rank formula (KT Prop. 2.3) at a generic realization of a multigraph, but its Lean pin only
+   proves it *assuming* the generic bound `dim Z ≤ D + def` (`hgen`); no pin shows a generic
+   realization meets that bound. How should it be fixed?" The PI asked: "Is this node one from
+   KT?" The coordinator checked KT 2011 (p. 655): Proposition 2.3 is in KT's preliminaries,
+   credited by KT to Jackson–Jordán [15], and is about generic **body-hinge** frameworks on
+   multigraphs ((i) `rank R(G,p) = D(|V|−1) − k`, (ii) `def(G̃) = k`, (iii)
+   `rank M(G̃) = D(|V|−1) − k` are equivalent); the node states it for a generic **panel-hinge**
+   realization of a multigraph, which is false in the project's meet model (the double edge on
+   two bodies); the pin `rigidityMatrix_prop11` is a body-hinge statement, conditional on `hgen`.
+   Re-asked: "Item 11: KT Prop. 2.3 (Jackson–Jordán's, as KT credit) is about generic body-hinge
+   frameworks on multigraphs; the node wrongly says panel-hinge (false for multigraphs in our
+   model), and its Lean pin is conditional on the generic bound. How should RESTATE fix it?"
+   Options: "KT's body-hinge form, conditional (Recommended)", "Panel-hinge, simple graphs",
+   "Both". The PI chose "KT's body-hinge form, conditional (Recommended)".
+2. **After RESTATE closes.** "When RESTATE closes (items 9b–12, then the close checklist), what
+   should the loop do? You said you'd push after RESTATE; that push is CI's first run of 41a's
+   module conversion." Options: "Stop for your push (Recommended)", "Continue: open MULTIGRAPH",
+   "Continue: open UNSTATED". The PI chose "Stop for your push (Recommended)".
+3. **Free strengthenings.** "Standing policy: when a build finds a conclusion can be strengthened
+   at no proof cost (like F-330's nonparallel panels), or a hypothesis relaxed that the proof
+   doesn't need (like the body bound you just relaxed), may I adopt it without asking?" Options:
+   "Adopt, record it (Recommended)" (adopt when it changes only the theorem at hand, no other
+   row's statement and no pencil row, and follows a pattern the PI already approved; recorded in
+   the design doc as the coordinator's call under this authorization; anything else still goes to
+   the PI) and "Always ask me". The PI chose "Adopt, record it (Recommended)".
+4. **M1 and loops** (design doc §4). "If MULTIGRAPH opens (now or later), its first decision
+   (design doc §4): M1's multigraphs and loops. A loop's hinge constrains nothing and never
+   crosses a partition. Allow loops by relaxing the upper bound's hinge condition to non-loop
+   links, or assume `G.Loopless`?" Options: "Allow loops (Recommended)" (relax the upper bound's
+   nondegeneracy to non-loop links; if the open's recon finds it costs more than about one extra
+   commit, come back to the PI), "Assume loopless", "Decide at the open". The PI chose "Allow
+   loops (Recommended)".
+
+What each answer settles:
+
+1. **Item 11 restates `prop:rigidity-matrix-prop11` as KT state it**: a generic body-hinge
+   framework on a multigraph (KT p. 655, credited to Jackson–Jordán), proved in the conditional
+   form (the bound gives the formula), citing item 10's generic body-hinge theorem for simple
+   graphs. It is repinned unconditionally when MULTIGRAPH's M1 lands (§3's MULTIGRAPH row). The
+   node's panel-hinge reading is the ledger's `F-331`, whose disposition is item 11.
+2. **RESTATE's close stops the loop for the PI's push** (41b's *Close* line), which is CI's first
+   run of 41a's module conversion.
+3. **The standing policy on free strengthenings**: the coordinator adopts, without asking, a
+   conclusion strengthened at no proof cost or a hypothesis relaxed that the proof does not need,
+   when it changes only the theorem at hand (no other row's statement, no pencil row) and follows
+   a pattern the PI already approved, and records it here as the coordinator's call under this
+   authorization; anything else still goes to the PI. 41b's statement-change rule points here.
+4. **M1 allows loops** (§4): the upper bound's nondegeneracy is relaxed to non-loop links; if
+   MULTIGRAPH's open recon finds that this costs more than about one extra commit, the question
+   goes back to the PI.
 
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
@@ -415,7 +474,7 @@ states the planned declarations under their planned names, in its own namespace.
 |---|---|---|---|
 | **CARRIER** | 41a (closed 2026-10-24) | done: `reaimSub` retired; the link predicate, its lemmas and the fill-in tactic; the four R statements; the spike; the switch (the field, 123 declarations in 27 files) and the footprint's docstrings; `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged (`notes/Phase41a.md`) | 9, besides the build-time detour P1–P5 |
 | **RESTATE** | 41b (opened 2026-10-24) | S2's main results and nodes (with `F-323`, §1.2–1.4); `cor:theorem-55-d3-spanning`; S1's panel and body-hinge theorems (with S13 and `F-324`); G6's row; round 1's scope sentences on the degenerate hinges removed (`formalization.yaml`, README, home page, `intro.tex`, ROADMAP; their selector half went in 41a's item 5b); non-vacuity witnesses at minimal graphs for these rows; S18 (the conditional statement or a repin on the generic forms, after S1; its `hC` moved to links in 41a's item 6); the remaining footprint docstrings; the link conjuncts the field makes redundant (the coordinator's call at 41a's close): the rows form `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` and `exists_rankHypothesis_isGeneralPosition4_of_two_le` (`Theorem56.lean`), and `exists_independent_normalRow_of_le_finrank`'s `hQends` (`PanelGeneric.lean`), with the d = 3 wrapper `exists_rankHypothesis_isGeneralPosition4`; from the PI's decisions at its open (§1b): Theorem 5.6 with general position, G6's row as the rank formula, `HasGenericFullRankRealization`'s last conjunct, and KT's nonparallel in Theorem 5.5's conclusion | 13–16 (`notes/Phase41b.md`) |
-| **MULTIGRAPH** | — | M1: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1) | 3–5 |
+| **MULTIGRAPH** | — | M1: the multigraph generic body-hinge theorem (JJ 2010 Theorem 6.1), loops allowed (§1f.4); then `prop:rigidity-matrix-prop11`, restated by 41b's item 11 as KT's body-hinge form proved conditionally, repinned unconditionally on M1 (§1f.1) | 3–5 |
 | **UNSTATED** | — | the claims no declaration states, the report's estimates: S22 1–2, S23 1, S24 2–3, S25 1, S31 2–3, S3 0–2, S16 1, S19 0–3, G5 3–5, `F-061` 1–2; after CARRIER, since S3 and S19 touch carrier code (`case_II_placement_eq612`) | 13–23 |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
@@ -429,9 +488,11 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
 
 - **KT's nonparallel** (§1b.4): settled by §2's *KT's nonparallel recon* (route B, 41b's items
   4a–4c) and by the PI's decisions in §1c (route B; the d = 3 wrapper concludes `IsNonparallel`).
-- **M1 and loops**: assume `G.Loopless`, or relax the upper bound's `hC` to non-loop links (a loop's
-  constraint is vacuous, and a loop never crosses a partition). MULTIGRAPH's open decides. JJ 2010
-  Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for 2-edge-coloured multigraphs; the
-  row's "every generic realization" is the project's strengthening.
+- **M1 and loops**: settled by the PI in advance (§1f.4): loops allowed, the upper bound's `hC`
+  relaxed to non-loop links (a loop's constraint is vacuous, and a loop never crosses a partition);
+  if MULTIGRAPH's open recon finds that this costs more than about one extra commit, the question
+  goes back to the PI. JJ 2010 Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for
+  2-edge-coloured multigraphs; the row's "every generic realization" is the project's
+  strengthening.
 - **The generic panel theorems on one body** (§2, *Item 9's recon*): settled by the PI (§1e), the
   rank formula and the iff take `V(G).Nonempty`; landed with 41b's item 9a.

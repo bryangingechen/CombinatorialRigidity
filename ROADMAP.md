@@ -1039,9 +1039,12 @@ the capstone: every generic hinge-point realization is rigid iff
 `(D-1)·G` packs `D` edge-disjoint spanning trees, over any infinite
 field (JJ Thm 6.1 / Cor 6.3 in every-generic form,
 `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`).
-As stated, P's and BH's theorems say nothing about a graph that is
-itself a minimal `k`-dof-graph, and apply to every graph with more than
-`D(|V|-1)` edges (`F-207`; the refactor is `RECONCILE-FORMAL`'s).
+As stated, BH's theorems say nothing about a graph that is itself a
+minimal `k`-dof-graph, and apply to every graph with more than
+`D(|V|-1)` edges (`F-207`; the refactor is `RECONCILE-FORMAL`'s). P's
+theorems lost the restriction in Phase 41b, which gave them KT Theorem
+5.6's bound on the edge labels instead and made P's rank formula a main
+result.
 Headline axioms verified at close. This closed the PROSPECT queue.
 
 ### Phase 35 — Multigraph molecular conjecture in the hinge-coplanar model (COPLANAR, post-program)

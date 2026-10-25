@@ -497,19 +497,39 @@ status:
       bodies, at any dimension n >= 2 and over any infinite field, the affine-hinge
       framework at every hinge-point assignment generic for row independence is
       infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees.
-      The panel-normal analogue (JJ Thm 7.2, sharpened to an iff) is
+      The panel-normal analogue, JJ Thm 7.2 sharpened to an iff, is the corollary of the next
+      row's rank formula. As stated, this theorem covers only part of this class. It assumes
+      that every edge label is an edge of G, and that every minimal k-dof-graph on the bodies
+      and the labels leaves some label unused (the supply of fresh labels that the Theorem 5.5
+      induction needs). The two assumptions contradict each other whenever G is itself a
+      minimal k-dof-graph for some k (a single edge, a tree, every minimal 0-dof-graph), so the
+      theorem says nothing about such a graph. Both hold whenever G has more than D(|V| - 1)
+      edges, for instance K_7 at n = 2 (21 > 3 * 6 edges); which graphs in between the theorem
+      covers is not settled. Phase 41 (in progress) removes the restriction, as it has for the
+      panel-normal analogue: the theorem will no longer assume that every label is an edge of
+      G, and will take a bound on the number of labels in place of the supply of unused ones.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals"
+    file: "CombinatorialRigidity/Molecular/GenericLift/PanelGeneric.lean"
+    description: >-
+      The rank formula at generic panel normals (phase 34, restated in phase 41b):
+      Katoh-Tanigawa 2011 Theorem 5.6 for simple graphs, at every panel-hinge realization with
+      generic normals (Jackson-Jordán 2010 section 7). For a simple spanning graph G on >= 1
+      body with more than D(|V|-1) edge labels (the bound the Theorem 5.6 row's declaration
+      takes), at any dimension n >= 2 and over any infinite field, every panel-hinge framework
+      on G whose normals are generic attains the deficiency rank,
+      rank R(G,p) = D(|V|-1) - def(G~). The normals are generic when every set of rigidity rows
+      at the edges of G that is linearly independent at some choice of normals is independent
+      at the framework's own; the choices that are not generic lie in the zero set of one
+      nonzero polynomial. The single edge and every tree are covered, given enough labels. Its
+      corollary
       CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff
-      (CombinatorialRigidity/Molecular/GenericLift/PanelGeneric.lean).
-      As stated, both theorems cover only part of this class. They assume that every edge
-      label is an edge of G, and that every minimal k-dof-graph on the bodies and the labels
-      leaves some label unused (the supply of fresh labels that the Theorem 5.5 induction
-      needs). The two assumptions contradict each other whenever G is itself a minimal
-      k-dof-graph for some k (a single edge, a tree, every minimal 0-dof-graph), so the
-      theorems say nothing about such a graph. Both hold whenever G has more than
-      D(|V| - 1) edges, for instance K_7 at n = 2 (21 > 3 * 6 edges); which graphs in
-      between the theorems cover is not settled. Phase 41 (in progress) removes the
-      restriction: the theorems will no longer assume that every label is an edge of G, and
-      will take a bound on the number of labels in place of the supply of unused ones.
+      is Jackson-Jordán 2010 Thm 7.2 sharpened to an iff: every such framework is
+      infinitesimally rigid iff def(G~) = 0.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -636,9 +656,9 @@ fidelity:
     "Notes on the formalization", records the wrong turns the development took. A 2026 review
     of the blueprint against the Lean found statements that claim more or less than the
     declarations they cite, and a cleanup now under way acts on them. Among the main results,
-    the generic body-hinge theorem with its panel-hinge companion, and Katoh-Tanigawa
-    Theorem 5.6 and the molecular conjecture for simple graphs, as stated, cover less than
-    their sources' statements do; their rows in status.main_results say what each covers.
+    the generic body-hinge theorem, and Katoh-Tanigawa Theorem 5.6 and the molecular
+    conjecture for simple graphs, as stated, cover less than their sources' statements do;
+    their rows in status.main_results say what each covers.
 
 # review status
 review:
@@ -647,7 +667,7 @@ review:
   notes: >-
     No external human peer review. Confidence rests on: a fully green CI build on every push
     (Lean compile, blueprint web/PDF, and checkdecls cross-checking every blueprint \lean{...}
-    pointer against the Lean environment); per-result `#print axioms` checks (all nineteen
+    pointer against the Lean environment); per-result `#print axioms` checks (all twenty
     main results use only propext / Classical.choice / Quot.sound); the lakefile's `warn.sorry`
     backstop; and continuous AI-agent review (between-phase cleanup rounds auditing
     Lean/blueprint divergence and long proofs, plus /code-review and friction-review passes),
@@ -792,12 +812,12 @@ alignment:
       status: "proved"
       note: >-
         Over any infinite field, with the existential quantifier upgraded to every generic
-        hinge-point realization. As stated, both theorems assume that every edge label is an
-        edge of G and that every minimal k-dof-graph on the bodies and the labels leaves a
-        label unused, which together exclude every G that is itself a minimal k-dof-graph (a
-        single edge, a tree, every minimal 0-dof-graph); the assumptions hold when G has more
-        than D(|V| - 1) edges, and the graphs in between are not settled (the main_results
-        row).
+        hinge-point realization. As stated, both hinge-point theorems assume that every edge
+        label is an edge of G and that every minimal k-dof-graph on the bodies and the labels
+        leaves a label unused, which together exclude every G that is itself a minimal
+        k-dof-graph (a single edge, a tree, every minimal 0-dof-graph); the assumptions hold
+        when G has more than D(|V| - 1) edges, and the graphs in between are not settled (the
+        main_results row).
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff"

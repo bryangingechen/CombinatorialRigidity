@@ -2,13 +2,13 @@
 
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c; on
-`F-330`, §1d; on the generic panel theorems' body bound, §1e) and the recons are in
-`notes/Phase41-design.md`. Items 1–8 and 9a done: Theorems 5.5 and 5.6, and their `d = 3`
-instances, conclude KT's nonparallel panels for simple `G`, `molecular_conjecture` holds on one
-body with nonparallel panels on its panel side (item 6b), the multigraph rows ask nondegeneracy on
-`E(G)` (item 7), the `d = 3` spanning corollary derives from `theorem_55_d3` (item 8), and the
-generic panel theorems hold at every framework on `G` with generic normals (item 9a). Next concrete
-task: item 9b, G6's row and its witness.
+`F-330`, §1d; on the generic panel theorems' body bound, §1e; in advance, §1f) and the recons are in
+`notes/Phase41-design.md`. Items 1–9 done: Theorems 5.5 and 5.6, and their `d = 3` instances,
+conclude KT's nonparallel panels for simple `G`, `molecular_conjecture` holds on one body with
+nonparallel panels on its panel side, the multigraph rows ask nondegeneracy on `E(G)`, the `d = 3`
+spanning corollary derives from `theorem_55_d3`, and the generic panel theorems hold at every
+framework on `G` with generic normals, their rank formula a main result (item 9b).
+Next concrete task: item 10's design pass, on the body-hinge theorems.
 
 ## Current state
 
@@ -31,15 +31,21 @@ nondegenerate hinges on `E(G)` (item 8). Item 9's design pass (`notes/Phase41-de
 9b (G6's row). Item 9a restated `PanelGeneric.lean`: genericity is the framework's, over the rows at
 the edges of its graph; the rank formula and its iff range over every framework on `G` with generic
 normals, under Theorem 5.6's `hd`, `hcard` and, by the PI's §1e, `V(G).Nonempty`; their witness is
-Theorem 5.6's main form. Next: item 9b, then the remaining restatements. Mode: structural edit. There are no
-red target nodes; each slice restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
+Theorem 5.6's main form. Item 9b made the rank formula a `main_results` row, witnessed at the
+single edge, and narrowed the S1 scope sentences to the body-hinge theorem. The PI answered four
+questions in advance (§1f): item 11's form, the stop at RESTATE's close, free strengthenings, M1's
+loops. Next: item 10's design pass, then the remaining restatements. Mode: structural edit. There
+are no red target nodes; each slice restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
 *Forward-mode slices*).
 
 ## Architectural choices made up front
 
-- **Statements change only as the design doc's §1 and §1b–§1e say** (`notes/Reconcile.md` §2,
-  *Hygiene*): any other statement change is recorded as an `S` entry and not acted on. A prompt
-  that bars an edit names the neighbouring edits it allows (dispatch-log F51).
+- **Statements change only as the design doc's §1 and §1b–§1f say** (`notes/Reconcile.md` §2,
+  *Hygiene*): any other statement change is recorded as an `S` entry and not acted on, except a
+  conclusion strengthened at no proof cost or a hypothesis relaxed that the proof does not need,
+  which the coordinator may adopt under the PI's standing policy, "Adopt, record it" (design doc
+  §1f.3: only the theorem at hand, an approved pattern, recorded there). A prompt that bars an
+  edit names the neighbouring edits it allows (dispatch-log F51).
 - **Each restated main result lands with its non-vacuity witness** in
   `CombinatorialRigidity/Nonvacuity.lean` (`PHASE-BOUNDARIES.md` *When this commit closes a
   phase*); its `formalization.yaml` row follows in the same commit.
@@ -73,42 +79,42 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
     the rank formula and the iff renamed, over every `Q` on `G`, with `hd`, `hcard`, `hne` (§1e);
     the nodes, fmlnotes, repoints and `formalization.yaml:501`, `:803`–`:810` (`F-206`; the panel
     halves of `F-207`, `F-252`; S13's panel side).
-  - [ ] **9b. G6's row.** `finrank_span_rigidityRows_of_isGenericNormals` as a `main_results` row
-    of `formalization.yaml`, its witness at the single edge in `Nonvacuity.lean` (the spike's
-    `…_witness`, which now passes `V(G).Nonempty` for `hV`; a `public import` of `PanelGeneric`);
-    the S1 scope sentences (README, home page, `intro.tex`, ROADMAP §34, `formalization.yaml:503`,
-    `:795`) narrowed to the body-hinge theorem: since 9a they are false of the panel one.
-    Ledger: `F-012`'s PI item, the panel form a main result.
+  - [x] **9b. G6's row**: `finrank_span_rigidityRows_of_isGenericNormals` a `main_results` row,
+    its witness at the single edge in `Nonvacuity.lean`; the S1 scope sentences name the
+    body-hinge theorem only (`F-012`'s PI item; `F-207`).
 - [ ] **10. S1, the body-hinge theorems** (`HingeGeneric.lean`): `hcard` for `hfresh`,
   `IsGenericHingePoints` oriented by the links, no `ends`, `hends` or `hD`; the spanning-trees row
   restated; the docstring-label check's two findings (`HingeGeneric.lean:476`, `:485`) cleared and
   its baseline lowered; the S1 scope sentences removed. Item 9's recon does not reach its predicate
   (`BodyHingeFramework` has no selector): a design pass with a spike first, as item 9's.
-- [ ] **11. S18** (`prop:rigidity-matrix-prop11`): the conditional statement, or a repin on the
-  generic forms.
+- [ ] **11. S18** (`prop:rigidity-matrix-prop11`; `F-121`, `F-331`; the PI's §1f.1): restated as
+  KT state Proposition 2.3, a generic body-hinge framework on a multigraph (KT p. 655, credited to
+  Jackson–Jordán), not a panel-hinge realization; proved in the conditional form (the bound gives
+  the formula), citing item 10's generic body-hinge theorem for simple graphs. The unconditional
+  repin waits for MULTIGRAPH's M1 (design doc §3).
 - [ ] **12. The status surfaces**: the degenerate-hinge sentences (Theorem 5.6's `main_results` row
   and `alignment` note, README, the home page, `intro.tex`, ROADMAP §23) and the footprint's
   remaining docstrings. The row and the note were restated at item 5; the other surfaces' "Theorem
   5.6 allows degenerate hinges" is false of `rankHypothesis_of_theorem_55_gen` since item 5 (true
   of the d = 3 instance until item 5b).
 - [ ] **Close**: whole-project build with 0 warnings, `lake lint`, the blueprint gates, the main
-  results' axioms; MULTIGRAPH or UNSTATED named next.
+  results' axioms; MULTIGRAPH or UNSTATED named next. Then the loop **stops for the PI's push**
+  (§1f.2), CI's first run of 41a's `module` conversion: no next phase opens.
 
 ## Blockers / open questions
 
 - **CI has not run since 2026-10-15**: the PI pushes after RESTATE closes (§1b), so that push is
-  CI's first run of 41a's `module` conversion (doc-gen, the upstreaming dashboard). The close
-  should expect to watch it.
+  CI's first run of 41a's `module` conversion (doc-gen, the upstreaming dashboard). The loop stops
+  at the close for that push (§1f.2).
 
 ## Hand-off / next phase
 
-**Item 9b**: G6's `main_results` row for `finrank_span_rigidityRows_of_isGenericNormals`, its
-non-vacuity witness at the single edge in `Nonvacuity.lean` (the spike's
-`finrank_span_rigidityRows_of_isGenericNormals_witness`, its `hV` argument now a proof of
-`V(G).Nonempty`), and the S1 scope sentences narrowed to the body-hinge theorem (checklist 9b). The
-spike is a record at `8c2d4475` and no longer compiles against the tree (its abundance call reads the
-old signature): transcribe the witness and its `singleEdge_isKDof_one`, not the file. One dispatch.
-Then item 10's design pass.
+**Item 10's design pass** (checklist 10): a recon with a Lean spike, as item 9's, on the
+body-hinge theorems of `HingeGeneric.lean`. It settles the predicate (`BodyHingeFramework` has no
+selector, and `hingePointRow`'s sign follows it), whether the transplant (`HingeGeneric.lean:751`)
+takes nondegeneracy on `E(G)` so that Theorem 5.6's main form is the witness, the cascade, the
+spanning-trees row's witness at a minimal graph, and the split into commits. One dispatch; then
+the commits it plans.
 
 ## Decisions made during this phase
 
@@ -121,6 +127,8 @@ Then item 10's design pass.
 - **The PI's decision on `F-330`** (2026-10-25): `notes/Phase41-design.md` §1d, verbatim.
 - **The PI's decision on the generic panel theorems' body bound** (2026-10-25):
   `notes/Phase41-design.md` §1e, verbatim.
+- **The PI's answers in advance** (2026-10-25; S18, RESTATE's close, free strengthenings, M1's
+  loops): `notes/Phase41-design.md` §1f, verbatim.
 - **Item 3** (`F-324`): four lemmas without `1 ≤ k` take `hk` for `hD : 2 ≤ D` (`D = 1` at `k = 0`).
 - **The genuine form concludes nonparallel too** (item 5; the coordinator's adjudication):
   `rankHypothesis_genuine_of_theorem_55_gen` gains `Q.IsNonparallel`, hypotheses unchanged; the rows

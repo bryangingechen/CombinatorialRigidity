@@ -160,16 +160,21 @@ packs `D` edge-disjoint spanning trees
 (`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`),
 with the non-generic parameter choices confined to the zero set of a
 single nonzero polynomial in each case. As stated, the generic
-body-hinge theorem and its panel-hinge companion (Jackson–Jordán's
-Theorem 7.2) cover only part of the simple graphs: they assume that
-every edge label is an edge of `G` and that every minimal
+body-hinge theorem covers only part of the simple graphs: it assumes
+that every edge label is an edge of `G` and that every minimal
 `k`-dof-graph on the bodies and the labels leaves a label unused, and
 the two assumptions contradict each other whenever `G` is itself a
 minimal `k`-dof-graph — a single edge, a tree, every minimal
-`0`-dof-graph — so the theorems say nothing about such a graph. Both
+`0`-dof-graph — so the theorem says nothing about such a graph. Both
 assumptions hold when `G` has more than `D(|V|−1)` edges (for
-instance `K₇` in the plane); which graphs in between they cover is
-not settled, and phase 41, in progress, removes the restriction.
+instance `K₇` in the plane); which graphs in between it covers is
+not settled. Phase 41, in progress, removes the restriction. It has
+already done so for the theorem's panel-hinge companion: every
+panel-hinge framework on a simple graph whose panel normals are
+generic attains the deficiency rank, given more edge labels than
+`D(|V|−1)`, and so is infinitesimally rigid iff the graph has
+deficiency zero (Jackson–Jordán's Theorem 7.2, sharpened to an iff;
+`PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals`).
 Phase 35 (closed 2026-07-18)
 recovered the **full multigraph strength** of Theorem 5.6 and of the
 molecular conjecture itself, which the development above proves for
