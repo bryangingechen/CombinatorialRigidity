@@ -20,11 +20,15 @@ item, in order (`.claude/agents-core/phase-builder.md`).
 part of this prompt. It carries the binding loop discipline (gates,
 scoping, bailouts); this file is only the outer contract.
 
-Your model rung is pinned by this definition: **Claude Sonnet 5**.
-Your commit trailer is
-`Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>` — unless
-your own environment block identifies a different model: then your
-environment wins; use its name and flag the mismatch in your return.
+Your model rung is pinned by this definition: **Claude Sonnet** — name
+the exact version from your **environment block**, in display form
+(`Claude Sonnet <version>`), with no context-window suffix — and do
+*not* copy a version from this file, from another agent definition, or
+from `git log` (this file pinned "Claude Sonnet 5" until a Sonnet 5.5
+dispatch overrode it, Phase 41a item 5b). Your commit trailer names that
+model — unless your environment block identifies a non-Sonnet model:
+then your environment wins; use its name and flag the mismatch in your
+return.
 
 After committing, return a final message of exactly the form:
 
