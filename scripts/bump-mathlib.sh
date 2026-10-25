@@ -22,6 +22,11 @@
 # transitively via `Matroid`) keep their own pins -- bumping those is a separate,
 # deliberate decision.
 #
+# A merged hopscotch PR pins `rev = "<sha>"` on the mathlib require in
+# `lakefile.toml` (and the same SHA as mathlib's `inputRev` in the manifest).
+# When that pin is present, this script moves both to the target as well, so
+# the lakefile never names a different mathlib from the one actually checked out.
+#
 # See `notes/ToolchainBumps.md` *Playbook* for the surrounding process, and
 # `CombinatorialRigidity/CLAUDE.md` *Build discipline* for the `lake update` rule.
 
@@ -30,7 +35,7 @@ set -euo pipefail
 MATHLIB_REPO="leanprover-community/mathlib4"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-usage() { sed -n '2,26p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 2; }
+usage() { sed -n '2,31p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 2; }
 
 [[ $# -ge 1 ]] || usage
 TARGET="$1"; shift
@@ -56,7 +61,7 @@ curl -fsSL "${RAW}/lake-manifest.json" -o "$TMP/mathlib-manifest.json"
 curl -fsSL "${RAW}/lean-toolchain"     -o "$TMP/lean-toolchain"
 
 python3 - "$ROOT" "$TMP" "$SHA" "$APPLY" <<'PYEOF'
-import json, sys
+import json, re, sys
 from pathlib import Path
 
 root, tmp, sha, apply = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3], sys.argv[4] == "1"
@@ -73,6 +78,10 @@ for pkg in ours["packages"]:
         if pkg["rev"] != sha:
             changes.append((name, pkg["rev"], sha))
             pkg["rev"] = sha
+        # A hopscotch-pinned SHA; `null` (no `rev` in the lakefile) stays.
+        if pkg.get("inputRev") is not None and pkg["inputRev"] != sha:
+            changes.append(("mathlib.inputRev", pkg["inputRev"], sha))
+            pkg["inputRev"] = sha
         continue
     up = upstream.get(name)
     if up is None:
@@ -84,6 +93,15 @@ for pkg in ours["packages"]:
 
 # Any mathlib dep we do not carry at all is a new transitive requirement.
 missing = [n for n in upstream if n not in {p["name"] for p in ours["packages"]}]
+
+# The `rev` line, if any, inside the `[[require]]` block named "mathlib".
+lf_path = root / "lakefile.toml"
+lf_old = lf_path.read_text()
+blocks = re.split(r"(?m)^(?=\[\[)", lf_old)
+for i, block in enumerate(blocks):
+    if block.startswith("[[require]]") and re.search(r'(?m)^name = "mathlib"$', block):
+        blocks[i] = re.sub(r'(?m)^rev = "[^"]*"$', f'rev = "{sha}"', block)
+lf_new = "".join(blocks)
 
 tc_path = root / "lean-toolchain"
 tc_new = (tmp / "lean-toolchain").read_text().strip()
@@ -104,6 +122,9 @@ if changes:
 else:
     print("\nlake-manifest.json: already in sync")
 
+if lf_new != lf_old:
+    print(f"\nlakefile.toml: mathlib `rev` -> {short(sha)}")
+
 if missing:
     print("\n⚠ mathlib now requires packages we do not carry -- add them by hand:")
     for n in sorted(missing):
@@ -115,6 +136,8 @@ if not apply:
 
 if changes:
     ours_path.write_text(json.dumps(ours, indent=1) + "\n")
+if lf_new != lf_old:
+    lf_path.write_text(lf_new)
 if tc_old != tc_new:
     tc_path.write_text(tc_new + "\n")
 print("\nwritten.")

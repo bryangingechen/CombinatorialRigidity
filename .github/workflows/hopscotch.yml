@@ -5,6 +5,12 @@ name: hopscotch (mathlib bump)
 # a PR against this repo's `master`. If it breaks, bisects to find the
 # breaking mathlib commit and opens / updates a tracking issue.
 #
+# The bump also writes `rev = "<sha>"` on the mathlib require in
+# lakefile.toml (hopscotch's mechanism). It moves only mathlib: `Matroid`
+# stays at its own pin, so once a mathlib commit breaks *that* pin the
+# tracking issue's culprit is a Matroid break, and the fix is a hand bump
+# of both (notes/ToolchainBumps.md *Playbook*).
+#
 # Adjust the cron line if daily is too noisy — weekly (`0 18 * * 1`) is
 # a reasonable alternative for a solo-dev cadence.
 
@@ -28,9 +34,16 @@ jobs:
     runs-on: ubuntu-latest
     name: Advance mathlib pin
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: leanprover-community/hopscotch-action@v1
+      # Pinned to a `main` commit, not `@v1`: the `v1` tag (= v1.0.0,
+      # 2026-04-27) pushes the bump branch with the checkout's GITHUB_TOKEN,
+      # whose pushes never start a normal CI run on the PR (every run sat at
+      # "action_required"). From `main` the push goes through `github-token`
+      # (`pr-token` falls back to it), so the `CI` secret's pushes run the PR
+      # check. Move to a release tag once one past this commit exists; don't
+      # accept a Dependabot "update" back to v1.0.0.
+      - uses: leanprover-community/hopscotch-action@517ad89123584081c57f9d605c9e3367c900efbb # main, 2026-09-28
         with:
           dependency: mathlib
           to: master       # mathlib's default branch

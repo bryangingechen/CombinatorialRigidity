@@ -13,32 +13,46 @@ never-`lake update` rule and its escape hatch) and *Automated mathlib bumps*
 
 ## Where this stands — and the next concrete task
 
-**Current pins (2026-10-21): Lean `v4.36.0-rc1`, mathlib `930ae145` (2026-10-20), `Matroid`
-`8ece6307` (2026-10-20)**, from the bump recorded below (*Bump record: v4.34.0-rc2 →
-v4.36.0-rc1*). Every gate of *The gate set* is green on the final tree; the results are in the
-record's gate table. **Not yet pushed.** The bump is five commits on local `master`, `8936b312`
-through its close, and the PI reviews them before any push. `origin/master` (`f39e35e6` as last
-fetched, 2026-10-15; local `master` is ahead by RECONCILE 3/3's tasks and this bump) still carries
-the v4.34.0-rc2 pins (Lean `v4.34.0-rc2`, mathlib `8b36e867`, `Matroid` `2b92ee39`),
-CI-validated at `91fcd24a` (checked 2026-09-29, [run
-36579395802](https://github.com/bryangingechen/CombinatorialRigidity/actions/runs/36579395802)).
+**Pins: Lean `v4.36.0-rc1`, `Matroid` `8ece6307` (2026-10-20), and mathlib from the last hand
+bump (`930ae145`, *Bump record: v4.34.0-rc2 → v4.36.0-rc1*) or a later merged hopscotch PR;**
+`lake-manifest.json` is the source of truth, since hopscotch moves mathlib without touching this
+note. The hand bump was pushed 2026-10-25 and CI passed at `4c892cb6` ([run
+40199573250](https://github.com/bryangingechen/CombinatorialRigidity/actions/runs/40199573250)).
+Hopscotch's PR #1 and issue #2 were written against the old pins (first-bad `ab64d1c`, which
+`Matroid` `8ece630` absorbed), so the first hopscotch run on the new pins rewrites both.
 
-**PI actions after the push** (none taken here: no push, no `gh` writes):
-- Check the push's *Build & deploy site* run (`gh run list --branch master`). It is the first CI
-  run on the new pins.
-- Close PR #1 and issue #2, which this bump supersedes. Issue #2 is hopscotch's tracking issue for
-  a genuine break, first-bad commit
-  [`ab64d1c`](https://github.com/leanprover-community/mathlib4/commit/ab64d1cdc0e5fd620fe0531593f8725c3cb079c8)
-  ("chore: don't inductively define sets (#42171)"). PR #1 offers the bump to the last-known-good
-  rev [`0258e25`](https://github.com/leanprover-community/mathlib4/commit/0258e251f94ee225ff7549af5b8f5d06050c9afc).
-  Both revs are behind the new mathlib pin, and `Matroid` at `8ece630` has absorbed `ab64d1c`.
-- Delete or keep the local `bump/lean-4.34.0-rc1` and `bump/lean-4.34.0-rc2` branches: never
-  pushed, fully merged into `master`.
-- Optional: the module conversion of the 90 non-`module` files (the record's last lesson): done
-  in Phase 41a's items P3–P5.
+**The automation (2026-10-25), in `.github/workflows/`:**
+- **`hopscotch.yml`** (daily) moves **mathlib only**, to its tip or the last good commit, on the
+  force-pushed branch `hopscotch/bump`, with a tracking issue naming the first bad commit. Its
+  commit also pins `rev` on the mathlib require in `lakefile.toml`, so after a merge `lake update`
+  no longer moves mathlib: edit that `rev`, or run `scripts/bump-mathlib.sh`, which moves the
+  lakefile `rev` and the manifest together.
+- **The action is pinned to a `main` commit of `hopscotch-action`**, not `@v1`: the `v1` tag
+  (v1.0.0) pushed the branch with the checkout's `GITHUB_TOKEN`, so no bump PR ever got a normal
+  CI run (each sat at "action_required"). From `main` the push uses the `CI` secret. If that
+  token expires or loses *Contents: write*, the run fails at its push step: renew the secret.
+- **`push_pr.yml`** (every PR) builds, runs `lake lint`, and compiles the blueprint (with
+  `checkdecls`), the docs and the homepage. That is what a bump PR's check adds over hopscotch's
+  own `lake build`. It runs the upstreaming-dashboard step too, because
+  `home_page/upstreaming.md` includes its output; without it every PR check failed until
+  2026-10-25.
+- **Dependabot** (monthly) bumps the actions.
 
-**Next concrete task: none here.** Once the push lands, hopscotch's daily run tracks mathlib
-against the new pins; the next bump starts from the *Playbook*.
+**Merging a hopscotch PR**: a green check, then read its build log for new warnings (CI does not
+fail on them; the project's gate does). A fix-up commit goes on `hopscotch/bump`; the action sees a
+committer other than itself and stops force-pushing that branch until the PR is merged or closed.
+
+**The limit: hopscotch cannot move `Matroid`.** Once a mathlib commit breaks `Matroid`'s pin,
+the tracking issue's first bad commit fails in `Matroid.*` rather than our files, and every later
+run bisects to it. The fix is a hand bump of both: `Matroid` to its new tip, and mathlib to the
+rev that tip pins (*Playbook*). A bisect also costs ~50 min per passing build against GitHub's
+6-hour job limit (2026-10-24's 1554-commit window took 4 h), so merge bump PRs promptly.
+
+**Left to the PI:** delete or keep the local `bump/lean-4.34.0-rc1` and `bump/lean-4.34.0-rc2`
+branches (never pushed, fully merged into `master`).
+
+**Next concrete task: none here.** Hopscotch tracks mathlib from here; the next hand bump (a
+`Matroid` break, or a toolchain move) starts from the *Playbook*.
 
 ---
 
