@@ -2739,6 +2739,10 @@ declaration's name as its header writes it:
   no longer meets its conclusion on two or more bodies; `thm:theorem-55-6` and `thm:theorem-55-6-genuine` restated, and
   the `main_results` row and the `alignment` note with them. `rankHypothesis_of_theorem_55_d3`
   keeps its statement (`F-329`); README, the home page, `intro.tex` and ROADMAP §23 are item 12's.
+  Item 5b (the commit "`rankHypothesis_of_theorem_55_d3` concludes nonparallel panels"; sha at the
+  next ledger sweep): `rankHypothesis_of_theorem_55_d3` and `thm:theorem-55-6-d3` conclude
+  nonparallel panels too, so the all-zero-normals framework no longer meets the `d = 3` pin on two
+  or more bodies.
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
@@ -3445,7 +3449,9 @@ declaration's name as its header writes it:
   dropping the conjunct, and said so in the docstring.
   *Evidence:* read (the statements of the two pins).
   *Found:* Phase 41b item 5.
-  *Disposition:* reported (`notes/Phase41b.md`, item 5b).
+  *Disposition:* done (Phase 41b item 5b, the commit "`rankHypothesis_of_theorem_55_d3` concludes
+  nonparallel panels"; the sha goes in at the next ledger sweep): the conjunct passed through, on
+  the coordinator's adjudication, `thm:theorem-55-6-d3` restated.
 
 ## L — Lean
 

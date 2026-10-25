@@ -1451,11 +1451,12 @@ We record the case $d = 3$.
   \label{thm:theorem-55-6-d3}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_d3}
   \leanok
-  \uses{def:rank-hypothesis}
+  \uses{def:rank-hypothesis, def:panel-nonparallel}
   Let $d = 3$, so that $D = 6$, let $K$ be an infinite field, and let
   $G = (V, E)$ be a simple graph with $V \neq \emptyset$. Then $G$ has a
   panel-hinge realization at the target rank
-  $6(|V| - 1) - \operatorname{def}(\tilde G)$ (\cref{def:rank-hypothesis}).
+  $6(|V| - 1) - \operatorname{def}(\tilde G)$ (\cref{def:rank-hypothesis})
+  whose panels are nonparallel (\cref{def:panel-nonparallel}).
 \end{theorem}
 \begin{proof}
   \leanok
@@ -1466,7 +1467,9 @@ We record the case $d = 3$.
 \begin{fmlnote}
   As for \cref{thm:theorem-55-6}, the pinned theorem assumes that $G$ spans
   the set of bodies, and its selector assigns each edge of $G$ its two
-  ends. It assumes $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}).
+  ends. Its panels are nonparallel, so every hinge at an edge of $G$ is
+  nondegenerate, as for \cref{thm:theorem-55-6}. It assumes
+  $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}).
 \end{fmlnote}
 
 The realization in the proof of \cref{thm:theorem-55-6-genuine} is a

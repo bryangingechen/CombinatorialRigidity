@@ -2380,9 +2380,10 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
 
 /-- **KT Theorem 5.6, `d = 3` instance** (`thm:theorem-55-6-d3`; Katoh–Tanigawa 2011 §5.2, p. 670;
 the `n := 3` specialization of `rankHypothesis_of_theorem_55_gen`). For a simple spanning graph on
-`≥ 1` body in `d = 3`, some panel-hinge framework `Q` on `G` has `dim Z(G, Q) = D + def(G̃)`. It
-states the rank only, without the general form's nonparallel panels, so its hinges may be
-degenerate; its selector gives each edge of `G` its ends (the field `isLink_ends`).
+`≥ 1` body in `d = 3`, some panel-hinge framework `Q` on `G` with nonparallel panels
+(`Q.IsNonparallel`) has `dim Z(G, Q) = D + def(G̃)`. Like the general form, it passes the
+nonparallel conjunct through, so every hinge at an edge of `G` is nondegenerate; its selector gives
+each edge of `G` its ends (the field `isLink_ends`).
 `Graph.bodyBarDim 3 = 6` closes the label-headroom bound by unfolding, and
 `PanelHingeFramework K (3 - 1) α β` is defeq to `PanelHingeFramework K 2 α β` (kernel `Nat.sub`
 reduction on literals), so the corollary needs no cast at the return type.
@@ -2393,11 +2394,11 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3 [Infinite K]
     [Nonempty α] [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework K 2 α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework K 2 α β, Q.graph = G ∧ Q.IsNonparallel ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
-  obtain ⟨Q, hQg, -, hrank⟩ := PanelHingeFramework.rankHypothesis_of_theorem_55_gen (K := K)
+  obtain ⟨Q, hQg, hnp, hrank⟩ := PanelHingeFramework.rankHypothesis_of_theorem_55_gen (K := K)
     (n := 3) (by norm_num) (by simpa [Graph.bodyBarDim] using hcard) G hne hspan hSimple
-  exact ⟨Q, hQg, hrank⟩
+  exact ⟨Q, hQg, hnp, hrank⟩
 
 set_option linter.unusedDecidableInType false in
 /-- **The Molecular Conjecture (the consumer-facing form)** (`thm:molecular-conjecture`;

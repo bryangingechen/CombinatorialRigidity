@@ -2,9 +2,9 @@
 
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c) and the
-recons are in `notes/Phase41-design.md`. Items 1–5 done: Theorems 5.5 and 5.6 conclude KT's
-nonparallel panels for simple `G`. Next concrete task: item 6, `molecular_conjecture`; item 5b
-(`F-329`) waits for the coordinator's call.
+recons are in `notes/Phase41-design.md`. Items 1–5b done: Theorems 5.5 and 5.6, and their
+`d = 3` instances, conclude KT's nonparallel panels for simple `G`. Next concrete task: item 6,
+`molecular_conjecture`.
 
 ## Current state
 
@@ -15,9 +15,8 @@ Opened with the PI on 2026-10-24, after the RESTATE open's recon (`notes/Phase41
 chain is gone (item 3); KT's nonparallel panels are `IsNonparallel` (item 4a); a generic full-rank
 realization gives a nonparallel one (item 4b, route B); Theorem 5.5's simple conjunct states it
 (item 4c); and Theorem 5.6, its genuine form and the d = 3 wrapper conclude it, the link conjuncts
-of the rows form and the wrapper gone (item 5). Next: `molecular_conjecture` (item 6), then the
-remaining restatements; the d = 3 instance of Theorem 5.6 (item 5b, `F-329`) is the coordinator's
-call. Mode: structural edit. There are no red
+of the rows form and the wrapper gone (item 5). The d = 3 instance of Theorem 5.6 passes the conjunct through
+too (item 5b, `F-329`). Next: `molecular_conjecture` (item 6), then the remaining restatements. Mode: structural edit. There are no red
 target nodes; each slice restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
 *Forward-mode slices*).
 
@@ -69,9 +68,10 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   `lem:theorem-56-general-position` restated; the `main_results` row and the `alignment` note
   (whose degenerate-hinge sentence the restatement made false); the witness
   `rankHypothesis_of_theorem_55_gen_witness` at the single edge in the plane.
-- [ ] **5b. `rankHypothesis_of_theorem_55_d3`** (`F-329`; found at item 5, the coordinator's call):
-  pass the nonparallel conjunct through the d = 3 instance, as item 4c passed Theorem 5.5's through
-  `theorem_55_d3`, restating `thm:theorem-55-6-d3`; or keep the statement, as its docstring now says.
+- [x] **5b. `rankHypothesis_of_theorem_55_d3`** (`F-329`; found at item 5): the nonparallel
+  conjunct passed through the d = 3 instance, as item 4c passed Theorem 5.5's through
+  `theorem_55_d3`; `thm:theorem-55-6-d3` and its note restated, the docstring rewritten. No
+  `formalization.yaml` row, so no witness; no caller in the library.
 - [ ] **6. `molecular_conjecture`** (S2; §1.2): `V(G).Nonempty` for `2 ≤ |V(G)|`, nondegenerate
   hinges on `E(G)` on both sides, `[DecidableEq β]` dropped (`F-323`); the witness.
 - [ ] **7. The multigraph rows** (§1.2, §1.4): `molecular_conjecture_multigraph` and
@@ -127,5 +127,9 @@ as its nonparallel panels give nondegenerate hinges on `E(G)` of a simple `G`
 - **The genuine form concludes nonparallel too** (item 5; the coordinator's adjudication, not the
   PI's): `rankHypothesis_genuine_of_theorem_55_gen` gains `Q.IsNonparallel`, its hypotheses
   unchanged; it is how §1b.1 and §1c's Theorem 5.6 is built. The rows form keeps
-  `Q.IsGeneralPosition` (its proof needs no upgrade); `rankHypothesis_of_theorem_55_d3` keeps its
-  statement (`F-329`, item 5b).
+  `Q.IsGeneralPosition` (its proof needs no upgrade); `rankHypothesis_of_theorem_55_d3` kept its
+  statement at item 5 (`F-329`).
+- **The d = 3 instance passes the conjunct through** (item 5b; the coordinator's adjudication):
+  `F-128` names `thm:theorem-55-6-d3`, whose conclusion the framework with all normals zero meets at
+  deficiency zero (S2's gap), so keeping the statement would leave `F-128` open at `d = 3`. The
+  option to keep it is rejected.
