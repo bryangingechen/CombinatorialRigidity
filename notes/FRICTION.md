@@ -110,6 +110,17 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] `exact h _ hq` against a goal `h` meets only by unfolding times out at `isDefEq` — pass the argument
+- **Where it bit:** Phase 41b, item 4a (`exists_nonparallel_polynomial`, `PanelHinge.lean`).
+  `exact hgp _ hq`, with `hgp : ∀ q, eval q Q ≠ 0 → (ofNormals G ends q).IsGeneralPosition` at `k`
+  against the goal `(ofNormals G ends q).IsNonparallel` at `k + 1`, timed out (200000
+  heartbeats): the goal is unified before `hq` assigns `_`, so the unifier searched for
+  `q ∘ Prod.map id Fin.castSucc` through the two predicates' bodies.
+- **Friction:** one MCP iteration.
+- **Proposed fix:** pass it, `exact hgp (q ∘ Prod.map id Fin.castSucc) hq`; the check is then a
+  defeq of closed terms (TACTICS-QUIRKS § 38, pin the heavy argument explicit).
+- **Status:** idiom.
+
 ### [resolved] The link field: what `link_tac` cannot see, and what its proofs block
 - **Where it bit:** Phase 41a, items 4–5a, the field `PanelHingeFramework.isLink_ends` and its
   autoParam and implicit record binders (`hlinks`), 123 declarations in 27 files; the spike took

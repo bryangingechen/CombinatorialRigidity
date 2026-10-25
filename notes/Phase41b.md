@@ -3,8 +3,8 @@
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1, and at this sub-phase's, §1b) and the recons are in
 `notes/Phase41-design.md`. Items 1 (KT's nonparallel by route B, items 4a–4c; the PI settled its two
-open options, design doc §1c), 2 and 3 done. Next concrete task: item 4a, the predicate
-`IsNonparallel`.
+open options, design doc §1c), 2, 3 and 4a done. Next concrete task: item 4b, nonparallel from
+generic.
 
 ## Current state
 
@@ -14,7 +14,8 @@ Opened with the PI on 2026-10-24, after the RESTATE open's recon (`notes/Phase41
 links off the field `isLink_ends`. Item 1's design pass (design doc §2, *KT's nonparallel recon*)
 defined KT's nonparallel on the normals' direction parts (the affine coordinate
 is the last) and reaches it at Theorem 5.5's end by the genericity device, the induction untouched
-(route B), in three commits, items 4a–4c. The sub-phase restates S2's and S1's main results
+(route B), in three commits, items 4a–4c; 4a gave the predicate and `def:panel-nonparallel`. The
+sub-phase restates S2's and S1's main results
 on the carrier that 41a gave the link field, and acts on the PI's four decisions at its open
 (§1b): Theorem 5.6 concludes general position for simple `G`, G6's row is the generic rank formula,
 `HasGenericFullRankRealization` drops its last conjunct, and Theorem 5.5's conclusion reaches KT's
@@ -52,7 +53,7 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   (`F-293`, `F-297`, `F-298`). Done: the twelve `hD`s gone, each body deriving the bound it uses;
   four lemmas that took no `1 ≤ k` swap `hD : 2 ≤ D` for `hk` (`D = 1` at `k = 0`); the callers
   already derived theirs; the two dead helpers of item 2 deleted.
-- [ ] **4a. The predicate** (§1b.4; `PanelHinge.lean`): `PanelHingeFramework.IsNonparallel` beside
+- [x] **4a. The predicate** (§1b.4; `PanelHinge.lean`): `PanelHingeFramework.IsNonparallel` beside
   `IsGeneralPosition` (the directions `Fin.init (P.normal a)` of any two distinct bodies of `α`
   independent), `IsNonparallel.isGeneralPosition`, `exists_nonparallel_polynomial` under `1 ≤ k`
   (the product of `exists_generalPosition_polynomial`, nonparallel at its non-roots) and
@@ -60,7 +61,12 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   `isNonparallel_of_eval_ne_zero`, `momentCurve_nonparallel`. Blueprint: a new
   `def:panel-nonparallel` from the paragraph after `def:panel-general-position` (KT §5.1, p. 668;
   `jacksonJordan2009` §7), the definition-faithfulness gate; `lem:moment-curve-general-position`
-  extended to nonparallel for `d ≥ 2`; `IsGeneralPosition`'s docstring points at it.
+  extended to nonparallel for `d ≥ 2`; `IsGeneralPosition`'s docstring points at it. Done, by
+  shorter routes than the witness's: `exists_nonparallel_polynomial` is
+  `exists_generalPosition_polynomial` one dimension lower, its variables renamed along
+  `Fin.castSucc` (the same product; nonparallel is general position of the direction parts), and
+  `isNonparallel_ofParam` holds by definition one dimension lower; `def:panel-nonparallel` pins the
+  predicate and the implication, and cites JJ 2010 §7 (p. 584, "non-degenerate").
 - [ ] **4b. Nonparallel from generic** (`PanelHinge.lean`, `GenericityDevice.lean`):
   `HasNonparallelFullRankRealization` beside `HasGenericFullRankRealization` (`∃ Q, Q.graph = G ∧
   Q.IsNonparallel ∧` the rank) and `hasNonparallelFullRankRealization_of_generic` (`1 ≤ k`, `hn`,
@@ -115,10 +121,13 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Hand-off / next phase
 
-**Item 4a**: the predicate `IsNonparallel` (item 3 landed). Then items 4b and 4c, one commit each,
-then item 5. 4b's proof is the witness's `exists_nonparallel_of_generic`, nearly
-verbatim, but its `obtain` of `HasGenericFullRankRealization` takes four components since item 2
-(the witnesses of `notes/reconcile-formal/` check at their own commits, not at item 2's).
+**Item 4b**: `HasNonparallelFullRankRealization` and `hasNonparallelFullRankRealization_of_generic`
+(item 4a landed). Then item 4c, then item 5. 4b's proof is the witness's
+`exists_nonparallel_of_generic`, but its `obtain` of `HasGenericFullRankRealization` takes four
+components since item 2 (the witnesses of `notes/reconcile-formal/` check at their own commits),
+and its leading-minor product comes from `exists_nonparallel_polynomial hk G Q.ends` (nonzero at
+the moment curve of an injective `α → K`), replacing the witness's `isNonparallel_of_eval_ne_zero`
+and its hand-made `Q_np`.
 
 ## Decisions made during this phase
 

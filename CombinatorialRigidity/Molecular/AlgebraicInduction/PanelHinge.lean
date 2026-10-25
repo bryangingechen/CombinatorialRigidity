@@ -24,7 +24,9 @@ molecular conjecture*, Discrete Comput. Geom. **45**), presented in
   body-hinge frameworks (`def:hinge-coplanar`);
 * normals in general position (`def:panel-general-position`), which give a nondegenerate hinge at
   every edge label to which the selector gives two distinct bodies
-  (`lem:general-position-support-nonzero`); normals on the moment curve are in general position
+  (`lem:general-position-support-nonzero`), and Katoh and Tanigawa's nonparallel panels
+  (`def:panel-nonparallel`), whose normals are in general position; normals on the moment curve
+  are in general position, and their panels nonparallel for `d ≥ 2`
   (`lem:moment-curve-general-position`), and so are the normals off the zeros of a polynomial;
 * the operations that replace the multigraph (`def:framework-with-graph`) and the normal of one body
   (`def:framework-with-normal`, `lem:with-normal-preserves`, `lem:case-II-rank-lift`);
@@ -380,8 +382,9 @@ theorem toBodyHinge_supportExtensor_ne_zero_iff (P : PanelHingeFramework K k α 
 
 /-- **Normals in general position** (`def:panel-general-position`): any two normals at distinct
 bodies are linearly independent. Then the hinge is nondegenerate at every edge label to which the
-selector gives two distinct bodies (`supportExtensor_ne_zero_of_isGeneralPosition`). The normals of
-a framework that Katoh and Tanigawa call nonparallel are in general position (KT §5.1, p. 668). -/
+selector gives two distinct bodies (`supportExtensor_ne_zero_of_isGeneralPosition`). Katoh and
+Tanigawa's nonparallel panels (`IsNonparallel`, `def:panel-nonparallel`) have normals in general
+position (`IsNonparallel.isGeneralPosition`), but two parallel panels have independent normals. -/
 def IsGeneralPosition (P : PanelHingeFramework K k α β) : Prop :=
   ∀ a b : α, a ≠ b → LinearIndependent K ![P.normal a, P.normal b]
 
@@ -393,6 +396,26 @@ theorem supportExtensor_ne_zero_of_isGeneralPosition (P : PanelHingeFramework K 
     (hP : P.IsGeneralPosition) {e : β} (he : (P.ends e).1 ≠ (P.ends e).2) :
     P.toBodyHinge.supportExtensor e ≠ 0 :=
   (P.toBodyHinge_supportExtensor_ne_zero_iff e).mpr (hP _ _ he)
+
+/-- **Nonparallel panels** (`def:panel-nonparallel`; KT §5.1, p. 668): the direction parts
+`Fin.init (P.normal a)` of the normals of any two distinct bodies are linearly independent.
+`homogenize` puts the coordinate `1` last, so the panel of a normal `n` is the hyperplane
+`{x | Fin.init n ⬝ᵥ x + n (Fin.last _) = 0}` of `K^(k+1)`. For `1 ≤ k` two such hyperplanes meet in
+a `(k − 1)`-dimensional affine subspace exactly when their direction parts are independent, so this
+is Katoh and Tanigawa's nonparallel panels, asked of any two distinct bodies of `α`. It gives
+general position (`IsNonparallel.isGeneralPosition`), and it fails at `k = 0` on two bodies, as the
+direction parts then lie in `K¹`. -/
+def IsNonparallel (P : PanelHingeFramework K k α β) : Prop :=
+  ∀ a b : α, a ≠ b → LinearIndependent K ![Fin.init (P.normal a), Fin.init (P.normal b)]
+
+/-- **Nonparallel panels have normals in general position** (`def:panel-nonparallel`): a vanishing
+combination of two normals vanishes on their direction parts, which are independent. -/
+theorem IsNonparallel.isGeneralPosition {P : PanelHingeFramework K k α β} (hP : P.IsNonparallel) :
+    P.IsGeneralPosition := fun a b hab =>
+  LinearIndependent.of_comp (LinearMap.funLeft K K Fin.castSucc) <| by
+    convert hP a b hab using 1
+    ext i
+    fin_cases i <;> rfl
 
 /-- **The moment curve** (the normals of `lem:moment-curve-general-position`): the point
 `(1, t, t², …, t^(k+1))` of `K^(k+2)`. Two of its points at distinct parameters are linearly
@@ -605,6 +628,17 @@ theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework K k α β) 
     (hparam : Function.Injective param) : (P.withMomentNormals param).IsGeneralPosition :=
   isGeneralPosition_ofParam P.graph P.ends hparam
 
+/-- **Moment-curve panels are nonparallel for `d ≥ 2`** (`lem:moment-curve-general-position`): if
+`1 ≤ k` and `param` is injective, the panels of `ofParam G ends param` are nonparallel, as the
+direction part of a moment-curve point is, by definition, the moment-curve point one degree lower,
+and two of those at distinct parameters are linearly independent
+(`momentCurve_pair_linearIndependent`). -/
+theorem isNonparallel_ofParam (hk : 1 ≤ k) (G : Graph α β) (ends : β → α × α) {param : α → K}
+    {hlinks : RecordsLinks G ends} (hparam : Function.Injective param) :
+    (ofParam (k := k) G ends param).IsNonparallel := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le' hk
+  exact fun a b hab => momentCurve_pair_linearIndependent fun h => hab (hparam h)
+
 /-- **The leading minor of two normals, as a polynomial** (a factor of the polynomial of
 `exists_generalPosition_polynomial`): `X (a, 0) · X (b, 1) − X (a, 1) · X (b, 0)` in
 `MvPolynomial (α × Fin (k+2)) K`. At `q` it takes the value `q(a,0) q(b,1) − q(a,1) q(b,0)`
@@ -664,6 +698,28 @@ theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : 
     rw [eval_pairLeadingMinorPoly] at hfac
     simp only [PanelHingeFramework.ofNormals_normal]
     exact pair_linearIndependent_of_leading_minor_ne_zero hfac
+
+/-- **A polynomial for nonparallel panels** (the polynomial of `exists_generalPosition_polynomial`
+on the direction parts, for `d ≥ 2`): if `1 ≤ k`, for a finite set of bodies there is a polynomial
+`Q` in the normals that is nonzero at the moment-curve normals of every injective `param`, and at
+whose non-roots `q` the panels of `ofNormals G ends q` are nonparallel (`IsNonparallel`). The
+direction parts `Fin.init` of normals in `K^(k+2)` are normals in `K^(k+1)`, so `Q` is the
+polynomial of `exists_generalPosition_polynomial` one dimension lower, its variables renamed along
+`Fin.castSucc`. The moment curve one dimension lower is the direction part of the moment curve. -/
+theorem exists_nonparallel_polynomial [Finite α] (hk : 1 ≤ k) (G : Graph α β)
+    (ends : β → α × α) (hlinks : RecordsLinks G ends := by link_tac) :
+    ∃ Q : MvPolynomial (α × Fin (k + 2)) K,
+      (∀ param : α → K, Function.Injective param →
+        MvPolynomial.eval (fun p => momentCurve (param p.1) p.2) Q ≠ 0) ∧
+      ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
+        (ofNormals (k := k) G ends q).IsNonparallel := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le' hk
+  obtain ⟨Q, hmc, hgp⟩ := exists_generalPosition_polynomial (K := K) (k := k) G ends
+  refine ⟨MvPolynomial.rename (Prod.map id Fin.castSucc) Q, fun param hparam => ?_, fun q hq => ?_⟩
+  · rw [MvPolynomial.eval_rename]
+    exact hmc param hparam
+  · rw [MvPolynomial.eval_rename] at hq
+    exact hgp (q ∘ Prod.map id Fin.castSucc) hq
 
 /-- **The panel framework on a subgraph** (`def:framework-with-graph`, panel layer): replace the
 underlying multigraph of `P` by a subgraph `G' ≤ P.graph` (`hle`), keeping the per-body panel

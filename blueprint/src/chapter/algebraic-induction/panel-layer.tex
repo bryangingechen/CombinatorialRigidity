@@ -18,8 +18,10 @@ normals at its ends are linearly independent.
 This subsection defines these frameworks
 (\cref{def:panel-hinge-framework}). It then gives a condition on the
 normals under which every hinge between two distinct bodies has a nonzero
-extensor (\cref{def:panel-general-position}). Normals on the moment curve
-satisfy it (\cref{lem:moment-curve-general-position}).
+extensor (\cref{def:panel-general-position}). Katoh and Tanigawa's
+nonparallel panels meet a stronger condition
+(\cref{def:panel-nonparallel}). Normals on the moment curve satisfy both,
+the second for $d \ge 2$ (\cref{lem:moment-curve-general-position}).
 
 \begin{definition}[Panel support extensor]
   \label{def:panel-support-extensor}
@@ -220,12 +222,47 @@ bodies nondegenerate.
   distinct bodies $u$ and $v$.
 \end{definition}
 
-Katoh and Tanigawa call a panel-hinge framework on a simple graph
-nonparallel if the panels of any two distinct bodies meet in a
-$(d-2)$-dimensional affine subspace~\cite[\S5.1]{katohTanigawa2011}. Its
-normals are then in general position, since any two of its panels are
-distinct. The converse fails for two parallel panels, which meet only at
-infinity. Katoh and Tanigawa avoid parallel panels by a projective
+Katoh and Tanigawa ask more of the panels of a simple graph. Two panels
+are nonparallel if they meet in a $(d-2)$-dimensional affine subspace,
+and a panel-hinge framework on a simple graph is nonparallel if the
+panels of any two distinct bodies are~\cite[\S5.1,
+p.~668]{katohTanigawa2011}. The notion is essentially Jackson and
+Jord\'an's, who call such a framework
+non-degenerate~\cite[\S7]{jacksonJordan2009}. As above, the panel with
+normal $n = (a, a_0)$, where $a \in K^d$, is the hyperplane
+$\{x \in K^d : a \cdot x + a_0 = 0\}$. We write $\hat n = a$ for the
+first $d$ coordinates of $n$. Let $d \ge 2$. Two such hyperplanes meet
+in a $(d-2)$-dimensional affine subspace if and only if the vectors
+$\hat n$ of their normals are linearly independent. Otherwise the two
+are parallel or equal, or one of them is empty or all of $K^d$.
+
+\begin{definition}[Nonparallel panels]
+  \label{def:panel-nonparallel}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.IsNonparallel,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.IsNonparallel.isGeneralPosition}
+  \leanok
+  \uses{def:panel-hinge-framework}
+  The panels of a panel-hinge framework $(G, n)$ are \emph{nonparallel}
+  if $\hat n_u$ and $\hat n_v$ are linearly independent for any two
+  distinct bodies $u$ and $v$, where $\hat n_v \in K^d$ consists of the
+  first $d$ coordinates of $n_v$.
+\end{definition}
+
+For $d \ge 2$ this is Katoh and Tanigawa's condition, asked of any two
+distinct bodies. The definition reads only the normals, so $G$ need not
+be simple. The panel $\{x : x \cdot c(v) + 1 = 0\}$ of Katoh and
+Tanigawa has the normal $(c(v), 1)$, so their panels are nonparallel
+exactly when the vectors $c(v)$ are pairwise linearly independent. They
+build their nonparallel realizations from vectors $c(v)$ with this
+property~\cite[p.~668]{katohTanigawa2011}. For $d = 1$ the vectors
+$\hat n_v$ lie in $K^1$, so no two panels are nonparallel.
+
+Nonparallel panels have normals in general position
+(\cref{def:panel-general-position}), since a linear relation between
+$n_u$ and $n_v$ restricts to one between $\hat n_u$ and $\hat n_v$. The
+converse fails for two parallel panels, whose normals are linearly
+independent and which meet only at infinity. In the proof of KT
+Theorem~5.6, Katoh and Tanigawa make any two panels meet by a projective
 transformation, under which infinitesimal rigidity is
 invariant~\cite[p.~670]{katohTanigawa2011}.
 
@@ -246,24 +283,29 @@ invariant~\cite[p.~670]{katohTanigawa2011}.
   \cref{def:panel-support-extensor}).
 \end{proof}
 
-\begin{lemma}[Moment-curve normals are in general position]
+\begin{lemma}[Moment-curve normals are in general position and nonparallel]
   \label{lem:moment-curve-general-position}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_withMomentNormals,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_ofParam}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_ofParam,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.isNonparallel_ofParam}
   \leanok
-  \uses{def:panel-general-position}
+  \uses{def:panel-general-position, def:panel-nonparallel}
   Let $(t_v)_{v \in V}$ be distinct elements of $K$, and let
   $n_v = (1, t_v, t_v^2, \dots, t_v^{d})$ be the point of the moment
-  curve at $t_v$. Then the normals $n_v$ are in general position. In
-  particular, if $K$ is infinite and $V$ is finite, then there are
-  normals in general position.
+  curve at $t_v$. Then the normals $n_v$ are in general position, and if
+  $d \ge 2$, their panels are nonparallel. In particular, if $K$ is
+  infinite and $V$ is finite, then there are normals in general
+  position, and for $d \ge 2$ there are nonparallel panels.
 \end{lemma}
 \begin{proof}
   \leanok
   Let $u \neq v$. The first two coordinates of $n_u$ and $n_v$ form the
   matrix with rows $(1, t_u)$ and $(1, t_v)$, whose determinant
   $t_v - t_u$ is not zero. So $n_u$ and $n_v$ are linearly independent.
-  An infinite field has $|V|$ distinct elements for every finite $V$.
+  If $d \ge 2$, then $\hat n_v = (1, t_v, \dots, t_v^{d-1})$ is the point
+  of the moment curve in $K^d$ at $t_v$, and the same argument shows that
+  $\hat n_u$ and $\hat n_v$ are linearly independent. An infinite field
+  has $|V|$ distinct elements for every finite $V$.
 \end{proof}
 
 \subsection{Two operations on frameworks}
