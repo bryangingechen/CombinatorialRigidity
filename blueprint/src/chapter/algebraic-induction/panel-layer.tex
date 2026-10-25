@@ -434,104 +434,93 @@ to $G'$ is the panel-hinge framework $(G', n)$
 
 Katoh and Tanigawa's Proposition~2.3, which they credit to Jackson and
 Jord\'an~\cite{jacksonJordan2009}, relates the rank of the rigidity matrix
-of a generic realization of a multigraph $G$ to the deficiency
-$\operatorname{def}(\tilde G)$ and to the rank of the matroid
+of a generic body-hinge framework $(G,p)$ on a multigraph $G$
+(\cref{def:dof-generic}) to the deficiency $\operatorname{def}(\tilde G)$
+and to the rank of the matroid
 $M(\tilde G)$~\cite[p.~655]{katohTanigawa2011}. It has two halves of
 different kinds. The matroidal half is KT eq.~(2.4),
 $\operatorname{rank} M(\tilde G) = D(|V|-1) - \operatorname{def}(\tilde G)$,
 which \cref{thm:def-eq-corank} proves. The analytic half is Jackson and
-Jord\'an's rank formula
+Jord\'an's rank formula~\cite[Theorem~6.1]{jacksonJordan2009}
 \[
   \operatorname{rank} R(G,p) \;=\; D(|V|-1) - \operatorname{def}(\tilde G)
 \]
-at a generic realization $(G,p)$. We prove it for panel-hinge
-realizations with nondegenerate hinges
-(\cref{prop:rigidity-matrix-prop11}).
+at a generic body-hinge framework $(G,p)$.
 
 The analytic half is in turn two inequalities of different kinds. The
-upper bound on the rank holds at every realization with nondegenerate
-hinges. The lower bound needs one realization that attains the rank, as a
-generic realization has the largest rank. Jackson and Jord\'an build such
-a realization from $D$ edge-disjoint forests in $\tilde G$ with
+upper bound on the rank holds at every body-hinge framework
+(\cref{lem:deficiency-rank-bound}). The lower bound on the rank, in the
+form
+\[
+  \dim Z(G,p) \;\le\; D + \operatorname{def}(\tilde G),
+\]
+is where genericity enters. A generic framework has the largest rank
+over all realizations of $G$, so it meets the bound as soon as one
+realization does. Jackson and Jord\'an build such a realization from
+$D$ edge-disjoint forests in $\tilde G$ with
 $D(|V|-1) - \operatorname{def}(\tilde G)$ edges in
-all~\cite[Theorem~6.1]{jacksonJordan2009}. We take it instead from KT
-Theorem~5.5, which this chapter proves by induction
-(\cref{thm:theorem-55}), as Katoh and Tanigawa do in their proof of
-Theorem~5.6~\cite[p.~670]{katohTanigawa2011}.
+all~\cite[Theorem~6.1]{jacksonJordan2009}. Katoh and Tanigawa's
+Theorem~5.6, which they derive from their Theorem~5.5, gives one for
+every multigraph~\cite[p.~670]{katohTanigawa2011}
+(\cref{thm:theorem-55-6-multigraph} below).
 
-\begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}(\tilde G)$; KT Proposition 2.3]
+We state the analytic half in a conditional form, with the bound as its
+hypothesis (\cref{prop:rigidity-matrix-prop11}), and prove the bound
+where we use the formula. The proofs of KT Theorem~5.6 below prove it
+for the realizations that they construct
+(\cref{thm:theorem-55-6-genuine}, \cref{thm:theorem-55-6-multigraph}).
+A later chapter proves the formula, and so the bound, at every generic
+hinge-point assignment of a simple graph
+(\cref{thm:bodyhinge-generic-rank}). For a multigraph, the formula at a
+generic framework is Jackson and Jord\'an's Theorem~6.1; at every
+generic hinge-point assignment of a multigraph it is not formalized.
+
+\begin{proposition}[The rank formula from a bound on the motions; KT Proposition 2.3]
   \label{prop:rigidity-matrix-prop11}
   \lean{CombinatorialRigidity.Molecular.rigidityMatrix_prop11}
   \leanok
-  \uses{def:rigidity-matrix, def:D-deficiency, def:dof-generic}
+  \uses{def:rigidity-matrix, def:D-deficiency}
   Let $G = (V, E)$ be a multigraph with $V \neq \emptyset$, and let
-  $(G,p)$ be a generic panel-hinge realization of $G$
-  (\cref{def:dof-generic}) whose hinges are all nondegenerate. Then
+  $(G,p)$ be a body-hinge framework with $C(p(e)) \neq 0$ at every edge
+  $e$ of $G$. Suppose that
+  \[
+    \dim Z(G,p) \;\le\; D + \operatorname{def}(\tilde G).
+  \]
+  Then
   \[
     \operatorname{rank} R(G,p) \;=\; D(|V|-1) - \operatorname{def}(\tilde G).
   \]
-  This is Jackson and Jord\'an's rank
-  formula~\cite[Theorem~6.1]{jacksonJordan2009}.
 \end{proposition}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55, lem:deficiency-rank-bound,
-        lem:motions-mono-of-graph-le, lem:minimal-kdof-spanning-subgraph}
+  \uses{lem:deficiency-rank-bound}
   Let $k = \operatorname{def}(\tilde G)$. Since
   $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$
   (\cref{def:rigidity-matrix}), the claim is that
-  $\dim Z(G,p) = D + k$.
-
-  \emph{The upper bound on the rank.} By
-  \cref{lem:deficiency-rank-bound}, $\dim Z(G,p) \ge D + k$. These
-  motions come from a partition $P$ of $V$ with
-  $\operatorname{def}_{\tilde G}(P) = k$. The screw assignments that are
-  constant on each part of $P$ form a space of dimension $D|P|$. On this
-  space, each edge that joins two parts imposes $D - 1$ linear conditions,
-  because its hinge is nondegenerate, and the other edges impose none. So
-  at least $D|P| - (D-1)\,d_G(P) = D + k$ dimensions of motions remain.
-
-  \emph{The lower bound on the rank.} If $|V| = 1$, every edge of $G$ is a
-  loop, whose rows vanish, and both sides of the formula are $0$. Let
-  $|V| \ge 2$. We follow Katoh and Tanigawa's proof of their
-  Theorem~5.6 (KT p.~670). The graph $G$ has a spanning subgraph $G'$ that is a
-  minimal $k$-dof-graph (\cref{lem:minimal-kdof-spanning-subgraph}). By
-  KT Theorem~5.5 (\cref{thm:theorem-55}), $G'$ has a panel-hinge
-  realization $(G', q)$ with
-  $\operatorname{rank} R(G', q) = D(|V|-1) - k$, that is, with
-  $\dim Z(G', q) = D + k$. Extend $q$ to a realization $(G, q)$ of $G$ by
-  giving each edge of $G$ that is not in $G'$ any hinge. Adding edges can
-  only shrink the space of motions (\cref{lem:motions-mono-of-graph-le}),
-  so $\dim Z(G, q) \le D + k$. A generic realization has the
-  largest rank over all realizations of $G$ (\cref{def:dof-generic}).
-  Hence
-  \[
-    \operatorname{rank} R(G,p) \;\ge\; \operatorname{rank} R(G,q)
-    \;\ge\; D(|V|-1) - k.
-  \]
+  $\dim Z(G,p) = D + k$. The hypothesis is the inequality
+  $\dim Z(G,p) \le D + k$. The reverse inequality holds as the hinges
+  are nondegenerate (\cref{lem:deficiency-rank-bound}).
 \end{proof}
 
 \begin{fmlnote}
-  The formalization has no notion of a generic realization in the sense
-  of \cref{def:dof-generic}. The pinned theorem is stated for a
-  body-hinge framework whose supporting extensor is nonzero at every edge
-  of $G$; a label outside $E(G)$ is unconstrained. It assumes the lower
-  bound on the rank, $\dim Z(G,p) \le D + \operatorname{def}(\tilde G)$,
-  and derives
-  $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$ from the upper bound.
-  Its screw assignments are defined on the whole body set, so this is the
-  rank formula when $G$ spans the body set. The theorems that apply it,
-  such as \cref{thm:theorem-55-6-genuine}, take $G$ spanning and prove the
-  lower bound on the rank for the realization they construct, by the
-  argument of the proof above. For simple spanning graphs, the formula
-  at every generic realization is formalized for generic normals
+  The pinned theorem asks for a nonzero supporting extensor only at the
+  edges of $G$; a label outside $E(G)$ is unconstrained. Its screw
+  assignments are defined on the whole body set, so its conclusion
+  $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$ is the rank formula
+  when $G$ spans the body set. The formalization has no notion of a
+  generic framework in the sense of \cref{def:dof-generic}. The theorems
+  that apply the pinned theorem, such as
+  \cref{thm:theorem-55-6-genuine}, take $G$ spanning and prove the bound
+  for the realization they construct. For simple spanning graphs, the
+  formula at every generic realization is formalized, with genericity as
+  the independence of rows, for generic normals
   (\cref{thm:panel-generic-rank}) and for generic hinge points
   (\cref{thm:bodyhinge-generic-rank}).
 \end{fmlnote}
 
 At deficiency zero the formula reads
-$\operatorname{rank} R(G,p) = D(|V|-1)$. So a generic realization with
-nondegenerate hinges is infinitesimally rigid if and only if
+$\operatorname{rank} R(G,p) = D(|V|-1)$. So a generic body-hinge
+framework is infinitesimally rigid if and only if
 $\operatorname{def}(\tilde G) = 0$, by
 \cref{lem:trivial-motions-rank-bound}. By KT Proposition~2.2
 (\cref{lem:deficiency-zero-iff-tree-packing}), this holds if and only if
@@ -1317,8 +1306,10 @@ the proof of KT Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}).
 Katoh and Tanigawa's Theorem~5.6 removes the minimality from KT
 Theorem~5.5: every multigraph $G$ has a panel-hinge realization of rank
 $D(|V| - 1) - \operatorname{def}(\tilde G)$~\cite[p.~670]{katohTanigawa2011}.
-The lower bound on the rank in the proof of KT Proposition~2.3
-(\cref{prop:rigidity-matrix-prop11}) follows their proof of this theorem.
+Its realization meets the bound on the motions that
+\cref{prop:rigidity-matrix-prop11} assumes, so a generic body-hinge
+framework of $G$ meets it too (the opening of
+\cref{sec:molecular-algebraic-induction-prop11}).
 At deficiency zero the realization is infinitesimally rigid, as
 \cref{cor:theorem-55-d3-spanning} records for a simple spanning minimal
 $0$-dof-graph at $d = 3$. Katoh and Tanigawa obtain the molecular conjecture from the

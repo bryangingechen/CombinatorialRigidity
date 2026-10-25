@@ -1074,16 +1074,19 @@ def HasPanelRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Pr
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
-/-! ## Proposition 1.1, analytic half (`prop:rigidity-matrix-prop11`) -/
+/-! ## KT Proposition 2.3 in conditional form (`prop:rigidity-matrix-prop11`) -/
 
-/-- **The rank hypothesis from the generic bound** (`prop:rigidity-matrix-prop11`; the analytic half
-of Katoh–Tanigawa's Proposition 1.1). For a body-hinge framework `F` whose supporting extensor is
-nonzero at every link of its multigraph (`hC`; a label outside `E(G)` is unconstrained), at
-`n = k + 1`, the generic bound `hgen : dim Z(F) ≤ D + def(G̃)` gives `F.RankHypothesis (def(G̃))`
-(`def:rank-hypothesis`): `dim Z(F) = D + def(G̃)`, equivalently `rank R(F) = D(|V|−1) − def(G̃)`
-(Jackson–Jordán 2010 Thm 6.1, geometric side), since `rank R = D|V| − dim Z`
-(`finrank_screwAssignment`). The matroidal half, `def(G̃) = corank M(G̃)`, is
-`Graph.rank_add_deficiency_eq` and `Graph.isBase_ncard_add_deficiency_eq`.
+/-- **The rank hypothesis from the generic bound** (`prop:rigidity-matrix-prop11`; Katoh–Tanigawa's
+Proposition 2.3, KT p. 655, which they credit to Jackson–Jordán, in conditional form). For a
+body-hinge framework `F` whose supporting extensor is nonzero at every link of its multigraph (`hC`;
+a label outside `E(G)` is unconstrained), at `n = k + 1`, the generic bound
+`hgen : dim Z(F) ≤ D + def(G̃)` gives `F.RankHypothesis (def(G̃))` (`def:rank-hypothesis`):
+`dim Z(F) = D + def(G̃)`, equivalently `rank R(F) = D(|V|−1) − def(G̃)` (Jackson–Jordán 2010
+Thm 6.1), since `rank R = D|V| − dim Z` (`finrank_screwAssignment`). A generic framework meets the
+bound; at every generic hinge-point assignment of a simple graph the formula is
+`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints` (`thm:bodyhinge-generic-rank`). The
+matroidal counterpart, `def(G̃) = corank M(G̃)` (KT eq. (2.4)), is `Graph.rank_add_deficiency_eq`
+and `Graph.isBase_ncard_add_deficiency_eq`.
 
 The proof joins two inequalities.
 

@@ -12,7 +12,10 @@ design pass, on the generic panel theorems, is in §2; the PI's decision on thei
 advance (2026-10-25: S18, RESTATE's close, free strengthenings, M1's loops) are §1f. Item 10's
 design pass, on the generic body-hinge theorems, is §2's last arc, with one adoption under §1f.3
 (one body); item 10a restated them as it plans, and items 10b and 12, in one commit, the status
-surfaces' scope and degenerate-hinge sentences. Next concrete task: 41b's item 11, S18.
+surfaces' scope and degenerate-hinge sentences. Item 11 restated `prop:rigidity-matrix-prop11` as
+§1f.1 decides, KT Proposition 2.3 for a body-hinge framework on a multigraph in conditional form,
+blueprint and docstrings only. Next concrete task: 41b's close, after which the loop stops for the
+PI's push (§1f.2).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report

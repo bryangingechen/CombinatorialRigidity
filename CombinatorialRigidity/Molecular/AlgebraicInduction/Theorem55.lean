@@ -2557,9 +2557,9 @@ model:
    edges only shrinks it (`finrank_infinitesimalMotions_le_of_graph_le`), so
    `dim Z(G) ≤ dim Z(G') = D + def(G̃)`; the strip realization fixes `dim Z(G') = D + def(G̃')` via
    `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`.
-5. **Conclude** `RankHypothesis (def(G̃))` via `rigidityMatrix_prop11` (KT Prop 1.1), whose
-   `n = k + 1` premise is `Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn`; every hinge is genuine
-   (`hC`), the input that node's genericity-free lower bound needs. -/
+5. **Conclude** `RankHypothesis (def(G̃))` via `rigidityMatrix_prop11` (KT Proposition 2.3 in
+   conditional form), whose `n = k + 1` premise is `Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn`;
+   every hinge is genuine (`hC`), the input that node's genericity-free lower bound needs. -/
 theorem theorem_55_6_multigraph_of_two_le [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)

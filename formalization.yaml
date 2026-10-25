@@ -396,10 +396,11 @@ status:
       a nondegenerate hinge at every edge label is proved, for simple graphs on >= 2
       bodies, as
       CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen.
-      With the upper bound at nondegenerate hinges
-      (CombinatorialRigidity.Molecular.rigidityMatrix_prop11), that form gives Jackson-Jordán's
-      rank formula, Katoh-Tanigawa Proposition 2.3, and with the def = corank bridge
-      (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~).
+      Its realization attains Jackson-Jordán's rank formula, Katoh-Tanigawa Proposition 2.3,
+      which CombinatorialRigidity.Molecular.rigidityMatrix_prop11 states in conditional form
+      (phase 41b: at a body-hinge framework with a nonzero hinge at every edge, the bound
+      dim Z <= D + def(G~), which a generic framework meets, gives the formula), and with the
+      def = corank bridge (Katoh-Tanigawa eq. (2.4)) that rank is the rank of M(G~).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -748,7 +749,7 @@ alignment:
       module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
       status: "proved"
 
-    - source: "Katoh-Tanigawa 2011, Theorem 5.6 + Proposition 2.3 (deficiency rank; rank R = D(|V|-1) - def, Jackson-Jordán 2010 Thm 6.1)"
+    - source: "Katoh-Tanigawa 2011, Theorem 5.6 + Proposition 2.3 in conditional form (deficiency rank; rank R = D(|V|-1) - def, Jackson-Jordán 2010 Thm 6.1)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen, CombinatorialRigidity.Molecular.rigidityMatrix_prop11"
       module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean, CombinatorialRigidity/Molecular/AlgebraicInduction/PanelHinge.lean"
       status: "proved"
@@ -758,6 +759,11 @@ alignment:
         holds at nondegenerate hinges, so the rank formula takes the proved form with a
         nondegenerate hinge at every edge label,
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen.
+        Since phase 41b, rigidityMatrix_prop11 is Proposition 2.3 as Katoh-Tanigawa state it,
+        for a body-hinge framework on a multigraph, in conditional form: with a nonzero hinge at
+        every edge, the bound dim Z <= D + def(G~) gives the rank formula. A generic framework
+        meets the bound. At every generic hinge-point assignment this is proved for simple
+        graphs (the Jackson-Jordán Thm 6.1 / Cor 6.3 row below), not for multigraphs.
 
     - source: "Katoh-Tanigawa 2011, Conjecture 1.2 (the Molecular Conjecture; Tay-Whiteley 1984)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture"

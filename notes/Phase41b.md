@@ -3,12 +3,13 @@
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c; on
 `F-330`, §1d; on the generic panel theorems' body bound, §1e; in advance, §1f) and the recons are in
-`notes/Phase41-design.md`. Items 1–10 and 12 done: Theorems 5.5 and 5.6, and their `d = 3`
+`notes/Phase41-design.md`. Items 1–12 done: Theorems 5.5 and 5.6, and their `d = 3`
 instances, conclude KT's nonparallel panels for simple `G`, `molecular_conjecture` holds on one
 body with nonparallel panels on its panel side, the multigraph rows ask nondegeneracy on `E(G)`,
 the `d = 3` spanning corollary derives from `theorem_55_d3`, the generic panel and body-hinge
 theorems hold at every generic realization on `G`, one body or more (rows witnessed at the single
-edge and the triangle), and the status surfaces say so. Next concrete task: item 11, S18.
+edge and the triangle), the status surfaces say so, and KT Proposition 2.3 is stated as KT state
+it, in conditional form. Next concrete task: the close.
 
 ## Current state
 
@@ -46,9 +47,12 @@ the simple minimal graphs included; the degenerate-hinge sentences (the same and
 that Theorems 5.5 and 5.6 give nonparallel panels. `molecular_conjecture`'s docstring and the
 prose before its node no longer say that, without the hinge conjunct, each side holds exactly for
 connected `G`, false since 6b (`F-130`); of the footprint's docstrings (`F-123`, `F-130`, `F-220`)
-none other is left false. Next: item 11, then the close. Mode: structural edit. There
-are no red target nodes; each slice restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
-*Forward-mode slices*).
+none other is left false. Item 11 restated `prop:rigidity-matrix-prop11` as KT state Proposition
+2.3, for a body-hinge framework on a multigraph, in conditional form (the bound on the motions
+gives the formula), as its pin already proved; the subsection's opening says where the bound holds,
+and the pin's docstrings name KT Proposition 2.3, not 1.1. Next: the close. Mode: structural
+edit. There are no red target nodes; each slice restates the nodes it reaches
+(`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Architectural choices made up front
 
@@ -84,34 +88,17 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 - [x] **8. `cor:theorem-55-d3-spanning`** (`F-126`): derived from `theorem_55_d3`, concluding
   `IsNonparallel`, hinges on `E(G)` and the rank; `hV` and `hSimple` used (*Decisions made*); moved
   below `theorem_55_d3`.
-- **9. S1, the panel theorems** (`PanelGeneric.lean`; S13; §1b.2), in two commits; design doc §2,
-  *Item 9's recon*, whose spike `notes/reconcile-formal/PanelGenericWitness.lean` is the Lean.
-  - [x] **9a. The restatement**: `Q.IsGenericNormals` (rows at `E(Q.graph)`, its own selector)
-    with the orientation lemmas; the abundance, existence, nondegeneracy and transplant restated;
-    the rank formula and the iff renamed, over every `Q` on `G`, with `hd`, `hcard`, `hne` (§1e);
-    the nodes, fmlnotes, repoints and `formalization.yaml:501`, `:803`–`:810` (`F-206`; the panel
-    halves of `F-207`, `F-252`; S13's panel side).
-  - [x] **9b. G6's row**: `finrank_span_rigidityRows_of_isGenericNormals` a `main_results` row,
-    its witness at the single edge in `Nonvacuity.lean`; the S1 scope sentences name the
-    body-hinge theorem only (`F-012`'s PI item; `F-207`).
-- **10. S1, the body-hinge theorems** (`HingeGeneric.lean`; S13; §1b.2's form; `F-207`, `F-252`,
-  `F-216`, `F-221`, `F-212`), in two commits; design doc §2, *Item 10's recon*, whose spike
-  `notes/reconcile-formal/HingeGenericWitness.lean` is the Lean (names as there).
-  - [x] **10a. The restatement, with the row's witness**: `IsGenericHingePoints G q` (pins 4–5:
-    the selector iff, the congruence); abundance, existence and nondegeneracy over `G`; the
-    witness assembly from Theorem 5.6's main form; the rank formula and its iffs under `hk1`, `hn`,
-    `hcard`, `hne`; the triangle witness; the nodes, notes, yaml row; check 9 at 0 (`F-207`,
-    `F-216`, `F-221`, `F-252`; S13's body-hinge side).
-  - [x] **10b. The S1 scope sentences restated** (docs only, with item 12): README, the home page,
-    `intro.tex`, ROADMAP §34; `F-207`'s last disposition; 10a's sha in the ledger.
-- [ ] **11. S18** (`prop:rigidity-matrix-prop11`; `F-121`, `F-331`; the PI's §1f.1): restated as
-  KT state Proposition 2.3, a generic body-hinge framework on a multigraph (KT p. 655, credited to
-  Jackson–Jordán), not a panel-hinge realization; proved in the conditional form (the bound gives
-  the formula), citing item 10's generic body-hinge theorem for simple graphs. The unconditional
-  repin waits for MULTIGRAPH's M1 (design doc §3).
-- [x] **12. The status surfaces** (with 10b): the degenerate-hinge sentences of README, the home
-  page, `intro.tex` and ROADMAP §23 (the row and note were item 5's); `molecular_conjecture`'s
-  docstring (`F-130`); `F-122`, `F-128` done, `F-123`, `F-220` re-read, nothing left.
+- [x] **9a, 9b. S1, the panel theorems** (`PanelGeneric.lean`; S13; design doc §2, *Item 9's
+  recon*): over every `Q` on `G` with generic normals, under `hd`, `hcard`, `hne` (§1e)
+  (`24d9d0cc`); the rank formula a `main_results` row, witnessed at the single edge (`ce98d5ec`).
+- [x] **10a, 10b. S1, the body-hinge theorems** (`HingeGeneric.lean`; design doc §2, *Item 10's
+  recon*): genericity over `G`; the rank formula and its iffs under `hk1`, `hn`, `hcard`, `hne`,
+  witnessed at the triangle (`96683b73`); the S1 scope sentences (`43f78c5f`, with item 12).
+- [x] **11. S18** (`prop:rigidity-matrix-prop11`; `F-121`, `F-331`; §1f.1): KT Proposition 2.3 for a
+  body-hinge framework on a multigraph, in conditional form; blueprint and docstrings only
+  (*Decisions made*). The unconditional repin is MULTIGRAPH's M1 (design doc §3).
+- [x] **12. The degenerate-hinge sentences** (with 10b, `43f78c5f`): README, the home page,
+  `intro.tex`, ROADMAP §23; `molecular_conjecture`'s docstring (`F-130`).
 - [ ] **Close**: whole-project build with 0 warnings, `lake lint`, the blueprint gates, the main
   results' axioms; MULTIGRAPH or UNSTATED named next. Then the loop **stops for the PI's push**
   (§1f.2), CI's first run of 41a's `module` conversion: no next phase opens.
@@ -124,17 +111,13 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Hand-off / next phase
 
-**Item 11** (checklist 11; S18, `F-121`, `F-331`; the PI's §1f.1): restate
-`prop:rigidity-matrix-prop11` as KT state Proposition 2.3 (p. 655, credited to Jackson–Jordán), a
-generic body-hinge framework on a multigraph, proved in the conditional form, as its pin
-`rigidityMatrix_prop11` (the bound `hgen` gives the formula) already is; cite item 10's generic
-body-hinge theorem for simple graphs; re-read the pin's header and docstring (`F-123`). First
-settle whether it is blueprint-only or wants a Lean bridge to `hgen` (design doc §2, *Item 10's
-recon*, "Item 11 in view"); if a bridge, that may be a commit of its own. Also give the commit
-"Phase 41b items 10b and 12: …" its sha in the six ledger dispositions that name it by subject
-(`F-122`, `F-123`, `F-128`, `F-130`, `F-207`, `F-220`). Gates: `blueprint/verify.sh`,
-`blueprint/lint.sh`, `check-phase-note.py`, and `lake build`/`lake lint` if Lean changes. Then
-the close.
+**The close** (checklist *Close*; `PHASE-BOUNDARIES.md` *When this commit closes a phase*): a
+whole-project `lake build` with 0 warnings and `lake lint`, `blueprint/verify.sh` and
+`blueprint/lint.sh`, `#print axioms` for every `main_results` row of `formalization.yaml`, then the
+close checklist for 41b (ROADMAP's row and §41, the status surfaces, the end-to-end re-read of the
+restated nodes, the working-doc tails, MULTIGRAPH or UNSTATED named next in the design doc's §3).
+One commit, unless the re-read finds a false sentence, which is then a commit of its own first.
+After it the loop **stops for the PI's push** (§1f.2): no next phase opens.
 
 ## Decisions made during this phase
 
@@ -157,19 +140,17 @@ the close.
   stays total, the body-hinge side asks `∀ e ∈ E(G)`, `IsHingeCoplanar` constrains `E(F.graph)`.
 - **Item 9's design** (design doc §2, *Item 9's recon*): genericity is the framework's, at its
   edges; Theorem 5.6's main form is the witness; no twin.
-- **Item 10's design** (2026-10-25; design doc §2, *Item 10's recon*): genericity at every
-  selector that records the links of `G` (no framework selector; a swap negates a row), equal to
-  one selector's by a lemma; Theorem 5.6's main form is the witness, as the transplant needs
-  nondegeneracy at edges only; `hk1` and `hn` stay (`Fin k` points; § 48 poisons `n - 1 + 1`).
-  The row's witness is the triangle with the shadow labels; `Nonvacuity.lean`'s private
-  `top_fin_three_shadowGraph_isKDof_zero` generalizes to `3 ≤ bodyBarDim n` and serves it and the
-  molecule row (the recon's uncompiled claim, checked at 10a).
-- **Items 10b and 12 in one commit** (the coordinator's call, 2026-10-25): both rewrite README,
-  the home page, `intro.tex`, ROADMAP and `formalization.yaml`'s notes. Item 11 stays separate.
-- **One body, the coordinator's call under §1f.3** (item 10a): the witness assembly, the rank
-  formula and both iffs take `hne : V(G).Nonempty` for `hV : 2 ≤ V(G).ncard`. The proof does not
-  need the bound (Theorem 5.6's main form covers one body), only these theorems change, and it is
-  §1e's pattern (design doc §2, *Item 10's recon*).
+- **Item 10's design** (design doc §2, *Item 10's recon*): genericity at every selector that
+  records the links of `G`; Theorem 5.6's main form is the witness; `hk1` and `hn` stay (§ 48);
+  the row's witness is the triangle with the shadow labels.
+- **Items 10b and 12 in one commit** (the coordinator's call): the same status surfaces.
+- **Item 11, no Lean bridge** (the coordinator's scope-pin): §1f.1 asks the conditional form, which
+  `rigidityMatrix_prop11` proves. The statement no longer names genericity, so it drops
+  `\uses{def:dof-generic}` (G5's node, now unused), and the proof the Theorem-5.5 route's four
+  unbacked edges. Lean: docstrings only, KT Proposition 1.1 (Tay–Whiteley's, KT p. 648) renamed 2.3
+  in the pin's header and docstring and `theorem_55_6_multigraph_of_two_le`'s (`F-123`, `F-133`).
+- **One body, the coordinator's call under §1f.3** (item 10a): `hne` for `hV` in the witness
+  assembly, the rank formula and both iffs, §1e's pattern (design doc §2, *Item 10's recon*).
 - **Item 9a's pins**: `def:generic-normals`'s third, `isGenericNormals_iff_of_graph_eq`.
 - **The corollary keeps `hV` and `hSimple`** (item 8; the coordinator's scope-pin): without
   `G.Simple` it is false at the double edge (`restated_theorem56_false_at_banana`,

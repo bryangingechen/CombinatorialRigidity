@@ -2542,6 +2542,17 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Prose-report.md`, S18); phase 41a: the pin's `hC` asked only at
   the links of $G$, and the note after the proof says so (`a22d989c`); the conditional statement, or a
   repin on the generic forms, stays RESTATE's, after S1.
+  Phase 41b, item 11 (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
+  Proposition 2.3, in conditional form"): done. The node states what its pin states, KT Proposition
+  2.3's rank formula for a body-hinge framework on a multigraph in conditional form: with a nonzero
+  hinge at every edge, the bound $\dim Z(G,p) \le D + \operatorname{def}(\tilde G)$ gives the
+  formula. Its proof is `lem:deficiency-rank-bound` and the hypothesis; the edges to
+  `thm:theorem-55`, `lem:motions-mono-of-graph-le`, `lem:minimal-kdof-spanning-subgraph` and
+  `def:dof-generic` are gone, and none of its edges is unbacked (`blueprint-deps.py --label`). The
+  subsection's opening says where the bound holds: at the realizations of KT Theorem 5.6 that the
+  chapter builds, and at every generic hinge-point assignment of a simple graph
+  (`thm:bodyhinge-generic-rank`, cited, not `\uses`d); for a multigraph it waits on MULTIGRAPH's M1,
+  at which the node is repinned unconditionally (`notes/Phase41-design.md` §1f.1, §3).
 - **F-122** · S · `def:panel-hinge-framework`, `def:hinge-coplanar`, `thm:molecular-conjecture`
   (`algebraic-induction/panel-layer.tex`): the structure `PanelHingeFramework` records, for every
   edge label, an ordered pair of bodies (`ends`), and computes the hinge from their normals;
@@ -2686,7 +2697,7 @@ declaration's name as its header writes it:
   a label outside the edge set constrains no motion (the design doc's §1.4); its docstring says so,
   and `molecular_conjecture_multigraph`'s body-hinge side asks nonzero hinges on `E(G)`.
   Item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge sentences
-  restated"): done for the degenerate hinges. README, the home page, `intro.tex` and ROADMAP §23
+  restated", `43f78c5f`): done for the degenerate hinges. README, the home page, `intro.tex` and ROADMAP §23
   say that Theorems 5.5 and 5.6 give each simple graph they cover a realization with nonparallel
   panels, so every hinge at an edge is nondegenerate, and that both sides of
   `molecular_conjecture`, on one body or more, ask a nondegenerate hinge at every edge, its panel
@@ -2767,7 +2778,7 @@ declaration's name as its header writes it:
   `molecular_conjecture` calls `rankHypothesis_of_theorem_55_gen`, not the genuine form, its panel
   side's nondegenerate hinges at the edges of $G$ coming from the nonparallel panels.
   Item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge sentences
-  restated"): done. README, the home page, `intro.tex` and ROADMAP §23 no longer say that Theorem
+  restated", `43f78c5f`): done. README, the home page, `intro.tex` and ROADMAP §23 no longer say that Theorem
   5.6 allows degenerate hinges or that all-zero normals meet it: its realization of a simple graph,
   on one body or more, has nonparallel panels, so every hinge at an edge is nondegenerate.
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
@@ -3281,7 +3292,7 @@ declaration's name as its header writes it:
   note are restated; the scope sentences of README, the home page, `intro.tex` and ROADMAP §34 are
   item 10b's.
   Phase 41b, items 10b and 12 (the commit "Phase 41b items 10b and 12: the scope and
-  degenerate-hinge sentences restated"): done. The scope sentences of README, the home page,
+  degenerate-hinge sentences restated", `43f78c5f`): done. The scope sentences of README, the home page,
   `intro.tex` and ROADMAP §34 say, as the body-hinge row does, that both generic theorems hold for
   every simple graph on one body or more, given more than $D(|V| - 1)$ labels, the simple minimal
   graphs (a single edge, a tree, a triangle) covered. The row's and its `alignment` note's "minimal
@@ -3590,8 +3601,15 @@ declaration's name as its header writes it:
   with nonzero hinges at its edges meets the rank hypothesis there, which the formula would give a
   generic one.
   *Found:* Phase 41b, the coordinator's check of KT for the PI (`notes/Phase41-design.md` §1f.1).
-  *Disposition:* open (`notes/Phase41b.md`, item 11): the PI chose KT's body-hinge form, proved
-  conditionally, repinned unconditionally on MULTIGRAPH's M1.
+  *Disposition:* done (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
+  Proposition 2.3, in conditional form"; before: open, `notes/Phase41b.md`, item 11): the PI chose
+  KT's body-hinge form, proved conditionally, repinned unconditionally on MULTIGRAPH's M1
+  (`notes/Phase41-design.md` §1f.1). The node is about a body-hinge framework on a multigraph, as KT
+  state Proposition 2.3 (p. 655), not a panel-hinge realization. The prose before it, the opening of
+  `algebraic-induction.tex`, the openings of `rigidity-matrix.tex` and `deficiency.tex`,
+  `intro.tex`'s Case III item, the sentence after `fmlnote:endpoint-selector-totality` and
+  `formalization.yaml`'s Theorem 5.6 row and alignment row no longer describe it as the formula at
+  generic panel-hinge realizations.
 
 ## L — Lean
 
@@ -4156,9 +4174,14 @@ declaration's name as its header writes it:
   generic bound `hgen`, which the proofs of KT Theorem 5.6 supply, without "GREEN-modulo",
   "honest" or "Phase 21b"; done (`8460b351`).
   Phase 41b, item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge
-  sentences restated"): re-read against 41b's restated statements; no part is left false.
+  sentences restated", `43f78c5f`): re-read against 41b's restated statements; no part is left false.
   `rigidityMatrix_prop11`'s header and docstring name its node, which item 11 restates (`F-121`,
   `F-331`), and are item 11's to re-read.
+  Phase 41b, item 11 (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
+  Proposition 2.3, in conditional form"): re-read against the restated node. The header and
+  docstring called the pin the analytic half of KT Proposition 1.1, which is Tay and Whiteley's
+  theorem (KT p. 648; `F-067`); both now name KT Proposition 2.3 (p. 655) in conditional form, as
+  the node does. Done.
 - **F-126** · L · the docstrings and comments of `panel-layer.tex`'s KT Theorem 5.5 pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `Pinning.lean`, `Theorem55.lean`):
   `HasFullRankRealization`'s docstring calls it "the motive Theorem 5.5's induction is run
@@ -4213,7 +4236,7 @@ declaration's name as its header writes it:
   without "the `def > 0` feed of `rigidityMatrix_prop11`", "Theorem 5.5 → Proposition 1.1" or
   "PROSPECT".
   Phase 41b, item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge
-  sentences restated"): since item 6b (`9f7f73ee`) the panel side asks `Q.IsNonparallel`, which
+  sentences restated", `43f78c5f`): since item 6b (`9f7f73ee`) the panel side asks `Q.IsNonparallel`, which
   gives nondegenerate hinges at the edges of the simple $G$, so item 5b's sentence was false of
   the panel side. `molecular_conjecture`'s docstring and the prose before `thm:molecular-conjecture`
   now say that, dropped from the body-hinge side, that side holds exactly for connected $G$ and the
@@ -4279,6 +4302,10 @@ declaration's name as its header writes it:
   their ends), `toBodyHinge_withGraph`'s without "the green ... machinery", and
   `toBodyHinge_withNormal_pinnedMotions_eq`'s without "carries the inductive realization" (it names
   the motion-space form that `case_II_realization_all_k` uses).
+  Phase 41b, item 11 (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
+  Proposition 2.3, in conditional form"): `theorem_55_6_multigraph_of_two_le`'s docstring names
+  `rigidityMatrix_prop11` KT Proposition 2.3 in conditional form, not KT Prop 1.1 (`F-067`), as the
+  restated node does.
 - **F-135** · L · the docstrings of `case-i.tex`'s first pins
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, `PanelLayer.lean`, `Pinning.lean`,
   `CaseIII/Arms.lean`). `toBodyHinge_rankHypothesis_zero`'s calls
@@ -4781,7 +4808,7 @@ declaration's name as its header writes it:
   label, and the process words gone ("Layer BH", "Phase 34", "PROSPECT", "consumers",
   "packaging", "seeded", "genuine").
   Phase 41b, item 12 (the commit "Phase 41b items 10b and 12: the scope and degenerate-hinge
-  sentences restated"): re-read against `HingeGeneric.lean` as item 10a restated it; no part is
+  sentences restated", `43f78c5f`): re-read against `HingeGeneric.lean` as item 10a restated it; no part is
   left false.
 
 - **F-225** · L · the docstrings of task 2.12's pins (`GenericLift/HingeGeneric.lean`,
