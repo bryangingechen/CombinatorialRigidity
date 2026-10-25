@@ -5,10 +5,8 @@
 statement changed. Sub-phase **41b** (RESTATE) opened 2026-10-24 with the PI's decisions in §1b,
 work log `notes/Phase41b.md`. MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
 they open. Item 1's recon on KT's nonparallel panels is §2's last arc, and the PI's decisions on its
-two open options are §1c; item 2 dropped `HasGenericFullRankRealization`'s last conjunct (§2,
-*RESTATE's open recon*, Q3). Next concrete task: 41b's item 4c, Theorem 5.5's conclusion (item 4a
-gave the predicate `IsNonparallel`, item 4b `HasNonparallelFullRankRealization` and the upgrade to
-it from a generic full-rank realization).
+two open options are §1c. Items 2–4c have landed: Theorem 5.5 concludes KT's nonparallel panels for
+simple `G`. Next concrete task: 41b's item 5, Theorem 5.6.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report

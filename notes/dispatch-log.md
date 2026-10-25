@@ -49,6 +49,8 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
+| 2026-10-24 | 41b item 3 `b2d0839a` | sonnet | coordinator artifact refuted (F19) | My scope-pin predicted that `rankHypothesis_genuine_of_theorem_55_gen`, the rows form and `theorem_55_6_multigraph_of_two_le` would lose `hD` to `unusedArguments`; they already derived `3 ≤ D` locally (round 3's `F-298`), so none changed. The builder checked instead of obeying. The prediction was read off the call sites' `hD` argument without opening the callers' binders. Also: the ledger dispositions said "item 3's commit", not a sha; item 4a filled it in. |
+| 2026-10-25 | 41b item 4c `4960364d` | sonnet | phase-note gate red at landing | The return attested the module builds, `checkdecls` and `blueprint/lint.sh`, but neither `lake lint` nor `check-phase-note.py`; the note failed forward-weighting (finished 70 ≥ forward 68), as items 2–4c each kept its full spec beside a "Done:" paragraph. The coordinator re-ran the whole build and `lake lint` (green) and compressed the done items to one-line verdicts in a fixup, with the design doc's and `Reconcile.md`'s stale next-task pointers. |
 
 **Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
 (2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases
