@@ -222,25 +222,6 @@ theorem RecordsLinks.update_splitOff (h : RecordsLinks G ends) {v u w : α} {e�
         simp only [h1, h2] <;> assumption
     · exact absurd h' hf1
 
-/-- **A selector that records the links of a subgraph agrees with `G.endsOf`**
-(`fmlnote:panel-hinge-nondegenerate`): if `ends` records the links of `H ≤ G`, then at every link of
-`H` the pair `ends e` is `G.endsOf e` or its reverse, as a link of `H` is one of `G`
-(`IsLink.of_le`, `Graph.endsOf_eq_or_swap`). `recordsLinks_agree_swap` (`CaseI.lean`) is the form
-for two selectors of one graph. No declaration uses it:
-`infinitesimalMotions_ofNormals_eq_of_ends_swap` compares two selectors that record the links of a
-graph directly. -/
-theorem RecordsLinks.swap_endsOf [Inhabited α] {H : Graph α β} (h : RecordsLinks H ends)
-    (hle : H ≤ G) :
-    ∀ e u v, H.IsLink e u v →
-      ((ends e).1 = (G.endsOf e).1 ∧ (ends e).2 = (G.endsOf e).2) ∨
-      ((ends e).1 = (G.endsOf e).2 ∧ (ends e).2 = (G.endsOf e).1) := by
-  intro e u v he
-  rcases G.endsOf_eq_or_swap (he.of_le hle) with hG | hG <;>
-    rcases h.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
-    simp only [hG] <;>
-    [exact Or.inl ⟨h1, h2⟩; exact Or.inr ⟨h1, h2⟩;
-     exact Or.inr ⟨h1, h2⟩; exact Or.inl ⟨h1, h2⟩]
-
 end PanelHingeFramework
 
 end RecordsLinks

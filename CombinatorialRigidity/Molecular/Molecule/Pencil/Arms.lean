@@ -704,7 +704,7 @@ theorem exists_hasPencilPanelRealization_glue [Finite α] [Finite β] {n : ℕ}
         have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
           fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
         simp only [extF, hnotE₁, ↓reduceIte, Graph.exists_isLink_of_mem_edgeSet hl.edge_mem]
-    exact finrank_span_rigidityRows_cutEdge_eq (by rw [hn]; decide) hn rfl ⟨G, extF⟩ rfl hV₂def hcut
+    exact finrank_span_rigidityRows_cutEdge_eq (by decide) hn rfl ⟨G, extF⟩ rfl hV₂def hcut
       (fun e _ _ _ => by simp only [extF]; split_ifs; exacts [hS₁nz e, hS₂nz e, hC])
       ⟨hne.some, hssub.subset hne.some_mem⟩ hVcard hdef
       (span_rigidityRows_eq_of_supportExtensor_agree extF ⟨G.induce V₁, ext₁⟩ rfl hagree₁)

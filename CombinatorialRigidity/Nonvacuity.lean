@@ -310,8 +310,8 @@ theorem theorem_55_minimalKDof_gen_witness :
     PanelHingeFramework.HasGenericFullRankRealization ℝ 1 2
         (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) ∧
       HasPanelRealization ℝ 1 2 (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) := by
-  obtain ⟨hgen, hpanel⟩ := PanelHingeFramework.theorem_55_minimalKDof_gen (K := ℝ) le_rfl
-    (Graph.three_le_bodyBarDim_of_two_le le_rfl)
+  obtain ⟨hgen, hpanel⟩ := PanelHingeFramework.theorem_55_minimalKDof_gen (K := ℝ) (k := 1)
+    (n := 2) le_rfl
     (Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num))
     (Graph.freshEdgeSupply_of_card_lt (by decide) (by simp only [Nat.card_fin]; decide))
     (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) (singleEdge_isMinimalKDof_one (by decide) 0)

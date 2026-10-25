@@ -2,8 +2,9 @@
 
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1, and at this sub-phase's, §1b) and the recons are in
-`notes/Phase41-design.md`. Items 1 (KT's nonparallel by route B, items 4a–4c) and 2 done.
-Next concrete task: item 3, `F-324`, `theorem_55_minimalKDof_gen`'s derivable `hD`.
+`notes/Phase41-design.md`. Items 1 (KT's nonparallel by route B, items 4a–4c; the PI settled its two
+open options, design doc §1c), 2 and 3 done. Next concrete task: item 4a, the predicate
+`IsNonparallel`.
 
 ## Current state
 
@@ -47,8 +48,10 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   (both selectors record the links); the link sites at `CaseII.lean`, `CaseIII/Realization.lean`
   and `Theorem55.lean` read the field; `fmlnote:generic-full-rank` and the note after
   `lem:case-cut-edge-realization-gp` restated. Two helpers lost their callers (*Blockers*).
-- [ ] **3. `F-324`**: `theorem_55_minimalKDof_gen`'s derivable `hD` and the chain below it
-  (`F-293`, `F-297`, `F-298`; about ten signatures, seven call sites).
+- [x] **3. `F-324`**: `theorem_55_minimalKDof_gen`'s derivable `hD` and the chain below it
+  (`F-293`, `F-297`, `F-298`). Done: the twelve `hD`s gone, each body deriving the bound it uses;
+  four lemmas that took no `1 ≤ k` swap `hD : 2 ≤ D` for `hk` (`D = 1` at `k = 0`); the callers
+  already derived theirs; the two dead helpers of item 2 deleted.
 - [ ] **4a. The predicate** (§1b.4; `PanelHinge.lean`): `PanelHingeFramework.IsNonparallel` beside
   `IsGeneralPosition` (the directions `Fin.init (P.normal a)` of any two distinct bodies of `α`
   independent), `IsNonparallel.isGeneralPosition`, `exists_nonparallel_polynomial` under `1 ≤ k`
@@ -77,7 +80,10 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   restated; the link conjunct of the rows form
   `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, of
   `exists_rankHypothesis_isGeneralPosition4_of_two_le` and of its wrapper
-  `exists_rankHypothesis_isGeneralPosition4` dropped; the witness.
+  `exists_rankHypothesis_isGeneralPosition4` dropped; the wrapper also concludes `IsNonparallel`
+  (design doc §1c.2: one more polynomial factor at its normals, after 4a gives the predicate;
+  the `_of_two_le` form gains it where the wrapper's proof needs it), its blueprint node and
+  `formalization.yaml` row restated; the witness.
 - [ ] **6. `molecular_conjecture`** (S2; §1.2): `V(G).Nonempty` for `2 ≤ |V(G)|`, nondegenerate
   hinges on `E(G)` on both sides, `[DecidableEq β]` dropped (`F-323`); the witness.
 - [ ] **7. The multigraph rows** (§1.2, §1.4): `molecular_conjecture_multigraph` and
@@ -103,20 +109,14 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Blockers / open questions
 
-- **Two helpers without callers since item 2** (a coordinator call, not in the plan):
-  `PanelHingeFramework.recordsLinks_agree_swap` (`CaseI.lean`, the old conjunct's form) and
-  `RecordsLinks.swap_endsOf` (`PanelHinge.lean`) built the dropped `hswap` arguments. Item 2 kept
-  them (its prompt kept `RecordsLinks` and its lemmas), and their docstrings say that no
-  declaration uses them; delete them in a small commit, or keep them as API.
 - **CI has not run since 2026-10-15**: the PI pushes after RESTATE closes (§1b), so that push is
   CI's first run of 41a's `module` conversion (doc-gen, the upstreaming dashboard). The close
   should expect to watch it.
 
 ## Hand-off / next phase
 
-**Item 3**: `F-324`, `theorem_55_minimalKDof_gen`'s derivable `hD` and the chain below it (`F-293`,
-`F-297`, `F-298`; about ten signatures, seven call sites), one commit. Then items 4a, 4b and 4c, one
-commit each, then item 5. 4b's proof is the witness's `exists_nonparallel_of_generic`, nearly
+**Item 4a**: the predicate `IsNonparallel` (item 3 landed). Then items 4b and 4c, one commit each,
+then item 5. 4b's proof is the witness's `exists_nonparallel_of_generic`, nearly
 verbatim, but its `obtain` of `HasGenericFullRankRealization` takes four components since item 2
 (the witnesses of `notes/reconcile-formal/` check at their own commits, not at item 2's).
 
@@ -127,3 +127,6 @@ verbatim, but its `obtain` of `HasGenericFullRankRealization` takes four compone
   reached at Theorem 5.5's end by the genericity device; the induction keeps general position.
   Route A, nonparallel in the motive, needs `1 ≤ k` on about a dozen producers, and stays a PI
   option (design doc §2, *KT's nonparallel recon*; §4).
+- **The PI's decisions after item 1's recon** (2026-10-24): `notes/Phase41-design.md` §1c, verbatim.
+- **Item 3** (`F-324`): four lemmas without `1 ≤ k` take `hk` for `hD : 2 ≤ D`, a swap the ledger's
+  "drop" needed (`D = 1` at `k = 0`); the `F-324` entry says which.

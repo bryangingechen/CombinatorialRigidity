@@ -3415,6 +3415,14 @@ declaration's name as its header writes it:
   (`scratch/reconcile-lean/t381/HD.lean`, gitignored).
   *Found:* RECONCILE round 3 task 38.1.
   *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
+  Phase 41b, item 3: done (Phase 41b item 3's commit; the sha goes in at the next ledger sweep).
+  `theorem_55_minimalKDof_gen` and the eleven declarations of the list lose `hD`, each body that
+  uses it deriving it (`hn ▸ three_le_screwDim hk1`, or `two_le_screwDim`). Four of them took no
+  `1 ≤ k` (`finrank_span_rigidityRows_cutEdge_eq`, `case_cut_edge_realization_gen`,
+  `case_cut_edge_realization_gp_gen`, `case_I_realization_all_k_gen`), so `hD : 2 ≤ D` there is
+  `hk : 1 ≤ k` (a hypothesis swapped, not only dropped; `D = screwDim k` forces it at `k = 0`,
+  where `D = 1`). Their blueprint nodes state $d \ge 2$ and `thm:theorem-55` states no `hD`:
+  unchanged. The callers already derived `3 ≤ D` locally (`F-298`), so none went unused.
 
 ## L — Lean
 
@@ -5990,6 +5998,7 @@ declaration's name as its header writes it:
   `isGeneralPosition_withMomentNormals` by `isGeneralPosition_ofParam`, each tool moved above its
   user; no statement changes (`lem:moment-curve-general-position` pins both forms). Done so, the
   leading-minor lemma moved up and `isGeneralPosition_withMomentNormals` down.
+  Phase 41b, item 3 (`F-324`): `case_III_realization_all_k`'s `hD` dropped, derived at its one use.
 - **F-297** · L · hypotheses the others give, and repeated derivations, in the first half of
   `Molecular/AlgebraicInduction/Theorem55.lean`. `theorem_55_base_producer_gen`'s
   `hD : 2 ≤ bodyBarDim n` (`lem:theorem-55-base-producer`) follows from `hk` and `hn`
@@ -6029,6 +6038,9 @@ declaration's name as its header writes it:
   (`case_cut_edge_realization_gen`, `case_cut_edge_realization_gp_gen` and `Pencil/Arms.lean`'s
   cut case); `lem:case-I-realization-h65` stated without $|V(G)| \ge 3$, its proof saying why
   (`e3ec5572`).
+  Phase 41b, item 3 (`F-324`): the `hD` of `theorem_55_base_producer_gen`,
+  `case_I_realization_h65_gen`, `finrank_span_rigidityRows_cutEdge_eq` and the two cut lemmas
+  dropped (the last three for `hk`, see `F-324`).
 - **F-298** · L · hypotheses the others give, repeated derivations and four needless `set_option`s,
   in the second half of `Molecular/AlgebraicInduction/Theorem55.lean`.
   `case_I_realization_nonsimple_gen`'s `hD : 2 ≤ bodyBarDim n` (`lem:case-I-realization-nonsimple`)
@@ -6093,6 +6105,10 @@ declaration's name as its header writes it:
   nodes these pins serve state $d \ge 2$ only, unchanged (`e3ec5572`); phase 41a, item 7: the
   genuine form and its link-recording form merged into one declaration; the strip and the
   re-aimed selector stay in two, the genuine form and the rows form (`f4bc4cb5`).
+  Phase 41b, item 3 (`F-324`): the `hD` of `case_I_realization_nonsimple_gen`,
+  `case_I_dispatch_gen`, `case_I_hcontract_gen`, `case_I_realization_all_k_gen`,
+  `theorem_55_minimalKDof_k_all_k` and `theorem_55_minimalKDof_gen` dropped; the callers' local `hD`
+  stay, as `omega` reads them.
 - **F-299** · L · a missed mathlib lemma and a repeated derivation in `Molecular/Molecule/`.
   `screwCoord_injective` (`ScrewVelocity.lean`) proves by rank–nullity, from `screwCoord_surjective`
   and the two dimensions, what `LinearMap.injective_iff_surjective_of_finrank_eq_finrank` gives; and

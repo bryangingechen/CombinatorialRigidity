@@ -4,9 +4,10 @@
 `notes/Phase41a.md`: the field `isLink_ends` is on `PanelHingeFramework`, and no main result's
 statement changed. Sub-phase **41b** (RESTATE) opened 2026-10-24 with the PI's decisions in §1b,
 work log `notes/Phase41b.md`. MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
-they open. Item 1's recon on KT's nonparallel panels is §2's last arc; item 2 dropped
-`HasGenericFullRankRealization`'s last conjunct (§2, *RESTATE's open recon*, Q3). Next concrete
-task: 41b's item 3, `F-324`, `theorem_55_minimalKDof_gen`'s derivable `hD`.
+they open. Item 1's recon on KT's nonparallel panels is §2's last arc, and the PI's decisions on its
+two open options are §1c; item 2 dropped `HasGenericFullRankRealization`'s last conjunct (§2, *RESTATE's open recon*, Q3). Next concrete
+task: 41b's item 4a, the predicate `IsNonparallel` (item 3, `F-324`, dropped
+`theorem_55_minimalKDof_gen`'s derivable `hD`).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -105,6 +106,30 @@ What each answer settles:
 
 And **the push waits for RESTATE's close**: CI has not run since 2026-10-15, so its first run of
 41a's `module` conversion (P2–P5) follows RESTATE's close.
+
+## 1c. The PI's decisions after item 1's recon (2026-10-24)
+
+The coordinator put the item-1 recon's two open options (§2, *KT's nonparallel recon*; §4) to the
+PI: (1) route A (nonparallel in the induction's motive, KT's eq. (6.1)) against route B (the
+planned upgrade at the end of Theorem 5.5); (2) nonparallel in the conclusion of the d = 3 wrapper
+`exists_rankHypothesis_isGeneralPosition4`. On (2) the PI chose the option labelled "Yes, add it
+(Recommended)". On (1) the PI first asked, verbatim:
+
+> Is route B the stronger result since it doesn't use the stronger hypothesis?
+
+The coordinator explained that Theorem 5.5's statement is the same under both routes: route B's
+intermediate lemmas keep their hypotheses (valid for every `k`, including `k = 0`), while route A's
+would conclude nonparallel at every step, mirroring KT's eq. (6.1), at the cost of `1 ≤ k` on about
+a dozen of them. The PI then chose the option labelled "Route B (Recommended)".
+
+What each answer settles:
+
+1. **Route B.** As §2's arc plans (items 4a–4c), with the induction untouched; route A is
+   rejected.
+2. **The d = 3 wrapper concludes `IsNonparallel` too.** It takes one more polynomial factor at its
+   choice of normals, and lands with item 5, which already restates the wrapper, after item 4a
+   gives the predicate. `exists_rankHypothesis_isGeneralPosition4_of_two_le` gains it where the
+   wrapper's proof needs it.
 
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
@@ -264,10 +289,10 @@ warnings, its six `#print axioms` the three standard axioms). The names below ar
   passed through `theorem_55_minimalKDof_k`, `theorem_55_d3` and
   `theorem_55_minimalKDof_gen_witness`. Proofs only: `rankHypothesis_genuine_of_theorem_55_gen`
   and the rows form, which read general position off the strip realization.
-  `exists_rankHypothesis_isGeneralPosition4` is untouched: it reads
+  `exists_rankHypothesis_isGeneralPosition4` is untouched by items 4a–4c: it reads
   `rankHypothesis_genuine_of_theorem_55_gen`, which states nothing of the normals, and re-chooses
-  them; a third polynomial factor would add nonparallel to it, a change §1b does not sanction
-  (§4).
+  them; a third polynomial factor adds nonparallel to it, which the PI sanctioned (§1c.2), at
+  item 5.
 - **Order.** Item 4 after items 2 and 3 (the new predicate is born without the link conjunct, and
   both 3 and 4c edit `theorem_55_minimalKDof_gen`) and before item 5, whose Theorem 5.6 then states
   `IsNonparallel` off the strip realization, whose normals `reaimSubLink` keeps; else
@@ -292,9 +317,7 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
 ## 4. Open questions
 
 - **KT's nonparallel** (§1b.4): settled by §2's *KT's nonparallel recon* (route B, 41b's items
-  4a–4c). Two options stay with the PI, neither in the plan: KT's eq. (6.1) motive at full strength
-  (route A, about a dozen internal producers gain `1 ≤ k`), and nonparallel in the conclusion of the
-  d = 3 wrapper `exists_rankHypothesis_isGeneralPosition4` (one more polynomial factor).
+  4a–4c) and by the PI's decisions in §1c (route B; the d = 3 wrapper concludes `IsNonparallel`).
 - **M1 and loops**: assume `G.Loopless`, or relax the upper bound's `hC` to non-loop links (a loop's
   constraint is vacuous, and a loop never crosses a partition). MULTIGRAPH's open decides. JJ 2010
   Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for 2-edge-coloured multigraphs; the

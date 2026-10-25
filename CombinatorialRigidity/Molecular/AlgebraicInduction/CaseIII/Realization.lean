@@ -2154,7 +2154,7 @@ theorem PanelHingeFramework.chainData_dispatch [Infinite K]
 /-! ## Case III (`lem:case-III`) -/
 
 /-- **Case III** (`lem:case-III`; KT Lemma 6.13, p. 692): let `K` be infinite and
-`D = bodyBarDim n = screwDim k ≥ 3` (`hD`, `hn`) with `1 ≤ k`, and let `G` be a simple minimal
+`D = bodyBarDim n = screwDim k ≥ 3` (`hn`) with `1 ≤ k`, and let `G` be a simple minimal
 `0`-dof-graph with `|V(G)| ≥ 3`, no proper rigid subgraph and an edge label outside `E(G)`
 (`hfresh`). Suppose that for every `k'`, every minimal `k'`-dof-graph with at least one and fewer
 than `|V(G)|` vertices has a panel realization, and a generic full-rank realization if it is simple
@@ -2167,7 +2167,7 @@ The proof, as in the proof of `lem:case-III`: `case_III_hsplit_producer_all_k`, 
 `k = 2`. -/
 theorem PanelHingeFramework.case_III_realization_all_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n)
+    {n : ℕ} (hk1 : 1 ≤ k)
     (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
@@ -2182,7 +2182,8 @@ theorem PanelHingeFramework.case_III_realization_all_k
   -- `hIH` at `k' = 0`, as `case_III_hsplit_producer_all_k` takes it, and its `hcand` from
   -- `chainData_dispatch`: `cd`, `hd2`, `hdef_Gab` and `hsplitGP` from the chain, `hk1`, `hn`, `hG`,
   -- `hV3`, `hSimple` and `hIH` from here.
-  PanelHingeFramework.case_III_hsplit_producer_all_k hD hn G hG hV3 hnoRigid hSimple
+  PanelHingeFramework.case_III_hsplit_producer_all_k (hn ▸ three_le_screwDim hk1) hn G hG hV3
+    hnoRigid hSimple
     (fun G' hG' hV2 hlt =>
       hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
     hfresh

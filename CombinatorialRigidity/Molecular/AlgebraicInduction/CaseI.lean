@@ -46,29 +46,6 @@ variable {α β : Type*}
 
 /-! ## Reorienting a realization (`lem:rank-transport-relabel-of-le-finrank`) -/
 
-/-- **Two selectors that give the links of `G` agree up to order**: if `ends₁` and `ends₂` each give
-every link of `G` its ends, in one order or the other (`hrec₁`, `hrec₂`), then at every link `e` of
-`G` the pair `ends₁ e` is `ends₂ e` or its reverse, as both are the ends of `e`.
-`RecordsLinks.swap_endsOf` (`PanelHinge.lean`) is the form for `G.endsOf` at the links of a
-subgraph. No declaration uses it: `infinitesimalMotions_ofNormals_eq_of_ends_swap` compares two
-selectors that record the links of `G` directly. -/
-theorem PanelHingeFramework.recordsLinks_agree_swap
-    {G : Graph α β} (ends₁ ends₂ : β → α × α)
-    (hrec₁ : ∀ e u v, G.IsLink e u v →
-      ((ends₁ e).1 = u ∧ (ends₁ e).2 = v) ∨ ((ends₁ e).1 = v ∧ (ends₁ e).2 = u))
-    (hrec₂ : ∀ e u v, G.IsLink e u v →
-      ((ends₂ e).1 = u ∧ (ends₂ e).2 = v) ∨ ((ends₂ e).1 = v ∧ (ends₂ e).2 = u)) :
-    ∀ e u v, G.IsLink e u v →
-      ((ends₁ e).1 = (ends₂ e).1 ∧ (ends₁ e).2 = (ends₂ e).2) ∨
-      ((ends₁ e).1 = (ends₂ e).2 ∧ (ends₁ e).2 = (ends₂ e).1) := by
-  intro e u v he
-  rcases hrec₁ e u v he with ⟨a1, a2⟩ | ⟨a1, a2⟩ <;>
-    rcases hrec₂ e u v he with ⟨b1, b2⟩ | ⟨b1, b2⟩
-  · exact Or.inl ⟨a1.trans b1.symm, a2.trans b2.symm⟩
-  · exact Or.inr ⟨a1.trans b2.symm, a2.trans b1.symm⟩
-  · exact Or.inr ⟨a1.trans b2.symm, a2.trans b1.symm⟩
-  · exact Or.inl ⟨a1.trans b1.symm, a2.trans b2.symm⟩
-
 /-- **The reoriented realization of the contraction is rigid** (a step of `lem:claim-6-4`): let
 `Gc.map f` have a nonempty vertex set, deficiency zero and a generic full-rank realization `Qcf`,
 and let `ends` give every link of `Gc` its ends. Then at some normals `nrm` in general position,

@@ -407,7 +407,7 @@ theorem theorem_55_base_producer_single_edge_gp_gen
   ring
 
 /-- **The base of KT Theorem 5.5** (`lem:theorem-55-base-producer`; KT §6, p. 671): let `1 ≤ k`, let
-`2 ≤ D` (`hD`) with `D = screwDim k` (`hn`), let `K` be infinite, and let `G` be a minimal
+`D = screwDim k` (`hn`), let `K` be infinite, and let `G` be a minimal
 `c`-dof-graph at `n` with one or two vertices. Then `G` has a nondegenerate-hinge panel realization
 (`HasPanelRealization`), and if `G` is simple, a generic full-rank realization
 (`HasGenericFullRankRealization`). `theorem_55_minimalKDof_gen` (`thm:theorem-55`) uses it for the
@@ -423,12 +423,12 @@ graphs:
   `theorem_55_base_producer_parallel_pair_gen`. This `G` is not simple
   (`not_simple_of_isMinimalKDof_of_ncard_two`), so the first conjunct is vacuous. -/
 theorem theorem_55_base_producer_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hk : 1 ≤ k)
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c)
     (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
       HasPanelRealization K k n G := by
+  have hD : 2 ≤ Graph.bodyBarDim n := hn ▸ two_le_screwDim hk
   rcases Graph.isMinimalKDof_ncard_le_two_trichotomy hD hG hne hV with
     ⟨hE, hc⟩ | ⟨x, y, e, hxy, hVG, hEG, hl, hc⟩ | ⟨x, y, e, f, hxy, hef, hVG, hEG, hle, hlf, hc⟩
   · -- (i) no edge: `E(G) = ∅`, `c = bodyBarDim n * (ncard - 1)`.
@@ -535,7 +535,7 @@ private theorem case_I_h65_ofNormals_supportExtensor {α β : Type*} (G : Graph 
     PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
 
 /-- **Case I with no simple contraction** (`lem:case-I-realization-h65`; KT Lemma 6.5 and Claim 6.6,
-p. 676): let `1 ≤ k`, let `3 ≤ D` (`hD`) with `D = screwDim k` (`hn`), let `K` be infinite, and let
+p. 676): let `1 ≤ k`, let `D = screwDim k` (`hn`), let `K` be infinite, and let
 `G` be a simple minimal `0`-dof-graph at `n` that has a proper rigid subgraph (`hrig`), so
 `|V(G)| ≥ 3`, and in which no proper rigid subgraph `H` has a simple contraction `G/E(H)`
 (`hnoSimpleContr`). Suppose the induction hypothesis `hIH` for the minimal `0`-dof-graphs with at
@@ -564,8 +564,7 @@ row space that are independent in the columns of `v`
 realization (`hasGenericFullRankRealization_of_rigidOn_ofNormals`). -/
 theorem PanelHingeFramework.case_I_realization_h65_gen
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hk : 1 ≤ k)
-    (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    {n : ℕ} (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0)
     (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n) (hSimple : G.Simple)
     (hnoSimpleContr : ∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
@@ -575,6 +574,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G') ∧
         HasPanelRealization K k n G') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
+  have hD : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk
   classical
   have : Fintype α := Fintype.ofFinite α
   have hV3 : 3 ≤ V(G).ncard := hrig.elim fun _ hH => hH.three_le_ncard
@@ -948,7 +948,7 @@ argument serves `|C| = 0` and `|C| = 1`, and `linarith` closes the bound, given 
 `D(|V(G)| − 1)` split across the cut (`hkey`); an `nlinarith` there, which multiplies pairs of
 hypotheses over the `finrank` terms, needed a raised `maxHeartbeats`. -/
 theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     {c c₁ c₂ : ℤ} {G : Graph α β} {V₁ V₂ : Set α} (hc : G.deficiency n = c)
     (F : BodyHingeFramework K k α β) (hFgraph : F.graph = G) (hV₂ : V₂ = V(G) \ V₁)
     (hcut_le : (G.cutEdges V₁).ncard ≤ 1)
@@ -966,6 +966,7 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
     (hlb₂ : screwDim k * ((V₂.ncard : ℤ) - 1) - c₂ ≤ (Module.finrank K S₂ : ℤ)) :
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
+  have hD : 2 ≤ Graph.bodyBarDim n := hn ▸ two_le_screwDim hk
   -- Lower bound: `le_finrank_span_rigidityRows_of_cut`, the side spans rewritten to `S₁`, `S₂`;
   -- a crossing edge of `G` is one of `F.graph`.
   have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext
@@ -1018,7 +1019,7 @@ theorem span_rigidityRows_eq_of_supportExtensor_agree {Gᵢ : Graph α β}
     simpa [BodyHingeFramework.hingeRowBlock] using hr
 
 /-- **Nondegenerate-hinge realization at a cut of at most one edge**
-(`lem:case-cut-edge-realization`; KT Lemma 6.1, p. 672): let `2 ≤ D` (`hD`) with `D = screwDim k`
+(`lem:case-cut-edge-realization`; KT Lemma 6.1, p. 672): let `1 ≤ k` with `D = screwDim k`
 (`hn`), and let `G` be a minimal `c`-dof-graph at `n` that is not 2-edge-connected. If every minimal
 `c'`-dof-graph with at least one and fewer than `|V(G)|` vertices has a nondegenerate-hinge panel
 realization (`hIH`), so does `G`. It holds over every field. `theorem_55_minimalKDof_gen` uses it at
@@ -1032,7 +1033,7 @@ crossing edge, if there is one, a nonzero extensor in the panels of its two ends
 (`exists_extensor_in_two_panels_grade`); each vertex has the normal of its side. Its rank is
 `D(|V(G)| − 1) − c` (`finrank_span_rigidityRows_cutEdge_eq`). -/
 theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hntec : ¬ G.TwoEdgeConnected)
     (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
       V(G').ncard < V(G).ncard → HasPanelRealization K k n G') :
@@ -1139,7 +1140,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     fun e u v hl => (hlinks e u v hl).1
   have hFVne : V(F.graph).Nonempty := ⟨u₀, hV₁sub.subset hu₀⟩
   -- The rank (`finrank_span_rigidityRows_cutEdge_eq`).
-  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn hG.deficiency_eq F rfl hV₂def hcut_le
+  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hk hn hG.deficiency_eq F rfl hV₂def hcut_le
     hFext hFVne hVcard hk_eq hF₁span hF₂span hrank₁.ge hrank₂.ge
   have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
     intro v hv
@@ -1154,7 +1155,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
   exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
 /-- **Generic full-rank realization at a cut of at most one edge**
-(`lem:case-cut-edge-realization-gp`; KT Lemma 6.1, p. 672): let `2 ≤ D` (`hD`) with `D = screwDim k`
+(`lem:case-cut-edge-realization-gp`; KT Lemma 6.1, p. 672): let `1 ≤ k` with `D = screwDim k`
 (`hn`), let `K` be infinite, and let `G` be a simple minimal `c`-dof-graph at `n` that is not
 2-edge-connected. If every simple minimal `c'`-dof-graph with at least one and fewer than `|V(G)|`
 vertices has a generic full-rank realization (`hIH`), so does `G`. `theorem_55_minimalKDof_gen` uses
@@ -1172,7 +1173,7 @@ nonzero hinges, its rows at the edges of `G[Vᵢ]` have rank at least `D(|Vᵢ| 
 has the target rank (`finrank_span_rigidityRows_cutEdge_eq`). Katoh and Tanigawa instead move one
 realization so that none of its panels is parallel to one of the other (KT p. 672). -/
 theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c)
     (hntec : ¬ G.TwoEdgeConnected) (hSimple : G.Simple)
     (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
@@ -1404,7 +1405,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     have := hQF₂rank; rw [hVeq₂, hG₂.1] at this; exact this
   -- The side ranks enter as lower bounds, from the rank polynomials and the ranks of `QF₁` and
   -- `QF₂`.
-  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn hG.deficiency_eq F hFgraph hV₂def
+  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hk hn hG.deficiency_eq F hFgraph hV₂def
     hcut_le hFext' hFVne hVcard hk_eq hF₁span hF₂span
     (by rw [← hrank₁eq]; exact_mod_cast hrank₁_bound)
     (by rw [← hrank₂eq]; exact_mod_cast hrank₂_bound)
@@ -1414,7 +1415,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
 /-! ## Case I: KT Lemmas 6.2 and 6.3, and the three cases (`lem:case-I-all-k`) -/
 
 /-- **Case I for a graph that is not simple** (`lem:case-I-realization-nonsimple`; KT Lemma 6.2,
-p. 673): let `1 ≤ k` and `2 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let `G` be a minimal
+p. 673): let `1 ≤ k`, with `D = screwDim k` (`hn`), and let `G` be a minimal
 `c`-dof-graph at `n` with `|V(G)| ≥ 3` that is not simple. If every minimal `c'`-dof-graph with at
 least one and fewer than `|V(G)|` vertices has a nondegenerate-hinge panel realization (`hIH`), so
 does `G`. It holds over every field.
@@ -1434,12 +1435,13 @@ contain those of the contraction's realization with the columns of `a` deleted
 is at least `D(|V(G)| − 1) − c` (`le_finrank_span_rigidityRows_of_splice`, KT eq. (6.3)). As every
 hinge at a link is nonzero, it is at most that (`finrank_span_rigidityRows_add_deficiency_le`). -/
 theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
     (hnsimple : ¬ G.Simple)
     (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
       V(G').ncard < V(G).ncard → HasPanelRealization K k n G') :
     HasPanelRealization K k n G := by
+  have hD : 2 ≤ Graph.bodyBarDim n := hn ▸ two_le_screwDim hk
   classical
   have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   -- ── Step 1: Two parallel edges, as `G` has no loop ───────────────────────────────────────
@@ -1707,7 +1709,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
 /-- **Case I with a simple contraction** (`lem:case-I-realization`; KT Lemma 6.3, p. 674): let `K`
-be infinite and `2 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let `G` be a simple minimal
+be infinite and `1 ≤ k`, with `D = screwDim k` (`hn`), and let `G` be a simple minimal
 `c`-dof-graph at `n` with `|V(G)| ≥ 3`, `H` a proper rigid subgraph of `G` and `r ∈ V(H)`, such that
 the contraction `G.rigidContract H r` is simple (`hcSimple`). If every minimal `c'`-dof-graph with
 at least one and fewer than `|V(G)|` vertices has a nondegenerate-hinge panel realization, and a
@@ -1728,7 +1730,7 @@ set of normals in general position (KT eq. (6.3)), as `V(H)` and `s_c` share onl
 theorem PanelHingeFramework.case_I_realization_all_k_gen
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
     (hSimple : G.Simple) {H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H))
     (hcSimple : (G.rigidContract H r).Simple)
@@ -1737,6 +1739,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G') ∧
         HasPanelRealization K k n G') :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
+  have hD : 2 ≤ Graph.bodyBarDim n := hn ▸ two_le_screwDim hk
   classical
   have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   obtain ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩ := hH
@@ -1809,7 +1812,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
       hsc_proj_indep n hn hne_ends hG.1
 
 /-- **The three cases of Case I** (`lem:case-I-dispatch`; KT Lemmas 6.2, 6.3 and 6.5, KT §6.2,
-p. 673): let `K` be infinite, `1 ≤ k` and `3 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let `G`
+p. 673): let `K` be infinite, `1 ≤ k`, with `D = screwDim k` (`hn`), and let `G`
 be a minimal `0`-dof-graph at `n` with a proper rigid subgraph (`hrig`), so `|V(G)| ≥ 3`. If every
 minimal `k'`-dof-graph with at least one and fewer than `|V(G)|` vertices has a nondegenerate-hinge
 panel realization, and a generic full-rank realization if it is simple (`hIH`), then so does `G`.
@@ -1822,7 +1825,7 @@ simple contraction to some `r ∈ V(H)`, KT Lemma 6.3 gives a generic full-rank 
 (`hasPanelRealization_of_generic`, with `NeZero k` from `hk`). `case_I_hcontract_gen` uses it at
 deficiency `0`. -/
 theorem case_I_dispatch_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (hk : 1 ≤ k)
-    (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0)
     (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n)
     (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
@@ -1841,22 +1844,22 @@ theorem case_I_dispatch_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β
       by_cases hd : ∃ H : Graph α β, ∃ r : α,
           H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple
       · obtain ⟨H, r, hH, hr, hcSimple⟩ := hd
-        exact PanelHingeFramework.case_I_realization_all_k_gen (by omega) hn G hG hV3 hSimple hH hr
+        exact PanelHingeFramework.case_I_realization_all_k_gen hk hn G hG hV3 hSimple hH hr
           hcSimple hIH
       · -- Otherwise KT Lemma 6.5, with `hIH` at deficiency `0`.
-        exact PanelHingeFramework.case_I_realization_h65_gen hk hD hn G hG hrig hSimple
+        exact PanelHingeFramework.case_I_realization_h65_gen hk hn G hG hrig hSimple
           (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩)
           (fun G' hG' hV2 hlt => hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
     exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩
   · -- `G` not simple: the first conjunct is vacuous, and KT Lemma 6.2 gives the second.
     exact ⟨fun hS => absurd hS hSimple,
-           case_I_realization_nonsimple_gen (by omega) hk hn G hG hV3 hSimple
+           case_I_realization_nonsimple_gen hk hn G hG hV3 hSimple
              (fun k' G' hG' hne' hlt => (hIH k' G' hG' hne' hlt).2)⟩
 
-/-- **Case I** (`lem:case-I-all-k`; KT §6.2, p. 673): let `K` be infinite, `1 ≤ k` and `3 ≤ D`
-(`hD`), with `D = screwDim k` (`hn`), and let `G` be a minimal `c`-dof-graph at `n` with a proper
-rigid subgraph (`hrig`), so `|V(G)| ≥ 3`. If every minimal `c'`-dof-graph with at least one
-and fewer than `|V(G)|` vertices has a nondegenerate-hinge panel realization, and a generic
+/-- **Case I** (`lem:case-I-all-k`; KT §6.2, p. 673): let `K` be infinite, `1 ≤ k`, with
+`D = screwDim k` (`hn`), and let `G` be a minimal `c`-dof-graph at `n` with a proper rigid subgraph
+(`hrig`), so `|V(G)| ≥ 3`. If every minimal `c'`-dof-graph with at least one and fewer than
+`|V(G)|` vertices has a nondegenerate-hinge panel realization, and a generic
 full-rank realization if it is simple (`hIH`), then so does `G`. `theorem_55_minimalKDof_gen` uses
 it for Case I.
 
@@ -1865,7 +1868,7 @@ For `c = 0` this is `case_I_dispatch_gen`. For `c ≠ 0` the case split is the s
 subgraph has a simple contraction (`case_I_realization_all_k_gen`); otherwise KT Claim 6.6 gives
 `c = 0` (`deficiency_eq_zero_of_simple_rigid_no_simpleContraction`), a contradiction. -/
 theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (hk : 1 ≤ k)
-    (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hn : Graph.bodyBarDim n = screwDim k)
     (c : ℤ) (G : Graph α β) (hG : G.IsMinimalKDof n c)
     (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n)
     (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
@@ -1874,13 +1877,14 @@ theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite �
         HasPanelRealization K k n G') :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
       HasPanelRealization K k n G := by
+  have hD : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk
   classical
   have : NeZero k := ⟨by omega⟩
   have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   have hV3 : 3 ≤ V(G).ncard := hrig.elim fun _ hH => hH.three_le_ncard
   by_cases hc : c = 0
   · -- c = 0: `case_I_dispatch_gen`.
-    exact case_I_dispatch_gen hk hD hn G (hc ▸ hG) hrig hIH
+    exact case_I_dispatch_gen hk hn G (hc ▸ hG) hrig hIH
   · -- `c > 0`: the same case split, in which the case of KT Lemma 6.5 does not occur.
     by_cases hSimple : G.Simple
     · -- `G` simple: does some proper rigid subgraph have a simple contraction?
@@ -1888,7 +1892,7 @@ theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite �
         by_cases hd : ∃ H : Graph α β, ∃ r : α,
             H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple
         · obtain ⟨H, r, hH, hr, hcSimple⟩ := hd
-          exact PanelHingeFramework.case_I_realization_all_k_gen (by omega) hn G hG hV3
+          exact PanelHingeFramework.case_I_realization_all_k_gen hk hn G hG hV3
             hSimple hH hr hcSimple hIH
         · -- No: KT Claim 6.6 gives `c = 0`, a contradiction.
           have hc0 : c = 0 := Graph.deficiency_eq_zero_of_simple_rigid_no_simpleContraction
@@ -1898,13 +1902,13 @@ theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite �
       exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩
     · -- `G` not simple: the first conjunct is vacuous, and KT Lemma 6.2 gives the second.
       exact ⟨fun hS => absurd hS hSimple,
-             case_I_realization_nonsimple_gen (by omega) hk hn G hG hV3 hSimple
+             case_I_realization_nonsimple_gen hk hn G hG hV3 hSimple
                (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩
 
 /-! ## KT Theorem 5.5 (`thm:theorem-55`) -/
 
-/-- **The induction of KT Theorem 5.5** (a step of `thm:theorem-55`): let `K` be infinite, `1 ≤ k`
-and `3 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let every minimal `c`-dof-graph miss some edge
+/-- **The induction of KT Theorem 5.5** (a step of `thm:theorem-55`): let `K` be infinite, `1 ≤ k`,
+with `D = screwDim k` (`hn`), and let every minimal `c`-dof-graph miss some edge
 label (`hfresh`). For a graph `H`, let `P(H)` say that `H` has a nondegenerate-hinge panel
 realization, and a generic full-rank realization if `H` is simple. Suppose that `P` holds at the
 minimal `c`-dof-graphs with one or two vertices (`hbase_k`); that it holds at a minimal
@@ -1922,7 +1926,7 @@ The induction on `|V(G)|` is `minimal_kdof_reduction_all_k`. In its two other ca
 `theorem_55_minimalKDof_gen` gives the four hypotheses. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     -- The base: `P` at the minimal `c`-dof-graphs with one or two vertices.
     (hbase_k : ∀ (c : ℤ) (G : Graph α β), G.IsMinimalKDof n c → V(G).Nonempty →
@@ -1953,8 +1957,9 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
       PanelHingeFramework.HasGenericFullRankRealization K k n G → HasPanelRealization K k n G)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
-      HasPanelRealization K k n G :=
-  Graph.minimal_kdof_reduction_all_k
+      HasPanelRealization K k n G := by
+  have hD : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk1
+  exact Graph.minimal_kdof_reduction_all_k
     (P := fun G =>
       (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
         HasPanelRealization K k n G)
@@ -1977,13 +1982,13 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
       have hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
       have hloop : G.Loopless := hSimple.toLoopless
-      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hn G (hfresh 0 G hG)
+      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hn G (hfresh 0 G hG)
         hG hV3 hnoRigid hSimple hIH
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     c G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
 
 /-- **KT Theorem 5.5** (`thm:theorem-55`; KT Theorem 5.5, p. 670, and its proof, KT §6,
-pp. 671–698): let `K` be infinite, `1 ≤ k` and `3 ≤ D` (`hD`), with `D = screwDim k` (`hn`), and let
+pp. 671–698): let `K` be infinite, `1 ≤ k`, with `D = screwDim k` (`hn`), and let
 every minimal `c'`-dof-graph miss some edge label (`hfresh`, `rem:fresh-edge-supply`). Then every
 minimal `c`-dof-graph `G` at `n` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel realization
 (`HasPanelRealization`), of rank `D(|V(G)| − 1) − c`, and if `G` is simple a generic full-rank
@@ -1995,22 +2000,22 @@ Lemma 6.1 from `case_cut_edge_realization_gen` and `case_cut_edge_realization_gp
 `hasPanelRealization_of_generic`. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_gen
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
       HasPanelRealization K k n G :=
-  PanelHingeFramework.theorem_55_minimalKDof_k_all_k hk1 hD hn hfresh
+  PanelHingeFramework.theorem_55_minimalKDof_k_all_k hk1 hn hfresh
     -- The base.
-    (fun c G hG hne hV2 => theorem_55_base_producer_gen hk1 (by omega) hn G hG hne hV2)
+    (fun c G hG hne hV2 => theorem_55_base_producer_gen hk1 hn G hG hne hV2)
     -- KT Lemma 6.1.
     (fun c G hG _ hntec hIH => ⟨
-      fun hSimple => case_cut_edge_realization_gp_gen (by omega) hn G hG hntec hSimple
+      fun hSimple => case_cut_edge_realization_gp_gen hk1 hn G hG hntec hSimple
         (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).1),
-      case_cut_edge_realization_gen (by omega) hn G hG hntec
+      case_cut_edge_realization_gen hk1 hn G hG hntec
         (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩)
     -- Case I.
-    (fun c G hG _hV3 hrig hIH => case_I_hcontract_gen hk1 hD hn c G hG hrig hIH)
+    (fun c G hG _hV3 hrig hIH => case_I_hcontract_gen hk1 hn c G hG hrig hIH)
     -- A nondegenerate-hinge realization from a generic full-rank one, with `NeZero k` from `hk1`.
     (fun G hloop hV2 hGP => by
       have : NeZero k := ⟨by omega⟩
@@ -2031,8 +2036,7 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K 2 n G) ∧
       HasPanelRealization K 2 n G :=
-  PanelHingeFramework.theorem_55_minimalKDof_gen (k := 2) (by norm_num)
-    (hn ▸ three_le_screwDim (by norm_num)) hn hfresh G hG hV
+  PanelHingeFramework.theorem_55_minimalKDof_gen (k := 2) (by norm_num) hn hfresh G hG hV
 
 /-- **KT Theorem 5.5 at `d = 3` and deficiency zero** (`thm:theorem-55-d3-instance`; KT Theorem 5.5,
 p. 670): let `K` be infinite and `6(|α| − 1) < |β|` (`hcard`). Then every minimal `0`-dof-graph `G`
@@ -2091,7 +2095,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
   have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
   -- Realize the spanning subgraph generically; its selector records the links of `G'`.
   obtain ⟨Q', hQ'g, hQ'gp, hQ'rank⟩ :=
-    (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min
+    (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hn hfresh G' hG'min
       hG'V2).1 hG'Simple
   have hQ'rec : RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
   -- Two distinct bodies for the off-edge selector.
@@ -2207,7 +2211,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
   have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
   -- Realize the spanning subgraph generically; its selector records the links of `G'`.
   obtain ⟨Q', hQ'g, hQ'gp, hQ'rank⟩ :=
-    (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min
+    (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hn hfresh G' hG'min
       hG'V2).1 hG'Simple
   have hQ'rec : RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
   -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge; GP is `Q'`'s normals.
@@ -2565,7 +2569,7 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
   have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
   -- Realize the spanning subgraph by the *bare* `HasPanelRealization` conjunct of Theorem 5.5.
   obtain ⟨F', normal', hF'g, hF'nz, hF'link, hF'rankspan⟩ :=
-    (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min hG'V2).2
+    (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hn hfresh G' hG'min hG'V2).2
   -- Endpoint selector for `G`-links (feeds the two-panel extension off `G'`).
   set ends : β → α × α := fun e =>
     if h : ∃ u v, G.IsLink e u v then (h.choose, h.choose_spec.choose) else (x₀, x₀)
