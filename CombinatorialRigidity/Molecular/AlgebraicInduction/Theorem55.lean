@@ -1991,10 +1991,12 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k
 pp. 671–698): let `K` be infinite, `1 ≤ k`, with `D = screwDim k` (`hn`), and let
 every minimal `c'`-dof-graph miss some edge label (`hfresh`, `rem:fresh-edge-supply`). Then every
 minimal `c`-dof-graph `G` at `n` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel realization
-(`HasPanelRealization`), of rank `D(|V(G)| − 1) − c`, and if `G` is simple a generic full-rank
-realization (`HasGenericFullRankRealization`).
+(`HasPanelRealization`), of rank `D(|V(G)| − 1) − c`, and if `G` is simple a nonparallel full-rank
+realization (`HasNonparallelFullRankRealization`).
 
-It is `theorem_55_minimalKDof_k_all_k`, with the base from `theorem_55_base_producer_gen`, KT
+It is `theorem_55_minimalKDof_k_all_k`, whose generic realization of a simple `G` becomes the
+nonparallel one by `hasNonparallelFullRankRealization_of_generic` (`lem:nonparallel-of-generic`;
+`G` is loopless and has a vertex), with the base from `theorem_55_base_producer_gen`, KT
 Lemma 6.1 from `case_cut_edge_realization_gen` and `case_cut_edge_realization_gp_gen`, Case I from
 `case_I_hcontract_gen`, and a nondegenerate-hinge realization from a generic full-rank one by
 `hasPanelRealization_of_generic`. -/
@@ -2003,9 +2005,10 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_gen
     {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G) ∧
-      HasPanelRealization K k n G :=
-  PanelHingeFramework.theorem_55_minimalKDof_k_all_k hk1 hn hfresh
+    (G.Simple → PanelHingeFramework.HasNonparallelFullRankRealization K k n G) ∧
+      HasPanelRealization K k n G := by
+  have hne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  obtain ⟨hgen, hpanel⟩ := PanelHingeFramework.theorem_55_minimalKDof_k_all_k (K := K) hk1 hn hfresh
     -- The base.
     (fun c G hG hne hV2 => theorem_55_base_producer_gen hk1 hn G hG hne hV2)
     -- KT Lemma 6.1.
@@ -2022,26 +2025,29 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_gen
       have := hloop
       exact hasPanelRealization_of_generic hV2 hGP)
     G hG hV
+  exact ⟨fun hSimple => by
+    have := hSimple.toLoopless
+    exact hasNonparallelFullRankRealization_of_generic hk1 hn hne (hgen hSimple), hpanel⟩
 
 /-- **KT Theorem 5.5 at `d = 3`** (a step of `thm:theorem-55-d3-instance`):
 `theorem_55_minimalKDof_gen` at `k = 2`, where `D = 6`. If `K` is infinite, `D = screwDim 2` (`hn`),
 so `3 ≤ D`, and every minimal `c'`-dof-graph misses some edge label (`hfresh`), then
 every minimal `c`-dof-graph `G` at `n` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel
-realization, and if `G` is simple a generic full-rank realization. `theorem_55_d3` uses it at
+realization, and if `G` is simple a nonparallel full-rank realization. `theorem_55_d3` uses it at
 `c = 0`. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hn : Graph.bodyBarDim n = screwDim 2)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K 2 n G) ∧
+    (G.Simple → PanelHingeFramework.HasNonparallelFullRankRealization K 2 n G) ∧
       HasPanelRealization K 2 n G :=
   PanelHingeFramework.theorem_55_minimalKDof_gen (k := 2) (by norm_num) hn hfresh G hG hV
 
 /-- **KT Theorem 5.5 at `d = 3` and deficiency zero** (`thm:theorem-55-d3-instance`; KT Theorem 5.5,
 p. 670): let `K` be infinite and `6(|α| − 1) < |β|` (`hcard`). Then every minimal `0`-dof-graph `G`
 at `n = 3` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel realization, of rank `6(|V(G)| − 1)`,
-and if `G` is simple a generic full-rank realization.
+and if `G` is simple a nonparallel full-rank realization.
 
 It is `theorem_55_minimalKDof_k` at `n = 3` and `c = 0`. `hcard` gives every minimal `c`-dof-graph
 an edge label outside its edge set (`Graph.freshEdgeSupply_of_card_lt`, `rem:fresh-edge-supply`),
@@ -2049,7 +2055,7 @@ and `D = screwDim 2` holds at `n = 3` by `decide`. No declaration uses it. -/
 theorem PanelHingeFramework.theorem_55_d3 [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard) :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization K 2 3 G) ∧
+    (G.Simple → PanelHingeFramework.HasNonparallelFullRankRealization K 2 3 G) ∧
       HasPanelRealization K 2 3 G :=
   PanelHingeFramework.theorem_55_minimalKDof_k (by decide)
     (Graph.freshEdgeSupply_of_card_lt (n := 3) (by decide)
@@ -2094,9 +2100,10 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
   have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
   have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
   -- Realize the spanning subgraph generically; its selector records the links of `G'`.
-  obtain ⟨Q', hQ'g, hQ'gp, hQ'rank⟩ :=
+  obtain ⟨Q', hQ'g, hQ'np, hQ'rank⟩ :=
     (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hn hfresh G' hG'min
       hG'V2).1 hG'Simple
+  have hQ'gp := hQ'np.isGeneralPosition
   have hQ'rec : RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
   -- Two distinct bodies for the off-edge selector.
   have hVcard : 2 ≤ Fintype.card α := by
@@ -2210,9 +2217,10 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
   have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
   have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
   -- Realize the spanning subgraph generically; its selector records the links of `G'`.
-  obtain ⟨Q', hQ'g, hQ'gp, hQ'rank⟩ :=
+  obtain ⟨Q', hQ'g, hQ'np, hQ'rank⟩ :=
     (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hn hfresh G' hG'min
       hG'V2).1 hG'Simple
+  have hQ'gp := hQ'np.isGeneralPosition
   have hQ'rec : RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
   -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge; GP is `Q'`'s normals.
   let Q := Q'.reaimSubLink k G G' x₀ y₀

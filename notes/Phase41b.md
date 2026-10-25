@@ -3,8 +3,7 @@
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1, and at this sub-phase's, §1b) and the recons are in
 `notes/Phase41-design.md`. Items 1 (KT's nonparallel by route B, items 4a–4c; the PI settled its two
-open options, design doc §1c), 2, 3, 4a and 4b done. Next concrete task: item 4c, Theorem 5.5's
-conclusion.
+open options, design doc §1c), 2, 3, 4a, 4b and 4c done. Next concrete task: item 5, Theorem 5.6.
 
 ## Current state
 
@@ -81,12 +80,25 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   Blueprint: `def:rank-hypothesis`'s statement and `fmlnote:generic-full-rank` name the third
   predicate (asked of all of `α`, so at `d = 1` only for at most one body); the new node follows
   `lem:generic-yields-genuine-hinge`'s note.
-- [ ] **4c. Theorem 5.5's conclusion** (`Theorem55.lean`, `Nonvacuity.lean`):
+- [x] **4c. Theorem 5.5's conclusion** (`Theorem55.lean`, `Nonvacuity.lean`):
   `theorem_55_minimalKDof_gen`'s simple conjunct becomes `HasNonparallelFullRankRealization`, by
   4b from the induction's, passed through `theorem_55_minimalKDof_k`, `theorem_55_d3` and
   `theorem_55_minimalKDof_gen_witness`; proofs only of `rankHypothesis_genuine_of_theorem_55_gen`
   and the rows form; `thm:theorem-55` and `thm:theorem-55-d3-instance` restated; the main result's
   `formalization.yaml` row ("generic for simple G"); `HasGenericFullRankRealization`'s docstring.
+  Done: the simple conjunct of `theorem_55_minimalKDof_gen` is `HasNonparallelFullRankRealization`
+  (the induction's generic one, `hasNonparallelFullRankRealization_of_generic` with `hSimple`'s
+  looplessness and a vertex from `hV`), passed through `theorem_55_minimalKDof_k`,
+  `theorem_55_d3` and the witness; the two destructurers (`rankHypothesis_genuine_of_theorem_55_gen`
+  and the rows form) take `IsNonparallel.isGeneralPosition`, no other consumer changed;
+  `thm:theorem-55` (a new `\uses{lem:nonparallel-of-generic}` and a closing paragraph of the
+  proof) and `thm:theorem-55-d3-instance` restated, the yaml row and the docstrings of
+  `HasGenericFullRankRealization`, the three theorems and the witness. Finding for item 5:
+  `hasGenericFullRankRealization_of_theorem_55_gen` (`thm:theorem-55-6-rows`'s corollary) reads the
+  rows form, not this conjunct, and is untouched; `cor:theorem-55-d3-spanning`'s
+  `rankHypothesis_deficiency_of_theorem_55_d3` still takes a generic `hGP` (item 8's), which
+  `theorem_55_d3`'s conjunct now gives through `IsNonparallel`'s implication only at the
+  realization level (no `HasNonparallel…` → `HasGeneric…` lemma exists; item 8 may add one).
 - [ ] **5. Theorem 5.6** (S2; §1b.1): `rankHypothesis_of_theorem_55_gen` concludes `Q.graph = G`,
   `Q.IsNonparallel` (the strip realization's normals, which `reaimSubLink` keeps; vacuous at one
   body) and the rank, keeps `hSimple`, drops `[DecidableEq β]` (`F-323`); `thm:theorem-55-6`
@@ -128,13 +140,11 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Hand-off / next phase
 
-**Item 4c**: Theorem 5.5's conclusion (items 4a and 4b landed). Then item 5. In
-`theorem_55_minimalKDof_gen` (`Theorem55.lean`, a term proof today), the simple conjunct is
-`hasNonparallelFullRankRealization_of_generic hk1 hn hne` applied to the induction's generic
-realization: every hypothesis is already there (`[Infinite K]`, `[Finite α]`, `[Finite β]`, `hk1`,
-`hn`), `G.Loopless` from `hSimple.toLoopless` and `V(G).Nonempty` from `hV`. The consumers that read
-general position off it take `IsNonparallel.isGeneralPosition`; the checklist's item 4c names them
-and the restated nodes.
+**Item 5**: Theorem 5.6 (items 4a–4c landed), as the checklist's item 5 says: `rankHypothesis_of_theorem_55_gen`
+concludes `Q.IsNonparallel` (the strip realization's normals, which `reaimSubLink` keeps), the rows
+form and the `isGeneralPosition4` forms drop the link conjunct, and the witness. Theorem 5.5's simple
+conjunct is now nonparallel (`.1 hSimple` gives `Q'.IsNonparallel`, which item 5's destructurers at
+`rankHypothesis_genuine_of_theorem_55_gen` already take apart).
 
 ## Decisions made during this phase
 

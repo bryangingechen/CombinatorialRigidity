@@ -1010,7 +1010,9 @@ order, as every panel-hinge framework's does (`isLink_ends`, `RecordsLinks.eq_or
 
 KT Theorem 5.5 gives a realization that is nonparallel if `G` is simple (KT p. 670), and the normals
 of a nonparallel realization are in general position (`def:panel-general-position`). The formal
-proof of KT Theorem 5.5 asks for a generic full-rank realization of a simple graph only, and for a
+induction of KT Theorem 5.5 asks for a generic full-rank realization of a simple graph only (its
+conclusion is the nonparallel one, `HasNonparallelFullRankRealization`, reached by
+`hasNonparallelFullRankRealization_of_generic`), and for a
 nondegenerate-hinge realization (`HasPanelRealization`) of every graph: in Katoh and Tanigawa's
 realization of two bodies joined by two edges, the two panels coincide (KT Lemma 5.3, p. 669), and
 their normals are not in general position.

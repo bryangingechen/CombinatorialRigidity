@@ -1120,7 +1120,7 @@ the base cases above, and Cases~I, II and~III, which
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization,
-        thm:minimal-kdof-reduction-all-k,
+        lem:nonparallel-of-generic, thm:minimal-kdof-reduction-all-k,
         lem:theorem-55-base-producer, lem:theorem-55-base,
         lem:case-cut-edge-realization, lem:case-cut-edge-realization-gp,
         lem:case-I, lem:case-I-realization, lem:case-I-all-k,
@@ -1129,7 +1129,7 @@ the base cases above, and Cases~I, II and~III, which
   minimal $k$-dof-graph with $|V| \ge 2$. Then $G$ has a
   nondegenerate-hinge panel realization
   (\cref{def:genuine-hinge-realization}), of rank $D(|V| - 1) - k$. If
-  $G$ is simple, then $G$ also has a generic full-rank realization
+  $G$ is simple, then $G$ also has a nonparallel full-rank realization
   (\cref{def:rank-hypothesis}). In particular, a minimal $0$-dof-graph
   with at least two vertices has an infinitesimally rigid
   nondegenerate-hinge panel realization.
@@ -1172,6 +1172,12 @@ the base cases above, and Cases~I, II and~III, which
   Case~III does (KT Lemmas~6.10 and~6.13; \cref{lem:case-III}). In both
   cases this realization is also a nondegenerate-hinge one
   (\cref{lem:generic-yields-genuine-hinge}), so $P(G)$ holds.
+
+  \emph{The nonparallel realization.} If $G$ is simple, it has no loops,
+  and $V(G) \neq \emptyset$, so the generic full-rank realization that
+  $P(G)$ gives for it yields a nonparallel full-rank realization
+  (\cref{lem:nonparallel-of-generic}). This is the realization that the
+  theorem states.
 
   \emph{The deficiencies.} The induction hypothesis is used at
   deficiencies other than $k$, even when $k = 0$. KT Lemma~6.1 applies
@@ -1241,7 +1247,7 @@ We record the case of the molecular conjecture, $d = 3$ and $k = 0$.
   $G = (V, E)$ be a minimal $0$-dof-graph with $|V| \ge 2$. Then $G$ has
   a nondegenerate-hinge panel realization
   (\cref{def:genuine-hinge-realization}), of rank $6(|V| - 1)$. If $G$ is
-  simple, then $G$ also has a generic full-rank realization
+  simple, then $G$ also has a nonparallel full-rank realization
   (\cref{def:rank-hypothesis}).
 \end{theorem}
 \begin{proof}

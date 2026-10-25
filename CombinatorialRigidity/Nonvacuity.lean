@@ -56,7 +56,7 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   bar between its endpoints is isostatic.
 * `theorem_55_minimalKDof_gen_witness`: Katoh and Tanigawa's Theorem 5.5 at the single edge, a
   minimal `1`-dof-graph, its fresh-edge supply from a label headroom. The single edge is simple, so
-  it has a panel realization in general position and one with a nondegenerate hinge, at rank
+  it has a panel realization with nonparallel panels and one with a nondegenerate hinge, at rank
   `3 · (2 - 1) - 1 = 2`.
 * `molecular_conjecture_multigraph_witness`: Tay and Whiteley's molecular conjecture, proved by
   Katoh and Tanigawa, for multigraphs, at the double edge, which is `0`-dof. The multigraph
@@ -304,10 +304,10 @@ private theorem singleEdge_isMinimalKDof_one {β : Type*} [Finite β] [Decidable
 fresh-edge supply `hfresh` comes from the label headroom `3 · (2 - 1) < 4`
 (`Graph.freshEdgeSupply_of_card_lt`), the bound `molecular_conjecture_witness` meets at `n = 3`.
 The single edge is simple, so both sides of the conditioned pair hold: a panel-hinge realization
-whose two panels are distinct (independent normals), and a panel realization whose hinge is
-nondegenerate and lies in both panels, each with rigidity matrix of rank `3 · (2 - 1) - 1 = 2`. -/
+whose two panels are nonparallel, and a panel realization whose hinge is nondegenerate and lies in
+both panels, each with rigidity matrix of rank `3 · (2 - 1) - 1 = 2`. -/
 theorem theorem_55_minimalKDof_gen_witness :
-    PanelHingeFramework.HasGenericFullRankRealization ℝ 1 2
+    PanelHingeFramework.HasNonparallelFullRankRealization ℝ 1 2
         (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) ∧
       HasPanelRealization ℝ 1 2 (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) := by
   obtain ⟨hgen, hpanel⟩ := PanelHingeFramework.theorem_55_minimalKDof_gen (K := ℝ) (k := 1)

@@ -375,7 +375,7 @@ status:
       nondegenerate-hinge panel realization whose rigidity matrix attains rank D(|V|-1) - k,
       at every dimension n >= 2 (D = (n+1 choose 2) >= 3; phase 40 lowered the floor from
       n >= 3) and over any infinite field of any characteristic (phase 33; KT's real statement is
-      the K = R case); generic for simple G.
+      the K = R case); nonparallel for simple G.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
