@@ -20,6 +20,16 @@ jobs:
           build: true
           lint: true
 
+      # `home_page/upstreaming.md` includes the dashboard this step
+      # generates, so the homepage build fails without it (every PR check
+      # failed this way until 2026-10-25). Keep it in step with `push.yml`.
+      - name: Upstreaming dashboard
+        uses: leanprover-community/upstreaming-dashboard-action@main
+        with:
+          website-directory: ./home_page
+          project-name: CombinatorialRigidity
+          branch-name: master
+
       # Build the blueprint and docs on PRs so we catch breakage before
       # merging, but do not deploy from PRs.
       - name: Compile blueprint and documentation (no deploy)

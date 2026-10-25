@@ -2,10 +2,10 @@
 
 **Status:** closed (opened and closed 2026-10-21). Queue item `bump-4.36`, done: Lean `v4.34.0-rc2`
 → `v4.36.0-rc1`, mathlib `8b36e867` → `930ae145`, `Matroid` `2b92ee39` → `8ece6307`, in five commits
-on `master`, not yet pushed. Every gate is green on the final tree, and all 19 main results' axioms
+on `master`, pushed 2026-10-25 (CI green at `4c892cb6`). Every gate is green on the final tree, and all 19 main results' axioms
 are unchanged. The record (the pins, why, what broke, the gate table, the lessons) is
 `notes/ToolchainBumps.md` *Bump record: v4.34.0-rc2 → v4.36.0-rc1*; its *Where this stands* has the
-PI's actions after the push. **Next:** the queue's next item, RECONCILE 3/3, resumes at task 34.1
+automation that tracks mathlib from here. **Next:** the queue's next item, RECONCILE 3/3, resumes at task 34.1
 (`notes/Reconcile-lean-cleanup.md`).
 
 ## Current state
@@ -63,9 +63,9 @@ retire `allowNonModules`; the record's last lesson.
 ## Hand-off / next phase
 
 **The queue's next item, `reconcile-lean`**: RECONCILE 3/3 resumes at task 34.1
-(`notes/Reconcile-lean-cleanup.md` *Hand-off*). **PI actions after the push** (none taken here: no
-push, no `gh` writes): check the push's CI run, then close PR #1 and issue #2, which this bump
-supersedes (`notes/ToolchainBumps.md` *Where this stands*).
+(`notes/Reconcile-lean-cleanup.md` *Hand-off*). **After the push** (2026-10-25): CI passed, and the
+first hopscotch run on the new pins rewrites PR #1 and issue #2, which predate it
+(`notes/ToolchainBumps.md` *Where this stands*).
 
 ## Decisions made during this bump
 

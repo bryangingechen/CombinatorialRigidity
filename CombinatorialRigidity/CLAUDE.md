@@ -351,7 +351,12 @@ rather than adding `@[nolint simpNF]`.
 
 ## Automated mathlib bumps
 
-`../.github/workflows/hopscotch.yml` (daily cron) opens PRs on branches like
-`hopscotch/bump-mathlib`. Review them like any mathlib bump (the project's
-lemmas may need fixups). When a bump hits a regression it opens a tracking
-issue instead, naming the breaking mathlib commit by bisection.
+`../.github/workflows/hopscotch.yml` (daily cron) force-pushes the branch
+`hopscotch/bump` and keeps one PR open moving **mathlib only** to its tip, or
+to the last good commit, with a tracking issue naming the first bad one by
+bisection. The PR check runs on it. Review it like any mathlib bump: a green
+check, and no new warnings in its build log (CI does not fail on them; a
+fix-up commit goes on the PR branch, and the action then leaves the branch
+alone). Merging it pins `rev` on the mathlib require in `lakefile.toml`, which
+`scripts/bump-mathlib.sh` keeps in step. The setup, and the `Matroid` limit:
+`../notes/ToolchainBumps.md` *Where this stands*.
