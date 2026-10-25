@@ -270,14 +270,16 @@ Theorem~6.5, whose hinges all lie in one hyperplane. They perturb it
 so that each hinge is the intersection of two hyperplanes, one for each
 end of its edge (their Lemma~7.1). These hyperplanes are the panels of
 a panel-and-hinge realization. We start instead from KT Theorem~5.6
-with nondegenerate hinges (\cref{thm:theorem-55-6-genuine}). It gives a
-panel-hinge realization at the target rank
-$D(|V|-1) - \operatorname{def}(\tilde G)$ (\cref{def:rank-hypothesis}).
+(\cref{thm:theorem-55-6}). It gives a panel-hinge realization at the
+target rank $D(|V|-1) - \operatorname{def}(\tilde G)$
+(\cref{def:rank-hypothesis}) whose panels are nonparallel, so that its
+hinges are nondegenerate.
 
 \begin{definition}[Generic normal assignment]
   \label{def:generic-normals}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.normalRow,
-    CombinatorialRigidity.Molecular.PanelHingeFramework.IsGenericNormals}
+    CombinatorialRigidity.Molecular.PanelHingeFramework.IsGenericNormals,
+    CombinatorialRigidity.Molecular.PanelHingeFramework.isGenericNormals_iff_of_graph_eq}
   \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix}
   Let $G = (V, E)$ be a multigraph. A \emph{normal assignment} $q$ of
@@ -293,9 +295,9 @@ $D(|V|-1) - \operatorname{def}(\tilde G)$ (\cref{def:rank-hypothesis}).
   $u$ and $v$, and a pair $(t, t')$ of indices of the standard basis of
   $\bigwedge^{d-1}K^{d+1}$. Here $y_t$ is the coordinate of $y$ at the
   $t$-th basis vector. The assignment $q$ is \emph{generic for row
-  independence} if every subfamily of the annihilator-row family that
-  is linearly independent at some normal assignment is linearly
-  independent at $q$.
+  independence}, and $(G, q)$ has \emph{generic normals}, if every
+  subfamily of the annihilator-row family that is linearly independent
+  at some normal assignment is linearly independent at $q$.
 \end{definition}
 
 These are the forms of \cref{lem:rows-polynomial-in-normals} at the
@@ -309,13 +311,18 @@ $R(G, q)$ at $e$ (\cref{lem:rows-polynomial-in-normals}).
   \label{fmlnote:generic-normals-selector}
   The formalization indexes the family by all the edge labels, and
   reads the ends of each label from an endpoint selector
-  (\cref{fmlnote:panel-hinge-nondegenerate}), not from $G$. So
-  genericity is a property of the normal assignment and the selector
-  alone. The pinned lemmas on abundance and existence take only the
-  selector. The other pinned results of this subsection take a
-  multigraph $G$ whose edges are all the labels, and a selector that
-  gives each edge its two ends. The first pin is the family, and the
-  second is genericity.
+  (\cref{fmlnote:panel-hinge-nondegenerate}), not from $G$. Genericity
+  is a property of a panel-hinge framework: it asks about the
+  subfamilies indexed by edges of $G$, with the framework's own
+  selector, which gives each edge of $G$ its two ends. As a form does
+  not depend on the order of the ends, two frameworks with the same
+  graph and the same normals have generic normals together, whatever
+  their selectors. The pinned lemma on abundance fixes one selector
+  that gives each edge of $G$ its two ends, and the one on existence
+  assumes a body, for the endpoint choice of $G$
+  (\cref{fmlnote:graph-operations}). The first pin is the family, the
+  second genericity, and the third that genericity reads only the graph
+  and the normals.
 \end{fmlnote}
 
 \begin{lemma}[Abundance of generic normal assignments]
@@ -376,7 +383,7 @@ $R(G, q)$ at $e$ (\cref{lem:rows-polynomial-in-normals}).
 
 \begin{lemma}[Generic normal assignments have nondegenerate hinges]
   \label{lem:generic-normals-nondegenerate}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ofNormals_ne_zero_of_isGenericNormals}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ne_zero_of_isGenericNormals}
   \leanok
   \uses{def:generic-normals, def:panel-hinge-framework,
     def:panel-support-extensor}
@@ -449,25 +456,28 @@ $D - 1$.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned lemma extracts the rows by the pinned theorem of
-  \cref{lem:independent-rows-of-rank}, with the realization's own
-  endpoint selector, which gives each edge its two ends in either order
-  (\cref{fmlnote:panel-hinge-nondegenerate}). It takes the family with
-  the selector of \cref{fmlnote:generic-normals-selector}. Where the two
-  orders differ, the hinge of the realization is $-C(q_u, q_v)$
+  The pinned lemma takes the family with any selector that gives each
+  edge of $G$ its two ends (\cref{fmlnote:generic-normals-selector}),
+  and extracts the rows at that selector by the pinned theorem of
+  \cref{lem:independent-rows-of-rank}, all at edges of $G$. Their
+  hinges are the realization's, read with its own selector, which also
+  gives each edge its two ends, in either order
+  (\cref{fmlnote:panel-hinge-nondegenerate}). Where the two orders
+  differ, the hinge of the realization is $-C(q_u, q_v)$
   (\cref{def:panel-support-extensor}), and the rows it extracts differ
   from the members of the family by a sign. Signs do not affect linear
-  independence.
+  independence. The pinned lemma asks nondegenerate hinges at the edges
+  of $G$ only.
 \end{fmlnote}
 
 \begin{theorem}[The rank formula at every generic normal assignment]
   \label{thm:panel-generic-rank}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals}
   \leanok
   \uses{def:generic-normals, def:panel-hinge-framework,
     def:rank-hypothesis, def:D-deficiency}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and $|V| \ge 2$. Let $q$ be a normal
+  a simple graph with $V$ finite and nonempty. Let $q$ be a normal
   assignment of $G$ that is generic for row independence. Then
   \[
     \operatorname{rank} R(G,q)
@@ -476,17 +486,17 @@ $D - 1$.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55-6-genuine, lem:panel-witness-transplant,
+  \uses{thm:theorem-55-6, lem:panel-witness-transplant,
     lem:generic-normals-nondegenerate, lem:relative-deficiency-rank-bound}
   As $G$ has no loops, the hinges of $(G, q)$ are nondegenerate
   (\cref{lem:generic-normals-nondegenerate}). So
   $\operatorname{rank} R(G,q) \le D(|V|-1) - \operatorname{def}(\tilde G)$
   (\cref{lem:relative-deficiency-rank-bound}).
 
-  For the reverse inequality, KT Theorem~5.6 with nondegenerate hinges
-  (\cref{thm:theorem-55-6-genuine}) gives a panel-hinge realization
-  $(G, q^0)$ with nondegenerate hinges at the target rank
-  $D(|V|-1) - \operatorname{def}(\tilde G)$. By
+  For the reverse inequality, KT Theorem~5.6 (\cref{thm:theorem-55-6})
+  gives a panel-hinge realization $(G, q^0)$ at the target rank
+  $D(|V|-1) - \operatorname{def}(\tilde G)$, whose hinges are
+  nondegenerate, as its panels are nonparallel. By
   \cref{lem:panel-witness-transplant}, some
   $D(|V|-1) - \operatorname{def}(\tilde G)$ members of the
   annihilator-row family of $q^0$ are linearly independent. As $q$ is
@@ -502,12 +512,12 @@ $D - 1$.
 \begin{corollary}[Every generic panel-and-hinge realization of a
   rigid graph; Jackson--Jord\'an]
   \label{cor:panel-generic-rigid}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff}
   \leanok
   \uses{def:generic-normals, def:panel-hinge-framework,
     def:D-deficiency}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and $|V| \ge 2$. Then $(G, q)$ is
+  a simple graph with $V$ finite and nonempty. Then $(G, q)$ is
   infinitesimally rigid at every normal assignment $q$ of $G$ that is
   generic for row independence if and only if
   $\operatorname{def}(\tilde G) = 0$.
@@ -536,20 +546,19 @@ $D - 1$.
 \end{proof}
 
 \begin{fmlnote}
-  The formalization writes $d = k + 1$ here. The pinned theorems of
+  The formalization writes $d = k + 1$ here, as in the note after
+  \cref{def:panel-support-extensor}; the pinned theorems of
   \cref{thm:panel-generic-rank} and \cref{cor:panel-generic-rigid}
-  take the dimension in $\operatorname{def}(\tilde G)$ as a separate
-  parameter, as in the note after \cref{def:panel-support-extensor}.
-  They assume that every body is a vertex of $G$ and every edge label
-  an edge of $G$, with a selector that gives each edge its two ends
-  (\cref{fmlnote:generic-normals-selector}). They also assume the
-  supply of fresh labels of \cref{rem:fresh-edge-supply}, which the
-  pinned theorem of \cref{thm:theorem-55-6-genuine} asks. As every
-  label is an edge of $G$, the supply fails when $G$ is itself a
-  minimal $k$-dof-graph for some $k$ (\cref{def:k-dof}), such as a
-  single edge or a tree. So the pinned theorems say nothing about such
-  a graph. They apply when $G$ has more than $D(|V| - 1)$ edges
-  (\cref{rem:fresh-edge-supply}), for instance to $K_7$ at $d = 2$.
+  take $d$ and the frameworks with $k = d - 1$. They range over the
+  panel-hinge frameworks on $G$ with generic normals, whatever their
+  selectors (\cref{fmlnote:generic-normals-selector}). They assume
+  that every body is a vertex of $G$, and, as the pinned theorem of
+  \cref{thm:theorem-55-6} does, that the set $L$ of edge labels has
+  more than $D(|V| - 1)$ elements, which gives the supply of fresh
+  labels (\cref{rem:fresh-edge-supply}). The bound is on $L$, not on
+  $G$, whose edges need not be all the labels: with enough labels the
+  theorems apply to every simple graph on the bodies, a single edge or
+  a tree among them.
 \end{fmlnote}
 
 Jackson and Jord\'an's Theorem~7.2 states that if $(d-1) \cdot G$

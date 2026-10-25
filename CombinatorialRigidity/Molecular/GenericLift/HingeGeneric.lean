@@ -49,7 +49,7 @@ specific carrier graph via an `ofHinge`-framework's `panelRow`, exactly as the p
   independence (Jackson–Jordán 2010, Theorem 6.1), assembled from the witness assembly
   (`exists_hingePoints_independent_hingePointRow`) transported by genericity and the nondegeneracy
   lemma — the same `le_antisymm` pinch the panel layer's
-  `finrank_span_rigidityRows_ofNormals_of_isGenericNormals` uses.
+  `finrank_span_rigidityRows_of_isGenericNormals` uses.
 * `cor:bodyhinge-generic-rigid` — `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`: a
   rank–nullity corollary of the rank formula, every generic realization is infinitesimally rigid
   on `V(G)` iff `def(G̃) = 0`.
@@ -60,7 +60,6 @@ specific carrier graph via an `ofHinge`-framework's `panelRow`, exactly as the p
   `Graph.deficiency_eq_zero_iff_exists_spanningTrees` (`Deficiency.lean`): every generic realization
   is rigid iff `G̃ = (D-1)·G` packs `D` edge-disjoint spanning trees.
 
-Non-`module`: imports `Theorem55.lean` (and through it `GenericityDevice.lean`), both non-`module`.
 -/
 
 @[expose] public section
@@ -359,7 +358,7 @@ multigraph `G` each of whose edge labels links its selector pair, every hinge-po
 generic for row independence gives the induced `ofHinge` framework on `G` every supporting extensor
 nonzero.
 
-Mirror of the panel layer's `supportExtensor_ofNormals_ne_zero_of_isGenericNormals`, but started at
+Mirror of the panel layer's `supportExtensor_ne_zero_of_isGenericNormals`, but started at
 the fixed affinely-independent reference point family `pRef` (the same family as the
 nondegenerate-hinge conjunct of `exists_isGenericHingePoints_abundance`) rather than a moment-curve
 pair: no moment curve is needed here, since the reference points are already free parameters. Fixing
@@ -880,7 +879,7 @@ lower bound via `finrank_span_eq_card` + `Submodule.finrank_mono`.
 `lem:generic-hinge-points-nondegenerate`).
 
 The two bounds pinch the row count to the exact value — the `le_antisymm` pinch of the panel layer
-(`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals`), here needing no
+(`PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals`), here needing no
 separate row-count computation for the witness since the assembly already reports it. -/
 theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
@@ -946,7 +945,7 @@ assignment generic for row independence is infinitesimally rigid on `V(G)` iff `
 rank–nullity corollary via the row-count-iff-rigidity bridge
 (`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`,
 `lem:isInfRigidOn-of-relative-count` + `lem:case-II-placement-old-rows-extract`), the mirror of the
-panel layer's `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`: forward, apply the assumed
+panel layer's `isInfinitesimallyRigidOn_of_isGenericNormals_iff`: forward, apply the assumed
 rigidity at any one generic assignment (`exists_isGenericHingePoints`,
 `lem:exists-generic-hinge-points`) to force the exact rank, then compare with the rank formula to
 get `def = 0`; backward, the rank formula at `def = 0` gives the exact row count at *every* generic

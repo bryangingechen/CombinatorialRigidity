@@ -368,7 +368,7 @@ whose rows `pencilRow hubSel G.endsOf q` are linearly independent, with `|s|` th
 rows (`pencilRow_mem_rigidityRows_of_mem_edgeSet`), so the rank is at least `|s|`, and at nonzero
 hinges it is at most the deficiency rank (`lem:relative-deficiency-rank-bound`;
 `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`, `GenericityDevice.lean`). The
-chart's counterpart of `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`
+chart's counterpart of `finrank_span_rigidityRows_of_isGenericNormals`
 (`GenericLift/PanelGeneric.lean`), whose rows are independent by genericity. -/
 theorem finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilRow
     [Inhabited α] [Finite α] [Finite β] {n : ℕ}

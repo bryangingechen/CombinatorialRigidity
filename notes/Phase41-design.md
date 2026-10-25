@@ -7,7 +7,8 @@ work log `notes/Phase41b.md`. MULTIGRAPH and UNSTATED are tracked by code (§3) 
 they open. The PI's decisions on item 1's recon (KT's nonparallel panels) are §1c. Items 2–8 have
 landed: Theorems 5.5 and 5.6 conclude KT's nonparallel panels for simple `G`, and
 `molecular_conjecture` and the multigraph rows ask nondegenerate hinges on `E(G)` only. Item 9's
-design pass, on the generic panel theorems, is §2's last arc. Next concrete task: 41b's item 9a.
+design pass, on the generic panel theorems, is §2's last arc; the PI's decision on their body
+bound is §1e, and item 9a restated them. Next concrete task: 41b's item 9b.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -145,6 +146,20 @@ the option labelled "Add nonparallel (Recommended)".
 What the answer settles: the panel side of `molecular_conjecture` states
 `Q.graph = G ∧ Q.IsNonparallel ∧ (∀ e ∈ E(G), Q.toBodyHinge.supportExtensor e ≠ 0) ∧
 Q.toBodyHinge.IsInfinitesimallyRigid`; the body-hinge side is unchanged.
+
+## 1e. The PI's decision on the generic panel theorems' body bound (2026-10-25)
+
+The coordinator asked: "The restated generic panel theorems (the rank formula over every framework
+on G with generic normals, and its iff, G6's row) need only `V(G).Nonempty`, not `2 ≤ |V(G)|`:
+Theorem 5.6's main form already covers one body, and the recon's spike compiles both versions.
+Relax it, as you did for `molecular_conjecture` (§1.2)?" The options were "Relax to Nonempty
+(Recommended)" and "Keep 2 ≤ |V(G)|". The PI chose the option labelled "Relax to Nonempty
+(Recommended)".
+
+What the answer settles: the rank formula and the iff take `hne : V(G).Nonempty` for
+`hV : 2 ≤ V(G).ncard`, which the spike's `_of_nonempty` forms compile, and their names are the
+planned unsuffixed ones (`finrank_span_rigidityRows_of_isGenericNormals`,
+`isInfinitesimallyRigidOn_of_isGenericNormals_iff`).
 
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
@@ -418,7 +433,5 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   constraint is vacuous, and a loop never crosses a partition). MULTIGRAPH's open decides. JJ 2010
   Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for 2-edge-coloured multigraphs; the
   row's "every generic realization" is the project's strengthening.
-- **The generic panel theorems on one body** (for the PI; §2, *Item 9's recon*): the rank formula
-  and the iff hold under `V(G).Nonempty` at no cost (compiled), as Theorem 5.6's main form covers
-  one body. The plan keeps §2's `hV : 2 ≤ |V(G)|`; relaxing it, as §1.2 did for
-  `molecular_conjecture`, is a statement change §1–§1d do not make. Item 9a can take either.
+- **The generic panel theorems on one body** (§2, *Item 9's recon*): settled by the PI (§1e), the
+  rank formula and the iff take `V(G).Nonempty`; landed with 41b's item 9a.

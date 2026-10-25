@@ -3201,6 +3201,15 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the eight pins, `GenericLift/PanelGeneric.lean`).
   *Found:* round 4 task 2.9.
   *Disposition:* reported (`notes/Prose-report.md`, S34).
+  Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
+  on `G` with generic normals"; the sha goes in at the next ledger sweep): done. The pins state what
+  the nodes state: genericity is a framework's (`IsGenericNormals P`), over the rows at the edges of
+  its graph, read with its own selector, which gives each edge its two ends, and it reads only the
+  graph and the normals (`isGenericNormals_iff_of_graph_eq`, a third pin of `def:generic-normals`);
+  the nondegeneracy lemma and the transplant ask nothing at a label outside $E(G)$; the rank formula
+  and its corollary range over every framework on $G$ with generic normals, with no selector
+  argument and no `hends`. The spanning (`hspan`) stays, in the note after the corollary;
+  `fmlnote:generic-normals-selector` and the note after the transplant are restated.
 - **F-207** · S · `thm:panel-generic-rank`, `cor:panel-generic-rigid` (`generic-lift.tex`): the
   pins hold vacuously at every graph that is itself a minimal $k$-dof-graph. Both take `hends`
   (every edge label links its selector pair in $G$, so $E(G)$ is the whole label set) and `hfresh`
@@ -3222,6 +3231,16 @@ declaration's name as its header writes it:
   theorems in `formalization.yaml` (the row and the two `alignment` entries), README, the home page,
   `intro.tex` and ROADMAP §34, with `rem:fresh-edge-supply`'s reading checked by a `lake lean`
   witness; its sharper reading is `F-252` (8ee0f8a8).
+  Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
+  on `G` with generic normals"; the sha goes in at the next ledger sweep): done for the panel half.
+  `finrank_span_rigidityRows_of_isGenericNormals` and
+  `isInfinitesimallyRigidOn_of_isGenericNormals_iff` take neither `hends` nor `hfresh` but KT
+  Theorem 5.6's `hcard` (more than $D(|\alpha| - 1)$ labels), a bound on the label set, not on $G$,
+  and range over every framework on $G$ with generic normals, on one body or more
+  (`notes/Phase41-design.md` §1e). So a minimal graph is no longer excluded;
+  `thm:panel-generic-rank`, `cor:panel-generic-rigid` and the note after it are restated. G6's
+  non-vacuity witness at the single edge and the scope sentences are item 9b's, the body-hinge half
+  item 10's.
 
 - **F-211** · S · `def:two-extensor`, `def:generic-endpoints` (`generic-lift.tex`): principle B's
   moves out of two definitions, task 2.10's hygiene-rule reading. At the open `def:two-extensor`
@@ -3252,6 +3271,11 @@ declaration's name as its header writes it:
   `exists_isGenericEndpoints_abundance`, and the body of the last).
   *Found:* round 4 task 2.10.
   *Disposition:* reported (`notes/Prose-report.md`, S13).
+  Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
+  on `G` with generic normals"; the sha goes in at the next ledger sweep): S13 within S1's refactor,
+  on the panel side: the genericity of `def:generic-normals` reads only the rows at the edges of
+  $G$, and its abundance polynomial has variables for the bodies only. The body-bar endpoint
+  assignments, this entry's subject, are unchanged, with the note after `def:generic-endpoints`.
 
 - **F-216** · S · `def:generic-hinge-points`, `lem:hinge-rows-polynomial-in-points`,
   `lem:generic-hinge-points-abundance`, `lem:exists-generic-hinge-points`,
@@ -3363,6 +3387,9 @@ declaration's name as its header writes it:
   both fibers of $D - 1$, and all $D - 1$ copies of a single edge.
   *Found:* RECONCILE round 1 task 2.
   *Disposition:* reported (`notes/Reconcile-texts-cleanup.md`, *Candidates for the PI*).
+  Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
+  on `G` with generic normals"; the sha goes in at the next ledger sweep): done for the two panel
+  pins, which no longer take `hfresh` (`F-207`); the four body-hinge pins are item 10's.
 - **F-260** · S · `lem:panel-hinge-dual-molecular` (`molecule-modelling.tex`): its unpinned (2), the
   rescaling of the normals $\bar c(v)$ by nonzero $\lambda_v$, is the case $q = \bar c$ of
   `lem:pencil-jj-rescale` (`main-component.tex`), whose pins

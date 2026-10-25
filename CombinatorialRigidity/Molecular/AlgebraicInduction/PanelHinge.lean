@@ -122,9 +122,9 @@ theorem RecordsLinks.of_isLink_imp (h : RecordsLinks G ends)
 
 /-- **The total form gives the condition** (`fmlnote:panel-hinge-nondegenerate`): if every label `e`
 links in `G` the two bodies that `ends` gives it, then `ends` records the links of `G`. This is the
-form of the hypothesis `hends` of `exists_good_realization_ofParam` and of the generic panel and
-body-hinge theorems (`GenericLift/`). It asks every label to be an edge of `G`, which the condition
-does not. -/
+form of the hypothesis `hends` of `exists_good_realization_ofParam` and of the generic body-hinge
+theorems (`GenericLift/HingeGeneric.lean`). It asks every label to be an edge of `G`, which the
+condition does not. -/
 theorem RecordsLinks.of_forall (h : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
     RecordsLinks G ends :=
   fun e _ => h e

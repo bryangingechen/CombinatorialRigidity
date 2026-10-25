@@ -498,7 +498,7 @@ status:
       framework at every hinge-point assignment generic for row independence is
       infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees.
       The panel-normal analogue (JJ Thm 7.2, sharpened to an iff) is
-      CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff
+      CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff
       (CombinatorialRigidity/Molecular/GenericLift/PanelGeneric.lean).
       As stated, both theorems cover only part of this class. They assume that every edge
       label is an edge of G, and that every minimal k-dof-graph on the bodies and the labels
@@ -800,14 +800,16 @@ alignment:
         row).
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
-      lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff"
+      lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff"
       module: "CombinatorialRigidity/Molecular/GenericLift/PanelGeneric.lean"
       status: "proved"
       note: >-
         Sharpened to an iff against def(G~) = 0; their sufficient tree-packing condition
-        implies it. As stated, both theorems have the scope of the row above: nothing about a
-        G that is itself a minimal k-dof-graph, every G with more than D(|V| - 1) edges, and
-        the graphs in between not settled.
+        implies it. Since phase 41b both theorems hold at every panel-hinge framework on a
+        simple spanning G (one body or more) whose normals are generic, read at the edges of
+        G only, under the bound of Katoh-Tanigawa Theorem 5.6 on the number of edge labels
+        (more than D(|V| - 1)); a single edge or a tree is covered once there are enough
+        labels.
 
     - source: "Jackson-Jordán 2010 p. 586 (every generic realization of G^2 rigid under six spanning trees in 5G; conditional there on the molecular conjecture)"
       lean: "SimpleGraph.molecule_generic_rank, SimpleGraph.molecule_generic_rigid, SimpleGraph.molecule_generic_square_packing"
