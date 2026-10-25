@@ -354,9 +354,10 @@ rather than adding `@[nolint simpNF]`.
 `../.github/workflows/hopscotch.yml` (daily cron) force-pushes the branch
 `hopscotch/bump` and keeps one PR open moving **mathlib only** to its tip, or
 to the last good commit, with a tracking issue naming the first bad one by
-bisection. The PR check runs on it. Review it like any mathlib bump: a green
-check, and no new warnings in its build log (CI does not fail on them; a
+bisection. The PR check waits for *Approve and run workflows* on the PR
+until the `CI` secret holds a real token. Review it like any mathlib bump: a
+green check, and no new warnings in its build log (CI does not fail on them; a
 fix-up commit goes on the PR branch, and the action then leaves the branch
-alone). Merging it pins `rev` on the mathlib require in `lakefile.toml`, which
+alone, so delete it on merge). Merging it pins `rev` on the mathlib require in `lakefile.toml`, which
 `scripts/bump-mathlib.sh` keeps in step. The setup, and the `Matroid` limit:
 `../notes/ToolchainBumps.md` *Where this stands*.

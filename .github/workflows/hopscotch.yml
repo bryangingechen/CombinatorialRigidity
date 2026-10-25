@@ -40,9 +40,11 @@ jobs:
       # 2026-04-27) pushes the bump branch with the checkout's GITHUB_TOKEN,
       # whose pushes never start a normal CI run on the PR (every run sat at
       # "action_required"). From `main` the push goes through `github-token`
-      # (`pr-token` falls back to it), so the `CI` secret's pushes run the PR
-      # check. Move to a release tag once one past this commit exists; don't
-      # accept a Dependabot "update" back to v1.0.0.
+      # (`pr-token` falls back to it), so once the `CI` secret holds a real
+      # PAT the PR check starts by itself; until then, approve it on the PR
+      # (notes/ToolchainBumps.md *Where this stands*). Move to a release tag
+      # once one past this commit exists; don't accept a Dependabot "update"
+      # back to v1.0.0.
       - uses: leanprover-community/hopscotch-action@517ad89123584081c57f9d605c9e3367c900efbb # main, 2026-09-28
         with:
           dependency: mathlib
