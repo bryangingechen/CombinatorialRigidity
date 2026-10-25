@@ -4,10 +4,10 @@
 `notes/Phase41a.md`: the field `isLink_ends` is on `PanelHingeFramework`, and no main result's
 statement changed. Sub-phase **41b** (RESTATE) opened 2026-10-24 with the PI's decisions in §1b,
 work log `notes/Phase41b.md`. MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
-they open. Item 1's recon on KT's nonparallel panels is §2's last arc, and the PI's decisions on its
-two open options are §1c. Items 2–6 have landed: Theorems 5.5 and 5.6 conclude KT's nonparallel
-panels for simple `G`, and `molecular_conjecture` asks nondegenerate hinges on `E(G)` only, on one
-body or more. Next concrete task: 41b's item 7, the multigraph rows.
+they open. The PI's decisions on item 1's recon (KT's nonparallel panels) are §1c. Items 2–8 have
+landed: Theorems 5.5 and 5.6 conclude KT's nonparallel panels for simple `G`, and
+`molecular_conjecture` and the multigraph rows ask nondegenerate hinges on `E(G)` only. Item 9's
+design pass, on the generic panel theorems, is §2's last arc. Next concrete task: 41b's item 9a.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -313,6 +313,87 @@ warnings, its six `#print axioms` the three standard axioms). The names below ar
   `IsNonparallel` off the strip realization, whose normals `reaimSubLink` keeps; else
   `thm:theorem-55-6` is restated twice. The commits are 41b's items 4a–4c.
 
+**Item 9's recon** (41b's item 9; 2026-10-25; Claude Opus 5.5, design pass, at `8c2d4475`).
+Evidence: `notes/reconcile-formal/PanelGenericWitness.lean` (`lake lean`: no errors or warnings, its
+six `#print axioms` the three standard axioms; `#lint` on a copy: no errors in 15 declarations). It
+states the planned declarations under their planned names, in its own namespace.
+- **No Lean consumer outside the file.** `PanelGeneric.lean` is imported only by the root module.
+  The mentions in `HingeGeneric.lean`, `Pencil/Steer.lean:371`,
+  `Pencil/MainComponent/Bridge.lean:31`, `Pencil/Engine.lean:84`, `:321`, `:341` and
+  `BodyBar/GenericLift.lean:26`, `:241` are docstrings, so no pencil statement or proof changes,
+  and the cascade is docstrings, pins and status rows.
+- **The predicate is the framework's, `Q.IsGenericNormals`**: every subfamily of rows at the edges
+  of `Q.graph` (`∀ i ∈ s, i.1 ∈ E(Q.graph)`) that is independent at some normal assignment is
+  independent at `Q`'s normals, with the rows `normalRow Q.ends`. The families stay indexed by the
+  label type. Rejected: `IsGenericNormals G ends q` restricted to `E(G)` (the same content, read
+  through two more arguments at every use), and the old predicate under a new quantifier (it reads
+  the rows of every label, against S13, so the theorem would assume more).
+- **The selector's orientation does not matter.** Exchanging a label's ends negates both its
+  extensor (`panelSupportExtensor_swap`) and its hinge row, so `normalRow` is unchanged
+  (`normalRow_eq_of_swap`; the remark after `def:generic-normals` says so). Two selectors that
+  record the links give the same rows at `E(G)` (`normalRow_eq_of_recordsLinks`), so the predicate
+  reads only the graph and the normals (`isGenericNormals_iff_of_graph_eq`). "A swapped end negates
+  a row" holds of the mixed row `Q.toBodyHinge.panelRow ends` (hinge row from `ends`, extensor
+  from `Q.ends`), which the transplant handles by its `±1`, and of item 10's `hingePointRow`.
+- **Signatures** (compiled; all in `PanelHingeFramework`, the last three renamed, as their
+  statements no longer mention `ofNormals`):
+  - `exists_isGenericNormals_abundance [Finite α] [Finite β] (G) (ends) (hlinks : RecordsLinks G
+    ends) : ∃ P ≠ 0, ∀ q, eval q P ≠ 0 → (ofNormals G ends q).IsGenericNormals`. The spike
+    derives it from the old lemma; in place, the old proof (its product over every subfamily) with
+    the new hypothesis ignored at its last line (not compiled).
+  - `exists_isGenericNormals [Infinite K] [Nonempty α] [Finite α] [Finite β] (G) : ∃ Q, Q.graph = G
+    ∧ Q.IsGenericNormals`, at `G.endsOf`.
+  - `exists_independent_normalRow_of_le_finrank [Finite α] [Finite β] (Q) {ends} (hends :
+    RecordsLinks Q.graph ends) (hC : ∀ e ∈ E(Q.graph), …) (hN)`, concluding `∃ s, (∀ i ∈ s, i.1 ∈
+    E(Q.graph)) ∧ Nat.card s = N ∧` independence of `normalRow ends` at `Q`'s normals: no `G`, no
+    `hQends` (the field), and the sign taken only at edges. Its `±1` route stays, so the worked
+    cases of `TACTICS-QUIRKS.md` (`:1747`, `:3564`) keep their target.
+  - `supportExtensor_ne_zero_of_isGenericNormals (hk1) {Q} (hloop : Q.graph.Loopless) (hq) : ∀ e ∈
+    E(Q.graph), Q.toBodyHinge.supportExtensor e ≠ 0` (was `…_ofNormals_ne_zero_…`).
+  - `finrank_span_rigidityRows_of_isGenericNormals [Infinite K] [Finite α] [Finite β] {n} (hd : 2 ≤
+    n) (hcard : bodyBarDim n * (Nat.card α - 1) < Nat.card β) (G) (hV : 2 ≤ V(G).ncard) (hspan)
+    (hSimple) (Q : PanelHingeFramework K (n - 1) α β) (hQ : Q.graph = G) (hq : Q.IsGenericNormals)
+    : (finrank (span Q.toBodyHinge.rigidityRows) : ℤ) = screwDim (n - 1) * (V(G).ncard - 1) -
+    G.deficiency n`: Theorem 5.6's binders; `hk1`, `hn`, `hfresh`, `ends`, `hends`,
+    `[DecidableEq β]` and `[Nonempty α]` gone (the last from `hV`).
+  - `isInfinitesimallyRigidOn_of_isGenericNormals_iff`, the same binders: `(∀ Q, Q.graph = G →
+    Q.IsGenericNormals → Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)) ↔ G.deficiency n = 0`.
+- **The composition.** The witness is Theorem 5.6's main form `rankHypothesis_of_theorem_55_gen`,
+  not the genuine one: its nonparallel panels give nondegenerate hinges on `E(G)`
+  (`IsNonparallel.isGeneralPosition`, `supportExtensor_ne_zero_of_isGeneralPosition`), and it takes
+  `hd` and `hcard` as they are. The transplant runs at `Q0` with `Q`'s selector (both fields give
+  `RecordsLinks Q0.graph Q.ends`); genericity of `Q` carries the extracted rows, all at edges, to
+  `Q`'s normals, where each is a rigidity row (`panelRow_mem_rigidityRows_of_link`, at `Q`'s field);
+  the upper bound (`finrank_span_rigidityRows_add_deficiency_le`) asks nondegeneracy at links only.
+- **One body (for the PI).** The composition needs only `V(G).Nonempty`, as Theorem 5.6's main form
+  covers one body: the rank formula and the iff compile under it
+  (`…_of_nonempty`). The plan keeps §2's `hV`; relaxing it, as §1.2 did for `molecular_conjecture`,
+  is the PI's call (§4).
+- **Not planned:** an abundance over every framework on `G`, whatever its selector
+  (`exists_isGenericNormals_abundance'`, compiled), at the cost of the three orientation lemmas.
+- **G6's witness** (compiled): at the single edge on `Fin 2`/`Fin 4`, `n = 2`, some framework has
+  generic normals and each such has rank `3 · (2 − 1) − 1 = 2`. In `Nonvacuity.lean` it reads the
+  private `singleEdge_isMinimalKDof_one` and needs a `public import` of `PanelGeneric`.
+- **Cascade.** Renames: the blueprint pins (`generic-lift.tex:379`, `:465`, `:505`),
+  `formalization.yaml:501` and `:803`, and the docstrings `HingeGeneric.lean:52`, `:362`, `:883`,
+  `:949` and `Steer.lean:371`. Statements: `def:generic-normals` and its fmlnote, the four lemma
+  nodes, `thm:panel-generic-rank` (proof `\uses` `thm:theorem-55-6` for the genuine form) and
+  `cor:panel-generic-rigid`, the fmlnotes after the transplant and the corollary, and the section's
+  opening prose. Docstrings that become false: `RecordsLinks.of_forall` (`PanelHinge.lean:125`,
+  "the generic panel and body-hinge theorems"), the genuine form's (`Theorem55.lean:2091`, "the
+  generic panel and hinge-point theorems read the witness's rows"). The S1 scope sentences (README
+  `:162`, `home_page/index.md:142`, `intro.tex:266`, ROADMAP `:1042`, `formalization.yaml:503`,
+  `:795`, `:808`) say both theorems are vacuous at minimal graphs; after 9a only the body-hinge
+  one is (9a rewrites `:808` with its row's names, 9b the others). The names that survive
+  (`normalRow`, `normalRow_eq_panelRow`, `IsGenericNormals`, the abundance) keep their docstring
+  mentions in `Engine.lean`, `Bridge.lean` and `BodyBar/GenericLift.lean` true.
+- **Split.** 9a the restatement, 9b G6's row and witness (`notes/Phase41b.md`). No twin is needed:
+  no other file reads the six declarations, so the predicate and its consumers switch together.
+  Item 10 is not reached: `HingeGeneric.lean` does not import this file, `BodyHingeFramework` has
+  no selector for a framework-level predicate, and `hingePointRow`'s sign does follow the
+  selector. What carries over (hypotheses, not compiled): Theorem 5.6's binders, and its main form
+  as the witness if item 10's transplant (`HingeGeneric.lean:751`) takes nondegeneracy on `E(G)`.
+
 ## 3. Sub-phases, by code
 
 | Code | Letter | Contents | Commits |
@@ -337,3 +418,7 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   constraint is vacuous, and a loop never crosses a partition). MULTIGRAPH's open decides. JJ 2010
   Theorem 6.1 (EJC 31, p. 582) is a maximum-rank statement for 2-edge-coloured multigraphs; the
   row's "every generic realization" is the project's strengthening.
+- **The generic panel theorems on one body** (for the PI; §2, *Item 9's recon*): the rank formula
+  and the iff hold under `V(G).Nonempty` at no cost (compiled), as Theorem 5.6's main form covers
+  one body. The plan keeps §2's `hV : 2 ≤ |V(G)|`; relaxing it, as §1.2 did for
+  `molecular_conjecture`, is a statement change §1–§1d do not make. Item 9a can take either.
