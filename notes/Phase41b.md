@@ -2,14 +2,16 @@
 
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1, and at this sub-phase's, §1b) and the recons are in
-`notes/Phase41-design.md`. Item 1 done: KT's nonparallel by route B, items 4a–4c. Next concrete
-task: item 2, `HasGenericFullRankRealization`'s last conjunct.
+`notes/Phase41-design.md`. Items 1 (KT's nonparallel by route B, items 4a–4c) and 2 done.
+Next concrete task: item 3, `F-324`, `theorem_55_minimalKDof_gen`'s derivable `hD`.
 
 ## Current state
 
 Opened with the PI on 2026-10-24, after the RESTATE open's recon (`notes/Phase41-design.md` §2,
-*RESTATE's open recon*); no Lean has changed yet. Item 1's design pass (design doc §2, *KT's
-nonparallel recon*) defined KT's nonparallel on the normals' direction parts (the affine coordinate
+*RESTATE's open recon*). Item 2 is its first Lean change: `HasGenericFullRankRealization` is
+`∃ Q, Q.graph = G ∧ Q.IsGeneralPosition ∧` the rank, and its destructurers read the selector's
+links off the field `isLink_ends`. Item 1's design pass (design doc §2, *KT's nonparallel recon*)
+defined KT's nonparallel on the normals' direction parts (the affine coordinate
 is the last) and reaches it at Theorem 5.5's end by the genericity device, the induction untouched
 (route B), in three commits, items 4a–4c. The sub-phase restates S2's and S1's main results
 on the carrier that 41a gave the link field, and acts on the PI's four decisions at its open
@@ -37,9 +39,14 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 - [x] **1. Recon: KT's nonparallel** (§1b.4; design pass, 2026-10-24): route B, in the design
   doc's §2 (*KT's nonparallel recon*); witness `notes/reconcile-formal/NonparallelWitness.lean`.
-- [ ] **2. `HasGenericFullRankRealization`'s last conjunct** (§1b.3): its producers and
+- [x] **2. `HasGenericFullRankRealization`'s last conjunct** (§1b.3): its producers and
   destructurers, the two dead helpers, `def:rank-hypothesis`'s prose; the two `hswap` hypotheses of
-  `Coupling.lean` and the hand-built link sites the field gives (design doc §2).
+  `Coupling.lean` and the hand-built link sites the field gives (design doc §2). Done: the
+  conjunct, `ofNormals_recordsLinks_of_hends` and `ofNormals_endsOf_recordsLinks` gone; `hswap` gone
+  from `infinitesimalMotions_ofNormals_eq_of_ends_swap` and `hasGenericRealization_transport_ends`
+  (both selectors record the links); the link sites at `CaseII.lean`, `CaseIII/Realization.lean`
+  and `Theorem55.lean` read the field; `fmlnote:generic-full-rank` and the note after
+  `lem:case-cut-edge-realization-gp` restated. Two helpers lost their callers (*Blockers*).
 - [ ] **3. `F-324`**: `theorem_55_minimalKDof_gen`'s derivable `hD` and the chain below it
   (`F-293`, `F-297`, `F-298`; about ten signatures, seven call sites).
 - [ ] **4a. The predicate** (§1b.4; `PanelHinge.lean`): `PanelHingeFramework.IsNonparallel` beside
@@ -96,15 +103,22 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Blockers / open questions
 
+- **Two helpers without callers since item 2** (a coordinator call, not in the plan):
+  `PanelHingeFramework.recordsLinks_agree_swap` (`CaseI.lean`, the old conjunct's form) and
+  `RecordsLinks.swap_endsOf` (`PanelHinge.lean`) built the dropped `hswap` arguments. Item 2 kept
+  them (its prompt kept `RecordsLinks` and its lemmas), and their docstrings say that no
+  declaration uses them; delete them in a small commit, or keep them as API.
 - **CI has not run since 2026-10-15**: the PI pushes after RESTATE closes (§1b), so that push is
   CI's first run of 41a's `module` conversion (doc-gen, the upstreaming dashboard). The close
   should expect to watch it.
 
 ## Hand-off / next phase
 
-**Item 2**: `HasGenericFullRankRealization`'s last conjunct, one commit; it needs no recon, its
-spec is the design doc's §2 (*RESTATE's open recon*, Q3). Then item 3, then items 4a, 4b and 4c,
-one commit each (4b's proof is the witness's, nearly verbatim), then item 5.
+**Item 3**: `F-324`, `theorem_55_minimalKDof_gen`'s derivable `hD` and the chain below it (`F-293`,
+`F-297`, `F-298`; about ten signatures, seven call sites), one commit. Then items 4a, 4b and 4c, one
+commit each, then item 5. 4b's proof is the witness's `exists_nonparallel_of_generic`, nearly
+verbatim, but its `obtain` of `HasGenericFullRankRealization` takes four components since item 2
+(the witnesses of `notes/reconcile-formal/` check at their own commits, not at item 2's).
 
 ## Decisions made during this phase
 

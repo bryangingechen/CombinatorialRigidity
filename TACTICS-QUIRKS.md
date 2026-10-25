@@ -1782,7 +1782,7 @@ whole Molecular subsystem carries zero overrides; the `T`-bundle + `simp only` k
 default 200000.
 
 **Final-`∃`-witness-assembly variant (Phase 22k).** When a producer ends by *hand-assembling* the
-existential motive (`HasGenericFullRankRealization`, a `def` unfolding to a 5-conjunct `∃ Q, …`) as
+existential motive (`HasGenericFullRankRealization`, a `def` unfolding to a conjunction `∃ Q, …`) as
 the anonymous constructor `⟨Q, …, hrank_eq, …⟩` over a heavy `Q = ofNormals G ends q` — plus the
 `B2 ≤` + `le_antisymm` rank-equality and the `▸`/`set`-fold bookkeeping to make `hrank_eq` match the
 motive's `Q.toBodyHinge.rigidityRows` — the *assembly itself* is the dominant `whnf` site: it

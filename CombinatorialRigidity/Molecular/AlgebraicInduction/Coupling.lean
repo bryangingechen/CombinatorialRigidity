@@ -15,10 +15,9 @@ Lemmas for Case I of KT Theorem 5.5 (Katoh and Tanigawa 2011, *A proof of the mo
 Discrete Comput. Geom. **45**, §6.2), presented in `sec:molecular-algebraic-induction-caseI`, and
 for the deletion of columns of `sec:molecular-rigidity-matrix-blocks`. The file proves:
 
-* that the selector `G.endsOf` gives every link of `G` its ends, that reordering the ends of edges
-  changes no motion, that a generic realization of a subgraph is rigid at the selector of `G`, and
-  that `H` and `G ＼ E(H)` cover `G` and share a body (steps of `lem:case-I-realization` and
-  `lem:case-cut-edge-realization-gp`);
+* that reordering the ends of edges changes no motion, that a generic realization of a subgraph is
+  rigid at the selector of `G`, and that `H` and `G ＼ E(H)` cover `G` and share a body (steps of
+  `lem:case-I-realization` and `lem:case-cut-edge-realization-gp`);
 * the projection `extProj`, whose dual map deletes the columns of a set of bodies, the
   block-triangular rank bound (`lem:block-rank-contract`), and the rows of `G ＼ E(H)` against those
   of `G/E(H)` once the columns of `V(H)` are deleted, at the normals `degeneratePlacement` (steps of
@@ -40,38 +39,18 @@ variable {α β : Type*}
 
 /-! ## Selectors, and the two subgraphs of Case I -/
 
-/-- **The selector `G.endsOf` gives every link of `G` its ends** (a step of
-`lem:case-cut-edge-realization-gp`): at every link `e` of `G` from `u` to `v`, the selector of
-`ofNormals G G.endsOf q₀` gives `e` the pair `(u, v)` or `(v, u)` (`Graph.endsOf_eq_or_swap`,
-through `ofNormals_ends`). This is the last conjunct of `HasGenericFullRankRealization` for that
-framework. -/
-theorem PanelHingeFramework.ofNormals_endsOf_recordsLinks [Inhabited α]
-    (G : Graph α β) (q₀ : α × Fin (k + 2) → K) :
-    ∀ e u v, G.IsLink e u v →
-      (((PanelHingeFramework.ofNormals G G.endsOf q₀).ends e).1 = u ∧
-        ((PanelHingeFramework.ofNormals G G.endsOf q₀).ends e).2 = v) ∨
-      (((PanelHingeFramework.ofNormals G G.endsOf q₀).ends e).1 = v ∧
-        ((PanelHingeFramework.ofNormals G G.endsOf q₀).ends e).2 = u) := by
-  intro e u v he
-  rw [PanelHingeFramework.ofNormals_ends]
-  rcases G.endsOf_eq_or_swap he with h | h
-  · exact Or.inl ⟨by rw [h], by rw [h]⟩
-  · exact Or.inr ⟨by rw [h], by rw [h]⟩
-
 /-- **Reordering the ends of edges changes no motion** (a step of
 `lem:rank-transport-relabel-of-le-finrank`, `lem:case-I-realization` and
-`lem:case-cut-edge-realization-gp`): if at every link of `G` the pair `ends' e` is `ends e` or its
-reverse (`hswap`), then `ofNormals G ends q` and `ofNormals G ends' q` have the same infinitesimal
-motions. The motions depend on the selector only through the hinges at links
-(`infinitesimalMotions_eq_of_isLink_span_supportExtensor`), and reversing the ends negates the hinge
-(`panelSupportExtensor_swap`), which leaves the line it spans, and so the hinge constraint,
+`lem:case-cut-edge-realization-gp`): if `ends` and `ends'` both record the links of `G`, then
+`ofNormals G ends q` and `ofNormals G ends' q` have the same infinitesimal motions. At every link of
+`G` the pair `ends' e` is `ends e` or its reverse, as both are the ends of the link
+(`IsLink.eq_and_eq_or_eq_and_eq`). The motions depend on the selector only through the hinges at
+links (`infinitesimalMotions_eq_of_isLink_span_supportExtensor`), and reversing the ends negates the
+hinge (`panelSupportExtensor_swap`), which leaves the line it spans, and so the hinge constraint,
 unchanged: the remark after `def:panel-hinge-framework` that the hinge constraint does not depend on
 the order of the ends. -/
 theorem PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
     (G : Graph α β) (ends ends' : β → α × α) (q : α × Fin (k + 2) → K)
-    (hswap : ∀ e u v, G.IsLink e u v →
-      ((ends' e).1 = (ends e).1 ∧ (ends' e).2 = (ends e).2) ∨
-      ((ends' e).1 = (ends e).2 ∧ (ends' e).2 = (ends e).1))
     {hlinks : PanelHingeFramework.RecordsLinks G ends}
     {hlinks' : PanelHingeFramework.RecordsLinks G ends'} :
     (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions =
@@ -82,19 +61,19 @@ theorem PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
   -- their spans (the lines the hinge constraints reference) coincide.
   simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
     PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
-  rcases hswap e u v he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  rcases (hlinks'.isLink he).eq_and_eq_or_eq_and_eq (hlinks.isLink he) with ⟨h1, h2⟩ | ⟨h1, h2⟩
   · rw [h1, h2]
   · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
 
 /-- **A generic realization of a subgraph, at the selector of `G`** (a step of
 `lem:case-I-realization`): let `Q` be a framework on `GH` in general position, rigid on `V(GH)`
-(`hQrig`), whose selector agrees with `ends` up to order at the links of `GH` (`hswap`), and let the
-two bodies that `ends` gives at every link of `GH` differ (`hne_ends`). Then at the normals
-`qH (a, i) = Q.normal a i`, `ofNormals GH ends qH` is rigid on `V(GH)` and its hinges at those links
-are nondegenerate. `Q` is `ofNormals GH Q.ends qH` by definition, once `Q.graph = GH`, so the two
-frameworks have the same motions (`infinitesimalMotions_ofNormals_eq_of_ends_swap`); general
-position depends on the normals alone, and gives the hinges
-(`supportExtensor_ne_zero_of_isGeneralPosition`). The proof of KT Lemma 6.3
+(`hQrig`), let `ends` record the links of `GH`, and let the two bodies that `ends` gives at every
+link of `GH` differ (`hne_ends`). Then at the normals `qH (a, i) = Q.normal a i`,
+`ofNormals GH ends qH` is rigid on `V(GH)` and its hinges at those links are nondegenerate. `Q` is
+`ofNormals GH Q.ends qH` by definition, once `Q.graph = GH`, and both selectors record the links of
+`GH`, so the two frameworks have the same motions
+(`infinitesimalMotions_ofNormals_eq_of_ends_swap`); general position depends on the normals alone,
+and gives the hinges (`supportExtensor_ne_zero_of_isGeneralPosition`). The proof of KT Lemma 6.3
 (`case_I_realization_all_k_gen`, in `Theorem55.lean`) applies it to `H`, with `ends = G.endsOf`,
 which gives both ends `default` at a label outside `E(G)` (`endsOf_fst_ne_snd`): so `hne_ends` is
 asked only at links. -/
@@ -102,9 +81,6 @@ theorem PanelHingeFramework.hasGenericRealization_transport_ends
     (GH : Graph α β) (ends : β → α × α) (Q : PanelHingeFramework K k α β)
     (hQg : Q.graph = GH) (hQgp : Q.IsGeneralPosition)
     (hQrig : Q.toBodyHinge.IsInfinitesimallyRigidOn V(GH))
-    (hswap : ∀ e u v, GH.IsLink e u v →
-      ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
-      ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1))
     (hne_ends : ∀ e, GH.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2)
     (hlinks : PanelHingeFramework.RecordsLinks GH ends := by link_tac) :
     ∃ qH : α × Fin (k + 2) → K,
@@ -121,7 +97,7 @@ theorem PanelHingeFramework.hasGenericRealization_transport_ends
   -- `ofNormals … ends …` have the same motions.
   have hmot : (PanelHingeFramework.ofNormals Q.graph ends qH).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals Q.graph Q.ends qH).toBodyHinge.infinitesimalMotions :=
-    PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap Q.graph ends Q.ends qH hswap
+    PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap Q.graph ends Q.ends qH
   refine ⟨qH, fun e he =>
     (PanelHingeFramework.ofNormals Q.graph ends qH).supportExtensor_ne_zero_of_isGeneralPosition
       hgp' (by rw [PanelHingeFramework.ofNormals_ends]; exact hne_ends e he), ?_⟩

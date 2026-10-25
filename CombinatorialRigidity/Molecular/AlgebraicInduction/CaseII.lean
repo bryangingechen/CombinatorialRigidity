@@ -432,8 +432,9 @@ theorem PanelHingeFramework.case_II_realization_all_k
   have hGab_ne : V(Gab).Nonempty :=
     ⟨a, by rw [hGab_def, Graph.vertexSet_splitOff]; exact ⟨haG, hav⟩⟩
   -- ── Step 3: the induction hypothesis at `Gab`, at deficiency `c − 1`. ──────────────────────────
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ :=
-    (hIH (c - 1) Gab hGab hGab_ne hGab_lt).1 hGab_simple
+  obtain ⟨Q, hQg, hQgp, hQrank⟩ := (hIH (c - 1) Gab hGab hGab_ne hGab_lt).1 hGab_simple
+  -- Its selector records the links of `Gab` (the field `isLink_ends`, as `Q.graph = Gab`).
+  have hQrec : PanelHingeFramework.RecordsLinks Gab Q.ends := hQg ▸ Q.isLink_ends
   -- Set up the IH normal function q := Q.normal.
   set q : α × Fin (k + 2) → K := fun p => Q.normal p.1 p.2 with hq_def
   -- ── Step 4: `n_a` and `n_b` are linearly independent (general position, `a ≠ b`). ──────────────
@@ -460,7 +461,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
   -- The ends for Gab are recorded up to swap: hrec' (Gab isLink → ends record).
   have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
     intro e u w he
-    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    rcases hQrec.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · exact Or.inl (Prod.ext h1 h2)
     · exact Or.inr (Prod.ext h1 h2)
   -- The IH finrank at q (via hQeq identifying ofNormals with Q).
@@ -505,11 +506,8 @@ theorem PanelHingeFramework.case_II_realization_all_k
   have hvVGab : v ∉ V(Gab) := by
     rw [hGab_def, Graph.vertexSet_splitOff]
     simp
-  have hQ_ends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 := by
-    intro e u w he
-    rcases hrec' e u w he with he' | he' <;> rw [he']
-    · exact he
-    · exact he.symm
+  have hQ_ends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 :=
+    fun _ _ _ he => hQrec.isLink he
   -- q and q₀ agree on V(Gab) (v ∉ V(Gab), so Gab-links avoid v).
   have hvedge : ∀ e u w, Gab.IsLink e u w →
       (Q.ends e).1 ≠ v ∧ (Q.ends e).2 ≠ v := by
@@ -1005,7 +1003,6 @@ theorem PanelHingeFramework.case_II_realization_all_k
   exact ⟨PanelHingeFramework.ofNormals G ends q',
     PanelHingeFramework.ofNormals_graph G ends q',
     hgp',
-    hrank_eq_q',
-    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q' hends_G⟩
+    hrank_eq_q'⟩
 
 end CombinatorialRigidity.Molecular

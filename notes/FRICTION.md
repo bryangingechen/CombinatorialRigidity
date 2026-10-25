@@ -167,8 +167,15 @@ to be re-derived by re-reading entries later.
   hypotheses keep their forms (RESTATE drops `hends`). Item 7: two callers of the merged genuine
   form (`PanelGeneric.lean`, `Theorem56.lean`) convert the field to the form at links,
   `hQ0g ▸ recordsLinks_iff_forall_isLink.mp Q0.isLink_ends`, for lemmas that still take it.
+  Phase 41b, item 2: the up-to-order conjunct of `HasGenericFullRankRealization` is gone, and its
+  destructurers read the field, `hQg ▸ Q.isLink_ends` (13 sites in 6 files, 12 of them as
+  `have hQrec : RecordsLinks G Q.ends := …`). `link_tac` does not see a framework's field through `hQg : Q.graph = G`, so
+  each `ofNormals G Q.ends q` below such an `obtain` needs that `have` in scope; the pair form
+  `hrec'` (four sites) is then rebuilt from `hQrec.eq_or_swap`.
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
-  5) or RESTATE touches their declarations; the conversions then go.
+  5) or RESTATE touches their declarations; the conversions then go. For the field under
+  `Q.graph = G`: a lemma `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) :
+  RecordsLinks G Q.ends` and a `link_base_tac` branch that applies it with `hQg` in scope.
 - **Status:** open.
 
 

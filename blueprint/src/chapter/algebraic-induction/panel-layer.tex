@@ -546,8 +546,10 @@ which Case~III uses.
   normals, and of the endpoint selector only what every panel-hinge
   framework meets (\cref{fmlnote:panel-hinge-nondegenerate}). No main
   result uses this predicate. The second pinned predicate is the generic
-  full-rank realization, whose selector assigns each edge of $G$ its two
-  ends.
+  full-rank realization: a panel-hinge framework on $G$ at the target
+  rank whose normals are in general position. Of the endpoint selector
+  it too asks only what every panel-hinge framework meets, that it
+  assign each edge of $G$ its two ends.
 
   Katoh and Tanigawa call a nonparallel realization generic if the
   coordinates of the vectors $c(v)$ that define its panels are
@@ -770,9 +772,10 @@ hypothesis.
   give $\operatorname{rank} R(G, q_0) = D(|V(G)| - 1) - k$.
 \end{proof}
 \begin{fmlnote}
-  A generic full-rank realization also records the two ends of each edge,
-  in some order (\cref{fmlnote:generic-full-rank}). The framework
-  $(G, q_0)$ takes them from the endpoint choice of $G$
+  The endpoint selector of a panel-hinge framework records the two ends
+  of each edge, in some order
+  (\cref{fmlnote:panel-hinge-nondegenerate}). The framework $(G, q_0)$
+  takes them from the endpoint choice of $G$
   (\cref{fmlnote:graph-operations}). The polynomial $Q_i$ is formed at
   the framework on $G[V_i]$ with the normals $q_i$ and these ends. Its
   rank is that of the given realization, as reversing the ends of an

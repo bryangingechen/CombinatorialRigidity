@@ -361,17 +361,15 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
     · exact hba
   -- 1. The selector `Q.ends` of the realization of `Gab`, which gives each link its ends in some
   -- order. The four polynomials are fixed before the normals `q`, a non-root of their product.
-  obtain ⟨Q, _, _, _, hQrec⟩ := id hsplitGP
+  obtain ⟨Q, hQg, _, _⟩ := id hsplitGP
+  have hQrec : PanelHingeFramework.RecordsLinks Gab Q.ends := hQg ▸ Q.isLink_ends
   have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
     intro e u w he
-    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    rcases hQrec.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · exact Or.inl (Prod.ext h1 h2)
     · exact Or.inr (Prod.ext h1 h2)
-  have hends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 := by
-    intro e u w he
-    rcases hrec' e u w he with h | h <;> rw [h]
-    · exact he
-    · exact he.symm
+  have hends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 :=
+    fun _ _ _ he => hQrec.isLink he
   have hne' : V(Gab).Nonempty := ⟨a, by rw [hGab, Graph.vertexSet_splitOff]; exact ⟨haG, by
     simp [hav]⟩⟩
   have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
@@ -909,17 +907,15 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
     · exact hba
   -- 1. The selector `Q.ends` of the realization of `Gab`. The three polynomials are fixed before
   -- the normals `q`, a non-root of their product with `Pu`, as in `case_III_candidate_dispatch`.
-  obtain ⟨Q, _, _, _, hQrec⟩ := id hsplitGP
+  obtain ⟨Q, hQg, _, _⟩ := id hsplitGP
+  have hQrec : PanelHingeFramework.RecordsLinks Gab Q.ends := hQg ▸ Q.isLink_ends
   have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
     intro e u w he
-    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    rcases hQrec.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · exact Or.inl (Prod.ext h1 h2)
     · exact Or.inr (Prod.ext h1 h2)
-  have hends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 := by
-    intro e u w he
-    rcases hrec' e u w he with h | h <;> rw [h]
-    · exact he
-    · exact he.symm
+  have hends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 :=
+    fun _ _ _ he => hQrec.isLink he
   have hne' : V(Gab).Nonempty := ⟨a, by rw [hGab, Graph.vertexSet_splitOff]; exact ⟨haG, by
     simp [hav]⟩⟩
   have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'

@@ -97,8 +97,8 @@ theorem RecordsLinks.eq_or_swap (h : RecordsLinks G ends) {e : β} {u v : α}
   (h.isLink he).eq_and_eq_or_eq_and_eq he
 
 /-- **The condition up to order** (`fmlnote:panel-hinge-nondegenerate`): `ends` records the links of
-`G` iff, at every link of `G` at `e` from `u` to `v`, `ends e` is `(u, v)` or `(v, u)`. This is the
-last conjunct of `HasGenericFullRankRealization`. -/
+`G` iff, at every link of `G` at `e` from `u` to `v`, `ends e` is `(u, v)` or `(v, u)`. It is a base
+form of `link_tac`. -/
 theorem recordsLinks_iff_eq_or_swap :
     RecordsLinks G ends ↔ ∀ e u v, G.IsLink e u v →
       ((ends e).1 = u ∧ (ends e).2 = v) ∨ ((ends e).1 = v ∧ (ends e).2 = u) := by
@@ -222,11 +222,13 @@ theorem RecordsLinks.update_splitOff (h : RecordsLinks G ends) {v u w : α} {e�
         simp only [h1, h2] <;> assumption
     · exact absurd h' hf1
 
-/-- **A selector that records the links of a subgraph agrees with `G.endsOf`** (a step of
-`lem:case-I-realization` and `lem:case-cut-edge-realization-gp`): if `ends` records the links of
-`H ≤ G`, then at every link of `H` the pair `ends e` is `G.endsOf e` or its reverse, as a link of
-`H` is one of `G` (`IsLink.of_le`, `Graph.endsOf_eq_or_swap`). `recordsLinks_agree_swap`
-(`CaseI.lean`) is the form for two selectors of one graph. -/
+/-- **A selector that records the links of a subgraph agrees with `G.endsOf`**
+(`fmlnote:panel-hinge-nondegenerate`): if `ends` records the links of `H ≤ G`, then at every link of
+`H` the pair `ends e` is `G.endsOf e` or its reverse, as a link of `H` is one of `G`
+(`IsLink.of_le`, `Graph.endsOf_eq_or_swap`). `recordsLinks_agree_swap` (`CaseI.lean`) is the form
+for two selectors of one graph. No declaration uses it:
+`infinitesimalMotions_ofNormals_eq_of_ends_swap` compares two selectors that record the links of a
+graph directly. -/
 theorem RecordsLinks.swap_endsOf [Inhabited α] {H : Graph α β} (h : RecordsLinks H ends)
     (hle : H ≤ G) :
     ∀ e u v, H.IsLink e u v →
@@ -965,9 +967,9 @@ def HasFullRankRealization (K : Type*) [Field K] (k : ℕ) (G : Graph α β) : P
 
 /-- **A generic full-rank realization** (`def:rank-hypothesis`, its second predicate): some
 panel-hinge framework `Q` on `G` (`Q.graph = G`) has normals in general position
-(`Q.IsGeneralPosition`), rows of rank `D(|V(G)| − 1) − def(G̃)`, with the deficiency read at `n`
-(`G.deficiency n`), and an endpoint selector `Q.ends` that gives each link of `G` its two ends, in
-either order.
+(`Q.IsGeneralPosition`) and rows of rank `D(|V(G)| − 1) − def(G̃)`, with the deficiency read at `n`
+(`G.deficiency n`). Its endpoint selector `Q.ends` gives each link of `G` its two ends, in either
+order, as every panel-hinge framework's does (`isLink_ends`, `RecordsLinks.eq_or_swap`).
 
 KT Theorem 5.5 gives a realization that is nonparallel if `G` is simple (KT p. 670), and the normals
 of a nonparallel realization are in general position (`def:panel-general-position`). The formal
@@ -983,37 +985,13 @@ realization asks only for general position: where the formal proof needs a rank,
 normals off the zeros of the finitely many polynomials that the step tests
 (`fmlnote:generic-full-rank`).
 
-Two selectors that give each link its two ends agree on every link up to the order of its ends,
-which moves a realization from one selector to another (`hasGenericRealization_transport_ends`).
-`ofNormals G ends q₀` meets the last conjunct when `ends` does (`ofNormals_recordsLinks_of_hends`),
-as with the selector `G.endsOf` (`ofNormals_endsOf_recordsLinks`). -/
+Two selectors that record the links of `G` agree on every link up to the order of its ends, which
+moves a realization from one selector to another (`hasGenericRealization_transport_ends`). -/
 def HasGenericFullRankRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Prop :=
   ∃ Q : PanelHingeFramework K k α β,
     Q.graph = G ∧ Q.IsGeneralPosition ∧
     ((Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
-      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n) ∧
-    (∀ e u v, G.IsLink e u v →
-      ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u))
-
-
-/-- **`ofNormals` gives each link its ends when its selector does** (a step of
-`lem:generic-realization-of-rigid`, `lem:case-I-realization` and `lem:case-II-realization`): if, at
-each link `e` of `G`, `e` links the two bodies that `ends` gives it (`hends`), the selector of
-`ofNormals G ends q₀` gives each link of `G` its two ends, in either order, the last conjunct of
-`HasGenericFullRankRealization`. Two links of one edge have the same two ends, in some order
-(`IsLink.eq_and_eq_or_eq_and_eq`). `ofNormals_endsOf_recordsLinks` (`Coupling.lean`) is the same for
-the selector `G.endsOf`. -/
-theorem ofNormals_recordsLinks_of_hends
-    (G : Graph α β) (ends : β → α × α) (q₀ : α × Fin (k + 2) → K)
-    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
-    ∀ e u v, G.IsLink e u v →
-      (((ofNormals (k := k) G ends q₀).ends e).1 = u ∧
-        ((ofNormals (k := k) G ends q₀).ends e).2 = v) ∨
-      (((ofNormals (k := k) G ends q₀).ends e).1 = v ∧
-        ((ofNormals (k := k) G ends q₀).ends e).2 = u) := by
-  intro e u v he
-  rw [ofNormals_ends]
-  exact (hends e u v he).eq_and_eq_or_eq_and_eq he
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n)
 
 end PanelHingeFramework
 

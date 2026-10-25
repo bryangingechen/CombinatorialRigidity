@@ -452,7 +452,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     (hQ : PanelHingeFramework.HasGenericFullRankRealization K k n (G.splitOff v a b e₀)) :
     PanelHingeFramework.HasGenericFullRankRealization K k n (G.splitOff a v c e₁) := by
   classical
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := hQ
+  obtain ⟨Q, hQg, hQgp, hQrank⟩ := hQ
+  have hQrec : PanelHingeFramework.RecordsLinks (G.splitOff v a b e₀) Q.ends := hQg ▸ Q.isLink_ends
   -- Derive rigidity from the rank hypothesis.
   have hne_in : V(G.splitOff v a b e₀).Nonempty :=
     ⟨a, by rw [Graph.vertexSet_splitOff]; exact ⟨hG_ea.right_mem, by simp [hav]⟩⟩
@@ -477,7 +478,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
   have hrec' : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w →
       Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
     intro e u w he
-    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    rcases hQrec.eq_or_swap he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · exact Or.inl (Prod.ext h1 h2)
     · exact Or.inr (Prod.ext h1 h2)
   obtain ⟨hgp, hrig_out, hrec⟩ := PanelHingeFramework.ofNormals_relabel hG_ea hG_eb hG_ec
@@ -503,13 +504,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     rw [← hVncard_out]
     rw [← hVncard_out] at h1_out
     zify [h1_out] at hW2 ⊢; exact_mod_cast hW2
-  -- The link conjunct, from equalities of pairs to equalities of their components.
-  refine ⟨_, rfl, hgp, hrank_out, fun e u w he => ?_⟩
-  rcases hrec e u w he with h1 | h1
-  · exact Or.inl ⟨by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).1],
-      by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).2]⟩
-  · exact Or.inr ⟨by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).1],
-      by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).2]⟩
+  exact ⟨_, rfl, hgp, hrank_out⟩
 
 /-! ## Moving a body in a combination of rows
 

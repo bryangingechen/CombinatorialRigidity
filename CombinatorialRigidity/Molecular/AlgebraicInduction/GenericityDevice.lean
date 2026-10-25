@@ -847,9 +847,9 @@ realization (`HasPanelRealization`, `def:genuine-hinge-realization`), the body-h
 
 * each normal is nonzero, as general position at `v` and another body `w ∈ V(G)` makes `Q.normal v`
   and `Q.normal w` linearly independent;
-* the hinge at each link is nonzero: `Q.ends` gives the link its ends (the last conjunct of
-  `HasGenericFullRankRealization`), which differ as `G` has no loops (`IsLink.ne`), and general
-  position gives `supportExtensor_ne_zero_of_isGeneralPosition`;
+* the hinge at each link is nonzero: `Q.ends` gives the link its ends (the field `isLink_ends`, as
+  `Q.graph = G`), which differ as `G` has no loops (`IsLink.ne`), and general position gives
+  `supportExtensor_ne_zero_of_isGeneralPosition`;
 * the hinge lies in the panels of both ends: it is the join of a basis of the meet of the two
   hyperplanes (`exists_extensor_eq_panelSupportExtensor_gen`, `lem:panel-support-extensor-join`),
   which needs `k ≥ 1`;
@@ -860,7 +860,7 @@ theorem hasPanelRealization_of_generic [NeZero k] {n : ℕ} {G : Graph α β} [G
     (hV : 2 ≤ V(G).ncard)
     (h : PanelHingeFramework.HasGenericFullRankRealization K k n G) :
     HasPanelRealization K k n G := by
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := h
+  obtain ⟨Q, hQg, hQgp, hQrank⟩ := h
   have hne : V(G).Nonempty := (Set.ncard_pos (Set.toFinite _)).mp (by omega)
   refine ⟨Q.toBodyHinge, Q.normal, ?_, ?_, ?_, ?_⟩
   · -- F.graph = G
@@ -873,7 +873,7 @@ theorem hasPanelRealization_of_generic [NeZero k] {n : ℕ} {G : Graph α β} [G
     exact hli.ne_zero 0 (by simp [Matrix.cons_val_zero, heq])
   · -- ∀ e u v, G.IsLink e u v → (supportExtensor e ≠ 0) ∧ ExtensorInPanel ... u ∧ ... v
     intro e u v he
-    have hends := hQrec e u v he
+    have hends := (hQg ▸ Q.isLink_ends).eq_or_swap he
     -- (Q.ends e).1 ≠ (Q.ends e).2 via link-recording + IsLink.ne.
     have hends_ne : (Q.ends e).1 ≠ (Q.ends e).2 := by
       rcases hends with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> [rw [h1, h2]; rw [h1, h2]] <;>

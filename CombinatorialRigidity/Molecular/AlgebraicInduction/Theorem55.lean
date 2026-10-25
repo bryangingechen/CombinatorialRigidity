@@ -278,8 +278,7 @@ It holds for every `k` and any number of vertices.
 The framework is `ofNormals G ends q₀`, with the constant selector at a vertex `w` of `G` and
 normals `q₀` off the zeros of the polynomial of `exists_generalPosition_polynomial`, which is not
 zero as `K` is infinite (`Countable.exists_injective_of_infinite`); so its normals are in general
-position. As `G` has no link, the framework has no rows, its rank `0` is the target rank, and the
-last conjunct is vacuous. -/
+position. As `G` has no link, the framework has no rows, and its rank `0` is the target rank. -/
 theorem theorem_55_base_producer_empty_gp_gen
     [Infinite K] [DecidableEq β] [Finite α] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
@@ -315,16 +314,13 @@ theorem theorem_55_base_producer_empty_gp_gen
   have hfinrank : Module.finrank K (Submodule.span K F.rigidityRows) = 0 := by
     rw [hrows, Submodule.span_empty, finrank_bot]
   refine ⟨PanelHingeFramework.ofNormals (k := k) G ends q₀,
-    PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_, ?_⟩
-  · -- Rank conjunct: target = 0.
-    have hdef : (G.deficiency n : ℤ) = (Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) :=
-      hG.deficiency_eq
-    rw [← hF, hfinrank, hdef, hn]
-    push_cast
-    ring
-  · -- Link-recording: vacuous since `E(G) = ∅`.
-    intro e u v hlink
-    exact absurd hlink (hnoLink e u v)
+    PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_⟩
+  -- Rank conjunct: target = 0.
+  have hdef : (G.deficiency n : ℤ) = (Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) :=
+    hG.deficiency_eq
+  rw [← hF, hfinrank, hdef, hn]
+  push_cast
+  ring
 
 /-- **The base of KT Theorem 5.5: one edge, a generic full-rank realization**
 (`lem:theorem-55-base-producer-single`; KT §6, p. 671): if `K` is infinite and `G` is a minimal
@@ -337,7 +333,7 @@ zeros of the polynomial of `exists_generalPosition_polynomial`, so in general po
 `e` is then nonzero (`supportExtensor_ne_zero_of_isGeneralPosition`, as `x ≠ y`), and its rows,
 those of `e` (`span_panelRow_linking_eq_rigidityRows`), have rank `D − 1`
 (`finrank_span_panelRow_edge`), the target rank. Every link of `G` is `e`, from `x` to `y` or back,
-so the selector gives each link its ends. -/
+so the selector records the links of `G`. -/
 theorem theorem_55_base_producer_single_edge_gp_gen
     [Infinite K] [DecidableEq β] [Finite α] {n : ℕ}
     (G : Graph α β) {x y : α} {e : β}
@@ -374,15 +370,7 @@ theorem theorem_55_base_producer_single_edge_gp_gen
   have hFe_ne : F.supportExtensor e ≠ 0 := by
     rw [hF]
     exact Q.supportExtensor_ne_zero_of_isGeneralPosition hgp (by rw [hQends, hends_def]; exact hxy)
-  -- Link-recording: every link is at `e`, with selector `ends e = (x, y)`.
-  have hrec : ∀ e' u v, G.IsLink e' u v →
-      ((Q.ends e').1 = u ∧ (Q.ends e').2 = v) ∨ ((Q.ends e').1 = v ∧ (Q.ends e').2 = u) := by
-    intro e' u v he'
-    have he'e : e' = e := hlink_e e' u v he'
-    subst he'e
-    rw [hQends, hends_def]
-    exact hl.eq_and_eq_or_eq_and_eq he'
-  refine ⟨Q, PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_, hrec⟩
+  refine ⟨Q, PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_⟩
   -- Rank conjunct: `finrank (span rigidityRows) = D − 1 = D·1 − 1`.
   have hends : ∀ e' u v, F.graph.IsLink e' u v →
       F.graph.IsLink e' (ends e').1 (ends e').2 := by
@@ -612,16 +600,14 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   -- selector `Q_v.ends`, which gives each link of `G_v` its ends.
   have hQv : PanelHingeFramework.HasGenericFullRankRealization K k n Gv :=
     (hIH Gv hGvmin hGvV2 hGvlt).1 hGvSimple
-  obtain ⟨Q_v, _, _, _, hQvrec⟩ := id hQv
+  obtain ⟨Q_v, hQvg, _, _⟩ := id hQv
+  have hQvrec : RecordsLinks Gv Q_v.ends := hQvg ▸ Q_v.isLink_ends
   have hGvdef : Gv.deficiency n = 0 := hGvmin.deficiency_eq
   have h1Gv : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).2 hGvne
   have hGvloop : Gv.Loopless := hGvSimple.toLoopless
   -- `Q_v.ends` records every `Gv`-link (single-link form).
-  have hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (Q_v.ends e).1 (Q_v.ends e).2 := by
-    intro e u w he
-    rcases hQvrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · rw [h1, h2]; exact he
-    · rw [h1, h2]; exact he.symm
+  have hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (Q_v.ends e).1 (Q_v.ends e).2 :=
+    fun _ _ _ he => hQvrec.isLink he
   -- Step 3: the selector `ends`, which is `Q_v.ends` but at `eₐ` and `e_b`.
   set ends : β → α × α :=
     Function.update (Function.update Q_v.ends eₐ (v, a)) e_b (v, b) with hends_def
@@ -657,7 +643,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
       · intro hw; subst hw; rcases hclv e u hlink.symm with rfl | rfl
         exacts [hea rfl, heb rfl]
     rw [hends_off e hea heb]
-    rcases hQvrec e u w hGvlink with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    rcases hQvrec.eq_or_swap hGvlink with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · rw [h1, h2]; exact hlink
     · rw [h1, h2]; exact hlink.symm
   -- Step 3': three nonzero polynomials, fixed before the normals, and normals `q` off the zeros of
@@ -893,7 +879,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
   have : Fintype α := Fintype.ofFinite α
   -- Extract the GP realization.
-  obtain ⟨Q, hQg, hQgp, hQrank, -⟩ := hGP
+  obtain ⟨Q, hQg, hQgp, hQrank⟩ := hGP
   -- Derive rigidity from the rank hypothesis.
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   have hVeq : V(G) = Q.toBodyHinge.graph.vertexSet := by
@@ -1183,9 +1169,8 @@ the two selectors give each edge of `G[Vᵢ]` its ends, in some order
 zeros these ranks are kept, and `exists_generalPosition_polynomial` one off whose zeros the normals
 are in general position. At a common non-root `q₀` of the three, `ofNormals G G.endsOf q₀` has
 nonzero hinges, its rows at the edges of `G[Vᵢ]` have rank at least `D(|Vᵢ| − 1) − cᵢ`, and so it
-has the target rank (`finrank_span_rigidityRows_cutEdge_eq`); its selector gives each link its ends
-(`ofNormals_endsOf_recordsLinks`). Katoh and Tanigawa instead move one realization so that none of
-its panels is parallel to one of the other (KT p. 672). -/
+has the target rank (`finrank_span_rigidityRows_cutEdge_eq`). Katoh and Tanigawa instead move one
+realization so that none of its panels is parallel to one of the other (KT p. 672). -/
 theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c)
@@ -1219,9 +1204,9 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   have hSimple₂ : (G.induce V₂).Simple :=
     hSimple.mono (G.induce_le Set.sdiff_subset)
   -- ── Step 4: Side GP frameworks from IH ─────────────────────────────────────────────────
-  obtain ⟨QF₁, hQF₁g, hQF₁gp, hQF₁rank, hQF₁rec⟩ :=
+  obtain ⟨QF₁, hQF₁g, hQF₁gp, hQF₁rank⟩ :=
     hIH c₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard hSimple₁
-  obtain ⟨QF₂, hQF₂g, hQF₂gp, hQF₂rank, hQF₂rec⟩ :=
+  obtain ⟨QF₂, hQF₂g, hQF₂gp, hQF₂rank⟩ :=
     hIH c₂ (G.induce V₂) hG₂ hV₂ne hV₂ncard hSimple₂
   -- ── Step 5: The normals of the sides ─────────────────────────────────────────────────────
   -- Each side's framework `QFᵢ` is `ofNormals (G.induce Vᵢ) QFᵢ.ends q₀ᵢ`, with the normals
@@ -1239,19 +1224,16 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     simp only [PanelHingeFramework.IsGeneralPosition, PanelHingeFramework.ofNormals_normal] at *
     exact hQF₂gp a b hab
   -- ── Step 7: Motion-space / finrank equality between QFᵢ.ends and G.endsOf at q₀ᵢ ─────────
-  -- The swap-invariance of the motion space: G.endsOf ↔ QF₁.ends agree up to order on
+  -- The swap-invariance of the motion space: G.endsOf and QF₁.ends both record the links of
   -- (G.induce V₁).
-  have hswap₁ : ∀ e u v, (G.induce V₁).IsLink e u v →
-      ((QF₁.ends e).1 = (G.endsOf e).1 ∧ (QF₁.ends e).2 = (G.endsOf e).2) ∨
-      ((QF₁.ends e).1 = (G.endsOf e).2 ∧ (QF₁.ends e).2 = (G.endsOf e).1) :=
-    (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mpr hQF₁rec).swap_endsOf
-      (G.induce_le hV₁sub.subset)
+  have hQF₁rec : PanelHingeFramework.RecordsLinks (G.induce V₁) QF₁.ends :=
+    hQF₁g ▸ QF₁.isLink_ends
   have hmot₁ :
       (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals (G.induce V₁) QF₁.ends q₀₁).toBodyHinge.infinitesimalMotions
       :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
-      (G.induce V₁) G.endsOf QF₁.ends q₀₁ hswap₁
+      (G.induce V₁) G.endsOf QF₁.ends q₀₁
   -- The QF₁.ends version of ofNormals has the same infinitesimalMotions as QF₁.toBodyHinge,
   -- because they share the same graph and the same supportExtensor function on every link.
   have hmotQF₁ :
@@ -1275,17 +1257,14 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     rw [hmot₁, hmotQF₁] at hcompl1
     omega
   -- Analogously for side 2.
-  have hswap₂ : ∀ e u v, (G.induce V₂).IsLink e u v →
-      ((QF₂.ends e).1 = (G.endsOf e).1 ∧ (QF₂.ends e).2 = (G.endsOf e).2) ∨
-      ((QF₂.ends e).1 = (G.endsOf e).2 ∧ (QF₂.ends e).2 = (G.endsOf e).1) :=
-    (PanelHingeFramework.recordsLinks_iff_eq_or_swap.mpr hQF₂rec).swap_endsOf
-      (G.induce_le Set.sdiff_subset)
+  have hQF₂rec : PanelHingeFramework.RecordsLinks (G.induce V₂) QF₂.ends :=
+    hQF₂g ▸ QF₂.isLink_ends
   have hmot₂ :
       (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals (G.induce V₂) QF₂.ends q₀₂).toBodyHinge.infinitesimalMotions
       :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
-      (G.induce V₂) G.endsOf QF₂.ends q₀₂ hswap₂
+      (G.induce V₂) G.endsOf QF₂.ends q₀₂
   have hmotQF₂ :
       (PanelHingeFramework.ofNormals (G.induce V₂) QF₂.ends q₀₂).toBodyHinge.infinitesimalMotions
       = QF₂.toBodyHinge.infinitesimalMotions :=
@@ -1430,8 +1409,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     (by rw [← hrank₁eq]; exact_mod_cast hrank₁_bound)
     (by rw [← hrank₂eq]; exact_mod_cast hrank₂_bound)
   rw [← hG.deficiency_eq] at hrank_eq
-  exact ⟨PanelHingeFramework.ofNormals G G.endsOf q₀, rfl, hQFgp, hrank_eq,
-    PanelHingeFramework.ofNormals_endsOf_recordsLinks G q₀⟩
+  exact ⟨PanelHingeFramework.ofNormals G G.endsOf q₀, rfl, hQFgp, hrank_eq⟩
 
 /-! ## Case I: KT Lemmas 6.2 and 6.3, and the three cases (`lem:case-I-all-k`) -/
 
@@ -1787,8 +1765,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
   -- (1) `H`, a simple minimal `0`-dof-graph: `hIH` gives a generic full-rank realization `QH`.
   have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
   have hHne : V(H).Nonempty := ⟨r, hr⟩
-  obtain ⟨QH, hQHg, hQHgp, hQHrank, hQHrec⟩ :=
-    (hIH 0 H hHmin hHne hVHlt).1 (hSimple.mono hle)
+  obtain ⟨QH, hQHg, hQHgp, hQHrank⟩ := (hIH 0 H hHmin hHne hVHlt).1 (hSimple.mono hle)
   -- `QH` is rigid on `V(H)`, as its rank is `D(|V(H)| − 1)`.
   have hne_QH : QH.toBodyHinge.graph.vertexSet.Nonempty := by
     rw [PanelHingeFramework.toBodyHinge_graph, hQHg]; exact hHne
@@ -1801,10 +1778,9 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen
       BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
         QH.toBodyHinge hne_QH, hVH_eq]
     zify [h1H] at hQHrank ⊢; exact_mod_cast hQHrank
-  -- `hswap`: `QH` records the links of `H` up to swap.
+  -- At its normals and the selector `ends`, which records the links of `H ≤ G`, it stays rigid.
   obtain ⟨qH, hneH, hrigH⟩ :=
     PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
-      ((PanelHingeFramework.recordsLinks_iff_eq_or_swap.mpr hQHrec).swap_endsOf hle)
       (fun e he => hne_ends e (he.of_le hle))
   -- (2) The contraction, a simple minimal `c`-dof-graph with fewer vertices than `G`: `hIH` gives
   -- `hQcf`.
@@ -2113,10 +2089,11 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
   have hG'Simple : G'.Simple := hSimple.mono hG'le
   have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
   have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
-  -- Realize the spanning subgraph generically.
-  obtain ⟨Q', hQ'g, hQ'gp, hQ'rank, hQ'rec⟩ :=
+  -- Realize the spanning subgraph generically; its selector records the links of `G'`.
+  obtain ⟨Q', hQ'g, hQ'gp, hQ'rank⟩ :=
     (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min
       hG'V2).1 hG'Simple
+  have hQ'rec : RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
   -- Two distinct bodies for the off-edge selector.
   have hVcard : 2 ≤ Fintype.card α := by
     have : V(G).ncard = Fintype.card α := by
@@ -2136,7 +2113,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
     · rw [dite_eq_left hlink]
       obtain ⟨u, v, hle⟩ := hlink
       rw [panelSupportExtensor_ne_zero_iff]
-      rcases hQ'rec e u v (hQ'g ▸ hle) with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      rcases hQ'rec.eq_or_swap hle with ⟨h1, h2⟩ | ⟨h1, h2⟩
       · rw [h1, h2]; exact hQ'gp u v hle.ne
       · rw [h1, h2]; exact hQ'gp v u hle.ne.symm
     · rw [dite_eq_right hlink]
@@ -2228,28 +2205,18 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
   have hG'Simple : G'.Simple := hSimple.mono hG'le
   have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
   have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
-  -- Realize the spanning subgraph generically.
-  obtain ⟨Q', hQ'g, hQ'gp, hQ'rank, hQ'rec⟩ :=
+  -- Realize the spanning subgraph generically; its selector records the links of `G'`.
+  obtain ⟨Q', hQ'g, hQ'gp, hQ'rank⟩ :=
     (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min
       hG'V2).1 hG'Simple
+  have hQ'rec : RecordsLinks G' Q'.ends := hQ'g ▸ Q'.isLink_ends
   -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge; GP is `Q'`'s normals.
   let Q := Q'.reaimSubLink k G G' x₀ y₀
   have hQg : Q.graph = G := rfl
   have hQgp : Q.IsGeneralPosition := hQ'gp
-  -- `hends`: the selector records a genuine `G`-link on every `G`-link.
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 := by
-    intro e u v he
-    simp only [Q, reaimSubLink]
-    by_cases hlink : ∃ u' v', G'.IsLink e u' v'
-    · rw [dite_eq_left hlink]
-      obtain ⟨u', v', hle'⟩ := hlink
-      rcases hQ'rec e u' v' (hQ'g ▸ hle') with ⟨h1, h2⟩ | ⟨h1, h2⟩
-      · rw [h1, h2]; exact hle'.of_le hG'le
-      · rw [h1, h2]; exact hle'.symm.of_le hG'le
-    · rw [dite_eq_right hlink]
-      have hGlink : ∃ u' v', G.IsLink e u' v' := ⟨u, v, he⟩
-      rw [dite_eq_left hGlink]
-      exact hGlink.choose_spec.choose_spec
+  -- `hends`: the selector records the links of `G` (the field `isLink_ends`, as `Q.graph = G`).
+  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 :=
+    fun _ _ _ he => Q.isLink_ends.isLink he
   -- `hC`: every supporting extensor is nonzero (GP on `G'`-links and re-added `G`-links; the
   -- explicit distinct pair `(x₀, y₀)` off-edge) — total over `β`.
   have hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0 := by
@@ -2259,7 +2226,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
     · rw [dite_eq_left hlink]
       obtain ⟨u, v, hle⟩ := hlink
       rw [panelSupportExtensor_ne_zero_iff]
-      rcases hQ'rec e u v (hQ'g ▸ hle) with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      rcases hQ'rec.eq_or_swap hle with ⟨h1, h2⟩ | ⟨h1, h2⟩
       · rw [h1, h2]; exact hQ'gp u v hle.ne
       · rw [h1, h2]; exact hQ'gp v u hle.ne.symm
     · rw [dite_eq_right hlink]
@@ -2299,19 +2266,19 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
 (`thm:theorem-55-6-rows`, corollary form; Katoh–Tanigawa 2011 §5.2, p. 670). Theorem 5.5's generic
 conclusion `HasGenericFullRankRealization K k n G` — stated by `theorem_55_minimalKDof_gen` for
 *minimal* `c`-dof graphs — holds for every simple graph on `≥ 2` bodies, spanning or not: repackage
-`finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, turning its edge-restricted
-link-recording conjunct into the motive's up-to-swap form via `IsLink.eq_and_eq_or_eq_and_eq` (two
-links of one edge agree up to order) and dropping the total-over-`β` genuine-hinge witness. -/
+`finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, dropping its link-recording
+conjunct (every framework's selector records the links of its graph, the field `isLink_ends`) and
+its total-over-`β` genuine-hinge witness. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen
     [Infinite K] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hSimple : G.Simple) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
-  obtain ⟨Q, hQg, hQgp, hends, -, hrank⟩ :=
+  obtain ⟨Q, hQg, hQgp, -, -, hrank⟩ :=
     PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen (K := K)
       hk1 hn hfresh G hV hSimple
-  exact ⟨Q, hQg, hQgp, hrank, fun e u v he => (hends e u v he).eq_and_eq_or_eq_and_eq he⟩
+  exact ⟨Q, hQg, hQgp, hrank⟩
 
 set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 at general `d`** (`thm:theorem-55-6`; Katoh–Tanigawa 2011 §5.2, p. 670). For a

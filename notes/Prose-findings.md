@@ -2663,7 +2663,13 @@ declaration's name as its header writes it:
   `prop:rigidity-matrix-prop11` and `cor:theorem-55-d3-spanning`, and
   `rem:molecular-conjecture-essential` restated (`a22d989c`); item 7: the link-recording form merged
   into `rankHypothesis_genuine_of_theorem_55_gen`, whose statement it adds a conjunct to that the
-  field makes redundant, and deleted with its pin on `thm:theorem-55-6-genuine` (`f4bc4cb5`).
+  field makes redundant, and deleted with its pin on `thm:theorem-55-6-genuine` (`f4bc4cb5`);
+  phase 41b, item 2: `HasGenericFullRankRealization`'s last conjunct dropped, as the field gives it
+  once `Q.graph = G`, with the two `hswap` hypotheses of `Coupling.lean` and the helpers
+  `ofNormals_recordsLinks_of_hends` and `ofNormals_endsOf_recordsLinks`; the docstrings on the
+  selector of a generic full-rank realization (`PanelHinge.lean`, `GenericityDevice.lean`,
+  `Coupling.lean`, `CaseI.lean`, `Theorem55.lean`) and the notes on it in `panel-layer.tex` say
+  that it records the links as every framework's selector does.
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`

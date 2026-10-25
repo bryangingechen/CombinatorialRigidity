@@ -4,8 +4,9 @@
 `notes/Phase41a.md`: the field `isLink_ends` is on `PanelHingeFramework`, and no main result's
 statement changed. Sub-phase **41b** (RESTATE) opened 2026-10-24 with the PI's decisions in §1b,
 work log `notes/Phase41b.md`. MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
-they open. Item 1's recon on KT's nonparallel panels is §2's last arc. Next concrete task: 41b's
-item 2, `HasGenericFullRankRealization`'s last conjunct (§2, *RESTATE's open recon*, Q3).
+they open. Item 1's recon on KT's nonparallel panels is §2's last arc; item 2 dropped
+`HasGenericFullRankRealization`'s last conjunct (§2, *RESTATE's open recon*, Q3). Next concrete
+task: 41b's item 3, `F-324`, `theorem_55_minimalKDof_gen`'s derivable `hD`.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
