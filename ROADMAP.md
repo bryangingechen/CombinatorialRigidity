@@ -765,7 +765,7 @@ has one as a **panel-hinge** framework; green + axiom-clean for
 As stated, Theorem 5.6's conclusion
 (`rankHypothesis_of_theorem_55_gen`) allows degenerate hinges, so at deficiency
 zero all-zero normals meet it; the form with nondegenerate hinges is
-`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (`F-122`, `F-128`; since
+`rankHypothesis_genuine_of_theorem_55_gen` (`F-122`, `F-128`; since
 phase 41a every panel-hinge framework's selector gives each edge its ends). The work split along the recon's
 carrier-grade fault line: **`CARRIER`** (23a, the mechanical `screwDim k`
 spine lift), **`CHAIN`** (23b–23f — the general-`d` chain dispatch; after the

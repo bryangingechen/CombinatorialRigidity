@@ -2,8 +2,8 @@
 
 **Status:** in progress (opened 2026-10-24). The phase's design, the PI's decisions and the open's
 recon are in `notes/Phase41-design.md`. Items 1 to 4, the build-time detour P1 to P5, item 5a (the
-switch), item 5b (the footprint's docstrings) and item 6 (`withGraph` restricted, `reaim` deleted)
-have landed. Next concrete task: item 7, the two genuine forms merged.
+switch), item 5b (the footprint's docstrings), item 6 (`withGraph` restricted, `reaim` deleted)
+and item 7 (the two genuine forms merged) have landed. Next concrete task: the close.
 
 ## Current state
 
@@ -16,7 +16,7 @@ whole project `module`s (a proof-only edit at `CaseIII/Realization` rebuilds tha
 declarations in 27 files follow it, the record binders are `hlinks`, and
 `def:panel-hinge-framework`'s formal note and `panel-layer.tex`'s selector notes are restated. Item
 6 asked `rigidityMatrix_prop11`'s `hC` only at links, so `reaim` went, and restricted the panel
-`withGraph` to subgraphs. Mode:
+`withGraph` to subgraphs; item 7 merged KT Theorem 5.6's two genuine forms into one. Mode:
 structural edit. There are no red target nodes, so the red-node consistency gate has nothing to
 read; the nodes a slice reaches are restated in that slice (`CombinatorialRigidity/CLAUDE.md`
 *Forward-mode slices*).
@@ -52,8 +52,9 @@ read; the nodes a slice reaches are restated in that slice (`CombinatorialRigidi
   deleted**, with `rigidityMatrix_prop11`'s `hC` asked only at links; 5b's docstring wraps
   reflowed. S18 is not discharged: the conditional statement, or a repin on the generic forms, is
   RESTATE's, after S1 (`notes/Phase41-design.md` §3).
-- [ ] **7. The two genuine forms merged**: under the field,
-  `rankHypothesis_genuine_of_theorem_55_gen` and its link-recording form coincide.
+- [x] **7. The two genuine forms merged**: under the field,
+  `rankHypothesis_genuine_of_theorem_55_gen` and its link-recording form coincide; the first keeps
+  the proof, and `thm:theorem-55-6-genuine` pins it alone.
 - [ ] **Close**: whole-project build with 0 warnings, `lake lint`, the blueprint gates, the 19
   main results' axioms unchanged; RESTATE opens as 41b.
 
@@ -63,34 +64,31 @@ read; the nodes a slice reaches are restated in that slice (`CombinatorialRigidi
   `main_results` row and `alignment` note, README, the home page, `intro.tex` and ROADMAP §23 say
   that `rankHypothesis_of_theorem_55_gen` allows degenerate hinges, so at deficiency zero the
   all-zero-normals framework meets it. RESTATE's table removes them (`notes/Phase41-design.md` §3).
+- **Link conjuncts the field makes redundant**, left after item 7 (no main result): the rows form
+  `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`,
+  `exists_rankHypothesis_isGeneralPosition4_of_two_le` (`Theorem56.lean`), and
+  `exists_independent_normalRow_of_le_finrank`'s `hQends` (`PanelGeneric.lean`). Not on 41a's
+  checklist: the close or RESTATE (the coordinator's call).
 
 ## Hand-off / next phase
 
-Item 7 next: the two genuine forms merged. Under the field,
-`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is `rankHypothesis_genuine_of_theorem_55_gen`
-with a conjunct every framework meets; one statement stays, and every reference to the other goes.
-Its commit also writes item 6's sha into the ledger dispositions that read "(item 6)" (`F-121`,
-`F-122`, `F-126`). Items 6 and 7 are the multi-commit trial's next arc
-(`.claude/commands/coordinate-phase.md` *Multi-commit arcs*; the PI kept its rules unchanged for
-two more arcs, 2026-10-24).
+The close next (`PHASE-BOUNDARIES.md` *When this commit closes a phase*): the whole-project build
+with 0 warnings, bare `lake lint`, `blueprint/lint.sh` and `verify.sh`, the 19 main results' axioms
+unchanged, and RESTATE opened as 41b. Its commit also writes item 7's sha into the ledger
+dispositions that read "(item 7)" (`F-122`, `F-128`, `F-298`), and settles the blocker on the
+redundant link conjuncts (above).
 
 ## Decisions made during this phase
 
 The decisions of the open are `notes/Phase41-design.md` §1.
 
-- **The build-time detour** (P1–P5; PI): the whole project converted before the spike; `lake lint
-  -- X` per file; `lake shake --fix` not applied (`notes/PERFORMANCE.md`).
-- **The link predicate** (item 2, 5a): `RecordsLinks G ends` is the field's type, with the forms
-  `recordsLinks_iff_forall_isLink`, `_iff_eq_or_swap`, `.of_forall`, `.of_pair`.
-- **The field defaults to `:= by link_tac`** (5a; coordinator); the record binders are `hlinks`
-  (`hlinks'`, `hlinks₁`, `hlinks₂`; the chain-step defs take it explicitly, TACTICS-QUIRKS § 120).
+- **The build-time detour** (P1–P5; PI): the whole project made `module`s before the spike
+  (`notes/PERFORMANCE.md`).
+- **The link predicate** (items 2, 5a): `RecordsLinks G ends`, the field's type; `:= by link_tac`;
+  the record binders are `hlinks` (TACTICS-QUIRKS § 120).
 - **The R statements** (items 3, 3a): `RecordsLinks (G.splitOff …) ends`, four statements.
-- **The selector sentences on the status surfaces** (item 5b; coordinator, 2026-10-24): since the
-  field, every panel-hinge framework's selector gives each edge of its graph its ends, so the
-  surfaces and docstrings no longer say that it is free; they keep the degenerate hinges (the
-  all-zero-normals framework at selector `G.endsOf` meets Theorem 5.6 at deficiency zero) and
-  `molecular_conjecture`'s nonzero hinge at every label, which RESTATE changes.
-- **`withGraph` and `hC`** (item 6): the panel `withGraph` takes `hle : G' ≤ P.graph`, its field
-  by `RecordsLinks.mono`; `rigidityMatrix_prop11`'s `hC` is the link form of its lower bound's.
-  `rankHypothesis_deficiency_of_theorem_55_d3` no longer uses `2 ≤ |V(G)|`: the binder is `_hV`
-  until RESTATE restates `cor:theorem-55-d3-spanning`.
+- **The selector sentences** (item 5b; coordinator): the surfaces drop the free selector and keep
+  the degenerate hinges, which RESTATE removes.
+- **`withGraph` and `hC`** (item 6): `withGraph` takes `hle : G' ≤ P.graph`; `hC` at links; the
+  d = 3 corollary's unused `2 ≤ |V(G)|` binds `_hV` until RESTATE restates its node.
+- **One genuine form** (item 7; coordinator): `rankHypothesis_genuine_of_theorem_55_gen` survives.

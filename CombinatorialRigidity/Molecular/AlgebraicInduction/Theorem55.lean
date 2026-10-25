@@ -823,14 +823,12 @@ and `thm:theorem-55-6-rows`): rebuild a panel-hinge framework with graph `G` and
 normals as `Q`, recording a genuine `G`-link on *every* edge of `G`. The endpoint selector uses
 `Q.ends e` on links of a subgraph `G' ≤ G` (the edges `Q` genuinely records, kept verbatim so the
 `withGraph G'` motion space is `Q`'s), a *genuine* pair of `G`-link endpoints on the re-added edges
-`E(G) ∖ E(G')`, and a fixed pair `(x₀, y₀)` only on labels outside `E(G)`. So it satisfies the
-edge-restricted link-recording hypothesis
-`hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2` — the `_of_le_finrank_linking`
-rank-polynomial family (`exists_rankPolynomial_of_le_finrank_linking`) requires it — while still
-keeping a genuine hinge on every edge (GP on `G'`-links / re-added `G`-links + `x₀ ≠ y₀` off-edge).
-This is the Theorem-5.6 re-add: the framework on the spanning subgraph realization, re-aimed onto
-the whole graph with a genuine hinge on every edge. It takes the record of the links of `G'` by
-`Q.ends` (`hlinks`) and `G' ≤ G` (`hle`), from which its field `isLink_ends` follows. -/
+`E(G) ∖ E(G')`, and a fixed pair `(x₀, y₀)` only on labels outside `E(G)`. So its selector gives
+each edge of `G` its two ends, as its field `isLink_ends` asks, while it keeps a genuine hinge at
+every label (GP on `G'`-links / re-added `G`-links + `x₀ ≠ y₀` off-edge). This is the Theorem-5.6
+re-add: the framework on the spanning subgraph realization, re-aimed onto the whole graph with a
+genuine hinge on every edge. It takes the record of the links of `G'` by `Q.ends` (`hlinks`) and
+`G' ≤ G` (`hle`), from which its field `isLink_ends` follows. -/
 private noncomputable def PanelHingeFramework.reaimSubLink (k : ℕ) {α β : Type*}
     (Q : PanelHingeFramework K k α β) (G G' : Graph α β) (x₀ y₀ : α)
     (hlinks : PanelHingeFramework.RecordsLinks G' Q.ends := by link_tac)
@@ -2079,30 +2077,30 @@ theorem PanelHingeFramework.theorem_55_d3 [Infinite K] [DecidableEq β] [Finite 
 
 /-! ## KT Theorem 5.6 and the molecular conjecture for simple graphs (`thm:theorem-55-6`) -/
 
-/-- **KT Theorem 5.6, link-recording genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the
-link-recording strengthening; Katoh–Tanigawa 2011 §5.2, p. 670). The strengthening of
-`rankHypothesis_genuine_of_theorem_55_gen` (below, which drops the conjunct) in which the endpoint
-selector *records a genuine `G`-link on every edge of `G`* (`reaimSubLink`), so the framework
-additionally satisfies the edge-restricted link-recording hypothesis
-`hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2`. Every panel-hinge
-framework now satisfies this (the field `isLink_ends`), so the conjunct holds of any framework on
-`G`, and this form is `rankHypothesis_genuine_of_theorem_55_gen` with it added.
+/-- **KT Theorem 5.6, genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the `≥ 2`-body
+stratum; Katoh–Tanigawa 2011 §5.2, p. 670). The `|V| ≥ 2` case of `rankHypothesis_of_theorem_55_gen`
+with the genuine-hinge witness `∀ e, Q.toBodyHinge.supportExtensor e ≠ 0` that its construction
+establishes: for a simple spanning graph on `≥ 2` bodies at any grade `1 ≤ k` with
+`3 ≤ bodyBarDim n = screwDim k`, the strip-realize-re-add assembly (KT p. 670) produces a
+panel-hinge realization with a *genuine* hinge at every label (each supporting extensor the meet of
+two transversal panels) realizing the rank hypothesis at `def(G̃)`. The genuine-hinge conjunct is
+exactly the `≥ 2`-body content — a genuine hinge needs two distinct bodies, so the single-body
+branch of `rankHypothesis_of_theorem_55_gen` cannot supply it — and it is what the Conjecture 1.2
+assembly (`molecular_conjecture`) consumes on the panel side.
 
-This is exactly the datum the general-position form of Theorem 5.6
-(`lem:theorem-56-general-position`, the square-graph dictionary's `≥` leg) needs: the
-deficiency-graded rank-polynomial transfer `exists_rankPolynomial_of_le_finrank_linking` requires
-the selector to record a link of every linking edge (so the linking panel rows span the rigidity
-rows), which a fixed off-edge pair `(x₀, y₀)` on the re-added edges `E(G) ∖ E(G')` would fail
-(those are genuine `G`-links, but `(x₀, y₀)` need not be their endpoints). `reaimSubLink` records
-the actual `G`-link endpoints there instead, while keeping `Q'.ends` on `G'`-links (so the
-`withGraph G'` motion space is `Q'`'s) and a genuine hinge on every edge (`hC`). -/
-theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen [Infinite K]
+The re-add (`reaimSubLink`) keeps the strip realization's selector on the links of the spanning
+subgraph `G'`, so that the `withGraph G'` motion space is the strip's, gives each re-added edge of
+`E(G) ∖ E(G')` its own two ends, and gives each label outside `E(G)` a fixed pair `(x₀, y₀)` of
+distinct bodies. Like that of every panel-hinge framework (the field `isLink_ends`), its selector
+gives each edge of `G` its two ends (`recordsLinks_iff_forall_isLink`). The general-position form
+of Theorem 5.6 (`lem:theorem-56-general-position`) and the generic panel and hinge-point theorems
+read the witness's rows through it (`exists_rankPolynomial_of_le_finrank_linking`). -/
+theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework K k α β, Q.graph = G ∧
-      (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
       (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
   have : Fintype α := Fintype.ofFinite α
@@ -2129,20 +2127,6 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
   -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge.
   let Q := Q'.reaimSubLink k G G' x₀ y₀
   have hQg : Q.graph = G := rfl
-  -- `hends`: the selector records a genuine `G`-link on every `G`-link.
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 := by
-    intro e u v he
-    simp only [Q, reaimSubLink]
-    by_cases hlink : ∃ u' v', G'.IsLink e u' v'
-    · rw [dite_eq_left hlink]
-      obtain ⟨u', v', hle'⟩ := hlink
-      rcases hQ'rec e u' v' (hQ'g ▸ hle') with ⟨h1, h2⟩ | ⟨h1, h2⟩
-      · rw [h1, h2]; exact hle'.of_le hG'le
-      · rw [h1, h2]; exact hle'.symm.of_le hG'le
-    · rw [dite_eq_right hlink]
-      have hGlink : ∃ u' v', G.IsLink e u' v' := ⟨u, v, he⟩
-      rw [dite_eq_left hGlink]
-      exact hGlink.choose_spec.choose_spec
   -- `hC`: every supporting extensor is nonzero (GP on `G'`-links and re-added `G`-links; the
   -- explicit distinct pair `(x₀, y₀)` off-edge).
   have hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0 := by
@@ -2191,35 +2175,13 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
   have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency n) :=
     rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn)
       (fun e _ _ _ => hC e) hgen
-  exact ⟨Q, hQg, hends, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
+  exact ⟨Q, hQg, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
 
-/-- **KT Theorem 5.6, genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the `≥ 2`-body
-stratum; Katoh–Tanigawa 2011 §5.2, p. 670). The `|V| ≥ 2` case of `rankHypothesis_of_theorem_55_gen`
-extracted as a reusable lemma that *also* exposes the genuine-hinge witness
-`hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0` its construction already establishes: for a simple
-spanning graph on `≥ 2` bodies at any grade `1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k`, the
-strip-realize-re-add assembly (KT p. 670) produces a panel-hinge realization with a *genuine* hinge
-on every edge (each supporting extensor the meet of two transversal panels) realizing the rank
-hypothesis at `def(G̃)`. The genuine-hinge conjunct is exactly the `≥ 2`-body content — a genuine
-hinge needs two distinct bodies, so the single-body branch of `rankHypothesis_of_theorem_55_gen`
-cannot supply it — and it is what the Conjecture 1.2 assembly (`molecular_conjecture`) consumes on
-the panel side. It is `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` with the
-link-recording conjunct dropped. -/
-theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K]
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
-    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework K k α β, Q.graph = G ∧
-      (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
-      Q.toBodyHinge.RankHypothesis (G.deficiency n) :=
-  (rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) hk1 hn hfresh G hV hspan
-    hSimple).imp fun _ ⟨hQg, _, hC, hrank⟩ => ⟨hQg, hC, hrank⟩
 
 /-- **KT Theorem 5.6, non-spanning row-rank form** (`thm:theorem-55-6-rows`; Katoh–Tanigawa 2011
 §5.2, p. 670). For a simple graph `G` on `≥ 2` bodies — *not* necessarily spanning `α` — at any
 grade `1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k` and over any infinite field, the
-strip-realize-re-add assembly of `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` produces a
+strip-realize-re-add assembly of `rankHypothesis_genuine_of_theorem_55_gen` produces a
 general-position panel-hinge realization `Q` of `G` whose selector records a genuine `G`-link on
 every edge, whose every supporting extensor is nonzero (total over `β`), and whose rigidity-row span
 has exactly the deficiency rank
@@ -2361,9 +2323,8 @@ binder that the spine `theorem_55_minimalKDof_gen` takes directly, as in `molecu
 below.
 
 Proof. For `|V| ≥ 2` the conclusion is that of `rankHypothesis_genuine_of_theorem_55_gen` without
-its hinge conjunct; the strip-realize-re-add assembly of KT p. 670 is there, and in
-`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`. For `|V| = 1` the graph is rigid with
-`def(G̃) = 0`, by `rankHypothesis_zero_iff`.
+its hinge conjunct; the strip-realize-re-add assembly of KT p. 670 is there. For `|V| = 1` the graph
+is rigid with `def(G̃) = 0`, by `rankHypothesis_zero_iff`.
 
 Scope. The selector of every panel-hinge framework gives each edge of `G` its two ends, in either
 order (the field `isLink_ends`), but the statement asks for no nondegenerate hinge. At deficiency

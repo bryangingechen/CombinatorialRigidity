@@ -2533,7 +2533,7 @@ declaration's name as its header writes it:
   `def:dof-generic` and `lem:genericity-device` unbacked).
   *Found:* round 3 task 2.1.
   *Disposition:* reported (`notes/Prose-report.md`, S18); phase 41a: the pin's `hC` asked only at
-  the links of $G$, and the note after the proof says so (item 6); the conditional statement, or a
+  the links of $G$, and the note after the proof says so (`a22d989c`); the conditional statement, or a
   repin on the generic forms, stays RESTATE's, after S1.
 - **F-122** · S · `def:panel-hinge-framework`, `def:hinge-coplanar`, `thm:molecular-conjecture`
   (`algebraic-induction/panel-layer.tex`): the structure `PanelHingeFramework` records, for every
@@ -2661,7 +2661,9 @@ declaration's name as its header writes it:
   realization of `cor:theorem-55-d3-spanning` itself, and `PanelHingeFramework.withGraph` takes a
   subgraph, `G' ≤ P.graph`; `def:framework-with-graph`, the notes after
   `prop:rigidity-matrix-prop11` and `cor:theorem-55-d3-spanning`, and
-  `rem:molecular-conjecture-essential` restated (item 6).
+  `rem:molecular-conjecture-essential` restated (`a22d989c`); item 7: the link-recording form merged
+  into `rankHypothesis_genuine_of_theorem_55_gen`, whose statement it adds a conjunct to that the
+  field makes redundant, and deleted with its pin on `thm:theorem-55-6-genuine` (item 7).
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2721,7 +2723,9 @@ declaration's name as its header writes it:
   framework at deficiency zero, stay RESTATE's; item 5b (`8460b351`): the `main_results` row, the `alignment`
   note, README, the home page, `intro.tex` and ROADMAP §23 drop the free selector and keep the
   degenerate hinges, and the docstrings of `rankHypothesis_of_theorem_55_gen` (its scope) and of
-  `rankHypothesis_of_theorem_55_d3` say so.
+  `rankHypothesis_of_theorem_55_d3` say so; item 7: the link-recording form deleted, its proof now
+  `rankHypothesis_genuine_of_theorem_55_gen`'s, so the `main_results` row, the `alignment` note,
+  README and ROADMAP §23 name that form (item 7).
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
@@ -3994,7 +3998,7 @@ declaration's name as its header writes it:
   `rankHypothesis_deficiency_of_theorem_55_d3`'s part is the phase's;
   Phase 41a, item 5b: `rankHypothesis_deficiency_of_theorem_55_d3`'s docstring names the `def = 0`
   stratum of KT Theorem 5.5, says that no declaration uses it and that its simplicity hypothesis
-  is unused (the binder stays, as `cor:theorem-55-d3-spanning` states it); item 6: with `reaim`
+  is unused (the binder stays, as `cor:theorem-55-d3-spanning` states it); item 6 (`a22d989c`): with `reaim`
   gone its two-body hypothesis is unused too, and the docstring says so (the binder `_hV` stays,
   as the node states it).
 - **F-130** · L · the docstrings of `panel-layer.tex`'s KT Theorem 5.6 and molecular-conjecture
@@ -6080,7 +6084,9 @@ declaration's name as its header writes it:
   as `F-324`. The `hV3` of `case_I_dispatch_gen` and `case_I_hcontract_gen`
   dropped, derived from `hrig`, the main result binding `_hV3`; `lem:case-I-dispatch` and
   `lem:case-I-all-k` stated without $|V(G)| \ge 3$. `thm:theorem-55-6-multigraph` and the other
-  nodes these pins serve state $d \ge 2$ only, unchanged (`e3ec5572`).
+  nodes these pins serve state $d \ge 2$ only, unchanged (`e3ec5572`); phase 41a, item 7: the
+  genuine form and its link-recording form merged into one declaration; the strip and the
+  re-aimed selector stay in two, the genuine form and the rows form (item 7).
 - **F-299** · L · a missed mathlib lemma and a repeated derivation in `Molecular/Molecule/`.
   `screwCoord_injective` (`ScrewVelocity.lean`) proves by rank–nullity, from `screwCoord_surjective`
   and the two dimensions, what `LinearMap.injective_iff_surjective_of_finrank_eq_finrank` gives; and

@@ -164,7 +164,9 @@ to be re-derived by re-reading entries later.
   `CaseIII/`), has no lemma: `(h.eq_or_swap hl).imp (fun h => Prod.ext h.1 h.2) (fun h => …)`.
   Item 5a: `RecordsLinks.of_forall` and `.of_pair` now give the condition from the total and pair
   forms, and `link_tac` tries every form, so the switch's record binders needed no conversion; the
-  hypotheses keep their forms (RESTATE drops `hends`).
+  hypotheses keep their forms (RESTATE drops `hends`). Item 7: two callers of the merged genuine
+  form (`PanelGeneric.lean`, `Theorem56.lean`) convert the field to the form at links,
+  `hQ0g ▸ recordsLinks_iff_forall_isLink.mp Q0.isLink_ends`, for lemmas that still take it.
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go.
 - **Status:** open.

@@ -1219,8 +1219,7 @@ least one vertex, in which the hinges may be degenerate
 
 \begin{theorem}[KT Theorem 5.6 with nondegenerate hinges]
   \label{thm:theorem-55-6-genuine}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen}
   \leanok
   \uses{lem:general-position-support-nonzero, def:rank-hypothesis}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
@@ -1269,16 +1268,15 @@ least one vertex, in which the hinges may be degenerate
 \end{proof}
 
 \begin{fmlnote}
-  Both pinned theorems assume that $G$ spans the set $W$ of bodies, state
+  The pinned theorem assumes that $G$ spans the set $W$ of bodies, states
   the target rank as $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
-  (\cref{rem:rank-hypothesis-relative}), and assume the supply of fresh
+  (\cref{rem:rank-hypothesis-relative}), and assumes the supply of fresh
   labels (\cref{rem:fresh-edge-supply}). The selector of the framework
-  that they construct assigns each edge of $G$ its two ends, as every
-  panel-hinge framework's does (\cref{fmlnote:panel-hinge-nondegenerate}),
-  and the second also states this. Both ask for a nonzero hinge at every
-  edge label, not only at the edges of $G$
-  (\cref{rem:molecular-conjecture-essential}). A label outside $E(G)$
-  gets the hinge of two distinct bodies, which is why they assume
+  that it constructs assigns each edge of $G$ its two ends, as every
+  panel-hinge framework's does (\cref{fmlnote:panel-hinge-nondegenerate}).
+  It asks for a nonzero hinge at every edge label, not only at the edges
+  of $G$ (\cref{rem:molecular-conjecture-essential}). A label outside
+  $E(G)$ gets the hinge of two distinct bodies, which is why it assumes
   $|V| \ge 2$.
 \end{fmlnote}
 
@@ -1314,7 +1312,7 @@ at least one vertex.
   (\cref{rem:rank-hypothesis-relative}). Its selector assigns each edge of
   $G$ its two ends, as every panel-hinge framework's does
   (\cref{fmlnote:panel-hinge-nondegenerate}). For $|V| \ge 2$, its
-  framework is that of the first pinned theorem of
+  framework is that of the pinned theorem of
   \cref{thm:theorem-55-6-genuine}. It assumes $D(|W| - 1) < |L|$, which
   gives the supply of fresh labels that \cref{thm:theorem-55-6-genuine}
   assumes (\cref{rem:fresh-edge-supply}).

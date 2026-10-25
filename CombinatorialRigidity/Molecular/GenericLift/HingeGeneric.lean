@@ -716,29 +716,30 @@ private theorem hingeRow_smul (u v : α) (t : K) (r : Module.Dual K (ScrewSpace 
   ext S
   simp [hingeRow_apply]
 
-/-- **The witness assembly** (`lem:hinge-point-witness`). The link-recording KT Theorem-5.6 panel
+/-- **The witness assembly** (`lem:hinge-point-witness`). KT Theorem 5.6's genuine-hinge panel
 witness realizes, over a selector `ends` that records a link at every edge label, an assignment `q₀`
 whose `hingePointRow` family attains the exact target rank `D(|V(G)|−1) − def(G̃)`.
 
-Proof. The witness `Q0 := rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` is a panel-hinge
-realization with every supporting extensor nonzero and exact row count `D(|V|−1) − def`
-(by `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`, as in the panel layer). Per
-edge, the panel meet decomposes the supporting extensor into `k` spanning points
+Proof. The witness `Q0 := rankHypothesis_genuine_of_theorem_55_gen` is a panel-hinge realization
+with every supporting extensor nonzero and exact row count `D(|V|−1) − def` (by
+`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`, as in the panel layer). Per edge, the
+panel meet decomposes the supporting extensor into `k` spanning points
 (`exists_extensor_eq_panelSupportExtensor_gen`); the leading point of each edge is nonzero (else the
 extensor would vanish, contradicting `hQ0C`). A single invertible map `g`
 (`exists_linearEquiv_forall_last_ne_zero`) moves every edge's leading point off the hyperplane at
-infinity simultaneously; the screw-mapped framework `F := Q0.toBodyHinge.mapExtensor
-(screwEquivOfLinearEquiv g)` carries every supporting extensor along, preserving the rigidity-row
-span's rank (`finrank_span_rigidityRows_mapExtensor`). Each moved extensor is read back as an affine
-hinge-point family (`exists_affineSubspaceExtensor_eq_smul_extensor`), up to a per-edge unit scalar
-`c e` — the resulting `ofHinge`-framework at the assembled assignment `q₀` therefore has
+infinity simultaneously; the screw-mapped framework
+`F := Q0.toBodyHinge.mapExtensor (screwEquivOfLinearEquiv g)` carries every supporting extensor
+along, preserving the rigidity-row span's rank (`finrank_span_rigidityRows_mapExtensor`). Each moved
+extensor is read back as an affine hinge-point family
+(`exists_affineSubspaceExtensor_eq_smul_extensor`), up to a per-edge unit scalar `c e` — the
+resulting `ofHinge`-framework at the assembled assignment `q₀` therefore has
 `(ofHinge G q₀).supportExtensor e = c e • F.supportExtensor e` for every edge, so its `panelRow`
 family is a per-edge unit-scalar transport of `F`'s.
-`exists_independent_panelRow_subfamily_of_le_finrank` extracts `N := finrank (span
-Q0.toBodyHinge.rigidityRows)` independent literal `panelRow`s of `F` at `ends`; the unit-scalar
-transport (`LinearIndependent.units_smul_iff`) carries that independence to the graph-free
-`hingePointRow ends q₀` family — no ± sign bookkeeping, since the transport scalar is a unit,
-not merely a swap sign (unlike the panel layer). -/
+`exists_independent_panelRow_subfamily_of_le_finrank` extracts
+`N := finrank (span Q0.toBodyHinge.rigidityRows)` independent literal `panelRow`s of `F` at `ends`;
+the unit-scalar transport (`LinearIndependent.units_smul_iff`) carries that independence to the
+graph-free `hingePointRow ends q₀` family — no ± sign bookkeeping, since the transport scalar is a
+unit, not merely a swap sign (unlike the panel layer). -/
 theorem exists_hingePoints_independent_hingePointRow [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
@@ -751,9 +752,9 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K]
         LinearIndependent K fun i : s => hingePointRow ends q₀ i := by
   classical
   have : NeZero k := ⟨by omega⟩
-  -- The link-recording Theorem-5.6 witness, over the carrier `G`.
-  obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
-    PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k)
+  -- KT Theorem 5.6's genuine-hinge witness, over the carrier `G`.
+  obtain ⟨Q0, hQ0g, hQ0C, hQ0rank⟩ :=
+    PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen (K := K) (k := k)
       hk1 hn hfresh G hV hspan hSimple
   -- `|V| ≥ 1` facts and the body-count reconciliation `Nat.card α = |V(G)|`.
   have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty

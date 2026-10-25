@@ -395,7 +395,7 @@ status:
       each hinge is zero and welds its two bodies, and a graph of deficiency zero is
       connected. The form with nondegenerate hinges is proved, for simple graphs on >= 2
       bodies, as
-      CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen.
+      CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen.
       With the upper bound at nondegenerate hinges
       (CombinatorialRigidity.Molecular.rigidityMatrix_prop11), that form gives Jackson-Jordán's
       rank formula, Katoh-Tanigawa Proposition 2.3, and with the def = corank bridge
@@ -737,7 +737,7 @@ alignment:
         zero the framework with every panel normal zero meets its conclusion (the main_results
         row). The upper bound holds at nondegenerate hinges, so the rank formula takes the
         proved form with nondegenerate hinges,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen.
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen.
 
     - source: "Katoh-Tanigawa 2011, Conjecture 1.2 (the Molecular Conjecture; Tay-Whiteley 1984)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture"

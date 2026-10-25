@@ -114,7 +114,7 @@ Theorem 5.6 allows degenerate hinges, so for a graph
 of deficiency zero a framework whose panel normals are all zero meets
 its conclusion. The form with nondegenerate hinges is
 proved for simple graphs on at least two bodies
-(`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`). The multigraph forms (phase 35, below)
+(`rankHypothesis_genuine_of_theorem_55_gen`). The multigraph forms (phase 35, below)
 place each hinge in the panels of its edge's ends. On top of these
 results sits the molecule application: the generic bar-joint rigidity
 matroid in dimension three in linear-matroid form (phase 24), projective

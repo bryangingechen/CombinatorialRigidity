@@ -40,7 +40,7 @@ graph enters only in the consumers, through an `hends` link hypothesis.
   selector, at that realization's own normals.
 * `thm:panel-generic-rank` — `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`: the
   rank formula `D(|V|−1) − def(G̃)` holds at every normal assignment generic for row independence,
-  assembled from the link-recording Theorem-5.6 witness (`Theorem55.lean`), the witness
+  assembled from KT Theorem 5.6's genuine-hinge witness (`Theorem55.lean`), the witness
   transplant, and the nondegeneracy lemma — the same `le_antisymm` pinch
   `Theorem56.lean`'s `exists_rankHypothesis_isGeneralPosition4_of_two_le` uses for its sibling
   general-position realization.
@@ -280,15 +280,15 @@ theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
   ext S
   simp [BodyHingeFramework.hingeRow_apply]
 
-/-- **The witness transplant: a rank bound on `Q`'s own rigidity rows extracts that many
-independent `normalRow`s of a fixed selector `ends`, evaluated at `Q`'s own normal assignment**
-(`lem:panel-witness-transplant`; Jackson–Jordán 2010 §7). Given `Q`, a panel-hinge
-realization of `G` whose supporting extensor is nonzero on *every* edge label (`hC`, the shape the
-link-recording witness `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` supplies), and a
-fixed endpoint selector `ends` for `G` that records a link at every edge label (`hends`) and that
-`Q.ends` agrees with (up to swap) on every actual link (`hQends`), a rank bound `N ≤ finrank (span
-Q.toBodyHinge.rigidityRows)` extracts `N` independent `normalRow ends q`-rows at `q :=` `Q`'s own
-normal assignment.
+/-- **The witness transplant: a rank bound on `Q`'s own rigidity rows extracts that many independent
+`normalRow`s of a fixed selector `ends`, evaluated at `Q`'s own normal assignment**
+(`lem:panel-witness-transplant`; Jackson–Jordán 2010 §7). Given `Q`, a panel-hinge realization of
+`G` whose supporting extensor is nonzero on *every* edge label (`hC`, the shape KT Theorem 5.6's
+genuine-hinge witness `rankHypothesis_genuine_of_theorem_55_gen` supplies), and a fixed endpoint
+selector `ends` for `G` that records a link at every edge label (`hends`) and that `Q.ends` agrees
+with (up to swap) on every actual link (`hQends`), a rank bound
+`N ≤ finrank (span Q.toBodyHinge.rigidityRows)` extracts `N` independent `normalRow ends q`-rows at
+`q :=` `Q`'s own normal assignment.
 
 The extraction is `exists_independent_panelRow_subfamily_of_le_finrank` (`GenericityDevice.lean`),
 applied to `Q.toBodyHinge` at `ends` (valid since `ends` records a link at *every* edge label,
@@ -381,14 +381,13 @@ independence attains the deficiency-graded rank:
 
 `finrank (span (ofNormals G ends q).toBodyHinge.rigidityRows) = D(|V(G)|-1) - def(G̃)`.
 
-*Lower bound.* The link-recording Theorem-5.6 witness
-(`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`) realizes a witness `Q0` at the exact
-target rank, via the rigidity-row/motion complement identity
+*Lower bound.* KT Theorem 5.6's genuine-hinge witness (`rankHypothesis_genuine_of_theorem_55_gen`)
+realizes a witness `Q0` at the exact target rank, via the rigidity-row/motion complement identity
 (`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`). The witness transplant
 (`exists_independent_normalRow_of_le_finrank`, `lem:panel-witness-transplant`) extracts that many
 independent `normalRow ends`-rows at `Q0`'s own normal assignment; genericity of `q`
-(`IsGenericNormals`) transfers that independence to `q`, and since `ends` records a link at
-every edge label, each such row is a rigidity row of `(ofNormals G ends q).toBodyHinge`
+(`IsGenericNormals`) transfers that independence to `q`, and since `ends` records a link at every
+edge label, each such row is a rigidity row of `(ofNormals G ends q).toBodyHinge`
 (`panelRow_mem_rigidityRows_of_link`), giving the lower bound via `finrank_span_eq_card` +
 `Submodule.finrank_mono`.
 
@@ -413,10 +412,13 @@ theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
       = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n := by
   classical
   have hloop : G.Loopless := hSimple.toLoopless
-  -- The link-recording Theorem-5.6 witness, over the carrier `G`.
-  obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
-    rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k) (n := n)
+  -- KT Theorem 5.6's genuine-hinge witness, over the carrier `G`; its selector gives each edge of
+  -- `G` its two ends (the field `isLink_ends`).
+  obtain ⟨Q0, hQ0g, hQ0C, hQ0rank⟩ :=
+    rankHypothesis_genuine_of_theorem_55_gen (K := K) (k := k) (n := n)
       hk1 hn hfresh G hV hspan hSimple
+  have hQ0ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q0.ends e).1 (Q0.ends e).2 :=
+    hQ0g ▸ recordsLinks_iff_forall_isLink.mp Q0.isLink_ends
   -- `|V| ≥ 1` facts and the body-count reconciliation `Nat.card α = |V(G)|`.
   have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   have h1V : 1 ≤ V(G).ncard := by omega

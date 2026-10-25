@@ -25,9 +25,10 @@ has no edge, and the moment-curve normals serve. On two or more bodies,
 `exists_rankHypothesis_isGeneralPosition4_of_two_le` moves the normals of a realization of KT
 Theorem 5.6 into general position without lowering the rank:
 
-* `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (`n = 3`, `k = 2`;
-  `thm:theorem-55-6-genuine`) gives a link-recording realization `Q₀` with nondegenerate hinges at
-  `dim Z = D + def(G̃)`, which we view as `ofNormals G Q₀.ends q₀` at its own normals `q₀`;
+* `rankHypothesis_genuine_of_theorem_55_gen` (`n = 3`, `k = 2`; `thm:theorem-55-6-genuine`) gives
+  a realization `Q₀` with nondegenerate hinges at `dim Z = D + def(G̃)`, whose selector gives each
+  edge its two ends (the field `isLink_ends`), and which we view as `ofNormals G Q₀.ends q₀` at its
+  own normals `q₀`;
 * rank–nullity for the rigidity rows (`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`)
   turns `dim Z = D + def` into the rank `D(|V| − 1) − def` of the rows of `Q₀`, and
   `exists_rankPolynomial_of_le_finrank_linking` (`lem:rank-polynomial-of-le-finrank`) gives a
@@ -76,7 +77,7 @@ namespace PanelHingeFramework
 The poles of its normals are then in general position up to order four, as the square-graph
 dictionary (`thm:molecular-iff-square-bar-joint`) needs. The proof takes a non-root of the product
 of the rank polynomial of `exists_rankPolynomial_of_le_finrank_linking`, at the normals of the
-realization of `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, and the polynomial of
+realization of `rankHypothesis_genuine_of_theorem_55_gen`, and the polynomial of
 `exists_generalPosition4_polynomial` (`MvPolynomial.exists_eval_ne_zero`); see the file header. -/
 theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
@@ -95,10 +96,12 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   have hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 3 c → ∃ e₀ : β, e₀ ∉ E(G') :=
     Graph.freshEdgeSupply_of_card_lt (by omega) (by simpa [Graph.bodyBarDim] using hcard)
-  -- Step 1: KT Theorem 5.6 with nondegenerate hinges and a link-recording selector.
-  obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
-    rankHypothesis_genuine_recordsLinks_of_theorem_55_gen
+  -- Step 1: KT Theorem 5.6 with nondegenerate hinges; the selector gives each edge its two ends.
+  obtain ⟨Q0, hQ0g, hQ0C, hQ0rank⟩ :=
+    rankHypothesis_genuine_of_theorem_55_gen
       (K := ℝ) (k := 2) (n := 3) (by norm_num) hn hfresh G hV hspan hSimple
+  have hQ0ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q0.ends e).1 (Q0.ends e).2 :=
+    hQ0g ▸ recordsLinks_iff_forall_isLink.mp Q0.isLink_ends
   -- View `Q0` as the free-normal framework at its own normals `q₀ = fun p => Q0.normal p.1 p.2`.
   have hself : ofNormals (k := 2) G Q0.ends (fun p => Q0.normal p.1 p.2) = Q0 :=
     ofNormals_eq_self_of_graph_eq Q0 hQ0g

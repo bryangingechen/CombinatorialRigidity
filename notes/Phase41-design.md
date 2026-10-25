@@ -3,9 +3,9 @@
 **Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) is open, work log
 `notes/Phase41a.md`; RESTATE, MULTIGRAPH and UNSTATED are tracked by code (§3) and get letters when
 they open. The build-time detour the PI scheduled before 41a's spike is done (items P1–P5), and so
-are the spike, the switch (item 5a), the footprint's docstrings (item 5b), and `withGraph`
-restricted with `reaim` deleted (item 6). Next concrete task: 41a's item 7, the two genuine forms
-merged (`notes/Phase41a.md`).
+are the spike, the switch (item 5a), the footprint's docstrings (item 5b), `withGraph` restricted
+with `reaim` deleted (item 6) and the two genuine forms merged (item 7). Next concrete task: 41a's
+close (`notes/Phase41a.md`).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -145,7 +145,8 @@ link-recording form (:2272, through `reaimSubLink`). So the first form follows f
 `hC` moves to links. `PanelHingeFramework.withGraph` (:385) has no caller outside its own lemmas;
 it becomes `P.withGraph G' (hle : G' ≤ P.graph)`, which keeps the field (`isLink_ends_of_le`).
 Done in 41a: `reaimSub` went at item 1; at item 6 `hC` moved to links, `reaim` was deleted and
-`withGraph` takes `hle` (the field from `RecordsLinks.mono`).
+`withGraph` takes `hle` (the field from `RecordsLinks.mono`); at item 7 the link-recording form's
+proof became `rankHypothesis_genuine_of_theorem_55_gen`'s, and the form was deleted.
 
 **S1 after S2.** The field is `hends` restricted to `E(G)`, so the panel theorems need neither
 `ends` nor `hends`, and S1 reduces to `hfresh` → `hcard`, genericity over rows indexed by `E(G)`, and
