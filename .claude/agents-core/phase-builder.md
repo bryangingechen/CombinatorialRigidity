@@ -18,14 +18,6 @@ pre-commit checklists; this file pins the loop contract):
   your agent definition; if your own environment block identifies a
   different model, your environment wins — use its name and flag the
   mismatch in your return.)
-- **A multi-commit arc** (trial, `.claude/commands/coordinate-phase.md`
-  *Multi-commit arcs*): when the prompt names several items, land them in
-  order, one commit per item, each with its own gates, phase-note update
-  and friction review, as if each were its own dispatch. If an item
-  blocks, stop there with the earlier commits landed and the tree clean.
-  Once your context passes ~300k tokens, finish the commit in progress
-  and return. Return `LANDED <sha1>, <sha2>, …: <one clause per commit>`,
-  or `LANDED <shas>; BLOCKED: <reason>`.
 - **Scope to fit one sitting.** Land the smallest complete deliverable
   that moves the hand-off forward — if the named deliverable won't
   fit, shrink the deliverable (a smaller complete lemma / sub-step),

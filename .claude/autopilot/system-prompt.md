@@ -12,8 +12,6 @@ Don't ask it. For every item in the queue:
 - **Rungs: Sonnet and Opus.** Dispatch `phase-builder-sonnet`, `phase-builder-opus` and
   `recon-opus`. No `*-fable` variant is available, not even as a second reader. Haiku stays off
   the map.
-- **Multi-commit arcs: on** (PI, 2026-10-24; a trial). Dispatch an arc wherever
-  `coordinate-phase.md` *Multi-commit arcs* allows one, and log each arc's row as it says.
 - **"As few interruptions as possible"** (the PI's words). Where the loop has an in-workflow
   resolution, use it. Stop only in the cases below.
 

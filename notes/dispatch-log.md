@@ -49,8 +49,6 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
-| 2026-10-24 | Phase41a arc, items 2–3 (`05e67236`, `579876ee`) | opus (claude-opus-5-5) | multi-commit trial, arc 1; spec defect caught in verification; return named a pre-amend sha | Per commit (session-usage `--since/--until`): item 2 77 msgs, 644k written, 12.8M read; item 3 36 msgs, 90k written, 10.7M read, ~300k context per turn vs item 1's fresh ~107k (37 msgs, 3.96M). Cut-off not fired. Mid-arc, the builder asked before deviating from the recon (:1751). The brief's "strengthen the conjunct" left three conclusions with `RecordsLinks` beside an equivalent up-to-order conjunct: the recon missed the latter. The builder amended item 3 and re-returned `579876ee` a minute later. Time: 36 min span, 18 of them in gates (3 full builds, one for a lint failure). |
-| 2026-10-24 | Phase41a arc, items 6–7 (`a22d989c`, `f4bc4cb5`) | opus (claude-opus-5-5) | multi-commit trial, arc 2; clean | Per commit (session-usage `--since/--until`): item 6 108 msgs, 286k written, 20.9M read, 65k output, 15.9 min (4.6 in gates), carrying 5b's three loose ends; item 7 52 msgs, 87k written, 17.4M read, 39k output, 9.3 min (3.2 in gates). The continuation wrote less cache than item 1's fresh build (146k) but read 4.4× as much (3.96M), at ~330k context per turn. Cut-off not fired; no verification catches; coordinator gap not measured. |
 
 **Phases 29–34 rows, 2026-07-09 → 07-18: 17 pruned at the 41a grooming
 (2026-10-24); the full rows are in git history at `3a627b3d`.** Those phases
@@ -109,7 +107,7 @@ or a rule already in a manual.
 **`40-docs`, PROSE rounds 1–5, RECONCILE rounds 1–3 and Phase 41a rows,
 2026-10-05 → 10-24: 20 pruned at the 41a grooming (2026-10-24); the
 full rows are in git history at `3a627b3d`.** The multi-commit trial's two arc
-rows stay above until the PI decides the trial. Profile, by the exception
+rows followed when the PI dropped the trial (F53). Profile, by the exception
 column's own wording (a row can match several classes, and the counts are
 approximate): 7 hygiene-rule readings the coordinator accepted (F51); 9
 gate-invisible defects caught in verification, by a later dispatch or at a
@@ -152,8 +150,8 @@ PI, and F40.
 
 **41a grooming (2026-10-24, after the 41a close).** 37 rows are pruned to git
 history (profiles under *Log*): the 17 of Phases 29–34, which closed
-ungroomed, and RECONCILE's and 41a's 20. The trial's two arc rows stay until
-the PI decides it. New findings: F50–F52. Promoted now: F50 into
+ungroomed, and RECONCILE's and 41a's 20. The trial's two arc rows followed
+when the PI dropped it (F53). New findings: F50–F52. Promoted now: F50 into
 `notes/CLAUDE.md` *Phase notes* and the playbook's shaping paragraph, F51
 into the shaping paragraph, F52 into the `hygiene` block and
 `CombinatorialRigidity/CLAUDE.md`'s deletion gate, and F44's close-summary
@@ -650,3 +648,20 @@ recurrence into *Verification tiers*.
   them. One row, but both checks shared the gap, and so did
   `CombinatorialRigidity/CLAUDE.md`'s deletion gate. Promoted: the `hygiene`
   block and that gate.
+- **F53 — the multi-commit trial is dropped (Phase 41a, two arcs; PI,
+  2026-10-24).** Two arcs ran, items 2–3 and 6–7. Per landed commit
+  (`session-usage.py` at the commits' times), the two continuation commits,
+  items 3 and 7, wrote less cache than a fresh single-commit build but read
+  2.4–4.4× as much (10.7M and 17.4M against items 1 and 3a's 3.96M and
+  4.45M), since every turn re-reads ~300k of context. At cache reads a tenth
+  of the base input price and writes 1.25×, a continuation commit cost about
+  1.2M and 1.85M input-token equivalents against 0.6M and 0.8M. Wall time
+  per commit was not lower (arc 2: 15.9 and 9.3 min, against 9.5 and 10.3).
+  The coordinator-side saving the trial was for (fewer launches and
+  re-orientations) was never measured. The PI dropped the trial on this
+  evidence. Removed: the playbook's *Multi-commit arcs* section (now a
+  one-paragraph pointer here) and steps 2, 4 and 5's arc sentences, the
+  builder core's bullet, the four builder definitions' line, and the
+  autopilot's "arcs: on". Kept: `session-usage.py`'s `--since`/`--until`
+  bounds and cache columns. The two arc rows are in git history at
+  `78c3f1e4`.

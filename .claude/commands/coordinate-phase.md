@@ -275,43 +275,10 @@ slice's precedent outweighs a prompt's restated rule. Shaping never
 changes the LANDED/BLOCKED contract and never delegates the
 coordinator's own verification to the subagent.
 
-### Multi-commit arcs (trial, 2026-10-24)
-
-The PI's call (2026-10-24, Phase 41): the one-commit dispatch dates from
-less capable builders, so try one dispatch for several commits. It trades
-a longer builder context for fewer launches, fewer orientation re-reads
-and fewer coordinator re-transcriptions. The evidence on each side:
-continuations ran clean (F4), and fresh builders cost 240–440k per build
-(F46), while one resumed 400–624k context cost $37 (step 3 *Resume and
-land*).
-
-- **Shape.** The prompt names an *arc*: 2–4 consecutive checklist items,
-  in order. The builder lands one commit per item, each with that item's
-  full gates and phase-note update. It returns `LANDED <sha1>, <sha2>, …:
-  <one clause per commit>`, or, when an item blocks, stops with the earlier
-  items landed and the tree clean: `LANDED <shas>; BLOCKED: <reason>`.
-- **Eligible.** Every item's spec is in the committed hand-off (S ≤ 2),
-  the items share an area, and no PI decision, recon or spike lies between
-  them. Never a spike, nor a commit the phase note calls a single large
-  switch.
-- **Cut-off.** Once its context passes ~300k tokens, the builder finishes
-  the commit in progress, then returns what landed and names the next item.
-- **Verification.** Step 4's tier on every commit of the arc, in order,
-  before the next dispatch, and step 5 once over the arc's modules; a
-  defect is fixed before anything builds on it.
-- **Measure, per arc.** `python3 .claude/scripts/session-usage.py tokens
-  --by-session` gives the builder's messages, cache writes, cache reads and
-  output, `gates --match <agent>` its wall time and its time in `lake` gates,
-  and `--since`/`--until` at the commits' `git log --format=%cI` times split
-  both by commit; per landed commit, they compare with the same phase's
-  single-commit dispatches (Phase 41a item 1: 37 messages, 146k written,
-  3.96M read, 31k output, 9.5 min; item 3a: 41 messages, 256k written,
-  4.45M read, 24k output, 10.3 min). Log one `notes/dispatch-log.md` row per arc (a
-  playbook deviation while the trial runs), with the verification catches,
-  whether the cut-off fired, and the time: the builder's minutes per
-  commit, and the coordinator's gap from a return to the next dispatch.
-  After about three arcs the PI decides: promote, adjust or drop. (After
-  arc 1, the PI kept these rules unchanged for arcs 2 and 3, 2026-10-24.)
+**One commit per dispatch.** A trial of multi-commit arcs (one builder
+landing 2–4 items) ran in Phase 41a and was dropped on 2026-10-24: each
+continuation commit cost about 1.5–3× a fresh single-commit build in
+cache reads, at the same wall time (dispatch-log F53).
 
 ### Verification tiers (what the coordinator re-runs itself)
 
@@ -484,9 +451,6 @@ CLAUDE.md at phase close.
    remain only for off-map dispatches (e.g. a haiku probe), and those
    resume at the SESSION model. Honor any standing rung override from
    the session-start check-in.
-   **Arcs (trial):** when the next 2–4 checklist items meet *Multi-commit
-   arcs*' eligibility, dispatch them as one arc, rated and rung-picked by
-   its hardest item.
    **Pre-dispatch derivation guard:** when the next leaf builds on a
    prior phase's mirror definition with no upstream precedent, spend
    the few minutes deriving the leaf's statement against the
@@ -619,11 +583,7 @@ CLAUDE.md at phase close.
    the recon's verdict and the PI's decisions in a scratch file: seven
    Phase-40 arcs ran this way with zero Lean rework, at 240–440k per
    build (dispatch-log F46).
-4. Verify the return (`CronDelete` the keepalive job first). For an
-   arc, run every check below on each commit it landed, oldest first
-   (`git log --oneline <noted-sha>..HEAD`, then `git show --stat` per
-   commit), and match the returned shas against the log: a builder can
-   amend after returning.
+4. Verify the return (`CronDelete` the keepalive job first).
    - **Mechanics:** `git log --oneline -3`, `git show --stat HEAD`,
      `git branch --show-current`. HEAD advanced past the noted sha;
      still on `master`; author `bryangingechen@gmail.com`; diff
@@ -796,10 +756,7 @@ CLAUDE.md at phase close.
    is rightmost, not "leftmost"), so warnings re-emit.
    **Warning-clean, not merely green** (a sorry'd skeleton once rode
    a green-but-warning build onto master). Red or warning-bearing →
-   stop and surface. Skip for docs-only commits. For an arc, build the
-   union of the modules its commits touched, once, at its last commit;
-   an earlier commit's warning-cleanliness is then the builder's
-   attestation in that commit's message. (Run the gate in the
+   stop and surface. Skip for docs-only commits. (Run the gate in the
    foreground, or — if backgrounded to read the diff in parallel, with
    the Bash tool's `run_in_background`, **never a shell `&`**, which no
    notification reports and no task stop reaches (a step-5 build used
