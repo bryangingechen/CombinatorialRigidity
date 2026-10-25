@@ -2545,6 +2545,12 @@ above, this time across the ℕ/ℤ cast rather than within one type. Fix: cast 
 and finish with `linarith` instead of `omega` — `have hz := congrArg (Nat.cast : ℕ → ℤ) hc;
 push_cast at hz; linarith`. FRICTION [resolved] *`omega` misses a `finrank` atom … `Fin (1 + 2)`*.
 
+**Worked case: a grade `2 - 1` against `1` (Phase 41b, `Nonvacuity.lean`).** A theorem that returns
+a `PanelHingeFramework K (n - 1) …` names its `finrank` at `n := 2` through the implicit grade
+`2 - 1`, and a statement at grade `1` through `1`: `omega` fails as above. The identity is the goal
+up to defeq, so `Int.ofNat_inj.mp hrank` closes it. FRICTION [idiom] *`omega` misses a `finrank`
+atom whose framework grade is `2 - 1`…*.
+
 ## 59. A new `Mathlib.Analysis.InnerProductSpace` import regresses a *pre-existing* exterior-algebra proof to `(deterministic) timeout at whnf` — the metric `PiLp`/`EuclideanSpace` instances poison `⋀`-term elaboration
 
 **Symptom.** Adding `public import Mathlib.Analysis.InnerProductSpace.PiL2` (or any
@@ -4428,8 +4434,8 @@ must supply for nothing, and the linter's own message already names the fix.
 **Fix, in order:**
 1. Drop the binder and open the proof with `classical` (a term proof becomes `by classical exact
    …`; `open scoped Classical in` for a bare term). Rebuild every callee too — they simply stop
-   passing the instance. In-tree precedent: `PanelHingeFramework.rankHypothesis_of_theorem_55_d3`
-   (`Theorem55.lean`, since RECONCILE round 3) calls `rankHypothesis_of_theorem_55_gen`, itself
+   passing the instance. In-tree precedent: `PanelHingeFramework.rankHypothesis_of_theorem_55_gen`
+   (`Theorem55.lean`, since Phase 41b) calls `rankHypothesis_genuine_of_theorem_55_gen`, itself
    `[DecidableEq β]`-taking, with `classical` and no binder.
 2. Only if that fails for a **stated** reason (a step computes with the specific instance —
    `decide`, a computational `rfl` — or a callee froze an instance in a `def` body that a later

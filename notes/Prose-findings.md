@@ -2732,6 +2732,13 @@ declaration's name as its header writes it:
   `rankHypothesis_of_theorem_55_d3` say so; item 7: the link-recording form deleted, its proof now
   `rankHypothesis_genuine_of_theorem_55_gen`'s, so the `main_results` row, the `alignment` note,
   README and ROADMAP §23 name that form (`f4bc4cb5`).
+  Phase 41b, item 5: done in part (Phase 41b item 5's commit; the sha goes in at the next ledger
+  sweep). `rankHypothesis_of_theorem_55_gen` and `rankHypothesis_genuine_of_theorem_55_gen`
+  conclude nonparallel panels (`IsNonparallel`), kept from the strip realization, so every hinge
+  at an edge of $G$ of the first's framework is nondegenerate and the all-zero-normals framework
+  no longer meets its conclusion on two or more bodies; `thm:theorem-55-6` and `thm:theorem-55-6-genuine` restated, and
+  the `main_results` row and the `alignment` note with them. `rankHypothesis_of_theorem_55_d3`
+  keeps its statement (`F-329`); README, the home page, `intro.tex` and ROADMAP §23 are item 12's.
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
   statement glued $H$ and the contraction $G/E(H)$, "both subgraphs of $G$". The contraction is not
   a subgraph of $G$ when an edge not in $H$ has an end in $V(H) \setminus \{r\}$, since that end is
@@ -3397,6 +3404,10 @@ declaration's name as its header writes it:
   *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*). Round 3:
   `theorem_55_6_multigraph_gen`'s `[DecidableEq β]`, to which `molecular_conjecture_multigraph`
   passes its own and nothing else, goes with that theorem's (`600ecc09`, `F-322`).
+  Phase 41b, item 5: done for `rankHypothesis_of_theorem_55_gen` (Phase 41b item 5's commit; the
+  sha goes in at the next ledger sweep): the binder and its suppression dropped, the proof opened
+  with `classical`. `molecular_conjecture`'s is item 6's, `molecular_conjecture_multigraph`'s item
+  7's.
 - **F-324** · S · `thm:theorem-55` (`panel-layer.tex`; its pin
   `PanelHingeFramework.theorem_55_minimalKDof_gen`, `AlgebraicInduction/Theorem55.lean`, a main
   result): the pin's `hD : 3 ≤ bodyBarDim n` follows from `hk1 : 1 ≤ k` and `hn : bodyBarDim n =
@@ -3423,6 +3434,18 @@ declaration's name as its header writes it:
   `hk : 1 ≤ k` (a hypothesis swapped, not only dropped; `D = screwDim k` forces it at `k = 0`,
   where `D = 1`). Their blueprint nodes state $d \ge 2$ and `thm:theorem-55` states no `hD`:
   unchanged. The callers already derived `3 ≤ D` locally (`F-298`), so none went unused.
+- **F-329** · S · `thm:theorem-55-6-d3` (`algebraic-induction/panel-layer.tex`; its pin
+  `PanelHingeFramework.rankHypothesis_of_theorem_55_d3`, `AlgebraicInduction/Theorem55.lean`): its
+  general form `rankHypothesis_of_theorem_55_gen` concludes nonparallel panels since Phase 41b's
+  item 5, but the pin still concludes only `∃ Q, Q.graph = G ∧ Q.toBodyHinge.RankHypothesis
+  (G.deficiency 3)`, so at deficiency zero the framework with all normals zero still meets it
+  (`F-128`'s gap, at the `d = 3` instance). Passing the conjunct through, as item 4c passed Theorem
+  5.5's through `theorem_55_d3`, changes its statement, which neither the design doc's §1, §1b and
+  §1c nor the coordinator's adjudication at item 5 names; item 5 kept the statement, its proof
+  dropping the conjunct, and said so in the docstring.
+  *Evidence:* read (the statements of the two pins).
+  *Found:* Phase 41b item 5.
+  *Disposition:* reported (`notes/Phase41b.md`, item 5b).
 
 ## L — Lean
 

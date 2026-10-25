@@ -179,9 +179,9 @@ of the injective tuples `f : Fin j → α` for `j = 2, 3, 4`. At the moment curv
 are `(param a)^3 ≠ 0` and each minor is a Vandermonde determinant of distinct parameters. At a
 non-root a single normal is nonzero by its last coordinate, and two to four normals are linearly
 independent by the minor of a tuple that lists them.
-`exists_rankHypothesis_isGeneralPosition4_of_two_le` takes a non-root of the product of `Q` and the
-rank polynomial of `exists_rankPolynomial_of_le_finrank_linking`
-(`MvPolynomial.exists_eval_ne_zero`). -/
+`exists_rankHypothesis_isGeneralPosition4_of_two_le` takes a non-root of the product of `Q`, the
+rank polynomial of `exists_rankPolynomial_of_le_finrank_linking` and the polynomial of
+`exists_nonparallel_polynomial` (`MvPolynomial.exists_eval_ne_zero`). -/
 theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends : β → α × α)
     (hlinks : PanelHingeFramework.RecordsLinks G ends := by link_tac) :
     ∃ Q : MvPolynomial (α × Fin 4) ℝ,

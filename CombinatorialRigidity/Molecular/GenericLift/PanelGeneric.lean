@@ -414,7 +414,7 @@ theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
   have hloop : G.Loopless := hSimple.toLoopless
   -- KT Theorem 5.6's genuine-hinge witness, over the carrier `G`; its selector gives each edge of
   -- `G` its two ends (the field `isLink_ends`).
-  obtain ⟨Q0, hQ0g, hQ0C, hQ0rank⟩ :=
+  obtain ⟨Q0, hQ0g, -, hQ0C, hQ0rank⟩ :=
     rankHypothesis_genuine_of_theorem_55_gen (K := K) (k := k) (n := n)
       hk1 hn hfresh G hV hspan hSimple
   have hQ0ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q0.ends e).1 (Q0.ends e).2 :=

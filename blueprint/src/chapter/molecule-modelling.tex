@@ -648,8 +648,8 @@ subfamily of an affinely independent family is affinely independent.
 
 KT Theorem~5.6 realizes a simple graph as a panel-hinge framework at the
 target rank (\cref{def:rank-hypothesis}). The realization can be taken
-with nondegenerate hinges (\cref{thm:theorem-55-6-genuine}). We need
-more. A normal $n \in \R^4$ with a nonzero last coordinate is a nonzero
+with nonparallel panels and nondegenerate hinges
+(\cref{thm:theorem-55-6-genuine}). We need more. A normal $n \in \R^4$ with a nonzero last coordinate is a nonzero
 multiple of $\bar c = (c, 1)$ for a unique point $c \in \R^3$, the pole
 of its panel
 (\cref{sec:molecule-modelling-projective}). We ask that the poles be in
@@ -662,12 +662,13 @@ framework whose centres are the poles
   \label{lem:theorem-56-general-position}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4}
   \leanok
-  \uses{def:general-position-placement}
+  \uses{def:general-position-placement, def:panel-nonparallel}
   Let $G = (V, E)$ be a simple graph with $V \neq \emptyset$. Then $G$ has
   a panel-hinge realization $(G, p)$ in $\R^3$ whose normals are
   $n_v = \lambda_v\, \bar c(v)$, for nonzero scalars $\lambda_v$ and
   points $c(v) \in \R^3$ in general position up to order four
-  (\cref{def:general-position-placement}), and which has
+  (\cref{def:general-position-placement}), whose panels are nonparallel
+  (\cref{def:panel-nonparallel}), and which has
   \[
     \dim Z(G, p) \;=\; D + \operatorname{def}(\tilde G),
   \]
@@ -676,11 +677,12 @@ framework whose centres are the poles
 \begin{proof}
   \leanok
   \uses{thm:theorem-55-6-d3, lem:genericity-device,
-        lem:relative-deficiency-rank-bound}
+        lem:relative-deficiency-rank-bound, lem:moment-curve-general-position}
   If $|V| = 1$, then $G$ has no edge, as it is simple, and
   $\operatorname{def}(\tilde G) = 0$. Every realization of $G$ then has
   $\dim Z(G, p) = D$, the dimension of the screw space, and any normal
-  $\bar c(v)$ will do.
+  $\bar c(v)$ will do. Its panels are nonparallel, as it has no two
+  distinct bodies.
 
   Let $|V| \ge 2$, and let $N = D(|V| - 1) - \operatorname{def}(\tilde G)$.
   KT Theorem~5.6 at $d = 3$ (\cref{thm:theorem-55-6-d3}) holds with
@@ -711,8 +713,18 @@ framework whose centres are the poles
   nonzero $t_v$, the last coordinates are $t_v^3 \neq 0$, and each of the
   minors is a Vandermonde determinant, which is nonzero.
 
-  As $\R$ is infinite, the nonzero polynomial $Q_1 Q_2$ has a non-root
-  $q$, and at $q$ the poles are in general position up to order four. In
+  A third polynomial $Q_3$ tests nonparallel panels: the product, over
+  the ordered pairs $(u, v)$ of distinct bodies, of the $2 \times 2$ minor
+  on the first two columns of the rows $n_u$ and $n_v$. Where it is not
+  zero, the first three coordinates of $n_u$ and of $n_v$ are linearly
+  independent, so the panels are nonparallel
+  (\cref{def:panel-nonparallel}). At the same moment-curve normals each
+  factor is $t_v - t_u \neq 0$
+  (\cref{lem:moment-curve-general-position}), so $Q_3$ is not zero.
+
+  As $\R$ is infinite, the nonzero polynomial $Q_1 Q_2 Q_3$ has a non-root
+  $q$, and at $q$ the poles are in general position up to order four and
+  the panels are nonparallel. In
   particular any two of the normals are linearly independent, so every
   hinge of $(G, q)$ is nondegenerate
   (\cref{lem:general-position-support-nonzero}). The deficiency bound for
@@ -724,8 +736,8 @@ framework whose centres are the poles
   Katoh and Tanigawa need only a nonparallel realization, one whose
   panels meet pairwise in lines, and they obtain it by a projective
   transformation (KT pp.~670--671). The square-graph dictionary needs the
-  poles in general position up to order four, and the argument above
-  provides them.
+  poles in general position up to order four. The argument above
+  provides both.
 \end{proof}
 
 \begin{fmlnote}
@@ -733,9 +745,9 @@ framework whose centres are the poles
   that $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). It states the
   general position of the poles for the normals: each has a nonzero last
   coordinate, and any four or fewer of them are linearly independent. It
-  also states that every hinge at an edge of $G$ is nondegenerate, and
-  that the endpoint selector assigns each edge of $G$ its two ends
-  (\cref{fmlnote:panel-hinge-nondegenerate}).
+  also states that every hinge at an edge of $G$ is nondegenerate. Its
+  endpoint selector assigns each edge of $G$ its two ends, as every
+  panel-hinge framework's does (\cref{fmlnote:panel-hinge-nondegenerate}).
 \end{fmlnote}
 
 Katoh and Tanigawa deduce from KT Theorem~5.6 that every simple graph has

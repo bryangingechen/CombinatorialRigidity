@@ -196,9 +196,11 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
             (fun p => pencilPicturePoint q p.1 p.2)).toBodyHinge.rigidityRows) : ℤ) := by
   have : Fintype α := Fintype.ofFinite α
   -- The planar case of KT Theorem 5.6, at `(n, k) = (2, 1)`.
-  obtain ⟨Q₀, hQ₀g, -, hQ₀ends, hQ₀C, hQ₀rank⟩ :=
+  obtain ⟨Q₀, hQ₀g, -, hQ₀C, hQ₀rank⟩ :=
     PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen
       (K := K) (k := 1) (n := 2) le_rfl rfl hfresh G hV hSimple
+  have hQ₀ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q₀.ends e).1 (Q₀.ends e).2 :=
+    hQ₀g ▸ PanelHingeFramework.recordsLinks_iff_forall_isLink.mp Q₀.isLink_ends
   have hself : PanelHingeFramework.ofNormals (k := 1) G Q₀.ends (fun p => Q₀.normal p.1 p.2)
       = Q₀ := PanelHingeFramework.ofNormals_eq_self_of_graph_eq Q₀ hQ₀g
   set N := Module.finrank K (Submodule.span K Q₀.toBodyHinge.rigidityRows) with hN

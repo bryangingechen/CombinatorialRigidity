@@ -385,15 +385,15 @@ status:
     file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
     description: >-
       Katoh-Tanigawa 2011 Theorem 5.6: every simple spanning multigraph has a panel-hinge
-      realization attaining the deficiency rank, rank R(G,p) = D(|V|-1) - def(G~), at every
-      dimension n >= 2 and over any infinite field of any characteristic (phase 33). As
-      stated, the theorem does not ask for nondegenerate hinges: the formal panel-hinge
+      realization with nonparallel panels (Katoh-Tanigawa §5.1: any two panels meet in a
+      (d-2)-dimensional affine subspace) attaining the deficiency rank, rank R(G,p) =
+      D(|V|-1) - def(G~), at every dimension n >= 2 and over any infinite field of any
+      characteristic (phase 33; nonparallel since phase 41b). The formal panel-hinge
       framework records, for each edge label, a pair of bodies (its endpoint selector), and
       since phase 41a the selector gives each edge of G its two ends, in either order (a
-      label outside the edges of G is unconstrained). So for every spanning graph of
-      deficiency zero, the framework whose panel normals are all zero meets its conclusion:
-      each hinge is zero and welds its two bodies, and a graph of deficiency zero is
-      connected. The form with nondegenerate hinges is proved, for simple graphs on >= 2
+      label outside the edges of G is unconstrained). Nonparallel panels have linearly
+      independent normals, so every hinge at an edge of G is nondegenerate. The form with
+      a nondegenerate hinge at every edge label is proved, for simple graphs on >= 2
       bodies, as
       CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen.
       With the upper bound at nondegenerate hinges
@@ -733,10 +733,10 @@ alignment:
       module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean, CombinatorialRigidity/Molecular/AlgebraicInduction/PanelHinge.lean"
       status: "proved"
       note: >-
-        As stated, rankHypothesis_of_theorem_55_gen allows degenerate hinges, so at deficiency
-        zero the framework with every panel normal zero meets its conclusion (the main_results
-        row). The upper bound holds at nondegenerate hinges, so the rank formula takes the
-        proved form with nondegenerate hinges,
+        Since phase 41b, rankHypothesis_of_theorem_55_gen concludes nonparallel panels, so
+        every hinge at an edge of G is nondegenerate (the main_results row). The upper bound
+        holds at nondegenerate hinges, so the rank formula takes the proved form with a
+        nondegenerate hinge at every edge label,
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen.
 
     - source: "Katoh-Tanigawa 2011, Conjecture 1.2 (the Molecular Conjecture; Tay-Whiteley 1984)"

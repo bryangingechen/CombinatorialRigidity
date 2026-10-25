@@ -753,7 +753,7 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K]
   classical
   have : NeZero k := ⟨by omega⟩
   -- KT Theorem 5.6's genuine-hinge witness, over the carrier `G`.
-  obtain ⟨Q0, hQ0g, hQ0C, hQ0rank⟩ :=
+  obtain ⟨Q0, hQ0g, -, hQ0C, hQ0rank⟩ :=
     PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen (K := K) (k := k)
       hk1 hn hfresh G hV hspan hSimple
   -- `|V| ≥ 1` facts and the body-count reconciliation `Nat.card α = |V(G)|`.

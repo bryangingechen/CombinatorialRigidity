@@ -110,6 +110,17 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] `omega` misses a `finrank` atom whose framework grade is `2 - 1` against a statement's `1`
+- **Where it bit:** Phase 41b, item 5 (`rankHypothesis_of_theorem_55_gen_witness`,
+  `Nonvacuity.lean`): `rankHypothesis_of_theorem_55_gen` at `n := 2` returns a
+  `PanelHingeFramework ℝ (2 - 1) …`, and the witness states one at grade `1`. With the rank identity
+  `↑(finrank …) = screwDim 1 + 1` in scope, `omega` on the goal `finrank … = 4` reported a
+  counterexample: the implicit grade makes the two `finrank` terms two atoms.
+- **Friction:** one MCP iteration.
+- **Proposed fix:** close by defeq, `Int.ofNat_inj.mp hrank`; or normalize first (`simp [screwDim]
+  at h` rewrites `2 - 1` too).
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 58 (a third worked case).
+
 ### [idiom] `fun h => hP (by rw [h, map_zero])` as an untyped argument fails — `ne_zero_of_map hP`
 - **Where it bit:** Phase 41b, item 4b (`hasNonparallelFullRankRealization_of_generic`,
   `GenericityDevice.lean`): the witness's two typed `have`s inlined into `mul_ne_zero` failed with
@@ -191,6 +202,9 @@ to be re-derived by re-reading entries later.
   `have hQrec : RecordsLinks G Q.ends := …`). `link_tac` does not see a framework's field through `hQg : Q.graph = G`, so
   each `ofNormals G Q.ends q` below such an `obtain` needs that `have` in scope; the pair form
   `hrec'` (four sites) is then rebuilt from `hQrec.eq_or_swap`.
+  Phase 41b, item 5: the rows form and the d = 3 wrapper lost their link conjuncts, so their
+  consumers (`Bridge.lean`, `Modelling.lean`) rebuild the form at links from the field, as item 7's
+  two did: four sites of `hQg ▸ recordsLinks_iff_forall_isLink.mp Q.isLink_ends` now.
 - **Proposed fix:** state such hypotheses as `RecordsLinks G ends` when the switch (Phase 41a, item
   5) or RESTATE touches their declarations; the conversions then go. For the field under
   `Q.graph = G`: a lemma `PanelHingeFramework.recordsLinks_of_graph_eq (hQg : Q.graph = G) :
@@ -689,7 +703,7 @@ to be re-derived by re-reading entries later.
 - **Where it bit:** Phase 39 (PENCIL) W3-L6a (`Molecular/Induction/Contraction.lean`, `Graph.rigidContract_deficiency_eq`); W5-L6a-safe-exists (`ReducibleVertex.lean`); Phase 40-cleanup task 2 (`5a636c0e`, the pencil tree's seven sites) and its corrective follow-up.
 - **What the linter checks** (its docstring, Mathlib `Tactic/Linter/UnusedInstancesInType.lean`): a `Decidable*` binder that the rest of the theorem's *type* does not mention. Whether the proof threads the binder to a callee is irrelevant, by design: a type-unused decidability binder is a hypothesis every caller must supply for nothing, and the linter's own message prescribes the fix — remove the binder, use `classical` in the proof (`open scoped Classical in` for a term). It is not a false positive. The trap is testing the fix by deleting the binder **without** adding `classical`: every callee that takes its own `[DecidableEq β]` then fails with `failed to synthesize instance of type class DecidableEq β`, which is a missing `classical`, not proof the binder is load-bearing.
 - **Fix, in order:**
-  1. **Drop the binder, open the proof with `classical`** (a term proof becomes `by classical exact …`). Rebuild the callers too: they simply stop passing the instance. In-tree precedent: `PanelHingeFramework.rankHypothesis_of_theorem_55_d3` (`Theorem55.lean`, since RECONCILE round 3) calls `rankHypothesis_of_theorem_55_gen`, which takes `[DecidableEq β]`, with `classical` and no binder.
+  1. **Drop the binder, open the proof with `classical`** (a term proof becomes `by classical exact …`). Rebuild the callers too: they simply stop passing the instance. In-tree precedent: `PanelHingeFramework.rankHypothesis_of_theorem_55_gen` (`Theorem55.lean`, since Phase 41b) calls `rankHypothesis_genuine_of_theorem_55_gen`, which takes `[DecidableEq β]`, with `classical` and no binder.
   2. **Only if that fails for a stated reason** (a step computes with the specific instance — `decide`, a computational `rfl` — or a callee froze an instance in a definition body that a later `rw` must match, TACTICS-QUIRKS § 66): keep the binder, suppress with `set_option linter.unusedDecidableInType false in` (before the docstring, TACTICS-QUIRKS § 51), and write that precise reason in the comment.
   3. **When the signature is pinned or a headline and the round may not change it** (Phase 40-cleanup's hygiene-only rule): suppress as in 2, with a comment saying the binder is type-unused, which callee it is threaded to, and that the fix is deferred as a candidate. Never call it a false positive. A callee to which such a headline passes its binder and nothing else keeps its own too: dropping it leaves the headline's binder unused for `lake lint`'s `unusedArguments`, which reads the proof term (RECONCILE round 3: `theorem_55_6_multigraph_gen`, below `molecular_conjecture_multigraph`; witness `scratch/reconcile-lean/t3810/Cascade.lean`, gitignored).
 - **Calibration history.** W3-L6a's binder was threaded only to callees that each take their own `[DecidableEq β]` (`contract_matroidMG_deficiency_eq`, `matroidMG_rigidContract_eq_contract`, `Graph.rank_add_deficiency_eq`); the proof had no `classical`. Deleting the binder, which had just worked in the sibling W3-L2a commit, broke those call sites, so the entry was filed as a false positive distinct from W3-L1/W3-L2's "`classical`-shadowing" one (`notes/Phase39.md`), with a delete-and-rebuild check as its fix. Both readings are superseded by the linter's docstring, which checks the type only. RECONCILE round 3 removed that suppression and comment. W5-L6a-safe-exists applied the `classical` fix (`exists_adjacent_degree_two_pair_of_{edgeBound,noRigid_of_deficiency_pos}`, generalized off `IsMinimalKDof`, whose type had carried the instance through `matroidMG`); both closed warning-clean. Phase 40-cleanup task 2 repeated the W3-L6a reading at seven pencil sites and restored all seven silencers as false positives. The follow-up applied the fix at the one unpinned site (`pencilPair_of_splitOff_of_habitat`, `Escape.lean`, both since deleted; its proof already opened with `classical`). The six pinned or headline sites kept the option under rule 3 as `40-simplify` candidates (`notes/Phase40-cleanup.md`); round 4 removed all six at the PI's Stop-2 sanction, by `a2`'s drops and `1a`'s retirements (the last in 10r, `654bae8a`), so the pencil tree has no suppression left.

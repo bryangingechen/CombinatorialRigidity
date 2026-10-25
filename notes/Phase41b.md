@@ -2,8 +2,9 @@
 
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
 decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c) and the
-recons are in `notes/Phase41-design.md`. Items 1–4c done: Theorem 5.5 concludes KT's nonparallel
-panels for simple `G`. Next concrete task: item 5, Theorem 5.6.
+recons are in `notes/Phase41-design.md`. Items 1–5 done: Theorems 5.5 and 5.6 conclude KT's
+nonparallel panels for simple `G`. Next concrete task: item 6, `molecular_conjecture`; item 5b
+(`F-329`) waits for the coordinator's call.
 
 ## Current state
 
@@ -12,9 +13,11 @@ Opened with the PI on 2026-10-24, after the RESTATE open's recon (`notes/Phase41
 41a gave the link field, and acts on the PI's decisions at its open (§1b) and after item 1's recon
 (§1c). So far: `HasGenericFullRankRealization` lost its link conjunct (item 2); the derivable `hD`
 chain is gone (item 3); KT's nonparallel panels are `IsNonparallel` (item 4a); a generic full-rank
-realization gives a nonparallel one (item 4b, route B); and Theorem 5.5's simple conjunct states it
-(item 4c). Next: Theorem 5.6 with `Q.graph = G` and nonparallel panels, and the d = 3 wrapper
-nonparallel too (item 5), then the remaining restatements. Mode: structural edit. There are no red
+realization gives a nonparallel one (item 4b, route B); Theorem 5.5's simple conjunct states it
+(item 4c); and Theorem 5.6, its genuine form and the d = 3 wrapper conclude it, the link conjuncts
+of the rows form and the wrapper gone (item 5). Next: `molecular_conjecture` (item 6), then the
+remaining restatements; the d = 3 instance of Theorem 5.6 (item 5b, `F-329`) is the coordinator's
+call. Mode: structural edit. There are no red
 target nodes; each slice restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
 *Forward-mode slices*).
 
@@ -50,7 +53,7 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   `theorem_55_minimalKDof_gen`, `theorem_55_minimalKDof_k`, `theorem_55_d3` and the witness is
   `HasNonparallelFullRankRealization`; `thm:theorem-55`, `thm:theorem-55-d3-instance` and the
   `formalization.yaml` row restated.
-- [ ] **5. Theorem 5.6** (S2; §1b.1): `rankHypothesis_of_theorem_55_gen` concludes `Q.graph = G`,
+- [x] **5. Theorem 5.6** (S2; §1b.1): `rankHypothesis_of_theorem_55_gen` concludes `Q.graph = G`,
   `Q.IsNonparallel` (the strip realization's normals, which `reaimSubLink` keeps; vacuous at one
   body) and the rank, keeps `hSimple`, drops `[DecidableEq β]` (`F-323`); `thm:theorem-55-6`
   restated; the link conjunct of the rows form
@@ -60,6 +63,15 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   (design doc §1c.2: one more polynomial factor at its normals, after 4a gives the predicate;
   the `_of_two_le` form gains it where the wrapper's proof needs it), its blueprint node and
   `formalization.yaml` row restated; the witness.
+  Done: as listed, and the genuine form concludes `IsNonparallel` too (*Decisions made*); the
+  wrapper takes a third factor, `exists_nonparallel_polynomial`, at the same moment curve;
+  `thm:theorem-55-6`, `thm:theorem-55-6-genuine`, `thm:theorem-55-6-rows`'s note and
+  `lem:theorem-56-general-position` restated; the `main_results` row and the `alignment` note
+  (whose degenerate-hinge sentence the restatement made false); the witness
+  `rankHypothesis_of_theorem_55_gen_witness` at the single edge in the plane.
+- [ ] **5b. `rankHypothesis_of_theorem_55_d3`** (`F-329`; found at item 5, the coordinator's call):
+  pass the nonparallel conjunct through the d = 3 instance, as item 4c passed Theorem 5.5's through
+  `theorem_55_d3`, restating `thm:theorem-55-6-d3`; or keep the statement, as its docstring now says.
 - [ ] **6. `molecular_conjecture`** (S2; §1.2): `V(G).Nonempty` for `2 ≤ |V(G)|`, nondegenerate
   hinges on `E(G)` on both sides, `[DecidableEq β]` dropped (`F-323`); the witness.
 - [ ] **7. The multigraph rows** (§1.2, §1.4): `molecular_conjecture_multigraph` and
@@ -82,7 +94,9 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
   generic forms.
 - [ ] **12. The status surfaces**: the degenerate-hinge sentences (Theorem 5.6's `main_results` row
   and `alignment` note, README, the home page, `intro.tex`, ROADMAP §23) and the footprint's
-  remaining docstrings.
+  remaining docstrings. The row and the note were restated at item 5; the other surfaces' "Theorem
+  5.6 allows degenerate hinges" is false of `rankHypothesis_of_theorem_55_gen` since item 5 (true
+  of the d = 3 instance until item 5b).
 - [ ] **Close**: whole-project build with 0 warnings, `lake lint`, the blueprint gates, the main
   results' axioms; MULTIGRAPH or UNSTATED named next.
 
@@ -94,12 +108,12 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 
 ## Hand-off / next phase
 
-**Item 5**: Theorem 5.6, as the checklist's item 5 says. `rankHypothesis_of_theorem_55_gen` concludes
-`Q.IsNonparallel` (the strip realization's normals, which `reaimSubLink` keeps); the rows form and
-the `isGeneralPosition4` forms drop the link conjunct, and the d = 3 wrapper also concludes
-`IsNonparallel` (§1c.2); the witness. Theorem 5.5's simple conjunct gives `Q'.IsNonparallel` at
-`.1 hSimple`. `hasGenericFullRankRealization_of_theorem_55_gen` (`thm:theorem-55-6-rows`'s
-corollary) reads the rows form, not that conjunct, and keeps its statement.
+**Item 6**: `molecular_conjecture`, as the checklist's item 6 says, with its witness. Its (⇒)
+direction reads `rankHypothesis_genuine_of_theorem_55_gen` today; with `V(G).Nonempty` and
+nondegeneracy asked only on `E(G)`, `rankHypothesis_of_theorem_55_gen` may serve it at every `|V|`,
+as its nonparallel panels give nondegenerate hinges on `E(G)` of a simple `G`
+(`IsNonparallel.isGeneralPosition`, `supportExtensor_ne_zero_of_isGeneralPosition`). Item 5b
+(`F-329`) is a one-declaration commit once the coordinator decides it.
 
 ## Decisions made during this phase
 
@@ -110,3 +124,8 @@ corollary) reads the rows form, not that conjunct, and keeps its statement.
 - **The PI's decisions after item 1's recon** (2026-10-24): `notes/Phase41-design.md` §1c, verbatim.
 - **Item 3** (`F-324`): four lemmas without `1 ≤ k` take `hk` for `hD : 2 ≤ D`, a swap the ledger's
   "drop" needed (`D = 1` at `k = 0`); the `F-324` entry says which.
+- **The genuine form concludes nonparallel too** (item 5; the coordinator's adjudication, not the
+  PI's): `rankHypothesis_genuine_of_theorem_55_gen` gains `Q.IsNonparallel`, its hypotheses
+  unchanged; it is how §1b.1 and §1c's Theorem 5.6 is built. The rows form keeps
+  `Q.IsGeneralPosition` (its proof needs no upgrade); `rankHypothesis_of_theorem_55_d3` keeps its
+  statement (`F-329`, item 5b).

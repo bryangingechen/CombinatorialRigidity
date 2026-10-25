@@ -58,6 +58,10 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   minimal `1`-dof-graph, its fresh-edge supply from a label headroom. The single edge is simple, so
   it has a panel realization with nonparallel panels and one with a nondegenerate hinge, at rank
   `3 · (2 - 1) - 1 = 2`.
+* `rankHypothesis_of_theorem_55_gen_witness`: Katoh and Tanigawa's Theorem 5.6 at the same single
+  edge, a simple graph of deficiency `1`. It has a panel-hinge realization whose two panels are
+  nonparallel, so that its hinge is nondegenerate, with infinitesimal motions of dimension
+  `3 + 1 = 4`.
 * `molecular_conjecture_multigraph_witness`: Tay and Whiteley's molecular conjecture, proved by
   Katoh and Tanigawa, for multigraphs, at the double edge, which is `0`-dof. The multigraph
   Theorem 5.6 gives it a rigid hinge-coplanar panel realization, so by the equivalence it has a
@@ -85,9 +89,9 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
 The body-bar and body-hinge rows are taken in the plane, `n = 2`, where `d = bodyBarDim 2 = 3` and
 each hinge is two bars (`bodyHingeMult 2 = 2`): at `n = 1` a hinge carries no bar
 (`bodyHingeMult 1 = 0`) and a body's one motion is a translation (`bodyBarDim 1 = 1`). So are
-Theorem 5.5 and the molecular conjecture for multigraphs, whose least dimension is `n = 2` (a panel
-is a line and a hinge a point); the pencil rows are stated at `n = 3`, and the molecule and Jacobs
-rows, about the square of a graph, in 3-space.
+Theorems 5.5 and 5.6 and the molecular conjecture for multigraphs, whose least dimension is `n = 2`
+(a panel is a line and a hinge a point); the pencil rows are stated at `n = 3`, and the molecule
+and Jacobs rows, about the square of a graph, in 3-space.
 -/
 
 @[expose] public section
@@ -317,6 +321,35 @@ theorem theorem_55_minimalKDof_gen_witness :
     (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) (singleEdge_isMinimalKDof_one (by decide) 0)
     (by rw [Graph.vertexSet_singleEdge]; exact (Set.ncard_pair (by decide)).ge)
   exact ⟨hgen (Graph.singleEdge_simple (by decide) 0), hpanel⟩
+
+/-- **Katoh and Tanigawa's Theorem 5.6 at the single edge, in the plane**:
+`Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen` at `n = 2` (grade `k = 1`, so a
+panel is a line and a hinge a point), at the single edge on two bodies, which is simple and has both
+bodies as vertices; the label headroom is `3 · (2 - 1) < 4`. Its deficiency is `1`, as it is a
+minimal `1`-dof-graph. So it has a panel-hinge realization whose two lines are nonparallel, and so
+meet in the hinge point of the edge, which is nondegenerate, with a space of infinitesimal motions
+of dimension `3 + 1 = 4`: the three trivial motions and the rotation of one body about the hinge. -/
+theorem rankHypothesis_of_theorem_55_gen_witness :
+    ∃ Q : PanelHingeFramework ℝ 1 (Fin 2) (Fin 4),
+      Q.graph = Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4) ∧ Q.IsNonparallel ∧
+        Q.toBodyHinge.supportExtensor 0 ≠ 0 ∧
+        Module.finrank ℝ Q.toBodyHinge.infinitesimalMotions = 4 := by
+  obtain ⟨Q, hQg, hQnp, hrank⟩ := PanelHingeFramework.rankHypothesis_of_theorem_55_gen (K := ℝ)
+    (n := 2) le_rfl (by simp only [Nat.card_fin]; decide)
+    (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) ⟨0, by simp⟩
+    (Set.eq_univ_of_forall fun x ↦ by fin_cases x <;> simp) (Graph.singleEdge_simple (by decide) 0)
+  have hdef : (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)).deficiency 2 = 1 :=
+    (singleEdge_isMinimalKDof_one (by decide) 0).1.deficiency_eq
+  -- The selector gives the edge its two ends, which are distinct.
+  have hlink : Q.graph.IsLink 0 (Q.ends 0).1 (Q.ends 0).2 :=
+    Q.isLink_ends.isLink (e := 0) (u := 0) (v := 1) (by rw [hQg]; simp)
+  refine ⟨Q, hQg, hQnp, Q.supportExtensor_ne_zero_of_isGeneralPosition hQnp.isGeneralPosition ?_,
+    ?_⟩
+  · rw [hQg, Graph.singleEdge_isLink] at hlink
+    omega
+  · -- `dim Z = screwDim 1 + def(G̃) = 3 + 1`.
+    rw [hdef] at hrank
+    exact Int.ofNat_inj.mp hrank
 
 /-- **The molecular conjecture for multigraphs at the double edge, in the plane**:
 `Molecular.molecular_conjecture_multigraph` at `n = 2` (a panel is a line and a hinge a point) at

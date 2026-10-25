@@ -2068,25 +2068,29 @@ stratum; Katoh–Tanigawa 2011 §5.2, p. 670). The `|V| ≥ 2` case of `rankHypo
 with the genuine-hinge witness `∀ e, Q.toBodyHinge.supportExtensor e ≠ 0` that its construction
 establishes: for a simple spanning graph on `≥ 2` bodies at any grade `1 ≤ k` with
 `3 ≤ bodyBarDim n = screwDim k`, the strip-realize-re-add assembly (KT p. 670) produces a
-panel-hinge realization with a *genuine* hinge at every label (each supporting extensor the meet of
-two transversal panels) realizing the rank hypothesis at `def(G̃)`. The genuine-hinge conjunct is
-exactly the `≥ 2`-body content — a genuine hinge needs two distinct bodies, so the single-body
-branch of `rankHypothesis_of_theorem_55_gen` cannot supply it — and it is what the Conjecture 1.2
-assembly (`molecular_conjecture`) consumes on the panel side.
+panel-hinge realization with nonparallel panels (`IsNonparallel`, `def:panel-nonparallel`) and a
+*genuine* hinge at every label (each supporting extensor the meet of two transversal panels),
+realizing the rank hypothesis at `def(G̃)`. The genuine-hinge conjunct is exactly the `≥ 2`-body
+content — a genuine hinge needs two distinct bodies, so the single-body branch of
+`rankHypothesis_of_theorem_55_gen` cannot supply it — and it is what the Conjecture 1.2 assembly
+(`molecular_conjecture`) consumes on the panel side.
 
-The re-add (`reaimSubLink`) keeps the strip realization's selector on the links of the spanning
-subgraph `G'`, so that the `withGraph G'` motion space is the strip's, gives each re-added edge of
-`E(G) ∖ E(G')` its own two ends, and gives each label outside `E(G)` a fixed pair `(x₀, y₀)` of
-distinct bodies. Like that of every panel-hinge framework (the field `isLink_ends`), its selector
-gives each edge of `G` its two ends (`recordsLinks_iff_forall_isLink`). The general-position form
-of Theorem 5.6 (`lem:theorem-56-general-position`) and the generic panel and hinge-point theorems
-read the witness's rows through it (`exists_rankPolynomial_of_le_finrank_linking`). -/
+The strip realization is Theorem 5.5's nonparallel one (`theorem_55_minimalKDof_gen`, as the
+spanning subgraph `G'` is simple), and the re-add (`reaimSubLink`) keeps its normals, so the panels
+stay nonparallel without the projective transformation of KT's proof (p. 670). The re-add keeps
+the strip realization's selector on the links of `G'`, so that the `withGraph G'` motion space is
+the strip's, gives each re-added edge of `E(G) ∖ E(G')` its own two ends, and gives each label
+outside `E(G)` a fixed pair `(x₀, y₀)` of distinct bodies. Like that of every panel-hinge framework
+(the field `isLink_ends`), its selector gives each edge of `G` its two ends
+(`recordsLinks_iff_forall_isLink`). The general-position form of Theorem 5.6
+(`lem:theorem-56-general-position`) and the generic panel and hinge-point theorems read the
+witness's rows through it (`exists_rankPolynomial_of_le_finrank_linking`). -/
 theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework K k α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework K k α β, Q.graph = G ∧ Q.IsNonparallel ∧
       (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
   have : Fintype α := Fintype.ofFinite α
@@ -2112,9 +2116,10 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
     omega
   obtain ⟨x₀⟩ := ‹Nonempty α›
   obtain ⟨y₀, hxy⟩ := Fintype.exists_ne_of_one_lt_card (by omega) x₀
-  -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge.
+  -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge; the normals are `Q'`'s.
   let Q := Q'.reaimSubLink k G G' x₀ y₀
   have hQg : Q.graph = G := rfl
+  have hQnp : Q.IsNonparallel := hQ'np
   -- `hC`: every supporting extensor is nonzero (GP on `G'`-links and re-added `G`-links; the
   -- explicit distinct pair `(x₀, y₀)` off-edge).
   have hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0 := by
@@ -2163,16 +2168,15 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
   have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency n) :=
     rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn)
       (fun e _ _ _ => hC e) hgen
-  exact ⟨Q, hQg, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
+  exact ⟨Q, hQg, hQnp, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
 
 
 /-- **KT Theorem 5.6, non-spanning row-rank form** (`thm:theorem-55-6-rows`; Katoh–Tanigawa 2011
 §5.2, p. 670). For a simple graph `G` on `≥ 2` bodies — *not* necessarily spanning `α` — at any
 grade `1 ≤ k` with `3 ≤ bodyBarDim n = screwDim k` and over any infinite field, the
 strip-realize-re-add assembly of `rankHypothesis_genuine_of_theorem_55_gen` produces a
-general-position panel-hinge realization `Q` of `G` whose selector records a genuine `G`-link on
-every edge, whose every supporting extensor is nonzero (total over `β`), and whose rigidity-row span
-has exactly the deficiency rank
+general-position panel-hinge realization `Q` of `G` whose every supporting extensor is nonzero
+(total over `β`), and whose rigidity-row span has exactly the deficiency rank
 
   `rank R(G, Q) = D·(|V(G)| − 1) − def(G̃)`.
 
@@ -2201,7 +2205,6 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework K k α β, Q.graph = G ∧ Q.IsGeneralPosition ∧
-      (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
       (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       (Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
         = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
@@ -2226,9 +2229,6 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
   let Q := Q'.reaimSubLink k G G' x₀ y₀
   have hQg : Q.graph = G := rfl
   have hQgp : Q.IsGeneralPosition := hQ'gp
-  -- `hends`: the selector records the links of `G` (the field `isLink_ends`, as `Q.graph = G`).
-  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 :=
-    fun _ _ _ he => Q.isLink_ends.isLink he
   -- `hC`: every supporting extensor is nonzero (GP on `G'`-links and re-added `G`-links; the
   -- explicit distinct pair `(x₀, y₀)` off-edge) — total over `β`.
   have hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0 := by
@@ -2268,7 +2268,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
   have hup := Q.toBodyHinge.finrank_span_rigidityRows_add_deficiency_le hn
     (by rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne) (fun e _ _ _ => hC e)
   rw [PanelHingeFramework.toBodyHinge_graph, hQg] at hup
-  refine ⟨Q, hQg, hQgp, hends, hC, ?_⟩
+  refine ⟨Q, hQg, hQgp, hC, ?_⟩
   rw [hG'V, hdefeq] at hQ'rank
   have hlow' : (Module.finrank K (Submodule.span K Q'.toBodyHinge.rigidityRows) : ℤ)
       ≤ Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) := by exact_mod_cast hlow
@@ -2278,49 +2278,46 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
 (`thm:theorem-55-6-rows`, corollary form; Katoh–Tanigawa 2011 §5.2, p. 670). Theorem 5.5's generic
 conclusion `HasGenericFullRankRealization K k n G` — stated by `theorem_55_minimalKDof_gen` for
 *minimal* `c`-dof graphs — holds for every simple graph on `≥ 2` bodies, spanning or not: repackage
-`finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, dropping its link-recording
-conjunct (every framework's selector records the links of its graph, the field `isLink_ends`) and
-its total-over-`β` genuine-hinge witness. -/
+`finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, dropping its total-over-`β`
+genuine-hinge witness. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen
     [Infinite K] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hSimple : G.Simple) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
-  obtain ⟨Q, hQg, hQgp, -, -, hrank⟩ :=
+  obtain ⟨Q, hQg, hQgp, -, hrank⟩ :=
     PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen (K := K)
       hk1 hn hfresh G hV hSimple
   exact ⟨Q, hQg, hQgp, hrank⟩
 
-set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 at general `d`** (`thm:theorem-55-6`; Katoh–Tanigawa 2011 §5.2, p. 670). For a
 simple spanning graph on `≥ 1` body at any dimension `n ≥ 2`, some panel-hinge framework `Q` on `G`
-at grade `n − 1` realizes the rank hypothesis at the deficiency `def(G̃)`:
-`dim Z(G, Q) = D + def(G̃)`. The single `2 ≤ n` hypothesis and the label-headroom bound
-`bodyBarDim n * (|α| − 1) < |β|` repackage the grade/dimension plumbing and the fresh-edge-supply
-binder that the spine `theorem_55_minimalKDof_gen` takes directly, as in `molecular_conjecture`
-below.
+at grade `n − 1` has nonparallel panels (`IsNonparallel`, `def:panel-nonparallel`; KT §5.1, p. 668)
+and realizes the rank hypothesis at the deficiency `def(G̃)`: `dim Z(G, Q) = D + def(G̃)`. The
+single `2 ≤ n` hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|` repackage
+the grade/dimension plumbing and the fresh-edge-supply binder that the spine
+`theorem_55_minimalKDof_gen` takes directly, as in `molecular_conjecture` below.
 
 Proof. For `|V| ≥ 2` the conclusion is that of `rankHypothesis_genuine_of_theorem_55_gen` without
 its hinge conjunct; the strip-realize-re-add assembly of KT p. 670 is there. For `|V| = 1` the graph
-is rigid with `def(G̃) = 0`, by `rankHypothesis_zero_iff`.
+is rigid with `def(G̃) = 0`, by `rankHypothesis_zero_iff`, and its panels are nonparallel, as no
+two bodies are distinct.
 
 Scope. The selector of every panel-hinge framework gives each edge of `G` its two ends, in either
-order (the field `isLink_ends`), but the statement asks for no nondegenerate hinge. At deficiency
-zero the framework with all normals zero and selector `G.endsOf` meets the conclusion: each hinge is
-zero and welds its two bodies, and a graph of deficiency zero is connected. The form with
-nondegenerate hinges is `rankHypothesis_genuine_of_theorem_55_gen`.
-
-`[DecidableEq β]` is used in the proof (`IsMinimalKDof` and the spanning strip carry it as an
-instance argument) but does not appear in the conclusion's type, so the `unusedDecidableInType`
-suppression above the docstring is correct. -/
+order (the field `isLink_ends`), and nonparallel panels have normals in general position
+(`IsNonparallel.isGeneralPosition`). As `G` is simple, its edges have distinct ends, so every hinge
+at an edge of `G` is nondegenerate (`supportExtensor_ne_zero_of_isGeneralPosition`). The statement
+asks nothing of the hinges at labels outside `E(G)`; the form with a nondegenerate hinge at every
+label, on `≥ 2` bodies, is `rankHypothesis_genuine_of_theorem_55_gen`. -/
 theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    [Nonempty α] [Finite α] [Finite β] {n : ℕ}
     (hd : 2 ≤ n)
     (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework K (n - 1) α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework K (n - 1) α β, Q.graph = G ∧ Q.IsNonparallel ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
+  classical
   have : Fintype α := Fintype.ofFinite α
   have hD : 3 ≤ Graph.bodyBarDim n := Graph.three_le_bodyBarDim_of_two_le hd
   have hn : Graph.bodyBarDim n = screwDim (n - 1) :=
@@ -2329,10 +2326,10 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
     Graph.freshEdgeSupply_of_card_lt (by omega) hcard
   by_cases hV2 : 2 ≤ V(G).ncard
   · -- `|V| ≥ 2`: `rankHypothesis_genuine_of_theorem_55_gen`, without its conjunct `hC`.
-    obtain ⟨Q, hQg, _hC, hrank⟩ :=
+    obtain ⟨Q, hQg, hQnp, _hC, hrank⟩ :=
       PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen (K := K)
         (by omega) hn hfresh G hV2 hspan hSimple
-    exact ⟨Q, hQg, hrank⟩
+    exact ⟨Q, hQg, hQnp, hrank⟩
   · -- Single-body case: `|V| = 1`, so `α` is a subsingleton and `def(G̃) = 0`.
     have hV1 : V(G).ncard = 1 := by
       rcases (Set.ncard_pos (Set.toFinite _)).2 hne with h
@@ -2378,13 +2375,15 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
     have hrh : Q.toBodyHinge.RankHypothesis 0 :=
       (BodyHingeFramework.rankHypothesis_zero_iff Q.toBodyHinge).mpr hrig
     rw [hdef0]
-    exact ⟨Q, hQg, hrh⟩
+    -- Nonparallel holds vacuously: no two bodies are distinct.
+    exact ⟨Q, hQg, fun a b hab => absurd (Subsingleton.elim a b) hab, hrh⟩
 
 /-- **KT Theorem 5.6, `d = 3` instance** (`thm:theorem-55-6-d3`; Katoh–Tanigawa 2011 §5.2, p. 670;
 the `n := 3` specialization of `rankHypothesis_of_theorem_55_gen`). For a simple spanning graph on
-`≥ 1` body in `d = 3`, some panel-hinge framework `Q` on `G` has `dim Z(G, Q) = D + def(G̃)`, with
-the scope of the general form (degenerate hinges allowed, the selector giving each edge of `G` its
-ends). `Graph.bodyBarDim 3 = 6` closes the label-headroom bound by unfolding, and
+`≥ 1` body in `d = 3`, some panel-hinge framework `Q` on `G` has `dim Z(G, Q) = D + def(G̃)`. It
+states the rank only, without the general form's nonparallel panels, so its hinges may be
+degenerate; its selector gives each edge of `G` its ends (the field `isLink_ends`).
+`Graph.bodyBarDim 3 = 6` closes the label-headroom bound by unfolding, and
 `PanelHingeFramework K (3 - 1) α β` is defeq to `PanelHingeFramework K 2 α β` (kernel `Nat.sub`
 reduction on literals), so the corollary needs no cast at the return type.
 
@@ -2396,9 +2395,9 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3 [Infinite K]
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework K 2 α β, Q.graph = G ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
-  classical
-  exact PanelHingeFramework.rankHypothesis_of_theorem_55_gen (n := 3) (by norm_num)
-    (by simpa [Graph.bodyBarDim] using hcard) G hne hspan hSimple
+  obtain ⟨Q, hQg, -, hrank⟩ := PanelHingeFramework.rankHypothesis_of_theorem_55_gen (K := K)
+    (n := 3) (by norm_num) (by simpa [Graph.bodyBarDim] using hcard) G hne hspan hSimple
+  exact ⟨Q, hQg, hrank⟩
 
 set_option linter.unusedDecidableInType false in
 /-- **The Molecular Conjecture (the consumer-facing form)** (`thm:molecular-conjecture`;
@@ -2446,7 +2445,7 @@ argument in an alternating join, `panelSupportExtensor_ne_zero_iff`) regardless 
 chosen. So dropping the hypothesis would make the iff *false* — the body-hinge side realizable, the
 panel-hinge side not — rather than vacuously true. `[DecidableEq β]` is used in the proof (via the
 genuine-hinge witness form's spanning strip) but not in the type, so the `unusedDecidableInType`
-suppression is correct, as for `rankHypothesis_of_theorem_55_gen`. -/
+suppression is correct. -/
 theorem PanelHingeFramework.molecular_conjecture [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hd : 2 ≤ n)
@@ -2481,7 +2480,7 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
       have hge := G.deficiency_nonneg ((n - 1) + 1) hne
       rw [hn1]; omega
     -- Theorem 5.6 (genuine-hinge witness form) at `def(G̃) = 0` gives a rigid genuine panel.
-    obtain ⟨Q, hQg, hQC, hQrank⟩ :=
+    obtain ⟨Q, hQg, -, hQC, hQrank⟩ :=
       PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen (K := K)
         (by omega) hn hfresh G hV hspan hSimple
     rw [hdef0] at hQrank

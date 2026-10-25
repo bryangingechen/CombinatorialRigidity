@@ -1325,21 +1325,23 @@ has none (the paragraph before \cref{thm:theorem-55}). The multigraph form,
 with hinges that need only lie in the panels, is
 \cref{thm:theorem-55-6-multigraph} in
 \cref{sec:molecular-coplanar-multigraph}. We state the theorem first with
-nondegenerate hinges, as Katoh and Tanigawa's are, for graphs with at least
-two vertices. The molecular conjecture (\cref{thm:molecular-conjecture})
-uses this form. We then derive the form for every simple graph with at
-least one vertex, in which the hinges may be degenerate
+nonparallel panels and nondegenerate hinges, as Katoh and Tanigawa's are,
+for graphs with at least two vertices. The molecular conjecture
+(\cref{thm:molecular-conjecture}) uses this form. We then derive the form
+with nonparallel panels for every simple graph with at least one vertex
 (\cref{thm:theorem-55-6}).
 
 \begin{theorem}[KT Theorem 5.6 with nondegenerate hinges]
   \label{thm:theorem-55-6-genuine}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen}
   \leanok
-  \uses{lem:general-position-support-nonzero, def:rank-hypothesis}
+  \uses{lem:general-position-support-nonzero, def:rank-hypothesis,
+        def:panel-nonparallel}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
-  simple graph with $|V| \ge 2$. Then $G$ has a panel-hinge realization at
-  the target rank (\cref{def:rank-hypothesis}) all of whose hinges are
-  nondegenerate.
+  simple graph with $|V| \ge 2$. Then $G$ has a nonparallel full-rank
+  realization (\cref{def:rank-hypothesis}), a panel-hinge realization at
+  the target rank whose panels are nonparallel
+  (\cref{def:panel-nonparallel}), all of whose hinges are nondegenerate.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -1352,17 +1354,18 @@ least one vertex, in which the hinges may be degenerate
   \emph{The realization.} By \cref{lem:minimal-kdof-spanning-subgraph},
   $G$ has a spanning subgraph $G'$ that is a minimal $c$-dof-graph. It is
   simple, as a subgraph of $G$, and it has the $|V| \ge 2$ vertices of
-  $G$. By KT Theorem~5.5 (\cref{thm:theorem-55}), $G'$ has a generic
-  full-rank realization $(G', q)$ (\cref{def:rank-hypothesis}). Its
-  normals $n_v$ are in general position, and
+  $G$. By KT Theorem~5.5 (\cref{thm:theorem-55}), $G'$ has a nonparallel
+  full-rank realization $(G', q)$ (\cref{def:rank-hypothesis}), with
   $\operatorname{rank} R(G', q) = D(|V| - 1) - c$. Let $(G, p)$ be the
-  panel-hinge framework on $G$ with the same normals. At each edge of $G'$
-  it has the hinge of $(G', q)$. Katoh and Tanigawa first apply a
+  panel-hinge framework on $G$ with the same normals $n_v$. Its panels are
+  those of $(G', q)$, so they are nonparallel, and at each edge of $G'$ it
+  has the hinge of $(G', q)$. Katoh and Tanigawa first apply a
   projective transformation so that the panels of any two bodies meet in a
   $(d-2)$-dimensional affine subspace. Infinitesimal rigidity is invariant
   under such a transformation. They then give each edge of $G$
   outside $G'$ a hinge in the intersection of the panels of its ends. Here
-  no transformation is needed. The normals are in general position, and
+  no transformation is needed, as the panels are nonparallel already. So
+  the normals are in general position (\cref{def:panel-nonparallel}), and
   each edge of $G$ has two distinct ends, as $G$ is simple. So the hinge
   $C(n_u, n_v)$ of every edge $uv$ of $G$ is nonzero
   (\cref{lem:general-position-support-nonzero}).
@@ -1394,29 +1397,36 @@ least one vertex, in which the hinges may be degenerate
   $|V| \ge 2$.
 \end{fmlnote}
 
-Without the nondegeneracy, the theorem holds for every simple graph with
-at least one vertex.
+Without the statement on the hinges, the theorem holds for every simple
+graph with at least one vertex.
 
 \begin{theorem}[Realization of a simple graph at the target rank; KT Theorem 5.6]
   \label{thm:theorem-55-6}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen}
   \leanok
-  \uses{def:rank-hypothesis}
+  \uses{def:rank-hypothesis, def:panel-nonparallel}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
-  simple graph with $V \neq \emptyset$. Then $G$ has a panel-hinge
-  realization $(G, p)$ at the target rank (\cref{def:rank-hypothesis}),
-  that is, with
+  simple graph with $V \neq \emptyset$. Then $G$ has a nonparallel
+  full-rank realization $(G, p)$ (\cref{def:rank-hypothesis}): its panels
+  are nonparallel (\cref{def:panel-nonparallel}), and
   \[
     \operatorname{rank} R(G,p) \;=\; D(|V| - 1) - \operatorname{def}(\tilde G).
   \]
+  In particular, every hinge of $(G, p)$ is nondegenerate
+  (\cref{lem:general-position-support-nonzero}).
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55-6-genuine}
+  \uses{thm:theorem-55-6-genuine, lem:general-position-support-nonzero}
   Let $c = \operatorname{def}(\tilde G)$. If $|V| = 1$, then $G$ has no
   edge, as it is simple, and $c = 0$. So every realization of $G$ has rank
-  $0 = D(|V| - 1) - c$. If $|V| \ge 2$, then the realization of
-  \cref{thm:theorem-55-6-genuine} is at the target rank.
+  $0 = D(|V| - 1) - c$, and its panels are nonparallel, as it has no two
+  distinct bodies. If $|V| \ge 2$, then the realization of
+  \cref{thm:theorem-55-6-genuine} is a nonparallel full-rank realization.
+  In both cases the normals are in general position
+  (\cref{def:panel-nonparallel}), and each edge of $G$ has two distinct
+  ends, as $G$ is simple, so every hinge is nondegenerate
+  (\cref{lem:general-position-support-nonzero}).
 \end{proof}
 
 \begin{fmlnote}
@@ -1427,7 +1437,10 @@ at least one vertex.
   $G$ its two ends, as every panel-hinge framework's does
   (\cref{fmlnote:panel-hinge-nondegenerate}). For $|V| \ge 2$, its
   framework is that of the pinned theorem of
-  \cref{thm:theorem-55-6-genuine}. It assumes $D(|W| - 1) < |L|$, which
+  \cref{thm:theorem-55-6-genuine}. It does not state that the hinges are
+  nondegenerate. At the edges of $G$ this follows from the nonparallel
+  panels and the selector, as in the proof, and it states nothing of the
+  hinge at a label outside $E(G)$. It assumes $D(|W| - 1) < |L|$, which
   gives the supply of fresh labels that \cref{thm:theorem-55-6-genuine}
   assumes (\cref{rem:fresh-edge-supply}).
 \end{fmlnote}
@@ -1512,9 +1525,10 @@ than motions.
 \begin{fmlnote}
   The pinned theorems do not assume that $G$ has every body as a vertex.
   The first states its conclusion as a panel-hinge framework on $G$ with
-  normals in general position, a selector that assigns each edge of $G$
-  its two ends, a nonzero hinge at every edge label
-  (\cref{rem:molecular-conjecture-essential}), and the target rank. The
+  normals in general position, a nonzero hinge at every edge label
+  (\cref{rem:molecular-conjecture-essential}), and the target rank. Its
+  selector assigns each edge of $G$ its two ends, as every panel-hinge
+  framework's does (\cref{fmlnote:panel-hinge-nondegenerate}). The
   second restates it as a generic full-rank realization
   (\cref{fmlnote:generic-full-rank}). Both assume the supply of fresh
   labels (\cref{rem:fresh-edge-supply}).

@@ -15,15 +15,16 @@ The panel-hinge realization of `lem:theorem-56-general-position`, as
 `sec:molecule-modelling-general-position` presents it: a simple graph `G` that spans a nonempty set
 of bodies, with more than `6(|V| - 1)` labels, has a panel-hinge realization in `ℝ³` at the rank of
 KT Theorem 5.6, `dim Z = D + def(G̃)`, whose normals are in general position up to order four
-(`IsGeneralPosition4`, `GeneralPosition4.lean`). Their poles are then in general position up to
-order four, as the square-graph dictionary (`thm:molecular-iff-square-bar-joint`) needs of the
-centres of the molecular framework on them. Katoh and Tanigawa need only a nonparallel realization,
-whose panels meet pairwise in lines, and obtain it by a projective transformation (KT pp. 670–671).
+(`IsGeneralPosition4`, `GeneralPosition4.lean`) and whose panels are nonparallel (`IsNonparallel`,
+`def:panel-nonparallel`). The poles of its normals are then in general position up to order four,
+as the square-graph dictionary (`thm:molecular-iff-square-bar-joint`) needs of the centres of the
+molecular framework on them. Katoh and Tanigawa need only a nonparallel realization, whose panels
+meet pairwise in lines, and obtain it by a projective transformation (KT pp. 670–671).
 
 `exists_rankHypothesis_isGeneralPosition4` splits on the number of bodies. A single body (`|V| = 1`)
 has no edge, and the moment-curve normals serve. On two or more bodies,
 `exists_rankHypothesis_isGeneralPosition4_of_two_le` moves the normals of a realization of KT
-Theorem 5.6 into general position without lowering the rank:
+Theorem 5.6 into general position, with nonparallel panels, without lowering the rank:
 
 * `rankHypothesis_genuine_of_theorem_55_gen` (`n = 3`, `k = 2`; `thm:theorem-55-6-genuine`) gives
   a realization `Q₀` with nondegenerate hinges at `dim Z = D + def(G̃)`, whose selector gives each
@@ -35,13 +36,14 @@ Theorem 5.6 into general position without lowering the rank:
   polynomial `Q_rk` that does not vanish at `q₀` and at whose non-roots the rows have at least that
   rank;
 * `exists_generalPosition4_polynomial` gives the polynomial `Q_gp4` that tests general position up
-  to order four;
-* the product `Q_rk · Q_gp4` is nonzero, so it has a non-root `q*`
+  to order four, and `exists_nonparallel_polynomial` the polynomial `Q_np` that tests nonparallel
+  panels;
+* the product `Q_rk · Q_gp4 · Q_np` is nonzero, so it has a non-root `q*`
   (`MvPolynomial.exists_eval_ne_zero`). At `q*` the rows have rank at least `D(|V| − 1) − def` (by
   `Q_rk`) and at most `D(|V| − 1) − def` (`finrank_span_rigidityRows_add_deficiency_le`,
   `lem:relative-deficiency-rank-bound`, as the hinges are nondegenerate by `IsGeneralPosition4` and
   `IsLink.ne`), so `RankHypothesis (def)` holds there, with the normals in general position up to
-  order four.
+  order four and the panels nonparallel.
 
 ## Main results
 
@@ -68,25 +70,26 @@ namespace PanelHingeFramework
 §5.2, p. 670): for a simple graph `G` that spans two or more bodies in `ℝ³`, with more than
 `6(|V| - 1)` labels, there is a panel-hinge realization `Q` on `G` that
 
-* records a `G`-link on every `G`-link (`hends`);
 * has a nonzero supporting extensor on every `G`-link (nondegenerate hinges);
-* realizes the target rank `dim Z(G, Q) = D + def(G̃)` (`RankHypothesis (G.deficiency 3)`); and
+* realizes the target rank `dim Z(G, Q) = D + def(G̃)` (`RankHypothesis (G.deficiency 3)`);
 * has normals in general position up to order four (`IsGeneralPosition4`): every normal has
-  nonvanishing last coordinate and every `≤ 4`-normal subfamily is linearly independent.
+  nonvanishing last coordinate and every `≤ 4`-normal subfamily is linearly independent; and
+* has nonparallel panels (`IsNonparallel`, `def:panel-nonparallel`; KT §5.1, p. 668).
 
-The poles of its normals are then in general position up to order four, as the square-graph
-dictionary (`thm:molecular-iff-square-bar-joint`) needs. The proof takes a non-root of the product
-of the rank polynomial of `exists_rankPolynomial_of_le_finrank_linking`, at the normals of the
-realization of `rankHypothesis_genuine_of_theorem_55_gen`, and the polynomial of
-`exists_generalPosition4_polynomial` (`MvPolynomial.exists_eval_ne_zero`); see the file header. -/
+Its selector gives each edge of `G` its two ends, as every panel-hinge framework's does (the field
+`isLink_ends`). The poles of its normals are then in general position up to order four, as the
+square-graph dictionary (`thm:molecular-iff-square-bar-joint`) needs. The proof takes a non-root of
+the product of the rank polynomial of `exists_rankPolynomial_of_le_finrank_linking`, at the normals
+of the realization of `rankHypothesis_genuine_of_theorem_55_gen`, and the polynomials of
+`exists_generalPosition4_polynomial` and `exists_nonparallel_polynomial`
+(`MvPolynomial.exists_eval_ne_zero`); see the file header. -/
 theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
-      (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
       (∀ e u v, G.IsLink e u v → Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) ∧
-      Q.IsGeneralPosition4 := by
+      Q.IsGeneralPosition4 ∧ Q.IsNonparallel := by
   classical
   obtain ⟨a₀, -⟩ := Set.nonempty_of_ncard_ne_zero (s := V(G)) (by omega)
   have : Nonempty α := ⟨a₀⟩
@@ -97,7 +100,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
   have hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 3 c → ∃ e₀ : β, e₀ ∉ E(G') :=
     Graph.freshEdgeSupply_of_card_lt (by omega) (by simpa [Graph.bodyBarDim] using hcard)
   -- Step 1: KT Theorem 5.6 with nondegenerate hinges; the selector gives each edge its two ends.
-  obtain ⟨Q0, hQ0g, hQ0C, hQ0rank⟩ :=
+  obtain ⟨Q0, hQ0g, -, hQ0C, hQ0rank⟩ :=
     rankHypothesis_genuine_of_theorem_55_gen
       (K := ℝ) (k := 2) (n := 3) (by norm_num) hn hfresh G hV hspan hSimple
   have hQ0ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q0.ends e).1 (Q0.ends e).2 :=
@@ -126,24 +129,32 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
       (fun e _ => by rw [hself]; exact hQ0C e)
       (N := Module.finrank ℝ (Submodule.span ℝ Q0.toBodyHinge.rigidityRows))
       (le_of_eq (by rw [hself]))
-  -- Step 3: the order-four general-position avoidance polynomial.
+  -- Step 3: the order-four general-position and the nonparallel avoidance polynomials.
   obtain ⟨Q_gp4, hQgp4_moment, hQgp4_pred⟩ :=
     exists_generalPosition4_polynomial G Q0.ends
-  -- Both polynomials are nonzero: `Q_rk` by its `q₀`-value, `Q_gp4` by its moment-curve value.
+  obtain ⟨Q_np, hQnp_moment, hQnp_pred⟩ :=
+    exists_nonparallel_polynomial (K := ℝ) (k := 2) (by norm_num) G Q0.ends
+  -- The three polynomials are nonzero: `Q_rk` by its `q₀`-value, `Q_gp4` and `Q_np` by their
+  -- values on the moment curve at the injective positive parameter `f + 1`.
   have hQ_rk_ne : Q_rk ≠ 0 := fun h => hQ_rk0 (by rw [h, map_zero])
-  have hQ_gp4_ne : Q_gp4 ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp4_moment (fun a => (f a : ℝ) + 1) ?_ (fun a => by positivity)
-      (by rw [h, map_zero])
-    exact fun a b hab => hf (by exact_mod_cast add_right_cancel hab)
-  -- Step 4: a non-root of the product (`MvPolynomial.exists_eval_ne_zero`) is a non-root of both.
-  obtain ⟨q_star, hq_star⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQ_rk_ne hQ_gp4_ne)
-  rw [map_mul] at hq_star
-  have hq_rk : eval q_star Q_rk ≠ 0 := fun h => hq_star (by rw [h]; ring)
-  have hq_gp4 : eval q_star Q_gp4 ≠ 0 := fun h => hq_star (by rw [h]; ring)
-  -- The realization at `q_star`, its general position up to order four, and its nondegenerate
-  -- hinges.
+  obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+  have hinj : Function.Injective fun a => (f a : ℝ) + 1 :=
+    fun a b hab => hf (by exact_mod_cast add_right_cancel hab)
+  have hQ_gp4_ne : Q_gp4 ≠ 0 := fun h =>
+    hQgp4_moment (fun a => (f a : ℝ) + 1) hinj (fun a => by positivity) (by rw [h, map_zero])
+  have hQ_np_ne : Q_np ≠ 0 := fun h =>
+    hQnp_moment (fun a => (f a : ℝ) + 1) hinj (by rw [h, map_zero])
+  -- Step 4: a non-root of the product (`MvPolynomial.exists_eval_ne_zero`) is a non-root of each.
+  obtain ⟨q_star, hq_star⟩ := MvPolynomial.exists_eval_ne_zero
+    (mul_ne_zero (mul_ne_zero hQ_rk_ne hQ_gp4_ne) hQ_np_ne)
+  rw [map_mul, map_mul] at hq_star
+  have hq_rk : eval q_star Q_rk ≠ 0 := left_ne_zero_of_mul (left_ne_zero_of_mul hq_star)
+  have hq_gp4 : eval q_star Q_gp4 ≠ 0 := right_ne_zero_of_mul (left_ne_zero_of_mul hq_star)
+  have hq_np : eval q_star Q_np ≠ 0 := right_ne_zero_of_mul hq_star
+  -- The realization at `q_star`, its general position up to order four, its nonparallel panels
+  -- and its nondegenerate hinges.
   have hgp4 : (ofNormals (k := 2) G Q0.ends q_star).IsGeneralPosition4 := hQgp4_pred q_star hq_gp4
+  have hnp : (ofNormals (k := 2) G Q0.ends q_star).IsNonparallel := hQnp_pred q_star hq_np
   have hgp2 : (ofNormals (k := 2) G Q0.ends q_star).IsGeneralPosition := hgp4.isGeneralPosition
   have hC : ∀ e u v, G.IsLink e u v →
       (ofNormals (k := 2) G Q0.ends q_star).toBodyHinge.supportExtensor e ≠ 0 := by
@@ -163,9 +174,8 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3 := by
     refine le_antisymm hub ?_
     rw [← hrank0]; exact_mod_cast hlb
-  refine ⟨ofNormals (k := 2) G Q0.ends q_star, ofNormals_graph G Q0.ends q_star,
-    ?_, hC, ?_, hgp4⟩
-  · intro e u v he; rw [ofNormals_ends]; exact hQ0ends e u v he
+  refine ⟨ofNormals (k := 2) G Q0.ends q_star, ofNormals_graph G Q0.ends q_star, hC, ?_, hgp4,
+    hnp⟩
   · -- `RankHypothesis (def)`: `dim Z = D + def` from the complement identity + the exact row count.
     change (Module.finrank ℝ
         (ofNormals (k := 2) G Q0.ends q_star).toBodyHinge.infinitesimalMotions : ℤ)
@@ -182,30 +192,31 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
 simple graph `G` that spans a nonempty set of bodies in `ℝ³`, with more than `6(|V| - 1)` labels,
 there is a panel-hinge realization `Q` on `G` that
 
-* records a `G`-link on every `G`-link (`hends`);
 * has a nonzero supporting extensor on every `G`-link (nondegenerate hinges);
-* realizes the target rank `dim Z(G, Q) = D + def(G̃)` (`RankHypothesis (G.deficiency 3)`); and
-* has normals in general position up to order four (`IsGeneralPosition4`).
+* realizes the target rank `dim Z(G, Q) = D + def(G̃)` (`RankHypothesis (G.deficiency 3)`);
+* has normals in general position up to order four (`IsGeneralPosition4`); and
+* has nonparallel panels (`IsNonparallel`, `def:panel-nonparallel`; KT §5.1, p. 668).
 
-The poles of its normals are then in general position up to order four, as the square-graph
-dictionary (`thm:molecular-iff-square-bar-joint`) needs.
+Its selector gives each edge of `G` its two ends (the field `isLink_ends`). The poles of its normals
+are then in general position up to order four, as the square-graph dictionary
+(`thm:molecular-iff-square-bar-joint`) needs.
 
 The proof splits on the number of bodies. On two or more, it is
 `exists_rankHypothesis_isGeneralPosition4_of_two_le`. On one (`|V| = 1`, so `α` is a subsingleton),
 `G` is edgeless (simple ⇒ loopless, and a subsingleton has no distinct endpoints, so `IsLink.ne`
 refutes every link), so `def(G̃) = 0` (`Graph.deficiency_of_edgeSet_empty`), the framework is
-infinitesimally rigid (`rankHypothesis_zero_iff` and subsingleton constancy), and the conjuncts on
-`hends` and on the hinges hold vacuously. The moment-curve normals at the constant parameter `1` are
-in general position up to order four by `exists_generalPosition4_polynomial` at the moment curve
-(nonvanishing last coordinate, and every `≤ 4`-subfamily, here at most a singleton, independent). -/
+infinitesimally rigid (`rankHypothesis_zero_iff` and subsingleton constancy), and the conjunct on
+the hinges holds vacuously, as does nonparallel (no two bodies are distinct). The moment-curve
+normals at the constant parameter `1` are in general position up to order four by
+`exists_generalPosition4_polynomial` at the moment curve (nonvanishing last coordinate, and every
+`≤ 4`-subfamily, here at most a singleton, independent). -/
 theorem exists_rankHypothesis_isGeneralPosition4 [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
-      (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
       (∀ e u v, G.IsLink e u v → Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) ∧
-      Q.IsGeneralPosition4 := by
+      Q.IsGeneralPosition4 ∧ Q.IsNonparallel := by
   have : Nonempty α := ⟨hne.some⟩
   by_cases hV2 : 2 ≤ V(G).ncard
   · exact exists_rankHypothesis_isGeneralPosition4_of_two_le hcard G hV2 hspan hSimple
@@ -240,8 +251,8 @@ theorem exists_rankHypothesis_isGeneralPosition4 [Finite α] [Finite β]
     have hrig : (ofNormals (k := 2) G ends q).toBodyHinge.IsInfinitesimallyRigid := by
       rw [← BodyHingeFramework.isInfinitesimallyRigidOn_univ_iff]
       intro S _ u _ v _; rw [Subsingleton.elim u v]
-    refine ⟨ofNormals (k := 2) G ends q, ofNormals_graph G ends q, ?_, ?_, ?_, hgp4⟩
-    · exact fun e u v hl => absurd hl (hnolink e u v)
+    refine ⟨ofNormals (k := 2) G ends q, ofNormals_graph G ends q, ?_, ?_, hgp4,
+      fun a b hab => absurd (Subsingleton.elim a b) hab⟩
     · exact fun e u v hl => absurd hl (hnolink e u v)
     · rw [hdef0]; exact (BodyHingeFramework.rankHypothesis_zero_iff _).mpr hrig
 

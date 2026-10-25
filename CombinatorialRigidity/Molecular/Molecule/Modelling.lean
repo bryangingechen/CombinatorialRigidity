@@ -86,8 +86,10 @@ theorem exists_molecular_rankHypothesis_generalPosition [Finite α] [Finite β]
       ∧ (∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) := by
   classical
   -- Step 1: the general-position form of Theorem 5.6 supplies a panel realization `Q`.
-  obtain ⟨Q, hQg, hQends, _hQC, hQrank, hQgp4⟩ :=
+  obtain ⟨Q, hQg, _hQC, hQrank, hQgp4, -⟩ :=
     PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4 hcard G hne hspan hSimple
+  have hQends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 :=
+    hQg ▸ PanelHingeFramework.recordsLinks_iff_forall_isLink.mp Q.isLink_ends
   -- The last coordinates of `Q`'s normals are nonzero (general position up to order four).
   have hw : ∀ a, Q.normal a (Fin.last 3) ≠ 0 := hQgp4.1
   -- The atom centres are the dehomogenized poles of `Q`'s normals.
