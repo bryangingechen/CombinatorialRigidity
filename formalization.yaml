@@ -521,8 +521,8 @@ status:
       The Molecular Conjecture at full multigraph strength (Katoh-Tanigawa 2011
       Conjecture 1.2 for multigraphs; phase 35): a spanning multigraph on any nonempty body
       set - parallel edges and loops admitted - has an infinitesimally rigid body-hinge
-      realization with nondegenerate hinges iff it has an infinitesimally rigid hinge-coplanar
-      panel realization
+      realization with nondegenerate hinges at its edges iff it has an infinitesimally rigid
+      hinge-coplanar panel realization with a nondegenerate hinge at every edge label
       (KT's containment model: each hinge lies in the panel of each endpoint body), at
       every dimension n >= 2 and over any infinite field of any characteristic. The
       multigraph Theorem 5.6 behind it is

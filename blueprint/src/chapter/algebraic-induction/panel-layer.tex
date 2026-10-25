@@ -189,16 +189,17 @@ name for the body-hinge frameworks that arise in this way.
         CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge}
   \leanok
   \uses{def:panel-hinge-framework, def:hinge-constraint}
-  A body-hinge framework is \emph{hinge-coplanar} if it is the body-hinge
-  interpretation of a panel-hinge framework.
+  A body-hinge framework is \emph{hinge-coplanar} if some panel-hinge
+  framework on its multigraph has, at every edge, the hinge of the
+  framework.
 \end{definition}
 
 \begin{fmlnote}
   The formal predicate inherits the endpoint selector of
   \cref{fmlnote:panel-hinge-nondegenerate}. It holds for a body-hinge
   framework whose hinge at each edge is the panel support extensor of the
-  normals of its two ends, and whose hinge at each label outside $E(G)$
-  is that of the normals of some two bodies.
+  normals of its two ends. It asks nothing of the hinge at a label outside
+  $E(G)$.
 \end{fmlnote}
 
 Katoh and Tanigawa's condition asks only that the hinges at each body lie
@@ -1627,7 +1628,9 @@ their result in this form~\cite[p.~647]{katohTanigawa2011}.
   a nonzero hinge $C(p(e))$ at every label $e \in L$, not only at the edges
   of $G$. So does the predicate of \cref{def:coplanar-panel-realization}.
   The pinned theorem of \cref{thm:molecular-conjecture} asks for one only
-  at the edges of $G$. A label outside $E(G)$ imposes no constraint. A
+  at the edges of $G$, as does the body-hinge side of
+  \cref{thm:molecular-conjecture-multigraph}; its panel side asks for
+  one at every label, as the predicate does. A label outside $E(G)$ imposes no constraint. A
   body-hinge framework can give it any nonzero extensor. A panel-hinge
   framework gives it the meet of the panels of two bodies
   (\cref{fmlnote:panel-hinge-nondegenerate}), which is nonzero only when
@@ -1937,7 +1940,8 @@ p.~648). In the present form it follows from
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
   multigraph, possibly with loops, with $V \neq \emptyset$. Then $G$ has
   an infinitesimally rigid body-hinge realization
-  (\cref{def:trivial-motions-rigid}) with nondegenerate hinges if and
+  (\cref{def:trivial-motions-rigid}) with nondegenerate hinges at the
+  edges of $G$ if and
   only if $G$ has an infinitesimally rigid hinge-coplanar panel
   realization (\cref{def:coplanar-panel-realization}).
 \end{theorem}
@@ -1947,14 +1951,15 @@ p.~648). In the present form it follows from
         lem:deficiency-rank-bound, def:rank-hypothesis, def:D-deficiency}
   We argue as for \cref{thm:molecular-conjecture}. A hinge-coplanar
   panel realization of $G$ is a body-hinge realization of $G$ whose
-  hinges are nondegenerate. So if $G$ has an infinitesimally rigid one,
-  then $G$ has an infinitesimally rigid body-hinge realization with
-  nondegenerate hinges.
+  hinges are nondegenerate, at every label and so at the edges of $G$. So
+  if $G$ has an infinitesimally rigid one, then $G$ has an infinitesimally
+  rigid body-hinge realization with nondegenerate hinges at the edges.
 
   Conversely, let $(G, p)$ be an infinitesimally rigid body-hinge
-  realization of $G$ with nondegenerate hinges. As it is infinitesimally
-  rigid, $\dim Z(G, p) = D$ (\cref{lem:trivial-motions-rank-bound}). As
-  its hinges are nondegenerate,
+  realization of $G$ with nondegenerate hinges at the edges. As it is
+  infinitesimally rigid, $\dim Z(G, p) = D$
+  (\cref{lem:trivial-motions-rank-bound}). As its hinges at the edges are
+  nondegenerate,
   $\dim Z(G, p) \ge D + \operatorname{def}(\tilde G)$
   (\cref{lem:deficiency-rank-bound}). Hence
   $\operatorname{def}(\tilde G) \le 0$, and so
@@ -1966,9 +1971,13 @@ p.~648). In the present form it follows from
 
 \begin{fmlnote}
   The pinned theorem assumes that $G$ spans the set $W$ of bodies and
-  that $D(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). Both of its
-  sides ask for a nonzero hinge at every edge label
-  (\cref{rem:molecular-conjecture-essential}).
+  that $D(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). Its
+  body-hinge side asks for a nonzero hinge only at the edges of $G$, as
+  \cref{thm:molecular-conjecture} does; its panel side asks for one at
+  every edge label, as \cref{def:coplanar-panel-realization} does
+  (\cref{rem:molecular-conjecture-essential}). A hinge-coplanar panel
+  realization is a body-hinge realization with nondegenerate hinges at
+  the edges of $G$, and no more is needed for the lower bound.
 \end{fmlnote}
 
 By the proof above, both sides hold if and only if

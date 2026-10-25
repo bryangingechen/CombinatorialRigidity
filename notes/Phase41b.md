@@ -1,10 +1,12 @@
 # Phase 41b — RESTATE: the main results restated on the linked carrier (work log)
 
 **Status:** in progress (opened 2026-10-24), a sub-phase of Phase 41. The phase's design, the PI's
-decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c; on `F-330`, §1d) and the
-recons are in `notes/Phase41-design.md`. Items 1–6b done: Theorems 5.5 and 5.6, and their
-`d = 3` instances, conclude KT's nonparallel panels for simple `G`, and `molecular_conjecture`
-holds on one body, with nonparallel panels on its panel side (item 6b). Next concrete task: item 7, the multigraph rows.
+decisions (at the phase's open, §1; at this sub-phase's, §1b; after item 1's recon, §1c; on
+`F-330`, §1d) and the recons are in `notes/Phase41-design.md`. Items 1–7 done: Theorems 5.5 and
+5.6, and their `d = 3` instances, conclude KT's nonparallel panels for simple `G`,
+`molecular_conjecture` holds on one body with nonparallel panels on its panel side (item 6b), and
+the multigraph rows ask nondegeneracy on `E(G)` (item 7). Next concrete task: item 8,
+`cor:theorem-55-d3-spanning`.
 
 ## Current state
 
@@ -18,9 +20,11 @@ realization gives a nonparallel one (item 4b, route B); Theorem 5.5's simple con
 of the rows form and the wrapper gone (item 5). The d = 3 instance of Theorem 5.6 passes the
 conjunct through too (item 5b, `F-329`). `molecular_conjecture` takes `V(G).Nonempty` and asks
 nondegenerate hinges on `E(G)` only (item 6), its panel side from Theorem 5.6's nonparallel panels.
-Next: the multigraph rows (item 7), then the remaining restatements. Mode: structural edit. There
-are no red target nodes; each slice restates the nodes it reaches (`CombinatorialRigidity/CLAUDE.md`
-*Forward-mode slices*).
+The multigraph rows are restated: `molecular_conjecture_multigraph`'s body-hinge side asks nonzero
+hinges on `E(G)`, `IsHingeCoplanar` constrains `E(F.graph)` only, both lose `[DecidableEq β]` (item
+7). Next: `cor:theorem-55-d3-spanning` (item 8), then the remaining restatements. Mode: structural
+edit. There are no red target nodes; each slice restates the nodes it reaches
+(`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
 
 ## Architectural choices made up front
 
@@ -70,9 +74,9 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 - [x] **6b. `molecular_conjecture`'s nonparallel panels** (`F-330`; §1d): the panel side gains
   `Q.IsNonparallel`, the body-hinge side unchanged; (⇐) discards it, the witness's proof is
   unchanged; the node, its `\uses`, the nonvacuity remark, the two rows and the docstring restated.
-- [ ] **7. The multigraph rows** (§1.2, §1.4): `molecular_conjecture_multigraph` and
+- [x] **7. The multigraph rows** (§1.2, §1.4): `molecular_conjecture_multigraph` and
   `theorem_55_6_multigraph_gen` ask nondegeneracy on `E(G)`; `IsHingeCoplanar` constrains `E(G)`
-  only; `F-323`'s binders.
+  only; `F-323`'s binders. Landed as the coordinator's adjudication says (*Decisions made*).
 - [ ] **8. `cor:theorem-55-d3-spanning`** (`F-126`): derived from `theorem_55_d3` under `hcard`,
   with general position and nondegenerate hinges on `E(G)`, `_hSimple` dropped.
   `rankHypothesis_deficiency_of_theorem_55_d3` takes a generic `hGP`; `theorem_55_d3` now gives the
@@ -101,17 +105,13 @@ Item 1's verdict keeps item 4 after items 2 and 3 and before item 5.
 - **CI has not run since 2026-10-15**: the PI pushes after RESTATE closes (§1b), so that push is
   CI's first run of 41a's `module` conversion (doc-gen, the upstreaming dashboard). The close
   should expect to watch it.
-- `F-330` resolved by the PI (§1d, item 6b).
 
 ## Hand-off / next phase
 
-**Item 7**: the multigraph rows, as the checklist's item 7 says, with the witness
-`molecular_conjecture_multigraph_witness` (`CombinatorialRigidity/Nonvacuity.lean`).
-`molecular_conjecture_multigraph`'s `[DecidableEq β]` goes with `theorem_55_6_multigraph_gen`'s
-(`F-323`; the comment above the latter). Its (⇒) lower bound already asks nondegeneracy at links
-only, as item 6's did. `HasCoplanarPanelRealization` asks a nonzero hinge at every label
-(`def:coplanar-panel-realization`'s note, `rem:molecular-conjecture-essential`): whether that
-conjunct narrows with the two theorems, and so whether item 7 is one commit, is its first question.
+**Item 8**: `cor:theorem-55-d3-spanning` (`F-126`), as the checklist's item 8 says. Its
+`rankHypothesis_deficiency_of_theorem_55_d3` takes a generic `hGP`; `theorem_55_d3` gives the
+nonparallel one, whose realization is in general position by `IsNonparallel.isGeneralPosition`
+(no predicate-level lemma yet). Whether item 8 is one commit is its first question.
 
 ## Decisions made during this phase
 
@@ -122,14 +122,15 @@ conjunct narrows with the two theorems, and so whether item 7 is one commit, is 
 - **The PI's decisions after item 1's recon** (2026-10-24): `notes/Phase41-design.md` §1c,
   verbatim.
 - **The PI's decision on `F-330`** (2026-10-25): `notes/Phase41-design.md` §1d, verbatim.
-- **Item 3** (`F-324`): four lemmas without `1 ≤ k` take `hk` for `hD : 2 ≤ D`, a swap the
-  ledger's "drop" needed (`D = 1` at `k = 0`); the `F-324` entry says which.
-- **The genuine form concludes nonparallel too** (item 5; the coordinator's adjudication, not the
-  PI's): `rankHypothesis_genuine_of_theorem_55_gen` gains `Q.IsNonparallel`, its hypotheses
-  unchanged; it is how §1b.1 and §1c's Theorem 5.6 is built. The rows form keeps
-  `Q.IsGeneralPosition` (its proof needs no upgrade); `rankHypothesis_of_theorem_55_d3` kept its
-  statement at item 5 (`F-329`).
+- **Item 3** (`F-324`): four lemmas without `1 ≤ k` take `hk` for `hD : 2 ≤ D` (`D = 1` at `k = 0`).
+- **The genuine form concludes nonparallel too** (item 5; the coordinator's adjudication):
+  `rankHypothesis_genuine_of_theorem_55_gen` gains `Q.IsNonparallel`, hypotheses unchanged; the rows
+  form keeps `Q.IsGeneralPosition`.
 - **The d = 3 instance passes the conjunct through** (item 5b; the coordinator's adjudication):
-  `F-128` names `thm:theorem-55-6-d3`, whose conclusion the framework with all normals zero meets at
-  deficiency zero (S2's gap), so keeping the statement would leave `F-128` open at `d = 3`. The
-  option to keep it is rejected.
+  `F-128` names `thm:theorem-55-6-d3`, whose conclusion all-zero normals meet (S2's gap); keeping
+  the statement would leave `F-128` open at `d = 3`.
+- **The multigraph rows** (item 7; the coordinator's adjudication of §1.2 and §1.4, not the PI's):
+  `HasCoplanarPanelRealization` keeps its total conjunct (the pencil main result concludes it; the
+  containment model realizes it on one body). So `molecular_conjecture_multigraph`'s body-hinge
+  side asks `∀ e ∈ E(G)`, its panel side stays total; `IsHingeCoplanar` constrains `E(F.graph)`
+  only; both results lose `[DecidableEq β]` (`F-323` done for both rows).

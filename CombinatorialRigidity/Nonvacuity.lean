@@ -359,11 +359,13 @@ the double edge, two bodies joined by two parallel hinges, which the simple-grap
 is `0`-dof (`Graph.isKDof_zero_of_parallel_pair`), so the multigraph Theorem 5.6
 (`theorem_55_6_multigraph_gen`) gives it a hinge-coplanar panel realization at full rank, which is
 infinitesimally rigid (`BodyHingeFramework.rankHypothesis_zero_iff`). By the equivalence, the
-double edge has an infinitesimally rigid body-hinge realization with every hinge nondegenerate. -/
+double edge has an infinitesimally rigid body-hinge realization with every hinge nondegenerate
+(at its edges). -/
 theorem molecular_conjecture_multigraph_witness :
     ∃ F : BodyHingeFramework ℝ 1 (Fin 2) (Fin 4),
       F.graph = Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4)) ∧
-        (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid := by
+        (∀ e ∈ E(Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))), F.supportExtensor e ≠ 0) ∧
+          F.IsInfinitesimallyRigid := by
   have hspan : V(Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))) = Set.univ :=
     Set.eq_univ_of_forall fun x ↦ by fin_cases x <;> simp
   have hcard : Graph.bodyBarDim 2 * (Nat.card (Fin 2) - 1) < Nat.card (Fin 4) := by

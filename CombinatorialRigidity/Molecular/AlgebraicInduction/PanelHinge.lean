@@ -259,7 +259,7 @@ with `supportExtensor e = panelSupportExtensor (normal u) (normal v)` at `(u,v) 
 incident hinge at `v` is then a meet whose join factor includes `normal v`, so it lies in the
 panel `panel(v) = {normal v}^⊥` by construction — coplanarity is structural, with no
 affine-intersection plumbing. The coplanarity *spec* `IsHingeCoplanar` on a bare
-`BodyHingeFramework` is exactly "arises as a `toBodyHinge`", automatic for the panel
+`BodyHingeFramework` is "agrees with a `toBodyHinge` on the edges", automatic for the panel
 constructions of Theorem 5.5 (`isHingeCoplanar_toBodyHinge`). -/
 
 /-- A **`d = k+1`-dimensional panel-hinge framework** (`def:panel-hinge-framework`;
@@ -955,15 +955,18 @@ namespace BodyHingeFramework
 variable {α β : Type*}
 
 /-- **Hinge-coplanarity of a body-hinge framework** (`def:hinge-coplanar`): `F` is
-*hinge-coplanar* when it arises as the body-hinge interpretation of a panel-hinge framework,
-`∃ P : PanelHingeFramework K k α β, P.toBodyHinge = F`. By `toBodyHinge` this means there is a
-per-body normal assignment realizing every edge's supporting extensor as the meet of its two
-endpoints' panels, so all hinges incident to a body `v` lie in the single panel `panel(v)` — the
+*hinge-coplanar* when a panel-hinge framework on its graph has its body-hinge interpretation
+agree with `F` at every edge of `F.graph`: `∃ P : PanelHingeFramework K k α β, P.graph = F.graph ∧
+∀ e ∈ E(F.graph), P.toBodyHinge.supportExtensor e = F.supportExtensor e`. By `toBodyHinge` this
+means there is a per-body normal assignment realizing every edge's supporting extensor as the meet
+of its two endpoints' panels (labels off `E(F.graph)` are unconstrained, the coordinator's
+adjudication), so all hinges incident to a body `v` lie in the single panel `panel(v)` — the
 coplanarity constraint that distinguishes Katoh–Tanigawa's panel-hinge (molecular) model from the
 free-hinge body-hinge model. This is the property Theorem 5.5's panel constructions establish; the
 conjecture's content is that it can be met without dropping rigidity. -/
 def IsHingeCoplanar (F : BodyHingeFramework K k α β) : Prop :=
-  ∃ P : PanelHingeFramework K k α β, P.toBodyHinge = F
+  ∃ P : PanelHingeFramework K k α β, P.graph = F.graph ∧
+    ∀ e ∈ E(F.graph), P.toBodyHinge.supportExtensor e = F.supportExtensor e
 
 /-- **A panel framework's body-hinge interpretation is hinge-coplanar** by construction
 (`def:hinge-coplanar`): `(P.toBodyHinge).IsHingeCoplanar` for every
@@ -971,7 +974,7 @@ def IsHingeCoplanar (F : BodyHingeFramework K k α β) : Prop :=
 builds through the panel layer automatically satisfies the molecular-model coplanarity. -/
 theorem isHingeCoplanar_toBodyHinge (P : PanelHingeFramework K k α β) :
     P.toBodyHinge.IsHingeCoplanar :=
-  ⟨P, rfl⟩
+  ⟨P, rfl, fun _ _ => rfl⟩
 
 end BodyHingeFramework
 
