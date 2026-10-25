@@ -959,8 +959,8 @@ variable {α β : Type*}
 agree with `F` at every edge of `F.graph`: `∃ P : PanelHingeFramework K k α β, P.graph = F.graph ∧
 ∀ e ∈ E(F.graph), P.toBodyHinge.supportExtensor e = F.supportExtensor e`. By `toBodyHinge` this
 means there is a per-body normal assignment realizing every edge's supporting extensor as the meet
-of its two endpoints' panels (labels off `E(F.graph)` are unconstrained, the coordinator's
-adjudication), so all hinges incident to a body `v` lie in the single panel `panel(v)` — the
+of its two endpoints' panels (labels off `E(F.graph)` are unconstrained), so all hinges incident
+to a body `v` lie in the single panel `panel(v)` — the
 coplanarity constraint that distinguishes Katoh–Tanigawa's panel-hinge (molecular) model from the
 free-hinge body-hinge model. This is the property Theorem 5.5's panel constructions establish; the
 conjecture's content is that it can be met without dropping rigidity. -/

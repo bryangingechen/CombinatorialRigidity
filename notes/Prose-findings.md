@@ -2669,12 +2669,15 @@ declaration's name as its header writes it:
   `ofNormals_recordsLinks_of_hends` and `ofNormals_endsOf_recordsLinks`; the docstrings on the
   selector of a generic full-rank realization (`PanelHinge.lean`, `GenericityDevice.lean`,
   `Coupling.lean`, `CaseI.lean`, `Theorem55.lean`) and the notes on it in `panel-layer.tex` say
-  that it records the links as every framework's selector does. Item 6 (Phase 41b item 6's commit;
-  the sha goes in at the next ledger sweep): `molecular_conjecture` takes `V(G).Nonempty` for
+  that it records the links as every framework's selector does. Item 6 (`68d5ea84`):
+  `molecular_conjecture` takes `V(G).Nonempty` for
   `2 ≤ |V(G)|` and asks a nondegenerate hinge at the edges of $G$ only, on both sides (the design
   doc's §1.2); `thm:molecular-conjecture`, its notes, `rem:molecular-conjecture-essential`,
   `rem:molecular-conjecture-nonvacuous` (the witness now at one body in the plane) and
   `rem:coplanar-single-body` restated, with the `main_results` row and the `alignment` note.
+  Item 7 (`6d261725`): `IsHingeCoplanar` constrains the hinges at `E(F.graph)` only, as a hinge at
+  a label outside the edge set constrains no motion (the design doc's §1.4); its docstring says so,
+  and `molecular_conjecture_multigraph`'s body-hinge side asks nonzero hinges on `E(G)`.
 - **F-124** · S · `lem:generic-yields-genuine-hinge` (`algebraic-induction/panel-layer.tex`): the
   statement gives every multigraph with at least two vertices that has a generic full-rank
   realization a nondegenerate-hinge panel realization. Its pin `hasPanelRealization_of_generic`
@@ -2746,7 +2749,7 @@ declaration's name as its header writes it:
   README, the home page, `intro.tex` and ROADMAP §23 are item 12's.
   Item 5b (`da20d498`): `rankHypothesis_of_theorem_55_d3` and `thm:theorem-55-6-d3` conclude
   nonparallel panels too, so the all-zero-normals framework no longer meets the `d = 3` pin on two
-  or more bodies. Item 6 (Phase 41b item 6's commit; the sha goes in at the next ledger sweep):
+  or more bodies. Item 6 (`68d5ea84`):
   `molecular_conjecture` calls `rankHypothesis_of_theorem_55_gen`, not the genuine form, its panel
   side's nondegenerate hinges at the edges of $G$ coming from the nonparallel panels.
 - **F-136** · S · `lem:case-I-splice-seed` (`algebraic-induction/case-i.tex`): at the open the
@@ -3411,15 +3414,16 @@ declaration's name as its header writes it:
   and proved by the theorems under `classical`, with no warning, on the three standard axioms
   (`scratch/reconcile-lean/t38/MainDec.lean`, gitignored).
   *Found:* RECONCILE round 3 task 38.
-  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*). Round 3:
+  *Disposition:* done (`6d261725`); reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*). Round 3:
   `theorem_55_6_multigraph_gen`'s `[DecidableEq β]`, to which `molecular_conjecture_multigraph`
   passes its own and nothing else, goes with that theorem's (`600ecc09`, `F-322`).
   Phase 41b, item 5: done for `rankHypothesis_of_theorem_55_gen` (`5c70542c`): the binder and its
   suppression dropped, the proof opened with `classical`. `molecular_conjecture`'s is item 6's,
-  `molecular_conjecture_multigraph`'s item 7's. Item 6: done for `molecular_conjecture` (Phase 41b
-  item 6's commit; the sha goes in at the next ledger sweep): the binder and its suppression
+  `molecular_conjecture_multigraph`'s item 7's. Item 6: done for `molecular_conjecture` (`68d5ea84`): the binder and its suppression
   dropped; the proof needs no `classical`, as it now calls `rankHypothesis_of_theorem_55_gen`, which
-  takes no `[DecidableEq β]`.
+  takes no `[DecidableEq β]`. Item 7 (`6d261725`): done for `molecular_conjecture_multigraph` and
+  `theorem_55_6_multigraph_gen`, whose binders and suppressions are dropped; with items 5 and 6 the
+  three main results are restated, so the entry is done.
 - **F-324** · S · `thm:theorem-55` (`panel-layer.tex`; its pin
   `PanelHingeFramework.theorem_55_minimalKDof_gen`, `AlgebraicInduction/Theorem55.lean`, a main
   result): the pin's `hD : 3 ≤ bodyBarDim n` follows from `hk1 : 1 ≤ k` and `hn : bodyBarDim n =
@@ -3474,8 +3478,7 @@ declaration's name as its header writes it:
   from Theorem 5.6 and the restated theorem, on the three standard axioms
   (`scratch/41b/MolNP.lean`, gitignored).
   *Found:* Phase 41b item 6.
-  *Disposition:* done (the commit "Phase 41b item 6b: `molecular_conjecture`'s panel side gains
-  `Q.IsNonparallel`"): the PI chose to add `Q.IsNonparallel` beside the nondegenerate hinges
+  *Disposition:* done (`9f7f73ee`): the PI chose to add `Q.IsNonparallel` beside the nondegenerate hinges
   (`notes/Phase41-design.md` §1d); statement, docstring, `thm:molecular-conjecture`, the witness's
   statement and the two `formalization.yaml` rows restated.
 
@@ -4069,7 +4072,11 @@ declaration's name as its header writes it:
   stratum of KT Theorem 5.5, says that no declaration uses it and that its simplicity hypothesis
   is unused (the binder stays, as `cor:theorem-55-d3-spanning` states it); item 6 (`a22d989c`): with `reaim`
   gone its two-body hypothesis is unused too, and the docstring says so (the binder `_hV` stays,
-  as the node states it).
+  as the node states it). Phase 41b, item 8 (the commit "Phase 41b item 8: `cor:theorem-55-d3-spanning`
+  derives from `theorem_55_d3`"; the sha goes in at the next ledger sweep): done for the pin.
+  Its `_hV` and `_hSimple` are used, as the realization now comes from `theorem_55_d3`, whose
+  nonparallel conjunct needs a simple graph (false at the double edge on two bodies); the docstring
+  no longer says they are unused, and `cor:theorem-55-d3-spanning` and its note are restated.
 - **F-130** · L · the docstrings of `panel-layer.tex`'s KT Theorem 5.6 and molecular-conjecture
   pins (`Molecular/AlgebraicInduction/Theorem55.lean`): `molecular_conjecture`'s says that dropping
   the nonzero-hinge conjunct "makes the statement false"; dropped from both sides, each side holds

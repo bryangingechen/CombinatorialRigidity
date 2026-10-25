@@ -1272,17 +1272,21 @@ the proof of KT Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}).
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3}
   \leanok
   \uses{thm:theorem-55-d3-instance, def:rank-hypothesis}
-  Let $d = 3$, so that $D = 6$, and let $G = (V, E)$ be a simple minimal
-  $0$-dof-graph with $|V| \ge 2$. Then $G$ has a generic full-rank
-  realization $(G,p)$ (\cref{def:rank-hypothesis}) with
+  Let $d = 3$, so that $D = 6$, let the field be infinite with
+  more than $6(|V| - 1)$ edge labels available, and let $G = (V, E)$ be a simple
+  minimal $0$-dof-graph with $|V| \ge 2$ that spans the set of bodies.
+  Then $G$ has a panel-hinge realization $(G,p)$ with nonparallel panels
+  (\cref{def:panel-nonparallel}), a nondegenerate hinge at every edge of
+  $G$, and
   \[
-    \dim Z(G,p) \;=\; D \;=\; D + \operatorname{def}(\tilde G).
+    \dim Z(G,p) \;=\; D \;=\; D + \operatorname{def}(\tilde G)
   \]
+  (\cref{def:rank-hypothesis}).
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{thm:theorem-55-d3-instance, prop:rigidity-matrix-prop11}
-  By \cref{thm:theorem-55-d3-instance}, $G$ has a generic full-rank
+  By \cref{thm:theorem-55-d3-instance}, $G$ has a nonparallel full-rank
   realization $(G,p)$, of rank $D(|V| - 1)$. So
   $\dim Z(G,p) = D|V| - \operatorname{rank} R(G,p) = D$
   (\cref{def:rigidity-matrix}). As $\operatorname{def}(\tilde G) = 0$,
@@ -1293,20 +1297,21 @@ the proof of KT Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}).
 \begin{fmlnote}
   \label{fmlnote:endpoint-selector-totality}
   The pinned theorem assumes that $G$ spans the set of bodies, and it
-  takes the generic full-rank realization of
-  \cref{thm:theorem-55-d3-instance} as a hypothesis. It derives the
-  formula from the pinned theorem of \cref{prop:rigidity-matrix-prop11},
-  which asks for a nonzero hinge at every edge of $G$. The realization
-  has one: its selector assigns each edge its two ends
+  takes the realization from \cref{thm:theorem-55-d3-instance}, whose
+  nonparallel conjunct needs $G$ simple and whose rank needs two bodies and
+  the supply of labels. It derives the formula from the pinned theorem of
+  \cref{prop:rigidity-matrix-prop11}, which asks for a nonzero hinge at
+  every link of the realization. The realization has one: its selector
+  assigns each edge its two ends
   (\cref{fmlnote:panel-hinge-nondegenerate}), which are distinct as $G$
-  has no loops, and their normals are linearly independent, as the
-  normals are in general position. The pinned theorem does not use that
-  $G$ is simple or has two bodies. Its conclusion is a panel-hinge
-  framework on $G$ with $\dim Z = D$, whose selector assigns each edge of
-  $G$ its two ends, as every panel-hinge framework's does. It does not
-  record that the normals are in general position. A framework whose
-  hinges are all degenerate also meets this conclusion, since a
-  $0$-dof-graph is connected.
+  has no loops, and their normals are linearly independent, as nonparallel
+  normals are in general position. Simplicity is needed: at the double edge
+  on two bodies, a minimal $0$-dof-graph, the two hinges of the meet model
+  coincide, so no realization has nonparallel panels there. The conclusion
+  records the nonparallel panels and the nonzero hinge at every edge of
+  $G$. A framework whose hinges are all degenerate also meets the rank
+  formula, since a $0$-dof-graph is connected, which is why the hinges are
+  part of the statement.
 \end{fmlnote}
 
 Katoh and Tanigawa's Theorem~5.6 removes the minimality from KT
@@ -1315,8 +1320,8 @@ $D(|V| - 1) - \operatorname{def}(\tilde G)$~\cite[p.~670]{katohTanigawa2011}.
 The lower bound on the rank in the proof of KT Proposition~2.3
 (\cref{prop:rigidity-matrix-prop11}) follows their proof of this theorem.
 At deficiency zero the realization is infinitesimally rigid, as
-\cref{cor:theorem-55-d3-spanning} records for a minimal $0$-dof-graph at
-$d = 3$. Katoh and Tanigawa obtain the molecular conjecture from the
+\cref{cor:theorem-55-d3-spanning} records for a simple spanning minimal
+$0$-dof-graph at $d = 3$. Katoh and Tanigawa obtain the molecular conjecture from the
 theorem in this way (KT p.~670; \cref{thm:molecular-conjecture}).
 
 We prove the theorem for simple graphs. In the panel-hinge frameworks of
