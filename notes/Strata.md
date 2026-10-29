@@ -3,8 +3,8 @@
 **Status:** its `Pᵈ` pencil part opened as **Phase 42** (PENCIL-D, the PI, 2026-10-29; plan
 `notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
-third set the `Pᵈ` picture, Results 12–19. Next concrete task: Phase 42a's
-(`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
+third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–22. Next concrete
+task: Phase 42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded). Editing discipline as for phase notes (≤ 8-line
 entries). `HARNESS.md` *Evidence* and *Reproducibility* bind this work; it is not an attack track.
 
@@ -198,6 +198,28 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     `D(n−1)` at all 24 cells, which certifies. Most capped graphs have `def_3 ≤ 2`, so they are in
     the stable range from `d = 4` (Result 18). The cells outside it at `d ≥ 4` are 26, on 11
     sparse capped graphs, and 15 past the cap. Not found below target, under that cap.
+20. `[MEASURED]` **Row 5's flat formulas in `Pᵈ`** (Phase 42a's T1; `--content`, seeds 1–3). The
+    flat configuration (every height zero) has rank `D(n−1) + 3 − dim L(q)` at all 38 graphs of the
+    `--d4` population, `d = 4, 5, 6`. R1's base (the last height zero: the `P^{d−1}` pencil in a
+    hyperplane) has `10(n−1) − def_6` at `d = 4` on the 36 simple graphs, and
+    `D(n−1) − def_{D_{d−1}}` at `d = 5, 6`. It is at the `Pᵈ` target on 30, 34 and 36 of them. The six
+    it misses at `d = 4` are `C₇`–`C₉`, `C₁₁`, `C₁₂` and `C11ear`. The flat configuration is at the
+    target on 22, the graphs with `def_3 = 0`.
+21. `[MEASURED]`, the `D`-gon `[PROVED]` at even `d`: **CERT's certificates** (Phase 42a's T2;
+    `--content`, seed-independent). At `d = 3..6` each one rows 10–12 use exists, its joins
+    independent over every field (Smith invariant factors 1). By search in `{−1, 0, 1}`: closed
+    `m`-gons, `m < D`; open ears `a, x₁, …, x_k, b`, `k ≤ D − 2`, at height zero at `a, x₁, x_k, b`.
+    The `D`-gon of the cycle and the long ear is built on a unimodular basis `P₀, …, P_d`, three
+    consecutive points at height zero: at even `d` an Euler circuit of `K_{d+1}`, whose joins are the
+    basis `P_i ∧ P_j`; at odd `d` one of `K_{d+1}` minus a perfect matching, with a detour through
+    `P_j + P_k − P_i` per matching edge `ij` (checked at `d = 3, 5`).
+22. `[MEASURED]` **The content range where the `P³` proof breaks** (Phase 42a; `--content`, seeds
+    1–3). All 38 cells with `4 ≤ d ≤ 2 + def_3`, on 15 graphs, reach their target. `θ(2, 2, k)` for
+    `k = 4..10` has row 14's one-body ear with ends sharing a neighbour (`def_3 = k − 2` under the
+    cap). `θ(2, 2, 2, k)` for `k = 5..10` has two hubs with three common neighbours
+    (`def_3 = k − 3`). The diamond rings at `m = 6, 7` (`n = 24, 28`) carry a condition at every
+    body, up to `d = 6`. Targets as in Result 19: 24 cells under the cap, 14 certified past it. With
+    §2.5's 47 cells (`notes/Phase42-design.md`), 85, none below. D's witness has `def_3 = 0`.
 
 ## The PENCIL-D program
 
@@ -243,10 +265,11 @@ Hunt, *J. Mechanisms* 2 (1967) 307–327, doi:10.1016/0022-2569(67)90005-5.
 
 ## Evidence
 
-Three commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
+Four commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
 `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest
---seed N` and `... --complexes --residual4 --d4 --lifting --seed N` (~20 s each), and
-`... --pd --seed N` (~4 s). Output is byte-identical under `PYTHONHASHSEED` 0 and 7.
+--seed N` and `... --complexes --residual4 --d4 --lifting --seed N` (~20 s each), `... --pd
+--seed N` and `... --content --seed N` (~4 s each). Output is byte-identical under
+`PYTHONHASHSEED` 0 and 7.
 - **First command** (session 1; byte-identical after sessions 2 and 3): 184 linear cells
   (23 graphs × 8 rungs) where the rank at a point, the count and the rank at the per-edge
   linear envelope agree; 7 mixed cases; every per-body cell (molecular, panel, pencil, flat
@@ -263,13 +286,21 @@ Three commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
   against the previous driver): Result 19's cells; Result 16 on all 38 graphs; at each simple
   graph `dim L(q) = 3 + def_3`, the points spanning `min(d+1, dim L(q))`, and `def_D = def_∞`
   through the stable range. Support: one picture per graph, fresh heights per `d`.
+- **`--content`** (Phase 42a; the ten earlier modes' output byte-identical at seeds 1–3 against
+  the previous driver): Results 20–22. Asserted: Result 20's flat rank at every cell and its
+  `d = 4` base at every simple graph, Result 21's certificates (with the chapter's hexagon and a
+  determinant-2 negative control), and under the cap `dim L(q) = 3 + def_3` and the design's
+  bounds on `def_3`. Support as `--pd`: one picture per graph, fresh heights per `d`; the flat
+  configuration varies the picture only. T2 searches the box `{−1, 0, 1}`, seeded by `(d, m)`
+  alone, so its lines are seed-independent. In-code fences: the families of Result 22 stop at
+  `k = 10` and `m = 7`, T2 at `d = 6`.
 - **Bounds:** a point's rank is a lower bound for the stratum's generic rank, and each count
   an upper bound (Results 3, 5, and `D(n−1) − def_D` in `Pᵈ`), so a match certifies the
   generic rank on that graph. A shortfall at a point would prove nothing.
 - **Caps:** the 38 labelled graphs are a cap, not a census (the `3^n` deficiency DP stops at
   `n ≤ 12`); `--pd`'s 8 past-cap graphs are certified only by reaching `D(n−1)`. Section
   draws are once per rung per run in `--linear`; per-body data is drawn afresh per graph. Fixed
-  constants `COORD = 1000`, `SPAN_SAMPLES = 12`, `LOVASZ_MAX_EDGES = 9`.
+  constants `COORD = 1000`, `SPAN_SAMPLES = 12`, `LOVASZ_MAX_EDGES = 9`, `CERT_TRIES = 1000`.
 
 ## Next tests
 

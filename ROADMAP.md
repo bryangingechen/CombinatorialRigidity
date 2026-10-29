@@ -1281,11 +1281,14 @@ split-off steps, the partition estimates and Phase 39's reduction dimension-gene
 or formal work. The short ears, the one-body and orbit ears and the generic statement's route B
 fail as written: in `P³` two bodies' planes always share a line, in `Pᵈ` they need not. The steps
 break at `d = 4` and `d = 5`, and the conjecture's new content at `d` is the sparse graphs with
-`def_3 ≥ d − 2`, so far measured on few graphs of the kind that would test it. Next: one driver
-mode with the flat formulas, the cycle and long-ear certificates, and graphs built where the
-proof breaks. Then, by the PI's defaults (2026-10-29), the statement layer and the `def_3 ≤ 1`
-corollary open beside the research, toward three tiered targets: every `d` at `def_3 ≤ 1`, at
-`def_3 ≤ 2` (a `P⁴` theorem), and every `d`.
+`def_3 ≥ d − 2`. One driver mode then tested the flat formulas (they hold) and the cycle and
+ear certificates. These exist at `d ≤ 6` over every field, the largest by a construction in
+every `d`. It also measured graphs built where the proof breaks. All 38 new cells there reach the
+generic rank, so on the graphs measured the obstruction is the proof's, not the statement's.
+Next, by the PI's defaults (2026-10-29), in either order: the statement layer and the
+`def_3 ≤ 1` corollary open beside the research, and two tests size the short and one-body ears
+at `d = 4, 5`. The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴`
+theorem), and every `d`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

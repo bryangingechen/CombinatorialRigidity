@@ -5,9 +5,11 @@
 rows, 10 generalize as they stand and 6 given routine or formal work (CERT, CARRIER); the coverage
 waits on the ear rows, nondegeneracy's lift is open, and 4 rows fail as written: the short ears,
 the one-body and orbit ears (rows 14–15), and route B. §2.5 places the thresholds at `d = 4, 5`
-and the content at `def[3] ≥ d − 2`, where the evidence is thin. Next concrete task: T1, T2 and
-§2.5's content-range graphs, one driver mode. The PI's defaults for the sessions after it are §1;
-the route stays open (§4). Evidence: `notes/Strata.md`, Results 12–19.
+and the content at `def[3] ≥ d − 2`. T1, T2 and the content-range graphs have landed (§2.4,
+§2.5): row 5's formulas hold, CERT holds at `d ≤ 6` over every field, and 38 more content cells
+reach their target, on graphs where rows 14 and 22 fail as written.
+Next concrete task: PD-STATE's open as the next sub-phase, or T3 and T4 at `d = 4, 5`, in either
+order (§1's defaults). The route stays open (§4). Evidence: `notes/Strata.md`, Results 12–22.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -90,7 +92,7 @@ are at `2168de79`. Notation: `def[D]` is `def:D-deficiency` at screw dimension `
 | 2 | `def:pencil-configuration`, `lem:pencil-condition-linear` (307, 468) | plane normal as a `4×4` determinant; "solving for `z_w`" (495–499) | GEN: `S → K³` is an isomorphism, so `S` is the graph of a map `K³ → K^{d−2}`; the configurations are `L(q)^{d−2}` (Result 13) |
 | 3 | Rank carrier: `lem:pencil-config-point-join-rank`, `-rank-collineation`, `-rank-scale-shift` (387–563) | the polarity as a self-map of `Λ²K⁴`; Lean at `Fin 4`, `k := 2`; scalar `t` | GEN\|CARRIER (formal); scale-shift becomes `GL_{d−2}` and `Aff(q)^{d−2}` |
 | 4 | `lem:pencil-x0-one-witness`, `-fibre-intersection` (670, 823) | none; the hinge is affine in each height, with a `Λ²Z` part quadratic in the heights at `d ≥ 4` | GEN: `L(q)^{d−2}` is linear, one polynomial section serves every height, the fibre lemma's Lean takes any submodule |
-| 5 | Flat rank (886–1167) | the split `Λ²K⁴ = K³ × K³` | GEN: R2's flat rank `D_d(n−1) + 3 − dim L(q)`; R1's base `D_d(n−1) − def[D_{d−1}]` where `P^{d−1}` attains (both by hand, untested, T1) |
+| 5 | Flat rank (886–1167) | the split `Λ²K⁴ = K³ × K³` | GEN: R2's flat rank `D_d(n−1) + 3 − dim L(q)`; R1's base `D_d(n−1) − def[D_{d−1}]` where `P^{d−1}` attains (both by hand; measured, T1, `Strata.md` Result 20) |
 | 6 | Jackson–Jordán's equality (1169–1369) | none: planar, KT Theorem 5.6 at `d = 2` | GEN unchanged |
 | 7 | Cut vertex, the shared scheme (1384–1564) | count only (`lem:deficiency-cut-vertex`, every `D`) | GEN: the height is used only as a vector |
 | 8 | Chain of bridges (1566–1645) | count only | GEN |
@@ -142,8 +144,12 @@ Result 17's `def[3] ≤ 1` one step further.
 ### 2.3 Obligations (stable codes)
 
 - **CERT** (rows 10–12): at each `d`, a closed `m`-gon of affine points with independent
-  consecutive joins for `m ≤ D_d`, and the long ear at `k = D_d − 1` with its ends at height zero.
-  Looks routine (B suggests an Euler circuit of `K_{d+1}` for even `d`, unchecked); T2 tests it.
+  consecutive joins for `m ≤ D_d`, the long ear at `k = D_d − 1` with its ends at height zero,
+  and row 12's open ears: `k + 1` independent joins, heights zero at `a, x₁, x_k, b`. **Holds at
+  `d ≤ 6`, over every field** (T2, `Strata.md` Result 21). The `D`-gon is a construction in every
+  `d`: B's Euler circuit at even `d`, a matching and detours at odd `d`, checked at `d = 3, 5`. Left
+  for PD-STEPS: a uniform construction for `m < D` and the open ears (or, at the cycle, KT, since a
+  cycle's pencil condition is empty).
 - **SHORT** (row 13): ears with `3 ≤ k ≤ D_d − 2` and `def[D](G[V₁]) > def[D](G)`. Re-inserting
   `x₂` adds only joins in `star(y₁) + star(y₃)`; X3 would be "at general ear data, `W` containing
   both stars is `Λ²K^{d+1}`", or the step moves `x₁` and `x₃` too. New mathematics.
@@ -157,13 +163,17 @@ Result 17's `def[3] ≤ 1` one step further.
 - **GENERIC** (row 22): route B in `Pᵈ`, an irreducible parametrization of the nondegenerate
   realizations, and the one-ear step at `d ≥ 5`. D's candidate witness against the good-ear lemma
   supplying a common neighbour: `C₆` with the chord `14` and `y` joined to `2, 5` (by hand,
-  feasibility unchecked).
+  feasibility unchecked). It has `def[3] = 0` (Result 22), so its rank is Result 17's; the
+  question it raises is GENERIC's alone.
 
-### 2.4 Proposed tests (named, not run)
+### 2.4 Proposed tests (T1 and T2 run; T3–T5 named, not run)
 
 - **T1** (row 5): at `d = 4` on the `--d4` population, the flat rank `10(n−1) + 3 − dim L(q)` and
-  R1's base `10(n−1) − def[6]`.
-- **T2** (CERT): the certificates at `d = 4, 5, 6`, by exact rank.
+  R1's base `10(n−1) − def[6]`. **Run** at `d = 4, 5, 6` (`Strata.md` Result 20): both formulas
+  hold; R1's base is at the `Pᵈ` target on 30 of 36 simple graphs at `d = 4`, missing only cycles
+  and `C11ear`.
+- **T2** (CERT): the certificates at `d = 4, 5, 6`, by exact rank. **Run** at `d = 3..6`, over
+  every field (Result 21; §2.3).
 - **T3** (SHORT): at `d = 4`, ears with `3 ≤ k ≤ 8` and `def[10](G[V₁]) > def[10](G)`: does a
   general datum give `W ⊇ star(y₁) + star(y₃)` with `W ≠ Λ²`, and does (⋆) hold?
 - **T4** (ONE-EAR): at `d = 4, 5`, the rank of `G[V₁]` on `G`'s configurations, one-body chains
@@ -207,9 +217,16 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 - **What none of them has, in that range:** row 14's configuration (a one-body ear whose
   non-adjacent ends share a neighbour), route B's two hubs with three common neighbours, or a
   condition at every body at `d ≥ 5`.
+- **Measured since** (`strata.py --content`, seeds 1–3; `Strata.md` Result 22): 38 more content
+  cells, on 15 graphs that carry all three between them, every one at its target. Up to `d = 6`
+  these are `θ(2, 2, k)` (`k = 4..10`, `def[3] = k − 2` under the cap), `θ(2, 2, 2, k)`
+  (`k = 5..10`, `def[3] = k − 3`) and the diamond rings at `m = 6, 7`. That makes 85 content cells,
+  none below target. So far the failing rows fail as proof steps only: every graph built to carry
+  their configurations attains.
 
 **Recommendations**, for the PI (§4):
-- **Measure the statement where the proof breaks**, before any attack track:
+- **Measure the statement where the proof breaks**, before any attack track (**done**: every
+  cell matched, above):
   - `θ(2, 2, k)` (paths of 2, 2 and `k` edges between two hubs): row 14's configuration,
     `def[3] ≥ k − 2` by the singleton partition, `n = k + 3`.
   - `θ(2, 2, 2, k)`: route B's, `def[3] ≥ k − 3`.
@@ -237,7 +254,8 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
   flag strata as corollaries.
 
 PD-STATE and PD-STABLE do not depend on the route, so they can run beside PD-RECON. The PI kept
-them out of the open; by the planning defaults (§1) they open beside it once T1 and T2 land.
+them out of the open; by the planning defaults (§1) they open beside it now that T1 and T2 have
+landed.
 
 ## 4. Open questions
 
@@ -249,7 +267,7 @@ unless a finding argues otherwise:
   enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
   its `Pᵈ` lift is deferred with it.
 - The carrier in dual form (CARRIER); PD-STATE checks it against the definition bodies at open.
-- PD-STATE and PD-STABLE open beside the research once T1 and T2 land.
+- PD-STATE and PD-STABLE open beside the research once T1 and T2 land (they have).
 
 Still open, for the PI:
 - The route: §2.2's proposal, R2's induction with R1's base row inside an induction on `d`. The

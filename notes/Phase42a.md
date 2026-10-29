@@ -1,30 +1,29 @@
 # Phase 42a — PD-RECON: does Phase 40's induction run in every `Pᵈ`? (work log)
 
 **Status:** in progress, opened 2026-10-29 with the PI, attended. Research only: no Lean, no
-blueprint. The step table (design doc §2.1–§2.4) and the thresholds (§2.5) have landed. Next
-concrete task: one `strata.py` mode with T1, T2 and the content-range graphs. The PI's defaults
-for the sessions after it are the design doc's §1. Plan and decisions: `notes/Phase42-design.md`;
-evidence: `notes/Strata.md`.
+blueprint. Landed: the step table and thresholds (design doc §2.1–§2.5); T1, T2 and the
+content-range graphs (`Strata.md` Results 20–22), with no shortfall.
+Next concrete task: T4's first half at `d = 4, 5`, or PD-STATE's open, in either order.
+Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
-**Next: T1, T2 and the content-range graphs (design doc §2.4, §2.5), one commit.** A new
-`strata.py` mode with exact rank at a seeded point:
-- **T1** checks row 5's two flat formulas at `d = 4` on the `--d4` population (R2's flat rank
-  `10(n−1) + 3 − dim L(q)`, R1's base `10(n−1) − def[6]`).
-- **T2** builds CERT's certificates at `d = 4, 5, 6` (closed `m`-gons for `m ≤ D_d`, the long ear
-  at `k = D_d − 1`).
-- **The content-range graphs** measure the pencil rank at `d = 4, 5, 6` against
-  `D(n−1) − def[D]`: `θ(2, 2, k)`, `θ(2, 2, 2, k)`, diamond rings at `m = 6, 7` and D's witness.
-  Use the DP oracle under the cap and `D(n−1)` past it. They go in the new mode, not `--pd`'s
-  population, so `--pd`'s figures do not move.
+**Next, in either order** (the PI's defaults, design doc §1):
+- **T4's first half** (design doc §2.4), one `strata.py` commit with its figures. At `d = 4, 5`,
+  on Result 22's `θ(2, 2, k)` and `θ(2, 2, 2, k)` (a one-body ear `a − x − b` whose ends share a
+  neighbour), take a configuration of `G` and measure `G[V₁] = G − x` there against its target,
+  with `dim(Π_a ∩ Π_b)`. Then T3 (SHORT, `d = 4, 5`) and T4's `d = 5, 6` half; each sizes an
+  obligation before any attack track.
+- **PD-STATE's open** beside the research, its letter minted then (`PHASE-BOUNDARIES.md` *When
+  this commit opens a phase*): check the dual-form carrier (§2.3 CARRIER) against the definition
+  bodies, and lay out PD-STABLE.
 
-All three are cheap. They settle rows 5 and 10–12, and give the first evidence where the failing
-rows bite. **After it, by the PI's defaults** (design doc §1): PD-STATE and PD-STABLE open beside
-the research as the next sub-phase (its letter minted at open), and T3 and T4 run at `d = 4, 5` on
-the content range. **Landed:** the step table, its route verdict (§2.2: R2's step structure, R1's
-base row) and §2.5. The steps break at `d = 4` (SHORT) and `d = 5` (ONE-EAR). At `d` the content
-is `def[3] ≥ d − 2`, measured so far on graphs that bind the pencil condition at few bodies.
+**Landed:** the step table, its route verdict (§2.2: R2's step structure, R1's base row) and
+§2.5; then T1, T2 and the content-range graphs as one mode, `strata.py --content`. Row 5's
+formulas hold. CERT holds at `d ≤ 6` over every field, its `D`-gon by a construction in every `d`
+(§2.3). All 38 new content cells attain, on graphs carrying rows 14's and 22's configurations, so
+the obstruction measured so far is the proof's, not the statement's. The steps break at `d = 4`
+(SHORT) and `d = 5` (ONE-EAR).
 
 ## Architectural choices made up front
 
@@ -41,12 +40,13 @@ is `def[3] ≥ d − 2`, measured so far on graphs that bind the pencil conditio
 - [x] **The route verdict** (§2.2): neither closes as written; R2's induction with R1's base row is
   the recon's proposal, the PI's call.
 - [x] **The thresholds and the content range** (§2.5).
-- [ ] **T1, T2** (§2.4): the flat formulas at `d = 4`; CERT's certificates at `d = 4, 5, 6`.
-- [ ] **The content-range graphs** (§2.5): `θ(2, 2, k)`, `θ(2, 2, 2, k)`, diamond rings at
-  `m = 6, 7`, D's witness, at `d = 4, 5, 6`.
+- [x] **T1, T2** (§2.4): the flat formulas at `d = 4, 5, 6`; CERT's certificates at `d = 3..6`,
+  over every field (`Strata.md` Results 20–21).
+- [x] **The content-range graphs** (§2.5): 38 content cells at `d = 4, 5, 6`, all at target
+  (Result 22).
 - [ ] **T3, T4, T5** (§2.4), on graphs with `def[3] ≥ d − 2` only: SHORT at `d = 4, 5`, ONE-EAR
   at `d = 4, 5` (and T4's `d = 5, 6` half), the coverage rows at `D = 10, 15`. Each sizes an
-  obligation before any attack on it.
+  obligation before any attack on it. T4's first half is next (*Current state*).
 - [ ] **A second read of rows 9 and 12** (contraction; (⋆) and the two-body ear), before an attack
   track or PD-CARRIER builds on them.
 - [ ] **SHORT, ONE-EAR** (§2.3): attack tracks once T3 and T4 size them, SHORT at `d = 4` and
@@ -59,12 +59,12 @@ is `def[3] ≥ d − 2`, measured so far on graphs that bind the pencil conditio
 
 ## Hand-off / next phase
 
-Land T1, T2 and the content-range graphs as one `strata.py` mode, committed with its figures
-(`HARNESS.md` *Reproducibility*). If a content-range graph stays below target at several seeds
-(one point's shortfall proves nothing), take it to the PI before anything else. Otherwise the next two commits are open in either order: PD-STATE's
-open (the next sub-phase, `PHASE-BOUNDARIES.md` *When this commit opens a phase*) and T3 and T4 at
-`d = 4, 5`. Whether SHORT and ONE-EAR take one session or several is unknown until T3 and T4 size
-them.
+Two commits are open, in either order (*Current state*). One is T4's first half, a new
+`strata.py` mode committed with its figures (`HARNESS.md` *Reproducibility*), on Result 22's
+thetas. The other is PD-STATE's open as the next sub-phase. A `G[V₁]` cell below target at
+several seeds would rule out ONE-EAR's first option at `d = 4`, the motive asking `G[V₁]` to attain
+on that locus (design doc §2.3), leaving another step (one point's shortfall proves nothing). Whether SHORT and ONE-EAR take one session or several is unknown
+until T3 and T4 size them.
 
 ## Decisions made during this phase
 
@@ -74,3 +74,8 @@ them.
 - **The PI's planning defaults** (design doc §1, 2026-10-29): content-range tests first; three
   tiered targets; GENERIC after; PD-STATE and PD-STABLE beside the research once T1 and T2 land;
   a second read of rows 9 and 12.
+- **T1, T2 and the content range share one mode**, `strata.py --content`, so `--pd`'s figures do
+  not move. T2's searches are seeded by `(d, m)` alone, the same at every `--seed`, and its
+  `D`-gon is built (`cert_top`), not searched: a `{−1, 0, 1}` search found none at `d = 5, 6` in
+  5000 tries (measured, script not retained). Independence is checked over every field (Smith
+  invariant factors), as Phase 40's certificates are.

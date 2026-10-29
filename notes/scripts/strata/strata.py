@@ -79,6 +79,22 @@ output byte-identical):
       graphs, subdivisions, diamond rings; n <= 25) at d = 4..6 against
       D(n-1), where a match certifies.
 
+Added in Phase 42a (2026-10-29; the ten modes above unchanged, their output
+byte-identical; `notes/Phase42-design.md` sections 2.4-2.5):
+
+  python3 notes/scripts/strata/strata.py --content [--seed N]
+      T1 on `GRAPHS4` at d = 4, 5, 6: the flat configuration (every height
+      0) against D(n-1) + 3 - dim L(q), asserted at every graph; R1's base
+      (the last height 0, the P^(d-1) pencil in a hyperplane) against
+      D(n-1) - def_(D_(d-1)), asserted at d = 4, reported at d = 5, 6.  T2
+      at d = 3..6: closed m-gons of affine points, 3 <= m <= D, with joins
+      independent over every field (Smith invariant factors all 1), and the
+      long ear's D-gon `cert_top` with three consecutive points at height
+      zero, asserted; seed-independent.  Then the content-range graphs
+      (theta(2,2,k), theta(2,2,2,k), D's witness, diamond rings at m = 6, 7)
+      at d = 4, 5, 6: rank at a point / D(n-1) - def_D under the DP cap,
+      reported, and against D(n-1) past it, where a match certifies.
+
 Verdict: the last line is `OK: every target met`, or `FAILED: ...` with exit
 status 1; a mismatch in any mode counts.
 
@@ -1241,8 +1257,313 @@ PD_PAST_CAP = {
 }
 
 
+# ---------------- Phase 42a: T1, T2 and the content range ----------------
+
+CERT_TRIES = 1000
+
+
+def elementary_divisors(M):
+    """The invariant factors of an integer matrix (its Smith normal form's
+    diagonal, zeros dropped).  All are 1 iff the gcd of the maximal minors is
+    1, iff the rows stay independent over every field."""
+    A = [[int(x) for x in r] for r in M]
+    out = []
+    while A and A[0] and any(any(r) for r in A):
+        _, i, j = min((abs(x), i, j) for i, r in enumerate(A)
+                      for j, x in enumerate(r) if x)
+        while True:
+            A[0], A[i] = A[i], A[0]
+            for r in A:
+                r[0], r[j] = r[j], r[0]
+            p = A[0][0]
+            for i in range(1, len(A)):
+                c = A[i][0] // p
+                A[i] = [x - c * y for x, y in zip(A[i], A[0])]
+            for j in range(1, len(A[0])):
+                c = A[0][j] // p
+                for r in A:
+                    r[j] -= c * r[0]
+            rest = [(abs(A[i][0]), i, 0) for i in range(1, len(A)) if A[i][0]] \
+                + [(abs(A[0][j]), 0, j) for j in range(1, len(A[0])) if A[0][j]]
+            if rest:
+                _, i, j = min(rest)
+                continue
+            bad = next((i for i in range(1, len(A))
+                        if any(x % p for x in A[i][1:])), None)
+            if bad is None:
+                break
+            A[0] = [x + y for x, y in zip(A[0], A[bad])]
+            i, j = 0, 0
+        out.append(abs(A[0][0]))
+        A = [r[1:] for r in A[1:]]
+    return out
+
+
+def unimodular(J):
+    """The rows of the integer matrix J are independent over every field."""
+    return rank(J) == len(J) and set(elementary_divisors(J)) == {1}
+
+
+def closed_joins(Y):
+    """The joins Y_0 Y_1, ..., Y_(m-2) Y_(m-1), Y_(m-1) Y_0 of a closed polygon."""
+    return [ext([Y[i], Y[(i + 1) % len(Y)]]) for i in range(len(Y))]
+
+
+def cert_search(d, m):
+    """A closed m-gon of affine points of K^(d+1), coordinates in {-1, 0, 1},
+    with joins independent over every field, by a search seeded by (d, m)
+    alone, so the same at every --seed.  Returns it and the tries."""
+    R = random.Random(1000 * d + m)
+    for t in range(1, CERT_TRIES + 1):
+        Y = [[F(R.randint(-1, 1)) for _ in range(d)] + [F(1)] for _ in range(m)]
+        if all(Y[i] != Y[(i + 1) % m] for i in range(m)) \
+                and unimodular(closed_joins(Y)):
+            return Y, t
+    raise Degenerate(f"cert: no closed {m}-gon in P^{d} in {CERT_TRIES} tries")
+
+
+def cert_ear(d, k):
+    """Row 12's open ear a, x_1, ..., x_k, b: k + 2 affine points with the k + 1
+    consecutive joins independent over every field and heights zero at a,
+    x_1, x_k, b, so that they lie in every lifting space (the chapter's
+    lem:pencil-ear-fibre(1)).  Searched as `cert_search`."""
+    R = random.Random(100000 + 1000 * d + k)
+    for t in range(1, CERT_TRIES + 1):
+        Y = [[F(R.randint(-1, 1)) for _ in range(d)] + [F(1)] for _ in range(k + 2)]
+        for i in (0, 1, k, k + 1):
+            Y[i][2:d] = [F(0)] * (d - 2)
+        J = [ext([Y[i], Y[i + 1]]) for i in range(k + 1)]
+        if all(any(j) for j in J) and unimodular(J):
+            return Y, t
+    raise Degenerate(f"cert: no open ear of {k} in P^{d} in {CERT_TRIES} tries")
+
+
+def euler_trail(adj, a, b):
+    """An Euler trail from a to b of the graph adj (vertex -> set of
+    neighbours), smallest neighbour first (Hierholzer); adj is consumed."""
+    stack, out = [a], []
+    while stack:
+        v = stack[-1]
+        if adj[v]:
+            w = min(adj[v])
+            adj[v].discard(w)
+            adj[w].discard(v)
+            stack.append(w)
+        else:
+            out.append(stack.pop())
+    out.reverse()
+    need(out[0] == a and out[-1] == b and not any(adj.values()),
+         "euler: not an Euler trail")
+    return out
+
+
+def cert_top(d):
+    """A closed D-gon, D = C(d+1,2), of affine points with joins independent
+    over every field and Y_(D-1), Y_0, Y_1 at height zero (the long ear's x_k,
+    a = b, x_1).  On P_0 = (0,..,0,1) and P_i = e_(i-1) + e_d, a unimodular
+    basis with P_1, P_2 at height zero, the joins P_i P_j are a unimodular
+    basis of Lambda^2.  Even d: an Euler circuit of K_(d+1), whose joins are
+    that basis.  Odd d: an Euler circuit of K_(d+1) minus the perfect
+    matching M = {12, 03, 45, 67, ...}, and for each ij in M a detour
+    i -> R -> k at a step i -> k, R = P_j + P_k - P_i, with joins
+    P_i P_j + P_i P_k and P_j P_k - P_i P_k.  Both circuits run 1 -> 0 -> 2.
+    Returns the points, the circuit and the detours {step: (i, j)}."""
+    P = [[F(0)] * d + [F(1)]] + [[F(int(c == i)) for c in range(d)] + [F(1)]
+                                  for i in range(d)]
+    M = [] if d % 2 == 0 else [(1, 2), (0, 3)] + [(i, i + 1) for i in range(4, d, 2)]
+    adj = {v: {w for w in range(d + 1) if w != v} for v in range(d + 1)}
+    for i, j in M + [(0, 1), (0, 2)]:
+        adj[i].discard(j)
+        adj[j].discard(i)
+    walk = [0] + euler_trail(adj, 2, 1)
+    used, detours = {0, len(walk) - 1}, {}
+    for i, j in M:
+        s = next(s for s in range(len(walk)) if s not in used and walk[s] in (i, j))
+        used.add(s)
+        detours[s] = (walk[s], j if walk[s] == i else i)
+    Y = []
+    for s, v in enumerate(walk):
+        Y.append(P[v])
+        if s in detours:
+            i, j = detours[s]
+            k = walk[(s + 1) % len(walk)]
+            Y.append([x + y - z for x, y, z in zip(P[j], P[k], P[i])])
+    return Y, walk, detours
+
+
+def placed(Y, m):
+    """Phase 40's placement of a closed walk of m >= D bodies on a closed
+    D-gon Y: bodies 0..D-3 at Y_0..Y_(D-3), bodies D-2..m-2 at Y_(D-2), the
+    last at Y_(D-1).  A cycle on m bodies, or an open ear a, x_1, ..., x_k, b
+    with m = k + 1, b at a's point."""
+    D = len(Y)
+    return [Y[min(i, D - 2)] for i in range(m - 1)] + [Y[D - 1]]
+
+
+CERT_HEXAGON = [[F(x) for x in y] for y in ((1, 0, 0, 1), (0, -1, 0, 1), (0, 0, 1, 1),
+                                            (-1, 0, 1, 1), (0, 0, 0, 1), (-1, -1, 0, 1))]
+
+
+def content_graphs():
+    """The content-range graphs of Phase42-design.md section 2.5, with the
+    singleton bound on def_3 that the design states for each family."""
+    th = lambda *ls: relabel(theta_edges(list(ls)))  # noqa: E731
+    G = {f"th22-{k}": (th(2, 2, k), k - 2) for k in range(4, 11)}
+    G.update({f"th222-{k}": (th(2, 2, 2, k), k - 3) for k in range(5, 11)})
+    G["Dwit"] = ((7, [(i, (i + 1) % 6) for i in range(6)] + [(0, 3), (6, 1), (6, 4)]),
+                 0)
+    G.update({f"ring{m}": (diamond_ring(m), m - 3) for m in (6, 7)})
+    return G
+
+
+def mode_content(s):
+    bad = 0
+    print("T1 (Phase 42a, row 5), one seeded picture q per graph of GRAPHS4.  "
+          "flat: every height 0, against D(n-1) + 3 - dim L(q) (asserted, every "
+          "graph and d; the chapter's flat rank).  R1: the last of the d-2 "
+          "heights 0, the rest fresh in L(q), so the P^(d-1) pencil in a "
+          "hyperplane, against D(n-1) - def_(D_(d-1)) (asserted at d = 4: Phase "
+          "40 and Result 15; reported at d = 5, 6, '<' below; '.' at "
+          "multigraphs).  Also asserted: def_3 <= d-3 gives def_(D_(d-1)) = "
+          "def_D (section 2.5, by Result 16)")
+    print(f"{'graph':10}{'n':>3}{'e':>3}{'d3':>4}{'d6':>4}{'d10':>4}{'d15':>4}"
+          f"{'l':>4} " + "".join(f"{'d=' + str(d) + ' flat':>12}{'R1':>9}"
+                                 for d in (4, 5, 6)))
+    reach = {d: [0, 0, 0] for d in (4, 5, 6)}  # simple graphs; flat, R1 at target
+    for g, (n, E) in GRAPHS4.items():
+        df = {D: deficiency(n, E, D) for D in (3, 6, 10, 15, 21)}
+        q = [s.vec(2) for _ in range(n)]
+        L = lifting_space(n, E, q)
+        ell = len(L)
+        cells = []
+        for d in (4, 5, 6):
+            D, Dm = (d + 1) * d // 2, d * (d - 1) // 2
+            t = D * (n - 1) - df[D]
+            b = [list(q[v]) + [F(0)] * (d - 2) + [F(1)] for v in range(n)]
+            H = [ext([b[u], b[v]]) for u, v in E]
+            body_guard(n, E, H)
+            r, tf = motion_rank(n, E, H), D * (n - 1) + 3 - ell
+            bad += r != tf
+            cells.append(f"{r}/{tf}" + ("" if r == tf else "*"))
+            if df[3] <= d - 3:
+                bad += df[Dm] != df[D]
+            if not simple(E):
+                cells.append(".")
+                continue
+            hs = [s.comb(L) for _ in range(d - 3)]
+            b = [list(q[v]) + [h[v] for h in hs] + [F(0), F(1)] for v in range(n)]
+            H = [ext([b[u], b[v]]) for u, v in E]
+            body_guard(n, E, H)
+            r1, t1 = motion_rank(n, E, H), D * (n - 1) - df[Dm]
+            mark = ""
+            if r1 != t1:
+                mark = "*" if d == 4 else "<"
+                bad += d == 4
+            cells.append(f"{r1}/{t1}{mark}")
+            reach[d][0] += 1
+            reach[d][1] += r == t
+            reach[d][2] += r1 == t
+        print(f"{g:10}{n:>3}{len(E):>3}{df[3]:>4}{df[6]:>4}{df[10]:>4}{df[15]:>4}"
+              f"{ell:>4} " + "".join(f"{c:>12}" if i % 2 == 0 else f"{c:>9}"
+                                     for i, c in enumerate(cells)))
+    for d, (k, f, r1) in reach.items():
+        print(f"  d={d}: at the P^d target D(n-1) - def_D, of {k} simple graphs: "
+              f"flat {f} (def_3 = def_D), R1 {r1}")
+
+    print("T2 (CERT, rows 10-12): affine points of K^(d+1) whose joins are "
+          "independent over every field (invariant factors all 1), asserted.  "
+          "By a search seeded by (d, m) or (d, k) alone, with its tries: closed "
+          "m-gons, 3 <= m < D (the cycle), and open ears a, x_1, .., x_k, b, "
+          "2 <= k <= D-2, at height zero at a, x_1, x_k, b (row 12).  m = D by "
+          "`cert_top`, also the long ear's certificate (Y_(D-1), Y_0, Y_1 at "
+          "height zero); its placements on cycles of m = D, D+1, D+3 bodies and "
+          "ears of k = D-1, D, D+2 interior bodies span Lambda^2.  d = 3 is the "
+          "control, with the chapter's hexagon (lem:pencil-chain-span-"
+          "certificates) asserted too, and the negative control "
+          "[[1, 1], [1, -1]] (invariant factors 1, 2) rejected.")
+    for m in range(3, 7):
+        bad += not unimodular(closed_joins(CERT_HEXAGON[:m]))
+    neg = [[F(1), F(1)], [F(1), F(-1)]]
+    bad += elementary_divisors(neg) != [1, 2] or unimodular(neg)
+    for d in (3, 4, 5, 6):
+        D = (d + 1) * d // 2
+        tries, ears = [], []
+        for out, find, ms in ((tries, cert_search, range(3, D)),
+                              (ears, cert_ear, range(2, D - 1))):
+            for m in ms:
+                try:
+                    out.append(find(d, m)[1])
+                except Degenerate:
+                    out.append("-")
+                    bad += 1
+        Y, walk, detours = cert_top(d)
+        ok = len(Y) == D and unimodular(closed_joins(Y)) \
+            and not any(Y[i][2:d] != [F(0)] * (d - 2) for i in (D - 1, 0, 1))
+        for m in (D, D + 1, D + 3):
+            ok = ok and rank(closed_joins(placed(Y, m))) == D
+        bad += not ok
+        print(f"  d={d} D={D:>2}: m = 3..{D - 1}, tries "
+              + " ".join(map(str, tries)) + f"; k = 2..{D - 2}, tries "
+              + " ".join(map(str, ears)) + f"; m = {D}: circuit "
+              + "-".join(map(str, walk))
+              + (", detours " + " ".join(f"{i}{j}@{walk[t]}{walk[(t + 1) % len(walk)]}"
+                                         for t, (i, j) in detours.items())
+                 if detours else "")
+              + ("" if ok else "  *"))
+
+    print("the content range (section 2.5): the pencil of P^d at one seeded "
+          "point per graph, fresh heights per d, against t = D(n-1) - def_D "
+          "under the DP cap (n <= 12; '<' below t, reported) and D(n-1) past it "
+          "('=' certifies, '?' inconclusive).  'c' marks a content cell, "
+          "d <= dim L(q) - 1 = 2 + def_3.  th22-k: theta(2,2,k), row 14's one-"
+          "body ear whose ends share a neighbour; th222-k: theta(2,2,2,k), route "
+          "B's two hubs with three common neighbours; Dwit: D's candidate "
+          "witness (section 2.3), C6 + 03 + y on 1, 4; ringm: diamond rings, a "
+          "condition at every body.  Asserted under the cap: def_3 at least the "
+          "design's singleton bound, dim L(q) = 3 + def_3, rank <= t")
+    print(f"{'graph':10}{'n':>3}{'e':>3}{'d3':>4}{'l':>4} "
+          + "".join(f"{'d=' + str(d):>13}" for d in (4, 5, 6)))
+    tally, short = [0, 0], []
+    for g, ((n, E), lo) in content_graphs().items():
+        capped = n <= 12
+        df = {}
+        if capped:
+            df = {D: deficiency(n, E, D) for D in (3, 10, 15, 21)}
+            bad += df[3] < lo
+        q = [s.vec(2) for _ in range(n)]
+        L = lifting_space(n, E, q)
+        ell = len(L)
+        if capped:
+            bad += ell != 3 + df[3]
+        cells = []
+        for d in (4, 5, 6):
+            D = (d + 1) * d // 2
+            _, H = pd_pencil(s, n, E, d, q, L)
+            body_guard(n, E, H)
+            r = motion_rank(n, E, H)
+            content = d <= ell - 1
+            if capped:
+                t = D * (n - 1) - df[D]
+                assert r <= t, (g, d)
+                ok, mark = r == t, ("" if r == t else "<")
+            else:
+                t = D * (n - 1)
+                ok, mark = r == t, ("=" if r == t else "?")
+            if content:
+                tally[0] += 1
+                tally[1] += ok
+                short += [] if ok else [f"{g}@{d}"]
+            cells.append(f"{r}/{t}{mark}{'c' if content else ''}")
+        print(f"{g:10}{n:>3}{len(E):>3}{df.get(3, '.'):>4}{ell:>4} "
+              + "".join(f"{c:>13}" for c in cells))
+    print(f"  content cells at their target: {tally[1]} of {tally[0]}"
+          + ("" if not short else "; not: " + ", ".join(short)))
+    print(f"mismatches (asserted): {bad}")
+    return bad
+
+
 MODES = ("linear", "mixed", "perbody", "examples", "selftest",
-         "complexes", "residual4", "d4", "lifting", "pd")
+         "complexes", "residual4", "d4", "lifting", "pd", "content")
 
 
 def main():
