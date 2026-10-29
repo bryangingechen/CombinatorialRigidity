@@ -109,7 +109,7 @@ conjecture is Jackson–Jordán's 2008 theorem on pin-collinear body-and-pin
 frameworks; the development proves it over every infinite field, by
 Katoh–Tanigawa's argument (phase 40). The formal panel-hinge framework records,
 for each edge, a pair of bodies whose panels meet in its hinge, and
-since phase 41a the pair is the edge's own ends. Since phase 41b,
+the pair is the edge's own ends (phase 41).
 Theorems 5.5 and 5.6 give each simple graph they cover a realization
 with nonparallel panels, as in Katoh–Tanigawa's Theorem 5.5 (no two
 panels are parallel), so the hinge of every edge is nondegenerate. Theorem 5.6
@@ -161,14 +161,19 @@ a framework at generic hinges is infinitesimally rigid iff `(D−1)·G`
 packs `D` edge-disjoint spanning trees
 (`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`),
 with the non-generic parameter choices confined to the zero set of a
-single nonzero polynomial in each case. Since phase 41b, the generic
-body-hinge theorem and its panel-hinge companion hold for every simple
-graph on one body or more, so they cover the simple minimal `k`-dof-graphs too, such as a
-single edge, a tree or a triangle; since phase 41d they assume nothing of the edge labels.
-Since phase 41c the body-hinge theorem holds for every
-multigraph, parallel edges and loops allowed; the panel-hinge companion
-stays for simple graphs. The companion says that every panel-hinge framework on such a
-graph whose panel normals are generic attains the deficiency rank, and
+single nonzero polynomial in each case. As restated in phase 41, the
+generic body-hinge theorem holds for every multigraph on one body or
+more, parallel edges and loops allowed, and its panel-hinge companion
+for every simple graph on one body or more, so both cover the simple
+minimal `k`-dof-graphs too, such as a single edge, a tree or a
+triangle; neither assumes anything of the edge labels. The body-hinge
+theorem also holds at Katoh–Tanigawa's own notion of genericity, at
+every choice of hinge positions at which the rows of every set of edges
+have maximum rank over the choices with nondegenerate hinges
+(`isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees`);
+every generic choice above is one. The companion says that every
+panel-hinge framework on a simple graph whose panel normals are generic
+attains the deficiency rank, and
 so is infinitesimally rigid iff the graph has deficiency zero
 (Jackson–Jordán's Theorem 7.2, sharpened to an iff;
 `PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals`).
@@ -200,6 +205,12 @@ connected graph of minimum degree at least two, a general member of it attains t
 by an induction through cut-vertex, bridge, cycle, ear, split-off and contraction steps; this gives
 the first statement. The second does not follow this way, and is proved instead inside the
 reduction's own induction.
+
+Phase 41 (closed 2026-10-29) ended a review of the blueprint against the
+Lean: the statements that claimed more or less than their Lean
+declarations were corrected, every main result has a closed witness that
+its hypotheses can all be met, and each claim the chapters made without a
+Lean declaration was given one.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

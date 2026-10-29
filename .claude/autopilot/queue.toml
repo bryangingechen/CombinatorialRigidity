@@ -117,7 +117,7 @@ id = "RECONCILE-FORMAL"
 title = "RECONCILE: the carriers and new formalization (phase)"
 note = "notes/Phase41-design.md"
 attended = true
-done = false
+done = true
 
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.

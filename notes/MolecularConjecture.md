@@ -784,21 +784,17 @@ field** (`pencil_realization_theorem`, `pencilPair_of_nonempty`); its first sub-
 5.5/5.6 and the conjecture to the plane, `n ≥ 2`, and its recons found three new proofs, each
 second-read, among them route B for the generic statement. At the close the PI retired the held
 kernels and the rest of the fallback (§6 of the design doc). Summary: ROADMAP §40. **Phase 41**
-(RECONCILE-FORMAL, `notes/Phase41-design.md`) opened 2026-10-24: it builds into `PanelHingeFramework`
-the condition that each edge's selector pair is its ends, and restates Theorems 5.5/5.6, the molecular
-conjecture and the generic-lift theorems on it. Its first sub-phase, 41a (CARRIER), closed 2026-10-24
-with the condition built into the structure and no main result restated; the second, 41b
-(RESTATE), closed 2026-10-25 with those theorems restated: Theorems 5.5 and 5.6 give simple graphs
-nonparallel panels, and the generic theorems cover every simple graph on one body or more. The
-third, 41c (MULTIGRAPH), opened and closed 2026-10-28: the generic body-hinge theorem holds for
-every multigraph, loops allowed, and KT Proposition 2.3 at every generic hinge-point assignment.
-The fourth, 41d (RELABEL), opened and closed 2026-10-29 with the PI: a transport at the boundary
-dropped the bound on the edge labels from the six main results that carried it, the induction
-untouched. The fifth and last, 41e (UNSTATED), opened 2026-10-29 with the PI: each claim no
-declaration states gets a declaration and a pin, KT Theorem 4.9's principle drops its label supply,
-and its close closes Phase 41. Summary: ROADMAP §41. Still queued,
+(RECONCILE-FORMAL, `notes/Phase41-design.md`) opened 2026-10-24 and closed 2026-10-29, the last
+part of the RECONCILE program, in five sub-phases, 41a–41e: `PanelHingeFramework` records each
+edge's ends as its selector pair (CARRIER); Theorems 5.5/5.6, the molecular conjecture and the
+generic-lift theorems were restated on it, Theorems 5.5 and 5.6 giving simple graphs nonparallel
+panels and the generic theorems covering every simple graph on one body or more (RESTATE); the
+generic body-hinge theorem holds for every multigraph, loops allowed, and KT Proposition 2.3 as KT
+state it (MULTIGRAPH); no main result bounds the edge labels (RELABEL); and each claim no
+declaration stated has one, with KT Proposition 2.3 and the generic body-hinge theorem at KT's own
+genericity (UNSTATED). Summary: ROADMAP §41. Still queued,
 codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md` — the next phase to open after Phase 41), **PIN** (a second,
+conjecture, `notes/Origami.md` — the next phase to open, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).

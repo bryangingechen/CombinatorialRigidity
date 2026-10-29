@@ -1,48 +1,30 @@
 # RECONCILE: acting on the PROSE findings (planning note)
 
-**Status:** rounds 1, 2 and 3 closed (rounds 1 and 2 on 2026-10-15, round 3 on 2026-10-24); the
-phase, `RECONCILE-FORMAL`, opened with the PI on 2026-10-24 as Phase 41; its first sub-phase,
-41a (CARRIER), closed the same day, its second, 41b (RESTATE), closed on 2026-10-25, and its third,
-41c (MULTIGRAPH), opened and closed on 2026-10-28, its fourth, 41d (RELABEL), opened and
-closed on 2026-10-29, and its fifth and last, 41e (UNSTATED), opened on 2026-10-29. The PI
-queued RECONCILE next, ahead of ORIGAMI, as three autopilot rounds and one attended phase
-(`.claude/autopilot/queue.toml`). Its input is PROSE's findings report `notes/Prose-report.md`
-(items S1–S42, L1–L12, M1–M5, G1–G6 and §2.6), with each finding's home the ledger
-`notes/Prose-findings.md`. Round 1, `reconcile-texts` (`notes/Reconcile-texts-cleanup.md`), is done
-in nine tasks: S1's and S2's scopes, M1's text, M2's and M5's credits (Pollaczek-Geiringer 1927
-states the characterization and is credited beside Laman), §2.6's example and the non-vacuity rule;
-the Lean is unchanged. Round 2, `reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), is
-done in 21 one-commit tasks: the false statements (S6–S10) made true, S4 and S5 restated, S7 and
-Case III's three counts (S20) repinned, G1's three pin changes made, S14, S15, S21, S26–S29, S35,
-S36 and S38–S42 fixed, G2's two true duplicates merged, the genericity device's citations made to
-say which argument they borrow, and the nodes of Cases I, II and III, `meet.tex` and the forest
-surgery that the formal proof leaves each framed by a remark; the Lean is unchanged, and the
-declarations the round unpinned are in round 3's list (§3, L9). Round 3, `reconcile-lean`
-(`notes/Reconcile-lean-cleanup.md`), is done in 103 one-commit tasks (the open's 39, with the
-sub-tasks the sweep and the screens added): a committed check of the blueprint labels the docstrings
-name (`scripts/check-docstring-labels.py`; 422 findings at its first run, 4 at the close, in S1's
-files); L9's deletions and the dead declarations `CLEANUP.md` §B's screen found, keeping the pins
-whose nodes stay, the vendored port and four declarations a chapter names as its Lean form or
-witness; `F-061`'s rename and `cor:forest-surgery-deficiency` repinned; the signatures that L6–L8,
-S17 and the entries' verdicts named; the pebble game's search re-proved with one marked set, its
-texts rewritten and its input split on any whitespace; the non-vacuity witnesses of the 16 main
-results outside S1's and S2's rows (`CombinatorialRigidity/Nonvacuity.lean`); and the docstring
-sweep by directory, outside the footprint's parts. Twenty-two blueprint statements were restated
-where these changes reached them. No main result's statement changed: `F-323` (three main results'
-unused `[DecidableEq β]`) and `F-324` (`theorem_55_minimalKDof_gen`'s derivable `hD`), with the
-binders below them kept for them, are for the PI with the phase's restatements, and the footprint's
-docstrings wait for the phase (§3). The round's log also proposed that the label check
-join the project's gates for a commit that moves a pin; the PI adopted it on 2026-10-24
-(`blueprint/lint.sh` check 9). Phase 41's plan, its
-open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
-41e (UNSTATED, the claims no declaration states, the phase's (c) in §3 below, with the design
-doc's §4(a); opened with the PI on 2026-10-29, the design doc's §1j, with item R's drop of `hfresh`
-from KT Theorem 4.9's principle and the molecule's padded labels dropped), the last commit of its
-close: its items have landed, the close's first part ran the gates and gave every ledger entry its
-last disposition, `done` or `left` (`notes/Prose-findings.md`, its header), and the first commit of
-its second part made the re-reads and the compressions (`notes/Phase41e.md` *Hand-off*). The last
-commit closes the phase and the program. The
-PI's push ran CI green on 2026-10-25.
+**Status:** ✓ closed 2026-10-29, with Phase 41. The PI queued RECONCILE next, ahead of ORIGAMI, as
+three autopilot rounds and one attended phase (`.claude/autopilot/queue.toml`, all four rows done).
+Its input was PROSE's findings report `notes/Prose-report.md` (items S1–S42, L1–L12, M1–M5, G1–G6
+and §2.6), and each finding's home is the ledger `notes/Prose-findings.md`, which closed with 332
+entries, 307 `done` and 25 `left`, none `reported` (its header says what is left and why). Round 1,
+`reconcile-texts` (`notes/Reconcile-texts-cleanup.md`), closed 2026-10-15 in nine tasks: S1's and
+S2's scopes, M1's text, M2's and M5's credits (Pollaczek-Geiringer 1927 states the
+characterization and is credited beside Laman), §2.6's example and the non-vacuity rule; the Lean
+unchanged. Round 2, `reconcile-statements` (`notes/Reconcile-statements-cleanup.md`), closed
+2026-10-15 in 21 tasks: the false statements made true, the mis-scoped ones restated, G1's pin
+changes made and G2's true duplicates merged, the genericity device's citations made to say which
+argument they borrow, and the nodes of KT's route that the formal proof leaves each framed by a
+remark; the Lean unchanged. Round 3, `reconcile-lean` (`notes/Reconcile-lean-cleanup.md`), closed
+2026-10-24 in 103 tasks: the docstring-label check (`scripts/check-docstring-labels.py`, since the
+PI's 2026-10-24 decision `blueprint/lint.sh` check 9), the dead declarations deleted, unneeded
+hypotheses below the main results dropped, the pebble game's search re-proved, a non-vacuity
+witness for each of the 16 main results outside S1's and S2's rows, and the docstring sweep outside
+the phase's footprint; twenty-two blueprint statements restated, no main result's. The phase,
+`RECONCILE-FORMAL`, opened with the PI on 2026-10-24 as Phase 41 and closed on 2026-10-29 in five
+sub-phases, 41a–41e (plan and the PI's decisions `notes/Phase41-design.md`; summary ROADMAP §41):
+S2's link condition a field of `PanelHingeFramework`, S1's generic theorems restated to cover the
+minimal graphs, with `F-323` and `F-324` taken in the restatements, M1 for every multigraph, no
+main result bounding the edge labels, and each claim no declaration stated given one (the phase's
+(c) in §3, with the design doc's §4(a)). **Next:** nothing in RECONCILE; the loop stopped for the
+PI's push, and ORIGAMI opens next, with the PI.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

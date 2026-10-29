@@ -96,9 +96,9 @@ panel-hinge framework — is a theorem of the development
 is a pin joining two bodies and each panel is a line, the molecular
 conjecture is Jackson–Jordán's 2008 theorem on pin-collinear body-and-pin
 frameworks; the development proves it over every infinite field, by
-Katoh–Tanigawa's argument (phase 40). The formal framework records a pair of bodies per edge, and since
-phase 41a the pair is the edge's own ends, so each hinge is the meet of
-the panels of its edge's own ends. Since phase 41b, Theorems 5.5 and
+Katoh–Tanigawa's argument (phase 40). The formal framework records a pair of bodies per edge, and
+the pair is the edge's own ends (phase 41), so each hinge is the meet of
+the panels of its edge's own ends. Theorems 5.5 and
 5.6 give each simple graph they cover a realization with nonparallel
 panels, as in Katoh–Tanigawa's Theorem 5.5, so the hinge of every edge
 is nondegenerate; Theorem 5.6 and the molecular conjecture hold for
@@ -140,14 +140,17 @@ whenever `5G` packs six edge-disjoint spanning trees; Tay's body-bar
 theorem holds at every generic choice of bar endpoints; and the
 body-hinge theorem holds at every generic choice of hinge positions,
 with the non-generic parameter choices confined to the zero set of a
-single nonzero polynomial in each case. Since phase 41b, the generic
-body-hinge theorem and its panel-hinge companion hold for every simple
-graph on one body or more, the simple minimal `k`-dof-graphs included
-(a single edge, a tree, a triangle): on such a graph each panel-hinge
+single nonzero polynomial in each case. As restated in phase 41, the
+generic body-hinge theorem holds for every multigraph on one body or
+more, parallel edges and loops allowed, and its panel-hinge companion
+for every simple graph on one body or more, the simple minimal
+`k`-dof-graphs included (a single edge, a tree, a triangle); neither
+assumes anything of the edge labels. On a simple graph each panel-hinge
 framework whose panel normals are generic attains the deficiency rank.
-Since phase 41d they assume nothing of the edge labels. Since phase 41c
-the body-hinge theorem holds for every multigraph, parallel edges and
-loops allowed (the panel-hinge companion stays for simple graphs).
+The body-hinge theorem also holds at Katoh–Tanigawa's own notion of
+genericity, at every choice of hinge positions at which the rows of
+every set of edges have maximum rank over the choices with
+nondegenerate hinges; every generic choice above is one.
 Phase 35 (closed 2026-07-18)
 recovered the **full multigraph strength** of Theorem 5.6 and of the
 molecular conjecture itself, which the development above proves for
@@ -159,7 +162,11 @@ panels — both results hold with parallel edges admitted
 equivalence is provably false for the intersection-based panel-hinge
 frameworks the simple-graph statements use. Phases 39–40 (closed
 2026-09-25 and 2026-09-29) then proved the pencil realization theorem,
-stated above.
+stated above. Phase 41 (closed 2026-10-29) ended a review of the
+blueprint against the Lean: the statements that claimed more or less
+than their Lean declarations were corrected, every main result has a
+closed witness that its hypotheses can all be met, and each claim the
+chapters made without a Lean declaration was given one.
 
 ### How the pencil realization theorem is proved
 
@@ -217,7 +224,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    26 | the molecule application (Corollary 5.7) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean` | ✓ |
 |    39 | the pencil realization theorem: reduction to two main-component statements | `Molecular/Molecule/Pencil/` | ✓ |
 |    40 | the pencil realization theorem: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
-|    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph | `Molecular/` | in progress |
+|    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph; a Lean declaration for each claim the blueprint made without one | `Molecular/` | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

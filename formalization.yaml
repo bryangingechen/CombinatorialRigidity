@@ -281,7 +281,14 @@ status:
     the plane into space, the heights of the lifts forming a linear space, the lifting space,
     after extending Theorems 5.5/5.6 and the molecular conjecture to dimension 2, where the
     molecular conjecture is Jackson-Jordán's 2008 pin-collinear theorem, here over any infinite
-    field.
+    field. Phase 41 (closed 2026-10-29) ended a review of the blueprint against the Lean: each
+    hinge of a formal panel-hinge framework lies at the ends of its own edge; the generic
+    body-hinge theorem covers every multigraph on one body or more and its panel-hinge companion
+    every simple graph on one body or more, minimal graphs included, with nothing assumed of the
+    edge labels, and the body-hinge theorem also holds at Katoh-Tanigawa's own notion of
+    genericity, the maximum rank over the realizations with nondegenerate hinges; every main
+    result has a closed witness that its hypotheses can all be met; and each claim the blueprint
+    made without a Lean declaration was given one.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -667,11 +674,11 @@ fidelity:
     and discusses its departures from the source in the chapter that proves it; its appendix,
     "Notes on the formalization", records the wrong turns the development took. A 2026 review
     of the blueprint against the Lean found statements that claim more or less than the
-    declarations they cite, and a cleanup now under way acts on them. Among the main results,
-    Katoh-Tanigawa Theorem 5.6 and the molecular conjecture for simple graphs, as stated,
-    cover less than their sources' statements do; their rows in status.main_results say what
-    each covers. The generic body-hinge theorem covers every multigraph, and no main result
-    assumes anything of the edge labels.
+    declarations they cite, and the cleanup that followed, closed 2026-10-29, corrected them.
+    Among the main results, Katoh-Tanigawa Theorem 5.6 and the molecular conjecture for simple
+    graphs, as stated, cover less than their sources' statements do; their rows in
+    status.main_results say what each covers. The generic body-hinge theorem covers every
+    multigraph, and no main result assumes anything of the edge labels.
 
 # review status
 review:

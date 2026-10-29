@@ -63,8 +63,8 @@ formalized, Theorem~5.6 covers every simple graph with at least one
 vertex, and both sides of \cref{thm:molecular-conjecture} ask for a
 nondegenerate hinge at every edge, its panel side also for nonparallel
 panels. The statements for multigraphs place each hinge in the panels
-of the ends of its edge. Phase~41, in progress, made the condition on
-the pair part of the framework and restated these theorems.
+of the ends of its edge. Phase~41 made the condition on the pair part
+of the framework and restated these theorems.
 
 From Theorem~5.6, Katoh and Tanigawa derive the \emph{molecule rank
 formula} (\cref{cor:molecule-rank-formula}), which Jackson and Jord\'an
@@ -266,7 +266,11 @@ and the form at generic points spanning the hinges for every multigraph
 with at least one vertex, parallel edges and loops allowed. So they
 cover the simple minimal $k$-dof-graphs, such as a single edge,
 a tree or a triangle, and the form at hinge points also covers the
-double edge.
+double edge. The form at hinge points holds, too, at every framework
+that is generic in Katoh and Tanigawa's own sense, whose rigidity matrix
+and each of its edge-induced submatrices have the largest rank over all
+realizations of the graph (\cref{def:dof-generic}); every framework at
+generic points spanning the hinges is one.
 
 A fourth continuation (phase~35) proves KT Theorem~5.6 and the molecular
 conjecture for multigraphs, as Katoh and Tanigawa state them
@@ -352,9 +356,13 @@ a tick, and a button in its heading links to the documentation of its
 Lean declarations. The \emph{dependency graph}, linked from the
 navigation bar, shows how the statements depend on each other. A node has
 a green border when its statement is formalized, and a green interior
-when its proof is; the graph's legend explains the other markings. The
-main results of every chapter are formalized, from Laman's theorem to
-the pencil realization theorem (\cref{sec:pencil}, \cref{sec:main-component}).
+when its proof is; the graph's legend explains the other markings.
+Every node of the graph is green, from Laman's theorem to the pencil
+realization theorem (\cref{sec:pencil}, \cref{sec:main-component}):
+each definition and result the chapters state as a node is formalized.
+Phase~41 ended a review of the chapters against the Lean, which corrected
+the statements that claimed more or less than their Lean declarations
+and gave a Lean declaration to each claim the chapters made without one.
 From phase~6 on, the graph is written forward: a chapter's nodes and
 their edges come first, and the statement and proof sketch of a node not
 yet formalized are the plan for its Lean declaration. So the graph is

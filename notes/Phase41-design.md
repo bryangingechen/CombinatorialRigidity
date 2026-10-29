@@ -1,33 +1,24 @@
 # Phase 41 — RECONCILE-FORMAL: design (cross-phase plan and recon)
 
-**Status:** opened 2026-10-24 with the PI. Sub-phase **41a** (CARRIER) closed 2026-10-24, work log
-`notes/Phase41a.md`: the field `isLink_ends` is on `PanelHingeFramework`, and no main result's
-statement changed. Sub-phase **41b** (RESTATE) closed 2026-10-25, work log `notes/Phase41b.md`:
-S1's and S2's main results are restated on the linked carrier as the PI decided at its open and
-during it (§1b–§1f). Theorems 5.5 and 5.6 conclude KT's nonparallel panels for simple `G`; the
-molecular conjecture and the multigraph rows ask nondegenerate hinges on `E(G)` only; the generic
-panel and body-hinge theorems hold at every generic realization of every simple graph on one body
-or more, the panel rank formula a twentieth main result; and `prop:rigidity-matrix-prop11` is KT
-Proposition 2.3 in conditional form. §2's RESTATE arcs are compressed to cited verdicts. The PI's
-push ran CI green (*Build & deploy site* at `4c892cb6` and `ae6a852c`, 2026-10-25). Sub-phase
-**41c** (MULTIGRAPH) opened 2026-10-28 with the PI (§1g) and closed the same day, work log
-`notes/Phase41c.md`: M1, the generic body-hinge theorem, holds for every multigraph, loops allowed,
-and KT Proposition 2.3 is proved as KT state it at every generic hinge-point assignment; §2's
-MULTIGRAPH arc is compressed to a cited verdict. The same day the PI set UNSTATED's scope, took
-§4(a) into it, and asked for a recon of §4(b), the label bound, now the code RELABEL (§1h, §3);
-UNSTATED's open recon is in §2, and so is RELABEL's (route B, a transport at the boundary, proved
-in a witness; 6–9 commits). On 2026-10-29 the PI took RELABEL by route B and opened it as **41d**
-(§1i), work log `notes/Phase41d.md`, with a read-only recon of `minimal_kdof_reduction`'s `hfresh`
-as its last item, and closed it the same day: no main result bounds the edge labels (B1–B3), and
-§2's RELABEL arc is compressed to a cited verdict. Item R's verdict (§2, *Item R's recon*: one
-commit drops `hfresh` from KT Theorem 4.9's principle) went to the PI with 41d's other open
-questions. The PI took it, with the rows form's restatement, the padding drop and the `\uses` fix
-(§1j), and UNSTATED opened the same day as **41e**, work log `notes/Phase41e.md`, planned as
-Phase 41's last sub-phase. After U11's recon the PI took KT Proposition 2.3 and M1 at KT's own
-genericity (§1k). Every 41e item has landed (U1–U12, R, PAD and M1K, with U11's recon and U12's
-spike), and §2's UNSTATED arc and *Item R's recon* are compressed to cited verdicts at 41e's
-close. **Next:** the close's last commit, which closes 41e, Phase 41 and the RECONCILE program
-(`notes/Phase41e.md` *Hand-off*).
+**Status:** ✓ closed 2026-10-29 (opened 2026-10-24 with the PI), in five sub-phases, each with its
+work log. **41a** (CARRIER, closed 2026-10-24, `notes/Phase41a.md`): the field `isLink_ends` is on
+`PanelHingeFramework`, and no main result's statement changed. **41b** (RESTATE, closed
+2026-10-25, `notes/Phase41b.md`): S1's and S2's main results restated on the linked carrier as the
+PI decided at its open and during it (§1b–§1f): Theorems 5.5 and 5.6 conclude KT's nonparallel
+panels for simple `G`; the molecular conjecture and the multigraph rows ask nondegenerate hinges
+on `E(G)` only; the generic panel and body-hinge theorems hold at every generic realization of
+every simple graph on one body or more, the panel rank formula a twentieth main result; and
+`prop:rigidity-matrix-prop11` is KT Proposition 2.3 in conditional form. **41c** (MULTIGRAPH,
+opened and closed 2026-10-28, §1g, `notes/Phase41c.md`): M1 holds for every multigraph, loops
+allowed, and KT Proposition 2.3 as KT state it, at every generic hinge-point assignment. **41d**
+(RELABEL, opened and closed 2026-10-29, §1h–§1i, `notes/Phase41d.md`): by route B, a transport at
+the boundary, no main result bounds the edge labels. **41e** (UNSTATED, opened and closed
+2026-10-29, §1j–§1k, `notes/Phase41e.md`): each claim of the full list (§1h.1) and §4(a) has a
+declaration and a pin, with item R before U4, PAD before U10, and KT Proposition 2.3 and M1 at
+KT's own genericity (M1K). §2's arcs are compressed to cited verdicts, and the PI's decisions
+(§1–§1k) stand verbatim. The close closed the RECONCILE program (`notes/Reconcile.md`). **Next:**
+nothing in this phase: the loop stopped for the PI's push, and ORIGAMI opens next, with the PI
+(ROADMAP *Queued post-program phases*).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -732,14 +723,14 @@ admissible (KT p. 660: `G_v^{ab}` is isomorphic to `G` with `vb` contracted, whi
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
 | **RELABEL** | 41d (opened and closed 2026-10-29 with the PI, §1i) | done: the bound on the edge labels (`hcard`, `hfresh`) dropped from the six main results that carried it (§1h.2), by route B, a transport at the boundary with the induction untouched (§1i.1; §2's *RELABEL's recon*): `embedEdges` moved up with minimality through deficiencies (B1), the pullbacks and KT Theorems 5.5 and 5.6 without the bound (B2), the cascade, the blueprint and `formalization.yaml` (B3); and R, a read-only recon of dropping `hfresh` from `minimal_kdof_reduction` (§1i.3; §2's *Item R's recon*: route A's combinatorial half, proved in a witness, 1 commit, for the PI) (`notes/Phase41d.md`) | 7, the open, a corrective and the close included (planned 7–10) |
-| **UNSTATED** | 41e (opened 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; item R's build before U4, so U4 is stated without `hfresh` (§1j.1); the rows form restated without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge repointed, riding on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped just before U10, as PAD (§1j.3); `def:dof-generic` needs its own recon (done: §2, under U11) and S3 a spike (done: §2, under U12); only S3 touches carrier code (`case_II_placement_eq612`) (`notes/Phase41e.md`) | 18–24, the open and the close included (the recon's 15–21, plus R's build, PAD and M1K, §1k; the report: 13–23) |
+| **UNSTATED** | 41e (opened and closed 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | done: the claims no declaration states, the full list (§1h.1) with §4(a), as U1–U12, sized and ordered by its open's recon (§2, *UNSTATED's open recon*): S25 and `def:blockingWitness` (U1), S24 (U2), S23 (U3), S22 (U4), S19 (U5), `rigidityMatrix_prop11`'s `hC` between distinct bodies (U6), S16 (U7), `F-061`'s forest lemma (U8), the Plücker expansion (U9), S31 (U10), `def:dof-generic` after its recon (U11) and S3 after its spike (U12, `case_II_placement_eq612` deleted); item R, KT Theorem 4.9's principle without `hfresh`, before U4 (§1j.1); the rows form without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge, on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped before U10, as PAD (§1j.3); KT Proposition 2.3 on U11 and M1 as M1K, at KT's own genericity (§1k) (`notes/Phase41e.md`) | 30, the open and the three-part close included: 21 within the plan's 18–24, plus the PI's §1k record and 8 verification fixups |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
 Phase 22l's lesson, API first and switch last (`notes/Phase22l.md` *Architectural choices*).
 
-The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and the ledger's last
-`reported` entries given dispositions (`notes/Reconcile.md` §3).
+The program closed with the phase, on 2026-10-29: ROADMAP's RECONCILE bullet compressed, and every
+ledger entry `done` or `left`, none `reported` (`notes/Reconcile.md` §3).
 
 ## 4. Open questions
 

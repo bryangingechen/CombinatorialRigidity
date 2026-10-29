@@ -179,7 +179,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
-| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, codes-until-open) | ◐ In progress — 41a ✓ (CARRIER), 41b ✓ (RESTATE), 41c ✓ (MULTIGRAPH), 41d ✓ (RELABEL), 41e ◐ (UNSTATED, the last) (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
+| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1046,7 +1046,10 @@ labels instead, so they cover every simple graph, the simple minimal
 ones included, and made P's rank formula a main result. Phase 41c then
 extended BH's theorems to every multigraph, parallel edges and loops
 allowed (`F-222`; P's stay for simple graphs), and Phase 41d dropped the
-bound on the labels.
+bound on the labels. Phase 41e stated BH's rank formula and iff at KT's own genericity, the
+maximum rank over the hinge-point realizations, which every generic assignment has
+(`isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees`, now the main result;
+the generic form above stays beside it).
 Headline axioms verified at close. This closed the PROSPECT queue.
 
 ### Phase 35 — Multigraph molecular conjecture in the hinge-coplanar model (COPLANAR, post-program)
@@ -1225,78 +1228,38 @@ carried past the close are indexed in the design doc's §7. Headline axioms (the
 `formalization.yaml` main results) re-verified at the close. Detail → `notes/Phase40p.md` +
 `notes/Phase40-design.md`.
 
-### Phase 41 — The panel-hinge carrier and its graph (RECONCILE-FORMAL, post-program; sub-lettered) — in progress
+### Phase 41 — The panel-hinge carrier and its graph (RECONCILE-FORMAL, post-program; sub-lettered 41a–41e) — ✓ Complete
 
-**In progress** (opened 2026-10-24 with the PI; plan and recon `notes/Phase41-design.md`). The
-attended phase of the RECONCILE program (`notes/Reconcile.md` §3), acting on PROSE's findings S1
-and S2. **S2**: `PanelHingeFramework`'s endpoint selector `ends` was free, so KT Theorem 5.6's main
-result was met at deficiency zero by the framework whose normals are all zero. The PI chose a field
-of the structure, `isLink_ends : ∀ e ∈ E(graph), graph.IsLink e (ends e).1 (ends e).2`, so a
-mis-linked framework cannot be built; the restated conclusions also ask nondegenerate hinges on
-`E(G)`, which the open's Lean witness shows the field alone does not give. **S1**: the generic
-panel and body-hinge theorems were vacuous at every minimal `k`-dof-graph, since their `hends` and
-fresh-label supply contradicted each other there; with the field, `hends` went, and the theorems
-took a bound on the label type instead (41b). The PI's decisions at the open (design A; KT's conclusions
-as the floor, stronger forms considered; `IsHingeCoplanar` and the multigraph rows on `E(G)` only;
-`F-323` and `F-324` dropped with the restatements) are in the design doc's §1. Five sub-phases by
-stable code: **CARRIER** (41a, ✓ closed 2026-10-24), **RESTATE** (41b, ✓ closed 2026-10-25),
-**MULTIGRAPH** (41c, ✓ closed 2026-10-28), **RELABEL** (41d, ✓ closed 2026-10-29) and
-**UNSTATED** (41e, in progress since 2026-10-29, the last; the claims no declaration states;
-18–24 commits). **41a**
-put the field on the structure, its API first and the switch last, as in Phase 22l: the link
-predicate and a tactic that fills in the link proof at the constructors, then the switch itself,
-123 declarations in 27 files in one build-green commit; then `withGraph` restricted to subgraphs,
-`reaim` and `reaimSub` deleted, and KT Theorem 5.6's two genuine forms merged. No main result's
-text changed, but the panel-hinge frameworks they conclude now give each edge its ends, and the 19
-main results' axioms are unchanged. Before the switch, a build-time detour the PI scheduled
-(2026-10-24) trimmed the molecular chain's imports and converted the whole project to Lean's module
-system: an edit inside a proof at the chain's head now rebuilds only its own file (10–14 s),
-and an edit to a statement there rebuilds the chain in 72–77 s (`notes/PERFORMANCE.md`). **41b**
-restated S1's and S2's main results on the linked carrier, in 23 commits, as the PI decided at its
-open and during it (the design doc's §1b–§1f). KT Theorems 5.5 and 5.6 and their `d = 3` instances
-conclude Katoh–Tanigawa's nonparallel panels for simple graphs, a new predicate reached at Theorem
-5.5's end by the genericity device, so every hinge at an edge is nondegenerate (multigraphs keep
-Phase 35's model, as a double edge's two hinges coincide in the meet model). The molecular
-conjecture holds from one body, both sides asking a nondegenerate hinge at each edge of `G` and the
-panel side nonparallel panels; the multigraph rows ask nondegeneracy on `E(G)`; the `d = 3` spanning
-corollary derives from Theorem 5.5. The generic panel and body-hinge theorems hold at every generic
-realization of every simple graph on one body or more, given enough edge labels, so they cover the
-simple minimal `k`-dof-graphs (the body-hinge theorem since 41c for every multigraph); the panel theorem's rank formula is a twentieth main result, and the
-new and restated rows have non-vacuity witnesses at the single edge and the triangle. The rank formula of
-KT Proposition 2.3 is stated for body-hinge frameworks on multigraphs in a conditional form (a bound
-on the motions as hypothesis; 41c proves the proposition itself). All 20 main results' axioms are
-the three standard ones. The PI's push, CI's first run of 41a's module conversion, was green.
-**41c** (opened and closed with the PI on 2026-10-28, 6 commits; the design doc's §1g) made M1,
-Jackson–Jordán 2010's Theorem 6.1 in generic form, hold for every multigraph spanning the bodies,
-parallel edges and loops allowed: the generic body-hinge rank formula and its two iffs, with
-non-vacuity witnesses at the double edge and the double edge with a loop. Its lower bound starts
-from the multigraph Theorem 5.6, whose hinges lie in the panels; loops cost one commit, the upper
-bound asked only at the edges that are not loops (the PI's §1f.4). KT Proposition 2.3 is proved
-as Katoh and Tanigawa state it, the three-way equivalence at every generic hinge-point assignment
-of a multigraph, and the conditional form keeps its own node. All 20 main results' axioms are
-unchanged. **41d** (RELABEL; opened and closed with the PI on 2026-10-29, 7 commits; the design
-doc's §1h–§1i) dropped the bound on the edge labels from the six main results that carried it: the
-fresh-label supply of KT Theorem 5.5, and the label bound of Theorem 5.6, both molecular
-conjectures, the generic panel rank formula and M1. Each applies its supply-taking form with the
-labels embedded in a larger set, where the supply holds, and pulls the framework back; rows,
-motions, normals and deficiency are unchanged, minimality transports through deficiencies, and the
-induction keeps the supply inside, untouched. 23 declarations lost one hypothesis each, and the
-non-vacuity witnesses use fewer labels than the old bound. A last item found that KT Theorem 4.9's
-reduction principle, which the transport cannot reach, can drop its supply in one commit, its chain
-re-proved when the new edge reuses the label of an edge at the split vertex. All 20 main results'
-axioms are unchanged. **41e** (UNSTATED; opened with the PI on 2026-10-29, the design doc's §1j;
-planned 18–24 commits) gives a declaration and a blueprint pin to each claim that no declaration
-stated: PROSE's S22–S25, S31, S3, S16 and S19, G5's three (the pebble game's blocking witness, the
-degree of freedom and genericity of a body-hinge framework, the Plücker expansion) and `F-061`'s
-forest lemma, with `rigidityMatrix_prop11`'s nondegeneracy asked only between distinct bodies.
-With them, as the PI decided: KT Theorem 4.9's reduction principle drops its label supply before
-its sequence form is stated, so the sequence assumes nothing of the labels; a form of Theorem 5.6
-that nothing calls drops its supply too; and the molecule's multigraph loses the spare labels it
-carried for the old bound. After U11's recon the PI added KT Proposition 2.3 and M1 at KT's own
-genericity, the maximum rank over the hinge-point realizations (§1k). Its close closes Phase 41 and the RECONCILE program, and the loop stops for the PI's push.
-**Next**: the last commit of 41e's close, which closes Phase 41 and the RECONCILE program (the status surfaces and this row). Its first part ran the gates on the final Lean tree, all 20 main results' axioms unchanged, and gave every finding of the ledger its last disposition, `done` or `left`; the first commit of its second part re-read the restated chapters and compressed the design doc's UNSTATED arc. Landed: U12, S3, the count of Case II's realization as a lemma that Case II calls, with `lem:case-II-realization-placement` as stated its corollary at a rigid realization and the dead pin deleted, after its spike; M1K, M1 at KT's own genericity, the maximum rank over the hinge-point realizations (§1k), the main result now `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees` (the generic form kept beside it); U11's recon and build, the degree of freedom and that genericity, `def:dof-generic`, with KT Proposition 2.3 at it; U1, the pebble game's blocking witness, U2, the matroid union's rank formula, U3, the circuit's tree partition, R, KT Theorem 4.9's principle without `hfresh`, U4, its reduction sequence, U5, Case I's rank identity, U6, `rigidityMatrix_prop11` with the hinge asked only between distinct bodies, U7, `hasPanelRealization_of_generic` for graphs with loops, U8, the independent rows of a forest of nondegenerate hinges, U9, the coordinates of an extensor as its Plücker coordinates, PAD, the padding of `G.shadowGraph` dropped, and U10, S31, the rigid molecular realizations and the rigid squares. Detail →
-`notes/Phase41a.md`, `notes/Phase41b.md`, `notes/Phase41c.md`, `notes/Phase41d.md`,
-`notes/Phase41e.md` + `notes/Phase41-design.md`.
+**✓ Complete** (opened 2026-10-24 with the PI, closed 2026-10-29; five sub-phases, work logs
+`notes/Phase41{a..e}.md`; plan, recons and the PI's decisions, §1–§1k verbatim,
+`notes/Phase41-design.md`). The attended phase of the RECONCILE program (`notes/Reconcile.md` §3),
+acting on PROSE's findings; its close closed the program. By stable code: **CARRIER** (41a) made
+the link condition a field of `PanelHingeFramework`, `isLink_ends`, so the pair of bodies each
+edge records is its own ends, and a mis-linked framework, which had met KT Theorem 5.6's main
+result with all its normals zero, cannot be built (S2); the API came first and the switch, 123
+declarations in 27 files, in one commit, after a build-time detour the PI scheduled that converted
+the project to Lean's module system (`notes/PERFORMANCE.md`). **RESTATE** (41b) restated the main
+results on that carrier: KT Theorems 5.5 and 5.6 conclude KT's nonparallel panels for simple
+graphs, the molecular conjecture holds from one body with a nondegenerate hinge at each edge, and
+the generic panel and body-hinge theorems, vacuous at every minimal `k`-dof-graph while their
+`hends` and fresh-label supply contradicted each other (S1), hold at every generic realization of
+every simple graph on one body or more, the panel rank formula a twentieth main result.
+**MULTIGRAPH** (41c) proved M1, Jackson–Jordán 2010's Theorem 6.1 in generic form, for every
+multigraph, parallel edges and loops allowed, and KT Proposition 2.3 as KT state it. **RELABEL**
+(41d) dropped the bound on the edge labels from the six main results that carried it, by a
+transport at the boundary that leaves the induction untouched. **UNSTATED** (41e) gave a
+declaration and a blueprint pin to each claim no declaration stated: PROSE's S3, S16, S19,
+S22–S25 and S31, G5's three (the pebble game's blocking witness, the degree of freedom and
+genericity of a body-hinge framework, the Plücker expansion) and `F-061`'s forest lemma. With
+them, KT Theorem 4.9's reduction principle dropped its label supply, so that its sequence form
+assumes nothing of the labels, and, at the PI's decision (§1k), KT Proposition 2.3 and M1 hold at
+KT's own genericity, the maximum rank over the hinge-point realizations: M1's row is now
+`isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees`, the generic form kept
+beside it (§34). Every main result has a non-vacuity witness (`Nonvacuity.lean`), and the findings
+ledger `notes/Prose-findings.md` closed with every entry `done` or `left`. Headline axioms (the
+twenty `formalization.yaml` main results) re-verified at every sub-phase's close, the three
+standard ones. The loop stopped for the PI's push; ORIGAMI opens next, with the PI. Detail →
+`notes/Phase41a.md` to `notes/Phase41e.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1336,7 +1299,7 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   rounds 3, `40-exposition`, and 4, `40-simplify`, closed 2026-10-04; round 5, `40-docs`, closed
   2026-10-05 (`notes/Phase40-cleanup.md`, `notes/Phase40-factor.md`,
   `notes/Phase40-exposition.md`, `notes/Phase40-simplify.md`, `notes/Phase40-docs.md`).
-  The autopilot queue then ran **PROSE**'s rounds (below), and its next rows are **RECONCILE**'s.
+  The autopilot queue then ran **PROSE**'s rounds (below), then **RECONCILE**'s.
 - **PROSE** — five `CLEANUP.md` rounds that rewrote the prose of every blueprint chapter outside
   `pencil.tex` and `main-component.tex`, repaired the dependency graph of every chapter, and
   recorded what else they noticed. Queued by the PI on 2026-10-07, ahead of ORIGAMI, and run under
@@ -1357,158 +1320,27 @@ formalization targets) lives in `notes/IdeaBacklog.md`.
   `notes/Prose-algebraic-cleanup.md`, `notes/Prose-applications-cleanup.md`,
   `notes/Prose-graph-cleanup.md`. The report proposed the follow-up program **RECONCILE** (below),
   which the PI queued next on 2026-10-15.
-- **RECONCILE** — acts on PROSE's findings report `notes/Prose-report.md`: statements whose
-  blueprint and Lean texts disagree, Lean hygiene, credits, and the nodes PROSE round 5 left.
-  Queued by the PI on 2026-10-15, next, ahead of ORIGAMI; plan, the PI's decisions and the order
-  are in `notes/Reconcile.md`. Three autopilot rounds: `reconcile-texts` (docs and prose, with the
-  credits verified against the sources), `reconcile-statements` (every false blueprint statement
-  fixed, KT's route kept and explained) and `reconcile-lean` (the pebble game's search fixed and
-  re-proved, a non-vacuity witness per main result, the docstring sweep). Then one attended phase,
-  `RECONCILE-FORMAL`: the link condition becomes a field of `PanelHingeFramework` (S2), the
-  generic body-hinge and panel theorems stop being vacuous at minimal graphs (S1), the generic
-  body-hinge theorem's multigraph form, and the claims no declaration states. Round 1,
-  `reconcile-texts`, opened and closed 2026-10-15 (`notes/Reconcile-texts-cleanup.md`; the
-  non-vacuity rule is in `PHASE-BOUNDARIES.md` and `CLEANUP.md` §A). Round 2,
-  `reconcile-statements`, opened and closed 2026-10-15 in 21 one-commit tasks
-  (`notes/Reconcile-statements-cleanup.md`); tasks 2–3 made the false statements S6–S10 true,
-  task 4 restated the vacuous or trivially met S4 and S5, task 5 repinned S7, task 6 restated
-  Case I's S14, S15 and S21, task 7 repinned Case III's three counts (S20), task 8 fixed S26, S27
-  and S35, task 9 fixed S29, task 9.1 made `F-259`'s and `F-260`'s pins (S36's "In particular"
-  through `lem:trivial-motions-rank-bound`; the dual lemma's rescaling), task 10 stated S38's
-  and S39's special cases generally, task 11 dropped the hypotheses S40–S42's pins do not
-  take, tasks 12 and 13 made G1's three pin changes (task 13 a node for open ears), task 14
-  merged G2's two true duplicates and unpinned `case_III_realization`, task 15 made the
-  genericity device's citations say which argument they borrow, and tasks 16–18 framed the nodes
-  of Cases I, II and III that the formal proof leaves (`rem:case-I-kt-steps`,
-  `rem:case-II-kt-steps`, `rem:case-III-kt-steps`; task 18 also added `F-257`'s three edges),
-  task 19 restated S28 and framed `meet.tex`'s lemmas through $\bigwedge^2 W$
-  (`rem:meet-kt-steps`), and task 20 framed the forest surgery (`rem:forest-surgery-kt-steps`),
-  and task 21 closed it, listing the eight declarations it unpinned for round 3. Round 3,
-  `reconcile-lean`, opened 2026-10-15 with 39 one-commit tasks (`notes/Reconcile-lean-cleanup.md`)
-  and closed 2026-10-24;
-  task 2 committed the docstring-label check (`scripts/check-docstring-labels.py`, baseline 422),
-  task 3 deleted L9's Theorem 5.5 and Case I wrappers and the cycle forms (fourteen declarations,
-  none pinned), task 4 Case III's line route, the candidate rows, `case_III_realization` and
-  `blockPiSpan` (seventeen, none pinned), task 5 `exists_good_realization_const` and
-  `exists_finite_spanning_rigidityRows` with their five dead callers, task 6 L9's shim
-  `splitOff_deficiency_le_of_forest_surgery`, with `cor:forest-surgery-deficiency` repinned on
-  `forest_surgery_split`, task 7 renamed `F-061`'s two `_forest` pins `_starForest`, the shape
-  their hypothesis forces, task 8 dropped the planar layer's unused or derivable hypotheses, task 9
-  the pebble game's `hloops`, which `himg` implies, task 10 the unused hypotheses of the
-  deficiency and the induction, task 11 the chain extraction's, its triangle lemma now the
-  case $m = 3$ of the cycle lemma, which left one missing forward edge (`F-270`), task 11.1
-  moved the cycle lemma to the deficiency chapter so that the edge points back, task 12
-  dropped the algebraic induction's unused or derivable hypotheses (the cut-edge lemmas' among
-  them), task 13 made the forest-packing lemma give a disjoint cover, which Tutte–Nash-Williams
-  and its two other callers use as it is, task 14 had the balanced packing's descent call the
-  packing move, whose statement now says what the move does, task 15 shortened
-  Katoh–Tanigawa Lemma 4.8(ii)'s minimality to their Lemma 4.3's argument, which needs no Lemma
-  4.7, task 15.1 dropped three vertex hypotheses of that lemma which its edge hypotheses imply,
-  task 16, a recon, settled the fix of the pebble game's search: one set of marked vertices
-  threaded through the search, its completeness proved from the set it returns, and `decide` left
-  to the texts, task 17 landed that search, re-proved, with the chapter restated, task 18
-  committed a script that times it beside the old search and checks what `decide` proves,
-  task 19 had the executable read its input split on any whitespace, tabs included, task 20
-  rewrote the texts on the search's cost (measured, no bound claimed), `decide` and the input,
-  and tasks 21–24 gave each of the sixteen main results outside S1's and S2's rows its
-  non-vacuity witness, a closed theorem applying it at a small input with every hypothesis met
-  (`Nonvacuity.lean`), and tasks 25–37.21 checked the docstrings of the thirteen planar files, of
-  the search, of the project's mathlib additions, of the pebble game's files, of the matroid
-  constructions, of the body-bar files, of the square-graph and generic-rigidity files, of the
-  deficiency file, of the induction's files, of the rigidity matrix's files, of the meet's and the
-  extensors' files and of the algebraic induction's pinning, panel-layer, Case I, Case II,
-  genericity, coupling, Case III, panel-hinge and Theorem 5.5 files, the molecular conjecture's
-  witness, and the molecule files on screw velocities, projective invariance, the polarity, the
-  square-graph dictionary, general position, Theorem 5.6's realization, molecular realizations and
-  the molecule rank formula, and the thirty-seven pencil files, on pencil realizations, the
-  chart of their parameters, the loop, cut-edge and base cases of their induction, nondegenerate
-  realizations, the chart's rows as polynomials in its parameters, a realization written in the
-  chart, explicit parameters, the conditions met at one point of the chart, the loop, base and cut
-  cases of the induction that asks for a generic realization, the reduction of the pencil
-  realization theorem to its two main-component statements, and the nondegenerate and generic
-  realizations of a subgraph, planar pictures, the heights that lift them and the configurations
-  they give, the rank of a configuration with all heights zero, the dimension of the lifting space
-  at a general picture, the steps of the induction at a cut vertex and along a chain of bridges,
-  the rank, deficiency and heights along an ear, the contraction curve and the rescaled lifting
-  system at a core, the steps of the induction at a contracted core, at a cycle and at an ear, the
-  geometry of lines, an open ear over fixed base data, the steps at an open ear with two, three and
-  four interior bodies, the steps at an open ear with one or two interior bodies at non-adjacent
-  ends, the step that splits off a body of degree two, the single steps of the induction and the
-  induction on the number of bodies, chains of bodies of degree two, the standing hypotheses at a
-  chain's smaller graphs and the cases that are not 2-connected, the reductions at a usable chain
-  and the structural coverage, the good ear of a minimal planar-rigid set, the generic realization
-  of a graph without a planar-rigid set, the generic realization across a one-body ear and across a
-  pendant triangle and the two main-component statements, against their proofs and credits, outside
-  the parts that wait for the next phase. Task 38 screened the code smells: unused declarations
-  to delete, by directory, a repeated derivation, and lint suppressions to remove, appended as
-  tasks 38.2–38.10. Task 38.1 screened the ten longest proofs, which need no restructuring, and gave
-  the round's other findings on the Lean their verdicts: hypotheses the proofs do not need, and
-  derivations an existing or one shared lemma replaces, become tasks 38.11–38.27. Task 38.2 deleted
-  the dead declarations of the Case III files, ninety with the lemmas only they used; task 38.3
-  those of the Case I, genericity-device and coupling files, thirty-three, and dropped two derivable
-  hypotheses; task 38.4 those of the pinning, panel-layer and panel-hinge files, twenty, dropped
-  hypotheses the proofs do not use or the others give, and re-proved two lemmas by others; task
-  38.5 deleted the unused concrete rigidity-matrix file and the dead declarations of the
-  rigidity-matrix, meet and extensor files, 105 with the lemmas only they used, dropped two
-  hypotheses of the meet and moved a lemma to its definition's file; task 38.6 deleted the dead
-  declarations of the combinatorial induction's files, thirty-two with the lemmas only they used;
-  task 38.7 those of the molecule files, fifteen; task 38.8 those of the search, pebble-game,
-  mirror, square-graph and body-bar files, thirty-three with the lemmas only they used, keeping the
-  one lemma that proves the meet chapter's duality isomorphism is the determinant map; task 38.9
-  put one selector in place of the pencil chart's re-seeding lemmas, deleting twelve declarations;
-  task 38.10 removed the lint suppressions over unused hypotheses, keeping those of three main
-  results, and of one lemma below one of them, whose statements wait for the next phase; task
-  38.11 dropped two unneeded hypotheses of the Henneberg reverse moves' isomorphisms; task 38.12
-  dropped three of the deficiency file, and one more that only fed one of them, stating the cut
-  lemma without its nonempty side; task 38.13 dropped or weakened twelve of four files of the
-  molecular induction, and dropped three more that only passed one of them on, stating KT Claim 6.6
-  without its bound on the number of vertices; task 38.14 dropped or weakened ten of the forest
-  surgery's two files, no blueprint statement changing; task 38.15 dropped five of the rigidity
-  matrix's block-rank file with its two lint suppressions, and four more of three path and ear
-  lemmas that only passed them on, stating the cut-edge rank bound for any set of at most one
-  crossing edge; task 38.16 dropped two unneeded hypotheses of the Case II and coupling files and
-  gave the genericity device's file one lemma for a derivation it repeated three times, with two
-  more repeated steps called where they were written out; task 38.17 dropped seven unneeded
-  hypotheses of the Case III arms, candidate and realization files, and an eighth that a rewritten
-  step had hidden, with an existing lemma for one step and two new ones for two more that were
-  written out several times, no blueprint statement changing; task 38.18 dropped eleven unneeded
-  hypotheses and variables of the Case III relabelling files, replaced a private lemma by an
-  existing one and called task 38.17's chain lemma at three more steps, no blueprint statement
-  changing; task 38.19 dropped the derivable hypotheses of the Theorem 5.5 file (three Case I
-  bounds on the number of vertices, a cut-edge condition, and the dimension bound of seven
-  consequences of the main theorem, with five more in the generic-realization files that only
-  passed it on), stating the three Case I lemmas without their vertex bound; task 38.20 proved six
-  lemmas of the screw-velocity and pencil files from existing ones, deleting one that only they
-  used, dropped a dimension bound that another hypothesis gives from the pencil cut-edge case, its
-  gluing lemma and five lemmas that only passed it on, weakened three orthogonality lemmas to the
-  hypothesis they use, and gave three degree lemmas one lemma for the step they repeated, no
-  blueprint statement changing; task 38.21 gave three pencil chart files one lemma for a step that
-  four of their proofs wrote out, and proved one more lemma from mathlib's, no blueprint statement
-  changing; task 38.22 dropped five hypotheses that others give from three pencil files, the
-  steering lemma's blueprint statement with them, and stated once a step written out seven times;
-  task 38.23 gave the main component's carrier to ear files one lemma for a step that four of their
-  proofs wrote out, proved four lemmas from existing ones and dropped three unneeded hypotheses, no
-  blueprint statement changing; task 38.24 stated once two steps that the main component's files
-  wrote out at seven sites each, a selector restricted to an induced subgraph and a count of bodies,
-  no blueprint statement changing; task 38.25 proved a simplicity lemma of the main component's
-  contraction file and five steps of its contraction, chain and line files by existing lemmas,
-  deleting three lemmas left without a use, and removed an unused part of a hypothesis and three
-  needless steps, no blueprint statement changing; task 38.26 dropped fourteen hypotheses that
-  others give from the main component's short-ear, orbit, split-off and coverage files, with two
-  new lemmas that give them, and three unused steps, and proved five steps by existing lemmas, no
-  blueprint statement changing; task 38.27 dropped eight hypotheses that others give or no step uses
-  from the main component's remaining coverage and generic files, and six unused steps, moved a
-  lemma beside the two obstructions that repeated it, gave three new lemmas for facts about a join
-  of two points written out in three proofs, and proved one more step by an existing lemma,
-  restating one blueprint statement and removing a blueprint dependency that no longer had a basis
-  in the Lean; and task 39 closed the round on 2026-10-24, in 103 one-commit tasks. Twenty-two
-  blueprint statements were restated where the round's changes reached them and two pins changed;
-  no main result's statement changed. Two hypotheses that main results take but do not need, an
-  unused decidability assumption of three of them and a derivable dimension bound of two, stay with
-  the same hypotheses of the lemmas below them, for the PI to drop when the next phase restates
-  those results; the docstrings of the files that build the panel-hinge carrier also wait for that
-  phase. Lemmas a chapter pins or names as its Lean form stay though no main result uses them.
-  `RECONCILE-FORMAL` opened with the PI on 2026-10-24 as **Phase 41** (§41 above).
+- **RECONCILE** — acted on PROSE's findings report `notes/Prose-report.md`: statements whose
+  blueprint and Lean texts disagreed, Lean hygiene, credits, and the nodes PROSE round 5 left.
+  Queued by the PI on 2026-10-15, ahead of ORIGAMI; plan, the PI's decisions and the order are in
+  `notes/Reconcile.md`. **Closed 2026-10-29**, with Phase 41: three autopilot rounds, then one
+  attended phase. Round 1, `reconcile-texts` (closed 2026-10-15,
+  `notes/Reconcile-texts-cleanup.md`), fixed the scopes and credits on the status surfaces
+  (Pollaczek-Geiringer 1927 credited beside Laman) and set the non-vacuity rule
+  (`PHASE-BOUNDARIES.md`, `CLEANUP.md` §A). Round 2, `reconcile-statements` (closed 2026-10-15 in 21
+  tasks, `notes/Reconcile-statements-cleanup.md`), made every false blueprint statement true or
+  restated it, made G1's pin changes and merged G2's true duplicates, and framed in a remark each
+  part of KT's route that the formal proof leaves (Cases I, II and III, the meet, the forest
+  surgery). Round 3, `reconcile-lean` (closed 2026-10-24 in 103 tasks,
+  `notes/Reconcile-lean-cleanup.md`), committed the docstring-label check
+  (`scripts/check-docstring-labels.py`, since 2026-10-24 `blueprint/lint.sh` check 9), deleted the
+  dead declarations, dropped unneeded hypotheses below the main results, re-proved the pebble game's
+  search with one marked set, gave each of the sixteen main results outside S1's and S2's rows a
+  non-vacuity witness (`Nonvacuity.lean`) and checked the docstrings outside the phase's footprint,
+  restating twenty-two blueprint statements and no main result's. The phase, `RECONCILE-FORMAL`, ran
+  as **Phase 41** (§41 above). The findings ledger `notes/Prose-findings.md` closed with 332
+  entries, 307 `done` and 25 `left`, none `reported` (its header). **ORIGAMI** is next, and opens
+  with the PI.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
