@@ -840,11 +840,13 @@ glasses~\cite[p.~27]{whiteley1999}.
 \begin{theorem}[Molecular frameworks and bar-joint frameworks on the
   square; Whiteley]
   \label{thm:molecular-iff-square-bar-joint}
-  \lean{CombinatorialRigidity.Molecular.molecular_finrank_motions_eq_square_ker}
+  \lean{CombinatorialRigidity.Molecular.molecular_finrank_motions_eq_square_ker,
+    SimpleGraph.molecular_rigid_iff_square_rigid}
   \leanok
   \uses{def:hinge-concurrent, def:square-graph, lem:square-cliques,
         def:framework, lem:screw-velocity-line,
-        lem:screw-determination, def:general-position-placement}
+        lem:screw-determination, def:general-position-placement,
+        lem:molecule-graph-carrier}
   Let $G = (V,E)$ be a graph of minimum degree at least two, and let
   $c \colon V \to \R^3$ be a placement in general position up to order
   four. Then the space $Z_{\mathrm{mol}}(G, c)$ of infinitesimal motions
@@ -863,7 +865,9 @@ glasses~\cite[p.~27]{whiteley1999}.
 \begin{proof}
   \leanok
   \uses{lem:framework-finrank, thm:panel-hinge-iff-molecular,
-    def:isInfinitesimallyRigid, lem:exists-generic-general-position}
+    def:isInfinitesimallyRigid, lem:exists-generic-general-position,
+    lem:trivial-motions-rank-bound, lem:deficiency-rank-bound,
+    lem:square-rank-le-genericRank, lem:rigidityMap-rank-at-generic}
   \emph{The map.} For a screw assignment $S$, let $\Phi(S)$ be the
   velocity assignment $v \mapsto \mathrm{vel}_{S(v)}(c(v))$
   (\cref{def:screw-velocity}). It is linear in $S$. Let
@@ -914,7 +918,7 @@ glasses~\cite[p.~27]{whiteley1999}.
   trivial ones, so $\dim Z_{\mathrm{mol}}(G, c_0) = D$
   (\cref{lem:trivial-motions-rank-bound}). Its hinges are nondegenerate,
   so $\dim Z_{\mathrm{mol}}(G, c_0) \ge D + \operatorname{def}(\tilde G)$
-  (\cref{lem:relative-deficiency-rank-bound}), and
+  (\cref{lem:deficiency-rank-bound}), and
   $\operatorname{def}(\tilde G) = 0$. By
   \cref{thm:panel-hinge-iff-molecular} there is a placement $c'$ in
   general position up to order four with
@@ -925,9 +929,10 @@ glasses~\cite[p.~27]{whiteley1999}.
   Conversely, let $p$ be infinitesimally rigid for $G^2$, so that
   $\operatorname{rank} R(G^2, p) \ge 3|V| - 6$. Let $c'$ be a placement
   that is generic for row independence and in general position up to
-  order four (\cref{lem:exists-generic-general-position}). A set of edges
-  of $G^2$ that is row-independent at $p$ is row-independent at $c'$
-  (\cref{def:generic-placement}), so
+  order four (\cref{lem:exists-generic-general-position}). The rank of
+  $R(G^2, p)$ is at most the generic rank of $G^2$
+  (\cref{lem:square-rank-le-genericRank}), which is the rank of
+  $R(G^2, c')$ (\cref{lem:rigidityMap-rank-at-generic}), so
   $\operatorname{rank} R(G^2, c') \ge 3|V| - 6$. By the first part,
   $\dim Z_{\mathrm{mol}}(G, c') \le 6 = D$. The trivial motions form a
   $D$-dimensional subspace of $Z_{\mathrm{mol}}(G, c')$
@@ -937,16 +942,17 @@ glasses~\cite[p.~27]{whiteley1999}.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem states the equality of the dimensions. It builds the
-  molecular framework on a multigraph on $V$ in which two distinct
-  vertices are joined by an edge exactly when they are adjacent in $G$,
-  with an endpoint selector that assigns each edge its two ends
+  The first pinned theorem states the equality of the dimensions. It
+  builds the molecular framework on a multigraph on $V$ in which two
+  distinct vertices are joined by an edge exactly when they are adjacent
+  in $G$, with an endpoint selector that assigns each edge its two ends
   (\cref{fmlnote:panel-hinge-nondegenerate}). Edges with the same ends
   impose the same hinge constraint, and a loop imposes none, so the
-  motions are those of the molecular framework on $(G, c)$. No
-  declaration states the equivalence of realizations in the last sentence
-  of the theorem. Its proof above combines the pinned theorem with those
-  of \cref{thm:panel-hinge-iff-molecular},
-  \cref{lem:relative-deficiency-rank-bound} and
-  \cref{lem:exists-generic-general-position}.
+  motions are those of the molecular framework on $(G, c)$. The second
+  pinned theorem states the equivalence of realizations in the last
+  sentence of the theorem, for a simple graph $G$, on the multigraph of
+  \cref{lem:molecule-graph-carrier}: a molecular realization takes an
+  endpoint selector that assigns each edge its two ends, and centres
+  $c$ with $c(u) \neq c(v)$ at every edge $uv$ of $G$. Its proof is the
+  one above, the case $V = \emptyset$ included.
 \end{fmlnote}

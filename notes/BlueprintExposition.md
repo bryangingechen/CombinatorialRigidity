@@ -1011,7 +1011,8 @@ flipped `done` in the same pass.
   end of `lem:screw-determination`'s proof gives the counterexample). Neither JJ nor
   KT states the exact general-position grade. Since PROSE round 4 task 2.3 the
   statement's realizability sentence asks nondegenerate hinges, and the proof
-  proves it, unpinned (`notes/Prose-findings.md` `F-174`, `F-183`). Pointer:
+  proves it (`notes/Prose-findings.md` `F-174`, `F-183`); Phase 41e's U10 pinned
+  it, `molecular_rigid_iff_square_rigid`, by the prose's route. Pointer:
   `notes/Phase25-design.md` §2.3/F5; `notes/Phase25.md`.
 - **rank-level chain over realizability-iff chain (the chapter preamble +
   `thm:panel-hinge-iff-molecular`)** — [done (the chapter's opening paragraphs)]

@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1–U9, R and PAD have landed. Next: U10.
+close (planned 17–23 commits, the open included); U1–U10, R and PAD have landed. Next: U11's recon.
 
 ## Current state
 
-**The next concrete commit is U10** (*Hand-off*); U1–U9, R and PAD have landed (`G.shadowGraph : Graph V (Sym2 V)`, `card_shadowLabel_lt` deleted; `molecule_generic_square_packing`'s axioms unchanged: propext, Classical.choice, Quot.sound). Each claim of the full
+**The next concrete commit is U11's recon** (*Hand-off*); U1–U10, R and PAD have landed (U10's `SimpleGraph.molecular_rigid_iff_square_rigid`: axioms propext, Classical.choice, Quot.sound). Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -69,102 +69,35 @@ is the fragility zone (`Molecular/AlgebraicInduction/`, `Molecular/RigidityMatri
 ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean`) and
 `Graph.Recon41Reduction` (`ReductionWitness.lean`).
 
-- [x] **U1. S25 and `def:blockingWitness`** (landed: `SimpleGraph.IsBlockingWitness` and
-  `not_isSparse_of_isBlockingWitness` in `Sparsity.lean`, the pebble-game lemma in
-  `Correctness.lean` with a `[Fintype V]` binder as `runPebbleGameWith_correct`; the node pinned
-  `\leanok`, `thm:pebble-game-correct` gains the pin and a `\uses`; the definition's docstring
-  corrected at verification, as a reject verdict's vertex set, not a pair, is the witness) (`F-041`; `F-038`, `F-008`'s part). New
-  `SimpleGraph.IsBlockingWitness G k ℓ s :=
-  ℓ ≤ k * s.card ∧ k * s.card < (G.edgesIn ↑s).ncard + ℓ` beside `IsSparse`
-  (`Sparsity.lean:103`), with `not_isSparse_of_isBlockingWitness`; and
-  `PartialOrientation.runPebbleGameWith_isBlockingWitness` (`PebbleGame/Correctness.lean`): under
-  `ℓ < 2k`, a `.inl w` return from the empty orientation on a list of edges of `G` (`hmem` only)
-  gives `G.IsBlockingWitness k ℓ w.V'`, by `runPebbleGameWith_witness_bridges` (`:401`) and
-  `WorkhorseWitness.certifies_against` (`:500`). Proved in the witness. `def:blockingWitness`
-  (`pebble-game.tex`, red) pinned and `\leanok`; `thm:pebble-game-correct` gains the pin. Outside
-  the zone. 1 commit.
-- [x] **U2. S24** (landed: `Matroid.Union_rk_eq` and `Matroid.Union_indep_iff_count` in
-  `Union.lean`, both pinned on `thm:matroid-partition-rank`, whose note is dropped; the
-  independence proof is `Union_pow_indep_iff_count`'s with the sum in place of `k * rk`, no shorter
-  route tried; the file header credits Nelson's port as before; the criterion's credit corrected at
-  verification to the matroid-union theorem, Edmonds 1965 being its `k`-copies case) (`F-051`). `Matroid.Union_rk_eq`, the rank of every `X` in the union of a finite
-  family (proved: `Union_pow_rk_eq`'s proof without its `Finset.sum_const`), and
-  `Matroid.Union_indep_iff_count`,
-  `(Matroid.Union Ms).Indep X ↔ ∀ Y ⊆ X, Y.ncard ≤ ∑ i, (Ms i).rk Y`, by
-  `Union_pow_indep_iff_count`'s proof (`S24IndepTarget`, stated only), in
-  `Matroid/Constructions/Union.lean` (beside `:562` and `:588`; ported from Peter Nelson's
-  `Matroid`: credit). `thm:matroid-partition-rank` pins both; its note goes. 1 commit.
-- [x] **U3. S23** (landed: `Graph.circuit_diff_isSpanningTreePacking` in `Operations.lean`, after
-  `circuit_induces_isTight`; the third pin of `lem:circuit-induces-rigid`, whose note is dropped.
-  Proved as planned, with `D >= 2` from the copy index of `e`, so `IsTight.connected` needs no
-  hypothesis; the bookkeeping was two small facts, `E(H) = X \ {e}` and that `H` and the
-  restriction span the same vertices) (`F-083`). `Graph.circuit_diff_isSpanningTreePacking`
-  (`Molecular/Induction/Operations.lean`, beside `circuit_induces_isTight` at `:164`): for a
-  circuit `X` of `M(G̃)` and `e ∈ X`,
-  `(((G.mulTilde n) ↾ (X \ {e})).induce (G.fiberSpan n X)).IsSpanningTreePacking (bodyBarDim n)`
-  (`S23Target`, stated only), by `circuit_induces_isTight`,
-  `isSparse_diff_singleton_of_isCircuit` (`Deficiency.lean:856`) carried to the induced graph,
-  `IsTight.connected` and `isSpanningTreePacking_of_isTight` (`BodyBar/TreePacking.lean`). The
-  friction is the `induce`/`restrict` bookkeeping (`E = X \ {e}`, `V = V(X)`).
-  `lem:circuit-induces-rigid`'s third pin; its note goes. 1 commit.
-- [x] **R. KT Theorem 4.9's principle without `hfresh`** (landed as planned, one commit: the four
-  statements restated, the helpers `notMem_edgeSet_removeVertex` and `notMem_edgeSet_removeVertex_iff`
-  in `Operations.lean`, the weaker forms `removeVertex_le_splitOff_of_notMem_removeVertex` and
-  `edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex`, the landed forms kept as their
-  corollaries; `splitOff_deficiency_le_aux` is gone, `splitOff_deficiency_le` being its
-  generalization, and `splitOff_deficiency_le_of_eq_left` calls it at `eₐ`. The proof of
-  `splitOff_isMinimalKDof` calls `splitOff_deficiency_le` directly, so `dof_tracking` is unchanged;
-  at verification, three unpinned helpers' docstrings stopped naming a node as their own (the
-  label ratchet), and `lem:reduction-step` `\uses` `lem:splitoff-deficiency`, the bound its pin
-  calls, in place of `lem:dof-tracking`)
-  (§1j.1; design doc §2, *Item R's
-  recon*; no ledger ID). Source: `ReductionWitness.lean`, transcribed. Four statements, each a
-  strengthening, files under `Molecular/Induction/`:
-  - `Graph.minimal_kdof_reduction` (`ForestSurgery/Reduction.lean:578`): `hfresh` dropped, and
-    `hsplit` given `P` at `G.splitOff v a b e₀` for every `e₀ ∉ E(G − v)` (form (b), the
-    witness's `minimal_kdof_reduction'`). Its proof is the landed one, with the induction
-    hypothesis at each admissible label.
-  - `splitOff_isMinimalKDof` (`:151`, `lem:reduction-step`'s pin): `e₀ ∉ E(G − v)`, and
-    `eₐ ≠ e_b` dropped; `chainData_extract`'s call (`ForestSurgery/ChainExtraction.lean:1284`)
-    adapts.
-  - `circuit_splitOff_meets_fiber` (`:66`): `e₀ ∉ E(G − v)`; its one caller is the lemma above.
-  - `splitOff_deficiency_le` (`SplitOffDeficiency.lean:165`, `lem:splitoff-deficiency`'s pin; the
-    private `splitOff_deficiency_le_aux` at `:49` generalized): `e₀ ∉ E(G − v)`. Its callers
-    (`Reduction.lean:1466`, `:1534`, and `dof_tracking` at `SplitOffDeficiency.lean:590`) pass
-    `e₀ ∉ E(G)` through the helper.
-
-  Added: the helper `notMem_edgeSet_removeVertex`, and weaker forms of `removeVertex_le_splitOff`
-  (`Operations.lean:702`) and `edgeSet_mulTilde_splitOff_diff_fiber` (`EdgeSplitting.lean:98`),
-  the landed forms kept for their other callers (`CaseIII/Realization.lean`, `link_le_tac` at
-  `PanelHinge.lean:320–321`, the `k > 0` surgery). No file of `AlgebraicInduction/` is edited.
-  Not planned: `splitOff_deficiency_ge` without `he₀` and `dof_tracking` under `e₀ ∉ E(G − v)`
-  (both compiled in the witness). Blueprint, four nodes: `thm:minimal-kdof-reduction`'s fmlnote
-  (its statement stays); `rem:fresh-edge-supply`'s supply list loses the principle;
-  `lem:splitoff-edge-substitution` (the new pin, under the additive-successor gate, and its
-  fmlnote); `lem:splitoff-deficiency-reuse`'s fmlnote. `formalization.yaml`'s KT Theorem 4.9 row
-  names no label condition, before or after. One full build, from `Operations.lean` through the
-  molecular chain. 1 commit.
+- [x] **U1. S25 and `def:blockingWitness`** (`F-041`; `F-038`, `F-008`'s part; landed:
+  `SimpleGraph.IsBlockingWitness` and `not_isSparse_of_isBlockingWitness` in `Sparsity.lean`,
+  `runPebbleGameWith_isBlockingWitness` in `PebbleGame/Correctness.lean`; the node pinned
+  `\leanok`, `thm:pebble-game-correct` gains the pin; the docstring names a reject verdict's vertex
+  set as the witness, corrected at verification).
+- [x] **U2. S24** (`F-051`; landed: `Matroid.Union_rk_eq` and `Matroid.Union_indep_iff_count` in
+  `Matroid/Constructions/Union.lean`, ported from Peter Nelson's `Matroid`, both pinned on
+  `thm:matroid-partition-rank`, its note dropped; the criterion credited to the matroid-union
+  theorem at verification, Edmonds 1965 being its `k`-copies case).
+- [x] **U3. S23** (`F-083`; landed: `Graph.circuit_diff_isSpanningTreePacking` in
+  `Operations.lean` after `circuit_induces_isTight`, the third pin of `lem:circuit-induces-rigid`,
+  its note dropped; `D ≥ 2` from the copy index of `e`).
+- [x] **R. KT Theorem 4.9's principle without `hfresh`** (§1j.1; design doc §2, *Item R's recon*;
+  no ledger ID; landed as planned, one commit, from `ReductionWitness.lean`): four statements under
+  `Molecular/Induction/` take `e₀ ∉ E(G − v)` (`minimal_kdof_reduction`, `splitOff_isMinimalKDof`,
+  `circuit_splitOff_meets_fiber`, `splitOff_deficiency_le`), with the helpers
+  `notMem_edgeSet_removeVertex(_iff)` and weaker forms of `removeVertex_le_splitOff` and
+  `edgeSet_mulTilde_splitOff_diff_fiber`; four nodes restated, `lem:splitoff-edge-substitution`
+  the new pin; at verification `lem:reduction-step` `\uses` `lem:splitoff-deficiency`.
 - [x] **U4. S22** (landed: `Graph.minimal_kdof_reduction_sequence`, with `KTReductionStep` and
   `IsDoubleEdge`, in `ForestSurgery/Reduction.lean` after `minimal_kdof_reduction`, which needed
   the new import of `Contraction.lean`; no `hfresh`, `3 ≤ D` alone. Transcribed from the witness
   with R's names, no proof change. `thm:minimal-kdof-reduction` pins it beside (ii)'s and its
   fmlnote now says both parts are proved; the two definitions are unpinned helpers, their
   docstrings leading `a step of thm:minimal-kdof-reduction`.) (`F-101`)
-- [x] **U5. S19** (landed: `BodyHingeFramework.case_I_rank_add_iff`, transcribed, in `CaseI.lean`'s
-  first section with a plain `import` of `Induction/Contraction`; landed first in `Pinning.lean`,
-  whose two new imports made it, `PanelHinge` and `GenericityDevice` wait on three Induction files,
-  and moved at verification to `CaseI.lean`, which already sees `ReducibleVertex` via `Coupling`.
-  `lem:case-I` pins it first, its proof `\uses` the two counts the pin calls, and its fmlnote says
-  the pin asks no minimality and only the frameworks' ranks; the label check moved no pin)
-  (`F-116`). `BodyHingeFramework.case_I_rank_add_iff` (proved): for a proper
-  rigid `H` with `r ∈ V(H)` and frameworks `F`, `F₂`, if `rank R(F₂) = D(|V(G/E(H))| − 1) − def`
-  of the contraction, then `rank R(F) = D(|V(G)| − 1) − def(G̃)` iff
-  `rank R(F) = D(|V(H)| − 1) + rank R(F₂)`, by `rigidContract_deficiency_eq`
-  (`Contraction.lean:566`) and `rigidContract_vertexSet_ncard` (`ReducibleVertex.lean:962`), with
-  no minimality. Additive, beside the block-pin criteria in `AlgebraicInduction/Pinning.lean`; no
-  fragile proof is touched. `lem:case-I` pins it first; its note's "No pinned theorem mentions the
-  contraction" is rewritten; the three block-pin pins stay unless the label check moves them.
-  1 commit.
+- [x] **U5. S19** (`F-116`; landed: `BodyHingeFramework.case_I_rank_add_iff`, transcribed, in
+  `CaseI.lean`'s first section, moved there from `Pinning.lean` at verification to keep imports
+  off the chain; `lem:case-I` pins it first, its proof `\uses` the two counts the pin calls, its
+  fmlnote says the pin asks no minimality).
 - [x] **U6. §4(a)** (no ledger ID), **with the riders of §1j.2 and §1j.4** (landed as planned:
   `rigidityMatrix_prop11`'s `hC` asks `u ≠ v`, passed straight to the lower bound, the witness's
   `rigidityMatrix_prop11'`; its three callers in `Theorem55.lean` wrap. Restated with it:
@@ -195,40 +128,27 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   library upstream of `Basic`, `Bricks`, `Claim612` and `Molecule/ScrewVelocity`, the only modules
   downstream of `Basic` without it. New node `lem:forest-rows-independent` after
   `lem:own-end-rows-independent`, its proof `\uses` the two nodes its pin calls) (`F-061`).
-- [x] **U9. The Plücker expansion** (`F-059`; landed in one commit, a step shorter than planned: `extensor_repr_exteriorPower` in `Molecular/Extensor.lean` before `pluckerVector`, `PluckerTarget`'s statement. The proof is `rfl` for the `⋀[K]^j` member, the two mathlib lemmas, the sign squared, and `ofFinEmbEquiv_symm_apply` (`rfl` against `orderEmbOfFin`) with no transpose; no index-bridge lemma was needed. Node `lem:plucker-expansion` after `def:plucker-coords`, its note went, and the `\cref`s of "the remark after `def:plucker-coords`" in `meet`, `rigidity-matrix` and `generic-lift` point at it) (`F-059`). Planned: the coordinates of `extensor v` in
-  `(Pi.basisFun K (Fin (d+1))).exteriorPower j` are the Plücker coordinates times KT's sign
-  (`PluckerTarget`, stated), by mathlib's `exteriorPower.basis_repr_apply` and
-  `ιMultiDual_apply_ιMulti` (the minor), against `pluckerCoord`'s `orderEmbOfFin` submatrix
-  (`Molecular/Extensor.lean:430`). The friction is the index bridge
-  (`Set.powersetCard.ofFinEmbEquiv` against `Finset.orderEmbOfFin`) and a transpose. The chain's
-  root, so a full rebuild. A lemma node after `def:plucker-coords`; its note goes. 1–2 commits.
-- [x] **PAD. `G.shadowGraph`'s padding dropped** (§1j.3; no ledger ID), immediately before U10,
-  so that U10 is stated over `Sym2 V`. `SimpleGraph.shadowGraph : Graph V (Sym2 V)`
-  (`Molecule/Carrier.lean:53`), linking `x` and `y` by `s(x, y)` when `G.Adj x y`;
-  `card_shadowLabel_lt` (`:89`) deleted under the deletion gate; the module and definition
-  docstrings restated. The padded type's other occurrences (grep `Fin (6 \* (Nat.card`):
-  `JacobsCounting.lean` (12 ascription lines, `:142`–`:430`, and the `Sum.inl`, `Sum.inl.injEq`
-  and `Sum.inl_injective` steps with them), `CombinatorialRigidity/Nonvacuity.lean` (`path3`
-  `:701` and `treeWalk` `:708`, with their labels) and `Molecule/Application.lean` (`let ends`
-  `:130`, and `:247` in the statement of `molecule_generic_square_packing`, a main result whose
-  label type changes: `cor:molecule-generic-square-packing` and its `formalization.yaml` row
-  re-read). Blueprint: `lem:molecule-graph-carrier` loses its fifth pin and "more than
-  6(|V| − 1) labels", its proof the further labels, its fmlnote the bound; the nodes that cite it
-  (`jacobs.tex` three, `molecule-application.tex` two, `generic-lift.tex` one) re-read. One full
-  build. Mechanical. 1 commit.
-- [ ] **U10. S31** (`F-174`, `F-183`), after PAD. `SimpleGraph.molecular_rigid_iff_square_rigid`
-  (`S31Target`, stated; after PAD its selector is `ends : Sym2 V → V × V`), under `[Nonempty V]`
-  and `hmin`: some selector recording the links of `G.shadowGraph` and centres distinct at each
-  edge give an infinitesimally rigid molecular framework iff `G²` has an infinitesimally rigid
-  placement. (⇒) nondegenerate hinges (`lineExtensor_ne_zero_of_ne`) and
-  `screwDim_add_deficiency_le_finrank_infinitesimalMotions` give `def = 0`, then
-  `molecule_generic_rigid` at `exists_isGenericPlacement`. (⇐) The rigid placement bounds the
-  generic rank (`finrank_range_rigidityMap_le_genericRank`), `molecule_rank_formula` and
-  `deficiency_nonneg` give `def = 0`, and `exists_molecular_rankHypothesis_generalPosition`
-  (`Modelling.lean:78`, no label bound) with `rankHypothesis_zero_iff` gives the framework, its
-  centres distinct by general position. `Molecule/Application.lean`.
-  `thm:molecular-iff-square-bar-joint`'s second pin; its note's last sentences go. A crux node:
-  its exposition-ledger entry is re-read. 1–2 commits.
+- [x] **U9. The Plücker expansion** (`F-059`; landed in one commit: `extensor_repr_exteriorPower`
+  in `Molecular/Extensor.lean` before `pluckerVector`, no index bridge or transpose needed; node
+  `lem:plucker-expansion` after `def:plucker-coords`, its note gone, three chapters' `\cref`s
+  repointed).
+- [x] **PAD. `G.shadowGraph`'s padding dropped** (§1j.3; no ledger ID; landed, mechanical, one
+  commit): `SimpleGraph.shadowGraph : Graph V (Sym2 V)`, `card_shadowLabel_lt` deleted; the padded
+  type's ascriptions in `JacobsCounting.lean`, `Nonvacuity.lean` and `Application.lean` (the
+  statement of `molecule_generic_square_packing` among them) restated; `lem:molecule-graph-carrier`
+  loses its fifth pin and the label bound.
+- [x] **U10. S31** (`F-174`, `F-183`; landed in one commit: `SimpleGraph.molecular_rigid_iff_square_rigid`
+  at the end of `Molecule/Application.lean`, selector `ends : Sym2 V → V × V`, under `hmin` and
+  without `[Nonempty V]`: the empty case is three lines, both sides holding as the node says (a free
+  strengthening, for §1f.3). The route is the node's prose, not the plan's, whose
+  `molecule_generic_rigid` and `molecule_rank_formula` pin nodes that depend on this one (a `\uses`
+  cycle): (⇒) `def = 0` as planned, then the molecular realization of
+  `thm:panel-hinge-iff-molecular` read through the dictionary; (⇐) the rank at `p` is at most the
+  generic rank, the rank at a generic placement in general position, then the dictionary with the
+  selector `G'.endsOf` and the trivial motions. `thm:molecular-iff-square-bar-joint` pins it second;
+  its proof `\uses` the four lemmas the pin calls (`lem:deficiency-rank-bound` in the prose for the
+  relative bound), its statement `lem:molecule-graph-carrier`; its fmlnote's last sentences
+  rewritten; the exposition-ledger entry says it is pinned.)
 - [ ] **U11, recon. `def:dof-generic`** (`F-008`'s part): read-only first, the
   definition-faithfulness gate. The witness's candidates: `dof F = D(|V(G)| − 1) − rank R(G,p)`,
   and `IsMaxRankHingePoints G q` (nondegenerate at the non-loop links, and at every `E' ⊆ E(G)`
@@ -275,9 +195,9 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**U10** (checklist item U10, S31: `SimpleGraph.molecular_rigid_iff_square_rigid`, its selector now
-`ends : Sym2 V → V × V`). Read the U10 checklist item; whether it fits one commit is the builder's
-call (a crux node with an uncompiled route: assess before building).
+**U11's recon** (checklist item *U11, recon*, `def:dof-generic`): read-only first, the
+definition-faithfulness gate on the witness's candidates; its verdict goes to the design doc's §2 in
+one docs commit, and a main-result change to the PI before U11 builds.
 
 ## Decisions made during this phase
 

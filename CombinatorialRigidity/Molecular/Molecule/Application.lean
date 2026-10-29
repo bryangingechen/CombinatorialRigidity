@@ -51,6 +51,10 @@ distinct; that dimension is at least `6 + def(G̃)`
   rigid for `G²` (`cor:molecule-generic-rigid`).
 * `SimpleGraph.molecule_generic_square_packing`: so is every such placement when `5·G'` contains six
   edge-disjoint spanning trees (`cor:molecule-generic-square-packing`).
+* `SimpleGraph.molecular_rigid_iff_square_rigid`: `G` has an infinitesimally rigid molecular
+  realization with nondegenerate hinges iff `G²` has an infinitesimally rigid placement in `ℝ³`
+  (the last sentence of `thm:molecular-iff-square-bar-joint`), from the dictionary, the molecular
+  realization of `thm:panel-hinge-iff-molecular` and a generic placement in general position.
 -/
 
 @[expose] public section
@@ -332,5 +336,98 @@ theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G :
         shadowGraph_isLink_iff]
     rwa [Graph.degree_eq_ncard_adj, hNeq, ncard_neighborSet_eq_degree] at h2
   exact G.molecule_generic_rigid hmin hdef hp
+
+/-! ## Rigid molecular realizations and rigid squares
+
+The last sentence of `thm:molecular-iff-square-bar-joint`: a graph has an infinitesimally rigid
+molecular realization with nondegenerate hinges iff its square has an infinitesimally rigid
+bar-joint realization in `ℝ³`. Both directions pass through the square-graph dictionary
+`molecular_finrank_motions_eq_square_ker` at a placement in general position up to order four. -/
+
+/-- **Rigid molecular realizations and rigid squares** (`thm:molecular-iff-square-bar-joint`, its
+last sentence; Whiteley's equivalence, which Jackson and Jordán 2008, §2.1, and Katoh and Tanigawa
+2011, pp. 650 and 671, cite from his manuscript of 2004): for a simple graph `G` of minimum degree
+at least two on a finite set `V`, some endpoint selector `ends` recording the links of
+`G' = G.shadowGraph` (`lem:molecule-graph-carrier`) and some centres `c`, distinct at every edge of
+`G`, give an infinitesimally rigid molecular framework iff `G²` has an infinitesimally rigid
+placement in `ℝ³`. Both sides hold when `V` is empty.
+
+(⇒) The hinges are nondegenerate, so `dim Z_mol ≥ D + def(G̃)` (`lem:deficiency-rank-bound`),
+while rigidity makes `dim Z_mol = D` (`lem:trivial-motions-rank-bound`); so `def(G̃) = 0`. The
+molecular realization of `thm:panel-hinge-iff-molecular` then has centres `c'` in general position
+and a motion space of dimension `D = 6`, which the dictionary makes `dim ker R(G², c')`. (⇐) At a
+placement `c'` generic for row independence and in general position, `rank R(G², c')` is the
+generic rank, at least the rank at the rigid placement; so `dim ker R(G², c') ≤ 6`, and by the
+dictionary the molecular framework on `G'` at `c'`, with the selector `G'.endsOf`, has a motion
+space of dimension at most `D`, which its trivial motions fill. Its centres are distinct, as `c'`
+is injective. -/
+theorem molecular_rigid_iff_square_rigid {V : Type*} [Fintype V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) :
+    (∃ (ends : Sym2 V → V × V) (c : V → EuclideanSpace ℝ (Fin 3)),
+      PanelHingeFramework.RecordsLinks G.shadowGraph ends ∧ (∀ u v, G.Adj u v → c u ≠ c v) ∧
+      (molecularOfCentres G.shadowGraph ends c).IsInfinitesimallyRigid) ↔
+    ∃ p : Framework V 3, G.square.IsInfinitesimallyRigid p := by
+  classical
+  rcases isEmpty_or_nonempty V with hV | hV
+  · -- No vertex: no screw assignment moves, and `R(G², p)` has the zero space as domain.
+    refine iff_of_true ⟨isEmptyElim, 0, fun e => isEmptyElim e, fun u => isEmptyElim u,
+      fun _ _ u => isEmptyElim u⟩ ⟨0, ?_⟩
+    exact Module.finrank_zero_of_subsingleton.trans_le (by norm_num)
+  have hne : V(G.shadowGraph).Nonempty := by rw [shadowGraph_vertexSet]; exact Set.univ_nonempty
+  have hshadow : ∀ u v, u ≠ v → ((∃ e, G.shadowGraph.IsLink e u v) ↔ G.Adj u v) :=
+    fun u v _ => shadowGraph_isLink_iff G u v
+  have hscrew : screwDim 2 = 6 := by decide
+  constructor
+  · rintro ⟨ends, c, hends, hc, hrig⟩
+    set F := molecularOfCentres G.shadowGraph ends c with hF_def
+    -- The hinges are nondegenerate: the two centres of each edge differ.
+    have hC : ∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0 := by
+      intro e u v huv _
+      rw [hF_def, molecularOfCentres_supportExtensor]
+      apply lineExtensor_ne_zero_of_ne
+      have hadj : G.Adj (ends e).1 (ends e).2 :=
+        (shadowGraph_isLink_iff G _ _).mp ⟨e, hends.isLink huv⟩
+      exact fun h => hc _ _ hadj (WithLp.ofLp_injective 2 h)
+    -- `D + def(G̃) ≤ dim Z_mol = D`, so `def(G̃) = 0`.
+    have hub : (screwDim 2 : ℤ) + G.shadowGraph.deficiency 3 ≤
+        (Module.finrank ℝ F.infinitesimalMotions : ℤ) :=
+      F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hC
+    have hrank := (F.rankHypothesis_zero_iff).mpr hrig
+    rw [BodyHingeFramework.RankHypothesis] at hrank
+    have hdef0 := G.shadowGraph.deficiency_nonneg 3 hne
+    have hdef : G.shadowGraph.deficiency 3 = 0 := by omega
+    -- The molecular realization in general position, read through the dictionary.
+    obtain ⟨ends', c', hrank', hgp', hends'⟩ :=
+      exists_molecular_rankHypothesis_generalPosition G.shadowGraph hne
+        (shadowGraph_vertexSet G) (shadowGraph_simple G)
+    rw [BodyHingeFramework.RankHypothesis, hdef] at hrank'
+    have hkey := molecular_finrank_motions_eq_square_ker hshadow hends' hmin hgp'
+    refine ⟨c', ?_⟩
+    rw [IsInfinitesimallyRigid]
+    omega
+  · rintro ⟨p, hp⟩
+    inhabit V
+    -- A placement generic for row independence and in general position.
+    obtain ⟨c, hgen, hgp⟩ := exists_isGenericPlacement_isGeneralPositionPlacement (V := V)
+    have hends := PanelHingeFramework.recordsLinks_endsOf G.shadowGraph
+    refine ⟨G.shadowGraph.endsOf, c, hends, fun u v huv h => G.ne_of_adj huv (hgp.injective h),
+      ?_⟩
+    set F := molecularOfCentres G.shadowGraph G.shadowGraph.endsOf c
+    -- `rank R(G², p) ≤ rank R(G², c)`, so `dim ker R(G², c) ≤ 6`.
+    have hle := finrank_range_rigidityMap_le_genericRank G.square p
+    rw [← finrank_range_rigidityMap_eq_genericRank G.square hgen] at hle
+    have hrn := LinearMap.finrank_range_add_finrank_ker (G.square.RigidityMap p)
+    have hrn' := LinearMap.finrank_range_add_finrank_ker (G.square.RigidityMap c)
+    rw [Framework.finrank] at hrn hrn'
+    rw [IsInfinitesimallyRigid] at hp
+    -- The dictionary, and the trivial motions as a `D`-dimensional subspace of `Z_mol`.
+    have hkey : Module.finrank ℝ F.infinitesimalMotions
+        = Module.finrank ℝ (LinearMap.ker (G.square.RigidityMap c)) :=
+      molecular_finrank_motions_eq_square_ker hshadow
+        (PanelHingeFramework.recordsLinks_iff_forall_isLink.mp hends) hmin hgp
+    have htriv := Submodule.finrank_mono F.trivialMotions_le_infinitesimalMotions
+    rw [F.finrank_trivialMotions] at htriv
+    rw [← BodyHingeFramework.rankHypothesis_zero_iff, BodyHingeFramework.RankHypothesis]
+    omega
 
 end SimpleGraph

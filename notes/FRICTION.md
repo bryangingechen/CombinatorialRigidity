@@ -138,6 +138,16 @@ to be re-derived by re-reading entries later.
   at h` rewrites `2 - 1` too).
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 58 (a third worked case).
 
+### [idiom] The deficiency bound at `k = 2` says `deficiency (2 + 1)`; ascribe `deficiency 3` before `omega`
+- **Where it bit:** Phase 41e, U10 (`molecular_rigid_iff_square_rigid`, `Molecule/Application.lean`):
+  `screwDim_add_deficiency_le_finrank_infinitesimalMotions` concludes over `F.graph.deficiency (k + 1)`,
+  so `omega` read `deficiency (2 + 1)` and `deficiency 3` as two atoms. A `set F` before a `refine`
+  that instantiated an existential also left the goal spelling the term, a second atom (§ 43's dual).
+- **Friction:** two MCP iterations.
+- **Proposed fix:** state the `have` with `deficiency 3` (defeq, as `molecule_rank_upper_bound` does);
+  `set` after the `refine`.
+- **Status:** idiom (TACTICS-QUIRKS § 58 and § 43 cover both).
+
 ### [idiom] `fun h => hP (by rw [h, map_zero])` as an untyped argument fails — `ne_zero_of_map hP`
 - **Where it bit:** Phase 41b, item 4b (`hasNonparallelFullRankRealization_of_generic`,
   `GenericityDevice.lean`): the witness's two typed `have`s inlined into `mul_ne_zero` failed with
