@@ -822,7 +822,7 @@ alignment:
       note: "Independence of an edge set's rows at a generic endpoint assignment iff (d,d)-sparsity of its restriction; the rank formula of their Thm 5.2 is that union-matroid rank."
 
     - source: "Jackson-Jordán 2010 Thm 6.1 / Cor 6.3 (generic body-and-hinge rigidity; existence form Tay 1989 / Whiteley 1988)"
-      lean: "CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees, CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency"
+      lean: "CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees, CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency"
       module: "CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean"
       status: "proved"
       note: >-
@@ -836,7 +836,14 @@ alignment:
         equivalence of rank R = D(|V|-1) - c, def(G~) = c and rank M(G~) = D(|V|-1) - c for
         every integer c, as
         CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency
-        (the last equivalence is KT eq. (2.4)).
+        (the last equivalence is KT eq. (2.4)). Since phase 41e, Proposition 2.3 is also stated
+        at KT's own genericity (the rows of R(G,q) and of each edge-induced submatrix have the
+        largest rank over the hinge-point realizations of G, nondegeneracy asked only at the links
+        between distinct bodies), as
+        CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints;
+        the form at row-independence genericity follows from it, as every such assignment has
+        maximum rank. The main-result rows above, and the iff of this row, are stated at
+        row-independence genericity.
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff"

@@ -6,15 +6,16 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4
 `notes/reconcile-formal/ReductionWitness.lean`, and for U11 `DofGenericWitness.lean`. Fifteen build items, two recons, a spike and the
-close (planned 18–24 commits, the open included); U1–U10, R, PAD and U11's recon have landed.
-Next: U11's build.
+close (planned 18–24 commits, the open included); U1–U11, R, PAD and U11's recon have landed.
+Next: M1K, M1 at KT's genericity.
 
 ## Current state
 
-**The next concrete commit is U11's build** (*Hand-off*); U1–U10, R, PAD and U11's recon have
-landed. The recon (design doc §2, under U11; witness `notes/reconcile-formal/DofGenericWitness.lean`)
-found the candidates faithful, a loop's hinge left free, and U11 one commit that adds declarations
-only and moves no main result. Each claim of the full
+**The next concrete commit is M1K** (*Hand-off*); U1–U11, R, PAD and U11's recon have
+landed. U11 (`def:dof-generic`, `GenericLift/HingeGeneric.lean`) transcribed the recon's witness
+(`notes/reconcile-formal/DofGenericWitness.lean`; the TFAE rides at `prop:rigidity-matrix-prop11`,
+the loop witness `isMaxRankHingePoints_loop`; the double-edge witnesses stay in the evidence file)
+and moved no main result. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -102,69 +103,24 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `CaseI.lean`'s first section, moved there from `Pinning.lean` at verification to keep imports
   off the chain; `lem:case-I` pins it first, its proof `\uses` the two counts the pin calls, its
   fmlnote says the pin asks no minimality).
-- [x] **U6. §4(a)** (no ledger ID), **with the riders of §1j.2 and §1j.4** (landed as planned:
-  `rigidityMatrix_prop11`'s `hC` asks `u ≠ v`, passed straight to the lower bound, the witness's
-  `rigidityMatrix_prop11'`; its three callers in `Theorem55.lean` wrap. Restated with it:
-  `prop:rank-formula-of-motion-bound`'s statement, proof and fmlnote, the fmlnote of
-  `cor:theorem-55-d3-spanning`, and `formalization.yaml`'s two notes on the pin. The rows form
-  `hasGenericFullRankRealization_of_theorem_55_gen` repackages the bound-free
-  `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, without `hfresh` and
-  `[DecidableEq β]` (nothing called it); `thm:theorem-55-6-rows`'s fmlnote and
-  `rem:fresh-edge-supply` say its third pin assumes nothing of the labels. The node's statement
-  `\uses` `thm:theorem-55`, which `scripts/blueprint-deps.py --label` finds reached, and its proof
-  opens on the realization built in the proof of `thm:theorem-55-6-genuine`; the label check is
-  unchanged, 0 findings).
-- [x] **U7. S16** (landed: `hasPanelRealization_of_generic` without `[G.Loopless]`, and without
-  `[Finite α]`, which the proof no longer used (`lake lint`'s `unusedArguments`; a hypothesis the
-  proof does not need, adopted under §1f.3 and recorded in the design doc's U7 entry). The framework
-  is built directly, `graph := G`, the hinge `C(n_a, n_b)` at `(a, b) = Q.ends e` off loops and
-  `C(n_a, n_{w a})` at a loop at `a`; one `exists_extensor_eq_panelSupportExtensor_gen` call covers
-  both. `BodyHingeFramework.span_rigidityRows_eq_of_eq_off_loops` transcribed into
-  `RigidityMatrix/Basic.lean`, the file of `rigidityRows`. In `Theorem55.lean`, two
-  `have hloop : G.Loopless` and one `have := hloop` went. The node's proof names the loop's hinge,
-  and its note went) (`F-124`).
-- [x] **U8. `F-061`'s forest lemma** (landed as planned, one commit:
-  `BodyHingeFramework.exists_independent_rigidityRows_of_isForest` in `RigidityMatrix/Basic.lean`
-  after `exists_independent_rigidityRows_of_starForest`, `ForestTarget`'s statement with
-  `T.edgeSet` for `E(T)`. The induction on `|E(T)|` runs inside the proof, for rows at the links of
-  `T`; the pendant step is `linearIndependent_sum_pinned_block`, and an injection reindexes the
-  joint family. The new `public import Matroid.Graph.Forest` adds the `Matroid` package's graph
-  library upstream of `Basic`, `Bricks`, `Claim612` and `Molecule/ScrewVelocity`, the only modules
-  downstream of `Basic` without it. New node `lem:forest-rows-independent` after
-  `lem:own-end-rows-independent`, its proof `\uses` the two nodes its pin calls) (`F-061`).
-- [x] **U9. The Plücker expansion** (`F-059`; landed in one commit: `extensor_repr_exteriorPower`
-  in `Molecular/Extensor.lean` before `pluckerVector`, no index bridge or transpose needed; node
-  `lem:plucker-expansion` after `def:plucker-coords`, its note gone, three chapters' `\cref`s
-  repointed).
-- [x] **PAD. `G.shadowGraph`'s padding dropped** (§1j.3; no ledger ID; landed, mechanical, one
-  commit): `SimpleGraph.shadowGraph : Graph V (Sym2 V)`, `card_shadowLabel_lt` deleted; the padded
-  type's ascriptions in `JacobsCounting.lean`, `Nonvacuity.lean` and `Application.lean` (the
-  statement of `molecule_generic_square_packing` among them) restated; `lem:molecule-graph-carrier`
-  loses its fifth pin and the label bound.
-- [x] **U10. S31** (`F-174`, `F-183`; landed in one commit:
-  `SimpleGraph.molecular_rigid_iff_square_rigid` in `Molecule/Application.lean`, selector
-  `Sym2 V → V × V`, under `hmin`, without `[Nonempty V]` and by the node's prose route, not the
-  plan's (both recorded in the design doc's U10 entry, the first under §1f.3);
-  `thm:molecular-iff-square-bar-joint` pins it second, its fmlnote rewritten, its
-  exposition-ledger entry updated.)
-- [x] **U11, recon. `def:dof-generic`** (`F-008`'s part; landed as one docs commit, the design
-  doc's §2 entry *U11's recon*, with `notes/reconcile-formal/DofGenericWitness.lean`): the
-  realizations are the hinge-point frameworks with nondegenerate hinges (KT §2.3, JJ §3.3), not
-  arbitrary extensors or panels; nondegeneracy asked only between distinct bodies, a loop's hinge
-  free (§1f.4's pattern); `dof` and `IsMaxRankHingePoints` (uncurried `q`) faithful, satisfiable at
-  the single and double edge, the triangle and with a loop, not met by two equal hinges; KT
-  Proposition 2.3 holds at every such realization (compiled), taken by the PI with M1 (§1k).
-- [ ] **U11. `def:dof-generic` built** as its recon settles (design doc §2, *U11's recon*, *U11's
-  build* and *The blueprint*): in `GenericLift/HingeGeneric.lean`, `dof`, `dof_eq_zero_iff`,
-  `IsMaxRankHingePoints`, the bridge from `IsGenericHingePoints`, existence, and the rank formula
-  and `dof` at every such realization, transcribed from the witness; `def:dof-generic` pinned and
-  `\leanok` with its fmlnote rewritten, the paragraph after
-  `lem:generic-hinge-points-nondegenerate` made `lem:generic-hinge-points-max-rank` (loops
-  allowed), a new `cor:dof-generic-realization`, and two restated sentences. With it, as the PI
-  decided (design doc §1k.1): `prop:rigidity-matrix-prop11` restated at `IsMaxRankHingePoints`
-  and pinned first by the witness's
-  `tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints`, today's pin kept
-  after it, and `formalization.yaml`'s JJ Thm 6.1 / Cor 6.3 alignment row restated. 1 commit.
+- [x] **U6. §4(a)**, with the riders of §1j.2 and §1j.4 (landed): `rigidityMatrix_prop11`'s `hC`
+  asks `u ≠ v`; the rows form `hasGenericFullRankRealization_of_theorem_55_gen` drops `hfresh`
+  and `[DecidableEq β]`; `prop:rank-formula-of-motion-bound` and neighbours restated.
+- [x] **U7. S16** (landed): `hasPanelRealization_of_generic` without `[G.Loopless]` and
+  `[Finite α]`; `span_rigidityRows_eq_of_eq_off_loops` in `RigidityMatrix/Basic.lean`.
+- [x] **U8. `F-061`'s forest lemma** (landed): `exists_independent_rigidityRows_of_isForest`;
+  `public import Matroid.Graph.Forest` added upstream of `Basic`; node `lem:forest-rows-independent`.
+- [x] **U9. The Plücker expansion** (`F-059`; landed): `extensor_repr_exteriorPower`, node
+  `lem:plucker-expansion`.
+- [x] **PAD. `G.shadowGraph`'s padding dropped** (§1j.3; landed): `shadowGraph : Graph V (Sym2 V)`,
+  `card_shadowLabel_lt` deleted.
+- [x] **U10. S31** (`F-174`, `F-183`; landed): `molecular_rigid_iff_square_rigid` in
+  `Molecule/Application.lean`; `thm:molecular-iff-square-bar-joint` pins it second.
+- [x] **U11, recon and build. `def:dof-generic`** (`F-008`'s part; design doc §2, *U11's recon*;
+  witness `DofGenericWitness.lean`): `dof`, `dof_eq_zero_iff`, `IsMaxRankHingePoints` (nondegeneracy
+  only between distinct bodies, a loop's hinge free), `lem:generic-hinge-points-max-rank`,
+  `cor:dof-generic-realization`; `prop:rigidity-matrix-prop11` restated at KT's genericity (§1k.1),
+  the JJ alignment row restated, no `main_results` row touched, no new import.
 - [ ] **M1K. M1 at KT's genericity** (design doc §1k.2; no ledger ID), after U11: the main result
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees` at every
   `IsMaxRankHingePoints` assignment, its rank formula U11's; the shape (a sibling made the
@@ -204,10 +160,12 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**U11's build** (checklist item *U11*, `def:dof-generic`), one commit: the declarations, nodes
-and fmlnote of the design doc's §2 entry *U11's recon*, transcribed from
-`notes/reconcile-formal/DofGenericWitness.lean` (run its `lake lean` first), with KT Proposition
-2.3's restatement at `IsMaxRankHingePoints` riding on it (§1k.1). Then M1K.
+**M1K** (checklist item *M1K*, design doc §1k.2), one commit: M1, the main result
+`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`, at every
+`IsMaxRankHingePoints` assignment. The rank formula is U11's
+`finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints`; the iff is new, and its shape (a
+sibling made the `main_results` row, or the main result restated in place) is the item's to settle,
+with the row, description, non-vacuity witnesses (`Nonvacuity.lean`) and axioms re-read.
 
 ## Decisions made during this phase
 

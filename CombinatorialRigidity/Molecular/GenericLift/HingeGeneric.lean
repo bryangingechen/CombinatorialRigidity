@@ -70,6 +70,15 @@ records the links of `G`; at one such selector it is the same condition
   composing the rigidity iff with the packing bridge
   `Graph.deficiency_eq_zero_iff_exists_spanningTrees` (`Deficiency.lean`): every generic realization
   is rigid iff `G̃ = (D-1)·G` packs `D` edge-disjoint spanning trees.
+* `def:dof-generic` — `dof` (the degree of freedom `D(|V(G)| − 1) − rank R(G,q)`) and
+  `IsMaxRankHingePoints` (Katoh–Tanigawa 2011, §2.4: the rows of `R(G,q)` and of each edge-induced
+  submatrix have the largest rank over the hinge-point realizations of `G`, nondegeneracy asked only
+  at the links between distinct bodies). Every assignment generic for row independence has maximum
+  rank (`isMaxRankHingePoints_of_isGenericHingePoints`), so one exists over an infinite field
+  (`exists_isMaxRankHingePoints`), and at every one of them KT Proposition 2.3 holds
+  (`tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints`, built on
+  `finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints`). The cheapest witness is a single
+  loop, where every assignment qualifies (`isMaxRankHingePoints_loop`).
 
 -/
 
@@ -1114,5 +1123,211 @@ theorem tfae_finrank_span_rigidityRows_ofHinge_deficiency [DecidableEq β] [Infi
   tfae_have 1 ↔ 2 := by constructor <;> intro h <;> linarith
   tfae_have 2 ↔ 3 := by constructor <;> intro h <;> linarith
   tfae_finish
+
+/-! ### Genericity as maximum rank (`def:dof-generic`), and KT Proposition 2.3 at it -/
+
+/-- **The degree of freedom** of a body-hinge framework (`def:dof-generic`; Katoh and Tanigawa
+2011, §2.4, p. 654): `D(|V(G)| − 1) − rank R(G,p)`, in `ℤ`, with `D = screwDim k` and `V(G)` the
+vertex set of the framework's graph. The screw assignments live on all the bodies `α`, and the rows
+involve only those of `V(G)`. It is `0` exactly at infinitesimal rigidity on `V(G)`
+(`dof_eq_zero_iff`). -/
+noncomputable def dof (F : BodyHingeFramework K k α β) : ℤ :=
+  screwDim k * ((V(F.graph).ncard : ℤ) - 1) - Module.finrank K (Submodule.span K F.rigidityRows)
+
+/-- **A hinge-point assignment is generic in the sense of maximum rank** (`def:dof-generic`;
+Katoh and Tanigawa 2011, §2.4, p. 654, after Jackson and Jordán 2010, §6, p. 583): the rows of
+`R(G,q)` and of each edge-induced submatrix (the rows of the edges of `E' ⊆ E(G)`) have the
+largest rank over all the realizations of `G`. A realization of `G` is a hinge-point assignment
+`q'` whose hinges at the links between *distinct* bodies are nondegenerate (the first conjunct for
+`q`, the hypothesis on `q'` in the second): up to the choice of the points, these are the
+body-and-hinge realizations. Nondegeneracy is asked only at those links, so a loop's hinge is
+free, as in `IsGenericHingePoints`; the divergence from Katoh and Tanigawa, whose multigraphs have
+no loops, is that a framework with a degenerate hinge at a loop still counts. At a graph with no
+link between distinct bodies, a single loop, every assignment qualifies. Every assignment generic
+for row independence qualifies (`isMaxRankHingePoints_of_isGenericHingePoints`). -/
+def IsMaxRankHingePoints (G : Graph α β) (q : β × Fin k × Fin (k + 1) → K) : Prop :=
+  (∀ e u v, G.IsLink e u v → u ≠ v → (ofHinge G fun e a b => q (e, a, b)).supportExtensor e ≠ 0) ∧
+    ∀ E' ⊆ E(G), ∀ q' : β × Fin k × Fin (k + 1) → K,
+      (∀ e u v, G.IsLink e u v → u ≠ v →
+        (ofHinge G fun e a b => q' (e, a, b)).supportExtensor e ≠ 0) →
+      Module.finrank K (Submodule.span K (ofHinge (G ↾ E') fun e a b => q' (e, a, b)).rigidityRows)
+        ≤ Module.finrank K
+            (Submodule.span K (ofHinge (G ↾ E') fun e a b => q (e, a, b)).rigidityRows)
+
+/-- **A hinge-point assignment generic for row independence has maximum rank**, on every
+multigraph, loops allowed (`lem:generic-hinge-points-max-rank`): the chain's genericity is KT's,
+and `IsMaxRankHingePoints` is satisfiable. A realization's independent rows, as many as
+its rank, transfer to `q` by genericity; its degenerate hinges, at loops only, are replaced by a
+fixed nondegenerate one, which changes no row. -/
+theorem isMaxRankHingePoints_of_isGenericHingePoints [Finite α] [Finite β] (hk1 : 1 ≤ k)
+    {G : Graph α β} {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints G q) :
+    IsMaxRankHingePoints G q := by
+  classical
+  refine ⟨supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints hk1 hq, ?_⟩
+  intro E' _ q' hq'
+  rcases isEmpty_or_nonempty α with hα | ⟨⟨x⟩⟩
+  · -- no bodies: the space of forms is zero
+    have : Subsingleton (Module.Dual K (α → ScrewSpace K k)) := by
+      constructor; intro f g; ext S; exact isEmptyElim S
+    rw [Submodule.finrank_eq_zero.mpr (Subsingleton.elim _ _)]
+    exact Nat.zero_le _
+  have : Inhabited α := ⟨x⟩
+  have hends : RecordsLinks G G.endsOf := PanelHingeFramework.recordsLinks_endsOf G
+  have hendsE : RecordsLinks (G ↾ E') G.endsOf := hends.mono Graph.restrict_le
+  -- A fixed affinely independent family, put at every label whose hinge in `q'` is degenerate.
+  set pRef : Fin k → Fin (k + 1) → K :=
+    (Pi.basisFun K (Fin (k + 1)) : Fin (k + 1) → Fin (k + 1) → K) ∘ Fin.castSucc
+  have hpRef : AffineIndependent K pRef :=
+    (((Pi.basisFun K (Fin (k + 1))).linearIndependent).comp
+      (Fin.castSucc : Fin k → Fin (k + 1)) (Fin.castSucc_injective k)).affineIndependent
+  set q'' : β × Fin k × Fin (k + 1) → K := fun i =>
+    if (ofHinge G fun e a b => q' (e, a, b)).supportExtensor i.1 = 0 then pRef i.2.1 i.2.2
+    else q' i with hq''
+  have hne'' : ∀ e, (ofHinge (G ↾ E') fun e a b => q'' (e, a, b)).supportExtensor e ≠ 0 := by
+    intro e h0
+    by_cases hz : (ofHinge G fun e a b => q' (e, a, b)).supportExtensor e = 0
+    · have hfun : (fun a b => q'' (e, a, b)) = pRef := by
+        funext a b; simp [hq'', hz]
+      have : (ofHinge (G ↾ E') fun e a b => q'' (e, a, b)).supportExtensor e
+          = ScrewSpace.mk (affineSubspaceExtensor pRef)
+              (affineSubspaceExtensor_mem_exteriorPower _) := by
+        apply ScrewSpace.ext
+        rw [ofHinge_supportExtensor_val, ScrewSpace.val_mk, hfun]
+      rw [this] at h0
+      apply (affineSubspaceExtensor_ne_zero_iff pRef).mpr hpRef
+      have := congrArg ScrewSpace.val h0
+      rwa [ScrewSpace.val_mk, ScrewSpace.val_zero] at this
+    · have hfun : (fun a b => q'' (e, a, b)) = fun a b => q' (e, a, b) := by
+        funext a b; simp [hq'', hz]
+      apply hz
+      apply ScrewSpace.ext
+      have := congrArg ScrewSpace.val h0
+      rw [ofHinge_supportExtensor_val, hfun] at this
+      rw [ofHinge_supportExtensor_val, this, ScrewSpace.val_zero]
+  -- The rows of `q''` and `q'` at `E'` span the same space: they differ only at loops.
+  have hspan'' : Submodule.span K (ofHinge (G ↾ E') fun e a b => q' (e, a, b)).rigidityRows
+      = Submodule.span K (ofHinge (G ↾ E') fun e a b => q'' (e, a, b)).rigidityRows := by
+    refine span_rigidityRows_eq_of_eq_off_loops _ _ rfl fun e u v hl huv => ?_
+    have hG : G.IsLink e u v := hl.of_le Graph.restrict_le
+    have hz := hq' e u v hG huv
+    have hfun : (fun a b => q'' (e, a, b)) = fun a b => q' (e, a, b) := by
+      funext a b; simp [hq'', hz]
+    apply ScrewSpace.ext
+    rw [ofHinge_supportExtensor_val, ofHinge_supportExtensor_val, hfun]
+  -- Independent rows of `q''` at `E'`, as many as its rank.
+  obtain ⟨s, hsl, hscard, hsli⟩ :=
+    (ofHinge (G ↾ E') fun e a b => q'' (e, a, b))
+      |>.exists_independent_panelRow_subfamily_of_le_finrank (ends := G.endsOf)
+        (fun e u v h => hendsE.isLink h) (fun e _ => hne'' e) le_rfl
+  have hsE : ∀ i ∈ s, (i : β × _ × _).1 ∈ E(G) := fun i hi =>
+    ((hsl i hi).of_le Graph.restrict_le).edge_mem
+  -- Genericity carries their independence to `q`.
+  have hli : LinearIndependent K fun i : s => hingePointRow G.endsOf q i :=
+    hq G.endsOf hends s hsE ⟨q'', hsli⟩
+  have hsub : Submodule.span K (Set.range fun i : s => hingePointRow G.endsOf q (i : β × _ × _))
+      ≤ Submodule.span K (ofHinge (G ↾ E') fun e a b => q (e, a, b)).rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨i, hi⟩, rfl⟩
+    exact Submodule.subset_span
+      ((ofHinge (G ↾ E') fun e a b => q (e, a, b)).panelRow_mem_rigidityRows (hsl i hi))
+  have : Fintype s := Fintype.ofFinite s
+  rw [hspan'', ← hscard, Nat.card_eq_fintype_card, ← finrank_span_eq_card hli]
+  exact Submodule.finrank_mono hsub
+
+/-- **Maximum-rank hinge-point assignments exist** over an infinite field, on every finite
+multigraph (`lem:generic-hinge-points-max-rank`): by the bridge from
+`exists_isGenericHingePoints`. -/
+theorem exists_isMaxRankHingePoints [Infinite K] [Finite α] [Finite β] (hk1 : 1 ≤ k)
+    (G : Graph α β) : ∃ q : β × Fin k × Fin (k + 1) → K, IsMaxRankHingePoints G q := by
+  obtain ⟨q, hq, -⟩ := exists_isGenericHingePoints (K := K) (k := k) G
+  exact ⟨q, isMaxRankHingePoints_of_isGenericHingePoints hk1 hq⟩
+
+/-- **KT Proposition 2.3's rank formula at every maximum-rank realization**
+(`cor:dof-generic-realization`): `rank R(G,q) = D(|V| − 1) − def(G̃)` at every `q` with
+`IsMaxRankHingePoints G q`. The row count at a generic assignment bounds `q`'s from above by
+maximality, and the deterministic bound
+(`finrank_span_rigidityRows_add_deficiency_le`) from the other side. -/
+theorem finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints [Infinite K]
+    [Finite α] [Finite β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)
+    {q : β × Fin k × Fin (k + 1) → K} (hq : IsMaxRankHingePoints G q) :
+    (Module.finrank K (Submodule.span K
+        (ofHinge G fun e a b => q (e, a, b)).rigidityRows) : ℤ)
+      = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n := by
+  obtain ⟨q₀, hq₀, -⟩ := exists_isGenericHingePoints (K := K) (k := k) G
+  have h₀ := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints hk1 hn G hne hspan hq₀
+  have hle := hq.2 E(G) subset_rfl q₀
+    (supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints hk1 hq₀)
+  rw [Graph.restrict_self] at hle
+  have hub := finrank_span_rigidityRows_add_deficiency_le
+    (ofHinge G fun e a b => q (e, a, b)) hn hne hq.1
+  simp only [ofHinge_graph] at hub
+  exact le_antisymm hub (h₀ ▸ by exact_mod_cast hle)
+
+/-- **A maximum-rank realization has `def(G̃)` degrees of freedom**
+(`cor:dof-generic-realization`): `finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints` in
+`dof` form. -/
+theorem dof_ofHinge_of_isMaxRankHingePoints [Infinite K] [Finite α] [Finite β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)
+    {q : β × Fin k × Fin (k + 1) → K} (hq : IsMaxRankHingePoints G q) :
+    dof (ofHinge G fun e a b => q (e, a, b)) = G.deficiency n := by
+  have h := finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints hk1 hn G hne hspan hq
+  rw [dof, ofHinge_graph]
+  linarith
+
+/-- **KT Proposition 2.3** (Katoh–Tanigawa 2011, p. 655, credited to Jackson–Jordán), at KT's own
+genericity: for a multigraph `G` spanning the bodies and a hinge-point assignment `q` of maximum
+rank (`IsMaxRankHingePoints`), the following are equivalent for every integer `c`:
+(i) `rank R(G,q) = D(|V| − 1) − c`; (ii) `def(G̃) = c`; (iii) `rank M(G̃) = D(|V| − 1) − c`.
+(i) ⇔ (ii) is `finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints`; (ii) ⇔ (iii) is KT
+eq. (2.4) (`Graph.rank_add_deficiency_eq`). -/
+theorem tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints [DecidableEq β]
+    [Infinite K] [Finite α] [Finite β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)
+    {q : β × Fin k × Fin (k + 1) → K} (hq : IsMaxRankHingePoints G q) (c : ℤ) :
+    List.TFAE
+      [(Module.finrank K (Submodule.span K
+          (ofHinge G fun e a b => q (e, a, b)).rigidityRows) : ℤ)
+            = screwDim k * (V(G).ncard - 1 : ℤ) - c,
+        G.deficiency n = c,
+        ((G.matroidMG n).rank : ℤ) = screwDim k * (V(G).ncard - 1 : ℤ) - c] := by
+  have hrank := finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints hk1 hn G hne hspan hq
+  have hD : 1 ≤ Graph.bodyBarDim n := by have := three_le_screwDim hk1; omega
+  have hMG := G.rank_add_deficiency_eq n hD hne
+  rw [hn] at hMG
+  tfae_have 1 ↔ 2 := by constructor <;> intro h <;> linarith
+  tfae_have 2 ↔ 3 := by constructor <;> intro h <;> linarith
+  tfae_finish
+
+/-- **The degree of freedom is `0` exactly at rigidity on `V(G)`** (`def:dof-generic`),
+by the row-count-iff-rigidity bridge
+`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`. -/
+theorem dof_eq_zero_iff [Finite α] (F : BodyHingeFramework K k α β)
+    (hne : V(F.graph).Nonempty) :
+    dof F = 0 ↔ F.IsInfinitesimallyRigidOn V(F.graph) := by
+  have h1 : 1 ≤ V(F.graph).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+  rw [F.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hne, dof]
+  constructor
+  · intro h; zify [h1]; linarith
+  · intro h; zify [h1] at h; linarith
+
+/-- **The cheapest witness of `IsMaxRankHingePoints`, a single loop** (a step of
+`def:dof-generic`): at a graph with no link between distinct bodies, every assignment, a degenerate
+hinge included, has maximum rank, as a loop's rows are zero. -/
+theorem isMaxRankHingePoints_loop (q : Fin 1 × Fin 2 × Fin 3 → ℝ) :
+    IsMaxRankHingePoints (K := ℝ) (k := 2)
+      (Graph.banana (0 : Fin 1) 0 ({0} : Set (Fin 1))) q := by
+  refine ⟨fun e u v h huv => absurd (by simp at h; omega) huv, fun E' _ q' _ => ?_⟩
+  have hrows : ∀ q'' : Fin 1 × Fin 2 × Fin 3 → ℝ,
+      Submodule.span ℝ (ofHinge ((Graph.banana (0 : Fin 1) 0 ({0} : Set (Fin 1))) ↾ E')
+        fun e a b => q'' (e, a, b)).rigidityRows = ⊥ := by
+    intro q''
+    rw [Submodule.span_eq_bot]
+    rintro _ ⟨e, u, v, -, r, -, rfl⟩
+    rw [Subsingleton.elim u v, hingeRow_self]
+  rw [hrows, hrows]
 
 end CombinatorialRigidity.Molecular.BodyHingeFramework

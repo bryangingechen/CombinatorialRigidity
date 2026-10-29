@@ -331,6 +331,10 @@ assignment is an infinitesimal motion.
 
 \begin{definition}[Degree of freedom; generic realization]
   \label{def:dof-generic}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.dof,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.dof_eq_zero_iff,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.IsMaxRankHingePoints}
+  \leanok
   \uses{def:rigidity-matrix}
   Let $(G,p)$ be a body-hinge framework. The \emph{degree of freedom}
   of $(G,p)$ is $D(|V|-1) - \operatorname{rank} R(G,p)$. The framework
@@ -340,9 +344,29 @@ assignment is an infinitesimal motion.
 \end{definition}
 
 \begin{fmlnote}
-  The formalization defines neither notion. Its statements give the
-  rank of $R(G,p)$ directly, and the note after
-  \cref{prop:rank-formula-of-motion-bound} says how they replace genericity.
+  The formalization writes $d = k + 1$, as in the note after
+  \cref{def:hinge-constraint}. The degree of freedom is formalized as
+  stated, in the integers, with $V$ the vertex set of $G$; the screw
+  assignments are defined on all the bodies, and the rows of
+  $R(G,p)$ involve only those of $V(G)$. It is $0$ exactly when
+  $(G,p)$ is infinitesimally rigid on $V(G)$, for $V(G)$ nonempty
+  (the second pin). Genericity is formalized for the
+  frameworks whose hinges are spanned by points (the hinge-point
+  assignments $q$ of \cref{def:generic-hinge-points}), as
+  \texttt{IsMaxRankHingePoints}. The realizations of $G$ compared with
+  $q$ are the hinge-point assignments whose hinge at every link between
+  distinct bodies is nondegenerate, and $q$ itself must have this
+  property. Nondegeneracy is not asked at a loop, whose hinge
+  constrains no motion, so a framework with a degenerate hinge at a
+  loop counts as generic, where Katoh and Tanigawa's multigraphs have
+  no loops. The cheapest witness is a single loop, where every
+  assignment is generic. Allowing degenerate hinges at the links
+  between distinct bodies would not match the source, as a degenerate
+  hinge welds its two bodies. Every assignment that is generic for
+  row independence is generic in this sense, so one exists over an
+  infinite field, and each has $\operatorname{def}(\tilde G)$ degrees
+  of freedom (\cref{lem:generic-hinge-points-max-rank},
+  \cref{cor:dof-generic-realization}).
 \end{fmlnote}
 
 By the next lemma, the trivial motions form a $D$-dimensional subspace
