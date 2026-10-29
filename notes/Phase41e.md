@@ -4,13 +4,17 @@
 last, so its close closes Phase 41 and the RECONCILE program. The phase's design, the PI's decisions
 (here §1h.1, the scope, and §1j, the open) and UNSTATED's open recon are in
 `notes/Phase41-design.md`; the recon's Lean witnesses are
-`notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
-`notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1–U10, R and PAD have landed. Next: U11's recon.
+`notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4
+`notes/reconcile-formal/ReductionWitness.lean`, and for U11 `DofGenericWitness.lean`. Fourteen build items, a recon, a spike and the
+close (planned 17–23 commits, the open included); U1–U10, R, PAD and U11's recon have landed.
+Next: U11's build.
 
 ## Current state
 
-**The next concrete commit is U11's recon** (*Hand-off*); U1–U10, R and PAD have landed (U10's `SimpleGraph.molecular_rigid_iff_square_rigid`: axioms propext, Classical.choice, Quot.sound). Each claim of the full
+**The next concrete commit is U11's build** (*Hand-off*); U1–U10, R, PAD and U11's recon have
+landed. The recon (design doc §2, under U11; witness `notes/reconcile-formal/DofGenericWitness.lean`)
+found the candidates faithful, a loop's hinge left free, and U11 one commit that adds declarations
+only and moves no main result. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -143,18 +147,20 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   plan's (both recorded in the design doc's U10 entry, the first under §1f.3);
   `thm:molecular-iff-square-bar-joint` pins it second, its fmlnote rewritten, its
   exposition-ledger entry updated.)
-- [ ] **U11, recon. `def:dof-generic`** (`F-008`'s part): read-only first, the
-  definition-faithfulness gate. The witness's candidates: `dof F = D(|V(G)| − 1) − rank R(G,p)`,
-  and `IsMaxRankHingePoints G q` (nondegenerate at the non-loop links, and at every `E' ⊆ E(G)`
-  the rows of `ofHinge (G ↾ E') q` of the largest rank over the hinge-point assignments with that
-  property), which the paragraph after `lem:generic-hinge-points-nondegenerate` derives from
-  `IsGenericHingePoints` (`HingeGeneric.lean:216`) for loopless `G`. Open: which carrier stands
-  for "all realizations of `G`"; loops, whose hinge points genericity leaves free; whether KT
-  Proposition 2.3 then holds at every such realization (a main result's statement: the PI's). Its
-  verdict goes to the design doc's §2 in one docs commit, as item R's did; a main-result change
-  goes to the PI before U11 builds. 0–1 commits.
-- [ ] **U11. `def:dof-generic` built** as its recon settles, in `GenericLift/HingeGeneric.lean`;
-  the node pinned and `\leanok`, its fmlnote rewritten. 1–2 commits.
+- [x] **U11, recon. `def:dof-generic`** (`F-008`'s part; landed as one docs commit, the design
+  doc's §2 entry *U11's recon*, with `notes/reconcile-formal/DofGenericWitness.lean`): the
+  realizations are the hinge-point frameworks with nondegenerate hinges (KT §2.3, JJ §3.3), not
+  arbitrary extensors or panels; nondegeneracy asked only between distinct bodies, a loop's hinge
+  free (§1f.4's pattern); `dof` and `IsMaxRankHingePoints` (uncurried `q`) faithful, satisfiable at
+  the single and double edge, the triangle and with a loop, not met by two equal hinges; KT
+  Proposition 2.3 holds at every such realization (compiled), its repin the PI's (*Blockers*).
+- [ ] **U11. `def:dof-generic` built** as its recon settles (design doc §2, *U11's recon*, *U11's
+  build* and *The blueprint*): in `GenericLift/HingeGeneric.lean`, `dof`, `dof_eq_zero_iff`,
+  `IsMaxRankHingePoints`, the bridge from `IsGenericHingePoints`, existence, and the rank formula
+  and `dof` at every such realization, transcribed from the witness; `def:dof-generic` pinned and
+  `\leanok` with its fmlnote rewritten, the paragraph after
+  `lem:generic-hinge-points-nondegenerate` made `lem:generic-hinge-points-max-rank` (loops
+  allowed), a new `cor:dof-generic-realization`, and two restated sentences. 1 commit.
 - [ ] **U12, spike. S3's route** (compiler-checked, read-only): in `CaseII.lean` (zone), the count
   in steps 7–14 of `case_II_realization_all_k`'s proof (`:295`, about 710 lines) extracted as a
   lemma, a realization of `G_v^{ab}` of rank `N` giving `rank R(G, q₀) ≥ N + D − 1`
@@ -184,14 +190,20 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Blockers / open questions
 
-- None blocking. Two items may return to the PI: U11's recon, if `def:dof-generic` moves a main
-  result's statement; and U12's spike, if the route does not compose (U12's size moves with it).
+- None blocking. U12's spike may return to the PI, if the route does not compose (U12's size
+  moves with it).
+- **For the PI, not blocking U11** (design doc §4, *KT Proposition 2.3 at KT's own genericity*):
+  restate `prop:rigidity-matrix-prop11` at `def:dof-generic`'s genericity, a strengthening proved
+  in the witness, which moves `formalization.yaml`'s Jackson–Jordán alignment row (not a main
+  result); no extra commit if answered before U11 builds, one after. M1 could follow (a main
+  result; about one commit). U11 builds as planned either way.
 
 ## Hand-off / next phase
 
-**U11's recon** (checklist item *U11, recon*, `def:dof-generic`): read-only first, the
-definition-faithfulness gate on the witness's candidates; its verdict goes to the design doc's §2 in
-one docs commit, and a main-result change to the PI before U11 builds.
+**U11's build** (checklist item *U11*, `def:dof-generic`), one commit: the declarations, nodes
+and fmlnote of the design doc's §2 entry *U11's recon*, transcribed from
+`notes/reconcile-formal/DofGenericWitness.lean` (run its `lake lean` first). If the PI has taken §4's
+KT Proposition 2.3 question by then, the repin rides on it.
 
 ## Decisions made during this phase
 

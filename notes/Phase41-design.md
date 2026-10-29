@@ -23,7 +23,8 @@ as its last item, and closed it the same day: no main result bounds the edge lab
 whole as the source of its build: one commit drops `hfresh` from KT Theorem 4.9's principle) went
 to the PI with 41d's other open questions. The PI took it, with the rows form's restatement, the
 padding drop and the `\uses` fix (§1j), and UNSTATED opened the same day as **41e**, work log
-`notes/Phase41e.md`, planned as Phase 41's last sub-phase. **Next:** 41e's item U1.
+`notes/Phase41e.md`, planned as Phase 41's last sub-phase. U11's recon is in §2, under U11.
+**Next:** 41e's U11 build.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -678,6 +679,135 @@ ScrewSpace carrier).
   loops, whose hinge points genericity leaves free; whether KT Proposition 2.3 then holds at every
   such realization (a main result's statement, the PI's). `GenericLift/HingeGeneric.lean`, after
   RELABEL if RELABEL restates that file. 1–2 commits.
+  - **U11's recon** (41e's item *U11, recon*; 2026-10-29; Claude Opus 5.5, design pass, at
+    `5b521137`). Evidence: `notes/reconcile-formal/DofGenericWitness.lean` (`lake lean`: no errors
+    or warnings, its seven `#print axioms` the three standard axioms; `#lint` on a copy: no errors in
+    9 declarations), in `ReconDofGeneric`; it supersedes `UnstatedWitness.lean`'s G5 copy. **Verdict:
+    the candidates are faithful in reading (a) below, with the loop convention of Q2; U11 is one
+    build commit, adds declarations only, and moves no main result's statement and no
+    `formalization.yaml` row.** An optional strengthening of KT Proposition 2.3 goes to the PI, not
+    blocking U11 (§4).
+    - *The sources.* Katoh and Tanigawa's body-hinge framework puts a `(d−2)`-dimensional affine
+      subspace at each edge (§2.3, p. 653), and is generic "if the ranks of `R(G,p)` and its
+      edge-induced submatrices take the maximum values over all realizations of `G`" (§2.4, p.
+      654), citing Jackson and Jordán. Their body-and-hinge realizations are such frameworks, with
+      hinges at infinity and prismatic hinges excluded (2010 §3.3, p. 578), and an edge-induced
+      submatrix deletes the `D − 1` rows of each edge of a subset (§6, p. 583). KT's multigraphs
+      have no loops (§2.5); JJ say nothing of loops.
+    - *Q1, the carrier.* (a) `ofHinge G q` over the hinge-point assignments whose hinges are
+      nondegenerate: up to the choice of the points, these are the realizations (the paragraph
+      after `lem:generic-hinge-points-nondegenerate`; a hinge determines its extensor up to a
+      scalar, the remark after `def:hinge-constraint`). Over an infinite field, finite bodies and
+      labels, `G` spanning and nonempty, the largest rank at `E'` is `D(|V|−1) − def((G ↾ E')~)`:
+      `lem:relative-deficiency-rank-bound` bounds every realization, and a generic assignment over
+      `G ↾ E'` attains it. **The sources' reading.** Allowing degenerate hinges is not: a zero
+      extensor's hinge-row block is every form, so the hinge welds its bodies (rank `D` at a single
+      edge), and for `d ≥ 3` an assignment with every hinge degenerate would be "generic" at every
+      `G`; the candidate's first conjunct is what excludes it. (b) Body-hinge frameworks on `G`
+      with any supporting extensor: with zero allowed, the welded maximum; with nonzero ones, the same
+      maxima as (a) under (a)'s hypotheses, by the same two bounds (not compiled). But the class
+      holds frameworks that are no realization (hinges at infinity, and for `d ≥ 3` screws that are
+      not extensors), and over a finite field nothing ties its maxima to (a)'s. Not the sources'.
+      (c) Panel-hinge frameworks: an edge's hinge is the meet of its ends' panels, so parallel
+      edges share a hinge, and the double edge's largest rank is `D − 1`, not `D` (§1f.1). KT's
+      realizations are body-hinge, and panel genericity is JJ §7's (`def:generic-normals`). Not
+      the sources'.
+    - *Q2, loops.* A loop's rows are zero whatever its hinge
+      (`span_rigidityRows_eq_of_eq_off_loops`, `RigidityMatrix/Basic.lean:579`), so the maxima are
+      the same whether the realizations compared ask a loop's hinge nondegenerate or not.
+      **Recommended: ask nondegeneracy at the links between distinct bodies only, of `(G,q)` and of
+      the realizations compared**, the project's convention since §1f.4 (the upper bound's `hC`) and
+      §1h.2 (U6), and `IsGenericHingePoints`'s, which leaves a loop's points free. Every
+      row-independence generic assignment then qualifies, loops allowed. The divergence, for the
+      fmlnote: a framework with a degenerate hinge at a loop counts as generic, where KT have no
+      loops. The strict reading (nondegenerate at every edge) builds as easily, but its bridge
+      needs `G` loopless or the loops' hinges asked separately; not recommended. It follows a
+      pattern the PI took (§1f.4, §1h.2), so it needs no PI decision.
+    - *Q3, the candidates.* `dof` is faithful as written: KT's formula (p. 654), in `ℤ`, with
+      `V = V(G)`; the screw assignments live on all the bodies `α`, and the rows involve only those
+      of `V(G)`. It is `0` exactly at rigidity on `V(G)` (`dof_eq_zero_iff`, compiled), and
+      `dim Z − D` when `G` spans. `IsMaxRankHingePoints` is faithful in reading (a) under Q2's
+      convention; restated with `IsGenericHingePoints`'s uncurried assignment
+      `q : β × Fin k × Fin (k + 1) → K`, so the bridge composes. `E' = E(G)` gives `R(G,q)` itself
+      (`Graph.restrict_self`). *Cheapest satisfying witness:* at a graph with no link between
+      distinct bodies, every assignment (the single loop, compiled, a degenerate hinge included);
+      otherwise one at the maximum on every set of edges: at the single edge any nondegenerate
+      assignment, at the double edge any with independent hinges, at the triangle any with three
+      independent hinges (by hand); over an infinite field, a generic one always.
+      **Satisfiable** (compiled, over `ℝ`): the single edge and the double edge in `d = 3`, the
+      triangle (`(⊤ : SimpleGraph (Fin 3)).shadowGraph`) and the double edge with a loop in
+      `d = 2`, and the single loop. **Not vacuous:** at the double edge, two hinges at the same
+      points do not qualify (`not_isMaxRankHingePoints_banana_of_eq`). The paragraph's derivation
+      from `IsGenericHingePoints` holds for every multigraph, loops allowed
+      (`isMaxRankHingePoints_of_isGenericHingePoints`): its "no loops" only made `(G,q)`
+      nondegenerate at a loop, and the proof replaces a compared assignment's degenerate hinges by
+      a fixed family, its rows unchanged, then takes
+      `exists_independent_panelRow_subfamily_of_le_finrank` (`GenericityDevice.lean:499`) and
+      transfers by genericity.
+    - *Q4, KT Proposition 2.3.* It holds at every maximum-rank realization (compiled, the witness's
+      `tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints`): a generic
+      assignment `q₀` has the formula (`HingeGeneric.lean:974`), a maximum-rank `q` has at least
+      its rank at `E' = E(G)`, and `finrank_span_rigidityRows_add_deficiency_le`
+      (`GenericityDevice.lean:411`) bounds `q` above, its hinges at the links between distinct
+      bodies being nondegenerate. As every row-independence generic assignment has maximum rank,
+      this is a strengthening of today's pin `tfae_finrank_span_rigidityRows_ofHinge_deficiency`
+      (`:1098`). U11 below adds the rank and `dof` forms as a new corollary, which no main result and
+      no `formalization.yaml` row reads; restating `prop:rigidity-matrix-prop11` itself at KT's own
+      genericity is the PI's (§4).
+    - *U11's build* (1 commit; `GenericLift/HingeGeneric.lean`, a new section before *KT
+      Proposition 2.3, unconditional*, transcribed from the witness; near the chain's end, so the
+      edit rebuilds only the file and its few importers). In
+      `CombinatorialRigidity.Molecular.BodyHingeFramework`:
+      `noncomputable def dof (F : BodyHingeFramework K k α β) : ℤ :=
+      screwDim k * ((V(F.graph).ncard : ℤ) - 1) - Module.finrank K (Submodule.span K F.rigidityRows)`;
+      `theorem dof_eq_zero_iff [Finite α] (F : BodyHingeFramework K k α β)
+      (hne : V(F.graph).Nonempty) : F.dof = 0 ↔ F.IsInfinitesimallyRigidOn V(F.graph)`;
+      `def IsMaxRankHingePoints (G : Graph α β) (q : β × Fin k × Fin (k + 1) → K) : Prop :=
+      (∀ e u v, G.IsLink e u v → u ≠ v → (ofHinge G fun e a b => q (e, a, b)).supportExtensor e ≠ 0)
+      ∧ ∀ E' ⊆ E(G), ∀ q' : β × Fin k × Fin (k + 1) → K, (∀ e u v, G.IsLink e u v → u ≠ v →
+      (ofHinge G fun e a b => q' (e, a, b)).supportExtensor e ≠ 0) → Module.finrank K
+      (Submodule.span K (ofHinge (G ↾ E') fun e a b => q' (e, a, b)).rigidityRows) ≤
+      Module.finrank K (Submodule.span K (ofHinge (G ↾ E') fun e a b => q (e, a, b)).rigidityRows)`;
+      `theorem isMaxRankHingePoints_of_isGenericHingePoints [Finite α] [Finite β] (hk1 : 1 ≤ k)
+      {G : Graph α β} {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints G q) :
+      IsMaxRankHingePoints G q`; `theorem exists_isMaxRankHingePoints [Infinite K] [Finite α]
+      [Finite β] (hk1 : 1 ≤ k) (G : Graph α β) : ∃ q, IsMaxRankHingePoints G q`; and, with
+      `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`'s hypotheses (`[Infinite K]
+      [Finite α] [Finite β] {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+      (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)`) and
+      `(hq : IsMaxRankHingePoints G q)` in place of its `hq`,
+      `finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints` (its conclusion) and
+      `dof_ofHinge_of_isMaxRankHingePoints : (ofHinge G fun e a b => q (e, a, b)).dof =
+      G.deficiency n`. The TFAE and the witnesses stay in the evidence file.
+    - *The blueprint, in the same commit.* `def:dof-generic` pins `dof`, `dof_eq_zero_iff` and
+      `IsMaxRankHingePoints`, `\leanok`, its statement unchanged; its fmlnote becomes: "The
+      formalization writes $d = k + 1$, as in the note after \cref{def:hinge-constraint}. The first
+      pin is the degree of freedom, an integer, with $V$ the vertex set of $G$; the screw
+      assignments are defined on all the bodies, and the rows of $R(G,p)$ involve only those of
+      $V(G)$. The second says that it is $0$ exactly when $(G,p)$ is infinitesimally rigid on
+      $V(G)$, for $V(G)$ nonempty. The third is genericity for the frameworks $(G,q)$ of
+      hinge-point assignments (\cref{def:generic-hinge-points}), which up to the choice of the
+      points are the realizations of $G$: $(G,q)$ is generic if its hinges are nondegenerate and,
+      for every set of edges, its rows at those edges have the largest rank over the hinge-point
+      assignments whose hinges are nondegenerate. Nondegeneracy is asked only at the edges whose
+      two ends differ: the rows of a loop are zero whatever its hinge, which is left free, as in
+      \cref{prop:rank-formula-of-motion-bound}. Over an infinite field generic realizations exist,
+      and each has $\operatorname{def}(\tilde G)$ degrees of freedom
+      (\cref{lem:generic-hinge-points-max-rank}, \cref{cor:dof-generic-realization})." In
+      `generic-lift.tex`, the paragraph "Let $d \ge 2$, let $G$ have no loops, …" becomes
+      `lem:generic-hinge-points-max-rank` (the bridge and existence pinned; every multigraph,
+      loops allowed; the paragraph as proof, with the loop replacement; `\uses` `def:dof-generic`,
+      `def:generic-hinge-points`, `lem:generic-hinge-points-nondegenerate`,
+      `lem:exists-generic-hinge-points`); its lead-in and its sentence on welding stay as prose. A
+      new `cor:dof-generic-realization` after `prop:rigidity-matrix-prop11` pins the rank and `dof`
+      forms ("every generic realization of `G` has `def(G̃)` degrees of freedom"; its proof the
+      pinch, `\uses` `thm:bodyhinge-generic-rank`, `lem:generic-hinge-points-max-rank`,
+      `lem:relative-deficiency-rank-bound`). Restated claims: `prop:rank-formula-of-motion-bound`'s
+      fmlnote ("The formalization has no notion of a generic framework in the sense of
+      \cref{def:dof-generic}" goes; the formula at those frameworks is the new corollary), and
+      `deficiency.tex`'s sentence before `def:k-dof` cites the corollary. Gates: `verify.sh`,
+      `lint.sh`, `check-docstring-labels.py` diffed against the parent (new pins), the honesty gate
+      on the new `\leanok`s, and this entry as the definition-faithfulness gate.
 - **U12. S3** (`F-150`; the dead pin, `F-152`'s part). A declaration for
   `lem:case-II-realization-placement` as stated, from a realization of `G_v^{ab}`: the count in
   steps 7–14 of `case_II_realization_all_k`'s proof extracted as a lemma (a realization of
@@ -858,7 +988,7 @@ dropped, `hsplit` given `P` at every admissible label, in 41e before U4.
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
 | **RELABEL** | 41d (opened and closed 2026-10-29 with the PI, §1i) | done: the bound on the edge labels (`hcard`, `hfresh`) dropped from the six main results that carried it (§1h.2), by route B, a transport at the boundary with the induction untouched (§1i.1; §2's *RELABEL's recon*): `embedEdges` moved up with minimality through deficiencies (B1), the pullbacks and KT Theorems 5.5 and 5.6 without the bound (B2), the cascade, the blueprint and `formalization.yaml` (B3); and R, a read-only recon of dropping `hfresh` from `minimal_kdof_reduction` (§1i.3; §2's *Item R's recon*: route A's combinatorial half, proved in a witness, 1 commit, for the PI) (`notes/Phase41d.md`) | 7, the open, a corrective and the close included (planned 7–10) |
-| **UNSTATED** | 41e (opened 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; item R's build before U4, so U4 is stated without `hfresh` (§1j.1); the rows form restated without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge repointed, riding on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped just before U10, as PAD (§1j.3); `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) (`notes/Phase41e.md`) | 17–23, the open and the close included (the recon's 15–21, plus R's build and PAD; the report: 13–23) |
+| **UNSTATED** | 41e (opened 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; item R's build before U4, so U4 is stated without `hfresh` (§1j.1); the rows form restated without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge repointed, riding on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped just before U10, as PAD (§1j.3); `def:dof-generic` needs its own recon (done: §2, under U11) and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) (`notes/Phase41e.md`) | 17–23, the open and the close included (the recon's 15–21, plus R's build and PAD; the report: 13–23) |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
@@ -897,3 +1027,13 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   the pinned forms no main result calls stay.
 - **Relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links**: in UNSTATED (§1h.2), 41e's
   item U6 (§2, *UNSTATED's open recon*).
+- **KT Proposition 2.3 at KT's own genericity** (§2, *U11's recon*; for the PI, not blocking
+  U11). After U11, `def:dof-generic`'s genericity is formalized (`IsMaxRankHingePoints`), and every
+  generic hinge-point assignment has it. The witness proves KT Proposition 2.3, the three-way
+  equivalence, at every such realization, a strengthening of today's pin of
+  `prop:rigidity-matrix-prop11`. Taking it repins that node (KT's statement exactly) and moves
+  `formalization.yaml`'s alignment row for Jackson–Jordán Theorem 6.1 / Corollary 6.3, not one of
+  the 20 main results: about 20 Lean lines, no extra commit if answered before U11 builds, one
+  after. M1 (a main result) and its rank formula could follow the same way: the rank formula is
+  compiled, the iff is not; about one commit. Neither is needed for U11, which adds declarations
+  only.
