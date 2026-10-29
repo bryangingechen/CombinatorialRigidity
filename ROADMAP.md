@@ -1279,8 +1279,13 @@ PD-STABLE (the statement layer and the `def_3 ≤ 1` corollary, independent of t
 table (2026-10-29) finds the carrier, both lemmas, the flat rank, the cut, bridge, contraction and
 split-off steps, the partition estimates and Phase 39's reduction dimension-general, given routine
 or formal work. The short ears, the one-body and orbit ears and the generic statement's route B
-fail as written: in `P³` two bodies' planes always share a line, in `Pᵈ` they need not. Next: two
-cheap tests of the flat formulas and the cycle and long-ear certificates.
+fail as written: in `P³` two bodies' planes always share a line, in `Pᵈ` they need not. The steps
+break at `d = 4` and `d = 5`, and the conjecture's new content at `d` is the sparse graphs with
+`def_3 ≥ d − 2`, so far measured on few graphs of the kind that would test it. Next: one driver
+mode with the flat formulas, the cycle and long-ear certificates, and graphs built where the
+proof breaks. Then, by the PI's defaults (2026-10-29), the statement layer and the `def_3 ≤ 1`
+corollary open beside the research, toward three tiered targets: every `d` at `def_3 ≤ 1`, at
+`def_3 ≤ 2` (a `P⁴` theorem), and every `d`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

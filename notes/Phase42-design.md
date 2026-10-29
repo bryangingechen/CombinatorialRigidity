@@ -5,8 +5,9 @@
 rows, 10 generalize as they stand and 6 given routine or formal work (CERT, CARRIER); the coverage
 waits on the ear rows, nondegeneracy's lift is open, and 4 rows fail as written: the short ears,
 the one-body and orbit ears (rows 14–15), and route B. §2.5 places the thresholds at `d = 4, 5`
-and the content at `def[3] ≥ d − 2`, where the evidence is thin. Next concrete task: T1 and T2
-(§2.4), one driver mode; the PI's calls are §4. Evidence: `notes/Strata.md`, Results 12–19.
+and the content at `def[3] ≥ d − 2`, where the evidence is thin. Next concrete task: T1, T2 and
+§2.5's content-range graphs, one driver mode. The PI's defaults for the sessions after it are §1;
+the route stays open (§4). Evidence: `notes/Strata.md`, Results 12–19.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -23,7 +24,8 @@ through Phase 39's reduction.
 
 Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `def_3 ≤ 1` is
 `Strata.md` Result 17. `d = 4, 5, 6` are measured (Results 11, 19), not found below target under
-the `--d4` population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it.
+the `--d4` population's cap (`n ≤ 12`, 36 simple graphs) and 8 graphs past it. Where the
+conjecture has content, that is 47 cells on 18 graphs, six of them cycles (§2.5).
 
 **What it implies.** By Result 12, every per-body flag stratum of `Pᵈ` attains, KT's panel
 theorem among them. That is a strengthening, not a new proof: Phase 40 itself uses KT Theorem 5.6
@@ -46,6 +48,23 @@ fibre-intersection lemma and Jackson–Jordán's equality.
   beside it.
 - **PI, 2026-10-29 (open), the plan's home:** "Sub-lettered, Phase42-design.md (Recommended)".
   The program section moved here from `notes/Strata.md`, which keeps its Results and evidence.
+- **PI, 2026-10-29 (planning), the defaults for the next sessions:** "Let's record your
+  suggestions and let those be the default for the next session." The suggestions, as put
+  (with §2.5's recommendations):
+  1. Measure the statement where the proof breaks, before any attack track: §2.5's content-range
+     graphs, in T1 and T2's driver mode.
+  2. Tiered targets, each a closable headline. Tier 0: every `d` at `def[3] ≤ 1` (PD-STABLE,
+     formal only). Tier 1: a `P⁴` theorem, so every `d` at `def[3] ≤ 2` (SHORT, ONE-EAR's `d = 4`
+     case, CERT). Tier 2: every `d`.
+  3. The bare and distinct conjuncts first, GENERIC after, deferring nondegeneracy's lift with it.
+  4. PD-STATE and PD-STABLE open beside the research once T1 and T2 land, the Lean under
+     `/coordinate-phase`; the carrier in dual form (a point per body, each closed neighbourhood in
+     a plane).
+  5. A second read of rows 9 (contraction) and 12 ((⋆), the two-body ear) before anything builds
+     on them.
+
+  The order put: T1, T2 and the content-range graphs; then T3 and T4 at `d = 4, 5` on the content
+  range, sizing SHORT and ONE-EAR; then attack tracks, with PD-STATE and PD-STABLE in parallel.
 
 ## 2. PD-RECON (42a)
 
@@ -217,21 +236,24 @@ leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
 - **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
   flag strata as corollaries.
 
-PD-STATE and PD-STABLE do not depend on the route, so they can run beside PD-RECON; the PI kept
-them out of the open (§1).
+PD-STATE and PD-STABLE do not depend on the route, so they can run beside PD-RECON. The PI kept
+them out of the open; by the planning defaults (§1) they open beside it once T1 and T2 land.
 
 ## 4. Open questions
 
-For the PI:
-- The route: §2.2's proposal, R2's induction with R1's base row inside an induction on `d`.
-- Whether SHORT and ONE-EAR (§2.3) become attack tracks, and whether `d = 4` is targeted first
-  (§2.2: it gives every `d` at `def[3] ≤ 2`). §2.5 recommends `d = 4` as a milestone, with each
-  obligation attacked at its own threshold, after the content-range tests.
-- Whether the `Pᵈ` headline ships the bare and distinct conjuncts first, GENERIC after (row 22).
-  Nondegeneracy enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with
-  row 22's reading this call also defers the next one's lift.
-- Nondegeneracy's `Pᵈ` lift, and primal or dual carrier (CARRIER; PD-STATE's open).
-- When PD-STATE and PD-STABLE open: beside the recon or after it.
+The PI's planning defaults (§1) answer most of the calls put at the open. A session follows them
+unless a finding argues otherwise:
+- `d = 4` first, as Tier 1 of three. SHORT is attacked at `d = 4` and ONE-EAR at `d = 5`, as
+  attack tracks once T3 and T4 size them (§2.5).
+- The headline ships the bare and distinct conjuncts first, GENERIC after (row 22). Nondegeneracy
+  enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with row 22's reading
+  its `Pᵈ` lift is deferred with it.
+- The carrier in dual form (CARRIER); PD-STATE checks it against the definition bodies at open.
+- PD-STATE and PD-STABLE open beside the research once T1 and T2 land.
+
+Still open, for the PI:
+- The route: §2.2's proposal, R2's induction with R1's base row inside an induction on `d`. The
+  defaults work inside it; it is not decided on its own.
 
 Settled by the table: Phase 39's reduction is `d`-general for the bare and distinct conjuncts,
 given CARRIER (row 19).
