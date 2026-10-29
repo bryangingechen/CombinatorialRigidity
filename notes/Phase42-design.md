@@ -4,8 +4,9 @@
 `notes/Phase42a.md`) is open: no Lean, no blueprint. The step table has landed (§2.1). Of its 22
 rows, 10 generalize as they stand and 6 given routine or formal work (CERT, CARRIER); the coverage
 waits on the ear rows, nondegeneracy's lift is open, and 4 rows fail as written: the short ears,
-the one-body and orbit ears (rows 14–15), and route B. Next concrete task: T1 and T2 (§2.4),
-one driver mode; the PI's calls are §4. Evidence: `notes/Strata.md`, Results 12–19.
+the one-body and orbit ears (rows 14–15), and route B. §2.5 places the thresholds at `d = 4, 5`
+and the content at `def[3] ≥ d − 2`, where the evidence is thin. Next concrete task: T1 and T2
+(§2.4), one driver mode; the PI's calls are §4. Evidence: `notes/Strata.md`, Results 12–19.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -151,6 +152,58 @@ Result 17's `def[3] ≤ 1` one step further.
 - **T5** (coverage): the graphs whose only row at `D = 10, 15` is a `k = 1, 2` orbit cell. C's hand
   count: `K₄` with every edge subdivided twice takes the orbit cell at `D = 6` and row 12 at `D = 10`.
 
+### 2.5 Where the dimension bites: two frames (2026-10-29)
+
+This session (Claude Opus 5.5) read §2.1–§2.2 against `Strata.md` Results 15–19 with the PI. The
+question: is `d = 4` to PENCIL-D what `d = 3` was to KT? Not in KT's sense. KT's proof is uniform
+in `d`: its geometry, two panels meeting in a `(d−2)`-flat, is the same in every `d`, and `d = 3`
+is the worked case (Lemma 6.10; §6.4.2, p. 692: *"The proof strategy is exactly the same as
+`d = 3`"*). The pencil's `Π_v` stays 3-dimensional while `K^{d+1}` grows, so incidences that are
+free in `P³` become conditions. That gives two kinds of threshold:
+
+- **The steps' thresholds, 4 and 5.** At `d = 4` the short ears and route B's steer fail (rows 13
+  and 22: two stars have codimension `C(d−1, 2)`). At `d = 5` the one-body ear and route B's
+  one-ear fail outright (rows 14 and 22: `Π_a ∩ Π_b` has dimension `5 − d`). So `d = 4` is where the
+  `P³` argument first breaks, not where it breaks in its general form: a `d = 4` ONE-EAR may use the
+  point `Π_a ∩ Π_b`, which is gone at `d ≥ 5`. T4 (`d = 5, 6`) asks whether 5 is the last
+  threshold. Rows 13, 15 and 22 are where Phase 40 found new mathematics at `d = 3` (SHORT, ORBIT
+  and route B; ROADMAP §40).
+- **The graph's threshold, `2 + def[3](G)`.** Inside the outer induction on `d` (§2.2), `G` attains
+  at `d` from `P^{d−1}` whenever `def[3](G) ≤ d − 3`. Then `D_{d−1} = C(d, 2) ≥ C(3 + def[3], 2)`, and
+  Result 16 makes `def[D_{d−1}] = def[D_d] = def_∞`. So the work at `d` is the graphs with
+  `def[3](G) ≥ d − 2`. That class is nonempty at every `d`, so no fixed `d` suffices; a `P⁴` theorem
+  gives every `d` at `def[3] ≤ 2`. Such a `G` has a partition with
+  `e(P) ≤ (3|P| − 3 − def[3])/2`, a quotient of average degree below 3 and rich in ears, which is
+  where rows 13–15 sit.
+
+**The evidence where the conjecture has content**, read off `strata.py --pd --seed 1`. Of the 36
+simple capped graphs, 24 have `def[3] ≤ 1` and are settled at every `d` by Result 17. The cells at
+`d ≥ 4` with `def[3] ≥ d − 2` are 47, on 18 graphs (12 capped, 6 past the cap). Result 19's 41
+leaves out each graph's top cell, `d = 2 + def[3]`, which also carries content.
+- **Six are cycles.** Every body has degree 2, so the pencil condition is empty (three points span
+  a plane), and these cells are KT's case.
+- **The other twelve** are thetas, cycles with triangle ears, subdivided `K₄`, `K₃,₃` and Petersen,
+  and `ring5`. In all but `ring5` the condition binds at 2 to 10 bodies, and `ring5`'s only content
+  cell is `d = 4`.
+- **What none of them has, in that range:** row 14's configuration (a one-body ear whose
+  non-adjacent ends share a neighbour), route B's two hubs with three common neighbours, or a
+  condition at every body at `d ≥ 5`.
+
+**Recommendations**, for the PI (§4):
+- **Measure the statement where the proof breaks**, before any attack track:
+  - `θ(2, 2, k)` (paths of 2, 2 and `k` edges between two hubs): row 14's configuration,
+    `def[3] ≥ k − 2` by the singleton partition, `n = k + 3`.
+  - `θ(2, 2, 2, k)`: route B's, `def[3] ≥ k − 3`.
+  - Diamond rings at `m = 6, 7`: a condition at every body, `def[3] ≥ m − 3`, certified by reaching
+    `D(n−1)` as `ring5` is.
+  - D's candidate witness (§2.3, GENERIC).
+
+  A shortfall redirects the phase. A match is the first evidence where the failing rows bite.
+- **Run T3–T5 at each `d` only on graphs with `def[3] ≥ d − 2`**, and run T3 at `d = 5` as well.
+- **Attack each obligation at its own threshold:** SHORT at `d = 4`, ONE-EAR at `d = 5`, each
+  checked one dimension up. `d = 4` stays the first milestone (every `d` at `def[3] ≤ 2`), but its
+  ONE-EAR case must not lean on `Π_a ∩ Π_b ≠ 0`.
+
 ## 3. Layers (stable codes)
 
 - **PD-RECON** (42a, open): settle R1 or R2 on paper, or refute with a certificate (§2).
@@ -172,8 +225,11 @@ them out of the open (§1).
 For the PI:
 - The route: §2.2's proposal, R2's induction with R1's base row inside an induction on `d`.
 - Whether SHORT and ONE-EAR (§2.3) become attack tracks, and whether `d = 4` is targeted first
-  (§2.2: it gives every `d` at `def[3] ≤ 2`).
+  (§2.2: it gives every `d` at `def[3] ≤ 2`). §2.5 recommends `d = 4` as a milestone, with each
+  obligation attacked at its own threshold, after the content-range tests.
 - Whether the `Pᵈ` headline ships the bare and distinct conjuncts first, GENERIC after (row 22).
+  Nondegeneracy enters `PencilPair` only in the generic conjunct (`Pencil/Motive.lean`), so with
+  row 22's reading this call also defers the next one's lift.
 - Nondegeneracy's `Pᵈ` lift, and primal or dual carrier (CARRIER; PD-STATE's open).
 - When PD-STATE and PD-STABLE open: beside the recon or after it.
 

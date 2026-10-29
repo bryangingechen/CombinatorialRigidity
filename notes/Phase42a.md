@@ -14,7 +14,9 @@ point: T1 checks row 5's two flat formulas at `d = 4` on the `--d4` population (
 settle rows 5 and 10–12. **Landed:** the step table, from four read-only recon passes. Ten of its
 22 rows generalize as they stand and six given routine or formal work. Four fail as written: the
 short ears (row 13), the one-body and orbit ears (14–15) and route B (22). The verdict on the
-routes is §2.2: the step structure is R2's, and R1 contributes a base row.
+routes is §2.2: the step structure is R2's, and R1 contributes a base row. **Also landed:** §2.5,
+the thresholds (`d = 4` for SHORT, `d = 5` for ONE-EAR) and the content range `def[3] ≥ d − 2`,
+whose measured graphs bind the pencil condition at few bodies. Its tests are the PI's call.
 
 ## Architectural choices made up front
 
@@ -31,6 +33,8 @@ routes is §2.2: the step structure is R2's, and R1 contributes a base row.
 - [x] **The route verdict** (§2.2): neither closes as written; R2's induction with R1's base row is
   the recon's proposal, the PI's call.
 - [ ] **T1, T2** (§2.4): the flat formulas at `d = 4`; CERT's certificates at `d = 4, 5, 6`.
+- [ ] **The content-range graphs** (§2.5): `θ(2, 2, k)`, `θ(2, 2, 2, k)`, diamond rings at
+  `m = 6, 7`, D's witness, at `d = 4, 5, 6`; proposed, not adopted (the PI's call, §4).
 - [ ] **T3, T4, T5** (§2.4): SHORT and ONE-EAR at `d = 4` (and `d = 5` for T4); the coverage rows
   at `D = 10, 15`. Each sizes an obligation before any attack on it.
 - [ ] **SHORT, ONE-EAR** (§2.3): the new mathematics, recon or attack track as the PI decides.
@@ -43,7 +47,8 @@ routes is §2.2: the step structure is R2's, and R1 contributes a base row.
 ## Hand-off / next phase
 
 Land T1 and T2 as one `strata.py` mode, committed with its figures (`HARNESS.md`
-*Reproducibility*), then T3 and T4 at `d = 4`. Whether SHORT and ONE-EAR take one session or
+*Reproducibility*). If the PI adopts §2.5's content-range graphs, they ride in the same mode. Then
+T3 and T4 at `d = 4` (§2.5 adds `d = 5`). Whether SHORT and ONE-EAR take one session or
 several is unknown until T3 and T4 size them.
 
 ## Decisions made during this phase
