@@ -158,24 +158,39 @@ define next.
 \end{definition}
 
 The sign is Katoh and Tanigawa's~\cite[p.~651]{katohTanigawa2011}.
-Write each $v_i$ in the standard basis $e_1, \dots, e_{d+1}$ and expand
-$v_1 \wedge \cdots \wedge v_j$ by multilinearity and alternation. The
-products $e_{i_1} \wedge \cdots \wedge e_{i_j}$ with
-$i_1 < \cdots < i_j$ form a basis of $\bigwedge^j K^{d+1}$, and the
-coefficient of each is the minor of $A(v)$ on the columns
-$i_1, \dots, i_j$. So up to the signs, the Plücker coordinate vector
-is the coordinate vector of the extensor $v_1 \vee \cdots \vee v_j$.
 Katoh and Tanigawa work with the Plücker coordinate vector and call the
 extensor its symbolic version. For $j = d+1$ there is one Plücker
 coordinate, $\pm \det A(v)$ (\texttt{pluckerCoord\_univ}). For
 homogenized points, $\det A(v)$ is the determinant of
 \cref{lem:affine-indep-iff}.
 
+\begin{lemma}[Plücker expansion]
+  \label{lem:plucker-expansion}
+  \lean{CombinatorialRigidity.Molecular.extensor_repr_exteriorPower}
+  \leanok
+  \uses{def:extensor, def:plucker-coords}
+  Let $v_1, \dots, v_j \in K^{d+1}$. The products
+  $e_{i_1} \wedge \cdots \wedge e_{i_j}$ with $i_1 < \cdots < i_j$ form
+  a basis of $\bigwedge^j K^{d+1}$, and the coordinate of
+  $v_1 \vee \cdots \vee v_j$ at $e_{i_1} \wedge \cdots \wedge e_{i_j}$
+  is $(-1)^{1 + i_1 + \cdots + i_j} P_{i_1, \dots, i_j}$, the Plücker
+  coordinate up to Katoh and Tanigawa's sign.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Write each $v_i$ in the standard basis and expand
+  $v_1 \wedge \cdots \wedge v_j$ by multilinearity and alternation. The
+  coefficient of $e_{i_1} \wedge \cdots \wedge e_{i_j}$ is the minor of
+  $A(v)$ on the columns $i_1, \dots, i_j$. The sign squares to $1$, so
+  this minor is the coordinate $P_{i_1, \dots, i_j}$ times the sign.
+\end{proof}
+
 \begin{fmlnote}
-  The formalization does not prove the expansion above, which relates
-  the Plücker coordinates to the extensor. The later chapters work with
-  the extensor itself and with its coordinates in the basis
-  $e_{i_1} \wedge \cdots \wedge e_{i_j}$.
+  The pin is the library's basis of the exterior power induced by the
+  standard basis, and the expansion is its coordinate formula
+  (\texttt{exteriorPower.basis\_repr\_apply}) for the minor. Katoh and
+  Tanigawa's sign is the one in \cref{def:plucker-coords}, so the
+  statement carries it.
 \end{fmlnote}
 
 Katoh and Tanigawa represent an affine subspace by the extensor of the

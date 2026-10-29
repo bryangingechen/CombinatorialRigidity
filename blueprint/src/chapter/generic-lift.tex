@@ -346,8 +346,7 @@ $R(G, q)$ at $e$ (\cref{lem:rows-polynomial-in-normals}).
   annihilator-row family at an edge with ends $u$ and $v$ is $0$ or
   $\pm$ a coordinate of $C(q_u, q_v) = *(q_u \vee q_v)$, where
   $q_u \vee q_v$ is the join (\cref{def:join}). Its coordinates are
-  the $2 \times 2$ minors $q_u(i)\, q_v(j) - q_u(j)\, q_v(i)$ (the
-  remark after \cref{def:plucker-coords}). The complement
+  the $2 \times 2$ minors $q_u(i)\, q_v(j) - q_u(j)\, q_v(i)$ (\cref{lem:plucker-expansion}). The complement
   isomorphism $*$ sends each standard basis vector to $\pm$ a standard
   basis vector (\cref{def:meet-complement-iso}). So each coordinate of
   each member of the family is a polynomial of degree at most two in
@@ -634,8 +633,8 @@ polynomials of degree one and two in the $2d$ coordinates of $p$ and
 $p'$. The vector $T(p, p')$ is the coordinate vector of the join
 $h(p) \vee h(p')$ (\cref{def:join}), whence its name. Its coordinates
 are taken in the basis of $\bigwedge^2 \R^{d+1}$ formed by the products
-of two standard basis vectors in increasing order, as in the remarks
-after \cref{def:plucker-coords}. Jackson and Jord\'an's vector of
+of two standard basis vectors in increasing order, as in
+\cref{lem:plucker-expansion}. Jackson and Jord\'an's vector of
 minors puts the coordinate $1$ last, as \cref{def:homogeneous-coords}
 does. It has the same coordinates as $T(p, p')$ up to their order,
 with the direction coordinates negated. Such a change of the
@@ -1130,22 +1129,20 @@ subsection explains.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:extensor, def:plucker-coords}
+  \uses{def:extensor, def:plucker-coords, lem:plucker-expansion}
   Let $A(q_e)$ be the $(d-1) \times (d+1)$ matrix whose $i$-th row is
   the homogeneous coordinate vector $\bar q_{e,i} = (q_{e,i}, 1)$
   (\cref{def:homogeneous-coords}). As $C(q_e)$ is the join
   $\bar q_{e,1} \vee \cdots \vee \bar q_{e,d-1}$, its coordinate at
-  $t$ is the minor of $A(q_e)$ on the columns of $t$ (the remarks after
-  \cref{def:plucker-coords}). Each entry of $A(q_e)$ is a coordinate
+  $t$ is the minor of $A(q_e)$ on the columns of $t$ (\cref{lem:plucker-expansion}). Each entry of $A(q_e)$ is a coordinate
   of $q$ or the constant $1$. So the same minor of the matrix of
   indeterminates is a polynomial, and its value at $q$ is the minor of
   $A(q_e)$.
 \end{proof}
 
 \begin{fmlnote}
-  The formalization does not prove the expansion after
-  \cref{def:plucker-coords} in general (the note there), and the pins
-  do not use the Pl\"ucker coordinates. The pin computes the coordinate
+  The pins do not use the Pl\"ucker coordinates or
+  \cref{lem:plucker-expansion}. The pin computes the coordinate
   at $t$ directly, as the pairing of the join with the dual basis vector
   at $t$, which a library lemma evaluates as the minor. Its polynomial is
   the minor of the matrix of indeterminates

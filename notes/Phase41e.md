@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1–U8 and R have landed. Next: U9.
+close (planned 17–23 commits, the open included); U1–U9 and R have landed. Next: PAD, then U10.
 
 ## Current state
 
-**The next concrete commit is U9** (*Hand-off*); U1–U8 and R have landed. Each claim of the full
+**The next concrete commit is PAD** (*Hand-off*); U1–U9 and R have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -195,7 +195,7 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   library upstream of `Basic`, `Bricks`, `Claim612` and `Molecule/ScrewVelocity`, the only modules
   downstream of `Basic` without it. New node `lem:forest-rows-independent` after
   `lem:own-end-rows-independent`, its proof `\uses` the two nodes its pin calls) (`F-061`).
-- [ ] **U9. The Plücker expansion** (`F-059`). The coordinates of `extensor v` in
+- [x] **U9. The Plücker expansion** (`F-059`; landed in one commit, a step shorter than planned: `extensor_repr_exteriorPower` in `Molecular/Extensor.lean` before `pluckerVector`, `PluckerTarget`'s statement. The proof is `rfl` for the `⋀[K]^j` member, the two mathlib lemmas, the sign squared, and `ofFinEmbEquiv_symm_apply` (`rfl` against `orderEmbOfFin`) with no transpose; no index-bridge lemma was needed. Node `lem:plucker-expansion` after `def:plucker-coords`, its note went, and the `\cref`s of "the remark after `def:plucker-coords`" in `meet`, `rigidity-matrix` and `generic-lift` point at it) (`F-059`). Planned: the coordinates of `extensor v` in
   `(Pi.basisFun K (Fin (d+1))).exteriorPower j` are the Plücker coordinates times KT's sign
   (`PluckerTarget`, stated), by mathlib's `exteriorPower.basis_repr_apply` and
   `ιMultiDual_apply_ιMulti` (the minor), against `pluckerCoord`'s `orderEmbOfFin` submatrix
@@ -275,13 +275,10 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**U9** (the Plücker expansion, `F-059`, checklist item U9): from the witness's `PluckerTarget`
-(stated only: compile its section with `lake lean` first), the coordinates of `extensor v` in
-`(Pi.basisFun K (Fin (d+1))).exteriorPower j` as the Plücker coordinates times KT's sign, in
-`Molecular/Extensor.lean` beside `pluckerCoord` (`:430`), the chain's root (a full rebuild), with
-a lemma node after `def:plucker-coords`, whose note goes. One or two commits: if the lemma does
-not fit one, the first lands the index bridge (`Set.powersetCard.ofFinEmbEquiv` against
-`Finset.orderEmbOfFin`) as a complete unpinned lemma.
+**PAD** (checklist item PAD: `G.shadowGraph`'s padding dropped, so that U10 is stated over
+`Sym2 V`), a mechanical commit under the deletion gate, immediately before U10 (S31). Read the
+PAD checklist item for the occurrences list; whether it fits one commit is the builder's call
+(the `JacobsCounting.lean` ascriptions are the bulk).
 
 ## Decisions made during this phase
 

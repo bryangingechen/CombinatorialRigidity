@@ -432,6 +432,24 @@ noncomputable def pluckerCoord {d j : ℕ} (v : Fin j → Fin (d + 1) → K)
   (-1) ^ (1 + ∑ i ∈ s, (i.val + 1)) *
     ((coordMatrix v).submatrix id (s.orderEmbOfFin h)).det
 
+/-- **The Plücker expansion** (`lem:plucker-expansion`): the coordinate of `extensor v` at a
+`j`-element set `s` of columns, in the basis `e_{i₁} ∧ ⋯ ∧ e_{iⱼ}` of `⋀[K]^j (K^(d+1))` induced by
+the standard basis, is `(−1)^(1 + i₁ + ⋯ + iⱼ)` times the Plücker coordinate (Katoh and Tanigawa
+2011, p. 651). By `exteriorPower.basis_repr_apply` and `exteriorPower.ιMultiDual_apply_ιMulti`, the
+coordinate is the minor of `coordMatrix v` on the columns of `s`, and the sign squares to `1`. -/
+theorem extensor_repr_exteriorPower {d j : ℕ} (v : Fin j → Fin (d + 1) → K)
+    (s : Set.powersetCard (Fin (d + 1)) j) :
+    ((Pi.basisFun K (Fin (d + 1))).exteriorPower j).repr
+        ⟨extensor v, extensor_mem_exteriorPower v⟩ s =
+      (-1) ^ (1 + ∑ i ∈ s.val, (i.val + 1)) * pluckerCoord v s.val s.prop := by
+  have h : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^j (Fin (d + 1) → K)) =
+      exteriorPower.ιMulti K j v := rfl
+  rw [h, exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual_apply_ιMulti]
+  unfold pluckerCoord
+  rw [← mul_assoc, ← mul_pow, show (-1 : K) * -1 = 1 by simp, one_pow, one_mul]
+  simp only [coordMatrix, Set.powersetCard.ofFinEmbEquiv_symm_apply]
+  rfl
+
 /-- **Plücker coordinate vector** (`def:plucker-coords`): the vector of the `(d+1 choose j)` Plücker
 coordinates of `v`, indexed by the `j`-element sets of columns. Katoh and Tanigawa call the extensor
 its symbolic version (p. 651). -/
