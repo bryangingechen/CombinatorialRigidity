@@ -1286,7 +1286,8 @@ autopilot, on 2026-10-07 **PROSE**'s five rounds after them, and on 2026-10-15 *
 after PROSE, so **ORIGAMI opens after RECONCILE**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
-formalization targets) lives in `notes/IdeaBacklog.md`.
+formalization targets) lives in `notes/IdeaBacklog.md`. Its STRATA entry (2026-10-29) has a
+research note of its own, `notes/Strata.md`, with tests pending for a fresh session.
 
 - **The post-Phase-40 cleanup rounds** — five `CLEANUP.md` rounds over what Phases 39–40 built.
   In order: `40-cleanup` (mechanical), `40-factor` (the shared hub normalization),

@@ -1485,6 +1485,18 @@ line and treated as part of the figure.
 | `M2 --script notes/scripts/m2/framedom.m2` | 1 s | workbook §(K-frame) *Steps FR1/FR2* ((FR-M0)–(FR-M3): the determinant law over the function field, the pinned instance 4608, the Veronese ranks) |
 | `M2 --script notes/scripts/m2/earbad.m2` | ~2 s | workbook §(K-main) Step MC13, (MC-45), (MC-46), (MC-47): the bad sets `B_k(r)` as Grassmannian subvarieties per flag orbit — `B₃(2) ⊆ B₂(2)` in all four orbits; `B₂` in orbits (i), (ii) is exactly the three families of (MC-46), inside `B₁`; orbits (iii), (iv) classified |
 
+### `strata/` — body-hinge rank on realization subloci (2026-10-29)
+
+A driver directory on the base layer, outside the PENCIL arcs. It imports
+catalogued §1 primitives only (`exactcore`, `kbare_common.exact_deficiency`,
+`pitch`'s `klein` / `det4` / `theta_edges`, `hybrid_gates.build_rigidity_extensors`).
+Its per-mode prose is its module docstring, and its reading is
+`notes/Strata.md`.
+
+| invocation | ~time | cited by |
+|---|---|---|
+| `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest --seed N`, `N ∈ {1, 2, 3}` | 20 s | `notes/Strata.md` *Evidence* (Results 1, 3, 5, 6, 7) |
+
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,
 `m2/README.md`). This table is the canonical **invocation** list; those are the

@@ -35,13 +35,18 @@ Phase 39); IDENT-PANEL is the strongest challenger (see its entry).
   Schulze–Tanigawa (*Linking rigid bodies symmetrically*,
   arXiv:1402.0039). Heavy new prerequisites: symmetry-adapted rigidity
   matrices, group actions on the screw space.
+- **STRATA** — the body-hinge rank on realization subloci beyond the
+  pencil (2026-10-29). Hinge-by-hinge constraints are settled softly:
+  only each hinge's linear span matters, giving a `def_{D′}` ladder.
+  Coupled strata (per-body data) have no such shortcut. Research note,
+  driver and next tests: `notes/Strata.md`.
 - **Higher-`d` pencil hierarchy** — PENCIL's sequel: in dimension `d`
   the per-body strata between panel (done) and molecular (done) form
   an unmapped lattice (hinges containing a common `(d−3)`-space, lying
   in a hyperplane pencil, …). Our KT formalization is
-  dimension-general, so unusually accessible. Fold into PENCIL's
-  phase-open recon if that phase goes well rather than queueing
-  separately.
+  dimension-general, so unusually accessible. First look, including
+  a `P⁴` incidence caution, in `notes/Strata.md` (Results 8–9, next
+  tests 2–3).
 - **Developable origami** — ORIGAMI's sequel (CCK arXiv:2309.06804
   §4.3, second remark): add the angle-sum-2π (developability)
   constraints, a deeper stratum below ORIGAMI's. Only meaningful after
