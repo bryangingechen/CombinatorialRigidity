@@ -1266,8 +1266,8 @@ conditional form. All 20 main results' axioms are the three standard ones. The P
 first run of 41a's module conversion, was green. **41c** opened with the PI on 2026-10-28 (the
 design doc's §1g); its open's recon built M1 in a Lean witness from the multigraph Theorem 5.6,
 whose hinges lie in the panels and so decompose as the construction needs, with loops costing one
-commit (the upper bound asked only at the edges that are not loops). **Next**: 41c's item 1, that
-upper bound; then M1 and KT Proposition 2.3's unconditional pin. Detail → `notes/Phase41a.md`,
+commit (the upper bound asked only at the edges that are not loops). Item 1, that upper bound,
+has landed. **Next**: 41c's item 2, M1; then KT Proposition 2.3's unconditional pin. Detail → `notes/Phase41a.md`,
 `notes/Phase41b.md`, `notes/Phase41c.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)

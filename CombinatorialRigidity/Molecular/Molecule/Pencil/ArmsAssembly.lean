@@ -147,7 +147,8 @@ theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph 
       · -- The rank: at most the deficiency rank, and at least the `D - 1` independent rows of `e`.
         have hdef : G.deficiency 3 = 1 :=
           Graph.deficiency_of_single_edge hxy hl_e hVG hEe
-        have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne hC
+        have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne
+          (fun e u v h _ => hC e u v h)
         rw [hFg] at hub
         obtain ⟨r, hr_li, hr_mem⟩ :=
           F.exists_independent_rigidityRows_of_edge (u := x) (v := y) hxy hl_e (hFe ▸ hCe_ne)

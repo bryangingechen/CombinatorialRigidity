@@ -403,8 +403,9 @@ theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_r
     linarith
 
 /-- **The rank is at most the target rank** (`lem:relative-deficiency-rank-bound`, its rank form):
-if `bodyBarDim n = screwDim k` (`hn`), `V(G)` is nonempty and the hinge at every link is
-nondegenerate (`hC`), then `rank R(G,p) ≤ D(|V(G)| − 1) − def(G̃)`, in `ℤ`. It is the form for
+if `bodyBarDim n = screwDim k` (`hn`), `V(G)` is nonempty and the hinge is nondegenerate at every
+link whose two ends differ (`hC`; a loop never crosses a partition), then
+`rank R(G,p) ≤ D(|V(G)| − 1) − def(G̃)`, in `ℤ`. It is the form for
 motions, `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`, with rank–nullity
 (`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`) and `|α| = |V(G)| + |V(G)ᶜ|`. -/
 theorem BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
@@ -412,7 +413,7 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
     (F : BodyHingeFramework K k α β)
     (hn : Graph.bodyBarDim n = screwDim k)
     (hne : F.graph.vertexSet.Nonempty)
-    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
+    (hC : ∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0) :
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       ≤ screwDim k * (F.graph.vertexSet.ncard - 1 : ℤ) - F.graph.deficiency n := by
   have : Fintype α := Fintype.ofFinite α
@@ -946,7 +947,7 @@ theorem PanelHingeFramework.hasNonparallelFullRankRealization_of_generic [Infini
   refine ⟨ofNormals G Q.ends q, rfl, hnp, le_antisymm ?_ ?_⟩
   · -- At most the target rank: the hinges at `q` are nondegenerate.
     exact BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le _ hn hne
-      fun e u v he => supportExtensor_ne_zero_of_isGeneralPosition _ hnp.isGeneralPosition
+      fun e u v he _ => supportExtensor_ne_zero_of_isGeneralPosition _ hnp.isGeneralPosition
         (hends e u v he).ne
   · -- At least the rank of `Q`, the target rank.
     rw [← hQrank]

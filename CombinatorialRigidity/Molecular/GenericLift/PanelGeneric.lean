@@ -520,7 +520,7 @@ theorem finrank_span_rigidityRows_of_isGenericNormals [Infinite K] [Finite α] [
   have hCq := supportExtensor_ne_zero_of_isGenericNormals hk1 (hQ ▸ hloop) hq
   have hub := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
     Q.toBodyHinge hn (by rw [toBodyHinge_graph, hQ]; exact hne)
-    (fun e _ _ h => hCq e h.edge_mem)
+    (fun e _ _ h _ => hCq e h.edge_mem)
   simp only [toBodyHinge_graph, hQ] at hub
   -- The two bounds pinch the row count to the exact value.
   exact le_antisymm hub (by rw [← hrank0]; exact_mod_cast hlbN)

@@ -565,7 +565,7 @@ theorem hasGenericPencilRealization_of_closedEar_two_of_isNondegPencilRealizatio
     (by rw [Graph.vertexSet_induce]; exact ⟨c, Or.inl rfl⟩)
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   have hup := F.finrank_span_rigidityRows_add_deficiency_le hn
-    (show F.graph.vertexSet.Nonempty from ⟨c, hcover ▸ Or.inl hc⟩) (fun f _ _ _ => hext_ne f)
+    (show F.graph.vertexSet.Nonempty from ⟨c, hcover ▸ Or.inl hc⟩) (fun f _ _ _ _ => hext_ne f)
   have hcount : (V(G).ncard : ℤ) = V₁.ncard + 2 := by
     have h := Set.ncard_union_add_ncard_inter V₁ V₂
     rw [hcov₂, hoverlap, Set.ncard_singleton, hV₂card] at h

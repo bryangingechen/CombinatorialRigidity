@@ -286,7 +286,8 @@ theorem hasPencilRealization_of_not_simple [Finite α] [Finite β]
     fun e _ _ _ => hextF_ne e
   have hFVne : V(F.graph).Nonempty := by
     rw [hFg]; exact (Set.ncard_pos (Set.toFinite _)).mp (by omega)
-  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
+  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne
+    (fun e u v h _ => hFext e u v h)
   -- ── Step 12: the rank is the deficiency rank ───────────────────────────────────────────
   have hFcfinrank : (Module.finrank K (Submodule.span K Fc.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G.rigidContract H' a).ncard : ℤ) - 1) - G.deficiency 3 := by

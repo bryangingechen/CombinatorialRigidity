@@ -166,7 +166,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
   -- Lower bound at `q*` (rank polynomial) and upper bound at `q*` (deficiency bound).
   have hlb := hQ_rk q_star hq_rk
   have hub := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
-    (ofNormals (k := 2) G Q0.ends q_star).toBodyHinge hn hVGne (fun e u v h => hC e u v h)
+    (ofNormals (k := 2) G Q0.ends q_star).toBodyHinge hn hVGne (fun e u v h _ => hC e u v h)
   simp only [toBodyHinge_graph, ofNormals_graph] at hub
   -- The two bounds pinch the row count to the exact value, giving back `RankHypothesis (def)`.
   have hrankeq : (Module.finrank ℝ (Submodule.span ℝ

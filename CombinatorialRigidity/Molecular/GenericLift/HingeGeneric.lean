@@ -1045,7 +1045,7 @@ theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
   -- (`lem:generic-hinge-points-nondegenerate`), so the deterministic upper bound applies.
   have hCq := supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints hk1 hloop hq
   have hub := finrank_span_rigidityRows_add_deficiency_le
-    (ofHinge G fun e a b => q (e, a, b)) hn hne (fun e _ _ h => hCq e h.edge_mem)
+    (ofHinge G fun e a b => q (e, a, b)) hn hne (fun e _ _ h _ => hCq e h.edge_mem)
   simp only [ofHinge_graph] at hub
   -- The two bounds pinch the row count to the exact value.
   exact le_antisymm hub (by rw [← hscard]; exact_mod_cast hlbN)

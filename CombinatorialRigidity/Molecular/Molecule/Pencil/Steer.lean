@@ -404,7 +404,7 @@ theorem finrank_span_rigidityRows_pencilChartFramework_eq_of_independent_pencilR
     exact_mod_cast hlbN
   -- The upper bound, at nonzero hinges.
   have hub := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
-    (pencilChartFramework (PencilSeed.ofCoord q) hubSel G) hn hGne hC
+    (pencilChartFramework (PencilSeed.ofCoord q) hubSel G) hn hGne (fun e u v h _ => hC e u v h)
   simp only [pencilChartFramework_graph] at hub
   exact le_antisymm hub (by rw [← hscard]; exact hlb)
 

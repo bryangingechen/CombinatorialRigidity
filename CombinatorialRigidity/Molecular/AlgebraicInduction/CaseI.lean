@@ -947,7 +947,7 @@ theorem
     exact PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition
       (PanelHingeFramework.ofNormals G ends q₀) hgp
       (by rw [PanelHingeFramework.ofNormals_ends]; exact hne)
-  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hne' hFext
+  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hne' (fun e u v h _ => hFext e u v h)
   have hB2' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - k' := by
     rw [hFgraph, hdef] at hB2; linarith

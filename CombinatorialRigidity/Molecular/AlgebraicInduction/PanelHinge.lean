@@ -1105,7 +1105,8 @@ theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]
     (hgen : (Module.finrank K F.infinitesimalMotions : ℤ) ≤ screwDim k + F.graph.deficiency n) :
     F.RankHypothesis (F.graph.deficiency n) := by
   subst hn
-  have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hC
+  have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions
+    (fun e u v h _ => hC e u v h)
   rw [BodyHingeFramework.RankHypothesis]
   omega
 

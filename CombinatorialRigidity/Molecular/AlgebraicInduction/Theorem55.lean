@@ -682,7 +682,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     exact hne_v e (hends_Gv e u w hlink)
   have hB2 := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
     (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge hn
-    (by rw [hFv_graph]; exact hGvne) hFvC
+    (by rw [hFv_graph]; exact hGvne) (fun e u v h _ => hFvC e u v h)
   rw [hFv_graph, hGvdef, sub_zero] at hB2
   rw [hGvdef, sub_zero] at hNeq
   have hNle := hP_vtrans q hq_v
@@ -918,7 +918,8 @@ theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {n : ℕ}
     fun _ he => hFgraph ▸ he.2
   rw [hFgraph, ← hV₂, hF₁span, hF₂span] at hbrick
   -- Upper bound: `finrank_span_rigidityRows_add_deficiency_le`.
-  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
+  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne
+    (fun e u v h _ => hFext e u v h)
   rw [hFgraph] at hB2
   have hB2' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by rw [hc] at hB2; linarith
@@ -1596,7 +1597,8 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
       exact (hFcext e _ _ hclink).1
   have hFVne : V(F.graph).Nonempty := by
     rw [hFg]; exact (Set.ncard_pos (Set.toFinite _)).mp (by omega)
-  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
+  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne
+    (fun e u v h _ => hFext e u v h)
   -- ── Step 12: The rank of the contraction's realization ───────────────────────────────────
   have hFcfinrank : (Module.finrank K (Submodule.span K Fc_fw.rigidityRows) : ℤ)
       = screwDim k * ((V(G.rigidContract H' a).ncard : ℤ) - 1) - c := by
@@ -2271,7 +2273,7 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
     exact Submodule.finrank_mono (Submodule.span_mono hsub)
   -- `≤`: the `V(G)`-relative deficiency bound, fed the genuine hinges on links.
   have hup := Q.toBodyHinge.finrank_span_rigidityRows_add_deficiency_le hn
-    (by rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne) (fun e _ _ _ => hC e)
+    (by rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne) (fun e _ _ _ _ => hC e)
   rw [PanelHingeFramework.toBodyHinge_graph, hQg] at hup
   refine ⟨Q, hQg, hQgp, hC, ?_⟩
   rw [hG'V, hdefeq] at hQ'rank
@@ -2468,7 +2470,7 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
     rintro ⟨F, hFg, hFC, hFrig⟩
     -- The genericity-free lower bound `D + def(G̃) ≤ dim Z(F)` (nondegenerate hinges at links).
     have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions
-      fun e _ _ he => hFC e (hFg ▸ he.edge_mem)
+      fun e _ _ he _ => hFC e (hFg ▸ he.edge_mem)
     rw [hFg] at hub
     -- Rigidity fixes `dim Z(F) = D`.
     have hZF : (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim (n - 1) := by
@@ -2837,7 +2839,7 @@ theorem molecular_conjecture_multigraph [Infinite K]
   · -- (⇒) body-hinge ⇒ coplanar panel, via `def(G̃) = 0` and the multigraph Theorem 5.6.
     rintro ⟨F, hFg, hFC, hFrig⟩
     have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions
-      fun e _ _ he => hFC e (hFg ▸ he.edge_mem)
+      fun e _ _ he _ => hFC e (hFg ▸ he.edge_mem)
     rw [hFg] at hub
     have hZF : (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim (n - 1) := by
       have h0 : (Module.finrank K F.infinitesimalMotions : ℤ) = (screwDim (n - 1) : ℤ) + 0 :=

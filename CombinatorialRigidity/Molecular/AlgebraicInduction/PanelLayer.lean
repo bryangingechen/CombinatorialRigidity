@@ -1569,7 +1569,8 @@ theorem _root_.Graph.bodyBarDim_eq_screwDim_sub_one {n : ℕ} (hn : 1 ≤ n) :
     show n - 1 + 2 = n + 1 by omega, show n + 1 - 1 = n by omega, Nat.mul_comm]
 
 /-- **The deficiency bound** (`lem:deficiency-rank-bound`): for a nonempty finite set of bodies,
-with the hinges at the edges of `G` nondegenerate (`hC`), `D + def(G̃) ≤ dim Z(G,p)`, the deficiency
+with the hinge nondegenerate at the edges of `G` whose two ends differ (`hC`; a loop never crosses a
+partition), `D + def(G̃) ≤ dim Z(G,p)`, the deficiency
 taken for `n = k + 1`; that is, `rank R(G,p) ≤ D(|V| − 1) − def(G̃)`. Take a partition `f` of the
 largest deficiency (`exists_eq_ciSup_of_finite`, a finite supremum). As
 `screwDim k = bodyBarDim (k + 1)`, `D·|P| − (D−1)·d_G(P) = D + def(G̃)` there, and the motions
@@ -1579,7 +1580,7 @@ rank formula in KT Proposition 2.3 (p. 655; `prop:rigidity-matrix-prop11`); Jack
 derive its rank form from a count of independent rows (2010, §4, pp. 580–581). -/
 theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [Finite α] [Finite β]
     (F : BodyHingeFramework K k α β)
-    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
+    (hC : ∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0) :
     (screwDim k : ℤ) + F.graph.deficiency (k + 1)
       ≤ (Module.finrank K F.infinitesimalMotions : ℤ) := by
   have : Fintype α := Fintype.ofFinite α
@@ -1594,8 +1595,8 @@ theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [F
   rw [Graph.deficiency, ← hf]
   -- The dimension lower bound at this `f`, and the transfer `partitionMotions f ≤ Z`.
   have hlb := F.screwDim_mul_numParts_sub_le_finrank_partitionMotions f fun e he => by
-    obtain ⟨_, x, y, hlink, _⟩ := he
-    exact hC e x y hlink
+    obtain ⟨_, x, y, hlink, hxy⟩ := he
+    exact hC e x y hlink fun h => hxy (h ▸ rfl)
   have hmono : Module.finrank K (F.partitionMotions f)
       ≤ Module.finrank K F.infinitesimalMotions :=
     Submodule.finrank_mono (F.partitionMotions_le_infinitesimalMotions f)
@@ -1658,18 +1659,19 @@ theorem screwDim_mul_range_card_sub_le_finrank_partitionMotions [Finite α] [Fin
   omega
 
 /-- **The relative deficiency bound** (`lem:relative-deficiency-rank-bound`): if
-`bodyBarDim n = screwDim k`, `V(G)` is nonempty and the hinges at the edges of `G` are
-nondegenerate, then `D·(|V(G)ᶜ| + 1) + def(G̃) ≤ dim Z(G,p)`, where `V(G)ᶜ` is the set of the bodies
-outside `V(G)`. A partition `f₀` of the largest deficiency is relabelled by
-`Graph.exists_normalized_labeling` as `g`, with the same parts and edges between parts and
-`|range g| = numParts f₀ + |V(G)ᶜ|`, and the bound with `|range g|`
-(`screwDim_mul_range_card_sub_le_finrank_partitionMotions`) applies at `g`. -/
+`bodyBarDim n = screwDim k`, `V(G)` is nonempty and the hinge is nondegenerate at the edges of `G`
+that are not loops (`hC`; a loop never crosses a partition), then
+`D·(|V(G)ᶜ| + 1) + def(G̃) ≤ dim Z(G,p)`, where `V(G)ᶜ` is the set of the bodies outside `V(G)`.
+A partition `f₀` of the largest deficiency is relabelled by `Graph.exists_normalized_labeling` as
+`g`, with the same parts and edges between parts and `|range g| = numParts f₀ + |V(G)ᶜ|`, and
+the bound with `|range g|` (`screwDim_mul_range_card_sub_le_finrank_partitionMotions`) applies at
+`g`. -/
 theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
     [Finite α] [Finite β] {n : ℕ}
     (F : BodyHingeFramework K k α β)
     (hn : Graph.bodyBarDim n = screwDim k)
     (hne : F.graph.vertexSet.Nonempty)
-    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
+    (hC : ∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0) :
     (screwDim k : ℤ) * (F.graph.vertexSetᶜ.ncard + 1) + F.graph.deficiency n
       ≤ (Module.finrank K F.infinitesimalMotions : ℤ) := by
   have : Nonempty α := ⟨hne.some⟩
@@ -1679,8 +1681,8 @@ theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
   obtain ⟨g, -, -, hcross, hrange_g, -⟩ := F.graph.exists_normalized_labeling f₀
   -- Apply the `|range g|`-form motion bound.
   have hCg : ∀ e ∈ F.graph.crossingEdges g, F.supportExtensor e ≠ 0 := fun e he => by
-    obtain ⟨_, x, y, hlink, _⟩ := he
-    exact hC e x y hlink
+    obtain ⟨_, x, y, hlink, hxy⟩ := he
+    exact hC e x y hlink fun h => hxy (h ▸ rfl)
   have hlb := F.screwDim_mul_range_card_sub_le_finrank_partitionMotions g hCg
   have hmono : Module.finrank K (F.partitionMotions g)
       ≤ Module.finrank K F.infinitesimalMotions :=

@@ -4,11 +4,11 @@
 design, the PI's decisions (here §1f.4, loops, and §1g, the open) and the open's recon are in
 `notes/Phase41-design.md`; the recon's Lean witness is
 `notes/reconcile-formal/MultigraphWitness.lean`. Three build items and the close (planned 3–5);
-none has landed. Next: item 1, the upper bound asked at the non-loop links only.
+item 1 has landed. Next: item 2, M1 (the witness file's M1 sections transcribed).
 
 ## Current state
 
-**The next concrete commit is item 1** (*Hand-off*); no item has landed. The open's recon
+**The next concrete commit is item 2** (*Hand-off*); item 1 has landed. The open's recon
 (design doc §2, *MULTIGRAPH's open recon*) built the whole sub-phase in a witness file against
 `ae6a852c`, with no `sorry`: M1, the generic
 body-hinge theorems for every spanning multigraph, parallel edges and loops allowed, and KT
@@ -34,21 +34,10 @@ restates the nodes it reaches, in step with its Lean.
 The witness file proves each Lean statement below under the namespace `Recon41cMultigraph`; an
 item transcribes it into the library, with its blueprint and status surfaces.
 
-- [ ] **1. The upper bound at the non-loop links** (§1f.4). In
-  `screwDim_add_deficiency_le_finrank_infinitesimalMotions`,
-  `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions` (`PanelLayer.lean`) and
-  `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` (`GenericityDevice.lean`), `hC`
-  becomes `∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0`; each proof's crossing
-  edge gives `hC e x y hlink fun h => hxy (h ▸ rfl)`. Its 24 callers wrap their hypothesis
-  (`fun e u v h _ => hC e u v h`, or one more `_` in a lambda): `PanelHinge.lean` 1,
-  `Theorem55.lean` 6, `GenericityDevice.lean` 1, `CaseI.lean` 1, `CaseII.lean` 1,
-  `CaseIII/Realization.lean` 2, `PanelGeneric.lean` 1, `HingeGeneric.lean` 1, `Theorem56.lean` 1,
-  `Application.lean` 1, and one in each of eight pencil files (`ArmsAssembly`, `Pair`, `Steer`,
-  `X0`, `MainComponent/{Carrier,Flat,GenericTriangle,GenericEar}`); proofs only, no other
-  statement moves (`rigidityMatrix_prop11` keeps its `hC`). Blueprint: `lem:deficiency-rank-bound`
-  gains the hypothesis its statement omits today (its pin has always taken `hC`), at the edges with
-  two distinct ends; `lem:relative-deficiency-rank-bound` asks it at the edges that are not loops.
-  S/P/B 1/1/2.
+- [x] **1. The upper bound at the non-loop links** (§1f.4; `F-332`). Done (the commit "Phase 41c
+  item 1: the upper bound asked at the non-loop links"): `hC` of the three upper-bound lemmas asks
+  `u ≠ v`, 18 files' callers wrap it, `lem:deficiency-rank-bound` states its hypothesis and
+  `lem:relative-deficiency-rank-bound` asks it at the non-loops. S/P/B 1/1/2.
 - [ ] **2. M1** (`F-222`; JJ 2010 Theorem 6.1, p. 582). In `HingeGeneric.lean`, `hSimple` dropped
   from `exists_hingePoints_independent_hingePointRow` (now from `theorem_55_6_multigraph_gen`),
   `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints` and the two iffs, under `hk1`, `hn`,
@@ -82,10 +71,10 @@ item transcribes it into the library, with its blueprint and status surfaces.
 
 ## Hand-off / next phase
 
-**Item 1**: relax `hC` in the three upper-bound lemmas to the non-loop links and wrap the 24
-callers, as the witness file's first section does; restate the two deficiency-bound nodes. One
-whole-project build; no main result's statement changes. Then item 2, which transcribes the witness
-file's M1 sections.
+**Item 2**: transcribe the witness file's M1 sections (`HingeGeneric.lean`: drop `hSimple`,
+`supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints` loses `Loopless`, new
+`exists_extensor_eq_of_extensorInPanel`, the `Nonvacuity.lean` witnesses, the blueprint and status
+surfaces), as the checklist says. If it is more than one sitting, land the Lean half first and say so.
 
 ## Decisions made during this phase
 

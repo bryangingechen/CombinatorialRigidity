@@ -342,7 +342,8 @@ theorem hasGenericPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G :
           Graph.deficiency_of_single_edge hxy hl_e hVG hEe
         have hC : ∀ e' u v', G.IsLink e' u v' → F.supportExtensor e' ≠ 0 :=
           fun e' _ _ _ => hCne
-        have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne hC
+        have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne
+          (fun e u v h _ => hC e u v h)
         rw [hFg] at hub
         obtain ⟨r, hr_li, hr_mem⟩ :=
           F.exists_independent_rigidityRows_of_edge (u := x) (v := y) hxy hl_e hCne

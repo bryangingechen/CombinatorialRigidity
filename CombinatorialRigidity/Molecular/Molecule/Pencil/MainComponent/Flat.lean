@@ -375,7 +375,7 @@ theorem _root_.Graph.three_add_deficiency_le_finrank_liftingSpace [Finite α] [F
   have hhub := (PanelHingeFramework.ofNormals (k := 1) G G.endsOf
       (fun p => pencilPicturePoint q p.1 p.2)).toBodyHinge
     |>.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions (n := 2) rfl hV
-      fun e u v he => by
+      fun e u v he _ => by
         rw [PanelHingeFramework.toBodyHinge_supportExtensor_ne_zero_iff]
         exact linearIndependent_pencilPicturePoint_pair (hq.1 e _ _ (hends e u v he))
   rw [Graph.finrank_infinitesimalMotions_ofNormals_pencilPicturePoint hq hends,

@@ -975,7 +975,8 @@ theorem PanelHingeFramework.case_II_realization_all_k
       intro e u w hlink
       exact hne_q' e u w (hFG'_graph ▸ hlink)
     have hB2 := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
-      (PanelHingeFramework.ofNormals G ends q').toBodyHinge hn hVGne' hCq'
+      (PanelHingeFramework.ofNormals G ends q').toBodyHinge hn hVGne'
+      (fun e u v h _ => hCq' e u v h)
     rwa [hFG'_graph] at hB2
   -- Rank equality at q': lb ≥ N and ub ≤ N (since c = G.deficiency n).
   have hrank_eq_q' : (Module.finrank K (Submodule.span K

@@ -443,7 +443,9 @@ that also has bodies on no edge of $G$.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions}
   \leanok
   \uses{def:rigidity-matrix, def:D-deficiency}
-  Let $(G,p)$ be a body-hinge framework with $V$ nonempty. Then
+  Let $(G,p)$ be a body-hinge framework with $V$ nonempty, and suppose
+  that $C(p(e)) \neq 0$ at every edge $e$ of $G$ whose two ends differ.
+  Then
   \[
     \dim Z(G,p) \;\ge\; D + \operatorname{def}(\tilde G),
   \]
@@ -456,8 +458,9 @@ that also has bodies on no edge of $G$.
   assignments that are constant on each part of $P$. It has dimension
   $D|P|$. On $W_P$, the hinge constraint at an edge inside a part always
   holds. At an edge $e$ that joins two parts it consists of $D - 1$
-  linear equations, since $C(p(e)) \neq 0$ (\cref{def:hinge-row-block}).
-  So the infinitesimal motions in $W_P$ form a subspace of dimension at
+  linear equations, since $C(p(e)) \neq 0$ (\cref{def:hinge-row-block});
+  a loop joins no two parts, so the hypothesis is not asked of it. So
+  the infinitesimal motions in $W_P$ form a subspace of dimension at
   least
   \[
     D|P| - (D-1)\,d_G(P) \;=\; D + \operatorname{def}_{\tilde G}(P).
@@ -490,7 +493,7 @@ constraint involves it.
   Let $(G,p)$ be a body-hinge framework whose screw assignments are
   defined on a finite set $B$ of bodies with
   $\emptyset \neq V(G) \subseteq B$, and suppose that $C(p(e)) \neq 0$
-  at every edge $e$ of $G$. Then
+  at every edge $e$ of $G$ that is not a loop. Then
   \[
     D\,(|B \setminus V(G)| + 1) + \operatorname{def}(\tilde G) \;\le\;
       \dim Z(G,p),

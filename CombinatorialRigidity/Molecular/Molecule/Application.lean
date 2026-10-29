@@ -161,7 +161,7 @@ theorem molecule_rank_upper_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
   -- Step 5: the genericity-free lower bound on the molecular motion-space dimension.
   have hub : (screwDim 2 : ℤ) + G.shadowGraph.deficiency 3 ≤
       (Module.finrank ℝ F.infinitesimalMotions : ℤ) :=
-    F.screwDim_add_deficiency_le_finrank_infinitesimalMotions fun e _ _ _ => hC e
+    F.screwDim_add_deficiency_le_finrank_infinitesimalMotions fun e _ _ _ _ => hC e
   -- Step 6: rank–nullity on `Framework V 3`, the generic-rank identification, then close the
   -- arithmetic over the named atoms with `omega` (as in the lower bound's proof).
   have hrn := LinearMap.finrank_range_add_finrank_ker (G.square.RigidityMap p)

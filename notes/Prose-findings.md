@@ -3615,6 +3615,19 @@ declaration's name as its header writes it:
   `intro.tex`'s Case III item, the sentence after `fmlnote:endpoint-selector-totality` and
   `formalization.yaml`'s Theorem 5.6 row and alignment row no longer describe it as the formula at
   generic panel-hinge realizations.
+- **F-332** · S · `lem:deficiency-rank-bound` (`deficiency.tex`; its pin
+  `screwDim_add_deficiency_le_finrank_infinitesimalMotions`, `AlgebraicInduction/PanelLayer.lean`):
+  the statement reads "Let $(G,p)$ be a body-hinge framework with $V$ nonempty. Then $\dim Z(G,p)
+  \ge D + \operatorname{def}(\tilde G)$", with no hypothesis on the hinges, while its pin has always
+  taken `hC`, the hinge nondegenerate at every edge, and the proof uses $C(p(e)) \neq 0$ at the
+  edges that join two parts. The bound is false without it (a zero hinge at an edge over a
+  partition's cut removes the $D - 1$ equations the count charges).
+  *Evidence:* read (the node's statement and proof against the pin's binder).
+  *Found:* Phase 41c's open recon.
+  *Disposition:* done (the commit "Phase 41c item 1: the upper bound asked at the non-loop links"; before: open,
+  `notes/Phase41c.md`, item 1): the statement now carries the hypothesis at the edges whose two
+  ends differ, as the pin does after the commit; `lem:relative-deficiency-rank-bound` asks it at the
+  edges that are not loops.
 
 ## L — Lean
 

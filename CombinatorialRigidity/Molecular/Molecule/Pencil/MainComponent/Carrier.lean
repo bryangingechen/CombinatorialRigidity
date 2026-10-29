@@ -940,7 +940,7 @@ theorem _root_.Graph.x0Attains_of_exists [Finite α] [Finite β] {G : Graph α �
       (PanelHingeFramework.ofNormals (k := 2) G ends
         (fun p => pencilConfigPoint q z p.1 p.2)).toBodyHinge
       (n := 3) (Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)) hV
-      (fun e u v he => hadm.supportExtensor_ne_zero hends z he)
+      (fun e u v he _ => hadm.supportExtensor_ne_zero hends z he)
     exact le_antisymm hup ((Int.self_le_toNat _).trans (by exact_mod_cast hQ _ hRz))
 
 /-! ## An admissible picture exists -/

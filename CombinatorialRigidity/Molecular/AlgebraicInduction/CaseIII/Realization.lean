@@ -403,7 +403,8 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
     rw [PanelHingeFramework.ofNormals_ends]
     exact (hends_Gab e u w hlink).ne
   have hB2 := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
-    (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge hn (by rw [hFgraph]; exact hne') hFC
+    (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge hn (by rw [hFgraph]; exact hne')
+    (fun e u v h _ => hFC e u v h)
   rw [hFgraph, hdef_Gab, sub_zero] at hB2
   rw [hdef_Gab, sub_zero] at hNeq
   have hNle := hP_abtrans q hq_ab
@@ -946,7 +947,8 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
     rw [PanelHingeFramework.ofNormals_ends]
     exact (hends_Gab e u w hlink).ne
   have hB2 := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
-    (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge hn (by rw [hFgraph]; exact hne') hFC
+    (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge hn (by rw [hFgraph]; exact hne')
+    (fun e u v h _ => hFC e u v h)
   rw [hFgraph, hdef_Gab, sub_zero] at hB2
   rw [hdef_Gab, sub_zero] at hNeq
   have hNle := hP_abtrans q hq_ab

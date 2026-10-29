@@ -395,7 +395,7 @@ theorem _root_.Graph.IsOpenEar.hasGenericPencilRealization_of_isNondegPencilReal
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
   have hup := F.finrank_span_rigidityRows_add_deficiency_le hn
     (show F.graph.vertexSet.Nonempty from ⟨a, hear.cover ▸ Or.inl haV⟩)
-    (fun f _ _ _ => hext_ne f)
+    (fun f _ _ _ _ => hext_ne f)
   have hs : (screwDim 2 : ℤ) = 6 := rfl
   have hrank' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3 := by
