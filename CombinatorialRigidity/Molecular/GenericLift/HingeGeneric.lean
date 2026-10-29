@@ -1091,4 +1091,33 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees 
   rw [isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff hk1 hn hcard G hne hspan]
   exact G.deficiency_eq_zero_iff_exists_spanningTrees n hne
 
+/-! ### KT Proposition 2.3, unconditional, at generic hinge points -/
+
+/-- **KT Proposition 2.3** (Katoh–Tanigawa 2011, p. 655, credited to Jackson–Jordán): for a
+multigraph `G` spanning the bodies and a hinge-point assignment generic over `G`, the following
+are equivalent for every integer `c`: (i) `rank R(G,q) = D(|V| − 1) − c`; (ii) `def(G̃) = c`;
+(iii) `rank M(G̃) = D(|V| − 1) − c`. (i) ⇔ (ii) is the rank formula
+(`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`; Jackson–Jordán 2010 Theorem 6.1);
+(ii) ⇔ (iii) is KT eq. (2.4) (`Graph.rank_add_deficiency_eq`). -/
+theorem tfae_finrank_span_rigidityRows_ofHinge_deficiency [DecidableEq β] [Infinite K]
+    [Finite α] [Finite β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)
+    {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints G q) (c : ℤ) :
+    List.TFAE
+      [(Module.finrank K (Submodule.span K
+          (ofHinge G fun e a b => q (e, a, b)).rigidityRows) : ℤ)
+            = screwDim k * (V(G).ncard - 1 : ℤ) - c,
+        G.deficiency n = c,
+        ((G.matroidMG n).rank : ℤ) = screwDim k * (V(G).ncard - 1 : ℤ) - c] := by
+  have hrank := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
+    hk1 hn hcard G hne hspan hq
+  have hD : 1 ≤ Graph.bodyBarDim n := by have := three_le_screwDim hk1; omega
+  have hMG := G.rank_add_deficiency_eq n hD hne
+  rw [hn] at hMG
+  tfae_have 1 ↔ 2 := by constructor <;> intro h <;> linarith
+  tfae_have 2 ↔ 3 := by constructor <;> intro h <;> linarith
+  tfae_finish
+
 end CombinatorialRigidity.Molecular.BodyHingeFramework

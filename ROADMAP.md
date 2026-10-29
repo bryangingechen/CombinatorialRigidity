@@ -1261,16 +1261,18 @@ panel side nonparallel panels; the multigraph rows ask nondegeneracy on `E(G)`; 
 corollary derives from Theorem 5.5. The generic panel and body-hinge theorems hold at every generic
 realization of every simple graph on one body or more, given enough edge labels, so they cover the
 simple minimal `k`-dof-graphs (the body-hinge theorem since 41c for every multigraph); the panel theorem's rank formula is a twentieth main result, and the
-new and restated rows have non-vacuity witnesses at the single edge and the triangle. KT Proposition
-2.3 is stated as Katoh and Tanigawa state it, for body-hinge frameworks on multigraphs, in
-conditional form. All 20 main results' axioms are the three standard ones. The PI's push, CI's
+new and restated rows have non-vacuity witnesses at the single edge and the triangle. The rank formula of
+KT Proposition 2.3 is stated for body-hinge frameworks on multigraphs in a conditional form (a bound
+on the motions as hypothesis; 41c item 3 proves the proposition itself at every generic hinge-point
+assignment). All 20 main results' axioms are the three standard ones. The PI's push, CI's
 first run of 41a's module conversion, was green. **41c** opened with the PI on 2026-10-28 (the
 design doc's §1g); its open's recon built M1 in a Lean witness from the multigraph Theorem 5.6,
 whose hinges lie in the panels and so decompose as the construction needs, with loops costing one
 commit (the upper bound asked only at the edges that are not loops). Items 1, that upper bound,
 and 2, M1 (the generic body-hinge theorem for every multigraph, loops allowed, with non-vacuity
-witnesses at the double edge and the double edge with a loop), have landed. **Next**: 41c's
-item 3, KT Proposition 2.3's unconditional pin. Detail → `notes/Phase41a.md`,
+witnesses at the double edge and the double edge with a loop), have landed, and so has item 3,
+KT Proposition 2.3 as Katoh and Tanigawa state it (the three-way equivalence at every generic
+hinge-point assignment of a multigraph), repinned unconditionally. **Next**: 41c's close. Detail → `notes/Phase41a.md`,
 `notes/Phase41b.md`, `notes/Phase41c.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)

@@ -323,8 +323,8 @@ this to choose the panel of the vertex of degree two that it puts back
 (\cref{lem:case-II-realization}, in
 \cref{sec:molecular-algebraic-induction-caseII}). Passing to a subgraph
 can only enlarge the space of motions
-(\cref{lem:motions-mono-of-graph-le}). The lower bound on the rank in KT
-Proposition~2.3 and the proofs of KT Theorem~5.6 use this to compare a
+(\cref{lem:motions-mono-of-graph-le}). The lower bound on the rank in the rank formula (KT Proposition~2.3)
+and the proofs of KT Theorem~5.6 use this to compare a
 realization of $G$ with one of a spanning subgraph.
 
 \begin{definition}[Framework on a new graph]
@@ -429,7 +429,7 @@ to $G'$ is the panel-hinge framework $(G', n)$
   (\cref{def:rigidity-matrix}).
 \end{proof}
 
-\subsection{The generic rank formula (KT Proposition 2.3)}
+\subsection{The rank formula from a bound on the motions}
 \label{sec:molecular-algebraic-induction-prop11}
 
 Katoh and Tanigawa's Proposition~2.3, which they credit to Jackson and
@@ -465,17 +465,20 @@ every multigraph~\cite[p.~670]{katohTanigawa2011}
 (\cref{thm:theorem-55-6-multigraph} below).
 
 We state the analytic half in a conditional form, with the bound as its
-hypothesis (\cref{prop:rigidity-matrix-prop11}), and prove the bound
+hypothesis (\cref{prop:rank-formula-of-motion-bound}), and prove the bound
 where we use the formula. The proofs of KT Theorem~5.6 below prove it
 for the realizations that they construct
 (\cref{thm:theorem-55-6-genuine}, \cref{thm:theorem-55-6-multigraph}).
 A later chapter proves the formula, and so the bound, at every generic
 hinge-point assignment of a multigraph
 (\cref{thm:bodyhinge-generic-rank}), which is Jackson and Jord\'an's
-Theorem~6.1 for the frameworks whose hinges are spanned by points.
+Theorem~6.1 for the frameworks whose hinges are spanned by points. Katoh
+and Tanigawa's unconditional statement of Proposition~2.3, the three-way
+equivalence at those assignments, is \cref{prop:rigidity-matrix-prop11}
+there.
 
-\begin{proposition}[The rank formula from a bound on the motions; KT Proposition 2.3]
-  \label{prop:rigidity-matrix-prop11}
+\begin{proposition}[The rank formula from a bound on the motions]
+  \label{prop:rank-formula-of-motion-bound}
   \lean{CombinatorialRigidity.Molecular.rigidityMatrix_prop11}
   \leanok
   \uses{def:rigidity-matrix, def:D-deficiency}
@@ -514,7 +517,9 @@ Theorem~6.1 for the frameworks whose hinges are spanned by points.
   realization is formalized, with genericity as the independence of
   rows, for generic normals of a simple spanning graph
   (\cref{thm:panel-generic-rank}) and for generic hinge points of a
-  spanning multigraph (\cref{thm:bodyhinge-generic-rank}).
+  spanning multigraph (\cref{thm:bodyhinge-generic-rank}), where KT
+  Proposition~2.3 itself, the three-way equivalence, is also formalized
+  (\cref{prop:rigidity-matrix-prop11}).
 \end{fmlnote}
 
 At deficiency zero the formula reads
@@ -624,7 +629,7 @@ which Case~III uses.
     + D\,|W \setminus V(G)|.
   \]
   For $W = V(G)$ this is $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$,
-  as in the proof of \cref{prop:rigidity-matrix-prop11}. When
+  as in the proof of \cref{prop:rank-formula-of-motion-bound}. When
   $\operatorname{def}(\tilde G) = 0$, the target rank says that every
   infinitesimal motion is constant on $V(G)$.
 \end{remark}
@@ -1256,9 +1261,9 @@ We record the case of the molecular conjecture, $d = 3$ and $k = 0$.
 
 At deficiency zero the realization is infinitesimally rigid. We record
 this in the form $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$, as in
-the proof of KT Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}).
+the proof of \cref{prop:rank-formula-of-motion-bound}.
 
-\begin{corollary}[KT Proposition 2.3 at deficiency zero from KT Theorem 5.5 ($d = 3$)]
+\begin{corollary}[The rank formula at deficiency zero from KT Theorem 5.5 ($d = 3$)]
   \label{cor:theorem-55-d3-spanning}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3}
   \leanok
@@ -1276,13 +1281,13 @@ the proof of KT Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}).
 \end{corollary}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55-d3-instance, prop:rigidity-matrix-prop11}
+  \uses{thm:theorem-55-d3-instance, prop:rank-formula-of-motion-bound}
   By \cref{thm:theorem-55-d3-instance}, $G$ has a nonparallel full-rank
   realization $(G,p)$, of rank $D(|V| - 1)$. So
   $\dim Z(G,p) = D|V| - \operatorname{rank} R(G,p) = D$
   (\cref{def:rigidity-matrix}). As $\operatorname{def}(\tilde G) = 0$,
-  this is the formula of KT Proposition~2.3 at $(G,p)$
-  (\cref{prop:rigidity-matrix-prop11}).
+  this is the rank formula at $(G,p)$, in the form of
+  \cref{prop:rank-formula-of-motion-bound}.
 \end{proof}
 
 \begin{fmlnote}
@@ -1291,7 +1296,7 @@ the proof of KT Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}).
   takes the realization from \cref{thm:theorem-55-d3-instance}, whose
   nonparallel conjunct needs $G$ simple and whose rank needs two bodies and
   the supply of labels. It derives the formula from the pinned theorem of
-  \cref{prop:rigidity-matrix-prop11}, which asks for a nonzero hinge at
+  \cref{prop:rank-formula-of-motion-bound}, which asks for a nonzero hinge at
   every link of the realization. The realization has one: its selector
   assigns each edge its two ends
   (\cref{fmlnote:panel-hinge-nondegenerate}), which are distinct as $G$
@@ -1309,7 +1314,7 @@ Katoh and Tanigawa's Theorem~5.6 removes the minimality from KT
 Theorem~5.5: every multigraph $G$ has a panel-hinge realization of rank
 $D(|V| - 1) - \operatorname{def}(\tilde G)$~\cite[p.~670]{katohTanigawa2011}.
 Its realization meets the bound on the motions that
-\cref{prop:rigidity-matrix-prop11} assumes, so a generic body-hinge
+\cref{prop:rank-formula-of-motion-bound} assumes, so a generic body-hinge
 framework of $G$ meets it too (the opening of
 \cref{sec:molecular-algebraic-induction-prop11}).
 At deficiency zero the realization is infinitesimally rigid, as
@@ -1346,7 +1351,7 @@ nonparallel panels for every simple graph with at least one vertex
   \leanok
   \uses{thm:theorem-55, lem:minimal-kdof-spanning-subgraph,
         lem:general-position-support-nonzero, lem:motions-mono-of-graph-le,
-        prop:rigidity-matrix-prop11}
+        prop:rank-formula-of-motion-bound}
   We follow Katoh and Tanigawa's proof (KT p.~670). Let
   $c = \operatorname{def}(\tilde G)$.
 
@@ -1377,8 +1382,8 @@ nonparallel panels for every simple graph with at least one vertex
     \;=\; D(|V| - 1) - c.
   \]
   The hinges of $(G, p)$ are nondegenerate, so the upper bound on the rank
-  in KT Proposition~2.3 holds at $(G, p)$
-  (\cref{prop:rigidity-matrix-prop11}), and
+  of \cref{lem:deficiency-rank-bound}, which
+  \cref{prop:rank-formula-of-motion-bound} uses, holds at $(G, p)$, and
   $\operatorname{rank} R(G, p) \le D(|V| - 1) - c$. So $(G, p)$ is at the
   target rank.
 \end{proof}
@@ -1842,7 +1847,7 @@ We first prove KT Theorem~5.6.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55, lem:subgraph-minimality, lem:motions-mono-of-graph-le,
-        prop:rigidity-matrix-prop11, def:genuine-hinge-realization,
+        prop:rank-formula-of-motion-bound, def:genuine-hinge-realization,
         lem:minimal-kdof-spanning-subgraph}
   We follow Katoh and Tanigawa's proof (KT p.~670), as for
   \cref{thm:theorem-55-6-genuine}. Let $c = \operatorname{def}(\tilde G)$.
@@ -1888,8 +1893,8 @@ We first prove KT Theorem~5.6.
     \;=\; D(|V| - 1) - c.
   \]
   The hinges of $(G, p)$ are nondegenerate, so the upper bound on the
-  rank in KT Proposition~2.3 holds at $(G, p)$
-  (\cref{prop:rigidity-matrix-prop11}), and
+  rank of \cref{lem:deficiency-rank-bound}, which
+  \cref{prop:rank-formula-of-motion-bound} uses, holds at $(G, p)$, and
   $\operatorname{rank} R(G, p) \le D(|V| - 1) - c$. So $(G, p)$ is at the
   target rank.
 \end{proof}

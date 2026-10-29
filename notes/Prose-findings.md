@@ -2553,6 +2553,13 @@ declaration's name as its header writes it:
   chapter builds, and at every generic hinge-point assignment of a simple graph
   (`thm:bodyhinge-generic-rank`, cited, not `\uses`d); for a multigraph it waits on MULTIGRAPH's M1,
   at which the node is repinned unconditionally (`notes/Phase41-design.md` §1f.1, §3).
+  Phase 41c, item 3 (the commit "Phase 41c item 3: KT Proposition 2.3, unconditional, at every
+  generic hinge-point assignment of a multigraph"): done. `prop:rigidity-matrix-prop11` moves to
+  `generic-lift.tex`, after `cor:bodyhinge-generic-tree-packing`, and states KT's three-way
+  equivalence, pinned on `tfae_finrank_span_rigidityRows_ofHinge_deficiency`. The conditional node
+  keeps its place and its pin `rigidityMatrix_prop11` under `prop:rank-formula-of-motion-bound`,
+  and the three proofs and the `\cref` and docstring sites that meant the conditional form
+  moved to it (no cycle through `lem:hinge-point-witness`).
 - **F-122** · S · `def:panel-hinge-framework`, `def:hinge-coplanar`, `thm:molecular-conjecture`
   (`algebraic-induction/panel-layer.tex`): the structure `PanelHingeFramework` records, for every
   edge label, an ordered pair of bodies (`ends`), and computes the hinge from their normals;

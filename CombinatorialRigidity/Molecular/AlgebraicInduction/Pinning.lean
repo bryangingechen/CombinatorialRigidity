@@ -613,9 +613,9 @@ theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
 `rank R(G,p) = D|V| − dim Z(G,p) = D(|V| − 1) − k'` (`finrank_screwAssignment`), the target rank of
 `def:rank-hypothesis` when `k' = def(G̃)`. The statements of KT Theorem 5.6 and of the molecular
 conjecture use it (`thm:theorem-55-6`, `thm:molecular-conjecture`), as does that of the rank formula
-(`prop:rigidity-matrix-prop11`). The induction that proves KT Theorem 5.5 states its realizations
-with `PanelHingeFramework.HasGenericFullRankRealization` and `HasPanelRealization` instead
-(`def:rank-hypothesis`, `def:genuine-hinge-realization`). -/
+(`prop:rank-formula-of-motion-bound`). The induction that proves KT Theorem 5.5 states its
+realizations with `PanelHingeFramework.HasGenericFullRankRealization` and `HasPanelRealization`
+instead (`def:rank-hypothesis`, `def:genuine-hinge-realization`). -/
 def RankHypothesis (F : BodyHingeFramework K k α β) (k' : ℤ) : Prop :=
   (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim k + k'
 

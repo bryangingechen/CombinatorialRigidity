@@ -35,8 +35,8 @@ molecular conjecture*, Discrete Comput. Geom. **45**), presented in
 
 It also proves the rows at an edge whose ends keep their normals (`lem:case-III-seam`), the forms
 for panel-hinge frameworks of `lem:cycle-realization-base`, `lem:cycle-realization-dim-bound` and
-`lem:case-I`, and `rigidityMatrix_prop11` (`prop:rigidity-matrix-prop11`). `Theorem55.lean` proves
-KT Theorem 5.5 (`thm:theorem-55`).
+`lem:case-I`, and `rigidityMatrix_prop11` (`prop:rank-formula-of-motion-bound`). `Theorem55.lean`
+proves KT Theorem 5.5 (`thm:theorem-55`).
 -/
 
 @[expose] public section
@@ -1074,11 +1074,12 @@ def HasPanelRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Pr
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
-/-! ## KT Proposition 2.3 in conditional form (`prop:rigidity-matrix-prop11`) -/
+/-! ## The rank formula from a bound on the motions (`prop:rank-formula-of-motion-bound`) -/
 
-/-- **The rank hypothesis from the generic bound** (`prop:rigidity-matrix-prop11`; Katoh–Tanigawa's
-Proposition 2.3, KT p. 655, which they credit to Jackson–Jordán, in conditional form). For a
-body-hinge framework `F` whose supporting extensor is nonzero at every link of its multigraph (`hC`;
+/-- **The rank hypothesis from the generic bound** (`prop:rank-formula-of-motion-bound`; the rank
+formula of Jackson–Jordán, which Katoh–Tanigawa state as their Proposition 2.3, KT p. 655, here in
+the form that takes the generic bound as a hypothesis). For a body-hinge framework `F` whose
+supporting extensor is nonzero at every link of its multigraph (`hC`;
 a label outside `E(G)` is unconstrained), at `n = k + 1`, the generic bound
 `hgen : dim Z(F) ≤ D + def(G̃)` gives `F.RankHypothesis (def(G̃))` (`def:rank-hypothesis`):
 `dim Z(F) = D + def(G̃)`, equivalently `rank R(F) = D(|V|−1) − def(G̃)` (Jackson–Jordán 2010

@@ -1554,6 +1554,35 @@ in every dimension, by comparing the rows.
   spanning trees.
 \end{proof}
 
+\begin{proposition}[KT Proposition 2.3, at every generic hinge-point
+  assignment]
+  \label{prop:rigidity-matrix-prop11}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency}
+  \leanok
+  \uses{thm:bodyhinge-generic-rank, thm:def-eq-corank}
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
+  a multigraph, with parallel edges and loops allowed, with $V$ finite
+  and nonempty. Let $q$ be a hinge-point assignment of $G$ that is
+  generic for row independence, and let $c$ be an integer. Then the
+  following are equivalent, as Katoh and Tanigawa
+  state~\cite[p.~655]{katohTanigawa2011}, crediting Jackson and
+  Jord\'an~\cite{jacksonJordan2009}:
+  \begin{enumerate}
+    \item[(i)] $\operatorname{rank} R(G,q) = D(|V|-1) - c$;
+    \item[(ii)] $\operatorname{def}(\tilde G) = c$;
+    \item[(iii)] $\operatorname{rank} M(\tilde G) = D(|V|-1) - c$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \leanok
+  \uses{thm:bodyhinge-generic-rank, thm:def-eq-corank}
+  By \cref{thm:bodyhinge-generic-rank},
+  $\operatorname{rank} R(G,q) = D(|V|-1) - \operatorname{def}(\tilde G)$,
+  which is (i)~$\Leftrightarrow$~(ii). By \cref{thm:def-eq-corank},
+  $\operatorname{rank} M(\tilde G) = D(|V|-1) - \operatorname{def}(\tilde G)$,
+  which is (ii)~$\Leftrightarrow$~(iii).
+\end{proof}
+
 \begin{fmlnote}
   The formalization writes $d = k + 1$, as in the note after
   \cref{def:hinge-constraint}. The pinned results of this subsection

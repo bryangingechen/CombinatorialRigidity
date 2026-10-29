@@ -4,11 +4,11 @@
 design, the PI's decisions (here §1f.4, loops, and §1g, the open) and the open's recon are in
 `notes/Phase41-design.md`; the recon's Lean witness is
 `notes/reconcile-formal/MultigraphWitness.lean`. Three build items and the close (planned 3–5);
-items 1 and 2 have landed. Next: item 3, KT Proposition 2.3 unconditional (*Hand-off*).
+items 1, 2 and 3 have landed. Next: the close (*Hand-off*).
 
 ## Current state
 
-**The next concrete commit is item 3** (*Hand-off*); items 1 and 2 have landed. The open's recon
+**The next concrete commit is the close** (*Hand-off*); items 1, 2 and 3 have landed. The open's recon
 (design doc §2, *MULTIGRAPH's open recon*) built the whole sub-phase in a witness file against
 `ae6a852c`, with no `sorry`: M1, the generic
 body-hinge theorems for every spanning multigraph, parallel edges and loops allowed, and KT
@@ -16,8 +16,9 @@ Proposition 2.3 at every generic hinge-point assignment. The lower bound comes f
 Theorem 5.6 (`theorem_55_6_multigraph_gen`): its hinges lie in panels, and `ExtensorInPanel`'s body
 is an extensor of vectors, so each hinge at an edge decomposes as the transplant needs. Loops cost
 one commit (item 1), within §1f.4's bound. Item 2 made the library's generic body-hinge theorems
-(rank formula, rigidity iff, spanning-trees iff) hold for every multigraph, loops allowed; the
-witness file's remaining section is item 3's. Mode: structural edit, no red target nodes; each item
+(rank formula, rigidity iff, spanning-trees iff) hold for every multigraph, loops allowed. Item 3
+added KT Proposition 2.3 as the three-way equivalence at every generic hinge-point assignment; the
+witness file is now fully transcribed. Mode: structural edit, no red target nodes; each item
 restates the nodes it reaches, in step with its Lean.
 
 ## Architectural choices made up front
@@ -48,16 +49,13 @@ item transcribes it into the library, with its blueprint and status surfaces.
   `ExtensorInPanel`, compiling there. `Nonvacuity.lean`: the banana and banana-with-loop witnesses,
   the triangle's repaired. Blueprint, `formalization.yaml`, README, home page, ROADMAP restated.
   S/P/B 1/1/2.
-- [ ] **3. KT Proposition 2.3, unconditional** (`F-121`; §1f.1). New
-  `BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency` (`HingeGeneric.lean`):
-  KT's (i) ⇔ (ii) ⇔ (iii) at a generic `q`, by M1 and `Graph.rank_add_deficiency_eq`.
-  `prop:rigidity-matrix-prop11` states and pins it; `rigidityMatrix_prop11`, the conditional form
-  Theorem 5.6's proofs use, gets its own node, and the three proofs that `\uses` the label for it
-  (`cor:theorem-55-d3-spanning`, `thm:theorem-55-6-genuine`, `thm:theorem-55-6-multigraph`) move
-  to the new one (else a cycle through `lem:hinge-point-witness`), with the Lean docstrings that
-  name the label for it (`scripts/check-docstring-labels.py`). Where the KT node sits, beside the
-  rank formula in `generic-lift.tex` or in place with a forward `\uses`, is the item's call.
-  S/P/B 2/2/2.
+- [x] **3. KT Proposition 2.3, unconditional** (`F-121`; §1f.1). Done (the commit "Phase 41c item
+  3: KT Proposition 2.3, unconditional, at every generic hinge-point assignment of a multigraph"):
+  `BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency` (`HingeGeneric.lean`) by M1
+  and `Graph.rank_add_deficiency_eq`. `prop:rigidity-matrix-prop11` moved to `generic-lift.tex` and
+  pins it; `rigidityMatrix_prop11` keeps its statement under the new
+  `prop:rank-formula-of-motion-bound` (`panel-layer.tex`), with the three `\uses` and the
+  `\cref` and docstring sites that mean the conditional form repointed. S/P/B 2/2/2.
 - [ ] **Close**: the gates (whole-project build with 0 warnings, `lake lint`, the blueprint gates,
   the 20 main results' axioms), ROADMAP's row and §41, the design doc's MULTIGRAPH arc compressed,
   UNSTATED named next.
@@ -70,11 +68,9 @@ item transcribes it into the library, with its blueprint and status surfaces.
 
 ## Hand-off / next phase
 
-**Item 3**: the TFAE corollary, as the checklist says: the witness file's last theorem section
-(`tfae_finrank_span_rigidityRows_ofHinge_deficiency`) into `HingeGeneric.lean`, with
-`prop:rigidity-matrix-prop11`'s repin, the new node for `rigidityMatrix_prop11` and the three moved
-`\uses`. Its status surfaces: the Jackson–Jordán alignment row's KT 2.3 note in
-`formalization.yaml`, and the panel-layer prose that says Proposition 2.3 is conditional.
+**The close** (an Opus coordinator dispatch): the gates (whole-project build with 0 warnings,
+`lake lint`, the blueprint gates, the 20 main results' axioms), ROADMAP's row and §41, the design
+doc's MULTIGRAPH arc compressed, UNSTATED named next. `F-121` and `F-222` are done.
 
 ## Decisions made during this phase
 
