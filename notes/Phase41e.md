@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1–U6 and R have landed. Next: U7.
+close (planned 17–23 commits, the open included); U1–U7 and R have landed. Next: U8.
 
 ## Current state
 
-**The next concrete commit is U7** (*Hand-off*); U1–U6 and R have landed. Each claim of the full
+**The next concrete commit is U8** (*Hand-off*); U1–U7 and R have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -26,8 +26,6 @@ the open (the red-node consistency gate): each states its notion consistently, a
 file and line it cites resolves at HEAD, with these corrections, which the checklist carries:
 - U4's form carried `hfresh`; with R taken, its source is `ReductionWitness.lean`'s last section,
   whose split step takes `e₀ ∉ E(G − v)`. `UnstatedWitness.lean`'s copy is superseded.
-- U7's three callers are in `Theorem55.lean` (`:1802`, `:1851`, `:2050`), so its check for a
-  now-unused `have : G.Loopless` is there, not in `GenericityDevice.lean`.
 - U10: `exists_molecular_rankHypothesis_generalPosition` takes no label bound since 41d's B3, so
   "its bound met by `card_shadowLabel_lt`" goes (§1j.3); after PAD the selector is `Sym2 V → V × V`.
 - U11's "after RELABEL" is met: 41d's B3 restated `HingeGeneric.lean`.
@@ -44,7 +42,7 @@ file and line it cites resolves at HEAD, with these corrections, which the check
 
 - **Statements change only as §1h, §1j and the recon say** (`notes/Reconcile.md` §2, *Hygiene*).
   Each item adds a declaration and a pin. The statement changes are R's four strengthenings, U6's
-  `hC` relaxed, U7's `[G.Loopless]` dropped, the rows form's `hfresh` and `[DecidableEq β]`
+  `hC` relaxed, U7's `[G.Loopless]` dropped (and its unused `[Finite α]`, §1f.3), the rows form's `hfresh` and `[DecidableEq β]`
   dropped (§1j.2), and PAD's label type (§1j.3). A free strengthening only under §1f.3, recorded
   in the design doc.
 - **The witnesses are the source.** Each build item checks its witness section with `lake lean`
@@ -179,15 +177,15 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `\uses` `thm:theorem-55`, which `scripts/blueprint-deps.py --label` finds reached, and its proof
   opens on the realization built in the proof of `thm:theorem-55-6-genuine`; the label check is
   unchanged, 0 findings).
-- [ ] **U7. S16** (`F-124`). `hasPanelRealization_of_generic` (`GenericityDevice.lean:862`)
-  without `[G.Loopless]` (`S16Target`, stated; its one new step
-  `span_rigidityRows_eq_of_eq_off_loops` proved): the framework is `Q.toBodyHinge` with the hinge
-  at each loop at `u` replaced by `C(n_u, n_w)` for a body `w ≠ u` (`2 ≤ |V(G)|`), which lies in
-  `u`'s panel (`exists_extensor_eq_panelSupportExtensor_gen`, `PanelLayer.lean:437`) and is
-  nonzero by general position; the rows' span is unchanged, as a loop's rows are zero. Zone. Its
-  three callers are in `Theorem55.lean` (`:1802`, `:1851`, `:2050`), which pass the instance
-  today: check each for a now-unused `have : G.Loopless`. `lem:generic-yields-genuine-hinge`'s
-  note on loops goes. 1 commit.
+- [x] **U7. S16** (landed: `hasPanelRealization_of_generic` without `[G.Loopless]`, and without
+  `[Finite α]`, which the proof no longer used (`lake lint`'s `unusedArguments`; a hypothesis the
+  proof does not need, under §1f.3, for the coordinator to record in the design doc). The framework
+  is built directly, `graph := G`, the hinge `C(n_a, n_b)` at `(a, b) = Q.ends e` off loops and
+  `C(n_a, n_{w a})` at a loop at `a`; one `exists_extensor_eq_panelSupportExtensor_gen` call covers
+  both. `BodyHingeFramework.span_rigidityRows_eq_of_eq_off_loops` transcribed into
+  `RigidityMatrix/Basic.lean`, the file of `rigidityRows`. In `Theorem55.lean`, two
+  `have hloop : G.Loopless` and one `have := hloop` went. The node's proof names the loop's hinge,
+  and its note went) (`F-124`).
 - [ ] **U8. `F-061`'s forest lemma.**
   `BodyHingeFramework.exists_independent_rigidityRows_of_isForest` (`ForestTarget`, stated): for a
   forest `T ≤ F.graph` (`Graph.IsForest`) with a nonzero hinge at each edge, `D − 1` rows per
@@ -278,12 +276,14 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**U7** (S16, `F-124`, checklist item U7): `hasPanelRealization_of_generic`
-(`AlgebraicInduction/GenericityDevice.lean`) without `[G.Loopless]`, from the witness's
-`S16Target` and its proved step `span_rigidityRows_eq_of_eq_off_loops` (run the section with
-`lake lean` first); its three callers in `Theorem55.lean` checked for a now-unused
-`have : G.Loopless`, and `lem:generic-yields-genuine-hinge`'s note on loops dropped. Zone. One
-commit.
+**U8** (`F-061`'s forest lemma, checklist item U8):
+`BodyHingeFramework.exists_independent_rigidityRows_of_isForest` from the witness's `ForestTarget`
+(stated only: compile its section with `lake lean` first), by induction on `|E(T)|` removing a
+pendant edge, in `RigidityMatrix/Basic.lean` beside `exists_independent_rigidityRows_of_starForest`
+(an interface change there rebuilds the molecular chain), with a new node after
+`lem:own-end-rows-independent`. Zone. One or two commits: if the induction does not fit one, the
+first lands the pendant-edge step as a complete unpinned lemma: independent rows of `T` less a
+pendant edge, joined with that edge's own `D − 1`, stay independent.
 
 ## Decisions made during this phase
 

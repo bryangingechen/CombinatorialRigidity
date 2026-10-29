@@ -1293,7 +1293,7 @@ With them, as the PI decided: KT Theorem 4.9's reduction principle drops its lab
 its sequence form is stated, so the sequence assumes nothing of the labels; a form of Theorem 5.6
 that nothing calls drops its supply too; and the molecule's multigraph loses the spare labels it
 carried for the old bound. Its close closes Phase 41 and the RECONCILE program, and the loop stops for the PI's push.
-**Next**: 41e's U7 (U1, the pebble game's blocking witness, U2, the matroid union's rank formula, U3, the circuit's tree partition, R, KT Theorem 4.9's principle without `hfresh`, U4, its reduction sequence, U5, Case I's rank identity, and U6, `rigidityMatrix_prop11` with the hinge asked only between distinct bodies, have landed), `hasPanelRealization_of_generic` for graphs with loops. Detail →
+**Next**: 41e's U8 (U1, the pebble game's blocking witness, U2, the matroid union's rank formula, U3, the circuit's tree partition, R, KT Theorem 4.9's principle without `hfresh`, U4, its reduction sequence, U5, Case I's rank identity, U6, `rigidityMatrix_prop11` with the hinge asked only between distinct bodies, and U7, `hasPanelRealization_of_generic` for graphs with loops, have landed), the independent rows of a forest of nondegenerate hinges. Detail →
 `notes/Phase41a.md`, `notes/Phase41b.md`, `notes/Phase41c.md`, `notes/Phase41d.md`,
 `notes/Phase41e.md` + `notes/Phase41-design.md`.
 

@@ -1785,7 +1785,6 @@ theorem case_I_dispatch_gen [Infinite K] [DecidableEq β] [Finite α] [Finite β
       HasPanelRealization K k n G := by
   classical
   have : NeZero k := ⟨by omega⟩
-  have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   have hV3 : 3 ≤ V(G).ncard := hrig.elim fun _ hH => hH.three_le_ncard
   by_cases hSimple : G.Simple
   · -- `G` simple: a generic full-rank realization, and from it a nondegenerate-hinge one.
@@ -1829,7 +1828,6 @@ theorem case_I_hcontract_gen [Infinite K] [DecidableEq β] [Finite α] [Finite �
   have hD : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk
   classical
   have : NeZero k := ⟨by omega⟩
-  have hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
   have hV3 : 3 ≤ V(G).ncard := hrig.elim fun _ hH => hH.three_le_ncard
   by_cases hc : c = 0
   · -- c = 0: `case_I_dispatch_gen`.
@@ -2044,9 +2042,8 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_gen_of_supply
     -- Case I.
     (fun c G hG _hV3 hrig hIH => case_I_hcontract_gen hk1 hn c G hG hrig hIH)
     -- A nondegenerate-hinge realization from a generic full-rank one, with `NeZero k` from `hk1`.
-    (fun G hloop hV2 hGP => by
+    (fun G _ hV2 hGP => by
       have : NeZero k := ⟨by omega⟩
-      have := hloop
       exact hasPanelRealization_of_generic hV2 hGP)
     G hG hV
   exact ⟨fun hSimple => by

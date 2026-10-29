@@ -686,7 +686,7 @@ realization gives a nondegenerate-hinge one.
 \begin{proof}
   \leanok
   \uses{lem:general-position-support-nonzero,
-    lem:panel-support-extensor-join}
+    lem:panel-support-extensor-join, def:panel-support-extensor}
   Let $(G,p)$ be a generic full-rank realization with normals $n_v$. It
   is at the target rank. Each normal $n_v$ is nonzero, since $|V| \ge 2$
   gives a body $w \neq v$, and $n_v$ and $n_w$ are linearly independent.
@@ -697,16 +697,12 @@ realization gives a nondegenerate-hinge one.
   $n_u^\perp \cap n_v^\perp$ (\cref{lem:panel-support-extensor-join} and
   the remark after it). So it lies in both panels. A loop
   at a body $u$ gives no row of $R(G,p)$, since its constraint involves
-  only $S(u) - S(u) = 0$. So we may replace its hinge by
-  $x_1 \vee \cdots \vee x_{d-1}$ for any linearly independent
-  $x_1, \dots, x_{d-1} \in n_u^\perp$, without changing the rank.
+  only $S(u) - S(u) = 0$. So we may replace its hinge by $C(n_u, n_w)$
+  for a body $w \neq u$, without changing the rank. As $n_u$ and $n_w$
+  are linearly independent, this hinge is nonzero (the remark after
+  \cref{def:panel-support-extensor}), and as above it lies in the panel
+  of~$u$.
 \end{proof}
-
-\begin{fmlnote}
-  The pinned theorem assumes that $G$ has no loops, and it keeps every
-  hinge of the generic realization. The theorems that apply it do so for
-  simple graphs.
-\end{fmlnote}
 
 A generic full-rank realization also gives a nonparallel one of the same
 rank. Katoh and Tanigawa make a realization nonparallel by KT

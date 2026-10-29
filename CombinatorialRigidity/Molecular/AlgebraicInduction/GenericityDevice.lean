@@ -843,68 +843,65 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite
 /-! ## Nondegenerate hinges from a generic realization (`lem:generic-yields-genuine-hinge`) -/
 
 /-- **A generic full-rank realization has nondegenerate hinges**
-(`lem:generic-yields-genuine-hinge`): for `k ≥ 1` (`[NeZero k]`), a loopless multigraph `G` with
+(`lem:generic-yields-genuine-hinge`): for `k ≥ 1` (`[NeZero k]`), a multigraph `G` with
 `|V(G)| ≥ 2` that has a generic full-rank realization `Q` has a nondegenerate-hinge panel
-realization (`HasPanelRealization`, `def:genuine-hinge-realization`), the body-hinge framework of
-`Q` with its normals:
+realization (`HasPanelRealization`, `def:genuine-hinge-realization`), with the normals of `Q` and
+its hinges off the loops:
 
-* each normal is nonzero, as general position at `v` and another body `w ∈ V(G)` makes `Q.normal v`
-  and `Q.normal w` linearly independent;
-* the hinge at each link is nonzero: `Q.ends` gives the link its ends (the field `isLink_ends`, as
-  `Q.graph = G`), which differ as `G` has no loops (`IsLink.ne`), and general position gives
-  `supportExtensor_ne_zero_of_isGeneralPosition`;
-* the hinge lies in the panels of both ends: it is the join of a basis of the meet of the two
-  hyperplanes (`exists_extensor_eq_panelSupportExtensor_gen`, `lem:panel-support-extensor-join`),
-  which needs `k ≥ 1`;
-* the rank is the same conjunct of both predicates.
-
-The theorems that use it, in `Theorem55.lean`, apply it to simple graphs. -/
-theorem hasPanelRealization_of_generic [NeZero k] {n : ℕ} {G : Graph α β} [G.Loopless] [Finite α]
+* every body `u` has a partner `w u ≠ u`, as `|V(G)| ≥ 2`, and general position makes `Q.normal u`
+  and `Q.normal (w u)` linearly independent, so each normal is nonzero;
+* the hinge at `e` is `C(n_a, n_b)` for `(a, b) = Q.ends e`, as in `Q`, when `a ≠ b`, and
+  `C(n_a, n_{w a})` at a loop at `a`. Its two normals are independent by general position, so it
+  is nonzero (`panelSupportExtensor_ne_zero_iff`), and it is the join of a basis of the meet of the
+  two hyperplanes (`exists_extensor_eq_panelSupportExtensor_gen`, `lem:panel-support-extensor-join`,
+  which needs `k ≥ 1`), so it lies in both panels: at a link from `u` to `v`, those of `u` and `v`,
+  which `Q.ends` records (the field `isLink_ends`, as `Q.graph = G`);
+* the rows of a loop are zero, so the rows span what those of `Q` span
+  (`BodyHingeFramework.span_rigidityRows_eq_of_eq_off_loops`), at the rank of `Q`, the same
+  conjunct of both predicates. -/
+theorem hasPanelRealization_of_generic [NeZero k] {n : ℕ} {G : Graph α β}
     (hV : 2 ≤ V(G).ncard)
     (h : PanelHingeFramework.HasGenericFullRankRealization K k n G) :
     HasPanelRealization K k n G := by
+  classical
   obtain ⟨Q, hQg, hQgp, hQrank⟩ := h
-  have hne : V(G).Nonempty := (Set.ncard_pos (Set.toFinite _)).mp (by omega)
-  refine ⟨Q.toBodyHinge, Q.normal, ?_, ?_, ?_, ?_⟩
-  · -- F.graph = G
-    rw [PanelHingeFramework.toBodyHinge_graph]; exact hQg
-  · -- ∀ v ∈ V(G), Q.normal v ≠ 0
-    intro v _hv
-    obtain ⟨w, _hwV, hwne⟩ := Set.exists_ne_of_one_lt_ncard (show 1 < V(G).ncard by omega) v
-    have hli := hQgp v w hwne.symm
-    intro heq
-    exact hli.ne_zero 0 (by simp [Matrix.cons_val_zero, heq])
-  · -- ∀ e u v, G.IsLink e u v → (supportExtensor e ≠ 0) ∧ ExtensorInPanel ... u ∧ ... v
+  -- A partner `w u ≠ u` of every body, as `G` has two.
+  choose w hw using fun u : α =>
+    (Set.exists_ne_of_one_lt_ncard (show 1 < V(G).ncard by omega) u).imp fun _ h => h.2
+  -- The second end of the hinge: that of `Q.ends`, or the partner at a loop.
+  set b : β → α := fun e =>
+    if (Q.ends e).1 = (Q.ends e).2 then w (Q.ends e).1 else (Q.ends e).2 with hb
+  have hab : ∀ e, (Q.ends e).1 ≠ b e := by
+    intro e; simp only [hb]; split_ifs with h
+    · exact (hw _).symm
+    · exact h
+  let F : BodyHingeFramework K k α β :=
+    { graph := G
+      supportExtensor := fun e => panelSupportExtensor (Q.normal (Q.ends e).1) (Q.normal (b e)) }
+  have hends : ∀ e u v, G.IsLink e u v →
+      (Q.ends e).1 = u ∧ (Q.ends e).2 = v ∨ (Q.ends e).1 = v ∧ (Q.ends e).2 = u :=
+    fun e u v he => (hQg ▸ Q.isLink_ends).eq_or_swap he
+  refine ⟨F, Q.normal, rfl, ?_, ?_, ?_⟩
+  · -- Each normal is nonzero.
+    intro v _hv heq
+    exact (hQgp v (w v) (hw v).symm).ne_zero 0 (by simp [heq])
+  · -- The hinge is nonzero, in the panels of both ends.
     intro e u v he
-    have hends := (hQg ▸ Q.isLink_ends).eq_or_swap he
-    -- (Q.ends e).1 ≠ (Q.ends e).2 via link-recording + IsLink.ne.
-    have hends_ne : (Q.ends e).1 ≠ (Q.ends e).2 := by
-      rcases hends with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> [rw [h1, h2]; rw [h1, h2]] <;>
-        [exact he.ne; exact he.ne.symm]
-    refine ⟨PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition Q hQgp hends_ne, ?_⟩
-    -- The panels: `exists_extensor_eq_panelSupportExtensor_gen` at the selected order of the ends.
-    -- One `?_` for the conjunction `ExtensorInPanel ... u ∧ ExtensorInPanel ... v`.
-    rcases hends with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · -- Case: (Q.ends e).1 = u, (Q.ends e).2 = v
-      -- supportExtensor e = panelSupportExtensor (Q.normal u) (Q.normal v)
-      have hsupp : Q.toBodyHinge.supportExtensor e =
-          panelSupportExtensor (Q.normal u) (Q.normal v) := by
-        rw [PanelHingeFramework.toBodyHinge_supportExtensor, h1, h2]
-      obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen (hQgp u v he.ne)
-      have hval : (Q.toBodyHinge.supportExtensor e).val = extensor p :=
-        congr_arg ScrewSpace.val hsupp ▸ hp
-      exact ⟨⟨p, hval, fun i => (hperp i).1⟩, ⟨p, hval, fun i => (hperp i).2⟩⟩
-    · -- Case: (Q.ends e).1 = v, (Q.ends e).2 = u
-      -- supportExtensor e = panelSupportExtensor (Q.normal v) (Q.normal u)
-      have hsupp : Q.toBodyHinge.supportExtensor e =
-          panelSupportExtensor (Q.normal v) (Q.normal u) := by
-        rw [PanelHingeFramework.toBodyHinge_supportExtensor, h1, h2]
-      obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen (hQgp v u he.ne.symm)
-      have hval : (Q.toBodyHinge.supportExtensor e).val = extensor p :=
-        congr_arg ScrewSpace.val hsupp ▸ hp
-      exact ⟨⟨p, hval, fun i => (hperp i).2⟩, ⟨p, hval, fun i => (hperp i).1⟩⟩
-  · -- Rank: direct from hQrank.
-    exact hQrank
+    obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen (hQgp _ _ (hab e))
+    have hpanel : ∀ x, x = u ∨ x = v → ExtensorInPanel (F.supportExtensor e) (Q.normal x) := by
+      intro x hx
+      have : x = (Q.ends e).1 ∨ x = b e := by
+        simp only [hb]; split_ifs <;> grind [hends e u v he]
+      rcases this with rfl | rfl
+      · exact ⟨p, hp, fun i => (hperp i).1⟩
+      · exact ⟨p, hp, fun i => (hperp i).2⟩
+    exact ⟨(panelSupportExtensor_ne_zero_iff _ _).mpr (hQgp _ _ (hab e)),
+      hpanel u (.inl rfl), hpanel v (.inr rfl)⟩
+  · -- The rank: `F` and `Q` differ only at loops.
+    rw [BodyHingeFramework.span_rigidityRows_eq_of_eq_off_loops F Q.toBodyHinge hQg.symm, hQrank]
+    intro e u v he huv
+    have hne : (Q.ends e).1 ≠ (Q.ends e).2 := by grind [hends e u v he]
+    simp [F, hb, hne]
 
 /-! ## Nonparallel panels from a generic realization (`lem:nonparallel-of-generic`) -/
 

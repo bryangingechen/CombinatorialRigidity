@@ -464,7 +464,8 @@ theorem hingeRow_apply (u v : α) (r : Module.Dual K (ScrewSpace K k))
   rw [hingeRow, LinearMap.comp_apply, screwDiff_apply]
 
 /-- **The row of a loop is zero** (`def:rigidity-matrix`): `hingeRow a a r = 0`, as `S a − S a = 0`.
-So a loop adds only zero rows, which `hasPencilRealization_of_isLoopAt` uses. -/
+So a loop adds only zero rows, which `hasPencilRealization_of_isLoopAt` and
+`span_rigidityRows_eq_of_eq_off_loops` use. -/
 @[simp]
 theorem hingeRow_self (a : α) (r : Module.Dual K (ScrewSpace K k)) :
     hingeRow (k := k) (α := α) a a r = 0 := by
@@ -566,6 +567,29 @@ theorem exists_edgeIndexed_combination_of_mem_span_rigidityRows
   refine ⟨n, f, ev, uv, vv, rv, hlink, hrv, ?_⟩
   rw [← hsum]
   exact Finset.sum_congr rfl fun j _ => by rw [hgrow j]
+
+/-- **The rows read the hinges only at the links between distinct bodies** (a step of
+`lem:generic-yields-genuine-hinge`; `def:rigidity-matrix`): two body-hinge frameworks on the same
+multigraph whose supporting extensors agree at every link between two distinct bodies have the same
+row space. The rows of a loop are zero (`hingeRow_self`), so the hinge at a loop, like the extensor
+at a label outside the edges, enters no row. `hasPanelRealization_of_generic` replaces the hinge at
+each loop so. -/
+theorem span_rigidityRows_eq_of_eq_off_loops (F F' : BodyHingeFramework K k α β)
+    (hG : F.graph = F'.graph)
+    (h : ∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e = F'.supportExtensor e) :
+    Submodule.span K F.rigidityRows = Submodule.span K F'.rigidityRows := by
+  have key : ∀ (F F' : BodyHingeFramework K k α β), F.graph = F'.graph →
+      (∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e = F'.supportExtensor e) →
+      Submodule.span K F.rigidityRows ≤ Submodule.span K F'.rigidityRows := by
+    intro F F' hG h
+    rw [Submodule.span_le]
+    rintro φ ⟨e, u, v, hl, r, hr, rfl⟩
+    by_cases huv : u = v
+    · subst huv; rw [hingeRow_self]; exact Submodule.zero_mem _
+    · refine Submodule.subset_span ⟨e, u, v, hG ▸ hl, r, ?_, rfl⟩
+      simpa [hingeRowBlock, h e u v hl huv] using hr
+  exact le_antisymm (key F F' hG h)
+    (key F' F hG.symm fun e u v hl huv => (h e u v (hG ▸ hl) huv).symm)
 
 /-! ## The infinitesimal motions `Z(G,p)` (`def:rigidity-matrix`)
 
