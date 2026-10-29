@@ -78,7 +78,8 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
 - [x] **U1. S25 and `def:blockingWitness`** (landed: `SimpleGraph.IsBlockingWitness` and
   `not_isSparse_of_isBlockingWitness` in `Sparsity.lean`, the pebble-game lemma in
   `Correctness.lean` with a `[Fintype V]` binder as `runPebbleGameWith_correct`; the node pinned
-  `\leanok`, `thm:pebble-game-correct` gains the pin and a `\uses`) (`F-041`; `F-038`, `F-008`'s part). New
+  `\leanok`, `thm:pebble-game-correct` gains the pin and a `\uses`; the definition's docstring
+  corrected at verification, as a reject verdict's vertex set, not a pair, is the witness) (`F-041`; `F-038`, `F-008`'s part). New
   `SimpleGraph.IsBlockingWitness G k ℓ s :=
   ℓ ≤ k * s.card ∧ k * s.card < (G.edgesIn ↑s).ncard + ℓ` beside `IsSparse`
   (`Sparsity.lean:103`), with `not_isSparse_of_isBlockingWitness`; and

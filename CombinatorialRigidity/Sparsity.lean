@@ -104,8 +104,8 @@ phrased additively to avoid `ℕ`-subtraction. -/
   ∀ s : Finset V, ℓ ≤ k * s.card → (G.edgesIn ↑s).ncard + ℓ ≤ k * s.card
 
 /-- A finite vertex set `s` is a `(k, ℓ)`-**blocking witness** for `G` if it spans too many edges
-for `G` to be `(k, ℓ)`-sparse: `ℓ ≤ k * #s` yet `k * #s < #E(s) + ℓ`. This is the pair a reject
-verdict of the pebble game carries. -/
+for `G` to be `(k, ℓ)`-sparse: `ℓ ≤ k * #s` yet `k * #s < #E(s) + ℓ`. The vertex set of a reject
+verdict of the pebble game is one (`runPebbleGameWith_isBlockingWitness`). -/
 @[expose] def IsBlockingWitness (k ℓ : ℕ) (s : Finset V) : Prop :=
   ℓ ≤ k * s.card ∧ k * s.card < (G.edgesIn (↑s : Set V)).ncard + ℓ
 
