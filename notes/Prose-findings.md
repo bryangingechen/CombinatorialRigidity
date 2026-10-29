@@ -3620,8 +3620,9 @@ declaration's name as its header writes it:
   the statement reads "Let $(G,p)$ be a body-hinge framework with $V$ nonempty. Then $\dim Z(G,p)
   \ge D + \operatorname{def}(\tilde G)$", with no hypothesis on the hinges, while its pin has always
   taken `hC`, the hinge nondegenerate at every edge, and the proof uses $C(p(e)) \neq 0$ at the
-  edges that join two parts. The bound is false without it (a zero hinge at an edge over a
-  partition's cut removes the $D - 1$ equations the count charges).
+  edges that join two parts. The bound is false without it: a zero hinge forces $S(u) = S(v)$
+  (`isInfinitesimalMotion_iff`, the span of a zero extensor), $D$ equations where the count charges
+  $D - 1$, so at two bodies joined by one edge with a zero hinge $\dim Z = D < D + 1$.
   *Evidence:* read (the node's statement and proof against the pin's binder).
   *Found:* Phase 41c's open recon.
   *Disposition:* done (the commit "Phase 41c item 1: the upper bound asked at the non-loop links"; before: open,
