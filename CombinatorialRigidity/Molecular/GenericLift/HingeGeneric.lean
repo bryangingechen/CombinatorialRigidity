@@ -56,8 +56,8 @@ records the links of `G`; at one such selector it is the same condition
   link of a multigraph `G` between distinct bodies a nondegenerate hinge.
 * `thm:bodyhinge-generic-rank` — `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`: the
   rank formula `D(|V|−1) − def(G̃)` holds at every hinge-point assignment generic over a
-  multigraph `G` (parallel edges and loops allowed) spanning the bodies, on one body or more, under
-  KT Theorem 5.6's bound on the number of labels (Jackson–Jordán 2010, Theorem 6.1). It is
+  multigraph `G` (parallel edges and loops allowed) spanning the bodies, on one body or more
+  (Jackson–Jordán 2010, Theorem 6.1). It is
   assembled from the witness assembly (`exists_hingePoints_independent_hingePointRow`, from the
   multigraph Theorem 5.6) transported by genericity and the nondegeneracy lemma — the same
   `le_antisymm` pinch the panel layer's `finrank_span_rigidityRows_of_isGenericNormals` uses.
@@ -849,7 +849,6 @@ the unit-scalar transport (`LinearIndependent.units_smul_iff`) carries that inde
 family `hingePointRow ends q₀`. -/
 theorem exists_hingePoints_independent_hingePointRow [Infinite K] [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)
     {ends : β → α × α} (hends : RecordsLinks G ends) :
     ∃ (q₀ : β × Fin k × Fin (k + 1) → K)
@@ -865,7 +864,7 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K] [Finite α] [F
   have : NeZero (n - 1) := ⟨by omega⟩
   -- The multigraph Theorem 5.6: a hinge-coplanar realization at the target rank.
   obtain ⟨F0, normal, ⟨hF0g, -, hF0C, hF0P⟩, hF0rank⟩ :=
-    theorem_55_6_multigraph_gen_of_card_lt (K := K) hd hcard G hspan
+    theorem_55_6_multigraph_gen (K := K) hd G hspan
   have h1V : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
   have hcardα : Nat.card α = V(G).ncard := by rw [hspan, Set.ncard_univ]
   have hrank0 : (Module.finrank K (Submodule.span K F0.rigidityRows) : ℤ)
@@ -948,8 +947,8 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K] [Finite α] [F
 
 /-- **The generic rank formula for the body-and-hinge affine model** (`thm:bodyhinge-generic-rank`;
 Jackson–Jordán 2010, Theorem 6.1). For a multigraph `G` (parallel edges and loops allowed) on one
-body or more, spanning the bodies, with more than `D(|α| − 1)` edge labels (KT Theorem 5.6's
-bound), every hinge-point assignment `q` generic over `G` attains the rank:
+body or more, spanning the bodies, every hinge-point assignment `q` generic over `G` attains the
+rank:
 
 `finrank (span (ofHinge G q).rigidityRows) = D(|V(G)|-1) - def(G̃)`.
 
@@ -975,7 +974,6 @@ separate row-count computation for the witness since the assembly already report
 theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
     [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)
     {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints G q) :
     (Module.finrank K (Submodule.span K
@@ -988,7 +986,7 @@ theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
   -- of `G`, of exactly the target rank.
   obtain ⟨q₀, s, hsE, hscard, hsli⟩ :=
     exists_hingePoints_independent_hingePointRow (K := K) (k := k) (n := n)
-      hk1 hn hcard G hne hspan hends
+      hk1 hn G hne hspan hends
   -- Genericity of `q` at the same selector transfers that subfamily's independence from `q₀`
   -- to `q`.
   have hLIq : LinearIndependent K fun i : s => hingePointRow G.endsOf q i :=
@@ -1038,7 +1036,6 @@ get `def = 0`; backward, the rank formula at `def = 0` gives the exact row count
 theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
     [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) :
     (∀ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints G q →
         (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
@@ -1048,7 +1045,7 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
   · intro hrigid
     obtain ⟨q, hq, -⟩ := exists_isGenericHingePoints (K := K) (k := k) G
     have hrank := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
-      hk1 hn hcard G hne hspan hq
+      hk1 hn G hne hspan hq
     have hB1 := (ofHinge G fun e a b => q (e, a, b))
       |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hne
     simp only [ofHinge_graph] at hB1
@@ -1057,7 +1054,7 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
     linarith [hrank, hcount]
   · intro hdef q hq
     have hrank := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
-      hk1 hn hcard G hne hspan hq
+      hk1 hn G hne hspan hq
     rw [hdef, sub_zero] at hrank
     have hB1 := (ofHinge G fun e a b => q (e, a, b))
       |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hne
@@ -1079,7 +1076,6 @@ which asks `D ≥ 3`, as `k ≥ 1` gives. -/
 theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees [Infinite K]
     [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) :
     (∀ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints G q →
         (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
@@ -1088,7 +1084,7 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees 
             Pairwise (Function.onFun Disjoint fun i => E(Ts i)) := by
   have hD : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk1
   have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
-  rw [isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff hk1 hn hcard G hne hspan]
+  rw [isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff hk1 hn G hne hspan]
   exact G.deficiency_eq_zero_iff_exists_spanningTrees n hne
 
 /-! ### KT Proposition 2.3, unconditional, at generic hinge points -/
@@ -1102,7 +1098,6 @@ are equivalent for every integer `c`: (i) `rank R(G,q) = D(|V| − 1) − c`; (i
 theorem tfae_finrank_span_rigidityRows_ofHinge_deficiency [DecidableEq β] [Infinite K]
     [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ)
     {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints G q) (c : ℤ) :
     List.TFAE
@@ -1112,7 +1107,7 @@ theorem tfae_finrank_span_rigidityRows_ofHinge_deficiency [DecidableEq β] [Infi
         G.deficiency n = c,
         ((G.matroidMG n).rank : ℤ) = screwDim k * (V(G).ncard - 1 : ℤ) - c] := by
   have hrank := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
-    hk1 hn hcard G hne hspan hq
+    hk1 hn G hne hspan hq
   have hD : 1 ≤ Graph.bodyBarDim n := by have := three_le_screwDim hk1; omega
   have hMG := G.rank_add_deficiency_eq n hD hne
   rw [hn] at hMG

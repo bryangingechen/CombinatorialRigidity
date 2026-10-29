@@ -3337,8 +3337,8 @@ theorem edgeSet_ncard_add_deficiency_le_of_isMinimalKDof
 minimal `c`-dof-graph `G'` on `α`, for every `c`, leaves some label `e₀ ∉ E(G')`. Suppose that
 `E(G')` is all of `β`. Then `β` is nonempty, as `|β| > 0`, so `G'` has an edge and a vertex, and
 `|β| = |E(G')| ≤ D(|V(G')| - 1) ≤ D(|α| - 1) < |β|` by
-`edgeSet_ncard_add_deficiency_le_of_isMinimalKDof` and `deficiency_nonneg`. The pinned theorems
-assume this bound or a form of its conclusion (`rem:fresh-edge-supply`). -/
+`edgeSet_ncard_add_deficiency_le_of_isMinimalKDof` and `deficiency_nonneg`. The induction of KT
+Theorem 5.5 assumes this bound or a form of its conclusion (`rem:fresh-edge-supply`). -/
 theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) (hcard : bodyBarDim n * (Nat.card α - 1) < Nat.card β) :
     ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G') := by

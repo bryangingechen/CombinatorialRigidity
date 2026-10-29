@@ -13,8 +13,8 @@ public import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 
 The panel-hinge realization of `lem:theorem-56-general-position`, as
 `sec:molecule-modelling-general-position` presents it: a simple graph `G` that spans a nonempty set
-of bodies, with more than `6(|V| - 1)` labels, has a panel-hinge realization in `ℝ³` at the rank of
-KT Theorem 5.6, `dim Z = D + def(G̃)`, whose normals are in general position up to order four
+of bodies has a panel-hinge realization in `ℝ³` at the rank of KT Theorem 5.6,
+`dim Z = D + def(G̃)`, whose normals are in general position up to order four
 (`IsGeneralPosition4`, `GeneralPosition4.lean`) and whose panels are nonparallel (`IsNonparallel`,
 `def:panel-nonparallel`). The poles of its normals are then in general position up to order four,
 as the square-graph dictionary (`thm:molecular-iff-square-bar-joint`) needs of the centres of the
@@ -67,8 +67,8 @@ namespace PanelHingeFramework
 
 /-- **KT Theorem 5.6 in `ℝ³` with the poles in general position, on two or more bodies** (a step of
 `lem:theorem-56-general-position`: its case `2 ≤ |V|`; KT Theorem 5.6, Katoh and Tanigawa 2011,
-§5.2, p. 670): for a simple graph `G` that spans two or more bodies in `ℝ³`, with more than
-`6(|V| - 1)` labels, there is a panel-hinge realization `Q` on `G` that
+§5.2, p. 670): for a simple graph `G` that spans two or more bodies in `ℝ³`, there is a panel-hinge
+realization `Q` on `G` that
 
 * has a nonzero supporting extensor on every `G`-link (nondegenerate hinges);
 * realizes the target rank `dim Z(G, Q) = D + def(G̃)` (`RankHypothesis (G.deficiency 3)`);
@@ -84,7 +84,6 @@ of the realization of `rankHypothesis_genuine_of_theorem_55_gen`, and the polyno
 `exists_generalPosition4_polynomial` and `exists_nonparallel_polynomial`
 (`MvPolynomial.exists_eval_ne_zero`); see the file header. -/
 theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite β]
-    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
       (∀ e u v, G.IsLink e u v → Q.toBodyHinge.supportExtensor e ≠ 0) ∧
@@ -95,14 +94,11 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
   have : Nonempty α := ⟨a₀⟩
   have hloop : G.Loopless := hSimple.toLoopless
   -- Numerics for `n = 3`, `k = 2`.
-  have hD : (3 : ℕ) ≤ Graph.bodyBarDim 3 := Graph.three_le_bodyBarDim_of_two_le (by norm_num)
   have hn : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
-  have hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 3 c → ∃ e₀ : β, e₀ ∉ E(G') :=
-    Graph.freshEdgeSupply_of_card_lt (by omega) (by simpa [Graph.bodyBarDim] using hcard)
   -- Step 1: KT Theorem 5.6 with nondegenerate hinges; the selector gives each edge its two ends.
   obtain ⟨Q0, hQ0g, -, hQ0C, hQ0rank⟩ :=
-    rankHypothesis_genuine_of_theorem_55_gen_of_supply
-      (K := ℝ) (k := 2) (n := 3) (by norm_num) hn hfresh G hV hspan hSimple
+    rankHypothesis_genuine_of_theorem_55_gen
+      (K := ℝ) (k := 2) (n := 3) (by norm_num) hn G hV hspan hSimple
   have hQ0ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q0.ends e).1 (Q0.ends e).2 :=
     hQ0g ▸ recordsLinks_iff_forall_isLink.mp Q0.isLink_ends
   -- View `Q0` as the free-normal framework at its own normals `q₀ = fun p => Q0.normal p.1 p.2`.
@@ -189,8 +185,8 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
 
 /-- **KT Theorem 5.6 in `ℝ³` with the poles in general position**
 (`lem:theorem-56-general-position`; KT Theorem 5.6, Katoh and Tanigawa 2011, §5.2, p. 670): for a
-simple graph `G` that spans a nonempty set of bodies in `ℝ³`, with more than `6(|V| - 1)` labels,
-there is a panel-hinge realization `Q` on `G` that
+simple graph `G` that spans a nonempty set of bodies in `ℝ³`, there is a panel-hinge realization `Q`
+on `G` that
 
 * has a nonzero supporting extensor on every `G`-link (nondegenerate hinges);
 * realizes the target rank `dim Z(G, Q) = D + def(G̃)` (`RankHypothesis (G.deficiency 3)`);
@@ -211,7 +207,6 @@ normals at the constant parameter `1` are in general position up to order four b
 `exists_generalPosition4_polynomial` at the moment curve (nonvanishing last coordinate, and every
 `≤ 4`-subfamily, here at most a singleton, independent). -/
 theorem exists_rankHypothesis_isGeneralPosition4 [Finite α] [Finite β]
-    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
       (∀ e u v, G.IsLink e u v → Q.toBodyHinge.supportExtensor e ≠ 0) ∧
@@ -219,7 +214,7 @@ theorem exists_rankHypothesis_isGeneralPosition4 [Finite α] [Finite β]
       Q.IsGeneralPosition4 ∧ Q.IsNonparallel := by
   have : Nonempty α := ⟨hne.some⟩
   by_cases hV2 : 2 ≤ V(G).ncard
-  · exact exists_rankHypothesis_isGeneralPosition4_of_two_le hcard G hV2 hspan hSimple
+  · exact exists_rankHypothesis_isGeneralPosition4_of_two_le G hV2 hspan hSimple
   · -- Single-body branch: `|V| = 1`, so `α` is a subsingleton and `G` is edgeless.
     classical
     have : Fintype α := Fintype.ofFinite α

@@ -3,13 +3,14 @@
 **Status:** in progress (opened 2026-10-29 with the PI), a sub-phase of Phase 41. The phase's
 design, the PI's decisions (here §1h.2 and §1i, the open) and RELABEL's recon are in
 `notes/Phase41-design.md`; the recon's Lean witness is `notes/reconcile-formal/RelabelWitness.lean`.
-Three build items, one read-only recon and the close (planned 7–10); B1 and B2 have landed. Next:
-item B3, the cascade and the texts.
+Three build items, one read-only recon and the close (planned 7–10); B1, B2 and B3 have landed, so
+no main result bounds the labels. Next: item R, the read-only recon on KT Theorem 4.9's principle.
 
 ## Current state
 
-**The next concrete commit is item B3** (*Hand-off*); B1 and B2 have landed (below), so KT Theorems
-5.5 and 5.6 (all five forms and the `k`-form of the multigraph one) assume nothing of the labels.
+**The next concrete commit is item R** (*Hand-off*); B1, B2 and B3 have landed (below), so the six
+main results that carried a bound on the labels, and every declaration of the cascade, assume
+nothing of them.
 RELABEL's recon (design
 doc §2, *RELABEL's recon*) proved route B in a witness against `e51acb76`, with no `sorry`: each
 main result applies its landed form at `β ⊕ Fin N`, `N = D(|α| − 1) + 1`, where
@@ -117,7 +118,7 @@ surfaces.
   too. Source: the witness's T1, T2 and spine sections, transcribed; look for a shorter route.
   Zone (`Theorem55.lean`), statements and new transports only. S/P/B 1/1/2. 1–2 commits; if it
   splits, cut between Theorem 5.5 and the forms of Theorem 5.6.
-- [ ] **B3. The cascade and the texts.** In each declaration below the binder is deleted and the
+- [x] **B3. The cascade and the texts.** In each declaration below the binder is deleted and the
   call switched to the bound-free form; nothing else in its proof changes (the witness's copies).
   - `Theorem55.lean`: the `d = 3` forms `theorem_55_minimalKDof_k`, `theorem_55_d3`,
     `rankHypothesis_deficiency_of_theorem_55_d3`, `rankHypothesis_of_theorem_55_d3` and
@@ -210,10 +211,19 @@ callers that keep their binder until B3 call the renamed forms. Both non-vacuity
 `blueprint/verify.sh`, `lint.sh`, `check-docstring-labels.py` (0 findings, as at the parent) and
 `blueprint-deps.py --label` on the five restated nodes and the new one (no `missing` line) clean.
 
+**B3 landed** (one commit, not split). The cascade's 17 declarations lost `hcard`/`hfresh` and call
+the bound-free forms, nothing else in their proofs changed; the molecule chain's three, uncompiled
+in the witness, compiled first with no surprise. Callers: `molecule_rank_lower_bound` no longer
+calls `card_shadowLabel_lt` (kept, its pin now dead; `Carrier.lean` says the padding is unneeded).
+The witnesses moved to fewer labels than the old bound (the double edge to `Fin 3`, the single edge
+to `Fin 1`, the conjecture's to `Fin 0`). Blueprint: `rem:fresh-edge-supply` rewritten, the renamed
+forms pinned beside their main results (*Decisions made*), the bound dropped from the arc's
+statements and fmlnotes; status surfaces as the checklist says. Whole-project build 0 warnings,
+`lake lint`, `verify.sh`, `lint.sh`, `check-docstring-labels.py` (0 findings) clean.
+
 ## Blockers / open questions
 
-- None blocking. A flag for B3: the molecule chain's three declarations are uncompiled in the
-  witness (B3 compiles them first).
+- None blocking.
 - For the PI at the close: item R's estimate for dropping `hfresh` from `minimal_kdof_reduction`;
   and `hasGenericFullRankRealization_of_theorem_55_gen` (the second pin of `thm:theorem-55-6-rows`),
   which the arc counts as internal and B2 left with `hfresh`, though nothing calls it: dropping it
@@ -221,14 +231,9 @@ callers that keep their binder until B3 call the renamed forms. Both non-vacuity
 
 ## Hand-off / next phase
 
-**Item B3**, the cascade and the texts, as the lemma checklist's B3 entry says. Each B3 declaration
-that B2 repointed calls a renamed form (`theorem_55_minimalKDof_k` → `…_gen_of_supply`;
-`rankHypothesis_of_theorem_55_d3`, `molecular_conjecture`, `PanelGeneric.lean` →
-`rankHypothesis_of_theorem_55_gen_of_card_lt`; `theorem_55_6_multigraph_d3`,
-`molecular_conjecture_multigraph`, `HingeGeneric.lean` → `theorem_55_6_multigraph_gen_of_card_lt`;
-`Theorem56.lean` → `rankHypothesis_genuine_of_theorem_55_gen_of_supply`): B3 switches each to the
-bound-free name with its binder. B2 already dropped the sentences that gave Theorem 5.6 the bound in
-`intro.tex`, `generic-lift.tex`'s two fmlnotes and README; the rest of those texts is B3's.
+**Item R**, the read-only recon on dropping `hfresh` from `minimal_kdof_reduction`, as the lemma
+checklist's R entry says: its verdict as a §2 arc of the design doc in one docs commit, no library
+Lean. Then the close.
 
 ## Decisions made during this phase
 
@@ -241,11 +246,13 @@ bound-free name with its binder. B2 already dropped the sentences that gave Theo
   `lem:pencil-jj-embed-edges` for `lem:embed-edges-simple-deficiency` in `panel-layer.tex`, so the
   main results' closure stays out of the pencil chapter; `lem:pencil-jj-embed-edges` keeps the
   lifting spaces and the pictures.
-- **B2's calls** (the item left them open). The renamed forms take `_of_supply` and `_of_card_lt`:
-  `_of_freshEdgeSupply` made the rows form's name 103 characters, past the line limit. They stay
-  unpinned, as helpers of their nodes, so `blueprint-deps.py` reports the `\uses` edges from the
-  Theorem 5.6 nodes to `thm:theorem-55` and `thm:theorem-55-6-genuine` as unbacked, and four
-  bound-free pins as dead (the rows form and the multigraph `k`-form stay so after B3): reports
-  for a check, not defects. `theorem_55_6_multigraph` got its own transport. T1 and T2 got a node,
-  `lem:embed-edges-framework`, as T5 did. The witnesses moved to `Fin 1`, so that they show the
-  bound gone rather than met.
+- **B2's calls** (the item left them open). The renamed forms take `_of_supply` and `_of_card_lt`
+  (`_of_freshEdgeSupply` passed the line limit). `theorem_55_6_multigraph` got its own transport;
+  T1 and T2 a node, `lem:embed-edges-framework`. The witnesses take fewer labels than the old bound
+  (B3 too), to show it gone rather than met.
+- **The renamed forms are pinned** (the coordinator's scope-pin at B3, replacing B2's "unpinned"):
+  each beside its main result on that node, so the `\uses` edges into `thm:theorem-55`,
+  `thm:theorem-55-6-genuine` and `thm:theorem-55-6-rows` are backed. Still reported: rows →
+  genuine (no Lean basis: the rows forms build the realization from Theorem 5.5, never calling the
+  genuine form), and three dead bound-free pins (the rows form, its `hasGeneric…` pin, the
+  multigraph `k`-form) and `card_shadowLabel_lt`: reports for a check, not defects.

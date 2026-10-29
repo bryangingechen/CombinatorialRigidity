@@ -24,9 +24,10 @@ labels; the molecule rank formula (`Application.lean`) applies the latter to `G.
 The labels of `G.shadowGraph` are `Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)`. Its link between
 adjacent vertices `u` and `v` of `G` is labelled `s(u, v)`, so it is simple, has vertex set `V`, and
 links exactly the adjacent pairs of `G`. No link has a label of the second summand: those labels
-bring the number of labels above `6(|V| - 1)`, as `exists_molecular_rankHypothesis_generalPosition`
-(`thm:panel-hinge-iff-molecular`) asks (its hypothesis `hcard`). On a nonempty `V`, the
-`|V|(|V| + 1)/2` labels of `Sym2 V` alone are too few exactly when `2 ≤ |V| ≤ 9`.
+bring the number of labels above `6(|V| - 1)` (`card_shadowLabel_lt`). No result needs that bound,
+as the molecular realization (`exists_molecular_rankHypothesis_generalPosition`,
+`thm:panel-hinge-iff-molecular`) assumes nothing of the labels; the second summand stays so that the
+label type, which `lem:molecule-graph-carrier` states, does not change.
 
 ## Main results
 
@@ -48,7 +49,7 @@ variable {V : Type*} [Finite V]
 /-- **The multigraph of a simple graph** (`lem:molecule-graph-carrier`): the multigraph on `V`, with
 the labels `Sym2 V ⊕ Fin (6 * (|V| - 1) + 1)`, that links `x` and `y` by the label `s(x, y)` when
 `G.Adj x y`. No link has a label of the second summand; those labels bring the number of labels
-above `6(|V| - 1)` for every finite `V` (`card_shadowLabel_lt`). -/
+above `6(|V| - 1)` for every finite `V` (`card_shadowLabel_lt`), which no result needs. -/
 def shadowGraph (G : SimpleGraph V) :
     Graph V (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) where
   vertexSet := Set.univ

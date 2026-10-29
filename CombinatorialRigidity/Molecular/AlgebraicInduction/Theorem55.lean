@@ -2089,44 +2089,37 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_gen
     rwa [Graph.vertexSet_embedEdges, Graph.deficiency_embedEdges] at hrank
 
 /-- **KT Theorem 5.5 at `d = 3`** (a step of `thm:theorem-55-d3-instance`):
-`theorem_55_minimalKDof_gen_of_supply` at `k = 2`, where `D = 6`. If `K` is infinite,
-`D = screwDim 2` (`hn`),
-so `3 ≤ D`, and every minimal `c'`-dof-graph misses some edge label (`hfresh`), then
-every minimal `c`-dof-graph `G` at `n` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel
-realization, and if `G` is simple a nonparallel full-rank realization. `theorem_55_d3` uses it at
-`c = 0`. -/
+`theorem_55_minimalKDof_gen` at `k = 2`, where `D = 6`. If `K` is infinite and `D = screwDim 2`
+(`hn`), so `3 ≤ D`, then every minimal `c`-dof-graph `G` at `n` with `|V(G)| ≥ 2` has a
+nondegenerate-hinge panel realization, and if `G` is simple a nonparallel full-rank realization.
+`theorem_55_d3` uses it at `c = 0`. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k
     [Infinite K] [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hn : Graph.bodyBarDim n = screwDim 2)
-    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasNonparallelFullRankRealization K 2 n G) ∧
       HasPanelRealization K 2 n G :=
-  PanelHingeFramework.theorem_55_minimalKDof_gen_of_supply (k := 2) (by norm_num) hn hfresh
-    G hG hV
+  PanelHingeFramework.theorem_55_minimalKDof_gen (k := 2) (by norm_num) hn G hG hV
 
 /-- **KT Theorem 5.5 at `d = 3` and deficiency zero** (`thm:theorem-55-d3-instance`; KT Theorem 5.5,
-p. 670): let `K` be infinite and `6(|α| − 1) < |β|` (`hcard`). Then every minimal `0`-dof-graph `G`
-at `n = 3` with `|V(G)| ≥ 2` has a nondegenerate-hinge panel realization, of rank `6(|V(G)| − 1)`,
-and if `G` is simple a nonparallel full-rank realization.
+p. 670): let `K` be infinite. Then every minimal `0`-dof-graph `G` at `n = 3` with `|V(G)| ≥ 2`
+has a nondegenerate-hinge panel realization, of rank `6(|V(G)| − 1)`, and if `G` is simple a
+nonparallel full-rank realization. Nothing is assumed of the edge labels.
 
-It is `theorem_55_minimalKDof_k` at `n = 3` and `c = 0`. `hcard` gives every minimal `c`-dof-graph
-an edge label outside its edge set (`Graph.freshEdgeSupply_of_card_lt`, `rem:fresh-edge-supply`),
-and `D = screwDim 2` holds at `n = 3` by `decide`. No declaration uses it. -/
+It is `theorem_55_minimalKDof_k` at `n = 3` and `c = 0`, where `D = screwDim 2` holds by `decide`.
+No declaration uses it. -/
 theorem PanelHingeFramework.theorem_55_d3 [Infinite K] [DecidableEq β] [Finite α] [Finite β]
-    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasNonparallelFullRankRealization K 2 3 G) ∧
       HasPanelRealization K 2 3 G :=
-  PanelHingeFramework.theorem_55_minimalKDof_k (by decide)
-    (Graph.freshEdgeSupply_of_card_lt (n := 3) (by decide)
-      (by simpa [Graph.bodyBarDim] using hcard)) G hG hV
+  PanelHingeFramework.theorem_55_minimalKDof_k (by decide) G hG hV
 
 /-- **KT Theorem 5.5, the `def = 0`/spanning stratum at `d = 3`** (`cor:theorem-55-d3-spanning`;
-Katoh–Tanigawa 2011 §5.1, §5.2). Let `K` be infinite and `6(|α| − 1) < |β|` (`hcard`). For a simple
-minimal-`0`-dof graph on `≥ 2` bodies in `d = 3` with `V(G) = Set.univ`, a panel-hinge
-realization `Q` of `G` with nonparallel panels (`Q.IsNonparallel`) and a nondegenerate hinge at
-every edge of `G` realizes the rank hypothesis at `def(G̃) = 0`: `dim Z(G, Q) = D = D + def(G̃)`.
+Katoh–Tanigawa 2011 §5.1, §5.2). Let `K` be infinite. For a simple minimal-`0`-dof graph on
+`≥ 2` bodies in `d = 3` with `V(G) = Set.univ`, a panel-hinge realization `Q` of `G` with
+nonparallel panels (`Q.IsNonparallel`) and a nondegenerate hinge at every edge of `G` realizes the
+rank hypothesis at `def(G̃) = 0`: `dim Z(G, Q) = D = D + def(G̃)`. Nothing is assumed of the edge
+labels.
 
 `theorem_55_d3` gives `Q` with the rank `6(|V(G)| − 1)`, which for `V(G) = Set.univ` is
 infinitesimal rigidity. The spanning condition kills the complement, so `dim Z = D·1 = D ≤ D + 0`,
@@ -2140,7 +2133,6 @@ No declaration uses it: it is the `d = 3` instance of the `def = 0` stratum, kep
 entry point. -/
 theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
     [Infinite K] [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
-    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard)
     (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework K 2 α β, Q.graph = G ∧ Q.IsNonparallel ∧
@@ -2148,7 +2140,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
   have : Fintype α := Fintype.ofFinite α
   obtain ⟨Q, hQg, hQnp, hQrank⟩ :=
-    (PanelHingeFramework.theorem_55_d3 (K := K) hcard G hG hV).1 hSimple
+    (PanelHingeFramework.theorem_55_d3 (K := K) G hG hV).1 hSimple
   have hQgp := hQnp.isGeneralPosition
   -- Derive rigidity from the rank hypothesis.
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
@@ -2586,12 +2578,11 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen [Infinite K]
   exact hQ'rank
 
 /-- **KT Theorem 5.6, `d = 3` instance** (`thm:theorem-55-6-d3`; Katoh–Tanigawa 2011 §5.2, p. 670;
-the `n := 3` specialization of `rankHypothesis_of_theorem_55_gen_of_card_lt`). For a simple spanning
+the `n := 3` specialization of `rankHypothesis_of_theorem_55_gen`). For a simple spanning
 graph on `≥ 1` body in `d = 3`, some panel-hinge framework `Q` on `G` with nonparallel panels
 (`Q.IsNonparallel`) has `dim Z(G, Q) = D + def(G̃)`. Like the general form, it passes the
 nonparallel conjunct through, so every hinge at an edge of `G` is nondegenerate; its selector gives
-each edge of `G` its ends (the field `isLink_ends`).
-`Graph.bodyBarDim 3 = 6` closes the label-headroom bound by unfolding, and
+each edge of `G` its ends (the field `isLink_ends`). Nothing is assumed of the edge labels.
 `PanelHingeFramework K (3 - 1) α β` is defeq to `PanelHingeFramework K 2 α β` (kernel `Nat.sub`
 reduction on literals), so the corollary needs no cast at the return type.
 
@@ -2599,12 +2590,11 @@ No declaration uses it: it is the `d = 3` instance of the general form, kept as 
 point. -/
 theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3 [Infinite K]
     [Nonempty α] [Finite α] [Finite β]
-    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework K 2 α β, Q.graph = G ∧ Q.IsNonparallel ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
-  obtain ⟨Q, hQg, hnp, hrank⟩ := rankHypothesis_of_theorem_55_gen_of_card_lt (K := K)
-    (n := 3) (by norm_num) (by simpa [Graph.bodyBarDim] using hcard) G hne hspan hSimple
+  obtain ⟨Q, hQg, hnp, hrank⟩ := rankHypothesis_of_theorem_55_gen (K := K)
+    (n := 3) (by norm_num) G hne hspan hSimple
   exact ⟨Q, hQg, hnp, hrank⟩
 
 /-- **The Molecular Conjecture (the consumer-facing form)** (`thm:molecular-conjecture`;
@@ -2612,10 +2602,8 @@ Katoh–Tanigawa 2011 Conjecture 1.2, p. 648, posed by Tay–Whiteley 1984). A s
 on `≥ 1` body can be realized as an infinitesimally rigid **body-hinge** framework in `Kⁿ` iff it
 can be realized as an infinitesimally rigid **panel-hinge** framework, at grade `n − 1` — the
 statement at general dimension `d` (`n ≥ 2`, equivalently `3 ≤ bodyBarDim n`). The single `2 ≤ n`
-hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|` repackage the internal
-grade/dimension plumbing and the higher-order fresh-edge-supply binder that the spine
-`theorem_55_minimalKDof_gen_of_supply` takes directly, exactly as in
-`rankHypothesis_of_theorem_55_gen_of_card_lt` above.
+hypothesis repackages the internal grade/dimension plumbing, as in
+`rankHypothesis_of_theorem_55_gen` above, and nothing is assumed of the edge labels.
 
 "Realized as an infinitesimally rigid `⋯` framework" is
 `∃ F, F.graph = G ∧ (∀ e ∈ E(G), F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid`: a framework
@@ -2650,7 +2638,7 @@ molecular characterization.
 Scope. Both sides ask for nondegenerate hinges at the edges of `G` only, as a hinge at a label
 outside `E(G)` constrains no motion. On one body `G` has no edge, as it is simple, and both sides
 hold: one body is infinitesimally rigid whatever its hinges. A form asking for a nondegenerate hinge
-at every label would fail there, as `β` is nonempty (`hcard`) and every hinge of a panel-hinge
+at every label would fail there whenever `β` is nonempty, as every hinge of a panel-hinge
 framework on one body is the meet of a panel with itself,
 `panelSupportExtensor (normal a) (normal a) = 0` (`panelSupportExtensor_ne_zero_iff`). The panel
 side also states that the panels are nonparallel (`IsNonparallel`), as the framework that the proof
@@ -2659,7 +2647,6 @@ on one body it holds vacuously. The proof of (⇐) discards it. -/
 theorem PanelHingeFramework.molecular_conjecture [Infinite K]
     [Nonempty α] [Finite α] [Finite β] {n : ℕ}
     (hd : 2 ≤ n)
-    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     (∃ F : BodyHingeFramework K (n - 1) α β, F.graph = G ∧
         (∀ e ∈ E(G), F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
@@ -2685,7 +2672,7 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
       rw [hn1]; omega
     -- Theorem 5.6 at `def(G̃) = 0` gives a rigid panel-hinge framework with nonparallel panels.
     obtain ⟨Q, rfl, hQnp, hQrank⟩ :=
-      rankHypothesis_of_theorem_55_gen_of_card_lt (K := K) hd hcard G hne hspan hSimple
+      rankHypothesis_of_theorem_55_gen (K := K) hd G hne hspan hSimple
     rw [hdef0] at hQrank
     -- Its hinge at every edge is nondegenerate: general position, and distinct ends (`G` simple).
     have : Q.graph.Loopless := hSimple.toLoopless
@@ -3023,31 +3010,27 @@ theorem theorem_55_6_multigraph_gen [Infinite K]
   exact hrank
 
 /-- **KT Theorem 5.6 for multigraphs at `d = 3`** (`cor:theorem-55-6-multigraph-d3`; KT Theorem 5.6,
-p. 670): `theorem_55_6_multigraph_gen_of_card_lt` at `n = 3`, where `k = 2` and `D = 6`. If `K` is
-infinite and
-`6(|α| − 1) < |β|` (`hcard`), every multigraph `G` on all of `α` (`hspan`) has a hinge-coplanar
-panel realization at the target rank `6(|V(G)| − 1) − def(G̃)`.
+p. 670): `theorem_55_6_multigraph_gen` at `n = 3`, where `k = 2` and `D = 6`. If `K` is infinite,
+every multigraph `G` on all of `α` (`hspan`) has a hinge-coplanar panel realization at the target
+rank `6(|V(G)| − 1) − def(G̃)`. Nothing is assumed of the edge labels.
 
-`Graph.bodyBarDim 3 = 6` gives `hcard` at `n = 3` by unfolding, and
 `BodyHingeFramework K (3 - 1) α β` is `BodyHingeFramework K 2 α β` by definition (`3 - 1` reduces to
 `2`), so the statement needs no cast, as in `rankHypothesis_of_theorem_55_d3`. No declaration uses
 it. -/
 theorem theorem_55_6_multigraph_d3 [Infinite K]
     [Nonempty α] [Finite α] [Finite β]
-    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     ∃ (F : BodyHingeFramework K 2 α β) (normal : α → Fin (2 + 2) → K),
       HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency 3) := by
   classical
-  exact theorem_55_6_multigraph_gen_of_card_lt (n := 3) (by norm_num)
-    (by simpa [Graph.bodyBarDim] using hcard) G hspan
+  exact theorem_55_6_multigraph_gen (n := 3) (by norm_num) G hspan
 
 /-- **The molecular conjecture for multigraphs** (`thm:molecular-conjecture-multigraph`; KT
-Conjecture 1.2, p. 648, posed by Tay and Whiteley 1984): let `K` be infinite, `2 ≤ n`, and
-`D(|α| − 1) < |β|` with `D = bodyBarDim n` (`hcard`). A multigraph `G` on all of `α` (`hspan`), with
-parallel edges and loops allowed, has an infinitesimally rigid **body-hinge** realization with
-nonzero hinges if and only if it has an infinitesimally rigid **hinge-coplanar panel-hinge**
-realization (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`), at grade `n − 1`.
+Conjecture 1.2, p. 648, posed by Tay and Whiteley 1984): let `K` be infinite and `2 ≤ n`. A
+multigraph `G` on all of `α` (`hspan`), with parallel edges and loops allowed, has an
+infinitesimally rigid **body-hinge** realization with nonzero hinges if and only if it has an
+infinitesimally rigid **hinge-coplanar panel-hinge** realization (`HasCoplanarPanelRealization`,
+`def:coplanar-panel-realization`), at grade `n − 1`. Nothing is assumed of the edge labels.
 This is the multigraph form of the simple-graph `PanelHingeFramework.molecular_conjecture`
 (`thm:molecular-conjecture`): the panel side is stated in KT's containment model (each hinge *lies
 in* the panel of each endpoint, KT §5.1 p. 668), not the meet model, so it holds at parallel edges
@@ -3080,7 +3063,6 @@ nonzero hinges at the links only, meets `dim Z = D` from rigidity (`rankHypothes
 theorem molecular_conjecture_multigraph [Infinite K]
     [Nonempty α] [Finite α] [Finite β] {n : ℕ}
     (hd : 2 ≤ n)
-    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hspan : V(G) = Set.univ) :
     (∃ F : BodyHingeFramework K (n - 1) α β, F.graph = G ∧
         (∀ e ∈ E(G), F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
@@ -3105,7 +3087,7 @@ theorem molecular_conjecture_multigraph [Infinite K]
       have hge := G.deficiency_nonneg ((n - 1) + 1) hne
       rw [hn1]; omega
     obtain ⟨F', normal, hW1, hF'rank⟩ :=
-      theorem_55_6_multigraph_gen_of_card_lt (K := K) hd hcard G hspan
+      theorem_55_6_multigraph_gen (K := K) hd G hspan
     rw [hdef0] at hF'rank
     exact ⟨F', normal, hW1, (BodyHingeFramework.rankHypothesis_zero_iff F').mp hF'rank⟩
   · -- (⇐) coplanar panel ⇒ body-hinge: the containment witness already is a body-hinge framework.

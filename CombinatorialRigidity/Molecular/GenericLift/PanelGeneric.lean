@@ -430,9 +430,8 @@ theorem exists_independent_normalRow_of_le_finrank [Finite α] [Finite β]
 /-! ### The rank formula and its rigidity corollary -/
 
 /-- **The generic rank formula for the panel-and-hinge model** (`thm:panel-generic-rank`;
-Jackson–Jordán 2010 §7). For a simple spanning graph `G` on one body or more, with more than
-`D(|α| − 1)` edge labels (`hcard`, the binder of KT Theorem 5.6), every panel-hinge framework `Q`
-on `G` with generic normals attains the deficiency-graded rank:
+Jackson–Jordán 2010 §7). For a simple spanning graph `G` on one body or more, every panel-hinge
+framework `Q` on `G` with generic normals attains the deficiency-graded rank:
 
 `finrank (span Q.toBodyHinge.rigidityRows) = D(|V(G)|-1) - def(G̃)`.
 
@@ -457,7 +456,7 @@ The two bounds pinch the row count to the exact value — the same `le_antisymm`
 `Theorem56.lean`'s `exists_rankHypothesis_isGeneralPosition4_of_two_le`, run here against a *given*
 framework with generic normals rather than a constructed simultaneous non-root. -/
 theorem finrank_span_rigidityRows_of_isGenericNormals [Infinite K] [Finite α] [Finite β] {n : ℕ}
-    (hd : 2 ≤ n) (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
+    (hd : 2 ≤ n)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
     (Q : PanelHingeFramework K (n - 1) α β) (hQ : Q.graph = G) (hq : Q.IsGenericNormals) :
     (Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
@@ -469,7 +468,7 @@ theorem finrank_span_rigidityRows_of_isGenericNormals [Infinite K] [Finite α] [
   have hloop : G.Loopless := hSimple.toLoopless
   -- The witness: KT Theorem 5.6, at the target rank, with nonparallel panels.
   obtain ⟨Q0, hQ0g, hQ0np, hQ0rank⟩ :=
-    rankHypothesis_of_theorem_55_gen_of_card_lt (K := K) hd hcard G hne hspan hSimple
+    rankHypothesis_of_theorem_55_gen (K := K) hd G hne hspan hSimple
   -- Its hinges at the edges of `G` are nondegenerate (general position, distinct ends).
   have hQ0C : ∀ e ∈ E(Q0.graph), Q0.toBodyHinge.supportExtensor e ≠ 0 := by
     intro e he
@@ -536,7 +535,7 @@ the assumed rigidity at one framework with generic normals (`exists_isGenericNor
 `def = 0`; backward, the rank formula at `def = 0` gives the exact row count at *every* framework
 on `G` with generic normals, hence rigidity there. -/
 theorem isInfinitesimallyRigidOn_of_isGenericNormals_iff [Infinite K] [Finite α] [Finite β]
-    {n : ℕ} (hd : 2 ≤ n) (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
+    {n : ℕ} (hd : 2 ≤ n)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     (∀ Q : PanelHingeFramework K (n - 1) α β, Q.graph = G → Q.IsGenericNormals →
         Q.toBodyHinge.IsInfinitesimallyRigidOn V(G))
@@ -546,7 +545,7 @@ theorem isInfinitesimallyRigidOn_of_isGenericNormals_iff [Infinite K] [Finite α
   constructor
   · intro hrigid
     obtain ⟨Q, hQ, hq⟩ := exists_isGenericNormals (K := K) (k := n - 1) G
-    have hrank := finrank_span_rigidityRows_of_isGenericNormals hd hcard G hne hspan hSimple Q hQ hq
+    have hrank := finrank_span_rigidityRows_of_isGenericNormals hd G hne hspan hSimple Q hQ hq
     have hB1 := Q.toBodyHinge.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
       (by rw [toBodyHinge_graph, hQ]; exact hne)
     simp only [toBodyHinge_graph, hQ] at hB1
@@ -554,7 +553,7 @@ theorem isInfinitesimallyRigidOn_of_isGenericNormals_iff [Infinite K] [Finite α
     zify [h1V] at hcount
     linarith [hrank, hcount]
   · intro hdef Q hQ hq
-    have hrank := finrank_span_rigidityRows_of_isGenericNormals hd hcard G hne hspan hSimple Q hQ hq
+    have hrank := finrank_span_rigidityRows_of_isGenericNormals hd G hne hspan hSimple Q hQ hq
     rw [hdef, sub_zero] at hrank
     have hB1 := Q.toBodyHinge.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
       (by rw [toBodyHinge_graph, hQ]; exact hne)

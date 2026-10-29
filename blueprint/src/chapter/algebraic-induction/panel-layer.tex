@@ -1114,7 +1114,8 @@ the base cases above, and Cases~I, II and~III, which
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
   \label{thm:theorem-55}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen_of_supply}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization,
         lem:nonparallel-of-generic, thm:minimal-kdof-reduction-all-k,
@@ -1195,17 +1196,18 @@ the base cases above, and Cases~I, II and~III, which
 
 \begin{fmlnote}
   The induction gives each edge it adds a label that the graph does not
-  use, so its formal statement assumes that every minimal
-  $k'$-dof-graph, for every $k'$, has an edge label outside its edge set
-  (\cref{rem:fresh-edge-supply}). The pinned theorem assumes nothing of
-  the labels. It relabels the edges of $G$ into a set with enough labels
-  that every minimal $k'$-dof-graph leaves one unused. The relabelled
-  graph is a minimal $k$-dof-graph with the bodies and the deficiency of
-  $G$, simple if $G$ is (\cref{lem:embed-edges-minimal},
-  \cref{lem:embed-edges-simple-deficiency}). The pinned theorem applies
-  the induction to it, and reads its realizations on the labels of $G$:
-  they are realizations of $G$ with the same normals, rows and motions
-  (\cref{lem:embed-edges-framework}).
+  use, so its formal statement, the second pinned theorem, assumes that
+  every minimal $k'$-dof-graph, for every $k'$, has an edge label
+  outside its edge set (\cref{rem:fresh-edge-supply}). The first pinned
+  theorem assumes nothing of the labels. It relabels the edges of $G$
+  into a set with enough labels that every minimal $k'$-dof-graph leaves
+  one unused. The relabelled graph is a minimal $k$-dof-graph with the
+  bodies and the deficiency of $G$, simple if $G$ is
+  (\cref{lem:embed-edges-minimal},
+  \cref{lem:embed-edges-simple-deficiency}). The first pinned theorem
+  applies the second to it, and reads its realizations on the labels of
+  $G$: they are realizations of $G$ with the same normals, rows and
+  motions (\cref{lem:embed-edges-framework}).
 \end{fmlnote}
 
 \begin{remark}[The fresh-edge-label convention]
@@ -1228,23 +1230,31 @@ the base cases above, and Cases~I, II and~III, which
   can use every label.
 
   Some pinned theorems assume one of three forms of this condition, and
-  the statements of this chapter omit it. The bound $D(|W| - 1) < |L|$ is
-  assumed by \cref{thm:theorem-55-d3-instance},
-  \cref{thm:theorem-55-6-d3}, \cref{thm:molecular-conjecture},
-  \cref{cor:theorem-55-6-multigraph-d3} and
-  \cref{thm:molecular-conjecture-multigraph}. The supply itself, a
-  label outside $E(H)$ for every minimal $k'$-dof-graph $H$ and every
-  $k'$, is assumed by the second theorem pinned on
-  \cref{thm:theorem-55-6-rows}. A label outside $E(G)$ for the graph $G$
-  of the lemma alone is assumed by \cref{lem:case-II-realization} and
-  \cref{lem:case-III}. The pinned theorems of \cref{thm:theorem-55},
-  \cref{thm:theorem-55-6-genuine}, \cref{thm:theorem-55-6},
-  \cref{thm:theorem-55-6-multigraph} and the first theorem pinned on
-  \cref{thm:theorem-55-6-rows} assume nothing of the labels: they
-  relabel the edges into a larger set of labels
-  (\cref{lem:embed-edges-minimal}, \cref{lem:embed-edges-framework}).
-  \Cref{rem:molecular-conjecture-nonvacuous} gives an instance that meets
-  the bound.
+  the statements of this chapter omit it. The supply itself, a label
+  outside $E(H)$ for every minimal $k'$-dof-graph $H$ and every $k'$, is
+  assumed by the second theorems pinned on \cref{thm:theorem-55},
+  \cref{thm:theorem-55-6-genuine} and
+  \cref{thm:theorem-55-6-multigraph}, the second and third pinned on
+  \cref{thm:theorem-55-6-rows}, the principle of
+  \cref{thm:minimal-kdof-reduction}, and \cref{lem:pencil-jj-chart}.
+  The bound $D(|W| - 1) < |L|$ is assumed by the second theorem pinned on
+  \cref{thm:theorem-55-6} and the fourth pinned on
+  \cref{thm:theorem-55-6-multigraph}. A label outside $E(G)$ for the
+  graph $G$ of the lemma alone is assumed by
+  \cref{lem:case-II-realization} and \cref{lem:case-III}.
+
+  The first theorems pinned on \cref{thm:theorem-55},
+  \cref{thm:theorem-55-6-genuine}, \cref{thm:theorem-55-6-rows},
+  \cref{thm:theorem-55-6} and \cref{thm:theorem-55-6-multigraph}, and
+  the third pinned on \cref{thm:theorem-55-6-multigraph}, assume nothing
+  of the labels, and so do the results that apply them. Each of the six
+  relabels the edges of $G$ into a larger set of labels that has
+  a supply (\cref{def:pencil-embed-edges},
+  \cref{lem:embed-edges-minimal}), applies the form that assumes one,
+  and reads the realization on the labels of $G$
+  (\cref{lem:embed-edges-framework}).
+  \Cref{rem:molecular-conjecture-nonvacuous} gives an instance with no
+  label at all.
 \end{remark}
 
 \begin{definition}[Relabelling the edges]
@@ -1361,12 +1371,6 @@ We record the case of the molecular conjecture, $d = 3$ and $k = 0$.
   This is \cref{thm:theorem-55} at $d = 3$ and $k = 0$.
 \end{proof}
 
-\begin{fmlnote}
-  The pinned theorem assumes $6(|W| - 1) < |L|$
-  (\cref{rem:fresh-edge-supply}), which the pinned theorem of
-  \cref{thm:theorem-55} does not.
-\end{fmlnote}
-
 At deficiency zero the realization is infinitesimally rigid. We record
 this in the form $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$, as in
 the proof of \cref{prop:rank-formula-of-motion-bound}.
@@ -1376,9 +1380,8 @@ the proof of \cref{prop:rank-formula-of-motion-bound}.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3}
   \leanok
   \uses{thm:theorem-55-d3-instance, def:rank-hypothesis}
-  Let $d = 3$, so that $D = 6$, let the field be infinite with
-  more than $6(|V| - 1)$ edge labels available, and let $G = (V, E)$ be a simple
-  minimal $0$-dof-graph with $|V| \ge 2$ that spans the set of bodies.
+  Let $d = 3$, so that $D = 6$, let $K$ be an infinite field, and let
+  $G = (V, E)$ be a simple minimal $0$-dof-graph with $|V| \ge 2$ that spans the set of bodies.
   Then $G$ has a panel-hinge realization $(G,p)$ with nonparallel panels
   (\cref{def:panel-nonparallel}), a nondegenerate hinge at every edge of
   $G$, and
@@ -1402,8 +1405,8 @@ the proof of \cref{prop:rank-formula-of-motion-bound}.
   \label{fmlnote:endpoint-selector-totality}
   The pinned theorem assumes that $G$ spans the set of bodies, and it
   takes the realization from \cref{thm:theorem-55-d3-instance}, whose
-  nonparallel conjunct needs $G$ simple and whose rank needs two bodies and
-  the supply of labels. It derives the formula from the pinned theorem of
+  nonparallel conjunct needs $G$ simple and whose rank needs two
+  bodies. It derives the formula from the pinned theorem of
   \cref{prop:rank-formula-of-motion-bound}, which asks for a nonzero hinge at
   every link of the realization. The realization has one: its selector
   assigns each edge its two ends
@@ -1445,7 +1448,8 @@ nonparallel panels for every simple graph with at least one vertex
 
 \begin{theorem}[KT Theorem 5.6 with nondegenerate hinges]
   \label{thm:theorem-55-6-genuine}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen_of_supply}
   \leanok
   \uses{lem:general-position-support-nonzero, def:rank-hypothesis,
         def:panel-nonparallel}
@@ -1498,14 +1502,17 @@ nonparallel panels for every simple graph with at least one vertex
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem assumes that $G$ spans the set $W$ of bodies, states
-  the target rank as $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
-  (\cref{rem:rank-hypothesis-relative}). It assumes nothing of the edge
-  labels: it relabels the edges, as the pinned theorem of
-  \cref{thm:theorem-55} does (\cref{rem:fresh-edge-supply}). The
-  selector of the framework that it constructs assigns each edge of $G$ its two ends, as every
-  panel-hinge framework's does (\cref{fmlnote:panel-hinge-nondegenerate}).
-  It asks for a nonzero hinge at every edge label, not only at the edges
+  Both pinned theorems assume that $G$ spans the set $W$ of bodies, and
+  state the target rank as
+  $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
+  (\cref{rem:rank-hypothesis-relative}). The first assumes nothing of
+  the edge labels: it relabels the edges, as the first pinned theorem of
+  \cref{thm:theorem-55} does, and applies the second, which assumes the
+  supply of fresh labels (\cref{rem:fresh-edge-supply}). The selector of
+  the framework that they construct assigns each edge of $G$ its two
+  ends, as every panel-hinge framework's does
+  (\cref{fmlnote:panel-hinge-nondegenerate}). They ask for a nonzero
+  hinge at every edge label, not only at the edges
   of $G$ (\cref{rem:molecular-conjecture-essential}). A label outside
   $E(G)$ gets the hinge of two distinct bodies, which is why it assumes
   $|V| \ge 2$.
@@ -1516,7 +1523,8 @@ graph with at least one vertex.
 
 \begin{theorem}[Realization of a simple graph at the target rank; KT Theorem 5.6]
   \label{thm:theorem-55-6}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen_of_card_lt}
   \leanok
   \uses{def:rank-hypothesis, def:panel-nonparallel}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be a
@@ -1545,21 +1553,22 @@ graph with at least one vertex.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem assumes that $G$ spans the set $W$ of bodies, and it
-  states the target rank as
+  Both pinned theorems assume that $G$ spans the set $W$ of bodies, and
+  they state the target rank as
   $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
-  (\cref{rem:rank-hypothesis-relative}). Its selector assigns each edge of
-  $G$ its two ends, as every panel-hinge framework's does
+  (\cref{rem:rank-hypothesis-relative}). Their selector assigns each edge
+  of $G$ its two ends, as every panel-hinge framework's does
   (\cref{fmlnote:panel-hinge-nondegenerate}). For $|V| \ge 2$, its
   framework is that of the pinned theorem of
   \cref{thm:theorem-55-6-genuine}. It does not state that the hinges are
   nondegenerate. At the edges of $G$ this follows from the nonparallel
   panels and the selector, as in the proof, and it states nothing of the
-  hinge at a label outside $E(G)$. It assumes nothing of the edge labels:
-  it relabels the edges into a set of more than $D(|W| - 1)$ labels
-  (\cref{rem:fresh-edge-supply}), where the theorem holds by the
-  argument above, and reads the realization on the labels of $G$
-  (\cref{lem:embed-edges-framework}).
+  hinge at a label outside $E(G)$. The second pinned theorem assumes
+  $D(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}) and proves the
+  theorem by the argument above. The first assumes nothing of the edge
+  labels: it relabels the edges into a set of more than $D(|W| - 1)$
+  labels, applies the second there, and reads the realization on the
+  labels of $G$ (\cref{lem:embed-edges-framework}).
 \end{fmlnote}
 
 We record the case $d = 3$.
@@ -1585,8 +1594,8 @@ We record the case $d = 3$.
   As for \cref{thm:theorem-55-6}, the pinned theorem assumes that $G$ spans
   the set of bodies, and its selector assigns each edge of $G$ its two
   ends. Its panels are nonparallel, so every hinge at an edge of $G$ is
-  nondegenerate, as for \cref{thm:theorem-55-6}. It assumes
-  $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}).
+  nondegenerate, as for \cref{thm:theorem-55-6}. It assumes nothing of
+  the edge labels.
 \end{fmlnote}
 
 The realization in the proof of \cref{thm:theorem-55-6-genuine} is a
@@ -1603,6 +1612,7 @@ than motions.
 \begin{theorem}[Generic full-rank realizations of simple graphs; KT Theorem 5.6]
   \label{thm:theorem-55-6-rows}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen_of_supply,
         CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen}
   \leanok
   \uses{thm:theorem-55-6-genuine, def:rank-hypothesis, def:panel-general-position,
@@ -1645,16 +1655,17 @@ than motions.
 
 \begin{fmlnote}
   The pinned theorems do not assume that $G$ has every body as a vertex.
-  The first states its conclusion as a panel-hinge framework on $G$ with
-  normals in general position, a nonzero hinge at every edge label
+  The first two state their conclusion as a panel-hinge framework on $G$
+  with normals in general position, a nonzero hinge at every edge label
   (\cref{rem:molecular-conjecture-essential}), and the target rank. Its
   selector assigns each edge of $G$ its two ends, as every panel-hinge
   framework's does (\cref{fmlnote:panel-hinge-nondegenerate}). The
-  second restates it as a generic full-rank realization
-  (\cref{fmlnote:generic-full-rank}). The first assumes nothing of the
-  edge labels: it relabels the edges, as the pinned theorem of
-  \cref{thm:theorem-55} does. The second assumes the supply of fresh
-  labels (\cref{rem:fresh-edge-supply}).
+  third restates the second as a generic full-rank realization
+  (\cref{fmlnote:generic-full-rank}). The second and third assume the
+  supply of fresh labels (\cref{rem:fresh-edge-supply}). The first
+  assumes nothing of the edge labels: it relabels the edges, as the
+  first pinned theorem of \cref{thm:theorem-55} does, and applies the
+  second.
 \end{fmlnote}
 
 We now prove the molecular conjecture of Tay and
@@ -1728,8 +1739,9 @@ $G$ is simple (\cref{lem:general-position-support-nonzero}).
   in them (KT Lemma~5.3, p.~669). The multigraph form holds for hinges that
   need only lie in the panels (\cref{thm:molecular-conjecture-multigraph}).
 
-  The pinned theorem assumes that $G$ spans the set $W$ of bodies and that
-  $D(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). On its panel side
+  The pinned theorem assumes that $G$ spans the set $W$ of bodies, and
+  nothing of the edge labels (\cref{rem:fresh-edge-supply}). On its panel
+  side
   the endpoint selector assigns each edge of $G$ its two ends, as every
   panel-hinge framework's does (\cref{fmlnote:panel-hinge-nondegenerate}).
   Both of its sides ask for a nonzero hinge at each edge of $G$ and at no
@@ -1768,9 +1780,10 @@ their result in this form~\cite[p.~647]{katohTanigawa2011}.
 \begin{remark}[An instance of the hypotheses]
   \label{rem:molecular-conjecture-nonvacuous}
   The hypotheses of the pinned theorem of \cref{thm:molecular-conjecture}
-  can all be met. Take $K = \R$, $d = 2$, one body and one label, and let
-  $G$ have the one body as its vertex and no edge. Then $G$ is simple and
-  spans the bodies, and $D(|W| - 1) = 0 < 1 = |L|$
+  can all be met. Take $K = \R$, $d = 2$, one body and no edge label, and
+  let $G$ have the one body as its vertex and no edge. Then $G$ is simple
+  and spans the bodies. As the set of labels is empty, the instance also
+  shows that the theorem assumes nothing of the labels
   (\cref{rem:fresh-edge-supply}). The formalization applies the theorem to
   this instance
   (\texttt{molecular\_\allowbreak{}conjecture\_\allowbreak{}witness}):
@@ -1946,7 +1959,9 @@ We first prove KT Theorem~5.6.
 \begin{theorem}[Realization of a multigraph at the target rank; KT Theorem 5.6]
   \label{thm:theorem-55-6-multigraph}
   \lean{CombinatorialRigidity.Molecular.theorem_55_6_multigraph,
-        CombinatorialRigidity.Molecular.theorem_55_6_multigraph_gen}
+        CombinatorialRigidity.Molecular.theorem_55_6_multigraph_of_supply,
+        CombinatorialRigidity.Molecular.theorem_55_6_multigraph_gen,
+        CombinatorialRigidity.Molecular.theorem_55_6_multigraph_gen_of_card_lt}
   \leanok
   \uses{def:coplanar-panel-realization, thm:theorem-55,
         lem:subgraph-minimality, lem:motions-mono-of-graph-le,
@@ -2017,12 +2032,15 @@ We first prove KT Theorem~5.6.
 \end{proof}
 
 \begin{fmlnote}
-  Both pinned theorems assume that $G$ spans the set $W$ of bodies, and
+  The pinned theorems assume that $G$ spans the set $W$ of bodies, and
   they state the target rank as
   $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$
-  (\cref{rem:rank-hypothesis-relative}). Neither assumes anything of the
-  edge labels: each relabels the edges, as the pinned theorem of
-  \cref{thm:theorem-55} does (\cref{rem:fresh-edge-supply}).
+  (\cref{rem:rank-hypothesis-relative}). The first and the third, at
+  grade $k$ and at dimension $d$, assume nothing of the edge labels:
+  each relabels the edges, as the first pinned theorem of
+  \cref{thm:theorem-55} does, and applies the theorem pinned after it.
+  The second assumes the supply of fresh labels, and the fourth
+  $D(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}).
 \end{fmlnote}
 
 We record the case $d = 3$.
@@ -2045,8 +2063,8 @@ We record the case $d = 3$.
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem assumes that $G$ spans the set $W$ of bodies and
-  that $6(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}).
+  The pinned theorem assumes that $G$ spans the set $W$ of bodies, and
+  nothing of the edge labels.
 \end{fmlnote}
 
 Katoh and Tanigawa prove the molecular conjecture of Tay and
@@ -2093,8 +2111,8 @@ p.~648). In the present form it follows from
 \end{proof}
 
 \begin{fmlnote}
-  The pinned theorem assumes that $G$ spans the set $W$ of bodies and
-  that $D(|W| - 1) < |L|$ (\cref{rem:fresh-edge-supply}). Its
+  The pinned theorem assumes that $G$ spans the set $W$ of bodies, and
+  nothing of the edge labels (\cref{rem:fresh-edge-supply}). Its
   body-hinge side asks for a nonzero hinge only at the edges of $G$, as
   \cref{thm:molecular-conjecture} does; its panel side asks for one at
   every edge label, as \cref{def:coplanar-panel-realization} does

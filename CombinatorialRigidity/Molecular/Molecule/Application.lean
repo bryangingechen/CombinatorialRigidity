@@ -76,7 +76,7 @@ theorem molecule_rank_lower_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
   classical
   -- Step 1: the molecular realization of `thm:panel-hinge-iff-molecular` on `G.shadowGraph`.
   obtain ⟨ends, c, hrank, hgp, hends⟩ :=
-    exists_molecular_rankHypothesis_generalPosition (card_shadowLabel_lt V) G.shadowGraph
+    exists_molecular_rankHypothesis_generalPosition G.shadowGraph
       (by rw [shadowGraph_vertexSet]; exact Set.univ_nonempty)
       (shadowGraph_vertexSet G) (shadowGraph_simple G)
   -- Step 2: the square-graph dictionary gives the motion-space dimension as `dim ker R(G², c)`.

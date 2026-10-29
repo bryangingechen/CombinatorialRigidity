@@ -1042,10 +1042,11 @@ field (JJ Thm 6.1 / Cor 6.3 in every-generic form,
 As first stated, P's and BH's theorems said nothing about a graph that is
 itself a minimal `k`-dof-graph (`F-207`). Phase 41b restated both over
 `G`, on ≥ 1 body, with the formal KT Theorem 5.6's bound on the edge
-labels instead, so they cover every simple graph, given enough labels,
-the simple minimal ones included, and made P's rank formula a main
-result. Phase 41c then extended BH's theorems to every multigraph, parallel edges
-and loops allowed (`F-222`; P's stay for simple graphs).
+labels instead, so they cover every simple graph, the simple minimal
+ones included, and made P's rank formula a main result. Phase 41c then
+extended BH's theorems to every multigraph, parallel edges and loops
+allowed (`F-222`; P's stay for simple graphs), and Phase 41d dropped the
+bound on the labels.
 Headline axioms verified at close. This closed the PROSPECT queue.
 
 ### Phase 35 — Multigraph molecular conjecture in the hinge-coplanar model (COPLANAR, post-program)
@@ -1281,9 +1282,9 @@ where the supply holds, and pulls the framework back; rows, motions, normals and
 unchanged, minimality transports through deficiencies, and the induction keeps the supply inside,
 untouched. Its recon proved the route in a Lean witness. A last item recons dropping the supply
 from KT Theorem 4.9's reduction principle, which the transport cannot reach, and returns to the PI.
-UNSTATED follows, expected as 41e. **Next**: 41d's item B3, the cascade and the texts (B1 and B2
-landed: the relabelling, minimality through deficiencies, and KT Theorems 5.5 and 5.6 without the
-bound, `notes/Phase41d.md`). Detail →
+UNSTATED follows, expected as 41e. **Next**: 41d's item R, that recon (B1–B3 landed: the
+relabelling, minimality through deficiencies, KT Theorems 5.5 and 5.6 without the bound, and the
+cascade, so none of the six main results bounds the labels, `notes/Phase41d.md`). Detail →
 `notes/Phase41a.md`, `notes/Phase41b.md`, `notes/Phase41c.md`, `notes/Phase41d.md` +
 `notes/Phase41-design.md`.
 

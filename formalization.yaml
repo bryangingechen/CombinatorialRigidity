@@ -498,15 +498,15 @@ status:
       Generic body-and-hinge rigidity from spanning trees (Tay 1989, Whiteley 1988;
       Jackson-Jordán 2010 Thm 6.1 / Cor 6.3, with the existential quantifier upgraded to
       every generic realization; phase 34, restated in phases 41b and 41c): for a spanning multigraph
-      G (parallel edges and loops allowed) on >= 1 body with more than D(|V|-1) edge labels (the bound the Theorem 5.6 row's
-      declaration takes), at any dimension n >= 2 and over any infinite field, the
+      G (parallel edges and loops allowed) on >= 1 body, with nothing assumed of the edge labels
+      (since phase 41d), at any dimension n >= 2 and over any infinite field, the
       affine-hinge framework at every hinge-point assignment generic for row independence is
       infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees. The
       assignment is generic when every set of rigidity rows at the edges of G that is
       linearly independent at some hinge-point assignment is independent at it; the
       assignments that are not generic lie in the zero set of one nonzero polynomial. The
-      single edge, every tree, the double edge and every minimal 0-dof-graph are covered,
-      given enough labels. The lower bound of the rank formula comes from the multigraph
+      single edge, every tree, the double edge and every minimal 0-dof-graph are covered. The
+      lower bound of the rank formula comes from the multigraph
       Theorem 5.6 (hinges in panels, each hinge decomposed into spanning points), and a
       loop's hinge, which constrains no motion, is left unconstrained by genericity.
       Its rank formula
@@ -524,13 +524,13 @@ status:
       The rank formula at generic panel normals (phase 34, restated in phase 41b):
       Katoh-Tanigawa 2011 Theorem 5.6 for simple graphs, at every panel-hinge realization with
       generic normals (Jackson-Jordán 2010 section 7). For a simple spanning graph G on >= 1
-      body with more than D(|V|-1) edge labels (the bound the Theorem 5.6 row's declaration
-      takes), at any dimension n >= 2 and over any infinite field, every panel-hinge framework
+      body, with nothing assumed of the edge labels (since phase 41d), at any dimension n >= 2
+      and over any infinite field, every panel-hinge framework
       on G whose normals are generic attains the deficiency rank,
       rank R(G,p) = D(|V|-1) - def(G~). The normals are generic when every set of rigidity rows
       at the edges of G that is linearly independent at some choice of normals is independent
       at the framework's own; the choices that are not generic lie in the zero set of one
-      nonzero polynomial. The single edge and every tree are covered, given enough labels. Its
+      nonzero polynomial. The single edge and every tree are covered. Its
       corollary
       CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff
       is Jackson-Jordán 2010 Thm 7.2 sharpened to an iff: every such framework is
@@ -663,8 +663,8 @@ fidelity:
     declarations they cite, and a cleanup now under way acts on them. Among the main results,
     Katoh-Tanigawa Theorem 5.6 and the molecular conjecture for simple graphs, as stated,
     cover less than their sources' statements do; their rows in status.main_results say what
-    each covers. The generic body-hinge theorem covers every multigraph, but asks for a bound
-    on the number of edge labels.
+    each covers. The generic body-hinge theorem covers every multigraph, and no main result
+    assumes anything of the edge labels.
 
 # review status
 review:
@@ -827,10 +827,8 @@ alignment:
         Over any infinite field, with the existential quantifier upgraded to every generic
         hinge-point realization. Both theorems hold at every hinge-point
         assignment generic for the rows at the edges of a spanning multigraph G (parallel
-        edges and loops allowed; one body or more), under the bound that the formal
-        Katoh-Tanigawa Theorem 5.6 takes on the number of edge labels (more than D(|V| - 1));
-        a single edge, a tree, the double edge or a minimal 0-dof-graph is covered once there
-        are enough labels. Phase 41b made them hold at every generic realization of a simple
+        edges and loops allowed; one body or more), whatever the edge labels; a single edge, a
+        tree, the double edge or a minimal 0-dof-graph is covered. Phase 41b made them hold at every generic realization of a simple
         graph, and phase 41c of every multigraph. In phase 41c the rank formula is also stated
         as Katoh-Tanigawa's Proposition 2.3 (p. 655, which they credit to Jackson-Jordán), the
         equivalence of rank R = D(|V|-1) - c, def(G~) = c and rank M(G~) = D(|V|-1) - c for
@@ -846,9 +844,8 @@ alignment:
         Sharpened to an iff against def(G~) = 0; their sufficient tree-packing condition
         implies it. Since phase 41b both theorems hold at every panel-hinge framework on a
         simple spanning G (one body or more) whose normals are generic, read at the edges of
-        G only, under the bound that the formal Katoh-Tanigawa Theorem 5.6 takes on the number
-        of edge labels (more than D(|V| - 1)); a single edge or a tree is covered once there
-        are enough labels.
+        G only, whatever the edge labels; a single edge or a tree is covered. Phase 41d
+        dropped the bound on the number of edge labels that both theorems took until then.
 
     - source: "Jackson-Jordán 2010 p. 586 (every generic realization of G^2 rigid under six spanning trees in 5G; conditional there on the molecular conjecture)"
       lean: "SimpleGraph.molecule_generic_rank, SimpleGraph.molecule_generic_rigid, SimpleGraph.molecule_generic_square_packing"

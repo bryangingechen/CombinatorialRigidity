@@ -13,11 +13,10 @@ public import CombinatorialRigidity.Molecular.Molecule.Theorem56
 
 The molecular realization of `thm:panel-hinge-iff-molecular`, as
 `sec:molecule-modelling-general-position` presents it: a simple graph `G` that spans a nonempty set
-of bodies in `ℝ³`, with more than `6(|V| - 1)` labels, has a molecular realization whose motion
-space has dimension `D + def(G̃)` and whose centres are in general position up to order four. Katoh
-and Tanigawa deduce from their Theorem 5.6, by projective duality, that a simple graph has a
-molecular realization at this rank (KT p. 671); infinitesimal rigidity is invariant under a polarity
-(Crapo and Whiteley 1982, §3.6).
+of bodies in `ℝ³` has a molecular realization whose motion space has dimension `D + def(G̃)` and
+whose centres are in general position up to order four. Katoh and Tanigawa deduce from their
+Theorem 5.6, by projective duality, that a simple graph has a molecular realization at this rank
+(KT p. 671); infinitesimal rigidity is invariant under a polarity (Crapo and Whiteley 1982, §3.6).
 
 The centres are the poles of the normals of the panel-hinge realization `Q` of
 `lem:theorem-56-general-position` (`PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4`),
@@ -38,9 +37,9 @@ divided by its last. Then
 ## Main results
 
 * `CombinatorialRigidity.Molecular.exists_molecular_rankHypothesis_generalPosition`: a simple graph
-  that spans a nonempty set of bodies in `ℝ³`, with more than `6(|V| - 1)` labels, has a molecular
-  realization on centres in general position up to order four with `dim Z = D + def(G̃)`, whose
-  endpoint selector records every `G`-link.
+  that spans a nonempty set of bodies in `ℝ³` has a molecular realization on centres in general
+  position up to order four with `dim Z = D + def(G̃)`, whose endpoint selector records every
+  `G`-link.
 -/
 
 @[expose] public section
@@ -53,9 +52,8 @@ namespace CombinatorialRigidity.Molecular
 variable {α β : Type*}
 
 /-- **Molecular realizations at the target rank** (`thm:panel-hinge-iff-molecular`; Katoh and
-Tanigawa 2011, p. 671): for a simple graph `G` that spans a nonempty set of bodies in `ℝ³`, with
-more than `6(|V| - 1)` labels, there is an endpoint selector `ends` and a placement `c : α → ℝ³` of
-the atom centres such that
+Tanigawa 2011, p. 671): for a simple graph `G` that spans a nonempty set of bodies in `ℝ³`, there is
+an endpoint selector `ends` and a placement `c : α → ℝ³` of the atom centres such that
 
 * the **molecular** framework on `c` realizes the target rank `dim Z = D + def(G̃)`
   (`RankHypothesis (G.deficiency 3)`);
@@ -78,7 +76,6 @@ polarity (`rankHypothesis_ofNormals_homogenize_iff`) transfers the rank to the m
 and order-four linear independence of the normals is order-four affine independence of the poles
 (`affineIndependent_iff_linearIndependent_homogenize`). -/
 theorem exists_molecular_rankHypothesis_generalPosition [Finite α] [Finite β]
-    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ (ends : β → α × α) (c : α → EuclideanSpace ℝ (Fin 3)),
       (molecularOfCentres G ends c).RankHypothesis (G.deficiency 3)
@@ -87,7 +84,7 @@ theorem exists_molecular_rankHypothesis_generalPosition [Finite α] [Finite β]
   classical
   -- Step 1: the general-position form of Theorem 5.6 supplies a panel realization `Q`.
   obtain ⟨Q, hQg, _hQC, hQrank, hQgp4, -⟩ :=
-    PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4 hcard G hne hspan hSimple
+    PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4 G hne hspan hSimple
   have hQends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 :=
     hQg ▸ PanelHingeFramework.recordsLinks_iff_forall_isLink.mp Q.isLink_ends
   -- The last coordinates of `Q`'s normals are nonzero (general position up to order four).

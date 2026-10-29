@@ -142,10 +142,10 @@ body-hinge theorem holds at every generic choice of hinge positions,
 with the non-generic parameter choices confined to the zero set of a
 single nonzero polynomial in each case. Since phase 41b, the generic
 body-hinge theorem and its panel-hinge companion hold for every simple
-graph on one body or more, given more edge labels than `D(|V|−1)`,
-where `D = d(d+1)/2`, the simple minimal `k`-dof-graphs included (a
-single edge, a tree, a triangle): on such a graph each panel-hinge
-framework whose panel normals are generic attains the deficiency rank. Since phase 41c
+graph on one body or more, the simple minimal `k`-dof-graphs included
+(a single edge, a tree, a triangle): on such a graph each panel-hinge
+framework whose panel normals are generic attains the deficiency rank.
+Since phase 41d they assume nothing of the edge labels. Since phase 41c
 the body-hinge theorem holds for every multigraph, parallel edges and
 loops allowed (the panel-hinge companion stays for simple graphs).
 Phase 35 (closed 2026-07-18)
