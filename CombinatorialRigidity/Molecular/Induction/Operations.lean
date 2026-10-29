@@ -154,8 +154,9 @@ theorem circuit_ncard_gt [DecidableEq β] [Finite α] [Finite β] {G : Graph α 
 
 /-- **The count of KT Lemma 3.4** (`lem:circuit-induces-rigid`; KT p. 658): for a circuit `X` of
 `M(G̃)` and `e ∈ X`, `|X − e| + D = D·|V(X)|`, that is, `|X − e| = D(|V(X)| − 1)`. By KT, `X − e`
-is then the union of `D` edge-disjoint spanning trees on `V(X)`, which is not formalized;
-`circuit_induces_isRigidSubgraph` gives the rigidity of `G[V(X)]`.
+is then the union of `D` edge-disjoint spanning trees on `V(X)`
+(`circuit_diff_isSpanningTreePacking`); `circuit_induces_isRigidSubgraph` gives the rigidity of
+`G[V(X)]`.
 
 The upper bound: `G̃ ↾ (X − e)` is `(D,D)`-sparse (`isSparse_diff_singleton_of_isCircuit`). If
 `X − e` is not empty, sparsity applied to `X − e` itself gives
@@ -196,6 +197,79 @@ theorem circuit_induces_isTight [DecidableEq β] [Finite α] [Finite β] {G : Gr
           ≤ bodyBarDim n * ((G.mulTilde n).spanningVerts (X \ {e})).ncard := hsp
         _ ≤ bodyBarDim n * (G.fiberSpan n X).ncard := by gcongr
   omega
+
+/-- **The tree partition of KT Lemma 3.4** (`lem:circuit-induces-rigid`; KT p. 658): for a circuit
+`X` of `M(G̃)` and `e ∈ X`, the graph `(G̃ ↾ (X − e))[V(X)]`, whose edges are the edges of `X − e`
+and whose vertices are `V(X)`, is a union of `D` edge-disjoint spanning trees
+(`IsSpanningTreePacking`), `D = bodyBarDim n`.
+
+It is `(D,D)`-sparse (`isSparse_diff_singleton_of_isCircuit`, as the induced subgraph keeps the
+edges of `X − e` and the vertices they span), and `(D,D)`-tight by `circuit_induces_isTight`
+(`E = X − e`, `V = V(X)`). A circuit is nonempty, and an element of `X` has a copy index in
+`Fin (D-1)`, so `D ≥ 2`; tightness then makes the graph connected (`IsTight.connected`), and
+`isSpanningTreePacking_of_isTight` gives the packing. -/
+theorem circuit_diff_isSpanningTreePacking [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} {X : Set (β × Fin (bodyHingeMult n))} (hX : (G.matroidMG n).IsCircuit X)
+    {e : β × Fin (bodyHingeMult n)} (he : e ∈ X) :
+    (((G.mulTilde n) ↾ (X \ {e})).induce (G.fiberSpan n X)).IsSpanningTreePacking
+      (bodyBarDim n) := by
+  set R := (G.mulTilde n) ↾ (X \ {e}) with hR
+  set H := R.induce (G.fiberSpan n X) with hH
+  have hXground : X ⊆ E(G.mulTilde n) := hX.subset_ground
+  have hD : 1 ≤ bodyBarDim n := by
+    have := e.2.pos
+    unfold bodyHingeMult at this
+    omega
+  -- The edges of `H` are those of `X − e`.
+  have hE : E(H) = X \ {e} := by
+    ext p
+    simp only [hH, hR, edgeSet_induce, Set.mem_ofPred_eq, restrict_isLink]
+    constructor
+    · rintro ⟨x, y, ⟨hp, _⟩, -, -⟩
+      exact hp
+    · intro hp
+      obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet (hXground hp.1)
+      exact ⟨x, y, ⟨hp, hl⟩, ⟨p, hp.1, hl.inc_left⟩, ⟨p, hp.1, hl.inc_right⟩⟩
+  have hV : V(H) = G.fiberSpan n X := by rw [hH, vertexSet_induce]
+  -- Spanned vertices agree for the edge sets of `H`.
+  have hspan : ∀ E' ⊆ E(H), H.spanningVerts E' = R.spanningVerts E' := by
+    intro E' hE'
+    ext x
+    simp only [mem_spanningVerts]
+    constructor
+    · rintro ⟨p, hp, hinc⟩
+      refine ⟨p, hp, ?_⟩
+      obtain ⟨y, hy⟩ := hinc
+      exact ⟨y, by simpa [hH] using hy |>.1⟩
+    · rintro ⟨p, hp, y, hy⟩
+      have hpH := hE' hp
+      rw [hE] at hpH
+      obtain ⟨a, b, hab⟩ := exists_isLink_of_mem_edgeSet (hXground hpH.1)
+      have hRab : R.IsLink p a b := by rw [hR, restrict_isLink]; exact ⟨hpH, hab⟩
+      have haV : a ∈ G.fiberSpan n X := ⟨p, hpH.1, hab.inc_left⟩
+      have hbV : b ∈ G.fiberSpan n X := ⟨p, hpH.1, hab.inc_right⟩
+      have hxy : x = a ∨ x = b := by
+        exact G.eq_or_eq_of_isLink_of_isLink hy.2 hab
+      refine ⟨p, hp, ?_⟩
+      rcases hxy with rfl | rfl
+      · exact ⟨b, by simpa [hH] using ⟨hRab, haV, hbV⟩⟩
+      · exact ⟨a, by simpa [hH] using ⟨hRab.symm, hbV, haV⟩⟩
+  have hsparse : H.IsSparse (bodyBarDim n) (bodyBarDim n) := by
+    intro E' hE' hne
+    rw [hspan E' hE']
+    refine (isSparse_diff_singleton_of_isCircuit hX he).1 E' ?_ hne
+    rw [hE] at hE'
+    simpa [hR, edgeSet_restrict, inter_eq_right.mpr (sdiff_subset.trans hXground)] using hE'
+  have htight : H.IsTight (bodyBarDim n) (bodyBarDim n) := by
+    refine ⟨hsparse, ?_⟩
+    rw [hE, hV]
+    exact circuit_induces_isTight hX he
+  have hne : V(H).Nonempty := by
+    rw [hV]
+    obtain ⟨p, hp⟩ := hX.nonempty
+    obtain ⟨x, _, hinc⟩ := exists_isLink_of_mem_edgeSet (hXground hp)
+    exact ⟨x, p, hp, hinc.inc_left⟩
+  exact isSpanningTreePacking_of_isTight (htight.connected hD hne) htight
 
 /-- **The edges of `X` are edges of `H̃`** (a step of `lem:circuit-induces-rigid`): for a set `X`
 of edges of `G̃` and `H = G[V(X)]`, `X ⊆ E(H̃)`, as the ends of each `p ∈ X`, which are those of

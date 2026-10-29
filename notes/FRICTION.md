@@ -110,6 +110,12 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] A link of `G.mulTilde n` projects as `G.2 p.1 x y`: `.2` on it blocks dot notation
+- **Where it bit:** Phase 41e, item U3 (`circuit_diff_isSpanningTreePacking`, `Operations.lean`): `hy : (R.IsLink p x y)` for `R = G̃ ↾ _` unfolds under `rcases` to `p ∈ _ ∧ G.2 p.1 x y`, and `hy.2.left_eq_or_eq h` fails ("does not have the necessary form").
+- **Friction:** four build iterations (also `induce_isLink` is a simp lemma, not a callable constant).
+- **Proposed fix:** none needed: call the class field `G.eq_or_eq_of_isLink_of_isLink hy.2 hab`, and use `simpa [hH] using ⟨..⟩` for `induce` links.
+- **Status:** idiom.
+
 ### [idiom] A suffixed name past the 100-column limit: break after `theorem`, call it unprefixed in its own namespace's bodies
 - **Where it bit:** Phase 41d, item B2 (`Theorem55.lean`): renaming the supply-taking form of
   `PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` with the

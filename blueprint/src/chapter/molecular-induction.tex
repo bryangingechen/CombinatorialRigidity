@@ -77,7 +77,8 @@ graph, the form that the algebraic induction uses.
 
 \begin{lemma}[A circuit induces a rigid subgraph; KT Lemma~3.4]
   \label{lem:circuit-induces-rigid}
-  \lean{Graph.circuit_induces_isTight, Graph.circuit_induces_isRigidSubgraph}
+  \lean{Graph.circuit_induces_isTight, Graph.circuit_induces_isRigidSubgraph,
+    Graph.circuit_diff_isSpanningTreePacking}
   \leanok
   \uses{lem:circuit-rigid, def:induced-span, def:rigid-subgraph, thm:def-eq-corank}
   Let $D \ge 1$, let $G$ be a multigraph, let $X$ be a circuit of
@@ -122,11 +123,6 @@ graph, the form that the algebraic induction uses.
   (\cref{thm:def-eq-corank}), $\operatorname{def}(\tilde H) = 0$. As $H$
   is a subgraph of $G$, it is a rigid subgraph of $G$.
 \end{proof}
-\begin{fmlnote}
-  The first pin is the count, and the second says that $G[V(X)]$ is a
-  rigid subgraph. The partition of $X - e$ into spanning trees is not
-  formalized.
-\end{fmlnote}
 
 If $G$ has no proper rigid subgraph (\cref{def:rigid-subgraph}), the
 lemma shows that every circuit $X$ of $M(\tilde G)$ with

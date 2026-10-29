@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1 and U2 have landed. Next: item U3, S23.
+close (planned 17–23 commits, the open included); U1, U2 and U3 have landed. Next: item R.
 
 ## Current state
 
-**The next concrete commit is item U3** (*Hand-off*); U1 and U2 have landed. Each claim of the full
+**The next concrete commit is item R** (*Hand-off*); U1, U2 and U3 have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -100,7 +100,11 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `Union_pow_indep_iff_count`'s proof (`S24IndepTarget`, stated only), in
   `Matroid/Constructions/Union.lean` (beside `:562` and `:588`; ported from Peter Nelson's
   `Matroid`: credit). `thm:matroid-partition-rank` pins both; its note goes. 1 commit.
-- [ ] **U3. S23** (`F-083`). `Graph.circuit_diff_isSpanningTreePacking`
+- [x] **U3. S23** (landed: `Graph.circuit_diff_isSpanningTreePacking` in `Operations.lean`, after
+  `circuit_induces_isTight`; the third pin of `lem:circuit-induces-rigid`, whose note is dropped.
+  Proved as planned, with `D >= 2` from the copy index of `e`, so `IsTight.connected` needs no
+  hypothesis; the bookkeeping was two small facts, `E(H) = X \ {e}` and that `H` and the
+  restriction span the same vertices) (`F-083`). `Graph.circuit_diff_isSpanningTreePacking`
   (`Molecular/Induction/Operations.lean`, beside `circuit_induces_isTight` at `:164`): for a
   circuit `X` of `M(G̃)` and `e ∈ X`,
   `(((G.mulTilde n) ↾ (X \ {e})).induce (G.fiberSpan n X)).IsSpanningTreePacking (bodyBarDim n)`
@@ -275,10 +279,10 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**Item U3** (S23, `F-083`): `Graph.circuit_diff_isSpanningTreePacking` in
-`Molecular/Induction/Operations.lean`, beside `circuit_induces_isTight` (`:164`), from
-`UnstatedWitness.lean`'s `S23Target` (stated only); pin it as `lem:circuit-induces-rigid`'s third
-pin and drop its note (checklist item U3). Then R.
+**Item R** (KT Theorem 4.9's principle without `hfresh`, checklist item R; source
+`ReductionWitness.lean`): the four strengthened statements under `Molecular/Induction/`, with
+`minimal_kdof_reduction` first as the checklist orders them. Assess whether the four fit one commit
+once the first closes. Then U4.
 
 ## Decisions made during this phase
 
