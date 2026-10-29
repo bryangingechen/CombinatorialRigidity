@@ -1041,7 +1041,8 @@ panel layer's `isInfinitesimallyRigidOn_of_isGenericNormals_iff`: forward, apply
 rigidity at any one generic assignment (`exists_isGenericHingePoints`,
 `lem:exists-generic-hinge-points`) to force the exact rank, then compare with the rank formula to
 get `def = 0`; backward, the rank formula at `def = 0` gives the exact row count at *every* generic
-`q`, hence rigidity there. -/
+`q`, hence rigidity there. The iff at the maximum-rank assignments, Katoh and Tanigawa's genericity,
+is `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff`. -/
 theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
     [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
@@ -1081,7 +1082,9 @@ of the Tay–Whiteley body-and-hinge realization theorem, obtained by composing 
 characterization (`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`,
 `cor:bodyhinge-generic-rigid`) with the tree-packing reformulation of the deficiency-zero condition
 (`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `lem:deficiency-zero-iff-tree-packing`),
-which asks `D ≥ 3`, as `k ≥ 1` gives. -/
+which asks `D ≥ 3`, as `k ≥ 1` gives. The iff at the maximum-rank assignments, Katoh and
+Tanigawa's genericity, is
+`isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees`. -/
 theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees [Infinite K]
     [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
@@ -1329,5 +1332,59 @@ theorem isMaxRankHingePoints_loop (q : Fin 1 × Fin 2 × Fin 3 → ℝ) :
     rintro _ ⟨e, u, v, -, r, -, rfl⟩
     rw [Subsingleton.elim u v, hingeRow_self]
   rw [hrows, hrows]
+
+/-! ### Rigidity and spanning trees at maximum-rank hinge points -/
+
+/-- **Every generic body-and-hinge realization of a rigid graph is rigid, at Katoh and Tanigawa's
+genericity** (`cor:bodyhinge-generic-rigid`; Jackson–Jordán 2010, §6). In the setting of
+`finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints`, the framework at every hinge-point
+assignment of maximum rank (`IsMaxRankHingePoints`, `def:dof-generic`) is infinitesimally rigid on
+`V(G)` iff `def(G̃) = 0`. Such a framework has `def(G̃)` degrees of freedom
+(`dof_ofHinge_of_isMaxRankHingePoints`, `cor:dof-generic-realization`), and its degree of freedom
+is `0` exactly at rigidity (`dof_eq_zero_iff`): forward at one maximum-rank assignment
+(`exists_isMaxRankHingePoints`, `lem:generic-hinge-points-max-rank`), backward at each. As every
+assignment generic for row independence has maximum rank
+(`isMaxRankHingePoints_of_isGenericHingePoints`), the backward direction holds at each of those
+too; `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff` is the iff at them. -/
+theorem isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff [Infinite K]
+    [Finite α] [Finite β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) :
+    (∀ q : β × Fin k × Fin (k + 1) → K, IsMaxRankHingePoints G q →
+        (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
+      ↔ G.deficiency n = 0 := by
+  constructor
+  · intro hrigid
+    obtain ⟨q, hq⟩ := exists_isMaxRankHingePoints (K := K) hk1 G
+    rw [← dof_ofHinge_of_isMaxRankHingePoints hk1 hn G hne hspan hq]
+    exact (dof_eq_zero_iff _ hne).mpr (hrigid q hq)
+  · intro hdef q hq
+    exact (dof_eq_zero_iff _ hne).mp
+      ((dof_ofHinge_of_isMaxRankHingePoints hk1 hn G hne hspan hq).trans hdef)
+
+/-- **Generic body-and-hinge rigidity from spanning trees, at Katoh and Tanigawa's genericity**
+(`cor:bodyhinge-generic-tree-packing`; Tay 1989, Whiteley 1988, Jackson–Jordán 2010 Cor 6.3). In
+the setting of `finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints`, the framework at every
+hinge-point assignment of maximum rank (`IsMaxRankHingePoints`, `def:dof-generic`) is
+infinitesimally rigid on `V(G)` iff the multiplied graph `G̃ = (D-1)·G` contains
+`D = bodyBarDim n` pairwise edge-disjoint spanning trees: the rigidity characterization
+`isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff` (`cor:bodyhinge-generic-rigid`)
+composed with the tree-packing reformulation of the deficiency-zero condition
+(`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `lem:deficiency-zero-iff-tree-packing`),
+which asks `D ≥ 3`, as `k ≥ 1` gives. The iff at the assignments generic for row independence is
+`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`. -/
+theorem isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees [Infinite K]
+    [Finite α] [Finite β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) :
+    (∀ q : β × Fin k × Fin (k + 1) → K, IsMaxRankHingePoints G q →
+        (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
+      ↔ ∃ Ts : Fin (Graph.bodyBarDim n) → Graph α (β × Fin (Graph.bodyHingeMult n)),
+          (∀ i, Ts i ≤s G.mulTilde n) ∧ (∀ i, (Ts i).IsTree) ∧
+            Pairwise (Function.onFun Disjoint fun i => E(Ts i)) := by
+  have hD : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk1
+  have : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
+  rw [isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff hk1 hn G hne hspan]
+  exact G.deficiency_eq_zero_iff_exists_spanningTrees n hne
 
 end CombinatorialRigidity.Molecular.BodyHingeFramework

@@ -6,16 +6,15 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4
 `notes/reconcile-formal/ReductionWitness.lean`, and for U11 `DofGenericWitness.lean`. Fifteen build items, two recons, a spike and the
-close (planned 18–24 commits, the open included); U1–U11, R, PAD and U11's recon have landed.
-Next: M1K, M1 at KT's genericity.
+close (planned 18–24 commits, the open included); U1–U11, R, PAD, U11's recon and M1K have
+landed. Next: U12's spike, S3's route.
 
 ## Current state
 
-**The next concrete commit is M1K** (*Hand-off*); U1–U11, R, PAD and U11's recon have
-landed. U11 (`def:dof-generic`, `GenericLift/HingeGeneric.lean`) transcribed the recon's witness
-(`notes/reconcile-formal/DofGenericWitness.lean`; the TFAE rides at `prop:rigidity-matrix-prop11`,
-the loop witness `isMaxRankHingePoints_loop`; the double-edge witnesses stay in the evidence file)
-and moved no main result. Each claim of the full
+**The next concrete commit is U12's spike** (*Hand-off*); U1–U11, R, PAD, U11's recon and M1K
+have landed. M1K moved M1, the `main_results` row, to
+`isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees` (KT's genericity, §1k.2);
+the count stays 20, its axioms the three standard ones. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -121,11 +120,12 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   only between distinct bodies, a loop's hinge free), `lem:generic-hinge-points-max-rank`,
   `cor:dof-generic-realization`; `prop:rigidity-matrix-prop11` restated at KT's genericity (§1k.1),
   the JJ alignment row restated, no `main_results` row touched, no new import.
-- [ ] **M1K. M1 at KT's genericity** (design doc §1k.2; no ledger ID), after U11: the main result
-  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees` at every
-  `IsMaxRankHingePoints` assignment, its rank formula U11's; the shape (a sibling made the
-  `main_results` row, or restated in place and renamed) the item's to settle; the row, its
-  description, witnesses and axioms re-read. About 1 commit.
+- [x] **M1K. M1 at KT's genericity** (design doc §1k.2; no ledger ID; landed): siblings
+  `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff(_spanningTrees)`, the second the
+  `main_results` row (description restated, axioms standard); both directions through `dof`
+  (U11's `dof_ofHinge_of_isMaxRankHingePoints`, `dof_eq_zero_iff`). The generic forms stay, second
+  pins of `cor:bodyhinge-generic-rigid` and `-tree-packing`, both restated and moved after
+  `cor:dof-generic-realization`. The three `Nonvacuity.lean` witnesses repointed and renamed.
 - [ ] **U12, spike. S3's route** (compiler-checked, read-only): in `CaseII.lean` (zone), the count
   in steps 7–14 of `case_II_realization_all_k`'s proof (`:295`, about 710 lines) extracted as a
   lemma, a realization of `G_v^{ab}` of rank `N` giving `rank R(G, q₀) ≥ N + D − 1`
@@ -138,12 +138,13 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   deletion gate (its mention in `GenericityDevice.lean:258`'s docstring included). 2 commits.
 - [ ] **Close**, a full-phase close (Phase 41 and the RECONCILE program,
   `PHASE-BOUNDARIES.md` *When this commit closes a phase*): the gates (whole-project build with 0
-  warnings, `lake lint`, the blueprint gates, the main results' axioms against 41d's close run; a
-  new `main_results` row, if any, with its non-vacuity witness); the re-read of the restated
+  warnings, `lake lint`, the blueprint gates, the main results' axioms against 41d's close run,
+  where M1K renamed M1's row; a new `main_results` row, if any, with its non-vacuity witness); the re-read of the restated
   chapters and the exposition ledger; the ledger's remaining `reported` and `left` entries given
   dispositions, and ROADMAP's RECONCILE bullet compressed (`notes/Reconcile.md` §3); ROADMAP's
   row flipped to ✓ and §41 compressed; README, the home page, `intro.tex` and
-  `formalization.yaml` re-summarized; `.claude/autopilot/queue.toml`'s `RECONCILE-FORMAL` row
+  `formalization.yaml` re-summarized (README and ROADMAP §34 name M1's generic form, which
+  M1K kept beside the row's maximum-rank form); `.claude/autopilot/queue.toml`'s `RECONCILE-FORMAL` row
   `done = true`; `notes/MolecularConjecture.md`; the design doc's UNSTATED arc compressed (its
   anchors counted first); the dispatch log groomed; the project-organization review. The loop
   stops for the PI's push (§1j.5); ORIGAMI opens later, with the PI.
@@ -160,12 +161,11 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**M1K** (checklist item *M1K*, design doc §1k.2), one commit: M1, the main result
-`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`, at every
-`IsMaxRankHingePoints` assignment. The rank formula is U11's
-`finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints`; the iff is new, and its shape (a
-sibling made the `main_results` row, or the main result restated in place) is the item's to settle,
-with the row, description, non-vacuity witnesses (`Nonvacuity.lean`) and axioms re-read.
+**U12's spike** (checklist item *U12, spike*), compiler-checked and read-only: in `CaseII.lean`
+(zone), extract the count in steps 7–14 of `case_II_realization_all_k`'s proof (`:295`) as a
+lemma (a realization of `G_v^{ab}` of rank `N` gives `rank R(G, q₀) ≥ N + D − 1`), and compile the
+proof calling it. A committed witness if it settles the route; it may return to the PI if the
+route does not compose (*Blockers*). Then U12 itself (2 commits), then the close.
 
 ## Decisions made during this phase
 

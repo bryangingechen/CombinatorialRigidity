@@ -359,8 +359,8 @@ status:
       coordinates of each edge, with no hinge and no condition on them, so these frameworks
       need not come from hinges. The form with hinges, at every generic choice of hinge
       points, is
-      CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees
-      (phase 34).
+      CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees
+      (phase 34; at Katoh-Tanigawa's genericity since phase 41e).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -493,25 +493,31 @@ status:
     comparator_config: ""
     literature_dependencies: []
 
-  - declaration: "CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees"
+  - declaration: "CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees"
     file: "CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean"
     description: >-
       Generic body-and-hinge rigidity from spanning trees (Tay 1989, Whiteley 1988;
       Jackson-Jordán 2010 Thm 6.1 / Cor 6.3, with the existential quantifier upgraded to
-      every generic realization; phase 34, restated in phases 41b and 41c): for a spanning multigraph
-      G (parallel edges and loops allowed) on >= 1 body, with nothing assumed of the edge labels
-      (since phase 41d), at any dimension n >= 2 and over any infinite field, the
-      affine-hinge framework at every hinge-point assignment generic for row independence is
-      infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees. The
-      assignment is generic when every set of rigidity rows at the edges of G that is
-      linearly independent at some hinge-point assignment is independent at it; the
-      assignments that are not generic lie in the zero set of one nonzero polynomial. The
+      every generic realization; phase 34, restated in phases 41b, 41c and 41e): for a spanning
+      multigraph G (parallel edges and loops allowed) on >= 1 body, with nothing assumed of the
+      edge labels (since phase 41d), at any dimension n >= 2 and over any infinite field, the
+      affine-hinge framework at every hinge-point assignment generic in Katoh-Tanigawa's sense
+      (since phase 41e) is infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint
+      spanning trees. The assignment is generic when the rigidity rows at G's edges, and those
+      at each subset of them, have the largest rank over the hinge-point realizations of G (the
+      assignments whose hinges at the links between distinct bodies are nondegenerate, as its
+      own must be; a loop's hinge, which constrains no motion, may be degenerate). Every
+      assignment generic for row independence (every set of rigidity rows at the edges of G that
+      is linearly independent at some hinge-point assignment is independent at it) is generic in
+      this sense, so the assignments that are not lie in the zero set of one nonzero polynomial;
+      the iff at row-independence genericity is
+      CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees,
+      the main result until phase 41e. The
       single edge, every tree, the double edge and every minimal 0-dof-graph are covered. The
       lower bound of the rank formula comes from the multigraph
-      Theorem 5.6 (hinges in panels, each hinge decomposed into spanning points), and a
-      loop's hinge, which constrains no motion, is left unconstrained by genericity.
+      Theorem 5.6 (hinges in panels, each hinge decomposed into spanning points).
       Its rank formula
-      CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
+      CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints
       is Jackson-Jordán 2010 Thm 6.1. The panel-normal analogue, JJ Thm 7.2
       sharpened to an iff, is the corollary of the next row's rank formula.
     sorry_count: 0
@@ -822,13 +828,13 @@ alignment:
       note: "Independence of an edge set's rows at a generic endpoint assignment iff (d,d)-sparsity of its restriction; the rank formula of their Thm 5.2 is that union-matroid rank."
 
     - source: "Jackson-Jordán 2010 Thm 6.1 / Cor 6.3 (generic body-and-hinge rigidity; existence form Tay 1989 / Whiteley 1988)"
-      lean: "CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees, CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency"
+      lean: "CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees, CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees, CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency"
       module: "CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean"
       status: "proved"
       note: >-
         Over any infinite field, with the existential quantifier upgraded to every generic
         hinge-point realization. Both theorems hold at every hinge-point
-        assignment generic for the rows at the edges of a spanning multigraph G (parallel
+        assignment generic over a spanning multigraph G, in either sense below (parallel
         edges and loops allowed; one body or more), whatever the edge labels; a single edge, a
         tree, the double edge or a minimal 0-dof-graph is covered. Phase 41b made them hold at every generic realization of a simple
         graph, and phase 41c of every multigraph. In phase 41c the rank formula is also stated
@@ -842,8 +848,15 @@ alignment:
         between distinct bodies), as
         CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints;
         the form at row-independence genericity follows from it, as every such assignment has
-        maximum rank. The main-result rows above, and the iff of this row, are stated at
-        row-independence genericity.
+        maximum rank. The rank formula and the iff are stated at both genericities too: at KT's
+        as
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isMaxRankHingePoints
+        and
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees,
+        the main result (since phase 41e), and at row-independence genericity as
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
+        and
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees.
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff"

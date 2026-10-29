@@ -1515,68 +1515,6 @@ in every dimension, by comparing the rows.
   $\operatorname{rank} R(G,q) \ge D(|V|-1) - \operatorname{def}(\tilde G)$.
 \end{proof}
 
-\begin{corollary}[Every generic body-and-hinge realization of a
-  rigid graph; Jackson--Jord\'an]
-  \label{cor:bodyhinge-generic-rigid}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff}
-  \leanok
-  \uses{def:generic-hinge-points, def:hinge-constraint,
-    def:D-deficiency}
-  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a multigraph, with parallel edges and loops allowed, with $V$ finite
-  and nonempty. Then $(G, q)$ is
-  infinitesimally rigid at every hinge-point assignment $q$ of $G$ that
-  is generic for row independence if and only if
-  $\operatorname{def}(\tilde G) = 0$.
-\end{corollary}
-\begin{proof}
-  \leanok
-  \uses{thm:bodyhinge-generic-rank, lem:exists-generic-hinge-points,
-    lem:isInfRigidOn-of-relative-count,
-    lem:case-II-placement-old-rows-extract}
-  Suppose first that $\operatorname{def}(\tilde G) = 0$, and let $q$ be
-  generic. By \cref{thm:bodyhinge-generic-rank},
-  $\operatorname{rank} R(G,q) = D(|V|-1)$, so
-  $\dim Z(G,q) = D|V| - D(|V|-1) = D$. Hence every infinitesimal
-  motion of $(G, q)$ is trivial
-  (\cref{lem:isInfRigidOn-of-relative-count}, with $W = V$).
-
-  Conversely, suppose that $(G, q)$ is infinitesimally rigid at every
-  generic $q$. As $K$ is infinite, some hinge-point assignment $q$ is
-  generic (\cref{lem:exists-generic-hinge-points}). Then $(G, q)$ is
-  infinitesimally rigid, so its motions are constant on $V$, and
-  $\dim Z(G,q) = D$ (\cref{lem:case-II-placement-old-rows-extract},
-  with $W = V$). As the screw assignments form a space of dimension
-  $D|V|$, $\operatorname{rank} R(G,q) = D(|V|-1)$, and
-  \cref{thm:bodyhinge-generic-rank} gives
-  $\operatorname{def}(\tilde G) = 0$.
-\end{proof}
-
-\begin{corollary}[Generic body-and-hinge rigidity from spanning
-  trees; Tay, Whiteley, Jackson--Jord\'an]
-  \label{cor:bodyhinge-generic-tree-packing}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees}
-  \leanok
-  \uses{def:generic-hinge-points, def:matroid-MG}
-  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a multigraph, with parallel edges and loops allowed, with $V$ finite
-  and nonempty. Then $(G, q)$ is
-  infinitesimally rigid at every hinge-point assignment $q$ of $G$ that
-  is generic for row independence if and only if
-  $\tilde G = (D-1) \cdot G$ contains $D$ edge-disjoint spanning trees.
-\end{corollary}
-\begin{proof}
-  \leanok
-  \uses{cor:bodyhinge-generic-rigid,
-    lem:deficiency-zero-iff-tree-packing}
-  By \cref{cor:bodyhinge-generic-rigid}, the condition on the generic
-  hinge-point assignments holds if and only if
-  $\operatorname{def}(\tilde G) = 0$. As $D \ge 3$, KT
-  Proposition~2.2 (\cref{lem:deficiency-zero-iff-tree-packing}) shows
-  that this holds if and only if $\tilde G$ contains $D$ edge-disjoint
-  spanning trees.
-\end{proof}
-
 \begin{proposition}[KT Proposition 2.3]
   \label{prop:rigidity-matrix-prop11}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints,
@@ -1647,11 +1585,89 @@ in every dimension, by comparing the rows.
   the links between distinct bodies are nondegenerate.
 \end{proof}
 
+\begin{corollary}[Every generic body-and-hinge realization of a
+  rigid graph; Jackson--Jord\'an]
+  \label{cor:bodyhinge-generic-rigid}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff}
+  \leanok
+  \uses{def:dof-generic, def:generic-hinge-points, def:hinge-constraint,
+    def:D-deficiency}
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
+  a multigraph, with parallel edges and loops allowed, with $V$ finite
+  and nonempty. Then $(G, q)$ is
+  infinitesimally rigid at every hinge-point assignment $q$ of $G$ that
+  is generic in the sense of \cref{def:dof-generic} if and only if
+  $\operatorname{def}(\tilde G) = 0$. The same holds with the
+  assignments that are generic for row independence
+  (\cref{def:generic-hinge-points}) in place of these.
+\end{corollary}
+\begin{proof}
+  \leanok
+  \uses{cor:dof-generic-realization, lem:generic-hinge-points-max-rank,
+    thm:bodyhinge-generic-rank, lem:exists-generic-hinge-points,
+    lem:isInfRigidOn-of-relative-count,
+    lem:case-II-placement-old-rows-extract}
+  Suppose first that $\operatorname{def}(\tilde G) = 0$, and let $q$ be
+  generic in the sense of \cref{def:dof-generic}. By
+  \cref{cor:dof-generic-realization},
+  $\operatorname{rank} R(G,q) = D(|V|-1)$, so
+  $\dim Z(G,q) = D|V| - D(|V|-1) = D$. Hence every infinitesimal
+  motion of $(G, q)$ is trivial
+  (\cref{lem:isInfRigidOn-of-relative-count}, with $W = V$).
+
+  Conversely, suppose that $(G, q)$ is infinitesimally rigid at every
+  such $q$. As $K$ is infinite, some hinge-point assignment $q$ is
+  generic in this sense (\cref{lem:generic-hinge-points-max-rank}).
+  Then $(G, q)$ is infinitesimally rigid, so its motions are constant
+  on $V$, and $\dim Z(G,q) = D$
+  (\cref{lem:case-II-placement-old-rows-extract}, with $W = V$). As the
+  screw assignments form a space of dimension $D|V|$,
+  $\operatorname{rank} R(G,q) = D(|V|-1)$, and
+  \cref{cor:dof-generic-realization} gives
+  $\operatorname{def}(\tilde G) = 0$.
+
+  At the assignments that are generic for row independence the
+  argument is the same, with \cref{thm:bodyhinge-generic-rank} in place
+  of \cref{cor:dof-generic-realization}, and with an assignment that is
+  generic for row independence, which exists as $K$ is infinite
+  (\cref{lem:exists-generic-hinge-points}).
+\end{proof}
+
+\begin{corollary}[Generic body-and-hinge rigidity from spanning
+  trees; Tay, Whiteley, Jackson--Jord\'an]
+  \label{cor:bodyhinge-generic-tree-packing}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees}
+  \leanok
+  \uses{def:dof-generic, def:generic-hinge-points, def:matroid-MG}
+  Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
+  a multigraph, with parallel edges and loops allowed, with $V$ finite
+  and nonempty. Then $(G, q)$ is
+  infinitesimally rigid at every hinge-point assignment $q$ of $G$ that
+  is generic in the sense of \cref{def:dof-generic} if and only if
+  $\tilde G = (D-1) \cdot G$ contains $D$ edge-disjoint spanning trees.
+  The same holds with the assignments that are generic for row
+  independence (\cref{def:generic-hinge-points}) in place of these.
+\end{corollary}
+\begin{proof}
+  \leanok
+  \uses{cor:bodyhinge-generic-rigid,
+    lem:deficiency-zero-iff-tree-packing}
+  By \cref{cor:bodyhinge-generic-rigid}, the condition on the generic
+  hinge-point assignments, in either sense, holds if and only if
+  $\operatorname{def}(\tilde G) = 0$. As $D \ge 3$, KT
+  Proposition~2.2 (\cref{lem:deficiency-zero-iff-tree-packing}) shows
+  that this holds if and only if $\tilde G$ contains $D$ edge-disjoint
+  spanning trees.
+\end{proof}
+
 \begin{fmlnote}
-  The formalization states the proposition twice: first at an
-  assignment that is generic in the sense of \cref{def:dof-generic},
-  Katoh and Tanigawa's, then at one that is generic for row
-  independence, which follows from the first
+  The formalization states \cref{prop:rigidity-matrix-prop11} and the
+  two corollaries above twice: first at the assignments that are
+  generic in the sense of \cref{def:dof-generic}, Katoh and Tanigawa's,
+  then at those that are generic for row independence. The
+  proposition's second form follows from its first
   (\cref{lem:generic-hinge-points-max-rank}). It writes $d = k + 1$, as
   in the note after
   \cref{def:hinge-constraint}. The pinned results of this subsection

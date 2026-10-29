@@ -56,19 +56,20 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   endpoint assignment, at the triple edge: an orientation and an endpoint assignment generic for
   row independence (a non-root of the abundance polynomial), at which the realization placing each
   bar between its endpoints is isostatic.
-* `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_witness`: Tay and
-  Whiteley's body-hinge theorem at every generic hinge-point assignment (Jackson and Jordán 2010
-  Cor 6.3) at the triangle `K₃`, a minimal `0`-dof-graph. Some hinge-point assignment is generic,
-  and at every generic one the framework is infinitesimally rigid, as `2·K₃` packs three spanning
-  trees.
-* `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_banana_witness`: the
+* `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees_witness`: Tay and
+  Whiteley's body-hinge theorem at every generic hinge-point assignment, in Katoh and Tanigawa's
+  sense of maximum rank (Jackson and Jordán 2010 Cor 6.3), at the triangle `K₃`, a minimal
+  `0`-dof-graph. Some hinge-point assignment has maximum rank, and at every one the framework is
+  infinitesimally rigid, as `2·K₃` packs three spanning trees.
+* `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees_banana_witness`: the
   same theorem at the double edge (two bodies, two parallel hinges), a multigraph that is not
-  simple (`banana_not_simple`): some hinge-point assignment is generic, and at every generic one
-  the framework is infinitesimally rigid, as `2·G` packs three spanning trees.
-* `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_loop_witness`: the
+  simple (`banana_not_simple`): some hinge-point assignment has maximum rank, and at every one the
+  framework is infinitesimally rigid, as `2·G` packs three spanning trees.
+* `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees_loop_witness`: the
   same theorem at the double edge with a loop at one body, which is not loopless
-  (`banana_addEdge_not_loopless`): the loop's hinge constrains nothing, and at every generic
-  assignment the framework is still infinitesimally rigid.
+  (`banana_addEdge_not_loopless`): the loop's hinge constrains nothing, and at every maximum-rank
+  assignment, whose hinge at the loop may be degenerate, the framework is still infinitesimally
+  rigid.
 * `theorem_55_minimalKDof_gen_witness`: Katoh and Tanigawa's Theorem 5.5 at the single edge, a
   minimal `1`-dof-graph, with one edge label, which the edge uses. The single edge is simple, so
   it has a panel realization with nonparallel panels and one with a nondegenerate hinge, at rank
@@ -333,22 +334,22 @@ private theorem top_fin_three_shadowGraph_isMinimalKDof_zero_two :
 
 open Molecular.BodyHingeFramework in
 /-- **Tay and Whiteley's body-hinge theorem at every generic hinge-point assignment, at the
-triangle**: `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`
-(`Molecular.BodyHingeFramework`; Jackson and Jordán 2010 Cor 6.3) in the plane (`n = 2`, grade
-`k = 1`, so a hinge is one point of the plane) at `K₃`, with the labels of
-`SimpleGraph.shadowGraph`. `K₃` is simple, has its three bodies as vertices, and is a minimal
-`0`-dof-graph. Some hinge-point assignment is generic
-over it (`exists_isGenericHingePoints`), and, as `2·K₃` packs three edge-disjoint spanning trees,
-the framework at every generic one is infinitesimally rigid. -/
-theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_witness :
-    (∃ q, IsGenericHingePoints (K := ℝ) (k := 1) (⊤ : SimpleGraph (Fin 3)).shadowGraph q) ∧
-      ∀ q, IsGenericHingePoints (K := ℝ) (k := 1) (⊤ : SimpleGraph (Fin 3)).shadowGraph q →
+triangle**: `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees`
+(`Molecular.BodyHingeFramework`; Jackson and Jordán 2010 Cor 6.3), at Katoh and Tanigawa's
+genericity, maximum rank, in the plane (`n = 2`, grade `k = 1`, so a hinge is one point of the
+plane) at `K₃`, with the labels of `SimpleGraph.shadowGraph`. `K₃` is simple, has its three bodies
+as vertices, and is a minimal `0`-dof-graph. Some hinge-point assignment has maximum rank over it
+(`exists_isMaxRankHingePoints`), and, as `2·K₃` packs three edge-disjoint spanning trees, the
+framework at every such assignment is infinitesimally rigid. -/
+theorem isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees_witness :
+    (∃ q, IsMaxRankHingePoints (K := ℝ) (k := 1) (⊤ : SimpleGraph (Fin 3)).shadowGraph q) ∧
+      ∀ q, IsMaxRankHingePoints (K := ℝ) (k := 1) (⊤ : SimpleGraph (Fin 3)).shadowGraph q →
         (ofHinge (⊤ : SimpleGraph (Fin 3)).shadowGraph
           fun e a b ↦ q (e, a, b)).IsInfinitesimallyRigidOn Set.univ := by
   have hne : V((⊤ : SimpleGraph (Fin 3)).shadowGraph).Nonempty := ⟨0, by simp⟩
   have : NeZero (Graph.bodyHingeMult 2) := ⟨by decide⟩
-  refine ⟨(exists_isGenericHingePoints _).imp fun _ h ↦ h.1, ?_⟩
-  have h := (isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees (K := ℝ)
+  refine ⟨exists_isMaxRankHingePoints le_rfl _, ?_⟩
+  have h := (isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees (K := ℝ)
     (k := 1) (n := 2) le_rfl rfl _ hne (shadowGraph_vertexSet _)).mpr
     ((Graph.deficiency_eq_zero_iff_exists_spanningTrees _ 2 hne).mp
       top_fin_three_shadowGraph_isMinimalKDof_zero_two.1.deficiency_eq)
@@ -357,14 +358,14 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_
 open Molecular.BodyHingeFramework in
 /-- **The generic body-hinge theorem at the double edge, in the plane**: two bodies joined by two
 parallel hinges (each a point of the plane, `k = 1`), with three labels, which do not exceed
-`3 · (2 - 1)`: the theorem assumes nothing of the labels. Some hinge-point assignment is generic
-over it, and at every generic one the framework is infinitesimally rigid,
+`3 · (2 - 1)`: the theorem assumes nothing of the labels. Some hinge-point assignment has maximum
+rank over it, and at every such assignment the framework is infinitesimally rigid,
 as `2·G` packs three edge-disjoint spanning trees. The double edge is a multigraph with parallel
 edges, not a simple graph. -/
-theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_banana_witness :
-    (∃ q, IsGenericHingePoints (K := ℝ) (k := 1)
+theorem isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees_banana_witness :
+    (∃ q, IsMaxRankHingePoints (K := ℝ) (k := 1)
         (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 3))) q) ∧
-      ∀ q, IsGenericHingePoints (K := ℝ) (k := 1)
+      ∀ q, IsMaxRankHingePoints (K := ℝ) (k := 1)
           (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 3))) q →
         (ofHinge (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 3)))
           fun e a b ↦ q (e, a, b)).IsInfinitesimallyRigidOn Set.univ := by
@@ -376,8 +377,8 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_
     Graph.isKDof_zero_of_parallel_pair (by decide) (x := 0) (y := 1) (e₁ := 0) (e₂ := 1)
       (by decide) (by simp) (by simp) (by decide) (by simp) (by simp)
   have : NeZero (Graph.bodyHingeMult 2) := ⟨by decide⟩
-  refine ⟨(exists_isGenericHingePoints _).imp fun _ h ↦ h.1, ?_⟩
-  have h := (isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees (K := ℝ)
+  refine ⟨exists_isMaxRankHingePoints le_rfl _, ?_⟩
+  have h := (isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees (K := ℝ)
     (k := 1) (n := 2) le_rfl rfl _ hne hspan).mpr
     ((Graph.deficiency_eq_zero_iff_exists_spanningTrees _ 2 hne).mp hdef)
   rwa [hspan] at h
@@ -386,12 +387,12 @@ open Molecular.BodyHingeFramework in
 /-- **The generic body-hinge theorem at the double edge with a loop, in the plane**: the double
 edge with a third hinge, a loop at body `0`. A loop's hinge constrains no motion and crosses no
 partition, so the deficiency is still `0` (`deficiency_le_deficiency_of_le_vertexSet_eq`), and at
-every generic hinge-point assignment the framework is infinitesimally rigid, though genericity says
-nothing about the loop's hinge. -/
-theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_loop_witness :
-    (∃ q, IsGenericHingePoints (K := ℝ) (k := 1)
+every maximum-rank hinge-point assignment the framework is infinitesimally rigid, though maximum
+rank asks nothing of the loop's hinge, which may be degenerate. -/
+theorem isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees_loop_witness :
+    (∃ q, IsMaxRankHingePoints (K := ℝ) (k := 1)
         ((Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 3))).addEdge 2 0 0) q) ∧
-      ∀ q, IsGenericHingePoints (K := ℝ) (k := 1)
+      ∀ q, IsMaxRankHingePoints (K := ℝ) (k := 1)
           ((Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 3))).addEdge 2 0 0) q →
         (ofHinge ((Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 3))).addEdge 2 0 0)
           fun e a b ↦ q (e, a, b)).IsInfinitesimallyRigidOn Set.univ := by
@@ -412,8 +413,8 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_
       (by rw [hspan, hspanH])
   have hloop : G.IsLink 2 0 0 := Graph.addEdge_isLink H 2 0 0
   have : NeZero (Graph.bodyHingeMult 2) := ⟨by decide⟩
-  refine ⟨(exists_isGenericHingePoints _).imp fun _ h ↦ h.1, ?_⟩
-  have h := (isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees (K := ℝ)
+  refine ⟨exists_isMaxRankHingePoints le_rfl _, ?_⟩
+  have h := (isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees (K := ℝ)
     (k := 1) (n := 2) le_rfl rfl G hne hspan).mpr
     ((Graph.deficiency_eq_zero_iff_exists_spanningTrees _ 2 hne).mp hdef)
   rwa [hspan] at h

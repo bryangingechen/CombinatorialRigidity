@@ -3298,7 +3298,9 @@ declaration's name as its header writes it:
   links), on one body or more (`notes/Phase41-design.md` §2, *Item 10's recon*, adopted under
   §1f.3). So a minimal graph is no longer excluded. The row's witness,
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_witness`
-  (`Nonvacuity.lean`), is at the triangle in the plane, a minimal $0$-dof-graph: some assignment is
+  (`Nonvacuity.lean`; since Phase 41e's item M1K, which moved the row to maximum-rank genericity,
+  `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees_witness`), is at the
+  triangle in the plane, a minimal $0$-dof-graph: some assignment is
   generic, and at each generic one the framework is infinitesimally rigid. The four nodes, the
   note after `cor:bodyhinge-generic-tree-packing`, and `formalization.yaml`'s row and `alignment`
   note are restated; the scope sentences of README, the home page, `intro.tex` and ROADMAP §34 are
