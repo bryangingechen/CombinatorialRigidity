@@ -179,7 +179,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
-| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, codes-until-open) | ◐ In progress — 41a ✓ (CARRIER), 41b ✓ (RESTATE), 41c ✓ (MULTIGRAPH), 41d ✓ (RELABEL); next UNSTATED, expected as 41e, after the PI's answers (see `notes/Phase41d.md`; plan `notes/Phase41-design.md`) |
+| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, codes-until-open) | ◐ In progress — 41a ✓ (CARRIER), 41b ✓ (RESTATE), 41c ✓ (MULTIGRAPH), 41d ✓ (RELABEL), 41e ◐ (UNSTATED, the last) (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1241,8 +1241,8 @@ as the floor, stronger forms considered; `IsHingeCoplanar` and the multigraph ro
 `F-323` and `F-324` dropped with the restatements) are in the design doc's §1. Five sub-phases by
 stable code: **CARRIER** (41a, ✓ closed 2026-10-24), **RESTATE** (41b, ✓ closed 2026-10-25),
 **MULTIGRAPH** (41c, ✓ closed 2026-10-28), **RELABEL** (41d, ✓ closed 2026-10-29) and
-**UNSTATED** (the claims no
-declaration states, expected as 41e; 15–21 commits). **41a**
+**UNSTATED** (41e, in progress since 2026-10-29, the last; the claims no declaration states;
+17–23 commits). **41a**
 put the field on the structure, its API first and the switch last, as in Phase 22l: the link
 predicate and a tactic that fills in the link proof at the constructors, then the switch itself,
 123 declarations in 27 files in one build-green commit; then `withGraph` restricted to subgraphs,
@@ -1284,11 +1284,18 @@ induction keeps the supply inside, untouched. 23 declarations lost one hypothesi
 non-vacuity witnesses use fewer labels than the old bound. A last item found that KT Theorem 4.9's
 reduction principle, which the transport cannot reach, can drop its supply in one commit, its chain
 re-proved when the new edge reuses the label of an edge at the split vertex. All 20 main results'
-axioms are unchanged. **Next**: the PI's answers to 41d's questions (that commit, its placement
-and form, and a free strengthening of a form nothing calls; `notes/Phase41d.md` *Blockers*), then
-UNSTATED, expected as 41e. Detail →
-`notes/Phase41a.md`, `notes/Phase41b.md`, `notes/Phase41c.md`, `notes/Phase41d.md` +
-`notes/Phase41-design.md`.
+axioms are unchanged. **41e** (UNSTATED; opened with the PI on 2026-10-29, the design doc's §1j;
+planned 17–23 commits) gives a declaration and a blueprint pin to each claim that no declaration
+stated: PROSE's S22–S25, S31, S3, S16 and S19, G5's three (the pebble game's blocking witness, the
+degree of freedom and genericity of a body-hinge framework, the Plücker expansion) and `F-061`'s
+forest lemma, with `rigidityMatrix_prop11`'s nondegeneracy asked only between distinct bodies.
+With them, as the PI decided: KT Theorem 4.9's reduction principle drops its label supply before
+its sequence form is stated, so the sequence assumes nothing of the labels; a form of Theorem 5.6
+that nothing calls drops its supply too; and the molecule's multigraph loses the spare labels it
+carried for the old bound. Its close closes Phase 41 and the RECONCILE program, and the loop stops for the PI's push.
+**Next**: 41e's item U1, the pebble game's blocking witness. Detail →
+`notes/Phase41a.md`, `notes/Phase41b.md`, `notes/Phase41c.md`, `notes/Phase41d.md`,
+`notes/Phase41e.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

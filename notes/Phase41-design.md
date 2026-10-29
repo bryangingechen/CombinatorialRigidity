@@ -20,9 +20,10 @@ in a witness; 6–9 commits). On 2026-10-29 the PI took RELABEL by route B and o
 (§1i), work log `notes/Phase41d.md`, with a read-only recon of `minimal_kdof_reduction`'s `hfresh`
 as its last item, and closed it the same day: no main result bounds the edge labels (B1–B3), and
 §2's RELABEL arc is compressed to a cited verdict. Item R's verdict (§2, *Item R's recon*, kept
-whole as the source of its build: one commit drops `hfresh` from KT Theorem 4.9's principle) waits
-for the PI, with 41d's other open questions (§4). **Next:** the PI's answers, then UNSTATED's open,
-expected as 41e.
+whole as the source of its build: one commit drops `hfresh` from KT Theorem 4.9's principle) went
+to the PI with 41d's other open questions. The PI took it, with the rows form's restatement, the
+padding drop and the `\uses` fix (§1j), and UNSTATED opened the same day as **41e**, work log
+`notes/Phase41e.md`, planned as Phase 41's last sub-phase. **Next:** 41e's item U1.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -44,7 +45,8 @@ open (§1b), the recons (§2), the sub-phases (§3) and the open questions (§4)
   `cor:theorem-55-d3-spanning`, the footprint's docstrings that round 3 moved here, and `F-323` and
   `F-324`. Then M1 (the multigraph generic body-hinge theorem, JJ 2010 Theorem 6.1), the label
   bound dropped from the main results (RELABEL, 41d; §1h, §1i), and the claims no declaration
-  states (S22–S25, S31, S3, S16, S19, G5, `F-061`'s forest lemma), with §4(a).
+  states (UNSTATED, 41e; S22–S25, S31, S3, S16, S19, G5, `F-061`'s forest lemma), with §4(a),
+  item R's build and the padding of the molecule's labels dropped (§1j).
 
 ## 1. The PI's decisions at the open (2026-10-24)
 
@@ -338,6 +340,61 @@ What each answer settles:
    runs low. The PI pushes only at Phase 41's close; this supersedes §1h's answer 4 only as to
    timing between sub-phases.
 
+## 1j. The PI's decisions at UNSTATED's open (2026-10-29)
+
+The coordinator put four questions on one form, then a follow-up, from 41d's *Blockers*
+(`notes/Phase41d.md`) and the run configuration. The PI's answers, verbatim (the question texts,
+option labels and option descriptions are the coordinator's wording on the form; the answers are
+the PI's selections; the bracketed paragraph is the coordinator's note):
+
+> Q: "41d's item R: KT Theorem 4.9's reduction principle (minimal_kdof_reduction, not a main result, no callers) can drop its fresh-label hypothesis hfresh in one commit. A recon proved its whole chain in a witness under the weaker e₀ ∉ E(G − v), where the new edge reuses the label of an edge at v. If placed in 41e before U4 (S22, the reduction-sequence theorem), U4 assumes nothing of the labels, and 41e grows to 16–22 commits. Take it?"
+> A: "Drop it, P at every label (Recommended)" (the option described as: "hsplit receives P at every label outside E(G − v): a strict strengthening. One commit in 41e, before U4.")
+
+> Q: "hasGenericFullRankRealization_of_theorem_55_gen (the third pin of thm:theorem-55-6-rows; nothing calls it) still takes hfresh after 41d. Restated over the bound-free rows form, a three-line repackage, it would drop both hfresh and [DecidableEq β]. That is a free strengthening under your standing §1f.3 policy. Take it in 41e?"
+> A: "Restate it in 41e (Recommended)" (the option described as: "A three-line repackage that drops hfresh and [DecidableEq β]. It rides along with an early 41e item; no new commit.")
+
+> Q: "41d's close also reported three loose ends and recommended no action: (1) card_shadowLabel_lt is uncalled, and lem:molecule-graph-carrier still states 'more than 6(|V|−1) labels', which no result needs (dropping the padding would change that statement and U10's); (2) thm:theorem-55-6-rows has a \uses edge to thm:theorem-55-6-genuine with no Lean basis; (3) three bound-free forms are pinned but called by no main result. Should 41e act on any of them?"
+> A: "Why did 41d recommend no action? Were these just out of scope at the time?"
+> [The coordinator answered: mostly scope, as 41d's hygiene rule changed statements only as §1i and the arc said. (1) The summand `Fin (6(|V|−1)+1)` of `G.shadowGraph`'s labels existed only to meet the bound 41d removed, and KT's graph has no spare labels; dropping it changes `lem:molecule-graph-carrier`'s statement and the label type under the three molecule results, U10's included; the cost is small (one lemma deleted, about 8 type ascriptions inside proofs in `JacobsCounting.lean` and 2 sites in `Nonvacuity.lean`, one blueprint node), and U10 touches the same surface. (2) The edge predates 41d: the blueprint says the rows form uses Theorem 5.6, the Lean builds it from Theorem 5.5; a one-line blueprint fix. (3) Not a defect: the bound-free forms are pinned beside their main results on purpose. Then it re-asked (1) and (2):]
+> Q: "Given that explanation: should 41e take either cheap tidy-up? (1) Drop G.shadowGraph's label padding: its type becomes Graph V (Sym2 V), card_shadowLabel_lt is deleted, and lem:molecule-graph-carrier loses 'more than 6(|V|−1) labels'. It is done before or with U10, which touches the same surface; about one commit or less. (2) Repoint thm:theorem-55-6-rows's \uses edge to what its Lean actually uses (Theorem 5.5), a one-line rider. The pinned uncalled forms (item 3) stay either way."
+> A: "Drop the padding (with U10), Fix the \uses edge" (two options selected, described as: "Simplify the label type to Sym2 V, delete card_shadowLabel_lt, and restate lem:molecule-graph-carrier and U10 to match." and "A one-line blueprint rider on an early 41e commit.")
+
+> Q: "How should the loop run for 41e (UNSTATED, the claims no declaration states, U1–U12, 15–22 commits)? Under 41d: no run cap, mechanical fixups (rescue §1) pre-authorized, Sonnet and Opus dispatchable, and stops between sub-phases and when the coordinator's context runs low. 41e is planned as Phase 41's last sub-phase, so its close would also close Phase 41 and the RECONCILE program, then stop for your push."
+> A: "Same as 41d (Recommended)" (the option described as: "No run cap; mechanical fixups pre-authorized; Sonnet and Opus dispatchable. Stop when 41e closes (closing Phase 41) or when context runs low.")
+
+What each answer settles:
+
+1. **Item R is taken, in form (b)** (§2, *Item R's recon*). `Graph.minimal_kdof_reduction`
+   (`Molecular/Induction/ForestSurgery/Reduction.lean`) drops `hfresh`, and its split case `hsplit`
+   is given `P` at `G.splitOff v a b e₀` for every label `e₀ ∉ E(G − v)`, a strict strengthening;
+   the source is `notes/reconcile-formal/ReductionWitness.lean`. It is one build commit in 41e,
+   placed before U4, so that U4 (S22, KT Theorem 4.9 (i)) is stated without `hfresh`.
+2. **The rows form is restated.**
+   `PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen`, the third pin of
+   `thm:theorem-55-6-rows`, is restated over the bound-free rows form, dropping `hfresh` and
+   `[DecidableEq β]`, a free strengthening (§1f.3). It rides on an early 41e item, with no commit
+   of its own.
+3. **`G.shadowGraph`'s padding is dropped, with U10.** Its type becomes `Graph V (Sym2 V)`,
+   `card_shadowLabel_lt` is deleted (the deletion gate), and `lem:molecule-graph-carrier` and U10
+   are restated to match. U10's "its bound met by `card_shadowLabel_lt`" (§2, *UNSTATED's open
+   recon*) goes entirely: since 41d's B3, U10 has no label bound to meet.
+4. **The `\uses` edge is fixed.** `thm:theorem-55-6-rows`'s edge to `thm:theorem-55-6-genuine`,
+   which its Lean does not back, is repointed to what its Lean uses, Theorem 5.5
+   (`thm:theorem-55`), as a one-line rider on an early 41e item. The pinned forms that no main
+   result calls (41d's third report) stay.
+5. **UNSTATED is 41e, and the loop runs as in 41d**: no run cap, mechanical fixups (rescue §1)
+   pre-authorized, Sonnet and Opus dispatchable. 41e is planned as Phase 41's last sub-phase, so
+   the loop stops when 41e closes, which closes Phase 41 and the RECONCILE program, for the PI's
+   push (§1i.4); and when the coordinator's context runs low.
+
+**The placements** are the open's (recorded in `notes/Phase41e.md`, not the PI's): item R's build is
+its own commit immediately before U4; the riders of answers 2 and 4 ride on U6, the earliest item
+that edits both `Theorem55.lean`, where the rows form is (the three callers of
+`rigidityMatrix_prop11`), and `panel-layer.tex`, the chapter of `thm:theorem-55-6-rows`, and a
+mechanical one (U7 edits `Theorem55.lean` only if a `have` goes unused at its callers); the padding
+drop is its own commit (PAD) immediately before U10, as it is mechanical across four Lean files
+while U10 is a crux node with an uncompiled route.
+
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
 **Evidence**, committed in `notes/reconcile-formal/`:
@@ -504,7 +561,10 @@ the code, so that the sub-phase that opens as UNSTATED transcribes it into its w
 targets, which carry the instances of the planned theorems). It proves S22, S24's rank form, S25 with
 `def:blockingWitness`, S19, §4(a) and S16's one new step, and states the other targets as `Prop`s
 that elaborate (names below are the witness's, in `ReconUnstated`). Every node, pin and declaration
-was re-read at `3b9f766b`, as the report predates RECONCILE's rounds and 41a–41c.
+was re-read at `3b9f766b`, as the report predates RECONCILE's rounds and 41a–41c. **Transcribed at
+41e's open** into `notes/Phase41e.md`, re-read at `0a63c7ef` after 41d: its checklist, with item R
+before U4, U4 without `hfresh`, the riders on U6 and the padding dropped before U10 (§1j), is the
+live one where the two differ.
 
 *Corrections to the plan.* G5's packing move and `lem:forest-surgery-unsplit` are settled: the
 descent calls `lem:packing-move`'s pin since round 3 (`F-087`, `9840dd2c`), and the second node was
@@ -774,7 +834,8 @@ witness proves it all. The principle's split case would be given `P` at `G_v^{ab
 label, a strict strengthening of today's statement, and U4 (KT Theorem 4.9 (i), in UNSTATED) would
 assume nothing of the labels. The questions: drop it (recommended), placed in UNSTATED before U4?
 Give `hsplit` `P` at every admissible label (recommended, a strengthening) or at one (a weaker
-theorem, at the same cost)? Or keep `hfresh` (no cost, and U4 as planned)?
+theorem, at the same cost)? Or keep `hfresh` (no cost, and U4 as planned)? **Answered** (§1j.1):
+dropped, `hsplit` given `P` at every admissible label, in 41e before U4.
 
 ## 3. Sub-phases, by code
 
@@ -784,7 +845,7 @@ theorem, at the same cost)? Or keep `hfresh` (no cost, and U4 as planned)?
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
 | **RELABEL** | 41d (opened and closed 2026-10-29 with the PI, §1i) | done: the bound on the edge labels (`hcard`, `hfresh`) dropped from the six main results that carried it (§1h.2), by route B, a transport at the boundary with the induction untouched (§1i.1; §2's *RELABEL's recon*): `embedEdges` moved up with minimality through deficiencies (B1), the pullbacks and KT Theorems 5.5 and 5.6 without the bound (B2), the cascade, the blueprint and `formalization.yaml` (B3); and R, a read-only recon of dropping `hfresh` from `minimal_kdof_reduction` (§1i.3; §2's *Item R's recon*: route A's combinatorial half, proved in a witness, 1 commit, for the PI) (`notes/Phase41d.md`) | 7, the open, a corrective and the close included (planned 7–10) |
-| **UNSTATED** | — (follows RELABEL, expected as 41e; its letter minted at its own open, §1i.2) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) | 15–21, the open and the close included (the report: 13–23); 16–22 with item R's build, if the PI takes it |
+| **UNSTATED** | 41e (opened 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; item R's build before U4, so U4 is stated without `hfresh` (§1j.1); the rows form restated without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge repointed, riding on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped just before U10, as PAD (§1j.3); `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) (`notes/Phase41e.md`) | 17–23, the open and the close included (the recon's 15–21, plus R's build and PAD; the report: 13–23) |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
@@ -813,11 +874,13 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   cannot reach it, §2): the PI asked for a recon of dropping it (§1i.3), 41d's item R. Its verdict
   (§2, *Item R's recon*): route A's combinatorial half holds, proved in a witness; one commit, best
   placed in UNSTATED before U4, with `hsplit` given `P` at every label outside `E(G − v)`, a strict
-  strengthening. Open for the PI at 41d's close.
+  strengthening. **Answered by the PI** (§1j.1): taken in that form, as 41e's item R before U4.
 - **`hasGenericFullRankRealization_of_theorem_55_gen`'s `hfresh`** (the third pin of
   `thm:theorem-55-6-rows`, internal by the RELABEL arc's count, and uncalled): B2 left it;
   restated over the bound-free rows form, a three-line repackage, it drops `hfresh` and
-  `[DecidableEq β]`, a free strengthening under §1f.3. Open for the PI at 41d's close, with the
-  close's reports on the forms no main result calls (`notes/Phase41d.md` *Blockers*).
-- **Relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links**: in UNSTATED (§1h.2), its item
-  U6 (§2, *UNSTATED's open recon*).
+  `[DecidableEq β]`, a free strengthening under §1f.3. **Answered by the PI** (§1j.2): restated in
+  41e, riding on U6. Of the close's reports (`notes/Phase41d.md` *Blockers*), the padding is
+  dropped before U10 (§1j.3) and `thm:theorem-55-6-rows`'s `\uses` edge is fixed on U6 (§1j.4);
+  the pinned forms no main result calls stay.
+- **Relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links**: in UNSTATED (§1h.2), 41e's
+  item U6 (§2, *UNSTATED's open recon*).

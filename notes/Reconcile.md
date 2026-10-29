@@ -3,8 +3,8 @@
 **Status:** rounds 1, 2 and 3 closed (rounds 1 and 2 on 2026-10-15, round 3 on 2026-10-24); the
 phase, `RECONCILE-FORMAL`, opened with the PI on 2026-10-24 as Phase 41; its first sub-phase,
 41a (CARRIER), closed the same day, its second, 41b (RESTATE), closed on 2026-10-25, and its third,
-41c (MULTIGRAPH), opened and closed on 2026-10-28, and its fourth, 41d (RELABEL), opened and
-closed on 2026-10-29. The PI
+41c (MULTIGRAPH), opened and closed on 2026-10-28, its fourth, 41d (RELABEL), opened and
+closed on 2026-10-29, and its fifth and last, 41e (UNSTATED), opened on 2026-10-29. The PI
 queued RECONCILE next, ahead of ORIGAMI, as three autopilot rounds and one attended phase
 (`.claude/autopilot/queue.toml`). Its input is PROSE's findings report `notes/Prose-report.md`
 (items S1–S42, L1–L12, M1–M5, G1–G6 and §2.6), with each finding's home the ledger
@@ -35,10 +35,11 @@ docstrings wait for the phase (§3). The round's log also proposed that the labe
 join the project's gates for a commit that moves a pin; the PI adopted it on 2026-10-24
 (`blueprint/lint.sh` check 9). Phase 41's plan, its
 open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
-the PI's answers to 41d's questions (RELABEL closed on 2026-10-29: no main result bounds the edge
-labels; its item R's one-commit drop of `hfresh` from KT Theorem 4.9's principle, and a free
-strengthening, go to the PI; `notes/Phase41d.md` *Blockers*), then UNSTATED, the claims no
-declaration states, expected as 41e. The
+41e (UNSTATED, the claims no declaration states, the phase's (c) in §3 below, with the design
+doc's §4(a); opened with the PI on 2026-10-29, the design doc's §1j, with item R's drop of `hfresh`
+from KT Theorem 4.9's principle and the molecule's padded labels dropped), its item U1, S25 with
+`def:blockingWitness`
+(`notes/Phase41e.md` *Hand-off*). Its close closes the phase and the program. The
 PI's push ran CI green on 2026-10-25.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 

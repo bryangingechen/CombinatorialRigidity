@@ -4,8 +4,8 @@
 stays in progress. The phase's design, the PI's decisions (here §1h.2 and §1i, the open) and
 RELABEL's recon are in `notes/Phase41-design.md`; the recon's Lean witness is
 `notes/reconcile-formal/RelabelWitness.lean`. Every checklist item landed, in 7 commits with the
-open, a corrective and the close. The loop stops for the PI's answers (*Blockers*); UNSTATED
-follows, expected as 41e (*Hand-off*).
+open, a corrective and the close. The PI answered *Blockers* on 2026-10-29 (the design doc's §1j),
+and UNSTATED opened the same day as 41e (*Hand-off*).
 
 ## Current state
 
@@ -48,7 +48,10 @@ edit, no red target nodes.
 
 ## Blockers / open questions
 
-For the PI at the stop (§1i.4); none blocks a build.
+For the PI at the stop (§1i.4); none blocks a build. **Answered** on 2026-10-29
+(`notes/Phase41-design.md` §1j): 1 taken (form (b), 41e's item R before U4), 2 taken (riding on
+41e's U6), and of 3 the padding drop (before U10) and the `\uses` fix (on U6); the pinned forms no
+main result calls stay.
 
 1. **Item R's question** (design doc §2, *Item R's recon*, its *For the PI*).
    `minimal_kdof_reduction` (KT Theorem 4.9's principle; not a main result, and nothing calls it)
@@ -72,12 +75,10 @@ For the PI at the stop (§1i.4); none blocks a build.
 
 ## Hand-off / next phase
 
-**The next concrete task is the PI's answers** to *Blockers* (the loop stops here, §1i.4; the PI pushes only at
-Phase 41's close). Then **UNSTATED**, expected as 41e, its letter minted at its own open: the claims
-no declaration states, the full list with §4(a) (§1h.1), sized and ordered as U1–U12 by the design
-doc's §2, *UNSTATED's open recon* (15–21 commits; 16–22 with item R's build before U4, if the PI
-takes it). Its open transcribes that recon, noting that since B3 U10 has no label bound to meet
-(§2, *RELABEL's recon*). ORIGAMI opens after Phase 41.
+**Next: 41e (UNSTATED)**, opened 2026-10-29 with the PI (the design doc's §1j), work log
+`notes/Phase41e.md`: the claims no declaration states, the full list with §4(a) (§1h.1), as U1–U12
+with item R's build before U4 and the padding dropped before U10 (17–23 commits); its first item is
+U1. It is Phase 41's last sub-phase, and the PI pushes at its close. ORIGAMI opens after Phase 41.
 
 ## Decisions made during this phase
 
@@ -92,5 +93,5 @@ takes it). Its open transcribes that recon, noting that since B3 U10 has no labe
 - **The renamed forms are pinned beside their main results** (B3), backing the `\uses` edges into
   `thm:theorem-55`, `thm:theorem-55-6-genuine` and `thm:theorem-55-6-rows`.
 - **The witnesses take fewer labels than the old bound** (B2, B3): the bound shown gone, not met.
-- **`G.shadowGraph`'s padding stays** (B3): dropping it would move `lem:molecule-graph-carrier` and
-  UNSTATED's U10.
+- **`G.shadowGraph`'s padding stayed** (B3): dropping it would move `lem:molecule-graph-carrier` and
+  UNSTATED's U10. The PI dropped it in 41e, before U10 (§1j.3).

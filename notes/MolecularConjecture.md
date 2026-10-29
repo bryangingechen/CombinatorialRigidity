@@ -794,7 +794,9 @@ third, 41c (MULTIGRAPH), opened and closed 2026-10-28: the generic body-hinge th
 every multigraph, loops allowed, and KT Proposition 2.3 at every generic hinge-point assignment.
 The fourth, 41d (RELABEL), opened and closed 2026-10-29 with the PI: a transport at the boundary
 dropped the bound on the edge labels from the six main results that carried it, the induction
-untouched; UNSTATED follows, expected as 41e, after the PI's answers to 41d's questions. Summary: ROADMAP §41. Still queued,
+untouched. The fifth and last, 41e (UNSTATED), opened 2026-10-29 with the PI: each claim no
+declaration states gets a declaration and a pin, KT Theorem 4.9's principle drops its label supply,
+and its close closes Phase 41. Summary: ROADMAP §41. Still queued,
 codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after Phase 41), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
