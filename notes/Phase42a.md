@@ -2,18 +2,18 @@
 
 **Status:** in progress, opened 2026-10-29 with the PI, attended. Research only: no Lean, no
 blueprint. Landed: the step table and thresholds (design doc §2.1–§2.5); T1, T2 and the
-content-range graphs (`Strata.md` Results 20–22), with no shortfall.
-Next concrete task: T4's first half at `d = 4, 5`, or PD-STATE's open, in either order.
+content-range graphs (`Strata.md` Results 20–22), with no shortfall; T4's first half (Result 23),
+where ONE-EAR's first option holds at every cell meeting the `d = 3` step's merged hypothesis.
+Next concrete task: T3 (SHORT) at `d = 4, 5`, or PD-STATE's open, in either order.
 Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 
 ## Current state
 
 **Next, in either order** (the PI's defaults, design doc §1):
-- **T4's first half** (design doc §2.4), one `strata.py` commit with its figures. At `d = 4, 5`,
-  on Result 22's `θ(2, 2, k)` and `θ(2, 2, 2, k)` (a one-body ear `a − x − b` whose ends share a
-  neighbour), take a configuration of `G` and measure `G[V₁] = G − x` there against its target,
-  with `dim(Π_a ∩ Π_b)`. Then T3 (SHORT, `d = 4, 5`) and T4's `d = 5, 6` half; each sizes an
-  obligation before any attack track.
+- **T3** (SHORT; design doc §2.4), one `strata.py` mode committed with its figures. At
+  `d = 4, 5`, on the content range, ears with `3 ≤ k ≤ D − 2` and `def[D](G[V₁]) > def[D](G)`:
+  does a general ear datum give `W ⊇ star(y₁) + star(y₃)` with `W ≠ Λ²`, and does (⋆) hold?
+  Then T4's second half: `d = 5, 6`, and Result 23's two `d = 4` cells where (⋆) asks for 3.
 - **PD-STATE's open** beside the research, its letter minted then (`PHASE-BOUNDARIES.md` *When
   this commit opens a phase*): check the dual-form carrier (§2.3 CARRIER) against the definition
   bodies, and lay out PD-STABLE.
@@ -23,7 +23,9 @@ Plan and decisions: `notes/Phase42-design.md`; evidence: `notes/Strata.md`.
 formulas hold. CERT holds at `d ≤ 6` over every field, its `D`-gon by a construction in every `d`
 (§2.3). All 38 new content cells attain, on graphs carrying rows 14's and 22's configurations, so
 the obstruction measured so far is the proof's, not the statement's. The steps break at `d = 4`
-(SHORT) and `d = 5` (ONE-EAR).
+(SHORT) and `d = 5` (ONE-EAR). Then T4's first half, `strata.py --oneear` (Result 23, §2.4): on
+`θ(2, 2, k)` and `θ(2, 3, k)` `G[V₁]` attains on the incidence locus at all 26 cells, `d = 4, 5`;
+on `θ(2, 2, 2, k)`, where the merged hypothesis fails, it misses once, provably (`k = 10`, `d = 4`).
 
 ## Architectural choices made up front
 
@@ -44,9 +46,10 @@ the obstruction measured so far is the proof's, not the statement's. The steps b
   over every field (`Strata.md` Results 20–21).
 - [x] **The content-range graphs** (§2.5): 38 content cells at `d = 4, 5, 6`, all at target
   (Result 22).
-- [ ] **T3, T4, T5** (§2.4), on graphs with `def[3] ≥ d − 2` only: SHORT at `d = 4, 5`, ONE-EAR
-  at `d = 4, 5` (and T4's `d = 5, 6` half), the coverage rows at `D = 10, 15`. Each sizes an
-  obligation before any attack on it. T4's first half is next (*Current state*).
+- [x] **T4's first half** (§2.4): `G[V₁]` on `G`'s configurations at `d = 4, 5` (Result 23).
+- [ ] **T3, T4's second half, T5** (§2.4), on graphs with `def[3] ≥ d − 2` only: SHORT at
+  `d = 4, 5`, T4 at `d = 5, 6`, the coverage rows at `D = 10, 15`. Each sizes an obligation
+  before any attack on it. T3 is next (*Current state*).
 - [ ] **A second read of rows 9 and 12** (contraction; (⋆) and the two-body ear), before an attack
   track or PD-CARRIER builds on them.
 - [ ] **SHORT, ONE-EAR** (§2.3): attack tracks once T3 and T4 size them, SHORT at `d = 4` and
@@ -59,12 +62,13 @@ the obstruction measured so far is the proof's, not the statement's. The steps b
 
 ## Hand-off / next phase
 
-Two commits are open, in either order (*Current state*). One is T4's first half, a new
-`strata.py` mode committed with its figures (`HARNESS.md` *Reproducibility*), on Result 22's
-thetas. The other is PD-STATE's open as the next sub-phase. A `G[V₁]` cell below target at
-several seeds would rule out ONE-EAR's first option at `d = 4`, the motive asking `G[V₁]` to attain
-on that locus (design doc §2.3), leaving another step (one point's shortfall proves nothing). Whether SHORT and ONE-EAR take one session or several is unknown
-until T3 and T4 size them.
+Two commits are open, in either order (*Current state*). One is T3, a new `strata.py` mode
+committed with its figures (`HARNESS.md` *Reproducibility*). The other is PD-STATE's open as the
+next sub-phase. T3 tests SHORT's X3 form (design doc §2.3): a general datum with `W` containing
+both stars and `W ≠ Λ²` rules it out at that `d`, leaving the step that moves `x₁` and `x₃` too.
+T4's first half left ONE-EAR's first option standing where the step's merged hypothesis holds;
+its insertion count is the second half's. Whether SHORT and ONE-EAR take one session or several
+is unknown until T3 and T4's second half size them.
 
 ## Decisions made during this phase
 
@@ -79,3 +83,8 @@ until T3 and T4 size them.
   `D`-gon is built (`cert_top`), not searched: a `{−1, 0, 1}` search found none at `d = 5, 6` in
   5000 tries (measured, script not retained). Independence is checked over every field (Smith
   invariant factors), as Phase 40's certificates are.
+- **T4's first half is its own mode**, `strata.py --oneear`, so `--content`'s figures do not
+  move. It adds `θ(2, 3, k)` as a control (ends sharing no neighbour) and reports the `d = 3`
+  step's two hypotheses per cell, since the motive is needed only where that step is taken. Its
+  one miss is proved from asserted premises, not read off a point. A past-cap cell is certified
+  when `G₁`'s own configuration reaches `D(n₁ − 1)`, so it is marked `<`, not `?`.

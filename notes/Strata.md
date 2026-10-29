@@ -3,7 +3,7 @@
 **Status:** its `Pᵈ` pencil part opened as **Phase 42** (PENCIL-D, the PI, 2026-10-29; plan
 `notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
-third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–22. Next concrete
+third set the `Pᵈ` picture, Results 12–19. Phase 42a's tests added Results 20–23. Next concrete
 task: Phase 42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded). Editing discipline as for phase notes (≤ 8-line
 entries). `HARNESS.md` *Evidence* and *Reproducibility* bind this work; it is not an attack track.
@@ -220,6 +220,15 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     (`def_3 = k − 3`). The diamond rings at `m = 6, 7` (`n = 24, 28`) carry a condition at every
     body, up to `d = 6`. Targets as in Result 19: 24 cells under the cap, 14 certified past it. With
     §2.5's 47 cells (`notes/Phase42-design.md`), 85, none below. D's witness has `def_3 = 0`.
+23. `[MEASURED]`, one bound `[PROVED]`: **The one-body ear on its incidence locus** (Phase 42a's
+    T4, first half; `--oneear`, seeds 1–3). For an ear `a − x − b` at non-adjacent ends, `G`'s
+    configurations restrict to the locus `b_x ∈ Π_a ∩ Π_b`, where `lem:pencil-one-ear-incidence`
+    needs `G₁ = G − x` at its target. There `G₁` reaches it at all 26 cells, `d = 4, 5`, of
+    `θ(2, 2, k)` (`k = 4..10`; the ends share a neighbour) and `θ(2, 3, k)` (`k = 4..9`; none), and
+    at 11 of 12 on `θ(2, 2, 2, k)` (`k = 5..10`; two, and the step's merged hypothesis fails). The
+    miss, `k = 10` at `d = 4`, is forced: the hubs' planes coincide, so the cycle `a y b w` has
+    dependent hinges, and the `k`-path extends that to a motion of `G₁` once its hinges span `Λ²`
+    (`k ≥ D`). The proof and the cells: `notes/Phase42-design.md` §2.4.
 
 ## The PENCIL-D program
 
@@ -265,11 +274,11 @@ Hunt, *J. Mechanisms* 2 (1967) 307–327, doi:10.1016/0022-2569(67)90005-5.
 
 ## Evidence
 
-Four commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
+Five commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
 `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest
 --seed N` and `... --complexes --residual4 --d4 --lifting --seed N` (~20 s each), `... --pd
---seed N` and `... --content --seed N` (~4 s each). Output is byte-identical under
-`PYTHONHASHSEED` 0 and 7.
+--seed N` and `... --content --seed N` (~4 s each), `... --oneear --seed N` (~1 s). Output is
+byte-identical under `PYTHONHASHSEED` 0 and 7.
 - **First command** (session 1; byte-identical after sessions 2 and 3): 184 linear cells
   (23 graphs × 8 rungs) where the rank at a point, the count and the rank at the per-edge
   linear envelope agree; 7 mixed cases; every per-body cell (molecular, panel, pencil, flat
@@ -294,6 +303,14 @@ Four commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
   configuration varies the picture only. T2 searches the box `{−1, 0, 1}`, seeded by `(d, m)`
   alone, so its lines are seed-independent. In-code fences: the families of Result 22 stop at
   `k = 10` and `m = 7`, T2 at `d = 6`.
+- **`--oneear`** (Phase 42a's T4; the eleven earlier modes' output byte-identical at seeds 1–3
+  against the previous driver): Result 23. Asserted: each ear's shape (`x` adjacent to the hubs
+  only, the hubs not adjacent), `dim Π_a = dim Π_b = 3` and `b_x ∈ Π_a ∩ Π_b` at `G`'s
+  configuration, every rank at most its count, `dim L(q) = 3 + def_3` for `G` and `G₁` under the
+  cap, and on `θ(2, 2, 2, k)` the forced motion's premises with its bound. Reported: the ranks,
+  `dim(Π_a ∩ Π_b)` and the `d = 3` step's two hypotheses. Support: one picture per graph, fresh
+  heights per `d` for `G` and for `G₁`'s control at the same picture. Fences: `d ∈ {4, 5}`,
+  `k ≤ 10` (`k ≤ 9` for `θ(2, 3, k)`), the DP cap at `n₁ ≤ 12`. The cells do not vary with the seed.
 - **Bounds:** a point's rank is a lower bound for the stratum's generic rank, and each count
   an upper bound (Results 3, 5, and `D(n−1) − def_D` in `Pᵈ`), so a match certifies the
   generic rank on that graph. A shortfall at a point would prove nothing.

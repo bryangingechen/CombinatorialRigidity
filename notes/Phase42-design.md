@@ -7,9 +7,11 @@ waits on the ear rows, nondegeneracy's lift is open, and 4 rows fail as written:
 the one-body and orbit ears (rows 14–15), and route B. §2.5 places the thresholds at `d = 4, 5`
 and the content at `def[3] ≥ d − 2`. T1, T2 and the content-range graphs have landed (§2.4,
 §2.5): row 5's formulas hold, CERT holds at `d ≤ 6` over every field, and 38 more content cells
-reach their target, on graphs where rows 14 and 22 fail as written.
-Next concrete task: PD-STATE's open as the next sub-phase, or T3 and T4 at `d = 4, 5`, in either
-order (§1's defaults). The route stays open (§4). Evidence: `notes/Strata.md`, Results 12–22.
+reach their target, on graphs where rows 14 and 22 fail as written. T4's first half has landed
+(§2.4): where the `d = 3` one-body step's hypotheses hold, `G[V₁]` attains on the incidence locus
+at every cell measured, `d = 4, 5`, so ONE-EAR's first option stands there.
+Next concrete task: PD-STATE's open as the next sub-phase, or T3 at `d = 4, 5`, in either order
+(§1's defaults). The route stays open (§4). Evidence: `notes/Strata.md`, Results 12–23.
 
 This file is the phase's entry point: the target (§0), the PI's decisions (§1), the recon (§2),
 the layers by stable code (§3) and the open questions (§4). Letters are minted when a sub-phase
@@ -156,6 +158,8 @@ Result 17's `def[3] ≤ 1` one step further.
 - **ONE-EAR** (rows 14–15): either a motive that asks `G[V₁]` to attain on the locus where `Π_a`
   and `Π_b` meet above a general `q_x`, or another step for `k = 1, 2` at non-adjacent ends, plus
   a `Pᵈ` insertion lemma (at `d ≥ 5` every reachable hinge lies in `Λ²(A+B)`, of dimension ≤ 10).
+  The first option's demand holds at every cell T4 measured where the step's merged hypothesis
+  holds, and fails, provably, at one where it does not (§2.4, `Strata.md` Result 23).
 - **CARRIER** (rows 3, 9, 19–21): PD-STATE's. The point-based `HasPencilPanelRealization` is the
   wrong object at `d ≥ 4`. Primal (a `(d−3)`-flat `A_v` in a hyperplane) or dual (a point in a
   3-space); an all-`d` polarity `Λ²K^{d+1} ≅ Λ^{d−1}K^{d+1}` (`screwComplementIso` is grade 2
@@ -166,7 +170,7 @@ Result 17's `def[3] ≤ 1` one step further.
   feasibility unchecked). It has `def[3] = 0` (Result 22), so its rank is Result 17's; the
   question it raises is GENERIC's alone.
 
-### 2.4 Proposed tests (T1 and T2 run; T3–T5 named, not run)
+### 2.4 Proposed tests (T1, T2 and T4's first half run; T3, T4's second half and T5 not run)
 
 - **T1** (row 5): at `d = 4` on the `--d4` population, the flat rank `10(n−1) + 3 − dim L(q)` and
   R1's base `10(n−1) − def[6]`. **Run** at `d = 4, 5, 6` (`Strata.md` Result 20): both formulas
@@ -178,6 +182,24 @@ Result 17's `def[3] ≤ 1` one step further.
   general datum give `W ⊇ star(y₁) + star(y₃)` with `W ≠ Λ²`, and does (⋆) hold?
 - **T4** (ONE-EAR): at `d = 4, 5`, the rank of `G[V₁]` on `G`'s configurations, one-body chains
   whose ends share a neighbour; at `d = 5, 6`, `dim(ρ + Λ²(A+B))` against `3 + f − def[D](G)`.
+  **First half run** (`Strata.md` Result 23; `--oneear`, seeds 1–3, the cells seed-independent).
+  The ear is `a − x − b` on theta graphs, `G₁ = G − x`, and a configuration of `G` restricted to
+  `V₁` is a general point of the incidence locus. On `θ(2, 2, k)` (`k = 4..10`, the ends share
+  one neighbour) and the control `θ(2, 3, k)` (`k = 4..9`, none), where the step's merged
+  hypothesis holds, `G₁` attains there at all 26 cells. The locus is proper: `dim(Π_a ∩ Π_b)` is 2
+  on it against 1 at `G₁`'s own configuration on `θ(2, 2, k)`, and on `θ(2, 3, k)` 1 against 0 at
+  `d = 5` (1 and 1 at `d = 4`, where the incidence costs nothing). The step's other hypothesis
+  read at `D`, `def[D](G₁) ≤ def[D](G)`, fails at `d = 4` on `θ(2, 2, 9)` and `θ(2, 3, 8)`
+  (`G₁ = C₁₁`): there `(⋆)` at `k = 1` asks `dim(ρ + Λ) ≥ 3`, not 2, the second half's question.
+  On `θ(2, 2, 2, k)` (`k = 5..10`, two shared neighbours `y, w`; the merged hypothesis fails under
+  the cap) `G₁` attains at 11 of 12 cells and misses at `k = 10`, `d = 4`: 119 against 120, a
+  target `G₁`'s own configuration certifies. **The miss is forced.** Where `b_x, b_y, b_w` are
+  independent, `Π_a` and `Π_b` (each 3-dimensional, both containing them) coincide, so the cycle
+  `a y b w` has its four hinges in the 3-dimensional `Λ²Π_a`. A dependency among them, with
+  `k`-path coefficients solving the long cycle's equation, is a nonzero motion assignment of `G₁`
+  (`Strata.md` Result 1) wherever the path's hinges span `Λ²K^{d+1}` (so `k ≥ D`), and `G₁` ranks at most
+  `D(n₁ − 1) − 1`. Both conditions are open on `G`'s irreducible configuration space and hold at
+  the seeded point (the driver checks both, exactly, and lists the cell), so the bound holds on a dense subset of the locus.
 - **T5** (coverage): the graphs whose only row at `D = 10, 15` is a `k = 1, 2` orbit cell. C's hand
   count: `K₄` with every edge subdivided twice takes the orbit cell at `D = 6` and row 12 at `D = 10`.
 

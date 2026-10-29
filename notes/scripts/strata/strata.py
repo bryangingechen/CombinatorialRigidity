@@ -95,6 +95,19 @@ byte-identical; `notes/Phase42-design.md` sections 2.4-2.5):
       at d = 4, 5, 6: rank at a point / D(n-1) - def_D under the DP cap,
       reported, and against D(n-1) past it, where a match certifies.
 
+Added for Phase 42a's T4 (2026-10-29; the eleven modes above unchanged, their
+output byte-identical; `notes/Phase42-design.md` sections 2.3-2.4):
+
+  python3 notes/scripts/strata/strata.py --oneear [--seed N]
+      T4's first half, ONE-EAR.  Theta graphs with a one-body ear a - x - b
+      (`one_ear_graphs`: the ends share one, two or no neighbours in
+      V1 = V - x) at d = 4, 5: a pencil configuration of G restricted to V1,
+      the incidence locus the d = 3 step needs G1 = G - x to attain on, and
+      G1's own configuration at the same picture, each against G1's target
+      (reported); with dim(Pi_a cap Pi_b), the d = 3 step's two hypotheses,
+      and at two shared neighbours the premises of a forced motion of G1
+      on the locus (asserted).
+
 Verdict: the last line is `OK: every target met`, or `FAILED: ...` with exit
 status 1; a mismatch in any mode counts.
 
@@ -1562,8 +1575,156 @@ def mode_content(s):
     return bad
 
 
+
+# ---------------- Phase 42a: T4's first half, the one-body ear ----------------
+
+def one_ear_graphs():
+    """T4's graphs (Phase42-design.md section 2.4).  Each is a theta graph
+    with hubs a = 0, b = 1, not adjacent, and x = 2 the interior body of its
+    first 2-path: a one-body ear a - x - b on V1 = V - x.  th22-k,
+    theta(2,2,k), k = 4..10: a and b share one neighbour in V1 (row 14's
+    configuration; Result 22's family).  th222-k, theta(2,2,2,k), k = 5..10:
+    they share two (route B's hubs).  th23-k, theta(2,3,k), k = 4..9: none,
+    the control."""
+    th = lambda *ls: relabel(theta_edges(list(ls)))  # noqa: E731
+    G = {f"th22-{k}": th(2, 2, k) for k in range(4, 11)}
+    G.update({f"th222-{k}": th(2, 2, 2, k) for k in range(5, 11)})
+    G.update({f"th23-{k}": th(2, 3, k) for k in range(4, 10)})
+    return G
+
+
+def plane_of(pts, edges, v):
+    """A basis of Pi_v = span b_N[v]."""
+    P = [pts[w] for w in sorted({v} | {w for e in edges if v in e for w in e})]
+    return [P[i] for i in _pivots(P)]
+
+
+def identify(n, edges, a, b):
+    """G with b identified into a, relabelled; an edge ab becomes a loop,
+    which def_D ignores.  So def_D of it is the maximum over the partitions
+    with a and b in one part, the merged deficiency def:deficiency-merged."""
+    ix = {v: i for i, v in enumerate(w for w in range(n) if w != b)}
+    ix[b] = ix[a]
+    return n - 1, [(ix[u], ix[v]) for u, v in edges]
+
+
+def mode_oneear(s):
+    print("T4's first half (Phase 42a; Phase42-design.md sections 2.3-2.4, "
+          "ONE-EAR): a one-body ear a - x - b, G1 = G[V1] = G - x.  At d = 4, "
+          "5, one seeded picture q per graph, fresh heights per d.  G1@G: a "
+          "pencil configuration of G (heights in L_G(q)) restricted to V1, "
+          "the locus the d = 3 step needs G1 to attain on "
+          "(lem:pencil-one-ear-incidence); [G1]: G1's own configuration at "
+          "q|V1 (heights in L_G1), the control.  Both against t1 = D(n1-1) - "
+          "def_D(G1) under the DP cap (n1 <= 12; '<' below, reported) or "
+          "D(n1-1) past it ('=' certifies, '?' inconclusive).  G: G's rank at "
+          "its configuration, as in --content; 'c' a content cell of G, d <= "
+          "dim L_G(q) - 1.  meet: dim(Pi_a cap Pi_b), Pi_v = span b_N[v] in "
+          "G1, at G's configuration | at G1's.  sh: neighbours a, b share in "
+          "V1.  M: the d = 3 step's hypothesis def_3(G1; a, b) + 2 <= "
+          "def_3(G1) (sec:main-component-orbit).  le: def_D(G1) <= def_D(G), "
+          "its other hypothesis at D ('.' past the cap).  Asserted: x has "
+          "neighbours a, b only, a and b not adjacent, dim Pi_a = dim Pi_b = "
+          "3, b_x in Pi_a cap Pi_b at G's configuration, every rank at most "
+          "its count, and under the cap dim L(q) = 3 + def_3 for G and G1.")
+    print(f"{'graph':9}{'n':>3}{'e':>3}{'d3':>4}{'sh':>3}{'M':>2} "
+          + "".join(f"{'d=' + str(d) + ' G':>12}{'G1@G [G1]':>16}{'meet':>6}{'le':>3}"
+                    for d in (4, 5)))
+    bad, tally, forced = 0, {}, []
+    for g, (n, E) in one_ear_graphs().items():
+        a, b, x = 0, 1, 2
+        nb = {v: {w for e in E if v in e for w in e} - {v} for v in range(n)}
+        bad += nb[x] != {a, b} or b in nb[a]
+        keep = [v for v in range(n) if v != x]
+        ix = {v: i for i, v in enumerate(keep)}
+        n1, E1 = n - 1, [(ix[u], ix[v]) for u, v in E if x not in (u, v)]
+        a1, b1 = ix[a], ix[b]
+        sh = len(nb[a] & nb[b] - {x})
+        df = {D: deficiency(n, E, D) for D in (3, 10, 15)} if n <= 12 else {}
+        df1 = {D: deficiency(n1, E1, D) for D in (3, 10, 15)} if n1 <= 12 else {}
+        mh = "."
+        if df1:
+            mh = "y" if deficiency(*identify(n1, E1, a1, b1), 3) + 2 <= df1[3] else "n"
+        q = [s.vec(2) for _ in range(n)]
+        L = lifting_space(n, E, q)
+        q1 = [q[v] for v in keep]
+        L1 = lifting_space(n1, E1, q1)
+        if df:
+            bad += len(L) != 3 + df[3]
+        if df1:
+            bad += len(L1) != 3 + df1[3]
+        cells = []
+        for d in (4, 5):
+            D = (d + 1) * d // 2
+            bG, H = pd_pencil(s, n, E, d, q, L)
+            body_guard(n, E, H)
+            r = motion_rank(n, E, H)
+            t = D * (n - 1) - df[D] if df else D * (n - 1)
+            assert r <= t, (g, d)
+            mark = ("" if r == t else "<") if df else ("=" if r == t else "?")
+            cells.append(f"{r}/{t}{mark}{'c' if d <= len(L) - 1 else ''}")
+            p1 = [bG[v] for v in keep]
+            pg, Hg = pd_pencil(s, n1, E1, d, q1, L1)
+            body_guard(n1, E1, Hg)
+            t1 = D * (n1 - 1) - df1[D] if df1 else D * (n1 - 1)
+            r1, meet = [], []
+            for pts in (p1, pg):
+                H1 = [ext([pts[u], pts[v]]) for u, v in E1]
+                body_guard(n1, E1, H1)
+                r1.append(motion_rank(n1, E1, H1))
+                assert r1[-1] <= t1, (g, d)
+                A, B = plane_of(pts, E1, a1), plane_of(pts, E1, b1)
+                bad += len(A) != 3 or len(B) != 3
+                if pts is p1:
+                    bad += rank(A + [bG[x]]) != 3 or rank(B + [bG[x]]) != 3
+                meet.append(len(span_cap(A, B)))
+            # past the cap a rank of D(n1-1) certifies t1 for both cells
+            sure = bool(df1) or max(r1) == t1
+            mk = [("" if rr == t1 else "<" if sure else "?") + ("" if df1 or rr != t1 else "=")
+                  for rr in r1]
+            cells.append(f"{r1[0]}/{t1}{mk[0]} [{r1[1]}{mk[1]}]")
+            if sh == 2:
+                # the mechanism: b_x, b_y, b_w independent make the hubs'
+                # planes coincide in G, so a, y, b, w lie in one 3-space and
+                # the 4-cycle's hinges are dependent in Lambda^2; where the
+                # k-path's hinges span Lambda^2 that dependency extends to a
+                # motion assignment of G1, so G1 ranks below D(n1-1) there
+                y, w = sorted(nb[a] & nb[b] - {x})
+                bad += rank([bG[v] for v in (x, y, w)]) != 3
+                bad += rank([bG[v] for v in (a, y, b, w)]) != 3
+                path = [ext([p1[u], p1[v]]) for u, v in E1
+                        if not {u, v} & {ix[y], ix[w]}]
+                if rank(path) == D:
+                    forced.append(f"{g}@{d}")
+                    bad += r1[0] > D * (n1 - 1) - 1
+            cells.append(f"{meet[0]}|{meet[1]}")
+            cells.append("." if not (df and df1) else "y" if df1[D] <= df[D] else "n")
+            fam = tally.setdefault((g.split("-")[0], d), [0, 0, 0, set(), []])
+            fam[0] += 1
+            fam[1] += r1[0] == t1
+            fam[2] += r1[1] == t1
+            fam[3].add(f"{meet[0]}|{meet[1]}")
+            fam[4] += [] if r1[0] == t1 else [g]
+        print(f"{g:9}{n:>3}{len(E):>3}{df.get(3, '.'):>4}{sh:>3}{mh:>2} "
+              + "".join(f"{c:>12}" if i % 4 == 0 else f"{c:>16}" if i % 4 == 1
+                        else f"{c:>6}" if i % 4 == 2 else f"{c:>3}"
+                        for i, c in enumerate(cells)))
+    for (fam, d), (k, at, atg, meets, short) in tally.items():
+        print(f"  {fam}, d={d}: G1 at t1 at G's configuration on {at} of {k} "
+              f"(its own: {atg} of {k}); meet " + ", ".join(sorted(meets))
+              + ("" if not short else "; below: " + ", ".join(short)))
+    print("  th222-k, two shared neighbours y, w: at G's configuration b_x, b_y, "
+          "b_w and b_a, b_y, b_b, b_w each span 3 dimensions (asserted, every "
+          "cell), so the 4-cycle a y b w has dependent hinges; where the k-path's "
+          "hinges span Lambda^2 this extends to a motion assignment of G1, which "
+          "then ranks at most D(n1-1) - 1 (asserted): "
+          + (", ".join(forced) if forced else "no cell"))
+    print(f"mismatches (asserted): {bad}")
+    return bad
+
+
 MODES = ("linear", "mixed", "perbody", "examples", "selftest",
-         "complexes", "residual4", "d4", "lifting", "pd", "content")
+         "complexes", "residual4", "d4", "lifting", "pd", "content", "oneear")
 
 
 def main():

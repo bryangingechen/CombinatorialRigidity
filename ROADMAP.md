@@ -1285,9 +1285,11 @@ break at `d = 4` and `d = 5`, and the conjecture's new content at `d` is the spa
 ear certificates. These exist at `d ≤ 6` over every field, the largest by a construction in
 every `d`. It also measured graphs built where the proof breaks. All 38 new cells there reach the
 generic rank, so on the graphs measured the obstruction is the proof's, not the statement's.
-Next, by the PI's defaults (2026-10-29), in either order: the statement layer and the
-`def_3 ≤ 1` corollary open beside the research, and two tests size the short and one-body ears
-at `d = 4, 5`. The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴`
+A second mode then tested the one-body ear where it breaks. Phase 40's step needs the smaller
+graph at its generic rank on a special locus. In `P⁴` and `P⁵` it reaches it there at every cell
+where the step's hypotheses hold, so a repaired step is not refuted; where they fail it can
+provably fall short. Next, by the PI's defaults (2026-10-29), in either order: the statement layer and the
+`def_3 ≤ 1` corollary open beside the research, and a test sizes the short ears at `d = 4, 5`. The targets are three tiers: every `d` at `def_3 ≤ 1`, at `def_3 ≤ 2` (a `P⁴`
 theorem), and every `d`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
