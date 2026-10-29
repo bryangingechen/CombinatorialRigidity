@@ -155,7 +155,7 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   the new import of `Contraction.lean`; no `hfresh`, `3 ≤ D` alone. Transcribed from the witness
   with R's names, no proof change. `thm:minimal-kdof-reduction` pins it beside (ii)'s and its
   fmlnote now says both parts are proved; the two definitions are unpinned helpers, their
-  docstrings leading `a step of thm:minimal-kdof-reduction`.)
+  docstrings leading `a step of thm:minimal-kdof-reduction`.) (`F-101`)
 - [ ] **U5. S19** (`F-116`). `BodyHingeFramework.case_I_rank_add_iff` (proved): for a proper
   rigid `H` with `r ∈ V(H)` and frameworks `F`, `F₂`, if `rank R(F₂) = D(|V(G/E(H))| − 1) − def`
   of the contraction, then `rank R(F) = D(|V(G)| − 1) − def(G̃)` iff
