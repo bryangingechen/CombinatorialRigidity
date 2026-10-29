@@ -7,7 +7,7 @@ its close closed Phase 41 and the RECONCILE program. The phase's design, the PI'
 `notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4 `ReductionWitness.lean`, for U11
 `DofGenericWitness.lean` and for U12 `CaseIIPlacementWitness.lean`. Every item landed, in 30
 commits with the open and the three-part close: 21 within the plan's 18–24, the PI's §1k record
-and 8 verification fixups. Next: the PI's push, then ORIGAMI, with the PI (*Hand-off*).
+and 8 verification fixups. Next: PENCIL-D, with the PI (*Hand-off*).
 
 ## Current state
 
@@ -65,10 +65,11 @@ changed after part 1. Mode: structural edit.
 
 ## Hand-off / next phase
 
-**Phase 41 and the RECONCILE program are closed; no phase is active.** The next concrete task is
-the PI's push, for which the loop stopped (§1j.5). ORIGAMI opens after it, with the PI (attended;
-planning note `notes/Origami.md`, ROADMAP *Queued post-program phases*), taking its phase number
-then; its queue row stays as it is until that open.
+**Phase 41 and the RECONCILE program are closed; no phase is active.** The PI's push, for which
+the loop stopped (§1j.5), has landed. On 2026-10-29 the PI queued PENCIL-D ahead of ORIGAMI, so
+the next concrete task is opening PENCIL-D with the PI (attended; planning note `notes/Strata.md`,
+*The PENCIL-D program*, ROADMAP *Queued post-program phases*), taking its phase number then;
+ORIGAMI follows. Both queue rows stay as they are until their opens.
 
 ## Decisions made during this phase
 

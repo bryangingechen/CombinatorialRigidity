@@ -24,7 +24,7 @@ S2's link condition a field of `PanelHingeFramework`, S1's generic theorems rest
 minimal graphs, with `F-323` and `F-324` taken in the restatements, M1 for every multigraph, no
 main result bounding the edge labels, and each claim no declaration stated given one (the phase's
 (c) in §3, with the design doc's §4(a)). **Next:** nothing in RECONCILE; the loop stopped for the
-PI's push, and ORIGAMI opens next, with the PI.
+PI's push, and PENCIL-D (queued 2026-10-29, ahead of ORIGAMI) opens next, with the PI.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

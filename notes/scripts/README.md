@@ -1491,12 +1491,13 @@ A driver directory on the base layer, outside the PENCIL arcs. It imports
 catalogued §1 primitives only (`exactcore`, `kbare_common.exact_deficiency`,
 `pitch`'s `klein` / `det4` / `theta_edges`, `hybrid_gates.build_rigidity_extensors`).
 Its per-mode prose is its module docstring, and its reading is
-`notes/Strata.md`.
+`notes/Strata.md`, which is also the planning note of the queued PENCIL-D program.
 
 | invocation | ~time | cited by |
 |---|---|---|
 | `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest --seed N`, `N ∈ {1, 2, 3}` | 20 s | `notes/Strata.md` *Evidence* (Results 1, 3, 5, 6, 7) |
 | `python3 notes/scripts/strata/strata.py --complexes --residual4 --d4 --lifting --seed N`, `N ∈ {1, 2, 3}` | 20 s | `notes/Strata.md` *Evidence* (Results 3, 4, 8, 9, 11); its helpers `span_cap`, `det_exact`, `ext`, `fund_cycles`, `lovasz_rank`, `rig_rank_dot` are direction-local and deliberately not catalogued |
+| `python3 notes/scripts/strata/strata.py --pd --seed N`, `N ∈ {1, 2, 3}` | 4 s | `notes/Strata.md` *Evidence* (Results 15, 16, 18: the pencil of `Pᵈ` at `d = 2..6`, the stable range and the deficiency lemma); `pd_pencil`, `subdivide` and `PD_PAST_CAP` are direction-local |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,

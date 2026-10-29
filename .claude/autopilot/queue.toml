@@ -119,6 +119,15 @@ note = "notes/Phase41-design.md"
 attended = true
 done = true
 
+# Attended: new mathematics before its formalization. Queued by the PI on 2026-10-29, ahead of
+# ORIGAMI; it opens with the PI and takes its phase number then. Plan: notes/Strata.md.
+[[item]]
+id = "PENCIL-D"
+title = "PENCIL-D: the pencil realization theorem in every dimension"
+note = "notes/Strata.md"
+attended = true
+done = false
+
 # Attended, so the driver stops before it. ORIGAMI opens with the PI, and takes its phase number
 # then; afterwards the PI may replace this row with the opened phase's id and set attended = false.
 [[item]]

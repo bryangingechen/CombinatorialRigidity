@@ -17,8 +17,8 @@ the boundary, no main result bounds the edge labels. **41e** (UNSTATED, opened a
 declaration and a pin, with item R before U4, PAD before U10, and KT Proposition 2.3 and M1 at
 KT's own genericity (M1K). §2's arcs are compressed to cited verdicts, and the PI's decisions
 (§1–§1k) stand verbatim. The close closed the RECONCILE program (`notes/Reconcile.md`). **Next:**
-nothing in this phase: the loop stopped for the PI's push, and ORIGAMI opens next, with the PI
-(ROADMAP *Queued post-program phases*).
+nothing in this phase: the loop stopped for the PI's push, and PENCIL-D (queued 2026-10-29,
+ahead of ORIGAMI) opens next, with the PI (ROADMAP *Queued post-program phases*).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report

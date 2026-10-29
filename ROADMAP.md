@@ -1258,7 +1258,8 @@ KT's own genericity, the maximum rank over the hinge-point realizations: M1's ro
 beside it (§34). Every main result has a non-vacuity witness (`Nonvacuity.lean`), and the findings
 ledger `notes/Prose-findings.md` closed with every entry `done` or `left`. Headline axioms (the
 twenty `formalization.yaml` main results) re-verified at every sub-phase's close, the three
-standard ones. The loop stopped for the PI's push; ORIGAMI opens next, with the PI. Detail →
+standard ones. The loop stopped for the PI's push; PENCIL-D (queued 2026-10-29, ahead of ORIGAMI)
+opens next, with the PI. Detail →
 `notes/Phase41a.md` to `notes/Phase41e.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
@@ -1283,11 +1284,12 @@ above); its formalization sequel **PENCIL-X0** opened as Phase 40 the same day a
 initiative and closed 2026-09-29, proving the pencil realization theorem (§40 above). The PI then
 queued five post-Phase-40 cleanup rounds ahead of ORIGAMI (2026-09-29), to run under
 autopilot, on 2026-10-07 **PROSE**'s five rounds after them, and on 2026-10-15 **RECONCILE**
-after PROSE, so **ORIGAMI opens after RECONCILE**.) A longer **unqueued**
+after PROSE, so **ORIGAMI opens after RECONCILE**; on 2026-10-29 the PI queued **PENCIL-D**
+ahead of ORIGAMI.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
-formalization targets) lives in `notes/IdeaBacklog.md`. Its STRATA entry (2026-10-29) has a
-research note of its own, `notes/Strata.md`, with tests pending for a fresh session.
+formalization targets) lives in `notes/IdeaBacklog.md`. Its STRATA entry (2026-10-29) grew a
+research note of its own, `notes/Strata.md`, which is also PENCIL-D's planning note.
 
 - **The post-Phase-40 cleanup rounds** — five `CLEANUP.md` rounds over what Phases 39–40 built.
   In order: `40-cleanup` (mechanical), `40-factor` (the shared hub normalization),
@@ -1340,8 +1342,21 @@ research note of its own, `notes/Strata.md`, with tests pending for a fresh sess
   non-vacuity witness (`Nonvacuity.lean`) and checked the docstrings outside the phase's footprint,
   restating twenty-two blueprint statements and no main result's. The phase, `RECONCILE-FORMAL`, ran
   as **Phase 41** (§41 above). The findings ledger `notes/Prose-findings.md` closed with 332
-  entries, 307 `done` and 25 `left`, none `reported` (its header). **ORIGAMI** is next, and opens
-  with the PI.
+  entries, 307 `done` and 25 `left`, none `reported` (its header). **PENCIL-D** is
+  next, then **ORIGAMI**, each opening with the PI.
+- **PENCIL-D** — the pencil realization theorem in every dimension: prove it, then formalize it
+  over the next few phases. Queued by the PI on 2026-10-29, ahead of ORIGAMI, after three STRATA
+  sessions; its planning note is `notes/Strata.md` (*The PENCIL-D program*). In `Pᵈ` the hinges
+  at each body form a pencil when they contain a common `(d−3)`-flat and lie in a hyperplane, the
+  bottom of the `2(d−1)` per-body flag conditions. A theorem there implies every one of them,
+  Katoh–Tanigawa's all-`d` panel theorem among them. `d = 2` (Jackson–Jordán's pin-collinear
+  theorem) and `d = 3` (Phase 40) are formalized; `d = 4, 5, 6` reach the generic rank at every
+  graph measured (36 simple graphs with `n ≤ 12`, 8 past that cap), and every `d` follows from
+  Phase 40 when `def_3(G) ≤ 1`. Layers by stable code: PD-RECON (the
+  research recon: does Phase 40's induction run in `Pᵈ`?), PD-STATE and PD-STABLE (the statement
+  layer and the `def_3 ≤ 1` corollary, independent of the route), then Phase 40's carrier, steps
+  and coverage, Phase 39's reduction, and the headline in `Pᵈ`. Attended; it opens with the PI and
+  takes its number then. First task: PD-RECON's step table.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

@@ -64,6 +64,21 @@ their output byte-identical):
       - 4 against def_4, reported); then the cubic diamond rings at
       n = 12, 16, 20, past the DP cap, where a rank of 10(n-1) certifies.
 
+Added in the third session (2026-10-29; the nine modes above unchanged, their
+output byte-identical):
+
+  python3 notes/scripts/strata/strata.py --pd [--seed N]
+      The pencil of P^d at d = 2..6, D = C(d+1,2), dual form: a planar picture
+      q plus d-2 heights in L(q), hinge the line b_u b_v.  On the simple
+      graphs of `GRAPHS4`: rank at a point / D(n-1) - def_D, asserted at
+      d = 2, 3 (Katoh-Tanigawa at d = 2; Phase 40), reported at d >= 4.  Also
+      asserted: dim L(q) = 3 + def_3; def at C(l,2), l = 3 + def_3, equals
+      def_inf (def at n + 2, where only tree quotients count) on all 38
+      graphs; the points span min(d+1, dim L(q)) dimensions; def_D = def_inf
+      in the stable range d >= dim L(q) - 1.  Then `PD_PAST_CAP` (theta
+      graphs, subdivisions, diamond rings; n <= 25) at d = 4..6 against
+      D(n-1), where a match certifies.
+
 Verdict: the last line is `OK: every target met`, or `FAILED: ...` with exit
 status 1; a mismatch in any mode counts.
 
@@ -1106,8 +1121,128 @@ def mode_lifting(s):
     return bad
 
 
+PD_DIMS = (2, 3, 4, 5, 6)
+
+
+def pd_pencil(s, n, edges, d, q, L):
+    """The pencil of P^d, dual form: b_v = (q_v, z^1_v, ..., z^(d-2)_v, 1),
+    q a planar picture and every z^i in L(q), so every coordinate is affine in
+    q on each closed neighbourhood and b_N[v] lies in a plane; hinge the line
+    b_u b_v in Lambda^2 K^(d+1).  d = 3 is `pencil`, d = 4 `d4_lineplane`.
+    Returns the points and the hinges."""
+    hs = [s.comb(L) for _ in range(d - 2)]
+    b = [list(q[v]) + [h[v] for h in hs] + [F(1)] for v in range(n)]
+    for u, v in edges:
+        need(rank([b[u], b[v]]) == 2, "pencil: adjacent points coincide")
+    return b, [ext([b[u], b[v]]) for u, v in edges]
+
+
+def mode_pd(s):
+    print("the pencil of P^d, d = 2..6, D = C(d+1,2): a planar picture plus d-2 "
+          "heights in L(q).  Cell: rank at a point / t = D(n-1) - def_D; '*' "
+          "marks a mismatch at d = 2, 3 (Katoh-Tanigawa at d = 2; Phase 40), "
+          "'<' a point below t at d >= 4 (reported), 's' the stable range "
+          "d >= dim L(q) - 1.  Asserted at every graph: dim L(q) = 3 + def_3 "
+          "(simple graphs), def_C(l,2) = def_inf with l = 3 + def_3 (every "
+          "graph), the points spanning min(d+1, l) dimensions, and at stable d "
+          "def_D = def_inf.")
+    print(f"{'graph':10}{'n':>3}{'e':>3}{'d3':>4}{'dinf':>5}{'l':>4} "
+          + "".join(f"{'d=' + str(d):>13}" for d in PD_DIMS))
+    bad, below = 0, {}
+    for i, (g, (n, E)) in enumerate(GRAPHS4.items()):
+        dfc = {}
+
+        def df(D):
+            if D not in dfc:
+                dfc[D] = deficiency(n, E, D)
+            return dfc[D]
+        d3, dinf = df(3), df(n + 2)  # D - 1 > n: only tree quotients count
+        l3 = 3 + d3
+        bad += df(l3 * (l3 - 1) // 2) != dinf
+        if not simple(E):
+            print(f"{g:10}{n:>3}{len(E):>3}{d3:>4}{dinf:>5}{'.':>4}  (multigraph: "
+                  f"def lemma only)")
+            continue
+        q = [s.vec(2) for _ in range(n)]
+        L = lifting_space(n, E, q)
+        ell = len(L)
+        bad += ell != l3
+        cells = []
+        for d in PD_DIMS:
+            D = (d + 1) * d // 2
+            try:
+                b, H = pd_pencil(s, n, E, d, q, L)
+                body_guard(n, E, H)
+                need(rank(b) == min(d + 1, ell), "points span too little")
+            except Degenerate:
+                cells.append("-")
+                continue
+            r = motion_rank(n, E, H)
+            if i < 2:
+                assert r == rig_rank_dot(n, E, H), (g, d)
+            t = D * (n - 1) - df(D)
+            assert r <= t, (g, d)
+            stable = d >= ell - 1
+            if stable:
+                bad += df(D) != dinf
+            mark = ""
+            if r != t:
+                mark = "*" if d <= 3 else "<"
+                if d <= 3:
+                    bad += 1
+                else:
+                    below.setdefault(d, []).append(g)
+            cells.append(f"{r}/{t}{mark}{'s' if stable else ''}")
+        print(f"{g:10}{n:>3}{len(E):>3}{d3:>4}{dinf:>5}{ell:>4} "
+              + "".join(f"{c:>13}" for c in cells))
+    for d in PD_DIMS[2:]:
+        gs = below.get(d, [])
+        print(f"  d={d}: below t at {len(gs)} graph(s)" + (": " + ", ".join(gs) if gs else ""))
+    print("past the DP cap, d = 4..6: rank at a point against D(n-1), the trivial "
+          "ceiling, so '=' certifies the stratum's generic rank (and def_D = 0); "
+          "'?' is inconclusive.  dim L(q) - 1 is where the stable range starts")
+    n_eq, n_all = 0, 0
+    for g, (n, E) in PD_PAST_CAP.items():
+        q = [s.vec(2) for _ in range(n)]
+        L = lifting_space(n, E, q)
+        cells = []
+        for d in (4, 5, 6):
+            D = (d + 1) * d // 2
+            b, H = pd_pencil(s, n, E, d, q, L)
+            body_guard(n, E, H)
+            r = motion_rank(n, E, H)
+            ok = r == D * (n - 1)
+            n_eq, n_all = n_eq + ok, n_all + 1
+            cells.append(f"d={d}: {r}/{D * (n - 1)}" + ("=" if ok else "?"))
+        print(f"  {g:10}n={n:>2} e={len(E):>2} dim L(q) = {len(L):>2}:  "
+              + "   ".join(cells))
+    print(f"  certified {n_eq} of {n_all} cells past the cap")
+    print(f"mismatches (asserted): {bad}")
+    return bad
+
+
+def subdivide(g, k):
+    """Every edge of g replaced by a path of k edges."""
+    n, E = g
+    out = []
+    for u, v in E:
+        path = [u] + list(range(n, n + k - 1)) + [v]
+        n += k - 1
+        out += list(zip(path, path[1:]))
+    return n, out
+
+
+PD_PAST_CAP = {
+    "ring3": diamond_ring(3), "ring4": diamond_ring(4), "ring5": diamond_ring(5),
+    "theta555": relabel(theta_edges([5, 5, 5])),
+    "theta666": relabel(theta_edges([6, 6, 6])),
+    "K4/3": subdivide(complete(4), 3), "K33/2": subdivide(kbip(3, 3), 2),
+    "petersen/2": subdivide(GRAPHS4["petersen"], 2),
+}
+
+
 MODES = ("linear", "mixed", "perbody", "examples", "selftest",
-         "complexes", "residual4", "d4", "lifting")
+         "complexes", "residual4", "d4", "lifting", "pd")
 
 
 def main():
