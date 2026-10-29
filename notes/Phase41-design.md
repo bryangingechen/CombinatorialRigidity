@@ -15,8 +15,9 @@ push ran CI green (*Build & deploy site* at `4c892cb6` and `ae6a852c`, 2026-10-2
 and KT Proposition 2.3 is proved as KT state it at every generic hinge-point assignment; §2's
 MULTIGRAPH arc is compressed to a cited verdict. The same day the PI set UNSTATED's scope, took
 §4(a) into it, and asked for a recon of §4(b), the label bound, now the code RELABEL (§1h, §3);
-UNSTATED's open recon is in §2. **Next:** RELABEL's read-only recon (§3); then the PI chooses which
-of RELABEL and UNSTATED opens as 41d.
+UNSTATED's open recon is in §2, and so is RELABEL's (route B, a transport at the boundary, proved
+in a witness; 6–9 commits). **Next:** the PI chooses whether RELABEL is taken, and which of RELABEL
+and UNSTATED opens as 41d (§1h.5; the questions at the end of *RELABEL's recon*).
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -580,6 +581,155 @@ ScrewSpace carrier).
 *Estimate.* U1–U7 one commit each, U8–U11 one or two, U12 two; with U11's recon and U12's spike, the
 open's transcription and the close, **15–21 commits** (the report's 13–23).
 
+**RELABEL's recon** (2026-10-29; Claude Opus 5.5, design pass, at `e51acb76`; recorded under the
+code, so that the sub-phase that opens as RELABEL, if the PI takes it, transcribes it). Evidence:
+`notes/reconcile-formal/RelabelWitness.lean` (`lake lean`: no errors or warnings, its eight
+`#print axioms` the three standard axioms; `#lint` on a copy: no errors in 25 declarations). It
+proves every composition of route B below with no `sorry`; names are the witness's, in
+`Recon41Relabel` namespaces.
+
+*The list.* Six of the 20 main results of `formalization.yaml` carry the bound, each visibly as a
+hypothesis: `theorem_55_minimalKDof_gen` (Theorem 5.5, `hfresh`), and `hcard : D(|α| − 1) < |β|` on
+`rankHypothesis_of_theorem_55_gen` (Theorem 5.6), `molecular_conjecture`,
+`molecular_conjecture_multigraph`, `finrank_span_rigidityRows_of_isGenericNormals` and
+`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees` (M1). The other fourteen
+state none; the molecule rank formula meets it inside (below). Theorem-level nodes whose pins carry
+it: `thm:theorem-55`, `thm:theorem-55-d3-instance`, `cor:theorem-55-d3-spanning`,
+`thm:theorem-55-6-genuine`, `thm:theorem-55-6`, `thm:theorem-55-6-d3`, `thm:theorem-55-6-rows`,
+`thm:theorem-55-6-multigraph` (both pins), `cor:theorem-55-6-multigraph-d3`,
+`thm:molecular-conjecture`, `thm:molecular-conjecture-multigraph`, `thm:panel-generic-rank`,
+`cor:panel-generic-rigid`, `thm:bodyhinge-generic-rank`, `cor:bodyhinge-generic-rigid`,
+`cor:bodyhinge-generic-tree-packing`, `prop:rigidity-matrix-prop11`, `thm:panel-hinge-iff-molecular`
+(`Molecule/Modelling.lean`) and `thm:minimal-kdof-reduction` (`hfresh` on the minimal
+`0`-dof-graphs); lemma-level, `lem:hinge-point-witness`, `lem:theorem-56-general-position`
+(`Molecule/Theorem56.lean`), `lem:case-II-realization`, `lem:case-III`, `lem:chain-cycle-dichotomy`,
+`lem:chain-data-extract` and `lem:pencil-jj-chart`. In Lean, 18 declarations take `hcard` and 16
+`hfresh`; `Deficiency.lean` has only the derivative `freshEdgeSupply_of_card_lt`, which turns the
+first into the second. `rem:fresh-edge-supply` lists the panel-layer nodes only. No main result
+states `IsHingeCoplanar`.
+
+*The precedents.* The pencil realization theorem (`Pencil/MainComponent/Statements.lean`; its
+reduction `_of_X0` is in `Pencil/X0.lean`, which §3's row named) avoids the bound twice over. Its
+own induction **recycles**: the split-off at a body `x 0` of degree two gives the new edge `ab` the
+label `e 0` of the ear's edge `a − x 0` (`G.splitOff (x 0) a b (e 0)`,
+`MainComponent/SplitOff.lean`, with the selector `Function.update ends (e 0) (a, b)`,
+`RecordsLinks.update_splitOff`), and compares two frameworks with two selectors
+(`finrank_span_rigidityRows_splitOff_special`); its principle `pencil_reduction` asks no supply.
+Where it calls KT Theorem 5.6 (Jackson and Jordán's equality, `Bridge.lean`) it **transports at the
+boundary**: it relabels into `β ⊕ Fin (3|α| + 1)` (`Graph.embedEdges`), where the supply holds, and
+its conclusion reads no label. The molecule rows fix the labels **by construction**: those of
+`G.shadowGraph` are `Sym2 V ⊕ Fin (6(|V| − 1) + 1)`, whose second summand no edge uses and which
+meets `hcard` (`card_shadowLabel_lt`, its one caller `molecule_rank_lower_bound`); their statements
+take a `SimpleGraph V` and name no label type. Mathlib's `Graph` has only the vertex map
+(`Maps.lean`), but the `Matroid` package has `Graph.edgeMap` and `Graph.edgePreimg`
+(`Matroid/Graph/Map.lean`, already in the import closure), and `embedEdges` is `edgeMap` at an
+embedding (`embedEdges_eq_edgeMap`). Nothing there relates the cycle matroid to an edge map, so
+minimality goes through deficiencies (T5).
+
+*Route A, recycling inside the induction: breaks at Case III.* `G.splitOff v a b eₐ` is `G_v^{ab}`
+with `ab` labelled `eₐ`, as every link of `eₐ` meets `v`; and the genericity device's variables are
+the normals, `α × Fin (k + 2)` (`exists_rankPolynomial_of_le_finrank_linking`), none per label. Case
+II would carry over: `case_II_realization_all_k` already compares a framework on `G` (selector
+`G.endsOf`) with one on `G_v^{ab}` (selector `Q.ends`), as the pencil step does, and its own use of
+`e₀ ∉ E(G)` needs only `e₀ ∉ E(G − v)`; but it passes the hypothesis to the deficiency chain
+(`splitOff_isMinimalKDof_of_pos`, `dof_tracking`, `circuit_splitOff_meets_fiber`,
+`edgeSet_mulTilde_splitOff_diff_fiber`, `removeVertex_le_splitOff`), which would be reproved under
+the weaker one. Case III breaks: `ChainData` carries one label `e₀` with `e₀_fresh` for the
+split-off at every interior vertex of the chain. `e₀_ne_edge` makes `shiftEdgeCycle i`
+duplicate-free (`nodup_shiftEdgeCycle`), so `shiftEdgePerm i` is the label permutation carrying the
+split-off at `v₁` to the one at `vᵢ` (`splitOff_isLink_shiftRelabel_iff`, `Operations.lean`); and
+`chainData_dispatch_interior_of_discriminator` (`CaseIII/Realization.lean`) builds one selector
+`ends₀` that gives `e₀` the ends `(v₂, v₀)` and the two chain edges at `v₁` their own, so it needs
+`e₀ ≠ edge 0, edge 1`. Recycled, when `E(G)` uses every label, the only labels the split-off at `v₁`
+frees are `edge 0` and `edge 1`, a different pair at each interior vertex: the shift is no longer
+one cycle on a duplicate-free list, and `ends₀` cannot hold both pairs of ends at one label. That is
+a redesign of Case III's chain machinery (`CaseIII/`, 7,198 lines, 3,136 of them in `Relabel/`, and
+`ChainData`), in the fragility zone, needing its own design recon before any estimate. The supply
+threads through `hfresh` binders in 16 declarations, `e₀ ∉ E(…)` binders in 35 (`Reduction.lean` 10,
+`EdgeSplitting.lean` 10, `CaseIII/Realization.lean` 4, `CaseIII/Relabel/Basic.lean` 4,
+`SplitOffDeficiency.lean` 4, `Operations.lean` 2, `ChainExtraction.lean` 1) and uses of `e₀_fresh`
+in 14. **Not recommended.**
+
+*Route B, a boundary transport along `inl : β ↪ β ⊕ Fin (D(|α| − 1) + 1)`: feasible, proved.* The
+induction and every proof inside it stay, with `hfresh`; each main result applies its landed form at
+`β ⊕ Fin N`, where `freshEdgeSupply_of_card_lt` gives the supply, and pulls the framework back.
+- *The graph.* `embedEdges` keeps the bodies, simplicity and the deficiency (landed, `Bridge.lean`).
+  Minimality transports through deficiencies (T5): deleting an edge of a minimal `c`-dof-graph
+  raises the deficiency (`deficiency_lt_of_isMinimalKDof`), and conversely
+  (`isMinimalKDof_of_deficiency_lt`), by KT eq. (2.4) and `matroidMG_restrict_mulTilde`, as
+  `exists_isMinimalKDof_spanning_subgraph` argues; the restriction commutes with the relabelling
+  (`embedEdges_restrict_diff`). About 90 lines, the only new mathematics.
+- *Rows and motions* (T1, T2). The pullback `bhComap` of a body-hinge framework on `G.embedEdges ι`
+  has the same rigidity rows, as sets (`bhComap_rigidityRows`), and the same motions; the pullback
+  `phComap` of a panel-hinge framework keeps the normals and takes the selector `ends ∘ ι`, whose
+  link field is three lines. Nonparallel panels, general position, the hinges at the edges, the rank
+  and `HasCoplanarPanelRealization`'s nonzero hinge at every label come back unchanged.
+- *Genericity: no transport*, against the coordinator's hypothesis. `IsGenericNormals` and
+  `IsGenericHingePoints` stay on `G`; the generic theorems use `hcard` only to call Theorem 5.6 for
+  their witness, and at the bound-free Theorem 5.6 their landed proofs compile with the binder
+  deleted and nothing else changed (the witness's copies: both molecular conjectures, the panel rank
+  and its iff, M1 with its rank formula, iff and witness assembly, and KT Proposition 2.3).
+- *The existential conclusions.* Theorems 5.5 and 5.6, in the genuine, rows, simple and multigraph
+  forms, are each a 10–20-line transport of the landed form (`theorem_55_minimalKDof_gen'`,
+  `rankHypothesis_genuine_of_theorem_55_gen'`,
+  `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen'`,
+  `rankHypothesis_of_theorem_55_gen'`, `theorem_55_6_multigraph_gen'`). `[Finite β]` stays, as
+  `β ⊕ Fin N` must be finite; the genuine and rows forms lose `[DecidableEq β]`, which only the
+  supply used (the linter flags it); Theorem 5.5 keeps it, for `IsMinimalKDof`.
+
+*Which statements change* (the PI's call: each loses a hypothesis). 23 declarations: the six main
+results; their `d = 3` forms (`theorem_55_minimalKDof_k`, `theorem_55_d3`,
+`rankHypothesis_deficiency_of_theorem_55_d3`, `rankHypothesis_of_theorem_55_d3`,
+`theorem_55_6_multigraph_d3`); the other forms of Theorem 5.6
+(`rankHypothesis_genuine_of_theorem_55_gen`,
+`finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, `theorem_55_6_multigraph`,
+`theorem_55_6_multigraph_gen`); the generic theorems' other forms
+(`isInfinitesimallyRigidOn_of_isGenericNormals_iff`, `exists_hingePoints_independent_hingePointRow`,
+`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`,
+`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`,
+`tfae_finrank_span_rigidityRows_ofHinge_deficiency`); and the molecule chain's three
+(`exists_rankHypothesis_isGeneralPosition4` and its `_of_two_le`,
+`exists_molecular_rankHypothesis_generalPosition`; by grep the same pattern, not compiled). The
+internal forms keep `hfresh` (`theorem_55_minimalKDof_k_all_k`,
+`hasGenericFullRankRealization_of_theorem_55_gen`, `theorem_55_6_multigraph_of_two_le`, Cases II and
+III, the chain extraction). Not covered: `minimal_kdof_reduction` (`thm:minimal-kdof-reduction`, KT
+Theorem 4.9's principle, and UNSTATED's U4 after it), whose split step names a fresh label for a
+predicate on `Graph α β`, so no pullback applies; dropping it would be route A's combinatorial half
+(the deficiency chain under `e₀ ∉ E(G − v)`), and no main result needs it. No pencil row moves:
+`lem:pencil-jj-chart` may keep `hfresh`, as its caller relabels already. `G.shadowGraph`'s padding
+becomes unneeded; keeping it moves no statement (dropping it would change
+`lem:molecule-graph-carrier` and U10's statement).
+
+*The plan*, if the PI takes RELABEL by route B:
+- **B1.** `embedEdges` moved up to `Deficiency.lean`, beside `freshEdgeSupply_of_card_lt` (or
+  defined as `edgeMap`), with its graph lemmas, T5 and the padded supply; `def:pencil-embed-edges`
+  moved to the chapter of `rem:fresh-edge-supply`, its name kept. A full rebuild of the molecular
+  chain. 1 commit.
+- **B2.** T1 and T2 after the induction (in `Theorem55.lean` or a file it imports that imports
+  `PanelHinge.lean`, not in `RigidityMatrix/Basic.lean` or `PanelHinge.lean`, which would rebuild
+  the chain); the spine's five transports, the main results keeping their names and the
+  supply-taking forms renamed (the deletion gate). 1–2 commits.
+- **B3.** The cascade: the binder deleted in the `d = 3` forms, the conjectures, `PanelGeneric.lean`
+  (2), `HingeGeneric.lean` (5), `Theorem56.lean` (2) and `Modelling.lean` (1), and at the callers
+  (`Nonvacuity.lean`, `Application.lean`); `rem:fresh-edge-supply` rewritten, the fmlnotes at the
+  nodes above dropped, and `formalization.yaml`'s rows (M1's and the panel row's "more than D(|V|−1)
+  edge labels"). 1–2 commits.
+- The open and the close.
+
+**6–9 commits**, the open and the close included. Fragility-zone exposure: `Theorem55.lean` only, at
+its main results' statements and the transports after the induction; no proof inside the induction
+changes, and the witness compiled every composition against the built tree with no residual goal.
+
+*Recommendation.* Take RELABEL, by route B: it brings six main results to their sources' statements,
+which have no label bound, at about a third of UNSTATED's size, and the witness leaves no open step.
+Open it before UNSTATED, as 41d: U11 (`def:dof-generic`) waits on the restated `HingeGeneric.lean`
+(*UNSTATED's open recon*), U10 then has no bound to meet, and no other item depends on the order.
+
+*For the PI* (§1h.5): whether RELABEL is taken, with the statement changes above; by which route (B
+recommended; A is unsized and reaches Case III); which of RELABEL and UNSTATED opens as 41d; and, if
+RELABEL is taken, whether `minimal_kdof_reduction` keeps `hfresh` (recommended: no main result needs
+it).
+
 ## 3. Sub-phases, by code
 
 | Code | Letter | Contents | Commits |
@@ -588,7 +738,7 @@ open's transcription and the close, **15–21 commits** (the report's 13–23).
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
 | **UNSTATED** | — (41d or 41e, the PI's choice after RELABEL's recon, §1h.5) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) | 15–21, the open and the close included (the report: 13–23) |
-| **RELABEL** | — (its letter and its order against UNSTATED wait on its recon and the PI, §1h.5) | the bound on the edge labels (`hcard`, `hfresh`) dropped from the main results that carry it (§1h.2). First item, a **read-only recon** that returns to the PI with an estimate before any build: enumerate every main result and statement carrying the bound, and size one relabelling transport along `β ↪ β'` (into `β ⊕ Fin N`) that shows each quantity they state unchanged (rows, deficiency, matroid rank, genericity). Leads to check: `IsGenericHingePoints` (`HingeGeneric.lean`) quantifies every selector and compares with points on all of `β` (the coordinator's hypothesis); mathlib's `Graph` has a vertex `map` (`Mathlib/Combinatorics/Graph/Maps.lean`) but no edge relabelling was found; `pencil_realization_theorem` asks no label bound (`Pencil/X0.lean`, `rem:fresh-edge-supply`), and the molecule rows fix their labels in `G.shadowGraph` (`Molecule/Carrier.lean`), two precedents | the recon; the rest unsized |
+| **RELABEL** | — (whether it is taken, and its order against UNSTATED, are the PI's, §1h.5) | the bound on the edge labels (`hcard`, `hfresh`) dropped from the main results that carry it (§1h.2). Its recon is done (§2, *RELABEL's recon*): six main results carry it, and 23 declarations' statements would change; route B, a transport at the boundary along `inl : β ↪ β ⊕ Fin N` with the induction untouched, is proved in full by the witness `notes/reconcile-formal/RelabelWitness.lean`, and genericity needs no transport; route A, recycling a label inside the induction, breaks at Case III's chain. Plan B1 (`embedEdges` moved up, minimality through deficiencies), B2 (the pullbacks and Theorems 5.5 and 5.6), B3 (the cascade, the blueprint and `formalization.yaml`) | 6–9, the open and the close included (route B) |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
@@ -610,6 +760,7 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   rank formula and the iff take `V(G).Nonempty`; landed with 41b's item 9a.
 - **Dropping `hcard` from M1 and KT Proposition 2.3** (§2, *MULTIGRAPH's open recon*): the PI
   asked for a read-only recon of one transport that drops the bound from every main result carrying
-  it (§1h.2), RELABEL's first item (§3). It returns to the PI with an estimate before any build.
+  it (§1h.2), RELABEL's first item (§3). The recon (§2, *RELABEL's recon*) found route B, a
+  transport at the boundary proved in a witness, at 6–9 commits; the PI decides (§1h.5).
 - **Relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links**: in UNSTATED (§1h.2), its item
   U6 (§2, *UNSTATED's open recon*).
