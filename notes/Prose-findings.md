@@ -20,7 +20,14 @@ PI or for RECONCILE's phase (`notes/Reconcile.md` §3), among them the footprint
 round 3 moved there and the round's own `F-273`, `F-276`, `F-277`, `F-301`, `F-323` and `F-324`,
 which are for the PI. A disposition names each round-3 task that made its change by the task's
 commit; an unqualified task number in a round-3 entry's prose is round 3's, its commit the one whose
-subject reads `RECONCILE round 3/3, task N:`.
+subject reads `RECONCILE round 3/3, task N:`. At the close of Phase 41 (RECONCILE-FORMAL,
+2026-10-29), which closes RECONCILE, it has 332 entries (`F-329` to `F-332` are the phase's), 307
+`done` and 25 `left`, none `reported` or `open`, each phase disposition naming its commit. The
+phase's builds did S1–S3, S16, S18, S19, S22–S25, S31, S33's pin, `F-252`, `F-323`, `F-324`, the
+footprint's docstrings and `F-301`'s remark. Left: what the PI keeps (`notes/Reconcile.md` §1:
+S11–S13, S30, S32, S37), S39's nodes that round 2 kept, and `F-273`, `F-276` and `F-277`, which the
+phase did not take. Of the nine `left` at round 3's close, `F-059` is done (41e's U9), `F-152` in
+part (U12), and the seven others' reasons hold.
 
 ## Format
 
@@ -1260,7 +1267,10 @@ declaration's name as its header writes it:
   *Evidence:* measured (`scripts/blueprint-deps.py --chapter extensor`, at `53ec36db`: two dead
   pins, two unbacked edges); read (`Molecular/Extensor.lean`; a `grep` for the two names' callers).
   *Found:* round 2 task 2.4.
-  *Disposition:* left (no declaration states the expansion; a lemma stating it is a Lean round's).
+  *Disposition:* done (`5b7307f5`); left (no declaration stated the expansion). Phase 41e, U9 (the
+  commit "Phase 41e U9: the Plücker expansion, extensor_repr_exteriorPower (F-059)"):
+  `extensor_repr_exteriorPower` states it, KT's sign times `pluckerCoord`, at the new node
+  `lem:plucker-expansion` after `def:plucker-coords`, whose note is gone.
 - **F-065** · N · `cor:block-rank-vertex-two-cut` (`rigidity-matrix.tex`): its pins
   `inf_span_rigidityRows_of_vertexTwoCut` and `finrank_span_rigidityRows_vertexTwoCut_eq` have no
   Lean caller, and no node uses the corollary (outside every main result's closure, counted in
@@ -1617,6 +1627,12 @@ declaration's name as its header writes it:
   `lem:rank-polynomial-of-le-finrank`, and `lem:relative-device-count` no longer `\uses` it
   (`1b46edc6`); its other four nodes framed by `rem:case-II-kt-steps`, which says what the formal
   proof uses instead, and the lead of *Counting rows and motions* points to it (`04b33020`).
+  Phase 41e, U12 (`90dc64a4`): `lem:case-II-realization-placement` is live, pinned on
+  `case_II_placement` and on `case_II_placement_rank`, which `case_II_realization_all_k` calls, and
+  its dead pin `case_II_placement_eq612` is deleted. Phase 41's close keeps
+  `lem:case-II-placement-old-rows` and its uncalled pin, KT eq. (6.13)'s step
+  (`rem:case-II-kt-steps`), as the PI keeps KT's route (`notes/Reconcile.md` §1). The rest stays
+  left.
 - **F-157** · N · `lem:case-III-claim-6-11` (`algebraic-induction/case-iii.tex`): the node states
   Claim 6.11 for $G_v^{ab}$ and $G_v = G - v$; its pin
   `exists_redundant_panelRow_ab_of_finrank_eq` holds for any two graphs whose links agree but for
@@ -2160,7 +2176,8 @@ declaration's name as its header writes it:
   statements and `shadowGraph`); a `lake lean` witness, every graph on `Fin 2` at every $p$ in
   $d = 3$, by `Submodule.finrank_le` and `Framework.finrank` ($6 \le 3 \cdot 4 / 2$).
   *Found:* round 1 task 5.4.
-  *Disposition:* reported (`notes/Prose-report.md`, S12); round 3: `IsInfinitesimallyRigid`'s
+  *Disposition:* left (the PI keeps S12, `notes/Reconcile.md` §1: no main result is affected);
+  reported (`notes/Prose-report.md`, S12); round 3: `IsInfinitesimallyRigid`'s
   docstring and `Framework.lean`'s header state the divergence (`522a0c0a`).
 - **F-026** · S · `lem:span-range-rigidityRow` (`laman-theorem.tex`): the statement assumes $V$
   finite, which its pin `span_range_rigidityRow` does not: it takes only `[Finite G.edgeSet]`. The
@@ -2246,7 +2263,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the definition at `db7ff7d6^` and at `db7ff7d6`; `PebbleGameResult`,
   `Correctness.lean`).
   *Found:* round 1 task 5.13; filed by task 5.14 at the coordinator's request.
-  *Disposition:* reported (`notes/Prose-report.md`, S33).
+  *Disposition:* done (`31154638`); reported (`notes/Prose-report.md`, S33), the PI's "confirm"
+  (`notes/Reconcile.md` §1). Phase 41e, U1 (the commit "Phase 41e U1: S25 and def:blockingWitness,
+  the pebble game's failure witness is a blocking witness"): the definition is pinned, on
+  `SimpleGraph.IsBlockingWitness` and `not_isSparse_of_isBlockingWitness` (`Sparsity.lean`), and
+  asks $\ell \le k|V'|$ as its statement does.
 - **F-041** · S · `thm:pebble-game-correct` (`pebble-game.tex`): the statement says more than its
   pin. `runPebbleGameWith_correct` states only the equivalence: $G$ is $(k, \ell)$-sparse if and
   only if the game on the list returns a partial orientation. The statement adds (1) that a
@@ -2263,7 +2284,10 @@ declaration's name as its header writes it:
   the two `aux` bodies, `Correctness.lean` and `Exec.lean`; `#check` of the four pins of task 5.15
   through the Lean server).
   *Found:* round 1 task 5.15.
-  *Disposition:* reported (`notes/Prose-report.md`, S25).
+  *Disposition:* done (`31154638`); reported (`notes/Prose-report.md`, S25). Phase 41e, U1 (as
+  `F-038`): `runPebbleGameWith_isBlockingWitness` (`PebbleGame/Correctness.lean`) states (2), that
+  the set of a returned failure witness is a blocking witness, and is the second pin of
+  `thm:pebble-game-correct`.
 - **F-042** · S · `def:pebbleGameResult` (`pebble-game.tex`): the definition takes a finite simple
   graph $G$ on $V$. Its pin `PebbleGameResult` takes only `[DecidableEq V]` and
   `[Fintype G.edgeSet]`, so $G$ need only have finitely many edges, as in `F-037`. The definition
@@ -2301,7 +2325,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the structure `Graph.BodyHingeFramework` and the statement of
   `body_hinge_tay`, `BodyBar/BodyHinge.lean`; `notes/Phase16.md` *Decisions*).
   *Found:* round 2 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, S11).
+  *Disposition:* left (the PI keeps S11, `notes/Reconcile.md` §1: `body_hinge_tay` is Tay's theorem
+  on the bar bundles of $(D-1)G$, as its row says, and the form with hinges is M1, for every
+  multigraph since Phase 41c, `aeac5f6e`); reported (`notes/Prose-report.md`, S11).
 - **F-049** · S · `lem:rank-rotation-semicont` (`rigidity-matrix.tex`): the statement claims KT
   Lemma 5.2 as the lower-semicontinuity of rank along a panel rotation, then a monotonicity form:
   if $\operatorname{span} C(p(e)) \subseteq \operatorname{span} C(p'(e))$ at every edge, then
@@ -2337,7 +2363,10 @@ declaration's name as its header writes it:
   `adjMap_rk_eq` with `sum'_rk_eq_rk_sum` would give the family form at every $X$, but no
   declaration states it, and none states the criterion for a family.
   *Found:* round 2 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, S24).
+  *Disposition:* done (`47556b0c`); reported (`notes/Prose-report.md`, S24). Phase 41e, U2 (the
+  commit "Phase 41e U2: S24, Matroid.Union_rk_eq and Matroid.Union_indep_iff_count"): the rank of
+  every $X$ and the criterion, for any finite family, ported from Peter Nelson's `Matroid`, are the
+  node's pins, and its note is gone.
 - **F-058** · S · `thm:tay-witness` (`body-bar.tex`) and `thm:body-hinge-tay` (`body-hinge.tex`):
   both statements assume $d \ge 2$, and their pins `Graph.BodyBarFramework.tay_witness` and
   `Graph.BodyHingeFramework.body_hinge_tay` hold for every $d$, so the statements are weaker than
@@ -2383,7 +2412,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the two pins' statements, `Induction/Operations.lean`; the callers of
   `isSpanningTreePacking_of_isTight`).
   *Found:* round 2 task 2.11.
-  *Disposition:* reported (`notes/Prose-report.md`, S23).
+  *Disposition:* done (`bcbfadaa`); reported (`notes/Prose-report.md`, S23). Phase 41e, U3 (the
+  commit "Phase 41e U3: S23, Graph.circuit_diff_isSpanningTreePacking"): the partition of $X - e$
+  into $D$ spanning trees is the node's third pin, and its note is gone.
 - **F-084** · S · `lem:reduction-step` (`molecular-induction.tex`): the statement says that
   contracting a proper rigid subgraph (`lem:contraction-minimality`) carries a minimal $0$-dof-graph
   to a smaller one. Its pin for that branch, `Graph.contraction_isMinimalKDof` (also
@@ -2400,7 +2431,8 @@ declaration's name as its header writes it:
   the graph form (`lem:rigidContract-isMinimalKDof`).
   *Evidence:* read (the statements of the three declarations, `Induction/Contraction.lean`).
   *Found:* round 2 task 2.11.
-  *Disposition:* reported (`notes/Prose-report.md`, S30).
+  *Disposition:* left (the PI keeps S30, `notes/Reconcile.md` §1: the claim is narrowed or proved in
+  prose, and no declaration states more); reported (`notes/Prose-report.md`, S30).
 - **F-086** · S · `lem:acyclic-insert-vfiber` and `lem:packing-move` (`molecular-induction.tex`):
   both statements take $v$ to be a vertex of degree two of $G$, the setting in which
   `lem:balanced-forest-packing` uses them. Their pins `acyclicSet_insert_vfiber_of_not_inc` and
@@ -2410,7 +2442,9 @@ declaration's name as its header writes it:
   proof says that it is not used.
   *Evidence:* read (the two statements, `Induction/ReducibleVertex.lean`).
   *Found:* round 2 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, S39).
+  *Disposition:* left (round 2's open keeps S39's other nodes at their sources' standing hypotheses,
+  `notes/Reconcile-statements-cleanup.md`; each statement is a true special case of its pins);
+  reported (`notes/Prose-report.md`, S39).
 - **F-101** · S · `thm:minimal-kdof-reduction` (`molecular-induction.tex`): the statement claims KT
   Theorem 4.9 as KT state it, a sequence of minimal $0$-dof-graphs from $G$ to the two-vertex
   double edge, each obtained from the one before by splitting off or by contracting a proper rigid
@@ -2423,7 +2457,10 @@ declaration's name as its header writes it:
   formalization note that (i) is not formalized.
   *Evidence:* read (the statements of the three declarations).
   *Found:* round 2 task 2.16.
-  *Disposition:* reported (`notes/Prose-report.md`, S22).
+  *Disposition:* done (`0512333b`); reported (`notes/Prose-report.md`, S22). Phase 41e, U4 (the
+  commit "Phase 41e U4: S22, Graph.minimal_kdof_reduction_sequence"): the sequence, part (i), is
+  pinned beside the principle, which since item R (`836bb645`) assumes nothing of the labels, and
+  the note says that both parts are proved.
 - **F-102** · S · `lem:case-cut-edge-realization-gp` (`molecular-induction.tex`): the statement
   assumes that every smaller simple minimal $k'$-dof-graph has a generic full-rank realization. Its
   pin `case_cut_edge_realization_gp_gen` also assumes that every smaller minimal $k'$-dof-graph has
@@ -2448,7 +2485,8 @@ declaration's name as its header writes it:
   exactly when $d \ge 4$. The dichotomy itself keeps KT's strength.
   *Evidence:* read (the three pins' statements).
   *Found:* round 2 task 2.17.
-  *Disposition:* reported (`notes/Prose-report.md`, S30).
+  *Disposition:* left (the PI keeps S30, `notes/Reconcile.md` §1: the claim is narrowed or proved in
+  prose, and no declaration states more); reported (`notes/Prose-report.md`, S30).
 - **F-112** · S · `def:meet` (`meet.tex`): at the open the definition also said that the meet of
   the supporting extensors of two subspaces is the supporting extensor of their intersection, and
   that for $a = b = 1$ the meet of two hyperplane normals supports their codimension-$2$
@@ -2460,7 +2498,8 @@ declaration's name as its header writes it:
   (`extensor_join_proportional_complementIso_meet`), and not the general case.
   *Evidence:* read (a `grep` for `meet` in the Lean; the statements of the cited declarations).
   *Found:* round 2 task 2.18.
-  *Disposition:* reported (`notes/Prose-report.md`, S30).
+  *Disposition:* left (the PI keeps S30, `notes/Reconcile.md` §1: the claim is narrowed or proved in
+  prose, and no declaration states more); reported (`notes/Prose-report.md`, S30).
 - **F-113** · S · `lem:complement-iso-decomposable-wedge-perp` (`meet.tex`): the statement says that
   $*(n_1 \vee n_2)$ is orthogonal to every $2$-extensor $n \vee c$ with $n \in \{n_1, n_2\}$, for
   linearly independent $n_1, n_2$. The second and third pins state only $n = n_1$, and assume no
@@ -2501,9 +2540,13 @@ declaration's name as its header writes it:
   `PanelHinge.lean`); measured (dead pins, `scripts/blueprint-deps.py --label lem:case-I`, at
   `ef57b401`).
   *Found:* round 3 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, S19); round 2: `rem:case-I-kt-steps` says that
+  *Disposition:* done (`c0a88ffe`); reported (`notes/Prose-report.md`, S19); round 2:
+  `rem:case-I-kt-steps` says that
   the formal proof uses neither the identity nor its forms with the block pin, and counts rows
   instead (`e6f1e425`).
+  Phase 41e, U5 (the commit "Phase 41e U5: S19, BodyHingeFramework.case_I_rank_add_iff"): KT eq.
+  (6.3)'s rank identity is the node's first pin, in `CaseI.lean` since `28ba330b`, and its note says
+  that the pin asks no minimality.
 - **F-117** · S · `lem:genericity-device` (`algebraic-induction/genericity-and-count.tex`): the
   statement says that each locus $\{p : \operatorname{rank} R(G,p) \ge r\}$ is Zariski-open, so
   the rank is lower semicontinuous and maximal on a dense set, and dually that $\dim Z(G,p)$ is
@@ -2539,7 +2582,8 @@ declaration's name as its header writes it:
   prop:rigidity-matrix-prop11` at `efa7ed2b`: `thm:theorem-55`, `lem:motions-mono-of-graph-le`,
   `def:dof-generic` and `lem:genericity-device` unbacked).
   *Found:* round 3 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, S18); phase 41a: the pin's `hC` asked only at
+  *Disposition:* done (`80d2a46f`); reported (`notes/Prose-report.md`, S18); phase 41a: the pin's
+  `hC` asked only at
   the links of $G$, and the note after the proof says so (`a22d989c`); the conditional statement, or a
   repin on the generic forms, stays RESTATE's, after S1.
   Phase 41b, item 11 (the commit "Phase 41b item 11: `prop:rigidity-matrix-prop11` restated as KT
@@ -2560,6 +2604,13 @@ declaration's name as its header writes it:
   keeps its place and its pin `rigidityMatrix_prop11` under `prop:rank-formula-of-motion-bound`,
   and the three proofs and the `\cref` and docstring sites that meant the conditional form
   moved to it (no cycle through `lem:hinge-point-witness`).
+  Phase 41e, U6 (the commit "Phase 41e U6: rigidityMatrix_prop11 asks the hinge only between
+  distinct bodies; the rows form without hfresh", `471a7377`): the conditional pin asks a
+  nondegenerate hinge only at the edges between distinct bodies (the design doc's §4(a)). U11 (the
+  commit "Phase 41e U11: def:dof-generic built, KT Proposition 2.3 at KT's own genericity",
+  `80d2a46f`): the node is stated at KT's own genericity, the maximum rank of `def:dof-generic`, and
+  pinned first on `tfae_finrank_span_rigidityRows_ofHinge_deficiency_of_isMaxRankHingePoints`
+  (`notes/Phase41-design.md` §1k.1). Done.
 - **F-122** · S · `def:panel-hinge-framework`, `def:hinge-coplanar`, `thm:molecular-conjecture`
   (`algebraic-induction/panel-layer.tex`): the structure `PanelHingeFramework` records, for every
   edge label, an ordered pair of bodies (`ends`), and computes the hinge from their normals;
@@ -2579,7 +2630,8 @@ declaration's name as its header writes it:
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, `Theorem55.lean`; a `grep` for
   `IsHingeCoplanar`).
   *Found:* round 3 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, S2); round 1: the molecular conjecture's scope
+  *Disposition:* done (`43f78c5f`); reported (`notes/Prose-report.md`, S2); round 1: the molecular
+  conjecture's scope
   stated (its panel side places no condition on the selector, so its body-hinge to panel-hinge
   direction concludes less than a panel-hinge realization) on its `main_results` row, its and JJ
   2008's `alignment` entries, README, the home page, `intro.tex` and ROADMAP §23, beside the
@@ -2721,7 +2773,11 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `hasPanelRealization_of_generic`,
   `Molecular/AlgebraicInduction/GenericityDevice.lean`; its callers in `Theorem55.lean`).
   *Found:* round 3 task 2.2.
-  *Disposition:* reported (`notes/Prose-report.md`, S16).
+  *Disposition:* done (`d04cbf9e`); reported (`notes/Prose-report.md`, S16). Phase 41e, U7 (the
+  commit "Phase 41e U7: S16, hasPanelRealization_of_generic for graphs with loops"): the pin takes
+  no `[G.Loopless]`; at a loop at $a$ the realization takes the hinge $C(n_a, n_w)$ of a body $w
+  \neq a$, which lies in the panel of $a$, and the rows are unchanged
+  (`span_rigidityRows_eq_of_eq_off_loops`).
 - **F-125** · S · `cor:theorem-55-d3-spanning` (`algebraic-induction/panel-layer.tex`): the
   statement gives a simple minimal $0$-dof-graph at $d = 3$ a generic full-rank realization with
   $\dim Z(G,p) = D$. Its pin `rankHypothesis_deficiency_of_theorem_55_d3` takes the generic
@@ -2735,7 +2791,8 @@ declaration's name as its header writes it:
   `RankHypothesis`, `Pinning.lean`); measured (`scripts/blueprint-deps.py --label
   cor:theorem-55-d3-spanning` at `db237dfd`, dead pin).
   *Found:* round 3 task 2.2.
-  *Disposition:* reported (`notes/Prose-report.md`, S2); phase 41a: with the field `isLink_ends`,
+  *Disposition:* done (`8c2d4475`); reported (`notes/Prose-report.md`, S2); phase 41a: with the
+  field `isLink_ends`,
   the conclusion's selector gives each edge of $G$ its ends, and the note after the proof says so
   (`afcff8fd`, item 5a); the degenerate hinges and general position stay RESTATE's.
   Phase 41b, item 8 (`8c2d4475`; this disposition written at 41b's close): done. The pin derives
@@ -2760,7 +2817,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements and bodies, `reaimSub` and `reaimSubLink`,
   `Molecular/AlgebraicInduction/Theorem55.lean`).
   *Found:* round 3 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, S2); round 1: KT Theorem 5.6's scope stated
+  *Disposition:* done (`43f78c5f`); reported (`notes/Prose-report.md`, S2); round 1: KT Theorem
+  5.6's scope stated
   (degenerate hinges, the free selector, and the all-zero-normals framework meeting the conclusion
   at deficiency zero for every spanning graph; a `lake lean` witness, script not retained: with
   `normal := 0` every hinge is zero, `Graph.preconnected_of_isKDof_zero` makes each motion
@@ -2806,7 +2864,8 @@ declaration's name as its header writes it:
   `def:rigid-contraction`); measured (dead pin, `scripts/blueprint-deps.py --label`, at
   `9a465598`).
   *Found:* round 3 task 2.7.
-  *Disposition:* reported (`notes/Prose-report.md`, S32).
+  *Disposition:* left (the PI keeps S32, `notes/Reconcile.md` §1: the statement holds, and its note
+  names the step no pin states); reported (`notes/Prose-report.md`, S32).
 - **F-137** · S · `lem:rows-polynomial-in-normals` (`algebraic-induction/case-i.tex`): the statement
   says that the rows of $R(G,n)$ at an edge can be chosen with coordinates that are polynomials of
   degree two in the normals. Task 2.7 added that the hinge at the edge be nondegenerate: the
@@ -2941,7 +3000,10 @@ declaration's name as its header writes it:
   `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` and
   `screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`.
   *Found:* round 3 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, S3).
+  *Disposition:* done (`90dc64a4`); reported (`notes/Prose-report.md`, S3). Phase 41e, U12 (the
+  commit "Phase 41e U12: S3, lem:case-II-realization-placement from a realization of G_v^{ab}"): the
+  node is pinned on `case_II_placement`, as stated, and on `case_II_placement_rank`, the count at
+  any rank, which `case_II_realization_all_k` calls; `case_II_placement_eq612` is deleted.
 - **F-154** · S · `lem:case-III-nested-rank-lower` (`algebraic-induction/case-iii.tex`): the
   statement omits two hypotheses of its pin `exists_nested_rankPolynomial_lower_all_k`, that $G$ is
   simple (`hSimple`) and the induction hypothesis for every $k'$ (`hIH`). Without simplicity it
@@ -3038,7 +3100,10 @@ declaration's name as its header writes it:
   definition `molecularOfCentres`, `Molecular/Molecule/Dictionary.lean`; the edge count of
   $C_7^2$).
   *Found:* round 4 task 1.
-  *Disposition:* reported (`notes/Prose-report.md`, S31).
+  *Disposition:* done (`0a0817a0`); reported (`notes/Prose-report.md`, S31). Phase 41e, U10 (the
+  commit "Phase 41e U10: S31, molecular_rigid_iff_square_rigid (F-174, F-183)"): the equivalence,
+  with nondegenerate hinges as `F-183` anchored it, is the node's second pin,
+  `molecular_rigid_iff_square_rigid`.
 - **F-177** · S · `def:genericRigidityMatroid`, `def:genericRank` (`bar-joint-3d.tex`): at the open
   the first definition ended "By `lem:linearRigidityMatroid-eq-genericRigidityMatroid` the matroid
   does not depend on the choice of $p$", a consequence with a forward `\cref`, and called
@@ -3053,7 +3118,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `genericRigidityMatroid` and `genericRank`; the statement of
   `linearRigidityMatroid_eq_genericRigidityMatroid`).
   *Found:* round 4 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, S37).
+  *Disposition:* left (the PI confirms S37's first reading, `notes/Reconcile.md` §1: the moves are
+  principle B's, the pins unchanged); reported (`notes/Prose-report.md`, S37).
 - **F-178** · S · `thm:projective-invariance` (`molecule-modelling.tex`): at the open the statement
   was set in $\R^3$, for an automorphism $\Lambda$ of $\bigwedge^2 \R^4$, and ran eight sentences:
   the projective reading (a collineation or a correlation, Crapo–Whiteley §3.6), the correlation as
@@ -3072,7 +3138,8 @@ declaration's name as its header writes it:
   `RigidityMatrix/Basic.lean`; `pencil.tex` at `lem:pencil-self-dual` and
   `lem:pencil-projective-transport`).
   *Found:* round 4 task 2.2.
-  *Disposition:* reported (`notes/Prose-report.md`, S37).
+  *Disposition:* left (the PI confirms S37's first reading, `notes/Reconcile.md` §1: the moves are
+  principle B's, the pins unchanged); reported (`notes/Prose-report.md`, S37).
 - **F-179** · S · `def:hinge-concurrent`, `def:screw-velocity`, `lem:panel-hinge-dual-molecular`
   (`molecule-modelling.tex`): principle B's moves. `def:hinge-concurrent` named the endpoint selector
   and ended on five sentences: the hinge-concurrency it gives (KT p. 671), the converse "carrying the
@@ -3091,7 +3158,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `molecularOfCentres`, `omegaForm`, `tauForm`, `screwVel` and the
   two line lemmas; KT pp. 650, 671; JJ 2008 §2.1; Whiteley 1999 p. 27).
   *Found:* round 4 task 2.2.
-  *Disposition:* reported (`notes/Prose-report.md`, S37).
+  *Disposition:* left (the PI confirms S37's first reading, `notes/Reconcile.md` §1: the moves are
+  principle B's, the pins unchanged); reported (`notes/Prose-report.md`, S37).
 - **F-180** · S · `lem:panel-hinge-dual-molecular`, `lem:screw-determination`
   (`molecule-modelling.tex`): statements that claim more or less than their pins. The first's
   "for normals with nonvanishing last coordinate the same holds after the rescaling normalization",
@@ -3131,7 +3199,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the statement and body of `molecular_finrank_motions_eq_square_ker`;
   `molecularOfCentres`; JJ 2008 §2.1; KT pp. 650, 671; Whiteley 1999 p. 27).
   *Found:* round 4 task 2.3.
-  *Disposition:* reported (`notes/Prose-report.md`, S31).
+  *Disposition:* done (`0a0817a0`); reported (`notes/Prose-report.md`, S31). Phase 41e, U10 (as
+  `F-174`): the claim the anchoring left unpinned is pinned.
 - **F-184** · S · `thm:panel-hinge-iff-molecular`, `lem:theorem-56-general-position`,
   `def:general-position-placement` (`molecule-modelling.tex`): principle B's moves and anchoring.
   The theorem's "simple spanning graph on at least one body, with enough hinge labels", its "endpoint
@@ -3202,7 +3271,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the four pins, `Molecular/Deficiency.lean`; JJ 2008 §§3
   and 5).
   *Found:* round 4 task 2.5.
-  *Disposition:* reported (`notes/Prose-report.md`, S39); round 2: `lem:partitionDef-merge` is
+  *Disposition:* left (the rest: round 2's open keeps S39's other nodes at their sources' standing
+  hypotheses, `notes/Reconcile-statements-cleanup.md`; each statement is a true special case of its
+  pins); reported (`notes/Prose-report.md`, S39); round 2: `lem:partitionDef-merge` is
   stated for every nonempty $Q$, its proof saying what $|Q| = 1$ gives, and its sentence left the
   note (`0b8a78e0`).
 - **F-195** · S · `thm:laman-square-count`, `lem:normal-cross-count-rooted`,
@@ -3221,7 +3292,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the slice's 25 pins, `JacobsCounting.lean`, `Jacobs.lean`,
   `SquareGraph.lean`; the body of `laman_square_count`).
   *Found:* round 4 task 2.6.
-  *Disposition:* reported (`notes/Prose-report.md`, S39).
+  *Disposition:* left (round 2's open keeps S39's other nodes at their sources' standing hypotheses,
+  `notes/Reconcile-statements-cleanup.md`; each statement is a true special case of its pins);
+  reported (`notes/Prose-report.md`, S39).
 - **F-206** · S · `def:generic-normals`, `lem:generic-normals-nondegenerate`,
   `lem:panel-witness-transplant`, `thm:panel-generic-rank`, `cor:panel-generic-rigid`
   (`generic-lift.tex`): the endpoint selector, the label set and the spanning left the statements.
@@ -3241,7 +3314,7 @@ declaration's name as its header writes it:
   which `F-207` shows are not innocuous.
   *Evidence:* read (the statements of the eight pins, `GenericLift/PanelGeneric.lean`).
   *Found:* round 4 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, S34).
+  *Disposition:* done (`24d9d0cc`); reported (`notes/Prose-report.md`, S34).
   Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
   on `G` with generic normals", `24d9d0cc`): done. The pins state what
   the nodes state: genericity is a framework's (`IsGenericNormals P`), over the rows at the edges of
@@ -3268,7 +3341,8 @@ declaration's name as its header writes it:
   `e₀ ∉ E(G)` and `(hends e₀).edge_mem` gives `e₀ ∈ E(G)`. A single edge is minimal: its $D - 1$
   copies are independent in $M(\tilde G)$, the only base, and $\operatorname{def}(\tilde G) = 1$.
   *Found:* round 4 task 2.9.
-  *Disposition:* reported (`notes/Prose-report.md`, S1); round 1: the scope stated beside both
+  *Disposition:* done (`43f78c5f`); reported (`notes/Prose-report.md`, S1); round 1: the scope
+  stated beside both
   theorems in `formalization.yaml` (the row and the two `alignment` entries), README, the home page,
   `intro.tex` and ROADMAP §34, with `rem:fresh-edge-supply`'s reading checked by a `lake lean`
   witness; its sharper reading is `F-252` (8ee0f8a8).
@@ -3328,7 +3402,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the bodies of `twoExtensor`, `twoExtensorPoly`, `twoExtensorPoly_eval` and
   `IsGenericEndpoints`, `BodyBar/GenericLift.lean`).
   *Found:* round 4 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, S37).
+  *Disposition:* left (the PI confirms S37's first reading, `notes/Reconcile.md` §1: the moves are
+  principle B's, the pins unchanged); reported (`notes/Prose-report.md`, S37).
 - **F-212** · S · `def:generic-endpoints`, `lem:generic-endpoints-abundance`
   (`generic-lift.tex`): the statements give an endpoint pair to each bar of $G$, and a polynomial
   "in the $2d\,|E(G)|$ endpoint coordinates". The pins give a pair to every edge label
@@ -3341,7 +3416,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of `ofEndpoints`, `IsGenericEndpoints` and
   `exists_isGenericEndpoints_abundance`, and the body of the last).
   *Found:* round 4 task 2.10.
-  *Disposition:* reported (`notes/Prose-report.md`, S13).
+  *Disposition:* left (the PI keeps S13, `notes/Reconcile.md` §1, for this entry's body-bar endpoint
+  assignments, with the note after `def:generic-endpoints`; S1's refactor took S13 on the panel and
+  body-hinge sides, below); reported (`notes/Prose-report.md`, S13).
   Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
   on `G` with generic normals", `24d9d0cc`): S13 within S1's refactor,
   on the panel side: the genericity of `def:generic-normals` reads only the rows at the edges of
@@ -3374,7 +3451,7 @@ declaration's name as its header writes it:
   pin of the slice takes `hfresh`, so `F-207`'s vacuity does not arise here.
   *Evidence:* read (the statements of the seven pins, `GenericLift/HingeGeneric.lean`).
   *Found:* round 4 task 2.11.
-  *Disposition:* reported (`notes/Prose-report.md`, S34).
+  *Disposition:* done (`96683b73`); reported (`notes/Prose-report.md`, S34).
   Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
   witnessed at the triangle", `96683b73`): done. The pins state what the nodes state:
   genericity is over $G$ (`IsGenericHingePoints G q`), for the rows indexed by its edges, at every
@@ -3415,7 +3492,7 @@ declaration's name as its header writes it:
   *Evidence:* read (the statements of the seven pins, `GenericLift/HingeGeneric.lean`,
   `Extensor.lean`).
   *Found:* round 4 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, S34).
+  *Disposition:* done (`96683b73`); reported (`notes/Prose-report.md`, S34).
   Phase 41b, item 10a (the commit "Phase 41b item 10a: the generic body-hinge theorems over `G`,
   witnessed at the triangle", `96683b73`): done. The four pins take no selector but the
   witness lemma's, which records the links of $G$ (the condition on $E(G)$), no "every label is an
@@ -3476,7 +3553,8 @@ declaration's name as its header writes it:
   bodies, and the blocks' bounds add, so every base takes exactly $D$ of them ($D \ge 3$), meeting
   both fibers of $D - 1$, and all $D - 1$ copies of a single edge.
   *Found:* RECONCILE round 1 task 2.
-  *Disposition:* reported (`notes/Reconcile-texts-cleanup.md`, *Candidates for the PI*).
+  *Disposition:* done (`96683b73`); reported (`notes/Reconcile-texts-cleanup.md`, *Candidates for
+  the PI*).
   Phase 41b, item 9a (the commit "Phase 41b item 9a: the generic panel theorems at every framework
   on `G` with generic normals", `24d9d0cc`): done for the two panel
   pins, which no longer take `hfresh` (`F-207`); the four body-hinge pins are item 10's.
@@ -3509,7 +3587,9 @@ declaration's name as its header writes it:
   *Evidence:* read (the body: `hD` feeds only `hD2` and `hD1`); a `lake lean` witness of
   `2 ≤ bodyBarDim n ↔ 3 ≤ bodyBarDim n` (`scratch/reconcile-lean/BodyBarDimTwo.lean`, gitignored).
   *Found:* RECONCILE round 3 task 15.
-  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
+  *Disposition:* left (put to the PI at round 3's close, and Phase 41 took only `F-323` and `F-324`,
+  `notes/Phase41-design.md` §1.5; a change of form alone, so `hD` and the node's $D \ge 3$ stay);
+  reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
 - **F-301** · S · `def:extensor-through-point` (`pencil.tex`; `ExtensorThroughPoint`,
   `Molecule/Pencil/Statement.lean`): the remark after the node says that the zero element passes
   through every point ("take every $p_i = q$"). That holds for $k \ge 2$, where two equal vectors
@@ -3520,7 +3600,10 @@ declaration's name as its header writes it:
   *Evidence:* read (the definition's body); a `lake lean` witness at $k = 1$ and at $k = 2$
   (`scratch/reconcile-lean/t372/Zero.lean`, gitignored).
   *Found:* RECONCILE round 3 task 37.2.
-  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
+  *Disposition:* done (the commit "Phase 41e close, part 1: the gates on the final tree, and the
+  ledger's last dispositions"); reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the
+  PI*). The remark after the node says it for $k \ge 2$, where the chapter uses it, and that at $k =
+  1$ the zero element passes through no nonzero point, as the docstring does since task 37.2.
 - **F-323** · S · `thm:theorem-55-6`, `thm:molecular-conjecture` and
   `thm:molecular-conjecture-multigraph` (`panel-layer.tex`; their pins
   `PanelHingeFramework.rankHypothesis_of_theorem_55_gen`, `PanelHingeFramework.molecular_conjecture`
@@ -3561,7 +3644,8 @@ declaration's name as its header writes it:
   `hD` and proved by it with `hn ▸ three_le_screwDim hk1`, on the three standard axioms
   (`scratch/reconcile-lean/t381/HD.lean`, gitignored).
   *Found:* RECONCILE round 3 task 38.1.
-  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the PI*).
+  *Disposition:* done (`b2d0839a`); reported (`notes/Reconcile-lean-cleanup.md`, *Candidates for the
+  PI*).
   Phase 41b, item 3: done (`b2d0839a`).
   `theorem_55_minimalKDof_gen` and the eleven declarations of the list lose `hD`, each body that
   uses it deriving it (`hn ▸ three_le_screwDim hk1`, or `two_le_screwDim`). Four of them took no
@@ -4190,7 +4274,8 @@ declaration's name as its header writes it:
   *Evidence:* read (the docstrings and bodies); measured (`scripts/blueprint-deps.py --label` at
   `efa7ed2b`, dead pins).
   *Found:* round 3 task 2.1.
-  *Disposition:* reported (`notes/Prose-report.md`, L3); round 3: in `PanelHinge.lean` (`fd9c57a4`),
+  *Disposition:* done (`c26edc57`); reported (`notes/Prose-report.md`, L3); round 3: in
+  `PanelHinge.lean` (`fd9c57a4`),
   the docstrings of `isGeneralPosition_withMomentNormals` and `isGeneralPosition_ofParam` name
   `lem:moment-curve-general-position`, call neither a construction that Case I needs, and say that
   no declaration, or no main result, uses them; the leads of `withMomentNormals` and `ofParam` name
@@ -5352,7 +5437,9 @@ declaration's name as its header writes it:
   `(⊤ : SimpleGraph (Fin 2)).IsLaman`, which it proves from a non-module file, on the search alone,
   and on `List.insertionSort`.
   *Found:* RECONCILE round 3 task 16.
-  *Disposition:* reported (to the PI at the round's close, as a possible later item: task 16 found
+  *Disposition:* left (put to the PI at round 3's close, and Phase 41 took only `F-323` and `F-324`,
+  `notes/Phase41-design.md` §1.5; the texts name `native_decide`); reported (to the PI at the
+  round's close, as a possible later item: task 16 found
   the route not cheap, and the round does not queue it).
 - **F-277** · L · `CombinatorialRigidity.Search.reachClosureComputable` (`Search/DFS.lean`;
   `def:reachClosureComputable`): it runs the search once for each vertex `w`, with the predicate
@@ -5365,7 +5452,9 @@ declaration's name as its header writes it:
   the statement of `reachableFindingAux_complete`); that the marked vertices are reachable is not
   proved.
   *Found:* RECONCILE round 3 task 16.
-  *Disposition:* reported (`notes/Reconcile-lean-cleanup.md` *Candidates for the PI*).
+  *Disposition:* left (put to the PI at round 3's close, and Phase 41 took only `F-323` and `F-324`,
+  `notes/Phase41-design.md` §1.5; the one-search body would restate `def:reachClosureComputable`, so
+  the per-vertex body stays); reported (`notes/Reconcile-lean-cleanup.md` *Candidates for the PI*).
 - **F-278** · L · `SimpleGraph.Henneberg.isoOfOptionSubtypeNe` (private) and
   `SimpleGraph.Henneberg.isoTypeIIOfThreeNeighbors` (`HennebergReverse.lean`): the first's
   `hnone : ¬ H.Adj none none` holds for every simple graph (`SimpleGraph.irrefl`; its callers pass
@@ -7376,7 +7465,7 @@ declaration's name as its header writes it:
   after `thm:body-hinge-tay`; the statement of
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`; JJ 2010 §6, p. 582).
   *Found:* round 4 task 2.12.
-  *Disposition:* reported (`notes/Prose-report.md`, M1); round 1: `body-hinge.tex`'s two passages
+  Until Phase 41c: reported (`notes/Prose-report.md`, M1); round 1: `body-hinge.tex`'s two passages
   say the corollary is for simple graphs, with the rest of its pin's scope (at least two vertices,
   every body a vertex, an infinite field, the fresh-label supply by pointer), and that for
   multigraphs the formalization has the theorem for bundles of bars (b72c0202). Not "only":

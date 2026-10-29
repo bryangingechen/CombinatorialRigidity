@@ -37,9 +37,10 @@ join the project's gates for a commit that moves a pin; the PI adopted it on 202
 open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
 41e (UNSTATED, the claims no declaration states, the phase's (c) in §3 below, with the design
 doc's §4(a); opened with the PI on 2026-10-29, the design doc's §1j, with item R's drop of `hfresh`
-from KT Theorem 4.9's principle and the molecule's padded labels dropped), its item U1, S25 with
-`def:blockingWitness`
-(`notes/Phase41e.md` *Hand-off*). Its close closes the phase and the program. The
+from KT Theorem 4.9's principle and the molecule's padded labels dropped), the second part of its
+close: its items have landed, and the close's first part ran the gates and gave every ledger entry
+its last disposition, `done` or `left` (`notes/Prose-findings.md`, its header; `notes/Phase41e.md`
+*Hand-off*). The second part closes the phase and the program. The
 PI's push ran CI green on 2026-10-25.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 

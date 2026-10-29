@@ -7,13 +7,19 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4
 `notes/reconcile-formal/ReductionWitness.lean`, for U11 `DofGenericWitness.lean`, and for U12
 `CaseIIPlacementWitness.lean`. Fifteen build items, two recons, a spike and the close (planned
-18–24 commits, the open included); every item but the close has landed. Next: the close, which
-closes Phase 41 and the RECONCILE program.
+18–24 commits, the open included); every item and the close's first part have landed. Next: the
+close's second part, which closes Phase 41 and the RECONCILE program.
 
 ## Current state
 
-**The next concrete commit is the close** (*Hand-off*); U1–U12, R, PAD, U11's recon, M1K and
-U12's spike have landed. U12 transcribed the spike's witness: `lem:case-II-realization-placement`
+**The next concrete commit is the close's second part** (*Hand-off*): the re-reads, the status
+surfaces and the compressions. Its first part landed the gates on the final Lean tree (no Lean
+change: whole-project `lake build` 6145 jobs with 0 warnings, `lake lint`, and the 20 main results'
+`#print axioms` byte-identical to 41d's close net of M1K's rename, each `[propext, Classical.choice,
+Quot.sound]`; the harness `scratch/41e-close/Axioms.lean`, gitignored), every ledger entry `done`
+or `left` (307 and 25, none `reported`; the ledger's header), `F-301`'s remark in `pencil.tex`, and
+the review's Lean question: `exists_independent_panelRow_transport` stays (*Decisions made*).
+U1–U12, R, PAD, U11's recon, M1K and U12's spike have landed. U12 transcribed the spike's witness: `lem:case-II-realization-placement`
 pins `case_II_placement` (as stated) and `case_II_placement_rank` (the count at any rank, which
 `case_II_realization_all_k` calls), and `case_II_placement_eq612` is deleted. M1K moved M1, the `main_results` row, to
 `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees` (KT's genericity, §1k.2);
@@ -153,6 +159,16 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   takes `exists_independent_panelRow_transport` and its node `lem:case-II-placement-old-rows`,
   uncalled and `\uses`'d by no live node since U12. The loop stops for the PI's push (§1j.5);
   ORIGAMI opens later, with the PI.
+  - [x] Part 1 (the commit "Phase 41e close, part 1: the gates on the final tree, and the ledger's
+    last dispositions"): the whole-project build, `lake lint` and the axioms on the final Lean
+    tree (*Current state*; no new `main_results` row, M1K's renamed one witnessed); the ledger's
+    dispositions (with `F-301`'s remark fixed); the review's Lean question, the declaration kept;
+    `blueprint/lint.sh` and `verify.sh` on that commit.
+  - [ ] Part 2: the rest of the item above: the re-read of the restated chapters and the
+    exposition ledger; ROADMAP's RECONCILE bullet (and `notes/Reconcile.md`'s **Status**: the
+    program closed); the row, §41, README, the home page, `intro.tex`, `formalization.yaml`, the
+    queue row, `notes/MolecularConjecture.md`; the design doc's UNSTATED arc; the rest of the
+    project-organization review; the blueprint gates again. The dispatch log is the coordinator's.
 
 **Estimate.** 18–24 commits, the open and the close included (M1K's commit added by §1k.2): U1–U7 one each, R and PAD one each,
 U8–U11 one or two each, U12 two, U11's recon and U12's spike none or one each. The recon's 15–21
@@ -165,11 +181,14 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**The close** (checklist item *Close*), a full-phase close of Phase 41 and the RECONCILE program
-(`PHASE-BOUNDARIES.md` *When this commit closes a phase*): its gates first (whole-project build,
-`lake lint`, the blueprint gates, the main results' axioms against 41d's close run), then the
-re-reads, the ledger dispositions and the status surfaces the item lists. If it is too large for
-one commit, land the gates and the ledger dispositions first and say so in *Current state*.
+**The close's second part** (checklist item *Close*, part 2), the commit that closes Phase 41 and
+the RECONCILE program (`PHASE-BOUNDARIES.md` *When this commit closes a phase*, the full-phase
+close). Part 1 ran the Lean gates and the axioms on the final tree and set the ledger's last
+dispositions; part 2 changes no Lean, so they stand, and it re-runs `blueprint/lint.sh` and
+`verify.sh` and `check-phase-note.py`. If it is too large for one commit, land the re-reads and the
+compressions first, and the status surfaces (ROADMAP's row, §41 and RECONCILE bullet, README, the
+home page, `intro.tex`, `formalization.yaml`, the queue row) last, in the commit that flips the row
+and closes. The dispatch log's grooming is the coordinator's.
 
 ## Decisions made during this phase
 
@@ -180,3 +199,6 @@ one commit, land the gates and the ledger dispositions first and say so in *Curr
   the earliest item that edits both `Theorem55.lean` (the rows form's file) and
   `panel-layer.tex`, and a mechanical one; PAD its own commit before U10, mechanical where U10 is
   a crux node with an uncompiled route.
+- **`exists_independent_panelRow_transport` stays** (the close's review): it states KT eq. (6.13)'s
+  step, `lem:case-II-placement-old-rows`, which `rem:case-II-kt-steps` frames; the PI keeps KT's
+  route with Lean behind its nodes (`notes/Reconcile.md` §1), and round 3 kept such pins.
