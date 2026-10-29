@@ -489,7 +489,8 @@ bodies, where $\pi_W$ deletes the columns of $W$
 
 \begin{lemma}[Case~I: the rank adds over the contraction; KT eq.~(6.3)]
   \label{lem:case-I}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le,
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_I_rank_add_iff,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn,
         CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn}
   \leanok
@@ -509,10 +510,14 @@ bodies, where $\pi_W$ deletes the columns of $W$
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:pinned-motions-on-rank-bound,
-    lem:rigidContract-isMinimalKDof}
-  By KT Lemma~3.5 (\cref{lem:rigidContract-isMinimalKDof}), $G/E(H)$ is
-  a minimal $k$-dof-graph. It has $|V(G)| - |V(H)| + 1$ vertices
-  (\cref{def:rigid-contraction}), so
+    lem:rigidContract-isMinimalKDof, lem:pencil-contraction-deficiency,
+    lem:reduction-measure}
+  The contraction keeps the deficiency,
+  $\operatorname{def}(\widetilde{G/E(H)}) = \operatorname{def}(\tilde G)
+  = k$ (\cref{lem:pencil-contraction-deficiency}; by KT Lemma~3.5,
+  \cref{lem:rigidContract-isMinimalKDof}, $G/E(H)$ is even a minimal
+  $k$-dof-graph). It has $|V(G)| - |V(H)| + 1$ vertices
+  (\cref{lem:reduction-measure}), so
   $\operatorname{rank} R(G/E(H), p_2) = D(|V(G)| - |V(H)|) - k$. The
   right side of the identity is therefore $D(|V(G)| - 1) - k$, the
   target rank of $G$. This proves the lemma.
@@ -587,16 +592,21 @@ bodies, where $\pi_W$ deletes the columns of $W$
 \end{proof}
 
 \begin{fmlnote}
-  No pinned theorem mentions the contraction. The second and third state
-  the lemma with the block pin in place of $R(G/E(H), p_2)$, for
-  panel-hinge and for body-hinge frameworks. Let $s$ be a nonempty set of
-  bodies, and suppose that $\dim Z(G,p) \le D + \dim Z_s(G,p)$. Then
+  The first pinned theorem states the identity with
+  $\operatorname{def}(\tilde G)$ in place of $k$, and does not assume
+  $G$ minimal: the first paragraph of the proof uses only the deficiency
+  and the number of vertices of $G/E(H)$. Of the two frameworks it uses
+  only their ranks, so their graphs need not be $G$ and $G/E(H)$. The
+  third and fourth state the lemma with the block pin in place of
+  $R(G/E(H), p_2)$, for panel-hinge and for body-hinge frameworks. Let
+  $s$ be a nonempty set of bodies, and suppose that
+  $\dim Z(G,p) \le D + \dim Z_s(G,p)$. Then
   $\dim Z(G,p) = D + k'$, the form of the target rank in
   \cref{rem:rank-hypothesis-relative}, if and only if
   $\dim Z_s(G,p) = k'$. For $s = V(H)$, the hypothesis holds when the rows
   of $H$ have rank $D(|V(H)| - 1)$, by the proof above, and
   $\dim Z_s(G,p) = k$ says that the second block has the rank of
-  $R(G/E(H), p_2)$. The first pinned theorem assumes that every
+  $R(G/E(H), p_2)$. The second pinned theorem assumes that every
   infinitesimal motion of $(G,p)$ is constant on $s$, and lets
   $s \subseteq t$. Then every infinitesimal motion is constant on $t$ if
   and only if $Z_s(G,p) \subseteq Z_t(G,p)$. It is the one used

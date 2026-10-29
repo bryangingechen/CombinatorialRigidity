@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1, U2, U3, R and U4 have landed. Next: U5.
+close (planned 17–23 commits, the open included); U1–U5 and R have landed. Next: U6.
 
 ## Current state
 
-**The next concrete commit is U5** (*Hand-off*); U1, U2, U3, R and U4 have landed. Each claim of the full
+**The next concrete commit is U6** (*Hand-off*); U1–U5 and R have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -156,7 +156,13 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   with R's names, no proof change. `thm:minimal-kdof-reduction` pins it beside (ii)'s and its
   fmlnote now says both parts are proved; the two definitions are unpinned helpers, their
   docstrings leading `a step of thm:minimal-kdof-reduction`.) (`F-101`)
-- [ ] **U5. S19** (`F-116`). `BodyHingeFramework.case_I_rank_add_iff` (proved): for a proper
+- [x] **U5. S19** (landed: `BodyHingeFramework.case_I_rank_add_iff` in `Pinning.lean`, before the
+  block-pin form, transcribed; `Pinning.lean` gains a `public import` of `Induction/ReducibleVertex`
+  (the statement's `rigidContract`) and a plain `import` of `Induction/Contraction` (the proof's
+  deficiency lemma), so it now waits on the contraction chain; 63 modules rebuilt, warning-clean.
+  `lem:case-I` pins it first, its proof `\uses` the two counts the pin calls, and its fmlnote says
+  the pin asks no minimality and only the frameworks' ranks; the label check moved no pin)
+  (`F-116`). `BodyHingeFramework.case_I_rank_add_iff` (proved): for a proper
   rigid `H` with `r ∈ V(H)` and frameworks `F`, `F₂`, if `rank R(F₂) = D(|V(G/E(H))| − 1) − def`
   of the contraction, then `rank R(F) = D(|V(G)| − 1) − def(G̃)` iff
   `rank R(F) = D(|V(H)| − 1) + rank R(F₂)`, by `rigidContract_deficiency_eq`
@@ -285,9 +291,11 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**U5** (S19, checklist item U5): `BodyHingeFramework.case_I_rank_add_iff` in
-`AlgebraicInduction/Pinning.lean`, beside the block-pin criteria, pinned first by `lem:case-I`
-(statement and route in the checklist). One commit.
+**U6** (§4(a) with the riders of §1j.2 and §1j.4, checklist item U6): `rigidityMatrix_prop11`
+(`AlgebraicInduction/PanelHinge.lean`) asks the hinge only at the links between distinct bodies,
+its three callers in `Theorem55.lean` wrap, and `prop:rank-formula-of-motion-bound` follows; the
+rows form drops `hfresh` and `[DecidableEq β]`, and `thm:theorem-55-6-rows`'s `\uses` repoints to
+`thm:theorem-55`. Zone, mechanical. One commit.
 
 ## Decisions made during this phase
 
