@@ -61,6 +61,14 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   Cor 6.3) at the triangle `K₃`, a minimal `0`-dof-graph. Some hinge-point assignment is generic,
   and at every generic one the framework is infinitesimally rigid, as `2·K₃` packs three spanning
   trees.
+* `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_banana_witness`: the
+  same theorem at the double edge (two bodies, two parallel hinges), a multigraph that is not
+  simple (`banana_not_simple`): some hinge-point assignment is generic, and at every generic one
+  the framework is infinitesimally rigid, as `2·G` packs three spanning trees.
+* `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_loop_witness`: the
+  same theorem at the double edge with a loop at one body, which is not loopless
+  (`banana_addEdge_not_loopless`): the loop's hinge constrains nothing, and at every generic
+  assignment the framework is still infinitesimally rigid.
 * `theorem_55_minimalKDof_gen_witness`: Katoh and Tanigawa's Theorem 5.5 at the single edge, a
   minimal `1`-dof-graph, its fresh-edge supply from a label headroom. The single edge is simple, so
   it has a panel realization with nonparallel panels and one with a nondegenerate hinge, at rank
@@ -344,11 +352,90 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_
   have : NeZero (Graph.bodyHingeMult 2) := ⟨by decide⟩
   refine ⟨(exists_isGenericHingePoints _).imp fun _ h ↦ h.1, ?_⟩
   have h := (isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees (K := ℝ)
-    (k := 1) (n := 2) le_rfl rfl hcard _ hne (shadowGraph_vertexSet _)
-    (shadowGraph_simple _)).mpr
+    (k := 1) (n := 2) le_rfl rfl hcard _ hne (shadowGraph_vertexSet _)).mpr
     ((Graph.deficiency_eq_zero_iff_exists_spanningTrees _ 2 hne).mp
       top_fin_three_shadowGraph_isMinimalKDof_zero_two.1.deficiency_eq)
   simpa using h
+
+open Molecular.BodyHingeFramework in
+/-- **The generic body-hinge theorem at the double edge, in the plane**: two bodies joined by two
+parallel hinges (each a point of the plane, `k = 1`), with the label headroom `3 · (2 - 1) < 4`.
+Some hinge-point
+assignment is generic over it, and at every generic one the framework is infinitesimally rigid,
+as `2·G` packs three edge-disjoint spanning trees. The double edge is a multigraph with parallel
+edges, not a simple graph. -/
+theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_banana_witness :
+    (∃ q, IsGenericHingePoints (K := ℝ) (k := 1)
+        (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))) q) ∧
+      ∀ q, IsGenericHingePoints (K := ℝ) (k := 1)
+          (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))) q →
+        (ofHinge (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4)))
+          fun e a b ↦ q (e, a, b)).IsInfinitesimallyRigidOn Set.univ := by
+  have hspan : V(Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))) = Set.univ :=
+    Set.eq_univ_of_forall fun x ↦ by fin_cases x <;> simp
+  have hne : V(Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).Nonempty := by
+    rw [hspan]; exact Set.univ_nonempty
+  have hcard : Graph.bodyBarDim 2 * (Nat.card (Fin 2) - 1) < Nat.card (Fin 4) := by
+    simp only [Nat.card_fin]; decide
+  have hdef : (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).deficiency 2 = 0 :=
+    Graph.isKDof_zero_of_parallel_pair (by decide) (x := 0) (y := 1) (e₁ := 0) (e₂ := 1)
+      (by decide) (by simp) (by simp) (by decide) (by simp) (by simp)
+  have : NeZero (Graph.bodyHingeMult 2) := ⟨by decide⟩
+  refine ⟨(exists_isGenericHingePoints _).imp fun _ h ↦ h.1, ?_⟩
+  have h := (isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees (K := ℝ)
+    (k := 1) (n := 2) le_rfl rfl hcard _ hne hspan).mpr
+    ((Graph.deficiency_eq_zero_iff_exists_spanningTrees _ 2 hne).mp hdef)
+  rwa [hspan] at h
+
+open Molecular.BodyHingeFramework in
+/-- **The generic body-hinge theorem at the double edge with a loop, in the plane**: the double
+edge with a third hinge, a loop at body `0`. A loop's hinge constrains no motion and crosses no
+partition, so the deficiency is still `0` (`deficiency_le_deficiency_of_le_vertexSet_eq`), and at
+every generic hinge-point assignment the framework is infinitesimally rigid, though genericity says
+nothing about the loop's hinge. -/
+theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees_loop_witness :
+    (∃ q, IsGenericHingePoints (K := ℝ) (k := 1)
+        ((Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).addEdge 2 0 0) q) ∧
+      ∀ q, IsGenericHingePoints (K := ℝ) (k := 1)
+          ((Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).addEdge 2 0 0) q →
+        (ofHinge ((Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).addEdge 2 0 0)
+          fun e a b ↦ q (e, a, b)).IsInfinitesimallyRigidOn Set.univ := by
+  set H := Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4)) with hH
+  set G := H.addEdge 2 0 0 with hG
+  have hspanH : V(H) = Set.univ := Set.eq_univ_of_forall fun x ↦ by fin_cases x <;> simp [hH]
+  have hspan : V(G) = Set.univ := by
+    rw [hG, Graph.vertexSet_addEdge, hspanH]; exact Set.union_univ _
+  have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  have hcard : Graph.bodyBarDim 2 * (Nat.card (Fin 2) - 1) < Nat.card (Fin 4) := by
+    simp only [Nat.card_fin]; decide
+  have hdefH : H.deficiency 2 = 0 :=
+    Graph.isKDof_zero_of_parallel_pair (by decide) (x := 0) (y := 1) (e₁ := 0) (e₂ := 1)
+      (by decide) (by simp [hH]) (by simp [hH]) (by decide) (by simp [hH]) (by simp [hH])
+  have hle : H ≤ G := Graph.le_addEdge (by simp [hH])
+  have hdef : G.deficiency 2 = 0 := by
+    refine le_antisymm ?_ (G.deficiency_nonneg 2 hne)
+    rw [← hdefH]
+    exact Graph.deficiency_le_deficiency_of_le_vertexSet_eq (by decide) hle
+      (by rw [hspan, hspanH])
+  have hloop : G.IsLink 2 0 0 := Graph.addEdge_isLink H 2 0 0
+  have : NeZero (Graph.bodyHingeMult 2) := ⟨by decide⟩
+  refine ⟨(exists_isGenericHingePoints _).imp fun _ h ↦ h.1, ?_⟩
+  have h := (isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees (K := ℝ)
+    (k := 1) (n := 2) le_rfl rfl hcard G hne hspan).mpr
+    ((Graph.deficiency_eq_zero_iff_exists_spanningTrees _ 2 hne).mp hdef)
+  rwa [hspan] at h
+
+/-- The double edge is not simple: it has two parallel edges. -/
+theorem banana_not_simple : ¬ (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).Simple := by
+  intro h
+  have := h.eq_of_isLink (e := 0) (f := 1) (x := 0) (y := 1) (by simp) (by simp)
+  exact absurd this (by decide)
+
+/-- The double edge with a loop is not loopless. -/
+theorem banana_addEdge_not_loopless :
+    ¬ ((Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).addEdge 2 0 0).Loopless := by
+  intro h
+  exact h.not_isLoopAt 2 0 (Graph.addEdge_isLink _ 2 0 0)
 
 
 /-! ### The molecular rows -/

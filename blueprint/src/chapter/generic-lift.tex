@@ -72,7 +72,7 @@ panel-and-hinge realizations (their Theorem~7.2).
 \Cref{sec:generic-lift-bodybar} proves Tay's theorem at every generic
 choice of the endpoints of the bars. \Cref{sec:generic-lift-bodyhinge}
 proves the rank formula at every generic choice of points spanning the
-hinges of a simple graph, and with it the theorem of Tay and Whiteley
+hinges of a multigraph, with parallel edges and loops allowed, and with it the theorem of Tay and Whiteley
 for frameworks with hinges.
 
 \subsection{Abundance of generic placements}
@@ -1009,24 +1009,25 @@ generic choices exist.
 
 Our main result is Jackson and Jord\'an's rank formula, KT
 Proposition~2.3 (\cref{prop:rigidity-matrix-prop11}), at every generic
-hinge-point assignment of a simple graph
-(\cref{thm:bodyhinge-generic-rank}). Jackson and Jord\'an prove the
-formula for every multigraph (their Theorem~6.1). Our proof is for
-simple graphs, as it starts from a realization that KT Theorem~5.6
-gives for simple graphs. At deficiency zero the formula gives the
+hinge-point assignment of a multigraph, with parallel edges and
+loops allowed (\cref{thm:bodyhinge-generic-rank}). Jackson and Jord\'an
+prove the formula for every multigraph (their Theorem~6.1). Our proof
+starts from the realization that KT Theorem~5.6 gives for every
+multigraph (\cref{thm:theorem-55-6-multigraph}). At deficiency zero the formula gives the
 theorem of Tay and Whiteley at every generic hinge-point assignment
 (\cref{cor:bodyhinge-generic-tree-packing}).
 
 For one hinge-point assignment at the target rank
 $D(|V| - 1) - \operatorname{def}(\tilde G)$ we start, as for normals,
-from KT Theorem~5.6 (\cref{thm:theorem-55-6}). It gives a panel-hinge
-realization at the target rank whose panels are nonparallel, so that
-its hinges are nondegenerate. The hinge of an edge with
-ends $u$ and $v$ is the meet of their panels, an extensor of the
-$(d-1)$-dimensional subspace $n_u^\perp \cap n_v^\perp$ of $K^{d+1}$,
-where $n_u$ and $n_v$ are the normals. If this subspace lies in the
-hyperplane of the vectors with last coordinate $0$, the hinge lies at
-infinity. Then no points of $K^d$ span it, as their homogeneous
+from KT Theorem~5.6 for multigraphs
+(\cref{thm:theorem-55-6-multigraph}). It gives a hinge-coplanar panel
+realization at the target rank, whose hinges are nonzero. The hinge of
+an edge with ends $u$ and $v$ lies in the panels of $u$ and $v$, so it
+is an extensor of $d - 1$ vectors of the hyperplane $n_u^\perp$ of
+$K^{d+1}$, where $n_u$ is the normal of $u$
+(\cref{lem:extensor-in-panel-decomposable}). If these vectors lie in
+the hyperplane of the vectors with last coordinate $0$, the hinge lies
+at infinity. Then no points of $K^d$ span it, as their homogeneous
 coordinate vectors have last coordinate $1$
 (\cref{def:homogeneous-coords}). Such a hinge is the body-and-hinge
 counterpart of the line at infinity of \cref{sec:generic-lift-bodybar}.
@@ -1227,9 +1228,10 @@ subsection explains.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints}
   \leanok
   \uses{def:generic-hinge-points, def:hinge-constraint}
-  Let $d \ge 2$, and let $G = (V, E)$ be a multigraph without loops.
-  Let $q$ be a hinge-point assignment of $G$ that is generic for row
-  independence. Then every hinge of $(G, q)$ is nondegenerate.
+  Let $d \ge 2$, and let $G = (V, E)$ be a multigraph, with parallel
+  edges and loops allowed. Let $q$ be a hinge-point assignment of $G$
+  that is generic for row independence. Then the hinge of $(G, q)$ at
+  every edge with two distinct ends is nondegenerate.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1377,35 +1379,50 @@ in every dimension, by comparing the rows.
   false.
 \end{proof}
 
+\begin{lemma}[A nonzero extensor in a panel is decomposable]
+  \label{lem:extensor-in-panel-decomposable}
+  \lean{CombinatorialRigidity.Molecular.exists_extensor_eq_of_extensorInPanel}
+  \leanok
+  \uses{def:genuine-hinge-realization, def:extensor}
+  Let $d \ge 2$ and let $C \neq 0$ be an extensor that lies in the
+  panel with normal $n$ (\cref{def:genuine-hinge-realization}). Then
+  $C = x_1 \vee \cdots \vee x_{d-1}$ for some vectors
+  $x_1, \dots, x_{d-1}$ of $K^{d+1}$, with $x_1 \neq 0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By definition, $C = x_1 \vee \cdots \vee x_{d-1}$ for some vectors of
+  $n^\perp$. As $C \neq 0$, the vectors are linearly independent (the
+  remark after \cref{def:extensor}), so $x_1 \neq 0$.
+\end{proof}
+
 \begin{lemma}[Independent annihilator rows at some hinge-point
   assignment]
   \label{lem:hinge-point-witness}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_hingePoints_independent_hingePointRow}
   \leanok
-  \uses{def:generic-hinge-points, def:D-deficiency}
+  \uses{def:generic-hinge-points, def:D-deficiency,
+    thm:theorem-55-6-multigraph, lem:extensor-in-panel-decomposable}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and nonempty. Then there is a
+  a multigraph, with parallel edges and loops allowed, with $V$ finite
+  and nonempty. Then there is a
   hinge-point assignment $q$ of $G$ at which some
   $D(|V|-1) - \operatorname{def}(\tilde G)$ members of the
   annihilator-row family of $q$ are linearly independent.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{thm:theorem-55-6, def:panel-support-extensor,
-    lem:panel-support-extensor-join, lem:simultaneous-affine-position,
+  \uses{thm:theorem-55-6-multigraph, lem:extensor-in-panel-decomposable,
+    lem:simultaneous-affine-position,
     lem:extensor-affine-representation, lem:screw-map-rows,
     lem:independent-rows-of-rank, def:induced-screw-map}
   Let $N = D(|V|-1) - \operatorname{def}(\tilde G)$. By KT
-  Theorem~5.6 (\cref{thm:theorem-55-6}), $G$ has a panel-hinge
-  realization $(G, p)$ at the target rank $N$ whose panels are
-  nonparallel, so that its hinges are all nondegenerate.
-  Let $n_v$ be its normals, and let $e$ be an edge with ends $u$ and
-  $v$. The hinge of $e$ is $C(n_u, n_v) \neq 0$, so it is
-  $w_{e,1} \vee \cdots \vee w_{e,d-1}$ for a basis
-  $w_{e,1}, \dots, w_{e,d-1}$ of $n_u^\perp \cap n_v^\perp$
-  (\cref{lem:panel-support-extensor-join} and the remark after it). In
-  particular
-  $w_{e,1} \neq 0$.
+  Theorem~5.6 for multigraphs (\cref{thm:theorem-55-6-multigraph}),
+  $G$ has a hinge-coplanar panel realization $(G, p)$ at the target
+  rank $N$. Its hinge $C_e$ at every edge $e$ is nonzero and lies in a
+  panel, so $C_e = w_{e,1} \vee \cdots \vee w_{e,d-1}$ for some
+  vectors $w_{e,i}$ of $K^{d+1}$ with $w_{e,1} \neq 0$
+  (\cref{lem:extensor-in-panel-decomposable}).
 
   By \cref{lem:simultaneous-affine-position}, there is an invertible
   linear map $g$ of $K^{d+1}$ such that $g(w_{e,1})$ has nonzero last
@@ -1417,12 +1434,12 @@ in every dimension, by comparing the rows.
   hinges are nondegenerate, as $\Lambda$ is injective. By
   \cref{lem:extensor-affine-representation}, there are points
   $q_{e,1}, \dots, q_{e,d-1}$ of $K^d$ and a scalar $c_e \neq 0$ with
-  $C(q_e) = c_e\, \Lambda\, C(n_u, n_v)$. Let $q$ be the hinge-point
+  $C(q_e) = c_e\, \Lambda\, C_e$. Let $q$ be the hinge-point
   assignment that gives each edge $e$ the points $q_e$.
 
   At each edge $e$ of $(G, \Lambda p)$, consider the forms
   $S \mapsto C_t\, x_{t'} - C_{t'}\, x_t$ of
-  \cref{def:generic-hinge-points}, with $C = \Lambda\, C(n_u, n_v)$.
+  \cref{def:generic-hinge-points}, with $C = \Lambda\, C_e$.
   As the hinge is nondegenerate, they span the same space as the rows
   of $R(G, \Lambda p)$ at $e$ (the argument in the proof of
   \cref{lem:rows-polynomial-in-normals}). So these forms, at all the
@@ -1430,7 +1447,7 @@ in every dimension, by comparing the rows.
   some $N$ of them are linearly independent
   (\cref{lem:independent-rows-of-rank}). The member of the
   annihilator-row family of $q$ at an index $(e, t, t')$ is $c_e$ times the form at $(e, t, t')$, as
-  $C(q_e) = c_e\, \Lambda\, C(n_u, n_v)$. Multiplying the members of a
+  $C(q_e) = c_e\, \Lambda\, C_e$. Multiplying the members of a
   family by nonzero scalars does not affect their linear independence.
   So the members of the family of $q$ at these $N$ indices are linearly
   independent.
@@ -1444,8 +1461,8 @@ in every dimension, by comparing the rows.
   \uses{def:generic-hinge-points, def:hinge-constraint,
     def:D-deficiency}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and nonempty. Let $q$ be a
-  hinge-point assignment of $G$ that is generic for row independence.
+  a multigraph, with parallel edges and loops allowed, with $V$ finite
+  and nonempty. Let $q$ be a hinge-point assignment of $G$ that is generic for row independence.
   Then
   \[
     \operatorname{rank} R(G,q)
@@ -1457,8 +1474,9 @@ in every dimension, by comparing the rows.
   \uses{lem:hinge-point-witness,
     lem:generic-hinge-points-nondegenerate,
     lem:relative-deficiency-rank-bound}
-  As $G$ has no loops, the hinges of $(G, q)$ are nondegenerate
-  (\cref{lem:generic-hinge-points-nondegenerate}). So
+  The hinges of $(G, q)$ at the edges with distinct ends are
+  nondegenerate (\cref{lem:generic-hinge-points-nondegenerate}), and
+  \cref{lem:relative-deficiency-rank-bound} asks nothing of a loop. So
   $\operatorname{rank} R(G,q) \le D(|V|-1) - \operatorname{def}(\tilde G)$
   (\cref{lem:relative-deficiency-rank-bound}).
 
@@ -1482,7 +1500,8 @@ in every dimension, by comparing the rows.
   \uses{def:generic-hinge-points, def:hinge-constraint,
     def:D-deficiency}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and nonempty. Then $(G, q)$ is
+  a multigraph, with parallel edges and loops allowed, with $V$ finite
+  and nonempty. Then $(G, q)$ is
   infinitesimally rigid at every hinge-point assignment $q$ of $G$ that
   is generic for row independence if and only if
   $\operatorname{def}(\tilde G) = 0$.
@@ -1517,7 +1536,8 @@ in every dimension, by comparing the rows.
   \leanok
   \uses{def:generic-hinge-points, def:matroid-MG}
   Let $d \ge 2$, let $K$ be an infinite field, and let $G = (V, E)$ be
-  a simple graph with $V$ finite and nonempty. Then $(G, q)$ is
+  a multigraph, with parallel edges and loops allowed, with $V$ finite
+  and nonempty. Then $(G, q)$ is
   infinitesimally rigid at every hinge-point assignment $q$ of $G$ that
   is generic for row independence if and only if
   $\tilde G = (D-1) \cdot G$ contains $D$ edge-disjoint spanning trees.
@@ -1546,8 +1566,8 @@ in every dimension, by comparing the rows.
   labels has more than $D(|V| - 1)$ elements, which gives the supply of
   fresh labels (\cref{rem:fresh-edge-supply}). The bound is on $L$, not
   on $G$, whose edges need not be all the labels: with enough labels the
-  results apply to every simple graph on the bodies, a single edge or a
-  tree among them. The pinned witness lemma takes a selector that gives
+  results apply to every multigraph on the bodies, a single edge, a
+  tree or a double edge among them. The pinned witness lemma takes a selector that gives
   each edge of $G$ its two ends. The rank formula and its corollaries
   take none, as genericity over $G$ asks about every such selector (the
   note after \cref{def:generic-hinge-points}).
@@ -1562,4 +1582,4 @@ of their Theorem~6.1~\cite[\S6]{jacksonJordan2009}. The body-hinge
 chapter proves the characterization in its existence form, for
 frameworks given by bundles of bars (\cref{thm:body-hinge-tay}).
 \Cref{cor:bodyhinge-generic-tree-packing} is its generic form for
-frameworks whose hinges are spanned by points, for simple graphs.
+frameworks whose hinges are spanned by points, for multigraphs.

@@ -1044,7 +1044,8 @@ itself a minimal `k`-dof-graph (`F-207`). Phase 41b restated both over
 `G`, on ≥ 1 body, with the formal KT Theorem 5.6's bound on the edge
 labels instead, so they cover every simple graph, given enough labels,
 the simple minimal ones included, and made P's rank formula a main
-result.
+result. Phase 41c then extended BH's theorems to every multigraph, parallel edges
+and loops allowed (`F-222`; P's stay for simple graphs).
 Headline axioms verified at close. This closed the PROSPECT queue.
 
 ### Phase 35 — Multigraph molecular conjecture in the hinge-coplanar model (COPLANAR, post-program)
@@ -1259,15 +1260,17 @@ conjecture holds from one body, both sides asking a nondegenerate hinge at each 
 panel side nonparallel panels; the multigraph rows ask nondegeneracy on `E(G)`; the `d = 3` spanning
 corollary derives from Theorem 5.5. The generic panel and body-hinge theorems hold at every generic
 realization of every simple graph on one body or more, given enough edge labels, so they cover the
-simple minimal `k`-dof-graphs; the panel theorem's rank formula is a twentieth main result, and the
+simple minimal `k`-dof-graphs (the body-hinge theorem since 41c for every multigraph); the panel theorem's rank formula is a twentieth main result, and the
 new and restated rows have non-vacuity witnesses at the single edge and the triangle. KT Proposition
 2.3 is stated as Katoh and Tanigawa state it, for body-hinge frameworks on multigraphs, in
 conditional form. All 20 main results' axioms are the three standard ones. The PI's push, CI's
 first run of 41a's module conversion, was green. **41c** opened with the PI on 2026-10-28 (the
 design doc's §1g); its open's recon built M1 in a Lean witness from the multigraph Theorem 5.6,
 whose hinges lie in the panels and so decompose as the construction needs, with loops costing one
-commit (the upper bound asked only at the edges that are not loops). Item 1, that upper bound,
-has landed. **Next**: 41c's item 2, M1; then KT Proposition 2.3's unconditional pin. Detail → `notes/Phase41a.md`,
+commit (the upper bound asked only at the edges that are not loops). Items 1, that upper bound,
+and 2, M1 (the generic body-hinge theorem for every multigraph, loops allowed, with non-vacuity
+witnesses at the double edge and the double edge with a loop), have landed. **Next**: 41c's
+item 3, KT Proposition 2.3's unconditional pin. Detail → `notes/Phase41a.md`,
 `notes/Phase41b.md`, `notes/Phase41c.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)

@@ -7373,6 +7373,10 @@ declaration's name as its header writes it:
   multigraphs the formalization has the theorem for bundles of bars (b72c0202). Not "only":
   `thm:theorem-55-6-multigraph` realizes every spanning multigraph with nonzero hinges. The
   multigraph generic form is `RECONCILE-FORMAL`'s (b).
+  *Disposition:* done (the commit "Phase 41c item 2: M1, the generic body-hinge theorem for
+  multigraphs, loops allowed"; before: round 1 above, then open, `notes/Phase41c.md`, item 2): the
+  rank formula and the two corollaries lose `hSimple`, the witness assembly starts from the
+  multigraph Theorem 5.6, and `body-hinge.tex` and the status surfaces say multigraph.
 - **F-228** · M · the credit for Laman's theorem (`intro.tex`, `laman.tex`, `laman-theorem.tex`,
   `henneberg.tex`; `README.md`, `home_page/index.md`): the blueprint credits the characterization of
   the generically rigid graphs in the plane to Laman 1970 alone, as Jordán 2016 does (Theorems 2.2.1

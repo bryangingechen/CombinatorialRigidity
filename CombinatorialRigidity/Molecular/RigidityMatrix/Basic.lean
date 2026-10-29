@@ -231,6 +231,28 @@ def ExtensorInPanel {k : ℕ} (C : ScrewSpace K k) (n : Fin (k + 2) → K) : Pro
   ∃ p : Fin k → Fin (k + 2) → K,
     C.val = extensor p ∧ ∀ i, p i ⬝ᵥ n = 0
 
+/-- **A nonzero screw in a panel is decomposable, with a nonzero leading vector**: if `C ≠ 0` lies
+in a panel (`ExtensorInPanel`), then `C` is the extensor of `k` vectors, the first of them nonzero.
+The vectors are those `ExtensorInPanel` gives; a nonzero extensor has linearly independent vectors
+(`extensor_ne_zero_iff_linearIndependent`), so in particular `p 0 ≠ 0`. -/
+theorem exists_extensor_eq_of_extensorInPanel {k : ℕ} [NeZero k] {C : ScrewSpace K k}
+    {nv : Fin (k + 2) → K} (hC : C ≠ 0) (hP : ExtensorInPanel C nv) :
+    ∃ p : Fin k → Fin (k + 2) → K, p 0 ≠ 0 ∧
+      C = ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower p) := by
+  obtain ⟨p, hp, -⟩ := hP
+  have heq : C = ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower p) := by
+    apply ScrewSpace.ext
+    rw [ScrewSpace.val_mk]
+    exact hp
+  refine ⟨p, ?_, heq⟩
+  have hpe : extensor p ≠ 0 := by
+    intro h0
+    apply hC
+    rw [heq]
+    apply ScrewSpace.ext
+    rw [ScrewSpace.val_mk, ScrewSpace.val_zero, h0]
+  exact ((extensor_ne_zero_iff_linearIndependent p).mp hpe).ne_zero 0
+
 /-- **A body-hinge framework** `(G,p)` in `K^d`, `d = k + 1` (`def:hinge-constraint`): a multigraph
 `G : Graph α β` with, at each edge label `e`, an element `supportExtensor e` of the screw space
 `⋀^k K^(k+2)`, which stands for the supporting extensor `C(p(e))` of the hinge `p(e)`. The bodies

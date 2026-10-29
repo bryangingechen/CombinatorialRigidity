@@ -4,18 +4,20 @@
 design, the PI's decisions (here §1f.4, loops, and §1g, the open) and the open's recon are in
 `notes/Phase41-design.md`; the recon's Lean witness is
 `notes/reconcile-formal/MultigraphWitness.lean`. Three build items and the close (planned 3–5);
-item 1 has landed. Next: item 2, M1 (the witness file's M1 sections transcribed).
+items 1 and 2 have landed. Next: item 3, KT Proposition 2.3 unconditional (*Hand-off*).
 
 ## Current state
 
-**The next concrete commit is item 2** (*Hand-off*); item 1 has landed. The open's recon
+**The next concrete commit is item 3** (*Hand-off*); items 1 and 2 have landed. The open's recon
 (design doc §2, *MULTIGRAPH's open recon*) built the whole sub-phase in a witness file against
 `ae6a852c`, with no `sorry`: M1, the generic
 body-hinge theorems for every spanning multigraph, parallel edges and loops allowed, and KT
 Proposition 2.3 at every generic hinge-point assignment. The lower bound comes from the multigraph
 Theorem 5.6 (`theorem_55_6_multigraph_gen`): its hinges lie in panels, and `ExtensorInPanel`'s body
 is an extensor of vectors, so each hinge at an edge decomposes as the transplant needs. Loops cost
-one commit (item 1), within §1f.4's bound. Mode: structural edit, no red target nodes; each item
+one commit (item 1), within §1f.4's bound. Item 2 made the library's generic body-hinge theorems
+(rank formula, rigidity iff, spanning-trees iff) hold for every multigraph, loops allowed; the
+witness file's remaining section is item 3's. Mode: structural edit, no red target nodes; each item
 restates the nodes it reaches, in step with its Lean.
 
 ## Architectural choices made up front
@@ -38,17 +40,14 @@ item transcribes it into the library, with its blueprint and status surfaces.
   item 1: the upper bound asked at the non-loop links"): `hC` of the three upper-bound lemmas asks
   `u ≠ v`, 18 files' callers wrap it, `lem:deficiency-rank-bound` states its hypothesis and
   `lem:relative-deficiency-rank-bound` asks it at the non-loops. S/P/B 1/1/2.
-- [ ] **2. M1** (`F-222`; JJ 2010 Theorem 6.1, p. 582). In `HingeGeneric.lean`, `hSimple` dropped
-  from `exists_hingePoints_independent_hingePointRow` (now from `theorem_55_6_multigraph_gen`),
-  `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints` and the two iffs, under `hk1`, `hn`,
-  `hcard`, `hne`, `hspan`; `supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints` concludes
-  `∀ e u v, G.IsLink e u v → u ≠ v → … ≠ 0` with no `G.Loopless`. One new lemma,
-  `exists_extensor_eq_of_extensorInPanel` (`RigidityMatrix/Basic.lean`, beside `ExtensorInPanel`).
-  `Nonvacuity.lean`: the row's witness at the double edge, a second at the double edge with a loop.
-  Blueprint: `thm:bodyhinge-generic-rank`, its two corollaries, `lem:hinge-point-witness`
-  (`\uses` the multigraph Theorem 5.6), `lem:generic-hinge-points-nondegenerate`, the chapter
-  opening and the scope sentences that say "simple". Status: the main row, the JJ alignment row,
-  `fidelity.divergences`, README, the home page, ROADMAP's BH paragraph. S/P/B 1/1/2.
+- [x] **2. M1** (`F-222`; JJ 2010 Theorem 6.1, p. 582). Done (the commit "Phase 41c item 2: M1, the
+  generic body-hinge theorem for multigraphs, loops allowed"): `hSimple` dropped from the witness
+  assembly (now from `theorem_55_6_multigraph_gen`), the rank formula and the two iffs;
+  `supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints` concludes at the non-loop links; the new
+  `exists_extensor_eq_of_extensorInPanel` sits in `RigidityMatrix/Basic.lean` beside
+  `ExtensorInPanel`, compiling there. `Nonvacuity.lean`: the banana and banana-with-loop witnesses,
+  the triangle's repaired. Blueprint, `formalization.yaml`, README, home page, ROADMAP restated.
+  S/P/B 1/1/2.
 - [ ] **3. KT Proposition 2.3, unconditional** (`F-121`; §1f.1). New
   `BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency` (`HingeGeneric.lean`):
   KT's (i) ⇔ (ii) ⇔ (iii) at a generic `q`, by M1 and `Graph.rank_add_deficiency_eq`.
@@ -71,10 +70,11 @@ item transcribes it into the library, with its blueprint and status surfaces.
 
 ## Hand-off / next phase
 
-**Item 2**: transcribe the witness file's M1 sections (`HingeGeneric.lean`: drop `hSimple`,
-`supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints` loses `Loopless`, new
-`exists_extensor_eq_of_extensorInPanel`, the `Nonvacuity.lean` witnesses, the blueprint and status
-surfaces), as the checklist says. If it is more than one sitting, land the Lean half first and say so.
+**Item 3**: the TFAE corollary, as the checklist says: the witness file's last theorem section
+(`tfae_finrank_span_rigidityRows_ofHinge_deficiency`) into `HingeGeneric.lean`, with
+`prop:rigidity-matrix-prop11`'s repin, the new node for `rigidityMatrix_prop11` and the three moved
+`\uses`. Its status surfaces: the Jackson–Jordán alignment row's KT 2.3 note in
+`formalization.yaml`, and the panel-layer prose that says Proposition 2.3 is conditional.
 
 ## Decisions made during this phase
 

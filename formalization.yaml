@@ -494,19 +494,21 @@ status:
     description: >-
       Generic body-and-hinge rigidity from spanning trees (Tay 1989, Whiteley 1988;
       Jackson-Jordán 2010 Thm 6.1 / Cor 6.3, with the existential quantifier upgraded to
-      every generic realization; phase 34, restated in phase 41b): for a simple spanning graph
-      G on >= 1 body with more than D(|V|-1) edge labels (the bound the Theorem 5.6 row's
+      every generic realization; phase 34, restated in phases 41b and 41c): for a spanning multigraph
+      G (parallel edges and loops allowed) on >= 1 body with more than D(|V|-1) edge labels (the bound the Theorem 5.6 row's
       declaration takes), at any dimension n >= 2 and over any infinite field, the
       affine-hinge framework at every hinge-point assignment generic for row independence is
       infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees. The
       assignment is generic when every set of rigidity rows at the edges of G that is
       linearly independent at some hinge-point assignment is independent at it; the
       assignments that are not generic lie in the zero set of one nonzero polynomial. The
-      single edge, every tree and every simple minimal 0-dof-graph are covered, given enough
-      labels.
+      single edge, every tree, the double edge and every minimal 0-dof-graph are covered,
+      given enough labels. The lower bound of the rank formula comes from the multigraph
+      Theorem 5.6 (hinges in panels, each hinge decomposed into spanning points), and a
+      loop's hinge, which constrains no motion, is left unconstrained by genericity.
       Its rank formula
       CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
-      is Jackson-Jordán 2010 Thm 6.1 for simple graphs. The panel-normal analogue, JJ Thm 7.2
+      is Jackson-Jordán 2010 Thm 6.1. The panel-normal analogue, JJ Thm 7.2
       sharpened to an iff, is the corollary of the next row's rank formula.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
@@ -656,9 +658,10 @@ fidelity:
     "Notes on the formalization", records the wrong turns the development took. A 2026 review
     of the blueprint against the Lean found statements that claim more or less than the
     declarations they cite, and a cleanup now under way acts on them. Among the main results,
-    the generic body-hinge theorem, and Katoh-Tanigawa Theorem 5.6 and the molecular
-    conjecture for simple graphs, as stated, cover less than their sources' statements do;
-    their rows in status.main_results say what each covers.
+    Katoh-Tanigawa Theorem 5.6 and the molecular conjecture for simple graphs, as stated,
+    cover less than their sources' statements do; their rows in status.main_results say what
+    each covers. The generic body-hinge theorem covers every multigraph, but asks for a bound
+    on the number of edge labels.
 
 # review status
 review:
@@ -762,8 +765,8 @@ alignment:
         Since phase 41b, rigidityMatrix_prop11 is Proposition 2.3 as Katoh-Tanigawa state it,
         for a body-hinge framework on a multigraph, in conditional form: with a nonzero hinge at
         every edge, the bound dim Z <= D + def(G~) gives the rank formula. A generic framework
-        meets the bound. At every generic hinge-point assignment this is proved for simple
-        graphs (the Jackson-Jordán Thm 6.1 / Cor 6.3 row below), not for multigraphs.
+        meets the bound. At every generic hinge-point assignment this is proved for multigraphs
+        (the Jackson-Jordán Thm 6.1 / Cor 6.3 row below).
 
     - source: "Katoh-Tanigawa 2011, Conjecture 1.2 (the Molecular Conjecture; Tay-Whiteley 1984)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture"
@@ -817,11 +820,12 @@ alignment:
       status: "proved"
       note: >-
         Over any infinite field, with the existential quantifier upgraded to every generic
-        hinge-point realization. Since phase 41b both theorems hold at every hinge-point
-        assignment generic for the rows at the edges of a simple spanning G (one body or
-        more), under the bound that the formal Katoh-Tanigawa Theorem 5.6 takes on the number of
-        edge labels (more than D(|V| - 1)); a single edge, a tree or a simple minimal
-        0-dof-graph is covered once there are enough labels.
+        hinge-point realization. Both theorems hold at every hinge-point
+        assignment generic for the rows at the edges of a spanning multigraph G (parallel
+        edges and loops allowed; one body or more), under the bound that the formal
+        Katoh-Tanigawa Theorem 5.6 takes on the number of edge labels (more than D(|V| - 1));
+        a single edge, a tree, the double edge or a minimal 0-dof-graph is covered once there
+        are enough labels. Phases 41b and 41c made them hold for every multigraph.
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff"
