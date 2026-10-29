@@ -2170,7 +2170,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
     simp
   -- Apply `rigidityMatrix_prop11`.
   have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency 3) :=
-    rigidityMatrix_prop11 Q.toBodyHinge 3 (by omega) hC hgen
+    rigidityMatrix_prop11 Q.toBodyHinge 3 (by omega) (fun e u v h _ => hC e u v h) hgen
   refine ⟨Q, hQg, hQnp, fun e he => ?_, by simpa [toBodyHinge_graph, hQg] using hprop11⟩
   obtain ⟨u, v, huv⟩ := Graph.exists_isLink_of_mem_edgeSet he
   exact hC e u v (by rw [toBodyHinge_graph, hQg]; exact huv)
@@ -2271,7 +2271,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen_of_supply [
   -- (`eq_add_one_of_bodyBarDim_eq_screwDim`).
   have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency n) :=
     rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn)
-      (fun e _ _ _ => hC e) hgen
+      (fun e _ _ _ _ => hC e) hgen
   exact ⟨Q, hQg, hQnp, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
 
 /-- **KT Theorem 5.6, genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the `≥ 2`-body
@@ -2450,19 +2450,17 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_th
 /-- **KT Theorem 5.6 as the generic motive, for every simple graph on `≥ 2` bodies**
 (`thm:theorem-55-6-rows`, corollary form; Katoh–Tanigawa 2011 §5.2, p. 670). Theorem 5.5's generic
 conclusion `HasGenericFullRankRealization K k n G` — stated by `theorem_55_minimalKDof_gen` for
-*minimal* `c`-dof graphs — holds for every simple graph on `≥ 2` bodies, spanning or not, given a
-supply of fresh edge labels (`hfresh`, `rem:fresh-edge-supply`): repackage
-`finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen_of_supply`, dropping its
-total-over-`β` genuine-hinge witness. -/
+*minimal* `c`-dof graphs — holds for every simple graph on `≥ 2` bodies, spanning or not.
+Nothing is assumed of the edge labels: repackage
+`finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, dropping its total-over-`β`
+genuine-hinge witness. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen
-    [Infinite K] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    [Infinite K] [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hSimple : G.Simple) :
     PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   obtain ⟨Q, hQg, hQgp, -, hrank⟩ :=
-    finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen_of_supply (K := K)
-      hk1 hn hfresh G hV hSimple
+    finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen (K := K) hk1 hn G hV hSimple
   exact ⟨Q, hQg, hQgp, hrank⟩
 
 /-- **KT Theorem 5.6 at general `d`, given more edge labels than `D(|α| − 1)`** (a step of
@@ -2851,8 +2849,8 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
     rw [hFg, ← hdefeq, ← hZ']
     exact_mod_cast hmono
   have hprop11 : F.RankHypothesis (F.graph.deficiency n) :=
-    rigidityMatrix_prop11 F n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) (fun e _ _ _ => hC e)
-      hgen
+    rigidityMatrix_prop11 F n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn)
+      (fun e _ _ _ _ => hC e) hgen
   rw [hFg] at hprop11
   exact ⟨F, normal', hW1, hprop11⟩
 

@@ -398,8 +398,9 @@ status:
       CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen.
       Its realization attains Jackson-Jordán's rank formula, the one in Katoh-Tanigawa
       Proposition 2.3, which CombinatorialRigidity.Molecular.rigidityMatrix_prop11 states in
-      conditional form (phase 41b: at a body-hinge framework with a nonzero hinge at every edge,
-      the bound dim Z <= D + def(G~), which a generic framework meets, gives the formula; the
+      conditional form (phase 41b: at a body-hinge framework with a nonzero hinge at every edge
+      whose ends differ, a loop's hinge unconstrained since phase 41e, the bound
+      dim Z <= D + def(G~), which a generic framework meets, gives the formula; the
       unconditional Proposition 2.3, at every generic hinge-point assignment of a multigraph, is
       CombinatorialRigidity.Molecular.BodyHingeFramework.tfae_finrank_span_rigidityRows_ofHinge_deficiency,
       from the rank formula of the Jackson-Jordán Thm 6.1 / Cor 6.3 row below), and with the
@@ -767,8 +768,9 @@ alignment:
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen.
         Since phase 41b, rigidityMatrix_prop11 is the rank formula of Proposition 2.3 for a
         body-hinge framework on a multigraph, in the form that takes a bound on the motions as
-        hypothesis: with a nonzero hinge at every edge, the bound dim Z <= D + def(G~) gives
-        the rank formula. A generic framework meets the bound. Katoh-Tanigawa's Proposition 2.3
+        hypothesis: with a nonzero hinge at every edge whose ends differ (since phase 41e; loops
+        are unconstrained), the bound dim Z <= D + def(G~) gives the rank formula. A generic
+        framework meets the bound. Katoh-Tanigawa's Proposition 2.3
         itself, the three-way equivalence of the rank, the deficiency and the matroid rank, is
         proved at every generic hinge-point assignment of a multigraph (the Jackson-Jordán
         Thm 6.1 / Cor 6.3 row below).

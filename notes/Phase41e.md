@@ -6,16 +6,16 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1–U5 and R have landed. Next: U6.
+close (planned 17–23 commits, the open included); U1–U6 and R have landed. Next: U7.
 
 ## Current state
 
-**The next concrete commit is U6** (*Hand-off*); U1–U5 and R have landed. Each claim of the full
+**The next concrete commit is U7** (*Hand-off*); U1–U6 and R have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
 4.9's principle before U4, so that U4 assumes nothing of the labels; the rows form's restatement
-without `hfresh` and the repointed `\uses` edge of `thm:theorem-55-6-rows`, both riding on U6; and
+without `hfresh` and the repointed `\uses` edge of `thm:theorem-55-6-rows`, both landed with U6; and
 `G.shadowGraph`'s padding, dropped in its own commit PAD just before U10. Mode: structural edit.
 The two red target nodes, `def:blockingWitness` (U1) and `def:dof-generic` (U11), were re-read at
 the open (the red-node consistency gate): each states its notion consistently, and
@@ -26,10 +26,6 @@ the open (the red-node consistency gate): each states its notion consistently, a
 file and line it cites resolves at HEAD, with these corrections, which the checklist carries:
 - U4's form carried `hfresh`; with R taken, its source is `ReductionWitness.lean`'s last section,
   whose split step takes `e₀ ∉ E(G − v)`. `UnstatedWitness.lean`'s copy is superseded.
-- U6: `rigidityMatrix_prop11` (`PanelHinge.lean:1103`) still asks `hC` at every link. Its callers
-  are `Theorem55.lean:2173` (passes `hC` itself), `:2273` (in
-  `rankHypothesis_genuine_of_theorem_55_gen_of_supply`, renamed by 41d) and `:2854`, the last two
-  passing `fun e _ _ _ => hC e`.
 - U7's three callers are in `Theorem55.lean` (`:1802`, `:1851`, `:2050`), so its check for a
   now-unused `have : G.Loopless` is there, not in `GenericityDevice.lean`.
 - U10: `exists_molecular_rankHypothesis_generalPosition` takes no label bound since 41d's B3, so
@@ -171,27 +167,18 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   fragile proof is touched. `lem:case-I` pins it first; its note's "No pinned theorem mentions the
   contraction" is rewritten; the three block-pin pins stay unless the label check moves them.
   1 commit.
-- [ ] **U6. §4(a)** (no ledger ID: a new one), **with the riders of §1j.2 and §1j.4.**
-  `rigidityMatrix_prop11` (`AlgebraicInduction/PanelHinge.lean:1103`): `hC` becomes
-  `∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0` (the witness's
-  `rigidityMatrix_prop11'`, proved, one argument fewer). Its three callers in `Theorem55.lean`
-  wrap: `:2173` passes `fun e u v h _ => hC e u v h`, and `:2273` and `:2854` add a binder to
-  `fun e _ _ _ => hC e`. `prop:rank-formula-of-motion-bound` asks the hinge at the edges whose
-  ends differ. Riders:
-  - **The rows form** (§1j.2):
-    `PanelHingeFramework.hasGenericFullRankRealization_of_theorem_55_gen`
-    (`Theorem55.lean:2457`) repackages the bound-free
-    `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen` (`:2431`), dropping
-    `hfresh` and `[DecidableEq β]`; its docstring's supply clause goes.
-    `thm:theorem-55-6-rows`'s fmlnote ("The second and third assume the supply", "The third
-    restates the second") and `rem:fresh-edge-supply`'s supply list (`the second and third pinned
-    on`) say the third pin assumes nothing of the labels.
-  - **The `\uses` edge** (§1j.4): `thm:theorem-55-6-rows`'s statement `\uses` repoints
-    `thm:theorem-55-6-genuine` to `thm:theorem-55`, what its Lean uses (every pin builds from
-    `theorem_55_minimalKDof_gen_of_supply`); the proof's opening sentence, which cites the same
-    node, is re-read with it.
-
-  Zone, mechanical. 1 commit.
+- [x] **U6. §4(a)** (no ledger ID), **with the riders of §1j.2 and §1j.4** (landed as planned:
+  `rigidityMatrix_prop11`'s `hC` asks `u ≠ v`, passed straight to the lower bound, the witness's
+  `rigidityMatrix_prop11'`; its three callers in `Theorem55.lean` wrap. Restated with it:
+  `prop:rank-formula-of-motion-bound`'s statement, proof and fmlnote, the fmlnote of
+  `cor:theorem-55-d3-spanning`, and `formalization.yaml`'s two notes on the pin. The rows form
+  `hasGenericFullRankRealization_of_theorem_55_gen` repackages the bound-free
+  `finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`, without `hfresh` and
+  `[DecidableEq β]` (nothing called it); `thm:theorem-55-6-rows`'s fmlnote and
+  `rem:fresh-edge-supply` say its third pin assumes nothing of the labels. The node's statement
+  `\uses` `thm:theorem-55`, which `scripts/blueprint-deps.py --label` finds reached, and its proof
+  opens on the realization built in the proof of `thm:theorem-55-6-genuine`; the label check is
+  unchanged, 0 findings).
 - [ ] **U7. S16** (`F-124`). `hasPanelRealization_of_generic` (`GenericityDevice.lean:862`)
   without `[G.Loopless]` (`S16Target`, stated; its one new step
   `span_rigidityRows_eq_of_eq_off_loops` proved): the framework is `Q.toBodyHinge` with the hinge
@@ -291,11 +278,12 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**U6** (§4(a) with the riders of §1j.2 and §1j.4, checklist item U6): `rigidityMatrix_prop11`
-(`AlgebraicInduction/PanelHinge.lean`) asks the hinge only at the links between distinct bodies,
-its three callers in `Theorem55.lean` wrap, and `prop:rank-formula-of-motion-bound` follows; the
-rows form drops `hfresh` and `[DecidableEq β]`, and `thm:theorem-55-6-rows`'s `\uses` repoints to
-`thm:theorem-55`. Zone, mechanical. One commit.
+**U7** (S16, `F-124`, checklist item U7): `hasPanelRealization_of_generic`
+(`AlgebraicInduction/GenericityDevice.lean`) without `[G.Loopless]`, from the witness's
+`S16Target` and its proved step `span_rigidityRows_eq_of_eq_off_loops` (run the section with
+`lake lean` first); its three callers in `Theorem55.lean` checked for a now-unused
+`have : G.Loopless`, and `lem:generic-yields-genuine-hinge`'s note on loops dropped. Zone. One
+commit.
 
 ## Decisions made during this phase
 

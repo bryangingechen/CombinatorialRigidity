@@ -1079,9 +1079,9 @@ def HasPanelRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Pr
 /-- **The rank hypothesis from the generic bound** (`prop:rank-formula-of-motion-bound`; the rank
 formula of Jackson–Jordán, which Katoh–Tanigawa state as their Proposition 2.3, KT p. 655, here in
 the form that takes the generic bound as a hypothesis). For a body-hinge framework `F` whose
-supporting extensor is nonzero at every link of its multigraph (`hC`;
-a label outside `E(G)` is unconstrained), at `n = k + 1`, the generic bound
-`hgen : dim Z(F) ≤ D + def(G̃)` gives `F.RankHypothesis (def(G̃))` (`def:rank-hypothesis`):
+supporting extensor is nonzero at every link of its multigraph between two distinct bodies (`hC`;
+the hinge at a loop and at a label outside `E(G)` is unconstrained), at `n = k + 1`, the generic
+bound `hgen : dim Z(F) ≤ D + def(G̃)` gives `F.RankHypothesis (def(G̃))` (`def:rank-hypothesis`):
 `dim Z(F) = D + def(G̃)`, equivalently `rank R(F) = D(|V|−1) − def(G̃)` (Jackson–Jordán 2010
 Thm 6.1), since `rank R = D|V| − dim Z` (`finrank_screwAssignment`). A generic framework meets the
 bound; at every generic hinge-point assignment of a multigraph the formula is
@@ -1094,7 +1094,8 @@ The proof joins two inequalities.
 * The lower bound `D + def(G̃) ≤ dim Z(F)` needs no genericity: a vertex partition attaining
   `def(G̃)` contracts each part to one effective body, leaving `D(|P|−1) − (D−1)·d_G(P)` independent
   screw freedoms beyond the `D` trivial motions. It is
-  `screwDim_add_deficiency_le_finrank_infinitesimalMotions`, which needs the nonzero hinges `hC`.
+  `screwDim_add_deficiency_le_finrank_infinitesimalMotions`, which needs the nonzero hinges `hC`;
+  a loop joins no two parts, so it asks nothing of the hinge there.
 * The upper bound is the hypothesis `hgen`. Its callers, the proofs of KT Theorem 5.6
   (`thm:theorem-55-6-genuine`, `thm:theorem-55-6-multigraph`), supply it from Theorem 5.5
   (`theorem_55_minimalKDof_gen`) pushed from minimal `k`-dof-graphs to all multigraphs, by deleting
@@ -1102,12 +1103,11 @@ The proof joins two inequalities.
   space (`lem:motions-mono-of-graph-le`). -/
 theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]
     (F : BodyHingeFramework K k α β) (n : ℕ) (hn : n = k + 1)
-    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
+    (hC : ∀ e u v, F.graph.IsLink e u v → u ≠ v → F.supportExtensor e ≠ 0)
     (hgen : (Module.finrank K F.infinitesimalMotions : ℤ) ≤ screwDim k + F.graph.deficiency n) :
     F.RankHypothesis (F.graph.deficiency n) := by
   subst hn
-  have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions
-    (fun e u v h _ => hC e u v h)
+  have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hC
   rw [BodyHingeFramework.RankHypothesis]
   omega
 
