@@ -1281,8 +1281,8 @@ where the supply holds, and pulls the framework back; rows, motions, normals and
 unchanged, minimality transports through deficiencies, and the induction keeps the supply inside,
 untouched. Its recon proved the route in a Lean witness. A last item recons dropping the supply
 from KT Theorem 4.9's reduction principle, which the transport cannot reach, and returns to the PI.
-UNSTATED follows, expected as 41e. **Next**: 41d's item B1, the relabelling moved up with
-minimality through deficiencies (`notes/Phase41d.md`). Detail →
+UNSTATED follows, expected as 41e. **Next**: 41d's item B2, the pullbacks and the spine
+(B1 landed: the relabelling and minimality through deficiencies, `notes/Phase41d.md`). Detail →
 `notes/Phase41a.md`, `notes/Phase41b.md`, `notes/Phase41c.md`, `notes/Phase41d.md` +
 `notes/Phase41-design.md`.
 

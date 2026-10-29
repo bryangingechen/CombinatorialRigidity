@@ -3,12 +3,12 @@
 **Status:** in progress (opened 2026-10-29 with the PI), a sub-phase of Phase 41. The phase's
 design, the PI's decisions (here §1h.2 and §1i, the open) and RELABEL's recon are in
 `notes/Phase41-design.md`; the recon's Lean witness is `notes/reconcile-formal/RelabelWitness.lean`.
-Three build items, one read-only recon and the close (planned 7–10); none has landed. Next: item B1,
-`embedEdges` moved up with minimality through deficiencies.
+Three build items, one read-only recon and the close (planned 7–10); B1 has landed. Next: item B2,
+the pullbacks and the spine.
 
 ## Current state
 
-**The next concrete commit is item B1** (*Hand-off*); no item has landed. RELABEL's recon (design
+**The next concrete commit is item B2** (*Hand-off*); B1 has landed (below). RELABEL's recon (design
 doc §2, *RELABEL's recon*) proved route B in a witness against `e51acb76`, with no `sorry`: each
 main result applies its landed form at `β ⊕ Fin N`, `N = D(|α| − 1) + 1`, where
 `Graph.freshEdgeSupply_of_card_lt` gives the supply, and pulls the framework back along `inl`. The
@@ -54,7 +54,7 @@ The witness proves each Lean statement below in its `Recon41Relabel` namespaces,
 forms under primed names; an item transcribes it into the library, with its blueprint and status
 surfaces.
 
-- [ ] **B1. `embedEdges` moved up, and minimality through deficiencies (T5).** Into
+- [x] **B1. `embedEdges` moved up, and minimality through deficiencies (T5).** Into
   `Molecular/Deficiency.lean`, beside `Graph.freshEdgeSupply_of_card_lt`: `Graph.embedEdges` from
   `Molecule/Pencil/MainComponent/Bridge.lean` (or defined as the `Matroid` package's
   `Graph.edgeMap` at an embedding, the witness's `embedEdges_eq_edgeMap`) with its graph lemmas
@@ -184,6 +184,18 @@ surfaces.
   The loop stops for the PI (§1i.4), with R's question; no push (the PI pushes at Phase 41's
   close).
 
+**B1 landed** (one commit). `Graph.embedEdges` and `vertexSet_embedEdges`, `embedEdges_isLink`,
+`edgeSet_embedEdges`, `Simple.embedEdges` and `deficiency_embedEdges` moved to `Deficiency.lean`
+(own definition kept, not `edgeMap`: the witness's `embedEdges_eq_edgeMap` is an `Iff.rfl`, not
+needed); T5 (`deficiency_lt_of_isMinimalKDof`, `isMinimalKDof_of_deficiency_lt`,
+`embedEdges_restrict_diff`, `IsMinimalKDof.embedEdges`) transcribed unchanged from the witness (no
+shorter route taken); and `freshEdgeSupply_padded` (the supply at `β ⊕ Fin (D(|α| − 1) + 1)`).
+Calls recorded: `lem:pencil-jj-embed-edges` keeps all five pins and stays in `main-component.tex`
+(only the definition node moves; the clauses' pins are by name); T5 and the padded supply get a new
+node `lem:embed-edges-minimal` in `panel-layer.tex` beside `def:pencil-embed-edges`. Whole-project
+build 0 warnings, `lake lint`, `blueprint/verify.sh` and `check-docstring-labels.py` (0 findings)
+all clean.
+
 ## Blockers / open questions
 
 - None blocking. Two flags for the builders: `theorem_55_6_multigraph` is one of the 23 but is in
@@ -193,10 +205,8 @@ surfaces.
 
 ## Hand-off / next phase
 
-**Item B1**: move `Graph.embedEdges` and its five graph lemmas up to `Deficiency.lean`, beside
-`freshEdgeSupply_of_card_lt`, add T5 and the padded supply as the witness's sections do, and move
-`def:pencil-embed-edges` to `panel-layer.tex`. One whole-project build (the molecular chain
-rebuilds); no statement changes. Then B2, which transcribes the witness's pullbacks and spine.
+**Item B2**: the pullbacks (`bhComap`, `phComap`) and the spine's five transports, as the lemma
+checklist's B2 entry says; `embedEdges`, T5 and the padded supply are in `Deficiency.lean`. Then B3.
 
 ## Decisions made during this phase
 

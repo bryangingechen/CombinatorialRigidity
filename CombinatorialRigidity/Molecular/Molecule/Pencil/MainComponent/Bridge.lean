@@ -45,8 +45,8 @@ equality at a smaller graph multiplies its polynomial with its other conditions 
 
 ## Main definitions
 
-* `Graph.embedEdges`: `def:pencil-embed-edges`, the graph `G` with its edges relabelled along an
-  embedding `β ↪ β'`.
+* `Graph.embedEdges` (`Molecular/Deficiency.lean`): `def:pencil-embed-edges`, the graph `G` with its
+  edges relabelled along an embedding `β ↪ β'`.
 
 ## Main results
 
@@ -271,49 +271,13 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
   rw [← hQ₀rank]
   exact_mod_cast hle
 
-/-! ## Relabelling the edges (`def:pencil-embed-edges`, `lem:pencil-jj-embed-edges`) -/
+/-! ## Relabelling keeps the pictures (`lem:pencil-jj-embed-edges`)
 
-/-- **Relabel the edges of `G` along an embedding `ι : β ↪ β'`** (`def:pencil-embed-edges`): the
-graph on `V(G)` with an edge `ι e` linking `x` and `y` for every link `e` of `G`. It has the same
-vertices, adjacencies and closed neighbourhoods as `G`, so the lifting space, admissibility and the
-deficiencies are unchanged (`lem:pencil-jj-embed-edges`); only the label type grows, which is what
-lets Jackson and Jordán's equality be drawn from the planar case of KT Theorem 5.6 with no supply of
-spare labels assumed (`fmlnote:pencil-jj-embed-edges`). -/
-def _root_.Graph.embedEdges {β' : Type*} (G : Graph α β) (ι : β ↪ β') : Graph α β' where
-  vertexSet := V(G)
-  IsLink e x y := ∃ e₀, ι e₀ = e ∧ G.IsLink e₀ x y
-  isLink_symm := by
-    rintro e -
-    exact ⟨fun x y ⟨e₀, he, h⟩ => ⟨e₀, he, h.symm⟩⟩
-  eq_or_eq_of_isLink_of_isLink := by
-    rintro e x y v w ⟨e₀, rfl, h⟩ ⟨e₁, he, h'⟩
-    obtain rfl := ι.injective he
-    exact h.left_eq_or_eq h'
-  left_mem_of_isLink := by
-    rintro e x y ⟨e₀, -, h⟩
-    exact h.left_mem
+`Graph.embedEdges` itself (`def:pencil-embed-edges`) is in `Molecular/Deficiency.lean`. -/
 
 section embedEdges
 
 variable {β' : Type*} {G : Graph α β} {ι : β ↪ β'}
-
-/-- Relabelling keeps the bodies (a step of `lem:pencil-jj-embed-edges`, whose proof names it). -/
-@[simp]
-theorem _root_.Graph.vertexSet_embedEdges : V(G.embedEdges ι) = V(G) := rfl
-
-/-- The links of the relabelled graph are the relabelled links (a step of
-`lem:pencil-jj-embed-edges`, whose proof names it). -/
-theorem _root_.Graph.embedEdges_isLink {e : β'} {x y : α} :
-    (G.embedEdges ι).IsLink e x y ↔ ∃ e₀, ι e₀ = e ∧ G.IsLink e₀ x y := Iff.rfl
-
-/-- The edges of the relabelled graph are the relabelled edges (a step of
-`lem:pencil-jj-embed-edges`, whose proof names it). -/
-theorem _root_.Graph.edgeSet_embedEdges : E(G.embedEdges ι) = ι '' E(G) := by
-  ext e
-  refine ⟨fun ⟨x, y, e₀, he, h⟩ => ⟨e₀, h.edge_mem, he⟩, ?_⟩
-  rintro ⟨e₀, he₀, rfl⟩
-  obtain ⟨x, y, h⟩ := G.exists_isLink_of_mem_edgeSet he₀
-  exact ⟨x, y, e₀, rfl, h⟩
 
 /-- Relabelling keeps every closed neighbourhood (a step of `lem:pencil-jj-embed-edges`, whose proof
 names it). -/
@@ -328,15 +292,6 @@ theorem _root_.Graph.closedNbhd_embedEdges (v : α) :
   · rintro (h | ⟨e₀, h⟩)
     · exact Or.inl h
     · exact Or.inr ⟨_, e₀, rfl, h⟩
-
-/-- **Relabelling keeps a simple graph simple** (`lem:pencil-jj-embed-edges`, its first clause). -/
-theorem _root_.Graph.Simple.embedEdges (hG : G.Simple) : (G.embedEdges ι).Simple where
-  not_isLoopAt := by
-    rintro e x ⟨e₀, -, h⟩
-    exact hG.toLoopless.not_isLoopAt e₀ x h
-  eq_of_isLink := by
-    rintro e f x y ⟨e₀, rfl, h⟩ ⟨f₀, rfl, h'⟩
-    rw [hG.eq_of_isLink h h']
 
 /-- **Relabelling keeps the lifting spaces** (`lem:pencil-jj-embed-edges`, its second clause): at
 every picture, as the bodies and the closed neighbourhoods are unchanged. -/
@@ -366,27 +321,6 @@ theorem _root_.Graph.isMainPicture_embedEdges_iff {q : α × Fin 2 → K} :
     (G.embedEdges ι).IsMainPicture q ↔ G.IsMainPicture q := by
   simp only [Graph.IsMainPicture, Graph.isAdmissiblePicture_embedEdges_iff,
     Graph.finrank_liftingSpace_embedEdges]
-
-/-- **Relabelling keeps every deficiency** (`lem:pencil-jj-embed-edges`, its last clause): a
-partition crosses the images of the edges it crossed before. -/
-theorem _root_.Graph.deficiency_embedEdges (n : ℕ) :
-    (G.embedEdges ι).deficiency n = G.deficiency n := by
-  have hcross : ∀ f : α → α, (G.embedEdges ι).crossingEdges f = ι '' G.crossingEdges f := by
-    intro f
-    ext e
-    simp only [Graph.crossingEdges, Graph.edgeSet_embedEdges, Graph.embedEdges_isLink,
-      Set.mem_ofPred_eq, Set.mem_image]
-    constructor
-    · rintro ⟨⟨e₀, he₀, rfl⟩, x, y, ⟨e₁, he₁, h⟩, hxy⟩
-      obtain rfl := ι.injective he₁
-      exact ⟨e₁, ⟨he₀, x, y, h, hxy⟩, rfl⟩
-    · rintro ⟨e₀, ⟨he₀, x, y, h, hxy⟩, rfl⟩
-      exact ⟨⟨e₀, he₀, rfl⟩, x, y, ⟨e₀, rfl, h⟩, hxy⟩
-  have hdef : ∀ f : α → α, (G.embedEdges ι).partitionDef n f = G.partitionDef n f := by
-    intro f
-    simp only [Graph.partitionDef, Graph.numParts, Graph.vertexSet_embedEdges, hcross,
-      Set.ncard_image_of_injective _ ι.injective]
-  simp only [Graph.deficiency, hdef]
 
 end embedEdges
 

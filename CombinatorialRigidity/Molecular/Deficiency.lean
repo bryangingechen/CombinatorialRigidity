@@ -3373,6 +3373,187 @@ theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n :
   have hEeq : (E(G').ncard : ℤ) = (Nat.card β : ℤ) := by rw [hEuniv, Set.ncard_univ]
   linarith [hbound, hdefnn, hmul, hcardZ, hEeq]
 
+/-! ## Relabelling the edges (`def:pencil-embed-edges`, `lem:pencil-jj-embed-edges`)
+
+Relabelling the edges of `G` along an embedding `ι : β ↪ β'` keeps the bodies, the adjacencies and
+the deficiencies, and it keeps minimality (`IsMinimalKDof.embedEdges`). It is the transport that
+drops the bound on the edge labels from the main results: a graph on `β` is relabelled into
+`β ⊕ Fin N`, where the fresh-label supply holds (`freshEdgeSupply_padded`). -/
+
+/-- **Relabel the edges of `G` along an embedding `ι : β ↪ β'`** (`def:pencil-embed-edges`): the
+graph on `V(G)` with an edge `ι e` linking `x` and `y` for every link `e` of `G`. It has the same
+vertices, adjacencies and closed neighbourhoods as `G`, so the lifting space, admissibility and the
+deficiencies are unchanged (`lem:pencil-jj-embed-edges`); only the label type grows, which is what
+lets Jackson and Jordán's equality be drawn from the planar case of KT Theorem 5.6 with no supply of
+spare labels assumed (`fmlnote:pencil-jj-embed-edges`). -/
+def embedEdges {β' : Type*} (G : Graph α β) (ι : β ↪ β') : Graph α β' where
+  vertexSet := V(G)
+  IsLink e x y := ∃ e₀, ι e₀ = e ∧ G.IsLink e₀ x y
+  isLink_symm := by
+    rintro e -
+    exact ⟨fun x y ⟨e₀, he, h⟩ => ⟨e₀, he, h.symm⟩⟩
+  eq_or_eq_of_isLink_of_isLink := by
+    rintro e x y v w ⟨e₀, rfl, h⟩ ⟨e₁, he, h'⟩
+    obtain rfl := ι.injective he
+    exact h.left_eq_or_eq h'
+  left_mem_of_isLink := by
+    rintro e x y ⟨e₀, -, h⟩
+    exact h.left_mem
+
+section embedEdges
+
+variable {β' : Type*} {G : Graph α β} {ι : β ↪ β'}
+
+/-- Relabelling keeps the bodies (a step of `lem:pencil-jj-embed-edges`, whose proof names it). -/
+@[simp]
+theorem vertexSet_embedEdges : V(G.embedEdges ι) = V(G) := rfl
+
+/-- The links of the relabelled graph are the relabelled links (a step of
+`lem:pencil-jj-embed-edges`, whose proof names it). -/
+theorem embedEdges_isLink {e : β'} {x y : α} :
+    (G.embedEdges ι).IsLink e x y ↔ ∃ e₀, ι e₀ = e ∧ G.IsLink e₀ x y := Iff.rfl
+
+/-- The edges of the relabelled graph are the relabelled edges (a step of
+`lem:pencil-jj-embed-edges`, whose proof names it). -/
+theorem edgeSet_embedEdges : E(G.embedEdges ι) = ι '' E(G) := by
+  ext e
+  refine ⟨fun ⟨x, y, e₀, he, h⟩ => ⟨e₀, h.edge_mem, he⟩, ?_⟩
+  rintro ⟨e₀, he₀, rfl⟩
+  obtain ⟨x, y, h⟩ := G.exists_isLink_of_mem_edgeSet he₀
+  exact ⟨x, y, e₀, rfl, h⟩
+
+/-- **Relabelling keeps a simple graph simple** (`lem:pencil-jj-embed-edges`, its first clause). -/
+theorem Simple.embedEdges (hG : G.Simple) : (G.embedEdges ι).Simple where
+  not_isLoopAt := by
+    rintro e x ⟨e₀, -, h⟩
+    exact hG.toLoopless.not_isLoopAt e₀ x h
+  eq_of_isLink := by
+    rintro e f x y ⟨e₀, rfl, h⟩ ⟨f₀, rfl, h'⟩
+    rw [hG.eq_of_isLink h h']
+
+/-- **Relabelling keeps every deficiency** (`lem:pencil-jj-embed-edges`, its last clause): a
+partition crosses the images of the edges it crossed before. -/
+theorem deficiency_embedEdges (n : ℕ) :
+    (G.embedEdges ι).deficiency n = G.deficiency n := by
+  have hcross : ∀ f : α → α, (G.embedEdges ι).crossingEdges f = ι '' G.crossingEdges f := by
+    intro f
+    ext e
+    simp only [Graph.crossingEdges, Graph.edgeSet_embedEdges, Graph.embedEdges_isLink,
+      Set.mem_ofPred_eq, Set.mem_image]
+    constructor
+    · rintro ⟨⟨e₀, he₀, rfl⟩, x, y, ⟨e₁, he₁, h⟩, hxy⟩
+      obtain rfl := ι.injective he₁
+      exact ⟨e₁, ⟨he₀, x, y, h, hxy⟩, rfl⟩
+    · rintro ⟨e₀, ⟨he₀, x, y, h, hxy⟩, rfl⟩
+      exact ⟨⟨e₀, he₀, rfl⟩, x, y, ⟨e₀, rfl, h⟩, hxy⟩
+  have hdef : ∀ f : α → α, (G.embedEdges ι).partitionDef n f = G.partitionDef n f := by
+    intro f
+    simp only [Graph.partitionDef, Graph.numParts, Graph.vertexSet_embedEdges, hcross,
+      Set.ncard_image_of_injective _ ι.injective]
+  simp only [Graph.deficiency, hdef]
+
+/-- Deleting an edge of a minimal `c`-dof-graph raises the deficiency. -/
+theorem deficiency_lt_of_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} {c : ℤ} (hD : 1 ≤ Graph.bodyBarDim n) (hG : G.IsMinimalKDof n c) {e : β}
+    (he : e ∈ E(G)) : G.deficiency n < (G ↾ (E(G) \ {e})).deficiency n := by
+  classical
+  set G'' := G ↾ (E(G) \ {e}) with hG''
+  have hle : G'' ≤ G := Graph.restrict_le
+  have hV : V(G'') = V(G) := Graph.vertexSet_restrict ..
+  have hne : V(G).Nonempty := by
+    obtain ⟨x, y, h⟩ := G.exists_isLink_of_mem_edgeSet he
+    exact ⟨x, h.left_mem⟩
+  have hge := Graph.deficiency_le_deficiency_of_le_vertexSet_eq hD hle hV
+  refine lt_of_le_of_ne hge fun heq => ?_
+  obtain ⟨B, hB⟩ := (G''.matroidMG n).exists_isBase
+  have hBindep : (G.matroidMG n).Indep B := by
+    have hrestr : ((G.matroidMG n).restrict E(G''.mulTilde n)).Indep B := by
+      rw [Graph.matroidMG_restrict_mulTilde hle]; exact hB.indep
+    exact (Matroid.restrict_indep_iff.mp hrestr).1
+  have hBsize := G''.isBase_ncard_add_deficiency_eq n hD (hV ▸ hne) hB
+  have hrank := G.rank_add_deficiency_eq n hD hne
+  have : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  have hBbase : (G.matroidMG n).IsBase B := by
+    apply hBindep.isBase_of_ncard
+    rw [hV, ← heq] at hBsize
+    have : (B.ncard : ℤ) = (G.matroidMG n).rank := by linarith
+    exact_mod_cast this.symm.le
+  obtain ⟨p, hpB, hpe⟩ := hG.2 B hBbase e he
+  have hp : p ∈ E(G''.mulTilde n) := hB.subset_ground hpB
+  rw [Graph.mem_edgeSet_mulTilde, hG'', Graph.edgeSet_restrict] at hp
+  rw [Graph.mem_edgeFiber] at hpe
+  exact hp.2.2 hpe
+
+/-- A `c`-dof-graph whose every edge deletion raises the deficiency is minimal. -/
+theorem isMinimalKDof_of_deficiency_lt [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} {c : ℤ} (hD : 1 ≤ Graph.bodyBarDim n) (hc : G.deficiency n = c)
+    (hlt : ∀ e ∈ E(G), G.deficiency n < (G ↾ (E(G) \ {e})).deficiency n) :
+    G.IsMinimalKDof n c := by
+  classical
+  refine ⟨hc, fun B hB e he => ?_⟩
+  set G'' := G ↾ (E(G) \ {e}) with hG''
+  have hle : G'' ≤ G := Graph.restrict_le
+  have hV : V(G'') = V(G) := Graph.vertexSet_restrict ..
+  have hne : V(G).Nonempty := by
+    obtain ⟨x, y, h⟩ := G.exists_isLink_of_mem_edgeSet he
+    exact ⟨x, h.left_mem⟩
+  by_contra hBe
+  rw [Set.not_nonempty_iff_eq_empty] at hBe
+  have hBsub : B ⊆ E(G''.mulTilde n) := by
+    intro p hp
+    have hpG : p ∈ E(G.mulTilde n) := hB.subset_ground hp
+    rw [Graph.mem_edgeSet_mulTilde] at hpG ⊢
+    rw [hG'', Graph.edgeSet_restrict]
+    refine ⟨hpG, hpG, fun hpe => ?_⟩
+    rw [Set.eq_empty_iff_forall_notMem] at hBe
+    exact hBe p ⟨hp, by rw [Graph.mem_edgeFiber]; exact hpe⟩
+  have hBindep : (G''.matroidMG n).Indep B := by
+    have hrestr : ((G.matroidMG n).restrict E(G''.mulTilde n)).Indep B :=
+      Matroid.restrict_indep_iff.mpr ⟨hB.indep, hBsub⟩
+    rwa [Graph.matroidMG_restrict_mulTilde hle] at hrestr
+  have : (G''.matroidMG n).Finite := Matroid.finite_of_finite (M := G''.matroidMG n)
+  have hBrank : (B.ncard : ℤ) ≤ (G''.matroidMG n).rank := by exact_mod_cast hBindep.ncard_le_rank
+  have hBcard := G.isBase_ncard_add_deficiency_eq n hD hne hB
+  have hrank'' := G''.rank_add_deficiency_eq n hD (hV ▸ hne)
+  rw [hV] at hrank''
+  have := hlt e he
+  linarith
+
+/-- Restricting to all edges but one commutes with the relabelling. -/
+theorem embedEdges_restrict_diff {G : Graph α β} {ι : β ↪ β'} (e : β) :
+    (G.embedEdges ι) ↾ (E(G.embedEdges ι) \ {ι e}) = (G ↾ (E(G) \ {e})).embedEdges ι := by
+  refine Graph.ext rfl fun f x y => ?_
+  simp only [Graph.restrict_isLink, Graph.embedEdges_isLink, Graph.edgeSet_embedEdges,
+    Set.mem_sdiff, Set.mem_singleton_iff, Set.mem_image]
+  constructor
+  · rintro ⟨⟨-, hne⟩, e₀, rfl, h⟩
+    exact ⟨e₀, rfl, ⟨h.edge_mem, fun h' => hne (h' ▸ rfl)⟩, h⟩
+  · rintro ⟨e₀, rfl, ⟨-, hne⟩, h⟩
+    exact ⟨⟨⟨e₀, h.edge_mem, rfl⟩, fun h' => hne (ι.injective h')⟩, e₀, rfl, h⟩
+
+/-- The relabelled graph of a minimal `c`-dof-graph is a minimal `c`-dof-graph. -/
+theorem IsMinimalKDof.embedEdges [DecidableEq β] [DecidableEq β'] [Finite α] [Finite β]
+    [Finite β'] {G : Graph α β} {n : ℕ} {c : ℤ} (hD : 1 ≤ Graph.bodyBarDim n)
+    (hG : G.IsMinimalKDof n c) (ι : β ↪ β') : (G.embedEdges ι).IsMinimalKDof n c := by
+  refine isMinimalKDof_of_deficiency_lt hD
+    ((Graph.deficiency_embedEdges n).trans hG.deficiency_eq) fun e' he' => ?_
+  rw [Graph.edgeSet_embedEdges] at he'
+  obtain ⟨e, he, rfl⟩ := he'
+  rw [embedEdges_restrict_diff, Graph.deficiency_embedEdges, Graph.deficiency_embedEdges]
+  exact deficiency_lt_of_isMinimalKDof hD hG he
+
+/-- **The fresh-label supply at the padded label type** (`rem:fresh-edge-supply`): for `D ≥ 1`,
+every minimal `c`-dof-graph on `α` with labels in `β ⊕ Fin (D(|α| - 1) + 1)` leaves some label
+outside its edge set. It is `freshEdgeSupply_of_card_lt` at that type, whose cardinality
+`|β| + D(|α| - 1) + 1` exceeds `D(|α| - 1)`. -/
+theorem freshEdgeSupply_padded [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) :
+    ∀ (c : ℤ) (G' : Graph α (β ⊕ Fin (bodyBarDim n * (Nat.card α - 1) + 1))),
+      G'.IsMinimalKDof n c → ∃ e₀, e₀ ∉ E(G') :=
+  freshEdgeSupply_of_card_lt hD (by rw [Nat.card_sum, Nat.card_fin]; omega)
+
+end embedEdges
+
 /-! ## The merged deficiency (`def:deficiency-merged`) and the value at a vertex 2-cut
 
 `deficiencyMerged G n u v` is the largest value of a partition with `u` and `v` in one part

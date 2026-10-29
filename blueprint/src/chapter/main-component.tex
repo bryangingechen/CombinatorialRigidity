@@ -1282,16 +1282,6 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   nothing about the labels.
 \end{fmlnote}
 
-\begin{definition}[Relabelling the edges]
-  \label{def:pencil-embed-edges}
-  \lean{Graph.embedEdges}
-  \leanok
-  Let $\iota$ be an injective map from the set of edge labels of $G$ into
-  a larger set of labels. The graph $G$ \emph{with its edges relabelled
-  by $\iota$} has the bodies of $G$, and an edge $\iota(e)$ joining $u$
-  and $v$ for every edge $e$ of $G$ joining $u$ and $v$.
-\end{definition}
-
 \begin{lemma}[Relabelling the edges keeps the lifting spaces, the pictures and the deficiencies]
   \label{lem:pencil-jj-embed-edges}
   \lean{Graph.Simple.embedEdges, Graph.liftingSpace_embedEdges,
