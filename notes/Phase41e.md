@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1, U2 and U3 have landed. Next: item R.
+close (planned 17–23 commits, the open included); U1, U2, U3 and R have landed. Next: U4.
 
 ## Current state
 
-**The next concrete commit is item R** (*Hand-off*); U1, U2 and U3 have landed. Each claim of the full
+**The next concrete commit is U4** (*Hand-off*); U1, U2, U3 and R have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -113,7 +113,14 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `IsTight.connected` and `isSpanningTreePacking_of_isTight` (`BodyBar/TreePacking.lean`). The
   friction is the `induce`/`restrict` bookkeeping (`E = X \ {e}`, `V = V(X)`).
   `lem:circuit-induces-rigid`'s third pin; its note goes. 1 commit.
-- [ ] **R. KT Theorem 4.9's principle without `hfresh`** (§1j.1; design doc §2, *Item R's
+- [x] **R. KT Theorem 4.9's principle without `hfresh`** (landed as planned, one commit: the four
+  statements restated, the helpers `notMem_edgeSet_removeVertex` and `notMem_edgeSet_removeVertex_iff`
+  in `Operations.lean`, the weaker forms `removeVertex_le_splitOff_of_notMem_removeVertex` and
+  `edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex`, the landed forms kept as their
+  corollaries; `splitOff_deficiency_le_aux` is gone, `splitOff_deficiency_le` being its
+  generalization, and `splitOff_deficiency_le_of_eq_left` calls it at `eₐ`. The proof of
+  `splitOff_isMinimalKDof` calls `splitOff_deficiency_le` directly, so `dof_tracking` is unchanged)
+  (§1j.1; design doc §2, *Item R's
   recon*; no ledger ID). Source: `ReductionWitness.lean`, transcribed. Four statements, each a
   strengthening, files under `Molecular/Induction/`:
   - `Graph.minimal_kdof_reduction` (`ForestSurgery/Reduction.lean:578`): `hfresh` dropped, and
@@ -140,7 +147,7 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   fmlnote); `lem:splitoff-deficiency-reuse`'s fmlnote. `formalization.yaml`'s KT Theorem 4.9 row
   names no label condition, before or after. One full build, from `Operations.lean` through the
   molecular chain. 1 commit.
-- [ ] **U4. S22** (`F-101`), after R. `Graph.minimal_kdof_reduction_sequence`
+- [ ] **U4. S22** (`F-101`), R landed. `Graph.minimal_kdof_reduction_sequence`
   (`ForestSurgery/Reduction.lean`): `Relation.ReflTransGen` of a step relation
   (`KTReductionStep`: to a minimal `0`-dof-graph, by a split-off at a vertex of degree two at a
   label `e₀ ∉ E(G − v)`, the formal `G_v^{ab}`, or the contraction of a proper rigid subgraph)
@@ -279,10 +286,11 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**Item R** (KT Theorem 4.9's principle without `hfresh`, checklist item R; source
-`ReductionWitness.lean`): the four strengthened statements under `Molecular/Induction/`, with
-`minimal_kdof_reduction` first as the checklist orders them. Assess whether the four fit one commit
-once the first closes. Then U4.
+**U4** (S22, checklist item U4; source the last section of `ReductionWitness.lean`):
+`Graph.minimal_kdof_reduction_sequence` and its step relation `KTReductionStep` (the split clause
+at a label `e₀ ∉ E(G − v)`) in `ForestSurgery/Reduction.lean`, proved from item R's principle at
+`e₀ = eₐ` (`notMem_edgeSet_removeVertex_iff` gives its admissibility); pinned beside
+`thm:minimal-kdof-reduction`'s (ii), whose first-sentence note goes. One commit.
 
 ## Decisions made during this phase
 

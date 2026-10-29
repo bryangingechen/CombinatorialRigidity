@@ -767,23 +767,71 @@ lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} 
   rw [hp, edgeSet_splitOff]
   exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
 
-/-- **`G − v` is a subgraph of `G_v^{ab}`** (`lem:splitoff-edge-substitution`): if `e₀ ∉ E(G)`,
+/-- **A label outside `E(G)` is outside `E(G − v)`** (`lem:splitoff-edge-substitution`): the weaker
+hypothesis on the label `e₀` of the new edge of `G.splitOff v a b e₀`. It is `G_v^{ab}` exactly when
+`e₀ ∉ E(G − v)` (`fmlnote:graph-operations`). -/
+lemma notMem_edgeSet_removeVertex {G : Graph α β} {e : β} (he : e ∉ E(G)) (v : α) :
+    e ∉ E(G.removeVertex v) :=
+  fun h => he ((G.removeVertex_le v).edgeSet_mono h)
+
+/-- **The labels outside `E(G − v)`, at a vertex of degree two** (`lem:splitoff-edge-substitution`):
+when `eₐ` and `e_b` are the only edges at `v`, a label `e₀` is outside `E(G − v)` iff it is outside
+`E(G)` or is `eₐ` or `e_b`. In particular `eₐ` and `e_b` are admissible labels of the new edge. -/
+lemma notMem_edgeSet_removeVertex_iff {G : Graph α β} {v a b : α} {e₀ eₐ e_b : β}
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) :
+    e₀ ∉ E(G.removeVertex v) ↔ e₀ ∉ E(G) ∨ e₀ = eₐ ∨ e₀ = e_b := by
+  constructor
+  · intro h
+    by_contra hc
+    push Not at hc
+    obtain ⟨hG, ha, hb⟩ := hc
+    obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hG
+    by_cases hx : x = v
+    · subst hx
+      exact (hdeg2 e₀ y hl).elim ha hb
+    by_cases hy : y = v
+    · subst hy
+      exact (hdeg2 e₀ x hl.symm).elim ha hb
+    exact h (removeVertex_isLink.mpr ⟨hl, hx, hy⟩).edge_mem
+  · rintro (h | rfl | rfl) hmem
+    · exact notMem_edgeSet_removeVertex h v hmem
+    · obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hmem
+      obtain ⟨hlG, hx, hy⟩ := removeVertex_isLink.mp hl
+      rcases hla.eq_and_eq_or_eq_and_eq hlG with ⟨h, -⟩ | ⟨h, -⟩
+      · exact hx h.symm
+      · exact hy h.symm
+    · obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hmem
+      obtain ⟨hlG, hx, hy⟩ := removeVertex_isLink.mp hl
+      rcases hlb.eq_and_eq_or_eq_and_eq hlG with ⟨h, -⟩ | ⟨h, -⟩
+      · exact hx h.symm
+      · exact hy h.symm
+
+/-- **`G − v` is a subgraph of `G_v^{ab}`** (`lem:splitoff-edge-substitution`): if `e₀ ∉ E(G − v)`,
 then `G.removeVertex v ≤ G.splitOff v a b e₀`. A link of `G − v` is a link of `G` whose ends
-differ from `v` (`removeVertex_isLink`), and its edge, an edge of `G`, is not `e₀`. So `G − v` is
-a common subgraph of `G` (`removeVertex_le`) and of `G_v^{ab}`, which is not a subgraph of `G`.
-Its callers are `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`
-(`lem:removal-deficiency-equality`) and `splitOff_removeVertex_minimalKDof`. -/
-lemma removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (he₀ : e₀ ∉ E(G)) :
-    G.removeVertex v ≤ G.splitOff v a b e₀ := by
+differ from `v` (`removeVertex_isLink`), and its edge, an edge of `G − v`, is not `e₀`. So `G − v`
+is a common subgraph of `G` (`removeVertex_le`) and of `G_v^{ab}`, which is not a subgraph of
+`G`. -/
+lemma removeVertex_le_splitOff_of_notMem_removeVertex {G : Graph α β} {v a b : α} {e₀ : β}
+    (he₀ : e₀ ∉ E(G.removeVertex v)) : G.removeVertex v ≤ G.splitOff v a b e₀ := by
   refine ⟨?_, ?_⟩
   · intro x hx
     rw [vertexSet_splitOff]
     rw [vertexSet_removeVertex] at hx
     exact hx
   · intro e x y h
-    rw [removeVertex_isLink] at h
+    have h' := removeVertex_isLink.mp h
     rw [splitOff_isLink]
-    exact Or.inl ⟨fun hee => he₀ (hee ▸ h.1.edge_mem), h.1, h.2.1, h.2.2⟩
+    exact Or.inl ⟨fun hee => he₀ (hee ▸ h.edge_mem), h'.1, h'.2.1, h'.2.2⟩
+
+/-- **`G − v` is a subgraph of `G_v^{ab}`** (`lem:splitoff-edge-substitution`): if `e₀ ∉ E(G)`,
+then `G.removeVertex v ≤ G.splitOff v a b e₀`, the case of
+`removeVertex_le_splitOff_of_notMem_removeVertex` that the callers meet (a label outside `E(G)`).
+Its callers are `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`
+(`lem:removal-deficiency-equality`) and `splitOff_removeVertex_minimalKDof`. -/
+lemma removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (he₀ : e₀ ∉ E(G)) :
+    G.removeVertex v ≤ G.splitOff v a b e₀ :=
+  removeVertex_le_splitOff_of_notMem_removeVertex (notMem_edgeSet_removeVertex he₀ v)
 
 /-- **When `G_v^{ab}` is simple** (a step of `lem:splitoff-simple`): `G_v^{ab}` is simple if none
 of its links joins a vertex to itself (`hloop`) and any two of its links between the same two

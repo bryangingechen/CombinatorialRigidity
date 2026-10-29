@@ -440,6 +440,7 @@ pass between $G$ and $G_v^{ab}$ through the graph $G_v$.
 \begin{lemma}[The common subgraph of $G$ and $G_v^{ab}$]
   \label{lem:splitoff-edge-substitution}
   \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff,
+        Graph.removeVertex_le_splitOff_of_notMem_removeVertex,
         Graph.isLink_incident_of_not_removeVertex}
   \leanok
   \uses{def:graph-operations}
@@ -463,10 +464,14 @@ pass between $G$ and $G_v^{ab}$ through the graph $G_v$.
 \end{proof}
 
 \begin{fmlnote}
-  The three pinned theorems state the two inclusions and the last
-  assertion, for every vertex $v$. The second assumes that the label of
-  the new edge $ab$ lies outside $E(G)$ (\cref{fmlnote:graph-operations}).
-  No pinned theorem states that $G_v^{ab}$ is not a subgraph of $G$.
+  The four pinned theorems state the two inclusions and the last
+  assertion, for every vertex $v$. The second and third state the
+  inclusion in $G_v^{ab}$ under a condition on the label of the new edge
+  $ab$ (\cref{fmlnote:graph-operations}): the third assumes that the label
+  lies outside $E(G - v)$, which is the condition under which the formal
+  splitting off is $G_v^{ab}$, and the second, the case that its callers
+  meet, assumes the stronger condition that it lies outside $E(G)$. No
+  pinned theorem states that $G_v^{ab}$ is not a subgraph of $G$.
 \end{fmlnote}
 
 \subsection{Forest surgery: KT Lemmas~4.1 and~4.2}
@@ -1244,10 +1249,10 @@ new edge that joins its neighbours.
 \end{proof}
 \begin{fmlnote}
   In the formalization $G''$ is the splitting off at $v$ with $e_0 = e_a$
-  as the label of the new edge (\cref{fmlnote:graph-operations}), while
-  the upper bound of \cref{lem:splitoff-deficiency} assumes
-  $e_0 \notin E(G)$. The two bounds have one proof, which uses only that
-  $e_0$ does not join different parts of $P$ in $G$.
+  as the label of the new edge (\cref{fmlnote:graph-operations}). It is the
+  case $e_0 = e_a$ of the upper bound of \cref{lem:splitoff-deficiency},
+  which assumes $e_0 \notin E(G - v)$, a condition that $e_a$ meets. The
+  two bounds are one theorem.
 \end{fmlnote}
 
 The ear steps of the pencil chapter whose ends are not adjacent
@@ -1924,10 +1929,10 @@ Lemma~6.1, which we prove with the algebraic induction
 \end{proof}
 \begin{fmlnote}
   The formalization proves part~(ii), and no declaration states
-  part~(i). The declaration also assumes that every minimal
-  $0$-dof-graph has an edge label outside its edge set, and in (b) it
-  forms $G_v^{ab}$ with such a label for the new edge
-  (\cref{fmlnote:graph-operations}).
+  part~(i). In (b) the declaration asks $P(G)$ of $P(G_v^{ab})$ for every
+  label $e_0 \notin E(G - v)$ of the new edge, the labels at which the
+  formal splitting off is $G_v^{ab}$ (\cref{fmlnote:graph-operations}).
+  It assumes nothing else of the labels.
 \end{fmlnote}
 
 In~(c), $P$ is assumed for every smaller graph, and not only for

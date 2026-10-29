@@ -43,15 +43,21 @@ of one part of `P`, `e_b` joins two parts of `P` exactly when the new edge `ab` 
 `P'`, and every other edge has the same ends in both graphs. So the value of `P'` for `G̃_v^{ab}` is
 at most that of `P` for `G̃`. -/
 
-/-- The common proof of `splitOff_deficiency_le` and `splitOff_deficiency_le_of_eq_left`: the label
-`e₀` of the new edge is either not an edge of `G` or `eₐ` (`he₀`). In both cases `e₀` does not join
-two parts of the extended partition, which is all the proof uses of it. -/
-private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+/-- **Splitting off does not raise the deficiency** (`lem:splitoff-deficiency`; KT Lemma 4.3(i)):
+let `D ≥ 1`, let `eₐ` and `e_b` be the only edges of `G` at `v` (`hdeg2`), joining it to `a, b ≠ v`,
+and let the label `e₀` of the new edge not be an edge of `G - v`, so that `G.splitOff v a b e₀` is
+`G_v^{ab}` (`fmlnote:graph-operations`); `e₀` may be `eₐ` or `e_b`. Then
+`def(G̃_v^{ab}) ≤ def(G̃)`. A partition `P'` of `V(G) ∖ {v}` extends to one `P` of `V(G)` by adding
+`v` to the part of `a`, with `|P| = |P'|`, and the map sending `e_b` to `e₀` and fixing the other
+edges is injective from the edges of `G` across `P` to those of `G_v^{ab}` across `P'`. An edge
+across `P` other than `e_b` avoids `v`, so it is an edge of `G - v` and is not `e₀`, which is all
+the proof uses of the label. -/
+theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
-    (he₀ : e₀ ∉ E(G) ∨ e₀ = eₐ) :
+    (he₀ : e₀ ∉ E(G.removeVertex v)) :
     (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n := by
   classical
   set H := G.splitOff v a b e₀ with hH
@@ -78,15 +84,20 @@ private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α
     · rintro _ ⟨x, ⟨hx, hxv⟩, rfl⟩
       exact ⟨x, hx, hfne x (by simpa using hxv)⟩
   have hfa : f a = f' a := hfne a hav
-  -- `e₀` does not cross `f`: it is not an edge of `G`, or it is `eₐ`, whose ends `v` and `a` both
-  -- have the label `f' a`.
-  have he₀cross : e₀ ∉ G.crossingEdges f := by
-    rcases he₀ with he₀ | rfl
-    · exact fun h => he₀ h.1
-    · rintro ⟨-, x, y, hlink, hxy⟩
-      rcases hla.eq_and_eq_or_eq_and_eq hlink with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  -- An edge of `G` across `f` other than `e_b` avoids `v`: at `v` it would be `eₐ`, whose ends `v`
+  -- and `a` both have the label `f' a`. So it is an edge of `G - v`, and not `e₀`.
+  have hcross_v : ∀ e x y, G.IsLink e x y → f x ≠ f y → e ≠ e_b → x ≠ v := by
+    intro e x y hlink hxy hev hxv
+    subst hxv
+    rcases hdeg2 e y hlink with rfl | rfl
+    · rcases hla.eq_and_eq_or_eq_and_eq hlink with ⟨-, rfl⟩ | ⟨-, hav'⟩
       · exact hxy (by rw [hfv, hfa])
-      · exact hxy (by rw [hfv, hfa])
+      · exact hav hav'
+    · exact hev rfl
+  have he₀cross : ∀ e ∈ G.crossingEdges f, e ≠ e_b → e ≠ e₀ := by
+    rintro e ⟨-, x, y, hlink, hxy⟩ hev hee
+    exact he₀ (hee ▸ (removeVertex_isLink.mpr ⟨hlink, hcross_v e x y hlink hxy hev,
+      hcross_v e y x hlink.symm (Ne.symm hxy) hev⟩).edge_mem)
   -- Step 2: the crossing-edge count does not increase, via the injection `e_b ↦ e₀`.
   have hcross : (G.crossingEdges f).ncard ≤ (H.crossingEdges f').ncard := by
     -- `f` and `f'` agree away from `v`; `f b = f' b` (since `b ≠ v`).
@@ -128,7 +139,7 @@ private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α
               · rw [hfv, hfa]
               · exact absurd hav' hav
             · exact absurd rfl hev
-        have hee₀ : e ≠ e₀ := fun h => he₀cross (h ▸ he)
+        have hee₀ : e ≠ e₀ := he₀cross e he hev
         refine ⟨?_, x, y, ?_, ?_⟩
         · have : H.IsLink e x y := by
             rw [hH, splitOff_isLink]; exact Or.inl ⟨hee₀, hlink, hxv.1, hxv.2⟩
@@ -142,9 +153,9 @@ private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α
       by_cases h1 : e1 = e_b <;> by_cases h2 : e2 = e_b
       · rw [h1, h2]
       · rw [ite_eq_left h1, ite_eq_right h2] at hg
-        exact absurd (by rw [hg]; exact he2) he₀cross
+        exact (he₀cross e2 he2 h2 hg.symm).elim
       · rw [ite_eq_right h1, ite_eq_left h2] at hg
-        exact absurd (by rw [← hg]; exact he1) he₀cross
+        exact (he₀cross e1 he1 h1 hg).elim
       · rwa [ite_eq_right h1, ite_eq_right h2] at hg
     · exact Set.toFinite _
   -- Combine: `partitionDef_G(f) ≥ partitionDef_H(f')`, then bound by the supremum.
@@ -156,21 +167,6 @@ private theorem splitOff_deficiency_le_aux [Finite α] [Finite β] {G : Graph α
     nlinarith [Int.ofNat_le.mpr hcross]
   exact hmono.trans (G.partitionDef_le_deficiency n f)
 
-/-- **Splitting off does not raise the deficiency** (`lem:splitoff-deficiency`; KT Lemma 4.3(i)):
-let `D ≥ 1`, let `eₐ` and `e_b` be the only edges of `G` at `v` (`hdeg2`), joining it to `a, b ≠ v`,
-and let the label `e₀` of the new edge not be an edge of `G`. Then `def(G̃_v^{ab}) ≤ def(G̃)`. A
-partition `P'` of `V(G) ∖ {v}` extends to one `P` of `V(G)` by adding `v` to the part of `a`, with
-`|P| = |P'|`, and the map sending `e_b` to `e₀` and fixing the other edges is injective from the
-edges of `G` across `P` to those of `G_v^{ab}` across `P'`. -/
-theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
-    (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
-    (hav : a ≠ v) (hbv : b ≠ v)
-    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
-    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
-    (he₀ : e₀ ∉ E(G)) :
-    (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n :=
-  splitOff_deficiency_le_aux hD hav hbv hla hlb hdeg2 (Or.inl he₀)
-
 /-! ### The new edge with the label `eₐ` (`lem:splitoff-deficiency-reuse`)
 
 The upper bound when the new edge `ab` takes the label `eₐ` (`G.splitOff v a b eₐ`), the form in
@@ -181,14 +177,15 @@ which the open-ear steps of `main-component.tex` suppress a vertex of degree two
 /-- **Suppressing a vertex of degree two** (`lem:splitoff-deficiency-reuse`): under the hypotheses
 of `splitOff_deficiency_le`, with the label `eₐ` for the new edge, `def(G̃'') ≤ def(G̃)`, where
 `G'' = G.splitOff v a b eₐ` is `G` with the end `v` of `eₐ` replaced by `b`, and with `v` and `e_b`
-deleted. It is the case `e₀ = eₐ` of `splitOff_deficiency_le_aux`. -/
+deleted. It is the case `e₀ = eₐ` of `splitOff_deficiency_le`. -/
 theorem splitOff_deficiency_le_of_eq_left [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 1 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) :
     (G.splitOff v a b eₐ).deficiency n ≤ G.deficiency n :=
-  splitOff_deficiency_le_aux hD hav hbv hla hlb hdeg2 (Or.inr rfl)
+  splitOff_deficiency_le hD hav hbv hla hlb hdeg2
+    ((notMem_edgeSet_removeVertex_iff hla hlb hdeg2).mpr (Or.inr (Or.inl rfl)))
 
 /-! ### Splitting off with a gap in the merged deficiency (`lem:splitoff-deficiency-merged`)
 
@@ -587,7 +584,7 @@ theorem dof_tracking [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
       G.deficiency n ≤ (G.removeVertex v).deficiency n :=
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   ⟨splitOff_deficiency_ge hD1 hav hbv heab hla hlb he₀,
-    splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 he₀,
+    splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 (notMem_edgeSet_removeVertex he₀ v),
     removeVertex_deficiency_ge hD hav hbv heab hla hlb hdeg2⟩
 
 end Graph

@@ -52,8 +52,9 @@ variable {α β : Type*}
 
 /-- **Every circuit of `M(G̃_v^{ab})` meets the copies of `ab`** (KT eq. (4.10), pp. 665–666; a step
 of `lem:reduction-step`): let `D ≥ 1`, let `G` be a loopless multigraph with no proper rigid
-subgraph, let `v ∈ V(G)`, and let `e₀ ∉ E(G)`. Then every circuit `X` of `M(G̃_v^{ab})` meets the
-copies `ẽ₀ = edgeFiber e₀ n` of the new edge `ab`.
+subgraph, let `v ∈ V(G)`, and let `e₀ ∉ E(G − v)`, so that `G.splitOff v a b e₀` is `G_v^{ab}`.
+Then every circuit `X` of `M(G̃_v^{ab})` meets the copies `ẽ₀ = edgeFiber e₀ n` of the new edge
+`ab`.
 
 Otherwise `X` is a set of edges of `(G_v)̃`, where `G_v = G - v`
 (`edgeSet_mulTilde_splitOff_diff_fiber`). As `G_v` is a subgraph of `G_v^{ab}` and of `G`, `X` is a
@@ -65,7 +66,7 @@ a proper rigid subgraph, which `G` has none of. The lemma asks neither that `G` 
 (`loopless_of_isMinimalKDof`). -/
 theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
     [G.Loopless] {n : ℕ} (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ : β} (hvG : v ∈ V(G))
-    (he₀ : e₀ ∉ E(G)) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (he₀ : e₀ ∉ E(G.removeVertex v)) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     {X : Set (β × Fin (bodyHingeMult n))}
     (hX : ((G.splitOff v a b e₀).matroidMG n).IsCircuit X) :
     (X ∩ edgeFiber e₀ n).Nonempty := by
@@ -77,10 +78,11 @@ theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G
     have := hX.subset_ground; rwa [matroidMG, Matroid.restrict_ground_eq] at this
   have hXdisj : Disjoint X (edgeFiber e₀ n) := Set.disjoint_iff_inter_eq_empty.mpr hXe
   have hXsubGv : X ⊆ E((G.removeVertex v).mulTilde n) := by
-    rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
+    rw [← edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex n he₀]
     exact Set.subset_sdiff.mpr ⟨hXground, hXdisj⟩
-  -- `G_v ≤ G_v^{ab}`: every link of `G` that avoids `v` survives, as `e₀ ∉ E(G)`.
-  have hleGvSplit : G.removeVertex v ≤ G.splitOff v a b e₀ := removeVertex_le_splitOff he₀
+  -- `G_v ≤ G_v^{ab}`: every link of `G` that avoids `v` survives, as `e₀ ∉ E(G - v)`.
+  have hleGvSplit : G.removeVertex v ≤ G.splitOff v a b e₀ :=
+    removeVertex_le_splitOff_of_notMem_removeVertex he₀
   have hleSplitMul : (G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n :=
     edgeMultiply_mono hleGvSplit _
   -- `M(G̃_v^{ab}) ↾ E(G̃_v) = M(G̃_v)`, so `X` is a circuit of `M(G̃_v)`.
@@ -132,11 +134,12 @@ theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G
 
 /-- **Splitting off keeps a minimal `0`-dof-graph minimal** (`lem:reduction-step` (i); KT
 Lemma 4.8(i), pp. 665–666): let `D ≥ 2`, and let `G` be a minimal `0`-dof-graph with at least three
-vertices and no proper rigid subgraph, whose vertex `v` has exactly the two edges `eₐ ≠ e_b`
-(`hdeg2`), joining it to `a, b ≠ v`. Then `G_v^{ab}`, formed with a label `e₀ ∉ E(G)`, is a minimal
-`0`-dof-graph.
+vertices and no proper rigid subgraph, whose vertex `v` has exactly the two edges `eₐ`, `e_b`
+(`hdeg2`), joining it to `a, b ≠ v`. Then `G_v^{ab}`, formed with a label `e₀ ∉ E(G − v)`, is a
+minimal `0`-dof-graph. The label may be `eₐ` or `e_b`, and the edges need not differ: only the upper
+bound of `dof_tracking` is used, and it asks neither.
 
-By `dof_tracking` (KT Lemmas 4.3(i) and 4.4), `def(G̃_v^{ab}) ≤ def(G̃) = 0`, so `G_v^{ab}` is a
+By `splitOff_deficiency_le` (KT Lemma 4.3(i)), `def(G̃_v^{ab}) ≤ def(G̃) = 0`, so `G_v^{ab}` is a
 `0`-dof-graph. The subgraph `G_v = G - v` has the `|V(G)| - 1 ≥ 2` vertices of `G` other than `v`,
 so it is not rigid, and `def((G_v)̃) > 0`: the case `k = 0` of KT Lemma 4.7. By
 `circuit_splitOff_meets_fiber` (KT eq. (4.10)), `E((G_v)̃)` contains no circuit of `M(G̃_v^{ab})`,
@@ -150,8 +153,9 @@ the count replaces the exchange. The three vertices are needed: splitting off a 
 two-vertex double edge leaves a loop at one vertex, a `0`-dof-graph that is not minimal. -/
 theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     (hD : 2 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) {v a b : α} {e₀ eₐ e_b : β}
-    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) (hla : G.IsLink eₐ v a)
-    (hlb : G.IsLink e_b v b) (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hav : a ≠ v) (hbv : b ≠ v) (hla : G.IsLink eₐ v a)
+    (hlb : G.IsLink e_b v b) (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G.removeVertex v))
     (hG : G.IsMinimalKDof n 0) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (G.splitOff v a b e₀).IsMinimalKDof n 0 := by
   classical
@@ -178,11 +182,11 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
     · exfalso
       refine hnp Gv ⟨⟨hleGvG, h.symm⟩, hVv2, ?_⟩
       rw [hVveq]; exact Set.sdiff_singleton_ssubset.mpr hvG
-  -- 0-dof half: `def(G̃') = 0` from `dof_tracking` squeezed against `def(G̃) = 0` and `def ≥ 0`.
+  -- 0-dof half: `def(G̃') = 0`, the upper bound squeezed against `def(G̃) = 0` and `def ≥ 0`.
   have hdofG : G.deficiency n = 0 := hG.deficiency_eq
-  have htrack := dof_tracking hD hav hbv heab hla hlb hdeg2 he₀
   have hdefG'_zero : G'.deficiency n = 0 := by
-    have h1 : G'.deficiency n ≤ G.deficiency n := htrack.2.1
+    have h1 : G'.deficiency n ≤ G.deficiency n :=
+      splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 he₀
     have h2 : 0 ≤ G'.deficiency n := G'.deficiency_nonneg n hVne
     rw [hdofG] at h1; omega
   refine ⟨hdefG'_zero, fun B' hB' e heG' => ?_⟩
@@ -191,7 +195,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
   intro hBe
   -- `E(G̃') = ẽ₀ ⊔ E(G̃v)`: the copies of `ab` and those of the edges of `Gv`.
   have hsplit_ground : E(G'.mulTilde n) \ edgeFiber e₀ n = E(Gv.mulTilde n) :=
-    edgeSet_mulTilde_splitOff_diff_fiber n he₀
+    edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex n he₀
   have hfiberGround : edgeFiber e₀ n ⊆ E(G'.mulTilde n) :=
     edgeFiber_subset_edgeSet_mulTilde_splitOff n hav hbv haV hbV
   -- `B' ⊆ E(G̃')`, `|B'| = D(|V'|−1)` since `def(G̃') = 0`.
@@ -212,7 +216,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
     · rw [matroidMG, Matroid.restrict_ground_eq, ← hsplit_ground]; exact Set.sdiff_subset
   have hleGvG' : Gv ≤ G' := by
     rw [hGvdef, hG'def]
-    exact removeVertex_le_splitOff he₀
+    exact removeVertex_le_splitOff_of_notMem_removeVertex he₀
   have hGv_base : (Gv.matroidMG n).IsBase (E(Gv.mulTilde n)) := by
     have hg : (Gv.matroidMG n).E = E(Gv.mulTilde n) := by
       rw [matroidMG, Matroid.restrict_ground_eq]
@@ -555,36 +559,36 @@ multigraphs hold of every minimal `0`-dof-graph `G` in each of three cases:
 
 * `hbase`: `G` has two vertices;
 * `hsplit`: `G` has no proper rigid subgraph, its vertex `v` has exactly the two edges `eₐ ≠ e_b`,
-  joining it to `a, b ≠ v`, and `P` holds of `G_v^{ab}`, formed with a label `e₀ ∉ E(G)`;
+  joining it to `a, b ≠ v`, and `P` holds of `G_v^{ab}`, formed with every label `e₀ ∉ E(G − v)`
+  (`fmlnote:graph-operations`: the formal `G.splitOff v a b e₀` is `G_v^{ab}` exactly then);
 * `hcontract`: `G` has at least three vertices and a proper rigid subgraph, and `P` holds of every
   minimal `0`-dof-graph with at least two and fewer than `|V(G)|` vertices.
 
-If every minimal `0`-dof-graph has a label outside its edges (`hfresh`), then `P` holds of every
-minimal `0`-dof-graph with at least two vertices. The proof is an induction on `|V(G)|`. A graph `G`
+Then `P` holds of every minimal `0`-dof-graph with at least two vertices, with no condition on the
+labels: the label `eₐ` is always admissible (`notMem_edgeSet_removeVertex_iff`). The proof is an
+induction on `|V(G)|`. A graph `G`
 with at least three vertices and no proper rigid subgraph is `2`-edge-connected
 (`twoEdgeConnected_of_isKDof_zero`), so it has a vertex `v` of degree two (`exists_degree_eq_two`,
 `lem:reducible-vertex`), whose two edges join it to vertices `a, b ≠ v`
 (`exists_splitOff_data_of_degree_eq_two`). Then `G_v^{ab}` is a minimal `0`-dof-graph
 (`splitOff_isMinimalKDof`, `lem:reduction-step`) with one vertex fewer
 (`splitOff_vertexSet_ncard_lt`, `lem:reduction-measure`), and the induction hypothesis gives the
-premise of `hsplit`.
+premise of `hsplit` at each admissible label. This is `hsplit` read as a statement about every
+formal `G_v^{ab}`; it implies the form with one label, and the form with a label outside `E(G)`.
 
 The contraction case is given the induction hypothesis at every smaller graph, not the contraction:
 Katoh and Tanigawa's proof of their Theorem 5.5 needs it at both `H` and `G/E(H)` (p. 673), and
 `G/E(H)` is again a minimal `0`-dof-graph (`rigidContract_isMinimalKDof`,
-`lem:rigidContract-isMinimalKDof`). `hfresh` asks a label only of the minimal `0`-dof-graphs, as a
-graph whose edges are loops at one vertex can use every label (`rem:fresh-edge-supply`). No
+`lem:rigidContract-isMinimalKDof`). No
 declaration uses the theorem; the algebraic induction runs `minimal_kdof_reduction_all_k`. -/
 theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 3 ≤ bodyBarDim n)
-    (hfresh : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → ∃ e₀ : β, e₀ ∉ E(G'))
-    {P : Graph α β → Prop}
+    (hD : 3 ≤ bodyBarDim n) {P : Graph α β → Prop}
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → P G)
-    (hsplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β),
+    (hsplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b : β),
       G.IsMinimalKDof n 0 → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
       v ∈ V(G) → a ≠ v → b ≠ v → a ∈ V(G) → b ∈ V(G) → eₐ ≠ e_b →
       G.IsLink eₐ v a → G.IsLink e_b v b → (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
-      e₀ ∉ E(G) → P (G.splitOff v a b e₀) → P G)
+      (∀ e₀ : β, e₀ ∉ E(G.removeVertex v) → P (G.splitOff v a b e₀)) → P G)
     (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
@@ -620,10 +624,7 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
         omega
       obtain ⟨a, b, eₐ, e_b, hav, hbv, haV, hbV, heab, hla, hlb, hdeg2⟩ :=
         exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG hb₀G hb₀v hvdeg
-      -- A label `e₀ ∉ E(G)`, which `hfresh` gives as `G` is a minimal `0`-dof-graph.
-      obtain ⟨e₀, he₀⟩ := hfresh G hG
-      have hsplitMin : (G.splitOff v a b e₀).IsMinimalKDof n 0 :=
-        splitOff_isMinimalKDof hD2 hV3 hav hbv heab hla hlb hdeg2 he₀ hG hrig
+      refine hsplit G v a b eₐ e_b hG hrig hvG hav hbv haV hbV heab hla hlb hdeg2 fun e₀ he₀ => ?_
       have hsmaller : V(G.splitOff v a b e₀).ncard < N :=
         hN ▸ splitOff_vertexSet_ncard_lt hvG
       have hsplit2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
@@ -631,8 +632,8 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
         have hdv : (V(G) \ {v}).ncard = V(G).ncard - 1 := by
           rw [Set.ncard_sdiff (by simpa using hvG) (Set.toFinite _), Set.ncard_singleton]
         omega
-      exact hsplit G v a b eₐ e_b e₀ hG hrig hvG hav hbv haV hbV heab hla hlb hdeg2 he₀
-        (IH _ hsmaller _ rfl hsplitMin hsplit2)
+      exact IH _ hsmaller _ rfl
+        (splitOff_isMinimalKDof hD2 hV3 hav hbv hla hlb hdeg2 he₀ hG hrig) hsplit2
 
 /-- **Induction over all deficiencies** (`thm:minimal-kdof-reduction-all-k`; the induction of Katoh
 and Tanigawa's proof of their Theorem 5.5, with its hypothesis KT eq. (6.1), p. 671): let a property
@@ -1463,7 +1464,7 @@ theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite �
   -- `def(G̃_v^{ab}) = 0` at `k = 0`: splitting off does not increase deficiency, and `def ≥ 0`.
   have hdefH_zero : H.deficiency n = 0 := by
     have hle : H.deficiency n ≤ G.deficiency n :=
-      splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 he₀
+      splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 (notMem_edgeSet_removeVertex he₀ _)
     have hge : 0 ≤ H.deficiency n := H.deficiency_nonneg n hVHne
     rw [hG.deficiency_eq] at hle; omega
   -- A base `B'` of `M(G̃_v^{ab})` with `h = |ẽ₀ ∩ B'| < D − 1` (KT Lemma 4.3(ii)).
@@ -1531,7 +1532,7 @@ theorem splitOff_isKDof_of_exists_base_inter_fiber_lt [DecidableEq β] [Finite �
     ⟨a, by rw [vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
   -- `def(H̃) ≤ k`: splitting off does not increase the deficiency (KT 4.3(i)).
   have hle : (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n :=
-    splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 he₀
+    splitOff_deficiency_le hD1 hav hbv hla hlb hdeg2 (notMem_edgeSet_removeVertex he₀ _)
   rw [hG] at hle
   -- 4.2(i) lifts `B'` to an `M(G̃)`-independent `I` of size `|B'| + D`.
   obtain ⟨I, hIindep, hIcard, -, -⟩ :=

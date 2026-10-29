@@ -91,26 +91,34 @@ lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : �
 
 /-- **The edges of `G̃_v^{ab}` other than the copies of `ab` are those of `(G_v)̃`** (a step of
 `lem:reverse-reroute-cycle-lift`, `lem:reverse-pendant-insert` and `lem:reduction-step`): when
-`e₀ ∉ E(G)`, `E(G̃_v^{ab}) ∖ ẽ₀ = E((G_v)̃)`, where `ẽ₀ = edgeFiber e₀ n`. An edge of `G_v^{ab}`
-other than `e₀` is an edge of `G` whose ends differ from `v`, so an edge of `G_v`; conversely, an
-edge of `G_v` is an edge of `G`, so it is not `e₀`, and `G_v^{ab}` keeps it. `Reduction.lean` uses
-it to compare the matroids of `G̃_v^{ab}` and of `(G_v)̃`. -/
-lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ)
-    (he₀ : e₀ ∉ E(G)) :
+`e₀ ∉ E(G − v)`, `E(G̃_v^{ab}) ∖ ẽ₀ = E((G_v)̃)`, where `ẽ₀ = edgeFiber e₀ n`. An edge of
+`G_v^{ab}` other than `e₀` is an edge of `G` whose ends differ from `v`, so an edge of `G_v`;
+conversely, an edge of `G_v` is not `e₀`, and `G_v^{ab}` keeps it. `Reduction.lean` uses it to
+compare the matroids of `G̃_v^{ab}` and of `(G_v)̃`. -/
+lemma edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex {G : Graph α β} {v a b : α}
+    {e₀ : β} (n : ℕ) (he₀ : e₀ ∉ E(G.removeVertex v)) :
     E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) := by
   ext p
   simp only [Set.mem_sdiff, mem_edgeFiber, mem_edgeSet_mulTilde,
     edgeSet_splitOff, Set.mem_union]
-  rw [removeVertex, edgeSet_deleteVerts]
-  simp only [Set.mem_ofPred_eq, Set.mem_singleton_iff]
   constructor
   · rintro ⟨(⟨rfl, _⟩ | ⟨_, x, y, hl, hx, hy⟩), hpne⟩
     · exact absurd rfl hpne
-    · exact ⟨x, y, hl, hx, hy⟩
-  · rintro ⟨x, y, hl, hx, hy⟩
-    refine ⟨Or.inr ⟨?_, x, y, hl, hx, hy⟩, ?_⟩
-    · rintro rfl; exact he₀ hl.edge_mem
-    · rintro rfl; exact he₀ hl.edge_mem
+    · exact (removeVertex_isLink.mpr ⟨hl, hx, hy⟩).edge_mem
+  · intro hp
+    obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hp
+    obtain ⟨hlG, hx, hy⟩ := removeVertex_isLink.mp hl
+    refine ⟨Or.inr ⟨?_, x, y, hlG, hx, hy⟩, ?_⟩
+    · rintro h; exact he₀ (h ▸ hp)
+    · rintro h; exact he₀ (h ▸ hp)
+
+/-- **The edges of `G̃_v^{ab}` other than the copies of `ab` are those of `(G_v)̃`**
+(`lem:reduction-step`): when `e₀ ∉ E(G)`, the case of
+`edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex` that the other callers meet. -/
+lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ)
+    (he₀ : e₀ ∉ E(G)) :
+    E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) :=
+  edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex n (notMem_edgeSet_removeVertex he₀ v)
 
 /-- **A forest of `(G_v)̃` is a forest of `G̃_v^{ab}`** (a step of `lem:reroute-vfree-transport`):
 when `e₀ ∉ E(G)`, a set of edges independent in the cycle matroid of `(G_v)̃` is independent in that

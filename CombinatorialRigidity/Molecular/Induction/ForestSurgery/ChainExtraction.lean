@@ -1281,7 +1281,8 @@ theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
       cd.deg_two (⟨1, by omega⟩ : Fin cd.d) hi
     have he₀' : cd.e₀ ∉ E(G) := cd.e₀_fresh
     refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩
-    · exact splitOff_isMinimalKDof hD2 hV3 hav hbv heab hlea hleb hclv he₀' hG hnoRigid
+    · exact splitOff_isMinimalKDof hD2 hV3 hav hbv hlea hleb hclv
+        (notMem_edgeSet_removeVertex he₀' _) hG hnoRigid
     · exact splitOff_simple_of_noRigid_of_card hD3 heab hlea hleb hV4 hnoRigid
     · rw [vertexSet_splitOff, Set.ncard_sdiff (by simpa using hvG) (Set.toFinite _),
         Set.ncard_singleton]
