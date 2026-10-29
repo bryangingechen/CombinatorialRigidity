@@ -2,7 +2,8 @@
 
 **Status:** rounds 1, 2 and 3 closed (rounds 1 and 2 on 2026-10-15, round 3 on 2026-10-24); the
 phase, `RECONCILE-FORMAL`, opened with the PI on 2026-10-24 as Phase 41; its first sub-phase,
-41a (CARRIER), closed the same day, and its second, 41b (RESTATE), closed on 2026-10-25. The PI
+41a (CARRIER), closed the same day, its second, 41b (RESTATE), closed on 2026-10-25, and its third,
+41c (MULTIGRAPH), opened on 2026-10-28. The PI
 queued RECONCILE next, ahead of ORIGAMI, as three autopilot rounds and one attended phase
 (`.claude/autopilot/queue.toml`). Its input is PROSE's findings report `notes/Prose-report.md`
 (items S1–S42, L1–L12, M1–M5, G1–G6 and §2.6), with each finding's home the ledger
@@ -33,8 +34,7 @@ docstrings wait for the phase (§3). The round's log also proposed that the labe
 join the project's gates for a commit that moves a pin; the PI adopted it on 2026-10-24
 (`blueprint/lint.sh` check 9). Phase 41's plan, its
 open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
-the PI's push, CI's first run of 41a's `module` conversion; then the PI chooses MULTIGRAPH or
-UNSTATED as the phase's next sub-phase (`notes/Phase41b.md` *Hand-off*).
+41c's item 1 (`notes/Phase41c.md` *Hand-off*); the PI's push ran CI green on 2026-10-25.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 
 ## 1. The PI's decisions

@@ -179,7 +179,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 2/3: every false statement, and KT's route explained) | the blueprint's statements and pins in every chapter, and the nodes of Katoh–Tanigawa's route that the formal proof leaves (no Lean) | ✓ Complete — the false statements fixed and KT's route explained, the Lean unchanged (see `notes/Reconcile-statements-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
-| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, codes-until-open) | ◐ In progress — 41a ✓ (CARRIER), 41b ✓ (RESTATE); next MULTIGRAPH or UNSTATED, the PI's choice after the push (see `notes/Phase41b.md`; plan `notes/Phase41-design.md`) |
+| 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, codes-until-open) | ◐ In progress — 41a ✓ (CARRIER), 41b ✓ (RESTATE), 41c (MULTIGRAPH) open (see `notes/Phase41c.md`; plan `notes/Phase41-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1238,8 +1238,8 @@ took a bound on the label type instead (41b). The PI's decisions at the open (de
 as the floor, stronger forms considered; `IsHingeCoplanar` and the multigraph rows on `E(G)` only;
 `F-323` and `F-324` dropped with the restatements) are in the design doc's §1. Four sub-phases by
 stable code: **CARRIER** (41a, ✓ closed 2026-10-24), **RESTATE** (41b, ✓ closed 2026-10-25),
-**MULTIGRAPH** (M1, Jackson–Jordán 2010's Theorem 6.1 for multigraphs, loops allowed; then KT
-Proposition 2.3 repinned unconditionally; 3–5 commits) and **UNSTATED** (the claims no declaration
+**MULTIGRAPH** (41c, opened 2026-10-28: M1, Jackson–Jordán 2010's Theorem 6.1 for multigraphs,
+loops allowed; then KT Proposition 2.3 repinned unconditionally; 3–5 commits) and **UNSTATED** (the claims no declaration
 states; 13–23 commits). **41a**
 put the field on the structure, its API first and the switch last, as in Phase 22l: the link
 predicate and a tactic that fills in the link proof at the constructors, then the switch itself,
@@ -1262,11 +1262,13 @@ realization of every simple graph on one body or more, given enough edge labels,
 simple minimal `k`-dof-graphs; the panel theorem's rank formula is a twentieth main result, and the
 new and restated rows have non-vacuity witnesses at the single edge and the triangle. KT Proposition
 2.3 is stated as Katoh and Tanigawa state it, for body-hinge frameworks on multigraphs, in
-conditional form. All 20 main results' axioms are the three standard ones. **Next**: the loop stops
-for the PI's push, CI's first run of 41a's module conversion (the design doc's §1f.2); then the PI
-chooses MULTIGRAPH, recommended (M1 repins KT Proposition 2.3 unconditionally, and §1f.4 settles its
-first decision), or UNSTATED. Detail → `notes/Phase41a.md`, `notes/Phase41b.md` +
-`notes/Phase41-design.md`.
+conditional form. All 20 main results' axioms are the three standard ones. The PI's push, CI's
+first run of 41a's module conversion, was green. **41c** opened with the PI on 2026-10-28 (the
+design doc's §1g); its open's recon built M1 in a Lean witness from the multigraph Theorem 5.6,
+whose hinges lie in the panels and so decompose as the construction needs, with loops costing one
+commit (the upper bound asked only at the edges that are not loops). **Next**: 41c's item 1, that
+upper bound; then M1 and KT Proposition 2.3's unconditional pin. Detail → `notes/Phase41a.md`,
+`notes/Phase41b.md`, `notes/Phase41c.md` + `notes/Phase41-design.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

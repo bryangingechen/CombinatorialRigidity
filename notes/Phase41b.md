@@ -4,8 +4,8 @@
 progress. The phase's design, the PI's decisions (at the phase's open, §1; at this sub-phase's,
 §1b; after item 1's recon, §1c; on `F-330`, §1d; on the generic panel theorems' body bound, §1e; in
 advance, §1f) and the recons are in `notes/Phase41-design.md`. Every checklist item landed, in 23
-commits with the open and the close. Next: the PI pushes and CI is watched (§1f.2); then the PI
-chooses MULTIGRAPH (recommended) or UNSTATED, to open with the PI. No successor is open.
+commits with the open and the close. The PI's push ran CI green (2026-10-25), and MULTIGRAPH
+opened as 41c on 2026-10-28 (`notes/Phase41c.md`).
 
 ## Current state
 
@@ -65,26 +65,14 @@ own commit (`810cb2d6`, with `F-133`'s last code). Mode: structural edit, no red
 
 ## Blockers / open questions
 
-- **CI has not run since 2026-10-15**: the PI's push after this close is CI's first run of 41a's
-  `module` conversion (Lean build, doc-gen, blueprint, the upstreaming dashboard).
-- **Carried to MULTIGRAPH** (design doc §3): `prop:rigidity-matrix-prop11`'s unconditional repin
-  (§1f.1); the generic body-hinge theorem is for simple graphs until M1
-  (`formalization.yaml`'s `fidelity.divergences`).
+- None. The push's CI run, the first of 41a's `module` conversion, was green (*Build & deploy
+  site*, run 40229429653 at `ae6a852c`, 2026-10-25). Carried to 41c: `prop:rigidity-matrix-prop11`'s
+  unconditional repin (§1f.1) and M1, the generic body-hinge theorem for multigraphs.
 
 ## Hand-off / next phase
 
-**The PI pushes; CI is watched** (§1f.2): the push is CI's first run of 41a's `module` conversion,
-so its *Build & deploy site* run (the Lean build, doc-gen, the blueprint and the upstreaming
-dashboard) is the check. No successor opens before it, and the loop does not push.
-
-**Then the PI chooses the next sub-phase** (design doc §3), to open with the PI; its letter and
-work log are minted at that open, not before:
-- **MULTIGRAPH**, 3–5 commits: M1, the generic body-hinge theorem for multigraphs (Jackson–Jordán
-  2010, Theorem 6.1), with loops allowed; then `prop:rigidity-matrix-prop11` repinned
-  unconditionally. Recommended: M1 completes item 11's node (§1f.1), and its first decision, the
-  loops, is already settled (§1f.4).
-- **UNSTATED**, 13–23 commits: the claims no declaration states (S22–S25, S31, S3, S16, S19, G5,
-  `F-061`'s forest lemma), by the findings report's estimates.
+**Successor: 41c (MULTIGRAPH)**, opened 2026-10-28 with the PI (design doc §1g); its next task is
+in `notes/Phase41c.md`. UNSTATED stays for the PI after it.
 
 ## Decisions made during this phase
 
