@@ -3,14 +3,15 @@
 **Status:** in progress (opened 2026-10-29 with the PI), a sub-phase of Phase 41. The phase's
 design, the PI's decisions (here §1h.2 and §1i, the open) and RELABEL's recon are in
 `notes/Phase41-design.md`; the recon's Lean witness is `notes/reconcile-formal/RelabelWitness.lean`.
-Three build items, one read-only recon and the close (planned 7–10); B1, B2 and B3 have landed, so
-no main result bounds the labels. Next: item R, the read-only recon on KT Theorem 4.9's principle.
+Three build items, one read-only recon and the close (planned 7–10); B1, B2, B3 and item R have
+landed, so no main result bounds the labels, and KT Theorem 4.9's principle can drop its supply in
+one commit (R, for the PI). Next: the close.
 
 ## Current state
 
-**The next concrete commit is item R** (*Hand-off*); B1, B2 and B3 have landed (below), so the six
-main results that carried a bound on the labels, and every declaration of the cascade, assume
-nothing of them.
+**The next concrete commit is the close** (*Hand-off*); B1, B2, B3 and item R have landed (below),
+so the six main results that carried a bound on the labels, and every declaration of the cascade,
+assume nothing of them, and R's question waits for the PI at the stop.
 RELABEL's recon (design
 doc §2, *RELABEL's recon*) proved route B in a witness against `e51acb76`, with no `sorry`: each
 main result applies its landed form at `β ⊕ Fin N`, `N = D(|α| − 1) + 1`, where
@@ -163,7 +164,7 @@ surfaces.
   Source: the witness's cascade sections, transcribed (all but the molecule chain); look for a
   shorter route. S/P/B 1/1/2, the molecule chain's three uncompiled. 1–2 commits; if it splits, cut
   between `Theorem55.lean` with the molecule chain and the generic theorems with the texts.
-- [ ] **R. Recon: dropping `hfresh` from `minimal_kdof_reduction`** (read-only; the PI's §1i.3).
+- [x] **R. Recon: dropping `hfresh` from `minimal_kdof_reduction`** (read-only; the PI's §1i.3).
   `Graph.minimal_kdof_reduction` (`Induction/ForestSurgery/Reduction.lean`;
   `thm:minimal-kdof-reduction`, KT Theorem 4.9's principle) is not a main result, and no
   declaration uses it (the algebraic induction runs `minimal_kdof_reduction_all_k`, which takes no
@@ -221,19 +222,31 @@ forms pinned beside their main results (*Decisions made*), the bound dropped fro
 statements and fmlnotes; status surfaces as the checklist says. Whole-project build 0 warnings,
 `lake lint`, `verify.sh`, `lint.sh`, `check-docstring-labels.py` (0 findings) clean.
 
+**R landed** (one docs commit; design doc §2, *Item R's recon*; witness
+`notes/reconcile-formal/ReductionWitness.lean`, no `sorry`). Route A's combinatorial half holds: the
+principle's chain (`removeVertex_le_splitOff`, `edgeSet_mulTilde_splitOff_diff_fiber`,
+`circuit_splitOff_meets_fiber`, `splitOff_deficiency_le`, `splitOff_isMinimalKDof`) is re-proved
+under `e₀ ∉ E(G − v)`, so the split-off can reuse `eₐ`, and the principle drops `hfresh`, its
+`hsplit` given `P` at every such label (a strict strengthening), with U4 then free of `hfresh`.
+`splitOff_isMinimalKDof_of_pos` (KT Lemma 4.8(ii)) is off the path and does not survive locally.
+One build commit, best placed in UNSTATED before U4.
+
 ## Blockers / open questions
 
 - None blocking.
-- For the PI at the close: item R's estimate for dropping `hfresh` from `minimal_kdof_reduction`;
-  and `hasGenericFullRankRealization_of_theorem_55_gen` (the second pin of `thm:theorem-55-6-rows`),
+- For the PI at the close: item R's question (design doc §2, *Item R's recon*, its *For the PI*):
+  drop `hfresh` from `minimal_kdof_reduction` in one commit, placed in UNSTATED before U4, with
+  `hsplit` given `P` at every label outside `E(G − v)` (recommended), or keep it; and
+  `hasGenericFullRankRealization_of_theorem_55_gen` (the second pin of `thm:theorem-55-6-rows`),
   which the arc counts as internal and B2 left with `hfresh`, though nothing calls it: dropping it
   is a 3-line repackage of the bound-free rows form, a free strengthening under §1f.3.
 
 ## Hand-off / next phase
 
-**Item R**, the read-only recon on dropping `hfresh` from `minimal_kdof_reduction`, as the lemma
-checklist's R entry says: its verdict as a §2 arc of the design doc in one docs commit, no library
-Lean. Then the close.
+**The close**, as the lemma checklist's *Close* entry says: the gates, the re-read of the restated
+chapters, ROADMAP's row and §41, the design doc's RELABEL arc compressed to a cited verdict (item
+R's arc stays whole: it is the source of R's build, if the PI takes it), UNSTATED named next. The
+loop then stops for the PI, with item R's question.
 
 ## Decisions made during this phase
 

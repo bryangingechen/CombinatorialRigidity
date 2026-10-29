@@ -36,8 +36,8 @@ join the project's gates for a commit that moves a pin; the PI adopted it on 202
 (`blueprint/lint.sh` check 9). Phase 41's plan, its
 open's recon and the PI's decisions there are in `notes/Phase41-design.md`. **Next concrete task:**
 41d (RELABEL, the label bound dropped from the main results; opened with the PI on 2026-10-29, the
-design doc's §1i), its item B1, the relabelling moved up with minimality through deficiencies
-(`notes/Phase41d.md` *Hand-off*); UNSTATED, the claims no declaration states, follows, expected as 41e. The
+design doc's §1i), its close: items B1–B3 and the recon R have landed, and R's question goes to
+the PI at the stop (`notes/Phase41d.md` *Hand-off*); UNSTATED, the claims no declaration states, follows, expected as 41e. The
 PI's push ran CI green on 2026-10-25.
 The two PDFs of §2 are in `.refs/` (the PI, 2026-10-15).
 

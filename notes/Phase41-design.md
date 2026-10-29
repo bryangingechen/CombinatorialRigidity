@@ -18,7 +18,9 @@ MULTIGRAPH arc is compressed to a cited verdict. The same day the PI set UNSTATE
 UNSTATED's open recon is in §2, and so is RELABEL's (route B, a transport at the boundary, proved
 in a witness; 6–9 commits). On 2026-10-29 the PI took RELABEL by route B and opened it as **41d**
 (§1i), work log `notes/Phase41d.md`, with a read-only recon of `minimal_kdof_reduction`'s `hfresh`
-as its last item; UNSTATED follows, expected as 41e. **Next:** 41d's item B1.
+as its last item; UNSTATED follows, expected as 41e. B1–B3 have landed, and item R's verdict is
+in §2 (*Item R's recon*: one commit drops `hfresh` there, for the PI at the stop). **Next:** 41d's
+close.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -763,6 +765,131 @@ recommended; A is unsized and reaches Case III); which of RELABEL and UNSTATED o
 RELABEL is taken, whether `minimal_kdof_reduction` keeps `hfresh` (recommended: no main result needs
 it). The PI's answers are §1i: route B, as 41d, and a recon of dropping `hfresh` there (41d's item R).
 
+**Item R's recon** (41d's item R; 2026-10-29; Claude Opus 5.5, read-only, at `953367f0`; the PI's
+§1i.3). Evidence: `notes/reconcile-formal/ReductionWitness.lean` (`lake lean`: no errors or
+warnings, its six `#print axioms` the three standard axioms; `#lint` on a copy: no errors in 15
+declarations). It proves with no `sorry` each lemma below under the weaker hypothesis, the
+principle without `hfresh` and U4 without `hfresh`; names are the witness's, in
+`Graph.Recon41Reduction`, a primed name being the landed declaration under `e₀ ∉ E(G − v)`. Line
+numbers are at `953367f0`, files under `Molecular/Induction/`.
+
+*The premise, re-read.* The principle (`ForestSurgery/Reduction.lean:578`) has no caller (`:289`
+and `:654` are docstrings) and calls one lemma that takes the label, `splitOff_isMinimalKDof`
+(`:151`, KT Lemma 4.8(i)), at the `e₀` that `hfresh` gives (`:624`). That lemma uses only the upper
+bound of `dof_tracking` (`:183–185`), and `edgeSet_mulTilde_splitOff_diff_fiber`,
+`circuit_splitOff_meets_fiber` and `removeVertex_le_splitOff`. `splitOff_isMinimalKDof_of_pos`
+(`:1711`, KT Lemma 4.8(ii)) is off this path: Case II calls it (`CaseII.lean:427`). The formal
+`G.splitOff v a b e₀` (`Operations.lean:620`) deletes every edge labelled `e₀` and adds `ab` as
+`e₀`, so it is `G_v^{ab}` exactly when `e₀ ∉ E(G − v)`, as `fmlnote:graph-operations` says. When
+`eₐ` and `e_b` are the only edges at `v`, that is `e₀ ∉ E(G)` or `e₀ ∈ {eₐ, e_b}`
+(`notMem_edgeSet_removeVertex_iff`), so the label `eₐ` is always admissible. Katoh and Tanigawa
+note that `G_v^{ab}` is isomorphic to `G` with `va` or `vb` contracted (p. 660); contracting `vb`
+keeps the label `eₐ` on the edge `ab`, which gives `G.splitOff v a b eₐ`.
+
+*Sub-question 1: each use of `e₀ ∉ E(G)`, read from the bodies.*
+- `removeVertex_le_splitOff` (`Operations.lean:702`): one use (`:712`), that a link of `G − v` is
+  not `e₀`. **GO**, one line (`removeVertex_le_splitOff'`).
+- `edgeSet_mulTilde_splitOff_diff_fiber` (`ForestSurgery/EdgeSplitting.lean:98`): two uses
+  (`:112–113`), the same fact for a link whose ends differ from `v`. **GO**, one line each.
+- `circuit_splitOff_meets_fiber` (`Reduction.lean:66`): it only passes the hypothesis to the two
+  above (`:80`, `:83`). **GO**.
+- `dof_tracking` (`SplitOffDeficiency.lean:579`). Its upper bound `splitOff_deficiency_le`
+  (`:165`) is the private `splitOff_deficiency_le_aux` (`:49`), which already takes
+  `e₀ ∉ E(G) ∨ e₀ = eₐ` and uses it once, in `he₀cross` (`:83–89`, "`e₀` crosses no part"). That
+  is false at `e₀ = e_b`, but the proof needs only that no crossing edge other than `e_b` is `e₀`.
+  This holds under `e₀ ∉ E(G − v)`, as such an edge avoids `v` (the argument of `:113–130`).
+  **GO**, about 20 lines (`splitOff_deficiency_le'`). Its lower bound `splitOff_deficiency_ge`
+  (`:286`) uses `eₐ, e_b ≠ e₀` (`:307–308`) only to show that `eₐ` and `e_b` are not edges of
+  `G_v^{ab}` (`:310–323`). The proof needs only that an edge of `G_v^{ab}` other than `e₀` is
+  neither of them, which holds for every `e₀`. So the lower bound **asks nothing of `e₀`**
+  (`splitOff_deficiency_ge'`, about 25 lines), and `dof_tracking'` follows. The principle needs
+  neither.
+- `splitOff_isMinimalKDof` (`Reduction.lean:151`): it passes the hypothesis to the four above
+  (`:183`, `:194`, `:208`, `:215`), and its count over a base missing `ẽ` (`:228–283`) reads
+  `edgeSet_splitOff` and never uses it. **GO** (`splitOff_isMinimalKDof'`, which calls the upper
+  bound directly). Then `eₐ ≠ e_b`, which only the lower bound used, is unused and is dropped.
+- `splitOff_isMinimalKDof_of_pos` (`:1711`): **NO-GO as a local change, and not needed.** Its
+  forest surgery (KT Lemmas 4.1 and 4.2) uses the full hypothesis at steps that fail under the
+  weaker one: `hr_notin` (`:1128–1132`, that no copy of `ab` lies in a forest of `G̃`); `hhe₀K`
+  (`:1847–1848`, `e₀ ∉ E(K)` for a `K` that contains `v`); and `eₐ, e_b ≠ e₀` in
+  `splitOff_reroute_packing` (`EdgeSplitting.lean:776–777`, used at `:846–847`, `:964–966` and
+  `:1188–1190`). Recycling there is route A's algebraic half (Case II at `k > 0`), which §1i left
+  out.
+
+*Sub-question 2: `hsplit` restated.* In each form below `hfresh` is gone.
+- **(b)** `(∀ e₀, e₀ ∉ E(G − v) → P (G.splitOff v a b e₀)) → P G` (`minimal_kdof_reduction'`;
+  `hsplit` no longer binds `e₀`): `P` holds at every formal `G_v^{ab}`. This form implies the
+  landed principle: the landed hypotheses, `hfresh` among them, give its `hsplit`
+  (`minimal_kdof_reduction_of'`). So it is a strict strengthening. It also implies (a).
+- **(a)** `e₀ ∉ E(G − v) → P (G.splitOff v a b e₀) → P G`
+  (`minimal_kdof_reduction_of_one_label`): `P` holds at one formal `G_v^{ab}`. This is not a
+  strengthening of the landed statement, as its `hsplit` must also handle the recycled labels,
+  which the landed one never meets.
+- `e₀ ∈ {eₐ, e_b} ∨ e₀ ∉ E(G)` is the same condition as `e₀ ∉ E(G − v)` here. The latter is
+  `fmlnote:graph-operations`' own condition, so it is the one to state.
+
+The proof is the landed one: it calls `hsplit` at the two edges at `v`, with the induction
+hypothesis at each admissible label (`splitOff_isMinimalKDof'`, on one vertex fewer).
+Faithfulness: Katoh and Tanigawa state Theorem 4.9 as the sequence (p. 666). Its induction is the
+blueprint's (ii), whose clause (b), "`P(G_v^{ab})` implies `P(G)`", names `G_v^{ab}` with no label,
+and form (b) asks `P` of each formal `G_v^{ab}`. So `thm:minimal-kdof-reduction`'s statement stays
+as it is, and its fmlnote no longer mentions the supply. **GO**, form (b) recommended.
+
+*Sub-question 3: U4.* `minimal_kdof_reduction_sequence` drops `hfresh`, and the split clause of
+`KTReductionStep` asks `e₀ ∉ E(G − v)` (the formal `G_v^{ab}`) instead of a fresh label. The proof
+is form (b) at `e₀ = eₐ`; the witness's last section is `UnstatedWitness.lean`'s proof with a few
+lines changed. Under the landed principle a graph that uses every label has no split step, which is
+why U4 carried `hfresh`. U4 stays one commit if R's build lands first; if U4 landed first, its
+statement would change twice. If the PI keeps `hfresh`, U4 stays as planned.
+
+*A transport, against the arc's claim.* Route B's pullback cannot reach the principle. `P` is any
+predicate on `Graph α β`, and at `β ⊕ Fin N` the new edge of a split-off carries a label outside
+`β`, where no pullback evaluates `P`. Letting `P` range over label types would turn the theorem
+into a family, which is not KT's theorem. A relabelling **inside the step** does reach it, since it
+transports `splitOff_isMinimalKDof`, not `P`. At `Option β`, the label `none` is fresh for
+`G.embedEdges some`, the landed lemma gives minimality there, and
+`(G.splitOff v a b eₐ).embedEdges σ = (G.embedEdges some).splitOff v a b none` for the embedding
+`σ` that sends `eₐ` to `none`. It needs minimality reflected along `embedEdges` (T5's converse),
+the absence of proper rigid subgraphs carried to `G.embedEdges some`, and that equality: about
+120–150 new lines, **not compiled**, against route A's roughly 100, all compiled. Its one merit is
+that no internal statement changes. Not recommended.
+
+*Which statements change* (route A, form (b)):
+- `minimal_kdof_reduction`: `hfresh` dropped, `hsplit` as (b).
+- `splitOff_isMinimalKDof` (`lem:reduction-step`'s pin): `e₀ ∉ E(G − v)`, and `eₐ ≠ e_b`
+  dropped. `chainData_extract` (`ChainExtraction.lean:1284`) adapts its call.
+- `circuit_splitOff_meets_fiber`: `e₀ ∉ E(G − v)`; its one caller is the lemma above.
+- `splitOff_deficiency_le` (`lem:splitoff-deficiency`'s pin): `e₀ ∉ E(G − v)`. Its callers
+  (`Reduction.lean:1466`, `:1534` and `dof_tracking`) pass `e₀ ∉ E(G)` through a one-line helper.
+
+All four are strengthenings. Added: the helper (`notMem_edgeSet_removeVertex`) and the weaker forms
+of `removeVertex_le_splitOff` and `edgeSet_mulTilde_splitOff_diff_fiber`. The landed forms keep
+their statements: the first has five callers in `CaseIII/Realization.lean`, two in `link_le_tac`
+(`PanelHinge.lean:320–321`) and two in the `k > 0` surgery, the second four in that surgery. No
+file of `AlgebraicInduction/` is edited, and the rebuild runs from `Operations.lean` through the
+molecular chain. The blueprint changes at four nodes: `thm:minimal-kdof-reduction`'s fmlnote;
+`rem:fresh-edge-supply`'s list, which loses the principle; `lem:splitoff-edge-substitution` (the
+new pin under the additive-successor gate, and its fmlnote); and `lem:splitoff-deficiency-reuse`'s
+fmlnote. `formalization.yaml`'s KT Theorem 4.9 row (`alignment`) names no label condition, today
+or after. Optional and not needed: `splitOff_deficiency_ge` without `he₀`, and `dof_tracking` under
+`e₀ ∉ E(G − v)` (both compiled), which would be two more strengthenings.
+
+*Estimate.* **1 commit**: the witness transcribed, about 100 Lean lines changed or added in five
+files, the blueprint nodes above and one full build. Placed in UNSTATED before U4, it lets U4
+state KT Theorem 4.9 (i) with nothing assumed of the labels, and UNSTATED's 15–21 commits become
+**16–22**. As its own sub-phase, with an open and a close, it is 3 commits.
+
+*For the PI.* `minimal_kdof_reduction` (the induction principle of KT Theorem 4.9; not a main
+result, and nothing calls it) can drop `hfresh` in one commit. The chain it calls holds when the
+new edge of `G_v^{ab}` reuses the label of an edge at `v`: the hypothesis becomes
+`e₀ ∉ E(G − v)`, exactly the labels at which the formal splitting off is `G_v^{ab}`. Five lemmas
+are re-proved and four statements strengthened, none in the algebraic induction's files, and the
+witness proves it all. The principle's split case would be given `P` at `G_v^{ab}` for every such
+label, a strict strengthening of today's statement, and U4 (KT Theorem 4.9 (i), in UNSTATED) would
+assume nothing of the labels. The questions: drop it (recommended), placed in UNSTATED before U4?
+Give `hsplit` `P` at every admissible label (recommended, a strengthening) or at one (a weaker
+theorem, at the same cost)? Or keep `hfresh` (no cost, and U4 as planned)?
+
 ## 3. Sub-phases, by code
 
 | Code | Letter | Contents | Commits |
@@ -770,8 +897,8 @@ it). The PI's answers are §1i: route B, as 41d, and a recon of dropping `hfresh
 | **CARRIER** | 41a (closed 2026-10-24) | done: `reaimSub` retired; the link predicate, its lemmas and the fill-in tactic; the four R statements; the spike; the switch (the field, 123 declarations in 27 files) and the footprint's docstrings; `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged (`notes/Phase41a.md`) | 9, besides the build-time detour P1–P5 |
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
-| **RELABEL** | 41d (opened 2026-10-29 with the PI, §1i) | the bound on the edge labels (`hcard`, `hfresh`) dropped from the main results that carry it (§1h.2), by route B (§1i.1). Its recon (§2, *RELABEL's recon*): six main results carry it, and 23 declarations' statements change; route B, a transport at the boundary along `inl : β ↪ β ⊕ Fin N` with the induction untouched, is proved in full by the witness `notes/reconcile-formal/RelabelWitness.lean`, and genericity needs no transport; route A, recycling a label inside the induction, breaks at Case III's chain. Items B1 (`embedEdges` moved up, minimality through deficiencies), B2 (the pullbacks and Theorems 5.5 and 5.6), B3 (the cascade, the blueprint and `formalization.yaml`), then R, a read-only recon of dropping `hfresh` from `minimal_kdof_reduction` that returns to the PI (§1i.3) (`notes/Phase41d.md`) | 7–10: the arc's 6–9, the open and the close included, and R's record |
-| **UNSTATED** | — (follows RELABEL, expected as 41e; its letter minted at its own open, §1i.2) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) | 15–21, the open and the close included (the report: 13–23) |
+| **RELABEL** | 41d (opened 2026-10-29 with the PI, §1i) | the bound on the edge labels (`hcard`, `hfresh`) dropped from the main results that carry it (§1h.2), by route B (§1i.1). Its recon (§2, *RELABEL's recon*): six main results carry it, and 23 declarations' statements change; route B, a transport at the boundary along `inl : β ↪ β ⊕ Fin N` with the induction untouched, is proved in full by the witness `notes/reconcile-formal/RelabelWitness.lean`, and genericity needs no transport; route A, recycling a label inside the induction, breaks at Case III's chain. Items B1 (`embedEdges` moved up, minimality through deficiencies), B2 (the pullbacks and Theorems 5.5 and 5.6), B3 (the cascade, the blueprint and `formalization.yaml`), then R, a read-only recon of dropping `hfresh` from `minimal_kdof_reduction` that returns to the PI (§1i.3; done, §2's *Item R's recon*: route A's combinatorial half, proved in a witness, 1 commit) (`notes/Phase41d.md`) | 7–10: the arc's 6–9, the open and the close included, and R's record |
+| **UNSTATED** | — (follows RELABEL, expected as 41e; its letter minted at its own open, §1i.2) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) | 15–21, the open and the close included (the report: 13–23); 16–22 with item R's build, if the PI takes it |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
@@ -797,8 +924,9 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
   transport at the boundary proved in a witness, at 6–9 commits; the PI took route B and opened
   RELABEL as 41d (§1i.1).
 - **`minimal_kdof_reduction`'s `hfresh`** (KT Theorem 4.9's principle, not a main result; route B
-  cannot reach it, §2): the PI asked for a recon of dropping it (§1i.3), 41d's item R, which sizes
-  route A's combinatorial half (the deficiency chain under `e₀ ∉ E(G − v)`) and returns to the PI
-  before any build.
+  cannot reach it, §2): the PI asked for a recon of dropping it (§1i.3), 41d's item R. Its verdict
+  (§2, *Item R's recon*): route A's combinatorial half holds, proved in a witness; one commit, best
+  placed in UNSTATED before U4, with `hsplit` given `P` at every label outside `E(G − v)`, a strict
+  strengthening. Open for the PI at 41d's close.
 - **Relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links**: in UNSTATED (§1h.2), its item
   U6 (§2, *UNSTATED's open recon*).
