@@ -469,7 +469,7 @@ theorem finrank_span_rigidityRows_of_isGenericNormals [Infinite K] [Finite α] [
   have hloop : G.Loopless := hSimple.toLoopless
   -- The witness: KT Theorem 5.6, at the target rank, with nonparallel panels.
   obtain ⟨Q0, hQ0g, hQ0np, hQ0rank⟩ :=
-    rankHypothesis_of_theorem_55_gen (K := K) hd hcard G hne hspan hSimple
+    rankHypothesis_of_theorem_55_gen_of_card_lt (K := K) hd hcard G hne hspan hSimple
   -- Its hinges at the edges of `G` are nondegenerate (general position, distinct ends).
   have hQ0C : ∀ e ∈ E(Q0.graph), Q0.toBodyHinge.supportExtensor e ≠ 0 := by
     intro e he

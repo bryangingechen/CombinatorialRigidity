@@ -865,7 +865,7 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K] [Finite α] [F
   have : NeZero (n - 1) := ⟨by omega⟩
   -- The multigraph Theorem 5.6: a hinge-coplanar realization at the target rank.
   obtain ⟨F0, normal, ⟨hF0g, -, hF0C, hF0P⟩, hF0rank⟩ :=
-    theorem_55_6_multigraph_gen (K := K) hd hcard G hspan
+    theorem_55_6_multigraph_gen_of_card_lt (K := K) hd hcard G hspan
   have h1V : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
   have hcardα : Nat.card α = V(G).ncard := by rw [hspan, Set.ncard_univ]
   have hrank0 : (Module.finrank K (Submodule.span K F0.rigidityRows) : ℤ)

@@ -4434,8 +4434,9 @@ must supply for nothing, and the linter's own message already names the fix.
 **Fix, in order:**
 1. Drop the binder and open the proof with `classical` (a term proof becomes `by classical exact
    …`; `open scoped Classical in` for a bare term). Rebuild every callee too — they simply stop
-   passing the instance. In-tree precedent: `PanelHingeFramework.rankHypothesis_of_theorem_55_gen`
-   (`Theorem55.lean`, since Phase 41b) calls `rankHypothesis_genuine_of_theorem_55_gen`, itself
+   passing the instance. In-tree precedent:
+   `PanelHingeFramework.rankHypothesis_of_theorem_55_gen_of_card_lt` (`Theorem55.lean`, since
+   Phase 41b; renamed in 41d) calls `rankHypothesis_genuine_of_theorem_55_gen_of_supply`, itself
    `[DecidableEq β]`-taking, with `classical` and no binder.
 2. Only if that fails for a **stated** reason (a step computes with the specific instance —
    `decide`, a computational `rfl` — or a callee froze an instance in a `def` body that a later

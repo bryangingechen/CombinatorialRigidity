@@ -101,7 +101,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le [Finite α] [Finite �
     Graph.freshEdgeSupply_of_card_lt (by omega) (by simpa [Graph.bodyBarDim] using hcard)
   -- Step 1: KT Theorem 5.6 with nondegenerate hinges; the selector gives each edge its two ends.
   obtain ⟨Q0, hQ0g, -, hQ0C, hQ0rank⟩ :=
-    rankHypothesis_genuine_of_theorem_55_gen
+    rankHypothesis_genuine_of_theorem_55_gen_of_supply
       (K := ℝ) (k := 2) (n := 3) (by norm_num) hn hfresh G hV hspan hSimple
   have hQ0ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q0.ends e).1 (Q0.ends e).2 :=
     hQ0g ▸ recordsLinks_iff_forall_isLink.mp Q0.isLink_ends

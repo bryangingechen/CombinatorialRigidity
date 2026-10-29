@@ -70,13 +70,13 @@ input (for an `iff`, the side the theorem derives there). Each is the closed dec
   (`banana_addEdge_not_loopless`): the loop's hinge constrains nothing, and at every generic
   assignment the framework is still infinitesimally rigid.
 * `theorem_55_minimalKDof_gen_witness`: Katoh and Tanigawa's Theorem 5.5 at the single edge, a
-  minimal `1`-dof-graph, its fresh-edge supply from a label headroom. The single edge is simple, so
+  minimal `1`-dof-graph, with one edge label, which the edge uses. The single edge is simple, so
   it has a panel realization with nonparallel panels and one with a nondegenerate hinge, at rank
   `3 · (2 - 1) - 1 = 2`.
 * `rankHypothesis_of_theorem_55_gen_witness`: Katoh and Tanigawa's Theorem 5.6 at the same single
-  edge, a simple graph of deficiency `1`. It has a panel-hinge realization whose two panels are
-  nonparallel, so that its hinge is nondegenerate, with infinitesimal motions of dimension
-  `3 + 1 = 4`.
+  edge with its one label, a simple graph of deficiency `1`. It has a panel-hinge realization whose
+  two panels are nonparallel, so that its hinge is nondegenerate, with infinitesimal motions of
+  dimension `3 + 1 = 4`.
 * `finrank_span_rigidityRows_of_isGenericNormals_witness`: the rank formula at generic panel
   normals (Jackson and Jordán 2010 §7) at the same single edge. Some panel-hinge framework on it has
   generic normals, and every such framework has rigidity matrix of rank `3 · (2 - 1) - 1 = 2`.
@@ -485,42 +485,38 @@ private theorem singleEdge_isMinimalKDof_one {β : Type*} [Finite β] [Decidable
 
 /-- **Katoh and Tanigawa's Theorem 5.5 at the single edge, in the plane**:
 `Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen` at `n = 2` and grade `k = 1`
-(`bodyBarDim 2 = screwDim 1 = 3`), at the single edge on two bodies, a minimal `1`-dof-graph. Its
-fresh-edge supply `hfresh` comes from the label headroom `3 · (2 - 1) < 4`
-(`Graph.freshEdgeSupply_of_card_lt`), the bound that Theorem 5.6 and the molecular conjecture
-assume.
+(`bodyBarDim 2 = screwDim 1 = 3`), at the single edge on two bodies, a minimal `1`-dof-graph, with
+one edge label, which the edge uses: the theorem assumes nothing of the labels.
 The single edge is simple, so both sides of the conditioned pair hold: a panel-hinge realization
 whose two panels are nonparallel, and a panel realization whose hinge is nondegenerate and lies in
 both panels, each with rigidity matrix of rank `3 · (2 - 1) - 1 = 2`. -/
 theorem theorem_55_minimalKDof_gen_witness :
     PanelHingeFramework.HasNonparallelFullRankRealization ℝ 1 2
-        (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) ∧
-      HasPanelRealization ℝ 1 2 (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) := by
+        (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 1)) ∧
+      HasPanelRealization ℝ 1 2 (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 1)) := by
   obtain ⟨hgen, hpanel⟩ := PanelHingeFramework.theorem_55_minimalKDof_gen (K := ℝ) (k := 1)
     (n := 2) le_rfl
     (Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num))
-    (Graph.freshEdgeSupply_of_card_lt (by decide) (by simp only [Nat.card_fin]; decide))
-    (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) (singleEdge_isMinimalKDof_one (by decide) 0)
+    (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 1)) (singleEdge_isMinimalKDof_one (by decide) 0)
     (by rw [Graph.vertexSet_singleEdge]; exact (Set.ncard_pair (by decide)).ge)
   exact ⟨hgen (Graph.singleEdge_simple (by decide) 0), hpanel⟩
 
 /-- **Katoh and Tanigawa's Theorem 5.6 at the single edge, in the plane**:
 `Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen` at `n = 2` (grade `k = 1`, so a
 panel is a line and a hinge a point), at the single edge on two bodies, which is simple and has both
-bodies as vertices; the label headroom is `3 · (2 - 1) < 4`. Its deficiency is `1`, as it is a
+bodies as vertices, with one edge label, which the edge uses. Its deficiency is `1`, as it is a
 minimal `1`-dof-graph. So it has a panel-hinge realization whose two lines are nonparallel, and so
 meet in the hinge point of the edge, which is nondegenerate, with a space of infinitesimal motions
 of dimension `3 + 1 = 4`: the three trivial motions and the rotation of one body about the hinge. -/
 theorem rankHypothesis_of_theorem_55_gen_witness :
-    ∃ Q : PanelHingeFramework ℝ 1 (Fin 2) (Fin 4),
-      Q.graph = Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4) ∧ Q.IsNonparallel ∧
+    ∃ Q : PanelHingeFramework ℝ 1 (Fin 2) (Fin 1),
+      Q.graph = Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 1) ∧ Q.IsNonparallel ∧
         Q.toBodyHinge.supportExtensor 0 ≠ 0 ∧
         Module.finrank ℝ Q.toBodyHinge.infinitesimalMotions = 4 := by
   obtain ⟨Q, hQg, hQnp, hrank⟩ := PanelHingeFramework.rankHypothesis_of_theorem_55_gen (K := ℝ)
-    (n := 2) le_rfl (by simp only [Nat.card_fin]; decide)
-    (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)) ⟨0, by simp⟩
+    (n := 2) le_rfl (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 1)) ⟨0, by simp⟩
     (Set.eq_univ_of_forall fun x ↦ by fin_cases x <;> simp) (Graph.singleEdge_simple (by decide) 0)
-  have hdef : (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 4)).deficiency 2 = 1 :=
+  have hdef : (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 1)).deficiency 2 = 1 :=
     (singleEdge_isMinimalKDof_one (by decide) 0).1.deficiency_eq
   -- The selector gives the edge its two ends, which are distinct.
   have hlink : Q.graph.IsLink 0 (Q.ends 0).1 (Q.ends 0).2 :=
@@ -577,7 +573,7 @@ theorem molecular_conjecture_multigraph_witness :
   have hdef : (Graph.banana (0 : Fin 2) 1 ({0, 1} : Set (Fin 4))).deficiency 2 = 0 :=
     Graph.isKDof_zero_of_parallel_pair (by decide) (x := 0) (y := 1) (e₁ := 0) (e₂ := 1)
       (by decide) (by simp) (by simp) (by decide) (by simp) (by simp)
-  obtain ⟨F, normal, hF, hrank⟩ := theorem_55_6_multigraph_gen (K := ℝ) le_rfl hcard _ hspan
+  obtain ⟨F, normal, hF, hrank⟩ := theorem_55_6_multigraph_gen (K := ℝ) le_rfl _ hspan
   rw [hdef] at hrank
   exact (molecular_conjecture_multigraph le_rfl hcard _ hspan).mpr
     ⟨F, normal, hF, (BodyHingeFramework.rankHypothesis_zero_iff F).mp hrank⟩

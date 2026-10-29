@@ -21,7 +21,8 @@ case of equal deficiencies (`cor:pencil-jj-flat`), and the contraction, ear and 
 it at the smaller graphs they compare with `G`.
 
 The proof draws the equality from the planar case of KT Theorem 5.6 (`thm:theorem-55-6-rows` at
-`d = 2`, `PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`),
+`d = 2`, in the form with a supply of spare labels,
+`PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen_of_supply`),
 which does not ask `G` to have every body as a vertex, and gives a panel-hinge framework on `G` in
 the plane of rank `3(|V(G)| − 1) − def₂(G)`. At a common non-root of its rank polynomial, of a
 polynomial whose non-roots are in general position (as `Molecule/Theorem56.lean` moves a realization
@@ -178,12 +179,12 @@ picture `q` off the zero set of `P` the plane framework at the normals `(x_v, y_
 least `3(|V(G)| − 1) − def₂(G)`.
 
 Proof. The planar case of KT Theorem 5.6, which does not ask `G` to have every body as a vertex
-(`PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`,
-`thm:theorem-55-6-rows` at `d = 2`), gives a realization `Q₀` at exactly that rank. Its rank
-polynomial (`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`), the general-position
-polynomial (`PanelHingeFramework.exists_generalPosition_polynomial`) and the product of the third
-normal coordinates have a common non-root `n₀`. Rescaling each body's normal by `n₀(a, 2)⁻¹` lands
-in the chart at a picture `q'`, with the same rank
+(`PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen_of_supply`,
+`thm:theorem-55-6-rows` at `d = 2`, with `hfresh`), gives a realization `Q₀` at exactly that rank.
+Its rank polynomial (`PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`), the
+general-position polynomial (`PanelHingeFramework.exists_generalPosition_polynomial`) and the
+product of the third normal coordinates have a common non-root `n₀`. Rescaling each body's normal
+by `n₀(a, 2)⁻¹` lands in the chart at a picture `q'`, with the same rank
 (`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_smul`) and nonzero hinges (general
 position). The rank polynomial at `q'`, pulled back along the chart, is the required `P`. -/
 theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint
@@ -199,7 +200,7 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
   have : Fintype α := Fintype.ofFinite α
   -- The planar case of KT Theorem 5.6, at `(n, k) = (2, 1)`.
   obtain ⟨Q₀, hQ₀g, -, hQ₀C, hQ₀rank⟩ :=
-    PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen
+    PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen_of_supply
       (K := K) (k := 1) (n := 2) le_rfl rfl hfresh G hV hSimple
   have hQ₀ends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q₀.ends e).1 (Q₀.ends e).2 :=
     hQ₀g ▸ PanelHingeFramework.recordsLinks_iff_forall_isLink.mp Q₀.isLink_ends

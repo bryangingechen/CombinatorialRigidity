@@ -3,12 +3,14 @@
 **Status:** in progress (opened 2026-10-29 with the PI), a sub-phase of Phase 41. The phase's
 design, the PI's decisions (here §1h.2 and §1i, the open) and RELABEL's recon are in
 `notes/Phase41-design.md`; the recon's Lean witness is `notes/reconcile-formal/RelabelWitness.lean`.
-Three build items, one read-only recon and the close (planned 7–10); B1 has landed. Next: item B2,
-the pullbacks and the spine.
+Three build items, one read-only recon and the close (planned 7–10); B1 and B2 have landed. Next:
+item B3, the cascade and the texts.
 
 ## Current state
 
-**The next concrete commit is item B2** (*Hand-off*); B1 has landed (below). RELABEL's recon (design
+**The next concrete commit is item B3** (*Hand-off*); B1 and B2 have landed (below), so KT Theorems
+5.5 and 5.6 (all five forms and the `k`-form of the multigraph one) assume nothing of the labels.
+RELABEL's recon (design
 doc §2, *RELABEL's recon*) proved route B in a witness against `e51acb76`, with no `sorry`: each
 main result applies its landed form at `β ⊕ Fin N`, `N = D(|α| − 1) + 1`, where
 `Graph.freshEdgeSupply_of_card_lt` gives the supply, and pulls the framework back along `inl`. The
@@ -74,7 +76,7 @@ surfaces.
   item's call, recorded in its commit. No `formalization.yaml` row moves. Source: the witness's
   first and T5 sections, transcribed; look for a shorter route. A full rebuild of the molecular
   chain. S/P/B 1/1/2. 1 commit.
-- [ ] **B2. The pullbacks and the spine.** T1 and T2 after the induction, in
+- [x] **B2. The pullbacks and the spine.** T1 and T2 after the induction, in
   `AlgebraicInduction/Theorem55.lean` or a file it imports that imports `PanelHinge.lean` (not
   `RigidityMatrix/Basic.lean` or `PanelHinge.lean`, which would rebuild the chain): `bhComap` with
   `bhComap_rigidityRows` (an equality of sets) and `bhComap_infinitesimalMotions`, and `phComap`
@@ -196,19 +198,37 @@ and deficiency pins off `lem:pencil-jj-embed-edges` too: *Decisions made*.) Whol
 build 0 warnings, `lake lint`, `blueprint/verify.sh` and `check-docstring-labels.py` (0 findings)
 all clean.
 
+**B2 landed** (one commit, not split). `bhComap`, `phComap` and their three lemmas (T1, T2) in
+`Theorem55.lean` before KT Theorem 5.5, on a new node `lem:embed-edges-framework`
+(`panel-layer.tex`). Six supply-taking forms renamed, `hfresh` ones to `…_of_supply`
+(`theorem_55_minimalKDof_gen`, `rankHypothesis_genuine_of_theorem_55_gen`, the rows form,
+`theorem_55_6_multigraph`) and `hcard` ones to `…_of_card_lt` (`rankHypothesis_of_theorem_55_gen`,
+`theorem_55_6_multigraph_gen`); under the old names, six transports, each the witness's (the
+`k`-form's its own, as the genuine form's), with `freshEdgeSupply_padded` for the inline bound. The
+callers that keep their binder until B3 call the renamed forms. Both non-vacuity witnesses moved to
+`Fin 1`, the edge using the only label. Whole-project build 0 warnings, `lake lint`,
+`blueprint/verify.sh`, `lint.sh`, `check-docstring-labels.py` (0 findings, as at the parent) and
+`blueprint-deps.py --label` on the five restated nodes and the new one (no `missing` line) clean.
+
 ## Blockers / open questions
 
-- None blocking. Two flags for the builders: `theorem_55_6_multigraph` is one of the 23 but is in
-  neither the witness nor the arc's steps (B2 places it); and the molecule chain's three
-  declarations are uncompiled in the witness (B3 compiles them first).
-- For the PI at the close: item R's estimate for dropping `hfresh` from `minimal_kdof_reduction`.
+- None blocking. A flag for B3: the molecule chain's three declarations are uncompiled in the
+  witness (B3 compiles them first).
+- For the PI at the close: item R's estimate for dropping `hfresh` from `minimal_kdof_reduction`;
+  and `hasGenericFullRankRealization_of_theorem_55_gen` (the second pin of `thm:theorem-55-6-rows`),
+  which the arc counts as internal and B2 left with `hfresh`, though nothing calls it: dropping it
+  is a 3-line repackage of the bound-free rows form, a free strengthening under §1f.3.
 
 ## Hand-off / next phase
 
-**Item B2**: the pullbacks (`bhComap`, `phComap`) and the spine's five transports, as the lemma
-checklist's B2 entry says; `embedEdges`, T5 and the padded supply are in `Deficiency.lean`, pinned on
-`lem:embed-edges-simple-deficiency` and `lem:embed-edges-minimal` (`panel-layer.tex`), which the
-restated nodes' proofs then `\uses`: run `python3 scripts/blueprint-deps.py --label` on each. Then B3.
+**Item B3**, the cascade and the texts, as the lemma checklist's B3 entry says. Each B3 declaration
+that B2 repointed calls a renamed form (`theorem_55_minimalKDof_k` → `…_gen_of_supply`;
+`rankHypothesis_of_theorem_55_d3`, `molecular_conjecture`, `PanelGeneric.lean` →
+`rankHypothesis_of_theorem_55_gen_of_card_lt`; `theorem_55_6_multigraph_d3`,
+`molecular_conjecture_multigraph`, `HingeGeneric.lean` → `theorem_55_6_multigraph_gen_of_card_lt`;
+`Theorem56.lean` → `rankHypothesis_genuine_of_theorem_55_gen_of_supply`): B3 switches each to the
+bound-free name with its binder. B2 already dropped the sentences that gave Theorem 5.6 the bound in
+`intro.tex`, `generic-lift.tex`'s two fmlnotes and README; the rest of those texts is B3's.
 
 ## Decisions made during this phase
 
@@ -221,3 +241,11 @@ restated nodes' proofs then `\uses`: run `python3 scripts/blueprint-deps.py --la
   `lem:pencil-jj-embed-edges` for `lem:embed-edges-simple-deficiency` in `panel-layer.tex`, so the
   main results' closure stays out of the pencil chapter; `lem:pencil-jj-embed-edges` keeps the
   lifting spaces and the pictures.
+- **B2's calls** (the item left them open). The renamed forms take `_of_supply` and `_of_card_lt`:
+  `_of_freshEdgeSupply` made the rows form's name 103 characters, past the line limit. They stay
+  unpinned, as helpers of their nodes, so `blueprint-deps.py` reports the `\uses` edges from the
+  Theorem 5.6 nodes to `thm:theorem-55` and `thm:theorem-55-6-genuine` as unbacked, and four
+  bound-free pins as dead (the rows form and the multigraph `k`-form stay so after B3): reports
+  for a check, not defects. `theorem_55_6_multigraph` got its own transport. T1 and T2 got a node,
+  `lem:embed-edges-framework`, as T5 did. The witnesses moved to `Fin 1`, so that they show the
+  bound gone rather than met.

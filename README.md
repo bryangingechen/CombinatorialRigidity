@@ -163,9 +163,8 @@ packs `D` edge-disjoint spanning trees
 with the non-generic parameter choices confined to the zero set of a
 single nonzero polynomial in each case. Since phase 41b, the generic
 body-hinge theorem and its panel-hinge companion hold for every simple
-graph on one body or more, given more edge labels than `D(|V|−1)` (a
-bound the formal Theorem 5.6 also assumes), so they cover the simple
-minimal `k`-dof-graphs too, such as a single edge, a tree or a
+graph on one body or more, given more edge labels than `D(|V|−1)`, so
+they cover the simple minimal `k`-dof-graphs too, such as a single edge, a tree or a
 triangle. Since phase 41c the body-hinge theorem holds for every
 multigraph, parallel edges and loops allowed; the panel-hinge companion
 stays for simple graphs. The companion says that every panel-hinge framework on such a
