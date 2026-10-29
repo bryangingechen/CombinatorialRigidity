@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""strata.py -- body-hinge rank in P^3 on realization strata (2026-10-29).
+"""strata.py -- body-hinge rank on realization strata, P^3 and P^4 (2026-10-29).
 
 The evidence behind `notes/Strata.md`.  For each graph G of a fixed
 population and each stratum X of hinge configurations, it takes the exact
@@ -36,15 +36,47 @@ Modes (run from the repo root; each prints its seed):
       and, at D = 6, with `kbare_common.exact_deficiency`; the motion identity
       rank R = 6(n-1) - |E| + rank{g_e (x) C_e} holds at sampled strata.
 
+Added in the second session (2026-10-29; the five modes above unchanged,
+their output byte-identical):
+
+  python3 notes/scripts/strata/strata.py --complexes [--seed N]
+      Per-body special complexes (hinge uv meets lines ell_u and ell_v) and
+      per-body linear complexes (hinge uv in complexes w_u and w_v) in P^3:
+      rank at a point / 6(n-1)-def_6 [rank at the per-edge envelope
+      {w_u, w_v}^perp | at |E| <= 9 the min-max min_F |E-F| + dim sum_F
+      g_e (x) L_e by brute force over F].
+  python3 notes/scripts/strata/strata.py --residual4 [--seed N]
+      The P^4 flat base of the note's Result 9: hinge planes inside one
+      hyperplane, the one at uv through points p_u, p_v.  Rank in P^4 /
+      10(n-1)-def_4, and the D = 4 residual / 4(n-1)-def_4.
+  python3 notes/scripts/strata/strata.py --d4 [--seed N]
+      The six P^4 per-body flag strata on `GRAPHS4` (the samplers' docstrings
+      give each one's model and its polar-dual form).  Asserted: generic and
+      panel at 10(n-1)-def_10 (Tay-Whiteley; Katoh-Tanigawa, d >= 2), and
+      three flat sub-cases at the counts of the theorems they reduce to
+      (pencil0, line-o: def_6, the P^3 molecular theorem; l+h0: def_3, the
+      planar theorem).  Reported, not asserted: point, pencil, line-x,
+      line+hyp, each against the upper bound 10(n-1)-def_10.  Ranks by the
+      motion identity at D = 10, cross-checked against `rig_rank_dot`.
+  python3 notes/scripts/strata/strata.py --lifting [--seed N]
+      Lifting-space dimensions at a seeded picture on `GRAPHS4`: planar
+      (dim L(q) - 3 = def_3 asserted at simple graphs) and in K^3 (dim L(q)
+      - 4 against def_4, reported); then the cubic diamond rings at
+      n = 12, 16, 20, past the DP cap, where a rank of 10(n-1) certifies.
+
 Verdict: the last line is `OK: every target met`, or `FAILED: ...` with exit
 status 1; a mismatch in any mode counts.
 
 Population (labelled graphs, capped; nothing here is a census): the 23 graphs
-of `GRAPHS` below, n <= 12 bodies.  Supports: a section (the plane, the point,
-the complex, the lines) is drawn ONCE per stratum per run and reused for every
-graph; the hinges vary per graph.  Coordinates are integers in
-[-COORD, COORD]; combination coefficients are nonzero integers in that
-range.  Exact Q throughout (`fractions.Fraction`, no GF(p)).
+of `GRAPHS` below, n <= 12 bodies; `--d4` adds the 15 of `GRAPHS4` (seven
+triangle-rich graphs, the cube, Petersen, and six sparse graphs, three of them
+with def_10 > 0), 38 in all, 36 simple.  Supports: in
+--linear and --mixed a section (the plane, the point, the complex, the lines)
+is drawn ONCE per stratum per run and reused for every graph; the hinges vary
+per graph.  The per-body modes draw their per-body data afresh per graph.
+Coordinates are integers in [-COORD, COORD]; combination coefficients are
+nonzero integers in that range.  Exact Q throughout (`fractions.Fraction`,
+no GF(p)).  The deficiency DP is exponential (3^n), hence n <= 12.
 """
 import argparse
 import os
@@ -123,8 +155,37 @@ def rig_rank(n, edges, hinges):
     return rank(rows)
 
 
+def rig_rank_dot(n, edges, hinges):
+    """The body-hinge rank in any screw dimension D = len(C_e): rows
+    r (x) (e_u - e_v), r over a basis of the coordinate annihilator of C_e, so
+    a motion is (S_v) with S_u - S_v in span C_e.  At D = 6 the Klein
+    annihilator of `rig_rank` gives the same motions."""
+    D = len(hinges[0])
+    rows = []
+    for (u, v), C in zip(edges, hinges):
+        need(any(C), "zero hinge")
+        for r in nullspace([C]):
+            row = [F(0)] * (D * n)
+            for k in range(D):
+                row[D * u + k] += r[k]
+                row[D * v + k] -= r[k]
+            rows.append(row)
+    return rank(rows)
+
+
 def motion_rank(n, edges, hinges):
-    """6(n-1) - |E| + rank{g_e (x) C_e}, g_e = e's column of a cycle basis."""
+    """D(n-1) - |E| + rank{g_e (x) C_e}, g_e = e's column of a cycle basis,
+    D = len(C_e) (6 in P^3, 10 in P^4)."""
+    D = len(hinges[0])
+    cyc = fund_cycles(n, edges)
+    M = [[F(z.get(j, 0)) * hinges[j][i] for j in range(len(edges))]
+         for z in cyc for i in range(D)]
+    return D * (n - 1) - len(edges) + (rank(M) if M else 0)
+
+
+def fund_cycles(n, edges):
+    """Fundamental cycles of a spanning tree, each a signed edge dict; the
+    column of edge j across them is g_j, the cographic vector."""
     parent, order = {0: None}, [0]
     while order:
         x = order.pop()
@@ -155,9 +216,20 @@ def motion_rank(n, edges, hinges):
         for k, s in root_path(u).items():
             z[k] = z.get(k, 0) + s
         cyc.append(z)
-    M = [[F(z.get(j, 0)) * hinges[j][i] for j in range(len(edges))]
-         for z in cyc for i in range(6)]
-    return 6 * (n - 1) - len(edges) + (rank(M) if M else 0)
+    return cyc
+
+
+def lovasz_rank(n, edges, spans):
+    """min over F of |E - F| + dim sum_{e in F} g_e (x) L_e: the rank of
+    {g_e (x) C_e} at C_e generic in L_e = span(spans[e]) (Lovasz 1977, as
+    Tanigawa 2012 Thm 2.1 states it; Rado 1942), by brute force over F."""
+    cyc = fund_cycles(n, edges)
+    blocks = [[[F(z.get(j, 0)) * b[i] for z in cyc for i in range(len(b))]
+               for b in spans[j]] for j in range(len(edges))]
+    m = len(edges)
+    return min(m - bin(S).count("1")
+               + rank([v for j in range(m) if (S >> j) & 1 for v in blocks[j]])
+               for S in range(1 << m))
 
 
 # ---------------- sampling ----------------
@@ -171,6 +243,9 @@ class Sampler:
 
     def pt(self):
         return [self.num() for _ in range(4)]
+
+    def vec(self, k):
+        return [self.num() for _ in range(k)]
 
     def comb(self, basis):
         """A combination with every coefficient nonzero, so a nonzero vector
@@ -321,14 +396,17 @@ def panel(s, n, edges):
 
 
 def lifting_space(n, edges, q):
-    """L(q): heights z, affine in the picture on every closed neighbourhood."""
+    """L(q): heights z, affine in the picture on every closed neighbourhood.
+    The picture q lies in K^k, k = len(q[0]) (k = 2 for P^3, 3 for P^4); a
+    closed neighbourhood must be affinely independent or spanning."""
+    k = len(q[0])
     nb = {v: sorted({w for e in edges if v in e for w in e} - {v})
           for v in range(n)}
     rows = []
     for v in range(n):
         N = [v] + nb[v]
-        A = [[q[w][0], q[w][1], F(1)] for w in N]
-        need(rank(A) == 3, f"picture not admissible at body {v}")
+        A = [list(q[w]) + [F(1)] for w in N]
+        need(rank(A) == min(len(N), k + 1), f"picture not admissible at body {v}")
         for phi in left_nullspace(A):
             r = [F(0)] * n
             for w, c in zip(N, phi):
@@ -336,9 +414,8 @@ def lifting_space(n, edges, q):
             rows.append(r)
     L = nullspace(rows) if rows else [[F(int(i == j)) for i in range(n)]
                                       for j in range(n)]
-    affine = [[q[w][0] for w in range(n)], [q[w][1] for w in range(n)],
-              [F(1)] * n]
-    need(rank(L) >= 3 and rank(L + affine) == rank(L),
+    affine = [[q[w][i] for w in range(n)] for i in range(k)] + [[F(1)] * n]
+    need(rank(L) >= k + 1 and rank(L + affine) == rank(L),
          "L(q) misses the affine heights")
     return L
 
@@ -607,14 +684,439 @@ def mode_selftest(s):
     return 0
 
 
+# ---------------- per-body complexes in P^3 (next test 4) ----------------
+
+def unit6(i):
+    return [F(int(i == j)) for j in range(6)]
+
+
+def complex_span(ws):
+    """{C : klein(C, w) = 0 for every w in ws}: the span of the lines of the
+    linear congruence cut by the complexes ws (4-dim for two of them)."""
+    return nullspace([[klein(unit6(i), w) for i in range(6)] for w in ws])
+
+
+def perbody_special(s, n, edges):
+    """Each body v has a line ell_v; hinge uv joins a point of ell_u to a
+    point of ell_v (all lines meeting both, ell_u and ell_v skew)."""
+    ell = [subspace([s.pt(), s.pt()], 2, "special: ell_v") for _ in range(n)]
+    for u, v in edges:
+        subspace(ell[u] + ell[v], 4, "special: adjacent axes not skew")
+    W = [wedge2(*x) for x in ell]
+    H = [wedge2(s.comb(ell[u]), s.comb(ell[v])) for u, v in edges]
+    return H, [complex_span([W[u], W[v]]) for u, v in edges]
+
+
+def perbody_complex(s, n, edges):
+    """Each body v has a nondegenerate linear complex w_v; hinge uv is the
+    line through a random point a lying in both complexes (the meet of a's
+    two null planes)."""
+    w = []
+    for _ in range(n):
+        x = [s.num() for _ in range(6)]
+        need(klein(x, x) != 0, "complex: w_v degenerate")
+        w.append(x)
+    H = []
+    for u, v in edges:
+        a = s.pt()
+        null = nullspace([[klein(wedge2(a, unit(i)), w[b]) for i in range(4)]
+                          for b in (u, v)])
+        need(len(null) == 2, "complex: the two null planes of a coincide")
+        C = wedge2(*null)
+        need(klein(C, w[u]) == 0 == klein(C, w[v]), "complex: hinge off a complex")
+        H.append(C)
+    return H, [complex_span([w[u], w[v]]) for u, v in edges]
+
+
+LOVASZ_MAX_EDGES = 9
+
+
+def mode_complexes(s):
+    print("per-body complexes: rank at a point / 6(n-1)-def_6 [rank at the "
+          "per-edge envelope L_uv = {w_u, w_v}^perp; at |E| <= "
+          f"{LOVASZ_MAX_EDGES} also | the min-max 6(n-1)-|E|+min_F(...)]")
+    bad, checked = 0, 0
+    for g, (n, E) in GRAPHS.items():
+        t6 = 6 * (n - 1) - deficiency(n, E, 6)
+        cells = []
+        for name, mk in (("special", perbody_special), ("complex", perbody_complex)):
+            H, Ls = mk(s, n, E)
+            for C, L in zip(H, Ls):
+                need(len(L) == 4 and rank(L + [C]) == 4 and klein(C, C) == 0,
+                     f"{name}: hinge off its congruence")
+            body_guard(n, E, H)
+            r = rig_rank(n, E, H)
+            env = rig_rank(n, E, [s.comb(L) for L in Ls])
+            ok = r == t6 == env
+            lv = ""
+            if len(E) <= LOVASZ_MAX_EDGES:
+                lr = 6 * (n - 1) - len(E) + lovasz_rank(n, E, Ls)
+                ok, checked, lv = ok and lr == env, checked + 1, f"|{lr}"
+            bad += not ok
+            cells.append(f"{name} {r}/{t6}[{env}{lv}]" + ("" if ok else "*"))
+        print(f"  {g:10}" + "   ".join(cells))
+    print(f"min-max agreements checked: {checked}; mismatches: {bad}")
+    return bad
+
+
+# ---------------- P^4 (next tests 2 and 3) ----------------
+#
+# A hinge of a body-hinge framework in P^4 is a plane (a 3-dim subspace of
+# K^5), recorded by its Pluecker vector in Lambda^3 K^5 = K^10.  The rank is
+# a function of the hinge vectors up to one common linear isomorphism of the
+# screw space, so a configuration may equally be recorded through its polar
+# dual (hinge planes W <-> lines W^perp, in Lambda^2 K^5): the containments
+# reverse, "hinges at v contain the point p_v" <-> "the dual lines lie in the
+# hyperplane p_v^perp", "... lie in the hyperplane B_v" <-> "... pass through
+# the point B_v^perp", "... contain the line A_v" <-> "... lie in the plane
+# A_v^perp".  Each sampler states which form it uses; one framework never
+# mixes them.  Ranks come from the motion identity at D = 10, cross-checked
+# against `rig_rank_dot` on the first graphs.
+
+def det_exact(M):
+    M = [r[:] for r in M]
+    k, out = len(M), F(1)
+    for c in range(k):
+        p = next((i for i in range(c, k) if M[i][c] != 0), None)
+        if p is None:
+            return F(0)
+        if p != c:
+            M[c], M[p] = M[p], M[c]
+            out = -out
+        out *= M[c][c]
+        for i in range(c + 1, k):
+            f = M[i][c] / M[c][c]
+            M[i] = [x - f * y for x, y in zip(M[i], M[c])]
+    return out
+
+
+def ext(vecs):
+    """Pluecker vector of span(vecs): the maximal minors, columns in
+    lexicographic order (at k = 2, m = 4 this is `wedge2`'s PL order)."""
+    m = len(vecs[0])
+    return [det_exact([[v[c] for c in cols] for v in vecs])
+            for cols in combinations(range(m), len(vecs))]
+
+
+def span_cap(U, W):
+    """A basis of span(U) cap span(W)."""
+    null = nullspace([[x[i] for x in U] + [-y[i] for y in W]
+                      for i in range(len(U[0]))])
+    pts = [[sum((c * x[i] for c, x in zip(z, U)), F(0)) for i in range(len(U[0]))]
+           for z in null]
+    return [pts[i] for i in _pivots(pts)]
+
+
+def hinge_plane(vecs):
+    """The Lambda^3 vector of the plane spanned by `vecs` (rank 3 required)."""
+    idx = _pivots(vecs)
+    need(len(idx) == 3, f"hinge spans dimension {len(idx)}, not a plane")
+    return ext([vecs[i] for i in idx])
+
+
+def d4_generic(s, n, edges):
+    """Dual form: a random line per hinge."""
+    return [ext([s.vec(5), s.vec(5)]) for _ in edges]
+
+
+def d4_panel(s, n, edges, b=None):
+    """Hinges at v in a hyperplane B_v.  Dual form: the line b_u b_v,
+    b_v = B_v^perp (the P^4 molecular configuration)."""
+    b = b or [s.vec(5) for _ in range(n)]
+    for u, v in edges:
+        need(rank([b[u], b[v]]) == 2, "panel: adjacent B coincide")
+    return [ext([b[u], b[v]]) for u, v in edges]
+
+
+def d4_point(s, n, edges):
+    """Hinges at v through a point p_v.  Dual form: hinge uv a random line in
+    the plane p_u^perp cap p_v^perp."""
+    P = [s.vec(5) for _ in range(n)]
+    out = []
+    for u, v in edges:
+        pl = subspace(nullspace([P[u], P[v]]), 3, "point: adjacent p coincide")
+        out.append(ext(subspace([s.comb(pl), s.comb(pl)], 2, "point: hinge")))
+    return out
+
+
+def d4_pencil(s, n, edges, flat=False):
+    """Hinges at v through p_v and inside B_v, with p_w in B_v for w in N[v].
+    Dual form, lifted: b_v = (q_v, z_v, 1) with q a picture in K^3 and z in
+    the lifting space (affine in q on every closed neighbourhood), so b_N[v]
+    lies in a hyperplane; hinge b_u b_v.  flat: z = 0, every b_v in one
+    hyperplane, so hinges in Lambda^2 K^4 (the P^3 molecular count def_6)."""
+    q = [s.vec(3) for _ in range(n)]
+    z = [F(0)] * n if flat else s.comb(lifting_space(n, edges, q))
+    return d4_panel(s, n, edges, [q[v] + [z[v], F(1)] for v in range(n)])
+
+
+def d4_lineplane(s, n, edges, flat=False):
+    """Hinges at v contain a line A_v and lie in a hyperplane B_v.  Dual form:
+    hinge lines through b_v inside the plane pi_v, so b_N[v] is coplanar;
+    lifted from a planar picture q by two heights z, w in L(q).  flat:
+    z = w = 0, every b_v in one plane (the planar count def_3)."""
+    q = [s.vec(2) for _ in range(n)]
+    L = lifting_space(n, edges, q)
+    z, w = ([F(0)] * n, [F(0)] * n) if flat else (s.comb(L), s.comb(L))
+    return d4_panel(s, n, edges, [q[v] + [z[v], w[v], F(1)] for v in range(n)])
+
+
+def d4_line_concurrent(s, n, edges):
+    """Hinges at v contain a line A_v, adjacent lines meet (primal form).
+    Every A_v through one point o: hinge o ^ a_u ^ a_v, the P^3 molecular
+    configuration in K^5/o (count def_6)."""
+    o = s.vec(5)
+    a = [s.vec(5) for _ in range(n)]
+    return [hinge_plane([o, a[u], a[v]]) for u, v in edges]
+
+
+def degeneracy_order(n, edges):
+    """Remove a minimum-degree vertex repeatedly (ties: the least label);
+    reversed, every vertex has at most the degeneracy many earlier
+    neighbours."""
+    adj = {v: {w for e in edges if v in e for w in e} - {v} for v in range(n)}
+    left, out = set(range(n)), []
+    while left:
+        v = min(left, key=lambda x: (len(adj[x] & left), x))
+        out.append(v)
+        left.remove(v)
+    return out[::-1], adj
+
+
+def transversal(A1, A2, A3):
+    """The line meeting three lines of P^4 that span it: through
+    a = A1 cap span(A2, A3), meeting A3 inside span(a, A2)."""
+    need(rank(A2 + A3) == 4, "transversal: A2, A3 not skew")
+    a = span_cap(A1, A2 + A3)
+    need(len(a) == 1, "transversal: A1 does not cut span(A2, A3) in a point")
+    c = span_cap([a[0]] + A2, A3)
+    need(len(c) == 1, "transversal: no point on A3")
+    return [a[0], c[0]]
+
+
+def d4_line_constructive(s, n, edges):
+    """The same stratum, built line by line in degeneracy order.  A_v must
+    meet each earlier neighbour's line; if two of those lines meet at m,
+    A_v passes through m (else A_v lies in their plane and two hinges at v
+    coincide).  Two forced points fix A_v; one forced point plus at most one
+    further line; none: up to two lines (a point on each), or three (their
+    transversal).  Anything else raises Degenerate."""
+    order, adj = degeneracy_order(n, edges)
+    A = {}
+    for v in order:
+        U = [u for u in sorted(adj[v]) if u in A]
+        forced = []
+        for u, w in combinations(U, 2):
+            m = span_cap(A[u], A[w])
+            need(len(m) <= 1, "constructive: two earlier lines coincide")
+            if m and all(rank([m[0], f]) == 2 for f in forced):
+                forced.append(m[0])
+        if len(forced) >= 2:
+            line = forced[:2]
+            need(all(rank(line + [f]) == 2 for f in forced),
+                 "constructive: forced points not collinear")
+        elif forced:
+            rest = [u for u in U if rank(A[u] + forced) == 3]
+            need(len(rest) <= 1, "constructive: a forced point and two more lines")
+            line = forced + [s.comb(A[rest[0]]) if rest else s.vec(5)]
+        elif len(U) <= 2:
+            line = [s.comb(A[u]) for u in U] + [s.vec(5) for _ in range(2 - len(U))]
+        else:
+            need(len(U) == 3, "constructive: four earlier lines, no forced point")
+            line = transversal(*[A[u] for u in U])
+        subspace(line, 2, "constructive: A_v")
+        for u in U:
+            need(rank(A[u] + line) == 3, "constructive: A_v misses a neighbour")
+        A[v] = line
+    return [hinge_plane(A[u] + A[v]) for u, v in edges]
+
+
+def ear_cycle(k, every=1):
+    """C_k with a triangle ear on every `every`-th edge."""
+    n, E = cyc(k)
+    for i in range(0, k, every):
+        E += [(i, n), (n, (i + 1) % k)]
+        n += 1
+    return n, E
+
+
+def triangle_ring(m):
+    n, E = 0, []
+    for _ in range(m):
+        E += [(n, n + 1), (n + 1, n + 2), (n + 2, n)]
+        n += 3
+    E += [(3 * i + 2, (3 * (i + 1)) % n) for i in range(m)]
+    return n, E
+
+
+GRAPHS4 = dict(GRAPHS, **{
+    "diamond": (4, [(0, 1), (0, 2), (1, 2), (1, 3), (2, 3)]),
+    "octa": (6, [e for e in combinations(range(6), 2)
+                 if e not in ((0, 1), (2, 3), (4, 5))]),
+    "strip8": (8, [(i, i + 1) for i in range(7)] + [(i, i + 2) for i in range(6)]),
+    "friend3": (7, [(0, 1), (1, 2), (2, 0), (0, 3), (3, 4), (4, 0),
+                    (0, 5), (5, 6), (6, 0)]),
+    "W7": wheel(7), "C6ears": ear_cycle(6), "triring4": triangle_ring(4),
+    "cube": (8, [(i, i ^ b) for i in range(8) for b in (1, 2, 4) if i < i ^ b]),
+    "petersen": (10, [(i, (i + 1) % 5) for i in range(5)]
+                 + [(5 + i, 5 + (i + 2) % 5) for i in range(5)]
+                 + [(i, i + 5) for i in range(5)]),
+    # sparse: def_6 > def_10 or def_4 > 0; C11, C12, C5-C5 have def_10 > 0
+    "C11": cyc(11), "C12": cyc(12), "C11ear": ear_cycle(11, 11),
+    "C9ears3": ear_cycle(9, 3), "theta444": relabel(theta_edges([4, 4, 4])),
+    "C5-C5": (10, cyc(5)[1] + [(5 + i, 5 + (i + 1) % 5) for i in range(5)]
+              + [(0, 5)]),
+})
+
+
+def mode_residual4(s):
+    print("Result 9's flat base: hinge planes of P^4 inside one hyperplane H, "
+          "the one at uv through p_u, p_v (a pencil each).  rank in P^4 / "
+          "10(n-1)-def_4; the D = 4 residual / 4(n-1)-def_4")
+    bad = 0
+    for i, (g, (n, E)) in enumerate(GRAPHS.items()):
+        p = [s.pt() for _ in range(n)]
+        H4 = [ext(subspace([p[u], p[v], s.pt()], 3, "residual: hinge"))
+              for u, v in E]
+        H10 = [hinge_plane([p[u] + [F(0)], p[v] + [F(0)], s.pt() + [F(0)]])
+               for u, v in E]
+        body_guard(n, E, H4)
+        body_guard(n, E, H10)
+        d4 = deficiency(n, E, 4)
+        r10, r4 = motion_rank(n, E, H10), motion_rank(n, E, H4)
+        if i < 4:
+            assert r10 == rig_rank_dot(n, E, H10) and r4 == rig_rank_dot(n, E, H4), g
+        t10, t4 = 10 * (n - 1) - d4, 4 * (n - 1) - d4
+        ok = r10 == t10 and r4 == t4
+        bad += not ok
+        print(f"  {g:10}P^4 {r10}/{t10}   D=4 {r4}/{t4}" + ("" if ok else "  *"))
+    print(f"mismatches: {bad}")
+    return bad
+
+
+D4_TYPES = [
+    # (column, sampler, count it is asserted against or None, simple only)
+    ("generic", d4_generic, 10, False),
+    ("panel", d4_panel, 10, True),
+    ("point", d4_point, None, False),
+    ("pencil", d4_pencil, None, True),
+    ("pencil0", lambda s, n, E: d4_pencil(s, n, E, flat=True), 6, True),
+    ("line-o", d4_line_concurrent, 6, True),
+    ("line-x", d4_line_constructive, None, True),
+    ("line+hyp", d4_lineplane, None, True),
+    ("l+h0", lambda s, n, E: d4_lineplane(s, n, E, flat=True), 3, True),
+]
+
+
+def mode_d4(s):
+    print("P^4 per-body flag strata (hinges at v contain no flat / a point / "
+          "a line, and lie in a hyperplane or not).  Cell: the rank at a "
+          "point, a LOWER bound for the stratum's generic rank; every cell is "
+          "at most t = 10(n-1)-def_10.  Asserted cells (generic, panel: = t; "
+          "pencil0, line-o: = 10(n-1)-def_6; l+h0: = 10(n-1)-def_3) carry * on "
+          "a mismatch; the rest print '<' when below t, '-' when the sampler "
+          "or the stratum is degenerate there, '.' when not applicable "
+          "(coupled types at multigraphs).")
+    print(f"{'graph':10}{'n':>3}{'e':>3}{'d10':>4}{'d6':>4}{'d4':>4}{'d3':>4}"
+          f"{'t':>5} " + "".join(f"{c:>9}" for c, *_ in D4_TYPES))
+    bad, below = 0, {}
+    for i, (g, (n, E)) in enumerate(GRAPHS4.items()):
+        d = {D: deficiency(n, E, D) for D in (10, 6, 4, 3)}
+        t = 10 * (n - 1) - d[10]
+        cells = []
+        for col, mk, D, simple_only in D4_TYPES:
+            if simple_only and not simple(E):
+                cells.append(".")
+                continue
+            try:
+                H = mk(s, n, E)
+                body_guard(n, E, H)
+            except Degenerate:
+                cells.append("-")
+                continue
+            r = motion_rank(n, E, H)
+            if i < 3:
+                assert r == rig_rank_dot(n, E, H), (g, col)
+            assert r <= t, (g, col)
+            if D is not None:
+                ok = r == 10 * (n - 1) - d[D]
+                bad += not ok
+                cells.append(f"{r}" + ("" if ok else "*"))
+            else:
+                below.setdefault(col, []).extend([g] if r < t else [])
+                cells.append(f"{r}" + ("<" if r < t else ""))
+        print(f"{g:10}{n:>3}{len(E):>3}{d[10]:>4}{d[6]:>4}{d[4]:>4}{d[3]:>4}"
+              f"{t:>5} " + "".join(f"{c:>9}" for c in cells))
+    for col, gs in below.items():
+        print(f"  {col}: below t at {len(gs)} graph(s){': ' + ', '.join(gs) if gs else ''}")
+    print(f"mismatches (asserted cells): {bad}")
+    return bad
+
+
+def diamond_ring(m):
+    """m copies of K_4 - e joined in a ring through their degree-2 vertices:
+    cubic, n = 4m, def_3 >= m - 3 (the ring partition)."""
+    n, E = 0, []
+    for _ in range(m):
+        E += [(n, n + 1), (n, n + 2), (n + 1, n + 2), (n + 1, n + 3), (n + 2, n + 3)]
+        n += 4
+    E += [(4 * i + 3, (4 * (i + 1)) % n) for i in range(m)]
+    return n, E
+
+
+def mode_lifting(s):
+    print("lifting spaces at a seeded picture: dim L(q) - (k+1) against "
+          "def_(k+1), k = 2 (the planar picture of line+hyp; = is asserted at "
+          "simple graphs, the blueprint's dim L(q) = 3 + def_3) and k = 3 (the "
+          "picture of the P^4 pencil; reported)")
+    bad, neq, lt = 0, [], []
+    for g, (n, E) in GRAPHS4.items():
+        cells = []
+        for k in (2, 3):
+            dl = len(lifting_space(n, E, [s.vec(k) for _ in range(n)])) - k - 1
+            d = deficiency(n, E, k + 1)
+            if k == 2 and simple(E):
+                bad += dl != d
+            if k == 3:
+                neq += [g] if dl != d else []
+                lt += [g] if dl < d else []
+            cells.append(f"k={k}: {dl} vs {d}" + ("" if dl == d else " <>"))
+        print(f"  {g:10}" + "   ".join(cells))
+    print(f"  k = 3: unequal at {len(neq)} of {len(GRAPHS4)}, below def_4 at "
+          f"{len(lt)}{': ' + ', '.join(lt) if lt else ''}")
+    print("cubic rings of diamonds, past the DP cap (n = 4m): rank at a point "
+          "against 10(n-1), the trivial ceiling, so a match certifies")
+    for m in (3, 4, 5):
+        n, E = diamond_ring(m)
+        dl = len(lifting_space(n, E, [s.vec(2) for _ in range(n)])) - 3
+        r = {}
+        for col, mk, *_ in D4_TYPES:
+            if col in ("generic", "pencil", "line+hyp", "l+h0"):
+                H = mk(s, n, E)
+                body_guard(n, E, H)
+                r[col] = motion_rank(n, E, H)
+        top = 10 * (n - 1)
+        ok = r["generic"] == r["pencil"] == r["line+hyp"] == top \
+            and r["l+h0"] == top - dl
+        bad += not ok
+        print(f"  m={m} n={n}: dim L(q)-3 = {dl}; generic {r['generic']}, pencil "
+              f"{r['pencil']}, line+hyp {r['line+hyp']}, l+h0 {r['l+h0']} "
+              f"(= 10(n-1) - (dim L(q)-3) = {top - dl})" + ("" if ok else "  *"))
+    print(f"mismatches: {bad}")
+    return bad
+
+
+MODES = ("linear", "mixed", "perbody", "examples", "selftest",
+         "complexes", "residual4", "d4", "lifting")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=1)
-    for m in ("linear", "mixed", "perbody", "examples", "selftest"):
+    for m in MODES:
         ap.add_argument(f"--{m}", action="store_true")
     args = ap.parse_args()
-    modes = [m for m in ("linear", "mixed", "perbody", "examples", "selftest")
-             if getattr(args, m)]
+    modes = [m for m in MODES if getattr(args, m)]
     if not modes:
         ap.error("choose a mode")
     print(f"seed {args.seed}")

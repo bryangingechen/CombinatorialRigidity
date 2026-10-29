@@ -1496,6 +1496,7 @@ Its per-mode prose is its module docstring, and its reading is
 | invocation | ~time | cited by |
 |---|---|---|
 | `python3 notes/scripts/strata/strata.py --linear --mixed --perbody --examples --selftest --seed N`, `N ∈ {1, 2, 3}` | 20 s | `notes/Strata.md` *Evidence* (Results 1, 3, 5, 6, 7) |
+| `python3 notes/scripts/strata/strata.py --complexes --residual4 --d4 --lifting --seed N`, `N ∈ {1, 2, 3}` | 20 s | `notes/Strata.md` *Evidence* (Results 3, 4, 8, 9, 11); its helpers `span_cap`, `det_exact`, `ext`, `fund_cycles`, `lovasz_rank`, `rig_rank_dot` are direction-local and deliberately not catalogued |
 
 Per-driver prose — *what* each mode asserts — stays in the four per-directory
 READMEs (`escape/README.md`, `kbare/README.md`, `w4/README.md`,

@@ -37,16 +37,19 @@ Phase 39); IDENT-PANEL is the strongest challenger (see its entry).
   matrices, group actions on the screw space.
 - **STRATA** — the body-hinge rank on realization subloci beyond the
   pencil (2026-10-29). Hinge-by-hinge constraints are settled softly:
-  only each hinge's linear span matters, giving a `def_{D′}` ladder.
-  Coupled strata (per-body data) have no such shortcut. Research note,
-  driver and next tests: `notes/Strata.md`.
+  only each hinge's linear span matters, giving a closed min-max and
+  a `def_{D′}` ladder (no precedent found for either; the motion
+  identity is Crapo–Whiteley 1982's). Coupled strata (per-body data)
+  have no such shortcut. Research note, driver and next tests:
+  `notes/Strata.md`.
 - **Higher-`d` pencil hierarchy** — PENCIL's sequel: in dimension `d`
   the per-body strata between panel (done) and molecular (done) form
   an unmapped lattice (hinges containing a common `(d−3)`-space, lying
   in a hyperplane pencil, …). Our KT formalization is
-  dimension-general, so unusually accessible. First look, including
-  a `P⁴` incidence caution, in `notes/Strata.md` (Results 8–9, next
-  tests 2–3).
+  dimension-general, so unusually accessible. In `P⁴` all six
+  per-body flag strata reach the generic rank on a capped census, and
+  the minimum (hinges containing a line, inside a hyperplane) implies
+  the rest: `notes/Strata.md` Results 8, 9, 11, next tests 1–2.
 - **Developable origami** — ORIGAMI's sequel (CCK arXiv:2309.06804
   §4.3, second remark): add the angle-sum-2π (developability)
   constraints, a deeper stratum below ORIGAMI's. Only meaningful after
