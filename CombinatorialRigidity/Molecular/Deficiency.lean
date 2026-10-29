@@ -3373,7 +3373,8 @@ theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n :
   have hEeq : (E(G').ncard : ℤ) = (Nat.card β : ℤ) := by rw [hEuniv, Set.ncard_univ]
   linarith [hbound, hdefnn, hmul, hcardZ, hEeq]
 
-/-! ## Relabelling the edges (`def:pencil-embed-edges`, `lem:pencil-jj-embed-edges`)
+/-! ## Relabelling the edges (`def:pencil-embed-edges`, `lem:embed-edges-simple-deficiency`,
+`lem:embed-edges-minimal`)
 
 Relabelling the edges of `G` along an embedding `ι : β ↪ β'` keeps the bodies, the adjacencies and
 the deficiencies, and it keeps minimality (`IsMinimalKDof.embedEdges`). It is the transport that
@@ -3382,8 +3383,9 @@ drops the bound on the edge labels from the main results: a graph on `β` is rel
 
 /-- **Relabel the edges of `G` along an embedding `ι : β ↪ β'`** (`def:pencil-embed-edges`): the
 graph on `V(G)` with an edge `ι e` linking `x` and `y` for every link `e` of `G`. It has the same
-vertices, adjacencies and closed neighbourhoods as `G`, so the lifting space, admissibility and the
-deficiencies are unchanged (`lem:pencil-jj-embed-edges`); only the label type grows, which is what
+vertices, adjacencies and closed neighbourhoods as `G`, so the deficiencies
+(`lem:embed-edges-simple-deficiency`), the lifting space and admissibility
+(`lem:pencil-jj-embed-edges`) are unchanged; only the label type grows, which is what
 lets Jackson and Jordán's equality be drawn from the planar case of KT Theorem 5.6 with no supply of
 spare labels assumed (`fmlnote:pencil-jj-embed-edges`). -/
 def embedEdges {β' : Type*} (G : Graph α β) (ι : β ↪ β') : Graph α β' where
@@ -3404,17 +3406,18 @@ section embedEdges
 
 variable {β' : Type*} {G : Graph α β} {ι : β ↪ β'}
 
-/-- Relabelling keeps the bodies (a step of `lem:pencil-jj-embed-edges`, whose proof names it). -/
+/-- Relabelling keeps the bodies (a step of `lem:embed-edges-simple-deficiency`, whose proof names
+it). -/
 @[simp]
 theorem vertexSet_embedEdges : V(G.embedEdges ι) = V(G) := rfl
 
 /-- The links of the relabelled graph are the relabelled links (a step of
-`lem:pencil-jj-embed-edges`, whose proof names it). -/
+`lem:embed-edges-simple-deficiency`, whose proof names it). -/
 theorem embedEdges_isLink {e : β'} {x y : α} :
     (G.embedEdges ι).IsLink e x y ↔ ∃ e₀, ι e₀ = e ∧ G.IsLink e₀ x y := Iff.rfl
 
 /-- The edges of the relabelled graph are the relabelled edges (a step of
-`lem:pencil-jj-embed-edges`, whose proof names it). -/
+`lem:embed-edges-simple-deficiency`, whose proof names it). -/
 theorem edgeSet_embedEdges : E(G.embedEdges ι) = ι '' E(G) := by
   ext e
   refine ⟨fun ⟨x, y, e₀, he, h⟩ => ⟨e₀, h.edge_mem, he⟩, ?_⟩
@@ -3422,7 +3425,8 @@ theorem edgeSet_embedEdges : E(G.embedEdges ι) = ι '' E(G) := by
   obtain ⟨x, y, h⟩ := G.exists_isLink_of_mem_edgeSet he₀
   exact ⟨x, y, e₀, rfl, h⟩
 
-/-- **Relabelling keeps a simple graph simple** (`lem:pencil-jj-embed-edges`, its first clause). -/
+/-- **Relabelling keeps a simple graph simple** (`lem:embed-edges-simple-deficiency`, its first
+clause). -/
 theorem Simple.embedEdges (hG : G.Simple) : (G.embedEdges ι).Simple where
   not_isLoopAt := by
     rintro e x ⟨e₀, -, h⟩
@@ -3431,8 +3435,8 @@ theorem Simple.embedEdges (hG : G.Simple) : (G.embedEdges ι).Simple where
     rintro e f x y ⟨e₀, rfl, h⟩ ⟨f₀, rfl, h'⟩
     rw [hG.eq_of_isLink h h']
 
-/-- **Relabelling keeps every deficiency** (`lem:pencil-jj-embed-edges`, its last clause): a
-partition crosses the images of the edges it crossed before. -/
+/-- **Relabelling keeps every deficiency** (`lem:embed-edges-simple-deficiency`, its second
+clause): a partition crosses the images of the edges it crossed before. -/
 theorem deficiency_embedEdges (n : ℕ) :
     (G.embedEdges ι).deficiency n = G.deficiency n := by
   have hcross : ∀ f : α → α, (G.embedEdges ι).crossingEdges f = ι '' G.crossingEdges f := by

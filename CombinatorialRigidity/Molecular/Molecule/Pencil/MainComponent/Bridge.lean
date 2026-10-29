@@ -38,10 +38,11 @@ The planar case of KT Theorem 5.6 assumes a supply of spare edge labels (`hfresh
 labels are `β`. The equality mentions no edge label, so its proof relabels the edges of `G` into
 `β ⊕ Fin (3|α| + 1)` (`Graph.embedEdges`), where `Graph.freshEdgeSupply_of_card_lt (n := 2)` gives
 the supply, and the relabelling changes nothing that the equality reads
-(`lem:pencil-jj-embed-edges`): the equality and its corollaries assume no supply of spare labels
-(`fmlnote:pencil-jj-embed-edges`). The graph `G` sits anywhere in the bodies `α` and the labels `β`,
-and every polynomial is in the picture coordinates `α × Fin 2`, so that a step that uses the
-equality at a smaller graph multiplies its polynomial with its other conditions on the picture.
+(`lem:embed-edges-simple-deficiency`, `lem:pencil-jj-embed-edges`): the equality and its
+corollaries assume no supply of spare labels (`fmlnote:pencil-jj-embed-edges`). The graph `G` sits
+anywhere in the bodies `α` and the labels `β`, and every polynomial is in the picture coordinates
+`α × Fin 2`, so that a step that uses the equality at a smaller graph multiplies its polynomial with
+its other conditions on the picture.
 
 ## Main definitions
 
@@ -60,9 +61,10 @@ equality at a smaller graph multiplies its polynomial with its other conditions 
   value at `t = 0` for only finitely many `t`.
 * `Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint`:
   `lem:pencil-jj-chart`.
-* `Graph.Simple.embedEdges`, `Graph.liftingSpace_embedEdges`,
-  `Graph.isAdmissiblePicture_embedEdges_iff`, `Graph.isMainPicture_embedEdges_iff` and
-  `Graph.deficiency_embedEdges`: `lem:pencil-jj-embed-edges`.
+* `Graph.liftingSpace_embedEdges`, `Graph.isAdmissiblePicture_embedEdges_iff` and
+  `Graph.isMainPicture_embedEdges_iff`: `lem:pencil-jj-embed-edges`. Its companions
+  `Graph.Simple.embedEdges` and `Graph.deficiency_embedEdges` (`lem:embed-edges-simple-deficiency`:
+  relabelling keeps simplicity and every deficiency) are in `Molecular/Deficiency.lean`.
 * `Graph.exists_mvPolynomial_finrank_liftingSpace_eq`, `Graph.IsMainPicture.finrank_liftingSpace_eq`
   and `Graph.exists_isMainPicture_finrank_liftingSpace_eq`: `thm:pencil-jj-equality`, at a general
   picture, at every main picture (`ℓ₀ = 3 + def₂(G)`) and at one picture.
@@ -273,7 +275,8 @@ theorem _root_.Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPict
 
 /-! ## Relabelling keeps the pictures (`lem:pencil-jj-embed-edges`)
 
-`Graph.embedEdges` itself (`def:pencil-embed-edges`) is in `Molecular/Deficiency.lean`. -/
+`Graph.embedEdges` itself (`def:pencil-embed-edges`), and that it keeps simplicity and every
+deficiency (`lem:embed-edges-simple-deficiency`), are in `Molecular/Deficiency.lean`. -/
 
 section embedEdges
 
@@ -293,14 +296,14 @@ theorem _root_.Graph.closedNbhd_embedEdges (v : α) :
     · exact Or.inl h
     · exact Or.inr ⟨_, e₀, rfl, h⟩
 
-/-- **Relabelling keeps the lifting spaces** (`lem:pencil-jj-embed-edges`, its second clause): at
+/-- **Relabelling keeps the lifting spaces** (`lem:pencil-jj-embed-edges`, its first clause): at
 every picture, as the bodies and the closed neighbourhoods are unchanged. -/
 theorem _root_.Graph.liftingSpace_embedEdges (q : α × Fin 2 → K) :
     (G.embedEdges ι).liftingSpace q = G.liftingSpace q := by
   ext z
   simp only [Graph.mem_liftingSpace, Graph.vertexSet_embedEdges, Graph.closedNbhd_embedEdges]
 
-/-- **Relabelling keeps the admissible pictures** (`lem:pencil-jj-embed-edges`, its third clause):
+/-- **Relabelling keeps the admissible pictures** (`lem:pencil-jj-embed-edges`, its second clause):
 the links join the same pairs of bodies, and the closed neighbourhoods are unchanged. -/
 theorem _root_.Graph.isAdmissiblePicture_embedEdges_iff {q : α × Fin 2 → K} :
     (G.embedEdges ι).IsAdmissiblePicture q ↔ G.IsAdmissiblePicture q := by
@@ -315,7 +318,7 @@ theorem _root_.Graph.finrank_liftingSpace_embedEdges (q : α × Fin 2 → K) :
     Module.finrank K ((G.embedEdges ι).liftingSpace q) = Module.finrank K (G.liftingSpace q) := by
   rw [Graph.liftingSpace_embedEdges]
 
-/-- **Relabelling keeps the main pictures** (`lem:pencil-jj-embed-edges`, its fourth clause), as it
+/-- **Relabelling keeps the main pictures** (`lem:pencil-jj-embed-edges`, its third clause), as it
 keeps the admissible pictures and the dimensions of the lifting spaces. -/
 theorem _root_.Graph.isMainPicture_embedEdges_iff {q : α × Fin 2 → K} :
     (G.embedEdges ι).IsMainPicture q ↔ G.IsMainPicture q := by

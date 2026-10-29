@@ -1243,12 +1243,34 @@ the base cases above, and Cases~I, II and~III, which
   and $v$ for every edge $e$ of $G$ joining $u$ and $v$.
 \end{definition}
 
+\begin{lemma}[Relabelling the edges keeps simplicity and every deficiency]
+  \label{lem:embed-edges-simple-deficiency}
+  \lean{Graph.Simple.embedEdges, Graph.deficiency_embedEdges}
+  \leanok
+  \uses{def:pencil-embed-edges, def:D-deficiency}
+  Let $G'$ be $G$ with its edges relabelled by an injective map $\iota$
+  (\cref{def:pencil-embed-edges}). Then $G'$ is simple if $G$ is, and
+  $\operatorname{def}_d(G') = \operatorname{def}_d(G)$ for every $d$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The bodies and the pairs of adjacent bodies are unchanged
+  (\texttt{vertexSet\_\allowbreak{}embedEdges},
+  \texttt{embedEdges\_\allowbreak{}isLink}): the edge $\iota(e)$ joins
+  the bodies that $e$ joins. As $\iota$ is injective, $G'$ has a loop, or
+  two edges joining one pair of bodies, only if $G$ does. A partition
+  crosses exactly the images of the edges it crossed before
+  (\texttt{edgeSet\_\allowbreak{}embedEdges}), so it crosses as many
+  edges and keeps its deficiency, and the largest of these values is
+  unchanged.
+\end{proof}
+
 \begin{lemma}[Relabelling the edges keeps minimality, and the padded label set has a supply]
   \label{lem:embed-edges-minimal}
   \lean{Graph.deficiency_lt_of_isMinimalKDof, Graph.isMinimalKDof_of_deficiency_lt,
         Graph.IsMinimalKDof.embedEdges, Graph.freshEdgeSupply_padded}
   \leanok
-  \uses{def:pencil-embed-edges, def:k-dof, def:D-deficiency, rem:fresh-edge-supply}
+  \uses{def:pencil-embed-edges, def:k-dof, def:D-deficiency}
   Let $G$ be a minimal $k$-dof-graph and $G'$ be $G$ with its edges
   relabelled injectively (\cref{def:pencil-embed-edges}). Then $G'$ is a
   minimal $k$-dof-graph. Moreover, for $D \ge 1$, every minimal
@@ -1258,15 +1280,18 @@ the base cases above, and Cases~I, II and~III, which
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{lem:matroid-restrict-subgraph, thm:def-eq-corank,
+        lem:embed-edges-simple-deficiency}
   Deleting an edge of a minimal $k$-dof-graph raises the deficiency: a
   base of $M(\tilde G)$ of the deleted graph is independent in
-  $M(\tilde G)$ (\texttt{matroidMG\_\allowbreak{}restrict\_\allowbreak{}mulTilde}),
-  it has the size of a base of $M(\tilde G)$ if the deficiency stayed the
-  same (KT eq.~(2.4)), so it is a base, and it meets the copies of the
-  deleted edge by minimality, a contradiction. The same count shows that a
-  $k$-dof-graph whose every edge deletion raises the deficiency is
-  minimal. Relabelling commutes with deleting an edge and keeps every
-  deficiency (\cref{lem:pencil-jj-embed-edges}), so $G'$ is minimal. The
+  $M(\tilde G)$ (\cref{lem:matroid-restrict-subgraph}), it has the size
+  of a base of $M(\tilde G)$ if the deficiency stayed the same (KT
+  eq.~(2.4), \cref{thm:def-eq-corank}), so it is a base, and it meets the
+  copies of the deleted edge by minimality, a contradiction. The same
+  count shows that a $k$-dof-graph whose every edge deletion raises the
+  deficiency is minimal. Relabelling commutes with deleting an edge and
+  keeps every deficiency (\cref{lem:embed-edges-simple-deficiency}), so
+  $G'$ is minimal. The
   padded label set has more than $D(|W| - 1)$ labels, and
   \cref{rem:fresh-edge-supply} applies.
 \end{proof}

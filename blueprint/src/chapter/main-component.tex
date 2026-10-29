@@ -1278,42 +1278,34 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   its formal proof first relabels the edges into a larger label set,
   which has spare labels (\cref{def:pencil-embed-edges}), and the
   relabelling changes nothing that the equality reads
-  (\cref{lem:pencil-jj-embed-edges}). The equality therefore assumes
+  (\cref{lem:embed-edges-simple-deficiency} and
+  \cref{lem:pencil-jj-embed-edges}). The equality therefore assumes
   nothing about the labels.
 \end{fmlnote}
 
-\begin{lemma}[Relabelling the edges keeps the lifting spaces, the pictures and the deficiencies]
+\begin{lemma}[Relabelling the edges keeps the lifting spaces and the pictures]
   \label{lem:pencil-jj-embed-edges}
-  \lean{Graph.Simple.embedEdges, Graph.liftingSpace_embedEdges,
-        Graph.isAdmissiblePicture_embedEdges_iff, Graph.isMainPicture_embedEdges_iff,
-        Graph.deficiency_embedEdges}
+  \lean{Graph.liftingSpace_embedEdges, Graph.isAdmissiblePicture_embedEdges_iff,
+        Graph.isMainPicture_embedEdges_iff}
   \leanok
   \uses{def:pencil-embed-edges, def:pencil-lifting-space,
-        def:pencil-admissible-picture, def:pencil-main-picture,
-        def:D-deficiency}
+        def:pencil-admissible-picture, def:pencil-main-picture}
   Let $G'$ be $G$ with its edges relabelled injectively into a larger set
-  of labels (\cref{def:pencil-embed-edges}). Then $G'$ is simple if $G$
-  is, and $G'$ has the lifting spaces $L(q)$, the admissible and main
-  pictures, and the deficiencies $\operatorname{def}_d$ of $G$, for every
-  $d$.
+  of labels (\cref{def:pencil-embed-edges}). Then $G'$ has the lifting
+  spaces $L(q)$ and the admissible and main pictures of $G$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The bodies and the pairs of adjacent bodies are unchanged
-  (\texttt{vertexSet\_\allowbreak{}embedEdges},
-  \texttt{embedEdges\_\allowbreak{}isLink}), and hence so
-  are the closed neighbourhoods
-  (\texttt{closedNbhd\_\allowbreak{}embedEdges}) and the
-  dimensions of the lifting spaces, which the main pictures read
+  The bodies and the pairs of adjacent bodies are unchanged, as in the
+  proof of \cref{lem:embed-edges-simple-deficiency}, and hence so are the
+  closed neighbourhoods (\texttt{closedNbhd\_\allowbreak{}embedEdges})
+  and the dimensions of the lifting spaces, which the main pictures read
   (\texttt{finrank\_\allowbreak{}liftingSpace\_\allowbreak{}embedEdges}).
-  A partition crosses exactly the images of the edges it crossed before
-  (\texttt{edgeSet\_\allowbreak{}embedEdges}).
 \end{proof}
 
 \begin{fmlnote}
-  The five pins are the five clauses, in order: simplicity, the lifting
-  spaces, the admissible pictures, the main pictures and the
-  deficiencies.
+  The three pins are the three clauses, in order: the lifting spaces, the
+  admissible pictures and the main pictures.
 \end{fmlnote}
 
 \begin{theorem}[Jackson and Jord\'an's equality]
@@ -1334,9 +1326,9 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{lem:pencil-jj-chart, lem:pencil-jj-embed-edges,
-        lem:pencil-x0-main-picture-open, lem:pencil-lifting-planes-motions,
-        lem:pencil-lifting-space-deficiency}
+  \uses{lem:pencil-jj-chart, lem:embed-edges-simple-deficiency,
+        lem:pencil-jj-embed-edges, lem:pencil-x0-main-picture-open,
+        lem:pencil-lifting-planes-motions, lem:pencil-lifting-space-deficiency}
   Let $P$ be the product of two nonzero polynomials. The non-roots of the
   first are main pictures (\cref{lem:pencil-x0-main-picture-open}). The
   second is the polynomial of \cref{lem:pencil-jj-chart}, which needs two
@@ -1344,7 +1336,8 @@ $\dim L(q) \le 3 + \operatorname{def}_2(G)$.
   body lies in $V(G)$
   (\texttt{Graph.\allowbreak{}closedNbhd\_\allowbreak{}subset\_\allowbreak{}vertexSet}).
   (The formal proof applies \cref{lem:pencil-jj-chart}
-  to $G$ with its edges relabelled, \cref{lem:pencil-jj-embed-edges}.)
+  to $G$ with its edges relabelled, \cref{lem:embed-edges-simple-deficiency}
+  and \cref{lem:pencil-jj-embed-edges}.)
 
   Let $q$ be a non-root of $P$. The plane framework $P_q$ has rank at
   least $3(|V(G)| - 1) - \operatorname{def}_2(G)$, and exactly

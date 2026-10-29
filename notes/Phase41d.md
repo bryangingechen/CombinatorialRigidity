@@ -190,9 +190,9 @@ surfaces.
 needed); T5 (`deficiency_lt_of_isMinimalKDof`, `isMinimalKDof_of_deficiency_lt`,
 `embedEdges_restrict_diff`, `IsMinimalKDof.embedEdges`) transcribed unchanged from the witness (no
 shorter route taken); and `freshEdgeSupply_padded` (the supply at `β ⊕ Fin (D(|α| − 1) + 1)`).
-Calls recorded: `lem:pencil-jj-embed-edges` keeps all five pins and stays in `main-component.tex`
-(only the definition node moves; the clauses' pins are by name); T5 and the padded supply get a new
-node `lem:embed-edges-minimal` in `panel-layer.tex` beside `def:pencil-embed-edges`. Whole-project
+Calls recorded: `def:pencil-embed-edges` moved; T5 and the padded supply got a new node
+`lem:embed-edges-minimal` in `panel-layer.tex` beside it. (A corrective then moved the simplicity
+and deficiency pins off `lem:pencil-jj-embed-edges` too: *Decisions made*.) Whole-project
 build 0 warnings, `lake lint`, `blueprint/verify.sh` and `check-docstring-labels.py` (0 findings)
 all clean.
 
@@ -206,7 +206,9 @@ all clean.
 ## Hand-off / next phase
 
 **Item B2**: the pullbacks (`bhComap`, `phComap`) and the spine's five transports, as the lemma
-checklist's B2 entry says; `embedEdges`, T5 and the padded supply are in `Deficiency.lean`. Then B3.
+checklist's B2 entry says; `embedEdges`, T5 and the padded supply are in `Deficiency.lean`, pinned on
+`lem:embed-edges-simple-deficiency` and `lem:embed-edges-minimal` (`panel-layer.tex`), which the
+restated nodes' proofs then `\uses`: run `python3 scripts/blueprint-deps.py --label` on each. Then B3.
 
 ## Decisions made during this phase
 
@@ -214,3 +216,8 @@ checklist's B2 entry says; `embedEdges`, T5 and the padded supply are in `Defici
 - **Route B, not route A** (RELABEL's recon, design doc §2): recycling a label inside the
   induction breaks at Case III's chain (`ChainData.e₀_fresh`, one fresh label for every interior
   split-off); the transport at the boundary leaves the induction untouched.
+- **The two graph pins moved to the panel layer** (the corrective after B1): `Simple.embedEdges` and
+  `deficiency_embedEdges`, which B2's Theorem 5.5/5.6 transports call, left the pencil chapter's
+  `lem:pencil-jj-embed-edges` for `lem:embed-edges-simple-deficiency` in `panel-layer.tex`, so the
+  main results' closure stays out of the pencil chapter; `lem:pencil-jj-embed-edges` keeps the
+  lifting spaces and the pictures.
