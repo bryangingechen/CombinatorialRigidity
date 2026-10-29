@@ -825,7 +825,8 @@ alignment:
         edges and loops allowed; one body or more), under the bound that the formal
         Katoh-Tanigawa Theorem 5.6 takes on the number of edge labels (more than D(|V| - 1));
         a single edge, a tree, the double edge or a minimal 0-dof-graph is covered once there
-        are enough labels. Phases 41b and 41c made them hold for every multigraph.
+        are enough labels. Phase 41b made them hold at every generic realization of a simple
+        graph, and phase 41c of every multigraph.
 
     - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_of_isGenericNormals_iff"

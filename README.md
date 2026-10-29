@@ -162,13 +162,13 @@ packs `D` edge-disjoint spanning trees
 (`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`),
 with the non-generic parameter choices confined to the zero set of a
 single nonzero polynomial in each case. Since phase 41b, the generic
-body-hinge theorem and its panel-hinge companion hold for every graph
-on one body or more, given more edge labels than `D(|V|−1)` (a bound
-the formal Theorem 5.6 also assumes), so they cover the minimal
-`k`-dof-graphs too, such as a single edge, a tree or a triangle. Since
-phase 41c the body-hinge theorem holds for every multigraph, parallel
-edges and loops allowed; the panel-hinge companion stays for simple
-graphs. The companion says that every panel-hinge framework on such a
+body-hinge theorem and its panel-hinge companion hold for every simple
+graph on one body or more, given more edge labels than `D(|V|−1)` (a
+bound the formal Theorem 5.6 also assumes), so they cover the simple
+minimal `k`-dof-graphs too, such as a single edge, a tree or a
+triangle. Since phase 41c the body-hinge theorem holds for every
+multigraph, parallel edges and loops allowed; the panel-hinge companion
+stays for simple graphs. The companion says that every panel-hinge framework on such a
 graph whose panel normals are generic attains the deficiency rank, and
 so is infinitesimally rigid iff the graph has deficiency zero
 (Jackson–Jordán's Theorem 7.2, sharpened to an iff;
