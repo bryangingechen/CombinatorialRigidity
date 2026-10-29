@@ -372,8 +372,10 @@ $G_v^{ab}$ is a minimal $0$-dof-graph (KT Lemma~4.8(i),
 \cref{lem:reduction-step}), and the same count gives one row less than
 the target rank $D(|V(G)| - 1)$ (KT p.~680). Case~III supplies the
 missing row (\cref{sec:molecular-algebraic-induction-caseIII}).
-\Cref{lem:case-II-realization-placement} states this count, and the
-next four lemmas give its parts. In them, as in
+\Cref{lem:case-II-realization-placement} states this count, and three of
+the next four lemmas give its parts. The third, on rows shared by two
+frameworks, states the consequence of KT eq.~(6.13), which the proof
+replaces by a row operation (\cref{rem:case-II-kt-steps}). In all four, as in
 \cref{lem:rank-polynomial-of-le-finrank}, the rows of $R(G,q)$ at an
 edge are the linear forms of \cref{lem:rows-polynomial-in-normals},
 indexed by the edge and a pair of coordinates. At a nondegenerate hinge
@@ -520,12 +522,11 @@ space of a rigidity matrix.
 
 \begin{lemma}[KT eq.~(6.12) when $G_v^{ab}$ is rigid: one row short]
   \label{lem:case-II-realization-placement}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_placement_eq612}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_placement,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_placement_rank}
   \leanok
-  \uses{def:panel-hinge-framework, lem:case-II-placement-new-rows,
-        lem:case-II-placement-old-rows,
-        lem:case-II-placement-old-rows-extract,
-        lem:case-II-placement-block-independent}
+  \uses{def:panel-hinge-framework, def:graph-operations,
+        def:rigidity-matrix}
   Let $G$ be a multigraph, let $v$ be a vertex of $G$ of degree two whose
   edges join it to vertices $a$ and $b$, and let $G_v^{ab}$ be obtained by
   splitting off $v$ (\cref{def:graph-operations}). Let $(G_v^{ab}, q)$ be
@@ -537,47 +538,52 @@ space of a rigidity matrix.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
+  \uses{def:panel-support-extensor, lem:case-II-placement-new-rows,
         lem:case-II-placement-old-rows-extract,
-        lem:case-II-placement-block-independent,
-        lem:independent-rows-of-rank, lem:splitoff-edge-substitution,
-        lem:with-normal-preserves}
-  The proof of \cref{lem:case-II-realization}, in the next subsection,
-  makes the same count with $t = 1$. Let $n_a = q(a)$ and $n_b = q(b)$. The hinge
-  $C = C(n_a, n_b)$ of the edge $ab$ of $(G_v^{ab}, q)$ is nonzero. As
-  $C$ is bilinear and $C(n,n) = 0$ (\cref{def:panel-support-extensor}),
+        lem:rigidityRows-pinned-placement-rank-add,
+        lem:independent-rows-of-rank, lem:with-normal-preserves,
+        lem:span-rigidityRows-eq-of-motions-eq,
+        lem:case-III-transport-collapse}
+  We first make the count from a realization $(G_v^{ab}, q)$ with
+  nondegenerate hinges whose rigidity matrix has rank at least $N$, for
+  any $N$; the proof of \cref{lem:case-II-realization}, in the next
+  subsection, takes it with $t = 1$. Let $n_a = q(a)$ and $n_b = q(b)$.
+  The hinge $C = C(n_a, n_b)$ of the edge $ab$ of $(G_v^{ab}, q)$ is
+  nonzero. As $C$ is bilinear and $C(n,n) = 0$
+  (\cref{def:panel-support-extensor}),
   \[
     C(n_a + t\,n_b,\, n_b) \;=\; C,
     \qquad
     C(n_a + t\,n_b,\, n_a) \;=\; -t\,C.
   \]
   So, up to sign, the edges $vb$ and $va$ of $(G, q_0)$ have the hinges
-  $C$ and $-tC$, both nondegenerate as $t \neq 0$. Every other edge of
-  $G$ is an edge of $G_v$ (\cref{lem:splitoff-edge-substitution}). Its
-  ends differ from $v$, so it has the same hinge in $(G, q_0)$ as in
+  $C$ and $-tC$, both nondegenerate as $t \neq 0$. As $v$ has degree
+  two, every other edge of $G$ is an edge of $G_v$, and so of $G_v^{ab}$
+  (\cref{lem:splitoff-edge-substitution}). Its ends differ from $v$, so
+  it has the same hinge, up to sign, in $(G, q_0)$ as in
   $(G_v^{ab}, q)$, and this hinge is nondegenerate.
 
   The normals $q_0$ and $q$ differ only at $v$, which lies on no edge of
   $G_v^{ab}$. So $(G_v^{ab}, q_0)$ has the hinges and the infinitesimal
-  motions of $(G_v^{ab}, q)$ (\cref{lem:with-normal-preserves}). Its
-  vertices are those of $G$ other than $v$
-  (\cref{def:graph-operations}). By
-  \cref{lem:case-II-placement-old-rows-extract}, some $D(|V(G)| - 2)$
-  rows $\sigma_1, \dots, \sigma_l$ of $R(G_v^{ab}, q_0)$ are linearly
-  independent. Each of them lies in the row space of $R(G, q_0)$. A row
-  at an edge of $G_v$ is also a row of $R(G, q_0)$
-  (\cref{lem:case-II-placement-old-rows}). A row at the edge $ab$ is, up
-  to sign, a form $S \mapsto \varphi(S(a) - S(b))$, where $\varphi$ is a
-  linear form on $K^D$ that vanishes on $C$. The forms
+  motions of $(G_v^{ab}, q)$ (\cref{lem:with-normal-preserves}), and so
+  its row space (\cref{lem:span-rigidityRows-eq-of-motions-eq}). Some $N$
+  rows $\sigma_1, \dots, \sigma_N$ of $R(G_v^{ab}, q_0)$ are linearly
+  independent (\cref{lem:independent-rows-of-rank}). Each of them lies in
+  the row space of $R(G, q_0)$. A row at an edge of $G_v$ is, up to
+  sign, a row of $R(G, q_0)$ at that edge, as the edge has the same hinge
+  in both frameworks up to sign. A row at the edge $ab$ is, up to sign, a
+  form $S \mapsto \varphi(S(a) - S(b))$, where $\varphi$ is a linear form
+  on $K^D$ that vanishes on $C$. The forms
   $S \mapsto \varphi(S(v) - S(b))$ and $S \mapsto \varphi(S(v) - S(a))$
   lie in the row spaces of the edges $vb$ and $va$ of $(G, q_0)$, as
   $\varphi$ vanishes on their hinges, and
   \[
     \varphi\bigl(S(a) - S(b)\bigr) \;=\;
-      \varphi\bigl(S(v) - S(b)\bigr) - \varphi\bigl(S(v) - S(a)\bigr).
+      \varphi\bigl(S(v) - S(b)\bigr) - \varphi\bigl(S(v) - S(a)\bigr)
   \]
-  This is the row form of Katoh and Tanigawa's column operation, which
-  adds the columns of $v$ to those of $a$ (KT eqs.~(6.14)--(6.16)).
+  (\cref{lem:case-III-transport-collapse}). This is the row form of Katoh
+  and Tanigawa's column operation, which adds the columns of $v$ to those
+  of $a$ (KT eqs.~(6.14)--(6.16)).
 
   By \cref{lem:case-II-placement-new-rows}, some $D - 1$ rows
   $\rho_1, \dots, \rho_{D-1}$ of $R(G, q_0)$ at $vb$ are linearly
@@ -588,16 +594,25 @@ space of a rigidity matrix.
   independent. The $\sigma_j$ vanish there, as no edge of $G_v^{ab}$ has
   $v$ as an end. So the $\rho_i$ and the $\sigma_j$ are linearly
   independent together (\cref{lem:case-II-placement-block-independent}),
-  and they lie in the row space of $R(G, q_0)$. Hence, as in
-  \cref{lem:rigidityRows-pinned-placement-rank-add},
+  and they lie in the row space of $R(G, q_0)$. Hence
+  (\cref{lem:rigidityRows-pinned-placement-rank-add})
+  \[
+    \operatorname{rank} R(G, q_0) \;\ge\; N + D - 1.
+  \]
+
+  Now let every infinitesimal motion of $(G_v^{ab}, q)$ be constant on
+  $V(G_v^{ab})$, whose vertices are those of $G$ other than $v$
+  (\cref{def:graph-operations}). Then $R(G_v^{ab}, q)$ has rank
+  $N = D(|V(G)| - 2)$, by the dimension of its motion space
+  (\cref{lem:case-II-placement-old-rows-extract}), and
   \[
     \operatorname{rank} R(G, q_0) \;\ge\;
-      (D - 1) + D\bigl(|V(G)| - 2\bigr) \;=\; D\bigl(|V(G)| - 1\bigr) - 1.
+      D\bigl(|V(G)| - 2\bigr) + (D - 1) \;=\; D\bigl(|V(G)| - 1\bigr) - 1.
   \]
   As the hinges of $(G, q_0)$ are nondegenerate, its rows span its row
-  space. So some $D(|V(G)| - 1) - 1$ of them are linearly independent.
-  Katoh and Tanigawa note this count for $k = 0$ on
-  p.~680~\cite{katohTanigawa2011}.
+  space. So some $D(|V(G)| - 1) - 1$ of them are linearly independent
+  (\cref{lem:independent-rows-of-rank}). Katoh and Tanigawa note this
+  count for $k = 0$ on p.~680~\cite{katohTanigawa2011}.
 \end{proof}
 
 The rows at $ab$ cannot be left out of this count when $|V(G)| \ge 3$
@@ -613,16 +628,17 @@ This is why $v$ is put back with the hinge of $vb$ equal to that of
 $ab$.
 
 \begin{fmlnote}
-  The pinned theorem assumes a realization not of $G_v^{ab}$ but of a
-  subgraph $G'$ of $G$ that does not contain $v$ and has $|V(G)| - 1$
-  vertices, with nondegenerate hinges, every infinitesimal motion of
-  which is constant on $V(G')$, and with $q(a)$ and $q(b)$ linearly
-  independent. The rows of $G'$ are rows of $(G, q_0)$
-  (\cref{lem:case-II-placement-old-rows}), so none of them has to be
-  written through the edges $vb$ and $va$. The pinned theorem also states
-  that the hinge of $va$ is nondegenerate, and it does not assume that $v$
-  has degree two. By the argument above, $G'$ is a proper rigid subgraph
-  of $G$ when $|V(G)| \ge 3$. So in Cases~II and~III, where $G$ has none,
-  no realization meets its hypothesis. No main result uses it. The proof of
-  \cref{lem:case-II-realization} makes the count for $k > 0$ as above.
+  The first pinned theorem is the lemma. It reads the ends of the edges
+  of $G$ and of $G_v^{ab}$ from two endpoint selectors
+  (\cref{fmlnote:panel-hinge-nondegenerate}), and asks that the label of
+  the new edge $ab$ not be an edge of $G_v$, so that the graph obtained
+  is $G_v^{ab}$ (\cref{def:graph-operations}). The second pinned theorem
+  is the count from a realization of $G_v^{ab}$ with nondegenerate hinges
+  whose rigidity matrix has rank at least $N$, for any $N$: the hinges of
+  $(G, q_0)$ are nondegenerate, and $\operatorname{rank} R(G, q_0) \ge N
+  + D - 1$. The proof of \cref{lem:case-II-realization} applies it with
+  $t = 1$, at the rank $D(|V(G)| - 2) - (k - 1)$ that the induction
+  hypothesis gives. Both place the rows of $G_v^{ab}$ in the row space of
+  $R(G, q_0)$, as above, and do not use
+  \cref{lem:case-II-placement-old-rows}. No main result uses the first.
 \end{fmlnote}

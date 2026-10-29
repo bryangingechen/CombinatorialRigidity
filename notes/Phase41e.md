@@ -7,16 +7,15 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4
 `notes/reconcile-formal/ReductionWitness.lean`, for U11 `DofGenericWitness.lean`, and for U12
 `CaseIIPlacementWitness.lean`. Fifteen build items, two recons, a spike and the close (planned
-18–24 commits, the open included); U1–U11, R, PAD, U11's recon, M1K and U12's spike have landed.
-Next: U12's build, S3, transcribed from the spike's witness.
+18–24 commits, the open included); every item but the close has landed. Next: the close, which
+closes Phase 41 and the RECONCILE program.
 
 ## Current state
 
-**The next concrete commit is U12's build** (*Hand-off*); U1–U11, R, PAD, U11's recon, M1K and
-U12's spike have landed. The spike compiled S3's route with no `sorry` (design doc §2, under U12):
-the count of `case_II_realization_all_k`'s steps 7–18 extracted as `case_II_placement_rank`, the
-node as stated as `case_II_placement`, and the caller rewritten to call the first; the node needs
-no restatement. M1K moved M1, the `main_results` row, to
+**The next concrete commit is the close** (*Hand-off*); U1–U12, R, PAD, U11's recon, M1K and
+U12's spike have landed. U12 transcribed the spike's witness: `lem:case-II-realization-placement`
+pins `case_II_placement` (as stated) and `case_II_placement_rank` (the count at any rank, which
+`case_II_realization_all_k` calls), and `case_II_placement_eq612` is deleted. M1K moved M1, the `main_results` row, to
 `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees` (KT's genericity, §1k.2);
 the count stays 20, its axioms the three standard ones. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
@@ -134,15 +133,12 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `case_II_placement_rank` (rank `N` of `G_v^{ab}` gives nondegenerate hinges of `(G, q₀)` and rank
   `≥ N + D − 1`), `case_II_placement` (the node as stated) and `case_II_realization_all_k` calling
   the first at `t = 1`, its statement unchanged; no `sorry`, standard axioms.
-- [ ] **U12. S3** (`F-150`; the dead pin, `F-152`'s part). A declaration for
-  `lem:case-II-realization-placement` as stated, from a realization of `G_v^{ab}`: the witness's
-  `case_II_placement_rank` and `case_II_placement` transcribed into `CaseII.lean` in
-  `PanelHingeFramework`, and `case_II_realization_all_k` rewritten to call the first;
-  `case_II_placement_eq612` (`CaseII.lean:67`), uncalled and unmeetable in Cases II and III,
-  deleted with the repin under the deletion gate (`GenericityDevice.lean:258`'s and the file
-  header's mentions included). The node's `\uses`, its fmlnote and `case-ii.tex`'s *One row short*
-  follow the route; `exists_independent_panelRow_transport`, left uncalled, kept pinned or retired.
-  1 commit (planned 2: the witness is the build).
+- [x] **U12. S3** (`F-150`; the dead pin, `F-152`'s part; landed in one commit, from the witness):
+  `PanelHingeFramework.case_II_placement_rank` and `case_II_placement` in `CaseII.lean`, both pinned
+  on `lem:case-II-realization-placement` (the node unchanged, its proof, `\uses` and fmlnote on the
+  route), and `case_II_realization_all_k` calling the first (~710 → ~290 lines, statement
+  unchanged), its node `\uses` the placement; `case_II_placement_eq612` deleted under the deletion
+  gate; `rem:case-II-kt-steps` restated. `exists_independent_panelRow_transport` kept, pinned.
 - [ ] **Close**, a full-phase close (Phase 41 and the RECONCILE program,
   `PHASE-BOUNDARIES.md` *When this commit closes a phase*): the gates (whole-project build with 0
   warnings, `lake lint`, the blueprint gates, the main results' axioms against 41d's close run,
@@ -153,8 +149,10 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `formalization.yaml` re-summarized (README and ROADMAP §34 name M1's generic form, which
   M1K kept beside the row's maximum-rank form); `.claude/autopilot/queue.toml`'s `RECONCILE-FORMAL` row
   `done = true`; `notes/MolecularConjecture.md`; the design doc's UNSTATED arc compressed (its
-  anchors counted first); the dispatch log groomed; the project-organization review. The loop
-  stops for the PI's push (§1j.5); ORIGAMI opens later, with the PI.
+  anchors counted first); the dispatch log groomed; the project-organization review, which also
+  takes `exists_independent_panelRow_transport` and its node `lem:case-II-placement-old-rows`,
+  uncalled and `\uses`'d by no live node since U12. The loop stops for the PI's push (§1j.5);
+  ORIGAMI opens later, with the PI.
 
 **Estimate.** 18–24 commits, the open and the close included (M1K's commit added by §1k.2): U1–U7 one each, R and PAD one each,
 U8–U11 one or two each, U12 two, U11's recon and U12's spike none or one each. The recon's 15–21
@@ -163,15 +161,15 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Blockers / open questions
 
-- None. U12's spike composed, with the node's statement as written: nothing goes to the PI.
+- None.
 
 ## Hand-off / next phase
 
-**U12's build** (checklist item *U12*): transcribe `CaseIIPlacementWitness.lean` into
-`CaseII.lean` (`lake lean` it first): `case_II_placement_rank` and `case_II_placement` in place of
-`case_II_placement_eq612`, and the witness's `case_II_realization_all_k` body; repin
-`lem:case-II-realization-placement` on `case_II_placement` with the deletion gate (design doc §2,
-under U12, *For U12's build*). One commit, the Lean and the repin together; then the close.
+**The close** (checklist item *Close*), a full-phase close of Phase 41 and the RECONCILE program
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*): its gates first (whole-project build,
+`lake lint`, the blueprint gates, the main results' axioms against 41d's close run), then the
+re-reads, the ledger dispositions and the status surfaces the item lists. If it is too large for
+one commit, land the gates and the ledger dispositions first and say so in *Current state*.
 
 ## Decisions made during this phase
 

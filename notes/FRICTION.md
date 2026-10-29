@@ -110,6 +110,27 @@ moment you resolve the entry) is what makes the sweep a pure
 to be re-derived by re-reading entries later.
 
 ## Open
+### [idiom] `simp [h, annihRow_apply_self]` does not fire: the `@[simp]` `annihRow_apply` unfolds the row first
+- **Where it bit:** Phase 41e, item U12's spike (`case_II_placement_rank`, `CaseII.lean`, the rows of
+  `G_v^{ab}` at an edge `e ≠ e₀`): with `h : FG.supportExtensor e = -FGab.supportExtensor e`, the
+  goal `annihRow (FGab.supportExtensor e) t₁ t₂ (FG.supportExtensor e) = 0` went to a coordinate
+  identity `-(x₁ * x₂) + x₂ * x₁ = 0`, and the linter flagged `annihRow_apply_self` unused.
+- **Friction:** one MCP iteration.
+- **Proposed fix:** none needed: `rw [h, map_neg, annihRow_apply_self, neg_zero]` (and
+  `exact annihRow_apply_self _ t₁ t₂` in the other orientation).
+- **Status:** idiom.
+
+### [open] `hingeRow` has no additive form through a third body
+- **Where it bit:** Phase 41e, item U12's spike (`case_II_placement_rank`, `CaseII.lean`, KT's column
+  operation as a row operation): writing `hingeRow a b ρ` as `hingeRow a v ρ + hingeRow v b ρ` took
+  `rw [← sub_add_cancel (hingeRow a b ρ) (hingeRow v b ρ), hingeRow_sub_hingeRow_eq a v b ρ]`,
+  after a first `rw [← hingeRow_sub_hingeRow_eq v a b ρ]` found no pattern.
+- **Friction:** one MCP iteration; the lemma's `u w − v w = u v` shape names the wrong side.
+- **Proposed fix:** `hingeRow_add_hingeRow (u v w) (r) : hingeRow u v r + hingeRow v w r =
+  hingeRow u w r` beside `hingeRow_sub_hingeRow_eq` in `RigidityMatrix/Basic.lean`; not added at
+  U12, to keep the commit off a deep zone file.
+- **Status:** open.
+
 ### [idiom] A link of `G.mulTilde n` projects as `G.2 p.1 x y`: `.2` on it blocks dot notation
 - **Where it bit:** Phase 41e, item U3 (`circuit_diff_isSpanningTreePacking`, `Operations.lean`): `hy : (R.IsLink p x y)` for `R = G̃ ↾ _` unfolds under `rcases` to `p ∈ _ ∧ G.2 p.1 x y`, and `hy.2.left_eq_or_eq h` fails ("does not have the necessary form").
 - **Friction:** four build iterations (also `induce_isLink` is a simp lemma, not a callable constant).

@@ -25,7 +25,7 @@ does not use them.
 
 \begin{remark}[Katoh and Tanigawa's steps in Case~II and the formal proof]
   \label{rem:case-II-kt-steps}
-  Two lemmas of this subsection and four of
+  Two lemmas of this subsection and three of
   \cref{sec:molecular-algebraic-induction-relative} belong to Katoh and
   Tanigawa's proof of KT Lemma~6.8, or state facts about it for
   infinitesimal motions. The formal proof of KT Theorem~5.5
@@ -73,7 +73,7 @@ does not use them.
   operation instead. At $q_0$ the hinges of $vb$, $va$ and $ab$ agree up
   to sign, so each row at $ab$ is the difference of a row at $vb$ and a
   row at $va$. Hence every row of $R(G_v^{ab}, q)$ lies in the row space
-  of $R(G, q_0)$ (the proof of \cref{lem:case-II-realization}).
+  of $R(G, q_0)$ (the proof of \cref{lem:case-II-realization-placement}).
 
   The rank then adds, as in KT eq.~(6.16). Some $D - 1$ rows at $vb$ are
   linearly independent on the screw assignments that vanish off $v$,
@@ -87,11 +87,9 @@ does not use them.
   $0$-dof-graph, and the same count gives one row less than the target
   rank (KT p.~680). \Cref{lem:case-II-realization-placement} states this
   count from a realization of $G_v^{ab}$ whose motions are all constant
-  on its vertex set. Its formal counterpart assumes instead a rigid
-  realization of a subgraph of $G$ that avoids $v$. No graph of
-  Cases~II and~III has one (the note after the lemma), and no main
-  result uses the lemma. For $k > 0$, the proof of
-  \cref{lem:case-II-realization} makes the count itself. In Case~III,
+  on its vertex set, and its proof makes it first from a realization of
+  any rank. For $k > 0$, the proof of \cref{lem:case-II-realization}
+  takes the count in this form. In Case~III,
   where $k = 0$, the formal proof obtains the full rank of each of its
   frameworks from the count of KT eq.~(6.29)
   (\cref{lem:case-III-rank-certification}).
@@ -207,14 +205,13 @@ this form.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:reduction-step-pos, lem:with-normal-preserves,
+  \uses{lem:reduction-step-pos,
         lem:rank-polynomial-of-le-finrank, lem:splitoff-simple,
         lem:reduction-measure, lem:simple-minimal-noRigid,
         lem:reducible-vertex, lem:general-position-support-nonzero,
-        lem:rigidityRows-pinned-placement-rank-add,
-        lem:relative-deficiency-rank-bound, lem:case-II-placement-new-rows,
-        lem:case-III-transport-collapse,
-        lem:span-rigidityRows-eq-of-motions-eq}
+        lem:relative-deficiency-rank-bound,
+        lem:case-II-realization-placement,
+        lem:splitoff-edge-substitution}
   We follow Katoh and Tanigawa's proof of KT Lemma~6.8
   (pp.~677--679). The graph $G$ is simple
   (\cref{lem:simple-minimal-noRigid}). As $d \ge 2$, we have $D \ge 3$,
@@ -291,7 +288,8 @@ this form.
   (\cref{lem:general-position-support-nonzero}).
 
   We now count rows as Katoh and Tanigawa do, with a row operation in
-  place of their column operation. Let $r_1, \dots, r_{D-1}$ be a basis
+  place of their column operation, as in the proof of
+  \cref{lem:case-II-realization-placement} with $t = 1$. Let $r_1, \dots, r_{D-1}$ be a basis
   of the linear forms on the screws that vanish on $C$
   (\cref{def:hinge-row-block}). As the hinges of $vb$, $va$ and $ab$
   agree up to sign, we may take this basis for all three. Up to sign,
@@ -347,5 +345,7 @@ this form.
 \begin{fmlnote}
   The pinned theorem also assumes that some edge label lies outside
   $E(G)$, the label of the new edge $ab$ of $G_v^{ab}$
-  (\cref{rem:fresh-edge-supply}).
+  (\cref{rem:fresh-edge-supply}). It then lies outside $E(G_v)$, as the
+  count of \cref{lem:case-II-realization-placement} asks
+  (\cref{lem:splitoff-edge-substitution}).
 \end{fmlnote}

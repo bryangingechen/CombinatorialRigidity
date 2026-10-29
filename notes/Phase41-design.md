@@ -879,8 +879,9 @@ ScrewSpace carrier).
       `exists_independent_panelRow_transport` (`lem:case-II-placement-old-rows`) nor
       `_subfamily_of_rigidOn_linking`: the rows of `G_v` enter through the row space, their hinges
       equal up to sign, as in `lem:case-II-realization`'s proof. The transport lemma's one caller is
-      `case_II_placement_eq612`, so the deletion leaves it uncalled (kept pinned or retired: U12's
-      call), and the node's `\uses` follow the route. `case_II_placement_eq612` is called nowhere
+      `case_II_placement_eq612`, so the deletion leaves it uncalled (kept pinned at U12, the
+      coordinator's call; the close's project-organization review takes it), and the node's
+      `\uses` follow the route. U12 landed as planned here. `case_II_placement_eq612` is called nowhere
       (tree-wide `git grep`, bare name): its declaration, two docstrings (`CaseII.lean:294`,
       `GenericityDevice.lean:258`), the node's pin, ROADMAP (§22's history) and the notes.
 - **Close**: the ledger's remaining `reported` and `left` entries given dispositions and ROADMAP's
