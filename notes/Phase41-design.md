@@ -630,6 +630,11 @@ ScrewSpace carrier).
   (`span_rigidityRows_eq_of_eq_off_loops`, proved). `GenericityDevice.lean`, zone; the three callers
   pass the instance today, so check for a now-unused `have : G.Loopless`. The node's note on loops
   goes. 1 commit.
+  - **`[Finite α]` dropped too, adopted under §1f.3** (the coordinator's call under the PI's
+    standing authorization, recorded here at `d04cbf9e`): the built framework needs no finiteness of
+    the bodies, so `lake lint`'s `unusedArguments` flagged the binder. The change touches only this
+    theorem, which is not a main result or a pencil row; its callers in `Theorem55.lean` all carry
+    `[Finite α]` anyway. It follows the pattern of 41c's one-body relaxation.
 - **U8. `F-061`'s forest lemma.** `BodyHingeFramework.exists_independent_rigidityRows_of_isForest`
   (`ForestTarget`): for a forest `T ≤ F.graph` (`Graph.IsForest`) with a nonzero hinge at each edge,
   `D − 1` rows per edge, jointly independent, in `exists_independent_rigidityRows_of_starForest`'s

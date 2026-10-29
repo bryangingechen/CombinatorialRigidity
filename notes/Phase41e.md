@@ -179,7 +179,7 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   unchanged, 0 findings).
 - [x] **U7. S16** (landed: `hasPanelRealization_of_generic` without `[G.Loopless]`, and without
   `[Finite α]`, which the proof no longer used (`lake lint`'s `unusedArguments`; a hypothesis the
-  proof does not need, under §1f.3, for the coordinator to record in the design doc). The framework
+  proof does not need, adopted under §1f.3 and recorded in the design doc's U7 entry). The framework
   is built directly, `graph := G`, the hinge `C(n_a, n_b)` at `(a, b) = Q.ends e` off loops and
   `C(n_a, n_{w a})` at a loop at `a`; one `exists_extensor_eq_panelSupportExtensor_gen` call covers
   both. `BodyHingeFramework.span_rigidityRows_eq_of_eq_off_loops` transcribed into
