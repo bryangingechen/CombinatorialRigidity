@@ -3,8 +3,8 @@
 **Status:** its `Pᵈ` pencil part opened as **Phase 42** (PENCIL-D, the PI, 2026-10-29; plan
 `notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
-third set the `Pᵈ` picture, Results 12–19. Next concrete task: PD-RECON's step table, Phase
-42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
+third set the `Pᵈ` picture, Results 12–19. Next concrete task: Phase 42a's
+(`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
 `notes/scripts/strata/strata.py` (exact ℚ, seeded). Editing discipline as for phase notes (≤ 8-line
 entries). `HARNESS.md` *Evidence* and *Reproducibility* bind this work; it is not an attack track.
 
@@ -273,8 +273,8 @@ Three commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
 
 ## Next tests
 
-1. **PD-RECON's step table**, Phase 42a's next concrete task (`notes/Phase42a.md`). It
-   absorbs session 2's test "a proof for (line, hyperplane) in `P⁴`": R1 at `d = 4`.
+1. **PD-RECON's step table**, landed as Phase 42a's (`notes/Phase42-design.md` §2.1). It
+   absorbed session 2's test "a proof for (line, hyperplane) in `P⁴`": R1 at `d = 4`.
 2. **Past the cap:** a `D`-general deficiency oracle (Result 3: `def_{D′}` is a matroid-union
    rank, so polynomial) would turn `--pd`'s past-cap rows into full tests at every `d`. The
    harness's polynomial oracles are `D = 6` only. The cells that matter are those outside the

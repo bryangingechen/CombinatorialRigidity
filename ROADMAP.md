@@ -1275,8 +1275,12 @@ are formalized; `d = 4, 5, 6` reach the generic rank at every graph measured (36
 research first: **PD-RECON** (42a, `notes/Phase42a.md`) asks, step by step, whether Phase 40's
 induction runs in `Pᵈ`, by induction on `d` or directly. Then, by stable code: PD-STATE and
 PD-STABLE (the statement layer and the `def_3 ≤ 1` corollary, independent of the route), Phase
-40's carrier, steps and coverage in `Pᵈ`, Phase 39's reduction, and the headline. First task:
-PD-RECON's step table.
+40's carrier, steps and coverage in `Pᵈ`, Phase 39's reduction, and the headline. PD-RECON's step
+table (2026-10-29) finds the carrier, both lemmas, the flat rank, the cut, bridge, contraction and
+split-off steps, the partition estimates and Phase 39's reduction dimension-general, given routine
+or formal work. The short ears, the one-body and orbit ears and the generic statement's route B
+fail as written: in `P³` two bodies' planes always share a line, in `Pᵈ` they need not. Next: two
+cheap tests of the flat formulas and the cycle and long-ear certificates.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
