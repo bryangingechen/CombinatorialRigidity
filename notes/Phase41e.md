@@ -119,7 +119,10 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex`, the landed forms kept as their
   corollaries; `splitOff_deficiency_le_aux` is gone, `splitOff_deficiency_le` being its
   generalization, and `splitOff_deficiency_le_of_eq_left` calls it at `eₐ`. The proof of
-  `splitOff_isMinimalKDof` calls `splitOff_deficiency_le` directly, so `dof_tracking` is unchanged)
+  `splitOff_isMinimalKDof` calls `splitOff_deficiency_le` directly, so `dof_tracking` is unchanged;
+  at verification, three unpinned helpers' docstrings stopped naming a node as their own (the
+  label ratchet), and `lem:reduction-step` `\uses` `lem:splitoff-deficiency`, the bound its pin
+  calls, in place of `lem:dof-tracking`)
   (§1j.1; design doc §2, *Item R's
   recon*; no ledger ID). Source: `ReductionWitness.lean`, transcribed. Four statements, each a
   strengthening, files under `Molecular/Induction/`:

@@ -767,16 +767,17 @@ lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} 
   rw [hp, edgeSet_splitOff]
   exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
 
-/-- **A label outside `E(G)` is outside `E(G − v)`** (`lem:splitoff-edge-substitution`): the weaker
-hypothesis on the label `e₀` of the new edge of `G.splitOff v a b e₀`. It is `G_v^{ab}` exactly when
-`e₀ ∉ E(G − v)` (`fmlnote:graph-operations`). -/
+/-- **A label outside `E(G)` is outside `E(G − v)`** (a step of `lem:splitoff-edge-substitution`):
+the weaker hypothesis on the label `e₀` of the new edge of `G.splitOff v a b e₀`. It is `G_v^{ab}`
+exactly when `e₀ ∉ E(G − v)` (`fmlnote:graph-operations`). -/
 lemma notMem_edgeSet_removeVertex {G : Graph α β} {e : β} (he : e ∉ E(G)) (v : α) :
     e ∉ E(G.removeVertex v) :=
   fun h => he ((G.removeVertex_le v).edgeSet_mono h)
 
-/-- **The labels outside `E(G − v)`, at a vertex of degree two** (`lem:splitoff-edge-substitution`):
-when `eₐ` and `e_b` are the only edges at `v`, a label `e₀` is outside `E(G − v)` iff it is outside
-`E(G)` or is `eₐ` or `e_b`. In particular `eₐ` and `e_b` are admissible labels of the new edge. -/
+/-- **The labels outside `E(G − v)`, at a vertex of degree two** (a step of
+`lem:splitoff-deficiency-reuse`): when `eₐ` and `e_b` are the only edges at `v`, a label `e₀` is
+outside `E(G − v)` iff it is outside `E(G)` or is `eₐ` or `e_b`. In particular `eₐ` and `e_b` are
+admissible labels of the new edge. -/
 lemma notMem_edgeSet_removeVertex_iff {G : Graph α β} {v a b : α} {e₀ eₐ e_b : β}
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) :

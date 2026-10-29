@@ -1705,7 +1705,7 @@ vertices~\cite[pp.~666--667]{katohTanigawa2011}.
   \label{lem:reduction-step}
   \lean{Graph.splitOff_isMinimalKDof, Graph.contraction_isMinimalKDof}
   \leanok
-  \uses{lem:contraction-minimality, lem:dof-tracking, lem:circuit-induces-rigid}
+  \uses{lem:contraction-minimality, lem:splitoff-deficiency, lem:circuit-induces-rigid}
   Let $D \ge 2$, and let $G$ be a minimal $0$-dof-graph.
   \begin{enumerate}
     \item Suppose that $G$ has at least three vertices and no proper
@@ -1730,8 +1730,8 @@ vertices~\cite[pp.~666--667]{katohTanigawa2011}.
   proof~\cite[pp.~665--666]{katohTanigawa2011} up to its last step. Let
   $G' = G_v^{ab}$, and let $G_v = G - v$. Both have the $|V(G)| - 1$
   vertices of $G$ other than $v$, and the edges of $\widetilde{G'}$ are
-  those of $\widetilde{G_v}$ and the $D - 1$ copies of $ab$. By
-  \cref{lem:dof-tracking},
+  those of $\widetilde{G_v}$ and the $D - 1$ copies of $ab$. By the
+  upper bound of \cref{lem:splitoff-deficiency},
   $\operatorname{def}(\widetilde{G'}) \le \operatorname{def}(\tilde G) = 0$,
   and $\operatorname{def}(\widetilde{G'}) \ge 0$ as $G'$ has a vertex. So
   $G'$ is a $0$-dof-graph. The subgraph $G_v$ of $G$ has

@@ -90,11 +90,10 @@ lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : �
     rintro rfl; exact he₀ hlink.edge_mem
 
 /-- **The edges of `G̃_v^{ab}` other than the copies of `ab` are those of `(G_v)̃`** (a step of
-`lem:reverse-reroute-cycle-lift`, `lem:reverse-pendant-insert` and `lem:reduction-step`): when
-`e₀ ∉ E(G − v)`, `E(G̃_v^{ab}) ∖ ẽ₀ = E((G_v)̃)`, where `ẽ₀ = edgeFiber e₀ n`. An edge of
-`G_v^{ab}` other than `e₀` is an edge of `G` whose ends differ from `v`, so an edge of `G_v`;
-conversely, an edge of `G_v` is not `e₀`, and `G_v^{ab}` keeps it. `Reduction.lean` uses it to
-compare the matroids of `G̃_v^{ab}` and of `(G_v)̃`. -/
+`lem:reduction-step`): when `e₀ ∉ E(G − v)`, `E(G̃_v^{ab}) ∖ ẽ₀ = E((G_v)̃)`, where
+`ẽ₀ = edgeFiber e₀ n`. An edge of `G_v^{ab}` other than `e₀` is an edge of `G` whose ends differ
+from `v`, so an edge of `G_v`; conversely, an edge of `G_v` is not `e₀`, and `G_v^{ab}` keeps it.
+`Reduction.lean` uses it to compare the matroids of `G̃_v^{ab}` and of `(G_v)̃`. -/
 lemma edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex {G : Graph α β} {v a b : α}
     {e₀ : β} (n : ℕ) (he₀ : e₀ ∉ E(G.removeVertex v)) :
     E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) := by
@@ -113,8 +112,9 @@ lemma edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex {G : Graph α 
     · rintro h; exact he₀ (h ▸ hp)
 
 /-- **The edges of `G̃_v^{ab}` other than the copies of `ab` are those of `(G_v)̃`**
-(`lem:reduction-step`): when `e₀ ∉ E(G)`, the case of
-`edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex` that the other callers meet. -/
+(a step of `lem:reverse-reroute-cycle-lift`, `lem:reverse-pendant-insert`,
+`lem:case-III-gap3-minimalKDof` and `lem:removal-deficiency-equality`): when `e₀ ∉ E(G)`, the case
+of `edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex` that those callers meet. -/
 lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ)
     (he₀ : e₀ ∉ E(G)) :
     E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) :=

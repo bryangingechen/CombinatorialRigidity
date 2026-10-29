@@ -57,11 +57,12 @@ Then every circuit `X` of `M(G̃_v^{ab})` meets the copies `ẽ₀ = edgeFiber e
 `ab`.
 
 Otherwise `X` is a set of edges of `(G_v)̃`, where `G_v = G - v`
-(`edgeSet_mulTilde_splitOff_diff_fiber`). As `G_v` is a subgraph of `G_v^{ab}` and of `G`, `X` is a
-circuit of `M((G_v)̃)` and of `M(G̃)` (`matroidMG_restrict_mulTilde`). So `G[V(X)]` is a rigid
-subgraph of `G` (`circuit_induces_isRigidSubgraph`, KT Lemma 3.4). It has the two ends of an edge of
-`X`, which differ as `G` has no loops, and not `v`, as no edge of `G_v` is incident with `v`: it is
-a proper rigid subgraph, which `G` has none of. The lemma asks neither that `G` be minimal nor that
+(`edgeSet_mulTilde_splitOff_diff_fiber_of_notMem_removeVertex`). As `G_v` is a subgraph of
+`G_v^{ab}` and of `G`, `X` is a circuit of `M((G_v)̃)` and of `M(G̃)`
+(`matroidMG_restrict_mulTilde`). So `G[V(X)]` is a rigid subgraph of `G`
+(`circuit_induces_isRigidSubgraph`, KT Lemma 3.4). It has the two ends of an edge of `X`, which
+differ as `G` has no loops, and not `v`, as no edge of `G_v` is incident with `v`: it is a proper
+rigid subgraph, which `G` has none of. The lemma asks neither that `G` be minimal nor that
 `v` have degree two; `splitOff_isMinimalKDof` obtains the looplessness from minimality
 (`loopless_of_isMinimalKDof`). -/
 theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
