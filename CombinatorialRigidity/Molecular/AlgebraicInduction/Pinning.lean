@@ -6,8 +6,6 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
-public import CombinatorialRigidity.Molecular.Induction.ReducibleVertex
-import CombinatorialRigidity.Molecular.Induction.Contraction
 
 /-!
 # Panel rows, block pins and small rigid frameworks
@@ -37,8 +35,7 @@ presented in `sec:molecular-algebraic-induction`. The file proves:
 * putting back a body (`lem:case-II`).
 
 `PanelLayer.lean` defines the panel support extensor and the forms `annihRow` that the rows
-`panelRow` use, and `Induction/ReducibleVertex.lean` the contraction `G.rigidContract H r` of Case
-I's rank count.
+`panelRow` use.
 -/
 
 @[expose] public section
@@ -760,9 +757,9 @@ Katoh and Tanigawa's Case I contracts a proper rigid subgraph `H` to one vertex 
 For motions, the corresponding operation pins all the bodies of `V(H)` at once: `pinnedMotionsOn s`
 is the space of the infinitesimal motions that vanish on `s`, and `pinnedMotionsOn {v}` is the space
 `pinnedMotions v` of KT Lemma 5.1 (`lem:rank-delete-vertex`). This section proves the lemmas of
-`sec:molecular-algebraic-induction-caseI` on the block pin, Case I's rank count (`lem:case-I`), over
-the contraction and with the block pin, and its form for motions (`lem:case-I-splice-seed`), and the
-counts of `sec:molecular-algebraic-induction-relative` that use the block pin of `V(G)`. As
+`sec:molecular-algebraic-induction-caseI` on the block pin, Case I's rank count (`lem:case-I`) and
+its form for motions (`lem:case-I-splice-seed`), and the counts of
+`sec:molecular-algebraic-induction-relative` that use the block pin of `V(G)`. As
 `rem:case-I-kt-steps` says, the formal proof of KT Theorem 5.5 uses neither `lem:case-I` nor the
 lemmas on the block pin; it uses the block pin through the counts relative to `V(G)`
 (`lem:relative-screw-split`, `lem:isInfRigidOn-of-relative-count`). -/
@@ -1101,32 +1098,6 @@ theorem isInfinitesimallyRigidOn_insert_iff (F : BodyHingeFramework K k α β) {
     · exact hvw S hS w hw
     · exact (hvw S hS u hu).symm
     · exact hrig S hS u hu w hw
-
-/-- **Case I's rank count** (`lem:case-I`; KT eq. (6.3)): let `H` be a proper rigid subgraph of `G`,
-let `r ∈ V(H)`, and let `F₂` be at the target rank of the contraction `G/E(H)` to `r`,
-`rank R(F₂) = D(|V(G/E(H))| − 1) − def((G/E(H))̃)` (`h₂`). Then `F` is at the target rank of `G`,
-`rank R(F) = D(|V(G)| − 1) − def(G̃)`, iff `rank R(F) = D(|V(H)| − 1) + rank R(F₂)`.
-
-The identity is arithmetic: the contraction keeps the deficiency
-(`Graph.rigidContract_deficiency_eq`) and has `|V(G)| − |V(H)| + 1` vertices
-(`Graph.rigidContract_vertexSet_ncard`), so the two right sides are equal. It asks no minimality of
-`G`, and of the frameworks only their ranks: their graphs need not be `G` and `G/E(H)`. -/
-theorem case_I_rank_add_iff [Finite α] [Finite β] {n : ℕ} [NeZero (Graph.bodyHingeMult n)]
-    {G H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ H.vertexSet)
-    (F F₂ : BodyHingeFramework K k α β)
-    (h₂ : (Module.finrank K (Submodule.span K F₂.rigidityRows) : ℤ)
-      = screwDim k * (((G.rigidContract H r).vertexSet.ncard : ℤ) - 1)
-        - (G.rigidContract H r).deficiency n) :
-    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
-        = screwDim k * ((G.vertexSet.ncard : ℤ) - 1) - G.deficiency n ↔
-      (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
-        = screwDim k * ((H.vertexSet.ncard : ℤ) - 1)
-          + Module.finrank K (Submodule.span K F₂.rigidityRows) := by
-  have hsub : H.vertexSet ⊆ G.vertexSet := hH.1.1.vertexSet_mono
-  have hle : H.vertexSet.ncard ≤ G.vertexSet.ncard := Set.ncard_le_ncard hsub (Set.toFinite _)
-  rw [h₂, Graph.rigidContract_deficiency_eq hH hr, Graph.rigidContract_vertexSet_ncard hr hsub]
-  push_cast [Nat.cast_sub hle]
-  constructor <;> intro h <;> linarith
 
 /-- **Case I's rank count with the block pin** (`lem:case-I`, its form for body-hinge frameworks):
 let `s` be a nonempty set of bodies, and suppose that `dim Z(G,p) ≤ D + dim Z_s(G,p)` (`hglue`).

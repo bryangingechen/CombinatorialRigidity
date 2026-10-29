@@ -156,10 +156,10 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   with R's names, no proof change. `thm:minimal-kdof-reduction` pins it beside (ii)'s and its
   fmlnote now says both parts are proved; the two definitions are unpinned helpers, their
   docstrings leading `a step of thm:minimal-kdof-reduction`.) (`F-101`)
-- [x] **U5. S19** (landed: `BodyHingeFramework.case_I_rank_add_iff` in `Pinning.lean`, before the
-  block-pin form, transcribed; `Pinning.lean` gains a `public import` of `Induction/ReducibleVertex`
-  (the statement's `rigidContract`) and a plain `import` of `Induction/Contraction` (the proof's
-  deficiency lemma), so it now waits on the contraction chain; 63 modules rebuilt, warning-clean.
+- [x] **U5. S19** (landed: `BodyHingeFramework.case_I_rank_add_iff`, transcribed, in `CaseI.lean`'s
+  first section with a plain `import` of `Induction/Contraction`; landed first in `Pinning.lean`,
+  whose two new imports made it, `PanelHinge` and `GenericityDevice` wait on three Induction files,
+  and moved at verification to `CaseI.lean`, which already sees `ReducibleVertex` via `Coupling`.
   `lem:case-I` pins it first, its proof `\uses` the two counts the pin calls, and its fmlnote says
   the pin asks no minimality and only the frameworks' ranks; the label check moved no pin)
   (`F-116`). `BodyHingeFramework.case_I_rank_add_iff` (proved): for a proper

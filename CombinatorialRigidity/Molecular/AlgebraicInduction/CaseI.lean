@@ -7,6 +7,7 @@ module
 
 public import CombinatorialRigidity.Molecular.AlgebraicInduction.Coupling
 public import CombinatorialRigidity.Mathlib.Basic.Countable.Defs
+import CombinatorialRigidity.Molecular.Induction.Contraction
 
 /-!
 # Case I: the rows outside a rigid subgraph, and two realizations combined
@@ -15,6 +16,9 @@ Lemmas for Case I of KT Theorem 5.5 (Katoh and Tanigawa 2011, *A proof of the mo
 Discrete Comput. Geom. **45**, §6.2), presented in `sec:molecular-algebraic-induction-caseI`. The
 file proves:
 
+* Case I's rank count over the contraction `G/E(H)`, KT eq. (6.3) (`lem:case-I`), from the
+  deficiency and the number of vertices of the contraction (`Induction/Contraction.lean`,
+  `Induction/ReducibleVertex.lean`);
 * that a realization that the induction hypothesis gives keeps its rank under another selector that
   gives the ends of its edges, in particular the realization of the contraction `G/E(H)` with the
   ends that its edges have in `G ＼ E(H)` (`lem:rank-transport-relabel-of-le-finrank`), with the
@@ -43,6 +47,35 @@ variable {K : Type*} [Field K]
 open scoped Graph
 
 variable {α β : Type*}
+
+/-! ## Case I's rank count over the contraction (`lem:case-I`) -/
+
+/-- **Case I's rank count** (`lem:case-I`; KT eq. (6.3)): let `H` be a proper rigid subgraph of `G`,
+let `r ∈ V(H)`, and let `F₂` be at the target rank of the contraction `G/E(H)` to `r`,
+`rank R(F₂) = D(|V(G/E(H))| − 1) − def((G/E(H))̃)` (`h₂`). Then `F` is at the target rank of `G`,
+`rank R(F) = D(|V(G)| − 1) − def(G̃)`, iff `rank R(F) = D(|V(H)| − 1) + rank R(F₂)`.
+
+The identity is arithmetic: the contraction keeps the deficiency
+(`Graph.rigidContract_deficiency_eq`) and has `|V(G)| − |V(H)| + 1` vertices
+(`Graph.rigidContract_vertexSet_ncard`), so the two right sides are equal. It asks no minimality of
+`G`, and of the frameworks only their ranks: their graphs need not be `G` and `G/E(H)`. -/
+theorem BodyHingeFramework.case_I_rank_add_iff [Finite α] [Finite β] {n : ℕ}
+    [NeZero (Graph.bodyHingeMult n)] {G H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α}
+    (hr : r ∈ H.vertexSet)
+    (F F₂ : BodyHingeFramework K k α β)
+    (h₂ : (Module.finrank K (Submodule.span K F₂.rigidityRows) : ℤ)
+      = screwDim k * (((G.rigidContract H r).vertexSet.ncard : ℤ) - 1)
+        - (G.rigidContract H r).deficiency n) :
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+        = screwDim k * ((G.vertexSet.ncard : ℤ) - 1) - G.deficiency n ↔
+      (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+        = screwDim k * ((H.vertexSet.ncard : ℤ) - 1)
+          + Module.finrank K (Submodule.span K F₂.rigidityRows) := by
+  have hsub : H.vertexSet ⊆ G.vertexSet := hH.1.1.vertexSet_mono
+  have hle : H.vertexSet.ncard ≤ G.vertexSet.ncard := Set.ncard_le_ncard hsub (Set.toFinite _)
+  rw [h₂, Graph.rigidContract_deficiency_eq hH hr, Graph.rigidContract_vertexSet_ncard hr hsub]
+  push_cast [Nat.cast_sub hle]
+  constructor <;> intro h <;> linarith
 
 /-! ## Reorienting a realization (`lem:rank-transport-relabel-of-le-finrank`) -/
 
