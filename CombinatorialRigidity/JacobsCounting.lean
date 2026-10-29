@@ -139,7 +139,7 @@ theorem IsSquareTightPartition.eq_of_common_nbr [Finite V] {f : V → V}
 crossing edge of `G.shadowGraph` within `S`. -/
 private theorem mem_crossingEdgesWithin_shadowGraph {f : V → V} {S : Set V} {x y : V}
     (hxy : G.Adj x y) (hx : f x ∈ S) (hy : f y ∈ S) (hne : f x ≠ f y) :
-    (Sum.inl s(x, y) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ∈
+    (s(x, y) : Sym2 V) ∈
       G.shadowGraph.crossingEdgesWithin f S :=
   ⟨⟨x, y, hxy, rfl⟩, x, y, ⟨hxy, rfl⟩, hx, hy, hne⟩
 
@@ -160,19 +160,18 @@ theorem IsSquareTightPartition.not_adj_adj_of_same_part [Finite V] {f : V → V}
     (Set.mem_insert_iff.mpr (Or.inr rfl)) hfvu
   have h2 := mem_crossingEdgesWithin_shadowGraph (S := {f v, f u}) hvw (Set.mem_insert _ _)
     (Set.mem_insert_iff.mpr (Or.inr hfuw.symm)) hfvw
-  have hne : (Sum.inl s(v, u) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ≠ Sum.inl s(v, w) := by
+  have hne : (s(v, u) : Sym2 V) ≠ s(v, w) := by
     intro h
-    rw [Sum.inl.injEq] at h
     rcases Sym2.eq_iff.mp h with ⟨_, huw'⟩ | ⟨hvw', _⟩
     · exact huw huw'
     · exact hvw.ne hvw'
-  have hsub : ({Sum.inl s(v, u), Sum.inl s(v, w)} :
-      Set (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) ⊆
+  have hsub : ({s(v, u), s(v, w)} :
+      Set (Sym2 V)) ⊆
       G.shadowGraph.crossingEdgesWithin f {f v, f u} := by
     rintro e (rfl | rfl)
     exacts [h1, h2]
-  have hcard : ({Sum.inl s(v, u), Sum.inl s(v, w)} :
-      Set (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))).ncard = 2 := Set.ncard_pair hne
+  have hcard : ({s(v, u), s(v, w)} :
+      Set (Sym2 V)).ncard = 2 := Set.ncard_pair hne
   have hle2 := Set.ncard_le_ncard hsub (Set.toFinite _)
   omega
 
@@ -203,31 +202,28 @@ theorem IsSquareTightPartition.not_adj_triangle [Finite V] {f : V → V}
   have h3 := mem_crossingEdgesWithin_shadowGraph (S := {f u, f v, f w}) huw
     (Set.mem_insert _ _)
     (Set.mem_insert_iff.mpr (Or.inr (Set.mem_insert_iff.mpr (Or.inr rfl)))) hfuw
-  have h12 : (Sum.inl s(u, v) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ≠ Sum.inl s(v, w) := by
+  have h12 : (s(u, v) : Sym2 V) ≠ s(v, w) := by
     intro h
-    rw [Sum.inl.injEq] at h
     rcases Sym2.eq_iff.mp h with ⟨huv', _⟩ | ⟨huw', _⟩
     · exact huv_ne huv'
     · exact huw_ne huw'
-  have h13 : (Sum.inl s(u, v) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ≠ Sum.inl s(u, w) := by
+  have h13 : (s(u, v) : Sym2 V) ≠ s(u, w) := by
     intro h
-    rw [Sum.inl.injEq] at h
     rcases Sym2.eq_iff.mp h with ⟨_, hvw'⟩ | ⟨huw', _⟩
     · exact hvw_ne hvw'
     · exact huw_ne huw'
-  have h23 : (Sum.inl s(v, w) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ≠ Sum.inl s(u, w) := by
+  have h23 : (s(v, w) : Sym2 V) ≠ s(u, w) := by
     intro h
-    rw [Sum.inl.injEq] at h
     rcases Sym2.eq_iff.mp h with ⟨hvu', _⟩ | ⟨hvw', _⟩
     · exact huv_ne hvu'.symm
     · exact hvw_ne hvw'
-  have hWsub : ({Sum.inl s(u, v), Sum.inl s(v, w), Sum.inl s(u, w)} :
-      Set (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) ⊆
+  have hWsub : ({s(u, v), s(v, w), s(u, w)} :
+      Set (Sym2 V)) ⊆
       G.shadowGraph.crossingEdgesWithin f {f u, f v, f w} := by
     rintro e (rfl | rfl | rfl)
     exacts [h1, h2, h3]
-  have hWcard : ({Sum.inl s(u, v), Sum.inl s(v, w), Sum.inl s(u, w)} :
-      Set (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))).ncard = 3 :=
+  have hWcard : ({s(u, v), s(v, w), s(u, w)} :
+      Set (Sym2 V)).ncard = 3 :=
     Set.ncard_eq_three.mpr ⟨_, _, _, h12, h13, h23, rfl⟩
   have hWc := Set.ncard_le_ncard hWsub (Set.toFinite _)
   rw [hScard] at hsub
@@ -373,24 +369,23 @@ theorem squareNormalCrossEdges_disjoint_special [Finite V] {f : V → V}
   exact hfv' hfv
 
 /-- **The `G`-cross class numbers `d_G(P)`** (`lem:square-cross-classification`). The edges of
-`G` joining distinct parts biject, via `s(x, y) ↦ Sum.inl s(x, y)`, with the crossing edges
+`G` joining distinct parts are the crossing edges
 `G.shadowGraph.crossingEdges f`, whose number is `d_G(P)` (the `crossingEdges` term of
 `partitionDef` and `deficiency`; JJ write `e_G(P)`). The proof of `thm:laman-square-count` uses
 it to identify that term. -/
 theorem squareGCrossEdges_ncard_eq_crossingEdges (f : V → V) :
     (G.squareGCrossEdges f).ncard = (G.shadowGraph.crossingEdges f).ncard := by
-  have himg : G.shadowGraph.crossingEdges f =
-      (Sum.inl : Sym2 V → Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) '' (G.squareGCrossEdges f) := by
+  have himg : G.shadowGraph.crossingEdges f = G.squareGCrossEdges f := by
     ext e
-    simp only [Graph.crossingEdges, squareGCrossEdges, Set.mem_ofPred_eq, Set.mem_image]
+    simp only [Graph.crossingEdges, squareGCrossEdges, Set.mem_ofPred_eq]
     constructor
-    · rintro ⟨_, x, y, ⟨hadj, hlink⟩, hne⟩
-      exact ⟨s(x, y), ⟨hadj, hne⟩, hlink⟩
-    · rintro ⟨e', ⟨hadj, hne⟩, rfl⟩
-      refine e'.ind (fun x y => ?_) hadj hne
+    · rintro ⟨_, x, y, ⟨hadj, rfl⟩, hne⟩
+      exact ⟨hadj, hne⟩
+    · rintro ⟨hadj, hne⟩
+      refine e.ind (fun x y => ?_) hadj hne
       intro hadj hne
       exact ⟨⟨x, y, hadj, rfl⟩, x, y, ⟨hadj, rfl⟩, hne⟩
-  rw [himg, (Sum.inl_injective.injOn).ncard_image]
+  rw [himg]
 
 /-! ## The classification: the common neighbors
 
@@ -404,7 +399,7 @@ bound (`IsLaman3.degree_le_three`). This is the *moreover* clause of
 distinct vertices `v ≠ w` share a part (`f w = f v`), then `v`'s part has at least three vertices
 and `v` has at least two neighbors inside it. The first half rewrites the part of
 `Graph.IsTightPartition.parts` within `V(G.shadowGraph) = univ`; the second converts its count of
-edges of `G.shadowGraph` through the bijection `y ↦ Sum.inl s(v, y)` between those edges at `v`
+edges of `G.shadowGraph` through the bijection `y ↦ s(v, y)` between those edges at `v`
 inside the part and `v`'s neighbors in `G` inside it. -/
 theorem IsSquareTightPartition.parts [Finite V] {f : V → V} (hf : G.IsSquareTightPartition f)
     {v w : V} (hvw : w ≠ v) (hfw : f w = f v) :
@@ -417,8 +412,7 @@ theorem IsSquareTightPartition.parts [Finite V] {f : V → V} (hf : G.IsSquareTi
   · set T_e := {e ∈ E(G.shadowGraph) | ∃ y, y ≠ v ∧ f y = f v ∧ G.shadowGraph.IsLink e v y}
       with hTe
     set T_v : Set V := {y | G.Adj v y ∧ f y = f v} with hTv
-    have himg : T_e = (fun y : V => (Sum.inl s(v, y) :
-        Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) '' T_v := by
+    have himg : T_e = (fun y : V => (s(v, y) : Sym2 V)) '' T_v := by
       ext e
       simp only [hTe, hTv, Set.mem_ofPred_eq, Set.mem_image]
       constructor
@@ -426,10 +420,8 @@ theorem IsSquareTightPartition.parts [Finite V] {f : V → V} (hf : G.IsSquareTi
         exact ⟨y, ⟨hadj, hfy⟩, hlink⟩
       · rintro ⟨y, ⟨hadj, hfy⟩, rfl⟩
         exact ⟨⟨v, y, hadj, rfl⟩, y, hadj.ne', hfy, hadj, rfl⟩
-    have hinj : Set.InjOn (fun y : V => (Sum.inl s(v, y) :
-        Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) T_v := by
+    have hinj : Set.InjOn (fun y : V => (s(v, y) : Sym2 V)) T_v := by
       intro y1 hy1 y2 hy2 heq
-      simp only [Sum.inl.injEq] at heq
       rcases Sym2.eq_iff.mp heq with ⟨_, h⟩ | ⟨h1, h2⟩
       · exact h
       · exact h2.trans h1

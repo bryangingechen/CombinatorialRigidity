@@ -98,19 +98,16 @@ step is the following lemma.
 \begin{lemma}[A simple graph as a multigraph]
   \label{lem:molecule-graph-carrier}
   \lean{SimpleGraph.shadowGraph, SimpleGraph.shadowGraph_simple,
-    SimpleGraph.shadowGraph_vertexSet, SimpleGraph.shadowGraph_isLink_iff,
-    SimpleGraph.card_shadowLabel_lt}
+    SimpleGraph.shadowGraph_vertexSet, SimpleGraph.shadowGraph_isLink_iff}
   \leanok
   Let $G$ be a simple graph on a finite set $V$. Then there is a simple
-  multigraph $G'$ with vertex set $V$, whose edges are drawn from a set
-  of more than $6(|V| - 1)$ labels, in which two distinct vertices are
+  multigraph $G'$ with vertex set $V$, in which two distinct vertices are
   joined by an edge if and only if they are adjacent in $G$.
 \end{lemma}
 \begin{proof}
   \leanok
   Take as labels the $|V|(|V| + 1)/2$ unordered pairs of elements of
-  $V$ and $6(|V| - 1) + 1$ further labels, more than $6(|V| - 1)$ in
-  all. For each edge $uv$ of $G$, let $G'$ have one edge joining $u$ and
+  $V$. For each edge $uv$ of $G$, let $G'$ have one edge joining $u$ and
   $v$, labelled by the pair $\{u, v\}$. Distinct edges of $G'$ have
   distinct labels, hence distinct pairs of ends, and no edge is a loop,
   as $G$ has none. So $G'$ is simple, and its edges join exactly the
@@ -122,11 +119,9 @@ step is the following lemma.
   objects. The square and the generic rank are defined for simple graphs,
   and the deficiency and the frameworks of \cref{sec:molecule-modelling}
   for multigraphs, whose edges are drawn from a fixed set of labels
-  (\cref{fmlnote:graph-operations}). The first pin is $G'$, the next
-  three are its simplicity, its vertex set and its edges, and the fifth
-  is the bound on its labels, which no result below needs: the pinned
-  form of \cref{thm:panel-hinge-iff-molecular} assumes nothing of the
-  labels (\cref{rem:fresh-edge-supply}). The pinned forms of the three results below
+  (\cref{fmlnote:graph-operations}). The first pin is $G'$, with the
+  unordered pairs of $V$ as its labels, and the next three are its
+  simplicity, its vertex set and its edges. The pinned forms of the three results below
   state the deficiency of $G'$, and apply the results of
   \cref{sec:molecule-modelling} to $G'$.
 \end{fmlnote}

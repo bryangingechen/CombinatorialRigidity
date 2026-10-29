@@ -127,7 +127,7 @@ theorem molecule_rank_upper_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
   obtain ⟨p, hgen, hgp⟩ := exists_isGenericPlacement_isGeneralPositionPlacement (V := V)
   -- Step 2: the endpoint selector for `G.shadowGraph`: a linked label's (classically chosen)
   -- link pair, or the fixed distinct pair `(v₀, u₀)` for a never-linked label.
-  let ends : (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) → V × V := fun e =>
+  let ends : Sym2 V → V × V := fun e =>
     if h : ∃ x y, G.shadowGraph.IsLink e x y then (h.choose, h.choose_spec.choose) else (v₀, u₀)
   have hends_eq : ∀ e, ends e = if h : ∃ x y, G.shadowGraph.IsLink e x y then
       (h.choose, h.choose_spec.choose) else (v₀, u₀) := fun _ => rfl
@@ -244,7 +244,7 @@ vertices, and its vertices have degree at least two (`Graph.two_le_degree_of_isK
 `lem:deficiency-zero-connected`). As `G'` is simple and links exactly the adjacent pairs of `G`,
 each vertex has the same degree in `G`, and `molecule_generic_rigid` applies. -/
 theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G : SimpleGraph V)
-    {Ts : Fin 6 → Graph V ((Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) × Fin (Graph.bodyHingeMult 3))}
+    {Ts : Fin 6 → Graph V (Sym2 V × Fin (Graph.bodyHingeMult 3))}
     (hspan : ∀ i, Ts i ≤s G.shadowGraph.mulTilde 3) (hTtree : ∀ i, (Ts i).IsTree)
     (hdisj : Pairwise (Function.onFun Disjoint (fun i => E(Ts i))))
     {p : Framework V 3} (hp : IsGenericPlacement p) :

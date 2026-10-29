@@ -3111,7 +3111,8 @@ dependent-type occurrence that breaks `rw`/`Eq.mpr`. Concretely: keep `hscrew : 
 anywhere) and close the goal with a single `omega` that also sees the rank-nullity / domination
 facts.
 
-**Worked case:** `SimpleGraph.molecule_rank_lower_bound` (`Molecular/Molecule/Application.lean`,
+**Worked case** (since Phase 41e's PAD the label type is `Sym2 V`, so this exact case no longer
+arises): `SimpleGraph.molecule_rank_lower_bound` (`Molecular/Molecule/Application.lean`,
 Phase 26 leaf `lem:molecule-rank-lower-bound`) — both `rw [← hscrew, ← hrank']` (to build an
 intermediate `hker`) and the final `rw [hcard]` before closing hit this, because the goal's
 `G.shadowGraph.deficiency 3` carries `G.shadowGraph`'s label type `Fin (6 * (Nat.card V - 1) + 1)`

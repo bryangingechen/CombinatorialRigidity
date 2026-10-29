@@ -21,13 +21,9 @@ the generic rank are defined for a `SimpleGraph V`, and the deficiency and the m
 panel-hinge frameworks for a multigraph `Graph V β`, whose edges are drawn from a type `β` of
 labels; the molecule rank formula (`Application.lean`) applies the latter to `G.shadowGraph`.
 
-The labels of `G.shadowGraph` are `Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)`. Its link between
-adjacent vertices `u` and `v` of `G` is labelled `s(u, v)`, so it is simple, has vertex set `V`, and
-links exactly the adjacent pairs of `G`. No link has a label of the second summand: those labels
-bring the number of labels above `6(|V| - 1)` (`card_shadowLabel_lt`). No result needs that bound,
-as the molecular realization (`exists_molecular_rankHypothesis_generalPosition`,
-`thm:panel-hinge-iff-molecular`) assumes nothing of the labels; the second summand stays so that the
-label type, which `lem:molecule-graph-carrier` states, does not change.
+The labels of `G.shadowGraph` are `Sym2 V`. Its link between adjacent vertices `u` and `v` of `G` is
+labelled `s(u, v)`, so it is simple, has vertex set `V`, and links exactly the adjacent pairs of
+`G`.
 
 ## Main results
 
@@ -35,7 +31,6 @@ label type, which `lem:molecule-graph-carrier` states, does not change.
 * `SimpleGraph.shadowGraph_simple`: it is simple.
 * `SimpleGraph.shadowGraph_vertexSet`: its vertex set is `V`.
 * `SimpleGraph.shadowGraph_isLink_iff`: it links exactly the adjacent pairs of `G`.
-* `SimpleGraph.card_shadowLabel_lt`: its labels number more than `6(|V| - 1)`.
 -/
 
 @[expose] public section
@@ -47,17 +42,14 @@ namespace SimpleGraph
 variable {V : Type*} [Finite V]
 
 /-- **The multigraph of a simple graph** (`lem:molecule-graph-carrier`): the multigraph on `V`, with
-the labels `Sym2 V ⊕ Fin (6 * (|V| - 1) + 1)`, that links `x` and `y` by the label `s(x, y)` when
-`G.Adj x y`. No link has a label of the second summand; those labels bring the number of labels
-above `6(|V| - 1)` for every finite `V` (`card_shadowLabel_lt`), which no result needs. -/
-def shadowGraph (G : SimpleGraph V) :
-    Graph V (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) where
+the labels `Sym2 V`, that links `x` and `y` by the label `s(x, y)` when `G.Adj x y`. -/
+def shadowGraph (G : SimpleGraph V) : Graph V (Sym2 V) where
   vertexSet := Set.univ
-  IsLink e x y := G.Adj x y ∧ Sum.inl s(x, y) = e
+  IsLink e x y := G.Adj x y ∧ s(x, y) = e
   isLink_symm e _ := ⟨fun x y h =>
-    ⟨h.1.symm, (congrArg Sum.inl (Sym2.eq_swap (a := y) (b := x))).trans h.2⟩⟩
+    ⟨h.1.symm, (Sym2.eq_swap (a := y) (b := x)).trans h.2⟩⟩
   eq_or_eq_of_isLink_of_isLink e x y v w h1 h2 := by
-    have hs : s(x, y) = s(v, w) := Sum.inl_injective (h1.2.trans h2.2.symm)
+    have hs : s(x, y) = s(v, w) := h1.2.trans h2.2.symm
     rcases Sym2.eq_iff.mp hs with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
     · exact Or.inl rfl
     · exact Or.inr rfl
@@ -81,14 +73,6 @@ omit [Finite V] in
 at `x = y`. -/
 theorem shadowGraph_isLink_iff (G : SimpleGraph V) (x y : V) :
     (∃ e, G.shadowGraph.IsLink e x y) ↔ G.Adj x y :=
-  ⟨fun ⟨_, h⟩ => h.1, fun h => ⟨Sum.inl s(x, y), h, rfl⟩⟩
-
-/-- **The labels of the multigraph of a simple graph** (`lem:molecule-graph-carrier`): they number
-more than `6(|V| - 1)` for every finite `V`, since the summand `Fin (6 * (|V| - 1) + 1)` alone has
-`6(|V| - 1) + 1`. -/
-theorem card_shadowLabel_lt (V : Type*) [Finite V] :
-    6 * (Nat.card V - 1) < Nat.card (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) := by
-  rw [Nat.card_sum, Nat.card_fin]
-  omega
+  ⟨fun ⟨_, h⟩ => h.1, fun h => ⟨s(x, y), h, rfl⟩⟩
 
 end SimpleGraph

@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1–U9 and R have landed. Next: PAD, then U10.
+close (planned 17–23 commits, the open included); U1–U9, R and PAD have landed. Next: U10.
 
 ## Current state
 
-**The next concrete commit is PAD** (*Hand-off*); U1–U9 and R have landed. Each claim of the full
+**The next concrete commit is U10** (*Hand-off*); U1–U9, R and PAD have landed (`G.shadowGraph : Graph V (Sym2 V)`, `card_shadowLabel_lt` deleted; `molecule_generic_square_packing`'s axioms unchanged: propext, Classical.choice, Quot.sound). Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -202,7 +202,7 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   (`Molecular/Extensor.lean:430`). The friction is the index bridge
   (`Set.powersetCard.ofFinEmbEquiv` against `Finset.orderEmbOfFin`) and a transpose. The chain's
   root, so a full rebuild. A lemma node after `def:plucker-coords`; its note goes. 1–2 commits.
-- [ ] **PAD. `G.shadowGraph`'s padding dropped** (§1j.3; no ledger ID), immediately before U10,
+- [x] **PAD. `G.shadowGraph`'s padding dropped** (§1j.3; no ledger ID), immediately before U10,
   so that U10 is stated over `Sym2 V`. `SimpleGraph.shadowGraph : Graph V (Sym2 V)`
   (`Molecule/Carrier.lean:53`), linking `x` and `y` by `s(x, y)` when `G.Adj x y`;
   `card_shadowLabel_lt` (`:89`) deleted under the deletion gate; the module and definition
@@ -275,10 +275,9 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**PAD** (checklist item PAD: `G.shadowGraph`'s padding dropped, so that U10 is stated over
-`Sym2 V`), a mechanical commit under the deletion gate, immediately before U10 (S31). Read the
-PAD checklist item for the occurrences list; whether it fits one commit is the builder's call
-(the `JacobsCounting.lean` ascriptions are the bulk).
+**U10** (checklist item U10, S31: `SimpleGraph.molecular_rigid_iff_square_rigid`, its selector now
+`ends : Sym2 V → V × V`). Read the U10 checklist item; whether it fits one commit is the builder's
+call (a crux node with an uncompiled route: assess before building).
 
 ## Decisions made during this phase
 

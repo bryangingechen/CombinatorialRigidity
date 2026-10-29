@@ -279,7 +279,7 @@ theorem isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff_witness :
 its `Sym2` label. -/
 private theorem top_fin_three_shadowGraph_edgeSet :
     E((⊤ : SimpleGraph (Fin 3)).shadowGraph)
-      = {Sum.inl s(0, 1), Sum.inl s(1, 2), Sum.inl s(0, 2)} := by
+      = {s(0, 1), s(1, 2), s(0, 2)} := by
   ext e
   rw [Graph.edgeSet_eq_setOfPred_exists_isLink]
   constructor
@@ -293,7 +293,7 @@ private theorem top_fin_three_shadowGraph_edgeSet :
 private theorem top_fin_three_shadowGraph_isKDof_zero {n : ℕ} (hD : 3 ≤ Graph.bodyBarDim n) :
     (⊤ : SimpleGraph (Fin 3)).shadowGraph.IsKDof n 0 := by
   refine Graph.isKDof_zero_of_triangle hD (x := 0) (y := 1) (z := 2)
-    (exy := Sum.inl s(0, 1)) (eyz := Sum.inl s(1, 2)) (exz := Sum.inl s(0, 2))
+    (exy := s(0, 1)) (eyz := s(1, 2)) (exz := s(0, 2))
     (by decide) (by decide) (by decide) ⟨by decide, rfl⟩ ⟨by decide, rfl⟩ ⟨by decide, rfl⟩ ?_
     top_fin_three_shadowGraph_edgeSet
   rw [shadowGraph_vertexSet]
@@ -698,14 +698,14 @@ theorem degree_one_rank_witness :
 copy of the edge `s(a, m)`, then the `d`-th copy of `s(m, b)`. -/
 private def path3 (a m b : Fin 3) (c d : Fin (Graph.bodyHingeMult 3)) :
     WList (Fin 3)
-      ((Sym2 (Fin 3) ⊕ Fin (6 * (Nat.card (Fin 3) - 1) + 1)) × Fin (Graph.bodyHingeMult 3)) :=
-  .cons a (Sum.inl s(a, m), c) (.cons m (Sum.inl s(m, b), d) (.nil b))
+      (Sym2 (Fin 3) × Fin (Graph.bodyHingeMult 3)) :=
+  .cons a (s(a, m), c) (.cons m (s(m, b), d) (.nil b))
 
 /-- Six edge-disjoint spanning trees of `5·K₃`, two paths through each vertex `m`: the `k`-th
 (`k = 0, 1`) takes, on its edge from `m` to `o`, copy `k` when `m < o` and copy `2 + k` when
 `o < m`. So the four paths through an edge take its copies `0` to `3`. -/
 private def treeWalk : Fin 6 → WList (Fin 3)
-    ((Sym2 (Fin 3) ⊕ Fin (6 * (Nat.card (Fin 3) - 1) + 1)) × Fin (Graph.bodyHingeMult 3)) :=
+    (Sym2 (Fin 3) × Fin (Graph.bodyHingeMult 3)) :=
   ![path3 1 0 2 ⟨0, by decide⟩ ⟨0, by decide⟩, path3 1 0 2 ⟨1, by decide⟩ ⟨1, by decide⟩,
     path3 0 1 2 ⟨2, by decide⟩ ⟨0, by decide⟩, path3 0 1 2 ⟨3, by decide⟩ ⟨1, by decide⟩,
     path3 0 2 1 ⟨2, by decide⟩ ⟨2, by decide⟩, path3 0 2 1 ⟨3, by decide⟩ ⟨3, by decide⟩]
@@ -723,7 +723,7 @@ theorem molecule_generic_square_packing_witness :
       (⊤ : SimpleGraph (Fin 3)).square.IsInfinitesimallyRigid p := by
   have hV : V((⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3) = Set.univ := rfl
   have hL : ∀ e x y, (⊤ : SimpleGraph (Fin 3)).shadowGraph.IsLink e x y ↔
-      x ≠ y ∧ Sum.inl s(x, y) = e := fun _ _ _ ↦ Iff.rfl
+      x ≠ y ∧ s(x, y) = e := fun _ _ _ ↦ Iff.rfl
   have hP : ∀ i, ((⊤ : SimpleGraph (Fin 3)).shadowGraph.mulTilde 3).IsPath (treeWalk i) := by
     intro i
     fin_cases i <;> simp [treeWalk, path3, Graph.cons_isPath_iff, hV, hL]
