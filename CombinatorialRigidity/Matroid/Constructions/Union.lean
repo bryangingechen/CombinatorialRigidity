@@ -605,10 +605,11 @@ theorem Union_rk_eq [DecidableEq α] [Finite α] [Fintype ι] (Ms : ι → Matro
     rw [hcard Yf (Finset.coe_subset.mp hYsub)]
     have := hle Yf (Finset.coe_subset.mp hYsub); convert this using 2
 
-/-- **The independence criterion for a matroid union** (`thm:matroid-partition-rank`; Edmonds
-1965, Theorem 1, for a family): `X` is independent in `Matroid.Union Ms` iff every `Y ⊆ X`
-satisfies `|Y| ≤ ∑ᵢ r_{Mᵢ}(Y)`. Proved from `Union_rk_eq` as `Union_pow_indep_iff_count` is
-from `Union_pow_rk_eq`. -/
+/-- **The independence criterion for a matroid union** (`thm:matroid-partition-rank`; the
+matroid-union theorem of Nash-Williams and Edmonds, whose case of `k` copies of one matroid is
+Edmonds 1965, Theorem 1, `Union_pow_indep_iff_count`): `X` is independent in `Matroid.Union Ms`
+iff every `Y ⊆ X` satisfies `|Y| ≤ ∑ᵢ r_{Mᵢ}(Y)`. Proved from `Union_rk_eq` as
+`Union_pow_indep_iff_count` is from `Union_pow_rk_eq`. -/
 theorem Union_indep_iff_count [DecidableEq α] [Finite α] [Fintype ι] (Ms : ι → Matroid α)
     {X : Set α} :
     (Matroid.Union Ms).Indep X ↔ ∀ Y ⊆ X, Y.ncard ≤ ∑ i, (Ms i).rk Y := by

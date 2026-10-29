@@ -92,7 +92,8 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
 - [x] **U2. S24** (landed: `Matroid.Union_rk_eq` and `Matroid.Union_indep_iff_count` in
   `Union.lean`, both pinned on `thm:matroid-partition-rank`, whose note is dropped; the
   independence proof is `Union_pow_indep_iff_count`'s with the sum in place of `k * rk`, no shorter
-  route tried; the file header credits Nelson's port as before) (`F-051`). `Matroid.Union_rk_eq`, the rank of every `X` in the union of a finite
+  route tried; the file header credits Nelson's port as before; the criterion's credit corrected at
+  verification to the matroid-union theorem, Edmonds 1965 being its `k`-copies case) (`F-051`). `Matroid.Union_rk_eq`, the rank of every `X` in the union of a finite
   family (proved: `Union_pow_rk_eq`'s proof without its `Finset.sum_const`), and
   `Matroid.Union_indep_iff_count`,
   `(Matroid.Union Ms).Indep X ↔ ∀ Y ⊆ X, Y.ncard ≤ ∑ i, (Ms i).rk Y`, by
