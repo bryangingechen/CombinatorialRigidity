@@ -841,6 +841,48 @@ ScrewSpace carrier).
   which `case_II_realization_all_k` then calls; `case_II_placement_eq612`, dead and unmeetable in
   Cases II and III, deleted with the repin (the deletion gate). **Needs a compiler-checked spike
   first**: a route-composition question inside a ~600-line proof in `CaseII.lean`, zone. 2 commits.
+  - **U12's spike** (41e's item *U12, spike*; 2026-10-29; Claude Opus 5.5, at `9c67712f`).
+    Evidence: `notes/reconcile-formal/CaseIIPlacementWitness.lean` (`lake lean`: no errors or
+    warnings, its three `#print axioms` the three standard axioms; `#lint` on a copy: no errors in 3
+    declarations), in `ReconCaseIIPlacement`. **Verdict: the route composes with no `sorry`, and the
+    node as stated is what the lemma carries.** The count, in `PanelHingeFramework`
+    (`ofNormals`, `finrank`, `span` short for their full names):
+    `theorem case_II_placement_rank [DecidableEq α] [Finite α] [Finite β] (G : Graph α β)
+    {v a b : α} {e_a e_b e₀ : β} (hav : a ≠ v) (hbv : b ≠ v) (hG_ea : G.IsLink e_a v a)
+    (hG_eb : G.IsLink e_b v b) (hclv : ∀ e x, G.IsLink e v x → e = e_a ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G.removeVertex v)) (ends : β → α × α) (hlinks : RecordsLinks G ends)
+    (endsv : β → α × α) (hlinksv : RecordsLinks (G.splitOff v a b e₀) endsv)
+    {q : α × Fin (k + 2) → K} (hne : ∀ e, (G.splitOff v a b e₀).IsLink e (endsv e).1 (endsv e).2 →
+    (ofNormals (G.splitOff v a b e₀) endsv q).toBodyHinge.supportExtensor e ≠ 0) {N : ℕ}
+    (hN : N ≤ finrank K (span K (ofNormals (G.splitOff v a b e₀) endsv q).toBodyHinge.rigidityRows))
+    {t : K} (ht : t ≠ 0) (q₀ : α × Fin (k + 2) → K) (hq₀ : q₀ = fun p => if p.1 = v then
+    ((fun i => q (a, i)) + t • (fun i => q (b, i))) p.2 else q p) : (∀ e, G.IsLink e (ends e).1
+    (ends e).2 → (ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0) ∧
+    N + (screwDim k - 1) ≤ finrank K (span K (ofNormals G ends q₀).toBodyHinge.rigidityRows)`.
+    The node's form `case_II_placement` takes `hrig : (ofNormals (G.splitOff v a b e₀) endsv
+    q).toBodyHinge.IsInfinitesimallyRigidOn V(G.splitOff v a b e₀)` for `N` and `hN`, and concludes
+    `∃ s, (∀ i ∈ s, G.IsLink i.1 (ends i.1).1 (ends i.1).2) ∧ Nat.card s = screwDim k *
+    (V(G).ncard - 1) - 1 ∧ LinearIndependent K (fun i : s =>
+    (ofNormals G ends q₀).toBodyHinge.panelRow ends i)` (`finrank_span_rigidityRows_of_rigidOn`,
+    `exists_independent_panelRow_subfamily_of_le_finrank`).
+    - *The call site.* In `case_II_realization_all_k`, after step 6 (`hNrank_q`) and step 9's
+      `hne_q` (moved up): `obtain ⟨hne_G, hcount⟩ := case_II_placement_rank G hav hbv hG_ea hG_eb
+      hclv (Graph.notMem_edgeSet_removeVertex he₀ v) ends (PanelHingeFramework.recordsLinks_endsOf
+      G) Q.ends hQrec hne_q hNrank_q one_ne_zero q₀ rfl`, with `q₀ = q[v ↦ n_a + 1 • n_b]`. Steps 15
+      and 20 stay, step 19 becomes `sub_toNat_eq_of_add_pred_eq` and `hcount`, and `hgab` and
+      `hrec'` go: the proof falls from about 710 lines to 290, its statement unchanged (the
+      witness's `example`).
+    - *For U12's build.* The node's hypotheses are the lemma's, with the selectors,
+      `e₀ ∉ E(G − v)`, `a, b ≠ v` and the degree-two closure as carrier data; `q(a)`, `q(b)`
+      independent comes from the nondegenerate hinge of `ab` (the old pin's `hgab` goes), and
+      `t ≠ 0` serves only the hinge of `va`. The route uses neither
+      `exists_independent_panelRow_transport` (`lem:case-II-placement-old-rows`) nor
+      `_subfamily_of_rigidOn_linking`: the rows of `G_v` enter through the row space, their hinges
+      equal up to sign, as in `lem:case-II-realization`'s proof. The transport lemma's one caller is
+      `case_II_placement_eq612`, so the deletion leaves it uncalled (kept pinned or retired: U12's
+      call), and the node's `\uses` follow the route. `case_II_placement_eq612` is called nowhere
+      (tree-wide `git grep`, bare name): its declaration, two docstrings (`CaseII.lean:294`,
+      `GenericityDevice.lean:258`), the node's pin, ROADMAP (§22's history) and the notes.
 - **Close**: the ledger's remaining `reported` and `left` entries given dispositions and ROADMAP's
   RECONCILE bullet compressed (`notes/Reconcile.md` §3), if UNSTATED is Phase 41's last sub-phase.
 
@@ -1014,7 +1056,7 @@ dropped, `hsplit` given `P` at every admissible label, in 41e before U4.
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
 | **RELABEL** | 41d (opened and closed 2026-10-29 with the PI, §1i) | done: the bound on the edge labels (`hcard`, `hfresh`) dropped from the six main results that carried it (§1h.2), by route B, a transport at the boundary with the induction untouched (§1i.1; §2's *RELABEL's recon*): `embedEdges` moved up with minimality through deficiencies (B1), the pullbacks and KT Theorems 5.5 and 5.6 without the bound (B2), the cascade, the blueprint and `formalization.yaml` (B3); and R, a read-only recon of dropping `hfresh` from `minimal_kdof_reduction` (§1i.3; §2's *Item R's recon*: route A's combinatorial half, proved in a witness, 1 commit, for the PI) (`notes/Phase41d.md`) | 7, the open, a corrective and the close included (planned 7–10) |
-| **UNSTATED** | 41e (opened 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; item R's build before U4, so U4 is stated without `hfresh` (§1j.1); the rows form restated without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge repointed, riding on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped just before U10, as PAD (§1j.3); `def:dof-generic` needs its own recon (done: §2, under U11) and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) (`notes/Phase41e.md`) | 18–24, the open and the close included (the recon's 15–21, plus R's build, PAD and M1K, §1k; the report: 13–23) |
+| **UNSTATED** | 41e (opened 2026-10-29 with the PI, §1j; Phase 41's last sub-phase) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; item R's build before U4, so U4 is stated without `hfresh` (§1j.1); the rows form restated without `hfresh` and `thm:theorem-55-6-rows`'s `\uses` edge repointed, riding on U6 (§1j.2, §1j.4); `G.shadowGraph`'s padding dropped just before U10, as PAD (§1j.3); `def:dof-generic` needs its own recon (done: §2, under U11) and S3 a spike (done: §2, under U12); only S3 touches carrier code (`case_II_placement_eq612`) (`notes/Phase41e.md`) | 18–24, the open and the close included (the recon's 15–21, plus R's build, PAD and M1K, §1k; the report: 13–23) |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;

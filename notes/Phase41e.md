@@ -5,14 +5,18 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 (here §1h.1, the scope, §1j, the open, and §1k, after U11's recon) and UNSTATED's open recon are in
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean`, for item R and U4
-`notes/reconcile-formal/ReductionWitness.lean`, and for U11 `DofGenericWitness.lean`. Fifteen build items, two recons, a spike and the
-close (planned 18–24 commits, the open included); U1–U11, R, PAD, U11's recon and M1K have
-landed. Next: U12's spike, S3's route.
+`notes/reconcile-formal/ReductionWitness.lean`, for U11 `DofGenericWitness.lean`, and for U12
+`CaseIIPlacementWitness.lean`. Fifteen build items, two recons, a spike and the close (planned
+18–24 commits, the open included); U1–U11, R, PAD, U11's recon, M1K and U12's spike have landed.
+Next: U12's build, S3, transcribed from the spike's witness.
 
 ## Current state
 
-**The next concrete commit is U12's spike** (*Hand-off*); U1–U11, R, PAD, U11's recon and M1K
-have landed. M1K moved M1, the `main_results` row, to
+**The next concrete commit is U12's build** (*Hand-off*); U1–U11, R, PAD, U11's recon, M1K and
+U12's spike have landed. The spike compiled S3's route with no `sorry` (design doc §2, under U12):
+the count of `case_II_realization_all_k`'s steps 7–18 extracted as `case_II_placement_rank`, the
+node as stated as `case_II_placement`, and the caller rewritten to call the first; the node needs
+no restatement. M1K moved M1, the `main_results` row, to
 `isInfinitesimallyRigidOn_ofHinge_isMaxRankHingePoints_iff_spanningTrees` (KT's genericity, §1k.2);
 the count stays 20, its axioms the three standard ones. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
@@ -126,16 +130,19 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   (U11's `dof_ofHinge_of_isMaxRankHingePoints`, `dof_eq_zero_iff`). The generic forms stay, second
   pins of `cor:bodyhinge-generic-rigid` and `-tree-packing`, both restated and moved after
   `cor:dof-generic-realization`. The three `Nonvacuity.lean` witnesses repointed and renamed.
-- [ ] **U12, spike. S3's route** (compiler-checked, read-only): in `CaseII.lean` (zone), the count
-  in steps 7–14 of `case_II_realization_all_k`'s proof (`:295`, about 710 lines) extracted as a
-  lemma, a realization of `G_v^{ab}` of rank `N` giving `rank R(G, q₀) ≥ N + D − 1`
-  (`D(|V(G)| − 1) − 1` at a rigid one), and the proof calling it, compiled. A committed witness if
-  it settles the route. 0–1 commits.
+- [x] **U12, spike. S3's route** (landed: `CaseIIPlacementWitness.lean`, design doc §2 under U12):
+  `case_II_placement_rank` (rank `N` of `G_v^{ab}` gives nondegenerate hinges of `(G, q₀)` and rank
+  `≥ N + D − 1`), `case_II_placement` (the node as stated) and `case_II_realization_all_k` calling
+  the first at `t = 1`, its statement unchanged; no `sorry`, standard axioms.
 - [ ] **U12. S3** (`F-150`; the dead pin, `F-152`'s part). A declaration for
-  `lem:case-II-realization-placement` as stated, from a realization of `G_v^{ab}`: the spike's
-  lemma, which `case_II_realization_all_k` then calls; `case_II_placement_eq612`
-  (`CaseII.lean:67`), dead and unmeetable in Cases II and III, deleted with the repin under the
-  deletion gate (its mention in `GenericityDevice.lean:258`'s docstring included). 2 commits.
+  `lem:case-II-realization-placement` as stated, from a realization of `G_v^{ab}`: the witness's
+  `case_II_placement_rank` and `case_II_placement` transcribed into `CaseII.lean` in
+  `PanelHingeFramework`, and `case_II_realization_all_k` rewritten to call the first;
+  `case_II_placement_eq612` (`CaseII.lean:67`), uncalled and unmeetable in Cases II and III,
+  deleted with the repin under the deletion gate (`GenericityDevice.lean:258`'s and the file
+  header's mentions included). The node's `\uses`, its fmlnote and `case-ii.tex`'s *One row short*
+  follow the route; `exists_independent_panelRow_transport`, left uncalled, kept pinned or retired.
+  1 commit (planned 2: the witness is the build).
 - [ ] **Close**, a full-phase close (Phase 41 and the RECONCILE program,
   `PHASE-BOUNDARIES.md` *When this commit closes a phase*): the gates (whole-project build with 0
   warnings, `lake lint`, the blueprint gates, the main results' axioms against 41d's close run,
@@ -156,16 +163,15 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Blockers / open questions
 
-- None blocking. U12's spike may return to the PI, if the route does not compose (U12's size
-  moves with it).
+- None. U12's spike composed, with the node's statement as written: nothing goes to the PI.
 
 ## Hand-off / next phase
 
-**U12's spike** (checklist item *U12, spike*), compiler-checked and read-only: in `CaseII.lean`
-(zone), extract the count in steps 7–14 of `case_II_realization_all_k`'s proof (`:295`) as a
-lemma (a realization of `G_v^{ab}` of rank `N` gives `rank R(G, q₀) ≥ N + D − 1`), and compile the
-proof calling it. A committed witness if it settles the route; it may return to the PI if the
-route does not compose (*Blockers*). Then U12 itself (2 commits), then the close.
+**U12's build** (checklist item *U12*): transcribe `CaseIIPlacementWitness.lean` into
+`CaseII.lean` (`lake lean` it first): `case_II_placement_rank` and `case_II_placement` in place of
+`case_II_placement_eq612`, and the witness's `case_II_realization_all_k` body; repin
+`lem:case-II-realization-placement` on `case_II_placement` with the deletion gate (design doc §2,
+under U12, *For U12's build*). One commit, the Lean and the repin together; then the close.
 
 ## Decisions made during this phase
 
