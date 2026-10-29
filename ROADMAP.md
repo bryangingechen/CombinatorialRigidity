@@ -1293,7 +1293,7 @@ With them, as the PI decided: KT Theorem 4.9's reduction principle drops its lab
 its sequence form is stated, so the sequence assumes nothing of the labels; a form of Theorem 5.6
 that nothing calls drops its supply too; and the molecule's multigraph loses the spare labels it
 carried for the old bound. Its close closes Phase 41 and the RECONCILE program, and the loop stops for the PI's push.
-**Next**: 41e's item U1, the pebble game's blocking witness. Detail →
+**Next**: 41e's item U2 (U1, the pebble game's blocking witness, has landed), the matroid union's rank formula. Detail →
 `notes/Phase41a.md`, `notes/Phase41b.md`, `notes/Phase41c.md`, `notes/Phase41d.md`,
 `notes/Phase41e.md` + `notes/Phase41-design.md`.
 

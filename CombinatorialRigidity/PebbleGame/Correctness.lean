@@ -604,6 +604,27 @@ theorem runPebbleGameWith_correct [Fintype V]
   · rintro ⟨_, hD⟩
     exact runPebbleGameWith_sound toSucc h_toSucc edges hpairwise himg hD
 
+/-- **A failure witness of the pebble game is a blocking witness** (`thm:pebble-game-correct`
+(2)). In the matroidal regime `ℓ < 2k`, a `.inl w` return of `runPebbleGameWith` from the empty
+orientation on a list of edges of `G` (only `hmem` of the list's hypotheses is needed) gives that
+`w.V'` is a blocking witness for `G` (`SimpleGraph.IsBlockingWitness`), by
+`runPebbleGameWith_witness_bridges` and `WorkhorseWitness.certifies_against`. -/
+theorem runPebbleGameWith_isBlockingWitness [Fintype V]
+    {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ} (h_matroidal : ℓ < 2 * k)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    (edges : List (V × V)) (hmem : ∀ p ∈ edges, s(p.1, p.2) ∈ G.edgeFinset)
+    {w : WorkhorseWitness k ℓ V}
+    (h : (empty : PartialOrientation V).runPebbleGameWith k ℓ Reachable.empty
+      toSucc h_toSucc edges = .inl w) :
+    G.IsBlockingWitness k ℓ w.V' := by
+  have hsub : (empty : PartialOrientation V).underline ⊆ G.edgeFinset := by
+    rw [underline_empty]; exact Finset.empty_subset _
+  obtain ⟨h_uv_in, h_sub⟩ :=
+    runPebbleGameWith_witness_bridges toSucc h_toSucc edges Reachable.empty hmem hsub h
+  exact w.certifies_against h_matroidal h_uv_in h_sub
+
 end Correctness
 
 end PartialOrientation

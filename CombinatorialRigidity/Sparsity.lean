@@ -103,6 +103,17 @@ phrased additively to avoid `ℕ`-subtraction. -/
 @[expose] def IsSparse (k ℓ : ℕ) : Prop :=
   ∀ s : Finset V, ℓ ≤ k * s.card → (G.edgesIn ↑s).ncard + ℓ ≤ k * s.card
 
+/-- A finite vertex set `s` is a `(k, ℓ)`-**blocking witness** for `G` if it spans too many edges
+for `G` to be `(k, ℓ)`-sparse: `ℓ ≤ k * #s` yet `k * #s < #E(s) + ℓ`. This is the pair a reject
+verdict of the pebble game carries. -/
+@[expose] def IsBlockingWitness (k ℓ : ℕ) (s : Finset V) : Prop :=
+  ℓ ≤ k * s.card ∧ k * s.card < (G.edgesIn (↑s : Set V)).ncard + ℓ
+
+/-- A graph with a blocking witness is not sparse. -/
+theorem not_isSparse_of_isBlockingWitness {k ℓ : ℕ} {s : Finset V}
+    (h : G.IsBlockingWitness k ℓ s) : ¬ G.IsSparse k ℓ :=
+  fun hG => by have := hG s h.1; have := h.2; omega
+
 /-- A simple graph `G` is `(k, ℓ)`-tight if it is `(k, ℓ)`-sparse and its total edge count is
 exactly `k * #V − ℓ`. -/
 @[expose] def IsTight (k ℓ : ℕ) : Prop :=

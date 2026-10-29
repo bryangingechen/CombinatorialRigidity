@@ -483,6 +483,8 @@ following kind.
 
 \begin{definition}[Blocking witness]
   \label{def:blockingWitness}
+  \lean{SimpleGraph.IsBlockingWitness, SimpleGraph.not_isSparse_of_isBlockingWitness}
+  \leanok
   \uses{def:isSparse}
   Let $G$ be a simple graph on $V$, and let $k$ and $\ell$ be
   non-negative integers. A \emph{blocking witness} for $G$ is a finite
@@ -924,9 +926,10 @@ $N^+_D(a)$, so that it applies to each formal form of the game
 
 \begin{theorem}[Correctness of the pebble game]
   \label{thm:pebble-game-correct}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_correct}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_correct,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_isBlockingWitness}
   \leanok
-  \uses{def:runPebbleGame, def:workhorseWitness, def:isSparse,
+  \uses{def:runPebbleGame, def:workhorseWitness, def:isSparse, def:blockingWitness,
     thm:pebble-game-soundness, lem:runPebbleGame-underline-eq,
     lem:workhorseWitness-certifies}
   Let $V$ be a finite set, let $G$ be a simple graph on $V$, and let $k$

@@ -6,12 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); none has landed. Next: item U1, S25 with
-`def:blockingWitness`.
+close (planned 17–23 commits, the open included); U1 has landed. Next: item U2, S24.
 
 ## Current state
 
-**The next concrete commit is item U1** (*Hand-off*); no item has landed. Each claim of the full
+**The next concrete commit is item U2** (*Hand-off*); U1 has landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -76,7 +75,10 @@ is the fragility zone (`Molecular/AlgebraicInduction/`, `Molecular/RigidityMatri
 ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean`) and
 `Graph.Recon41Reduction` (`ReductionWitness.lean`).
 
-- [ ] **U1. S25 and `def:blockingWitness`** (`F-041`; `F-038`, `F-008`'s part). New
+- [x] **U1. S25 and `def:blockingWitness`** (landed: `SimpleGraph.IsBlockingWitness` and
+  `not_isSparse_of_isBlockingWitness` in `Sparsity.lean`, the pebble-game lemma in
+  `Correctness.lean` with a `[Fintype V]` binder as `runPebbleGameWith_correct`; the node pinned
+  `\leanok`, `thm:pebble-game-correct` gains the pin and a `\uses`) (`F-041`; `F-038`, `F-008`'s part). New
   `SimpleGraph.IsBlockingWitness G k ℓ s :=
   ℓ ≤ k * s.card ∧ k * s.card < (G.edgesIn ↑s).ncard + ℓ` beside `IsSparse`
   (`Sparsity.lean:103`), with `not_isSparse_of_isBlockingWitness`; and
@@ -268,11 +270,11 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**Item U1**: add `SimpleGraph.IsBlockingWitness` with `not_isSparse_of_isBlockingWitness` beside
-`IsSparse` in `Sparsity.lean`, and `PartialOrientation.runPebbleGameWith_isBlockingWitness` in
-`PebbleGame/Correctness.lean`, transcribed from `UnstatedWitness.lean`'s S25 section; pin
-`def:blockingWitness` (green) and add the pin to `thm:pebble-game-correct`. It goes first as it is
-proved in the witness, lies outside the zone and touches no file another item edits. Then U2.
+**Item U2**: `Matroid.Union_rk_eq` and `Matroid.Union_indep_iff_count` in
+`Matroid/Constructions/Union.lean` (beside `Union_pow_rk_eq` at `:562` and
+`Union_pow_indep_iff_count` at `:588`; credit Peter Nelson's `Matroid`), from
+`UnstatedWitness.lean`'s S24 section; pin both on `thm:matroid-partition-rank` and drop its note.
+Then U3.
 
 ## Decisions made during this phase
 
