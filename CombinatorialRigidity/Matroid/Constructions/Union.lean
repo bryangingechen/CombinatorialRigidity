@@ -23,7 +23,8 @@ Modifications made in the port:
   and the rank formula of the binary union (`matroid_partition'` /
   `matroid_partition_eRk'`).
 * Added in this project: the rank formula for an indexed family (`Union_rank_eq`), its
-  per-set forms (`adjMap_rk_eq`, `Union_pow_rk_eq`), and Edmonds' matroid-partition
+  per-set forms (`adjMap_rk_eq`, `Union_rk_eq`, `Union_pow_rk_eq`), the independence criterion
+  for a family (`Union_indep_iff_count`), and Edmonds' matroid-partition
   theorem (`Union_pow_indep_iff_count`).
 -/
 module
@@ -63,6 +64,9 @@ matroid-union theorem of Nash-Williams and Edmonds), and Edmonds' matroid-partit
   family, and its per-set form for `k` copies of one matroid (`thm:matroid-partition-rank`);
   `Matroid.adjMap_rank_eq` / `Matroid.adjMap_rk_eq` — the rank of the `adjMap`-matroid they
   rest on.
+* `Matroid.Union_rk_eq`, `Matroid.Union_indep_iff_count` — the rank of every `X` in a union of
+  a family, and the independence criterion `|Y| ≤ ∑ᵢ r_{Mᵢ}(Y)` for every `Y ⊆ X`
+  (`thm:matroid-partition-rank`).
 * `Matroid.Union_pow_indep_iff_count` — a set is independent in the `k`-fold
   union `Matroid.Union (fun _ : Fin k ↦ M)` iff every subset `Y` satisfies
   `|Y| ≤ k · r_M(Y)`: Edmonds' matroid-partition theorem (`thm:matroid-partition`).
@@ -577,6 +581,59 @@ theorem Union_pow_rk_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) 
   · obtain ⟨Yf, rfl⟩ := (Y.toFinite).exists_finset_coe
     rw [hcard Yf (Finset.coe_subset.mp hYsub)]
     have := hle Yf (Finset.coe_subset.mp hYsub); convert this using 2
+
+/-- **The rank of a set in a matroid union** (`thm:matroid-partition-rank`, the family form at
+every `X`; Nash-Williams, Edmonds, Oxley 2011, (11.3.3)): for any `X`, the rank of `X` in
+`Matroid.Union Ms` attains `min_{Y ⊆ X} (∑ᵢ r_{Mᵢ}(Y) + |X \ Y|)`. The proof of
+`Union_pow_rk_eq` without its `Finset.sum_const` step (the case of `k` equal factors). -/
+theorem Union_rk_eq [DecidableEq α] [Finite α] [Fintype ι] (Ms : ι → Matroid α) (X : Set α) :
+    (∃ Y ⊆ X, (∑ i, (Ms i).rk Y) + (X \ Y).ncard ≤ (Matroid.Union Ms).rk X) ∧
+    (∀ Y ⊆ X, (Matroid.Union Ms).rk X ≤ (∑ i, (Ms i).rk Y) + (X \ Y).ncard) := by
+  have : Fintype α := Fintype.ofFinite α
+  classical
+  obtain ⟨Xf, rfl⟩ := (X.toFinite).exists_finset_coe
+  simp only [Matroid.Union]
+  obtain ⟨⟨Y, hYsub, hY⟩, hle⟩ :=
+    adjMap_rk_eq (Matroid.sum' Ms) (fun x y ↦ x.2 = y) Xf
+  simp_rw [sum'_rk_eq_rk_sum, preimage_ofPred_eq, exists_eq_right',
+    Finset.setOfPred_mem] at hY hle
+  have hcard : ∀ Y : Finset α, Y ⊆ Xf → ((Xf : Set α) \ (Y : Set α)).ncard = (Xf \ Y).card := by
+    intro Y _; rw [← Finset.coe_sdiff, ncard_coe_finset]
+  refine ⟨⟨Y, by exact_mod_cast Finset.coe_subset.mpr hYsub, ?_⟩, fun Y hYsub ↦ ?_⟩
+  · rw [hcard Y hYsub]; convert hY using 2
+  · obtain ⟨Yf, rfl⟩ := (Y.toFinite).exists_finset_coe
+    rw [hcard Yf (Finset.coe_subset.mp hYsub)]
+    have := hle Yf (Finset.coe_subset.mp hYsub); convert this using 2
+
+/-- **The independence criterion for a matroid union** (`thm:matroid-partition-rank`; Edmonds
+1965, Theorem 1, for a family): `X` is independent in `Matroid.Union Ms` iff every `Y ⊆ X`
+satisfies `|Y| ≤ ∑ᵢ r_{Mᵢ}(Y)`. Proved from `Union_rk_eq` as `Union_pow_indep_iff_count` is
+from `Union_pow_rk_eq`. -/
+theorem Union_indep_iff_count [DecidableEq α] [Finite α] [Fintype ι] (Ms : ι → Matroid α)
+    {X : Set α} :
+    (Matroid.Union Ms).Indep X ↔ ∀ Y ⊆ X, Y.ncard ≤ ∑ i, (Ms i).rk Y := by
+  set N := Matroid.Union Ms with hN
+  obtain ⟨⟨Y₀, hY₀sub, hY₀⟩, hle⟩ := Union_rk_eq Ms X
+  have hfin : X.Finite := X.toFinite
+  have hrk_le : N.rk X ≤ X.ncard := by
+    obtain ⟨Ef, rfl⟩ := hfin.exists_finset_coe
+    rw [ncard_coe_finset]; exact N.rk_le_finset_card Ef
+  have hindep : N.Indep X ↔ X.ncard ≤ N.rk X := by
+    rw [indep_iff_eRk_eq_encard_of_finite hfin, ← cast_rk_eq_eRk_of_finite _ hfin,
+      ← hfin.cast_ncard_eq, Nat.cast_inj]
+    omega
+  have hsplit : ∀ Y ⊆ X,
+      (Y.ncard ≤ ∑ i, (Ms i).rk Y ↔ X.ncard ≤ (∑ i, (Ms i).rk Y) + (X \ Y).ncard) := by
+    intro Y hY
+    have : (X \ Y).ncard + Y.ncard = X.ncard := by
+      rw [ncard_sdiff_add_ncard_of_subset hY hfin]
+    omega
+  rw [hindep]
+  constructor
+  · intro hge Y hY
+    rw [hsplit Y hY]; exact le_trans hge (hle Y hY)
+  · intro hcount
+    exact le_trans ((hsplit Y₀ hY₀sub).mp (hcount Y₀ hY₀sub)) hY₀
 
 /-- **Edmonds' matroid-partition theorem** (`thm:matroid-partition`; Edmonds 1965,
 Theorem 1): a set `E'` is independent in the `k`-fold union `Matroid.Union (fun _ : Fin k ↦ M)`

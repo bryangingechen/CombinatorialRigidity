@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1 has landed. Next: item U2, S24.
+close (planned 17–23 commits, the open included); U1 and U2 have landed. Next: item U3, S23.
 
 ## Current state
 
-**The next concrete commit is item U2** (*Hand-off*); U1 has landed. Each claim of the full
+**The next concrete commit is item U3** (*Hand-off*); U1 and U2 have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -89,7 +89,10 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   `WorkhorseWitness.certifies_against` (`:500`). Proved in the witness. `def:blockingWitness`
   (`pebble-game.tex`, red) pinned and `\leanok`; `thm:pebble-game-correct` gains the pin. Outside
   the zone. 1 commit.
-- [ ] **U2. S24** (`F-051`). `Matroid.Union_rk_eq`, the rank of every `X` in the union of a finite
+- [x] **U2. S24** (landed: `Matroid.Union_rk_eq` and `Matroid.Union_indep_iff_count` in
+  `Union.lean`, both pinned on `thm:matroid-partition-rank`, whose note is dropped; the
+  independence proof is `Union_pow_indep_iff_count`'s with the sum in place of `k * rk`, no shorter
+  route tried; the file header credits Nelson's port as before) (`F-051`). `Matroid.Union_rk_eq`, the rank of every `X` in the union of a finite
   family (proved: `Union_pow_rk_eq`'s proof without its `Finset.sum_const`), and
   `Matroid.Union_indep_iff_count`,
   `(Matroid.Union Ms).Indep X ↔ ∀ Y ⊆ X, Y.ncard ≤ ∑ i, (Ms i).rk Y`, by
@@ -271,11 +274,10 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**Item U2**: `Matroid.Union_rk_eq` and `Matroid.Union_indep_iff_count` in
-`Matroid/Constructions/Union.lean` (beside `Union_pow_rk_eq` at `:562` and
-`Union_pow_indep_iff_count` at `:588`; credit Peter Nelson's `Matroid`), from
-`UnstatedWitness.lean`'s S24 section; pin both on `thm:matroid-partition-rank` and drop its note.
-Then U3.
+**Item U3** (S23, `F-083`): `Graph.circuit_diff_isSpanningTreePacking` in
+`Molecular/Induction/Operations.lean`, beside `circuit_induces_isTight` (`:164`), from
+`UnstatedWitness.lean`'s `S23Target` (stated only); pin it as `lem:circuit-induces-rigid`'s third
+pin and drop its note (checklist item U3). Then R.
 
 ## Decisions made during this phase
 
