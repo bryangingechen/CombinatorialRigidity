@@ -4,7 +4,7 @@
 stays in progress. The phase's design, the PI's decisions (here §1f.4, loops, and §1g, the open)
 and the open's recon are in `notes/Phase41-design.md`; the recon's Lean witness is
 `notes/reconcile-formal/MultigraphWitness.lean`. Every checklist item landed, in 6 commits with the
-open, the re-read and the close. RELABEL's recon is done; next the PI opens 41d (*Hand-off*).
+open, the re-read and the close. The PI opened 41d (RELABEL) next, on 2026-10-29 (*Hand-off*).
 
 ## Current state
 
@@ -48,12 +48,11 @@ target nodes.
 
 ## Hand-off / next phase
 
-**Next: the PI chooses** whether RELABEL is taken, and which of RELABEL and UNSTATED (the claims no
-declaration states; its open's recon in the design doc's §2, 15–21 commits) opens as 41d (§1h.5);
-no letter is minted and no work log exists until then. RELABEL's read-only recon is done (§2,
-*RELABEL's recon*): a transport at the boundary along `β ↪ β ⊕ Fin N`, proved in
+**Next: 41d (RELABEL)**, opened 2026-10-29 with the PI (the design doc's §1i), work log
+`notes/Phase41d.md`: a transport at the boundary along `β ↪ β ⊕ Fin N`, proved in
 `notes/reconcile-formal/RelabelWitness.lean`, drops the bound on the edge labels from the six main
-results carrying it, 6–9 commits. ORIGAMI opens after Phase 41.
+results carrying it; its first item is B1. UNSTATED (the claims no declaration states; its open's
+recon in the design doc's §2) follows, expected as 41e. ORIGAMI opens after Phase 41.
 
 ## Decisions made during this phase
 

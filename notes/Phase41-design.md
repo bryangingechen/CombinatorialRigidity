@@ -16,8 +16,9 @@ and KT Proposition 2.3 is proved as KT state it at every generic hinge-point ass
 MULTIGRAPH arc is compressed to a cited verdict. The same day the PI set UNSTATED's scope, took
 §4(a) into it, and asked for a recon of §4(b), the label bound, now the code RELABEL (§1h, §3);
 UNSTATED's open recon is in §2, and so is RELABEL's (route B, a transport at the boundary, proved
-in a witness; 6–9 commits). **Next:** the PI chooses whether RELABEL is taken, and which of RELABEL
-and UNSTATED opens as 41d (§1h.5; the questions at the end of *RELABEL's recon*).
+in a witness; 6–9 commits). On 2026-10-29 the PI took RELABEL by route B and opened it as **41d**
+(§1i), work log `notes/Phase41d.md`, with a read-only recon of `minimal_kdof_reduction`'s `hfresh`
+as its last item; UNSTATED follows, expected as 41e. **Next:** 41d's item B1.
 
 The phase is the last part of the RECONCILE program (`notes/Reconcile.md`, with its standing rules
 in §2 and the plan of this phase in §3 *The phase*). Its input is PROSE's findings report
@@ -37,9 +38,9 @@ open (§1b), the recons (§2), the sub-phases (§3) and the open questions (§4)
   `k`-dof-graph. So the theorems are vacuous there.
 - Within the same sub-phases: S13, S18, G6 (the generic panel theorem's own row),
   `cor:theorem-55-d3-spanning`, the footprint's docstrings that round 3 moved here, and `F-323` and
-  `F-324`. Then M1 (the multigraph generic body-hinge theorem, JJ 2010 Theorem 6.1) and the claims
-  no declaration states (S22–S25, S31, S3, S16, S19, G5, `F-061`'s forest lemma), with §4(a); and,
-  if the PI takes it after its recon, the label bound dropped from the main results (RELABEL, §1h).
+  `F-324`. Then M1 (the multigraph generic body-hinge theorem, JJ 2010 Theorem 6.1), the label
+  bound dropped from the main results (RELABEL, 41d; §1h, §1i), and the claims no declaration
+  states (S22–S25, S31, S3, S16, S19, G5, `F-061`'s forest lemma), with §4(a).
 
 ## 1. The PI's decisions at the open (2026-10-24)
 
@@ -300,6 +301,38 @@ grows (`Graph α (Option β)` per step), or an infinite one. Mathlib's `Graph α
 deletion, contraction and `induce` in fixed types, which the induction leans on; a growing type moves
 a transport into every step, and an infinite `β` clashes with the families indexed by the whole label
 type under `[Finite β]` (§2). So the fix belongs once, at the boundary: a transport along `β ↪ β'`.
+
+## 1i. The PI's decisions after RELABEL's recon (2026-10-29)
+
+The coordinator put four questions, from *RELABEL's recon* (§2). The PI's answers, verbatim (the
+option descriptions are the coordinator's wording on the question form):
+
+> Q: "RELABEL's recon found that a boundary relabelling (route B) drops the edge-label bound from all six main results that carry it: Theorem 5.5, Theorem 5.6, both molecular conjectures, the generic panel theorem and M1. It is fully compiler-checked, about 6–9 commits, and 23 declarations lose the hypothesis, all strengthenings. Take RELABEL?"
+> A: "Yes, route B (Recommended)" (the option described as: "Transport at the boundary along β ↪ β ⊕ Fin N; the induction keeps hfresh internally. Steps: B1 the embedding and minimality transfer, B2 the pullbacks and the spine, B3 the cascade and texts, plus open and close.")
+
+> Q: "If RELABEL is taken, which sub-phase opens as 41d? The recon recommends RELABEL first: UNSTATED's item U11 (def:dof-generic) builds on the restated HingeGeneric.lean, and U10 then has no bound to meet. No other item depends on the order."
+> A: "RELABEL as 41d (Recommended)" (the option described as: "RELABEL opens now as 41d; UNSTATED follows as 41e with its scope as already decided (full list plus (a)).")
+
+> Q: "KT Theorem 4.9's induction principle (minimal_kdof_reduction, not a main result) also takes hfresh, and route B can't reach it: dropping it would need route A's deficiency-chain rework. Keep hfresh there?"
+> A: "Recon dropping it" (the option described as: "A later recon sizes the deficiency chain's rework under the weaker hypothesis e₀ ∉ E(G − v); comes back to you.")
+
+> Q: "Your earlier "stop for your push at the close" was given for Phase 41's last sub-phase. If RELABEL runs first, what should the loop do when RELABEL closes?"
+> A: "We will stop between phases and also if we start running out of context; I will not push until the end of phase 41 though."
+
+What each answer settles:
+
+1. **RELABEL is taken, by route B, and is 41d** (`notes/Phase41d.md`): the transport at the boundary
+   along `β ↪ β ⊕ Fin N`, the induction keeping `hfresh` inside, in the steps B1–B3 of §2's arc,
+   with the statement changes it lists (each a dropped hypothesis).
+2. **UNSTATED follows, expected as 41e**, with its scope as §1h set it (the full list, with §4(a));
+   its letter is minted at its own open.
+3. **`minimal_kdof_reduction`'s `hfresh` gets a read-only recon item in 41d** that sizes route A's
+   combinatorial half (the deficiency chain under `e₀ ∉ E(G − v)`) and returns to the PI with an
+   estimate before any build. The coordinator places it last, so that its question reaches the PI
+   at the stop between sub-phases.
+4. **The loop stops between sub-phases** (so at 41d's close) and when the coordinator's context
+   runs low. The PI pushes only at Phase 41's close; this supersedes §1h's answer 4 only as to
+   timing between sub-phases.
 
 ## 2. The open's recon (2026-10-24; Claude Opus 5.5, read-only, at `95e2f418`)
 
@@ -728,7 +761,7 @@ Open it before UNSTATED, as 41d: U11 (`def:dof-generic`) waits on the restated `
 *For the PI* (§1h.5): whether RELABEL is taken, with the statement changes above; by which route (B
 recommended; A is unsized and reaches Case III); which of RELABEL and UNSTATED opens as 41d; and, if
 RELABEL is taken, whether `minimal_kdof_reduction` keeps `hfresh` (recommended: no main result needs
-it).
+it). The PI's answers are §1i: route B, as 41d, and a recon of dropping `hfresh` there (41d's item R).
 
 ## 3. Sub-phases, by code
 
@@ -737,8 +770,8 @@ it).
 | **CARRIER** | 41a (closed 2026-10-24) | done: `reaimSub` retired; the link predicate, its lemmas and the fill-in tactic; the four R statements; the spike; the switch (the field, 123 declarations in 27 files) and the footprint's docstrings; `withGraph` restricted; `reaim` deleted with `hC` on links; the two genuine forms merged (`notes/Phase41a.md`) | 9, besides the build-time detour P1–P5 |
 | **RESTATE** | 41b (closed 2026-10-25) | done: `HasGenericFullRankRealization`'s link conjunct and `F-324`'s derivable `hD`s dropped; `IsNonparallel`, and Theorems 5.5 and 5.6 with their `d = 3` instances concluding it for simple `G` (route B, §1c); `molecular_conjecture` on one body or more, hinges on `E(G)`, nonparallel panels (§1d); the multigraph rows and `IsHingeCoplanar` on `E(G)`; `cor:theorem-55-d3-spanning` from `theorem_55_d3`; S1's panel and body-hinge theorems at every generic realization on `G` under `hcard`, one body or more (§1e, §1f.3); G6's row, the twentieth main result; witnesses at the single edge and the triangle; S18 as KT Proposition 2.3, conditional (§1f.1); the scope and degenerate-hinge sentences; the link conjuncts the field makes redundant (`notes/Phase41b.md`) | 23, the open and the close included (planned 13–16) |
 | **MULTIGRAPH** | 41c (closed 2026-10-28) | done: the upper bound asked at the non-loop links (§1f.4); M1, the generic body-hinge theorem (JJ 2010 Theorem 6.1) for every spanning multigraph, loops allowed, from the multigraph Theorem 5.6, with witnesses at the double edge and the double edge with a loop; KT Proposition 2.3 as KT state it, at every generic hinge-point assignment, pinned by `prop:rigidity-matrix-prop11`, its conditional form under `prop:rank-formula-of-motion-bound` (§1f.1) (`notes/Phase41c.md`) | 6, the open, the re-read and the close included (planned 3–5), besides three verification fixups |
-| **UNSTATED** | — (41d or 41e, the PI's choice after RELABEL's recon, §1h.5) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) | 15–21, the open and the close included (the report: 13–23) |
-| **RELABEL** | — (whether it is taken, and its order against UNSTATED, are the PI's, §1h.5) | the bound on the edge labels (`hcard`, `hfresh`) dropped from the main results that carry it (§1h.2). Its recon is done (§2, *RELABEL's recon*): six main results carry it, and 23 declarations' statements would change; route B, a transport at the boundary along `inl : β ↪ β ⊕ Fin N` with the induction untouched, is proved in full by the witness `notes/reconcile-formal/RelabelWitness.lean`, and genericity needs no transport; route A, recycling a label inside the induction, breaks at Case III's chain. Plan B1 (`embedEdges` moved up, minimality through deficiencies), B2 (the pullbacks and Theorems 5.5 and 5.6), B3 (the cascade, the blueprint and `formalization.yaml`) | 6–9, the open and the close included (route B) |
+| **RELABEL** | 41d (opened 2026-10-29 with the PI, §1i) | the bound on the edge labels (`hcard`, `hfresh`) dropped from the main results that carry it (§1h.2), by route B (§1i.1). Its recon (§2, *RELABEL's recon*): six main results carry it, and 23 declarations' statements change; route B, a transport at the boundary along `inl : β ↪ β ⊕ Fin N` with the induction untouched, is proved in full by the witness `notes/reconcile-formal/RelabelWitness.lean`, and genericity needs no transport; route A, recycling a label inside the induction, breaks at Case III's chain. Items B1 (`embedEdges` moved up, minimality through deficiencies), B2 (the pullbacks and Theorems 5.5 and 5.6), B3 (the cascade, the blueprint and `formalization.yaml`), then R, a read-only recon of dropping `hfresh` from `minimal_kdof_reduction` that returns to the PI (§1i.3) (`notes/Phase41d.md`) | 7–10: the arc's 6–9, the open and the close included, and R's record |
+| **UNSTATED** | — (follows RELABEL, expected as 41e; its letter minted at its own open, §1i.2) | the claims no declaration states, the full list (§1h.1), with §4(a): twelve items sized and ordered by its open's recon (§2, *UNSTATED's open recon*), U1–U12; `def:dof-generic` needs its own recon and S3 a spike; only S3 touches carrier code (`case_II_placement_eq612`) | 15–21, the open and the close included (the report: 13–23) |
 
 **Why the switch was one commit** (CARRIER): under the lint gate a field cannot be staged file by
 file without a temporary twin structure, as an unused proof argument fails `unusedArguments`;
@@ -761,6 +794,11 @@ The program closes with the phase: ROADMAP's RECONCILE bullet compressed, and th
 - **Dropping `hcard` from M1 and KT Proposition 2.3** (§2, *MULTIGRAPH's open recon*): the PI
   asked for a read-only recon of one transport that drops the bound from every main result carrying
   it (§1h.2), RELABEL's first item (§3). The recon (§2, *RELABEL's recon*) found route B, a
-  transport at the boundary proved in a witness, at 6–9 commits; the PI decides (§1h.5).
+  transport at the boundary proved in a witness, at 6–9 commits; the PI took route B and opened
+  RELABEL as 41d (§1i.1).
+- **`minimal_kdof_reduction`'s `hfresh`** (KT Theorem 4.9's principle, not a main result; route B
+  cannot reach it, §2): the PI asked for a recon of dropping it (§1i.3), 41d's item R, which sizes
+  route A's combinatorial half (the deficiency chain under `e₀ ∉ E(G − v)`) and returns to the PI
+  before any build.
 - **Relaxing `rigidityMatrix_prop11`'s `hC` to the non-loop links**: in UNSTATED (§1h.2), its item
   U6 (§2, *UNSTATED's open recon*).
