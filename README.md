@@ -212,6 +212,13 @@ declarations were corrected, every main result has a closed witness that
 its hypotheses can all be met, and each claim the chapters made without a
 Lean declaration was given one.
 
+Phase 42, in progress, asks whether the pencil realization theorem holds
+in every dimension. In projective `d`-space the hinges at a body form a
+pencil when they contain a common `(d−3)`-flat and lie in a hyperplane;
+the theorem is formalized at `d = 2` and `d = 3`, and the general case,
+which would imply Katoh–Tanigawa's panel theorem in every dimension,
+starts with a paper check of whether the `d = 3` proof generalizes.
+
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
 cross-cutting design rationale; `TACTICS-GOLF.md` carries idiom / golfing guidance and `TACTICS-QUIRKS.md` covers build-failure rescue.

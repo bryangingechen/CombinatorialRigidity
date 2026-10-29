@@ -120,11 +120,11 @@ attended = true
 done = true
 
 # Attended: new mathematics before its formalization. Queued by the PI on 2026-10-29, ahead of
-# ORIGAMI; it opens with the PI and takes its phase number then. Plan: notes/Strata.md.
+# ORIGAMI, and opened with the PI the same day as Phase 42; its plan is notes/Phase42-design.md.
 [[item]]
 id = "PENCIL-D"
 title = "PENCIL-D: the pencil realization theorem in every dimension"
-note = "notes/Strata.md"
+note = "notes/Phase42-design.md"
 attended = true
 done = false
 

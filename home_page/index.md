@@ -166,7 +166,12 @@ stated above. Phase 41 (closed 2026-10-29) ended a review of the
 blueprint against the Lean: the statements that claimed more or less
 than their Lean declarations were corrected, every main result has a
 closed witness that its hypotheses can all be met, and each claim the
-chapters made without a Lean declaration was given one.
+chapters made without a Lean declaration was given one. Phase 42, in
+progress, asks whether the pencil realization theorem holds in every
+dimension: in projective $d$-space the hinges at a body form a pencil when
+they contain a common $(d-3)$-flat and lie in a hyperplane. The theorem is
+formalized at $d = 2$ and $d = 3$; the general case starts with a paper
+check of whether the $d = 3$ proof generalizes.
 
 ### How the pencil realization theorem is proved
 
@@ -225,6 +230,7 @@ The table below and `ROADMAP.md` carry the fine-grained status.
 |    39 | the pencil realization theorem: reduction to two main-component statements | `Molecular/Molecule/Pencil/` | ✓ |
 |    40 | the pencil realization theorem: the main-component proof of the two statements (and the plane case of Theorems 5.5/5.6) | `Molecular/` | ✓ |
 |    41 | each hinge at the ends of its own edge, built into the panel-hinge framework; the generic rank theorems at every graph; a Lean declaration for each claim the blueprint made without one | `Molecular/` | ✓ |
+|    42 | the pencil realization theorem in every dimension | research first | in progress |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

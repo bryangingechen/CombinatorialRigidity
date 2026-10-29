@@ -1491,7 +1491,7 @@ A driver directory on the base layer, outside the PENCIL arcs. It imports
 catalogued §1 primitives only (`exactcore`, `kbare_common.exact_deficiency`,
 `pitch`'s `klein` / `det4` / `theta_edges`, `hybrid_gates.build_rigidity_extensors`).
 Its per-mode prose is its module docstring, and its reading is
-`notes/Strata.md`, which is also the planning note of the queued PENCIL-D program.
+`notes/Strata.md`, which is also the evidence of PENCIL-D (Phase 42, `notes/Phase42-design.md`).
 
 | invocation | ~time | cited by |
 |---|---|---|

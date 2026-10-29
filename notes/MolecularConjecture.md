@@ -792,9 +792,11 @@ panels and the generic theorems covering every simple graph on one body or more 
 generic body-hinge theorem holds for every multigraph, loops allowed, and KT Proposition 2.3 as KT
 state it (MULTIGRAPH); no main result bounds the edge labels (RELABEL); and each claim no
 declaration stated has one, with KT Proposition 2.3 and the generic body-hinge theorem at KT's own
-genericity (UNSTATED). Summary: ROADMAP §41. Still queued,
+genericity (UNSTATED). Summary: ROADMAP §41. **Phase 42** (PENCIL-D,
+`notes/Phase42-design.md`) opened 2026-10-29 with the PI: the pencil realization theorem in every
+dimension, research first (42a, PD-RECON). Summary: ROADMAP §42. Still queued,
 codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
-conjecture, `notes/Origami.md` — the next phase to open, with the PI), **PIN** (a second,
+conjecture, `notes/Origami.md` — the next phase to open after PENCIL-D, with the PI), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's
 pin-collinear route, re-scoped at 40a's close; unplanned), **UPSTREAM** (mathlib upstreaming) and
 **VERSO** (the paused verso-blueprint port).

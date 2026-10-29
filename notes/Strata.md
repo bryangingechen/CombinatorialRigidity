@@ -1,13 +1,12 @@
-# STRATA — body-hinge rank on realization subloci (research note; PENCIL-D's planning note)
+# STRATA — body-hinge rank on realization subloci (research note; PENCIL-D's evidence)
 
-**Status:** queued as **PENCIL-D** (the PI, 2026-10-29): prove the pencil realization theorem in
-every `Pᵈ` and formalize it over the next few phases, ahead of ORIGAMI; unopened, its number
-minted on open (*The PENCIL-D program*). Three sessions with the PI after Phase 40: the first found
+**Status:** its `Pᵈ` pencil part opened as **Phase 42** (PENCIL-D, the PI, 2026-10-29; plan
+`notes/Phase42-design.md`). Three sessions with the PI after Phase 40: the first found
 Results 1–10; the second checked the literature (*Literature*) and ran Results 9–11's tests; the
-third set the `Pᵈ` picture, Results 12–19. Next concrete task: PD-RECON's step table (*The PENCIL-D
-program*). No Lean, no blueprint yet. Evidence driver: `notes/scripts/strata/strata.py` (exact ℚ,
-seeded). Editing discipline as for phase notes (≤ 8-line entries). `HARNESS.md` *Evidence* and
-*Reproducibility* bind this work; it is not an attack track.
+third set the `Pᵈ` picture, Results 12–19. Next concrete task: PD-RECON's step table, Phase
+42a's (`notes/Phase42a.md`). No Lean, no blueprint here. Evidence driver:
+`notes/scripts/strata/strata.py` (exact ℚ, seeded). Editing discipline as for phase notes (≤ 8-line
+entries). `HARNESS.md` *Evidence* and *Reproducibility* bind this work; it is not an attack track.
 
 ## The question
 
@@ -200,59 +199,10 @@ in every `Pᵈ` (Results 12–19), which PENCIL-D sets out to prove.
     the stable range from `d = 4` (Result 18). The cells outside it at `d ≥ 4` are 26, on 11
     sparse capped graphs, and 15 past the cap. Not found below target, under that cap.
 
-## The PENCIL-D program (queued by the PI, 2026-10-29)
+## The PENCIL-D program
 
-**Goal.** Prove the pencil realization theorem in every `Pᵈ`, and formalize it over the next few
-phases. The PI queued it ahead of ORIGAMI. Numbers and letters are minted on open
-(`PHASE-BOUNDARIES.md`), and the stable codes below name the layers until then.
-
-**Target (the `Pᵈ` pencil conjecture).** Let `G` satisfy `def:pencil-x0-standing` (finite, simple,
-connected, minimum degree at least two), and let `d ≥ 2`. Take a general picture `q` and general
-heights `z¹, …, z^{d−2} ∈ L(q)`. Then the hinges `b_u ∧ b_v` of Result 13 have rank
-`D(n−1) − def_D(G)`, `D = C(d+1, 2)`. The headline is the multigraph form, Phase 39's `PencilPair`
-in dimension `d`, through Phase 39's reduction.
-Status: `d = 2, 3` are proved and formalized (Phases 40a, 40). Every `d` with `def_3 ≤ 1` is
-Result 17. `d = 4, 5, 6` are measured (Results 11, 19).
-
-**What it implies.** By Result 12, every per-body flag stratum of `Pᵈ` attains, KT's panel
-theorem among them. That is a strengthening, not a new proof: Phase 40 itself uses KT Theorem 5.6
-at `d = 2` and KT Lemma 6.3.
-
-**What exists.** KT's chain is formalized in every `d` (Phases 21–23, 33, 41). The pencil layer is
-`P³` only. `IsNondegPencilRealization` takes a `BodyHingeFramework K 2` and points `Fin 4 → K`
-(`Pencil/Motive.lean`), and `main-component.tex` computes in `Λ²K⁴`'s flat coordinates. The
-planar carrier is the reusable part: pictures, `L(q)`, the one-witness lemma, the
-fibre-intersection lemma and Jackson–Jordán's equality.
-
-**Routes**, neither checked:
-- **(R1) Induction on `d`.** The step `d−1 → d` starts from Result 13's base, the `P^{d−1}` pencil
-  in a hyperplane, and adds one height in `L(q)`. Phase 40 is the step `2 → 3` from the flat base.
-- **(R2) Direct.** Phase 40's induction, run once with `d − 2` heights.
-
-Either way, Result 15 limits the work for each graph to `d ≤ 2 + def_3(G)`.
-
-**Layers** (stable codes):
-- **PD-RECON** (research, recon-first as Phase 39 was): settle R1 or R2 on paper, or refute with a
-  certificate. It also covers whether Phase 39's multigraph reduction is `d`-general. The PI
-  chooses at open whether it runs in the phase or as an attack track (`HARNESS.md`).
-- **PD-STATE**: the `Pᵈ` statement layer on the general-`d` panel carrier, agreeing with Phase 39's
-  `P³` definitions. The candidate encoding (Result 13) is a panel realization whose normals on each
-  closed neighbourhood span at most three dimensions. Check it against the carrier's definition
-  bodies at open; docstrings are not evidence.
-- **PD-STABLE**: Results 15–17, formally: the embedding, the deficiency lemma, and `Pᵈ` for
-  `def_3 ≤ 1`. It needs PD-STATE and Phase 40, but not the recon.
-- **PD-CARRIER**, **PD-STEPS**, **PD-COVERAGE**: Phase 40b–40m in `Pᵈ`, shaped by PD-RECON's route.
-- **PD-REDUCTION**, **PD-HEAD**: Phase 39's reduction in `Pᵈ`; the headline `PencilPair`, and the
-  flag strata as corollaries.
-
-PD-STATE and PD-STABLE do not depend on the route, so they can run beside PD-RECON.
-
-**Next concrete task: PD-RECON's step table**, the program's opening commit after the phase note.
-Take each step of Phase 40's induction (`main-component.tex`: the cut and bridge-chain scheme,
-contraction, the cycle and long ear, the short ears, the orbit ear, the split-off) and its two
-lemmas (one witness, fibre intersection). For each, record whether the argument uses `d = 3`
-beyond the screw dimension and the flat base, and give a verdict for R1. Whether the recon takes
-one session or several is unknown until that table exists.
+Opened 2026-10-29 with the PI as **Phase 42**: the target, the routes, the layers and the PI's
+decisions are `notes/Phase42-design.md`, the recon's work log `notes/Phase42a.md`.
 
 ## Literature (next test 1, 2026-10-29)
 
@@ -323,7 +273,7 @@ Three commands, `N ∈ {1, 2, 3}`, verdict `OK: every target met` at all three:
 
 ## Next tests
 
-1. **PD-RECON's step table**, the program's next concrete task (*The PENCIL-D program*). It
+1. **PD-RECON's step table**, Phase 42a's next concrete task (`notes/Phase42a.md`). It
    absorbs session 2's test "a proof for (line, hyperplane) in `P⁴`": R1 at `d = 4`.
 2. **Past the cap:** a `D`-general deficiency oracle (Result 3: `def_{D′}` is a matroid-union
    rank, so polynomial) would turn `--pd`'s past-cap rows into full tests at every `d`. The

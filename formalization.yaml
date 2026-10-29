@@ -288,7 +288,9 @@ status:
     edge labels, and the body-hinge theorem also holds at Katoh-Tanigawa's own notion of
     genericity, the maximum rank over the realizations with nondegenerate hinges; every main
     result has a closed witness that its hypotheses can all be met; and each claim the blueprint
-    made without a Lean declaration was given one.
+    made without a Lean declaration was given one. Phase 42 (in progress) asks whether the pencil
+    realization theorem holds in every dimension, in projective d-space with each body's hinges
+    containing a common (d-3)-flat and lying in a hyperplane; it has no Lean yet.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

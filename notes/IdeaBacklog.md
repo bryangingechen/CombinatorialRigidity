@@ -43,8 +43,8 @@ Phase 39); IDENT-PANEL is the strongest challenger (see its entry).
   have no such shortcut. Research note, driver and next tests:
   `notes/Strata.md`. Its higher-`d` pencil part is queued (next entry).
 - **Higher-`d` pencil hierarchy** — queued by the PI on 2026-10-29 as
-  **PENCIL-D** (ROADMAP *Queued post-program phases*; planning note
-  `notes/Strata.md`, *The PENCIL-D program*).
+  **PENCIL-D**, opened the same day as Phase 42 (ROADMAP §42; plan
+  `notes/Phase42-design.md`).
 - **Developable origami** — ORIGAMI's sequel (CCK arXiv:2309.06804
   §4.3, second remark): add the angle-sum-2π (developability)
   constraints, a deeper stratum below ORIGAMI's. Only meaningful after

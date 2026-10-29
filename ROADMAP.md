@@ -180,6 +180,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (RECONCILE 3/3: the Lean outside the phase's footprint) | the Lean's dead code, signatures, docstrings and the pebble game's search, a non-vacuity witness per main result, and the blueprint pins they move (no main result's statement changes) | ✓ Complete — dead code deleted, unneeded hypotheses dropped and the blueprint statements they reached restated, the search re-proved, the docstrings checked and a non-vacuity witness per main result outside the next phase's rows, no main result's statement changed (see `notes/Reconcile-lean-cleanup.md`; plan `notes/Reconcile.md`; round manual: `CLEANUP.md`) |
 | ⋮ Toolchain bump to Lean v4.36.0-rc1 (maintenance, cross-phase) | `lean-toolchain`, `lake-manifest.json`, `lakefile.toml` (+ renames, imports and one-line fixes in 39 Lean files) | ✓ Complete — v4.34.0-rc2 → v4.36.0-rc1, mathlib → `930ae14`, `Matroid` → `8ece630`; every gate green, all 19 main results' axioms unchanged; pushed 2026-10-25, CI green at `4c892cb6` (see `notes/Bump-v4.36.0-rc1.md`; record `notes/ToolchainBumps.md`) |
 | 41. The panel-hinge carrier and its graph (post-program) — RECONCILE-FORMAL | `Molecular/` (structural edit; sub-lettered, 41a–41e) | ✓ Complete — each hinge at its own edge's ends, and the RECONCILE program closed (see `notes/Phase41e.md`; plan `notes/Phase41-design.md`) |
+| 42. The pencil realization theorem in every dimension (post-program) — PENCIL-D | research first, then `Molecular/` (sub-lettered, 42a–) | In progress — 42a, PD-RECON: does Phase 40's induction run in every dimension? (see `notes/Phase42a.md`; plan `notes/Phase42-design.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1259,8 +1260,23 @@ beside it (§34). Every main result has a non-vacuity witness (`Nonvacuity.lean`
 ledger `notes/Prose-findings.md` closed with every entry `done` or `left`. Headline axioms (the
 twenty `formalization.yaml` main results) re-verified at every sub-phase's close, the three
 standard ones. The loop stopped for the PI's push; PENCIL-D (queued 2026-10-29, ahead of ORIGAMI)
-opens next, with the PI. Detail →
+opened next, with the PI, as Phase 42 (§42). Detail →
 `notes/Phase41a.md` to `notes/Phase41e.md` + `notes/Phase41-design.md`.
+
+### Phase 42 — The pencil realization theorem in every dimension (PENCIL-D, post-program; sub-lettered)
+
+**In progress** (opened 2026-10-29 with the PI; plan, the PI's decisions and the layers
+`notes/Phase42-design.md`; evidence `notes/Strata.md`). In `Pᵈ` the hinges at each body form a
+pencil when they contain a common `(d−3)`-flat and lie in a hyperplane, the bottom of the `2(d−1)`
+per-body flag conditions; a theorem there implies every one of them, Katoh–Tanigawa's all-`d`
+panel theorem among them. `d = 2` (Jackson–Jordán's pin-collinear theorem) and `d = 3` (Phase 40)
+are formalized; `d = 4, 5, 6` reach the generic rank at every graph measured (36 simple graphs with
+`n ≤ 12`, 8 past that cap), and every `d` follows from Phase 40 when `def_3(G) ≤ 1`. The phase is
+research first: **PD-RECON** (42a, `notes/Phase42a.md`) asks, step by step, whether Phase 40's
+induction runs in `Pᵈ`, by induction on `d` or directly. Then, by stable code: PD-STATE and
+PD-STABLE (the statement layer and the `def_3 ≤ 1` corollary, independent of the route), Phase
+40's carrier, steps and coverage in `Pᵈ`, Phase 39's reduction, and the headline. First task:
+PD-RECON's step table.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1285,11 +1301,11 @@ initiative and closed 2026-09-29, proving the pencil realization theorem (§40 a
 queued five post-Phase-40 cleanup rounds ahead of ORIGAMI (2026-09-29), to run under
 autopilot, on 2026-10-07 **PROSE**'s five rounds after them, and on 2026-10-15 **RECONCILE**
 after PROSE, so **ORIGAMI opens after RECONCILE**; on 2026-10-29 the PI queued **PENCIL-D**
-ahead of ORIGAMI.) A longer **unqueued**
+ahead of ORIGAMI, and it opened the same day as Phase 42, §42 above.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
 formalization targets) lives in `notes/IdeaBacklog.md`. Its STRATA entry (2026-10-29) grew a
-research note of its own, `notes/Strata.md`, which is also PENCIL-D's planning note.
+research note of its own, `notes/Strata.md`, which holds PENCIL-D's evidence.
 
 - **The post-Phase-40 cleanup rounds** — five `CLEANUP.md` rounds over what Phases 39–40 built.
   In order: `40-cleanup` (mechanical), `40-factor` (the shared hub normalization),
@@ -1342,21 +1358,10 @@ research note of its own, `notes/Strata.md`, which is also PENCIL-D's planning n
   non-vacuity witness (`Nonvacuity.lean`) and checked the docstrings outside the phase's footprint,
   restating twenty-two blueprint statements and no main result's. The phase, `RECONCILE-FORMAL`, ran
   as **Phase 41** (§41 above). The findings ledger `notes/Prose-findings.md` closed with 332
-  entries, 307 `done` and 25 `left`, none `reported` (its header). **PENCIL-D** is
-  next, then **ORIGAMI**, each opening with the PI.
-- **PENCIL-D** — the pencil realization theorem in every dimension: prove it, then formalize it
-  over the next few phases. Queued by the PI on 2026-10-29, ahead of ORIGAMI, after three STRATA
-  sessions; its planning note is `notes/Strata.md` (*The PENCIL-D program*). In `Pᵈ` the hinges
-  at each body form a pencil when they contain a common `(d−3)`-flat and lie in a hyperplane, the
-  bottom of the `2(d−1)` per-body flag conditions. A theorem there implies every one of them,
-  Katoh–Tanigawa's all-`d` panel theorem among them. `d = 2` (Jackson–Jordán's pin-collinear
-  theorem) and `d = 3` (Phase 40) are formalized; `d = 4, 5, 6` reach the generic rank at every
-  graph measured (36 simple graphs with `n ≤ 12`, 8 past that cap), and every `d` follows from
-  Phase 40 when `def_3(G) ≤ 1`. Layers by stable code: PD-RECON (the
-  research recon: does Phase 40's induction run in `Pᵈ`?), PD-STATE and PD-STABLE (the statement
-  layer and the `def_3 ≤ 1` corollary, independent of the route), then Phase 40's carrier, steps
-  and coverage, Phase 39's reduction, and the headline in `Pᵈ`. Attended; it opens with the PI and
-  takes its number then. First task: PD-RECON's step table.
+  entries, 307 `done` and 25 `left`, none `reported` (its header). **PENCIL-D**
+  opened next, as Phase 42; **ORIGAMI** follows, opening with the PI.
+- **PENCIL-D** — the pencil realization theorem in every dimension: opened 2026-10-29 with the PI
+  as Phase 42 (§42 above; plan `notes/Phase42-design.md`).
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid
