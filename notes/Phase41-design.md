@@ -661,6 +661,14 @@ ScrewSpace carrier).
   bound met by `card_shadowLabel_lt`) with `rankHypothesis_zero_iff` gives the framework, its
   centres distinct by general position. `Molecule/Application.lean`. The theorem's second pin; its
   note's last sentences go. A crux node: its exposition-ledger entry is re-read. 1–2 commits.
+  - **Landed without `[Nonempty V]`, adopted under §1f.3** (the coordinator's call under the PI's
+    standing authorization, recorded here at `0a0817a0`): both sides hold when `V` is empty, as
+    the node's statement says, at three lines of proof. The change touches only this new theorem,
+    which is not a main result or a pencil row, and it follows 41c's one-body relaxation. The
+    route also left the plan: `molecule_generic_rigid` and `molecule_rank_formula` pin
+    corollaries that depend on this node, so the proof runs through the dictionary
+    `molecular_finrank_motions_eq_square_ker` and the generic-rank lemmas, as the node's prose
+    does.
 - **U11. `def:dof-generic`** (`F-008`'s part). **Needs its own read-only recon** (the
   definition-faithfulness gate). The witness's candidates: `dof F = D(|V(G)| − 1) − rank R(G,p)`, and
   `IsMaxRankHingePoints G q` (nondegenerate at the non-loop links, and at every `E' ⊆ E(G)` the rows

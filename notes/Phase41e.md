@@ -137,18 +137,12 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   type's ascriptions in `JacobsCounting.lean`, `Nonvacuity.lean` and `Application.lean` (the
   statement of `molecule_generic_square_packing` among them) restated; `lem:molecule-graph-carrier`
   loses its fifth pin and the label bound.
-- [x] **U10. S31** (`F-174`, `F-183`; landed in one commit: `SimpleGraph.molecular_rigid_iff_square_rigid`
-  at the end of `Molecule/Application.lean`, selector `ends : Sym2 V → V × V`, under `hmin` and
-  without `[Nonempty V]`: the empty case is three lines, both sides holding as the node says (a free
-  strengthening, for §1f.3). The route is the node's prose, not the plan's, whose
-  `molecule_generic_rigid` and `molecule_rank_formula` pin nodes that depend on this one (a `\uses`
-  cycle): (⇒) `def = 0` as planned, then the molecular realization of
-  `thm:panel-hinge-iff-molecular` read through the dictionary; (⇐) the rank at `p` is at most the
-  generic rank, the rank at a generic placement in general position, then the dictionary with the
-  selector `G'.endsOf` and the trivial motions. `thm:molecular-iff-square-bar-joint` pins it second;
-  its proof `\uses` the four lemmas the pin calls (`lem:deficiency-rank-bound` in the prose for the
-  relative bound), its statement `lem:molecule-graph-carrier`; its fmlnote's last sentences
-  rewritten; the exposition-ledger entry says it is pinned.)
+- [x] **U10. S31** (`F-174`, `F-183`; landed in one commit:
+  `SimpleGraph.molecular_rigid_iff_square_rigid` in `Molecule/Application.lean`, selector
+  `Sym2 V → V × V`, under `hmin`, without `[Nonempty V]` and by the node's prose route, not the
+  plan's (both recorded in the design doc's U10 entry, the first under §1f.3);
+  `thm:molecular-iff-square-bar-joint` pins it second, its fmlnote rewritten, its
+  exposition-ledger entry updated.)
 - [ ] **U11, recon. `def:dof-generic`** (`F-008`'s part): read-only first, the
   definition-faithfulness gate. The witness's candidates: `dof F = D(|V(G)| − 1) − rank R(G,p)`,
   and `IsMaxRankHingePoints G q` (nondegenerate at the non-loop links, and at every `E' ⊆ E(G)`
