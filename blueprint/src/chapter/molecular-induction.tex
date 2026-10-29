@@ -1869,7 +1869,7 @@ Lemma~6.1, which we prove with the algebraic induction
 
 \begin{theorem}[Reduction of minimal $0$-dof-graphs; KT Theorem~4.9]
   \label{thm:minimal-kdof-reduction}
-  \lean{Graph.minimal_kdof_reduction}
+  \lean{Graph.minimal_kdof_reduction, Graph.minimal_kdof_reduction_sequence}
   \leanok
   \uses{def:graph-operations}
   Let $D \ge 3$.
@@ -1928,9 +1928,9 @@ Lemma~6.1, which we prove with the algebraic induction
   which extends to one for $G$.
 \end{proof}
 \begin{fmlnote}
-  The formalization proves part~(ii), and no declaration states
-  part~(i). In (b) the declaration asks $P(G)$ of $P(G_v^{ab})$ for every
-  label $e_0 \notin E(G - v)$ of the new edge, the labels at which the
+  The formalization proves both parts. Part~(i) states the steps as a
+  relation on graphs and the end as a double edge. In (b) the declaration
+  asks $P(G)$ of $P(G_v^{ab})$ for every label $e_0 \notin E(G - v)$ of the new edge, the labels at which the
   formal splitting off is $G_v^{ab}$ (\cref{fmlnote:graph-operations}).
   It assumes nothing else of the labels.
 \end{fmlnote}

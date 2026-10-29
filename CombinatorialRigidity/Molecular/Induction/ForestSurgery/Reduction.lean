@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Molecular.Induction.Contraction
 public import CombinatorialRigidity.Molecular.Induction.ForestSurgery.EdgeSplitting
 
 /-!
@@ -635,6 +636,74 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
         omega
       exact IH _ hsmaller _ rfl
         (splitOff_isMinimalKDof hD2 hV3 hav hbv hla hlb hdeg2 he₀ hG hrig) hsplit2
+
+/-! ## KT Theorem 4.9 (i): the reduction sequence -/
+
+/-- **A step of the reduction sequence** (a step of `thm:minimal-kdof-reduction`): `G'` is a minimal
+`0`-dof-graph obtained from `G` by KT Theorem 4.9's two operations, a splitting off at a vertex `v`
+of degree two with the label `e₀ ∉ E(G - v)` of the new edge (so that `G'` is `G_v^{ab}`,
+`fmlnote:graph-operations`), or the contraction of a proper rigid subgraph. -/
+def KTReductionStep [DecidableEq β] (n : ℕ) (G G' : Graph α β) : Prop :=
+  G'.IsMinimalKDof n 0 ∧
+    ((∃ (v a b : α) (eₐ e_b e₀ : β), v ∈ V(G) ∧ a ≠ v ∧ b ≠ v ∧ eₐ ≠ e_b ∧
+        G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧ (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) ∧
+        e₀ ∉ E(G.removeVertex v) ∧ G' = G.splitOff v a b e₀) ∨
+      (∃ (H : Graph α β) (r : α), H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧
+        G' = G.rigidContract H r))
+
+/-- **The double edge** (a step of `thm:minimal-kdof-reduction`): the graph on two vertices with two
+edges, each joining them, where the sequence of KT Theorem 4.9 (i) ends. -/
+def IsDoubleEdge (G : Graph α β) : Prop :=
+  ∃ x y e f, x ≠ y ∧ e ≠ f ∧ V(G) = {x, y} ∧ E(G) = {e, f} ∧ G.IsLink e x y ∧ G.IsLink f x y
+
+/-- **The reduction sequence** (`thm:minimal-kdof-reduction` (i), KT Theorem 4.9, pp. 666–667): let
+`D ≥ 3`. A minimal `0`-dof-graph `G` with at least two vertices reduces to a double edge by a finite
+sequence of steps (`KTReductionStep`): splitting off at a vertex of degree two, and contracting a
+proper rigid subgraph. As in Katoh and Tanigawa's proof, it follows from `minimal_kdof_reduction`
+with `P G` the existence of such a sequence. The two-vertex case is
+`isMinimalKDof_ncard_le_two_trichotomy`, a split step extends the sequence of `G_v^{ab}` at the
+label `eₐ`, which is always admissible (`notMem_edgeSet_removeVertex_iff`), and a contraction step
+extends that of `G/E(H)`. No hypothesis on the labels. -/
+theorem minimal_kdof_reduction_sequence [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
+    ∃ Gm : Graph α β, Relation.ReflTransGen (KTReductionStep n) G Gm ∧ IsDoubleEdge Gm := by
+  have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have : NeZero (bodyHingeMult n) := ⟨by rw [bodyHingeMult]; omega⟩
+  have hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
+      ∃ Gm, Relation.ReflTransGen (KTReductionStep n) G Gm ∧ IsDoubleEdge Gm := by
+    intro G hG hV2
+    have hne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+    rcases isMinimalKDof_ncard_le_two_trichotomy hD2 hG hne hV2.le with
+      ⟨-, hk⟩ | ⟨-, -, -, -, -, -, -, hk⟩ | ⟨x, y, e, f, hxy, hef, hVG, hEG, he, hf, -⟩
+    · rw [hV2] at hk; push_cast at hk; omega
+    · omega
+    · exact ⟨G, .refl, x, y, e, f, hxy, hef, hVG, hEG, he, hf⟩
+  refine minimal_kdof_reduction hD
+    (P := fun G => ∃ Gm, Relation.ReflTransGen (KTReductionStep n) G Gm ∧ IsDoubleEdge Gm)
+    hbase ?_ ?_ G hG hV
+  · intro G v a b eₐ e_b hG hnp hvG hav hbv haV hbV heab hla hlb hdeg hP
+    have hea : eₐ ∉ E(G.removeVertex v) :=
+      (notMem_edgeSet_removeVertex_iff hla hlb hdeg).mpr (Or.inr (Or.inl rfl))
+    obtain ⟨Gm, hGm, hdbl⟩ := hP eₐ hea
+    have h2 : 2 ≤ V(G).ncard := by
+      have hsub : ({v, a} : Set α) ⊆ V(G) :=
+        Set.insert_subset hvG (Set.singleton_subset_iff.mpr haV)
+      have := Set.ncard_le_ncard hsub (Set.toFinite _)
+      rwa [Set.ncard_pair hav.symm] at this
+    rcases eq_or_lt_of_le h2 with h2 | h3
+    · exact hbase G hG h2.symm
+    have hmin := splitOff_isMinimalKDof hD2 h3 hav hbv hla hlb hdeg hea hG hnp
+    exact ⟨Gm, .head ⟨hmin, .inl ⟨v, a, b, eₐ, e_b, eₐ, hvG, hav, hbv, heab, hla, hlb, hdeg, hea,
+      rfl⟩⟩ hGm, hdbl⟩
+  · intro G hG hV3 ⟨H, hH⟩ IH
+    obtain ⟨r, hr⟩ := hH.vertexSet_nonempty
+    have hsub : V(H) ⊆ V(G) := hH.1.1.vertexSet_mono
+    have hcount := rigidContract_vertexSet_ncard (G := G) hr hsub
+    have hH2 := hH.2.1
+    have hlt : V(H).ncard < V(G).ncard := Set.ncard_lt_ncard hH.2.2 (Set.toFinite _)
+    have hmin := rigidContract_isMinimalKDof hG hH hr
+    obtain ⟨Gm, hGm, hdbl⟩ := IH _ hmin (by omega) (by omega)
+    exact ⟨Gm, .head ⟨hmin, .inr ⟨H, r, hH, hr, rfl⟩⟩ hGm, hdbl⟩
 
 /-- **Induction over all deficiencies** (`thm:minimal-kdof-reduction-all-k`; the induction of Katoh
 and Tanigawa's proof of their Theorem 5.5, with its hypothesis KT eq. (6.1), p. 671): let a property

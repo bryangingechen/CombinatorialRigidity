@@ -6,11 +6,11 @@ last, so its close closes Phase 41 and the RECONCILE program. The phase's design
 `notes/Phase41-design.md`; the recon's Lean witnesses are
 `notes/reconcile-formal/UnstatedWitness.lean` and, for item R and U4,
 `notes/reconcile-formal/ReductionWitness.lean`. Fourteen build items, a recon, a spike and the
-close (planned 17–23 commits, the open included); U1, U2, U3 and R have landed. Next: U4.
+close (planned 17–23 commits, the open included); U1, U2, U3, R and U4 have landed. Next: U5.
 
 ## Current state
 
-**The next concrete commit is U4** (*Hand-off*); U1, U2, U3 and R have landed. Each claim of the full
+**The next concrete commit is U5** (*Hand-off*); U1, U2, U3, R and U4 have landed. Each claim of the full
 list (§1h.1) gets a declaration and a pin: S22–S25, S31, S3, S16, S19, G5's three
 (`def:blockingWitness`, `def:dof-generic`, the Plücker expansion) and `F-061`'s forest lemma, with
 §4(a). The PI also took, at the open (§1j): item R's build, which drops `hfresh` from KT Theorem
@@ -150,16 +150,12 @@ ScrewSpace carrier). Witness names are in `ReconUnstated` (`UnstatedWitness.lean
   fmlnote); `lem:splitoff-deficiency-reuse`'s fmlnote. `formalization.yaml`'s KT Theorem 4.9 row
   names no label condition, before or after. One full build, from `Operations.lean` through the
   molecular chain. 1 commit.
-- [ ] **U4. S22** (`F-101`), R landed. `Graph.minimal_kdof_reduction_sequence`
-  (`ForestSurgery/Reduction.lean`): `Relation.ReflTransGen` of a step relation
-  (`KTReductionStep`: to a minimal `0`-dof-graph, by a split-off at a vertex of degree two at a
-  label `e₀ ∉ E(G − v)`, the formal `G_v^{ab}`, or the contraction of a proper rigid subgraph)
-  from `G` to a double edge, under `3 ≤ D` alone: **no `hfresh`** (§1j.1). Its proof is R's
-  principle at `e₀ = eₐ`, with `isMinimalKDof_ncard_le_two_trichotomy` (`Deficiency.lean:3248`),
-  `splitOff_isMinimalKDof` as R restates it and `rigidContract_isMinimalKDof`
-  (`Contraction.lean:521`). Source: `ReductionWitness.lean`'s last section (proved). Not a main
-  result. `thm:minimal-kdof-reduction` pins it beside (ii)'s; the note's first sentence goes.
-  1 commit.
+- [x] **U4. S22** (landed: `Graph.minimal_kdof_reduction_sequence`, with `KTReductionStep` and
+  `IsDoubleEdge`, in `ForestSurgery/Reduction.lean` after `minimal_kdof_reduction`, which needed
+  the new import of `Contraction.lean`; no `hfresh`, `3 ≤ D` alone. Transcribed from the witness
+  with R's names, no proof change. `thm:minimal-kdof-reduction` pins it beside (ii)'s and its
+  fmlnote now says both parts are proved; the two definitions are unpinned helpers, their
+  docstrings leading `a step of thm:minimal-kdof-reduction`.)
 - [ ] **U5. S19** (`F-116`). `BodyHingeFramework.case_I_rank_add_iff` (proved): for a proper
   rigid `H` with `r ∈ V(H)` and frameworks `F`, `F₂`, if `rank R(F₂) = D(|V(G/E(H))| − 1) − def`
   of the contraction, then `rank R(F) = D(|V(G)| − 1) − def(G̃)` iff
@@ -289,11 +285,9 @@ moved by R's build (+1, §1j.1) and PAD as its own commit (+1, §1j.3); the ride
 
 ## Hand-off / next phase
 
-**U4** (S22, checklist item U4; source the last section of `ReductionWitness.lean`):
-`Graph.minimal_kdof_reduction_sequence` and its step relation `KTReductionStep` (the split clause
-at a label `e₀ ∉ E(G − v)`) in `ForestSurgery/Reduction.lean`, proved from item R's principle at
-`e₀ = eₐ` (`notMem_edgeSet_removeVertex_iff` gives its admissibility); pinned beside
-`thm:minimal-kdof-reduction`'s (ii), whose first-sentence note goes. One commit.
+**U5** (S19, checklist item U5): `BodyHingeFramework.case_I_rank_add_iff` in
+`AlgebraicInduction/Pinning.lean`, beside the block-pin criteria, pinned first by `lem:case-I`
+(statement and route in the checklist). One commit.
 
 ## Decisions made during this phase
 
