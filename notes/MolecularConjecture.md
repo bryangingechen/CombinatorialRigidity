@@ -792,9 +792,9 @@ with the condition built into the structure and no main result restated; the sec
 nonparallel panels, and the generic theorems cover every simple graph on one body or more. The
 third, 41c (MULTIGRAPH), opened and closed 2026-10-28: the generic body-hinge theorem holds for
 every multigraph, loops allowed, and KT Proposition 2.3 at every generic hinge-point assignment.
-The fourth, 41d (RELABEL), opened 2026-10-29 with the PI: a transport at the boundary drops the
-bound on the edge labels from the six main results that carry it, the induction untouched;
-UNSTATED follows, expected as 41e. Summary: ROADMAP §41. Still queued,
+The fourth, 41d (RELABEL), opened and closed 2026-10-29 with the PI: a transport at the boundary
+dropped the bound on the edge labels from the six main results that carried it, the induction
+untouched; UNSTATED follows, expected as 41e, after the PI's answers to 41d's questions. Summary: ROADMAP §41. Still queued,
 codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
 conjecture, `notes/Origami.md` — the next phase to open after Phase 41), **PIN** (a second,
 independent proof of the 2-d molecular conjecture by Jackson–Jordán 2008's

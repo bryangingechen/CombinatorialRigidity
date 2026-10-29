@@ -1732,6 +1732,22 @@ account, which since item 3 is `prop:rank-formula-of-motion-bound`'s, and now sa
 `lem:relative-deficiency-rank-bound` mentions name the node, not its hypothesis.
 **Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
 
+### Phase 41d (RELABEL: the bound on the edge labels dropped from the main results, structural edit — no new chapter)
+
+**No new entries — judged at the sub-phase close (2026-10-29).** The sub-phase removed a
+project-side hypothesis: the bound on the edge labels comes from the formal fixed label set, which
+Katoh and Tanigawa's argument does not have (`rem:fresh-edge-supply`). The new nodes
+(`lem:embed-edges-simple-deficiency`, `lem:embed-edges-minimal`, `lem:embed-edges-framework`) and
+`def:pencil-embed-edges`, moved to `panel-layer.tex`, serve only that label set; the one new
+argument, minimality through deficiencies, is KT eq. (2.4) as `lem:minimal-kdof-spanning-subgraph`
+uses it, and its proof is in its node. No crux proof rerouted: the induction is untouched. The close
+checked the entries naming a node 41d restated or moved: the Phase 26 entry's padded carrier
+"supplying enough edge labels for Theorem 5.6" and the Phase 40d entry's relabelling nodes under
+`main-component.tex` are dated to their phases; since 41d the padding is unneeded
+(`lem:molecule-graph-carrier`'s note) and `def:pencil-embed-edges` sits beside
+`rem:fresh-edge-supply`. Neither judgment changes, as both nodes are project-side.
+**Result: unchanged, 0 pending / 50 done / 1 closed as superseded** (of 51).
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

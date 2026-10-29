@@ -1,271 +1,96 @@
 # Phase 41d — RELABEL: the bound on the edge labels dropped from the main results (work log)
 
-**Status:** in progress (opened 2026-10-29 with the PI), a sub-phase of Phase 41. The phase's
-design, the PI's decisions (here §1h.2 and §1i, the open) and RELABEL's recon are in
-`notes/Phase41-design.md`; the recon's Lean witness is `notes/reconcile-formal/RelabelWitness.lean`.
-Three build items, one read-only recon and the close (planned 7–10); B1, B2, B3 and item R have
-landed, so no main result bounds the labels, and KT Theorem 4.9's principle can drop its supply in
-one commit (R, for the PI). Next: the close.
+**Status:** ✓ closed 2026-10-29 (opened the same day with the PI), a sub-phase of Phase 41, which
+stays in progress. The phase's design, the PI's decisions (here §1h.2 and §1i, the open) and
+RELABEL's recon are in `notes/Phase41-design.md`; the recon's Lean witness is
+`notes/reconcile-formal/RelabelWitness.lean`. Every checklist item landed, in 7 commits with the
+open, a corrective and the close. The loop stops for the PI's answers (*Blockers*); UNSTATED
+follows, expected as 41e (*Hand-off*).
 
 ## Current state
 
-**The next concrete commit is the close** (*Hand-off*); B1, B2, B3 and item R have landed (below),
-so the six main results that carried a bound on the labels, and every declaration of the cascade,
-assume nothing of them, and R's question waits for the PI at the stop.
-RELABEL's recon (design
-doc §2, *RELABEL's recon*) proved route B in a witness against `e51acb76`, with no `sorry`: each
-main result applies its landed form at `β ⊕ Fin N`, `N = D(|α| − 1) + 1`, where
-`Graph.freshEdgeSupply_of_card_lt` gives the supply, and pulls the framework back along `inl`. The
-rows, motions, normals and deficiency come back unchanged, minimality transports through
-deficiencies, and genericity needs no transport. KT Theorem 5.5's induction keeps `hfresh` inside,
-and no proof in it changes. Six main results lose the bound (`hfresh` on Theorem 5.5; `hcard` on
-Theorem 5.6, both molecular conjectures, the generic panel rank formula and M1), and 23
-declarations' statements lose a hypothesis. **The witness's one uncompiled claim:** the molecule
-chain's three declarations (`Theorem56.lean` 2, `Modelling.lean` 1) follow "by grep the same
-pattern, not compiled". Mode: structural edit, no red target nodes; each item restates the nodes
-it reaches, in step with its Lean.
+**Closed.** The six main results that carried a bound on the edge labels assume nothing of them:
+KT Theorem 5.5's fresh-label supply (`theorem_55_minimalKDof_gen`), and the bound `hcard` of KT
+Theorem 5.6, both molecular conjectures, the generic panel rank formula and M1. Each applies its
+supply-taking form, renamed and pinned beside it, with the labels embedded in
+`β ⊕ Fin (D(|α| − 1) + 1)`, where the supply holds, and pulls the framework back: rows, motions,
+normals and deficiency are unchanged, minimality transports through deficiencies, and the induction
+keeps the supply inside, untouched. 23 declarations lost one hypothesis each, every one a
+strengthening, and the non-vacuity witnesses use fewer labels than the old bound. Item R found that
+KT Theorem 4.9's principle can drop its supply in one commit, which goes to the PI. The close's
+re-read fixed three pronouns in `panel-layer.tex`'s notes, left singular when B2 and B3 gave the
+nodes a second pin. At the close the 20 main results' axioms are `[propext, Classical.choice,
+Quot.sound]`, the output identical to 41c's close run net of the harness path. Mode: structural
+edit, no red target nodes.
 
 ## Architectural choices made up front
 
 - **Statements change only as §1i and the arc say** (`notes/Reconcile.md` §2, *Hygiene*): each of
-  the 23 declarations of the arc's *Which statements change* loses one hypothesis (`hcard` or
-  `hfresh`, with `[DecidableEq β]` where only the supply used it), and nothing else in its
-  statement moves. A free strengthening only under §1f.3, recorded in the design doc.
-- **The induction keeps `hfresh`** (route B): `theorem_55_minimalKDof_k_all_k`,
-  `hasGenericFullRankRealization_of_theorem_55_gen`, `theorem_55_6_multigraph_of_two_le`, Cases II
-  and III and the chain extraction are untouched. In `Theorem55.lean`, the zone, only the main
-  results' statements and the transports after the induction change.
-- **The main results keep their names**; the landed supply-taking forms the transports call are
-  renamed, under the deletion gate (`CombinatorialRigidity/CLAUDE.md` *Forward-mode slices*).
-- **Each restated main result lands with its non-vacuity witness check** (its witness rebuilt
-  against the new statement, the label-headroom argument deleted) and its `formalization.yaml`
-  row, in the same commit.
-- **Ledger.** Each commit names the ledger IDs it acts on, if any; RELABEL has none of its own (the
-  bound is the design doc's §4(b), the PI's §1h.2, not a PROSE finding). One commit per dispatch
-  (dispatch-log F53).
-- **The witness is the source.** Each build item transcribes
-  `notes/reconcile-formal/RelabelWitness.lean` (no `sorry`; compiler-checked at `e51acb76`),
-  checking it first with `lake lean` while it still compiles (it calls the landed forms, which B2
-  renames), and looks for a shorter route as it goes; a shorter proof that compiles is taken and
-  noted in the commit.
-- **The loop** runs under §1h.3's configuration, given for 41d (no run cap, mechanical fixups
-  pre-authorized, Sonnet and Opus dispatchable), and stops at 41d's close and when the
-  coordinator's context runs low (§1i.4); the PI pushes only at Phase 41's close.
+  the 23 declarations loses one hypothesis; a free strengthening only under §1f.3.
+- **Route B, the induction untouched**: Theorem 5.5's induction, Cases II and III and the chain
+  extraction keep `hfresh`; in `Theorem55.lean` only the main results' statements and the
+  transports after the induction changed.
+- **The main results keep their names**; the supply-taking forms are renamed, under the deletion
+  gate. **The witness is the source**; the evidence files are not repointed.
 
 ## Lemma checklist
 
-The witness proves each Lean statement below in its `Recon41Relabel` namespaces, the bound-free
-forms under primed names; an item transcribes it into the library, with its blueprint and status
-surfaces.
-
-- [x] **B1. `embedEdges` moved up, and minimality through deficiencies (T5).** Into
-  `Molecular/Deficiency.lean`, beside `Graph.freshEdgeSupply_of_card_lt`: `Graph.embedEdges` from
-  `Molecule/Pencil/MainComponent/Bridge.lean` (or defined as the `Matroid` package's
-  `Graph.edgeMap` at an embedding, the witness's `embedEdges_eq_edgeMap`) with its graph lemmas
-  `Graph.vertexSet_embedEdges`, `Graph.embedEdges_isLink`, `Graph.edgeSet_embedEdges`,
-  `Graph.Simple.embedEdges` and `Graph.deficiency_embedEdges`, names kept (the pencil ones,
-  `closedNbhd_embedEdges`, `liftingSpace_embedEdges`, `isAdmissiblePicture_embedEdges_iff`,
-  `finrank_liftingSpace_embedEdges` and `isMainPicture_embedEdges_iff`, stay in `Bridge.lean`).
-  T5, the only new mathematics, about 90 lines: `deficiency_lt_of_isMinimalKDof`,
-  `isMinimalKDof_of_deficiency_lt`, `embedEdges_restrict_diff` and `IsMinimalKDof.embedEdges`, by
-  KT eq. (2.4) and `matroidMG_restrict_mulTilde`, as `exists_isMinimalKDof_spanning_subgraph`
-  argues (every lemma they call is already in `Deficiency.lean`). And the padded supply, the supply
-  at `β ⊕ Fin (D(|α| − 1) + 1)` (the witness proves its bound inline, `rw [Nat.card_sum,
-  Nat.card_fin]; omega`). No statement changes. Blueprint: `def:pencil-embed-edges` moved to
-  `algebraic-induction/panel-layer.tex`, the chapter of `rem:fresh-edge-supply`, its name kept, and
-  `fmlnote:pencil-jj-embed-edges` kept coherent with the move. The arc names no node for T5, and
-  does not say whether `lem:pencil-jj-embed-edges`'s simplicity and deficiency clauses move too: the
-  item's call, recorded in its commit. No `formalization.yaml` row moves. Source: the witness's
-  first and T5 sections, transcribed; look for a shorter route. A full rebuild of the molecular
-  chain. S/P/B 1/1/2. 1 commit.
-- [x] **B2. The pullbacks and the spine.** T1 and T2 after the induction, in
-  `AlgebraicInduction/Theorem55.lean` or a file it imports that imports `PanelHinge.lean` (not
-  `RigidityMatrix/Basic.lean` or `PanelHinge.lean`, which would rebuild the chain): `bhComap` with
-  `bhComap_rigidityRows` (an equality of sets) and `bhComap_infinitesimalMotions`, and `phComap`
-  (the normals kept, the selector `P'.ends ∘ ι`, its link field three lines) with
-  `phComap_toBodyHinge`. Then the spine's five transports, each 10–20 lines: the landed form at
-  `β ⊕ Fin N`, pulled back.
-  - `PanelHingeFramework.theorem_55_minimalKDof_gen` (KT Theorem 5.5): `hfresh` dropped;
-    `[DecidableEq β]` stays, for `IsMinimalKDof`.
-  - `PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen` and
-    `PanelHingeFramework.finrank_span_rigidityRows_genuine_recordsLinks_of_theorem_55_gen`: `hfresh`
-    and `[DecidableEq β]` dropped (only the supply used it; the linter flags it).
-  - `PanelHingeFramework.rankHypothesis_of_theorem_55_gen` (KT Theorem 5.6) and
-    `theorem_55_6_multigraph_gen`: `hcard` dropped. `[Finite β]` stays everywhere, as `β ⊕ Fin N`
-    must be finite.
-  - **Placed by neither the arc's steps nor the witness:** `theorem_55_6_multigraph`, the `k`-form
-    with `hfresh` that the landed `_gen` calls, is one of the 23. B2 drops its `hfresh` with the
-    spine (its own transport, as the genuine form's, or derived from the bound-free `_gen`): the
-    item's call, recorded in its commit.
-
-  The main results keep their names; the landed supply-taking forms are renamed (the new names are
-  the item's). **The deletion gate:** grep the whole repo for each of the five names and repoint,
-  in the same commit, every reference that means the supply-taking form: the transports, the
-  callers that keep their binder until B3 (the `d = 3` forms, the conjectures, the generic
-  theorems, `Theorem56.lean`), docstrings and notes. In `Bridge.lean`,
-  `Graph.exists_mvPolynomial_le_finrank_span_rigidityRows_pencilPicturePoint`
-  (`lem:pencil-jj-chart`) keeps `hfresh` and calls the renamed rows form (no pencil row moves).
-  The evidence files in `notes/reconcile-formal/` check against the commits their headers name and
-  are not repointed (none has been after a later restatement). Non-vacuity: `theorem_55_minimalKDof_gen_witness` and
-  `rankHypothesis_of_theorem_55_gen_witness` (`CombinatorialRigidity/Nonvacuity.lean`) without the
-  label headroom `3 · (2 − 1) < 4` and their docstrings' sentence on it; the two `formalization.yaml`
-  rows re-read (neither names the bound today). Blueprint, the changed-statement gate:
-  `thm:theorem-55`, `thm:theorem-55-6-genuine`, `thm:theorem-55-6`, `thm:theorem-55-6-rows` and
-  `thm:theorem-55-6-multigraph` (both pins) restated where they or their notes state the bound;
-  `rem:fresh-edge-supply`'s list loses these nodes (B3 rewrites the remark);
-  `fmlnote:pencil-jj-embed-edges`'s "the formal case `d = 2` of KT Theorem 5.6 assumes a supply"
-  restated. `python3 scripts/check-docstring-labels.py` diffed against the parent (the moved-pin
-  gate): a renamed form whose docstring names its old node is a finding unless the node pins it
-  too. Source: the witness's T1, T2 and spine sections, transcribed; look for a shorter route.
-  Zone (`Theorem55.lean`), statements and new transports only. S/P/B 1/1/2. 1–2 commits; if it
-  splits, cut between Theorem 5.5 and the forms of Theorem 5.6.
-- [x] **B3. The cascade and the texts.** In each declaration below the binder is deleted and the
-  call switched to the bound-free form; nothing else in its proof changes (the witness's copies).
-  - `Theorem55.lean`: the `d = 3` forms `theorem_55_minimalKDof_k`, `theorem_55_d3`,
-    `rankHypothesis_deficiency_of_theorem_55_d3`, `rankHypothesis_of_theorem_55_d3` and
-    `theorem_55_6_multigraph_d3`; the conjectures `PanelHingeFramework.molecular_conjecture` and
-    `molecular_conjecture_multigraph` (the witness's `molecular_conjecture'` and
-    `molecular_conjecture_multigraph'`).
-  - `GenericLift/PanelGeneric.lean` (2): `finrank_span_rigidityRows_of_isGenericNormals` and
-    `isInfinitesimallyRigidOn_of_isGenericNormals_iff`.
-  - `GenericLift/HingeGeneric.lean` (5): `exists_hingePoints_independent_hingePointRow`,
-    `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`,
-    `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`,
-    `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees` (M1) and
-    `tfae_finrank_span_rigidityRows_ofHinge_deficiency` (KT Proposition 2.3). The witness restates
-    the private `hingeRow_smul` as `hingeRow_smul'` only because it sits outside the file.
-  - `Molecule/Theorem56.lean` (2): `exists_rankHypothesis_isGeneralPosition4` and
-    `exists_rankHypothesis_isGeneralPosition4_of_two_le`; `Molecule/Modelling.lean` (1):
-    `exists_molecular_rankHypothesis_generalPosition`. **Not compiled by the witness** ("by grep
-    the same pattern"): compile them first; a surprise is a BLOCKED return, not an improvised
-    change.
-  - The callers: `CombinatorialRigidity/Nonvacuity.lean` (the witnesses of the M1, panel-rank and
-    multigraph-conjecture rows, their `hcard` and their docstrings' headroom sentences),
-    `Molecular/AlgebraicInduction/Nonvacuity.lean` (`molecular_conjecture_witness`, its
-    `3 · (1 − 1) < 1`) and `Molecule/Application.lean` (`molecule_rank_lower_bound`, the one
-    caller of `card_shadowLabel_lt`). `G.shadowGraph`'s padding stays: dropping it would move
-    `lem:molecule-graph-carrier` and UNSTATED's U10; `Molecule/Carrier.lean`'s docstrings, which
-    give the padding as the bound's, say what it is for once nothing needs it.
-
-  Blueprint: `rem:fresh-edge-supply` rewritten (the supply is now an assumption of the induction's
-  internal forms and of `thm:minimal-kdof-reduction`; the main results relabel at the boundary,
-  `def:pencil-embed-edges` with T5), the statements and fmlnotes that state the bound at the arc's
-  other nodes (`thm:theorem-55-d3-instance`, `cor:theorem-55-d3-spanning`, `thm:theorem-55-6-d3`,
-  `cor:theorem-55-6-multigraph-d3`, `thm:molecular-conjecture`,
-  `thm:molecular-conjecture-multigraph`, `thm:panel-generic-rank`, `cor:panel-generic-rigid`,
-  `thm:bodyhinge-generic-rank`, `cor:bodyhinge-generic-rigid`,
-  `cor:bodyhinge-generic-tree-packing`, `prop:rigidity-matrix-prop11`,
-  `thm:panel-hinge-iff-molecular`, `lem:hinge-point-witness`, `lem:theorem-56-general-position`)
-  and `rem:molecular-conjecture-nonvacuous`; `lem:pencil-jj-chart` keeps `hfresh`, as its caller
-  relabels already. Status: `formalization.yaml`'s M1 and panel rows ("more than D(|V|−1) edge
-  labels", "given enough labels"), the JJ 6.1 and 7.2 alignment notes and the fidelity summary's
-  last sentence, with the two conjecture rows re-read (neither names the bound today); README's and the home page's "given more edge labels than `D(|V|−1)`",
-  `intro.tex`'s two sentences that cite `rem:fresh-edge-supply`, and ROADMAP's BH paragraph.
-  Source: the witness's cascade sections, transcribed (all but the molecule chain); look for a
-  shorter route. S/P/B 1/1/2, the molecule chain's three uncompiled. 1–2 commits; if it splits, cut
-  between `Theorem55.lean` with the molecule chain and the generic theorems with the texts.
-- [x] **R. Recon: dropping `hfresh` from `minimal_kdof_reduction`** (read-only; the PI's §1i.3).
-  `Graph.minimal_kdof_reduction` (`Induction/ForestSurgery/Reduction.lean`;
-  `thm:minimal-kdof-reduction`, KT Theorem 4.9's principle) is not a main result, and no
-  declaration uses it (the algebraic induction runs `minimal_kdof_reduction_all_k`, which takes no
-  supply). Route B cannot reach it: its split step names a fresh label for a predicate on
-  `Graph α β`, so no pullback applies. The recon sizes route A's combinatorial half, the
-  deficiency chain re-proved under the weaker `e₀ ∉ E(G − v)` (the split-off recycling one of
-  `v`'s two edge labels), through `splitOff_isMinimalKDof_of_pos` and
-  `circuit_splitOff_meets_fiber` (`Reduction.lean`), `dof_tracking` (`SplitOffDeficiency.lean`),
-  `edgeSet_mulTilde_splitOff_diff_fiber` (`EdgeSplitting.lean`) and `removeVertex_le_splitOff`
-  (`Operations.lean`), as the arc names them, and `splitOff_isMinimalKDof`, the `k = 0` step that
-  the principle itself calls. Its questions: which of these use `e₀ ∉ E(G)` beyond
-  `e₀ ∉ E(G − v)`; how `hsplit`'s premise `e₀ ∉ E(G)` restates; what then happens to UNSTATED's
-  U4 (`minimal_kdof_reduction_sequence`, which carries `hfresh` as the principle does); and the
-  estimate in commits. Its verdict is recorded as a §2 arc of the design doc in one docs commit,
-  as RELABEL's recon was (`fb566765`), with any Lean evidence in `notes/reconcile-formal/`; no
-  library Lean changes, and no build follows before the PI decides. Placed last, so that its
-  question reaches the PI at the stop between sub-phases. Off the S/P/B axes: a recon.
-- [ ] **Close**: the gates (whole-project build with 0 warnings, `lake lint`, the blueprint gates,
-  the 20 main results' axioms), the re-read of the restated chapters, ROADMAP's row and §41, the
-  design doc's RELABEL arc compressed to a cited verdict, UNSTATED named next (expected as 41e).
-  The loop stops for the PI (§1i.4), with R's question; no push (the PI pushes at Phase 41's
-  close).
-
-**B1 landed** (one commit). `Graph.embedEdges` and `vertexSet_embedEdges`, `embedEdges_isLink`,
-`edgeSet_embedEdges`, `Simple.embedEdges` and `deficiency_embedEdges` moved to `Deficiency.lean`
-(own definition kept, not `edgeMap`: the witness's `embedEdges_eq_edgeMap` is an `Iff.rfl`, not
-needed); T5 (`deficiency_lt_of_isMinimalKDof`, `isMinimalKDof_of_deficiency_lt`,
-`embedEdges_restrict_diff`, `IsMinimalKDof.embedEdges`) transcribed unchanged from the witness (no
-shorter route taken); and `freshEdgeSupply_padded` (the supply at `β ⊕ Fin (D(|α| − 1) + 1)`).
-Calls recorded: `def:pencil-embed-edges` moved; T5 and the padded supply got a new node
-`lem:embed-edges-minimal` in `panel-layer.tex` beside it. (A corrective then moved the simplicity
-and deficiency pins off `lem:pencil-jj-embed-edges` too: *Decisions made*.) Whole-project
-build 0 warnings, `lake lint`, `blueprint/verify.sh` and `check-docstring-labels.py` (0 findings)
-all clean.
-
-**B2 landed** (one commit, not split). `bhComap`, `phComap` and their three lemmas (T1, T2) in
-`Theorem55.lean` before KT Theorem 5.5, on a new node `lem:embed-edges-framework`
-(`panel-layer.tex`). Six supply-taking forms renamed, `hfresh` ones to `…_of_supply`
-(`theorem_55_minimalKDof_gen`, `rankHypothesis_genuine_of_theorem_55_gen`, the rows form,
-`theorem_55_6_multigraph`) and `hcard` ones to `…_of_card_lt` (`rankHypothesis_of_theorem_55_gen`,
-`theorem_55_6_multigraph_gen`); under the old names, six transports, each the witness's (the
-`k`-form's its own, as the genuine form's), with `freshEdgeSupply_padded` for the inline bound. The
-callers that keep their binder until B3 call the renamed forms. Both non-vacuity witnesses moved to
-`Fin 1`, the edge using the only label. Whole-project build 0 warnings, `lake lint`,
-`blueprint/verify.sh`, `lint.sh`, `check-docstring-labels.py` (0 findings, as at the parent) and
-`blueprint-deps.py --label` on the five restated nodes and the new one (no `missing` line) clean.
-
-**B3 landed** (one commit, not split). The cascade's 17 declarations lost `hcard`/`hfresh` and call
-the bound-free forms, nothing else in their proofs changed; the molecule chain's three, uncompiled
-in the witness, compiled first with no surprise. Callers: `molecule_rank_lower_bound` no longer
-calls `card_shadowLabel_lt` (kept, its pin now dead; `Carrier.lean` says the padding is unneeded).
-The witnesses moved to fewer labels than the old bound (the double edge to `Fin 3`, the single edge
-to `Fin 1`, the conjecture's to `Fin 0`). Blueprint: `rem:fresh-edge-supply` rewritten, the renamed
-forms pinned beside their main results (*Decisions made*), the bound dropped from the arc's
-statements and fmlnotes; status surfaces as the checklist says. Whole-project build 0 warnings,
-`lake lint`, `verify.sh`, `lint.sh`, `check-docstring-labels.py` (0 findings) clean.
-
-**R landed** (one docs commit; design doc §2, *Item R's recon*; witness
-`notes/reconcile-formal/ReductionWitness.lean`, no `sorry`). Route A's combinatorial half holds: the
-principle's chain (`removeVertex_le_splitOff`, `edgeSet_mulTilde_splitOff_diff_fiber`,
-`circuit_splitOff_meets_fiber`, `splitOff_deficiency_le`, `splitOff_isMinimalKDof`) is re-proved
-under `e₀ ∉ E(G − v)`, so the split-off can reuse `eₐ`, and the principle drops `hfresh`, its
-`hsplit` given `P` at every such label (a strict strengthening), with U4 then free of `hfresh`.
-`splitOff_isMinimalKDof_of_pos` (KT Lemma 4.8(ii)) is off the path and does not survive locally.
-One build commit, best placed in UNSTATED before U4.
+- [x] **B1. `embedEdges` moved up, and minimality through deficiencies (T5)**: `c6bc7762`, with the
+  corrective `7287795e` (the simplicity and deficiency pins to `lem:embed-edges-simple-deficiency`).
+- [x] **B2. The pullbacks, and KT Theorems 5.5 and 5.6 without the bound**
+  (`lem:embed-edges-framework`; six forms renamed): `9d6a43d9`.
+- [x] **B3. The cascade and the texts** (17 declarations, the witnesses, `rem:fresh-edge-supply`,
+  the status surfaces): `953367f0`.
+- [x] **R. Recon: dropping `hfresh` from `minimal_kdof_reduction`** (§1i.3; design doc §2, *Item R's
+  recon*; witness `notes/reconcile-formal/ReductionWitness.lean`): `8ea9f2b1`.
+- [x] **Close**: the gates, the re-read, ROADMAP's row and §41, the design doc's RELABEL arc
+  compressed, UNSTATED named next (the commit "Phase 41d CLOSES (RELABEL)").
 
 ## Blockers / open questions
 
-- None blocking.
-- For the PI at the close: item R's question (design doc §2, *Item R's recon*, its *For the PI*):
-  drop `hfresh` from `minimal_kdof_reduction` in one commit, placed in UNSTATED before U4, with
-  `hsplit` given `P` at every label outside `E(G − v)` (recommended), or keep it; and
-  `hasGenericFullRankRealization_of_theorem_55_gen` (the second pin of `thm:theorem-55-6-rows`),
-  which the arc counts as internal and B2 left with `hfresh`, though nothing calls it: dropping it
-  is a 3-line repackage of the bound-free rows form, a free strengthening under §1f.3.
+For the PI at the stop (§1i.4); none blocks a build.
+
+1. **Item R's question** (design doc §2, *Item R's recon*, its *For the PI*).
+   `minimal_kdof_reduction` (KT Theorem 4.9's principle; not a main result, and nothing calls it)
+   can drop `hfresh` in one commit: its chain holds when the new edge of `G_v^{ab}` reuses the
+   label of an edge at `v`, the hypothesis becoming `e₀ ∉ E(G − v)`. Placed in UNSTATED before U4,
+   it lets U4 assume nothing of the labels (UNSTATED 16–22 commits). The options: drop it, with
+   `hsplit` given `P` at every label outside `E(G − v)` (recommended, a strict strengthening); drop
+   it, with `hsplit` at one such label (a weaker theorem, at the same cost); or keep `hfresh` (no
+   cost, U4 as planned).
+2. **`hasGenericFullRankRealization_of_theorem_55_gen`** (the third pin of
+   `thm:theorem-55-6-rows`): B2 left its `hfresh`, as the arc counts it internal, though nothing
+   calls it. Restated over the bound-free rows form, a three-line repackage, it drops `hfresh` and
+   `[DecidableEq β]`, a free strengthening under §1f.3; or leave it (design doc §4).
+3. **Reports, no action recommended** (B3's, confirmed by the close's re-read). No main result
+   calls the bound-free rows form, the form of item 2 or the bound-free multigraph `k`-form
+   `theorem_55_6_multigraph`, all pinned. `card_shadowLabel_lt` is uncalled, while
+   `lem:molecule-graph-carrier` still states "more than 6(|V| − 1) labels", which its note says no
+   result needs; dropping the padding would move that statement and U10's. And
+   `thm:theorem-55-6-rows`'s `\uses` edge to `thm:theorem-55-6-genuine` has no Lean basis (the rows
+   forms build from Theorem 5.5), as before 41d.
 
 ## Hand-off / next phase
 
-**The close**, as the lemma checklist's *Close* entry says: the gates, the re-read of the restated
-chapters, ROADMAP's row and §41, the design doc's RELABEL arc compressed to a cited verdict (item
-R's arc stays whole: it is the source of R's build, if the PI takes it), UNSTATED named next. The
-loop then stops for the PI, with item R's question.
+**The next concrete task is the PI's answers** to *Blockers* (the loop stops here, §1i.4; the PI pushes only at
+Phase 41's close). Then **UNSTATED**, expected as 41e, its letter minted at its own open: the claims
+no declaration states, the full list with §4(a) (§1h.1), sized and ordered as U1–U12 by the design
+doc's §2, *UNSTATED's open recon* (15–21 commits; 16–22 with item R's build before U4, if the PI
+takes it). Its open transcribes that recon, noting that since B3 U10 has no label bound to meet
+(§2, *RELABEL's recon*). ORIGAMI opens after Phase 41.
 
 ## Decisions made during this phase
 
 - **The PI's decisions at the open** (2026-10-29): `notes/Phase41-design.md` §1i, verbatim.
-- **Route B, not route A** (RELABEL's recon, design doc §2): recycling a label inside the
-  induction breaks at Case III's chain (`ChainData.e₀_fresh`, one fresh label for every interior
-  split-off); the transport at the boundary leaves the induction untouched.
-- **The two graph pins moved to the panel layer** (the corrective after B1): `Simple.embedEdges` and
-  `deficiency_embedEdges`, which B2's Theorem 5.5/5.6 transports call, left the pencil chapter's
-  `lem:pencil-jj-embed-edges` for `lem:embed-edges-simple-deficiency` in `panel-layer.tex`, so the
-  main results' closure stays out of the pencil chapter; `lem:pencil-jj-embed-edges` keeps the
-  lifting spaces and the pictures.
-- **B2's calls** (the item left them open). The renamed forms take `_of_supply` and `_of_card_lt`
-  (`_of_freshEdgeSupply` passed the line limit). `theorem_55_6_multigraph` got its own transport;
-  T1 and T2 a node, `lem:embed-edges-framework`. The witnesses take fewer labels than the old bound
-  (B3 too), to show it gone rather than met.
-- **The renamed forms are pinned** (the coordinator's scope-pin at B3, replacing B2's "unpinned"):
-  each beside its main result on that node, so the `\uses` edges into `thm:theorem-55`,
-  `thm:theorem-55-6-genuine` and `thm:theorem-55-6-rows` are backed. Still reported: rows →
-  genuine (no Lean basis: the rows forms build the realization from Theorem 5.5, never calling the
-  genuine form), and three dead bound-free pins (the rows form, its `hasGeneric…` pin, the
-  multigraph `k`-form) and `card_shadowLabel_lt`: reports for a check, not defects.
+- **Route B, not route A** (design doc §2, *RELABEL's recon*): recycling a label inside the
+  induction breaks at Case III's chain (`ChainData.e₀_fresh`).
+- **The relabelling's graph pins on the panel layer** (B1's corrective): `Simple.embedEdges` and
+  `deficiency_embedEdges` on `lem:embed-edges-simple-deficiency`, so the main results' closure
+  stays out of the pencil chapter.
+- **Names** (B2): `_of_supply` and `_of_card_lt` (FRICTION *A suffixed name past the 100-column
+  limit*); `theorem_55_6_multigraph` its own transport; T1 and T2 on `lem:embed-edges-framework`.
+- **The renamed forms are pinned beside their main results** (B3), backing the `\uses` edges into
+  `thm:theorem-55`, `thm:theorem-55-6-genuine` and `thm:theorem-55-6-rows`.
+- **The witnesses take fewer labels than the old bound** (B2, B3): the bound shown gone, not met.
+- **`G.shadowGraph`'s padding stays** (B3): dropping it would move `lem:molecule-graph-carrier` and
+  UNSTATED's U10.
